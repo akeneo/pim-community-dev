@@ -1,7 +1,7 @@
 import React from 'react';
 import {useTranslate} from '../hooks';
-import styled from "styled-components";
-import {getColor, DangerPlainIcon, useTheme} from "akeneo-design-system";
+import styled from 'styled-components';
+import {getColor, DangerPlainIcon, useTheme} from 'akeneo-design-system';
 
 const UnsavedChangesContainer = styled.div`
   margin-top: 10px;
@@ -24,7 +24,7 @@ const UnsavedChanges = () => {
 
   return (
     <UnsavedChangesContainer>
-      <UnsavedChangesIcon color={theme.color.yellow100} size={18}/>
+      <UnsavedChangesIcon color={theme.color.yellow100} size={18} />
       <span>{translate('pim_common.entity_updated')}</span>
     </UnsavedChangesContainer>
   );

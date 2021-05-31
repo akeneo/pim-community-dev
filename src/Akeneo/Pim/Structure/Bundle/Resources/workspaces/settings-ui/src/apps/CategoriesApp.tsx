@@ -4,7 +4,7 @@ import {HashRouter as Router, Route, Switch} from 'react-router-dom';
 import {ThemeProvider} from 'styled-components';
 import {pimTheme} from 'akeneo-design-system';
 import {CategoriesIndex, CategoriesTreePage, CategoryEditPage} from '../pages';
-import {EditCategoryProvider} from "../components";
+import {EditCategoryProvider} from '../components';
 
 type Props = {
   setCanLeavePage: (canLeavePage: boolean) => void;
@@ -20,7 +20,7 @@ const CategoriesApp: FC<Props> = ({setCanLeavePage}) => {
               <CategoriesTreePage />
             </Route>
             <Route path="/:categoryId/edit">
-              <EditCategoryProvider setCanLeavePage={setCanLeavePage} >
+              <EditCategoryProvider setCanLeavePage={setCanLeavePage}>
                 <CategoryEditPage />
               </EditCategoryProvider>
             </Route>

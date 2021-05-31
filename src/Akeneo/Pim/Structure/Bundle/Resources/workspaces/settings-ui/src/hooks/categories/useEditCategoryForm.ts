@@ -1,8 +1,8 @@
-import {useCallback, useContext, useEffect, useState} from "react";
-import {saveEditCategoryForm} from "../../infrastructure/savers";
-import {NotificationLevel, useNotify, useTranslate} from "@akeneo-pim-community/shared";
-import {EditCategoryForm, useCategory} from "./useCategory";
-import {EditCategoryContext} from "../../components";
+import {useCallback, useContext, useEffect, useState} from 'react';
+import {saveEditCategoryForm} from '../../infrastructure/savers';
+import {NotificationLevel, useNotify, useTranslate} from '@akeneo-pim-community/shared';
+import {EditCategoryForm, useCategory} from './useCategory';
+import {EditCategoryContext} from '../../components';
 
 // @todo Add unit tests
 const useEditCategoryForm = (categoryId: number) => {
@@ -23,7 +23,10 @@ const useEditCategoryForm = (categoryId: number) => {
       if (!originalFormData.label.hasOwnProperty(locale) && changedLabel.value === '') {
         return false;
       }
-      if (!originalFormData.label.hasOwnProperty(locale) || originalFormData.label[locale].value !== changedLabel.value) {
+      if (
+        !originalFormData.label.hasOwnProperty(locale) ||
+        originalFormData.label[locale].value !== changedLabel.value
+      ) {
         return true;
       }
     }
@@ -32,14 +35,22 @@ const useEditCategoryForm = (categoryId: number) => {
   }, [originalFormData, editedFormData]);
 
   const havePermissionsBeenChanged = useCallback((): boolean => {
-    if (originalFormData === null || editedFormData === null || !originalFormData.permissions || !editedFormData.permissions) {
+    if (
+      originalFormData === null ||
+      editedFormData === null ||
+      !originalFormData.permissions ||
+      !editedFormData.permissions
+    ) {
       return false;
     }
 
-    return JSON.stringify(originalFormData.permissions.view.value) != JSON.stringify(editedFormData.permissions.view.value)
-      || JSON.stringify(originalFormData.permissions.edit.value) != JSON.stringify(editedFormData.permissions.edit.value)
-      || JSON.stringify(originalFormData.permissions.own.value) != JSON.stringify(editedFormData.permissions.own.value);
-
+    return (
+      JSON.stringify(originalFormData.permissions.view.value) !=
+        JSON.stringify(editedFormData.permissions.view.value) ||
+      JSON.stringify(originalFormData.permissions.edit.value) !=
+        JSON.stringify(editedFormData.permissions.edit.value) ||
+      JSON.stringify(originalFormData.permissions.own.value) != JSON.stringify(editedFormData.permissions.own.value)
+    );
   }, [originalFormData, editedFormData]);
 
   const onChangeCategoryLabel = (locale: string, label: string) => {
@@ -60,19 +71,19 @@ const useEditCategoryForm = (categoryId: number) => {
       case 'view':
         setEditedFormData({
           ...editedFormData,
-          permissions: {...editedFormData.permissions, view: {...editedFormData.permissions.view, value: values}}
+          permissions: {...editedFormData.permissions, view: {...editedFormData.permissions.view, value: values}},
         });
         break;
       case 'edit':
         setEditedFormData({
           ...editedFormData,
-          permissions: {...editedFormData.permissions, edit: {...editedFormData.permissions.edit, value: values}}
+          permissions: {...editedFormData.permissions, edit: {...editedFormData.permissions.edit, value: values}},
         });
         break;
       case 'edit':
         setEditedFormData({
           ...editedFormData,
-          permissions: {...editedFormData.permissions, own: {...editedFormData.permissions.own, value: values}}
+          permissions: {...editedFormData.permissions, own: {...editedFormData.permissions.own, value: values}},
         });
         break;
     }
@@ -86,9 +97,9 @@ const useEditCategoryForm = (categoryId: number) => {
     const editedApplyOnChildren = {...editedFormData.permissions.apply_on_children, value: value === true ? '1' : '0'};
     setEditedFormData({
       ...editedFormData,
-      permissions: {...editedFormData.permissions, apply_on_children: editedApplyOnChildren}
+      permissions: {...editedFormData.permissions, apply_on_children: editedApplyOnChildren},
     });
-  }
+  };
 
   const saveCategory = useCallback(async () => {
     if (categoryData === null || editedFormData === null) {
@@ -117,7 +128,6 @@ const useEditCategoryForm = (categoryId: number) => {
     }
 
     setOriginalFormData(categoryData.form);
-
   }, [categoryData]);
 
   useEffect(() => {
@@ -129,12 +139,11 @@ const useEditCategoryForm = (categoryId: number) => {
     if (originalFormData.permissions && editedFormData !== null && editedFormData.permissions) {
       setEditedFormData({
         ...originalFormData,
-        permissions: {...originalFormData.permissions, apply_on_children: editedFormData.permissions.apply_on_children}
+        permissions: {...originalFormData.permissions, apply_on_children: editedFormData.permissions.apply_on_children},
       });
     } else {
       setEditedFormData({...originalFormData});
     }
-
   }, [originalFormData]);
 
   useEffect(() => {
@@ -155,8 +164,8 @@ const useEditCategoryForm = (categoryId: number) => {
     onChangePermissions,
     onChangeApplyPermissionsOnChilren,
     thereAreUnsavedChanges,
-    saveCategory
+    saveCategory,
   };
 };
 
-export {useEditCategoryForm}
+export {useEditCategoryForm};

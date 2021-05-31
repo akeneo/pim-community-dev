@@ -21,6 +21,10 @@ const MainContainer = styled.div`
   justify-content: space-between;
   flex-direction: column;
   max-width: 100%;
+
+  ${LineContainer} {
+    min-height: 34px;
+  }
 `;
 
 const ActionsContainer = styled.div`

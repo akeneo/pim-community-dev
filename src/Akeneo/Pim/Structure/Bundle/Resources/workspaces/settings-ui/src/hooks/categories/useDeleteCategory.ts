@@ -13,11 +13,7 @@ const useDeleteCategory = () => {
   const translate = useTranslate();
   const notify = useNotify();
 
-  const isCategoryDeletionPossible = (
-    identifier: number,
-    label: string,
-    numberOfProducts: number,
-  ): boolean => {
+  const isCategoryDeletionPossible = (label: string, numberOfProducts: number): boolean => {
     if (numberOfProducts > MAX_NUMBER_OF_PRODUCTS_TO_ALLOW_DELETE) {
       notify(
         NotificationLevel.INFO,
@@ -51,7 +47,7 @@ const useDeleteCategory = () => {
   return {
     isCategoryDeletionPossible,
     handleDeleteCategory,
-  }
-}
+  };
+};
 
 export {useDeleteCategory, CategoryToDelete};

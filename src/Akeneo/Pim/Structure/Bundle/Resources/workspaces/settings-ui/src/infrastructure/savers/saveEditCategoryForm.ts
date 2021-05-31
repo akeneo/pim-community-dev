@@ -1,4 +1,4 @@
-import {EditCategoryForm} from "../../hooks";
+import {EditCategoryForm} from '../../hooks';
 
 const Routing = require('routing');
 
