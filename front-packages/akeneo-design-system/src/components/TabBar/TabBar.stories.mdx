@@ -3,6 +3,7 @@ import {TabBar} from './TabBar.tsx';
 import {Badge} from '../Badge/Badge';
 import {Pill} from '../Pill/Pill';
 import {useTabBar} from '../../hooks';
+import {Scrollable, Content} from '../../storybook/PreviewGallery';
 
 <Meta
   title="Components/TabBar"
@@ -114,6 +115,42 @@ The order of the tabs must be consistent across the entire application. Related 
           ))}
         </TabBar>
       );
+    }}
+  </Story>
+</Canvas>
+
+## Sticky
+
+<Canvas>
+  <Story name="Sticky">
+    {args => {
+      const [isCurrent, switchTo] = useTabBar('firstTab');
+      return (<Scrollable height={300}>
+        <TabBar sticky={0}>
+          <TabBar.Tab isActive={isCurrent('firstTab')} onClick={() => switchTo('firstTab')}>
+            First tab <Pill level="warning" />
+          </TabBar.Tab>
+          <TabBar.Tab isActive={isCurrent('anotherTab')} onClick={() => switchTo('anotherTab')}>
+            Another tab
+          </TabBar.Tab>
+          <TabBar.Tab isActive={isCurrent('lastTab')} onClick={() => switchTo('lastTab')}>
+            Last tab <Pill level="danger" />
+          </TabBar.Tab>
+        </TabBar>
+        <Content height={400}>Some content</Content>
+        <TabBar sticky={0}>
+          <TabBar.Tab isActive={isCurrent('firstTab')} onClick={() => switchTo('firstTab')}>
+            First tab <Pill level="warning" />
+          </TabBar.Tab>
+          <TabBar.Tab isActive={isCurrent('anotherTab')} onClick={() => switchTo('anotherTab')}>
+            Another tab
+          </TabBar.Tab>
+          <TabBar.Tab isActive={isCurrent('lastTab')} onClick={() => switchTo('lastTab')}>
+            Last tab <Pill level="danger" />
+          </TabBar.Tab>
+        </TabBar>
+        <Content height={400}>Some other content</Content>
+      </Scrollable>)
     }}
   </Story>
 </Canvas>
