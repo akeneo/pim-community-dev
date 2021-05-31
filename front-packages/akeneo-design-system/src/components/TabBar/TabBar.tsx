@@ -20,6 +20,7 @@ const Container = styled.div<{sticky: number} & AkeneoThemedProps>`
   display: flex;
   align-items: center;
   border-bottom: 1px solid ${getColor('grey', 80)};
+  background: ${getColor('white')};
 
   ${({sticky}) =>
     undefined !== sticky &&
@@ -39,7 +40,6 @@ const TabBarContainer = styled.div`
   flex-wrap: wrap;
   overflow: hidden;
   margin-bottom: -1px;
-  background: ${getColor('white')};
 `;
 
 const TabContainer = styled.div<TabProps & AkeneoThemedProps>`
