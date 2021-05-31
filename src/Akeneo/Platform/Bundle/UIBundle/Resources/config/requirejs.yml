@@ -984,6 +984,7 @@ config:
     # Grid view selector
     pim/grid/view-selector: pimui/js/product/grid/view-selector
     pim/grid/view-selector/selector: pimui/js/grid/view-selector
+    pim/grid/view-selector/view-selector-secondary-actions: pimui/js/grid/view-selector-secondary-actions.ts
     pim/grid/view-selector/line: pimui/js/grid/view-selector-line
     pim/grid/view-selector/create-view: pimui/js/grid/view-selector-create-view
     pim/grid/view-selector/save-view: pimui/js/grid/view-selector-save-view

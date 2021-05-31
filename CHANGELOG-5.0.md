@@ -1,5 +1,9 @@
 # 5.0.x
 
+## Bug fixes:
+
+- PIM-9882: Fix the display of the grid selector secondary action dropdown
+
 # 5.0.28 (2021-05-28)
 
 ## Bug fixes
