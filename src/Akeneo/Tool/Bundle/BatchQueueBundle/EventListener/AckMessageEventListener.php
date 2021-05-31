@@ -12,7 +12,7 @@ use Symfony\Component\Messenger\Event\WorkerMessageReceivedEvent;
 
 /**
  * Using Google Pub/Sub we should ack the message within the next 10 seconds after pulling it (it can be configured
- * to 10 minutes maximum). After that the message is re-dispatched. As the job execution can be longer, we
+ * to 10 minutes maximum). After that the message is deliver again. As the job execution can be longer, we
  * take the decision to ack the message just after pulling it. The aim to this subscriber is to ack all job messages
  * before the job execution.
  *
