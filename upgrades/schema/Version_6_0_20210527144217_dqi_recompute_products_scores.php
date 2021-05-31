@@ -2,15 +2,12 @@
 
 namespace Pim\Upgrade\Schema;
 
-use Akeneo\Tool\Component\Batch\Model\JobInstance;
-use Akeneo\UserManagement\Component\Model\UserInterface;
 use Doctrine\DBAL\Schema\Schema;
 use Doctrine\Migrations\AbstractMigration;
 use Symfony\Component\DependencyInjection\ContainerAwareInterface;
 use Symfony\Component\DependencyInjection\ContainerInterface;
-use Symfony\Component\Security\Core\User\User;
 
-final class Version20210527144217 extends AbstractMigration implements ContainerAwareInterface
+final class Version_6_0_20210527144217_dqi_recompute_products_scores extends AbstractMigration implements ContainerAwareInterface
 {
     private ContainerInterface $container;
 
@@ -46,27 +43,14 @@ SQL;
                 'data_quality_insights'
             );
 SQL;
-        $this->addSql($sql);
+        $this->container->get('database_connection')->executeQuery($sql);
     }
 
     private function launchRecomputeJob()
     {
-        $jobInstance = $this->getJobInstance();
-        $user = new User(UserInterface::SYSTEM_USER_NAME, null);
-        $jobParameters = ['lastProductId' => 0];
-
-        $this->container->get('akeneo_batch_queue.launcher.queue_job_launcher')->launch($jobInstance, $user, $jobParameters);
-    }
-
-    private function getJobInstance(): JobInstance
-    {
-        $jobInstance = $this->container->get('akeneo_batch.job.job_instance_repository')->findOneByIdentifier('data_quality_insights_recompute_products_scores');
-
-        if (!$jobInstance instanceof JobInstance) {
-            throw new \RuntimeException('The job instance "data_quality_insights_recompute_products_scores" does not exist. Please contact your administrator.');
-        }
-
-        return $jobInstance;
+        $this->container->get('pim_catalog.command_launcher')->executeForeground(
+            'pim:data-quality-insights:recompute-product-scores'
+        );
     }
 
     public function setContainer(ContainerInterface $container = null)
