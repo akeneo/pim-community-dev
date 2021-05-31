@@ -109,3 +109,9 @@ services:
             - 'job_key'
         tags:
             - { name: 'akeneo_messenger.ordering_key_candidate' }
+
+    Akeneo\Tool\Bundle\BatchQueueBundle\EventListener\AckMessageEventListener:
+        arguments:
+            - '@messenger.receiver_locator'
+        tags:
+            - { name: kernel.event_subscriber }
