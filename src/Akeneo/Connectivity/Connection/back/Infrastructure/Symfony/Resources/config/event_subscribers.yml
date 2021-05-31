@@ -3,6 +3,7 @@ services:
         arguments:
             - '@akeneo_connectivity.connection.service.connection_context'
             - '@akeneo_connectivity.connection.application.audit.handler.update_data_destination_product_event_count'
+            - '@akeneo_connectivity.connection.persistence.repository.connection'
         tags:
             - { name: kernel.event_subscriber }
 

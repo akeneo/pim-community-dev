@@ -36,6 +36,7 @@ $rules = [
 
         // Event API
         'Akeneo\Platform\Component\EventQueue',
+        'Akeneo\Connectivity\Connection\Domain\Webhook\Event\EventsApiRequestSucceededEvent',
 
         'Akeneo\Channel\Component\Event\ChannelCategoryHasBeenUpdated',
 
