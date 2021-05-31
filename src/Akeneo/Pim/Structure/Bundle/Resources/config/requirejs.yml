@@ -18,3 +18,5 @@ config:
 
     paths:
         pim/attribute-edit-form/properties/ref-data-name: akeneopimstructure/js/attribute/form/properties/ref-data-name
+
+        pim/category-edit-form/history: akeneopimstructure/js/category/history.ts

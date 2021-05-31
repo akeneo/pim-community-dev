@@ -3,21 +3,18 @@ import {useParams} from 'react-router';
 import {Breadcrumb, SectionTitle, useBooleanState} from 'akeneo-design-system';
 import {
   FullScreenError,
-  NotificationLevel,
   PageContent,
   PageHeader,
   PimView,
-  useNotify,
   useRouter,
   useSecurity,
   useSetPageTitle,
   useTranslate,
 } from '@akeneo-pim-community/shared';
-import {useCategoryTree} from '../../hooks';
+import {CategoryToDelete, useCategoryTree, useDeleteCategory} from '../../hooks';
 import {CategoryTree} from '../../components';
 import {NewCategoryModal} from './NewCategoryModal';
 import {DeleteCategoryModal} from '../../components/datagrids/categories/DeleteCategoryModal';
-import {deleteCategory} from '../../infrastructure/removers';
 
 type Params = {
   treeId: string;
@@ -28,19 +25,10 @@ type CategoryToCreate = {
   onCreate: () => void;
 };
 
-type CategoryToDelete = {
-  identifier: number;
-  label: string;
-  onDelete: () => void;
-};
-
-const MAX_NUMBER_OF_PRODUCTS_TO_ALLOW_DELETE = 100;
-
 const CategoriesTreePage: FC = () => {
   let {treeId} = useParams<Params>();
   const router = useRouter();
   const translate = useTranslate();
-  const notify = useNotify();
   const {isGranted} = useSecurity();
   const {tree, status, load} = useCategoryTree(parseInt(treeId));
   const [treeLabel, setTreeLabel] = useState(`[${treeId}]`);
@@ -48,10 +36,11 @@ const CategoriesTreePage: FC = () => {
   const [categoryToCreate, setCategoryToCreate] = useState<CategoryToCreate | null>(null);
   const [isDeleteCategoryModalOpen, openDeleteCategoryModal, closeDeleteCategoryModal] = useBooleanState();
   const [categoryToDelete, setCategoryToDelete] = useState<CategoryToDelete | null>(null);
+  const {isCategoryDeletionPossible, handleDeleteCategory} = useDeleteCategory();
 
   useSetPageTitle(translate('pim_title.pim_enrich_categorytree_tree', {'category.label': treeLabel}));
 
-  const followSettingsIndex = () => router.redirect(router.generate('pim_enrich_attribute_index'));
+  const followSettingsIndex = () => router.redirect(router.generate('pim_settings_index'));
   const followCategoriesIndex = () => router.redirect(router.generate('pim_enrich_categorytree_index'));
   const followEditCategory = (id: number) => {
     if (!isGranted('pim_enrich_product_category_edit')) {
@@ -76,46 +65,15 @@ const CategoriesTreePage: FC = () => {
     numberOfProducts: number,
     onDelete: () => void
   ) => {
-    if (numberOfProducts > MAX_NUMBER_OF_PRODUCTS_TO_ALLOW_DELETE) {
-      notify(
-        NotificationLevel.INFO,
-        translate('pim_enrich.entity.category.category_deletion.products_limit_exceeded.title'),
-        translate('pim_enrich.entity.category.category_deletion.products_limit_exceeded.message', {
-          name: label,
-          limit: MAX_NUMBER_OF_PRODUCTS_TO_ALLOW_DELETE,
-        })
-      );
-
-      return;
+    if (isCategoryDeletionPossible(identifier, label, numberOfProducts)) {
+      setCategoryToDelete({identifier, label, onDelete});
+      openDeleteCategoryModal();
     }
-
-    setCategoryToDelete({identifier, label, onDelete});
-    openDeleteCategoryModal();
-  };
+  }
 
   const handleCloseDeleteCategoryModal = () => {
     setCategoryToDelete(null);
     closeDeleteCategoryModal();
-  };
-
-  const handleDeleteCategory = async () => {
-    if (categoryToDelete === null) {
-      return;
-    }
-
-    const success = await deleteCategory(categoryToDelete.identifier);
-    success && categoryToDelete.onDelete();
-
-    const message = success
-      ? 'pim_enrich.entity.category.category_deletion.success'
-      : 'pim_enrich.entity.category.category_deletion.error';
-
-    notify(
-      success ? NotificationLevel.SUCCESS : NotificationLevel.ERROR,
-      translate(message, {name: categoryToDelete.label})
-    );
-
-    handleCloseDeleteCategoryModal();
   };
 
   useEffect(() => {
@@ -184,7 +142,10 @@ const CategoriesTreePage: FC = () => {
           <DeleteCategoryModal
             categoryLabel={categoryToDelete.label}
             closeModal={handleCloseDeleteCategoryModal}
-            deleteCategory={handleDeleteCategory}
+            deleteCategory={async () => {
+              await handleDeleteCategory(categoryToDelete);
+              handleCloseDeleteCategoryModal();
+            }}
             message={'pim_enrich.entity.category.category_deletion.confirmation'}
           />
         )}
