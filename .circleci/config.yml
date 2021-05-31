@@ -39,7 +39,7 @@ jobs:
 ##################
 # Build          #
 ##################
-  build_dev:
+  build_srnt_dev:
     parameters:
         is_pull_request:
             type: boolean
@@ -122,7 +122,7 @@ jobs:
           paths:
             - project
 
-  build_prod:
+  build_srnt_prod:
       parameters:
           is_pull_request:
               type: boolean
@@ -153,63 +153,7 @@ jobs:
               name: Push PROD PIM image on docker registry
               command: PIM_CONTEXT=deployment make push-php-image-prod
 
-  prepare_pr_ge_environment:
-      environment:
-          <<: *envVarsDeployDev
-      machine:
-          image: ubuntu-2004:202010-01
-      steps:
-          - attach_workspace:
-              at: ~/
-          - set_gcloud_config_dev
-          - restore_persisted_env_vars
-          - run:
-              name: Get CE version from same branch name or master
-              command: |
-                if curl --output /dev/null --silent --head --fail https://github.com/akeneo/pim-community-dev/tree/${CIRCLE_BRANCH}; then
-                    CE_BRANCH=${CIRCLE_BRANCH}
-                else
-                    CE_BRANCH=master
-                fi
-                IMAGE_TAG=$(echo growth-$CIRCLE_SHA1 | cut -b 1-40)
-                echo "CE branch to use: $CE_BRANCH"
-                echo "Image tag: $IMAGE_TAG"
-                echo export IMAGE_TAG=$IMAGE_TAG >> $BASH_ENV
-                echo export CE_BRANCH=$CE_BRANCH >> $BASH_ENV
-          - run:
-              name: Install yq
-              command: |
-                wget https://github.com/mikefarah/yq/releases/download/2.4.0/yq_linux_386
-                sudo mv yq_linux_386 /usr/local/bin/yq
-                sudo chmod +x /usr/local/bin/yq
-          - run:
-              name: Prepare the Growth Edition
-              command: |
-                mv /home/circleci/project /home/circleci/ee_project
-                git clone --branch $CE_BRANCH git@github.com:akeneo/pim-community-dev.git /home/circleci/project
-                cd /home/circleci/project
-                /home/circleci/ee_project/growth_edition/prepare_growth_edition.sh /home/circleci/project
-          - run:
-              name: Build the Growth Edition prod image
-              command: |
-                DOCKER_BUILDKIT=1 docker build --no-cache --progress=plain --pull --target prod \
-                  --tag eu.gcr.io/akeneo-ci/pim-enterprise-dev:$IMAGE_TAG \
-                  --build-arg COMPOSER_AUTH=${COMPOSER_AUTH} .
-                docker push eu.gcr.io/akeneo-ci/pim-enterprise-dev:$IMAGE_TAG
-          - run:
-              name: Persist env vars for next jobs
-              command: |
-                  echo export IMAGE_TAG=$IMAGE_TAG >> persisted_env_vars
-                  echo export IMAGE_TAG_SHORTED=$(echo $CIRCLE_SHA1 | cut -c -7) >> persisted_env_vars
-                  echo export TYPE="grth" >> persisted_env_vars
-                  echo export PRODUCT_REFERENCE_TYPE="growth_edition_instance" >> persisted_env_vars
-                  echo export PRODUCT_REFERENCE_CODE="growth_edition_sandbox" >> persisted_env_vars
-          - persist_to_workspace:
-              root: ~/
-              paths:
-                - project
-
-  prepare_growth_edition:
+  build_grth:
       environment:
         <<: *envVarsDeployDev
       machine:
@@ -817,7 +761,7 @@ jobs:
 ##################
 # Tests deploy   #
 ##################
-  test_deploy:
+  test_deploy_srnt:
       environment:
         <<: *envVarsDeployDev
       <<: *dockerCloudDeployer
@@ -846,7 +790,7 @@ jobs:
               command: PIM_CONTEXT=deployment INSTANCE_NAME=pimci-$(echo $CIRCLE_SHA1 | cut -c -7)-${CIRCLE_BUILD_NUM} make delete
               when: always
 
-  test_deploy_growth:
+  test_deploy_grth:
       environment:
         <<: *envVarsDeployDev
       <<: *dockerCloudDeployer
@@ -875,7 +819,7 @@ jobs:
               command: PIM_CONTEXT=deployment INSTANCE_NAME=pimci-$(echo $CIRCLE_SHA1 | cut -c -7)-${CIRCLE_BUILD_NUM} make delete
               when: always
 
-  test_upgrade_from_last_release:
+  test_upgrade_srnt_from_last_release:
       environment:
           <<: *envVarsDeployDev
       <<: *dockerCloudDeployer
@@ -922,7 +866,7 @@ jobs:
                 command: IMAGE_TAG=$CIRCLE_SHA1 PIM_CONTEXT=deployment INSTANCE_NAME=$INSTANCE_NAME make delete
                 when: always
 
-  test_upgrade_growth_from_last_release:
+  test_upgrade_grth_from_last_release:
       environment:
           <<: *envVarsDeployDev
       <<: *dockerCloudDeployer
@@ -968,7 +912,7 @@ jobs:
                 command: PIM_CONTEXT=deployment make delete
                 when: always
 
-  test_upgrade_from_serenity_customer_db:
+  test_upgrade_from_srnt_customer_db:
       environment:
           <<: *envVarsDeployDev
       <<: *dockerCloudDeployer
@@ -1005,7 +949,7 @@ jobs:
 ##################
 # Releases       #
 ##################
-  release:
+  release_srnt:
       environment:
           <<: *envVarsDeployDev
       machine:
@@ -1024,7 +968,7 @@ jobs:
               name: PIM_CONTEXT=deployment make release
               command: OLD_IMAGE_TAG=$IMAGE_TAG PIM_CONTEXT=deployment make release
 
-  release_growth_edition:
+  release_grth:
       environment:
           <<: *envVarsDeployDev
       machine:
@@ -1105,7 +1049,7 @@ jobs:
                 command: |
                     ACTIVATE_MONITORING=true INSTANCE_NAME=pimci-pm PIM_CONTEXT=deployment UPGRADE_STEP_2=true make deploy-serenity
 
-  deploy_pr_environment:
+  deploy_pr_srnt_environment:
       environment:
           <<: *envVarsDeployDev
       <<: *dockerCloudDeployer
@@ -1133,7 +1077,7 @@ jobs:
               command: ENV_NAME=dev INSTANCE_NAME_PREFIX=pimci-pr INSTANCE_NAME=pimci-pr-${CIRCLE_PULL_REQUEST##*/} PIM_CONTEXT=deployment make delete
               when: on_fail
 
-  deploy_pr_ge_environment:
+  deploy_pr_grth_environment:
       environment:
           <<: *envVarsDeployDev
       <<: *dockerCloudDeployer
@@ -1164,19 +1108,6 @@ jobs:
 ##################
 # Cleanup        #
 ##################
-  destroy_deployed_env:
-      environment:
-        <<: *envVarsDeployDev
-      <<: *dockerCloudDeployer
-      steps:
-          - attach_workspace:
-                at: ~/
-          - set_gcloud_config_dev
-          - restore_persisted_env_vars
-          - run:
-              name: Remove env on kubernetes
-              command: PIM_CONTEXT=deployment INSTANCE_NAME=pimci-$(echo $CIRCLE_SHA1 | cut -c -7)-${CIRCLE_BUILD_NUM} make delete
-
   delete_pr_environments_hourly:
       environment:
           <<: *envVarsDeployDev
@@ -1208,21 +1139,6 @@ jobs:
                 command: |
                     PIM_CONTEXT=deployment make mr-proper
 
-  delete_pr_environment:
-      environment:
-          <<: *envVarsDeployDev
-      <<: *dockerCloudDeployer
-      steps:
-          - attach_workspace:
-                at: ~/
-          - set_gcloud_config_dev
-          - run:
-                name: delete environments
-                command: |
-                    if [[ ${CIRCLE_PULL_REQUEST##*/} == "" ]]; then echo "ERROR : CIRCLE_PULL_REQUEST is empty."; exit 1;fi
-                    echo "remove env from 'deploy_pr_environment'"
-                    INSTANCE_NAME=pimci-pr-${CIRCLE_PULL_REQUEST##*/} PIM_CONTEXT=deployment make delete-serenity
-
 
 workflows:
   version: 2
@@ -1237,25 +1153,25 @@ workflows:
           - checkout:
                 requires:
                     - ready_to_build?
-          - build_dev:
+          - build_srnt_dev:
                 requires:
                     - checkout
           - test_helm_generated_k8s_files:
                 requires:
                     - checkout
-          - build_prod:
+          - build_srnt_prod:
                 requires:
                     - test_helm_generated_k8s_files
           - test_cronjobs_existence:
                 requires:
-                    - build_prod
-          - test_deploy:
+                    - build_srnt_prod
+          - test_deploy_srnt:
                 requires:
                     - test_cronjobs_existence
-          - test_upgrade_from_last_release:
+          - test_upgrade_srnt_from_last_release:
                 requires:
-                    - test_deploy
-          - deploy_pr_environment?:
+                    - test_deploy_srnt
+          - deploy_pr_srnt_environment?:
                 type: approval
                 filters:
                     branches:
@@ -1263,76 +1179,62 @@ workflows:
                             - master
                 requires:
                     - test_cronjobs_existence
-          - delete_pr_environment:
+          - deploy_pr_srnt_environment:
                 requires:
-                    - delete_pr_environment?
-          - delete_pr_environment?:
+                    - deploy_pr_srnt_environment?
+          - deploy_pr_grth_environment?:
                 type: approval
                 filters:
                     branches:
                         ignore:
                             - master
                 requires:
-                    - deploy_pr_environment
-          - deploy_pr_environment:
-                requires:
-                    - deploy_pr_environment?
-
-          - deploy_pr_ge_environment?:
-                type: approval
-                filters:
-                    branches:
-                        ignore:
-                            - master
-                requires:
-                    - prepare_growth_edition
-          - prepare_growth_edition:
+                    - build_grth
+          - build_grth:
                 requires:
                     - test_helm_generated_k8s_files
-          - test_deploy_growth:
+          - test_deploy_grth:
                 requires:
-                    - prepare_growth_edition
-          - test_upgrade_growth_from_last_release:
+                    - build_grth
+          - test_upgrade_grth_from_last_release:
                 requires:
-                    - test_deploy_growth
-          - deploy_pr_ge_environment:
+                    - test_deploy_grth
+          - deploy_pr_grth_environment:
                 requires:
-                    - deploy_pr_ge_environment?
+                    - deploy_pr_grth_environment?
           - test_front_code_style:
                 requires:
-                    - build_dev
+                    - build_srnt_dev
           - test_database:
                 requires:
-                    - build_dev
+                    - build_srnt_dev
           - test_back_static_and_acceptance:
                 requires:
-                    - build_dev
+                    - build_srnt_dev
           - test_front_static_acceptance_and_integration:
                 requires:
-                    - build_dev
+                    - build_srnt_dev
           - test_front_end_to_end:
                 requires:
-                    - build_dev
+                    - build_srnt_dev
           - test_back_phpunit:
                 requires:
-                    - build_dev
+                    - build_srnt_dev
           - test_back_integration_bounded_contexts:
                 requires:
-                    - build_dev
+                    - build_srnt_dev
           - test_back_integration_reference_entities:
                 requires:
-                    - build_dev
+                    - build_srnt_dev
           - test_back_performance:
                 requires:
-                    - build_dev
-
+                    - build_srnt_dev
           - test_onboarder_bundle:
                 requires:
-                    - build_dev
-
+                    - build_srnt_dev
           - test_back_data_migrations:
                 requires:
-                    - build_dev
+                    - build_srnt_dev
           - test_back_behat_legacy:
                 requires:
                     - test_back_static_and_acceptance
@@ -1358,48 +1260,48 @@ workflows:
           - checkout:
                 requires:
                     - ready_to_build?
-          - build_dev:
+          - build_srnt_dev:
                 is_pull_request: false
                 requires:
                     - checkout
-          - build_prod:
+          - build_srnt_prod:
                 is_pull_request: false
                 requires:
                     - checkout
           - test_cronjobs_existence:
                 requires:
-                    - build_prod
-          - test_deploy:
+                    - build_srnt_prod
+          - test_deploy_srnt:
                 requires:
                     - test_cronjobs_existence
           - test_back_static_and_acceptance:
                 requires:
-                    - build_dev
+                    - build_srnt_dev
           - test_front_static_acceptance_and_integration:
                 requires:
-                    - build_dev
+                    - build_srnt_dev
           - test_back_integration_bounded_contexts:
                 requires:
-                    - build_dev
+                    - build_srnt_dev
           - test_back_integration_reference_entities:
                 requires:
-                    - build_dev
+                    - build_srnt_dev
           - test_back_phpunit:
                 requires:
-                    - build_dev
+                    - build_srnt_dev
           - test_onboarder_bundle:
                 requires:
-                    - build_dev
+                    - build_srnt_dev
           - test_back_behat_legacy:
                 requires:
-                    - build_dev
+                    - build_srnt_dev
           - test_back_data_migrations:
                 requires:
-                    - build_dev
+                    - build_srnt_dev
           - test_back_performance:
                 requires:
-                    - build_dev
-          - release:
+                    - build_srnt_dev
+          - release_srnt:
                 requires:
                     - test_back_static_and_acceptance
                     - test_front_static_acceptance_and_integration
@@ -1411,7 +1313,7 @@ workflows:
                     - test_back_performance
                     - test_back_behat_legacy
                     - test_back_data_migrations
-                    - test_deploy
+                    - test_deploy_srnt
 
   on_demand_growth_edition_release:
       jobs:
@@ -1423,18 +1325,18 @@ workflows:
           - checkout:
               requires:
                   - ready_to_build?
-          - prepare_growth_edition:
+          - build_grth:
               requires:
                   - checkout
           - test_cronjobs_existence:
               requires:
-                  - prepare_growth_edition
-          - test_deploy_growth:
+                  - build_grth
+          - test_deploy_grth:
               requires:
                   - test_cronjobs_existence
-          - release_growth_edition:
+          - release_grth:
               requires:
-                  - test_deploy_growth
+                  - test_deploy_grth
 
   nightly:
       triggers:
@@ -1444,57 +1346,56 @@ workflows:
                     branches:
                         only:
                             - master
-
       jobs:
           - checkout
-          - build_dev:
+          - build_srnt_dev:
                 is_pull_request: false
                 requires:
                     - checkout
-          - build_prod:
+          - build_srnt_prod:
                 is_pull_request: false
                 requires:
                     - checkout
           - test_cronjobs_existence:
                 requires:
-                    - build_prod
-          - test_deploy:
+                    - build_srnt_prod
+          - test_deploy_srnt:
                 requires:
                     - test_cronjobs_existence
-          - test_upgrade_from_last_release:
+          - test_upgrade_srnt_from_last_release:
                 requires:
                     - test_cronjobs_existence
           - test_front_code_style:
                 requires:
-                    - build_dev
+                    - build_srnt_dev
           - test_back_static_and_acceptance:
                 requires:
-                    - build_dev
+                    - build_srnt_dev
           - test_front_static_acceptance_and_integration:
                 requires:
-                    - build_dev
+                    - build_srnt_dev
           - test_back_phpunit:
                 requires:
-                    - build_dev
+                    - build_srnt_dev
           - test_back_integration_bounded_contexts:
                 requires:
-                    - build_dev
+                    - build_srnt_dev
           - test_back_integration_reference_entities:
                 requires:
-                    - build_dev
+                    - build_srnt_dev
           - test_back_performance:
                 requires:
-                    - build_dev
+                    - build_srnt_dev
           - test_onboarder_bundle:
                 requires:
-                    - build_dev
+                    - build_srnt_dev
           - test_back_behat_legacy:
                 requires:
-                    - build_dev
+                    - build_srnt_dev
           - test_back_data_migrations:
                 requires:
-                    - build_dev
-          - release:
+                    - build_srnt_dev
+          - release_srnt:
                 requires:
                     - test_back_static_and_acceptance
                     - test_front_static_acceptance_and_integration
@@ -1505,8 +1406,8 @@ workflows:
                     - test_back_performance
                     - test_back_behat_legacy
                     - test_back_data_migrations
-                    - test_deploy
-#                    - test_upgrade_from_last_release
+                    - test_deploy_srnt
+#                    - test_upgrade_srnt_from_last_release
 
   growth_edition_release:
       triggers:
@@ -1518,21 +1419,21 @@ workflows:
                             - master
       jobs:
           - checkout
-          - prepare_growth_edition:
+          - build_grth:
                 requires:
                     - checkout
           - test_cronjobs_existence:
                 requires:
-                    - prepare_growth_edition
-          - test_deploy_growth:
+                    - build_grth
+          - test_deploy_grth:
                 requires:
                     - test_cronjobs_existence
-          - test_upgrade_growth_from_last_release:
+          - test_upgrade_grth_from_last_release:
                     requires:
-                        - test_deploy_growth
-          - release_growth_edition:
+                        - test_deploy_grth
+          - release_grth:
                     requires:
-                        - test_upgrade_growth_from_last_release
+                        - test_upgrade_grth_from_last_release
 
   nightly_deployments:
       triggers:
@@ -1560,15 +1461,14 @@ workflows:
                     branches:
                         only:
                             - master
-
       jobs:
           - checkout
-          - build_prod:
+          - build_srnt_prod:
                 requires:
                     - checkout
-          - test_upgrade_from_serenity_customer_db:
+          - test_upgrade_from_srnt_customer_db:
                 requires:
-                    - build_prod
+                    - build_srnt_prod
 
   hourly_cleanup:
      triggers:
