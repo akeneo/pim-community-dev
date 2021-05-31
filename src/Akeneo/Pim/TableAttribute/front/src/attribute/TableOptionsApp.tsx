@@ -1,6 +1,6 @@
 import React from 'react';
 import {TwoColumnsLayout} from './TwoColumnsLayout';
-import {SectionTitle, pimTheme, Field, TextInput, Button, useBooleanState, Table} from 'akeneo-design-system';
+import {SectionTitle, pimTheme, Field, TextInput, Button, useBooleanState, Table, CloseIcon, IconButton} from 'akeneo-design-system';
 import {DependenciesProvider} from '@akeneo-pim-community/legacy-bridge';
 import styled, {ThemeProvider} from 'styled-components';
 import {ColumnDefinition, TableConfiguration} from '../models/TableConfiguration';
@@ -39,6 +39,7 @@ const TableOptionsApp: React.FC<TableOptionsAppProps> = ({initialTableConfigurat
   const [activeLocales, setActiveLocales] = React.useState<Locale[]>([]);
   const [isNewColumnModalOpen, openNewColumnModal, closeNewColumnModal] = useBooleanState();
   const [isDeleteColumnModalOpen, openDeleteColumnModal, closeDeleteColumnModal] = useBooleanState();
+  const [lastColumnCodeToDelete, setLastColumnCodeToDelete] = React.useState<string|undefined>();
   const [firstColumnDefinition, ...otherColumnDefinitions] = tableConfiguration;
 
   React.useEffect(() => {
@@ -65,10 +66,10 @@ const TableOptionsApp: React.FC<TableOptionsAppProps> = ({initialTableConfigurat
     onChange(tableConfiguration);
   };
 
-  const handleDelete = (columnDefinition: ColumnDefinition) => {
-    tableConfiguration.push(columnDefinition);
-    setTableConfiguration([...tableConfiguration]);
-    onChange(tableConfiguration);
+  const handleDelete = () => {
+    const newTableConfiguration = tableConfiguration.filter((columnDefinition)=>columnDefinition.code!==lastColumnCodeToDelete);
+    setTableConfiguration(newTableConfiguration);
+    onChange(newTableConfiguration);
   };
 
 
@@ -142,17 +143,26 @@ const TableOptionsApp: React.FC<TableOptionsAppProps> = ({initialTableConfigurat
                     </Table.Cell>
                     {/* Adding the delete button */}
                     <Table.ActionCell>
-                      <Button onClick={()=>openDeleteColumnModal()}>Delete</Button>
+                      <IconButton
+                          ghost="borderless"
+                          icon={<CloseIcon />}
+                          onClick={()=>{
+                            setLastColumnCodeToDelete(columnDefinition.code);
+                            openDeleteColumnModal();
+                          }}
+                          title="TODO:Delete"
+                          level="tertiary"
+                      />
                     </Table.ActionCell>
                   </Table.Row>
                 ))}
               </Table.Body>
             </Table>
-            {isDeleteColumnModalOpen && (
+            {isDeleteColumnModalOpen && lastColumnCodeToDelete && (
                 <DeleteColumnModal
                     close={closeDeleteColumnModal}
-                    onCreate={handleDelete}
-                    existingColumnCodes={tableConfiguration.map(columnDefinition => columnDefinition.code)}
+                    onDelete={handleDelete}
+                    columnCode={lastColumnCodeToDelete}
                 />
             )}
             {isNewColumnModalOpen && (
