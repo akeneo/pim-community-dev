@@ -5,7 +5,7 @@ services:
         arguments:
             - '@akeneo_assetmanager.infrastructure.persistence.query.analytics.count_asset_families'
             - '@akeneo_assetmanager.infrastructure.persistence.query.analytics.average_max_number_of_assets_per_asset_family'
-            - '@akeneo_assetmanager.infrastructure.persistence.query.analytics.average_max_number_of_values_per_asset'
+            - '@akeneo.asset_manager.infrastructure.public_api.analytics.aggregated_average_max_number_of_value_per_asset'
             - '@akeneo_assetmanager.infrastructure.persistence.query.analytics.average_max_number_of_attributes_per_asset_family'
             - '@akeneo_assetmanager.infrastructure.persistence.query.analytics.average_max_percentage_of_attributes_per_asset_family.localizable_only'
             - '@akeneo_assetmanager.infrastructure.persistence.query.analytics.average_max_percentage_of_attributes_per_asset_family.scopable_only'
