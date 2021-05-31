@@ -12,7 +12,7 @@ const CategoriesIndex: FC = () => {
   const [isModalOpen, openModal, closeModal] = useBooleanState();
   const {isGranted} = useSecurity();
 
-  const followSettingsIndex = () => router.redirect(router.generate('pim_enrich_attribute_index'));
+  const followSettingsIndex = () => router.redirect(router.generate('pim_settings_index'));
 
   useEffect(() => {
     load();
