@@ -1,4 +1,11 @@
-import {Channel, denormalizeChannel, getChannelLabel, getLocalesFromChannel, getAllLocalesFromChannels, getLocaleFromChannel} from './channel';
+import {
+  Channel,
+  denormalizeChannel,
+  getChannelLabel,
+  getLocalesFromChannel,
+  getAllLocalesFromChannels,
+  getLocaleFromChannel,
+} from './channel';
 import {denormalizeLocale} from './locale';
 
 describe('akeneo > shared > model --- channel', () => {
@@ -184,22 +191,22 @@ describe('akeneo > shared > model --- channel', () => {
   test('I can get the list of locales for a channel', () => {
     expect(getLocalesFromChannel([], 'ecommerce')).toEqual([]);
     expect(
-        getLocalesFromChannel(
-            [
+      getLocalesFromChannel(
+        [
+          {
+            code: 'ecommerce',
+            locales: [
               {
-                code: 'ecommerce',
-                locales: [
-                  {
-                    code: 'en_US',
-                  },
-                  {
-                    code: 'fr_FR',
-                  },
-                ],
+                code: 'en_US',
+              },
+              {
+                code: 'fr_FR',
               },
             ],
-            'ecommerce'
-        )
+          },
+        ],
+        'ecommerce'
+      )
     ).toEqual([
       {
         code: 'en_US',
