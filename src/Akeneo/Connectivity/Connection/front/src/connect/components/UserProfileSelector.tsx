@@ -1,16 +1,8 @@
-import React, {FC, useContext, useEffect, useState} from 'react';
+import React, {FC, useEffect, useState} from 'react';
 import {useTranslate} from '../../shared/translate';
 import {AkeneoThemedProps, Field, getColor, getFontSize, Helper, Link, SelectInput} from 'akeneo-design-system';
 import styled from 'styled-components';
 import {useFetchUserProfiles} from '../hooks/use-fetch-user-profiles';
-import {useFetchMarketplaceUrl} from '../hooks/use-fetch-marketplace-url';
-import {UserContext} from '../../shared/user';
-import {useSaveUserProfile} from '../hooks/use-save-user';
-
-type UserProfile = {
-    code: string;
-    label: string;
-};
 
 const ProfileSelect = styled(SelectInput)`
     height: 40px;
@@ -66,29 +58,21 @@ const LinkButton = styled.button<AkeneoThemedProps>`
     }
 `;
 
-export const UserProfileSelector: FC = () => {
+type Props = {
+    selectedProfile: string | null;
+    handleOnSelectChange: (selectedValue: string | null) => void;
+    handleClick: () => void;
+}
+
+type UserProfile = {
+    code: string;
+    label: string;
+};
+
+export const UserProfileSelector: FC<Props> = ({selectedProfile, handleOnSelectChange, handleClick}) => {
     const translate = useTranslate();
     const [userProfiles, setUserProfiles] = useState<UserProfile[]>([]);
-    const [selectedProfile, setSelectedProfile] = useState<string | null>(null);
     const fetchUserProfiles = useFetchUserProfiles();
-    const fetchMarketplaceUrl = useFetchMarketplaceUrl();
-
-    const saveUser = useSaveUserProfile(useContext(UserContext).get<{id: string}>('meta').id);
-
-    const handleClick = () => {
-        if (null === selectedProfile) {
-            return;
-        }
-        saveUser({profile: selectedProfile}).then(() => {
-            fetchMarketplaceUrl().then((url: string) => {
-                window.open(url);
-            });
-        });
-    };
-
-    const handleOnSelectChange = (selectedValue: string | null) => {
-        setSelectedProfile(selectedValue);
-    };
 
     useEffect(() => {
         fetchUserProfiles().then(setUserProfiles);

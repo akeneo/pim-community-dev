@@ -8,6 +8,7 @@ import {useFetchMarketplaceUrl} from '../hooks/use-fetch-marketplace-url';
 import {useRouter} from '../../shared/router/use-router';
 import {UserContext} from '../../shared/user';
 import {UserProfileSelector} from '../components/UserProfileSelector';
+import {useSaveUserProfile} from '../hooks/use-save-user';
 
 const LinkButton = styled.a<AkeneoThemedProps>`
     display: inline-flex;
@@ -69,13 +70,14 @@ const Caption = styled.p`
 
 export const Marketplace: FC = () => {
     const translate = useTranslate();
+    const user = useContext(UserContext);
+    const saveUser = useSaveUserProfile(user.get<{id: string}>('meta').id);
     const fetchMarketplaceUrl = useFetchMarketplaceUrl();
     const [marketplaceUrl, setMarketplaceUrl] = useState<string>('');
     const [userProfile, setUserProfile] = useState<string | null | undefined>(undefined);
+    const [showSelector, setShowSelector] = useState<boolean>(false);
     const generateUrl = useRouter();
     const dashboardHref = `#${generateUrl('akeneo_connectivity_connection_audit_index')}`;
-
-    const user = useContext(UserContext);
 
     const breadcrumb = (
         <Breadcrumb>
@@ -87,7 +89,11 @@ export const Marketplace: FC = () => {
     useEffect(() => {
         (async () => {
             await user.refresh();
-            setUserProfile(user.get<string>('profile'));
+            const profile = user.get<string | null>('profile');
+            setUserProfile(profile);
+            if (null === profile) {
+                setShowSelector(true);
+            }
         })();
     }, [user]);
 
@@ -98,6 +104,22 @@ export const Marketplace: FC = () => {
     if (undefined === userProfile) {
         return null;
     }
+
+    const handleOnSelectChange = (selectedValue: string | null) => {
+        setUserProfile(selectedValue);
+    };
+
+    const handleClick = () => {
+        if (null === userProfile) {
+            return;
+        }
+        saveUser({profile: userProfile}).then(() => {
+            setShowSelector(false);
+            fetchMarketplaceUrl().then((url: string) => {
+                window.open(url);
+            });
+        });
+    };
 
     return (
         <>
@@ -110,8 +132,12 @@ export const Marketplace: FC = () => {
 
                 <Heading>{translate('akeneo_connectivity.connection.connect.marketplace.title')}</Heading>
 
-                {userProfile === null ? (
-                    <UserProfileSelector />
+                {showSelector ? (
+                    <UserProfileSelector
+                        selectedProfile={userProfile}
+                        handleOnSelectChange={handleOnSelectChange}
+                        handleClick={handleClick}
+                    />
                 ) : (
                     <>
                         <Caption>{translate('akeneo_connectivity.connection.connect.marketplace.sub_title')}</Caption>
