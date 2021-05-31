@@ -62,7 +62,6 @@ class PublishJobToQueue
     /** @var BatchLogHandler */
     private $batchLogHandler;
 
-    // TODO @merge master/6.0: make the $batchLogHandler argument mandatory
     public function __construct(
         string $jobInstanceClass,
         string $kernelEnv,
@@ -74,7 +73,7 @@ class PublishJobToQueue
         JobParametersValidator $jobParametersValidator,
         JobExecutionQueueInterface $jobExecutionQueue,
         EventDispatcherInterface $eventDispatcher,
-        BatchLogHandler $batchLogHandler = null
+        BatchLogHandler $batchLogHandler
     ) {
         $this->jobInstanceClass = $jobInstanceClass;
         $this->jobRepository = $jobRepository;
@@ -126,10 +125,7 @@ class PublishJobToQueue
         $this->validateJobParameters($jobInstance, $jobParameters, $jobInstanceCode);
         $jobExecution = $this->jobRepository->createJobExecution($jobInstance, $jobParameters);
 
-        // TODO @merge master/6.0: remove the null !== $this->>batchLogHandler check
-        if (null !== $this->batchLogHandler) {
-            $this->batchLogHandler->setSubDirectory((string)$jobExecution->getId());
-        }
+        $this->batchLogHandler->setSubDirectory((string)$jobExecution->getId());
 
         if (null !== $username) {
             $jobExecution->setUser($username);
