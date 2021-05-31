@@ -49,7 +49,9 @@ class InMemoryFindConnectorAssetTest extends TestCase
     {
         $asset = new ConnectorAsset(
             AssetCode::fromString('asset_code'),
-            []
+            [],
+            new \DateTimeImmutable('@0'),
+            new \DateTimeImmutable('@3600'),
         );
         $this->query->save(
             AssetFamilyIdentifier::fromString('asset_family'),

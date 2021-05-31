@@ -200,7 +200,9 @@ class GetConnectorAssetsContext implements Context
                             'data' => $mainImage->getKey()
                         ]
                     ]
-                ]
+                ],
+                new \DateTimeImmutable('@0'),
+                new \DateTimeImmutable('@3600'),
             );
 
             $this->findConnectorAssets->save($assetIdentifier, $connectorAsset);
@@ -344,7 +346,9 @@ class GetConnectorAssetsContext implements Context
                             'data' => $mainImage->getKey()
                         ]
                     ]
-                ]
+                ],
+                new \DateTimeImmutable('@0'),
+                new \DateTimeImmutable('@3600'),
             );
 
             $this->findConnectorAssets->save($assetIdentifier, $connectorAsset);
@@ -470,7 +474,9 @@ class GetConnectorAssetsContext implements Context
                             'data' => 'Italie'
                         ]
                     ]
-                ]
+                ],
+                new \DateTimeImmutable('@0'),
+                new \DateTimeImmutable('@3600'),
             );
 
             $this->connectorAssetsByAssetIdentifier[(string) $assetIdentifier] = $connectorAsset;
@@ -619,7 +625,9 @@ class GetConnectorAssetsContext implements Context
                             'data'    => 'Not required attribute ecommerce fr_FR'
                         ]
                     ]
-                ]
+                ],
+                new \DateTimeImmutable('@0'),
+                new \DateTimeImmutable('@3600'),
             );
 
             $this->findConnectorAssets->save($assetIdentifier, $connectorAsset);
@@ -700,7 +708,9 @@ class GetConnectorAssetsContext implements Context
                             'data'    => 'Not required attribute ecommerce fr_FR'
                         ]
                     ]
-                ]
+                ],
+                new \DateTimeImmutable('@0'),
+                new \DateTimeImmutable('@3600'),
             );
 
             $this->findConnectorAssets->save($assetIdentifier, $connectorAsset);
@@ -795,7 +805,9 @@ class GetConnectorAssetsContext implements Context
                             'data'    => 'Not required attribute ecommerce fr_FR'
                         ]
                     ]
-                ]
+                ],
+                new \DateTimeImmutable('@0'),
+                new \DateTimeImmutable('@3600'),
             );
 
             $this->findConnectorAssets->save($assetIdentifier, $connectorAsset);
@@ -935,7 +947,9 @@ class GetConnectorAssetsContext implements Context
 
             $connectorAsset = new ConnectorAsset(
                 $assetCode,
-                []
+                [],
+                new \DateTimeImmutable('@0'),
+                new \DateTimeImmutable('@3600'),
             );
 
             $this->connectorAssetsByAssetIdentifier[(string) $assetIdentifier] = $connectorAsset;
@@ -980,7 +994,9 @@ class GetConnectorAssetsContext implements Context
 
             $connectorAsset = new ConnectorAsset(
                 $assetCode,
-                []
+                [],
+                new \DateTimeImmutable('@0'),
+                new \DateTimeImmutable('@3600'),
             );
 
             $this->connectorAssetsByAssetIdentifier[(string) $assetIdentifier] = $connectorAsset;

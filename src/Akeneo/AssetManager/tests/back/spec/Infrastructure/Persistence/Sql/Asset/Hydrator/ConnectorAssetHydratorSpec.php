@@ -85,7 +85,9 @@ class ConnectorAssetHydratorSpec extends ObjectBehavior
                     'channel'   => null,
                     'attribute' => 'country_designer_fingerprint',
                 ]
-            ])
+            ]),
+            'created_at' => '1970-01-01 00:00:00',
+            'updated_at' => '1970-01-01 01:00:00',
         ];
 
         $expectedAsset = $connectorAsset = new ConnectorAsset(
@@ -110,7 +112,9 @@ class ConnectorAssetHydratorSpec extends ObjectBehavior
                         'data'    => 'france',
                     ]
                 ]
-            ]
+            ],
+            new \DateTimeImmutable('@0'),
+            new \DateTimeImmutable('@3600'),
         );
 
         $this->hydrate($row, $valueKeyCollection, $attributes)->shouldBeLike($expectedAsset);
@@ -163,7 +167,9 @@ class ConnectorAssetHydratorSpec extends ObjectBehavior
                     'channel'   => 'ecommerce',
                     'attribute' => 'description_designer_fingerprint',
                 ]
-            ])
+            ]),
+            'created_at' => '1970-01-01 00:00:00',
+            'updated_at' => '1970-01-01 01:00:00',
         ];
 
         $expectedAsset = $connectorAsset = new ConnectorAsset(
@@ -188,7 +194,9 @@ class ConnectorAssetHydratorSpec extends ObjectBehavior
                         'data'    => 'france',
                     ]
                 ]
-            ]
+            ],
+            new \DateTimeImmutable('@0'),
+            new \DateTimeImmutable('@3600'),
         );
 
         $this->hydrate($row, $valueKeyCollection, $attributes)->shouldBeLike($expectedAsset);

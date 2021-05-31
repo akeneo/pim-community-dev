@@ -134,7 +134,11 @@ class SqlFindConnectorAssetByAssetFamilyAndCodeTest extends SqlIntegrationTestCa
                         'data'    => 'house_front_view'
                     ]
                 ],
-            ]
+            ],
+            (new \DateTimeImmutable('@0'))
+                ->setTimezone(new \DateTimeZone(date_default_timezone_get())),
+            (new \DateTimeImmutable('@3600'))
+                ->setTimezone(new \DateTimeZone(date_default_timezone_get())),
         );
 
         $assetFound = $this->findConnectorAssetQuery->find(AssetFamilyIdentifier::fromString('designer'), $asset->getCode());
@@ -221,7 +225,9 @@ class SqlFindConnectorAssetByAssetFamilyAndCodeTest extends SqlIntegrationTestCa
                     LocaleReference::noReference(),
                     MediaLinkData::fromString('house_front_view')
                 )
-            ])
+            ]),
+            new \DateTimeImmutable('@0'),
+            new \DateTimeImmutable('@3600'),
         );
 
         $this->assetRepository->create($asset);
@@ -357,7 +363,9 @@ class SqlFindConnectorAssetByAssetFamilyAndCodeTest extends SqlIntegrationTestCa
                     LocaleReference::fromLocaleIdentifier(LocaleIdentifier::fromCode('en_US')),
                     TextData::fromString('France')
                 ),
-            ])
+            ]),
+            new \DateTimeImmutable('@0'),
+            new \DateTimeImmutable('@3600'),
         );
         $this->assetRepository->create($countryAsset);
 
@@ -373,7 +381,9 @@ class SqlFindConnectorAssetByAssetFamilyAndCodeTest extends SqlIntegrationTestCa
                         LocaleReference::fromLocaleIdentifier(LocaleIdentifier::fromCode('en_US')),
                         TextData::fromString(ucfirst($code))
                     ),
-                ])
+                ]),
+                new \DateTimeImmutable('@0'),
+                new \DateTimeImmutable('@3600'),
             );
             $this->assetRepository->create($brandAsset);
         }

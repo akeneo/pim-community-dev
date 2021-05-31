@@ -59,7 +59,9 @@
                                     "data": "Not required attribute ecommerce fr_FR"
                                 }
                             ]
-                        }
+                        },
+                        "created": "1970-01-01T00:00:00+00:00",
+                        "updated": "1970-01-01T01:00:00+00:00"
                     },
                     {
                         "_links": {
@@ -100,7 +102,9 @@
                                     "data": "Not required attribute ecommerce fr_FR"
                                 }
                             ]
-                        }
+                        },
+                        "created": "1970-01-01T00:00:00+00:00",
+                        "updated": "1970-01-01T01:00:00+00:00"
                     }
                 ]
             }

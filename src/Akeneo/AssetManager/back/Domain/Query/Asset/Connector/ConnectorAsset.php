@@ -27,17 +27,29 @@ class ConnectorAsset
 
     private array $normalizedValues;
 
-    public function __construct(AssetCode $code, array $normalizedValues)
-    {
+    private \DateTimeImmutable $createdAt;
+
+    private \DateTimeImmutable $updatedAt;
+
+    public function __construct(
+        AssetCode $code,
+        array $normalizedValues,
+        \DateTimeImmutable $createdAt,
+        \DateTimeImmutable $updatedAt
+    ) {
         $this->code = $code;
         $this->normalizedValues = $normalizedValues;
+        $this->createdAt = $createdAt;
+        $this->updatedAt = $updatedAt;
     }
 
     public function normalize(): array
     {
         return [
             'code'   => $this->code->normalize(),
-            'values' => empty($this->normalizedValues) ? (object) []: $this->normalizedValues,
+            'values' => empty($this->normalizedValues) ? (object) [] : $this->normalizedValues,
+            'created' => $this->createdAt->format(\DateTimeInterface::ATOM),
+            'updated' => $this->updatedAt->format(\DateTimeInterface::ATOM),
         ];
     }
 
@@ -53,7 +65,7 @@ class ConnectorAsset
             }
         }
 
-        return new self($this->code, $filteredValues);
+        return new self($this->code, $filteredValues, $this->createdAt, $this->updatedAt);
     }
 
     public function getAssetWithValuesFilteredOnLocales(LocaleIdentifierCollection $localeIdentifiers): ConnectorAsset
@@ -65,6 +77,6 @@ class ConnectorAsset
 
         $filteredValues = array_filter($filteredValues, fn ($filteredValue) => !empty($filteredValue));
 
-        return new self($this->code, $filteredValues);
+        return new self($this->code, $filteredValues, $this->createdAt, $this->updatedAt);
     }
 }
