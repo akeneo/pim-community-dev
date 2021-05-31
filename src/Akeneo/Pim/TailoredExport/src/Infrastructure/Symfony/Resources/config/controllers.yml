@@ -1,0 +1,7 @@
+services:
+    Akeneo\Pim\TailoredExport\Infrastructure\Controller\GetGroupedSourcesAction:
+        public: true
+        arguments:
+            - '@pimee_tailored_export.query.sql.get_grouped_attributes'
+            - '@pim_user.context.user'
+            - '@translator'

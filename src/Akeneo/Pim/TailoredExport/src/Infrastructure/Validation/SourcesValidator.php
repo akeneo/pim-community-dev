@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace Akeneo\Pim\TailoredExport\Infrastructure\Validation;
 
 use Symfony\Component\Validator\Constraint;
+use Symfony\Component\Validator\Constraints\Choice;
 use Symfony\Component\Validator\Constraints\Collection;
 use Symfony\Component\Validator\Constraints\NotBlank;
 use Symfony\Component\Validator\Constraints\Type;
@@ -58,6 +59,14 @@ class SourcesValidator extends ConstraintValidator
                         new Type([
                             'type' => 'array',
                         ]),
+                    ],
+                    'type' => [
+                        new Choice(
+                            [
+                                'strict' => true,
+                                'choices' => ['property', 'attribute'],
+                            ]
+                        )
                     ],
                     'selection' => new Collection(
                         ['fields' => [

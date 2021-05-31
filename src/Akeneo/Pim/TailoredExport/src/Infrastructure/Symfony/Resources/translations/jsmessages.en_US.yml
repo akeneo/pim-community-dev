@@ -26,6 +26,13 @@ akeneo.tailored_export:
     sources:
       title: Sources
       add: Add source
+      no_result: Sorry, there is no results.
+      remove:
+        title: source
+        text: Are you sure you want to remove this source?
+        button: Remove this source
+      no_source_configuration:
+        title: There are no operations available for this source. Only its value will be exported.
       no_source_selected:
         title: No source selected for the moment.
         subtitle: To know more about mapping and operations,

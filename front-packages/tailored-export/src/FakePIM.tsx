@@ -4,6 +4,7 @@ import {
   AkeneoIcon,
   Breadcrumb,
   Button,
+  CommonStyle,
   ExportXlsxIllustration,
   getColor,
   getFontSize,
@@ -20,6 +21,8 @@ const Container = styled.div`
   display: flex;
   width: 100vw;
   height: 100vh;
+
+  ${CommonStyle}
 `;
 
 const Header = styled.div`
@@ -79,13 +82,12 @@ const FakePIM = () => {
 
   const handleColumnConfigurationChange = (columnConfiguration: ColumnConfiguration[]) => {
     if (null !== jobConfiguration) {
-      setJobConfiguration({
+      setJobConfiguration(jobConfiguration => ({
         ...jobConfiguration,
         configuration: {...jobConfiguration.configuration, columns: columnConfiguration},
-      });
+      }));
     }
   };
-
   const handleCategoryChange = (categoriesSelected: string[]) => {
     if (jobConfiguration === null) return;
 

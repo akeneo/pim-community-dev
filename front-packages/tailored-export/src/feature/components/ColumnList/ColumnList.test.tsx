@@ -30,6 +30,7 @@ test('it renders a placeholder when no column is selected', () => {
 
   renderWithProviders(
     <ColumnList
+      onColumnReorder={jest.fn}
       columnsConfiguration={columnsConfiguration}
       onColumnChange={jest.fn}
       onColumnCreated={jest.fn}
@@ -68,6 +69,7 @@ test('it can remove a column', () => {
 
   renderWithProviders(
     <ColumnList
+      onColumnReorder={jest.fn}
       columnsConfiguration={columnsConfiguration}
       onColumnChange={jest.fn}
       onColumnCreated={jest.fn}
@@ -104,6 +106,7 @@ test('it can create a new column', () => {
 
   renderWithProviders(
     <ColumnList
+      onColumnReorder={jest.fn}
       columnsConfiguration={columnsConfiguration}
       onColumnChange={jest.fn}
       onColumnCreated={handleCreate}
@@ -120,6 +123,50 @@ test('it can create a new column', () => {
   userEvent.type(lastInput, 'm');
 
   expect(handleCreate).toBeCalledWith('m');
+});
+
+test('it can handle paste events', () => {
+  const columnsConfiguration: ColumnConfiguration[] = [
+    {
+      uuid: '1',
+      target: 'my column',
+      sources: [],
+      format: {
+        type: 'concat',
+        elements: [],
+      },
+    },
+  ];
+
+  const handleCreate = jest.fn();
+
+  renderWithProviders(
+    <ColumnList
+      onColumnReorder={jest.fn}
+      columnsConfiguration={columnsConfiguration}
+      onColumnChange={jest.fn}
+      onColumnCreated={handleCreate}
+      onColumnsCreated={handleCreate}
+      onColumnRemoved={jest.fn}
+      onColumnSelected={jest.fn}
+      selectedColumn={null}
+    />
+  );
+
+  const lastInput = screen.getAllByPlaceholderText(
+    'akeneo.tailored_export.column_list.column_row.target_placeholder'
+  )[1];
+  const clipboardEvent = new Event('paste', {
+    bubbles: true,
+    cancelable: true,
+    composed: true,
+  });
+  clipboardEvent['clipboardData'] = {
+    getData: () => 'test\tof\tpasted\tdata',
+  };
+  lastInput.dispatchEvent(clipboardEvent);
+
+  expect(handleCreate).toBeCalledWith(['test', 'of', 'pasted', 'data']);
 });
 
 test('it can update a column', () => {
@@ -139,6 +186,7 @@ test('it can update a column', () => {
 
   renderWithProviders(
     <ColumnList
+      onColumnReorder={jest.fn}
       columnsConfiguration={columnsConfiguration}
       onColumnChange={handleColumnChange}
       onColumnCreated={jest.fn}
@@ -203,6 +251,7 @@ test('it displays validation errors', () => {
       ]}
     >
       <ColumnList
+        onColumnReorder={jest.fn}
         columnsConfiguration={columnsConfiguration}
         onColumnChange={handleColumnChange}
         onColumnCreated={jest.fn}
@@ -247,6 +296,7 @@ test('it move to next line when user type enter', async () => {
 
   renderWithProviders(
     <ColumnList
+      onColumnReorder={jest.fn}
       columnsConfiguration={columnsConfiguration}
       onColumnChange={jest.fn}
       onColumnCreated={jest.fn}
@@ -287,6 +337,7 @@ test('it focus the selected column', async () => {
 
   renderWithProviders(
     <ColumnList
+      onColumnReorder={jest.fn}
       columnsConfiguration={columnsConfiguration}
       onColumnChange={jest.fn}
       onColumnCreated={jest.fn}

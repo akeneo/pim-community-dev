@@ -1,0 +1,198 @@
+import React from 'react';
+import {screen} from '@testing-library/react';
+import {renderWithProviders, Channel} from '@akeneo-pim-community/shared';
+import {SourceConfigurator} from './SourceConfigurator';
+import {Source} from '../../models';
+import {fireEvent} from '@testing-library/dom';
+import userEvent from '@testing-library/user-event';
+import {Attribute, FetcherContext} from "../../contexts";
+import {act} from "react-dom/test-utils";
+
+const attributes = [{code: 'description', labels: [], scopable: false, localizable: false}];
+const channels = [
+  {
+    code: 'ecommerce',
+    locales: [{code: 'en_US', label: 'English (United States)'}, {code: 'fr_FR', label: 'French (France)'}],
+    labels: {fr_FR: 'Ecommerce'},
+  },
+  {
+    code: 'mobile',
+    locales: [{code: 'de_DE', label: 'German (Germany)'}, {code: 'en_US', label: 'English (United States)'}],
+    labels: {fr_FR: 'Mobile'},
+  },
+  {
+    code: 'print',
+    locales: [
+      {code: 'de_DE', label: 'German (Germany)'},
+      {code: 'en_US', label: 'English (United States)'},
+      {code: 'fr_FR', label: 'French (France)'}
+    ],
+    labels: {fr_FR: 'Impression'},
+  },
+];
+
+const fetchers = {
+  attribute: {fetchByIdentifiers: (): Promise<Attribute[]> => Promise.resolve<Attribute>(attributes)},
+  channel: {fetchAll: (): Promise<Channel[]> => Promise.resolve(channels)},
+};
+
+test('it display source configurator', async () => {
+  const source: Source = {
+    uuid: 'cffd560e-1e40-4c55-a415-89c7958b270d',
+    code: 'Description',
+    type: 'attribute',
+    locale: null,
+    channel: null,
+    operations: [],
+    selection: {
+      type: 'code',
+    },
+  };
+
+  await act(async () => {
+    renderWithProviders(
+      <FetcherContext.Provider value={fetchers}>
+        <SourceConfigurator source={source} onSourceChange={jest.fn}/>
+      </FetcherContext.Provider>
+    );
+  });
+
+  expect(
+    screen.getByText(/akeneo.tailored_export.column_details.sources.no_source_configuration.title/i)
+  ).toBeInTheDocument();
+});
+
+test('it display locale dropdown when attribute is localizable', async () => {
+  const source: Source = {
+    uuid: 'cffd560e-1e40-4c55-a415-89c7958b270d',
+    code: 'Description',
+    type: 'attribute',
+    locale: 'fr_FR',
+    channel: null,
+    operations: [],
+    selection: {
+      type: 'code',
+    },
+  };
+
+  await act(async () => {
+    renderWithProviders(
+      <FetcherContext.Provider value={fetchers}>
+        <SourceConfigurator source={source} onSourceChange={jest.fn}/>
+      </FetcherContext.Provider>
+    )
+  });
+
+  expect(screen.getByLabelText(/pim_common.locale/i)).toBeInTheDocument();
+  expect(screen.queryByLabelText(/pim_common.channel/i)).not.toBeInTheDocument();
+});
+
+test('it display channel dropdown when attribute is scopable', async () => {
+  const source: Source = {
+    uuid: 'cffd560e-1e40-4c55-a415-89c7958b270d',
+    code: 'Description',
+    type: 'attribute',
+    locale: null,
+    channel: 'ecommerce',
+    operations: [],
+    selection: {
+      type: 'code',
+    },
+  };
+
+  await act(async () => {
+    renderWithProviders(
+      <FetcherContext.Provider value={fetchers}>
+        <SourceConfigurator source={source} onSourceChange={jest.fn}/>
+      </FetcherContext.Provider>
+    );
+  });
+
+  expect(screen.queryByLabelText(/pim_common.locale/i)).not.toBeInTheDocument();
+  expect(screen.getByLabelText(/pim_common.channel/i)).toBeInTheDocument();
+});
+
+test('it display channel dropdown when attribute is scopable and localizable', async () => {
+  const source: Source = {
+    uuid: 'cffd560e-1e40-4c55-a415-89c7958b270d',
+    code: 'Description',
+    type: 'attribute',
+    locale: 'fr_FR',
+    channel: 'ecommerce',
+    operations: [],
+    selection: {
+      type: 'code',
+    },
+  };
+
+  await act(async () => {
+    renderWithProviders(
+      <FetcherContext.Provider value={fetchers}>
+        <SourceConfigurator source={source} onSourceChange={jest.fn}/>
+      </FetcherContext.Provider>
+    );
+  });
+
+  expect(screen.getByLabelText(/pim_common.locale/i)).toBeInTheDocument();
+  expect(screen.getByLabelText(/pim_common.channel/i)).toBeInTheDocument();
+});
+
+test('it calls handler when channel changed', async () => {
+  const handleSourceChange = jest.fn();
+  const source: Source = {
+    uuid: 'cffd560e-1e40-4c55-a415-89c7958b270d',
+    code: 'Description',
+    type: 'attribute',
+    locale: 'fr_FR',
+    channel: 'ecommerce',
+    operations: [],
+    selection: {
+      type: 'code',
+    },
+  };
+
+  await act(async () => {
+    renderWithProviders(
+      <FetcherContext.Provider value={fetchers}>
+        <SourceConfigurator source={source} onSourceChange={handleSourceChange}/>
+      </FetcherContext.Provider>
+    );
+  });
+
+  const channelDropdown = screen.getByLabelText(/pim_common.channel/i);
+  userEvent.click(channelDropdown);
+
+  fireEvent.click(screen.getByText('[mobile]'));
+
+  expect(handleSourceChange).toHaveBeenCalledWith({...source, locale: 'de_DE', channel: 'mobile'});
+});
+
+test('it calls handler when locale changed', async () => {
+  const handleSourceChange = jest.fn();
+  const source: Source = {
+    uuid: 'cffd560e-1e40-4c55-a415-89c7958b270d',
+    code: 'Description',
+    type: 'attribute',
+    locale: 'fr_FR',
+    channel: 'ecommerce',
+    operations: [],
+    selection: {
+      type: 'code',
+    },
+  };
+
+  await act(async () => {
+    renderWithProviders(
+      <FetcherContext.Provider value={fetchers}>
+        <SourceConfigurator source={source} onSourceChange={handleSourceChange}/>
+      </FetcherContext.Provider>
+    );
+  });
+
+  const localeDropdown = screen.getByLabelText(/pim_common.locale/i);
+  userEvent.click(localeDropdown);
+
+  fireEvent.click(screen.getByText('English (United States)'));
+
+  expect(handleSourceChange).toHaveBeenCalledWith({...source, locale: 'en_US'});
+});

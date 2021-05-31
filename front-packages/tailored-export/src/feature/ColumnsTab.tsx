@@ -6,6 +6,7 @@ import {createColumn, addColumn, removeColumn, ColumnConfiguration, updateColumn
 import {ColumnDetails} from './components/ColumnDetails/ColumnDetails';
 import {ColumnList} from './components/ColumnList/ColumnList';
 import {ValidationErrorsContext} from './contexts/ValidationErrorsContext';
+import {ColumnDetailsPlaceholder} from './components/ColumnDetails/ColumnDetailsPlaceholder';
 
 const MAX_COLUMN_COUNT = 1000;
 
@@ -71,11 +72,11 @@ const ColumnsTab = ({columnsConfiguration, validationErrors, onColumnsConfigurat
           onColumnRemoved={handleRemoveColumn}
           onColumnReorder={handleReorderColumns}
         />
-        <ColumnDetails
-          columnConfiguration={selectedColumnConfiguration}
-          noColumns={columnsConfiguration.length === 0}
-          onColumnChange={handleChangeColumn}
-        />
+        {null === selectedColumnConfiguration ? (
+          <ColumnDetailsPlaceholder />
+        ) : (
+          <ColumnDetails columnConfiguration={selectedColumnConfiguration} onColumnChange={handleChangeColumn} />
+        )}
       </Container>
     </ValidationErrorsContext.Provider>
   );

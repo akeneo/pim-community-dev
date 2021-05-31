@@ -1,4 +1,12 @@
-import {ChannelReference, LocaleCode, LocaleReference} from '@akeneo-pim-community/shared';
+import {
+  Channel,
+  ChannelReference,
+  getLocalesFromChannel,
+  LocaleCode,
+  LocaleReference,
+} from '@akeneo-pim-community/shared';
+import {uuid} from 'akeneo-design-system';
+import {Attribute} from '../contexts';
 
 type Operation = {
   type: string;
@@ -22,6 +30,7 @@ type Selection =
 type Source = {
   uuid: string;
   code: string;
+  type: 'attribute' | 'property';
   locale: LocaleReference;
   channel: ChannelReference;
   operations: Operation[];
@@ -83,5 +92,71 @@ const isNonEmptyColumn = (columnConfiguration: ColumnConfiguration): boolean =>
   0 !== columnConfiguration.sources.length ||
   0 !== columnConfiguration.format.elements.length;
 
-export type {ColumnConfiguration};
-export {createColumn, addColumn, removeColumn, updateColumn};
+const addAttributeSource = (
+  columnConfiguration: ColumnConfiguration,
+  sourceCode: string,
+  attribute: Attribute,
+  channels: Channel[]
+): ColumnConfiguration => {
+  const channelCode = attribute.scopable ? channels[0].code : null;
+  const locales = getLocalesFromChannel(channels, channelCode);
+  const locale = attribute.localizable ? locales[0].code : null;
+
+  return {
+    ...columnConfiguration,
+    sources: [
+      ...columnConfiguration.sources,
+      {
+        uuid: uuid(),
+        code: sourceCode,
+        type: 'attribute',
+        locale,
+        channel: channelCode,
+        operations: [],
+        selection: {type: 'code'},
+      },
+    ],
+  };
+};
+
+const addPropertySource = (columnConfiguration: ColumnConfiguration, sourceCode: string): ColumnConfiguration => {
+  return {
+    ...columnConfiguration,
+    sources: [
+      ...columnConfiguration.sources,
+      {
+        uuid: uuid(),
+        code: sourceCode,
+        type: 'property',
+        locale: null,
+        channel: null,
+        operations: [],
+        selection: {type: 'code'},
+      },
+    ],
+  };
+};
+
+const updateSource = (columnConfiguration: ColumnConfiguration, updatedSource: Source): ColumnConfiguration => ({
+  ...columnConfiguration,
+  sources: columnConfiguration.sources.map<Source>(source =>
+    source.uuid === updatedSource.uuid ? updatedSource : source
+  ),
+});
+
+const removeSource = (columnConfiguration: ColumnConfiguration, removedSource: Source): ColumnConfiguration => ({
+  ...columnConfiguration,
+  sources: columnConfiguration.sources.filter(source => source.uuid !== removedSource.uuid),
+});
+
+export type {ColumnConfiguration, Source};
+export {
+  createColumn,
+  addColumn,
+  removeColumn,
+  updateColumn,
+  removeSource,
+  addAttributeSource,
+  addPropertySource,
+  updateSource,
+};

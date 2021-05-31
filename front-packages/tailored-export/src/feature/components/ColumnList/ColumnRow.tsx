@@ -64,6 +64,7 @@ const ColumnRow = forwardRef<HTMLInputElement, ColumnRowProps>(
                 ref={ref}
                 onChange={updatedValue => onColumnChange({...column, target: updatedValue})}
                 onSubmit={() => onFocusNext(column.uuid)}
+                placeholder={translate('akeneo.tailored_export.column_list.column_row.target_placeholder')}
                 invalid={targetErrors.length !== 0}
                 value={column.target}
               />
