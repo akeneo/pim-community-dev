@@ -4,19 +4,19 @@ declare(strict_types=1);
 
 namespace AkeneoTest\Pim\Enrichment\Integration\Category;
 
-use Akeneo\Pim\Enrichment\PublicApi\Categories\SqlCountTotalCategoriesPerTree;
+use Akeneo\Pim\Enrichment\PublicApi\Categories\SqlCountCategoriesPerTree;
 use Akeneo\Test\Integration\Configuration;
 use Akeneo\Test\Integration\TestCase;
 use Webmozart\Assert\Assert;
 
-final class SqlCountTotalCategoriesPerTreeIntegration extends TestCase
+final class SqlCountCategoriesPerTreeIntegration extends TestCase
 {
-    public SqlCountTotalCategoriesPerTree $countTotalCategoriesPerTree;
+    public SqlCountCategoriesPerTree $countTotalCategoriesPerTree;
 
     public function setUp(): void
     {
         parent::setUp();
-        $this->countTotalCategoriesPerTree = $this->get('akeneo.enrichment.public_api.count_total_categories_per_tree');
+        $this->countTotalCategoriesPerTree = $this->get('akeneo.enrichment.public_api.count_categories_per_tree');
 
         /**
          * master
@@ -80,7 +80,17 @@ final class SqlCountTotalCategoriesPerTreeIntegration extends TestCase
     public function it_throws_if_the_category_codes_are_not_non_empty_strings($invalidCategoryCode)
     {
         $this->expectException(\InvalidArgumentException::class);
-        $this->countTotalCategoriesPerTree->execute([$invalidCategoryCode], true);
+        $this->countTotalCategoriesPerTree->executeWithoutChildren([$invalidCategoryCode], true);
+    }
+
+    /**
+     * @test
+     * @dataProvider invalidCategoryCodes
+     */
+    public function it_throws_if_the_category_codes_are_not_non_empty_strings_with_children($invalidCategoryCode)
+    {
+        $this->expectException(\InvalidArgumentException::class);
+        $this->countTotalCategoriesPerTree->executeWithChildren([$invalidCategoryCode], true);
     }
 
     public function invalidCategoryCodes(): array
@@ -98,9 +108,9 @@ final class SqlCountTotalCategoriesPerTreeIntegration extends TestCase
      */
     public function it_counts_the_total_selected_categories_without_counting_children_for_each_category_tree($categoryCodes, $expected): void
     {
-        $actual = $this->countTotalCategoriesPerTree->execute($categoryCodes, false);
+        $actual = $this->countTotalCategoriesPerTree->executeWithoutChildren($categoryCodes, false);
 
-        $this->assertEquals($expected, $actual);
+        self::assertEquals($expected, $actual);
     }
 
     public function categoryCodesToSelectWithoutChildren(): array
@@ -124,8 +134,8 @@ final class SqlCountTotalCategoriesPerTreeIntegration extends TestCase
      */
     public function it_counts_the_total_selected_categories_with_children_for_each_category_tree($categoryCodes, $expectedResults): void
     {
-        $actual = $this->countTotalCategoriesPerTree->execute($categoryCodes, true);
-        $this->assertEquals($expectedResults, $actual);
+        $actual = $this->countTotalCategoriesPerTree->executeWithChildren($categoryCodes, true);
+        self::assertEquals($expectedResults, $actual);
     }
 
     public function categoryCodesToSelectWithChildren(): array
@@ -145,19 +155,14 @@ final class SqlCountTotalCategoriesPerTreeIntegration extends TestCase
 
     private function givenCategories(array $categories): void
     {
-        $categories = array_walk(
-            $categories,
-            function (array $categoryData) {
-                $category = $this->get('pim_catalog.factory.category')->create();
-                $this->get('pim_catalog.updater.category')->update($category, $categoryData);
-                $constraintViolations = $this->get('validator')->validate($category);
+        foreach ($categories as $categoryData) {
+            $category = $this->get('pim_catalog.factory.category')->create();
+            $this->get('pim_catalog.updater.category')->update($category, $categoryData);
+            $constraintViolations = $this->get('validator')->validate($category);
 
-                Assert::count($constraintViolations, 0);
-                $this->get('pim_catalog.saver.category')->save($category);
-
-                return $category;
-            }
-        );
+            Assert::count($constraintViolations, 0);
+            $this->get('pim_catalog.saver.category')->save($category);
+        }
     }
 
     protected function getConfiguration(): Configuration
