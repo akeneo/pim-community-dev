@@ -62,7 +62,7 @@ type Props = {
     selectedProfile: string | null;
     handleOnSelectChange: (selectedValue: string | null) => void;
     handleClick: () => void;
-}
+};
 
 type UserProfile = {
     code: string;
@@ -97,7 +97,10 @@ export const UserProfileSelector: FC<Props> = ({selectedProfile, handleOnSelectC
                     ))}
                 </ProfileSelect>
                 <Helper level='info'>
-                    <Link href='https://help.akeneo.com/pim/serenity/articles/manage-your-account.html#your-general-information' target='_blank'>
+                    <Link
+                        href='https://help.akeneo.com/pim/serenity/articles/manage-your-account.html#your-general-information'
+                        target='_blank'
+                    >
                         {translate('pim_user.profile.why_is_it_needed')}
                     </Link>
                 </Helper>

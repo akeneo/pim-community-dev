@@ -126,6 +126,7 @@ extensions:
         config:
             fieldName: profile
             label: pim_user_management.entity.user.properties.profile
+            allowClear: true
             templateParams:
                 linkLabel: pim_user.profile.why_is_it_needed
 

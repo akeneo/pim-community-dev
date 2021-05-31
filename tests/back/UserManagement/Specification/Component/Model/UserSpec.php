@@ -44,6 +44,13 @@ class UserSpec extends ObjectBehavior
         $this->getProfile()->shouldReturn('manager');
     }
 
+    function it_set_an_empty_profile_as_null()
+    {
+        $this->getProfile()->shouldReturn(null);
+        $this->setProfile('');
+        $this->getProfile()->shouldReturn(null);
+    }
+
     function it_can_be_duplicated()
     {
         $duplicated = $this->duplicate();

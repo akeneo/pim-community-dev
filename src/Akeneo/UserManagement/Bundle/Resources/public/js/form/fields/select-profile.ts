@@ -39,6 +39,13 @@ class SelectProfile extends BaseSelect {
       return result;
     }, {});
   }
+
+  /**
+   * {@inheritdoc}
+   */
+  getFieldValue(field: HTMLInputElement) {
+    return null === field.value ? '' : field.value;
+  }
 }
 
 export = SelectProfile;

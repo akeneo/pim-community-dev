@@ -1213,6 +1213,6 @@ class User implements UserInterface
 
     public function setProfile(?string $profile): void
     {
-        $this->profile = $profile;
+        $this->profile = '' === $profile ? null : $profile;
     }
 }
