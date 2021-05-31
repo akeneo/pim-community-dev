@@ -17,8 +17,7 @@ use Akeneo\AssetManager\Domain\Model\AssetFamily\AssetFamilyIdentifier;
 
 class ComputeTransformationsFromAssetFamilyIdentifierHandler
 {
-    /** @var ComputeTransformationFromAssetFamilyIdentifierLauncherInterface */
-    private $computeTransformationLauncher;
+    private ComputeTransformationFromAssetFamilyIdentifierLauncherInterface $computeTransformationLauncher;
 
     public function __construct(ComputeTransformationFromAssetFamilyIdentifierLauncherInterface $computeTransformationLauncher)
     {

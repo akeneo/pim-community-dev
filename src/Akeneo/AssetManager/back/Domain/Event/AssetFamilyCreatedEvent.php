@@ -23,8 +23,7 @@ use Symfony\Component\EventDispatcher\Event;
  */
 class AssetFamilyCreatedEvent extends Event
 {
-    /** @var AssetFamilyIdentifier */
-    private $assetFamilyIdentifier;
+    private AssetFamilyIdentifier $assetFamilyIdentifier;
 
     public function __construct(AssetFamilyIdentifier $assetFamilyIdentifier)
     {

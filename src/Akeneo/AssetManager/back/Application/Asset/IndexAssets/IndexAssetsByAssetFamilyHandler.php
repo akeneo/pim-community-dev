@@ -15,8 +15,7 @@ use Akeneo\AssetManager\Domain\Repository\AssetIndexerInterface;
  */
 class IndexAssetsByAssetFamilyHandler
 {
-    /** @var AssetIndexerInterface */
-    private $assetIndexer;
+    private AssetIndexerInterface $assetIndexer;
 
     public function __construct(AssetIndexerInterface $assetIndexer)
     {

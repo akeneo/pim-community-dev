@@ -19,8 +19,7 @@ namespace Akeneo\AssetManager\Application\Attribute\EditAttribute\CommandFactory
  */
 class EditAllowedExtensionsCommand extends AbstractEditAttributeCommand
 {
-    /** @var array */
-    public $allowedExtensions;
+    public array $allowedExtensions;
 
     public function __construct(string $identifier, array $allowedExtensions)
     {

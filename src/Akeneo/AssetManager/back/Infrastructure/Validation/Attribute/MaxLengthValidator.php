@@ -15,6 +15,9 @@ namespace Akeneo\AssetManager\Infrastructure\Validation\Attribute;
 
 use Symfony\Component\Validator\Constraint;
 use Symfony\Component\Validator\Constraints;
+use Symfony\Component\Validator\Constraints\Callback;
+use Symfony\Component\Validator\Constraints\GreaterThan;
+use Symfony\Component\Validator\Constraints\LessThanOrEqual;
 use Symfony\Component\Validator\ConstraintValidator;
 use Symfony\Component\Validator\Context\ExecutionContextInterface;
 use Symfony\Component\Validator\Exception\UnexpectedTypeException;
@@ -34,14 +37,14 @@ class MaxLengthValidator extends ConstraintValidator
 
         $validator = Validation::createValidator();
         $violations = $validator->validate($maxLength, [
-                new Constraints\Callback(function ($value, ExecutionContextInterface $context, $payload) {
+                new Callback(function ($value, ExecutionContextInterface $context, $payload) {
                     if (null !== $value && !is_int($value)) {
                         $context->buildViolation(MaxLength::MESSAGE_SHOULD_BE_AN_INTEGER)
                             ->addViolation();
                     }
                 }),
-                new Constraints\LessThanOrEqual(65535),
-                new Constraints\GreaterThan(0)
+                new LessThanOrEqual(65535),
+                new GreaterThan(0)
             ]
         );
 

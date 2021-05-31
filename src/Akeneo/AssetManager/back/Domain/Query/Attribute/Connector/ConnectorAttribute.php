@@ -40,29 +40,21 @@ class ConnectorAttribute
         'asset_type' => 'asset_family_code',
     ];
 
-    /** @var AttributeIdentifier */
-    private $code;
+    private AttributeCode $code;
 
-    /** @var LabelCollection */
-    private $labelCollection;
+    private LabelCollection $labelCollection;
 
-    /** @var string */
-    private $type;
+    private string $type;
 
-    /** @var bool */
-    private $valuePerLocale;
+    private AttributeValuePerLocale $valuePerLocale;
 
-    /** @var bool */
-    private $valuePerChannel;
+    private AttributeValuePerChannel $valuePerChannel;
 
-    /** @var bool */
-    private $isRequired;
+    private AttributeIsRequired $isRequired;
 
-    /** @var bool */
-    private $isReadOnly;
+    private AttributeIsReadOnly $isReadOnly;
 
-    /** @var array */
-    private $additionalProperties;
+    private array $additionalProperties;
 
     public function __construct(
         AttributeCode $identifier,

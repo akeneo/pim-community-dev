@@ -42,35 +42,26 @@ class AssetDetails
 
     private const DATE_FORMAT = 'c';
 
-    /** @var AssetIdentifier */
-    public $identifier;
+    public AssetIdentifier $identifier;
 
-    /** @var AssetFamilyIdentifier */
-    public $assetFamilyIdentifier;
+    public AssetFamilyIdentifier $assetFamilyIdentifier;
 
     /** * @var AttributeIdentifier */
-    public $attributeAsMainMediaIdentifier;
+    public AttributeIdentifier $attributeAsMainMediaIdentifier;
 
-    /** @var AssetCode */
-    public $code;
+    public AssetCode $code;
 
-    /** @var LabelCollection */
-    public $labels;
+    public LabelCollection $labels;
 
-    /** @var \DateTimeImmutable */
-    public $createdAt;
+    public \DateTimeImmutable $createdAt;
 
-    /** @var \DateTimeImmutable */
-    public $updatedAt;
+    public \DateTimeImmutable $updatedAt;
 
-    /** @var array */
-    public $image;
+    public array $image;
 
-    /** @var array */
-    public $values;
+    public array $values;
 
-    /** @var boolean */
-    public $isAllowedToEdit = true;
+    public bool $isAllowedToEdit = true;
 
     public function __construct(
         AssetIdentifier $identifier,

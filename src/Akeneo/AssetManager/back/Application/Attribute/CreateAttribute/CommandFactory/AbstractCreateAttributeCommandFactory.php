@@ -31,7 +31,7 @@ abstract class AbstractCreateAttributeCommandFactory implements CreateAttributeC
         ];
 
         foreach ($keysToCheck as $keyToCheck) {
-            if (!key_exists($keyToCheck, $nomalizedCommand)) {
+            if (!array_key_exists($keyToCheck, $nomalizedCommand)) {
                 throw new \InvalidArgumentException(
                     sprintf('Expects normalized command to have key "%s"', $keyToCheck)
                 );

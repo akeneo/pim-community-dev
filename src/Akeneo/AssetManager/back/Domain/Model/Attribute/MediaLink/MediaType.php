@@ -34,8 +34,7 @@ class MediaType
         self::OTHER
     ];
 
-    /** @var string */
-    private $mediaType;
+    private string $mediaType;
 
     private function __construct(string $mediaType)
     {

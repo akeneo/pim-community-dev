@@ -28,14 +28,11 @@ use Akeneo\AssetManager\Domain\Query\Asset\SearchAssetResult;
  */
 class SearchAsset
 {
-    /** @var FindIdentifiersForQueryInterface */
-    private $findIdentifiersForQuery;
+    private FindIdentifiersForQueryInterface $findIdentifiersForQuery;
 
-    /** @var FindAssetItemsForIdentifiersAndQueryInterface */
-    private $findAssetItemsForIdentifiersAndQuery;
+    private FindAssetItemsForIdentifiersAndQueryInterface $findAssetItemsForIdentifiersAndQuery;
 
-    /** @var CountAssetsInterface */
-    private $countAssets;
+    private CountAssetsInterface $countAssets;
 
     public function __construct(
         FindIdentifiersForQueryInterface $findIdentifiersForQuery,
@@ -60,8 +57,7 @@ class SearchAsset
     private function countTotalAssets(AssetQuery $assetQuery): int
     {
         $assetFamilyIdentifier = AssetFamilyIdentifier::fromString($assetQuery->getFilter('asset_family')['value']);
-        $totalCount = $this->countAssets->forAssetFamily($assetFamilyIdentifier);
 
-        return $totalCount;
+        return $this->countAssets->forAssetFamily($assetFamilyIdentifier);
     }
 }

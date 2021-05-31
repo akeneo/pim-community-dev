@@ -15,11 +15,9 @@ use Symfony\Component\EventDispatcher\Event;
  */
 class AttributeDeletedEvent extends Event
 {
-    /** @var AssetFamilyIdentifier */
-    public $assetFamilyIdentifier;
+    public AssetFamilyIdentifier $assetFamilyIdentifier;
 
-    /** @var AttributeIdentifier */
-    public $attributeIdentifier;
+    public AttributeIdentifier $attributeIdentifier;
 
     public function __construct(AssetFamilyIdentifier $assetFamilyIdentifier, AttributeIdentifier $attributeIdentifier)
     {

@@ -21,8 +21,7 @@ use Webmozart\Assert\Assert;
  */
 class TransformationLabel
 {
-    /** @var string */
-    private $label;
+    private string $label;
 
     private function __construct(string $label)
     {

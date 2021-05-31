@@ -19,8 +19,7 @@ namespace Akeneo\AssetManager\Application\Attribute\EditAttribute\CommandFactory
  */
 class EditMaxLengthCommand extends AbstractEditAttributeCommand
 {
-    /** @var int|null */
-    public $maxLength;
+    public ?int $maxLength = null;
 
     public function __construct(string $identifier, ?int $maxLength)
     {

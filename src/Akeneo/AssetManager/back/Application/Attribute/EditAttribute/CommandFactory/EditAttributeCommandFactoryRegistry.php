@@ -16,7 +16,7 @@ namespace Akeneo\AssetManager\Application\Attribute\EditAttribute\CommandFactory
 class EditAttributeCommandFactoryRegistry implements EditAttributeCommandFactoryRegistryInterface
 {
     /** @var EditAttributeCommandFactoryInterface[] */
-    private $factories = [];
+    private array $factories = [];
 
     public function register(EditAttributeCommandFactoryInterface $factory): void
     {

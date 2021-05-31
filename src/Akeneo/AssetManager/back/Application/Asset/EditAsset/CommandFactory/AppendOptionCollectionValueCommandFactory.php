@@ -34,13 +34,11 @@ class AppendOptionCollectionValueCommandFactory implements EditValueCommandFacto
 
     public function create(AbstractAttribute $attribute, array $normalizedValue): AbstractEditValueCommand
     {
-        $command = new AppendOptionCollectionValueCommand(
+        return new AppendOptionCollectionValueCommand(
             $attribute,
             $normalizedValue['channel'],
             $normalizedValue['locale'],
             $normalizedValue['data'] ?? []
         );
-
-        return $command;
     }
 }

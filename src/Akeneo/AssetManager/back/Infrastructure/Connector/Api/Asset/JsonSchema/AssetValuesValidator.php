@@ -26,11 +26,9 @@ use Akeneo\AssetManager\Domain\Query\Attribute\FindAttributesIndexedByIdentifier
  */
 class AssetValuesValidator
 {
-    /** @var FindAttributesIndexedByIdentifierInterface */
-    private $findAttributesIndexedByIdentifier;
+    private FindAttributesIndexedByIdentifierInterface $findAttributesIndexedByIdentifier;
 
-    /** @var AssetValueValidatorRegistry */
-    private $assetValueValidatorRegistry;
+    private AssetValueValidatorRegistry $assetValueValidatorRegistry;
 
     public function __construct(
         AssetValueValidatorRegistry $assetValueValidatorRegistry,

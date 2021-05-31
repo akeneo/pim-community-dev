@@ -26,8 +26,7 @@ use Akeneo\AssetManager\Domain\Model\Attribute\AttributeIdentifier;
  */
 class AttributeAsLabelReference
 {
-    /** @var AttributeIdentifier|null */
-    private $identifier;
+    private ?AttributeIdentifier $identifier = null;
 
     private function __construct(?AttributeIdentifier $attributeIdentifier)
     {

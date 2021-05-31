@@ -48,44 +48,31 @@ use Symfony\Component\Validator\Validator\ValidatorInterface;
  */
 class CreateAction
 {
-    /** @var CreateAssetHandler */
-    private $createAssetHandler;
+    private CreateAssetHandler $createAssetHandler;
 
-    /** @var EditAssetHandler */
-    private $editAssetHandler;
+    private EditAssetHandler $editAssetHandler;
 
-    /** @var AssetIndexerInterface */
-    private $assetIndexer;
+    private AssetIndexerInterface $assetIndexer;
 
-    /** @var NormalizerInterface */
-    private $normalizer;
+    private NormalizerInterface $normalizer;
 
-    /** @var ValidatorInterface */
-    private $validator;
+    private ValidatorInterface $validator;
 
-    /** @var SecurityFacade */
-    private $securityFacade;
+    private SecurityFacade $securityFacade;
 
-    /** @var CanEditAssetFamilyQueryHandler */
-    private $canEditAssetFamilyQueryHandler;
+    private CanEditAssetFamilyQueryHandler $canEditAssetFamilyQueryHandler;
 
-    /** @var TokenStorageInterface */
-    private $tokenStorage;
+    private TokenStorageInterface $tokenStorage;
 
-    /** @var EditAssetCommandFactory */
-    private $editAssetCommandFactory;
+    private \Akeneo\AssetManager\Application\Asset\EditAsset\CommandFactory\EditAssetCommandFactory $editAssetCommandFactory;
 
-    /** @var NamingConventionEditAssetCommandFactory */
-    private $namingConventionEditAssetCommandFactory;
+    private NamingConventionEditAssetCommandFactory $namingConventionEditAssetCommandFactory;
 
-    /** @var LinkAssetHandler */
-    private $linkAssetHandler;
+    private LinkAssetHandler $linkAssetHandler;
 
-    /** @var IndexAssetEventAggregator */
-    private $indexAssetEventAggregator;
+    private \Akeneo\AssetManager\Infrastructure\Search\Elasticsearch\Asset\EventAggregatorInterface $indexAssetEventAggregator;
 
-    /** @var ComputeTransformationEventAggregatorInterface */
-    private $computeTransformationEventAggregator;
+    private ComputeTransformationEventAggregatorInterface $computeTransformationEventAggregator;
 
     public function __construct(
         CreateAssetHandler $createAssetHandler,
@@ -223,21 +210,18 @@ class CreateAction
     {
         $normalizedCommand = json_decode($request->getContent(), true);
 
-        $command = new CreateAssetCommand(
+        return new CreateAssetCommand(
             $normalizedCommand['asset_family_identifier'] ?? null,
             $normalizedCommand['code'] ?? null,
             $normalizedCommand['labels'] ?? []
         );
-
-        return $command;
     }
 
     private function getEditCommand(Request $request): EditAssetCommand
     {
         $normalizedCommand = json_decode($request->getContent(), true);
-        $command = $this->editAssetCommandFactory->create($normalizedCommand);
 
-        return $command;
+        return $this->editAssetCommandFactory->create($normalizedCommand);
     }
 
     private function getNamingConventionEditCommand(Request $request): EditAssetCommand

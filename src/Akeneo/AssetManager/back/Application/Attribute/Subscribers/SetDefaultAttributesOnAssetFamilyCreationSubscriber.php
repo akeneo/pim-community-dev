@@ -32,14 +32,11 @@ use Symfony\Component\EventDispatcher\EventSubscriberInterface;
  */
 class SetDefaultAttributesOnAssetFamilyCreationSubscriber implements EventSubscriberInterface
 {
-    /** @var CreateAttributeHandler */
-    private $createAttributeHandler;
+    private CreateAttributeHandler $createAttributeHandler;
 
-    /** @var AssetFamilyRepositoryInterface */
-    private $assetFamilyRepository;
+    private AssetFamilyRepositoryInterface $assetFamilyRepository;
 
-    /** @var AttributeRepositoryInterface */
-    private $attributeRepository;
+    private AttributeRepositoryInterface $attributeRepository;
 
     public function __construct(
         AssetFamilyRepositoryInterface $assetFamilyRepository,

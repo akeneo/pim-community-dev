@@ -35,7 +35,7 @@ class CreateMediaLinkAttributeCommandFactory extends AbstractCreateAttributeComm
         $normalizedCommand['media_type'] = isset($normalizedCommand['media_type']) ? $normalizedCommand['media_type'] : MediaType::IMAGE;
         $this->checkAdditionalProperties($normalizedCommand);
 
-        $command = new CreateMediaLinkAttributeCommand(
+        return new CreateMediaLinkAttributeCommand(
             $normalizedCommand['asset_family_identifier'],
             $normalizedCommand['code'],
             $normalizedCommand['labels'] ?? [],
@@ -47,8 +47,6 @@ class CreateMediaLinkAttributeCommandFactory extends AbstractCreateAttributeComm
             $this->stringOrNull($normalizedCommand, 'prefix'),
             $this->stringOrNull($normalizedCommand, 'suffix')
         );
-
-        return $command;
     }
 
     /**
@@ -61,7 +59,7 @@ class CreateMediaLinkAttributeCommandFactory extends AbstractCreateAttributeComm
         ];
 
         foreach ($keysToCheck as $keyToCheck) {
-            if (!key_exists($keyToCheck, $nomalizedCommand)) {
+            if (!array_key_exists($keyToCheck, $nomalizedCommand)) {
                 throw new \InvalidArgumentException(
                     sprintf('Expects normalized command to have key "%s"', $keyToCheck)
                 );

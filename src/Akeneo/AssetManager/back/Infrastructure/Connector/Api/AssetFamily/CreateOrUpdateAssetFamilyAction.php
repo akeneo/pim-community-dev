@@ -36,29 +36,21 @@ use Symfony\Component\Validator\Validator\ValidatorInterface;
 
 class CreateOrUpdateAssetFamilyAction
 {
-    /** @var AssetFamilyExistsInterface */
-    private $assetFamilyExists;
+    private AssetFamilyExistsInterface $assetFamilyExists;
 
-    /** @var ValidatorInterface */
-    private $validator;
+    private ValidatorInterface $validator;
 
-    /** @var CreateAssetFamilyHandler */
-    private $createAssetFamilyHandler;
+    private CreateAssetFamilyHandler $createAssetFamilyHandler;
 
-    /** @var EditAssetFamilyHandler */
-    private $editAssetFamilyHandler;
+    private EditAssetFamilyHandler $editAssetFamilyHandler;
 
-    /** @var Router */
-    private $router;
+    private Router $router;
 
-    /** @var AssetFamilyValidator */
-    private $jsonSchemaValidator;
+    private AssetFamilyValidator $jsonSchemaValidator;
 
-    /** @var FindFileDataByFileKeyInterface */
-    private $findFileData;
+    private FindFileDataByFileKeyInterface $findFileData;
 
-    /** @var AssetFamilyRepositoryInterface */
-    private $assetFamilyRepository;
+    private AssetFamilyRepositoryInterface $assetFamilyRepository;
 
     public function __construct(
         AssetFamilyExistsInterface $assetFamilyExists,
@@ -101,7 +93,7 @@ class CreateOrUpdateAssetFamilyAction
 
         $createAssetFamilyCommand = null;
         $shouldBeCreated = $this->shouldAssetFamilyBeCreated($assetFamilyIdentifier);
-        if (true === $shouldBeCreated) {
+        if ($shouldBeCreated) {
             $createAssetFamilyCommand = new CreateAssetFamilyCommand(
                 $normalizedAssetFamily['code'],
                 $normalizedAssetFamily['labels'] ?? [],
@@ -128,7 +120,7 @@ class CreateOrUpdateAssetFamilyAction
 
         if (array_key_exists('image', $normalizedAssetFamily)) {
             $editAssetFamilyCommand->image = null !== $normalizedAssetFamily['image'] ? $this->getImageData($normalizedAssetFamily['image']) : null;
-        } elseif (false === $shouldBeCreated) {
+        } elseif (!$shouldBeCreated) {
             $assetFamily = $this->assetFamilyRepository->getByIdentifier($assetFamilyIdentifier);
             $editAssetFamilyCommand->image = $assetFamily->getImage()->normalize();
         }
@@ -138,7 +130,7 @@ class CreateOrUpdateAssetFamilyAction
             throw new ViolationHttpException($violations, 'The asset family has data that does not comply with the business rules.');
         }
 
-        if (true === $shouldBeCreated) {
+        if ($shouldBeCreated) {
             ($this->createAssetFamilyHandler)($createAssetFamilyCommand);
         }
 
@@ -150,7 +142,7 @@ class CreateOrUpdateAssetFamilyAction
             ], UrlGeneratorInterface::ABSOLUTE_URL)
         ];
 
-        $responseStatusCode = true === $shouldBeCreated ? Response::HTTP_CREATED : Response::HTTP_NO_CONTENT;
+        $responseStatusCode = $shouldBeCreated ? Response::HTTP_CREATED : Response::HTTP_NO_CONTENT;
 
         return Response::create('', $responseStatusCode, $headers);
     }

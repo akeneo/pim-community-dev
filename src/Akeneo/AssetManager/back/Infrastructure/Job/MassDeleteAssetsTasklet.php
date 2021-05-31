@@ -35,7 +35,7 @@ use Akeneo\Tool\Component\Connector\Step\TaskletInterface;
  */
 class MassDeleteAssetsTasklet implements TaskletInterface, TrackableTaskletInterface
 {
-    private ?StepExecution $stepExecution;
+    private ?StepExecution $stepExecution = null;
     private AssetQueryBuilderInterface $assetQueryBuilder;
     private Client $assetClient;
     private DeleteAssetsHandler $deleteAssetsHandler;

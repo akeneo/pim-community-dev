@@ -12,8 +12,7 @@ use Doctrine\DBAL\Connection;
  */
 class SqlAverageMaxNumberOfAttributesPerAssetFamily
 {
-    /** @var Connection */
-    private $sqlConnection;
+    private Connection $sqlConnection;
 
     public function __construct(Connection $sqlConnection)
     {
@@ -35,11 +34,10 @@ FROM (
 ) as rec;
 SQL;
         $result = $this->sqlConnection->query($sql)->fetch();
-        $volume = new AverageMaxVolumes(
+
+        return new AverageMaxVolumes(
             (int) $result['max'],
             (int) $result['average']
         );
-
-        return $volume;
     }
 }

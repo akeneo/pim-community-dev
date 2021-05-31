@@ -20,11 +20,9 @@ use Symfony\Component\Security\Core\Authentication\Token\Storage\TokenStorageInt
 
 class ComputeTransformationFromAssetFamilyIdentifierLauncher implements ComputeTransformationFromAssetFamilyIdentifierLauncherInterface
 {
-    /** @var PublishJobToQueue */
-    private $publishJobToQueue;
+    private PublishJobToQueue $publishJobToQueue;
 
-    /** @var TokenStorageInterface */
-    private $tokenStorage;
+    private TokenStorageInterface $tokenStorage;
 
     public function __construct(PublishJobToQueue $publishJobToQueue, TokenStorageInterface $tokenStorage)
     {

@@ -31,17 +31,13 @@ use Symfony\Component\Security\Core\Authentication\Token\Storage\TokenStorageInt
  */
 class ExecuteProductLinkRulesAction
 {
-    /** @var LinkAllAssetFamilyAssetsHandler */
-    private $linkAllAssetFamilyAssetsHandler;
+    private LinkAllAssetFamilyAssetsHandler $linkAllAssetFamilyAssetsHandler;
 
-    /** @var TokenStorageInterface */
-    private $tokenStorage;
+    private TokenStorageInterface $tokenStorage;
 
-    /** @var CanEditAssetFamilyQueryHandler */
-    private $canEditAssetFamilyQueryHandler;
+    private CanEditAssetFamilyQueryHandler $canEditAssetFamilyQueryHandler;
 
-    /** @var SecurityFacade */
-    private $securityFacade;
+    private SecurityFacade $securityFacade;
 
     public function __construct(
         LinkAllAssetFamilyAssetsHandler $linkAllAssetFamilyAssetsHandler,

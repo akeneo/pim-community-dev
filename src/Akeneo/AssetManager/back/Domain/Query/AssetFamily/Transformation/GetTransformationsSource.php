@@ -25,8 +25,7 @@ use Akeneo\AssetManager\Domain\Repository\AssetFamilyRepositoryInterface;
 
 class GetTransformationsSource
 {
-    /** @var GetTransformations */
-    private $getTransformations;
+    private GetTransformations $getTransformations;
 
     public function __construct(GetTransformations $getTransformations)
     {

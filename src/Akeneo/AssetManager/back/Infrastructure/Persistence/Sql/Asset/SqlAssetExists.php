@@ -27,8 +27,7 @@ use Doctrine\DBAL\Types\Type;
  */
 class SqlAssetExists implements AssetExistsInterface
 {
-    /** @var Connection */
-    private $sqlConnection;
+    private Connection $sqlConnection;
 
     public function __construct(Connection $sqlConnection)
     {
@@ -90,8 +89,7 @@ SQL;
     {
         $platform = $this->sqlConnection->getDatabasePlatform();
         $result = $statement->fetch(\PDO::FETCH_ASSOC);
-        $isExisting = Type::getType(Type::BOOLEAN)->convertToPhpValue($result['is_existing'], $platform);
 
-        return $isExisting;
+        return Type::getType(Type::BOOLEAN)->convertToPhpValue($result['is_existing'], $platform);
     }
 }

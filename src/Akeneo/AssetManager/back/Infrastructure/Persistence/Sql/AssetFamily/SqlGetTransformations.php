@@ -24,11 +24,9 @@ use Doctrine\DBAL\Types\Types;
 
 class SqlGetTransformations implements GetTransformations
 {
-    /** @var Connection */
-    private $connection;
+    private Connection $connection;
 
-    /** @var TransformationCollectionFactory */
-    private $transformationCollectionFactory;
+    private TransformationCollectionFactory $transformationCollectionFactory;
 
     public function __construct(
         Connection $connection,

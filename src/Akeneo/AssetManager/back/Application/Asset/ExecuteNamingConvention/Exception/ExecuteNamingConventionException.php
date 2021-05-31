@@ -10,7 +10,7 @@ final class ExecuteNamingConventionException extends AbstractExecuteNamingConven
         \Throwable $previous = null
     ) {
         parent::__construct(
-            $previous ? $previous->getMessage() : 'Unexpected error during naming convention execution',
+            $previous !== null ? $previous->getMessage() : 'Unexpected error during naming convention execution',
             0,
             $previous
         );

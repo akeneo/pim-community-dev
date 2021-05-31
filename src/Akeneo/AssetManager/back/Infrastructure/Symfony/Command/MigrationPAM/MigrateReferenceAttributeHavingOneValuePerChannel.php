@@ -32,17 +32,13 @@ class MigrateReferenceAttributeHavingOneValuePerChannel extends Command
     private const DEFAULT_REFERENCE_CODE = 'reference';
     private const DEFAULT_REFERENCE_LOCALIZABLE_CODE = 'reference_localizable';
 
-    /** @var Connection|null */
-    private $readConnection = null;
+    private ?Connection $readConnection = null;
 
-    /** @var Connection */
-    private $writeConnection;
+    private Connection $writeConnection;
 
-    /** @var SymfonyStyle */
-    private $io;
+    private ?SymfonyStyle $io = null;
 
-    /** @var CountAssets */
-    private $countAssets;
+    private CountAssets $countAssets;
 
     private ConnectionFactory $connectionFactory;
 
@@ -91,7 +87,7 @@ class MigrateReferenceAttributeHavingOneValuePerChannel extends Command
     public function execute(InputInterface $input, OutputInterface $output)
     {
         $this->io = new SymfonyStyle($input, $output);
-        $this->io->title(sprintf('Convertion of reference attribute to non scopable reference attributes'));
+        $this->io->title('Convertion of reference attribute to non scopable reference attributes');
         $familyCode = $input->getArgument('asset-family-code');
         $referenceCode = $input->getArgument('reference-code');
         $referenceLocalizableCode = $input->getArgument('reference-localizable-code');
@@ -284,9 +280,7 @@ WHERE (code = :reference_code OR code = :reference_localizable_code)
 SQL;
 
         return array_map(
-            function ($row) {
-                return $row['identifier'];
-            },
+            fn ($row) => $row['identifier'],
             $this->getReadConnection()->fetchAll(
                 $sqlReferenceAttributes,
                 [

@@ -33,11 +33,9 @@ class PurgeOrphanAssetsCommand extends Command
 
     public const PURGE_ORPHANS_FILE_INFO_COMMAND_NAME = 'akeneo:asset-manager:purge-orphans-file-info';
 
-    /** @var Connection */
-    private $connection;
+    private Connection $connection;
 
-    /** @var FilesystemProvider */
-    private $filesystemProvider;
+    private FilesystemProvider $filesystemProvider;
 
     public function __construct(Connection $connection, FilesystemProvider $filesystemProvider)
     {

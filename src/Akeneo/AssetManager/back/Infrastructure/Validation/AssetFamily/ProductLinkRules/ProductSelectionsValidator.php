@@ -25,14 +25,11 @@ class ProductSelectionsValidator
     private const FIELD_FIELD = 'field';
     private const FIELDS_WITH_NO_CHANNEL_NOR_LOCALES = ['enable', 'family', 'categories'];
 
-    /** @var RuleEngineValidatorACLInterface */
-    private $ruleEngineValidatorACL;
+    private RuleEngineValidatorACLInterface $ruleEngineValidatorACL;
 
-    /** @var ExtrapolatedAttributeValidator */
-    private $extrapolatedAttributeValidator;
+    private ExtrapolatedAttributeValidator $extrapolatedAttributeValidator;
 
-    /** @var ChannelAndLocaleValidator */
-    private $channelAndLocaleValidator;
+    private ChannelAndLocaleValidator $channelAndLocaleValidator;
 
     public function __construct(
         RuleEngineValidatorACLInterface $ruleEngineValidatorACL,
@@ -57,11 +54,10 @@ class ProductSelectionsValidator
     private function checkNotEmpty(array $productSelections): ConstraintViolationListInterface
     {
         $validator = Validation::createValidator();
-        $ruleEngineViolations = $validator->validate($productSelections,
+
+        return $validator->validate($productSelections,
             [new NotBlank(['message' => ProductLinkRulesShouldBeExecutable::PRODUCT_SELECTION_CANNOT_BE_EMPTY])]
         );
-
-        return $ruleEngineViolations;
     }
 
     private function validateProductSelection(

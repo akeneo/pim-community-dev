@@ -18,8 +18,7 @@ namespace Akeneo\AssetManager\Application\Asset\ExecuteNamingConvention;
  */
 class ExecuteAssetFamilyNamingConventionCommand
 {
-    /** @var string */
-    public $assetFamilyIdentifier;
+    public string $assetFamilyIdentifier;
 
     public function __construct(string $assetFamilyIdentifier)
     {

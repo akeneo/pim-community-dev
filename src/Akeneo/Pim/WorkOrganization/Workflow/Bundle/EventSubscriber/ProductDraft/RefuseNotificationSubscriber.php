@@ -11,6 +11,7 @@
 
 namespace Akeneo\Pim\WorkOrganization\Workflow\Bundle\EventSubscriber\ProductDraft;
 
+use Akeneo\Pim\Enrichment\Component\Product\Model\ProductModelInterface;
 use Akeneo\Pim\WorkOrganization\Workflow\Component\Event\EntityWithValuesDraftEvents;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 use Symfony\Component\EventDispatcher\GenericEvent;
@@ -73,15 +74,16 @@ class RefuseNotificationSubscriber extends AbstractProposalStateNotificationSubs
             return;
         }
 
-        $message = isset($messageInfos['message'])
-            ? $messageInfos['message']
-            : 'pimee_workflow.product_draft.notification.refuse';
+        $message = $messageInfos['message'] ?? 'pimee_workflow.product_draft.notification.refuse';
+        $route = $productDraft->getEntityWithValue() instanceof ProductModelInterface ?
+            'pim_enrich_product_model_edit' :
+            'pim_enrich_product_edit';
 
         $notification = $this->notificationFactory->create();
         $notification
             ->setType('error')
             ->setMessage($message)
-            ->setRoute('pim_enrich_product_edit')
+            ->setRoute($route)
             ->setRouteParams(['id' => $productDraft->getEntityWithValue()->getId()]);
 
         $options = [

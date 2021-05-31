@@ -19,8 +19,7 @@ use Akeneo\AssetManager\Domain\Model\ChannelIdentifier;
  */
 class ChannelReference
 {
-    /** @var ChannelIdentifier|null */
-    private $identifier;
+    private ?ChannelIdentifier $identifier = null;
 
     private function __construct(?ChannelIdentifier $identifier)
     {

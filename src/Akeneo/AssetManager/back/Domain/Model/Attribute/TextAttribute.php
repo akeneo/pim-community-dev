@@ -26,20 +26,15 @@ class TextAttribute extends AbstractAttribute
 {
     public const ATTRIBUTE_TYPE = 'text';
 
-    /** @var AttributeMaxLength */
-    private $maxLength;
+    private AttributeMaxLength $maxLength;
 
-    /** @var AttributeIsTextarea */
-    private $isTextarea;
+    private AttributeIsTextarea $isTextarea;
 
-    /** @var AttributeValidationRule */
-    private $validationRule;
+    private AttributeValidationRule $validationRule;
 
-    /** @var AttributeRegularExpression */
-    private $regularExpression;
+    private AttributeRegularExpression $regularExpression;
 
-    /** @var AttributeIsRichTextEditor */
-    private $isRichTextEditor;
+    private AttributeIsRichTextEditor $isRichTextEditor;
 
     protected function __construct(
         AttributeIdentifier $identifier,

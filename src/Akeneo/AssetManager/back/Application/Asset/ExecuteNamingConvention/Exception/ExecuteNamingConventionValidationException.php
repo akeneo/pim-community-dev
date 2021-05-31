@@ -9,8 +9,7 @@ use Webmozart\Assert\Assert;
 
 final class ExecuteNamingConventionValidationException extends AbstractExecuteNamingConventionException
 {
-    /** @var ConstraintViolationListInterface */
-    private $violations;
+    private ConstraintViolationListInterface $violations;
 
     public function __construct(ConstraintViolationListInterface $violations)
     {

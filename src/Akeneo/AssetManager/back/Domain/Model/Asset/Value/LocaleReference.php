@@ -19,8 +19,7 @@ use Akeneo\AssetManager\Domain\Model\LocaleIdentifier;
  */
 class LocaleReference
 {
-    /** @var LocaleIdentifier|null */
-    private $identifier;
+    private ?LocaleIdentifier $identifier = null;
 
     private function __construct(?LocaleIdentifier $identifier)
     {

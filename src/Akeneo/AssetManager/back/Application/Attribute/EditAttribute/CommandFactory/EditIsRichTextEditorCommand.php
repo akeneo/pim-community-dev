@@ -10,8 +10,7 @@ namespace Akeneo\AssetManager\Application\Attribute\EditAttribute\CommandFactory
  */
 class EditIsRichTextEditorCommand extends AbstractEditAttributeCommand
 {
-    /** @var bool|null */
-    public $isRichTextEditor;
+    public ?bool $isRichTextEditor = null;
 
     public function __construct(string $identifier, ?bool $isRichTextEditor)
     {

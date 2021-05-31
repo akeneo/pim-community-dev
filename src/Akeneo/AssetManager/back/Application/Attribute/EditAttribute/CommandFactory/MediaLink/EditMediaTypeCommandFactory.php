@@ -37,11 +37,9 @@ class EditMediaTypeCommandFactory implements EditAttributeCommandFactoryInterfac
             throw new \RuntimeException('Impossible to create an edit "media type" property command.');
         }
 
-        $command = new EditMediaTypeCommand(
+        return new EditMediaTypeCommand(
             $normalizedCommand['identifier'],
             $normalizedCommand['media_type']
         );
-
-        return $command;
     }
 }

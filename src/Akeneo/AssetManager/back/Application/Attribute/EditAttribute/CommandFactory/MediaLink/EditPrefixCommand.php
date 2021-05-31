@@ -21,8 +21,7 @@ use Akeneo\AssetManager\Application\Attribute\EditAttribute\CommandFactory\Abstr
  */
 class EditPrefixCommand extends AbstractEditAttributeCommand
 {
-    /** @var string|null */
-    public $prefix;
+    public ?string $prefix = null;
 
     public function __construct(string $identifier, ?string $prefix)
     {

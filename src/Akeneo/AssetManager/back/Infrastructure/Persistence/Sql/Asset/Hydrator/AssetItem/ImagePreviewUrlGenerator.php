@@ -14,8 +14,7 @@ class ImagePreviewUrlGenerator
 {
     private const URL_ATTRIBUTE_PREVIEW_ENDPOINT = 'akeneo_asset_manager_image_preview';
 
-    /** @var Router */
-    private $router;
+    private Router $router;
 
     public function __construct(Router $router)
     {

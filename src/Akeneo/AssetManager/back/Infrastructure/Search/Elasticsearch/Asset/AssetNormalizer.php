@@ -32,17 +32,13 @@ class AssetNormalizer implements AssetNormalizerInterface
     private const COMPLETE_VALUE_KEYS = 'complete_value_keys';
     private const VALUES_FIELD = 'values';
 
-    /** @var FindValueKeysToIndexForAllChannelsAndLocalesInterface */
-    private $findValueKeysToIndexForAllChannelsAndLocales;
+    private FindValueKeysToIndexForAllChannelsAndLocalesInterface $findValueKeysToIndexForAllChannelsAndLocales;
 
-    /** @var SqlFindSearchableAssets */
-    private $findSearchableAssets;
+    private SqlFindSearchableAssets $findSearchableAssets;
 
-    /** @var FindValueKeysByAttributeTypeInterface */
-    private $findValueKeysByAttributeType;
+    private FindValueKeysByAttributeTypeInterface $findValueKeysByAttributeType;
 
-    /** @var FindActivatedLocalesInterface */
-    private $findActivatedLocales;
+    private FindActivatedLocalesInterface $findActivatedLocales;
 
     public function __construct(
         FindValueKeysToIndexForAllChannelsAndLocalesInterface $findValueKeysToIndexForAllChannelsAndLocales,
@@ -132,18 +128,15 @@ class AssetNormalizer implements AssetNormalizerInterface
     {
         $valuesToIndex = array_intersect_key($searchableAssetItem->values, array_flip($valueKeys));
         $dataToIndex = array_map(
-            function (array $value) {
-                return $value['data'];
-            },
+            fn (array $value) => $value['data'],
             $valuesToIndex
         );
 
         $stringToIndex = implode(' ', $dataToIndex);
         $cleanedData = str_replace(["\r", "\n"], " ", $stringToIndex);
         $cleanedData = strip_tags(html_entity_decode($cleanedData));
-        $result = sprintf('%s %s', $searchableAssetItem->code, $cleanedData);
 
-        return $result;
+        return sprintf('%s %s', $searchableAssetItem->code, $cleanedData);
     }
 
     private function generateFilledValueKeys(SearchableAssetItem $searchableAssetItem): array
@@ -158,7 +151,7 @@ class AssetNormalizer implements AssetNormalizerInterface
         array $filledValueKeysMatrix,
         array $filterableValues
     ): array {
-        $normalizedAsset = [
+        return [
             self::IDENTIFIER => $searchableAssetItem->identifier,
             self::CODE => $searchableAssetItem->code,
             self::ASSET_FAMILY_CODE => $searchableAssetItem->assetFamilyIdentifier,
@@ -168,8 +161,6 @@ class AssetNormalizer implements AssetNormalizerInterface
             self::COMPLETE_VALUE_KEYS => $filledValueKeysMatrix,
             self::VALUES_FIELD => $filterableValues
         ];
-
-        return $normalizedAsset;
     }
 
     private function generateFilterableValues(SearchableAssetItem $searchableAssetItem): array

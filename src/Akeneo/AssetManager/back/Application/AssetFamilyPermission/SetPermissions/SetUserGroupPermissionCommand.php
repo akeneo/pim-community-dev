@@ -12,11 +12,9 @@ namespace Akeneo\AssetManager\Application\AssetFamilyPermission\SetPermissions;
  */
 class SetUserGroupPermissionCommand
 {
-    /** @var int */
-    public $userGroupIdentifier;
+    public int $userGroupIdentifier;
 
-    /** @var string */
-    public $rightLevel;
+    public string $rightLevel;
 
     public function __construct(int $userGroupIdentifier, string $rightLevel)
     {

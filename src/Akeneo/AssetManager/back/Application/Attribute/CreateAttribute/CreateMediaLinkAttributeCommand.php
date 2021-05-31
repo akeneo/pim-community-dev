@@ -19,14 +19,11 @@ namespace Akeneo\AssetManager\Application\Attribute\CreateAttribute;
  */
 class CreateMediaLinkAttributeCommand extends AbstractCreateAttributeCommand
 {
-    /** @var string */
-    public $mediaType;
+    public string $mediaType;
 
-    /** @var string|null */
-    public $prefix;
+    public ?string $prefix = null;
 
-    /** @var string|null */
-    public $suffix;
+    public ?string $suffix = null;
 
     public function __construct(
         string $assetFamilyIdentifier,

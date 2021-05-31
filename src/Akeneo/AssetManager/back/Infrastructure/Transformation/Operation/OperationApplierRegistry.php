@@ -19,7 +19,7 @@ use Akeneo\AssetManager\Infrastructure\Transformation\Exception\TransformationEx
 final class OperationApplierRegistry
 {
     /** @var OperationApplier[] */
-    private $operationAppliers = [];
+    private array $operationAppliers = [];
 
     public function __construct(iterable $operationAppliers)
     {

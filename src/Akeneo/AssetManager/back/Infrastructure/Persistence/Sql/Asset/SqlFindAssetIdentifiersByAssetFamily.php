@@ -24,8 +24,7 @@ class SqlFindAssetIdentifiersByAssetFamily implements FindAssetIdentifiersByAsse
 {
     private const BATCH_SIZE = 1000;
 
-    /** @var Connection */
-    private $connection;
+    private Connection $connection;
 
     public function __construct(Connection $connection)
     {

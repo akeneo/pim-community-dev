@@ -35,7 +35,7 @@ use Webmozart\Assert\Assert;
 class ValueKeyCollection implements \IteratorAggregate
 {
     /** @var ValueKey[] */
-    private $valueKeys;
+    private array $valueKeys;
 
     private function __construct(array $valueKeys)
     {
@@ -55,9 +55,7 @@ class ValueKeyCollection implements \IteratorAggregate
 
     public function normalize(): array
     {
-        return array_map(function (ValueKey $valueKey) {
-            return $valueKey->__toString();
-        }, $this->valueKeys);
+        return array_map(fn (ValueKey $valueKey) => $valueKey->__toString(), $this->valueKeys);
     }
 
     public function getIterator(): \Iterator

@@ -35,8 +35,8 @@ use Akeneo\AssetManager\Domain\Repository\AttributeRepositoryInterface;
  */
 class EmptyUpdater implements ValueUpdaterInterface
 {
-    private $getTransformationsSource;
-    private $attributeRepository;
+    private GetTransformationsSource $getTransformationsSource;
+    private AttributeRepositoryInterface $attributeRepository;
 
     public function __construct(
         GetTransformationsSource $getTransformationsSource,

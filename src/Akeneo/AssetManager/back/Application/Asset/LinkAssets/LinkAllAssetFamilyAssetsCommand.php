@@ -19,8 +19,7 @@ namespace Akeneo\AssetManager\Application\Asset\LinkAssets;
  */
 class LinkAllAssetFamilyAssetsCommand
 {
-    /** @var string */
-    public $assetFamilyIdentifier;
+    public string $assetFamilyIdentifier;
 
     public function __construct(string $assetFamilyIdentifier)
     {

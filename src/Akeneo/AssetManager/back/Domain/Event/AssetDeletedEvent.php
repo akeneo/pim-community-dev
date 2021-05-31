@@ -18,14 +18,11 @@ use Symfony\Component\EventDispatcher\Event;
  */
 class AssetDeletedEvent extends Event
 {
-    /** @var AssetIdentifier */
-    private $assetIdentifier;
+    private AssetIdentifier $assetIdentifier;
 
-    /** @var AssetCode */
-    private $assetCode;
+    private AssetCode $assetCode;
 
-    /** @var AssetFamilyIdentifier */
-    private $assetFamilyIdentifier;
+    private AssetFamilyIdentifier $assetFamilyIdentifier;
 
     public function __construct(
         AssetIdentifier $assetIdentifier,

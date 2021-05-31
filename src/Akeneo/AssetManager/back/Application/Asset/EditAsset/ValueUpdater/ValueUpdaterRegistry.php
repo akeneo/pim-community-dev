@@ -22,7 +22,7 @@ use Akeneo\AssetManager\Application\Asset\EditAsset\CommandFactory\AbstractEditV
 class ValueUpdaterRegistry implements ValueUpdaterRegistryInterface
 {
     /** @var ValueUpdaterInterface[]  */
-    private $updaters = [];
+    private array $updaters = [];
 
     public function register(ValueUpdaterInterface $valueUpdater): void
     {

@@ -2,11 +2,6 @@
 
 namespace spec\Akeneo\AssetManager\Domain\Query\Asset;
 
-use Akeneo\AssetManager\Domain\Model\AssetFamily\AssetFamilyIdentifier;
-use Akeneo\AssetManager\Domain\Model\Image;
-use Akeneo\AssetManager\Domain\Model\LabelCollection;
-use Akeneo\AssetManager\Domain\Model\Asset\AssetCode;
-use Akeneo\AssetManager\Domain\Model\Asset\AssetIdentifier;
 use Akeneo\AssetManager\Domain\Query\Asset\AssetItem;
 use PhpSpec\ObjectBehavior;
 
@@ -26,7 +21,7 @@ class AssetItemSpec extends ObjectBehavior
             'fr_FR' => 'Philippe starck',
             'en_US' => 'Philip starck',
         ];
-        $this->image = null;
+        $this->image = [];
         $this->values = [
             'designer_name_fingerprint_en_US' => [
                 'attribute' => 'designer_name_fingerprint',
@@ -46,7 +41,7 @@ class AssetItemSpec extends ObjectBehavior
                     'fr_FR' => 'Philippe starck',
                     'en_US' => 'Philip starck',
                 ],
-                'image' => null,
+                'image' => [],
                 'values' => [
                     'designer_name_fingerprint_en_US' => [
                         'attribute' => 'designer_name_fingerprint',

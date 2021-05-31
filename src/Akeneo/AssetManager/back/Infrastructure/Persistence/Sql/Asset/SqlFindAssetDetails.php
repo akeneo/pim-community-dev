@@ -30,20 +30,15 @@ use Doctrine\DBAL\Types\Type;
  */
 class SqlFindAssetDetails implements FindAssetDetailsInterface
 {
-    /** @var Connection */
-    private $sqlConnection;
+    private Connection $sqlConnection;
 
-    /** @var AssetDetailsHydratorInterface */
-    private $assetDetailsHydrator;
+    private AssetDetailsHydratorInterface $assetDetailsHydrator;
 
-    /** @var GenerateEmptyValuesInterface */
-    private $generateEmptyValues;
+    private GenerateEmptyValuesInterface $generateEmptyValues;
 
-    /** @var FindValueKeyCollectionInterface */
-    private $findValueKeyCollection;
+    private FindValueKeyCollectionInterface $findValueKeyCollection;
 
-    /** @var FindAttributesIndexedByIdentifierInterface */
-    private $findAttributesIndexedByIdentifier;
+    private FindAttributesIndexedByIdentifierInterface $findAttributesIndexedByIdentifier;
 
     public function __construct(
         Connection $sqlConnection,
@@ -70,9 +65,7 @@ class SqlFindAssetDetails implements FindAssetDetailsInterface
             return null;
         }
 
-        $assetDetails = $this->hydrateAssetDetails($result);
-
-        return $assetDetails;
+        return $this->hydrateAssetDetails($result);
     }
 
     private function fetchResult(AssetFamilyIdentifier $assetFamilyIdentifier, AssetCode $assetCode): array
@@ -99,7 +92,7 @@ SQL;
         $result = $statement->fetch(\PDO::FETCH_ASSOC);
         $statement->closeCursor();
 
-        return !$result ? [] : $result;
+        return $result ? $result : [];
     }
 
     private function getAssetFamilyIdentifier($result): AssetFamilyIdentifier

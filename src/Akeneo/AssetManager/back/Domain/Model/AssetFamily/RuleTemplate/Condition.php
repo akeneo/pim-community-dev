@@ -27,20 +27,15 @@ use Webmozart\Assert\Assert;
  */
 class Condition
 {
-    /** @var Field */
-    private $field;
+    private Field $field;
 
-    /** @var Operator */
-    private $operator;
+    private Operator $operator;
 
-    /** @var Value */
-    private $value;
+    private Value $value;
 
-    /** @var ChannelReference */
-    private $channel;
+    private ChannelReference $channel;
 
-    /** @var LocaleReference */
-    private $locale;
+    private LocaleReference $locale;
 
     private function __construct(Field $field, Operator $operator, Value $value, ChannelReference $channel, LocaleReference $locale)
     {

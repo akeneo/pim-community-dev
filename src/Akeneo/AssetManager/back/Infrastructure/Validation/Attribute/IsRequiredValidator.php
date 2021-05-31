@@ -15,6 +15,8 @@ namespace Akeneo\AssetManager\Infrastructure\Validation\Attribute;
 
 use Symfony\Component\Validator\Constraint;
 use Symfony\Component\Validator\Constraints;
+use Symfony\Component\Validator\Constraints\NotNull;
+use Symfony\Component\Validator\Constraints\Type;
 use Symfony\Component\Validator\ConstraintValidator;
 use Symfony\Component\Validator\Exception\UnexpectedTypeException;
 use Symfony\Component\Validator\Validation;
@@ -33,8 +35,8 @@ class IsRequiredValidator extends ConstraintValidator
 
         $validator = Validation::createValidator();
         $violations = $validator->validate($isRequired, [
-                new Constraints\NotNull(),
-                new Constraints\Type(['type' => 'boolean'])
+                new NotNull(),
+                new Type(['type' => 'boolean'])
             ]
         );
 

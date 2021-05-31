@@ -38,20 +38,16 @@ final class ComputeAssetTransformationEventAggregator implements EventAggregator
 {
     private const MAX_ASSET_BATCH = 200;
 
-    /** @var ComputeTransformationFromAssetIdentifiersLauncherInterface */
-    private $computeTransformationLauncher;
+    private ComputeTransformationFromAssetIdentifiersLauncherInterface $computeTransformationLauncher;
 
-    /** @var AssetRepositoryInterface */
-    private $assetRepository;
+    private AssetRepositoryInterface $assetRepository;
 
-    /** @var AssetFamilyRepositoryInterface */
-    private $assetFamilyRepository;
+    private AssetFamilyRepositoryInterface $assetFamilyRepository;
 
-    /** @var GetOutdatedVariationSourceInterface */
-    private $getOutdatedVariationSource;
+    private GetOutdatedVariationSourceInterface $getOutdatedVariationSource;
 
     /** @var AssetIdentifier[] */
-    private $assetsToComputeTransformations = [];
+    private array $assetsToComputeTransformations = [];
 
     public function __construct(
         ComputeTransformationFromAssetIdentifiersLauncherInterface $computeTransformationLauncher,

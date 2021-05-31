@@ -29,8 +29,7 @@ class ValidateAttributePropertiesImmutability
         'asset_family_code',
     ];
 
-    /** @var FindConnectorAttributeByIdentifierAndCodeInterface */
-    private $findConnectorAttribute;
+    private FindConnectorAttributeByIdentifierAndCodeInterface $findConnectorAttribute;
 
     public function __construct(FindConnectorAttributeByIdentifierAndCodeInterface $findConnectorAttribute)
     {

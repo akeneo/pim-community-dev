@@ -19,14 +19,11 @@ namespace Akeneo\AssetManager\Application\Attribute\CreateAttribute;
  */
 class CreateNumberAttributeCommand extends AbstractCreateAttributeCommand
 {
-    /** @var bool */
-    public $decimalsAllowed;
+    public bool $decimalsAllowed;
 
-    /** @var string|null */
-    public $minValue;
+    public ?string $minValue = null;
 
-    /** @var string|null */
-    public $maxValue;
+    public ?string $maxValue = null;
 
     public function __construct(
         string $assetFamilyIdentifier,

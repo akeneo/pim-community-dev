@@ -17,8 +17,7 @@ use Akeneo\Tool\Component\FileStorage\Model\FileInfoInterface;
 
 class Image
 {
-    /** @var FileInfoInterface|null */
-    private $file;
+    private ?FileInfoInterface $file = null;
 
     private function __construct(?FileInfoInterface $file)
     {

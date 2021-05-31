@@ -26,8 +26,7 @@ use Akeneo\AssetManager\Domain\Repository\AssetFamilyRepositoryInterface;
  */
 class CreateAssetFamilyHandler
 {
-    /** @var AssetFamilyRepositoryInterface */
-    private $assetFamilyRepository;
+    private AssetFamilyRepositoryInterface $assetFamilyRepository;
 
     public function __construct(AssetFamilyRepositoryInterface $assetFamilyRepository)
     {

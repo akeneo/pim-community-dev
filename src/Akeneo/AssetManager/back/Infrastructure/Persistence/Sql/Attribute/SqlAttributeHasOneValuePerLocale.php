@@ -30,8 +30,7 @@ use Doctrine\DBAL\Types\Type;
  */
 class SqlAttributeHasOneValuePerLocale implements AttributeHasOneValuePerLocaleInterface
 {
-    /** @var Connection */
-    private $sqlConnection;
+    private Connection $sqlConnection;
 
     /**
      * @param Connection $sqlConnection
@@ -62,8 +61,6 @@ SQL;
             throw AttributeNotFoundException::withAssetFamilyAndAttributeCode($assetFamilyIdentifier, $attributeCode);
         }
 
-        $hasOneValuePerLocale = Type::getType(Type::BOOLEAN)->convertToPhpValue($result['value_per_locale'], $platform);
-
-        return $hasOneValuePerLocale;
+        return Type::getType(Type::BOOLEAN)->convertToPhpValue($result['value_per_locale'], $platform);
     }
 }

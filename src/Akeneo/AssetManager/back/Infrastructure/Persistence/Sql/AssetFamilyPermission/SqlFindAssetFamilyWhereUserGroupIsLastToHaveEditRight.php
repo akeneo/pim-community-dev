@@ -25,8 +25,7 @@ use PDO;
  */
 class SqlFindAssetFamilyWhereUserGroupIsLastToHaveEditRight
 {
-    /** @var Connection */
-    private $sqlConnection;
+    private Connection $sqlConnection;
 
     public function __construct(Connection $sqlConnection)
     {

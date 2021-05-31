@@ -14,11 +14,9 @@ use Symfony\Component\Finder\Finder;
  */
 class AssetsInstaller
 {
-    /** @var Filesystem */
-    private $filesystem;
+    private Filesystem $filesystem;
 
-    /** @var string */
-    private $projectDir;
+    private string $projectDir;
 
     public function __construct(Filesystem $filesystem, string $projectDir)
     {

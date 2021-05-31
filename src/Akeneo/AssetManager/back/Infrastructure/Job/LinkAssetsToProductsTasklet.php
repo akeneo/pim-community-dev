@@ -34,7 +34,7 @@ class LinkAssetsToProductsTasklet implements TaskletInterface, TrackableTaskletI
 {
     private RuleTemplateExecutor $ruleTemplateExecutor;
     private FindAssetCodesByAssetFamilyInterface $findAssetCodesByAssetFamily;
-    private ?StepExecution $stepExecution;
+    private ?StepExecution $stepExecution = null;
     private CountAssetsInterface $countAssets;
     private JobRepositoryInterface $jobRepository;
     private int $batchSize;
@@ -68,9 +68,7 @@ class LinkAssetsToProductsTasklet implements TaskletInterface, TrackableTaskletI
         $assetFamilyIdentifier = AssetFamilyIdentifier::fromString($this->stepExecution->getJobParameters()->get('asset_family_identifier'));
 
         if ($this->stepExecution->getJobParameters()->has('asset_codes')) {
-            $assetCodes = array_map(function (string $assetCode) {
-                return AssetCode::fromString($assetCode);
-            }, $this->stepExecution->getJobParameters()->get('asset_codes'));
+            $assetCodes = array_map(fn (string $assetCode) => AssetCode::fromString($assetCode), $this->stepExecution->getJobParameters()->get('asset_codes'));
             $totalItems = count($assetCodes);
         } else {
             $assetCodes = $this->findAssetCodesByAssetFamily->find($assetFamilyIdentifier);

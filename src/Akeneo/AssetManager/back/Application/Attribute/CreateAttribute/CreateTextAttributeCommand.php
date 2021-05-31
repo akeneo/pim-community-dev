@@ -19,20 +19,15 @@ namespace Akeneo\AssetManager\Application\Attribute\CreateAttribute;
  */
 class CreateTextAttributeCommand extends AbstractCreateAttributeCommand
 {
-    /** @var int */
-    public $maxLength;
+    public ?int $maxLength = null;
 
-    /** @var bool */
-    public $isTextarea;
+    public bool $isTextarea;
 
-    /** @var bool */
-    public $isRichTextEditor;
+    public bool $isRichTextEditor;
 
-    /** @var string|null */
-    public $validationRule;
+    public ?string $validationRule = null;
 
-    /** @var string|null */
-    public $regularExpression;
+    public ?string $regularExpression = null;
 
     public function __construct(
         string $assetFamilyIdentifier,

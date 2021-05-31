@@ -33,11 +33,9 @@ use Symfony\Component\Validator\Validator\ValidatorInterface;
  */
 class ConnectorTransformationCollectionHydrator
 {
-    /** @var ValidatorInterface */
-    private $validator;
+    private ValidatorInterface $validator;
 
-    /** @var OperationFactory */
-    private $operationFactory;
+    private OperationFactory $operationFactory;
 
     public function __construct(ValidatorInterface $validator, OperationFactory $operationFactory)
     {
@@ -82,12 +80,10 @@ class ConnectorTransformationCollectionHydrator
     private function buildOperations(array $normalizedOperations): OperationCollection
     {
         return OperationCollection::create(
-            array_map(function (array $normalizedOperation): Operation {
-                return $this->operationFactory->create(
-                    $normalizedOperation['type'],
-                    $normalizedOperation['parameters']
-                );
-            }, $normalizedOperations)
+            array_map(fn (array $normalizedOperation): Operation => $this->operationFactory->create(
+                $normalizedOperation['type'],
+                $normalizedOperation['parameters']
+            ), $normalizedOperations)
         );
     }
 }

@@ -26,14 +26,11 @@ use Akeneo\AssetManager\Domain\Repository\AttributeRepositoryInterface;
  */
 class DeleteAttributeHandler
 {
-    /** @var FindAssetFamilyAttributeAsLabelInterface */
-    private $findAssetFamilyAttributeAsLabel;
+    private FindAssetFamilyAttributeAsLabelInterface $findAssetFamilyAttributeAsLabel;
 
-    /** @var FindAssetFamilyAttributeAsMainMediaInterface */
-    private $findAssetFamilyAttributeAsMainMedia;
+    private FindAssetFamilyAttributeAsMainMediaInterface $findAssetFamilyAttributeAsMainMedia;
 
-    /** @var AttributeRepositoryInterface */
-    private $attributeRepository;
+    private AttributeRepositoryInterface $attributeRepository;
 
     public function __construct(
         FindAssetFamilyAttributeAsLabelInterface $findAssetFamilyAttributeAsLabel,

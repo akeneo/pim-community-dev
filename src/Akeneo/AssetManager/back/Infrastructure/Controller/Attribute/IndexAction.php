@@ -28,11 +28,9 @@ use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
  */
 class IndexAction
 {
-    /** @var FindAttributesDetailsInterface */
-    private $findAttributesDetails;
+    private FindAttributesDetailsInterface $findAttributesDetails;
 
-    /** @var AssetFamilyExistsInterface */
-    private $assetFamilyExists;
+    private AssetFamilyExistsInterface $assetFamilyExists;
 
     public function __construct(
         FindAttributesDetailsInterface $findAttributesDetails,
@@ -76,8 +74,6 @@ class IndexAction
      */
     private function normalizeAttributesDetails(array $attributesDetails): array
     {
-        return array_map(function (AttributeDetails $attributeDetails) {
-            return $attributeDetails->normalize();
-        }, $attributesDetails);
+        return array_map(fn (AttributeDetails $attributeDetails) => $attributeDetails->normalize(), $attributesDetails);
     }
 }

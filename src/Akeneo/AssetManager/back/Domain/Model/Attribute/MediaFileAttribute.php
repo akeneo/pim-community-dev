@@ -26,14 +26,11 @@ class MediaFileAttribute extends AbstractAttribute
 {
     public const ATTRIBUTE_TYPE = 'media_file';
 
-    /** @var AttributeMaxFileSize */
-    private $maxFileSize;
+    private AttributeMaxFileSize $maxFileSize;
 
-    /** @var AttributeAllowedExtensions */
-    private $allowedExtensions;
+    private AttributeAllowedExtensions $allowedExtensions;
 
-    /** @var MediaType */
-    private $mediaType;
+    private MediaType $mediaType;
 
     protected function __construct(
         AttributeIdentifier $identifier,

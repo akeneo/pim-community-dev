@@ -16,14 +16,11 @@ use Symfony\Component\EventDispatcher\Event;
  */
 class AssetCreatedEvent extends Event implements DomainEvent
 {
-    /** @var AssetIdentifier */
-    private $assetIdentifier;
+    private AssetIdentifier $assetIdentifier;
 
-    /** @var AssetCode */
-    private $assetCode;
+    private AssetCode $assetCode;
 
-    /** @var AssetFamilyIdentifier */
-    private $assetFamilyIdentifier;
+    private AssetFamilyIdentifier $assetFamilyIdentifier;
 
     public function __construct(
         AssetIdentifier $assetIdentifier,

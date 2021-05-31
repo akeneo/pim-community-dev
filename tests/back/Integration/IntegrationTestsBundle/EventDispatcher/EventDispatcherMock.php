@@ -30,24 +30,19 @@ class EventDispatcherMock implements EventDispatcherInterface
     /**
      * {@inheritdoc}
      */
-    public function dispatch($eventName)
+    public function dispatch($event)
     {
-        /**
-         * With SF 4.3, eventName is deleted (but still work for BC.
-         * If this method is called with 2 parameters (event, string), it implies than we try to dispatch an
-         * event with the old way. So we have to switch the arguments to be dispatched correctly.
-         * The right way to fix this should be to use Symfony\Contracts\EventDispatcher\EventDispatcherInterface
-         * and switch every dispatch calls arguments.
-         * @see https://symfony.com/blog/new-in-symfony-4-3-simpler-event-dispatching
-         */
-        if (2 > count(func_get_args()) && is_object(func_get_arg(0))) {
-            $event = func_get_arg(0);
-            $eventName = null;
-        } elseif (func_get_arg(1) && is_string(func_get_arg(1))) {
-            $event = func_get_arg(0);
-            $eventName = func_get_arg(1);
+        $eventName = 1 < \func_num_args() ? func_get_arg(1) : null;
+
+        if (\is_object($event)) {
+            $eventName = $eventName ?? \get_class($event);
+        } elseif (\is_string($event) && (null === $eventName || $eventName instanceof ContractsEvent || $eventName instanceof Event)) {
+            @trigger_error(sprintf('Calling the "%s::dispatch()" method with the event name as the first argument is deprecated since Symfony 4.3, pass it as the second argument and provide the event object as the first argument instead.', EventDispatcherInterface::class), \E_USER_DEPRECATED);
+            $swap = $event;
+            $event = $eventName ?? new Event();
+            $eventName = $swap;
         } else {
-            $event = func_get_arg(1);
+            throw new \TypeError(sprintf('Argument 1 passed to "%s::dispatch()" must be an object, "%s" given.', EventDispatcherInterface::class, \is_object($event) ? \get_class($event) : \gettype($event)));
         }
         $this->dispatchedEvents[$eventName] = $event;
         return $this->eventDispatcher->dispatch($event, $eventName);

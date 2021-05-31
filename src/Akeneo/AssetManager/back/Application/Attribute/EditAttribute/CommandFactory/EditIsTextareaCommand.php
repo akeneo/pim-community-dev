@@ -10,8 +10,7 @@ namespace Akeneo\AssetManager\Application\Attribute\EditAttribute\CommandFactory
  */
 class EditIsTextareaCommand extends AbstractEditAttributeCommand
 {
-    /** @var bool|null */
-    public $isTextarea;
+    public ?bool $isTextarea = null;
 
     public function __construct(string $identifier, ?bool $isTextarea)
     {

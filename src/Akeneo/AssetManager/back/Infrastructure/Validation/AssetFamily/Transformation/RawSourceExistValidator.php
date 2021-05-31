@@ -29,8 +29,7 @@ use Symfony\Component\Validator\Validation;
 
 class RawSourceExistValidator extends ConstraintValidator
 {
-    /** @var AttributeRepositoryInterface */
-    private $attributeRepository;
+    private AttributeRepositoryInterface $attributeRepository;
 
     public function __construct(AttributeRepositoryInterface $attributeRepository)
     {
