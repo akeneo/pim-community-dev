@@ -4,6 +4,7 @@ services:
         arguments:
             - '@pim_catalog.repository.category'
             - '@pim_catalog.normalizer.standard.translation'
+            - '@pim_catalog.filter.chained'
 
     akeneo.enrichment.public_api.count_categories_per_tree:
         class: Akeneo\Pim\Enrichment\Bundle\Storage\Sql\Category\SqlCountCategoriesPerTree
