@@ -9,13 +9,15 @@ const translate = require('oro/translator');
 
 type TableOptionsTabConfig = {
   label: string;
+  activeForTypes: string[];
 };
 
 class TableOptionsTab extends BaseView {
   private config: TableOptionsTabConfig;
 
-  initialize(config: {config: TableOptionsTabConfig}): void {
-    this.config = config.config;
+  initialize(config: any): void {
+    this.config = config.config as TableOptionsTabConfig;
+
     BaseView.prototype.initialize.apply(this, config);
   }
 

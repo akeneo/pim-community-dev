@@ -1,7 +1,7 @@
 import {AttributesIllustration, Button, Field, Modal, SelectInput, TextInput, Helper} from 'akeneo-design-system';
 import React from 'react';
 import {ColumnDefinition, ColumnType, dataTypes} from '../models/TableConfiguration';
-import {useUserContext, useTranslate} from '@akeneo-pim-community/shared';
+import {useUserContext, useTranslate, LabelCollection} from '@akeneo-pim-community/shared';
 import {LocaleLabel} from './LocaleLabel';
 import styled from 'styled-components';
 
@@ -111,7 +111,7 @@ const AddColumnModal: React.FC<AddColumnModalProps> = ({close, onCreate, existin
       return;
     }
 
-    const labels = {};
+    const labels: LabelCollection = {};
     labels[catalogLocale] = columnDefinition.label;
     close();
     onCreate({
