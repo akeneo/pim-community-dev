@@ -4,3 +4,7 @@ services:
         decoration_inner_name: 'base_standard_attribute_normalizer'
         arguments:
             - '@base_standard_attribute_normalizer'
+
+    Akeneo\Pim\TableAttribute\Infrastructure\Normalizer\Standard\TableNormalizer:
+        tags:
+            - { name: 'pim_standard_format_serializer.normalizer', priority: 90 }

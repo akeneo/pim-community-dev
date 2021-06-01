@@ -8,24 +8,24 @@ use PhpSpec\ObjectBehavior;
 
 class StringCellSpec extends ObjectBehavior
 {
-    public function let()
+    function let()
     {
         $this->beConstructedThrough('fromNormalized', ['foo bar']);
     }
 
-    public function it_is_initializable()
+    function it_is_initializable()
     {
         $this->shouldImplement(CellInterface::class);
         $this->shouldHaveType(StringCell::class);
     }
 
-    public function it_cannot_be_instantiated_with_an_empty_string()
+    function it_cannot_be_instantiated_with_an_empty_string()
     {
         $this->beConstructedThrough('fromNormalized', ['']);
         $this->shouldThrow(\InvalidArgumentException::class)->duringInstantiation();
     }
 
-    public function it_can_be_normalized()
+    function it_can_be_normalized()
     {
         $this->normalize()->shouldReturn('foo bar');
     }
