@@ -14,6 +14,10 @@
 
 # 5.0.27 (2021-05-26)
 
+## Bug fixes
+
+- PIM-9876: Fix purge of products old scores in Data Quality Insights
+
 # 5.0.26 (2021-05-21)
 
 ## Bug fixes
