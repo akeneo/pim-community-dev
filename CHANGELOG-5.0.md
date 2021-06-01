@@ -1,5 +1,19 @@
 # 5.0.x
 
+# 5.0.29 (2021-05-31)
+
+## Bug fixes:
+
+- PIM-9882: Fix the display of the grid selector secondary action dropdown
+
+# 5.0.28 (2021-05-28)
+
+## Bug fixes
+
+- PIM-9878: Fix breadcrumb link in Settings > Attribute Groups
+
+# 5.0.27 (2021-05-26)
+
 # 5.0.26 (2021-05-21)
 
 ## Bug fixes
