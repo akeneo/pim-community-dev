@@ -426,6 +426,7 @@ oro_user | user_type | NO | varchar(20) |
 oro_user | properties | NO | json | 
 oro_user | consecutive_authentication_failure_counter | NO | int unsigned | 
 oro_user | authentication_failure_reset_date | YES | datetime | 
+oro_user | profile | YES | varchar(255) | 
 oro_user | catalogLocale_id | YES | int | MUL
 oro_user | catalogScope_id | YES | int | MUL
 oro_user | defaultTree_id | YES | int | MUL
