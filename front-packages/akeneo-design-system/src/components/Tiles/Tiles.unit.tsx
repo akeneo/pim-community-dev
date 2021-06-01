@@ -1,16 +1,33 @@
 import React from 'react';
-import {Tiles} from './Tiles';
+import {Tile, Tiles} from './Tiles';
 import {render, screen} from '../../storybook/test-util';
+import {AssetCollectionIcon} from '../../icons';
 
-test('it renders its children properly', () => {
-  render(<Tiles>Tiles content</Tiles>);
+test('it renders tile correctly', () => {
+  render(
+    <Tiles size={'big'}>
+      <Tile label={'A label'} icon={<AssetCollectionIcon />}></Tile>
+    </Tiles>
+  );
 
-  expect(screen.getByText('Tiles content')).toBeInTheDocument();
+  expect(screen.getByText('A label')).toBeInTheDocument();
 });
 
-// Those tests should pass directly if you follow the contributing guide.
-// If you add required props to your Component, these tests will fail
-// and you will need to add these required props here as well
+test('it fails when there are invalid children', () => {
+  const mockConsole = jest.spyOn(console, 'error').mockImplementation();
+
+  expect(() => {
+    render(
+      <Tiles>
+        tata
+        <span>span tag</span>
+      </Tiles>
+    );
+  }).toThrowError();
+
+  mockConsole.mockRestore();
+});
+
 test('Tiles supports forwardRef', () => {
   const ref = {current: null};
 
