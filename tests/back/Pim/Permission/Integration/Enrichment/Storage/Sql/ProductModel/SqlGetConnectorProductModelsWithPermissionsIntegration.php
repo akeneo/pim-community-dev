@@ -102,8 +102,8 @@ class SqlGetConnectorProductModelsWithPermissionsIntegration extends TestCase
             new ConnectorProductModel(
                 (int)$dataRootPm['id'],
                 'root_product_model',
-                new \DateTimeImmutable($dataRootPm['created']),
-                new \DateTimeImmutable($dataRootPm['updated']),
+                new \DateTimeImmutable($dataRootPm['created'], new \DateTimeZone('UTC')),
+                new \DateTimeImmutable($dataRootPm['updated'], new \DateTimeZone('UTC')),
                 null,
                 'family_permission',
                 'family_variant_permission',
@@ -121,8 +121,8 @@ class SqlGetConnectorProductModelsWithPermissionsIntegration extends TestCase
             new ConnectorProductModel(
                 (int)$dataSubPm['id'],
                 'sub_product_model',
-                new \DateTimeImmutable($dataSubPm['created']),
-                new \DateTimeImmutable($dataSubPm['updated']),
+                new \DateTimeImmutable($dataSubPm['created'], new \DateTimeZone('UTC')),
+                new \DateTimeImmutable($dataSubPm['updated'], new \DateTimeZone('UTC')),
                 'root_product_model',
                 'family_permission',
                 'family_variant_permission',
@@ -284,8 +284,8 @@ class SqlGetConnectorProductModelsWithPermissionsIntegration extends TestCase
             new ConnectorProductModel(
                 (int)$dataRootPm['id'],
                 'root_product_model',
-                new \DateTimeImmutable($dataRootPm['created']),
-                new \DateTimeImmutable($dataRootPm['updated']),
+                new \DateTimeImmutable($dataRootPm['created'], new \DateTimeZone('UTC')),
+                new \DateTimeImmutable($dataRootPm['updated'], new \DateTimeZone('UTC')),
                 null,
                 'family_permission',
                 'family_variant_permission',
@@ -303,8 +303,8 @@ class SqlGetConnectorProductModelsWithPermissionsIntegration extends TestCase
             new ConnectorProductModel(
                 (int)$dataSubPm['id'],
                 'sub_product_model',
-                new \DateTimeImmutable($dataSubPm['created']),
-                new \DateTimeImmutable($dataSubPm['updated']),
+                new \DateTimeImmutable($dataSubPm['created'], new \DateTimeZone('UTC')),
+                new \DateTimeImmutable($dataSubPm['updated'], new \DateTimeZone('UTC')),
                 'root_product_model',
                 'family_permission',
                 'family_variant_permission',
