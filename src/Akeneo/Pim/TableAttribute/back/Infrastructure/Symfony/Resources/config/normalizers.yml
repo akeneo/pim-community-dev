@@ -8,3 +8,15 @@ services:
     Akeneo\Pim\TableAttribute\Infrastructure\Normalizer\Standard\TableNormalizer:
         tags:
             - { name: 'pim_standard_format_serializer.normalizer', priority: 90 }
+            - { name: 'pim_storage_serializer.normalizer', priority: 90 }
+            - { name: 'pim_versioning.serializer.normalizer', priority: 90 }
+
+    Akeneo\Pim\TableAttribute\Infrastructure\Normalizer\Indexing\TableValueNormalizer:
+        arguments:
+            - '@akeneo.pim.structure.query.get_attributes'
+        tags:
+            - { name: 'pim_indexing_serializer.normalizer' }
+
+    Akeneo\Pim\TableAttribute\Infrastructure\Normalizer\Versioning\TableNormalizer:
+        tags:
+            - { name: 'pim_versioning.serializer.normalizer' }

@@ -44,6 +44,8 @@ $rules = [
             'Akeneo\Pim\Enrichment\Component\Product\Model\ValueInterface',
             'Akeneo\Pim\Enrichment\Component\Product\Model\AbstractValue',
             'Akeneo\Pim\Enrichment\Component\Product\Comparator\ComparatorInterface',
+            'Akeneo\Pim\Enrichment\Component\Product\Normalizer\Indexing\Value\AbstractProductValueNormalizer',
+            'Akeneo\Pim\Enrichment\Component\Product\Normalizer\Indexing\Value\ValueCollectionNormalizer',
         ]
     )->in('Akeneo\Pim\TableAttribute\Infrastructure'),
 ];

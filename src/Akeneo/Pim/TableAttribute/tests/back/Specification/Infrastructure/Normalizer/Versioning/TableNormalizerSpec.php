@@ -11,10 +11,11 @@ declare(strict_types=1);
  * file that was distributed with this source code.
  */
 
-namespace Specification\Akeneo\Pim\TableAttribute\Infrastructure\Normalizer\Standard;
+namespace Specification\Akeneo\Pim\TableAttribute\Infrastructure\Normalizer\Versioning;
 
 use Akeneo\Pim\TableAttribute\Domain\Value\Table;
-use Akeneo\Pim\TableAttribute\Infrastructure\Normalizer\Standard\TableNormalizer;
+use Akeneo\Pim\TableAttribute\Infrastructure\Normalizer\Versioning\TableNormalizer;
+use Akeneo\Pim\TableAttribute\Infrastructure\Value\TableValue;
 use PhpSpec\ObjectBehavior;
 
 class TableNormalizerSpec extends ObjectBehavior
@@ -24,10 +25,9 @@ class TableNormalizerSpec extends ObjectBehavior
         $this->shouldHaveType(TableNormalizer::class);
     }
 
-    function it_only_supports_a_table_in_standard_storeage_or_versioning_format()
+    function it_only_supports_a_table_value_in_flat_or_versioning_format()
     {
-        $this->supportsNormalization(Table::fromNormalized([['foo' => 'bar']]), 'standard')->shouldBe(true);
-        $this->supportsNormalization(Table::fromNormalized([['foo' => 'bar']]), 'storage')->shouldBe(true);
+        $this->supportsNormalization(Table::fromNormalized([['foo' => 'bar']]), 'flat')->shouldBe(true);
         $this->supportsNormalization(Table::fromNormalized([['foo' => 'bar']]), 'versioning')->shouldBe(true);
         $this->supportsNormalization(new \stdClass(), 'standard')->shouldBe(false);
         $this->supportsNormalization(Table::fromNormalized([['foo' => 'bar']]), 'other')->shouldBe(false);

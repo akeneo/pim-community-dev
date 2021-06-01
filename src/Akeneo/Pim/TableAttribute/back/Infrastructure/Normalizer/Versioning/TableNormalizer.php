@@ -11,7 +11,7 @@ declare(strict_types=1);
  * file that was distributed with this source code.
  */
 
-namespace Akeneo\Pim\TableAttribute\Infrastructure\Normalizer\Standard;
+namespace Akeneo\Pim\TableAttribute\Infrastructure\Normalizer\Versioning;
 
 use Akeneo\Pim\TableAttribute\Domain\Value\Table;
 use Symfony\Component\Serializer\Normalizer\CacheableSupportsMethodInterface;
@@ -35,7 +35,7 @@ final class TableNormalizer implements NormalizerInterface, CacheableSupportsMet
      */
     public function supportsNormalization($data, string $format = null): bool
     {
-        return $data instanceof Table && in_array($format, ['standard', 'storage', 'versioning']);
+        return $data instanceof Table && in_array($format, ['flat', 'versioning']);
     }
 
     /**
