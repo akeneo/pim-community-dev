@@ -23,6 +23,10 @@ table-attribute-integration-back:
 table-attribute-end-to-end-back:
 	APP_ENV=test ${PHP_RUN} vendor/bin/phpunit --configuration phpunit.xml.dist --testsuite Table_Attribute_End_To_End $(O)
 
+.PHONY: table-attribute-lint-back
+table-attribute-lint-back:
+	${PHP_RUN} vendor/bin/php-cs-fixer fix --diff --dry-run --config=.php_cs.php src/Akeneo/Pim/TableAttribute/back
+
 .PHONY: table-attribute-unit-front
 table-attribute-unit-front:
 	$(YARN_RUN) run --cwd=src/Akeneo/Pim/TableAttribute/front jest --ci $(O)
