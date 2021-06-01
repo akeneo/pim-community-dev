@@ -13,7 +13,25 @@ declare(strict_types=1);
 
 namespace Akeneo\Pim\TableAttribute\Infrastructure\Value\Comparator;
 
-class TableValueComparator
-{
+use Akeneo\Pim\Enrichment\Component\Product\Comparator\ComparatorInterface;
+use Akeneo\Pim\Structure\Component\AttributeTypes;
 
+class TableValueComparator implements ComparatorInterface
+{
+    public function supports($type): bool
+    {
+        return AttributeTypes::TABLE === $type;
+    }
+
+    public function compare($data, $originals): ?array
+    {
+        $default = ['locale' => null, 'scope' => null, 'data' => []];
+        $originals = array_merge($default, $originals);
+
+        if ($data['data'] === $originals['data']) {
+            return null;
+        }
+
+        return $data;
+    }
 }

@@ -4,3 +4,7 @@ services:
             -
                 text: Akeneo\Pim\TableAttribute\Domain\TableConfiguration\TextColumn
                 number: Akeneo\Pim\TableAttribute\Domain\TableConfiguration\NumberColumn
+
+    Akeneo\Pim\TableAttribute\Infrastructure\Value\Factory\TableValueFactory:
+        tags:
+            - { name: 'akeneo.pim.enrichment.factory.product_value' }

@@ -40,6 +40,10 @@ $rules = [
             'Akeneo\Channel\Component\Query\PublicApi',
             'Akeneo\Platform\Bundle\InstallerBundle\Event',
             'Akeneo\Platform\Bundle\UIBundle\Provider\Field\FieldProviderInterface',
+            'Akeneo\Pim\Enrichment\Component\Product\Factory\Value\ValueFactory',
+            'Akeneo\Pim\Enrichment\Component\Product\Model\ValueInterface',
+            'Akeneo\Pim\Enrichment\Component\Product\Model\AbstractValue',
+            'Akeneo\Pim\Enrichment\Component\Product\Comparator\ComparatorInterface',
         ]
     )->in('Akeneo\Pim\TableAttribute\Infrastructure'),
 ];

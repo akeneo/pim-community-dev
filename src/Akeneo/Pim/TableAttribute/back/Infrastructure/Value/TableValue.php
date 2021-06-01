@@ -13,7 +13,26 @@ declare(strict_types=1);
 
 namespace Akeneo\Pim\TableAttribute\Infrastructure\Value;
 
-class TableValue
-{
+use Akeneo\Pim\Enrichment\Component\Product\Model\AbstractValue;
+use Akeneo\Pim\Enrichment\Component\Product\Model\ValueInterface;
+use Akeneo\Pim\TableAttribute\Domain\Value\Table;
 
+class TableValue extends AbstractValue
+{
+    public function isEqual(ValueInterface $value): bool
+    {
+        // TODO implement
+        return false;
+    }
+
+    public function getData(): Table
+    {
+        return $this->data;
+    }
+
+    public function __toString(): string
+    {
+        // TODO implement
+        return 'toto';
+    }
 }

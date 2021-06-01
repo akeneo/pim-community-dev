@@ -1,0 +1,11 @@
+services:
+    pim_catalog.updater.setter.table_value:
+        class: '%pim_catalog.updater.setter.value.class%'
+        parent: pim_catalog.updater.setter.abstract
+        arguments: [ [ 'table' ] ]
+        tags:
+            - { name: 'pim_catalog.updater.setter' }
+
+    Akeneo\Pim\TableAttribute\Infrastructure\Value\Comparator\TableValueComparator:
+        tags:
+            - { name: pim_catalog.attribute.comparator }

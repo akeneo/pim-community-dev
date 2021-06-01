@@ -13,7 +13,47 @@ declare(strict_types=1);
 
 namespace Akeneo\Pim\TableAttribute\Infrastructure\Value\Factory;
 
-class TableValueFactory
-{
+use Akeneo\Pim\Enrichment\Component\Product\Factory\Value\ValueFactory;
+use Akeneo\Pim\Enrichment\Component\Product\Model\ValueInterface;
+use Akeneo\Pim\Structure\Component\AttributeTypes;
+use Akeneo\Pim\Structure\Component\Query\PublicApi\AttributeType\Attribute;
+use Akeneo\Pim\TableAttribute\Domain\Value\Table;
+use Akeneo\Pim\TableAttribute\Infrastructure\Value\TableValue;
 
+class TableValueFactory implements ValueFactory
+{
+    public function createByCheckingData(
+        Attribute $attribute,
+        ?string $channelCode,
+        ?string $localeCode,
+        $data
+    ): ValueInterface {
+        // todo cheecks
+        return $this->createWithoutCheckingData($attribute, $channelCode, $localeCode, $data);
+    }
+
+    public function createWithoutCheckingData(
+        Attribute $attribute,
+        ?string $channelCode,
+        ?string $localeCode,
+        $data
+    ): ValueInterface {
+        $table = Table::fromNormalized($data);
+        if ($attribute->isLocalizableAndScopable()) {
+            return TableValue::scopableLocalizableValue($attribute->code(), $table, $channelCode, $localeCode);
+        }
+        if ($attribute->isScopable()) {
+            return TableValue::scopableValue($attribute->code(), $table, $channelCode);
+        }
+        if ($attribute->isLocalizable()) {
+            return TableValue::localizableValue($attribute->code(), $table, $localeCode);
+        }
+
+        return TableValue::value($attribute->code(), $table);
+    }
+
+    public function supportedAttributeType(): string
+    {
+        return AttributeTypes::TABLE;
+    }
 }

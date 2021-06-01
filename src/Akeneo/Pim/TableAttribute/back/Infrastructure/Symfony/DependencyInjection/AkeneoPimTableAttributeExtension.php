@@ -29,6 +29,7 @@ class AkeneoPimTableAttributeExtension extends Extension
     {
         $loader = new YamlFileLoader($container, new FileLocator(__DIR__ . '/../Resources/config'));
         $loader->load('attribute_types.yml');
+        $loader->load('enrichment.yml');
         $loader->load('event_subscribers.yml');
         $loader->load('factories.yml');
         $loader->load('normalizers.yml');
