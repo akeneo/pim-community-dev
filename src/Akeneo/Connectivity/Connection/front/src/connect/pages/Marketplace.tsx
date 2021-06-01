@@ -1,13 +1,13 @@
-import React, {FC, useEffect, useState} from 'react';
+import React, {FC} from 'react';
 import {AkeneoThemedProps, Breadcrumb, getColor, getFontSize} from 'akeneo-design-system';
 import {useTranslate} from '../../shared/translate';
 import {PageHeader} from '../../common';
 import {UserButtons} from '../../shared/user';
 import styled from 'styled-components';
-import {useFetchMarketingUrl} from '../hooks/use-fetch-marketing-url';
 import {useRouter} from '../../shared/router/use-router';
+import {useAppActivate} from '../hooks/use-app-activate';
 
-const LinkButton = styled.a<AkeneoThemedProps>`
+const LinkButton = styled.button<AkeneoThemedProps>`
     display: inline-flex;
     align-items: center;
     gap: 10px;
@@ -51,24 +51,11 @@ const PageContent = styled.div`
     }
 `;
 
-const Heading = styled.h1`
-    color: ${({theme}) => theme.color.grey140};
-    font-size: 28px;
-    font-weight: normal;
-    margin: 0;
-    margin-bottom: 21px;
-    line-height: 1.2em;
-`;
-
-const Caption = styled.p`
-    font-size: 23px;
-    line-height: 1.2em;
-`;
-
 export const Marketplace: FC = () => {
     const translate = useTranslate();
-    const fetchMarketplaceUrl = useFetchMarketingUrl();
-    const [marketplaceUrl, setMarketplaceUrl] = useState<string>('');
+    //const fetchMarketplaceUrl = useFetchMarketingUrl();
+    //const [marketplaceUrl, setMarketplaceUrl] = useState<string>('');
+    const appActivate = useAppActivate('19e75c0ee9eb4ecf84c5d294186980ee60738a74c2be11eb85');
     const generateUrl = useRouter();
     const dashboardHref = `#${generateUrl('akeneo_connectivity_connection_audit_index')}`;
 
@@ -79,13 +66,9 @@ export const Marketplace: FC = () => {
         </Breadcrumb>
     );
 
-    const pimSource = 'http://172.17.0.1:8080';
-    const nativeAppUrl = 'http://172.17.0.1:8081/activate';
-    const yellExtensionRedirectUrl = `${nativeAppUrl}?pim=${pimSource}`;
-
-    useEffect(() => {
-        fetchMarketplaceUrl().then(setMarketplaceUrl);
-    }, [fetchMarketplaceUrl]);
+    //useEffect(() => {
+    //    fetchMarketplaceUrl().then(setMarketplaceUrl);
+    //}, [fetchMarketplaceUrl]);
 
     return (
         <>
@@ -94,7 +77,7 @@ export const Marketplace: FC = () => {
             </PageHeader>
 
             <PageContent>
-                <LinkButton href={yellExtensionRedirectUrl} target='_blank' role='link' tabIndex='0'>
+                <LinkButton onClick={appActivate} target='_blank' role='link' tabIndex='0'>
                     ACTIVATE YELL EXTENSION
                 </LinkButton>
             </PageContent>

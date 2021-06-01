@@ -60,3 +60,6 @@ services:
         public: true
         class: Akeneo\Connectivity\Connection\Infrastructure\ExternalApi\Controller\AppTokenController
         parent: fos_oauth_server.controller.token
+
+    Akeneo\Connectivity\Connection\Infrastructure\InternalApi\Controller\AppActivationController:
+        public: true
