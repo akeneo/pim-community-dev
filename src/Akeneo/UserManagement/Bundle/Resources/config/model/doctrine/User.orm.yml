@@ -119,6 +119,10 @@ Akeneo\UserManagement\Component\Model\User:
             type: datetime
             nullable: true
             column: authentication_failure_reset_date
+        profile:
+            type: string
+            nullable: true
+            length: 255
 
     manyToMany:
         roles:
