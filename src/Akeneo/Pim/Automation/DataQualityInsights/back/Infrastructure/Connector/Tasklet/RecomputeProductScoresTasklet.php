@@ -30,7 +30,7 @@ final class RecomputeProductScoresTasklet implements TaskletInterface
 
     private JobInstanceRepository $jobInstanceRepository;
 
-    private const TIMEBOX_IN_SECONDS_ALLOWED = 17000; // ~28 minutes
+    private const TIMEBOX_IN_SECONDS_ALLOWED = 900; // 15 minutes
     private const BULK_SIZE = 1000;
 
     public function __construct(
