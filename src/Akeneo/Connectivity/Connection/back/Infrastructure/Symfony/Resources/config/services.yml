@@ -95,3 +95,14 @@ services:
             - 'AES-256-OFB'
             - '%env(APP_SECRET)%'
             - '%env(APP_SECRET)%'
+    Akeneo\Connectivity\Connection\Infrastructure\Service\OAuthScopeTransformer:
+        public: false
+    Akeneo\Connectivity\Connection\Infrastructure\Service\OAuthScopeValidator:
+        arguments:
+            $security: '@Symfony\Component\Security\Core\Security'
+            $securityFacade: '@oro_security.security_facade'
+            $authScopeTransformer: '@Akeneo\Connectivity\Connection\Infrastructure\Service\OAuthScopeTransformer'
+    Akeneo\Connectivity\Connection\Infrastructure\Service\CreateAppUserWithPermissions:
+        public: false
+        arguments:
+            $authScopeTransformer: '@Akeneo\Connectivity\Connection\Infrastructure\Service\OAuthScopeTransformer'

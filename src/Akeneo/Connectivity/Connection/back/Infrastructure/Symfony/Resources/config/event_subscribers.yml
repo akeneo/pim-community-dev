@@ -46,3 +46,8 @@ services:
             - '@akeneo_connectivity.connection.persistence.repository.events_api_debug'
         tags:
             - { name: kernel.event_subscriber }
+    Akeneo\Connectivity\Connection\Infrastructure\EventSubscriber\OAuthEventSubscriber:
+        arguments:
+            - '@akeneo_connectivity.connection.persistence.repository.connection'
+        tags:
+            - { name: kernel.event_subscriber }

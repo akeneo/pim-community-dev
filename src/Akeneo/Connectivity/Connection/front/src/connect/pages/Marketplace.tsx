@@ -6,8 +6,9 @@ import {UserButtons} from '../../shared/user';
 import styled from 'styled-components';
 import {useRouter} from '../../shared/router/use-router';
 import {useAppActivate} from '../hooks/use-app-activate';
+import {useRoute} from "../../shared/router";
 
-const LinkButton = styled.button<AkeneoThemedProps>`
+const LinkButton = styled.a<AkeneoThemedProps>`
     display: inline-flex;
     align-items: center;
     gap: 10px;
@@ -65,6 +66,10 @@ export const Marketplace: FC = () => {
             <Breadcrumb.Step>{translate('pim_menu.item.marketplace')}</Breadcrumb.Step>
         </Breadcrumb>
     );
+    const activateUrl = useRoute(
+        'akeneo_connectivity_connection_app_activate',
+        {identifier:'19e75c0ee9eb4ecf84c5d294186980ee60738a74c2be11eb85'}
+    );
 
     //useEffect(() => {
     //    fetchMarketplaceUrl().then(setMarketplaceUrl);
@@ -77,7 +82,7 @@ export const Marketplace: FC = () => {
             </PageHeader>
 
             <PageContent>
-                <LinkButton onClick={appActivate} target='_blank' role='link' tabIndex='0'>
+                <LinkButton href={activateUrl} target='_blank' role='link' tabIndex='0'>
                     ACTIVATE YELL EXTENSION
                 </LinkButton>
             </PageContent>
