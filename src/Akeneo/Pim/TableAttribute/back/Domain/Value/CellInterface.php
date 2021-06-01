@@ -15,5 +15,8 @@ namespace Akeneo\Pim\TableAttribute\Domain\Value;
 
 interface CellInterface
 {
+    /**
+     * @return mixed
+     */
     public function normalize();
 }

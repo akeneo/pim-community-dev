@@ -43,6 +43,9 @@ final class Table
         ));
     }
 
+    /**
+     * @return array<array>
+     */
     public function normalize(): array
     {
         return array_map(

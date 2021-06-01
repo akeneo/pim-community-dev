@@ -17,11 +17,11 @@ use Webmozart\Assert\Assert;
 
 final class Row
 {
-    /** @var array<string,CellInterface> */
+    /** @var array<string, CellInterface> */
     private array $cells;
 
     /**
-     * @param array<string,CellInterface> $cells
+     * @param array<string, CellInterface> $cells
      */
     private function __construct(array $cells)
     {
@@ -29,8 +29,7 @@ final class Row
     }
 
     /**
-     * @param array<string,mixed> $row
-     *
+     * @param array<string, mixed> $row
      * @return static
      */
     public static function fromNormalized(array $row): self
@@ -44,6 +43,9 @@ final class Row
         );
     }
 
+    /**
+     * @return array<string, mixed>
+     */
     public function normalize(): array
     {
         return array_map(
