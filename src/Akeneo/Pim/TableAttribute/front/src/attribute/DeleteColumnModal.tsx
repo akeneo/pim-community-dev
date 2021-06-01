@@ -12,10 +12,10 @@ const FieldsList = styled.div`
 type DeleteColumnModalProps = {
   close: () => void;
   onDelete: () => void;
-  columnCode: string;
+  columnDefinitionCode: string;
 };
 
-const DeleteColumnModal: React.FC<DeleteColumnModalProps> = ({close, onDelete, columnCode}) => {
+const DeleteColumnModal: React.FC<DeleteColumnModalProps> = ({close, onDelete, columnDefinitionCode}) => {
   const translate = useTranslate();
   const [typedColumnCode, setTypedColumnCode] = React.useState<string>('');
 
@@ -40,7 +40,7 @@ const DeleteColumnModal: React.FC<DeleteColumnModalProps> = ({close, onDelete, c
           Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore
           magna aliqua.
         </Helper>
-        <Field label={translate('pim_table_attribute.form.attribute.please_type', {columnDefinitionCode: columnCode})}>
+        <Field label={translate('pim_table_attribute.form.attribute.please_type', {columnDefinitionCode: columnDefinitionCode})}>
           <TextInput onChange={setTypedColumnCode} value={typedColumnCode} />
         </Field>
       </FieldsList>
@@ -48,7 +48,7 @@ const DeleteColumnModal: React.FC<DeleteColumnModalProps> = ({close, onDelete, c
         <Button level='tertiary' onClick={handleCancel}>
           {translate('pim_common.cancel')}
         </Button>
-        <Button level='danger' onClick={handleDelete} disabled={typedColumnCode !== columnCode}>
+        <Button level='danger' onClick={handleDelete} disabled={typedColumnCode !== columnDefinitionCode}>
           {translate('pim_common.delete')}
         </Button>
       </Modal.BottomButtons>

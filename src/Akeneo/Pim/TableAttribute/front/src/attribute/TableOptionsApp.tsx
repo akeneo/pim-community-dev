@@ -152,7 +152,6 @@ const TableOptionsApp: React.FC<TableOptionsAppProps> = ({initialTableConfigurat
                     <Table.Cell rowTitle={true}>
                       {getLabel(columnDefinition.labels, userContext.get('catalogLocale'), columnDefinition.code)}
                     </Table.Cell>
-                    {/* Adding the delete button */}
                     <Table.ActionCell>
                       <IconButton
                         ghost='borderless'
@@ -161,7 +160,7 @@ const TableOptionsApp: React.FC<TableOptionsAppProps> = ({initialTableConfigurat
                           setLastColumnCodeToDelete(columnDefinition.code);
                           openDeleteColumnModal();
                         }}
-                        title='TODO:Delete'
+                        title={translate('pim_common.delete')}
                         level='tertiary'
                       />
                     </Table.ActionCell>
@@ -173,7 +172,7 @@ const TableOptionsApp: React.FC<TableOptionsAppProps> = ({initialTableConfigurat
               <DeleteColumnModal
                 close={closeDeleteColumnModal}
                 onDelete={handleDelete}
-                columnCode={lastColumnCodeToDelete}
+                columnDefinitionCode={lastColumnCodeToDelete}
               />
             )}
             {isNewColumnModalOpen && (
