@@ -7,7 +7,7 @@ namespace Akeneo\Platform\Bundle\ImportExportBundle\Controller\Ui;
 use Akeneo\Pim\Enrichment\Component\Category\Query\PublicApi\CategoryTree;
 use Akeneo\Pim\Enrichment\Component\Category\Query\PublicApi\CountCategoriesPerTree;
 use Akeneo\Pim\Enrichment\Component\Category\Query\PublicApi\FindCategoryTrees;
-use Laminas\Diactoros\Response\JsonResponse;
+use Symfony\Component\HttpFoundation\JsonResponse;
 
 /**
  * @author    Samir Boulil <samir.boulil@akeneo.com>
@@ -25,8 +25,10 @@ class CategoryTreeController
         $this->countCategoriesPerTree = $countCategoriesPerTree;
     }
 
-    public function __invoke(): JsonResponse
+    public function __invoke(array $selectedCategories): JsonResponse
     {
+        var_dump($selectedCategories);
+        error_log($selectedCategories);
         $normalizedCategoryTrees = $this->normalizedCategoryTrees();
 
         return new JsonResponse($normalizedCategoryTrees);
