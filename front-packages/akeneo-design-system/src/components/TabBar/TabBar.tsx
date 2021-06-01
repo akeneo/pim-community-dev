@@ -10,16 +10,26 @@ import React, {
   useRef,
   useState,
 } from 'react';
-import styled from 'styled-components';
+import styled, {css} from 'styled-components';
 import {AkeneoThemedProps, getColor, getFontSize} from '../../theme';
 import {Dropdown, IconButton} from '../../components';
 import {MoreIcon} from '../../icons';
 import {useBooleanState} from '../../hooks';
 
-const Container = styled.div`
+const Container = styled.div<{sticky: number} & AkeneoThemedProps>`
   display: flex;
   align-items: center;
   border-bottom: 1px solid ${getColor('grey', 80)};
+  background: ${getColor('white')};
+
+  ${({sticky}) =>
+    undefined !== sticky &&
+    css`
+      position: sticky;
+      top: ${sticky}px;
+      background-color: ${getColor('white')};
+      z-index: 9;
+    `}
 `;
 
 const TabBarContainer = styled.div`
@@ -108,7 +118,7 @@ const Tab = ({children, isActive, parentRef, onVisibilityChange, ...rest}: TabPr
     const options = {
       root: tabBarElement,
       rootMargin: '0px',
-      threshold: 1.0,
+      threshold: 0,
     };
 
     const observer = new IntersectionObserver(event => {
@@ -134,6 +144,11 @@ type TabBarProps = {
    * Title of the More button.
    */
   moreButtonTitle: string;
+
+  /**
+   * When set, defines the sticky top position of the Tab bar.
+   */
+  sticky?: number;
 
   /**
    * Tabs of the Tab bar.
@@ -173,8 +188,8 @@ const TabBar = ({moreButtonTitle, children, ...rest}: TabBarProps) => {
   const activeTabIsHidden = hiddenTabs.find(child => child.props.isActive) !== undefined;
 
   return (
-    <Container>
-      <TabBarContainer ref={ref} role="tablist" {...rest}>
+    <Container {...rest}>
+      <TabBarContainer ref={ref} role="tablist">
         {decoratedChildren}
       </TabBarContainer>
       {0 < hiddenTabs.length && (
