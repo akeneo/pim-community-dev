@@ -135,8 +135,7 @@ function getRequestContracts(string $requestContractsDir): array
 $backendRequestContractsDir = sprintf('%s/%s', __DIR__, 'back/Integration/Resources/responses/');
 $frontendRequestContractsDir = sprintf('%s/%s', __DIR__, 'front/integration/responses/');
 
-$hasError = checkJsonSchemas($backendRequestContractsDir);
-$hasError |= checkJsonSchemas($frontendRequestContractsDir);
+$hasError = checkJsonSchemas($backendRequestContractsDir) ||checkJsonSchemas($frontendRequestContractsDir);
 
 if ($hasError === 0) {
     writeln('No error found in Request Contracts', 'info');

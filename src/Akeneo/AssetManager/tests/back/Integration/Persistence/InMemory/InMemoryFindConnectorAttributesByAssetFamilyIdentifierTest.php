@@ -40,17 +40,6 @@ class InMemoryFindConnectorAttributesByAssetFamilyIdentifierTest extends TestCas
      */
     public function it_returns_null_when_finding_a_non_existent_asset_family()
     {
-        $connectorAttribute = new ConnectorAttribute(
-            AttributeCode::fromString('description'),
-            LabelCollection::fromArray(['en_US' => 'Description', 'fr_FR' => 'Description']),
-            'text',
-            AttributeValuePerLocale::fromBoolean(true),
-            AttributeValuePerChannel::fromBoolean(true),
-            AttributeIsRequired::fromBoolean(true),
-            AttributeIsReadOnly::fromBoolean(false),
-            []
-        );
-
         $result = $this->query->find(
             AssetFamilyIdentifier::fromString('non_existent_asset_family_identifier')
         );
@@ -84,8 +73,6 @@ class InMemoryFindConnectorAttributesByAssetFamilyIdentifierTest extends TestCas
         );
 
         Assert::assertNotNull($results);
-        Assert::assertSame([
-            $connectorAttribute
-        ], $results);
+        Assert::assertSame([$connectorAttribute], $results);
     }
 }
