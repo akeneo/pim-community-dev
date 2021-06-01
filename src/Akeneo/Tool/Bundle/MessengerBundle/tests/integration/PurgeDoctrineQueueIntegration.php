@@ -1,4 +1,5 @@
 <?php
+
 declare(strict_types=1);
 
 namespace Akeneo\Tool\Bundle\MessengerBundle\tests\integration;
@@ -22,7 +23,7 @@ class PurgeDoctrineQueueIntegration extends TestCase
         $this->purgeDoctrineQueueQuery->execute(
             'messenger_messages',
             'webhook',
-            new \DateTimeImmutable('2021-01-18 14:16:53')
+            new \DateTimeImmutable('2021-01-18 14:16:53', new \DateTimeZone('UTC'))
         );
         $results = $this->fetchRemainingEntries();
 
@@ -48,7 +49,7 @@ class PurgeDoctrineQueueIntegration extends TestCase
     {
         $sql = <<<SQL
 INSERT INTO messenger_messages (body, headers, queue_name, created_at, available_at)
-VALUES 
+VALUES
     (
         'product_model_created',
         '{"class":"Akeneo\\Platform\\Component\\EventQueue\\BulkEvent"}',
