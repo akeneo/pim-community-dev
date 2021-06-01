@@ -1,0 +1,75 @@
+import {Meta, Story, ArgsTable, Canvas} from '@storybook/addon-docs/blocks';
+import {Tiles, Tile} from './Tiles.tsx';
+import {
+  AssetCollectionIcon,
+  DateIcon,
+  FileIcon,
+  AttributeNumberIcon,
+  AttributeTextIcon,
+  IdIcon,
+  MetricIcon,
+  AssetsIcon,
+} from '../../icons';
+
+<Meta
+  title="Components/Tiles"
+  component={Tiles}
+  argTypes={{
+    size: {control: {type: 'select', options: ['small', 'big']}},
+  }}
+  args={{size: 'small'}}
+/>
+
+# Tiles
+
+## Usage
+
+TODO
+
+### TODO
+
+TODO
+
+## Playground
+
+<Canvas>
+  <Story name="Standard">
+    {args => {
+      const [selected, setSelected] = React.useState('Identifier');
+      return <Tiles {...args} >
+        <Tile icon={<AssetCollectionIcon/>} label={'Assets collection'} selected={selected === 'Assets collection'} onClick={() => {setSelected('Assets collection')}}/>
+        <Tile icon={<DateIcon/>} label={'Date'} selected={selected === 'Date'} onClick={() => {setSelected('Date')}}/>
+        <Tile icon={<FileIcon/>} label={'File'} selected={selected === 'File'} onClick={() => {setSelected('File')}}/>
+        <Tile icon={<IdIcon/>} label={'Identifier'} selected={selected === 'Identifier'} onClick={() => {setSelected('Identifier')}}/>
+        <Tile icon={<AssetsIcon/>} label={'Image'} selected={selected === 'Image'} onClick={() => {setSelected('Image')}}/>
+        <Tile icon={<MetricIcon/>} label={'Measurement'} selected={selected === 'Measurement'} onClick={() => {setSelected('Measurement')}}/>
+        <Tile icon={<AttributeTextIcon/>} label={'Text'} selected={selected === 'Text'} onClick={() => {setSelected('Text')}}/>
+        <Tile icon={<AttributeNumberIcon/>} label={'Number'} selected={selected === 'Number'} onClick={() => {setSelected('Number')}}/>
+        <Tile icon={<AttributeNumberIcon/>} label={'This is a very huge label lol megalol de ouf'} selected={selected === 'Number'} onClick={() => {setSelected('Number')}}/>
+      </Tiles>;
+    }}
+  </Story>
+</Canvas>
+
+<ArgsTable story="Standard" />
+
+## Variation on size
+
+<Canvas>
+  <Story name="Size">
+    {args => {
+      return (
+        <>
+          <Tiles size={'small'}>
+            <Tile icon={<AssetCollectionIcon/>} label={'Assets collection'}/>
+            <Tile icon={<DateIcon/>} label={'Date'}/>
+          </Tiles>
+          <Tiles size={'big'}>
+            <Tile icon={<AssetCollectionIcon/>} label={'Assets collection'}/>
+            <Tile icon={<DateIcon/>} label={'Date'}/>
+          </Tiles>
+        </>
+      );
+    }}
+  </Story>
+</Canvas>
