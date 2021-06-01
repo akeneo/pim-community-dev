@@ -1,5 +1,15 @@
 import {arrayUnique} from 'akeneo-design-system';
-import {Locale, LocaleCode, isLocales, denormalizeLocale, localeExists, LocaleReference, isLabelCollection, LabelCollection, getLabel} from '../models';
+import {
+  Locale,
+  LocaleCode,
+  isLocales,
+  denormalizeLocale,
+  localeExists,
+  LocaleReference,
+  isLabelCollection,
+  LabelCollection,
+  getLabel,
+} from '../models';
 
 type ChannelCode = string;
 type ChannelReference = ChannelCode | null;

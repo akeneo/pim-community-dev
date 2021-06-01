@@ -398,7 +398,7 @@ class ListProductsQueryHandlerSpec extends ObjectBehavior
             ->fromProductQueryBuilder($pqb, 1, null, null, null)
             ->willReturn(new ConnectorProductList(1, [$connectorProduct]));
 
-        $eventDispatcher->dispatch(new ReadProductsEvent([5]))->shouldBeCalled();
+        $eventDispatcher->dispatch(new ReadProductsEvent(1))->shouldBeCalled();
 
         $fromSizePqbFactory->create(Argument::cetera())->shouldNotBeCalled();
 

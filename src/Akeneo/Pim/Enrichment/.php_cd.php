@@ -36,6 +36,7 @@ $rules = [
 
         // Event API
         'Akeneo\Platform\Component\EventQueue',
+        'Akeneo\Connectivity\Connection\Domain\Webhook\Event\EventsApiRequestSucceededEvent',
 
         'Akeneo\Channel\Component\Event\ChannelCategoryHasBeenUpdated',
 
@@ -126,6 +127,7 @@ $rules = [
         'Akeneo\Platform\Bundle\UIBundle\Resolver\LocaleResolver',
 
         'Akeneo\Pim\Structure\Component\Query\InternalApi\GetAllBlacklistedAttributeCodesInterface',
+        'Elasticsearch\Common\Exceptions\ElasticsearchException',
     ])->in('Akeneo\Pim\Enrichment\Bundle'),
     $builder->only([
         'Symfony\Component',

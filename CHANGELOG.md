@@ -73,6 +73,8 @@
 - PIM-9777: Fix error message when trying to delete an attribute linked to an entity
 - PIM-9873: Fix since last n day filter in product export
 - PIM-9852: Fix exception during PRE_REMOVE on removeAll cause ES desynchronisation
+- PIM-9881: Do not update a product value which was not modified
+- PIM-9863: Remove temporisation and add unit tests for product model reindexation.
 
 ## New features
 

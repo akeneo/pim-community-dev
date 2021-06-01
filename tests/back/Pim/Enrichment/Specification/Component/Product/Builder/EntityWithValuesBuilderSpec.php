@@ -52,7 +52,7 @@ class EntityWithValuesBuilderSpec extends ObjectBehavior
         $this->beConstructedWith($valuesResolver, $productValueFactory, $getAttributesQuery);
     }
 
-    function it_adds_an_empty_product_value(
+    function it_removes_a_product_value_if_data_is_empty(
         $productValueFactory,
         ProductInterface $product,
         AttributeInterface $size,
@@ -121,22 +121,21 @@ class EntityWithValuesBuilderSpec extends ObjectBehavior
         $this->addOrReplaceValue($product, $label, null, null, ' ');
     }
 
-    function it_adds_a_non_empty_product_value(
+    function it_updates_a_non_empty_product_value(
         $productValueFactory,
         ProductInterface $product,
         AttributeInterface $size,
         AttributeInterface $color,
+        ValueInterface $formerSizeValue,
+        ValueInterface $formerColorValue,
         ValueInterface $sizeValue,
         ValueInterface $colorValue
     ) {
         $size->getCode()->willReturn('size');
         $color->getCode()->willReturn('color');
 
-        $product->getValue('size', null, null)->willReturn($sizeValue);
-        $product->getValue('color', 'en_US', 'ecommerce')->willReturn($colorValue);
-
-        $product->removeValue($sizeValue)->willReturn($product);
-        $product->removeValue($colorValue)->willReturn($product);
+        $product->getValue('size', null, null)->willReturn($formerSizeValue);
+        $product->getValue('color', 'en_US', 'ecommerce')->willReturn($formerColorValue);
 
         $sizeAttribute = new Attribute(
             'size',
@@ -163,15 +162,20 @@ class EntityWithValuesBuilderSpec extends ObjectBehavior
             []
         );
 
-        $productValueFactory->createByCheckingData($sizeAttribute, null, null, null)->willReturn($sizeValue);
+        $productValueFactory->createByCheckingData($sizeAttribute, null, null, 'xl')->willReturn($sizeValue);
         $productValueFactory->createByCheckingData($colorAttribute, 'ecommerce', 'en_US', 'red')->willReturn(
             $colorValue
         );
 
-        $product->addValue($sizeValue)->willReturn($product);
-        $product->addValue($colorValue)->willReturn($product);
+        $formerSizeValue->isEqual($sizeValue)->shouldBeCalled()->willReturn(false);
+        $product->removeValue($formerSizeValue)->shouldBeCalled()->willReturn($product);
+        $product->addValue($sizeValue)->shouldBeCalled()->willReturn($product);
 
-        $this->addOrReplaceValue($product, $size, null, null, null);
+        $formerColorValue->isEqual($colorValue)->shouldBeCalled()->willReturn(false);
+        $product->removeValue($formerColorValue)->shouldBeCalled()->willReturn($product);
+        $product->addValue($colorValue)->shouldBeCalled()->willReturn($product);
+
+        $this->addOrReplaceValue($product, $size, null, null, 'xl');
         $this->addOrReplaceValue($product, $color, 'en_US', 'ecommerce', 'red');
     }
 
@@ -237,6 +241,7 @@ class EntityWithValuesBuilderSpec extends ObjectBehavior
                 ];
             })
         )->shouldBeCalled()->willReturn($newValue);
+        $formerValue->isEqual($newValue)->shouldBeCalled()->willReturn(false);
 
         $this->addOrReplaceValue($product, $price, null, null, $priceData);
     }
@@ -306,5 +311,26 @@ class EntityWithValuesBuilderSpec extends ObjectBehavior
         )->shouldBeCalled()->willThrow($exception);
 
         $this->shouldThrow($exception)->during('addOrReplaceValue', [$product, $metric, null, null, $data]);
+    }
+
+    function it_does_not_update_a_value_if_the_former_one_was_equal(
+        ValueFactory $productValueFactory,
+        ProductInterface $product,
+        AttributeInterface $label,
+        ValueInterface $formerValue,
+        ValueInterface $newValue
+    ) {
+        $label->getCode()->willReturn('label');
+        $product->getValue('label', null, null)->willReturn($formerValue);
+
+        $labelAttribute = new Attribute('label', AttributeTypes::TEXT, [], true, true, null, null, false, 'option', []);
+        $productValueFactory->createByCheckingData($labelAttribute, null, null, 'My product label')
+                            ->shouldBeCalled()
+                            ->willReturn($newValue);
+        $formerValue->isEqual($newValue)->shouldBeCalled()->willReturn(true);
+        $product->removeValue(Argument::any())->shouldNotBeCalled();
+        $product->addValue(Argument::any())->shouldNotBeCalled();
+
+        $this->addOrReplaceValue($product, $label, null, null, 'My product label')->shouldReturn($newValue);
     }
 }

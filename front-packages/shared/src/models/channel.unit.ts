@@ -1,5 +1,32 @@
-import {Channel, denormalizeChannel, getChannelLabel, getLocalesFromChannel, getAllLocalesFromChannels, getLocaleFromChannel} from './channel';
+import {
+  Channel,
+  denormalizeChannel,
+  getChannelLabel,
+  getLocalesFromChannel,
+  getAllLocalesFromChannels,
+  getLocaleFromChannel,
+} from './channel';
 import {denormalizeLocale} from './locale';
+
+const baseChannel = {
+  category_tree: '',
+  conversion_units: [],
+  currencies: [],
+  labels: {},
+  meta: {
+    created: '',
+    form: '',
+    id: 1,
+    updated: '',
+  },
+};
+
+const baseLocale = {
+  code: '',
+  label: '',
+  region: '',
+  language: '',
+};
 
 describe('akeneo > shared > model --- channel', () => {
   test('I can create a new channel from a normalized one', () => {
@@ -113,24 +140,30 @@ describe('akeneo > shared > model --- channel', () => {
   test('I can get the list of local of all channels', () => {
     const channels: Channel[] = [
       {
+        ...baseChannel,
         code: 'ecommerce',
         locales: [
           {
+            ...baseLocale,
             code: 'en_US',
           },
           {
+            ...baseLocale,
             code: 'fr_FR',
           },
         ],
       },
       {
+        ...baseChannel,
         code: 'mobile',
         labels: {},
         locales: [
           {
+            ...baseLocale,
             code: 'de_DE',
           },
           {
+            ...baseLocale,
             code: 'de_BE',
           },
         ],
@@ -139,24 +172,30 @@ describe('akeneo > shared > model --- channel', () => {
 
     expect(getLocalesFromChannel(channels, 'ecommerce')).toEqual([
       {
+        ...baseLocale,
         code: 'en_US',
       },
       {
+        ...baseLocale,
         code: 'fr_FR',
       },
     ]);
 
     expect(getLocalesFromChannel(channels, null)).toEqual([
       {
+        ...baseLocale,
         code: 'en_US',
       },
       {
+        ...baseLocale,
         code: 'fr_FR',
       },
       {
+        ...baseLocale,
         code: 'de_DE',
       },
       {
+        ...baseLocale,
         code: 'de_BE',
       },
     ]);
@@ -165,12 +204,15 @@ describe('akeneo > shared > model --- channel', () => {
   test('I can search locale by code and fallback to the first locale if locale does not exist', () => {
     const channels = [
       {
+        ...baseChannel,
         code: 'ecommerce',
         locales: [
           {
+            ...baseLocale,
             code: 'en_US',
           },
           {
+            ...baseLocale,
             code: 'fr_FR',
           },
         ],
@@ -184,27 +226,32 @@ describe('akeneo > shared > model --- channel', () => {
   test('I can get the list of locales for a channel', () => {
     expect(getLocalesFromChannel([], 'ecommerce')).toEqual([]);
     expect(
-        getLocalesFromChannel(
-            [
+      getLocalesFromChannel(
+        [
+          {
+            ...baseChannel,
+            code: 'ecommerce',
+            locales: [
               {
-                code: 'ecommerce',
-                locales: [
-                  {
-                    code: 'en_US',
-                  },
-                  {
-                    code: 'fr_FR',
-                  },
-                ],
+                ...baseLocale,
+                code: 'en_US',
+              },
+              {
+                ...baseLocale,
+                code: 'fr_FR',
               },
             ],
-            'ecommerce'
-        )
+          },
+        ],
+        'ecommerce'
+      )
     ).toEqual([
       {
+        ...baseLocale,
         code: 'en_US',
       },
       {
+        ...baseLocale,
         code: 'fr_FR',
       },
     ]);

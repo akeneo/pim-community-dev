@@ -3,21 +3,33 @@ import React, {
   cloneElement,
   HTMLAttributes,
   isValidElement,
+  ReactElement,
   ReactNode,
   RefObject,
   useEffect,
   useRef,
   useState,
 } from 'react';
-import styled from 'styled-components';
+import styled, {css} from 'styled-components';
 import {AkeneoThemedProps, getColor, getFontSize} from '../../theme';
 import {Dropdown, IconButton} from '../../components';
 import {MoreIcon} from '../../icons';
 import {useBooleanState} from '../../hooks';
 
-const Container = styled.div`
+const Container = styled.div<{sticky: number} & AkeneoThemedProps>`
   display: flex;
+  align-items: center;
   border-bottom: 1px solid ${getColor('grey', 80)};
+  background: ${getColor('white')};
+
+  ${({sticky}) =>
+    undefined !== sticky &&
+    css`
+      position: sticky;
+      top: ${sticky}px;
+      background-color: ${getColor('white')};
+      z-index: 9;
+    `}
 `;
 
 const TabBarContainer = styled.div`
@@ -27,6 +39,7 @@ const TabBarContainer = styled.div`
   height: 44px;
   flex-wrap: wrap;
   overflow: hidden;
+  margin-bottom: -1px;
 `;
 
 const TabContainer = styled.div<TabProps & AkeneoThemedProps>`
@@ -44,11 +57,21 @@ const TabContainer = styled.div<TabProps & AkeneoThemedProps>`
 
   &:hover {
     color: ${getColor('brand', 100)};
+    border-bottom: 3px solid ${getColor('brand', 100)};
   }
 `;
 
-const MoreDropdown = styled(Dropdown)`
+const HiddenTabsDropdown = styled(Dropdown)<{isActive: boolean} & AkeneoThemedProps>`
+  border-bottom: 3px solid ${({isActive}) => (isActive ? getColor('brand', 100) : 'transparent')};
+  margin-bottom: -1px;
+  height: 44px;
+  box-sizing: border-box;
   align-items: center;
+
+  &:hover {
+    color: ${getColor('brand', 100)};
+    border-bottom: 3px solid ${getColor('brand', 100)};
+  }
 `;
 
 type TabProps = {
@@ -123,6 +146,11 @@ type TabBarProps = {
   moreButtonTitle: string;
 
   /**
+   * When set, defines the sticky top position of the Tab bar.
+   */
+  sticky?: number;
+
+  /**
    * Tabs of the Tab bar.
    */
   children?: ReactNode;
@@ -153,27 +181,31 @@ const TabBar = ({moreButtonTitle, children, ...rest}: TabBarProps) => {
     });
   });
 
+  const hiddenTabs = React.Children.toArray(decoratedChildren).filter(
+    (child, index): child is ReactElement<TabProps> => isValidElement<TabProps>(child) && hiddenElements.includes(index)
+  );
+
+  const activeTabIsHidden = hiddenTabs.find(child => child.props.isActive) !== undefined;
+
   return (
-    <Container>
-      <TabBarContainer ref={ref} role="tablist" {...rest}>
+    <Container {...rest}>
+      <TabBarContainer ref={ref} role="tablist">
         {decoratedChildren}
       </TabBarContainer>
-      {0 < hiddenElements.length && (
-        <MoreDropdown>
+      {0 < hiddenTabs.length && (
+        <HiddenTabsDropdown isActive={activeTabIsHidden}>
           <IconButton level="tertiary" ghost="borderless" icon={<MoreIcon />} title={moreButtonTitle} onClick={open} />
           {isOpen && (
             <Dropdown.Overlay verticalPosition="down" onClose={close}>
               <Dropdown.ItemCollection>
-                {decoratedChildren?.map((child, index) => {
-                  if (!hiddenElements.includes(index) || !isValidElement<TabProps>(child)) return;
-
+                {hiddenTabs.map((child, index) => {
                   const handleClick = () => {
                     close();
                     child.props.onClick?.();
                   };
 
                   return (
-                    <Dropdown.Item key={index} onClick={handleClick}>
+                    <Dropdown.Item key={index} onClick={handleClick} isActive={child.props.isActive}>
                       {child.props.children}
                     </Dropdown.Item>
                   );
@@ -181,7 +213,7 @@ const TabBar = ({moreButtonTitle, children, ...rest}: TabBarProps) => {
               </Dropdown.ItemCollection>
             </Dropdown.Overlay>
           )}
-        </MoreDropdown>
+        </HiddenTabsDropdown>
       )}
     </Container>
   );
