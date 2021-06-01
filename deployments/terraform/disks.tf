@@ -11,6 +11,8 @@ resource "google_compute_disk" "mysql-disk" {
     pim_version = lower(var.pim_version)
     app         = "mysql"
     type        = local.type
+    product_reference_code = var.product_reference_code
+    product_reference_type = var.product_reference_type
   }
 
   lifecycle {
