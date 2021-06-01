@@ -1178,7 +1178,7 @@ workflows:
                         ignore:
                             - master
                 requires:
-                    - test_cronjobs_existence
+                    - build_srnt_prod
           - deploy_pr_srnt_environment:
                 requires:
                     - deploy_pr_srnt_environment?
