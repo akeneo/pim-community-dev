@@ -24,11 +24,12 @@ import {
 
 ## Usage
 
-TODO
+The Tiles component provides the user a list of choices, for example, an attribute type, a template, or an export format.
+It is a visual component made up of an icon and a label.
 
-### TODO
+### Format
 
-TODO
+The component is displayed in a configurable responsive grid (width and gap). Tiles is a set of Tile.
 
 ## Playground
 
@@ -45,7 +46,6 @@ TODO
         <Tile icon={<MetricIcon/>} label={'Measurement'} selected={selected === 'Measurement'} onClick={() => {setSelected('Measurement')}}/>
         <Tile icon={<AttributeTextIcon/>} label={'Text'} selected={selected === 'Text'} onClick={() => {setSelected('Text')}}/>
         <Tile icon={<AttributeNumberIcon/>} label={'Number'} selected={selected === 'Number'} onClick={() => {setSelected('Number')}}/>
-        <Tile icon={<AttributeNumberIcon/>} label={'This is a very huge label lol megalol de ouf'} selected={selected === 'Number'} onClick={() => {setSelected('Number')}}/>
       </Tiles>;
     }}
   </Story>
@@ -61,12 +61,12 @@ TODO
       return (
         <>
           <Tiles size={'small'}>
-            <Tile icon={<AssetCollectionIcon/>} label={'Assets collection'}/>
-            <Tile icon={<DateIcon/>} label={'Date'}/>
+            <Tile icon={<AssetCollectionIcon/>} label={'Small Assets collection'}/>
+            <Tile icon={<DateIcon/>} label={'Small Date'}/>
           </Tiles>
           <Tiles size={'big'}>
-            <Tile icon={<AssetCollectionIcon/>} label={'Assets collection'}/>
-            <Tile icon={<DateIcon/>} label={'Date'}/>
+            <Tile icon={<AssetCollectionIcon/>} label={'Big Assets collection'}/>
+            <Tile icon={<DateIcon/>} label={'Big Date'}/>
           </Tiles>
         </>
       );

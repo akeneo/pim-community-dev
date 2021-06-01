@@ -6,20 +6,26 @@ import {AkeneoThemedProps, getColor} from '../../theme';
 type Size = 'small' | 'big';
 
 const TilesContainer = styled.div<{size: Size} & AkeneoThemedProps>`
-  display: flex;
-  flex-wrap: wrap;
-  gap: ${({size}) => (size === 'small' ? '20px' : '30px')};
+  display: grid;
+  ${({size}) =>
+    size === 'small'
+      ? css`
+          gap: 20px;
+          grid-template-columns: repeat(auto-fill, minmax(130px, 1fr));
+        `
+      : css`
+          gap: 30px;
+          grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+        `}
 `;
 
 const TileContainer = styled.div<{selected: boolean; size: Size; onClick?: () => void} & AkeneoThemedProps>`
   ${({size}) =>
     size === 'small'
       ? css`
-          width: 130px;
           height: 130px;
         `
       : css`
-          width: 200px;
           height: 200px;
         `}
   transition: border-color 0.2s, color 0.2s, background 0.2s;
@@ -52,10 +58,12 @@ const IconContainer = styled.div<{size: Size} & AkeneoThemedProps>`
   ${({size}) =>
     size === 'small'
       ? css`
-          padding: 26px 0 0 0;
+          padding: 25px 0 0 0;
+          height: 54px;
         `
       : css`
           padding: 40px 0 0 0;
+          height: 100px;
         `}
 `;
 const LabelContainer = styled.div`
@@ -64,15 +72,18 @@ const LabelContainer = styled.div`
   -webkit-line-clamp: 2;
   -webkit-box-orient: vertical;
   overflow: hidden;
-  line-height: 1.6;
+  line-height: 1.3;
 `;
 
 type TilesProps = {
   /**
-   * TODO.
+   * Children are Tile components only
    */
   children?: ReactNode;
 
+  /**
+   * The size can be 'small' (by default) or 'big'
+   */
   size?: Size;
 };
 
@@ -94,7 +105,9 @@ const Tile: React.FC<TileProps> = ({label, icon, selected = false, size, onClick
 };
 
 /**
- * TODO.
+ * The Tiles component provides the user a list of choices, for example, an attribute type, a template, or an export
+ * format.
+ * It is a visual component made up of an icon and a label..
  */
 const Tiles = React.forwardRef<HTMLDivElement, TilesProps>(
   ({size = 'small', children, ...rest}: TilesProps, forwardedRef: Ref<HTMLDivElement>) => {
