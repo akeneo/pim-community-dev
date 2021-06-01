@@ -39,7 +39,7 @@ class CategoryTreeController
      */
     private function normalizedCategoryTreesWithSelectedCount(array $selectedCategoryCodes): array
     {
-        $selectedCategoryCountPerTree = $this->countCategoriesPerTree->executeWithChildren($selectedCategoryCodes);
+        $selectedCategoryCountPerTree = $this->countCategoriesPerTree->executeWithoutChildren($selectedCategoryCodes);
         return array_map(
             static function (CategoryTree $categoryTree) use ($selectedCategoryCountPerTree) {
                 $result = $categoryTree->normalize();
