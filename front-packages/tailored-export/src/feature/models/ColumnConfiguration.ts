@@ -6,7 +6,7 @@ import {
   LocaleReference,
 } from '@akeneo-pim-community/shared';
 import {uuid} from 'akeneo-design-system';
-import {Attribute} from '../contexts';
+import {Attribute} from './Attribute';
 
 type Operation = {
   type: string;

@@ -31,4 +31,3 @@ const useFetchers = (): FetcherValue => {
 };
 
 export {FetcherContext, useFetchers};
-export type {Attribute};

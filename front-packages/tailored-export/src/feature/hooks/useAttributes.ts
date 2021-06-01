@@ -1,6 +1,7 @@
-import {useIsMounted} from 'akeneo-design-system';
 import {useEffect, useState} from 'react';
-import {Attribute, useFetchers} from '../contexts';
+import {useIsMounted} from 'akeneo-design-system';
+import {Attribute} from '../models';
+import {useFetchers} from '../contexts';
 
 const useAttributes = (attributeCodes: string[]): Attribute[] => {
   const attributeFetcher = useFetchers().attribute;

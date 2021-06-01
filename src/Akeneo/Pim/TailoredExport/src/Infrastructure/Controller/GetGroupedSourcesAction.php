@@ -53,15 +53,15 @@ final class GetGroupedSourcesAction
         $page = $options['page'];
         $offset = $page * $limit;
         $localeCode = $options['locale'];
-        $attributeTypes = $options['attributeTypes'] ?? null;
+        $attributeTypes = isset($options['attributeTypes']) ? explode(',', $options['attributeTypes']) : null;
 
         $fields = [
-            'categories',
-            'enabled',
-            'family',
-            'parent',
-            'groups',
-            'family_variant',
+            // 'categories',
+            // 'enabled',
+            // 'family',
+            // 'parent',
+            // 'groups',
+            // 'family_variant',
             // 'identifier',
             // 'created',
             // 'updated',

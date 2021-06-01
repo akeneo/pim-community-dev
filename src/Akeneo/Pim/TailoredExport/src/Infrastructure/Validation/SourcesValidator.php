@@ -7,6 +7,7 @@ namespace Akeneo\Pim\TailoredExport\Infrastructure\Validation;
 use Symfony\Component\Validator\Constraint;
 use Symfony\Component\Validator\Constraints\Choice;
 use Symfony\Component\Validator\Constraints\Collection;
+use Symfony\Component\Validator\Constraints\Count;
 use Symfony\Component\Validator\Constraints\NotBlank;
 use Symfony\Component\Validator\Constraints\Type;
 use Symfony\Component\Validator\Constraints\Uuid;
@@ -16,6 +17,8 @@ use Symfony\Component\Validator\Validator\ValidatorInterface;
 
 class SourcesValidator extends ConstraintValidator
 {
+    private const MAX_SOURCE_COUNT = 4;
+
     public function validate($sources, Constraint $constraint)
     {
         if (empty($sources)) {
@@ -23,6 +26,26 @@ class SourcesValidator extends ConstraintValidator
         }
 
         $validator = Validation::createValidator();
+
+        $violations = $validator->validate($sources, [
+            new Type(['type' => 'array']),
+            new Count([
+                'max' => self::MAX_SOURCE_COUNT,
+                'maxMessage' => 'akeneo.tailored_export.validation.sources.max_source_count_reached'
+            ])
+        ]);
+
+        if (0 < $violations->count()) {
+            foreach ($violations as $violation) {
+                $this->context->buildViolation(
+                    $violation->getMessage(),
+                    $violation->getParameters()
+                )
+                    ->addViolation();
+            }
+
+            return;
+        }
 
         foreach ($sources as $source) {
             $this->validateColumn($validator, $source);

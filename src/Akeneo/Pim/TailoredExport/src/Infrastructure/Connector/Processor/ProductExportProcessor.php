@@ -35,7 +35,27 @@ class ProductExportProcessor implements ItemProcessorInterface, StepExecutionAwa
             throw new \Exception('Processor have not been properly initialized');
         }
 
-        return ['id' => $product->getId()];
+        $columns = $this->stepExecution->getJobParameters()->get('columns');
+
+        $productStandard = [];
+
+        foreach ($columns as $column) {
+            $operationSourceValues = [];
+
+            foreach ($column['sources'] as $source) {
+                $value = $product->getValue($source['code'], $source['locale'], $source['channel']);
+
+                if (null === $value) {
+                    continue;
+                }
+
+                $operationSourceValues[] = $value->getData();
+            }
+
+            $productStandard[$column['target']] = implode(' ', $operationSourceValues);
+        }
+
+        return $productStandard;
     }
 
     /**
