@@ -30,4 +30,9 @@ final class StringCell implements CellInterface
 
         return new self($data);
     }
+
+    public function normalize(): string
+    {
+        return $this->data;
+    }
 }

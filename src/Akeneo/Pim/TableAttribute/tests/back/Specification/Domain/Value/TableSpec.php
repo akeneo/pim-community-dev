@@ -33,4 +33,14 @@ class TableSpec extends ObjectBehavior
         $this->beConstructedThrough('fromNormalized', [['123', false]]);
         $this->shouldThrow(\InvalidArgumentException::class)->duringInstantiation();
     }
+
+    public function it_can_be_normalized()
+    {
+        $this->normalize()->shouldReturn(
+            [
+                ['foo' => 'bar'],
+                ['bar' => 'baz'],
+            ]
+        );
+    }
 }

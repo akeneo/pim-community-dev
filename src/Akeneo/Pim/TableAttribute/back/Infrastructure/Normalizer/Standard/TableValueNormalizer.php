@@ -11,9 +11,9 @@ declare(strict_types=1);
  * file that was distributed with this source code.
  */
 
-namespace Akeneo\Pim\TableAttribute\Domain\Value;
+namespace Akeneo\Pim\TableAttribute\Infrastructure\Normalizer\Standard;
 
-interface CellInterface
+class TableValueNormalizer
 {
-    public function normalize();
+
 }

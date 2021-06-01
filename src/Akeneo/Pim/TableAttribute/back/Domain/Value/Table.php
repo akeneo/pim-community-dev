@@ -42,4 +42,12 @@ final class Table
             $data
         ));
     }
+
+    public function normalize(): array
+    {
+        return array_map(
+            fn (Row $row): array => $row->normalize(),
+            $this->rows
+        );
+    }
 }

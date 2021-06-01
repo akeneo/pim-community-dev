@@ -22,4 +22,12 @@ class RowSpec extends ObjectBehavior
         $this->beConstructedThrough('fromNormalized', [[]]);
         $this->shouldThrow(\InvalidArgumentException::class)->duringInstantiation();
     }
+
+    public function it_can_be_normalized()
+    {
+        $this->normalize()->shouldReturn([
+            'foo' => 'bar',
+            'bar' => 'baz',
+        ]);
+    }
 }

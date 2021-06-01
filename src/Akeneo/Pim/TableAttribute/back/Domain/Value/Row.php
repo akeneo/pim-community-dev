@@ -43,4 +43,12 @@ final class Row
             )
         );
     }
+
+    public function normalize(): array
+    {
+        return array_map(
+            fn (CellInterface $cell) => $cell->normalize(),
+            $this->cells
+        );
+    }
 }
