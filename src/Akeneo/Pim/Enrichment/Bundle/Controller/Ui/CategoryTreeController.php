@@ -404,7 +404,7 @@ class CategoryTreeController extends Controller
     private function formatPermissionField(FormView $formView): array
     {
         return [
-            'value' => $formView->vars['value'],
+            'value' => array_values($formView->vars['value']),
             'fullName' => $formView->vars['full_name'],
             'choices'  => array_map(fn ($choice) => ['label' => $choice->label, 'value' => $choice->value], $formView->vars['choices']),
         ];
