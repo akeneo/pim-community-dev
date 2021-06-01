@@ -8,6 +8,7 @@ use Akeneo\Pim\Enrichment\Component\Category\Query\PublicApi\CategoryTree;
 use Akeneo\Pim\Enrichment\Component\Category\Query\PublicApi\CountCategoriesPerTree;
 use Akeneo\Pim\Enrichment\Component\Category\Query\PublicApi\FindCategoryTrees;
 use Symfony\Component\HttpFoundation\JsonResponse;
+use Symfony\Component\HttpFoundation\Request;
 
 /**
  * @author    Samir Boulil <samir.boulil@akeneo.com>
@@ -25,22 +26,33 @@ class CategoryTreeController
         $this->countCategoriesPerTree = $countCategoriesPerTree;
     }
 
-    public function __invoke(array $selectedCategories): JsonResponse
+    public function __invoke(Request $request): JsonResponse
     {
-        var_dump($selectedCategories);
-        error_log($selectedCategories);
-        $normalizedCategoryTrees = $this->normalizedCategoryTrees();
+        $selectedCategoryCodes = $this->categoryCodes($request);
+        $normalizedCategoryTrees = $this->normalizedCategoryTreesWithSelectedCount($selectedCategoryCodes);
 
         return new JsonResponse($normalizedCategoryTrees);
     }
 
-    private function normalizedCategoryTrees(): array
+    /**
+     * @param string[] $selectedCategoryCodes
+     */
+    private function normalizedCategoryTreesWithSelectedCount(array $selectedCategoryCodes): array
     {
+        $selectedCategoryCountPerTree = $this->countCategoriesPerTree->executeWithChildren($selectedCategoryCodes);
         return array_map(
-            static function (CategoryTree $categoryTree) {
-                return $categoryTree->normalize();
+            static function (CategoryTree $categoryTree) use ($selectedCategoryCountPerTree) {
+                $result = $categoryTree->normalize();
+                $result['selectedCategoryCount'] = $selectedCategoryCountPerTree[$result['code']];
+
+                return $result;
             },
             $this->findCategoryTrees->execute()
         );
+    }
+
+    private function categoryCodes(Request $request): array
+    {
+        return json_decode($request->getContent(), true) ?? [];
     }
 }

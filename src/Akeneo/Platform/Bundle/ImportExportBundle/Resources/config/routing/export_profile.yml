@@ -12,6 +12,6 @@ pim_importexport_export_profile_edit:
         code: '[a-zA-Z0-9_]+'
 
 pim_importexport_category_tree_list:
-    path: /category_trees
+    path: /category-trees
     defaults: { _controller: pim_import_export.controller.category_trees }
     methods: [POST]
