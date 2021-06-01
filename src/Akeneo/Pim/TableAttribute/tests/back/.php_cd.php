@@ -46,6 +46,7 @@ $rules = [
             'Akeneo\Pim\Enrichment\Component\Product\Comparator\ComparatorInterface',
             'Akeneo\Pim\Enrichment\Component\Product\Normalizer\Indexing\Value\AbstractProductValueNormalizer',
             'Akeneo\Pim\Enrichment\Component\Product\Normalizer\Indexing\Value\ValueCollectionNormalizer',
+            'Akeneo\Pim\Enrichment\Component\Product\Completeness\MaskItemGenerator\MaskItemGeneratorForAttributeType',
         ]
     )->in('Akeneo\Pim\TableAttribute\Infrastructure'),
 ];
