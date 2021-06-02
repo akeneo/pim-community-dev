@@ -3,6 +3,7 @@ import {saveEditCategoryForm} from '../../infrastructure/savers';
 import {NotificationLevel, useNotify, useTranslate} from '@akeneo-pim-community/shared';
 import {EditCategoryForm, useCategory} from './useCategory';
 import {EditCategoryContext} from '../../components';
+import {computeNewEditPermissions, computeNewOwnPermissions, computeNewViewPermissions} from "../../helpers";
 
 // @todo Add unit tests
 const useEditCategoryForm = (categoryId: number) => {
@@ -69,22 +70,16 @@ const useEditCategoryForm = (categoryId: number) => {
 
     switch (type) {
       case 'view':
-        setEditedFormData({
-          ...editedFormData,
-          permissions: {...editedFormData.permissions, view: {...editedFormData.permissions.view, value: values}},
-        });
+        const newViewPermissions = computeNewViewPermissions(editedFormData, values);
+        setEditedFormData(newViewPermissions);
         break;
       case 'edit':
-        setEditedFormData({
-          ...editedFormData,
-          permissions: {...editedFormData.permissions, edit: {...editedFormData.permissions.edit, value: values}},
-        });
+        const newEditPermissions = computeNewEditPermissions(editedFormData, values);
+        setEditedFormData(newEditPermissions);
         break;
-      case 'edit':
-        setEditedFormData({
-          ...editedFormData,
-          permissions: {...editedFormData.permissions, own: {...editedFormData.permissions.own, value: values}},
-        });
+      case 'own':
+        const newOwnPermissions = computeNewOwnPermissions(editedFormData, values);
+        setEditedFormData(newOwnPermissions);
         break;
     }
   };
