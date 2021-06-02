@@ -94,7 +94,7 @@ type TileProps = {
   onClick?: () => void;
 };
 
-const Tile: FC<TileProps> = ({icon, selected = false, size, onClick, children, ...rest}) => {
+const Tile: FC<TileProps> = ({icon, selected = false, size = 'small', onClick, children, ...rest}) => {
   return (
     <TileContainer selected={selected} size={size} onClick={onClick} {...rest}>
       <IconContainer size={size}>{React.cloneElement(icon, {size: size === 'small' ? 54 : 100})}</IconContainer>
