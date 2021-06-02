@@ -88,6 +88,7 @@ $rules = [
         //TODO: It extends Controller
         'Akeneo\Pim\Enrichment\Bundle\Controller\InternalApi\ProductPdfController',
         'Akeneo\Pim\Enrichment\Bundle\Controller\Ui\CategoryTreeController',
+        'Akeneo\Pim\Enrichment\Component\Category\Query\CountTreesChildrenInterface',
         'Akeneo\Pim\Enrichment\Bundle\Controller\Ui\ProductController',
         'Akeneo\Pim\Enrichment\Bundle\Controller\Ui\ProductModelController',
 
