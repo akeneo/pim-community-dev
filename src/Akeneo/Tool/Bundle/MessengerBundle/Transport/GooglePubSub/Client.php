@@ -111,14 +111,12 @@ class Client
             'subscription_name' => null,
             'auto_setup' => false,
             'subscription_filter' => null,
-            'ack_message_right_after_pull' => false,
         ]);
         $resolver->setAllowedTypes('project_id', 'string');
         $resolver->setAllowedTypes('topic_name', 'string');
         $resolver->setAllowedTypes('subscription_name', ['null', 'string']);
         $resolver->setAllowedTypes('auto_setup', 'bool');
         $resolver->setAllowedTypes('subscription_filter', ['null', 'string']);
-        $resolver->setAllowedTypes('ack_message_right_after_pull', 'bool');
 
         return $resolver;
     }
