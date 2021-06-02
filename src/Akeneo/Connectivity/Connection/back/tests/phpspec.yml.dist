@@ -4,9 +4,11 @@ extensions:
     format:
       - html
       - clover
+      - php
     output:
       html: coverage/connectivity/phpspec
-      clover: coverage/connectivity/phpspec/coverage.xml
+      clover: coverage/connectivity/phpspec/coverage.cov
+      php: coverage/connectivity/phpspec/coverage.php
     whitelist:
       - src/Akeneo/Connectivity/Connection/back
     blacklist:
