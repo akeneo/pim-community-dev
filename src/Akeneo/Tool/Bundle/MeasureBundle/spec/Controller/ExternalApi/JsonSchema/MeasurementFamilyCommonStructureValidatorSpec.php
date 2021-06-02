@@ -25,12 +25,12 @@ class MeasurementFamilyCommonStructureValidatorSpec extends ObjectBehavior
 
     function it_returns_all_the_errors_of_invalid_measurement_family_properties()
     {
-        $asset = [
+        $measurement = [
             'values' => null,
             'foo' => 'bar',
         ];
 
-        $errors = $this->validate($asset);
+        $errors = $this->validate($measurement);
         $errors->shouldBeArray();
         $errors->shouldHaveCount(1);
     }
