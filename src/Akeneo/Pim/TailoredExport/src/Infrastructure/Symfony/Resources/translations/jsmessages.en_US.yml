@@ -44,8 +44,9 @@ akeneo.tailored_export:
   validation:
     columns:
       max_column_count_reached: You reached the maximum column count of {{ limit }}
-      max_source_count_reached: You reached the maximum source count of {{ limit }}
       target:
         should_not_be_blank: Column name should not be blank
         max_length_reached: Column name is too long. It should have {{ limit }} characters or less.
         should_be_unique: Column name should be unique
+    sources:
+      max_source_count_reached: You reached the maximum source count of {{ limit }}

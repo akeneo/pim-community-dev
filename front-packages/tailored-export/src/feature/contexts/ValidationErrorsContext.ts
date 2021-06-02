@@ -5,7 +5,7 @@ type ValidationErrorsValue = ValidationError[];
 
 const ValidationErrorsContext = createContext<ValidationErrorsValue>([]);
 
-const useValidationErrors = (propertyPath: string, exactMatch: boolean) => {
+const useValidationErrors = (propertyPath: string, exactMatch: boolean = false) => {
   const validationErrors = useContext(ValidationErrorsContext);
 
   const errors = exactMatch

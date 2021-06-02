@@ -1,6 +1,6 @@
 import React, {forwardRef, SyntheticEvent} from 'react';
 import styled from 'styled-components';
-import {CloseIcon, getColor, Helper, IconButton, Table, TextInput, useBooleanState} from 'akeneo-design-system';
+import {CloseIcon, getColor, Helper, IconButton, Pill, Table, TextInput, useBooleanState} from 'akeneo-design-system';
 import {DeleteModal, useTranslate} from '@akeneo-pim-community/shared';
 import {ColumnConfiguration} from '../../models/ColumnConfiguration';
 import {useValidationErrors} from '../../contexts';
@@ -15,7 +15,7 @@ const Field = styled.div`
 const SourceList = styled.div`
   color: ${getColor('grey', 100)};
   font-style: italic;
-  margin-left: 20px;
+  margin: 0 20px;
 `;
 
 const TargetCell = styled(Table.Cell)`
@@ -54,6 +54,7 @@ const ColumnRow = forwardRef<HTMLInputElement, ColumnRowProps>(
     };
 
     const targetErrors = useValidationErrors(`[columns][${column.uuid}][target]`, true);
+    const hasError = useValidationErrors(`[columns][${column.uuid}]`).length > 0 && 0 === targetErrors.length;
 
     return (
       <>
@@ -77,6 +78,7 @@ const ColumnRow = forwardRef<HTMLInputElement, ColumnRowProps>(
           </TargetCell>
           <Table.Cell>
             <SourceList>{translate('akeneo.tailored_export.column_list.column_row.no_source')}</SourceList>
+            {hasError && <Pill level="danger" />}
           </Table.Cell>
           <RemoveCell>
             <IconButton

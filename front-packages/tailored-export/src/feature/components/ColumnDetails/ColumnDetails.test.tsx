@@ -3,7 +3,7 @@ import {act, screen} from '@testing-library/react';
 import {renderWithProviders, Channel} from '@akeneo-pim-community/shared';
 import {ColumnDetails} from './ColumnDetails';
 import {AvailableSourceGroup, ColumnConfiguration} from '../../models';
-import {FetcherContext, Attribute} from '../../contexts';
+import {FetcherContext, Attribute, ValidationErrorsContext} from '../../contexts';
 import userEvent from '@testing-library/user-event';
 
 const fetchers = {
@@ -371,4 +371,50 @@ test('We can delete a source', async () => {
       elements: [],
     },
   });
+});
+
+test('it renders column details with errors', async () => {
+  const columnConfiguration: ColumnConfiguration = {
+    uuid: '3a6645e0-0d70-411d-84ee-79833144544a',
+    sources: [
+      {
+        uuid: 'cffd560e-1e40-4c55-a415-89c7958b270d',
+        code: 'Description',
+        type: 'attribute',
+        locale: null,
+        channel: null,
+        operations: [],
+        selection: {
+          type: 'code',
+        },
+      },
+    ],
+    target: 'My column name',
+    format: {
+      type: 'concat',
+      elements: [],
+    },
+  };
+
+  await act(async () => {
+    renderWithProviders(
+      <FetcherContext.Provider value={fetchers}>
+        <ValidationErrorsContext.Provider
+          value={[
+            {
+              messageTemplate: 'akeneo.tailored_export.validation.sources.max_source_count_reached',
+              parameters: {'{{ count }}': 5, '{{ limit }}': 4},
+              message: 'akeneo.tailored_export.validation.sources.max_source_count_reached',
+              propertyPath: '[columns][3a6645e0-0d70-411d-84ee-79833144544a][sources]',
+              invalidValue: [],
+            },
+          ]}
+        >
+          <ColumnDetails columnConfiguration={columnConfiguration} onColumnChange={jest.fn} />
+        </ValidationErrorsContext.Provider>
+      </FetcherContext.Provider>
+    );
+  });
+
+  expect(screen.getByText(/akeneo.tailored_export.validation.sources.max_source_count_reached/i)).toBeInTheDocument();
 });

@@ -1,6 +1,6 @@
 import React, {useEffect} from 'react';
 import styled from 'styled-components';
-import {SectionTitle, useTabBar} from 'akeneo-design-system';
+import {Helper, SectionTitle, useTabBar} from 'akeneo-design-system';
 import {useTranslate} from '@akeneo-pim-community/shared';
 import {
   addAttributeSource,
@@ -13,7 +13,7 @@ import {
 import {AddSourceDropdown} from './AddSourceDropdown/AddSourceDropdown';
 import {SourceConfigurator} from '../SourceDetails/SourceConfigurator';
 import {SourceTabBar} from '../SourceDetails/SourceTabBar';
-import {useFetchers} from '../../contexts';
+import {useFetchers, useValidationErrors} from '../../contexts';
 import {useChannels} from '../../hooks';
 import {NoSourcePlaceholder} from './ColumnDetailsPlaceholder';
 import {SourceFooter} from './SourceFooter';
@@ -77,6 +77,8 @@ const ColumnDetails = ({columnConfiguration, onColumnChange}: ColumnDetailsProps
     }
   };
 
+  const sourcesErrors = useValidationErrors(`[columns][${columnConfiguration.uuid}][sources]`, true);
+
   return (
     <Container>
       <SourcesSectionTitle sticky={0}>
@@ -88,6 +90,11 @@ const ColumnDetails = ({columnConfiguration, onColumnChange}: ColumnDetailsProps
         {columnConfiguration.sources.length !== 0 && (
           <SourceTabBar sources={columnConfiguration.sources} currentTab={currentSourceUuid} onTabChange={switchTo} />
         )}
+        {sourcesErrors.map((error, index) => (
+          <Helper key={index} level="error">
+            {translate(error.messageTemplate, error.parameters)}
+          </Helper>
+        ))}
         {currentSource && <SourceConfigurator source={currentSource} onSourceChange={handleSourceChange} />}
         {currentSource && <SourceFooter source={currentSource} onSourceRemove={handleSourceRemove} />}
         {columnConfiguration.sources.length === 0 && <NoSourcePlaceholder />}

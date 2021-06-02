@@ -74,7 +74,7 @@ const SourceConfigurator = ({source, onSourceChange}: SourceConfiguratorProps) =
             openLabel={translate('pim_common.open')}
             value={source.locale}
             onChange={locale => {
-              onSourceChange({...source, locale});
+              onSourceChange({...source, locale: locale});
             }}
           >
             {locales.map((locale: LocaleModel) => (
