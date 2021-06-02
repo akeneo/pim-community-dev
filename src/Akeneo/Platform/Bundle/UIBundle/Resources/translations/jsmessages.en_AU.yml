@@ -229,6 +229,7 @@ pim_common:
   read_more: Read more
   channel: Channel
   locale: Locale
+  groups: Groups
 error:
   exception: Oh snap! A {{ status_code }} error occurred...
   forbidden: Forbidden. You are not allowed to access this page
