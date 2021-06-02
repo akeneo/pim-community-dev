@@ -14,6 +14,7 @@ const useCategoryTree = (treeId: number) => {
     with_items_count: '0',
     include_parent: '1',
     include_sub: '0',
+    context: 'manage',
   });
 
   const {data, fetch, error: fetchError, status: fetchStatus} = useFetch<BackendCategoryTree>(url);
