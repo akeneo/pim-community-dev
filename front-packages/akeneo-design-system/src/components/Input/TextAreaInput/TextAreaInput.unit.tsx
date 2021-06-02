@@ -3,9 +3,8 @@ import {TextAreaInput} from './TextAreaInput';
 import {fireEvent, render, screen} from '../../../storybook/test-util';
 import {ContentBlock} from 'draft-js';
 
-jest.mock(
-  'html-to-draftjs',
-  () => (text: string) => 'WILL FAIL' === text ? undefined : {contentBlocks: [new ContentBlock({text})]}
+jest.mock('html-to-draftjs', () => (text: string) =>
+  'WILL FAIL' === text ? undefined : {contentBlocks: [new ContentBlock({text})]}
 );
 
 test('it renders and handle changes', () => {

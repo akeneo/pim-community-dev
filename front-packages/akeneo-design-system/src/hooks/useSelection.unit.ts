@@ -29,8 +29,14 @@ test('It can generate a basic selection', () => {
     onSelectionChange('melania', true);
   });
 
-  const [completeCollection, completeSelectionState, isCompleteItemSelected, , , completeSelectedCount] =
-    result.current;
+  const [
+    completeCollection,
+    completeSelectionState,
+    isCompleteItemSelected,
+    ,
+    ,
+    completeSelectedCount,
+  ] = result.current;
 
   expect(isCompleteItemSelected('donald')).toBe(true);
   expect(isCompleteItemSelected('melania')).toBe(true);
@@ -86,8 +92,14 @@ test('It can handle selection all', () => {
     onSelectionChange('donald', false);
   });
 
-  const [unselectedCollection, unselectedSelectionState, isUnselectedItemSelected, , , unselectedCount] =
-    result.current;
+  const [
+    unselectedCollection,
+    unselectedSelectionState,
+    isUnselectedItemSelected,
+    ,
+    ,
+    unselectedCount,
+  ] = result.current;
   expect(isUnselectedItemSelected('donald')).toBe(false);
   expect(unselectedSelectionState).toBe('mixed');
   expect(unselectedCollection.collection).toEqual(['donald']);
