@@ -52,6 +52,8 @@ pimee_catalog_rule:
           success: Ha eliminado las reglas.
           error: Se ha producido un error durante la eliminación de las reglas.
           empty_selection: Ninguna regla seleccionada.
+      tags:
+        add: Añadir
   form:
     category:
       catalog: Catálogo

@@ -52,6 +52,8 @@ pimee_catalog_rule:
           success: You successfuly deleted the rules.
           error: An error occurred during the deletion of the rules.
           empty_selection: No rules selected.
+      tags:
+        add: Add
   form:
     category:
       catalog: Catalog
