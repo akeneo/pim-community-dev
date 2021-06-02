@@ -7,7 +7,9 @@ describe('DeleteColumnModal', () => {
   it('user cannot access delete button without typing the right column code', async () => {
     const handleClose = jest.fn();
     const handleDelete = jest.fn();
-    renderWithProviders(<DeleteColumnModal close={handleClose} columnDefinitionCode={'ingredients'} onDelete={handleDelete} />);
+    renderWithProviders(
+      <DeleteColumnModal close={handleClose} columnDefinitionCode={'ingredients'} onDelete={handleDelete} />
+    );
     const deleteButton = await screen.findByText('pim_common.delete');
     expect(deleteButton).toHaveAttribute('disabled');
 
@@ -28,7 +30,9 @@ describe('DeleteColumnModal', () => {
   it('modal closing when user clicks on cancel button', async () => {
     const handleClose = jest.fn();
     const handleDelete = jest.fn();
-    renderWithProviders(<DeleteColumnModal close={handleClose} columnDefinitionCode={'ingredients'} onDelete={handleDelete} />);
+    renderWithProviders(
+      <DeleteColumnModal close={handleClose} columnDefinitionCode={'ingredients'} onDelete={handleDelete} />
+    );
     const cancelButton = await screen.findByText('pim_common.cancel');
 
     act(() => {

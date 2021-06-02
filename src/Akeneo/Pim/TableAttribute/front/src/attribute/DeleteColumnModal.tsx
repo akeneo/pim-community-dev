@@ -40,7 +40,10 @@ const DeleteColumnModal: React.FC<DeleteColumnModalProps> = ({close, onDelete, c
           Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore
           magna aliqua.
         </Helper>
-        <Field label={translate('pim_table_attribute.form.attribute.please_type', {columnDefinitionCode: columnDefinitionCode})}>
+        <Field
+          label={translate('pim_table_attribute.form.attribute.please_type', {
+            columnDefinitionCode: columnDefinitionCode,
+          })}>
           <TextInput onChange={setTypedColumnCode} value={typedColumnCode} />
         </Field>
       </FieldsList>
