@@ -72,7 +72,51 @@ class AssetSpec extends ObjectBehavior
         $this->shouldHaveType(Asset::class);
     }
 
-     function it_returns_its_identifier()
+    function it_can_be_instantiated_with_a_created_and_updated_date()
+    {
+        $identifier = AssetIdentifier::fromString('designer_starck_fingerprint');
+        $assetFamilyIdentifier = AssetFamilyIdentifier::fromString('designer');
+        $assetCode = AssetCode::fromString('starck');
+        $valueCollection = ValueCollection::fromValues([
+            Value::create(
+                AttributeIdentifier::create('designer', 'label', 'fingerprint'),
+                ChannelReference::noReference(),
+                LocaleReference::fromLocaleIdentifier(LocaleIdentifier::fromCode('fr_FR')),
+                TextData::fromString('Stark')
+            ),
+            Value::create(
+                AttributeIdentifier::create('designer', 'label', 'fingerprint'),
+                ChannelReference::noReference(),
+                LocaleReference::fromLocaleIdentifier(LocaleIdentifier::fromCode('en_US')),
+                TextData::fromString('Stark')
+            ),
+            Value::create(
+                AttributeIdentifier::create('designer', 'description', 'fingerprint'),
+                ChannelReference::fromChannelIdentifier(ChannelIdentifier::fromCode('ecommerce')),
+                LocaleReference::fromLocaleIdentifier(LocaleIdentifier::fromCode('fr_FR')),
+                TextData::fromString('.one value per channel ecommerce / one value per locale fr_FR.')
+            ),
+        ]);
+        $created = new \DateTimeImmutable('@0');
+        $updated = new \DateTimeImmutable('@3600');
+
+        $this->beConstructedThrough('create', [
+            $identifier,
+            $assetFamilyIdentifier,
+            $assetCode,
+            $valueCollection,
+            $created,
+            $updated
+        ]);
+
+        $this->getCreatedAt()
+            ->shouldBe($created);
+
+        $this->getUpdatedAt()
+            ->shouldBe($updated);
+    }
+
+    function it_returns_its_identifier()
     {
         $identifier = AssetIdentifier::fromString('designer_starck_fingerprint');
 
