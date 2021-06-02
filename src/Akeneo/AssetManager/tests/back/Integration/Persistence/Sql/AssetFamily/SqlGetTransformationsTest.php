@@ -34,11 +34,9 @@ use PHPUnit\Framework\Assert;
 
 class SqlGetTransformationsTest extends SqlIntegrationTestCase
 {
-    /** @var SqlGetTransformations */
-    private $getTransformations;
+    private SqlGetTransformations $getTransformations;
 
-    /** @var AssetFamilyRepositoryInterface */
-    private $assetFamilyRepository;
+    private AssetFamilyRepositoryInterface $assetFamilyRepository;
 
     public function test_it_throws_an_exception_if_the_asset_family_was_not_found()
     {

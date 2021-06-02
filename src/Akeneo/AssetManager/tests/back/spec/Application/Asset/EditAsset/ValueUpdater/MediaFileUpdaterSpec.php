@@ -119,7 +119,7 @@ class MediaFileUpdaterSpec extends ObjectBehavior
 
     private function getAttribute(): MediaFileAttribute
     {
-        $mediaFileAttribute = MediaFileAttribute::create(
+        return MediaFileAttribute::create(
             AttributeIdentifier::create('designer', 'image', 'test'),
             AssetFamilyIdentifier::fromString('designer'),
             AttributeCode::fromString('image'),
@@ -133,7 +133,5 @@ class MediaFileUpdaterSpec extends ObjectBehavior
             AttributeAllowedExtensions::fromList(self::VALID_EXTENSIONS),
             MediaType::fromString(MediaType::IMAGE)
         );
-
-        return $mediaFileAttribute;
     }
 }

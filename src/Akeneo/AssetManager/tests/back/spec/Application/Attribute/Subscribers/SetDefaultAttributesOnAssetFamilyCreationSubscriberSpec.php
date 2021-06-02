@@ -72,16 +72,10 @@ class SetDefaultAttributesOnAssetFamilyCreationSubscriberSpec extends ObjectBeha
             [$labelAttribute, $mediaFileAttribute]
         );
 
-        $assetFamily->updateAttributeAsLabelReference(Argument::that(function ($attributeAsLabelReference) {
-            return $attributeAsLabelReference instanceof AttributeAsLabelReference
-                && 'label_brand_fingerprint' === $attributeAsLabelReference->normalize();
-
-        }))->shouldBeCalled();
-        $assetFamily->updateAttributeAsMainMediaReference(Argument::that(function ($attributeAsMainMediaReference) {
-            return $attributeAsMainMediaReference instanceof AttributeAsMainMediaReference
-                && 'image_brand_fingerprint' === $attributeAsMainMediaReference->normalize();
-
-        }))->shouldBeCalled();
+        $assetFamily->updateAttributeAsLabelReference(Argument::that(fn($attributeAsLabelReference) => $attributeAsLabelReference instanceof AttributeAsLabelReference
+            && 'label_brand_fingerprint' === $attributeAsLabelReference->normalize()))->shouldBeCalled();
+        $assetFamily->updateAttributeAsMainMediaReference(Argument::that(fn($attributeAsMainMediaReference) => $attributeAsMainMediaReference instanceof AttributeAsMainMediaReference
+            && 'image_brand_fingerprint' === $attributeAsMainMediaReference->normalize()))->shouldBeCalled();
         $assetFamilyRepository->update($assetFamily)->shouldBeCalled();
 
         $this->whenAssetFamilyCreated($assetFamilyCreatedEvent);

@@ -27,14 +27,11 @@ use Symfony\Component\EventDispatcher\EventDispatcher;
 
 class InMemoryFindAssetLabelsByCodesTest extends TestCase
 {
-    /** @var InMemoryFindAssetLabelsByCodes */
-    private $findAssetLabelsByCodesQuery;
+    private InMemoryFindAssetLabelsByCodes $findAssetLabelsByCodesQuery;
 
-    /** @var InMemoryAssetRepository */
-    private $assetRepository;
+    private InMemoryAssetRepository $assetRepository;
 
-    /** @var InMemoryAssetFamilyRepository */
-    private $assetFamilyRepository;
+    private InMemoryAssetFamilyRepository $assetFamilyRepository;
 
     public function setUp(): void
     {

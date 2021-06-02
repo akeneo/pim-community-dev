@@ -47,13 +47,11 @@ class RuleEngineValidatorACLSpec extends ObjectBehavior
         $oneViolation = $this->oneViolation();
 
         $productConditionValidator->validate(
-            Argument::that(function (ProductCondition $actualCondition) use ($productSelection) {
-                return $productSelection['field'] === $actualCondition->getField()
-                    && $productSelection['operator'] === $actualCondition->getOperator()
-                    && $productSelection['value'] === $actualCondition->getValue()
-                    && $productSelection['locale'] === $actualCondition->getLocale()
-                    && $productSelection['channel'] === $actualCondition->getScope();
-            })
+            Argument::that(fn(ProductCondition $actualCondition) => $productSelection['field'] === $actualCondition->getField()
+                && $productSelection['operator'] === $actualCondition->getOperator()
+                && $productSelection['value'] === $actualCondition->getValue()
+                && $productSelection['locale'] === $actualCondition->getLocale()
+                && $productSelection['channel'] === $actualCondition->getScope())
         )->willReturn($oneViolation);
 
         $this->validateProductSelection($productSelection)->shouldReturn($oneViolation);
@@ -71,19 +69,15 @@ class RuleEngineValidatorACLSpec extends ObjectBehavior
         $oneViolation = $this->oneViolation();
 
         $actionDenormalizer->denormalize(
-            Argument::that(function (array $adaptedProductAction) use ($productAction) {
-                return 'set' === $adaptedProductAction['type']
-                    && $adaptedProductAction['field'] === $productAction['attribute']
-                    && ['VALIDATION_TEST'] === $adaptedProductAction['items'];
-            }
+            Argument::that(fn(array $adaptedProductAction) => 'set' === $adaptedProductAction['type']
+                && $adaptedProductAction['field'] === $productAction['attribute']
+                && ['VALIDATION_TEST'] === $adaptedProductAction['items']
             ),
             ActionInterface::class
         )->willReturn($setProductAction);
 
         $productActionValidator->validate(
-            Argument::that(function (ProductSetAction $actualAction) use ($productAction) {
-                return $productAction['attribute'] === $actualAction->getField();
-            })
+            Argument::that(fn(ProductSetAction $actualAction) => $productAction['attribute'] === $actualAction->getField())
         )->willReturn($oneViolation);
 
         $actualViolations = $this->validateProductAssignment($productAction);
@@ -102,19 +96,15 @@ class RuleEngineValidatorACLSpec extends ObjectBehavior
         $oneViolation = $this->oneViolation();
 
         $actionDenormalizer->denormalize(
-            Argument::that(function (array $adaptedProductAction) use ($productAction) {
-                return $productAction['mode'] === $adaptedProductAction['type']
-                    && $adaptedProductAction['field'] === $productAction['attribute']
-                    && ['VALIDATION_TEST'] === $adaptedProductAction['items'];
-            }
+            Argument::that(fn(array $adaptedProductAction) => $productAction['mode'] === $adaptedProductAction['type']
+                && $adaptedProductAction['field'] === $productAction['attribute']
+                && ['VALIDATION_TEST'] === $adaptedProductAction['items']
             ),
             ActionInterface::class
         )->willReturn($productAddAction);
 
         $productActionValidator->validate(
-            Argument::that(function (ProductAddAction $actualAction) use ($productAction) {
-                return $productAction['attribute'] === $actualAction->getField();
-            })
+            Argument::that(fn(ProductAddAction $actualAction) => $productAction['attribute'] === $actualAction->getField())
         )->willReturn($oneViolation);
 
         $actualViolations = $this->validateProductAssignment($productAction);

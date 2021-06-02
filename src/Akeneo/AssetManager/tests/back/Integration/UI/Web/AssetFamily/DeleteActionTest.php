@@ -31,8 +31,7 @@ class DeleteActionTest extends ControllerIntegrationTestCase
 {
     private const ASSET_FAMILY_DELETE_ROUTE = 'akeneo_asset_manager_asset_family_delete_rest';
 
-    /** @var WebClientHelper */
-    private $webClientHelper;
+    private WebClientHelper $webClientHelper;
 
     public function setUp(): void
     {

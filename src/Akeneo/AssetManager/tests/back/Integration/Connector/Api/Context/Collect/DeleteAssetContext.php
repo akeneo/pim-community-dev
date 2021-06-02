@@ -60,44 +60,31 @@ class DeleteAssetContext implements Context
 {
     private const REQUEST_CONTRACT_DIR = 'Asset/Connector/Collect/';
 
-    /** @var OauthAuthenticatedClientFactory */
-    private $clientFactory;
+    private OauthAuthenticatedClientFactory $clientFactory;
 
-    /** @var WebClientHelper */
-    private $webClientHelper;
+    private WebClientHelper $webClientHelper;
 
-    /** @var AssetFamilyRepositoryInterface */
-    private $assetFamilyRepository;
+    private AssetFamilyRepositoryInterface $assetFamilyRepository;
 
-    /** @var null|Response */
-    private $pimResponse;
+    private ?Response $pimResponse = null;
 
-    /** @var AttributeRepositoryInterface */
-    private $attributeRepository;
+    private InMemoryAttributeRepository $attributeRepository;
 
-    /** @var AssetRepositoryInterface */
-    private $assetRepository;
+    private AssetRepositoryInterface $assetRepository;
 
-    /** @var null|string */
-    private $requestContract;
+    private ?string $requestContract = null;
 
-    /** @var InMemoryChannelExists */
-    private $channelExists;
+    private InMemoryChannelExists $channelExists;
 
-    /** @var InMemoryFindActivatedLocalesByIdentifiers */
-    private $activatedLocales;
+    private InMemoryFindActivatedLocalesByIdentifiers $activatedLocales;
 
-    /** @var InMemoryFindActivatedLocalesPerChannels */
-    private $activatedLocalesPerChannels;
+    private InMemoryFindActivatedLocalesPerChannels $activatedLocalesPerChannels;
 
-    /** @var InMemoryFindFileDataByFileKey */
-    private $findFileData;
+    private InMemoryFindFileDataByFileKey $findFileData;
 
-    /** @var InMemoryFileExists */
-    private $fileExists;
+    private InMemoryFileExists $fileExists;
 
-    /** @var InMemoryGetAttributeIdentifier */
-    private $getAttributeIdentifier;
+    private InMemoryGetAttributeIdentifier $getAttributeIdentifier;
 
     public function __construct(
         OauthAuthenticatedClientFactory $clientFactory,

@@ -44,11 +44,9 @@ use Akeneo\AssetManager\Integration\ControllerIntegrationTestCase;
 
 class GetActionTest extends ControllerIntegrationTestCase
 {
-    /** @var WebClientHelper */
-    private $webClientHelper;
+    private WebClientHelper $webClientHelper;
 
-    /** @var AttributeRepositoryInterface */
-    private $attributeRepository;
+    private AttributeRepositoryInterface $attributeRepository;
 
     public function setUp(): void
     {

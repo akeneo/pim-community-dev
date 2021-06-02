@@ -14,8 +14,7 @@ use PHPUnit\Framework\Assert;
  */
 class SqlFindActivatedLocalesPerChannelsTest extends SqlIntegrationTestCase
 {
-    /** @var FindActivatedLocalesPerChannelsInterface */
-    private $findActivatedLocalesPerChannels;
+    private FindActivatedLocalesPerChannelsInterface $findActivatedLocalesPerChannels;
 
     public function setUp(): void
     {

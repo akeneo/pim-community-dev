@@ -4,6 +4,9 @@ declare(strict_types=1);
 
 namespace spec\Akeneo\AssetManager\Infrastructure\Transformation;
 
+use Akeneo\AssetManager\Domain\Model\AssetFamily\Transformation\Operation\ScaleOperation;
+use Akeneo\AssetManager\Domain\Model\AssetFamily\Transformation\Operation\ThumbnailOperation;
+use Akeneo\AssetManager\Domain\Model\AssetFamily\Transformation\Operation\ColorspaceOperation;
 use Akeneo\AssetManager\Domain\Model\AssetFamily\Transformation\Operation;
 use Akeneo\AssetManager\Domain\Model\AssetFamily\Transformation\OperationCollection;
 use Akeneo\AssetManager\Domain\Model\AssetFamily\Transformation\Transformation;
@@ -22,9 +25,9 @@ class FileTransformerSpec extends ObjectBehavior
         OperationApplier $thumbnailOperationApplier
     ) {
         // registry with 'scale' and 'thumbnail' operation appliers
-        $scaleOperationApplier->supports(Argument::type(Operation\ScaleOperation::class))->willReturn(true);
+        $scaleOperationApplier->supports(Argument::type(ScaleOperation::class))->willReturn(true);
         $scaleOperationApplier->supports(Argument::type(Operation::class))->willReturn(false);
-        $thumbnailOperationApplier->supports(Argument::type(Operation\ThumbnailOperation::class))->willReturn(true);
+        $thumbnailOperationApplier->supports(Argument::type(ThumbnailOperation::class))->willReturn(true);
         $thumbnailOperationApplier->supports(Argument::type(Operation::class))->willReturn(false);
         $applierRegistry = new OperationApplierRegistry(
             [$scaleOperationApplier->getWrappedObject(), $thumbnailOperationApplier->getWrappedObject()]
@@ -43,7 +46,7 @@ class FileTransformerSpec extends ObjectBehavior
     ) {
         $transformation->getOperationCollection()->willReturn(
             OperationCollection::create([
-                Operation\ColorspaceOperation::create(['colorspace' => 'grey'])
+                ColorspaceOperation::create(['colorspace' => 'grey'])
             ])
         );
 
@@ -62,8 +65,8 @@ class FileTransformerSpec extends ObjectBehavior
         Transformation $transformation,
         File $file
     ) {
-        $scale = Operation\ScaleOperation::create(['ratio' => 50]);
-        $thumbnail = Operation\ThumbnailOperation::create(['height' => 100]);
+        $scale = ScaleOperation::create(['ratio' => 50]);
+        $thumbnail = ThumbnailOperation::create(['height' => 100]);
         $transformation->getOperationCollection()->willReturn(OperationCollection::create([$scale, $thumbnail]));
         $transformation->getFilenamePrefix()->willReturn('thumb_');
         $transformation->getFilenameSuffix()->willReturn('-42');

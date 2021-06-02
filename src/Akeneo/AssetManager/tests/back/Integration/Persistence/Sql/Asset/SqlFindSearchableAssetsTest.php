@@ -28,8 +28,7 @@ use PHPUnit\Framework\Assert;
  */
 class SqlFindSearchableAssetsTest extends SqlIntegrationTestCase
 {
-    /** @var SqlFindSearchableAssets */
-    private $findSearchableAssets;
+    private SqlFindSearchableAssets $findSearchableAssets;
 
     public function setUp(): void
     {
@@ -156,9 +155,8 @@ class SqlFindSearchableAssetsTest extends SqlIntegrationTestCase
                 RuleTemplateCollection::empty()
             )
         );
-        $result = $assetFamilyRepository->getByIdentifier(AssetFamilyIdentifier::fromString('designer'));
 
-        return $result;
+        return $assetFamilyRepository->getByIdentifier(AssetFamilyIdentifier::fromString('designer'));
     }
 
     private function createBrand(): AssetFamily
@@ -175,9 +173,8 @@ class SqlFindSearchableAssetsTest extends SqlIntegrationTestCase
                 RuleTemplateCollection::empty()
             )
         );
-        $result = $assetFamilyRepository->getByIdentifier(AssetFamilyIdentifier::fromString('designer'));
 
-        return $result;
+        return $assetFamilyRepository->getByIdentifier(AssetFamilyIdentifier::fromString('designer'));
     }
 
     private function createStark(AssetFamily $designer): void
@@ -241,8 +238,7 @@ class SqlFindSearchableAssetsTest extends SqlIntegrationTestCase
     {
         $assetFamilyRepository = $this->get('akeneo_assetmanager.infrastructure.persistence.repository.asset_family');
         $assetFamily = $assetFamilyRepository->getByIdentifier(AssetFamilyIdentifier::fromString($identifier));
-        $result = $assetFamily->getAttributeAsLabelReference()->normalize();
 
-        return $result;
+        return $assetFamily->getAttributeAsLabelReference()->normalize();
     }
 }

@@ -26,8 +26,7 @@ use Akeneo\AssetManager\Integration\SqlIntegrationTestCase;
  */
 class SqlAssetFamilyExistsTest extends SqlIntegrationTestCase
 {
-    /** @var AssetFamilyExistsInterface */
-    private $assetFamilyExists;
+    private AssetFamilyExistsInterface $assetFamilyExists;
 
     public function setUp(): void
     {

@@ -9,8 +9,7 @@ use Akeneo\AssetManager\Domain\Query\Asset\FindCodesByIdentifiersInterface;
 
 class InMemoryFindCodesByIdentifiers implements FindCodesByIdentifiersInterface
 {
-    /** @var InMemoryAssetRepository */
-    private $assetRepository;
+    private InMemoryAssetRepository $assetRepository;
 
     public function __construct(InMemoryAssetRepository $assetRepository)
     {

@@ -26,8 +26,7 @@ use Akeneo\AssetManager\Integration\SqlIntegrationTestCase;
  */
 class SqlCountAssetFamiliesTest extends SqlIntegrationTestCase
 {
-    /** @var SqlCountAssetFamilies */
-    private $countAssetFamilies;
+    private SqlCountAssetFamilies $countAssetFamilies;
 
     public function setUp(): void
     {

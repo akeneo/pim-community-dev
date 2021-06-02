@@ -28,8 +28,7 @@ class IndexActionTest extends ControllerIntegrationTestCase
 {
     private const ASSET_FAMILY_LIST_ROUTE = 'akeneo_asset_manager_asset_family_index_rest';
 
-    /** @var WebClientHelper */
-    private $webClientHelper;
+    private WebClientHelper $webClientHelper;
 
     public function setUp(): void
     {

@@ -31,8 +31,7 @@ use Ramsey\Uuid\Uuid;
  */
 class ElasticSearchAverageMaxNumberOfAssetsPerAssetFamilyTest extends SqlIntegrationTestCase
 {
-    /** @var ElasticSearchAverageMaxNumberOfAssetsPerAssetFamily */
-    private $averageMaxNumberOfAssetsPerAssetFamily;
+    private ElasticSearchAverageMaxNumberOfAssetsPerAssetFamily $averageMaxNumberOfAssetsPerAssetFamily;
 
     public function setUp(): void
     {
@@ -114,7 +113,7 @@ class ElasticSearchAverageMaxNumberOfAssetsPerAssetFamilyTest extends SqlIntegra
         for ($i = 0; $i < $numberOfAssetsPerAssetFamiliestoLoad; $i++) {
             $assetRepository->create(
                 Asset::create(
-                    AssetIdentifier::fromString(sprintf('%s', $this->getRandomIdentifier())),
+                    AssetIdentifier::fromString($this->getRandomIdentifier()),
                     $assetFamilyIdentifier,
                     AssetCode::fromString(sprintf('%s_%d', $i, $assetFamilyIdentifier->normalize())),
                     ValueCollection::fromValues([])

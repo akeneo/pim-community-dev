@@ -11,8 +11,8 @@ use PHPUnit\Framework\Assert;
 
 class MassDeleteAssetsLauncherSpy implements MassDeleteAssetsLauncherInterface
 {
-    private ?AssetFamilyIdentifier $assetFamilyIdentifier;
-    private ?AssetQuery $assetQuery;
+    private ?AssetFamilyIdentifier $assetFamilyIdentifier = null;
+    private ?AssetQuery $assetQuery = null;
 
     public function launchForAssetFamilyAndQuery(AssetFamilyIdentifier $assetFamilyIdentifier, AssetQuery $assetQuery): void
     {

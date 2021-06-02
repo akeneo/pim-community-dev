@@ -15,8 +15,7 @@ class SetActionTest extends ControllerIntegrationTestCase
 {
     private const SET_ASSET_FAMILY_PERMISSION_ROUTE = 'akeneo_asset_manager_asset_family_permission_set_rest';
 
-    /** @var WebClientHelper */
-    private $webClientHelper;
+    private WebClientHelper $webClientHelper;
 
     public function setUp(): void
     {

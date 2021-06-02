@@ -30,11 +30,9 @@ use Symfony\Component\EventDispatcher\EventDispatcher;
  */
 class InMemoryFindAttributesIndexedByIdentifierTest extends TestCase
 {
-    /** @var InMemoryFindAttributesIndexedByIdentifier */
-    private $query;
+    private InMemoryFindAttributesIndexedByIdentifier $query;
 
-    /** @var InMemoryAttributeRepository */
-    private $attributeRepository;
+    private InMemoryAttributeRepository $attributeRepository;
 
     public function setUp(): void
     {

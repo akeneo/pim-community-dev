@@ -25,10 +25,9 @@ use Akeneo\AssetManager\Integration\SqlIntegrationTestCase;
 
 class SqlFindValueKeysByAttributeTypeTest extends SqlIntegrationTestCase
 {
-    /** @var FindValueKeysByAttributeTypeInterface */
-    private $findValueKeysByAttributeType;
+    private FindValueKeysByAttributeTypeInterface $findValueKeysByAttributeType;
 
-    private $order = 2;
+    private int $order = 2;
 
     public function setUp(): void
     {

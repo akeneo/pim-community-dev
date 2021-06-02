@@ -35,11 +35,9 @@ use Symfony\Component\EventDispatcher\EventDispatcher;
 
 class InMemoryGetAttributeIdentifierTest extends TestCase
 {
-    /** @var InMemoryAttributeRepository*/
-    private $attributeRepository;
+    private InMemoryAttributeRepository $attributeRepository;
 
-    /** @var GetAttributeIdentifierInterface */
-    private $getAttributeIdentifier;
+    private InMemoryGetAttributeIdentifier $getAttributeIdentifier;
 
     public function setUp(): void
     {

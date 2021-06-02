@@ -40,26 +40,19 @@ final class DeleteAssetContext implements Context
     private const FINGERPRINT = 'fingerprint';
     private const ASSET_CODE = 'stark';
 
-    /** @var AssetFamilyRepositoryInterface */
-    private $assetFamilyRepository;
+    private AssetFamilyRepositoryInterface $assetFamilyRepository;
 
-    /** @var InMemoryAssetRepository */
-    private $assetRepository;
+    private AssetRepositoryInterface $assetRepository;
 
-    /** @var DeleteAssetHandler */
-    private $deleteAssetHandler;
+    private DeleteAssetHandler $deleteAssetHandler;
 
-    /** @var ValidatorInterface */
-    private $validator;
+    private ValidatorInterface $validator;
 
-    /** @var ExceptionContext */
-    private $exceptionContext;
+    private ExceptionContext $exceptionContext;
 
-    /** @var ConstraintViolationsContext */
-    private $violationsContext;
+    private ConstraintViolationsContext $violationsContext;
 
-    /** @var CreateAssetFamilyHandler */
-    private $createAssetFamilyHandler;
+    private CreateAssetFamilyHandler $createAssetFamilyHandler;
 
     public function __construct(
         AssetFamilyRepositoryInterface $assetFamilyRepository,

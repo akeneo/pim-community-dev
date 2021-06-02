@@ -14,8 +14,7 @@ use Akeneo\AssetManager\Domain\Query\UserGroup\FindUserGroupsForSecurityIdentifi
  */
 class InMemoryFindUserGroupsForSecurityIdentifier implements FindUserGroupsForSecurityIdentifierInterface
 {
-    /** @var array */
-    private $groupsForUsers = [];
+    private array $groupsForUsers = [];
 
     /**
      * @return UserGroupIdentifier[]

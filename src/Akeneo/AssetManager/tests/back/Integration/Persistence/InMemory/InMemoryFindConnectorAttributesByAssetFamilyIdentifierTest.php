@@ -27,8 +27,7 @@ use PHPUnit\Framework\TestCase;
 
 class InMemoryFindConnectorAttributesByAssetFamilyIdentifierTest extends TestCase
 {
-    /** @var InMemoryFindConnectorAttributesByAssetFamilyIdentifier */
-    private $query;
+    private InMemoryFindConnectorAttributesByAssetFamilyIdentifier $query;
 
     public function setUp(): void
     {
@@ -41,20 +40,8 @@ class InMemoryFindConnectorAttributesByAssetFamilyIdentifierTest extends TestCas
      */
     public function it_returns_null_when_finding_a_non_existent_asset_family()
     {
-        $connectorAttribute = new ConnectorAttribute(
-            AttributeCode::fromString('description'),
-            LabelCollection::fromArray(['en_US' => 'Description', 'fr_FR' => 'Description']),
-            'text',
-            AttributeValuePerLocale::fromBoolean(true),
-            AttributeValuePerChannel::fromBoolean(true),
-            AttributeIsRequired::fromBoolean(true),
-            AttributeIsReadOnly::fromBoolean(false),
-            []
-        );
-
         $result = $this->query->find(
-            AssetFamilyIdentifier::fromString('non_existent_asset_family_identifier'),
-            $connectorAttribute
+            AssetFamilyIdentifier::fromString('non_existent_asset_family_identifier')
         );
 
         Assert::assertEmpty($result);
@@ -82,13 +69,10 @@ class InMemoryFindConnectorAttributesByAssetFamilyIdentifierTest extends TestCas
         );
 
         $results = $this->query->find(
-            AssetFamilyIdentifier::fromString('existent_asset_family_identifier'),
-            $connectorAttribute
+            AssetFamilyIdentifier::fromString('existent_asset_family_identifier')
         );
 
         Assert::assertNotNull($results);
-        Assert::assertSame([
-            $connectorAttribute
-        ], $results);
+        Assert::assertSame([$connectorAttribute], $results);
     }
 }

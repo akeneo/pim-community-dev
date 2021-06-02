@@ -23,7 +23,7 @@ use Akeneo\AssetManager\Domain\Query\AssetFamily\FindAssetFamilyItemsInterface;
 class InMemoryFindAssetFamilyItems implements FindAssetFamilyItemsInterface
 {
     /** @var AssetFamilyItem[] */
-    private $results = [];
+    private array $results = [];
 
     public function save(AssetFamilyItem $assetFamilyDetails)
     {

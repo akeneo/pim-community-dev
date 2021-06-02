@@ -67,56 +67,40 @@ class GetConnectorAssetsContext implements Context
 {
     private const REQUEST_CONTRACT_DIR = 'Asset/Connector/Distribute/';
 
-    /** @var OauthAuthenticatedClientFactory */
-    private $clientFactory;
+    private OauthAuthenticatedClientFactory $clientFactory;
 
-    /** @var WebClientHelper */
-    private $webClientHelper;
+    private WebClientHelper $webClientHelper;
 
-    /** @var InMemoryFindConnectorAssetsByIdentifiers */
-    private $findConnectorAssets;
+    private InMemoryFindConnectorAssetsByIdentifiers $findConnectorAssets;
 
-    /** @var AssetFamilyRepositoryInterface */
-    private $assetFamilyRepository;
+    private AssetFamilyRepositoryInterface $assetFamilyRepository;
 
-    /** @var InMemoryAttributeRepository */
-    private $attributeRepository;
+    private InMemoryAttributeRepository $attributeRepository;
 
-    /** @var array */
-    private $assetPages;
+    private array $assetPages;
 
-    /** @var InMemoryFindAssetIdentifiersForQuery */
-    private $findAssetIdentifiersForQuery;
+    private InMemoryFindAssetIdentifiersForQuery $findAssetIdentifiersForQuery;
 
-    /** @var null|Response */
-    private $unprocessableEntityResponse;
+    private ?Response $unprocessableEntityResponse = null;
 
-    /** @var null|Response */
-    private $updatedSinceWrongFormatResponse;
+    private ?Response $updatedSinceWrongFormatResponse = null;
 
-    /** @var null|Response */
-    private $updatedSinceResponse;
+    private ?Response $updatedSinceResponse = null;
 
-    /** @var InMemoryChannelExists */
-    private $channelExists;
+    private InMemoryChannelExists $channelExists;
 
     /** @var ConnectorAsset[] */
-    private $connectorAssetsByAssetIdentifier;
+    private ?array $connectorAssetsByAssetIdentifier = null;
 
-    /** @var InMemoryFindActivatedLocalesByIdentifiers */
-    private $findActivatedLocalesByIdentifiers;
+    private InMemoryFindActivatedLocalesByIdentifiers $findActivatedLocalesByIdentifiers;
 
-    /** @var InMemoryFindRequiredValueKeyCollectionForChannelAndLocales */
-    private $findRequiredValueKeyCollectionForChannelAndLocales;
+    private InMemoryFindRequiredValueKeyCollectionForChannelAndLocales $findRequiredValueKeyCollectionForChannelAndLocales;
 
-    /** @var null|string */
-    private $requestContract;
+    private ?string $requestContract = null;
 
-    /** @var InMemoryFindActivatedLocalesPerChannels */
-    private $findActivatedLocalesPerChannels;
+    private InMemoryFindActivatedLocalesPerChannels $findActivatedLocalesPerChannels;
 
-    /** @var InMemoryDateRepository */
-    private $dateRepository;
+    private InMemoryDateRepository $dateRepository;
 
     public function __construct(
         OauthAuthenticatedClientFactory $clientFactory,

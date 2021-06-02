@@ -26,11 +26,9 @@ use Symfony\Component\EventDispatcher\EventDispatcher;
 
 class InMemoryFindIdentifiersByAssetFamilyTest extends TestCase
 {
-    /** @var InMemoryFindAssetIdentifiersByAssetFamily */
-    private $query;
+    private InMemoryFindAssetIdentifiersByAssetFamily $query;
 
-    /** @var InMemoryAssetRepository */
-    private $assetRepository;
+    private InMemoryAssetRepository $assetRepository;
 
     /**
      * @test
@@ -91,9 +89,7 @@ class InMemoryFindIdentifiersByAssetFamilyTest extends TestCase
         Assert::assertIsIterable($actualIdentifiers);
 
         $expectedAssetIdentifiers = array_map(
-            function (string $identifier): AssetIdentifier {
-                return AssetIdentifier::fromString($identifier);
-            },
+            fn (string $identifier): AssetIdentifier => AssetIdentifier::fromString($identifier),
             $expectedIdentifiers
         );
 

@@ -17,8 +17,7 @@ use Akeneo\AssetManager\Integration\SqlIntegrationTestCase;
 
 class SqlFindAssetFamilyWhereUserGroupIsLastToHaveEditRightTest extends SqlIntegrationTestCase
 {
-    /** @var SqlFindAssetFamilyWhereUserGroupIsLastToHaveEditRight */
-    private $query;
+    private SqlFindAssetFamilyWhereUserGroupIsLastToHaveEditRight $query;
 
     public function setUp(): void
     {

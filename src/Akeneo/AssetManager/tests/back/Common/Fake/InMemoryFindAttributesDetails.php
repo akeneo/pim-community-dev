@@ -23,10 +23,9 @@ use Akeneo\AssetManager\Domain\Query\Attribute\FindAttributesDetailsInterface;
  */
 class InMemoryFindAttributesDetails implements FindAttributesDetailsInterface
 {
-    private $results = [];
+    private array $results = [];
 
-    /** @var InMemoryFindActivatedLocales */
-    private $activatedLocalesQuery;
+    private InMemoryFindActivatedLocales $activatedLocalesQuery;
 
     public function __construct(InMemoryFindActivatedLocales $activatedLocalesQuery)
     {

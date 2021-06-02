@@ -181,10 +181,8 @@ class ValueCollectionSpec extends ObjectBehavior
 
     function it_filters_the_values()
     {
-        $this->filter(function(Value $value){ return false;})->normalize()->shouldReturn([]);
-        $this->filter(function(Value $value){
-            return !$value->getChannelReference()->isEmpty();
-        })->findValue(ValueKey::createFromNormalized('image_designer_fingerprint_mobile_fr_FR'))
+        $this->filter(fn(Value $value) => false)->normalize()->shouldReturn([]);
+        $this->filter(fn(Value $value) => !$value->getChannelReference()->isEmpty())->findValue(ValueKey::createFromNormalized('image_designer_fingerprint_mobile_fr_FR'))
             ->shouldNotBeNull();
     }
 
@@ -221,7 +219,7 @@ class ValueCollectionSpec extends ObjectBehavior
         $this->hasValue(Value::create(
             AttributeIdentifier::fromString('name_designer_fingerprint'),
             ChannelReference::createFromNormalized('e-commerce'),
-            LocaleReference::noReference('fr_FR'),
+            LocaleReference::noReference(),
             TextData::fromString('Philippe Starcks')
         ))->shouldReturn(false);
     }

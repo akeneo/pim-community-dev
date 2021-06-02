@@ -39,20 +39,15 @@ class GetConnectorAssetFamilyContext implements Context
 {
     private const REQUEST_CONTRACT_DIR = 'AssetFamily/Connector/Distribute/';
 
-    /** @var OauthAuthenticatedClientFactory */
-    private $clientFactory;
+    private OauthAuthenticatedClientFactory $clientFactory;
 
-    /** @var WebClientHelper */
-    private $webClientHelper;
+    private WebClientHelper $webClientHelper;
 
-    /** @var InMemoryFindConnectorAssetFamilyByAssetFamilyIdentifier */
-    private $findConnectorAssetFamily;
+    private InMemoryFindConnectorAssetFamilyByAssetFamilyIdentifier $findConnectorAssetFamily;
 
-    /** @var AssetFamilyRepositoryInterface */
-    private $assetFamilyRepository;
+    private AssetFamilyRepositoryInterface $assetFamilyRepository;
 
-    /** @var null|Response */
-    private $existentAssetFamily;
+    private ?Response $existentAssetFamily = null;
 
     public function __construct(
         OauthAuthenticatedClientFactory $clientFactory,

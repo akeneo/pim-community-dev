@@ -42,11 +42,9 @@ use Akeneo\AssetManager\Integration\SqlIntegrationTestCase;
 
 class SqlGetValueKeyForAttributeChannelAndLocaleTest extends SqlIntegrationTestCase
 {
-    /** @var SqlGetValueKeyForAttributeChannelAndLocale */
-    private $getValueKeyForAttributeChannelAndLocale;
+    private SqlGetValueKeyForAttributeChannelAndLocale $getValueKeyForAttributeChannelAndLocale;
 
-    /** @var AttributeRepositoryInterface */
-    private $attributeRepository;
+    private AttributeRepositoryInterface $attributeRepository;
 
     public function setUp(): void
     {

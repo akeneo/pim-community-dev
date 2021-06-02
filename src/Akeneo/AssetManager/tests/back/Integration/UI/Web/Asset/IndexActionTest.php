@@ -47,8 +47,7 @@ use Akeneo\AssetManager\Integration\ControllerIntegrationTestCase;
 
 class IndexActionTest extends ControllerIntegrationTestCase
 {
-    /** @var WebClientHelper */
-    private $webClientHelper;
+    private WebClientHelper $webClientHelper;
 
     public function setUp(): void
     {

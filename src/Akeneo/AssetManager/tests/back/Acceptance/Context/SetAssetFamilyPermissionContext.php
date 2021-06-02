@@ -29,23 +29,17 @@ final class SetAssetFamilyPermissionContext implements Context
     private const USER_GROUPS = ['IT support' => 154, 'Catalog Manager' => 122];
     private const ASSET_FAMILY_IDENTIFIER = 'designer';
 
-    /** @var AssetFamilyRepositoryInterface */
-    private $assetFamilyRepository;
+    private AssetFamilyRepositoryInterface $assetFamilyRepository;
 
-    /** @var InMemoryAssetFamilyPermissionRepository */
-    private $assetFamilyPermissionRepository;
+    private AssetFamilyPermissionRepositoryInterface $assetFamilyPermissionRepository;
 
-    /** @var SetAssetFamilyPermissionsHandler */
-    private $setAssetFamilyPermissionsHandler;
+    private SetAssetFamilyPermissionsHandler $setAssetFamilyPermissionsHandler;
 
-    /** @var ExceptionContext */
-    private $exceptionContext;
+    private ExceptionContext $exceptionContext;
 
-    /** @var ValidatorInterface */
-    private $validator;
+    private ValidatorInterface $validator;
 
-    /** @var CreateAssetFamilyHandler */
-    private $createAssetFamilyHandler;
+    private CreateAssetFamilyHandler $createAssetFamilyHandler;
 
     public function __construct(
         AssetFamilyRepositoryInterface $assetFamilyRepository,
