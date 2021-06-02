@@ -1600,6 +1600,53 @@ JSON;
         $this->assertSame(Response::HTTP_UNPROCESSABLE_ENTITY, $response->getStatusCode());
     }
 
+    public function testProductPartialUpdateWithTwoWayAssociationsOnProductItself()
+    {
+      $this->createTwoWayAssociation();
+
+        $data = <<<JSON
+{
+    "identifier": "product_associations",
+    "associations": {
+        "TWO_WAYS": {
+            "products": ["product_associations"]
+        }
+    }
+}
+JSON;
+
+        $client = $this->createAuthenticatedClient();
+        $client->request('PATCH', 'api/rest/v1/products/product_associations', [], [], [], $data);
+
+        $expectedContent = [
+            'code'    => 422,
+            'message' => 'A 2-way association only allows two different products to be associated',
+            '_links' => [
+                'documentation' => ['href' => 'https://help.akeneo.com/pim/serenity/articles/manage-your-association-types.html#create-a-2-way-association-type'],
+            ],
+        ];
+
+        $response = $client->getResponse();
+        $this->assertSame(Response::HTTP_UNPROCESSABLE_ENTITY, $response->getStatusCode());
+        $this->assertSame($expectedContent, json_decode($response->getContent(), true));
+    }
+
+    protected function createTwoWayAssociation()
+    {
+        $client = $this->createAuthenticatedClient();
+        $dataAssociationType =
+            <<<JSON
+    {
+        "code": "TWO_WAYS",
+        "is_two_way": true
+    }
+JSON;
+        $client->request('POST', '/api/rest/v1/association-types', [], [], [], $dataAssociationType);
+        $response = $client->getResponse();
+
+        $this->assertSame(Response::HTTP_CREATED, $response->getStatusCode());;
+    }
+
     /**
      * {@inheritdoc}
      */

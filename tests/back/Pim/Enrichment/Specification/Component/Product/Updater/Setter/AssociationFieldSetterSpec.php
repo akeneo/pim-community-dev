@@ -3,6 +3,9 @@
 namespace Specification\Akeneo\Pim\Enrichment\Component\Product\Updater\Setter;
 
 use Akeneo\Pim\Enrichment\Component\Product\Association\MissingAssociationAdder;
+use Akeneo\Pim\Enrichment\Component\Product\Exception\TwoWayAssociationWithTheSameProductException;
+use Akeneo\Pim\Enrichment\Component\Product\Model\AbstractAssociation;
+use Akeneo\Pim\Enrichment\Component\Product\Model\AbstractProduct;
 use Akeneo\Pim\Enrichment\Component\Product\Model\AssociationInterface;
 use Akeneo\Pim\Enrichment\Component\Product\Model\Group;
 use Akeneo\Pim\Enrichment\Component\Product\Model\GroupInterface;
@@ -447,6 +450,38 @@ class AssociationFieldSetterSpec extends ObjectBehavior
                 $productModel,
                 'associations',
                 ['xsell' => ['product_models' => ['not existing product model']]],
+            ]
+        );
+    }
+
+    function it_fails_for_two_way_association_on_the_product_itself(
+        $productRepository,
+        $associationTypeRepository,
+        $missingAssociationAdder
+    ) {
+        $twoWayAssociationType = new AssociationType();
+        $twoWayAssociationType->setIsTwoWay(true);
+        $twoWayAssociationType->setCode('TWO_WAY_ASSOCIATION');
+        $associationTypeRepository->findOneByIdentifier('TWO_WAY_ASSOCIATION')->willReturn($twoWayAssociationType);
+
+        $twoWayAssociation = new ProductAssociation();
+        $twoWayAssociation->setAssociationType($twoWayAssociationType);
+
+        $ownerAndAssociateProduct = new Product();
+        $ownerAndAssociateProduct->setIdentifier('owner_and_associate_product_identifier');
+        $ownerAndAssociateProduct->addAssociation($twoWayAssociation);
+
+        $productRepository->findOneByIdentifier('owner_and_associate_product_identifier')->willReturn($ownerAndAssociateProduct);
+
+        $missingAssociationAdder->addMissingAssociations($ownerAndAssociateProduct)->shouldBeCalled();
+
+        $this->shouldThrow(TwoWayAssociationWithTheSameProductException::class)
+            ->during(
+            'setFieldData',
+            [
+                $ownerAndAssociateProduct,
+                'associations',
+                ['TWO_WAY_ASSOCIATION' => ['products' => ['owner_and_associate_product_identifier']]],
             ]
         );
     }
