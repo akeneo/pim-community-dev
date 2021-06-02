@@ -1,0 +1,59 @@
+import {Meta, Story, ArgsTable, Canvas} from '@storybook/addon-docs/blocks';
+import {MainNavigationItem} from './MainNavigationItem.tsx';
+import * as Icons from '../../icons';
+
+<Meta
+  title="Components/MainNavigationItem"
+  component={MainNavigationItem}
+  argTypes={{
+      icon: {
+          control: {type: 'select', options: Object.keys(Icons)},
+          table: {type: {summary: 'ReactElement<IconProps>'}},
+      },
+      title: { control: {type: 'text'}},
+      tag: { control: {type: 'text'}},
+      disabled: {control: {type: 'boolean'}},
+      active: {control: {type: 'boolean'}},
+      onClick: {action: 'Click on the button'},
+  }}
+  args={{
+      icon: 'CardIcon',
+      title: 'Title',
+  }}
+/>
+
+# MainNavigationItem
+
+## Usage
+
+TODO
+
+## Playground
+
+<Canvas>
+  <Story name="Standard">
+    {args => {
+      return <MainNavigationItem {...args} icon={React.createElement(Icons[args.icon])} />;
+    }}
+  </Story>
+</Canvas>
+
+<ArgsTable story="Standard" />
+
+## Variation on tag
+
+<Canvas>
+    <Story name="Tag">
+        {args => {
+            return (
+                <>
+                    <MainNavigationItem {...args} icon={React.createElement(Icons[args.icon])} tag='new'/>
+                    <MainNavigationItem {...args} icon={React.createElement(Icons[args.icon])}
+                                        tag='very loooooooooooong tag'/>
+                    <MainNavigationItem {...args} icon={React.createElement(Icons[args.icon])}
+                                        tag='needlessly loooooooooooong tag'/>
+                </>
+            );
+        }}
+  </Story>
+</Canvas>
