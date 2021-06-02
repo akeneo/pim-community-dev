@@ -1,4 +1,4 @@
-import React, {Ref, ReactNode, isValidElement} from 'react';
+import React, {Ref, ReactNode, isValidElement, FC} from 'react';
 import styled, {css} from 'styled-components';
 import {IconProps} from '../../icons';
 import {AkeneoThemedProps, getColor} from '../../theme';
@@ -95,7 +95,7 @@ type TileProps = {
   onClick?: () => void;
 };
 
-const Tile: React.FC<TileProps> = ({label, icon, selected = false, size, onClick, ...rest}) => {
+const Tile: FC<TileProps> = ({label, icon, selected = false, size, onClick, ...rest}) => {
   return (
     <TileContainer selected={selected} size={size} onClick={onClick} {...rest}>
       <IconContainer size={size}>{React.cloneElement(icon, {size: size === 'small' ? 54 : 100})}</IconContainer>
