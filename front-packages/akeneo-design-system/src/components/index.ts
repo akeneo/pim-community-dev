@@ -30,3 +30,4 @@ export * from './Tags/Tags';
 export * from './Tiles/Tiles';
 export * from './Toolbar/Toolbar';
 export * from './Tree/Tree';
+export * from './MainNavigationItem/MainNavigationItem';
