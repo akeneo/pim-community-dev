@@ -77,7 +77,8 @@ ifeq ($(CI),true)
 else
 	XDEBUG_MODE=coverage APP_ENV=test ${PHP_RUN} vendor/bin/phpunit \
 		-c src/Akeneo/Connectivity/Connection/back/tests/ \
-		--coverage-clover coverage/connectivity/integration/coverage.xml \
+		--coverage-clover coverage/connectivity/integration/coverage.cov \
+		--coverage-php coverage/connectivity/integration/coverage.php \
 		--coverage-html coverage/connectivity/integration/ \
 		--testsuite Integration $(0)
 endif
@@ -88,10 +89,25 @@ ifeq ($(CI),true)
 else
 	XDEBUG_MODE=coverage APP_ENV=test ${PHP_RUN} vendor/bin/phpunit \
 		-c src/Akeneo/Connectivity/Connection/back/tests/ \
-		--coverage-clover coverage/connectivity/EndToEnd/coverage.xml \
+		--coverage-clover coverage/connectivity/EndToEnd/coverage.cov \
+		--coverage-php coverage/connectivity/EndToEnd/coverage.php \
 		--coverage-html coverage/connectivity/EndToEnd/ \
 		--testsuite EndToEnd $(0)
 endif
+
+connectivity-connection-codecoverage-merge: connectivity-connection-unit-back connectivity-connection-integration-back connectivity-connection-e2e-back
+	test -e phpcov.phar || wget https://phar.phpunit.de/phpcov.phar
+	php phpcov.phar --version
+	if [ -d coverage/connectivity/fusion/ ]; then rm -r coverage/connectivity/fusion/; fi
+	mkdir -p coverage/connectivity/fusion/
+	cp coverage/connectivity/phpspec/coverage.php coverage/connectivity/fusion/phpspec.cov
+	cp coverage/connectivity/integration/coverage.php coverage/connectivity/fusion/integration.cov
+	cp coverage/connectivity/EndToEnd/coverage.php coverage/connectivity/fusion/EndToEnd.cov
+
+	XDEBUG_MODE=coverage ${PHP_RUN} -d memory_limit=-1 phpcov.phar merge \
+		--clover coverage/connectivity/fusion/coverage.cov \
+		--html coverage/connectivity/fusion/ \
+		coverage/connectivity/fusion/
 
 connectivity-connection-back:
 	$(MAKE) connectivity-connection-coupling-back
