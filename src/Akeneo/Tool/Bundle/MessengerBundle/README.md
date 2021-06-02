@@ -87,15 +87,6 @@ From the Symfony Messenger point of view, these are three independent queues. Bu
   that will lead to degraded performance. Plus be aware for Google PubSub the checks perform some administrator operations
   which are limited by quotas (c.f. https://cloud.google.com/pubsub/quotas).
 
-- `ack_message_right_after_pull: ?bool`
-
-  Default to `false`, it allows to ack the message right after pulling it.  
-  By default Google Pub/Sub waits for an acknowledgement during the next 10 seconds after the message is pulled. After that the message is available once again for another subscriber using the same subscription.  
-  It can be a problem because in Symfony Messenger the message is acknowledged after the message is handled. For long processes the message will not be acknowledged in time.  
-  The maximum custom deadline you can specify is 600 seconds (10 minutes). If this limit is not high enough, consider setting this option to `true`.  
-  (See the `ackDeadlineSeconds` option in https://cloud.google.com/pubsub/docs/reference/rest/v1/projects.subscriptions/create)    
-  Note: with a doctrine transport, the `redeliver_timeout` is the equivalent of `ackDeadlineSeconds`
-
 - `subscription_filter: ?string`
 
   Default to `null`, it allows to filter messages. See https://cloud.google.com/pubsub/docs/filtering for the syntax.  

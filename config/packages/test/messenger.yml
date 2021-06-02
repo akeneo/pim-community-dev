@@ -31,7 +31,6 @@ framework:
                     project_id: '%env(GOOGLE_CLOUD_PROJECT)%'
                     topic_name: '%env(PUBSUB_TOPIC_JOB_QUEUE_UI)%'
                     subscription_name: '%env(PUBSUB_SUBSCRIPTION_JOB_QUEUE_UI)%'
-                    ack_message_right_after_pull: true
                     auto_setup: '%env(bool:PUBSUB_AUTO_SETUP)%'
                 retry_strategy:
                     max_retries: 0
@@ -42,7 +41,6 @@ framework:
                     project_id: '%env(GOOGLE_CLOUD_PROJECT)%'
                     topic_name: '%env(PUBSUB_TOPIC_JOB_QUEUE_IMPORT_EXPORT)%'
                     subscription_name: '%env(PUBSUB_SUBSCRIPTION_JOB_QUEUE_IMPORT_EXPORT)%'
-                    ack_message_right_after_pull: true
                     auto_setup: '%env(bool:PUBSUB_AUTO_SETUP)%'
                 retry_strategy:
                     max_retries: 0
@@ -53,7 +51,6 @@ framework:
                     project_id: '%env(GOOGLE_CLOUD_PROJECT)%'
                     topic_name: '%env(PUBSUB_TOPIC_JOB_QUEUE_DATA_MAINTENANCE)%'
                     subscription_name: '%env(PUBSUB_SUBSCRIPTION_JOB_QUEUE_DATA_MAINTENANCE)%'
-                    ack_message_right_after_pull: true
                     auto_setup: '%env(bool:PUBSUB_AUTO_SETUP)%'
                 retry_strategy:
                     max_retries: 0

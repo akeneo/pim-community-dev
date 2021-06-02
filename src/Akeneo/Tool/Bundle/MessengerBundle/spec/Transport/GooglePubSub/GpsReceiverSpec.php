@@ -64,41 +64,6 @@ class GpsReceiverSpec extends ObjectBehavior
             ]);
     }
 
-    public function it_gets_and_acks_message_when_mode_is_activated(Subscription $subscription, $serializer): void
-    {
-        $this->beConstructedWith($subscription, $serializer, ['ack_message_right_after_pull' => true]);
-
-        $gpsMessage = new Message(
-            [
-                'data' => 'My message!',
-                'messageId' => '123',
-                'attributes' => ['my_attribute' => 'My attribute!']
-            ]
-        );
-        $envelope = new Envelope((object)['message' => 'My message!']);
-
-        $subscription->pull([
-            'maxMessages' => 1,
-            'returnImmediately' => true,
-        ])
-            ->willReturn([$gpsMessage]);
-
-        $serializer->decode([
-            'body' => 'My message!',
-            'headers' => ['my_attribute' => 'My attribute!']
-        ])
-            ->willReturn($envelope);
-
-        $subscription->acknowledge($gpsMessage)->shouldBeCalledOnce();
-
-        $this->get()
-            ->shouldBeLike([
-                $envelope
-                    ->with(new TransportMessageIdStamp('123'))
-                    ->with(new NativeMessageStamp($gpsMessage))
-            ]);
-    }
-
     public function it_acknowledges_a_message(Subscription $subscription): void
     {
         $gpsMessage = new Message(
@@ -111,20 +76,6 @@ class GpsReceiverSpec extends ObjectBehavior
 
         $subscription->acknowledge($gpsMessage)
             ->shouldBeCalled();
-
-        $this->ack($envelope);
-    }
-
-    public function it_does_not_acknowledges_a_message_when_it_was_acknowledged_after_pull(
-        Subscription $subscription,
-        SerializerInterface $serializer
-    ): void {
-        $this->beConstructedWith($subscription, $serializer, ['ack_message_right_after_pull' => true]);
-
-        $gpsMessage = new Message(['data' => 'My message!']);
-        $envelope = new Envelope((object)['message' => 'My message!'], [new NativeMessageStamp($gpsMessage)]);
-
-        $subscription->acknowledge($gpsMessage)->shouldNotBeCalled();
 
         $this->ack($envelope);
     }

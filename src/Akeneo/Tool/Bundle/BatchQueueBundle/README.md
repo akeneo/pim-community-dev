@@ -40,7 +40,6 @@ bash command        Symfony Messenger          / Doctrine / ...)    JobExecution
 |                         | <------------------------ |                      |                          |
 |                         |                           |                      |                          |
 |                         | Acknowledge message       |                      |                          |
-|                         | (GooglePubSub only)       |                      |                          |
 |                         | ------------------------> |                      |                          |
 |                         |                           |                      |                          |
 |                         | Spread message to handler |                      |                          |
@@ -61,10 +60,6 @@ bash command        Symfony Messenger          / Doctrine / ...)    JobExecution
 |                         |                   Message handling is terminated |                          |
 |                         | <-------------------------+--------------------- |                          |
 |                         |                           |                      |                          |
-|                         | Acknowledge message       |                      |                          |
-|                         | (except GooglePubSub)     |                      |                          |
-|                         | ------------------------> |                      |                          |
-|                         |                           |                      |                          |
 |  The message is handled |                           |                      |                          |
 | <---------------------- |                           |                      |                          |
 |                         |                           |                      |                          |
@@ -74,9 +69,11 @@ bash command        Symfony Messenger          / Doctrine / ...)    JobExecution
 |                         |                           |                      |                          |
 | ...                     |                           |                      |                          |
 ```
-### Why do we ackowledge the message differently with Google PubSub?
 
-Google PubSub has a maximum time to acknowledge a message. By default it's 10 seconds and it can be configured
+### Why do we acknowledge the message just after pulling it?
+
+The normal usage in the Symfony Messenger's workflow is to ack the message after handling it.
+But Google PubSub has a maximum time to acknowledge a message. By default it's 10 seconds and it can be configured
 with the `ackDeadlineSeconds` option (https://cloud.google.com/pubsub/docs/reference/rest/v1/projects.subscriptions/create).
 The maximum that can be configured is 10 minutes. If the the message is not acknowledged in that interval, it can be delivered again.  
 But it's not rare a job execution exceeds 10 minutes, and we don't want to receive the same message twice. We thought about 2 solutions:
