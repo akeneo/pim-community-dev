@@ -19,10 +19,6 @@ const DeleteColumnModal: React.FC<DeleteColumnModalProps> = ({close, onDelete, c
   const translate = useTranslate();
   const [typedColumnCode, setTypedColumnCode] = React.useState<string>('');
 
-  const handleCancel = () => {
-    close();
-  };
-
   const handleDelete = () => {
     close();
     onDelete();
@@ -48,7 +44,7 @@ const DeleteColumnModal: React.FC<DeleteColumnModalProps> = ({close, onDelete, c
         </Field>
       </FieldsList>
       <Modal.BottomButtons>
-        <Button level='tertiary' onClick={handleCancel}>
+        <Button level='tertiary' onClick={close}>
           {translate('pim_common.cancel')}
         </Button>
         <Button level='danger' onClick={handleDelete} disabled={typedColumnCode !== columnDefinitionCode}>

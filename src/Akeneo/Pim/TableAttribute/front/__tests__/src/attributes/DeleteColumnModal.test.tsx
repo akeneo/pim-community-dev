@@ -4,7 +4,7 @@ import {screen, act, fireEvent} from '@testing-library/react';
 import {DeleteColumnModal} from '../../../src/attribute/DeleteColumnModal';
 
 describe('DeleteColumnModal', () => {
-  it('user cannot access delete button without typing the right column code', async () => {
+  it('renders a disabled delete button when the column code is not filled', async () => {
     const handleClose = jest.fn();
     const handleDelete = jest.fn();
     renderWithProviders(
@@ -27,7 +27,7 @@ describe('DeleteColumnModal', () => {
     expect(handleDelete).toHaveBeenCalledTimes(1);
   });
 
-  it('modal closing when user clicks on cancel button', async () => {
+  it('closes the modal when user clicks on cancel button', async () => {
     const handleClose = jest.fn();
     const handleDelete = jest.fn();
     renderWithProviders(
