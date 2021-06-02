@@ -29,7 +29,7 @@ class InMemoryFindConnectorAttributesByAssetFamilyIdentifierTest extends TestCas
 {
     private InMemoryFindConnectorAttributesByAssetFamilyIdentifier $query;
 
-    public function setUp(): voiddocker-compose run -u www-data --rm php php src/Akeneo/AssetManager/tests/check-requests-contracts-with-json-schemas.php
+    public function setUp(): void
     {
         parent::setUp();
         $this->query = new InMemoryFindConnectorAttributesByAssetFamilyIdentifier();
