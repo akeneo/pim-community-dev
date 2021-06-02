@@ -19,6 +19,7 @@ use Akeneo\Pim\Structure\Component\AttributeTypes;
 use Akeneo\Pim\Structure\Component\Query\PublicApi\AttributeType\Attribute;
 use Akeneo\Pim\TableAttribute\Domain\Value\Table;
 use Akeneo\Pim\TableAttribute\Infrastructure\Value\TableValue;
+use Akeneo\Tool\Component\StorageUtils\Exception\InvalidPropertyTypeException;
 
 class TableValueFactory implements ValueFactory
 {
@@ -28,7 +29,37 @@ class TableValueFactory implements ValueFactory
         ?string $localeCode,
         $data
     ): ValueInterface {
-        // todo cheecks
+        if (!is_array($data)) {
+            throw InvalidPropertyTypeException::arrayExpected($attribute->code(), static::class, $data);
+        }
+        foreach ($data as $row) {
+            if (!is_array($row)) {
+                throw InvalidPropertyTypeException::arrayOfArraysExpected($attribute->code(), static::class, $data);
+            }
+
+            foreach ($row as $cell) {
+                // TODO Validate for other types cheecks
+                // TODO scalar ?
+                if (!is_string($cell)) {
+                    throw InvalidPropertyTypeException::validArrayStructureExpected(
+                        $attribute->code(),
+                        'TODO cell should be a string',
+                        static::class,
+                        $data
+                    );
+                }
+
+                if ('' === $cell) {
+                    throw InvalidPropertyTypeException::validArrayStructureExpected(
+                        $attribute->code(),
+                        'TODO cell must be filled',
+                        static::class,
+                        $data
+                    );
+                }
+            }
+        }
+
         return $this->createWithoutCheckingData($attribute, $channelCode, $localeCode, $data);
     }
 
