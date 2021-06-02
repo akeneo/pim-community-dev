@@ -88,18 +88,24 @@ type TilesProps = {
 };
 
 type TileProps = {
-  label: string;
   icon: React.ReactElement<IconProps>;
   size?: Size;
   selected?: boolean;
   onClick?: () => void;
 };
 
-const Tile: FC<TileProps> = ({label, icon, selected = false, size, onClick, ...rest}) => {
+const Tile: FC<TileProps> = ({
+  icon,
+  selected = false,
+  size,
+  onClick,
+  children,
+  ...rest
+}) => {
   return (
     <TileContainer selected={selected} size={size} onClick={onClick} {...rest}>
       <IconContainer size={size}>{React.cloneElement(icon, {size: size === 'small' ? 54 : 100})}</IconContainer>
-      <LabelContainer>{label}</LabelContainer>
+      <LabelContainer>{children}</LabelContainer>
     </TileContainer>
   );
 };

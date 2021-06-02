@@ -39,14 +39,30 @@ The component is displayed in a configurable responsive grid (width and gap). Ti
     {args => {
       const [isCurrent, switchTo] = useTabBar('Identifier');
       return <Tiles {...args} >
-        <Tile icon={<AssetCollectionIcon/>} label='Assets collection' selected={isCurrent('Assets collection')} onClick={() => {switchTo('Assets collection')}}/>
-        <Tile icon={<DateIcon/>} label='Date' selected={isCurrent('Date')} onClick={() => {switchTo('Date')}}/>
-        <Tile icon={<FileIcon/>} label='File' selected={isCurrent('File')} onClick={() => {switchTo('File')}}/>
-        <Tile icon={<IdIcon/>} label='Identifier' selected={isCurrent('Identifier')} onClick={() => {switchTo('Identifier')}}/>
-        <Tile icon={<AssetsIcon/>} label='Image' selected={isCurrent('Image')} onClick={() => {switchTo('Image')}}/>
-        <Tile icon={<MetricIcon/>} label='Measurement' selected={isCurrent('Measurement')} onClick={() => {switchTo('Measurement')}}/>
-        <Tile icon={<AttributeTextIcon/>} label='Text' selected={isCurrent('Text')} onClick={() => {switchTo('Text')}}/>
-        <Tile icon={<AttributeNumberIcon/>} label='Number' selected={isCurrent('Number')} onClick={() => {switchTo('Number')}}/>
+        <Tile icon={<AssetCollectionIcon/>} selected={isCurrent('Assets collection')} onClick={() => {switchTo('Assets collection')}}>
+          Assets collection
+        </Tile>
+        <Tile icon={<DateIcon/>} selected={isCurrent('Date')} onClick={() => {switchTo('Date')}}>
+          Date
+        </Tile>
+        <Tile icon={<FileIcon/>} selected={isCurrent('File')} onClick={() => {switchTo('File')}}>
+          File
+        </Tile>
+        <Tile icon={<IdIcon/>} selected={isCurrent('Identifier')} onClick={() => {switchTo('Identifier')}}>
+          Identifier
+        </Tile>
+        <Tile icon={<AssetsIcon/>} selected={isCurrent('Image')} onClick={() => {switchTo('Image')}}>
+          Image
+        </Tile>
+        <Tile icon={<MetricIcon/>} selected={isCurrent('Measurement')} onClick={() => {switchTo('Measurement')}}>
+          Measurement
+        </Tile>
+        <Tile icon={<AttributeTextIcon/>} selected={isCurrent('Text')} onClick={() => {switchTo('Text')}}>
+          Text
+        </Tile>
+        <Tile icon={<AttributeNumberIcon/>} selected={isCurrent('Number')} onClick={() => {switchTo('Number')}}>
+          Number
+        </Tile>
       </Tiles>;
     }}
   </Story>
@@ -62,12 +78,20 @@ The component is displayed in a configurable responsive grid (width and gap). Ti
       return (
         <>
           <Tiles size={'small'}>
-            <Tile icon={<AssetCollectionIcon/>} label='Small Assets collection'/>
-            <Tile icon={<DateIcon/>} label='Small Date'/>
+            <Tile icon={<AssetCollectionIcon/>}>
+              Small Assets collection
+            </Tile>
+            <Tile icon={<DateIcon/>}>
+              Small Date
+            </Tile>
           </Tiles>
           <Tiles size={'big'}>
-            <Tile icon={<AssetCollectionIcon/>} label='Big Assets collection'/>
-            <Tile icon={<DateIcon/>} label='Big Date'/>
+            <Tile icon={<AssetCollectionIcon/>}>
+              Big Assets collection
+            </Tile>
+            <Tile icon={<DateIcon/>}>
+              Big Date
+            </Tile>
           </Tiles>
         </>
       );
