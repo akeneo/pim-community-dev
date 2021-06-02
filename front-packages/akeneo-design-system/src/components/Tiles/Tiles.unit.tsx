@@ -6,7 +6,9 @@ import {AssetCollectionIcon} from '../../icons';
 test('it renders tile correctly', () => {
   render(
     <Tiles size={'big'}>
-      <Tile icon={<AssetCollectionIcon />}>A label</Tile>
+      <Tile>
+        <AssetCollectionIcon />A label
+      </Tile>
     </Tiles>
   );
 

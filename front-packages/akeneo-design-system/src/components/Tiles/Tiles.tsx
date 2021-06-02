@@ -88,24 +88,29 @@ type TilesProps = {
 };
 
 type TileProps = {
-  icon: React.ReactElement<IconProps>;
   size?: Size;
   selected?: boolean;
   onClick?: () => void;
 };
 
-const Tile: FC<TileProps> = ({
-  icon,
-  selected = false,
-  size,
-  onClick,
-  children,
-  ...rest
-}) => {
+const Tile: FC<TileProps> = ({selected = false, size, onClick, children, ...rest}) => {
+  let icon: React.ReactElement<IconProps> | undefined;
+  React.Children.forEach(children, child => {
+    if (!icon && isValidElement<IconProps>(child)) {
+      icon = child;
+    }
+  });
+
   return (
     <TileContainer selected={selected} size={size} onClick={onClick} {...rest}>
-      <IconContainer size={size}>{React.cloneElement(icon, {size: size === 'small' ? 54 : 100})}</IconContainer>
-      <LabelContainer>{children}</LabelContainer>
+      {icon && (
+        <IconContainer size={size}>{React.cloneElement(icon, {size: size === 'small' ? 54 : 100})}</IconContainer>
+      )}
+      <LabelContainer>
+        {React.Children.map(children, child => {
+          return child !== icon && child;
+        })}
+      </LabelContainer>
     </TileContainer>
   );
 };
