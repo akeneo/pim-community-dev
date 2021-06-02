@@ -79,7 +79,6 @@ JSON;
         ], $decoded['table_configuration']);
     }
 
-
     public function testItUpdatesATableAttribute(): void
     {
         $client = $this->createAuthenticatedClient();
