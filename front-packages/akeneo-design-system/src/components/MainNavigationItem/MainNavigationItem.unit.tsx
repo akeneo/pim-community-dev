@@ -32,6 +32,15 @@ test('MainNavigationItem will not trigger onClick when MainNavigationItem is dis
   expect(onClick).not.toBeCalled();
 });
 
+test('MainNavigationItem will not trigger onClick when onClick is undefined', () => {
+  const onClick = jest.fn();
+  render(<MainNavigationItem icon={<ComponentIcon />} title="My title" onClick={undefined} />);
+
+  fireEvent.click(screen.getByText('My title'));
+
+  expect(onClick).not.toBeCalled();
+});
+
 test('MainNavigationItem supports forwardRef', () => {
   const ref = {current: null};
 
