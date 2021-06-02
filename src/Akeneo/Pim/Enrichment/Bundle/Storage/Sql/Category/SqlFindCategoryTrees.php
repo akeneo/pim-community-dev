@@ -41,7 +41,7 @@ class SqlFindCategoryTrees implements FindCategoryTrees
     }
 
     /**
-     * @param Category $categories
+     * @param Category[] $categories
      */
     private function applyPermissions(array $categories): array
     {
