@@ -75,6 +75,7 @@
 - PIM-9852: Fix exception during PRE_REMOVE on removeAll cause ES desynchronisation
 - PIM-9881: Do not update a product value which was not modified
 - PIM-9863: Remove temporisation and add unit tests for product model reindexation.
+- PIM-9891: Fix missing sanity checks when computing enrichment status
 - PIM-9886: Fix display of completeness in the PEF when the selected locale is deactivated
 
 ## New features
