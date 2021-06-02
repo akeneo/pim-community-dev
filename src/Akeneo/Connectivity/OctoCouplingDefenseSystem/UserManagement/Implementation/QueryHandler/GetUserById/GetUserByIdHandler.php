@@ -7,7 +7,6 @@ use Akeneo\Connectivity\OctoCouplingDefenseSystem\UserManagement\PublicApi\Query
 use Akeneo\UserManagement\Component\Model\UserInterface;
 use Akeneo\UserManagement\Component\Repository\UserRepositoryInterface;
 use Symfony\Component\Messenger\Handler\MessageSubscriberInterface;
-use Symfony\Component\Serializer\Normalizer\NormalizerInterface;
 
 /**
  * @copyright 2021 Akeneo SAS (http://www.akeneo.com)
@@ -16,12 +15,10 @@ use Symfony\Component\Serializer\Normalizer\NormalizerInterface;
 class GetUserByIdHandler implements MessageSubscriberInterface
 {
     private UserRepositoryInterface $repository;
-    private NormalizerInterface $normalizer;
 
-    public function __construct(UserRepositoryInterface $repository,NormalizerInterface $normalizer)
+    public function __construct(UserRepositoryInterface $repository)
     {
         $this->repository = $repository;
-        $this->normalizer = $normalizer;
     }
 
     public static function getHandledMessages(): iterable
@@ -32,7 +29,7 @@ class GetUserByIdHandler implements MessageSubscriberInterface
     }
 
     // TODO: Handle error
-    public function __invoke(GetUserByIdQuery $query) :User
+    public function __invoke(GetUserByIdQuery $query): User
     {
         /** @var UserInterface $user */
         $user = $this->repository->find($query->getId());
@@ -40,4 +37,3 @@ class GetUserByIdHandler implements MessageSubscriberInterface
         return new User($user->getId(), $user->getUsername());
     }
 }
-

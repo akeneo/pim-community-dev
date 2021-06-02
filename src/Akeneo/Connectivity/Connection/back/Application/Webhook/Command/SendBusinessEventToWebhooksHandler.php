@@ -12,13 +12,11 @@ use Akeneo\Connectivity\Connection\Domain\Webhook\Client\WebhookRequest;
 use Akeneo\Connectivity\Connection\Domain\Webhook\Exception\WebhookEventDataBuilderNotFoundException;
 use Akeneo\Connectivity\Connection\Domain\Webhook\Model\Read\ActiveWebhook;
 use Akeneo\Connectivity\Connection\Domain\Webhook\Persistence\Query\SelectActiveWebhooksQuery;
-use Akeneo\Connectivity\OctoCouplingDefenseSystem\UserManagement\PublicApi\Query\GetUserById\GetUserByIdQuery;
+use Akeneo\Connectivity\OctoCouplingDefenseSystem\UserManagement\PublicApi\Query\GetUserById\GetUserByIdQueryTrait;
 use Akeneo\Platform\Component\EventQueue\BulkEvent;
 use Akeneo\Platform\Component\EventQueue\BulkEventInterface;
 use Akeneo\Platform\Component\EventQueue\EventInterface;
 use Psr\Log\LoggerInterface;
-use Symfony\Component\Messenger\MessageBusInterface;
-use Symfony\Component\Messenger\Stamp\HandledStamp;
 
 /**
  * @author    Thomas Galvaing <thomas.galvaing@akeneo.com>
@@ -27,6 +25,8 @@ use Symfony\Component\Messenger\Stamp\HandledStamp;
  */
 class SendBusinessEventToWebhooksHandler
 {
+    use GetUserByIdQueryTrait;
+
     private SelectActiveWebhooksQuery $selectActiveWebhooksQuery;
     private WebhookUserAuthenticator $webhookUserAuthenticator;
     private WebhookClient $client;
@@ -34,7 +34,6 @@ class SendBusinessEventToWebhooksHandler
     private LoggerInterface $logger;
     private EventSubscriptionSkippedOwnEventLogger $eventSubscriptionSkippedOwnEventLogger;
     private string $pimSource;
-    private MessageBusInterface $queryBus;
 
     public function __construct(
         SelectActiveWebhooksQuery $selectActiveWebhooksQuery,
@@ -43,8 +42,7 @@ class SendBusinessEventToWebhooksHandler
         WebhookEventBuilder $builder,
         LoggerInterface $logger,
         EventSubscriptionSkippedOwnEventLogger $eventSubscriptionSkippedOwnEventLogger,
-        MessageBusInterface $queryBus,
-        string $pimSource,
+        string $pimSource
     ) {
         $this->selectActiveWebhooksQuery = $selectActiveWebhooksQuery;
         $this->webhookUserAuthenticator = $webhookUserAuthenticator;
@@ -53,7 +51,6 @@ class SendBusinessEventToWebhooksHandler
         $this->logger = $logger;
         $this->eventSubscriptionSkippedOwnEventLogger = $eventSubscriptionSkippedOwnEventLogger;
         $this->pimSource = $pimSource;
-        $this->queryBus = $queryBus;
     }
 
     public function handle(SendBusinessEventToWebhooksCommand $command): void
@@ -70,9 +67,7 @@ class SendBusinessEventToWebhooksHandler
             foreach ($webhooks as $webhook) {
                 $this->webhookUserAuthenticator->authenticate($webhook->userId());
 
-                //TODO NEXT STEP : service ?
-                $response = $this->queryBus->dispatch(new GetUserByIdQuery($webhook->userId()));
-                $user = $response->last(HandledStamp::class)->getResult();
+                $user = $this->getUserById($webhook->userId());
 
                 $filteredPimEventBulk = $this->filterConnectionOwnEvents($webhook, $user->getUsername(), $pimEventBulk);
                 if (null === $filteredPimEventBulk) {

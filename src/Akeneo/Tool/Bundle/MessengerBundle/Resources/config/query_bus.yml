@@ -1,0 +1,5 @@
+services:
+    akeneo_messenger.query_bus:
+        class: Akeneo\Tool\Component\Messenger\QueryBus
+        arguments:
+          - '@query.bus'
