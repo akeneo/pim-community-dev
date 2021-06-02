@@ -137,9 +137,9 @@ $frontendRequestContractsDir = sprintf('%s/%s', __DIR__, 'front/integration/resp
 
 $hasError = checkJsonSchemas($backendRequestContractsDir) ||checkJsonSchemas($frontendRequestContractsDir);
 
-if ($hasError === 0) {
+if ($hasError === false) {
     writeln('No error found in Request Contracts', 'info');
 }
 
-$exitCode = $hasError !== 0 ? 1 : 0;
+$exitCode = $hasError === true ? 1 : 0;
 exit($exitCode);
