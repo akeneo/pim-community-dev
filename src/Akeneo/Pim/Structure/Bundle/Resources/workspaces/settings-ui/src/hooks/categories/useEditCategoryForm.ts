@@ -4,12 +4,14 @@ import {NotificationLevel, useNotify, useTranslate} from '@akeneo-pim-community/
 import {EditCategoryForm, useCategory} from './useCategory';
 import {EditCategoryContext} from '../../components';
 import {computeNewEditPermissions, computeNewOwnPermissions, computeNewViewPermissions} from "../../helpers";
+import {Category} from '../../models';
 
 // @todo Add unit tests
 const useEditCategoryForm = (categoryId: number) => {
   const notify = useNotify();
   const translate = useTranslate();
   const {categoryData, status: categoryLoadingStatus, load: loadCategory} = useCategory(categoryId);
+  const [category, setCategory] = useState<Category | null>(null);
   const [originalFormData, setOriginalFormData] = useState<EditCategoryForm | null>(null);
   const [editedFormData, setEditedFormData] = useState<EditCategoryForm | null>(null);
   const [thereAreUnsavedChanges, setThereAreUnsavedChanges] = useState<boolean>(false);
@@ -106,6 +108,7 @@ const useEditCategoryForm = (categoryId: number) => {
     if (response.success) {
       notify(NotificationLevel.SUCCESS, translate('pim_enrich.entity.category.content.edit.success'));
       setOriginalFormData(response.form);
+      setCategory(response.category);
     } else {
       notify(NotificationLevel.ERROR, translate('pim_enrich.entity.category.content.edit.fail'));
       const refreshedToken = {...editedFormData._token, value: response.form._token.value};
@@ -123,6 +126,7 @@ const useEditCategoryForm = (categoryId: number) => {
     }
 
     setOriginalFormData(categoryData.form);
+    setCategory(categoryData.category);
   }, [categoryData]);
 
   useEffect(() => {
@@ -153,7 +157,7 @@ const useEditCategoryForm = (categoryId: number) => {
 
   return {
     categoryLoadingStatus,
-    category: categoryData ? categoryData.category : null,
+    category,
     formData: editedFormData,
     onChangeCategoryLabel,
     onChangePermissions,
