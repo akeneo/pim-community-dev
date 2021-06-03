@@ -137,12 +137,6 @@ class AssociationFieldSetter extends AbstractFieldSetter
                 );
             }
 
-            if ($associationType->isTwoWay()
-                && $owner instanceof Product
-                && $owner->getIdentifier() === $associatedProduct->getIdentifier()) {
-                throw new TwoWayAssociationWithTheSameProductException();
-            }
-
             $this->addAssociatedProduct($owner, $associatedProduct, $associationType);
         }
     }
