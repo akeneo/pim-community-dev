@@ -42,7 +42,6 @@ const EditPermissionsForm = ({formData, onChangePermissions, onChangeApplyPermis
             </MultiSelectInput.Option>
           ))}
         </MultiSelectInput>
-        <Helper level="info">{translate('category.permissions.view.help')}</Helper>
       </Field>
       <Field label={translate('category.permissions.edit.label')}>
         <MultiSelectInput
@@ -58,7 +57,6 @@ const EditPermissionsForm = ({formData, onChangePermissions, onChangeApplyPermis
             </MultiSelectInput.Option>
           ))}
         </MultiSelectInput>
-        <Helper level="info">{translate('category.permissions.edit.help')}</Helper>
       </Field>
       <Field label={translate('category.permissions.own.label')}>
         <MultiSelectInput
