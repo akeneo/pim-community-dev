@@ -145,96 +145,150 @@ jobs:
                               curl --output /dev/null --silent --head --fail
                               https://github.com/akeneo/pim-community-dev/tree/${CIRCLE_BRANCH} &&
                               sed -i "s|\"akeneo/pim-community-dev\": \"dev-master|\"akeneo/pim-community-dev\": \"dev-${CIRCLE_BRANCH}|" composer.json ||
-                              echo "No CE branch $CIRCLE_BRANCH found. I don't touch the composer.json file."
+                              echo "No CE branch ${CIRCLE_BRANCH} found. I don't touch the composer.json file."
           - run:
-              name: Build PROD PIM docker image
-              command: PIM_CONTEXT=deployment IMAGE_TAG_DATE=$(date +%Y%m%d%H%M%S) make php-image-prod
+              name: Define value for next steps
+              command: |
+                TYPE="srnt"
+                IMAGE_TAG_DATE=$(date +%Y%m%d%H%M%S)
+                SERENITY_RELEASE_NAME="v$(date +%Y%m%d%H%M%S)"
+                PRODUCT_REFERENCE_TYPE="serenity_instance"
+                PRODUCT_REFERENCE_CODE="serenity_${ENV_NAME}"
+
+                echo export TYPE=${TYPE} >> $BASH_ENV
+                echo export IMAGE_TAG_DATE=${IMAGE_TAG_DATE} >> $BASH_ENV
+                echo export SERENITY_RELEASE_NAME=${SERENITY_RELEASE_NAME} >> $BASH_ENV
+                echo export PRODUCT_REFERENCE_TYPE=${PRODUCT_REFERENCE_TYPE} >> $BASH_ENV
+                echo export PRODUCT_REFERENCE_CODE=${PRODUCT_REFERENCE_CODE} >> $BASH_ENV
+
+                echo "Image tag: ${IMAGE_TAG}"
+                echo "Serenity release name: ${SERENITY_RELEASE_NAME}"
           - run:
-              name: Push PROD PIM image on docker registry
+              name: Build the Serenity Edition prod image
+              command: PIM_CONTEXT=deployment IMAGE_TAG_DATE=${IMAGE_TAG_DATE} make php-image-prod
+          - run:
+              name: Push the Serenity Edition prod image on docker registry
               command: PIM_CONTEXT=deployment make push-php-image-prod
-
-  build_grth:
-      environment:
-        <<: *envVarsDeployDev
-      machine:
-          image: ubuntu-2004:202010-01
-      steps:
-          - attach_workspace:
-                at: ~/
-          - add_ssh_keys:
-                fingerprints:
-                    - "1f:25:f8:bb:59:52:95:f6:e2:f2:97:2f:30:d4:e9:66"
-          - set_gcloud_config_dev
-          - restore_persisted_env_vars
-          - run:
-              name: Get last good CE build revision
-              command: |
-                  if [[ -n "$CIRCLE_PULL_REQUEST" ]]; then
-                      if curl --output /dev/null --silent --head --fail https://github.com/akeneo/pim-community-dev/tree/${CIRCLE_BRANCH}; then
-                          CE_BRANCH=${CIRCLE_BRANCH}
-                          CE_COMMIT_HASH=HEAD
-                      else
-                          CE_BRANCH=master
-                          CE_COMMIT_HASH=HEAD
-                      fi
-                  else
-                      docker run --rm -v $PWD/growth_edition/last_good_ce:/app composer composer install
-                      CE_BRANCH=master
-                      CE_COMMIT_HASH=$(docker run --rm -v $PWD/growth_edition/last_good_ce:/app composer php get_last_good_ce_revision.php)
-                  fi
-
-                  IMAGE_TAG=$(echo growth-$CE_COMMIT_HASH | cut -b 1-20)$(echo $CIRCLE_SHA1 | cut -b 1-20)
-                  GROWTH_RELEASE_NAME=growth-v$(date +%Y%m%d%H%M%S)
-
-                  echo "CE Branch used: $CE_BRANCH"
-                  echo "CE Commit hash used: $CE_COMMIT_HASH"
-                  echo "Image tag: $IMAGE_TAG"
-                  echo "Growth Release name: $GROWTH_RELEASE_NAME"
-
-                  echo export CE_BRANCH=$CE_BRANCH >> $BASH_ENV
-                  echo export CE_COMMIT_HASH=$CE_COMMIT_HASH >> $BASH_ENV
-                  echo export IMAGE_TAG=$IMAGE_TAG >> $BASH_ENV
-                  echo export GROWTH_RELEASE_NAME=$GROWTH_RELEASE_NAME >> $BASH_ENV
-          - run:
-              name: Install yq
-              command: |
-                  wget https://github.com/mikefarah/yq/releases/download/2.4.0/yq_linux_386
-                  sudo mv yq_linux_386 /usr/local/bin/yq
-                  sudo chmod +x /usr/local/bin/yq
-          - run:
-              name: Prepare the Growth Edition
-              command: |
-                  export GIT_SSH_COMMAND='ssh -i ~/.ssh/id_rsa_1f25f8bb595295f6e2f2972f30d4e966 -o UserKnownHostsFile=~/.ssh/known_hosts -o IdentitiesOnly=Yes'
-                  mv /home/circleci/project /home/circleci/ee_project
-                  git clone --branch $CE_BRANCH git@github.com:akeneo/pim-community-dev.git /home/circleci/project
-                  cd /home/circleci/project
-                  git checkout $CE_COMMIT_HASH
-                  /home/circleci/ee_project/growth_edition/prepare_growth_edition.sh /home/circleci/project
-          - run:
-              name: Build the Growth Edition prod image
-              command: |
-                  DOCKER_BUILDKIT=1 docker build --no-cache --progress=plain --pull --target prod \
-                    --tag eu.gcr.io/akeneo-ci/pim-enterprise-dev:$IMAGE_TAG \
-                    --tag eu.gcr.io/akeneo-ci/pim-enterprise-dev:$GROWTH_RELEASE_NAME \
-                    --build-arg COMPOSER_AUTH=${COMPOSER_AUTH} .
-                  docker push eu.gcr.io/akeneo-ci/pim-enterprise-dev:$IMAGE_TAG
-                  docker push eu.gcr.io/akeneo-ci/pim-enterprise-dev:$GROWTH_RELEASE_NAME
-                  BOTO_CONFIG=/dev/null gsutil -m cp -r /home/circleci/project/deployments/ gs://akecld-terraform-modules/growth-edition-dev/$IMAGE_TAG/
           - run:
               name: Persist env vars for next jobs
               command: |
-                  echo export CE_BRANCH=$CE_BRANCH > persisted_env_vars
-                  echo export CE_COMMIT_HASH=$CE_COMMIT_HASH >> persisted_env_vars
-                  echo export IMAGE_TAG=$IMAGE_TAG >> persisted_env_vars
-                  echo export IMAGE_TAG_SHORTED=$(echo $CIRCLE_SHA1 | cut -c -7) >> persisted_env_vars
-                  echo export GROWTH_RELEASE_NAME=$GROWTH_RELEASE_NAME >> persisted_env_vars
-                  echo export TYPE="grth" >> persisted_env_vars
-                  echo export PRODUCT_REFERENCE_TYPE="growth_edition_instance" >> persisted_env_vars
-                  echo export PRODUCT_REFERENCE_CODE="growth_edition_sandbox" >> persisted_env_vars
+                echo export TYPE=${TYPE} > persisted_env_vars
+                echo export IMAGE_TAG=${IMAGE_TAG} >> persisted_env_vars
+                echo export IMAGE_TAG_SHORTED=${IMAGE_TAG_SHORTED} >> persisted_env_vars
+                echo export IMAGE_TAG_DATE=${IMAGE_TAG_DATE} >> persisted_env_vars
+                echo export SERENITY_RELEASE_NAME=${SERENITY_RELEASE_NAME} >> persisted_env_vars
+                echo export PRODUCT_REFERENCE_TYPE=${PRODUCT_REFERENCE_TYPE} >> persisted_env_vars
+                echo export PRODUCT_REFERENCE_CODE=${PRODUCT_REFERENCE_CODE} >> persisted_env_vars
           - persist_to_workspace:
               root: ~/
               paths:
                 - project
+
+  build_grth:
+    parameters:
+      is_pull_request:
+        type: boolean
+        default: true
+    environment:
+      <<: *envVarsDeployDev
+    machine:
+      image: ubuntu-2004:202010-01
+    steps:
+    - attach_workspace:
+        at: ~/
+    - add_ssh_keys:
+        fingerprints:
+          - "1f:25:f8:bb:59:52:95:f6:e2:f2:97:2f:30:d4:e9:66"
+    - set_gcloud_config_dev
+    - restore_persisted_env_vars
+    - when:
+        condition: << parameters.is_pull_request >>
+        steps:
+          - run:
+              name: Get last good CE build revision on PR
+              command: |
+                if curl --output /dev/null --silent --head --fail https://github.com/akeneo/pim-community-dev/tree/${CIRCLE_BRANCH}; then
+                  CE_BRANCH=${CIRCLE_BRANCH}
+                  CE_COMMIT_HASH=HEAD
+                else
+                  CE_BRANCH=master
+                  CE_COMMIT_HASH=HEAD
+                fi
+
+                echo export CE_BRANCH=${CE_BRANCH} >> $BASH_ENV
+                echo export CE_COMMIT_HASH=${CE_COMMIT_HASH} >> $BASH_ENV
+    - when:
+        condition:
+          not: << parameters.is_pull_request >>
+        steps:
+          - run:
+              name: Get last good CE build revision on master
+              command: |
+                docker run --rm -v $PWD/growth_edition/last_good_ce:/app composer composer install
+                CE_BRANCH=master
+                CE_COMMIT_HASH=$(docker run --rm -v ${PWD}/growth_edition/last_good_ce:/app composer php get_last_good_ce_revision.php)
+
+                echo export CE_BRANCH=${CE_BRANCH} >> $BASH_ENV
+                echo export CE_COMMIT_HASH=${CE_COMMIT_HASH} >> $BASH_ENV
+    - run:
+        name: Define value for next steps
+        command: |
+          TYPE="grth"
+          IMAGE_TAG=$(echo growth-${IMAGE_TAG} | cut -b 1-40)
+          IMAGE_TAG_DATE=$(date +%Y%m%d%H%M%S)
+          GROWTH_RELEASE_NAME="growth-v$(date +%Y%m%d%H%M%S)"
+          PRODUCT_REFERENCE_TYPE="growth_edition_instance"
+          PRODUCT_REFERENCE_CODE="growth_edition_${ENV_NAME}"
+
+          echo export TYPE=${TYPE} >> $BASH_ENV
+          echo export IMAGE_TAG=${IMAGE_TAG} >> $BASH_ENV
+          echo export IMAGE_TAG_DATE=${IMAGE_TAG_DATE} >> $BASH_ENV
+          echo export GROWTH_RELEASE_NAME=${GROWTH_RELEASE_NAME} >> $BASH_ENV
+          echo export PRODUCT_REFERENCE_TYPE=${PRODUCT_REFERENCE_TYPE} >> $BASH_ENV
+          echo export PRODUCT_REFERENCE_CODE=${PRODUCT_REFERENCE_CODE} >> $BASH_ENV
+
+          echo "CE Branch used: ${CE_BRANCH}"
+          echo "CE Commit hash used: ${CE_COMMIT_HASH}"
+          echo "Image tag: ${IMAGE_TAG}"
+          echo "Growth Release name: ${GROWTH_RELEASE_NAME}"
+    - run:
+        name: Install yq
+        command: |
+          wget https://github.com/mikefarah/yq/releases/download/2.4.0/yq_linux_386
+          sudo mv yq_linux_386 /usr/local/bin/yq
+          sudo chmod +x /usr/local/bin/yq
+    - run:
+        name: Prepare the Growth Edition
+        command: |
+          # export GIT_SSH_COMMAND='ssh -i ~/.ssh/id_rsa_1f25f8bb595295f6e2f2972f30d4e966 -o UserKnownHostsFile=~/.ssh/known_hosts -o IdentitiesOnly=Yes'
+          mv /home/circleci/project /home/circleci/ee_project
+          git clone --branch $CE_BRANCH git@github.com:akeneo/pim-community-dev.git /home/circleci/project
+          cd /home/circleci/project
+          git checkout $CE_COMMIT_HASH
+          /home/circleci/ee_project/growth_edition/prepare_growth_edition.sh /home/circleci/project
+    - run:
+        name: Build the Growth Edition prod image
+        command: PIM_CONTEXT=deployment TYPE=${TYPE} IMAGE_TAG_DATE=${IMAGE_TAG_DATE} make php-image-prod
+    - run:
+        name: Push the Growth Edition prod image on docker registry
+        command: PIM_CONTEXT=deployment TYPE=${TYPE} make push-php-image-prod
+    - run:
+        name: Push the Growth Edition deployements files on bucket
+        command: BOTO_CONFIG=/dev/null gsutil -m cp -r /home/circleci/project/deployments/ gs://akecld-terraform-modules/growth-edition-dev/${IMAGE_TAG}/
+    - run:
+        name: Persist env vars for next jobs
+        command: |
+          echo export TYPE=${TYPE} > persisted_env_vars
+          echo export IMAGE_TAG=${IMAGE_TAG} >> persisted_env_vars
+          echo export IMAGE_TAG_SHORTED=${IMAGE_TAG_SHORTED} >> persisted_env_vars
+          echo export IMAGE_TAG_DATE=${IMAGE_TAG_DATE} >> persisted_env_vars
+          echo export GROWTH_RELEASE_NAME=${GROWTH_RELEASE_NAME} >> persisted_env_vars
+          echo export PRODUCT_REFERENCE_TYPE=${PRODUCT_REFERENCE_TYPE} >> persisted_env_vars
+          echo export PRODUCT_REFERENCE_CODE=${PRODUCT_REFERENCE_CODE} >> persisted_env_vars
+    - persist_to_workspace:
+          root: ~/
+          paths:
+            - project
 
 ##################
 # Tests          #
@@ -994,6 +1048,7 @@ jobs:
                   docker pull eu.gcr.io/akeneo-ci/pim-enterprise-dev:$IMAGE_TAG
                   docker image tag eu.gcr.io/akeneo-ci/pim-enterprise-dev:$IMAGE_TAG eu.gcr.io/akeneo-ci/pim-enterprise-dev:$GROWTH_RELEASE_NAME
                   docker image tag eu.gcr.io/akeneo-ci/pim-enterprise-dev:$IMAGE_TAG eu.gcr.io/akeneo-cloud/pim-enterprise-dev:$GROWTH_RELEASE_NAME
+                  docker push eu.gcr.io/akeneo-ci/pim-enterprise-dev:$GROWTH_RELEASE_NAME
                   docker push eu.gcr.io/akeneo-cloud/pim-enterprise-dev:$GROWTH_RELEASE_NAME
 
 ##################
@@ -1242,7 +1297,6 @@ workflows:
                     - test_back_phpunit
                     - test_back_integration_bounded_contexts
                     - test_back_integration_reference_entities
-
           - pull_request_success:
                 requires:
                     - test_back_performance
@@ -1326,6 +1380,7 @@ workflows:
               requires:
                   - ready_to_build?
           - build_grth:
+              is_pull_request: false
               requires:
                   - checkout
           - test_cronjobs_existence:
@@ -1420,6 +1475,7 @@ workflows:
       jobs:
           - checkout
           - build_grth:
+                is_pull_request: false
                 requires:
                     - checkout
           - test_cronjobs_existence:
