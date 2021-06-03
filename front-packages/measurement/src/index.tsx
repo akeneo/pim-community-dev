@@ -9,7 +9,7 @@ import {MeasurementApp, ConfigContext, UnsavedChangesContext} from './feature';
 
 const unsavedChanges = {
   hasUnsavedChanges: false,
-  setHasUnsavedChanges: () => (unsavedChanges.hasUnsavedChanges = true),
+  setHasUnsavedChanges: (hasChanges: boolean) => (unsavedChanges.hasUnsavedChanges = hasChanges),
 };
 
 ReactDOM.render(
