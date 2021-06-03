@@ -53,4 +53,15 @@ final class Row
             $this->cells
         );
     }
+
+    /**
+     * @return string[]
+     */
+    public function columnCodes(): array
+    {
+        return \array_map(
+            'strval',
+            \array_keys($this->cells)
+        );
+    }
 }

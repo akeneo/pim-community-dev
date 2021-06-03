@@ -13,6 +13,7 @@ declare(strict_types=1);
 
 namespace Akeneo\Pim\TableAttribute\Domain\TableConfiguration;
 
+use Akeneo\Pim\TableAttribute\Domain\TableConfiguration\ValueObject\ColumnCode;
 use Webmozart\Assert\Assert;
 
 final class TableConfiguration
@@ -52,6 +53,17 @@ final class TableConfiguration
     {
         return array_map(
             fn (ColumnDefinition $columnDefinition): array => $columnDefinition->normalize(),
+            $this->columnDefinitions
+        );
+    }
+
+    /**
+     * @return ColumnCode[]
+     */
+    public function columnCodes(): array
+    {
+        return \array_map(
+            fn (ColumnDefinition $column): ColumnCode => $column->code(),
             $this->columnDefinitions
         );
     }

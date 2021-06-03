@@ -24,4 +24,14 @@ final class TableConfigurationNotFoundException extends \RuntimeException
 
         return new self($message);
     }
+
+    public static function forAttributeCode(string $attributeCode): self
+    {
+        $message = sprintf(
+            'Could not find table configuration for the "%s" attribute',
+            $attributeCode
+        );
+
+        return new self($message);
+    }
 }

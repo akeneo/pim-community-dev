@@ -11,8 +11,8 @@ class TableSpec extends ObjectBehavior
     {
         $this->beConstructedThrough('fromNormalized', [
             [
-                ['foo' => 'bar'],
-                ['bar' => 'baz'],
+                ['foo' => 'bar', '0' => 'toto'],
+                ['bar' => 'baz', 'foo' => '333'],
             ],
         ]);
     }
@@ -38,9 +38,14 @@ class TableSpec extends ObjectBehavior
     {
         $this->normalize()->shouldReturn(
             [
-                ['foo' => 'bar'],
-                ['bar' => 'baz'],
+                ['foo' => 'bar', '0' => 'toto'],
+                ['bar' => 'baz', 'foo' => '333'],
             ]
         );
+    }
+
+    function it_exposes_unique_column_codes()
+    {
+        $this->uniqueColumnCodes()->shouldReturn(['foo', '0', 'bar']);
     }
 }

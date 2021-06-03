@@ -113,4 +113,37 @@ final class SqlTableConfigurationRepository implements TableConfigurationReposit
             )
         );
     }
+
+    public function getByAttributeCode(string $attributeCode): TableConfiguration
+    {
+        $statement = $this->connection->executeQuery(
+            <<<SQL
+            SELECT table_column.id, table_column.code, data_type, column_order, labels
+            FROM pim_catalog_table_column table_column
+            INNER JOIN pim_catalog_attribute attribute ON attribute.id = table_column.attribute_id  
+            WHERE attribute.code = :attributeCode
+            ORDER BY column_order
+            SQL,
+            [
+                'attributeCode' => $attributeCode,
+            ]
+        );
+        $results = $statement->fetchAll();
+        if (0 === count($results)) {
+            throw TableConfigurationNotFoundException::forAttributeCode($attributeCode);
+        }
+
+        return TableConfiguration::fromColumnDefinitions(
+            array_map(
+                fn (array $row): ColumnDefinition => $this->columnFactory->createFromNormalized(
+                    [
+                        'code' => $row['code'],
+                        'data_type' => $row['data_type'],
+                        'labels' => \json_decode($row['labels'], true),
+                    ]
+                ),
+                $results
+            )
+        );
+    }
 }

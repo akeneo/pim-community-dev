@@ -40,7 +40,8 @@ final class SqlTableConfigurationRepositoryIntegration extends TestCase
         $this->loadFixtures();
     }
 
-    public function testItSavesATableConfiguration(): void
+    /** @test */
+    public function it_saves_a_new_table_configuration(): void
     {
         $tableConfiguration = TableConfiguration::fromColumnDefinitions([
             TextColumn::fromNormalized(['code' => 'ingredients']),
@@ -64,7 +65,8 @@ final class SqlTableConfigurationRepositoryIntegration extends TestCase
         self::assertSame('quantity_', substr($rows[1]['id'], 0, strlen('quantity_')));
     }
 
-    public function testItUpdatesATableConfiguration(): void
+    /** @test */
+    public function it_updates_a_table_configuration(): void
     {
         $tableConfiguration = TableConfiguration::fromColumnDefinitions([
             TextColumn::fromNormalized(['code' => 'ingredients']),
@@ -97,7 +99,8 @@ final class SqlTableConfigurationRepositoryIntegration extends TestCase
         self::assertSame('aqr', $rows[1]['code']);
     }
 
-    public function testItUpdatesATableConfigurationByChangingTheOrder(): void
+    /** @test */
+    public function it_updates_a_table_configuration_and_changes_the_columns_order(): void
     {
         $tableConfiguration = TableConfiguration::fromColumnDefinitions([
             TextColumn::fromNormalized(['code' => 'ingredients']),
@@ -137,7 +140,8 @@ final class SqlTableConfigurationRepositoryIntegration extends TestCase
         self::assertSame($idQuantity, $rows[2]['id']);
     }
 
-    public function testItLoadsATableConfiguration(): void
+    /** @test */
+    public function it_fetches_a_table_configuration_by_attribute_id(): void
     {
         $sql = <<<SQL
         INSERT INTO pim_catalog_table_column (id, attribute_id, code, data_type, column_order, labels)
@@ -162,7 +166,6 @@ final class SqlTableConfigurationRepositoryIntegration extends TestCase
 
         $result = $this->sqlTableConfigurationRepository->getByAttributeId($this->tableAttributeId);
 
-        self::assertInstanceOf(TableConfiguration::class, $result);
         self::assertEquals([
             [
                 'code' => 'ingredients',
@@ -176,7 +179,57 @@ final class SqlTableConfigurationRepositoryIntegration extends TestCase
         ], $result->normalize());
     }
 
-    public function testItThrowsAnExceptionWhenTableConfigurationIsNotFound(): void
+    /** @test */
+    public function it_fetches_a_table_configuration_by_attribute_code(): void
+    {
+        $sql = <<<SQL
+        INSERT INTO pim_catalog_table_column (id, attribute_id, code, data_type, column_order, labels)
+        VALUES (:id, :attribute_id, :code, :data_type, :column_order, :labels)
+        SQL;
+        $this->connection->executeQuery(
+            $sql,
+            [
+                'id' => 'ingredients_1234567890',
+                'attribute_id' => $this->tableAttributeId,
+                'code' => 'ingredients',
+                'data_type' => 'text',
+                'column_order' => 0,
+                'labels' => \json_encode(['en_US' => 'Ingredients', 'fr_FR' => 'Ingrédients'])
+            ]
+        );
+        $this->connection->executeQuery(
+            $sql,
+            [
+                'id' => 'quantity_2345678901',
+                'attribute_id' => $this->tableAttributeId,
+                'code' => 'quantity',
+                'data_type' => 'text',
+                'column_order' => 1,
+                'labels' => \json_encode([])
+            ]
+        );
+
+        $result = $this->sqlTableConfigurationRepository->getByAttributeCode('nutrition');
+
+        self::assertEquals(
+            [
+                [
+                    'code' => 'ingredients',
+                    'data_type' => 'text',
+                    'labels' => ['en_US' => 'Ingredients', 'fr_FR' => 'Ingrédients'],
+                ],
+                [
+                    'code' => 'quantity',
+                    'data_type' => 'text',
+                    'labels' => (object)[],
+                ]
+            ],
+            $result->normalize()
+        );
+    }
+
+    /** @test */
+    public function it_throw_an_exception_if_table_configuration_cannot_be_fetched(): void
     {
         $this->expectException(TableConfigurationNotFoundException::class);
         $this->expectExceptionMessage('Could not find table configuration for "0" attribute id');

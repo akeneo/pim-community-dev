@@ -14,3 +14,6 @@ pim_table_configuration:
             label_locale_does_not_exist_or_is_not_activated: The "{{ locale_code }}" locale doesn't exist or is not activated
             invalid_labels_format: The column labels must be a key/value object
             must_not_be_filled: The type %type% does not allow table_configuration
+
+        product_value:
+            non_existing_columns: '[0,1]The "{{ non_existing_columns }}" column does not exist|]1,Inf[The "{{ non_existing_columns }}" columns do not exist'

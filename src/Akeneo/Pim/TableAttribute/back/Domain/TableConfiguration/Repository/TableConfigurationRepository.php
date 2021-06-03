@@ -24,4 +24,9 @@ interface TableConfigurationRepository
      * @throws TableConfigurationNotFoundException
      */
     public function getByAttributeId(int $attributeId): TableConfiguration;
+
+    /**
+     * @throws TableConfigurationNotFoundException
+     */
+    public function getByAttributeCode(string $attributeCode): TableConfiguration;
 }

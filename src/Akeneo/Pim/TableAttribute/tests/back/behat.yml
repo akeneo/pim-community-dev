@@ -8,6 +8,9 @@ default:
                 - Akeneo\Pim\TableAttribute\tests\back\Acceptance\Context\ConstraintViolationsContext
                 - test.channel.context
                 - test.locale.context
+                - test.user.context
+                - test.attribute.context
+                - test.catalog.product_validation.context
             filters:
                 tags: '@acceptance-back'
     extensions:

@@ -6,3 +6,9 @@ services:
             - '@Akeneo\Pim\TableAttribute\tests\back\Acceptance\Context\ConstraintViolationsContext'
 
     Akeneo\Pim\TableAttribute\tests\back\Acceptance\Context\ConstraintViolationsContext: ~
+
+    Akeneo\Pim\TableAttribute\Domain\TableConfiguration\Repository\TableConfigurationRepository:
+        class: Akeneo\Pim\TableAttribute\tests\back\Acceptance\InMemory\InMemoryTableConfigurationRepository
+        arguments:
+            - '@pim_catalog.repository.attribute'
+            - '@Akeneo\Pim\TableAttribute\Domain\TableConfiguration\Factory\ColumnFactory'

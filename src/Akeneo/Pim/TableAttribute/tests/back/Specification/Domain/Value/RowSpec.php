@@ -9,7 +9,7 @@ class RowSpec extends ObjectBehavior
 {
     function let()
     {
-        $this->beConstructedThrough('fromNormalized', [['foo' => 'bar', 'bar' => 'baz']]);
+        $this->beConstructedThrough('fromNormalized', [['foo' => 'bar', '0' => 'baz']]);
     }
 
     function it_is_initializable()
@@ -27,7 +27,12 @@ class RowSpec extends ObjectBehavior
     {
         $this->normalize()->shouldReturn([
             'foo' => 'bar',
-            'bar' => 'baz',
+            '0' => 'baz',
         ]);
+    }
+
+    function it_exposes_its_column_codes()
+    {
+        $this->columnCodes()->shouldReturn(['foo', '0']);
     }
 }

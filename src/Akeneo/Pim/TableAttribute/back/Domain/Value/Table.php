@@ -53,4 +53,12 @@ final class Table
             $this->rows
         );
     }
+
+    /**
+     * @return string[]
+     */
+    public function uniqueColumnCodes(): array
+    {
+        return \array_unique(\array_merge(...\array_map(fn (Row $row): array => $row->columnCodes(), $this->rows)));
+    }
 }

@@ -12,3 +12,14 @@ services:
             - '@pim_channel.query.cache.channel_exists_with_locale'
         tags:
             - { name: 'validator.constraint_validator' }
+
+    Akeneo\Pim\TableAttribute\Infrastructure\Validation\ProductValue\TableColumnsShouldExistValidator:
+        arguments:
+            - '@Akeneo\Pim\TableAttribute\Domain\TableConfiguration\Repository\TableConfigurationRepository'
+        tags:
+            - { name: 'validator.constraint_validator' }
+
+    # Constraint guessers
+    Akeneo\Pim\TableAttribute\Infrastructure\Validation\ProductValue\ConstraintGuesser\TableGuesser:
+        tags:
+            - { name: 'pim_catalog.constraint_guesser.attribute' }
