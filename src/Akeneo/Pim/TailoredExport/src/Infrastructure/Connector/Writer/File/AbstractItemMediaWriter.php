@@ -17,12 +17,8 @@ use Akeneo\Tool\Component\Batch\Item\InitializableInterface;
 use Akeneo\Tool\Component\Batch\Item\ItemWriterInterface;
 use Akeneo\Tool\Component\Batch\Model\StepExecution;
 use Akeneo\Tool\Component\Batch\Step\StepExecutionAwareInterface;
-use Akeneo\Tool\Component\Buffer\BufferFactory;
 use Akeneo\Tool\Component\Connector\Writer\File\ArchivableWriterInterface;
-use Akeneo\Tool\Component\Connector\Writer\File\FlatItemBuffer;
-use Akeneo\Tool\Component\Connector\Writer\File\FlatItemBufferFlusher;
 use Akeneo\Tool\Component\Connector\Writer\File\WrittenFileInfo;
-use Box\Spout\Writer\WriterFactory;
 use Box\Spout\Writer\WriterInterface;
 use Symfony\Component\Filesystem\Filesystem;
 
@@ -36,16 +32,19 @@ abstract class AbstractItemMediaWriter implements
     private const DATETIME_FORMAT = 'Y-m-d_H-i-s';
 
     private Filesystem $localFileSystem;
+    private FileWriterFactory $fileWriterFactory;
+    private ?StepExecution $stepExecution = null;
 
     /** @var WrittenFileInfo[] */
     private array $writtenFiles = [];
-    private ?StepExecution $stepExecution = null;
-    private ?WriterInterface $writer = null;
     private int $numberOfLineWritten = 0;
+    private ?string $openedPath = null;
+    private ?WriterInterface $writer = null;
 
-    public function __construct(Filesystem $localFileSystem)
+    public function __construct(Filesystem $localFileSystem, FileWriterFactory $fileWriterFactory)
     {
         $this->localFileSystem = $localFileSystem;
+        $this->fileWriterFactory = $fileWriterFactory;
     }
 
     /**
@@ -54,6 +53,10 @@ abstract class AbstractItemMediaWriter implements
     public function initialize(): void
     {
         $this->numberOfLineWritten = 0;
+        $this->writtenFiles = [];
+        $this->openedPath = null;
+        $this->writer = null;
+
         $exportDirectory = dirname($this->getPath());
         if (!is_dir($exportDirectory)) {
             $this->localFileSystem->mkdir($exportDirectory);
@@ -66,23 +69,26 @@ abstract class AbstractItemMediaWriter implements
      */
     public function write(array $items): void
     {
+        $this->openedPath = $this->getPath();
+        if (!empty($items) && $this->numberOfLineWritten === 0) {
+            $this->writer = $this->fileWriterFactory->build();
+            $this->writer->openToFile($this->openedPath);
+            $this->addHeadersIfNeeded(current($items));
+        }
+
         foreach ($items as $item) {
-            $path = $this->getPath();
-            $writer = $this->getWriter($path, $this->getWriterConfiguration());
-            if ($this->numberOfLineWritten === 0) {
-                $this->addHeaders($item);
+            if ($this->maxLinePerFileIsReached()) {
+                $this->writer->close();
+                $this->writtenFiles[] = WrittenFileInfo::fromLocalFile($this->openedPath, basename($this->openedPath));
+
+                $this->writer = $this->fileWriterFactory->build();
+                $this->openedPath = $this->getPath();
+                $this->writer->openToFile($this->openedPath);
+                $this->addHeadersIfNeeded($item);
             }
 
-            if ($this->areSeveralFilesNeeded() && $this->maxLinePerFileIsReached()) {
-                $writer->close();
-                $this->writtenFiles[] = WrittenFileInfo::fromLocalFile($path, basename($path));
 
-                $this->writer = null;
-                $writer = $this->getWriter($path, $this->getWriterConfiguration());
-                $this->addHeaders($item);
-            }
-
-            $writer->addRow($item);
+            $this->writer->addRow($item);
             $this->numberOfLineWritten++;
         }
 
@@ -94,13 +100,11 @@ abstract class AbstractItemMediaWriter implements
      */
     public function flush(): void
     {
-        $path = $this->getPath();
-        if ($this->numberOfLineWritten !== 0) {
-            $this->writtenFiles[] = WrittenFileInfo::fromLocalFile($path, basename($path));
+        if ($this->numberOfLineWritten !== 0 && $this->openedPath !== null) {
+            $this->writtenFiles[] = WrittenFileInfo::fromLocalFile($this->openedPath, basename($this->openedPath));
         }
 
-        $writer = $this->getWriter($path, $this->getWriterConfiguration());
-        $writer->close();
+        $this->writer->close();
     }
 
     /**
@@ -153,11 +157,6 @@ abstract class AbstractItemMediaWriter implements
         $this->stepExecution = $stepExecution;
     }
 
-    /**
-     * @return array<string, mixed>
-     */
-    abstract protected function getWriterConfiguration(): array;
-
     private function areSeveralFilesNeeded(): bool
     {
         $maxLinesPerFile = $this->getMaxLinePerFile();
@@ -175,34 +174,6 @@ abstract class AbstractItemMediaWriter implements
         return $parameters->has('linesPerFile') ? (int) $parameters->get('linesPerFile') : -1;
     }
 
-    private function getWriter($filePath, array $options = []): WriterInterface
-    {
-        if ($this->writer) {
-            return $this->writer;
-        }
-
-        if (!isset($options['type'])) {
-            throw new \InvalidArgumentException('Option "type" have to be defined');
-        }
-
-        $this->writer = WriterFactory::create($options['type']);
-        unset($options['type']);
-
-        foreach ($options as $name => $option) {
-            $setter = 'set' . ucfirst($name);
-            if (!method_exists($this->writer, $setter)) {
-                $message = sprintf('Option "%s" does not exist in writer "%s"', $setter, get_class($this->writer));
-                throw new \InvalidArgumentException($message);
-            }
-
-            $this->writer->$setter($option);
-        }
-
-        $this->writer->openToFile($filePath);
-
-        return $this->writer;
-    }
-
     private function getStepExecution(): StepExecution
     {
         if (!$this->stepExecution instanceof StepExecution) {
@@ -212,7 +183,7 @@ abstract class AbstractItemMediaWriter implements
         return $this->stepExecution;
     }
 
-    private function addHeaders(array $item): void
+    private function addHeadersIfNeeded(array $item): void
     {
         $parameters = $this->getStepExecution()->getJobParameters();
         if (!$parameters->has('withHeader') || $parameters->get('withHeader') === false) {
@@ -224,6 +195,10 @@ abstract class AbstractItemMediaWriter implements
 
     private function maxLinePerFileIsReached(): bool
     {
-        return $this->numberOfLineWritten % $this->getMaxLinePerFile() === 1;
+        if (!$this->areSeveralFilesNeeded()) {
+            return false;
+        }
+
+        return $this->numberOfLineWritten > 0 && $this->numberOfLineWritten % $this->getMaxLinePerFile() === 0;
     }
 }

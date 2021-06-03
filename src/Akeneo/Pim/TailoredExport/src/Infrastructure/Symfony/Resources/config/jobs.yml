@@ -39,10 +39,16 @@ services:
       - '@Akeneo\Pim\TailoredExport\Infrastructure\Connector\Processor\AttributeSelector\AttributeSelectorRegistry'
       - '@akeneo.pim.structure.query.get_attributes'
 
+  akeneo.tailored_export.connector.xlsx.file_writer_factory:
+    class: Akeneo\Pim\TailoredExport\Infrastructure\Connector\Writer\File\FileWriterFactory
+    arguments:
+      - 'xlsx'
+
   akeneo.tailored_export.connector.writer.xlsx.product:
     class: 'Akeneo\Pim\TailoredExport\Infrastructure\Connector\Writer\File\Xlsx\ProductWriter'
     arguments:
       - '@filesystem'
+      - '@akeneo.tailored_export.connector.xlsx.file_writer_factory'
 
   akeneo.tailored_export.connector.step.xlsx_product.export:
     class: '%pim_connector.step.item_step.class%'
