@@ -13,9 +13,10 @@ declare(strict_types=1);
 
 namespace Akeneo\Pim\TableAttribute\Domain\Value;
 
+use Traversable;
 use Webmozart\Assert\Assert;
 
-final class Table
+final class Table implements \IteratorAggregate
 {
     /** @var array<Row> */
     private array $rows;
@@ -26,6 +27,14 @@ final class Table
     private function __construct(array $rows)
     {
         $this->rows = $rows;
+    }
+
+    /**
+     * @return \Traversable<Row>
+     */
+    public function getIterator(): \Traversable
+    {
+        return new \ArrayIterator($this->rows);
     }
 
     /**

@@ -15,26 +15,34 @@ namespace Akeneo\Pim\TableAttribute\Domain\Value;
 
 use Webmozart\Assert\Assert;
 
-final class StringCell implements CellInterface
+final class Cell
 {
-    private string $data;
+    /** @var int|string */
+    private $data;
 
-    private function __construct(string $data)
+    /**
+     * @params int|string $data
+     */
+    private function __construct($data)
     {
         $this->data = $data;
     }
 
     /**
-     * @param mixed $data
+     * @params int|string $data
      */
     public static function fromNormalized($data): self
     {
-        Assert::stringNotEmpty($data);
+        Assert::scalar($data);
+        Assert::notSame($data, '');
 
         return new self($data);
     }
 
-    public function normalize(): string
+    /**
+     * @returns int|string
+     */
+    public function normalize()
     {
         return $this->data;
     }

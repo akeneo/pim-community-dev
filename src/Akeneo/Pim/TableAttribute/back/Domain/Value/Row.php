@@ -17,11 +17,11 @@ use Webmozart\Assert\Assert;
 
 final class Row
 {
-    /** @var array<string, CellInterface> */
+    /** @var array<string, Cell> */
     private array $cells;
 
     /**
-     * @param array<string, CellInterface> $cells
+     * @param array<string, Cell> $cells
      */
     private function __construct(array $cells)
     {
@@ -37,7 +37,7 @@ final class Row
         Assert::notEmpty($row);
         return new self(
             array_map(
-                fn ($data): CellInterface => StringCell::fromNormalized($data),
+                fn ($data): Cell => Cell::fromNormalized($data),
                 $row
             )
         );
@@ -49,7 +49,7 @@ final class Row
     public function normalize(): array
     {
         return array_map(
-            fn (CellInterface $cell) => $cell->normalize(),
+            fn (Cell $cell) => $cell->normalize(),
             $this->cells
         );
     }

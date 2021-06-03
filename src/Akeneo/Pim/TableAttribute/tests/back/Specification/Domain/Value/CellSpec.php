@@ -2,11 +2,10 @@
 
 namespace Specification\Akeneo\Pim\TableAttribute\Domain\Value;
 
-use Akeneo\Pim\TableAttribute\Domain\Value\CellInterface;
-use Akeneo\Pim\TableAttribute\Domain\Value\StringCell;
+use Akeneo\Pim\TableAttribute\Domain\Value\Cell;
 use PhpSpec\ObjectBehavior;
 
-class StringCellSpec extends ObjectBehavior
+class CellSpec extends ObjectBehavior
 {
     function let()
     {
@@ -15,8 +14,7 @@ class StringCellSpec extends ObjectBehavior
 
     function it_is_initializable()
     {
-        $this->shouldImplement(CellInterface::class);
-        $this->shouldHaveType(StringCell::class);
+        $this->shouldHaveType(Cell::class);
     }
 
     function it_cannot_be_instantiated_with_an_empty_string()
