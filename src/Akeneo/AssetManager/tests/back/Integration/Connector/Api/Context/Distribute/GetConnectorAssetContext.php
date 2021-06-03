@@ -129,7 +129,9 @@ class GetConnectorAssetContext implements Context
                         'data' => '2/4/3/7/24378761474c58aeee26016ee881b3b15069de52_kartell_cover.jpg'
                     ]
                 ]
-            ]
+            ],
+            new \DateTimeImmutable('@0'),
+            new \DateTimeImmutable('@3600'),
         );
         $this->findConnectorAsset->save(
             AssetFamilyIdentifier::fromString($assetFamilyIdentifier),
@@ -181,7 +183,9 @@ class GetConnectorAssetContext implements Context
         for ($i = 0; $i < 10 ; $i++) {
             $asset = new ConnectorAsset(
                 AssetCode::fromString('asset_code_' . $i),
-                []
+                [],
+                new \DateTimeImmutable('@0'),
+                new \DateTimeImmutable('@3600'),
             );
             $this->findConnectorAsset->save(
                 AssetFamilyIdentifier::fromString($assetFamilyIdentifier),
@@ -226,7 +230,9 @@ class GetConnectorAssetContext implements Context
             for ($j = 0; $j < 10 ; $j++) {
                 $asset = new ConnectorAsset(
                     AssetCode::fromString(sprintf('asset_code_%s_%s', $i, $j)),
-                    []
+                    [],
+                    new \DateTimeImmutable('@0'),
+                    new \DateTimeImmutable('@3600'),
                 );
                 $this->findConnectorAsset->save(
                     AssetFamilyIdentifier::fromString(sprintf('asset_family_%s', $i)),

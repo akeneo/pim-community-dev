@@ -56,7 +56,9 @@ class SqlFindConnectorAssetByAssetFamilyAndCode implements FindConnectorAssetByA
                 identifier, 
                 code, 
                 asset_family_identifier, 
-                value_collection
+                value_collection,
+                created_at,
+                updated_at
             FROM akeneo_asset_manager_asset
             WHERE 
                 code = :code AND asset_family_identifier = :asset_family_identifier;

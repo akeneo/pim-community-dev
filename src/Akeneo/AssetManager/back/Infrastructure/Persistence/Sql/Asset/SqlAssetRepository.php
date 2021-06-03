@@ -76,8 +76,8 @@ class SqlAssetRepository implements AssetRepositoryInterface
 
         $insert = <<<SQL
         INSERT INTO akeneo_asset_manager_asset
-            (identifier, code, asset_family_identifier, value_collection)
-        VALUES (:identifier, :code, :asset_family_identifier, :value_collection);
+            (identifier, code, asset_family_identifier, value_collection, created_at, updated_at)
+        VALUES (:identifier, :code, :asset_family_identifier, :value_collection, :created_at, :updated_at);
 SQL;
         $affectedRows = $this->sqlConnection->executeUpdate(
             $insert,

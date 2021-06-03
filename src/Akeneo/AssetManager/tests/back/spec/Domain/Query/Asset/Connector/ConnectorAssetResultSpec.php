@@ -1,4 +1,5 @@
 <?php
+
 declare(strict_types=1);
 
 /*
@@ -22,9 +23,19 @@ class ConnectorAssetResultSpec extends ObjectBehavior
     {
         $this->beConstructedThrough('createFromSearchAfterQuery', [
             [
-                new ConnectorAsset(AssetCode::fromString('code1'), []),
+                new ConnectorAsset(
+                    AssetCode::fromString('code1'),
+                    [],
+                    new \DateTimeImmutable('@0'),
+                    new \DateTimeImmutable('@3600'),
+                ),
                 new \StdClass(),
-                new ConnectorAsset(AssetCode::fromString('code2'), []),
+                new ConnectorAsset(
+                    AssetCode::fromString('code2'),
+                    [],
+                    new \DateTimeImmutable('@0'),
+                    new \DateTimeImmutable('@3600'),
+                ),
             ],
             ['value1', 120]
         ]);
@@ -34,8 +45,18 @@ class ConnectorAssetResultSpec extends ObjectBehavior
 
     function it_returns_the_assets()
     {
-        $asset1 = new ConnectorAsset(AssetCode::fromString('code1'), []);
-        $asset2 = new ConnectorAsset(AssetCode::fromString('code2'), []);
+        $asset1 = new ConnectorAsset(
+            AssetCode::fromString('code1'),
+            [],
+            new \DateTimeImmutable('@0'),
+            new \DateTimeImmutable('@3600'),
+        );
+        $asset2 = new ConnectorAsset(
+            AssetCode::fromString('code2'),
+            [],
+            new \DateTimeImmutable('@0'),
+            new \DateTimeImmutable('@3600'),
+        );
         $this->beConstructedThrough('createFromSearchAfterQuery', [
             [$asset1, $asset2],
             ['value1', 120]

@@ -111,7 +111,9 @@ class SqlFindConnectorAssetsByIdentifiersTest extends SqlIntegrationTestCase
                             'data'    => sprintf('Nom: %s', $code),
                         ]
                     ]
-                ]
+                ],
+                (new \DateTimeImmutable('@0'))->setTimezone(new \DateTimeZone(date_default_timezone_get())),
+                (new \DateTimeImmutable('@3600'))->setTimezone(new \DateTimeZone(date_default_timezone_get())),
             );
         }
 
@@ -155,7 +157,9 @@ class SqlFindConnectorAssetsByIdentifiersTest extends SqlIntegrationTestCase
                             'data'    => sprintf('Nom: %s', $code),
                         ]
                     ]
-                ]
+                ],
+                (new \DateTimeImmutable('@0'))->setTimezone(new \DateTimeZone(date_default_timezone_get())),
+                (new \DateTimeImmutable('@3600'))->setTimezone(new \DateTimeZone(date_default_timezone_get())),
             );
         }
 
@@ -194,7 +198,9 @@ class SqlFindConnectorAssetsByIdentifiersTest extends SqlIntegrationTestCase
                             'data'    => sprintf('Nom: %s', $code),
                         ]
                     ]
-                ]
+                ],
+                (new \DateTimeImmutable('@0'))->setTimezone(new \DateTimeZone(date_default_timezone_get())),
+                (new \DateTimeImmutable('@3600'))->setTimezone(new \DateTimeZone(date_default_timezone_get())),
             );
         }
 
@@ -276,7 +282,7 @@ class SqlFindConnectorAssetsByIdentifiersTest extends SqlIntegrationTestCase
     private function loadAssets(array $codes): void
     {
         foreach ($codes as $code) {
-            $asset = Asset::create(
+            $asset = Asset::fromState(
                 AssetIdentifier::fromString(sprintf('designer_%s_fingerprint', $code)),
                 AssetFamilyIdentifier::fromString('designer'),
                 AssetCode::fromString($code),
@@ -299,7 +305,9 @@ class SqlFindConnectorAssetsByIdentifiersTest extends SqlIntegrationTestCase
                         LocaleReference::fromLocaleIdentifier(LocaleIdentifier::fromCode('fr_FR')),
                         TextData::fromString(sprintf('Nom: %s', $code))
                     )
-                ])
+                ]),
+                new \DateTimeImmutable('@0'),
+                new \DateTimeImmutable('@3600'),
             );
 
             $assets[] = $asset;
