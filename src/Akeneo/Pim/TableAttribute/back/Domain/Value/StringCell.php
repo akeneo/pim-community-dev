@@ -24,6 +24,9 @@ final class StringCell implements CellInterface
         $this->data = $data;
     }
 
+    /**
+     * @param mixed $data
+     */
     public static function fromNormalized($data): self
     {
         Assert::stringNotEmpty($data);
