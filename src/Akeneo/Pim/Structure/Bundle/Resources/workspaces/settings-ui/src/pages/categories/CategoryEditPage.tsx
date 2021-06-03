@@ -89,7 +89,7 @@ const CategoryEditPage: FC = () => {
   };
 
   useEffect(() => {
-    if (category === null) {
+    if (!category) {
       setCategoryLabel('');
       setTreeLabel('');
       setTree(null);
