@@ -32,7 +32,7 @@ class CreateTableValueEndToEnd extends ApiTestCase
             'identifier' => 'id1',
             'values' => [
                 'nutrition' => [
-                    ['locale' => null, 'scope' => null, 'data' => [['foo' => 'bar']]],
+                    ['locale' => null, 'scope' => null, 'data' => [['ingredients' => 'bar']]],
                 ],
             ],
         ];
@@ -79,7 +79,7 @@ class CreateTableValueEndToEnd extends ApiTestCase
             'identifier' => 'id1',
             'values' => [
                 'nutrition' => [
-                    ['locale' => null, 'scope' => null, 'data' => [['foo' => ['wrong_value']]]],
+                    ['locale' => null, 'scope' => null, 'data' => [['ingredients' => ['wrong_value']]]],
                 ],
             ],
         ];
@@ -88,7 +88,7 @@ class CreateTableValueEndToEnd extends ApiTestCase
         $response = $client->getResponse();
         Assert::assertSame(Response::HTTP_UNPROCESSABLE_ENTITY, $response->getStatusCode());
         Assert::assertStringContainsString(
-            'Property "nutrition" expects an array with valid data, TODO cell should be a string.',
+            'Property "nutrition" expects an array with valid data, TODO cell should be a scalar.',
             \json_decode($response->getContent(), true)['message']
         );
     }
@@ -101,7 +101,7 @@ class CreateTableValueEndToEnd extends ApiTestCase
             'identifier' => 'id1',
             'values' => [
                 'nutrition' => [
-                    ['locale' => null, 'scope' => null, 'data' => [['foo' => '']]],
+                    ['locale' => null, 'scope' => null, 'data' => [['ingredients' => '']]],
                 ],
             ],
         ];

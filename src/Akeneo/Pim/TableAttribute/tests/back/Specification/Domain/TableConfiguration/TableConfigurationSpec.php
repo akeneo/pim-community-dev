@@ -3,8 +3,11 @@
 namespace Specification\Akeneo\Pim\TableAttribute\Domain\TableConfiguration;
 
 use Akeneo\Pim\TableAttribute\Domain\TableConfiguration\ColumnDefinition;
+use Akeneo\Pim\TableAttribute\Domain\TableConfiguration\NumberColumn;
 use Akeneo\Pim\TableAttribute\Domain\TableConfiguration\TableConfiguration;
+use Akeneo\Pim\TableAttribute\Domain\TableConfiguration\TextColumn;
 use Akeneo\Pim\TableAttribute\Domain\TableConfiguration\ValueObject\ColumnCode;
+use Akeneo\Pim\TableAttribute\Domain\TableConfiguration\ValueObject\ColumnDataType;
 use PhpSpec\ObjectBehavior;
 
 class TableConfigurationSpec extends ObjectBehavior
@@ -34,6 +37,18 @@ class TableConfigurationSpec extends ObjectBehavior
         $quantity->code()->willReturn(ColumnCode::fromString('quantity'));
         $this->beConstructedThrough('fromColumnDefinitions', [[$ingredients, $quantity]]);
         $this->shouldHaveType(TableConfiguration::class);
+    }
+
+    function it_returns_the_data_type_of_a_given_column_code()
+    {
+        $this->beConstructedThrough('fromColumnDefinitions', [[
+            TextColumn::fromNormalized(['code' => 'ingredient']),
+            NumberColumn::fromNormalized(['code' => 'quantity']),
+        ]]);
+
+        $this->getColumnDataType(ColumnCode::fromString('ingredient'))->shouldBeLike(ColumnDataType::fromString('text'));
+        $this->getColumnDataType(ColumnCode::fromString('quantity'))->shouldBeLike(ColumnDataType::fromString('number'));
+        $this->getColumnDataType(ColumnCode::fromString('unknown'))->shouldReturn(null);
     }
 
 //    TODO: implement when select columns are implemented

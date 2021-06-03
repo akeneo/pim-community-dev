@@ -21,7 +21,7 @@ final class Cell
     private $data;
 
     /**
-     * @params int|string $data
+     * @param int|string $data
      */
     private function __construct($data)
     {
@@ -29,7 +29,7 @@ final class Cell
     }
 
     /**
-     * @params int|string $data
+     * @param int|string $data
      */
     public static function fromNormalized($data): self
     {
@@ -40,7 +40,7 @@ final class Cell
     }
 
     /**
-     * @returns int|string
+     * @return int|string
      */
     public function normalize()
     {

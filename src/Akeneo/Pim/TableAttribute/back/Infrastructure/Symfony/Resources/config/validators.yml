@@ -19,6 +19,12 @@ services:
         tags:
             - { name: 'validator.constraint_validator' }
 
+    Akeneo\Pim\TableAttribute\Infrastructure\Validation\ProductValue\CellDataTypesShouldMatchValidator:
+        arguments:
+            - '@Akeneo\Pim\TableAttribute\Domain\TableConfiguration\Repository\TableConfigurationRepository'
+        tags:
+            - { name: 'validator.constraint_validator' }
+
     # Constraint guessers
     Akeneo\Pim\TableAttribute\Infrastructure\Validation\ProductValue\ConstraintGuesser\TableGuesser:
         tags:

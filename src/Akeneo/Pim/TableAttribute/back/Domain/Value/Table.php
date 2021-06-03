@@ -13,9 +13,11 @@ declare(strict_types=1);
 
 namespace Akeneo\Pim\TableAttribute\Domain\Value;
 
-use Traversable;
 use Webmozart\Assert\Assert;
 
+/**
+ * @phpstan-implements \IteratorAggregate<int, Row>
+ */
 final class Table implements \IteratorAggregate
 {
     /** @var array<Row> */

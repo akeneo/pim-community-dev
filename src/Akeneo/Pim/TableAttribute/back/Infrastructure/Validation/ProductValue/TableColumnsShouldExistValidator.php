@@ -37,7 +37,6 @@ final class TableColumnsShouldExistValidator extends ConstraintValidator
             return;
         }
 
-        /** @var Table $data */
         $columnCodes = $value->getData()->uniqueColumnCodes();
         $tableConfiguration = $this->tableConfigurationRepository->getByAttributeCode($value->getAttributeCode());
         $existingColumnCodes = \array_map(

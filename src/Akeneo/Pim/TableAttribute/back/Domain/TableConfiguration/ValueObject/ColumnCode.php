@@ -40,4 +40,9 @@ final class ColumnCode
     {
         return $this->code;
     }
+
+    public function equals(ColumnCode $otherColumnCode): bool
+    {
+        return $this->asString() === $otherColumnCode->asString();
+    }
 }

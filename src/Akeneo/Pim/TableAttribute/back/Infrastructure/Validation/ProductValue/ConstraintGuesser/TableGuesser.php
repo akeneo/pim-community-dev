@@ -16,6 +16,7 @@ namespace Akeneo\Pim\TableAttribute\Infrastructure\Validation\ProductValue\Const
 use Akeneo\Pim\Enrichment\Component\Product\Validator\ConstraintGuesserInterface;
 use Akeneo\Pim\Structure\Component\AttributeTypes;
 use Akeneo\Pim\Structure\Component\Model\AttributeInterface;
+use Akeneo\Pim\TableAttribute\Infrastructure\Validation\ProductValue\CellDataTypesShouldMatch;
 use Akeneo\Pim\TableAttribute\Infrastructure\Validation\ProductValue\TableColumnsShouldExist;
 
 final class TableGuesser implements ConstraintGuesserInterface
@@ -28,6 +29,7 @@ final class TableGuesser implements ConstraintGuesserInterface
     public function guessConstraints(AttributeInterface $attribute): array
     {
         return [
+            new CellDataTypesShouldMatch(),
             new TableColumnsShouldExist(),
         ];
     }

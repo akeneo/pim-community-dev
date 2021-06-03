@@ -27,6 +27,7 @@ Feature: Enrich a table attribute value
 
   Scenario: Filling a cell with the wrong data type raises an error
     When a product is created with values:
-      | attribute | json_data                                       |
-      | nutrition | [{"ingredient": "sugar", "quantity": "abcdef"}] |
-    Then the error 'The "quantity" column expects a number' is raised
+      | attribute | json_data                                 |
+      | nutrition | [{"ingredient": 1, "quantity": "abcdef"}] |
+    Then the error 'The "quantity" column expects a numeric, string given' is raised
+    And the error 'The "ingredient" column expects a string, integer given' is raised

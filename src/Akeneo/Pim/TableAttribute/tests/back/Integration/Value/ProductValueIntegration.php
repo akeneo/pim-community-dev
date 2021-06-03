@@ -42,7 +42,7 @@ final class ProductValueIntegration extends TestCase
             'group' => 'other',
             'table_configuration' => [
                 ['code' => 'ingredients', 'data_type' => 'text', 'labels' => ['en_US' => 'Ingredients']],
-                ['code' => 'quantity', 'data_type' => 'text', 'labels' => ['en_US' => 'Quantity']],
+                ['code' => 'quantity', 'data_type' => 'number', 'labels' => ['en_US' => 'Quantity']],
             ],
         ]);
         $violations = $this->get('validator')->validate($attribute);
@@ -57,7 +57,7 @@ final class ProductValueIntegration extends TestCase
         $product = $this->get('pim_catalog.builder.product')->createProduct('id1');
         $this->get('pim_catalog.updater.product')->update($product, ['values' => [
             'nutrition' => [
-                ['locale' => null, 'scope' => null, 'data' => [['foo' => 'bar']]],
+                ['locale' => null, 'scope' => null, 'data' => [['ingredients' => 'bar', 'quantity' => 10]]],
             ],
         ]]);
         self::assertInstanceOf(TableValue::class, $product->getValue('nutrition'));

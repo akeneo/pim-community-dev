@@ -14,6 +14,7 @@ declare(strict_types=1);
 namespace Akeneo\Pim\TableAttribute\Domain\TableConfiguration;
 
 use Akeneo\Pim\TableAttribute\Domain\TableConfiguration\ValueObject\ColumnCode;
+use Akeneo\Pim\TableAttribute\Domain\TableConfiguration\ValueObject\ColumnDataType;
 use Webmozart\Assert\Assert;
 
 final class TableConfiguration
@@ -66,5 +67,16 @@ final class TableConfiguration
             fn (ColumnDefinition $column): ColumnCode => $column->code(),
             $this->columnDefinitions
         );
+    }
+
+    public function getColumnDataType(ColumnCode $columnCode): ?ColumnDataType
+    {
+        foreach ($this->columnDefinitions as $columnDefinition) {
+            if ($columnDefinition->code()->equals($columnCode)) {
+                return $columnDefinition->dataType();
+            }
+        }
+
+        return null;
     }
 }

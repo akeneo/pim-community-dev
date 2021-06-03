@@ -15,7 +15,10 @@ namespace Akeneo\Pim\TableAttribute\Domain\Value;
 
 use Webmozart\Assert\Assert;
 
-final class Row
+/**
+ * @phpstan-implements \IteratorAggregate<string, Cell>
+ */
+final class Row implements \IteratorAggregate
 {
     /** @var array<string, Cell> */
     private array $cells;
@@ -26,6 +29,14 @@ final class Row
     private function __construct(array $cells)
     {
         $this->cells = $cells;
+    }
+
+    /**
+     * @return \Traversable<string, Cell>
+     */
+    public function getIterator(): \Traversable
+    {
+        return new \ArrayIterator($this->cells);
     }
 
     /**

@@ -38,12 +38,10 @@ class TableValueFactory implements ValueFactory
             }
 
             foreach ($row as $cell) {
-                // TODO Validate for other types cheecks
-                // TODO scalar ?
-                if (!is_string($cell)) {
+                if (!is_scalar($cell)) {
                     throw InvalidPropertyTypeException::validArrayStructureExpected(
                         $attribute->code(),
-                        'TODO cell should be a string',
+                        'TODO cell should be a scalar',
                         static::class,
                         $data
                     );

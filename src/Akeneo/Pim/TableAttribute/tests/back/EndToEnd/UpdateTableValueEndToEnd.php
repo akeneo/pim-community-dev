@@ -31,7 +31,7 @@ class UpdateTableValueEndToEnd extends ApiTestCase
         $data = [
             'values' => [
                 'nutrition' => [
-                    ['locale' => null, 'scope' => null, 'data' => [['baz' => 'bam']]],
+                    ['locale' => null, 'scope' => null, 'data' => [['description' => 'bam']]],
                 ],
             ],
         ];
@@ -44,7 +44,7 @@ class UpdateTableValueEndToEnd extends ApiTestCase
         Assert::assertNotNull($productFromDb);
         $value = $productFromDb->getValue('nutrition');
         Assert::assertInstanceOf(TableValue::class, $value);
-        $expectedData = [['baz' => 'bam']];
+        $expectedData = [['description' => 'bam']];
         Assert::assertEqualsCanonicalizing($expectedData, $value->getData()->normalize());
     }
 
@@ -86,7 +86,7 @@ class UpdateTableValueEndToEnd extends ApiTestCase
             'group' => 'other',
             'table_configuration' => [
                 ['code' => 'ingredients', 'data_type' => 'text', 'labels' => ['en_US' => 'Ingredients']],
-                ['code' => 'quantity', 'data_type' => 'text', 'labels' => ['en_US' => 'Quantity']],
+                ['code' => 'description', 'data_type' => 'text', 'labels' => ['en_US' => 'description']],
             ],
         ]);
         $violations = $this->get('validator')->validate($attribute);
@@ -96,7 +96,7 @@ class UpdateTableValueEndToEnd extends ApiTestCase
         $product = $this->get('pim_catalog.builder.product')->createProduct('id1');
         $this->get('pim_catalog.updater.product')->update($product, ['values' => [
             'nutrition' => [
-                ['locale' => null, 'scope' => null, 'data' => [['foo' => 'bar']]],
+                ['locale' => null, 'scope' => null, 'data' => [['ingredients' => 'bar']]],
             ],
         ]]);
         self::assertInstanceOf(TableValue::class, $product->getValue('nutrition'));

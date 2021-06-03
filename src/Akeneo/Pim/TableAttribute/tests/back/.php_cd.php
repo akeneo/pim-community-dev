@@ -37,6 +37,7 @@ $rules = [
             // pim dependencies
             'Akeneo\Pim\Structure\Component',
             'Akeneo\Tool\Component\StorageUtils\Saver\SaverInterface',
+            'Akeneo\Tool\Component\StorageUtils\Exception\InvalidPropertyTypeException',
             'Akeneo\Channel\Component\Query\PublicApi',
             'Akeneo\Platform\Bundle\InstallerBundle\Event',
             'Akeneo\Platform\Bundle\UIBundle\Provider\Field\FieldProviderInterface',
@@ -47,6 +48,7 @@ $rules = [
             'Akeneo\Pim\Enrichment\Component\Product\Normalizer\Indexing\Value\AbstractProductValueNormalizer',
             'Akeneo\Pim\Enrichment\Component\Product\Normalizer\Indexing\Value\ValueCollectionNormalizer',
             'Akeneo\Pim\Enrichment\Component\Product\Completeness\MaskItemGenerator\MaskItemGeneratorForAttributeType',
+            'Akeneo\Pim\Enrichment\Component\Product\Validator\ConstraintGuesserInterface',
         ]
     )->in('Akeneo\Pim\TableAttribute\Infrastructure'),
 ];

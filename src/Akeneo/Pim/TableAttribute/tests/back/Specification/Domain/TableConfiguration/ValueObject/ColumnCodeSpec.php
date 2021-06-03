@@ -13,6 +13,7 @@ declare(strict_types=1);
 
 namespace Specification\Akeneo\Pim\TableAttribute\Domain\TableConfiguration\ValueObject;
 
+use Akeneo\Pim\TableAttribute\Domain\TableConfiguration\ValueObject\ColumnCode;
 use PhpSpec\ObjectBehavior;
 
 class ColumnCodeSpec extends ObjectBehavior
@@ -32,5 +33,13 @@ class ColumnCodeSpec extends ObjectBehavior
     {
         $this->beConstructedThrough('fromString', ['ingredients']);
         $this->asString()->shouldBe('ingredients');
+    }
+
+    function it_can_compare_to_another_column_code()
+    {
+        $this->beConstructedThrough('fromString', ['ingredients']);
+
+        $this->equals(ColumnCode::fromString('ingredients'))->shouldBe(true);
+        $this->equals(ColumnCode::fromString('other'))->shouldBe(false);
     }
 }
