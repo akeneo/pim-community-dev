@@ -37,7 +37,7 @@ abstract class AbstractItemMediaWriter implements
 
     /** @var WrittenFileInfo[] */
     private array $writtenFiles = [];
-    private int $numberOfLineWritten = 0;
+    private int $numberOfWrittenLines = 0;
     private ?string $openedPath = null;
     private ?WriterInterface $writer = null;
 
@@ -52,7 +52,7 @@ abstract class AbstractItemMediaWriter implements
      */
     public function initialize(): void
     {
-        $this->numberOfLineWritten = 0;
+        $this->numberOfWrittenLines = 0;
         $this->writtenFiles = [];
         $this->openedPath = null;
         $this->writer = null;
@@ -70,14 +70,14 @@ abstract class AbstractItemMediaWriter implements
     public function write(array $items): void
     {
         $this->openedPath = $this->getPath();
-        if (!empty($items) && $this->numberOfLineWritten === 0) {
+        if (!empty($items) && $this->numberOfWrittenLines === 0) {
             $this->writer = $this->fileWriterFactory->build();
             $this->writer->openToFile($this->openedPath);
             $this->addHeadersIfNeeded(current($items));
         }
 
         foreach ($items as $item) {
-            if ($this->maxLinePerFileIsReached()) {
+            if ($this->isMaxLinesPerFileReached()) {
                 $this->writer->close();
                 $this->writtenFiles[] = WrittenFileInfo::fromLocalFile($this->openedPath, basename($this->openedPath));
 
@@ -89,7 +89,7 @@ abstract class AbstractItemMediaWriter implements
 
 
             $this->writer->addRow($item);
-            $this->numberOfLineWritten++;
+            $this->numberOfWrittenLines++;
         }
 
         $this->stepExecution->incrementSummaryInfo('write', count($items));
@@ -100,7 +100,7 @@ abstract class AbstractItemMediaWriter implements
      */
     public function flush(): void
     {
-        if ($this->numberOfLineWritten !== 0 && $this->openedPath !== null) {
+        if ($this->numberOfWrittenLines !== 0 && $this->openedPath !== null) {
             $this->writtenFiles[] = WrittenFileInfo::fromLocalFile($this->openedPath, basename($this->openedPath));
         }
 
@@ -128,14 +128,21 @@ abstract class AbstractItemMediaWriter implements
 
         $filePath = strtr($filePath, ['%datetime%' => $datetime, '%job_label%' => $jobLabel]);
         if ($this->areSeveralFilesNeeded()) {
-            $fileNumber = floor($this->numberOfLineWritten / $this->getMaxLinePerFile()) + 1;
+            $fileNumber = floor($this->numberOfWrittenLines / $this->getMaxLinesPerFile()) + 1;
             $fileInfo = new \SplFileInfo($filePath);
             $extensionSuffix = '';
             if ('' !== $fileInfo->getExtension()) {
                 $extensionSuffix = '.' . $fileInfo->getExtension();
             }
 
-            $filePath = $fileInfo->getPath() . DIRECTORY_SEPARATOR . $fileInfo->getBasename($extensionSuffix) . '_' . $fileNumber . $extensionSuffix;
+            $filePath = sprintf(
+                '%s%s%s_%d%s',
+                $fileInfo->getPath(),
+                DIRECTORY_SEPARATOR,
+                $fileInfo->getBasename($extensionSuffix),
+                $fileNumber,
+                $extensionSuffix
+            );
         }
 
         return $filePath;
@@ -159,7 +166,7 @@ abstract class AbstractItemMediaWriter implements
 
     private function areSeveralFilesNeeded(): bool
     {
-        $maxLinesPerFile = $this->getMaxLinePerFile();
+        $maxLinesPerFile = $this->getMaxLinesPerFile();
         if (-1 === $maxLinesPerFile) {
             return false;
         }
@@ -167,7 +174,7 @@ abstract class AbstractItemMediaWriter implements
         return $this->stepExecution->getTotalItems() > $maxLinesPerFile;
     }
 
-    private function getMaxLinePerFile(): int
+    private function getMaxLinesPerFile(): int
     {
         $parameters = $this->getStepExecution()->getJobParameters();
 
@@ -193,12 +200,12 @@ abstract class AbstractItemMediaWriter implements
         $this->writer->addRow(array_keys($item));
     }
 
-    private function maxLinePerFileIsReached(): bool
+    private function isMaxLinesPerFileReached(): bool
     {
         if (!$this->areSeveralFilesNeeded()) {
             return false;
         }
 
-        return $this->numberOfLineWritten > 0 && $this->numberOfLineWritten % $this->getMaxLinePerFile() === 0;
+        return $this->numberOfWrittenLines > 0 && $this->numberOfWrittenLines % $this->getMaxLinesPerFile() === 0;
     }
 }
