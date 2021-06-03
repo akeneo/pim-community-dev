@@ -41,6 +41,16 @@ test('MainNavigationItem will not trigger onClick when onClick is undefined', ()
   expect(onClick).not.toBeCalled();
 });
 
+test('MainNavigationItem displays an anchor when providing a `href`', () => {
+  render(<MainNavigationItem icon={<ComponentIcon />} title="My title" href="https://akeneo.com/" />);
+  expect(screen.getByText('My title').closest('a')).toHaveAttribute('href', 'https://akeneo.com/');
+});
+
+test('MainNavigationItem do not display an anchor when providing a `href` on a disabled component', () => {
+  render(<MainNavigationItem icon={<ComponentIcon />} title="My title" disabled={true} href="https://akeneo.com/" />);
+  expect(screen.getByText('My title').closest('a')).not.toHaveAttribute('href');
+});
+
 test('MainNavigationItem supports forwardRef', () => {
   const ref = {current: null};
 

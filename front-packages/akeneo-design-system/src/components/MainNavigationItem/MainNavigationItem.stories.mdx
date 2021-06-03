@@ -15,6 +15,7 @@ import * as Icons from '../../icons';
       disabled: {control: {type: 'boolean'}},
       active: {control: {type: 'boolean'}},
       onClick: {action: 'Click on the button'},
+      tagTint: {control: {type: 'select', options: ['green', 'blue', 'dark_blue', 'purple', 'dark_purple', 'yellow', 'red']}},
   }}
   args={{
       icon: 'CardIcon',
@@ -26,7 +27,7 @@ import * as Icons from '../../icons';
 
 ## Usage
 
-TODO
+The Main Navigation Item is used by the Navigation pattern. This components helps the users in their daily usage as an easy way to discover and navigate the interface. Also, it's a companion for them to understand where they are in their journey.
 
 ## Playground
 
@@ -40,6 +41,37 @@ TODO
 
 <ArgsTable story="Standard" />
 
+## Variation on active
+
+<Canvas>
+    <Story name="Active">
+        {args => {
+            return (
+                <>
+                    <MainNavigationItem {...args} icon={React.createElement(Icons[args.icon])} active={false} title='Default'/>
+                    <MainNavigationItem {...args} icon={React.createElement(Icons[args.icon])} active={true} title='Active'/>
+                </>
+            );
+        }}
+    </Story>
+</Canvas>
+
+## Variation on disabled
+
+<Canvas>
+    <Story name="Disabled">
+        {args => {
+            return (
+                <>
+                    <MainNavigationItem {...args} icon={React.createElement(Icons[args.icon])} disabled={false} title='Default'/>
+                    <MainNavigationItem {...args} icon={React.createElement(Icons[args.icon])} disabled={true} title='Disabled'/>
+                    <MainNavigationItem {...args} icon={React.createElement(Icons[args.icon])} disabled={true} active={true} title='Disabled and active'/>
+                </>
+            );
+        }}
+    </Story>
+</Canvas>
+
 ## Variation on tag
 
 <Canvas>
@@ -48,12 +80,45 @@ TODO
             return (
                 <>
                     <MainNavigationItem {...args} icon={React.createElement(Icons[args.icon])} tag='new'/>
-                    <MainNavigationItem {...args} icon={React.createElement(Icons[args.icon])}
-                                        tag='very loooooooooooong tag'/>
-                    <MainNavigationItem {...args} icon={React.createElement(Icons[args.icon])}
-                                        tag='needlessly loooooooooooong tag'/>
+                    <MainNavigationItem {...args} icon={React.createElement(Icons[args.icon])} tag='very loooooooooooong tag'/>
+                    <MainNavigationItem {...args} icon={React.createElement(Icons[args.icon])} tag='needlessly loooooooooooong tag'/>
                 </>
             );
         }}
   </Story>
+</Canvas>
+
+## Variation on tagTint
+
+<Canvas>
+    <Story name="Tag tint">
+        {args => {
+            return (
+                <>
+                    <MainNavigationItem {...args} icon={React.createElement(Icons[args.icon])} tagTint='green' tag='green'/>
+                    <MainNavigationItem {...args} icon={React.createElement(Icons[args.icon])} tagTint='blue' tag='blue'/>
+                    <MainNavigationItem {...args} icon={React.createElement(Icons[args.icon])} tagTint='dark_blue' tag='dark_blue'/>
+                    <MainNavigationItem {...args} icon={React.createElement(Icons[args.icon])} tagTint='purple' tag='purple'/>
+                    <MainNavigationItem {...args} icon={React.createElement(Icons[args.icon])} tagTint='dark_purple' tag='dark_purple'/>
+                    <MainNavigationItem {...args} icon={React.createElement(Icons[args.icon])} tagTint='yellow' tag='yellow'/>
+                    <MainNavigationItem {...args} icon={React.createElement(Icons[args.icon])} tagTint='red' tag='red'/>
+                </>
+            );
+        }}
+    </Story>
+</Canvas>
+
+## Variation on href
+
+<Canvas>
+    <Story name="Link">
+        {args => {
+            return (
+                <>
+                    <MainNavigationItem {...args} icon={React.createElement(Icons[args.icon])} href="https://akeneo.com" target="_blank" title='Link'/>
+                    <MainNavigationItem {...args} icon={React.createElement(Icons[args.icon])} href="https://akeneo.com" target="_blank" disabled={true} title='Disabled link'/>
+                </>
+            );
+        }}
+    </Story>
 </Canvas>
