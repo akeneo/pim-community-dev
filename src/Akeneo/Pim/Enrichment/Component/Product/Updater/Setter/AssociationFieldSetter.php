@@ -4,9 +4,7 @@ declare(strict_types=1);
 namespace Akeneo\Pim\Enrichment\Component\Product\Updater\Setter;
 
 use Akeneo\Pim\Enrichment\Component\Product\Association\MissingAssociationAdder;
-use Akeneo\Pim\Enrichment\Component\Product\Exception\TwoWayAssociationWithTheSameProductException;
 use Akeneo\Pim\Enrichment\Component\Product\Model\EntityWithAssociationsInterface;
-use Akeneo\Pim\Enrichment\Component\Product\Model\Product;
 use Akeneo\Pim\Enrichment\Component\Product\Model\ProductInterface;
 use Akeneo\Pim\Enrichment\Component\Product\Model\ProductModelInterface;
 use Akeneo\Pim\Enrichment\Component\Product\Updater\TwoWayAssociationUpdaterInterface;
@@ -16,7 +14,6 @@ use Akeneo\Tool\Component\StorageUtils\Exception\InvalidObjectException;
 use Akeneo\Tool\Component\StorageUtils\Exception\InvalidPropertyException;
 use Akeneo\Tool\Component\StorageUtils\Exception\InvalidPropertyTypeException;
 use Akeneo\Tool\Component\StorageUtils\Repository\IdentifiableObjectRepositoryInterface;
-use Symfony\Component\HttpKernel\Exception\UnprocessableEntityHttpException;
 
 /**
  * Sets the association field
@@ -125,7 +122,6 @@ class AssociationFieldSetter extends AbstractFieldSetter
         }
 
         foreach ($productsIdentifiers as $productIdentifier) {
-            /** @var  ProductInterface $associatedProduct */
             $associatedProduct = $this->productRepository->findOneByIdentifier($productIdentifier);
             if (null === $associatedProduct) {
                 throw InvalidPropertyException::validEntityCodeExpected(
@@ -136,7 +132,6 @@ class AssociationFieldSetter extends AbstractFieldSetter
                     $productIdentifier
                 );
             }
-
             $this->addAssociatedProduct($owner, $associatedProduct, $associationType);
         }
     }
