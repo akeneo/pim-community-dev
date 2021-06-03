@@ -44,7 +44,7 @@ final class TableConfiguration
         );
         Assert::uniqueValues($codes);
 
-        return new self($columnDefinitions);
+        return new self(array_values($columnDefinitions));
     }
 
     /**
@@ -78,5 +78,10 @@ final class TableConfiguration
         }
 
         return null;
+    }
+
+    public function getFirstColumnCode(): ColumnCode
+    {
+        return $this->columnDefinitions[0]->code();
     }
 }

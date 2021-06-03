@@ -18,8 +18,8 @@ use Akeneo\Pim\TableAttribute\Domain\TableConfiguration\Repository\TableConfigur
 use Akeneo\Pim\TableAttribute\Domain\TableConfiguration\TableConfiguration;
 use Akeneo\Pim\TableAttribute\Domain\TableConfiguration\TextColumn;
 use Akeneo\Pim\TableAttribute\Domain\Value\Table;
-use Akeneo\Pim\TableAttribute\Infrastructure\Validation\ProductValue\CellDataTypesShouldMatch;
-use Akeneo\Pim\TableAttribute\Infrastructure\Validation\ProductValue\CellDataTypesShouldMatchValidator;
+use Akeneo\Pim\TableAttribute\Infrastructure\Validation\ProductValue\FirstColumnShouldBeFilled;
+use Akeneo\Pim\TableAttribute\Infrastructure\Validation\ProductValue\FirstColumnShouldBeFilledValidator;
 use Akeneo\Pim\TableAttribute\Infrastructure\Value\TableValue;
 use PhpSpec\ObjectBehavior;
 use Prophecy\Argument;
@@ -28,7 +28,7 @@ use Symfony\Component\Validator\ConstraintValidatorInterface;
 use Symfony\Component\Validator\Context\ExecutionContext;
 use Symfony\Component\Validator\Violation\ConstraintViolationBuilderInterface;
 
-final class CellDataTypesShouldMatchValidatorSpec extends ObjectBehavior
+final class FirstColumnShouldBeFilledValidatorSpec extends ObjectBehavior
 {
     function let(TableConfigurationRepository $tableConfigurationRepository, ExecutionContext $context)
     {
@@ -45,7 +45,7 @@ final class CellDataTypesShouldMatchValidatorSpec extends ObjectBehavior
 
     function it_is_initializable()
     {
-        $this->shouldHaveType(CellDataTypesShouldMatchValidator::class);
+        $this->shouldHaveType(FirstColumnShouldBeFilledValidator::class);
         $this->shouldImplement(ConstraintValidatorInterface::class);
     }
 
@@ -62,51 +62,36 @@ final class CellDataTypesShouldMatchValidatorSpec extends ObjectBehavior
     {
         $context->buildViolation(Argument::cetera())->shouldNotBeCalled();
 
-        $this->validate('pouet', new CellDataTypesShouldMatch());
+        $this->validate('foo', new FirstColumnShouldBeFilled());
     }
 
-    function it_adds_a_violation_on_invalid_types(
+    function it_adds_a_violation_when_first_column_is_not_filled(
         ExecutionContext $context,
         ConstraintViolationBuilderInterface $violationBuilder
     ) {
         $tableValue = TableValue::value('nutrition', Table::fromNormalized([
-            ['ingredient' => 12, 'quantity' => 1],
-            ['ingredient' => 'pepper', 'quantity' => 'foo'],
+            ['quantity' => 'sugar'],
+            ['ingredient' => 'salt', 'quantity' => 'sugar'],
+            ['quantity' => 'sugar'],
         ]));
-
-        $context->buildViolation(Argument::type('string'), ['{{ expected }}' => 'string', '{{ given }}' => 'integer', '{{ columnCode }}' => 'ingredient'])
-            ->shouldBeCalled()->willReturn($violationBuilder);
-        $violationBuilder->atPath('[0].ingredient')->shouldBeCalledOnce()->willReturn($violationBuilder);
-
-        $context->buildViolation(Argument::type('string'), ['{{ expected }}' => 'numeric', '{{ given }}' => 'string', '{{ columnCode }}' => 'quantity'])
-            ->shouldBeCalled()->willReturn($violationBuilder);
-        $violationBuilder->atPath('[1].quantity')->shouldBeCalledOnce()->willReturn($violationBuilder);
-
+        $constraint = new FirstColumnShouldBeFilled();
+        $context->buildViolation($constraint->message, ['{{ columnCode }}' => 'ingredient'])
+            ->shouldBeCalledTimes(2)->willReturn($violationBuilder);
+        $violationBuilder->atPath('[0]')->shouldBeCalledOnce()->willReturn($violationBuilder);
+        $violationBuilder->atPath('[2]')->shouldBeCalledOnce()->willReturn($violationBuilder);
         $violationBuilder->addViolation()->shouldBeCalledTimes(2);
 
-        $this->validate($tableValue, new CellDataTypesShouldMatch());
+        $this->validate($tableValue, $constraint);
     }
 
-    function it_does_not_add_violation_when_every_type_is_valid(ExecutionContext $context)
+    function it_does_not_add_violation_when_first_column_is_filled(ExecutionContext $context)
     {
-        $tableValue = TableValue::value('nutrition', Table::fromNormalized([[
-            'ingredient' => 'red hot chili peppers',
-        ]]));
-
-        $context->buildViolation(Argument::cetera())
-            ->shouldNotBeCalled();
-
-        $this->validate($tableValue, new CellDataTypesShouldMatch());
-    }
-
-    function it_does_not_validate_when_column_is_unknown(ExecutionContext $context)
-    {
-        $tableValue = TableValue::value('nutrition', Table::fromNormalized([[
-            'unknown' => 'foo',
-        ]]));
-
+        $tableValue = TableValue::value('nutrition', Table::fromNormalized([
+            ['ingredient' => 'sugar'],
+            ['ingredient' => 'salt'],
+        ]));
         $context->buildViolation(Argument::cetera())->shouldNotBeCalled();
 
-        $this->validate($tableValue, new CellDataTypesShouldMatch());
+        $this->validate($tableValue, new FirstColumnShouldBeFilled());
     }
 }

@@ -31,7 +31,9 @@ class UpdateTableValueEndToEnd extends ApiTestCase
         $data = [
             'values' => [
                 'nutrition' => [
-                    ['locale' => null, 'scope' => null, 'data' => [['description' => 'bam']]],
+                    ['locale' => null, 'scope' => null, 'data' => [
+                        ['ingredients'=> 'salt', 'description' => 'bam'],
+                    ]],
                 ],
             ],
         ];
@@ -44,7 +46,7 @@ class UpdateTableValueEndToEnd extends ApiTestCase
         Assert::assertNotNull($productFromDb);
         $value = $productFromDb->getValue('nutrition');
         Assert::assertInstanceOf(TableValue::class, $value);
-        $expectedData = [['description' => 'bam']];
+        $expectedData = [['ingredients'=> 'salt', 'description' => 'bam']];
         Assert::assertEqualsCanonicalizing($expectedData, $value->getData()->normalize());
     }
 

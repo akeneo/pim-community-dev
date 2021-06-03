@@ -13,6 +13,7 @@ declare(strict_types=1);
 
 namespace Akeneo\Pim\TableAttribute\Domain\Value;
 
+use Akeneo\Pim\TableAttribute\Domain\TableConfiguration\ValueObject\ColumnCode;
 use Webmozart\Assert\Assert;
 
 /**
@@ -74,5 +75,10 @@ final class Row implements \IteratorAggregate
             'strval',
             \array_keys($this->cells)
         );
+    }
+
+    public function cell(ColumnCode $columnCode): ?Cell
+    {
+        return $this->cells[$columnCode->asString()] ?? null;
     }
 }

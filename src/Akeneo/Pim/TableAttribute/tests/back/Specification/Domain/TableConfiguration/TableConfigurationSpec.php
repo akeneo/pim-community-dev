@@ -51,6 +51,17 @@ class TableConfigurationSpec extends ObjectBehavior
         $this->getColumnDataType(ColumnCode::fromString('unknown'))->shouldReturn(null);
     }
 
+    function it_returns_the_first_column_code()
+    {
+        $this->beConstructedThrough('fromColumnDefinitions', [[
+            4 => TextColumn::fromNormalized(['code' => 'ingredient']),
+            2 => NumberColumn::fromNormalized(['code' => 'quantity']),
+        ]]);
+
+        $this->getFirstColumnCode()
+            ->shouldBeLike(ColumnCode::fromString('ingredient'));
+    }
+
 //    TODO: implement when select columns are implemented
 //    function it_must_have_a_select_column_as_first_column()
 //    {

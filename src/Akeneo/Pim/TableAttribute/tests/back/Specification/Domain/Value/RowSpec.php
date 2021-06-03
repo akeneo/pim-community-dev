@@ -2,6 +2,8 @@
 
 namespace Specification\Akeneo\Pim\TableAttribute\Domain\Value;
 
+use Akeneo\Pim\TableAttribute\Domain\TableConfiguration\ValueObject\ColumnCode;
+use Akeneo\Pim\TableAttribute\Domain\Value\Cell;
 use Akeneo\Pim\TableAttribute\Domain\Value\Row;
 use PhpSpec\ObjectBehavior;
 
@@ -34,5 +36,11 @@ class RowSpec extends ObjectBehavior
     function it_exposes_its_column_codes()
     {
         $this->columnCodes()->shouldReturn(['foo', '0']);
+    }
+
+    function it_returns_the_cell_given_a_column_code()
+    {
+        $this->cell(ColumnCode::fromString('0'))->shouldBeLike(Cell::fromNormalized('baz'));
+        $this->cell(ColumnCode::fromString('unknown'))->shouldReturn(null);
     }
 }

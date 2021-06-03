@@ -31,3 +31,9 @@ Feature: Enrich a table attribute value
       | nutrition | [{"ingredient": 1, "quantity": "abcdef"}] |
     Then the error 'The "quantity" column expects a numeric, string given' is raised
     And the error 'The "ingredient" column expects a string, integer given' is raised
+
+  Scenario: Not filling the first column raises an error
+    When a product is created with values:
+      | attribute | json_data         |
+      | nutrition | [{"quantity": 1}] |
+    Then the error 'The "ingredient" column is mandatory' is raised

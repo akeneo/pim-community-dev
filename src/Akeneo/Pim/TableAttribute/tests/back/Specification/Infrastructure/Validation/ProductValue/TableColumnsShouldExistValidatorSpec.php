@@ -2,7 +2,6 @@
 
 namespace Specification\Akeneo\Pim\TableAttribute\Infrastructure\Validation\ProductValue;
 
-use Akeneo\Pim\TableAttribute\Domain\TableConfiguration\ColumnDefinition;
 use Akeneo\Pim\TableAttribute\Domain\TableConfiguration\NumberColumn;
 use Akeneo\Pim\TableAttribute\Domain\TableConfiguration\Repository\TableConfigurationRepository;
 use Akeneo\Pim\TableAttribute\Domain\TableConfiguration\TableConfiguration;
@@ -13,7 +12,6 @@ use Akeneo\Pim\TableAttribute\Infrastructure\Validation\ProductValue\TableColumn
 use Akeneo\Pim\TableAttribute\Infrastructure\Value\TableValue;
 use PhpSpec\ObjectBehavior;
 use Prophecy\Argument;
-use Symfony\Component\Validator\Constraint;
 use Symfony\Component\Validator\Constraints\NotBlank;
 use Symfony\Component\Validator\ConstraintValidatorInterface;
 use Symfony\Component\Validator\Context\ExecutionContext;
