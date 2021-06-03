@@ -1599,8 +1599,7 @@ JSON;
         $this->assertJsonStringEqualsJsonString($expected, $response->getContent());
         $this->assertSame(Response::HTTP_UNPROCESSABLE_ENTITY, $response->getStatusCode());
     }
-
-
+    
     /**
      * {@inheritdoc}
      */
