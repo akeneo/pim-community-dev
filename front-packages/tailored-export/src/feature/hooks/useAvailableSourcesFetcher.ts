@@ -1,17 +1,17 @@
 import {useRouter} from '@akeneo-pim-community/shared';
 
 const SUPPORTED_ATTRIBUTE_TYPES = [
-  // 'pim_catalog_boolean',
+  'pim_catalog_boolean',
   // 'pim_catalog_date',
   // 'pim_catalog_file',
-  // 'pim_catalog_identifier',
+  'pim_catalog_identifier',
   // 'pim_catalog_image',
   // 'pim_catalog_metric',
-  // 'pim_catalog_number',
+  'pim_catalog_number',
   // 'pim_catalog_multiselect',
   // 'pim_catalog_simpleselect',
   // 'pim_catalog_price_collection',
-  // 'pim_catalog_textarea',
+  'pim_catalog_textarea',
   'pim_catalog_text',
   // 'akeneo_reference_entity',
   // 'akeneo_reference_entity_collection',

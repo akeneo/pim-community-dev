@@ -14,6 +14,8 @@ declare(strict_types=1);
 namespace Akeneo\Pim\TailoredExport\Infrastructure\Connector\Processor;
 
 use Akeneo\Pim\Enrichment\Component\Product\Model\ProductInterface;
+use Akeneo\Pim\Structure\Component\Query\PublicApi\AttributeType\GetAttributes;
+use Akeneo\Pim\TailoredExport\Infrastructure\Connector\Processor\AttributeSelector\AttributeSelectorRegistry;
 use Akeneo\Tool\Component\Batch\Item\ItemProcessorInterface;
 use Akeneo\Tool\Component\Batch\Model\StepExecution;
 use Akeneo\Tool\Component\Batch\Step\StepExecutionAwareInterface;
@@ -21,6 +23,16 @@ use Akeneo\Tool\Component\Batch\Step\StepExecutionAwareInterface;
 class ProductExportProcessor implements ItemProcessorInterface, StepExecutionAwareInterface
 {
     private ?StepExecution $stepExecution = null;
+    private AttributeSelectorRegistry $attributeSelectorRegistry;
+    private GetAttributes $getAttributes;
+
+    public function __construct(
+        AttributeSelectorRegistry $attributeSelectorRegistry,
+        GetAttributes $getAttributes
+    ) {
+        $this->attributeSelectorRegistry = $attributeSelectorRegistry;
+        $this->getAttributes = $getAttributes;
+    }
 
     /**
      * {@inheritdoc}
@@ -43,13 +55,17 @@ class ProductExportProcessor implements ItemProcessorInterface, StepExecutionAwa
             $operationSourceValues = [];
 
             foreach ($column['sources'] as $source) {
-                $value = $product->getValue($source['code'], $source['locale'], $source['channel']);
-
-                if (null === $value) {
-                    continue;
+                if ('attribute' === $source['type']) {
+                    $value = $product->getValue($source['code'], $source['locale'], $source['channel']);
+                    $attribute = $this->getAttributes->forCode($source['code']);
+                    $operationSourceValues[] = $this->attributeSelectorRegistry->applyAttributeSelection(
+                        $source['selection'],
+                        $attribute,
+                        $value
+                    );
+                } else {
+                    throw new \Exception('Source type is unsupported');
                 }
-
-                $operationSourceValues[] = $value->getData();
             }
 
             $productStandard[$column['target']] = implode(' ', $operationSourceValues);
