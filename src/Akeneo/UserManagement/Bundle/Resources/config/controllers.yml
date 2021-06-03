@@ -90,3 +90,8 @@ services:
             - '%pim_user.login_form.action_route%'
             - '%pim_user.login_form.additional_hidden_fields%'
 
+    Akeneo\UserManagement\Bundle\Controller\Rest\FindAllProfilesController:
+        public: true
+        class: Akeneo\UserManagement\Bundle\Controller\Rest\FindAllProfilesController
+        arguments:
+            - '@pim_user.repository.profile'

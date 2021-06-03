@@ -7,7 +7,7 @@ extensions:
                 view: 'datagrid-view'
 
     pim-grid-view-selector-secondary-actions:
-        module: pim/form/common/secondary-actions
+        module: pim/grid/view-selector/view-selector-secondary-actions
         parent: pim-grid-view-selector
         targetZone: buttons
 

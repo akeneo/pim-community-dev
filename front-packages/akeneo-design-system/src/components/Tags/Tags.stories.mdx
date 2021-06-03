@@ -1,0 +1,40 @@
+import {Meta, Story, ArgsTable, Canvas} from '@storybook/addon-docs/blocks';
+import {Tags, Tag} from './Tags.tsx';
+
+<Meta
+  title="Components/Tags"
+  component={Tags}
+  argTypes={{}}
+  args={{}}
+/>
+
+# Tags
+
+## Usage
+
+Tags can be used to display a list of keywords.
+
+A `Tags` element can only accept a list of `Tag` children.
+
+Each Tag must have one `tint` attribute that you can pick in that list: `'green' | 'blue' | 'dark_blue' | 'purple' | 'dark_purple' | 'yellow' | 'red'`
+
+## Playground
+
+<Canvas>
+  <Story name="Standard">
+    {args => {
+      return <Tags {...args}>
+        <Tag tint='red'>Red</Tag>
+        <Tag tint='blue'>Blue</Tag>
+        <Tag tint='dark_blue'>Dark Blue</Tag>
+        <Tag tint='purple'>Purple</Tag>
+        <Tag tint='dark_purple'>Dark Purple</Tag>
+        <Tag tint='green'>Green</Tag>
+        <Tag title='custom title' tint='yellow'>Yellow</Tag>
+        <Tag tint='red'>Very very very very looooonnnnnng teeeexxt</Tag>
+      </Tags>;
+    }}
+  </Story>
+</Canvas>
+
+<ArgsTable story="Standard" />

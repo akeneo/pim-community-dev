@@ -229,6 +229,7 @@ pim_common:
   read_more: Lees meer
   channel: Kanaal
   locale: Locale
+  groups: Groepen
 error:
   exception: Oh, nee! Een {{ status_code }} fout deed zich voor...
   forbidden: U heeft geen toegang tot deze pagina
