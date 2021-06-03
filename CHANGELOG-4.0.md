@@ -1,5 +1,9 @@
 # 4.0.x
 
+## Bug fixes
+
+- PIM-9892: Increase limit of product attributes fetched from a reference entity
+
 # 4.0.112 (2021-05-27)
 
 # 4.0.111 (2021-05-21)
