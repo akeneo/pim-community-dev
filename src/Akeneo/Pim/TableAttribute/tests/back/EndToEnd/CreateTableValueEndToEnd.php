@@ -115,6 +115,28 @@ class CreateTableValueEndToEnd extends ApiTestCase
         );
     }
 
+    public function testItThrowsAnErrorOnEmptyData(): void
+    {
+        $client = $this->createAuthenticatedClient();
+
+        $data = [
+            'identifier' => 'id1',
+            'values' => [
+                'nutrition' => [
+                    ['locale' => null, 'scope' => null, 'data' => [['ingredients' => '']]],
+                ],
+            ],
+        ];
+
+        $client->request('POST', 'api/rest/v1/products', [], [], [], json_encode($data));
+        $response = $client->getResponse();
+        Assert::assertSame(Response::HTTP_UNPROCESSABLE_ENTITY, $response->getStatusCode());
+        Assert::assertStringContainsString(
+            'Property "nutrition" expects an array with valid data, TODO cell must be filled.',
+            \json_decode($response->getContent(), true)['message']
+        );
+    }
+
     protected function getConfiguration(): Configuration
     {
         return $this->catalog->useTechnicalCatalog();
@@ -140,3 +162,4 @@ class CreateTableValueEndToEnd extends ApiTestCase
         $this->get('pim_catalog.saver.attribute')->save($attribute);
     }
 }
+

@@ -37,3 +37,9 @@ Feature: Enrich a table attribute value
       | attribute | json_data         |
       | nutrition | [{"quantity": 1}] |
     Then the error 'The "ingredient" column is mandatory' is raised
+
+  Scenario: Providing a valid table should not raise any error
+    When a product is created with values:
+      | attribute | json_data         |
+      | nutrition | [{"ingredient": "sugar", quantity": 1}] |
+    Then no error is raised
