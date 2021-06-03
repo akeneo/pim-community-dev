@@ -12,22 +12,23 @@ Feature: Remove a category
       | caterpillar_2 | winter_boots,2014_collection      |
     And I am logged in as "Julia"
 
-  Scenario: Remove a simple category
+  Scenario: Remove a simple category via the edit page
     Given I am on the "sandals" category page
     When I press the secondary action "Delete"
     And I confirm the deletion
-    Then I should be on the category "summer_collection" edit page
-    And I should see the flash message "Category successfully removed"
-    And I should not see the "Sandals" category under the "summer_collection" category
+    And I should see the text "The category \"Sandals\" was successfully deleted"
+    And I should see the text "2014 collection"
 
-  Scenario: Remove a category tree
+  Scenario: Remove a category tree via the grid
     Given the following category:
       | code            | parent | label-en_US     |
       | 2013_collection |        | 2013 collection |
-    And I am on the "2013_collection" category page
-    And I should see the text "Edit tree - 2013 collection"
-    When I press the secondary action "Delete"
+    And I am on the categories page
+    And I should see the text "2013 collection"
+    And I should see the text "2014 collection"
+    When I hover over the category "2013 collection"
+    And I press the "Delete" button
     And I confirm the deletion
-    Then I should be redirected on the category tree creation page
-    And I should see the flash message "Tree successfully removed"
-
+    Then I should see the text "The tree \"2013 collection\" was successfully deleted"
+    And I should not see the text "2013 collection"
+    But I should see the text "2014 collection"

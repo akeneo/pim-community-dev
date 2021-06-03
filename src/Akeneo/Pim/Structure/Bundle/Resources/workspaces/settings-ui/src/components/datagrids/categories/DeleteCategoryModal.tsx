@@ -23,7 +23,7 @@ const DeleteCategoryModal: FC<DeleteCategoryModalProps> = ({categoryLabel, close
         <Button onClick={closeModal} level="tertiary">
           {translate('pim_common.cancel')}
         </Button>
-        <Button onClick={() => deleteCategory()} level="danger">
+        <Button onClick={() => deleteCategory()} level="danger" className="ok">
           {translate('pim_common.delete')}
         </Button>
       </ActionButtons>

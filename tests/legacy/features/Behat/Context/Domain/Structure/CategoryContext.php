@@ -29,4 +29,17 @@ final class CategoryContext extends PimContext
         }, sprintf('The "%s" category was not found', $categoryLabel));
         $categoryTree->click();
     }
+
+    /**
+     * @When I hover over the category ":categoryLabel"
+     */
+    public function iHoverOverTheCategory(string $categoryLabel)
+    {
+        /** @var NodeElement $categoryTree */
+        $categoryTree = $this->spin(function () use ($categoryLabel) {
+            return $this->getCurrentPage()->find('named', array('content', $categoryLabel));
+        }, sprintf('The "%s" category was not found', $categoryLabel));
+
+        $categoryTree->mouseOver();
+    }
 }
