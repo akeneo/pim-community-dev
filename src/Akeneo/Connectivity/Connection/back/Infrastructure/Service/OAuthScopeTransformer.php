@@ -11,7 +11,7 @@ namespace Akeneo\Connectivity\Connection\Infrastructure\Service;
 class OAuthScopeTransformer
 {
     private const PRODUCT_EDIT_SCOPE = 'product:edit';
-    private const PRODUCT_EDIT_ACL = 'pim_enrich_product_edit_attributes';
+    private const PRODUCT_EDIT_ACL = 'action:pim_api_attribute_edit';
 
     private static array $scopesToAclMapping = [
         self::PRODUCT_EDIT_SCOPE => self::PRODUCT_EDIT_ACL
@@ -22,7 +22,7 @@ class OAuthScopeTransformer
         $aclPermissions = [];
         foreach ($oauthScopes as $scope) {
             if (isset(self::$scopesToAclMapping[$scope])) {
-                $aclPermissions[] = self::$scopesToAclMapping[$scope];
+                $aclPermissions[self::$scopesToAclMapping[$scope]] = true;
             }
         }
         return $aclPermissions;

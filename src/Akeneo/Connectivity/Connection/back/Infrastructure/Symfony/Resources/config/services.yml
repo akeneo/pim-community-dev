@@ -106,3 +106,15 @@ services:
         public: false
         arguments:
             $authScopeTransformer: '@Akeneo\Connectivity\Connection\Infrastructure\Service\OAuthScopeTransformer'
+            $roleWithPermissionsFactory: '@pim_user.factory.role_with_permissions'
+            $roleWithPermissionsRepository: '@pim_user.repository.role_with_permissions'
+            $roleRepository: '@pim_user.repository.role'
+            $roleWithPermissionsSaver: '@pim_user.saver.role_with_permissions'
+            $userSaver: '@pim_user.saver.user'
+            $userRepository: '@pim_user.repository.user'
+            $userFactory: '@pim_user.factory.user'
+    Akeneo\Connectivity\Connection\Infrastructure\Service\ClientManager:
+        decorates: fos_oauth_server.client_manager.default
+        decoration_inner_name: fos_oauth_server.client_manager.base_default
+        arguments:
+            - '@fos_oauth_server.client_manager.base_default'

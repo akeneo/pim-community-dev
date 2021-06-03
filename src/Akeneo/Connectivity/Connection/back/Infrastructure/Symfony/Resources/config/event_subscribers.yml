@@ -48,6 +48,7 @@ services:
             - { name: kernel.event_subscriber }
     Akeneo\Connectivity\Connection\Infrastructure\EventSubscriber\OAuthEventSubscriber:
         arguments:
-            - '@akeneo_connectivity.connection.persistence.repository.connection'
+            $connectionRepository: '@akeneo_connectivity.connection.persistence.repository.connection'
+            $userRepository: '@pim_user.repository.user'
         tags:
             - { name: kernel.event_subscriber }

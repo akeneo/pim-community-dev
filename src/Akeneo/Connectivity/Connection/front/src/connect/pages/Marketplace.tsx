@@ -68,7 +68,7 @@ export const Marketplace: FC = () => {
     );
     const activateUrl = useRoute(
         'akeneo_connectivity_connection_app_activate',
-        {identifier:'19e75c0ee9eb4ecf84c5d294186980ee60738a74c2be11eb85'}
+        {identifier: '1sp8vcfi1940cc8o4g0skcw88w8g8gk004wssw0ogc4ks8gc08'}
     );
 
     //useEffect(() => {
@@ -82,7 +82,7 @@ export const Marketplace: FC = () => {
             </PageHeader>
 
             <PageContent>
-                <LinkButton href={activateUrl} target='_blank' role='link' tabIndex='0'>
+                <LinkButton href={activateUrl} role='link' tabIndex='0'>
                     ACTIVATE YELL EXTENSION
                 </LinkButton>
             </PageContent>

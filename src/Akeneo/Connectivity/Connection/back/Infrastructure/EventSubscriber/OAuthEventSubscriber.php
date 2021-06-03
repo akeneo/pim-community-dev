@@ -8,9 +8,11 @@ use Akeneo\Connectivity\Connection\Domain\Settings\Model\ValueObject\FlowType;
 use Akeneo\Connectivity\Connection\Domain\Settings\Model\Write\Connection;
 use Akeneo\Connectivity\Connection\Domain\Settings\Persistence\Repository\ConnectionRepository;
 use Akeneo\Tool\Bundle\ApiBundle\Entity\Client;
+use Akeneo\UserManagement\Bundle\Doctrine\ORM\Repository\UserRepository;
 use Akeneo\UserManagement\Component\Model\User;
 use FOS\OAuthServerBundle\Event\OAuthEvent;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
+use Symfony\Component\HttpFoundation\RequestStack;
 
 /**
  * @copyright 2021 Akeneo SAS (http://www.akeneo.com)
@@ -19,10 +21,14 @@ use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 class OAuthEventSubscriber implements EventSubscriberInterface
 {
     private ConnectionRepository $connectionRepository;
+    private UserRepository $userRepository;
 
-    public function __construct(ConnectionRepository $connectionRepository)
-    {
+    public function __construct(
+        ConnectionRepository $connectionRepository,
+        UserRepository $userRepository
+    ) {
         $this->connectionRepository = $connectionRepository;
+        $this->userRepository = $userRepository;
     }
 
     public static function getSubscribedEvents()
@@ -33,7 +39,9 @@ class OAuthEventSubscriber implements EventSubscriberInterface
     public function saveConnection(OAuthEvent $event)
     {
         $client = $event->getClient();
-        $user = $event->getUser();
+        $appUsername = 'yell-extenssion-username';
+        $user = $this->userRepository->findOneBy(['username' => $appUsername]);
+        //$user = $event->getUser();
         // @todo: CREATE USER WITH PERMISSIONS FROM THE SCOPE
         if (!$client instanceof Client || !$user instanceof User) {
             return;

@@ -55,6 +55,8 @@ services:
         public: true
         class: Akeneo\Connectivity\Connection\Infrastructure\ExternalApi\Controller\AppLoginController
         parent: fos_oauth_server.controller.authorize
+        arguments:
+            $clientManager: '@Akeneo\Connectivity\Connection\Infrastructure\Service\ClientManager'
         calls:
             - setOAuth2Server: ['@fos_oauth_server.server']
             - setScopeValidator: ['@Akeneo\Connectivity\Connection\Infrastructure\Service\OAuthScopeValidator']
