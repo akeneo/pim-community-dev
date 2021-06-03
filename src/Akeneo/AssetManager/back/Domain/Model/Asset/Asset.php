@@ -62,17 +62,15 @@ class Asset
         AssetIdentifier $identifier,
         AssetFamilyIdentifier $assetFamilyIdentifier,
         AssetCode $code,
-        ValueCollection $valueCollection,
-        \DateTimeImmutable $createdAt = null,
-        \DateTimeImmutable $updatedAt = null
+        ValueCollection $valueCollection
     ): self {
         $asset = new self(
             $identifier,
             $assetFamilyIdentifier,
             $code,
             $valueCollection,
-            $createdAt ?? new \DateTimeImmutable('now', new \DateTimeZone('UTC')),
-            $updatedAt ?? new \DateTimeImmutable('now', new \DateTimeZone('UTC'))
+            new \DateTimeImmutable('now', new \DateTimeZone('UTC')),
+            new \DateTimeImmutable('now', new \DateTimeZone('UTC'))
         );
 
         $asset->recordedEvents[AssetCreatedEvent::class] = new AssetCreatedEvent(

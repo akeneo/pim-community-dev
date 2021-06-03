@@ -282,7 +282,7 @@ class SqlFindConnectorAssetsByIdentifiersTest extends SqlIntegrationTestCase
     private function loadAssets(array $codes): void
     {
         foreach ($codes as $code) {
-            $asset = Asset::create(
+            $asset = Asset::fromState(
                 AssetIdentifier::fromString(sprintf('designer_%s_fingerprint', $code)),
                 AssetFamilyIdentifier::fromString('designer'),
                 AssetCode::fromString($code),
