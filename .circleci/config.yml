@@ -770,7 +770,27 @@ jobs:
 ##################
 # Helm tests     #
 ##################
-  test_cronjobs_existence:
+  test_cronjobs_existence_srnt:
+      environment:
+        <<: *envVarsDeployDev
+      machine:
+          image: ubuntu-2004:202010-01
+      steps:
+          - attach_workspace:
+                at: ~/
+          - set_gcloud_config_dev
+          - restore_persisted_env_vars
+          - run:
+              name: Install yq
+              command: |
+                  wget https://github.com/mikefarah/yq/releases/download/3.3.1/yq_linux_386
+                  sudo mv yq_linux_386 /usr/local/bin/yq
+                  sudo chmod +x /usr/local/bin/yq
+          - run:
+              name: Test Cronjob jobs exists
+              command: PIM_CONTEXT=deployment make test-helm-cronjob
+
+  test_cronjobs_existence_grth:
       environment:
         <<: *envVarsDeployDev
       machine:
@@ -1217,12 +1237,12 @@ workflows:
           - build_srnt_prod:
                 requires:
                     - test_helm_generated_k8s_files
-          - test_cronjobs_existence:
+          - test_cronjobs_existence_srnt:
                 requires:
                     - build_srnt_prod
           - test_deploy_srnt:
                 requires:
-                    - test_cronjobs_existence
+                    - test_cronjobs_existence_srnt
           - test_upgrade_srnt_from_last_release:
                 requires:
                     - test_deploy_srnt
@@ -1244,13 +1264,16 @@ workflows:
                         ignore:
                             - master
                 requires:
-                    - build_grth
+                    - test_cronjobs_existence_grth
           - build_grth:
                 requires:
                     - test_helm_generated_k8s_files
-          - test_deploy_grth:
+          - test_cronjobs_existence_grth:
                 requires:
                     - build_grth
+          - test_deploy_grth:
+                requires:
+                    - test_cronjobs_existence_grth
           - test_upgrade_grth_from_last_release:
                 requires:
                     - test_deploy_grth
@@ -1322,12 +1345,12 @@ workflows:
                 is_pull_request: false
                 requires:
                     - checkout
-          - test_cronjobs_existence:
+          - test_cronjobs_existence_srnt:
                 requires:
                     - build_srnt_prod
           - test_deploy_srnt:
                 requires:
-                    - test_cronjobs_existence
+                    - test_cronjobs_existence_srnt
           - test_back_static_and_acceptance:
                 requires:
                     - build_srnt_dev
@@ -1383,12 +1406,12 @@ workflows:
               is_pull_request: false
               requires:
                   - checkout
-          - test_cronjobs_existence:
+          - test_cronjobs_existence_grth:
               requires:
                   - build_grth
           - test_deploy_grth:
               requires:
-                  - test_cronjobs_existence
+                  - test_cronjobs_existence_grth
           - release_grth:
               requires:
                   - test_deploy_grth
@@ -1411,15 +1434,15 @@ workflows:
                 is_pull_request: false
                 requires:
                     - checkout
-          - test_cronjobs_existence:
+          - test_cronjobs_existence_srnt:
                 requires:
                     - build_srnt_prod
           - test_deploy_srnt:
                 requires:
-                    - test_cronjobs_existence
+                    - test_cronjobs_existence_srnt
           - test_upgrade_srnt_from_last_release:
                 requires:
-                    - test_cronjobs_existence
+                    - test_cronjobs_existence_srnt
           - test_front_code_style:
                 requires:
                     - build_srnt_dev
@@ -1478,12 +1501,12 @@ workflows:
                 is_pull_request: false
                 requires:
                     - checkout
-          - test_cronjobs_existence:
+          - test_cronjobs_existence_grth:
                 requires:
                     - build_grth
           - test_deploy_grth:
                 requires:
-                    - test_cronjobs_existence
+                    - test_cronjobs_existence_grth
           - test_upgrade_grth_from_last_release:
                     requires:
                         - test_deploy_grth
