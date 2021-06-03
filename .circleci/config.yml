@@ -29,16 +29,16 @@ jobs:
       - run:
           name: Persist default IMAGE_TAG to be the repo last commit SHA1
           command: |
-              echo export IMAGE_TAG=$CIRCLE_SHA1>> persisted_env_vars
-              echo export IMAGE_TAG_SHORTED=$(echo $CIRCLE_SHA1 | cut -c -7)>> persisted_env_vars
+              echo export IMAGE_TAG=${CIRCLE_SHA1}>> persisted_env_vars
+              echo export IMAGE_TAG_SHORTED=$(echo ${CIRCLE_SHA1} | cut -c -7)>> persisted_env_vars
       - persist_to_workspace:
           root: ~/
           paths:
             - project
 
-##################
-# Build          #
-##################
+  ##################
+  # Build          #
+  ##################
   build_srnt_dev:
     parameters:
         is_pull_request:
@@ -290,9 +290,9 @@ jobs:
           paths:
             - project
 
-##################
-# Tests          #
-##################
+  ##################
+  # Tests          #
+  ##################
   test_back_static_and_acceptance:
       machine:
           image: ubuntu-2004:202010-01
@@ -737,9 +737,9 @@ jobs:
               name: Success
               command: echo "The build has run with success! Let's merge :)"
 
-##################
-# Sanity checks  #
-##################
+  ##################
+  # Sanity checks  #
+  ##################
   ui_sanity_checks:
       machine:
           image: ubuntu-1604:201903-01
@@ -767,9 +767,9 @@ jobs:
           - store_artifacts:
                 path: var/logs
 
-##################
-# Helm tests     #
-##################
+  ##################
+  # Helm tests     #
+  ##################
   test_cronjobs_existence_srnt:
       environment:
         <<: *envVarsDeployDev
@@ -832,9 +832,9 @@ jobs:
               name: Test Serenity with Onboarder bundle Helm generated yaml files compliance with latest kubernetes Version
               command: PIM_CONTEXT=deployment WITH_ONBOARDER=1 make test_helm_generated_k8s_files
 
-##################
-# Tests deploy   #
-##################
+  ##################
+  # Tests deploy   #
+  ##################
   test_deploy_srnt:
       environment:
         <<: *envVarsDeployDev
@@ -845,23 +845,37 @@ jobs:
           - set_gcloud_config_dev
           - restore_persisted_env_vars
           - run:
+              name: Define value for next steps
+              command: |
+                INSTANCE_NAME_PREFIX=pimci
+                INSTANCE_NAME=${INSTANCE_NAME_PREFIX}-${IMAGE_TAG_SHORTED}-${CIRCLE_BUILD_NUM}
+                PIM_CONTEXT=deployment
+
+                echo export INSTANCE_NAME_PREFIX=${INSTANCE_NAME_PREFIX} >> $BASH_ENV
+                echo export INSTANCE_NAME=${INSTANCE_NAME} >> $BASH_ENV
+                echo export PIM_CONTEXT=${PIM_CONTEXT} >> $BASH_ENV
+
+                echo "Instance name prefix: ${INSTANCE_NAME_PREFIX}"
+                echo "Instance name: ${INSTANCE_NAME}"
+                echo "Image tag: ${IMAGE_TAG}"
+          - run:
               name: DATADOG deployment Livetail logs page
-              command: echo "https://app.datadoghq.eu/logs/livetail?cols=service%2Ccomponent%2Cpfid&from_ts=0&index=main&live=true&messageDisplay=inline&query=kube_namespace%3Asrnt-pimci-${IMAGE_TAG_SHORTED}-${CIRCLE_BUILD_NUM}&stream_sort=time%2Casc&to_ts=-1"
+              command: echo "https://app.datadoghq.eu/logs/livetail?query=kube_namespace%3A${TYPE}-${INSTANCE_NAME}"
           - run:
               name: Deploy PIM on kubernetes
-              command: PIM_CONTEXT=deployment INSTANCE_NAME=pimci-$(echo $CIRCLE_SHA1 | cut -c -7)-${CIRCLE_BUILD_NUM} make deploy-serenity
+              command: make deploy-instance
           - run:
               name: Test PIM connexion on kubernetes
-              command: PIM_CONTEXT=deployment INSTANCE_NAME=pimci-$(echo $CIRCLE_SHA1 | cut -c -7)-${CIRCLE_BUILD_NUM} make test-prod
+              command: make test-prod
           - run:
               name: Prepare infrastructure artifacts
-              command: PIM_CONTEXT=deployment INSTANCE_NAME=pimci-$(echo $CIRCLE_SHA1 | cut -c -7)-${CIRCLE_BUILD_NUM} make prepare-infrastructure-artifacts
+              command: make prepare-infrastructure-artifacts
               when: on_fail
           - store_artifacts:
               path: ~/artifacts/infra
           - run:
               name: Remove env on kubernetes
-              command: PIM_CONTEXT=deployment INSTANCE_NAME=pimci-$(echo $CIRCLE_SHA1 | cut -c -7)-${CIRCLE_BUILD_NUM} make delete
+              command: make delete
               when: always
 
   test_deploy_grth:
@@ -874,23 +888,37 @@ jobs:
           - set_gcloud_config_dev
           - restore_persisted_env_vars
           - run:
+              name: Define value for next steps
+              command: |
+                INSTANCE_NAME_PREFIX=pimci
+                INSTANCE_NAME=${INSTANCE_NAME_PREFIX}-${IMAGE_TAG_SHORTED}-${CIRCLE_BUILD_NUM}
+                PIM_CONTEXT=deployment
+
+                echo export INSTANCE_NAME_PREFIX=${INSTANCE_NAME_PREFIX} >> $BASH_ENV
+                echo export INSTANCE_NAME=${INSTANCE_NAME} >> $BASH_ENV
+                echo export PIM_CONTEXT=${PIM_CONTEXT} >> $BASH_ENV
+
+                echo "Instance name prefix: ${INSTANCE_NAME_PREFIX}"
+                echo "Instance name: ${INSTANCE_NAME}"
+                echo "Image tag: ${IMAGE_TAG}"
+          - run:
               name: DATADOG deployment Livetail logs page
-              command: echo "https://app.datadoghq.eu/logs/livetail?cols=service%2Ccomponent%2Cpfid&from_ts=0&index=main&live=true&messageDisplay=inline&query=kube_namespace%grth-pimci-${IMAGE_TAG_SHORTED}-${CIRCLE_BUILD_NUM}&stream_sort=time%2Casc&to_ts=-1"
+              command: echo "https://app.datadoghq.eu/logs/livetail?query=kube_namespace%3A${TYPE}-${INSTANCE_NAME}"
           - run:
               name: Deploy PIM on kubernetes
-              command: PIM_CONTEXT=deployment INSTANCE_NAME=pimci-$(echo $CIRCLE_SHA1 | cut -c -7)-${CIRCLE_BUILD_NUM} make deploy-serenity
+              command: make deploy-instance
           - run:
               name: Test PIM connexion on kubernetes
-              command: PIM_CONTEXT=deployment INSTANCE_NAME=pimci-$(echo $CIRCLE_SHA1 | cut -c -7)-${CIRCLE_BUILD_NUM} make test-prod
+              command: make test-prod
           - run:
               name: Prepare infrastructure artifacts
-              command: PIM_CONTEXT=deployment INSTANCE_NAME=pimci-$(echo $CIRCLE_SHA1 | cut -c -7)-${CIRCLE_BUILD_NUM} make prepare-infrastructure-artifacts
+              command: make prepare-infrastructure-artifacts
               when: on_fail
           - store_artifacts:
               path: ~/artifacts/infra
           - run:
               name: Remove env on kubernetes
-              command: PIM_CONTEXT=deployment INSTANCE_NAME=pimci-$(echo $CIRCLE_SHA1 | cut -c -7)-${CIRCLE_BUILD_NUM} make delete
+              command: make delete
               when: always
 
   test_upgrade_srnt_from_last_release:
@@ -904,44 +932,55 @@ jobs:
           - set_gcloud_config_dev
           - restore_persisted_env_vars
           - run:
-                name: Get latest release & export variables
-                command: |
-                    LATEST_RELEASE=$(TYPE=srnt bash ${PWD}/deployments/bin/get_latest_release.sh)
-                    if [ -z "$LATEST_RELEASE" ]; then 
+              name: Get latest release & export variables
+              command: |
+                  LATEST_RELEASE=$(bash ${PWD}/deployments/bin/get_latest_release.sh)
+                  if [[ -z "${LATEST_RELEASE}" ]]; then
                       echo "Could not retrieve latest deployed release"
                       exit 1
-                    fi 
-                    echo $LATEST_RELEASE
-                    ssh-keyscan -t rsa github.com >> ~/.ssh/known_hosts
-                    echo export IMAGE_TAG=${LATEST_RELEASE} >> $BASH_ENV
-                    echo export INSTANCE_NAME_PREFIX=pimup >> $BASH_ENV
-                    echo export INSTANCE_NAME=pimup-$(echo $CIRCLE_SHA1 | cut -c -7)-${CIRCLE_BUILD_NUM} >> $BASH_ENV
-                    echo export CIRCLE_SHA1=${CIRCLE_SHA1} >> $BASH_ENV
+                  fi
+                  INSTANCE_NAME_PREFIX=pimup
+                  INSTANCE_NAME=${INSTANCE_NAME_PREFIX}-${IMAGE_TAG_SHORTED}-${CIRCLE_BUILD_NUM}
+                  PIM_CONTEXT=deployment
+
+                  echo export LATEST_RELEASE=${LATEST_RELEASE} >> $BASH_ENV
+                  echo export INSTANCE_NAME_PREFIX=${INSTANCE_NAME_PREFIX} >> $BASH_ENV
+                  echo export INSTANCE_NAME=${INSTANCE_NAME} >> $BASH_ENV
+                  echo export PIM_CONTEXT=${PIM_CONTEXT} >> $BASH_ENV
+
+                  echo "Instance name prefix: ${INSTANCE_NAME_PREFIX}"
+                  echo "Instance name: ${INSTANCE_NAME}"
+                  echo "Image tag: ${IMAGE_TAG}"
+                  echo "Latest image tag: ${LATEST_RELEASE}"
           - run:
-                name: Deploy instance with latest release
-                command: |
-                    PIM_CONTEXT=deployment INSTANCE_NAME=$INSTANCE_NAME make create-ci-release-files
-                    PIM_CONTEXT=deployment INSTANCE_NAME=$INSTANCE_NAME make change-terraform-source-version
-                    PIM_CONTEXT=deployment INSTANCE_NAME=$INSTANCE_NAME make deploy
+              name: DATADOG deployment Livetail logs page
+              command: echo "https://app.datadoghq.eu/logs/livetail?query=kube_namespace%3A${TYPE}-${INSTANCE_NAME}"
           - run:
-                name: Upgrade
-                command: UPGRADE_STEP_2=true PIM_CONTEXT=deployment INSTANCE_NAME=$INSTANCE_NAME IMAGE_TAG=$CIRCLE_SHA1 make deploy-serenity
+              name: Deploy instance with latest release
+              command: |
+                  ssh-keyscan -t rsa github.com >> ~/.ssh/known_hosts
+                  IMAGE_TAG=${LATEST_RELEASE} make create-ci-release-files
+                  IMAGE_TAG=${LATEST_RELEASE} make change-terraform-source-version
+                  IMAGE_TAG=${LATEST_RELEASE} make deploy
           - run:
-                name: Production tests on upgraded env
-                command: PIM_CONTEXT=deployment INSTANCE_NAME=$INSTANCE_NAME make test-prod
+              name: Upgrade
+              command: UPGRADE_STEP_2=true make deploy-instance
           - run:
-                name: Check that upgrader pod ran
-                command: kubectl get pods --namespace=srnt-${INSTANCE_NAME} | grep pim-upgrader
+              name: Production tests on upgraded env
+              command: make test-prod
           - run:
-                name: Prepare infrastructure artifacts
-                command: PIM_CONTEXT=deployment INSTANCE_NAME=$INSTANCE_NAME make prepare-infrastructure-artifacts
-                when: on_fail
+              name: Check that upgrader pod ran
+              command: kubectl get pods --namespace=${TYPE}-${INSTANCE_NAME} | grep pim-upgrader
+          - run:
+              name: Prepare infrastructure artifacts
+              command: make prepare-infrastructure-artifacts
+              when: on_fail
           - store_artifacts:
-                path: ~/artifacts/infra
+              path: ~/artifacts/infra
           - run:
-                name: Remove upgraded env
-                command: IMAGE_TAG=$CIRCLE_SHA1 PIM_CONTEXT=deployment INSTANCE_NAME=$INSTANCE_NAME make delete
-                when: always
+              name: Remove upgraded env
+              command: make delete
+              when: always
 
   test_upgrade_grth_from_last_release:
       environment:
@@ -950,47 +989,56 @@ jobs:
       steps:
           - attach_workspace:
                 at: ~/
-          - add_ssh_keys
           - set_gcloud_config_dev
           - restore_persisted_env_vars
           - run:
                 name: Get latest release & export variables
                 command: |
-                    LATEST_RELEASE=$(TYPE=grth bash ${PWD}/deployments/bin/get_latest_release.sh)
-                    if [ -z "$LATEST_RELEASE" ]; then 
+                    LATEST_RELEASE=$(bash ${PWD}/deployments/bin/get_latest_release.sh)
+                    if [[ -z "${LATEST_RELEASE}" ]]; then
                       echo "Could not retrieve latest deployed release"
                       exit 1
-                    fi 
-                    echo $LATEST_RELEASE
-                    ssh-keyscan -t rsa github.com >> ~/.ssh/known_hosts
+                    fi
+                    INSTANCE_NAME_PREFIX=pimup
+                    INSTANCE_NAME=${INSTANCE_NAME_PREFIX}-${IMAGE_TAG_SHORTED}-${CIRCLE_BUILD_NUM}
+                    PIM_CONTEXT=deployment
+
                     echo export LATEST_RELEASE=${LATEST_RELEASE} >> $BASH_ENV
-                    echo export INSTANCE_NAME_PREFIX=pimup >> $BASH_ENV
-                    echo export INSTANCE_NAME=pimup-$(echo $CIRCLE_SHA1 | cut -c -7)-${CIRCLE_BUILD_NUM} >> $BASH_ENV
-                    echo export CIRCLE_SHA1=${CIRCLE_SHA1} >> $BASH_ENV
+                    echo export INSTANCE_NAME_PREFIX=${INSTANCE_NAME_PREFIX} >> $BASH_ENV
+                    echo export INSTANCE_NAME=${INSTANCE_NAME} >> $BASH_ENV
+                    echo export PIM_CONTEXT=${PIM_CONTEXT} >> $BASH_ENV
+
+                    echo "Instance name prefix: ${INSTANCE_NAME_PREFIX}"
+                    echo "Instance name: ${INSTANCE_NAME}"
+                    echo "Image tag: ${IMAGE_TAG}"
+                    echo "Latest image tag: ${LATEST_RELEASE}"
+          - run:
+              name: DATADOG deployment Livetail logs page
+              command: echo "https://app.datadoghq.eu/logs/livetail?query=kube_namespace%3A${TYPE}-${INSTANCE_NAME}"
           - run:
                 name: Deploy instance with latest release
                 command: |
-                    IMAGE_TAG=${LATEST_RELEASE} PIM_CONTEXT=deployment make create-ci-release-files
-                    IMAGE_TAG=${LATEST_RELEASE} PIM_CONTEXT=deployment make change-terraform-source-version
-                    IMAGE_TAG=${LATEST_RELEASE} PIM_CONTEXT=deployment make deploy
+                    IMAGE_TAG=${LATEST_RELEASE} make create-ci-release-files
+                    IMAGE_TAG=${LATEST_RELEASE} make change-terraform-source-version
+                    IMAGE_TAG=${LATEST_RELEASE} make deploy
           - run:
                 name: Upgrade
-                command: UPGRADE_STEP_2=true PIM_CONTEXT=deployment make deploy-serenity
+                command: UPGRADE_STEP_2=true make deploy-instance
           - run:
                 name: Production tests on upgraded env
-                command: PIM_CONTEXT=deployment make test-prod
+                command: make test-prod
           - run:
                 name: Check that upgrader pod ran
-                command: kubectl get pods --namespace=grth-${INSTANCE_NAME} | grep pim-upgrader
+                command: kubectl get pods --namespace=${TYPE}-${INSTANCE_NAME} | grep pim-upgrader
           - run:
                 name: Prepare infrastructure artifacts
-                command: PIM_CONTEXT=deployment make prepare-infrastructure-artifacts
+                command: make prepare-infrastructure-artifacts
                 when: on_fail
           - store_artifacts:
                 path: ~/artifacts/infra
           - run:
                 name: Remove upgraded env
-                command: PIM_CONTEXT=deployment make delete
+                command: make delete
                 when: always
 
   test_upgrade_from_srnt_customer_db:
@@ -1000,36 +1048,56 @@ jobs:
       steps:
           - attach_workspace:
                 at: ~/
-          - add_ssh_keys
           - set_gcloud_config_dev
           - restore_persisted_env_vars
           - run:
+              name: Define value for next steps
+              command: |
+                LIST_SOURCE_PFID=( srnt-nature-et-decouvertes srnt-invivo srnt-franklin-electric )
+                RANDOM_SOURCE_PFID=$(( $RANDOM % 3 ))
+                SOURCE_PFID=${LIST_SOURCE_PFID[${RANDOM_SOURCE_PFID}]}
+                INSTANCE_NAME_PREFIX=pimci-duplic
+                INSTANCE_NAME=$(echo "${INSTANCE_NAME_PREFIX}-${IMAGE_TAG}" | cut -c1-40)
+                PIM_CONTEXT=deployment
+
+                echo export SOURCE_PFID=${SOURCE_PFID} >> $BASH_ENV
+                echo export INSTANCE_NAME_PREFIX=${INSTANCE_NAME_PREFIX} >> $BASH_ENV
+                echo export INSTANCE_NAME=${INSTANCE_NAME} >> $BASH_ENV
+                echo export PIM_CONTEXT=${PIM_CONTEXT} >> $BASH_ENV
+
+                echo "Source PFID: ${SOURCE_PFID}"
+                echo "Instance name prefix: ${INSTANCE_NAME_PREFIX}"
+                echo "Instance name: ${INSTANCE_NAME}"
+                echo "Image tag: ${IMAGE_TAG}"
+          - run:
+              name: DATADOG deployment Livetail logs page
+              command: echo "https://app.datadoghq.eu/logs/livetail?query=kube_namespace%3A${TYPE}-${INSTANCE_NAME}"
+          - run:
                 name: Duplicate PROD environment
-                command: |
-                    ssh-keyscan github.com >> ~/.ssh/known_hosts
-                    LIST_SOURCE_PFID=( srnt-nature-et-decouvertes srnt-invivo srnt-franklin-electric )
-                    RANDOM_SOURCE_PFID=$(( $RANDOM % 3 ))
-                    SOURCE_PFID=${LIST_SOURCE_PFID[${RANDOM_SOURCE_PFID}]}
-                    INSTANCE_NAME=pimci-duplic-$(echo $CIRCLE_SHA1 | cut -c -7)-${CIRCLE_BUILD_NUM}
-                    INSTANCE_NAME=${INSTANCE_NAME} IMAGE_TAG=${CIRCLE_SHA1} INSTANCE_NAME_PREFIX=pimci-duplic ENV_NAME=dev SOURCE_PFID=${SOURCE_PFID} PIM_CONTEXT=deployment  make clone_serenity
+                command: make clone_serenity
           - run:
                 name: Upgrade the duplicate environment
                 command: |
-                    UPGRADE_STEP_2=true PIM_CONTEXT=deployment IMAGE_TAG=$CIRCLE_SHA1 INSTANCE_NAME_PREFIX=pimci-duplic INSTANCE_NAME=pimci-duplic-$(echo $CIRCLE_SHA1 | cut -c -7)-${CIRCLE_BUILD_NUM} make create-ci-release-files get_mysql_parameters_disk deploy
+                    UPGRADE_STEP_2=true make create-ci-release-files
+                    UPGRADE_STEP_2=true make get_mysql_parameters_disk
+                    UPGRADE_STEP_2=true make deploy
+          - run:
+                name: Production tests on upgraded env
+                command: make test-prod
           - run:
               name: Prepare infrastructure artifacts
-              command: INSTANCE_NAME=pimci-duplic-$(echo $CIRCLE_SHA1 | cut -c -7)-${CIRCLE_BUILD_NUM} PIM_CONTEXT=deployment make prepare-infrastructure-artifacts
+              command: make prepare-infrastructure-artifacts
               when: on_fail
           - store_artifacts:
               path: ~/artifacts/infra
           - run:
                 name: Remove upgraded env
-                command: IMAGE_TAG=$CIRCLE_SHA1 INSTANCE_NAME=pimci-duplic-$(echo $CIRCLE_SHA1 | cut -c -7)-${CIRCLE_BUILD_NUM} PIM_CONTEXT=deployment make delete
+                command: make delete
                 when: always
 
-##################
-# Releases       #
-##################
+  ##################
+  # Releases       #
+  ##################
   release_srnt:
       environment:
           <<: *envVarsDeployDev
@@ -1078,9 +1146,9 @@ jobs:
                   docker push eu.gcr.io/akeneo-ci/pim-enterprise-dev:$GROWTH_RELEASE_NAME
                   docker push eu.gcr.io/akeneo-cloud/pim-enterprise-dev:$GROWTH_RELEASE_NAME
 
-##################
-# Deploy         #
-##################
+  ##################
+  # Deploy         #
+  ##################
   deploy_helpdesk_environment:
       environment:
         <<: *envVarsDeployPreprod
@@ -1187,9 +1255,9 @@ jobs:
               command: ENV_NAME=dev INSTANCE_NAME_PREFIX=pimci-pr-ge INSTANCE_NAME=pimci-pr-ge-${CIRCLE_PULL_REQUEST##*/} PIM_CONTEXT=deployment make delete
               when: on_fail
 
-##################
-# Cleanup        #
-##################
+  ##################
+  # Cleanup        #
+  ##################
   delete_pr_environments_hourly:
       environment:
           <<: *envVarsDeployDev
@@ -1252,7 +1320,7 @@ workflows:
                     - test_cronjobs_existence_srnt
           - test_upgrade_srnt_from_last_release:
                 requires:
-                    - test_deploy_srnt
+                    - test_cronjobs_existence_srnt
           - deploy_pr_srnt_environment?:
                 type: approval
                 filters:
@@ -1260,7 +1328,7 @@ workflows:
                         ignore:
                             - master
                 requires:
-                    - build_srnt_prod
+                    - test_cronjobs_existence_srnt
           - deploy_pr_srnt_environment:
                 requires:
                     - deploy_pr_srnt_environment?
@@ -1283,7 +1351,7 @@ workflows:
                     - test_cronjobs_existence_grth
           - test_upgrade_grth_from_last_release:
                 requires:
-                    - test_deploy_grth
+                    - test_cronjobs_existence_grth
           - deploy_pr_grth_environment:
                 requires:
                     - deploy_pr_grth_environment?

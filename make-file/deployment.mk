@@ -58,8 +58,12 @@ endif
 executor ?= kubectl
 migrate ?= no
 
+.PHONY: deploy-instance
+deploy-instance: create-ci-release-files deploy
+
 .PHONY: deploy-serenity
 deploy-serenity: create-ci-release-files deploy
+	@echo "Deprecated"
 
 .PHONY: delete-serenity
 delete-serenity: create-ci-release-files delete
