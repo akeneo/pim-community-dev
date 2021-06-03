@@ -85,8 +85,6 @@ class TableValueFactorySpec extends ObjectBehavior
             ]
         );
     }
-
-
     function it_throws_an_exception_if_cell_is_empty()
     {
         $attribute = $this->buildTableAttribute(false, false);
