@@ -73,7 +73,7 @@ abstract class AbstractItemMediaWriter implements
                 $this->addHeaders($item);
             }
 
-            if ($this->getMaxLinePerFile() !== -1 && $this->numberOfLineWritten % $this->getMaxLinePerFile() === 0) {
+            if ($this->areSeveralFilesNeeded() && $this->maxLinePerFileIsReached()) {
                 $writer->close();
                 $this->writtenFiles[] = WrittenFileInfo::fromLocalFile($path, basename($path));
 
@@ -220,5 +220,10 @@ abstract class AbstractItemMediaWriter implements
         }
 
         $this->writer->addRow(array_keys($item));
+    }
+
+    private function maxLinePerFileIsReached(): bool
+    {
+        return $this->numberOfLineWritten % $this->getMaxLinePerFile() === 1;
     }
 }

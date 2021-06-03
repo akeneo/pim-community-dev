@@ -33,21 +33,12 @@ use Symfony\Component\Filesystem\Filesystem;
 class ProductWriterSpec extends ObjectBehavior
 {
     function let(
-        BufferFactory $bufferFactory,
-        FlatItemBufferFlusher $flusher,
         Filesystem $filesystem,
-        FlatItemBuffer $flatRowBuffer,
         StepExecution $stepExecution,
         JobExecution $jobExecution,
         JobInstance $jobInstance
     ) {
-        $bufferFactory->create()->willReturn($flatRowBuffer);
-
-        $this->beConstructedWith(
-            $bufferFactory,
-            $flusher,
-            $filesystem
-        );
+        $this->beConstructedWith($filesystem);
 
         $stepExecution->getJobExecution()->willReturn($jobExecution);
         $jobExecution->getJobInstance()->willReturn($jobInstance);
@@ -70,84 +61,113 @@ class ProductWriterSpec extends ObjectBehavior
         $this->shouldHaveType(ProductWriter::class);
     }
 
-    function it_generate_file_path_depending_on_step_execution_parameters(StepExecution $stepExecution)
-    {
-        $stepExecution->getJobParameters()->willReturn(new JobParameters(
-            [
-                'linesPerFile' => 10000,
-                'filePath' => '/tmp/my_custom_export_product.xlsx',
-                'withHeader' => false,
-            ]
-        ));
+    function it_generates_file_path_depending_on_step_execution_parameters_and_line_per_files(
+        StepExecution $stepExecution
+    ) {
+        $stepExecution->getTotalItems()->willReturn(10);
+        $stepExecution->getJobParameters()->willReturn(new JobParameters([
+            'linesPerFile' => 10000,
+            'filePath' => '/tmp/my_custom_export_product.xlsx',
+            'withHeader' => false,
+        ]));
 
         $this->getPath()->shouldReturn('/tmp/my_custom_export_product.xlsx');
 
-        $stepExecution->getJobParameters()->willReturn(new JobParameters(
-            [
-                'linesPerFile' => 10000,
-                'filePath' => '/tmp/%job_label%_product.xlsx',
-                'withHeader' => false,
-            ]
-        ));
+        $stepExecution->getJobParameters()->willReturn(new JobParameters([
+            'linesPerFile' => 10000,
+            'filePath' => '/tmp/%job_label%_product.xlsx',
+            'withHeader' => false,
+        ]));
 
         $this->getPath()->shouldReturn('/tmp/XLSX_Product_export_product.xlsx');
 
-        $stepExecution->getJobParameters()->willReturn(new JobParameters(
-            [
-                'linesPerFile' => 10000,
-                'filePath' => '/tmp/%job_label%%datetime%_product.xlsx',
-                'withHeader' => false,
-            ]
-        ));
+        $stepExecution->getJobParameters()->willReturn(new JobParameters([
+            'linesPerFile' => 10000,
+            'filePath' => '/tmp/%job_label%%datetime%_product.xlsx',
+            'withHeader' => false,
+        ]));
 
         $this->getPath()->shouldReturn('/tmp/XLSX_Product_export2021-03-24_16-00-00_product.xlsx');
+
+        $stepExecution->getTotalItems()->willReturn(100000);
+        $stepExecution->getJobParameters()->willReturn(new JobParameters([
+            'linesPerFile' => 10000,
+            'filePath' => '/tmp/%job_label%%datetime%_product.xlsx',
+            'withHeader' => false,
+        ]));
+
+        $this->getPath()->shouldReturn('/tmp/XLSX_Product_export2021-03-24_16-00-00_product_1.xlsx');
     }
-    function it_call_the_flusher_and_store_the_written_files(
-        FlatItemBufferFlusher $flusher,
-        FlatItemBuffer $flatRowBuffer,
-        StepExecution $stepExecution
-    ) {
-        $jobParameters = new JobParameters(
-            [
-                'linesPerFile' => 10000,
-                'filePath' => '/tmp/%job_label%_product.xlsx',
-                'withHeader' => false,
-            ]
-        );
+
+    function it_writes_file_with_items(StepExecution $stepExecution)
+    {
+        $stepExecution->getTotalItems()->willReturn(5);
+        $jobParameters = new JobParameters([
+            'linesPerFile' => 6,
+            'filePath' => '/tmp/%job_label%_product.xlsx',
+            'withHeader' => false,
+        ]);
 
         $stepExecution->getJobParameters()->willReturn($jobParameters);
-
-        $flusher->setStepExecution($stepExecution)->shouldBeCalled();
-        $flatRowBuffer->write([['sku' => 42, 'name' => 'bag']], ['withHeader' => false]);
-        $flusher->flush(
-            $flatRowBuffer,
-            ['type' => 'xlsx'],
-            '/tmp/XLSX_Product_export_product.xlsx',
-            10000
-        )
-            ->shouldBeCalled()
-            ->willReturn(
-                [
-                    '/tmp/XLSX_Product_export_product1.xlsx',
-                    '/tmp/XLSX_Product_export_product2.xlsx',
-                ]
-            );
+        $stepExecution->incrementSummaryInfo("write", 5)->shouldBeCalled();
 
         $this->initialize();
-        $this->write([['sku' => 42, 'name' => 'bag']]);
+        $this->write([
+            ['sku' => 42, 'name' => 'bag'],
+            ['sku' => 52, 'name' => 'sunglasses'],
+            ['sku' => 62, 'name' => 'cap'],
+            ['sku' => 72, 'name' => 'bob'],
+            ['sku' => 72, 'name' => 'hat']
+        ]);
+
         $this->flush();
 
-        $this->getWrittenFiles()->shouldBeLike(
-            [
-                WrittenFileInfo::fromLocalFile(
-                    '/tmp/XLSX_Product_export_product1.xlsx',
-                    'XLSX_Product_export_product1.xlsx'
-                ),
-                WrittenFileInfo::fromLocalFile(
-                    '/tmp/XLSX_Product_export_product2.xlsx',
-                    'XLSX_Product_export_product2.xlsx'
-                ),
-            ]
-        );
+        $this->getWrittenFiles()->shouldBeLike([
+            WrittenFileInfo::fromLocalFile(
+                '/tmp/XLSX_Product_export_product.xlsx',
+                'XLSX_Product_export_product.xlsx'
+            ),
+        ]);
+    }
+
+    function it_writes_several_files_when_lines_per_file_of_file_is_less_than_total_item(StepExecution $stepExecution)
+    {
+        $stepExecution->getTotalItems()->willReturn(5);
+        $jobParameters = new JobParameters([
+            'linesPerFile' => 2,
+            'filePath' => '/tmp/%job_label%_product.xlsx',
+            'withHeader' => false,
+        ]);
+
+        $stepExecution->getJobParameters()->willReturn($jobParameters);
+        $stepExecution->incrementSummaryInfo("write", 3)->shouldBeCalled();
+        $stepExecution->incrementSummaryInfo("write", 2)->shouldBeCalled();
+
+        $this->initialize();
+        $this->write([
+            ['sku' => 42, 'name' => 'bag'],
+            ['sku' => 52, 'name' => 'sunglasses'],
+            ['sku' => 62, 'name' => 'cap'],
+        ]);
+        $this->write([
+            ['sku' => 72, 'name' => 'bob'],
+            ['sku' => 72, 'name' => 'hat']
+        ]);
+        $this->flush();
+
+        $this->getWrittenFiles()->shouldBeLike([
+            WrittenFileInfo::fromLocalFile(
+                '/tmp/XLSX_Product_export_product_1.xlsx',
+                'XLSX_Product_export_product_1.xlsx'
+            ),
+            WrittenFileInfo::fromLocalFile(
+                '/tmp/XLSX_Product_export_product_2.xlsx',
+                'XLSX_Product_export_product_2.xlsx'
+            ),
+            WrittenFileInfo::fromLocalFile(
+                '/tmp/XLSX_Product_export_product_3.xlsx',
+                'XLSX_Product_export_product_3.xlsx'
+            ),
+        ]);
     }
 }

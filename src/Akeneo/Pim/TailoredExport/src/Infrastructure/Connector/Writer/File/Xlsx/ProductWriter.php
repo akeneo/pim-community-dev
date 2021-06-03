@@ -13,9 +13,24 @@ declare(strict_types=1);
 namespace Akeneo\Pim\TailoredExport\Infrastructure\Connector\Writer\File\Xlsx;
 
 use Akeneo\Pim\TailoredExport\Infrastructure\Connector\Writer\File\AbstractItemMediaWriter;
+use Box\Spout\Writer\WriterInterface;
+use Symfony\Component\Filesystem\Filesystem;
 
 class ProductWriter extends AbstractItemMediaWriter
 {
+    private WriterInterface $writer;
+
+    public function __construct(Filesystem $localFileSystem, WriterInterface $writer)
+    {
+        parent::__construct($localFileSystem);
+        $this->writer = $writer;
+    }
+
+    public function initialize(): void
+    {
+        parent::initialize();
+    }
+
     /**
      * @return array<string, mixed>
      * {@inheritdoc}
