@@ -47,7 +47,7 @@ class NavigationContext extends BaseNavigationContext
      */
     public function iEditTheUserGroup($identifier)
     {
-        $page   = 'UserGroup';
+        $page = 'UserGroup';
         $getter = sprintf('get%s', $page);
         $entity = $this->getFixturesContext()->$getter($identifier);
         $this->openPage(sprintf('UserGroup edit', $page), ['id' => $entity->getId()]);
@@ -60,22 +60,22 @@ class NavigationContext extends BaseNavigationContext
      */
     public function iEditTheUserRole($label)
     {
-        $page   = 'UserRole';
+        $page = 'UserRole';
         $getter = sprintf('get%s', $page);
         $entity = $this->getFixturesContext()->$getter($label);
         $this->openPage(sprintf('UserRole edit', $page), ['id' => $entity->getId()]);
     }
 
     /**
-     * @todo remove when all routes will use `code` for identifier
      * @param string $identifier
      *
      * @Given /^I edit the "([^"]*)" association type$/
      * @Given /^I am on the "([^"]*)" association type page$/
+     * @todo remove when all routes will use `code` for identifier
      */
     public function iEditTheAssociationType($identifier)
     {
-        $page   = 'AssociationType';
+        $page = 'AssociationType';
         $this->openPage(sprintf('%s edit', $page), ['code' => $identifier]);
     }
 
@@ -110,6 +110,17 @@ class NavigationContext extends BaseNavigationContext
     public function iAmOnTheCategoryNodeCreationPage(Category $category)
     {
         $this->openPage('Category node creation', ['id' => $category->getId()]);
+    }
+
+    /**
+     * @param Category $category
+     *
+     * @Given /^I am on the category tree "([^"]*)" page$/
+     */
+    public function iAmOnTheCategoryTreePage(string $code)
+    {
+        $category = $this->getFixturesContext()->getEntity('Category', ['code' => $code]);
+        $this->openPage('Category tree', ['id' => $category->getId()]);
     }
 
     /**
@@ -153,7 +164,7 @@ class NavigationContext extends BaseNavigationContext
      */
     public function iAmOnTheGroupTypeEditPage($identifier)
     {
-        $page   = 'GroupType';
+        $page = 'GroupType';
         $getter = sprintf('get%s', $page);
         $entity = $this->getFixturesContext()->$getter($identifier);
         $this->openPage(sprintf('%s edit', $page), ['code' => $entity->getCode()]);
@@ -197,7 +208,7 @@ class NavigationContext extends BaseNavigationContext
      */
     public function iShouldBeOnTheJobPage(JobInstance $job)
     {
-        $jobPage         = sprintf('%s show', ucfirst($job->getType()));
+        $jobPage = sprintf('%s show', ucfirst($job->getType()));
         $expectedAddress = $this->getPage($jobPage)->getUrl(['code' => $job->getCode()]);
         $this->assertAddress($expectedAddress);
     }
@@ -209,7 +220,7 @@ class NavigationContext extends BaseNavigationContext
      */
     public function iShouldBeOnTheJobEditPage(JobInstance $job)
     {
-        $jobPage         = sprintf('%s edit', ucfirst($job->getType()));
+        $jobPage = sprintf('%s edit', ucfirst($job->getType()));
         $expectedAddress = $this->getPage($jobPage)->getUrl(['code' => $job->getCode()]);
         $this->assertAddress($expectedAddress);
     }
