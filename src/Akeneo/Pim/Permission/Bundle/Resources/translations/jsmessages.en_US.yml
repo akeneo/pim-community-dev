@@ -73,11 +73,9 @@ pim_analytics:
 
 category.permissions:
     view.label: Allowed to view products
-    view.help: Allow to view the products in this category
     edit.label: Allowed to edit products
-    edit.help: Allow to edit the products in this category (implies the view permission)
     own.label: Allowed to own products
-    own.help: Allowed to review, publish, unpublish, classify, associate products in this category (implies the edit permission)
+    own.help: Review, publish, unpublish, classify and associate products
     no_access_to_products: You don't have access to products in any tree, please contact your administrator
     apply_on_children.label: Apply changes on children
-    apply_on_children.help: Copy the permissions changes on all children, existing permissions on children are kept
+    apply_on_children.help: Existing permissions on children are kept
