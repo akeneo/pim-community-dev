@@ -21,7 +21,13 @@ class ClientManager implements ClientManagerInterface
     }
     public function findClientByPublicId($publicId)
     {
-        return $this->findClientBy(['randomId' => $publicId]);
+        if (false === $pos = strpos($publicId, '_')) {
+            return;
+        }
+
+        $randomId = substr($publicId, $pos + 1);
+
+        return $this->findClientBy(['randomId' => $randomId]);
     }
 
     public function deleteClient(ClientInterface $client)

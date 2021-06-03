@@ -40,15 +40,18 @@ services:
             - '@akeneo_connectivity.connection.webhook.cache_clearer'
         tags:
             - { name: kernel.event_subscriber }
-    
+
     Akeneo\Connectivity\Connection\Infrastructure\EventSubscriber\EventsApiLoggingSubscriber:
         arguments:
             - '@akeneo_connectivity.connection.persistence.repository.events_api_debug'
         tags:
             - { name: kernel.event_subscriber }
+
     Akeneo\Connectivity\Connection\Infrastructure\EventSubscriber\OAuthEventSubscriber:
         arguments:
             $connectionRepository: '@akeneo_connectivity.connection.persistence.repository.connection'
             $userRepository: '@pim_user.repository.user'
+            $createAppUserWithPermissions: '@Akeneo\Connectivity\Connection\Infrastructure\Service\CreateAppUserWithPermissions'
+            $requestStack: '@request_stack'
         tags:
             - { name: kernel.event_subscriber }

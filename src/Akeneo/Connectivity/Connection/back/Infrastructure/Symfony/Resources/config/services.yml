@@ -95,13 +95,16 @@ services:
             - 'AES-256-OFB'
             - '%env(APP_SECRET)%'
             - '%env(APP_SECRET)%'
+
     Akeneo\Connectivity\Connection\Infrastructure\Service\OAuthScopeTransformer:
         public: false
+
     Akeneo\Connectivity\Connection\Infrastructure\Service\OAuthScopeValidator:
         arguments:
             $security: '@Symfony\Component\Security\Core\Security'
             $securityFacade: '@oro_security.security_facade'
             $authScopeTransformer: '@Akeneo\Connectivity\Connection\Infrastructure\Service\OAuthScopeTransformer'
+
     Akeneo\Connectivity\Connection\Infrastructure\Service\CreateAppUserWithPermissions:
         public: false
         arguments:
@@ -113,8 +116,17 @@ services:
             $userSaver: '@pim_user.saver.user'
             $userRepository: '@pim_user.repository.user'
             $userFactory: '@pim_user.factory.user'
+            $validator: '@validator'
+            $userUpdater: '@pim_user.updater.user'
+
     Akeneo\Connectivity\Connection\Infrastructure\Service\ClientManager:
         decorates: fos_oauth_server.client_manager.default
         decoration_inner_name: fos_oauth_server.client_manager.base_default
         arguments:
             - '@fos_oauth_server.client_manager.base_default'
+
+    Akeneo\Connectivity\Connection\Infrastructure\Service\OAuthStorage:
+        decorates: fos_oauth_server.storage.default
+        decoration_inner_name: fos_oauth_server.storage.default_base
+        arguments:
+            - '@fos_oauth_server.storage.default_base'

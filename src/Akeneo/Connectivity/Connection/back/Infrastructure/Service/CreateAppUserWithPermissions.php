@@ -4,7 +4,9 @@ declare(strict_types=1);
 
 namespace Akeneo\Connectivity\Connection\Infrastructure\Service;
 
+use Akeneo\Tool\Bundle\ApiBundle\Entity\Client;
 use Akeneo\Tool\Component\StorageUtils\Saver\SaverInterface;
+use Akeneo\Tool\Component\StorageUtils\Updater\ObjectUpdaterInterface;
 use Akeneo\UserManagement\Bundle\Doctrine\ORM\Repository\RoleRepository;
 use Akeneo\UserManagement\Bundle\Doctrine\ORM\Repository\RoleWithPermissionsRepository;
 use Akeneo\UserManagement\Bundle\Doctrine\ORM\Repository\UserRepository;
@@ -12,6 +14,7 @@ use Akeneo\UserManagement\Component\Factory\RoleWithPermissionsFactory;
 use Akeneo\UserManagement\Component\Factory\UserFactory;
 use Akeneo\UserManagement\Component\Model\User;
 use Akeneo\UserManagement\Component\Storage\Saver\RoleWithPermissionsSaver;
+use Symfony\Component\Validator\Validator\ValidatorInterface;
 
 /**
  * @copyright 2021 Akeneo SAS (http://www.akeneo.com)
@@ -27,6 +30,8 @@ class CreateAppUserWithPermissions
     private SaverInterface $userSaver;
     private UserRepository $userRepository;
     private UserFactory $userFactory;
+    private ObjectUpdaterInterface $userUpdater;
+    private ValidatorInterface $validator;
 
     public function __construct(
         OAuthScopeTransformer $authScopeTransformer,
@@ -36,7 +41,9 @@ class CreateAppUserWithPermissions
         RoleWithPermissionsSaver $roleWithPermissionsSaver,
         SaverInterface $userSaver,
         UserRepository $userRepository,
-        UserFactory $userFactory
+        UserFactory $userFactory,
+        ObjectUpdaterInterface $userUpdater,
+        ValidatorInterface $validator
     ) {
         $this->authScopeTransformer = $authScopeTransformer;
         $this->roleWithPermissionsFactory = $roleWithPermissionsFactory;
@@ -46,43 +53,82 @@ class CreateAppUserWithPermissions
         $this->userSaver = $userSaver;
         $this->userRepository = $userRepository;
         $this->userFactory = $userFactory;
+        $this->userUpdater = $userUpdater;
+        $this->validator = $validator;
     }
 
-    public function handle(array $scopes): void
+    public function handle(Client $client, array $scopes): User
     {
         $aclPermissionIds = $this->authScopeTransformer->transform($scopes);
 
         /**
-         * @todo: CREATE USER WITH PERMISSIONS FROM THE SCOPE
-         * @see Akeneo\UserManagement\Component\Factory\UserFactory
-         * @see Akeneo\UserManagement\Component\Factory\RoleWithPermissionsFactory
-         * -> create a role
-         * -> create a user
+         * @todo:
          * -> create a user group
-         * associate this user to this role
          * associate this user to this user group
          */
-        $roleCode = 'yell-extenssion-role';
+        $roleCode = sprintf('%s-role', $this->slugify($client->getLabel()));
+
         $role = $this->roleRepository->findOneByIdentifier($roleCode);
         if (null === $role) {
             $roleWithPermissions = $this->roleWithPermissionsFactory->create($aclPermissionIds);
-            $roleWithPermissions->role()->setLabel('yell-extenssion-label');
-            $roleWithPermissions->role()->setRole('yell-extenssion-role');
+            $roleWithPermissions->role()->setLabel($roleCode);
+            $roleWithPermissions->role()->setRole($roleCode);
+            /**
+             * TODO
+             * ^ Akeneo\Tool\Component\StorageUtils\Exception\InvalidPropertyException {#3494 ▼
+            #propertyValue: Akeneo\UserManagement\Component\Model\Role {#3378 ▶}
+            #className: "Akeneo\UserManagement\Component\Updater\UserUpdater"
+            #propertyName: "roles"
+            #message: "Property "roles" expects a valid role. The role does not exist, "yell-extenssion-role" given."
+            #code: 300
+            #file: "/srv/pim/src/Akeneo/Tool/Component/StorageUtils/Exception/InvalidPropertyException.php"
+            #line: 106
+             */
             $this->roleWithPermissionsSaver->saveAll([$roleWithPermissions]);
             $role = $roleWithPermissions->role();
         }
-        $appUsername = 'yell-extenssion-username';
-        $appUser = $this->userRepository->findOneBy(['username' => $appUsername]);
-        if (null === $appUser) {
-            $appUser = $this->userFactory->create();
-            if (!$appUser instanceof User) {
-                throw new \Exception('user factory is not created a user model');
+
+        return $this->createUser($client->getLabel(), [$role]);
+    }
+
+    private function createUser(string $username, array $roles): User
+    {
+        $user = $this->userFactory->create();
+        $user->defineAsApiUser();
+        $this->userUpdater->update(
+            $user,
+            [
+                'username' => $username,
+                'password' => $this->generatePassword(),
+                'first_name' => $this->slugify($username),
+                'last_name' => $this->slugify($username),
+                'email' => sprintf('%s@example.com', $username),
+                'roles' => $roles
+            ]
+        );
+
+        $errors = $this->validator->validate($user);
+        if (0 < count($errors)) {
+            $errorMessages = [];
+            foreach ($errors as $error) {
+                $errorMessages[] = $error->getPropertyPath() . ': ' . $error->getMessage();
             }
-            $appUser->setUsername($appUsername);
-            $appUser->setEmail(random_int(99999999, 999999990).'@random.email');
-            $appUser->setPassword(random_int(1, 999));
-            $appUser->setRoles([$role]);
-            $this->userSaver->save($appUser);
+
+            throw new \LogicException("The user creation failed :\n" . implode("\n", $errorMessages));
         }
+
+        $this->userSaver->save($user);
+
+        return $user;
+    }
+
+    private function slugify(string $string): string
+    {
+        return strtr($string, '<>&" ', '_____');
+    }
+
+    private function generatePassword(): string
+    {
+        return str_shuffle(ucfirst(substr(uniqid(), 0, 9)));
     }
 }

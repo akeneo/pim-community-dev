@@ -7,12 +7,14 @@ namespace Akeneo\Connectivity\Connection\Infrastructure\EventSubscriber;
 use Akeneo\Connectivity\Connection\Domain\Settings\Model\ValueObject\FlowType;
 use Akeneo\Connectivity\Connection\Domain\Settings\Model\Write\Connection;
 use Akeneo\Connectivity\Connection\Domain\Settings\Persistence\Repository\ConnectionRepository;
+use Akeneo\Connectivity\Connection\Infrastructure\Service\CreateAppUserWithPermissions;
 use Akeneo\Tool\Bundle\ApiBundle\Entity\Client;
 use Akeneo\UserManagement\Bundle\Doctrine\ORM\Repository\UserRepository;
 use Akeneo\UserManagement\Component\Model\User;
 use FOS\OAuthServerBundle\Event\OAuthEvent;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 use Symfony\Component\HttpFoundation\RequestStack;
+use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 
 /**
  * @copyright 2021 Akeneo SAS (http://www.akeneo.com)
@@ -22,13 +24,19 @@ class OAuthEventSubscriber implements EventSubscriberInterface
 {
     private ConnectionRepository $connectionRepository;
     private UserRepository $userRepository;
+    private CreateAppUserWithPermissions $createAppUserWithPermissions;
+    private RequestStack $requestStack;
 
     public function __construct(
         ConnectionRepository $connectionRepository,
-        UserRepository $userRepository
+        UserRepository $userRepository,
+        CreateAppUserWithPermissions $createAppUserWithPermissions,
+        RequestStack $requestStack
     ) {
         $this->connectionRepository = $connectionRepository;
         $this->userRepository = $userRepository;
+        $this->createAppUserWithPermissions = $createAppUserWithPermissions;
+        $this->requestStack = $requestStack;
     }
 
     public static function getSubscribedEvents()
@@ -39,28 +47,39 @@ class OAuthEventSubscriber implements EventSubscriberInterface
     public function saveConnection(OAuthEvent $event)
     {
         $client = $event->getClient();
-        $appUsername = 'yell-extenssion-username';
-        $user = $this->userRepository->findOneBy(['username' => $appUsername]);
-        //$user = $event->getUser();
-        // @todo: CREATE USER WITH PERMISSIONS FROM THE SCOPE
-        if (!$client instanceof Client || !$user instanceof User) {
+
+        if (!$client instanceof Client) {
             return;
         }
-        $connection = $this->connectionRepository->findOneByCode('yellextension');
+
+        if (null === $request = $this->requestStack->getCurrentRequest()) {
+            throw new \LogicException('Current request not found.');
+        }
+
+        $scopes = [];
+        if ($request->get('scope')) {
+            // get scopes for OAuth Apps
+            $scopes = explode(',', $request->get('scope'));
+        }
+
+        $user = $this->createAppUserWithPermissions->handle($client, $scopes);
+
+        $connectionCode = strtr($client->getLabel(), '<>&" ', '_____');
+        $connection = $this->connectionRepository->findOneByCode($connectionCode);
 
         if(null !== $connection) {
-            return;
+            throw new \LogicException('Extension already exist.');
         }
 
+        // TODO receive FlowType from the App
         $connection = new Connection(
-            'yellextension',
-            'yell-extension',
-            FlowType::DATA_DESTINATION,
+            $connectionCode,
+            $connectionCode,
+            FlowType::OTHER,
             $client->getId(),
-            $user->getId(), // user
-            null,
-            true
+            $user->getId()
         );
+
         $this->connectionRepository->create($connection);
     }
 }
