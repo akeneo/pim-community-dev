@@ -148,6 +148,7 @@ const CategoryEditPage: FC = () => {
                 icon={<MoreIcon />}
                 ghost="borderless"
                 onClick={openSecondaryAction}
+                className="dropdown-button"
               />
               {secondaryActionIsOpen && (
                 <Dropdown.Overlay onClose={closeSecondaryAction}>
@@ -169,6 +170,7 @@ const CategoryEditPage: FC = () => {
                           }
                         });
                       }}
+                      className="AknDropdown-menuLink"
                     >
                       <span>{translate('pim_common.delete')}</span>
                     </Dropdown.Item>
