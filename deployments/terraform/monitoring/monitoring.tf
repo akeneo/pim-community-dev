@@ -48,6 +48,9 @@ resource "google_monitoring_uptime_check_config" "https" {
       host       = replace(var.dns_external, "/\\.$/", "")
     }
   }
+  depends_on = [
+    var.helm_exec_id
+  ]
 }
 
 resource "google_monitoring_notification_channel" "pagerduty" {
