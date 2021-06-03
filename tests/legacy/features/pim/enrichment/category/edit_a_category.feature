@@ -18,9 +18,3 @@ Feature: Edit a category
     Then I should see the flash message "Category successfully updated"
     And I should be on the category "sandals" edit page
     And I should see the text "My sandals"
-
-  Scenario: Go to category edit page from the category tree
-    Given I am on the categories page
-    And I select the "2014 collection" tree
-    And I click on the "summer_collection" category
-    Then I should be on the category "summer_collection" edit page

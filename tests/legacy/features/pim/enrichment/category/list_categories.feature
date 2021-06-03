@@ -4,12 +4,14 @@ Feature: List categories
   As a product manager
   I need to be able to list existing categories
 
-  @critical
-  Scenario: Successfully display categories
+  Background:
     Given a "footwear" catalog configuration
     And I am logged in as "Julia"
-    When I am on the categories page
+
+  @critical
+  Scenario: Navigate to edit category page
+    Given I am on the categories page
+    When I follow the "2014 collection" category
     Then I should see the text "2014 collection"
-    And I should see the text "Summer collection"
-    And I should see the text "Winter collection"
-    And I should see the text "Please select a category on the left or Create a new category"
+    And I follow the "Summer collection" category
+    Then the field Code should contain "summer_collection"
