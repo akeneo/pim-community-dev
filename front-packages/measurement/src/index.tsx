@@ -5,7 +5,8 @@ import {pimTheme} from 'akeneo-design-system';
 import {MicroFrontendDependenciesProvider, Routes, Translations} from '@akeneo-pim-community/shared';
 import {routes} from './routes.json';
 import translations from './translations.json';
-import {MeasurementApp, ConfigContext, UnsavedChangesContext} from './feature';
+import {ConfigContext, UnsavedChangesContext} from './feature';
+import MeasurementApp from './feature/MeasurementApp';
 
 const unsavedChanges = {
   hasUnsavedChanges: false,

@@ -30,32 +30,13 @@ const webpackConfig = {
     version: true,
   },
   optimization: {
+    runtimeChunk: 'single',
     splitChunks: {
-      cacheGroups: {
-        vendor: {
-          test: /[\\/]node_modules[\\/]/,
-          name: "vendor",
-          filename: "vendor.min.js",
-          chunks: "all"
-        },
-        main: {
-          filename: 'main.min.js'
-        }
-      }
+      chunks: 'all',
+      maxInitialRequests: Infinity,
+      minSize: 0
     },
-    moduleIds: 'hashed',
-    minimizer: [new TerserPlugin({
-      cache: true,
-      parallel: true,
-      sourceMap: false,
-      terserOptions: {
-        ecma: 6,
-        mangle: true,
-        output: {
-          comments: false,
-        },
-      },
-    })]
+   
   },
   mode: (isProd ? 'production' : 'development'),
   target: 'web',
