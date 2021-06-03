@@ -27,6 +27,20 @@ pim_enrich:
       module:
         delete:
           confirm: Möchten Sie diesen Benutzer wirklich löschen?
+pim_user.profile:
+  caption: Sagen Sie uns zunächst, was Ihre Hauptaufgabe ist, damit wir Ihnen mit den wichtigsten Inhalten helfen können.
+  why_is_it_needed: Warum brauchen wir diese Informationen?
+  save_button: Speichern und Zugriff auf den Marktplatz
+  selector:
+    placeholder: Wähle eine Option aus
+    not_found: Kein Ergebnis gefunden
+  product_manager: Ich verwalte Produktkataloge.
+  redactor: Ich reichere Produktdaten an.
+  pim_integrator: Ich integriere Akeneo PIM in unser IT-Ökosystem.
+  pim_administrator: Ich administriere Akeneo PIM.
+  asset_manager: Ich verwalte Assets im PIM.
+  translator: Ich übersetze Produkte, Assets und/oder Referenz-Entitätsdaten.
+  third_party_developer: Ich entwickle Lösungen im Zusammenhang mit Akeneo PIM.
 pim_user_management:
   entity:
     user:
@@ -42,6 +56,7 @@ pim_user_management:
         index: "] -Inf, 1] {{ count }} Benutzer|] 1, Inf [{{ count }} Benutzer"
       properties:
         username: Benutzername
+        profile: Was ist Ihre Hauptaufgaben?
         name_prefix: Namenspräfix
         first_name: Vorname
         middle_name: Zweiter Vorname
