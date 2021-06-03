@@ -55,6 +55,14 @@ class AttributeContext implements Context
                 $attributeData['available_locales'] = array_filter(explode(',', $attributeData['available_locales']));
             }
 
+            if (isset($attributeData['table_configuration'])) {
+                if ('' === $attributeData['table_configuration']) {
+                    unset($attributeData['table_configuration']);
+                } else {
+                    $attributeData['table_configuration'] = \json_decode($attributeData['table_configuration'], true);
+                }
+            }
+
             $attribute = $this->attributeBuilder->build($attributeData);
             $this->attributeRepository->save($attribute);
         }
