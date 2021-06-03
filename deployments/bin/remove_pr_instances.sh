@@ -33,13 +33,23 @@ for NAMESPACE in $(kubectl get ns | egrep 'srnt-pimci|srnt-pimup|grth-pimci|grth
         if [[ ${#NS_AGE} -eq 3 ]]; then
             AGE=$(echo ${NS_AGE//h/})
             if [[ ${AGE} -gt 23 ]]; then
-                DELETE_INSTANCE=true
+                #Check helm deploy/updated time
+                DEPLOY_TIME=$(helm3 list -n ${NAMESPACE} | grep ${NAMESPACE} | awk -F\\t '{print $4}' | awk '{print $1" "$2}')
+                DAY_DIFF=$(( ($(date +%s) - $(date -d "${DEPLOY_TIME}" +%s)) / (60*60*24) ))
+                if [[ ${DAY_DIFF} -gt 1 ]]; then
+                    DELETE_INSTANCE=true
+                fi
             fi
         fi
     fi
     # delete all environments older than 24 hours (>=1day)
     if [[ ${NS_AGE} == *d* ]]; then
-        DELETE_INSTANCE=true
+        #Check helm deploy/updated time
+        DEPLOY_TIME=$(helm3 list -n ${NAMESPACE} | grep ${NAMESPACE} | awk -F\\t '{print $4}' | awk '{print $1" "$2}')
+        DAY_DIFF=$(( ($(date +%s) - $(date -d "${DEPLOY_TIME}" +%s)) / (60*60*24) ))
+        if [[ ${DAY_DIFF} -gt 1 ]]; then
+            DELETE_INSTANCE=true
+        fi
     fi
 
     if [ $DELETE_INSTANCE = true ]; then
