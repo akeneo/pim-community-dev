@@ -906,8 +906,11 @@ jobs:
           - run:
                 name: Get latest release & export variables
                 command: |
-                    git tag --list | grep -E "^v?[0-9]+$" | sort -r > /tmp/pim-tags.txt
-                    LATEST_RELEASE=$(head -n 1 /tmp/pim-tags.txt)
+                    LATEST_RELEASE=$(TYPE=srnt bash ${PWD}/deployments/bin/get_latest_release.sh)
+                    if [ -z "$LATEST_RELEASE" ]; then 
+                      echo "Could not retrieve latest deployed release"
+                      exit 1
+                    fi 
                     echo $LATEST_RELEASE
                     ssh-keyscan -t rsa github.com >> ~/.ssh/known_hosts
                     echo export IMAGE_TAG=${LATEST_RELEASE} >> $BASH_ENV
@@ -953,8 +956,12 @@ jobs:
           - run:
                 name: Get latest release & export variables
                 command: |
-                    GS_GROWTH=$(gsutil ls -l gs://akecld-terraform-modules/growth-edition | sort -r | head -n 1 || true)
-                    LATEST_RELEASE=$(echo ${GS_GROWTH} | cut -d/ -f5)
+                    LATEST_RELEASE=$(TYPE=grth bash ${PWD}/deployments/bin/get_latest_release.sh)
+                    if [ -z "$LATEST_RELEASE" ]; then 
+                      echo "Could not retrieve latest deployed release"
+                      exit 1
+                    fi 
+                    echo $LATEST_RELEASE
                     ssh-keyscan -t rsa github.com >> ~/.ssh/known_hosts
                     echo export LATEST_RELEASE=${LATEST_RELEASE} >> $BASH_ENV
                     echo export INSTANCE_NAME_PREFIX=pimup >> $BASH_ENV
