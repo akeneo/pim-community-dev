@@ -162,4 +162,3 @@ class CreateTableValueEndToEnd extends ApiTestCase
         $this->get('pim_catalog.saver.attribute')->save($attribute);
     }
 }
-
