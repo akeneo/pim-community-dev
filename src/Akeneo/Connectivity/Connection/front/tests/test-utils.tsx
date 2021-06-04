@@ -9,8 +9,10 @@ import fetchMock from 'jest-fetch-mock';
 const UserProvider: FC = ({children}) => {
     const data: {[key: string]: string} = {uiLocale: 'en_US', timezone: 'UTC'};
     const user = {
-        get: (key: string) => data[key],
+        // eslint-disable-next-line
+        get: <T,>(key: string) => (data[key] as unknown) as T,
         set: () => undefined,
+        refresh: () => Promise.resolve(),
     };
 
     return <UserContext.Provider value={user}>{children}</UserContext.Provider>;

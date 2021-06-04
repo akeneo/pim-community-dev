@@ -1,11 +1,14 @@
-import React, {FC, useEffect, useState} from 'react';
+import React, {FC, useContext, useEffect, useState} from 'react';
 import {AkeneoThemedProps, Breadcrumb, ChannelsIllustration, getColor, getFontSize} from 'akeneo-design-system';
 import {useTranslate} from '../../shared/translate';
 import {PageHeader} from '../../common';
 import {UserButtons} from '../../shared/user';
 import styled from 'styled-components';
-import {useFetchMarketingUrl} from '../hooks/use-fetch-marketing-url';
+import {useFetchMarketplaceUrl} from '../hooks/use-fetch-marketplace-url';
 import {useRouter} from '../../shared/router/use-router';
+import {UserContext} from '../../shared/user';
+import {UserProfileSelector} from '../components/UserProfileSelector';
+import {useSaveUserProfile} from '../hooks/use-save-user';
 
 const LinkButton = styled.a<AkeneoThemedProps>`
     display: inline-flex;
@@ -67,8 +70,12 @@ const Caption = styled.p`
 
 export const Marketplace: FC = () => {
     const translate = useTranslate();
-    const fetchMarketplaceUrl = useFetchMarketingUrl();
+    const user = useContext(UserContext);
+    const saveUser = useSaveUserProfile(user.get<{id: string}>('meta').id);
+    const fetchMarketplaceUrl = useFetchMarketplaceUrl();
     const [marketplaceUrl, setMarketplaceUrl] = useState<string>('');
+    const [userProfile, setUserProfile] = useState<string | null | undefined>(undefined);
+    const [showSelector, setShowSelector] = useState<boolean>(false);
     const generateUrl = useRouter();
     const dashboardHref = `#${generateUrl('akeneo_connectivity_connection_audit_index')}`;
 
@@ -80,8 +87,39 @@ export const Marketplace: FC = () => {
     );
 
     useEffect(() => {
+        (async () => {
+            await user.refresh();
+            const profile = user.get<string | null>('profile');
+            setUserProfile(profile);
+            if (null === profile) {
+                setShowSelector(true);
+            }
+        })();
+    }, [user]);
+
+    useEffect(() => {
         fetchMarketplaceUrl().then(setMarketplaceUrl);
     }, [fetchMarketplaceUrl]);
+
+    if (undefined === userProfile) {
+        return null;
+    }
+
+    const handleOnSelectChange = (selectedValue: string | null) => {
+        setUserProfile(selectedValue);
+    };
+
+    const handleClick = () => {
+        if (null === userProfile) {
+            return;
+        }
+        saveUser({profile: userProfile}).then(() => {
+            setShowSelector(false);
+            fetchMarketplaceUrl().then((url: string) => {
+                window.open(url);
+            });
+        });
+    };
 
     return (
         <>
@@ -94,11 +132,20 @@ export const Marketplace: FC = () => {
 
                 <Heading>{translate('akeneo_connectivity.connection.connect.marketplace.title')}</Heading>
 
-                <Caption>{translate('akeneo_connectivity.connection.connect.marketplace.sub_title')}</Caption>
-
-                <LinkButton href={marketplaceUrl} target='_blank' role='link' tabIndex='0'>
-                    {translate('akeneo_connectivity.connection.connect.marketplace.link')}
-                </LinkButton>
+                {showSelector ? (
+                    <UserProfileSelector
+                        selectedProfile={userProfile}
+                        handleOnSelectChange={handleOnSelectChange}
+                        handleClick={handleClick}
+                    />
+                ) : (
+                    <>
+                        <Caption>{translate('akeneo_connectivity.connection.connect.marketplace.sub_title')}</Caption>
+                        <LinkButton href={marketplaceUrl} target='_blank' role='link' tabIndex='0'>
+                            {translate('akeneo_connectivity.connection.connect.marketplace.link')}
+                        </LinkButton>
+                    </>
+                )}
             </PageContent>
         </>
     );

@@ -459,6 +459,7 @@ pim_datagrid:
             product: "]-Inf, 1]{{ count }} result selected|]1, Inf[{{ count }} results selected"
     view_selector:
         view: Views
+        choose_type: I want to create a private view
     actions:
         edit_product_attributes: Edit attributes of the product
         classify_product: Classify the product

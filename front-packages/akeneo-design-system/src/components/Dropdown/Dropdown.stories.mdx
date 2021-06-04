@@ -81,11 +81,11 @@ For accessibility reasons, we must put the full text in an HTML title attribute.
 ## Simple Item
 
 <Canvas>
-  <Story name="Simple Item" height={260}>
+  <Story name="Simple Item" height={300}>
     {args => {
       const [isOpen, open, close] = useBooleanState(true);
       return (
-        <SpaceContainer height={200}>
+        <SpaceContainer height={290}>
           <Dropdown>
             <Button onClick={open}>
               Simple <ArrowDownIcon />
@@ -97,6 +97,7 @@ For accessibility reasons, we must put the full text in an HTML title attribute.
                 </Dropdown.Header>
                 <Dropdown.ItemCollection>
                   <Dropdown.Item>First item</Dropdown.Item>
+                  <Dropdown.Item isActive={true}>Active item</Dropdown.Item>
                   <Dropdown.Item onClick={action('Clicked')}>A very long item</Dropdown.Item>
                   <Dropdown.Item onClick={action('Clicked')} disabled={true}>
                     This one is disabled
