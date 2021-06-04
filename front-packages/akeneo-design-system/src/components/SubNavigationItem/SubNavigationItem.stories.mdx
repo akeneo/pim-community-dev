@@ -1,0 +1,121 @@
+import {Meta, Story, ArgsTable, Canvas} from '@storybook/addon-docs/blocks';
+import {SubNavigationItem} from './SubNavigationItem.tsx';
+
+<Meta
+  title="Components/SubNavigationItem"
+  component={SubNavigationItem}
+  argTypes={{
+      title: { control: {type: 'text'}},
+      tag: { control: {type: 'text'}},
+      tagTint: {control: {type: 'select', options: ['green', 'blue', 'dark_blue', 'purple', 'dark_purple', 'yellow', 'red']}},
+      disabled: {control: {type: 'boolean'}},
+      active: {control: {type: 'boolean'}},
+      href: { control: {type: 'text'}},
+      onClick: {action: 'Click on the button'},
+  }}
+  args={{
+      title: 'Title',
+  }}
+/>
+
+# SubNavigationItem
+
+## Usage
+
+TODO
+
+## Playground
+
+<Canvas>
+  <Story name="Standard">
+    {args => {
+      return <SubNavigationItem {...args} />;
+    }}
+  </Story>
+</Canvas>
+
+<ArgsTable story="Standard" />
+
+## Variation on active
+
+<Canvas>
+  <Story name="Active">
+    {args => {
+      return (
+        <>
+            <SubNavigationItem {...args} active={false} title='Default'/>
+            <SubNavigationItem {...args} active={true} title='Active'/>
+        </>
+      );
+    }}
+  </Story>
+</Canvas>
+
+## Variation on disabled
+
+<Canvas>
+    <Story name="Disabled">
+        {args => {
+            return (
+                <>
+                    <SubNavigationItem {...args} disabled={false} title='Default'/>
+                    <SubNavigationItem {...args} disabled={true} title='Disabled'/>
+                    <SubNavigationItem {...args} disabled={true} active={true} title='Disabled and active'/>
+                </>
+            );
+        }}
+    </Story>
+</Canvas>
+
+## Variation on tag
+
+<Canvas>
+    <Story name="Tag">
+        {args => {
+            return (
+                <>
+                    <SubNavigationItem {...args} />
+                    <SubNavigationItem {...args} title='Title' tag='Tag'/>
+                    <SubNavigationItem {...args} title='Title name that is way too long' tag='Tag'/>
+                    <SubNavigationItem {...args} title='Title name that is too long' tag='Tag but longer'/>
+                </>
+            );
+        }}
+    </Story>
+</Canvas>
+
+
+## Variation on tagTint
+
+<Canvas>
+    <Story name="Tag tint">
+        {args => {
+            return (
+                <>
+                    <SubNavigationItem {...args} tagTint='green' tag='green'/>
+                    <SubNavigationItem {...args} tagTint='blue' tag='blue'/>
+                    <SubNavigationItem {...args} tagTint='dark_blue' tag='dark_blue'/>
+                    <SubNavigationItem {...args} tagTint='purple' tag='purple'/>
+                    <SubNavigationItem {...args} tagTint='dark_purple' tag='dark_purple'/>
+                    <SubNavigationItem {...args} tagTint='yellow' tag='yellow'/>
+                    <SubNavigationItem {...args} tagTint='red' tag='red'/>
+                </>
+            );
+        }}
+    </Story>
+</Canvas>
+
+## Variation on href
+
+<Canvas>
+    <Story name="Link">
+        {args => {
+            return (
+                <>
+                    <SubNavigationItem {...args} href="https://akeneo.com" target="_blank" title='Link'/>
+                    <SubNavigationItem {...args} href="https://akeneo.com" target="_blank" disabled={true} title='Disabled link'/>
+                </>
+            );
+        }}
+    </Story>
+</Canvas>
