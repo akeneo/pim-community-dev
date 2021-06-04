@@ -1045,11 +1045,13 @@ jobs:
       steps:
           - attach_workspace:
                 at: ~/
+          - add_ssh_keys
           - set_gcloud_config_dev
           - restore_persisted_env_vars
           - run:
               name: Define value for next steps
               command: |
+                ssh-keyscan github.com >> ~/.ssh/known_hosts
                 LIST_SOURCE_PFID=( srnt-nature-et-decouvertes srnt-invivo srnt-franklin-electric )
                 RANDOM_SOURCE_PFID=$(( $RANDOM % 3 ))
                 SOURCE_PFID=${LIST_SOURCE_PFID[${RANDOM_SOURCE_PFID}]}
