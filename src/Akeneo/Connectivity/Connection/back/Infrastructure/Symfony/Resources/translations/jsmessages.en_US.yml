@@ -44,7 +44,7 @@ akeneo_connectivity.connection:
         marketplace:
             title: Want to connect your PIM with another application? 🤟
             sub_title: Check our marketplace to see which application can be connected with Akeneo PIM.
-            link: Here you go!
+            link: Access the marketplace
     connections: Connections
     secondary_actions:
         title: Other actions

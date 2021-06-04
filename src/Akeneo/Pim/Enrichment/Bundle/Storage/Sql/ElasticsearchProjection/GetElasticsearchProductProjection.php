@@ -11,6 +11,7 @@ use Akeneo\Pim\Enrichment\Component\Product\Exception\ObjectNotFoundException;
 use Akeneo\Pim\Enrichment\Component\Product\Factory\ReadValueCollectionFactory;
 use Doctrine\DBAL\Connection;
 use Doctrine\DBAL\Types\Type;
+use Doctrine\DBAL\Types\Types;
 use Symfony\Component\Serializer\Normalizer\NormalizerInterface;
 
 /**
@@ -79,12 +80,11 @@ final class GetElasticsearchProductProjection implements GetElasticsearchProduct
 
             $values = $this->valuesNormalizer->normalize($row['values'], self::INDEXING_FORMAT_PRODUCT_AND_MODEL_INDEX);
 
-            // use Type::DATETIME and not Type::DATETIME_IMMUTABLE as it's overridden in the PIM (UTCDateTimeType) to handle UTC correctly
             $results[$row['identifier']] = new ElasticsearchProductProjection(
                 $row['id'],
                 $row['identifier'],
-                \DateTimeImmutable::createFromMutable(Type::getType(Type::DATETIME)->convertToPhpValue($row['created_date'], $platform)),
-                \DateTimeImmutable::createFromMutable(Type::getType(Type::DATETIME)->convertToPhpValue($row['updated_date'], $platform)),
+                Type::getType(Types::DATETIME_IMMUTABLE)->convertToPhpValue($row['created_date'], $platform),
+                Type::getType(Types::DATETIME_IMMUTABLE)->convertToPhpValue($row['updated_date'], $platform),
                 (bool) $row['is_enabled'],
                 $row['family_code'],
                 \json_decode($row['family_labels'], true),
@@ -119,7 +119,7 @@ final class GetElasticsearchProductProjection implements GetElasticsearchProduct
 WITH
     product as (
         SELECT
-            product.id, 
+            product.id,
             product.identifier,
             product.is_enabled,
             product.product_model_id AS parent_product_model_id,
@@ -135,26 +135,26 @@ WITH
             JSON_KEYS(product.raw_values) AS attribute_codes_in_product_raw_values,
             JSON_MERGE_PATCH(
                 product.raw_values,
-                COALESCE(sub_product_model.raw_values, JSON_OBJECT()), 
+                COALESCE(sub_product_model.raw_values, JSON_OBJECT()),
                 COALESCE(root_product_model.raw_values, JSON_OBJECT())
             ) as raw_values,
             attribute.code AS attribute_as_label_code,
             CASE WHEN root_product_model.id IS NOT NULL THEN 2 ELSE 1 END AS product_lvl_in_attribute_set
-        FROM 
-            pim_catalog_product product 
+        FROM
+            pim_catalog_product product
             LEFT JOIN pim_catalog_product_model sub_product_model ON sub_product_model.id = product.product_model_id
             LEFT JOIN pim_catalog_product_model root_product_model ON root_product_model.id = sub_product_model.parent_id
             LEFT JOIN pim_catalog_family family ON family.id = product.family_id
             LEFT JOIN pim_catalog_family_variant family_variant ON family_variant.id = sub_product_model.family_variant_id
             LEFT JOIN pim_catalog_attribute attribute ON attribute.id = family.label_attribute_id
-        WHERE 
+        WHERE
             product.identifier IN (:identifiers)
     ),
     product_categories AS (
         SELECT
             product.id AS product_id,
             JSON_ARRAYAGG(category.code) AS category_codes
-        FROM 
+        FROM
             product
             JOIN pim_catalog_category_product category_product ON category_product.product_id = product.id
             JOIN pim_catalog_category category ON category.id = category_product.category_id
@@ -164,14 +164,14 @@ WITH
         SELECT product_id, JSON_ARRAYAGG(category_code) as category_codes
         FROM (
             SELECT product.id AS product_id, category.code AS category_code
-            FROM 
+            FROM
                 product
                 INNER JOIN pim_catalog_product_model model ON model.id = product.parent_product_model_id
                 INNER JOIN pim_catalog_category_product_model category_model ON category_model.product_model_id = model.id
                 INNER JOIN pim_catalog_category category ON category.id= category_model.category_id
             UNION ALL
             SELECT product.id AS product_id, category.code AS category_code
-            FROM 
+            FROM
                 product
                 INNER JOIN pim_catalog_product_model model ON model.id = product.parent_product_model_id
                 INNER JOIN pim_catalog_product_model parent ON parent.id = model.parent_id
@@ -179,19 +179,19 @@ WITH
                 INNER JOIN pim_catalog_category category ON category.id = category_model.category_id
         ) results
         GROUP BY product_id
-    ),    
+    ),
     product_groups AS (
         SELECT
             product.id AS product_id,
             JSON_ARRAYAGG(pim_group.code) AS group_codes
-        FROM 
+        FROM
             product
             JOIN pim_catalog_group_product group_product ON group_product.product_id = product.id
             JOIN pim_catalog_group pim_group ON pim_group.id = group_product.group_id
         GROUP BY  product.id
     ),
     product_completeness AS (
-        SELECT 
+        SELECT
             completeness.product_id,
             JSON_OBJECTAGG(channel_code, completeness.completeness_per_locale) as completeness_per_channel
         FROM (
@@ -200,8 +200,8 @@ WITH
                 JSON_OBJECTAGG(
                     locale.code,
                     IF(
-                        completeness.required_count = 0, 
-                        100, 
+                        completeness.required_count = 0,
+                        100,
                         floor(((completeness.required_count - completeness.missing_count)/completeness.required_count) * 100)
                     )
                 ) as completeness_per_locale,
@@ -211,36 +211,36 @@ WITH
                 STRAIGHT_JOIN pim_catalog_completeness completeness ON completeness.product_id = product.id
                 JOIN pim_catalog_channel channel ON channel.id = completeness.channel_id
                 JOIN pim_catalog_locale locale ON locale.id = completeness.locale_id
-            GROUP BY product_id, channel_code 
+            GROUP BY product_id, channel_code
         ) as completeness
         GROUP BY completeness.product_id
     ),
     product_family_label AS (
-        SELECT 
+        SELECT
             family.family_id,
             JSON_OBJECTAGG(locale.code, family_translation.label) AS labels
-        FROM 
-            (SELECT DISTINCT product.family_id FROM product WHERE family_id IS NOT NULL) family  
+        FROM
+            (SELECT DISTINCT product.family_id FROM product WHERE family_id IS NOT NULL) family
             CROSS JOIN pim_catalog_locale locale
             LEFT JOIN pim_catalog_family_translation family_translation ON family_translation.foreign_key = family.family_id AND family_translation.locale = locale.code
         WHERE locale.is_activated = true
         GROUP BY family.family_id
     ),
     family_attributes AS (
-        SELECT 
+        SELECT
             family.family_id,
             JSON_ARRAYAGG(attribute.code) as attribute_codes_in_family
-        FROM 
-        (SELECT DISTINCT product.family_id FROM product WHERE family_id IS NOT NULL) family 
+        FROM
+        (SELECT DISTINCT product.family_id FROM product WHERE family_id IS NOT NULL) family
         JOIN pim_catalog_family_attribute family_attribute ON family_attribute.family_id = family.family_id
         JOIN pim_catalog_attribute attribute ON attribute.id = family_attribute.attribute_id
         GROUP BY family.family_id
     ),
     variant_product_attributes AS (
-        SELECT 
+        SELECT
             family_variant.family_variant_id,
             JSON_ARRAYAGG(attribute.code) as attribute_codes_at_variant_product_level
-        FROM 
+        FROM
             (SELECT DISTINCT family_variant_id, product_lvl_in_attribute_set FROM product WHERE family_variant_id IS NOT NULL) family_variant
             JOIN pim_catalog_family_variant_has_variant_attribute_sets family_variant_attribute_set ON family_variant_attribute_set.family_variant_id = family_variant.family_variant_id
             JOIN pim_catalog_variant_attribute_set_has_attributes attribute_in_set ON attribute_in_set.variant_attribute_set_id = family_variant_attribute_set.variant_attribute_sets_id
@@ -250,8 +250,8 @@ WITH
             family_variant.product_lvl_in_attribute_set = attribute_set.level
         GROUP BY family_variant.family_variant_id
     )
-    SELECT 
-        product.id, 
+    SELECT
+        product.id,
         product.identifier,
         product.is_enabled,
         product.parent_product_model_code,
@@ -274,7 +274,7 @@ WITH
         COALESCE(product_completeness.completeness_per_channel, JSON_OBJECT()) AS completeness,
         COALESCE(family_attributes.attribute_codes_in_family, JSON_ARRAY()) AS attribute_codes_in_family,
         COALESCE(variant_product_attributes.attribute_codes_at_variant_product_level, JSON_ARRAY()) AS attribute_codes_at_variant_product_level
-    FROM 
+    FROM
         product
         LEFT JOIN product_groups ON product_groups.product_id = product.id
         LEFT JOIN product_categories ON product_categories.product_id = product.id
@@ -300,7 +300,7 @@ SQL;
             }
 
             $attributeCodesInFamily = \json_decode($row['attribute_codes_in_family'], true);
-            $attributeCodesAtVariantProductLevel= \json_decode($row['attribute_codes_at_variant_product_level'], true);
+            $attributeCodesAtVariantProductLevel = \json_decode($row['attribute_codes_at_variant_product_level'], true);
 
             $row['attribute_codes_of_ancestor'] = array_values(array_unique(array_diff($attributeCodesInFamily, $attributeCodesAtVariantProductLevel)));
 

@@ -59,7 +59,7 @@ const NewCategoryModal: FC<NewCategoryModalProps> = ({closeModal, onCreate, pare
         </Button>
       </Modal.TopRightButtons>
       <Modal.SectionTitle color="brand">{translate('pim_enrich.entity.category.plural_label')}</Modal.SectionTitle>
-      <Modal.Title>{translate('pim_enrich.entity.category.new_category')}</Modal.Title>
+      <Modal.Title>{translate(parentCode === undefined ? 'pim_enrich.entity.category.new_category_tree' : 'pim_enrich.entity.category.new_category')}</Modal.Title>
 
       <StyledField label={translate('pim_common.code')}>
         <TextInput

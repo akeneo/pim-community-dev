@@ -11,5 +11,5 @@ namespace Akeneo\Connectivity\Connection\Domain\Marketplace;
  */
 interface MarketplaceUrlGeneratorInterface
 {
-    public function generateUrl(): string;
+    public function generateUrl(string $username): string;
 }

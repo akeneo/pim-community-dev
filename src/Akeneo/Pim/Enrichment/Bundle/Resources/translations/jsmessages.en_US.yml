@@ -233,18 +233,19 @@ pim_enrich.entity.category:
             success: Category successfully updated
             fail: The category could not be updated
     new_category: New category
+    new_category_tree: New category tree
     category_created: The category "{{ code }}" was successfully created
     category_creation_error: The category "{{ code }}" could not be created
     category_tree_creation:
-        success: The "{{ code }}" tree was successfully created
-        error: The "{{ code }}" tree could not be created
+        success: The tree "{{ code }}" was successfully created
+        error: The tree "{{ code }}" could not be created
     category_tree_deletion:
-        success: The "{{ tree }}" tree was successfully deleted
-        error: The "{{ tree }}" tree could not be deleted
+        success: The tree "{{ tree }}" was successfully deleted
+        error: The tree "{{ tree }}" could not be deleted
         confirmation: Are you sure want to delete the {{ name }} tree? All the categories in that tree will be deleted, and the products will be removed from all those categories.
         products_limit_exceeded:
             title: This tree cannot be deleted
-            message: The "{{ tree }}" tree contains more than {{ limit }} products and therefore cannot be deleted.
+            message: The tree "{{ tree }}" contains more than {{ limit }} products and therefore cannot be deleted.
     category_deletion:
         success: The category "{{ name }}" was successfully deleted
         error: The category "{{ name }}" could not be deleted
@@ -459,6 +460,7 @@ pim_datagrid:
             product: "]-Inf, 1]{{ count }} result selected|]1, Inf[{{ count }} results selected"
     view_selector:
         view: Views
+        choose_type: I want to create a private view
     actions:
         edit_product_attributes: Edit attributes of the product
         classify_product: Classify the product
