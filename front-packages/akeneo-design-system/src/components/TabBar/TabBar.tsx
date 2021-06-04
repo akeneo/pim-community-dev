@@ -15,6 +15,7 @@ import {AkeneoThemedProps, getColor, getFontSize} from '../../theme';
 import {Dropdown, IconButton} from '../../components';
 import {MoreIcon} from '../../icons';
 import {useBooleanState} from '../../hooks';
+import {Override} from '../../shared';
 
 const Container = styled.div<{sticky: number} & AkeneoThemedProps>`
   display: flex;
@@ -74,32 +75,35 @@ const HiddenTabsDropdown = styled(Dropdown)<{isActive: boolean} & AkeneoThemedPr
   }
 `;
 
-type TabProps = {
-  /**
-   * Define if the tab is active.
-   */
-  isActive: boolean;
+type TabProps = Override<
+  React.HTMLAttributes<HTMLDivElement>,
+  {
+    /**
+     * Define if the tab is active.
+     */
+    isActive: boolean;
 
-  /**
-   * Function called when the user click on tab.
-   */
-  onClick?: () => void;
+    /**
+     * Function called when the user click on tab.
+     */
+    onClick?: () => void;
 
-  /**
-   * Content of the Tab.
-   */
-  children: ReactNode;
+    /**
+     * Content of the Tab.
+     */
+    children: ReactNode;
 
-  /**
-   * @private
-   */
-  parentRef?: RefObject<HTMLDivElement>;
+    /**
+     * @private
+     */
+    parentRef?: RefObject<HTMLDivElement>;
 
-  /**
-   * @private
-   */
-  onVisibilityChange?: (newVisibility: boolean) => void;
-};
+    /**
+     * @private
+     */
+    onVisibilityChange?: (newVisibility: boolean) => void;
+  }
+>;
 
 const Tab = ({children, isActive, parentRef, onVisibilityChange, ...rest}: TabProps) => {
   const ref = useRef<HTMLDivElement>(null);
@@ -171,13 +175,15 @@ const TabBar = ({moreButtonTitle, children, ...rest}: TabBarProps) => {
     }
 
     const key = child.key !== null ? child.key : index;
+    const isHidden = hiddenElements.includes(String(key));
 
-    if (hiddenElements.includes(String(key))) {
+    if (isHidden) {
       hiddenTabs.push(child);
     }
 
     return cloneElement(child, {
       parentRef: ref,
+      tabIndex: isHidden ? -1 : 0,
       onVisibilityChange: (isVisible: boolean) => {
         setHiddenElements(previousHiddenElements =>
           isVisible
