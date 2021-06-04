@@ -50,7 +50,7 @@ const HistoryPimView = ({viewName, className, onBuild}: Props) => {
 
   return (
     <div>
-      <div ref={el} />
+      <div ref={el} className={className} />
     </div>
   );
 };
