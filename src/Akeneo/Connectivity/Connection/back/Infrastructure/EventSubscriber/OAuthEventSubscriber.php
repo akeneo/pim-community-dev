@@ -57,14 +57,13 @@ class OAuthEventSubscriber implements EventSubscriberInterface
         }
 
         $scopes = [];
-        if ($request->get('scope')) {
+        if (null !== $form = $request->get('fos_oauth_server_authorize_form')) {
             // get scopes for OAuth Apps
-            $scopes = explode(',', $request->get('scope'));
+            $scopes = explode(',', $form['scope']);
         }
-
         $user = $this->createAppUserWithPermissions->handle($client, $scopes);
 
-        $connectionCode = strtr($client->getLabel(), '<>&" ', '_____');
+        $connectionCode = strtr($client->getLabel(), '<>&" -', '______');
         $connection = $this->connectionRepository->findOneByCode($connectionCode);
 
         if(null !== $connection) {

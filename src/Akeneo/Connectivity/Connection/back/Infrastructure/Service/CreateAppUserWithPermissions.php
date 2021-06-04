@@ -73,22 +73,11 @@ class CreateAppUserWithPermissions
             $roleWithPermissions = $this->roleWithPermissionsFactory->create($aclPermissionIds);
             $roleWithPermissions->role()->setLabel($roleCode);
             $roleWithPermissions->role()->setRole($roleCode);
-            /**
-             * TODO
-             * ^ Akeneo\Tool\Component\StorageUtils\Exception\InvalidPropertyException {#3494 ▼
-            #propertyValue: Akeneo\UserManagement\Component\Model\Role {#3378 ▶}
-            #className: "Akeneo\UserManagement\Component\Updater\UserUpdater"
-            #propertyName: "roles"
-            #message: "Property "roles" expects a valid role. The role does not exist, "yell-extenssion-role" given."
-            #code: 300
-            #file: "/srv/pim/src/Akeneo/Tool/Component/StorageUtils/Exception/InvalidPropertyException.php"
-            #line: 106
-             */
             $this->roleWithPermissionsSaver->saveAll([$roleWithPermissions]);
             $role = $roleWithPermissions->role();
         }
 
-        return $this->createUser($client->getLabel(), [$role]);
+        return $this->createUser($client->getLabel(), [$role->getRole()]);
     }
 
     private function createUser(string $username, array $roles): User
