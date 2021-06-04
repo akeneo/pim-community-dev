@@ -105,58 +105,58 @@ type SelectInputProps = Override<
   Override<React.InputHTMLAttributes<HTMLDivElement>, InputProps<string>>,
   (
     | {
-      clearable?: false;
-      readOnly: true;
-      value: string | null;
-    }
+        clearable?: false;
+        readOnly: true;
+        value: string | null;
+      }
     | {
-      clearable?: false;
-      readOnly?: boolean;
-      value: string;
-      onChange: (newValue: string) => void;
-    }
+        clearable?: false;
+        readOnly?: boolean;
+        value: string;
+        onChange: (newValue: string) => void;
+      }
     | {
-      clearable?: true;
-      readOnly?: boolean;
-      value: string | null;
-      onChange: (newValue: string | null) => void;
-    }
+        clearable?: true;
+        readOnly?: boolean;
+        value: string | null;
+        onChange: (newValue: string | null) => void;
+      }
   ) & {
-      /**
-       * The placeholder displayed when no option is selected.
-       */
-      placeholder?: string;
+    /**
+     * The placeholder displayed when no option is selected.
+     */
+    placeholder?: string;
 
-      /**
-       * The text displayed when no result was found.
-       */
-      emptyResultLabel: string;
+    /**
+     * The text displayed when no result was found.
+     */
+    emptyResultLabel: string;
 
-      /**
-       * Accessibility text for the clear button
-       */
-      clearLabel?: string;
+    /**
+     * Accessibility text for the clear button
+     */
+    clearLabel?: string;
 
-      /**
-       * Accessibility text for the open dropdown button
-       */
-      openLabel?: string;
+    /**
+     * Accessibility text for the open dropdown button
+     */
+    openLabel?: string;
 
-      /**
-       * Defines if the input is valid on not.
-       */
-      invalid?: boolean;
+    /**
+     * Defines if the input is valid on not.
+     */
+    invalid?: boolean;
 
-      /**
-       * The options.
-       */
-      children?: ReactNode;
+    /**
+     * The options.
+     */
+    children?: ReactNode;
 
-      /**
-       * Force the vertical position of the overlay.
-       */
-      verticalPosition?: VerticalPosition;
-    }
+    /**
+     * Force the vertical position of the overlay.
+     */
+    verticalPosition?: VerticalPosition;
+  }
 >;
 
 /**
