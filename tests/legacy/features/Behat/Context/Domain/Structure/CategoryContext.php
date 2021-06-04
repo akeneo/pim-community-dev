@@ -24,14 +24,12 @@ final class CategoryContext extends PimContext
         /** @var NodeElement $categoryTree */
         $categoryTree = $this->spin(function () use ($categoryLabel) {
             return $this->getCurrentPage()->find('named', array('content', $categoryLabel));
-
-            //return $this->getSession()->getPage()->find('xpath', sprintf('//td[text()="%s"]', $categoryTreeLabel));
         }, sprintf('The "%s" category was not found', $categoryLabel));
         $categoryTree->click();
     }
 
     /**
-     * @When I hover over the category ":categoryLabel"
+     * @When I hover over the category :categoryLabel
      */
     public function iHoverOverTheCategory(string $categoryLabel)
     {
@@ -41,5 +39,38 @@ final class CategoryContext extends PimContext
         }, sprintf('The "%s" category was not found', $categoryLabel));
 
         $categoryTree->mouseOver();
+    }
+
+    /**
+     * @When I hover over the category tree item :categoryLabel
+     */
+    public function iHoverOverTheCategoryTreeItem(string $categoryLabel)
+    {
+        /** @var NodeElement $categoryTree */
+        $categoryTree = $this->spin(function () use ($categoryLabel) {
+            $tree = $this->getCurrentPage()->find('css', 'ul[role="tree"]');
+            if (!$tree) {
+                return false;
+            }
+
+            return $tree->find('named', array('content', $categoryLabel));
+        }, sprintf('The "%s" category was not found', $categoryLabel));
+
+        $categoryTree->mouseOver();
+    }
+
+    /** @When I create the category with code :code */
+    public function iCreateTheCategoryWithCode(string $code)
+    {
+        $this->spin(function () use ($code) {
+            $modal = $this->getCurrentPage()->find('css', 'div[role=dialog]');
+            if (!$modal) {
+                return false;
+            }
+
+            $modal->fillField('Code', $code);
+            $modal->findButton('Create')->click();
+            return true;
+        }, sprintf('Can not create the category with code %s', $code));
     }
 }
