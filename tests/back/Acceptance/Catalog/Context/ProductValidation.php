@@ -59,9 +59,13 @@ final class ProductValidation implements Context
     {
         $this->productBuilder->withIdentifier('foo');
         foreach ($table as $row) {
-            $data = $row['data'];
-            if (preg_match('/,/', $data)) {
-                $data = explode(',', $row['data']);
+            if (isset($row['json_data']) && '' !== $row['json_data']) {
+                $data = \json_decode($row['json_data'], true);
+            } else {
+                $data = $row['data'];
+                if (preg_match('/,/', $data)) {
+                    $data = explode(',', $row['data']);
+                }
             }
 
             $this->productBuilder->withValue($row['attribute'], $data, $row['locale'] ?? '', $row['scope'] ?? '');
