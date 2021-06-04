@@ -1,5 +1,7 @@
 # 4.0.x
 
+# 4.0.113 (2021-06-04)
+
 ## Bug fixes
 
 - PIM-9892: Add possibility to define options when fetching attributes by type
