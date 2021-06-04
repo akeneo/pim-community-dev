@@ -8,11 +8,9 @@ use Akeneo\AssetManager\Infrastructure\Validation\AssetFamily\ProductLinkRules\G
 
 class InMemoryGetAssetCollectionTypeAdapter implements GetAssetCollectionTypeAdapterInterface
 {
-    /** @var string */
-    private $attributeType = null;
+    private ?string $attributeType = null;
 
-    /** @var \Exception */
-    private $exceptionToThrow;
+    private ?\Exception $exceptionToThrow = null;
 
     public function fetch(string $productAttributeCode): string
     {

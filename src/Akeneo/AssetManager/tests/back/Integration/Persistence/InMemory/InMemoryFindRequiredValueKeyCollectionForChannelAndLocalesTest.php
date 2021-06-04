@@ -27,11 +27,9 @@ use Symfony\Component\EventDispatcher\EventDispatcher;
 
 class InMemoryFindRequiredValueKeyCollectionForChannelAndLocalesTest extends TestCase
 {
-    /** @var InMemoryAttributeRepository */
-    private $attributeRepository;
+    private InMemoryAttributeRepository $attributeRepository;
 
-    /** @var InMemoryFindRequiredValueKeyCollectionForChannelAndLocales */
-    private $query;
+    private InMemoryFindRequiredValueKeyCollectionForChannelAndLocales $query;
 
     public function setUp(): void
     {

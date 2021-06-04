@@ -1,5 +1,15 @@
 # 5.0.x
 
+# 5.0.29 (2021-05-31)
+
+# 5.0.28 (2021-05-28)
+
+# 5.0.27 (2021-05-26)
+
+## Bug fixes
+
+- PIM-9841: Improve dashboard performance: introduce data cache (through pim:volume:aggregate) for number of values for asset query and number of values per record
+
 # 5.0.26 (2021-05-21)
 
 # 5.0.25 (2021-05-19)

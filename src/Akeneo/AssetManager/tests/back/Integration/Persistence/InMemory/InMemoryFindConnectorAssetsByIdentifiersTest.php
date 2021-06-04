@@ -25,8 +25,7 @@ use PHPUnit\Framework\TestCase;
 
 class InMemoryFindConnectorAssetsByIdentifiersTest extends TestCase
 {
-    /** @var InMemoryFindConnectorAssetsByIdentifiers */
-    private $findConnectorAssetsByIdentifiers;
+    private InMemoryFindConnectorAssetsByIdentifiers $findConnectorAssetsByIdentifiers;
 
     public function setUp(): void
     {
@@ -42,21 +41,27 @@ class InMemoryFindConnectorAssetsByIdentifiersTest extends TestCase
     {
         $kartellAsset = new ConnectorAsset(
             AssetCode::fromString('kartell'),
-            []
+            [],
+            new \DateTimeImmutable('@0'),
+            new \DateTimeImmutable('@3600'),
         );
         $kartellAssetIdentifier = AssetIdentifier::fromString('brand_kartell_fingerprint');
         $this->findConnectorAssetsByIdentifiers->save($kartellAssetIdentifier, $kartellAsset);
 
         $lexonAsset = new ConnectorAsset(
             AssetCode::fromString('lexon'),
-            []
+            [],
+            new \DateTimeImmutable('@0'),
+            new \DateTimeImmutable('@3600'),
         );
         $lexonAssetIdentifier = AssetIdentifier::fromString('brand_lexon_fingerprint');
         $this->findConnectorAssetsByIdentifiers->save($lexonAssetIdentifier, $lexonAsset);
 
         $alessiAsset = new ConnectorAsset(
             AssetCode::fromString('alessi'),
-            []
+            [],
+            new \DateTimeImmutable('@0'),
+            new \DateTimeImmutable('@3600'),
         );
         $alessiAssetIdentifier = AssetIdentifier::fromString('brand_alessi_fingerprint');
         $this->findConnectorAssetsByIdentifiers->save($alessiAssetIdentifier, $alessiAsset);
@@ -84,7 +89,9 @@ class InMemoryFindConnectorAssetsByIdentifiersTest extends TestCase
     {
         $connectorAsset = new ConnectorAsset(
             AssetCode::fromString('kartell'),
-            []
+            [],
+            new \DateTimeImmutable('@0'),
+            new \DateTimeImmutable('@3600'),
         );
         $assetIdentifier = AssetIdentifier::fromString('brand_kartell_fingerprint');
         $this->findConnectorAssetsByIdentifiers->save($assetIdentifier, $connectorAsset);
@@ -148,7 +155,9 @@ class InMemoryFindConnectorAssetsByIdentifiersTest extends TestCase
                         'data'    => 'Description for print channel',
                     ],
                 ]
-            ]
+            ],
+            new \DateTimeImmutable('@0'),
+            new \DateTimeImmutable('@3600'),
         );
         $assetIdentifier = AssetIdentifier::fromString('brand_kartell_fingerprint');
 
@@ -181,7 +190,9 @@ class InMemoryFindConnectorAssetsByIdentifiersTest extends TestCase
                         'data'    => 'FR ecommerce name',
                     ]
                 ],
-            ]
+            ],
+            new \DateTimeImmutable('@0'),
+            new \DateTimeImmutable('@3600'),
         );
 
         $assetsFound = $this->findConnectorAssetsByIdentifiers->find([
@@ -249,7 +260,9 @@ class InMemoryFindConnectorAssetsByIdentifiersTest extends TestCase
                         'data'    => 'Not localizable value.'
                     ]
                 ],
-            ]
+            ],
+            new \DateTimeImmutable('@0'),
+            new \DateTimeImmutable('@3600'),
         );
         $assetIdentifier = AssetIdentifier::fromString('brand_kartell_fingerprint');
 
@@ -284,7 +297,9 @@ class InMemoryFindConnectorAssetsByIdentifiersTest extends TestCase
                         'data'    => 'Not localizable value.'
                     ],
                 ],
-            ]
+            ],
+            new \DateTimeImmutable('@0'),
+            new \DateTimeImmutable('@3600'),
         );
 
         $assetsFound = $this->findConnectorAssetsByIdentifiers->find([

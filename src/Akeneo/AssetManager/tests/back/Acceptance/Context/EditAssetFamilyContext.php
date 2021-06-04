@@ -53,44 +53,31 @@ final class EditAssetFamilyContext implements Context
     private const UNKNOWN_CHANNEL = 'unknown_channel';
     private const UNKNOWN_LOCALE = 'UNKNOWN_LOCALE';
 
-    /** @var AssetFamilyRepositoryInterface */
-    private $assetFamilyRepository;
+    private AssetFamilyRepositoryInterface $assetFamilyRepository;
 
-    /** @var EditAssetFamilyHandler */
-    private $editAssetFamilyHandler;
+    private EditAssetFamilyHandler $editAssetFamilyHandler;
 
-    /** @var CreateAssetFamilyHandler */
-    private $createAssetFamilyHandler;
+    private CreateAssetFamilyHandler $createAssetFamilyHandler;
 
-    /** @var ValidatorInterface */
-    private $validator;
+    private ValidatorInterface $validator;
 
-    /** @var ConstraintViolationsContext */
-    private $constraintViolationsContext;
+    private ConstraintViolationsContext $constraintViolationsContext;
 
-    /** @var InMemoryFindActivatedLocalesByIdentifiers */
-    private $activatedLocales;
+    private InMemoryFindActivatedLocalesByIdentifiers $activatedLocales;
 
-    /** @var int */
-    private $ruleTemplateByAssetFamilyLimit;
+    private int $ruleTemplateByAssetFamilyLimit;
 
-    /** @var RuleEngineValidatorACLStub */
-    private $ruleEngineValidatorACLStub;
+    private RuleEngineValidatorACLStub $ruleEngineValidatorACLStub;
 
-    /** @var FixturesLoader */
-    private $fixturesLoader;
+    private FixturesLoader $fixturesLoader;
 
-    /** @var InMemoryChannelExists */
-    private $channelExists;
+    private InMemoryChannelExists $channelExists;
 
-    /** @var InMemoryGetAssetCollectionTypeAdapter */
-    private $inMemoryFindAssetCollectionTypeACL;
+    private InMemoryGetAssetCollectionTypeAdapter $inMemoryFindAssetCollectionTypeACL;
 
-    /** @var GetAttributeIdentifierInterface */
-    private $getAttributeIdentifier;
+    private GetAttributeIdentifierInterface $getAttributeIdentifier;
 
-    /** @var AttributeRepositoryInterface */
-    private $attributeRepository;
+    private AttributeRepositoryInterface $attributeRepository;
 
     public function __construct(
         AssetFamilyRepositoryInterface $assetFamilyRepository,
@@ -177,7 +164,7 @@ final class EditAssetFamilyContext implements Context
             $actualAssetFamily
         );
 
-        if (key_exists('attribute_as_label', $expectedInformation)) {
+        if (array_key_exists('attribute_as_label', $expectedInformation)) {
             $expectedAttributeIdentifier = sprintf('%s_%s_%s',
                 $expectedInformation['attribute_as_label'],
                 $actualAssetFamily->getIdentifier(),
@@ -191,7 +178,7 @@ final class EditAssetFamilyContext implements Context
             );
         }
 
-        if (key_exists('attribute_as_main_media', $expectedInformation)) {
+        if (array_key_exists('attribute_as_main_media', $expectedInformation)) {
             $expectedAttributeIdentifier = sprintf('%s_%s_%s',
                 $expectedInformation['attribute_as_main_media'],
                 $actualAssetFamily->getIdentifier(),

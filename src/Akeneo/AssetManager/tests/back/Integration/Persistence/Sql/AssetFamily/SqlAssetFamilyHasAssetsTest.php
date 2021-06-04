@@ -34,8 +34,7 @@ use Akeneo\AssetManager\Integration\SqlIntegrationTestCase;
  */
 class SqlAssetFamilyHasAssetsTest extends SqlIntegrationTestCase
 {
-    /** @var AssetFamilyHasAssetsInterface */
-    private $assetFamilyHasAssets;
+    private AssetFamilyHasAssetsInterface $assetFamilyHasAssets;
 
     public function setUp(): void
     {

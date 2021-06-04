@@ -21,11 +21,9 @@ use Akeneo\Tool\Component\StorageUtils\Saver\SaverInterface;
 
 class SqlFileExistsTest extends SqlIntegrationTestCase
 {
-    /** @var FileExistsInterface */
-    private $fileExists;
+    private FileExistsInterface $fileExists;
 
-    /** @var SaverInterface */
-    private $fileSaver;
+    private SaverInterface $fileSaver;
 
     public function setUp(): void
     {

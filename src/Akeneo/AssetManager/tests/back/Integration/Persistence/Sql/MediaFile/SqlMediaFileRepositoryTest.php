@@ -25,8 +25,7 @@ use Akeneo\Tool\Component\FileStorage\Model\FileInfo;
  */
 class SqlMediaFileRepositoryTest extends SqlIntegrationTestCase
 {
-    /** @var MediaFileRepositoryInterface */
-    private $mediaFileRepository;
+    private MediaFileRepositoryInterface $mediaFileRepository;
 
     public function setUp(): void
     {

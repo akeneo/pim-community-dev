@@ -33,8 +33,7 @@ use Akeneo\AssetManager\Integration\SqlIntegrationTestCase;
 
 class SqlFindAttributeNextOrderTest extends SqlIntegrationTestCase
 {
-    /** @var FindAttributeNextOrderInterface */
-    private $findAttributeNextOrder;
+    private FindAttributeNextOrderInterface $findAttributeNextOrder;
 
     public function setUp(): void
     {

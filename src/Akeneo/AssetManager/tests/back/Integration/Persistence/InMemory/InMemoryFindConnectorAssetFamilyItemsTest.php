@@ -28,8 +28,7 @@ use PHPUnit\Framework\TestCase;
 
 class InMemoryFindConnectorAssetFamilyItemsTest extends TestCase
 {
-    /** @var InMemoryFindConnectorAssetFamilyItems */
-    private $findConnectorAssetFamilyItems;
+    private InMemoryFindConnectorAssetFamilyItems $findConnectorAssetFamilyItems;
 
     public function setUp(): void
     {
@@ -133,13 +132,11 @@ class InMemoryFindConnectorAssetFamilyItemsTest extends TestCase
             ->setOriginalFilename(sprintf('image_%s', $rawIdentifier))
             ->setKey(sprintf('test/image_%s.jpg', $rawIdentifier));
 
-        $assetFamily = AssetFamily::create(
+        return AssetFamily::create(
             $assetFamilyIdentifier,
             ['en_US' => $rawIdentifier],
             Image::fromFileInfo($imageInfo),
             RuleTemplateCollection::empty()
         );
-
-        return $assetFamily;
     }
 }

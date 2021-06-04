@@ -23,11 +23,9 @@ use PHPUnit\Framework\Assert;
 
 class SqlAttributeExistsTest extends SqlIntegrationTestCase
 {
-    /** @var AttributeExistsInterface */
-    private $attributeExists;
+    private AttributeExistsInterface $attributeExists;
 
-    /** @var array */
-    private $fixtures;
+    private ?array $fixtures = null;
 
     public function setUp(): void
     {

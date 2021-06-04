@@ -24,7 +24,7 @@ use Akeneo\AssetManager\Domain\Query\Locale\FindActivatedLocalesByIdentifiersInt
 class InMemoryFindActivatedLocalesByIdentifiers implements FindActivatedLocalesByIdentifiersInterface
 {
     /** @var LocaleIdentifier[] */
-    private $activatedLocales = [];
+    private array $activatedLocales = [];
 
     /**
      * {@inheritdoc}

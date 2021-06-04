@@ -40,29 +40,22 @@ use Akeneo\AssetManager\Integration\SqlIntegrationTestCase;
 
 class SqlFindAttributesIndexedByIdentifierTest extends SqlIntegrationTestCase
 {
-    /** @var FindAttributesIndexedByIdentifierInterface */
-    private $findAttributesIndexedByIdentifier;
+    private FindAttributesIndexedByIdentifierInterface $findAttributesIndexedByIdentifier;
 
     /** @var AbstractAttribute */
     private $name;
 
-    /** @var AbstractAttribute */
-    private $email;
+    private AbstractAttribute $email;
 
-    /** @var AbstractAttribute */
-    private $customRegex;
+    private AbstractAttribute $customRegex;
 
-    /** @var AbstractAttribute */
-    private $longDescription;
+    private AbstractAttribute $longDescription;
 
-    /** @var AbstractAttribute */
-    private $mediaFileAttribute;
+    private ?MediaFileAttribute $mediaFileAttribute = null;
 
-    /** @var AbstractAttribute */
-    private $attributeAsLabel;
+    private AbstractAttribute $attributeAsLabel;
 
-    /** @var AbstractAttribute */
-    private $attributeAsMainMedia;
+    private AbstractAttribute $attributeAsMainMedia;
 
     public function setUp(): void
     {

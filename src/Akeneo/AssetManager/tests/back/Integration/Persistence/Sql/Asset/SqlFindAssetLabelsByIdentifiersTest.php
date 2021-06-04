@@ -22,17 +22,13 @@ use Akeneo\AssetManager\Integration\SqlIntegrationTestCase;
 
 class SqlFindAssetLabelsByIdentifiersTest extends SqlIntegrationTestCase
 {
-    /** @var FindAssetLabelsByIdentifiersInterface */
-    private $query;
+    private FindAssetLabelsByIdentifiersInterface $query;
 
-    /** @var AssetIdentifier */
-    private $starckIdentifier;
+    private AssetIdentifier $starckIdentifier;
 
-    /** @var AssetIdentifier */
-    private $dysonIdentifier;
+    private AssetIdentifier $dysonIdentifier;
 
-    /** @var AssetIdentifier */
-    private $michaelIdentifier;
+    private AssetIdentifier $michaelIdentifier;
 
     public function setUp(): void
     {

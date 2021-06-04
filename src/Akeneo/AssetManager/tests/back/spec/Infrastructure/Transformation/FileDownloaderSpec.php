@@ -73,9 +73,7 @@ class FileDownloaderSpec extends ObjectBehavior
         Filesystem $filesystem
     ) {
         $fileFetcher->fetch($storageFilesystem, Argument::cetera())->shouldBeCalledTimes(11)->will(
-            function ($arguments) {
-                return new \SplFileInfo($arguments[2]['filePath'] . '/' . $arguments[1]);
-            }
+            fn($arguments) => new \SplFileInfo($arguments[2]['filePath'] . '/' . $arguments[1])
         );
         $filesystem->copy(Argument::cetera())->shouldBeCalledTimes(11);
 

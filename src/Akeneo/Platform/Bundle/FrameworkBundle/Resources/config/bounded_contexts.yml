@@ -1,0 +1,55 @@
+parameters:
+    pimee.bounded_contexts:
+        'Akeneo\AssetManager': 'Asset Manager'
+
+        'Akeneo\Channel': 'Channel'
+
+        'Akeneo\Connectivity': 'Connectivity'
+
+        'Akeneo\FreeTrial': 'FreeTrial'
+
+        'Akeneo\Onboarder': 'Onboarder'
+
+        'Akeneo\Pim\Automation\DataQualityInsights': 'Data Quality Insights'
+        'Akeneo\Pim\Automation\RuleEngine': 'Rule Engine'
+
+        'Akeneo\Pim\Enrichment\AssetManager': 'Asset Manager'
+        'Akeneo\Pim\Enrichment': 'Enrichment'
+
+        'Akeneo\Pim\Permission': 'Permissions'
+
+        'Akeneo\Pim\Structure': 'Structure'
+
+        'Akeneo\Pim\WorkOrganization\TeamworkAssistant': 'Teamwork Assistant'
+        'Akeneo\Pim\WorkOrganization\Workflow': 'Workflow'
+        'Akeneo\Pim\WorkOrganization\ProductRevert': 'Workflow'
+
+        'Akeneo\Platform\Bundle\ImportExportBundle': 'Enrichment'
+        'Akeneo\Platform\Bundle\UIBundle': 'Enrichment'
+        'Akeneo\Platform\CommunicationChannel': 'Connectivity'
+        'Akeneo\Platform': 'Platform'
+
+        'Akeneo\ReferenceEntity': 'Reference Entity'
+        'Akeneo\SharedCatalog': 'Shared Catalogs'
+
+        'Akeneo\Tool\Bundle\ConnectorBundle': 'Connectivity'
+        'Akeneo\Tool\Bundle\RuleEngineBundle': 'Rule Engine'
+        'Akeneo\Tool\Bundle\VersioningBundle': 'Workflow'
+        'Akeneo\Tool\Bundle': 'Tool'
+
+        'Akeneo\UserManagement': 'User Management'
+
+        'AkeneoEnterprise\Connectivity': 'Connectivity'
+
+        'FOS\OAuthServerBundle': 'User Management'
+        'Hslavich\OneloginSamlBundle': 'User Management'
+
+        'Oneup\FlysystemBundle': 'Tool'
+
+        'Oro\Bundle\ConfigBundle\OroConfigBundle': 'Enrichment'
+        'Oro\Bundle\DataGridBundle\OroDataGridBundle': 'Enrichment'
+        'Oro\Bundle\FilterBundle': 'Enrichment'
+        'Oro\Bundle\PimDataGridBundle': 'Enrichment'
+        'Oro\Bundle\PimFilterBundle': 'Enrichment'
+        'Oro\Bundle\SecurityBundle': 'User Management'
+        'Oro\Bundle\TranslationBundle': 'Enrichment'

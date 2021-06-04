@@ -18,8 +18,7 @@ use PHPUnit\Framework\TestCase;
 
 class InMemoryFindFileDataByFileKeyTest extends TestCase
 {
-    /** @var InMemoryFindFileDataByFileKey */
-    private $findFileDataByFileKey;
+    private InMemoryFindFileDataByFileKey $findFileDataByFileKey;
 
     public function setUp(): void
     {

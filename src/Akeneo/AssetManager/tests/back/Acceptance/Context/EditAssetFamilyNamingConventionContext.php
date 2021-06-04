@@ -32,26 +32,19 @@ use Webmozart\Assert\Assert;
 
 class EditAssetFamilyNamingConventionContext implements Context
 {
-    /** @var EditAssetFamilyHandler */
-    private $editAssetFamilyHandler;
+    private EditAssetFamilyHandler $editAssetFamilyHandler;
 
-    /** @var ConstraintViolationsContext */
-    private $constraintViolationsContext;
+    private ConstraintViolationsContext $constraintViolationsContext;
 
-    /** @var AssetFamilyRepositoryInterface */
-    private $assetFamilyRepository;
+    private AssetFamilyRepositoryInterface $assetFamilyRepository;
 
-    /** @var InMemoryFindActivatedLocalesByIdentifiers */
-    private $activatedLocales;
+    private InMemoryFindActivatedLocalesByIdentifiers $activatedLocales;
 
-    /** @var CreateAssetFamilyHandler */
-    private $createAssetFamilyHandler;
+    private CreateAssetFamilyHandler $createAssetFamilyHandler;
 
-    /** @var ValidatorInterface */
-    private $validator;
+    private ValidatorInterface $validator;
 
-    /** @var CreateAttributeHandler */
-    private $createAttributeHandler;
+    private CreateAttributeHandler $createAttributeHandler;
 
     public function __construct(
         EditAssetFamilyHandler $editAssetFamilyHandler,

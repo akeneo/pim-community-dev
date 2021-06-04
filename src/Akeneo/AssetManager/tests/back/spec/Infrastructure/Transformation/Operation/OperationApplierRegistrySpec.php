@@ -2,6 +2,7 @@
 
 namespace spec\Akeneo\AssetManager\Infrastructure\Transformation\Operation;
 
+use Akeneo\AssetManager\Domain\Model\AssetFamily\Transformation\Operation\ResizeOperation;
 use Akeneo\AssetManager\Domain\Model\AssetFamily\Transformation\Operation;
 use Akeneo\AssetManager\Infrastructure\Transformation\Exception\TransformationException;
 use Akeneo\AssetManager\Infrastructure\Transformation\Operation\OperationApplier;
@@ -38,7 +39,7 @@ class OperationApplierRegistrySpec extends ObjectBehavior
         OperationApplier $colorspaceApplier,
         OperationApplier $thumbnailApplier
     ) {
-        $operation = Operation\ResizeOperation::create([
+        $operation = ResizeOperation::create([
             'width' => 600,
             'height' => 480,
         ]);

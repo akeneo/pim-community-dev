@@ -8,3 +8,14 @@ services:
         tags:
             - { name: "kernel.event_subscriber" }
             - { name: "monolog.logger", channel: "request" }
+
+    Akeneo\Platform\Bundle\FrameworkBundle\BoundedContext\BoundedContextResolver:
+        arguments:
+            - '@controller_resolver'
+            - '%pimee.bounded_contexts%'
+
+    Akeneo\Platform\Bundle\FrameworkBundle\EventListener\AddContextHeaderResponseListener:
+        arguments:
+            - '@Akeneo\Platform\Bundle\FrameworkBundle\BoundedContext\BoundedContextResolver'
+        tags:
+            - { name: kernel.event_listener, event: kernel.response, method: injectAkeneoContextHeader }

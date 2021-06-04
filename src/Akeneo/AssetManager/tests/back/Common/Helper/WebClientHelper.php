@@ -30,8 +30,7 @@ class WebClientHelper
 {
     private const RESPONSES_FILE_PATH_PREFIX = __DIR__ . '/../../Integration/Resources/responses/';
 
-    /** @var RouterInterface */
-    private $router;
+    private RouterInterface $router;
 
     public function __construct(RouterInterface $router)
     {
@@ -260,13 +259,11 @@ HTML;
         $files = [];
 
         if (isset($request['files'])) {
-            $files = array_map(function ($requestFile) {
-                return new UploadedFile(
-                    self::RESPONSES_FILE_PATH_PREFIX . $requestFile['path'],
-                    $requestFile['name'],
-                    $requestFile['mime_type']
-                );
-            }, $request['files']);
+            $files = array_map(fn ($requestFile) => new UploadedFile(
+                self::RESPONSES_FILE_PATH_PREFIX . $requestFile['path'],
+                $requestFile['name'],
+                $requestFile['mime_type']
+            ), $request['files']);
         }
 
         return $files;

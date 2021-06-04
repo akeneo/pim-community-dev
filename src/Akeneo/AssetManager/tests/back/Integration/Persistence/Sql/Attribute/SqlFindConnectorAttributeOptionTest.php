@@ -36,14 +36,11 @@ use Akeneo\AssetManager\Integration\SqlIntegrationTestCase;
 
 class SqlFindConnectorAttributeOptionTest extends SqlIntegrationTestCase
 {
-    /** @var AssetFamilyRepositoryInterface */
-    private $assetFamilyRepository;
+    private AssetFamilyRepositoryInterface $assetFamilyRepository;
 
-    /** @var AttributeRepositoryInterface */
-    private $attributeRepository;
+    private AttributeRepositoryInterface $attributeRepository;
 
-    /** @var FindConnectorAttributeOptionInterface*/
-    private $findConnectorAttributeOption;
+    private FindConnectorAttributeOptionInterface $findConnectorAttributeOption;
 
     protected function setUp(): void
     {
@@ -135,9 +132,7 @@ class SqlFindConnectorAttributeOptionTest extends SqlIntegrationTestCase
             AttributeIsReadOnly::fromBoolean(false),
             [
                 'options' => array_map(
-                    function (AttributeOption $attributeOption) {
-                        return $attributeOption->normalize();
-                    },
+                    fn (AttributeOption $attributeOption) => $attributeOption->normalize(),
                     $optionCollectionAttribute->getAttributeOptions()
                 ),
             ]

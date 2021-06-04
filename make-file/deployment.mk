@@ -58,8 +58,12 @@ endif
 executor ?= kubectl
 migrate ?= no
 
+.PHONY: deploy-instance
+deploy-instance: create-ci-release-files deploy
+
 .PHONY: deploy-serenity
 deploy-serenity: create-ci-release-files deploy
+	@echo "Deprecated"
 
 .PHONY: delete-serenity
 delete-serenity: create-ci-release-files delete
@@ -311,6 +315,7 @@ test_upgrade_from_flexibility_clone:
 
 .PHONY: php-image-prod
 php-image-prod: #Doc: pull docker image for pim-enterprise-dev with the prod tag
+ifeq ($(TYPE),srnt)
 	git config user.name "Michel Tag"
 	git config user.email "akeneo-ci@akeneo.com"
 
@@ -318,6 +323,7 @@ php-image-prod: #Doc: pull docker image for pim-enterprise-dev with the prod tag
 	sed -i "s/VERSION = '.*';/VERSION = '${IMAGE_TAG_DATE}';/g" src/Akeneo/Platform/EnterpriseVersion.php
 	git add src/Akeneo/Platform/EnterpriseVersion.php
 	git commit -m "Prepare SaaS ${IMAGE_TAG}"
+endif
 
 	DOCKER_BUILDKIT=1 docker build --no-cache --progress=plain --pull --tag eu.gcr.io/akeneo-ci/pim-enterprise-dev:${IMAGE_TAG} --target prod --build-arg COMPOSER_AUTH='${COMPOSER_AUTH}' .
 

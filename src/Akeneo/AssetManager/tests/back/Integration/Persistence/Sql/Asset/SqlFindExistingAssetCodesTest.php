@@ -24,11 +24,9 @@ use Akeneo\AssetManager\Integration\SqlIntegrationTestCase;
  */
 class SqlFindExistingAssetCodesTest extends SqlIntegrationTestCase
 {
-    /** @var FindExistingAssetCodesInterface */
-    private $existingAssetCodes;
+    private FindExistingAssetCodesInterface $existingAssetCodes;
 
-    /** @var AssetIdentifier */
-    private $assetIdentifier;
+    private AssetIdentifier $assetIdentifier;
 
     public function setUp(): void
     {

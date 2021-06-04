@@ -69,38 +69,28 @@ class LinkAssetsContext implements Context
     private const ANOTHER_PRODUCT_MULTIPLE_LINK_DATA = 'another_asset_multiple_link';
     private const FINGERPRINT = 'fingerprint';
 
-    /** @var AssetRepositoryInterface */
-    private $assetRepository;
+    private AssetRepositoryInterface $assetRepository;
 
-    /** @var AssetFamilyRepositoryInterface */
-    private $assetFamilyRepository;
+    private AssetFamilyRepositoryInterface $assetFamilyRepository;
 
-    /** @var CreateAssetHandler */
-    private $createAssetHandler;
+    private CreateAssetHandler $createAssetHandler;
 
-    /** @var ValidatorInterface */
-    private $validator;
+    private ValidatorInterface $validator;
 
-    /** @var ExceptionContext */
-    private $exceptionContext;
+    private ExceptionContext $exceptionContext;
 
-    /** @var CompiledRuleRunnerSpy */
-    private $compiledRuleRunnerSpy;
+    private CompiledRuleRunnerInterface $compiledRuleRunnerSpy;
 
-    /** @var AttributeRepositoryInterface */
-    private $attributeRepository;
+    private AttributeRepositoryInterface $attributeRepository;
 
-    /** @var ProductLinkRuleLauncherSpy */
-    private $productLinkRuleLauncherSpy;
+    private ProductLinkRuleLauncherSpy $productLinkRuleLauncherSpy;
 
     /** * @var LinkAssetHandler */
-    private $linkAssetHandler;
+    private LinkAssetHandler $linkAssetHandler;
 
-    /** @var LinkAssetsHandler */
-    private $linkMultipleAssetHandler;
+    private LinkAssetsHandler $linkMultipleAssetHandler;
 
-    /** @var LinkAllAssetFamilyAssetsHandler */
-    private $linkAllAssetFamilyAssetsHandler;
+    private LinkAllAssetFamilyAssetsHandler $linkAllAssetFamilyAssetsHandler;
 
     public function __construct(
         AssetRepositoryInterface $assetRepository,

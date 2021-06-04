@@ -20,8 +20,7 @@ use Symfony\Bundle\FrameworkBundle\Test\KernelTestCase;
 
 class OperationFactoryTest extends KernelTestCase
 {
-    /** @var OperationFactory */
-    private $operationFactory;
+    private ?object $operationFactory = null;
 
     public function setUp(): void
     {

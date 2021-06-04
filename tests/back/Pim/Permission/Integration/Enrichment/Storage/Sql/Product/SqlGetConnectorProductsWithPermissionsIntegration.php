@@ -82,8 +82,8 @@ class SqlGetConnectorProductsWithPermissionsIntegration extends TestCase
         $expectedProduct = new ConnectorProduct(
             (int) $productData['id'],
             'variant_product',
-            new \DateTimeImmutable($productData['created']),
-            new \DateTimeImmutable($productData['updated']),
+            new \DateTimeImmutable($productData['created'], new \DateTimeZone('UTC')),
+            new \DateTimeImmutable($productData['updated'], new \DateTimeZone('UTC')),
             true,
             'family_permission',
             ['own_category'],
@@ -246,8 +246,8 @@ class SqlGetConnectorProductsWithPermissionsIntegration extends TestCase
         $expectedProduct = new ConnectorProduct(
             (int) $productData['id'],
             'variant_product',
-            new \DateTimeImmutable($productData['created']),
-            new \DateTimeImmutable($productData['updated']),
+            new \DateTimeImmutable($productData['created'], new \DateTimeZone('UTC')),
+            new \DateTimeImmutable($productData['updated'], new \DateTimeZone('UTC')),
             true,
             'family_permission',
             ['own_category'],

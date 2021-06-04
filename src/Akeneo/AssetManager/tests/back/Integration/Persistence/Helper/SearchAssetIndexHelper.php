@@ -24,8 +24,7 @@ use PHPUnit\Framework\Assert;
  */
 class SearchAssetIndexHelper
 {
-    /** @var Client */
-    private $assetClient;
+    private Client $assetClient;
 
     public function __construct(Client $assetClient)
     {
@@ -55,9 +54,8 @@ class SearchAssetIndexHelper
         $this->refreshIndex();
 
         $query = $this->getQuery($assetFamilyCode, $channel, $locale, $terms);
-        $matchingIdentifiers = $this->executeQuery($query);
 
-        return $matchingIdentifiers;
+        return $this->executeQuery($query);
     }
 
     public function findAssetsByAssetFamily(string $assetFamilyCode): array
@@ -70,9 +68,8 @@ class SearchAssetIndexHelper
                 'match' => ['asset_family_code' => $assetFamilyCode,],
             ],
         ];
-        $matchingIdentifiers = $this->executeQuery($query);
 
-        return $matchingIdentifiers;
+        return $this->executeQuery($query);
     }
 
     public function findAsset(string $assetFamilyCode, string $assetCode): array
@@ -89,9 +86,8 @@ class SearchAssetIndexHelper
                 ],
             ],
         ];
-        $matchingIdentifiers = $this->executeQuery($query);
 
-        return $matchingIdentifiers;
+        return $this->executeQuery($query);
     }
 
     public function assertAssetExists(string $assetFamilyCode, string $assetCode): void

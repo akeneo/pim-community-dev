@@ -49,29 +49,21 @@ class CreateActionTest extends ControllerIntegrationTestCase
 {
     private const CREATE_ASSET_ROUTE = 'akeneo_asset_manager_asset_create_rest';
 
-    /** @var FixturesLoader */
-    private $fixturesLoader;
+    private FixturesLoader $fixturesLoader;
 
-    /** @var InMemoryFileExists */
-    private $fileExists;
+    private InMemoryFileExists $fileExists;
 
-    /** @var InMemoryFindFileDataByFileKey */
-    private $findFileData;
+    private InMemoryFindFileDataByFileKey $findFileData;
 
-    /** @var WebClientHelper */
-    private $webClientHelper;
+    private WebClientHelper $webClientHelper;
 
-    /** @var AssetFamilyRepositoryInterface */
-    private $assetFamilyRepository;
+    private AssetFamilyRepositoryInterface $assetFamilyRepository;
 
-    /** @var AttributeRepositoryInterface */
-    private $attributeRepository;
+    private AttributeRepositoryInterface $attributeRepository;
 
-    /** @var AssetRepositoryInterface */
-    private $assetRepository;
+    private AssetRepositoryInterface $assetRepository;
 
-    /** @var ProductLinkRuleLauncherSpy  */
-    private $productLinkRuleLauncherSpy;
+    private ProductLinkRuleLauncherSpy $productLinkRuleLauncherSpy;
 
     public function setUp(): void
     {

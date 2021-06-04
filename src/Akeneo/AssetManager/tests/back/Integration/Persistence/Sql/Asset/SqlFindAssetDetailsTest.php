@@ -49,20 +49,15 @@ use Akeneo\Tool\Component\FileStorage\Model\FileInfo;
 
 class SqlFindAssetDetailsTest extends SqlIntegrationTestCase
 {
-    /** @var FindAssetDetailsInterface */
-    private $findAssetDetailsQuery;
+    private FindAssetDetailsInterface $findAssetDetailsQuery;
 
-    /** @var AssetRepositoryInterface */
-    private $assetRepository;
+    private AssetRepositoryInterface $assetRepository;
 
-    /** @var AssetIdentifier */
-    private $assetIdentifier;
+    private ?AssetIdentifier $assetIdentifier = null;
 
-    /** @var AttributeRepositoryInterface */
-    private $attributeRepository;
+    private AttributeRepositoryInterface $attributeRepository;
 
-    /** @var AssetFamilyRepositoryInterface */
-    private $assetFamilyRepository;
+    private AssetFamilyRepositoryInterface $assetFamilyRepository;
 
     public function setUp(): void
     {

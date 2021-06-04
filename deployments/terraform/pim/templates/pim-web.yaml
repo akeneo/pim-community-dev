@@ -29,7 +29,8 @@ spec:
         ad.datadoghq.com/fpm.check_names: '["php_fpm"]'
         ad.datadoghq.com/fpm.init_configs: '[{}]'
         ad.datadoghq.com/fpm.instances: '[[{"status_url":"http://%%host%%:9000/status", "use_fastcgi": true}, {"status_url":"http://%%host%%:9001/status", "use_fastcgi": true}]]'
-        ad.datadoghq.com/fpm.logs: '[{ "service": "pim-enterprise-dev", "source": "pim-enterprise-dev", "log_processing_rules": [{ "type": "exclude_at_match", "name": "exclude_php_status_logs", "pattern" : "\"/status\""}] }]'
+        ad.datadoghq.com/fpm.logs: '[{ "service": "pim-enterprise-dev", "source": "pim-enterprise-dev", "log_processing_rules": [{ "type": "exclude_at_match", "name": "exclude_php_status_logs", "pattern" : "\"(/status|/monitoring/services_status|/notification/count_unread)\""}]}]'
+        ad.datadoghq.com/httpd.logs: '[{ "service": "httpd", "source": "httpd", "log_processing_rules": [{ "type": "exclude_at_match", "name": "exclude_php_status_logs", "pattern" : "\"(/monitoring/services_status|/status|/notification/count_unread)\""}]}]'
         checksum/env-config: {{ include (print $.Template.BasePath "/env-configmap.yaml") . | replace  (printf "%s-%s" .Chart.Name .Chart.Version ) "" | sha256sum }} # force reload of pods upon change of the configmap
         checksum/pim-config: {{ include (print $.Template.BasePath "/pim-configmap.yaml") . | replace  (printf "%s-%s" .Chart.Name .Chart.Version ) "" | sha256sum }} # force reload of pods upon change of the configmap
         checksum/secrets: {{ include (print $.Template.BasePath "/pim-secrets.yaml") . | replace  (printf "%s-%s" .Chart.Name .Chart.Version ) "" | sha256sum }} # force reload of pods upon change of the configmap

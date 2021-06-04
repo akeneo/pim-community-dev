@@ -21,8 +21,7 @@ use PHPUnit\Framework\TestCase;
 
 class InMemoryMediaFileRepositoryTest extends TestCase
 {
-    /** @var InMemoryMediaFileRepository */
-    private $mediaFileRepository;
+    private InMemoryMediaFileRepository $mediaFileRepository;
 
     public function setUp(): void
     {

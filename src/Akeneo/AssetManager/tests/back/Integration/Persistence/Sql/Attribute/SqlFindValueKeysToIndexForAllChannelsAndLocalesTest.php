@@ -36,8 +36,7 @@ use PHPUnit\Framework\Assert;
  */
 class SqlFindValueKeysToIndexForAllChannelsAndLocalesTest extends SqlIntegrationTestCase
 {
-    /** @var SqlFindValueKeysToIndexForAllChannelsAndLocales */
-    private $findValuesToIndexForChannelAndLocale;
+    private SqlFindValueKeysToIndexForAllChannelsAndLocales $findValuesToIndexForChannelAndLocale;
 
     public function setUp(): void
     {
@@ -52,8 +51,7 @@ class SqlFindValueKeysToIndexForAllChannelsAndLocalesTest extends SqlIntegration
      */
     public function it_generates_an_empty_list()
     {
-        $valueKeyCollection = $this->findValuesToIndexForChannelAndLocale->find(AssetFamilyIdentifier::fromString('designer'),
-            ChannelIdentifier::fromCode('ecommerce'), LocaleIdentifier::fromCode('en_US'));
+        $valueKeyCollection = $this->findValuesToIndexForChannelAndLocale->find(AssetFamilyIdentifier::fromString('designer'));
         Assert::assertEquals(
             [
                 'ecommerce' => ['fr_FR' => [], 'en_US' => []],
@@ -71,9 +69,7 @@ class SqlFindValueKeysToIndexForAllChannelsAndLocalesTest extends SqlIntegration
     {
         $this->loadAssetFamilyAndAttributes();
         $valueKeyCollection = $this->findValuesToIndexForChannelAndLocale->find(
-            AssetFamilyIdentifier::fromString('designer'),
-            ChannelIdentifier::fromCode('ecommerce'),
-            LocaleIdentifier::fromCode('en_US')
+            AssetFamilyIdentifier::fromString('designer')
         );
 
         /** @var AssetFamily $assetFamily */

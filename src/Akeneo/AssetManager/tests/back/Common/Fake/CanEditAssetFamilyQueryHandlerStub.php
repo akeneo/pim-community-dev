@@ -14,7 +14,7 @@ use Webmozart\Assert\Assert;
  */
 class CanEditAssetFamilyQueryHandlerStub extends CanEditAssetFamilyQueryHandler
 {
-    private $isAllowed = true;
+    private bool $isAllowed = true;
 
     public function __invoke(CanEditAssetFamilyQuery $query): bool
     {

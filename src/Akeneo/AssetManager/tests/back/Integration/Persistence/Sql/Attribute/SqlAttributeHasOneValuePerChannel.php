@@ -30,8 +30,7 @@ class SqlAttributeHasOneValuePerChannel extends SqlIntegrationTestCase
     private const ATTRIBUTE_CODE = 'name';
     private const UNKNOWN_ATTRIBUTE_CODE = 'UNKNOWN_ATTRIBUTE';
 
-    /** @var AttributeHasOneValuePerChannelInterface */
-    private $attributeHasOneValuePerChannel;
+    private AttributeHasOneValuePerChannelInterface $attributeHasOneValuePerChannel;
 
     public function setUp(): void
     {

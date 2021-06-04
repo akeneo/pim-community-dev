@@ -13,6 +13,7 @@ declare(strict_types=1);
 
 namespace spec\Akeneo\AssetManager\Domain\Model\AssetFamily\Transformation\Operation;
 
+use Akeneo\AssetManager\Domain\Model\AssetFamily\Transformation\Operation\ScaleOperation;
 use Akeneo\AssetManager\Domain\Model\AssetFamily\Transformation\Operation;
 use PhpSpec\ObjectBehavior;
 
@@ -34,7 +35,7 @@ class ScaleOperationSpec extends ObjectBehavior
 
     function it_is_initializable()
     {
-        $this->shouldHaveType(Operation\ScaleOperation::class);
+        $this->shouldHaveType(ScaleOperation::class);
         $this->getWidth()->shouldBe(200);
         $this->getHeight()->shouldBe(100);
         $this->getRatioPercent()->shouldBe(50);
@@ -51,7 +52,7 @@ class ScaleOperationSpec extends ObjectBehavior
             'width' => 200,
             'height' => 100,
         ]);
-        $object->beAnInstanceOf(Operation\ScaleOperation::class);
+        $object->beAnInstanceOf(ScaleOperation::class);
         $object->getWidth()->shouldBe(200);
         $object->getHeight()->shouldBe(100);
         $object->getRatioPercent()->shouldBeNull();
@@ -60,7 +61,7 @@ class ScaleOperationSpec extends ObjectBehavior
             'width' => 200,
             'ratio' => 50,
         ]);
-        $object->beAnInstanceOf(Operation\ScaleOperation::class);
+        $object->beAnInstanceOf(ScaleOperation::class);
         $object->getWidth()->shouldBe(200);
         $object->getHeight()->shouldBeNull();
         $object->getRatioPercent()->shouldBe(50);
@@ -69,7 +70,7 @@ class ScaleOperationSpec extends ObjectBehavior
             'height' => 100,
             'ratio' => 50,
         ]);
-        $object->beAnInstanceOf(Operation\ScaleOperation::class);
+        $object->beAnInstanceOf(ScaleOperation::class);
         $object->getWidth()->shouldBeNull();
         $object->getHeight()->shouldBe(100);
         $object->getRatioPercent()->shouldBe(50);
@@ -80,7 +81,7 @@ class ScaleOperationSpec extends ObjectBehavior
         $object = $this::create([
             'width' => 200,
         ]);
-        $object->beAnInstanceOf(Operation\ScaleOperation::class);
+        $object->beAnInstanceOf(ScaleOperation::class);
         $object->getWidth()->shouldBe(200);
         $object->getHeight()->shouldBeNull();
         $object->getRatioPercent()->shouldBeNull();
@@ -88,7 +89,7 @@ class ScaleOperationSpec extends ObjectBehavior
         $object = $this::create([
             'height' => 100,
         ]);
-        $object->beAnInstanceOf(Operation\ScaleOperation::class);
+        $object->beAnInstanceOf(ScaleOperation::class);
         $object->getWidth()->shouldBeNull();
         $object->getHeight()->shouldBe(100);
         $object->getRatioPercent()->shouldBeNull();
@@ -96,7 +97,7 @@ class ScaleOperationSpec extends ObjectBehavior
         $object = $this::create([
             'ratio' => 50,
         ]);
-        $object->beAnInstanceOf(Operation\ScaleOperation::class);
+        $object->beAnInstanceOf(ScaleOperation::class);
         $object->getWidth()->shouldBeNull();
         $object->getHeight()->shouldBeNull();
         $object->getRatioPercent()->shouldBe(50);

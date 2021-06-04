@@ -27,8 +27,7 @@ class CreateActionTest extends ControllerIntegrationTestCase
 {
     private const CREATE_ATTRIBUTE_ROUTE = 'akeneo_asset_manager_attribute_create_rest';
 
-    /** @var WebClientHelper */
-    private $webClientHelper;
+    private WebClientHelper $webClientHelper;
 
     public function setUp(): void
     {

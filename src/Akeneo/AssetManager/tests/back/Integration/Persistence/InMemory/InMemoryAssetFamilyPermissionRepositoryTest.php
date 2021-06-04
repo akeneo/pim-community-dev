@@ -14,8 +14,7 @@ use PHPUnit\Framework\TestCase;
 
 class InMemoryAssetFamilyPermissionRepositoryTest extends TestCase
 {
-    /** @var InMemoryAssetFamilyPermissionRepository */
-    private $inMemoryAssetFamilyPermissionRepository;
+    private InMemoryAssetFamilyPermissionRepository $inMemoryAssetFamilyPermissionRepository;
 
     public function setUp(): void
     {

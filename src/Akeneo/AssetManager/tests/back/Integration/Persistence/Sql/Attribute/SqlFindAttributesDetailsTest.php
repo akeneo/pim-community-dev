@@ -22,14 +22,11 @@ use Akeneo\AssetManager\Integration\SqlIntegrationTestCase;
 
 class SqlFindAttributesDetailsTest extends SqlIntegrationTestCase
 {
-    /** @var FindAttributesDetailsInterface */
-    private $findAttributesDetails;
+    private FindAttributesDetailsInterface $findAttributesDetails;
 
-    /** @var array */
-    private $fixturesDesigner;
+    private ?array $fixturesDesigner = null;
 
-    /** @var array */
-    private $fixturesBrand;
+    private ?array $fixturesBrand = null;
 
     public function setUp(): void
     {

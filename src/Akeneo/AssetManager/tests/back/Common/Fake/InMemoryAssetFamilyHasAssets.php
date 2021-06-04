@@ -22,8 +22,7 @@ use Akeneo\AssetManager\Domain\Query\AssetFamily\AssetFamilyHasAssetsInterface;
  */
 class InMemoryAssetFamilyHasAssets implements AssetFamilyHasAssetsInterface
 {
-    /** @var InMemoryAssetRepository */
-    private $assetRepository;
+    private InMemoryAssetRepository $assetRepository;
 
     public function __construct(InMemoryAssetRepository $assetRepository)
     {

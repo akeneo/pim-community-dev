@@ -15,11 +15,9 @@ use Akeneo\AssetManager\Integration\PreviewGeneratorIntegrationTestCase;
  */
 final class BinaryPdfGeneratorTest extends PreviewGeneratorIntegrationTestCase
 {
-    /** @var PreviewGeneratorInterface */
-    private $binaryPdfGenerator;
+    private PreviewGeneratorInterface $binaryPdfGenerator;
 
-    /** @var MediaFileAttribute */
-    private $mediaFileAttribute;
+    private MediaFileAttribute $mediaFileAttribute;
 
     public function setUp(): void
     {

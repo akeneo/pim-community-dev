@@ -27,8 +27,7 @@ use Akeneo\AssetManager\Domain\Repository\AttributeNotFoundException;
  */
 class InMemoryGetAttributeType implements GetAttributeTypeInterface
 {
-    /** @var InMemoryAttributeRepository */
-    private $attributeRepository;
+    private InMemoryAttributeRepository $attributeRepository;
 
     public function __construct(InMemoryAttributeRepository $attributeRepository)
     {

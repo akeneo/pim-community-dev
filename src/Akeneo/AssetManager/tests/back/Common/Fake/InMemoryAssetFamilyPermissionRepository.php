@@ -13,7 +13,7 @@ use Akeneo\AssetManager\Domain\Repository\AssetFamilyPermissionRepositoryInterfa
 class InMemoryAssetFamilyPermissionRepository implements AssetFamilyPermissionRepositoryInterface
 {
     /** @var AssetFamilyPermission[] */
-    private $assetFamilyPermissions;
+    private ?array $assetFamilyPermissions = null;
 
     public function save(AssetFamilyPermission $assetFamilyPermission): void
     {
@@ -36,7 +36,7 @@ class InMemoryAssetFamilyPermissionRepository implements AssetFamilyPermissionRe
     ): bool {
         $refEntityIdentifier = $assetFamilyIdentifier->normalize();
 
-        if (key_exists($refEntityIdentifier, $this->assetFamilyPermissions)) {
+        if (array_key_exists($refEntityIdentifier, $this->assetFamilyPermissions)) {
             $assetFamilyPermission = $this->assetFamilyPermissions[$refEntityIdentifier];
             $normalized = $assetFamilyPermission->normalize();
 

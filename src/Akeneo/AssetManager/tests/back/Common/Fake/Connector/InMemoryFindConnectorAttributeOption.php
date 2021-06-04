@@ -24,7 +24,7 @@ use Akeneo\AssetManager\Domain\Query\Attribute\Connector\FindConnectorAttributeO
 class InMemoryFindConnectorAttributeOption implements FindConnectorAttributeOptionInterface
 {
     /** @var ConnectorAttribute[] */
-    private $attributes;
+    private array $attributes;
 
     public function __construct()
     {
@@ -52,20 +52,16 @@ class InMemoryFindConnectorAttributeOption implements FindConnectorAttributeOpti
 
         $options = $connectorAttribute->normalize()['options'];
 
-        $matchingOption = current(array_filter($options, function ($option) use ($optionCode) {
-            return $option['code'] === (string) $optionCode;
-        }));
+        $matchingOption = current(array_filter($options, fn ($option) => $option['code'] === (string) $optionCode));
 
 
         if (!$matchingOption) {
             return null;
         }
 
-        $connectorOption = new ConnectorAttributeOption(
+        return new ConnectorAttributeOption(
             OptionCode::fromString($matchingOption['code']),
             LabelCollection::fromArray($matchingOption['labels'])
         );
-
-        return $connectorOption;
     }
 }

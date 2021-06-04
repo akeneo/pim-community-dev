@@ -48,6 +48,7 @@ use Akeneo\AssetManager\Infrastructure\Persistence\Sql\Asset\SqlAssetRepository;
 use Akeneo\AssetManager\Infrastructure\Persistence\Sql\AssetFamily\SqlAssetFamilyRepository;
 use Akeneo\AssetManager\Infrastructure\Persistence\Sql\Attribute\SqlAttributeRepository;
 use Akeneo\AssetManager\Infrastructure\PublicApi\Onboarder;
+use Akeneo\AssetManager\Infrastructure\PublicApi\Onboarder\FindAllAssets;
 use Akeneo\AssetManager\Integration\SqlIntegrationTestCase;
 use PHPUnit\Framework\Assert;
 
@@ -57,11 +58,10 @@ use PHPUnit\Framework\Assert;
  */
 class FindAllAssetsTest extends SqlIntegrationTestCase
 {
-    /** @var Onboarder\FindAllAssets */
-    private $query;
+    private FindAllAssets $query;
 
     /** @var AssetIdentifier[] */
-    private $identifiers = [];
+    private array $identifiers = [];
 
     public function setUp(): void
     {

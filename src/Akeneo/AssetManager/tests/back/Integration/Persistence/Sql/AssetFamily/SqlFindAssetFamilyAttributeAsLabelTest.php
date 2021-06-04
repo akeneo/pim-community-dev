@@ -19,8 +19,7 @@ use Akeneo\AssetManager\Integration\SqlIntegrationTestCase;
 
 class SqlFindAssetFamilyAttributeAsLabelTest extends SqlIntegrationTestCase
 {
-    /** @var FindAssetFamilyAttributeAsLabelInterface */
-    private $findAttributeAsLabel;
+    private FindAssetFamilyAttributeAsLabelInterface $findAttributeAsLabel;
 
     public function setUp(): void
     {

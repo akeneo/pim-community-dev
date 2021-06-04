@@ -79,9 +79,7 @@ class EditAssetFamilyHandlerSpec extends ObjectBehavior
         $assetFamily->updateLabels(Argument::type(LabelCollection::class))
             ->shouldBeCalled();
 
-        $assetFamily->updateImage(Argument::that(function ($image) {
-                return $image instanceof Image && $image->isEmpty();
-            }))
+        $assetFamily->updateImage(Argument::that(fn($image) => $image instanceof Image && $image->isEmpty()))
             ->shouldBeCalled();
 
         $assetFamily->updateRuleTemplateCollection(Argument::type(RuleTemplateCollection::class))
@@ -131,9 +129,7 @@ class EditAssetFamilyHandlerSpec extends ObjectBehavior
         $assetFamily->updateLabels(Argument::type(LabelCollection::class))
             ->shouldBeCalled();
 
-        $assetFamily->updateImage(Argument::that(function ($image) {
-                return $image instanceof Image && $image->getKey() === '/path/image.jpg';
-            }))
+        $assetFamily->updateImage(Argument::that(fn($image) => $image instanceof Image && $image->getKey() === '/path/image.jpg'))
             ->shouldBeCalled();
 
         $assetFamily->updateRuleTemplateCollection(Argument::type(RuleTemplateCollection::class))
@@ -192,9 +188,7 @@ class EditAssetFamilyHandlerSpec extends ObjectBehavior
         $assetFamily->updateLabels(Argument::type(LabelCollection::class))
             ->shouldBeCalled();
 
-        $assetFamily->updateImage(Argument::that(function ($image) {
-                return $image instanceof Image && $image->getKey() === '/path/image.jpg';
-            }))
+        $assetFamily->updateImage(Argument::that(fn($image) => $image instanceof Image && $image->getKey() === '/path/image.jpg'))
             ->shouldBeCalled();
 
         $assetFamily->updateRuleTemplateCollection(Argument::type(RuleTemplateCollection::class))
@@ -226,9 +220,7 @@ class EditAssetFamilyHandlerSpec extends ObjectBehavior
         $assetFamily->updateLabels(Argument::type(LabelCollection::class))
             ->shouldBeCalled();
 
-        $assetFamily->updateImage(Argument::that(function ($image) {
-            return $image instanceof Image && $image->isEmpty();
-        }))->shouldBeCalled();
+        $assetFamily->updateImage(Argument::that(fn($image) => $image instanceof Image && $image->isEmpty()))->shouldBeCalled();
 
         $assetFamily->updateRuleTemplateCollection(Argument::type(RuleTemplateCollection::class))
             ->shouldBeCalled();
@@ -263,9 +255,7 @@ class EditAssetFamilyHandlerSpec extends ObjectBehavior
         $assetFamily->updateLabels(Argument::type(LabelCollection::class))
             ->shouldBeCalled();
 
-        $assetFamily->updateImage(Argument::that(function ($image) {
-            return $image instanceof Image && $image->isEmpty();
-        }))
+        $assetFamily->updateImage(Argument::that(fn($image) => $image instanceof Image && $image->isEmpty()))
             ->shouldBeCalled();
 
         $assetFamily->updateRuleTemplateCollection(Argument::type(RuleTemplateCollection::class))
@@ -332,9 +322,7 @@ class EditAssetFamilyHandlerSpec extends ObjectBehavior
             ->shouldBeCalled();
 
         $assetFamily->updateImage(
-            Argument::that(function ($image) {
-                return $image instanceof Image && $image->isEmpty();
-            })
+            Argument::that(fn($image) => $image instanceof Image && $image->isEmpty())
         )->shouldBeCalled();
 
         $assetFamily->updateRuleTemplateCollection(Argument::type(RuleTemplateCollection::class))
@@ -389,9 +377,7 @@ class EditAssetFamilyHandlerSpec extends ObjectBehavior
             ->shouldBeCalled();
 
         $assetFamily->updateImage(
-            Argument::that(function ($image) {
-                return $image instanceof Image && $image->isEmpty();
-            })
+            Argument::that(fn($image) => $image instanceof Image && $image->isEmpty())
         )->shouldBeCalled();
 
         $assetFamily->updateNamingConvention(
@@ -431,9 +417,7 @@ class EditAssetFamilyHandlerSpec extends ObjectBehavior
 
         $assetFamily->updateImage(
             Argument::that(
-                function ($image) {
-                    return $image instanceof Image && $image->isEmpty();
-                }
+                fn($image) => $image instanceof Image && $image->isEmpty()
             )
         )->shouldBeCalled();
 

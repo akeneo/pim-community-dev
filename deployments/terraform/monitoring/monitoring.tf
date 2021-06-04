@@ -48,5 +48,17 @@ resource "google_monitoring_uptime_check_config" "https" {
       host       = replace(var.dns_external, "/\\.$/", "")
     }
   }
+  depends_on = [
+    var.helm_exec_id
+  ]
 }
 
+resource "google_monitoring_notification_channel" "pagerduty" {
+  project      = var.google_project_id
+  display_name = "Notification channel of ${local.pfid}"
+  type         = "pagerduty"
+
+  labels = {
+    service_key = var.pager_duty_service_key
+  }
+}

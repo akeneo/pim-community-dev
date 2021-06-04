@@ -20,7 +20,7 @@ use Akeneo\AssetManager\Domain\Query\AssetFamily\Connector\FindConnectorAssetFam
 class InMemoryFindConnectorAssetFamilyByAssetFamilyIdentifier implements FindConnectorAssetFamilyByAssetFamilyIdentifierInterface
 {
     /** @var ConnectorAssetFamily[] */
-    private $results;
+    private array $results;
 
     public function __construct()
     {

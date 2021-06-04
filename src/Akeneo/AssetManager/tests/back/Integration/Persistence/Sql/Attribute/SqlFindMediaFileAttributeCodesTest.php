@@ -40,14 +40,11 @@ use Akeneo\AssetManager\Integration\SqlIntegrationTestCase;
 
 class SqlFindMediaFileAttributeCodesTest extends SqlIntegrationTestCase
 {
-    /** @var FindMediaFileAttributeCodesInterface */
-    private $findMediaFileAttributeCodes;
+    private FindMediaFileAttributeCodesInterface $findMediaFileAttributeCodes;
 
-    /** @var AttributeRepositoryInterface */
-    private $attributesRepository;
+    private AttributeRepositoryInterface $attributesRepository;
 
-    /** @var AssetFamilyRepositoryInterface */
-    private $assetFamilyRepository;
+    private AssetFamilyRepositoryInterface $assetFamilyRepository;
 
     public function setUp(): void
     {

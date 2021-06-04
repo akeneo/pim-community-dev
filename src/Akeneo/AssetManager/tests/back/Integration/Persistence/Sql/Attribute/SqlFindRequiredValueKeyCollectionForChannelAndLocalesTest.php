@@ -31,17 +31,13 @@ use Akeneo\AssetManager\Integration\SqlIntegrationTestCase;
  */
 class SqlFindRequiredValueKeyCollectionForChannelAndLocalesTest extends SqlIntegrationTestCase
 {
-    /** @var FindRequiredValueKeyCollectionForChannelAndLocalesInterface */
-    private $findRequiredValueKeyCollection;
+    private FindRequiredValueKeyCollectionForChannelAndLocalesInterface $findRequiredValueKeyCollection;
 
-    /** @var AttributeRepositoryInterface */
-    private $attributeRepository;
+    private AttributeRepositoryInterface $attributeRepository;
 
-    /** @var array */
-    private $fixturesDesigner;
+    private ?array $fixturesDesigner = null;
 
-    /** @var array */
-    private $fixturesCountry;
+    private ?array $fixturesCountry = null;
 
     public function setUp(): void
     {

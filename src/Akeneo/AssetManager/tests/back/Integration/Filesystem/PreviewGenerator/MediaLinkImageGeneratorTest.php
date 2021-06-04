@@ -15,11 +15,9 @@ use Akeneo\AssetManager\Integration\PreviewGeneratorIntegrationTestCase;
  */
 final class MediaLinkImageGeneratorTest extends PreviewGeneratorIntegrationTestCase
 {
-    /** @var PreviewGeneratorInterface */
-    private $mediaLinkImageGenerator;
+    private PreviewGeneratorInterface $mediaLinkImageGenerator;
 
-    /** @var MediaLinkAttribute */
-    private $mediaLinkAttribute;
+    private MediaLinkAttribute $mediaLinkAttribute;
 
     public function setUp(): void
     {

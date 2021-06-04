@@ -35,11 +35,9 @@ use Akeneo\AssetManager\Integration\SqlIntegrationTestCase;
  */
 class SqlAssetsExistsTest extends SqlIntegrationTestCase
 {
-    /** @var SqlAssetsExists */
-    private $query;
+    private SqlAssetsExists $query;
 
-    /** @var string */
-    private $assetIdentifier;
+    private AssetIdentifier $assetIdentifier;
 
     public function setUp(): void
     {

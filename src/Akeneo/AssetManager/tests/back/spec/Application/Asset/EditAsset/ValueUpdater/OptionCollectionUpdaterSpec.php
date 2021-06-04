@@ -70,7 +70,7 @@ class OptionCollectionUpdaterSpec extends ObjectBehavior
 
     private function getAttribute(): OptionCollectionAttribute
     {
-        $optionAttribute = OptionCollectionAttribute::create(
+        return OptionCollectionAttribute::create(
             AttributeIdentifier::create('brand', 'age', 'fingerprint'),
             AssetFamilyIdentifier::fromString('brand'),
             AttributeCode::fromString('age_target'),
@@ -81,7 +81,5 @@ class OptionCollectionUpdaterSpec extends ObjectBehavior
             AttributeValuePerChannel::fromBoolean(true),
             AttributeValuePerLocale::fromBoolean(true)
         );
-
-        return $optionAttribute;
     }
 }

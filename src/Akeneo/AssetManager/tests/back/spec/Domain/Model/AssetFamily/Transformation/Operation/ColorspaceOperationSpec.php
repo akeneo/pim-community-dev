@@ -13,6 +13,7 @@ declare(strict_types=1);
 
 namespace spec\Akeneo\AssetManager\Domain\Model\AssetFamily\Transformation\Operation;
 
+use Akeneo\AssetManager\Domain\Model\AssetFamily\Transformation\Operation\ColorspaceOperation;
 use Akeneo\AssetManager\Domain\Model\AssetFamily\Transformation\Operation;
 use PhpSpec\ObjectBehavior;
 
@@ -32,7 +33,7 @@ class ColorspaceOperationSpec extends ObjectBehavior
 
     function it_is_initializable()
     {
-        $this->shouldHaveType(Operation\ColorspaceOperation::class);
+        $this->shouldHaveType(ColorspaceOperation::class);
     }
 
     function it_returns_its_type()

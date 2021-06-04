@@ -31,8 +31,7 @@ class SqlAttributeHasOneValuePerLocaleTest extends SqlIntegrationTestCase
     private const ATTRIBUTE_CODE = 'name';
     private const UNKNOWN_ATTRIBUTE_CODE = 'UNKNOWN_ATTRIBUTE';
 
-    /** @var AttributeHasOneValuePerLocaleInterface */
-    private $attributeHasOneValuePerLocale;
+    private AttributeHasOneValuePerLocaleInterface $attributeHasOneValuePerLocale;
 
     public function setUp(): void
     {

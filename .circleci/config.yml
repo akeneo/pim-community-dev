@@ -29,17 +29,17 @@ jobs:
       - run:
           name: Persist default IMAGE_TAG to be the repo last commit SHA1
           command: |
-              echo export IMAGE_TAG=$CIRCLE_SHA1>> persisted_env_vars
-              echo export IMAGE_TAG_SHORTED=$(echo $CIRCLE_SHA1 | cut -c -7)>> persisted_env_vars
+              echo export IMAGE_TAG=${CIRCLE_SHA1}>> persisted_env_vars
+              echo export IMAGE_TAG_SHORTED=$(echo ${CIRCLE_SHA1} | cut -c -7)>> persisted_env_vars
       - persist_to_workspace:
           root: ~/
           paths:
             - project
 
-##################
-# Build          #
-##################
-  build_dev:
+  ##################
+  # Build          #
+  ##################
+  build_srnt_dev:
     parameters:
         is_pull_request:
             type: boolean
@@ -122,7 +122,7 @@ jobs:
           paths:
             - project
 
-  build_prod:
+  build_srnt_prod:
       parameters:
           is_pull_request:
               type: boolean
@@ -145,156 +145,154 @@ jobs:
                               curl --output /dev/null --silent --head --fail
                               https://github.com/akeneo/pim-community-dev/tree/${CIRCLE_BRANCH} &&
                               sed -i "s|\"akeneo/pim-community-dev\": \"dev-master|\"akeneo/pim-community-dev\": \"dev-${CIRCLE_BRANCH}|" composer.json ||
-                              echo "No CE branch $CIRCLE_BRANCH found. I don't touch the composer.json file."
+                              echo "No CE branch ${CIRCLE_BRANCH} found. I don't touch the composer.json file."
           - run:
-              name: Build PROD PIM docker image
-              command: PIM_CONTEXT=deployment IMAGE_TAG_DATE=$(date +%Y%m%d%H%M%S) make php-image-prod
-          - run:
-              name: Push PROD PIM image on docker registry
-              command: PIM_CONTEXT=deployment make push-php-image-prod
+              name: Define value for next steps
+              command: |
+                TYPE="srnt"
+                IMAGE_TAG_DATE=$(date +%Y%m%d%H%M%S)
+                SERENITY_RELEASE_NAME="v$(date +%Y%m%d%H%M%S)"
+                PRODUCT_REFERENCE_TYPE="serenity_instance"
+                PRODUCT_REFERENCE_CODE="serenity_${ENV_NAME}"
 
-  prepare_pr_ge_environment:
-      environment:
-          <<: *envVarsDeployDev
-      machine:
-          image: ubuntu-2004:202010-01
-      steps:
-          - attach_workspace:
-              at: ~/
-          - set_gcloud_config_dev
-          - restore_persisted_env_vars
+                echo export TYPE=${TYPE} >> $BASH_ENV
+                echo export IMAGE_TAG_DATE=${IMAGE_TAG_DATE} >> $BASH_ENV
+                echo export SERENITY_RELEASE_NAME=${SERENITY_RELEASE_NAME} >> $BASH_ENV
+                echo export PRODUCT_REFERENCE_TYPE=${PRODUCT_REFERENCE_TYPE} >> $BASH_ENV
+                echo export PRODUCT_REFERENCE_CODE=${PRODUCT_REFERENCE_CODE} >> $BASH_ENV
+
+                echo "Image tag: ${IMAGE_TAG}"
+                echo "Serenity release name: ${SERENITY_RELEASE_NAME}"
           - run:
-              name: Get CE version from same branch name or master
+              name: Build the Serenity Edition prod image
+              command: PIM_CONTEXT=deployment IMAGE_TAG_DATE=${IMAGE_TAG_DATE} make php-image-prod
+          - run:
+              name: Push the Serenity Edition prod image on docker registry
+              command: PIM_CONTEXT=deployment make push-php-image-prod
+          - run:
+              name: Persist env vars for next jobs
+              command: |
+                echo export TYPE=${TYPE} > persisted_env_vars
+                echo export IMAGE_TAG=${IMAGE_TAG} >> persisted_env_vars
+                echo export IMAGE_TAG_SHORTED=${IMAGE_TAG_SHORTED} >> persisted_env_vars
+                echo export IMAGE_TAG_DATE=${IMAGE_TAG_DATE} >> persisted_env_vars
+                echo export SERENITY_RELEASE_NAME=${SERENITY_RELEASE_NAME} >> persisted_env_vars
+                echo export PRODUCT_REFERENCE_TYPE=${PRODUCT_REFERENCE_TYPE} >> persisted_env_vars
+                echo export PRODUCT_REFERENCE_CODE=${PRODUCT_REFERENCE_CODE} >> persisted_env_vars
+          - persist_to_workspace:
+              root: ~/
+              paths:
+                - project
+
+  build_grth:
+    parameters:
+      is_pull_request:
+        type: boolean
+        default: true
+    environment:
+      <<: *envVarsDeployDev
+    machine:
+      image: ubuntu-2004:202010-01
+    steps:
+    - attach_workspace:
+        at: ~/
+    - add_ssh_keys:
+        fingerprints:
+          - "1f:25:f8:bb:59:52:95:f6:e2:f2:97:2f:30:d4:e9:66"
+    - set_gcloud_config_dev
+    - restore_persisted_env_vars
+    - when:
+        condition: << parameters.is_pull_request >>
+        steps:
+          - run:
+              name: Get last good CE build revision on PR
               command: |
                 if curl --output /dev/null --silent --head --fail https://github.com/akeneo/pim-community-dev/tree/${CIRCLE_BRANCH}; then
-                    CE_BRANCH=${CIRCLE_BRANCH}
+                  CE_BRANCH=${CIRCLE_BRANCH}
+                  CE_COMMIT_HASH=HEAD
                 else
-                    CE_BRANCH=master
+                  CE_BRANCH=master
+                  CE_COMMIT_HASH=HEAD
                 fi
-                IMAGE_TAG=$(echo growth-$CIRCLE_SHA1 | cut -b 1-40)
-                echo "CE branch to use: $CE_BRANCH"
-                echo "Image tag: $IMAGE_TAG"
-                echo export IMAGE_TAG=$IMAGE_TAG >> $BASH_ENV
-                echo export CE_BRANCH=$CE_BRANCH >> $BASH_ENV
-          - run:
-              name: Install yq
-              command: |
-                wget https://github.com/mikefarah/yq/releases/download/2.4.0/yq_linux_386
-                sudo mv yq_linux_386 /usr/local/bin/yq
-                sudo chmod +x /usr/local/bin/yq
-          - run:
-              name: Prepare the Growth Edition
-              command: |
-                mv /home/circleci/project /home/circleci/ee_project
-                git clone --branch $CE_BRANCH git@github.com:akeneo/pim-community-dev.git /home/circleci/project
-                cd /home/circleci/project
-                /home/circleci/ee_project/growth_edition/prepare_growth_edition.sh /home/circleci/project
-          - run:
-              name: Build the Growth Edition prod image
-              command: |
-                DOCKER_BUILDKIT=1 docker build --no-cache --progress=plain --pull --target prod \
-                  --tag eu.gcr.io/akeneo-ci/pim-enterprise-dev:$IMAGE_TAG \
-                  --build-arg COMPOSER_AUTH=${COMPOSER_AUTH} .
-                docker push eu.gcr.io/akeneo-ci/pim-enterprise-dev:$IMAGE_TAG
-          - run:
-              name: Persist env vars for next jobs
-              command: |
-                  echo export IMAGE_TAG=$IMAGE_TAG >> persisted_env_vars
-                  echo export IMAGE_TAG_SHORTED=$(echo $CIRCLE_SHA1 | cut -c -7) >> persisted_env_vars
-                  echo export TYPE="grth" >> persisted_env_vars
-                  echo export PRODUCT_REFERENCE_TYPE="growth_edition_instance" >> persisted_env_vars
-                  echo export PRODUCT_REFERENCE_CODE="growth_edition_sandbox" >> persisted_env_vars
-          - persist_to_workspace:
-              root: ~/
-              paths:
-                - project
 
-  prepare_growth_edition:
-      environment:
-        <<: *envVarsDeployDev
-      machine:
-          image: ubuntu-2004:202010-01
-      steps:
-          - attach_workspace:
-                at: ~/
-          - add_ssh_keys:
-                fingerprints:
-                    - "1f:25:f8:bb:59:52:95:f6:e2:f2:97:2f:30:d4:e9:66"
-          - set_gcloud_config_dev
-          - restore_persisted_env_vars
+                echo export CE_BRANCH=${CE_BRANCH} >> $BASH_ENV
+                echo export CE_COMMIT_HASH=${CE_COMMIT_HASH} >> $BASH_ENV
+    - when:
+        condition:
+          not: << parameters.is_pull_request >>
+        steps:
           - run:
-              name: Get last good CE build revision
+              name: Get last good CE build revision on master
               command: |
-                  if [[ -n "$CIRCLE_PULL_REQUEST" ]]; then
-                      if curl --output /dev/null --silent --head --fail https://github.com/akeneo/pim-community-dev/tree/${CIRCLE_BRANCH}; then
-                          CE_BRANCH=${CIRCLE_BRANCH}
-                          CE_COMMIT_HASH=HEAD
-                      else
-                          CE_BRANCH=master
-                          CE_COMMIT_HASH=HEAD
-                      fi
-                  else
-                      docker run --rm -v $PWD/growth_edition/last_good_ce:/app composer composer install
-                      CE_BRANCH=master
-                      CE_COMMIT_HASH=$(docker run --rm -v $PWD/growth_edition/last_good_ce:/app composer php get_last_good_ce_revision.php)
-                  fi
+                docker run --rm -v $PWD/growth_edition/last_good_ce:/app composer composer install
+                CE_BRANCH=master
+                CE_COMMIT_HASH=$(docker run --rm -v ${PWD}/growth_edition/last_good_ce:/app composer php get_last_good_ce_revision.php)
 
-                  IMAGE_TAG=$(echo growth-$CE_COMMIT_HASH | cut -b 1-20)$(echo $CIRCLE_SHA1 | cut -b 1-20)
-                  GROWTH_RELEASE_NAME=growth-v$(date +%Y%m%d%H%M%S)
+                echo export CE_BRANCH=${CE_BRANCH} >> $BASH_ENV
+                echo export CE_COMMIT_HASH=${CE_COMMIT_HASH} >> $BASH_ENV
+    - run:
+        name: Define value for next steps
+        command: |
+          TYPE="grth"
+          IMAGE_TAG=$(echo growth-${IMAGE_TAG} | cut -b 1-40)
+          IMAGE_TAG_DATE=$(date +%Y%m%d%H%M%S)
+          GROWTH_RELEASE_NAME="growth-v$(date +%Y%m%d%H%M%S)"
+          PRODUCT_REFERENCE_TYPE="growth_edition_instance"
+          PRODUCT_REFERENCE_CODE="growth_edition_${ENV_NAME}"
 
-                  echo "CE Branch used: $CE_BRANCH"
-                  echo "CE Commit hash used: $CE_COMMIT_HASH"
-                  echo "Image tag: $IMAGE_TAG"
-                  echo "Growth Release name: $GROWTH_RELEASE_NAME"
+          echo export TYPE=${TYPE} >> $BASH_ENV
+          echo export IMAGE_TAG=${IMAGE_TAG} >> $BASH_ENV
+          echo export IMAGE_TAG_DATE=${IMAGE_TAG_DATE} >> $BASH_ENV
+          echo export GROWTH_RELEASE_NAME=${GROWTH_RELEASE_NAME} >> $BASH_ENV
+          echo export PRODUCT_REFERENCE_TYPE=${PRODUCT_REFERENCE_TYPE} >> $BASH_ENV
+          echo export PRODUCT_REFERENCE_CODE=${PRODUCT_REFERENCE_CODE} >> $BASH_ENV
 
-                  echo export CE_BRANCH=$CE_BRANCH >> $BASH_ENV
-                  echo export CE_COMMIT_HASH=$CE_COMMIT_HASH >> $BASH_ENV
-                  echo export IMAGE_TAG=$IMAGE_TAG >> $BASH_ENV
-                  echo export GROWTH_RELEASE_NAME=$GROWTH_RELEASE_NAME >> $BASH_ENV
-          - run:
-              name: Install yq
-              command: |
-                  wget https://github.com/mikefarah/yq/releases/download/2.4.0/yq_linux_386
-                  sudo mv yq_linux_386 /usr/local/bin/yq
-                  sudo chmod +x /usr/local/bin/yq
-          - run:
-              name: Prepare the Growth Edition
-              command: |
-                  export GIT_SSH_COMMAND='ssh -i ~/.ssh/id_rsa_1f25f8bb595295f6e2f2972f30d4e966 -o UserKnownHostsFile=~/.ssh/known_hosts -o IdentitiesOnly=Yes'
-                  mv /home/circleci/project /home/circleci/ee_project
-                  git clone --branch $CE_BRANCH git@github.com:akeneo/pim-community-dev.git /home/circleci/project
-                  cd /home/circleci/project
-                  git checkout $CE_COMMIT_HASH
-                  /home/circleci/ee_project/growth_edition/prepare_growth_edition.sh /home/circleci/project
-          - run:
-              name: Build the Growth Edition prod image
-              command: |
-                  DOCKER_BUILDKIT=1 docker build --no-cache --progress=plain --pull --target prod \
-                    --tag eu.gcr.io/akeneo-ci/pim-enterprise-dev:$IMAGE_TAG \
-                    --tag eu.gcr.io/akeneo-ci/pim-enterprise-dev:$GROWTH_RELEASE_NAME \
-                    --build-arg COMPOSER_AUTH=${COMPOSER_AUTH} .
-                  docker push eu.gcr.io/akeneo-ci/pim-enterprise-dev:$IMAGE_TAG
-                  docker push eu.gcr.io/akeneo-ci/pim-enterprise-dev:$GROWTH_RELEASE_NAME
-                  BOTO_CONFIG=/dev/null gsutil -m cp -r /home/circleci/project/deployments/ gs://akecld-terraform-modules/growth-edition-dev/$IMAGE_TAG/
-          - run:
-              name: Persist env vars for next jobs
-              command: |
-                  echo export CE_BRANCH=$CE_BRANCH > persisted_env_vars
-                  echo export CE_COMMIT_HASH=$CE_COMMIT_HASH >> persisted_env_vars
-                  echo export IMAGE_TAG=$IMAGE_TAG >> persisted_env_vars
-                  echo export IMAGE_TAG_SHORTED=$(echo $CIRCLE_SHA1 | cut -c -7) >> persisted_env_vars
-                  echo export GROWTH_RELEASE_NAME=$GROWTH_RELEASE_NAME >> persisted_env_vars
-                  echo export TYPE="grth" >> persisted_env_vars
-                  echo export PRODUCT_REFERENCE_TYPE="growth_edition_instance" >> persisted_env_vars
-                  echo export PRODUCT_REFERENCE_CODE="growth_edition_sandbox" >> persisted_env_vars
-          - persist_to_workspace:
-              root: ~/
-              paths:
-                - project
+          echo "CE Branch used: ${CE_BRANCH}"
+          echo "CE Commit hash used: ${CE_COMMIT_HASH}"
+          echo "Image tag: ${IMAGE_TAG}"
+          echo "Growth Release name: ${GROWTH_RELEASE_NAME}"
+    - run:
+        name: Install yq
+        command: |
+          wget https://github.com/mikefarah/yq/releases/download/2.4.0/yq_linux_386
+          sudo mv yq_linux_386 /usr/local/bin/yq
+          sudo chmod +x /usr/local/bin/yq
+    - run:
+        name: Prepare the Growth Edition
+        command: |
+          # export GIT_SSH_COMMAND='ssh -i ~/.ssh/id_rsa_1f25f8bb595295f6e2f2972f30d4e966 -o UserKnownHostsFile=~/.ssh/known_hosts -o IdentitiesOnly=Yes'
+          mv /home/circleci/project /home/circleci/ee_project
+          git clone --branch $CE_BRANCH git@github.com:akeneo/pim-community-dev.git /home/circleci/project
+          cd /home/circleci/project
+          git checkout $CE_COMMIT_HASH
+          /home/circleci/ee_project/growth_edition/prepare_growth_edition.sh /home/circleci/project
+    - run:
+        name: Build the Growth Edition prod image
+        command: PIM_CONTEXT=deployment TYPE=${TYPE} IMAGE_TAG_DATE=${IMAGE_TAG_DATE} make php-image-prod
+    - run:
+        name: Push the Growth Edition prod image on docker registry
+        command: PIM_CONTEXT=deployment TYPE=${TYPE} make push-php-image-prod
+    - run:
+        name: Push the Growth Edition deployements files on bucket
+        command: BOTO_CONFIG=/dev/null gsutil -m cp -r /home/circleci/project/deployments/ gs://akecld-terraform-modules/growth-edition-dev/${IMAGE_TAG}/
+    - run:
+        name: Persist env vars for next jobs
+        command: |
+          echo export TYPE=${TYPE} > persisted_env_vars
+          echo export IMAGE_TAG=${IMAGE_TAG} >> persisted_env_vars
+          echo export IMAGE_TAG_SHORTED=${IMAGE_TAG_SHORTED} >> persisted_env_vars
+          echo export IMAGE_TAG_DATE=${IMAGE_TAG_DATE} >> persisted_env_vars
+          echo export GROWTH_RELEASE_NAME=${GROWTH_RELEASE_NAME} >> persisted_env_vars
+          echo export PRODUCT_REFERENCE_TYPE=${PRODUCT_REFERENCE_TYPE} >> persisted_env_vars
+          echo export PRODUCT_REFERENCE_CODE=${PRODUCT_REFERENCE_CODE} >> persisted_env_vars
+    - persist_to_workspace:
+          root: ~/
+          paths:
+            - project
 
-##################
-# Tests          #
-##################
+  ##################
+  # Tests          #
+  ##################
   test_back_static_and_acceptance:
       machine:
           image: ubuntu-2004:202010-01
@@ -739,9 +737,9 @@ jobs:
               name: Success
               command: echo "The build has run with success! Let's merge :)"
 
-##################
-# Sanity checks  #
-##################
+  ##################
+  # Sanity checks  #
+  ##################
   ui_sanity_checks:
       machine:
           image: ubuntu-1604:201903-01
@@ -769,10 +767,30 @@ jobs:
           - store_artifacts:
                 path: var/logs
 
-##################
-# Helm tests     #
-##################
-  test_cronjobs_existence:
+  ##################
+  # Helm tests     #
+  ##################
+  test_cronjobs_existence_srnt:
+      environment:
+        <<: *envVarsDeployDev
+      machine:
+          image: ubuntu-2004:202010-01
+      steps:
+          - attach_workspace:
+                at: ~/
+          - set_gcloud_config_dev
+          - restore_persisted_env_vars
+          - run:
+              name: Install yq
+              command: |
+                  wget https://github.com/mikefarah/yq/releases/download/3.3.1/yq_linux_386
+                  sudo mv yq_linux_386 /usr/local/bin/yq
+                  sudo chmod +x /usr/local/bin/yq
+          - run:
+              name: Test Cronjob jobs exists
+              command: PIM_CONTEXT=deployment make test-helm-cronjob
+
+  test_cronjobs_existence_grth:
       environment:
         <<: *envVarsDeployDev
       machine:
@@ -814,10 +832,10 @@ jobs:
               name: Test Serenity with Onboarder bundle Helm generated yaml files compliance with latest kubernetes Version
               command: PIM_CONTEXT=deployment WITH_ONBOARDER=1 make test_helm_generated_k8s_files
 
-##################
-# Tests deploy   #
-##################
-  test_deploy:
+  ##################
+  # Tests deploy   #
+  ##################
+  test_deploy_srnt:
       environment:
         <<: *envVarsDeployDev
       <<: *dockerCloudDeployer
@@ -827,26 +845,40 @@ jobs:
           - set_gcloud_config_dev
           - restore_persisted_env_vars
           - run:
+              name: Define value for next steps
+              command: |
+                INSTANCE_NAME_PREFIX=pimci
+                INSTANCE_NAME=${INSTANCE_NAME_PREFIX}-${IMAGE_TAG_SHORTED}-${CIRCLE_BUILD_NUM}
+                PIM_CONTEXT=deployment
+
+                echo export INSTANCE_NAME_PREFIX=${INSTANCE_NAME_PREFIX} >> $BASH_ENV
+                echo export INSTANCE_NAME=${INSTANCE_NAME} >> $BASH_ENV
+                echo export PIM_CONTEXT=${PIM_CONTEXT} >> $BASH_ENV
+
+                echo "Instance name prefix: ${INSTANCE_NAME_PREFIX}"
+                echo "Instance name: ${INSTANCE_NAME}"
+                echo "Image tag: ${IMAGE_TAG}"
+          - run:
               name: DATADOG deployment Livetail logs page
-              command: echo "https://app.datadoghq.eu/logs/livetail?cols=service%2Ccomponent%2Cpfid&from_ts=0&index=main&live=true&messageDisplay=inline&query=kube_namespace%3Asrnt-pimci-${IMAGE_TAG_SHORTED}-${CIRCLE_BUILD_NUM}&stream_sort=time%2Casc&to_ts=-1"
+              command: echo "https://app.datadoghq.eu/logs/livetail?query=kube_namespace%3A${TYPE}-${INSTANCE_NAME}"
           - run:
               name: Deploy PIM on kubernetes
-              command: PIM_CONTEXT=deployment INSTANCE_NAME=pimci-$(echo $CIRCLE_SHA1 | cut -c -7)-${CIRCLE_BUILD_NUM} make deploy-serenity
+              command: make deploy-instance
           - run:
               name: Test PIM connexion on kubernetes
-              command: PIM_CONTEXT=deployment INSTANCE_NAME=pimci-$(echo $CIRCLE_SHA1 | cut -c -7)-${CIRCLE_BUILD_NUM} make test-prod
+              command: make test-prod
           - run:
               name: Prepare infrastructure artifacts
-              command: PIM_CONTEXT=deployment INSTANCE_NAME=pimci-$(echo $CIRCLE_SHA1 | cut -c -7)-${CIRCLE_BUILD_NUM} make prepare-infrastructure-artifacts
+              command: make prepare-infrastructure-artifacts
               when: on_fail
           - store_artifacts:
               path: ~/artifacts/infra
           - run:
               name: Remove env on kubernetes
-              command: PIM_CONTEXT=deployment INSTANCE_NAME=pimci-$(echo $CIRCLE_SHA1 | cut -c -7)-${CIRCLE_BUILD_NUM} make delete
+              command: make delete
               when: always
 
-  test_deploy_growth:
+  test_deploy_grth:
       environment:
         <<: *envVarsDeployDev
       <<: *dockerCloudDeployer
@@ -856,26 +888,40 @@ jobs:
           - set_gcloud_config_dev
           - restore_persisted_env_vars
           - run:
+              name: Define value for next steps
+              command: |
+                INSTANCE_NAME_PREFIX=pimci
+                INSTANCE_NAME=${INSTANCE_NAME_PREFIX}-${IMAGE_TAG_SHORTED}-${CIRCLE_BUILD_NUM}
+                PIM_CONTEXT=deployment
+
+                echo export INSTANCE_NAME_PREFIX=${INSTANCE_NAME_PREFIX} >> $BASH_ENV
+                echo export INSTANCE_NAME=${INSTANCE_NAME} >> $BASH_ENV
+                echo export PIM_CONTEXT=${PIM_CONTEXT} >> $BASH_ENV
+
+                echo "Instance name prefix: ${INSTANCE_NAME_PREFIX}"
+                echo "Instance name: ${INSTANCE_NAME}"
+                echo "Image tag: ${IMAGE_TAG}"
+          - run:
               name: DATADOG deployment Livetail logs page
-              command: echo "https://app.datadoghq.eu/logs/livetail?cols=service%2Ccomponent%2Cpfid&from_ts=0&index=main&live=true&messageDisplay=inline&query=kube_namespace%grth-pimci-${IMAGE_TAG_SHORTED}-${CIRCLE_BUILD_NUM}&stream_sort=time%2Casc&to_ts=-1"
+              command: echo "https://app.datadoghq.eu/logs/livetail?query=kube_namespace%3A${TYPE}-${INSTANCE_NAME}"
           - run:
               name: Deploy PIM on kubernetes
-              command: PIM_CONTEXT=deployment INSTANCE_NAME=pimci-$(echo $CIRCLE_SHA1 | cut -c -7)-${CIRCLE_BUILD_NUM} make deploy-serenity
+              command: make deploy-instance
           - run:
               name: Test PIM connexion on kubernetes
-              command: PIM_CONTEXT=deployment INSTANCE_NAME=pimci-$(echo $CIRCLE_SHA1 | cut -c -7)-${CIRCLE_BUILD_NUM} make test-prod
+              command: make test-prod
           - run:
               name: Prepare infrastructure artifacts
-              command: PIM_CONTEXT=deployment INSTANCE_NAME=pimci-$(echo $CIRCLE_SHA1 | cut -c -7)-${CIRCLE_BUILD_NUM} make prepare-infrastructure-artifacts
+              command: make prepare-infrastructure-artifacts
               when: on_fail
           - store_artifacts:
               path: ~/artifacts/infra
           - run:
               name: Remove env on kubernetes
-              command: PIM_CONTEXT=deployment INSTANCE_NAME=pimci-$(echo $CIRCLE_SHA1 | cut -c -7)-${CIRCLE_BUILD_NUM} make delete
+              command: make delete
               when: always
 
-  test_upgrade_from_last_release:
+  test_upgrade_srnt_from_last_release:
       environment:
           <<: *envVarsDeployDev
       <<: *dockerCloudDeployer
@@ -886,126 +932,173 @@ jobs:
           - set_gcloud_config_dev
           - restore_persisted_env_vars
           - run:
-                name: Get latest release & export variables
-                command: |
-                    git tag --list | grep -E "^v?[0-9]+$" | sort -r > /tmp/pim-tags.txt
-                    LATEST_RELEASE=$(head -n 1 /tmp/pim-tags.txt)
-                    echo $LATEST_RELEASE
-                    ssh-keyscan -t rsa github.com >> ~/.ssh/known_hosts
-                    echo export IMAGE_TAG=${LATEST_RELEASE} >> $BASH_ENV
-                    echo export INSTANCE_NAME_PREFIX=pimup >> $BASH_ENV
-                    echo export INSTANCE_NAME=pimup-$(echo $CIRCLE_SHA1 | cut -c -7)-${CIRCLE_BUILD_NUM} >> $BASH_ENV
-                    echo export CIRCLE_SHA1=${CIRCLE_SHA1} >> $BASH_ENV
-          - run:
-                name: Deploy instance with latest release
-                command: |
-                    PIM_CONTEXT=deployment INSTANCE_NAME=$INSTANCE_NAME make create-ci-release-files
-                    PIM_CONTEXT=deployment INSTANCE_NAME=$INSTANCE_NAME make change-terraform-source-version
-                    PIM_CONTEXT=deployment INSTANCE_NAME=$INSTANCE_NAME make deploy
-          - run:
-                name: Upgrade
-                command: UPGRADE_STEP_2=true PIM_CONTEXT=deployment INSTANCE_NAME=$INSTANCE_NAME IMAGE_TAG=$CIRCLE_SHA1 make deploy-serenity
-          - run:
-                name: Production tests on upgraded env
-                command: PIM_CONTEXT=deployment INSTANCE_NAME=$INSTANCE_NAME make test-prod
-          - run:
-                name: Check that upgrader pod ran
-                command: kubectl get pods --namespace=srnt-${INSTANCE_NAME} | grep pim-upgrader
-          - run:
-                name: Prepare infrastructure artifacts
-                command: PIM_CONTEXT=deployment INSTANCE_NAME=$INSTANCE_NAME make prepare-infrastructure-artifacts
-                when: on_fail
-          - store_artifacts:
-                path: ~/artifacts/infra
-          - run:
-                name: Remove upgraded env
-                command: IMAGE_TAG=$CIRCLE_SHA1 PIM_CONTEXT=deployment INSTANCE_NAME=$INSTANCE_NAME make delete
-                when: always
+              name: Get latest release & export variables
+              command: |
+                  LATEST_RELEASE=$(bash ${PWD}/deployments/bin/get_latest_release.sh)
+                  if [[ -z "${LATEST_RELEASE}" ]]; then
+                      echo "Could not retrieve latest deployed release"
+                      exit 1
+                  fi
+                  INSTANCE_NAME_PREFIX=pimup
+                  INSTANCE_NAME=${INSTANCE_NAME_PREFIX}-${IMAGE_TAG_SHORTED}-${CIRCLE_BUILD_NUM}
+                  PIM_CONTEXT=deployment
 
-  test_upgrade_growth_from_last_release:
+                  echo export LATEST_RELEASE=${LATEST_RELEASE} >> $BASH_ENV
+                  echo export INSTANCE_NAME_PREFIX=${INSTANCE_NAME_PREFIX} >> $BASH_ENV
+                  echo export INSTANCE_NAME=${INSTANCE_NAME} >> $BASH_ENV
+                  echo export PIM_CONTEXT=${PIM_CONTEXT} >> $BASH_ENV
+
+                  echo "Instance name prefix: ${INSTANCE_NAME_PREFIX}"
+                  echo "Instance name: ${INSTANCE_NAME}"
+                  echo "Image tag: ${IMAGE_TAG}"
+                  echo "Latest image tag: ${LATEST_RELEASE}"
+          - run:
+              name: DATADOG deployment Livetail logs page
+              command: echo "https://app.datadoghq.eu/logs/livetail?query=kube_namespace%3A${TYPE}-${INSTANCE_NAME}"
+          - run:
+              name: Deploy instance with latest release
+              command: |
+                  ssh-keyscan -t rsa github.com >> ~/.ssh/known_hosts
+                  IMAGE_TAG=${LATEST_RELEASE} make create-ci-release-files
+                  IMAGE_TAG=${LATEST_RELEASE} make change-terraform-source-version
+                  IMAGE_TAG=${LATEST_RELEASE} make deploy
+          - run:
+              name: Upgrade
+              command: UPGRADE_STEP_2=true make deploy-instance
+          - run:
+              name: Production tests on upgraded env
+              command: make test-prod
+          - run:
+              name: Check that upgrader pod ran
+              command: kubectl get pods --namespace=${TYPE}-${INSTANCE_NAME} | grep pim-upgrader
+          - run:
+              name: Prepare infrastructure artifacts
+              command: make prepare-infrastructure-artifacts
+              when: on_fail
+          - store_artifacts:
+              path: ~/artifacts/infra
+          - run:
+              name: Remove upgraded env
+              command: make delete
+              when: always
+
+  test_upgrade_grth_from_last_release:
       environment:
           <<: *envVarsDeployDev
       <<: *dockerCloudDeployer
       steps:
           - attach_workspace:
                 at: ~/
-          - add_ssh_keys
           - set_gcloud_config_dev
           - restore_persisted_env_vars
           - run:
                 name: Get latest release & export variables
                 command: |
-                    GS_GROWTH=$(gsutil ls -l gs://akecld-terraform-modules/growth-edition | sort -r | head -n 1 || true)
-                    LATEST_RELEASE=$(echo ${GS_GROWTH} | cut -d/ -f5)
-                    ssh-keyscan -t rsa github.com >> ~/.ssh/known_hosts
+                    LATEST_RELEASE=$(bash ${PWD}/deployments/bin/get_latest_release.sh)
+                    if [[ -z "${LATEST_RELEASE}" ]]; then
+                      echo "Could not retrieve latest deployed release"
+                      exit 1
+                    fi
+                    INSTANCE_NAME_PREFIX=pimup
+                    INSTANCE_NAME=${INSTANCE_NAME_PREFIX}-${IMAGE_TAG_SHORTED}-${CIRCLE_BUILD_NUM}
+                    PIM_CONTEXT=deployment
+
                     echo export LATEST_RELEASE=${LATEST_RELEASE} >> $BASH_ENV
-                    echo export INSTANCE_NAME_PREFIX=pimup >> $BASH_ENV
-                    echo export INSTANCE_NAME=pimup-$(echo $CIRCLE_SHA1 | cut -c -7)-${CIRCLE_BUILD_NUM} >> $BASH_ENV
-                    echo export CIRCLE_SHA1=${CIRCLE_SHA1} >> $BASH_ENV
+                    echo export INSTANCE_NAME_PREFIX=${INSTANCE_NAME_PREFIX} >> $BASH_ENV
+                    echo export INSTANCE_NAME=${INSTANCE_NAME} >> $BASH_ENV
+                    echo export PIM_CONTEXT=${PIM_CONTEXT} >> $BASH_ENV
+
+                    echo "Instance name prefix: ${INSTANCE_NAME_PREFIX}"
+                    echo "Instance name: ${INSTANCE_NAME}"
+                    echo "Image tag: ${IMAGE_TAG}"
+                    echo "Latest image tag: ${LATEST_RELEASE}"
+          - run:
+              name: DATADOG deployment Livetail logs page
+              command: echo "https://app.datadoghq.eu/logs/livetail?query=kube_namespace%3A${TYPE}-${INSTANCE_NAME}"
           - run:
                 name: Deploy instance with latest release
                 command: |
-                    IMAGE_TAG=${LATEST_RELEASE} PIM_CONTEXT=deployment make create-ci-release-files
-                    IMAGE_TAG=${LATEST_RELEASE} PIM_CONTEXT=deployment make change-terraform-source-version
-                    IMAGE_TAG=${LATEST_RELEASE} PIM_CONTEXT=deployment make deploy
+                    IMAGE_TAG=${LATEST_RELEASE} make create-ci-release-files
+                    IMAGE_TAG=${LATEST_RELEASE} make change-terraform-source-version
+                    IMAGE_TAG=${LATEST_RELEASE} make deploy
           - run:
                 name: Upgrade
-                command: UPGRADE_STEP_2=true PIM_CONTEXT=deployment make deploy-serenity
+                command: UPGRADE_STEP_2=true make deploy-instance
           - run:
                 name: Production tests on upgraded env
-                command: PIM_CONTEXT=deployment make test-prod
+                command: make test-prod
           - run:
                 name: Check that upgrader pod ran
-                command: kubectl get pods --namespace=grth-${INSTANCE_NAME} | grep pim-upgrader
+                command: kubectl get pods --namespace=${TYPE}-${INSTANCE_NAME} | grep pim-upgrader
           - run:
                 name: Prepare infrastructure artifacts
-                command: PIM_CONTEXT=deployment make prepare-infrastructure-artifacts
+                command: make prepare-infrastructure-artifacts
                 when: on_fail
           - store_artifacts:
                 path: ~/artifacts/infra
           - run:
                 name: Remove upgraded env
-                command: PIM_CONTEXT=deployment make delete
+                command: make delete
                 when: always
 
-  test_upgrade_from_serenity_customer_db:
+  test_upgrade_from_srnt_customer_db:
       environment:
           <<: *envVarsDeployDev
       <<: *dockerCloudDeployer
       steps:
           - attach_workspace:
                 at: ~/
-          - add_ssh_keys
           - set_gcloud_config_dev
           - restore_persisted_env_vars
+          - run:
+              name: Define value for next steps
+              command: |
+                LIST_SOURCE_PFID=( srnt-nature-et-decouvertes srnt-invivo srnt-franklin-electric )
+                RANDOM_SOURCE_PFID=$(( $RANDOM % 3 ))
+                SOURCE_PFID=${LIST_SOURCE_PFID[${RANDOM_SOURCE_PFID}]}
+                INSTANCE_NAME_PREFIX=pimci-duplic
+                INSTANCE_NAME=$(echo "${INSTANCE_NAME_PREFIX}-${IMAGE_TAG}" | cut -c1-40)
+                PIM_CONTEXT=deployment
+
+                echo export SOURCE_PFID=${SOURCE_PFID} >> $BASH_ENV
+                echo export INSTANCE_NAME_PREFIX=${INSTANCE_NAME_PREFIX} >> $BASH_ENV
+                echo export INSTANCE_NAME=${INSTANCE_NAME} >> $BASH_ENV
+                echo export PIM_CONTEXT=${PIM_CONTEXT} >> $BASH_ENV
+
+                echo "Source PFID: ${SOURCE_PFID}"
+                echo "Instance name prefix: ${INSTANCE_NAME_PREFIX}"
+                echo "Instance name: ${INSTANCE_NAME}"
+                echo "Image tag: ${IMAGE_TAG}"
+          - run:
+              name: DATADOG deployment Livetail logs page
+              command: echo "https://app.datadoghq.eu/logs/livetail?query=kube_namespace%3A${TYPE}-${INSTANCE_NAME}"
           - run:
                 name: Duplicate PROD environment
-                command: |
-                    ssh-keyscan github.com >> ~/.ssh/known_hosts
-                    LIST_SOURCE_PFID=( srnt-nature-et-decouvertes srnt-invivo srnt-franklin-electric )
-                    RANDOM_SOURCE_PFID=$(( $RANDOM % 3 ))
-                    SOURCE_PFID=${LIST_SOURCE_PFID[${RANDOM_SOURCE_PFID}]}
-                    INSTANCE_NAME=$(echo "pimci-duplic-${IMAGE_TAG}"|cut -c1-40)
-                    INSTANCE_NAME=${INSTANCE_NAME} IMAGE_TAG=${CIRCLE_SHA1} INSTANCE_NAME_PREFIX=pimci-duplic ENV_NAME=dev SOURCE_PFID=${SOURCE_PFID} PIM_CONTEXT=deployment  make clone_serenity
+                command: make clone_serenity
           - run:
                 name: Upgrade the duplicate environment
                 command: |
-                    UPGRADE_STEP_2=true PIM_CONTEXT=deployment IMAGE_TAG=$CIRCLE_SHA1 INSTANCE_NAME_PREFIX=pimci-duplic INSTANCE_NAME=$(echo "pimci-duplic-${IMAGE_TAG}"|cut -c1-40) make create-ci-release-files get_mysql_parameters_disk deploy
+                    UPGRADE_STEP_2=true make create-ci-release-files
+                    UPGRADE_STEP_2=true make get_mysql_parameters_disk
+                    UPGRADE_STEP_2=true make deploy
+          - run:
+                name: Production tests on upgraded env
+                command: make test-prod
           - run:
               name: Prepare infrastructure artifacts
-              command: INSTANCE_NAME=$(echo "pimci-duplic-${IMAGE_TAG}"|cut -c1-40) PIM_CONTEXT=deployment make prepare-infrastructure-artifacts
+              command: make prepare-infrastructure-artifacts
               when: on_fail
           - store_artifacts:
               path: ~/artifacts/infra
           - run:
                 name: Remove upgraded env
-                command: IMAGE_TAG=$CIRCLE_SHA1 INSTANCE_NAME=$(echo "pimci-duplic-${IMAGE_TAG}"|cut -c1-40) PIM_CONTEXT=deployment make delete
+                command: make delete
                 when: always
 
-##################
-# Releases       #
-##################
-  release:
+  ##################
+  # Releases       #
+  ##################
+  release_srnt:
       environment:
           <<: *envVarsDeployDev
       machine:
@@ -1024,7 +1117,7 @@ jobs:
               name: PIM_CONTEXT=deployment make release
               command: OLD_IMAGE_TAG=$IMAGE_TAG PIM_CONTEXT=deployment make release
 
-  release_growth_edition:
+  release_grth:
       environment:
           <<: *envVarsDeployDev
       machine:
@@ -1050,11 +1143,12 @@ jobs:
                   docker pull eu.gcr.io/akeneo-ci/pim-enterprise-dev:$IMAGE_TAG
                   docker image tag eu.gcr.io/akeneo-ci/pim-enterprise-dev:$IMAGE_TAG eu.gcr.io/akeneo-ci/pim-enterprise-dev:$GROWTH_RELEASE_NAME
                   docker image tag eu.gcr.io/akeneo-ci/pim-enterprise-dev:$IMAGE_TAG eu.gcr.io/akeneo-cloud/pim-enterprise-dev:$GROWTH_RELEASE_NAME
+                  docker push eu.gcr.io/akeneo-ci/pim-enterprise-dev:$GROWTH_RELEASE_NAME
                   docker push eu.gcr.io/akeneo-cloud/pim-enterprise-dev:$GROWTH_RELEASE_NAME
 
-##################
-# Deploy         #
-##################
+  ##################
+  # Deploy         #
+  ##################
   deploy_helpdesk_environment:
       environment:
         <<: *envVarsDeployPreprod
@@ -1105,7 +1199,7 @@ jobs:
                 command: |
                     ACTIVATE_MONITORING=true INSTANCE_NAME=pimci-pm PIM_CONTEXT=deployment UPGRADE_STEP_2=true make deploy-serenity
 
-  deploy_pr_environment:
+  deploy_pr_srnt_environment:
       environment:
           <<: *envVarsDeployDev
       <<: *dockerCloudDeployer
@@ -1133,7 +1227,7 @@ jobs:
               command: ENV_NAME=dev INSTANCE_NAME_PREFIX=pimci-pr INSTANCE_NAME=pimci-pr-${CIRCLE_PULL_REQUEST##*/} PIM_CONTEXT=deployment make delete
               when: on_fail
 
-  deploy_pr_ge_environment:
+  deploy_pr_grth_environment:
       environment:
           <<: *envVarsDeployDev
       <<: *dockerCloudDeployer
@@ -1161,22 +1255,9 @@ jobs:
               command: ENV_NAME=dev INSTANCE_NAME_PREFIX=pimci-pr-ge INSTANCE_NAME=pimci-pr-ge-${CIRCLE_PULL_REQUEST##*/} PIM_CONTEXT=deployment make delete
               when: on_fail
 
-##################
-# Cleanup        #
-##################
-  destroy_deployed_env:
-      environment:
-        <<: *envVarsDeployDev
-      <<: *dockerCloudDeployer
-      steps:
-          - attach_workspace:
-                at: ~/
-          - set_gcloud_config_dev
-          - restore_persisted_env_vars
-          - run:
-              name: Remove env on kubernetes
-              command: PIM_CONTEXT=deployment INSTANCE_NAME=pimci-$(echo $CIRCLE_SHA1 | cut -c -7)-${CIRCLE_BUILD_NUM} make delete
-
+  ##################
+  # Cleanup        #
+  ##################
   delete_pr_environments_hourly:
       environment:
           <<: *envVarsDeployDev
@@ -1208,21 +1289,6 @@ jobs:
                 command: |
                     PIM_CONTEXT=deployment make mr-proper
 
-  delete_pr_environment:
-      environment:
-          <<: *envVarsDeployDev
-      <<: *dockerCloudDeployer
-      steps:
-          - attach_workspace:
-                at: ~/
-          - set_gcloud_config_dev
-          - run:
-                name: delete environments
-                command: |
-                    if [[ ${CIRCLE_PULL_REQUEST##*/} == "" ]]; then echo "ERROR : CIRCLE_PULL_REQUEST is empty."; exit 1;fi
-                    echo "remove env from 'deploy_pr_environment'"
-                    INSTANCE_NAME=pimci-pr-${CIRCLE_PULL_REQUEST##*/} PIM_CONTEXT=deployment make delete-serenity
-
 
 workflows:
   version: 2
@@ -1237,102 +1303,91 @@ workflows:
           - checkout:
                 requires:
                     - ready_to_build?
-          - build_dev:
+          - build_srnt_dev:
                 requires:
                     - checkout
           - test_helm_generated_k8s_files:
                 requires:
                     - checkout
-          - build_prod:
+          - build_srnt_prod:
                 requires:
                     - test_helm_generated_k8s_files
-          - test_cronjobs_existence:
+          - test_cronjobs_existence_srnt:
                 requires:
-                    - build_prod
-          - test_deploy:
+                    - build_srnt_prod
+          - test_deploy_srnt:
                 requires:
-                    - test_cronjobs_existence
-          - test_upgrade_from_last_release:
+                    - test_cronjobs_existence_srnt
+          - test_upgrade_srnt_from_last_release:
                 requires:
-                    - test_deploy
-          - deploy_pr_environment?:
+                    - test_cronjobs_existence_srnt
+          - deploy_pr_srnt_environment?:
                 type: approval
                 filters:
                     branches:
                         ignore:
                             - master
                 requires:
-                    - test_cronjobs_existence
-          - delete_pr_environment:
+                    - test_cronjobs_existence_srnt
+          - deploy_pr_srnt_environment:
                 requires:
-                    - delete_pr_environment?
-          - delete_pr_environment?:
+                    - deploy_pr_srnt_environment?
+          - deploy_pr_grth_environment?:
                 type: approval
                 filters:
                     branches:
                         ignore:
                             - master
                 requires:
-                    - deploy_pr_environment
-          - deploy_pr_environment:
-                requires:
-                    - deploy_pr_environment?
-
-          - deploy_pr_ge_environment?:
-                type: approval
-                filters:
-                    branches:
-                        ignore:
-                            - master
-                requires:
-                    - prepare_growth_edition
-          - prepare_growth_edition:
+                    - test_cronjobs_existence_grth
+          - build_grth:
                 requires:
                     - test_helm_generated_k8s_files
-          - test_deploy_growth:
+          - test_cronjobs_existence_grth:
                 requires:
-                    - prepare_growth_edition
-          - test_upgrade_growth_from_last_release:
+                    - build_grth
+          - test_deploy_grth:
                 requires:
-                    - test_deploy_growth
-          - deploy_pr_ge_environment:
+                    - test_cronjobs_existence_grth
+          - test_upgrade_grth_from_last_release:
                 requires:
-                    - deploy_pr_ge_environment?
+                    - test_cronjobs_existence_grth
+          - deploy_pr_grth_environment:
+                requires:
+                    - deploy_pr_grth_environment?
           - test_front_code_style:
                 requires:
-                    - build_dev
+                    - build_srnt_dev
           - test_database:
                 requires:
-                    - build_dev
+                    - build_srnt_dev
           - test_back_static_and_acceptance:
                 requires:
-                    - build_dev
+                    - build_srnt_dev
           - test_front_static_acceptance_and_integration:
                 requires:
-                    - build_dev
+                    - build_srnt_dev
           - test_front_end_to_end:
                 requires:
-                    - build_dev
+                    - build_srnt_dev
           - test_back_phpunit:
                 requires:
-                    - build_dev
+                    - build_srnt_dev
           - test_back_integration_bounded_contexts:
                 requires:
-                    - build_dev
+                    - build_srnt_dev
           - test_back_integration_reference_entities:
                 requires:
-                    - build_dev
+                    - build_srnt_dev
           - test_back_performance:
                 requires:
-                    - build_dev
-
+                    - build_srnt_dev
           - test_onboarder_bundle:
                 requires:
-                    - build_dev
-
+                    - build_srnt_dev
           - test_back_data_migrations:
                 requires:
-                    - build_dev
+                    - build_srnt_dev
           - test_back_behat_legacy:
                 requires:
                     - test_back_static_and_acceptance
@@ -1340,7 +1395,6 @@ workflows:
                     - test_back_phpunit
                     - test_back_integration_bounded_contexts
                     - test_back_integration_reference_entities
-
           - pull_request_success:
                 requires:
                     - test_back_performance
@@ -1358,48 +1412,48 @@ workflows:
           - checkout:
                 requires:
                     - ready_to_build?
-          - build_dev:
+          - build_srnt_dev:
                 is_pull_request: false
                 requires:
                     - checkout
-          - build_prod:
+          - build_srnt_prod:
                 is_pull_request: false
                 requires:
                     - checkout
-          - test_cronjobs_existence:
+          - test_cronjobs_existence_srnt:
                 requires:
-                    - build_prod
-          - test_deploy:
+                    - build_srnt_prod
+          - test_deploy_srnt:
                 requires:
-                    - test_cronjobs_existence
+                    - test_cronjobs_existence_srnt
           - test_back_static_and_acceptance:
                 requires:
-                    - build_dev
+                    - build_srnt_dev
           - test_front_static_acceptance_and_integration:
                 requires:
-                    - build_dev
+                    - build_srnt_dev
           - test_back_integration_bounded_contexts:
                 requires:
-                    - build_dev
+                    - build_srnt_dev
           - test_back_integration_reference_entities:
                 requires:
-                    - build_dev
+                    - build_srnt_dev
           - test_back_phpunit:
                 requires:
-                    - build_dev
+                    - build_srnt_dev
           - test_onboarder_bundle:
                 requires:
-                    - build_dev
+                    - build_srnt_dev
           - test_back_behat_legacy:
                 requires:
-                    - build_dev
+                    - build_srnt_dev
           - test_back_data_migrations:
                 requires:
-                    - build_dev
+                    - build_srnt_dev
           - test_back_performance:
                 requires:
-                    - build_dev
-          - release:
+                    - build_srnt_dev
+          - release_srnt:
                 requires:
                     - test_back_static_and_acceptance
                     - test_front_static_acceptance_and_integration
@@ -1411,7 +1465,7 @@ workflows:
                     - test_back_performance
                     - test_back_behat_legacy
                     - test_back_data_migrations
-                    - test_deploy
+                    - test_deploy_srnt
 
   on_demand_growth_edition_release:
       jobs:
@@ -1423,18 +1477,19 @@ workflows:
           - checkout:
               requires:
                   - ready_to_build?
-          - prepare_growth_edition:
+          - build_grth:
+              is_pull_request: false
               requires:
                   - checkout
-          - test_cronjobs_existence:
+          - test_cronjobs_existence_grth:
               requires:
-                  - prepare_growth_edition
-          - test_deploy_growth:
+                  - build_grth
+          - test_deploy_grth:
               requires:
-                  - test_cronjobs_existence
-          - release_growth_edition:
+                  - test_cronjobs_existence_grth
+          - release_grth:
               requires:
-                  - test_deploy_growth
+                  - test_deploy_grth
 
   nightly:
       triggers:
@@ -1444,57 +1499,56 @@ workflows:
                     branches:
                         only:
                             - master
-
       jobs:
           - checkout
-          - build_dev:
+          - build_srnt_dev:
                 is_pull_request: false
                 requires:
                     - checkout
-          - build_prod:
+          - build_srnt_prod:
                 is_pull_request: false
                 requires:
                     - checkout
-          - test_cronjobs_existence:
+          - test_cronjobs_existence_srnt:
                 requires:
-                    - build_prod
-          - test_deploy:
+                    - build_srnt_prod
+          - test_deploy_srnt:
                 requires:
-                    - test_cronjobs_existence
-          - test_upgrade_from_last_release:
+                    - test_cronjobs_existence_srnt
+          - test_upgrade_srnt_from_last_release:
                 requires:
-                    - test_cronjobs_existence
+                    - test_cronjobs_existence_srnt
           - test_front_code_style:
                 requires:
-                    - build_dev
+                    - build_srnt_dev
           - test_back_static_and_acceptance:
                 requires:
-                    - build_dev
+                    - build_srnt_dev
           - test_front_static_acceptance_and_integration:
                 requires:
-                    - build_dev
+                    - build_srnt_dev
           - test_back_phpunit:
                 requires:
-                    - build_dev
+                    - build_srnt_dev
           - test_back_integration_bounded_contexts:
                 requires:
-                    - build_dev
+                    - build_srnt_dev
           - test_back_integration_reference_entities:
                 requires:
-                    - build_dev
+                    - build_srnt_dev
           - test_back_performance:
                 requires:
-                    - build_dev
+                    - build_srnt_dev
           - test_onboarder_bundle:
                 requires:
-                    - build_dev
+                    - build_srnt_dev
           - test_back_behat_legacy:
                 requires:
-                    - build_dev
+                    - build_srnt_dev
           - test_back_data_migrations:
                 requires:
-                    - build_dev
-          - release:
+                    - build_srnt_dev
+          - release_srnt:
                 requires:
                     - test_back_static_and_acceptance
                     - test_front_static_acceptance_and_integration
@@ -1505,8 +1559,8 @@ workflows:
                     - test_back_performance
                     - test_back_behat_legacy
                     - test_back_data_migrations
-                    - test_deploy
-#                    - test_upgrade_from_last_release
+                    - test_deploy_srnt
+#                    - test_upgrade_srnt_from_last_release
 
   growth_edition_release:
       triggers:
@@ -1518,21 +1572,22 @@ workflows:
                             - master
       jobs:
           - checkout
-          - prepare_growth_edition:
+          - build_grth:
+                is_pull_request: false
                 requires:
                     - checkout
-          - test_cronjobs_existence:
+          - test_cronjobs_existence_grth:
                 requires:
-                    - prepare_growth_edition
-          - test_deploy_growth:
+                    - build_grth
+          - test_deploy_grth:
                 requires:
-                    - test_cronjobs_existence
-          - test_upgrade_growth_from_last_release:
+                    - test_cronjobs_existence_grth
+          - test_upgrade_grth_from_last_release:
                     requires:
-                        - test_deploy_growth
-          - release_growth_edition:
+                        - test_deploy_grth
+          - release_grth:
                     requires:
-                        - test_upgrade_growth_from_last_release
+                        - test_upgrade_grth_from_last_release
 
   nightly_deployments:
       triggers:
@@ -1560,15 +1615,14 @@ workflows:
                     branches:
                         only:
                             - master
-
       jobs:
           - checkout
-          - build_prod:
+          - build_srnt_prod:
                 requires:
                     - checkout
-          - test_upgrade_from_serenity_customer_db:
+          - test_upgrade_from_srnt_customer_db:
                 requires:
-                    - build_prod
+                    - build_srnt_prod
 
   hourly_cleanup:
      triggers:

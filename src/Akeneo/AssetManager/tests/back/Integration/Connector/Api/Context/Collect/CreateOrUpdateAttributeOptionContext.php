@@ -46,29 +46,21 @@ class CreateOrUpdateAttributeOptionContext implements Context
 {
     private const REQUEST_CONTRACT_DIR = 'Attribute/Connector/Collect/';
 
-    /** @var OauthAuthenticatedClientFactory */
-    private $clientFactory;
+    private OauthAuthenticatedClientFactory $clientFactory;
 
-    /** @var WebClientHelper */
-    private $webClientHelper;
+    private WebClientHelper $webClientHelper;
 
-    /** @var AssetFamilyRepositoryInterface */
-    private $assetFamilyRepository;
+    private AssetFamilyRepositoryInterface $assetFamilyRepository;
 
-    /** @var null|string */
-    private $requestContract;
+    private ?string $requestContract = null;
 
-    /** @var null|Response */
-    private $pimResponse;
+    private ?Response $pimResponse = null;
 
-    /** @var AttributeRepositoryInterface */
-    private $attributeRepository;
+    private AttributeRepositoryInterface $attributeRepository;
 
-    /** @var OptionCollectionAttribute */
-    private $optionAttribute;
+    private ?OptionCollectionAttribute $optionAttribute = null;
 
-    /** @var InMemoryFindActivatedLocalesByIdentifiers */
-    private $activatedLocales;
+    private InMemoryFindActivatedLocalesByIdentifiers $activatedLocales;
 
     public function __construct(
         AssetFamilyRepositoryInterface $assetFamilyRepository,

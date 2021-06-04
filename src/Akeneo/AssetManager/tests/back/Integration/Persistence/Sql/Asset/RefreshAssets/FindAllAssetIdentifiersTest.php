@@ -18,8 +18,7 @@ use Akeneo\AssetManager\Integration\SqlIntegrationTestCase;
 
 class FindAllAssetIdentifiersTest extends SqlIntegrationTestCase
 {
-    /** @var FindAllAssetIdentifiers */
-    private $allAssetIdentifiers;
+    private FindAllAssetIdentifiers $allAssetIdentifiers;
 
     protected function setUp(): void
     {
@@ -87,9 +86,7 @@ class FindAllAssetIdentifiersTest extends SqlIntegrationTestCase
      */
     private function assertAssetsIdentifiers(array $expectedIdentifiers, array $actualIdentifiers): void
     {
-        $normalizedIdentifiers = array_map(function (AssetIdentifier $identifier) {
-            return $identifier->normalize();
-        }, $actualIdentifiers);
+        $normalizedIdentifiers = array_map(fn (AssetIdentifier $identifier) => $identifier->normalize(), $actualIdentifiers);
         sort($normalizedIdentifiers);
         sort($expectedIdentifiers);
         $this->assertEquals($expectedIdentifiers, $normalizedIdentifiers);

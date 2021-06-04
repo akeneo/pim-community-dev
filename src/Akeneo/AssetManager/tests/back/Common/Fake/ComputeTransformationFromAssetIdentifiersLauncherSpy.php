@@ -22,7 +22,7 @@ use Akeneo\AssetManager\Domain\Model\Asset\AssetIdentifier;
  */
 class ComputeTransformationFromAssetIdentifiersLauncherSpy implements ComputeTransformationFromAssetIdentifiersLauncherInterface
 {
-    private $assetIdentifiersInJobs = [];
+    private array $assetIdentifiersInJobs = [];
 
     /**
      * {@inheritDoc}

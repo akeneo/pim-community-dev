@@ -221,7 +221,7 @@ final class ImportAssetContext implements Context
             "%d warnings should be thrown, got %d:\n%s",
             $count,
             count($invalidItemEvents),
-            join("\n", array_map(fn ($x) => $x->getReason(), $invalidItemEvents))
+            implode("\n", array_map(fn ($x) => $x->getReason(), $invalidItemEvents))
         ));
     }
 

@@ -24,8 +24,7 @@ use Webmozart\Assert\Assert;
  */
 class InMemoryFindAssetFamilyPermissionsDetails implements FindAssetFamilyPermissionsDetailsInterface
 {
-    /** @var array */
-    public $results = [];
+    public array $results = [];
 
     public function save(array $permissions): void
     {
