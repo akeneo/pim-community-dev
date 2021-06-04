@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace Akeneo\Connectivity\Connection\Infrastructure\ExternalApi\Controller;
 
 use Akeneo\Connectivity\Connection\Infrastructure\Service\CreateAppUserWithPermissions;
+use Akeneo\Connectivity\Connection\Infrastructure\Service\OAuthScopeTransformer;
 use Akeneo\Connectivity\Connection\Infrastructure\Service\OAuthScopeValidator;
 use FOS\OAuthServerBundle\Event\OAuthEvent;
 use FOS\OAuthServerBundle\Form\Handler\AuthorizeFormHandler;
@@ -31,7 +32,6 @@ use Symfony\Component\Security\Core\User\UserInterface;
  */
 class AppLoginController
 {
-    const PRODUCT_EDIT_SCOPE = 'product:edit';
     use WithCheckClientHash;
 
     private ?ClientInterface $client = null;
@@ -62,7 +62,8 @@ class AppLoginController
         OAuthScopeValidator $scopeValidator,
         SessionInterface $session = null,
         string $templateEngineType = 'twig'
-    ) {
+    )
+    {
         $this->requestStack = $requestStack;
         $this->session = $session;
         $this->authorizeForm = $authorizeForm;
@@ -75,9 +76,10 @@ class AppLoginController
         $this->templateEngineType = $templateEngineType;
         $this->eventDispatcher = $eventDispatcher;
         $this->scopeValidator = $scopeValidator;
+
         $this->oAuth2Server->setVariable(
             OAuth2::CONFIG_SUPPORTED_SCOPES,
-            self::PRODUCT_EDIT_SCOPE
+            OAuthScopeTransformer::PRODUCT_EDIT_SCOPE . ' ' . OAuthScopeTransformer::ATTRIBUTE_LIST_SCOPE
         );
     }
 
@@ -127,9 +129,9 @@ class AppLoginController
             $client = $this->getClient();
 
             $response = $this->templating->renderResponse(
-                'AkeneoConnectivityConnectionBundle::authorize_custom.html.'.$this->templateEngineType,
+                'AkeneoConnectivityConnectionBundle::authorize_custom.html.' . $this->templateEngineType,
                 array(
-                    'form'   => $form->createView(),
+                    'form' => $form->createView(),
                     'client' => $client,
                     'scopes' => $scopes
                 )
@@ -145,9 +147,9 @@ class AppLoginController
     }
 
     /**
-     * @param UserInterface        $user
+     * @param UserInterface $user
      * @param AuthorizeFormHandler $formHandler
-     * @param Request              $request
+     * @param Request $request
      *
      * @return Response
      */

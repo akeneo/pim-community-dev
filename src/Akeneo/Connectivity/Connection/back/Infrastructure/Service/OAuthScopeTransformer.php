@@ -10,11 +10,14 @@ namespace Akeneo\Connectivity\Connection\Infrastructure\Service;
  */
 class OAuthScopeTransformer
 {
-    private const PRODUCT_EDIT_SCOPE = 'product:edit';
+    public const PRODUCT_EDIT_SCOPE = 'product:edit';
+    public const ATTRIBUTE_LIST_SCOPE = 'attribute:list';
     private const PRODUCT_EDIT_ACL = 'action:pim_api_attribute_edit';
+    private const ATTRIBUTE_LIST_ACL = 'action:pim_api_attribute_list';
 
     private static array $scopesToAclMapping = [
-        self::PRODUCT_EDIT_SCOPE => self::PRODUCT_EDIT_ACL
+        self::PRODUCT_EDIT_SCOPE => self::PRODUCT_EDIT_ACL,
+        self::ATTRIBUTE_LIST_SCOPE => self::ATTRIBUTE_LIST_ACL
     ];
 
     public function transform(array $oauthScopes): array
