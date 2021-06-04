@@ -60,14 +60,30 @@ class AkeneoElasticsearchExtension extends Extension
                     new Reference(ParameterBagInterface::class)
                 ]);
 
-            $container->register($index['service_name'], Client::class)
-                ->setArguments([
-                    new Reference('akeneo_elasticsearch.client_builder'),
-                    new Reference($configurationLoaderServiceName),
-                    $config['hosts'],
-                    $index['index_name'],
-                    $index['id_prefix'],
-                ]);
+            if (isset($index['activate_dual_indexation_with_service'])) {
+                $container->register($index['service_name'], DualIndexationClient::class)
+                    ->setArguments([
+                        new Reference('akeneo_elasticsearch.client_builder'),
+                        new Reference($configurationLoaderServiceName),
+                        $config['hosts'],
+                        $index['index_name'],
+                        $index['id_prefix'],
+                        $config['max_chunk_size'],
+                        new Reference($index['activate_dual_indexation_with_service']),
+                    ])
+                    ->setPublic(true);
+            } else {
+                $container->register($index['service_name'], Client::class)
+                    ->setArguments([
+                        new Reference('akeneo_elasticsearch.client_builder'),
+                        new Reference($configurationLoaderServiceName),
+                        $config['hosts'],
+                        $index['index_name'],
+                        $index['id_prefix'],
+                        $config['max_chunk_size']
+                    ])
+                    ->setPublic(true);
+            }
 
             $esClientRegistryDefinition->addMethodCall('register', [new Reference($index['service_name'])]);
         }

@@ -2,6 +2,7 @@
 
 ## Bug fixes:
 
+- PIM-9895: [Backport] PIM-9707: ES Max query size and add test for the ElasticSearch client chunked bulk index
 - PIM-9894: [Backport] PIM-9700: Add batch-size option in index products command and index product-models command
 
 # 5.0.29 (2021-05-31)

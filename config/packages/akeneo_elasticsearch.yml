@@ -1,5 +1,6 @@
 akeneo_elasticsearch:
     hosts: "%index_hosts%"
+    max_chunk_size: "%env(int:APP_ELASTICSEARCH_MAX_CHUNK_SIZE_CHARACTERS)%"
     indexes:
         -
             service_name: "akeneo_elasticsearch.client.product_and_product_model"
