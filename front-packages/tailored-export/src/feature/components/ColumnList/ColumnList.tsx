@@ -20,6 +20,10 @@ const SourceList = styled.div`
   margin-left: 20px;
 `;
 
+const SourceDataHeaderCell = styled(Table.HeaderCell)`
+  padding-left: 20px;
+`;
+
 type ColumnListProps = {
   columnsConfiguration: ColumnConfiguration[];
   selectedColumn: ColumnConfiguration | null;
@@ -91,7 +95,9 @@ const ColumnList = ({
         <Table isDragAndDroppable={true} onReorder={onColumnReorder}>
           <Table.Header sticky={44}>
             <Table.HeaderCell>{translate('akeneo.tailored_export.column_list.header.column_name')}</Table.HeaderCell>
-            <Table.HeaderCell>{translate('akeneo.tailored_export.column_list.header.source_data')}</Table.HeaderCell>
+            <SourceDataHeaderCell>
+              {translate('akeneo.tailored_export.column_list.header.source_data')}
+            </SourceDataHeaderCell>
             <Table.HeaderCell />
           </Table.Header>
           <Table.Body>

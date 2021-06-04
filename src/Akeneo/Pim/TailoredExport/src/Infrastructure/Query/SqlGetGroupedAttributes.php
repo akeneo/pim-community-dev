@@ -62,7 +62,7 @@ FROM pim_catalog_attribute attribute
                                                            AND locale = :localeCode
     LEFT JOIN attribute_group ON attribute_group.id = attribute.group_id
 WHERE {searchFilters}
-ORDER BY attribute_group.sort_order, attribute.sort_order
+ORDER BY attribute_group.sort_order, attribute.sort_order, attribute.id
 LIMIT :limit OFFSET :offset
 SQL;
 

@@ -1,20 +1,9 @@
 import React from 'react';
-import {screen} from '@testing-library/react';
+import {screen, act, fireEvent} from '@testing-library/react';
 import {renderWithProviders, Channel} from '@akeneo-pim-community/shared';
 import {SourceTabBar} from './SourceTabBar';
-import {Source} from '../../models';
-import {fireEvent} from '@testing-library/dom';
-import {FetcherContext, Attribute} from '../../contexts';
-import {act} from "react-dom/test-utils";
-
-global.beforeEach(() => {
-  const intersectionObserverMock = () => ({
-    observe: jest.fn(),
-    unobserve: jest.fn(),
-  });
-
-  window.IntersectionObserver = jest.fn().mockImplementation(intersectionObserverMock);
-});
+import {Attribute, Source} from '../../models';
+import {FetcherContext} from '../../contexts';
 
 const attributes: Attribute[] = [
   {
@@ -32,7 +21,7 @@ const attributes: Attribute[] = [
 ];
 
 const fetchers = {
-  attribute: {fetchByIdentifiers: (): Promise<Attribute[]> => Promise.resolve<Attribute>(attributes)},
+  attribute: {fetchByIdentifiers: (): Promise<Attribute[]> => Promise.resolve<Attribute[]>(attributes)},
   channel: {fetchAll: (): Promise<Channel[]> => Promise.resolve([])},
 };
 
@@ -77,9 +66,13 @@ test('it renders the source tab bar', async () => {
   await act(async () => {
     renderWithProviders(
       <FetcherContext.Provider value={fetchers}>
-        <SourceTabBar sources={sources} currentTab="cffd560e-1e40-4c55-a415-89c7958b270d" onTabChange={handleTabChange} />
+        <SourceTabBar
+          sources={sources}
+          currentTab="cffd560e-1e40-4c55-a415-89c7958b270d"
+          onTabChange={handleTabChange}
+        />
       </FetcherContext.Provider>
-    )
+    );
   });
 
   expect(screen.getByText(/English description/i)).toBeInTheDocument();

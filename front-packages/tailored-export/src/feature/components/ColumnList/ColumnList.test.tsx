@@ -1,12 +1,36 @@
-import React from 'react';
-import {screen, fireEvent} from '@testing-library/react';
-import {renderWithProviders} from '@akeneo-pim-community/shared';
-import {ColumnList} from './ColumnList';
+import React, {ReactNode} from 'react';
+import {screen, fireEvent, act, within} from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
-import {ValidationErrorsContext} from '../../contexts';
+import {Channel, renderWithProviders as baseRender} from '@akeneo-pim-community/shared';
+import {ColumnList} from './ColumnList';
+import {FetcherContext, ValidationErrorsContext} from '../../contexts';
 import {ColumnConfiguration} from '../../models/ColumnConfiguration';
+import {Attribute} from '../../models';
 
-test('it renders a placeholder when no column is selected', () => {
+const attributes: Attribute[] = [
+  {
+    code: 'name',
+    labels: {fr_FR: 'French name', en_US: 'English name'},
+    scopable: false,
+    localizable: false,
+  },
+  {
+    code: 'description',
+    labels: {fr_FR: 'French description', en_US: 'English description'},
+    scopable: false,
+    localizable: false,
+  },
+];
+
+const fetchers = {
+  attribute: {fetchByIdentifiers: (): Promise<Attribute[]> => Promise.resolve<Attribute[]>(attributes)},
+  channel: {fetchAll: (): Promise<Channel[]> => Promise.resolve([])},
+};
+
+const renderWithProviders = async (node: ReactNode) =>
+  await act(async () => void baseRender(<FetcherContext.Provider value={fetchers}>{node}</FetcherContext.Provider>));
+
+test('it renders a placeholder when no column is selected', async () => {
   const columnsConfiguration: ColumnConfiguration[] = [
     {
       uuid: '1',
@@ -28,7 +52,7 @@ test('it renders a placeholder when no column is selected', () => {
     },
   ];
 
-  renderWithProviders(
+  await renderWithProviders(
     <ColumnList
       onColumnReorder={jest.fn}
       columnsConfiguration={columnsConfiguration}
@@ -52,7 +76,7 @@ test('it renders a placeholder when no column is selected', () => {
   expect(firstInput).toHaveFocus();
 });
 
-test('it can remove a column', () => {
+test('it can remove a column', async () => {
   const columnsConfiguration: ColumnConfiguration[] = [
     {
       uuid: '1',
@@ -67,7 +91,7 @@ test('it can remove a column', () => {
 
   const handleRemove = jest.fn();
 
-  renderWithProviders(
+  await renderWithProviders(
     <ColumnList
       onColumnReorder={jest.fn}
       columnsConfiguration={columnsConfiguration}
@@ -89,7 +113,7 @@ test('it can remove a column', () => {
   expect(handleRemove).toBeCalled();
 });
 
-test('it can create a new column', () => {
+test('it can create a new column', async () => {
   const columnsConfiguration: ColumnConfiguration[] = [
     {
       uuid: '1',
@@ -104,7 +128,7 @@ test('it can create a new column', () => {
 
   const handleCreate = jest.fn();
 
-  renderWithProviders(
+  await renderWithProviders(
     <ColumnList
       onColumnReorder={jest.fn}
       columnsConfiguration={columnsConfiguration}
@@ -125,7 +149,7 @@ test('it can create a new column', () => {
   expect(handleCreate).toBeCalledWith('m');
 });
 
-test('it can handle paste events', () => {
+test('it can handle paste events', async () => {
   const columnsConfiguration: ColumnConfiguration[] = [
     {
       uuid: '1',
@@ -140,7 +164,7 @@ test('it can handle paste events', () => {
 
   const handleCreate = jest.fn();
 
-  renderWithProviders(
+  await renderWithProviders(
     <ColumnList
       onColumnReorder={jest.fn}
       columnsConfiguration={columnsConfiguration}
@@ -169,7 +193,7 @@ test('it can handle paste events', () => {
   expect(handleCreate).toBeCalledWith(['test', 'of', 'pasted', 'data']);
 });
 
-test('it can update a column', () => {
+test('it can update a column', async () => {
   const columnsConfiguration: ColumnConfiguration[] = [
     {
       uuid: '1',
@@ -184,7 +208,7 @@ test('it can update a column', () => {
 
   const handleColumnChange = jest.fn();
 
-  renderWithProviders(
+  await renderWithProviders(
     <ColumnList
       onColumnReorder={jest.fn}
       columnsConfiguration={columnsConfiguration}
@@ -213,7 +237,7 @@ test('it can update a column', () => {
   });
 });
 
-test('it displays validation errors', () => {
+test('it displays validation errors', async () => {
   const columnsConfiguration: ColumnConfiguration[] = [
     {
       uuid: '1',
@@ -228,7 +252,7 @@ test('it displays validation errors', () => {
 
   const handleColumnChange = jest.fn();
 
-  renderWithProviders(
+  await renderWithProviders(
     <ValidationErrorsContext.Provider
       value={[
         {
@@ -294,7 +318,7 @@ test('it move to next line when user type enter', async () => {
 
   const handleColumnSelected = jest.fn();
 
-  renderWithProviders(
+  await renderWithProviders(
     <ColumnList
       onColumnReorder={jest.fn}
       columnsConfiguration={columnsConfiguration}
@@ -335,7 +359,7 @@ test('it focus the selected column', async () => {
     },
   ];
 
-  renderWithProviders(
+  await renderWithProviders(
     <ColumnList
       onColumnReorder={jest.fn}
       columnsConfiguration={columnsConfiguration}
@@ -353,4 +377,64 @@ test('it focus the selected column', async () => {
   )[0];
 
   expect(firstInput).toHaveFocus();
+});
+
+test('it displays the sources labels on the row', async () => {
+  const columnsConfiguration: ColumnConfiguration[] = [
+    {
+      uuid: '1',
+      target: 'my column',
+      sources: [
+        {
+          uuid: '1234',
+          code: 'name',
+          type: 'attribute',
+          locale: null,
+          channel: null,
+          operations: [],
+          selection: {type: 'code'},
+        },
+        {
+          uuid: '1235',
+          code: 'enabled',
+          type: 'property',
+          locale: null,
+          channel: null,
+          operations: [],
+          selection: {type: 'code'},
+        },
+      ],
+      format: {
+        type: 'concat',
+        elements: [],
+      },
+    },
+    {
+      uuid: '2',
+      target: 'another column',
+      sources: [],
+      format: {
+        type: 'concat',
+        elements: [],
+      },
+    },
+  ];
+
+  await renderWithProviders(
+    <ColumnList
+      onColumnReorder={jest.fn}
+      columnsConfiguration={columnsConfiguration}
+      onColumnChange={jest.fn}
+      onColumnCreated={jest.fn}
+      onColumnsCreated={jest.fn}
+      onColumnRemoved={jest.fn}
+      onColumnSelected={jest.fn}
+      selectedColumn={columnsConfiguration[0]}
+    />
+  );
+
+  const [_headerRow, firstRow, secondRow] = screen.getAllByRole('row');
+
+  expect(within(firstRow).getByText('English name, pim_common.enabled')).toBeInTheDocument();
+  expect(within(secondRow).getByText('akeneo.tailored_export.column_list.column_row.no_source')).toBeInTheDocument();
 });

@@ -1,13 +1,11 @@
-import React from 'react';
-import {screen} from '@testing-library/react';
-import {ColumnsTab} from './ColumnsTab';
+import React, {ReactNode} from 'react';
+import {screen, fireEvent, act} from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
-import {renderWithProviders, Channel} from '@akeneo-pim-community/shared';
-import {fireEvent} from '@testing-library/dom';
+import {renderWithProviders as baseRender, Channel} from '@akeneo-pim-community/shared';
+import {ColumnsTab} from './ColumnsTab';
 import {ColumnConfiguration} from './models/ColumnConfiguration';
-import {AvailableSourceGroup} from './models';
-import {act} from 'react-dom/test-utils';
-import {Attribute, FetcherContext} from './contexts';
+import {Attribute, AvailableSourceGroup} from './models';
+import {FetcherContext} from './contexts';
 
 const attributes = [{code: 'description', labels: {}, scopable: false, localizable: false}];
 const fetchers = {
@@ -15,14 +13,8 @@ const fetchers = {
   channel: {fetchAll: (): Promise<Channel[]> => Promise.resolve([])},
 };
 
-global.beforeEach(() => {
-  const intersectionObserverMock = () => ({
-    observe: jest.fn(),
-    unobserve: jest.fn(),
-  });
-
-  window.IntersectionObserver = jest.fn().mockImplementation(intersectionObserverMock);
-});
+const renderWithProviders = async (node: ReactNode) =>
+  await act(async () => void baseRender(<FetcherContext.Provider value={fetchers}>{node})</FetcherContext.Provider>));
 
 jest.mock('akeneo-design-system/lib/shared/uuid', () => ({
   uuid: () => '276b6361-badb-48a1-98ef-d75baa235148',
@@ -65,7 +57,7 @@ jest.mock('./hooks/useAvailableSourcesFetcher', () => ({
   ],
 }));
 
-test('It open the source panel related to the column selected', () => {
+test('It open the source panel related to the column selected', async () => {
   const columnsConfiguration: ColumnConfiguration[] = [
     {
       uuid: 'fbf9cff9-e95c-4e7d-983b-2947c7df90df',
@@ -78,14 +70,12 @@ test('It open the source panel related to the column selected', () => {
     },
   ];
 
-  renderWithProviders(
-    <FetcherContext.Provider value={fetchers}>
-      <ColumnsTab
-        columnsConfiguration={columnsConfiguration}
-        validationErrors={[]}
-        onColumnsConfigurationChange={jest.fn}
-      />
-    </FetcherContext.Provider>
+  await renderWithProviders(
+    <ColumnsTab
+      columnsConfiguration={columnsConfiguration}
+      validationErrors={[]}
+      onColumnsConfigurationChange={jest.fn}
+    />
   );
 
   const myColumnInput = screen.getAllByPlaceholderText(
@@ -103,7 +93,7 @@ test('It open the source panel related to the column selected', () => {
   ).toBeInTheDocument();
 });
 
-test('It create a column when user enter a text in last input', () => {
+test('It create a column when user enter a text in last input', async () => {
   const columnsConfiguration: ColumnConfiguration[] = [
     {
       uuid: 'fbf9cff9-e95c-4e7d-983b-2947c7df90df',
@@ -118,14 +108,12 @@ test('It create a column when user enter a text in last input', () => {
 
   const handleColumnsConfigurationChange = jest.fn();
 
-  renderWithProviders(
-    <FetcherContext.Provider value={fetchers}>
-      <ColumnsTab
-        columnsConfiguration={columnsConfiguration}
-        validationErrors={[]}
-        onColumnsConfigurationChange={handleColumnsConfigurationChange}
-      />
-    </FetcherContext.Provider>
+  await renderWithProviders(
+    <ColumnsTab
+      columnsConfiguration={columnsConfiguration}
+      validationErrors={[]}
+      onColumnsConfigurationChange={handleColumnsConfigurationChange}
+    />
   );
 
   const lastInput = screen.getAllByPlaceholderText(
@@ -170,14 +158,12 @@ test('It update column when user change value input', async () => {
 
   const handleColumnsConfigurationChange = jest.fn();
 
-  renderWithProviders(
-    <FetcherContext.Provider value={fetchers}>
-      <ColumnsTab
-        columnsConfiguration={columnsConfiguration}
-        validationErrors={[]}
-        onColumnsConfigurationChange={handleColumnsConfigurationChange}
-      />
-    </FetcherContext.Provider>
+  await renderWithProviders(
+    <ColumnsTab
+      columnsConfiguration={columnsConfiguration}
+      validationErrors={[]}
+      onColumnsConfigurationChange={handleColumnsConfigurationChange}
+    />
   );
 
   const firstInput = screen.getAllByPlaceholderText(
@@ -201,7 +187,7 @@ test('It update column when user change value input', async () => {
   ]);
 });
 
-test('It delete column when user click on delete button', () => {
+test('It delete column when user click on delete button', async () => {
   const columnsConfiguration: ColumnConfiguration[] = [
     {
       uuid: 'fbf9cff9-e95c-4e7d-983b-2947c7df90df',
@@ -216,14 +202,12 @@ test('It delete column when user click on delete button', () => {
 
   const handleColumnsConfigurationChange = jest.fn();
 
-  renderWithProviders(
-    <FetcherContext.Provider value={fetchers}>
-      <ColumnsTab
-        columnsConfiguration={columnsConfiguration}
-        validationErrors={[]}
-        onColumnsConfigurationChange={handleColumnsConfigurationChange}
-      />
-    </FetcherContext.Provider>
+  await renderWithProviders(
+    <ColumnsTab
+      columnsConfiguration={columnsConfiguration}
+      validationErrors={[]}
+      onColumnsConfigurationChange={handleColumnsConfigurationChange}
+    />
   );
 
   const removeButton = screen.getByTitle('akeneo.tailored_export.column_list.column_row.remove');
@@ -250,14 +234,12 @@ test('It add source when user click on add source', async () => {
 
   const handleColumnsConfigurationChange = jest.fn();
 
-  renderWithProviders(
-    <FetcherContext.Provider value={fetchers}>
-      <ColumnsTab
-        columnsConfiguration={columnsConfiguration}
-        validationErrors={[]}
-        onColumnsConfigurationChange={handleColumnsConfigurationChange}
-      />
-    </FetcherContext.Provider>
+  await renderWithProviders(
+    <ColumnsTab
+      columnsConfiguration={columnsConfiguration}
+      validationErrors={[]}
+      onColumnsConfigurationChange={handleColumnsConfigurationChange}
+    />
   );
 
   const addSourceButton = screen.getByText('akeneo.tailored_export.column_details.sources.add');

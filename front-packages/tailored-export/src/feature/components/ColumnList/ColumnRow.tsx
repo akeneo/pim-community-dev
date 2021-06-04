@@ -1,9 +1,10 @@
-import React, {forwardRef, SyntheticEvent} from 'react';
+import React, {forwardRef, SyntheticEvent, useMemo} from 'react';
 import styled from 'styled-components';
 import {CloseIcon, getColor, Helper, IconButton, Pill, Table, TextInput, useBooleanState} from 'akeneo-design-system';
-import {DeleteModal, useTranslate} from '@akeneo-pim-community/shared';
+import {DeleteModal, getLabel, useTranslate, useUserContext} from '@akeneo-pim-community/shared';
 import {ColumnConfiguration} from '../../models/ColumnConfiguration';
 import {useValidationErrors} from '../../contexts';
+import {useAttributes} from '../../hooks';
 
 const Field = styled.div`
   width: 100%;
@@ -13,9 +14,17 @@ const Field = styled.div`
 `;
 
 const SourceList = styled.div`
+  margin-left: 20px;
+  text-overflow: ellipsis;
+  overflow: hidden;
+`;
+
+const SourceListPlaceholder = styled.span`
   color: ${getColor('grey', 100)};
   font-style: italic;
-  margin: 0 20px;
+  display: flex;
+  align-items: center;
+  width: 100%;
 `;
 
 const TargetCell = styled(Table.Cell)`
@@ -24,6 +33,11 @@ const TargetCell = styled(Table.Cell)`
 
 const RemoveCell = styled(Table.Cell)`
   width: 50px;
+  padding-left: 0;
+`;
+
+const Spacer = styled.div`
+  flex: 1;
 `;
 
 type ColumnRowProps = {
@@ -55,6 +69,9 @@ const ColumnRow = forwardRef<HTMLInputElement, ColumnRowProps>(
 
     const targetErrors = useValidationErrors(`[columns][${column.uuid}][target]`, true);
     const hasError = useValidationErrors(`[columns][${column.uuid}]`).length > 0 && 0 === targetErrors.length;
+    const userContext = useUserContext();
+    const attributeCodes = useMemo(() => column.sources.map(source => source.code), [column.sources]);
+    const attributes = useAttributes(attributeCodes);
 
     return (
       <>
@@ -77,7 +94,26 @@ const ColumnRow = forwardRef<HTMLInputElement, ColumnRowProps>(
             </Field>
           </TargetCell>
           <Table.Cell>
-            <SourceList>{translate('akeneo.tailored_export.column_list.column_row.no_source')}</SourceList>
+            <SourceList>
+              {0 === column.sources.length ? (
+                <SourceListPlaceholder>
+                  {translate('akeneo.tailored_export.column_list.column_row.no_source')}
+                </SourceListPlaceholder>
+              ) : (
+                column.sources
+                  .map(source =>
+                    source.type === 'attribute'
+                      ? getLabel(
+                          attributes.find(attribute => attribute.code === source.code)?.labels ?? {},
+                          userContext.get('catalogLocale'),
+                          source.code
+                        )
+                      : translate(`pim_common.${source.code}`)
+                  )
+                  .join(', ')
+              )}
+            </SourceList>
+            <Spacer />
             {hasError && <Pill level="danger" />}
           </Table.Cell>
           <RemoveCell>

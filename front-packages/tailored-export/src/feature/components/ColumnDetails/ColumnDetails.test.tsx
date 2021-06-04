@@ -1,10 +1,10 @@
 import React from 'react';
 import {act, screen} from '@testing-library/react';
+import userEvent from '@testing-library/user-event';
 import {renderWithProviders, Channel} from '@akeneo-pim-community/shared';
 import {ColumnDetails} from './ColumnDetails';
-import {AvailableSourceGroup, ColumnConfiguration} from '../../models';
-import {FetcherContext, Attribute, ValidationErrorsContext} from '../../contexts';
-import userEvent from '@testing-library/user-event';
+import {Attribute, AvailableSourceGroup, ColumnConfiguration} from '../../models';
+import {FetcherContext, ValidationErrorsContext} from '../../contexts';
 
 const fetchers = {
   attribute: {
@@ -47,15 +47,6 @@ const fetchers = {
 jest.mock('akeneo-design-system/lib/shared/uuid', () => ({
   uuid: () => '276b6361-badb-48a1-98ef-d75baa235148',
 }));
-
-global.beforeEach(() => {
-  const intersectionObserverMock = () => ({
-    observe: jest.fn(),
-    unobserve: jest.fn(),
-  });
-
-  window.IntersectionObserver = jest.fn().mockImplementation(intersectionObserverMock);
-});
 
 jest.mock('../../hooks/useAvailableSourcesFetcher', () => ({
   useAvailableSourcesFetcher: () => (): AvailableSourceGroup[] => [

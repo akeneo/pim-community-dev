@@ -1,19 +1,9 @@
 import React from 'react';
-import {screen} from '@testing-library/react';
+import {screen, act} from '@testing-library/react';
+import userEvent from '@testing-library/user-event';
 import {renderWithProviders} from '@akeneo-pim-community/shared';
 import {AddSourceDropdown} from './AddSourceDropdown';
-import userEvent from '@testing-library/user-event';
 import {AvailableSourceGroup} from '../../../models';
-import {act} from 'react-dom/test-utils';
-
-global.beforeEach(() => {
-  const intersectionObserverMock = () => ({
-    observe: jest.fn(),
-    unobserve: jest.fn(),
-  });
-
-  window.IntersectionObserver = jest.fn().mockImplementation(intersectionObserverMock);
-});
 
 jest.mock('../../../hooks/useAvailableSourcesFetcher', () => ({
   useAvailableSourcesFetcher: () => (): AvailableSourceGroup[] => [

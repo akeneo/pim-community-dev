@@ -1,9 +1,9 @@
-import React from "react";
-import {act} from 'react-dom/test-utils';
-import {renderHook} from '@testing-library/react-hooks';
+import React from 'react';
+import {renderHook, act} from '@testing-library/react-hooks';
 import {Channel} from '@akeneo-pim-community/shared';
-import {Attribute, FetcherContext} from '../contexts';
-import {useChannels} from "./useChannels";
+import {FetcherContext} from '../contexts';
+import {useChannels} from './useChannels';
+import {Attribute} from '../models';
 
 const channelResponse: Channel[] = [
   {
@@ -13,13 +13,13 @@ const channelResponse: Channel[] = [
         code: 'en_US',
         label: 'English (United States)',
         language: '',
-        region: ''
+        region: '',
       },
       {
         code: 'fr_FR',
         label: 'French (France)',
         language: '',
-        region: ''
+        region: '',
       },
     ],
     labels: {
@@ -33,13 +33,13 @@ const channelResponse: Channel[] = [
         code: 'de_DE',
         label: 'German (Germany)',
         language: '',
-        region: ''
+        region: '',
       },
       {
         code: 'en_US',
         label: 'English (United States)',
         language: '',
-        region: ''
+        region: '',
       },
     ],
     labels: {
@@ -53,19 +53,19 @@ const channelResponse: Channel[] = [
         code: 'de_DE',
         label: 'German (Germany)',
         language: '',
-        region: ''
+        region: '',
       },
       {
         code: 'en_US',
         label: 'English (United States)',
         language: '',
-        region: ''
+        region: '',
       },
       {
         code: 'fr_FR',
         label: 'French (France)',
         language: '',
-        region: ''
+        region: '',
       },
     ],
     labels: {
@@ -79,17 +79,15 @@ const fetchers = {
     fetchByIdentifiers: (): Promise<Attribute[]> => Promise.resolve<Attribute[]>([]),
   },
   channel: {
-    fetchAll: (): Promise<Channel[]> => new Promise(resolve => resolve(channelResponse)),
+    fetchAll: (): Promise<Channel[]> => Promise.resolve(channelResponse),
   },
 };
 
 const Wrapper: React.FC = ({children}) => {
-  return (
-    <FetcherContext.Provider value={fetchers}>{children}</FetcherContext.Provider>
-  )
+  return <FetcherContext.Provider value={fetchers}>{children}</FetcherContext.Provider>;
 };
 
-test('It fetch the channels', async () => {
+test('It fetches channels', async () => {
   const {result, waitForNextUpdate} = renderHook(() => useChannels(), {wrapper: Wrapper});
   expect(result.current);
   await act(async () => {
@@ -98,4 +96,13 @@ test('It fetch the channels', async () => {
 
   const attributes = result.current;
   expect(attributes).toEqual(channelResponse);
+});
+
+test('It does not set state when unmounted', async () => {
+  const {result, unmount} = renderHook(() => useChannels(), {wrapper: Wrapper});
+
+  unmount();
+
+  const attributes = result.current;
+  expect(attributes).toEqual([]);
 });
