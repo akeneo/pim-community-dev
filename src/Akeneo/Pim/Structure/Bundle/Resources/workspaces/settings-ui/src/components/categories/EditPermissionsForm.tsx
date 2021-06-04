@@ -18,6 +18,10 @@ type Props = {
   onChangeApplyPermissionsOnChilren: (value: boolean) => void;
 };
 
+const PermissionField = styled(Field)`
+  max-width: 400px;
+`;
+
 const EditPermissionsForm = ({formData, onChangePermissions, onChangeApplyPermissionsOnChilren}: Props) => {
   const translate = useTranslate();
 
@@ -27,7 +31,7 @@ const EditPermissionsForm = ({formData, onChangePermissions, onChangeApplyPermis
 
   return (
     <FormContainer>
-      <Field label={translate('category.permissions.view.label')}>
+      <PermissionField label={translate('category.permissions.view.label')}>
         <MultiSelectInput
           readOnly={false}
           value={formData.permissions.view.value}
@@ -43,8 +47,8 @@ const EditPermissionsForm = ({formData, onChangePermissions, onChangeApplyPermis
           ))}
         </MultiSelectInput>
         <Helper level="info">{translate('category.permissions.view.help')}</Helper>
-      </Field>
-      <Field label={translate('category.permissions.edit.label')}>
+      </PermissionField>
+      <PermissionField label={translate('category.permissions.edit.label')}>
         <MultiSelectInput
           value={formData.permissions.edit.value}
           name={formData.permissions.edit.fullName}
@@ -59,8 +63,8 @@ const EditPermissionsForm = ({formData, onChangePermissions, onChangeApplyPermis
           ))}
         </MultiSelectInput>
         <Helper level="info">{translate('category.permissions.edit.help')}</Helper>
-      </Field>
-      <Field label={translate('category.permissions.own.label')}>
+      </PermissionField>
+      <PermissionField label={translate('category.permissions.own.label')}>
         <MultiSelectInput
           value={formData.permissions.own.value}
           name={formData.permissions.own.fullName}
@@ -75,7 +79,7 @@ const EditPermissionsForm = ({formData, onChangePermissions, onChangeApplyPermis
           ))}
         </MultiSelectInput>
         <Helper level="info">{translate('category.permissions.own.help')}</Helper>
-      </Field>
+      </PermissionField>
       <Field label={translate('category.permissions.apply_on_children.label')}>
         <BooleanInput
           clearable={false}
