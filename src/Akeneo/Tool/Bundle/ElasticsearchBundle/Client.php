@@ -123,7 +123,7 @@ class Client
             if (($paramsComputedSize + strlen(json_encode($document))) >= $this->maxChunkSize) {
                 $mergedResponse = $this->doBulkIndex($params, $mergedResponse);
                 $paramsComputedSize = 0;
-                    $params = [];
+                $params = [];
             }
 
             $params['body'][] = $action;
