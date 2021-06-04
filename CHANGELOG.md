@@ -2,7 +2,7 @@
 # master
 
 ## Bug fixes
-
+- PIM-9890: Creating Channels with numeric code breaks the PIM
 - PIM-9748: Upgrade JQuery for security reasons
 - PIM-9678: The time counter is still running despite the job failed
 - PIM-9672: Error 500 on the API when inputing [null] on an array
