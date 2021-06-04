@@ -28,4 +28,5 @@ export * from './Table/Table';
 export * from './Tags/Tags';
 export * from './Toolbar/Toolbar';
 export * from './Tree/Tree';
+export * from './Tiles/Tiles';
 export * from './SubNavigationItem/SubNavigationItem';

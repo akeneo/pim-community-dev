@@ -77,6 +77,10 @@ const ProductCurrentCompleteness: FC<Props> = ({
     router.redirect(router.generate('pim_enrich_product_model_edit', {id: modelId}));
   };
 
+  if (false === currentCompleteness.localesCompleteness.hasOwnProperty(userContext.get('catalogLocale'))) {
+    return null;
+  }
+
   return (
     <StyledDropdown>
       <SwitcherButton

@@ -369,6 +369,9 @@ pim_enrich.mass_edit.product:
       description: Das übergeordnete Element der Variantenprodukte oder Sub Produktmodelle die im Raster ausgewählt wurden, werden zu dem gewählten Produktmodell geändert.
 pim_datagrid:
   no_entities: "Kein {{ entityHint }} gefunden"
+  no_entities.product: "Keine Produkte gefunden" #Custom translation for product grid
+  no_results: "Für Ihre Suche wurden leider keine {{ entityHint }} gefunden."
+  no_results.product: "Leider gibt es kein Produkt für Ihre Suchanfrage." #Custom translation for product grid
   mass_action_group:
     bulk_actions:
       label: Massenbearbeitung
@@ -405,6 +408,7 @@ pim_datagrid:
       product: "]-Inf, 1]{{ count }} Ergebnis ausgewählt|]1, Inf[{{ count }} Ergebnisse ausgewählt"
   view_selector:
     view: Ansichten
+    choose_type: Ich möchte eine private Ansicht erstellen
   actions:
     edit_product_attributes: Bearbeite die Attribute des Produkts
     classify_product: Produkt klassifizieren
