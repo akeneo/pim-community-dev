@@ -229,6 +229,7 @@ pim_common:
   read_more: En savoir plus
   channel: Canal
   locale: Locale
+  groups: Groupes
 error:
   exception: Oups! Une erreur {{ status_code }} s'est produite...
   forbidden: Désolé, vous n'êtes pas autorisé(e) à accéder à cette page

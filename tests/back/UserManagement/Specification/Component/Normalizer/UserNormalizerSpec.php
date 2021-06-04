@@ -79,6 +79,7 @@ class UserNormalizerSpec extends ObjectBehavior
             'groups'                    => [],
             'roles'                     => [],
             'product_grid_filters'      => [],
+            'profile'                   => null,
             'avatar'                    => [
                 'filePath'         => null,
                 'originalFilename' => null,

@@ -190,17 +190,16 @@ describe('testing source chart from Dashboard page', () => {
         );
 
         const userContext = {
-            get: (key: string) => {
-                if ('uiLocale' === key) {
-                    return 'en_US';
-                }
-                if ('timezone' === key) {
-                    return 'UTC';
-                }
+            // eslint-disable-next-line
+            get: <T,>(key: string) => {
+                let value = key;
+                value = 'uiLocale' === key ? 'en_US' : value;
+                value = 'timezone' === key ? 'UTC' : value;
 
-                return key;
+                return (value as unknown) as T;
             },
             set: () => undefined,
+            refresh: () => Promise.resolve(),
         };
         const {findByText, queryByText, getByText} = renderWithProviders(
             <UserContext.Provider value={userContext}>

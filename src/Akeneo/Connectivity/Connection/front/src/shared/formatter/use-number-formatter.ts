@@ -4,7 +4,7 @@ import {UserContext} from '../user';
 export const useNumberFormatter = () => {
     const user = useContext(UserContext);
 
-    const uiLocale = user.get('uiLocale');
+    const uiLocale = user.get<string>('uiLocale');
 
     return useCallback(
         (number: number, options?: Intl.NumberFormatOptions) =>

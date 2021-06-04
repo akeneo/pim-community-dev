@@ -24,7 +24,7 @@ class MeasurementFamilyRepositoryIntegration extends SqlIntegrationTestCase
         parent::setUp();
 
         $this->repository = $this->get('akeneo_measure.persistence.measurement_family_repository');
-        $this->loadSomeMetrics();
+        $this->loadSomeMeasurements();
     }
 
     /**
@@ -128,6 +128,21 @@ class MeasurementFamilyRepositoryIntegration extends SqlIntegrationTestCase
         );
     }
 
+    /** @test */
+    public function it_refreshes_the_cache_after_creating_a_measurement_family(): void
+    {
+        $this->assertCount(2, $this->repository->all());
+
+        $this->repository->save(
+            $this->createMeasurementFamily(
+                'NewFamily',
+                ["en_US" => "New family label", "fr_FR" => "Nouveau famille label"]
+            )
+        );
+
+        $this->assertCount(3, $this->repository->all());
+    }
+
     /**
      * @test
      */
@@ -161,7 +176,7 @@ class MeasurementFamilyRepositoryIntegration extends SqlIntegrationTestCase
         );
     }
 
-    private function loadSomeMetrics(): void
+    private function loadSomeMeasurements(): void
     {
         $sql = <<<SQL
 TRUNCATE TABLE `akeneo_measurement`;

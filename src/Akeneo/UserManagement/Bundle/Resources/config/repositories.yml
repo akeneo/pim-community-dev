@@ -31,3 +31,6 @@ services:
         arguments:
             - '@pim_user.repository.role'
             - '@oro_security.acl.manager'
+
+    pim_user.repository.profile:
+        class: Akeneo\UserManagement\Bundle\Storage\ProfileRepository

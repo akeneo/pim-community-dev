@@ -50,3 +50,4 @@ services:
         class: Akeneo\Connectivity\Connection\Infrastructure\InternalApi\Controller\MarketplaceUrlController
         arguments:
             - '@akeneo_connectivity.connection.marketplace.url_generator'
+            - '@pim_user.context.user'
