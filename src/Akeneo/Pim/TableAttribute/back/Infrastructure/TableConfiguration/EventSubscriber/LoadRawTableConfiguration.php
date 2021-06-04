@@ -43,7 +43,7 @@ class LoadRawTableConfiguration implements EventSubscriber
             return;
         }
 
-        $tableConfiguration = $this->tableConfigurationRepository->getByAttributeId((int) $entity->getId());
+        $tableConfiguration = $this->tableConfigurationRepository->getByAttributeCode($entity->getCode());
         $entity->setRawTableConfiguration($tableConfiguration->normalize());
     }
 }

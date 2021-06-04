@@ -38,7 +38,7 @@ class GetTableValueEndToEnd extends ApiTestCase
                     'locale' => null,
                     'scope' => null,
                     'data' => [
-                        ['ingredient' => 'bar']
+                        ['ingredient' => 'sugar'],
                     ]
                 ]
             ]
@@ -66,7 +66,7 @@ class GetTableValueEndToEnd extends ApiTestCase
             'type' => AttributeTypes::TABLE,
             'group' => 'other',
             'table_configuration' => [
-                ['code' => 'ingredient', 'data_type' => 'text', 'labels' => ['en_US' => 'Ingredients']],
+                ['code' => 'ingredient', 'data_type' => 'text', 'labels' => ['en_US' => 'ingredient']],
                 ['code' => 'quantity', 'data_type' => 'text', 'labels' => ['en_US' => 'Quantity']],
             ],
         ]);
@@ -77,7 +77,7 @@ class GetTableValueEndToEnd extends ApiTestCase
         $product = $this->get('pim_catalog.builder.product')->createProduct('id1');
         $this->get('pim_catalog.updater.product')->update($product, ['values' => [
             'nutrition' => [
-                ['locale' => null, 'scope' => null, 'data' => [['ingredient' => 'bar']]],
+                ['locale' => null, 'scope' => null, 'data' => [['ingredient' => 'sugar']]],
             ],
         ]]);
         self::assertInstanceOf(TableValue::class, $product->getValue('nutrition'));

@@ -53,6 +53,6 @@ class TableConfigurationSaver implements SaverInterface
             )
         );
 
-        $this->tableConfigurationRepository->save($attribute->getId(), $tableConfiguration);
+        $this->tableConfigurationRepository->save($attribute->getCode(), $tableConfiguration);
     }
 }

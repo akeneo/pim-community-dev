@@ -7,7 +7,7 @@ services:
 
     Akeneo\Pim\TableAttribute\tests\back\Acceptance\Context\ConstraintViolationsContext: ~
 
-    Akeneo\Pim\TableAttribute\Domain\TableConfiguration\Repository\TableConfigurationRepository:
+    Akeneo\Pim\TableAttribute\Infrastructure\TableConfiguration\Repository\SqlTableConfigurationRepository:
         class: Akeneo\Pim\TableAttribute\tests\back\Acceptance\InMemory\InMemoryTableConfigurationRepository
         arguments:
             - '@pim_catalog.repository.attribute'

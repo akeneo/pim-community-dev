@@ -15,16 +15,6 @@ namespace Akeneo\Pim\TableAttribute\Domain\TableConfiguration\Repository;
 
 final class TableConfigurationNotFoundException extends \RuntimeException
 {
-    public static function forAttributeId(int $attributeId): self
-    {
-        $message = sprintf(
-            'Could not find table configuration for "%d" attribute id',
-            $attributeId
-        );
-
-        return new self($message);
-    }
-
     public static function forAttributeCode(string $attributeCode): self
     {
         $message = sprintf(

@@ -36,6 +36,7 @@ $rules = [
 
             // pim dependencies
             'Akeneo\Pim\Structure\Component',
+            'Akeneo\Tool\Component\StorageUtils\Cache',
             'Akeneo\Tool\Component\StorageUtils\Saver\SaverInterface',
             'Akeneo\Tool\Component\StorageUtils\Exception\InvalidPropertyTypeException',
             'Akeneo\Channel\Component\Query\PublicApi',

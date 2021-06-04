@@ -17,13 +17,7 @@ use Akeneo\Pim\TableAttribute\Domain\TableConfiguration\TableConfiguration;
 
 interface TableConfigurationRepository
 {
-    // TODO : decide if we should pass attribute id or not
-    public function save(int $attributeId, TableConfiguration $tableConfiguration): void;
-
-    /**
-     * @throws TableConfigurationNotFoundException
-     */
-    public function getByAttributeId(int $attributeId): TableConfiguration;
+    public function save(string $attributeCode, TableConfiguration $tableConfiguration): void;
 
     /**
      * @throws TableConfigurationNotFoundException

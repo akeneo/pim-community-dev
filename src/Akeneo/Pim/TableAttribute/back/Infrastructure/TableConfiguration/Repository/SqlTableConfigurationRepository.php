@@ -35,27 +35,30 @@ final class SqlTableConfigurationRepository implements TableConfigurationReposit
         $this->columnFactory = $columnFactory;
     }
 
-    public function save(int $attributeId, TableConfiguration $tableConfiguration): void
+    public function save(string $attributeCode, TableConfiguration $tableConfiguration): void
     {
         if ($this->connection->isTransactionActive()) {
-            $this->doSave($attributeId, $tableConfiguration);
+            $this->doSave($attributeCode, $tableConfiguration);
             return;
         }
 
-        $this->connection->transactional(fn () => $this->doSave($attributeId, $tableConfiguration));
+        $this->connection->transactional(fn () => $this->doSave($attributeCode, $tableConfiguration));
     }
 
-    private function doSave(int $attributeId, TableConfiguration $tableConfiguration): void
+    private function doSave(string $attributeCode, TableConfiguration $tableConfiguration): void
     {
         $newColumnCodes = array_map(
             fn (array $columnDefinition): string => $columnDefinition['code'],
             $tableConfiguration->normalize()
         );
 
-        $this->connection->executeQuery(
-            'DELETE FROM pim_catalog_table_column WHERE attribute_id = :attribute_id AND code NOT IN (:newColumnCodes)',
+        $this->connection->executeQuery(<<<SQL
+            DELETE table_column.* FROM pim_catalog_table_column table_column
+            INNER JOIN pim_catalog_attribute attribute ON attribute.id = table_column.attribute_id
+            WHERE attribute.code = :attribute_code AND table_column.code NOT IN (:newColumnCodes)
+            SQL,
             [
-                'attribute_id' => $attributeId,
+                'attribute_code' => $attributeCode,
                 'newColumnCodes' => $newColumnCodes,
             ],
             [
@@ -66,12 +69,15 @@ final class SqlTableConfigurationRepository implements TableConfigurationReposit
             $this->connection->executeQuery(
                 <<<SQL
                 INSERT INTO pim_catalog_table_column (id, attribute_id, code, data_type, column_order, labels)
-                VALUES (:id, :attribute_id, :code, :data_type, :column_order, :labels)
-                ON DUPLICATE KEY UPDATE column_order = VALUES(column_order), labels = VALUES(labels)
+                SELECT * FROM (
+                    SELECT :column_id, attribute.id, :code, :data_type, :column_order AS column_order, :labels AS labels
+                    FROM pim_catalog_attribute AS attribute WHERE code = :attribute_code
+                ) AS newvalues                
+                ON DUPLICATE KEY UPDATE column_order = newvalues.column_order, labels = newvalues.labels
                 SQL,
                 [
-                    'id' =>  ($column['code'] . '_' . Uuid::uuid4()->toString()),
-                    'attribute_id' => $attributeId,
+                    'column_id' =>  ($column['code'] . '_' . Uuid::uuid4()->toString()),
+                    'attribute_code' => $attributeCode,
                     'code' => $column['code'],
                     'data_type' => $column['data_type'],
                     'column_order' => $columnOrder,
@@ -79,39 +85,6 @@ final class SqlTableConfigurationRepository implements TableConfigurationReposit
                 ]
             );
         }
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    public function getByAttributeId(int $attributeId): TableConfiguration
-    {
-        $statement = $this->connection->executeQuery(
-            <<<SQL
-            SELECT id, code, data_type, column_order, labels
-            FROM pim_catalog_table_column
-            WHERE attribute_id = :attributeId
-            ORDER BY column_order
-            SQL,
-            [
-                'attributeId' => $attributeId,
-            ]
-        );
-        $results = $statement->fetchAll();
-        if (0 === count($results)) {
-            throw TableConfigurationNotFoundException::forAttributeId($attributeId);
-        }
-
-        return TableConfiguration::fromColumnDefinitions(
-            array_map(
-                fn (array $row): ColumnDefinition => $this->columnFactory->createFromNormalized([
-                    'code' => $row['code'],
-                    'data_type' => $row['data_type'],
-                    'labels' => \json_decode($row['labels'], true),
-                ]),
-                $results
-            )
-        );
     }
 
     public function getByAttributeCode(string $attributeCode): TableConfiguration

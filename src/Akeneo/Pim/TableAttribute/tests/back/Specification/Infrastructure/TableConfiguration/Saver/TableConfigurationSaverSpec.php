@@ -41,7 +41,7 @@ class TableConfigurationSaverSpec extends ObjectBehavior
     ) {
         $attribute->getType()->willReturn(AttributeTypes::TEXT);
 
-        $tableConfigurationRepository->save(Argument::any(), Argument::any())->shouldNotBeCalled();
+        $tableConfigurationRepository->save(Argument::cetera())->shouldNotBeCalled();
         $this->save($attribute);
     }
 
@@ -52,7 +52,7 @@ class TableConfigurationSaverSpec extends ObjectBehavior
         $attribute->getType()->willReturn(AttributeTypes::TABLE);
         $attribute->getRawTableConfiguration()->willReturn(null);
 
-        $tableConfigurationRepository->save(Argument::any(), Argument::any())->shouldNotBeCalled();
+        $tableConfigurationRepository->save(Argument::cetera())->shouldNotBeCalled();
         $this->shouldThrow(\InvalidArgumentException::class)->during('save', [$attribute]);
     }
 
@@ -66,13 +66,13 @@ class TableConfigurationSaverSpec extends ObjectBehavior
             ['data_type' => 'text', 'code' => 'ingredients', 'labels' => []],
             ['data_type' => 'text', 'code' => 'quantity', 'labels' => []],
         ]);
-        $attribute->getId()->willReturn(42);
+        $attribute->getCode()->willReturn('nutrition');
         $columnFactory->createFromNormalized(['data_type' => 'text', 'code' => 'ingredients', 'labels' => []])
             ->willReturn(TextColumn::fromNormalized(['data_type' => 'text', 'code' => 'ingredients', 'labels' => []]));
         $columnFactory->createFromNormalized(['data_type' => 'text', 'code' => 'quantity', 'labels' => []])
             ->willReturn(TextColumn::fromNormalized(['data_type' => 'text', 'code' => 'quantity', 'labels' => []]));
 
-        $tableConfigurationRepository->save(42, Argument::type(TableConfiguration::class))->shouldBeCalled();
+        $tableConfigurationRepository->save('nutrition', Argument::type(TableConfiguration::class))->shouldBeCalled();
         $this->save($attribute);
     }
 }

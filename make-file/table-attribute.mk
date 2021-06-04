@@ -1,3 +1,6 @@
+include make-file/dev.mk
+include make-file/test.mk
+
 .PHONY: table-attribute-coupling-back
 table-attribute-coupling-back:
 	$(PHP_RUN) vendor/bin/php-coupling-detector detect src/Akeneo/Pim/TableAttribute/back/ --config-file src/Akeneo/Pim/TableAttribute/tests/back/.php_cd.php
@@ -12,7 +15,7 @@ table-attribute-unit-back:
 	$(PHP_RUN) vendor/bin/phpspec run src/Akeneo/Pim/TableAttribute/tests/back/Specification
 
 .PHONY: table-attribute-acceptance-back
-table-attribute-acceptance-back:
+table-attribute-acceptance-back: var/tests/behat/table-attribute
 	$(PHP_RUN) vendor/bin/behat --config src/Akeneo/Pim/TableAttribute/tests/back/behat.yml --format pim --out var/tests/behat/table-attribute --format progress --out std --colors $(O)
 
 .PHONY: table-attribute-integration-back

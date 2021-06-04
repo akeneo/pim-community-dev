@@ -32,35 +32,13 @@ class InMemoryTableConfigurationRepository implements TableConfigurationReposito
         $this->columnFactory = $columnFactory;
     }
 
-    public function save(int $attributeId, TableConfiguration $tableConfiguration): void
+    public function save(string $attributeCode, TableConfiguration $tableConfiguration): void
     {
-        $attribute = $this->attributeRepository->findOneBy(['id' => $attributeId]);
+        $attribute = $this->attributeRepository->findOneByIdentifier($attributeCode);
         if (null === $attribute) {
-            throw new \InvalidArgumentException(\sprintf('Attribute with id %d not found', $attributeId));
+            throw new \InvalidArgumentException(\sprintf('The "%s" attribute was not found', $attributeCode));
         }
         $attribute->setRawTableConfiguration($tableConfiguration->normalize());
-    }
-
-    public function getByAttributeId(int $attributeId): TableConfiguration
-    {
-        $attribute = $this->attributeRepository->findOneBy(['id' => $attributeId]);
-        if (null === $attribute || AttributeTypes::TABLE !== $attribute->getType(
-            ) || null === $attribute->getRawTableConfiguration()) {
-            throw TableConfigurationNotFoundException::forAttributeId($attributeId);
-        }
-
-        return TableConfiguration::fromColumnDefinitions(
-            array_map(
-                fn (array $row): ColumnDefinition => $this->columnFactory->createFromNormalized(
-                    [
-                        'code' => $row['code'],
-                        'data_type' => $row['data_type'],
-                        'labels' => \json_decode($row['labels'] ?? '{}', true),
-                    ]
-                ),
-                $attribute->getRawTableConfiguration()
-            )
-        );
     }
 
     public function getByAttributeCode(string $attributeCode): TableConfiguration

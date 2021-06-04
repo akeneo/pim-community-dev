@@ -37,7 +37,7 @@ class LoadRawTableConfigurationSpec extends ObjectBehavior
         $entity = new \stdClass();
         $event->getObject()->willReturn($entity);
 
-        $tableConfigurationRepository->getByAttributeId(Argument::any())->shouldNotBeCalled();
+        $tableConfigurationRepository->getByAttributeCode(Argument::any())->shouldNotBeCalled();
 
         $this->postLoad($event);
     }
@@ -50,7 +50,7 @@ class LoadRawTableConfigurationSpec extends ObjectBehavior
         $attribute->getType()->willReturn(AttributeTypes::TEXT);
         $event->getObject()->willReturn($attribute);
 
-        $tableConfigurationRepository->getByAttributeId(Argument::any())->shouldNotBeCalled();
+        $tableConfigurationRepository->getByAttributeCode(Argument::any())->shouldNotBeCalled();
 
         $this->postLoad($event);
     }
@@ -61,10 +61,10 @@ class LoadRawTableConfigurationSpec extends ObjectBehavior
         AttributeInterface $attribute
     ) {
         $attribute->getType()->willReturn(AttributeTypes::TABLE);
-        $attribute->getId()->willReturn(42);
+        $attribute->getCode()->willReturn('nutrition');
         $event->getObject()->willReturn($attribute);
 
-        $tableConfigurationRepository->getByAttributeId(42)->shouldBeCalled()->willReturn(
+        $tableConfigurationRepository->getByAttributeCode('nutrition')->shouldBeCalled()->willReturn(
             TableConfiguration::fromColumnDefinitions(
                 [
                     TextColumn::fromNormalized(['code' => 'ingredients', 'labels' => []]),

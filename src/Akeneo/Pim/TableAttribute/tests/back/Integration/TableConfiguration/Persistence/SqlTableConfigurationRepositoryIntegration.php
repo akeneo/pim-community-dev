@@ -14,7 +14,6 @@ declare(strict_types=1);
 namespace Akeneo\Pim\TableAttribute\tests\back\Integration\TableConfiguration\Persistence;
 
 use Akeneo\Pim\TableAttribute\Domain\TableConfiguration\Repository\TableConfigurationNotFoundException;
-use Akeneo\Pim\TableAttribute\Domain\TableConfiguration\Repository\TableConfigurationRepository;
 use Akeneo\Pim\TableAttribute\Domain\TableConfiguration\TableConfiguration;
 use Akeneo\Pim\TableAttribute\Domain\TableConfiguration\TextColumn;
 use Akeneo\Pim\TableAttribute\Infrastructure\TableConfiguration\Repository\SqlTableConfigurationRepository;
@@ -35,7 +34,7 @@ final class SqlTableConfigurationRepositoryIntegration extends TestCase
     {
         parent::setUp();
 
-        $this->sqlTableConfigurationRepository = $this->get(TableConfigurationRepository::class);
+        $this->sqlTableConfigurationRepository = $this->get(SqlTableConfigurationRepository::class);
         $this->connection = $this->get('database_connection');
         $this->loadFixtures();
     }
@@ -47,7 +46,7 @@ final class SqlTableConfigurationRepositoryIntegration extends TestCase
             TextColumn::fromNormalized(['code' => 'ingredients']),
             TextColumn::fromNormalized(['code' => 'quantity']),
         ]);
-        $this->sqlTableConfigurationRepository->save($this->tableAttributeId, $tableConfiguration);
+        $this->sqlTableConfigurationRepository->save('nutrition', $tableConfiguration);
 
         $rows = $this->connection->executeQuery(
             'SELECT * FROM pim_catalog_table_column WHERE attribute_id = :attribute_id ORDER BY column_order',
@@ -72,7 +71,7 @@ final class SqlTableConfigurationRepositoryIntegration extends TestCase
             TextColumn::fromNormalized(['code' => 'ingredients']),
             TextColumn::fromNormalized(['code' => 'quantity']),
         ]);
-        $this->sqlTableConfigurationRepository->save($this->tableAttributeId, $tableConfiguration);
+        $this->sqlTableConfigurationRepository->save('nutrition', $tableConfiguration);
 
         $rows = $this->connection->executeQuery(
             'SELECT * FROM pim_catalog_table_column WHERE attribute_id = :attribute_id ORDER BY column_order',
@@ -86,7 +85,7 @@ final class SqlTableConfigurationRepositoryIntegration extends TestCase
             TextColumn::fromNormalized(['code' => 'quantity']),
             TextColumn::fromNormalized(['code' => 'aqr']),
         ]);
-        $this->sqlTableConfigurationRepository->save($this->tableAttributeId, $tableConfiguration);
+        $this->sqlTableConfigurationRepository->save('nutrition', $tableConfiguration);
 
         $rows = $this->connection->executeQuery(
             'SELECT * FROM pim_catalog_table_column WHERE attribute_id = :attribute_id ORDER BY column_order',
@@ -107,7 +106,7 @@ final class SqlTableConfigurationRepositoryIntegration extends TestCase
             TextColumn::fromNormalized(['code' => 'quantity']),
             TextColumn::fromNormalized(['code' => 'price']),
         ]);
-        $this->sqlTableConfigurationRepository->save($this->tableAttributeId, $tableConfiguration);
+        $this->sqlTableConfigurationRepository->save('nutrition', $tableConfiguration);
 
         $rows = $this->connection->executeQuery(
             'SELECT * FROM pim_catalog_table_column WHERE attribute_id = :attribute_id ORDER BY column_order',
@@ -124,7 +123,7 @@ final class SqlTableConfigurationRepositoryIntegration extends TestCase
             TextColumn::fromNormalized(['code' => 'price']),
             TextColumn::fromNormalized(['code' => 'quantity']),
         ]);
-        $this->sqlTableConfigurationRepository->save($this->tableAttributeId, $tableConfiguration);
+        $this->sqlTableConfigurationRepository->save('nutrition', $tableConfiguration);
 
         $rows = $this->connection->executeQuery(
             'SELECT * FROM pim_catalog_table_column WHERE attribute_id = :attribute_id ORDER BY column_order',
@@ -138,45 +137,6 @@ final class SqlTableConfigurationRepositoryIntegration extends TestCase
         self::assertSame($idPrice, $rows[1]['id']);
         self::assertSame('quantity', $rows[2]['code']);
         self::assertSame($idQuantity, $rows[2]['id']);
-    }
-
-    /** @test */
-    public function it_fetches_a_table_configuration_by_attribute_id(): void
-    {
-        $sql = <<<SQL
-        INSERT INTO pim_catalog_table_column (id, attribute_id, code, data_type, column_order, labels)
-        VALUES (:id, :attribute_id, :code, :data_type, :column_order, :labels)
-        SQL;
-        $this->connection->executeQuery($sql, [
-            'id' => 'ingredients_1234567890',
-            'attribute_id' => $this->tableAttributeId,
-            'code' => 'ingredients',
-            'data_type' => 'text',
-            'column_order' => 0,
-            'labels' => \json_encode(['en_US' => 'Ingredients', 'fr_FR' => 'Ingrédients'])
-        ]);
-        $this->connection->executeQuery($sql, [
-            'id' => 'quantity_2345678901',
-            'attribute_id' => $this->tableAttributeId,
-            'code' => 'quantity',
-            'data_type' => 'text',
-            'column_order' => 1,
-            'labels' => \json_encode([])
-        ]);
-
-        $result = $this->sqlTableConfigurationRepository->getByAttributeId($this->tableAttributeId);
-
-        self::assertEquals([
-            [
-                'code' => 'ingredients',
-                'data_type' => 'text',
-                'labels' => ['en_US' => 'Ingredients', 'fr_FR' => 'Ingrédients'],
-            ], [
-                'code' => 'quantity',
-                'data_type' => 'text',
-                'labels' => (object) [],
-            ]
-        ], $result->normalize());
     }
 
     /** @test */
@@ -229,12 +189,12 @@ final class SqlTableConfigurationRepositoryIntegration extends TestCase
     }
 
     /** @test */
-    public function it_throw_an_exception_if_table_configuration_cannot_be_fetched(): void
+    public function it_throws_an_exception_if_table_configuration_cannot_be_fetched(): void
     {
         $this->expectException(TableConfigurationNotFoundException::class);
-        $this->expectExceptionMessage('Could not find table configuration for "0" attribute id');
+        $this->expectExceptionMessage('Could not find table configuration for the "yolo" attribute');
 
-        $this->sqlTableConfigurationRepository->getByAttributeId(0);
+        $this->sqlTableConfigurationRepository->getByAttributeCode('yolo');
     }
 
     protected function getConfiguration(): Configuration
