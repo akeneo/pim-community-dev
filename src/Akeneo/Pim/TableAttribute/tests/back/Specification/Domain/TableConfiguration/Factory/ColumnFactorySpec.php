@@ -13,6 +13,7 @@ declare(strict_types=1);
 
 namespace Specification\Akeneo\Pim\TableAttribute\Domain\TableConfiguration\Factory;
 
+use Akeneo\Pim\TableAttribute\Domain\TableConfiguration\BooleanColumn;
 use Akeneo\Pim\TableAttribute\Domain\TableConfiguration\Factory\ColumnFactory;
 use Akeneo\Pim\TableAttribute\Domain\TableConfiguration\NumberColumn;
 use Akeneo\Pim\TableAttribute\Domain\TableConfiguration\TextColumn;
@@ -26,6 +27,7 @@ class ColumnFactorySpec extends ObjectBehavior
         $this->beConstructedWith([
             'text' => TextColumn::class,
             'number' => NumberColumn::class,
+            'boolean' => BooleanColumn::class,
         ]);
     }
 
@@ -53,6 +55,17 @@ class ColumnFactorySpec extends ObjectBehavior
             'labels' => [],
         ]);
         $column->shouldHaveType(NumberColumn::class);
+        $column->code()->shouldBeLike(ColumnCode::fromString('quantities'));
+    }
+
+    function it_returns_a_boolean_column()
+    {
+        $column = $this->createFromNormalized([
+            'data_type' => 'boolean',
+            'code' => 'quantities',
+            'labels' => [],
+        ]);
+        $column->shouldHaveType(BooleanColumn::class);
         $column->code()->shouldBeLike(ColumnCode::fromString('quantities'));
     }
 

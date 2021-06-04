@@ -56,8 +56,12 @@ final class CreateAttributeContext implements Context
                 'data_type' => 'text',
                 'code' => 'ingredients'
             ], [
-                'data_type' => 'text',
+                'data_type' => 'number',
                 'code' => 'quantity'
+            ],
+            [
+                'data_type' => 'boolean',
+                'code' => 'isAllergenic',
             ]
         ]);
         $this->saveAttribute($attribute);

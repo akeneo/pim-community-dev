@@ -27,7 +27,7 @@ Akeneo\Pim\Structure\Component\Model\Attribute:
                                           type: string
                                           message: pim_table_configuration.validation.table_configuration.column_type_must_be_a_string
                                       - Choice:
-                                          choices: ["text", "number"]
+                                          choices: ["text", "number", "boolean"]
                                           message: pim_table_configuration.validation.table_configuration.unknown_data_type
                             labels:
                                 - Optional:

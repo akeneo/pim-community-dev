@@ -17,11 +17,11 @@ use Webmozart\Assert\Assert;
 
 final class Cell
 {
-    /** @var int|string */
+    /** @var scalar */
     private $data;
 
     /**
-     * @param int|string $data
+     * @param scalar $data
      */
     private function __construct($data)
     {
@@ -29,7 +29,7 @@ final class Cell
     }
 
     /**
-     * @param int|string $data
+     * @param scalar $data
      */
     public static function fromNormalized($data): self
     {
@@ -40,7 +40,7 @@ final class Cell
     }
 
     /**
-     * @return int|string
+     * @return scalar
      */
     public function normalize()
     {

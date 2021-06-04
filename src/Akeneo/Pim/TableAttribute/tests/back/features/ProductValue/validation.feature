@@ -7,9 +7,9 @@ Feature: Enrich a table attribute value
   Background:
     Given an authenticated user
     And the following attributes:
-      | code        | type                     | table_configuration                                                                       |
-      | sku         | pim_catalog_identifier   |                                                                                           |
-      | nutrition   | pim_catalog_table        | [{"code": "ingredient", "data_type": "text"},{"code": "quantity", "data_type": "number"}] |
+      | code        | type                     | table_configuration                                                                                                                     |
+      | sku         | pim_catalog_identifier   |                                                                                                                                         |
+      | nutrition   | pim_catalog_table        | [{"code": "ingredient", "data_type": "text"},{"code": "quantity", "data_type": "number"}, {"code":"isAllergen", "data_type":"boolean"}] |
     And the following locales "en_US"
     And the following "ecommerce" channel with locales "en_US"
 
@@ -41,5 +41,11 @@ Feature: Enrich a table attribute value
   Scenario: Providing a valid table should not raise any error
     When a product is created with values:
       | attribute | json_data         |
-      | nutrition | [{"ingredient": "sugar", quantity": 1}] |
+      | nutrition | [{"ingredient": "sugar", "quantity": 1}] |
+    Then no error is raised
+
+  Scenario: Providing a valid table should not raise any error
+    When a product is created with values:
+      | attribute | json_data         |
+      | nutrition | [{"ingredient": "sugar", "quantity": 1, "isAllergen":true}] |
     Then no error is raised

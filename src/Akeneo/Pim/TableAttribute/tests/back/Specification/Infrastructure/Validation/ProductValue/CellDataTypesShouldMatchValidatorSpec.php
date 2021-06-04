@@ -13,6 +13,7 @@ declare(strict_types=1);
 
 namespace Specification\Akeneo\Pim\TableAttribute\Infrastructure\Validation\ProductValue;
 
+use Akeneo\Pim\TableAttribute\Domain\TableConfiguration\BooleanColumn;
 use Akeneo\Pim\TableAttribute\Domain\TableConfiguration\NumberColumn;
 use Akeneo\Pim\TableAttribute\Domain\TableConfiguration\Repository\TableConfigurationRepository;
 use Akeneo\Pim\TableAttribute\Domain\TableConfiguration\TableConfiguration;
@@ -39,6 +40,7 @@ final class CellDataTypesShouldMatchValidatorSpec extends ObjectBehavior
             TableConfiguration::fromColumnDefinitions([
                 TextColumn::fromNormalized(['code' => 'ingredient']),
                 NumberColumn::fromNormalized(['code' => 'quantity']),
+                BooleanColumn::fromNormalized(['code' => 'isAllergen']),
             ])
         );
     }
@@ -72,6 +74,7 @@ final class CellDataTypesShouldMatchValidatorSpec extends ObjectBehavior
         $tableValue = TableValue::value('nutrition', Table::fromNormalized([
             ['ingredient' => 12, 'quantity' => 1],
             ['ingredient' => 'pepper', 'quantity' => 'foo'],
+            ['ingredient' => 'salt', 'isAllergen' => 'yes'],
         ]));
 
         $context->buildViolation(Argument::type('string'), ['{{ expected }}' => 'string', '{{ given }}' => 'integer', '{{ columnCode }}' => 'ingredient'])
@@ -82,7 +85,11 @@ final class CellDataTypesShouldMatchValidatorSpec extends ObjectBehavior
             ->shouldBeCalled()->willReturn($violationBuilder);
         $violationBuilder->atPath('[1].quantity')->shouldBeCalledOnce()->willReturn($violationBuilder);
 
-        $violationBuilder->addViolation()->shouldBeCalledTimes(2);
+        $context->buildViolation(Argument::type('string'), ['{{ expected }}' => 'boolean', '{{ given }}' => 'string', '{{ columnCode }}' => 'isAllergen'])
+            ->shouldBeCalled()->willReturn($violationBuilder);
+        $violationBuilder->atPath('[2].isAllergen')->shouldBeCalledOnce()->willReturn($violationBuilder);
+
+        $violationBuilder->addViolation()->shouldBeCalledTimes(3);
 
         $this->validate($tableValue, new CellDataTypesShouldMatch());
     }
@@ -91,6 +98,8 @@ final class CellDataTypesShouldMatchValidatorSpec extends ObjectBehavior
     {
         $tableValue = TableValue::value('nutrition', Table::fromNormalized([[
             'ingredient' => 'red hot chili peppers',
+            'quantity' => 4,
+            'isAllergen' => true,
         ]]));
 
         $context->buildViolation(Argument::cetera())
