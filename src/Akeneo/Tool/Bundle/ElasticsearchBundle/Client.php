@@ -9,6 +9,7 @@ use Akeneo\Tool\Bundle\ElasticsearchBundle\Exception\MissingIdentifierException;
 use Akeneo\Tool\Bundle\ElasticsearchBundle\IndexConfiguration\Loader;
 use Elasticsearch\Client as NativeClient;
 use Elasticsearch\ClientBuilder;
+use Elasticsearch\Common\Exceptions\BadRequest400Exception;
 use Ramsey\Uuid\Uuid;
 
 /**
@@ -21,8 +22,8 @@ use Ramsey\Uuid\Uuid;
  */
 class Client
 {
-    /** Number of split requests when retrying bulk index */
-    private const NUMBER_OF_BATCHES_ON_RETRY = 2;
+    /** @var int Number of split requests  */
+    private const NUMBER_OF_BATCHES = 2;
 
     private ClientBuilder $builder;
     private Loader $configurationLoader;
@@ -108,7 +109,6 @@ class Client
             'errors' => false,
             'items' => [],
         ];
-
         foreach ($documents as $document) {
             $action = ['index' => ['_index' => $this->indexName]];
 
@@ -122,7 +122,8 @@ class Client
 
             if (($paramsComputedSize + strlen(json_encode($document))) >= $this->maxChunkSize) {
                 $mergedResponse = $this->doBulkIndex($params, $mergedResponse);
-                $params = [];
+                $paramsComputedSize = 0;
+                    $params = [];
             }
 
             $params['body'][] = $action;
@@ -133,7 +134,6 @@ class Client
                 $params['refresh'] = $refresh->getType();
             }
         }
-
         $mergedResponse = $this->doBulkIndex($params, $mergedResponse);
 
         if (isset($mergedResponse['errors']) && true === $mergedResponse['errors']) {
@@ -145,10 +145,11 @@ class Client
 
     private function doBulkIndex(array $params, array $mergedResponse): array
     {
+        $length = count($params['body']);
         try {
             $mergedResponse = $this->doChunkedBulkIndex($params, $mergedResponse, $length);
         } catch (BadRequest400Exception $e) {
-            $chunkLength = intdiv($length, self::NUMBER_OF_BATCHES_ON_RETRY);
+            $chunkLength = intdiv($length, self::NUMBER_OF_BATCHES);
             $chunkLength = $chunkLength % 2 == 0 ? $chunkLength : $chunkLength + 1;
 
             $mergedResponse = $this->doChunkedBulkIndex($params, $mergedResponse, $chunkLength);
@@ -156,14 +157,30 @@ class Client
             throw new IndexationException($e->getMessage(), $e->getCode(), $e);
         }
 
-        if (isset($response['errors']) && true === $response['errors']) {
-            $mergedResponse['errors'] = true;
+        return $mergedResponse;
+    }
+
+    private function doChunkedBulkIndex(array $params, array $mergedResponse, int $chunkLength): array
+    {
+        $bulkRequest = [];
+        if (isset($params['refresh'])) {
+            $bulkRequest['refresh'] = $params['refresh'];
         }
 
-        $mergedResponse['items'] = array_merge($mergedResponse['items'], $response['items']);
+        $chunkedBody = array_chunk($params['body'], $chunkLength);
+        foreach ($chunkedBody as $chunk) {
+            $bulkRequest['body'] = $chunk;
+            $response = $this->client->bulk($bulkRequest);
 
-        if (isset($response['took'])) {
-            $mergedResponse['took'] += $response['took'];
+            if (isset($response['errors']) && true === $response['errors']) {
+                $mergedResponse['errors'] = true;
+            }
+
+            $mergedResponse['items'] = array_merge($mergedResponse['items'], $response['items']);
+
+            if (isset($response['took'])) {
+                $mergedResponse['took'] += $response['took'];
+            }
         }
 
         return $mergedResponse;
