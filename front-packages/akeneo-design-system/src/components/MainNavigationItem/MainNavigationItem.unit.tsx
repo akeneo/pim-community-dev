@@ -3,6 +3,18 @@ import {MainNavigationItem} from './MainNavigationItem';
 import {fireEvent, render, screen} from '../../storybook/test-util';
 import {ComponentIcon} from '../../icons';
 
+test('MainNavigationItem supports forwardRef', () => {
+  const ref = {current: null};
+
+  render(<MainNavigationItem icon={<ComponentIcon />} title="My title" ref={ref} />);
+  expect(ref.current).not.toBe(null);
+});
+
+test('MainNavigationItem supports ...rest props', () => {
+  render(<MainNavigationItem icon={<ComponentIcon />} title="My title" data-testid="my_value" />);
+  expect(screen.getByTestId('my_value')).toBeInTheDocument();
+});
+
 test('MainNavigationItem displays title', () => {
   render(<MainNavigationItem icon={<ComponentIcon />} title="My title" />);
   expect(screen.getByText('My title')).toBeInTheDocument();
@@ -49,16 +61,4 @@ test('MainNavigationItem displays an anchor when providing a `href`', () => {
 test('MainNavigationItem do not display an anchor when providing a `href` on a disabled component', () => {
   render(<MainNavigationItem icon={<ComponentIcon />} title="My title" disabled={true} href="https://akeneo.com/" />);
   expect(screen.getByText('My title').closest('a')).not.toHaveAttribute('href');
-});
-
-test('MainNavigationItem supports forwardRef', () => {
-  const ref = {current: null};
-
-  render(<MainNavigationItem icon={<ComponentIcon />} title="My title" ref={ref} />);
-  expect(ref.current).not.toBe(null);
-});
-
-test('MainNavigationItem supports ...rest props', () => {
-  render(<MainNavigationItem icon={<ComponentIcon />} title="My title" data-testid="my_value" />);
-  expect(screen.getByTestId('my_value')).toBeInTheDocument();
 });

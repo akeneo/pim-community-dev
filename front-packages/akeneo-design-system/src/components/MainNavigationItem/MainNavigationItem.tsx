@@ -81,6 +81,11 @@ type MainNavigationItemProps = {
   tag?: string;
 
   /**
+   * The tint/color to apply on the tag;
+   */
+  tagTint?: string;
+
+  /**
    * Define if the component is active
    */
   active?: boolean;
@@ -89,21 +94,15 @@ type MainNavigationItemProps = {
    * Define if the component will be displayed as disabled
    */
   disabled?: boolean;
-
-  /**
-   * The callback to call when user clicks on the component
-   */
-  onClick?: (event: SyntheticEvent) => void;
-
   /**
    * Url to go to if the button is clicked.
    */
   href?: string;
 
   /**
-   * The tint/color to apply on the tag;
+   * The callback to call when user clicks on the component
    */
-  tagTint?: string;
+  onClick?: (event: SyntheticEvent) => void;
 };
 
 const MainNavigationItem = React.forwardRef<HTMLDivElement, MainNavigationItemProps>(
@@ -112,11 +111,11 @@ const MainNavigationItem = React.forwardRef<HTMLDivElement, MainNavigationItemPr
       icon,
       title,
       tag,
+      tagTint = 'blue',
       onClick,
       href,
       active = false,
       disabled = false,
-      tagTint = 'blue',
       ...rest
     }: MainNavigationItemProps,
     forwardedRef: Ref<HTMLDivElement>
@@ -130,12 +129,12 @@ const MainNavigationItem = React.forwardRef<HTMLDivElement, MainNavigationItemPr
     return (
       <Container
         as={undefined !== href ? 'a' : 'button'}
-        ref={forwardedRef}
-        {...rest}
         disabled={disabled}
         active={active}
         onClick={handleClick}
         href={disabled ? undefined : href}
+        ref={forwardedRef}
+        {...rest}
       >
         <IconContainer>
           {React.cloneElement(icon, {size: 20})}

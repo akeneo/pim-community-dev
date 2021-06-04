@@ -12,10 +12,11 @@ import * as Icons from '../../icons';
       },
       title: { control: {type: 'text'}},
       tag: { control: {type: 'text'}},
+      tagTint: {control: {type: 'select', options: ['green', 'blue', 'dark_blue', 'purple', 'dark_purple', 'yellow', 'red']}},
       disabled: {control: {type: 'boolean'}},
       active: {control: {type: 'boolean'}},
+      href: { control: {type: 'text'}},
       onClick: {action: 'Click on the button'},
-      tagTint: {control: {type: 'select', options: ['green', 'blue', 'dark_blue', 'purple', 'dark_purple', 'yellow', 'red']}},
   }}
   args={{
       icon: 'CardIcon',
