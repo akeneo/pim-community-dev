@@ -3,7 +3,7 @@ import {saveEditCategoryForm} from '../../infrastructure/savers';
 import {NotificationLevel, useNotify, useTranslate} from '@akeneo-pim-community/shared';
 import {EditCategoryForm, useCategory} from './useCategory';
 import {EditCategoryContext} from '../../components';
-import {computeNewEditPermissions, computeNewOwnPermissions, computeNewViewPermissions} from "../../helpers";
+import {computeNewEditPermissions, computeNewOwnPermissions, computeNewViewPermissions} from '../../helpers';
 
 // @todo Add unit tests
 const useEditCategoryForm = (categoryId: number) => {
