@@ -161,12 +161,19 @@ type TabBarProps = {
  */
 const TabBar = ({moreButtonTitle, children, ...rest}: TabBarProps) => {
   const ref = useRef<HTMLDivElement>(null);
-  const [hiddenElements, setHiddenElements] = useState<number[]>([]);
+  const [hiddenElements, setHiddenElements] = useState<string[]>([]);
   const [isOpen, open, close] = useBooleanState();
 
+  const hiddenTabs: ReactElement<TabProps>[] = [];
   const decoratedChildren = Children.map(children, (child, index) => {
     if (!isValidElement<TabProps>(child)) {
       throw new Error('TabBar only accepts TabBar.Tab as children');
+    }
+
+    const key = child.key !== null ? child.key : index;
+
+    if (hiddenElements.includes(String(key))) {
+      hiddenTabs.push(child);
     }
 
     return cloneElement(child, {
@@ -174,16 +181,12 @@ const TabBar = ({moreButtonTitle, children, ...rest}: TabBarProps) => {
       onVisibilityChange: (isVisible: boolean) => {
         setHiddenElements(previousHiddenElements =>
           isVisible
-            ? previousHiddenElements.filter(hiddenElement => hiddenElement !== index)
-            : [index, ...previousHiddenElements]
+            ? previousHiddenElements.filter(hiddenElement => hiddenElement !== String(key))
+            : [String(key), ...previousHiddenElements]
         );
       },
     });
   });
-
-  const hiddenTabs = React.Children.toArray(decoratedChildren).filter(
-    (child, index): child is ReactElement<TabProps> => isValidElement<TabProps>(child) && hiddenElements.includes(index)
-  );
 
   const activeTabIsHidden = hiddenTabs.find(child => child.props.isActive) !== undefined;
 

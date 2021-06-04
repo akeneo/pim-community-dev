@@ -128,6 +128,11 @@ type SelectInputProps = Override<
            * The props value of the selected option.
            */
           value: string;
+
+          /**
+           * Handler called when the value is updated.
+           */
+          onChange: (newValue: string) => void;
         }
     ) & {
       /**
