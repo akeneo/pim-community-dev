@@ -233,6 +233,7 @@ pim_enrich.entity.category:
             success: Category successfully updated
             fail: The category could not be updated
     new_category: New category
+    new_category_tree: New category tree
     category_created: The category "{{ code }}" was successfully created
     category_creation_error: The category "{{ code }}" could not be created
     category_tree_creation:
