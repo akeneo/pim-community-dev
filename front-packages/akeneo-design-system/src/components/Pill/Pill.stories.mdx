@@ -6,7 +6,7 @@ import {Pill} from './Pill.tsx';
   title="Components/Pill"
   component={Pill}
   argTypes={{
-    level: {control: {type: 'select', options: ['warning', 'danger']}},
+    level: {control: {type: 'select', options: ['primary', 'warning', 'danger']}},
   }}
   args={{level: 'warning'}}
 />
@@ -18,9 +18,18 @@ import {Pill} from './Pill.tsx';
 The Pill component is used to attract attention on a specific part of the UI, such as on a List/Table row or on a Tab component.
 
 Example of use:
+
 <ul>
-    <li><LinkTo kind="Components/TabBar" story="With Pills">TabBar</LinkTo></li>
-    <li><LinkTo kind="Components/Field" story="Completeness">Field</LinkTo></li>
+  <li>
+    <LinkTo kind="Components/TabBar" story="With Pills">
+      TabBar
+    </LinkTo>
+  </li>
+  <li>
+    <LinkTo kind="Components/Field" story="Completeness">
+      Field
+    </LinkTo>
+  </li>
 </ul>
 
 ## Playground
@@ -42,6 +51,7 @@ Example of use:
     {args => {
       return (
         <>
+          <Pill {...args} level="primary" />
           <Pill {...args} level="warning" />
           <Pill {...args} level="danger" />
         </>

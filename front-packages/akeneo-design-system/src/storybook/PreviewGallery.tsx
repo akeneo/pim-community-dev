@@ -69,6 +69,12 @@ const ListContextContainer = styled.div`
   }
 `;
 
+const Section = styled.div`
+  display: flex;
+  gap: 20px;
+  flex-direction: column;
+`;
+
 const MessageBarContainer = styled.div`
   padding: 5px;
   width: 600px;
@@ -181,16 +187,17 @@ const fakeFetcher = async (page = 0, searchValue = '') => {
 };
 
 export {
-  StoryStyle,
-  PreviewGrid,
+  Content,
+  fakeFetcher,
+  LabelContainer,
+  ListContextContainer,
+  MessageBarContainer,
   PreviewCard,
   PreviewContainer,
-  LabelContainer,
-  Subtitle,
-  Content,
-  MessageBarContainer,
+  PreviewGrid,
   Scrollable,
+  Section,
   SpaceContainer,
-  ListContextContainer,
-  fakeFetcher,
+  StoryStyle,
+  Subtitle,
 };
