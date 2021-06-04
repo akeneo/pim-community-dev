@@ -26,11 +26,6 @@ jobs:
       - image: alpine/git
     steps:
       - checkout
-      - run:
-          name: Persist default IMAGE_TAG to be the repo last commit SHA1
-          command: |
-              echo export IMAGE_TAG=${CIRCLE_SHA1}>> persisted_env_vars
-              echo export IMAGE_TAG_SHORTED=$(echo ${CIRCLE_SHA1} | cut -c -7)>> persisted_env_vars
       - persist_to_workspace:
           root: ~/
           paths:
@@ -135,7 +130,6 @@ jobs:
           - attach_workspace:
                 at: ~/
           - set_gcloud_config_dev
-          - restore_persisted_env_vars
           - when:
                 condition: << parameters.is_pull_request >>
                 steps:
@@ -150,12 +144,16 @@ jobs:
               name: Define value for next steps
               command: |
                 TYPE="srnt"
+                IMAGE_TAG=${CIRCLE_SHA1}
+                IMAGE_TAG_SHORTED=$(echo ${IMAGE_TAG} | cut -c -7)
                 IMAGE_TAG_DATE=$(date +%Y%m%d%H%M%S)
                 SERENITY_RELEASE_NAME="v$(date +%Y%m%d%H%M%S)"
                 PRODUCT_REFERENCE_TYPE="serenity_instance"
                 PRODUCT_REFERENCE_CODE="serenity_${ENV_NAME}"
 
                 echo export TYPE=${TYPE} >> $BASH_ENV
+                echo export IMAGE_TAG=${IMAGE_TAG} >> $BASH_ENV
+                echo export IMAGE_TAG_SHORTED=${IMAGE_TAG_SHORTED} >> $BASH_ENV
                 echo export IMAGE_TAG_DATE=${IMAGE_TAG_DATE} >> $BASH_ENV
                 echo export SERENITY_RELEASE_NAME=${SERENITY_RELEASE_NAME} >> $BASH_ENV
                 echo export PRODUCT_REFERENCE_TYPE=${PRODUCT_REFERENCE_TYPE} >> $BASH_ENV
@@ -182,7 +180,7 @@ jobs:
           - persist_to_workspace:
               root: ~/
               paths:
-                - project
+                - project/persisted_env_vars
 
   build_grth:
     parameters:
@@ -200,7 +198,6 @@ jobs:
         fingerprints:
           - "1f:25:f8:bb:59:52:95:f6:e2:f2:97:2f:30:d4:e9:66"
     - set_gcloud_config_dev
-    - restore_persisted_env_vars
     - when:
         condition: << parameters.is_pull_request >>
         steps:
@@ -234,7 +231,8 @@ jobs:
         name: Define value for next steps
         command: |
           TYPE="grth"
-          IMAGE_TAG=$(echo growth-${IMAGE_TAG} | cut -b 1-40)
+          IMAGE_TAG=$(echo growth-${CIRCLE_SHA1} | cut -b 1-40)
+          IMAGE_TAG_SHORTED=$(echo ${CIRCLE_SHA1} | cut -c -7)
           IMAGE_TAG_DATE=$(date +%Y%m%d%H%M%S)
           GROWTH_RELEASE_NAME="growth-v$(date +%Y%m%d%H%M%S)"
           PRODUCT_REFERENCE_TYPE="growth_edition_instance"
@@ -242,6 +240,7 @@ jobs:
 
           echo export TYPE=${TYPE} >> $BASH_ENV
           echo export IMAGE_TAG=${IMAGE_TAG} >> $BASH_ENV
+          echo export IMAGE_TAG_SHORTED=${IMAGE_TAG_SHORTED} >> $BASH_ENV
           echo export IMAGE_TAG_DATE=${IMAGE_TAG_DATE} >> $BASH_ENV
           echo export GROWTH_RELEASE_NAME=${GROWTH_RELEASE_NAME} >> $BASH_ENV
           echo export PRODUCT_REFERENCE_TYPE=${PRODUCT_REFERENCE_TYPE} >> $BASH_ENV
@@ -260,7 +259,6 @@ jobs:
     - run:
         name: Prepare the Growth Edition
         command: |
-          # export GIT_SSH_COMMAND='ssh -i ~/.ssh/id_rsa_1f25f8bb595295f6e2f2972f30d4e966 -o UserKnownHostsFile=~/.ssh/known_hosts -o IdentitiesOnly=Yes'
           mv /home/circleci/project /home/circleci/ee_project
           git clone --branch $CE_BRANCH git@github.com:akeneo/pim-community-dev.git /home/circleci/project
           cd /home/circleci/project
@@ -818,7 +816,6 @@ jobs:
           - attach_workspace:
                 at: ~/
           - set_gcloud_config_dev
-          - restore_persisted_env_vars
           - run:
               name: Test Serenity Helm generated yaml files compliance with current kubernetes Version
               command: PIM_CONTEXT=deployment K8S_CLUSTER_VERSION_ENABLED=1  make test_helm_generated_k8s_files
