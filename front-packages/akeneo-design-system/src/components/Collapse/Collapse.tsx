@@ -65,7 +65,7 @@ const Collapse = React.forwardRef<HTMLDivElement, CollapseProps>(
     {label, collapseButtonLabel, isOpen, onCollapse, children, ...rest}: CollapseProps,
     forwardedRef: Ref<HTMLDivElement>
   ) => {
-    const collapse = () => onCollapse(!isOpen);
+    const handleCollapse = () => onCollapse(!isOpen);
 
     return (
       <CollapseContainer ref={forwardedRef} {...rest}>
@@ -75,7 +75,7 @@ const Collapse = React.forwardRef<HTMLDivElement, CollapseProps>(
             size="small"
             level="tertiary"
             ghost="borderless"
-            onClick={collapse}
+            onClick={handleCollapse}
             title={collapseButtonLabel}
             icon={isOpen ? <CheckPartialIcon /> : <PlusIcon />}
           />
