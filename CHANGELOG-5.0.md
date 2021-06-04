@@ -1,5 +1,9 @@
 # 5.0.x
 
+## Bug fixes:
+
+- PIM-9894: [Backport] PIM-9700: Add batch-size option in index products command and index product-models command
+
 # 5.0.29 (2021-05-31)
 
 ## Bug fixes:
