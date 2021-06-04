@@ -102,39 +102,26 @@ const Option = styled.span<{value: string}>`
 `;
 
 type SelectInputProps = Override<
-  Override<React.InputHTMLAttributes<HTMLDivElement>, InputProps<string | null>>,
+  Override<React.InputHTMLAttributes<HTMLDivElement>, InputProps<string>>,
   (
     | {
-        readOnly: true;
-      }
+      clearable?: false;
+      readOnly: true;
+      value: string | null;
+    }
     | {
-        readOnly?: boolean;
-        onChange: (newValue: string | null) => void;
-      }
-  ) &
-    (
-      | {
-          clearable?: true;
-
-          /**
-           * The props value of the selected option.
-           */
-          value: string | null;
-        }
-      | {
-          clearable?: false;
-
-          /**
-           * The props value of the selected option.
-           */
-          value: string;
-
-          /**
-           * Handler called when the value is updated.
-           */
-          onChange: (newValue: string) => void;
-        }
-    ) & {
+      clearable?: false;
+      readOnly?: boolean;
+      value: string;
+      onChange: (newValue: string) => void;
+    }
+    | {
+      clearable?: true;
+      readOnly?: boolean;
+      value: string | null;
+      onChange: (newValue: string | null) => void;
+    }
+  ) & {
       /**
        * The placeholder displayed when no option is selected.
        */
