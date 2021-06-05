@@ -75,3 +75,6 @@ pim_enrich:
         launched_flash: Триває робота експорту продуктів
 category:
   overview: Категорії
+tree:
+  remove:
+    error_linked: Це дерево категорій не можна видалити, воно пов'язане з каналом
