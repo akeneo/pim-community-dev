@@ -1,6 +1,7 @@
 An identifier attribute already exists.: Ідентифікатор атрибуту вже існує.
 Attribute code may contain only letters, numbers and underscore: Код атрибуту може містити лише літери, цифри та підкреслення
 Attribute code may contain only letters (at least one), numbers and underscores: Код атрибута може містити лише літери (хоча б одну), цифри та знак підкреслення
+Attribute code may not contain line-feed characters: Код атрибута не може містити символів переносу рядка
 This attribute type can't be used as a grid filter: Цей тип атрибута не можна використовувати як фільтр
 This code is not available: Цей код недоступний
 This attribute type must be required: Цей атрибут типу має бути обовязковим

@@ -37,6 +37,7 @@ Most Viewed: Найпопулярніше
 "Yes": "Так"
 "No": "Ні"
 required: (обов'язково)
+The element could not be deleted: Не вдалося видалити елемент
 pim_ui.system_config:
   form:
     loading_message_enabled.label: Дозволити завантаження повідомлень
@@ -79,6 +80,7 @@ pim_enrich:
       associations_view: Переглянути зв'язки продукту
       associations_edit: Додавання зв'язків продукту
       change_family: Змінити сімейство продуктів
+      change_state: Змінити статус товару
       add_to_groups: Додати продукт до груп
       mass_edit: Масові дії редагування продуктів
       comment: Коментувати продукти
@@ -200,6 +202,7 @@ flash:
     removed: Елемент було видалено
   attribute:
     identifier_not_removable: Ідентифікатор атрибуту не може бути видалений
+    used_as_conversion_unit: Цей атрибут не можна видалити, оскільки він використовується як частика перетворення в каналі ( %channelCodes%).
   category:
     removed: Категорію успішно видалено
   tree:
