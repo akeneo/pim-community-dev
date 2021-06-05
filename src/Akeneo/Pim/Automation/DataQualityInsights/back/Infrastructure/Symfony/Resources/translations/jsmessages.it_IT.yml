@@ -1,0 +1,6 @@
+akeneo_data_quality_insights:
+  title: Approfondimenti sulla qualità dei dati
+  dqi_dashboard:
+    menu: Approfondimenti sulla qualità dei dati
+    helper:
+      title: Introduzione alla qualità dei dati in Akeneo
