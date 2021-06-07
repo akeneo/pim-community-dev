@@ -26,7 +26,7 @@ class IndexProductModelCommand extends Command
 {
     protected static $defaultName = 'pim:product-model:index';
 
-    private const BATCH_SIZE = 1000;
+    private const DEFAULT_BATCH_SIZE = 1000;
 
     private const ERROR_CODE_USAGE = 1;
 
@@ -68,6 +68,13 @@ class IndexProductModelCommand extends Command
                 InputOption::VALUE_NONE,
                 'Index all existing product models into Elasticsearch'
             )
+            ->addOption(
+                'batch-size',
+                false,
+                InputOption::VALUE_REQUIRED,
+                'Number of product models to index per batch',
+                self::DEFAULT_BATCH_SIZE
+            )
             ->setDescription('Index all or some product models into Elasticsearch');
     }
 
@@ -78,8 +85,10 @@ class IndexProductModelCommand extends Command
     {
         $this->checkIndexExists();
 
+        $batchSize = (int) $input->getOption('batch-size') ?: self::DEFAULT_BATCH_SIZE;
+
         if (true === $input->getOption('all')) {
-            $chunkedProductModelCodes = $this->getAllRootProductModelCodes();
+            $chunkedProductModelCodes = $this->getAllRootProductModelCodes($batchSize);
             $productModelCount = $this->getTotalNumberOfRootProductModels();
         } elseif (!empty($input->getArgument('codes'))) {
             $requestedCodes = $input->getArgument('codes');
@@ -93,7 +102,7 @@ class IndexProductModelCommand extends Command
                     )
                 );
             }
-            $chunkedProductModelCodes = array_chunk($existingroductModelCodes, self::BATCH_SIZE);
+            $chunkedProductModelCodes = array_chunk($existingroductModelCodes, $batchSize);
             $productModelCount = count($existingroductModelCodes);
         } else {
             $output->writeln(
@@ -126,7 +135,7 @@ class IndexProductModelCommand extends Command
         return $indexedProductModelCount;
     }
 
-    private function getAllRootProductModelCodes(): iterable
+    private function getAllRootProductModelCodes(int $batchSize): iterable
     {
         $formerId = 0;
         $sql = <<< SQL
@@ -142,7 +151,7 @@ SQL;
                 $sql,
                 [
                     'formerId' => $formerId,
-                    'limit' => self::BATCH_SIZE,
+                    'limit' => $batchSize,
                 ],
                 [
                     'formerId' => \PDO::PARAM_INT,
