@@ -42,7 +42,7 @@ class TableOptionsTab extends BaseView {
     if (!this.isActive()) {
       return;
     }
-    const initialTableConfiguration = this.getFormData().table_configuration;
+    const initialTableConfiguration = this.getFormData().table_configuration || [];
 
     ReactDOM.render(
       <DependenciesProvider>

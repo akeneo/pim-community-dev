@@ -22,3 +22,10 @@ pim_table_attribute:
         column_data_type_must_be_filled: The data type must be filled
         invalid_code: The column code can only contain letters, numbers and underscores
         duplicated_column_code: Each column requires a unique code. {{ duplicateCode }} is already used
+
+pim_enrich:
+    entity:
+        attribute:
+            property:
+                type:
+                    pim_catalog_table: Table

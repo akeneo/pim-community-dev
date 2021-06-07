@@ -1,3 +1,8 @@
 config:
     paths:
         pim/table-attribute/attribute/tab: akeneopimtableattribute/attribute/table-options-tab
+
+    config:
+        pim/form/common/attributes/create-button:
+            attribute_icons:
+                pim_catalog_table: table

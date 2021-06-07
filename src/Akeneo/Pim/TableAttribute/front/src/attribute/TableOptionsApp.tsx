@@ -44,7 +44,7 @@ const TableOptionsApp: React.FC<TableOptionsAppProps> = ({initialTableConfigurat
   const router = useRouter();
   const userContext = useUserContext();
   const [tableConfiguration, setTableConfiguration] = React.useState<TableConfiguration>(initialTableConfiguration);
-  const [selectedColumnCode, setSelectedColumnCode] = React.useState<string>(tableConfiguration[0].code);
+  const [selectedColumnCode, setSelectedColumnCode] = React.useState<string | undefined>(tableConfiguration[0]?.code)
   const selectedColumn = tableConfiguration.find(column => column.code === selectedColumnCode) as ColumnDefinition;
   const [activeLocales, setActiveLocales] = React.useState<Locale[]>([]);
   const [isNewColumnModalOpen, openNewColumnModal, closeNewColumnModal] = useBooleanState();
@@ -73,6 +73,7 @@ const TableOptionsApp: React.FC<TableOptionsAppProps> = ({initialTableConfigurat
   const handleCreate = (columnDefinition: ColumnDefinition) => {
     tableConfiguration.push(columnDefinition);
     setTableConfiguration([...tableConfiguration]);
+    setSelectedColumnCode(columnDefinition.code);
     onChange(tableConfiguration);
   };
 
@@ -84,7 +85,7 @@ const TableOptionsApp: React.FC<TableOptionsAppProps> = ({initialTableConfigurat
     onChange(newTableConfiguration);
   };
 
-  const rightColumn = (
+  const rightColumn = selectedColumn ? (
     <div>
       <SectionTitle title={getLabel(selectedColumn.labels, userContext.get('catalogLocale'), selectedColumn.code)}>
         <SectionTitle.Title>
@@ -115,7 +116,7 @@ const TableOptionsApp: React.FC<TableOptionsAppProps> = ({initialTableConfigurat
         ))}
       </FieldsList>
     </div>
-  );
+  ) : <div/>;
 
   return (
     <DependenciesProvider>
@@ -125,7 +126,7 @@ const TableOptionsApp: React.FC<TableOptionsAppProps> = ({initialTableConfigurat
             <SectionTitle title={translate('pim_table_attribute.form.attribute.columns')}>
               <SectionTitle.Title>{translate('pim_table_attribute.form.attribute.columns')}</SectionTitle.Title>
             </SectionTitle>
-            <Table>
+            {tableConfiguration.length > 0 && <Table>
               <Table.Body>
                 <Table.Row
                   key={firstColumnDefinition.code}
@@ -141,7 +142,7 @@ const TableOptionsApp: React.FC<TableOptionsAppProps> = ({initialTableConfigurat
                   </Table.Cell>
                 </Table.Row>
               </Table.Body>
-            </Table>
+            </Table>}
             <Table isDragAndDroppable={true} onReorder={handleReorder}>
               <Table.Body>
                 {otherColumnDefinitions.map(columnDefinition => (
