@@ -99,6 +99,7 @@ class UserNormalizer implements NormalizerInterface, CacheableSupportsMethodInte
             'groups'                    => $user->getGroupNames(),
             'roles'                     => $this->getRoleNames($user),
             'product_grid_filters'      => $user->getProductGridFilters(),
+            'profile'                   => $user->getProfile(),
             'avatar'                    => null === $user->getAvatar() ? [
                 'filePath'         => null,
                 'originalFilename' => null,

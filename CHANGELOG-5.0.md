@@ -1,5 +1,32 @@
 # 5.0.x
 
+## Bug fixes:
+
+- PIM-9882: Fix the display of the grid selector secondary action dropdown
+
+# 5.0.28 (2021-05-28)
+
+## Bug fixes
+
+- PIM-9878: Fix breadcrumb link in Settings > Attribute Groups
+
+# 5.0.27 (2021-05-26)
+
+# 5.0.26 (2021-05-21)
+
+## Bug fixes
+
+- PIM-9839: Fix indexation issue on the 2-way associations
+
+# 5.0.25 (2021-05-19)
+
+- OB-806: Add missing migration on `pim_catalog_completeness` table
+- PIM-9865: [Backport] PIM-9771: Export to PDF doesn't export Image
+
+# 5.0.24 (2021-05-07)
+
+# 5.0.23 (2021-05-05)
+
 ## BC breaks
 
 - API-1557:

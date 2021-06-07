@@ -112,7 +112,7 @@ extensions:
         config:
             stateCode: pim-menu-settings
             tab: pim-menu-settings
-            navigationTitle: pim_menu.navigation.settings
+            navigationTitle: pim_menu.navigation.settings.collapsed_label
 
     # Settings > catalog settings
     pim-menu-catalog-settings-block:

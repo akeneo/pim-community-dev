@@ -185,6 +185,8 @@ services:
         class: 'Akeneo\Pim\Enrichment\Bundle\EventSubscriber\EntityWithAssociations\PersistTwoWayAssociationSubscriber'
         arguments:
             - '@doctrine'
+            - '@pim_catalog.elasticsearch.indexer.product'
+            - '@pim_catalog.elasticsearch.indexer.product_model'
         tags:
             - { name: kernel.event_subscriber }
 
@@ -233,6 +235,12 @@ services:
             - '@akeneo.pim.structure.query.get_attributes'
             - '@akeneo.pim.enrichment.factory.value'
             - '@pim_channel.query.sql.get_channel_code_with_locale_codes'
+        tags:
+            - { name: kernel.event_subscriber }
+
+    Akeneo\Pim\Enrichment\Bundle\EventSubscriber\EventsApi\DispatchReadProductEventFromEventsApiSubscriber:
+        arguments:
+            - '@event_dispatcher'
         tags:
             - { name: kernel.event_subscriber }
 

@@ -1,0 +1,39 @@
+pim_enrich:
+  #Attribute
+  attribute:
+    tab:
+      parameter.title: Parametreler
+      value.title: Değerler
+      history.title: Geçmiş
+  #Family
+  family:
+    info:
+      cant_remove_attribute_used_as_axis: Bir aile değişkeninde değişken ekseni olarak kullanılan bu özellik kaldırılamıyor
+  #Group type
+  group_type:
+    tab:
+      property.title: Özellikler
+  #Mass edit operations
+  mass_edit_action:
+    family:
+      page_title: Aileler
+      page_subtitle: Toplu Düzenle (1 aile) | Toplu Düzenle (%count% aile)
+      title: İşlemi seçin
+      subtitle: Seçilen ailede yapmak istediğiniz eylemi seçin| Seçilen %count% ailede yapmak istediğiniz eylemi seçin
+      confirm: Bir ürünün sınıfını şu bilgilere göre güncellemek üzeresiniz, lütfen onaylayın. | Aşağıdaki bilgilerle bir ürünün %sayı% sınıfını güncellemek üzeresiniz, lütfen onaylayın.
+      steps:
+        first: Aileleri seçin
+        second: İşlemi seçin
+        third: Yapılandırma
+        fourth: Doğrula
+pim_enrich_attribute_form:
+  code: Kod
+  type: Özellik türü
+  reference_data_name: Referans veri ismi
+  scopable: Kanal başına değer
+  localizable: Yerel ayar başına değer
+  unique: Benzersiz değer
+  availableLocales: Kullanılabilir yerel ayarlar
+  locale_specific: Özel yerel ayarlar
+  group: Özellik grubu
+  useableAsGridFilter: Kılavuz olarak kullanılabilir

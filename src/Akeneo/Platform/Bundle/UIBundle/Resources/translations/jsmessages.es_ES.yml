@@ -218,6 +218,7 @@ pim_common:
     STARTS WITH: Comienza por
     ENDS WITH: Termina por
   read_more: Leer más
+  groups: Grupos
 error:
   exception: Oups! Un error {{ status_code }} ha ocurrido...
   forbidden: Prohibido. Usted no tiene permitido acceder a esta página
@@ -330,6 +331,8 @@ pim_menu:
     activity: Actividad de navegación
     system: Sistema de navegación
     user: Navegación del gestor de usuario
+    settings:
+      collapsed_label: Navegación de ajustes
     product: Navegación de productos
     product_infos: Información de producto
   user:

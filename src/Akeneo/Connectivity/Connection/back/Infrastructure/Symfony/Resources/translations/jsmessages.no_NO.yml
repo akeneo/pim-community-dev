@@ -1,0 +1,11 @@
+akeneo_connectivity.connection:
+  edit_connection:
+    credentials:
+      wrong_credentials_combinations:
+        single: Vi ser du benytter feil {{ wrong_username }} brukernavn for denne tilkoblingen (Sist brukt {{ date }} den {{ time }}). Vi anbefaller å benytte {{ good_username }} brukernavnet isteden.
+        link: Opplev hvorfor du skal bruke den.
+        link_list: Se hvorfor vi anbefaller å benytte brukernavn.
+        several: Vi oppdaget at du ikke bruker {{ good_username }}  brukernavnet for denne tilkoblingen.
+        list: 'Her er listen over brukernavn som har vært benyttet de siste 7 dagene:'
+        username_date: '{{ wrong_username }} den {{ date }} kl {{ time }}'
+  grid.wrong_credentials_combination_helper: Noen av tilkoblingene under benytter ikke brukernavn. De er merket i gult.

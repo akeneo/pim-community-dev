@@ -62,12 +62,16 @@ pim_common:
   name: 名前
   remove: 削除
   code: コード
+  quantity: 数量
   products: 商品
   product_models: 商品モデル
   categories: カテゴリ
+  family_variant: ファミリーバリエーション
   enabled: 有効
   family: ファミリー
+  parent: 親
   groups: グループ
+  unit: ユニット
   yes: "はい"
   no: "いいえ"
 pim_enrich:
@@ -100,7 +104,6 @@ pim_enrich:
       edit_attributes: 商品モデルの属性を編集
       categories_view: 商品モデルのカテゴリを相談
       history: 商品モデルの履歴を表示
-      remove: 商品モデルを削除
     category:
       list: カテゴリを一覧表示
       create: カテゴリを作成
@@ -378,6 +381,7 @@ pim_catalog_file: ファイル
 pim_catalog_image: 画像
 pim_catalog_boolean: "Yes/No"
 pim_catalog_date: 日付
+pim_catalog_metric: 測定
 pim_reference_data_simpleselect: 単一選択データの参照
 pim_reference_data_multiselect: 複数選択データの参照
 #Locales
@@ -434,8 +438,18 @@ pim_datagrid:
       label: グループ
     enabled:
       label: ステータス
+    scope:
+      label: スコープ
     completeness:
       label: 完了
+    created:
+      label: 作成日
+    updated:
+      label: 更新日
+    label_or_identifier:
+      label: ラベルもしくは識別子
+    parent:
+      label: 親
     identifier:
       label: 識別子
 #Versioning / history
@@ -523,3 +537,7 @@ job_tracker:
     title: プロセストラッカー
   filter:
     started_at: 開始日時
+pim_login:
+  logo_title: Akeneo PIM
+  footer:
+    powered_image_title: ロゴ Akeneo

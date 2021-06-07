@@ -154,6 +154,7 @@ pim_common:
   before: 之前
   by: 由
   cancel: 取消
+  clear_value: 清除值
   close: 关闭
   code: 代码
   completeness: 完整性
@@ -190,6 +191,7 @@ pim_common:
   previous: 上一步
   properties: 属性
   remove: 移除
+  required_label: '（必填）'
   result_count: "{0}0 个结果|{1}1 个结果|]1, Inf[{{ itemsCount }} 个结果"
   save: 保存
   search: 搜索
@@ -201,6 +203,7 @@ pim_common:
   to: 到
   type: 类型
   update: 更新
+  updated: 已更新
   "yes": "是"
   operator: 运算符
   operators:

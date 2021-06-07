@@ -42,6 +42,7 @@ services:
     Akeneo\Pim\Automation\DataQualityInsights\Application\Consolidation\PurgeOutdatedData:
         arguments:
             - '@Akeneo\Pim\Automation\DataQualityInsights\Infrastructure\Persistence\Repository\DashboardScoresProjectionRepository'
+            - '@Akeneo\Pim\Automation\DataQualityInsights\Infrastructure\Persistence\Repository\ProductScoreRepository'
 
     akeneo.pim.automation.data_quality_insights.create_products_criteria_evaluations:
         class: Akeneo\Pim\Automation\DataQualityInsights\Application\ProductEvaluation\CreateCriteriaEvaluations

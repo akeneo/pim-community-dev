@@ -117,7 +117,31 @@ class ChannelValidationIntegration extends TestCase
 
         $this->assertCount(1, $violations);
         $this->assertSame(
-            'Channel code may contain only letters, numbers and underscores',
+            'Channel code may contain only letters, numbers and underscores and should contain at least one letter',
+            $violation->getMessage()
+        );
+        $this->assertSame('code', $violation->getPropertyPath());
+    }
+
+    public function testChannelCodeContainsAtLeastOneLetter()
+    {
+        $channel = $this->createChannel();
+        $this->getUpdater()->update(
+            $channel,
+            [
+                'code'          => '1234567890',
+                'category_tree' => 'master',
+                'currencies'    => ['EUR'],
+                'locales'       => ['fr_FR'],
+            ]
+        );
+
+        $violations = $this->getValidator()->validate($channel);
+        $violation = current($violations)[0];
+
+        $this->assertCount(1, $violations);
+        $this->assertSame(
+            'Channel code may contain only letters, numbers and underscores and should contain at least one letter',
             $violation->getMessage()
         );
         $this->assertSame('code', $violation->getPropertyPath());

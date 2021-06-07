@@ -6,13 +6,16 @@ namespace spec\Akeneo\Connectivity\Connection\Infrastructure\EventSubscriber;
 
 use Akeneo\Connectivity\Connection\Application\Audit\Command\UpdateDataDestinationProductEventCountCommand;
 use Akeneo\Connectivity\Connection\Application\Audit\Command\UpdateDataDestinationProductEventCountHandler;
-use Akeneo\Connectivity\Connection\Domain\ValueObject\HourlyInterval;
+use Akeneo\Connectivity\Connection\Domain\Settings\Model\ValueObject\ConnectionCode;
 use Akeneo\Connectivity\Connection\Domain\Settings\Model\ValueObject\FlowType;
+use Akeneo\Connectivity\Connection\Domain\Settings\Persistence\Repository\ConnectionRepository;
+use Akeneo\Connectivity\Connection\Domain\ValueObject\HourlyInterval;
 use Akeneo\Connectivity\Connection\Domain\Settings\Model\Write\Connection;
 use Akeneo\Connectivity\Connection\Infrastructure\ConnectionContext;
 use Akeneo\Connectivity\Connection\Infrastructure\EventSubscriber\ReadProductsEventSubscriber;
 use Akeneo\Pim\Enrichment\Component\Product\Event\Connector\ReadProductsEvent;
 use PhpSpec\ObjectBehavior;
+use Prophecy\Argument;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 
 /**
@@ -24,11 +27,13 @@ class ReadProductsEventSubscriberSpec extends ObjectBehavior
 {
     public function let(
         ConnectionContext $connectionContext,
-        UpdateDataDestinationProductEventCountHandler $updateDataDestinationProductEventCountHandler
+        UpdateDataDestinationProductEventCountHandler $updateDataDestinationProductEventCountHandler,
+        ConnectionRepository $connectionRepository
     ): void {
         $this->beConstructedWith(
             $connectionContext,
-            $updateDataDestinationProductEventCountHandler
+            $updateDataDestinationProductEventCountHandler,
+            $connectionRepository
         );
     }
 
@@ -43,48 +48,101 @@ class ReadProductsEventSubscriberSpec extends ObjectBehavior
         $this->getSubscribedEvents()->shouldReturn([ReadProductsEvent::class => 'saveReadProducts',]);
     }
 
-    public function it_saves_read_products_events(
-        $connectionContext,
-        $updateDataDestinationProductEventCountHandler
+    public function it_saves_read_products_events_without_connection_code_from_the_rest_api(
+        ConnectionContext $connectionContext,
+        UpdateDataDestinationProductEventCountHandler $updateDataDestinationProductEventCountHandler,
+        Connection $connection
     ): void {
-        $connection = new Connection('ecommerce', 'ecommerce', FlowType::DATA_DESTINATION, 42, 10);
-        $connectionContext->getConnection()->willReturn($connection);
-        $connectionContext->isCollectable()->willReturn(true);
+        $readProductsEvent = new ReadProductsEvent(3);
 
-        $this->saveReadProducts(new ReadProductsEvent([4, 2, 6]));
+        $connection->auditable()->willReturn(true);
+        $connection->flowType()->willReturn(new FlowType(FlowType::DATA_DESTINATION));
+        $connection->code()->willReturn(new ConnectionCode('connection_code'));
+        $connectionContext->areCredentialsValidCombination()->willReturn(true);
+        $connectionContext->getConnection()->willReturn($connection);
 
         $updateDataDestinationProductEventCountHandler->handle(
             new UpdateDataDestinationProductEventCountCommand(
-                'ecommerce',
+                'connection_code',
                 HourlyInterval::createFromDateTime(new \DateTimeImmutable('now', new \DateTimeZone('UTC'))),
                 3
             )
-        )->shouldBeCalled();
+        )->shouldBeCalledTimes(1);
+
+        $this->saveReadProducts($readProductsEvent);
     }
 
-    public function it_does_not_save_read_products_events_for_not_collectable_connection(
-        $connectionContext,
-        $updateDataDestinationProductEventCountHandler
+    public function it_saves_read_products_events_with_connection_code_from_the_events_api(
+        UpdateDataDestinationProductEventCountHandler $updateDataDestinationProductEventCountHandler,
+        ConnectionRepository $connectionRepository,
+        Connection $connection
     ): void {
-        $connectionContext->isCollectable()->willReturn(false);
+        $readProductsEvent = new ReadProductsEvent(3, 'connection_code');
 
-        $this->saveReadProducts(new ReadProductsEvent([4, 2, 6]));
+        $connectionRepository->findOneByCode('connection_code')
+            ->willReturn($connection);
 
-        $updateDataDestinationProductEventCountHandler->handle()
+        $connection->auditable()->willReturn(true);
+        $connection->flowType()->willReturn(new FlowType(FlowType::DATA_DESTINATION));
+        $connection->code()->willReturn(new ConnectionCode('connection_code'));
+
+        $updateDataDestinationProductEventCountHandler->handle(
+            new UpdateDataDestinationProductEventCountCommand(
+                'connection_code',
+                HourlyInterval::createFromDateTime(new \DateTimeImmutable('now', new \DateTimeZone('UTC'))),
+                3
+            )
+        )->shouldBeCalledTimes(1);
+
+        $this->saveReadProducts($readProductsEvent);
+    }
+
+    public function it_does_not_save_read_products_events_when_the_connection_is_not_using_valid_credentials(
+        ConnectionContext $connectionContext,
+        UpdateDataDestinationProductEventCountHandler $updateDataDestinationProductEventCountHandler
+    ): void {
+        $readProductsEvent = new ReadProductsEvent(3);
+
+        $connectionContext->areCredentialsValidCombination()->willReturn(false);
+
+        $updateDataDestinationProductEventCountHandler->handle(Argument::any())
             ->shouldNotBeCalled();
+
+        $this->saveReadProducts($readProductsEvent);
     }
 
-    public function it_does_not_save_read_products_events_when_the_connection_flow_type_is_different_than_destination(
-        $connectionContext,
-        $updateDataDestinationProductEventCountHandler
+    public function it_does_not_save_read_products_events_when_the_connection_is_not_auditable(
+        ConnectionContext $connectionContext,
+        UpdateDataDestinationProductEventCountHandler $updateDataDestinationProductEventCountHandler,
+        Connection $connection
     ): void {
-        $connection = new Connection('ecommerce', 'ecommerce', FlowType::DATA_SOURCE, 42, 10);
+        $readProductsEvent = new ReadProductsEvent(3);
+
+        $connection->auditable()->willReturn(false);
+        $connectionContext->areCredentialsValidCombination()->willReturn(true);
         $connectionContext->getConnection()->willReturn($connection);
-        $connectionContext->isCollectable()->willReturn(true);
 
-        $this->saveReadProducts(new ReadProductsEvent([4, 2, 6]));
-
-        $updateDataDestinationProductEventCountHandler->handle()
+        $updateDataDestinationProductEventCountHandler->handle(Argument::any())
             ->shouldNotBeCalled();
+
+        $this->saveReadProducts($readProductsEvent);
+    }
+
+    public function it_does_not_save_read_products_events_when_the_connection_is_not_a_destination(
+        ConnectionContext $connectionContext,
+        UpdateDataDestinationProductEventCountHandler $updateDataDestinationProductEventCountHandler,
+        Connection $connection
+    ): void {
+        $readProductsEvent = new ReadProductsEvent(3);
+
+        $connection->flowType()->willReturn(new FlowType(FlowType::DATA_SOURCE));
+        $connection->auditable()->willReturn(true);
+        $connectionContext->areCredentialsValidCombination()->willReturn(true);
+        $connectionContext->getConnection()->willReturn($connection);
+
+        $updateDataDestinationProductEventCountHandler->handle(Argument::any())
+            ->shouldNotBeCalled();
+
+        $this->saveReadProducts($readProductsEvent);
     }
 }

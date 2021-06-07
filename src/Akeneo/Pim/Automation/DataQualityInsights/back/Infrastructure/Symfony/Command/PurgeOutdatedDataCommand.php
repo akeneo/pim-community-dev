@@ -50,15 +50,15 @@ final class PurgeOutdatedDataCommand extends Command
             return 0;
         }
 
-        $this->purgeDashboardProjectionRates($purgeDate, $output);
+        $this->purgeOutdatedData($purgeDate, $output);
 
         return 0;
     }
 
-    private function purgeDashboardProjectionRates(\DateTimeImmutable $purgeDate, OutputInterface $output)
+    private function purgeOutdatedData(\DateTimeImmutable $purgeDate, OutputInterface $output)
     {
-        $output->writeln('Start to purge dashboard projection rates.');
-        $this->purgeOutdatedData->purgeDashboardProjectionRatesFrom($purgeDate);
+        $output->writeln('Start to purge dashboard projection rates and product scores.');
+        $this->purgeOutdatedData->purgeAllFrom($purgeDate);
         $output->writeln('Purge done.');
     }
 

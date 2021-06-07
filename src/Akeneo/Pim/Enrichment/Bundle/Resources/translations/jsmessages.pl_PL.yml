@@ -70,10 +70,9 @@ pim_enrich.entity.product:
       locale_unavailable: To tłumaczone pole nie jest dostępne dla wersji językowej '{{ locale }}' i kanału '{{ channel }}'
       to_fill_count: "{1}1 brak wymaganego atrybutu|]1, Inf[{{ count }} brakujących wymaganych atrybutów"
       add_attribute_option: Dodaj opcje atrybutu
-      add_option: Dodaj Opcję
     completeness:
       title: Kompletność
-      complete: Kompletny
+      complete: Kompletność
       no_family: Brak zdefiniowanej rodziny. Proszę zdefiniuj rodzinę w celu przeliczenia kompletności tego produktu.
       no_completeness: Właśnie zmieniłeś rodzinę produktu. Proszę zapisz zmiany w celu przeliczenia kompletności dla nowej rodziny.
       missing_values: "{1}1 brakująca wartość|]1, Inf[{{ count }} brakujące wartości"
@@ -154,6 +153,7 @@ pim_enrich.entity.product_model:
       required_label: '(oś wariantu)'
     completeness:
       variant_product: "]-Inf, 1]{{ complete }}/{{ total }} wariant produkt|]1, Inf[{{ complete }}/{{ total }} wariant produktów"
+      label: Wariant
     delete:
       confirm: Czy na pewno chcesz usunąć ten model produktu? Wszystkie jego elementy podrzędne, modele i warianty produktów, zostaną również usunięte.
       confirm_for_products_and_product_models: Czy na pewno chcesz usunąć wybrane produkty i modele produktów? Wszystkie elementy podrzędne modelu produktu również zostaną usunięte.
@@ -349,12 +349,12 @@ pim_datagrid:
       csv_grid_context: CSV (w kontekście siatki)
       xlsx_all: Excel (wszystkie atrybuty)
       xlsx_grid_context: Excel (w kontekście siatki)
+      configurator:
+        title: Wybierz działanie
+        all_attributes: Wszystkie atrybuty
     mass_edit: Działania zbiorcze
     sequential_edit: Edycja sekwencyjna
     mass_delete: Usuwanie zbiorcze
-    selected:
-      family: wybrane rodziny
-      product: wybrane wyniki
   view_selector:
     view: Widoki
   actions:
@@ -371,6 +371,20 @@ pim_datagrid:
   filters:
     label: Filtry
     system: System
+    product_typology:
+      variant: 'Wariant'
+    entity_type:
+      label: 'Wariant'
+    family:
+      label: Rodzina
+    groups:
+      label: Grupy
+    enabled:
+      label: Status
+    completeness:
+      label: Kompletny
+    identifier:
+      label: Identyfikator
   search: Szukaj w {{label}}
 batch_jobs:
   add_association:

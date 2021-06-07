@@ -14,7 +14,7 @@ const getDropRow = (element: HTMLElement | null): number => {
 };
 
 const generateReorderedIndices = (size: number, draggedIndex: number, droppedIndex: number) => {
-  //Generate en array of indices from original size
+  //Generate an array of indices from original size
   const originalArray = Array.from([...Array.from({length: size})].keys());
 
   //Remove the moved element
@@ -38,6 +38,7 @@ const useDrop = (tableSize: number, draggedElementIndex: number | null) => {
       onReorder(newIndices);
 
       event.stopPropagation();
+      event.preventDefault();
     }
   };
 

@@ -2,7 +2,7 @@
 # master
 
 ## Bug fixes
-
+- PIM-9890: Creating Channels with numeric code breaks the PIM
 - PIM-9748: Upgrade JQuery for security reasons
 - PIM-9678: The time counter is still running despite the job failed
 - PIM-9672: Error 500 on the API when inputing [null] on an array
@@ -73,6 +73,11 @@
 - PIM-9777: Fix error message when trying to delete an attribute linked to an entity
 - PIM-9873: Fix since last n day filter in product export
 - PIM-9852: Fix exception during PRE_REMOVE on removeAll cause ES desynchronisation
+- PIM-9876: Fix purge of products old scores in Data Quality Insights
+- PIM-9881: Do not update a product value which was not modified
+- PIM-9863: Remove temporisation and add unit tests for product model reindexation.
+- PIM-9891: Fix missing sanity checks when computing enrichment status
+- PIM-9886: Fix display of completeness in the PEF when the selected locale is deactivated
 
 ## New features
 

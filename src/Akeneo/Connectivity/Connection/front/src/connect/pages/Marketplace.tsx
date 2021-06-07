@@ -1,12 +1,11 @@
 import React, {FC} from 'react';
-import {AkeneoThemedProps, Breadcrumb, getColor, getFontSize} from 'akeneo-design-system';
+import {AkeneoThemedProps, Breadcrumb, ChannelsIllustration, getColor, getFontSize} from 'akeneo-design-system';
 import {useTranslate} from '../../shared/translate';
 import {PageHeader} from '../../common';
 import {UserButtons} from '../../shared/user';
 import styled from 'styled-components';
 import {useRouter} from '../../shared/router/use-router';
-import {useAppActivate} from '../hooks/use-app-activate';
-import {useRoute} from "../../shared/router";
+import {useRoute} from '../../shared/router';
 
 const LinkButton = styled.a<AkeneoThemedProps>`
     display: inline-flex;
@@ -52,11 +51,17 @@ const PageContent = styled.div`
     }
 `;
 
+const Heading = styled.h1`
+    color: ${({theme}) => theme.color.grey140};
+    font-size: 28px;
+    font-weight: normal;
+    margin: 0;
+    margin-bottom: 21px;
+    line-height: 1.2em;
+`;
+
 export const Marketplace: FC = () => {
     const translate = useTranslate();
-    //const fetchMarketplaceUrl = useFetchMarketingUrl();
-    //const [marketplaceUrl, setMarketplaceUrl] = useState<string>('');
-    const appActivate = useAppActivate('19e75c0ee9eb4ecf84c5d294186980ee60738a74c2be11eb85');
     const generateUrl = useRouter();
     const dashboardHref = `#${generateUrl('akeneo_connectivity_connection_audit_index')}`;
 
@@ -71,10 +76,6 @@ export const Marketplace: FC = () => {
         {identifier: '1sp8vcfi1940cc8o4g0skcw88w8g8gk004wssw0ogc4ks8gc08'}
     );
 
-    //useEffect(() => {
-    //    fetchMarketplaceUrl().then(setMarketplaceUrl);
-    //}, [fetchMarketplaceUrl]);
-
     return (
         <>
             <PageHeader breadcrumb={breadcrumb} userButtons={<UserButtons />}>
@@ -82,6 +83,10 @@ export const Marketplace: FC = () => {
             </PageHeader>
 
             <PageContent>
+                <ChannelsIllustration size={256} />
+
+                <Heading>{translate('akeneo_connectivity.connection.connect.marketplace.title')}</Heading>
+
                 <LinkButton href={activateUrl} role='link' tabIndex='0'>
                     ACTIVATE YELL EXTENSION
                 </LinkButton>

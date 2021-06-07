@@ -22,6 +22,7 @@ const renderEventLogDateTimeRangeFilter = (
     const user = {
         get: jest.fn().mockReturnValue(timeZone),
         set: jest.fn(),
+        refresh: jest.fn(),
     };
 
     const wrapper: React.FC = ({children}) => (

@@ -60,6 +60,15 @@ pim_common:
   properties: Propriedade
   name: Nome
   remove: Remover
+  code: Código
+  products: Produtos
+  product_models: Modelos de produto
+  categories: Categorias
+  enabled: Habilitado
+  family: Família
+  groups: Grupos
+  yes: "Sim"
+  no: "Não"
 pim_enrich:
   #ACLs
   acl:
@@ -89,7 +98,6 @@ pim_enrich:
       edit_attributes: Editar atributos de um modelo de produto
       categories_view: Consultar as categorias de um modelo de produto
       history: Ver histórico do modelo de produto
-      remove: Remover um modelo de produto
     category:
       list: Listar categorias
       create: Criar uma categoria
@@ -152,8 +160,6 @@ pim_enrich:
       remove: Remover associações de um produto
     job_tracker:
       index: Ver rastreamento de processo
-    api_connection:
-      manage: Gerenciar as conexões de API
   acl_group:
     association_type: Tipos de Associação
     attribute: Atributos
@@ -344,8 +350,6 @@ Decimals allowed: Permitir decimais
 Negative allowed: Permitir valores negativos
 Date min: Data mínima
 Date max: Data máxima
-Metric family: Unidades métricas
-Default metric unit: Unidade métrica padrão
 Max file size: Tamanho máximo do arquivo (MB)
 Allowed extensions: Extensões permitidas
 None: Nenhum
@@ -370,7 +374,6 @@ pim_catalog_file: Arquivo
 pim_catalog_image: Imagem
 pim_catalog_boolean: "Sim/Não"
 pim_catalog_date: Data
-pim_catalog_metric: Métrico
 pim_reference_data_simpleselect: Seleção simples de dados de referência
 pim_reference_data_multiselect: Seleção múltipla de dados de referência
 #Locales
@@ -417,6 +420,20 @@ Updated At: Atualizado em
 Enabled: Habilitado
 Disabled: Desabilitado
 Status: Status
+pim_datagrid:
+  filters:
+    entity_type:
+      label: Variante
+    family:
+      label: Família
+    groups:
+      label: Grupos
+    enabled:
+      label: Status
+    completeness:
+      label: Completo
+    identifier:
+      label: Identificador
 #Versioning / history
 Change History: Histórico de alterações
 Data Audit: Auditoria de dados

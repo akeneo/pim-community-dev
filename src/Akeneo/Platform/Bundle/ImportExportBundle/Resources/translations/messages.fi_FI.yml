@@ -164,3 +164,4 @@ FAILED: Epäonnistunut
 ABANDONED: Hylätty
 UNKNOWN: Tuntematon
 warning.label: Varoitus
+pim_datagrid.column.username: Käyttäjänimi
