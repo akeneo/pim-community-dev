@@ -380,13 +380,8 @@ jobs:
                     APP_ENV=test C='mysql elasticsearch object-storage pubsub-emulator' make up
                     docker/wait_docker_up.sh
         -   run:
-                name: Restore permissions on files
+                name: Reset git changes
                 command: git checkout -- .
-        -   run:
-                name: Restore permissions on vendor files
-                command: |
-                    cd vendor/akeneo/pim-community-dev
-                    git checkout -- .
         -   run:
                 name: Change owner on project dir after restoring cache
                 command: sudo chown -R 1000:1000 ../project
