@@ -206,7 +206,10 @@ const TableOptionsApp: React.FC<TableOptionsAppProps> = ({initialTableConfigurat
         <Field
           label={translate('pim_table_attribute.form.attribute.data_type')}
           requiredLabel={translate('pim_common.required_label')}>
-          <TextInput readOnly={true} value={selectedColumn.data_type} />
+          <TextInput
+            readOnly={true}
+            value={translate(`pim_table_attribute.properties.data_type.${selectedColumn.data_type}`)}
+          />
         </Field>
       </FieldsList>
       <SectionTitle title={translate('pim_table_attribute.form.attribute.labels')}>
