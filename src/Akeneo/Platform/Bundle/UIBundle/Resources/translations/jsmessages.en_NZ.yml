@@ -211,6 +211,7 @@ pim_common:
     DOES NOT CONTAIN: Does not contain
     STARTS WITH: Starts with
     ENDS WITH: Ends with
+  groups: Groups
 error:
   exception: Oh snap! A {{ status_code }} error occurred...
   forbidden: Forbidden. You are not allowed to access this page
@@ -323,6 +324,8 @@ pim_menu:
     activity: Activity navigation
     system: System navigation
     user: Users management navigation
+    settings:
+      collapsed_label: Settings navigation
     product: Product navigation
     product_infos: Product infos
   user:

@@ -10,6 +10,7 @@ use Akeneo\Connectivity\Connection\Application\Webhook\Service\Logger\SendApiEve
 use Akeneo\Connectivity\Connection\Domain\Webhook\Client\WebhookClient;
 use Akeneo\Connectivity\Connection\Domain\Webhook\Event\EventsApiRequestFailedEvent;
 use Akeneo\Connectivity\Connection\Domain\Webhook\Event\EventsApiRequestSucceededEvent;
+use Akeneo\Connectivity\Connection\Domain\Webhook\Model\WebhookEvent;
 use Akeneo\Connectivity\Connection\Infrastructure\Webhook\RequestHeaders;
 use GuzzleHttp\ClientInterface;
 use GuzzleHttp\Exception\RequestException;
@@ -52,6 +53,7 @@ class GuzzleWebhookClient implements WebhookClient
         $this->debugLogger = $debugLogger;
         $this->eventDispatcher = $eventDispatcher;
         $this->config = $config;
+        $this->eventDispatcher = $eventDispatcher;
     }
 
     public function bulkSend(iterable $webhookRequests): void
@@ -88,13 +90,21 @@ class GuzzleWebhookClient implements WebhookClient
                     'timeout' => $this->config['timeout'] ?? null,
                 ],
                 'fulfilled' => function (Response $response, int $index) use (&$logs) {
-                    $this->eventDispatcher->dispatch(new EventsApiRequestSucceededEvent());
-
                     /** @var EventSubscriptionSendApiEventRequestLog $webhookRequestLog */
                     $webhookRequestLog = $logs[$index];
                     $webhookRequestLog->setSuccess(true);
                     $webhookRequestLog->setEndTime(microtime(true));
                     $webhookRequestLog->setResponse($response);
+
+                    $pimEvents = array_map(
+                        fn (WebhookEvent $apiEvent) => $apiEvent->getPimEvent(),
+                        $webhookRequestLog->getWebhookRequest()->apiEvents()
+                    );
+
+                    $this->eventDispatcher->dispatch(new EventsApiRequestSucceededEvent(
+                        $webhookRequestLog->getWebhookRequest()->webhook()->connectionCode(),
+                        $pimEvents
+                    ));
 
                     $this->debugLogger->logEventsApiRequestSucceed(
                         $webhookRequestLog->getWebhookRequest()->webhook()->connectionCode(),

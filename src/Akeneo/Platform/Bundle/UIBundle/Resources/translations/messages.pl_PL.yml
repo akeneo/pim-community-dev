@@ -62,6 +62,14 @@ pim_common:
   name: Nazwa
   remove: Usuń
   code: Pod Produktu
+  products: Produkty
+  product_models: Model produktu
+  categories: Kategorie
+  enabled: Włączony
+  family: Rodzina
+  groups: Grupy
+  yes: "Tak"
+  no: "Nie"
 pim_enrich:
   #ACLs
   acl:
@@ -92,7 +100,6 @@ pim_enrich:
       edit_attributes: Edytuj atrybutu modelu produktu
       categories_view: Sprawdź kategorie modelu produktu
       history: Przeglądaj historię modelu produktu
-      remove: Usuń model produktu
     category:
       list: Przeglądanie kategorii
       create: Tworzenie kategorii
@@ -420,6 +427,20 @@ Updated At: Aktualizowano
 Enabled: Włączony
 Disabled: Wyłączony
 Status: Status
+pim_datagrid:
+  filters:
+    entity_type:
+      label: Wariant
+    family:
+      label: Rodzina
+    groups:
+      label: Grupy
+    enabled:
+      label: Status
+    completeness:
+      label: Kompletny
+    identifier:
+      label: Identyfikator
 #Versioning / history
 Change History: Historia zmian
 Data Audit: Inspekcja danych

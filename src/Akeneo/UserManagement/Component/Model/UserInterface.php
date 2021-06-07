@@ -564,4 +564,8 @@ interface UserInterface extends AdvancedUserInterface, \Serializable, EntityUplo
     public function getAuthenticationFailureResetDate(): ?\DateTime;
 
     public function setAuthenticationFailureResetDate(?\DateTime $authenticationFailureResetDate);
+
+    public function getProfile(): ?string;
+
+    public function setProfile(?string $profile): void;
 }

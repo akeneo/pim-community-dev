@@ -6,15 +6,16 @@ namespace spec\Akeneo\Connectivity\Connection\Infrastructure\Webhook\Client;
 
 use Akeneo\Connectivity\Connection\Application\Webhook\Service\EventsApiRequestLogger;
 use Akeneo\Connectivity\Connection\Application\Webhook\Service\Logger\SendApiEventRequestLogger;
+use Akeneo\Connectivity\Connection\Domain\Webhook\Client\WebhookClient;
 use Akeneo\Connectivity\Connection\Domain\Webhook\Client\WebhookRequest;
 use Akeneo\Connectivity\Connection\Domain\Webhook\Event\EventsApiRequestFailedEvent;
 use Akeneo\Connectivity\Connection\Domain\Webhook\Event\EventsApiRequestSucceededEvent;
-use Akeneo\Connectivity\Connection\Infrastructure\Webhook\RequestHeaders;
-use Akeneo\Platform\Component\EventQueue\Author;
 use Akeneo\Connectivity\Connection\Domain\Webhook\Model\Read\ActiveWebhook;
 use Akeneo\Connectivity\Connection\Domain\Webhook\Model\WebhookEvent;
 use Akeneo\Connectivity\Connection\Infrastructure\Webhook\Client\GuzzleWebhookClient;
 use Akeneo\Connectivity\Connection\Infrastructure\Webhook\Client\Signature;
+use Akeneo\Connectivity\Connection\Infrastructure\Webhook\RequestHeaders;
+use Akeneo\Platform\Component\EventQueue\Author;
 use Akeneo\Platform\Component\EventQueue\Event;
 use Akeneo\Platform\Component\EventQueue\EventInterface;
 use GuzzleHttp\Client;
@@ -54,6 +55,7 @@ class GuzzleWebhookClientSpec extends ObjectBehavior
     public function it_is_initializable(): void
     {
         $this->shouldBeAnInstanceOf(GuzzleWebhookClient::class);
+        $this->shouldImplement(WebhookClient::class);
     }
 
     public function it_sends_webhook_requests_in_bulk(
@@ -83,6 +85,7 @@ class GuzzleWebhookClientSpec extends ObjectBehavior
         );
 
         $author = Author::fromNameAndType('julia', Author::TYPE_UI);
+        $Request1pimEvent = $this->createEvent($author, ['data_1'], 1577836800, '7abae2fe-759a-4fce-aa43-f413980671b3');
         $request1 = new WebhookRequest(
             new ActiveWebhook('ecommerce', 0, 'a_secret', 'http://localhost/webhook1'),
             [
@@ -93,11 +96,12 @@ class GuzzleWebhookClientSpec extends ObjectBehavior
                     $author,
                     'staging.akeneo.com',
                     ['data_1'],
-                    $this->createEvent($author, ['data_1'], 1577836800, '7abae2fe-759a-4fce-aa43-f413980671b3')
+                    $Request1pimEvent
                 ),
             ]
         );
 
+        $Request2pimEvent = $this->createEvent($author, ['data_2'], 1577836800, '7abae2fe-759a-4fce-aa43-f413980671b3');
         $request2 = new WebhookRequest(
             new ActiveWebhook('erp', 1, 'a_secret', 'http://localhost/webhook2'),
             [
@@ -108,7 +112,7 @@ class GuzzleWebhookClientSpec extends ObjectBehavior
                     $author,
                     'staging.akeneo.com',
                     ['data_2'],
-                    $this->createEvent($author, ['data_2'], 1577836800, '7abae2fe-759a-4fce-aa43-f413980671b3')
+                    $Request2pimEvent
                 ),
             ]
         );
@@ -129,6 +133,19 @@ class GuzzleWebhookClientSpec extends ObjectBehavior
         $timestamp = (int)$request->getHeader(RequestHeaders::HEADER_REQUEST_TIMESTAMP)[0];
         $signature = Signature::createSignature('a_secret', $timestamp, $body);
         Assert::assertEquals($signature, $request->getHeader(RequestHeaders::HEADER_REQUEST_SIGNATURE)[0]);
+
+        $eventDispatcher
+            ->dispatch(Argument::allOf(
+                Argument::type(EventsApiRequestSucceededEvent::class),
+                Argument::that(function (EventsApiRequestSucceededEvent $event) use ($Request1pimEvent) {
+                    if ('ecommerce' !== $event->getConnectionCode() || $Request1pimEvent !== $event->getEvents()[0]) {
+                        return false;
+                    }
+
+                    return true;
+                })
+            ))
+            ->shouldBeCalledTimes(1);
 
         $eventsApiRequestLogger->logEventsApiRequestSucceed(
             'ecommerce',
@@ -151,6 +168,19 @@ class GuzzleWebhookClientSpec extends ObjectBehavior
         $timestamp = (int)$request->getHeader(RequestHeaders::HEADER_REQUEST_TIMESTAMP)[0];
         $signature = Signature::createSignature('a_secret', $timestamp, $body);
         Assert::assertEquals($signature, $request->getHeader(RequestHeaders::HEADER_REQUEST_SIGNATURE)[0]);
+
+        $eventDispatcher
+            ->dispatch(Argument::allOf(
+                Argument::type(EventsApiRequestSucceededEvent::class),
+                Argument::that(function (EventsApiRequestSucceededEvent $event) use ($Request2pimEvent) {
+                    if ('erp' !== $event->getConnectionCode() || $Request2pimEvent !== $event->getEvents()[0]) {
+                        return false;
+                    }
+
+                    return true;
+                })
+            ))
+            ->shouldBeCalledTimes(1);
 
         $eventsApiRequestLogger->logEventsApiRequestSucceed(
             'erp',
@@ -295,8 +325,7 @@ class GuzzleWebhookClientSpec extends ObjectBehavior
 
     private function createEvent(Author $author, array $data, int $timestamp, string $uuid): EventInterface
     {
-        return new class($author, $data, $timestamp, $uuid) extends Event
-        {
+        return new class($author, $data, $timestamp, $uuid) extends Event {
             public function getName(): string
             {
                 return 'product.created';

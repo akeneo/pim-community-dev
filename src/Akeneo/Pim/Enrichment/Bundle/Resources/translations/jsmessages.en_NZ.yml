@@ -303,6 +303,7 @@ pim_enrich.mass_edit.product:
     move_to_category:
       label: Move between categories
       description: The products will be classified into following categories, the existing classification is lost.
+      no_update: Please select a category.
     remove_from_category:
       label: Remove from categories
       description: The products will be removed from the following categories.

@@ -193,6 +193,8 @@ pim_common:
   not_available: N/A
   now: Jetzt
   ok: OK
+  open: Öffnen
+  no_result: Kein Ergebnis gefunden
   other_actions: Weitere Aktionen
   permissions: Berechtigungen
   previous: Zurück
@@ -229,6 +231,13 @@ pim_common:
   read_more: Mehr lesen
   channel: Kanal
   locale: Gebietsschema
+  categories: Kategorien
+  family_variant: Varianten der Produktfamilien
+  enabled: Aktiviert
+  family: Produktfamilie
+  parent: Eltern
+  groups: Gruppen
+  more: Mehr
 error:
   exception: Oh nein! Ein {{ status_code }} Fehler ist aufgetreten...
   forbidden: Sie haben keine Berechtigung, diese Seite anzuzeigen
@@ -345,6 +354,7 @@ pim_menu:
     settings:
       product: Artikel Einstellungen
       catalog: Katalogeinstellungen
+      collapsed_label: Navigation Einstellung
     product: Navigation Produkte
     product_infos: Produktinformationen
   user:

@@ -1,5 +1,15 @@
-import {Locale, LocaleCode, isLocales, denormalizeLocale} from '../models';
-import {isLabelCollection, LabelCollection, getLabel} from '../models';
+import {arrayUnique} from 'akeneo-design-system';
+import {
+  Locale,
+  LocaleCode,
+  isLocales,
+  denormalizeLocale,
+  localeExists,
+  LocaleReference,
+  isLabelCollection,
+  LabelCollection,
+  getLabel,
+} from '../models';
 
 type ChannelCode = string;
 type ChannelReference = ChannelCode | null;
@@ -41,5 +51,32 @@ const denormalizeChannel = (channel: any): Channel => {
   return {...channel, locales};
 };
 
-export {getChannelLabel, denormalizeChannel};
+const getAllLocalesFromChannels = (channels: Channel[]): Locale[] =>
+  channels.reduce<Locale[]>(
+    (locales, channel) => arrayUnique([...locales, ...channel.locales], (first, second) => first.code === second.code),
+    []
+  );
+
+const getLocaleFromChannel = (channels: Channel[], channelCode: ChannelCode, localeCode: LocaleReference) => {
+  if (null === localeCode) return null;
+  const channelLocales = getLocales(channels, channelCode);
+
+  return !localeExists(channelLocales, localeCode) ? channelLocales[0].code : localeCode;
+};
+
+const getLocalesFromChannel = (channels: Channel[], channelCode: ChannelCode | null) => {
+  if (null !== channelCode) {
+    return getLocales(channels, channelCode);
+  }
+
+  return getAllLocalesFromChannels(channels);
+};
+
+const getLocales = (channels: Channel[], channelCode: string) => {
+  const channel = channels.find((channel: Channel) => channel.code === channelCode);
+
+  return undefined === channel ? [] : channel.locales;
+};
+
+export {getChannelLabel, denormalizeChannel, getAllLocalesFromChannels, getLocaleFromChannel, getLocalesFromChannel};
 export type {ChannelCode, Channel, ChannelReference};

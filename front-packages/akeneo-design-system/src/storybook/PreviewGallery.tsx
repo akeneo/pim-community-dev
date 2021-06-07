@@ -88,6 +88,98 @@ const SpaceContainer = styled.div<{width: number; height: number}>`
   flex-direction: column;
 `;
 
+const fakeFetcher = async (page = 0, searchValue = '') => {
+  const items = [
+    {
+      id: `name_${page}`,
+      text: `Name (page ${page})`,
+    },
+    {
+      id: `collection_${page}`,
+      text: 'Collection',
+    },
+    {
+      id: `description_${page}`,
+      text: 'Description',
+    },
+    {
+      id: `brand_${page}`,
+      text: 'Brand',
+    },
+    {
+      id: `response_time_${page}`,
+      text: 'Response time (ms)',
+    },
+    {
+      id: `variation_name_${page}`,
+      text: 'Variant Name',
+    },
+    {
+      id: `variation_description_${page}`,
+      text: 'Variant description',
+    },
+    {
+      id: `release_date_${page}`,
+      text: 'Release date',
+    },
+    {
+      id: `release_date_${page}`,
+      text: 'Release date',
+    },
+    {
+      id: `asset_collection_${page}`,
+      text: 'Asset collection',
+    },
+    {
+      id: `associations_${page}`,
+      text: 'Associations',
+    },
+    {
+      id: `enabled_${page}`,
+      text: 'Enabled',
+    },
+    {
+      id: `price_${page}`,
+      text: 'Price',
+    },
+    {
+      id: `promotion_${page}`,
+      text: 'Promotion',
+    },
+    {
+      id: `city_${page}`,
+      text: 'City',
+    },
+    {
+      id: `supplier_${page}`,
+      text: 'Supplier',
+    },
+    {
+      id: `label_${page}`,
+      text: 'Label',
+    },
+    {
+      id: `category_${page}`,
+      text: 'Category',
+    },
+    {
+      id: `updated_at_${page}`,
+      text: 'Updated at',
+    },
+    {
+      id: `created_at_${page}`,
+      text: 'Created at',
+    },
+  ];
+  if (page > 3) return Promise.resolve([]);
+  const filteredItems =
+    searchValue !== '' && 0 === page ? items.filter(item => -1 !== item.text.indexOf(searchValue)) : items;
+  if (searchValue !== '' && page > 0) return Promise.resolve([]);
+  return new Promise(resolve => {
+    setTimeout(() => resolve(filteredItems), 200);
+  });
+};
+
 export {
   StoryStyle,
   PreviewGrid,
@@ -100,4 +192,5 @@ export {
   Scrollable,
   SpaceContainer,
   ListContextContainer,
+  fakeFetcher,
 };

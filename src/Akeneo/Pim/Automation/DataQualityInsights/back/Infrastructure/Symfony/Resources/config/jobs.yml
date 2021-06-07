@@ -34,14 +34,35 @@ services:
             - '@event_dispatcher'
             - '@akeneo_batch.job_repository'
             -
-                - '@akeneo.pim.automation.data_quality_insights.connector.step.consolidate_dashboard_rates'
                 - '@akeneo.pim.automation.data_quality_insights.connector.step.purge_outdated_data'
+                - '@akeneo.pim.automation.data_quality_insights.connector.step.consolidate_dashboard_rates'
+            - true
+        tags:
+            - { name: akeneo_batch.job, connector: 'Data Quality Insights Connector', type: 'data_quality_insights' }
+            - name: akeneo_batch.job.not_visible
+
+    akeneo.pim.automation.data_quality_insights.job.recompute_products_scores:
+        class: '%pim_connector.job.simple_job.class%'
+        arguments:
+            - 'data_quality_insights_recompute_products_scores'
+            - '@event_dispatcher'
+            - '@akeneo_batch.job_repository'
+            -
+                - '@akeneo.pim.automation.data_quality_insights.connector.step.recompute_products_scores'
             - true
         tags:
             - { name: akeneo_batch.job, connector: 'Data Quality Insights Connector', type: 'data_quality_insights' }
             - name: akeneo_batch.job.not_visible
 
     #Steps
+    akeneo.pim.automation.data_quality_insights.connector.step.recompute_products_scores:
+        class: '%pim_connector.step.tasklet.class%'
+        arguments:
+            - 'recompute_product_scores'
+            - '@event_dispatcher'
+            - '@akeneo_batch.job_repository'
+            - '@akeneo.pim.automation.data_quality_insights.connector.tasklet.recompute_products_scores'
+
     akeneo.pim.automation.data_quality_insights.connector.step.evaluate_products_and_product_models_criteria:
         class: '%pim_connector.step.tasklet.class%'
         arguments:
@@ -83,6 +104,15 @@ services:
             - '@Akeneo\Pim\Automation\DataQualityInsights\Infrastructure\Connector\Tasklet\PurgeOutdatedDataTasklet'
 
     #Tasklets
+    akeneo.pim.automation.data_quality_insights.connector.tasklet.recompute_products_scores:
+        class: Akeneo\Pim\Automation\DataQualityInsights\Infrastructure\Connector\Tasklet\RecomputeProductScoresTasklet
+        arguments:
+            - '@Akeneo\Pim\Automation\DataQualityInsights\Application\Consolidation\ConsolidateProductScores'
+            - '@database_connection'
+            - '@akeneo_batch_queue.launcher.queue_job_launcher'
+            - '@akeneo_batch.job.job_instance_repository'
+            - '@logger'
+
     akeneo.pim.automation.data_quality_insights.connector.tasklet.evaluate_products_and_product_models_criteria:
         class: Akeneo\Pim\Automation\DataQualityInsights\Infrastructure\Connector\Tasklet\EvaluateProductsAndProductModelsCriteriaTasklet
         arguments:
@@ -122,6 +152,11 @@ services:
             - { name: akeneo_batch.job.job_parameters.default_values_provider }
 
     Akeneo\Pim\Automation\DataQualityInsights\Infrastructure\Connector\JobParameters\PeriodicTasksParameters:
+        tags:
+            - { name: akeneo_batch.job.job_parameters.constraint_collection_provider }
+            - { name: akeneo_batch.job.job_parameters.default_values_provider }
+
+    Akeneo\Pim\Automation\DataQualityInsights\Infrastructure\Connector\JobParameters\RecomputeProductScoresParameters:
         tags:
             - { name: akeneo_batch.job.job_parameters.constraint_collection_provider }
             - { name: akeneo_batch.job.job_parameters.default_values_provider }

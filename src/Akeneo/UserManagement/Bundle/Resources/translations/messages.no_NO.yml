@@ -67,13 +67,11 @@ pim_user:
       username_or_email: Brukernavn eller e-post
       remember_me: Husk meg på denne datamaskinen
       password_forgotten: Glemt ditt passord?
-      log_in: Logg inn
       forgot_password: Glemt passord
       request: Forespørsel
       password_reset: Tilbakestilling av passord
       reset: Tilbakestill
       password_reset_email_sent: En e-post er sendt til brukeren. Den inneholder en link for å klikke på for å nullstille ditt passord.
-      homepage: Gå til hjemmeside
   group:
     tab:
       general.title: Generelt

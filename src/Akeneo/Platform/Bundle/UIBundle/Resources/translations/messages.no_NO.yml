@@ -61,6 +61,15 @@ pim_common:
   properties: Egenskaper
   name: Navn
   remove: Fjern
+  code: Kode
+  products: Produkter
+  product_models: Produktmodeller
+  categories: Kategorier
+  enabled: Aktivert
+  family: Familie
+  groups: Grupper
+  yes: "Ja"
+  no: "Nei"
 pim_enrich:
   #ACLs
   acl:
@@ -91,7 +100,6 @@ pim_enrich:
       edit_attributes: Rediger attributter for en produktmodell
       categories_view: Se kategoriene for en produktmodell
       history: Vis historikk produktmodell
-      remove: Fjern en produktmodell
     category:
       list: Kategoriliste
       create: Opprett en kategori
@@ -154,8 +162,6 @@ pim_enrich:
       remove: Fjern tilknytninger for et produkt
     job_tracker:
       index: Vis prosessovervåkning
-    api_connection:
-      manage: Administrer API-forbindelsene
   acl_group:
     association_type: Tilknytningstyper
     attribute: Attributter
@@ -346,8 +352,6 @@ Decimals allowed: Tillat desimaler
 Negative allowed: Tillat negative verdier
 Date min: Min dato
 Date max: Maks dato
-Metric family: Metrisk familie
-Default metric unit: Standard metrisk enhet
 Max file size: Maks filstørrelse (MB)
 Allowed extensions: Tillatte utvidelser
 None: Ingen
@@ -372,7 +376,6 @@ pim_catalog_file: Fil
 pim_catalog_image: Bilde
 pim_catalog_boolean: "Ja/Nei"
 pim_catalog_date: Dato
-pim_catalog_metric: Metrisk
 pim_reference_data_simpleselect: Referansedata enkelt valg
 pim_reference_data_multiselect: Referansedata multivalg
 #Locales
@@ -419,6 +422,20 @@ Updated At: Oppdatert den
 Enabled: Aktivert
 Disabled: Deaktivert
 Status: Status
+pim_datagrid:
+  filters:
+    entity_type:
+      label: Variant
+    family:
+      label: Familie
+    groups:
+      label: Grupper
+    enabled:
+      label: Status
+    completeness:
+      label: Fullstendig
+    identifier:
+      label: Identifikator
 #Versioning / history
 Change History: Endre historikk
 Data Audit: Datarevisjon
