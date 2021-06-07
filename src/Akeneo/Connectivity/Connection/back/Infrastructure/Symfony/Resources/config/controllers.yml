@@ -79,4 +79,5 @@ services:
             - '@Akeneo\Connectivity\Connection\Infrastructure\Service\OAuthScopeValidator'
             - '@session'
             - '%fos_oauth_server.template.engine%'
+            - '@Akeneo\Connectivity\Connection\Infrastructure\Service\OAuthScopeTransformer'
 

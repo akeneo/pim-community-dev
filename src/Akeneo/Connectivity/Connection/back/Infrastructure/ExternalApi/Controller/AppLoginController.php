@@ -4,7 +4,6 @@ declare(strict_types=1);
 
 namespace Akeneo\Connectivity\Connection\Infrastructure\ExternalApi\Controller;
 
-use Akeneo\Connectivity\Connection\Infrastructure\Service\CreateAppUserWithPermissions;
 use Akeneo\Connectivity\Connection\Infrastructure\Service\OAuthScopeTransformer;
 use Akeneo\Connectivity\Connection\Infrastructure\Service\OAuthScopeValidator;
 use FOS\OAuthServerBundle\Event\OAuthEvent;
@@ -47,7 +46,7 @@ class AppLoginController
     private string $templateEngineType;
     private EventDispatcherInterface $eventDispatcher;
     protected OAuthScopeValidator $scopeValidator;
-    protected CreateAppUserWithPermissions $createAppUserWithPermissions;
+    protected OAuthScopeTransformer $authScopeTransformer;
 
     public function __construct(
         RequestStack $requestStack,
@@ -61,9 +60,9 @@ class AppLoginController
         EventDispatcherInterface $eventDispatcher,
         OAuthScopeValidator $scopeValidator,
         SessionInterface $session = null,
-        string $templateEngineType = 'twig'
-    )
-    {
+        string $templateEngineType = 'twig',
+        OAuthScopeTransformer $authScopeTransformer
+    ) {
         $this->requestStack = $requestStack;
         $this->session = $session;
         $this->authorizeForm = $authorizeForm;
@@ -76,6 +75,7 @@ class AppLoginController
         $this->templateEngineType = $templateEngineType;
         $this->eventDispatcher = $eventDispatcher;
         $this->scopeValidator = $scopeValidator;
+        $this->authScopeTransformer = $authScopeTransformer;
 
         $this->oAuth2Server->setVariable(
             OAuth2::CONFIG_SUPPORTED_SCOPES,
@@ -93,7 +93,7 @@ class AppLoginController
             $scopes = [];
             if ($request->get('scope')) {
                 // get scopes for OAuth Apps
-                $scopes = explode(',', $request->get('scope'));
+                $scopes = explode(' ', $request->get('scope'));
                 //$this->scopeValidator->validate($scopes);
             }
 
@@ -127,13 +127,12 @@ class AppLoginController
             }
 
             $client = $this->getClient();
-
             $response = $this->templating->renderResponse(
                 'AkeneoConnectivityConnectionBundle::authorize_custom.html.' . $this->templateEngineType,
                 array(
                     'form' => $form->createView(),
                     'client' => $client,
-                    'scopes' => $scopes
+                    'scopes' => array_keys($this->authScopeTransformer->transform($scopes))
                 )
             );
 

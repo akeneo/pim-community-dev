@@ -28,6 +28,7 @@ class OAuthScopeTransformer
                 $aclPermissions[self::$scopesToAclMapping[$scope]] = true;
             }
         }
+
         return $aclPermissions;
     }
 }
