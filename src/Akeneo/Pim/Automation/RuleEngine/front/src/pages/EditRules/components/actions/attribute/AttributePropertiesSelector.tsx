@@ -226,9 +226,9 @@ const AttributePropertiesSelector: React.FC<Props> = ({
               attribute,
               translate,
               currentCatalogLocale,
-              getAvailableCurrencies(currencies),
+              scopes,
               currencies,
-              watch(scopeFormName),
+              () => watch(scopeFormName),
               isCurrencyRequired
             )}
           />

@@ -11,21 +11,18 @@ import {
 } from '../../models';
 import {Translate} from '../../dependenciesTools';
 import {IndexedCurrencies} from '../../repositories/CurrencyRepository';
+import {IndexedScopes} from "../../repositories/ScopeRepository";
 
 const getCurrencyValidation = (
   attribute: Attribute,
   translate: Translate,
   currentCatalogLocale: LocaleCode,
-  availableCurrencies: Currency[],
+  scopes: IndexedScopes,
   currencies: IndexedCurrencies,
-  channelCode: ScopeCode,
+  getChannelCode: () => ScopeCode,
   isCurrencyRequired = true
 ) => {
   const currencyValidation: any = {};
-  const indexedAvailableCurrencies: IndexedCurrencies = {};
-  availableCurrencies.forEach(
-      currency => (indexedAvailableCurrencies[currency.code] = currency)
-  );
 
   if (isCurrencyRequired && attribute.type === AttributeType.PRICE_COLLECTION) {
     currencyValidation['required'] = translate(
@@ -39,25 +36,35 @@ const getCurrencyValidation = (
     if (!selectedCode) {
       return;
     }
+
+    const channelCode = getChannelCode();
+    let availableCurrencies: Currency[] = [];
+    if (!attribute.scopable) {
+      availableCurrencies = Object.values(currencies);
+    } else if (channelCode && scopes[channelCode]) {
+      availableCurrencies = scopes[channelCode].currencies.map(code => ({code}));
+    }
+
     if ('undefined' === typeof currencies[selectedCode]) {
       return translate(
         'pimee_catalog_rule.exceptions.unknown_or_inactive_currency',
         {currencyCode: selectedCode}
       );
     }
-    if (typeof indexedAvailableCurrencies[selectedCode] === 'undefined') {
+    if (!availableCurrencies.some(currency => currency.code === selectedCode)) {
       return attribute.scopable
-          ? translate('pimee_catalog_rule.exceptions.unbound_currency', {
+        ? translate('pimee_catalog_rule.exceptions.unbound_currency', {
             currencyCode: selectedCode,
             channelCode,
           })
-          : translate(
-              'pimee_catalog_rule.exceptions.unknown_or_inactive_currency',
-              {currencyCode: selectedCode}
+        : translate(
+            'pimee_catalog_rule.exceptions.unknown_or_inactive_currency',
+            {currencyCode: selectedCode}
           );
     }
     return true;
   };
+
   return currencyValidation;
 };
 
