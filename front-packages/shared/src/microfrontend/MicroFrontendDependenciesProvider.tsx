@@ -37,7 +37,6 @@ const MicroFrontendDependenciesProvider = ({
       throw new Error(`Route ${route} not found`);
     }
 
-
     const queryString = parameters
       ? '?' +
         Object.entries(parameters)
