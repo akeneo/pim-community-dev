@@ -93,6 +93,7 @@ define(['oro/translator', 'pim/form', 'oro/mediator', 'oro/loading-mask', 'oro/m
      */
     fail: function (response) {
       switch (response.status) {
+        case 422:
         case 400:
           this.getRoot().trigger('pim_enrich:form:entity:bad_request', {
             sentData: this.getFormData(),

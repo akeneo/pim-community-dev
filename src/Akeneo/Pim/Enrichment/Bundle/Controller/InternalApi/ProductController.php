@@ -9,6 +9,7 @@ use Akeneo\Pim\Enrichment\Component\Product\Comparator\Filter\FilterInterface;
 use Akeneo\Pim\Enrichment\Component\Product\Converter\ConverterInterface;
 use Akeneo\Pim\Enrichment\Component\Product\EntityWithFamilyVariant\RemoveParentInterface;
 use Akeneo\Pim\Enrichment\Component\Product\Exception\ObjectNotFoundException;
+use Akeneo\Pim\Enrichment\Component\Product\Exception\TwoWayAssociationWithTheSameProductException;
 use Akeneo\Pim\Enrichment\Component\Product\Localization\Localizer\AttributeConverterInterface;
 use Akeneo\Pim\Enrichment\Component\Product\Model\ProductInterface;
 use Akeneo\Pim\Enrichment\Component\Product\ProductModel\Filter\AttributeFilterInterface;
@@ -266,7 +267,14 @@ class ProductController
         } catch (ObjectNotFoundException $e) {
             throw new BadRequestHttpException();
         }
-        $this->updateProduct($product, $data);
+        try {
+            $this->updateProduct($product, $data);
+        } catch (TwoWayAssociationWithTheSameProductException $e) {
+            return new JsonResponse([
+                'message' => $e->getMessage(),
+                'global' => true],
+                Response::HTTP_UNPROCESSABLE_ENTITY);
+        }
 
         $violations = $this->validator->validate($product);
         $violations->addAll($this->localizedConverter->getViolations());

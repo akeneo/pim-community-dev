@@ -22,6 +22,7 @@ use Akeneo\Pim\Enrichment\Component\Product\Event\Connector\ReadProductsEvent;
 use Akeneo\Pim\Enrichment\Component\Product\Event\ProductDomainErrorEvent;
 use Akeneo\Pim\Enrichment\Component\Product\Exception\InvalidArgumentException as ProductInvalidArgumentException;
 use Akeneo\Pim\Enrichment\Component\Product\Exception\ObjectNotFoundException;
+use Akeneo\Pim\Enrichment\Component\Product\Exception\TwoWayAssociationWithTheSameProductException;
 use Akeneo\Pim\Enrichment\Component\Product\Exception\UnknownProductException;
 use Akeneo\Pim\Enrichment\Component\Product\Model\ProductInterface;
 use Akeneo\Pim\Enrichment\Component\Product\Normalizer\ExternalApi\ConnectorProductNormalizer;
@@ -556,6 +557,14 @@ class ProductController
                 throw new DocumentedHttpException(
                     Documentation::URL . $anchor,
                     sprintf('%s Check the expected format on the API documentation.', $exception->getMessage()),
+                    $exception
+                );
+            }
+
+            if ($exception instanceof TwoWayAssociationWithTheSameProductException) {
+                throw new DocumentedHttpException(
+                    TwoWayAssociationWithTheSameProductException::TWO_WAY_ASSOCIATIONS_HELP_URL,
+                    TwoWayAssociationWithTheSameProductException::TWO_WAY_ASSOCIATIONS_ERROR_MESSAGE,
                     $exception
                 );
             }
