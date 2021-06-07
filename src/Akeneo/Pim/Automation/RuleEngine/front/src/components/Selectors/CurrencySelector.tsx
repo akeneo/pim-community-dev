@@ -22,6 +22,10 @@ const getCurrencyValidation = (
   isCurrencyRequired = true
 ) => {
   const currencyValidation: any = {};
+  const indexedAvailableCurrencies: IndexedCurrencies = {};
+  availableCurrencies.forEach(
+      currency => (indexedAvailableCurrencies[currency.code] = currency)
+  );
 
   if (isCurrencyRequired && attribute.type === AttributeType.PRICE_COLLECTION) {
     currencyValidation['required'] = translate(
@@ -41,20 +45,19 @@ const getCurrencyValidation = (
         {currencyCode: selectedCode}
       );
     }
-    if (!availableCurrencies.some(currency => currency.code === selectedCode)) {
+    if (typeof indexedAvailableCurrencies[selectedCode] === 'undefined') {
       return attribute.scopable
-        ? translate('pimee_catalog_rule.exceptions.unbound_currency', {
+          ? translate('pimee_catalog_rule.exceptions.unbound_currency', {
             currencyCode: selectedCode,
             channelCode,
           })
-        : translate(
-            'pimee_catalog_rule.exceptions.unknown_or_inactive_currency',
-            {currencyCode: selectedCode}
+          : translate(
+              'pimee_catalog_rule.exceptions.unknown_or_inactive_currency',
+              {currencyCode: selectedCode}
           );
     }
     return true;
   };
-
   return currencyValidation;
 };
 
