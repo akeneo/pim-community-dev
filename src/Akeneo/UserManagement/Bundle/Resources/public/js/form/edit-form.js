@@ -5,18 +5,18 @@
 'use strict';
 
 define(['pim/form/common/edit-form', 'pim/user-context'], function (BaseEditForm, UserContext) {
-    return BaseEditForm.extend({
+  return BaseEditForm.extend({
+    /**
+     * {@inheritdoc}
+     */
+    configure: function () {
+      this.on('pim_enrich:form:entity:post_fetch', this._refreshUserContext);
 
-        /**
-         * {@inheritdoc}
-         */
-        configure: function () {
-            this.on('pim_enrich:form:entity:post_fetch', this._refreshUserContext);
-            return BaseEditForm.prototype.configure.apply(this, arguments);
-        },
+      return BaseEditForm.prototype.configure.apply(this, arguments);
+    },
 
-        _refreshUserContext: function () {
-            UserContext.refresh();
-        },
-    });
+    _refreshUserContext: function () {
+      UserContext.refresh();
+    },
+  });
 });
