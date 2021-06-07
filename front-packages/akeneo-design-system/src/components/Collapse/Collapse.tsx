@@ -6,10 +6,17 @@ import {CheckPartialIcon, PlusIcon} from '../../icons';
 
 const CollapseContainer = styled.div`
   width: 100%;
+  border: solid ${getColor('grey', 40)};
+  border-width: 0 0 1px 0;
+
+  &:first-child {
+    border-width: 1px 0;
+  }
 `;
 
 const Content = styled.div<{$height: number}>`
-  height: ${({$height}) => $height}px;
+  // +10 to account for the content padding
+  height: ${({$height}) => (0 < $height ? $height + 10 : 0)}px;
   transition: height 0.2s ease-in-out;
   overflow: hidden;
 `;
