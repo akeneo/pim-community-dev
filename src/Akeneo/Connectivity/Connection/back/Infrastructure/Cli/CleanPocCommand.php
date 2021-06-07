@@ -50,10 +50,15 @@ SQL;
         $rmRole = <<<SQL
 DELETE FROM oro_access_role WHERE role = :role
 SQL;
+        $rmGroup = <<<SQL
+DELETE FROM oro_access_group WHERE name = :group
+SQL;
+
 
         $this->dbalConnection->executeUpdate($rmConnection, ['code' => strtr($code, '-', '_')]);
         $this->dbalConnection->executeUpdate($rmUser, ['code' => $code]);
         $this->dbalConnection->executeUpdate($rmRole, ['role' => $code . '-role']);
+        $this->dbalConnection->executeUpdate($rmGroup, ['group' => $code . '-group']);
 
         return 0;
     }

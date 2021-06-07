@@ -66,6 +66,7 @@ services:
         class: Akeneo\Connectivity\Connection\Infrastructure\ExternalApi\Controller\AppLoginController
         decorates: fos_oauth_server.controller.authorize
         decoration_inner_name: fos_oauth_server.controller.authorize_base
+        decoration_priority: 5
         public: true
         arguments:
             - '@request_stack'

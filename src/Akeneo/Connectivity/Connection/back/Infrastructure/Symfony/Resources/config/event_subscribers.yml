@@ -55,4 +55,4 @@ services:
             $createAppUserWithPermissions: '@Akeneo\Connectivity\Connection\Infrastructure\Service\CreateAppUserWithPermissions'
             $requestStack: '@request_stack'
         tags:
-            - { name: kernel.event_subscriber }
+            - { name: kernel.event_subscriber, priority: 10 }
