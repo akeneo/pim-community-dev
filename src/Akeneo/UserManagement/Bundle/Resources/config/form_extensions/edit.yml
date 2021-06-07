@@ -1,6 +1,6 @@
 extensions:
     pim-user-edit-form:
-        module: pim/form/common/edit-form
+        module: pim/user-edit-form/edit-form
 
     pim-user-edit-form-breadcrumbs:
         module: pim/common/breadcrumbs
