@@ -193,6 +193,8 @@ pim_common:
   not_available: N/A
   now: Now
   ok: OK
+  open: Open
+  no_result: No result found
   other_actions: Other actions
   permissions: Permissions
   previous: Previous
@@ -229,7 +231,13 @@ pim_common:
   read_more: Read more
   channel: Channel
   locale: Locale
+  categories: Categories
+  family_variant: Family variant
+  enabled: Enabled
+  family: Family
+  parent: Parent
   groups: Groups
+  more: More
 error:
   exception: Oh snap! A {{ status_code }} error occurred...
   forbidden: Forbidden. You are not allowed to access this page
