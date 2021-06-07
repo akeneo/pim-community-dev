@@ -1,5 +1,9 @@
 # 5.0.x
 
+## Bug fixes
+
+- PIM-9876: Fix purge of products old scores in Data Quality Insights
+
 # 5.0.30 (2021-06-04)
 
 ## Bug fixes:
@@ -20,10 +24,6 @@
 - PIM-9878: Fix breadcrumb link in Settings > Attribute Groups
 
 # 5.0.27 (2021-05-26)
-
-## Bug fixes
-
-- PIM-9876: Fix purge of products old scores in Data Quality Insights
 
 # 5.0.26 (2021-05-21)
 
