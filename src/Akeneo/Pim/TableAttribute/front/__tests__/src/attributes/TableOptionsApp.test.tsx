@@ -16,6 +16,10 @@ const complexTableConfiguration: TableConfiguration = [
   {data_type: 'text', code: 'part', labels: {en_US: 'For 1 part'}},
 ];
 
+const waitPageToBeLoaded = async () => {
+  expect(await screen.findByText('English (United States)')).toBeInTheDocument();
+};
+
 describe('TableOptionsApp', () => {
   it('should render the columns', async () => {
     const handleChange = jest.fn();
@@ -92,10 +96,38 @@ describe('TableOptionsApp', () => {
   it('should render without column', async () => {
     const handleChange = jest.fn();
     renderWithProviders(<TableOptionsApp onChange={handleChange} initialTableConfiguration={[]} />);
-    //TODO: change when we have the mockup
-    await act(async () => {
-      await new Promise(resolve => setTimeout(resolve, 100));
+    expect(await screen.findByText('pim_table_attribute.form.attribute.empty_title')).toBeInTheDocument();
+  });
+
+  it('falls back to the first column when deleting a selected column', async () => {
+    const handleChange = jest.fn();
+    renderWithProviders(
+      <TableOptionsApp onChange={handleChange} initialTableConfiguration={complexTableConfiguration} />
+    );
+    await waitPageToBeLoaded();
+    act(() => {
+      fireEvent.click(screen.getAllByRole('row')[1]);
     });
-    expect(screen.queryByLabelText('pim_common.code')).not.toBeInTheDocument();
+
+    const codeInput = screen.getByLabelText('pim_common.code') as HTMLInputElement;
+    expect(codeInput.value).toEqual('quantity');
+    await act(async () => {
+      const deleteButtons = await screen.findAllByTitle('pim_common.delete');
+      fireEvent.click(deleteButtons[0]);
+    });
+    expect(await screen.findByText('pim_table_attribute.form.attribute.confirm_delete')).toBeInTheDocument();
+
+    const deleteButton = await screen.findByText('pim_common.delete');
+
+    const deleteCodeInput = screen.getByLabelText('pim_table_attribute.form.attribute.please_type') as HTMLInputElement;
+    act(() => {
+      fireEvent.change(deleteCodeInput, {target: {value: 'quantity'}});
+    });
+    expect(deleteButton).not.toHaveAttribute('disabled');
+
+    act(() => {
+      fireEvent.click(deleteButton);
+    });
+    expect(codeInput.value).toEqual('ingredients');
   });
 });

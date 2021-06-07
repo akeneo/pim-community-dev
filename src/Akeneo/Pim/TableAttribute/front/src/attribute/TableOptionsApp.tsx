@@ -38,8 +38,8 @@ const AddNewColumnButton = styled(Button)`
   margin-top: 20px;
 `;
 
-const TableColumnContainer = styled.div<{tableConfiguration: TableConfiguration} & AkeneoThemedProps>`
-  text-align: ${({tableConfiguration}) => (tableConfiguration.length === 0 ? 'center' : 'initial')};
+const CenteredHelper = styled.div<{centered: boolean} & AkeneoThemedProps>`
+  text-align: ${({centered}) => (centered ? 'center' : 'initial')};
 `;
 
 const EmptyTableTitle = styled.div`
@@ -51,6 +51,10 @@ type TableOptionsAppProps = {
   initialTableConfiguration: TableConfiguration;
   onChange: (tableConfiguration: TableConfiguration) => void;
 };
+
+const TableOptionsActionCell = styled(Table.ActionCell)`
+  width: 44px;
+`;
 
 const TableOptionsApp: React.FC<TableOptionsAppProps> = ({initialTableConfiguration, onChange}) => {
   const translate = useTranslate();
@@ -95,8 +99,98 @@ const TableOptionsApp: React.FC<TableOptionsAppProps> = ({initialTableConfigurat
       columnDefinition => columnDefinition.code !== lastColumnCodeToDelete
     );
     setTableConfiguration(newTableConfiguration);
+    if (lastColumnCodeToDelete === selectedColumnCode) {
+      setSelectedColumnCode(newTableConfiguration[0].code);
+    }
     onChange(newTableConfiguration);
   };
+
+  const leftColumn = (
+    <div>
+      <SectionTitle title={translate('pim_table_attribute.form.attribute.columns')}>
+        <SectionTitle.Title>{translate('pim_table_attribute.form.attribute.columns')}</SectionTitle.Title>
+      </SectionTitle>
+      {tableConfiguration.length > 0 ? (
+        <>
+          <Table>
+            <Table.Body>
+              <Table.Row
+                key={firstColumnDefinition.code}
+                onClick={() => setSelectedColumnCode(firstColumnDefinition.code)}
+                isSelected={firstColumnDefinition.code === selectedColumnCode}>
+                <EmptyTableCell />
+                <Table.Cell rowTitle={true}>
+                  {getLabel(firstColumnDefinition.labels, userContext.get('catalogLocale'), firstColumnDefinition.code)}
+                </Table.Cell>
+              </Table.Row>
+            </Table.Body>
+          </Table>
+          {tableConfiguration.length === 1 && (
+            <CenteredHelper centered={true}>
+              <AddingValueIllustration size={120} />
+              <EmptyTableTitle>{translate('pim_table_attribute.form.attribute.unique_title')}</EmptyTableTitle>
+              {translate('pim_table_attribute.form.attribute.unique_subtitle')}
+            </CenteredHelper>
+          )}
+        </>
+      ) : (
+        <CenteredHelper centered={true}>
+          <AddingValueIllustration size={120} />
+          <EmptyTableTitle>{translate('pim_table_attribute.form.attribute.empty_title')}</EmptyTableTitle>
+          {translate('pim_table_attribute.form.attribute.empty_subtitle')}
+        </CenteredHelper>
+      )}
+      <Table isDragAndDroppable={true} onReorder={handleReorder}>
+        <Table.Body>
+          {otherColumnDefinitions.map(columnDefinition => (
+            <Table.Row
+              key={columnDefinition.code}
+              onClick={() => setSelectedColumnCode(columnDefinition.code)}
+              isSelected={columnDefinition.code === selectedColumnCode}>
+              <Table.Cell rowTitle={true}>
+                {getLabel(columnDefinition.labels, userContext.get('catalogLocale'), columnDefinition.code)}
+              </Table.Cell>
+              <TableOptionsActionCell>
+                <IconButton
+                  ghost='borderless'
+                  icon={<CloseIcon />}
+                  onClick={() => {
+                    setLastColumnCodeToDelete(columnDefinition.code);
+                    openDeleteColumnModal();
+                  }}
+                  title={translate('pim_common.delete')}
+                  level='tertiary'
+                />
+              </TableOptionsActionCell>
+            </Table.Row>
+          ))}
+        </Table.Body>
+      </Table>
+      {isDeleteColumnModalOpen && lastColumnCodeToDelete && (
+        <DeleteColumnModal
+          close={closeDeleteColumnModal}
+          onDelete={handleDelete}
+          columnDefinitionCode={lastColumnCodeToDelete}
+        />
+      )}
+      {isNewColumnModalOpen && (
+        <AddColumnModal
+          close={closeNewColumnModal}
+          onCreate={handleCreate}
+          existingColumnCodes={tableConfiguration.map(columnDefinition => columnDefinition.code)}
+        />
+      )}
+      <CenteredHelper centered={tableConfiguration.length === 0}>
+        <AddNewColumnButton
+          title={translate('pim_table_attribute.form.attribute.add_column')}
+          ghost
+          level='secondary'
+          onClick={openNewColumnModal}>
+          {translate('pim_table_attribute.form.attribute.add_column')}
+        </AddNewColumnButton>
+      </CenteredHelper>
+    </div>
+  );
 
   const rightColumn = selectedColumn ? (
     <div>
@@ -136,85 +230,11 @@ const TableOptionsApp: React.FC<TableOptionsAppProps> = ({initialTableConfigurat
   return (
     <DependenciesProvider>
       <ThemeProvider theme={pimTheme}>
-        <TwoColumnsLayout rightColumn={rightColumn}>
-          <TableColumnContainer tableConfiguration={tableConfiguration}>
-            <SectionTitle title={translate('pim_table_attribute.form.attribute.columns')}>
-              <SectionTitle.Title>{translate('pim_table_attribute.form.attribute.columns')}</SectionTitle.Title>
-            </SectionTitle>
-            {tableConfiguration.length > 0 ? (
-              <Table>
-                <Table.Body>
-                  <Table.Row
-                    key={firstColumnDefinition.code}
-                    onClick={() => setSelectedColumnCode(firstColumnDefinition.code)}
-                    isSelected={firstColumnDefinition.code === selectedColumnCode}>
-                    <EmptyTableCell />
-                    <Table.Cell rowTitle={true}>
-                      {getLabel(
-                        firstColumnDefinition.labels,
-                        userContext.get('catalogLocale'),
-                        firstColumnDefinition.code
-                      )}
-                    </Table.Cell>
-                  </Table.Row>
-                </Table.Body>
-              </Table>
-            ) : (
-              <>
-                <AddingValueIllustration />
-                <EmptyTableTitle>{translate('pim_table_attribute.form.attribute.empty_title')}</EmptyTableTitle>
-                {translate('pim_table_attribute.form.attribute.empty_subtitle')}
-              </>
-            )}
-            <Table isDragAndDroppable={true} onReorder={handleReorder}>
-              <Table.Body>
-                {otherColumnDefinitions.map(columnDefinition => (
-                  <Table.Row
-                    key={columnDefinition.code}
-                    onClick={() => setSelectedColumnCode(columnDefinition.code)}
-                    isSelected={columnDefinition.code === selectedColumnCode}>
-                    <Table.Cell rowTitle={true}>
-                      {getLabel(columnDefinition.labels, userContext.get('catalogLocale'), columnDefinition.code)}
-                    </Table.Cell>
-                    <Table.ActionCell>
-                      <IconButton
-                        ghost='borderless'
-                        icon={<CloseIcon />}
-                        onClick={() => {
-                          setLastColumnCodeToDelete(columnDefinition.code);
-                          openDeleteColumnModal();
-                        }}
-                        title={translate('pim_common.delete')}
-                        level='tertiary'
-                      />
-                    </Table.ActionCell>
-                  </Table.Row>
-                ))}
-              </Table.Body>
-            </Table>
-            {isDeleteColumnModalOpen && lastColumnCodeToDelete && (
-              <DeleteColumnModal
-                close={closeDeleteColumnModal}
-                onDelete={handleDelete}
-                columnDefinitionCode={lastColumnCodeToDelete}
-              />
-            )}
-            {isNewColumnModalOpen && (
-              <AddColumnModal
-                close={closeNewColumnModal}
-                onCreate={handleCreate}
-                existingColumnCodes={tableConfiguration.map(columnDefinition => columnDefinition.code)}
-              />
-            )}
-            <AddNewColumnButton
-              title={translate('pim_table_attribute.form.attribute.add_column')}
-              ghost
-              level='secondary'
-              onClick={openNewColumnModal}>
-              {translate('pim_table_attribute.form.attribute.add_column')}
-            </AddNewColumnButton>
-          </TableColumnContainer>
-        </TwoColumnsLayout>
+        {tableConfiguration.length > 0 ? (
+          <TwoColumnsLayout rightColumn={rightColumn}>{leftColumn}</TwoColumnsLayout>
+        ) : (
+          leftColumn
+        )}
       </ThemeProvider>
     </DependenciesProvider>
   );
