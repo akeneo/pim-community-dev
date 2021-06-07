@@ -13,6 +13,10 @@ declare(strict_types=1);
 
 namespace Akeneo\Platform\Bundle\FrameworkBundle\EventListener;
 
+use Akeneo\Platform\Bundle\FrameworkBundle\BoundedContext\BoundedContextResolver;
+use Psr\Log\LoggerInterface;
+use Symfony\Component\ErrorHandler\Exception\FlattenException;
+use Symfony\Component\HttpKernel\Event\ExceptionEvent;
 use Symfony\Component\HttpKernel\EventListener\ErrorListener as SymfonyErrorListener;
 use Symfony\Component\HttpKernel\Exception\HttpExceptionInterface;
 
@@ -21,14 +25,59 @@ use Symfony\Component\HttpKernel\Exception\HttpExceptionInterface;
  */
 class ErrorListener extends SymfonyErrorListener
 {
-    protected function logException(\Throwable $exception, string $message): void
+    private BoundedContextResolver $boundedContextResolver;
+
+    public function __construct(
+        $controller,
+        BoundedContextResolver $boundedContextResolver,
+        LoggerInterface $logger = null,
+        $debug = false
+    ) {
+        parent::__construct($controller, $logger, $debug);
+        $this->boundedContextResolver = $boundedContextResolver;
+    }
+
+    public function logKernelException(ExceptionEvent $event)
     {
+        $e = FlattenException::createFromThrowable($event->getThrowable());
+
+        $this->logExceptionWithContext(
+            $event->getThrowable(),
+            sprintf(
+                'Uncaught PHP Exception %s: "%s" at %s line %s',
+                $e->getClass(),
+                $e->getMessage(),
+                $e->getFile(),
+                $e->getLine()
+            ),
+            $this->boundedContextResolver->fromRequest($event->getRequest()),
+            $event->getRequest()->getPathInfo() ?? ''
+        );
+    }
+
+    protected function logExceptionWithContext(
+        \Throwable $exception,
+        string $message,
+        string $akeneoContext,
+        string $pathInfo
+    ): void {
         if (null !== $this->logger) {
+            $logContext = [
+                'exception' => $exception,
+                'akeneo_context' => $akeneoContext,
+                'path_info' => $pathInfo,
+                'trace' => debug_backtrace(DEBUG_BACKTRACE_IGNORE_ARGS, 15),
+            ];
             if (!$exception instanceof HttpExceptionInterface || $exception->getStatusCode() >= 500) {
-                $this->logger->critical($message, ['exception' => $exception]);
+                $this->logger->critical($message, $logContext);
             } else {
-                $this->logger->notice($message, ['exception' => $exception]);
+                $this->logger->notice($message, $logContext);
             }
         }
+    }
+
+    protected function logException(\Throwable $exception, string $message): void
+    {
+        $this->logExceptionWithContext($exception, $message, 'Context is unknwon in ErrorListener::logException', '');
     }
 }

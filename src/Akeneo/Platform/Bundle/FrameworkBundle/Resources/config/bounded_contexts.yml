@@ -53,3 +53,5 @@ parameters:
         'Oro\Bundle\PimFilterBundle': 'Enrichment'
         'Oro\Bundle\SecurityBundle': 'User Management'
         'Oro\Bundle\TranslationBundle': 'Enrichment'
+
+        'Symfony\Bundle\FrameworkBundle\Controller\TemplateController': 'Tool'

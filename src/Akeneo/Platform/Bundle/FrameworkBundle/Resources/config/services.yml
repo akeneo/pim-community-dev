@@ -3,6 +3,7 @@ services:
         class: 'Akeneo\Platform\Bundle\FrameworkBundle\EventListener\ErrorListener'
         arguments:
             - '%kernel.error_controller%'
+            - '@Akeneo\Platform\Bundle\FrameworkBundle\BoundedContext\BoundedContextResolver'
             - '@logger'
             - '%kernel.debug%'
         tags:
