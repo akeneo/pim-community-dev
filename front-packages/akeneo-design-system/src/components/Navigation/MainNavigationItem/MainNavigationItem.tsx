@@ -1,13 +1,14 @@
-import React, {Ref, ReactElement, SyntheticEvent} from 'react';
+import React, {Ref, ReactElement, SyntheticEvent, ReactNode, isValidElement} from 'react';
 import styled from 'styled-components';
-import {AkeneoThemedProps, getColor, getFontSize} from '../../theme';
-import {IconProps} from '../../icons';
-import {Tag} from '../Tags/Tags';
+import {AkeneoThemedProps, getColor, getFontSize} from '../../../theme';
+import {IconProps} from '../../../icons';
+import {Tag} from '../../Tags/Tags';
 
 const Container = styled.button<{active: boolean; disabled: boolean} & AkeneoThemedProps>`
   width: 80px;
   height: 70px;
   margin: 0;
+  position: relative;
   display: flex;
   flex-direction: column;
   align-items: center;
@@ -18,6 +19,7 @@ const Container = styled.button<{active: boolean; disabled: boolean} & AkeneoThe
   text-decoration: none;
   line-height: 1.15;
   white-space: nowrap;
+  font-size: ${getFontSize('small')};
   cursor: ${({disabled}) => (disabled ? 'not-allowed' : 'pointer')};
   border: none;
   border-left: 4px solid
@@ -54,14 +56,10 @@ const Title = styled.p`
   margin-top: 7px;
 `;
 
-const IconContainer = styled.div`
-  position: relative;
-`;
-
-const CustomTag = styled(Tag)`
+const TagContainer = styled.div`
   position: absolute;
-  left: 50%;
-  top: -35%;
+  left: 39px;
+  top: 7px;
 `;
 
 type MainNavigationItemProps = {
@@ -71,19 +69,9 @@ type MainNavigationItemProps = {
   icon: ReactElement<IconProps>;
 
   /**
-   * The title of the button
+   * Children are a string label
    */
-  title: string;
-
-  /**
-   * Optional tag to display
-   */
-  tag?: string;
-
-  /**
-   * The tint/color to apply on the tag;
-   */
-  tagTint?: string;
+  children?: ReactNode;
 
   /**
    * Define if the component is active
@@ -94,6 +82,7 @@ type MainNavigationItemProps = {
    * Define if the component will be displayed as disabled
    */
   disabled?: boolean;
+
   /**
    * Url to go to if the button is clicked.
    */
@@ -107,17 +96,7 @@ type MainNavigationItemProps = {
 
 const MainNavigationItem = React.forwardRef<HTMLDivElement, MainNavigationItemProps>(
   (
-    {
-      icon,
-      title,
-      tag,
-      tagTint = 'blue',
-      onClick,
-      href,
-      active = false,
-      disabled = false,
-      ...rest
-    }: MainNavigationItemProps,
+    {icon, onClick, href, active = false, disabled = false, children, ...rest}: MainNavigationItemProps,
     forwardedRef: Ref<HTMLDivElement>
   ) => {
     const handleClick = (event: SyntheticEvent) => {
@@ -125,6 +104,15 @@ const MainNavigationItem = React.forwardRef<HTMLDivElement, MainNavigationItemPr
 
       onClick(event);
     };
+
+    let tag = null;
+    const taglessChildren = React.Children.map(children, child => {
+      if (isValidElement(child) && child.type === Tag) {
+        tag = child;
+        return null;
+      }
+      return child;
+    });
 
     return (
       <Container
@@ -136,11 +124,9 @@ const MainNavigationItem = React.forwardRef<HTMLDivElement, MainNavigationItemPr
         ref={forwardedRef}
         {...rest}
       >
-        <IconContainer>
-          {React.cloneElement(icon, {size: 20})}
-          {tag && <CustomTag tint={tagTint}>{tag}</CustomTag>}
-        </IconContainer>
-        <Title>{title}</Title>
+        {React.cloneElement(icon, {size: 20})}
+        <Title>{taglessChildren}</Title>
+        <TagContainer>{tag}</TagContainer>
       </Container>
     );
   }

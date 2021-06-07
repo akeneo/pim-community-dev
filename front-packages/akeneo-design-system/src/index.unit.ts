@@ -29,7 +29,7 @@ const getFiles = (path: string) =>
 describe('Every module is exported correctly', () => {
   const exportNames = Object.keys(Exports);
   const components = [
-    ...getSubfolders(['src/components', 'src/components/Input']),
+    ...getSubfolders(['src/components', 'src/components/Input', 'src/components/Navigation']),
     ...getFiles('src/icons'),
     ...getFiles('src/illustrations'),
   ];

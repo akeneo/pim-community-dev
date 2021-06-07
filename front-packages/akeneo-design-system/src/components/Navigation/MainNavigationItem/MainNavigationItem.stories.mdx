@@ -1,0 +1,112 @@
+import {Meta, Story, ArgsTable, Canvas} from '@storybook/addon-docs/blocks';
+import {MainNavigationItem} from './MainNavigationItem.tsx';
+import * as Icons from '../../../icons';
+import {CardIcon} from '../../../icons';
+import {Tag} from '../../Tags/Tags';
+
+<Meta
+  title="Components/Navigation/MainNavigationItem"
+  component={MainNavigationItem}
+  argTypes={{
+      icon: {
+          control: {type: 'select', options: Object.keys(Icons)},
+          table: {type: {summary: 'ReactElement<IconProps>'}},
+      },
+      disabled: {control: {type: 'boolean'}},
+      active: {control: {type: 'boolean'}},
+      href: { control: {type: 'text'}},
+      onClick: {action: 'Click on the button'},
+  }}
+  args={{
+      icon: 'CardIcon',
+      onClick: () => console.log('click')
+  }}
+/>
+
+# MainNavigationItem
+
+## Usage
+
+The Main Navigation Item is used by the Navigation pattern. This components helps the users in their daily usage as an easy way to discover and navigate the interface. Also, it's a companion for them to understand where they are in their journey.
+
+## Playground
+
+<Canvas>
+  <Story name="Standard">
+    {args => {
+      return <MainNavigationItem {...args} icon={React.createElement(Icons[args.icon])}>
+          Default
+      </MainNavigationItem>;
+    }}
+  </Story>
+</Canvas>
+
+<ArgsTable story="Standard" />
+
+## Variation on active
+
+<Canvas>
+    <Story name="Active">
+        {args => {
+            return (
+                <>
+                    <MainNavigationItem {...args} icon={<CardIcon/>} active={false}>Default</MainNavigationItem>
+                    <MainNavigationItem {...args} icon={<CardIcon/>} active={true}>Active</MainNavigationItem>
+                </>
+            );
+        }}
+    </Story>
+</Canvas>
+
+## Variation on disabled
+<Canvas>
+    <Story name="Disabled">
+        {args => {
+            return (
+                <>
+                    <MainNavigationItem {...args} icon={<CardIcon/>} disabled={false}>Default</MainNavigationItem>
+                    <MainNavigationItem {...args} icon={<CardIcon/>} disabled={true}>Disabled</MainNavigationItem>
+                    <MainNavigationItem {...args} icon={<CardIcon/>} disabled={true} active={true}>Disabled and Active</MainNavigationItem>
+                </>
+            );
+        }}
+    </Story>
+</Canvas>
+
+## Variation on tag
+
+<Canvas>
+    <Story name="Tag">
+        {args => {
+            return (
+                <>
+                    <MainNavigationItem {...args} icon={<CardIcon/>} disabled={false}>
+                        Default <Tag tint='blue'>Tag</Tag>
+                    </MainNavigationItem>
+                    <MainNavigationItem {...args} icon={<CardIcon/>} disabled={false}>
+                        Default <Tag tint='purple'>very loooooooooooong tag</Tag>
+                    </MainNavigationItem>
+                </>
+            );
+        }}
+    </Story>
+</Canvas>
+
+## Variation on href
+
+<Canvas>
+    <Story name="Link">
+        {args => {
+            return (
+                <>
+                    <MainNavigationItem {...args} icon={<CardIcon/>} href="https://akeneo.com" target="_blank">
+                        Link
+                    </MainNavigationItem>
+                    <MainNavigationItem {...args} icon={<CardIcon/>} href="https://akeneo.com" target="_blank" disabled={true}>
+                        Disabled link
+                    </MainNavigationItem>
+                </>
+            );
+        }}
+    </Story>
+</Canvas>
