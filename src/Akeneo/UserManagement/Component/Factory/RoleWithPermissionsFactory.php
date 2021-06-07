@@ -20,11 +20,11 @@ final class RoleWithPermissionsFactory implements SimpleFactoryInterface
         $this->roleFactory = $roleFactory;
     }
 
-    public function create(): RoleWithPermissions
+    public function create(array $permissions = []): RoleWithPermissions
     {
         return RoleWithPermissions::createFromRoleAndPermissions(
             $this->roleFactory->create(),
-            []
+            $permissions
         );
     }
 }

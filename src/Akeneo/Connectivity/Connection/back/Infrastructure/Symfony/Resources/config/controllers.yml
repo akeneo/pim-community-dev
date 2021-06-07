@@ -51,3 +51,34 @@ services:
         arguments:
             - '@akeneo_connectivity.connection.marketplace.url_generator'
             - '@pim_user.context.user'
+
+    akeneo_connectivity.connection.external_api.controller.app_token:
+        public: true
+        class: Akeneo\Connectivity\Connection\Infrastructure\ExternalApi\Controller\AppTokenController
+        parent: fos_oauth_server.controller.token
+
+    Akeneo\Connectivity\Connection\Infrastructure\InternalApi\Controller\AppActivationController:
+        public: true
+        arguments:
+            $clientManager: '@fos_oauth_server.client_manager.default'
+
+    fos_oauth_server.controller.authorize_custom:
+        class: Akeneo\Connectivity\Connection\Infrastructure\ExternalApi\Controller\AppLoginController
+        decorates: fos_oauth_server.controller.authorize
+        decoration_inner_name: fos_oauth_server.controller.authorize_base
+        public: true
+        arguments:
+            - '@request_stack'
+            - '@fos_oauth_server.authorize.form'
+            - '@fos_oauth_server.authorize.form.handler'
+            - '@fos_oauth_server.server'
+            - '@templating'
+            - '@security.token_storage'
+            - '@router'
+            - '@fos_oauth_server.client_manager'
+            - '@event_dispatcher'
+            - '@Akeneo\Connectivity\Connection\Infrastructure\Service\OAuthScopeValidator'
+            - '@session'
+            - '%fos_oauth_server.template.engine%'
+            - '@Akeneo\Connectivity\Connection\Infrastructure\Service\OAuthScopeTransformer'
+
