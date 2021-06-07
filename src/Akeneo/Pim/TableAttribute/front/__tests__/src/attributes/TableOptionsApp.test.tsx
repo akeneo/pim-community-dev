@@ -88,4 +88,14 @@ describe('TableOptionsApp', () => {
       {data_type: 'text', code: 'quantity', labels: {en_US: 'Quantity'}},
     ]);
   });
+
+  it('should render without column', async () => {
+    const handleChange = jest.fn();
+    renderWithProviders(<TableOptionsApp onChange={handleChange} initialTableConfiguration={[]} />);
+    //TODO: change when we have the mockup
+    await act(async () => {
+      await new Promise(resolve => setTimeout(resolve, 100));
+    });
+    expect(screen.queryByLabelText('pim_common.code')).not.toBeInTheDocument();
+  });
 });
