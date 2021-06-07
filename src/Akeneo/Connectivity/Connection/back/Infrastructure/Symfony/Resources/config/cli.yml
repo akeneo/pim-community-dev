@@ -34,3 +34,9 @@ services:
             - '@akeneo_connectivity_connection.persistence.query.purge_events_api_error_logs'
         tags:
             - {name: 'console.command'}
+
+    Akeneo\Connectivity\Connection\Infrastructure\Cli\CleanPocCommand:
+        arguments:
+            - '@database_connection'
+        tags:
+            - {name: 'console.command'}
