@@ -5,7 +5,7 @@ import {act, screen, fireEvent} from '@testing-library/react';
 jest.mock('../../../src/attribute/LocaleLabel');
 
 describe('AddColumnModal', () => {
-  it('should render the component', async () => {
+  it('should render the component', () => {
     const handleClose = jest.fn();
     const handleCreate = jest.fn();
     renderWithProviders(<AddColumnModal close={handleClose} onCreate={handleCreate} existingColumnCodes={[]} />);
@@ -14,7 +14,7 @@ describe('AddColumnModal', () => {
     expect(screen.getByText('pim_common.create')).toBeInTheDocument();
   });
 
-  it('should create default code', async () => {
+  it('should create default code', () => {
     const handleClose = jest.fn();
     const handleCreate = jest.fn();
     renderWithProviders(<AddColumnModal close={handleClose} onCreate={handleCreate} existingColumnCodes={[]} />);
@@ -22,14 +22,14 @@ describe('AddColumnModal', () => {
     const codeInput = screen.getByLabelText('pim_common.code') as HTMLInputElement;
     const labelInput = screen.getByLabelText('pim_common.label') as HTMLInputElement;
 
-    await act(async () => {
+    act(() => {
       fireEvent.change(labelInput, {target: {value: 'This is the label$'}});
     });
 
     expect(codeInput.value).toEqual('This_is_the_label_');
   });
 
-  it('should not update code once dirty', async () => {
+  it('should not update code once dirty', () => {
     const handleClose = jest.fn();
     const handleCreate = jest.fn();
     renderWithProviders(<AddColumnModal close={handleClose} onCreate={handleCreate} existingColumnCodes={[]} />);
@@ -37,17 +37,17 @@ describe('AddColumnModal', () => {
     const codeInput = screen.getByLabelText('pim_common.code') as HTMLInputElement;
     const labelInput = screen.getByLabelText('pim_common.label') as HTMLInputElement;
 
-    await act(async () => {
+    act(() => {
       fireEvent.change(codeInput, {target: {value: 'the_code'}});
     });
-    await act(async () => {
+    act(() => {
       fireEvent.change(labelInput, {target: {value: 'This is the label$'}});
     });
 
     expect(codeInput.value).toEqual('the_code');
   });
 
-  it('should add column', async () => {
+  it('should add column', () => {
     const handleClose = jest.fn();
     const handleCreate = jest.fn();
     renderWithProviders(<AddColumnModal close={handleClose} onCreate={handleCreate} existingColumnCodes={[]} />);
@@ -65,7 +65,7 @@ describe('AddColumnModal', () => {
 
     expect(createButton.disabled).toEqual(false);
 
-    await act(async () => {
+    act(() => {
       fireEvent.click(createButton);
     });
 
@@ -79,7 +79,7 @@ describe('AddColumnModal', () => {
     expect(handleClose).toHaveBeenCalled();
   });
 
-  it('should display validation errors', async () => {
+  it('should display validation errors', () => {
     const handleClose = jest.fn();
     const handleCreate = jest.fn();
     renderWithProviders(
