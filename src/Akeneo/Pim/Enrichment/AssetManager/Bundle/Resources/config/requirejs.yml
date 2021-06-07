@@ -7,7 +7,7 @@ config:
                     edit:   pim-attribute-form-asset
         pim/form/common/attributes/create-button:
             attribute_icons:
-                pim_catalog_asset_collection: asset-collection
+                pim_catalog_asset_collection: AssetCollectionIcon
     paths:
         pim/product-edit-form/assets: akeneopimenrichmentassetmanager/product/tab/asset
         pim/asset-collection-field: akeneopimenrichmentassetmanager/product/field/asset-collection/asset-collection-field
