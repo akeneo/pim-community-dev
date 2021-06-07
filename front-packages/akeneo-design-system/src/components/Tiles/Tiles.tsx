@@ -55,6 +55,7 @@ const TileContainer = styled.div<{selected: boolean; size: Size; onClick?: () =>
 `;
 
 const IconContainer = styled.div<{size: Size} & AkeneoThemedProps>`
+  box-sizing: content-box;
   ${({size}) =>
     size === 'small'
       ? css`

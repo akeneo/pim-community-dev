@@ -64,20 +64,20 @@ config:
       url: pim_enrich_job_instance_rest_export_put
     pim/form/common/attributes/create-button:
       attribute_icons:
-        pim_catalog_identifier:          id
-        pim_catalog_text:                text
-        pim_catalog_textarea:            textarea
-        pim_catalog_number:              number
-        pim_catalog_price_collection:    price
-        pim_catalog_multiselect:         multiselect
-        pim_catalog_simpleselect:        select
-        pim_catalog_file:                file
-        pim_catalog_image:               asset
-        pim_catalog_boolean:             switch
-        pim_catalog_date:                date
-        pim_catalog_metric:              metric
-        pim_reference_data_multiselect:  multiselect
-        pim_reference_data_simpleselect: select
+        pim_catalog_identifier: IdIcon
+        pim_catalog_text: AttributeTextIcon
+        pim_catalog_textarea: AttributeTextareaIcon
+        pim_catalog_number: AttributeNumberIcon
+        pim_catalog_price_collection: AttributePriceIcon
+        pim_catalog_multiselect: AttributeMultiSelectIcon
+        pim_catalog_simpleselect: AttributeSelectIcon
+        pim_catalog_file: AttributeFileIcon
+        pim_catalog_image: AssetsIcon
+        pim_catalog_boolean: AttributeBoolean
+        pim_catalog_date: DateIcon
+        pim_catalog_metric: MetricIcon
+        pim_reference_data_multiselect: AttributeMultiSelectIcon
+        pim_reference_data_simpleselect: AttributeSelectIcon
     pim/fetcher-registry:
       fetchers:
         default: pim/base-fetcher
