@@ -21,10 +21,7 @@ const Section = styled.div`
   outline-style: none;
   white-space: nowrap;
   text-transform: uppercase;
-
-  &:not(:first-child) {
-    margin-top: 10px;
-  }
+  margin-top: 10px;
 `;
 
 type DropdownProps = {

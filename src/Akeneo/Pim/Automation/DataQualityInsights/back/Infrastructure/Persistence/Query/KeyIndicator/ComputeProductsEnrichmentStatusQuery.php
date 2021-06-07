@@ -51,26 +51,44 @@ final class ComputeProductsEnrichmentStatusQuery implements ComputeProductsKeyIn
     public function compute(array $productIds): array
     {
         $productIds = array_map(fn (ProductId $productId) => $productId->toInt(), $productIds);
-        $localesByChannel = $this->getLocalesByChannelQuery->getArray();
+        $channelsLocales = $this->getLocalesByChannelQuery->getArray();
         $productsEvaluations = $this->getProductsEvaluations($productIds);
 
         $productsEnrichmentStatus = [];
         foreach ($productIds as $productId) {
-            foreach ($localesByChannel as $channel => $locales) {
-                $channelId = $this->channels->getIdByCode($channel);
-                foreach ($locales as $locale) {
-                    $localeId = $this->locales->getIdByCode($locale);
-                    $productsEnrichmentStatus[$productId][$channel][$locale] = isset($productsEvaluations[$productId])
-                        ? $this->computeProductEnrichmentStatus($productsEvaluations[$productId], $channelId, $localeId)
-                        : null;
-                }
+            if (!isset($productsEvaluations[$productId])) {
+                continue;
             }
+
+            $productsEnrichmentStatus[$productId] = $this->computeForChannelsLocales($productsEvaluations[$productId], $channelsLocales);
         }
 
         return $productsEnrichmentStatus;
     }
 
-    private function computeProductEnrichmentStatus(array $evaluations, int $channelId, int $localeId): ?bool
+    private function computeForChannelsLocales(array $evaluations, array $channelsLocales): array
+    {
+        $enrichmentStatus = [];
+        foreach ($channelsLocales as $channel => $locales) {
+            $channelId = $this->channels->getIdByCode($channel);
+            if (null === $channelId) {
+                continue;
+            }
+
+            foreach ($locales as $locale) {
+                $localeId = $this->locales->getIdByCode($locale);
+                if (null === $localeId) {
+                    continue;
+                }
+
+                $enrichmentStatus[$channel][$locale] = $this->computeEnrichmentStatus($evaluations, $channelId, $localeId);
+            }
+        }
+
+        return $enrichmentStatus;
+    }
+
+    private function computeEnrichmentStatus(array $evaluations, int $channelId, int $localeId): ?bool
     {
         $nonRequiredAttributesEvaluation = $evaluations[EvaluateCompletenessOfNonRequiredAttributes::CRITERION_CODE] ?? [];
         $requiredAttributesEvaluation = $evaluations[EvaluateCompletenessOfRequiredAttributes::CRITERION_CODE] ?? [];

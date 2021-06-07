@@ -102,69 +102,61 @@ const Option = styled.span<{value: string}>`
 `;
 
 type SelectInputProps = Override<
-  Override<React.InputHTMLAttributes<HTMLDivElement>, InputProps<string | null>>,
+  Override<React.InputHTMLAttributes<HTMLDivElement>, InputProps<string>>,
   (
     | {
+        clearable?: false;
         readOnly: true;
+        value: string | null;
       }
     | {
+        clearable?: false;
         readOnly?: boolean;
+        value: string;
+        onChange: (newValue: string) => void;
+      }
+    | {
+        clearable?: true;
+        readOnly?: boolean;
+        value: string | null;
         onChange: (newValue: string | null) => void;
       }
-  ) &
-    (
-      | {
-          clearable?: true;
+  ) & {
+    /**
+     * The placeholder displayed when no option is selected.
+     */
+    placeholder?: string;
 
-          /**
-           * The props value of the selected option.
-           */
-          value: string | null;
-        }
-      | {
-          clearable?: false;
+    /**
+     * The text displayed when no result was found.
+     */
+    emptyResultLabel: string;
 
-          /**
-           * The props value of the selected option.
-           */
-          value: string;
-        }
-    ) & {
-      /**
-       * The placeholder displayed when no option is selected.
-       */
-      placeholder?: string;
+    /**
+     * Accessibility text for the clear button
+     */
+    clearLabel?: string;
 
-      /**
-       * The text displayed when no result was found.
-       */
-      emptyResultLabel: string;
+    /**
+     * Accessibility text for the open dropdown button
+     */
+    openLabel?: string;
 
-      /**
-       * Accessibility text for the clear button
-       */
-      clearLabel?: string;
+    /**
+     * Defines if the input is valid on not.
+     */
+    invalid?: boolean;
 
-      /**
-       * Accessibility text for the open dropdown button
-       */
-      openLabel?: string;
+    /**
+     * The options.
+     */
+    children?: ReactNode;
 
-      /**
-       * Defines if the input is valid on not.
-       */
-      invalid?: boolean;
-
-      /**
-       * The options.
-       */
-      children?: ReactNode;
-
-      /**
-       * Force the vertical position of the overlay.
-       */
-      verticalPosition?: VerticalPosition;
-    }
+    /**
+     * Force the vertical position of the overlay.
+     */
+    verticalPosition?: VerticalPosition;
+  }
 >;
 
 /**
@@ -241,6 +233,8 @@ const SelectInput = ({
   };
 
   const handleClear = () => {
+    // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+    // @ts-ignore
     onChange?.(null);
   };
 

@@ -6,6 +6,7 @@ test('it returns the user locale and time zone', () => {
     const user = {
         get: jest.fn(),
         set: jest.fn(),
+        refresh: jest.fn(),
     };
     user.get.mockReturnValueOnce('fr_FR');
     user.get.mockReturnValueOnce('Europe/Paris');

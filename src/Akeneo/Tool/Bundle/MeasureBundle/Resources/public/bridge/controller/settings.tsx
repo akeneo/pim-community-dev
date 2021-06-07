@@ -11,6 +11,8 @@ const mediator = require('oro/mediator');
 const __ = require('oro/translator');
 
 class SettingsController extends ReactController {
+  private static container = document.createElement('div');
+
   reactElementToMount() {
     return (
       <ThemeProvider theme={pimTheme}>
@@ -34,6 +36,10 @@ class SettingsController extends ReactController {
     mediator.trigger('pim_menu:highlight:item', {extension: 'pim-menu-measurements-settings'});
 
     return super.renderRoute();
+  }
+
+  getContainerRef(): Element {
+    return SettingsController.container;
   }
 
   canLeave() {
