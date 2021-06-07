@@ -1,4 +1,4 @@
-import React, {Ref, ReactNode} from 'react';
+import React, {Ref, ReactNode, useRef, useState, useEffect} from 'react';
 import styled from 'styled-components';
 import {getColor, getFontSize} from '../../theme';
 import {IconButton} from '../../components';
@@ -8,10 +8,10 @@ const CollapseContainer = styled.div`
   width: 100%;
 `;
 
-const Content = styled.div<{isOpen: boolean}>`
-  transform: scaleY(${({isOpen}) => Number(isOpen)});
-  transform-origin: top;
-  transition: transform 0.2s ease-in-out;
+const Content = styled.div<{$height: number}>`
+  height: ${({$height}) => $height}px;
+  transition: height 0.2s ease-in-out;
+  overflow: hidden;
 `;
 
 const LabelContainer = styled.div`
@@ -65,7 +65,14 @@ const Collapse = React.forwardRef<HTMLDivElement, CollapseProps>(
     {label, collapseButtonLabel, isOpen, onCollapse, children, ...rest}: CollapseProps,
     forwardedRef: Ref<HTMLDivElement>
   ) => {
+    const [contentHeight, setContentHeight] = useState<number>(0);
+    const contentRef = useRef<HTMLDivElement>(null);
+
     const handleCollapse = () => onCollapse(!isOpen);
+
+    useEffect(() => {
+      setContentHeight(isOpen && null !== contentRef.current ? contentRef.current.scrollHeight : 0);
+    }, [isOpen]);
 
     return (
       <CollapseContainer ref={forwardedRef} {...rest}>
@@ -80,7 +87,9 @@ const Collapse = React.forwardRef<HTMLDivElement, CollapseProps>(
             icon={isOpen ? <CheckPartialIcon /> : <PlusIcon />}
           />
         </LabelContainer>
-        <Content isOpen={isOpen}>{children}</Content>
+        <Content ref={contentRef} $height={contentHeight}>
+          {children}
+        </Content>
       </CollapseContainer>
     );
   }

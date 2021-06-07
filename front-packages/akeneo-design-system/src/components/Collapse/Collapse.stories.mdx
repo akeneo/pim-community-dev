@@ -3,7 +3,7 @@ import {Meta, Story, ArgsTable, Canvas} from '@storybook/addon-docs/blocks';
 import {useArgs, updateArgs} from '@storybook/client-api';
 import {Collapse} from './Collapse.tsx';
 import {Helper, Link, TextInput, Field, Pill, Badge} from '../../components';
-import {Section} from '../../storybook/PreviewGallery';
+import {Section, SpaceContainer} from '../../storybook/PreviewGallery';
 
 <Meta
   title="Components/Collapse"
@@ -90,25 +90,63 @@ The Collapse can also be set to be opened by default, like here.
 <Canvas>
   <Story name="With content">
     {args => {
-      const [isOpen, setOpen] = useState(true);
+      const [isFirstOpen, setFirstOpen] = useState(true);
+      const [isSecondOpen, setSecondOpen] = useState(false);
+      const [isThirdOpen, setThirdOpen] = useState(false);
       return (
-        <Collapse {...args} isOpen={isOpen} onCollapse={setOpen}>
-          <Section>
-            <Field label="Property">
-              <TextInput placeholder="Type your text here" />
-              <Helper level="info">
-                This is just an info. <Link href="https://www.youtube.com/watch?v=dQw4w9WgXcQ">Don't click here</Link>
-              </Helper>
-            </Field>
-            <Field label="Format">
-              <TextInput placeholder="Type your text here" />
-            </Field>
-            <Field label="Nice field">
-              <TextInput placeholder="Type your text here" />
-              <Helper level="error">Something bad happened.</Helper>
-            </Field>
-          </Section>
-        </Collapse>
+        <SpaceContainer height={600}>
+          <Collapse {...args} isOpen={isFirstOpen} onCollapse={setFirstOpen}>
+            <Section>
+              <Field label="Property">
+                <TextInput placeholder="Type your text here" />
+                <Helper level="info">
+                  This is just an info. <Link href="https://www.youtube.com/watch?v=dQw4w9WgXcQ">Don't click here</Link>
+                </Helper>
+              </Field>
+              <Field label="Format">
+                <TextInput placeholder="Type your text here" />
+              </Field>
+              <Field label="Nice field">
+                <TextInput placeholder="Type your text here" />
+                <Helper level="error">Something bad happened.</Helper>
+              </Field>
+            </Section>
+          </Collapse>
+          <Collapse {...args} label="Another one" isOpen={isSecondOpen} onCollapse={setSecondOpen}>
+            <Section>
+              <Field label="Property">
+                <TextInput placeholder="Type your text here" />
+                <Helper level="info">
+                  This is just an info. <Link href="https://www.youtube.com/watch?v=dQw4w9WgXcQ">Don't click here</Link>
+                </Helper>
+              </Field>
+              <Field label="Format">
+                <TextInput placeholder="Type your text here" />
+              </Field>
+              <Field label="Nice field">
+                <TextInput placeholder="Type your text here" />
+                <Helper level="error">Something bad happened.</Helper>
+              </Field>
+            </Section>
+          </Collapse>
+          <Collapse {...args} label="Yet another one" isOpen={isThirdOpen} onCollapse={setThirdOpen}>
+            <Section>
+              <Field label="Property">
+                <TextInput placeholder="Type your text here" />
+                <Helper level="info">
+                  This is just an info. <Link href="https://www.youtube.com/watch?v=dQw4w9WgXcQ">Don't click here</Link>
+                </Helper>
+              </Field>
+              <Field label="Format">
+                <TextInput placeholder="Type your text here" />
+              </Field>
+              <Field label="Nice field">
+                <TextInput placeholder="Type your text here" />
+                <Helper level="error">Something bad happened.</Helper>
+              </Field>
+            </Section>
+          </Collapse>
+        </SpaceContainer>
       );
     }}
   </Story>
