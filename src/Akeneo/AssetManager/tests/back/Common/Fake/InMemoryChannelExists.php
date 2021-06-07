@@ -23,7 +23,7 @@ use Akeneo\AssetManager\Domain\Query\Channel\ChannelExistsInterface;
 class InMemoryChannelExists implements ChannelExistsInterface
 {
     /** @var ChannelIdentifier[] */
-    private $channels = [];
+    private array $channels = [];
 
     public function exists(ChannelIdentifier $channelIdentifier): bool
     {

@@ -39,14 +39,11 @@ class ExecuteProductLinkRulesActionTest extends ControllerIntegrationTestCase
     private const EXECUTE_PRODUCT_LINK_RULES_ACL = 'akeneo_assetmanager_asset_family_execute_product_link_rule';
     private const EDIT_ASSET_FAMILY_ACL = 'akeneo_assetmanager_asset_family_edit';
 
-    /** @var WebClientHelper */
-    private $webClientHelper;
+    private WebClientHelper $webClientHelper;
 
-    /** @var ProductLinkRuleLauncherSpy  */
-    private $productLinkRuleLauncherSpy;
+    private ProductLinkRuleLauncherSpy $productLinkRuleLauncherSpy;
 
-    /** @var SecurityFacadeStub */
-    private $securityFacade;
+    private SecurityFacadeStub $securityFacade;
 
     public function setUp(): void
     {

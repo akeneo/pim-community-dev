@@ -32,23 +32,17 @@ use Symfony\Component\Validator\Validator\ValidatorInterface;
  */
 class CreateAttributeContext implements Context
 {
-    /** @var AttributeRepositoryInterface */
-    private $attributeRepository;
+    private AttributeRepositoryInterface $attributeRepository;
 
-    /** @var CreateAttributeCommandFactoryRegistryInterface */
-    private $commandFactoryRegistry;
+    private CreateAttributeCommandFactoryRegistryInterface $commandFactoryRegistry;
 
-    /** @var ValidatorInterface */
-    private $validator;
+    private ValidatorInterface $validator;
 
-    /** @var CreateAttributeHandler */
-    private $handler;
+    private CreateAttributeHandler $handler;
 
-    /** @var ExceptionContext */
-    private $exceptionContext;
+    private ExceptionContext $exceptionContext;
 
-    /** @var ConstraintViolationsContext */
-    private $constraintViolationsContext;
+    private ConstraintViolationsContext $constraintViolationsContext;
 
     private InMemoryFindAttributesDetails $findAttributeDetails;
 

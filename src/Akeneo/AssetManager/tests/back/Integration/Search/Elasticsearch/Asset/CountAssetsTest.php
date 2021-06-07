@@ -22,14 +22,11 @@ use PHPUnit\Framework\Assert;
  */
 class CountAssetsTest extends SearchIntegrationTestCase
 {
-    /** @var CountAssetsInterface */
-    private $countAssets;
+    private CountAssetsInterface $countAssets;
 
-    /** @var AssetFamilyIdentifier */
-    private $emptyAssetFamilyIdentifier;
+    private ?AssetFamilyIdentifier $emptyAssetFamilyIdentifier = null;
 
-    /** @var AssetFamilyIdentifier */
-    private $assetFamilyIdentifiersWithAssets;
+    private ?AssetFamilyIdentifier $assetFamilyIdentifiersWithAssets = null;
 
     public function setUp(): void
     {

@@ -15,11 +15,9 @@ use Akeneo\AssetManager\Domain\Query\Asset\FindAssetLabelsByCodesInterface;
  */
 class InMemoryFindAssetLabelsByCodes implements FindAssetLabelsByCodesInterface
 {
-    /** @var InMemoryAssetRepository */
-    private $assetRepository;
+    private InMemoryAssetRepository $assetRepository;
 
-    /** @var InMemoryFindAssetFamilyAttributeAsLabel */
-    private $findAssetFamilyAttributeAsLabel;
+    private InMemoryFindAssetFamilyAttributeAsLabel $findAssetFamilyAttributeAsLabel;
 
     public function __construct(
         InMemoryAssetRepository $assetRepository,

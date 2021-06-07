@@ -26,11 +26,9 @@ use Symfony\Component\EventDispatcher\EventDispatcher;
 
 class InMemoryFindAssetFamilyAttributeAsLabelTest extends TestCase
 {
-    /** @var InMemoryFindAssetFamilyAttributeAsLabel */
-    private $findAssetFamilyAttributeAsLabel;
+    private InMemoryFindAssetFamilyAttributeAsLabel $findAssetFamilyAttributeAsLabel;
 
-    /** @var InMemoryAssetFamilyRepository */
-    private $assetFamilyRepository;
+    private InMemoryAssetFamilyRepository $assetFamilyRepository;
 
     public function setUp(): void
     {

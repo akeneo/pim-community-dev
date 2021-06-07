@@ -39,8 +39,7 @@ use Ramsey\Uuid\Uuid;
  */
 class SqlAverageMaxNumberOfAttributesPerAssetFamilyTest extends SqlIntegrationTestCase
 {
-    /** @var SqlAverageMaxNumberOfAttributesPerAssetFamily */
-    private $averageMaxNumberOfAttributesPerAssetFamily;
+    private SqlAverageMaxNumberOfAttributesPerAssetFamily $averageMaxNumberOfAttributesPerAssetFamily;
 
     public function setUp(): void
     {

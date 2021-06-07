@@ -55,9 +55,7 @@ class SearchAssetSpec extends ObjectBehavior
             ->willReturn([$stark, $dyson]);
         $countAssets->forAssetFamily(
             Argument::that(
-                function (AssetFamilyIdentifier $assetFamilyIdentifier) {
-                    return 'brand' === (string) $assetFamilyIdentifier;
-                }
+                fn(AssetFamilyIdentifier $assetFamilyIdentifier) => 'brand' === (string) $assetFamilyIdentifier
             )
         )->willReturn(10);
 

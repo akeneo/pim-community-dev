@@ -16,3 +16,4 @@ parameters:
     # Set to "true" to automatically load reference entities fixtures
     env(SHOULD_LOAD_REFERENCE_ENTITIES_FIXTURES): 'false'
     should_load_reference_entities_fixtures: '%env(bool:SHOULD_LOAD_REFERENCE_ENTITIES_FIXTURES)%'
+    average_max_number_of_values_per_record_limit: -1

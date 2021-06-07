@@ -23,8 +23,7 @@ use PHPUnit\Framework\Assert;
  */
 final class FindAssetLabelTranslationTest extends SqlIntegrationTestCase
 {
-    /** @var FindAssetLabelTranslation */
-    private $findAssetLabelTranslation;
+    private FindAssetLabelTranslation $findAssetLabelTranslation;
 
     public function setUp(): void
     {

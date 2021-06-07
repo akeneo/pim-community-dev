@@ -28,11 +28,9 @@ use Akeneo\AssetManager\Integration\PreviewGeneratorIntegrationTestCase;
  */
 final class OtherGeneratorTest extends PreviewGeneratorIntegrationTestCase
 {
-    /** @var PreviewGeneratorInterface */
-    private $otherGenerator;
+    private PreviewGeneratorInterface $otherGenerator;
 
-    /** @var MediaLinkAttribute */
-    private $mediaLinkAttribute;
+    private MediaLinkAttribute $mediaLinkAttribute;
 
     public function setUp(): void
     {

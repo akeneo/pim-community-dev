@@ -24,8 +24,7 @@ use Akeneo\AssetManager\Domain\Repository\AttributeNotFoundException;
  */
 class InMemoryAttributeHasOneValuePerChannel implements AttributeHasOneValuePerChannelInterface
 {
-    /** @var InMemoryAttributeRepository */
-    private $attributeRepository;
+    private InMemoryAttributeRepository $attributeRepository;
 
     public function __construct(InMemoryAttributeRepository $attributeRepository)
     {

@@ -22,7 +22,7 @@ use Akeneo\AssetManager\Domain\Query\Locale\FindActivatedLocalesInterface;
 class InMemoryFindActivatedLocales implements FindActivatedLocalesInterface
 {
     /** @var string[] */
-    private $activatedLocales = [
+    private array $activatedLocales = [
         'en_US',
         'fr_FR'
     ];

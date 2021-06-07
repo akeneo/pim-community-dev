@@ -31,11 +31,9 @@ use Symfony\Component\Security\Core\Authentication\Token\UsernamePasswordToken;
  */
 class AuthenticatedClient
 {
-    /** @var UserRepositoryInterface */
-    private $userRepository;
+    private UserRepositoryInterface $userRepository;
 
-    /** @var SessionInterface */
-    private $session;
+    private SessionInterface $session;
 
     public function __construct(
         UserRepositoryInterface $userRepository,

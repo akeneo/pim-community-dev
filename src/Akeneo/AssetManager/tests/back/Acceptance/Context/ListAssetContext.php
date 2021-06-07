@@ -43,20 +43,15 @@ use PHPUnit\Framework\Assert;
  */
 final class ListAssetContext implements Context
 {
-    /** @var SearchAssetResult */
-    private $result;
+    private ?SearchAssetResult $result = null;
 
-    /** @var AssetRepositoryInterface */
-    private $assetRepository;
+    private AssetRepositoryInterface $assetRepository;
 
-    /** @var AssetFamilyRepositoryInterface  */
-    private $assetFamilyRepository;
+    private AssetFamilyRepositoryInterface $assetFamilyRepository;
 
-    /** @var FindIdentifiersForQueryInterface */
-    private $findIdentifiersForQuery;
+    private FindIdentifiersForQueryInterface $findIdentifiersForQuery;
 
-    /** @var SearchAsset */
-    private $searchAsset;
+    private SearchAsset $searchAsset;
 
     public function __construct(
         AssetRepositoryInterface $assetRepository,
@@ -144,9 +139,7 @@ final class ListAssetContext implements Context
     {
         $expectedAssetCodes = explode(',', $expectedAssetCodes);
         $resultCodes = array_map(
-            function (AssetItem $assetItem): string {
-                return $assetItem->code;
-            },
+            fn (AssetItem $assetItem): string => $assetItem->code,
             $this->result->items
         );
 

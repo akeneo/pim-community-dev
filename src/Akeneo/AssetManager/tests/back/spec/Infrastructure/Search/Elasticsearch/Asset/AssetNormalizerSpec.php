@@ -48,7 +48,7 @@ class AssetNormalizerSpec extends ObjectBehavior
         FindActivatedLocalesInterface $findActivatedLocales
     ) {
         $assetIdentifier = AssetIdentifier::fromString('stark');
-        $updatedAt->getTimestamp()->willReturn(1589524960);
+        $updatedAt->getTimestamp()->willReturn(1_589_524_960);
 
         $stark = new SearchableAssetItem();
         $stark->identifier = 'designer_stark_fingerprint';
@@ -121,7 +121,7 @@ class AssetNormalizerSpec extends ObjectBehavior
             ]
         );
 
-        $normalizedAsset['updated_at']->shouldBeEqualTo(1589537781);
+        $normalizedAsset['updated_at']->shouldBeEqualTo(1_589_537_781);
     }
 
     function it_normalizes_a_searchable_assets_by_asset_identifiers(

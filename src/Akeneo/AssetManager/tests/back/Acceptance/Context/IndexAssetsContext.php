@@ -20,23 +20,17 @@ use Symfony\Component\Validator\Validator\ValidatorInterface;
  */
 class IndexAssetsContext implements Context
 {
-    /** @var AssetFamilyRepositoryInterface */
-    private $assetFamilyRepository;
+    private AssetFamilyRepositoryInterface $assetFamilyRepository;
 
-    /** @var IndexAssetsByAssetFamilyHandler */
-    private $indexAssetsByAssetFamily;
+    private IndexAssetsByAssetFamilyHandler $indexAssetsByAssetFamily;
 
-    /** @var AssetIndexerInterface */
-    private $assetIndexerSpy;
+    private AssetIndexerSpy $assetIndexerSpy;
 
-    /** @var ConstraintViolationsContext */
-    private $constraintViolationsContext;
+    private ConstraintViolationsContext $constraintViolationsContext;
 
-    /** @var ValidatorInterface */
-    private $validator;
+    private ValidatorInterface $validator;
 
-    /** @var CreateAssetFamilyHandler */
-    private $createAssetFamilyHandler;
+    private CreateAssetFamilyHandler $createAssetFamilyHandler;
 
     public function __construct(
         AssetFamilyRepositoryInterface $assetFamilyRepository,

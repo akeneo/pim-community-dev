@@ -36,8 +36,7 @@ use Symfony\Component\EventDispatcher\EventDispatcher;
 
 class InMemoryAttributeRepositoryTest extends TestCase
 {
-    /** @var InMemoryAttributeRepository*/
-    private $attributeRepository;
+    private InMemoryAttributeRepository $attributeRepository;
 
     public function setUp(): void
     {

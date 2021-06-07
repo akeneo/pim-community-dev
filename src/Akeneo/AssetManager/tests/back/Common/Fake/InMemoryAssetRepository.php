@@ -30,10 +30,9 @@ use Symfony\Component\EventDispatcher\EventDispatcherInterface;
 class InMemoryAssetRepository implements AssetRepositoryInterface
 {
     /** @var Asset[] */
-    protected $assets = [];
+    protected array $assets = [];
 
-    /** @var EventDispatcherInterface */
-    private $eventDispatcher;
+    private EventDispatcherInterface $eventDispatcher;
 
     public function __construct(
         EventDispatcherInterface $eventDispatcher
@@ -191,7 +190,7 @@ class InMemoryAssetRepository implements AssetRepositoryInterface
                 continue;
             }
 
-            $this->eventDispatcher->dispatch($event, get_class($event));
+            $this->eventDispatcher->dispatch($event);
         }
 
         $asset->clearRecordedEvents();

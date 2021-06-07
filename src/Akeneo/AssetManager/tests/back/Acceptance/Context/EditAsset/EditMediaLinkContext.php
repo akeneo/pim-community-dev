@@ -56,29 +56,21 @@ class EditMediaLinkContext implements Context
     private const NEW_URL = 'house_2345112';
     private const OLD_URL = 'garden_5124';
 
-    /** @var AssetFamilyRepositoryInterface */
-    private $assetFamilyRepository;
+    private AssetFamilyRepositoryInterface $assetFamilyRepository;
 
-    /** @var InMemoryAttributeRepository */
-    private $attributeRepository;
+    private AttributeRepositoryInterface $attributeRepository;
 
-    /** @var InMemoryAssetRepository */
-    private $assetRepository;
+    private AssetRepositoryInterface $assetRepository;
 
-    /** @var EditAssetCommandFactory */
-    private $editAssetCommandFactory;
+    private EditAssetCommandFactory $editAssetCommandFactory;
 
-    /** @var EditAssetHandler */
-    private $editAssetHandler;
+    private EditAssetHandler $editAssetHandler;
 
-    /** @var ValidatorInterface */
-    private $validator;
+    private ValidatorInterface $validator;
 
-    /** @var ExceptionContext */
-    private $exceptionContext;
+    private ExceptionContext $exceptionContext;
 
-    /** @var ConstraintViolationsContext */
-    private $violationsContext;
+    private ConstraintViolationsContext $violationsContext;
 
     public function __construct(
         AssetFamilyRepositoryInterface $assetFamilyRepository,

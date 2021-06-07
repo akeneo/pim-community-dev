@@ -22,17 +22,13 @@ use Akeneo\AssetManager\Integration\SqlIntegrationTestCase;
 
 class AssetValidatorTest extends SqlIntegrationTestCase
 {
-    /** @var AssetValidator */
-    private $assetValidator;
+    private AssetValidator $assetValidator;
 
-    /** @var AttributeRepositoryInterface */
-    private $attributeRepository;
+    private AttributeRepositoryInterface $attributeRepository;
 
-    /** @var AssetFamilyRepositoryInterface */
-    private $assetFamilyRepository;
+    private AssetFamilyRepositoryInterface $assetFamilyRepository;
 
-    /** @var int */
-    private $attributeOrder;
+    private int $attributeOrder;
 
     public function setUp(): void
     {

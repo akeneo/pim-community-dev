@@ -18,6 +18,7 @@ use Akeneo\AssetManager\Common\Helper\OauthAuthenticatedClientFactory;
 use Akeneo\AssetManager\Common\Helper\WebClientHelper;
 use Akeneo\AssetManager\Domain\Model\AssetFamily\AssetFamily;
 use Akeneo\AssetManager\Domain\Model\AssetFamily\AssetFamilyIdentifier;
+use Akeneo\AssetManager\Domain\Model\AssetFamily\NamingConvention\NamingConvention;
 use Akeneo\AssetManager\Domain\Model\AssetFamily\RuleTemplateCollection;
 use Akeneo\AssetManager\Domain\Model\Attribute\AttributeCode;
 use Akeneo\AssetManager\Domain\Model\Attribute\AttributeIdentifier;
@@ -33,6 +34,7 @@ use Akeneo\AssetManager\Domain\Model\Attribute\OptionCollectionAttribute;
 use Akeneo\AssetManager\Domain\Model\Image;
 use Akeneo\AssetManager\Domain\Model\LabelCollection;
 use Akeneo\AssetManager\Domain\Query\AssetFamily\Connector\ConnectorAssetFamily;
+use Akeneo\AssetManager\Domain\Query\AssetFamily\Connector\ConnectorTransformationCollection;
 use Akeneo\AssetManager\Domain\Query\Attribute\Connector\ConnectorAttribute;
 use Akeneo\AssetManager\Domain\Repository\AssetFamilyRepositoryInterface;
 use Akeneo\AssetManager\Domain\Repository\AttributeRepositoryInterface;
@@ -43,38 +45,30 @@ class GetConnectorAttributeOptionContext implements Context
 {
     private const REQUEST_CONTRACT_DIR = 'Attribute/Connector/Distribute/';
 
-    /** @var OauthAuthenticatedClientFactory */
-    private $clientFactory;
+    private OauthAuthenticatedClientFactory $clientFactory;
 
-    /** @var WebClientHelper */
-    private $webClientHelper;
+    private WebClientHelper $webClientHelper;
 
-    /** @var InMemoryFindConnectorAttributeOption */
-    private $findConnectorAttributeOption;
+    private InMemoryFindConnectorAttributeOption $findConnectorAttributeOption;
 
-    /** @var AssetFamilyRepositoryInterface */
-    private $assetFamilyRepository;
+    private AssetFamilyRepositoryInterface $assetFamilyRepository;
 
-    /** @var AttributeRepositoryInterface */
-    private $attributeRepository;
+    private AttributeRepositoryInterface $attributeRepository;
 
-    /** @var ConnectorAssetFamily */
-    private $assetFamily;
+    private ConnectorAssetFamily $assetFamily;
 
-    /** @var OptionAttribute */
-    private $singleOptionAttribute;
+    private OptionAttribute $singleOptionAttribute;
 
-    /** @var OptionCollectionAttribute */
-    private $multiOptionAttribute;
+    private OptionCollectionAttribute $multiOptionAttribute;
 
     /** @var null|Response **/
-    private $optionResponse;
+    private ?Response $optionResponse = null;
 
     /** @var null|Response **/
-    private $multiOptionResponse;
+    private ?Response $multiOptionResponse = null;
 
     /** @var null|Response **/
-    private $nonExistentAttributeOptionResponse;
+    private ?Response $nonExistentAttributeOptionResponse = null;
 
     public function __construct(
         OauthAuthenticatedClientFactory $clientFactory,
@@ -205,7 +199,7 @@ class GetConnectorAttributeOptionContext implements Context
         );
     }
 
-    private function createBrandAssetFamily()
+    private function createBrandAssetFamily(): ConnectorAssetFamily
     {
         $identifier = AssetFamilyIdentifier::fromString('brand_2');
 
@@ -220,8 +214,20 @@ class GetConnectorAttributeOptionContext implements Context
         );
 
         $this->assetFamilyRepository->create($assetFamily);
+        $connectorAssetFamily = new ConnectorAssetFamily(
+            $identifier,
+            LabelCollection::fromArray([
+                                           'fr_FR' => 'Marque',
+                                           'en_US' => 'Brand'
+                                       ]),
+            Image::createEmpty(),
+            [],
+            new ConnectorTransformationCollection([]),
+            NamingConvention::createFromNormalized([]),
+            null
+        );
 
-        return $assetFamily;
+        return $connectorAssetFamily;
     }
 
     private function createSingleOptionAttribute(string $code)
@@ -265,9 +271,7 @@ class GetConnectorAttributeOptionContext implements Context
             AttributeIsReadOnly::fromBoolean(false),
             [
                 'options' => array_map(
-                    function (AttributeOption $attributeOption) {
-                        return $attributeOption->normalize();
-                    },
+                    fn (AttributeOption $attributeOption) => $attributeOption->normalize(),
                     $this->singleOptionAttribute->getAttributeOptions()
                 ),
             ]
@@ -321,9 +325,7 @@ class GetConnectorAttributeOptionContext implements Context
             AttributeIsReadOnly::fromBoolean(false),
             [
                 'options' => array_map(
-                    function (AttributeOption $attributeOption) {
-                        return $attributeOption->normalize();
-                    },
+                    fn (AttributeOption $attributeOption) => $attributeOption->normalize(),
                     $this->multiOptionAttribute->getAttributeOptions()
                 ),
             ]

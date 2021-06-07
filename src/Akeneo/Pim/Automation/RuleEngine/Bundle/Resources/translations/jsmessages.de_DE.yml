@@ -52,6 +52,14 @@ pimee_catalog_rule:
           success: Die Regeln wurden erfolgreich gelöscht.
           error: Beim Löschen der Regeln ist ein Fehler aufgetreten.
           empty_selection: Keine Regeln ausgewählt.
+      tags:
+        set: Festlegen
+        add: Hinzufügen
+        calculate: Berechnen
+        clear: Löschen
+        concatenate: Verketten
+        copy: Kopieren
+        remove: Entfernen
   form:
     category:
       catalog: Katalog

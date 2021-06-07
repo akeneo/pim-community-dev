@@ -20,8 +20,7 @@ use PHPUnit\Framework\TestCase;
 
 class InMemoryFindActivatedLocalesByIdentifiersTest extends TestCase
 {
-    /** @var InMemoryFindActivatedLocalesByIdentifiers */
-    private $findActivatedLocalesByIdentifiers;
+    private InMemoryFindActivatedLocalesByIdentifiers $findActivatedLocalesByIdentifiers;
 
     public function setUp(): void
     {

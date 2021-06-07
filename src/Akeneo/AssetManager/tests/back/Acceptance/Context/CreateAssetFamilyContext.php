@@ -42,35 +42,25 @@ final class CreateAssetFamilyContext implements Context
     private const UNEXISTING_ATTRIBUTE_CODE = 'unexisting_attribute';
     private const ASSET_FAMILY_IDENTIFIER = 'packshot';
 
-    /** @var InMemoryAssetFamilyRepository */
-    private $assetFamilyRepository;
+    private AssetFamilyRepositoryInterface $assetFamilyRepository;
 
-    /** @var CreateAssetFamilyHandler */
-    private $createAssetFamilyHandler;
+    private CreateAssetFamilyHandler $createAssetFamilyHandler;
 
-    /** @var ValidatorInterface */
-    private $validator;
+    private ValidatorInterface $validator;
 
-    /** @var ExceptionContext */
-    private $exceptionContext;
+    private ExceptionContext $exceptionContext;
 
-    /** @var ConstraintViolationsContext */
-    private $violationsContext;
+    private ConstraintViolationsContext $violationsContext;
 
-    /** @var InMemoryFindActivatedLocalesByIdentifiers */
-    private $activatedLocales;
+    private InMemoryFindActivatedLocalesByIdentifiers $activatedLocales;
 
-    /** @var int  */
-    private $ruleTemplateByAssetFamilyLimit;
+    private int $ruleTemplateByAssetFamilyLimit;
 
-    /** @var RuleEngineValidatorACLStub */
-    private $ruleEngineValidatorACLStub;
+    private RuleEngineValidatorACLInterface $ruleEngineValidatorACLStub;
 
-    /** @var InMemoryChannelExists */
-    private $inMemoryChannelExists;
+    private InMemoryChannelExists $inMemoryChannelExists;
 
-    /** @var InMemoryGetAssetCollectionTypeAdapter */
-    private $inMemoryFindAssetCollectionTypeACL;
+    private InMemoryGetAssetCollectionTypeAdapter $inMemoryFindAssetCollectionTypeACL;
 
     public function __construct(
         AssetFamilyRepositoryInterface $assetFamilyRepository,

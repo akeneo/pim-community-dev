@@ -15,7 +15,7 @@ use PHPUnit\Framework\Assert;
 class CompiledRuleRunnerSpy implements CompiledRuleRunnerInterface
 {
     /** @var CompiledRule[] */
-    private $compiledRules = [];
+    private array $compiledRules = [];
 
     public function run(CompiledRule $compiledRule): void
     {

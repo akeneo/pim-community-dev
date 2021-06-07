@@ -23,8 +23,7 @@ use Akeneo\AssetManager\Domain\Query\Attribute\FindMediaFileAttributeCodesInterf
  */
 class InMemoryFindMediaFileAttributeCodes implements FindMediaFileAttributeCodesInterface
 {
-    /** @var InMemoryAttributeRepository */
-    private $attributeRepository;
+    private InMemoryAttributeRepository $attributeRepository;
 
     public function __construct(InMemoryAttributeRepository $attributeRepository)
     {

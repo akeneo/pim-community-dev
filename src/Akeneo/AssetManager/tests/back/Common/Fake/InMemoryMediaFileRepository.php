@@ -24,7 +24,7 @@ use Akeneo\Tool\Component\FileStorage\Model\FileInfo;
 class InMemoryMediaFileRepository implements MediaFileRepositoryInterface
 {
     /** @var FileInfo[] */
-    private $mediaFiles = [];
+    private array $mediaFiles = [];
 
     public function getByIdentifier(string $identifier): FileInfo
     {

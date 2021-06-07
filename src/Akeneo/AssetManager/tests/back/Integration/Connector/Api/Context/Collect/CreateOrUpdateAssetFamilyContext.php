@@ -64,38 +64,27 @@ class CreateOrUpdateAssetFamilyContext implements Context
     private const REQUEST_CONTRACT_DIR = 'AssetFamily/Connector/Collect/';
     private const VALID_EXTENSIONS = ['gif', 'jfif', 'jif', 'jpeg', 'jpg', 'pdf', 'png', 'psd', 'tif', 'tiff'];
 
-    /** @var OauthAuthenticatedClientFactory */
-    private $clientFactory;
+    private OauthAuthenticatedClientFactory $clientFactory;
 
-    /** @var WebClientHelper */
-    private $webClientHelper;
+    private WebClientHelper $webClientHelper;
 
-    /** @var AssetFamilyRepositoryInterface */
-    private $assetFamilyRepository;
+    private AssetFamilyRepositoryInterface $assetFamilyRepository;
 
-    /** @var null|Response */
-    private $pimResponse;
+    private ?Response $pimResponse = null;
 
-    /** @var null|string */
-    private $requestContract;
+    private ?string $requestContract = null;
 
-    /** @var InMemoryChannelExists */
-    private $channelExists;
+    private InMemoryChannelExists $channelExists;
 
-    /** @var InMemoryFindActivatedLocalesByIdentifiers */
-    private $activatedLocales;
+    private InMemoryFindActivatedLocalesByIdentifiers $activatedLocales;
 
-    /** @var InMemoryFindActivatedLocalesPerChannels */
-    private $activatedLocalesPerChannels;
+    private InMemoryFindActivatedLocalesPerChannels $activatedLocalesPerChannels;
 
-    /** @var InMemoryGetAttributeIdentifier */
-    private $getAttributeIdentifier;
+    private InMemoryGetAttributeIdentifier $getAttributeIdentifier;
 
-    /** @var InMemoryGetAssetCollectionTypeAdapter */
-    private $findAssetCollectionTypeACL;
+    private InMemoryGetAssetCollectionTypeAdapter $findAssetCollectionTypeACL;
 
-    /** @var AttributeRepositoryInterface */
-    private $attributeRepository;
+    private AttributeRepositoryInterface $attributeRepository;
 
     public function __construct(
         OauthAuthenticatedClientFactory $clientFactory,

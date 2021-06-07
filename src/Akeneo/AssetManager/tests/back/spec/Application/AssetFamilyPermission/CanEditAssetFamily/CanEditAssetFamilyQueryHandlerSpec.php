@@ -40,17 +40,13 @@ class CanEditAssetFamilyQueryHandlerSpec extends ObjectBehavior
 
         $assetFamilyPermissionRepository->getByAssetFamilyIdentifier(
             Argument::that(
-                function ($assetFamilyIdentifier) {
-                    return 'brand' === $assetFamilyIdentifier->normalize();
-                }
+                fn($assetFamilyIdentifier) => 'brand' === $assetFamilyIdentifier->normalize()
             )
         )->willReturn($assetFamilyPermission);
 
         $findUserGroupsForSecurityIdentifier->find(
             Argument::that(
-                function (SecurityIdentifier $securityIdentifier) {
-                    return 'julia' === $securityIdentifier->stringValue();
-                }
+                fn(SecurityIdentifier $securityIdentifier) => 'julia' === $securityIdentifier->stringValue()
             )
         )->willReturn([$userGroupIdentifier1, $userGroupIdentifier2]);
 

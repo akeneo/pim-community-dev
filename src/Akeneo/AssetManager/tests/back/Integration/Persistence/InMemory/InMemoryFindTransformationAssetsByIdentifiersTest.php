@@ -23,8 +23,7 @@ use Webmozart\Assert\Assert;
 
 class InMemoryFindTransformationAssetsByIdentifiersTest extends TestCase
 {
-    /** @var InMemoryFindTransformationAssetsByIdentifiers */
-    private $findTransformationAssetsByIdentifiers;
+    private InMemoryFindTransformationAssetsByIdentifiers $findTransformationAssetsByIdentifiers;
 
     public function setUp(): void
     {

@@ -34,10 +34,9 @@ use Akeneo\AssetManager\Integration\SqlIntegrationTestCase;
 
 class SqlGenerateEmptyValuesTest extends SqlIntegrationTestCase
 {
-    /** @var GenerateEmptyValuesInterface */
-    private $generateEmptyValues;
+    private GenerateEmptyValuesInterface $generateEmptyValues;
 
-    private $order = 2;
+    private int $order = 2;
 
     public function setUp(): void
     {

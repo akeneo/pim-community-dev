@@ -19,14 +19,11 @@ use Akeneo\Tool\Component\FileStorage\File\FileStorer;
  */
 final class BinaryImageGeneratorTest extends PreviewGeneratorIntegrationTestCase
 {
-    /** @var PreviewGeneratorInterface */
-    private $binaryImageGenerator;
+    private PreviewGeneratorInterface $binaryImageGenerator;
 
-    /** @var MediaFileAttribute */
-    private $mediaFileAttribute;
+    private MediaFileAttribute $mediaFileAttribute;
 
-    /** @var FileStorer */
-    private $fileStorer;
+    private FileStorer $fileStorer;
 
     public function setUp(): void
     {

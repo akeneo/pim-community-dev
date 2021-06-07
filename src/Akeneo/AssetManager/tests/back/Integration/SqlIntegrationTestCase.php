@@ -25,8 +25,7 @@ use Symfony\Bundle\FrameworkBundle\Test\KernelTestCase;
  */
 abstract class SqlIntegrationTestCase extends KernelTestCase
 {
-    /** @var FixturesLoader */
-    protected $fixturesLoader;
+    protected FixturesLoader $fixturesLoader;
 
     /**
      * {@inheritdoc}

@@ -36,14 +36,11 @@ class EditActionTest extends ControllerIntegrationTestCase
 {
     private const ASSET_FAMILY_EDIT_ROUTE = 'akeneo_asset_manager_asset_family_edit_rest';
 
-    /** @var WebClientHelper */
-    private $webClientHelper;
+    private WebClientHelper $webClientHelper;
 
-    /** @var AttributeRepositoryInterface */
-    private $attributeRepository;
+    private AttributeRepositoryInterface $attributeRepository;
 
-    /** @var SecurityFacadeStub */
-    private $securityFacade;
+    private SecurityFacadeStub $securityFacade;
 
     public function setUp(): void
     {

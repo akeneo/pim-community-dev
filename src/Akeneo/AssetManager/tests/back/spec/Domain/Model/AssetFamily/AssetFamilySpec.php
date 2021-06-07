@@ -63,8 +63,7 @@ class AssetFamilySpec extends ObjectBehavior
             $sameIdentifier,
             [],
             Image::createEmpty(),
-            RuleTemplateCollection::empty(),
-            new NullNamingConvention()
+            RuleTemplateCollection::empty()
         );
         $this->equals($sameAssetFamily)->shouldReturn(true);
 
@@ -73,8 +72,7 @@ class AssetFamilySpec extends ObjectBehavior
             $anotherIdentifier,
             [],
             Image::createEmpty(),
-            RuleTemplateCollection::empty(),
-            new NullNamingConvention()
+            RuleTemplateCollection::empty()
         );
         $this->equals($sameAssetFamily)->shouldReturn(false);
     }

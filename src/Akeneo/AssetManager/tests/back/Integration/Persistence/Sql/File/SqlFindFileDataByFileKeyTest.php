@@ -21,11 +21,9 @@ use Akeneo\Tool\Component\StorageUtils\Saver\SaverInterface;
 
 class SqlFindFileDataByFileKeyTest extends SqlIntegrationTestCase
 {
-    /** @var SqlFindFileDataByFileKey */
-    private $findfileByFileKey;
+    private SqlFindFileDataByFileKey $findfileByFileKey;
 
-    /** @var SaverInterface */
-    private $fileSaver;
+    private SaverInterface $fileSaver;
 
     public function setUp(): void
     {

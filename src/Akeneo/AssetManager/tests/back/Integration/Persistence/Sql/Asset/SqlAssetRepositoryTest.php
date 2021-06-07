@@ -40,17 +40,13 @@ use PHPUnit\Framework\Assert;
 
 class SqlAssetRepositoryTest extends SqlIntegrationTestCase
 {
-    /** @var EventDispatcherMock */
-    private $eventDispatcherMock;
+    private EventDispatcherMock $eventDispatcherMock;
 
-    /** @var AssetRepositoryInterface */
-    private $repository;
+    private AssetRepositoryInterface $repository;
 
-    /** @var AssetFamilyRepositoryInterface */
-    private $assetFamilyRepository;
+    private AssetFamilyRepositoryInterface $assetFamilyRepository;
 
-    /** @var array */
-    private $fixturesDesigner;
+    private ?array $fixturesDesigner = null;
 
     public function setUp(): void
     {

@@ -10,11 +10,9 @@ use Akeneo\AssetManager\Domain\Query\Attribute\ValueKey;
 
 class InMemoryFindAssetLabelsByIdentifiers implements FindAssetLabelsByIdentifiersInterface
 {
-    /** @var InMemoryAssetRepository  */
-    private $assetRepository;
+    private InMemoryAssetRepository $assetRepository;
 
-    /** @var InMemoryAssetFamilyRepository  */
-    private $assetFamilyRepository;
+    private InMemoryAssetFamilyRepository $assetFamilyRepository;
 
     public function __construct(
         InMemoryAssetRepository $assetRepository,

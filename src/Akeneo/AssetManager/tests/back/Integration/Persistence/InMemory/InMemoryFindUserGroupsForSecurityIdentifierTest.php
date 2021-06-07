@@ -15,8 +15,7 @@ use PHPUnit\Framework\TestCase;
  */
 class InMemoryFindUserGroupsForSecurityIdentifierTest extends TestCase
 {
-    /** @var InMemoryFindUserGroupsForSecurityIdentifier */
-    private $query;
+    private InMemoryFindUserGroupsForSecurityIdentifier $query;
 
     public function setUp(): void
     {
@@ -35,9 +34,7 @@ class InMemoryFindUserGroupsForSecurityIdentifierTest extends TestCase
         $userGroupIdentifiers = $this->query->find(SecurityIdentifier::fromString('julia'));
 
         $normalizedUserGroupIdentifiers = array_map(
-            function (UserGroupIdentifier $userGroupIdentifier) {
-                return $userGroupIdentifier->normalize();
-            },
+            fn (UserGroupIdentifier $userGroupIdentifier) => $userGroupIdentifier->normalize(),
             $userGroupIdentifiers
         );
 

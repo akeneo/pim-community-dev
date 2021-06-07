@@ -21,7 +21,7 @@ use Oro\Bundle\SecurityBundle\SecurityFacade;
  */
 class SecurityFacadeStub extends SecurityFacade
 {
-    private $permissions = [];
+    private array $permissions = [];
 
     public function isGranted($acl, $object = null)
     {

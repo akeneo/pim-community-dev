@@ -55,11 +55,9 @@ use Doctrine\DBAL\DBALException;
 
 class SqlAttributeRepositoryTest extends SqlIntegrationTestCase
 {
-    /** @var AttributeRepositoryInterface */
-    private $attributeRepository;
+    private AttributeRepositoryInterface $attributeRepository;
 
-    /** @var EventDispatcherMock */
-    private $eventDispatcherMock;
+    private EventDispatcherMock $eventDispatcherMock;
 
     public function setUp(): void
     {

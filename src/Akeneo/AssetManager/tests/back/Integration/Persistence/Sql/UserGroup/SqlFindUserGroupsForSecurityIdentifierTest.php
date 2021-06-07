@@ -12,8 +12,7 @@ use Doctrine\DBAL\Connection;
 
 class SqlFindUserGroupsForSecurityIdentifierTest extends SqlIntegrationTestCase
 {
-    /** @var FindUserGroupsForSecurityIdentifierInterface */
-    private $findUserGroupsForSecurityIdentifiers;
+    private FindUserGroupsForSecurityIdentifierInterface $findUserGroupsForSecurityIdentifiers;
 
     public function setUp(): void
     {
@@ -32,9 +31,7 @@ class SqlFindUserGroupsForSecurityIdentifierTest extends SqlIntegrationTestCase
 
         $userGroupIdentifiers = $this->findUserGroupsForSecurityIdentifiers->find(SecurityIdentifier::fromString('admin'));
         $normalizedUserGroupIdentifiers = array_map(
-            function (UserGroupIdentifier $userGroupIdentifier) {
-                return $userGroupIdentifier->normalize();
-            },
+            fn (UserGroupIdentifier $userGroupIdentifier) => $userGroupIdentifier->normalize(),
             $userGroupIdentifiers
         );
 

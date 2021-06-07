@@ -55,11 +55,13 @@ class SqlFindConnectorAssetsByIdentifiers implements FindConnectorAssetsByIdenti
     public function find(array $identifiers, AssetQuery $assetQuery): array
     {
         $sql = <<<SQL
-            SELECT 
-                identifier, 
-                code, 
-                asset_family_identifier, 
-                value_collection
+            SELECT
+                identifier,
+                code,
+                asset_family_identifier,
+                value_collection,
+                created_at,
+                updated_at
             FROM akeneo_asset_manager_asset
             WHERE identifier IN (:identifiers)
             ORDER BY FIELD(identifier, :identifiers);

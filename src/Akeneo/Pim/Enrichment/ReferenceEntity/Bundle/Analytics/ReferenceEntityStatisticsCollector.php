@@ -4,12 +4,12 @@ declare(strict_types=1);
 
 namespace Akeneo\Pim\Enrichment\ReferenceEntity\Bundle\Analytics;
 
+use Akeneo\ReferenceEntity\Infrastructure\PublicApi\Analytics\AggregatedAverageMaxNumberOfValuesPerRecord;
 use Akeneo\ReferenceEntity\Infrastructure\PublicApi\Analytics\AverageMaxPercentageOfAttributesPerReferenceEntity\SqlLocalizableOnly;
 use Akeneo\ReferenceEntity\Infrastructure\PublicApi\Analytics\AverageMaxPercentageOfAttributesPerReferenceEntity\SqlScopableAndLocalizable;
 use Akeneo\ReferenceEntity\Infrastructure\PublicApi\Analytics\AverageMaxPercentageOfAttributesPerReferenceEntity\SqlScopableOnly;
 use Akeneo\ReferenceEntity\Infrastructure\PublicApi\Analytics\SqlAverageMaxNumberOfAttributesPerReferenceEntity;
 use Akeneo\ReferenceEntity\Infrastructure\PublicApi\Analytics\SqlAverageMaxNumberOfRecordsPerReferenceEntity;
-use Akeneo\ReferenceEntity\Infrastructure\PublicApi\Analytics\SqlAverageMaxNumberOfValuesPerRecord;
 use Akeneo\ReferenceEntity\Infrastructure\PublicApi\Analytics\SqlCountReferenceEntities;
 use Akeneo\Tool\Component\Analytics\DataCollectorInterface;
 
@@ -25,7 +25,7 @@ class ReferenceEntityStatisticsCollector implements DataCollectorInterface
     /** @var SqlAverageMaxNumberOfRecordsPerReferenceEntity */
     private $averageMaxNumberOfRecordsPerReferenceEntity;
 
-    /** @var SqlAverageMaxNumberOfValuesPerRecord */
+    /** @var AggregatedAverageMaxNumberOfValuesPerRecord */
     private $averageMaxNumberOfValuesPerRecord;
 
     /** @var SqlAverageMaxNumberOfAttributesPerReferenceEntity */
@@ -43,7 +43,7 @@ class ReferenceEntityStatisticsCollector implements DataCollectorInterface
     public function __construct(
         SqlCountReferenceEntities $countReferenceEntities,
         SqlAverageMaxNumberOfRecordsPerReferenceEntity $averageMaxNumberOfRecordsPerReferenceEntity,
-        SqlAverageMaxNumberOfValuesPerRecord $averageMaxNumberOfValuesPerRecord,
+        AggregatedAverageMaxNumberOfValuesPerRecord $averageMaxNumberOfValuesPerRecord,
         SqlAverageMaxNumberOfAttributesPerReferenceEntity $averageMaxNumberOfAttributesPerReferenceEntity,
         SqlLocalizableOnly $localizableOnly,
         SqlScopableOnly $scopableOnly,

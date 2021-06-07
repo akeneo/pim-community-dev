@@ -43,8 +43,7 @@ class EditActionTest extends ControllerIntegrationTestCase
     private const EDIT_ATTRIBUTE_ROUTE = 'akeneo_asset_manager_attribute_edit_rest';
     private const RESPONSES_DIR = 'Attribute/Edit/';
 
-    /** @var WebClientHelper */
-    private $webClientHelper;
+    private WebClientHelper $webClientHelper;
 
     public function setUp(): void
     {

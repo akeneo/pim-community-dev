@@ -28,8 +28,7 @@ use Symfony\Bundle\FrameworkBundle\Test\KernelTestCase;
  */
 abstract class SearchIntegrationTestCase extends KernelTestCase
 {
-    /** @var SearchAssetIndexHelper */
-    protected $searchAssetIndexHelper;
+    protected SearchAssetIndexHelper $searchAssetIndexHelper;
 
     /**
      * {@inheritdoc}

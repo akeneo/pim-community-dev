@@ -9,6 +9,7 @@ use Akeneo\AssetManager\Common\Fake\InMemoryAssetRepository;
 use Akeneo\AssetManager\Common\Fake\InMemoryFindIdentifiersByAssetFamilyAndCodes;
 use Akeneo\AssetManager\Domain\Model\Asset\Asset;
 use Akeneo\AssetManager\Domain\Model\Asset\AssetCode;
+use Akeneo\AssetManager\Domain\Model\Asset\AssetIdentifier;
 use Akeneo\AssetManager\Domain\Model\Asset\Value\ValueCollection;
 use Akeneo\AssetManager\Domain\Model\AssetFamily\AssetFamily;
 use Akeneo\AssetManager\Domain\Model\AssetFamily\AssetFamilyIdentifier;
@@ -19,20 +20,15 @@ use Symfony\Component\EventDispatcher\EventDispatcher;
 
 class InMemoryFindIdentifiersByAssetFamilyAndCodesTest extends TestCase
 {
-    /** @var InMemoryAssetRepository */
-    private $assetRepository;
+    private InMemoryAssetRepository $assetRepository;
 
-    /** @var InMemoryAssetFamilyRepository */
-    private $assetFamilyRepository;
+    private InMemoryAssetFamilyRepository $assetFamilyRepository;
 
-    /** @var InMemoryFindIdentifiersByAssetFamilyAndCodes */
-    private $query;
+    private InMemoryFindIdentifiersByAssetFamilyAndCodes $query;
 
-    /** @var AssetFamilyIdentifier */
-    private $starckIdentifier;
+    private ?AssetIdentifier $starckIdentifier = null;
 
-    /** @var AssetFamilyIdentifier */
-    private $cocoIdentifier;
+    private ?AssetIdentifier $cocoIdentifier = null;
 
     public function setUp(): void
     {

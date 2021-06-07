@@ -27,8 +27,7 @@ use Symfony\Bundle\FrameworkBundle\Test\WebTestCase;
  */
 abstract class ControllerIntegrationTestCase extends WebTestCase
 {
-    /** @var KernelBrowser */
-    protected $client;
+    protected KernelBrowser $client;
 
     protected function setUp(): void
     {

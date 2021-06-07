@@ -36,8 +36,7 @@ use PHPUnit\Framework\Assert;
 
 class SqlFindAssetFamilyDetailsTest extends SqlIntegrationTestCase
 {
-    /** @var FindAssetFamilyDetailsInterface */
-    private $findAssetFamilyDetails;
+    private FindAssetFamilyDetailsInterface $findAssetFamilyDetails;
 
     public function setUp(): void
     {

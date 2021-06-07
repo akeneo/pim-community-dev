@@ -27,11 +27,9 @@ use Symfony\Component\EventDispatcher\EventDispatcher;
 
 class InMemoryFindAssetFamilyAttributeAsMainMediaTest extends TestCase
 {
-    /** @var InMemoryFindAssetFamilyAttributeAsMainMedia */
-    private $findAssetFamilyAttributeAsMainMedia;
+    private InMemoryFindAssetFamilyAttributeAsMainMedia $findAssetFamilyAttributeAsMainMedia;
 
-    /** @var InMemoryAssetFamilyRepository */
-    private $assetFamilyRepository;
+    private InMemoryAssetFamilyRepository $assetFamilyRepository;
 
     public function setUp(): void
     {

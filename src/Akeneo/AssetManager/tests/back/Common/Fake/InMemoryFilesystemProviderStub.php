@@ -25,8 +25,7 @@ use League\Flysystem\MountManager;
  */
 class InMemoryFilesystemProviderStub extends FilesystemProvider
 {
-    /** @var FilesystemInterface */
-    private $fileSystem;
+    private FilesystemInterface $fileSystem;
 
     public function __construct(MountManager $mountManager)
     {

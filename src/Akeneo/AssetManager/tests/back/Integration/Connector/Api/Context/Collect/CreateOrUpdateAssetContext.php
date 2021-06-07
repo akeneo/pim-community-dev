@@ -85,53 +85,37 @@ class CreateOrUpdateAssetContext implements Context
     private const PHONE_ASSET_CODE = 'phone';
     private const VALID_EXTENSIONS = ['gif', 'jfif', 'jif', 'jpeg', 'jpg', 'pdf', 'png', 'psd', 'tif', 'tiff'];
 
-    /** @var OauthAuthenticatedClientFactory */
-    private $clientFactory;
+    private OauthAuthenticatedClientFactory $clientFactory;
 
-    /** @var WebClientHelper */
-    private $webClientHelper;
+    private WebClientHelper $webClientHelper;
 
-    /** @var AssetFamilyRepositoryInterface */
-    private $assetFamilyRepository;
+    private AssetFamilyRepositoryInterface $assetFamilyRepository;
 
-    /** @var null|Response */
-    private $pimResponse;
+    private ?Response $pimResponse = null;
 
-    /** @var AttributeRepositoryInterface */
-    private $attributeRepository;
+    private AttributeRepositoryInterface $attributeRepository;
 
-    /** @var AssetRepositoryInterface */
-    private $assetRepository;
+    private AssetRepositoryInterface $assetRepository;
 
-    /** @var null|string */
-    private $requestContract;
+    private ?string $requestContract = null;
 
-    /** @var InMemoryChannelExists */
-    private $channelExists;
+    private InMemoryChannelExists $channelExists;
 
-    /** @var InMemoryFindActivatedLocalesByIdentifiers */
-    private $activatedLocales;
+    private InMemoryFindActivatedLocalesByIdentifiers $activatedLocales;
 
-    /** @var InMemoryFindActivatedLocalesPerChannels */
-    private $activatedLocalesPerChannels;
+    private InMemoryFindActivatedLocalesPerChannels $activatedLocalesPerChannels;
 
-    /** @var null|Response */
-    private $uploadImageResponse;
+    private ?Response $uploadImageResponse = null;
 
-    /** @var InMemoryFindFileDataByFileKey */
-    private $findFileData;
+    private InMemoryFindFileDataByFileKey $findFileData;
 
-    /** @var InMemoryFileExists */
-    private $fileExists;
+    private InMemoryFileExists $fileExists;
 
-    /** @var InMemoryGetAttributeIdentifier */
-    private $getAttributeIdentifier;
+    private InMemoryGetAttributeIdentifier $getAttributeIdentifier;
 
-    /** @var ProductLinkRuleLauncherSpy */
-    private $productLinkRuleLauncherSpy;
+    private ProductLinkRuleLauncherSpy $productLinkRuleLauncherSpy;
 
-    /** @var ComputeTransformationFromAssetIdentifiersLauncherSpy */
-    private $computeTransformationLauncherSpy;
+    private ComputeTransformationFromAssetIdentifiersLauncherSpy $computeTransformationLauncherSpy;
 
     public function __construct(
         OauthAuthenticatedClientFactory $clientFactory,

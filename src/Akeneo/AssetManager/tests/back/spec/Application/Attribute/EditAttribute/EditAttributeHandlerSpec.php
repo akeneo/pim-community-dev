@@ -58,14 +58,12 @@ class EditAttributeHandlerSpec extends ObjectBehavior
             '154'
         );
 
-        $editAttributeCommand = new EditAttributeCommand(
+        return new EditAttributeCommand(
             'designer_name_fingerprint',
             [
                 $editRequiredAttribute,
                 $editMaxFileSize
             ]
         );
-
-        return $editAttributeCommand;
     }
 }

@@ -48,14 +48,11 @@ use Akeneo\AssetManager\Integration\SearchIntegrationTestCase;
  */
 class FilterAssetsTest extends SearchIntegrationTestCase
 {
-    /** @var FindIdentifiersForQueryInterface */
-    private $findIdentifiersForQuery;
+    private FindIdentifiersForQueryInterface $findIdentifiersForQuery;
 
-    /** @var AssetFamilyIdentifier */
-    private $assetFamilyIdentifier;
+    private ?AssetFamilyIdentifier $assetFamilyIdentifier = null;
 
-    /** @var AttributeIdentifier */
-    private $attributeIdentifier;
+    private ?AttributeIdentifier $attributeIdentifier = null;
 
     public function setUp(): void
     {
@@ -197,12 +194,10 @@ class FilterAssetsTest extends SearchIntegrationTestCase
         );
 
         $attributeOptions = array_map(
-            function (string $optionCode) {
-                return AttributeOption::create(
-                    OptionCode::fromString($optionCode),
-                    LabelCollection::fromArray([])
-                );
-            },
+            fn (string $optionCode) => AttributeOption::create(
+                OptionCode::fromString($optionCode),
+                LabelCollection::fromArray([])
+            ),
             $options
         );
         $optionAttribute->setOptions($attributeOptions);
@@ -228,12 +223,10 @@ class FilterAssetsTest extends SearchIntegrationTestCase
         );
 
         $attributeOptions = array_map(
-            function (string $optionCode) {
-                return AttributeOption::create(
-                    OptionCode::fromString($optionCode),
-                    LabelCollection::fromArray([])
-                );
-            },
+            fn (string $optionCode) => AttributeOption::create(
+                OptionCode::fromString($optionCode),
+                LabelCollection::fromArray([])
+            ),
             $options
         );
         $optionCollectionAttribute->setOptions($attributeOptions);
@@ -323,7 +316,7 @@ class FilterAssetsTest extends SearchIntegrationTestCase
             ];
         }
 
-        $searchResult = $this->findIdentifiersForQuery->find(
+        return $this->findIdentifiersForQuery->find(
             AssetQuery::createFromNormalized([
                 'locale'  => $locale,
                 'channel' => $channel,
@@ -332,7 +325,5 @@ class FilterAssetsTest extends SearchIntegrationTestCase
                 'filters' => $filters,
             ])
         );
-
-        return $searchResult;
     }
 }

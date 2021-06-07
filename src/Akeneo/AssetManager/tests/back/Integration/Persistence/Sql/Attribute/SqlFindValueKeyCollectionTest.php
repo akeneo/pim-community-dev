@@ -35,10 +35,9 @@ use Akeneo\AssetManager\Integration\SqlIntegrationTestCase;
 
 class SqlFindValueKeyCollectionTest extends SqlIntegrationTestCase
 {
-    /** @var FindValueKeyCollectionInterface */
-    private $findValueKeyCollection;
+    private FindValueKeyCollectionInterface $findValueKeyCollection;
 
-    private $order = 2;
+    private int $order = 2;
 
     public function setUp(): void
     {

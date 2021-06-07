@@ -22,11 +22,9 @@ use PHPUnit\Framework\TestCase;
 
 class InMemoryFindAttributesDetailsTest extends TestCase
 {
-    /** @var InMemoryFindAttributesDetails */
-    private $query;
+    private InMemoryFindAttributesDetails $query;
 
-    /** @var InMemoryFindActivatedLocales */
-    private $activatedLocaleQuery;
+    private InMemoryFindActivatedLocales $activatedLocaleQuery;
 
     public function setUp(): void
     {

@@ -15,8 +15,7 @@ use Symfony\Component\Validator\ConstraintViolationListInterface;
  */
 class RuleEngineValidatorACLStub implements RuleEngineValidatorACLInterface
 {
-    /** @var ConstraintViolationList */
-    protected $violations;
+    protected ConstraintViolationListInterface $violations;
 
     public function __construct()
     {

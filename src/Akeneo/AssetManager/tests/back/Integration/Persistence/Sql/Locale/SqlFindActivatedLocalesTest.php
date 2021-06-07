@@ -18,8 +18,7 @@ use Akeneo\AssetManager\Integration\SqlIntegrationTestCase;
 
 class SqlFindActivatedLocalesTest extends SqlIntegrationTestCase
 {
-    /** @var FindActivatedLocalesInterface */
-    private $localesAreActivated;
+    private FindActivatedLocalesInterface $localesAreActivated;
 
     public function setUp(): void
     {
