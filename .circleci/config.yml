@@ -1056,7 +1056,7 @@ jobs:
                 RANDOM_SOURCE_PFID=$(( $RANDOM % 3 ))
                 SOURCE_PFID=${LIST_SOURCE_PFID[${RANDOM_SOURCE_PFID}]}
                 INSTANCE_NAME_PREFIX=pimci-duplic
-                INSTANCE_NAME=$(echo "${INSTANCE_NAME_PREFIX}-${IMAGE_TAG}" | cut -c1-40)
+                INSTANCE_NAME=${INSTANCE_NAME_PREFIX}-${IMAGE_TAG_SHORTED}-${CIRCLE_BUILD_NUM}
                 PIM_CONTEXT=deployment
 
                 echo export SOURCE_PFID=${SOURCE_PFID} >> $BASH_ENV
