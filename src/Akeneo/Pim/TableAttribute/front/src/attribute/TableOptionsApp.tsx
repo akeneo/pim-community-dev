@@ -10,6 +10,10 @@ import {
   Table,
   CloseIcon,
   IconButton,
+  AddingValueIllustration,
+  AkeneoThemedProps,
+  getFontSize,
+  getColor,
 } from 'akeneo-design-system';
 import {DependenciesProvider} from '@akeneo-pim-community/legacy-bridge';
 import styled, {ThemeProvider} from 'styled-components';
@@ -32,6 +36,15 @@ const EmptyTableCell = styled(Table.Cell)`
 
 const AddNewColumnButton = styled(Button)`
   margin-top: 20px;
+`;
+
+const TableColumnContainer = styled.div<{tableConfiguration: TableConfiguration} & AkeneoThemedProps>`
+  text-align: ${({tableConfiguration}) => (tableConfiguration.length === 0 ? 'center' : 'initial')};
+`;
+
+const EmptyTableTitle = styled.div`
+  font-size: ${getFontSize('big')};
+  color: ${getColor('grey', 140)};
 `;
 
 type TableOptionsAppProps = {
@@ -124,11 +137,11 @@ const TableOptionsApp: React.FC<TableOptionsAppProps> = ({initialTableConfigurat
     <DependenciesProvider>
       <ThemeProvider theme={pimTheme}>
         <TwoColumnsLayout rightColumn={rightColumn}>
-          <div>
+          <TableColumnContainer tableConfiguration={tableConfiguration}>
             <SectionTitle title={translate('pim_table_attribute.form.attribute.columns')}>
               <SectionTitle.Title>{translate('pim_table_attribute.form.attribute.columns')}</SectionTitle.Title>
             </SectionTitle>
-            {tableConfiguration.length > 0 && (
+            {tableConfiguration.length > 0 ? (
               <Table>
                 <Table.Body>
                   <Table.Row
@@ -146,6 +159,12 @@ const TableOptionsApp: React.FC<TableOptionsAppProps> = ({initialTableConfigurat
                   </Table.Row>
                 </Table.Body>
               </Table>
+            ) : (
+              <>
+                <AddingValueIllustration />
+                <EmptyTableTitle>{translate('pim_table_attribute.form.attribute.empty_title')}</EmptyTableTitle>
+                {translate('pim_table_attribute.form.attribute.empty_subtitle')}
+              </>
             )}
             <Table isDragAndDroppable={true} onReorder={handleReorder}>
               <Table.Body>
@@ -194,7 +213,7 @@ const TableOptionsApp: React.FC<TableOptionsAppProps> = ({initialTableConfigurat
               onClick={openNewColumnModal}>
               {translate('pim_table_attribute.form.attribute.add_column')}
             </AddNewColumnButton>
-          </div>
+          </TableColumnContainer>
         </TwoColumnsLayout>
       </ThemeProvider>
     </DependenciesProvider>
