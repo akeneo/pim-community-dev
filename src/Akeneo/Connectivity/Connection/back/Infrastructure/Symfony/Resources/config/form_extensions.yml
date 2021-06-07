@@ -139,12 +139,3 @@ extensions:
         config:
             title: pim_menu.item.marketplace
             to: akeneo_connectivity_connection_connect_marketplace
-
-    # Legacy activity link, only redirects to the new data flows page
-    pim-menu-activity-connection-audit:
-        module: pim/menu/item
-        parent: pim-menu-activity-navigation-block
-        position: 105
-        config:
-            title: pim_menu.item.connection_audit
-            to: akeneo_connectivity_connection_redirect_audit

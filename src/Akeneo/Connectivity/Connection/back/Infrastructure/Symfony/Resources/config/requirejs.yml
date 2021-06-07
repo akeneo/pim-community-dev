@@ -31,8 +31,6 @@ config:
                     module: pim/controller/connectivity/connection/audit
                 akeneo_connectivity_connection_audit_any:
                     module: pim/controller/connectivity/connection/audit
-                akeneo_connectivity_connection_redirect_audit:
-                    module: pim/controller/connectivity/connection/audit-redirect
                 akeneo_connectivity_connection_settings_redirect:
                     module: pim/controller/connectivity/connection/settings-redirect
                     aclResourceId: akeneo_connectivity_connection_manage_settings
@@ -43,7 +41,6 @@ config:
         pim/controller/connectivity/connection/error-management: akeneoconnectivityconnection/js/controller/error-management.tsx
         pim/controller/connectivity/connection/webhook: akeneoconnectivityconnection/js/controller/webhook.tsx
         pim/controller/connectivity/connection/audit: akeneoconnectivityconnection/js/controller/audit.tsx
-        pim/controller/connectivity/connection/audit-redirect: akeneoconnectivityconnection/js/controller/audit-redirect.tsx
         pim/controller/connectivity/connection/settings-redirect: akeneoconnectivityconnection/js/controller/settings-redirect.tsx
 
         pim/menu/connectivity/connection/marketplace-item: akeneoconnectivityconnection/js/menu/marketplace-item.js

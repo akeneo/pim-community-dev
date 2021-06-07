@@ -32,13 +32,11 @@ pim_title:
     akeneo_connectivity_connection_webhook_edit: Event subscription
     akeneo_connectivity_connection_webhook_regenerate_secret: Event subscription
     akeneo_connectivity_connection_webhook_event_logs: Event logs
-    akeneo_connectivity_connection_redirect_audit: Connection dashboard
     akeneo_connectivity_connection_settings_redirect: Connections
 
 akeneo_connectivity.connection:
     connect:
         redirect.link: To go there, click here
-        dashboard_redirect.title: Find your Connection dashboard in the Connect menu
         settings_redirect.title: Find your connection information in the Connect menu
 
         marketplace:
