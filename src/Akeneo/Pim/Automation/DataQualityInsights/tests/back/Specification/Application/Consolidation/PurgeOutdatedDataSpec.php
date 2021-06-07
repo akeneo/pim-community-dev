@@ -4,9 +4,11 @@ declare(strict_types=1);
 
 namespace Specification\Akeneo\Pim\Automation\DataQualityInsights\Application\Consolidation;
 
+use Akeneo\Pim\Automation\DataQualityInsights\Application\Consolidation\PurgeOutdatedData;
 use Akeneo\Pim\Automation\DataQualityInsights\Domain\Model\Write\DashboardPurgeDate;
 use Akeneo\Pim\Automation\DataQualityInsights\Domain\Model\Write\DashboardPurgeDateCollection;
 use Akeneo\Pim\Automation\DataQualityInsights\Domain\Repository\DashboardScoresProjectionRepositoryInterface;
+use Akeneo\Pim\Automation\DataQualityInsights\Domain\Repository\ProductScoreRepositoryInterface;
 use Akeneo\Pim\Automation\DataQualityInsights\Domain\ValueObject\ConsolidationDate;
 use Akeneo\Pim\Automation\DataQualityInsights\Domain\ValueObject\TimePeriod;
 use PhpSpec\ObjectBehavior;
@@ -14,15 +16,16 @@ use Prophecy\Argument;
 
 class PurgeOutdatedDataSpec extends ObjectBehavior
 {
-    public function let(DashboardScoresProjectionRepositoryInterface $dashboardRatesProjectionRepository)
-    {
-        $this->beConstructedWith(
-            $dashboardRatesProjectionRepository
-        );
+    public function let(
+        DashboardScoresProjectionRepositoryInterface $dashboardRatesProjectionRepository,
+        ProductScoreRepositoryInterface $productScoreRepository
+    ) {
+        $this->beConstructedWith($dashboardRatesProjectionRepository, $productScoreRepository);
     }
 
     public function it_purges_dashboard_projection_rates(
-        DashboardScoresProjectionRepositoryInterface $dashboardRatesProjectionRepository
+        DashboardScoresProjectionRepositoryInterface $dashboardRatesProjectionRepository,
+        ProductScoreRepositoryInterface $productScoreRepository
     ) {
         $purgeDate = new \DateTimeImmutable('2020-03-27');
         $daily = TimePeriod::daily();
@@ -45,7 +48,9 @@ class PurgeOutdatedDataSpec extends ObjectBehavior
             return $purgeDates == $expectedPurgeDates;
         }))->shouldBeCalled();
 
-        $this->purgeDashboardProjectionRatesFrom($purgeDate);
+        $productScoreRepository->purgeUntil($purgeDate->modify(sprintf('-%d DAY', PurgeOutdatedData::EVALUATIONS_RETENTION_DAYS)))->shouldBeCalled();
+
+        $this->purgeAllFrom($purgeDate);
     }
 
     private function formatPurgeDatesForComparison(DashboardPurgeDateCollection $purgeDates): array
