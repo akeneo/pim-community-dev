@@ -27,3 +27,10 @@ services:
             - '%webhook_active_event_subscriptions_limit%'
         tags:
             - { name: validator.constraint_validator }
+
+    akeneo_connectivity.connection.validators.webhook.external_url:
+        class: Akeneo\Connectivity\Connection\Application\Webhook\Validation\ExternalUrlValidator
+        arguments:
+            - '@akeneo_connectivity.connection.dns_lookup'
+        tags:
+            - { name: validator.constraint_validator }
