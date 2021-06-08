@@ -4,257 +4,36 @@ import {
   Tile,
   Tiles,
   useBooleanState,
-  AttributeFileIcon,
-  ActivityIcon,
+  Button,
   AddAttributeIcon,
-  AkeneoIcon,
-  ArrowIcon,
-  ArrowDownIcon,
-  ArrowLeftIcon,
-  ArrowRightIcon,
-  ArrowUpIcon,
-  AssetsIcon,
-  AssetCollectionIcon,
-  AssociateIcon,
-  AttributeBooleanIcon,
-  AttributeFileIcon,
-  AttributeLinkIcon,
-  AttributeMultiSelectIcon,
-  AttributeNumberIcon,
-  AttributePriceIcon,
-  AttributeSelectIcon,
-  AttributeTextIcon,
-  AttributeTextareaIcon,
-  BarChartsIcon,
-  BookIcon,
-  BoxIcon,
-  BrokenLinkIcon,
-  CaddyIcon,
-  CaddyAddIcon,
-  CaddyCheckoutIcon,
-  CardIcon,
-  CategoryIcon,
-  CheckIcon,
-  CheckPartialIcon,
-  CheckRoundIcon,
-  ClockIcon,
-  CloseIcon,
-  CodeIcon,
-  ColumnIcon,
-  CompareIcon,
-  ComponentIcon,
-  CopyIcon,
-  CreditsIcon,
-  DangerIcon,
-  DangerPlainIcon,
-  DateIcon,
-  DeleteIcon,
-  DialogIcon,
-  DownloadIcon,
-  DragDropIcon,
-  EditIcon,
-  EntityIcon,
-  EntityMultiIcon,
-  EraseIcon,
-  ExpandIcon,
-  ExplanationPointIcon,
-  FactoryIcon,
-  FileIcon,
-  FileCsvIcon,
-  FileXlsxIcon,
-  FiltersIcon,
-  FolderIcon,
-  FolderInIcon,
-  FolderMovedIcon,
-  FolderOutIcon,
-  FolderPlainIcon,
-  FoldersIcon,
-  FoldersPlainIcon,
-  FullscreenIcon,
-  GiftIcon,
-  GroupsIcon,
-  HelpIcon,
-  IdIcon,
-  InfoIcon,
-  InfoRoundIcon,
-  KeyboardIcon,
-  KeyIcon,
-  LightIcon,
-  LinkIcon,
-  ListIcon,
-  LoaderIcon,
-  LocaleIcon,
-  LockIcon,
-  MailIcon,
-  MediaLinkIcon,
-  MegaphoneIcon,
-  MetricIcon,
-  MinifyIcon,
-  MoreIcon,
-  MoreVerticalIcon,
-  NotificationIcon,
-  PanelCloseIcon,
-  PanelOpenIcon,
-  PlayIcon,
-  PlusIcon,
-  ProductIcon,
-  ProductModelIcon,
-  PublishIcon,
-  RefreshIcon,
-  RowIcon,
-  SearchIcon,
-  SectionIcon,
-  SettingsIcon,
-  ShopIcon,
-  SupplierIcon,
-  SystemIcon,
-  TagIcon,
-  UnpublishIcon,
-  UnviewIcon,
-  UploadIcon,
-  ValueIcon,
-  ViewIcon,
-  WaveIcon, Button, placeholderStyle
+  IconProps
 } from "akeneo-design-system";
 import { useRouter, useTranslate } from "@akeneo-pim-community/shared";
 import styled from "styled-components";
-
-const Icons = {
-  'ActivityIcon': ActivityIcon,
-  'AddAttributeIcon': AddAttributeIcon,
-  'AkeneoIcon': AkeneoIcon,
-  'ArrowIcon': ArrowIcon,
-  'ArrowDownIcon': ArrowDownIcon,
-  'ArrowLeftIcon': ArrowLeftIcon,
-  'ArrowRightIcon': ArrowRightIcon,
-  'ArrowUpIcon': ArrowUpIcon,
-  'AssetsIcon': AssetsIcon,
-  'AssetCollectionIcon': AssetCollectionIcon,
-  'AssociateIcon': AssociateIcon,
-  'AttributeBooleanIcon': AttributeBooleanIcon,
-  'AttributeFileIcon': AttributeFileIcon,
-  'AttributeLinkIcon': AttributeLinkIcon,
-  'AttributeMultiSelectIcon': AttributeMultiSelectIcon,
-  'AttributeNumberIcon': AttributeNumberIcon,
-  'AttributePriceIcon': AttributePriceIcon,
-  'AttributeSelectIcon': AttributeSelectIcon,
-  'AttributeTextIcon': AttributeTextIcon,
-  'AttributeTextareaIcon': AttributeTextareaIcon,
-  'BarChartsIcon': BarChartsIcon,
-  'BookIcon': BookIcon,
-  'BoxIcon': BoxIcon,
-  'BrokenLinkIcon': BrokenLinkIcon,
-  'CaddyIcon': CaddyIcon,
-  'CaddyAddIcon': CaddyAddIcon,
-  'CaddyCheckoutIcon': CaddyCheckoutIcon,
-  'CardIcon': CardIcon,
-  'CategoryIcon': CategoryIcon,
-  'CheckIcon': CheckIcon,
-  'CheckPartialIcon': CheckPartialIcon,
-  'CheckRoundIcon': CheckRoundIcon,
-  'ClockIcon': ClockIcon,
-  'CloseIcon': CloseIcon,
-  'CodeIcon': CodeIcon,
-  'ColumnIcon': ColumnIcon,
-  'CompareIcon': CompareIcon,
-  'ComponentIcon': ComponentIcon,
-  'CopyIcon': CopyIcon,
-  'CreditsIcon': CreditsIcon,
-  'DangerIcon': DangerIcon,
-  'DangerPlainIcon': DangerPlainIcon,
-  'DateIcon': DateIcon,
-  'DeleteIcon': DeleteIcon,
-  'DialogIcon': DialogIcon,
-  'DownloadIcon': DownloadIcon,
-  'DragDropIcon': DragDropIcon,
-  'EditIcon': EditIcon,
-  'EntityIcon': EntityIcon,
-  'EntityMultiIcon': EntityMultiIcon,
-  'EraseIcon': EraseIcon,
-  'ExpandIcon': ExpandIcon,
-  'ExplanationPointIcon': ExplanationPointIcon,
-  'FactoryIcon': FactoryIcon,
-  'FileIcon': FileIcon,
-  'FileCsvIcon': FileCsvIcon,
-  'FileXlsxIcon': FileXlsxIcon,
-  'FiltersIcon': FiltersIcon,
-  'FolderIcon': FolderIcon,
-  'FolderInIcon': FolderInIcon,
-  'FolderMovedIcon': FolderMovedIcon,
-  'FolderOutIcon': FolderOutIcon,
-  'FolderPlainIcon': FolderPlainIcon,
-  'FoldersIcon': FoldersIcon,
-  'FoldersPlainIcon': FoldersPlainIcon,
-  'FullscreenIcon': FullscreenIcon,
-  'GiftIcon': GiftIcon,
-  'GroupsIcon': GroupsIcon,
-  'HelpIcon': HelpIcon,
-  'IdIcon': IdIcon,
-  'InfoIcon': InfoIcon,
-  'InfoRoundIcon': InfoRoundIcon,
-  'KeyboardIcon': KeyboardIcon,
-  'KeyIcon': KeyIcon,
-  'LightIcon': LightIcon,
-  'LinkIcon': LinkIcon,
-  'ListIcon': ListIcon,
-  'LoaderIcon': LoaderIcon,
-  'LocaleIcon': LocaleIcon,
-  'LockIcon': LockIcon,
-  'MailIcon': MailIcon,
-  'MediaLinkIcon': MediaLinkIcon,
-  'MegaphoneIcon': MegaphoneIcon,
-  'MetricIcon': MetricIcon,
-  'MinifyIcon': MinifyIcon,
-  'MoreIcon': MoreIcon,
-  'MoreVerticalIcon': MoreVerticalIcon,
-  'NotificationIcon': NotificationIcon,
-  'PanelCloseIcon': PanelCloseIcon,
-  'PanelOpenIcon': PanelOpenIcon,
-  'PlayIcon': PlayIcon,
-  'PlusIcon': PlusIcon,
-  'ProductIcon': ProductIcon,
-  'ProductModelIcon': ProductModelIcon,
-  'PublishIcon': PublishIcon,
-  'RefreshIcon': RefreshIcon,
-  'RowIcon': RowIcon,
-  'SearchIcon': SearchIcon,
-  'SectionIcon': SectionIcon,
-  'SettingsIcon': SettingsIcon,
-  'ShopIcon': ShopIcon,
-  'SupplierIcon': SupplierIcon,
-  'SystemIcon': SystemIcon,
-  'TagIcon': TagIcon,
-  'UnpublishIcon': UnpublishIcon,
-  'UnviewIcon': UnviewIcon,
-  'UploadIcon': UploadIcon,
-  'ValueIcon': ValueIcon,
-  'ViewIcon': ViewIcon,
-  'WaveIcon': WaveIcon,
-}
+import * as icons from 'akeneo-design-system/lib/icons';
 
 const ModalContent = styled.div`
-  width: 730px;
+  margin-top: 30px;
+  width: 745px;
+  max-height: calc(100vh - 120px);
+  overflow-x: hidden;
+  overflow-y: auto;
 `
 
-const LoadingTile = styled(Tile)`
-  ${placeholderStyle}
-`;
-
 type AttributeType = string;
-type AttributeCode = string;
 
 type CreateButtonAppProps = {
   buttonTitle: string;
   iconsMap: {[attributeType: string]: string},
   isModalOpen?: boolean;
-  code?: AttributeCode;
+  onClick: (attributeType: AttributeType) => void;
 }
 
 const CreateButtonApp: React.FC<CreateButtonAppProps> = ({
   buttonTitle,
   iconsMap,
   isModalOpen = false,
-  code,
+  onClick,
 }) => {
   const [isOpen, open, close] = useBooleanState(isModalOpen);
   const translate = useTranslate();
@@ -278,19 +57,19 @@ const CreateButtonApp: React.FC<CreateButtonAppProps> = ({
 
   const handleClick = (attributeType: AttributeType) => {
     close();
-    const route = Router.generate('pim_enrich_attribute_create', { attribute_type: attributeType, code });
-    Router.redirect(route);
+    onClick(attributeType);
   }
 
   return <>
     {isOpen && attributeTypes && <Modal closeTitle={translate('pim_common.close')} onClose={close}>
-      <Modal.SectionTitle color="brand">{translate('pim_enrich.entity.attribute.property.type.choose')}</Modal.SectionTitle>
-      <Modal.Title>{translate('pim_enrich.entity.attribute.module.create.button')}</Modal.Title>
+      <Modal.SectionTitle color="brand">{translate('pim_enrich.entity.attribute.module.create.button')}</Modal.SectionTitle>
+      <Modal.Title>{translate('pim_enrich.entity.attribute.property.type.choose')}</Modal.Title>
       <ModalContent>
         <Tiles>
           {attributeTypes.map(attributeType => {
-            const componentAsString = iconsMap[attributeType] || 'AddAttributeIcon';
-            const Icon = Icons[componentAsString] || AddAttributeIcon;
+            const castIcons = icons as {[component: string]: React.FC<IconProps>};
+            const component = iconsMap[attributeType] || 'AddAttributeIcon';
+            const Icon = castIcons[component] || AddAttributeIcon
             return <Tile
               onClick={() => handleClick(attributeType)}
               key={attributeType}
@@ -303,9 +82,9 @@ const CreateButtonApp: React.FC<CreateButtonAppProps> = ({
         </Tiles>
       </ModalContent>
     </Modal>}
-    <span id="attribute-create-button" className="AknButton AknButton--apply AknButtonList-item" onClick={open}>
+    <Button id="attribute-create-button" onClick={open}>
       {buttonTitle}
-    </span>
+    </Button>
   </>
 }
 
