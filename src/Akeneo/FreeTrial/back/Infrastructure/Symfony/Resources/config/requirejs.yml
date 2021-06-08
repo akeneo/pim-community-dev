@@ -1,3 +1,9 @@
 config:
+  config:
+    pim/controller-registry:
+      controllers:
+        akeneo_invite_user:
+          module: pim/controller/invite-user
   paths:
     pim/onboarding: akeneofreetrial/js/onboarding/appcues-onboarding.ts
+    pim/controller/invite-user:  akeneofreetrial/js/invite-user/controller.tsx

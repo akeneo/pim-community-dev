@@ -94,7 +94,7 @@ const InviteUserApp = () => {
                     <Table.Body>
                         {users.map(user =>
                             <Table.Row>
-                                <Table.Cell>
+                                <Table.Cell rowTitle>
                                     {user.email}
                                 </Table.Cell>
                                 <Table.Cell>
