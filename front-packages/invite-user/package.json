@@ -30,7 +30,7 @@
     "typescript": "^4.0.3",
     "web-vitals": "^0.2.4"
   },
-  "proxy": "http://localhost:8080",
+  "proxy": "http://httpd:80",
   "scripts": {
     "app:start": "yarn translation:build; yarn route:build; yarn packages:build && react-scripts start",
     "test:unit:run": "react-scripts test --watchAll=false --coverage --coverageDirectory=coverage",
