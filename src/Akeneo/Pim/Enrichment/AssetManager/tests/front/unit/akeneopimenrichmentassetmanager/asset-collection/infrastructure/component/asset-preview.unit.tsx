@@ -6,7 +6,11 @@ import {MEDIA_LINK_ATTRIBUTE_TYPE} from 'akeneoassetmanager/domain/model/attribu
 import {MEDIA_FILE_ATTRIBUTE_TYPE} from 'akeneoassetmanager/domain/model/attribute/type/media-file';
 import {renderWithAssetManagerProviders} from '../../../../../../../../../../AssetManager/tests/front/unit/akeneoassetmanager/tools';
 
-jest.mock('akeneoassetmanager/tools/security-context', () => ({isGranted: (_permission: string) => true}));
+jest.mock('@akeneo-pim-community/shared/lib/hooks/useSecurity', () => ({
+  useSecurity: () => ({
+    isGranted: (_permission: string) => true,
+  }),
+}));
 
 const context = {locale: 'en_US', channel: 'ecommerce'};
 const mediaLinkImageAttribute = {

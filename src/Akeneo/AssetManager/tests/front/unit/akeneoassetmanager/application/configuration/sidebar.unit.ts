@@ -1,7 +1,7 @@
 import {TabsProvider} from 'akeneoassetmanager/application/configuration/sidebar';
 
 jest.mock('require-context', name => {});
-jest.mock('akeneoassetmanager/tools/security-context', name => {});
+jest.mock('pim/security-context', name => {});
 
 describe('akeneo > asset family > application > configuration --- sidebar', () => {
   test('I can get the tab list', () => {
