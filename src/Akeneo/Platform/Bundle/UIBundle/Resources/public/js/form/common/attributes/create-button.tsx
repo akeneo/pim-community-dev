@@ -20,7 +20,7 @@ class CreateButton extends BaseView {
     BaseView.prototype.initialize.apply(this, arguments);
   }
 
-  private getQueryParam = (paramName: string): any => {
+  getQueryParam(paramName: string): any {
     const urlString = window.location.href;
     const index = urlString.indexOf('?');
     if (index < 0) {
@@ -31,7 +31,7 @@ class CreateButton extends BaseView {
     return params.get(paramName);
   };
 
-  private onClick = (attributeType: string) => {
+  onClick(attributeType: string): void {
     router.redirectToRoute('pim_enrich_attribute_create', {
       attribute_type: attributeType,
       code: this.getQueryParam('code')
@@ -47,7 +47,7 @@ class CreateButton extends BaseView {
             buttonTitle={translate(this.config.buttonTitle)}
             iconsMap={moduleConfig.attribute_icons}
             isModalOpen={!!this.getQueryParam('open_create_attribute_modal')}
-            onClick={onClick}
+            onClick={this.onClick.bind(this)}
           />
         </ThemeProvider>
       </DependenciesProvider>,
