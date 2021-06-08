@@ -82,8 +82,7 @@ test('I can fill the fields, validate and the modal is closed.', async () => {
   });
 
   expect(mockFetch).toHaveBeenCalledWith('akeneo_measurements_validate_unit_rest', {
-    body:
-      '{"code":"KILOMETER","labels":{"en_US":"Kilometer"},"symbol":"km","convert_from_standard":[{"operator":"mul","value":"10"}]}',
+    body: '{"code":"KILOMETER","labels":{"en_US":"Kilometer"},"symbol":"km","convert_from_standard":[{"operator":"mul","value":"10"}]}',
     headers: [
       ['Content-type', 'application/json'],
       ['X-Requested-With', 'XMLHttpRequest'],
@@ -141,8 +140,7 @@ test('I can submit invalid values and have the errors displayed.', async () => {
   });
 
   expect(mockFetch).toHaveBeenCalledWith('akeneo_measurements_validate_unit_rest', {
-    body:
-      '{"code":"invalid unit code","labels":{"en_US":""},"symbol":"","convert_from_standard":[{"operator":"mul","value":""}]}',
+    body: '{"code":"invalid unit code","labels":{"en_US":""},"symbol":"","convert_from_standard":[{"operator":"mul","value":""}]}',
     headers: [
       ['Content-type', 'application/json'],
       ['X-Requested-With', 'XMLHttpRequest'],
