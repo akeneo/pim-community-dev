@@ -66,4 +66,3 @@ extensions:
         aclResourceId: pim_enrich_attribute_create
         config:
             buttonTitle: pim_enrich.entity.attribute.module.create.button
-            modalTitle: pim_enrich.entity.attribute.property.type.choose
