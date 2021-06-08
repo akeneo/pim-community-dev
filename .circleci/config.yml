@@ -1136,6 +1136,7 @@ jobs:
               command: |
                 BOTO_CONFIG=/dev/null gsutil -m cp -r /home/circleci/project/deployments/terraform gs://akecld-terraform-modules/growth-edition/$GROWTH_RELEASE_NAME/
                 BOTO_CONFIG=/dev/null gsutil -m cp -r /home/circleci/project/deployments/terraform gs://akecld-terraform-modules/growth-edition/$GROWTH_RELEASE_NAME/terraform/deployments/terraform
+                BOTO_CONFIG=/dev/null gsutil -m cp -r gs://akecld-terraform-modules/growth-edition/$GROWTH_RELEASE_NAME gs://akecld-terraform-modules/growth-edition-dev/$GROWTH_RELEASE_NAME
           - run:
               name: Tag the Docker image with the definitive tag
               command: |
