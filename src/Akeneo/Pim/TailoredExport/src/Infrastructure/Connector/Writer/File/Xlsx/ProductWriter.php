@@ -10,11 +10,11 @@ declare(strict_types=1);
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
  */
+
 namespace Akeneo\Pim\TailoredExport\Infrastructure\Connector\Writer\File\Xlsx;
 
 use Akeneo\Pim\TailoredExport\Infrastructure\Connector\Writer\File\AbstractItemMediaWriter;
 
 class ProductWriter extends AbstractItemMediaWriter
 {
-
 }
