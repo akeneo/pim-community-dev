@@ -16,3 +16,12 @@ extensions:
         config:
             label: pim_table_attribute.form.attribute.tab.table_options
             activeForTypes: [ 'pim_catalog_table' ]
+
+    pim-attribute-index-create-button:
+        module: pim/table-attribute/attribute/create-button
+        parent: pim-attribute-index
+        targetZone: buttons
+        position: 100
+        aclResourceId: pim_enrich_attribute_create
+        config:
+            buttonTitle: pim_enrich.entity.attribute.module.create.button

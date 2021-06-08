@@ -18,7 +18,6 @@ use Akeneo\AssetManager\Application\AssetFamilyPermission\CanEditAssetFamily\Can
 use Akeneo\AssetManager\Application\Attribute\CreateAttribute\AbstractCreateAttributeCommand;
 use Akeneo\AssetManager\Application\Attribute\CreateAttribute\CommandFactory\CreateAttributeCommandFactoryRegistryInterface;
 use Akeneo\AssetManager\Application\Attribute\CreateAttribute\CreateAttributeHandler;
-use Akeneo\AssetManager\Domain\Model\AssetFamily\AssetFamilyIdentifier;
 use Akeneo\AssetManager\Domain\Query\Attribute\FindAttributeNextOrderInterface;
 use Oro\Bundle\SecurityBundle\SecurityFacade;
 use Symfony\Component\HttpFoundation\JsonResponse;

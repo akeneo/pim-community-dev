@@ -28,7 +28,9 @@ pim_table_attribute:
         column_data_type_must_be_filled: The data type must be filled
         invalid_code: The column code can only contain letters, numbers and underscores
         duplicated_column_code: Each column requires a unique code. {{ duplicateCode }} is already used
-
+    templates:
+        choose_template: Choose your template
+        empty_table: Empty table
 pim_enrich:
     entity:
         attribute:

@@ -4,6 +4,7 @@ import ReactDOM from 'react-dom';
 import {TableOptionsApp} from './TableOptionsApp';
 import {TableConfiguration} from '../models/TableConfiguration';
 import {DependenciesProvider} from '@akeneo-pim-community/legacy-bridge';
+import { templates } from "../models/Template";
 // eslint-disable-next-line @typescript-eslint/no-var-requires
 const translate = require('oro/translator');
 
@@ -38,11 +39,28 @@ class TableOptionsTab extends BaseView {
     this.setData({...data});
   }
 
+  getQueryParam(paramName: string): any {
+    const urlString = window.location.href;
+    const index = urlString.indexOf('?');
+    if (index < 0) {
+      return null;
+    }
+    const params = new URLSearchParams(urlString.substring(index + 1));
+
+    return params.get(paramName);
+  };
+
   render(): any {
     if (!this.isActive()) {
       return;
     }
-    const initialTableConfiguration = this.getFormData().table_configuration || [];
+    let initialTableConfiguration = this.getFormData().table_configuration;
+    console.log(initialTableConfiguration);
+    // TODO Add condition for empty initial template
+    const tableTemplate = this.getQueryParam('table_template');
+    if (tableTemplate && templates[tableTemplate]) {
+      initialTableConfiguration = templates[this.getQueryParam('table_template')].table_configuration;
+    }
 
     ReactDOM.render(
       <DependenciesProvider>
