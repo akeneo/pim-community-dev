@@ -83,6 +83,7 @@ services:
         class: 'Akeneo\Pim\WorkOrganization\Workflow\Bundle\Storage\Sql\SqlSavePublishedProductCompletenesses'
         arguments:
             - '@database_connection'
+            - '@logger'
 
     pimee_workflow.query.select_attribute_labels_from_codes:
         class: Akeneo\Pim\WorkOrganization\Workflow\Bundle\Doctrine\ORM\Query\SelectAttributeLabelsFromCodesQuery
