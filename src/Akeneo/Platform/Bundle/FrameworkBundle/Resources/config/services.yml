@@ -3,7 +3,6 @@ services:
         class: 'Akeneo\Platform\Bundle\FrameworkBundle\EventListener\ErrorListener'
         arguments:
             - '%kernel.error_controller%'
-            - '@Akeneo\Platform\Bundle\FrameworkBundle\BoundedContext\BoundedContextResolver'
             - '@logger'
             - '%kernel.debug%'
         tags:
@@ -14,6 +13,13 @@ services:
         arguments:
             - '@controller_resolver'
             - '%pimee.bounded_contexts%'
+
+    Akeneo\Platform\Bundle\FrameworkBundle\BoundedContext\BoundedContextLogProcessor:
+        arguments:
+            - '@request_stack'
+            - '@Akeneo\Platform\Bundle\FrameworkBundle\BoundedContext\BoundedContextResolver'
+        tags:
+            - { name: monolog.processor }
 
     Akeneo\Platform\Bundle\FrameworkBundle\EventListener\AddContextHeaderResponseListener:
         arguments:

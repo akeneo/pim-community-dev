@@ -33,10 +33,16 @@ class BoundedContextResolver
 
     public function fromRequest(Request $request): string
     {
+        // we need to check for the attribute to avoid useless log triggered by controller resolver
+        // @link https://github.com/symfony/symfony/blob/5.2/src/Symfony/Component/HttpKernel/Controller/ControllerResolver.php#L40
+        if (!$request->attributes->has('_controller')) {
+            return 'Unknown request context: no controller in request';
+        }
+
         $controller = $this->controllerResolver->getController($request);
 
         if (false === $controller) {
-            return 'Unknown request context';
+            return 'Unknown request context: no controller in request';
         }
 
         $namespace = is_array($controller) ? get_class($controller[0]) : get_class($controller);
