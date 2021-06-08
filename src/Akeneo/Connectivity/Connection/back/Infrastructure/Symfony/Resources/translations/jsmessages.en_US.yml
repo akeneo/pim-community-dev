@@ -36,9 +36,6 @@ pim_title:
 
 akeneo_connectivity.connection:
     connect:
-        redirect.link: To go there, click here
-        settings_redirect.title: Find your connection information in the Connect menu
-
         marketplace:
             title: Want to connect your PIM with another application? 🤟
             sub_title: Check our marketplace to see which application can be connected with Akeneo PIM.
