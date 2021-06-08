@@ -2,7 +2,7 @@ import React, {Ref, ReactNode, isValidElement, FC} from 'react';
 import styled, {css} from 'styled-components';
 import {IconProps} from '../../icons';
 import {AkeneoThemedProps, getColor} from '../../theme';
-import { Override } from "../../";
+import {Override} from '../../';
 
 type Size = 'small' | 'big';
 
@@ -21,6 +21,7 @@ const TilesContainer = styled.div<{size: Size} & AkeneoThemedProps>`
 `;
 
 const TileContainer = styled.div<{selected: boolean; size: Size; onClick?: () => void} & AkeneoThemedProps>`
+  margin: 1px;
   ${({size}) =>
     size === 'small'
       ? css`
@@ -41,7 +42,7 @@ const TileContainer = styled.div<{selected: boolean; size: Size; onClick?: () =>
       ? css`
           border: 2px solid ${getColor('blue', 100)};
           color: ${getColor('blue', 100)};
-          margin: -1px;
+          margin: 0;
           background: ${getColor('blue', 10)};
         `
       : css`
@@ -50,10 +51,10 @@ const TileContainer = styled.div<{selected: boolean; size: Size; onClick?: () =>
   &:hover {
     border: 2px solid ${getColor('blue', 100)};
     color: ${getColor('blue', 100)};
-    margin: -1px;
+    margin: 0;
     background: ${getColor('blue', 10)};
   }
-  box-sizing: content-box;
+  box-sizing: border-box;
 `;
 
 const IconContainer = styled.div<{size: Size} & AkeneoThemedProps>`
@@ -91,12 +92,14 @@ type TilesProps = {
 };
 
 type TileProps = Override<
-  React.HTMLAttributes<HTMLDivElement>, {
-  icon: React.ReactElement<IconProps>;
-  size?: Size;
-  selected?: boolean;
-  onClick?: () => void;
-}>;
+  React.HTMLAttributes<HTMLDivElement>,
+  {
+    icon: React.ReactElement<IconProps>;
+    size?: Size;
+    selected?: boolean;
+    onClick?: () => void;
+  }
+>;
 
 const Tile: FC<TileProps> = ({icon, selected = false, size = 'small', onClick, children, ...rest}) => {
   return (
