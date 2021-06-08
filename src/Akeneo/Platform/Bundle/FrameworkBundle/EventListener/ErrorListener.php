@@ -41,6 +41,15 @@ class ErrorListener extends SymfonyErrorListener
     {
         $e = FlattenException::createFromThrowable($event->getThrowable());
 
+        $url = 'Unable to guess URL from request';
+        if ($event->getRequest()->getSchemeAndHttpHost() && $event->getRequest()->getPathInfo()) {
+            $url = sprintf(
+                '%s%s',
+                $event->getRequest()->getSchemeAndHttpHost(),
+                $event->getRequest()->getPathInfo()
+            );
+        }
+
         $this->logExceptionWithContext(
             $event->getThrowable(),
             sprintf(
@@ -51,7 +60,7 @@ class ErrorListener extends SymfonyErrorListener
                 $e->getLine()
             ),
             $this->boundedContextResolver->fromRequest($event->getRequest()),
-            $event->getRequest()->getPathInfo() ?? ''
+            $url
         );
     }
 

@@ -23,6 +23,7 @@ class ErrorListenerSpec extends ObjectBehavior
         $httpException = new HttpException(Response::HTTP_BAD_REQUEST, 'my error message');
         $event->getThrowable()->willReturn($httpException);
         $event->getRequest()->willReturn($request);
+        $request->getSchemeAndHttpHost()->shouldBeCalled()->willReturn('http://my_host/');
         $request->getPathInfo()->shouldBeCalled()->willReturn('my_path_info');
         $boundedContextResolver->fromRequest($request)->shouldBeCalled()->willReturn('my_context');
 
@@ -38,7 +39,7 @@ class ErrorListenerSpec extends ObjectBehavior
             Argument::allOf(
                 Argument::withEntry('exception', $httpException),
                 Argument::withEntry('akeneo_context', 'my_context'),
-                Argument::withEntry('path_info', 'my_path_info'),
+                Argument::withEntry('path_info', 'http://my_host/my_path_info'),
                 Argument::withKey('trace')
             )
         )->shouldBeCalled();
@@ -55,6 +56,7 @@ class ErrorListenerSpec extends ObjectBehavior
         $httpException = new \Exception('my error message');
         $event->getThrowable()->willReturn($httpException);
         $event->getRequest()->willReturn($request);
+        $request->getSchemeAndHttpHost()->shouldBeCalled()->willReturn('http://my_host/');
         $request->getPathInfo()->shouldBeCalled()->willReturn('my_path_info');
         $boundedContextResolver->fromRequest($request)->shouldBeCalled()->willReturn('my_context');
 
@@ -66,11 +68,13 @@ class ErrorListenerSpec extends ObjectBehavior
         $this->shouldHaveType(ErrorListener::class);
 
         $logger->critical(
-            Argument::containingString('Uncaught PHP Exception Exception: "my error message" at /srv/pim/tests/back/Platform/Specification/Bundle/FrameworkBundle/EventListener/ErrorListenerSpec.php line'),
+            Argument::containingString(
+                'Uncaught PHP Exception Exception: "my error message" at /srv/pim/tests/back/Platform/Specification/Bundle/FrameworkBundle/EventListener/ErrorListenerSpec'
+            ),
             Argument::allOf(
                 Argument::withEntry('exception', $httpException),
                 Argument::withEntry('akeneo_context', 'my_context'),
-                Argument::withEntry('path_info', 'my_path_info'),
+                Argument::withEntry('path_info', 'http://my_host/my_path_info'),
                 Argument::withKey('trace')
             )
         )->shouldBeCalled();

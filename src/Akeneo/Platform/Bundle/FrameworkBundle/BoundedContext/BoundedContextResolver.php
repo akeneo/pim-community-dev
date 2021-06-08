@@ -42,7 +42,7 @@ class BoundedContextResolver
         $namespace = is_array($controller) ? get_class($controller[0]) : get_class($controller);
 
         foreach ($this->boundedContexts as $namespaceStart => $boundedContext) {
-            if (str_starts_with($namespace, $namespaceStart)) {
+            if (strpos($namespace, $namespaceStart) === 0) {
                 return $boundedContext;
             }
         }

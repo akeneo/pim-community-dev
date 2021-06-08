@@ -24,7 +24,6 @@ use Symfony\Component\HttpKernel\Event\ResponseEvent;
 class AddContextHeaderResponseListener
 {
     private const HEADER_AKENEO_CONTEXT = 'x-akeneo-context';
-    private const HEADER_REQUEST_URI = 'x-request-path';
 
     private BoundedContextResolver $boundedContextResolver;
 
@@ -38,11 +37,6 @@ class AddContextHeaderResponseListener
         $event->getResponse()->headers->set(
             self::HEADER_AKENEO_CONTEXT,
             $this->boundedContextResolver->fromRequest($event->getRequest())
-        );
-
-        $event->getResponse()->headers->set(
-            self::HEADER_REQUEST_URI,
-            $event->getRequest()->getPathInfo()
         );
     }
 }
