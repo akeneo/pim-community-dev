@@ -56,6 +56,9 @@ describe('useDropTreeNode', () => {
     expect(result.current.placeholderPosition).toBe('none');
     expect(result.current.onDrop).toBeDefined();
     expect(result.current.onDragOver).toBeDefined();
+    expect(result.current.onDragEnd).toBeDefined();
+    expect(result.current.onDragEnter).toBeDefined();
+    expect(result.current.onDragLeave).toBeDefined();
   });
 
   test('it drags over the node', () => {
@@ -80,6 +83,7 @@ describe('useDropTreeNode', () => {
 
     // the dragged element could be dropped before the node
     act(() => {
+      result.current.onDragEnter();
       result.current.onDragOver(anElement, {x: 1, y: 1});
     });
 
@@ -113,6 +117,13 @@ describe('useDropTreeNode', () => {
       position: 'after',
     });
     expect(result.current.placeholderPosition).toBe('bottom');
+
+    // The dragged element could leave the node
+    act(() => {
+      result.current.onDragLeave();
+    });
+
+    expect(result.current.placeholderPosition).toBe('none');
   });
 
   test('it drops on the node', () => {

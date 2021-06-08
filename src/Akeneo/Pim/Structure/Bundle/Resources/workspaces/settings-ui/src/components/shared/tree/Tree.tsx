@@ -71,6 +71,8 @@ type TreeProps<T> = {
   onDragStart?: () => void;
   onDragEnd?: () => void;
   onDragOver?: (target: Element, cursorPosition: CursorPosition) => void;
+  onDragEnter?: () => void;
+  onDragLeave?: () => void;
   _isRoot?: boolean;
   children?: ReactNode;
 
@@ -96,6 +98,8 @@ const Tree = <T,>({
   onDragStart,
   onDragEnd,
   onDragOver,
+  onDragEnter,
+  onDragLeave,
   _isRoot = true,
   disabled = false,
   draggable = false,
@@ -188,6 +192,9 @@ const Tree = <T,>({
           setTicking(true);
         }}
         onDragEnter={() => {
+          if (onDragEnter) {
+            onDragEnter();
+          }
           // @fixme does not work when the user enter in a sub element of the row
           if (!isLeaf && !disabled && open) {
             if (timer) {
@@ -202,6 +209,10 @@ const Tree = <T,>({
           }
         }}
         onDragLeave={() => {
+          if (onDragLeave) {
+            onDragLeave();
+          }
+
           // @fixme does not work when the user enter in a sub element of the row
           if (timer !== null) {
             clearTimeout(timer);

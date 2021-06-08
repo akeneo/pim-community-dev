@@ -6,6 +6,7 @@ const folderIconCss = css`
   vertical-align: middle;
   transition: color 0.2s ease;
   margin-right: 5px;
+  pointer-events: none;
 `;
 
 const TreeLeafNotSelectedIcon = styled(FolderIcon)`

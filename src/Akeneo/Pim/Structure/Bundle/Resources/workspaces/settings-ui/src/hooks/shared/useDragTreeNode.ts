@@ -3,7 +3,7 @@ import {OrderableTreeContext} from '../../components/shared/providers/OrderableT
 import {TreeNode} from '../../models';
 
 const useDragTreeNode = <T>(node: TreeNode<T> | undefined, index: number) => {
-  const {draggedNode, setDraggedNode, setDropTarget, isActive} = useContext(OrderableTreeContext);
+  const {draggedNode, setDraggedNode, isActive} = useContext(OrderableTreeContext);
 
   const isDraggable = useMemo(() => isActive && node && node.type !== 'root', [isActive, node]);
 
@@ -27,17 +27,11 @@ const useDragTreeNode = <T>(node: TreeNode<T> | undefined, index: number) => {
     });
   }, [node]);
 
-  const onDragEnd = useCallback(() => {
-    setDropTarget(null);
-    setDraggedNode(null);
-  }, []);
-
   return {
     draggedNode,
     isDraggable,
     isDragged,
     onDragStart,
-    onDragEnd,
   };
 };
 
