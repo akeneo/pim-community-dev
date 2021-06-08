@@ -21,6 +21,7 @@ const de_DE = {
   language: 'German',
 };
 
+/* eslint-disable @typescript-eslint/no-unused-vars */
 const fetchLocale = async (_router: Router, code: LocaleCode): Promise<Locale | undefined> => {
   if (code === 'en_US') {
     return new Promise(resolve => resolve(en_US));
