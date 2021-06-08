@@ -157,7 +157,7 @@ const FakePIM = () => {
             <Title>Tailored Exports</Title>
           </div>
           {categoriesSelected.length === 0 ? 'All products' : `${categoriesSelected.length} selected category`}
-          <CategoryFilter categoriesSelected={categoriesSelected} setCategoriesSelected={handleCategoryChange} />
+          <CategoryFilter initialCategorySelection={categoriesSelected} onCategorySelection={handleCategoryChange} />
           <SaveButton onClick={saveJobConfiguration}>Save</SaveButton>
         </Header>
         <TabBar moreButtonTitle={translate('pim_common.more')}>

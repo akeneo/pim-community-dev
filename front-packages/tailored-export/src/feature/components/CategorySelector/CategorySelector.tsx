@@ -1,5 +1,5 @@
+import React, {useCallback, useState} from 'react';
 import styled from 'styled-components';
-import React, {useCallback} from 'react';
 import {
   Category,
   CategoryTree,
@@ -23,7 +23,7 @@ type CategorySelectorProps = {
 };
 
 const CategorySelector = ({categoryTreeCode, onChange, initialCategoryCodes}: CategorySelectorProps) => {
-  const [selectedCategoryCodes, setSelectedCategoryCodes] = React.useState<string[]>(initialCategoryCodes);
+  const [selectedCategoryCodes, setSelectedCategoryCodes] = useState<string[]>(initialCategoryCodes);
   const catalogLocale = useUserContext().get('catalogLocale');
   const router = useRouter();
 
@@ -83,7 +83,7 @@ const CategorySelector = ({categoryTreeCode, onChange, initialCategoryCodes}: Ca
         id: category.id,
         code: category.code,
         label: getLabel(category.labels, catalogLocale, category.code),
-        selectable: false,
+        selectable: true,
         children: json.map(child =>
           parseResponse(child, {
             selectable: true,

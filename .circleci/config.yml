@@ -86,17 +86,21 @@ jobs:
       - run:
           name: Create hash for front packages
           command: |
-            find vendor/akeneo/pim-community-dev/front-packages -type f -print0 | sort -z | xargs -0 sha1sum | sha1sum > ~/front-packages.hash
+            find vendor/akeneo/pim-community-dev/front-packages front-packages -type f -print0 | sort -z | xargs -0 sha1sum | sha1sum > ~/front-packages.hash
             date +%F >> ~/front-packages.hash
       - run:
           name: Set front-packages directory owner to circleci
-          command: sudo chown -R 1001:1001 vendor/akeneo/pim-community-dev/front-packages
+          command: |
+            sudo chown -R 1001:1001 vendor/akeneo/pim-community-dev/front-packages
+            sudo chown -R 1001:1001 front-packages
       - restore_cache:
           name: Restore front-packages cache
           key: front-packages-libs-{{ checksum "~/front-packages.hash" }}
       - run:
           name: Set front-packages directory owner to docker
-          command: sudo chown -R 1000:1000 vendor/akeneo/pim-community-dev/front-packages
+          command: |
+            sudo chown -R 1000:1000 vendor/akeneo/pim-community-dev/front-packages
+            sudo chown -R 1000:1000 front-packages
       - run:
           name: Build front-packages
           command: ls vendor/akeneo/pim-community-dev/front-packages/*/lib 1> /dev/null 2>&1 || make front-packages

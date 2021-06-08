@@ -1,4 +1,4 @@
-import React from 'react';
+import React, {useState} from 'react';
 import styled from 'styled-components';
 import {Button, Modal, ProductCategoryIllustration, useBooleanState} from 'akeneo-design-system';
 import {useTranslate} from '@akeneo-pim-community/shared';
@@ -12,15 +12,20 @@ const Container = styled.div`
 `;
 
 type CategoryFilterProps = {
-  categoriesSelected: string[];
-  setCategoriesSelected: (categoriesSelected: string[]) => void;
+  initialCategorySelection: string[];
+  onCategorySelection: (updatedCategorySelection: string[]) => void;
 };
 
-const CategoryFilter = ({categoriesSelected, setCategoriesSelected}: CategoryFilterProps) => {
+const CategoryFilter = ({initialCategorySelection, onCategorySelection}: CategoryFilterProps) => {
   const translate = useTranslate();
   const [isCategoriesModalOpen, openCategoriesModal, closeCategoriesModal] = useBooleanState();
-
+  const [selectedCategories, setSelectedCategories] = useState(initialCategorySelection);
   const handleConfirm = () => {
+    onCategorySelection(selectedCategories);
+    closeCategoriesModal();
+  };
+  const handleClose = () => {
+    setSelectedCategories(initialCategorySelection);
     closeCategoriesModal();
   };
 
@@ -29,16 +34,16 @@ const CategoryFilter = ({categoriesSelected, setCategoriesSelected}: CategoryFil
       {isCategoriesModalOpen && (
         <Modal
           closeTitle={translate('pim_common.close')}
-          onClose={closeCategoriesModal}
+          onClose={handleClose}
           illustration={<ProductCategoryIllustration />}
         >
           <Modal.Title>{translate('pim_connector.export.categories.selector.modal.title')}</Modal.Title>
           <MultiCategoryTreeSelector
-            categoriesSelected={categoriesSelected}
-            onCategorySelected={setCategoriesSelected}
+            categorySelection={selectedCategories}
+            onCategorySelection={setSelectedCategories}
           />
           <Modal.BottomButtons>
-            <Button level="tertiary" onClick={closeCategoriesModal}>
+            <Button level="tertiary" onClick={handleClose}>
               {translate('pim_common.cancel')}
             </Button>
             <Button level="primary" onClick={handleConfirm}>
@@ -50,8 +55,8 @@ const CategoryFilter = ({categoriesSelected, setCategoriesSelected}: CategoryFil
       <span>
         {translate(
           'pim_connector.export.categories.selector.label',
-          {count: categoriesSelected.length},
-          categoriesSelected.length
+          {count: initialCategorySelection.length},
+          initialCategorySelection.length
         )}
       </span>
       <Button level="secondary" onClick={openCategoriesModal}>

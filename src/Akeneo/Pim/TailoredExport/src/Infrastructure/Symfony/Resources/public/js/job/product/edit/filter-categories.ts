@@ -36,8 +36,8 @@ class FilterCategories extends BaseCategoryFilter {
           DependenciesProvider,
           null,
           React.createElement(CategoryFilter, {
-            categoriesSelected: this.getValue(),
-            setCategoriesSelected: categoriesSelected => {
+            initialCategorySelection: this.getValue(),
+            onCategorySelection: (categoriesSelected: string[]) => {
               this.setData({
                 field: this.getField(),
                 operator: categoriesSelected.length === 0 ? 'NOT IN' : 'IN',
