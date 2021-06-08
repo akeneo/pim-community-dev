@@ -53,6 +53,7 @@ const TileContainer = styled.div<{selected: boolean; size: Size; onClick?: () =>
     margin: -1px;
     background: ${getColor('blue', 10)};
   }
+  box-sizing: content-box;
 `;
 
 const IconContainer = styled.div<{size: Size} & AkeneoThemedProps>`
