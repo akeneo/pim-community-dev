@@ -59,7 +59,7 @@ class OAuthEventSubscriber implements EventSubscriberInterface
         $scopes = [];
         if (null !== $form = $request->get('fos_oauth_server_authorize_form')) {
             // get scopes for OAuth Apps
-            $scopes = explode(',', $form['scope']);
+            $scopes = explode(' ', $form['scope']);
         }
         $user = $this->createAppUserWithPermissions->handle($client, $scopes);
 
