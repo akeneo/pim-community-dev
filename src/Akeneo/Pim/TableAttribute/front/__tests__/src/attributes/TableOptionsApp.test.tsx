@@ -31,7 +31,7 @@ describe('TableOptionsApp', () => {
     const english = screen.getByLabelText('English (United States)') as HTMLInputElement;
     const german = screen.getByLabelText('German (Germany)') as HTMLInputElement;
     expect(codeInput.value).toEqual('ingredients');
-    expect(dataTypeInput.value).toEqual('text');
+    expect(dataTypeInput.value).toEqual('pim_table_attribute.properties.data_type.text');
     expect(english.value).toEqual('Ingredients');
     expect(german.value).toEqual('');
   });
