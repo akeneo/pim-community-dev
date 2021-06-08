@@ -9,13 +9,14 @@ import React, {
   useEffect,
   useRef,
   useState,
+  KeyboardEvent,
 } from 'react';
 import styled, {css} from 'styled-components';
 import {AkeneoThemedProps, getColor, getFontSize} from '../../theme';
 import {Dropdown, IconButton} from '../../components';
 import {MoreIcon} from '../../icons';
 import {useBooleanState} from '../../hooks';
-import {Override} from '../../shared';
+import {Key, Override} from '../../shared';
 
 const Container = styled.div<{sticky: number} & AkeneoThemedProps>`
   display: flex;
@@ -105,8 +106,14 @@ type TabProps = Override<
   }
 >;
 
-const Tab = ({children, isActive, parentRef, onVisibilityChange, ...rest}: TabProps) => {
+const Tab = ({children, onClick, isActive, parentRef, onVisibilityChange, ...rest}: TabProps) => {
   const ref = useRef<HTMLDivElement>(null);
+
+  const handleKeyDown = (event: KeyboardEvent<HTMLDivElement>) => {
+    if (event.key === Key.Space || event.key === Key.Enter) {
+      onClick?.();
+    }
+  };
 
   useEffect(() => {
     if (undefined === parentRef) {
@@ -137,7 +144,16 @@ const Tab = ({children, isActive, parentRef, onVisibilityChange, ...rest}: TabPr
   }, []);
 
   return (
-    <TabContainer ref={ref} tabIndex={0} role="tab" aria-selected={isActive} isActive={isActive} {...rest}>
+    <TabContainer
+      onKeyDown={handleKeyDown}
+      onClick={onClick}
+      ref={ref}
+      tabIndex={0}
+      role="tab"
+      aria-selected={isActive}
+      isActive={isActive}
+      {...rest}
+    >
       {children}
     </TabContainer>
   );
