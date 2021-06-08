@@ -6,6 +6,7 @@ import { CreateButtonApp } from "./CreateButtonApp";
 import { pimTheme } from "akeneo-design-system";
 import { ThemeProvider } from "styled-components";
 const translate = require('oro/translator');
+const router = require('pim/router');
 
 type CreateButtonConfig = {
   buttonTitle: string;
@@ -19,7 +20,7 @@ class CreateButton extends BaseView {
     BaseView.prototype.initialize.apply(this, arguments);
   }
 
-  private getQueryParam = (paramName): any => {
+  private getQueryParam = (paramName: string): any => {
     const urlString = window.location.href;
     const index = urlString.indexOf('?');
     if (index < 0) {
@@ -30,9 +31,15 @@ class CreateButton extends BaseView {
     return params.get(paramName);
   };
 
-  render(): any {
-    var moduleConfig = __moduleConfig;
+  private onClick = (attributeType: string) => {
+    router.redirectToRoute('pim_enrich_attribute_create', {
+      attribute_type: attributeType,
+      code: this.getQueryParam('code')
+    });
+  };
 
+  render(): any {
+    const moduleConfig = __moduleConfig;
     ReactDOM.render(
       <DependenciesProvider>
         <ThemeProvider theme={pimTheme}>
@@ -40,7 +47,7 @@ class CreateButton extends BaseView {
             buttonTitle={translate(this.config.buttonTitle)}
             iconsMap={moduleConfig.attribute_icons}
             isModalOpen={!!this.getQueryParam('open_create_attribute_modal')}
-            code={this.getQueryParam('code')}
+            onClick={onClick}
           />
         </ThemeProvider>
       </DependenciesProvider>,
