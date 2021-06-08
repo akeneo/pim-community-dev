@@ -2,6 +2,7 @@ import React, {Ref, ReactNode, isValidElement, FC} from 'react';
 import styled, {css} from 'styled-components';
 import {IconProps} from '../../icons';
 import {AkeneoThemedProps, getColor} from '../../theme';
+import { Override } from "../../";
 
 type Size = 'small' | 'big';
 
@@ -88,12 +89,13 @@ type TilesProps = {
   size?: Size;
 };
 
-type TileProps = {
+type TileProps = Override<
+  React.HTMLAttributes<HTMLDivElement>, {
   icon: React.ReactElement<IconProps>;
   size?: Size;
   selected?: boolean;
   onClick?: () => void;
-};
+}>;
 
 const Tile: FC<TileProps> = ({icon, selected = false, size = 'small', onClick, children, ...rest}) => {
   return (
