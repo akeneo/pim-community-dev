@@ -4,13 +4,15 @@ import {ThemeProvider} from 'styled-components';
 import {pimTheme} from 'akeneo-design-system';
 import {MicroFrontendDependenciesProvider, Routes} from '@akeneo-pim-community/shared';
 import {routes} from './routes.json';
-import {App} from './App';
+import translations from './translations.json';
+import {InviteUserApp} from './InviteUserApp';
 
 ReactDOM.render(
   <React.StrictMode>
     <ThemeProvider theme={pimTheme}>
-      <MicroFrontendDependenciesProvider routes={routes as Routes} translations={{locale: 'en_US', messages: {}}}>
-        <App/>
+        {/* @ts-ignore */}
+      <MicroFrontendDependenciesProvider routes={routes as Routes} translations={translations}>
+        <InviteUserApp/>
       </MicroFrontendDependenciesProvider>
     </ThemeProvider>
   </React.StrictMode>,
