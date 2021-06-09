@@ -4,6 +4,7 @@ config:
       controllers:
         akeneo_invite_user:
           module: pim/controller/invite-user
+          feature: free_trial
   paths:
     pim/onboarding: akeneofreetrial/js/onboarding/appcues-onboarding.ts
     pim/controller/invite-user:  akeneofreetrial/js/invite-user/controller.tsx
