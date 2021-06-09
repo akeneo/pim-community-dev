@@ -8,3 +8,4 @@ config:
   paths:
     pim/onboarding: akeneofreetrial/js/onboarding/appcues-onboarding.ts
     pim/controller/invite-user:  akeneofreetrial/js/invite-user/controller.tsx
+    pim/invite-user-button:  akeneofreetrial/js/invite-user/invite-user-button.tsx
