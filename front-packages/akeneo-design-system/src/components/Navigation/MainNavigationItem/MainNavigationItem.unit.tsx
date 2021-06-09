@@ -4,6 +4,15 @@ import {fireEvent, render, screen} from '../../../storybook/test-util';
 import {CardIcon} from '../../../icons';
 import {Tag} from '../../Tags/Tags';
 
+test('MainNavigationItem is an anchor', () => {
+  render(
+    <MainNavigationItem icon={<CardIcon />} href="https://akeneo.com/">
+      My title
+    </MainNavigationItem>
+  );
+  expect(screen.getByText('My title').closest('a')).toHaveAttribute('href', 'https://akeneo.com/');
+});
+
 test('MainNavigationItem supports forwardRef', () => {
   const ref = {current: null};
 
@@ -29,7 +38,7 @@ test('MainNavigationItem displays title', () => {
   expect(screen.getByText('My title')).toBeInTheDocument();
 });
 
-test('MainNavigationItem displays tags', () => {
+test('MainNavigationItem displays a tag', () => {
   render(
     <MainNavigationItem icon={<CardIcon />}>
       My title <Tag tint="blue">My tag</Tag>
@@ -37,6 +46,18 @@ test('MainNavigationItem displays tags', () => {
   );
   expect(screen.getByText('My title')).toBeInTheDocument();
   expect(screen.getByText('My tag')).toBeInTheDocument();
+});
+
+test('MainNavigationItem doesnt support multiple tags', () => {
+  expect(() =>
+    render(
+      <MainNavigationItem icon={<CardIcon />}>
+        My title
+        <Tag tint="blue">My tag</Tag>
+        <Tag tint="purple">My tag</Tag>
+      </MainNavigationItem>
+    )
+  ).toThrowError('You can only provide one component of type Tag.');
 });
 
 test('MainNavigationItem triggers onClick when MainNavigationItem is clicked', () => {
@@ -79,23 +100,4 @@ test('MainNavigationItem will not trigger onClick when onClick is undefined', ()
   fireEvent.click(screen.getByText('My title'));
 
   expect(onClick).not.toBeCalled();
-});
-
-test('MainNavigationItem displays an anchor when providing a `href`', () => {
-  render(
-    <MainNavigationItem icon={<CardIcon />} href="https://akeneo.com/">
-      My title
-    </MainNavigationItem>
-  );
-  expect(screen.getByText('My title').closest('a')).toHaveAttribute('href', 'https://akeneo.com/');
-});
-
-test('MainNavigationItem do not display an anchor when providing a `href` on a disabled component', () => {
-  render(
-    <MainNavigationItem icon={<CardIcon />} href="https://akeneo.com/" disabled={true}>
-      My title
-    </MainNavigationItem>
-  );
-
-  expect(screen.getByText('My title').closest('a')).not.toHaveAttribute('href');
 });

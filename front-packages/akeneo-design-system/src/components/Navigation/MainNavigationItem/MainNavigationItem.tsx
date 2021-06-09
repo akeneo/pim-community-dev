@@ -1,27 +1,27 @@
-import React, {Ref, ReactElement, SyntheticEvent, ReactNode, isValidElement} from 'react';
+import React from 'react';
 import styled from 'styled-components';
-import {AkeneoThemedProps, getColor, getFontSize} from '../../../theme';
 import {IconProps} from '../../../icons';
+import {Override} from '../../../shared';
+import {AkeneoThemedProps, getColor, getFontSize} from '../../../theme';
 import {Tag} from '../../Tags/Tags';
 
-const Container = styled.button<{active: boolean; disabled: boolean} & AkeneoThemedProps>`
-  width: 80px;
-  height: 70px;
-  margin: 0;
-  position: relative;
+const Link = styled.a<{active: boolean; disabled: boolean} & AkeneoThemedProps>`
+  align-items: center;
+  box-sizing: border-box;
+  cursor: ${({disabled}) => (disabled ? 'not-allowed' : 'pointer')};
   display: flex;
   flex-direction: column;
-  align-items: center;
-  justify-content: center;
-  box-sizing: border-box;
-  background-color: transparent;
-  outline-style: none;
-  text-decoration: none;
-  line-height: 1.15;
-  white-space: nowrap;
   font-size: ${getFontSize('small')};
-  cursor: ${({disabled}) => (disabled ? 'not-allowed' : 'pointer')};
-  border: none;
+  height: 70px;
+  justify-content: center;
+  line-height: 1.15;
+  margin: 0;
+  outline-style: none;
+  padding: 7px;
+  position: relative;
+  text-decoration: none;
+  width: 80px;
+
   border-left: 4px solid
     ${({active, disabled}) => {
       return !disabled && active ? getColor('brand', 100) : 'transparent';
@@ -30,6 +30,7 @@ const Container = styled.button<{active: boolean; disabled: boolean} & AkeneoThe
   color: ${({active, disabled}) => {
     return disabled ? getColor('grey', 100) : active ? getColor('brand', 100) : getColor('grey', 120);
   }};
+
   svg {
     color: ${({active, disabled}) => {
       return disabled ? getColor('grey', 80) : active ? getColor('brand', 100) : getColor('grey', 100);
@@ -50,84 +51,94 @@ const Container = styled.button<{active: boolean; disabled: boolean} & AkeneoThe
   }
 `;
 
-const Title = styled.p`
-  font-size: ${getFontSize('small')};
-  margin: 0;
+const Label = styled.span`
   margin-top: 7px;
+  max-width: 100%;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
 `;
 
 const TagContainer = styled.div`
+  overflow: hidden;
   position: absolute;
-  left: 39px;
+  right: 0;
   top: 7px;
+  width: 50%;
 `;
 
-type MainNavigationItemProps = {
-  /**
-   * The Icon to display
-   */
-  icon: ReactElement<IconProps>;
+type MainNavigationItemProps = Override<
+  React.AnchorHTMLAttributes<HTMLAnchorElement>,
+  {
+    /**
+     * The Icon to display
+     */
+    icon: React.ReactElement<IconProps>;
 
-  /**
-   * Children are a string label
-   */
-  children?: ReactNode;
+    /**
+     * Children are a string label
+     */
+    children: React.ReactNode;
 
-  /**
-   * Define if the component is active
-   */
-  active?: boolean;
+    /**
+     * Define if the component is active
+     */
+    active?: boolean;
 
-  /**
-   * Define if the component will be displayed as disabled
-   */
-  disabled?: boolean;
+    /**
+     * Define if the component will be displayed as disabled
+     */
+    disabled?: boolean;
 
-  /**
-   * Url to go to if the button is clicked.
-   */
-  href?: string;
+    /**
+     * Url to go to if the button is clicked.
+     */
+    href?: string;
+  }
+>;
 
-  /**
-   * The callback to call when user clicks on the component
-   */
-  onClick?: (event: SyntheticEvent) => void;
-};
+const MainNavigationItem = React.forwardRef<HTMLAnchorElement, MainNavigationItemProps>(
+  ({children, href, icon, active = false, disabled = false, onClick, ...rest}, forwardedRef) => {
+    const handleClick = (event: React.MouseEvent<HTMLAnchorElement>) => {
+      if (disabled) {
+        event.preventDefault();
 
-const MainNavigationItem = React.forwardRef<HTMLDivElement, MainNavigationItemProps>(
-  (
-    {icon, onClick, href, active = false, disabled = false, children, ...rest}: MainNavigationItemProps,
-    forwardedRef: Ref<HTMLDivElement>
-  ) => {
-    const handleClick = (event: SyntheticEvent) => {
-      if (disabled || undefined === onClick) return;
+        return;
+      }
 
-      onClick(event);
+      if (undefined !== onClick) {
+        onClick(event);
+      }
     };
 
-    let tag = null;
+    let tag: React.ReactElement<typeof Tag> | null = null;
     const taglessChildren = React.Children.map(children, child => {
-      if (isValidElement(child) && child.type === Tag) {
-        tag = child;
-        return null;
+      if (React.isValidElement(child) && child.type === Tag) {
+        if (null === tag) {
+          tag = child;
+
+          return null;
+        }
+        throw new Error('You can only provide one component of type Tag.');
       }
+
       return child;
     });
 
     return (
-      <Container
-        as={undefined !== href ? 'a' : 'button'}
-        disabled={disabled}
-        active={active}
-        onClick={handleClick}
-        href={disabled ? undefined : href}
+      <Link
         ref={forwardedRef}
+        href={disabled ? undefined : href}
+        active={active}
+        disabled={disabled}
+        aria-disabled={disabled}
+        onClick={handleClick}
         {...rest}
       >
         {React.cloneElement(icon, {size: 20})}
-        <Title>{taglessChildren}</Title>
-        <TagContainer>{tag}</TagContainer>
-      </Container>
+        {tag && <TagContainer>{tag}</TagContainer>}
+        <Label>{taglessChildren}</Label>
+      </Link>
     );
   }
 );

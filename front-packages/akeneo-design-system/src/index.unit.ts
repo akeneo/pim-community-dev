@@ -1,7 +1,7 @@
 import fs from 'fs';
 import * as Exports from './index';
 
-const EXCLUDE = ['Input'];
+const EXCLUDE = ['Input', 'Navigation'];
 
 const getSubfolders = (paths: string[]) =>
   paths.reduce(
