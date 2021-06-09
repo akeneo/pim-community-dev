@@ -43,7 +43,7 @@ define(['jquery', 'underscore', 'pim/base-fetcher', 'routing'], function ($, _, 
       if (!_.has(this.fetchByTypesPromises, cacheKey) || !useCache) {
         this.fetchByTypesPromises[cacheKey] = this.getJSON(this.options.urls.list, {
           types: attributeTypes.join(','),
-          options
+          options,
         })
           .then(_.identity)
           .promise();
