@@ -14,10 +14,10 @@ const Container = styled.div`
 ReactDOM.render(
   <React.StrictMode>
     <ThemeProvider theme={pimTheme}>
-        {/* @ts-ignore */}
+      {/* @ts-ignore */}
       <MicroFrontendDependenciesProvider routes={routes as Routes} translations={translations}>
         <Container>
-          <InviteUserApp/>
+          <InviteUserApp />
         </Container>
       </MicroFrontendDependenciesProvider>
     </ThemeProvider>
