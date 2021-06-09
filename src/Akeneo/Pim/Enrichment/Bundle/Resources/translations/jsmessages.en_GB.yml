@@ -369,6 +369,9 @@ pim_enrich.mass_edit.product:
       description: The parent of the variant products or sub-product models selected in the grid will be changed to the chosen product model.
 pim_datagrid:
   no_entities: "No {{ entityHint }} found"
+  no_entities.product: "No product found" #Custom translation for product grid
+  no_results: "Sorry, there is no {{ entityHint }} for your search."
+  no_results.product: "Sorry, there is no product for your search." #Custom translation for product grid
   mass_action_group:
     bulk_actions:
       label: Bulk Actions
@@ -405,6 +408,7 @@ pim_datagrid:
       product: "]-Inf, 1]{{ count }} result selected|]1, Inf[{{ count }} results selected"
   view_selector:
     view: Views
+    choose_type: I want to create a private view
   actions:
     edit_product_attributes: Edit attributes of the product
     classify_product: Classify the product
