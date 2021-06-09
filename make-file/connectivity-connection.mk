@@ -105,10 +105,9 @@ connectivity-connection-coverage:
 		--coverage-html coverage/Connectivity/Back/EndToEnd/ \
 		--testsuite EndToEnd $(0)
 	# run the backend application acceptance tests on scope connectivity
-	XDEBUG_MODE=coverage $(PHP_RUN) vendor/bin/behat \
+	XDEBUG_MODE=coverage $(PHP_RUN) -d memory_limit=-1 vendor/bin/behat \
 			--config src/Akeneo/Connectivity/Connection/back/tests/Acceptance/behat-coverage.yml \
-			--format pim --out var/tests/behat/connectivity/connection --format progress --out std --colors && \
-		cd ../../../../..
+			--format pim --out var/tests/behat/connectivity/connection --format progress --out std --colors
 	# download phpcov binary
 	test -e phpcov.phar || wget https://phar.phpunit.de/phpcov.phar
 	php phpcov.phar --version
@@ -118,6 +117,7 @@ connectivity-connection-coverage:
 	cp coverage/Connectivity/Back/Unit/coverage.php coverage/Connectivity/Back/Global/Unit.cov
 	cp coverage/Connectivity/Back/Integration/coverage.php coverage/Connectivity/Back/Global/Integration.cov
 	cp coverage/Connectivity/Back/EndToEnd/coverage.php coverage/Connectivity/Back/Global/EndToEnd.cov
+	cp coverage/Connectivity/Back/Acceptance/coverage.php coverage/Connectivity/Back/Global/Acceptance.cov
 	# run the command to merge all the code coverage on scope connectivity
 	XDEBUG_MODE=coverage ${PHP_RUN} -d memory_limit=-1 phpcov.phar merge \
 		--clover coverage/Connectivity/Back/Global/coverage.cov \
