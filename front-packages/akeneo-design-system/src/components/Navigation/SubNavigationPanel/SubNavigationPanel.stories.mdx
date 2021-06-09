@@ -1,0 +1,26 @@
+import {Meta, Story, ArgsTable, Canvas} from '@storybook/addon-docs/blocks';
+import {SubNavigationPanel} from './SubNavigationPanel.tsx';
+
+<Meta
+  title="Components/Navigation/SubNavigationPanel"
+  component={SubNavigationPanel}
+  args={{children: 'Some content'}}
+/>
+
+# SubNavigationPanel
+
+## Usage
+
+TODO
+
+## Playground
+
+<Canvas>
+  <Story name="Standard">
+    {args => {
+      return <SubNavigationPanel {...args} />;
+    }}
+  </Story>
+</Canvas>
+
+<ArgsTable story="Standard" />
