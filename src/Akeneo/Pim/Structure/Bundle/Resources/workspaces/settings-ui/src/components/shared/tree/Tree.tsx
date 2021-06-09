@@ -265,9 +265,6 @@ const Tree = <T,>({
                 if (onDragStart) {
                   onDragStart();
                 }
-                // @todo define dragImage with a proper style, call createDragImage
-                // @todo if the dragged element is an "opened" parent node, close it with handleClose()
-                // @todo call onDragStart
               }}
             >
               <RowIcon size={16} shapeRendering="crispEdges" />

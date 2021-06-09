@@ -55,8 +55,7 @@ const useCategoryTreeNode = (id: number) => {
         target.position === 'in' ? target.identifier : target.parentId
       );
       if (!targetParentNode) {
-        console.error(`Node ${target.parentId} not found`);
-        // @todo handle error
+        console.error(`Parent node ${target.parentId} not found to set the move of node ${target.identifier}`);
         return;
       }
 
@@ -74,7 +73,7 @@ const useCategoryTreeNode = (id: number) => {
   );
 
   const doMove = useCallback(
-    (move: Move) => {
+    async (move: Move) => {
       const {identifier, target, status} = move;
       if (status !== 'ready') {
         return;
@@ -86,8 +85,7 @@ const useCategoryTreeNode = (id: number) => {
 
       const movedNode = findOneByIdentifier(nodes, identifier);
       if (!movedNode) {
-        console.error(`Node ${identifier} not found`);
-        // @todo handle error
+        console.error(`Failed to move node ${identifier} : Node not found`);
         return;
       }
 
@@ -96,20 +94,17 @@ const useCategoryTreeNode = (id: number) => {
         target.position === 'in' ? target.identifier : target.parentId
       );
       if (!targetParentNode) {
-        console.error(`Node ${target.parentId} not found`);
-        // @todo handle error
+        console.error(`Failed to move node ${identifier} : Target parent node ${target.parentId} not found`);
         return;
       }
 
       if (!movedNode.parentId) {
-        console.error('Can not move root node');
-        // @todo handle error
+        console.error(`Failed to move node ${identifier} : Can not move root node`);
         return;
       }
       const originalParentNode = findOneByIdentifier(nodes, movedNode.parentId);
       if (!originalParentNode) {
-        console.error(`Node ${movedNode.parentId} not found`);
-        // @todo handle error
+        console.error(`Failed to move node ${identifier} : Moved parent Node ${movedNode.parentId} not found`);
         return;
       }
 
@@ -156,19 +151,19 @@ const useCategoryTreeNode = (id: number) => {
       setNodes(newNodesList);
 
       // Call to backend to persist the movement
-      const persistSuccess = moveCategory({
+      const persistSuccess = await moveCategory({
         identifier,
         parentId: target.position === 'in' ? target.identifier : target.parentId,
         previousCategoryId: determineAfterWhichCategoryIdentifierToMove(target, targetParentNode.childrenIds),
       });
 
-      // what we have to do if the callback fails? keep original position
-      console.log('Persist movement', persistSuccess);
+      if (!persistSuccess) {
+        console.error(`Failed to persist node ${identifier}`);
+      }
     },
     [nodes]
   );
 
-  // @todo Move in another location, or refactor.
   const determineAfterWhichCategoryIdentifierToMove = (target: DropTarget, childrenIds: number[]): number | null => {
     if (target.position === 'after') {
       return target.identifier;
