@@ -6,9 +6,9 @@ extensions:
       - clover
       - php
     output:
-      html: coverage/connectivity/phpspec
-      clover: coverage/connectivity/phpspec/coverage.cov
-      php: coverage/connectivity/phpspec/coverage.php
+      html: coverage/Connectivity/Back/Unit
+      clover: coverage/Connectivity/Back/Unit/coverage.cov
+      php: coverage/Connectivity/Back/Unit/coverage.php
     whitelist:
       - src/Akeneo/Connectivity/Connection/back
     blacklist:

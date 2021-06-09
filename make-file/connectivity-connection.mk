@@ -66,7 +66,9 @@ connectivity-connection-lint-back:
 	$(PHP_RUN) vendor/bin/phpstan analyse --level=5 src/Akeneo/Connectivity/Connection/back/Infrastructure
 
 connectivity-connection-unit-back:
-	XDEBUG_MODE=coverage $(PHP_RUN) vendor/bin/phpspec run -c src/Akeneo/Connectivity/Connection/back/tests/phpspec.yml.dist src/Akeneo/Connectivity/Connection/back/tests/Unit/spec/
+	XDEBUG_MODE=coverage $(PHP_RUN) vendor/bin/phpspec run \
+		-c src/Akeneo/Connectivity/Connection/back/tests/phpspec.yml.dist \
+		src/Akeneo/Connectivity/Connection/back/tests/Unit/spec/
 
 connectivity-connection-acceptance-back: var/tests/behat/connectivity/connection
 	$(PHP_RUN) vendor/bin/behat --config src/Akeneo/Connectivity/Connection/back/tests/Acceptance/behat.yml --format pim --out var/tests/behat/connectivity/connection --format progress --out std --colors
@@ -77,9 +79,9 @@ ifeq ($(CI),true)
 else
 	XDEBUG_MODE=coverage APP_ENV=test ${PHP_RUN} vendor/bin/phpunit \
 		-c src/Akeneo/Connectivity/Connection/back/tests/ \
-		--coverage-clover coverage/connectivity/integration/coverage.cov \
-		--coverage-php coverage/connectivity/integration/coverage.php \
-		--coverage-html coverage/connectivity/integration/ \
+		--coverage-clover coverage/Connectivity/Back/Integration/coverage.cov \
+		--coverage-php coverage/Connectivity/Back/Integration/coverage.php \
+		--coverage-html coverage/Connectivity/Back/Integration/ \
 		--testsuite Integration $(0)
 endif
 
@@ -89,25 +91,25 @@ ifeq ($(CI),true)
 else
 	XDEBUG_MODE=coverage APP_ENV=test ${PHP_RUN} vendor/bin/phpunit \
 		-c src/Akeneo/Connectivity/Connection/back/tests/ \
-		--coverage-clover coverage/connectivity/EndToEnd/coverage.cov \
-		--coverage-php coverage/connectivity/EndToEnd/coverage.php \
-		--coverage-html coverage/connectivity/EndToEnd/ \
+		--coverage-clover coverage/Connectivity/Back/EndToEnd/coverage.cov \
+		--coverage-php coverage/Connectivity/Back/EndToEnd/coverage.php \
+		--coverage-html coverage/Connectivity/Back/EndToEnd/ \
 		--testsuite EndToEnd $(0)
 endif
 
-connectivity-connection-codecoverage-merge: connectivity-connection-unit-back connectivity-connection-integration-back connectivity-connection-e2e-back
+connectivity-connection-codecoverage-merge:
 	test -e phpcov.phar || wget https://phar.phpunit.de/phpcov.phar
 	php phpcov.phar --version
-	if [ -d coverage/connectivity/fusion/ ]; then rm -r coverage/connectivity/fusion/; fi
-	mkdir -p coverage/connectivity/fusion/
-	cp coverage/connectivity/phpspec/coverage.php coverage/connectivity/fusion/phpspec.cov
-	cp coverage/connectivity/integration/coverage.php coverage/connectivity/fusion/integration.cov
-	cp coverage/connectivity/EndToEnd/coverage.php coverage/connectivity/fusion/EndToEnd.cov
+	if [ -d coverage/Connectivity/Back/Global/ ]; then rm -r coverage/Connectivity/Back/Global/; fi
+	mkdir -p coverage/Connectivity/Back/Global/
+	cp coverage/Connectivity/Back/Unit/coverage.php coverage/Connectivity/Back/Global/Unit.cov
+	cp coverage/Connectivity/Back/Integration/coverage.php coverage/Connectivity/Back/Global/Integration.cov
+	cp coverage/Connectivity/Back/EndToEnd/coverage.php coverage/Connectivity/Back/Global/EndToEnd.cov
 
 	XDEBUG_MODE=coverage ${PHP_RUN} -d memory_limit=-1 phpcov.phar merge \
-		--clover coverage/connectivity/fusion/coverage.cov \
-		--html coverage/connectivity/fusion/ \
-		coverage/connectivity/fusion/
+		--clover coverage/Connectivity/Back/Global/coverage.cov \
+		--html coverage/Connectivity/Back/Global/ \
+		coverage/Connectivity/Back/Global/
 
 connectivity-connection-back:
 	$(MAKE) connectivity-connection-coupling-back
