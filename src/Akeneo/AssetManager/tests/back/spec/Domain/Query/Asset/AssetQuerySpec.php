@@ -69,6 +69,66 @@ class AssetQuerySpec extends ObjectBehavior
         $this->getFilter('full_text')->shouldReturn($filter);
     }
 
+    function it_can_get_filters()
+    {
+        $filters = [
+            [
+                'field'    => 'full_text',
+                'operator' => '=',
+                'value'    => 'test'
+            ],
+            [
+                'field'    => 'values.main_color_designers_fingerprint',
+                'operator' => '=',
+                'value'    => 'blue'
+            ],
+            [
+                'field' => "asset_family",
+                'operator' => "=",
+                'value' => "designer",
+            ]
+        ];
+
+        $this->getFilters()->shouldReturn($filters);
+    }
+
+    function it_can_get_filters_by_field()
+    {
+        $expectedFilters = [
+            [
+                'field' => "updated",
+                'operator' => ">",
+                'value' => "2020-01-01T00:00:00+00:00",
+            ],
+            [
+                'field' => "updated",
+                'operator' => "<",
+                'value' => "2021-01-01T00:00:00+00:00",
+            ]
+        ];
+
+        $normalizedQuery = [
+            'channel' => 'ecommerce',
+            'locale'  => 'en_US',
+            'filters' => [
+                ...$expectedFilters,
+                [
+                    'field'    => 'full_text',
+                    'operator' => '=',
+                    'value'    => 'test'
+                ]
+            ],
+            'page'    => 0,
+            'size'    => 20
+        ];
+
+        $this->beConstructedThrough('createFromNormalized', [
+            $normalizedQuery
+        ]);
+
+        $this->getFilters('updated')->shouldReturn($expectedFilters);
+    }
+
     function it_can_get_filter_values()
     {
         $filters = [

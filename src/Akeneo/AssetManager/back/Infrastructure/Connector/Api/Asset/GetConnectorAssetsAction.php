@@ -197,11 +197,13 @@ class GetConnectorAssetsAction
         }
 
         if (isset($rawFilters['updated'])) {
-            $formattedFilters[] = [
-                'field' => 'updated',
-                'operator' => current($rawFilters['updated'])['operator'],
-                'value' => current($rawFilters['updated'])['value']
-            ];
+            foreach ($rawFilters['updated'] as $rawFilter) {
+                $formattedFilters[] = [
+                    'field' => 'updated',
+                    'operator' => $rawFilter['operator'],
+                    'value' => $rawFilter['value']
+                ];
+            }
         }
 
         return $formattedFilters;
