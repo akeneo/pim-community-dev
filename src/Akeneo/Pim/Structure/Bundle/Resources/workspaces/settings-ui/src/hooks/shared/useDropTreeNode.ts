@@ -6,8 +6,10 @@ import {CursorPosition} from '../../components';
 type ReorderOnDropHandler = (identifier: number, target: DropTarget, callback: () => void) => void;
 
 const useDropTreeNode = <T>(node: TreeNode<T> | undefined, reorder: ReorderOnDropHandler) => {
-  const {dropTarget, setDropTarget, draggedNode, setDraggedNode} = useContext(OrderableTreeContext);
+  const {draggedNode, setDraggedNode} = useContext(OrderableTreeContext);
   const [placeholderPosition, setPlaceholderPosition] = useState<PlaceholderPosition>('none');
+  const [overingCount, setOveringCount] = useState<number>(0);
+  const [dropTarget, setDropTarget] = useState<DropTarget | null>(null);
 
   const onDrop = useCallback(() => {
     if (!draggedNode || !dropTarget) {
@@ -19,6 +21,7 @@ const useDropTreeNode = <T>(node: TreeNode<T> | undefined, reorder: ReorderOnDro
     }
 
     reorder(draggedNode.identifier, dropTarget, () => {
+      setOveringCount(0);
       setDropTarget(null);
       setDraggedNode(null);
     });
@@ -61,8 +64,22 @@ const useDropTreeNode = <T>(node: TreeNode<T> | undefined, reorder: ReorderOnDro
     [node, draggedNode, dropTarget]
   );
 
+  const onDragEnd = useCallback(() => {
+    setOveringCount(0);
+    setDropTarget(null);
+    setDraggedNode(null);
+  }, []);
+
+  const onDragEnter = useCallback(() => {
+    setOveringCount(count => count + 1);
+  }, [overingCount, node]);
+
+  const onDragLeave = useCallback(() => {
+    setOveringCount(count => count - 1);
+  }, [overingCount, node]);
+
   useEffect(() => {
-    if (!dropTarget || !node || dropTarget.identifier !== node.identifier) {
+    if (overingCount === 0 || !dropTarget || !node || dropTarget.identifier !== node.identifier) {
       setPlaceholderPosition('none');
       return;
     }
@@ -81,13 +98,16 @@ const useDropTreeNode = <T>(node: TreeNode<T> | undefined, reorder: ReorderOnDro
     }
 
     setPlaceholderPosition(position);
-  }, [node, dropTarget]);
+  }, [node, dropTarget, overingCount]);
 
   return {
     dropTarget,
     onDrop,
     onDragOver,
     placeholderPosition,
+    onDragEnd,
+    onDragEnter,
+    onDragLeave,
   };
 };
 
