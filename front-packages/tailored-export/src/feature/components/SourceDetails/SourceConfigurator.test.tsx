@@ -1,23 +1,27 @@
 import React from 'react';
-import {screen} from '@testing-library/react';
+import {screen, act, fireEvent} from '@testing-library/react';
+import userEvent from '@testing-library/user-event';
 import {renderWithProviders, Channel} from '@akeneo-pim-community/shared';
 import {SourceConfigurator} from './SourceConfigurator';
-import {Source} from '../../models';
-import {fireEvent} from '@testing-library/dom';
-import userEvent from '@testing-library/user-event';
-import {Attribute, FetcherContext} from "../../contexts";
-import {act} from "react-dom/test-utils";
+import {Attribute, Source} from '../../models';
+import {FetcherContext} from '../../contexts';
 
-const attributes = [{code: 'description', labels: [], scopable: false, localizable: false}];
+const attributes = [{code: 'description', labels: {}, scopable: false, localizable: false}];
 const channels = [
   {
     code: 'ecommerce',
-    locales: [{code: 'en_US', label: 'English (United States)'}, {code: 'fr_FR', label: 'French (France)'}],
+    locales: [
+      {code: 'en_US', label: 'English (United States)'},
+      {code: 'fr_FR', label: 'French (France)'},
+    ],
     labels: {fr_FR: 'Ecommerce'},
   },
   {
     code: 'mobile',
-    locales: [{code: 'de_DE', label: 'German (Germany)'}, {code: 'en_US', label: 'English (United States)'}],
+    locales: [
+      {code: 'de_DE', label: 'German (Germany)'},
+      {code: 'en_US', label: 'English (United States)'},
+    ],
     labels: {fr_FR: 'Mobile'},
   },
   {
@@ -25,15 +29,15 @@ const channels = [
     locales: [
       {code: 'de_DE', label: 'German (Germany)'},
       {code: 'en_US', label: 'English (United States)'},
-      {code: 'fr_FR', label: 'French (France)'}
+      {code: 'fr_FR', label: 'French (France)'},
     ],
     labels: {fr_FR: 'Impression'},
   },
 ];
 
 const fetchers = {
-  attribute: {fetchByIdentifiers: (): Promise<Attribute[]> => Promise.resolve<Attribute>(attributes)},
-  channel: {fetchAll: (): Promise<Channel[]> => Promise.resolve(channels)},
+  attribute: {fetchByIdentifiers: (): Promise<Attribute[]> => Promise.resolve<Attribute[]>(attributes)},
+  channel: {fetchAll: (): Promise<Channel[]> => Promise.resolve<Channel[]>(channels)},
 };
 
 test('it display source configurator', async () => {
@@ -52,7 +56,7 @@ test('it display source configurator', async () => {
   await act(async () => {
     renderWithProviders(
       <FetcherContext.Provider value={fetchers}>
-        <SourceConfigurator source={source} onSourceChange={jest.fn}/>
+        <SourceConfigurator source={source} onSourceChange={jest.fn} />
       </FetcherContext.Provider>
     );
   });
@@ -78,9 +82,9 @@ test('it display locale dropdown when attribute is localizable', async () => {
   await act(async () => {
     renderWithProviders(
       <FetcherContext.Provider value={fetchers}>
-        <SourceConfigurator source={source} onSourceChange={jest.fn}/>
+        <SourceConfigurator source={source} onSourceChange={jest.fn} />
       </FetcherContext.Provider>
-    )
+    );
   });
 
   expect(screen.getByLabelText(/pim_common.locale/i)).toBeInTheDocument();
@@ -103,7 +107,7 @@ test('it display channel dropdown when attribute is scopable', async () => {
   await act(async () => {
     renderWithProviders(
       <FetcherContext.Provider value={fetchers}>
-        <SourceConfigurator source={source} onSourceChange={jest.fn}/>
+        <SourceConfigurator source={source} onSourceChange={jest.fn} />
       </FetcherContext.Provider>
     );
   });
@@ -128,7 +132,7 @@ test('it display channel dropdown when attribute is scopable and localizable', a
   await act(async () => {
     renderWithProviders(
       <FetcherContext.Provider value={fetchers}>
-        <SourceConfigurator source={source} onSourceChange={jest.fn}/>
+        <SourceConfigurator source={source} onSourceChange={jest.fn} />
       </FetcherContext.Provider>
     );
   });
@@ -154,7 +158,7 @@ test('it calls handler when channel changed', async () => {
   await act(async () => {
     renderWithProviders(
       <FetcherContext.Provider value={fetchers}>
-        <SourceConfigurator source={source} onSourceChange={handleSourceChange}/>
+        <SourceConfigurator source={source} onSourceChange={handleSourceChange} />
       </FetcherContext.Provider>
     );
   });
@@ -184,7 +188,7 @@ test('it calls handler when locale changed', async () => {
   await act(async () => {
     renderWithProviders(
       <FetcherContext.Provider value={fetchers}>
-        <SourceConfigurator source={source} onSourceChange={handleSourceChange}/>
+        <SourceConfigurator source={source} onSourceChange={handleSourceChange} />
       </FetcherContext.Provider>
     );
   });

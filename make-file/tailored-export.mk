@@ -1,14 +1,14 @@
 .PHONY: lint-back
 lint-back: #Doc: launch PHPStan for tailored export
-	$(PHP_RUN) vendor/bin/phpstan analyse --level=8 src/Akeneo/Pim/TailoredExport/src
+	$(PHP_RUN) vendor/bin/phpstan analyse --level=8 src/Akeneo/Platform/Bundle/TailoredExportBundle/src
 
 .PHONY: coupling-back
 coupling-back: #Doc: launch coupling detector for tailored export
-	$(PHP_RUN) vendor/bin/php-coupling-detector detect --config-file=src/Akeneo/Pim/TailoredExport/tests/.php_cd.php src/Akeneo/Pim/TailoredExport/src
+	$(PHP_RUN) vendor/bin/php-coupling-detector detect --config-file=src/Akeneo/Platform/Bundle/TailoredExportBundle/tests/.php_cd.php src/Akeneo/Platform/Bundle/TailoredExportBundle/src
 
 .PHONY: unit-back
 unit-back: #Doc: launch PHPSec for tailored export
-	$(PHP_RUN) vendor/bin/phpspec run src/Akeneo/Pim/TailoredExport/tests/Specification
+	$(PHP_RUN) vendor/bin/phpspec run src/Akeneo/Platform/Bundle/TailoredExportBundle/tests/Specification
 
 .PHONY: integration-back
 integration-back: var/tests/phpunit #Doc: launch PHP unit tests for tailored export

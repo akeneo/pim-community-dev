@@ -46,7 +46,7 @@
         </testsuite>
 
         <testsuite name="TailoredExport_Integration_Test">
-            <directory>src/Akeneo/Pim/TailoredExport/tests/Integration</directory>
+            <directory>src/Akeneo/Platform/Bundle/TailoredExportBundle/tests/Integration</directory>
         </testsuite>
 
         <testsuite name="End_to_End">

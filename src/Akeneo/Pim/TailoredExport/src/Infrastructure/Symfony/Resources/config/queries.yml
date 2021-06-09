@@ -1,5 +1,0 @@
-services:
-    pimee_tailored_export.query.sql.get_grouped_attributes:
-        class: Akeneo\Pim\TailoredExport\Infrastructure\Query\SqlGetGroupedAttributes
-        arguments:
-            - '@database_connection'

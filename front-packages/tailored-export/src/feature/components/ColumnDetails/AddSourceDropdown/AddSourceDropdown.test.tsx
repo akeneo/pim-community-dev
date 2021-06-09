@@ -6,40 +6,41 @@ import {AddSourceDropdown} from './AddSourceDropdown';
 import {AvailableSourceGroup} from '../../../models';
 
 jest.mock('../../../hooks/useAvailableSourcesFetcher', () => ({
-  useAvailableSourcesFetcher: () => (): AvailableSourceGroup[] => [
-    {
-      code: 'system',
-      label: 'System',
-      children: [
-        {
-          code: 'category',
-          label: 'Categories',
-          type: 'property',
-        },
-        {
-          code: 'enabled',
-          label: 'Activé',
-          type: 'property',
-        },
-      ],
-    },
-    {
-      code: 'marketing',
-      label: 'Marketing',
-      children: [
-        {
-          code: 'name',
-          label: 'Nom',
-          type: 'attribute',
-        },
-        {
-          code: 'description',
-          label: 'Description',
-          type: 'attribute',
-        },
-      ],
-    },
-  ],
+  useAvailableSourcesFetcher: () => (): AvailableSourceGroup[] =>
+    [
+      {
+        code: 'system',
+        label: 'System',
+        children: [
+          {
+            code: 'category',
+            label: 'Categories',
+            type: 'property',
+          },
+          {
+            code: 'enabled',
+            label: 'Activé',
+            type: 'property',
+          },
+        ],
+      },
+      {
+        code: 'marketing',
+        label: 'Marketing',
+        children: [
+          {
+            code: 'name',
+            label: 'Nom',
+            type: 'attribute',
+          },
+          {
+            code: 'description',
+            label: 'Description',
+            type: 'attribute',
+          },
+        ],
+      },
+    ],
 }));
 
 test('it add attribute source', async () => {

@@ -1,4 +1,0 @@
-pimee_tailored_export_get_grouped_sources_action:
-    path: /rest/tailored-export/sources
-    defaults: { _controller: Akeneo\Pim\TailoredExport\Infrastructure\Controller\GetGroupedSourcesAction }
-    methods: [GET]
