@@ -232,6 +232,9 @@ class UserUpdater implements ObjectUpdaterInterface
                 }
 
                 break;
+            case 'profile':
+                $user->setProfile($data);
+                break;
             default:
                 // For compatibilty
                 if (in_array($field, $this->properties)) {

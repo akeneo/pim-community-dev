@@ -1,0 +1,33 @@
+pim_enrich:
+  #Attribute
+  attribute:
+    tab:
+      parameter.title: Parametri
+      value.title: Vrijednosti
+      history.title: Povijest
+  #Group type
+  group_type:
+    tab:
+      property.title: Svojstva
+  #Mass edit operations
+  mass_edit_action:
+    family:
+      page_title: Obitelji
+      page_subtitle: Masovno uređivanje (1 obitelj) | Masovno uređivanje (%count% obitelji)
+      title: Odabiri operaciju
+      subtitle: Odaberi operaciju koju želiš obaviti na odabranoj obitelji| Odaberi operaciju koju želiš obaviti na %count% odabranih obitelji
+      confirm: Spremaš se ažurirati obitelj sa sljedećim podacima, molimo potvrdu. | Spremaš se ažurirati %count% obitelji sa sljedećim podacima, molimo potvrdu.
+      steps:
+        first: Odaberi obitelji
+        second: Odabiri operaciju
+        third: Konfiguriraj
+        fourth: Potvrdi
+pim_enrich_attribute_form:
+  code: Kod
+  type: Tip atributa
+  reference_data_name: Naziv refernce podataka
+  unique: Jedinstvena vrijednost
+  availableLocales: Dostupni lokalni parametri
+  locale_specific: Specifične regionalne postavke
+  group: Grupa atributa
+  useableAsGridFilter: Može se koristiti u prikazu

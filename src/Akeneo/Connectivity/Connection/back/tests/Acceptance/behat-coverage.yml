@@ -18,14 +18,10 @@ default:
                         'src/Akeneo/Connectivity/Connection/back/tests/': ~
                 includeUncoveredFiles: true
             reports:
-                clover:
-                    target: coverage/Connectivity/Back/Acceptance/coverage.cov
                 html:
                     target: coverage/Connectivity/Back/Acceptance/
                 php:
                     target: coverage/Connectivity/Back/Acceptance/coverage.php
-                xml:
-                    target: coverage/Connectivity/Back/Acceptance/coverage.xml
     suites:
         default:
             paths:

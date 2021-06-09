@@ -55,7 +55,7 @@ class IncrementEventsApiRequestCountEndToEnd extends ApiTestCase
             'ecommerce',
             'Ecommerce',
             FlowType::DATA_DESTINATION,
-            false,
+            true
         );
 
         $this->get('akeneo_connectivity.connection.fixtures.webhook_loader')->initWebhook($connection->code());

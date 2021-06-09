@@ -211,6 +211,7 @@ pim_common:
     DOES NOT CONTAIN: Does not contain
     STARTS WITH: Starts with
     ENDS WITH: Ends with
+  groups: Groups
 error:
   exception: Oh snap! A {{ status_code }} error occurred...
   forbidden: Forbidden. You are not allowed to access this page
@@ -287,6 +288,7 @@ pim_title:
   pim_enrich_job_tracker_show: Process tracker | Show job
   pim_enrich_mass_edit_action: Mass Edit
   pim_analytics_system_info_index: System information
+  pim_settings_index: Settings
 pim_menu:
   tab:
     activity: Activity
@@ -302,7 +304,6 @@ pim_menu:
     attribute_group: Attribute groups
     channel: Channels
     currency: Currencies
-    dashboard: Dashboard
     family: Families
     group: Groups
     group_type: Group types
@@ -323,7 +324,8 @@ pim_menu:
     activity: Activity navigation
     system: System navigation
     user: Users management navigation
-    settings: Settings navigation
+    settings:
+      collapsed_label: Settings navigation
     product: Product navigation
     product_infos: Product infos
   user:

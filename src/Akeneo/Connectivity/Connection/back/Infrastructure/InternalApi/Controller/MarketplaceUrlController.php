@@ -5,8 +5,11 @@ declare(strict_types=1);
 namespace Akeneo\Connectivity\Connection\Infrastructure\InternalApi\Controller;
 
 use Akeneo\Connectivity\Connection\Domain\Marketplace\MarketplaceUrlGeneratorInterface;
+use Akeneo\UserManagement\Bundle\Context\UserContext;
 use Symfony\Component\HttpFoundation\JsonResponse;
+use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\HttpFoundation\Response;
 
 /**
  * @author    Willy Mesnage <willy.mesnage@akeneo.com>
@@ -16,15 +19,24 @@ use Symfony\Component\HttpFoundation\Request;
 class MarketplaceUrlController
 {
     private MarketplaceUrlGeneratorInterface $marketplaceUrlGenerator;
+    private UserContext $userContext;
 
-    public function __construct(MarketplaceUrlGeneratorInterface $marketplaceUrlGenerator)
-    {
+    public function __construct(
+        MarketplaceUrlGeneratorInterface $marketplaceUrlGenerator,
+        UserContext $userContext
+    ) {
         $this->marketplaceUrlGenerator = $marketplaceUrlGenerator;
+        $this->userContext = $userContext;
     }
 
-    public function get(Request $request): JsonResponse
+    public function get(Request $request): Response
     {
-        $url = $this->marketplaceUrlGenerator->generateUrl();
+        if (!$request->isXmlHttpRequest()) {
+            return new RedirectResponse('/');
+        }
+
+        $username = $this->userContext->getUser()->getUsername();
+        $url = $this->marketplaceUrlGenerator->generateUrl($username);
 
         return new JsonResponse($url);
     }

@@ -1,6 +1,7 @@
 pim_notification:
   types:
     settings: Instellingen
+    mass_delete: Verwijderen
 flash:
   comment:
     create:
@@ -170,7 +171,7 @@ pim_enrich.entity.product_model:
     variant_axis:
       label: 'variant as'
       create: Nieuwe toevoegen
-      create_label: "Nieuwe {{ axes }} toevoegen"
+      title_create_label: "]-Inf, 1]Voeg een nieuwe {{ axes }}|]1, Inf[Voeg een nieuwe {{ axes }} toe"
       required_label: '(variant as)'
     completeness:
       variant_product: "]-Inf, 1]{{ complete }} / {{ total }} variant product|]1, Inf[{{ complete }}   {{ total }} variant producten"
@@ -281,6 +282,13 @@ pim_enrich.export.product:
       operators:
         BETWEEN: Tussen
         NOT BETWEEN: Niet tussen
+    quality-score:
+      title: Kwaliteitsscore
+      operator_choice_title: Kwaliteit scores exporteren voor
+      empty_selection: Geen voorwaarde op kwaliteitsscore
+      operators:
+        IN AT LEAST ONE LOCALE: Minstens één lokalisatie
+        IN ALL LOCALES: Alle geselecteerde lokalisaties
   global_settings:
     title: Algemene instellingen
 pim_enrich.mass_edit.product:

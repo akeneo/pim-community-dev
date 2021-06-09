@@ -27,6 +27,10 @@ pim_enrich:
       module:
         delete:
           confirm: Êtes-vous sûr(e) de vouloir supprimer cet utilisateur ?
+pim_user.profile:
+  selector:
+    placeholder: Sélectionnez une option
+    not_found: Aucun résultat
 pim_user_management:
   entity:
     user:

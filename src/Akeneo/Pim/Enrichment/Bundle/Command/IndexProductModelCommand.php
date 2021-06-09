@@ -8,7 +8,6 @@ use Akeneo\Pim\Enrichment\Bundle\Elasticsearch\Indexer\ProductModelDescendantsAn
 use Akeneo\Tool\Bundle\ElasticsearchBundle\Client;
 use Doctrine\DBAL\Connection;
 use Doctrine\DBAL\FetchMode;
-use Elasticsearch\Common\Exceptions\BadRequest400Exception;
 use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Helper\ProgressBar;
 use Symfony\Component\Console\Input\InputArgument;
@@ -123,15 +122,40 @@ class IndexProductModelCommand extends Command
             return self::ERROR_CODE_USAGE;
         }
 
-        $numberOfIndexedProducts = $this->batchEsStateHandler->doIndex($chunkedProductModelCodes, new ProgressBar($output, $productModelCount),
-            function ($codes) {
-                $this->productModelDescendantAndAncestorsIndexer->indexFromProductModelCodes($codes);
-            });
+        $bulkESHandler = new class($this->productModelDescendantAndAncestorsIndexer) implements BulkEsHandlerInterface {
+            private ProductModelDescendantsAndAncestorsIndexer $productModelDescendantsAndAncestorsIndexer;
 
-        $output->writeln('');
+            public function __construct(ProductModelDescendantsAndAncestorsIndexer $productModelDescendantsAndAncestorsIndexer)
+            {
+                $this->productModelDescendantsAndAncestorsIndexer = $productModelDescendantsAndAncestorsIndexer;
+            }
+            public function bulkExecute(array $codes): int
+            {
+                $this->productModelDescendantsAndAncestorsIndexer->indexFromProductModelCodes($codes);
+                return count($codes);
+            }
+        };
+
+        $numberOfIndexedProducts = $this->doIndex($chunkedProductModelCodes, new ProgressBar($output, $productModelCount), $bulkESHandler, $output);
+
         $output->writeln(sprintf('<info>%d product models indexed</info>', $numberOfIndexedProducts));
 
         return 0;
+    }
+
+    private function doIndex(iterable $chunkedCodes, ProgressBar $progressBar, BulkEsHandlerInterface $codesEsHandler, OutputInterface $output): int
+    {
+        $indexedCount = 0;
+
+        $progressBar->start();
+        foreach ($chunkedCodes as $codes) {
+            $treatedBachSize = $this->batchEsStateHandler->bulkExecute($codes, $codesEsHandler);
+            $indexedCount+=$treatedBachSize;
+            $progressBar->advance($treatedBachSize);
+        }
+        $progressBar->finish();
+
+        return $indexedCount;
     }
 
     private function getAllRootProductModelCodes(int $batchSize): iterable

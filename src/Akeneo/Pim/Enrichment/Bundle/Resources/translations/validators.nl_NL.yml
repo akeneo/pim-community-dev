@@ -72,6 +72,7 @@ pim_catalog:
     product_identifier: Deze id's "%s" bestaan niet.
     blacklisted_attribute_code: De code is tijdelijk geblokkeerd tot de lopende opschoningstaak is voltooid.
     blacklisted_attribute_code_with_link: "De code is tijdelijk geblokkeerd tot de lopende schoonmaaktaak is voltooid. Voor meer informatie, raadpleeg de <a href='{{ link }}' target='_blank'>taakdetails</a>."
+    duplicate_options: '{1} De volgende optie is meerdere keren gebruikt: "{{ duplicate_options }}". Controleer uw optielijst. ]1, +Inf] De volgende opties zijn meerdere keren gebruikt: "{{ duplicate_options }}". Controleer uw optielijst opnieuw.'
     0: Er is een onverwachte fout opgetreden.
     100: Onverwachte waarde
     101: Dit veld verwacht een Boolean invoer (ja- of nee-waarde).

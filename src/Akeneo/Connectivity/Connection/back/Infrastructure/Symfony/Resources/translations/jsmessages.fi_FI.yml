@@ -1,11 +1,21 @@
-pim_menu.item:
-  connection_settings: Yhteydet
-  connection_audit: Yhteyksien hallinta
+pim_menu:
+  navigation_back:
+    connection: Palaa API-yhteyksiin
+  navigation_block:
+    connection: API-yhteyksien hallinta
+  item:
+    connection_audit: Yhteyksien hallinta
+    connection_settings: Yhteydet
+    connection_settings_edit: API-yhteyksien asetukset
+    connection_monitoring: Monitorointi
 pim_title:
   akeneo_connectivity_connection_settings_index: Yhteydet
-  akeneo_connectivity_connection_settings_any: Yhteydet
+  akeneo_connectivity_connection_settings_edit: API-yhteyksien asetukset
+  akeneo_connectivity_connection_settings_any: API-yhteyksien asetukset
   akeneo_connectivity_connection_audit_index: Yhteyksien hallinta
   akeneo_connectivity_connection_audit_any: Yhteyksien hallinta
+  akeneo_connectivity_connection_error_management_dashboard: Yhteyksien hallinta
+  akeneo_connectivity_connection_error_management_connection_monitoring: API-yhteyksien monitorointi
 akeneo_connectivity.connection:
   connections: Yhteydet
   secondary_actions:
@@ -116,6 +126,8 @@ akeneo_connectivity.connection:
   flow_type_helper:
     message: Mietitkö mikä tietovirta on?
     link: Voimme auttaa sinua juuri täällä!
+  auditable_helper:
+    link: Lisätietoa...
   edit_image:
     upload_helper: Muuta kuvaasi, vedä ja pudota tai
     remove_helper: Poista kuva
@@ -132,22 +144,33 @@ akeneo_connectivity.connection:
       content: Palautteesi on meille todella kallisarvoinen. Auta meitä valitsemaan seuraava sovellus vastaamalla tähän yhden kysymyksen kyselyyn!
       button: Mennään!
     connection_selector:
-      title: Tietolähteet
+      title:
+        source: Tietolähteet
       all: Kaikki
     charts:
-      number_of_products_created: Luotujen tuotteiden määrä
-      number_of_products_updated: Päivitettyjen tuotteiden määrä
       legend:
-        during_the_last_seven_days: Viimeisten seitsemän päivän aikana
         today: Tänään
     no_connection:
-      title: Haluatko nähdä hienoja kaavioita yhteyksistäsi?
+      title:
+        default: Haluatko nähdä hienoja kaavioita yhteyksistäsi?
       message_with_permission:
-        message: Luo ja aloita ensimmäisen yhteytesi seuranta
         link: täältä.
       message_without_permission:
         message: Pyydä järjestelmänvalvojaasi luomaan sellaisen.
         link: Lue lisää yhteyksistä täältä...
+  webhook:
+    form:
+      secret: Salausavain
+    regenerate_secret:
+      title: Vahvista uudelleenluonti
+      action:
+        regenerate: Luo uudelleen
+      link: Tässä on mitä tapahtuu.
+  error_management:
+    connection_monitoring:
+      search_filter:
+        placeholder: Etsi virheviesteistä
+        result_count: '{0} Ei tulosta − [1,Inf] {{ count }} tulosta'
   runtime_error:
     error_message: Voi ei! Tapahtui virhe...
     reload_helper: Päivitä sivu ja yritä uudelleen

@@ -99,9 +99,6 @@ pim_import_export:
           with_header:
             title: Z nagłówkiem
             help: Drukować, czy nie nazwę kolumny
-          with_media:
-            title: Eksportuj pliki i zdjęcia
-            help: Czy eksportować pliki produktów i obrazy
           lines_per_file:
             title: Liczba wierszy na plik
             help: Określ limit liczby wierszy na plik
@@ -159,6 +156,15 @@ pim_import_export:
     6: Niepowodzenie
     7: Opuszczone
     8: Nieznany
+  job_status:
+    COMPLETED: Zakończone
+    STARTING: Rozpoczynanie
+    STARTED: Rozpoczęte
+    STOPPING: Zatrzymywanie
+    STOPPED: Zatrzymane
+    FAILED: Niepowodzenie
+    ABANDONED: Opuszczone
+    UNKNOWN: Nieznany
 confirmation:
   remove:
     import_profile: Czy na pewno chcesz usunąć ten profil importu?

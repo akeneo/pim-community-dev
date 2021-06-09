@@ -149,6 +149,26 @@ class CategoryRepositoryApiResourceIntegration extends TestCase
         Assert::assertEquals('women', $categories[8]->getCode());
     }
 
+    public function test_to_search_categories_after_update_date(): void
+    {
+        $this->initFixtures();
+
+        $connection = $this->get('database_connection');
+        $connection->exec('UPDATE pim_catalog_category SET updated="2019-05-15 16:27:00"');
+        $connection->exec('UPDATE pim_catalog_category SET updated="2019-07-15 16:27:00" WHERE code IN ("ring","men")');
+
+        $categories = $this->getRepository()->searchAfterOffset(
+            ['updated' => [['operator' => '>', 'value' => '2019-06-09T12:00:00+00:00']]],
+            ['code' => 'ASC'],
+            10,
+            0
+        );
+
+        Assert::assertCount(2, $categories);
+        Assert::assertEquals('men', $categories[0]->getCode());
+        Assert::assertEquals('ring', $categories[1]->getCode());
+    }
+
     protected function getConfiguration(): Configuration
     {
         return $this->catalog->useMinimalCatalog();

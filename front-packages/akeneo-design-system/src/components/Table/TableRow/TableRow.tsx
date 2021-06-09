@@ -1,4 +1,4 @@
-import React, {ReactNode, Ref, SyntheticEvent, HTMLAttributes, forwardRef, useContext, DragEvent} from 'react';
+import React, {ReactNode, Ref, SyntheticEvent, HTMLAttributes, forwardRef, useContext, useEffect} from 'react';
 import styled, {css} from 'styled-components';
 import {AkeneoThemedProps, getColor} from '../../../theme';
 import {Checkbox} from '../../../components';
@@ -122,10 +122,17 @@ const TableRow = forwardRef<HTMLTableRowElement, TableRowProps>(
       throw Error('A row in a selectable table should have the prop "isSelected" and "onSelectToggle"');
     }
 
-    const handleCheckboxChange = (e: SyntheticEvent) => {
-      e.stopPropagation();
-      undefined !== onSelectToggle && onSelectToggle(!isSelected);
+    const handleCheckboxChange = (event: SyntheticEvent) => {
+      event.stopPropagation();
+      onSelectToggle?.(!isSelected);
     };
+
+    useEffect(() => {
+      if (null === draggedElementIndex) {
+        drop();
+        dragEnd();
+      }
+    }, [draggedElementIndex]);
 
     return (
       <RowContainer
@@ -138,10 +145,6 @@ const TableRow = forwardRef<HTMLTableRowElement, TableRowProps>(
         data-draggable-index={rowIndex}
         onDragEnter={dragEnter}
         onDragLeave={dragLeave}
-        onDrop={(event: DragEvent) => {
-          event.preventDefault();
-          dragEnd();
-        }}
         {...rest}
       >
         {isSelectable && (

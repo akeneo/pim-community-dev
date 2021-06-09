@@ -494,6 +494,7 @@ config:
     pim/route-matcher:                  pimui/js/route-matcher
     pim/page-title:                     pimui/js/page-title
     pim/init-translator:                pimui/js/init-translator
+    pim/onboarding:                     pimui/js/onboarding/pim-onboarding.ts
 
     pimuser/js/init-signin: pimuser/js/init-signin
     translator-lib: pimui/lib/translator
@@ -675,6 +676,7 @@ config:
     pim/product-edit-form/product-label:                     pimui/js/product/form/product-label
     pim/product-edit-form/product-completeness:              pimui/js/product/form/product-completeness
     pim/product-edit-form/total-missing-required-attributes: pimui/js/product/form/total-missing-required-attributes
+    pim/product-edit-form/main-image:                        pimui/js/product/form/main-image.ts
     pim/product-edit-form/attribute-filter:                  pimui/js/product/form/attribute-filter
     pim/product-edit-form/attribute-filter-all:              pimui/js/product/form/attribute-filter-all
     pim/product-edit-form/attribute-filter-missing-required: pimui/js/product/form/attribute-filter-missing-required
@@ -859,7 +861,6 @@ config:
     # Common
     pim/common/grid:                   pimui/js/form/common/grid
     pim/common/redirect:               pimui/js/form/common/redirect
-    pim/common/column-list-view:       pimui/js/common/column-list-view
     pim/common/breadcrumbs:            pimui/js/common/breadcrumbs
     pim/common/tab/history:            pimui/js/form/common/tab/history
     pim/common/tab:                    pimui/js/form/common/tab
@@ -984,6 +985,7 @@ config:
     # Grid view selector
     pim/grid/view-selector: pimui/js/product/grid/view-selector
     pim/grid/view-selector/selector: pimui/js/grid/view-selector
+    pim/grid/view-selector/view-selector-secondary-actions: pimui/js/grid/view-selector-secondary-actions.ts
     pim/grid/view-selector/line: pimui/js/grid/view-selector-line
     pim/grid/view-selector/create-view: pimui/js/grid/view-selector-create-view
     pim/grid/view-selector/save-view: pimui/js/grid/view-selector-save-view

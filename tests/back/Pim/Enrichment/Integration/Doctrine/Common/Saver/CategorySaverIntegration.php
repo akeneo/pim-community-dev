@@ -31,6 +31,9 @@ class CategorySaverIntegration extends TestCase
         $persistedCategory = $this->getCategoryRepository()->findOneByIdentifier('foo');
         $persistedNormalizedCategory = $this->getCategoryNormalizer()->normalize($persistedCategory);
 
+        NormalizedCategoryCleaner::clean($createdNormalizedCategory);
+        NormalizedCategoryCleaner::clean($persistedNormalizedCategory);
+
         self::assertEquals($createdNormalizedCategory, $persistedNormalizedCategory);
     }
 

@@ -133,7 +133,6 @@ pim_enrich.entity.attribute:
     date_min: Data mínima
     decimals_allowed: Valores decimais permitidos
     default_metric_unit:
-      label: Unidade métrica padrão
       choose: Escolha uma unidade
     group:
       label: Grupo de atributos
@@ -143,7 +142,6 @@ pim_enrich.entity.attribute:
     max_characters: Limite máximo de caracteres
     max_file_size: Tamanho máximo do arquivo (MB)
     metric_family:
-      label: Unidades métricas
       choose: Escolher uma família
     minimum_input_length: Tamanho mínimo para preenchimento automático
     name: Nome
@@ -167,7 +165,6 @@ pim_enrich.entity.attribute:
       pim_catalog_image: Imagem
       pim_catalog_boolean: "Sim/Não"
       pim_catalog_date: Data
-      pim_catalog_metric: Métrico
       pim_reference_data_simpleselect: Seleção simples de dados de referência
       pim_reference_data_multiselect: Seleção múltipla de dados de referência
     unique: Valor exclusivo

@@ -128,6 +128,8 @@ $rules = [
         'Akeneo\Pim\Enrichment\Component\Product\Message\ProductModelCreated',
         'Akeneo\Pim\Enrichment\Component\Product\Message\ProductModelRemoved',
         'Akeneo\Pim\Enrichment\Component\Product\Message\ProductModelUpdated',
+
+        'Webmozart\Assert\Assert',
     ])->in('Akeneo\Connectivity\Connection\Domain\Webhook'),
 
     $builder->only(

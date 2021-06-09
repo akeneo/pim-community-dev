@@ -1,0 +1,49 @@
+pim_title:
+  pim_user_index: Người dùng
+  pim_user_role_index: Vai trò
+  oro_config_configuration_system: Cấu hình
+  pim_user_security_login: Đăng nhập
+  pim_user_reset_request: Quên Mật Khẩu
+confirmation:
+  remove:
+    user: Bạn có chắc bạn muốn xóa người dùng này không?
+    group: Bạn có chắc bạn muốn xoá sản phẩm này không?
+pim_enrich:
+  entity:
+    user:
+      module:
+        delete:
+          confirm: Bạn có chắc bạn muốn xóa người dùng này không?
+pim_user_management:
+  entity:
+    user:
+      properties:
+        username: Tên người dùng
+        name_prefix: Tiền tố tên
+        first_name: Tên
+        middle_name: Chữ lót
+        last_name: Họ
+        name_suffix: Hậu tố tên
+        avatar: Ảnh đại diện
+        email: Thư điện tử
+        catalog_locale: Locale của phân loại
+        catalog_scope: Phạm vi của phân loại
+        password: Mật khẩu
+      module:
+        create:
+          button: Tạo người dùng
+        delete:
+          confirm: Bạn có chắc bạn muốn xóa người dùng này không?
+        update:
+          additional: Bổ sung
+          password: Mật khẩu
+          notifications: Thông báo #TODO EE Only
+    role:
+      plural_label: Vai trò
+      module:
+        delete:
+          confirm: Bạn có chắc bạn muốn xoá vai trò này không?
+    group:
+      module:
+        create:
+          button: Tạo nhóm

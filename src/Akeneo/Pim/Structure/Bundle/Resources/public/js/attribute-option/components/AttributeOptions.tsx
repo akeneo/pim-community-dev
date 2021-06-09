@@ -18,7 +18,7 @@ import {
   updateAttributeOptionAction,
 } from '../reducers';
 import {useAttributeContext} from '../contexts';
-import {NotificationLevel, useNotify} from '@akeneo-pim-community/shared';
+import {NotificationLevel, useNotify, useTranslate} from '@akeneo-pim-community/shared';
 import EmptyAttributeOptionsList from './EmptyAttributeOptionsList';
 import useAttributeOptions from '../hooks/useAttributeOptions';
 
@@ -34,6 +34,7 @@ const AttributeOptions = () => {
   const dispatchAction = useDispatch();
   const attributeContext = useAttributeContext();
   const notify = useNotify();
+  const translate = useTranslate();
 
   useEffect(() => {
     if (
@@ -117,7 +118,7 @@ const AttributeOptions = () => {
           setSelectedOption(attributeOptions[0]);
         }
       } catch (error) {
-        notify(NotificationLevel.ERROR, error);
+        notify(NotificationLevel.ERROR, translate(error));
       }
       setIsSaving(false);
     },

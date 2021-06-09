@@ -170,6 +170,7 @@ pim_common:
   created: Aangemaakt
   delete: Verwijderen
   done: Gedaan
+  duplicate: Dupliceren
   edit: Wijzig
   entity_updated: Er zijn niet-opgeslagen wijzigingen.
   export: Exporteer
@@ -184,6 +185,7 @@ pim_common:
   less_than: Minder dan
   loading: Laden...
   media_upload: Klik en sleep een bestand om te uploaden of klik hier
+  more_actions: Meer acties
   more_than: Meer dan
   next: Volgende
   "no": "Nee"
@@ -225,6 +227,9 @@ pim_common:
     STARTS WITH: Begint met
     ENDS WITH: Eindigt met
   read_more: Lees meer
+  channel: Kanaal
+  locale: Locale
+  groups: Groepen
 error:
   exception: Oh, nee! Een {{ status_code }} fout deed zich voor...
   forbidden: U heeft geen toegang tot deze pagina
@@ -301,6 +306,7 @@ pim_title:
   pim_enrich_job_tracker_show: Procesopvolger | Toon taak
   pim_enrich_mass_edit_action: Massa bewerken
   pim_analytics_system_info_index: Systeeminformatie
+  pim_settings_index: Instellingen
 pim_menu:
   tab:
     activity: Activiteit
@@ -316,7 +322,6 @@ pim_menu:
     attribute_group: Attribuutgroepen
     channel: Kanalen
     currency: Valuta
-    dashboard: Dashboard
     family: Families
     group: Groepen
     group_type: Groepstypen
@@ -337,7 +342,8 @@ pim_menu:
     activity: Activiteit navigatie
     system: Systeem navigatie
     user: Gebruikersbeheer navigatie
-    settings: Instellingen navigatie
+    settings:
+      collapsed_label: Instellingen navigatie
     product: Product navigatie
     product_infos: Product informatie
   user:

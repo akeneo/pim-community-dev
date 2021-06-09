@@ -1,7 +1,7 @@
 extensions:
     pim-user-profile-form:
         module: pim/form/common/edit-form
-    
+
     pim-user-profile-form-breadcrumbs:
         module: pim/common/breadcrumbs
         parent: pim-user-profile-form
@@ -9,7 +9,7 @@ extensions:
         config:
             tab: pim-menu-system
             item: pim-menu-system-user-user
-    
+
     pim-user-profile-form-user-navigation:
         module: pim/menu/user-navigation
         parent: pim-user-profile-form
@@ -17,19 +17,19 @@ extensions:
         config:
             userAccount: pim_menu.user.user_account
             logout: pim_menu.user.logout
-    
+
     pim-user-profile-form-main-image:
         module: pim/form/common/main-image
         parent: pim-user-profile-form
         targetZone: main-image
         config:
             fallbackPath: '/bundles/pimui/images/info-user.png'
-    
+
     pim-user-profile-form-cache-invalidator:
         module: pim/cache-invalidator
         parent: pim-user-profile-form
         position: 1000
-    
+
     pim-user-profile-form-label:
         module: pim/form/common/label
         parent: pim-user-profile-form
@@ -37,13 +37,13 @@ extensions:
         position: 110
         config:
             field: username
-    
+
     pim-user-profile-form-save-buttons:
         module: pim/form/common/save-buttons
         parent: pim-user-profile-form
         targetZone: buttons
         position: 110
-    
+
     pim-user-profile-form-save:
         module: pim/form/common/save-form
         parent: pim-user-profile-form
@@ -57,13 +57,13 @@ extensions:
             identifierParamName: identifier
             entityIdentifierParamName: meta.id
             excludedProperties: ['last_login', 'login_count', 'password']
-    
+
     pim-user-profile-form-secondary-actions:
         module: pim/form/common/secondary-actions
         parent: pim-user-profile-form
         targetZone: buttons
         position: 50
-    
+
     pim-user-profile-form-state:
         module: pim/form/common/state
         parent: pim-user-profile-form
@@ -71,13 +71,13 @@ extensions:
         position: 900
         config:
             entity: pim_user_management.entity.user.label
-    
+
     pim-user-profile-form-form-tabs:
         module: pim/form/common/form-tabs
         parent: pim-user-profile-form
         targetZone: content
         position: 90
-    
+
     # General tab
     pim-user-profile-form-general-tab:
         module: pim/common/tab
@@ -86,7 +86,7 @@ extensions:
         position: 10
         config:
             label: pim_common.general_properties
-    
+
     pim-user-profile-form-general-tab-content:
         module: pim/common/simple-view
         parent: pim-user-profile-form-general-tab
@@ -117,7 +117,19 @@ extensions:
             fieldName: username
             label: pim_user_management.entity.user.properties.username
             required: true
-    
+
+    pim-user-profile-form-profile:
+        module: pim/user/form/fields/select-profile
+        parent: pim-user-profile-form-general-tab-content
+        position: 25
+        targetZone: content
+        config:
+            fieldName: profile
+            label: pim_user_management.entity.user.properties.profile
+            allowClear: true
+            templateParams:
+                linkLabel: pim_user.profile.why_is_it_needed
+
     pim-user-profile-form-name-prefix:
         module: pim/form/common/fields/text
         parent: pim-user-profile-form-general-tab-content
@@ -126,7 +138,7 @@ extensions:
         config:
             fieldName: name_prefix
             label: pim_user_management.entity.user.properties.name_prefix
-    
+
     pim-user-profile-form-first-name:
         module: pim/form/common/fields/text
         parent: pim-user-profile-form-general-tab-content
@@ -136,7 +148,7 @@ extensions:
             fieldName: first_name
             label: pim_user_management.entity.user.properties.first_name
             required: true
-    
+
     pim-user-profile-form-middle-name:
         module: pim/form/common/fields/text
         parent: pim-user-profile-form-general-tab-content
@@ -145,7 +157,7 @@ extensions:
         config:
             fieldName: middle_name
             label: pim_user_management.entity.user.properties.middle_name
-    
+
     pim-user-profile-form-last-name:
         module: pim/form/common/fields/text
         parent: pim-user-profile-form-general-tab-content
@@ -155,7 +167,7 @@ extensions:
             fieldName: last_name
             label: pim_user_management.entity.user.properties.last_name
             required: true
-    
+
     pim-user-profile-form-name-suffix:
         module: pim/form/common/fields/text
         parent: pim-user-profile-form-general-tab-content
@@ -164,7 +176,7 @@ extensions:
         config:
             fieldName: name_suffix
             label: pim_user_management.entity.user.properties.name_suffix
-    
+
     pim-user-profile-form-phone:
         module: pim/form/common/fields/text
         parent: pim-user-profile-form-general-tab-content
@@ -173,7 +185,7 @@ extensions:
         config:
             fieldName: phone
             label: pim_user_management.entity.user.properties.phone
-    
+
     pim-user-profile-form-avatar:
         module: pim/form/common/fields/media
         parent: pim-user-profile-form-general-tab-content
@@ -182,7 +194,7 @@ extensions:
         config:
             fieldName: avatar
             label: pim_user_management.entity.user.properties.avatar
-    
+
     pim-user-profile-form-email:
         module: pim/form/common/fields/text
         parent: pim-user-profile-form-general-tab-content
@@ -192,7 +204,7 @@ extensions:
             fieldName: email
             label: pim_user_management.entity.user.properties.email
             required: true
-    
+
     # Additional tab
     pim-user-profile-form-additional-tab:
         module: pim/common/tab
@@ -201,7 +213,7 @@ extensions:
         position: 20
         config:
             label: pim_user_management.entity.user.module.update.additional
-    
+
     pim-user-profile-form-additional-tab-content:
         module: pim/common/simple-view
         parent: pim-user-profile-form-additional-tab
@@ -211,7 +223,7 @@ extensions:
             templateParams:
                 sectionTitle: ''
                 dropZone: content
-    
+
     pim-user-profile-form-catalog-locale:
         module: pim/form/common/fields/available-locales
         parent: pim-user-profile-form-additional-tab-content
@@ -223,7 +235,7 @@ extensions:
             required: true
             isMultiple: false
             allowClear: false
-    
+
     pim-user-profile-form-catalog-channel:
         module: pim/user/fields/channel
         parent: pim-user-profile-form-additional-tab-content
@@ -235,7 +247,7 @@ extensions:
             required: true
             isMultiple: false
             allowClear: false
-    
+
     pim-user-profile-form-default-tree:
         module: pim/user/fields/category-tree
         parent: pim-user-profile-form-additional-tab-content
@@ -247,7 +259,7 @@ extensions:
             required: true
             isMultiple: false
             allowClear: false
-    
+
     pim-user-profile-form-product-grid-filters:
         module: pim/user/fields/product-grid-filters
         parent: pim-user-profile-form-additional-tab-content
@@ -257,13 +269,13 @@ extensions:
             fieldName: product_grid_filters
             label: pim_user_management.entity.user.properties.product_grid_filters
             choiceRoute: pim_enrich_product_grid_filters
-    
+
     pim-user-profile-form-default-grid-views:
         module: pim/user/fields/default-grid-views
         parent: pim-user-profile-form-additional-tab-content
         position: 40
         targetZone: content
-    
+
     # Groups and Roles tab
     pim-user-profile-form-groups-and-roles-tab:
         module: pim/common/tab
@@ -272,7 +284,7 @@ extensions:
         position: 30
         config:
             label: pim_user_management.entity.user.module.update.groups_and_roles
-    
+
     pim-user-profile-form-groups-and-roles-tab-content:
         module: pim/common/simple-view
         parent: pim-user-profile-form-groups-and-roles-tab
@@ -282,7 +294,7 @@ extensions:
             templateParams:
                 sectionTitle: ''
                 dropZone: content
-    
+
     pim-user-profile-form-groups:
         module: pim/user/fields/user-group
         parent: pim-user-profile-form-groups-and-roles-tab-content
@@ -294,7 +306,7 @@ extensions:
             isMultiple: true
             allowClear: true
             readOnly: true
-    
+
     pim-user-profile-form-roles:
         module: pim/user/fields/user-role
         parent: pim-user-profile-form-groups-and-roles-tab-content
@@ -307,7 +319,7 @@ extensions:
             isMultiple: true
             allowClear: true
             readOnly: true
-    
+
     # Password tab
     pim-user-profile-form-password-tab:
         module: pim/common/tab
@@ -316,7 +328,7 @@ extensions:
         position: 40
         config:
             label: pim_user_management.entity.user.module.update.password
-    
+
     pim-user-profile-form-password-tab-content:
         module: pim/common/simple-view
         parent: pim-user-profile-form-password-tab
@@ -326,7 +338,7 @@ extensions:
             templateParams:
                 sectionTitle: ''
                 dropZone: content
-    
+
     pim-user-profile-form-current-password:
         module: pim/form/common/fields/password
         parent: pim-user-profile-form-password-tab-content
@@ -335,7 +347,7 @@ extensions:
         config:
             fieldName: current_password
             label: pim_user_management.entity.user.properties.current_password
-    
+
     pim-user-profile-form-new-password:
         module: pim/form/common/fields/password
         parent: pim-user-profile-form-password-tab-content
@@ -344,7 +356,7 @@ extensions:
         config:
             fieldName: new_password
             label: pim_user_management.entity.user.properties.new_password
-    
+
     pim-user-profile-form-new-password-repeat:
         module: pim/form/common/fields/password
         parent: pim-user-profile-form-password-tab-content
@@ -353,7 +365,7 @@ extensions:
         config:
             fieldName: new_password_repeat
             label: pim_user_management.entity.user.properties.new_password_repeat
-    
+
     # Interfaces tab
     pim-user-profile-form-interfaces-tab:
         module: pim/common/tab
@@ -362,7 +374,7 @@ extensions:
         position: 50
         config:
             label: pim_user_management.entity.user.module.update.interfaces
-    
+
     pim-user-profile-form-interfaces-tab-content:
         module: pim/common/simple-view
         parent: pim-user-profile-form-interfaces-tab
@@ -372,7 +384,7 @@ extensions:
             templateParams:
                 sectionTitle: ''
                 dropZone: content
-    
+
     pim-user-profile-form-ui-locale:
         module: pim/user/fields/ui-locale
         parent: pim-user-profile-form-interfaces-tab-content
@@ -384,7 +396,7 @@ extensions:
             required: true
             isMultiple: false
             allowClear: false
-    
+
     pim-user-profile-form-timezone:
         module: pim/user/fields/timezone
         parent: pim-user-profile-form-interfaces-tab-content

@@ -3,21 +3,34 @@ import React, {
   cloneElement,
   HTMLAttributes,
   isValidElement,
+  ReactElement,
   ReactNode,
   RefObject,
   useEffect,
   useRef,
   useState,
 } from 'react';
-import styled from 'styled-components';
+import styled, {css} from 'styled-components';
 import {AkeneoThemedProps, getColor, getFontSize} from '../../theme';
 import {Dropdown, IconButton} from '../../components';
 import {MoreIcon} from '../../icons';
 import {useBooleanState} from '../../hooks';
+import {Override} from '../../shared';
 
-const Container = styled.div`
+const Container = styled.div<{sticky: number} & AkeneoThemedProps>`
   display: flex;
+  align-items: center;
   border-bottom: 1px solid ${getColor('grey', 80)};
+  background: ${getColor('white')};
+
+  ${({sticky}) =>
+    undefined !== sticky &&
+    css`
+      position: sticky;
+      top: ${sticky}px;
+      background-color: ${getColor('white')};
+      z-index: 9;
+    `}
 `;
 
 const TabBarContainer = styled.div`
@@ -27,6 +40,7 @@ const TabBarContainer = styled.div`
   height: 44px;
   flex-wrap: wrap;
   overflow: hidden;
+  margin-bottom: -1px;
 `;
 
 const TabContainer = styled.div<TabProps & AkeneoThemedProps>`
@@ -44,35 +58,52 @@ const TabContainer = styled.div<TabProps & AkeneoThemedProps>`
 
   &:hover {
     color: ${getColor('brand', 100)};
+    border-bottom: 3px solid ${getColor('brand', 100)};
   }
 `;
 
-type TabProps = {
-  /**
-   * Define if the tab is active.
-   */
-  isActive: boolean;
+const HiddenTabsDropdown = styled(Dropdown)<{isActive: boolean} & AkeneoThemedProps>`
+  border-bottom: 3px solid ${({isActive}) => (isActive ? getColor('brand', 100) : 'transparent')};
+  margin-bottom: -1px;
+  height: 44px;
+  box-sizing: border-box;
+  align-items: center;
 
-  /**
-   * Function called when the user click on tab.
-   */
-  onClick?: () => void;
+  &:hover {
+    color: ${getColor('brand', 100)};
+    border-bottom: 3px solid ${getColor('brand', 100)};
+  }
+`;
 
-  /**
-   * Content of the Tab.
-   */
-  children: ReactNode;
+type TabProps = Override<
+  React.HTMLAttributes<HTMLDivElement>,
+  {
+    /**
+     * Define if the tab is active.
+     */
+    isActive: boolean;
 
-  /**
-   * @private
-   */
-  parentRef?: RefObject<HTMLDivElement>;
+    /**
+     * Function called when the user click on tab.
+     */
+    onClick?: () => void;
 
-  /**
-   * @private
-   */
-  onVisibilityChange?: (newVisibility: boolean) => void;
-};
+    /**
+     * Content of the Tab.
+     */
+    children: ReactNode;
+
+    /**
+     * @private
+     */
+    parentRef?: RefObject<HTMLDivElement>;
+
+    /**
+     * @private
+     */
+    onVisibilityChange?: (newVisibility: boolean) => void;
+  }
+>;
 
 const Tab = ({children, isActive, parentRef, onVisibilityChange, ...rest}: TabProps) => {
   const ref = useRef<HTMLDivElement>(null);
@@ -91,7 +122,7 @@ const Tab = ({children, isActive, parentRef, onVisibilityChange, ...rest}: TabPr
     const options = {
       root: tabBarElement,
       rootMargin: '0px',
-      threshold: 1.0,
+      threshold: 0,
     };
 
     const observer = new IntersectionObserver(event => {
@@ -103,7 +134,7 @@ const Tab = ({children, isActive, parentRef, onVisibilityChange, ...rest}: TabPr
     return () => {
       observer.unobserve(tabElement);
     };
-  }, [onVisibilityChange, parentRef, ref]);
+  }, []);
 
   return (
     <TabContainer ref={ref} tabIndex={0} role="tab" aria-selected={isActive} isActive={isActive} {...rest}>
@@ -119,6 +150,11 @@ type TabBarProps = {
   moreButtonTitle: string;
 
   /**
+   * When set, defines the sticky top position of the Tab bar.
+   */
+  sticky?: number;
+
+  /**
    * Tabs of the Tab bar.
    */
   children?: ReactNode;
@@ -129,47 +165,56 @@ type TabBarProps = {
  */
 const TabBar = ({moreButtonTitle, children, ...rest}: TabBarProps) => {
   const ref = useRef<HTMLDivElement>(null);
-  const [hiddenElements, setHiddenElements] = useState<number[]>([]);
+  const [hiddenElements, setHiddenElements] = useState<string[]>([]);
   const [isOpen, open, close] = useBooleanState();
 
+  const hiddenTabs: ReactElement<TabProps>[] = [];
   const decoratedChildren = Children.map(children, (child, index) => {
     if (!isValidElement<TabProps>(child)) {
       throw new Error('TabBar only accepts TabBar.Tab as children');
     }
 
+    const key = child.key !== null ? child.key : index;
+    const isHidden = hiddenElements.includes(String(key));
+
+    if (isHidden) {
+      hiddenTabs.push(child);
+    }
+
     return cloneElement(child, {
       parentRef: ref,
+      tabIndex: isHidden ? -1 : 0,
       onVisibilityChange: (isVisible: boolean) => {
         setHiddenElements(previousHiddenElements =>
           isVisible
-            ? previousHiddenElements.filter(hiddenElement => hiddenElement !== index)
-            : [index, ...previousHiddenElements]
+            ? previousHiddenElements.filter(hiddenElement => hiddenElement !== String(key))
+            : [String(key), ...previousHiddenElements]
         );
       },
     });
   });
 
+  const activeTabIsHidden = hiddenTabs.find(child => child.props.isActive) !== undefined;
+
   return (
-    <Container>
-      <TabBarContainer ref={ref} role="tablist" {...rest}>
+    <Container {...rest}>
+      <TabBarContainer ref={ref} role="tablist">
         {decoratedChildren}
       </TabBarContainer>
-      {0 < hiddenElements.length && (
-        <Dropdown>
+      {0 < hiddenTabs.length && (
+        <HiddenTabsDropdown isActive={activeTabIsHidden}>
           <IconButton level="tertiary" ghost="borderless" icon={<MoreIcon />} title={moreButtonTitle} onClick={open} />
           {isOpen && (
             <Dropdown.Overlay verticalPosition="down" onClose={close}>
               <Dropdown.ItemCollection>
-                {decoratedChildren?.map((child, index) => {
-                  if (!hiddenElements.includes(index) || !isValidElement<TabProps>(child)) return;
-
+                {hiddenTabs.map((child, index) => {
                   const handleClick = () => {
                     close();
                     child.props.onClick?.();
                   };
 
                   return (
-                    <Dropdown.Item key={index} onClick={handleClick}>
+                    <Dropdown.Item key={index} onClick={handleClick} isActive={child.props.isActive}>
                       {child.props.children}
                     </Dropdown.Item>
                   );
@@ -177,7 +222,7 @@ const TabBar = ({moreButtonTitle, children, ...rest}: TabBarProps) => {
               </Dropdown.ItemCollection>
             </Dropdown.Overlay>
           )}
-        </Dropdown>
+        </HiddenTabsDropdown>
       )}
     </Container>
   );

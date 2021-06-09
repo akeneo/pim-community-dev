@@ -62,6 +62,7 @@ pim_common:
   name: Nombre
   remove: Eliminar
   code: Código
+  label: Etiqueta
   products: Productos
   product_models: Modelos de producto
   categories: Categorías
@@ -100,7 +101,6 @@ pim_enrich:
       edit_attributes: Editar atributos de un modelo del producto
       categories_view: Consultar las categorías de un modelo del producto
       history: Ver el historial del modelo del producto
-      remove: Remover un modelo del producto
     category:
       list: Lista de categorías
       create: Crear una categoría

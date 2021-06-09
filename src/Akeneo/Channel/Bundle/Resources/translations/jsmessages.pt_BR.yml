@@ -53,7 +53,7 @@ pim_enrich.entity.channel:
   property:
     category_tree: Árvore de categorias
     do_not_convert: Não converter
-    label_conversion_units: Escolha uma unidade de conversão para cada atributo métrico que será usado durante a exportação de produto
+    label_conversion_units: Escolha uma unidade de conversão para cada atributo de medida que será usado durante a exportação de produto
   module:
     create:
       button: Criar canal
@@ -63,8 +63,6 @@ pim_enrich.entity.locale:
   label: local
   uppercase_label: Localidade
   plural_label: Locais
-  page_title:
-    index: "]-Inf, 1]{{ count }} local|]1, Inf[{{ count }} locais"
 pim_enrich.entity.currency:
   plural_label: Moedas
   page_title:

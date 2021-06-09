@@ -62,6 +62,7 @@ pim_common:
   name: Naam
   remove: Verwijder
   code: Code
+  label: Label
   quantity: Aantal
   products: Producten
   product_models: Productmodels
@@ -550,4 +551,3 @@ pim_login:
   footer:
     powered: Mogelijk gemaakt door
     powered_image_title: logo Akeneo
-    baseline: Productervaringen maken groei mogelijk

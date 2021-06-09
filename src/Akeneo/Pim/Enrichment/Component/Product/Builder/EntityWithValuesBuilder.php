@@ -131,7 +131,9 @@ class EntityWithValuesBuilder implements EntityWithValuesBuilderInterface
     ): ValueInterface {
         $formerValue = $entityWithValues->getValue($attribute->code(), $localeCode, $channelCode);
         $updatedValue = $this->productValueFactory->createByCheckingData($attribute, $channelCode, $localeCode, $data);
-        $entityWithValues->removeValue($formerValue)->addValue($updatedValue);
+        if (!$formerValue->isEqual($updatedValue)) {
+            $entityWithValues->removeValue($formerValue)->addValue($updatedValue);
+        }
         $this->updateProductIdentiferIfNeeded($attribute, $entityWithValues, $data);
 
         return $updatedValue;

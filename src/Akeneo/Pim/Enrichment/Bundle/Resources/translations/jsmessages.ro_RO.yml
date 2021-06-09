@@ -1,0 +1,340 @@
+pim_notification:
+  types:
+    settings: Setări
+flash:
+  comment:
+    create:
+      success: Comentariul dvs. a fost creeat.
+    delete:
+      success: Comentariu dvs. a fost şters.
+    reply:
+      success: Raspunsul dvs. a fost creat.
+pim_enrich.entity.product:
+  label: produs
+  uppercase_label: Produs
+  plural_label: Produse
+  flash:
+    update:
+      success: Produsul a fost actualizat cu succes.
+      fail: Produsul nu poate fi actualizat.
+      fields_not_ready: "Produsul nu poate fi salvat acum. Următoarele câmpuri nu sunt gata: {{ fields }}"
+      already_in_upload: Un fișier este deja încărcat pentru acest atribut în localul "{{ locale }}" și scope "{{ scope }}"
+    delete:
+      success: Produsul a fost sters cu succes.
+      fail: Produsul nu a putut fi sters.
+    create:
+      success: Produsul a fost creeat cu succes
+      fail: Nu există un atribut configurat ca identificator de produs sau nu aveți drepturile necesare pentru a-l edita.
+  module:
+    create:
+      subtitle: Creează produs
+      title: Selectează acțiune
+      choose_family: Alegeți o familie
+      choose_family_variant: Alege o variantă de familie
+    variant_navigation:
+      common: Comune
+    status:
+      enabled: Activat
+      disabled: Dezactivat
+    download_pdf:
+      label: PDF
+    copy:
+      label: Compară / Tradu
+      select: Selectează
+      all_visible: Toate vizibile
+      copy: Copiază
+    history:
+      version: Versiune
+      author: Autor
+      logged_at: Conectat la
+      from: De la
+      modified: Modificat
+      old_value: Valoarea veche
+      new_value: Valoarea nouă
+    meta:
+      updated: Ultima actualizare
+      groups: Grupuri
+    show_group:
+      title: Grup {{ group }}
+      view_group: Vezi grup
+      more_products: '{{ count }} mai multe produse...'
+    attribute:
+      remove_optional: Elimină acest atribut
+      locale_specific_unavailable: Acest câmp specific local nu este disponibil în acest local
+      locale_unavailable: Acest câmp localizabil nu este valabil pentru local '{{ locale }}' şi canalul '{{ channel }}'
+      add_attribute_option: Adaugă opțiune de atribut
+    completeness:
+      title: Completitudine
+      complete: Completitudine
+      no_family: Nicio familie definită. Vă rugăm să definiți o familie pentru a calcula completitudinea acestui produs.
+      no_completeness: Tocmai ați schimbat familia produsului. Vă rugăm salvați-o înainte de a calcula completitudinea pentru noua familie.
+    sequential_edit:
+      item_limit: Doar primele 1000 produse sunt vizualizate în această editare secvențială ({{ count }} selectate)
+      empty: Selecția dumneavoastră este goală, vă rugăm să schimbați criterele de căutare
+      save_and_next: Salvează și înainte
+      save_and_finish: Salvează și termină
+    associations:
+      none_exist: Niciun tip de asociație nu există.
+      show_products: Afișează produsele
+      show_groups: Afișează grupurile
+      number_of_associations: "{{ productCount }} produs(e), {{ productModelCount }} model(e) de produs și {{ groupCount }} grup(uri)"
+      association_type_selector: Tip de asociație
+      manage: Adaugă {{ associationType }} asociații
+      add_associations: Adaugă asociații
+    attribute_filter:
+      display: Afișează
+      all: Toate atribute
+      missing_required: Toate atributele necesare care lipsesc
+    change_family:
+      title: Schimbă familia de produs
+      merge_attributes: Atributele curente vor fi fuzionate cu cele din noua familie.
+      keep_attributes: Niciun atribut nu va fi șters.
+      change_family_to: Schimbă familia la
+      empty_selection: Alegeți o familie
+    basket:
+      title: Coş
+      empty_basket: Coșul este gol
+    delete:
+      confirm: Sunteți sigur că doriți să ştergeți acest produs?
+    comment:
+      post: Adaugă un nou comentariu
+      reply: Răspunde
+      title: Comentarii
+      empty: Momentan nu există niciun comentariu
+      header_comment: '{{ user }} comentează produsul'
+      header_reply: '{{ user }} răspunde la comentariu'
+      delete_confirm: Sunteți sigur că doriți să ştergeți acest comentariu?
+      removed_author: Utilizator eliminat
+pim_enrich.entity.product_model:
+  uppercase_label: Model de produs
+  flash:
+    create:
+      success: Modelul de produs a fost creat
+      product_model_added: Modelul de produs a fost adăugat cu succes la modelul produsului
+      variant_product_added: Produsul variant a fost adăugat cu succes la modelul de produs
+    update:
+      success: Modelul de produs a fost actualizat. Completitudinea variantelor de produs ce îi aparțin va fi recalculată.
+      fail: Modelul de produs nu a putut fi actualizat.
+      fields_not_ready: "Momentan modelul de produs nu poate fi salvat.\nUrmătoarele câmpuri nu sunt gata: {{ fields }}"
+    delete:
+      success: Modelul de produs a fost şters.
+  choose: Alegeți un model de produs
+  property:
+    family_variant: Variantă
+  module:
+    create:
+      title: Creează un model de produs
+      content: Un model de produs strânge variantele de produs şi uşurează imbogățirea proprietăților lor comune.
+    attribute:
+      read_only_parent_attribute_from_common: Acest atribut poate fi actualizat în atributele comune.
+      read_only_parent_attribute_from_model: "Acest atribut poate fi actualizat în atribute după {{ axes }}"
+    variant_axis:
+      create: Adaugă nou
+      create_label: "Adaugă un nou {{ axes }}"
+      required_label: '(Variantă axis)'
+    completeness:
+      label: Variantă
+    delete:
+      confirm: Sunteți sigur că doriți să ştergeți acest model de produs? Toți copii lui, modelele de produs şi variantele de produs, vor fi deasemenea şterse.
+pim_enrich.entity.group:
+  label: Grup
+  flash:
+    update:
+      success: Grupul a fost actualizat cu succes.
+      fail: Grupul nu s-a putut actualiza.
+      fields_not_ready: "Grupul nu se poate salva acum. Următoarele câmpuri nu sunt gata: {{ fields }}"
+    create:
+      success: Grupul a fost creeat cu succes
+    delete:
+      success: Grupul a fost şters cu succes
+      fail: Nu puteți şterge acest grup
+  module:
+    create:
+      button: Creează grup
+    delete:
+      confirm: Sunteți sigur că vreți să ștergeți acest grup?
+pim_enrich.entity.category:
+  label: categorie
+  uppercase_label: Categorie
+  plural_label: Categorii
+pim_enrich.export.product:
+  data:
+    title: Filtrează produsele
+  structure:
+    title: Filtrează datele
+  filter:
+    locales:
+      help: "Localele definesc valoarilr de produs localizate pentru exportare. Ex: doar informații de produs în limba Franceză."
+    attributes:
+      help: "Selecționează informațiile de produs de exportat. Ex: doar atribute tecnice."
+      empty: Toate atributele vor fi exportate
+      modal:
+        title: Selectarea de atribute
+    attributes_selector:
+      selected: "Atributele selectate"
+      clear: Curăță
+      all_group: Toate grupurile
+      empty_selection: Toate atributele vor fi exportate
+    family:
+      title: Familie
+      help: "Selectează produsele pentru exportare după familia lor. De exemplu: Exportă doar pantofii și rochiile."
+      operators:
+        IN: În listă
+        "NOT IN": Nu este în listă
+        EMPTY: Produsele care nu au o familie
+        "NOT EMPTY": Produsele care au o familie
+      empty_selection: Nici o condiție pe familii
+    updated:
+      title: Condiție de timp
+      operators:
+        ALL: Nici o condiție de dată
+        "SINCE LAST N DAYS": 'Produse actualizate în ultimele n zile (ex: 6)'
+        ">": Produse actualizate de la data de
+        "SINCE LAST JOB": Produse actualizate de la ultimul export
+    enabled:
+      title: Stare
+      help: "Seleczionează produsele de exportat după starea lor. Ex: Exportă produsele oricare ar fi starea lor."
+      value:
+        enabled: Activat
+        disabled: Dezactivat
+    completeness:
+      title: Completitudine
+      help: Seleczionează produsele de exportat după completitudinea lor.
+      operators:
+        ALL: Nici o condiție pe completitudine
+        ">=": Completat măcar pe un locale selectat
+        "GREATER OR EQUALS THAN ON ALL LOCALES": Completat pe toate localele selectate
+        "GREATER OR EQUALS THAN ON AT LEAST ONE LOCALE": Completat măcar pe un locale selectat
+        LOWER THAN ON ALL LOCALES: Nu a fost completat pe toate localele selectate
+      empty_selection: Alegeți o familie
+    category:
+      title: Categorie
+      help: Foloseşte categoriile de produs în arbore (definit de canalul de mai sus) pentru a selecta produsele de exportat
+    identifier:
+      title: Identificator
+    string:
+      operators:
+        ALL: Toate
+    select:
+      operators:
+        IN: În listă
+    date:
+      operators:
+        BETWEEN: Între
+        NOT BETWEEN: Nu e între
+  global_settings:
+    title: Setări globale
+pim_enrich.mass_edit.product:
+  step:
+    select:
+      label: Alege produse
+    configure:
+      label: Configurare
+    confirm:
+      label: Confirmă
+  operation:
+    common:
+      select_attributes: Selectează atributele
+    change_status:
+      label: Schimbă status
+      description: Produsele selectate vor fi activate sau dezactivate.
+      field: A activa
+    edit_common:
+      description: Doar atributele care aparțin de familiile produselor selectate vor fi editate cu următoarele date pentru localul {{ locale }} și canalul {{ scope }}.
+    change_family:
+      label: Schimbați familia
+      description: Familia produselor selectate va fi schimbată la familia aleasă
+    add_to_group:
+      label: Adaugă la grupuri
+      description: Selectează grupurile în care să adaugi produsele selectate
+      field: Grupuri
+    add_to_category:
+      label: Adăugați la categorii
+      description: Produsele vor fi clasificate în următoarele categorii, clasificarea existentă se păstrează.
+    move_to_category:
+      label: Mută între categorii
+      description: Produsele vor fi clasificate în următoarele categorii, clasificarea existentă este pierdută.
+    remove_from_category:
+      label: Eliminați din categorii
+      description: Produsele vor fi eliminate din categoriile următoare.
+    add_to_existing_product_model:
+      label: Adăugați la un model de produs existent
+      description: Modelul produsului selectat va strânge produsele și permite îmbogățirea proprietăților lor comune.
+pim_datagrid:
+  mass_action_group:
+    bulk_actions:
+      label: Acțiuni în masă
+    quick_export:
+      label: Export rapid
+  mass_action:
+    delete:
+      confirm_content: Sunteți sigur că doriți să ştergeți produsele selectate?
+      success: Produsele selectate au fost șterse.
+    quick_export:
+      csv_all: CSV (Toate atributele)
+      csv_grid_context: CSV (context grilă)
+      xlsx_all: Excel (Toate atributele)
+      xlsx_grid_context: Excel (context grilă)
+      configurator:
+        title: Selectează acțiune
+        all_attributes: Toate atribute
+    sequential_edit: Editare secvențială
+  view_selector:
+    view: Vizualizari
+  actions:
+    edit_product_attributes: Modifică atributele produsului
+    classify_product: Clasificați produsul
+    delete_product: Șterge produsul
+    change_status: Schimbă status
+    other: Alte acțiuni
+  empty_results:
+    associated_product:
+      hint: Nu există produse asociate
+      subHint: 'Apasa pe butonul "adauga asociatii" pentru a asocia acest produs'
+  filters:
+    label: Filtre
+    system: Sistem
+    product_typology:
+      variant: 'Variantă'
+    entity_type:
+      label: 'Variantă'
+    family:
+      label: Familie
+    groups:
+      label: Grupuri
+    enabled:
+      label: Stare
+    completeness:
+      label: Complet
+    identifier:
+      label: Identificator
+  search: Caută în {{ label }}
+batch_jobs:
+  add_product_value:
+    label: Adăugați valoarea produsului
+    perform.label: Adăugați valoarea produsului
+  add_to_category:
+    label: Adăugați la categorie
+    perform.label: Adăugați la categorie
+  add_to_existing_product_model:
+    label: Adăugați la un model al produsului existent
+    perform.label: Adăugați la un model de produs existent
+  csv_product_quick_export:
+    quick_export_product_model.label: CSV model de produs export rapid
+  edit_common_attributes:
+    label: Editați atributele
+    perform.label: Modifică atribute
+    clean.label: Curățați fișierele pentru atribute
+    cleaner.label: Curățați fișierele pentru atribute
+  move_to_category:
+    label: Mutați la categorie
+    perform.label: Mutați la categorie
+  update_product_value:
+    label: Actualizați valoarea produsului
+    perform.label: Actualizează valoarea produsului
+  remove_from_category:
+    label: Eliminați din categorie
+    perform.label: Eliminați din categorie
+  set_attribute_requirements:
+    label: Setează cerințele atributelor
+    perform.label: Setează cerințele atributelor
