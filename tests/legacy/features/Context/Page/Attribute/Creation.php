@@ -275,12 +275,9 @@ class Creation extends Form
      */
     public function selectAttributeType($name)
     {
-        $x = $this->spin(function () use ($name) {
+        $this->spin(function () use ($name) {
             return $this->find('css', sprintf('div[title="%s"]', $name));
-        }, sprintf('Cannot find attribute type "%s"', $name));
-
-        var_dump($x->getOuterHtml());
-        $x->click();
+        }, sprintf('Cannot find attribute type "%s"', $name))->click();
     }
 
     /**
