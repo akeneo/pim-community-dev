@@ -33,17 +33,6 @@ extensions:
             userAccount: pim_menu.user.user_account
             logout: pim_menu.user.logout
 
-    # System
-
-    pim-menu-system-connection-settings:
-        module: pim/menu/item
-        parent: pim-menu-system-navigation-block
-        aclResourceId: akeneo_connectivity_connection_manage_settings
-        position: 120
-        config:
-            title: pim_menu.item.connection_settings
-            to: akeneo_connectivity_connection_settings_redirect
-
     # System / Connection
 
     pim-menu-connection-column:
@@ -133,7 +122,7 @@ extensions:
             to: akeneo_connectivity_connection_settings_index
 
     pim-menu-connect-marketplace:
-        module: pim/menu/connectivity/connection/marketplace-item
+        module: pim/menu/item
         parent: pim-menu-connect-navigation-block
         position: 20
         config:
