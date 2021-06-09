@@ -52,7 +52,7 @@ class WebUser extends PimContext
     {
         $entity = implode('', array_map('ucfirst', explode(' ', $entity)));
         $this->spin(function () use ($entity) {
-            if (null !== $this->getCurrentPage()->find('css', '.modal, .ui-dialog')) {
+            if (null !== $this->getCurrentPage()->find('css', '.modal, .ui-dialog, [role=dialog]')) {
                 return true;
             }
 
