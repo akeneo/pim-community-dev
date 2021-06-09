@@ -14,14 +14,14 @@ type Props = {
   id: number;
   label: string;
   index?: number;
-  sortable?: boolean;
+  orderable?: boolean;
   followCategory?: (category: CategoryTreeModel) => void;
   onCategoryMoved?: () => void;
   addCategory?: (parentCode: string, onCreate: () => void) => void;
   deleteCategory?: (identifier: number, label: string, numberOfProducts: number, onDelete: () => void) => void;
 };
 
-const Node: FC<Props> = ({id, label, followCategory, addCategory, deleteCategory, sortable = false, index = 0}) => {
+const Node: FC<Props> = ({id, label, followCategory, addCategory, deleteCategory, orderable = false, index = 0}) => {
   const {
     node,
     children,
@@ -106,7 +106,7 @@ const Node: FC<Props> = ({id, label, followCategory, addCategory, deleteCategory
             followCategory={followCategory}
             addCategory={addCategory}
             deleteCategory={deleteCategory}
-            sortable={sortable}
+            orderable={orderable}
             index={index}
           />
         </React.Fragment>
