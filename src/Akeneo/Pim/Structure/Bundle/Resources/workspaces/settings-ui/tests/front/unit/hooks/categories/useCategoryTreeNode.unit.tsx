@@ -10,6 +10,9 @@ import {
   useCategoryTreeNode,
 } from '@akeneo-pim-community/settings-ui';
 import {aBackendCategoryTree, aCategoryTree} from '../../../utils/provideCategoryHelper';
+import {moveCategory} from "@akeneo-pim-community/settings-ui/src/infrastructure/savers";
+
+jest.mock('@akeneo-pim-community/settings-ui/src/infrastructure/savers/moveCategory');
 
 const DefaultProviders: FC<{root: CategoryTreeModel}> = ({children, root}) => (
   <DependenciesProvider>
@@ -131,12 +134,20 @@ describe('useCategoryTreeNode > move category', () => {
     const {result} = renderUseCategoryTree(1234, root);
     const moveCallback = jest.fn();
 
+    // @ts-ignore
+    moveCategory.mockResolvedValue(true);
+
     expect(result.current.node?.childrenIds).toEqual([1, 2, 3]);
     act(() => {
       result.current.moveTo(1, {identifier: 3, parentId: 1234, position: 'before'}, moveCallback);
     });
     expect(result.current.node?.childrenIds).toEqual([2, 1, 3]);
     expect(moveCallback).toHaveBeenCalled();
+    expect(moveCategory).toHaveBeenCalledWith({
+      identifier: 1,
+      parentId: 1234,
+      previousCategoryId: 2
+    });
   });
 
   test('it moves a category after', () => {
@@ -144,18 +155,29 @@ describe('useCategoryTreeNode > move category', () => {
     const {result} = renderUseCategoryTree(1234, root);
     const moveCallback = jest.fn();
 
+    // @ts-ignore
+    moveCategory.mockResolvedValue(true);
+
     expect(result.current.node?.childrenIds).toEqual([1, 2, 3]);
     act(() => {
       result.current.moveTo(1, {identifier: 3, parentId: 1234, position: 'after'}, moveCallback);
     });
     expect(result.current.node?.childrenIds).toEqual([2, 3, 1]);
     expect(moveCallback).toHaveBeenCalled();
+    expect(moveCategory).toHaveBeenCalledWith({
+      identifier: 1,
+      parentId: 1234,
+      previousCategoryId: 3
+    });
   });
 
   test('it moves a category in leaf', () => {
     const root = aCategoryTree('a_root', ['cat_1', 'cat_2', 'cat_3'], true, false, 1234);
     const {result} = renderUseCategoryTree(1234, root);
     const moveCallback = jest.fn();
+
+    // @ts-ignore
+    moveCategory.mockResolvedValue(true);
 
     expect(result.current.node?.childrenIds).toEqual([1, 2, 3]);
     expect(result.current.children[1].type).toBe('leaf');
@@ -169,12 +191,20 @@ describe('useCategoryTreeNode > move category', () => {
     expect(result.current.children[0].type).toBe('node');
     expect(result.current.children[0].identifier).toBe(2);
     expect(moveCallback).toHaveBeenCalled();
+    expect(moveCategory).toHaveBeenCalledWith({
+      identifier: 1,
+      parentId: 2,
+      previousCategoryId: null
+    });
   });
 
   test('it moves a category in parent category', async () => {
     const root = aCategoryTree('a_root', ['cat_1', 'cat_2', 'cat_3'], true, false, 1234);
     const {result, rerender} = renderUseCategoryTree(1234, root);
     const moveCallback = jest.fn();
+
+    // @ts-ignore
+    moveCategory.mockResolvedValue(true);
 
     const childrenList: BackendCategoryTree[] = [
       aBackendCategoryTree('a_child_category', [], false, 1111),
@@ -215,6 +245,11 @@ describe('useCategoryTreeNode > move category', () => {
     expect(result.current.node?.childrenIds).toEqual([1, 1111, 2222]);
     expect(result.current.node?.type).toBe('node');
     expect(moveCallback).toHaveBeenCalled();
+    expect(moveCategory).toHaveBeenCalledWith({
+      identifier: 1,
+      parentId: 3,
+      previousCategoryId: null
+    });
 
     act(() => {
       rerender({categoryId: 1234});
