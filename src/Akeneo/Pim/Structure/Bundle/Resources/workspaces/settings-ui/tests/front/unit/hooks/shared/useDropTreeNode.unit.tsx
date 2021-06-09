@@ -147,13 +147,17 @@ describe('useDropTreeNode', () => {
     );
 
     act(() => {
+      result.current.onDragEnter();
       result.current.onDragOver(anElement, {x: 1, y: 1});
     });
 
     act(() => {
       result.current.onDrop();
+      result.current.onDragEnd();
     });
 
     expect(reorder).toBeCalled();
+    expect(result.current.placeholderPosition).toBe('none');
+    expect(result.current.dropTarget).toBe(null);
   });
 });
