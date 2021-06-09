@@ -1,12 +1,7 @@
 import React, {useRef, useState, useEffect} from 'react';
 import styled from 'styled-components';
 import {useIsMounted, useViewBuilder} from '../hooks';
-
-type View = {
-  setElement: (element: HTMLElement | null) => View;
-  render: () => void;
-  remove: () => void;
-};
+import {View} from '../DependenciesProvider.type';
 
 type Props = {
   viewName: string;
@@ -30,7 +25,7 @@ const PimView = ({viewName, className}: Props) => {
       return;
     }
 
-    viewBuilder.build(viewName).then((view: View) => {
+    viewBuilder.build(viewName).then(view => {
       if (isMounted()) {
         view.setElement(el.current).render();
         setView(view);

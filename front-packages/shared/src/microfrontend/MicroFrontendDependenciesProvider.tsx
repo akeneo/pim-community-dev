@@ -1,6 +1,6 @@
 import React, {ReactNode, useEffect, useState} from 'react';
 import {useIsMounted} from '../hooks';
-import {RouteParams} from '../DependenciesProvider.type';
+import {RouteParams, View} from '../DependenciesProvider.type';
 import {DependenciesContext} from '../DependenciesContext';
 import {useNotifications} from './useNotifications';
 import {Notifications} from '../components';
@@ -68,6 +68,12 @@ const MicroFrontendDependenciesProvider = ({
   const currentUserUrl = generateUrl('pim_user_user_rest_get_current');
   const securityContextUrl = generateUrl('pim_user_security_rest_get');
 
+  const view: View = {
+    setElement: () => view,
+    render: () => {},
+    remove: () => {},
+  };
+
   useEffect(() => {
     const fetchUserContext = async () => {
       const response = await fetch(currentUserUrl);
@@ -125,7 +131,7 @@ const MicroFrontendDependenciesProvider = ({
           );
         },
         viewBuilder: {
-          build: async (_viewName: string) => Promise.resolve(),
+          build: async (_viewName: string) => Promise.resolve(view),
         },
         mediator: {
           trigger: (event: string, _options?: unknown) => console.log('Triggering', event),
