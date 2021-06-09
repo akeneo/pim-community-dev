@@ -122,7 +122,7 @@ const CategoriesTreePage: FC = () => {
           </SectionTitle>
           <CategoryTree
             root={tree}
-            sortable={isGranted('pim_enrich_product_category_edit')}
+            orderable={isGranted('pim_enrich_product_category_edit')}
             followCategory={
               isGranted('pim_enrich_product_category_edit') ? cat => followEditCategory(cat.id) : undefined
             }
