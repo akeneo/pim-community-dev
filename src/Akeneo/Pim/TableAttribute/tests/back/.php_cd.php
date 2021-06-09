@@ -39,6 +39,7 @@ $rules = [
             'Akeneo\Tool\Component\StorageUtils\Cache',
             'Akeneo\Tool\Component\StorageUtils\Saver\SaverInterface',
             'Akeneo\Tool\Component\StorageUtils\Exception\InvalidPropertyTypeException',
+            'Akeneo\Tool\Component\Connector\Exception',
             'Akeneo\Channel\Component\Query\PublicApi',
             'Akeneo\Platform\Bundle\InstallerBundle\Event',
             'Akeneo\Platform\Bundle\UIBundle\Provider\Field\FieldProviderInterface',
@@ -51,6 +52,7 @@ $rules = [
             'Akeneo\Pim\Enrichment\Component\Product\Completeness\MaskItemGenerator\MaskItemGeneratorForAttributeType',
             'Akeneo\Pim\Enrichment\Component\Product\Validator\ConstraintGuesserInterface',
             'Akeneo\Pim\Enrichment\Component\Product\Connector\ArrayConverter\StandardToFlat\Product\ValueConverter\AbstractValueConverter',
+            'Akeneo\Pim\Enrichment\Component\Product\Connector\ArrayConverter\FlatToStandard\ValueConverter\ValueConverterInterface',
         ]
     )->in('Akeneo\Pim\TableAttribute\Infrastructure'),
 ];

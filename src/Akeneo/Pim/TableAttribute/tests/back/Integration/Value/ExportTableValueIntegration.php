@@ -21,7 +21,7 @@ use Akeneo\Tool\Bundle\BatchBundle\Persistence\Sql\SqlCreateJobInstance;
 use Box\Spout\Reader\ReaderFactory;
 use PHPUnit\Framework\Assert;
 
-class ExportTableValueIntegration extends TestCase
+final class ExportTableValueIntegration extends TestCase
 {
     private const CSV_EXPORT_JOB_CODE = 'csv_product_export';
     private const XLSX_EXPORT_JOB_CODE = 'xlsx_product_export';
@@ -107,7 +107,7 @@ CSV;
                 'table_configuration' => [
                     [
                         'code' => 'ingredient',
-                        'data_type' => 'text',
+                        'data_type' => 'select',
                         'labels' => [
                             'en_US' => 'Ingredients',
                         ],

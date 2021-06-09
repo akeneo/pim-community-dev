@@ -5,3 +5,7 @@ services:
             - ['pim_catalog_table']
         tags:
             - { name: pim_connector.array_converter.standard_to_flat.product.value_converter }
+
+    Akeneo\Pim\TableAttribute\Infrastructure\Value\ArrayConverter\FlatToStandard:
+        tags:
+            - { name: pim_connector.array_converter.flat_to_standard.product.value_converter }
