@@ -9,7 +9,7 @@ const PillContainer = styled.div<{level: PillLevel} & AkeneoThemedProps>`
   border-radius: 50%;
 `;
 
-type PillLevel = 'warning' | 'danger';
+type PillLevel = 'primary' | 'warning' | 'danger';
 
 type PillProps = {
   /**

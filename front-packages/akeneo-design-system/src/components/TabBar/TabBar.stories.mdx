@@ -109,7 +109,11 @@ The order of the tabs must be consistent across the entire application. Related 
       return (
         <TabBar {...args}>
           {[...Array(100)].map((_, index) => (
-            <TabBar.Tab key={index} isActive={isCurrent(`Tab ${index + 1}`)} onClick={() => switchTo(`Tab ${index + 1}`)}>
+            <TabBar.Tab
+              key={index}
+              isActive={isCurrent(`Tab ${index + 1}`)}
+              onClick={() => switchTo(`Tab ${index + 1}`)}
+            >
               {`Tab ${index + 1}`}
             </TabBar.Tab>
           ))}
@@ -125,32 +129,34 @@ The order of the tabs must be consistent across the entire application. Related 
   <Story name="Sticky">
     {args => {
       const [isCurrent, switchTo] = useTabBar('firstTab');
-      return (<Scrollable height={300}>
-        <TabBar sticky={0}>
-          <TabBar.Tab isActive={isCurrent('firstTab')} onClick={() => switchTo('firstTab')}>
-            First tab <Pill level="warning" />
-          </TabBar.Tab>
-          <TabBar.Tab isActive={isCurrent('anotherTab')} onClick={() => switchTo('anotherTab')}>
-            Another tab
-          </TabBar.Tab>
-          <TabBar.Tab isActive={isCurrent('lastTab')} onClick={() => switchTo('lastTab')}>
-            Last tab <Pill level="danger" />
-          </TabBar.Tab>
-        </TabBar>
-        <Content height={400}>Some content</Content>
-        <TabBar sticky={0}>
-          <TabBar.Tab isActive={isCurrent('firstTab')} onClick={() => switchTo('firstTab')}>
-            First tab <Pill level="warning" />
-          </TabBar.Tab>
-          <TabBar.Tab isActive={isCurrent('anotherTab')} onClick={() => switchTo('anotherTab')}>
-            Another tab
-          </TabBar.Tab>
-          <TabBar.Tab isActive={isCurrent('lastTab')} onClick={() => switchTo('lastTab')}>
-            Last tab <Pill level="danger" />
-          </TabBar.Tab>
-        </TabBar>
-        <Content height={400}>Some other content</Content>
-      </Scrollable>)
+      return (
+        <Scrollable height={300}>
+          <TabBar sticky={0}>
+            <TabBar.Tab isActive={isCurrent('firstTab')} onClick={() => switchTo('firstTab')}>
+              First tab <Pill level="warning" />
+            </TabBar.Tab>
+            <TabBar.Tab isActive={isCurrent('anotherTab')} onClick={() => switchTo('anotherTab')}>
+              Another tab
+            </TabBar.Tab>
+            <TabBar.Tab isActive={isCurrent('lastTab')} onClick={() => switchTo('lastTab')}>
+              Last tab <Pill level="danger" />
+            </TabBar.Tab>
+          </TabBar>
+          <Content height={400}>Some content</Content>
+          <TabBar sticky={0}>
+            <TabBar.Tab isActive={isCurrent('firstTab')} onClick={() => switchTo('firstTab')}>
+              First tab <Pill level="warning" />
+            </TabBar.Tab>
+            <TabBar.Tab isActive={isCurrent('anotherTab')} onClick={() => switchTo('anotherTab')}>
+              Another tab
+            </TabBar.Tab>
+            <TabBar.Tab isActive={isCurrent('lastTab')} onClick={() => switchTo('lastTab')}>
+              Last tab <Pill level="danger" />
+            </TabBar.Tab>
+          </TabBar>
+          <Content height={400}>Some other content</Content>
+        </Scrollable>
+      );
     }}
   </Story>
 </Canvas>
