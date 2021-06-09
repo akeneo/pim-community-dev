@@ -73,4 +73,32 @@ final class CategoryContext extends PimContext
             return true;
         }, sprintf('Can not create the category with code %s', $code));
     }
+
+    /**
+     * @When I open the category tab :tabName
+     */
+    public function iOpenTheCategoryTab(string $tabName)
+    {
+        $tab = $this->spin(function () use ($tabName) {
+            $tabList = $this->getCurrentPage()->find('css', 'div[role=tablist]');
+            if (!$tabList) {
+                return false;
+            }
+
+            return $tabList->find('named', ['content', $tabName]);
+        }, sprintf('Tab "%s" not found', $tabName));
+
+        $tab->click();
+    }
+
+    /**
+     * @When I submit the category changes
+     */
+    public function iSubmitTheCategoryChanges()
+    {
+        $this->spin(function () {
+            $this->getCurrentPage()->findButton('Save')->press();
+            return true;
+        }, 'Can not save the current category');
+    }
 }
