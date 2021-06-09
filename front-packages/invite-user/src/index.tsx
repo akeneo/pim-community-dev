@@ -5,7 +5,7 @@ import {CommonStyle, pimTheme} from 'akeneo-design-system';
 import {MicroFrontendDependenciesProvider, Routes} from '@akeneo-pim-community/shared';
 import {routes} from './routes.json';
 import translations from './translations.json';
-import {InviteUserApp} from './InviteUserApp';
+import {InviteUserApp} from './feature';
 
 const Container = styled.div`
   ${CommonStyle}

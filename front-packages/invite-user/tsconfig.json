@@ -18,7 +18,7 @@
     "noUnusedLocals": true,
     "noUnusedParameters": true,
     "outDir": "lib",
-    "rootDir": "src",
+    "rootDir": "src/feature",
     "skipLibCheck": true,
     "sourceMap": true,
     "strictBindCallApply": true,
@@ -42,7 +42,7 @@
     "isolatedModules": true
   },
   "include": [
-    "src",
-    "tests"
+    "src/feature",
+    "src/tests"
   ]
 }
