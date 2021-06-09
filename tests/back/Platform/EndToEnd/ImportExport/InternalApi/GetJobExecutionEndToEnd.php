@@ -95,7 +95,7 @@ SQL;
                     'summary' => [
                         'read lines' => '38',
                         'skipped product (no differences)' => '37',
-                        'Skipped' => '1',
+                        'skipped' => '1',
                     ],
                     'startedAt' => '10/13/2020 01:05 PM',
                     'endedAt' => '10/13/2020 01:06 PM',

@@ -3,6 +3,7 @@
 ## Bug fixes
 
 - PIM-9876: Fix purge of products old scores in Data Quality Insights
+- PIM-9896: Patched symfony/security-core vulnerability
 
 # 5.0.30 (2021-06-04)
 
