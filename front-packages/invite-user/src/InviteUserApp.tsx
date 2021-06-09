@@ -1,5 +1,5 @@
 import React from 'react';
-import {PageContent, PageHeader, useTranslate} from "@akeneo-pim-community/shared";
+import {PageContent, PageHeader, PimView, useTranslate} from "@akeneo-pim-community/shared";
 import {Breadcrumb, Button, Field, Helper, Table, TagInput, SurveyIllustration, Badge} from "akeneo-design-system";
 import styled from "styled-components";
 
@@ -51,16 +51,12 @@ const InviteUserApp = () => {
                         </Breadcrumb.Step>
                     </Breadcrumb>
                 </PageHeader.Breadcrumb>
-                <PageHeader.Actions>
-                    <Button
-                        ghost
-                        level="secondary"
-                        onClick={function noRefCheck() {
-                        }}
-                    >
-                        {translate('free_trial.invite_users.invite_button')}
-                    </Button>
-                </PageHeader.Actions>
+                <PageHeader.UserActions>
+                    <PimView
+                      viewName="pim-menu-user-navigation"
+                      className="AknTitleContainer-userMenuContainer AknTitleContainer-userMenu"
+                    />
+                </PageHeader.UserActions>
             </PageHeader>
             <PageContent>
                 <Helper level="info">
