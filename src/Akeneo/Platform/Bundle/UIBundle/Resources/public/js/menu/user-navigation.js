@@ -20,9 +20,9 @@ define([
   'akeneo/communication-channel',
   'pim/media-url-generator',
   'pim/template/menu/user-navigation',
-    'pim/invite-user-button',
-  'pim/feature-flags'
-], function (_, __, BaseForm, router, UserContext, Notifications, CommunicationChannel, MediaUrlGenerator, template, InviteUserButton, FeatureFlags) {
+  'pim/feature-flags',
+  '@akeneo-pim-community/invite-user'
+], function (_, __, BaseForm, router, UserContext, Notifications, CommunicationChannel, MediaUrlGenerator, template, FeatureFlags, {InviteUserButton}) {
   return BaseForm.extend({
     className: 'AknTitleContainer-userMenu',
     template: _.template(template),
@@ -69,8 +69,11 @@ define([
       this.delegateEvents();
 
       if (FeatureFlags.isEnabled('free_trial')) {
-        const inviteUserButton = new InviteUserButton();
-        document.getElementById('invite-user-btn').innerHTML = inviteUserButton.render().$el.html();
+        this.renderReact(
+            InviteUserButton,
+            {},
+            document.getElementById('invite-user-btn')
+        )
       }
 
       return BaseForm.prototype.render.apply(this, arguments);
