@@ -70,11 +70,15 @@ JSON;
                     "en_US" => "Ingredients",
                     "fr_FR" => "Ingrédients",
                 ],
+                'validations' => []
             ],
             [
                 'code' => 'quantity',
                 'data_type' => 'text',
                 'labels' => [],
+                'validations' => [
+                    'max_length' => 255,
+                ]
             ]
         ], $decoded['table_configuration']);
     }
@@ -151,7 +155,10 @@ JSON;
             },
             {
                 "code": "quantity",
-                "data_type": "text"
+                "data_type": "text",
+                "validations": {
+                    "max_length": 255
+                }
             }
         ]
     }

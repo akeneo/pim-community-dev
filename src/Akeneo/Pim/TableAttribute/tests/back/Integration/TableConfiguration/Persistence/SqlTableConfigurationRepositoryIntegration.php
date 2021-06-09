@@ -182,8 +182,8 @@ final class SqlTableConfigurationRepositoryIntegration extends TestCase
     public function it_fetches_a_table_configuration_by_attribute_code(): void
     {
         $sql = <<<SQL
-        INSERT INTO pim_catalog_table_column (id, attribute_id, code, data_type, column_order, labels)
-        VALUES (:id, :attribute_id, :code, :data_type, :column_order, :labels)
+        INSERT INTO pim_catalog_table_column (id, attribute_id, code, data_type, column_order, labels, validations)
+        VALUES (:id, :attribute_id, :code, :data_type, :column_order, :labels, :validations)
         SQL;
         $this->connection->executeQuery(
             $sql,
@@ -193,7 +193,8 @@ final class SqlTableConfigurationRepositoryIntegration extends TestCase
                 'code' => 'ingredients',
                 'data_type' => 'text',
                 'column_order' => 0,
-                'labels' => \json_encode(['en_US' => 'Ingredients', 'fr_FR' => 'Ingrédients'])
+                'labels' => \json_encode(['en_US' => 'Ingredients', 'fr_FR' => 'Ingrédients']),
+                'validations' => '{}'
             ]
         );
         $this->connection->executeQuery(
@@ -204,7 +205,8 @@ final class SqlTableConfigurationRepositoryIntegration extends TestCase
                 'code' => 'quantity',
                 'data_type' => 'text',
                 'column_order' => 1,
-                'labels' => \json_encode([])
+                'labels' => '{}',
+                'validations' => \json_encode(['max_length' => 255])
             ]
         );
 
@@ -216,11 +218,13 @@ final class SqlTableConfigurationRepositoryIntegration extends TestCase
                     'code' => 'ingredients',
                     'data_type' => 'text',
                     'labels' => ['en_US' => 'Ingredients', 'fr_FR' => 'Ingrédients'],
+                    'validations' => (object)[],
                 ],
                 [
                     'code' => 'quantity',
                     'data_type' => 'text',
                     'labels' => (object)[],
+                    'validations' => ['max_length' => 255],
                 ]
             ],
             $result->normalize()

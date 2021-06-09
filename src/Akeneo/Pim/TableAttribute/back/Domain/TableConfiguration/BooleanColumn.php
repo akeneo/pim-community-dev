@@ -32,10 +32,14 @@ class BooleanColumn extends AbstractColumnDefinition
         $labels = $normalized['labels'] ?? [];
         Assert::isArray($labels);
 
+        $validations = $normalized['validations'] ?? [];
+        Assert::isArray($validations);
+
         return new self(
             ColumnCode::fromString($normalized['code']),
             ColumnDataType::fromString(self::DATATYPE),
-            LabelCollection::fromNormalized($labels)
+            LabelCollection::fromNormalized($labels),
+            ValidationCollection::fromNormalized($validations)
         );
     }
 
@@ -44,11 +48,15 @@ class BooleanColumn extends AbstractColumnDefinition
      */
     public function normalize(): array
     {
+        // TODO Check if we can't abstract this normalize() method
+        $labels = $this->labels->labels();
+        $validations = $this->validations->normalize();
+
         return [
             'code' => $this->code->asString(),
             'data_type' => $this->dataType->asString(),
-            'labels' => $this->labels->labels(),
-            // TODO validation rules
+            'labels' => [] === $labels ? (object) [] : $labels,
+            'validations' => [] === $validations ? (object) [] : $validations,
         ];
     }
 }

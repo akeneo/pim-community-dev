@@ -35,10 +35,14 @@ class TextColumn extends AbstractColumnDefinition
         $labels = $normalized['labels'] ?? [];
         Assert::isArray($labels);
 
+        $validations = $normalized['validations'] ?? [];
+        Assert::isArray($validations);
+
         return new self(
             ColumnCode::fromString($normalized['code']),
             ColumnDataType::fromString(self::DATATYPE),
-            LabelCollection::fromNormalized($labels)
+            LabelCollection::fromNormalized($labels),
+            ValidationCollection::fromNormalized($validations),
         );
     }
 
@@ -48,12 +52,13 @@ class TextColumn extends AbstractColumnDefinition
     public function normalize(): array
     {
         $labels = $this->labels->labels();
+        $validations = $this->validations->normalize();
 
         return [
             'code' => $this->code->asString(),
             'data_type' => $this->dataType->asString(),
             'labels' => [] === $labels ? (object) [] : $labels,
-            // TODO validation rules
+            'validations' => [] === $validations ? (object) [] : $validations,
         ];
     }
 }

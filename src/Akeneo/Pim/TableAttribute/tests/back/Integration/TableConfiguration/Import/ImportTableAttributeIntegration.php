@@ -42,10 +42,11 @@ CSV;
 
         $nutritionAttribute = $this->attributeRepository->findOneByIdentifier('nutrition');
         Assert::assertNotNull($nutritionAttribute);
+        // TODO Import validations
         Assert::assertEqualsCanonicalizing(
             [
-                ['code' => 'ingredients', 'data_type' => 'select', 'labels' => ['en_US' => 'Ingredients']],
-                ['code' => 'quantity', 'data_type' => 'text', 'labels' => ['en_US' => 'Quantity']],
+                ['code' => 'ingredients', 'data_type' => 'select', 'labels' => ['en_US' => 'Ingredients'], 'validations' => (object) []],
+                ['code' => 'quantity', 'data_type' => 'text', 'labels' => ['en_US' => 'Quantity'], 'validations' => (object) []],
             ],
             $nutritionAttribute->getRawTableConfiguration()
         );
@@ -55,8 +56,8 @@ CSV;
         Assert::assertSame(AttributeTypes::TABLE, $storageAttribute->getType());
         Assert::assertEqualsCanonicalizing(
             [
-                ['code' => 'dimension', 'data_type' => 'select', 'labels' => ['en_US' => 'Dimension']],
-                ['code' => 'value', 'data_type' => 'text', 'labels' => ['en_US' => 'Value']],
+                ['code' => 'dimension', 'data_type' => 'select', 'labels' => ['en_US' => 'Dimension'], 'validations' => (object) []],
+                ['code' => 'value', 'data_type' => 'text', 'labels' => ['en_US' => 'Value'], 'validations' => (object) []],
             ],
             $storageAttribute->getRawTableConfiguration()
         );
@@ -106,10 +107,11 @@ CSV;
 
         $nutritionAttribute = $this->attributeRepository->findOneByIdentifier('nutrition');
         Assert::assertNotNull($nutritionAttribute);
+        // TODO Import validations
         Assert::assertEqualsCanonicalizing(
             [
-                ['code' => 'ingredients', 'data_type' => 'select', 'labels' => ['en_US' => 'Ingredients']],
-                ['code' => 'quantity', 'data_type' => 'text', 'labels' => ['en_US' => 'Quantity']],
+                ['code' => 'ingredients', 'data_type' => 'select', 'labels' => ['en_US' => 'Ingredients'], 'validations' => (object) []],
+                ['code' => 'quantity', 'data_type' => 'text', 'labels' => ['en_US' => 'Quantity'], 'validations' => (object) []],
             ],
             $nutritionAttribute->getRawTableConfiguration()
         );
@@ -119,8 +121,8 @@ CSV;
         Assert::assertSame(AttributeTypes::TABLE, $storageAttribute->getType());
         Assert::assertEqualsCanonicalizing(
             [
-                ['code' => 'dimension', 'data_type' => 'select', 'labels' => ['en_US' => 'Dimension']],
-                ['code' => 'value', 'data_type' => 'text', 'labels' => ['en_US' => 'Value']],
+                ['code' => 'dimension', 'data_type' => 'select', 'labels' => ['en_US' => 'Dimension'], 'validations' => (object) []],
+                ['code' => 'value', 'data_type' => 'text', 'labels' => ['en_US' => 'Value'], 'validations' => (object) []],
             ],
             $storageAttribute->getRawTableConfiguration()
         );

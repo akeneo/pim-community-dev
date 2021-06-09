@@ -71,23 +71,24 @@ final class SqlTableConfigurationRepository implements TableConfigurationReposit
                 'newColumnCodesAndTypes' => Connection::PARAM_STR_ARRAY,
             ]
         );
-        foreach ($tableConfiguration->normalize() as $columnOrder => $column) {
+        foreach ($tableConfiguration->normalize() as $columnOrder => $columnDefinition) {
             $this->connection->executeQuery(
                 <<<SQL
-                INSERT INTO pim_catalog_table_column (id, attribute_id, code, data_type, column_order, labels)
+                INSERT INTO pim_catalog_table_column (id, attribute_id, code, data_type, column_order, labels, validations)
                 SELECT * FROM (
-                    SELECT :column_id, attribute.id, :code, :data_type, :column_order AS column_order, :labels AS labels
+                    SELECT :column_id, attribute.id, :code, :data_type, :column_order AS column_order, :labels AS labels, :validations as validations
                     FROM pim_catalog_attribute AS attribute WHERE code = :attribute_code
                 ) AS newvalues                
-                ON DUPLICATE KEY UPDATE column_order = newvalues.column_order, labels = newvalues.labels
+                ON DUPLICATE KEY UPDATE column_order = newvalues.column_order, labels = newvalues.labels, validations = newvalues.validations
                 SQL,
                 [
-                    'column_id' =>  $this->getNextIdentifier($column['code']),
+                    'column_id' =>  $this->getNextIdentifier($columnDefinition['code']),
                     'attribute_code' => $attributeCode,
-                    'code' => $column['code'],
-                    'data_type' => $column['data_type'],
+                    'code' => $columnDefinition['code'],
+                    'data_type' => $columnDefinition['data_type'],
                     'column_order' => $columnOrder,
-                    'labels' => \json_encode($column['labels']),
+                    'labels' => \json_encode($columnDefinition['labels']),
+                    'validations' => \json_encode($columnDefinition['validations']),
                 ]
             );
         }
@@ -97,7 +98,7 @@ final class SqlTableConfigurationRepository implements TableConfigurationReposit
     {
         $statement = $this->connection->executeQuery(
             <<<SQL
-            SELECT table_column.id, table_column.code, data_type, column_order, labels
+            SELECT table_column.id, table_column.code, data_type, column_order, labels, validations
             FROM pim_catalog_table_column table_column
             INNER JOIN pim_catalog_attribute attribute ON attribute.id = table_column.attribute_id  
             WHERE attribute.code = :attributeCode
@@ -119,6 +120,7 @@ final class SqlTableConfigurationRepository implements TableConfigurationReposit
                         'code' => $row['code'],
                         'data_type' => $row['data_type'],
                         'labels' => \json_decode($row['labels'], true),
+                        'validations' => \json_decode($row['validations'], true),
                     ]
                 ),
                 $results

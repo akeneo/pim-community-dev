@@ -42,6 +42,11 @@ Akeneo\Pim\Structure\Component\Model\Attribute:
                                                 message: pim_table_configuration.validation.table_configuration.column_label_must_be_a_string
                                           - NotNull:
                                                 message: pim_table_configuration.validation.table_configuration.column_label_must_be_a_string
+                            validations:
+                                - Optional:
+                                      - Type:
+                                            type: array
+                                            message: TODO
                         missingFieldsMessage: pim_table_configuration.validation.table_configuration.missing_column
             - Akeneo\Pim\TableAttribute\Infrastructure\Validation\Attribute\IsColumnCodeUnique: ~
             - Akeneo\Pim\TableAttribute\Infrastructure\Validation\Attribute\FirstColumnShouldHaveSelectDataType: ~

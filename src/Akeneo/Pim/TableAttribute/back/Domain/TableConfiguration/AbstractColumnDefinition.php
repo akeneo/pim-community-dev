@@ -21,14 +21,16 @@ abstract class AbstractColumnDefinition implements ColumnDefinition
     protected ColumnCode $code;
     protected ColumnDataType $dataType;
     protected LabelCollection $labels;
+    protected ValidationCollection $validations;
 
     // validation rules: specific to each data type
 
-    protected function __construct(ColumnCode $code, ColumnDataType $dataType, LabelCollection $labels)
+    protected function __construct(ColumnCode $code, ColumnDataType $dataType, LabelCollection $labels, ValidationCollection $validations)
     {
         $this->code = $code;
         $this->dataType = $dataType;
         $this->labels = $labels;
+        $this->validations = $validations;
     }
 
     public function code(): ColumnCode

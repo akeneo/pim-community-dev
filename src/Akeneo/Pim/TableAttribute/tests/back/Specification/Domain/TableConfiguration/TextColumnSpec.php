@@ -40,4 +40,6 @@ class TextColumnSpec extends ObjectBehavior
         $this->labels()->shouldHaveType(LabelCollection::class);
         $this->labels()->labels()->shouldReturn(['en_US' => 'Ingredients', 'fr_FR' => 'Ingrédients']);
     }
+
+    // TODO Spec normalize
 }
