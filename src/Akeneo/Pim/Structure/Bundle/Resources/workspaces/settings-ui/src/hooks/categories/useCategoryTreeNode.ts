@@ -11,7 +11,7 @@ import {
 import {findByIdentifiers, findLoadedDescendantsIdentifiers, findOneByIdentifier, update} from '../../helpers';
 import {useFetch, useRoute} from '@akeneo-pim-community/shared';
 import {moveCategory} from '../../infrastructure/savers';
-import {useBooleanState} from 'akeneo-design-system';
+import {arrayUnique, useBooleanState} from 'akeneo-design-system';
 
 type Move = {
   identifier: number;
@@ -232,8 +232,12 @@ const useCategoryTreeNode = (id: number) => {
       type: node.type !== 'root' ? (newChildren.length > 0 ? 'node' : 'leaf') : 'root',
     });
 
-    // @todo check uniqueness of new children
-    setNodes([...updatedNodes, ...newChildren]);
+    setNodes(
+      arrayUnique<TreeNode<CategoryTreeModel>>(
+        [...updatedNodes, ...newChildren],
+        (node, currentNode) => node.identifier === currentNode.identifier
+      )
+    );
   }, [data]);
 
   useEffect(() => {
