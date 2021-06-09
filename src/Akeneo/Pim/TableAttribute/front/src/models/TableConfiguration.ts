@@ -1,13 +1,16 @@
 import {LabelCollection} from '@akeneo-pim-community/shared';
 
 export type ColumnType = 'text' | 'number' | 'boolean';
+export type ColumnCode = string;
+
+const DATA_TYPES: ColumnType[] = ['text', 'number', 'boolean'];
+
 export type ColumnDefinition = {
-  code: string;
+  code: ColumnCode;
   data_type: ColumnType;
   labels: LabelCollection;
 };
 
-const dataTypes = ['text', 'number', 'boolean'];
-
 export type TableConfiguration = ColumnDefinition[];
-export {dataTypes};
+
+export {DATA_TYPES};

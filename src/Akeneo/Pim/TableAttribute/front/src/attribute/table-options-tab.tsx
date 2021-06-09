@@ -4,22 +4,23 @@ import ReactDOM from 'react-dom';
 import {TableOptionsApp} from './TableOptionsApp';
 import {TableConfiguration} from '../models/TableConfiguration';
 import {DependenciesProvider} from '@akeneo-pim-community/legacy-bridge';
-import { templates } from "../models/Template";
+import {TEMPLATES} from '../models/Template';
+import {AttributeType} from '../models/Attribute';
 // eslint-disable-next-line @typescript-eslint/no-var-requires
 const translate = require('oro/translator');
 
 type TableOptionsTabConfig = {
   label: string;
-  activeForTypes: string[];
+  activeForTypes: AttributeType[];
 };
 
-class TableOptionsTab extends BaseView {
+class TableOptionsTab extends (BaseView as {new (options: {config: TableOptionsTabConfig}): any}) {
   private config: TableOptionsTabConfig;
 
-  initialize(config: any): void {
-    this.config = config.config as TableOptionsTabConfig;
+  initialize(options: {config: TableOptionsTabConfig}): void {
+    this.config = options.config;
 
-    BaseView.prototype.initialize.apply(this, config);
+    BaseView.prototype.initialize.apply(this, options);
   }
 
   configure(): JQueryPromise<any> {
@@ -48,18 +49,23 @@ class TableOptionsTab extends BaseView {
     const params = new URLSearchParams(urlString.substring(index + 1));
 
     return params.get(paramName);
-  };
+  }
 
   render(): any {
     if (!this.isActive()) {
       return;
     }
+
     let initialTableConfiguration = this.getFormData().table_configuration;
-    console.log(initialTableConfiguration);
-    // TODO Add condition for empty initial template
-    const tableTemplate = this.getQueryParam('table_template');
-    if (tableTemplate && templates[tableTemplate]) {
-      initialTableConfiguration = templates[this.getQueryParam('table_template')].table_configuration;
+    if (typeof initialTableConfiguration === 'undefined') {
+      initialTableConfiguration = [];
+      const tableTemplate = this.getQueryParam('table_template');
+      if (tableTemplate) {
+        const template = TEMPLATES.find(template => template.code === tableTemplate);
+        if (template) {
+          initialTableConfiguration = template.tableConfiguration;
+        }
+      }
     }
 
     ReactDOM.render(
@@ -81,7 +87,7 @@ class TableOptionsTab extends BaseView {
   }
 
   private isActive() {
-    return this.config.activeForTypes.includes((this.getRoot() as any).getType());
+    return this.config.activeForTypes.includes(this.getRoot().getType());
   }
 }
 

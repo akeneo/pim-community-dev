@@ -1,6 +1,6 @@
 import {AttributesIllustration, Button, Field, Modal, SelectInput, TextInput, Helper} from 'akeneo-design-system';
 import React from 'react';
-import {ColumnDefinition, ColumnType, dataTypes} from '../models/TableConfiguration';
+import {ColumnCode, ColumnDefinition, ColumnType, DATA_TYPES} from '../models/TableConfiguration';
 import {useUserContext, useTranslate, LabelCollection} from '@akeneo-pim-community/shared';
 import {LocaleLabel} from './LocaleLabel';
 import styled from 'styled-components';
@@ -14,11 +14,11 @@ const FieldsList = styled.div`
 type AddColumnModalProps = {
   close: () => void;
   onCreate: (columnDefinition: ColumnDefinition) => void;
-  existingColumnCodes: string[];
+  existingColumnCodes: ColumnCode[];
 };
 
 type UndefinedColumnDefinition = {
-  code: string;
+  code: ColumnCode;
   label: string;
   data_type: ColumnType | null;
 };
@@ -59,7 +59,7 @@ const AddColumnModal: React.FC<AddColumnModalProps> = ({close, onCreate, existin
     }
   };
 
-  const handleCodeChange = (code: string) => {
+  const handleCodeChange = (code: ColumnCode) => {
     setColumnDefinition({...columnDefinition, code});
     validateCode(code, false);
     setDirtyCode(code !== '');
@@ -70,7 +70,7 @@ const AddColumnModal: React.FC<AddColumnModalProps> = ({close, onCreate, existin
     validateDataType(data_type, false);
   };
 
-  const validateCode = (code: string, silent: boolean): number => {
+  const validateCode = (code: ColumnCode, silent: boolean): number => {
     const validations: string[] = [];
     if (code === '') validations.push(translate('pim_table_attribute.validations.column_code_must_be_filled'));
     if (code !== '' && !/^[a-zA-Z0-9_]+$/.exec(code))
@@ -165,7 +165,7 @@ const AddColumnModal: React.FC<AddColumnModalProps> = ({close, onCreate, existin
             placeholder={translate('pim_table_attribute.form.attribute.select_type')}
             value={columnDefinition.data_type as string}
             clearable={false}>
-            {dataTypes.map(dataType => (
+            {DATA_TYPES.map(dataType => (
               <SelectInput.Option
                 key={dataType}
                 title={translate(`pim_table_attribute.properties.data_type.${dataType}`)}

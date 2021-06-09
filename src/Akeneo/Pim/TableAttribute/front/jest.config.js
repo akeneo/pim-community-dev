@@ -14,5 +14,6 @@ module.exports = {
     'src/**/*.{js,jsx,ts,tsx}',
     '!src/fetchers/**/*.{js,jsx,ts,tsx}',
     '!src/attribute/table-options-tab.tsx',
+    '!src/attribute/create-button.tsx',
   ],
 };

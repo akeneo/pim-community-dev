@@ -2,6 +2,7 @@ import {DeleteIllustration, Button, Field, Modal, TextInput, Helper} from 'akene
 import React from 'react';
 import {useTranslate} from '@akeneo-pim-community/shared';
 import styled from 'styled-components';
+import {ColumnCode} from '../models/TableConfiguration';
 
 const FieldsList = styled.div`
   gap: 20px;
@@ -12,12 +13,12 @@ const FieldsList = styled.div`
 type DeleteColumnModalProps = {
   close: () => void;
   onDelete: () => void;
-  columnDefinitionCode: string;
+  columnDefinitionCode: ColumnCode;
 };
 
 const DeleteColumnModal: React.FC<DeleteColumnModalProps> = ({close, onDelete, columnDefinitionCode}) => {
   const translate = useTranslate();
-  const [typedColumnCode, setTypedColumnCode] = React.useState<string>('');
+  const [typedColumnCode, setTypedColumnCode] = React.useState<ColumnCode>('');
 
   const handleDelete = () => {
     close();

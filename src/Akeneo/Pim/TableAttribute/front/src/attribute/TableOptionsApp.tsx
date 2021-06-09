@@ -17,8 +17,8 @@ import {
 } from 'akeneo-design-system';
 import {DependenciesProvider} from '@akeneo-pim-community/legacy-bridge';
 import styled, {ThemeProvider} from 'styled-components';
-import {ColumnDefinition, TableConfiguration} from '../models/TableConfiguration';
-import {getLabel, Locale, useRouter, useTranslate, useUserContext} from '@akeneo-pim-community/shared';
+import {ColumnCode, ColumnDefinition, TableConfiguration} from '../models/TableConfiguration';
+import {getLabel, Locale, LocaleCode, useRouter, useTranslate, useUserContext} from '@akeneo-pim-community/shared';
 import {AddColumnModal} from './AddColumnModal';
 import {DeleteColumnModal} from './DeleteColumnModal';
 import {fetchActivatedLocales} from '../fetchers/LocaleFetcher';
@@ -61,19 +61,21 @@ const TableOptionsApp: React.FC<TableOptionsAppProps> = ({initialTableConfigurat
   const router = useRouter();
   const userContext = useUserContext();
   const [tableConfiguration, setTableConfiguration] = React.useState<TableConfiguration>(initialTableConfiguration);
-  const [selectedColumnCode, setSelectedColumnCode] = React.useState<string | undefined>(tableConfiguration[0]?.code);
+  const [selectedColumnCode, setSelectedColumnCode] = React.useState<ColumnCode | undefined>(
+    tableConfiguration[0]?.code
+  );
   const selectedColumn = tableConfiguration.find(column => column.code === selectedColumnCode) as ColumnDefinition;
   const [activeLocales, setActiveLocales] = React.useState<Locale[]>([]);
   const [isNewColumnModalOpen, openNewColumnModal, closeNewColumnModal] = useBooleanState();
   const [isDeleteColumnModalOpen, openDeleteColumnModal, closeDeleteColumnModal] = useBooleanState();
-  const [lastColumnCodeToDelete, setLastColumnCodeToDelete] = React.useState<string | undefined>();
+  const [lastColumnCodeToDelete, setLastColumnCodeToDelete] = React.useState<ColumnCode | undefined>();
   const [firstColumnDefinition, ...otherColumnDefinitions] = tableConfiguration;
 
   React.useEffect(() => {
     fetchActivatedLocales(router).then((activeLocales: Locale[]) => setActiveLocales(activeLocales));
   }, [router]);
 
-  const handleLabelChange = (localeCode: string, newValue: string) => {
+  const handleLabelChange = (localeCode: LocaleCode, newValue: string) => {
     selectedColumn.labels[localeCode] = newValue;
     const index = tableConfiguration.indexOf(selectedColumn);
     tableConfiguration[index] = selectedColumn;
