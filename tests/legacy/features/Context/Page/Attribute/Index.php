@@ -17,4 +17,19 @@ class Index extends Grid
      * @var string
      */
     protected $path = '#/configuration/attribute/';
+
+    /**
+     * {@inheritdoc}
+     */
+    public function __construct($session, $pageFactory, $parameters = array())
+    {
+        parent::__construct($session, $pageFactory, $parameters);
+
+        $this->elements = array_merge(
+            $this->elements,
+            array(
+                'Creation link' => array('css' => '#attribute-create-button'),
+            )
+        );
+    }
 }
