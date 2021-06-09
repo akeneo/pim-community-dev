@@ -23,7 +23,7 @@ class ExternalUrlValidator extends ConstraintValidator
         $this->dnsLookup = $dnsLookup;
     }
 
-    public function validate($value, Constraint $constraint)
+    public function validate($value, Constraint $constraint): void
     {
         if (!$constraint instanceof ExternalUrl) {
             throw new UnexpectedTypeException($constraint, ExternalUrl::class);
@@ -44,23 +44,22 @@ class ExternalUrlValidator extends ConstraintValidator
         $ip = $this->dnsLookup->ip($host);
 
         if (null === $ip) {
-            $this->context->buildViolation($constraint->message)
-                ->setParameter('{{ address }}', $this->formatValue($value))
-                ->addViolation();
+            $this->context->buildViolation($constraint->message)->addViolation();
 
             return;
         }
 
         $flag = \FILTER_FLAG_NO_PRIV_RANGE | \FILTER_FLAG_NO_RES_RANGE;
         if (!filter_var($ip, \FILTER_VALIDATE_IP, $flag)) {
-            $this->context->buildViolation($constraint->message)
-                ->setParameter('{{ address }}', $this->formatValue($value))
-                ->addViolation();
+            $this->context->buildViolation($constraint->message)->addViolation();
 
             return;
         }
     }
 
+    /**
+     * @param mixed $value
+     */
     private function valueToString($value): string
     {
         if (\is_string($value)) {

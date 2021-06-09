@@ -12,5 +12,5 @@ use Symfony\Component\Validator\Constraint;
  */
 class ExternalUrl extends Constraint
 {
-    public string $message = 'The address {{ address }} is not allowed.';
+    public string $message = 'akeneo_connectivity.connection.webhook.error.not_allowed_url';
 }
