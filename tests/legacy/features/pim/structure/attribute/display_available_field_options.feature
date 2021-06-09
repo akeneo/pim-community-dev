@@ -7,7 +7,6 @@ Feature: Display available field options
   Background:
     Given the "default" catalog configuration
     And I am logged in as "Julia"
-    And I am on the attributes page
 
   Scenario Outline: Successfully display available parameter fields for attribute types
     Given I am on the attributes page
