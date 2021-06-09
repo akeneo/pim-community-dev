@@ -29,8 +29,8 @@ class EnterprisePermissionContext extends PimContext
             $itemList = $field->getParent()->getParent()->findAll('css', 'li');
 
             return array_filter(
-                array_map(fn(NodeElement $item) => trim($item->getText()), $itemList),
-                fn(string $content) => !empty($content)
+                array_map(fn (NodeElement $item) => trim($item->getText()), $itemList),
+                fn (string $content) => !empty($content)
             );
         }, sprintf('Field "%s" not found', $fieldLabel));
         $expectedGroups = $this->listToArray($userGroups);
@@ -66,7 +66,7 @@ class EnterprisePermissionContext extends PimContext
                 foreach ($userGroups as $userGroup) {
                     $option = $backdrop->getParent()->find('named', ['content', $userGroup]);
                     if (!$option) {
-                       return false;
+                        return false;
                     }
                     $option->click();
                 }
