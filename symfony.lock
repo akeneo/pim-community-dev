@@ -151,6 +151,9 @@
     "dompdf/dompdf": {
         "version": "v0.6.2"
     },
+    "dvdoug/behat-code-coverage": {
+        "version": "v5.2.1"
+    },
     "egulias/email-validator": {
         "version": "2.1.11"
     },
