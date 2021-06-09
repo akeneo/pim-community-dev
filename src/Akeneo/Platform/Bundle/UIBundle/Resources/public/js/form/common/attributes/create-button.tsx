@@ -1,16 +1,16 @@
 import BaseView = require('pimui/js/view/base');
-import ReactDOM from "react-dom";
+import ReactDOM from 'react-dom';
 import React from 'react';
-import { DependenciesProvider } from "@akeneo-pim-community/legacy-bridge";
-import { CreateButtonApp } from "./CreateButtonApp";
-import { pimTheme } from "akeneo-design-system";
-import { ThemeProvider } from "styled-components";
+import {DependenciesProvider} from '@akeneo-pim-community/legacy-bridge';
+import {CreateButtonApp} from './CreateButtonApp';
+import {pimTheme} from 'akeneo-design-system';
+import {ThemeProvider} from 'styled-components';
 const translate = require('oro/translator');
 const router = require('pim/router');
 
 type CreateButtonConfig = {
   buttonTitle: string;
-}
+};
 
 class CreateButton extends BaseView {
   private config: CreateButtonConfig;
@@ -29,14 +29,14 @@ class CreateButton extends BaseView {
     const params = new URLSearchParams(urlString.substring(index + 1));
 
     return params.get(paramName);
-  };
+  }
 
   onClick(attributeType: string): void {
     router.redirectToRoute('pim_enrich_attribute_create', {
       attribute_type: attributeType,
-      code: this.getQueryParam('code')
+      code: this.getQueryParam('code'),
     });
-  };
+  }
 
   render(): any {
     const moduleConfig = __moduleConfig;
