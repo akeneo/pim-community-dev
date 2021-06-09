@@ -66,9 +66,7 @@ connectivity-connection-lint-back:
 	$(PHP_RUN) vendor/bin/phpstan analyse --level=5 src/Akeneo/Connectivity/Connection/back/Infrastructure
 
 connectivity-connection-unit-back:
-	XDEBUG_MODE=coverage $(PHP_RUN) vendor/bin/phpspec run \
-		-c src/Akeneo/Connectivity/Connection/back/tests/phpspec.yml.dist \
-		src/Akeneo/Connectivity/Connection/back/tests/Unit/spec/
+	$(PHP_RUN) vendor/bin/phpspec run src/Akeneo/Connectivity/Connection/back/tests/Unit/spec/
 
 connectivity-connection-acceptance-back: var/tests/behat/connectivity/connection
 	$(PHP_RUN) vendor/bin/behat --config src/Akeneo/Connectivity/Connection/back/tests/Acceptance/behat.yml --format pim --out var/tests/behat/connectivity/connection --format progress --out std --colors
@@ -77,35 +75,50 @@ connectivity-connection-integration-back:
 ifeq ($(CI),true)
 	.circleci/run_phpunit.sh . .circleci/find_phpunit.php Akeneo_Connectivity_Connection_Integration
 else
-	XDEBUG_MODE=coverage APP_ENV=test ${PHP_RUN} vendor/bin/phpunit \
-		-c src/Akeneo/Connectivity/Connection/back/tests/ \
-		--coverage-clover coverage/Connectivity/Back/Integration/coverage.cov \
-		--coverage-php coverage/Connectivity/Back/Integration/coverage.php \
-		--coverage-html coverage/Connectivity/Back/Integration/ \
-		--testsuite Integration $(0)
+	APP_ENV=test ${PHP_RUN} vendor/bin/phpunit -c . --testsuite Akeneo_Connectivity_Connection_Integration $(0)
 endif
 
 connectivity-connection-e2e-back:
 ifeq ($(CI),true)
 	.circleci/run_phpunit.sh . .circleci/find_phpunit.php Akeneo_Connectivity_Connection_EndToEnd
 else
+	APP_ENV=test ${PHP_RUN} vendor/bin/phpunit -c . --testsuite Akeneo_Connectivity_Connection_EndToEnd $(0)
+endif
+
+connectivity-connection-coverage:
+	# run the backend application unit tests on scope connectivity
+	XDEBUG_MODE=coverage $(PHP_RUN) vendor/bin/phpspec run \
+    		-c src/Akeneo/Connectivity/Connection/back/tests/phpspec.yml.dist \
+    		src/Akeneo/Connectivity/Connection/back/tests/Unit/spec/
+	# run the backend application integration tests on scope connectivity
+	XDEBUG_MODE=coverage APP_ENV=test ${PHP_RUN} vendor/bin/phpunit \
+		-c src/Akeneo/Connectivity/Connection/back/tests/ \
+		--coverage-clover coverage/Connectivity/Back/Integration/coverage.cov \
+		--coverage-php coverage/Connectivity/Back/Integration/coverage.php \
+		--coverage-html coverage/Connectivity/Back/Integration/ \
+		--testsuite Integration $(0)
+	# run the backend application end to end tests on scope connectivity
 	XDEBUG_MODE=coverage APP_ENV=test ${PHP_RUN} vendor/bin/phpunit \
 		-c src/Akeneo/Connectivity/Connection/back/tests/ \
 		--coverage-clover coverage/Connectivity/Back/EndToEnd/coverage.cov \
 		--coverage-php coverage/Connectivity/Back/EndToEnd/coverage.php \
 		--coverage-html coverage/Connectivity/Back/EndToEnd/ \
 		--testsuite EndToEnd $(0)
-endif
-
-connectivity-connection-codecoverage-merge:
+	# run the backend application acceptance tests on scope connectivity
+	XDEBUG_MODE=coverage $(PHP_RUN) vendor/bin/behat \
+			--config src/Akeneo/Connectivity/Connection/back/tests/Acceptance/behat-coverage.yml \
+			--format pim --out var/tests/behat/connectivity/connection --format progress --out std --colors && \
+		cd ../../../../..
+	# download phpcov binary
 	test -e phpcov.phar || wget https://phar.phpunit.de/phpcov.phar
 	php phpcov.phar --version
+	# create a coverage global folder
 	if [ -d coverage/Connectivity/Back/Global/ ]; then rm -r coverage/Connectivity/Back/Global/; fi
 	mkdir -p coverage/Connectivity/Back/Global/
 	cp coverage/Connectivity/Back/Unit/coverage.php coverage/Connectivity/Back/Global/Unit.cov
 	cp coverage/Connectivity/Back/Integration/coverage.php coverage/Connectivity/Back/Global/Integration.cov
 	cp coverage/Connectivity/Back/EndToEnd/coverage.php coverage/Connectivity/Back/Global/EndToEnd.cov
-
+	# run the command to merge all the code coverage on scope connectivity
 	XDEBUG_MODE=coverage ${PHP_RUN} -d memory_limit=-1 phpcov.phar merge \
 		--clover coverage/Connectivity/Back/Global/coverage.cov \
 		--html coverage/Connectivity/Back/Global/ \
