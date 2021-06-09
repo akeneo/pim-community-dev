@@ -8,6 +8,7 @@ const useCategoryTreeList = () => {
     _format: 'json',
     include_sub: '0',
     with_items_count: '0',
+    context: 'manage',
   });
 
   const {data, fetch, status, error} = useFetch<CategoryTreeModel[]>(url);
