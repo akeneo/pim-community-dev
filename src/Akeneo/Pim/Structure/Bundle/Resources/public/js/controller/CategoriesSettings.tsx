@@ -8,6 +8,8 @@ const mediator = require('oro/mediator');
 class CategoriesSettings extends ReactController {
   private canLeavePage: boolean = true;
 
+  private static container = document.createElement('div');
+
   setCanLeavePage(canLeavePage: boolean) {
     this.canLeavePage = canLeavePage;
   }
@@ -29,6 +31,10 @@ class CategoriesSettings extends ReactController {
 
   canLeave() {
     return this.canLeavePage || confirm(__('pim_ui.flash.unsaved_changes'));
+  }
+
+  getContainerRef(): Element {
+    return CategoriesSettings.container;
   }
 }
 
