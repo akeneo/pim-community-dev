@@ -11,7 +11,7 @@ import {
 } from '../../models';
 import {Translate} from '../../dependenciesTools';
 import {IndexedCurrencies} from '../../repositories/CurrencyRepository';
-import {IndexedScopes} from "../../repositories/ScopeRepository";
+import {IndexedScopes} from '../../repositories/ScopeRepository';
 
 const getCurrencyValidation = (
   attribute: Attribute,
@@ -42,7 +42,9 @@ const getCurrencyValidation = (
     if (!attribute.scopable) {
       availableCurrencies = Object.values(currencies);
     } else if (channelCode && scopes[channelCode]) {
-      availableCurrencies = scopes[channelCode].currencies.map(code => ({code}));
+      availableCurrencies = scopes[channelCode].currencies.map(code => ({
+        code,
+      }));
     }
 
     if ('undefined' === typeof currencies[selectedCode]) {
