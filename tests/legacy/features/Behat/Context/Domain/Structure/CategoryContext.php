@@ -26,7 +26,7 @@ final class CategoryContext extends PimContext
             return $this->getCurrentPage()->find('named', array('content', $categoryLabel));
         }, sprintf('The "%s" category was not found', $categoryLabel));
 
-        $this->spin(function() use ($categoryTree) {
+        $this->spin(function () use ($categoryTree) {
             $categoryTree->press();
             return true;
         }, 'Can not follow the "%s" category');
@@ -42,7 +42,7 @@ final class CategoryContext extends PimContext
             return $this->getCurrentPage()->find('named', array('content', $categoryLabel));
         }, sprintf('The "%s" category was not found', $categoryLabel));
 
-        $this->spin(function() use ($category) {
+        $this->spin(function () use ($category) {
             $category->mouseOver();
             return true;
         }, 'Can not hover the "%s" category');
@@ -63,7 +63,7 @@ final class CategoryContext extends PimContext
             return $tree->find('named', array('content', $categoryLabel));
         }, sprintf('The "%s" category was not found', $categoryLabel));
 
-        $this->spin(function() use ($categoryTree) {
+        $this->spin(function () use ($categoryTree) {
             $categoryTree->mouseOver();
             return true;
         }, 'Can not hover the "%s" category tree');
