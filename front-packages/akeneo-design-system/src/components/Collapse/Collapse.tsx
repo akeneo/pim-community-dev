@@ -3,6 +3,7 @@ import styled from 'styled-components';
 import {getColor, getFontSize} from '../../theme';
 import {IconButton} from '../../components';
 import {CheckPartialIcon, PlusIcon} from '../../icons';
+import {useIsMounted} from '../../hooks';
 
 const ANIMATION_DURATION = 100;
 
@@ -77,14 +78,15 @@ const Collapse = React.forwardRef<HTMLDivElement, CollapseProps>(
     const [contentHeight, setContentHeight] = useState<number>(0);
     const [overflow, setOverflow] = useState<string>(isOpen ? 'inherit' : 'hidden');
     const contentRef = useRef<HTMLDivElement>(null);
+    const isMounted = useIsMounted();
 
     const handleCollapse = () => onCollapse(!isOpen);
 
     useEffect(() => {
-      if (contentRef.current) {
+      if (contentRef.current && isMounted()) {
         if (isOpen) {
           setContentHeight(contentRef.current.scrollHeight);
-          setTimeout(() => setOverflow('inherit'), ANIMATION_DURATION);
+          setTimeout(() => isMounted() && setOverflow('inherit'), ANIMATION_DURATION);
         } else {
           setContentHeight(0);
           setOverflow('hidden');
