@@ -5,6 +5,8 @@ namespace Specification\Akeneo\Pim\Enrichment\Bundle\Doctrine\ORM\Updater;
 
 use Akeneo\Pim\Enrichment\Bundle\Doctrine\ORM\Updater\TwoWayAssociationUpdater;
 use Akeneo\Pim\Enrichment\Component\Product\Association\MissingAssociationAdder;
+use Akeneo\Pim\Enrichment\Component\Product\Exception\TwoWayAssociationWithTheSameProductException;
+use Akeneo\Pim\Enrichment\Component\Product\Model\AbstractProduct;
 use Akeneo\Pim\Enrichment\Component\Product\Model\AssociationInterface;
 use Akeneo\Pim\Enrichment\Component\Product\Model\EntityWithAssociationsInterface;
 use Akeneo\Pim\Enrichment\Component\Product\Model\Product;
@@ -41,7 +43,9 @@ class TwoWayAssociationUpdaterSpec extends ObjectBehavior
         ProductInterface $associatedProduct
     ): void {
         $owner = new Product();
+        $owner->setIdentifier('product_identifier');
 
+        $associatedProduct->getIdentifier()->willReturn('associated_product_identifier');
         $associatedProduct->hasAssociationForTypeCode('xsell')->willReturn(false);
         $associatedProduct->getAssociatedProducts('xsell')->willReturn(new ArrayCollection());
 
@@ -60,6 +64,7 @@ class TwoWayAssociationUpdaterSpec extends ObjectBehavior
         $clonedOwner = new Product();
         $clonedOwner->setIdentifier('owner');
 
+        $associatedProduct->getIdentifier()->willReturn('associated_product_identifier');
         $associatedProduct->hasAssociationForTypeCode('xsell')->willReturn(true);
         $associatedProduct->getAssociatedProducts('xsell')->willReturn(new ArrayCollection([$clonedOwner]));
 
@@ -182,5 +187,16 @@ class TwoWayAssociationUpdaterSpec extends ObjectBehavior
         $this
             ->shouldThrow('\LogicException')
             ->during('removeInversedAssociation', [$owner, 'xsell', $associatedProduct]);
+    }
+
+    public function it_does_not_associate_product_with_itself(
+    ): void {
+
+        $ownerAndAssociateProduct = new Product();
+        $ownerAndAssociateProduct->setIdentifier('owner_and_associate_product_identifier');
+
+        $this
+            ->shouldThrow(TwoWayAssociationWithTheSameProductException::class)
+            ->during('createInversedAssociation', [$ownerAndAssociateProduct, 'xsell', $ownerAndAssociateProduct]);
     }
 }

@@ -9,11 +9,15 @@ const computeNewViewPermissions = (originalFormData: EditCategoryForm, values: s
   }
 
   return newFormData;
-}
+};
 
 const computeNewEditPermissions = (originalFormData: EditCategoryForm, values: string[]) => {
   let newFormData = updateFormDataWithNewValues(originalFormData, values, 'edit');
-  const {removedPermission, addedPermission} = computeDifferencesBetweenPermissions(originalFormData, newFormData, 'edit');
+  const {removedPermission, addedPermission} = computeDifferencesBetweenPermissions(
+    originalFormData,
+    newFormData,
+    'edit'
+  );
   if (removedPermission) {
     newFormData = removePermissionByType('own', removedPermission, newFormData);
   }
@@ -22,7 +26,7 @@ const computeNewEditPermissions = (originalFormData: EditCategoryForm, values: s
   }
 
   return newFormData;
-}
+};
 
 const computeNewOwnPermissions = (originalFormData: EditCategoryForm, values: string[]) => {
   let newFormData = updateFormDataWithNewValues(originalFormData, values, 'own');
@@ -33,25 +37,29 @@ const computeNewOwnPermissions = (originalFormData: EditCategoryForm, values: st
   }
 
   return newFormData;
-}
+};
 
-const updateFormDataWithNewValues = (originalFormData: EditCategoryForm, values: string[], type: 'view' | 'edit' | 'own') => {
+const updateFormDataWithNewValues = (
+  originalFormData: EditCategoryForm,
+  values: string[],
+  type: 'view' | 'edit' | 'own'
+) => {
   if (!originalFormData.permissions) {
     return originalFormData;
   }
 
   return {
     ...originalFormData,
-    permissions: {...originalFormData.permissions, [type]: {...originalFormData.permissions[type], value: values}}
+    permissions: {...originalFormData.permissions, [type]: {...originalFormData.permissions[type], value: values}},
   };
-}
+};
 
 const removePermissionByType = (type: 'view' | 'edit' | 'own', permissionId: number, newPermissions: any) => {
   const newValues = newPermissions.permissions[type].value.filter((permission: number) => permission !== permissionId);
 
   return {
     ...newPermissions,
-    permissions: {...newPermissions.permissions, [type]: {...newPermissions.permissions[type], value: newValues}}
+    permissions: {...newPermissions.permissions, [type]: {...newPermissions.permissions[type], value: newValues}},
   };
 };
 
@@ -62,15 +70,19 @@ const addPermissionByType = (type: 'view' | 'edit' | 'own', permissionId: number
 
   return {
     ...newPermissions,
-    permissions: {...newPermissions.permissions, [type]: {...newPermissions.permissions[type], value: newValues}}
+    permissions: {...newPermissions.permissions, [type]: {...newPermissions.permissions[type], value: newValues}},
   };
 };
 
 const computeDifferencesBetweenPermissions = (permissionsA: any, permissionsB: any, type: string) => {
   return {
-    removedPermission: permissionsA.permissions[type].value.filter((permissionId: number) => !permissionsB.permissions[type].value.includes(permissionId))[0],
-    addedPermission: permissionsB.permissions[type].value.filter((permissionId: number) => !permissionsA.permissions[type].value.includes(permissionId))[0],
-  }
+    removedPermission: permissionsA.permissions[type].value.filter(
+      (permissionId: number) => !permissionsB.permissions[type].value.includes(permissionId)
+    )[0],
+    addedPermission: permissionsB.permissions[type].value.filter(
+      (permissionId: number) => !permissionsA.permissions[type].value.includes(permissionId)
+    )[0],
+  };
 };
 
 export {computeNewViewPermissions, computeNewEditPermissions, computeNewOwnPermissions};

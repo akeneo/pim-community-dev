@@ -62,6 +62,7 @@ pim_common:
   name: Nombre
   remove: Eliminar
   code: Código
+  label: Etiqueta
   products: Productos
   product_models: Modelos de producto
   categories: Categorías

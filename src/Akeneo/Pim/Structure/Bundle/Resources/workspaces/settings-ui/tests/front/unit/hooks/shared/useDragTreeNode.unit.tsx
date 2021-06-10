@@ -30,7 +30,6 @@ describe('useDragTreeNode', () => {
     const node = aTreeNode('node');
     const {result} = renderUseDragTreeNode(node, 0, true);
 
-    expect(result.current.onDragEnd).toBeDefined();
     expect(result.current.onDragStart).toBeDefined();
     expect(result.current.isDragged).toBeDefined();
   });
@@ -79,12 +78,6 @@ describe('useDragTreeNode', () => {
     });
 
     expect(result.current.isDragged()).toBeTruthy();
-
-    act(() => {
-      result.current.onDragEnd();
-    });
-
-    expect(result.current.isDragged()).toBeFalsy();
   });
 
   test('it does not drag when the node is undefined', () => {
@@ -94,12 +87,6 @@ describe('useDragTreeNode', () => {
 
     act(() => {
       result.current.onDragStart();
-    });
-
-    expect(result.current.isDragged()).toBeFalsy();
-
-    act(() => {
-      result.current.onDragEnd();
     });
 
     expect(result.current.isDragged()).toBeFalsy();

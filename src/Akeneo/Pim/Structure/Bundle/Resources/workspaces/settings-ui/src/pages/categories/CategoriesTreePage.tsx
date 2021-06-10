@@ -66,7 +66,7 @@ const CategoriesTreePage: FC = () => {
     numberOfProducts: number,
     onDelete: () => void
   ) => {
-    if (isCategoryDeletionPossible(identifier, label, numberOfProducts)) {
+    if (isCategoryDeletionPossible(label, numberOfProducts)) {
       setCategoryToDelete({identifier, label, onDelete});
       openDeleteCategoryModal();
     }
