@@ -84,7 +84,7 @@ const useEditCategoryForm = (categoryId: number) => {
     }
   };
 
-  const onChangeApplyPermissionsOnChilren = (value: any) => {
+  const onChangeApplyPermissionsOnChildren = (value: any) => {
     if (editedFormData === null || !editedFormData.permissions) {
       return;
     }
@@ -157,7 +157,7 @@ const useEditCategoryForm = (categoryId: number) => {
     formData: editedFormData,
     onChangeCategoryLabel,
     onChangePermissions,
-    onChangeApplyPermissionsOnChilren,
+    onChangeApplyPermissionsOnChildren,
     thereAreUnsavedChanges,
     saveCategory,
   };
