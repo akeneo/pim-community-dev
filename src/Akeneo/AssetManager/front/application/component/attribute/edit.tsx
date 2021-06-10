@@ -2,7 +2,14 @@ import React, {useRef} from 'react';
 import {connect} from 'react-redux';
 import styled, {FlattenSimpleInterpolation} from 'styled-components';
 import {DeleteIcon, Key, Checkbox, Button, SectionTitle, useAutoFocus, useBooleanState} from 'akeneo-design-system';
-import {DeleteModal, getErrorsForPath, TextField, useTranslate, ValidationError} from '@akeneo-pim-community/shared';
+import {
+  DeleteModal,
+  getErrorsForPath,
+  TextField,
+  useSecurity,
+  useTranslate,
+  ValidationError,
+} from '@akeneo-pim-community/shared';
 import {getErrorsView} from 'akeneoassetmanager/application/component/app/validation-error';
 import {EditState} from 'akeneoassetmanager/application/reducer/asset-family/edit';
 import {
@@ -48,10 +55,8 @@ interface OwnProps {
     locale: {
       edit: boolean;
     };
-    attribute: {
-      create: boolean;
+    assetFamily: {
       edit: boolean;
-      delete: boolean;
     };
   };
 }
@@ -99,9 +104,7 @@ const AdditionalProperty = ({
       edit: boolean;
     };
     attribute: {
-      create: boolean;
       edit: boolean;
-      delete: boolean;
     };
   };
 }): JSX.Element => {
@@ -121,16 +124,19 @@ const AdditionalProperty = ({
 
 const Edit = ({isActive, isSaving, rights, assetFamily, attribute, context, events, errors}: EditProps) => {
   const translate = useTranslate();
+  const {isGranted} = useSecurity();
   const labelInputRef = useRef<HTMLInputElement>(null);
   const [isDeleteModalOpen, openDeleteModal, closeDeleteModal] = useBooleanState();
   const label = attribute.getLabel(context.locale);
-  const canEditLabel = rights.attribute.edit && rights.locale.edit;
+  const canEditAttribute = isGranted('akeneo_assetmanager_attribute_edit') && rights.assetFamily.edit;
+  const canDeleteAttribute = canEditAttribute && isGranted('akeneo_assetmanager_attribute_delete');
+  const canEditLabel = canEditAttribute && rights.locale.edit;
 
   const handleLabelChange = (value: string) => events.onLabelUpdated(value, context.locale);
 
   // This will be simplyfied in the near future
   const displayDeleteButton =
-    rights.attribute.delete &&
+    canDeleteAttribute &&
     !attributeidentifiersAreEqual(assetFamily.attributeAsLabel, attribute.getIdentifier()) &&
     !attributeidentifiersAreEqual(assetFamily.attributeAsMainMedia, attribute.getIdentifier());
 
@@ -168,21 +174,13 @@ const Edit = ({isActive, isSaving, rights, assetFamily, attribute, context, even
             {getErrorsView(errors, 'valuePerLocale')}
           </div>
           <div>
-            <Checkbox
-              checked={attribute.isRequired}
-              onChange={events.onIsRequiredUpdated}
-              readOnly={!rights.attribute.edit}
-            >
+            <Checkbox checked={attribute.isRequired} onChange={events.onIsRequiredUpdated} readOnly={!canEditAttribute}>
               {translate('pim_asset_manager.attribute.edit.input.is_required')}
             </Checkbox>
             {getErrorsView(errors, 'isRequired')}
           </div>
           <div>
-            <Checkbox
-              checked={attribute.isReadOnly}
-              onChange={events.onIsReadOnlyUpdated}
-              readOnly={!rights.attribute.edit}
-            >
+            <Checkbox checked={attribute.isReadOnly} onChange={events.onIsReadOnlyUpdated} readOnly={!canEditAttribute}>
               {translate('pim_asset_manager.attribute.edit.input.is_read_only')}
             </Checkbox>
             {getErrorsView(errors, 'isReadOnly')}
@@ -194,7 +192,14 @@ const Edit = ({isActive, isSaving, rights, assetFamily, attribute, context, even
               onSubmit={events.onSubmit}
               errors={errors}
               locale={context.locale}
-              rights={rights}
+              rights={{
+                locale: {
+                  edit: rights.locale.edit,
+                },
+                attribute: {
+                  edit: canEditAttribute,
+                },
+              }}
             />
           </ErrorBoundary>
         </Fields>
@@ -218,7 +223,7 @@ const Edit = ({isActive, isSaving, rights, assetFamily, attribute, context, even
             <Button onClick={events.onCancel} level="tertiary">
               {translate('pim_asset_manager.attribute.edit.cancel')}
             </Button>
-            {rights.attribute.edit && (
+            {canEditAttribute && (
               <Button onClick={events.onSubmit}>{translate('pim_asset_manager.attribute.edit.save')}</Button>
             )}
           </ButtonContainer>

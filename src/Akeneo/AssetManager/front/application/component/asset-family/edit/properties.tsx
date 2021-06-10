@@ -1,7 +1,7 @@
 import React from 'react';
 import {connect} from 'react-redux';
 import {Button, Dropdown, IconButton, MoreIcon, SectionTitle, useBooleanState} from 'akeneo-design-system';
-import {useTranslate, DeleteModal, Section} from '@akeneo-pim-community/shared';
+import {useTranslate, DeleteModal, Section, useSecurity} from '@akeneo-pim-community/shared';
 import {EditState} from 'akeneoassetmanager/application/reducer/asset-family/edit';
 import {EditForm} from 'akeneoassetmanager/application/component/asset-family/edit/form';
 import {
@@ -18,8 +18,6 @@ import {canEditAssetFamily, canEditLocale} from 'akeneoassetmanager/application/
 import AttributeIdentifier from 'akeneoassetmanager/domain/model/attribute/identifier';
 import {NormalizedAttribute} from 'akeneoassetmanager/domain/model/attribute/attribute';
 
-const securityContext = require('pim/security-context');
-
 interface StateProps {
   form: EditionFormState;
   attributes: NormalizedAttribute[] | null;
@@ -32,7 +30,6 @@ interface StateProps {
     };
     assetFamily: {
       edit: boolean;
-      delete: boolean;
     };
   };
 }
@@ -94,9 +91,12 @@ const SecondaryActions = ({canDeleteAssetFamily, onDeleteAssetFamily}: Secondary
 
 const Properties = ({events, attributes, context, form, rights}: StateProps & DispatchProps) => {
   const translate = useTranslate();
+  const {isGranted} = useSecurity();
   const [isDeleteModalOpen, openDeleteModal, closeDeleteModal] = useBooleanState();
   const assetFamily = form.data;
   const assetFamilyLabel = getAssetFamilyLabel(assetFamily, context.locale);
+  const canEditAssetFamily = isGranted('akeneo_assetmanager_asset_family_edit') && rights.assetFamily.edit;
+  const canDeleteAssetFamily = canEditAssetFamily && isGranted('akeneo_assetmanager_asset_family_delete');
 
   return (
     <>
@@ -104,20 +104,20 @@ const Properties = ({events, attributes, context, form, rights}: StateProps & Di
         label={translate('pim_asset_manager.asset_family.tab.properties')}
         image={assetFamily.image}
         primaryAction={(defaultFocus: React.RefObject<any>) =>
-          rights.assetFamily.edit ? (
+          canEditAssetFamily ? (
             <Button onClick={events.onSaveEditForm} ref={defaultFocus}>
               {translate('pim_asset_manager.asset_family.button.save')}
             </Button>
           ) : null
         }
         secondaryActions={
-          <SecondaryActions canDeleteAssetFamily={rights.assetFamily.delete} onDeleteAssetFamily={openDeleteModal} />
+          <SecondaryActions canDeleteAssetFamily={canDeleteAssetFamily} onDeleteAssetFamily={openDeleteModal} />
         }
         withLocaleSwitcher={true}
         withChannelSwitcher={false}
         isDirty={form.state.isDirty}
         breadcrumb={<AssetFamilyBreadcrumb assetFamilyLabel={assetFamilyLabel} />}
-        displayActions={rights.assetFamily.edit}
+        displayActions={canEditAssetFamily}
       />
       <Section>
         <SectionTitle>
@@ -162,13 +162,7 @@ export default connect(
           edit: canEditLocale(state.right.locale, locale),
         },
         assetFamily: {
-          edit:
-            securityContext.isGranted('akeneo_assetmanager_asset_family_edit') &&
-            canEditAssetFamily(state.right.assetFamily, state.form.data.identifier),
-          delete:
-            securityContext.isGranted('akeneo_assetmanager_asset_family_edit') &&
-            securityContext.isGranted('akeneo_assetmanager_asset_family_delete') &&
-            canEditAssetFamily(state.right.assetFamily, state.form.data.identifier),
+          edit: canEditAssetFamily(state.right.assetFamily, state.form.data.identifier),
         },
       },
     };

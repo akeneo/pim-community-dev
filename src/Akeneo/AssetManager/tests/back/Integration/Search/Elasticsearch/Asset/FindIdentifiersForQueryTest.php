@@ -395,15 +395,25 @@ class FindIdentifiersForQueryTest extends SearchIntegrationTestCase
     /**
      * @test
      */
-    public function updated_date_filter()
+    public function updated_date_greater_and_lesser_than_filter()
     {
         $before = [
             'identifier' => 'before',
             'asset_family_code' => 'date_asset_family',
             'code' => 'before',
-            'asset_code_label_search' => ['fr_FR' => 'before_ref'],
-            'asset_full_text_search'    => ['ecommerce' => ['fr_FR' => 'avant']],
-            'updated_at' => date_create('2010-01-01')->getTimestamp(),
+            'asset_code_label_search' => [],
+            'asset_full_text_search'    => [],
+            'updated_at' => date_create('2010-01-01T00:00:00+00:00')->getTimestamp(),
+            'complete_value_keys' => [],
+        ];
+
+        $expected = [
+            'identifier' => 'expected',
+            'asset_family_code' => 'date_asset_family',
+            'code' => 'expected',
+            'asset_code_label_search' => [],
+            'asset_full_text_search'    => [],
+            'updated_at' => date_create('2011-01-01T00:00:00+00:00')->getTimestamp(),
             'complete_value_keys' => [],
         ];
 
@@ -411,13 +421,13 @@ class FindIdentifiersForQueryTest extends SearchIntegrationTestCase
             'identifier' => 'after',
             'asset_family_code' => 'date_asset_family',
             'code' => 'after',
-            'asset_code_label_search' => ['fr_FR' => 'after_fre'],
-            'asset_full_text_search'    => ['ecommerce' => ['fr_FR' => 'apres']],
-            'updated_at' => date_create('2012-01-01')->getTimestamp(),
+            'asset_code_label_search' => [],
+            'asset_full_text_search'    => [],
+            'updated_at' => date_create('2012-01-01T00:00:00+00:00')->getTimestamp(),
             'complete_value_keys' => [],
         ];
 
-        $this->searchAssetIndexHelper->index([$before, $after]);
+        $this->searchAssetIndexHelper->index([$before, $expected, $after]);
 
         $query = AssetQuery::createFromNormalized([
             'locale' => 'en_US',
@@ -426,24 +436,224 @@ class FindIdentifiersForQueryTest extends SearchIntegrationTestCase
             'page' => 0,
             'filters' => [
                 [
-                    'field' => 'updated',
-                    'operator' => '>',
-                    'value' => '2011-01-01T10:00:00+00:00'
-                ],
-                [
                     'field' => 'asset_family',
                     'operator' => '=',
                     'value' => 'date_asset_family',
                     'context' => []
-                ]
+                ],
+                [
+                    'field' => 'updated',
+                    'operator' => '>',
+                    'value' => '2010-01-01T00:00:00+00:00'
+                ],
+                [
+                    'field' => 'updated',
+                    'operator' => '<',
+                    'value' => '2012-01-01T00:00:00+00:00'
+                ],
             ]
         ]);
 
         $matchingidentifiers = $this->findIdentifiersForQuery->find($query);
 
         Assert::assertSame([
-            'identifiers' => ['after'],
+            'identifiers' => ['expected'],
             'matches_count' => 1
+        ], $matchingidentifiers->normalize());
+    }
+
+    /**
+     * @test
+     */
+    public function updated_date_between_filter()
+    {
+        $before = [
+            'identifier' => 'before',
+            'asset_family_code' => 'date_asset_family',
+            'code' => 'before',
+            'asset_code_label_search' => [],
+            'asset_full_text_search'    => [],
+            'updated_at' => date_create('2010-01-01T00:00:00+00:00')->getTimestamp(),
+            'complete_value_keys' => [],
+        ];
+
+        $expected = [
+            'identifier' => 'expected',
+            'asset_family_code' => 'date_asset_family',
+            'code' => 'expected',
+            'asset_code_label_search' => [],
+            'asset_full_text_search'    => [],
+            'updated_at' => date_create('2011-01-01T00:00:00+00:00')->getTimestamp(),
+            'complete_value_keys' => [],
+        ];
+
+        $after = [
+            'identifier' => 'after',
+            'asset_family_code' => 'date_asset_family',
+            'code' => 'after',
+            'asset_code_label_search' => [],
+            'asset_full_text_search'    => [],
+            'updated_at' => date_create('2012-01-01T00:00:00+00:00')->getTimestamp(),
+            'complete_value_keys' => [],
+        ];
+
+        $this->searchAssetIndexHelper->index([$before, $expected, $after]);
+
+        $query = AssetQuery::createFromNormalized([
+            'locale' => 'en_US',
+            'channel' => 'ecommerce',
+            'size' => 20,
+            'page' => 0,
+            'filters' => [
+                [
+                    'field' => 'asset_family',
+                    'operator' => '=',
+                    'value' => 'date_asset_family',
+                    'context' => []
+                ],
+                [
+                    'field' => 'updated',
+                    'operator' => 'BETWEEN',
+                    'value' => ['2010-01-01T00:00:00+00:00', '2012-01-01T00:00:00+00:00']
+                ],
+            ]
+        ]);
+
+        $matchingidentifiers = $this->findIdentifiersForQuery->find($query);
+
+        Assert::assertSame([
+            'identifiers' => ['expected'],
+            'matches_count' => 1
+        ], $matchingidentifiers->normalize());
+    }
+
+    /**
+     * @test
+     */
+    public function updated_date_not_between_filter()
+    {
+        $before = [
+            'identifier' => 'before',
+            'asset_family_code' => 'date_asset_family',
+            'code' => 'before',
+            'asset_code_label_search' => [],
+            'asset_full_text_search'    => [],
+            'updated_at' => date_create('2010-01-01T00:00:00+00:00')->getTimestamp(),
+            'complete_value_keys' => [],
+        ];
+
+        $expected = [
+            'identifier' => 'not_expected',
+            'asset_family_code' => 'date_asset_family',
+            'code' => 'not_expected',
+            'asset_code_label_search' => [],
+            'asset_full_text_search'    => [],
+            'updated_at' => date_create('2011-01-01T00:00:00+00:00')->getTimestamp(),
+            'complete_value_keys' => [],
+        ];
+
+        $after = [
+            'identifier' => 'after',
+            'asset_family_code' => 'date_asset_family',
+            'code' => 'after',
+            'asset_code_label_search' => [],
+            'asset_full_text_search'    => [],
+            'updated_at' => date_create('2012-01-01T00:00:00+00:00')->getTimestamp(),
+            'complete_value_keys' => [],
+        ];
+
+        $this->searchAssetIndexHelper->index([$before, $expected, $after]);
+
+        $query = AssetQuery::createFromNormalized([
+            'locale' => 'en_US',
+            'channel' => 'ecommerce',
+            'size' => 20,
+            'page' => 0,
+            'filters' => [
+                [
+                    'field' => 'asset_family',
+                    'operator' => '=',
+                    'value' => 'date_asset_family',
+                    'context' => []
+                ],
+                [
+                    'field' => 'updated',
+                    'operator' => 'NOT BETWEEN',
+                    'value' => ['2010-01-01T00:00:00+00:00', '2012-01-01T00:00:00+00:00']
+                ],
+            ]
+        ]);
+
+        $matchingidentifiers = $this->findIdentifiersForQuery->find($query);
+
+        Assert::assertSame([
+            'identifiers' => ['after', 'before'],
+            'matches_count' => 2
+        ], $matchingidentifiers->normalize());
+    }
+
+    /**
+     * @test
+     */
+    public function updated_date_since_last_n_days_filter()
+    {
+        $twoDaysAgo = [
+            'identifier' => 'twoDaysAgo',
+            'asset_family_code' => 'date_asset_family',
+            'code' => 'twoDaysAgo',
+            'asset_code_label_search' => [],
+            'asset_full_text_search'    => [],
+            'updated_at' => date_create('now - 2 days')->getTimestamp(),
+            'complete_value_keys' => [],
+        ];
+
+        $yesterday = [
+            'identifier' => 'yesterday',
+            'asset_family_code' => 'date_asset_family',
+            'code' => 'yesterday',
+            'asset_code_label_search' => [],
+            'asset_full_text_search'    => [],
+            'updated_at' => date_create('now - 1 day')->getTimestamp(),
+            'complete_value_keys' => [],
+        ];
+
+        $today = [
+            'identifier' => 'today',
+            'asset_family_code' => 'date_asset_family',
+            'code' => 'today',
+            'asset_code_label_search' => [],
+            'asset_full_text_search'    => [],
+            'updated_at' => date_create('now')->getTimestamp(),
+            'complete_value_keys' => [],
+        ];
+
+        $this->searchAssetIndexHelper->index([$twoDaysAgo, $yesterday, $today]);
+
+        $query = AssetQuery::createFromNormalized([
+            'locale' => 'en_US',
+            'channel' => 'ecommerce',
+            'size' => 20,
+            'page' => 0,
+            'filters' => [
+                [
+                    'field' => 'asset_family',
+                    'operator' => '=',
+                    'value' => 'date_asset_family',
+                    'context' => []
+                ],
+                [
+                    'field' => 'updated',
+                    'operator' => 'SINCE LAST N DAYS',
+                    'value' => 2
+                ],
+            ]
+        ]);
+
+        $matchingidentifiers = $this->findIdentifiersForQuery->find($query);
+
+        Assert::assertSame([
+            'identifiers' => ['today', 'yesterday'],
+            'matches_count' => 2,
         ], $matchingidentifiers->normalize());
     }
 

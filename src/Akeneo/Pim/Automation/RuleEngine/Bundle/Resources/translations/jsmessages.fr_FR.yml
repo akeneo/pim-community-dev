@@ -54,6 +54,7 @@ pimee_catalog_rule:
           empty_selection: Aucune règle n'a été sélectionnée.
       tags:
         add: Ajouter
+        clear: Effacer
   form:
     category:
       catalog: Catalogue

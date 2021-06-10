@@ -28,14 +28,18 @@ final class ElasticsearchChecker
     {
         $failingIndexNames = [];
 
-        foreach ($this->clientRegistry->getClients() as $client) {
-            if (!$client->hasIndex()) {
-                $failingIndexNames[] = $client->getIndexName();
+        try {
+            foreach ($this->clientRegistry->getClients() as $client) {
+                if (!$client->hasIndex()) {
+                    $failingIndexNames[] = $client->getIndexName();
+                }
             }
-        }
 
-        return empty($failingIndexNames) ?
-            ServiceStatus::ok() :
-            ServiceStatus::notOk('Elasticsearch failing indexes: '.implode(',', $failingIndexNames));
+            return empty($failingIndexNames) ?
+                ServiceStatus::ok() :
+                ServiceStatus::notOk(sprintf('Elasticsearch failing indexes: %s', implode(',', $failingIndexNames)));
+        } catch (\Exception $exception) {
+            return ServiceStatus::notOk(sprintf('Elasticsearch exception: %s', $exception->getMessage()));
+        }
     }
 }

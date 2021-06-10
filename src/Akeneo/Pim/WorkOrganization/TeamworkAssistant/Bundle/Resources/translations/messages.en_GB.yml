@@ -32,6 +32,9 @@ teamwork_assistant:
     deletion:
       user_linked_to_project: This user cannot be deleted because he/she is still linked to one or more project(s). Please remove the groups he/she is linked to in his/her user account.
       user_is_project_owner: This user is still owner of one or more projects. Please delete all this user's projects.
+  user_group:
+    deletion:
+      group_linked_to_project: This user group is used in a Teamwork Assistant project, it can't be deleted
 job_execution:
   summary:
     processed_products: Processed products
