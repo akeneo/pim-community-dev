@@ -45,8 +45,14 @@ export type FormField = {
   label: string;
 };
 
-export type FormChoiceField = FormField & {
+export type HiddenFormField = {
+  value: string;
+  fullName: string;
+};
+
+export type FormChoiceField = {
   value: string[];
+  fullName: string;
   choices: {
     value: string;
     label: string;
@@ -55,12 +61,12 @@ export type FormChoiceField = FormField & {
 
 export type EditCategoryForm = {
   label: {[locale: string]: FormField};
-  _token: FormField;
+  _token: HiddenFormField;
   permissions?: {
     view: FormChoiceField;
     edit: FormChoiceField;
     own: FormChoiceField;
-    apply_on_children: FormField;
+    apply_on_children: HiddenFormField;
   };
   errors: string[];
 };
