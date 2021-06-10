@@ -87,7 +87,7 @@ class UpdateTableValueEndToEnd extends ApiTestCase
             'type' => AttributeTypes::TABLE,
             'group' => 'other',
             'table_configuration' => [
-                ['code' => 'ingredients', 'data_type' => 'text', 'labels' => ['en_US' => 'Ingredients']],
+                ['code' => 'ingredients', 'data_type' => 'select', 'labels' => ['en_US' => 'Ingredients']],
                 ['code' => 'description', 'data_type' => 'text', 'labels' => ['en_US' => 'description']],
             ],
         ]);

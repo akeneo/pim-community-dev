@@ -13,6 +13,12 @@ services:
         tags:
             - { name: 'validator.constraint_validator' }
 
+    Akeneo\Pim\TableAttribute\Infrastructure\Validation\Attribute\FirstColumnCodeCannotBeChangedValidator:
+        arguments:
+            - '@pim_catalog.repository.attribute'
+        tags:
+            - { name: 'validator.constraint_validator' }
+
     Akeneo\Pim\TableAttribute\Infrastructure\Validation\ProductValue\TableColumnsShouldExistValidator:
         arguments:
             - '@Akeneo\Pim\TableAttribute\Domain\TableConfiguration\Repository\TableConfigurationRepository'

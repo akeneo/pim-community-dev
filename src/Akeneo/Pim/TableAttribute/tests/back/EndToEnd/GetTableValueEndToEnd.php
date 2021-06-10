@@ -66,7 +66,7 @@ class GetTableValueEndToEnd extends ApiTestCase
             'type' => AttributeTypes::TABLE,
             'group' => 'other',
             'table_configuration' => [
-                ['code' => 'ingredient', 'data_type' => 'text', 'labels' => ['en_US' => 'ingredient']],
+                ['code' => 'ingredient', 'data_type' => 'select', 'labels' => ['en_US' => 'ingredient']],
                 ['code' => 'quantity', 'data_type' => 'text', 'labels' => ['en_US' => 'Quantity']],
             ],
         ]);

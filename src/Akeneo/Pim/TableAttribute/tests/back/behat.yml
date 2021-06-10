@@ -5,6 +5,7 @@ default:
                 - '%paths.base%/features'
             contexts:
                 - Akeneo\Pim\TableAttribute\tests\back\Acceptance\Context\CreateAttributeContext
+                - Akeneo\Pim\TableAttribute\tests\back\Acceptance\Context\UpdateAttributeContext
                 - Akeneo\Pim\TableAttribute\tests\back\Acceptance\Context\ConstraintViolationsContext
                 - test.channel.context
                 - test.locale.context

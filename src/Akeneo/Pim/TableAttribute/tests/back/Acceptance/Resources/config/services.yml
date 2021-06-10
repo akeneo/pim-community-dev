@@ -5,6 +5,12 @@ services:
             - '@pim_catalog.repository.attribute'
             - '@Akeneo\Pim\TableAttribute\tests\back\Acceptance\Context\ConstraintViolationsContext'
 
+    Akeneo\Pim\TableAttribute\tests\back\Acceptance\Context\UpdateAttributeContext:
+        arguments:
+            - '@validator'
+            - '@pim_catalog.repository.attribute'
+            - '@Akeneo\Pim\TableAttribute\tests\back\Acceptance\Context\ConstraintViolationsContext'
+
     Akeneo\Pim\TableAttribute\tests\back\Acceptance\Context\ConstraintViolationsContext: ~
 
     Akeneo\Pim\TableAttribute\Infrastructure\TableConfiguration\Repository\SqlTableConfigurationRepository:

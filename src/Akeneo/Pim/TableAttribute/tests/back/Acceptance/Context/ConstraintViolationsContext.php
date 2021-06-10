@@ -65,6 +65,13 @@ final class ConstraintViolationsContext implements Context
             $actualViolationMessages[] = $constraintViolation->getMessage();
         }
 
+        if (empty($actualViolationMessages)) {
+            throw new \RuntimeException(\sprintf(
+                'No violation found with message "%s", no violation are raised',
+                $message
+            ));
+        }
+
         throw new \RuntimeException(\sprintf(
             'No violation found with message "%s", actual messages are %s',
             $message,

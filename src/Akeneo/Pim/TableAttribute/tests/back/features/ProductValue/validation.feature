@@ -7,16 +7,16 @@ Feature: Enrich a table attribute value
   Background:
     Given an authenticated user
     And the following attributes:
-      | code        | type                     | table_configuration                                                                                                                     |
-      | sku         | pim_catalog_identifier   |                                                                                                                                         |
-      | nutrition   | pim_catalog_table        | [{"code": "ingredient", "data_type": "text"},{"code": "quantity", "data_type": "number"}, {"code":"isAllergen", "data_type":"boolean"}] |
+      | code        | type                     | table_configuration                                                                                                                                                                |
+      | sku         | pim_catalog_identifier   |                                                                                                                                                                                    |
+      | nutrition   | pim_catalog_table        | [{"code": "ingredient", "data_type": "select"}, {"code": "quantity", "data_type": "number"}, {"code":"isAllergen", "data_type":"boolean"}, {"code":"comments", "data_type":"text"}] |
     And the following locales "en_US"
     And the following "ecommerce" channel with locales "en_US"
 
   Scenario: Providing a table with a non existing column should raise an error
     When a product is created with values:
-      | attribute   | json_data                                                                    |
-      | nutrition   | [{"ingredient": "sugar", "quantity": "20", "non_existing_column": "foobar"}] |
+      | attribute   | json_data                                                                  |
+      | nutrition   | [{"ingredient": "sugar", "quantity": 20, "non_existing_column": "foobar"}] |
     Then the error 'The "non_existing_column" column does not exist' is raised
 
   Scenario: Providing a table with non existing columns should raise an error
@@ -46,6 +46,6 @@ Feature: Enrich a table attribute value
 
   Scenario: Providing a valid table should not raise any error
     When a product is created with values:
-      | attribute | json_data         |
-      | nutrition | [{"ingredient": "sugar", "quantity": 1, "isAllergen":true}] |
+      | attribute | json_data                                                                      |
+      | nutrition | [{"ingredient": "sugar", "quantity": 1, "isAllergen":true, "comments": "foo"}] |
     Then no error is raised

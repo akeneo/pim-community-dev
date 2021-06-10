@@ -65,6 +65,11 @@ class CellDataTypesShouldMatchValidator extends ConstraintValidator
                             $this->addViolation('boolean', $data, $rowIndex, $stringColumnCode);
                         }
                         break;
+                    case 'select':
+                        if (!is_string($data)) {
+                            $this->addViolation('string', $data, $rowIndex, $stringColumnCode);
+                        }
+                        break;
                     default:
                         throw new \LogicException(
                             sprintf('Cannot validate the "%s" data type', $expectedDataType->asString())

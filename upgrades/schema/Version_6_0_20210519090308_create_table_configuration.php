@@ -23,9 +23,22 @@ final class Version_6_0_20210519090308_create_table_configuration extends Abstra
             validations json not null default ('{}'),
             labels json not null default ('{}')
         );
-        alter table pim_catalog_table_column add constraint pim_catalog_table_column_pk primary key (id);
-        alter table pim_catalog_table_column add constraint pim_catalog_table_column_attribute_id_fk foreign key (attribute_id) REFERENCES pim_catalog_attribute(id) ON DELETE CASCADE ON UPDATE CASCADE;
-        alter table pim_catalog_table_column add constraint pim_catalog_table_column_attribute_code_unique unique (attribute_id, code);
+        ALTER TABLE pim_catalog_table_column
+            ADD CONSTRAINT pim_catalog_table_column_pk PRIMARY KEY (id);
+        ALTER TABLE pim_catalog_table_column
+            ADD CONSTRAINT pim_catalog_table_column_attribute_id_fk FOREIGN KEY (attribute_id) REFERENCES pim_catalog_attribute(id) ON DELETE CASCADE ON UPDATE CASCADE;
+        ALTER TABLE pim_catalog_table_column
+            ADD CONSTRAINT pim_catalog_table_column_attribute_code_unique UNIQUE (attribute_id, code);
+
+        CREATE TABLE pim_catalog_table_column_select_option (
+            column_id varchar(64) not null,
+            code varchar(100) not null,
+            labels json not null default ('{}')
+        );
+        ALTER TABLE pim_catalog_table_column_select_option
+            ADD CONSTRAINT pim_catalog_table_column_select_option_pk PRIMARY KEY (column_id, code);
+        ALTER TABLE pim_catalog_table_column_select_option
+            ADD CONSTRAINT pim_catalog_table_column_select_option_column_fk FOREIGN KEY (column_id) REFERENCES pim_catalog_table_column(id) ON DELETE CASCADE ON UPDATE CASCADE;
         SQL;
 
         $this->addSql($sql);

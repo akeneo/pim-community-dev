@@ -1,6 +1,7 @@
 Akeneo\Pim\Structure\Component\Model\Attribute:
     constraints:
         - Akeneo\Pim\TableAttribute\Infrastructure\Validation\Attribute\IsTableAttributeConfigured: ~
+        - Akeneo\Pim\TableAttribute\Infrastructure\Validation\Attribute\FirstColumnCodeCannotBeChanged: ~
     properties:
         rawTableConfiguration:
             - Type: array
@@ -27,7 +28,7 @@ Akeneo\Pim\Structure\Component\Model\Attribute:
                                           type: string
                                           message: pim_table_configuration.validation.table_configuration.column_type_must_be_a_string
                                       - Choice:
-                                          choices: ["text", "number", "boolean"]
+                                          choices: ["text", "number", "boolean", "select"]
                                           message: pim_table_configuration.validation.table_configuration.unknown_data_type
                             labels:
                                 - Optional:
@@ -43,4 +44,4 @@ Akeneo\Pim\Structure\Component\Model\Attribute:
                                                 message: pim_table_configuration.validation.table_configuration.column_label_must_be_a_string
                         missingFieldsMessage: pim_table_configuration.validation.table_configuration.missing_column
             - Akeneo\Pim\TableAttribute\Infrastructure\Validation\Attribute\IsColumnCodeUnique: ~
-#              TODO add validation: first column cannot be changed (code and data_type)
+            - Akeneo\Pim\TableAttribute\Infrastructure\Validation\Attribute\FirstColumnShouldHaveSelectDataType: ~

@@ -41,7 +41,7 @@ final class ExportTableAttributeIntegration extends TestCase
             [
                 [
                     'code' => 'ingredients',
-                    'data_type' => 'text',
+                    'data_type' => 'select',
                     'labels' => [
                         'en_US' => 'Ingredients',
                     ],
@@ -89,7 +89,7 @@ final class ExportTableAttributeIntegration extends TestCase
             [
                 [
                     'code' => 'ingredients',
-                    'data_type' => 'text',
+                    'data_type' => 'select',
                     'labels' => [
                         'en_US' => 'Ingredients',
                     ],
@@ -155,7 +155,7 @@ final class ExportTableAttributeIntegration extends TestCase
             'table_configuration' => [
                 [
                     'code' => 'ingredients',
-                    'data_type' => 'text',
+                    'data_type' => 'select',
                     'labels' => [
                         'en_US' => 'Ingredients',
                     ],

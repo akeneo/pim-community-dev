@@ -67,3 +67,7 @@ Feature: Create a table attribute
   Scenario: Cannot create a non table attribute with a table configuration
     When I create a text attribute with a table configuration
     Then There is a violation with message: The type pim_catalog_text does not allow table_configuration
+
+  Scenario: Cannot create a table attribute when the first column is not select
+    When I create a table attribute with text first column
+    Then There is a violation with message: TODO The first column should be select, "text" given

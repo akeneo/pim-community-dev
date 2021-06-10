@@ -35,8 +35,8 @@ class ImportTableAttributeIntegration extends TestCase
     {
         $csv = <<<CSV
 code;type;localizable;scopable;group;unique;sort_order;table_configuration
-nutrition;pim_catalog_table;0;0;other;0;2;[{"code":"ingredients","data_type":"text","labels":{"en_US":"Ingredients"}},{"code":"quantity","data_type":"text","labels":{"en_US":"Quantity"}}]
-storage;pim_catalog_table;0;0;other;0;3;[{"code":"dimension","data_type":"text","labels":{"en_US":"Dimension"}},{"code":"value","data_type":"text","labels":{"en_US":"Value"}}]
+nutrition;pim_catalog_table;0;0;other;0;2;[{"code":"ingredients","data_type":"select","labels":{"en_US":"Ingredients"}},{"code":"quantity","data_type":"text","labels":{"en_US":"Quantity"}}]
+storage;pim_catalog_table;0;0;other;0;3;[{"code":"dimension","data_type":"select","labels":{"en_US":"Dimension"}},{"code":"value","data_type":"text","labels":{"en_US":"Value"}}]
 CSV;
         $this->jobLauncher->launchImport(self::CSV_IMPORT_JOB_CODE, $csv);
 
@@ -44,7 +44,7 @@ CSV;
         Assert::assertNotNull($nutritionAttribute);
         Assert::assertEqualsCanonicalizing(
             [
-                ['code' => 'ingredients', 'data_type' => 'text', 'labels' => ['en_US' => 'Ingredients']],
+                ['code' => 'ingredients', 'data_type' => 'select', 'labels' => ['en_US' => 'Ingredients']],
                 ['code' => 'quantity', 'data_type' => 'text', 'labels' => ['en_US' => 'Quantity']],
             ],
             $nutritionAttribute->getRawTableConfiguration()
@@ -55,7 +55,7 @@ CSV;
         Assert::assertSame(AttributeTypes::TABLE, $storageAttribute->getType());
         Assert::assertEqualsCanonicalizing(
             [
-                ['code' => 'dimension', 'data_type' => 'text', 'labels' => ['en_US' => 'Dimension']],
+                ['code' => 'dimension', 'data_type' => 'select', 'labels' => ['en_US' => 'Dimension']],
                 ['code' => 'value', 'data_type' => 'text', 'labels' => ['en_US' => 'Value']],
             ],
             $storageAttribute->getRawTableConfiguration()
@@ -79,7 +79,7 @@ CSV;
                     'other',
                     '0',
                     '5',
-                    '[{"code":"ingredients","data_type":"text","labels":{"en_US":"Ingredients"}},{"code":"quantity","data_type":"text","labels":{"en_US":"Quantity"}}]',
+                    '[{"code":"ingredients","data_type":"select","labels":{"en_US":"Ingredients"}},{"code":"quantity","data_type":"text","labels":{"en_US":"Quantity"}}]',
                 ],
                 [
                     'storage',
@@ -89,7 +89,7 @@ CSV;
                     'other',
                     '0',
                     '6',
-                    '[{"code":"dimension","data_type":"text","labels":{"en_US":"Dimension"}},{"code":"value","data_type":"text","labels":{"en_US":"Value"}}]',
+                    '[{"code":"dimension","data_type":"select","labels":{"en_US":"Dimension"}},{"code":"value","data_type":"text","labels":{"en_US":"Value"}}]',
                 ],
             ]
         );
@@ -108,7 +108,7 @@ CSV;
         Assert::assertNotNull($nutritionAttribute);
         Assert::assertEqualsCanonicalizing(
             [
-                ['code' => 'ingredients', 'data_type' => 'text', 'labels' => ['en_US' => 'Ingredients']],
+                ['code' => 'ingredients', 'data_type' => 'select', 'labels' => ['en_US' => 'Ingredients']],
                 ['code' => 'quantity', 'data_type' => 'text', 'labels' => ['en_US' => 'Quantity']],
             ],
             $nutritionAttribute->getRawTableConfiguration()
@@ -119,7 +119,7 @@ CSV;
         Assert::assertSame(AttributeTypes::TABLE, $storageAttribute->getType());
         Assert::assertEqualsCanonicalizing(
             [
-                ['code' => 'dimension', 'data_type' => 'text', 'labels' => ['en_US' => 'Dimension']],
+                ['code' => 'dimension', 'data_type' => 'select', 'labels' => ['en_US' => 'Dimension']],
                 ['code' => 'value', 'data_type' => 'text', 'labels' => ['en_US' => 'Value']],
             ],
             $storageAttribute->getRawTableConfiguration()
@@ -169,7 +169,7 @@ CSV;
                 'table_configuration' => [
                     [
                         'code' => 'ingredients',
-                        'data_type' => 'text',
+                        'data_type' => 'select',
                     ],
                     [
                         'code' => 'quantity',

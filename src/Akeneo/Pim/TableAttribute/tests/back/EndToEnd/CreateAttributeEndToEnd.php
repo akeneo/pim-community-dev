@@ -36,7 +36,7 @@ final class CreateAttributeEndToEnd extends ApiTestCase
         "table_configuration": [
             {
                 "code": "ingredients",
-                "data_type": "text"
+                "data_type": "select"
             }
         ]
     }
@@ -65,7 +65,7 @@ JSON;
         self::assertSame([
             [
                 'code' => 'ingredients',
-                'data_type' => 'text',
+                'data_type' => 'select',
                 'labels' => [
                     "en_US" => "Ingredients",
                     "fr_FR" => "Ingrédients",
@@ -93,7 +93,7 @@ JSON;
         "table_configuration": [
             {
                 "code": "ingredients",
-                "data_type": "text",
+                "data_type": "select",
                 "labels": {
                     "fr_FR":"Ingraydients",
                     "de_DE":"Zutat"
@@ -143,7 +143,7 @@ JSON;
         "table_configuration": [
             {
                 "code": "ingredients",
-                "data_type": "text",
+                "data_type": "select",
                 "labels": {
                     "en_US":"Ingredients",
                     "fr_FR":"Ingrédients"

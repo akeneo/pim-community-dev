@@ -53,16 +53,21 @@ final class CreateAttributeContext implements Context
             ->build();
         $attribute->setRawTableConfiguration([
             [
-                'data_type' => 'text',
+                'data_type' => 'select',
                 'code' => 'ingredients'
-            ], [
+            ],
+            [
                 'data_type' => 'number',
                 'code' => 'quantity'
             ],
             [
                 'data_type' => 'boolean',
                 'code' => 'isAllergenic',
-            ]
+            ],
+            [
+                'data_type' => 'text',
+                'code' => 'comments'
+            ],
         ]);
         $this->saveAttribute($attribute);
     }
@@ -92,7 +97,7 @@ final class CreateAttributeContext implements Context
             ->build();
         $attribute->setRawTableConfiguration([
             [
-                'data_type' => 'text',
+                'data_type' => 'select',
                 'code' => 'ingredients',
             ]
         ]);
@@ -111,11 +116,11 @@ final class CreateAttributeContext implements Context
             ->build();
         $attribute->setRawTableConfiguration([
             [
-                'data_type' => 'text',
+                'data_type' => 'select',
                 'code' => 'ingredients',
             ], [
                 'data_type' => 'text',
-            ]
+            ],
         ]);
         $this->saveAttribute($attribute);
     }
@@ -132,7 +137,7 @@ final class CreateAttributeContext implements Context
             ->build();
         $attribute->setRawTableConfiguration([
             [
-                'data_type' => 'text',
+                'data_type' => 'select',
                 'code' => 'ingredients',
             ], [
                 'data_type' => 'text',
@@ -155,14 +160,14 @@ final class CreateAttributeContext implements Context
         $attribute->setRawTableConfiguration(
             [
                 [
-                    'data_type' => 'text',
+                    'data_type' => 'select',
                     'code' => 'ingredients',
                 ],
                 [
                     'data_type' => 'text',
                     'code' => 'quantity',
-                ]
-            ]
+                ],
+            ],
         );
         $this->saveAttribute($attribute);
     }
@@ -179,7 +184,7 @@ final class CreateAttributeContext implements Context
             ->build();
         $attribute->setRawTableConfiguration([
             [
-                'data_type' => 'text',
+                'data_type' => 'select',
                 'code' => 'ingredients',
             ],
             [
@@ -201,7 +206,7 @@ final class CreateAttributeContext implements Context
             ->build();
         $attribute->setRawTableConfiguration([
             [
-                'data_type' => 'text',
+                'data_type' => 'select',
                 'code' => 'ingredients',
             ],
             [
@@ -224,7 +229,7 @@ final class CreateAttributeContext implements Context
             ->build();
         $attribute->setRawTableConfiguration([
             [
-                'data_type' => 'text',
+                'data_type' => 'select',
                 'code' => 'ingredients',
             ],
             [
@@ -247,7 +252,7 @@ final class CreateAttributeContext implements Context
             ->build();
         $attribute->setRawTableConfiguration([
             [
-                'data_type' => 'text',
+                'data_type' => 'select',
                 'code' => 'ingredients',
             ], [
                 'data_type' => 'text',
@@ -270,7 +275,7 @@ final class CreateAttributeContext implements Context
             ->build();
         $attribute->setRawTableConfiguration([
             [
-                'data_type' => 'text',
+                'data_type' => 'select',
                 'code' => 'ingredients',
             ], [
                 'data_type' => 'text',
@@ -279,6 +284,29 @@ final class CreateAttributeContext implements Context
                     'pt_DTC' => 'a label'
                 ]
             ]
+        ]);
+        $this->saveAttribute($attribute);
+    }
+
+    /**
+     * @When I create a table attribute with text first column
+     */
+    public function iCreateATableAttributeWithTextFirstColumn(): void
+    {
+        $attribute = $this->attributeBuilder
+            ->withCode('table')
+            ->withGroupCode('marketing')
+            ->withType(AttributeTypes::TABLE)
+            ->build();
+        $attribute->setRawTableConfiguration([
+            [
+                'data_type' => 'text',
+                'code' => 'ingredients',
+            ],
+            [
+                'data_type' => 'number',
+                'code' => 'quantity',
+            ],
         ]);
         $this->saveAttribute($attribute);
     }

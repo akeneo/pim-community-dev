@@ -153,7 +153,7 @@ class CreateTableValueEndToEnd extends ApiTestCase
             'type' => AttributeTypes::TABLE,
             'group' => 'other',
             'table_configuration' => [
-                ['code' => 'ingredients', 'data_type' => 'text', 'labels' => ['en_US' => 'Ingredients']],
+                ['code' => 'ingredients', 'data_type' => 'select', 'labels' => ['en_US' => 'Ingredients']],
                 ['code' => 'quantity', 'data_type' => 'text', 'labels' => ['en_US' => 'Quantity']],
             ],
         ]);

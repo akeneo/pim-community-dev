@@ -97,6 +97,7 @@ pim_catalog_product_model | BASE TABLE
 pim_catalog_product_model_association | BASE TABLE
 pim_catalog_product_unique_data | BASE TABLE
 pim_catalog_table_column | BASE TABLE
+pim_catalog_table_column_select_option | BASE TABLE
 pim_catalog_variant_attribute_set_has_attributes | BASE TABLE
 pim_catalog_variant_attribute_set_has_axes | BASE TABLE
 pim_comment_comment | BASE TABLE
@@ -640,6 +641,9 @@ pim_catalog_table_column | data_type | NO | varchar(20) |
 pim_catalog_table_column | column_order | NO | int |
 pim_catalog_table_column | validations | NO | json |
 pim_catalog_table_column | labels | NO | json |
+pim_catalog_table_column_select_option | column_id | NO | varchar(64) | PRI
+pim_catalog_table_column_select_option | code | NO | varchar(100) | PRI
+pim_catalog_table_column_select_option | labels | NO | json |
 pim_catalog_variant_attribute_set_has_attributes | variant_attribute_set_id | NO | int | PRI
 pim_catalog_variant_attribute_set_has_attributes | attributes_id | NO | int | PRI
 pim_catalog_variant_attribute_set_has_axes | variant_attribute_set_id | NO | int | PRI

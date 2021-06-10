@@ -23,6 +23,7 @@ pim_table_attribute:
             text: Text
             number: Number
             boolean: Boolean
+            select: Select
     validations:
         column_code_must_be_filled: The code must be filled
         column_data_type_must_be_filled: The data type must be filled
