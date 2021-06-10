@@ -125,9 +125,9 @@ const PriceCollectionAttributeConditionLine: React.FC<PriceCollectionAttributeCo
                   attribute,
                   translate,
                   currentCatalogLocale,
-                  getAvailableCurrencies(currencies),
+                  scopes,
                   currencies,
-                  watch(scopeFormName) ?? condition.scope
+                  () => watch(scopeFormName) ?? condition.scope
                 )
               : undefined
           }
