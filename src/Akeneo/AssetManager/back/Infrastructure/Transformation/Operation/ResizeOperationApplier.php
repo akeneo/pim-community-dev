@@ -60,6 +60,7 @@ class ResizeOperationApplier implements OperationApplier
                     ],
                 ],
                 'quality' => 100,
+                'format' => 'png'
             ]
         );
         $this->filesystem->dumpFile($file->getRealPath(), $computedImage->getContent());
