@@ -8,9 +8,11 @@ pim_datagrid:
   no_entities:
     proposal: There is no proposals to review.
     product_draft: There is no product draft to review.
+  no_entities.published product: No published product found
   no_results:
     proposal: There is no proposals to review. Try to change your search criteria.
     product_draft: There is no product draft to review. Try to change your search criteria.
+  no_results.published product: Sorry, there is no published product for your search.
   workflow:
     partial_approve: Approve changes on attribute {{ attribute }} of the product {{ product }}
     partial_reject: Reject changes on attribute {{ attribute }} of the product {{ product }}

@@ -8,9 +8,11 @@ pim_datagrid:
   no_entities:
     proposal: Il n'y a aucune proposition à réviser.
     product_draft: Il n'y a aucun brouillon à réviser.
+  no_entities.published product: Aucun produit publié trouvé
   no_results:
     proposal: Il n'y a aucune proposition à réviser. Tentez de modifier vos critères de recherche.
     product_draft: Il n'y a aucun brouillon à réviser. Tentez de modifier vos critères de recherche.
+  no_results.published product: Désolé, il n'y a aucun produit publié pour votre recherche.
   workflow:
     partial_approve: Approuver les modifications sur l'attribut {{ attribute }} du produit {{ product }}
     partial_reject: Rejeter les modifications sur l'attribut {{ attribute }} du produit {{ product }}
