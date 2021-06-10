@@ -356,7 +356,6 @@ class CategoryTreeController extends Controller
 
         $formData = $this->formatFormView($form->createView());
 
-        // @todo[PLG-94] remove unused Twig templates AkeneoPimEnrichmentBundle:CategoryTree:%s.html.twig
         return new JsonResponse(['category' => $normalizedCategory, 'form' => $formData], $responseStatus);
     }
 
