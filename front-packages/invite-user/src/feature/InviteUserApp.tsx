@@ -1,7 +1,9 @@
-import React from 'react';
+import React, {useContext, useState} from 'react';
 import {PageContent, PageHeader, PimView, useTranslate} from '@akeneo-pim-community/shared';
 import {Breadcrumb, Button, Field, Helper, Table, TagInput, SurveyIllustration, Badge} from 'akeneo-design-system';
 import styled from 'styled-components';
+import {InvitedUser} from "./models";
+import {InvitedUserContext} from "./providers/InvitedUserProvider";
 
 const FieldContent = styled.div`
   display: flex;
@@ -23,20 +25,10 @@ const IllustrationContainer = styled.div`
   margin: 0 auto;
 `;
 
-type User = {
-  email: string;
-  status: 'invited' | 'active';
-};
-
 const InviteUserApp = () => {
   const translate = useTranslate();
-
-  const users: User[] = [
-    {email: 'test@test.com', status: 'invited'},
-    {email: 'test1@test1.com', status: 'active'},
-    {email: 'test2@test2.com', status: 'invited'},
-    {email: 'test3@test3.com', status: 'active'},
-  ];
+  const [newUsers, setNewUsers] = useState<string[]>();
+  const {users, addUser} = useInvitedUsers();
 
   return (
     <>
@@ -62,9 +54,9 @@ const InviteUserApp = () => {
         <FieldContainer label={translate('free_trial.invite_users.invite_input_label')}>
           <FieldContent>
             <TagInputContainer>
-              <TagInput onChange={() => {}} value={[]} />
+              <TagInput onChange={setInvitedUser} value={[]} />
             </TagInputContainer>
-            <Button ghost level="tertiary" onClick={() => {}}>
+            <Button ghost level="tertiary" onClick={() => addInvitedUsers()}>
               {translate('pim_common.add')}
             </Button>
           </FieldContent>

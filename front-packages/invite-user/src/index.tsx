@@ -6,19 +6,26 @@ import {MicroFrontendDependenciesProvider, Routes} from '@akeneo-pim-community/s
 import {routes} from './routes.json';
 import translations from './translations.json';
 import {InviteUserApp} from './feature';
+import {InvitedUserProvider} from "./feature/providers/InvitedUserProvider";
 
 const Container = styled.div`
   ${CommonStyle}
 `;
+
+const inviteNewUsers = (emails: string[]): void => {
+  return;
+}
 
 ReactDOM.render(
   <React.StrictMode>
     <ThemeProvider theme={pimTheme}>
       {/* @ts-ignore */}
       <MicroFrontendDependenciesProvider routes={routes as Routes} translations={translations}>
-        <Container>
-          <InviteUserApp />
-        </Container>
+        <InvitedUserProvider inviteNewUsers={inviteNewUsers} retrieveInvitedUsers={}>
+          <Container>
+            <InviteUserApp />
+          </Container>
+        </InvitedUserProvider>
       </MicroFrontendDependenciesProvider>
     </ThemeProvider>
   </React.StrictMode>,
