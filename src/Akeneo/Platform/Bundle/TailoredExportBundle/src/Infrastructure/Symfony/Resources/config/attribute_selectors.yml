@@ -24,3 +24,12 @@ services:
       - '@akeneo.pim.structure.query.lru_cached_get_existing_attribute_options_with_values'
     tags:
       - { name: akeneo.tailored_export.attribute_selector }
+
+  Akeneo\Platform\TailoredExport\Infrastructure\Connector\Processor\AttributeSelector\MultiSelectSelector:
+    public: true
+    arguments:
+      -
+        - 'pim_catalog_multiselect'
+      - '@akeneo.pim.structure.query.lru_cached_get_existing_attribute_options_with_values'
+    tags:
+      - { name: akeneo.tailored_export.attribute_selector }

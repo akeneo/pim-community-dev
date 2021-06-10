@@ -6,7 +6,15 @@ import {SourceConfigurator} from './SourceConfigurator';
 import {Attribute, Source} from '../../models';
 import {FetcherContext} from '../../contexts';
 
-const attributes = [{code: 'description', labels: {}, scopable: false, localizable: false}];
+const attributes = [
+  {
+    code: 'description',
+    type: 'pim_catalog_text',
+    labels: {},
+    scopable: false,
+    localizable: false,
+  },
+];
 const channels = [
   {
     code: 'ecommerce',

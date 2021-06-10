@@ -28,6 +28,7 @@ class SimpleSelectSelectorSpec extends ObjectBehavior
         $simpleSelectAttribute = $this->createAttribute('pim_catalog_simpleselect');
         $this->supports(['type' => 'code'], $simpleSelectAttribute)->shouldReturn(true);
         $this->supports(['type' => 'label'], $simpleSelectAttribute)->shouldReturn(true);
+        $this->supports(['type' => 'unknown'], $simpleSelectAttribute)->shouldReturn(false);
     }
 
     public function it_selects_the_code(
@@ -68,7 +69,7 @@ class SimpleSelectSelectorSpec extends ObjectBehavior
                 'description.the_code' => ['en_US' => 'The label']
             ]);
 
-        $this->applySelection(['type' => 'label', 'locale' => 'fr_FR'], $simpleSelectAttribute, $value)->shouldReturn('the_code');
+        $this->applySelection(['type' => 'label', 'locale' => 'fr_FR'], $simpleSelectAttribute, $value)->shouldReturn('[the_code]');
     }
 
     private function createAttribute(string $attributeType): Attribute

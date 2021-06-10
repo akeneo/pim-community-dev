@@ -100,12 +100,7 @@ class SourcesValidator extends ConstraintValidator
                             ]
                         )
                     ],
-                    'selection' => new Collection(
-                        ['fields' => [
-                            'type' => new Type(['type' => 'string']),
-                            'locale' => new Type(['type' => 'string']),
-                        ]]
-                    ),
+                    'selection' => new Selection(),
                 ],
             ]),
         );
@@ -116,7 +111,7 @@ class SourcesValidator extends ConstraintValidator
                     $violation->getMessage(),
                     $violation->getParameters()
                 )
-                    ->atPath(sprintf('[%s]', $source['uuid']))
+                    ->atPath(sprintf('[%s]%s', $source['uuid'], $violation->getPropertyPath()))
                     ->addViolation();
             }
         }

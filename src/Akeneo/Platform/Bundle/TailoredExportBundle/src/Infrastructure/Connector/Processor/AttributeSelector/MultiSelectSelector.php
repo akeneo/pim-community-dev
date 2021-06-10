@@ -2,15 +2,6 @@
 
 declare(strict_types=1);
 
-/*
- * This file is part of the Akeneo PIM Enterprise Edition.
- *
- * (c) 2021 Akeneo SAS (https://www.akeneo.com)
- *
- * For the full copyright and license information, please view the LICENSE
- * file that was distributed with this source code.
- */
-
 namespace Akeneo\Platform\TailoredExport\Infrastructure\Connector\Processor\AttributeSelector;
 
 use Akeneo\Pim\Enrichment\Component\Product\Model\ValueInterface;
@@ -21,7 +12,7 @@ use Akeneo\Platform\TailoredExport\Domain\SelectionTypes;
 /**
  * @author Pierre Jolly <pierre.jolly@akeneo.com>
  */
-class SimpleSelectSelector implements AttributeSelectorInterface
+class MultiSelectSelector implements AttributeSelectorInterface
 {
     /** @var string[] */
     private array $supportedAttributeTypes;
@@ -37,26 +28,48 @@ class SimpleSelectSelector implements AttributeSelectorInterface
 
     public function applySelection(array $selectionConfiguration, Attribute $attribute, ValueInterface $value): string
     {
-        $optionCode = $value->getData();
+        $optionsCodes = $value->getData();
+        $selectedData = '';
 
         switch ($selectionConfiguration['type']) {
-            case SelectionTypes::CODE:
-                return $optionCode;
-            case SelectionTypes::LABEL:
-                $optionKey = sprintf('%s.%s', $attribute->code(), $optionCode);
+            case 'code':
+                $selectedData = $optionsCodes;
+                break;
+            case 'label':
+                $optionsKeys = $this->generateOptionsKeys($optionsCodes, $attribute->code());
+
                 $attributeOptionTranslations = $this->getExistingAttributeOptionsWithValues->fromAttributeCodeAndOptionCodes(
-                    [$optionKey]
+                    $optionsKeys
                 );
 
-                return $attributeOptionTranslations[$optionKey][$selectionConfiguration['locale']] ?? sprintf('[%s]', $optionCode);
-            default:
-                throw new \LogicException('Selection type not supported');
+                $selectedData = array_map(function ($optionCode) use ($attributeOptionTranslations, $attribute, $selectionConfiguration) {
+                    $optionKey = $this->generateOptionKey($attribute->code(), $optionCode);
+                    return $attributeOptionTranslations[$optionKey][$selectionConfiguration['locale']] ?? sprintf('[%s]', $optionCode);
+                }, $value->getData());
+                break;
         }
+
+        return implode(', ', $selectedData);
     }
 
     public function supports(array $selectionConfiguration, Attribute $attribute): bool
     {
         return in_array($selectionConfiguration['type'], [SelectionTypes::LABEL, SelectionTypes::CODE])
             && in_array($attribute->type(), $this->supportedAttributeTypes);
+    }
+
+    private function generateOptionsKeys(array $optionsCodes, string $attributeCode): array
+    {
+        return array_map(
+            function ($optionCode) use ($attributeCode) {
+                return $this->generateOptionKey($attributeCode, $optionCode);
+            },
+            $optionsCodes
+        );
+    }
+
+    private function generateOptionKey(string $attributeCode, string $optionCode): string
+    {
+        return sprintf('%s.%s', $attributeCode, $optionCode);
     }
 }

@@ -1,23 +1,18 @@
-import {CodeLabelSelector} from './CodeLabelSelector';
-import {useAttribute} from '../../../../hooks';
 import React from 'react';
-import {Source, Selection} from '../../../../models';
+import {Selection, Attribute} from '../../../../models';
+import {CodeLabelSelector} from './CodeLabelSelector';
 
 type SelectorProps = {
-  source: Source;
+  attribute: Attribute;
+  selection: Selection;
   onSelectionChange: (selection: Selection) => void;
 };
 
-const Selector = ({source, onSelectionChange}: SelectorProps) => {
-  const attribute = useAttribute(source.code);
-
-  if (null === attribute) return null;
-
+const Selector = ({attribute, selection, onSelectionChange}: SelectorProps) => {
   switch (attribute.type) {
     case 'pim_catalog_simpleselect':
     case 'pim_catalog_multiselect':
-      return <CodeLabelSelector selection={source.selection} onSelectionChange={onSelectionChange} />;
-
+      return <CodeLabelSelector selection={selection} onSelectionChange={onSelectionChange} />;
     default:
       return null;
   }

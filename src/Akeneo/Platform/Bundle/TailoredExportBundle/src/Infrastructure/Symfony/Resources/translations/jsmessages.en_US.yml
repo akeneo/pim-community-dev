@@ -39,6 +39,8 @@ akeneo.tailored_export:
         link: this article may help you
       no_column_selected:
         title: No column selected for the moment.
+      selection:
+        title: Selection
   column:
     delete_message: Are you sure you want to remove this column?
   validation:

@@ -1,7 +1,7 @@
-import {getAllLocalesFromChannels, useTranslate} from '@akeneo-pim-community/shared';
-import {Field, SelectInput} from 'akeneo-design-system';
-import {Selection} from '../../../../models';
 import React from 'react';
+import {Field, SelectInput} from 'akeneo-design-system';
+import {getAllLocalesFromChannels, Section, useTranslate} from '@akeneo-pim-community/shared';
+import {Selection} from '../../../../models';
 import {useChannels} from '../../../../hooks';
 import {LocaleDropdown} from '../LocaleDropdown';
 
@@ -16,7 +16,7 @@ const CodeLabelSelector = ({selection, onSelectionChange}: CodeLabelSelectorProp
   const locales = getAllLocalesFromChannels(channels);
 
   return (
-    <>
+    <Section>
       <Field label={translate('pim_common.type')}>
         <SelectInput
           clearable={false}
@@ -45,7 +45,7 @@ const CodeLabelSelector = ({selection, onSelectionChange}: CodeLabelSelectorProp
           onChange={updatedValue => onSelectionChange({...selection, locale: updatedValue})}
         />
       )}
-    </>
+    </Section>
   );
 };
 

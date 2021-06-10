@@ -1,12 +1,11 @@
-import {Source} from '../../models';
 import React from 'react';
+import styled from 'styled-components';
 import {getLocaleFromChannel, ChannelCode, LocaleCode} from '@akeneo-pim-community/shared';
 import {useChannels} from '../../hooks';
-import styled from 'styled-components';
-import {SourceDetailsPlaceholder} from './SourceDetailsPlaceholder';
+import {Source} from '../../models';
 import {ChannelDropdown} from './SourceConfigurator/ChannelDropdown';
 import {LocaleDropdown} from './SourceConfigurator/LocaleDropdown';
-import {Selector} from './SourceConfigurator/Selector/Selector';
+import {Operations} from './SourceConfigurator/Operations';
 
 const Container = styled.div`
   display: flex;
@@ -44,11 +43,7 @@ const SourceConfigurator = ({source, onSourceChange}: SourceConfiguratorProps) =
           }}
         />
       )}
-      <Selector
-        source={source}
-        onSelectionChange={updatedSelection => onSourceChange({...source, selection: updatedSelection})}
-      />
-      {'identifier' === source.code && <SourceDetailsPlaceholder />}
+      <Operations source={source} onSourceChange={onSourceChange} />
     </Container>
   );
 };

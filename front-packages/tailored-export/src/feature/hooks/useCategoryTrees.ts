@@ -34,7 +34,7 @@ const useCategoryTrees = (
     };
 
     fetchCategories();
-  }, [route, setCategoryTrees, isMounted, initialCategorySelection]);
+  }, [route, setCategoryTrees, isMounted, initialCategorySelection, setActiveCategoryTree]);
 
   return categoryTrees;
 };
