@@ -73,7 +73,7 @@ spec:
           image: {{ template "pim.imageNameAndTag" . }}
           imagePullPolicy: {{ .Values.image.pim.pullPolicy | quote }}
           command: ['/usr/local/sbin/php-fpm', '-F']
-          resources: {{ toYaml .Values.pim.resources | nindent 12 }}
+          resources: {{ toYaml .Values.pim.fpm.resources | nindent 12 }}
           ports:
             - name: fpm
               containerPort: 9000
@@ -125,13 +125,7 @@ spec:
         - name: httpd
           image: "{{ .Values.image.httpd.repository }}:{{ .Values.image.httpd.tag }}"
           imagePullPolicy: {{ .Values.image.httpd.pullPolicy | quote }}
-          resources:
-            limits:
-              cpu: 200m
-              memory: 128Mi
-            requests:
-              cpu: 200m
-              memory: 128Mi
+          resources: {{ toYaml .Values.pim.httpd.resources | nindent 12 }}
           ports:
             - containerPort: 80
               name: httpd
