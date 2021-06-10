@@ -90,21 +90,6 @@ class MergeDataOnProductSpec extends ObjectBehavior
         $this->merge($filteredProduct, $fullProduct)->shouldReturn($fullProduct);
     }
 
-    function it_sets_parent_from_unit_of_work_if_it_is_a_variant_product_and_if_it_is_new(
-        $productModelRepository,
-        ProductInterface $filteredVariantProduct,
-        ProductModelInterface $parent,
-        ProductModelInterface $parentInUoW
-    ) {
-        $parent->getId()->willReturn(1);
-        $filteredVariantProduct->getParent()->willReturn($parent);
-        $productModelRepository->find(1)->willReturn($parentInUoW);
-
-        $filteredVariantProduct->setParent($parentInUoW)->shouldBeCalled();
-
-        $this->merge($filteredVariantProduct)->shouldReturn($filteredVariantProduct);
-    }
-
     function it_converts_the_full_product_to_a_variant_product(
         $productModelRepository,
         $attributeRepository,
@@ -127,8 +112,6 @@ class MergeDataOnProductSpec extends ObjectBehavior
         $parent->getCode()->willReturn('parent_code');
         $filteredVariantProduct->getParent()->willReturn($parent);
         $productModelRepository->find(1)->willReturn($parentInUoW);
-
-        $filteredVariantProduct->setParent($parentInUoW)->shouldBeCalled();
 
         $filteredVariantProduct->getId()->willReturn(1);
         $filteredVariantProduct->isEnabled()->willReturn(true);
@@ -230,7 +213,6 @@ class MergeDataOnProductSpec extends ObjectBehavior
         $filteredVariantProduct->getParent()->willReturn($parent);
         $parent->getId()->willReturn(1);
         $productModelRepository->find(1)->willReturn($parentInUoW);
-        $filteredVariantProduct->setParent($parentInUoW)->shouldBeCalled();
 
         $filteredVariantProduct->getId()->willReturn(1);
         $filteredVariantProduct->isEnabled()->willReturn(true);
@@ -257,7 +239,7 @@ class MergeDataOnProductSpec extends ObjectBehavior
         $fullVariantProduct->setGroups($groups)->shouldBeCalled();
         $fullVariantProduct->setUniqueData($uniqueData)->shouldBeCalled();
         $fullVariantProduct->setFamilyVariant($familyVariant)->shouldBeCalled();
-        $fullVariantProduct->setParent(Argument::type(ProductModelInterface::class))->shouldBeCalled();
+        $fullVariantProduct->setParent($parentInUoW)->shouldBeCalled();
 
         $valuesMerger->merge($filteredVariantProduct, $fullVariantProduct)->willReturn($fullVariantProduct);
         $associationMerger->merge($filteredVariantProduct, $fullVariantProduct)->willReturn($fullVariantProduct);

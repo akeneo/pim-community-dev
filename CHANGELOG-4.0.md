@@ -1,5 +1,9 @@
 # 4.0.x
 
+## Bug fixes
+
+- PIM-9900: Fix server error on the second save of a product variant
+
 # 4.0.113 (2021-06-04)
 
 ## Bug fixes
