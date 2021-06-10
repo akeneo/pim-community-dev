@@ -13,6 +13,7 @@ declare(strict_types=1);
 
 namespace Akeneo\Pim\TableAttribute\tests\back\Integration\TableConfiguration\Persistence;
 
+use Akeneo\Pim\TableAttribute\Domain\TableConfiguration\NumberColumn;
 use Akeneo\Pim\TableAttribute\Domain\TableConfiguration\Repository\TableConfigurationNotFoundException;
 use Akeneo\Pim\TableAttribute\Domain\TableConfiguration\TableConfiguration;
 use Akeneo\Pim\TableAttribute\Domain\TableConfiguration\TextColumn;
@@ -137,6 +138,44 @@ final class SqlTableConfigurationRepositoryIntegration extends TestCase
         self::assertSame($idPrice, $rows[1]['id']);
         self::assertSame('quantity', $rows[2]['code']);
         self::assertSame($idQuantity, $rows[2]['id']);
+    }
+
+    /** @test */
+    public function it_recreates_the_column_when_data_type_is_updated(): void
+    {
+        $tableConfiguration = TableConfiguration::fromColumnDefinitions([
+            TextColumn::fromNormalized(['code' => 'ingredients']),
+            TextColumn::fromNormalized(['code' => 'quantity']),
+        ]);
+        $this->sqlTableConfigurationRepository->save('nutrition', $tableConfiguration);
+
+        $rows = $this->connection->executeQuery(
+            'SELECT * FROM pim_catalog_table_column WHERE attribute_id = :attribute_id ORDER BY column_order',
+            ['attribute_id' => $this->tableAttributeId]
+        )->fetchAll();
+
+        self::assertCount(2, $rows);
+        $idIngredients = $rows[0]['id'];
+        $idQuantity = $rows[1]['id'];
+        self::assertSame('text', $rows[1]['data_type']);
+
+        $tableConfiguration = TableConfiguration::fromColumnDefinitions([
+            TextColumn::fromNormalized(['code' => 'ingredients']),
+            NumberColumn::fromNormalized(['code' => 'quantity']),
+        ]);
+        $this->sqlTableConfigurationRepository->save('nutrition', $tableConfiguration);
+
+        $rows = $this->connection->executeQuery(
+            'SELECT * FROM pim_catalog_table_column WHERE attribute_id = :attribute_id ORDER BY column_order',
+            ['attribute_id' => $this->tableAttributeId]
+        )->fetchAll();
+
+        self::assertCount(2, $rows);
+        self::assertSame('ingredients', $rows[0]['code']);
+        self::assertSame($idIngredients, $rows[0]['id']);
+        self::assertSame('quantity', $rows[1]['code']);
+        self::assertSame('number', $rows[1]['data_type'], 'The column data type should have changed');
+        self::assertNotSame($idQuantity, $rows[1]['id'], 'The column id should have changed when the type is updated');
     }
 
     /** @test */

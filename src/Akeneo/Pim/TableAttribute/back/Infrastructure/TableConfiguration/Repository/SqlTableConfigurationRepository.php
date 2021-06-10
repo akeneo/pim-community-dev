@@ -35,6 +35,11 @@ final class SqlTableConfigurationRepository implements TableConfigurationReposit
         $this->columnFactory = $columnFactory;
     }
 
+    private function getNextIdentifier(string $columnCode): string
+    {
+        return sprintf('%s_%s', $columnCode, Uuid::uuid4()->toString());
+    }
+
     public function save(string $attributeCode, TableConfiguration $tableConfiguration): void
     {
         if ($this->connection->isTransactionActive()) {
@@ -47,22 +52,23 @@ final class SqlTableConfigurationRepository implements TableConfigurationReposit
 
     private function doSave(string $attributeCode, TableConfiguration $tableConfiguration): void
     {
-        $newColumnCodes = array_map(
-            fn (array $columnDefinition): string => $columnDefinition['code'],
+        $newColumnCodesAndTypes = array_map(
+            fn (array $columnDefinition): string => $columnDefinition['code'] . '-' . $columnDefinition['data_type'],
             $tableConfiguration->normalize()
         );
 
         $this->connection->executeQuery(<<<SQL
             DELETE table_column.* FROM pim_catalog_table_column table_column
             INNER JOIN pim_catalog_attribute attribute ON attribute.id = table_column.attribute_id
-            WHERE attribute.code = :attribute_code AND table_column.code NOT IN (:newColumnCodes)
+            WHERE attribute.code = :attribute_code
+                AND CONCAT(table_column.code, '-', table_column.data_type) NOT IN (:newColumnCodesAndTypes)
             SQL,
             [
                 'attribute_code' => $attributeCode,
-                'newColumnCodes' => $newColumnCodes,
+                'newColumnCodesAndTypes' => $newColumnCodesAndTypes,
             ],
             [
-                'newColumnCodes' => Connection::PARAM_STR_ARRAY,
+                'newColumnCodesAndTypes' => Connection::PARAM_STR_ARRAY,
             ]
         );
         foreach ($tableConfiguration->normalize() as $columnOrder => $column) {
@@ -76,7 +82,7 @@ final class SqlTableConfigurationRepository implements TableConfigurationReposit
                 ON DUPLICATE KEY UPDATE column_order = newvalues.column_order, labels = newvalues.labels
                 SQL,
                 [
-                    'column_id' =>  ($column['code'] . '_' . Uuid::uuid4()->toString()),
+                    'column_id' =>  $this->getNextIdentifier($column['code']),
                     'attribute_code' => $attributeCode,
                     'code' => $column['code'],
                     'data_type' => $column['data_type'],
