@@ -2,7 +2,7 @@ import React, {RefObject, createRef} from 'react';
 import {connect} from 'react-redux';
 import styled from 'styled-components';
 import {Button, Key, CloseIcon, Modal, SectionTitle, getColor} from 'akeneo-design-system';
-import {Section, TextField, useTranslate} from '@akeneo-pim-community/shared';
+import {Section, TextField, useSecurity, useTranslate} from '@akeneo-pim-community/shared';
 import {getLabel} from 'pimui/js/i18n';
 import {ValidationError} from '@akeneo-pim-community/shared';
 import {EditState} from 'akeneoassetmanager/application/reducer/asset-family/edit';
@@ -45,8 +45,6 @@ const HeaderCell = styled.th`
   padding-bottom: 20px;
   background: ${getColor('white')};
 `;
-
-const securityContext = require('pim/security-context');
 
 const OptionView = ({onOptionEditionStart}: {onOptionEditionStart: () => void}) => {
   const translate = useTranslate();
@@ -105,10 +103,8 @@ type OwnProps = {
     locale: {
       edit: boolean;
     };
-    attribute: {
-      create: boolean;
+    assetFamily: {
       edit: boolean;
-      delete: boolean;
     };
   };
 };
@@ -132,10 +128,8 @@ type OptionRowProps = {
     locale: {
       edit: boolean;
     };
-    attribute: {
-      create: boolean;
+    assetFamily: {
       edit: boolean;
-      delete: boolean;
     };
   };
   labelInputReference: React.RefObject<HTMLInputElement>;
@@ -167,13 +161,17 @@ const OptionRow = ({
   onFocusPreviousField,
 }: OptionRowProps) => {
   const translate = useTranslate();
-  const displayDeleteRowButton: boolean = !isLastRow && rights.attribute.delete;
-  const canEditLabel = rights.attribute.edit && rights.locale.edit;
+  const {isGranted} = useSecurity();
+
+  const canEditAttribute = rights.assetFamily.edit && isGranted('akeneo_assetmanager_option_edit');
+  const displayDeleteRowButton: boolean =
+    !isLastRow && canEditAttribute && isGranted('akeneo_assetmanager_option_delete');
+  const canEditLabel = canEditAttribute && rights.locale.edit;
   const labelClassName = `AknTextField AknTextField--light ${!canEditLabel ? 'AknTextField--disabled' : ''}`;
 
   return (
     <>
-      {!isLastRow || rights.attribute.edit ? (
+      {!isLastRow || canEditAttribute ? (
         <tr data-code={code} className="AknOptionEditor-row">
           <td>
             <div className="AknFieldContainer">
@@ -221,7 +219,7 @@ const OptionRow = ({
                   type="text"
                   className={
                     'AknTextField AknTextField--light' +
-                    (index <= numberOfLockedOptions - 1 && !rights.attribute.edit ? ' AknTextField--disabled' : '')
+                    (index <= numberOfLockedOptions - 1 && !canEditAttribute ? ' AknTextField--disabled' : '')
                   }
                   tabIndex={index <= numberOfLockedOptions - 1 ? -1 : 0}
                   id={`pim_asset_manager.attribute.edit.input.${code}_${index}.code`}
@@ -242,7 +240,7 @@ const OptionRow = ({
                       }
                     }
                   }}
-                  readOnly={!rights.attribute.edit}
+                  readOnly={!canEditAttribute}
                 />
               </div>
             </div>
@@ -281,6 +279,9 @@ const ManageOptionsView = ({
   currentOptionId,
 }: ManageOptionsProps) => {
   const translate = useTranslate();
+  const {isGranted} = useSecurity();
+
+  const canEditAttribute = rights.assetFamily.edit && isGranted('akeneo_assetmanager_option_edit');
   const labelInputReferences: RefObject<HTMLInputElement>[] = [
     ...options.map(() => createRef<HTMLInputElement>()),
     React.createRef<HTMLInputElement>(),
@@ -336,9 +337,7 @@ const ManageOptionsView = ({
       </Modal.SectionTitle>
       <Modal.Title>{translate('pim_asset_manager.attribute.edit.input.manage_options.quick_edit.label')}</Modal.Title>
       <Modal.TopRightButtons>
-        {rights.attribute.edit && (
-          <Button onClick={events.onOptionEditionSubmission}>{translate('pim_common.save')}</Button>
-        )}
+        {canEditAttribute && <Button onClick={events.onOptionEditionSubmission}>{translate('pim_common.save')}</Button>}
       </Modal.TopRightButtons>
       <Content>
         <OptionContainer>
@@ -417,7 +416,7 @@ const ManageOptionsView = ({
 };
 
 export default connect(
-  (state: EditState, ownProps: OwnProps) => {
+  (state: EditState) => {
     return {
       ...state.options,
       locale: state.user.catalogLocale,
@@ -429,18 +428,6 @@ export default connect(
       numberOfLockedOptions: state.options.numberOfLockedOptions,
       assetFamilyCode: state.form.data.code,
       catalogLocale: state.user.defaultCatalogLocale,
-      rights: {
-        locale: {
-          edit: ownProps.rights.locale.edit,
-        },
-        attribute: {
-          edit: securityContext.isGranted('akeneo_assetmanager_option_edit') && ownProps.rights.attribute.edit,
-          delete:
-            securityContext.isGranted('akeneo_assetmanager_option_delete') &&
-            securityContext.isGranted('akeneo_assetmanager_option_edit') &&
-            ownProps.rights.attribute.edit,
-        },
-      },
     };
   },
   (dispatch: any): DispatchProps => {

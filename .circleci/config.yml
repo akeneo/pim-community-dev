@@ -26,11 +26,6 @@ jobs:
       - image: alpine/git
     steps:
       - checkout
-      - run:
-          name: Persist default IMAGE_TAG to be the repo last commit SHA1
-          command: |
-              echo export IMAGE_TAG=${CIRCLE_SHA1}>> persisted_env_vars
-              echo export IMAGE_TAG_SHORTED=$(echo ${CIRCLE_SHA1} | cut -c -7)>> persisted_env_vars
       - persist_to_workspace:
           root: ~/
           paths:
@@ -135,7 +130,6 @@ jobs:
           - attach_workspace:
                 at: ~/
           - set_gcloud_config_dev
-          - restore_persisted_env_vars
           - when:
                 condition: << parameters.is_pull_request >>
                 steps:
@@ -150,12 +144,16 @@ jobs:
               name: Define value for next steps
               command: |
                 TYPE="srnt"
+                IMAGE_TAG=${CIRCLE_SHA1}
+                IMAGE_TAG_SHORTED=$(echo ${IMAGE_TAG} | cut -c -7)
                 IMAGE_TAG_DATE=$(date +%Y%m%d%H%M%S)
                 SERENITY_RELEASE_NAME="v$(date +%Y%m%d%H%M%S)"
                 PRODUCT_REFERENCE_TYPE="serenity_instance"
                 PRODUCT_REFERENCE_CODE="serenity_${ENV_NAME}"
 
                 echo export TYPE=${TYPE} >> $BASH_ENV
+                echo export IMAGE_TAG=${IMAGE_TAG} >> $BASH_ENV
+                echo export IMAGE_TAG_SHORTED=${IMAGE_TAG_SHORTED} >> $BASH_ENV
                 echo export IMAGE_TAG_DATE=${IMAGE_TAG_DATE} >> $BASH_ENV
                 echo export SERENITY_RELEASE_NAME=${SERENITY_RELEASE_NAME} >> $BASH_ENV
                 echo export PRODUCT_REFERENCE_TYPE=${PRODUCT_REFERENCE_TYPE} >> $BASH_ENV
@@ -182,7 +180,7 @@ jobs:
           - persist_to_workspace:
               root: ~/
               paths:
-                - project
+                - project/persisted_env_vars
 
   build_grth:
     parameters:
@@ -200,7 +198,6 @@ jobs:
         fingerprints:
           - "1f:25:f8:bb:59:52:95:f6:e2:f2:97:2f:30:d4:e9:66"
     - set_gcloud_config_dev
-    - restore_persisted_env_vars
     - when:
         condition: << parameters.is_pull_request >>
         steps:
@@ -234,7 +231,8 @@ jobs:
         name: Define value for next steps
         command: |
           TYPE="grth"
-          IMAGE_TAG=$(echo growth-${IMAGE_TAG} | cut -b 1-40)
+          IMAGE_TAG=$(echo growth-${CIRCLE_SHA1} | cut -b 1-40)
+          IMAGE_TAG_SHORTED=$(echo ${CIRCLE_SHA1} | cut -c -7)
           IMAGE_TAG_DATE=$(date +%Y%m%d%H%M%S)
           GROWTH_RELEASE_NAME="growth-v$(date +%Y%m%d%H%M%S)"
           PRODUCT_REFERENCE_TYPE="growth_edition_instance"
@@ -242,6 +240,7 @@ jobs:
 
           echo export TYPE=${TYPE} >> $BASH_ENV
           echo export IMAGE_TAG=${IMAGE_TAG} >> $BASH_ENV
+          echo export IMAGE_TAG_SHORTED=${IMAGE_TAG_SHORTED} >> $BASH_ENV
           echo export IMAGE_TAG_DATE=${IMAGE_TAG_DATE} >> $BASH_ENV
           echo export GROWTH_RELEASE_NAME=${GROWTH_RELEASE_NAME} >> $BASH_ENV
           echo export PRODUCT_REFERENCE_TYPE=${PRODUCT_REFERENCE_TYPE} >> $BASH_ENV
@@ -260,7 +259,6 @@ jobs:
     - run:
         name: Prepare the Growth Edition
         command: |
-          # export GIT_SSH_COMMAND='ssh -i ~/.ssh/id_rsa_1f25f8bb595295f6e2f2972f30d4e966 -o UserKnownHostsFile=~/.ssh/known_hosts -o IdentitiesOnly=Yes'
           mv /home/circleci/project /home/circleci/ee_project
           git clone --branch $CE_BRANCH git@github.com:akeneo/pim-community-dev.git /home/circleci/project
           cd /home/circleci/project
@@ -818,7 +816,6 @@ jobs:
           - attach_workspace:
                 at: ~/
           - set_gcloud_config_dev
-          - restore_persisted_env_vars
           - run:
               name: Test Serenity Helm generated yaml files compliance with current kubernetes Version
               command: PIM_CONTEXT=deployment K8S_CLUSTER_VERSION_ENABLED=1  make test_helm_generated_k8s_files
@@ -1048,16 +1045,18 @@ jobs:
       steps:
           - attach_workspace:
                 at: ~/
+          - add_ssh_keys
           - set_gcloud_config_dev
           - restore_persisted_env_vars
           - run:
               name: Define value for next steps
               command: |
+                ssh-keyscan github.com >> ~/.ssh/known_hosts
                 LIST_SOURCE_PFID=( srnt-nature-et-decouvertes srnt-invivo srnt-franklin-electric )
                 RANDOM_SOURCE_PFID=$(( $RANDOM % 3 ))
                 SOURCE_PFID=${LIST_SOURCE_PFID[${RANDOM_SOURCE_PFID}]}
                 INSTANCE_NAME_PREFIX=pimci-duplic
-                INSTANCE_NAME=$(echo "${INSTANCE_NAME_PREFIX}-${IMAGE_TAG}" | cut -c1-40)
+                INSTANCE_NAME=${INSTANCE_NAME_PREFIX}-${IMAGE_TAG_SHORTED}-${CIRCLE_BUILD_NUM}
                 PIM_CONTEXT=deployment
 
                 echo export SOURCE_PFID=${SOURCE_PFID} >> $BASH_ENV
@@ -1137,6 +1136,7 @@ jobs:
               command: |
                 BOTO_CONFIG=/dev/null gsutil -m cp -r /home/circleci/project/deployments/terraform gs://akecld-terraform-modules/growth-edition/$GROWTH_RELEASE_NAME/
                 BOTO_CONFIG=/dev/null gsutil -m cp -r /home/circleci/project/deployments/terraform gs://akecld-terraform-modules/growth-edition/$GROWTH_RELEASE_NAME/terraform/deployments/terraform
+                BOTO_CONFIG=/dev/null gsutil -m cp -r gs://akecld-terraform-modules/growth-edition/$GROWTH_RELEASE_NAME gs://akecld-terraform-modules/growth-edition-dev/$GROWTH_RELEASE_NAME
           - run:
               name: Tag the Docker image with the definitive tag
               command: |
@@ -1158,31 +1158,36 @@ jobs:
                 at: ~/
             - set_gcloud_config_preprod
             - add_ssh_keys
-            - restore_persisted_env_vars
             - run:
-                name: Get latest release
+                name: Define value for next steps
                 command: |
-                    ssh-keyscan github.com >> ~/.ssh/known_hosts
-                    git tag --list | grep -E "^v?[0-9]+$" | sort -r > /tmp/pim-tags.txt
-                    RELEASE_TO_DEPLOY=$(head -n 1 /tmp/pim-tags.txt)
-                    echo export IMAGE_TAG=${RELEASE_TO_DEPLOY} >> $BASH_ENV
-                    echo export ENV_NAME=preprod >> $BASH_ENV
-                    echo export INSTANCE_NAME=pimci-helpdesk >> $BASH_ENV
-                    echo export PIM_CONTEXT=deployment >> $BASH_ENV
-                    echo export ACTIVATE_MONITORING=true >> $BASH_ENV
+                  TYPE="srnt"
+                  ssh-keyscan github.com >> ~/.ssh/known_hosts
+                  git tag --list | grep -E "^v?[0-9]+$" | sort -r > /tmp/pim-tags.txt
+                  RELEASE_TO_DEPLOY=$(head -n 1 /tmp/pim-tags.txt)
+                  INSTANCE_NAME="pimci-helpdesk"
+                  PRODUCT_REFERENCE_TYPE="serenity_instance"
+                  PRODUCT_REFERENCE_CODE="serenity_${ENV_NAME}"
+                  PIM_CONTEXT=deployment
+                  ACTIVATE_MONITORING=true
+
+                  echo export TYPE=${TYPE} >> $BASH_ENV
+                  echo export RELEASE_TO_DEPLOY=${RELEASE_TO_DEPLOY} >> $BASH_ENV
+                  echo export INSTANCE_NAME=${INSTANCE_NAME} >> $BASH_ENV
+                  echo export PRODUCT_REFERENCE_TYPE=${PRODUCT_REFERENCE_TYPE} >> $BASH_ENV
+                  echo export PRODUCT_REFERENCE_CODE=${PRODUCT_REFERENCE_CODE} >> $BASH_ENV
+                  echo export PIM_CONTEXT=${PIM_CONTEXT} >> $BASH_ENV
+                  echo export ACTIVATE_MONITORING=${ACTIVATE_MONITORING} >> $BASH_ENV
             - run:
                 name: Generate config files and deploy
                 command: |
-                    PIM_CONTEXT=deployment make create-ci-release-files
-                    PIM_CONTEXT=deployment make change-terraform-source-version
-            - run:
-                name: Deploy
-                command: |
-                    PIM_CONTEXT=deployment UPGRADE_STEP_2=true make deploy
+                    IMAGE_TAG=${RELEASE_TO_DEPLOY} make create-ci-release-files
+                    IMAGE_TAG=${RELEASE_TO_DEPLOY} make change-terraform-source-version
+                    UPGRADE_STEP_2=true IMAGE_TAG=${RELEASE_TO_DEPLOY} make deploy
             - run:
                 name: Communicate
                 command: |
-                    PIM_CONTEXT=deployment make slack_helpdesk
+                    make slack_helpdesk
 
   deploy_pm_environment:
       environment:
@@ -1192,12 +1197,30 @@ jobs:
           - attach_workspace:
                 at: ~/
           - set_gcloud_config_preprod
-          - restore_persisted_env_vars
           - add_ssh_keys
           - run:
-                name: Latest master version for PMs
-                command: |
-                    ACTIVATE_MONITORING=true INSTANCE_NAME=pimci-pm PIM_CONTEXT=deployment UPGRADE_STEP_2=true make deploy-serenity
+              name: Define value for next steps
+              command: |
+                TYPE="srnt"
+                IMAGE_TAG=${CIRCLE_SHA1}
+                IMAGE_TAG_SHORTED=$(echo ${IMAGE_TAG} | cut -c -7)
+                INSTANCE_NAME="pimci-pm"
+                PRODUCT_REFERENCE_TYPE="serenity_instance"
+                PRODUCT_REFERENCE_CODE="serenity_${ENV_NAME}"
+                PIM_CONTEXT=deployment
+                ACTIVATE_MONITORING=true
+
+                echo export TYPE=${TYPE} >> $BASH_ENV
+                echo export IMAGE_TAG=${IMAGE_TAG} >> $BASH_ENV
+                echo export INSTANCE_NAME=${INSTANCE_NAME} >> $BASH_ENV
+                echo export PRODUCT_REFERENCE_TYPE=${PRODUCT_REFERENCE_TYPE} >> $BASH_ENV
+                echo export PRODUCT_REFERENCE_CODE=${PRODUCT_REFERENCE_CODE} >> $BASH_ENV
+                echo export PIM_CONTEXT=${PIM_CONTEXT} >> $BASH_ENV
+                echo export ACTIVATE_MONITORING=${ACTIVATE_MONITORING} >> $BASH_ENV
+          - run:
+              name: Latest master version for PMs
+              command: |
+                UPGRADE_STEP_2=true make deploy-instance
 
   deploy_pr_srnt_environment:
       environment:
@@ -1209,22 +1232,41 @@ jobs:
           - set_gcloud_config_dev
           - restore_persisted_env_vars
           - run:
-                name: Deploy PR environment
-                command: |
-                    if [[ ${CIRCLE_PULL_REQUEST##*/} == "" ]]; then echo "ERROR : CIRCLE_PULL_REQUEST is empty."; exit 1;fi
-                    echo "This environment will be available at https://pimci-pr-${CIRCLE_PULL_REQUEST##*/}.dev.cloud.akeneo.com once deployed :) "
+              name: Define value for next steps
+              command: |
+                INSTANCE_NAME_PREFIX=pimci-pr
+                INSTANCE_NAME=${INSTANCE_NAME_PREFIX}-${CIRCLE_PULL_REQUEST##*/}
+                PIM_CONTEXT=deployment
+                ACTIVATE_MONITORING=true
+
+                echo export IMAGE_TAG=${IMAGE_TAG} >> $BASH_ENV
+                echo export INSTANCE_NAME_PREFIX=${INSTANCE_NAME_PREFIX} >> $BASH_ENV
+                echo export INSTANCE_NAME=${INSTANCE_NAME} >> $BASH_ENV
+                echo export PRODUCT_REFERENCE_TYPE=${PRODUCT_REFERENCE_TYPE} >> $BASH_ENV
+                echo export PRODUCT_REFERENCE_CODE=${PRODUCT_REFERENCE_CODE} >> $BASH_ENV
+                echo export PIM_CONTEXT=${PIM_CONTEXT} >> $BASH_ENV
+                echo export ACTIVATE_MONITORING=${ACTIVATE_MONITORING} >> $BASH_ENV
+
+                echo "Instance name prefix: ${INSTANCE_NAME_PREFIX}"
+                echo "Instance name: ${INSTANCE_NAME}"
+                echo "Image tag: ${IMAGE_TAG}"
           - run:
-                name: Deploy PR environment
-                command: ENV_NAME=dev INSTANCE_NAME_PREFIX=pimci-pr INSTANCE_NAME=pimci-pr-${CIRCLE_PULL_REQUEST##*/} PIM_CONTEXT=deployment make deploy-serenity
+              name: Check Circle CI PR
+              command: |
+                if [[ ${CIRCLE_PULL_REQUEST##*/} == "" ]]; then echo "ERROR : CIRCLE_PULL_REQUEST is empty."; exit 1;fi
+                echo "This environment will be available at https://${INSTANCE_NAME}.dev.cloud.akeneo.com once deployed :)"
+          - run:
+              name: Deploy PR environment
+              command: make deploy-instance
           - run:
               name: Prepare infrastructure artifacts
-              command: ENV_NAME=dev INSTANCE_NAME_PREFIX=pimci-pr INSTANCE_NAME=pimci-pr-${CIRCLE_PULL_REQUEST##*/} PIM_CONTEXT=deployment make prepare-infrastructure-artifacts
+              command: make prepare-infrastructure-artifacts
               when: on_fail
           - store_artifacts:
               path: ~/artifacts/infra
           - run:
               name: Remove env on kubernetes
-              command: ENV_NAME=dev INSTANCE_NAME_PREFIX=pimci-pr INSTANCE_NAME=pimci-pr-${CIRCLE_PULL_REQUEST##*/} PIM_CONTEXT=deployment make delete
+              command: make delete
               when: on_fail
 
   deploy_pr_grth_environment:
@@ -1237,22 +1279,41 @@ jobs:
           - set_gcloud_config_dev
           - restore_persisted_env_vars
           - run:
+              name: Define value for next steps
+              command: |
+                INSTANCE_NAME_PREFIX=pimci-pr-ge
+                INSTANCE_NAME=${INSTANCE_NAME_PREFIX}-${CIRCLE_PULL_REQUEST##*/}
+                PIM_CONTEXT=deployment
+                ACTIVATE_MONITORING=true
+
+                echo export IMAGE_TAG=${IMAGE_TAG} >> $BASH_ENV
+                echo export INSTANCE_NAME_PREFIX=${INSTANCE_NAME_PREFIX} >> $BASH_ENV
+                echo export INSTANCE_NAME=${INSTANCE_NAME} >> $BASH_ENV
+                echo export PRODUCT_REFERENCE_TYPE=${PRODUCT_REFERENCE_TYPE} >> $BASH_ENV
+                echo export PRODUCT_REFERENCE_CODE=${PRODUCT_REFERENCE_CODE} >> $BASH_ENV
+                echo export PIM_CONTEXT=${PIM_CONTEXT} >> $BASH_ENV
+                echo export ACTIVATE_MONITORING=${ACTIVATE_MONITORING} >> $BASH_ENV
+
+                echo "Instance name prefix: ${INSTANCE_NAME_PREFIX}"
+                echo "Instance name: ${INSTANCE_NAME}"
+                echo "Image tag: ${IMAGE_TAG}"
+          - run:
               name: Check Circle CI PR
               command: |
                 if [[ ${CIRCLE_PULL_REQUEST##*/} == "" ]]; then echo "ERROR : CIRCLE_PULL_REQUEST is empty."; exit 1;fi
-                echo "This environment will be available at https://pimci-pr-ge-${CIRCLE_PULL_REQUEST##*/}.dev.cloud.akeneo.com once deployed :) "
+                echo "This environment will be available at https://${INSTANCE_NAME}.dev.cloud.akeneo.com once deployed :)"
           - run:
               name: Deploy PR environment
-              command: ENV_NAME=dev INSTANCE_NAME_PREFIX=pimci-pr-ge INSTANCE_NAME=pimci-pr-ge-${CIRCLE_PULL_REQUEST##*/} PIM_CONTEXT=deployment make deploy-serenity
+              command: make deploy-instance
           - run:
               name: Prepare infrastructure artifacts
-              command: ENV_NAME=dev INSTANCE_NAME_PREFIX=pimci-pr-ge INSTANCE_NAME=pimci-pr-ge-${CIRCLE_PULL_REQUEST##*/} PIM_CONTEXT=deployment make prepare-infrastructure-artifacts
-              when: always
+              command: make prepare-infrastructure-artifacts
+              when: on_fail
           - store_artifacts:
               path: ~/artifacts/infra
           - run:
               name: Remove env on kubernetes
-              command: ENV_NAME=dev INSTANCE_NAME_PREFIX=pimci-pr-ge INSTANCE_NAME=pimci-pr-ge-${CIRCLE_PULL_REQUEST##*/} PIM_CONTEXT=deployment make delete
+              command: make delete
               when: on_fail
 
   ##################
@@ -1323,10 +1384,6 @@ workflows:
                     - test_cronjobs_existence_srnt
           - deploy_pr_srnt_environment?:
                 type: approval
-                filters:
-                    branches:
-                        ignore:
-                            - master
                 requires:
                     - test_cronjobs_existence_srnt
           - deploy_pr_srnt_environment:
@@ -1334,10 +1391,6 @@ workflows:
                     - deploy_pr_srnt_environment?
           - deploy_pr_grth_environment?:
                 type: approval
-                filters:
-                    branches:
-                        ignore:
-                            - master
                 requires:
                     - test_cronjobs_existence_grth
           - build_grth:

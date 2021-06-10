@@ -236,6 +236,22 @@ pim_asset_manager:
       drop_or_click_here: Drag and drop your files or click here
       will_appear_here: Upload assets and they will appear just here!
       discard_changes: You will lose your assets if you close this modal without creating them.
+      list:
+        asset: Asset
+        filename: Filename
+        code: Code (required)
+        locale: Locale (required)
+        channel: Channel (required)
+        status: Status
+      status:
+        waiting_for_upload: not uploaded
+        upload_in_progress: in progress
+        uploaded: uploaded
+        valid: ready to create
+        invalid: error
+        created: created
+    delete:
+      title: Asset
     mass_delete:
       title: Assets
     grid:
@@ -255,23 +271,173 @@ pim_asset_manager:
         title: That's not it!
         description: You just scrolled through the first {{ maxDisplayedAssets }} results out of {{ total }} assets. To see more, try with more specific search criteria.
       column:
+        code: Code
+        image: Image
+        label: Label
         complete: Complete
+        action: Actions
+      completeness:
+        title_no_required: No attribute required
+        title_non_complete: 0 out of {{ required }} attributes complete
+        title_ongoing: '{{ complete }} out of {{ required }} attributes complete'
+        title_complete: All {{ required }} attributes complete
     tab:
+      enrich: Enrich
       product: Products
+    notification:
+      save:
+        success: Asset successfully updated.
+        fail: An error occurred during the save of the asset
+        validation_error: The asset could not be updated
+      create:
+        success: Asset successfully created.
+        fail: An error occurred during the creation of the asset
+      delete:
+        success: Asset "{{ code }}" successfully deleted.
+        fail: An error occurred during the deletion of the asset
     completeness:
       label: Complete
   attribute:
+    validation:
+      limit_reached: 'You cannot create the attribute "{{ %attribute_label% }}" because you have reached the limit of {{ %limit% }} attributes for this asset family'
+    default:
+      code: Code
+      label: Label
+      media_file: Media file
+    type:
+      text: Text
+      media_file: Media file
+      asset: Asset single link
+      asset_collection: Asset collection
+      option: Single option
+      option_collection: Multiple options
+      number: Number
+      media_link: Media link
     is_required: required for completeness
-    edit:
+    is_read_only: Read only in the UI
+    media_type_preview: Preview of media type
+    no_data:
+      title: There are no custom attributes for {{ entityLabel }}
+      subtitle: Click on the button "Add an attribute" to configure your first custom attribute
+    button:
+      add: Add an attribute
+    create:
+      header:
+        title: Create
+      subtitle: Asset Families
+      title: Add new asset attribute
+      description: The following parameters, except the label, cannot be updated after the attribute creation
       input:
+        code: Code (required)
+        label: Label
+        type: Attribute type
+        asset_type: Asset family to link (required)
+        value_per_locale: Value per locale
+        value_per_channel: Value per channel
+      placeholder:
+        asset_type: Select your linked asset family
+    edit:
+      delete: Delete the attribute
+      title: Edit attribute {{ code }}
+      save: Save
+      cancel: Cancel
+      input:
+        code: Code (required)
+        label: Label
+        type: Attribute type
         asset_type: Related asset family (required)
+        value_per_locale: Value per locale
+        value_per_channel: Value per channel
+        is_required: Required for completeness
+        is_read_only: Read only in the UI
+        max_length: Max characters
+        textarea: Text Area
+        is_rich_text_editor: Rich Text Editor
+        max_file_size: Max file size (MB)
+        allowed_extensions: Allowed extensions
+        validation_rule: Validation rule
+        regular_expression: Regular expression
+        min_value: Min value
+        max_value: Max value
+        manage_options:
+          confirmation:
+            discard_changes: You will lose changes made to the list of options if you leave the page
+          quick_edit:
+            label: Manage options
+          option:
+            label:
+              placeholder: Write you new option label here
+        options:
+          validation_rule:
+            none: None
+            email: E-mail
+            regular_expression: Regular expression
+            url: URL
+        decimals_allowed: Decimal values allowed
+        prefix: Prefix
+        suffix: Suffix
+        media_type: Media type
+    delete:
+      message: Are you sure you want to delete the attribute "{{ attributeLabel }}"?
+      title: Attribute
+    notification:
+      list:
+        fail: An error occurred during the update of the attribute list
+      save:
+        success: Attribute successfully updated.
+        fail: An error occurred during the save of the attribute
+        validation_error: The attribute could not be updated
+      create:
+        success: Attribute successfully created.
+        fail: An error occurred during the creation of the attribute
+        validation_error: The attribute could not be created
+      delete:
+        success: Attribute successfully deleted.
+        fail: An error occurred during the deletion of the attribute
+    options:
+      no_value: Click here to select an option.
+      sub_title: Asset Families
+      helper:
+        title: Label translations
+    media_link:
+      reload: Reload the media link thumbnail
+    media_file:
+      placeholder: Drag and drop to upload or click here
+    used_as_transformation_target: This field is read only as it is used as a target in an asset transformation.
 pim_enrich:
+  confirmation:
+    discard_changes: 'You will lose changes to the "{{ entity }}" entity if you leave the page.'
   entity:
     attribute:
       property:
+        type:
+          pim_catalog_asset_collection: Asset collection
+        section:
+          type_specific: Type specific parameters
         asset_family:
           identifier: Related asset family (required)
           default_label: Please select an asset family
+permission:
+  mass_action: Apply {{ rightLevel }} right on all groups
+#Analytics
+pim_catalog_volume:
+  section:
+    asset_family:
+      title: Axes on asset families
+      hint: If you are using the asset families, here are the axes to help you monitor your volume.
+  axis:
+    count_asset_family: Asset families
+    average_max_assets_per_asset_family: Assets per asset family
+    average_max_attributes_per_asset_family: Attributes per asset family
+pim_import_export:
+  widget:
+    last_operations:
+      job_type:
+        asset_manager_compute_transformations: "Compute asset transformations"
+        asset_manager_link_assets_to_products: "Link assets to products"
+batch_jobs:
+  default_steps:
+    link_assets_to_products: Link assets to products
 job_execution:
   summary:
     assets: Assets

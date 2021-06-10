@@ -12,9 +12,7 @@ export type View = React.SFC<{
   locale: string;
   rights: {
     attribute: {
-      create: boolean;
       edit: boolean;
-      delete: boolean;
     };
   };
 }>;

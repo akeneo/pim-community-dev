@@ -24,15 +24,12 @@ class AddContextHeaderResponseListenerSpec extends ObjectBehavior
         $event->getRequest()->shouldBeCalled()->willReturn($request);
         $event->getResponse()->shouldBeCalled()->willReturn($response);
 
-        $request->getPathInfo()->shouldBeCalled()->willReturn('my_path_info');
-
         $response->headers = $headers;
 
         $this->beConstructedWith($boundedContextResolver);
         $this->shouldHaveType(AddContextHeaderResponseListener::class);
 
         $headers->set('x-akeneo-context', 'my_context')->shouldBeCalled();
-        $headers->set('x-request-path', 'my_path_info')->shouldBeCalled();
 
         $this->injectAkeneoContextHeader($event);
     }

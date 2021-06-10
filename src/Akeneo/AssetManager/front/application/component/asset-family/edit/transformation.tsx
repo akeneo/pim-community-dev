@@ -3,7 +3,7 @@ import {connect} from 'react-redux';
 import {JsonEditor as Editor} from 'jsoneditor-react';
 import 'jsoneditor-react/es/editor.min.css';
 import {Link, Button, Helper, SectionTitle} from 'akeneo-design-system';
-import {Section, useTranslate, ValidationError} from '@akeneo-pim-community/shared';
+import {Section, useSecurity, useTranslate, ValidationError} from '@akeneo-pim-community/shared';
 import {AssetFamilyBreadcrumb} from 'akeneoassetmanager/application/component/app/breadcrumb';
 import Header from 'akeneoassetmanager/application/component/asset-family/edit/header';
 import {AssetFamily, getAssetFamilyLabel} from 'akeneoassetmanager/domain/model/asset-family/asset-family';
@@ -21,7 +21,6 @@ import {EditionFormState} from 'akeneoassetmanager/application/reducer/asset-fam
 import schema from 'akeneoassetmanager/infrastructure/model/asset-family/transformations.schema.json';
 
 const ajv = new Ajv({allErrors: true, verbose: true});
-const securityContext = require('pim/security-context');
 
 interface StateProps {
   form: EditionFormState;
@@ -87,7 +86,13 @@ interface DispatchProps {
 
 const Transformation = ({assetFamily, context, events, rights, form, errors}: StateProps & DispatchProps) => {
   const translate = useTranslate();
+  const {isGranted} = useSecurity();
   const assetFamilyLabel = getAssetFamilyLabel(assetFamily, context.locale);
+
+  const canEditTransformations =
+    rights.assetFamily.edit &&
+    isGranted('akeneo_assetmanager_asset_family_edit') &&
+    isGranted('akeneo_assetmanager_asset_family_manage_transformation');
 
   return (
     <>
@@ -99,7 +104,7 @@ const Transformation = ({assetFamily, context, events, rights, form, errors}: St
             <Button ghost={true} level="tertiary" onClick={events.onLaunchComputeTransformations}>
               {translate('pim_asset_manager.asset.button.launch_transformations')}
             </Button>
-            {rights.assetFamily.edit && (
+            {canEditTransformations && (
               <Button onClick={events.onSaveEditForm} ref={defaultFocus}>
                 {translate('pim_asset_manager.asset_family.button.save')}
               </Button>
@@ -130,7 +135,7 @@ const Transformation = ({assetFamily, context, events, rights, form, errors}: St
           transformations={assetFamily.transformations}
           errors={errors}
           onAssetFamilyTransformationsChange={events.onAssetFamilyTransformationsUpdated}
-          editMode={rights.assetFamily.edit}
+          editMode={canEditTransformations}
         />
       </Section>
     </>
@@ -148,10 +153,7 @@ export default connect(
       errors: state.form.errors,
       rights: {
         assetFamily: {
-          edit:
-            securityContext.isGranted('akeneo_assetmanager_asset_family_edit') &&
-            securityContext.isGranted('akeneo_assetmanager_asset_family_manage_transformation') &&
-            canEditAssetFamily(state.right.assetFamily, state.form.data.identifier),
+          edit: canEditAssetFamily(state.right.assetFamily, state.form.data.identifier),
         },
       },
     };

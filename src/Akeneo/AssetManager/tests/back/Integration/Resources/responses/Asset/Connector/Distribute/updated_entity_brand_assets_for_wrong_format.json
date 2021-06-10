@@ -14,8 +14,28 @@
       "message": "The search filters have an invalid format.",
       "errors": [
         {
-          "property": "updated[0].value",
-          "message": "Invalid date-time \"abc123\", expected format YYYY-MM-DDThh:mm:ssZ or YYYY-MM-DDThh:mm:ss+hh:mm"
+          "message": "Does not have a value in the enumeration [\"SINCE LAST N DAYS\"]",
+          "property": "updated[0].operator"
+        },
+        {
+          "message": "String value found, but an integer is required",
+          "property": "updated[0].value"
+        },
+        {
+          "message": "Invalid date-time \"abc123\", expected format YYYY-MM-DDThh:mm:ssZ or YYYY-MM-DDThh:mm:ss+hh:mm",
+          "property": "updated[0].value"
+        },
+        {
+          "message": "Does not have a value in the enumeration [\"BETWEEN\",\"NOT BETWEEN\"]",
+          "property": "updated[0].operator"
+        },
+        {
+          "message": "String value found, but an array is required",
+          "property": "updated[0].value"
+        },
+        {
+          "message": "Failed to match exactly one schema",
+          "property": "updated[0]"
         }
       ]
     }

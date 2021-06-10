@@ -33,6 +33,8 @@ final class MysqlChecker
             return ServiceStatus::ok();
         } catch (DBALException $e) {
             return ServiceStatus::notOk(sprintf('Unable to request the database: "%s".', $e->getMessage()));
+        } catch (\Exception $e) {
+            return ServiceStatus::notOk(sprintf('MySQL general execption: "%s".', $e->getMessage()));
         }
     }
 }
