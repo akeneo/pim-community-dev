@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Akeneo\Pim\Enrichment\Component\Product\ProductModel;
 
+use Akeneo\Pim\Enrichment\Component\Product\Model\EntityWithFamilyVariantInterface;
 use Akeneo\Pim\Enrichment\Component\Product\Model\ProductModelInterface;
 use Akeneo\Pim\Enrichment\Component\Product\Model\ValueInterface;
 use Akeneo\Pim\Enrichment\Component\Product\Repository\ProductModelRepositoryInterface;
@@ -59,31 +60,16 @@ class ImageAsLabel
             }
         }
 
-        if ($levelContainingAttribute <= $this->getLevel($productModel)) {
+        if ($levelContainingAttribute <= $productModel->getVariationLevel()) {
             return $productModel->getImage();
         }
 
-        $currentLevel = $this->getLevel($productModel);
+        $currentLevel = $productModel->getVariationLevel();
         $entity = $productModel;
 
         do {
-            $modelChild = current($this->productModelRepository->findBy(
-                ['parent' => $entity],
-                ['created' => 'ASC', 'code' => 'ASC'],
-                1
-            ));
-
-            $productChild = $this->productRepository->findLastCreatedByParent($entity);
-
-            if (false !== $modelChild) {
-                $entity = $modelChild;
-            }
-
-            if (null !== $productChild) {
-                $entity = $productChild;
-            }
-
-            if (false === $modelChild && null === $productChild) {
+            $entity = $this->findLastCreatedEntityWithFamilyVariantByParent($entity);
+            if (null === $entity) {
                 return null;
             }
 
@@ -93,8 +79,28 @@ class ImageAsLabel
         return $entity->getImage();
     }
 
-    private function getLevel(ProductModelInterface $productModel): int
+    private function findLastCreatedEntityWithFamilyVariantByParent(
+        ProductModelInterface $productModel
+    ): ?EntityWithFamilyVariantInterface {
+        $productChild = $this->productRepository->findLastCreatedByParent($productModel);
+        if (null !== $productChild) {
+            return $productChild;
+        }
+
+        return $this->findLastCreatedProductModelByParent($productModel);
+    }
+
+    private function findLastCreatedProductModelByParent(ProductModelInterface $productModel): ?ProductModelInterface
     {
-        return $productModel->isRoot() ? 0 : 1;
+        $productModels = $this->productModelRepository->findChildrenProductModels($productModel);
+        if (empty($productModels)) {
+            return null;
+        }
+
+        usort($productModels, function(ProductModelInterface $a, ProductModelInterface $b) {
+            return $a->getCreated() <=> $b->getCreated();
+        });
+
+        return current($productModels);
     }
 }
