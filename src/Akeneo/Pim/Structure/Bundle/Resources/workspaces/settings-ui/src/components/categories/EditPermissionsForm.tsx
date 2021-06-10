@@ -4,7 +4,7 @@ import {useTranslate} from '@akeneo-pim-community/shared';
 import styled from 'styled-components';
 import {BooleanInput, Field, Helper, MultiSelectInput} from 'akeneo-design-system';
 
-const FormContainer = styled.form`
+const FormContainer = styled.div`
   margin-top: 20px;
 
   & > * {

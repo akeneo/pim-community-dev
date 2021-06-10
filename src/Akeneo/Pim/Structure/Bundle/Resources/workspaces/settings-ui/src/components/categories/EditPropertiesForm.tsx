@@ -5,7 +5,7 @@ import {Category} from '../../models';
 import {Field, Helper, SectionTitle, TextInput} from 'akeneo-design-system';
 import {EditCategoryForm} from '../../hooks';
 
-const FormContainer = styled.form`
+const FormContainer = styled.div`
   & > * {
     margin: 0 10px 20px 0;
   }
