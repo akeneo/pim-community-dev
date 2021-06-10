@@ -23,7 +23,9 @@ const waitPageToBeLoaded = async () => {
 describe('TableOptionsApp', () => {
   it('should render the columns', async () => {
     const handleChange = jest.fn();
-    renderWithProviders(<TableOptionsApp onChange={handleChange} initialTableConfiguration={tableConfiguration} />);
+    renderWithProviders(
+      <TableOptionsApp onChange={handleChange} initialTableConfiguration={tableConfiguration} savedColumnCodes={[]} />
+    );
     expect(await screen.findByText('English (United States)')).toBeInTheDocument();
 
     const codeInput = screen.getByLabelText('pim_common.code') as HTMLInputElement;
@@ -39,7 +41,11 @@ describe('TableOptionsApp', () => {
   it('should display column information', async () => {
     const handleChange = jest.fn();
     renderWithProviders(
-      <TableOptionsApp onChange={handleChange} initialTableConfiguration={complexTableConfiguration} />
+      <TableOptionsApp
+        onChange={handleChange}
+        initialTableConfiguration={complexTableConfiguration}
+        savedColumnCodes={[]}
+      />
     );
     expect(await screen.findByText('English (United States)')).toBeInTheDocument();
 
@@ -50,12 +56,19 @@ describe('TableOptionsApp', () => {
     const codeInput = screen.getByLabelText('pim_common.code') as HTMLInputElement;
     const english = screen.getByLabelText('English (United States)') as HTMLInputElement;
     expect(codeInput.value).toEqual('quantity');
+    expect(codeInput).not.toHaveAttribute('readonly');
     expect(english.value).toEqual('Quantity');
   });
 
   it('should update labels', async () => {
     const handleChange = jest.fn();
-    renderWithProviders(<TableOptionsApp onChange={handleChange} initialTableConfiguration={tableConfiguration} />);
+    renderWithProviders(
+      <TableOptionsApp
+        onChange={handleChange}
+        initialTableConfiguration={tableConfiguration}
+        savedColumnCodes={['ingredients']}
+      />
+    );
     expect(await screen.findByText('English (United States)')).toBeInTheDocument();
 
     const french = screen.getByLabelText('French (France)') as HTMLInputElement;
@@ -71,7 +84,11 @@ describe('TableOptionsApp', () => {
   it('should drag and drop', async () => {
     const handleChange = jest.fn();
     renderWithProviders(
-      <TableOptionsApp onChange={handleChange} initialTableConfiguration={complexTableConfiguration} />
+      <TableOptionsApp
+        onChange={handleChange}
+        initialTableConfiguration={complexTableConfiguration}
+        savedColumnCodes={[]}
+      />
     );
     expect(await screen.findByText('English (United States)')).toBeInTheDocument();
 
@@ -95,14 +112,20 @@ describe('TableOptionsApp', () => {
 
   it('should render without column', async () => {
     const handleChange = jest.fn();
-    renderWithProviders(<TableOptionsApp onChange={handleChange} initialTableConfiguration={[]} />);
+    renderWithProviders(
+      <TableOptionsApp onChange={handleChange} initialTableConfiguration={[]} savedColumnCodes={[]} />
+    );
     expect(await screen.findByText('pim_table_attribute.form.attribute.empty_title')).toBeInTheDocument();
   });
 
   it('falls back to the first column when deleting a selected column', async () => {
     const handleChange = jest.fn();
     renderWithProviders(
-      <TableOptionsApp onChange={handleChange} initialTableConfiguration={complexTableConfiguration} />
+      <TableOptionsApp
+        onChange={handleChange}
+        initialTableConfiguration={complexTableConfiguration}
+        savedColumnCodes={[]}
+      />
     );
     await waitPageToBeLoaded();
     act(() => {
@@ -129,5 +152,19 @@ describe('TableOptionsApp', () => {
       fireEvent.click(deleteButton);
     });
     expect(codeInput.value).toEqual('ingredients');
+  });
+
+  it('should set the code field as readonly if the column is saved', async () => {
+    const handleChange = jest.fn();
+    renderWithProviders(
+      <TableOptionsApp
+        onChange={handleChange}
+        initialTableConfiguration={tableConfiguration}
+        savedColumnCodes={['ingredients']}
+      />
+    );
+    expect(await screen.findByText('English (United States)')).toBeInTheDocument();
+    const codeInput = screen.getByLabelText('pim_common.code') as HTMLInputElement;
+    expect(codeInput).toHaveAttribute('readonly');
   });
 });

@@ -56,7 +56,8 @@ class TableOptionsTab extends (BaseView as {new (options: {config: TableOptionsT
       return;
     }
 
-    let initialTableConfiguration = this.getFormData().table_configuration;
+    let initialTableConfiguration = this.getFormData().table_configuration as TableConfiguration | undefined;
+    const savedColumnCodes = (initialTableConfiguration || []).map(columnDefinition => columnDefinition.code);
     if (typeof initialTableConfiguration === 'undefined') {
       initialTableConfiguration = [];
       const tableTemplate = this.getQueryParam('table_template');
@@ -73,6 +74,7 @@ class TableOptionsTab extends (BaseView as {new (options: {config: TableOptionsT
         <TableOptionsApp
           initialTableConfiguration={initialTableConfiguration}
           onChange={this.handleChange.bind(this)}
+          savedColumnCodes={savedColumnCodes}
         />
       </DependenciesProvider>,
       this.el

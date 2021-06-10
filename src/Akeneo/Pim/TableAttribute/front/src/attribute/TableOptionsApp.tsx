@@ -14,6 +14,8 @@ import {
   AkeneoThemedProps,
   getFontSize,
   getColor,
+  uuid,
+  Helper,
 } from 'akeneo-design-system';
 import {DependenciesProvider} from '@akeneo-pim-community/legacy-bridge';
 import styled, {ThemeProvider} from 'styled-components';
@@ -50,61 +52,99 @@ const EmptyTableTitle = styled.div`
 type TableOptionsAppProps = {
   initialTableConfiguration: TableConfiguration;
   onChange: (tableConfiguration: TableConfiguration) => void;
+  savedColumnCodes: ColumnCode[];
 };
+
+type ColumnDefinitionWithId = ColumnDefinition & {id: string};
+type TableConfigurationWithId = ColumnDefinitionWithId[];
 
 const TableOptionsActionCell = styled(Table.ActionCell)`
   width: 44px;
 `;
 
-const TableOptionsApp: React.FC<TableOptionsAppProps> = ({initialTableConfiguration, onChange}) => {
+const TableOptionsApp: React.FC<TableOptionsAppProps> = ({initialTableConfiguration, onChange, savedColumnCodes}) => {
   const translate = useTranslate();
   const router = useRouter();
   const userContext = useUserContext();
-  const [tableConfiguration, setTableConfiguration] = React.useState<TableConfiguration>(initialTableConfiguration);
-  const [selectedColumnCode, setSelectedColumnCode] = React.useState<ColumnCode | undefined>(
-    tableConfiguration[0]?.code
+  const [tableConfiguration, setTableConfiguration] = React.useState<TableConfigurationWithId>(
+    initialTableConfiguration.map(columnDefinition => {
+      return {...columnDefinition, id: uuid()};
+    })
   );
-  const selectedColumn = tableConfiguration.find(column => column.code === selectedColumnCode) as ColumnDefinition;
+  const [selectedColumnId, setSelectedColumnId] = React.useState<string | undefined>(tableConfiguration[0]?.id);
+  const selectedColumn = tableConfiguration.find(column => column.id === selectedColumnId) as ColumnDefinitionWithId;
   const [activeLocales, setActiveLocales] = React.useState<Locale[]>([]);
   const [isNewColumnModalOpen, openNewColumnModal, closeNewColumnModal] = useBooleanState();
   const [isDeleteColumnModalOpen, openDeleteColumnModal, closeDeleteColumnModal] = useBooleanState();
-  const [lastColumnCodeToDelete, setLastColumnCodeToDelete] = React.useState<ColumnCode | undefined>();
+  const [lastColumnIdToDelete, setLastColumnIdToDelete] = React.useState<string | undefined>();
   const [firstColumnDefinition, ...otherColumnDefinitions] = tableConfiguration;
+  const [savedColumnIds, setSavedColumnIds] = React.useState<string[]>([]);
 
   React.useEffect(() => {
     fetchActivatedLocales(router).then((activeLocales: Locale[]) => setActiveLocales(activeLocales));
   }, [router]);
+
+  React.useEffect(() => {
+    setSavedColumnIds(
+      savedColumnCodes.map(
+        savedColumnCode =>
+          tableConfiguration.find(columnDefinition => columnDefinition.code === savedColumnCode)?.id as string
+      )
+    );
+  }, [JSON.stringify(savedColumnCodes)]);
+
+  const isDuplicateColumnCode = (columnCode: ColumnCode) => {
+    return tableConfiguration.filter(columnDefinition => columnDefinition.code === columnCode).length > 1;
+  };
+
+  const handleChange = (tableConfigurationWithId: TableConfigurationWithId) => {
+    onChange(
+      tableConfigurationWithId.map(columnDefinition => {
+        const {id, ...rest} = columnDefinition;
+        return rest;
+      })
+    );
+  };
 
   const handleLabelChange = (localeCode: LocaleCode, newValue: string) => {
     selectedColumn.labels[localeCode] = newValue;
     const index = tableConfiguration.indexOf(selectedColumn);
     tableConfiguration[index] = selectedColumn;
     setTableConfiguration([...tableConfiguration]);
-    onChange(tableConfiguration);
+    handleChange(tableConfiguration);
+  };
+
+  const handleCodeChange = (newCode: ColumnCode) => {
+    selectedColumn.code = newCode;
+    const index = tableConfiguration.indexOf(selectedColumn);
+    tableConfiguration[index] = selectedColumn;
+    setTableConfiguration([...tableConfiguration]);
+    handleChange(tableConfiguration);
   };
 
   const handleReorder = (newIndices: number[]) => {
     const newTableConfiguration = [firstColumnDefinition, ...newIndices.map(i => otherColumnDefinitions[i])];
     setTableConfiguration(newTableConfiguration);
-    onChange(newTableConfiguration);
+    handleChange(newTableConfiguration);
   };
 
   const handleCreate = (columnDefinition: ColumnDefinition) => {
-    tableConfiguration.push(columnDefinition);
+    const columnDefinitionWithId = {...columnDefinition, id: uuid()};
+    tableConfiguration.push(columnDefinitionWithId);
     setTableConfiguration([...tableConfiguration]);
-    setSelectedColumnCode(columnDefinition.code);
-    onChange(tableConfiguration);
+    setSelectedColumnId(columnDefinitionWithId.id);
+    handleChange(tableConfiguration);
   };
 
   const handleDelete = () => {
     const newTableConfiguration = tableConfiguration.filter(
-      columnDefinition => columnDefinition.code !== lastColumnCodeToDelete
+      columnDefinition => columnDefinition.id !== lastColumnIdToDelete
     );
     setTableConfiguration(newTableConfiguration);
-    if (lastColumnCodeToDelete === selectedColumnCode) {
-      setSelectedColumnCode(newTableConfiguration[0].code);
+    if (lastColumnIdToDelete === selectedColumnId) {
+      setSelectedColumnId(newTableConfiguration[0].id);
     }
-    onChange(newTableConfiguration);
+    handleChange(newTableConfiguration);
   };
 
   const leftColumn = (
@@ -117,9 +157,8 @@ const TableOptionsApp: React.FC<TableOptionsAppProps> = ({initialTableConfigurat
           <Table>
             <Table.Body>
               <Table.Row
-                key={firstColumnDefinition.code}
-                onClick={() => setSelectedColumnCode(firstColumnDefinition.code)}
-                isSelected={firstColumnDefinition.code === selectedColumnCode}>
+                onClick={() => setSelectedColumnId(firstColumnDefinition.id)}
+                isSelected={firstColumnDefinition.id === selectedColumnId}>
                 <EmptyTableCell />
                 <Table.Cell rowTitle={true}>
                   {getLabel(firstColumnDefinition.labels, userContext.get('catalogLocale'), firstColumnDefinition.code)}
@@ -146,9 +185,9 @@ const TableOptionsApp: React.FC<TableOptionsAppProps> = ({initialTableConfigurat
         <Table.Body>
           {otherColumnDefinitions.map(columnDefinition => (
             <Table.Row
-              key={columnDefinition.code}
-              onClick={() => setSelectedColumnCode(columnDefinition.code)}
-              isSelected={columnDefinition.code === selectedColumnCode}>
+              key={columnDefinition.id}
+              onClick={() => setSelectedColumnId(columnDefinition.id)}
+              isSelected={columnDefinition.id === selectedColumnId}>
               <Table.Cell rowTitle={true}>
                 {getLabel(columnDefinition.labels, userContext.get('catalogLocale'), columnDefinition.code)}
               </Table.Cell>
@@ -157,7 +196,7 @@ const TableOptionsApp: React.FC<TableOptionsAppProps> = ({initialTableConfigurat
                   ghost='borderless'
                   icon={<CloseIcon />}
                   onClick={() => {
-                    setLastColumnCodeToDelete(columnDefinition.code);
+                    setLastColumnIdToDelete(columnDefinition.id);
                     openDeleteColumnModal();
                   }}
                   title={translate('pim_common.delete')}
@@ -168,11 +207,14 @@ const TableOptionsApp: React.FC<TableOptionsAppProps> = ({initialTableConfigurat
           ))}
         </Table.Body>
       </Table>
-      {isDeleteColumnModalOpen && lastColumnCodeToDelete && (
+      {isDeleteColumnModalOpen && lastColumnIdToDelete && (
         <DeleteColumnModal
           close={closeDeleteColumnModal}
           onDelete={handleDelete}
-          columnDefinitionCode={lastColumnCodeToDelete}
+          columnDefinitionCode={
+            tableConfiguration.find(columnDefinition => columnDefinition.id === lastColumnIdToDelete)
+              ?.code as ColumnCode
+          }
         />
       )}
       {isNewColumnModalOpen && (
@@ -203,7 +245,18 @@ const TableOptionsApp: React.FC<TableOptionsAppProps> = ({initialTableConfigurat
       </SectionTitle>
       <FieldsList>
         <Field label={translate('pim_common.code')} requiredLabel={translate('pim_common.required_label')}>
-          <TextInput readOnly={true} value={selectedColumn.code} />
+          <TextInput
+            readOnly={savedColumnIds.includes(selectedColumn.id)}
+            value={selectedColumn.code}
+            onChange={handleCodeChange}
+          />
+          {isDuplicateColumnCode(selectedColumn.code) && (
+            <Helper level='error'>
+              {translate('pim_table_attribute.validations.duplicated_column_code', {
+                duplicateCode: selectedColumn.code,
+              })}
+            </Helper>
+          )}
         </Field>
         <Field
           label={translate('pim_table_attribute.form.attribute.data_type')}
