@@ -255,27 +255,6 @@ class CategoryTreeController extends Controller
     }
 
     /**
-     * @throws AccessDeniedException
-     *
-     * @return Response
-     */
-    public function indexAction(): Response
-    {
-        if (false === $this->securityFacade->isGranted($this->buildAclName('category_list'))) {
-            throw new AccessDeniedException();
-        }
-
-        return $this->render(
-            'AkeneoPimEnrichmentBundle:CategoryTree:index.html.twig',
-            [
-                'related_entity' => $this->rawConfiguration['related_entity'],
-                'route'          => $this->rawConfiguration['route'],
-                'acl'            => $this->rawConfiguration['acl'],
-            ]
-        );
-    }
-
-    /**
      * Create a tree or category
      *
      * @param Request $request
