@@ -62,6 +62,7 @@ pim_common:
   name: Naam
   remove: Verwijder
   code: Code
+  label: Label
   quantity: Aantal
   products: Producten
   product_models: Productmodels

@@ -87,14 +87,11 @@ export const Marketplace: FC = () => {
     );
 
     useEffect(() => {
-        (async () => {
-            await user.refresh();
-            const profile = user.get<string | null>('profile');
-            setUserProfile(profile);
-            if (null === profile) {
-                setShowSelector(true);
-            }
-        })();
+        const profile = user.get<string | null>('profile');
+        setUserProfile(profile);
+        if (null === profile) {
+            setShowSelector(true);
+        }
     }, [user]);
 
     useEffect(() => {

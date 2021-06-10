@@ -4,6 +4,7 @@ declare(strict_types=1);
 namespace Akeneo\Pim\Enrichment\Bundle\Doctrine\ORM\Updater;
 
 use Akeneo\Pim\Enrichment\Component\Product\Association\MissingAssociationAdder;
+use Akeneo\Pim\Enrichment\Component\Product\Exception\TwoWayAssociationWithTheSameProductException;
 use Akeneo\Pim\Enrichment\Component\Product\Model\EntityWithAssociationsInterface;
 use Akeneo\Pim\Enrichment\Component\Product\Model\ProductInterface;
 use Akeneo\Pim\Enrichment\Component\Product\Model\ProductModelInterface;
@@ -40,6 +41,12 @@ class TwoWayAssociationUpdater implements TwoWayAssociationUpdaterInterface
         string $associationTypeCode,
         EntityWithAssociationsInterface $associatedEntity
     ): void {
+        if ($owner instanceof ProductInterface
+            && $associatedEntity instanceof ProductInterface
+            && $owner->getIdentifier() === $associatedEntity->getIdentifier()) {
+            throw new TwoWayAssociationWithTheSameProductException();
+        }
+
         if (!$associatedEntity->hasAssociationForTypeCode($associationTypeCode)) {
             $this->missingAssociationAdder->addMissingAssociations($associatedEntity);
         }
