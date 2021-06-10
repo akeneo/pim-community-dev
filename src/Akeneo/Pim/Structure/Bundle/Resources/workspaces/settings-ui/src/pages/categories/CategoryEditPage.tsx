@@ -65,7 +65,7 @@ const CategoryEditPage: FC = () => {
     formData,
     onChangeCategoryLabel,
     onChangePermissions,
-    onChangeApplyPermissionsOnChilren,
+    onChangeApplyPermissionsOnChildren,
     thereAreUnsavedChanges,
     saveCategory,
   } = useEditCategoryForm(parseInt(categoryId));
@@ -234,7 +234,7 @@ const CategoryEditPage: FC = () => {
           <EditPermissionsForm
             formData={formData}
             onChangePermissions={onChangePermissions}
-            onChangeApplyPermissionsOnChilren={onChangeApplyPermissionsOnChilren}
+            onChangeApplyPermissionsOnChildren={onChangeApplyPermissionsOnChildren}
           />
         )}
       </PageContent>

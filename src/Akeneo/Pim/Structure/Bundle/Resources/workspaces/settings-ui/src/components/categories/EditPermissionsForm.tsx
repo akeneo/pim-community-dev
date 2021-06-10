@@ -15,14 +15,14 @@ const FormContainer = styled.form`
 type Props = {
   formData: EditCategoryForm | null;
   onChangePermissions: (type: string, values: string[]) => void;
-  onChangeApplyPermissionsOnChilren: (value: boolean) => void;
+  onChangeApplyPermissionsOnChildren: (value: boolean) => void;
 };
 
 const PermissionField = styled(Field)`
   max-width: 400px;
 `;
 
-const EditPermissionsForm = ({formData, onChangePermissions, onChangeApplyPermissionsOnChilren}: Props) => {
+const EditPermissionsForm = ({formData, onChangePermissions, onChangeApplyPermissionsOnChildren}: Props) => {
   const translate = useTranslate();
 
   if (formData === null || !formData.permissions) {
@@ -85,7 +85,7 @@ const EditPermissionsForm = ({formData, onChangePermissions, onChangeApplyPermis
           value={formData.permissions.apply_on_children.value === '1'}
           noLabel={translate('pim_common.no')}
           yesLabel={translate('pim_common.yes')}
-          onChange={changedValue => onChangeApplyPermissionsOnChilren(changedValue)}
+          onChange={changedValue => onChangeApplyPermissionsOnChildren(changedValue)}
         />
         <Helper level="info">{translate('category.permissions.apply_on_children.help')}</Helper>
       </Field>
