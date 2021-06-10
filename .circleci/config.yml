@@ -105,6 +105,7 @@ jobs:
           key: front-packages-libs-{{ checksum "~/front-packages.hash" }}
           paths:
             - vendor/akeneo/pim-community-dev/front-packages/akeneo-design-system/lib
+            - vendor/akeneo/pim-community-dev/front-packages/measurement/lib
             - vendor/akeneo/pim-community-dev/front-packages/shared/lib
       - run:
           name: Build Javascript
