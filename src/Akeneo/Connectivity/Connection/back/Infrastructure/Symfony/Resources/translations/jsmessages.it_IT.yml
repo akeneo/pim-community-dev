@@ -213,21 +213,44 @@ akeneo_connectivity.connection:
       action:
         regenerate: Rigenera
       link: Ecco cosa succederà.
+      flash:
+        success: Chiave segreta webhook rigenerata correttamente.
+        error: Si è verificato un errore durante la rigenerazione della chiave segreta del webhook.
     active_event_subscriptions_limit_reached:
+      message: Puoi collegare fino a {{ limit }} connessioni alla funzione di iscrizione evento. Hai raggiunto questo limite.
       link: Scopri di più sulla configurazione degli abbonamenti agli eventi.
   error_management:
     connection_monitoring:
       title: Monitoraggio
+      helper:
+        title: '{0} Hai {{ count }} errore |[1,Inf] Hai {{ count }} errori'
+        description: Qui puoi vedere il dettaglio di ogni errore per questa connessione negli ultimi 7 giorni. Il numero di errori è limitato a 100 errori.
+        link: Per capire come risolvere questo problema, visita il centro di aiuto API.
       search_filter:
         placeholder: Cerca nei messaggi di errore
+        result_count: '{0} Nessun risultato |[1,Inf] {{ count }} risultati'
       error_list:
+        date_time_column:
+          title: Giorno e ora
         content_column:
+          title: Messaggio di errore business
           product_name: Nome del prodotto
+          with_id: con l'ID
         details_column:
           title: Dettaglio
           locale: Località
           channel: Canale
           family: Famiglia
+      no_error:
+        title: Fantastico! Nessun errore trovato!
+      not_auditable:
+        title: Connessione non monitorata
+        description:
+          1: Per monitorare gli errori di questa connessione,
+          2: attivare il monitoraggio
+          3: nelle impostazioni.
+      not_data_source:
+        title: Per ora, la pagina di monitoraggio è disponibile solo per la connessione sorgente.
   runtime_error:
     error_message: Uffa! Si è verificato un errore...
     reload_helper: Prova a ricaricare la pagina e a provare di nuovo.
