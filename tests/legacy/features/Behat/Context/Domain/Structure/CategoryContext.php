@@ -25,7 +25,11 @@ final class CategoryContext extends PimContext
         $categoryTree = $this->spin(function () use ($categoryLabel) {
             return $this->getCurrentPage()->find('named', array('content', $categoryLabel));
         }, sprintf('The "%s" category was not found', $categoryLabel));
-        $categoryTree->click();
+
+        $this->spin(function() use ($categoryTree) {
+            $categoryTree->press();
+            return true;
+        }, 'Can not follow the "%s" category');
     }
 
     /**
@@ -33,12 +37,15 @@ final class CategoryContext extends PimContext
      */
     public function iHoverOverTheCategory(string $categoryLabel)
     {
-        /** @var NodeElement $categoryTree */
-        $categoryTree = $this->spin(function () use ($categoryLabel) {
+        /** @var NodeElement $category */
+        $category = $this->spin(function () use ($categoryLabel) {
             return $this->getCurrentPage()->find('named', array('content', $categoryLabel));
         }, sprintf('The "%s" category was not found', $categoryLabel));
 
-        $categoryTree->mouseOver();
+        $this->spin(function() use ($category) {
+            $category->mouseOver();
+            return true;
+        }, 'Can not hover the "%s" category');
     }
 
     /**
@@ -56,7 +63,10 @@ final class CategoryContext extends PimContext
             return $tree->find('named', array('content', $categoryLabel));
         }, sprintf('The "%s" category was not found', $categoryLabel));
 
-        $categoryTree->mouseOver();
+        $this->spin(function() use ($categoryTree) {
+            $categoryTree->mouseOver();
+            return true;
+        }, 'Can not hover the "%s" category tree');
     }
 
     /** @When I create the category with code :code */
