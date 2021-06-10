@@ -56,7 +56,7 @@ const InviteUserApp = () => {
             <TagInputContainer>
               <TagInput onChange={setNewInvitedUsers} value={newInvitedUsers} />
             </TagInputContainer>
-            <Button ghost level="tertiary" onClick={() => addInvitedUsers(newInvitedUsers)}>
+            <Button ghost level="tertiary" disabled={newInvitedUsers.length < 1} onClick={() => addInvitedUsers(newInvitedUsers)}>
               {translate('pim_common.add')}
             </Button>
           </FieldContent>
