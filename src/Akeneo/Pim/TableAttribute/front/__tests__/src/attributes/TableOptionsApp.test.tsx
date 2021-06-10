@@ -6,14 +6,14 @@ import {TableConfiguration} from '../../../src/models/TableConfiguration';
 jest.mock('../../../src/fetchers/LocaleFetcher');
 
 const tableConfiguration: TableConfiguration = [
-  {data_type: 'text', code: 'ingredients', labels: {en_US: 'Ingredients'}},
+  {data_type: 'text', code: 'ingredients', labels: {en_US: 'Ingredients'}, validations: {}},
 ];
 
 const complexTableConfiguration: TableConfiguration = [
-  {data_type: 'text', code: 'ingredients', labels: {en_US: 'Ingredients'}},
-  {data_type: 'text', code: 'quantity', labels: {en_US: 'Quantity'}},
-  {data_type: 'text', code: 'aqr', labels: {en_US: 'AQR'}},
-  {data_type: 'text', code: 'part', labels: {en_US: 'For 1 part'}},
+  {data_type: 'text', code: 'ingredients', labels: {en_US: 'Ingredients'}, validations: {}},
+  {data_type: 'text', code: 'quantity', labels: {en_US: 'Quantity'}, validations: {}},
+  {data_type: 'text', code: 'aqr', labels: {en_US: 'AQR'}, validations: {}},
+  {data_type: 'text', code: 'part', labels: {en_US: 'For 1 part'}, validations: {}},
 ];
 
 const waitPageToBeLoaded = async () => {
@@ -77,7 +77,7 @@ describe('TableOptionsApp', () => {
     });
 
     expect(handleChange).toBeCalledWith([
-      {data_type: 'text', code: 'ingredients', labels: {en_US: 'Ingredients', fr_FR: 'French label'}},
+      {data_type: 'text', code: 'ingredients', labels: {en_US: 'Ingredients', fr_FR: 'French label'}, validations: {}},
     ]);
   });
 
@@ -103,10 +103,10 @@ describe('TableOptionsApp', () => {
     });
 
     expect(handleChange).toBeCalledWith([
-      {data_type: 'text', code: 'ingredients', labels: {en_US: 'Ingredients'}},
-      {data_type: 'text', code: 'aqr', labels: {en_US: 'AQR'}},
-      {data_type: 'text', code: 'part', labels: {en_US: 'For 1 part'}},
-      {data_type: 'text', code: 'quantity', labels: {en_US: 'Quantity'}},
+      {data_type: 'text', code: 'ingredients', labels: {en_US: 'Ingredients'}, validations: {}},
+      {data_type: 'text', code: 'aqr', labels: {en_US: 'AQR'}, validations: {}},
+      {data_type: 'text', code: 'part', labels: {en_US: 'For 1 part'}, validations: {}},
+      {data_type: 'text', code: 'quantity', labels: {en_US: 'Quantity'}, validations: {}},
     ]);
   });
 

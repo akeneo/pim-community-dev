@@ -3,8 +3,6 @@ import {TwoColumnsLayout} from './TwoColumnsLayout';
 import {
   SectionTitle,
   pimTheme,
-  Field,
-  TextInput,
   Button,
   useBooleanState,
   Table,
@@ -20,17 +18,11 @@ import {
 import {DependenciesProvider} from '@akeneo-pim-community/legacy-bridge';
 import styled, {ThemeProvider} from 'styled-components';
 import {ColumnCode, ColumnDefinition, TableConfiguration} from '../models/TableConfiguration';
-import {getLabel, Locale, LocaleCode, useRouter, useTranslate, useUserContext} from '@akeneo-pim-community/shared';
+import {getLabel, Locale, useRouter, useTranslate, useUserContext} from '@akeneo-pim-community/shared';
 import {AddColumnModal} from './AddColumnModal';
 import {DeleteColumnModal} from './DeleteColumnModal';
 import {fetchActivatedLocales} from '../fetchers/LocaleFetcher';
-
-const FieldsList = styled.div`
-  display: flex;
-  flex-direction: column;
-  gap: 20px;
-  margin: 20px 0;
-`;
+import {ColumnDefinitionProperties} from './ColumnDefinitionProperties';
 
 const EmptyTableCell = styled(Table.Cell)`
   width: 44px;
@@ -109,7 +101,7 @@ const TableOptionsApp: React.FC<TableOptionsAppProps> = ({initialTableConfigurat
   const handleLabelChange = (localeCode: LocaleCode, newValue: string) => {
     selectedColumn.labels[localeCode] = newValue;
     const index = tableConfiguration.indexOf(selectedColumn);
-    tableConfiguration[index] = selectedColumn;
+    tableConfiguration[index] = columnDefinition;
     setTableConfiguration([...tableConfiguration]);
     handleChange(tableConfiguration);
   };
@@ -289,7 +281,7 @@ const TableOptionsApp: React.FC<TableOptionsAppProps> = ({initialTableConfigurat
     <DependenciesProvider>
       <ThemeProvider theme={pimTheme}>
         {tableConfiguration.length > 0 ? (
-          <TwoColumnsLayout rightColumn={rightColumn}>{leftColumn}</TwoColumnsLayout>
+          <TwoColumnsLayout rightColumn={ColumnDefinitionColumn}>{leftColumn}</TwoColumnsLayout>
         ) : (
           leftColumn
         )}

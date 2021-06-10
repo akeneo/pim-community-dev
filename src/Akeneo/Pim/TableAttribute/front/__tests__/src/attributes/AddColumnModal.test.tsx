@@ -75,6 +75,7 @@ describe('AddColumnModal', () => {
       labels: {
         en_US: 'Ingredients',
       },
+      validations: {},
     });
     expect(handleClose).toHaveBeenCalled();
   });

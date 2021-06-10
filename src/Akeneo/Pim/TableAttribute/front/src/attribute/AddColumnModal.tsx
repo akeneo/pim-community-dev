@@ -118,7 +118,8 @@ const AddColumnModal: React.FC<AddColumnModalProps> = ({close, onCreate, existin
       code: columnDefinition.code,
       labels: labels,
       data_type: columnDefinition.data_type as ColumnType,
-    });
+      validations: {},
+    } as ColumnDefinition);
   };
 
   return (
