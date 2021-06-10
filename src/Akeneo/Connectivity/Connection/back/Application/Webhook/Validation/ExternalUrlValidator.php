@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace Akeneo\Connectivity\Connection\Application\Webhook\Validation;
 
 use Akeneo\Connectivity\Connection\Application\Webhook\Service\DnsLookupInterface;
+use Symfony\Component\HttpFoundation\IpUtils;
 use Symfony\Component\Validator\Constraint;
 use Symfony\Component\Validator\ConstraintValidator;
 use Symfony\Component\Validator\Exception\UnexpectedTypeException;
@@ -15,12 +16,21 @@ use Symfony\Component\Validator\Exception\UnexpectedTypeException;
  */
 class ExternalUrlValidator extends ConstraintValidator
 {
+    private const DOMAIN_BLACKLIST = [
+        'localhost',
+        'elasticsearch',
+        'memcached',
+    ];
+
     private DnsLookupInterface $dnsLookup;
+    private array $networkWhitelist;
 
     public function __construct(
-        DnsLookupInterface $dnsLookup
+        DnsLookupInterface $dnsLookup,
+        string $networkWhitelist = ''
     ) {
         $this->dnsLookup = $dnsLookup;
+        $this->networkWhitelist = explode(',', $networkWhitelist);
     }
 
     public function validate($value, Constraint $constraint): void
@@ -30,31 +40,50 @@ class ExternalUrlValidator extends ConstraintValidator
         }
 
         $value = $this->valueToString($value);
-
         if (empty($value)) {
             return;
         }
 
         $host = parse_url($value, \PHP_URL_HOST);
-
         if (empty($host) || !is_string($host)) {
+            return;
+        }
+
+        if (in_array($host, self::DOMAIN_BLACKLIST)) {
+            $this->context->buildViolation($constraint->message)->addViolation();
+
             return;
         }
 
         $ip = $this->dnsLookup->ip($host);
 
         if (null === $ip) {
+            return;
+        }
+
+        if ($this->isInWhitelist($ip)) {
+            return;
+        }
+
+        if ($this->isInPrivateRange($ip)) {
             $this->context->buildViolation($constraint->message)->addViolation();
 
             return;
         }
+    }
 
-        $flag = \FILTER_FLAG_NO_PRIV_RANGE | \FILTER_FLAG_NO_RES_RANGE;
-        if (!filter_var($ip, \FILTER_VALIDATE_IP, $flag)) {
-            $this->context->buildViolation($constraint->message)->addViolation();
-
-            return;
+    private function isInWhitelist(string $ip): bool
+    {
+        if (empty($this->networkWhitelist)) {
+            return false;
         }
+
+        return IpUtils::checkIp($ip, $this->networkWhitelist);
+    }
+
+    private function isInPrivateRange(string $ip): bool
+    {
+        return !filter_var($ip, \FILTER_VALIDATE_IP, \FILTER_FLAG_NO_PRIV_RANGE);
     }
 
     /**
