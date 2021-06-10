@@ -2,6 +2,7 @@ Akeneo\Pim\Structure\Component\Model\Attribute:
     constraints:
         - Akeneo\Pim\TableAttribute\Infrastructure\Validation\Attribute\IsTableAttributeConfigured: ~
         - Akeneo\Pim\TableAttribute\Infrastructure\Validation\Attribute\FirstColumnCodeCannotBeChanged: ~
+        - Akeneo\Pim\TableAttribute\Infrastructure\Validation\Attribute\AreTableAttributeValidationsValid: ~
     properties:
         rawTableConfiguration:
             - Type: array
@@ -46,7 +47,7 @@ Akeneo\Pim\Structure\Component\Model\Attribute:
                                 - Optional:
                                       - Type:
                                             type: array
-                                            message: TODO
+                                            message: TODO Validation should be an object
                         missingFieldsMessage: pim_table_configuration.validation.table_configuration.missing_column
             - Akeneo\Pim\TableAttribute\Infrastructure\Validation\Attribute\IsColumnCodeUnique: ~
             - Akeneo\Pim\TableAttribute\Infrastructure\Validation\Attribute\FirstColumnShouldHaveSelectDataType: ~

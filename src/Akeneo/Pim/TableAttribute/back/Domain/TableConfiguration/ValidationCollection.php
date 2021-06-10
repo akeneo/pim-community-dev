@@ -17,13 +17,20 @@ use Webmozart\Assert\Assert;
 
 final class ValidationCollection
 {
+    /** @var array<string, mixed> */
     private array $validations;
 
+    /**
+     * @param array<string, mixed> $validations
+     */
     private function __construct(array $validations)
     {
         $this->validations = $validations;
     }
 
+    /**
+     * @param array<string, mixed> $validations
+     */
     public static function fromNormalized(array $validations): ValidationCollection
     {
         Assert::allStringNotEmpty(array_keys($validations));
@@ -31,6 +38,9 @@ final class ValidationCollection
         return new self($validations);
     }
 
+    /**
+     * @return array<string, mixed>
+     */
     public function normalize(): array
     {
         return $this->validations;

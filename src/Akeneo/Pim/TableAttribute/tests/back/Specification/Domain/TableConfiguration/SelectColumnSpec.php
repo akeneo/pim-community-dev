@@ -14,7 +14,12 @@ class SelectColumnSpec extends ObjectBehavior
     {
         $this->beConstructedThrough(
             'fromNormalized',
-            [['code' => 'ingredient', 'labels' => ['en_US' => 'Ingredient', 'fr_FR' => 'Ingrédient']]]
+            [
+                [
+                    'code' => 'ingredient',
+                    'labels' => ['en_US' => 'Ingredient', 'fr_FR' => 'Ingrédient'],
+                ],
+            ]
         );
     }
 

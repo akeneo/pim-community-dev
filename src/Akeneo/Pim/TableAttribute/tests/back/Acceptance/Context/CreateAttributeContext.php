@@ -126,7 +126,7 @@ final class CreateAttributeContext implements Context
     }
 
     /**
-     * @When I create a table attribute with a configuration having column code ":code"
+     * @When /^I create a table attribute with a configuration having column code "([^"]*)"$/
      */
     public function iCreateATableAttributeWithAConfigurationHavingColumnCode(string $code): void
     {
@@ -142,6 +142,82 @@ final class CreateAttributeContext implements Context
             ], [
                 'data_type' => 'text',
                 'code' => $code,
+            ]
+        ]);
+        $this->saveAttribute($attribute);
+    }
+
+    /**
+     * @When I create a table attribute with a configuration having unknown validation
+     */
+    public function iCreateATableAttributeWithAConfigurationHavingUnknownValidation()
+    {
+        $attribute = $this->attributeBuilder
+            ->withCode('table')
+            ->withGroupCode('marketing')
+            ->withType(AttributeTypes::TABLE)
+            ->build();
+        $attribute->setRawTableConfiguration([
+            [
+                'data_type' => 'select',
+                'code' => 'ingredients',
+            ], [
+                'data_type' => 'text',
+                'code' => 'quantity',
+                'validations' => [
+                    'unknown' => 123
+                ],
+            ],
+        ]);
+        $this->saveAttribute($attribute);
+    }
+
+    /**
+     * @When I create a table attribute with a configuration having invalid max length validation value type
+     */
+    public function iCreateATableAttributeWithAConfigurationHavingInvalidMaxLengthValidationValueType()
+    {
+        $attribute = $this->attributeBuilder
+            ->withCode('table')
+            ->withGroupCode('marketing')
+            ->withType(AttributeTypes::TABLE)
+            ->build();
+        $attribute->setRawTableConfiguration(
+            [
+                [
+                    'data_type' => 'select',
+                    'code' => 'ingredients',
+                ],
+                [
+                    'data_type' => 'text',
+                    'code' => 'quantity',
+                    'validations' => [
+                        'max_length' => 'foo bar',
+                    ],
+                ],
+            ]
+        );
+        $this->saveAttribute($attribute);
+    }
+
+    /**
+     * @When I create a table attribute with a configuration having invalid validation type
+     */
+    public function iCreateATableAttributeWithAConfigurationHavingInvalidValidationType()
+    {
+        $attribute = $this->attributeBuilder
+            ->withCode('table')
+            ->withGroupCode('marketing')
+            ->withType(AttributeTypes::TABLE)
+            ->build();
+        $attribute->setRawTableConfiguration([
+            [
+                'data_type' => 'text',
+                'code' => 'ingredients',
+                'validations' => 123
+            ], [
+                'data_type' => 'text',
+                'code' => 'quantity',
             ]
         ]);
         $this->saveAttribute($attribute);

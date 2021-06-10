@@ -3,6 +3,10 @@ services:
         tags:
             - { name: 'validator.constraint_validator' }
 
+    Akeneo\Pim\TableAttribute\Infrastructure\Validation\Attribute\AreTableAttributeValidationsValidValidator:
+        tags:
+            - { name: 'validator.constraint_validator' }
+
     Akeneo\Pim\TableAttribute\Infrastructure\Validation\Attribute\IsColumnCodeUniqueValidator:
         tags:
             - { name: 'validator.constraint_validator' }

@@ -45,6 +45,7 @@ final class ExportTableAttributeIntegration extends TestCase
                     'labels' => [
                         'en_US' => 'Ingredients',
                     ],
+                    'validations' => (object)[],
                 ],
                 [
                     'code' => 'quantity',
@@ -52,6 +53,8 @@ final class ExportTableAttributeIntegration extends TestCase
                     'labels' => [
                         'en_US' => 'Quantity',
                     ],
+                    // TODO add validations to check it's well exported
+                    'validations' => (object)[],
                 ],
             ]
         );
@@ -93,6 +96,7 @@ final class ExportTableAttributeIntegration extends TestCase
                     'labels' => [
                         'en_US' => 'Ingredients',
                     ],
+                    'validations' => (object)[],
                 ],
                 [
                     'code' => 'quantity',
@@ -100,6 +104,7 @@ final class ExportTableAttributeIntegration extends TestCase
                     'labels' => [
                         'en_US' => 'Quantity',
                     ],
+                    'validations' => (object)[],
                 ],
             ]
         );
@@ -173,6 +178,7 @@ final class ExportTableAttributeIntegration extends TestCase
         Assert::assertCount(0, $violations, \sprintf('The attribute is not valid: %s', $violations));
 
         $this->get('pim_catalog.saver.attribute')->save($attribute);
+        $this->get('pim_connector.doctrine.cache_clearer')->clear();
     }
 
     protected function getConfiguration(): Configuration

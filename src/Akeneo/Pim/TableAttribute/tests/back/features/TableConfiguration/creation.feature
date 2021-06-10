@@ -60,6 +60,18 @@ Feature: Create a table attribute
     When I create a table attribute with a configuration having non activated locale
     Then There is a violation with message: The "pt_DTC" locale doesn't exist or is not activated
 
+  Scenario: Cannot create a table configuration having invalid validation type
+    When I create a table attribute with a configuration having invalid validation type
+    Then There is a violation with message: TODO Validation should be an object
+
+  Scenario: Cannot create a table configuration having unknown validation
+    When I create a table attribute with a configuration having unknown validation
+    Then There is a violation with message: TODO unknown validation key max_length => unknown
+
+  Scenario: Cannot create a table configuration having invalid max length validation value type
+    When I create a table attribute with a configuration having invalid max length validation value type
+    Then There is a violation with message: TODO invalid validation value type integer => string
+
   Scenario: Cannot create a non table attribute with a table configuration
     When I create a text attribute with a table configuration
     Then There is a violation with message: The type pim_catalog_text does not allow table_configuration
