@@ -1,6 +1,6 @@
 import React from 'react';
 import {TabBar} from './TabBar';
-import {render, screen, act} from '../../storybook/test-util';
+import {render, screen, act, fireEvent} from '../../storybook/test-util';
 import userEvent from '@testing-library/user-event';
 
 type EntryCallback = (entries: {isIntersecting: boolean}[]) => void;
@@ -86,4 +86,25 @@ test('it displays a Dropdown button when having a lot of tabs', () => {
   act(() => {
     entryCallback?.([{isIntersecting: true}]);
   });
+});
+
+test('it calls the onClick handler when hitting the enter or space key', () => {
+  const handleClick = jest.fn();
+
+  render(
+    <TabBar moreButtonTitle="More">
+      <TabBar.Tab isActive={false}>First tab</TabBar.Tab>
+      <TabBar.Tab isActive={false}>Another tab</TabBar.Tab>
+      <TabBar.Tab isActive={true} onClick={handleClick}>
+        Last tab
+      </TabBar.Tab>
+    </TabBar>
+  );
+
+  const lastTab = screen.getByText('Last tab');
+
+  fireEvent.keyDown(lastTab, {key: 'Enter', code: 'Enter'});
+  fireEvent.keyDown(lastTab, {key: ' ', code: 'Space'});
+
+  expect(handleClick).toHaveBeenCalledTimes(2);
 });

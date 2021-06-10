@@ -9,12 +9,14 @@ import React, {
   useEffect,
   useRef,
   useState,
+  KeyboardEvent,
 } from 'react';
 import styled, {css} from 'styled-components';
 import {AkeneoThemedProps, getColor, getFontSize} from '../../theme';
 import {Dropdown, IconButton} from '../../components';
 import {MoreIcon} from '../../icons';
 import {useBooleanState} from '../../hooks';
+import {Key, Override} from '../../shared';
 
 const Container = styled.div<{sticky: number} & AkeneoThemedProps>`
   display: flex;
@@ -74,35 +76,44 @@ const HiddenTabsDropdown = styled(Dropdown)<{isActive: boolean} & AkeneoThemedPr
   }
 `;
 
-type TabProps = {
-  /**
-   * Define if the tab is active.
-   */
-  isActive: boolean;
+type TabProps = Override<
+  React.HTMLAttributes<HTMLDivElement>,
+  {
+    /**
+     * Define if the tab is active.
+     */
+    isActive: boolean;
 
-  /**
-   * Function called when the user click on tab.
-   */
-  onClick?: () => void;
+    /**
+     * Function called when the user click on tab.
+     */
+    onClick?: () => void;
 
-  /**
-   * Content of the Tab.
-   */
-  children: ReactNode;
+    /**
+     * Content of the Tab.
+     */
+    children: ReactNode;
 
-  /**
-   * @private
-   */
-  parentRef?: RefObject<HTMLDivElement>;
+    /**
+     * @private
+     */
+    parentRef?: RefObject<HTMLDivElement>;
 
-  /**
-   * @private
-   */
-  onVisibilityChange?: (newVisibility: boolean) => void;
-};
+    /**
+     * @private
+     */
+    onVisibilityChange?: (newVisibility: boolean) => void;
+  }
+>;
 
-const Tab = ({children, isActive, parentRef, onVisibilityChange, ...rest}: TabProps) => {
+const Tab = ({children, onClick, isActive, parentRef, onVisibilityChange, ...rest}: TabProps) => {
   const ref = useRef<HTMLDivElement>(null);
+
+  const handleKeyDown = (event: KeyboardEvent<HTMLDivElement>) => {
+    if (event.key === Key.Space || event.key === Key.Enter) {
+      onClick?.();
+    }
+  };
 
   useEffect(() => {
     if (undefined === parentRef) {
@@ -133,7 +144,16 @@ const Tab = ({children, isActive, parentRef, onVisibilityChange, ...rest}: TabPr
   }, []);
 
   return (
-    <TabContainer ref={ref} tabIndex={0} role="tab" aria-selected={isActive} isActive={isActive} {...rest}>
+    <TabContainer
+      onKeyDown={handleKeyDown}
+      onClick={onClick}
+      ref={ref}
+      tabIndex={0}
+      role="tab"
+      aria-selected={isActive}
+      isActive={isActive}
+      {...rest}
+    >
       {children}
     </TabContainer>
   );
@@ -161,9 +181,10 @@ type TabBarProps = {
  */
 const TabBar = ({moreButtonTitle, children, ...rest}: TabBarProps) => {
   const ref = useRef<HTMLDivElement>(null);
-  const [hiddenElements, setHiddenElements] = useState<number[]>([]);
+  const [hiddenElements, setHiddenElements] = useState<string[]>([]);
   const [isOpen, open, close] = useBooleanState();
 
+  const hiddenTabs: ReactElement<TabProps>[] = [];
   const decoratedChildren = Children.map(children, (child, index) => {
     if (!child) {
       return;
@@ -173,21 +194,25 @@ const TabBar = ({moreButtonTitle, children, ...rest}: TabBarProps) => {
       throw new Error('TabBar only accepts TabBar.Tab as children');
     }
 
+    const key = child.key !== null ? child.key : index;
+    const isHidden = hiddenElements.includes(String(key));
+
+    if (isHidden) {
+      hiddenTabs.push(child);
+    }
+
     return cloneElement(child, {
       parentRef: ref,
+      tabIndex: isHidden ? -1 : 0,
       onVisibilityChange: (isVisible: boolean) => {
         setHiddenElements(previousHiddenElements =>
           isVisible
-            ? previousHiddenElements.filter(hiddenElement => hiddenElement !== index)
-            : [index, ...previousHiddenElements]
+            ? previousHiddenElements.filter(hiddenElement => hiddenElement !== String(key))
+            : [String(key), ...previousHiddenElements]
         );
       },
     });
   });
-
-  const hiddenTabs = React.Children.toArray(decoratedChildren).filter(
-    (child, index): child is ReactElement<TabProps> => isValidElement<TabProps>(child) && hiddenElements.includes(index)
-  );
 
   const activeTabIsHidden = hiddenTabs.find(child => child.props.isActive) !== undefined;
 

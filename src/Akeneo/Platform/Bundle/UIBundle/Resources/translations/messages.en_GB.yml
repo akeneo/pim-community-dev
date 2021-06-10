@@ -62,6 +62,7 @@ pim_common:
   name: Name
   remove: Remove
   code: Code
+  label: Label
   quantity: Quantity
   products: Products
   product_models: Product models
