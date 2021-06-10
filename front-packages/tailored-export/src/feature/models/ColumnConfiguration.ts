@@ -149,7 +149,7 @@ const removeSource = (columnConfiguration: ColumnConfiguration, removedSource: S
   sources: columnConfiguration.sources.filter(source => source.uuid !== removedSource.uuid),
 });
 
-export type {ColumnConfiguration, Source};
+export type {ColumnConfiguration, Source, Selection};
 export {
   createColumn,
   addColumn,
