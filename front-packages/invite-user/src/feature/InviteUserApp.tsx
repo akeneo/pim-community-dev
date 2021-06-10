@@ -1,9 +1,9 @@
-import React, {useContext, useState} from 'react';
+import React, {useState} from 'react';
 import {PageContent, PageHeader, PimView, useTranslate} from '@akeneo-pim-community/shared';
 import {Breadcrumb, Button, Field, Helper, Table, TagInput, SurveyIllustration, Badge} from 'akeneo-design-system';
 import styled from 'styled-components';
 import {InvitedUser} from "./models";
-import {InvitedUserContext} from "./providers/InvitedUserProvider";
+import {useInvitedUsers} from "./hooks";
 
 const FieldContent = styled.div`
   display: flex;
@@ -27,8 +27,8 @@ const IllustrationContainer = styled.div`
 
 const InviteUserApp = () => {
   const translate = useTranslate();
-  const [newUsers, setNewUsers] = useState<string[]>();
-  const {users, addUser} = useInvitedUsers();
+  const [newInvitedUsers, setNewInvitedUsers] = useState<string[]>([]);
+  const {invitedUsers, addInvitedUsers} = useInvitedUsers();
 
   return (
     <>
@@ -54,9 +54,9 @@ const InviteUserApp = () => {
         <FieldContainer label={translate('free_trial.invite_users.invite_input_label')}>
           <FieldContent>
             <TagInputContainer>
-              <TagInput onChange={setInvitedUser} value={[]} />
+              <TagInput onChange={setNewInvitedUsers} value={newInvitedUsers} />
             </TagInputContainer>
-            <Button ghost level="tertiary" onClick={() => addInvitedUsers()}>
+            <Button ghost level="tertiary" onClick={() => addInvitedUsers(newInvitedUsers)}>
               {translate('pim_common.add')}
             </Button>
           </FieldContent>
@@ -67,17 +67,17 @@ const InviteUserApp = () => {
             <Table.HeaderCell>{translate('free_trial.invite_users.users_list.headers.status')}</Table.HeaderCell>
           </Table.Header>
           <Table.Body>
-            {users.map(user => (
-              <Table.Row key={user.email}>
-                <Table.Cell rowTitle>{user.email}</Table.Cell>
+            {invitedUsers && invitedUsers.map((invitedUser: InvitedUser) => (
+              <Table.Row key={invitedUser.email}>
+                <Table.Cell rowTitle>{invitedUser.email}</Table.Cell>
                 <Table.Cell>
-                  <Badge level={user.status === 'active' ? 'primary' : 'tertiary'}>{user.status}</Badge>
+                  <Badge level={invitedUser.status === 'active' ? 'primary' : 'tertiary'}>{invitedUser.status}</Badge>
                 </Table.Cell>
               </Table.Row>
             ))}
           </Table.Body>
         </Table>
-        {users.length === 0 && (
+        {invitedUsers && invitedUsers.length === 0 && (
           <IllustrationContainer>
             <SurveyIllustration />
             <div>{translate('free_trial.invite_users.users_list.empty_list_message')}</div>
