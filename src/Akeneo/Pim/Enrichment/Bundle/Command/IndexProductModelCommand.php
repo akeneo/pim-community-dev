@@ -95,7 +95,7 @@ class IndexProductModelCommand extends Command
     {
         $this->checkIndexExists();
 
-        $batchSize = (int)$input->getOption('batch-size') ?: self::DEFAULT_BATCH_SIZE;
+        $batchSize = (int) $input->getOption('batch-size') ?: self::DEFAULT_BATCH_SIZE;
 
         if (true === $input->getOption('all')) {
             $chunkedProductModelCodes = $this->getAllRootProductModelCodes($batchSize);

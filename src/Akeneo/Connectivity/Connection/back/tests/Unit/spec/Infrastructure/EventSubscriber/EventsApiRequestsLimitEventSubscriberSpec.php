@@ -6,6 +6,7 @@ namespace spec\Akeneo\Connectivity\Connection\Infrastructure\EventSubscriber;
 
 use Akeneo\Connectivity\Connection\Application\Webhook\Service\LimitOfEventsApiRequestsReachedLogger;
 use Akeneo\Connectivity\Connection\Application\Webhook\Service\Logger\ReachRequestLimitLogger;
+use Akeneo\Connectivity\Connection\Domain\Webhook\Event\MessageProcessedEvent;
 use Akeneo\Connectivity\Connection\Domain\Webhook\Persistence\Repository\EventsApiDebugRepository;
 use Akeneo\Connectivity\Connection\Infrastructure\EventSubscriber\EventsApiRequestsLimitEventSubscriber;
 use Akeneo\Connectivity\Connection\Infrastructure\Webhook\Service\GetDelayUntilNextRequest;
@@ -37,7 +38,7 @@ class EventsApiRequestsLimitEventSubscriberSpec extends ObjectBehavior
     public function it_provides_subscribed_events(): void
     {
         $this->getSubscribedEvents()->shouldReturn([
-            WorkerRunningEvent::class => 'checkWebhookRequestLimit',
+            MessageProcessedEvent::class => 'checkWebhookRequestLimit',
         ]);
     }
 

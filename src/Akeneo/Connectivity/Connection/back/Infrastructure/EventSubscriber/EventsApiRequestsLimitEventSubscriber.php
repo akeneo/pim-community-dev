@@ -6,11 +6,11 @@ namespace Akeneo\Connectivity\Connection\Infrastructure\EventSubscriber;
 
 use Akeneo\Connectivity\Connection\Application\Webhook\Service\LimitOfEventsApiRequestsReachedLogger;
 use Akeneo\Connectivity\Connection\Application\Webhook\Service\Logger\ReachRequestLimitLogger;
+use Akeneo\Connectivity\Connection\Domain\Webhook\Event\MessageProcessedEvent;
 use Akeneo\Connectivity\Connection\Domain\Webhook\Persistence\Repository\EventsApiDebugRepository;
 use Akeneo\Connectivity\Connection\Infrastructure\Webhook\Service\GetDelayUntilNextRequest;
 use Akeneo\Connectivity\Connection\Infrastructure\Webhook\Service\Sleep;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
-use Symfony\Component\Messenger\Event\WorkerRunningEvent;
 
 /**
  * @author Pierre Jolly <pierre.jolly@akeneo.com>
@@ -45,7 +45,7 @@ final class EventsApiRequestsLimitEventSubscriber implements EventSubscriberInte
     public static function getSubscribedEvents(): array
     {
         return [
-            WorkerRunningEvent::class => 'checkWebhookRequestLimit',
+            MessageProcessedEvent::class => 'checkWebhookRequestLimit',
         ];
     }
 
