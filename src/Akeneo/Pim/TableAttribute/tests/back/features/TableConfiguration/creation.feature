@@ -103,3 +103,7 @@ Feature: Create a table attribute
   Scenario: Cannot create a table configuration having invalid decimals allowed value type
     When I create a table attribute with a configuration '{"data_type": "text", "code": "quantity", "validations": { "decimals_allowed": "error"}}'
     Then There is a violation with message: TODO bool
+
+  Scenario: Cannot create a table configuration with min validation greater than max validation
+    When I create a table attribute with a configuration '{"data_type": "text", "code": "quantity", "validations": { "min": 10, "max": 5}}'
+    Then There is a violation with message: TODO max should be greater than min
