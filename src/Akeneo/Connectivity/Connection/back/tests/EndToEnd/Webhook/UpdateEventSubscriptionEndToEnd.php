@@ -44,7 +44,7 @@ class UpdateEventSubscriptionEndToEnd extends WebTestCase
         $data = [
             'code' => $connection->code(),
             'enabled' => true,
-            'url' => 'http://localhost',
+            'url' => 'http://example.com',
         ];
 
         $this->authenticateAsAdmin();
@@ -151,7 +151,7 @@ class UpdateEventSubscriptionEndToEnd extends WebTestCase
         $data = [
             'code' => 'shopify',
             'enabled' => true,
-            'url' => 'http://localhost',
+            'url' => 'http://example.com',
         ];
 
         $this->authenticateAsAdmin();
@@ -218,7 +218,7 @@ class UpdateEventSubscriptionEndToEnd extends WebTestCase
         $data = [
             'code' => $translationConnection->code(),
             'enabled' => true,
-            'url' => 'http://localhost',
+            'url' => 'http://example.com',
         ];
 
         $this->authenticateAsAdmin();
