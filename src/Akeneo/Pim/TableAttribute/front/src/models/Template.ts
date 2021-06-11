@@ -20,22 +20,6 @@ const TEMPLATES: Template[] = [
     tableConfiguration: [],
     icon: TableIcon,
   },
-  {
-    code: 'other_table',
-    tableConfiguration: [
-      {
-        code: 'ingredient',
-        data_type: 'text',
-        labels: {},
-      },
-      {
-        code: 'something',
-        data_type: 'text',
-        labels: {},
-      },
-    ],
-    icon: TableIcon,
-  },
 ];
 
 export {TEMPLATES};
