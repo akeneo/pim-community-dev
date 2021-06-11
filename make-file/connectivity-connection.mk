@@ -109,15 +109,16 @@ connectivity-connection-coverage:
 			--config src/Akeneo/Connectivity/Connection/back/tests/Acceptance/behat-coverage.yml \
 			--format pim --out var/tests/behat/connectivity/connection --format progress --out std --colors
 	# download phpcov binary
-	test -e phpcov.phar || wget https://phar.phpunit.de/phpcov.phar
-	php phpcov.phar --version
+	$(DOCKER_COMPOSE) run -u www-data --rm php test -e phpcov.phar || wget https://phar.phpunit.de/phpcov.phar && \
+		php phpcov.phar --version
 	# create a coverage global folder
-	if [ -d coverage/Connectivity/Back/Global/ ]; then rm -r coverage/Connectivity/Back/Global/; fi
-	mkdir -p coverage/Connectivity/Back/Global/
-	cp coverage/Connectivity/Back/Unit/coverage.php coverage/Connectivity/Back/Global/Unit.cov
-	cp coverage/Connectivity/Back/Integration/coverage.php coverage/Connectivity/Back/Global/Integration.cov
-	cp coverage/Connectivity/Back/EndToEnd/coverage.php coverage/Connectivity/Back/Global/EndToEnd.cov
-	cp coverage/Connectivity/Back/Acceptance/coverage.php coverage/Connectivity/Back/Global/Acceptance.cov
+	$(DOCKER_COMPOSE) run -u www-data --rm php sh -c "\
+		if [ -d coverage/Connectivity/Back/Global/ ]; then rm -r coverage/Connectivity/Back/Global/; fi && \
+		mkdir -p coverage/Connectivity/Back/Global/ && \
+		cp coverage/Connectivity/Back/Unit/coverage.php coverage/Connectivity/Back/Global/Unit.cov && \
+		cp coverage/Connectivity/Back/Integration/coverage.php coverage/Connectivity/Back/Global/Integration.cov && \
+		cp coverage/Connectivity/Back/EndToEnd/coverage.php coverage/Connectivity/Back/Global/EndToEnd.cov && \
+		cp coverage/Connectivity/Back/Acceptance/coverage.php coverage/Connectivity/Back/Global/Acceptance.cov"
 	# run the command to merge all the code coverage on scope connectivity
 	XDEBUG_MODE=coverage ${PHP_RUN} -d memory_limit=-1 phpcov.phar merge \
 		--clover coverage/Connectivity/Back/Global/coverage.cov \
