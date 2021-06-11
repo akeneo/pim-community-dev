@@ -107,8 +107,18 @@ final class CategoryContext extends PimContext
     public function iSubmitTheCategoryChanges()
     {
         $this->spin(function () {
-            $this->getCurrentPage()->findButton('Save')->press();
+            $saveButton = $this->getCurrentPage()->findButton('Save');
+            if (!$saveButton) {
+                return false;
+            }
+
+            $saveButton->press();
             return true;
         }, 'Can not save the current category');
+
+        // Wait for the server response
+        $this->spin(function () {
+            return $this->getCurrentPage()->find('css', 'div[role=status]');
+        }, 'No response for the category update');
     }
 }
