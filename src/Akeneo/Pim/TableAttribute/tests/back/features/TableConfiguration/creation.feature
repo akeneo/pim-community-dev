@@ -99,3 +99,7 @@ Feature: Create a table attribute
   Scenario: Cannot create a table attribute when the first column is not select
     When I create a table attribute with text first column
     Then There is a violation with message: TODO The first column should be select, "text" given
+
+  Scenario: Cannot create a table configuration having invalid decimals allowed value type
+    When I create a table attribute with a configuration '{"data_type": "text", "code": "quantity", "validations": { "decimals_allowed": "error"}}'
+    Then There is a violation with message: TODO bool
