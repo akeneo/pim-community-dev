@@ -15,7 +15,6 @@ use Akeneo\Connectivity\Connection\Domain\ErrorManagement\Model\Write\TechnicalE
 use Akeneo\Connectivity\Connection\Domain\ErrorManagement\Persistence\Repository\BusinessErrorRepository;
 use Akeneo\Connectivity\Connection\Domain\Settings\Model\ValueObject\FlowType;
 use Akeneo\Connectivity\Connection\Domain\ValueObject\HourlyInterval;
-use Akeneo\Pim\Enrichment\Component\Error\DomainErrorInterface;
 use Akeneo\Pim\Enrichment\Component\Product\Model\ProductInterface;
 use FOS\RestBundle\Context\Context;
 use FOS\RestBundle\Serializer\Serializer;
@@ -52,7 +51,7 @@ class CollectApiError
     }
 
     public function collectFromProductDomainError(
-        DomainErrorInterface $error,
+        \Throwable $error,
         ?ProductInterface $product
     ): void {
         if (false === $this->isConnectionCollectable()) {
