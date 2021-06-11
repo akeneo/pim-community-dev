@@ -106,9 +106,7 @@ const MainNavigationItem = React.forwardRef<HTMLAnchorElement, MainNavigationIte
         return;
       }
 
-      if (undefined !== onClick) {
-        onClick(event);
-      }
+      onClick?.(event);
     };
 
     let tag: React.ReactElement<typeof Tag> | null = null;
