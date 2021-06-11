@@ -15,10 +15,6 @@ namespace Akeneo\Pim\TableAttribute\Infrastructure\Validation\Attribute;
 
 use Symfony\Component\Validator\Constraint;
 
-final class AreTableAttributeValidationsValid extends Constraint
+final class ValidationShouldMatchColumnType extends Constraint
 {
-    public function getTargets(): array
-    {
-        return [self::CLASS_CONSTRAINT];
-    }
 }

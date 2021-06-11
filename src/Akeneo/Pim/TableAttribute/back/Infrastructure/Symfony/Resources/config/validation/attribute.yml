@@ -2,15 +2,17 @@ Akeneo\Pim\Structure\Component\Model\Attribute:
     constraints:
         - Akeneo\Pim\TableAttribute\Infrastructure\Validation\Attribute\IsTableAttributeConfigured: ~
         - Akeneo\Pim\TableAttribute\Infrastructure\Validation\Attribute\FirstColumnCodeCannotBeChanged: ~
-        # - Akeneo\Pim\TableAttribute\Infrastructure\Validation\Attribute\AreTableAttributeValidationsValid: ~
     properties:
         rawTableConfiguration:
             - Type: array
             - Count:
                   min: 2
                   minMessage: pim_table_configuration.validation.table_configuration.must_contain_at_least_two_columns
+            - Akeneo\Pim\TableAttribute\Infrastructure\Validation\Attribute\IsColumnCodeUnique: ~
+            - Akeneo\Pim\TableAttribute\Infrastructure\Validation\Attribute\FirstColumnShouldHaveSelectDataType: ~
             - All:
                   - Type: array
+                  - Akeneo\Pim\TableAttribute\Infrastructure\Validation\Attribute\ValidationShouldMatchColumnType: ~
                   - Collection:
                         fields:
                             code:
@@ -74,8 +76,6 @@ Akeneo\Pim\Structure\Component\Model\Attribute:
                                                         message: TODO bool
 
                                           allowMissingFields: true
-                                          extraFieldsMessage: "TODO unknown validation : {{ field }}. Authorized: max_mength, min, max, decimals_allowed"
+                                          allowExtraFields: true # handled in ValidationShouldMatchColumnType
                                       - Akeneo\Pim\TableAttribute\Infrastructure\Validation\Attribute\MaxShouldBeGreaterThanMin: ~
                         missingFieldsMessage: pim_table_configuration.validation.table_configuration.missing_column
-            - Akeneo\Pim\TableAttribute\Infrastructure\Validation\Attribute\IsColumnCodeUnique: ~
-            - Akeneo\Pim\TableAttribute\Infrastructure\Validation\Attribute\FirstColumnShouldHaveSelectDataType: ~

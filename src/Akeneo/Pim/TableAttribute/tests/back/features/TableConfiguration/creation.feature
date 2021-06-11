@@ -66,7 +66,7 @@ Feature: Create a table attribute
 
   Scenario: Cannot create a table configuration having unknown validation
     When I create a table attribute with a configuration '{"data_type": "text", "code": "quantity", "validations": { "unknown": 123 }}'
-    Then There is a violation with message: TODO unknown validation : "unknown". Authorized: max_mength, min, max, decimals_allowed
+    Then There is a violation with message: TODO wrong validation type max_length unknown
 
   Scenario: Cannot create a table configuration having invalid max length validation value type
     When I create a table attribute with a configuration '{"data_type": "text", "code": "quantity", "validations": { "max_length": "foo bar"}}'
@@ -110,4 +110,4 @@ Feature: Create a table attribute
 
   Scenario: Cannot create a table configuration with a min validation on a text column
     When I create a table attribute with a configuration '{"data_type": "text", "code": "quantity", "validations": { "min": 10 }}'
-    Then There is a violation with message: TODO min not valid for text column, allowed types are max_length.
+    Then There is a violation with message: TODO wrong validation type max_length min
