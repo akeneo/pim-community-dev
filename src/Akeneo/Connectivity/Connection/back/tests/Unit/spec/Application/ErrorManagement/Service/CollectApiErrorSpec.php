@@ -16,6 +16,7 @@ use Akeneo\Connectivity\Connection\Domain\Settings\Model\ValueObject\FlowType;
 use Akeneo\Connectivity\Connection\Domain\Settings\Model\Write\Connection;
 use Akeneo\Pim\Enrichment\Component\Error\DomainErrorInterface;
 use Akeneo\Pim\Enrichment\Component\Product\Model\ProductInterface;
+use FOS\RestBundle\Context\Context;
 use FOS\RestBundle\Serializer\Serializer;
 use PhpSpec\ObjectBehavior;
 use PHPUnit\Framework\Assert;
@@ -51,6 +52,8 @@ class CollectApiErrorSpec extends ObjectBehavior
         $connectionContext->getConnection()->willReturn($connection);
         $connectionContext->isCollectable()->willReturn(true);
 
+        $context = (new Context())->setAttribute('product', $product);
+
         $connection->code()->willReturn(new ConnectionCode('erp'));
         $connection->flowType()->willReturn(new FlowType(FlowType::DATA_SOURCE));
 
@@ -85,7 +88,7 @@ class CollectApiErrorSpec extends ObjectBehavior
         }))
             ->shouldBeCalled();
 
-        $this->collectFromProductDomainError($error, $product);
+        $this->collectFromProductDomainError($error, $context);
         $this->flush();
     }
 
@@ -103,6 +106,8 @@ class CollectApiErrorSpec extends ObjectBehavior
             $violation1->getWrappedObject(),
             $violation2->getWrappedObject()
         ]);
+
+        $context = (new Context())->setAttribute('product', $product);
 
         $connectionContext->getConnection()->willReturn($connection);
         $connectionContext->isCollectable()->willReturn(true);
@@ -147,7 +152,7 @@ class CollectApiErrorSpec extends ObjectBehavior
         }))
             ->shouldBeCalled();
 
-        $this->collectFromProductValidationError($violationList, $product);
+        $this->collectFromProductValidationError($violationList, $context);
         $this->flush();
     }
 

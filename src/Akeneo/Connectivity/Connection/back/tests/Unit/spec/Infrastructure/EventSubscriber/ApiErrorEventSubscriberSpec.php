@@ -11,6 +11,7 @@ use Akeneo\Pim\Enrichment\Bundle\Event\TechnicalErrorEvent;
 use Akeneo\Pim\Enrichment\Component\Product\Event\ProductDomainErrorEvent;
 use Akeneo\Pim\Enrichment\Component\Product\Exception\UnknownAttributeException;
 use Akeneo\Pim\Enrichment\Component\Product\Model\Product;
+use FOS\RestBundle\Context\Context;
 use PhpSpec\ObjectBehavior;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 use Symfony\Component\HttpKernel\Event\TerminateEvent;
@@ -45,8 +46,10 @@ class ApiErrorEventSubscriberSpec extends ObjectBehavior
         $error = new UnknownAttributeException('attribute_code');
         $product = new Product();
         $event = new ProductDomainErrorEvent($error, $product);
+        $context = (new Context())->setAttribute('product', $event->getProduct());
 
-        $collectApiError->collectFromProductDomainError($error, $product)->shouldBeCalled();
+
+        $collectApiError->collectFromProductDomainError($error, $context)->shouldBeCalled();
 
         $this->collectProductDomainError($event);
     }
@@ -56,8 +59,9 @@ class ApiErrorEventSubscriberSpec extends ObjectBehavior
         $constraintViolationList = new ConstraintViolationList();
         $product = new Product();
         $event = new ProductValidationErrorEvent($constraintViolationList, $product);
+        $context = (new Context())->setAttribute('product', $event->getProduct());
 
-        $collectApiError->collectFromProductValidationError($constraintViolationList, $product)->shouldBeCalled();
+        $collectApiError->collectFromProductValidationError($constraintViolationList, $context)->shouldBeCalled();
 
         $this->collectProductValidationError($event);
     }

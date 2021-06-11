@@ -42,7 +42,6 @@ $rules = [
 
             // Not ok
             'Akeneo\Pim\Enrichment\Component\Error\DomainErrorInterface',
-            'Akeneo\Pim\Enrichment\Component\Product\Model\ProductInterface',
         ]
     )->in('Akeneo\Connectivity\Connection\Application\ErrorManagement'),
 

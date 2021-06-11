@@ -8,6 +8,7 @@ use Akeneo\Connectivity\Connection\Application\ErrorManagement\Service\CollectAp
 use Akeneo\Pim\Enrichment\Bundle\Event\ProductValidationErrorEvent;
 use Akeneo\Pim\Enrichment\Bundle\Event\TechnicalErrorEvent;
 use Akeneo\Pim\Enrichment\Component\Product\Event\ProductDomainErrorEvent;
+use FOS\RestBundle\Context\Context;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 use Symfony\Component\HttpKernel\KernelEvents;
 
@@ -40,14 +41,16 @@ final class ApiErrorEventSubscriber implements EventSubscriberInterface
 
     public function collectProductDomainError(ProductDomainErrorEvent $event): void
     {
-        $this->collectApiError->collectFromProductDomainError($event->getError(), $event->getProduct());
+        $context = (new Context())->setAttribute('product', $event->getProduct());
+        $this->collectApiError->collectFromProductDomainError($event->getError(), $context);
     }
 
     public function collectProductValidationError(ProductValidationErrorEvent $event): void
     {
+        $context = (new Context())->setAttribute('product', $event->getProduct());
         $this->collectApiError->collectFromProductValidationError(
             $event->getConstraintViolationList(),
-            $event->getProduct()
+            $context
         );
     }
 
