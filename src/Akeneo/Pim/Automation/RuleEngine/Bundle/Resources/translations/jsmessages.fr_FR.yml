@@ -53,7 +53,13 @@ pimee_catalog_rule:
           error: Une erreur s'est produite lors de la suppression des règles.
           empty_selection: Aucune règle n'a été sélectionnée.
       tags:
+        set: Définir
         add: Ajouter
+        calculate: Calculer
+        clear: Effacer
+        concatenate: Concaténer
+        copy: Copier
+        remove: Supprimer
   form:
     category:
       catalog: Catalogue

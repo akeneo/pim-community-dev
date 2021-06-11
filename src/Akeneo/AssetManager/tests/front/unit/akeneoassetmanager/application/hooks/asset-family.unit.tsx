@@ -4,18 +4,20 @@ import '@testing-library/jest-dom/extend-expect';
 import {useAssetFamily} from 'akeneoassetmanager/application/hooks/asset-family';
 import {renderHook, act} from '@testing-library/react-hooks';
 
-jest.mock('akeneoassetmanager/tools/security-context', () => ({
-  isGranted: (permission: string) => {
-    switch (permission) {
-      case 'akeneo_assetmanager_asset_create':
-      case 'akeneo_assetmanager_asset_edit':
-      case 'akeneo_assetmanager_asset_delete':
-      case 'akeneo_assetmanager_asset_family_edit':
-        return true;
-      case 'akeneo_assetmanager_asset_family_create':
-        return false;
-    }
-  },
+jest.mock('@akeneo-pim-community/shared/lib/hooks/useSecurity', () => ({
+  useSecurity: () => ({
+    isGranted: (permission: string) => {
+      switch (permission) {
+        case 'akeneo_assetmanager_asset_create':
+        case 'akeneo_assetmanager_asset_edit':
+        case 'akeneo_assetmanager_asset_delete':
+        case 'akeneo_assetmanager_asset_family_edit':
+          return true;
+        case 'akeneo_assetmanager_asset_family_create':
+          return false;
+      }
+    },
+  }),
 }));
 
 const assetFamily = {

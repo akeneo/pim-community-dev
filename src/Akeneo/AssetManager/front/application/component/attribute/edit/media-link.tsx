@@ -37,9 +37,7 @@ const MediaLinkView = ({
   errors: ValidationError[];
   rights: {
     attribute: {
-      create: boolean;
       edit: boolean;
-      delete: boolean;
     };
   };
 }) => {

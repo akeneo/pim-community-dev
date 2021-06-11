@@ -16,19 +16,13 @@ class ErrorListenerSpec extends ObjectBehavior
 {
     function it_logs_enriched_http_exception(
         ExceptionEvent $event,
-        BoundedContextResolver $boundedContextResolver,
-        LoggerInterface $logger,
-        Request $request
+        LoggerInterface $logger
     ) {
         $httpException = new HttpException(Response::HTTP_BAD_REQUEST, 'my error message');
         $event->getThrowable()->willReturn($httpException);
-        $event->getRequest()->willReturn($request);
-        $request->getPathInfo()->shouldBeCalled()->willReturn('my_path_info');
-        $boundedContextResolver->fromRequest($request)->shouldBeCalled()->willReturn('my_context');
 
         $this->beConstructedWith(
             $controller = new \stdClass(),
-            $boundedContextResolver,
             $logger
         );
         $this->shouldHaveType(ErrorListener::class);
@@ -37,8 +31,6 @@ class ErrorListenerSpec extends ObjectBehavior
             Argument::containingString('Uncaught PHP Exception Symfony\Component\HttpKernel\Exception\HttpException: "my error message" at /srv/pim/tests/back/Platform/Specification/Bundle/FrameworkBundle/EventListener/ErrorListenerSpec.php line'),
             Argument::allOf(
                 Argument::withEntry('exception', $httpException),
-                Argument::withEntry('akeneo_context', 'my_context'),
-                Argument::withEntry('path_info', 'my_path_info'),
                 Argument::withKey('trace')
             )
         )->shouldBeCalled();
@@ -48,29 +40,23 @@ class ErrorListenerSpec extends ObjectBehavior
 
     function it_logs_enriched_exception(
         ExceptionEvent $event,
-        BoundedContextResolver $boundedContextResolver,
-        LoggerInterface $logger,
-        Request $request
+        LoggerInterface $logger
     ) {
         $httpException = new \Exception('my error message');
         $event->getThrowable()->willReturn($httpException);
-        $event->getRequest()->willReturn($request);
-        $request->getPathInfo()->shouldBeCalled()->willReturn('my_path_info');
-        $boundedContextResolver->fromRequest($request)->shouldBeCalled()->willReturn('my_context');
 
         $this->beConstructedWith(
             $controller = new \stdClass(),
-            $boundedContextResolver,
             $logger
         );
         $this->shouldHaveType(ErrorListener::class);
 
         $logger->critical(
-            Argument::containingString('Uncaught PHP Exception Exception: "my error message" at /srv/pim/tests/back/Platform/Specification/Bundle/FrameworkBundle/EventListener/ErrorListenerSpec.php line'),
+            Argument::containingString(
+                'Uncaught PHP Exception Exception: "my error message" at /srv/pim/tests/back/Platform/Specification/Bundle/FrameworkBundle/EventListener/ErrorListenerSpec'
+            ),
             Argument::allOf(
                 Argument::withEntry('exception', $httpException),
-                Argument::withEntry('akeneo_context', 'my_context'),
-                Argument::withEntry('path_info', 'my_path_info'),
                 Argument::withKey('trace')
             )
         )->shouldBeCalled();

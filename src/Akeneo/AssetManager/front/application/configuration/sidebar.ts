@@ -1,5 +1,5 @@
 import * as React from 'react';
-import securityContext from 'akeneoassetmanager/tools/security-context';
+const securityContext = require('pim/security-context');
 
 class SibebarMissConfigurationError extends Error {}
 

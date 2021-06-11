@@ -32,6 +32,9 @@ teamwork_assistant:
     deletion:
       user_linked_to_project: Cet utilisateur est toujours lié à un ou plusieurs projets. Veuillez supprimer les groupes auxquels il est lié dans son compte utilisateur.
       user_is_project_owner: Cet utilisateur est toujours propriétaire d'un ou de plusieurs projets. Veuillez supprimer tous les projets de cet utilisateur.
+  user_group:
+    deletion:
+      group_linked_to_project: Ce groupe d'utilisateurs est associé à un projet, il ne peut pas être supprimé
 job_execution:
   summary:
     processed_products: Produits traités

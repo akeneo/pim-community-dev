@@ -29,7 +29,7 @@ spec:
         ad.datadoghq.com/fpm.check_names: '["php_fpm"]'
         ad.datadoghq.com/fpm.init_configs: '[{}]'
         ad.datadoghq.com/fpm.instances: '[[{"status_url":"http://%%host%%:9000/status", "use_fastcgi": true}, {"status_url":"http://%%host%%:9001/status", "use_fastcgi": true}]]'
-        ad.datadoghq.com/fpm.logs: '[{ "service": "pim-enterprise-dev", "source": "pim-enterprise-dev", "log_processing_rules": [{ "type": "exclude_at_match","name": "exclude_php_status_logs", "pattern" : "uri\":\"/status\""},{ "type":"exclude_at_match", "name": "exclude_php_status_logs", "pattern" : "x-request-path\":\"(/notification/count_unread|/monitoring/services_status)\""}]}]'
+        ad.datadoghq.com/fpm.logs: '[{ "service": "pim-enterprise-dev", "source": "pim-enterprise-dev", "log_processing_rules": [{ "type": "exclude_at_match","name": "exclude_php_status_logs", "pattern" : "uri\":\"/status\""},{ "type":"exclude_at_match", "name": "exclude_php_status_logs", "pattern" : "path_info\":\"[^\"]*(/notification/count_unread|/monitoring/services_status)\""}]}]'
         ad.datadoghq.com/httpd.logs: '[{ "service": "httpd", "source": "httpd", "log_processing_rules": [{ "type": "exclude_at_match", "name": "exclude_php_status_logs", "pattern" : "\"(/monitoring/services_status|/status|/notification/count_unread)\""}]}]'
         checksum/env-config: {{ include (print $.Template.BasePath "/env-configmap.yaml") . | replace  (printf "%s-%s" .Chart.Name .Chart.Version ) "" | sha256sum }} # force reload of pods upon change of the configmap
         checksum/pim-config: {{ include (print $.Template.BasePath "/pim-configmap.yaml") . | replace  (printf "%s-%s" .Chart.Name .Chart.Version ) "" | sha256sum }} # force reload of pods upon change of the configmap
@@ -73,7 +73,7 @@ spec:
           image: {{ template "pim.imageNameAndTag" . }}
           imagePullPolicy: {{ .Values.image.pim.pullPolicy | quote }}
           command: ['/usr/local/sbin/php-fpm', '-F']
-          resources: {{ toYaml .Values.pim.resources | nindent 12 }}
+          resources: {{ toYaml .Values.pim.fpm.resources | nindent 12 }}
           ports:
             - name: fpm
               containerPort: 9000
@@ -125,13 +125,7 @@ spec:
         - name: httpd
           image: "{{ .Values.image.httpd.repository }}:{{ .Values.image.httpd.tag }}"
           imagePullPolicy: {{ .Values.image.httpd.pullPolicy | quote }}
-          resources:
-            limits:
-              cpu: 200m
-              memory: 128Mi
-            requests:
-              cpu: 200m
-              memory: 128Mi
+          resources: {{ toYaml .Values.pim.httpd.resources | nindent 12 }}
           ports:
             - containerPort: 80
               name: httpd

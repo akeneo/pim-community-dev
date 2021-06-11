@@ -119,8 +119,7 @@ final class DemoHelperCommand extends Command
                 'You have ' . $delayInSeconds . ' seconds to stop this process if you don\'t want to loose data.'
             ]);
 
-            $io->createProgressBar($delayInSeconds);
-            $io->progressStart();
+            $io->progressStart($delayInSeconds);
             for ($i=0; $i<$delayInSeconds; $i++) {
                 $io->progressAdvance();
                 sleep(1);

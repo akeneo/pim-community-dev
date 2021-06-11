@@ -11,14 +11,15 @@ import {
 } from '../../models';
 import {Translate} from '../../dependenciesTools';
 import {IndexedCurrencies} from '../../repositories/CurrencyRepository';
+import {IndexedScopes} from '../../repositories/ScopeRepository';
 
 const getCurrencyValidation = (
   attribute: Attribute,
   translate: Translate,
   currentCatalogLocale: LocaleCode,
-  availableCurrencies: Currency[],
+  scopes: IndexedScopes,
   currencies: IndexedCurrencies,
-  channelCode: ScopeCode,
+  getChannelCode: () => ScopeCode,
   isCurrencyRequired = true
 ) => {
   const currencyValidation: any = {};
@@ -35,6 +36,17 @@ const getCurrencyValidation = (
     if (!selectedCode) {
       return;
     }
+
+    const channelCode = getChannelCode();
+    let availableCurrencies: Currency[] = [];
+    if (!attribute.scopable) {
+      availableCurrencies = Object.values(currencies);
+    } else if (channelCode && scopes[channelCode]) {
+      availableCurrencies = scopes[channelCode].currencies.map(code => ({
+        code,
+      }));
+    }
+
     if ('undefined' === typeof currencies[selectedCode]) {
       return translate(
         'pimee_catalog_rule.exceptions.unknown_or_inactive_currency',

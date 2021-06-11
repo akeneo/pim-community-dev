@@ -1,7 +1,7 @@
 import React, {memo} from 'react';
 import {connect} from 'react-redux';
 import {Key, Button, SectionTitle} from 'akeneo-design-system';
-import {useTranslate, Translate} from '@akeneo-pim-community/shared';
+import {useTranslate, Translate, useSecurity} from '@akeneo-pim-community/shared';
 import {attributeCreationStart} from 'akeneoassetmanager/domain/event/attribute/create';
 import {EditState} from 'akeneoassetmanager/application/reducer/asset-family/edit';
 import {CreateState} from 'akeneoassetmanager/application/reducer/attribute/create';
@@ -20,8 +20,6 @@ import ErrorBoundary from 'akeneoassetmanager/application/component/app/error-bo
 import {EditOptionState} from 'akeneoassetmanager/application/reducer/attribute/type/option';
 import {canEditAssetFamily, canEditLocale} from 'akeneoassetmanager/application/reducer/right';
 
-const securityContext = require('pim/security-context');
-
 interface StateProps {
   context: {
     locale: string;
@@ -30,10 +28,8 @@ interface StateProps {
     locale: {
       edit: boolean;
     };
-    attribute: {
-      create: boolean;
+    assetFamily: {
       edit: boolean;
-      delete: boolean;
     };
   };
   assetFamily: AssetFamily;
@@ -132,16 +128,17 @@ interface AttributeViewProps {
     locale: {
       edit: boolean;
     };
-    attribute: {
-      create: boolean;
+    assetFamily: {
       edit: boolean;
-      delete: boolean;
     };
   };
 }
 
 const AttributeView = memo(({normalizedAttribute, onAttributeEdit, locale, rights}: AttributeViewProps) => {
   const translate = useTranslate();
+  const {isGranted} = useSecurity();
+
+  const canEditAttribute = isGranted('akeneo_assetmanager_attribute_edit') && rights.assetFamily.edit;
   const attribute = denormalizeAttribute(normalizedAttribute);
   const icon = getAttributeIcon(attribute.getType());
 
@@ -174,7 +171,7 @@ const AttributeView = memo(({normalizedAttribute, onAttributeEdit, locale, right
           readOnly
           tabIndex={-1}
         />
-        {rights.attribute.edit ? (
+        {canEditAttribute ? (
           <button
             className="AknIconButton AknIconButton--edit"
             onClick={() => onAttributeEdit(attribute.getIdentifier())}
@@ -208,6 +205,9 @@ const AttributesView = ({
   options,
 }: CreateProps) => {
   const translate = useTranslate();
+  const {isGranted} = useSecurity();
+
+  const canCreateAttribute = isGranted('akeneo_assetmanager_attribute_create') && rights.assetFamily.edit;
 
   const assetFamilyLabel = getAssetFamilyLabel(assetFamily, context.locale);
 
@@ -217,7 +217,7 @@ const AttributesView = ({
         label={translate('pim_asset_manager.asset_family.tab.attribute')}
         image={assetFamily.image}
         primaryAction={(defaultFocus: React.RefObject<any>) =>
-          rights.attribute.create ? (
+          canCreateAttribute ? (
             <Button level="secondary" onClick={events.onAttributeCreationStart} ref={defaultFocus} tabIndex={0}>
               {translate('pim_asset_manager.attribute.button.add')}
             </Button>
@@ -227,7 +227,7 @@ const AttributesView = ({
         withChannelSwitcher={false}
         isDirty={false}
         breadcrumb={<AssetFamilyBreadcrumb assetFamilyLabel={assetFamilyLabel} />}
-        displayActions={rights.attribute.create}
+        displayActions={canCreateAttribute}
       />
       <div className="AknSubsection">
         <SectionTitle sticky={160}>
@@ -296,17 +296,8 @@ export default connect(
         locale: {
           edit: canEditLocale(state.right.locale, locale),
         },
-        attribute: {
-          create:
-            securityContext.isGranted('akeneo_assetmanager_attribute_create') &&
-            canEditAssetFamily(state.right.assetFamily, state.form.data.identifier),
-          edit:
-            securityContext.isGranted('akeneo_assetmanager_attribute_edit') &&
-            canEditAssetFamily(state.right.assetFamily, state.form.data.identifier),
-          delete:
-            securityContext.isGranted('akeneo_assetmanager_attribute_edit') &&
-            securityContext.isGranted('akeneo_assetmanager_attribute_delete') &&
-            canEditAssetFamily(state.right.assetFamily, state.form.data.identifier),
+        assetFamily: {
+          edit: canEditAssetFamily(state.right.assetFamily, state.form.data.identifier),
         },
       },
       assetFamily: state.form.data,

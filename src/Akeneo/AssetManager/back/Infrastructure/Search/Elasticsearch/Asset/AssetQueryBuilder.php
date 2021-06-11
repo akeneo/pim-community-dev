@@ -49,7 +49,7 @@ class AssetQueryBuilder implements AssetQueryBuilderInterface
         $codeLabelFilter = ($assetQuery->hasFilter('code_label')) ? $assetQuery->getFilter('code_label') : null;
         $codeFilter = ($assetQuery->hasFilter('code')) ? $assetQuery->getFilter('code') : null;
         $completeFilter = ($assetQuery->hasFilter('complete')) ? $assetQuery->getFilter('complete') : null;
-        $updatedFilter = ($assetQuery->hasFilter('updated')) ? $assetQuery->getFilter('updated') : null;
+        $updatedFilters = ($assetQuery->hasFilter('updated')) ? $assetQuery->getFilters('updated') : [];
         $attributeFilters = ($assetQuery->hasFilter('values.*')) ? $assetQuery->getValueFilters() : [];
 
         $query = [
@@ -125,13 +125,45 @@ class AssetQueryBuilder implements AssetQueryBuilderInterface
             ];
         }
 
-        if (null !== $updatedFilter && !empty($updatedFilter['value'] && '>' === $updatedFilter['operator'])) {
-            $query['query']['constant_score']['filter']['bool']['filter'][] = [
-                'range' => [
-                    'updated_at' => ['gt' => $this->getFormattedDate($updatedFilter['value'])]
-                ]
-            ];
-        }
+        $query['query']['constant_score']['filter']['bool'] = array_reduce(
+            $updatedFilters,
+            function (array $query, array $filter): array {
+                if (empty($filter['value'])) {
+                    return $query;
+                }
+                switch ($filter['operator']) {
+                    case '<':
+                        $query['filter'][] = ['range' => ['updated_at' => [
+                            'lt' => $this->getFormattedDate($filter['value']),
+                        ]]];
+                        break;
+                    case '>':
+                        $query['filter'][] = ['range' => ['updated_at' => [
+                            'gt' => $this->getFormattedDate($filter['value']),
+                        ]]];
+                        break;
+                    case 'BETWEEN':
+                        $query['filter'][] = ['range' => ['updated_at' => [
+                            'gt' => $this->getFormattedDate($filter['value'][0]),
+                            'lt' => $this->getFormattedDate($filter['value'][1]),
+                        ]]];
+                        break;
+                    case 'NOT BETWEEN':
+                        $query['must_not'][] = ['range' => ['updated_at' => [
+                            'gt' => $this->getFormattedDate($filter['value'][0]),
+                            'lt' => $this->getFormattedDate($filter['value'][1]),
+                        ]]];
+                        break;
+                    case 'SINCE LAST N DAYS':
+                        $query['filter'][] = ['range' => ['updated_at' => [
+                            'gt' => $this->getFormattedDate(sprintf('%s days ago', $filter['value'])),
+                        ]]];
+                        break;
+                }
+                return $query;
+            },
+            $query['query']['constant_score']['filter']['bool']
+        );
 
         if (!empty($attributeFilters)) {
             foreach ($attributeFilters as $attributeFilter) {

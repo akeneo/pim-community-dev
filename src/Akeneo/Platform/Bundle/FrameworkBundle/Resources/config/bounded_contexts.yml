@@ -47,7 +47,7 @@ parameters:
         'Oneup\FlysystemBundle': 'Tool'
 
         'Oro\Bundle\ConfigBundle\OroConfigBundle': 'Enrichment'
-        'Oro\Bundle\DataGridBundle\OroDataGridBundle': 'Enrichment'
+        'Oro\Bundle\DataGridBundle': 'Enrichment'
         'Oro\Bundle\FilterBundle': 'Enrichment'
         'Oro\Bundle\PimDataGridBundle': 'Enrichment'
         'Oro\Bundle\PimFilterBundle': 'Enrichment'
