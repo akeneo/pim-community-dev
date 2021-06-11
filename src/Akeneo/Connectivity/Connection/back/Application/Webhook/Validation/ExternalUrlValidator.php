@@ -23,6 +23,10 @@ class ExternalUrlValidator extends ConstraintValidator
     ];
 
     private DnsLookupInterface $dnsLookup;
+
+    /**
+     * @var string[]
+     */
     private array $networkWhitelist;
 
     public function __construct(
