@@ -25,6 +25,10 @@ GOOGLE_STORAGE_lOCATION ?= eu
 REGISTRY ?= eu.gcr.io
 HELM_REPO_PROD := akeneo-charts
 DEPLOYMENTS_INSTANCES_DIR ?= $(PWD)/deployments/instances
+CLOUD_CUSTOMERS_DEV_DIR ?= /root/cloud-customers-dev
+OPERATIONS_TOOLS_DIR ?= /root/operation-tools
+OPERATIONS_TOOLS_BRANCH ?= master
+GRTH_BUCKET ?= growth-edition-dev
 INSTANCE_DIR ?= $(DEPLOYMENTS_INSTANCES_DIR)/$(PFID)
 MYSQL_DISK_SIZE ?= 10
 MYSQL_DISK_DESCRIPTION ?=
@@ -38,7 +42,7 @@ PIM_SRC_DIR_GE ?=
 MAIN_TF_TEMPLATE ?= serenity_instance
 
 ifeq ($(TYPE),grth)
-	PIM_SRC_DIR_GE := gcs::https://www.googleapis.com/storage/v1/akecld-terraform-modules/growth-edition-dev/$(IMAGE_TAG)
+	PIM_SRC_DIR_GE := gcs::https://www.googleapis.com/storage/v1/akecld-terraform-modules/$(GRTH_BUCKET)/$(IMAGE_TAG)
 	MAIN_TF_TEMPLATE := growth_instance
 endif
 
@@ -261,11 +265,55 @@ ifeq ($(ACTIVATE_MONITORING),true)
 endif
 endif
 ifeq ($(TYPE),grth)
-	yq w -j -P -i ${INSTANCE_DIR}/main.tf.json 'module.pim.source' "gcs::https://www.googleapis.com/storage/v1/akecld-terraform-modules/growth-edition/$(IMAGE_TAG)/terraform/deployments/terraform"
+	yq w -j -P -i ${INSTANCE_DIR}/main.tf.json 'module.pim.source' "gcs::https://www.googleapis.com/storage/v1/akecld-terraform-modules/$(GRTH_BUCKET)/$(IMAGE_TAG)/terraform"
 ifeq ($(ACTIVATE_MONITORING),true)
-	yq w -j -P -i ${INSTANCE_DIR}/main.tf.json 'module.pim-monitoring.source' "gcs::https://www.googleapis.com/storage/v1/akecld-terraform-modules/growth-edition/$(IMAGE_TAG)/terraform/deployments/terraform/monitoring/"
+	yq w -j -P -i ${INSTANCE_DIR}/main.tf.json 'module.pim-monitoring.source' "gcs::https://www.googleapis.com/storage/v1/akecld-terraform-modules/$(GRTH_BUCKET)/$(IMAGE_TAG)/terraform/monitoring"
 endif
 endif
+
+.PHONY: commit-instance
+commit-instance:
+	git clone git@github.com:akeneo/cloud-customers-dev.git $(CLOUD_CUSTOMERS_DEV_DIR)
+	mkdir -p $(DEPLOYMENTS_INSTANCES_DIR)/$(PFID)
+	IMAGE_TAG=$(IMAGE_TAG) $(MAKE) create-ci-release-files
+	IMAGE_TAG=$(IMAGE_TAG) $(MAKE) change-terraform-source-version
+	GIT_SSH_COMMAND='ssh -i ~/.ssh/id_rsa_1f25f8bb595295f6e2f2972f30d4e966 -o UserKnownHostsFile=~/.ssh/known_hosts -o IdentitiesOnly=Yes' \
+	make deploy
+	git config --global user.email "pim_ci@akeneo.com"
+	git config --global user.name "pim_ci_instance_creation"
+	cd $(CLOUD_CUSTOMERS_DEV_DIR) && git add $(DEPLOYMENTS_INSTANCES_DIR)/$(PFID)
+	cd $(CLOUD_CUSTOMERS_DEV_DIR) && git pull --no-commit && git commit -am "Created instance $(PFID)" && git push
+
+.PHONY: uncommit-instance
+uncommit-instance:
+	git clone git@cloud-customers-dev:akeneo/cloud-customers-dev.git $(CLOUD_CUSTOMERS_DEV_DIR)
+	make delete
+	rm -rf $(DEPLOYMENTS_INSTANCES_DIR)/$(PFID)
+	git config --global user.email "pim_ci@akeneo.com"
+	git config --global user.name "pim_ci_instance_deletion"
+	cd $(CLOUD_CUSTOMERS_DEV_DIR) && git add $(DEPLOYMENTS_INSTANCES_DIR)/$(PFID)
+	cd $(CLOUD_CUSTOMERS_DEV_DIR) && git pull --no-commit && git commit -am "Deleted instance $(PFID)" && git push
+
+.PHONY: upgrade-instance
+upgrade-instance:
+	git clone git@operation-tools:akeneo/operation-tools.git $(OPERATIONS_TOOLS_DIR)
+	cd $(OPERATIONS_TOOLS_DIR) && git checkout $(OPERATIONS_TOOLS_BRANCH)
+	cp $(OPERATIONS_TOOLS_DIR)/jenkins.yaml /usr/share/jenkins/ref/casc/jenkins.yaml
+	mkdir -p /workspace && cp ${HOME}/gcloud-service-key.json /workspace/pim_ci.json
+	JENKINS_LIBS_SSH_PRIVATE_FILE_PATH=~/.ssh/id_rsa_2c6118646e36aa7476fd5e6b735923c6 \
+	PERRYBOT_SSH_PRIVATE_FILE_PATH=~/.ssh/id_rsa_5f7bb3cbd43de2c2365f9db487865f67 \
+	DEVTEST=true \
+	DEVTEST_INSTANCE=$(PFID) \
+	JENKINSFILE_PATH=$(OPERATIONS_TOOLS_DIR)/saas-instances-upgrade.Jenkinsfile \
+	/app/bin/jenkinsfile-runner-launcher -ns -u \
+	-a "batchMode=false" \
+	-a "skipShutdown=false" \
+	-a "autoApply=true" \
+	-a "release=$(IMAGE_TAG)" \
+	-a "productTypePrefixFilter=$(TYPE)" \
+	-a "googleProjectIdFilter=akecld-saas-dev" \
+	-a "googleCloudZoneFilter=*" \
+	-a "forceUpdate=false"
 
 .PHONY: test-prod
 test-prod:
