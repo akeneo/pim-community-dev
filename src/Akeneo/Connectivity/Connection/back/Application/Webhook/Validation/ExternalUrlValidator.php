@@ -5,7 +5,7 @@ declare(strict_types=1);
 namespace Akeneo\Connectivity\Connection\Application\Webhook\Validation;
 
 use Akeneo\Connectivity\Connection\Application\Webhook\Service\DnsLookupInterface;
-use Symfony\Component\HttpFoundation\IpUtils;
+use Akeneo\Connectivity\Connection\Application\Webhook\Service\IpMatcherInterface;
 use Symfony\Component\Validator\Constraint;
 use Symfony\Component\Validator\ConstraintValidator;
 use Symfony\Component\Validator\Exception\UnexpectedTypeException;
@@ -24,6 +24,8 @@ class ExternalUrlValidator extends ConstraintValidator
 
     private DnsLookupInterface $dnsLookup;
 
+    private IpMatcherInterface $ipMatcher;
+
     /**
      * @var string[]
      */
@@ -31,10 +33,12 @@ class ExternalUrlValidator extends ConstraintValidator
 
     public function __construct(
         DnsLookupInterface $dnsLookup,
+        IpMatcherInterface $ipMatcher,
         string $networkWhitelist = ''
     ) {
         $this->dnsLookup = $dnsLookup;
-        $this->networkWhitelist = explode(',', $networkWhitelist);
+        $this->ipMatcher = $ipMatcher;
+        $this->networkWhitelist = empty($networkWhitelist) ? [] : explode(',', $networkWhitelist);
     }
 
     public function validate($value, Constraint $constraint): void
@@ -60,7 +64,6 @@ class ExternalUrlValidator extends ConstraintValidator
         }
 
         $ip = $this->dnsLookup->ip($host);
-
         if (null === $ip) {
             return;
         }
@@ -82,7 +85,7 @@ class ExternalUrlValidator extends ConstraintValidator
             return false;
         }
 
-        return IpUtils::checkIp($ip, $this->networkWhitelist);
+        return $this->ipMatcher->match($ip, $this->networkWhitelist);
     }
 
     private function isInPrivateRange(string $ip): bool

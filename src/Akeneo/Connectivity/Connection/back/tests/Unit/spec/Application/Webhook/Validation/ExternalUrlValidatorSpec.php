@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace spec\Akeneo\Connectivity\Connection\Application\Webhook\Validation;
 
 use Akeneo\Connectivity\Connection\Application\Webhook\Service\DnsLookupInterface;
+use Akeneo\Connectivity\Connection\Application\Webhook\Service\IpMatcherInterface;
 use Akeneo\Connectivity\Connection\Application\Webhook\Validation\ExternalUrl;
 use Akeneo\Connectivity\Connection\Application\Webhook\Validation\ExternalUrlValidator;
 use PhpSpec\ObjectBehavior;
@@ -18,9 +19,10 @@ use Symfony\Component\Validator\Violation\ConstraintViolationBuilderInterface;
 class ExternalUrlValidatorSpec extends ObjectBehavior
 {
     public function let(
-        DnsLookupInterface $dnsLookup
+        DnsLookupInterface $dnsLookup,
+        IpMatcherInterface $ipMatcher
     ): void {
-        $this->beConstructedWith($dnsLookup);
+        $this->beConstructedWith($dnsLookup, $ipMatcher);
     }
 
     public function it_is_initializable(): void
@@ -143,14 +145,16 @@ class ExternalUrlValidatorSpec extends ObjectBehavior
     public function it_allows_the_ip_if_in_private_range_and_in_whitelist(
         ExecutionContextInterface $context,
         DnsLookupInterface $dnsLookup,
+        IpMatcherInterface $ipMatcher,
         ExternalUrl $constraint
     ): void {
-        $this->beConstructedWith($dnsLookup, '172.16.0.0/24');
+        $this->beConstructedWith($dnsLookup, $ipMatcher, '172.16.0.0/24');
         $this->initialize($context);
 
         $value = 'http://akeneo.com/foo';
 
         $dnsLookup->ip('akeneo.com')->willReturn('172.16.0.1');
+        $ipMatcher->match('172.16.0.1', ['172.16.0.0/24'])->willReturn(true);
         $context->buildViolation(Argument::any())->shouldNotBeCalled();
 
         $this->validate($value, $constraint);

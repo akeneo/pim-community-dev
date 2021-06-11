@@ -35,6 +35,7 @@ services:
         class: Akeneo\Connectivity\Connection\Application\Webhook\Validation\ExternalUrlValidator
         arguments:
             - '@akeneo_connectivity.connection.dns_lookup'
+            - '@akeneo_connectivity.connection.ip_matcher'
             - '%env(string:ALLOWED_NETWORK_WHITELIST)%'
         tags:
             - { name: validator.constraint_validator }
