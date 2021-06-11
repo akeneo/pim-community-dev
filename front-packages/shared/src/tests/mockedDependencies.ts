@@ -1,4 +1,10 @@
-import {NotificationLevel} from '../DependenciesProvider.type';
+import {NotificationLevel, View} from '../DependenciesProvider.type';
+
+const view: View = {
+  setElement: () => view,
+  render: () => {},
+  remove: () => {},
+};
 
 const mockedDependencies = {
   router: {
@@ -7,16 +13,7 @@ const mockedDependencies = {
   },
   translate: (key: string) => key,
   viewBuilder: {
-    build: (viewName: string) => {
-      return Promise.resolve({
-        remove: () => {},
-        setElement: () => {
-          return {
-            render: () => viewName,
-          };
-        },
-      });
-    },
+    build: (_viewName: string) => Promise.resolve(view),
   },
   notify: (level: NotificationLevel, message: string): string => {
     return `${level} ${message}`;
