@@ -1,10 +1,10 @@
 import React from 'react';
 import {screen} from '@testing-library/react';
 import {renderWithProviders} from '@akeneo-pim-community/shared';
-import {SourceDetailsPlaceholder} from './SourceDetailsPlaceholder';
+import {NoOperationsPlaceholder} from './NoOperationsPlaceholder';
 
-test('it renders source detail placeholder', () => {
-  renderWithProviders(<SourceDetailsPlaceholder />);
+test('it renders no operations placeholder', () => {
+  renderWithProviders(<NoOperationsPlaceholder />);
 
   expect(
     screen.getByText(/akeneo.tailored_export.column_details.sources.no_source_configuration.title/i)

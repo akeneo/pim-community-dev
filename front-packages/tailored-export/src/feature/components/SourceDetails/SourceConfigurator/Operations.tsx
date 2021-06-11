@@ -3,7 +3,7 @@ import {Collapse} from 'akeneo-design-system';
 import {useTranslate} from '@akeneo-pim-community/shared';
 import {useAttribute} from '../../../hooks';
 import {Source} from '../../../models';
-import {SourceDetailsPlaceholder} from '../SourceDetailsPlaceholder';
+import {NoOperationsPlaceholder} from './NoOperationsPlaceholder';
 import {Selector} from './Selector/Selector';
 
 type OperationsProps = {
@@ -20,10 +20,11 @@ const Operations = ({source, onSourceChange}: OperationsProps) => {
 
   switch (attribute.type) {
     case 'pim_catalog_text':
+    case 'pim_catalog_textarea':
     case 'pim_catalog_identifier':
     case 'pim_catalog_boolean':
     case 'pim_catalog_number':
-      return <SourceDetailsPlaceholder />;
+      return <NoOperationsPlaceholder />;
   }
 
   const selector = (

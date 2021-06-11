@@ -1,7 +1,7 @@
-import {useTranslate} from '@akeneo-pim-community/shared';
-import {getColor, getFontSize, RulesIllustration} from 'akeneo-design-system';
 import React from 'react';
 import styled from 'styled-components';
+import {getColor, getFontSize, RulesIllustration} from 'akeneo-design-system';
+import {useTranslate} from '@akeneo-pim-community/shared';
 
 const Content = styled.div`
   display: flex;
@@ -18,7 +18,7 @@ const Title = styled.div`
   text-align: center;
 `;
 
-const SourceDetailsPlaceholder = () => {
+const NoOperationsPlaceholder = () => {
   const translate = useTranslate();
 
   return (
@@ -29,4 +29,4 @@ const SourceDetailsPlaceholder = () => {
   );
 };
 
-export {SourceDetailsPlaceholder};
+export {NoOperationsPlaceholder};
