@@ -2,7 +2,7 @@ Akeneo\Pim\Structure\Component\Model\Attribute:
     constraints:
         - Akeneo\Pim\TableAttribute\Infrastructure\Validation\Attribute\IsTableAttributeConfigured: ~
         - Akeneo\Pim\TableAttribute\Infrastructure\Validation\Attribute\FirstColumnCodeCannotBeChanged: ~
-        - Akeneo\Pim\TableAttribute\Infrastructure\Validation\Attribute\AreTableAttributeValidationsValid: ~
+        # - Akeneo\Pim\TableAttribute\Infrastructure\Validation\Attribute\AreTableAttributeValidationsValid: ~
     properties:
         rawTableConfiguration:
             - Type: array
@@ -48,6 +48,33 @@ Akeneo\Pim\Structure\Component\Model\Attribute:
                                       - Type:
                                             type: array
                                             message: TODO Validation should be an object
+                                      - Collection:
+                                          fields:
+                                              max_length:
+                                                  - Type:
+                                                      type: int
+                                                      message: TODO integer
+                                                  - Positive:
+                                                      message : TODO positive int
+                                              min:
+                                                  - Type:
+                                                        type: int
+                                                        message: TODO integer
+                                                  - PositiveOrZero:
+                                                        message: TODO positive integer
+                                              max:
+                                                  - Type:
+                                                        type: int
+                                                        message: TODO integer
+                                                  - Positive:
+                                                        message: TODO positive integer
+                                              decimals_allowed:
+                                                  - Type:
+                                                        type: bool
+                                                        message: TODO bool
+
+                                          allowMissingFields: true
+                                          extraFieldsMessage: TODO unknown validation
                         missingFieldsMessage: pim_table_configuration.validation.table_configuration.missing_column
             - Akeneo\Pim\TableAttribute\Infrastructure\Validation\Attribute\IsColumnCodeUnique: ~
             - Akeneo\Pim\TableAttribute\Infrastructure\Validation\Attribute\FirstColumnShouldHaveSelectDataType: ~
