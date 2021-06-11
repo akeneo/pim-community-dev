@@ -250,6 +250,37 @@ class UpdateEventSubscriptionEndToEnd extends WebTestCase
         );
     }
 
+    public function test_it_fails_to_update_a_webhook_with_a_forbidden_url(): void
+    {
+        $connection = $this->connectionLoader->createConnection(
+            'magento',
+            'Magento',
+            FlowType::DATA_SOURCE,
+            false,
+        );
+
+        $data = [
+            'code' => $connection->code(),
+            'enabled' => true,
+            'url' => 'http://localhost',
+        ];
+
+        $this->authenticateAsAdmin();
+        $this->client->request(
+            'POST',
+            sprintf('/rest/connections/%s/webhook', $connection->code()),
+            [],
+            [],
+            ['CONTENT_TYPE' => 'application/json'],
+            json_encode($data),
+        );
+
+        Assert::assertEquals(
+            Response::HTTP_UNPROCESSABLE_ENTITY,
+            $this->client->getResponse()->getStatusCode(),
+        );
+    }
+
     protected function getConfiguration(): Configuration
     {
         return $this->catalog->useMinimalCatalog();
