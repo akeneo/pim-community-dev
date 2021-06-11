@@ -35,7 +35,11 @@ class ReferenceEntitySimpleSelectSelector implements AttributeSelectorInterface
     public function applySelection(array $selectionConfiguration, Attribute $attribute, ValueInterface $value): string
     {
         $recordCode = (string) $value->getData();
-        $referenceEntityIdentifier = $attribute->properties()['reference_data_name'];
+        $referenceEntityIdentifier = $attribute->properties()['reference_data_name'] ?? null;
+
+        if (null === $referenceEntityIdentifier) {
+            throw new \LogicException('Reference entity identifier not present in the attribute properties ("reference_data_name")');
+        }
 
         switch ($selectionConfiguration['type']) {
             case SelectionTypes::CODE:

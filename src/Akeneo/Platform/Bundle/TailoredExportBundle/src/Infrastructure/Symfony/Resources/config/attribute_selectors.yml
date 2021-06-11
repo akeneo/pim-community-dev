@@ -51,3 +51,12 @@ services:
       - '@akeneo_referenceentity.infrastructure.persistence.query.enrich.find_records_labels_public_api'
     tags:
       - { name: akeneo.tailored_export.attribute_selector }
+
+  Akeneo\Platform\TailoredExport\Infrastructure\Connector\Processor\AttributeSelector\AssetCollectionSelector:
+    public: true
+    arguments:
+      -
+        - 'pim_catalog_asset_collection'
+      - '@akeneo_assetmanager.infrastructure.persistence.query.enrich.find_asset_label_translation_public_api'
+    tags:
+      - { name: akeneo.tailored_export.attribute_selector }

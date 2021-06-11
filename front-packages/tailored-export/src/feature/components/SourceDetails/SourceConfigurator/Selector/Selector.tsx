@@ -14,6 +14,7 @@ const Selector = ({attribute, selection, onSelectionChange}: SelectorProps) => {
     case 'pim_catalog_multiselect':
     case 'akeneo_reference_entity':
     case 'akeneo_reference_entity_collection':
+    case 'pim_catalog_asset_collection':
       return <CodeLabelSelector selection={selection} onSelectionChange={onSelectionChange} />;
     default:
       return null;

@@ -13,49 +13,49 @@ declare(strict_types=1);
 
 namespace Akeneo\Platform\TailoredExport\Infrastructure\Connector\Processor\AttributeSelector;
 
+use Akeneo\AssetManager\Infrastructure\PublicApi\Enrich\FindAssetLabelTranslation;
 use Akeneo\Pim\Enrichment\Component\Product\Model\ValueInterface;
 use Akeneo\Pim\Structure\Component\Query\PublicApi\AttributeType\Attribute;
 use Akeneo\Platform\TailoredExport\Domain\SelectionTypes;
-use Akeneo\ReferenceEntity\Infrastructure\PublicApi\Enrich\FindRecordsLabelTranslations;
 
-class ReferenceEntityMultiSelectSelector implements AttributeSelectorInterface
+class AssetCollectionSelector implements AttributeSelectorInterface
 {
     /** @var string[] */
     private array $supportedAttributeTypes;
-    private FindRecordsLabelTranslations $findRecordsLabelTranslations;
+    private FindAssetLabelTranslation $findAssetLabelTranslations;
 
     public function __construct(
         array $supportedAttributeTypes,
-        FindRecordsLabelTranslations $findRecordsLabelTranslations
+        FindAssetLabelTranslation $findAssetLabelTranslations
     ) {
         $this->supportedAttributeTypes = $supportedAttributeTypes;
-        $this->findRecordsLabelTranslations = $findRecordsLabelTranslations;
+        $this->findAssetLabelTranslations = $findAssetLabelTranslations;
     }
 
     public function applySelection(array $selectionConfiguration, Attribute $attribute, ValueInterface $value): string
     {
-        $recordCodes = array_map('strval', $value->getData());
-        $referenceEntityIdentifier = $attribute->properties()['reference_data_name'] ?? null;
+        $assetCodes = array_map('strval', $value->getData());
+        $assetFamilyIdentifier = $attribute->properties()['reference_data_name'] ?? null;
 
-        if (null === $referenceEntityIdentifier) {
-            throw new \LogicException('Reference entity identifier not present in the attribute properties ("reference_data_name")');
+        if (null === $assetFamilyIdentifier) {
+            throw new \LogicException('Asset family identifier not present in the attribute properties ("reference_data_name")');
         }
 
         $selectedData = [];
 
         switch ($selectionConfiguration['type']) {
             case SelectionTypes::CODE:
-                $selectedData = $recordCodes;
+                $selectedData = $assetCodes;
                 break;
             case SelectionTypes::LABEL:
-                $recordTranslations = $this->findRecordsLabelTranslations->find(
-                    $referenceEntityIdentifier,
-                    $recordCodes,
+                $assetTranslations = $this->findAssetLabelTranslations->byFamilyCodeAndAssetCodes(
+                    $assetFamilyIdentifier,
+                    $assetCodes,
                     $selectionConfiguration['locale']
                 );
 
-                $selectedData = array_map(fn ($recordCode) => $recordTranslations[$recordCode] ??
-                    sprintf('[%s]', $recordCode), $recordCodes);
+                $selectedData = array_map(fn ($assetCode) => $assetTranslations[$assetCode] ??
+                    sprintf('[%s]', $assetCode), $assetCodes);
 
                 break;
             default:
