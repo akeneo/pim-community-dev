@@ -71,13 +71,12 @@ class MergeDataOnProduct implements NotGrantedDataMergerInterface
             );
         }
 
+        $filteredProductParent = $this->getParent($filteredProduct);
         if (null === $fullProduct) {
+            $filteredProduct->setParent($filteredProductParent);
+
             return $filteredProduct;
         }
-
-        $filteredProductParent = $filteredProduct instanceof EntityWithFamilyVariantInterface
-            ? $this->getParent($filteredProduct)
-            : null;
 
         if (!$fullProduct instanceof ProductInterface) {
             throw InvalidObjectException::objectExpected(ClassUtils::getClass($fullProduct), ProductInterface::class);
