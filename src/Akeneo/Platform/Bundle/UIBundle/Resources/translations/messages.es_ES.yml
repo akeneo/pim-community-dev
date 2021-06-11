@@ -505,7 +505,6 @@ pim_mass_edit:
       success: Eliminación en masa <strong>%label%</strong> finalizada
 job_execution.summary:
   mass_edited: Editado en masa
-  skip: Omitido
   skipped_products: Productos omitidos
   skipped_attributes: Atributos omitidos
   skipped_families: Familias omitidas
