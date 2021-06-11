@@ -62,23 +62,31 @@ type SubNavigationPanelProps = {
    * Whether or not the panel is open.
    */
   isOpen?: boolean;
+
+  /**
+   * Handler called when the collapse button is clicked.
+   */
+  onCollapse: (isOpen: boolean) => void;
 };
 
 /**
- * TODO.
+ * SubNavigationPanel is used to display a collapsable panel.
  */
 const SubNavigationPanel = React.forwardRef<HTMLDivElement, SubNavigationPanelProps>(
-  ({children, isOpen = true, ...rest}: SubNavigationPanelProps, forwardedRef: React.Ref<HTMLDivElement>) => {
+  (
+    {children, isOpen = true, onCollapse, ...rest}: SubNavigationPanelProps,
+    forwardedRef: React.Ref<HTMLDivElement>
+  ) => {
     return (
       <Panel ref={forwardedRef} isOpen={isOpen} {...rest}>
         <PanelContent>{isOpen && children}</PanelContent>
 
         {isOpen ? (
-          <CloseButton>
+          <CloseButton onClick={() => onCollapse(false)} title="Close">
             <CloseIcon />
           </CloseButton>
         ) : (
-          <OpenButton>
+          <OpenButton onClick={() => onCollapse(true)} title="Open">
             <OpenIcon />
           </OpenButton>
         )}
