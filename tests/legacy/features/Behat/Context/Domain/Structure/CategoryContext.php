@@ -45,6 +45,7 @@ final class CategoryContext extends PimContext
             }
             return $treeList->find('named', array('content', $categoryTreeLabel));
         }, sprintf('The "%s" category tree was not found', $categoryTreeLabel));
+
         $this->spin(function () use ($categoryTree) {
             $categoryTree->press();
             return true;
@@ -108,6 +109,7 @@ final class CategoryContext extends PimContext
      */
     public function iOpenTheCategoryTab(string $tabName)
     {
+        /** @var NodeElement $tab */
         $tab = $this->spin(function () use ($tabName) {
             $tabList = $this->getCurrentPage()->find('css', 'div[role=tablist]');
             if (!$tabList) {
@@ -117,7 +119,11 @@ final class CategoryContext extends PimContext
             return $tabList->find('named', ['content', $tabName]);
         }, sprintf('Tab "%s" not found', $tabName));
 
-        $tab->click();
+        $this->spin(function () use ($tab, $tabName) {
+            $tab->click();
+
+            return $tab->getAttribute('aria-selected') === 'true';
+        }, sprintf('Can not open the "%s" tab', $tabName));
     }
 
     /**
