@@ -8,19 +8,19 @@ Feature: Show a product product model
     Given a "catalog_modeling" catalog configuration
     And I am logged in as "Mary"
     And I am on the "master_men_blazers_deals" category page
-    And I visit the "Permissions" tab
-    And I fill in the following information:
+    And I open the category tab "Permissions"
+    And I fill in the category permission with:
       | Allowed to view products | Redactor |
       | Allowed to edit products |          |
       | Allowed to own products  |          |
-    And I save the category
+    And I submit the category changes
     And I am on the "supplier_mongo" category page
-    And I visit the "Permissions" tab
-    And I fill in the following information:
+    And I open the category tab "Permissions"
+    And I fill in the category permission with:
       | Allowed to view products | Redactor |
       | Allowed to edit products |          |
       | Allowed to own products  |          |
-    And I save the category
+    And I submit the category changes
 
   @critical
   Scenario: Seeing the view actions on the product grid

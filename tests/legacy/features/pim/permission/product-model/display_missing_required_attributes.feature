@@ -67,10 +67,10 @@ Feature: Display the missing required attributes
     Then I should see the text "4 missing required attributes" in the total missing required attributes
     And I should see the text "3 missing required attributes"
     When I edit the "supplier_zaro" category
-    And I visit the "Permissions" tab
-    And I fill in the following information:
+    And I open the category tab "Permissions"
+    And I fill in the category permission with:
       | Allowed to view products | Manager, Redactor |
-    And I save the category
+    And I submit the category changes
     When I am on the "watch" product page
     Then I should see the text "Marketing"
     But I should not see any missing required attribute
