@@ -50,6 +50,7 @@ $rules = [
             'Akeneo\Pim\Enrichment\Component\Product\Normalizer\Indexing\Value\ValueCollectionNormalizer',
             'Akeneo\Pim\Enrichment\Component\Product\Completeness\MaskItemGenerator\MaskItemGeneratorForAttributeType',
             'Akeneo\Pim\Enrichment\Component\Product\Validator\ConstraintGuesserInterface',
+            'Akeneo\Pim\Enrichment\Component\Product\Connector\ArrayConverter\StandardToFlat\Product\ValueConverter\AbstractValueConverter',
         ]
     )->in('Akeneo\Pim\TableAttribute\Infrastructure'),
 ];
