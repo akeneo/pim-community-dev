@@ -13,7 +13,7 @@ const SUPPORTED_ATTRIBUTE_TYPES = [
   // 'pim_catalog_price_collection',
   'pim_catalog_textarea',
   'pim_catalog_text',
-  // 'akeneo_reference_entity',
+  'akeneo_reference_entity',
   // 'akeneo_reference_entity_collection',
   // 'pim_catalog_asset_collection',
 ];
