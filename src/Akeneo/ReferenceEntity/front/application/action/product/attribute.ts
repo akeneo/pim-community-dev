@@ -19,13 +19,15 @@ import {createLocaleReference} from 'akeneoreferenceentity/domain/model/locale-r
 
 const fetcherRegistry = require('pim/fetcher-registry');
 
+const ATTRIBUTES_LIMIT = 1000;
+
 export const updateAttributeList = (referenceEntityIdentifier: ReferenceEntityIdentifier) => async (
   dispatch: any
 ): Promise<void> => {
   const attributes = await promisify(
     fetcherRegistry
       .getFetcher('attribute')
-      .fetchByTypes(['akeneo_reference_entity_collection', 'akeneo_reference_entity'], false)
+      .fetchByTypes(['akeneo_reference_entity_collection', 'akeneo_reference_entity'], false, {limit: ATTRIBUTES_LIMIT})
   );
 
   const linkedAttributes = attributes

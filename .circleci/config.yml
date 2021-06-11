@@ -105,6 +105,7 @@ jobs:
           key: front-packages-libs-{{ checksum "~/front-packages.hash" }}
           paths:
             - vendor/akeneo/pim-community-dev/front-packages/akeneo-design-system/lib
+            - vendor/akeneo/pim-community-dev/front-packages/measurement/lib
             - vendor/akeneo/pim-community-dev/front-packages/shared/lib
       - run:
           name: Build Javascript
@@ -602,13 +603,8 @@ jobs:
                     APP_ENV=test C='mysql elasticsearch object-storage pubsub-emulator' make up
                     docker/wait_docker_up.sh
         -   run:
-                name: Restore permissions on files
+                name: Reset git changes
                 command: git checkout -- .
-        -   run:
-                name: Restore permissions on vendor files
-                command: |
-                    cd vendor/akeneo/pim-community-dev
-                    git checkout -- .
         -   run:
                 name: Change owner on project dir after restoring cache
                 command: sudo chown -R 1000:1000 ../project
@@ -1445,6 +1441,7 @@ workflows:
                 requires:
                     - test_back_static_and_acceptance
                     - test_front_static_acceptance_and_integration
+                    - test_front_code_style
                     - test_back_phpunit
                     - test_back_integration_bounded_contexts
                     - test_back_integration_reference_entities

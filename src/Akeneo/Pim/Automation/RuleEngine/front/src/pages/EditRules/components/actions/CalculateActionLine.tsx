@@ -282,9 +282,9 @@ const CalculateActionLine: React.FC<ActionLineProps> = ({
                     attributeTarget,
                     translate,
                     currentCatalogLocale,
-                    getAvailableCurrenciesForTarget(currencies),
+                    scopes,
                     currencies,
-                    getScopeFormValue()
+                    getScopeFormValue
                   )}
                 />
               </SelectorBlock>

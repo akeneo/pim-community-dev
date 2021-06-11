@@ -1,5 +1,16 @@
 # 5.0.x
 
+## Bug fixes
+
+- PIM-9876: Fix purge of products old scores in Data Quality Insights
+- PIM-9884: Fix cannot create rule to make calculation with scopable price attributes
+
+# 5.0.30 (2021-06-04)
+
+## Bug fixes
+
+- PIM-9895: [Backport] PIM-9707: ES Max query size and add test for the ElasticSearch client chunked bulk index
+
 # 5.0.29 (2021-05-31)
 
 # 5.0.28 (2021-05-28)
