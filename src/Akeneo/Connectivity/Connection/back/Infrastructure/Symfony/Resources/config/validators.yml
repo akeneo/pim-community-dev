@@ -1,3 +1,6 @@
+parameters:
+    env(ALLOWED_NETWORK_WHITELIST): ''
+
 services:
     akeneo_connectivity.connection.validators.connection.code_must_be_unique:
         class: Akeneo\Connectivity\Connection\Application\Settings\Validation\Connection\CodeMustBeUniqueValidator
