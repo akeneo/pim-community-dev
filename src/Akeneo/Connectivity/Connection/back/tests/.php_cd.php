@@ -39,9 +39,6 @@ $rules = [
             // ???
             'Akeneo\Connectivity\Connection\Application\ConnectionContextInterface',
             'Akeneo\Connectivity\Connection\Domain\Settings\Model\ValueObject\FlowType',
-
-            // Not ok
-            'Akeneo\Pim\Enrichment\Component\Error\DomainErrorInterface',
         ]
     )->in('Akeneo\Connectivity\Connection\Application\ErrorManagement'),
 

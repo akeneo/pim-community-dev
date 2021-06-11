@@ -15,7 +15,6 @@ use Akeneo\Connectivity\Connection\Domain\ErrorManagement\Model\Write\TechnicalE
 use Akeneo\Connectivity\Connection\Domain\ErrorManagement\Persistence\Repository\BusinessErrorRepository;
 use Akeneo\Connectivity\Connection\Domain\Settings\Model\ValueObject\FlowType;
 use Akeneo\Connectivity\Connection\Domain\ValueObject\HourlyInterval;
-use Akeneo\Pim\Enrichment\Component\Error\DomainErrorInterface;
 use FOS\RestBundle\Context\Context;
 use FOS\RestBundle\Serializer\Serializer;
 use Symfony\Component\Validator\ConstraintViolationInterface;
@@ -51,8 +50,8 @@ class CollectApiError
     }
 
     public function collectFromProductDomainError(
-        DomainErrorInterface $error,
-        Context $context
+       \Throwable $error,
+       Context $context
     ): void {
         if (false === $this->isConnectionCollectable()) {
             return;
