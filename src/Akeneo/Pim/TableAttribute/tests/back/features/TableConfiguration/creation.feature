@@ -21,7 +21,7 @@ Feature: Create a table attribute
     Then There is a violation with message: The table attribute must contain at least 2 columns
 
   Scenario: Cannot create a table configuration without column code
-    When I create a table attribute with a configuration without column code
+    When I create a table attribute with a configuration '{"data_type": "text"}'
     Then There is a violation with message: The "code" column must be filled
 
   Scenario: Cannot create a table configuration with invalid column code
@@ -41,40 +41,56 @@ Feature: Create a table attribute
     Then There is a violation with message: The column code is too long: it must be 100 characters or less
 
   Scenario: Cannot create a table configuration without type
-    When I create a table attribute with a configuration without type
+    When I create a table attribute with a configuration '{"code": "quantity"}'
     Then There is a violation with message: The "data_type" column must be filled
 
   Scenario: Cannot create a table configuration having unknown type
-    When I create a table attribute with a configuration having unknown type
+    When I create a table attribute with a configuration '{"data_type": "unknown", "code": "quantity"}'
     Then There is a violation with message: The column data type is unknown. Please choose one of the following: number, text, select, boolean
 
   Scenario: Cannot create a table configuration having invalid type
-    When I create a table attribute with a configuration having invalid type
+    When I create a table attribute with a configuration '{"data_type": 1, "code": "quantity"}'
     Then There is a violation with message: The column data type must be a string
 
   Scenario: Cannot create a table configuration with invalid column labels format
-    When I create a table attribute with a configuration having invalid column labels format
+    When I create a table attribute with a configuration '{"data_type": "text", "code": "quantity", "labels": "A label without locale"}'
     Then There is a violation with message: The column labels must be a key/value object
 
   Scenario: Cannot create a table configuration with non activated locale
-    When I create a table attribute with a configuration having non activated locale
+    When I create a table attribute with a configuration '{"data_type": "text", "code": "quantity", "labels": { "pt_DTC": "a label" }}'
     Then There is a violation with message: The "pt_DTC" locale doesn't exist or is not activated
 
   Scenario: Cannot create a table configuration having invalid validation type
-    When I create a table attribute with a configuration having invalid validation type
+    When I create a table attribute with a configuration '{"data_type": "text", "code": "quantity", "validations": 123}'
     Then There is a violation with message: TODO Validation should be an object
 
   Scenario: Cannot create a table configuration having unknown validation
-    When I create a table attribute with a configuration having unknown validation
-    Then There is a violation with message: TODO unknown validation key max_length => unknown
+    When I create a table attribute with a configuration '{"data_type": "text", "code": "quantity", "validations": { "unknown": 123 }}'
+    Then There is a violation with message: TODO unknown validation : "unknown". Authorized: max_mength, min, max, decimals_allowed
 
   Scenario: Cannot create a table configuration having invalid max length validation value type
-    When I create a table attribute with a configuration having invalid max length validation value type
-    Then There is a violation with message: TODO invalid validation value type integer => string
+    When I create a table attribute with a configuration '{"data_type": "text", "code": "quantity", "validations": { "max_length": "foo bar"}}'
+    Then There is a violation with message: TODO integer
 
-  Scenario: Cannot create a non table attribute with a table configuration
-    When I create a text attribute with a table configuration
-    Then There is a violation with message: The type pim_catalog_text does not allow table_configuration
+  Scenario: Cannot create a table configuration having invalid negative max_length
+    When I create a table attribute with a configuration '{"data_type": "text", "code": "quantity", "validations": { "max_length": -8000}}'
+    Then There is a violation with message: TODO positive int
+
+  Scenario: Cannot create a table configuration having invalid min validation value type
+    When I create a table attribute with a configuration '{"data_type": "text", "code": "quantity", "validations": { "min": "foo bar"}}'
+    Then There is a violation with message: TODO integer
+
+  Scenario: Cannot create a table configuration having invalid negative min
+    When I create a table attribute with a configuration '{"data_type": "text", "code": "quantity", "validations": { "min": -8000}}'
+    Then There is a violation with message: TODO positive integer
+
+  Scenario: Cannot create a table configuration having invalid max length validation value type
+    When I create a table attribute with a configuration '{"data_type": "text", "code": "quantity", "validations": { "max": "foo bar"}}'
+    Then There is a violation with message: TODO integer
+
+  Scenario: Cannot create a table configuration having invalid negative max
+    When I create a table attribute with a configuration '{"data_type": "text", "code": "quantity", "validations": { "max": -8000}}'
+    Then There is a violation with message: TODO positive integer
 
   Scenario: Cannot create a non table attribute with a table configuration
     When I create a text attribute with a table configuration

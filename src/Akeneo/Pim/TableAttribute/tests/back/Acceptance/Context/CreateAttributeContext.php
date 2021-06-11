@@ -105,31 +105,20 @@ final class CreateAttributeContext implements Context
     }
 
     /**
-     * @When I create a table attribute with a configuration without column code
-     */
-    public function iCreateATableAttributeWithAConfigurationWithoutColumnCode(): void
-    {
-        $attribute = $this->attributeBuilder
-            ->withCode('table')
-            ->withGroupCode('marketing')
-            ->withType(AttributeTypes::TABLE)
-            ->build();
-        $attribute->setRawTableConfiguration([
-            [
-                'data_type' => 'select',
-                'code' => 'ingredients',
-            ], [
-                'data_type' => 'text',
-            ],
-        ]);
-        $this->saveAttribute($attribute);
-    }
-
-    /**
      * @When /^I create a table attribute with a configuration having column code "([^"]*)"$/
      */
     public function iCreateATableAttributeWithAConfigurationHavingColumnCode(string $code): void
     {
+        $this->iCreateATableAttributeWithAConfiguration(sprintf('{"data_type": "text", "code": "%s"}', $code));
+    }
+
+    /**
+     * @When /^I create a table attribute with a configuration '([^']*)'$/
+     */
+    public function iCreateATableAttributeWithAConfiguration(string $jsonAsString)
+    {
+        $json = \json_decode($jsonAsString, true, 512, JSON_THROW_ON_ERROR);
+
         $attribute = $this->attributeBuilder
             ->withCode('table')
             ->withGroupCode('marketing')
@@ -139,86 +128,7 @@ final class CreateAttributeContext implements Context
             [
                 'data_type' => 'select',
                 'code' => 'ingredients',
-            ], [
-                'data_type' => 'text',
-                'code' => $code,
-            ]
-        ]);
-        $this->saveAttribute($attribute);
-    }
-
-    /**
-     * @When I create a table attribute with a configuration having unknown validation
-     */
-    public function iCreateATableAttributeWithAConfigurationHavingUnknownValidation()
-    {
-        $attribute = $this->attributeBuilder
-            ->withCode('table')
-            ->withGroupCode('marketing')
-            ->withType(AttributeTypes::TABLE)
-            ->build();
-        $attribute->setRawTableConfiguration([
-            [
-                'data_type' => 'select',
-                'code' => 'ingredients',
-            ], [
-                'data_type' => 'text',
-                'code' => 'quantity',
-                'validations' => [
-                    'unknown' => 123
-                ],
-            ],
-        ]);
-        $this->saveAttribute($attribute);
-    }
-
-    /**
-     * @When I create a table attribute with a configuration having invalid max length validation value type
-     */
-    public function iCreateATableAttributeWithAConfigurationHavingInvalidMaxLengthValidationValueType()
-    {
-        $attribute = $this->attributeBuilder
-            ->withCode('table')
-            ->withGroupCode('marketing')
-            ->withType(AttributeTypes::TABLE)
-            ->build();
-        $attribute->setRawTableConfiguration(
-            [
-                [
-                    'data_type' => 'select',
-                    'code' => 'ingredients',
-                ],
-                [
-                    'data_type' => 'text',
-                    'code' => 'quantity',
-                    'validations' => [
-                        'max_length' => 'foo bar',
-                    ],
-                ],
-            ]
-        );
-        $this->saveAttribute($attribute);
-    }
-
-    /**
-     * @When I create a table attribute with a configuration having invalid validation type
-     */
-    public function iCreateATableAttributeWithAConfigurationHavingInvalidValidationType()
-    {
-        $attribute = $this->attributeBuilder
-            ->withCode('table')
-            ->withGroupCode('marketing')
-            ->withType(AttributeTypes::TABLE)
-            ->build();
-        $attribute->setRawTableConfiguration([
-            [
-                'data_type' => 'text',
-                'code' => 'ingredients',
-                'validations' => 123
-            ], [
-                'data_type' => 'text',
-                'code' => 'quantity',
-            ]
+            ], $json,
         ]);
         $this->saveAttribute($attribute);
     }
@@ -229,136 +139,14 @@ final class CreateAttributeContext implements Context
     public function iCreateATextAttributeWithAConfiguration(): void
     {
         $attribute = $this->attributeBuilder
-            ->withCode('name')
+            ->withCode('table')
             ->withGroupCode('marketing')
             ->withType(AttributeTypes::TEXT)
             ->build();
-        $attribute->setRawTableConfiguration(
-            [
-                [
-                    'data_type' => 'select',
-                    'code' => 'ingredients',
-                ],
-                [
-                    'data_type' => 'text',
-                    'code' => 'quantity',
-                ],
-            ],
-        );
-        $this->saveAttribute($attribute);
-    }
-
-    /**
-     * @When I create a table attribute with a configuration without type
-     */
-    public function iCreateATableAttributeWithoutType(): void
-    {
-        $attribute = $this->attributeBuilder
-            ->withCode('table')
-            ->withGroupCode('marketing')
-            ->withType(AttributeTypes::TABLE)
-            ->build();
         $attribute->setRawTableConfiguration([
             [
                 'data_type' => 'select',
                 'code' => 'ingredients',
-            ],
-            [
-                'code' => 'quantity',
-            ]
-        ]);
-        $this->saveAttribute($attribute);
-    }
-
-    /**
-     * @When I create a table attribute with a configuration having unknown type
-     */
-    public function iCreateATableAttributeHavingUnknownType(): void
-    {
-        $attribute = $this->attributeBuilder
-            ->withCode('table')
-            ->withGroupCode('marketing')
-            ->withType(AttributeTypes::TABLE)
-            ->build();
-        $attribute->setRawTableConfiguration([
-            [
-                'data_type' => 'select',
-                'code' => 'ingredients',
-            ],
-            [
-                'data_type' => 'unknown',
-                'code' => 'quantity',
-            ]
-        ]);
-        $this->saveAttribute($attribute);
-    }
-
-    /**
-     * @When I create a table attribute with a configuration having invalid type
-     */
-    public function iCreateATableAttributeHavingInvalidType(): void
-    {
-        $attribute = $this->attributeBuilder
-            ->withCode('table')
-            ->withGroupCode('marketing')
-            ->withType(AttributeTypes::TABLE)
-            ->build();
-        $attribute->setRawTableConfiguration([
-            [
-                'data_type' => 'select',
-                'code' => 'ingredients',
-            ],
-            [
-                'data_type' => 1,
-                'code' => 'quantity',
-            ]
-        ]);
-        $this->saveAttribute($attribute);
-    }
-
-    /**
-     * @When I create a table attribute with a configuration having invalid column labels format
-     */
-    public function iCreateATableAttributeWithAConfigurationHavingInvalidColumnLabelsFormat(): void
-    {
-        $attribute = $this->attributeBuilder
-            ->withCode('table')
-            ->withGroupCode('marketing')
-            ->withType(AttributeTypes::TABLE)
-            ->build();
-        $attribute->setRawTableConfiguration([
-            [
-                'data_type' => 'select',
-                'code' => 'ingredients',
-            ], [
-                'data_type' => 'text',
-                'code' => 'quantity',
-                'labels' => 'A label without locale'
-            ]
-        ]);
-        $this->saveAttribute($attribute);
-    }
-
-    /**
-     * @When I create a table attribute with a configuration having non activated locale
-     */
-    public function iCreateATableAttributeWithAConfigurationHavingNonActivatedLocale(): void
-    {
-        $attribute = $this->attributeBuilder
-            ->withCode('table')
-            ->withGroupCode('marketing')
-            ->withType(AttributeTypes::TABLE)
-            ->build();
-        $attribute->setRawTableConfiguration([
-            [
-                'data_type' => 'select',
-                'code' => 'ingredients',
-            ], [
-                'data_type' => 'text',
-                'code' => 'quantity',
-                'labels' => [
-                    'pt_DTC' => 'a label'
-                ]
             ]
         ]);
         $this->saveAttribute($attribute);
