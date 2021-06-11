@@ -68,7 +68,7 @@ class ImageAsLabel
         $entity = $productModel;
 
         do {
-            $entity = $this->findLastCreatedEntityWithFamilyVariantByParent($entity);
+            $entity = $this->findFirstCreatedEntityWithFamilyVariantByParent($entity);
             if (null === $entity) {
                 return null;
             }
@@ -79,7 +79,7 @@ class ImageAsLabel
         return $entity->getImage();
     }
 
-    private function findLastCreatedEntityWithFamilyVariantByParent(
+    private function findFirstCreatedEntityWithFamilyVariantByParent(
         ProductModelInterface $productModel
     ): ?EntityWithFamilyVariantInterface {
         $productChild = $this->productRepository->findLastCreatedByParent($productModel);
@@ -87,20 +87,15 @@ class ImageAsLabel
             return $productChild;
         }
 
-        return $this->findLastCreatedProductModelByParent($productModel);
-    }
-
-    private function findLastCreatedProductModelByParent(ProductModelInterface $productModel): ?ProductModelInterface
-    {
-        $productModels = $this->productModelRepository->findChildrenProductModels($productModel);
-        if (empty($productModels)) {
-            return null;
+        /** TODO pull up in master: remove this if statement */
+        if (!method_exists($this->productModelRepository, 'findFirstCreatedVariantProductModel')) {
+            return current($this->productModelRepository->findBy(
+                ['parent' => $productModel],
+                ['created' => 'ASC', 'code' => 'ASC'],
+                1
+            )) ?? null;
         }
 
-        usort($productModels, function(ProductModelInterface $a, ProductModelInterface $b) {
-            return $a->getCreated() <=> $b->getCreated();
-        });
-
-        return current($productModels);
+        return $this->productModelRepository->findFirstCreatedVariantProductModel($productModel);
     }
 }

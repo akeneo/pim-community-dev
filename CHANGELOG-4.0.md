@@ -1,5 +1,9 @@
 # 4.0.x
 
+## Bug fixes
+
+PIM-9901: Error 403 on a 2-levels product variant when displaying a variant product without having permission on product model
+
 # 4.0.113 (2021-06-04)
 
 ## Bug fixes
