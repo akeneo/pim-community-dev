@@ -80,15 +80,13 @@ class SqlSavePublishedProductCompletenesses implements SavePublishedProductCompl
     private function executeWithRetry(callable $function, int $publishedProductId): void
     {
         $retry = 0;
-        $isError = true;
-        while (true === $isError) {
+        while (true) {
             try {
                 $this->connection->transactional($function);
 
-                $isError = false;
+                return;
             } catch (DeadlockException $e) {
                 $retry += 1;
-
                 if (5 === $retry) {
                     throw $e;
                 }
