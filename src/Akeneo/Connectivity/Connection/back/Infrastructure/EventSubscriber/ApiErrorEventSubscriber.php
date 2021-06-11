@@ -42,13 +42,10 @@ final class ApiErrorEventSubscriber implements EventSubscriberInterface
 
     public function collectProductDomainError(ProductDomainErrorEvent $event): void
     {
-        $context = new Context();
-
-        if ($event->getProduct() instanceof ProductInterface) {
-            $context->setAttribute('product', $event->getProduct());
-        }
-
-        $this->collectApiError->collectFromProductDomainError($event->getError(), $context);
+        $this->collectApiError->collectFromProductDomainError(
+            $event->getError(),
+            (new Context())->setAttribute('product', $event->getProduct())
+        );
     }
 
     public function collectProductValidationError(ProductValidationErrorEvent $event): void

@@ -47,7 +47,7 @@ class ApiErrorEventSubscriberSpec extends ObjectBehavior
         $product = new Product();
         $event = new ProductDomainErrorEvent($error, $product);
         $context = (new Context())->setAttribute('product', $event->getProduct());
-        
+
         $collectApiError->collectFromProductDomainError($error, $context)->shouldBeCalled();
 
         $this->collectProductDomainError($event);
