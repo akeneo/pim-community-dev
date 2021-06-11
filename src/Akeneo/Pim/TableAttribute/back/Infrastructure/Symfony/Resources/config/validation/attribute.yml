@@ -75,6 +75,7 @@ Akeneo\Pim\Structure\Component\Model\Attribute:
 
                                           allowMissingFields: true
                                           extraFieldsMessage: "TODO unknown validation : {{ field }}. Authorized: max_mength, min, max, decimals_allowed"
+                                      - Akeneo\Pim\TableAttribute\Infrastructure\Validation\Attribute\MaxShouldBeGreaterThanMin: ~
                         missingFieldsMessage: pim_table_configuration.validation.table_configuration.missing_column
             - Akeneo\Pim\TableAttribute\Infrastructure\Validation\Attribute\IsColumnCodeUnique: ~
             - Akeneo\Pim\TableAttribute\Infrastructure\Validation\Attribute\FirstColumnShouldHaveSelectDataType: ~

@@ -9,5 +9,4 @@ use Symfony\Component\Validator\Constraint;
 
 final class MaxShouldBeGreaterThanMin extends Constraint
 {
-
 }
