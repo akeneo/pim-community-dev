@@ -33,6 +33,25 @@ final class CategoryContext extends PimContext
     }
 
     /**
+     * @When I follow the :categoryTreeLabel category tree
+     */
+    public function iFollowTheCategoryTree(string $categoryTreeLabel)
+    {
+        /** @var NodeElement $categoryTree */
+        $categoryTree = $this->spin(function () use ($categoryTreeLabel) {
+            $treeList = $this->getCurrentPage()->find('css', 'table');
+            if (!$treeList) {
+                return false;
+            }
+            return $treeList->find('named', array('content', $categoryTreeLabel));
+        }, sprintf('The "%s" category tree was not found', $categoryTreeLabel));
+        $this->spin(function () use ($categoryTree) {
+            $categoryTree->press();
+            return true;
+        }, 'Can not follow the "%s" category tree');
+    }
+
+    /**
      * @When I hover over the category :categoryLabel
      */
     public function iHoverOverTheCategory(string $categoryLabel)
