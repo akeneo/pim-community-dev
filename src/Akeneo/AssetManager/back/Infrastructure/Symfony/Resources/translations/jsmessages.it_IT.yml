@@ -192,6 +192,8 @@ pim_asset_manager:
       link: Fai clic qui per aggiungere il tuo primo gruppo utente
   asset:
     img: Il media principale dell'asset denominato "{{ label }}"
+    created_at: Creato
+    updated_at: Aggiornato
     validation:
       limit_reached: 'Non puoi creare l''asset "{{ %asset_label% }}" perché hai raggiunto il limite di {{ %limit% }} asset per questa famiglia di asset'
       code:
@@ -249,6 +251,7 @@ pim_asset_manager:
       line_count: '[0,1]{{ count }} file|]1,Inf] {{ count }} file'
       title: Carica asset
       lines: File
+      retry: Riprova
       remove: Rimuovi
       remove_all: Rimuovi tutto
       confirm: Crea
@@ -424,6 +427,7 @@ pim_asset_manager:
         title: Traduzioni etichetta
     media_file:
       placeholder: Trascina e rilascia per caricare o fai click qui
+      uploading: Caricamento...
   modal:
     delete:
       subtitle: Conferma eliminazione
