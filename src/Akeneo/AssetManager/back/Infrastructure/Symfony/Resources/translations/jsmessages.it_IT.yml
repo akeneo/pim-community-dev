@@ -247,6 +247,7 @@ pim_asset_manager:
       line_count: '[0,1]{{ count }} file|]1,Inf] {{ count }} file'
       title: Carica asset
       lines: File
+      retry: Riprova
       remove: Rimuovi
       remove_all: Rimuovi tutto
       confirm: Crea
@@ -422,6 +423,7 @@ pim_asset_manager:
         title: Traduzioni etichetta
     media_file:
       placeholder: Trascina e rilascia per caricare o fai click qui
+      uploading: Caricamento...
   modal:
     delete:
       subtitle: Conferma eliminazione
