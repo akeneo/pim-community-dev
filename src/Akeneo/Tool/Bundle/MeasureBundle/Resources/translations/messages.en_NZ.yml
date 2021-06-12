@@ -18,6 +18,7 @@ pim_measure:
     Pressure: Pressure
     Energy: Energy
     CaseBox: Packaging
+    Brightness: Brightness
   units:
     #Area
     ACRE: Acre
@@ -148,7 +149,6 @@ pim_measure:
     GALLON: Gallon
     LITER: Litre
     MILLILITER: Millilitre
-    OUNCE: Ounce
     PINT: Pint
     #Weight
     DENIER: Denier
@@ -159,6 +159,7 @@ pim_measure:
     MARC: Marc
     MILLIGRAM: Milligram
     ONCE: Once
+    OUNCE: Ounce
     POUND: Pound
     TON: Ton
     #Pressure
@@ -178,3 +179,6 @@ pim_measure:
     #CaseBox
     PIECE: Piece
     DOZEN: Dozen
+    #Brightness
+    LUMEN: Lumen
+    NIT: Nit
