@@ -1,0 +1,39 @@
+akeneo_assetmanager:
+  acl_group:
+    asset_manager: Asset manager
+  acl:
+    asset_family:
+      create: Create an asset family
+      edit: Edit the asset family properties
+      delete: Delete an asset family
+      manage_permission: Manage asset family permissions
+      manage_transformation: Manage asset family transformations
+    asset:
+      create: Create an asset
+      edit: Edit the assets
+      delete: Delete an asset
+      delete_all: Delete all assets
+      list_product: List linked products to asset
+    attribute:
+      create: Add an attribute to an asset family
+      edit: Edit an attribute of an asset family
+      delete: Delete an attribute of an asset family
+    option:
+      edit: Edit options
+      delete: Remove an option
+pim_import_export:
+  widget:
+    last_operations:
+      job_type:
+        asset_manager_link_assets_to_products: "Link assets to products"
+#average_percentage_localizable_only_attributes: Average percentage of localizable only attributes per asset family
+#average_percentage_scopable_only_attributes: Average percentage of scopable only attributes per asset family
+#average_percentage_scopable_and_localizable_attributes: Average percentage of localizable and scopable attributes per asset family
+pim_catalog_asset_collection: Asset collection
+pim_datagrid:
+  cells:
+    type:
+      asset_manager_link_assets_to_products: Link assets to products
+batch_jobs:
+  default_steps:
+    link_assets_to_products: Link assets to products

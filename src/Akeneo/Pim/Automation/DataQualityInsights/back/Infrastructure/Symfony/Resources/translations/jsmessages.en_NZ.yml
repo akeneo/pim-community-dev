@@ -1,0 +1,22 @@
+akeneo_data_quality_insights:
+  product_evaluation:
+    criteria:
+      consistency_spelling:
+        recommendation: Attributes with spelling issues
+    axis:
+      consistency:
+        title: Consistency
+        attributes_link: Display all improvable attributes
+        success: Your product data is fully consistent. Congratulations!
+  product_edit_form:
+    attribute_filter:
+      all_improvable_attributes: All improvable attributes
+    spellcheck_popover:
+      title: Corrections
+      original_text_title: Original
+      suggestions_title: Proposals
+      ignore_all_suggestions_button_label: Ignore
+  attribute_grid:
+    quality:
+      to_improve: To improve
+      good: Good
