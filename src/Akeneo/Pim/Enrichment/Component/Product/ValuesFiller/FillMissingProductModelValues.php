@@ -123,8 +123,14 @@ final class FillMissingProductModelValues implements FillMissingValuesInterface
                     $nullValues[$attribute->getCode()][$channel->getCode()]['<all_locales>'] = $nullValue;
                 }
             } elseif (!$attribute->isScopable() && $attribute->isLocalizable()) {
-                foreach ($this->getLocales() as $locale) {
-                    $nullValues[$attribute->getCode()]['<all_channels>'][$locale->getCode()] = $nullValue;
+                if ($attribute->isLocaleSpecific()) {
+                    foreach ($attribute->getAvailableLocales() as $locale) {
+                        $nullValues[$attribute->getCode()]['<all_channels>'][$locale->getCode()] = $nullValue;
+                    }
+                } else {
+                    foreach ($this->getLocales() as $locale) {
+                        $nullValues[$attribute->getCode()]['<all_channels>'][$locale->getCode()] = $nullValue;
+                    }
                 }
             } elseif ($attribute->isScopable() && $attribute->isLocalizable()) {
                 foreach ($this->getChannels() as $channel) {
@@ -224,23 +230,20 @@ final class FillMissingProductModelValues implements FillMissingValuesInterface
             } elseif ($attribute->isScopable() && !$attribute->isLocalizable()) {
                 foreach ($this->getChannels() as $channel) {
                     foreach ($this->sortCurrenciesByCode($channel->getCurrencies()->toArray()) as $currency) {
-                        $nullValues[$attribute->getCode()][$channel->getCode()]['<all_locales>'][$currency->getCode(
-                        )] = null;
+                        $nullValues[$attribute->getCode()][$channel->getCode()]['<all_locales>'][$currency->getCode()] = null;
                     }
                 }
             } elseif (!$attribute->isScopable() && $attribute->isLocalizable()) {
                 foreach ($this->getLocales() as $locale) {
                     foreach ($this->getCurrencies() as $currency) {
-                        $nullValues[$attribute->getCode()]['<all_channels>'][$locale->getCode()][$currency->getCode(
-                        )] = null;
+                        $nullValues[$attribute->getCode()]['<all_channels>'][$locale->getCode()][$currency->getCode()] = null;
                     }
                 }
             } elseif ($attribute->isScopable() && $attribute->isLocalizable()) {
                 foreach ($this->getChannels() as $channel) {
                     foreach ($channel->getLocales() as $locale) {
                         foreach ($this->sortCurrenciesByCode($channel->getCurrencies()->toArray()) as $currency) {
-                            $nullValues[$attribute->getCode()][$channel->getCode()][$locale->getCode(
-                            )][$currency->getCode()] = null;
+                            $nullValues[$attribute->getCode()][$channel->getCode()][$locale->getCode()][$currency->getCode()] = null;
                         }
                     }
                 }
