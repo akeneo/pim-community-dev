@@ -3,6 +3,7 @@
 ## Bug fixes
 
 - PIM-9900: Fix server error on the second save of a product variant
+- PIM-9901: Error 403 on a 2-levels product variant when displaying a variant product without having permission on product model
 
 # 4.0.113 (2021-06-04)
 
