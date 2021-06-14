@@ -1,6 +1,7 @@
 import React from 'react';
 import {Selection, Attribute} from '../../../../models';
 import {CodeLabelSelector} from './CodeLabelSelector';
+import {MeasurementSelector} from './MeasurementSelector';
 
 type SelectorProps = {
   attribute: Attribute;
@@ -16,6 +17,8 @@ const Selector = ({attribute, selection, onSelectionChange}: SelectorProps) => {
     case 'akeneo_reference_entity_collection':
     case 'pim_catalog_asset_collection':
       return <CodeLabelSelector selection={selection} onSelectionChange={onSelectionChange} />;
+    case 'pim_catalog_metric':
+      return <MeasurementSelector selection={selection} onSelectionChange={onSelectionChange} />;
     default:
       return null;
   }

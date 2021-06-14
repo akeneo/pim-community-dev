@@ -40,6 +40,7 @@ $rules = [
             'Akeneo\Pim\Enrichment\Component\Product\Query\Filter\Operators',
             'Akeneo\Pim\Permission\Bundle\User\UserContext',
             'Akeneo\ReferenceEntity\Infrastructure\PublicApi\Enrich\FindRecordsLabelTranslations',
+            'Akeneo\Tool\Bundle\MeasureBundle\PublicApi\GetUnitTranslations',
         ]
     )->in('Akeneo\Platform\TailoredExport'),
 ];

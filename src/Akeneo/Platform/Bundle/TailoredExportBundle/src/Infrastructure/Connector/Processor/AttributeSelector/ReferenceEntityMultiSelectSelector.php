@@ -59,7 +59,7 @@ class ReferenceEntityMultiSelectSelector implements AttributeSelectorInterface
 
                 break;
             default:
-                throw new \LogicException('Selection type not supported');
+                throw new \LogicException(sprintf('Selection type "%s" is not supported', $selectionConfiguration['type']));
         }
 
         return implode(', ', $selectedData);

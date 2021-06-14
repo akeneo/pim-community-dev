@@ -50,7 +50,7 @@ class SimpleSelectSelector implements AttributeSelectorInterface
 
                 return $attributeOptionTranslations[$optionKey][$selectionConfiguration['locale']] ?? sprintf('[%s]', $optionCode);
             default:
-                throw new \LogicException('Selection type not supported');
+                throw new \LogicException(sprintf('Selection type "%s" is not supported', $selectionConfiguration['type']));
         }
     }
 

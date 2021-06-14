@@ -27,11 +27,7 @@ const LocaleDropdown = ({value, channel = null, onChange}: LocaleDropdownProps) 
         emptyResultLabel={translate('pim_common.no_result')}
         openLabel={translate('pim_common.open')}
         value={value}
-        onChange={localeCode => {
-          if (localeCode === null) return;
-
-          onChange(localeCode);
-        }}
+        onChange={onChange}
       >
         {locales.map((locale: LocaleModel) => (
           <SelectInput.Option key={locale.code} title={locale.label} value={locale.code}>
@@ -39,11 +35,6 @@ const LocaleDropdown = ({value, channel = null, onChange}: LocaleDropdownProps) 
           </SelectInput.Option>
         ))}
       </SelectInput>
-      {/* {[].map((error, index) => (
-        <Helper key={index} inline={true} level="error">
-          {translate(error.messageTemplate, error.parameters)}
-        </Helper>
-      ))} */}
     </Field>
   );
 };

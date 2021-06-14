@@ -32,10 +32,10 @@ class MultiSelectSelector implements AttributeSelectorInterface
         $selectedData = '';
 
         switch ($selectionConfiguration['type']) {
-            case 'code':
+            case SelectionTypes::CODE:
                 $selectedData = $optionsCodes;
                 break;
-            case 'label':
+            case SelectionTypes::LABEL:
                 $optionsKeys = $this->generateOptionsKeys($optionsCodes, $attribute->code());
 
                 $attributeOptionTranslations = $this->getExistingAttributeOptionsWithValues->fromAttributeCodeAndOptionCodes(
@@ -47,6 +47,8 @@ class MultiSelectSelector implements AttributeSelectorInterface
                     return $attributeOptionTranslations[$optionKey][$selectionConfiguration['locale']] ?? sprintf('[%s]', $optionCode);
                 }, $value->getData());
                 break;
+            default:
+                throw new \LogicException(sprintf('Selection type "%s" is not supported', $selectionConfiguration['type']));
         }
 
         return implode(', ', $selectedData);

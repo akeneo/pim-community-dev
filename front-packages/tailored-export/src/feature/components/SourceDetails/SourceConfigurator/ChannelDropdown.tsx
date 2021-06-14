@@ -20,11 +20,7 @@ const ChannelDropdown = ({value, onChange}: ChannelDropdownProps) => {
         emptyResultLabel={translate('pim_common.no_result')}
         openLabel={translate('pim_common.open')}
         value={value}
-        onChange={channelCode => {
-          if (channelCode === null) return;
-
-          onChange(channelCode);
-        }}
+        onChange={onChange}
       >
         {channels.map(channel => (
           <SelectInput.Option

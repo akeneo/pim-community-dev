@@ -7,7 +7,7 @@ import {ColumnConfiguration} from './models/ColumnConfiguration';
 import {Attribute, AvailableSourceGroup} from './models';
 import {FetcherContext} from './contexts';
 
-const attributes = [{code: 'description', labels: {}, scopable: false, localizable: false}];
+const attributes = [{code: 'description', type: 'pim_catalog_text', labels: {}, scopable: false, localizable: false}];
 const fetchers = {
   attribute: {fetchByIdentifiers: (): Promise<Attribute[]> => Promise.resolve<Attribute[]>(attributes)},
   channel: {fetchAll: (): Promise<Channel[]> => Promise.resolve([])},

@@ -49,7 +49,12 @@ const AddSourceDropdown = ({onSourceSelected}: AddSourceDropdownProps) => {
       {isOpen && (
         <Dropdown.Overlay verticalPosition="down" onClose={close}>
           <Dropdown.Header>
-            <Search onSearchChange={setSearchValue} placeholder="Search" searchValue={searchValue} title="Search" />
+            <Search
+              onSearchChange={setSearchValue}
+              placeholder={translate('pim_common.search')}
+              searchValue={searchValue}
+              title={translate('pim_common.search')}
+            />
           </Dropdown.Header>
           <Dropdown.ItemCollection onNextPage={handleNextPage}>
             {flattenSections(items).map((item, index) =>

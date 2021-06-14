@@ -41,6 +41,8 @@ akeneo.tailored_export:
         title: No column selected for the moment.
       selection:
         title: Selection
+        type:
+          amount: Amount
   column:
     delete_message: Are you sure you want to remove this column?
   validation:

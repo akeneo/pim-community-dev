@@ -16,42 +16,44 @@ namespace Akeneo\Platform\TailoredExport\Infrastructure\Connector\Processor\Attr
 use Akeneo\Pim\Enrichment\Component\Product\Model\ValueInterface;
 use Akeneo\Pim\Structure\Component\Query\PublicApi\AttributeType\Attribute;
 use Akeneo\Platform\TailoredExport\Domain\SelectionTypes;
-use Akeneo\ReferenceEntity\Infrastructure\PublicApi\Enrich\FindRecordsLabelTranslations;
+use Akeneo\Tool\Bundle\MeasureBundle\PublicApi\GetUnitTranslations;
 
-class ReferenceEntitySimpleSelectSelector implements AttributeSelectorInterface
+class MeasurementSelector implements AttributeSelectorInterface
 {
     /** @var string[] */
     private array $supportedAttributeTypes;
-    private FindRecordsLabelTranslations $findRecordsLabelTranslations;
+    private GetUnitTranslations $getUnitTranslations;
 
     public function __construct(
         array $supportedAttributeTypes,
-        FindRecordsLabelTranslations $findRecordsLabelTranslations
+        GetUnitTranslations $getUnitTranslations
     ) {
         $this->supportedAttributeTypes = $supportedAttributeTypes;
-        $this->findRecordsLabelTranslations = $findRecordsLabelTranslations;
+        $this->getUnitTranslations = $getUnitTranslations;
     }
 
     public function applySelection(array $selectionConfiguration, Attribute $attribute, ValueInterface $value): string
     {
-        $recordCode = (string) $value->getData();
-        $referenceEntityIdentifier = $attribute->properties()['reference_data_name'] ?? null;
-
-        if (null === $referenceEntityIdentifier) {
-            throw new \LogicException('Reference entity identifier not present in the attribute properties ("reference_data_name")');
-        }
+        $data = $value->getData();
 
         switch ($selectionConfiguration['type']) {
             case SelectionTypes::CODE:
-                return $recordCode;
+                return $data->getUnit() ?? '';
+            case SelectionTypes::AMOUNT:
+                return (string) ($data->getData() ?? '');
             case SelectionTypes::LABEL:
-                $recordTranslation = $this->findRecordsLabelTranslations->find(
-                    $referenceEntityIdentifier,
-                    [$recordCode],
+                $unit = $data->getUnit();
+
+                if (null === $unit) {
+                    return '';
+                }
+
+                $unitTranslations = $this->getUnitTranslations->byMeasurementFamilyCodeAndLocale(
+                    $attribute->metricFamily(),
                     $selectionConfiguration['locale']
                 );
 
-                return $recordTranslation[$recordCode] ?? sprintf('[%s]', $recordCode);
+                return $unitTranslations[$unit] ?? sprintf('[%s]', $unit);
             default:
                 throw new \LogicException(sprintf('Selection type "%s" is not supported', $selectionConfiguration['type']));
         }
@@ -59,7 +61,7 @@ class ReferenceEntitySimpleSelectSelector implements AttributeSelectorInterface
 
     public function supports(array $selectionConfiguration, Attribute $attribute): bool
     {
-        return in_array($selectionConfiguration['type'], [SelectionTypes::LABEL, SelectionTypes::CODE])
+        return in_array($selectionConfiguration['type'], [SelectionTypes::LABEL, SelectionTypes::CODE, SelectionTypes::AMOUNT])
             && in_array($attribute->type(), $this->supportedAttributeTypes);
     }
 }
