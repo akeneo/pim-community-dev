@@ -3,6 +3,7 @@
 namespace Akeneo\Pim\Enrichment\Bundle\Controller\Ui;
 
 use Akeneo\Pim\Enrichment\Bundle\Doctrine\ORM\Counter\CategoryItemsCounterInterface;
+use Akeneo\Pim\Enrichment\Bundle\Form\CategoryFormViewNormalizer;
 use Akeneo\Pim\Enrichment\Component\Category\Query\CountTreesChildrenInterface;
 use Akeneo\Tool\Component\Classification\Model\CategoryInterface;
 use Akeneo\Tool\Component\Classification\Repository\CategoryRepositoryInterface;
@@ -75,6 +76,8 @@ class CategoryTreeController extends Controller
 
     private CountTreesChildrenInterface $countTreesChildrenQuery;
 
+    private CategoryFormViewNormalizer $categoryFormViewNormalizer;
+
     public function __construct(
         EventDispatcherInterface $eventDispatcher,
         UserContext $userContext,
@@ -90,6 +93,7 @@ class CategoryTreeController extends Controller
         NormalizerInterface $constraintViolationNormalizer,
         CategoryItemsCounterInterface $categoryItemsCounter,
         CountTreesChildrenInterface $countTreesChildrenQuery,
+        CategoryFormViewNormalizer $categoryFormViewNormalizer,
         array $rawConfiguration
     ) {
         $this->eventDispatcher = $eventDispatcher;
@@ -111,6 +115,7 @@ class CategoryTreeController extends Controller
         $this->constraintViolationNormalizer = $constraintViolationNormalizer;
         $this->categoryItemsCounter = $categoryItemsCounter;
         $this->countTreesChildrenQuery = $countTreesChildrenQuery;
+        $this->categoryFormViewNormalizer = $categoryFormViewNormalizer;
     }
 
     /**
@@ -333,7 +338,7 @@ class CategoryTreeController extends Controller
             'root' => $rootCategory === null ? null : $this->normalizer->normalize($rootCategory, 'internal_api')
         ]);
 
-        $formData = $this->formatFormView($form->createView());
+        $formData = $this->categoryFormViewNormalizer->normalizeFormView($form->createView());
 
         return new JsonResponse(['category' => $normalizedCategory, 'form' => $formData], $responseStatus);
     }
