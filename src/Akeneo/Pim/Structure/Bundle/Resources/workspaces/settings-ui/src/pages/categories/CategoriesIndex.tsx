@@ -8,19 +8,19 @@ import {NewCategoryModal} from './NewCategoryModal';
 const CategoriesIndex: FC = () => {
   const router = useRouter();
   const translate = useTranslate();
-  const {trees, status, load} = useCategoryTreeList();
+  const {trees, loadingStatus, loadTrees} = useCategoryTreeList();
   const [isModalOpen, openModal, closeModal] = useBooleanState();
   const {isGranted} = useSecurity();
 
   const followSettingsIndex = () => router.redirect(router.generate('pim_settings_index'));
 
   useEffect(() => {
-    load();
+    loadTrees();
   }, []);
 
   return (
     <>
-      <PageHeader showPlaceholder={status === 'idle' || status === 'fetching'}>
+      <PageHeader showPlaceholder={loadingStatus === 'idle' || loadingStatus === 'fetching'}>
         <PageHeader.Breadcrumb>
           <Breadcrumb>
             <Breadcrumb.Step onClick={followSettingsIndex}>{translate('pim_menu.tab.settings')}</Breadcrumb.Step>
@@ -48,10 +48,10 @@ const CategoriesIndex: FC = () => {
         {trees.length === 0 ? (
           <EmptyCategoryTreeList />
         ) : (
-          <CategoryTreesDataGrid trees={trees} refreshCategoryTrees={load} />
+          <CategoryTreesDataGrid trees={trees} refreshCategoryTrees={loadTrees} />
         )}
       </PageContent>
-      {isModalOpen && <NewCategoryModal closeModal={closeModal} onCreate={load} />}
+      {isModalOpen && <NewCategoryModal closeModal={closeModal} onCreate={loadTrees} />}
     </>
   );
 };

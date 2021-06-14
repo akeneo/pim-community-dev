@@ -11,20 +11,20 @@ const useCategoryTreeList = () => {
     context: 'manage',
   });
 
-  const {data, fetch, status, error} = useFetch<CategoryTreeModel[]>(url);
+  const [treesData, loadTrees, loadingStatus, loadingError] = useFetch<CategoryTreeModel[]>(url);
 
-  const {data: productsNumberByCategory, fetch: fetchProductsNumberByCategory} = useFetch<{
+  const [productsNumberByCategory, fetchProductsNumberByCategory] = useFetch<{
     [categoryId: number]: number;
   }>(useRoute('pim_enrich_categorytree_get_products_number'));
 
   useEffect(() => {
-    setTrees(data || []);
-    if (data) {
+    setTrees(treesData || []);
+    if (treesData) {
       (async () => {
         await fetchProductsNumberByCategory();
       })();
     }
-  }, [data]);
+  }, [treesData]);
 
   useEffect(() => {
     if (productsNumberByCategory) {
@@ -44,9 +44,9 @@ const useCategoryTreeList = () => {
 
   return {
     trees,
-    status,
-    load: fetch,
-    error,
+    loadingStatus,
+    loadTrees,
+    loadingError,
   };
 };
 

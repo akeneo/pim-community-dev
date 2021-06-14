@@ -20,8 +20,8 @@ describe('useCategoryTree', () => {
   test('it returns default values', () => {
     const {result} = renderUseCategoryTree(1234);
     expect(result.current.tree).toBeNull();
-    expect(result.current.status).toBe('idle');
-    expect(result.current.load).toBeDefined();
+    expect(result.current.loadingStatus).toBe('idle');
+    expect(result.current.loadTree).toBeDefined();
     expect(result.current.error).toBeNull();
   });
 
@@ -44,11 +44,11 @@ describe('useCategoryTree', () => {
     const {result} = renderUseCategoryTree(treeId);
 
     await act(async () => {
-      result.current.load();
+      result.current.loadTree();
     });
 
     expect(result.current.tree).toEqual(categoryTree);
-    expect(result.current.status).toBe('fetched');
+    expect(result.current.loadingStatus).toBe('fetched');
   });
 
   test('it returns errors when the loading failed', async () => {
@@ -58,11 +58,11 @@ describe('useCategoryTree', () => {
     const {result} = renderUseCategoryTree(1234);
 
     await act(async () => {
-      result.current.load();
+      result.current.loadTree();
     });
 
     expect(result.current.tree).toBeNull();
-    expect(result.current.status).toEqual('error');
+    expect(result.current.loadingStatus).toEqual('error');
     expect(result.current.error).toMatch(/unexpected server error/);
   });
 });

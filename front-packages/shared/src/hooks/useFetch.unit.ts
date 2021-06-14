@@ -30,10 +30,11 @@ describe('useFetch', () => {
 
   test('it returns default values', () => {
     const {result} = renderUseFetchData('/fetch/data');
-    expect(result.current.data).toBeNull();
-    expect(result.current.status).toBe('idle');
-    expect(result.current.fetch).toBeDefined();
-    expect(result.current.error).toBeNull();
+    const [data, fetch, status, error] = result.current;
+    expect(data).toBeNull();
+    expect(status).toBe('idle');
+    expect(fetch).toBeDefined();
+    expect(error).toBeNull();
   });
 
   test('it loads the data', async () => {
@@ -47,11 +48,11 @@ describe('useFetch', () => {
     const {result} = renderUseFetchData('/fetch/data');
 
     await act(async () => {
-      result.current.fetch();
+      result.current[1]();
     });
 
-    expect(result.current.data).toEqual({foo: 'bar'});
-    expect(result.current.status).toBe('fetched');
+    expect(result.current[0]).toEqual({foo: 'bar'});
+    expect(result.current[2]).toBe('fetched');
   });
 
   test('it loads the data with fetching options', async () => {
@@ -71,12 +72,12 @@ describe('useFetch', () => {
     const {result} = renderUseFetchData('/fetch/data', fetchingOptions);
 
     await act(async () => {
-      result.current.fetch();
+      result.current[1]();
     });
 
     expect(fetcher).toBeCalledWith('/fetch/data', fetchingOptions);
-    expect(result.current.data).toEqual({foo: 'bar'});
-    expect(result.current.status).toBe('fetched');
+    expect(result.current[0]).toEqual({foo: 'bar'});
+    expect(result.current[2]).toBe('fetched');
   });
 
   test('it returns errors when the loading failed', async () => {
@@ -86,11 +87,11 @@ describe('useFetch', () => {
     const {result} = renderUseFetchData('/fetch/bad-data');
 
     await act(async () => {
-      result.current.fetch();
+      result.current[1]();
     });
 
-    expect(result.current.data).toBeNull();
-    expect(result.current.status).toEqual('error');
-    expect(result.current.error).toMatch(/unexpected server error/);
+    expect(result.current[0]).toBeNull();
+    expect(result.current[2]).toEqual('error');
+    expect(result.current[3]).toMatch(/unexpected server error/);
   });
 });
