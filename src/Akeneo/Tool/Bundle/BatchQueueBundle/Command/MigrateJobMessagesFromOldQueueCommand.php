@@ -121,7 +121,7 @@ final class MigrateJobMessagesFromOldQueueCommand extends Command
 
         $progressBar->finish();
         $output->writeln('');
-        $output->writeln(sprintf('<info>Terminated, %d job message(s) are migrated.</info>', $migratedMessagecount));
+        $output->writeln(sprintf('<info>Finished, %d job message(s) are migrated.</info>', $migratedMessagecount));
 
         return 0;
     }
