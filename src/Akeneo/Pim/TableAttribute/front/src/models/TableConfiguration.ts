@@ -9,9 +9,15 @@ type TextColumnValidation = {
   max_length?: number;
 };
 
-type NumberColumnValidation = {};
+type NumberColumnValidation = {
+  min?: number;
+  max?: number;
+  decimals_allowed?: boolean;
+};
 
 type BooleanColumnValidation = {};
+
+type SelectColumnValidation = {};
 
 export type ColumnValidation = TextColumnValidation | NumberColumnValidation | BooleanColumnValidation;
 
@@ -30,6 +36,10 @@ export type ColumnDefinition = {
   | {
       data_type: 'boolean';
       validations: BooleanColumnValidation;
+    }
+  | {
+      data_type: 'select';
+      validations: SelectColumnValidation;
     }
 );
 

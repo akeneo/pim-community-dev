@@ -4,6 +4,7 @@ import {getLabel, Locale, LocaleCode, useTranslate} from '@akeneo-pim-community/
 import {ColumnCode, ColumnValidation} from '../models/TableConfiguration';
 import styled from 'styled-components';
 import {ColumnDefinitionWithId} from './TableOptionsApp';
+import {Checkbox} from '@akeneo-pim-community/connectivity-connection/src/common';
 
 const FieldsList = styled.div`
   display: flex;
@@ -49,7 +50,7 @@ const ColumnDefinitionProperties: React.FC<ColumnDefinitionPropertiesProps> = ({
   const validations = (
     <>
       {selectedColumn.data_type === 'text' && (
-        <Field label={translate('pim_table_attribute.form.validations.max_length')}>
+        <Field label={translate('pim_table_attribute.validations.max_length')}>
           <NumberInput
             value={`${selectedColumn.validations.max_length}`}
             onChange={value => handleValidationChange({max_length: parseInt(value)})}
@@ -57,6 +58,29 @@ const ColumnDefinitionProperties: React.FC<ColumnDefinitionPropertiesProps> = ({
             max={100}
           />
         </Field>
+      )}
+      {selectedColumn.data_type === 'number' && (
+        <FieldsList>
+          <Field label={translate('pim_table_attribute.validations.min')}>
+            <NumberInput
+              value={`${selectedColumn.validations.min}`}
+              onChange={value => handleValidationChange({min: parseInt(value)})}
+              min={0}
+            />
+          </Field>
+          <Field label={translate('pim_table_attribute.validations.max')}>
+            <NumberInput
+              value={`${selectedColumn.validations.max}`}
+              onChange={value => handleValidationChange({max: parseInt(value)})}
+              min={0}
+            />
+          </Field>
+          <Checkbox
+            checked={selectedColumn.validations.decimals_allowed ?? false}
+            onChange={event => handleValidationChange({decimals_allowed: event.target.checked})}>
+            {translate('pim_table_attribute.validations.decimals_allowed')}
+          </Checkbox>
+        </FieldsList>
       )}
     </>
   );

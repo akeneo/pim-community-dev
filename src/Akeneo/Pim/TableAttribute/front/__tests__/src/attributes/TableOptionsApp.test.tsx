@@ -10,9 +10,9 @@ const tableConfiguration: TableConfiguration = [
 ];
 
 const complexTableConfiguration: TableConfiguration = [
-  {data_type: 'text', code: 'ingredients', labels: {en_US: 'Ingredients'}, validations: {}},
-  {data_type: 'text', code: 'quantity', labels: {en_US: 'Quantity'}, validations: {}},
-  {data_type: 'text', code: 'aqr', labels: {en_US: 'AQR'}, validations: {}},
+  {data_type: 'select', code: 'ingredients', labels: {en_US: 'Ingredients'}, validations: {}},
+  {data_type: 'number', code: 'quantity', labels: {en_US: 'Quantity'}, validations: {}},
+  {data_type: 'boolean', code: 'is_allergenic', labels: {en_US: 'Is allergenic'}, validations: {}},
   {data_type: 'text', code: 'part', labels: {en_US: 'For 1 part'}, validations: {}},
 ];
 
@@ -103,10 +103,10 @@ describe('TableOptionsApp', () => {
     });
 
     expect(handleChange).toBeCalledWith([
-      {data_type: 'text', code: 'ingredients', labels: {en_US: 'Ingredients'}, validations: {}},
-      {data_type: 'text', code: 'aqr', labels: {en_US: 'AQR'}, validations: {}},
+      {data_type: 'select', code: 'ingredients', labels: {en_US: 'Ingredients'}, validations: {}},
+      {data_type: 'boolean', code: 'is_allergenic', labels: {en_US: 'Is allergenic'}, validations: {}},
       {data_type: 'text', code: 'part', labels: {en_US: 'For 1 part'}, validations: {}},
-      {data_type: 'text', code: 'quantity', labels: {en_US: 'Quantity'}, validations: {}},
+      {data_type: 'number', code: 'quantity', labels: {en_US: 'Quantity'}, validations: {}},
     ]);
   });
 
@@ -166,5 +166,59 @@ describe('TableOptionsApp', () => {
     expect(await screen.findByText('English (United States)')).toBeInTheDocument();
     const codeInput = screen.getByLabelText('pim_common.code') as HTMLInputElement;
     expect(codeInput).toHaveAttribute('readonly');
+  });
+
+  it('should render validation fields', async () => {
+    const handleChange = jest.fn();
+    renderWithProviders(
+      <TableOptionsApp
+        onChange={handleChange}
+        initialTableConfiguration={complexTableConfiguration}
+        savedColumnCodes={[]}
+      />
+    );
+    expect(await screen.findByText('English (United States)')).toBeInTheDocument();
+    act(() => {
+      fireEvent.click(screen.getAllByRole('row')[1]);
+    });
+    const minInput = screen.getByLabelText('pim_table_attribute.validations.min') as HTMLInputElement;
+    expect(minInput).toBeInTheDocument();
+    const maxInput = screen.getByLabelText('pim_table_attribute.validations.max') as HTMLInputElement;
+    expect(maxInput).toBeInTheDocument();
+    const decimalsAllowedCheckbox = screen.getByLabelText(
+      'pim_table_attribute.validations.decimals_allowed'
+    ) as HTMLInputElement;
+    expect(decimalsAllowedCheckbox).toBeInTheDocument();
+
+    await act(async () => {
+      fireEvent.change(minInput, {target: {value: '10'}});
+    });
+    expect(handleChange).toHaveBeenCalledWith([
+      {code: 'ingredients', data_type: 'select', labels: {en_US: 'Ingredients'}, validations: {}},
+      {code: 'quantity', data_type: 'number', labels: {en_US: 'Quantity'}, validations: {min: 10}},
+      {code: 'is_allergenic', data_type: 'boolean', labels: {en_US: 'Is allergenic'}, validations: {}},
+      {code: 'part', data_type: 'text', labels: {en_US: 'For 1 part'}, validations: {}},
+    ]);
+
+    await act(async () => {
+      fireEvent.click(decimalsAllowedCheckbox);
+    });
+    expect(handleChange).toHaveBeenCalledWith([
+      {code: 'ingredients', data_type: 'select', labels: {en_US: 'Ingredients'}, validations: {}},
+      {
+        code: 'quantity',
+        data_type: 'number',
+        labels: {en_US: 'Quantity'},
+        validations: {min: 10, decimals_allowed: true},
+      },
+      {code: 'is_allergenic', data_type: 'boolean', labels: {en_US: 'Is allergenic'}, validations: {}},
+      {code: 'part', data_type: 'text', labels: {en_US: 'For 1 part'}, validations: {}},
+    ]);
+
+    act(() => {
+      fireEvent.click(screen.getAllByRole('row')[3]);
+    });
+    const maxLengthInput = screen.getByLabelText('pim_table_attribute.validations.max_length') as HTMLInputElement;
+    expect(maxLengthInput).toBeInTheDocument();
   });
 });
