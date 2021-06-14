@@ -1,11 +1,12 @@
 import {Meta, Story, ArgsTable, Canvas} from '@storybook/addon-docs/blocks';
 import {useArgs, updateArgs} from '@storybook/client-api';
 import {SubNavigationPanel} from './SubNavigationPanel.tsx';
+import {SpaceContainer} from '../../../storybook/PreviewGallery';
 
 <Meta
   title="Components/Navigation/SubNavigationPanel"
   component={SubNavigationPanel}
-  args={{children: 'Some content', isOpen: true}}
+  args={{isOpen: true, onCollapse: () => undefined}}
 />
 
 # SubNavigationPanel
@@ -28,7 +29,13 @@ When the panel is collapsed the content is hidden.
     {args => {
       const [{isOpen}, updateArgs] = useArgs();
       const handleCollapse = isOpen => updateArgs({isOpen});
-      return <SubNavigationPanel {...args} onCollapse={handleCollapse} />;
+      return (
+        <SpaceContainer height={200}>
+          <SubNavigationPanel {...args} onCollapse={handleCollapse}>
+            Some content
+          </SubNavigationPanel>
+        </SpaceContainer>
+      );
     }}
   </Story>
 </Canvas>
@@ -40,7 +47,30 @@ When the panel is collapsed the content is hidden.
 <Canvas>
   <Story name="Collapsed">
     {args => {
-      return <SubNavigationPanel {...args} isOpen={false} />;
+      return (
+        <SpaceContainer height={200}>
+          <SubNavigationPanel {...args} isOpen={false}>
+            Some content
+          </SubNavigationPanel>
+        </SpaceContainer>
+      );
+    }}
+  </Story>
+</Canvas>
+
+## Panel with collapse content
+
+<Canvas>
+  <Story name="With collapse content">
+    {args => {
+      return (
+        <SpaceContainer height={200}>
+          <SubNavigationPanel {...args} isOpen={false}>
+            <SubNavigationPanel.Collapse>Collapse content</SubNavigationPanel.Collapse>
+            Some content
+          </SubNavigationPanel>
+        </SpaceContainer>
+      );
     }}
   </Story>
 </Canvas>

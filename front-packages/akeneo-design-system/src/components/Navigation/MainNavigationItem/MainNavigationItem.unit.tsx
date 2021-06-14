@@ -49,6 +49,7 @@ test('MainNavigationItem displays a tag', () => {
 });
 
 test('MainNavigationItem doesnt support multiple tags', () => {
+  const mockConsole = jest.spyOn(console, 'error').mockImplementation();
   expect(() =>
     render(
       <MainNavigationItem icon={<CardIcon />}>
@@ -58,6 +59,7 @@ test('MainNavigationItem doesnt support multiple tags', () => {
       </MainNavigationItem>
     )
   ).toThrowError('You can only provide one component of type Tag.');
+  mockConsole.mockRestore();
 });
 
 test('MainNavigationItem triggers onClick when MainNavigationItem is clicked', () => {
@@ -79,20 +81,6 @@ test('MainNavigationItem will not trigger onClick when MainNavigationItem is dis
 
   render(
     <MainNavigationItem icon={<CardIcon />} onClick={onClick} disabled={true}>
-      My title
-    </MainNavigationItem>
-  );
-
-  fireEvent.click(screen.getByText('My title'));
-
-  expect(onClick).not.toBeCalled();
-});
-
-test('MainNavigationItem will not trigger onClick when onClick is undefined', () => {
-  const onClick = jest.fn();
-
-  render(
-    <MainNavigationItem icon={<CardIcon />} onClick={undefined}>
       My title
     </MainNavigationItem>
   );

@@ -1,0 +1,52 @@
+import {Meta, Story, ArgsTable, Canvas} from '@storybook/addon-docs/blocks';
+import {useArgs, updateArgs} from '@storybook/client-api';
+import {SubNavigation} from './SubNavigation.tsx';
+import {Tag} from '../../Tags/Tags';
+import {Link} from '../../Link/Link';
+
+<Meta
+  title="Components/Navigation/SubNavigation"
+  component={SubNavigation}
+  subcomponents={{
+    'SubNavigation.Item': SubNavigation.Item,
+    'SubNavigation.Section': SubNavigation.Section,
+  }}
+  args={{isOpen: true}}
+/>
+
+# SubNavigation
+
+## Usage
+
+TODO
+
+## Playground
+
+<Canvas>
+  <Story name="Standard">
+    {args => {
+      const [{isOpen}, updateArgs] = useArgs();
+      const handleCollapse = isOpen => updateArgs({isOpen});
+      return (
+        <SubNavigation {...args} onCollapse={handleCollapse}>
+          <SubNavigation.Section>
+            <SubNavigation.Item target="_blank" href="/">
+              Item
+            </SubNavigation.Item>
+            <SubNavigation.Item target="_blank" href="/">
+              Item with Tag<Tag tint="blue">Tag</Tag>
+            </SubNavigation.Item>
+            <SubNavigation.Item target="_blank" href="/" disabled>
+              Disabled Item
+            </SubNavigation.Item>
+          </SubNavigation.Section>
+          <SubNavigation.Item target="_blank" href="/">
+            Item outside a Section
+          </SubNavigation.Item>
+        </SubNavigation>
+      );
+    }}
+  </Story>
+</Canvas>
+
+<ArgsTable story="Standard" />
