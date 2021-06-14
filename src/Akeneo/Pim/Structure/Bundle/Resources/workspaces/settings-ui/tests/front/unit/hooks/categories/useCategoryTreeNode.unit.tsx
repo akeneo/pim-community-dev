@@ -10,7 +10,7 @@ import {
   useCategoryTreeNode,
 } from '@akeneo-pim-community/settings-ui';
 import {aBackendCategoryTree, aCategoryTree} from '../../../utils/provideCategoryHelper';
-import {moveCategory} from "@akeneo-pim-community/settings-ui/src/infrastructure/savers";
+import {moveCategory} from '@akeneo-pim-community/settings-ui/src/infrastructure/savers';
 
 jest.mock('@akeneo-pim-community/settings-ui/src/infrastructure/savers/moveCategory');
 
@@ -146,7 +146,7 @@ describe('useCategoryTreeNode > move category', () => {
     expect(moveCategory).toHaveBeenCalledWith({
       identifier: 1,
       parentId: 1234,
-      previousCategoryId: 2
+      previousCategoryId: 2,
     });
   });
 
@@ -167,7 +167,7 @@ describe('useCategoryTreeNode > move category', () => {
     expect(moveCategory).toHaveBeenCalledWith({
       identifier: 1,
       parentId: 1234,
-      previousCategoryId: 3
+      previousCategoryId: 3,
     });
   });
 
@@ -194,7 +194,7 @@ describe('useCategoryTreeNode > move category', () => {
     expect(moveCategory).toHaveBeenCalledWith({
       identifier: 1,
       parentId: 2,
-      previousCategoryId: null
+      previousCategoryId: null,
     });
   });
 
@@ -248,7 +248,7 @@ describe('useCategoryTreeNode > move category', () => {
     expect(moveCategory).toHaveBeenCalledWith({
       identifier: 1,
       parentId: 3,
-      previousCategoryId: null
+      previousCategoryId: null,
     });
 
     act(() => {

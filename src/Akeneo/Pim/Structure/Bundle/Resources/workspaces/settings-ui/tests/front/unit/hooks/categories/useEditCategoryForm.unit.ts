@@ -2,7 +2,7 @@ import {act} from 'react-test-renderer';
 import {renderHookWithProviders} from '@akeneo-pim-community/shared';
 import {useCategory, useEditCategoryForm} from '@akeneo-pim-community/settings-ui';
 import {aCategory} from '../../../utils/provideCategoryHelper';
-import {saveEditCategoryForm} from "@akeneo-pim-community/settings-ui/src/infrastructure/savers";
+import {saveEditCategoryForm} from '@akeneo-pim-community/settings-ui/src/infrastructure/savers';
 
 jest.mock('@akeneo-pim-community/settings-ui/src/hooks/categories/useCategory');
 jest.mock('@akeneo-pim-community/settings-ui/src/infrastructure/savers/saveEditCategoryForm');
@@ -49,7 +49,7 @@ describe('useEditCategoryForm', () => {
     expect(result.current.thereAreUnsavedChanges).toBe(true);
     expect(result.current.formData).toStrictEqual({
       ...aCategoryForm,
-      label: {...aCategoryForm.label, en_US: {...aCategoryForm.label.en_US, value: 'Foo'}}
+      label: {...aCategoryForm.label, en_US: {...aCategoryForm.label.en_US, value: 'Foo'}},
     });
 
     act(() => {
@@ -75,8 +75,8 @@ describe('useEditCategoryForm', () => {
       permissions: {
         ...aCategoryForm.permissions,
         view: {...aCategoryForm.permissions.view, value: ['1']},
-        edit: {...aCategoryForm.permissions.edit, value: ['1']}
-      }
+        edit: {...aCategoryForm.permissions.edit, value: ['1']},
+      },
     });
 
     act(() => {
@@ -99,7 +99,7 @@ describe('useEditCategoryForm', () => {
     expect(result.current.thereAreUnsavedChanges).toBe(true);
     expect(result.current.formData).toStrictEqual({
       ...aCategoryForm,
-      permissions: {...aCategoryForm.permissions, edit: {...aCategoryForm.permissions.edit, value: ['1']}}
+      permissions: {...aCategoryForm.permissions, edit: {...aCategoryForm.permissions.edit, value: ['1']}},
     });
 
     act(() => {
@@ -122,7 +122,7 @@ describe('useEditCategoryForm', () => {
     expect(result.current.thereAreUnsavedChanges).toBe(true);
     expect(result.current.formData).toStrictEqual({
       ...aCategoryForm,
-      permissions: {...aCategoryForm.permissions, own: {...aCategoryForm.permissions.own, value: ['1', '2']}}
+      permissions: {...aCategoryForm.permissions, own: {...aCategoryForm.permissions.own, value: ['1', '2']}},
     });
 
     act(() => {
@@ -147,8 +147,8 @@ describe('useEditCategoryForm', () => {
       ...aCategoryForm,
       permissions: {
         ...aCategoryForm.permissions,
-        apply_on_children: {...aCategoryForm.permissions.apply_on_children, value: '0'}
-      }
+        apply_on_children: {...aCategoryForm.permissions.apply_on_children, value: '0'},
+      },
     });
 
     act(() => {
@@ -162,7 +162,7 @@ describe('useEditCategoryForm', () => {
     const refreshedForm = {
       ...aCategoryForm,
       label: {...aCategoryForm.label, en_US: {...aCategoryForm.label.en_US, value: 'Foo'}},
-      _token: {...aCategoryForm._token, value: 'sNX5OmLv9rpxRmMKU_AE2v46J--2Fpiu9B1vhpEwsqM'}
+      _token: {...aCategoryForm._token, value: 'sNX5OmLv9rpxRmMKU_AE2v46J--2Fpiu9B1vhpEwsqM'},
     };
 
     // @ts-ignore
@@ -187,7 +187,7 @@ describe('useEditCategoryForm', () => {
     const refreshedForm = {
       ...aCategoryForm,
       errors: ['A random error message'],
-      _token: {...aCategoryForm._token, value: 'sNX5OmLv9rpxRmMKU_AE2v46J--2Fpiu9B1vhpEwsqM'}
+      _token: {...aCategoryForm._token, value: 'sNX5OmLv9rpxRmMKU_AE2v46J--2Fpiu9B1vhpEwsqM'},
     };
 
     // @ts-ignore
@@ -210,71 +210,71 @@ describe('useEditCategoryForm', () => {
     expect(result.current.formData).toStrictEqual({
       ...refreshedForm,
       errors: [],
-      label: {...refreshedForm.label, en_US: {...refreshedForm.label.en_US, value: 'Foo'}}
+      label: {...refreshedForm.label, en_US: {...refreshedForm.label.en_US, value: 'Foo'}},
     });
   });
 
   const aCategoryForm = {
-    'label': {
-      'en_US': {
-        'value': 'Ziggy',
-        'fullName': 'pim_category[label][en_US]',
-        'label': 'English (United States)'
+    label: {
+      en_US: {
+        value: 'Ziggy',
+        fullName: 'pim_category[label][en_US]',
+        label: 'English (United States)',
       },
     },
-    'errors': [],
-    '_token': {
-      'value': 'dm4vOMTG-1OFeMWAeYNLTk1kQwkJa6epzTOez0QImX8',
-      'fullName': 'pim_category[_token]'
+    errors: [],
+    _token: {
+      value: 'dm4vOMTG-1OFeMWAeYNLTk1kQwkJa6epzTOez0QImX8',
+      fullName: 'pim_category[_token]',
     },
-    'permissions': {
-      'view': {
-        'value': ['1', '2'],
-        'fullName': 'pim_category[permissions][view][]',
-        'choices': [
+    permissions: {
+      view: {
+        value: ['1', '2'],
+        fullName: 'pim_category[permissions][view][]',
+        choices: [
           {
-            'label': 'IT support',
-            'value': '1'
+            label: 'IT support',
+            value: '1',
           },
           {
-            'label': 'Manager',
-            'value': '2'
+            label: 'Manager',
+            value: '2',
           },
-        ]
+        ],
       },
-      'edit': {
-        'value': ['1', '2'],
-        'fullName': 'pim_category[permissions][edit][]',
-        'choices': [
+      edit: {
+        value: ['1', '2'],
+        fullName: 'pim_category[permissions][edit][]',
+        choices: [
           {
-            'label': 'IT support',
-            'value': '1'
+            label: 'IT support',
+            value: '1',
           },
           {
-            'label': 'Manager',
-            'value': '2'
+            label: 'Manager',
+            value: '2',
           },
-        ]
+        ],
       },
-      'own': {
-        'value': ['1'],
-        'fullName': 'pim_category[permissions][own][]',
-        'choices': [
+      own: {
+        value: ['1'],
+        fullName: 'pim_category[permissions][own][]',
+        choices: [
           {
-            'label': 'IT support',
-            'value': '1'
+            label: 'IT support',
+            value: '1',
           },
           {
-            'label': 'Manager',
-            'value': '2'
+            label: 'Manager',
+            value: '2',
           },
-        ]
+        ],
       },
-      'apply_on_children': {
-        'value': '1',
-        'fullName': 'pim_category[permissions][apply_on_children]'
-      }
-    }
+      apply_on_children: {
+        value: '1',
+        fullName: 'pim_category[permissions][apply_on_children]',
+      },
+    },
   };
 
   const aCategoryResult = () => {
