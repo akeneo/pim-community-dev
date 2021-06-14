@@ -13,6 +13,7 @@ namespace Akeneo\Pim\Permission\Bundle\Controller\Ui;
 
 use Akeneo\Pim\Enrichment\Bundle\Controller\Ui\CategoryTreeController as BaseCategoryTreeController;
 use Akeneo\Pim\Enrichment\Bundle\Doctrine\ORM\Counter\CategoryItemsCounterInterface;
+use Akeneo\Pim\Enrichment\Component\Category\Form\CategoryFormViewNormalizerInterface;
 use Akeneo\Pim\Enrichment\Component\Category\Query\CountTreesChildrenInterface;
 use Akeneo\Pim\Permission\Bundle\Entity\Repository\CategoryAccessRepository;
 use Akeneo\Pim\Permission\Bundle\User\UserContext;
@@ -73,7 +74,8 @@ class CategoryTreeController extends BaseCategoryTreeController
         CountTreesChildrenInterface $countTreesChildrenQuery,
         array $rawConfiguration,
         CategoryAccessRepository $categoryAccessRepo,
-        TokenStorageInterface $tokenStorage
+        TokenStorageInterface $tokenStorage,
+        CategoryFormViewNormalizerInterface $categoryFormViewNormalizer
     ) {
         parent::__construct(
             $eventDispatcher,
@@ -90,6 +92,7 @@ class CategoryTreeController extends BaseCategoryTreeController
             $constraintViolationNormalizer,
             $categoryItemsCounter,
             $countTreesChildrenQuery,
+            $categoryFormViewNormalizer,
             $rawConfiguration
         );
 
