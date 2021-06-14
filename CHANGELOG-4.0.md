@@ -1,5 +1,7 @@
 # 4.0.x
 
+# 4.0.114 (2021-06-14)
+
 ## Bug fixes
 
 - PIM-9902: fix specific local attribute export in model and product model
