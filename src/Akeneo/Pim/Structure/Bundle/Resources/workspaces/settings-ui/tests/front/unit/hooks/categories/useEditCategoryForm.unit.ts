@@ -22,7 +22,7 @@ describe('useEditCategoryForm', () => {
   };
 
   test('it returns default values', () => {
-    const useCategoryResult = anUseCategoryResult();
+    const useCategoryResult = aCategoryResult();
     // @ts-ignore
     useCategory.mockReturnValue(useCategoryResult);
 
@@ -39,7 +39,7 @@ describe('useEditCategoryForm', () => {
 
   test('it changes the value of a category label', () => {
     // @ts-ignore
-    useCategory.mockReturnValue(anUseCategoryResult());
+    useCategory.mockReturnValue(aCategoryResult());
 
     const {result} = renderUseEditCategoryForm(42);
     act(() => {
@@ -62,7 +62,7 @@ describe('useEditCategoryForm', () => {
 
   test('it changes the view permissions of a category', () => {
     // @ts-ignore
-    useCategory.mockReturnValue(anUseCategoryResult());
+    useCategory.mockReturnValue(aCategoryResult());
 
     const {result} = renderUseEditCategoryForm(42);
     act(() => {
@@ -89,7 +89,7 @@ describe('useEditCategoryForm', () => {
 
   test('it changes the edit permissions of a category', () => {
     // @ts-ignore
-    useCategory.mockReturnValue(anUseCategoryResult());
+    useCategory.mockReturnValue(aCategoryResult());
 
     const {result} = renderUseEditCategoryForm(42);
     act(() => {
@@ -112,7 +112,7 @@ describe('useEditCategoryForm', () => {
 
   test('it changes the own permissions of a category', () => {
     // @ts-ignore
-    useCategory.mockReturnValue(anUseCategoryResult());
+    useCategory.mockReturnValue(aCategoryResult());
 
     const {result} = renderUseEditCategoryForm(42);
     act(() => {
@@ -135,7 +135,7 @@ describe('useEditCategoryForm', () => {
 
   test('it changes the value of apply permissions on children', () => {
     // @ts-ignore
-    useCategory.mockReturnValue(anUseCategoryResult());
+    useCategory.mockReturnValue(aCategoryResult());
 
     const {result} = renderUseEditCategoryForm(42);
     act(() => {
@@ -166,7 +166,7 @@ describe('useEditCategoryForm', () => {
     };
 
     // @ts-ignore
-    useCategory.mockReturnValue(anUseCategoryResult());
+    useCategory.mockReturnValue(aCategoryResult());
     // @ts-ignore
     saveEditCategoryForm.mockResolvedValue({
       success: true,
@@ -191,7 +191,7 @@ describe('useEditCategoryForm', () => {
     };
 
     // @ts-ignore
-    useCategory.mockReturnValue(anUseCategoryResult());
+    useCategory.mockReturnValue(aCategoryResult());
     // @ts-ignore
     saveEditCategoryForm.mockResolvedValue({
       success: false,
@@ -277,7 +277,7 @@ describe('useEditCategoryForm', () => {
     }
   };
 
-  const anUseCategoryResult = () => {
+  const aCategoryResult = () => {
     const root = aCategory('root', {}, 1, null);
     const category = aCategory('cat_1', {en_US: 'Ziggy'}, 42, root);
 
