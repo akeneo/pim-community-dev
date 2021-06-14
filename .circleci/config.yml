@@ -20,6 +20,13 @@ aliases:
             username: _json_key  # default username when using a JSON key file to authenticate
             password: $GCLOUD_SERVICE_KEY_DEV  # JSON service account you created, do not encode to base64
 
+  - &dockerJenkinsCloudDeployer
+      docker:
+          - image: eu.gcr.io/akeneo-ci/jenkinsfile-runner:2.10
+            auth:
+                username: _json_key  # default username when using a JSON key file to authenticate
+                password: $GCLOUD_SERVICE_KEY_DEV  # JSON service account you created, do not encode to base64
+
 jobs:
   checkout:
     docker:
@@ -151,6 +158,7 @@ jobs:
                 SERENITY_RELEASE_NAME="v$(date +%Y%m%d%H%M%S)"
                 PRODUCT_REFERENCE_TYPE="serenity_instance"
                 PRODUCT_REFERENCE_CODE="serenity_${ENV_NAME}"
+                PIM_CONTEXT=deployment
 
                 echo export TYPE=${TYPE} >> $BASH_ENV
                 echo export IMAGE_TAG=${IMAGE_TAG} >> $BASH_ENV
@@ -159,15 +167,16 @@ jobs:
                 echo export SERENITY_RELEASE_NAME=${SERENITY_RELEASE_NAME} >> $BASH_ENV
                 echo export PRODUCT_REFERENCE_TYPE=${PRODUCT_REFERENCE_TYPE} >> $BASH_ENV
                 echo export PRODUCT_REFERENCE_CODE=${PRODUCT_REFERENCE_CODE} >> $BASH_ENV
+                echo export PIM_CONTEXT=${PIM_CONTEXT} >> $BASH_ENV
 
                 echo "Image tag: ${IMAGE_TAG}"
                 echo "Serenity release name: ${SERENITY_RELEASE_NAME}"
           - run:
               name: Build the Serenity Edition prod image
-              command: PIM_CONTEXT=deployment IMAGE_TAG_DATE=${IMAGE_TAG_DATE} make php-image-prod
+              command: IMAGE_TAG_DATE=${IMAGE_TAG_DATE} make php-image-prod
           - run:
               name: Push the Serenity Edition prod image on docker registry
-              command: PIM_CONTEXT=deployment make push-php-image-prod
+              command: make push-php-image-prod
           - run:
               name: Persist env vars for next jobs
               command: |
@@ -178,6 +187,7 @@ jobs:
                 echo export SERENITY_RELEASE_NAME=${SERENITY_RELEASE_NAME} >> persisted_env_vars
                 echo export PRODUCT_REFERENCE_TYPE=${PRODUCT_REFERENCE_TYPE} >> persisted_env_vars
                 echo export PRODUCT_REFERENCE_CODE=${PRODUCT_REFERENCE_CODE} >> persisted_env_vars
+                echo export PIM_CONTEXT=${PIM_CONTEXT} >> persisted_env_vars
           - persist_to_workspace:
               root: ~/
               paths:
@@ -199,6 +209,7 @@ jobs:
         fingerprints:
           - "1f:25:f8:bb:59:52:95:f6:e2:f2:97:2f:30:d4:e9:66"
     - set_gcloud_config_dev
+    - install_yq
     - when:
         condition: << parameters.is_pull_request >>
         steps:
@@ -238,6 +249,7 @@ jobs:
           GROWTH_RELEASE_NAME="growth-v$(date +%Y%m%d%H%M%S)"
           PRODUCT_REFERENCE_TYPE="growth_edition_instance"
           PRODUCT_REFERENCE_CODE="growth_edition_${ENV_NAME}"
+          PIM_CONTEXT=deployment
 
           echo export TYPE=${TYPE} >> $BASH_ENV
           echo export IMAGE_TAG=${IMAGE_TAG} >> $BASH_ENV
@@ -246,17 +258,12 @@ jobs:
           echo export GROWTH_RELEASE_NAME=${GROWTH_RELEASE_NAME} >> $BASH_ENV
           echo export PRODUCT_REFERENCE_TYPE=${PRODUCT_REFERENCE_TYPE} >> $BASH_ENV
           echo export PRODUCT_REFERENCE_CODE=${PRODUCT_REFERENCE_CODE} >> $BASH_ENV
+          echo export PIM_CONTEXT=${PIM_CONTEXT} >> $BASH_ENV
 
           echo "CE Branch used: ${CE_BRANCH}"
           echo "CE Commit hash used: ${CE_COMMIT_HASH}"
           echo "Image tag: ${IMAGE_TAG}"
           echo "Growth Release name: ${GROWTH_RELEASE_NAME}"
-    - run:
-        name: Install yq
-        command: |
-          wget https://github.com/mikefarah/yq/releases/download/2.4.0/yq_linux_386
-          sudo mv yq_linux_386 /usr/local/bin/yq
-          sudo chmod +x /usr/local/bin/yq
     - run:
         name: Prepare the Growth Edition
         command: |
@@ -267,13 +274,20 @@ jobs:
           /home/circleci/ee_project/growth_edition/prepare_growth_edition.sh /home/circleci/project
     - run:
         name: Build the Growth Edition prod image
-        command: PIM_CONTEXT=deployment TYPE=${TYPE} IMAGE_TAG_DATE=${IMAGE_TAG_DATE} make php-image-prod
+        command: TYPE=${TYPE} IMAGE_TAG_DATE=${IMAGE_TAG_DATE} make php-image-prod
     - run:
         name: Push the Growth Edition prod image on docker registry
-        command: PIM_CONTEXT=deployment TYPE=${TYPE} make push-php-image-prod
+        command: TYPE=${TYPE} make push-php-image-prod
     - run:
-        name: Push the Growth Edition deployements files on bucket
-        command: BOTO_CONFIG=/dev/null gsutil -m cp -r /home/circleci/project/deployments/ gs://akecld-terraform-modules/growth-edition-dev/${IMAGE_TAG}/
+        name: Prepare the Terraform module with the upgrade script
+        command: |
+          mkdir -p /home/circleci/project/deployments/terraform/deployments
+          cp -r /home/circleci/project/deployments/automation /home/circleci/project/deployments/terraform/deployments
+    - run:
+        name: Push Terraform modules to GCS
+        command: |
+          BOTO_CONFIG=/dev/null gsutil -m cp -r /home/circleci/project/deployments/terraform gs://akecld-terraform-modules/growth-edition-dev/${IMAGE_TAG}/
+          BOTO_CONFIG=/dev/null gsutil -m cp -r /home/circleci/project/deployments/terraform gs://akecld-terraform-modules/growth-edition-dev/${IMAGE_TAG}/terraform/deployments/terraform
     - run:
         name: Persist env vars for next jobs
         command: |
@@ -284,6 +298,7 @@ jobs:
           echo export GROWTH_RELEASE_NAME=${GROWTH_RELEASE_NAME} >> persisted_env_vars
           echo export PRODUCT_REFERENCE_TYPE=${PRODUCT_REFERENCE_TYPE} >> persisted_env_vars
           echo export PRODUCT_REFERENCE_CODE=${PRODUCT_REFERENCE_CODE} >> persisted_env_vars
+          echo export PIM_CONTEXT=${PIM_CONTEXT} >> persisted_env_vars
     - persist_to_workspace:
           root: ~/
           paths:
@@ -764,6 +779,32 @@ jobs:
   ##################
   # Helm tests     #
   ##################
+  test_helm_generated_k8s_files:
+      environment:
+        <<: *envVarsDeployDev
+      <<: *dockerCloudDeployer
+      steps:
+          - attach_workspace:
+                at: ~/
+          - set_gcloud_config_dev
+          - run:
+              name: Define value for next steps
+              command: |
+                PIM_CONTEXT=deployment
+                echo export PIM_CONTEXT=${PIM_CONTEXT} >> $BASH_ENV
+          - run:
+              name: Test Serenity Helm generated yaml files compliance with current kubernetes Version
+              command: K8S_CLUSTER_VERSION_ENABLED=1 make test_helm_generated_k8s_files
+          - run:
+              name: Test Serenity with Onboarder bundle Helm generated yaml files compliance with current kubernetes Version
+              command: WITH_ONBOARDER=1 K8S_CLUSTER_VERSION_ENABLED=1 make test_helm_generated_k8s_files
+          - run:
+              name: Test Serenity Helm generated yaml files compliance with latest kubernetes Version
+              command: make test_helm_generated_k8s_files
+          - run:
+              name: Test Serenity with Onboarder bundle Helm generated yaml files compliance with latest kubernetes Version
+              command: WITH_ONBOARDER=1 make test_helm_generated_k8s_files
+
   test_cronjobs_existence_srnt:
       environment:
         <<: *envVarsDeployDev
@@ -774,15 +815,10 @@ jobs:
                 at: ~/
           - set_gcloud_config_dev
           - restore_persisted_env_vars
-          - run:
-              name: Install yq
-              command: |
-                  wget https://github.com/mikefarah/yq/releases/download/3.3.1/yq_linux_386
-                  sudo mv yq_linux_386 /usr/local/bin/yq
-                  sudo chmod +x /usr/local/bin/yq
+          - install_yq
           - run:
               name: Test Cronjob jobs exists
-              command: PIM_CONTEXT=deployment make test-helm-cronjob
+              command: make test-helm-cronjob
 
   test_cronjobs_existence_grth:
       environment:
@@ -794,36 +830,10 @@ jobs:
                 at: ~/
           - set_gcloud_config_dev
           - restore_persisted_env_vars
-          - run:
-              name: Install yq
-              command: |
-                  wget https://github.com/mikefarah/yq/releases/download/3.3.1/yq_linux_386
-                  sudo mv yq_linux_386 /usr/local/bin/yq
-                  sudo chmod +x /usr/local/bin/yq
+          - install_yq
           - run:
               name: Test Cronjob jobs exists
-              command: PIM_CONTEXT=deployment make test-helm-cronjob
-
-  test_helm_generated_k8s_files:
-      environment:
-        <<: *envVarsDeployDev
-      <<: *dockerCloudDeployer
-      steps:
-          - attach_workspace:
-                at: ~/
-          - set_gcloud_config_dev
-          - run:
-              name: Test Serenity Helm generated yaml files compliance with current kubernetes Version
-              command: PIM_CONTEXT=deployment K8S_CLUSTER_VERSION_ENABLED=1  make test_helm_generated_k8s_files
-          - run:
-              name: Test Serenity with Onboarder bundle Helm generated yaml files compliance with current kubernetes Version
-              command: PIM_CONTEXT=deployment WITH_ONBOARDER=1 K8S_CLUSTER_VERSION_ENABLED=1 make test_helm_generated_k8s_files
-          - run:
-              name: Test Serenity Helm generated yaml files compliance with latest kubernetes Version
-              command: PIM_CONTEXT=deployment make test_helm_generated_k8s_files
-          - run:
-              name: Test Serenity with Onboarder bundle Helm generated yaml files compliance with latest kubernetes Version
-              command: PIM_CONTEXT=deployment WITH_ONBOARDER=1 make test_helm_generated_k8s_files
+              command: make test-helm-cronjob
 
   ##################
   # Tests deploy   #
@@ -842,11 +852,9 @@ jobs:
               command: |
                 INSTANCE_NAME_PREFIX=pimci
                 INSTANCE_NAME=${INSTANCE_NAME_PREFIX}-${IMAGE_TAG_SHORTED}-${CIRCLE_BUILD_NUM}
-                PIM_CONTEXT=deployment
 
                 echo export INSTANCE_NAME_PREFIX=${INSTANCE_NAME_PREFIX} >> $BASH_ENV
                 echo export INSTANCE_NAME=${INSTANCE_NAME} >> $BASH_ENV
-                echo export PIM_CONTEXT=${PIM_CONTEXT} >> $BASH_ENV
 
                 echo "Instance name prefix: ${INSTANCE_NAME_PREFIX}"
                 echo "Instance name: ${INSTANCE_NAME}"
@@ -885,11 +893,9 @@ jobs:
               command: |
                 INSTANCE_NAME_PREFIX=pimci
                 INSTANCE_NAME=${INSTANCE_NAME_PREFIX}-${IMAGE_TAG_SHORTED}-${CIRCLE_BUILD_NUM}
-                PIM_CONTEXT=deployment
 
                 echo export INSTANCE_NAME_PREFIX=${INSTANCE_NAME_PREFIX} >> $BASH_ENV
                 echo export INSTANCE_NAME=${INSTANCE_NAME} >> $BASH_ENV
-                echo export PIM_CONTEXT=${PIM_CONTEXT} >> $BASH_ENV
 
                 echo "Instance name prefix: ${INSTANCE_NAME_PREFIX}"
                 echo "Instance name: ${INSTANCE_NAME}"
@@ -914,10 +920,68 @@ jobs:
               command: make delete
               when: always
 
-  test_upgrade_srnt_from_last_release:
+  test_deploy_srnt_last_release:
       environment:
           <<: *envVarsDeployDev
       <<: *dockerCloudDeployer
+      steps:
+          - attach_workspace:
+                at: ~/
+          - add_ssh_keys:
+                fingerprints:
+                    - "5f:7b:b3:cb:d4:3d:e2:c2:36:5f:9d:b4:87:86:5f:67"
+                    - "1f:25:f8:bb:59:52:95:f6:e2:f2:97:2f:30:d4:e9:66"
+          - set_gcloud_config_dev
+          - restore_persisted_env_vars
+          - run:
+                name: Get latest release & export variables
+                command: |
+                    LATEST_RELEASE=$(bash ${PWD}/deployments/bin/get_latest_release.sh)
+                    if [[ -z "${LATEST_RELEASE}" ]]; then
+                        echo "Could not retrieve latest deployed release"
+                        exit 1
+                    fi
+                    INSTANCE_NAME_PREFIX=pimup
+                    INSTANCE_NAME=${INSTANCE_NAME_PREFIX}-${IMAGE_TAG_SHORTED}-${CIRCLE_BUILD_NUM}
+                    DEPLOYMENTS_INSTANCES_DIR=/root/cloud-customers-dev/saas/projects/${GOOGLE_PROJECT_ID}/${CLUSTER_NAME}/releases
+
+                    echo export LATEST_RELEASE=${LATEST_RELEASE} >> $BASH_ENV
+                    echo export INSTANCE_NAME_PREFIX=${INSTANCE_NAME_PREFIX} >> $BASH_ENV
+                    echo export INSTANCE_NAME=${INSTANCE_NAME} >> $BASH_ENV
+                    echo export DEPLOYMENTS_INSTANCES_DIR=${DEPLOYMENTS_INSTANCES_DIR} >> $BASH_ENV
+
+                    echo "Instance name prefix: ${INSTANCE_NAME_PREFIX}"
+                    echo "Instance name: ${INSTANCE_NAME}"
+                    echo "Image tag: ${IMAGE_TAG}"
+                    echo "Latest image tag: ${LATEST_RELEASE}"
+                    echo "Deployments instances directory: ${DEPLOYMENTS_INSTANCES_DIR}"
+          - run:
+                name: DATADOG deployment Livetail logs page
+                command: echo "https://app.datadoghq.eu/logs/livetail?query=kube_namespace%3A${TYPE}-${INSTANCE_NAME}"
+          - run:
+                name: Deploy instance with latest release
+                command: |
+                    ssh-keyscan -t rsa github.com >> ~/.ssh/known_hosts
+                    export GIT_SSH_COMMAND='ssh -i ~/.ssh/id_rsa_5f7bb3cbd43de2c2365f9db487865f67 -o UserKnownHostsFile=~/.ssh/known_hosts -o IdentitiesOnly=Yes'
+                    IMAGE_TAG=${LATEST_RELEASE} make commit-instance
+          - run:
+                name: Persist env vars for next jobs
+                command: |
+                    echo export INSTANCE_NAME="${INSTANCE_NAME}" >> persisted_env_vars
+                    echo export DEPLOYMENTS_INSTANCES_DIR="${DEPLOYMENTS_INSTANCES_DIR}" >> persisted_env_vars
+          - persist_to_workspace:
+              root: ~/
+              paths:
+                - project/persisted_env_vars
+          - run:
+              name: Remove env on kubernetes
+              command: IMAGE_TAG=${LATEST_RELEASE} make commit-instance
+              when: on_fail
+
+  test_upgrade_srnt_from_last_release:
+      environment:
+          <<: *envVarsDeployDev
+      <<: *dockerJenkinsCloudDeployer
       steps:
           - attach_workspace:
                 at: ~/
@@ -925,39 +989,19 @@ jobs:
           - set_gcloud_config_dev
           - restore_persisted_env_vars
           - run:
-              name: Get latest release & export variables
-              command: |
-                  LATEST_RELEASE=$(bash ${PWD}/deployments/bin/get_latest_release.sh)
-                  if [[ -z "${LATEST_RELEASE}" ]]; then
-                      echo "Could not retrieve latest deployed release"
-                      exit 1
-                  fi
-                  INSTANCE_NAME_PREFIX=pimup
-                  INSTANCE_NAME=${INSTANCE_NAME_PREFIX}-${IMAGE_TAG_SHORTED}-${CIRCLE_BUILD_NUM}
-                  PIM_CONTEXT=deployment
-
-                  echo export LATEST_RELEASE=${LATEST_RELEASE} >> $BASH_ENV
-                  echo export INSTANCE_NAME_PREFIX=${INSTANCE_NAME_PREFIX} >> $BASH_ENV
-                  echo export INSTANCE_NAME=${INSTANCE_NAME} >> $BASH_ENV
-                  echo export PIM_CONTEXT=${PIM_CONTEXT} >> $BASH_ENV
-
-                  echo "Instance name prefix: ${INSTANCE_NAME_PREFIX}"
-                  echo "Instance name: ${INSTANCE_NAME}"
-                  echo "Image tag: ${IMAGE_TAG}"
-                  echo "Latest image tag: ${LATEST_RELEASE}"
+                name: Define value for next steps
+                command: |
+                    PIM_CONTEXT=deployment
+                    echo export PIM_CONTEXT=${PIM_CONTEXT} >> $BASH_ENV
+                    ssh-keyscan -t rsa github.com >> ~/.ssh/known_hosts
+                    echo '' > /root/.ssh/config #clean github exclusions automatically added by circleci
+                    REPO_TO_ADD=github.com KEY_TO_ADD=/root/.ssh/id_rsa_1f25f8bb595295f6e2f2972f30d4e966 bash deployments/bin/add-deploy-key.sh
+                    REPO_TO_ADD=cloud-customers-dev KEY_TO_ADD=/root/.ssh/id_rsa_5f7bb3cbd43de2c2365f9db487865f67 bash deployments/bin/add-deploy-key.sh
+                    REPO_TO_ADD=jenkins-k8s-utils KEY_TO_ADD=/root/.ssh/id_rsa_2c6118646e36aa7476fd5e6b735923c6 bash deployments/bin/add-deploy-key.sh
+                    REPO_TO_ADD=operation-tools KEY_TO_ADD=/root/.ssh/id_rsa_9871a29f0e320bbf564ab34189c7b429 bash deployments/bin/add-deploy-key.sh
           - run:
-              name: DATADOG deployment Livetail logs page
-              command: echo "https://app.datadoghq.eu/logs/livetail?query=kube_namespace%3A${TYPE}-${INSTANCE_NAME}"
-          - run:
-              name: Deploy instance with latest release
-              command: |
-                  ssh-keyscan -t rsa github.com >> ~/.ssh/known_hosts
-                  IMAGE_TAG=${LATEST_RELEASE} make create-ci-release-files
-                  IMAGE_TAG=${LATEST_RELEASE} make change-terraform-source-version
-                  IMAGE_TAG=${LATEST_RELEASE} make deploy
-          - run:
-              name: Upgrade
-              command: UPGRADE_STEP_2=true make deploy-instance
+                name: Jenkins Upgrade
+                command: make upgrade-instance
           - run:
               name: Production tests on upgraded env
               command: make test-prod
@@ -972,16 +1016,20 @@ jobs:
               path: ~/artifacts/infra
           - run:
               name: Remove upgraded env
-              command: make delete
+              command: make uncommit-instance
               when: always
 
-  test_upgrade_grth_from_last_release:
+  test_deploy_grth_last_release:
       environment:
           <<: *envVarsDeployDev
       <<: *dockerCloudDeployer
       steps:
           - attach_workspace:
                 at: ~/
+          - add_ssh_keys:
+                fingerprints:
+                    - "5f:7b:b3:cb:d4:3d:e2:c2:36:5f:9d:b4:87:86:5f:67"
+                    - "1f:25:f8:bb:59:52:95:f6:e2:f2:97:2f:30:d4:e9:66"
           - set_gcloud_config_dev
           - restore_persisted_env_vars
           - run:
@@ -994,29 +1042,65 @@ jobs:
                     fi
                     INSTANCE_NAME_PREFIX=pimup
                     INSTANCE_NAME=${INSTANCE_NAME_PREFIX}-${IMAGE_TAG_SHORTED}-${CIRCLE_BUILD_NUM}
-                    PIM_CONTEXT=deployment
+                    DEPLOYMENTS_INSTANCES_DIR=/root/cloud-customers-dev/saas/projects/${GOOGLE_PROJECT_ID}/${CLUSTER_NAME}/releases
 
                     echo export LATEST_RELEASE=${LATEST_RELEASE} >> $BASH_ENV
                     echo export INSTANCE_NAME_PREFIX=${INSTANCE_NAME_PREFIX} >> $BASH_ENV
                     echo export INSTANCE_NAME=${INSTANCE_NAME} >> $BASH_ENV
-                    echo export PIM_CONTEXT=${PIM_CONTEXT} >> $BASH_ENV
+                    echo export DEPLOYMENTS_INSTANCES_DIR=${DEPLOYMENTS_INSTANCES_DIR} >> $BASH_ENV
 
                     echo "Instance name prefix: ${INSTANCE_NAME_PREFIX}"
                     echo "Instance name: ${INSTANCE_NAME}"
                     echo "Image tag: ${IMAGE_TAG}"
                     echo "Latest image tag: ${LATEST_RELEASE}"
+                    echo "DEPLOYMENTS_INSTANCES_DIR: ${DEPLOYMENTS_INSTANCES_DIR}"
           - run:
               name: DATADOG deployment Livetail logs page
               command: echo "https://app.datadoghq.eu/logs/livetail?query=kube_namespace%3A${TYPE}-${INSTANCE_NAME}"
           - run:
                 name: Deploy instance with latest release
                 command: |
-                    IMAGE_TAG=${LATEST_RELEASE} make create-ci-release-files
-                    IMAGE_TAG=${LATEST_RELEASE} make change-terraform-source-version
-                    IMAGE_TAG=${LATEST_RELEASE} make deploy
+                    ssh-keyscan -t rsa github.com >> ~/.ssh/known_hosts
+                    export GIT_SSH_COMMAND='ssh -i ~/.ssh/id_rsa_5f7bb3cbd43de2c2365f9db487865f67 -o UserKnownHostsFile=~/.ssh/known_hosts -o IdentitiesOnly=Yes'
+                    IMAGE_TAG=${LATEST_RELEASE} make commit-instance
           - run:
-                name: Upgrade
-                command: UPGRADE_STEP_2=true make deploy-instance
+                name: Persist env vars for next jobs
+                command: |
+                    echo export INSTANCE_NAME="${INSTANCE_NAME}" >> persisted_env_vars
+                    echo export DEPLOYMENTS_INSTANCES_DIR="${DEPLOYMENTS_INSTANCES_DIR}" >> persisted_env_vars
+          - persist_to_workspace:
+              root: ~/
+              paths:
+                - project/persisted_env_vars
+          - run:
+              name: Remove env on kubernetes
+              command: IMAGE_TAG=${LATEST_RELEASE} make commit-instance
+              when: on_fail
+
+  test_upgrade_grth_from_last_release:
+      environment:
+          <<: *envVarsDeployDev
+      <<: *dockerJenkinsCloudDeployer
+      steps:
+          - attach_workspace:
+                at: ~/
+          - add_ssh_keys
+          - set_gcloud_config_dev
+          - restore_persisted_env_vars
+          - run:
+              name: Define value for next steps
+              command: |
+                    PIM_CONTEXT=deployment
+                    echo export PIM_CONTEXT=${PIM_CONTEXT} >> $BASH_ENV
+                    ssh-keyscan -t rsa github.com >> ~/.ssh/known_hosts
+                    echo '' > /root/.ssh/config #clean github exclusions automatically added by circleci
+                    REPO_TO_ADD=github.com KEY_TO_ADD=/root/.ssh/id_rsa_1f25f8bb595295f6e2f2972f30d4e966 bash deployments/bin/add-deploy-key.sh
+                    REPO_TO_ADD=cloud-customers-dev KEY_TO_ADD=/root/.ssh/id_rsa_5f7bb3cbd43de2c2365f9db487865f67 bash deployments/bin/add-deploy-key.sh
+                    REPO_TO_ADD=jenkins-k8s-utils KEY_TO_ADD=/root/.ssh/id_rsa_2c6118646e36aa7476fd5e6b735923c6 bash deployments/bin/add-deploy-key.sh
+                    REPO_TO_ADD=operation-tools KEY_TO_ADD=/root/.ssh/id_rsa_9871a29f0e320bbf564ab34189c7b429 bash deployments/bin/add-deploy-key.sh
+          - run:
+                name: Jenkins Upgrade
+                command: make upgrade-instance
           - run:
                 name: Production tests on upgraded env
                 command: make test-prod
@@ -1031,7 +1115,7 @@ jobs:
                 path: ~/artifacts/infra
           - run:
                 name: Remove upgraded env
-                command: make delete
+                command: make uncommit-instance
                 when: always
 
   test_upgrade_from_srnt_customer_db:
@@ -1053,12 +1137,10 @@ jobs:
                 SOURCE_PFID=${LIST_SOURCE_PFID[${RANDOM_SOURCE_PFID}]}
                 INSTANCE_NAME_PREFIX=pimci-duplic
                 INSTANCE_NAME=${INSTANCE_NAME_PREFIX}-${IMAGE_TAG_SHORTED}-${CIRCLE_BUILD_NUM}
-                PIM_CONTEXT=deployment
 
                 echo export SOURCE_PFID=${SOURCE_PFID} >> $BASH_ENV
                 echo export INSTANCE_NAME_PREFIX=${INSTANCE_NAME_PREFIX} >> $BASH_ENV
                 echo export INSTANCE_NAME=${INSTANCE_NAME} >> $BASH_ENV
-                echo export PIM_CONTEXT=${PIM_CONTEXT} >> $BASH_ENV
 
                 echo "Source PFID: ${SOURCE_PFID}"
                 echo "Instance name prefix: ${INSTANCE_NAME_PREFIX}"
@@ -1174,6 +1256,10 @@ jobs:
                   echo export PRODUCT_REFERENCE_CODE=${PRODUCT_REFERENCE_CODE} >> $BASH_ENV
                   echo export PIM_CONTEXT=${PIM_CONTEXT} >> $BASH_ENV
                   echo export ACTIVATE_MONITORING=${ACTIVATE_MONITORING} >> $BASH_ENV
+
+                  echo "Instance name: ${INSTANCE_NAME}"
+                  echo "Image tag: ${IMAGE_TAG}"
+                  echo "Release to deploy: ${RELEASE_TO_DEPLOY}"
             - run:
                 name: Generate config files and deploy
                 command: |
@@ -1213,6 +1299,9 @@ jobs:
                 echo export PRODUCT_REFERENCE_CODE=${PRODUCT_REFERENCE_CODE} >> $BASH_ENV
                 echo export PIM_CONTEXT=${PIM_CONTEXT} >> $BASH_ENV
                 echo export ACTIVATE_MONITORING=${ACTIVATE_MONITORING} >> $BASH_ENV
+
+                echo "Instance name: ${INSTANCE_NAME}"
+                echo "Image tag: ${IMAGE_TAG}"
           - run:
               name: Latest master version for PMs
               command: |
@@ -1232,7 +1321,6 @@ jobs:
               command: |
                 INSTANCE_NAME_PREFIX=pimci-pr
                 INSTANCE_NAME=${INSTANCE_NAME_PREFIX}-${CIRCLE_PULL_REQUEST##*/}
-                PIM_CONTEXT=deployment
                 ACTIVATE_MONITORING=true
 
                 echo export IMAGE_TAG=${IMAGE_TAG} >> $BASH_ENV
@@ -1240,7 +1328,6 @@ jobs:
                 echo export INSTANCE_NAME=${INSTANCE_NAME} >> $BASH_ENV
                 echo export PRODUCT_REFERENCE_TYPE=${PRODUCT_REFERENCE_TYPE} >> $BASH_ENV
                 echo export PRODUCT_REFERENCE_CODE=${PRODUCT_REFERENCE_CODE} >> $BASH_ENV
-                echo export PIM_CONTEXT=${PIM_CONTEXT} >> $BASH_ENV
                 echo export ACTIVATE_MONITORING=${ACTIVATE_MONITORING} >> $BASH_ENV
 
                 echo "Instance name prefix: ${INSTANCE_NAME_PREFIX}"
@@ -1279,7 +1366,6 @@ jobs:
               command: |
                 INSTANCE_NAME_PREFIX=pimci-pr-ge
                 INSTANCE_NAME=${INSTANCE_NAME_PREFIX}-${CIRCLE_PULL_REQUEST##*/}
-                PIM_CONTEXT=deployment
                 ACTIVATE_MONITORING=true
 
                 echo export IMAGE_TAG=${IMAGE_TAG} >> $BASH_ENV
@@ -1287,7 +1373,6 @@ jobs:
                 echo export INSTANCE_NAME=${INSTANCE_NAME} >> $BASH_ENV
                 echo export PRODUCT_REFERENCE_TYPE=${PRODUCT_REFERENCE_TYPE} >> $BASH_ENV
                 echo export PRODUCT_REFERENCE_CODE=${PRODUCT_REFERENCE_CODE} >> $BASH_ENV
-                echo export PIM_CONTEXT=${PIM_CONTEXT} >> $BASH_ENV
                 echo export ACTIVATE_MONITORING=${ACTIVATE_MONITORING} >> $BASH_ENV
 
                 echo "Instance name prefix: ${INSTANCE_NAME_PREFIX}"
@@ -1375,9 +1460,12 @@ workflows:
           - test_deploy_srnt:
                 requires:
                     - test_cronjobs_existence_srnt
-          - test_upgrade_srnt_from_last_release:
+          - test_deploy_srnt_last_release:
                 requires:
                     - test_cronjobs_existence_srnt
+          - test_upgrade_srnt_from_last_release:
+                requires:
+                    - test_deploy_srnt_last_release
           - deploy_pr_srnt_environment?:
                 type: approval
                 requires:
@@ -1395,10 +1483,13 @@ workflows:
           - test_cronjobs_existence_grth:
                 requires:
                     - build_grth
-          - test_deploy_grth:
+          - test_deploy_grth_last_release:
                 requires:
                     - test_cronjobs_existence_grth
           - test_upgrade_grth_from_last_release:
+                requires:
+                    - test_deploy_grth_last_release
+          - test_deploy_grth:
                 requires:
                     - test_cronjobs_existence_grth
           - deploy_pr_grth_environment:
@@ -1565,9 +1656,12 @@ workflows:
           - test_deploy_srnt:
                 requires:
                     - test_cronjobs_existence_srnt
-          - test_upgrade_srnt_from_last_release:
+          - test_deploy_srnt_last_release:
                 requires:
                     - test_cronjobs_existence_srnt
+          - test_upgrade_srnt_from_last_release:
+                requires:
+                    - test_deploy_srnt_last_release
           - test_front_code_style:
                 requires:
                     - build_srnt_dev
@@ -1632,9 +1726,12 @@ workflows:
           - test_deploy_grth:
                 requires:
                     - test_cronjobs_existence_grth
-          - test_upgrade_grth_from_last_release:
+          - test_deploy_grth_last_release:
                     requires:
                         - test_deploy_grth
+          - test_upgrade_grth_from_last_release:
+                    requires:
+                        - test_deploy_grth_last_release
           - release_grth:
                     requires:
                         - test_upgrade_grth_from_last_release
@@ -1735,3 +1832,13 @@ commands:
             echo "Persisted env vars:"
             cat persisted_env_vars
             cat persisted_env_vars >> $BASH_ENV
+
+  install_yq:
+    description: "Install yq"
+    steps:
+      - run:
+          name: Install yq
+          command: |
+            wget https://github.com/mikefarah/yq/releases/download/3.3.1/yq_linux_386
+            sudo mv yq_linux_386 /usr/local/bin/yq
+            sudo chmod +x /usr/local/bin/yq

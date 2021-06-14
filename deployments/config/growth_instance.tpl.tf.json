@@ -17,7 +17,7 @@
           "product_reference_code": "${PRODUCT_REFERENCE_CODE}",
           "product_reference_type": "${PRODUCT_REFERENCE_TYPE}",
           "pim_version": "${IMAGE_TAG}",
-          "source": "${PIM_SRC_DIR_GE}/deployments/terraform"
+          "source": "${PIM_SRC_DIR_GE}/terraform"
       }
   },
   "terraform": {

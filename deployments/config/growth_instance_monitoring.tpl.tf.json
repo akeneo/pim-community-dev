@@ -9,7 +9,7 @@
           "product_reference_type": "${module.pim.product_reference_type}",
           "monitoring_authentication_token": "${module.pim.monitoring_authentication_token}",
           "helm_exec_id": "${module.pim.helm_exec_id}",
-          "source": "${PIM_SRC_DIR_GE}/deployments/terraform/monitoring"
+          "source": "${PIM_SRC_DIR_GE}/terraform/monitoring"
       }
     }
 }
