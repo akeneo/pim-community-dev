@@ -20,6 +20,8 @@ class ExternalUrlValidator extends ConstraintValidator
         'localhost',
         'elasticsearch',
         'memcached',
+        'object-storage',
+        'mysql',
     ];
 
     private DnsLookupInterface $dnsLookup;
