@@ -4,6 +4,8 @@ import {Collapse} from './Collapse';
 import {render, screen} from '../../storybook/test-util';
 import {Badge, Pill} from '../../components';
 
+jest.useFakeTimers();
+
 test('it renders its children along with its label', () => {
   render(
     <Collapse
@@ -36,6 +38,8 @@ test('it calls the onCollapse handler when hitting the collapse button', () => {
   );
 
   userEvent.click(screen.getByTitle('Collapse'));
+
+  jest.runAllTimers();
 
   expect(handleCollapse).toHaveBeenCalledWith(true);
 });

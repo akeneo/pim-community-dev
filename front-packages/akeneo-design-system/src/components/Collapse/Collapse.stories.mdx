@@ -2,7 +2,7 @@ import {useState} from 'react';
 import {Meta, Story, ArgsTable, Canvas} from '@storybook/addon-docs/blocks';
 import {useArgs, updateArgs} from '@storybook/client-api';
 import {Collapse} from './Collapse.tsx';
-import {Helper, Link, TextInput, Field, Pill, Badge} from '../../components';
+import {Helper, Link, TextInput, Field, Pill, Badge, Button} from '../../components';
 import {Section, SpaceContainer, Content} from '../../storybook/PreviewGallery';
 
 <Meta
@@ -63,10 +63,15 @@ Two possible behaviours, automaticaly close collapse when you open another one o
 
 ## With Badge
 
+Here you can add/remove content in the Collapse component to see that it adapts its height accordingly.
+
 <Canvas>
   <Story name="With Badge">
     {args => {
       const [isOpen, setOpen] = useState(false);
+      const [children, setChildren] = useState(['Child 0']);
+      const addChild = () => setChildren(children => [...children, `Child ${children.length}`]);
+      const removeChild = () => setChildren(children => [...children.slice(0, -1)]);
       return (
         <Collapse
           {...args}
@@ -77,7 +82,21 @@ Two possible behaviours, automaticaly close collapse when you open another one o
               Numerable content <Badge level="secondary">42</Badge>
             </>
           }
-        />
+        >
+          <Section>
+            {children.map(child => (
+              <div key={child}>
+                {child}&nbsp;
+                <Button ghost={true} level="tertiary" size="small" onClick={addChild}>
+                  Add
+                </Button>&nbsp;
+                <Button ghost={true} level="tertiary" size="small" onClick={removeChild}>
+                  Remove
+                </Button>
+              </div>
+            ))}
+          </Section>
+        </Collapse>
       );
     }}
   </Story>
