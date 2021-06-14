@@ -1,10 +1,12 @@
 import {EditCategoryForm} from '../../hooks';
+import {Category} from '../../models';
 
 const Routing = require('routing');
 
 type EditCategoryResponse = {
   success: boolean;
   form: EditCategoryForm;
+  category: Category;
 };
 
 const saveEditCategoryForm = async (categoryId: number, formData: EditCategoryForm): Promise<EditCategoryResponse> => {
@@ -37,6 +39,7 @@ const saveEditCategoryForm = async (categoryId: number, formData: EditCategoryFo
   return {
     success: response.ok,
     form: responseContent.form,
+    category: responseContent.category,
   };
 };
 

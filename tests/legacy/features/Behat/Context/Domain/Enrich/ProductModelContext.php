@@ -78,6 +78,7 @@ class ProductModelContext extends PimContext
      * @throws \Context\Spin\TimeoutException
      *
      * @Given /^I am on the "([^"]*)" product model page$/
+     * @Given /^I go to the "([^"]*)" product model page$/
      * @Given /^I edit the "([^"]*)" product model$/
      */
     public function iAmOnTheProductModelEditPage($identifier)
