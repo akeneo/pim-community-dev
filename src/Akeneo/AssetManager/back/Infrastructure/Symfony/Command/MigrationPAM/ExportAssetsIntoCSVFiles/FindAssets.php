@@ -52,7 +52,7 @@ UNION ALL
 ;
 SQL;
 
-        $stmt = $this->connection->query();
+        $stmt = $this->connection->executeQuery($fetchAssetsQuery);
         while ($row = $stmt->fetch()) {
             yield $row;
         }
