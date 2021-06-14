@@ -1,6 +1,7 @@
 pim_notification:
   types:
     settings: Configuración
+    mass_delete: Eliminación
 flash:
   comment:
     create:
@@ -31,6 +32,9 @@ pim_enrich.entity.product:
       fail: Ningún atributo se ha configurado como identificador de producto o usted no posee derechos de edición.
   page_title:
     index: "]-Inf, 1]{{ count }} resultado|]1, Inf[{{ count }} resultados"
+    product: "]-Inf, 1]{{ count }} producto|]1, Inf[{{ count }} productos"
+    product_model: "]-Inf, 1]{{ count }} modelo de producto|]1, Inf[{{ count }} modelos de producto"
+    product_and_product_model: "{{ productCount }}, {{ productModelCount }}"
   module:
     create:
       subtitle: Crear un producto
@@ -49,6 +53,11 @@ pim_enrich.entity.product:
       select: Seleccionar
       all_visible: Todo lo visible
       copy: Copiar
+    convert_variant_to_simple:
+      label: Convertir a un producto simple
+      dialog:
+        title: Confirmar la conversión
+        content: "¿Está seguro de que desea convertir este producto variante en un producto simple? Todos sus valores, categorías y asociaciones anteriores se guardarán."
     history:
       version: Versión
       author: Autor
@@ -345,6 +354,10 @@ pim_enrich.mass_edit.product:
       label_count: "{0}Añadir algunos <span class=\"AknFullPage-title--highlight\">productos</span> a un modelo de producto existente |{1}Añadir <span class=\"AknFullPage-title--highlight\">1 producto</span> a un modelo de producto existente|]1, Inf[Añadir <span class=\"AknFullPage-title--highlight\">{{ itemsCount }} productos</span> a un modelo de producto existente"
       description: El modelo de producto seleccionado reunirá los productos y permitirá el enrequecimiento de sus propiedades comunes.
       no_update: Por favor, seleccione un modelo de producto antes de continuar
+    convert_to_simple_products:
+      label: Convertir a productos simples
+      label_count: "{0}Convertir algunos <span class=\"AknFullPage-title--highlight\">productos</span> a productos simples |{1}Convertir <span class=\"AknFullPage-title--highlight\">1 producto</span> a un producto simple |]1, Inf[Convierte <span class=\"AknFullPage-title--highlight\">{{ itemsCount }} productos</span> a productos simples"
+      description: Se guardarán todos los valores, categorías y asociaciones anteriores.
     associate_to_product_and_product_model:
       label: Asociar
       label_count: "{0}Asociar algunos <span class=\"AknFullPage-title--highlight\">productos</span> a productos o modelos de productos |{1}Asociar <span class=\"AknFullPage-title--highlight\">1 producto</span> a productos o modelos de producto|]1, Inf[Asociar <span class=\"AknFullPage-title--highlight\">{{ itemsCount }} productos</span> a productos o modelos de productos"
@@ -372,8 +385,18 @@ pim_datagrid:
       xlsx_all: Excel (todos los atributos)
       xlsx_grid_context: Excel (contexto de la cuadrícula)
       configurator:
+        subtitle: Exportación rápida
         title: Seleccione su acción
+        csv: CSV
+        xlsx: XLSX
+        grid_context: Contexto de la cuadrícula
         all_attributes: Todos los atributos
+        with_codes: Con códigos
+        with_labels: Con etiquetas
+        without_media: Sin media
+        with_media: Con media
+      flash:
+        message: "Puedes seguir la progresión de tu exportación aquí."
     mass_edit: Acciones en masa
     sequential_edit: Edición secuencial
     mass_delete: Eliminación masiva
@@ -397,9 +420,13 @@ pim_datagrid:
     label: Filtros
     system: Sistema
     product_typology:
+      label: 'Tipología de producto'
+      simple: 'Simple'
       variant: 'Variante'
     entity_type:
       label: 'Variante'
+      grouped: 'Agrupado'
+      ungrouped: 'Desagrupados'
     family:
       label: Familia
     groups:
@@ -408,6 +435,14 @@ pim_datagrid:
       label: Estado
     completeness:
       label: Completo
+    created:
+      label: Creado el
+    updated:
+      label: Actualizado el
+    label_or_identifier:
+      label: Etiqueta o identificador
+    parent:
+      label: Padre
     identifier:
       label: Identificador
   search: Buscar en {{ label }}
@@ -427,6 +462,9 @@ batch_jobs:
   add_to_existing_product_model:
     label: Agregar a un modelo de producto existente
     perform.label: Agregar a un modelo de producto existente
+  convert_to_simple_products:
+    label: Convertir a productos simples
+    perform.label: Convertir a productos simples
   csv_product_grid_context_quick_export:
     quick_export.label: Exportación rápida de la grilla de productos en CSV
     quick_export_product_model.label: Exportación rápida del contexto de la cuadrícula del modelo del producto CSV
