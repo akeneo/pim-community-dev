@@ -3,7 +3,7 @@
 namespace Akeneo\Pim\Enrichment\Bundle\Controller\Ui;
 
 use Akeneo\Pim\Enrichment\Bundle\Doctrine\ORM\Counter\CategoryItemsCounterInterface;
-use Akeneo\Pim\Enrichment\Bundle\Form\CategoryFormViewNormalizer;
+use Akeneo\Pim\Enrichment\Component\Category\Form\CategoryFormViewNormalizerInterface;
 use Akeneo\Pim\Enrichment\Component\Category\Query\CountTreesChildrenInterface;
 use Akeneo\Tool\Component\Classification\Model\CategoryInterface;
 use Akeneo\Tool\Component\Classification\Repository\CategoryRepositoryInterface;
@@ -16,7 +16,6 @@ use Doctrine\Common\Collections\ArrayCollection;
 use Oro\Bundle\SecurityBundle\SecurityFacade;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\EventDispatcher\EventDispatcherInterface;
-use Symfony\Component\Form\FormView;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
@@ -76,7 +75,7 @@ class CategoryTreeController extends Controller
 
     private CountTreesChildrenInterface $countTreesChildrenQuery;
 
-    private CategoryFormViewNormalizer $categoryFormViewNormalizer;
+    private CategoryFormViewNormalizerInterface $categoryFormViewNormalizer;
 
     public function __construct(
         EventDispatcherInterface $eventDispatcher,
@@ -93,7 +92,7 @@ class CategoryTreeController extends Controller
         NormalizerInterface $constraintViolationNormalizer,
         CategoryItemsCounterInterface $categoryItemsCounter,
         CountTreesChildrenInterface $countTreesChildrenQuery,
-        CategoryFormViewNormalizer $categoryFormViewNormalizer,
+        CategoryFormViewNormalizerInterface $categoryFormViewNormalizer,
         array $rawConfiguration
     ) {
         $this->eventDispatcher = $eventDispatcher;

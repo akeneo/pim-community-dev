@@ -4,9 +4,10 @@ declare(strict_types=1);
 
 namespace Akeneo\Pim\Enrichment\Bundle\Form;
 
+use Akeneo\Pim\Enrichment\Component\Category\Form\CategoryFormViewNormalizerInterface;
 use Symfony\Component\Form\FormView;
 
-final class CategoryFormViewNormalizer
+final class CategoryFormViewNormalizer implements CategoryFormViewNormalizerInterface
 {
     public function normalizeFormView(FormView $formView): array
     {
@@ -28,18 +29,6 @@ final class CategoryFormViewNormalizer
             ];
         }
 
-        if (isset($formView->children['permissions'])) {
-            $formData['permissions'] = [
-                'view' => $this->formatPermissionField($formView->children['permissions']->offsetGet('view')),
-                'edit' => $this->formatPermissionField($formView->children['permissions']->offsetGet('edit')),
-                'own' => $this->formatPermissionField($formView->children['permissions']->offsetGet('own')),
-                'apply_on_children' => [
-                    'value' => $formView->children['permissions']->offsetGet('apply_on_children')->vars['value'],
-                    'fullName' => $formView->children['permissions']->offsetGet('apply_on_children')->vars['full_name'],
-                ],
-            ];
-        }
-
         // No error mapping for now
         foreach ($formView->vars['errors'] as $error) {
             $formData['errors'][] = $error->getMessage();
@@ -47,14 +36,5 @@ final class CategoryFormViewNormalizer
         $formData['errors'] = array_unique($formData['errors']);
 
         return $formData;
-    }
-
-    private function formatPermissionField(FormView $formView): array
-    {
-        return [
-            'value' => array_values($formView->vars['value']),
-            'fullName' => $formView->vars['full_name'],
-            'choices'  => array_map(fn ($choice) => ['label' => $choice->label, 'value' => $choice->value], $formView->vars['choices']),
-        ];
     }
 }
