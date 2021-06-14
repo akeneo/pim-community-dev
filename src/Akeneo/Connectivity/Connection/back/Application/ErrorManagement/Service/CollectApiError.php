@@ -15,7 +15,6 @@ use Akeneo\Connectivity\Connection\Domain\ErrorManagement\Model\Write\TechnicalE
 use Akeneo\Connectivity\Connection\Domain\ErrorManagement\Persistence\Repository\BusinessErrorRepository;
 use Akeneo\Connectivity\Connection\Domain\Settings\Model\ValueObject\FlowType;
 use Akeneo\Connectivity\Connection\Domain\ValueObject\HourlyInterval;
-use Akeneo\Pim\Enrichment\Component\Product\Model\ProductInterface;
 use FOS\RestBundle\Context\Context;
 use FOS\RestBundle\Serializer\Serializer;
 use Symfony\Component\Validator\ConstraintViolationInterface;
@@ -51,14 +50,12 @@ class CollectApiError
     }
 
     public function collectFromProductDomainError(
-        \Throwable $error,
-        ?ProductInterface $product
+       \Throwable $error,
+       Context $context
     ): void {
         if (false === $this->isConnectionCollectable()) {
             return;
         }
-
-        $context = (new Context())->setAttribute('product', $product);
         $json = $this->serializer->serialize($error, 'json', $context);
         $this->errors->add(new BusinessError($json));
     }
@@ -68,13 +65,12 @@ class CollectApiError
      */
     public function collectFromProductValidationError(
         ConstraintViolationListInterface $constraintViolationList,
-        ProductInterface $product
+        Context $context
     ): void {
         if (false === $this->isConnectionCollectable()) {
             return;
         }
 
-        $context = (new Context())->setAttribute('product', $product);
         foreach ($constraintViolationList as $constraintViolation) {
             $json = $this->serializer->serialize($constraintViolation, 'json', $context);
             $this->errors->add(new BusinessError($json));
