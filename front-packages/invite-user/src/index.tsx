@@ -5,20 +5,32 @@ import {CommonStyle, pimTheme} from 'akeneo-design-system';
 import {MicroFrontendDependenciesProvider, Routes} from '@akeneo-pim-community/shared';
 import {routes} from './routes.json';
 import translations from './translations.json';
-import {InviteUserApp} from './feature';
+import {InviteUserApp, InvitedUser} from './feature';
+import {InvitedUserProvider} from "./feature/providers/InvitedUserProvider";
 
 const Container = styled.div`
   ${CommonStyle}
 `;
+
+const saveUsers = (emails: string[]):InvitedUser[] => {
+    return emails.map((email:string) => {
+        return {email, status: "invited"}
+    })
+};
+const retrieveUsers = ():InvitedUser[] => {
+    return []
+};
 
 ReactDOM.render(
   <React.StrictMode>
     <ThemeProvider theme={pimTheme}>
       {/* @ts-ignore */}
       <MicroFrontendDependenciesProvider routes={routes as Routes} translations={translations}>
-        <Container>
-          <InviteUserApp />
-        </Container>
+          <InvitedUserProvider saveNewInvitedUsers={saveUsers} retrieveInvitedUsers={retrieveUsers}>
+            <Container>
+              <InviteUserApp />
+            </Container>
+          </InvitedUserProvider>
       </MicroFrontendDependenciesProvider>
     </ThemeProvider>
   </React.StrictMode>,

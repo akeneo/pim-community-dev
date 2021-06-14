@@ -39,10 +39,16 @@ const InviteUserApp = () => {
     const [newInvitedUsers, setNewInvitedUsers] = useState<string[]>([]);
     const {invitedUsers, addInvitedUsers} = useInvitedUsers();
 
+    const addNewUsers = () => {
+        addInvitedUsers(newInvitedUsers);
+
+        setNewInvitedUsers([]);
+    }
+
     return (
         <>
             <PageHeader>
-                <PageHeader.Title>{translate('free_trial.invite_users.title', {count: 0}, 0)}</PageHeader.Title>
+                <PageHeader.Title>{translate('free_trial.invite_users.title', {count: invitedUsers.length}, invitedUsers.length)}</PageHeader.Title>
                 <PageHeader.Breadcrumb>
                     <Breadcrumb>
                         <Breadcrumb.Step>{translate('free_trial.invite_users.breadcrumb')}</Breadcrumb.Step>
@@ -66,7 +72,7 @@ const InviteUserApp = () => {
                             <TagInput onChange={setNewInvitedUsers} value={newInvitedUsers}/>
                         </TagInputContainer>
                         <Button ghost level="tertiary" disabled={newInvitedUsers.length < 1}
-                                onClick={() => addInvitedUsers(newInvitedUsers)}>
+                                onClick={() => addNewUsers()}>
                             {translate('pim_common.add')}
                         </Button>
                     </FieldContent>
