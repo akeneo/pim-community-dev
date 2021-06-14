@@ -1,4 +1,4 @@
-import React from 'react';
+import React, {FC} from 'react';
 import ReactDOM from 'react-dom';
 import {ThemeProvider} from 'styled-components';
 import {pimTheme} from 'akeneo-design-system';
@@ -13,9 +13,10 @@ import {
 import {routes} from './routes.json';
 import translations from './translations.json';
 import {FakePIM} from './FakePIM';
-import {Attribute, FetcherContext} from './feature/contexts';
+import {Attribute} from './feature/models';
+import {FetcherContext} from './feature/contexts';
 
-const FetcherProvider = ({children}) => {
+const FetcherProvider: FC = ({children}) => {
   const router = useRouter();
 
   return (

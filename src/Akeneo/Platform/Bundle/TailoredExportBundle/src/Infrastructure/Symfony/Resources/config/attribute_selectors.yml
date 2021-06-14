@@ -69,3 +69,11 @@ services:
       - '@akeneo_measurement.public_api.get_unit_translations'
     tags:
       - { name: akeneo.tailored_export.attribute_selector }
+
+  Akeneo\Platform\TailoredExport\Infrastructure\Connector\Processor\AttributeSelector\PriceCollectionSelector:
+    public: true
+    arguments:
+      -
+        - 'pim_catalog_price_collection'
+    tags:
+      - { name: akeneo.tailored_export.attribute_selector }

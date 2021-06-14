@@ -2,6 +2,7 @@ import React from 'react';
 import {Selection, Attribute} from '../../../../models';
 import {CodeLabelSelector} from './CodeLabelSelector';
 import {MeasurementSelector} from './MeasurementSelector';
+import {PriceCollectionSelector} from './PriceCollectionSelector';
 
 type SelectorProps = {
   attribute: Attribute;
@@ -19,6 +20,8 @@ const Selector = ({attribute, selection, onSelectionChange}: SelectorProps) => {
       return <CodeLabelSelector selection={selection} onSelectionChange={onSelectionChange} />;
     case 'pim_catalog_metric':
       return <MeasurementSelector selection={selection} onSelectionChange={onSelectionChange} />;
+    case 'pim_catalog_price_collection':
+      return <PriceCollectionSelector selection={selection} onSelectionChange={onSelectionChange} />;
     default:
       return null;
   }

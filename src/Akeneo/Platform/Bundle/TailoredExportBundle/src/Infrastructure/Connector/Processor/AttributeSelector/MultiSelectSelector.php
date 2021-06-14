@@ -2,6 +2,15 @@
 
 declare(strict_types=1);
 
+/*
+ * This file is part of the Akeneo PIM Enterprise Edition.
+ *
+ * (c) 2021 Akeneo SAS (https://www.akeneo.com)
+ *
+ * For the full copyright and license information, please view the LICENSE
+ * file that was distributed with this source code.
+ */
+
 namespace Akeneo\Platform\TailoredExport\Infrastructure\Connector\Processor\AttributeSelector;
 
 use Akeneo\Pim\Enrichment\Component\Product\Model\ValueInterface;
@@ -29,7 +38,7 @@ class MultiSelectSelector implements AttributeSelectorInterface
     public function applySelection(array $selectionConfiguration, Attribute $attribute, ValueInterface $value): string
     {
         $optionsCodes = $value->getData();
-        $selectedData = '';
+        $selectedData = [];
 
         switch ($selectionConfiguration['type']) {
             case SelectionTypes::CODE:

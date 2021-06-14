@@ -1,12 +1,7 @@
-import {
-  Channel,
-  ChannelReference,
-  getLocalesFromChannel,
-  LocaleCode,
-  LocaleReference,
-} from '@akeneo-pim-community/shared';
+import {Channel, ChannelReference, getLocalesFromChannel, LocaleReference} from '@akeneo-pim-community/shared';
 import {uuid} from 'akeneo-design-system';
 import {Attribute} from './Attribute';
+import {Selection, getDefaultSelectionByAttribute} from './Selection';
 
 type Operation = {
   type: string;
@@ -14,18 +9,6 @@ type Operation = {
   mapping?: any;
   unit?: any;
 };
-
-type Selection =
-  | {
-      type: 'code';
-    }
-  | {
-      type: 'amount';
-    }
-  | {
-      type: 'label';
-      locale: LocaleCode;
-    };
 
 type Source = {
   uuid: string;
@@ -101,6 +84,7 @@ const addAttributeSource = (
   const channelCode = attribute.scopable ? channels[0].code : null;
   const locales = getLocalesFromChannel(channels, channelCode);
   const locale = attribute.localizable ? locales[0].code : null;
+  const selection = getDefaultSelectionByAttribute(attribute);
 
   return {
     ...columnConfiguration,
@@ -113,7 +97,7 @@ const addAttributeSource = (
         locale,
         channel: channelCode,
         operations: [],
-        selection: {type: 'code'},
+        selection,
       },
     ],
   };
@@ -149,7 +133,7 @@ const removeSource = (columnConfiguration: ColumnConfiguration, removedSource: S
   sources: columnConfiguration.sources.filter(source => source.uuid !== removedSource.uuid),
 });
 
-export type {ColumnConfiguration, Source, Selection};
+export type {ColumnConfiguration, Source};
 export {
   createColumn,
   addColumn,

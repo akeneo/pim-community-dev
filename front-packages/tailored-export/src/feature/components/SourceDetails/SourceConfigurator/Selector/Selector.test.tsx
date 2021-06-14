@@ -20,6 +20,10 @@ jest.mock('./MeasurementSelector', () => ({
   MeasurementSelector: () => 'This is a measurement selector',
 }));
 
+jest.mock('./PriceCollectionSelector', () => ({
+  PriceCollectionSelector: () => 'This is a price collection selector',
+}));
+
 test.each([
   'pim_catalog_text',
   'pim_catalog_textarea',
@@ -64,4 +68,18 @@ test('it renders a measurement selector for measurement attribute', () => {
   );
 
   expect(screen.getByText('This is a measurement selector')).toBeInTheDocument();
+});
+
+test('it renders a price collection selector for price collection attribute', () => {
+  const onSelectionChange = jest.fn();
+
+  renderWithProviders(
+    <Selector
+      selection={{type: 'amount'}}
+      attribute={getAttribute('pim_catalog_price_collection')}
+      onSelectionChange={onSelectionChange}
+    />
+  );
+
+  expect(screen.getByText('This is a price collection selector')).toBeInTheDocument();
 });

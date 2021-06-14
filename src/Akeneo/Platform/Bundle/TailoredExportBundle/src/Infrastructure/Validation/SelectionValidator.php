@@ -28,6 +28,7 @@ class SelectionValidator extends ConstraintValidator
                                     'choices' => [
                                         SelectionTypes::AMOUNT,
                                         SelectionTypes::CODE,
+                                        SelectionTypes::CURRENCY,
                                         SelectionTypes::LABEL,
                                     ],
                                 ]
