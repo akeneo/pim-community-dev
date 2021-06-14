@@ -46,13 +46,15 @@ describe('useFetch', () => {
     });
 
     const {result} = renderUseFetchData('/fetch/data');
+    const [, fetch] = result.current;
 
     await act(async () => {
-      result.current[1]();
+      fetch();
     });
 
-    expect(result.current[0]).toEqual({foo: 'bar'});
-    expect(result.current[2]).toBe('fetched');
+    const [data, , status] = result.current;
+    expect(data).toEqual({foo: 'bar'});
+    expect(status).toBe('fetched');
   });
 
   test('it loads the data with fetching options', async () => {
@@ -70,14 +72,15 @@ describe('useFetch', () => {
     });
 
     const {result} = renderUseFetchData('/fetch/data', fetchingOptions);
-
+    const [, fetch] = result.current;
     await act(async () => {
-      result.current[1]();
+      fetch();
     });
 
+    const [data, , status] = result.current;
     expect(fetcher).toBeCalledWith('/fetch/data', fetchingOptions);
-    expect(result.current[0]).toEqual({foo: 'bar'});
-    expect(result.current[2]).toBe('fetched');
+    expect(data).toEqual({foo: 'bar'});
+    expect(status).toBe('fetched');
   });
 
   test('it returns errors when the loading failed', async () => {
@@ -85,13 +88,15 @@ describe('useFetch', () => {
     jest.spyOn(global, 'fetch').mockRejectedValue(new Error('An unexpected server error'));
 
     const {result} = renderUseFetchData('/fetch/bad-data');
+    const [, fetch] = result.current;
 
     await act(async () => {
-      result.current[1]();
+      fetch();
     });
 
-    expect(result.current[0]).toBeNull();
-    expect(result.current[2]).toEqual('error');
-    expect(result.current[3]).toMatch(/unexpected server error/);
+    const [data, , status, error] = result.current;
+    expect(data).toBeNull();
+    expect(status).toEqual('error');
+    expect(error).toMatch(/unexpected server error/);
   });
 });
