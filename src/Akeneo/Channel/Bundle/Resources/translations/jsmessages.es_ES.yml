@@ -53,6 +53,7 @@ pim_enrich.entity.channel:
   property:
     category_tree: Árbol de categoría
     do_not_convert: No convertir
+    measurement: Ajustes de medición
     label_conversion_units: Elija una unidad de conversión para cada atributo de medida que se utilizará durante la exportación del producto
   module:
     create:
@@ -63,6 +64,8 @@ pim_enrich.entity.locale:
   label: local
   uppercase_label: Local
   plural_label: Locales
+  grid:
+    no_search_result: Lo sentimos, no hay ningún resultado para su búsqueda.
 pim_enrich.entity.currency:
   plural_label: Monedas
   page_title:

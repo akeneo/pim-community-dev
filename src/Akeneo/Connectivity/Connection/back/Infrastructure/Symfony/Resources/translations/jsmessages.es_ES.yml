@@ -102,6 +102,15 @@ akeneo_connectivity.connection:
       user_role_helper:
         message: El rol predeterminado `{{ role }}` no es la mejor opción para tu conexión. Le recomendamos encarecidamente que elija un rol adaptado a sus necesidades de conexión.
         link: Más información aquí...
+      user_group_helper:
+        message: Le recomendamos encarecidamente que elija un grupo adaptado a sus necesidades de conexión.
+        link: Más información aquí...
+  regenerate_secret:
+    title: Confirmar regeneración
+    description: '¿Estás seguro de que quieres regenerar el secreto de conexión? ¿No estás seguro de los impactos?'
+    link: Esto es lo que sucederá.
+    action:
+      regenerate: Regenerar
   delete_connection:
     title: Confirmar la eliminación
   flow_type_helper:
@@ -154,12 +163,23 @@ akeneo_connectivity.connection:
     event_subscription: Subscripcion al evento
     helper:
       message: Puede ser notificado de eventos que ocurren en el PIM para productos sincronizados con esta aplicación conectada. Sólo tiene que definir una URL.
+      link: Más información sobre la configuración de suscripción a eventos...
       url.test_disabled: Por favor, haga clic en el botón Guardar para poder probar la URL.
     form:
+      url: URL
       secret: Secreto
+      enabled: Activación de suscripción al evento
+      test: Prueba
+    error:
+      wrong_url: Este valor no es una URL válida.
+      required: Este campo es obligatorio.
+      not_found: Estás intentando actualizar una conexión que no existe.
+      limit_reached: Ha alcanzado el límite de suscripciones a eventos activos.
     regenerate_secret:
+      title: Confirmar regeneración
       action:
         regenerate: Regenerar
+      link: Esto es lo que sucederá.
     active_event_subscriptions_limit_reached:
       link: Lea para mas información sobre subcripción a eventos
     event_logs:
