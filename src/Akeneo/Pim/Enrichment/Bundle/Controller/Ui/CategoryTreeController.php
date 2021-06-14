@@ -3,6 +3,7 @@
 namespace Akeneo\Pim\Enrichment\Bundle\Controller\Ui;
 
 use Akeneo\Pim\Enrichment\Bundle\Doctrine\ORM\Counter\CategoryItemsCounterInterface;
+use Akeneo\Pim\Enrichment\Component\Category\Form\CategoryFormViewNormalizerInterface;
 use Akeneo\Pim\Enrichment\Component\Category\Query\CountTreesChildrenInterface;
 use Akeneo\Tool\Component\Classification\Model\CategoryInterface;
 use Akeneo\Tool\Component\Classification\Repository\CategoryRepositoryInterface;
@@ -15,7 +16,6 @@ use Doctrine\Common\Collections\ArrayCollection;
 use Oro\Bundle\SecurityBundle\SecurityFacade;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\EventDispatcher\EventDispatcherInterface;
-use Symfony\Component\Form\FormView;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
@@ -75,6 +75,8 @@ class CategoryTreeController extends Controller
 
     private CountTreesChildrenInterface $countTreesChildrenQuery;
 
+    private CategoryFormViewNormalizerInterface $categoryFormViewNormalizer;
+
     public function __construct(
         EventDispatcherInterface $eventDispatcher,
         UserContext $userContext,
@@ -90,6 +92,7 @@ class CategoryTreeController extends Controller
         NormalizerInterface $constraintViolationNormalizer,
         CategoryItemsCounterInterface $categoryItemsCounter,
         CountTreesChildrenInterface $countTreesChildrenQuery,
+        CategoryFormViewNormalizerInterface $categoryFormViewNormalizer,
         array $rawConfiguration
     ) {
         $this->eventDispatcher = $eventDispatcher;
@@ -111,6 +114,7 @@ class CategoryTreeController extends Controller
         $this->constraintViolationNormalizer = $constraintViolationNormalizer;
         $this->categoryItemsCounter = $categoryItemsCounter;
         $this->countTreesChildrenQuery = $countTreesChildrenQuery;
+        $this->categoryFormViewNormalizer = $categoryFormViewNormalizer;
     }
 
     /**
@@ -333,59 +337,9 @@ class CategoryTreeController extends Controller
             'root' => $rootCategory === null ? null : $this->normalizer->normalize($rootCategory, 'internal_api')
         ]);
 
-        $formData = $this->formatFormView($form->createView());
+        $formData = $this->categoryFormViewNormalizer->normalizeFormView($form->createView());
 
         return new JsonResponse(['category' => $normalizedCategory, 'form' => $formData], $responseStatus);
-    }
-
-    private function formatFormView(FormView $formView): array
-    {
-        $formData = ['label' => [], 'errors' => []];
-
-        if (isset($formView->children['label'])) {
-            foreach ($formView->children['label']->children as $locale => $labelForm) {
-                $formData['label'][$locale] = [
-                    'value' => $labelForm->vars['value'],
-                    'fullName' => $labelForm->vars['full_name'],
-                    'label' => $labelForm->vars['label'],
-                ];
-            }
-        }
-        if (isset($formView->children['_token'])) {
-            $formData['_token'] = [
-               'value' => $formView->children['_token']->vars['value'],
-               'fullName' => $formView->children['_token']->vars['full_name'],
-            ];
-        }
-
-        if (isset($formView->children['permissions'])) {
-            $formData['permissions'] = [
-                'view' => $this->formatPermissionField($formView->children['permissions']->offsetGet('view')),
-                'edit' => $this->formatPermissionField($formView->children['permissions']->offsetGet('edit')),
-                'own' => $this->formatPermissionField($formView->children['permissions']->offsetGet('own')),
-                'apply_on_children' => [
-                    'value' => $formView->children['permissions']->offsetGet('apply_on_children')->vars['value'],
-                    'fullName' => $formView->children['permissions']->offsetGet('apply_on_children')->vars['full_name'],
-                ],
-            ];
-        }
-
-        // No error mapping for now
-        foreach ($formView->vars['errors'] as $error) {
-            $formData['errors'][] = $error->getMessage();
-        }
-        $formData['errors'] = array_unique($formData['errors']);
-
-        return $formData;
-    }
-
-    private function formatPermissionField(FormView $formView): array
-    {
-        return [
-            'value' => array_values($formView->vars['value']),
-            'fullName' => $formView->vars['full_name'],
-            'choices'  => array_map(fn ($choice) => ['label' => $choice->label, 'value' => $choice->value], $formView->vars['choices']),
-        ];
     }
 
     /**
