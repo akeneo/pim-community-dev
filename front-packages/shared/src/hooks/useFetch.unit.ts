@@ -30,10 +30,11 @@ describe('useFetch', () => {
 
   test('it returns default values', () => {
     const {result} = renderUseFetchData('/fetch/data');
-    expect(result.current.data).toBeNull();
-    expect(result.current.status).toBe('idle');
-    expect(result.current.fetch).toBeDefined();
-    expect(result.current.error).toBeNull();
+    const [data, fetch, status, error] = result.current;
+    expect(data).toBeNull();
+    expect(status).toBe('idle');
+    expect(fetch).toBeDefined();
+    expect(error).toBeNull();
   });
 
   test('it loads the data', async () => {
@@ -45,13 +46,15 @@ describe('useFetch', () => {
     });
 
     const {result} = renderUseFetchData('/fetch/data');
+    const [, fetch] = result.current;
 
     await act(async () => {
-      result.current.fetch();
+      fetch();
     });
 
-    expect(result.current.data).toEqual({foo: 'bar'});
-    expect(result.current.status).toBe('fetched');
+    const [data, , status] = result.current;
+    expect(data).toEqual({foo: 'bar'});
+    expect(status).toBe('fetched');
   });
 
   test('it loads the data with fetching options', async () => {
@@ -69,14 +72,15 @@ describe('useFetch', () => {
     });
 
     const {result} = renderUseFetchData('/fetch/data', fetchingOptions);
-
+    const [, fetch] = result.current;
     await act(async () => {
-      result.current.fetch();
+      fetch();
     });
 
+    const [data, , status] = result.current;
     expect(fetcher).toBeCalledWith('/fetch/data', fetchingOptions);
-    expect(result.current.data).toEqual({foo: 'bar'});
-    expect(result.current.status).toBe('fetched');
+    expect(data).toEqual({foo: 'bar'});
+    expect(status).toBe('fetched');
   });
 
   test('it returns errors when the loading failed', async () => {
@@ -84,13 +88,15 @@ describe('useFetch', () => {
     jest.spyOn(global, 'fetch').mockRejectedValue(new Error('An unexpected server error'));
 
     const {result} = renderUseFetchData('/fetch/bad-data');
+    const [, fetch] = result.current;
 
     await act(async () => {
-      result.current.fetch();
+      fetch();
     });
 
-    expect(result.current.data).toBeNull();
-    expect(result.current.status).toEqual('error');
-    expect(result.current.error).toMatch(/unexpected server error/);
+    const [data, , status, error] = result.current;
+    expect(data).toBeNull();
+    expect(status).toEqual('error');
+    expect(error).toMatch(/unexpected server error/);
   });
 });

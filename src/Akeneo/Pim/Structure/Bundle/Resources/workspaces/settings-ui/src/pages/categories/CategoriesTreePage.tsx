@@ -31,7 +31,7 @@ const CategoriesTreePage: FC = () => {
   const router = useRouter();
   const translate = useTranslate();
   const {isGranted} = useSecurity();
-  const {tree, status, load} = useCategoryTree(parseInt(treeId));
+  const {tree, loadingStatus, loadTree} = useCategoryTree(parseInt(treeId));
   const [treeLabel, setTreeLabel] = useState<string>('');
   const [isNewCategoryModalOpen, openNewCategoryModal, closeNewCategoryModal] = useBooleanState();
   const [categoryToCreate, setCategoryToCreate] = useState<CategoryToCreate | null>(null);
@@ -78,14 +78,14 @@ const CategoriesTreePage: FC = () => {
   };
 
   useEffect(() => {
-    load();
+    loadTree();
   }, [treeId]);
 
   useEffect(() => {
     setTreeLabel(tree ? tree.label : '');
   }, [tree]);
 
-  if (status === 'error') {
+  if (loadingStatus === 'error') {
     return (
       <FullScreenError
         title={translate('error.exception', {status_code: '404'})}
@@ -97,7 +97,7 @@ const CategoriesTreePage: FC = () => {
 
   return (
     <>
-      <PageHeader showPlaceholder={status === 'idle' || status === 'fetching'}>
+      <PageHeader showPlaceholder={loadingStatus === 'idle' || loadingStatus === 'fetching'}>
         <PageHeader.Breadcrumb>
           <Breadcrumb>
             <Breadcrumb.Step onClick={followSettingsIndex}>{translate('pim_menu.tab.settings')}</Breadcrumb.Step>

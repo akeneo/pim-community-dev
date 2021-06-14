@@ -1,4 +1,4 @@
-import {useFetch, useRoute} from '@akeneo-pim-community/shared';
+import {FetchStatus, useFetch, useRoute} from '@akeneo-pim-community/shared';
 import {Category, EditCategoryForm} from '../../models';
 
 type EditCategoryData = {
@@ -6,19 +6,16 @@ type EditCategoryData = {
   form: EditCategoryForm;
 };
 
-const useCategory = (categoryId: number) => {
+const useCategory = (
+  categoryId: number
+): [data: EditCategoryData | null, fetch: () => Promise<void>, status: FetchStatus, error: string | null] => {
   const url = useRoute('pim_enrich_categorytree_edit', {
     id: categoryId.toString(),
   });
 
-  const {data, fetch, error, status} = useFetch<EditCategoryData>(url);
+  const [categoryData, load, status, error] = useFetch<EditCategoryData>(url);
 
-  return {
-    categoryData: data,
-    load: fetch,
-    status,
-    error,
-  };
+  return [categoryData, load, status, error];
 };
 
 export {useCategory, EditCategoryForm};

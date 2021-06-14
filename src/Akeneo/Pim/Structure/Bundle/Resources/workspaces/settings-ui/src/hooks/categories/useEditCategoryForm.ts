@@ -10,7 +10,7 @@ import {Category} from '../../models';
 const useEditCategoryForm = (categoryId: number) => {
   const notify = useNotify();
   const translate = useTranslate();
-  const {categoryData, status: categoryLoadingStatus, load: loadCategory} = useCategory(categoryId);
+  const [categoryData, loadCategory, categoryLoadingStatus] = useCategory(categoryId);
   const [category, setCategory] = useState<Category | null>(null);
   const [originalFormData, setOriginalFormData] = useState<EditCategoryForm | null>(null);
   const [editedFormData, setEditedFormData] = useState<EditCategoryForm | null>(null);

@@ -20,9 +20,9 @@ describe('useCategoryTreeList', () => {
   test('it returns default values', () => {
     const {result} = renderUseCategoryTreeList();
     expect(result.current.trees.length).toBe(0);
-    expect(result.current.status).toBe('idle');
-    expect(result.current.error).toBeNull();
-    expect(result.current.load).toBeDefined();
+    expect(result.current.loadingStatus).toBe('idle');
+    expect(result.current.loadingError).toBeNull();
+    expect(result.current.loadTrees).toBeDefined();
   });
 
   test('it loads the list of category trees', async () => {
@@ -36,11 +36,11 @@ describe('useCategoryTreeList', () => {
     const {result} = renderUseCategoryTreeList();
 
     await act(async () => {
-      result.current.load();
+      result.current.loadTrees();
     });
 
     expect(result.current.trees.length).toBe(3);
-    expect(result.current.status).toBe('fetched');
+    expect(result.current.loadingStatus).toBe('fetched');
   });
 
   test('it returns an empty list of category trees when the loading failed', async () => {
@@ -50,11 +50,11 @@ describe('useCategoryTreeList', () => {
     const {result} = renderUseCategoryTreeList();
 
     await act(async () => {
-      result.current.load();
+      result.current.loadTrees();
     });
 
     expect(result.current.trees.length).toBe(0);
-    expect(result.current.status).toBe('error');
-    expect(result.current.error).toMatch(/unexpected server error/);
+    expect(result.current.loadingStatus).toBe('error');
+    expect(result.current.loadingError).toMatch(/unexpected server error/);
   });
 });

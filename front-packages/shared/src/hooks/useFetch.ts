@@ -2,7 +2,10 @@ import {useCallback, useState} from 'react';
 
 export type FetchStatus = 'idle' | 'error' | 'fetching' | 'fetched';
 
-const useFetch = <T>(url: string, init?: RequestInit) => {
+const useFetch = <T>(
+  url: string,
+  init?: RequestInit
+): [data: T | null, fetch: () => Promise<void>, status: FetchStatus, error: string | null] => {
   const [data, setData] = useState<T | null>(null);
   const [status, setStatus] = useState<FetchStatus>('idle');
   const [error, setError] = useState<string | null>(null);
@@ -23,12 +26,7 @@ const useFetch = <T>(url: string, init?: RequestInit) => {
     }
   }, [url]);
 
-  return {
-    data,
-    fetch: doFetch,
-    status,
-    error,
-  };
+  return [data, doFetch, status, error];
 };
 
 export {useFetch};

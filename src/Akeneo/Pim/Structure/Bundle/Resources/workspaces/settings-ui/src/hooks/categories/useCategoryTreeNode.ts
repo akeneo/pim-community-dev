@@ -35,7 +35,7 @@ const useCategoryTreeNode = (id: number) => {
     context: 'manage',
   });
 
-  const {data, fetch: loadChildren, status: loadChildrenStatus} = useFetch<BackendCategoryTree>(url);
+  const [childrenData, loadChildren, loadChildrenStatus] = useFetch<BackendCategoryTree>(url);
 
   const node = useMemo(() => findOneByIdentifier(nodes, id), [id, nodes]);
   const children = useMemo(() => (!node ? [] : findByIdentifiers(nodes, node.childrenIds)), [node, nodes]);
@@ -219,10 +219,10 @@ const useCategoryTreeNode = (id: number) => {
   }, [node]);
 
   useEffect(() => {
-    if (!node || !Array.isArray(data)) {
+    if (!node || !Array.isArray(childrenData)) {
       return;
     }
-    const newChildren: TreeNode<CategoryTreeModel>[] = data.map(child => {
+    const newChildren: TreeNode<CategoryTreeModel>[] = childrenData.map(child => {
       return buildTreeNodeFromCategoryTree(convertToCategoryTree(child), node.identifier);
     });
 
@@ -239,7 +239,7 @@ const useCategoryTreeNode = (id: number) => {
         (node, currentNode) => node.identifier === currentNode.identifier
       )
     );
-  }, [data]);
+  }, [childrenData]);
 
   useEffect(() => {
     if (node?.childrenStatus === 'to-reload') {
