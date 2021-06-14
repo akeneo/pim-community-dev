@@ -6,6 +6,7 @@ use Akeneo\Pim\TableAttribute\Infrastructure\Validation\Attribute\ValidationShou
 use Akeneo\Pim\TableAttribute\Infrastructure\Validation\Attribute\ValidationShouldMatchColumnTypeValidator;
 use PhpSpec\ObjectBehavior;
 use Prophecy\Argument;
+use Symfony\Component\Validator\Constraint;
 use Symfony\Component\Validator\Constraints\NotBlank;
 use Symfony\Component\Validator\ConstraintValidatorInterface;
 use Symfony\Component\Validator\Context\ExecutionContextInterface;
@@ -90,4 +91,22 @@ class ValidationShouldMatchColumnTypeValidatorSpec extends ObjectBehavior
             new ValidationShouldMatchColumnType()
         );
     }
+
+    function it_adds_only_one_violation_when_several_validations_do_not_match_column_type(
+        ExecutionContextInterface $context,
+        ConstraintViolationBuilderInterface $violationBuilder
+    ) {
+        $context->buildViolation(
+            Argument::type('string'),
+            ['{{ expected }}' => 'max_length', '{{ given }}' => 'min, max, decimals_allowed']
+        )->shouldBeCalledOnce()->willReturn($violationBuilder);
+
+        $violationBuilder->atPath('validations')->shouldBeCalledOnce()->willReturn($violationBuilder);
+        $violationBuilder->addViolation()->shouldBeCalledOnce();
+        $this->validate(
+            ['data_type' => 'text', 'code' => 'test', 'validations' => ['min' => 0, 'max' => 10, 'decimals_allowed' => true]],
+            new ValidationShouldMatchColumnType()
+        );
+    }
+
 }

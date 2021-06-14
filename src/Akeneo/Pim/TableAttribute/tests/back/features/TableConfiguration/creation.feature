@@ -108,6 +108,6 @@ Feature: Create a table attribute
     When I create a table attribute with a configuration '{"data_type": "text", "code": "quantity", "validations": { "min": 10, "max": 5}}'
     Then There is a violation with message: TODO max should be greater than min
 
-  Scenario: Cannot create a table configuration with a min validation on a text column
-    When I create a table attribute with a configuration '{"data_type": "text", "code": "quantity", "validations": { "min": 10 }}'
-    Then There is a violation with message: TODO wrong validation type max_length min
+  Scenario: Cannot create a table configuration with invalid validations on a text column
+    When I create a table attribute with a configuration '{"data_type": "text", "code": "quantity", "validations": { "min": 10, "max": 20, "decimals_allowed": true }}'
+    Then There is a violation with message: TODO wrong validation type max_length min, max, decimals_allowed

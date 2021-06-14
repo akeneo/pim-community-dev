@@ -38,30 +38,31 @@ final class ValidationShouldMatchColumnTypeValidator extends ConstraintValidator
             return;
         }
 
-        if (!isset($value['validations']) || !\is_array($value['validations'])) {
+        if (!isset($value['validations']) || !\is_array($value['validations']) || [] === $value['validations']) {
             return;
         }
-        $validationKeys = \array_keys($value['validations']);
-        foreach ($validationKeys as $validationKey) {
-            if ([] === self::VALIDATION_MAPPING[$columnType]) {
-                $this->context->buildViolation(
-                    'TODO wrong no validation allowed {{ given }}',
-                    [
-                        '{{ given }}' => $validationKey,
-                    ]
-                )->atPath('validations')->addViolation();
 
-                continue;
-            }
-            if (!\in_array($validationKey, self::VALIDATION_MAPPING[$columnType])) {
-                $this->context->buildViolation(
-                    'TODO wrong validation type {{ expected }} {{ given }}',
-                    [
-                        '{{ expected }}' => \implode(', ', self::VALIDATION_MAPPING[$columnType]),
-                        '{{ given }}' => $validationKey,
-                    ]
-                )->atPath('validations')->addViolation();
-            }
+        $validationKeys = \array_keys($value['validations']);
+        if ([] === self::VALIDATION_MAPPING[$columnType]) {
+            $this->context->buildViolation(
+                'TODO wrong no validation allowed {{ given }}',
+                [
+                    '{{ given }}' => \implode(', ', $validationKeys),
+                ]
+            )->atPath('validations')->addViolation();
+
+            return;
+        }
+
+        $invalidValidationKeys = \array_diff($validationKeys, self::VALIDATION_MAPPING[$columnType]);
+        if ([] !== $invalidValidationKeys) {
+            $this->context->buildViolation(
+                'TODO wrong validation type {{ expected }} {{ given }}',
+                [
+                    '{{ expected }}' => \implode(', ', self::VALIDATION_MAPPING[$columnType]),
+                    '{{ given }}' => \implode(', ', $invalidValidationKeys),
+                ]
+            )->atPath('validations')->addViolation();
         }
     }
 }
