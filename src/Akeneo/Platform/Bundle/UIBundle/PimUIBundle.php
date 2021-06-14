@@ -8,6 +8,7 @@ use Akeneo\Platform\Bundle\UIBundle\DependencyInjection\Compiler\RegisterViewEle
 use Akeneo\Platform\Bundle\UIBundle\DependencyInjection\Reference\ReferenceFactory;
 use Symfony\Component\DependencyInjection\ContainerBuilder;
 use Symfony\Component\HttpKernel\Bundle\Bundle;
+use Symfony\Component\Routing\RequestContext;
 
 /**
  * Override PimUIBundle
@@ -31,5 +32,36 @@ class PimUIBundle extends Bundle
             ->addCompilerPass(new RegisterGenericProvidersPass(new ReferenceFactory(), 'form'))
             ->addCompilerPass(new RegisterGenericProvidersPass(new ReferenceFactory(), 'filter'))
         ;
+    }
+
+    /**
+     * {@inheritdoc }
+     */
+    public function boot()
+    {
+        parent::boot();
+
+        $this->setupRequestContext();
+    }
+
+    private function setupRequestContext(): void
+    {
+        $url = getenv('AKENEO_PIM_URL');
+        $scheme = parse_url($url, \PHP_URL_SCHEME);
+        $host = parse_url($url, \PHP_URL_HOST);
+        $port = parse_url($url, \PHP_URL_PORT);
+
+        /** @var RequestContext $requestContext */
+        $requestContext = $this->container->get('router')->getContext();
+        $requestContext->setScheme($scheme);
+        $requestContext->setHost($host);
+        switch (strtolower($scheme)) {
+            case 'https':
+                $requestContext->setHttpsPort($port);
+                break;
+            case 'http':
+                $requestContext->setHttpPort($port);
+                break;
+        }
     }
 }
