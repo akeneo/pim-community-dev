@@ -206,15 +206,17 @@ const CategoryEditPage: FC = () => {
               {translate('pim_common.permissions')}
             </TabBar.Tab>
           )}
-          <TabBar.Tab
-            isActive={isCurrent(historyTabName)}
-            onClick={() => {
-              setActiveTab(historyTabName);
-              switchTo(historyTabName);
-            }}
-          >
-            {translate('pim_common.history')}
-          </TabBar.Tab>
+          {isGranted('pim_enrich_product_category_history') && (
+            <TabBar.Tab
+              isActive={isCurrent(historyTabName)}
+              onClick={() => {
+                setActiveTab(historyTabName);
+                switchTo(historyTabName);
+              }}
+            >
+              {translate('pim_common.history')}
+            </TabBar.Tab>
+          )}
         </TabBar>
 
         {isCurrent(propertyTabName) && category && (
