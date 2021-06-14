@@ -2,14 +2,15 @@ import React, {createContext, FC} from 'react';
 import {InvitedUser} from '../models';
 
 type InvitedUserState = {
-  saveNewInvitedUsers: (emails: string[]) => InvitedUser[];
-  retrieveInvitedUsers: () => InvitedUser[];
+  saveNewInvitedUsers: (emails: string[]) => Promise<InvitedUser[]>;
+  retrieveInvitedUsers: () => Promise<InvitedUser[]>;
 };
 
 const InvitedUserContext = createContext<InvitedUserState>({
-  saveNewInvitedUsers: () => [],
-  retrieveInvitedUsers: () => [],
+  saveNewInvitedUsers: () => Promise.resolve([]),
+  retrieveInvitedUsers: () => Promise.resolve([]),
 });
+
 
 const InvitedUserProvider: FC<InvitedUserState> = ({children, saveNewInvitedUsers, retrieveInvitedUsers}) => {
   return <InvitedUserContext.Provider value={{saveNewInvitedUsers: saveNewInvitedUsers, retrieveInvitedUsers}}>{children}</InvitedUserContext.Provider>;

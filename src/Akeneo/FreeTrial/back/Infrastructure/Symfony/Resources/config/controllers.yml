@@ -1,0 +1,6 @@
+services:
+  Akeneo\FreeTrial\Infrastructure\Controller\RetrieveUsersController:
+    public: true
+
+  Akeneo\FreeTrial\Infrastructure\Controller\SaveUsersController:
+    public: true

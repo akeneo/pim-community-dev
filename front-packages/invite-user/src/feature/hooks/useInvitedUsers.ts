@@ -11,21 +11,21 @@ const useInvitedUsers = () => {
     const [invitedUsers, setInvitedUsers] = useState<InvitedUser[]>([]);
 
     useEffect(() => {
-        const users = retrieveInvitedUsers();
-
-        setInvitedUsers(users);
+        retrieveInvitedUsers().then((invitedUsers) => {
+            setInvitedUsers(invitedUsers);
+        });
     }, [retrieveInvitedUsers]);
 
     const addInvitedUsers = (newInvitedUsers: string[]) => {
-        const newUsers = saveNewInvitedUsers(newInvitedUsers);
+        saveNewInvitedUsers(newInvitedUsers).then((invitedUsers) => {
+            setInvitedUsers(invitedUsers);
 
-        setInvitedUsers(newUsers);
-
-        notify(
-            NotificationLevel.SUCCESS,
-            translate('free_trial.invite_users.invite_messages.success.title'),
-            translate('free_trial.invite_users.invite_messages.success.description')
-        );
+            notify(
+                NotificationLevel.SUCCESS,
+                translate('free_trial.invite_users.invite_messages.success.title'),
+                translate('free_trial.invite_users.invite_messages.success.description')
+            );
+        });
     }
 
     return {invitedUsers, addInvitedUsers};

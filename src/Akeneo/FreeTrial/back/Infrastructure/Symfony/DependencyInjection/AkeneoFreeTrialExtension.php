@@ -17,5 +17,6 @@ final class AkeneoFreeTrialExtension extends Extension
 
         $loader->load('external_javascript_dependencies.yml');
         $loader->load('feature_flags.yml');
+        $loader->load('controllers.yml');
     }
 }

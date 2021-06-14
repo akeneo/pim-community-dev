@@ -1,2 +1,14 @@
 akeneo_invite_user:
   path: '/invite-user'
+
+akeneo_free_trial_retrieve_users:
+  path: '/retrieve-users'
+  methods: [GET]
+  defaults:
+    _controller: Akeneo\FreeTrial\Infrastructure\Controller\RetrieveUsersController
+
+akeneo_free_trial_save_users:
+  path: '/save-users'
+  methods: [POST]
+  defaults:
+    _controller: Akeneo\FreeTrial\Infrastructure\Controller\SaveUsersController
