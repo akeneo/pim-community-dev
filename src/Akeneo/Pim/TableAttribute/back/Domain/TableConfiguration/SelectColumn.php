@@ -41,20 +41,4 @@ class SelectColumn extends AbstractColumnDefinition
             ValidationCollection::fromNormalized($validations),
         );
     }
-
-    /**
-     * {@inheritdoc}
-     */
-    public function normalize(): array
-    {
-        $labels = $this->labels->labels();
-        $validations = $this->validations->normalize();
-
-        return [
-            'code' => $this->code->asString(),
-            'data_type' => $this->dataType->asString(),
-            'labels' => [] === $labels ? (object)[] : $labels,
-            'validations' => [] === $validations ? (object)[] : $validations,
-        ];
-    }
 }

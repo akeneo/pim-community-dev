@@ -20,8 +20,6 @@ class BooleanColumn extends AbstractColumnDefinition
 {
     private const DATATYPE = 'boolean';
 
-    // validation for number (min, max decimal allowed)
-
     /**
      * @param array<string, mixed> $normalized
      */
@@ -41,22 +39,5 @@ class BooleanColumn extends AbstractColumnDefinition
             LabelCollection::fromNormalized($labels),
             ValidationCollection::fromNormalized($validations)
         );
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    public function normalize(): array
-    {
-        // TODO Check if we can't abstract this normalize() method
-        $labels = $this->labels->labels();
-        $validations = $this->validations->normalize();
-
-        return [
-            'code' => $this->code->asString(),
-            'data_type' => $this->dataType->asString(),
-            'labels' => [] === $labels ? (object) [] : $labels,
-            'validations' => [] === $validations ? (object) [] : $validations,
-        ];
     }
 }

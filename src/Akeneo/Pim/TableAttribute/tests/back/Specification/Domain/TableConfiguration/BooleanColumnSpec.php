@@ -13,9 +13,59 @@ declare(strict_types=1);
 
 namespace Specification\Akeneo\Pim\TableAttribute\Domain\TableConfiguration;
 
+use Akeneo\Pim\TableAttribute\Domain\TableConfiguration\BooleanColumn;
+use Akeneo\Pim\TableAttribute\Domain\TableConfiguration\LabelCollection;
+use Akeneo\Pim\TableAttribute\Domain\TableConfiguration\ValueObject\ColumnCode;
+use Akeneo\Pim\TableAttribute\Domain\TableConfiguration\ValueObject\ColumnDataType;
 use PhpSpec\ObjectBehavior;
 
 class BooleanColumnSpec extends ObjectBehavior
 {
-    // TODO
+    function let()
+    {
+        $this->beConstructedThrough(
+            'fromNormalized',
+            [
+                [
+                    'code' => 'is_allergenic',
+                    'labels' => ['en_US' => 'Is allergenic', 'fr_FR' => 'Allergène'],
+                ],
+            ]
+        );
+    }
+
+    function it_is_initializable()
+    {
+        $this->shouldHaveType(BooleanColumn::class);
+    }
+
+    function it_is_a_text_column()
+    {
+        $this->dataType()->shouldHaveType(ColumnDataType::class);
+        $this->dataType()->asString()->shouldBe('boolean');
+    }
+
+    function it_has_a_code()
+    {
+        $this->code()->shouldHaveType(ColumnCode::class);
+        $this->code()->asString()->shouldBe('is_allergenic');
+    }
+
+    function it_has_labels()
+    {
+        $this->labels()->shouldHaveType(LabelCollection::class);
+        $this->labels()->labels()->shouldReturn(['en_US' => 'Is allergenic', 'fr_FR' => 'Allergène']);
+    }
+
+    function it_can_be_normalized()
+    {
+        $this->normalize()->shouldBeLike(
+            [
+                'data_type' => 'boolean',
+                'code' => 'is_allergenic',
+                'labels' => ['en_US' => 'Is allergenic', 'fr_FR' => 'Allergène'],
+                'validations' => (object)[],
+            ]
+        );
+    }
 }

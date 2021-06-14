@@ -21,8 +21,6 @@ class TextColumn extends AbstractColumnDefinition
 {
     private const DATATYPE = 'text';
 
-    // validation for text (min, max chars)
-
     /**
      * @param array<string, mixed> $normalized
      *
@@ -44,21 +42,5 @@ class TextColumn extends AbstractColumnDefinition
             LabelCollection::fromNormalized($labels),
             ValidationCollection::fromNormalized($validations),
         );
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    public function normalize(): array
-    {
-        $labels = $this->labels->labels();
-        $validations = $this->validations->normalize();
-
-        return [
-            'code' => $this->code->asString(),
-            'data_type' => $this->dataType->asString(),
-            'labels' => [] === $labels ? (object) [] : $labels,
-            'validations' => [] === $validations ? (object) [] : $validations,
-        ];
     }
 }

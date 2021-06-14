@@ -45,4 +45,16 @@ class SelectColumnSpec extends ObjectBehavior
         $this->labels()->shouldHaveType(LabelCollection::class);
         $this->labels()->labels()->shouldReturn(['en_US' => 'Ingredient', 'fr_FR' => 'Ingrédient']);
     }
+
+    function it_can_be_normalized()
+    {
+        $this->normalize()->shouldBeLike(
+            [
+                'data_type' => 'select',
+                'code' => 'ingredient',
+                'labels' => ['en_US' => 'Ingredient', 'fr_FR' => 'Ingrédient'],
+                'validations' => (object)[],
+            ]
+        );
+    }
 }

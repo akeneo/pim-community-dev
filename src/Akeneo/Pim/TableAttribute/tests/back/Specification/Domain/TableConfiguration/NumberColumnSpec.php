@@ -40,4 +40,16 @@ class NumberColumnSpec extends ObjectBehavior
         $this->labels()->shouldHaveType(LabelCollection::class);
         $this->labels()->labels()->shouldReturn(['en_US' => 'Quantities', 'fr_FR' => 'Quantités']);
     }
+
+    function it_can_be_normalized()
+    {
+        $this->normalize()->shouldBeLike(
+            [
+                'data_type' => 'number',
+                'code' => 'quantities',
+                'labels' => ['en_US' => 'Quantities', 'fr_FR' => 'Quantités'],
+                'validations' => (object)[],
+            ]
+        );
+    }
 }

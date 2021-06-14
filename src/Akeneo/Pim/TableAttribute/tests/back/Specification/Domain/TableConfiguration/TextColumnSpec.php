@@ -41,5 +41,15 @@ class TextColumnSpec extends ObjectBehavior
         $this->labels()->labels()->shouldReturn(['en_US' => 'Ingredients', 'fr_FR' => 'Ingrédients']);
     }
 
-    // TODO Spec normalize
+    function it_can_be_normalized()
+    {
+        $this->normalize()->shouldBeLike(
+            [
+                'data_type' => 'text',
+                'code' => 'ingredients',
+                'labels' => ['en_US' => 'Ingredients', 'fr_FR' => 'Ingrédients'],
+                'validations' => (object)[],
+            ]
+        );
+    }
 }

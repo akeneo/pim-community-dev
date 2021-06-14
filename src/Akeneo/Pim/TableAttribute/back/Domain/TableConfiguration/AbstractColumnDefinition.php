@@ -23,10 +23,12 @@ abstract class AbstractColumnDefinition implements ColumnDefinition
     protected LabelCollection $labels;
     protected ValidationCollection $validations;
 
-    // validation rules: specific to each data type
-
-    protected function __construct(ColumnCode $code, ColumnDataType $dataType, LabelCollection $labels, ValidationCollection $validations)
-    {
+    protected function __construct(
+        ColumnCode $code,
+        ColumnDataType $dataType,
+        LabelCollection $labels,
+        ValidationCollection $validations
+    ) {
         $this->code = $code;
         $this->dataType = $dataType;
         $this->labels = $labels;
@@ -46,5 +48,18 @@ abstract class AbstractColumnDefinition implements ColumnDefinition
     public function labels(): LabelCollection
     {
         return $this->labels;
+    }
+
+    public function normalize(): array
+    {
+        $labels = $this->labels->labels();
+        $validations = $this->validations->normalize();
+
+        return [
+            'code' => $this->code->asString(),
+            'data_type' => $this->dataType->asString(),
+            'labels' => [] === $labels ? (object)[] : $labels,
+            'validations' => [] === $validations ? (object)[] : $validations,
+        ];
     }
 }
