@@ -25,7 +25,31 @@ final class CategoryContext extends PimContext
         $categoryTree = $this->spin(function () use ($categoryLabel) {
             return $this->getCurrentPage()->find('named', array('content', $categoryLabel));
         }, sprintf('The "%s" category was not found', $categoryLabel));
-        $categoryTree->click();
+
+        $this->spin(function () use ($categoryTree) {
+            $categoryTree->press();
+            return true;
+        }, 'Can not follow the "%s" category');
+    }
+
+    /**
+     * @When I follow the :categoryTreeLabel category tree
+     */
+    public function iFollowTheCategoryTree(string $categoryTreeLabel)
+    {
+        /** @var NodeElement $categoryTree */
+        $categoryTree = $this->spin(function () use ($categoryTreeLabel) {
+            $treeList = $this->getCurrentPage()->find('css', 'table');
+            if (!$treeList) {
+                return false;
+            }
+            return $treeList->find('named', array('content', $categoryTreeLabel));
+        }, sprintf('The "%s" category tree was not found', $categoryTreeLabel));
+
+        $this->spin(function () use ($categoryTree) {
+            $categoryTree->press();
+            return true;
+        }, 'Can not follow the "%s" category tree');
     }
 
     /**
@@ -33,12 +57,15 @@ final class CategoryContext extends PimContext
      */
     public function iHoverOverTheCategory(string $categoryLabel)
     {
-        /** @var NodeElement $categoryTree */
-        $categoryTree = $this->spin(function () use ($categoryLabel) {
+        /** @var NodeElement $category */
+        $category = $this->spin(function () use ($categoryLabel) {
             return $this->getCurrentPage()->find('named', array('content', $categoryLabel));
         }, sprintf('The "%s" category was not found', $categoryLabel));
 
-        $categoryTree->mouseOver();
+        $this->spin(function () use ($category) {
+            $category->mouseOver();
+            return true;
+        }, 'Can not hover the "%s" category');
     }
 
     /**
@@ -56,7 +83,10 @@ final class CategoryContext extends PimContext
             return $tree->find('named', array('content', $categoryLabel));
         }, sprintf('The "%s" category was not found', $categoryLabel));
 
-        $categoryTree->mouseOver();
+        $this->spin(function () use ($categoryTree) {
+            $categoryTree->mouseOver();
+            return true;
+        }, 'Can not hover the "%s" category tree');
     }
 
     /** @When I create the category with code :code */
@@ -72,5 +102,48 @@ final class CategoryContext extends PimContext
             $modal->findButton('Create')->click();
             return true;
         }, sprintf('Can not create the category with code %s', $code));
+    }
+
+    /**
+     * @When I open the category tab :tabName
+     */
+    public function iOpenTheCategoryTab(string $tabName)
+    {
+        /** @var NodeElement $tab */
+        $tab = $this->spin(function () use ($tabName) {
+            $tabList = $this->getCurrentPage()->find('css', 'div[role=tablist]');
+            if (!$tabList) {
+                return false;
+            }
+
+            return $tabList->find('named', ['content', $tabName]);
+        }, sprintf('Tab "%s" not found', $tabName));
+
+        $this->spin(function () use ($tab, $tabName) {
+            $tab->click();
+
+            return $tab->getAttribute('aria-selected') === 'true';
+        }, sprintf('Can not open the "%s" tab', $tabName));
+    }
+
+    /**
+     * @When I submit the category changes
+     */
+    public function iSubmitTheCategoryChanges()
+    {
+        $this->spin(function () {
+            $saveButton = $this->getCurrentPage()->findButton('Save');
+            if (!$saveButton) {
+                return false;
+            }
+
+            $saveButton->press();
+            return true;
+        }, 'Can not save the current category');
+
+        // Wait for the server response
+        $this->spin(function () {
+            return $this->getCurrentPage()->find('css', 'div[role=status]');
+        }, 'No response for the category update');
     }
 }

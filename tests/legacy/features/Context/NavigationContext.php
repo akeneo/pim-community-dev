@@ -116,6 +116,7 @@ class NavigationContext extends BaseNavigationContext
      * @param Category $category
      *
      * @Given /^I am on the category tree "([^"]*)" page$/
+     * @When /^I go to the category tree "([^"]*)" page$/
      */
     public function iAmOnTheCategoryTreePage(string $code)
     {
