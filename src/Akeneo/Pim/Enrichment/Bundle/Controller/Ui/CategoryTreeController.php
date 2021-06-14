@@ -440,7 +440,7 @@ class CategoryTreeController extends Controller
         return new JsonResponse($numberOfProducts);
     }
 
-    public function countChildrenAction(): JsonResponse
+    public function countTreesChildrenAction(): JsonResponse
     {
         $countChildren = $this->countTreesChildrenQuery->execute();
 
