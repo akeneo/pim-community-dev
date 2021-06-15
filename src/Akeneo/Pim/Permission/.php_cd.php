@@ -35,6 +35,8 @@ $rules = [
         'Akeneo\Pim\Enrichment\Component\Product\ProductModel\Query\GetConnectorProductModels',
         'Akeneo\Pim\WorkOrganization\Workflow\Component\Query\PublicApi\GetWorkflowStatusFromProductModelCodes',
         'Akeneo\Pim\Enrichment\Component\Product\Comparator\Filter\FilterInterface',
+        'Akeneo\Pim\Enrichment\Bundle\Form\CategoryFormViewNormalizer',
+        'Akeneo\Pim\Enrichment\Component\Category\Form\CategoryFormViewNormalizerInterface',
 
         // TIP-1000: Permissions should not be linked to Locale
         'Akeneo\Channel\Component\Repository\LocaleRepositoryInterface',
