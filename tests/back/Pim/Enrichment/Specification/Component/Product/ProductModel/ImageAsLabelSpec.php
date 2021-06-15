@@ -2,6 +2,7 @@
 
 namespace Specification\Akeneo\Pim\Enrichment\Component\Product\ProductModel;
 
+use Akeneo\Pim\Enrichment\Bundle\Doctrine\ORM\Repository\ProductModelRepository;
 use Doctrine\Common\Collections\Collection;
 use PhpSpec\ObjectBehavior;
 use Akeneo\Pim\Structure\Component\Model\AttributeInterface;
@@ -11,13 +12,12 @@ use Akeneo\Pim\Enrichment\Component\Product\Model\ProductModelInterface;
 use Akeneo\Pim\Enrichment\Component\Product\Model\ValueInterface;
 use Akeneo\Pim\Structure\Component\Model\VariantAttributeSetInterface;
 use Akeneo\Pim\Enrichment\Component\Product\Model\ProductInterface;
-use Akeneo\Pim\Enrichment\Component\Product\Repository\ProductModelRepositoryInterface;
 use Akeneo\Pim\Enrichment\Component\Product\Repository\VariantProductRepositoryInterface;
 
 class ImageAsLabelSpec extends ObjectBehavior
 {
     function let(
-        ProductModelRepositoryInterface $productModelRepository,
+        ProductModelRepository $productModelRepository,
         VariantProductRepositoryInterface $productRepository
     ) {
         $this->beConstructedWith($productModelRepository, $productRepository);
@@ -54,7 +54,7 @@ class ImageAsLabelSpec extends ObjectBehavior
         $familyVariant->getVariantAttributeSets()->willReturn($attributeSets);
         $productModel->getFamily()->willReturn($family);
         $productModel->getFamilyVariant()->willReturn($familyVariant);
-        $productModel->isRoot()->willReturn(false);
+        $productModel->getVariationLevel()->willReturn(1);
         $productModel->getImage()->willReturn($imageValue);
 
         $this->value($productModel)->shouldReturn($imageValue);
@@ -91,7 +91,7 @@ class ImageAsLabelSpec extends ObjectBehavior
         $familyVariant->getVariantAttributeSets()->willReturn($attributeSets);
         $productModel->getFamily()->willReturn($family);
         $productModel->getFamilyVariant()->willReturn($familyVariant);
-        $productModel->isRoot()->willReturn(false);
+        $productModel->getVariationLevel()->willReturn(1);
         $productModel->getImage()->willReturn($imageValue);
 
         $this->value($productModel)->shouldReturn($imageValue);
@@ -131,13 +131,9 @@ class ImageAsLabelSpec extends ObjectBehavior
         $familyVariant->getVariantAttributeSets()->willReturn($attributeSets);
         $productModel->getFamily()->willReturn($family);
         $productModel->getFamilyVariant()->willReturn($familyVariant);
-        $productModel->isRoot()->willReturn(true);
+        $productModel->getVariationLevel()->willReturn(0);
 
-        $productModelRepository->findBy(
-            ['parent' => $productModel],
-            ['created' => 'ASC', 'code' => 'ASC'],
-            1
-        )->willReturn([$subProductModel]);
+        $productModelRepository->findFirstCreatedVariantProductModel($productModel)->willReturn($subProductModel);
 
         $productRepository->findLastCreatedByParent($productModel)->willReturn(null);
 
@@ -180,15 +176,10 @@ class ImageAsLabelSpec extends ObjectBehavior
         $familyVariant->getVariantAttributeSets()->willReturn($attributeSets);
         $productModel->getFamily()->willReturn($family);
         $productModel->getFamilyVariant()->willReturn($familyVariant);
-        $productModel->isRoot()->willReturn(false);
-
-        $productModelRepository->findBy(
-            ['parent' => $productModel],
-            ['created' => 'ASC', 'code' => 'ASC'],
-            1
-        )->willReturn([]);
+        $productModel->getVariationLevel()->willReturn(1);
 
         $productRepository->findLastCreatedByParent($productModel)->willReturn($variantProduct);
+        $productModelRepository->findFirstCreatedVariantProductModel($productModel)->shouldNotBeCalled();
 
         $variantProduct->getImage()->willReturn($imageValue);
 
@@ -227,13 +218,9 @@ class ImageAsLabelSpec extends ObjectBehavior
         $familyVariant->getVariantAttributeSets()->willReturn($attributeSets);
         $productModel->getFamily()->willReturn($family);
         $productModel->getFamilyVariant()->willReturn($familyVariant);
-        $productModel->isRoot()->willReturn(false);
+        $productModel->getVariationLevel()->willReturn(1);
 
-        $productModelRepository->findBy(
-            ['parent' => $productModel],
-            ['created' => 'ASC', 'code' => 'ASC'],
-            1
-        )->willReturn([]);
+        $productModelRepository->findFirstCreatedVariantProductModel($productModel);
 
         $productRepository->findLastCreatedByParent($productModel)->willReturn(null);
 

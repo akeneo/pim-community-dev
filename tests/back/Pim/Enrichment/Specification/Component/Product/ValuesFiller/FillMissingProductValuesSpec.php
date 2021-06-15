@@ -23,7 +23,8 @@ class FillMissingProductValuesSpec extends ObjectBehavior
         ChannelRepositoryInterface $channelRepository,
         LocaleRepositoryInterface $localeRepository,
         GetAttributes $getAttributes
-    ) {
+    )
+    {
         $family = new Family();
 
         $family->addAttribute(
@@ -32,6 +33,10 @@ class FillMissingProductValuesSpec extends ObjectBehavior
         $family->addAttribute(
             (new Builder())->aTextAttribute()->withCode('localizable_name')->localizable()->build()
         );
+        $family->addAttribute(
+            (new Builder())->aTextAttribute()->withCode('specific_localizable_name')->specificlocalizable()->build()
+        );
+
         $family->addAttribute(
             (new Builder())->aTextAttribute()->withCode('scopable_name')->scopable()->build()
         );
@@ -131,6 +136,11 @@ class FillMissingProductValuesSpec extends ObjectBehavior
                         ],
 
                     ],
+                    'specific_localizable_name' => [[
+                        'scope' => null,
+                        'locale' => null,
+                        'data' => null,
+                    ]],
                     'scopable_name' => [
                         [
                             'scope' => 'tablet',
@@ -259,6 +269,11 @@ class FillMissingProductValuesSpec extends ObjectBehavior
                             'data' => null
                         ],
                     ],
+                    'specific_localizable_name' => [[
+                        'scope' => null,
+                        'locale' => null,
+                        'data' => null,
+                    ]],
                     'scopable_name' => [
                         [
                             'scope' => 'tablet',

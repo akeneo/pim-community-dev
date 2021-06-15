@@ -41,6 +41,11 @@ class InMemoryProductModelRepository implements IdentifiableObjectRepositoryInte
         $this->productModels->set($object->getCode(), $object);
     }
 
+    public function findFirstCreatedVariantProductModel(ProductModelInterface $productModel): ?ProductModelInterface
+    {
+        throw new NotImplementedException(__METHOD__);
+    }
+
     public function getItemsFromIdentifiers(array $identifiers)
     {
         throw new NotImplementedException(__METHOD__);

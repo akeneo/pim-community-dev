@@ -92,6 +92,17 @@ class ProductModelRepository extends EntityRepository implements ProductModelRep
     /**
      * {@inheritdoc}
      */
+    public function findFirstCreatedVariantProductModel(ProductModelInterface $productModel): ?ProductModelInterface
+    {
+        return $this->findOneBy(
+            ['parent' => $productModel],
+            ['created' => 'ASC', 'code' => 'ASC']
+        );
+    }
+
+    /**
+     * {@inheritdoc}
+     */
     public function findDescendantProductIdentifiers(ProductModelInterface $productModel): array
     {
         $qb = $this

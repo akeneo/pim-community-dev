@@ -98,6 +98,7 @@ class InMemoryProductModelRepositorySpec extends ObjectBehavior
         $this->shouldThrow(NotImplementedException::class)->during('findSiblingsProductModels', [$productModel]);
         $this->shouldThrow(NotImplementedException::class)->during('countRootProductModels', []);
         $this->shouldThrow(NotImplementedException::class)->during('findChildrenProductModels', [$productModel]);
+        $this->shouldThrow(NotImplementedException::class)->during('findFirstCreatedVariantProductModel', [$productModel]);
         $this->shouldThrow(NotImplementedException::class)->during('findDescendantProductIdentifiers', [$productModel]);
         $this->shouldThrow(NotImplementedException::class)->during('findByIdentifiers', [[]]);
         $this->shouldThrow(NotImplementedException::class)->during('findChildrenProducts', [$productModel]);
