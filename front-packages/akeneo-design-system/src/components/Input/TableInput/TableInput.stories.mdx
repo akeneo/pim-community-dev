@@ -1,0 +1,78 @@
+import {Meta, Story, ArgsTable, Canvas} from '@storybook/addon-docs/blocks';
+import {TableInput} from './TableInput.tsx';
+
+<Meta
+  title="Components/Inputs/Table input"
+  component={TableInput}
+  argTypes={{
+    level: {control: {type: 'select', options: ['primary', 'warning', 'danger']}},
+  }}
+  args={{level: 'primary', children: 'Table text'}}
+/>
+
+# TableInput
+
+## Usage
+
+TODO
+
+### TODO
+
+TODO
+
+## Playground
+
+<Canvas>
+  <Story name="Standard">
+    {args => {
+      return <TableInput {...args}>
+        <TableInput.Header>
+          <TableInput.HeaderCell>Ingredient</TableInput.HeaderCell>
+          <TableInput.HeaderCell>Quantity</TableInput.HeaderCell>
+          <TableInput.HeaderCell>Is allergenic</TableInput.HeaderCell>
+        </TableInput.Header>
+        <TableInput.Body>
+          <TableInput.Row>
+            <TableInput.Cell>Sugar</TableInput.Cell>
+            <TableInput.Cell>12 g</TableInput.Cell>
+            <TableInput.Cell>nope</TableInput.Cell>
+          </TableInput.Row>
+          <TableInput.Row>
+            <TableInput.Cell>Salt</TableInput.Cell>
+            <TableInput.Cell>1 g</TableInput.Cell>
+            <TableInput.Cell>yep</TableInput.Cell>
+          </TableInput.Row>
+          <TableInput.Row>
+            <TableInput.Cell>Pepper</TableInput.Cell>
+            <TableInput.Cell></TableInput.Cell>
+            <TableInput.Cell></TableInput.Cell>
+          </TableInput.Row>
+        </TableInput.Body>
+      </TableInput>;
+    }}
+  </Story>
+</Canvas>
+
+<ArgsTable story="Standard" />
+
+## Variation on level
+
+<Canvas>
+  <Story name="Level">
+    {args => {
+      return (
+        <>
+          <TableInput {...args} level="primary">
+            Primary
+          </TableInput>
+          <TableInput {...args} level="warning">
+            Warning
+          </TableInput>
+          <TableInput {...args} level="danger">
+            Danger
+          </TableInput>
+        </>
+      );
+    }}
+  </Story>
+</Canvas>
