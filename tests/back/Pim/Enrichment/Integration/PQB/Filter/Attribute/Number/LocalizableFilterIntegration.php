@@ -135,7 +135,7 @@ class LocalizableFilterIntegration extends AbstractProductQueryBuilderTestCase
     public function testErrorLocalizable()
     {
         $this->expectException(InvalidPropertyException::class);
-        $this->expectExceptionMessage('Attribute "a_localizable_number" expects a locale, none given.');
+        $this->expectExceptionMessage('The a_localizable_number attribute requires a locale.');
 
         $this->executeFilter([['a_localizable_number', Operators::NOT_EQUAL, 12]]);
     }

@@ -73,98 +73,67 @@ use Webmozart\Assert\Assert;
  */
 class ProductController
 {
-    /** @var NormalizerInterface */
-    protected $normalizer;
+    protected NormalizerInterface $normalizer;
 
-    /** @var IdentifiableObjectRepositoryInterface */
-    protected $channelRepository;
+    protected IdentifiableObjectRepositoryInterface $channelRepository;
 
-    /** @var AttributeRepositoryInterface */
-    protected $attributeRepository;
+    protected AttributeRepositoryInterface $attributeRepository;
 
-    /** @var IdentifiableObjectRepositoryInterface */
-    protected $productRepository;
+    protected IdentifiableObjectRepositoryInterface $productRepository;
 
-    /** @var PaginatorInterface */
-    protected $offsetPaginator;
+    protected PaginatorInterface $offsetPaginator;
 
-    /** @var PaginatorInterface */
-    protected $searchAfterPaginator;
+    protected PaginatorInterface $searchAfterPaginator;
 
-    /** @var  ValidatorInterface */
-    protected $productValidator;
+    protected ValidatorInterface $productValidator;
 
-    /** @var ProductBuilderInterface */
-    protected $productBuilder;
+    protected ProductBuilderInterface $productBuilder;
 
-    /** @var ObjectUpdaterInterface */
-    protected $updater;
+    protected ObjectUpdaterInterface $updater;
 
-    /** @var RemoverInterface */
-    protected $remover;
+    protected RemoverInterface $remover;
 
-    /** @var SaverInterface */
-    protected $saver;
+    protected SaverInterface $saver;
 
-    /** @var UrlGeneratorInterface */
-    protected $router;
+    protected UrlGeneratorInterface $router;
 
-    /** @var FilterInterface */
-    protected $emptyValuesFilter;
+    protected FilterInterface $emptyValuesFilter;
 
-    /** @var StreamResourceResponse */
-    protected $partialUpdateStreamResource;
+    protected StreamResourceResponse $partialUpdateStreamResource;
 
-    /** @var PrimaryKeyEncrypter */
-    protected $primaryKeyEncrypter;
+    protected PrimaryKeyEncrypter $primaryKeyEncrypter;
 
-    /** @var array */
-    protected $apiConfiguration;
+    protected array $apiConfiguration;
 
-    /** @var ProductQueryBuilderFactoryInterface */
-    protected $fromSizePqbFactory;
+    protected ProductQueryBuilderFactoryInterface $fromSizePqbFactory;
 
-    /** @var ProductBuilderInterface */
-    protected $variantProductBuilder;
+    protected ProductBuilderInterface $variantProductBuilder;
 
-    /** @var AddParent */
-    protected $addParent;
+    protected AddParent $addParent;
 
-    /** @var AttributeFilterInterface */
-    protected $productAttributeFilter;
+    protected AttributeFilterInterface $productAttributeFilter;
 
-    /** @var ListProductsQueryValidator */
-    private $listProductsQueryValidator;
+    private ListProductsQueryValidator $listProductsQueryValidator;
 
-    /** @var ListProductsQueryHandler */
-    private $listProductsQueryHandler;
+    private ListProductsQueryHandler $listProductsQueryHandler;
 
-    /** @var ConnectorProductNormalizer */
-    private $connectorProductNormalizer;
+    private ConnectorProductNormalizer $connectorProductNormalizer;
 
-    /** @var TokenStorageInterface */
-    private $tokenStorage;
+    private TokenStorageInterface $tokenStorage;
 
-    /** @var GetConnectorProducts */
-    private $getConnectorProducts;
+    private GetConnectorProducts $getConnectorProducts;
 
-    /** @var GetConnectorProducts */
-    private $getConnectorProductsWithOptions;
+    private GetConnectorProducts $getConnectorProductsWithOptions;
 
-    /** @var ApiAggregatorForProductPostSaveEventSubscriber */
-    private $apiAggregatorForProductPostSave;
+    private ApiAggregatorForProductPostSaveEventSubscriber $apiAggregatorForProductPostSave
+;
+    private WarmupQueryCache $warmupQueryCache;
 
-    /** @var WarmupQueryCache */
-    private $warmupQueryCache;
+    private EventDispatcherInterface $eventDispatcher;
 
-    /** @var EventDispatcherInterface */
-    private $eventDispatcher;
+    protected DuplicateValueChecker $duplicateValueChecker;
 
-    /** @var DuplicateValueChecker */
-    protected $duplicateValueChecker;
-
-    /** @var LoggerInterface */
-    private $logger;
+    private LoggerInterface $logger;
 
     private GetProductsWithQualityScoresInterface $getProductsWithQualityScores;
 

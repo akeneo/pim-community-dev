@@ -116,7 +116,7 @@ class LocalizableScopableFilterIntegration extends AbstractProductQueryBuilderTe
     public function testErrorLocale()
     {
         $this->expectException(InvalidPropertyException::class);
-        $this->expectExceptionMessage('Attribute "a_localizable_scopable_image" expects a locale, none given.');
+        $this->expectExceptionMessage('The a_localizable_scopable_image attribute requires a locale.');
 
         $this->executeFilter([['a_localizable_scopable_image', Operators::NOT_EQUAL, '2016-09-23']]);
     }

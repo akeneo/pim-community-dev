@@ -137,7 +137,7 @@ class LocalizableFilterIntegration extends AbstractProductQueryBuilderTestCase
     public function testErrorMetricLocalizable()
     {
         $this->expectException(InvalidPropertyException::class);
-        $this->expectExceptionMessage('Attribute "a_localizable_metric" expects a locale, none given.');
+        $this->expectExceptionMessage('The a_localizable_metric attribute requires a locale.');
 
         $this->executeFilter([['a_localizable_metric', Operators::NOT_EQUAL, ['amount' => 250, 'unit' => 'KILOWATT']]]);
     }

@@ -19,22 +19,14 @@ use Akeneo\Pim\Structure\Component\Model\AttributeInterface;
  */
 class AttributeValidatorHelper
 {
-    /** @var LocaleRepositoryInterface */
-    protected $localeRepository;
+    protected LocaleRepositoryInterface $localeRepository;
 
-    /** @var ChannelRepositoryInterface */
-    protected $scopeRepository;
+    protected ChannelRepositoryInterface $scopeRepository;
 
-    /** @var array */
-    protected $localeCodes;
+    protected ?array $localeCodes = null;
 
-    /** @var array */
-    protected $scopeCodes;
+    protected ?array $scopeCodes = null;
 
-    /**
-     * @param LocaleRepositoryInterface  $localeRepository
-     * @param ChannelRepositoryInterface $scopeRepository
-     */
     public function __construct(
         LocaleRepositoryInterface $localeRepository,
         ChannelRepositoryInterface $scopeRepository
@@ -46,34 +38,20 @@ class AttributeValidatorHelper
     /**
      * Check if locale data is consistent with the attribute localizable property
      *
-     * @param AttributeInterface $attribute
-     * @param string             $locale
-     *
      * @throws \LogicException
      */
-    public function validateLocale(AttributeInterface $attribute, $locale)
+    public function validateLocale(AttributeInterface $attribute, ?string $locale): void
     {
         if (!$attribute->isLocalizable() && null === $locale) {
             return;
         }
 
         if ($attribute->isLocalizable() && null === $locale) {
-            throw new LocalizableAttributeException(
-                sprintf(
-                    'Attribute "%s" expects a locale, none given.',
-                    $attribute->getCode()
-                )
-            );
+            throw LocalizableAttributeException::withCode($attribute->getCode());
         }
 
         if (!$attribute->isLocalizable() && null !== $locale) {
-            throw new NotLocalizableAttributeException(
-                sprintf(
-                    'Attribute "%s" does not expect a locale, "%s" given.',
-                    $attribute->getCode(),
-                    $locale
-                )
-            );
+            throw NotLocalizableAttributeException::withCode($attribute->getCode());
         }
 
         if (null === $this->localeCodes) {
@@ -104,14 +82,11 @@ class AttributeValidatorHelper
 
     /**
      * Check if metric family of attribute are the same
-     *
-     * @param AttributeInterface $fromAttribute
-     * @param AttributeInterface $toAttribute
      */
     public function validateUnitFamilies(
         AttributeInterface $fromAttribute,
         AttributeInterface $toAttribute
-    ) {
+    ): void {
         if ($fromAttribute->getMetricFamily() !== $toAttribute->getMetricFamily()) {
             throw new \LogicException(
                 sprintf(
@@ -126,12 +101,9 @@ class AttributeValidatorHelper
     /**
      * Check if scope data is consistent with the attribute scopable property
      *
-     * @param AttributeInterface $attribute
-     * @param string             $scope
-     *
      * @throws \LogicException
      */
-    public function validateScope(AttributeInterface $attribute, $scope)
+    public function validateScope(AttributeInterface $attribute, ?string $scope): void
     {
         if (!$attribute->isScopable() && null === $scope) {
             return;
@@ -171,18 +143,12 @@ class AttributeValidatorHelper
         }
     }
 
-    /**
-     * @return array
-     */
-    protected function getActivatedLocaleCodes()
+    protected function getActivatedLocaleCodes(): array
     {
         return $this->localeRepository->getActivatedLocaleCodes();
     }
 
-    /**
-     * @return array
-     */
-    protected function getScopeCodes()
+    protected function getScopeCodes(): array
     {
         return $this->scopeRepository->getChannelCodes();
     }
