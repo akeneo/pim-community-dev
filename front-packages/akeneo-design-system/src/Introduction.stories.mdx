@@ -15,6 +15,7 @@ export const getComponentLink = componentName => {
     case 'BooleanInput':
     case 'TextInput':
     case 'TagInput':
+    case 'TableInput':
       return `Components/Inputs/${componentName}`;
     default:
       return `Components/${componentName}`;
