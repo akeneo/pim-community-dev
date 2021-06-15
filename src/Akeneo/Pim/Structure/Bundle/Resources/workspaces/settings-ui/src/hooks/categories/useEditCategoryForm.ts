@@ -118,7 +118,7 @@ const useEditCategoryForm = (categoryId: number) => {
 
   useEffect(() => {
     loadCategory();
-  }, []);
+  }, [categoryId]);
 
   useEffect(() => {
     if (categoryData === null) {
