@@ -72,6 +72,8 @@ interface ProductModelRepositoryInterface extends
      */
     public function findChildrenProducts(ProductModelInterface $productModel): array;
 
+    public function findFirstCreatedVariantProductModel(ProductModelInterface $productModel): ?ProductModelInterface
+
     /**
      * Get root products models after the one provided. Mainly used to iterate
      * through a large collecion.
