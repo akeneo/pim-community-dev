@@ -12,7 +12,7 @@ use Symfony\Component\HttpKernel\Event\ResponseEvent;
 
 class AddContextHeaderResponseListenerSpec extends ObjectBehavior
 {
-    function it_injects_response_headers(
+    function it_injects_response_headers_without_query_string(
         BoundedContextResolver $boundedContextResolver,
         Request $request,
         ResponseEvent $event,
@@ -22,6 +22,8 @@ class AddContextHeaderResponseListenerSpec extends ObjectBehavior
         $boundedContextResolver->fromRequest($request)->shouldBeCalled()->willReturn('my_context');
 
         $event->getRequest()->shouldBeCalled()->willReturn($request);
+        $request->getPathInfo()->willReturn('my_path_info');
+
         $event->getResponse()->shouldBeCalled()->willReturn($response);
 
         $response->headers = $headers;
@@ -30,6 +32,7 @@ class AddContextHeaderResponseListenerSpec extends ObjectBehavior
         $this->shouldHaveType(AddContextHeaderResponseListener::class);
 
         $headers->set('x-akeneo-context', 'my_context')->shouldBeCalled();
+        $headers->set('x-request-path', 'my_path_info')->shouldBeCalled();
 
         $this->injectAkeneoContextHeader($event);
     }
