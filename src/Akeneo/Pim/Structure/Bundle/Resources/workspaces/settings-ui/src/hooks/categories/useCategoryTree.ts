@@ -20,6 +20,11 @@ const useCategoryTree = (treeId: number) => {
   const [data, fetch, fetchStatus, fetchError] = useFetch<BackendCategoryTree>(url);
 
   useEffect(() => {
+    if (fetchStatus === 'fetching' || fetchStatus === 'idle') {
+      // Tree is not loaded yet
+      return;
+    }
+
     if (fetchStatus === 'error') {
       setLoadingStatus(fetchStatus);
       setError(fetchError);
@@ -27,14 +32,10 @@ const useCategoryTree = (treeId: number) => {
       return;
     }
 
-    if (data === null && fetchStatus === 'fetched') {
+    if (data === null) {
       setTree(null);
       setLoadingStatus('error');
       setError(`Category tree [${treeId}] not found`);
-    }
-
-    if (data === null) {
-      // Tree is not loaded yet
       return;
     }
 
