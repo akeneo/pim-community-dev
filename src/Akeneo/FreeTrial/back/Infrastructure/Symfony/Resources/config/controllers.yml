@@ -1,6 +1,10 @@
 services:
   Akeneo\FreeTrial\Infrastructure\Controller\RetrieveUsersController:
     public: true
+    arguments:
+      - '@Akeneo\FreeTrial\Domain\Query\GetInvitedUsersQuery'
 
   Akeneo\FreeTrial\Infrastructure\Controller\SaveUsersController:
     public: true
+    arguments:
+      - '@Akeneo\FreeTrial\Application\InviteUser'

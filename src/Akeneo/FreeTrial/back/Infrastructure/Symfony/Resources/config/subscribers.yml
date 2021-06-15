@@ -1,0 +1,6 @@
+services:
+  Akeneo\FreeTrial\Infrastructure\Install\EventSubscriber\InitFreeTrialDbSchemaSubscriber:
+    arguments:
+      - '@database_connection'
+    tags:
+      - { name: 'kernel.event_subscriber' }

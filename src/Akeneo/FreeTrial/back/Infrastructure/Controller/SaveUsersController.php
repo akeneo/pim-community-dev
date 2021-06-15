@@ -3,6 +3,7 @@
 
 namespace Akeneo\FreeTrial\Infrastructure\Controller;
 
+use Akeneo\FreeTrial\Application\InviteUser;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
 
@@ -12,8 +13,21 @@ use Symfony\Component\HttpFoundation\Request;
  */
 class SaveUsersController
 {
+    private InviteUser $inviteUser;
+
+    public function __construct(InviteUser $inviteUser)
+    {
+        $this->inviteUser = $inviteUser;
+    }
+
     public function __invoke(Request $request): JsonResponse
     {
+        $emails = json_decode($request->getContent());
+
+        foreach ($emails as $email) {
+            ($this->inviteUser) ($email);
+        }
+
         return new JsonResponse([]);
     }
 }
