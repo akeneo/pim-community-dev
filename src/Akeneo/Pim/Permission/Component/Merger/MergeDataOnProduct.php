@@ -17,6 +17,7 @@ use Akeneo\Pim\Enrichment\Component\Product\EntityWithFamilyVariant\AddParent;
 use Akeneo\Pim\Enrichment\Component\Product\EntityWithFamilyVariant\RemoveParentInterface;
 use Akeneo\Pim\Enrichment\Component\Product\Model\EntityWithFamilyVariantInterface;
 use Akeneo\Pim\Enrichment\Component\Product\Model\ProductInterface;
+use Akeneo\Pim\Enrichment\Component\Product\Model\ProductModelInterface;
 use Akeneo\Pim\Enrichment\Component\Product\Repository\ProductModelRepositoryInterface;
 use Akeneo\Pim\Enrichment\Component\Product\Value\ScalarValue;
 use Akeneo\Pim\Permission\Component\NotGrantedDataMergerInterface;
@@ -70,9 +71,10 @@ class MergeDataOnProduct implements NotGrantedDataMergerInterface
             );
         }
 
-        $this->setParent($filteredProduct);
-
+        $filteredProductParent = $this->getParent($filteredProduct);
         if (null === $fullProduct) {
+            $filteredProduct->setParent($filteredProductParent);
+
             return $filteredProduct;
         }
 
@@ -97,10 +99,10 @@ class MergeDataOnProduct implements NotGrantedDataMergerInterface
         if ($filteredProduct->isVariant()) {
             if ($fullProduct->isVariant()) {
                 $fullProduct->setFamilyVariant($filteredProduct->getFamilyVariant());
-                $fullProduct->setParent($filteredProduct->getParent());
+                $fullProduct->setParent($filteredProductParent);
             } else {
                 $fullProduct = $this->addParent->to($fullProduct, $filteredProduct->getParent()->getCode());
-                $this->setParent($fullProduct);
+                $fullProduct->setParent($this->getParent($fullProduct));
             }
         } elseif ($fullProduct->isVariant()) {
             $this->removeParent->from($fullProduct);
@@ -116,13 +118,12 @@ class MergeDataOnProduct implements NotGrantedDataMergerInterface
     /**
      * @param EntityWithFamilyVariantInterface $entityWithFamilyVariant
      */
-    private function setParent(EntityWithFamilyVariantInterface $entityWithFamilyVariant): void
+    private function getParent(EntityWithFamilyVariantInterface $entityWithFamilyVariant): ?ProductModelInterface
     {
         if (null === $entityWithFamilyVariant->getParent()) {
-            return;
+            return null;
         }
 
-        $parent = $this->productModelRepository->find($entityWithFamilyVariant->getParent()->getId());
-        $entityWithFamilyVariant->setParent($parent);
+        return $this->productModelRepository->find($entityWithFamilyVariant->getParent()->getId());
     }
 }

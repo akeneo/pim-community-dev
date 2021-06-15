@@ -1,9 +1,12 @@
 # 5.0.x
 
+# 5.0.31 (2021-06-10)
+
 ## Bug fixes
 
 - PIM-9876: Fix purge of products old scores in Data Quality Insights
 - PIM-9884: Fix cannot create rule to make calculation with scopable price attributes
+- PIM-9883: Fix TIFF to jpeg conversion.
 
 # 5.0.30 (2021-06-04)
 
