@@ -6,6 +6,7 @@ export * from './MediaLinkInput/MediaLinkInput';
 export * from './MultiSelectInput/MultiSelectInput';
 export * from './NumberInput/NumberInput';
 export * from './SelectInput/SelectInput';
+export * from './TableInput/TableInput';
 export * from './TagInput/TagInput';
 export * from './TextAreaInput/TextAreaInput';
 export * from './TextInput/TextInput';
