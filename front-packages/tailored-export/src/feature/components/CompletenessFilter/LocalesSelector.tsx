@@ -12,6 +12,8 @@ const LocalesSelector = ({locales, onChange}: LocalesSelectorProps) => {
     const channels = useChannels();
     const availableLocales = getAllLocalesFromChannels(channels);
 
+    if (availableLocales.length === 0) return null;
+
     return (
         <Section>
             <Field label={translate('pim_connector.export.completeness.locale_selector.label')}>

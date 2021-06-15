@@ -40,15 +40,15 @@ const renderWithProviders = async (node: ReactNode) =>
     await act(async () => void baseRender(<FetcherContext.Provider value={fetchers}>{node})</FetcherContext.Provider>));
 
 test('it displays the selected locales', async () =>{
-    renderWithProviders(<LocalesSelector locales={['en_US']} onChange={() => {}}/>);
+    await renderWithProviders(<LocalesSelector locales={['en_US']} onChange={() => {}}/>);
+
+    expect(screen.queryByText('pim_connector.export.completeness.locale_selector.label')).toBeInTheDocument();
+    expect(screen.queryByText('English (American)')).toBeInTheDocument();
+})
+
+test('it notifies when  is changed', async () => {
+    await renderWithProviders(<LocalesSelector locales={['en_US', 'fr_FR']} onChange={() => {}}/>);
 
     expect(screen.getByText('pim_connector.export.completeness.locale_selector.label')).toBeInTheDocument();
     expect(screen.getByText('English (American)')).toBeInTheDocument();
 })
-
-// test('it notifies when the operator is changed', async () =>{
-//     renderWithProviders(<LocalesSelector locales={['en_US']} onChange={() => {}}/>);
-//
-//     expect(screen.getByText('pim_connector.export.completeness.locale_selector.label')).toBeInTheDocument();
-//     expect(screen.getByText('English (American)')).toBeInTheDocument();
-// })
