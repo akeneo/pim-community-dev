@@ -113,6 +113,7 @@ akeneo_connectivity.connection:
       regenerate: Regenerar
   delete_connection:
     title: Confirmar la eliminación
+    link: Esto es lo que sucederá.
   flow_type_helper:
     link: '¡Podemos ayudarte aquí mismo!'
   auditable_helper:
@@ -218,3 +219,6 @@ akeneo_connectivity.connection:
           3: en la configuración.
       not_data_source:
         title: Por ahora, la página de monitoreo sólo está disponible para conexión fuente.
+  runtime_error:
+    reload_helper: Por favor, recargue la página e inténtelo de nuevo.
+    reload_button: Recargar
