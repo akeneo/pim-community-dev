@@ -67,7 +67,6 @@ Akeneo\Pim\Structure\Component\Model\Attribute:
                                   message: TODO integer
                               - PositiveOrZero:
                                   message: TODO positive integer
-
                             max:
                               - Type:
                                   type: int

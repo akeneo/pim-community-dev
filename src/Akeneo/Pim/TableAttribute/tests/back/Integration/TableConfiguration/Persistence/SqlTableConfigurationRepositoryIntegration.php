@@ -206,7 +206,7 @@ final class SqlTableConfigurationRepositoryIntegration extends TestCase
                 'data_type' => 'text',
                 'column_order' => 1,
                 'labels' => '{}',
-                'validations' => \json_encode(['max_length' => 255])
+                'validations' => \json_encode(['max_length' => 100])
             ]
         );
 
@@ -224,7 +224,7 @@ final class SqlTableConfigurationRepositoryIntegration extends TestCase
                     'code' => 'quantity',
                     'data_type' => 'text',
                     'labels' => (object)[],
-                    'validations' => ['max_length' => 255],
+                    'validations' => ['max_length' => 90],
                 ]
             ],
             $result->normalize()
