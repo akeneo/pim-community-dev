@@ -77,7 +77,7 @@ JSON;
                 'data_type' => 'text',
                 'labels' => [],
                 'validations' => [
-                    'max_length' => 255,
+                    'max_length' => 100,
                 ]
             ]
         ], $decoded['table_configuration']);
@@ -157,7 +157,7 @@ JSON;
                 "code": "quantity",
                 "data_type": "text",
                 "validations": {
-                    "max_length": 255
+                    "max_length": 100
                 }
             }
         ]
