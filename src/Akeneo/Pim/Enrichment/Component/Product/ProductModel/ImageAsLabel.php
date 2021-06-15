@@ -74,6 +74,9 @@ class ImageAsLabel
         return $entity->getImage();
     }
 
+    /**
+     * @return ProductModelInterface | ProductInterface | null
+     */
     private function findFirstCreatedEntityWithFamilyVariantByParent(
         ProductModelInterface $productModel
     ): ?EntityWithFamilyVariantInterface {
