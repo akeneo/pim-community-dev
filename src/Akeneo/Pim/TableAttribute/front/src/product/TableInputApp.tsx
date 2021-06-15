@@ -8,18 +8,25 @@ type TableValue = { [columnCode: string]: any }[];
 type TableInputAppProps = {
   valueData: TableValue;
   tableConfiguration: TableConfiguration;
+  onChange: (tableValue: TableValue) => void;
 };
 
-const TableInputApp: React.FC<TableInputAppProps> = ({valueData, tableConfiguration}) => {
-
-  const [tableValue, setTableValue] = React.useState<TableValue>([...valueData]);
+const TableInputApp: React.FC<TableInputAppProps> = ({valueData, tableConfiguration, onChange}) => {
+  const valueClone = valueData.map(row => {
+    return Object.keys(row).reduce((o, k) => {
+      o[k] = row[k];
+      return o;
+    }, {})
+  });
+  const [tableValue, setTableValue] = React.useState<TableValue>(valueClone);
 
   const handleChange = (rowIndex: number, columnCode: ColumnCode, cellValue: string) => {
     const row = tableValue[rowIndex];
-    delete row[columnCode];
     row[columnCode] = cellValue;
-    tableValue[rowIndex] = {...row};
-    setTableValue([...tableValue]);
+    tableValue[rowIndex] = row;
+    const newTableValue = [...tableValue];
+    setTableValue(newTableValue);
+    onChange(newTableValue);
   };
 
   const userContext = useUserContext();

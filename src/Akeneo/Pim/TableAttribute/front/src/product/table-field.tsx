@@ -17,12 +17,15 @@ class TableField extends (Field as {new (config: any): any}) {
   renderInput(templateContext: any) {
     const valueData = templateContext.value.data;
     const tableConfiguration = templateContext.attribute.table_configuration as TableConfiguration;
-
     const container = document.createElement('div');
+    const handleChange = (value: any) => {
+      this.setCurrentValue(value);
+    }
+
     ReactDOM.render(
       <DependenciesProvider>
         <ThemeProvider theme={pimTheme}>
-          <TableInputApp valueData={valueData} tableConfiguration={tableConfiguration}/>
+          <TableInputApp valueData={valueData} tableConfiguration={tableConfiguration} onChange={handleChange}/>
         </ThemeProvider>
       </DependenciesProvider>,
       container
