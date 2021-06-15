@@ -174,6 +174,7 @@ class ProductIndexerSpec extends ObjectBehavior
             $identifier,
             new \DateTimeImmutable('2019-03-16 12:03:00', new \DateTimeZone('UTC')),
             new \DateTimeImmutable('2019-03-16 12:03:00', new \DateTimeZone('UTC')),
+            new \DateTimeImmutable('2019-03-16 12:03:00', new \DateTimeZone('UTC')),
             true,
             'family_code',
             [],

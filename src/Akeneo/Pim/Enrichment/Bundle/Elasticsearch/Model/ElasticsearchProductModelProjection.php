@@ -15,65 +15,37 @@ final class ElasticsearchProductModelProjection
 {
     private const INDEX_DATE_FORMAT = 'c';
 
-    /** @var int */
-    private $id;
-
-    /** @var string */
-    private $code;
-
-    /** @var \DateTimeImmutable */
-    private $createdDate;
-
-    /** @var \DateTimeImmutable */
-    private $updatedDate;
-
-    /** @var string */
-    private $familyCode;
-
+    private int $id;
+    private string $code;
+    private \DateTimeImmutable $createdDate;
+    private \DateTimeImmutable $updatedDate;
+    private \DateTimeImmutable $entityUpdatedDate;
+    private string $familyCode;
     /** @var string[] */
-    private $familyLabels;
-
-    /** @var string */
-    private $familyVariantCode;
-
+    private array $familyLabels;
+    private string $familyVariantCode;
     /** @var string[] */
-    private $categoryCodes;
-
+    private array $categoryCodes;
     /** @var string[] */
-    private $ancestorCategoryCodes;
-
-    /** @var string|null */
-    private $parentCode;
-
-    /** @var array */
-    private $values;
-
-    /** @var array */
-    private $allComplete;
-
-    /** @var array */
-    private $allIncomplete;
-
-    /** @var int|null */
-    private $parentId;
-
-    /** @var array */
-    private $labels;
-
+    private array $ancestorCategoryCodes;
+    private ?string $parentCode;
+    private array $values;
+    private array $allComplete;
+    private array $allIncomplete;
+    private ?int $parentId;
+    private array $labels;
     /** @var string[] */
-    private $ancestorAttributeCodes;
-
+    private array $ancestorAttributeCodes;
     /** @var string[] */
-    private $attributesForThisLevel;
-
-    /** @var array */
-    private $additionalData = [];
+    private array $attributesForThisLevel;
+    private array $additionalData = [];
 
     public function __construct(
         int $id,
         string $code,
         \DateTimeImmutable $createdDate,
         \DateTimeImmutable $updatedDate,
+        \DateTimeImmutable $entityUpdatedDate,
         string $familyCode,
         array $familyLabels,
         string $familyVariantCode,
@@ -93,6 +65,7 @@ final class ElasticsearchProductModelProjection
         $this->code = $code;
         $this->createdDate = $createdDate;
         $this->updatedDate = $updatedDate;
+        $this->entityUpdatedDate = $entityUpdatedDate;
         $this->familyCode = $familyCode;
         $this->familyLabels = $familyLabels;
         $this->familyVariantCode = $familyVariantCode;
@@ -118,6 +91,7 @@ final class ElasticsearchProductModelProjection
             $this->code,
             $this->createdDate,
             $this->updatedDate,
+            $this->entityUpdatedDate,
             $this->familyCode,
             $this->familyLabels,
             $this->familyVariantCode,
@@ -142,6 +116,7 @@ final class ElasticsearchProductModelProjection
             'identifier' => $this->code,
             'created' => $this->createdDate->format(self::INDEX_DATE_FORMAT),
             'updated' => $this->updatedDate->format(self::INDEX_DATE_FORMAT),
+            'entity_updated' => $this->entityUpdatedDate->format(self::INDEX_DATE_FORMAT),
             'family' => [
                 'code' => $this->familyCode,
                 'labels' => $this->familyLabels,
