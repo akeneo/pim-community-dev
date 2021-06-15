@@ -78,7 +78,7 @@ class ImageAsLabel
     /**
      * @return ProductModelInterface | ProductInterface | null
      */
-    private function findFirstCreatedEntityWithFamilyVariantByParent(ProductModelInterface $productModel) 
+    private function findFirstCreatedEntityWithFamilyVariantByParent(ProductModelInterface $productModel)
     {
         $productChild = $this->productRepository->findLastCreatedByParent($productModel);
         if (null !== $productChild) {
