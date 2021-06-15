@@ -3,6 +3,7 @@ import {Channel, renderWithProviders as baseRender} from '@akeneo-pim-community/
 import {LocalesSelector} from "./LocalesSelector";
 import React, {ReactNode} from "react";
 import {FetcherContext} from "../../contexts";
+import userEvent from "@testing-library/user-event";
 
 const channels: Channel[] = [
     {
@@ -46,9 +47,12 @@ test('it displays the selected locales', async () =>{
     expect(screen.queryByText('English (American)')).toBeInTheDocument();
 })
 
-test('it notifies when  is changed', async () => {
-    await renderWithProviders(<LocalesSelector locales={['en_US', 'fr_FR']} onChange={() => {}}/>);
+test('it notifies when a locale is added to the selection', async () => {
+    const onLocalesSelectionChange = jest.fn();
+    await renderWithProviders(<LocalesSelector locales={['fr_FR']} onChange={onLocalesSelectionChange} />);
 
-    expect(screen.getByText('pim_connector.export.completeness.locale_selector.label')).toBeInTheDocument();
-    expect(screen.getByText('English (American)')).toBeInTheDocument();
+    userEvent.click(screen.getByText('pim_connector.export.completeness.locale_selector.label'));
+    userEvent.click(screen.getByText('English (American)'));
+
+    expect(onLocalesSelectionChange).toHaveBeenCalledWith(['fr_FR', 'en_US']);
 })
