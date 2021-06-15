@@ -10,7 +10,7 @@ import {
   getFontSize,
   TabBar,
 } from 'akeneo-design-system';
-import {CategoryFilter, ColumnsTab} from './feature';
+import {CompletenessFilter, CategoryFilter, ColumnsTab} from './feature';
 import {useEffect} from 'react';
 import {NotificationLevel, useNotify, useRoute, useTranslate, ValidationError} from '@akeneo-pim-community/shared';
 import {ColumnConfiguration} from './feature/models/ColumnConfiguration';
@@ -103,6 +103,8 @@ const FakePIM = () => {
     });
   };
 
+   // handle completeness change
+
   const saveJobConfiguration = async () => {
     setValidationErrors([]);
     const response = await fetch(saveRoute, {
@@ -172,6 +174,7 @@ const FakePIM = () => {
           <TabBar.Tab isActive={true}>Select the columns</TabBar.Tab>
           <TabBar.Tab isActive={false}>History</TabBar.Tab>
         </TabBar>
+        <CompletenessFilter operator="ALL" locales={['fr_FR', 'EN_US']} onOperatorChange={() => {}} onLocalesChange={() => {}} />
         <ColumnsTab
           validationErrors={validationErrors}
           columnsConfiguration={jobConfiguration.configuration.columns}
