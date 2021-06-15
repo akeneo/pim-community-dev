@@ -45,10 +45,10 @@ class AttributeValidatorHelperSpec extends ObjectBehavior
         $name->isLocalizable()->willReturn(false);
         $name->getCode()->willReturn('name');
 
-        $this->shouldThrow(new \LogicException('Attribute "description" expects a locale, none given.'))
+        $this->shouldThrow(new \LogicException('The description attribute requires a locale.'))
             ->during('validateLocale', [$description, null]);
 
-        $this->shouldThrow(new \LogicException('Attribute "name" does not expect a locale, "en_US" given.'))
+        $this->shouldThrow(new \LogicException('The name attribute is not localisable.'))
             ->during('validateLocale', [$name, 'en_US']);
     }
 
@@ -129,9 +129,7 @@ class AttributeValidatorHelperSpec extends ObjectBehavior
 
 class InitializedAttributeValidatorHelper extends AttributeValidatorHelper
 {
-    /** @var array */
-    protected $localeCodes = ['en_US', 'fr_FR'];
+    protected array $localeCodes = ['en_US', 'fr_FR'];
 
-    /** @var array */
-    protected $scopeCodes = ['ecommerce', 'tablet'];
+    protected array $scopeCodes = ['ecommerce', 'tablet'];
 }

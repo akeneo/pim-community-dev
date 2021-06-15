@@ -124,14 +124,14 @@ class LocalizableFilterIntegration extends AbstractProductQueryBuilderTestCase
         $result = $this->executeFilter([['a_localizable_date', Operators::NOT_BETWEEN, [new \DateTime('2016-04-23T00:00:00'), '2016-09-23'], ['locale' => 'en_US']]]);
         $this->assert($result, []);
     }
-    
+
     public function testErrorMetricLocalizable()
     {
         $this->expectException(InvalidPropertyException::class);
-        $this->expectExceptionMessage('Attribute "a_localizable_date" expects a locale, none given.');
+        $this->expectExceptionMessage('The a_localizable_date attribute requires a locale.');
         $this->executeFilter([['a_localizable_date', Operators::NOT_EQUAL, 250]]);
     }
-    
+
     public function testLocaleNotFound()
     {
         $this->expectException(InvalidPropertyException::class);
