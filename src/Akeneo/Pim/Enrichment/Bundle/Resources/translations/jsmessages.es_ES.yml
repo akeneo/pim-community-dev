@@ -433,6 +433,8 @@ pim_datagrid:
       label: Grupos
     enabled:
       label: Estado
+    scope:
+      label: Ámbito
     completeness:
       label: Completo
     created:
