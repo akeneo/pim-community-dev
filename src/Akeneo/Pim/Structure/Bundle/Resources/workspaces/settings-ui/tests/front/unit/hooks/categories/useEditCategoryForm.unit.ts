@@ -22,14 +22,18 @@ describe('useEditCategoryForm', () => {
   };
 
   test('it returns default values', () => {
-    const useCategoryResult = aCategoryResult();
+    const categoryResult = aCategoryResult();
     // @ts-ignore
-    useCategory.mockReturnValue(useCategoryResult);
+    useCategory.mockReturnValue(categoryResult);
 
     const {result} = renderUseEditCategoryForm(42);
+    const [categoryData] = categoryResult;
+
     expect(result.current.categoryLoadingStatus).toBe('fetched');
-    expect(result.current.category).toStrictEqual(useCategoryResult.categoryData.category);
-    expect(result.current.formData).toStrictEqual(useCategoryResult.categoryData.form);
+    // @ts-ignore
+    expect(result.current.category).toStrictEqual(categoryData.category);
+    // @ts-ignore
+    expect(result.current.formData).toStrictEqual(categoryData.form);
     expect(result.current.onChangeCategoryLabel).toBeDefined();
     expect(result.current.onChangePermissions).toBeDefined();
     expect(result.current.onChangeApplyPermissionsOnChildren).toBeDefined();
@@ -281,14 +285,14 @@ describe('useEditCategoryForm', () => {
     const root = aCategory('root', {}, 1, null);
     const category = aCategory('cat_1', {en_US: 'Ziggy'}, 42, root);
 
-    return {
-      categoryData: {
+    return [
+      {
         category,
         form: aCategoryForm,
       },
-      load: () => Promise.resolve('fetched'),
-      status: 'fetched',
-      error: null,
-    };
+      () => Promise.resolve('fetched'),
+      'fetched',
+      null,
+    ];
   };
 });
