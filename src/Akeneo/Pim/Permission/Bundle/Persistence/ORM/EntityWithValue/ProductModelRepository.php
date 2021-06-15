@@ -181,6 +181,32 @@ class ProductModelRepository extends EntityRepository implements ProductModelRep
     /**
      * {@inheritdoc}
      */
+    public function findFirstCreatedVariantProductModel(ProductModelInterface $productModel): ?ProductModelInterface
+    {
+        /** TODO pull up in master: remove if-else, call directly findFirstCreatedVariantProductModel */
+        if (method_exists($this->productModelRepository, 'findFirstCreatedVariantProductModel')) {
+            $productModel = $this->productModelRepository->findFirstCreatedVariantProductModel($productModel);
+        } else {
+            $productModel = current($this->productModelRepository->findBy(
+                ['parent' => $productModel],
+                ['created' => 'ASC', 'code' => 'ASC'],
+                1
+            ));
+        }
+
+        if (!$this->authorizationChecker->isGranted(Attributes::VIEW, $productModel)) {
+            return null;
+        }
+
+        $filteredProductModel = $this->filteredProductModelFactory->create($productModel);
+        $filteredProductModel->cleanup();
+
+        return $filteredProductModel;
+    }
+
+    /**
+     * {@inheritdoc}
+     */
     public function findDescendantProductIdentifiers(ProductModelInterface $productModel): array
     {
         return $this->productModelRepository->findDescendantProductIdentifiers($productModel);
