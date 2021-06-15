@@ -51,6 +51,7 @@
 - PIM-9874: Fix slow SQL query when many assets are linked to products when getting products through API
 - PIM-9879: Fix notification link when a proposal on a product model was accepted or rejected 
 - PIM-9897: Simultaneous different mass publish jobs create Deadlock issue
+- PIM-9912: Exception is not caught at the beginning of rules execution
 
 ## Improvements
 

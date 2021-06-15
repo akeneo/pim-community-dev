@@ -297,6 +297,35 @@ class ExecuteRulesTaskletSpec extends ObjectBehavior
         $this->execute();
     }
 
+    function it_still_continues_to_execute_the_rules_when_counting_the_products_fails(
+        RuleDefinitionRepositoryInterface $ruleDefinitionRepository,
+        RunnerInterface $ruleRunner,
+        DryRunnerInterface $dryRuleRunner,
+        JobParameters $jobParameters,
+        StepExecution $stepExecution,
+        JobStopper $jobStopper
+    ) {
+        $jobParameters->get('rule_codes')->willReturn(['rule1']);
+        $jobParameters->get('dry_run')->willReturn(false);
+
+        $ruleDefinitionRepository->findBy(['code' => ['rule1']], ['priority' => 'DESC'])
+            ->willReturn([new RuleDefinition()]);
+
+        $dryRuleRunner
+            ->dryRun(Argument::type(RuleDefinition::class))
+            ->shouldBeCalledOnce()
+            ->willThrow(new \LogicException('an exception'));
+
+        $stepExecution->setTotalItems(0)->shouldBeCalledOnce();
+        $stepExecution->setSummary(Argument::type('array'))->shouldBeCalled();
+
+        $stepExecution->setSummary(Argument::type('array'))->shouldBeCalled();
+        $ruleRunner->run(Argument::type(RuleDefinition::class))->shouldBeCalledOnce();
+        $jobStopper->isStopping($stepExecution)->willReturn(false);
+
+        $this->execute();
+    }
+
     function it_can_be_stopped(
         RuleDefinitionRepositoryInterface $ruleDefinitionRepository,
         RunnerInterface $ruleRunner,
