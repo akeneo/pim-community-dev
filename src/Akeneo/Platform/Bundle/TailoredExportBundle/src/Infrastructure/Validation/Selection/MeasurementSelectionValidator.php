@@ -10,6 +10,7 @@ use Symfony\Component\Validator\Constraint;
 use Symfony\Component\Validator\Constraints\Choice;
 use Symfony\Component\Validator\Constraints\Collection;
 use Symfony\Component\Validator\Constraints\NotBlank;
+use Symfony\Component\Validator\Constraints\Optional;
 use Symfony\Component\Validator\Constraints\Type;
 use Symfony\Component\Validator\ConstraintValidator;
 use Symfony\Component\Validator\Validation;
@@ -36,7 +37,7 @@ class MeasurementSelectionValidator extends ConstraintValidator
                                 ]
                             )
                         ],
-                        'label' => new Type(['type' => 'string']),
+                        'locale' => new Optional([new Type(['type' => 'string'])]),
                     ],
                 ]
             ),

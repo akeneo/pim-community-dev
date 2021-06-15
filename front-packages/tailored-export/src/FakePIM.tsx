@@ -120,7 +120,7 @@ const FakePIM = () => {
       try {
         const json = await response.json();
         setValidationErrors(json.normalized_errors);
-      } catch (e) {}
+      } catch (error) {}
 
       notify(NotificationLevel.ERROR, translate('pim_import_export.entity.job_instance.flash.update.fail'));
     } else {

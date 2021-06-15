@@ -1,59 +1,54 @@
 import {LocaleCode} from '@akeneo-pim-community/shared';
 import {Attribute} from './Attribute';
 
-const availableSeparators = [
-  ',',
-  ';',
-  '|'
-];
+const availableSeparators = [',', ';', '|'];
 
-type SelectionSeparator = typeof availableSeparators[number];
+type CollectionSeparator = typeof availableSeparators[number];
 
 type CodeLabelSelection =
   | {
-  type: 'code';
-}
+      type: 'code';
+    }
   | {
-  type: 'label';
-  locale: LocaleCode;
-};
+      type: 'label';
+      locale: LocaleCode;
+    };
 
 type CodeLabelCollectionSelection =
   | {
-    type: 'code';
-    separator: SelectionSeparator;
-  }
+      type: 'code';
+      separator: CollectionSeparator;
+    }
   | {
-    type: 'label';
-    locale: LocaleCode;
-    separator: SelectionSeparator;
-  };
+      type: 'label';
+      locale: LocaleCode;
+      separator: CollectionSeparator;
+    };
 
 type PriceCollectionSelection =
   | {
-    type: 'amount';
-  }
+      type: 'amount';
+    }
   | {
-    type: 'currency';
-  }
-;
+      type: 'currency';
+    };
 
 type MeasurementSelection =
   | {
-    type: 'code';
-  }
+      type: 'code';
+    }
   | {
-    type: 'label';
-    locale: LocaleCode;
-  }
+      type: 'label';
+      locale: LocaleCode;
+    }
   | {
-    type: 'amount';
-  }
-;
+      type: 'amount';
+    };
 
 type Selection = CodeLabelSelection | CodeLabelCollectionSelection | PriceCollectionSelection | MeasurementSelection;
 
-const isSelectionSeparator = (separator: unknown) : separator is SelectionSeparator => typeof separator === 'string' && availableSeparators.includes(separator);
+const isCollectionSeparator = (separator: unknown): separator is CollectionSeparator =>
+  typeof separator === 'string' && availableSeparators.includes(separator);
 
 const getDefaultSelectionByAttribute = (attribute: Attribute): Selection => {
   switch (attribute.type) {
@@ -68,12 +63,11 @@ const getDefaultSelectionByAttribute = (attribute: Attribute): Selection => {
   }
 };
 
-export {availableSeparators, isSelectionSeparator, getDefaultSelectionByAttribute};
+export {availableSeparators, isCollectionSeparator, getDefaultSelectionByAttribute};
 export type {
-  Selection,
-  CodeLabelSelection,
   CodeLabelCollectionSelection,
-  PriceCollectionSelection,
+  CodeLabelSelection,
   MeasurementSelection,
-  SelectionSeparator
+  PriceCollectionSelection,
+  Selection,
 };

@@ -1,7 +1,7 @@
 import React, {useEffect} from 'react';
 import styled from 'styled-components';
 import {Helper, SectionTitle, useTabBar} from 'akeneo-design-system';
-import {useTranslate} from '@akeneo-pim-community/shared';
+import {filterErrors, useTranslate} from '@akeneo-pim-community/shared';
 import {
   addAttributeSource,
   addPropertySource,
@@ -78,6 +78,8 @@ const ColumnDetails = ({columnConfiguration, onColumnChange}: ColumnDetailsProps
   };
 
   const sourcesErrors = useValidationErrors(`[columns][${columnConfiguration.uuid}][sources]`, true);
+  const validationErrors = useValidationErrors(`[columns][${columnConfiguration.uuid}][sources]`, false);
+
 
   return (
     <Container>
@@ -95,7 +97,13 @@ const ColumnDetails = ({columnConfiguration, onColumnChange}: ColumnDetailsProps
             {translate(error.messageTemplate, error.parameters)}
           </Helper>
         ))}
-        {currentSource && <SourceConfigurator source={currentSource} onSourceChange={handleSourceChange} />}
+        {currentSource && (
+          <SourceConfigurator
+            source={currentSource}
+            validationErrors={filterErrors(validationErrors, `[${currentSource.uuid}]`)}
+            onSourceChange={handleSourceChange}
+          />
+        )}
         {currentSource && <SourceFooter source={currentSource} onSourceRemove={handleSourceRemove} />}
         {columnConfiguration.sources.length === 0 && <NoSourcePlaceholder />}
       </Content>

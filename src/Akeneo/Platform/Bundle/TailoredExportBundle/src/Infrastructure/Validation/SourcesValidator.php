@@ -14,7 +14,7 @@ declare(strict_types=1);
 namespace Akeneo\Platform\TailoredExport\Infrastructure\Validation;
 
 use Akeneo\Pim\Structure\Component\Query\PublicApi\AttributeType\GetAttributes;
-use Akeneo\Platform\Bundle\TailoredExportBundle\src\Domain\SourceTypes;
+use Akeneo\Platform\TailoredExport\Domain\SourceTypes;
 use Symfony\Component\Validator\Constraint;
 use Symfony\Component\Validator\Constraints\Choice;
 use Symfony\Component\Validator\Constraints\Collection;
@@ -23,7 +23,6 @@ use Symfony\Component\Validator\Constraints\NotBlank;
 use Symfony\Component\Validator\Constraints\Type;
 use Symfony\Component\Validator\Constraints\Uuid;
 use Symfony\Component\Validator\ConstraintValidator;
-use Symfony\Component\Validator\Validation;
 use Symfony\Component\Validator\Validator\ValidatorInterface;
 
 class SourcesValidator extends ConstraintValidator

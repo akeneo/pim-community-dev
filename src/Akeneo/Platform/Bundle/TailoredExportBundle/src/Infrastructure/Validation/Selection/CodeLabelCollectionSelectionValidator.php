@@ -10,6 +10,7 @@ use Symfony\Component\Validator\Constraint;
 use Symfony\Component\Validator\Constraints\Choice;
 use Symfony\Component\Validator\Constraints\Collection;
 use Symfony\Component\Validator\Constraints\NotBlank;
+use Symfony\Component\Validator\Constraints\Optional;
 use Symfony\Component\Validator\Constraints\Type;
 use Symfony\Component\Validator\ConstraintValidator;
 
@@ -43,7 +44,6 @@ class CodeLabelCollectionSelectionValidator extends ConstraintValidator
                             )
                         ],
                         'separator' => [
-                            new NotBlank(),
                             new Choice(
                                 [
                                     'strict' => true,
@@ -51,7 +51,7 @@ class CodeLabelCollectionSelectionValidator extends ConstraintValidator
                                 ]
                             )
                         ],
-                        'label' => new Type(['type' => 'string']),
+                        'locale' => new Optional([new Type(['type' => 'string'])]),
                     ],
                 ]
             ),
@@ -63,6 +63,7 @@ class CodeLabelCollectionSelectionValidator extends ConstraintValidator
                     $violation->getMessage(),
                     $violation->getParameters()
                 )
+                    ->atPath($violation->getPropertyPath())
                     ->addViolation();
             }
 

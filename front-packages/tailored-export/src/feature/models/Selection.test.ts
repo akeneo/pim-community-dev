@@ -1,23 +1,29 @@
-import {getDefaultSelectionByAttribute} from './Selection';
+import {getDefaultSelectionByAttribute, isCollectionSeparator} from './Selection';
 import {Attribute} from './Attribute';
 
-test('it return default selection by attribute type', () => {
-  const textAttribute: Attribute = {
-    code: 'name',
-    type: 'pim_catalog_text',
-    labels: {},
-    scopable: false,
-    localizable: false,
-  };
+const getAttribute = (type: string): Attribute => ({
+  code: 'nice_attribute',
+  type,
+  labels: {},
+  scopable: false,
+  localizable: false,
+});
 
-  const priceCollectionAttribute: Attribute = {
-    code: 'name',
-    type: 'pim_catalog_price_collection',
-    labels: {},
-    scopable: false,
-    localizable: false,
-  };
+test('it returns default selection by attribute type', () => {
+  expect(getDefaultSelectionByAttribute(getAttribute('pim_catalog_text'))).toEqual({type: 'code'});
+  expect(getDefaultSelectionByAttribute(getAttribute('pim_catalog_price_collection'))).toEqual({type: 'amount'});
+  expect(getDefaultSelectionByAttribute(getAttribute('pim_catalog_price_collection'))).toEqual({type: 'amount'});
+  expect(getDefaultSelectionByAttribute(getAttribute('pim_catalog_multiselect'))).toEqual({
+    type: 'code',
+    separator: ',',
+  });
+});
 
-  expect(getDefaultSelectionByAttribute(textAttribute)).toEqual({type: 'code'});
-  expect(getDefaultSelectionByAttribute(priceCollectionAttribute)).toEqual({type: 'amount'});
+test('it can tell if something is a valid selection separator', () => {
+  expect(isCollectionSeparator(',')).toEqual(true);
+  expect(isCollectionSeparator(';')).toEqual(true);
+  expect(isCollectionSeparator('|')).toEqual(true);
+  expect(isCollectionSeparator('coucou')).toEqual(false);
+  expect(isCollectionSeparator('')).toEqual(false);
+  expect(isCollectionSeparator('.')).toEqual(false);
 });

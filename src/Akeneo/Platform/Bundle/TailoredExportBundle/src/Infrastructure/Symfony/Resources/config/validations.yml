@@ -1,7 +1,4 @@
 services:
-  _defaults:
-    public: true
-
   akeneo.tailored_export.validation.source.code_label_selection.constraint:
     class: 'Akeneo\Platform\TailoredExport\Infrastructure\Validation\Selection\CodeLabelSelection'
 
@@ -49,10 +46,4 @@ services:
       - '@pim_channel.query.cache.channel_exists_with_locale'
     tags:
       - { name: validator.constraint_validator, alias: 'akeneo.tailored_export.validation.locale_should_be_active' }
-    public: true
-
-  akeneo.tailored_export.validation.column:
-    class: 'Akeneo\Platform\TailoredExport\Infrastructure\Validation\ColumnsValidator'
-    tags:
-      - { name: validator.constraint_validator, alias: 'akeneo.tailored_export.validation.column' }
     public: true

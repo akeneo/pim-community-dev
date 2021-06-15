@@ -1,6 +1,6 @@
 import React from 'react';
 import styled from 'styled-components';
-import {getLocaleFromChannel, ChannelCode, LocaleCode} from '@akeneo-pim-community/shared';
+import {getLocaleFromChannel, ChannelCode, LocaleCode, ValidationError} from '@akeneo-pim-community/shared';
 import {useChannels} from '../../hooks';
 import {Source} from '../../models';
 import {ChannelDropdown} from './SourceConfigurator/ChannelDropdown';
@@ -17,10 +17,11 @@ const Container = styled.div`
 
 type SourceConfiguratorProps = {
   source: Source;
+  validationErrors: ValidationError[];
   onSourceChange: (updatedSource: Source) => void;
 };
 
-const SourceConfigurator = ({source, onSourceChange}: SourceConfiguratorProps) => {
+const SourceConfigurator = ({source, validationErrors, onSourceChange}: SourceConfiguratorProps) => {
   const channels = useChannels();
 
   return (
@@ -43,7 +44,7 @@ const SourceConfigurator = ({source, onSourceChange}: SourceConfiguratorProps) =
           }}
         />
       )}
-      <Operations source={source} onSourceChange={onSourceChange} />
+      <Operations source={source} validationErrors={validationErrors} onSourceChange={onSourceChange} />
     </Container>
   );
 };

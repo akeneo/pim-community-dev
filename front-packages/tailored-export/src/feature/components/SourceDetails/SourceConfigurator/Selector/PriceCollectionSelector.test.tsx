@@ -65,7 +65,7 @@ test('it can select a currency selection type', async () => {
   );
 
   userEvent.click(screen.getByText('pim_common.type'));
-  userEvent.click(screen.getByTitle('pim_common.currency'));
+  userEvent.click(screen.getByTitle('akeneo.tailored_export.column_details.sources.selection.type.currency'));
 
   expect(onSelectionChange).toHaveBeenCalledWith({type: 'currency'});
 });

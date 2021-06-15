@@ -1,6 +1,6 @@
 import React, {useState} from 'react';
 import {Collapse} from 'akeneo-design-system';
-import {useTranslate} from '@akeneo-pim-community/shared';
+import {filterErrors, useTranslate, ValidationError} from '@akeneo-pim-community/shared';
 import {useAttribute} from '../../../hooks';
 import {Source} from '../../../models';
 import {NoOperationsPlaceholder} from './NoOperationsPlaceholder';
@@ -8,10 +8,11 @@ import {Selector} from './Selector/Selector';
 
 type OperationsProps = {
   source: Source;
+  validationErrors: ValidationError[];
   onSourceChange: (updatedSource: Source) => void;
 };
 
-const Operations = ({source, onSourceChange}: OperationsProps) => {
+const Operations = ({source, validationErrors, onSourceChange}: OperationsProps) => {
   const translate = useTranslate();
   const [isSelectorCollapsed, toggleSelectorCollapse] = useState<boolean>(true);
   const attribute = useAttribute(source.code);
@@ -31,6 +32,7 @@ const Operations = ({source, onSourceChange}: OperationsProps) => {
     <Selector
       attribute={attribute}
       selection={source.selection}
+      validationErrors={filterErrors(validationErrors, '[selection]')}
       onSelectionChange={updatedSelection => onSourceChange({...source, selection: updatedSelection})}
     />
   );

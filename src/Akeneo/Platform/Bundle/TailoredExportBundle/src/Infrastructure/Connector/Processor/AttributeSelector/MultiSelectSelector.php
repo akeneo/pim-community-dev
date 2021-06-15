@@ -58,7 +58,7 @@ class MultiSelectSelector implements AttributeSelectorInterface
                 throw new \LogicException(sprintf('Selection type "%s" is not supported', $selectionConfiguration['type']));
         }
 
-        return implode(', ', $selectedData);
+        return implode($selectionConfiguration['separator'], $selectedData);
     }
 
     public function supports(array $selectionConfiguration, Attribute $attribute): bool
