@@ -106,6 +106,37 @@ test('it handles empty cases', () => {
   expect(onChange).not.toHaveBeenCalled();
 });
 
+test('it handles empty cases', () => {
+  const onChange = jest.fn();
+  render(
+    <MultiSelectInput
+      value={[]}
+      onChange={onChange}
+      placeholder="Placeholder"
+      removeLabel="Remove"
+      emptyResultLabel="Empty result"
+    >
+      <MultiSelectInput.Option value="en_US">English</MultiSelectInput.Option>
+      <MultiSelectInput.Option value="fr_FR">French</MultiSelectInput.Option>
+      <MultiSelectInput.Option value="de_DE">German</MultiSelectInput.Option>
+      <MultiSelectInput.Option value="es_ES">Spanish</MultiSelectInput.Option>
+    </MultiSelectInput>
+  );
+
+  const input = screen.getByRole('textbox');
+  fireEvent.click(input);
+  fireEvent.change(input, {target: {value: 'France 3'}});
+
+  const germanOption = screen.queryByText('German');
+  expect(germanOption).not.toBeInTheDocument();
+  const frenchOption = screen.queryByText('French');
+  expect(frenchOption).not.toBeInTheDocument();
+  expect(screen.getByText('Empty result')).toBeInTheDocument();
+
+  fireEvent.keyDown(input, {key: 'Enter', code: 'Enter'});
+  expect(onChange).not.toHaveBeenCalled();
+});
+
 test('it handles removing a Chip', () => {
   const onChange = jest.fn();
   render(
