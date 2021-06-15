@@ -1,6 +1,12 @@
 import React from 'react';
 import styled from 'styled-components';
-import {getLocaleFromChannel, ChannelCode, LocaleCode, ValidationError} from '@akeneo-pim-community/shared';
+import {
+  filterErrors,
+  getLocaleFromChannel,
+  ChannelCode,
+  LocaleCode,
+  ValidationError,
+} from '@akeneo-pim-community/shared';
 import {useChannels} from '../../hooks';
 import {Source} from '../../models';
 import {ChannelDropdown} from './SourceConfigurator/ChannelDropdown';
@@ -23,12 +29,16 @@ type SourceConfiguratorProps = {
 
 const SourceConfigurator = ({source, validationErrors, onSourceChange}: SourceConfiguratorProps) => {
   const channels = useChannels();
+  const localeErrors = filterErrors(validationErrors, '[locale]');
+  const channelErrors = filterErrors(validationErrors, '[channel]');
 
   return (
     <Container>
       {null !== source.channel && (
         <ChannelDropdown
           value={source.channel}
+          channels={channels}
+          validationErrors={channelErrors}
           onChange={(channelCode: ChannelCode) => {
             const localeCode = getLocaleFromChannel(channels, channelCode, source.locale);
             onSourceChange({...source, locale: localeCode, channel: channelCode});
@@ -39,6 +49,7 @@ const SourceConfigurator = ({source, validationErrors, onSourceChange}: SourceCo
         <LocaleDropdown
           value={source.locale}
           channel={source.channel}
+          validationErrors={localeErrors}
           onChange={(localeCode: LocaleCode) => {
             onSourceChange({...source, locale: localeCode});
           }}

@@ -1,10 +1,11 @@
 import React, {ReactNode} from 'react';
 import {act, screen} from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
-import {Channel, renderWithProviders as baseRender} from '@akeneo-pim-community/shared';
+import {Channel, renderWithProviders as baseRender, ValidationError} from '@akeneo-pim-community/shared';
 import {CodeLabelSelector} from './CodeLabelSelector';
 import {Attribute} from '../../../../models';
 import {FetcherContext} from '../../../../contexts';
+import {CodeLabelCollectionSelector} from './CodeLabelCollectionSelector';
 
 const attributes = [{code: 'description', type: 'pim_catalog_text', labels: {}, scopable: false, localizable: false}];
 const channels: Channel[] = [
@@ -47,7 +48,9 @@ const renderWithProviders = async (node: ReactNode) =>
 test('it displays a type dropdown when the selection type is code', async () => {
   const onSelectionChange = jest.fn();
 
-  await renderWithProviders(<CodeLabelSelector selection={{type: 'code'}} onSelectionChange={onSelectionChange} />);
+  await renderWithProviders(
+    <CodeLabelSelector selection={{type: 'code'}} validationErrors={[]} onSelectionChange={onSelectionChange} />
+  );
 
   expect(screen.getByText('pim_common.type')).toBeInTheDocument();
   expect(screen.getByText('pim_common.code')).toBeInTheDocument();
@@ -58,7 +61,11 @@ test('it displays a locale dropdown when the selection type is label', async () 
   const onSelectionChange = jest.fn();
 
   await renderWithProviders(
-    <CodeLabelSelector selection={{type: 'label', locale: 'en_US'}} onSelectionChange={onSelectionChange} />
+    <CodeLabelSelector
+      selection={{type: 'label', locale: 'en_US'}}
+      validationErrors={[]}
+      onSelectionChange={onSelectionChange}
+    />
   );
 
   expect(screen.getByText('pim_common.type')).toBeInTheDocument();
@@ -73,7 +80,9 @@ test('it displays a locale dropdown when the selection type is label', async () 
 test('it can select a label selection type', async () => {
   const onSelectionChange = jest.fn();
 
-  await renderWithProviders(<CodeLabelSelector selection={{type: 'code'}} onSelectionChange={onSelectionChange} />);
+  await renderWithProviders(
+    <CodeLabelSelector selection={{type: 'code'}} validationErrors={[]} onSelectionChange={onSelectionChange} />
+  );
 
   userEvent.click(screen.getByText('pim_common.type'));
   userEvent.click(screen.getByTitle('pim_common.label'));
@@ -85,11 +94,46 @@ test('it can select a code selection type', async () => {
   const onSelectionChange = jest.fn();
 
   await renderWithProviders(
-    <CodeLabelSelector selection={{type: 'label', locale: 'en_US'}} onSelectionChange={onSelectionChange} />
+    <CodeLabelSelector
+      selection={{type: 'label', locale: 'en_US'}}
+      validationErrors={[]}
+      onSelectionChange={onSelectionChange}
+    />
   );
 
   userEvent.click(screen.getByText('pim_common.type'));
   userEvent.click(screen.getByTitle('pim_common.code'));
 
   expect(onSelectionChange).toHaveBeenCalledWith({type: 'code'});
+});
+
+test('it displays validation errors', async () => {
+  const onSelectionChange = jest.fn();
+  const validationErrors: ValidationError[] = [
+    {
+      messageTemplate: 'error.key.locale',
+      invalidValue: '',
+      message: 'this is a locale error',
+      parameters: {},
+      propertyPath: '[locale]',
+    },
+    {
+      messageTemplate: 'error.key.type',
+      invalidValue: '',
+      message: 'this is a type error',
+      parameters: {},
+      propertyPath: '[type]',
+    },
+  ];
+
+  await renderWithProviders(
+    <CodeLabelSelector
+      validationErrors={validationErrors}
+      selection={{type: 'label', locale: 'en_US'}}
+      onSelectionChange={onSelectionChange}
+    />
+  );
+
+  expect(screen.getByText('error.key.locale')).toBeInTheDocument();
+  expect(screen.getByText('error.key.type')).toBeInTheDocument();
 });

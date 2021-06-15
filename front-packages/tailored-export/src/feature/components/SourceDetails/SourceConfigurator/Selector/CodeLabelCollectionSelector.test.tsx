@@ -149,6 +149,13 @@ test('it displays validation errors', async () => {
       parameters: {},
       propertyPath: '[locale]',
     },
+    {
+      messageTemplate: 'error.key.type',
+      invalidValue: '',
+      message: 'this is a type error',
+      parameters: {},
+      propertyPath: '[type]',
+    },
   ];
 
   await renderWithProviders(
@@ -161,4 +168,5 @@ test('it displays validation errors', async () => {
 
   expect(screen.getByText('error.key.separator')).toBeInTheDocument();
   expect(screen.getByText('error.key.locale')).toBeInTheDocument();
+  expect(screen.getByText('error.key.type')).toBeInTheDocument();
 });

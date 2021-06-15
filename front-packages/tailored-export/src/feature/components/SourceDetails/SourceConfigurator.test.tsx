@@ -64,7 +64,7 @@ test('it display source configurator', async () => {
   await act(async () => {
     renderWithProviders(
       <FetcherContext.Provider value={fetchers}>
-        <SourceConfigurator source={source} onSourceChange={jest.fn} />
+        <SourceConfigurator source={source} validationErrors={[]} onSourceChange={jest.fn} />
       </FetcherContext.Provider>
     );
   });
@@ -90,7 +90,7 @@ test('it display locale dropdown when attribute is localizable', async () => {
   await act(async () => {
     renderWithProviders(
       <FetcherContext.Provider value={fetchers}>
-        <SourceConfigurator source={source} onSourceChange={jest.fn} />
+        <SourceConfigurator source={source} validationErrors={[]} onSourceChange={jest.fn} />
       </FetcherContext.Provider>
     );
   });
@@ -115,7 +115,7 @@ test('it display channel dropdown when attribute is scopable', async () => {
   await act(async () => {
     renderWithProviders(
       <FetcherContext.Provider value={fetchers}>
-        <SourceConfigurator source={source} onSourceChange={jest.fn} />
+        <SourceConfigurator source={source} validationErrors={[]} onSourceChange={jest.fn} />
       </FetcherContext.Provider>
     );
   });
@@ -140,7 +140,7 @@ test('it display channel dropdown when attribute is scopable and localizable', a
   await act(async () => {
     renderWithProviders(
       <FetcherContext.Provider value={fetchers}>
-        <SourceConfigurator source={source} onSourceChange={jest.fn} />
+        <SourceConfigurator source={source} validationErrors={[]} onSourceChange={jest.fn} />
       </FetcherContext.Provider>
     );
   });
@@ -166,7 +166,7 @@ test('it calls handler when channel changed', async () => {
   await act(async () => {
     renderWithProviders(
       <FetcherContext.Provider value={fetchers}>
-        <SourceConfigurator source={source} onSourceChange={handleSourceChange} />
+        <SourceConfigurator source={source} validationErrors={[]} onSourceChange={handleSourceChange} />
       </FetcherContext.Provider>
     );
   });
@@ -196,7 +196,7 @@ test('it calls handler when locale changed', async () => {
   await act(async () => {
     renderWithProviders(
       <FetcherContext.Provider value={fetchers}>
-        <SourceConfigurator source={source} onSourceChange={handleSourceChange} />
+        <SourceConfigurator source={source} validationErrors={[]} onSourceChange={handleSourceChange} />
       </FetcherContext.Provider>
     );
   });

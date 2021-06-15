@@ -1,16 +1,23 @@
-import {ChannelCode, getLabel, useTranslate, useUserContext} from '@akeneo-pim-community/shared';
-import {Field, SelectInput} from 'akeneo-design-system';
-import {useChannels} from '../../../hooks';
 import React from 'react';
+import {Field, Helper, SelectInput} from 'akeneo-design-system';
+import {
+  Channel,
+  ChannelCode,
+  getLabel,
+  useTranslate,
+  useUserContext,
+  ValidationError,
+} from '@akeneo-pim-community/shared';
 
 type ChannelDropdownProps = {
   value: ChannelCode;
+  channels: Channel[];
+  validationErrors: ValidationError[];
   onChange: (updatedValue: ChannelCode) => void;
 };
 
-const ChannelDropdown = ({value, onChange}: ChannelDropdownProps) => {
+const ChannelDropdown = ({value, channels, validationErrors, onChange}: ChannelDropdownProps) => {
   const translate = useTranslate();
-  const channels = useChannels();
   const userContext = useUserContext();
 
   return (
@@ -32,6 +39,11 @@ const ChannelDropdown = ({value, onChange}: ChannelDropdownProps) => {
           </SelectInput.Option>
         ))}
       </SelectInput>
+      {validationErrors.map((error, index) => (
+        <Helper key={index} inline={true} level="error">
+          {translate(error.messageTemplate, error.parameters)}
+        </Helper>
+      ))}
     </Field>
   );
 };

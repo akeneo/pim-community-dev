@@ -95,11 +95,13 @@ class SourcesValidator extends ConstraintValidator
                         new Type([
                             'type' => 'string',
                         ]),
+                        new ChannelShouldExist(),
                     ],
                     'locale' => [
                         new Type([
                             'type' => 'string',
                         ]),
+                        new LocaleShouldBeActive()
                     ],
                     'operations' => [
                         new Type([

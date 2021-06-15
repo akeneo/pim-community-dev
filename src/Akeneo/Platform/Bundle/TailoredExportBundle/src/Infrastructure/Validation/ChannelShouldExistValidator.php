@@ -18,10 +18,7 @@ use Symfony\Component\Validator\Constraint;
 use Symfony\Component\Validator\ConstraintValidator;
 use Webmozart\Assert\Assert;
 
-/**
- * @copyright 2021 Akeneo SAS (https://www.akeneo.com)
- */
-final class LocaleShouldBeActiveValidator extends ConstraintValidator
+class ChannelShouldExistValidator extends ConstraintValidator
 {
     private ChannelExistsWithLocaleInterface $channelExistsWithLocale;
 
@@ -33,18 +30,18 @@ final class LocaleShouldBeActiveValidator extends ConstraintValidator
     /**
      * {@inheritdoc}
      */
-    public function validate($localeCode, Constraint $constraint)
+    public function validate($channel, Constraint $constraint)
     {
-        Assert::isInstanceOf($constraint, LocaleShouldBeActive::class);
-        if (!is_string($localeCode)) {
+        Assert::isInstanceOf($constraint, ChannelShouldExist::class);
+        if (!is_string($channel)) {
             return;
         }
 
-        if (!$this->channelExistsWithLocale->isLocaleActive($localeCode)) {
+        if (!$this->channelExistsWithLocale->doesChannelExist($channel)) {
             $this->context->buildViolation(
-                LocaleShouldBeActive::NOT_ACTIVE_MESSAGE,
+                ChannelShouldExist::NOT_EXIST_MESSAGE,
                 [
-                    '{{ locale_code }}' => $localeCode,
+                    '{{ channel_code }}' => $channel,
                 ]
             )->addViolation();
         }

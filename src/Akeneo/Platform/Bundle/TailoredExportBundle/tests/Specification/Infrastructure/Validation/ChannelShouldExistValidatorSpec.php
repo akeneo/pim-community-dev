@@ -3,8 +3,8 @@
 namespace Specification\Akeneo\Platform\TailoredExport\Infrastructure\Validation;
 
 use Akeneo\Channel\Component\Query\PublicApi\ChannelExistsWithLocaleInterface;
-use Akeneo\Platform\TailoredExport\Infrastructure\Validation\LocaleShouldBeActive;
-use Akeneo\Platform\TailoredExport\Infrastructure\Validation\LocaleShouldBeActiveValidator;
+use Akeneo\Platform\TailoredExport\Infrastructure\Validation\ChannelShouldExistValidator;
+use Akeneo\Platform\TailoredExport\Infrastructure\Validation\ChannelShouldExist;
 use PhpSpec\ObjectBehavior;
 use Prophecy\Argument;
 use Symfony\Component\Validator\Constraints\IsNull;
@@ -12,7 +12,7 @@ use Symfony\Component\Validator\ConstraintValidatorInterface;
 use Symfony\Component\Validator\Context\ExecutionContextInterface;
 use Symfony\Component\Validator\Violation\ConstraintViolationBuilderInterface;
 
-class LocaleShouldBeActiveValidatorSpec extends ObjectBehavior
+class ChannelShouldExistValidatorSpec extends ObjectBehavior
 {
     function let(ChannelExistsWithLocaleInterface $channelExistsWithLocale, ExecutionContextInterface $context)
     {
@@ -23,7 +23,7 @@ class LocaleShouldBeActiveValidatorSpec extends ObjectBehavior
     function it_is_a_constraint_validator()
     {
         $this->shouldImplement(ConstraintValidatorInterface::class);
-        $this->shouldHaveType(LocaleShouldBeActiveValidator::class);
+        $this->shouldHaveType(ChannelShouldExistValidator::class);
     }
 
     function it_throws_an_exception_with_a_wrong_constraint()
@@ -35,37 +35,37 @@ class LocaleShouldBeActiveValidatorSpec extends ObjectBehavior
         ChannelExistsWithLocaleInterface $channelExistsWithLocale,
         ExecutionContextInterface $context
     ) {
-        $channelExistsWithLocale->isLocaleActive(Argument::any())->shouldNotBeCalled();
+        $channelExistsWithLocale->doesChannelExist(Argument::any())->shouldNotBeCalled();
         $context->buildViolation(Argument::cetera())->shouldNotBeCalled();
 
-        $this->validate(new \stdClass(), new LocaleShouldBeActive());
+        $this->validate(new \stdClass(), new ChannelShouldExist());
     }
 
-    function it_does_not_add_a_violation_if_the_locale_is_active(
+    function it_does_not_add_a_violation_if_the_channel_exist(
         ChannelExistsWithLocaleInterface $channelExistsWithLocale,
         ExecutionContextInterface $context
     ) {
-        $channelExistsWithLocale->isLocaleActive('en_US')->shouldBeCalled()->willReturn(true);
+        $channelExistsWithLocale->doesChannelExist('ecommerce')->shouldBeCalled()->willReturn(true);
         $context->buildViolation(Argument::cetera())->shouldNotBeCalled();
 
-        $this->validate('en_US', new LocaleShouldBeActive());
+        $this->validate('ecommerce', new ChannelShouldExist());
     }
 
-    function it_adds_a_violation_if_the_locale_is_not_active(
+    function it_adds_a_violation_if_the_channel_do_not_exist(
         ChannelExistsWithLocaleInterface $channelExistsWithLocale,
         ExecutionContextInterface $context,
         ConstraintViolationBuilderInterface $violationBuilder
     ) {
-        $constraint = new LocaleShouldBeActive();
-        $channelExistsWithLocale->isLocaleActive('es_CA')->shouldBeCalled()->willReturn(false);
+        $constraint = new ChannelShouldExist();
+        $channelExistsWithLocale->doesChannelExist('non_existent_channel')->shouldBeCalled()->willReturn(false);
         $context->buildViolation(
-            'akeneo.tailored_export.validation.locale.should_be_active',
+            'akeneo.tailored_export.validation.channel.should_exist',
             [
-                '{{ locale_code }}' => 'es_CA',
+                '{{ channel_code }}' => 'non_existent_channel',
             ]
         )->shouldBeCalled()->willReturn($violationBuilder);
         $violationBuilder->addViolation()->shouldBeCalled();
 
-        $this->validate('es_CA', $constraint);
+        $this->validate('non_existent_channel', $constraint);
     }
 }

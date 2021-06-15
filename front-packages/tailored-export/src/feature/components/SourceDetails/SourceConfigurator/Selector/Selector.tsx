@@ -34,15 +34,26 @@ const Selector = ({attribute, selection, validationErrors, onSelectionChange}: S
       );
     case 'akeneo_reference_entity':
     case 'pim_catalog_simpleselect':
-      return <CodeLabelSelector selection={selection as CodeLabelSelection} onSelectionChange={onSelectionChange} />;
+      return (
+        <CodeLabelSelector
+          selection={selection as CodeLabelSelection}
+          validationErrors={validationErrors}
+          onSelectionChange={onSelectionChange}
+        />
+      );
     case 'pim_catalog_metric':
       return (
-        <MeasurementSelector selection={selection as MeasurementSelection} onSelectionChange={onSelectionChange} />
+        <MeasurementSelector
+          selection={selection as MeasurementSelection}
+          validationErrors={validationErrors}
+          onSelectionChange={onSelectionChange}
+        />
       );
     case 'pim_catalog_price_collection':
       return (
         <PriceCollectionSelector
           selection={selection as PriceCollectionSelection}
+          validationErrors={validationErrors}
           onSelectionChange={onSelectionChange}
         />
       );

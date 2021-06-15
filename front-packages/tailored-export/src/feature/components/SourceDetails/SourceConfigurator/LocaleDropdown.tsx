@@ -13,11 +13,11 @@ import React from 'react';
 type LocaleDropdownProps = {
   value: LocaleCode;
   channel?: ChannelReference;
-  validationErrors?: ValidationError[];
+  validationErrors: ValidationError[];
   onChange: (updatedValue: LocaleCode) => void;
 };
 
-const LocaleDropdown = ({value, channel = null, validationErrors = [], onChange}: LocaleDropdownProps) => {
+const LocaleDropdown = ({value, channel = null, validationErrors, onChange}: LocaleDropdownProps) => {
   const translate = useTranslate();
   const channels = useChannels();
   const locales = getLocalesFromChannel(channels, channel);

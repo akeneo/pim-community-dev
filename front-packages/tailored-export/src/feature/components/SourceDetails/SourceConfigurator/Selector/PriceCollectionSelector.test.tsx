@@ -1,10 +1,11 @@
 import React, {ReactNode} from 'react';
 import {act, screen} from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
-import {Channel, renderWithProviders as baseRender} from '@akeneo-pim-community/shared';
+import {Channel, renderWithProviders as baseRender, ValidationError} from '@akeneo-pim-community/shared';
 import {PriceCollectionSelector} from './PriceCollectionSelector';
 import {Attribute} from '../../../../models';
 import {FetcherContext} from '../../../../contexts';
+import {CodeLabelCollectionSelector} from './CodeLabelCollectionSelector';
 
 const attributes = [
   {code: 'price', type: 'pim_catalog_price_collection', labels: {}, scopable: false, localizable: false},
@@ -50,7 +51,7 @@ test('it displays a type dropdown when the selection type is amount', async () =
   const onSelectionChange = jest.fn();
 
   await renderWithProviders(
-    <PriceCollectionSelector selection={{type: 'amount'}} onSelectionChange={onSelectionChange} />
+    <PriceCollectionSelector selection={{type: 'amount'}} validationErrors={[]} onSelectionChange={onSelectionChange} />
   );
 
   expect(screen.getByText('pim_common.type')).toBeInTheDocument();
@@ -61,11 +62,34 @@ test('it can select a currency selection type', async () => {
   const onSelectionChange = jest.fn();
 
   await renderWithProviders(
-    <PriceCollectionSelector selection={{type: 'amount'}} onSelectionChange={onSelectionChange} />
+    <PriceCollectionSelector selection={{type: 'amount'}} validationErrors={[]} onSelectionChange={onSelectionChange} />
   );
 
   userEvent.click(screen.getByText('pim_common.type'));
   userEvent.click(screen.getByTitle('akeneo.tailored_export.column_details.sources.selection.type.currency'));
 
   expect(onSelectionChange).toHaveBeenCalledWith({type: 'currency'});
+});
+
+test('it displays validation errors', async () => {
+  const onSelectionChange = jest.fn();
+  const validationErrors: ValidationError[] = [
+    {
+      messageTemplate: 'error.key.type',
+      invalidValue: '',
+      message: 'this is a type error',
+      parameters: {},
+      propertyPath: '[type]',
+    },
+  ];
+
+  await renderWithProviders(
+    <PriceCollectionSelector
+      selection={{type: 'amount'}}
+      validationErrors={validationErrors}
+      onSelectionChange={onSelectionChange}
+    />
+  );
+
+  expect(screen.getByText('error.key.type')).toBeInTheDocument();
 });

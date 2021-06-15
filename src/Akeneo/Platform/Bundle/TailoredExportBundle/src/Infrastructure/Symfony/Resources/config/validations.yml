@@ -47,3 +47,11 @@ services:
     tags:
       - { name: validator.constraint_validator, alias: 'akeneo.tailored_export.validation.locale_should_be_active' }
     public: true
+
+  akeneo.tailored_export.validation.channel_should_exist:
+    class: 'Akeneo\Platform\TailoredExport\Infrastructure\Validation\ChannelShouldExistValidator'
+    arguments:
+      - '@pim_channel.query.cache.channel_exists_with_locale'
+    tags:
+      - { name: validator.constraint_validator, alias: 'akeneo.tailored_export.validation.channel_should_exist' }
+    public: true

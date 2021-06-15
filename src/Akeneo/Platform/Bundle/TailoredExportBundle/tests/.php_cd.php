@@ -33,6 +33,7 @@ $rules = [
             'Box\Spout\Writer\WriterInterface',
 
             'Akeneo\AssetManager\Infrastructure\PublicApi\Enrich\FindAssetLabelTranslation',
+            'Akeneo\Channel\Component\Query\PublicApi\ChannelExistsWithLocaleInterface',
             'Akeneo\Pim\Structure\Component\Query\PublicApi',
             'Akeneo\Pim\Enrichment\Component\Product\Model\ValueInterface',
             'Akeneo\Pim\Enrichment\Component\Product\Query\ProductQueryBuilderFactoryInterface',
