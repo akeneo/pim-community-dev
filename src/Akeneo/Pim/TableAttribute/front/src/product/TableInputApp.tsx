@@ -1,14 +1,26 @@
 import React from 'react';
-import { TableInput } from 'akeneo-design-system';
+import { TableInput, TextInput } from 'akeneo-design-system';
 import { ColumnCode, TableConfiguration } from '../models/TableConfiguration';
 import { getLabel, useUserContext } from '@akeneo-pim-community/shared';
 
+type TableValue = { [columnCode: string]: any }[];
+
 type TableInputAppProps = {
-  valueData: {[columnCode: string]: any}[];
+  valueData: TableValue;
   tableConfiguration: TableConfiguration;
 };
 
 const TableInputApp: React.FC<TableInputAppProps> = ({valueData, tableConfiguration}) => {
+
+  const [tableValue, setTableValue] = React.useState<TableValue>([...valueData]);
+
+  const handleChange = (rowIndex: number, columnCode: ColumnCode, cellValue: string) => {
+    const row = tableValue[rowIndex];
+    delete row[columnCode];
+    row[columnCode] = cellValue;
+    tableValue[rowIndex] = {...row};
+    setTableValue([...tableValue]);
+  };
 
   const userContext = useUserContext();
   const columnCodes: ColumnCode[] = tableConfiguration.map(columnDefinition => columnDefinition.code);
@@ -20,12 +32,13 @@ const TableInputApp: React.FC<TableInputAppProps> = ({valueData, tableConfigurat
       </TableInput.HeaderCell>)}
     </TableInput.Header>
     <TableInput.Body>
-      {valueData.map((row, rowIndex) => {
+      {tableValue.map((row, rowIndex) => {
         return (
           <TableInput.Row key={`${rowIndex}`}>
-            {columnCodes.map(columnCode => <TableInput.Cell key={`${rowIndex}-${columnCode}`}>
-              {JSON.stringify(row[columnCode])}
-            </TableInput.Cell>)}
+            {columnCodes.map(columnCode => (
+              <TableInput.Cell key={`${rowIndex}-${columnCode}`}>
+                <TextInput value={row[columnCode]} onChange={(value) => handleChange(rowIndex, columnCode, value)} />
+              </TableInput.Cell>))}
           </TableInput.Row>
         )
       })}
