@@ -41,8 +41,6 @@ class AssetCollectionSelector implements AttributeSelectorInterface
             throw new \LogicException('Asset family identifier not present in the attribute properties ("reference_data_name")');
         }
 
-        $selectedData = [];
-
         switch ($selectionConfiguration['type']) {
             case SelectionTypes::CODE:
                 $selectedData = $assetCodes;

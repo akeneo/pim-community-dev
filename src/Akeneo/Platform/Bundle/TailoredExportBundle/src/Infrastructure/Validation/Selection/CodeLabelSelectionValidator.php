@@ -2,21 +2,23 @@
 
 declare(strict_types=1);
 
-namespace Akeneo\Platform\TailoredExport\Infrastructure\Validation;
+namespace Akeneo\Platform\TailoredExport\Infrastructure\Validation\Selection;
 
 use Akeneo\Platform\TailoredExport\Domain\SelectionTypes;
+use Akeneo\Platform\TailoredExport\Infrastructure\Validation\LocaleShouldBeActive;
 use Symfony\Component\Validator\Constraint;
 use Symfony\Component\Validator\Constraints\Choice;
 use Symfony\Component\Validator\Constraints\Collection;
+use Symfony\Component\Validator\Constraints\NotBlank;
+use Symfony\Component\Validator\Constraints\Type;
 use Symfony\Component\Validator\ConstraintValidator;
 use Symfony\Component\Validator\Validation;
 
-class SelectionValidator extends ConstraintValidator
+class CodeLabelSelectionValidator extends ConstraintValidator
 {
     public function validate($selection, Constraint $constraint)
     {
-        $validator = Validation::createValidator();
-
+        $validator = $this->context->getValidator();
         $violations = $validator->validate($selection, [
             new Collection(
                 [
@@ -26,16 +28,14 @@ class SelectionValidator extends ConstraintValidator
                                 [
                                     'strict' => true,
                                     'choices' => [
-                                        SelectionTypes::AMOUNT,
                                         SelectionTypes::CODE,
-                                        SelectionTypes::CURRENCY,
                                         SelectionTypes::LABEL,
                                     ],
                                 ]
                             )
                         ],
+                        'label' => new Type(['type' => 'string']),
                     ],
-                    'allowExtraFields' => true,
                 ]
             ),
         ]);
@@ -52,18 +52,20 @@ class SelectionValidator extends ConstraintValidator
             return;
         }
 
-        switch ($selection['type']) {
-            case SelectionTypes::LABEL:
-                $this->validateLabel($selection);
-                break;
-        }
-    }
+        if (SelectionTypes::LABEL === $selection['type']) {
+            $violations = $validator->validate($selection['locale'], [
+                new NotBlank(),
+                new LocaleShouldBeActive()
+            ]);
 
-    private function validateLabel($selection)
-    {
-        if (!isset($selection['locale'])) {
-            $this->context->buildViolation(Selection::SELECTION_LOCALE_SHOULD_NOT_BE_BLANK)
-                ->addViolation();
+            foreach ($violations as $violation) {
+                $this->context->buildViolation(
+                    $violation->getMessage(),
+                    $violation->getParameters()
+                )
+                    ->atPath('locale')
+                    ->addViolation();
+            }
         }
     }
 }

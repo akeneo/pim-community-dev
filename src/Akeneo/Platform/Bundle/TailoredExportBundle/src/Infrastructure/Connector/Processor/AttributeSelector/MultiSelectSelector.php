@@ -38,8 +38,6 @@ class MultiSelectSelector implements AttributeSelectorInterface
     public function applySelection(array $selectionConfiguration, Attribute $attribute, ValueInterface $value): string
     {
         $optionsCodes = $value->getData();
-        $selectedData = [];
-
         switch ($selectionConfiguration['type']) {
             case SelectionTypes::CODE:
                 $selectedData = $optionsCodes;

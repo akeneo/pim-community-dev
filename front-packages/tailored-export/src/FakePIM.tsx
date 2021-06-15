@@ -115,9 +115,13 @@ const FakePIM = () => {
     });
 
     if (!response.ok) {
-      const json = await response.json();
+      setValidationErrors([]);
 
-      setValidationErrors(json.normalized_errors);
+      try {
+        const json = await response.json();
+        setValidationErrors(json.normalized_errors);
+      } catch (e) {}
+
       notify(NotificationLevel.ERROR, translate('pim_import_export.entity.job_instance.flash.update.fail'));
     } else {
       notify(NotificationLevel.SUCCESS, translate('pim_import_export.entity.job_instance.flash.update.success'));

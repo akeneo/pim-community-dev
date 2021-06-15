@@ -15,10 +15,19 @@ namespace Akeneo\Platform\TailoredExport\Infrastructure\Validation;
 
 use Symfony\Component\Validator\Constraint;
 
-class Sources extends Constraint
+/**
+ * @copyright 2021 Akeneo SAS (https://www.akeneo.com)
+ */
+final class LocaleShouldBeActive extends Constraint
 {
+    public $message = 'akeneo.tailored_export.validation.locale.should_be_active';
+    public $invalidMessage = 'akeneo.tailored_export.validation.locale.invalid';
+
+    /**
+     * {@inheritdoc}
+     */
     public function validatedBy()
     {
-        return 'akeneo.tailored_export.validation.source';
+        return 'akeneo.tailored_export.validation.locale_should_be_active';
     }
 }

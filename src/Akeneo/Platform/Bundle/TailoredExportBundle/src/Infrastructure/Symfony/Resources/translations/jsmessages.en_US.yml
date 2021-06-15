@@ -41,8 +41,10 @@ akeneo.tailored_export:
         title: No column selected for the moment.
       selection:
         title: Selection
+        separator: Separator
         type:
           amount: Amount
+          currency: Currency
   column:
     delete_message: Are you sure you want to remove this column?
   validation:
@@ -54,3 +56,5 @@ akeneo.tailored_export:
         should_be_unique: Column name should be unique
     sources:
       max_source_count_reached: You reached the maximum source count of {{ limit }}
+    locale:
+      should_be_active: Locale should be active

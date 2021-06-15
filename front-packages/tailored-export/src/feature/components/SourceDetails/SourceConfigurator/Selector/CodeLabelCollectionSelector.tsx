@@ -1,16 +1,16 @@
 import React from 'react';
 import {Field, SelectInput} from 'akeneo-design-system';
 import {getAllLocalesFromChannels, Section, useTranslate} from '@akeneo-pim-community/shared';
-import {CodeLabelSelection} from '../../../../models';
+import {availableSeparators, isSelectionSeparator, CodeLabelCollectionSelection} from '../../../../models';
 import {useChannels} from '../../../../hooks';
 import {LocaleDropdown} from '../LocaleDropdown';
 
-type CodeLabelSelectorProps = {
-  selection: CodeLabelSelection;
-  onSelectionChange: (updatedSelection: CodeLabelSelection) => void;
+type CodeLabelCollectionSelectorProps = {
+  selection: CodeLabelCollectionSelection;
+  onSelectionChange: (updatedSelection: CodeLabelCollectionSelection) => void;
 };
 
-const CodeLabelSelector = ({selection, onSelectionChange}: CodeLabelSelectorProps) => {
+const CodeLabelCollectionSelector = ({selection, onSelectionChange}: CodeLabelCollectionSelectorProps) => {
   const translate = useTranslate();
   const channels = useChannels();
   const locales = getAllLocalesFromChannels(channels);
@@ -25,9 +25,9 @@ const CodeLabelSelector = ({selection, onSelectionChange}: CodeLabelSelectorProp
           value={selection.type}
           onChange={type => {
             if ('label' === type) {
-              onSelectionChange({type, locale: locales[0].code});
+              onSelectionChange({...selection, type, locale: locales[0].code});
             } else if ('code' === type) {
-              onSelectionChange({type});
+              onSelectionChange({...selection, type});
             }
           }}
         >
@@ -45,8 +45,27 @@ const CodeLabelSelector = ({selection, onSelectionChange}: CodeLabelSelectorProp
           onChange={updatedValue => onSelectionChange({...selection, locale: updatedValue})}
         />
       )}
+      <Field label={translate('akeneo.tailored_export.column_details.sources.selection.separator')}>
+        <SelectInput
+          clearable={false}
+          emptyResultLabel={translate('pim_common.no_result')}
+          openLabel={translate('pim_common.open')}
+          value={selection.separator}
+          onChange={separator => {
+            if (isSelectionSeparator(separator)) {
+              onSelectionChange({...selection, separator});
+            }
+          }}
+        >
+          {availableSeparators.map((availableSeparator) => (
+            <SelectInput.Option key={availableSeparator} title={availableSeparator} value={availableSeparator}>
+              {availableSeparator}
+            </SelectInput.Option>
+          ))}
+        </SelectInput>
+      </Field>
     </Section>
   );
 };
 
-export {CodeLabelSelector};
+export {CodeLabelCollectionSelector};

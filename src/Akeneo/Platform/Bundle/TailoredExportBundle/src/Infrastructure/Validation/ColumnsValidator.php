@@ -37,8 +37,8 @@ class ColumnsValidator extends ConstraintValidator
             return;
         }
 
-        $validator = Validation::createValidator();
 
+        $validator = $this->context->getValidator();
         $violations = $validator->validate($columns, [
             new Type(['type' => 'array']),
             new Count([

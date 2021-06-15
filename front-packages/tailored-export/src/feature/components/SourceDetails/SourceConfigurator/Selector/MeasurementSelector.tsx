@@ -1,13 +1,13 @@
 import React from 'react';
 import {Field, SelectInput} from 'akeneo-design-system';
 import {getAllLocalesFromChannels, Section, useTranslate} from '@akeneo-pim-community/shared';
-import {Selection} from '../../../../models';
+import {MeasurementSelection} from '../../../../models';
 import {useChannels} from '../../../../hooks';
 import {LocaleDropdown} from '../LocaleDropdown';
 
 type MeasurementSelectorProps = {
-  selection: Selection;
-  onSelectionChange: (updatedSelection: Selection) => void;
+  selection: MeasurementSelection;
+  onSelectionChange: (updatedSelection: MeasurementSelection) => void;
 };
 
 const MeasurementSelector = ({selection, onSelectionChange}: MeasurementSelectorProps) => {

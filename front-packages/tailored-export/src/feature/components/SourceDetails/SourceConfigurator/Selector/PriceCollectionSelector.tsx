@@ -1,11 +1,11 @@
 import React from 'react';
 import {Field, SelectInput} from 'akeneo-design-system';
 import {Section, useTranslate} from '@akeneo-pim-community/shared';
-import {Selection} from '../../../../models';
+import {PriceCollectionSelection} from '../../../../models';
 
 type PriceCollectionSelectorProps = {
-  selection: Selection;
-  onSelectionChange: (updatedSelection: Selection) => void;
+  selection: PriceCollectionSelection;
+  onSelectionChange: (updatedSelection: PriceCollectionSelection) => void;
 };
 
 const PriceCollectionSelector = ({selection, onSelectionChange}: PriceCollectionSelectorProps) => {
@@ -31,8 +31,11 @@ const PriceCollectionSelector = ({selection, onSelectionChange}: PriceCollection
           >
             {translate('akeneo.tailored_export.column_details.sources.selection.type.amount')}
           </SelectInput.Option>
-          <SelectInput.Option title={translate('pim_common.currency')} value="currency">
-            {translate('pim_common.currency')}
+          <SelectInput.Option
+            title={translate('akeneo.tailored_export.column_details.sources.selection.type.currency')}
+            value="currency"
+          >
+            {translate('akeneo.tailored_export.column_details.sources.selection.type.currency')}
           </SelectInput.Option>
         </SelectInput>
       </Field>
