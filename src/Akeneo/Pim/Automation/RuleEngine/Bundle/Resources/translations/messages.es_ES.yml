@@ -19,8 +19,11 @@ pimee_catalog_rule:
       associations: Asociaciones
       groups: Grupos
       categories: Categorías
+      completeness: Completitud
       identifier: Identificador
+      parent: Padre
       enabled: Estado
+      entity_type: Tipo de entidad
       created: Creado
       updated: Actualizado
     field_groups:
@@ -55,6 +58,9 @@ pimee_catalog_rule:
       week: ']-Inf, -1[ hace %absolute_count% semanas|{-1}hace 1 semana|{1}en 1 semana|]1, +Inf[en %absolute_count% semanas'
       month: ']-Inf, -1[ hace %absolute_count% meses|{-1}hace 1 mes|{1}en 1 mes|]1, +Inf[en %absolute_count% meses'
       year: ']-Inf, -1[ hace %absolute_count% años|{-1}hace 1 año|{1}en 1 año|]1, +Inf[en %absolute_count% años'
+  status:
+    enabled: Habilitado
+    disabled: Inhabilitado
 btn:
   Execute rules: Ejecutar reglas
 job_execution:
