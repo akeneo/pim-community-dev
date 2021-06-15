@@ -80,7 +80,6 @@ const ColumnDetails = ({columnConfiguration, onColumnChange}: ColumnDetailsProps
   const sourcesErrors = useValidationErrors(`[columns][${columnConfiguration.uuid}][sources]`, true);
   const validationErrors = useValidationErrors(`[columns][${columnConfiguration.uuid}][sources]`, false);
 
-
   return (
     <Container>
       <SourcesSectionTitle sticky={0}>

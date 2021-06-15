@@ -81,7 +81,7 @@ class CodeLabelCollectionSelectionValidator extends ConstraintValidator
                     $violation->getMessage(),
                     $violation->getParameters()
                 )
-                    ->atPath('locale')
+                    ->atPath('[locale]')
                     ->addViolation();
             }
         }
