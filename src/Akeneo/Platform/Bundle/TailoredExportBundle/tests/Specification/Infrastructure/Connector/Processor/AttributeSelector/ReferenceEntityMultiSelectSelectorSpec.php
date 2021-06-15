@@ -40,7 +40,11 @@ class ReferenceEntityMultiSelectSelectorSpec extends ObjectBehavior
         $referenceEntityMultiSelectAttribute = $this->createReferenceEntityMultiAttribute('marque', 'brand');
         $value->getData()->willReturn(['alessi', 'starck', 'jean-paul']);
 
-        $this->applySelection(['type' => 'code'], $referenceEntityMultiSelectAttribute, $value)->shouldReturn('alessi, starck, jean-paul');
+        $this->applySelection(
+            ['type' => 'code', 'separator' => ';'],
+            $referenceEntityMultiSelectAttribute,
+            $value
+        )->shouldReturn('alessi;starck;jean-paul');
     }
 
     public function it_selects_the_label(
@@ -59,8 +63,11 @@ class ReferenceEntityMultiSelectSelectorSpec extends ObjectBehavior
                 'jean-paul' => 'Jean-Paul Deploy',
             ]);
 
-        $this->applySelection(['type' => 'label', 'locale' => 'fr_FR'], $referenceEntityMultiSelectAttribute, $value)
-            ->shouldReturn('Alessi le français, Philippe Starck, Jean-Paul Deploy');
+        $this->applySelection(
+            ['type' => 'label', 'locale' => 'fr_FR', 'separator' => ','],
+            $referenceEntityMultiSelectAttribute,
+            $value
+        )->shouldReturn('Alessi le français,Philippe Starck,Jean-Paul Deploy');
     }
 
     public function it_selects_the_code_when_label_is_undefined(
@@ -79,8 +86,11 @@ class ReferenceEntityMultiSelectSelectorSpec extends ObjectBehavior
                 'jean-paul' => 'Jean-Paul Deploy',
             ]);
 
-        $this->applySelection(['type' => 'label', 'locale' => 'fr_FR'], $referenceEntityMultiSelectAttribute, $value)
-            ->shouldReturn('Alessi le français, [starck], Jean-Paul Deploy');
+        $this->applySelection(
+            ['type' => 'label', 'locale' => 'fr_FR', 'separator' => '|'],
+            $referenceEntityMultiSelectAttribute,
+            $value
+        )->shouldReturn('Alessi le français|[starck]|Jean-Paul Deploy');
     }
 
     private function createReferenceEntityMultiAttribute(string $name, string $referenceEntityIdentifier): Attribute

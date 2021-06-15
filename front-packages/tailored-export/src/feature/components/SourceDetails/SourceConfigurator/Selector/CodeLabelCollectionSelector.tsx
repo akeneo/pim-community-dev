@@ -27,6 +27,7 @@ const CodeLabelCollectionSelector = ({
   const locales = getAllLocalesFromChannels(channels);
   const separatorErrors = filterErrors(validationErrors, '[separator]');
   const localeErrors = filterErrors(validationErrors, '[locale]');
+  const typeErrors = filterErrors(validationErrors, '[type]');
 
   return (
     <Section>
@@ -36,6 +37,7 @@ const CodeLabelCollectionSelector = ({
           emptyResultLabel={translate('pim_common.no_result')}
           openLabel={translate('pim_common.open')}
           value={selection.type}
+          invalid={0 < typeErrors.length}
           onChange={type => {
             if ('label' === type) {
               onSelectionChange({type, locale: locales[0].code, separator: selection.separator});
@@ -51,6 +53,11 @@ const CodeLabelCollectionSelector = ({
             {translate('pim_common.code')}
           </SelectInput.Option>
         </SelectInput>
+        {typeErrors.map((error, index) => (
+          <Helper key={index} inline={true} level="error">
+            {translate(error.messageTemplate, error.parameters)}
+          </Helper>
+        ))}
       </Field>
       {'label' === selection.type && (
         <LocaleDropdown

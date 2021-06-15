@@ -16,6 +16,7 @@ namespace Specification\Akeneo\Platform\TailoredExport\Infrastructure\Connector\
 use Akeneo\Pim\Enrichment\Component\Product\Model\ValueInterface;
 use Akeneo\Pim\Structure\Component\Query\PublicApi\AttributeOption\GetExistingAttributeOptionsWithValues;
 use Akeneo\Pim\Structure\Component\Query\PublicApi\AttributeType\Attribute;
+use Akeneo\ReferenceEntity\Infrastructure\PublicApi\Enrich\FindRecordsLabelTranslations;
 use PhpSpec\ObjectBehavior;
 
 class MultiSelectSelectorSpec extends ObjectBehavior
@@ -39,7 +40,7 @@ class MultiSelectSelectorSpec extends ObjectBehavior
         $attribute = $this->createAttribute('pim_catalog_multiselect');
         $value->getData()->willReturn(['code1', 'code2']);
 
-        $this->applySelection(['type' => 'code'], $attribute, $value)->shouldReturn('code1, code2');
+        $this->applySelection(['type' => 'code', 'separator' => ','], $attribute, $value)->shouldReturn('code1,code2');
     }
 
     public function it_selects_the_label(
@@ -71,7 +72,11 @@ class MultiSelectSelectorSpec extends ObjectBehavior
             ]
         );
 
-        $this->applySelection(['type' => 'label', 'locale' => 'fr_FR'], $attribute, $value)->shouldReturn('label1, label2, [code3]');
+        $this->applySelection(
+            ['type' => 'label', 'locale' => 'fr_FR', 'separator' => ';'],
+            $attribute,
+            $value
+        )->shouldReturn('label1;label2;[code3]');
     }
 
     private function createAttribute(string $attributeType): Attribute

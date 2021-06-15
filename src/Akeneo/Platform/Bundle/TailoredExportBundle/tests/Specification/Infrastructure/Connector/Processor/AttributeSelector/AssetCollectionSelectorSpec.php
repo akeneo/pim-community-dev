@@ -40,8 +40,8 @@ class AssetCollectionSelectorSpec extends ObjectBehavior
         $assetCollectionAttribute = $this->createAssetCollectionAttribute('ass_col_attribute', 'packshot');
         $value->getData()->willReturn(['admete_1', 'admete_2', 'absorb_1']);
 
-        $this->applySelection(['type' => 'code'], $assetCollectionAttribute, $value)
-            ->shouldReturn('admete_1, admete_2, absorb_1');
+        $this->applySelection(['type' => 'code', 'separator' => ','], $assetCollectionAttribute, $value)
+            ->shouldReturn('admete_1,admete_2,absorb_1');
     }
 
     public function it_selects_the_label(
@@ -60,8 +60,11 @@ class AssetCollectionSelectorSpec extends ObjectBehavior
                 'absorb_1' => 'Absorb 1',
             ]);
 
-        $this->applySelection(['type' => 'label', 'locale' => 'fr_FR'], $assetCollectionAttribute, $value)
-            ->shouldReturn('Admete 1, Admete 2, Absorb 1');
+        $this->applySelection(
+            ['type' => 'label', 'locale' => 'fr_FR', 'separator' => ';'],
+            $assetCollectionAttribute,
+            $value
+        )->shouldReturn('Admete 1;Admete 2;Absorb 1');
     }
 
     public function it_selects_the_code_when_label_is_undefined(
@@ -80,8 +83,8 @@ class AssetCollectionSelectorSpec extends ObjectBehavior
                 'absorb_1' => 'Absorb 1',
             ]);
 
-        $this->applySelection(['type' => 'label', 'locale' => 'fr_FR'], $assetCollectionAttribute, $value)
-            ->shouldReturn('Admete 1, [admete_2], Absorb 1');
+        $this->applySelection(['type' => 'label', 'locale' => 'fr_FR', 'separator' => '|'], $assetCollectionAttribute, $value)
+            ->shouldReturn('Admete 1|[admete_2]|Absorb 1');
     }
 
     private function createAssetCollectionAttribute(string $name, string $assetFamilyCode): Attribute
