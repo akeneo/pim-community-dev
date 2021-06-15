@@ -47,6 +47,12 @@ const ColumnDefinitionProperties: React.FC<ColumnDefinitionPropertiesProps> = ({
     onChange(selectedColumn);
   };
 
+  const isMinGreaterThanMax =
+    selectedColumn.data_type === 'number' &&
+    'undefined' !== typeof selectedColumn.validations.min &&
+    'undefined' !== typeof selectedColumn.validations.max &&
+    selectedColumn.validations.min > selectedColumn.validations.max;
+
   const validations = (
     <>
       {selectedColumn.data_type === 'text' && (
@@ -60,7 +66,7 @@ const ColumnDefinitionProperties: React.FC<ColumnDefinitionPropertiesProps> = ({
         </Field>
       )}
       {selectedColumn.data_type === 'number' && (
-        <FieldsList>
+        <>
           <Field label={translate('pim_table_attribute.validations.min')}>
             <NumberInput
               value={`${selectedColumn.validations.min}`}
@@ -74,13 +80,16 @@ const ColumnDefinitionProperties: React.FC<ColumnDefinitionPropertiesProps> = ({
               onChange={value => handleValidationChange({max: parseInt(value)})}
               min={0}
             />
+            {isMinGreaterThanMax && (
+              <Helper level='error'>{translate('pim_table_attribute.validations.max_greater_than_min')}</Helper>
+            )}
           </Field>
           <Checkbox
             checked={selectedColumn.validations.decimals_allowed ?? false}
             onChange={event => handleValidationChange({decimals_allowed: event.target.checked})}>
             {translate('pim_table_attribute.validations.decimals_allowed')}
           </Checkbox>
-        </FieldsList>
+        </>
       )}
     </>
   );
