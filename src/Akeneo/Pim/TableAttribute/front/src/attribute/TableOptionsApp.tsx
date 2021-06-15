@@ -13,7 +13,6 @@ import {
   getFontSize,
   getColor,
   uuid,
-  Helper,
 } from 'akeneo-design-system';
 import {DependenciesProvider} from '@akeneo-pim-community/legacy-bridge';
 import styled, {ThemeProvider} from 'styled-components';
@@ -47,7 +46,7 @@ type TableOptionsAppProps = {
   savedColumnCodes: ColumnCode[];
 };
 
-type ColumnDefinitionWithId = ColumnDefinition & {id: string};
+export type ColumnDefinitionWithId = ColumnDefinition & {id: string};
 type TableConfigurationWithId = ColumnDefinitionWithId[];
 
 const TableOptionsActionCell = styled(Table.ActionCell)`
@@ -98,18 +97,9 @@ const TableOptionsApp: React.FC<TableOptionsAppProps> = ({initialTableConfigurat
     );
   };
 
-  const handleLabelChange = (localeCode: LocaleCode, newValue: string) => {
-    selectedColumn.labels[localeCode] = newValue;
+  const handleColumnChange = (columnDefinition: ColumnDefinitionWithId) => {
     const index = tableConfiguration.indexOf(selectedColumn);
     tableConfiguration[index] = columnDefinition;
-    setTableConfiguration([...tableConfiguration]);
-    handleChange(tableConfiguration);
-  };
-
-  const handleCodeChange = (newCode: ColumnCode) => {
-    selectedColumn.code = newCode;
-    const index = tableConfiguration.indexOf(selectedColumn);
-    tableConfiguration[index] = selectedColumn;
     setTableConfiguration([...tableConfiguration]);
     handleChange(tableConfiguration);
   };
@@ -228,51 +218,15 @@ const TableOptionsApp: React.FC<TableOptionsAppProps> = ({initialTableConfigurat
     </div>
   );
 
-  const rightColumn = selectedColumn ? (
-    <div>
-      <SectionTitle title={getLabel(selectedColumn.labels, userContext.get('catalogLocale'), selectedColumn.code)}>
-        <SectionTitle.Title>
-          {getLabel(selectedColumn.labels, userContext.get('catalogLocale'), selectedColumn.code)}
-        </SectionTitle.Title>
-      </SectionTitle>
-      <FieldsList>
-        <Field label={translate('pim_common.code')} requiredLabel={translate('pim_common.required_label')}>
-          <TextInput
-            readOnly={savedColumnIds.includes(selectedColumn.id)}
-            value={selectedColumn.code}
-            onChange={handleCodeChange}
-          />
-          {isDuplicateColumnCode(selectedColumn.code) && (
-            <Helper level='error'>
-              {translate('pim_table_attribute.validations.duplicated_column_code', {
-                duplicateCode: selectedColumn.code,
-              })}
-            </Helper>
-          )}
-        </Field>
-        <Field
-          label={translate('pim_table_attribute.form.attribute.data_type')}
-          requiredLabel={translate('pim_common.required_label')}>
-          <TextInput
-            readOnly={true}
-            value={translate(`pim_table_attribute.properties.data_type.${selectedColumn.data_type}`)}
-          />
-        </Field>
-      </FieldsList>
-      <SectionTitle title={translate('pim_table_attribute.form.attribute.labels')}>
-        <SectionTitle.Title>{translate('pim_table_attribute.form.attribute.labels')}</SectionTitle.Title>
-      </SectionTitle>
-      <FieldsList>
-        {activeLocales.map(locale => (
-          <Field label={locale.label} key={locale.code} locale={locale.code}>
-            <TextInput
-              onChange={label => handleLabelChange(locale.code, label)}
-              value={selectedColumn.labels[locale.code] ?? ''}
-            />
-          </Field>
-        ))}
-      </FieldsList>
-    </div>
+  const ColumnDefinitionColumn = selectedColumn ? (
+    <ColumnDefinitionProperties
+      selectedColumn={selectedColumn}
+      catalogLocaleCode={userContext.get('catalogLocale')}
+      activeLocales={activeLocales}
+      onChange={handleColumnChange}
+      savedColumnIds={savedColumnIds}
+      isDuplicateColumnCode={isDuplicateColumnCode}
+    />
   ) : (
     <div />
   );

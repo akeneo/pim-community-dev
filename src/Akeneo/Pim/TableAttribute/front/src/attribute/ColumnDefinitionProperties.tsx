@@ -1,8 +1,9 @@
 import React from 'react';
-import {Field, NumberInput, SectionTitle, TextInput} from 'akeneo-design-system';
+import {Field, Helper, NumberInput, SectionTitle, TextInput} from 'akeneo-design-system';
 import {getLabel, Locale, LocaleCode, useTranslate} from '@akeneo-pim-community/shared';
-import {ColumnDefinition, ColumnValidation} from '../models/TableConfiguration';
+import {ColumnCode, ColumnValidation} from '../models/TableConfiguration';
 import styled from 'styled-components';
+import {ColumnDefinitionWithId} from './TableOptionsApp';
 
 const FieldsList = styled.div`
   display: flex;
@@ -12,10 +13,12 @@ const FieldsList = styled.div`
 `;
 
 type ColumnDefinitionPropertiesProps = {
-  selectedColumn: ColumnDefinition;
+  selectedColumn: ColumnDefinitionWithId;
   catalogLocaleCode: LocaleCode;
   activeLocales: Locale[];
-  onChange: (column: ColumnDefinition) => void;
+  onChange: (column: ColumnDefinitionWithId) => void;
+  savedColumnIds: string[];
+  isDuplicateColumnCode: (code: ColumnCode) => boolean;
 };
 
 const ColumnDefinitionProperties: React.FC<ColumnDefinitionPropertiesProps> = ({
@@ -23,6 +26,8 @@ const ColumnDefinitionProperties: React.FC<ColumnDefinitionPropertiesProps> = ({
   catalogLocaleCode,
   activeLocales,
   onChange,
+  savedColumnIds,
+  isDuplicateColumnCode,
 }) => {
   const translate = useTranslate();
 
@@ -36,6 +41,11 @@ const ColumnDefinitionProperties: React.FC<ColumnDefinitionPropertiesProps> = ({
     onChange(selectedColumn);
   };
 
+  const handleCodeChange = (code: ColumnCode) => {
+    selectedColumn.code = code;
+    onChange(selectedColumn);
+  };
+
   const validations = (
     <>
       {selectedColumn.data_type === 'text' && (
@@ -44,6 +54,7 @@ const ColumnDefinitionProperties: React.FC<ColumnDefinitionPropertiesProps> = ({
             value={`${selectedColumn.validations.max_length}`}
             onChange={value => handleValidationChange({max_length: parseInt(value)})}
             min={0}
+            max={100}
           />
         </Field>
       )}
@@ -59,7 +70,18 @@ const ColumnDefinitionProperties: React.FC<ColumnDefinitionPropertiesProps> = ({
       </SectionTitle>
       <FieldsList>
         <Field label={translate('pim_common.code')} requiredLabel={translate('pim_common.required_label')}>
-          <TextInput readOnly={true} value={selectedColumn.code} />
+          <TextInput
+            readOnly={savedColumnIds.includes(selectedColumn.id)}
+            value={selectedColumn.code}
+            onChange={handleCodeChange}
+          />
+          {isDuplicateColumnCode(selectedColumn.code) && (
+            <Helper level='error'>
+              {translate('pim_table_attribute.validations.duplicated_column_code', {
+                duplicateCode: selectedColumn.code,
+              })}
+            </Helper>
+          )}
         </Field>
         <Field
           label={translate('pim_table_attribute.form.attribute.data_type')}
