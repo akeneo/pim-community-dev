@@ -49,7 +49,7 @@ test.each([
     type: 'attribute',
   };
 
-  renderWithProviders(<Operations source={source} onSourceChange={onSourceChange} />);
+  renderWithProviders(<Operations source={source} validationErrors={[]} onSourceChange={onSourceChange} />);
 
   expect(
     screen.getByText('akeneo.tailored_export.column_details.sources.no_source_configuration.title')
@@ -75,7 +75,7 @@ test.each([
     type: 'attribute',
   };
 
-  renderWithProviders(<Operations source={source} onSourceChange={onSourceChange} />);
+  renderWithProviders(<Operations source={source} validationErrors={[]} onSourceChange={onSourceChange} />);
 
   userEvent.click(screen.getByText('This is a selector'));
 
@@ -95,7 +95,7 @@ test('it renders nothing if the attribute is not found', () => {
     type: 'attribute',
   };
 
-  renderWithProviders(<Operations source={source} onSourceChange={onSourceChange} />);
+  renderWithProviders(<Operations source={source} validationErrors={[]} onSourceChange={onSourceChange} />);
 
   expect(
     screen.queryByText('akeneo.tailored_export.column_details.sources.no_source_configuration.title')

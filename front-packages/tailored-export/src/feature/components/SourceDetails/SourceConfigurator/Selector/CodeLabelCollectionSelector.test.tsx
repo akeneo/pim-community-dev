@@ -1,7 +1,7 @@
 import React, {ReactNode} from 'react';
 import {act, screen} from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
-import {Channel, renderWithProviders as baseRender} from '@akeneo-pim-community/shared';
+import {Channel, renderWithProviders as baseRender, ValidationError} from '@akeneo-pim-community/shared';
 import {CodeLabelCollectionSelector} from './CodeLabelCollectionSelector';
 import {Attribute} from '../../../../models';
 import {FetcherContext} from '../../../../contexts';
@@ -48,7 +48,11 @@ test('it displays a type dropdown and a separator dropdown when the selection ty
   const onSelectionChange = jest.fn();
 
   await renderWithProviders(
-    <CodeLabelCollectionSelector selection={{type: 'code', separator: ','}} onSelectionChange={onSelectionChange} />
+    <CodeLabelCollectionSelector
+      validationErrors={[]}
+      selection={{type: 'code', separator: ','}}
+      onSelectionChange={onSelectionChange}
+    />
   );
 
   expect(screen.getByText('pim_common.type')).toBeInTheDocument();
@@ -62,6 +66,7 @@ test('it displays a locale dropdown when the selection type is label', async () 
 
   await renderWithProviders(
     <CodeLabelCollectionSelector
+      validationErrors={[]}
       selection={{type: 'label', locale: 'en_US', separator: ','}}
       onSelectionChange={onSelectionChange}
     />
@@ -80,7 +85,11 @@ test('it can select a label selection type', async () => {
   const onSelectionChange = jest.fn();
 
   await renderWithProviders(
-    <CodeLabelCollectionSelector selection={{type: 'code', separator: ','}} onSelectionChange={onSelectionChange} />
+    <CodeLabelCollectionSelector
+      validationErrors={[]}
+      selection={{type: 'code', separator: ','}}
+      onSelectionChange={onSelectionChange}
+    />
   );
 
   userEvent.click(screen.getByText('pim_common.type'));
@@ -94,6 +103,7 @@ test('it can select a code selection type', async () => {
 
   await renderWithProviders(
     <CodeLabelCollectionSelector
+      validationErrors={[]}
       selection={{type: 'label', locale: 'en_US', separator: ','}}
       onSelectionChange={onSelectionChange}
     />
@@ -110,6 +120,7 @@ test('it can select a collection separator', async () => {
 
   await renderWithProviders(
     <CodeLabelCollectionSelector
+      validationErrors={[]}
       selection={{type: 'label', locale: 'en_US', separator: ','}}
       onSelectionChange={onSelectionChange}
     />
@@ -119,4 +130,35 @@ test('it can select a collection separator', async () => {
   userEvent.click(screen.getByTitle(';'));
 
   expect(onSelectionChange).toHaveBeenCalledWith({type: 'label', locale: 'en_US', separator: ';'});
+});
+
+test('it displays validation errors', async () => {
+  const onSelectionChange = jest.fn();
+  const validationErrors: ValidationError[] = [
+    {
+      messageTemplate: 'error.key.separator',
+      invalidValue: '',
+      message: 'this is a separator error',
+      parameters: {},
+      propertyPath: '[separator]',
+    },
+    {
+      messageTemplate: 'error.key.locale',
+      invalidValue: '',
+      message: 'this is a locale error',
+      parameters: {},
+      propertyPath: '[locale]',
+    },
+  ];
+
+  await renderWithProviders(
+    <CodeLabelCollectionSelector
+      validationErrors={validationErrors}
+      selection={{type: 'label', locale: 'en_US', separator: ','}}
+      onSelectionChange={onSelectionChange}
+    />
+  );
+
+  expect(screen.getByText('error.key.separator')).toBeInTheDocument();
+  expect(screen.getByText('error.key.locale')).toBeInTheDocument();
 });

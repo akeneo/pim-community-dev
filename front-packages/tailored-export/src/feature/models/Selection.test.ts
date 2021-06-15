@@ -12,7 +12,14 @@ const getAttribute = (type: string): Attribute => ({
 test('it returns default selection by attribute type', () => {
   expect(getDefaultSelectionByAttribute(getAttribute('pim_catalog_text'))).toEqual({type: 'code'});
   expect(getDefaultSelectionByAttribute(getAttribute('pim_catalog_price_collection'))).toEqual({type: 'amount'});
-  expect(getDefaultSelectionByAttribute(getAttribute('pim_catalog_price_collection'))).toEqual({type: 'amount'});
+  expect(getDefaultSelectionByAttribute(getAttribute('pim_catalog_asset_collection'))).toEqual({
+    type: 'code',
+    separator: ',',
+  });
+  expect(getDefaultSelectionByAttribute(getAttribute('akeneo_reference_entity_collection'))).toEqual({
+    type: 'code',
+    separator: ',',
+  });
   expect(getDefaultSelectionByAttribute(getAttribute('pim_catalog_multiselect'))).toEqual({
     type: 'code',
     separator: ',',
