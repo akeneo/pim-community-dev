@@ -1,7 +1,8 @@
 import React from 'react';
 import styled from 'styled-components';
-import {useTranslate, LocaleCode} from '@akeneo-pim-community/shared';
-import {Operator} from './OperatorSelector';
+import {LocaleCode} from '@akeneo-pim-community/shared';
+import {OperatorSelector, Operator} from './OperatorSelector';
+import {LocalesSelector} from './LocalesSelector';
 
 const Container = styled.div`
   display: flex;
@@ -18,16 +19,13 @@ type CompletenessFilterProps = {
     onLocalesChange: (locales: LocaleCode[]) => void;
 };
 
-const CompletenessFilter = ({}: CompletenessFilterProps) => {
-  const translate = useTranslate();
-
+const CompletenessFilter = ({operator, locales, onOperatorChange, onLocalesChange}: CompletenessFilterProps) => {
   return (
     <Container>
-      <span>
-        {translate(
-          'pim_connector.export.completeness.selector.label')}
-      </span>
-        // voir Channel
+        <span>
+            <OperatorSelector operator={operator} onChange={onOperatorChange} />
+            {operator !== 'ALL' && (<LocalesSelector locales={locales} onChange={onLocalesChange} />)}
+        </span>
     </Container>
   );
 };
