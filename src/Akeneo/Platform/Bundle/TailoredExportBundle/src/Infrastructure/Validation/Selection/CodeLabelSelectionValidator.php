@@ -24,6 +24,7 @@ class CodeLabelSelectionValidator extends ConstraintValidator
                 [
                     'fields' => [
                         'type' => [
+                            new NotBlank(),
                             new Choice(
                                 [
                                     'strict' => true,

@@ -59,6 +59,8 @@ const getDefaultSelectionByAttribute = (attribute: Attribute): Selection => {
   switch (attribute.type) {
     case 'pim_catalog_price_collection':
       return {type: 'amount'};
+    case 'akeneo_reference_entity_collection':
+    case 'pim_catalog_asset_collection':
     case 'pim_catalog_multiselect':
       return {type: 'code', separator: ','};
     default:

@@ -8,6 +8,7 @@ use Akeneo\Platform\TailoredExport\Domain\SelectionTypes;
 use Symfony\Component\Validator\Constraint;
 use Symfony\Component\Validator\Constraints\Choice;
 use Symfony\Component\Validator\Constraints\Collection;
+use Symfony\Component\Validator\Constraints\NotBlank;
 use Symfony\Component\Validator\ConstraintValidator;
 use Symfony\Component\Validator\Validation;
 
@@ -21,6 +22,7 @@ class PriceCollectionSelectionValidator extends ConstraintValidator
                 [
                     'fields' => [
                         'type' => [
+                            new NotBlank(),
                             new Choice(
                                 [
                                     'strict' => true,

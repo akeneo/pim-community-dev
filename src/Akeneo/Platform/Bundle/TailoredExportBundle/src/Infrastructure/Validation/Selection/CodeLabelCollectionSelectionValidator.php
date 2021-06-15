@@ -4,15 +4,14 @@ declare(strict_types=1);
 
 namespace Akeneo\Platform\TailoredExport\Infrastructure\Validation\Selection;
 
-use Akeneo\Pim\Enrichment\Component\Product\Validator\Constraints\NotBlank;
 use Akeneo\Platform\TailoredExport\Domain\SelectionTypes;
 use Akeneo\Platform\TailoredExport\Infrastructure\Validation\LocaleShouldBeActive;
 use Symfony\Component\Validator\Constraint;
 use Symfony\Component\Validator\Constraints\Choice;
 use Symfony\Component\Validator\Constraints\Collection;
+use Symfony\Component\Validator\Constraints\NotBlank;
 use Symfony\Component\Validator\Constraints\Type;
 use Symfony\Component\Validator\ConstraintValidator;
-use Symfony\Component\Validator\Validation;
 
 class CodeLabelCollectionSelectionValidator extends ConstraintValidator
 {
@@ -32,6 +31,7 @@ class CodeLabelCollectionSelectionValidator extends ConstraintValidator
                 [
                     'fields' => [
                         'type' => [
+                            new NotBlank(),
                             new Choice(
                                 [
                                     'strict' => true,
@@ -43,6 +43,7 @@ class CodeLabelCollectionSelectionValidator extends ConstraintValidator
                             )
                         ],
                         'separator' => [
+                            new NotBlank(),
                             new Choice(
                                 [
                                     'strict' => true,
