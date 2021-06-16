@@ -4,13 +4,13 @@ import {ColumnCode, TableConfiguration} from '../models/TableConfiguration';
 import {getLabel, useUserContext} from '@akeneo-pim-community/shared';
 import {TableValue} from '../models/TableValue';
 
-type TableInputAppProps = {
+type TableInputValueProps = {
   valueData: TableValue;
   tableConfiguration: TableConfiguration;
   onChange: (tableValue: TableValue) => void;
 };
 
-const TableInputApp: React.FC<TableInputAppProps> = ({valueData, tableConfiguration, onChange}) => {
+const TableInputValue: React.FC<TableInputValueProps> = ({valueData, tableConfiguration, onChange}) => {
   const valueClone = valueData.map(row => {
     return Object.keys(row).reduce((previousRow, columnCode) => {
       previousRow[columnCode] = row[columnCode];
@@ -83,4 +83,4 @@ const TableInputApp: React.FC<TableInputAppProps> = ({valueData, tableConfigurat
   );
 };
 
-export {TableInputApp};
+export {TableInputValue};
