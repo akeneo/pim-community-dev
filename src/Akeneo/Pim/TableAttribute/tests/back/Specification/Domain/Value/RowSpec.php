@@ -11,7 +11,12 @@ class RowSpec extends ObjectBehavior
 {
     function let()
     {
-        $this->beConstructedThrough('fromNormalized', [['foo' => 'bar', '0' => 'baz']]);
+        $this->beConstructedThrough('fromNormalized', [[
+            'foo' => 'bar',
+            'empty' => '',
+            '0' => 'baz',
+            'null' => null,
+        ]]);
     }
 
     function it_is_initializable()

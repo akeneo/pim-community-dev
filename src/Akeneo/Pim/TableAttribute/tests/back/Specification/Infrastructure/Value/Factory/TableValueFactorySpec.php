@@ -85,23 +85,17 @@ class TableValueFactorySpec extends ObjectBehavior
             ]
         );
     }
-    function it_throws_an_exception_if_cell_is_empty()
+    function it_filters_empty_cells()
     {
         $attribute = $this->buildTableAttribute(false, false);
 
-        $this->shouldThrow(InvalidPropertyTypeException::validArrayStructureExpected(
-            'nutrition',
-            'TODO cell must be filled',
-            TableValueFactory::class,
-            [['foo' => '']]
-        ))->during(
-            'createByCheckingData', [
-                $attribute,
-                null,
-                null,
-                [['foo' => '']]
-            ]
+        $value = $this->createByCheckingData($attribute,
+            null,
+            null,
+            [['foo' => '', 'bar' => 'baz', 'toto' => null]]
         );
+        $value->shouldBeAnInstanceOf(TableValue::class);
+        $value->getData()->shouldBeLike(Table::fromNormalized([['bar' => 'baz']]));
     }
 
     private function buildTableAttribute(bool $isLocalizable = false, bool $isScopable = false): Attribute

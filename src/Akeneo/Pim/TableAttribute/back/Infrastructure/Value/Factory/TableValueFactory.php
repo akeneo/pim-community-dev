@@ -38,19 +38,14 @@ class TableValueFactory implements ValueFactory
             }
 
             foreach ($row as $cell) {
+                if (null === $cell || '' === $cell) {
+                    continue;
+                }
+
                 if (!is_scalar($cell)) {
                     throw InvalidPropertyTypeException::validArrayStructureExpected(
                         $attribute->code(),
                         'TODO cell should be a scalar',
-                        static::class,
-                        $data
-                    );
-                }
-
-                if ('' === $cell) {
-                    throw InvalidPropertyTypeException::validArrayStructureExpected(
-                        $attribute->code(),
-                        'TODO cell must be filled',
                         static::class,
                         $data
                     );

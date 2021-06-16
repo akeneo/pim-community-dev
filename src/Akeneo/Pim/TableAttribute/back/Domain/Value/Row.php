@@ -46,11 +46,13 @@ final class Row implements \IteratorAggregate
      */
     public static function fromNormalized(array $row): self
     {
+        $isCellFilled = fn ($data): bool => '' !== $data && null !== $data;
+
         Assert::notEmpty($row);
         return new self(
             array_map(
                 fn ($data): Cell => Cell::fromNormalized($data),
-                $row
+                array_filter($row, $isCellFilled)
             )
         );
     }
