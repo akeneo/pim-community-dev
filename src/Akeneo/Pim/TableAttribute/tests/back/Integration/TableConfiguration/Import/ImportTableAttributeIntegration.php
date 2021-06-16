@@ -35,7 +35,7 @@ class ImportTableAttributeIntegration extends TestCase
     {
         $csv = <<<CSV
 code;type;localizable;scopable;group;unique;sort_order;table_configuration
-nutrition;pim_catalog_table;0;0;other;0;2;[{"code":"ingredients","data_type":"select","labels":{"en_US":"Ingredients"}},{"code":"quantity","data_type":"text","labels":{"en_US":"Quantity"}}]
+nutrition;pim_catalog_table;0;0;other;0;2;[{"code":"ingredients","data_type":"select","labels":{"en_US":"Ingredients"}},{"code":"quantity","data_type":"text","labels":{"en_US":"Quantity"},"validations":{"max_length":50}}]
 storage;pim_catalog_table;0;0;other;0;3;[{"code":"dimension","data_type":"select","labels":{"en_US":"Dimension"}},{"code":"value","data_type":"text","labels":{"en_US":"Value"}}]
 CSV;
         $this->jobLauncher->launchImport(self::CSV_IMPORT_JOB_CODE, $csv);
@@ -46,7 +46,7 @@ CSV;
         Assert::assertEqualsCanonicalizing(
             [
                 ['code' => 'ingredients', 'data_type' => 'select', 'labels' => ['en_US' => 'Ingredients'], 'validations' => (object) []],
-                ['code' => 'quantity', 'data_type' => 'text', 'labels' => ['en_US' => 'Quantity'], 'validations' => (object) []],
+                ['code' => 'quantity', 'data_type' => 'text', 'labels' => ['en_US' => 'Quantity'], 'validations' => ['max_length' => 50]],
             ],
             $nutritionAttribute->getRawTableConfiguration()
         );

@@ -194,7 +194,7 @@ final class SqlTableConfigurationRepositoryIntegration extends TestCase
                 'data_type' => 'text',
                 'column_order' => 0,
                 'labels' => \json_encode(['en_US' => 'Ingredients', 'fr_FR' => 'Ingrédients']),
-                'validations' => '{}'
+                'validations' => '{}',
             ]
         );
         $this->connection->executeQuery(
@@ -206,7 +206,7 @@ final class SqlTableConfigurationRepositoryIntegration extends TestCase
                 'data_type' => 'text',
                 'column_order' => 1,
                 'labels' => '{}',
-                'validations' => \json_encode(['max_length' => 100])
+                'validations' => \json_encode(['max_length' => 90]),
             ]
         );
 

@@ -49,12 +49,15 @@ final class ExportTableAttributeIntegration extends TestCase
                 ],
                 [
                     'code' => 'quantity',
-                    'data_type' => 'text',
+                    'data_type' => 'number',
                     'labels' => [
                         'en_US' => 'Quantity',
                     ],
-                    // TODO add validations to check it's well exported
-                    'validations' => (object)[],
+                    'validations' => [
+                        'min' => 10,
+                        'max' => 200,
+                        'decimals_allowed' => true,
+                    ],
                 ],
             ]
         );
@@ -100,11 +103,15 @@ final class ExportTableAttributeIntegration extends TestCase
                 ],
                 [
                     'code' => 'quantity',
-                    'data_type' => 'text',
+                    'data_type' => 'number',
                     'labels' => [
                         'en_US' => 'Quantity',
                     ],
-                    'validations' => (object)[],
+                    'validations' => [
+                        'min' => 10,
+                        'max' => 200,
+                        'decimals_allowed' => true,
+                    ],
                 ],
             ]
         );
@@ -167,9 +174,14 @@ final class ExportTableAttributeIntegration extends TestCase
                 ],
                 [
                     'code' => 'quantity',
-                    'data_type' => 'text',
+                    'data_type' => 'number',
                     'labels' => [
                         'en_US' => 'Quantity',
+                    ],
+                    'validations' => [
+                        'min' => 10,
+                        'max' => 200,
+                        'decimals_allowed' => true,
                     ],
                 ],
             ]
