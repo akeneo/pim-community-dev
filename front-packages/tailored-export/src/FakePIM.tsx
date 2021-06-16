@@ -13,8 +13,16 @@ import {
 } from 'akeneo-design-system';
 import {CompletenessFilter, CategoryFilter, ColumnsTab} from './feature';
 import {useEffect} from 'react';
-import {NotificationLevel, useNotify, useRoute, useTranslate, ValidationError} from '@akeneo-pim-community/shared';
+import {
+  NotificationLevel,
+  useNotify,
+  useRoute,
+  useTranslate,
+  ValidationError,
+  LocaleCode,
+} from '@akeneo-pim-community/shared';
 import {ColumnConfiguration} from './feature/models/ColumnConfiguration';
+import {Operator} from './feature';
 
 const JOB_CODE = 'mmm';
 
@@ -50,6 +58,13 @@ const Menu = styled.div`
 const Page = styled.div`
   flex: 1;
   padding: 40px;
+`;
+
+const FieldContainer = styled.div`
+  width: 400px;
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
 `;
 
 const SaveButton = styled(Button)`
@@ -105,7 +120,30 @@ const FakePIM = () => {
     });
   };
 
-   // handle completeness change
+  const handleCompletenessOperatorFilterChange = (operator: Operator) => {
+    const newFilters = jobConfiguration.configuration.filters.data.map(filter => {
+      if (filter.field !== 'completeness') return filter;
+
+      return {...filter, operator: operator, value: 100};
+    });
+
+    setJobConfiguration({
+      ...jobConfiguration,
+      configuration: {...jobConfiguration.configuration, filters: {data: newFilters}},
+    });
+  };
+  const handleCompletenessLocalesFilterChange = (locales: LocaleCode[]) => {
+    const newFilters = jobConfiguration.configuration.filters.data.map(filter => {
+      if (filter.field !== 'completeness') return filter;
+
+      return {...filter, context: {locales}};
+    });
+
+    setJobConfiguration({
+      ...jobConfiguration,
+      configuration: {...jobConfiguration.configuration, filters: {data: newFilters}},
+    });
+  };
 
   const saveJobConfiguration = async () => {
     setValidationErrors([]);
@@ -170,20 +208,33 @@ const FakePIM = () => {
           <TabBar.Tab isActive={false}>Properties</TabBar.Tab>
           <TabBar.Tab isActive={false}>Permissions</TabBar.Tab>
           <TabBar.Tab isActive={false}>Global settings</TabBar.Tab>
-          <TabBar.Tab isActive={isCurrent('lines')} onClick={() => switchTo('lines')}>Filter the data</TabBar.Tab>
-          <TabBar.Tab isActive={isCurrent('columns')} onClick={() => switchTo('columns')}>Select the columns</TabBar.Tab>
+          <TabBar.Tab isActive={isCurrent('lines')} onClick={() => switchTo('lines')}>
+            Filter the data
+          </TabBar.Tab>
+          <TabBar.Tab isActive={isCurrent('columns')} onClick={() => switchTo('columns')}>
+            Select the columns
+          </TabBar.Tab>
           <TabBar.Tab isActive={false}>History</TabBar.Tab>
         </TabBar>
-        {isCurrent('columns') && <ColumnsTab
+        {isCurrent('columns') && (
+          <ColumnsTab
             validationErrors={validationErrors}
             columnsConfiguration={jobConfiguration.configuration.columns}
             onColumnsConfigurationChange={handleColumnConfigurationChange}
-        />}
-        {isCurrent('lines') && <>
-          {categoriesSelected.length === 0 ? 'All products' : `${categoriesSelected.length} selected category`}
-          <CategoryFilter initialCategorySelection={categoriesSelected} onCategorySelection={handleCategoryChange} />
-          <CompletenessFilter operator="GREATER OR EQUALS THAN ON AT LEAST ONE LOCALE" locales={['fr_FR']} onOperatorChange={() => {}} onLocalesChange={() => {}} />
-        </>}
+          />
+        )}
+        {isCurrent('lines') && (
+          <FieldContainer>
+            {categoriesSelected.length === 0 ? 'All products' : `${categoriesSelected.length} selected category`}
+            <CategoryFilter initialCategorySelection={categoriesSelected} onCategorySelection={handleCategoryChange} />
+            <CompletenessFilter
+              operator="GREATER OR EQUALS THAN ON AT LEAST ONE LOCALE"
+              locales={['fr_FR']}
+              onOperatorChange={handleCompletenessOperatorFilterChange}
+              onLocalesChange={handleCompletenessLocalesFilterChange}
+            />
+          </FieldContainer>
+        )}
       </Page>
     </Container>
   );

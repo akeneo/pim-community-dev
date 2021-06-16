@@ -6,29 +6,27 @@ import {LocalesSelector} from './LocalesSelector';
 
 const Container = styled.div`
   display: flex;
-  align-items: center;
+  flex-direction: column;
+  gap: 15px;
   justify-content: space-between;
   width: 100%;
 `;
 
-
 type CompletenessFilterProps = {
-    operator: Operator,
-    locales: LocaleCode[],
-    onOperatorChange: (operator: string) => void;
-    onLocalesChange: (locales: LocaleCode[]) => void;
+  operator: Operator;
+  locales: LocaleCode[];
+  onOperatorChange: (operator: string) => void;
+  onLocalesChange: (locales: LocaleCode[]) => void;
 };
 
 const CompletenessFilter = ({operator, locales, onOperatorChange, onLocalesChange}: CompletenessFilterProps) => {
   return (
     <Container>
-        <span>
-            <OperatorSelector operator={operator} onChange={onOperatorChange} />
-            {operator !== 'ALL' && (<LocalesSelector locales={locales} onChange={onLocalesChange} />)}
-        </span>
+      <OperatorSelector operator={operator} onChange={onOperatorChange} />
+      {operator !== 'ALL' && <LocalesSelector locales={locales} onChange={onLocalesChange} />}
     </Container>
   );
 };
 
 export {CompletenessFilter};
-export type {Operator}
+export type {Operator};

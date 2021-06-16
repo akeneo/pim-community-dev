@@ -176,6 +176,13 @@ extensions:
 
     akeneo-product-localized-completeness-filter:
         module: akeneotailoredexport/js/job/product/edit/filter-localized-completeness
+        config:
+            neverEmpty: true
+            operators:
+                - ALL
+                - GREATER OR EQUALS THAN ON AT LEAST ONE LOCALE
+                - GREATER OR EQUALS THAN ON ALL LOCALES
+                - LOWER THAN ON ALL LOCALES
 
     pim-job-instance-xlsx-tailored-product-export-edit-filter-the-data-default-attribute-filters:
         module: pim/job/product/edit/content/data/default-attribute-filters
