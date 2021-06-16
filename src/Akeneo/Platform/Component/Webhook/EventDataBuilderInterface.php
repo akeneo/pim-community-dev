@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace Akeneo\Platform\Component\Webhook;
 
-use Akeneo\Connectivity\OctoCouplingDefenseSystem\UserManagement\PublicApi\Query\GetUserById\User;
+use Akeneo\UserManagement\Bundle\PublicApi\Query\GetUserById\User;
 use Akeneo\Platform\Component\EventQueue\BulkEventInterface;
 
 /**

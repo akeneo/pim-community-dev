@@ -1,6 +1,6 @@
 <?php
 
-namespace Akeneo\Connectivity\OctoCouplingDefenseSystem\UserManagement\PublicApi\Query\GetUserById;
+namespace Akeneo\UserManagement\Bundle\PublicApi\Query\GetUserById;
 
 /**
  * @copyright 2021 Akeneo SAS (http://www.akeneo.com)

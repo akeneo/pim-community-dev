@@ -76,11 +76,7 @@ $rules = [
             'Akeneo\Platform\Component\Webhook',
 
             // Not ok
-            'Akeneo\UserManagement\Component\Model\UserInterface',
             'Doctrine\Common\Persistence\ObjectRepository',
-            'Symfony\Component\Security\Core\Authentication\Token\Storage\TokenStorageInterface',
-            'Symfony\Component\Security\Core\Authentication\Token\UsernamePasswordToken',
-            'Symfony\Component\Security\Core\User\UserInterface',
 
             // ???
             'Akeneo\Connectivity\Connection\Domain\Settings\Exception\ConstraintViolationListException',

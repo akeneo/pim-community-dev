@@ -1,5 +1,5 @@
 services:
-  Akeneo\Connectivity\OctoCouplingDefenseSystem\UserManagement\Implementation\QueryHandler\GetUserById\GetUserByIdHandler:
+  Akeneo\UserManagement\Bundle\QueryHandler\GetUserByIdHandler:
     arguments:
       - '@pim_user.repository.user'
     tags:

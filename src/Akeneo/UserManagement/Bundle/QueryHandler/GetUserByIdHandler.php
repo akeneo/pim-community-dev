@@ -1,9 +1,9 @@
 <?php
 
-namespace Akeneo\Connectivity\OctoCouplingDefenseSystem\UserManagement\Implementation\QueryHandler\GetUserById;
+namespace Akeneo\UserManagement\Bundle\QueryHandler;
 
-use Akeneo\Connectivity\OctoCouplingDefenseSystem\UserManagement\PublicApi\Query\GetUserById\GetUserByIdQuery;
-use Akeneo\Connectivity\OctoCouplingDefenseSystem\UserManagement\PublicApi\Query\GetUserById\User;
+use Akeneo\UserManagement\Bundle\PublicApi\Query\GetUserById\GetUserByIdQuery;
+use Akeneo\UserManagement\Bundle\PublicApi\Query\GetUserById\User;
 use Akeneo\UserManagement\Component\Model\UserInterface;
 use Akeneo\UserManagement\Component\Repository\UserRepositoryInterface;
 use Symfony\Component\Messenger\Handler\MessageSubscriberInterface;
@@ -28,10 +28,9 @@ class GetUserByIdHandler implements MessageSubscriberInterface
         ];
     }
 
-    // TODO: Handle error
-    public function __invoke(GetUserByIdQuery $query): User
+    public function __invoke(GetUserByIdQuery $query): ?User
     {
-        /** @var UserInterface $user */
+        /** @var ?UserInterface $user */
         $user = $this->repository->find($query->getId());
 
         return new User($user->getId(), $user->getUsername());
