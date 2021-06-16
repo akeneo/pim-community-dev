@@ -152,11 +152,15 @@ define([
      * @param {Event} event
      */
     displayError: function (event) {
-      _.each(event.response, function (error) {
-        if (error.global) {
-          messenger.notify('error', error.message);
-        }
-      });
+      if (!Array.isArray(event.response) && event.response.global) {
+        messenger.notify('error', event.response.message);
+      } else {
+        _.each(event.response, function (error) {
+          if (error.global) {
+            messenger.notify('error', error.message);
+          }
+        });
+      }
     },
 
     /**

@@ -65,6 +65,7 @@ pim_common:
     name: Name
     remove: Remove
     code: Code
+    label: Label
     quantity: Quantity
     products: Products
     product_models: Product models
@@ -559,7 +560,6 @@ pim_mass_edit:
 
 job_execution.summary:
     mass_edited: Mass edited
-    skip: Skipped
     skipped_products: Skipped products
     skipped_attributes: Skipped attributes
     skipped_families: Skipped families

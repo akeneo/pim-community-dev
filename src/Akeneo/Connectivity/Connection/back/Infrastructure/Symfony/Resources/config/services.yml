@@ -95,3 +95,9 @@ services:
             - 'AES-256-OFB'
             - '%env(APP_SECRET)%'
             - '%env(APP_SECRET)%'
+
+    akeneo_connectivity.connection.dns_lookup:
+        class: Akeneo\Connectivity\Connection\Infrastructure\Service\DnsLookup
+
+    akeneo_connectivity.connection.ip_matcher:
+        class: Akeneo\Connectivity\Connection\Infrastructure\Service\IpMatcher

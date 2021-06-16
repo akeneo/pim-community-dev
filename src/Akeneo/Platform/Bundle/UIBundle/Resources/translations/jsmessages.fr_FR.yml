@@ -193,6 +193,8 @@ pim_common:
   not_available: N/A
   now: Maintenant
   ok: OK
+  open: Ouvrir
+  no_result: Aucun résultat
   other_actions: Autres actions
   permissions: Autorisations
   previous: Précédent
@@ -229,6 +231,13 @@ pim_common:
   read_more: En savoir plus
   channel: Canal
   locale: Locale
+  categories: Catégories
+  family_variant: Variante de famille
+  enabled: Activé
+  family: Famille
+  parent: Parent
+  groups: Groupes
+  more: Plus
 error:
   exception: Oups! Une erreur {{ status_code }} s'est produite...
   forbidden: Désolé, vous n'êtes pas autorisé(e) à accéder à cette page

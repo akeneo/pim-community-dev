@@ -37,7 +37,7 @@ class MeasurementFamilyRepository implements MeasurementFamilyRepositoryInterfac
     public function all(): array
     {
         if (empty($this->allMeasurementFamiliesCache)) {
-            $this->allMeasurementFamiliesCache = $this->loadAssetFamiliesIndexByCodes();
+            $this->allMeasurementFamiliesCache = $this->loadMeasurementFamiliesIndexByCodes();
         }
 
         return array_values($this->allMeasurementFamiliesCache);
@@ -47,7 +47,7 @@ class MeasurementFamilyRepository implements MeasurementFamilyRepositoryInterfac
     {
         $normalizedMeasurementFamilyCode = $measurementFamilyCode->normalize();
         if (!isset($this->measurementFamilyCache[$normalizedMeasurementFamilyCode])) {
-            $this->measurementFamilyCache[$normalizedMeasurementFamilyCode] = $this->loadAssetFamily($measurementFamilyCode);
+            $this->measurementFamilyCache[$normalizedMeasurementFamilyCode] = $this->loadMeasurementFamily($measurementFamilyCode);
         }
 
         return $this->measurementFamilyCache[$normalizedMeasurementFamilyCode];
@@ -84,6 +84,7 @@ SQL;
             );
         }
 
+        $this->allMeasurementFamiliesCache = $this->all();
         $this->allMeasurementFamiliesCache[$normalizedMeasurementFamily['code']] = $measurementFamily;
         $this->measurementFamilyCache[$normalizedMeasurementFamily['code']] = $measurementFamily;
     }
@@ -189,7 +190,7 @@ SQL;
      *
      * @throws \Doctrine\DBAL\DBALException
      */
-    private function loadAssetFamiliesIndexByCodes(): array
+    private function loadMeasurementFamiliesIndexByCodes(): array
     {
         $selectAllQuery = <<<SQL
     SELECT
@@ -215,7 +216,7 @@ SQL;
         return $measurementFamiliesIndexByCodes;
     }
 
-    private function loadAssetFamily(MeasurementFamilyCode $measurementFamilyCode): ?MeasurementFamily
+    private function loadMeasurementFamily(MeasurementFamilyCode $measurementFamilyCode): ?MeasurementFamily
     {
         $sql = <<<SQL
     SELECT

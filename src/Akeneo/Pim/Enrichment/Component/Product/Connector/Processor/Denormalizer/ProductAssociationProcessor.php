@@ -3,6 +3,7 @@
 namespace Akeneo\Pim\Enrichment\Component\Product\Connector\Processor\Denormalizer;
 
 use Akeneo\Pim\Enrichment\Component\Product\Comparator\Filter\FilterInterface;
+use Akeneo\Pim\Enrichment\Component\Product\Exception\TwoWayAssociationWithTheSameProductException;
 use Akeneo\Pim\Enrichment\Component\Product\Model\ProductInterface;
 use Akeneo\Tool\Component\Batch\Item\ItemProcessorInterface;
 use Akeneo\Tool\Component\Batch\Step\StepExecutionAwareInterface;
@@ -110,7 +111,10 @@ class ProductAssociationProcessor extends AbstractProcessor implements ItemProce
 
         try {
             $this->updateProduct($product, $item);
-        } catch (PropertyException | InvalidArgumentException | AccessDeniedException $exception) {
+        } catch (PropertyException
+        | InvalidArgumentException
+        | AccessDeniedException
+        | TwoWayAssociationWithTheSameProductException $exception) {
             $this->detachProduct($product);
             $this->skipItemWithMessage($item, $exception->getMessage(), $exception);
         }

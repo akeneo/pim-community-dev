@@ -90,6 +90,7 @@ pim_enrich.entity.attribute_option:
 pim_enrich.entity.association_type:
   label: tipo de asociación
   property:
+    is_two_way: Asociación de 2 vías
     is_quantified: Asociación con cantidad
   flash:
     update:
@@ -107,8 +108,13 @@ pim_enrich.entity.association_type:
     create:
       title: Crear un nuevo tipo de asociación
       button: Crear un tipo de asociación
+      is_two_way:
+        message_on_read_only: El tipo de asociación puede ser cuantificado o de dos vías, para seleccionar este, desmarcar el otro
+      is_quantified:
+        message_on_read_only: El tipo de asociación puede ser cuantificado o de dos vías, para seleccionar este, desmarcar el otro
     delete:
       confirm: '¿Está seguro que desea eliminar este tipo de asociación?'
+  hint: <a href="{{link}}" target="_blank">En este artículo</a>encontrará todo lo que necesita para crear su propio tipo de asociación.
 pim_enrich.entity.group_type:
   label: tipo de grupo
   flash:
@@ -159,6 +165,7 @@ pim_enrich.entity.attribute:
     max_characters: Caracteres Max
     max_file_size: Tamaño máximo de archivo (MB)
     metric_family:
+      label: Familia de medición
       choose: Seleccionar familia
     minimum_input_length: Longitud mínima para la autocompleción
     name: Nombre
@@ -232,6 +239,8 @@ pim_enrich.entity.attribute_group:
       attributes_groups_selected: '{{ itemsCount }} grupo(s) seleccionado'
     delete:
       confirm: '¿Está seguro que desea eliminar este grupo de atributo?'
+  grid:
+    no_search_result: Lo sentimos, no hay ningún resultado para su búsqueda.
 pim_enrich.mass_edit.family:
   title: Acción masiva sobre las familias
   confirm: "{1}Está a punto de actualizar una familia con la siguiente información, por favor confirme.|]1, Inf[Está a punto de actualizar {{ itemsCount }} familias con la información siguiente, por favor confirme."

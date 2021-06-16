@@ -6,6 +6,7 @@ namespace Akeneo\Pim\Automation\DataQualityInsights\Application\Consolidation;
 
 use Akeneo\Pim\Automation\DataQualityInsights\Domain\Model\Write\DashboardPurgeDateCollection;
 use Akeneo\Pim\Automation\DataQualityInsights\Domain\Repository\DashboardScoresProjectionRepositoryInterface;
+use Akeneo\Pim\Automation\DataQualityInsights\Domain\Repository\ProductScoreRepositoryInterface;
 use Akeneo\Pim\Automation\DataQualityInsights\Domain\ValueObject\ConsolidationDate;
 use Akeneo\Pim\Automation\DataQualityInsights\Domain\ValueObject\TimePeriod;
 
@@ -20,12 +21,23 @@ final class PurgeOutdatedData
 
     private DashboardScoresProjectionRepositoryInterface $dashboardScoresProjectionRepository;
 
-    public function __construct(DashboardScoresProjectionRepositoryInterface $dashboardScoresProjectionRepository)
-    {
+    private ProductScoreRepositoryInterface $productScoreRepository;
+
+    public function __construct(
+        DashboardScoresProjectionRepositoryInterface $dashboardScoresProjectionRepository,
+        ProductScoreRepositoryInterface $productScoreRepository
+    ) {
         $this->dashboardScoresProjectionRepository = $dashboardScoresProjectionRepository;
+        $this->productScoreRepository = $productScoreRepository;
     }
 
-    public function purgeDashboardProjectionRatesFrom(\DateTimeImmutable $date): void
+    public function purgeAllFrom(\DateTimeImmutable $date)
+    {
+        $this->purgeDashboardProjectionRatesFrom($date);
+        $this->purgeProductScoresFrom($date);
+    }
+
+    private function purgeDashboardProjectionRatesFrom(\DateTimeImmutable $date): void
     {
         $purgeDate = new ConsolidationDate($date);
         $purgeDates = new DashboardPurgeDateCollection();
@@ -50,5 +62,11 @@ final class PurgeOutdatedData
             );
 
         $this->dashboardScoresProjectionRepository->purgeRates($purgeDates);
+    }
+
+    private function purgeProductScoresFrom(\DateTimeImmutable $date): void
+    {
+        $purgeDate = $date->modify(sprintf('-%d DAY', self::EVALUATIONS_RETENTION_DAYS));
+        $this->productScoreRepository->purgeUntil($purgeDate);
     }
 }

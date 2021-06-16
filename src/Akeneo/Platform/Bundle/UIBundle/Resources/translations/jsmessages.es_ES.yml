@@ -154,6 +154,7 @@ pim_common:
   before: Anterior
   by: por
   cancel: Cancelar
+  clear_value: Limpiar valor
   close: Cerrar
   code: Código
   completeness: Completitud
@@ -164,6 +165,7 @@ pim_common:
   created: creado
   delete: Borrar
   done: Hecho
+  duplicate: Duplicar
   edit: Editar
   entity_updated: Hay cambios sin guardar.
   export: Export
@@ -178,6 +180,7 @@ pim_common:
   less_than: menor que
   loading: Cargando...
   media_upload: Arrastre y suelte aquí o haga clic aquí para subir el fichero
+  more_actions: Más acciones
   more_than: mayor que
   next: Siguiente
   "no": "No"
@@ -185,6 +188,8 @@ pim_common:
   not_available: N/A
   now: Ahora
   ok: OK
+  open: Abrir
+  no_result: No se encontraron resultados
   other_actions: Otras acciones
   permissions: Permisiones
   previous: Previo
@@ -202,6 +207,7 @@ pim_common:
   to: hasta
   type: Tipo
   update: Actualizar
+  updated: Actualizado
   "yes": "Sí"
   operator: Operador
   operators:
@@ -218,6 +224,15 @@ pim_common:
     STARTS WITH: Comienza por
     ENDS WITH: Termina por
   read_more: Leer más
+  channel: Canal
+  locale: Local
+  categories: Categorías
+  family_variant: Variantes de familia
+  enabled: Habilitado
+  family: Familia
+  parent: Padre
+  groups: Grupos
+  more: Más
 error:
   exception: Oups! Un error {{ status_code }} ha ocurrido...
   forbidden: Prohibido. Usted no tiene permitido acceder a esta página
@@ -310,6 +325,7 @@ pim_menu:
     attribute_group: Grupos de atributos
     channel: Canales
     currency: Monedas
+    dashboard: Panel de actividades
     family: Familias
     group: Grupos
     group_type: Tipos de grupo
@@ -331,6 +347,8 @@ pim_menu:
     system: Sistema de navegación
     user: Navegación del gestor de usuario
     settings:
+      product: Ajustes del producto
+      catalog: Configuración del catálogo
       collapsed_label: Navegación de ajustes
     product: Navegación de productos
     product_infos: Información de producto
@@ -343,3 +361,17 @@ pim_notification:
     export: Export
     quick_export: Exportación rápida
     mass_edit: Edición en masa
+pim_settings:
+  settings_menu: Menú de ajustes
+  catalog_settings: Configuración del catálogo
+  product_settings: Ajustes del producto
+  count:
+    categories: Tienes {{ countTrees }} árboles y {{ countCategories }} categorías
+    channels: Tienes {{ count }} canales
+    locales: Tienes {{ count }} locales habilitados
+    currencies: Tienes {{ count }} monedas habilitadas
+    attribute_groups: Tiene {{ count }} grupos de atributos
+    attributes: Tienes {{ count }} atributos
+    families: Tienes {{ count }} familias
+    measurements: Tiene {{ count }} mediciones
+    association_types: Tienes {{ count }} tipos de asociación
