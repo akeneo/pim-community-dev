@@ -1,4 +1,4 @@
-import {DependencyList, RefObject, useCallback, useEffect, useLayoutEffect} from 'react';
+import {DependencyList, RefObject, useCallback, useLayoutEffect} from 'react';
 import debounce from '../../../shared/utils/debounce';
 import findScrollParent from '../utils/findScrollParent';
 
@@ -30,13 +30,6 @@ const useScrollPosition = (
     }, [...deps, ref, callback]);
 
     const debounceHandleScroll = debounce(handleScroll, delay);
-
-    // We force the callback each time the deps changes,
-    // this way, the up-to-date scrollPosition is sent even when the user does not scroll
-    // but something changed (lines were removed for example, or any other case).
-    useEffect(() => {
-        debounceHandleScroll();
-    }, deps);
 
     useLayoutEffect(() => {
         window.addEventListener('scroll', debounceHandleScroll, true);

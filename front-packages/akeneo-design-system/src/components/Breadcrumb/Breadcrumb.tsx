@@ -1,4 +1,4 @@
-import React, {isValidElement, ReactElement} from 'react';
+import React, {ReactElement} from 'react';
 import styled from 'styled-components';
 import {getColor} from '../../theme';
 import {Link, LinkProps} from '../../components/Link/Link';
@@ -38,10 +38,6 @@ const Breadcrumb = ({children, ...rest}: BreadcrumbProps) => {
   return (
     <BreadcrumbContainer aria-label="Breadcrumb" {...rest}>
       {React.Children.map(children, (child, index) => {
-        if (!(isValidElement(child) && child.type === Step)) {
-          throw new Error('Breadcrumb only accepts `Breacrumb.Step` elements as children');
-        }
-
         const isLastStep = childrenCount - 1 === index;
 
         return isLastStep ? (
