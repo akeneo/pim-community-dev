@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Akeneo\Pim\Enrichment\Component\Product\Webhook;
 
+use Akeneo\Platform\Component\Webhook\Context;
 use Akeneo\UserManagement\Bundle\PublicApi\Query\GetUserById\User;
 use Akeneo\Pim\Enrichment\Component\Product\Message\ProductRemoved;
 use Akeneo\Platform\Component\EventQueue\BulkEventInterface;
@@ -31,7 +32,7 @@ class ProductRemovedEventDataBuilder implements EventDataBuilderInterface
         return true;
     }
 
-    public function build(BulkEventInterface $event, User $user): EventDataCollection
+    public function build(BulkEventInterface $event, Context $context): EventDataCollection
     {
         $collection = new EventDataCollection();
 

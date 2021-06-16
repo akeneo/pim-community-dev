@@ -4,7 +4,6 @@ declare(strict_types=1);
 
 namespace Akeneo\Platform\Component\Webhook;
 
-use Akeneo\UserManagement\Bundle\PublicApi\Query\GetUserById\User;
 use Akeneo\Platform\Component\EventQueue\BulkEventInterface;
 
 /**
@@ -18,5 +17,5 @@ interface EventDataBuilderInterface
     /**
      * @return EventDataCollection Normalized data.
      */
-    public function build(BulkEventInterface $event, User $user): EventDataCollection;
+    public function build(BulkEventInterface $event, Context $context): EventDataCollection;
 }
