@@ -1,5 +1,6 @@
 services:
     pim_framework.service.pim_url:
         class: Akeneo\Platform\Bundle\FrameworkBundle\Service\PimUrl
+        public: true
         arguments:
             - '%env(string:AKENEO_PIM_URL)%'
