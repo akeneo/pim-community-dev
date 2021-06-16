@@ -39,3 +39,4 @@ deployments/logs
 deployments/terraform/pim/Chart.yaml
 deployments/terraform/pim/Chart.lock
 /pim-enterprise-cloud
+connectors/*
