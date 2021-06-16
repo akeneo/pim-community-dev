@@ -13,7 +13,7 @@ final class TableFieldProvider implements FieldProviderInterface
     public function getField($attribute): string
     {
         // TODO Change this
-        return 'akeneo-text-field';
+        return 'akeneo-table-field';
     }
 
     /**

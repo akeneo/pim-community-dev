@@ -1,5 +1,5 @@
 import React from 'react';
-import {BooleanInput, NumberInput, TableInput, TextInput} from 'akeneo-design-system';
+import {BooleanInput, TableInput} from 'akeneo-design-system';
 import {ColumnCode, TableConfiguration} from '../models/TableConfiguration';
 import {getLabel, useUserContext} from '@akeneo-pim-community/shared';
 import {TableValue} from '../models/TableValue';
@@ -50,13 +50,13 @@ const TableInputApp: React.FC<TableInputAppProps> = ({valueData, tableConfigurat
                 return (
                   <TableInput.Cell key={`${rowIndex}-${columnCode}`}>
                     {'number' === columnType && (
-                      <NumberInput
+                      <TableInput.NumberInput
                         value={`${row[columnCode] as number}`}
                         onChange={value => handleChange(rowIndex, columnCode, value)}
                       />
                     )}
                     {('text' === columnType || 'select' === columnType) && (
-                      <TextInput
+                      <TableInput.TextInput
                         value={row[columnCode] as string}
                         onChange={value => handleChange(rowIndex, columnCode, value)}
                       />
