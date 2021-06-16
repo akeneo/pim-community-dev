@@ -129,7 +129,7 @@ class AttributeValidatorHelperSpec extends ObjectBehavior
 
 class InitializedAttributeValidatorHelper extends AttributeValidatorHelper
 {
-    protected array $localeCodes = ['en_US', 'fr_FR'];
+    protected ?array $localeCodes = ['en_US', 'fr_FR'];
 
-    protected array $scopeCodes = ['ecommerce', 'tablet'];
+    protected ?array $scopeCodes = ['ecommerce', 'tablet'];
 }

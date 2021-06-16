@@ -126,7 +126,7 @@ class ErrorListProductEndToEnd extends AbstractProductTestCase
         $client = $this->createAuthenticatedClient();
 
         $client->request('GET', '/api/rest/v1/products?search={"a_localizable_image":[{"operator":"CONTAINS", "value":"text"}]}');
-        $this->assert($client, 'Attribute "a_localizable_image" expects a locale, none given.', Response::HTTP_UNPROCESSABLE_ENTITY);
+        $this->assert($client, 'The a_localizable_image attribute requires a locale.', Response::HTTP_UNPROCESSABLE_ENTITY);
     }
 
     public function testSearchWithMissingLocales()

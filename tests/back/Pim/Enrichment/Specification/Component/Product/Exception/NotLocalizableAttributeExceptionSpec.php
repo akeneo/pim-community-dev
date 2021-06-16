@@ -29,4 +29,9 @@ class NotLocalizableAttributeExceptionSpec extends ObjectBehavior
         $templatedMessage->getTemplate()->shouldReturn('The {attribute_code} attribute is not localisable.');
         $templatedMessage->getParameters()->shouldReturn(['attribute_code' => 'description']);
     }
+
+    public function it_provides_the_attribute_code(): void
+    {
+        $this->getAttributeCode()->shouldReturn('description');
+    }
 }
