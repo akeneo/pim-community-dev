@@ -16,6 +16,7 @@ define([
      * {@inheritdoc}
      */
     renderForm: function (route) {
+        console.trace('tye');
       return FetcherRegistry.getFetcher('group-type')
         .fetch(route.params.code, {cached: false})
         .then(groupType => {

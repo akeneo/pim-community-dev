@@ -370,7 +370,7 @@ config:
           module: pim/controller/template
           aclResourceId: pim_enrich_associationtype_create
         pim_enrich_grouptype_index:
-          module: pim/controller/common/index
+          module: pim/controller/group-type/index
           aclResourceId: pim_enrich_grouptype_index
           config:
             entity: group-type
@@ -523,6 +523,7 @@ config:
     pim/controller/role:                   pimui/js/controller/role
     pim/controller/job-execution:          pimui/js/controller/job-execution
     pim/controller/group-type:             pimui/js/controller/group-type
+    pim/controller/group-type/index: akeneopimstructure/js/controller/GroupTypesSettings
     pim/controller/system:                 pimui/js/controller/system
     pim/controller/user:                   pimui/js/controller/user
     pim/controller/attribute-group/edit:   pimui/js/controller/attribute-group/edit
