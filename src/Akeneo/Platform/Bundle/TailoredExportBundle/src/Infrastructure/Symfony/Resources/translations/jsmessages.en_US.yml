@@ -1,6 +1,12 @@
 batch_jobs.xlsx_tailored_product_export.label: Tailored product export in XLSX
 
 akeneo.tailored_export:
+  filters:
+    completeness:
+      locales:
+        label: Define the locale for the completeness
+        placeholder: Select some locales
+        remove: Remove the locale
   form:
     job_instance:
       tab:
