@@ -231,6 +231,7 @@ akeneo_connectivity.connection:
       required: This field is required.
       not_found: You are trying to update a connection that does not exist.
       limit_reached: You have reached the limit of active event subscriptions.
+      not_allowed_url: This url is not allowed.
     flash:
       success: Event subscription successfully updated.
       error: Sorry, an error occurred while editing the event subscription.
