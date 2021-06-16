@@ -18,11 +18,13 @@ class NotLocalizableAttributeException extends \LogicException implements
     TemplatedErrorMessageInterface
 {
     private TemplatedErrorMessage $templatedMessage;
+    private string $attributeCode;
 
-    private function __construct(TemplatedErrorMessage $templatedMessage)
+    private function __construct(TemplatedErrorMessage $templatedMessage, string $attributeCode)
     {
         parent::__construct((string) $templatedMessage);
         $this->templatedMessage = $templatedMessage;
+        $this->attributeCode = $attributeCode;
     }
 
     public static function withCode(string $attributeCode): self
@@ -31,12 +33,18 @@ class NotLocalizableAttributeException extends \LogicException implements
             new TemplatedErrorMessage(
                 'The {attribute_code} attribute is not localisable.',
                 ['attribute_code' => $attributeCode]
-            )
+            ),
+            $attributeCode
         );
     }
 
     public function getTemplatedErrorMessage(): TemplatedErrorMessage
     {
         return $this->templatedMessage;
+    }
+
+    public function getAttributeCode(): string
+    {
+        return $this->attributeCode;
     }
 }
