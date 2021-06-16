@@ -6,9 +6,11 @@ akeneo_free_trial_retrieve_users:
   methods: [GET]
   defaults:
     _controller: Akeneo\FreeTrial\Infrastructure\Controller\RetrieveUsersController
+    _feature: free_trial
 
 akeneo_free_trial_save_users:
   path: '/save-users'
   methods: [POST]
   defaults:
     _controller: Akeneo\FreeTrial\Infrastructure\Controller\SaveUsersController
+    _feature: free_trial
