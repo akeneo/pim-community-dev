@@ -63,12 +63,16 @@ pim_common:
   remove: Eliminar
   code: Código
   label: Etiqueta
+  quantity: Cantidad
   products: Productos
   product_models: Modelos de producto
   categories: Categorías
+  family_variant: Variantes de familia
   enabled: Habilitado
   family: Familia
+  parent: Padre
   groups: Grupos
+  unit: Unidad
   yes: "Sí"
   no: "No"
 pim_enrich:
@@ -525,3 +529,7 @@ job_tracker:
     title: Seguimiento de procesos
   filter:
     started_at: Ejecutado el
+pim_login:
+  footer:
+    powered: Creado con
+    powered_image_title: logo de Akeneo
