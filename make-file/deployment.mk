@@ -379,8 +379,14 @@ clone_flexibility:
 test_upgrade_from_flexibility_clone:
 	FLEXIBILITY_CUSTOMER_LIST=$(FLEXIBILITY_CUSTOMER_LIST) bash $(PWD)/deployments/bin/clone_flexibility.sh
 
+.PHONY: configure-bigcommerce-connector
+configure-bigcommerce-connector:
+	rm -rf tmp
+	mkdir -p tmp
+	git clone git@github.com:akeneo/bigcommerce-connector.git tmp/build-connector
+
 .PHONY: php-image-prod
-php-image-prod: #Doc: pull docker image for pim-enterprise-dev with the prod tag
+php-image-prod: configure-bigcommerce-connector #Doc: pull docker image for pim-enterprise-dev with the prod tag
 ifeq ($(TYPE),srnt)
 	git config user.name "Michel Tag"
 	git config user.email "akeneo-ci@akeneo.com"
@@ -388,7 +394,7 @@ ifeq ($(TYPE),srnt)
 	git remote set-url origin https://micheltag:${MICHEL_TAG_TOKEN}@github.com/akeneo/pim-enterprise-dev.git
 	sed -i "s/VERSION = '.*';/VERSION = '${IMAGE_TAG_DATE}';/g" src/Akeneo/Platform/EnterpriseVersion.php
 	git add src/Akeneo/Platform/EnterpriseVersion.php
-	git commit -m "Prepare SaaS ${IMAGE_TAG}"
+	#git commit -m "Prepare SaaS ${IMAGE_TAG}"
 endif
 
 	DOCKER_BUILDKIT=1 docker build --no-cache --progress=plain --pull --tag eu.gcr.io/akeneo-ci/pim-enterprise-dev:${IMAGE_TAG} --target prod --build-arg COMPOSER_AUTH='${COMPOSER_AUTH}' .
