@@ -63,21 +63,16 @@ Akeneo\Pim\Structure\Component\Model\Attribute:
                                   message: 'TODO max_length should be less than or equal to {{ compared_value }} (given: {{ value }})'
                             min:
                               - Type:
-                                  type: int
-                                  message: TODO integer
-                              - PositiveOrZero:
-                                  message: TODO positive integer
+                                  type: numeric
+                                  message: TODO numeric
                             max:
                               - Type:
-                                  type: int
-                                  message: TODO integer
-                              - Positive:
-                                  message: TODO positive integer
+                                  type: numeric
+                                  message: TODO numeric
                             decimals_allowed:
                               - Type:
                                   type: bool
                                   message: TODO bool
-
                           allowMissingFields: true
                           allowExtraFields: true # handled in ValidationShouldMatchColumnType
                       - Akeneo\Pim\TableAttribute\Infrastructure\Validation\Attribute\MaxShouldBeGreaterThanMin: ~

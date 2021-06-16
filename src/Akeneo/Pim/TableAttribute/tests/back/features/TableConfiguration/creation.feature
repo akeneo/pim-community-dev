@@ -77,20 +77,12 @@ Feature: Create a table attribute
     Then There is a violation with message: TODO positive int
 
   Scenario: Cannot create a table configuration having invalid min validation value type
-    When I create a table attribute with a configuration '{"data_type": "text", "code": "quantity", "validations": { "min": "foo bar"}}'
-    Then There is a violation with message: TODO integer
+    When I create a table attribute with a configuration '{"data_type": "number", "code": "quantity", "validations": { "min": "foo bar"}}'
+    Then There is a violation with message: TODO numeric
 
-  Scenario: Cannot create a table configuration having invalid negative min
-    When I create a table attribute with a configuration '{"data_type": "text", "code": "quantity", "validations": { "min": -8000}}'
-    Then There is a violation with message: TODO positive integer
-
-  Scenario: Cannot create a table configuration having invalid max length validation value type
-    When I create a table attribute with a configuration '{"data_type": "text", "code": "quantity", "validations": { "max": "foo bar"}}'
-    Then There is a violation with message: TODO integer
-
-  Scenario: Cannot create a table configuration having invalid negative max
-    When I create a table attribute with a configuration '{"data_type": "text", "code": "quantity", "validations": { "max": -8000}}'
-    Then There is a violation with message: TODO positive integer
+  Scenario: Cannot create a table configuration having invalid max validation value type
+    When I create a table attribute with a configuration '{"data_type": "number", "code": "quantity", "validations": { "max": "foo bar"}}'
+    Then There is a violation with message: TODO numeric
 
   Scenario: Cannot create a non table attribute with a table configuration
     When I create a text attribute with a table configuration
