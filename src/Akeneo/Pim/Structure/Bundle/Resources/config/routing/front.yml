@@ -38,7 +38,7 @@ pim_enrich_associationtype_edit:
         code: '[a-zA-Z0-9_]+'
 
 pim_enrich_grouptype_index:
-    path: '/configuration/group-type'
+    path: '/configuration/group-type/'
 
 pim_enrich_grouptype_edit:
     path: '/configuration/group-type/{code}/edit'
