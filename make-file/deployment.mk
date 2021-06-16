@@ -138,11 +138,11 @@ delete:
 	if [ -f "$(INSTANCE_DIR)/main.tf.json" ]; then \
 		cd $(INSTANCE_DIR) ;\
 		echo "Destroying $(INSTANCE_DIR) ..." ;\
-		TYPE=$(TYPE) INSTANCE_NAME=$(INSTANCE_NAME) TF_INPUT_FALSE=$(TF_INPUT_FALSE) TF_AUTO_APPROVE=$(TF_AUTO_APPROVE) bash $(PWD)/deployments/bin/delete_instance.sh ;\
+		ENV_NAME=$(ENV_NAME) TYPE=$(TYPE) INSTANCE_NAME=$(INSTANCE_NAME) TF_INPUT_FALSE=$(TF_INPUT_FALSE) TF_AUTO_APPROVE=$(TF_AUTO_APPROVE) bash $(PWD)/deployments/bin/delete_instance.sh ;\
 	elif [ -f "$(DEPLOYMENTS_INSTANCES_DIR)/3.2/main.tf" ]; then \
 		cd $(DEPLOYMENTS_INSTANCES_DIR)/3.2 ;\
 		echo "Destroying $(DEPLOYMENTS_INSTANCES_DIR)/3.2 ..." ;\
-		TYPE=$(TYPE) INSTANCE_NAME=$(INSTANCE_NAME) TF_INPUT_FALSE=$(TF_INPUT_FALSE) TF_AUTO_APPROVE=$(TF_AUTO_APPROVE) bash $(PWD)/deployments/bin/delete_instance.sh ;\
+		ENV_NAME=$(ENV_NAME) TYPE=$(TYPE) INSTANCE_NAME=$(INSTANCE_NAME) TF_INPUT_FALSE=$(TF_INPUT_FALSE) TF_AUTO_APPROVE=$(TF_AUTO_APPROVE) bash $(PWD)/deployments/bin/delete_instance.sh ;\
 	fi
 
 .PHONY: delete_clone_flexibility
@@ -345,7 +345,12 @@ slack_helpdesk:
 
 .PHONY: delete_pr_environments_hourly
 delete_pr_environments_hourly:
-	ENV_NAME=${ENV_NAME} bash $(PWD)/deployments/bin/remove_pr_instances.sh
+	@echo "Deprecated"
+	ENV_NAME=${ENV_NAME} bash $(PWD)/deployments/bin/remove_instances.sh
+
+.PHONY: delete_environments_hourly
+delete_environments_hourly:
+	ENV_NAME=${ENV_NAME} bash $(PWD)/deployments/bin/remove_instances.sh
 
 .PHONY: clone_serenity
 clone_serenity:
@@ -386,7 +391,3 @@ test-helm-cronjob: #Doc: Test declared cronjob job are available via the PIM con
 .PHONY: test_helm_generated_k8s_files
 test_helm_generated_k8s_files: #Doc Test helm generated templates are K8S compliant
 	bash $(PWD)/deployments/bin/test_helm_generated_k8s_files.sh
-
-.PHONY: mr-proper
-mr-proper: #Doc: Clean olds or orphans google resources
-	bash $(PWD)/deployments/bin/ci-mrproper.sh

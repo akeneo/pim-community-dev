@@ -34,53 +34,18 @@ terraform apply ${TF_INPUT_FALSE} ${TF_AUTO_APPROVE} -target=module.pim.local_fi
 
 echo "2 - removing deployment and terraform resources"
 export KUBECONFIG=.kubeconfig
+
 # WARNING ! DON'T DELETE release helm before get list of PV
 # Empty list is not an error
+# grep -v mysql because the mysql disk is manage by terraform process
+LIST_PD_NAME=$((kubectl get pv -o json | jq -r --arg PFID "$PFID" '[.items[] | select(.spec.claimRef.namespace == $PFID) | .spec.gcePersistentDisk.pdName] | unique | .[]' | grep -v mysql) || echo "")
 LIST_PV_NAME=$((kubectl get pv -o json | jq -r --arg PFID "$PFID" '[.items[] | select(.spec.claimRef.namespace == $PFID) | .metadata.name] | unique | .[]' | grep -v mysql) || echo "")
-
-LIST_OF_DISK=""
-
-if [ -n "${LIST_PV_NAME}" ]; then
-  for PV_NAME in ${LIST_PV_NAME}; do
-    PD_NAME=$(kubectl get pv "${PV_NAME}" -o jsonpath='{..spec.gcePersistentDisk.pdName}')
-
-    LIST_OF_DISK="${LIST_OF_DISK} ${PD_NAME}"
-  done
-fi
 
 (helm3 list -n "${PFID}" && helm3 uninstall ${PFID} -n ${PFID}) || true
 ((kubectl get ns ${PFID} | grep "$PFID") && kubectl delete ns ${PFID}) || true
 
-IS_SOME_DISK_STILL_ATTACH="false"
-
-if [ -n "${LIST_OF_DISK}" ]; then
-    for PD_NAME in ${LIST_OF_DISK}; do
-      RETRY=10
-      while ((${RETRY}>0)); do
-          IS_DISK_DETACHED=$(gcloud --project=${GOOGLE_PROJECT_ID}  compute disks list  --filter="(name=(${PD_NAME}) AND zone:europe-west3-a AND NOT users:*)" --format="value(name)" )
-
-          if [ -z "$IS_DISK_DETACHED" ]; then
-            break;
-          fi
-
-          ((RETRY--))
-          sleep 5
-      done
-
-      if [ -n "$IS_DISK_DETACHED" ]; then
-        echo "[WARN] The disk ${PD_NAME} is still attached!"
-        IS_SOME_DISK_STILL_ATTACH="true"
-      fi
-    done
-fi
-
-if [ "${IS_SOME_DISK_STILL_ATTACH}" = "true" ]; then
-  echo "2.5 - Some disks still attached"
-else
-  echo "2.5 - All disk are detached"
-fi
-
 terraform destroy ${TF_INPUT_FALSE} ${TF_AUTO_APPROVE}
+
 
 echo "3 - Removing shared state files"
 if [[ $GOOGLE_PROJECT_ID == "akecld-saas-dev" || $GOOGLE_PROJECT_ID == "akecld-onboarder-dev" ]]; then
@@ -91,18 +56,27 @@ sleep 30
 
 gsutil rm -r gs://akecld-terraform${TF_BUCKET}/saas/${GOOGLE_PROJECT_ID}/${GOOGLE_CLUSTER_ZONE}/${PFID}
 
-echo "5 - Delete disks"
-
-if [ -n "${LIST_OF_DISK}" ]; then
-  for PD_NAME in ${LIST_OF_DISK}; do
+echo "4 - Delete PD and PV"
+if [[ -n "${LIST_PD_NAME}" ]]; then
+  for PD_NAME in ${LIST_PD_NAME}; do
     for i in {1..6}; do
-      DISK_URI=$(gcloud compute disks list --filter="name=(${PD_NAME}) AND zone:(${GOOGLE_CLUSTER_ZONE})" --project ${GOOGLE_PROJECT_ID} --uri --quiet)
-
-      if [ -z "$DISK_URI" ]; then
-        break;
-      fi
-
-      (gcloud --quiet compute disks delete ${DISK_URI} && break) || sleep 30
-    done
+  		gcloud --quiet compute disks delete ${PD_NAME} --project=${GOOGLE_PROJECT_ID} --zone=${GOOGLE_CLUSTER_ZONE} && break || sleep 10
+  	done
   done
+fi
+
+if [[ -n "${LIST_PV_NAME}" ]]; then
+  for PV_NAME in ${LIST_PV_NAME}; do
+    kubectl delete pv ${PV_NAME}
+  done
+fi
+
+echo "5 - Delete policies and logging metrics"
+LOGGING_METRIC=$(gcloud logging metrics list --project ${GOOGLE_PROJECT_ID} --filter="name ~ ${PFID}" --format="value(name)")
+RELATED_ALERT=$(gcloud alpha monitoring policies list --project ${GOOGLE_PROJECT_ID} --filter="displayName ~ ${PFID}" --format="value(name)")
+if [[ ${RELATED_ALERT} != "" ]]; then
+    gcloud alpha monitoring policies delete ${RELATED_ALERT} --quiet --project ${GOOGLE_PROJECT_ID}
+fi
+if [[ ${LOGGING_METRIC} != "" ]]; then
+    gcloud logging metrics delete ${LOGGING_METRIC} --quiet --project ${GOOGLE_PROJECT_ID}
 fi
