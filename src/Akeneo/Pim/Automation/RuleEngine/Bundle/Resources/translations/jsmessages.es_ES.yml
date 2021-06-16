@@ -100,22 +100,34 @@ pimee_catalog_rule:
       character_left: "]-Inf, 1]{{ count }} Caracteres restantes|]1, +Inf[{{ count }} Caracteres restantes"
       priority:
         label: Prioridad
+      status:
+        label: Estado
+        enabled: Habilitado
+        disabled: Inhabilitado
       add_to_category: Agregar a la categoría
       add_conditions: Agregar condiciones
       products_count:
+        products: "]-Inf, 1]{{ count }} producto|]1, +Inf[{{ count }} productos"
+        product_models: "]-Inf, 1]{{ count }} modelo de producto|]1, +Inf[{{ count }} modelos de producto"
+        products_and_product_models: "{{ products }} y {{ product_models }}"
         pending: Calculando productos y modelos de productos
         error: Imposible calcular productos y modelos de productos
       product_selection: Selección de producto
       preview: Previsualizar
       fields:
         family: Familia
+        family_variant: Variantes de familia
         category: Categoría
+        identifier: Identificador
         attribute: Atributo
         groups: Grupos
+        parent: Padre
         measurement_unit: Unidad de medida
         measurement_default_unit: "Unidad por defecto ({{ unit }})"
         currency: Moneda
         operator: operador
+        entity_type:
+          label: Tipo de entidad
       execute:
         button: Guardar y ejecutar
         title: Guardar y ejecutar la regla
@@ -235,9 +247,14 @@ pimee_catalog_rule:
           "DOES NOT CONTAIN": no contiene
           "EMPTY": Está vacío
           "NOT EMPTY": no está vacío
+          "IN": en
+          "NOT IN": no en
+          "IN CHILDREN": en descendiente
+          "NOT IN CHILDREN": no en descendiente
           "UNCLASSIFIED": sin clasificar
           "IN OR UNCLASSIFIED": no está clasificado o en
           "BETWEEN": entre
+          "NOT BETWEEN": no entre
           "=": igual
           "!=": no es igual a
           ">": mayor que
@@ -265,6 +282,7 @@ pimee_catalog_rule:
       add_to_category: Crear una acción
     tree:
       item:
+        selected: Elemento seleccionado
         not_selected: Seleccionar elemento
     date:
       operators:
@@ -275,12 +293,14 @@ pimee_catalog_rule:
         date: Elige una fecha.
         relative_date: Elige una fecha.
         locale: Elegir un local
+        scope: Elija un ámbito
         period: Elija una unidad de tiempo
         open_period: Abrir menú de unidad de tiempo
         date_from: Elija una fecha de inicio
         date_to: Elija una fecha de fin
         date_past: Fecha en el pasado
         date_future: Fecha en el futuro
+        date_present: Ahora
       day: "]-Inf, 1] Día|]1, +Inf[ Días"
       week: "]-Inf, 1] Semana|]1, +Inf[ Semanas"
       month: "]-Inf, 1] Mes|]1, +Inf[ Meses"

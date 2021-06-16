@@ -212,6 +212,7 @@ pim_asset_manager:
     no_linked_products: Este activo no está vinculado a los productos
     enrich:
       code: Código
+      label: Etiqueta
       edit_subsection: Editar recurso
       product_subsection: Productos vinculados
       main_media_preview: Vista previa de medios principales
@@ -219,12 +220,15 @@ pim_asset_manager:
     create:
       header:
         title: Crear
+      subtitle: Lista de familias
       input:
         label: Etiqueta
         code: Código (requerido)
     upload:
       retry: Reintentar
+      remove: Eliminar
       remove_all: Remover todos
+      confirm: Crear
       add_to_product: Añadir al producto
       files_limit: Estás intentando subir demasiados archivos, solo se cargarán los primeros {{ limit }}.
       disabled_for_media_link: No puede subir recursos en esta familia ya que el atributo usado como medio principal es un atributo de enlace de medios
@@ -240,6 +244,7 @@ pim_asset_manager:
         waiting_for_upload: no cargado
         upload_in_progress: en progreso
         uploaded: subido
+        invalid: error
         created: creado
     delete:
       message: '¿Está seguro que desea eliminar el activo "{{ assetLabel }}"? Si está vinculado a los productos, los enlaces se eliminarán.'
@@ -350,6 +355,49 @@ pim_asset_manager:
         max_file_size: Tamaño máximo de archivo (MB)
         allowed_extensions: Extensiones permitidas
         validation_rule: Regla de validación
+        regular_expression: Expresión regular
+        min_value: Valor mínimo
+        max_value: Valor máximo
+        manage_options:
+          confirmation:
+            discard_changes: Perderá todos los cambios realizados a la lista de opciones si sale de la página actual
+          quick_edit:
+            label: Administrar opciones
+          option:
+            label:
+              placeholder: Escriba su nueva etiqueta para opciones aqui
+        options:
+          validation_rule:
+            none: Ninguna
+            email: E-mail
+            regular_expression: Expresión regular
+            url: URL
+        decimals_allowed: Valores decimales permitidos
+        prefix: Prefijo
+        suffix: Sufijo
+        media_type: Tipo de medios
+    delete:
+      message: '¿Está seguro que desea eliminar el atributo "{{ attributeLabel }}"?'
+      title: Atributo
+    notification:
+      list:
+        fail: Se ha producido un error durante la actualización de la lista de atributos
+      save:
+        success: Atributo exitosamente actualizado.
+        fail: Se ha producido un error durante el guardado del atributo
+        validation_error: El atributo no pudo ser actualizado
+      create:
+        success: Atributo creado exitosamente.
+        fail: Se ha producido un error durante la creación del atributo
+        validation_error: El atributo no pudo ser creado
+      delete:
+        success: Atributo exitosamente borrado.
+        fail: Se ha producido un error durante la eliminación del atributo
+    options:
+      no_value: Haz clic aquí para seleccionar una opción.
+      sub_title: Lista de familias
+      helper:
+        title: Traducciones de etiqueta
     media_link:
       placeholder: Introduzca aquí su enlace
       read_only: Este enlace de medios es de solo lectura

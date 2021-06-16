@@ -10,12 +10,15 @@ pimee_catalog_rule:
           no_yet_calculated: Aún no calculado
         tags:
           label: Acciones
+        priority: Prioridad
+        status: Estado
       mass_edit_action:
         execute: Ejecutar
         delete: Borrar
   condition:
     fields:
       family: Familia
+      family_variant: Variantes de familia
       associations: Asociaciones
       groups: Grupos
       categories: Categorías
