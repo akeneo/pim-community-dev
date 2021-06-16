@@ -8,7 +8,6 @@ use Akeneo\Platform\Bundle\UIBundle\DependencyInjection\Compiler\RegisterViewEle
 use Akeneo\Platform\Bundle\UIBundle\DependencyInjection\Reference\ReferenceFactory;
 use Symfony\Component\DependencyInjection\ContainerBuilder;
 use Symfony\Component\HttpKernel\Bundle\Bundle;
-use Symfony\Component\Routing\RequestContext;
 
 /**
  * Override PimUIBundle
