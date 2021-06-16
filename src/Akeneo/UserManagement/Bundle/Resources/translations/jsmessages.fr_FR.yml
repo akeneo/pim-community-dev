@@ -28,9 +28,19 @@ pim_enrich:
         delete:
           confirm: Êtes-vous sûr(e) de vouloir supprimer cet utilisateur ?
 pim_user.profile:
+  caption: Afin de vous proposer un contenu plus pertinent et apprendre à mieux vous connaitre, dites-nous quelle est votre mission principale.
+  why_is_it_needed: Pourquoi avons-nous besoin de ces informations ?
+  save_button: Enregistrer et accéder à la marketplace
   selector:
     placeholder: Sélectionnez une option
     not_found: Aucun résultat
+  product_manager: Je gère les catalogues de produits.
+  redactor: J'enrichis les données produit.
+  pim_integrator: J'intègre Akeneo PIM dans son écosystème.
+  pim_administrator: J'administre Akeneo PIM.
+  asset_manager: Je gère les ressources dans le PIM.
+  translator: Je traduis les données des produits, des ressources et/ou des entités référentielles.
+  third_party_developer: Je développe des solutions connectées à Akeneo PIM.
 pim_user_management:
   entity:
     user:
@@ -46,6 +56,7 @@ pim_user_management:
         index: "]-Inf, 1]{{ count }} utilisateur|]1, Inf[{{ count }} utilisateurs"
       properties:
         username: Nom d'utilisateur
+        profile: Quelle est votre mission principale?
         name_prefix: Particule
         first_name: Prénom
         middle_name: Deuxième prénom
