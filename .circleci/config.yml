@@ -119,29 +119,8 @@ jobs:
           name: Build css
           command: make css
       - run:
-          name: Create hash for front packages
-          command: |
-            find << parameters.path_to_front_packages >> -type f -print0 | sort -z | xargs -0 sha1sum | sha1sum > ~/front-packages.hash
-            date +%F >> ~/front-packages.hash
-      - run:
-          name: Set front-packages directory owner to circleci
-          command: sudo chown -R 1001:1001 << parameters.path_to_front_packages >>
-      - restore_cache:
-          name: Restore front-packages cache
-          key: front-packages-libs-{{ checksum "~/front-packages.hash" }}
-      - run:
-          name: Set front-packages directory owner to docker
-          command: sudo chown -R 1000:1000 << parameters.path_to_front_packages >>
-      - run:
           name: Build front-packages
-          command: ls << parameters.path_to_front_packages >>/*/lib 1> /dev/null 2>&1 || make front-packages
-      - save_cache:
-          name: Save front-packages cache
-          key: front-packages-libs-{{ checksum "~/front-packages.hash" }}
-          paths:
-            - << parameters.path_to_front_packages >>/akeneo-design-system/lib
-            - << parameters.path_to_front_packages >>/shared/lib
-            - << parameters.path_to_front_packages >>/measurement/lib
+          command: make front-packages
       - run:
           name: Build Javascript
           command: make javascript-dev
