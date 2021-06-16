@@ -5,7 +5,6 @@ declare(strict_types=1);
 namespace Akeneo\Pim\Enrichment\Component\Product\Validator\Constraints;
 
 use Symfony\Component\Validator\Constraint;
-use Symfony\Component\Validator\Constraints\Email;
 use Symfony\Component\Validator\Constraints\EmailValidator as BaseValidator;
 use Symfony\Component\Validator\Exception\UnexpectedTypeException;
 
@@ -26,10 +25,9 @@ class EmailValidator extends BaseValidator
         foreach ($this->context->getViolations() as $key => $violation) {
             if ($violation->getCode() === Email::INVALID_FORMAT_ERROR) {
                 $this->context->getViolations()->remove($key);
-                $this->context->buildViolation(
-                    $constraint->message,
-                    ['%attribute%' => $constraint->attributeCode]
-                )
+                $this->context->buildViolation($constraint->message)
+                    ->setParameter('%attribute%', $constraint->attributeCode)
+                    ->setInvalidValue($value)
                     ->setCode(Email::INVALID_FORMAT_ERROR)
                     ->addViolation();
             }
