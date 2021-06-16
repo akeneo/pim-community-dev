@@ -23,17 +23,15 @@ class UrlValidator extends BaseUrlValidator
 
         parent::validate($value, $constraint);
 
-        if (0 < $this->context->getViolations()->count()) {
-            foreach ($this->context->getViolations() as $key => $violation) {
-                /* @var ConstraintViolationInterface $violation */
-                if (Url::INVALID_URL_ERROR === $violation->getCode()) {
-                    $this->context->getViolations()->remove($key);
-                    $this->context->buildViolation($constraint->message)
-                        ->setParameter('%attribute%', $constraint->attributeCode)
-                        ->setInvalidValue($value)
-                        ->setCode(Url::INVALID_URL_ERROR)
-                        ->addViolation();
-                }
+        foreach ($this->context->getViolations() as $key => $violation) {
+            /* @var ConstraintViolationInterface $violation */
+            if (Url::INVALID_URL_ERROR === $violation->getCode()) {
+                $this->context->getViolations()->remove($key);
+                $this->context->buildViolation($constraint->message)
+                    ->setParameter('%attribute%', $constraint->attributeCode)
+                    ->setInvalidValue($value)
+                    ->setCode(Url::INVALID_URL_ERROR)
+                    ->addViolation();
             }
         }
     }

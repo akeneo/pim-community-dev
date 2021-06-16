@@ -42,11 +42,9 @@ class UrlValidatorSpec extends ObjectBehavior
     public function it_allows_null_value(
         ExecutionContextInterface $context,
         ConstraintViolationListInterface $constraintViolationList
-    ): void
-    {
+    ): void {
         $constraint = new Url(['attributeCode' => 'a_code']);
         $context->getViolations()->willReturn($constraintViolationList);
-        $constraintViolationList->count()->willreturn(0);
         $context
             ->buildViolation(Argument::any())
             ->shouldNotBeCalled();
@@ -57,11 +55,9 @@ class UrlValidatorSpec extends ObjectBehavior
     public function it_allows_empty_value(
         ExecutionContextInterface $context,
         ConstraintViolationListInterface $constraintViolationList
-    ): void
-    {
+    ): void {
         $constraint = new Url(['attributeCode' => 'a_code']);
         $context->getViolations()->willReturn($constraintViolationList);
-        $constraintViolationList->count()->willreturn(0);
 
         $context
             ->buildViolation(Argument::any())
@@ -75,8 +71,8 @@ class UrlValidatorSpec extends ObjectBehavior
         ConstraintViolationListInterface $constraintViolationList,
         ConstraintViolationBuilderInterface $constraintViolationBuilder,
         ConstraintViolationInterface $violation
-    ): void
-    {
+    ): void {
+        $badUrl = 'htp://bad.url';
         $constraint = new Url(['attributeCode' => 'a_code']);
 
         $context->buildViolation($constraint->message)->willReturn($constraintViolationBuilder);
@@ -85,7 +81,6 @@ class UrlValidatorSpec extends ObjectBehavior
         $constraintViolationBuilder->addViolation()->shouldBeCalled();
 
         $context->getViolations()->willReturn($constraintViolationList);
-        $constraintViolationList->count()->willReturn(1)->shouldBeCalledTimes(1);
         $constraintViolationList->rewind()->willReturn($violation);
         $constraintViolationList->valid()->willReturn(true, false);
         $constraintViolationList->current()->willReturn($violation);
@@ -97,18 +92,29 @@ class UrlValidatorSpec extends ObjectBehavior
         $context->buildViolation($constraint->message)->willReturn($constraintViolationBuilder);
         $constraintViolationBuilder->setParameter('%attribute%', $constraint->attributeCode)
             ->willReturn($constraintViolationBuilder)->shouldBeCalledTimes(1);
-        $constraintViolationBuilder->setInvalidValue('htp://bad.url')
+        $constraintViolationBuilder->setInvalidValue($badUrl)
             ->willReturn($constraintViolationBuilder)->shouldBeCalledTimes(1);
         $constraintViolationBuilder->setCode(Url::INVALID_URL_ERROR)
             ->willReturn($constraintViolationBuilder)->shouldBeCalledTimes(2);
         $constraintViolationBuilder->addViolation()->shouldBeCalledTimes(2);
         $constraintViolationList->next()->willReturn(null);
 
-        $this->validate('htp://bad.url', $constraint);
+        $this->validate($badUrl, $constraint);
     }
 
     public function it_throws_an_exception_if_the_constraint_is_not_an_url(): void
     {
         $this->shouldThrow(UnexpectedTypeException::class)->during('validate', ['value', new IsString()]);
+    }
+
+    public function it_validates_a_good_url(ExecutionContextInterface $context): void
+    {
+        $goodUrl = 'https://www.akeneo.com';
+        $constraint = new Url(['attributeCode' => 'a_code']);
+
+        $context->getViolations()->willReturn([]);
+        $context->buildViolation(Argument::cetera())->shouldNotBeCalled();
+
+        $this->validate($goodUrl, $constraint);
     }
 }
