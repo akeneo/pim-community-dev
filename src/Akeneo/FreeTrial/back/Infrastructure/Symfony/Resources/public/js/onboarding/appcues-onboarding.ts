@@ -33,4 +33,4 @@ const AppcuesOnboarding: PimOnboarding = {
   },
 };
 
-export = AppcuesOnboarding;
+export default AppcuesOnboarding;

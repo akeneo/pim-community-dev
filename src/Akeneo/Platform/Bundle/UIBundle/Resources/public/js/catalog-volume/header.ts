@@ -62,4 +62,4 @@ class HeaderView extends BaseView {
   }
 }
 
-export = HeaderView;
+export default HeaderView;

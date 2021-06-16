@@ -49,4 +49,4 @@ class BackLink extends BaseView {
   }
 }
 
-export = BackLink;
+export default BackLink;

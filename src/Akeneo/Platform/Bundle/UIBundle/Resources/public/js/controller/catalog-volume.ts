@@ -23,4 +23,4 @@ class CatalogVolumeController extends BaseController {
   }
 }
 
-export = CatalogVolumeController;
+export default CatalogVolumeController;

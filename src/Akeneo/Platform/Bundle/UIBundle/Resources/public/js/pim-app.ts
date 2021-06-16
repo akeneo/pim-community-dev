@@ -1,6 +1,6 @@
 import _ from 'underscore';
 import Backbone from 'backbone';
-import BaseView = require('pimui/js/view/base');
+import BaseView from 'pimui/js/view/base';
 
 const mediator = require('oro/mediator');
 const FetcherRegistry = require('pim/fetcher-registry');
@@ -73,4 +73,4 @@ class PimApp extends BaseView {
   }
 }
 
-export = PimApp;
+export default PimApp;

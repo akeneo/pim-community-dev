@@ -164,4 +164,4 @@ class TreeAssociate {
   };
 }
 
-export = TreeAssociate;
+export default TreeAssociate;

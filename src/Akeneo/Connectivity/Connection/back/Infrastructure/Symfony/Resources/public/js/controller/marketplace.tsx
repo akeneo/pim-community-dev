@@ -28,4 +28,4 @@ class MarketplaceController extends ReactController {
   }
 }
 
-export = MarketplaceController;
+export default MarketplaceController;

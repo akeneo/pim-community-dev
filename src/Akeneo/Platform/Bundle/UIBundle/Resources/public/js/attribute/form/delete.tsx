@@ -19,4 +19,4 @@ class Delete extends ReactView {
   }
 }
 
-export = Delete;
+export default Delete;

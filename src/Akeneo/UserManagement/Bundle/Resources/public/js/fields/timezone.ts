@@ -462,4 +462,4 @@ class TimezoneField extends BaseSelect {
   }
 }
 
-export = TimezoneField;
+export default TimezoneField;

@@ -30,4 +30,4 @@ class DashboardController extends ReactController {
   }
 }
 
-export = DashboardController;
+export default DashboardController;

@@ -18,4 +18,4 @@ class DqiDashboardController extends BaseController {
   }
 }
 
-export = DqiDashboardController;
+export default DqiDashboardController;

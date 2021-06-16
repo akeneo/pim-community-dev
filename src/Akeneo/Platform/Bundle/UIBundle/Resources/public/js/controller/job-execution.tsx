@@ -30,4 +30,4 @@ class JobExecutionController extends ReactController {
   }
 }
 
-export = JobExecutionController;
+export default JobExecutionController;

@@ -48,4 +48,4 @@ class SelectProfile extends BaseSelect {
   }
 }
 
-export = SelectProfile;
+export default SelectProfile;

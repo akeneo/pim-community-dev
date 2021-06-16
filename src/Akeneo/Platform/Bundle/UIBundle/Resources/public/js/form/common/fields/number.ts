@@ -11,4 +11,4 @@ class NumberField extends BaseText {
   readonly template = _.template(template);
 }
 
-export = NumberField;
+export default NumberField;

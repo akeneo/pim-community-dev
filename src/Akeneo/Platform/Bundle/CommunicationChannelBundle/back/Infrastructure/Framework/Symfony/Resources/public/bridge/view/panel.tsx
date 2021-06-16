@@ -53,4 +53,4 @@ class PanelView extends ReactView {
   }
 }
 
-export = PanelView;
+export default PanelView;

@@ -8,4 +8,4 @@ class ConvertToSimpleProduct extends BaseOperation {
   }
 }
 
-export = ConvertToSimpleProduct;
+export default ConvertToSimpleProduct;

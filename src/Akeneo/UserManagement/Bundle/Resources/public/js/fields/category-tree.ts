@@ -41,4 +41,4 @@ class CategoryTree extends BaseSelect {
   }
 }
 
-export = CategoryTree;
+export default CategoryTree;

@@ -35,4 +35,4 @@ class NavigationBack extends View {
   }
 }
 
-export = NavigationBack;
+export default NavigationBack;

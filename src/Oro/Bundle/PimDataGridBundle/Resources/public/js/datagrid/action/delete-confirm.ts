@@ -26,4 +26,4 @@ class DeleteConfirm {
   }
 }
 
-export = DeleteConfirm;
+export default DeleteConfirm;

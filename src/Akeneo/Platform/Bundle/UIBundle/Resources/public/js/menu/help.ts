@@ -55,4 +55,4 @@ class Help extends BaseView {
   }
 }
 
-export = Help;
+export default Help;
