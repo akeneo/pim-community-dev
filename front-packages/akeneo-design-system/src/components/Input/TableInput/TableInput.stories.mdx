@@ -4,10 +4,8 @@ import {TableInput} from './TableInput.tsx';
 <Meta
   title="Components/Inputs/Table input"
   component={TableInput}
-  argTypes={{
-    level: {control: {type: 'select', options: ['primary', 'warning', 'danger']}},
-  }}
-  args={{level: 'primary', children: 'Table text'}}
+  argTypes={{}}
+  args={{children: []}}
 />
 
 # TableInput
@@ -25,27 +23,33 @@ TODO
 <Canvas>
   <Story name="Standard">
     {args => {
+      const [value1, setValue1] = React.useState(12);
+      const [value2, setValue2] = React.useState(13);
+      const [value3, setValue3] = React.useState(14);
+      const [value4, setValue4] = React.useState(15);
+      const [value5, setValue5] = React.useState();
+      const [value6, setValue6] = React.useState();
       return <TableInput {...args}>
         <TableInput.Header>
-          <TableInput.HeaderCell>Ingredient</TableInput.HeaderCell>
+          <TableInput.HeaderCell rowTitle={true}>Ingredient</TableInput.HeaderCell>
           <TableInput.HeaderCell>Quantity</TableInput.HeaderCell>
           <TableInput.HeaderCell>Is allergenic</TableInput.HeaderCell>
         </TableInput.Header>
         <TableInput.Body>
           <TableInput.Row>
-            <TableInput.Cell>Sugar</TableInput.Cell>
-            <TableInput.Cell>12 g</TableInput.Cell>
-            <TableInput.Cell>nope</TableInput.Cell>
+            <TableInput.Cell rowTitle={true}>Sugar</TableInput.Cell>
+            <TableInput.Cell><TableInput.TextInput value={value1} onChange={setValue1}/></TableInput.Cell>
+            <TableInput.Cell><TableInput.NumberInput value={value2} onChange={setValue2}/></TableInput.Cell>
           </TableInput.Row>
           <TableInput.Row>
-            <TableInput.Cell>Salt</TableInput.Cell>
-            <TableInput.Cell>1 g</TableInput.Cell>
-            <TableInput.Cell>yep</TableInput.Cell>
+            <TableInput.Cell rowTitle={true}>Salt</TableInput.Cell>
+            <TableInput.Cell><TableInput.TextInput value={value3} onChange={setValue3}/></TableInput.Cell>
+            <TableInput.Cell><TableInput.NumberInput value={value4} onChange={setValue4}/></TableInput.Cell>
           </TableInput.Row>
           <TableInput.Row>
-            <TableInput.Cell>Pepper</TableInput.Cell>
-            <TableInput.Cell></TableInput.Cell>
-            <TableInput.Cell></TableInput.Cell>
+            <TableInput.Cell rowTitle={true}>Pepper</TableInput.Cell>
+            <TableInput.Cell><TableInput.TextInput value={value5} onChange={setValue5}/></TableInput.Cell>
+            <TableInput.Cell><TableInput.NumberInput value={value6} onChange={setValue6}/></TableInput.Cell>
           </TableInput.Row>
         </TableInput.Body>
       </TableInput>;
@@ -62,14 +66,7 @@ TODO
     {args => {
       return (
         <>
-          <TableInput {...args} level="primary">
-            Primary
-          </TableInput>
-          <TableInput {...args} level="warning">
-            Warning
-          </TableInput>
-          <TableInput {...args} level="danger">
-            Danger
+          <TableInput {...args}>
           </TableInput>
         </>
       );
