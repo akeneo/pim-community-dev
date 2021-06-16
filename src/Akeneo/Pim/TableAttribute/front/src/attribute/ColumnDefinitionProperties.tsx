@@ -62,6 +62,7 @@ const ColumnDefinitionProperties: React.FC<ColumnDefinitionPropertiesProps> = ({
             onChange={value => handleValidationChange({max_length: parseInt(value)})}
             min={0}
             max={100}
+            step={1}
           />
         </Field>
       )}
@@ -70,15 +71,13 @@ const ColumnDefinitionProperties: React.FC<ColumnDefinitionPropertiesProps> = ({
           <Field label={translate('pim_table_attribute.validations.min')}>
             <NumberInput
               value={`${selectedColumn.validations.min}`}
-              onChange={value => handleValidationChange({min: parseInt(value)})}
-              min={0}
+              onChange={value => handleValidationChange({min: value})}
             />
           </Field>
           <Field label={translate('pim_table_attribute.validations.max')}>
             <NumberInput
               value={`${selectedColumn.validations.max}`}
-              onChange={value => handleValidationChange({max: parseInt(value)})}
-              min={0}
+              onChange={value => handleValidationChange({max: value})}
             />
             {isMinGreaterThanMax && (
               <Helper level='error'>{translate('pim_table_attribute.validations.max_greater_than_min')}</Helper>

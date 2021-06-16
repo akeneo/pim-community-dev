@@ -195,7 +195,7 @@ describe('TableOptionsApp', () => {
     });
     expect(handleChange).toHaveBeenCalledWith([
       {code: 'ingredients', data_type: 'select', labels: {en_US: 'Ingredients'}, validations: {}},
-      {code: 'quantity', data_type: 'number', labels: {en_US: 'Quantity'}, validations: {min: 10}},
+      {code: 'quantity', data_type: 'number', labels: {en_US: 'Quantity'}, validations: {min: '10'}},
       {code: 'is_allergenic', data_type: 'boolean', labels: {en_US: 'Is allergenic'}, validations: {}},
       {code: 'part', data_type: 'text', labels: {en_US: 'For 1 part'}, validations: {}},
     ]);
@@ -209,7 +209,7 @@ describe('TableOptionsApp', () => {
         code: 'quantity',
         data_type: 'number',
         labels: {en_US: 'Quantity'},
-        validations: {min: 10, decimals_allowed: true},
+        validations: {min: '10', decimals_allowed: true},
       },
       {code: 'is_allergenic', data_type: 'boolean', labels: {en_US: 'Is allergenic'}, validations: {}},
       {code: 'part', data_type: 'text', labels: {en_US: 'For 1 part'}, validations: {}},
