@@ -283,6 +283,9 @@ jobs:
         command: |
           mkdir -p /home/circleci/project/deployments/terraform/deployments
           cp -r /home/circleci/project/deployments/automation /home/circleci/project/deployments/terraform/deployments
+          cp -r /home/circleci/project/deployments/bin /home/circleci/project/deployments/terraform/deployments
+          cp -r /home/circleci/project/deployments/config /home/circleci/project/deployments/terraform/deployments
+          cp -r /home/circleci/project/deployments/share /home/circleci/project/deployments/terraform/deployments
     - run:
         name: Push Terraform modules to GCS
         command: |
@@ -1190,6 +1193,7 @@ jobs:
               command: |
                 SERENITY_RELEASE_NAME=v$(docker run --rm eu.gcr.io/akeneo-ci/pim-enterprise-dev:${IMAGE_TAG} grep -o "const VERSION = '.*';$" src/Akeneo/Platform/EnterpriseVersion.php | sed "s/const VERSION = '//" | sed "s/';//")
                 BOTO_CONFIG=/dev/null gsutil -m cp -r /home/circleci/project/deployments/terraform gs://akecld-terraform-modules/serenity-edition/$SERENITY_RELEASE_NAME/
+                BOTO_CONFIG=/dev/null gsutil -m cp -r /home/circleci/project/deployments gs://akecld-terraform-modules/serenity-edition/$SERENITY_RELEASE_NAME/terraform/
           - run:
               name: PIM_CONTEXT=deployment make release
               command: OLD_IMAGE_TAG=$IMAGE_TAG PIM_CONTEXT=deployment make release
