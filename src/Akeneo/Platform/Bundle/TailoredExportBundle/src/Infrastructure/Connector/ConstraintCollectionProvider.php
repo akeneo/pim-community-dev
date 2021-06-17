@@ -13,6 +13,7 @@ declare(strict_types=1);
 
 namespace Akeneo\Platform\TailoredExport\Infrastructure\Connector;
 
+use Akeneo\Channel\Component\Validator\Constraint\ActivatedLocale;
 use Akeneo\Platform\TailoredExport\Infrastructure\Validation\Columns;
 use Akeneo\Tool\Component\Batch\Job\JobInterface;
 use Akeneo\Tool\Component\Batch\Job\JobParameters\ConstraintCollectionProviderInterface;
@@ -58,6 +59,7 @@ class ConstraintCollectionProvider implements ConstraintCollectionProviderInterf
                                         'fields' => [
                                             'scope' => new Assert\Optional(),
                                             'locale' => new Assert\Optional(),
+                                            'locales' => new Assert\All([new ActivatedLocale()]),
                                         ],
                                     ]),
                                 ]),
