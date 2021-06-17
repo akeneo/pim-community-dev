@@ -1278,6 +1278,54 @@ jobs:
                 command: |
                   make slack_helpdesk
 
+  deploy_grth_helpdesk_environment:
+      environment:
+        <<: *envVarsDeployPreprod
+      <<: *dockerJenkinsCloudDeployer
+      steps:
+            - attach_workspace:
+                at: ~/
+            - set_gcloud_config_preprod
+            - add_ssh_keys
+            - run:
+                name: Define value for next steps
+                command: |
+                  TYPE="grth"
+                  RELEASE_TO_DEPLOY=$(gcloud container images list-tags eu.gcr.io/akeneo-cloud/pim-enterprise-dev --filter="growth-v" --sort-by="~tags" --limit=1 --format="value(tags)")
+                  INSTANCE_NAME="pimci-helpdesk-ge"
+                  PRODUCT_REFERENCE_TYPE="growth_edition_instance"
+                  PRODUCT_REFERENCE_CODE="growth_edition_${ENV_NAME}"
+                  PIM_CONTEXT=deployment
+                  ACTIVATE_MONITORING=true
+
+                  echo export TYPE=${TYPE} >> $BASH_ENV
+                  echo export RELEASE_TO_DEPLOY=${RELEASE_TO_DEPLOY} >> $BASH_ENV
+                  echo export INSTANCE_NAME=${INSTANCE_NAME} >> $BASH_ENV
+                  echo export PRODUCT_REFERENCE_TYPE=${PRODUCT_REFERENCE_TYPE} >> $BASH_ENV
+                  echo export PRODUCT_REFERENCE_CODE=${PRODUCT_REFERENCE_CODE} >> $BASH_ENV
+                  echo export PIM_CONTEXT=${PIM_CONTEXT} >> $BASH_ENV
+                  echo export ACTIVATE_MONITORING=${ACTIVATE_MONITORING} >> $BASH_ENV
+
+                  echo "Instance name: ${INSTANCE_NAME}"
+                  echo "Image tag: ${IMAGE_TAG}"
+                  echo "Release to deploy: ${RELEASE_TO_DEPLOY}"
+            - run:
+                name: Setup key for Jenkins
+                command: |
+                  ssh-keyscan github.com >> ~/.ssh/known_hosts
+                  echo '' > /root/.ssh/config #clean github exclusions automatically added by circleci
+                  REPO_TO_ADD=github.com KEY_TO_ADD=/root/.ssh/id_rsa_1f25f8bb595295f6e2f2972f30d4e966 bash deployments/bin/add-deploy-key.sh
+                  REPO_TO_ADD=cloud-customers-dev KEY_TO_ADD=/root/.ssh/id_rsa_5f7bb3cbd43de2c2365f9db487865f67 bash deployments/bin/add-deploy-key.sh
+                  REPO_TO_ADD=jenkins-k8s-utils KEY_TO_ADD=/root/.ssh/id_rsa_2c6118646e36aa7476fd5e6b735923c6 bash deployments/bin/add-deploy-key.sh
+                  REPO_TO_ADD=operation-tools KEY_TO_ADD=/root/.ssh/id_rsa_9871a29f0e320bbf564ab34189c7b429 bash deployments/bin/add-deploy-key.sh
+            - run:
+                  name: Jenkins Upgrade
+                  command: IMAGE_TAG=${RELEASE_TO_DEPLOY} make upgrade-instance
+            - run:
+                name: Communicate
+                command: |
+                    make slack_helpdesk
+
   deploy_pm_environment:
       environment:
           <<: *envVarsDeployPreprod
@@ -1750,6 +1798,9 @@ workflows:
       jobs:
           - checkout
           - deploy_srnt_helpdesk_environment:
+                requires:
+                    - checkout
+          - deploy_grth_helpdesk_environment:
                 requires:
                     - checkout
           - deploy_pm_environment:

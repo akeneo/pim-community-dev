@@ -180,6 +180,11 @@ ifeq ($(INSTANCE_NAME),pimci-helpdesk)
 	yq w -i $(INSTANCE_DIR)/values.yaml pim.hook.upgradePim.enabled true
 	yq w -i $(INSTANCE_DIR)/values.yaml pim.hook.upgradeES.enabled false
 endif
+ifeq ($(INSTANCE_NAME),pimci-helpdesk-ge)
+	yq w -i $(INSTANCE_DIR)/values.yaml pim.hook.installPim.enabled true
+	yq w -i $(INSTANCE_DIR)/values.yaml pim.hook.upgradePim.enabled true
+	yq w -i $(INSTANCE_DIR)/values.yaml pim.hook.upgradeES.enabled false
+endif
 ifeq ($(INSTANCE_NAME_PREFIX),pimci-pr)
 	sed 's/^\(FLAG_.*_ENABLED\).*/  \1: "1"/g' .env | (grep "FLAG_.*_ENABLED" | grep -v "ONBOARDER" | grep -v "FREE_TRIAL" || true) >> $(PIM_SRC_DIR)/deployments/terraform/pim/templates/env-configmap.yaml
 endif
@@ -341,7 +346,12 @@ endif
 
 .PHONY: slack_helpdesk
 slack_helpdesk:
+ifeq ($(TYPE),srnt)
 	curl -X POST -H 'Content-type: application/json' --data '{"text":"Serenity env has been deployed with the last tag $(IMAGE_TAG) : https://pimci-helpdesk.preprod.cloud.akeneo.com"}' $${SLACK_URL_HELPDESK};
+endif
+ifeq ($(TYPE),grth)
+	curl -X POST -H 'Content-type: application/json' --data '{"text":"Growth env has been deployed with the last tag $(IMAGE_TAG) : https://pimci-helpdesk-ge.preprod.cloud.akeneo.com"}' $${SLACK_URL_HELPDESK};
+endif
 
 .PHONY: delete_pr_environments_hourly
 delete_pr_environments_hourly:
