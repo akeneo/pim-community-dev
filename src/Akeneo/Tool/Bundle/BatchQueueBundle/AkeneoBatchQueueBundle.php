@@ -2,8 +2,6 @@
 
 namespace Akeneo\Tool\Bundle\BatchQueueBundle;
 
-use Doctrine\Bundle\DoctrineBundle\DependencyInjection\Compiler\DoctrineOrmMappingsPass;
-use Symfony\Component\DependencyInjection\ContainerBuilder;
 use Symfony\Component\HttpKernel\Bundle\Bundle;
 
 /**
@@ -15,23 +13,4 @@ use Symfony\Component\HttpKernel\Bundle\Bundle;
  */
 class AkeneoBatchQueueBundle extends Bundle
 {
-    /**
-     * {@inheritdoc}
-     *
-     * @TODO CPM-154: to remove
-     */
-    public function build(ContainerBuilder $container)
-    {
-        $mappings = [
-            realpath(__DIR__ . '/Resources/config/model/doctrine') => 'Akeneo\Tool\Component\BatchQueue\Queue'
-        ];
-        $container
-            ->addCompilerPass(
-                DoctrineOrmMappingsPass::createYamlMappingDriver(
-                    $mappings,
-                    ['doctrine.orm.entity_manager'],
-                    false
-                )
-            );
-    }
 }
