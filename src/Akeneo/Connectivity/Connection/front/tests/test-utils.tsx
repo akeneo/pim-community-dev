@@ -6,7 +6,7 @@ import {ThemeProvider} from 'styled-components';
 import {theme} from '../src/common/styled-with-theme';
 import fetchMock from 'jest-fetch-mock';
 
-const UserProvider: FC = ({children}) => {
+export const UserProvider: FC = ({children}) => {
     const data: {[key: string]: string} = {uiLocale: 'en_US', timezone: 'UTC'};
     const user = {
         // eslint-disable-next-line
