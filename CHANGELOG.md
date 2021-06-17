@@ -91,6 +91,7 @@
 
 - PIM-9648: Mitigate DDoS risk on API auth endpoint by rejecting too large content
 - PIM-9697: Exported files streamer
+- PIM-9719: Add the real "updated" values in ES for product and product models
 
 ## Classes
 
