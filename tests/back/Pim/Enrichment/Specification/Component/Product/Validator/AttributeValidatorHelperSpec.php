@@ -2,6 +2,7 @@
 
 namespace Specification\Akeneo\Pim\Enrichment\Component\Product\Validator;
 
+use Akeneo\Pim\Enrichment\Component\Product\Exception\NotScopableAttributeException;
 use Akeneo\Pim\Enrichment\Component\Product\Exception\ScopableAttributeException;
 use PhpSpec\ObjectBehavior;
 use Akeneo\Pim\Structure\Component\Model\AttributeInterface;
@@ -95,7 +96,7 @@ class AttributeValidatorHelperSpec extends ObjectBehavior
         $this->shouldThrow(ScopableAttributeException::class)
             ->during('validateScope', [$description, null]);
 
-        $this->shouldThrow(new \LogicException('Attribute "name" does not expect a scope, "ecommerce" given.'))
+        $this->shouldThrow(NotScopableAttributeException::class)
             ->during('validateScope', [$name, 'ecommerce']);
     }
 
