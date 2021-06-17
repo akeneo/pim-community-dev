@@ -1,22 +1,20 @@
 import styled from "styled-components";
 import React, { forwardRef, HTMLAttributes, Ref } from "react";
 import { Override } from "../../../../shared";
+import { getColor } from "../../../../theme";
 
 const TableInputTr = styled.tr`
   height: 40px;
-  border-radius: 2px;
   & > * {
-    border: 1px solid #c7cbd4;
+    border: 1px solid ${getColor('grey', 60)};
     border-left-width: 0;
+    border-top-width: 0;
   }
   & > *:first-child {
     border-left-width: 1px;
-    border-top-left-radius: 2px;
-    border-bottom-left-radius: 2px;
-  }
-  & > *:last-child {
-    border-top-right-radius: 2px;
-    border-bottom-right-radius: 2px;
+    position: sticky;
+    left: 0;
+    z-index: 1;
   }
 `;
 
