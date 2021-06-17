@@ -16,14 +16,21 @@ Feature: Edit an URL attribute of an asset family
     Then 'dam_image' prefix should be '"http://www.bynder.com/"'
 
   @acceptance-back
+  Scenario: Updating prefix property with a relative url
+    Given an asset family with an mediaLink attribute 'dam_image'
+    When the user sets the prefix value of 'dam_image' to '"/prefix/"'
+    Then 'dam_image' prefix should be '"/prefix/"'
+
+  @acceptance-back
   Scenario Outline: Invalid prefix edit
     Given  an asset family with an mediaLink attribute 'dam_image'
     When the user sets the prefix value of 'dam_image' to '<invalid_prefix>'
     Then there should be a validation error on the property 'prefix' with message '<message>'
 
     Examples:
-      | invalid_prefix | message                               |
-      | ""             | The prefix cannot be an empty string. |
+      | invalid_prefix | message                                                                            |
+      | ""             | The prefix cannot be an empty string.                                              |
+      | "file://"      | This field should start with a valid protocol. Allowed protocols are: http, https. |
 
   @acceptance-back
   Scenario: Updating suffix property

@@ -107,6 +107,7 @@ final class EditAssetContext implements Context
     private const NUMBER_ATTRIBUTE_IDENTIFIER = 'age_designer_fingerprint';
     private const DUMMY_ORIGINAL_VALUE = 'Une valeur naïve';
     private const DUMMY_UPDATED_VALUE = 'An updated dummy data';
+    private const WEBSITE_MEDIA_FILE_ATTRIBUTE_CODE = 'website';
 
     private const DUMMY_FILEPATH_PREFIX = '/a/dummy/key';
     private const UPDATED_DUMMY_FILENAME = 'dummy_filename.png';
@@ -2532,6 +2533,18 @@ final class EditAssetContext implements Context
         $this->violationsContext->assertThereShouldBeViolations(1);
         $this->violationsContext->assertViolationOnPropertyWithMesssage(
             'values.' . self::NUMBER_ATTRIBUTE_CODE,
+            $expectedMessage
+        );
+    }
+
+    /**
+     * @Then /^there should be a validation error on the media file value with message "([^\']*)"$/
+     */
+    public function thereShouldBeAValidationErrorOnThMediaFileValueWithMessage($expectedMessage)
+    {
+        $this->violationsContext->assertThereShouldBeViolations(1);
+        $this->violationsContext->assertViolationOnPropertyWithMesssage(
+            'values.' . self::WEBSITE_MEDIA_FILE_ATTRIBUTE_CODE,
             $expectedMessage
         );
     }
