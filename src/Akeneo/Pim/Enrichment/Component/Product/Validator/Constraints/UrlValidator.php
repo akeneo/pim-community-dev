@@ -22,7 +22,6 @@ class UrlValidator extends BaseUrlValidator
         }
 
         parent::validate($value, $constraint);
-
         foreach ($this->context->getViolations() as $key => $violation) {
             /* @var ConstraintViolationInterface $violation */
             if (Url::INVALID_URL_ERROR === $violation->getCode()) {

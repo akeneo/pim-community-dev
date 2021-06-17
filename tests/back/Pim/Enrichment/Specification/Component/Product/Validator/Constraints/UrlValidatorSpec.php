@@ -8,10 +8,13 @@ use Akeneo\Pim\Enrichment\Component\Product\Validator\Constraints\IsString;
 use Akeneo\Pim\Enrichment\Component\Product\Validator\Constraints\Url;
 use Akeneo\Pim\Enrichment\Component\Product\Validator\Constraints\UrlValidator;
 use PhpSpec\ObjectBehavior;
+use PHPUnit\Framework\Assert;
 use Prophecy\Argument;
 use Symfony\Component\Validator\Constraints\UrlValidator as BaseUrlValidator;
 use Symfony\Component\Validator\ConstraintValidator;
+use Symfony\Component\Validator\ConstraintViolation;
 use Symfony\Component\Validator\ConstraintViolationInterface;
+use Symfony\Component\Validator\ConstraintViolationList;
 use Symfony\Component\Validator\ConstraintViolationListInterface;
 use Symfony\Component\Validator\Context\ExecutionContextInterface;
 use Symfony\Component\Validator\Exception\UnexpectedTypeException;
@@ -67,28 +70,21 @@ class UrlValidatorSpec extends ObjectBehavior
     }
 
     public function it_does_not_validate_a_bad_url(
-        ExecutionContextInterface $context,
-        ConstraintViolationListInterface $constraintViolationList,
-        ConstraintViolationBuilderInterface $constraintViolationBuilder,
-        ConstraintViolationInterface $violation
+        $context,
+        ConstraintViolation $constraintViolation,
+        ConstraintViolationBuilderInterface $constraintViolationBuilder
     ): void {
         $badUrl = 'htp://bad.url';
         $constraint = new Url(['attributeCode' => 'a_code']);
 
-        $context->buildViolation($constraint->message)->willReturn($constraintViolationBuilder);
-        $constraintViolationBuilder->setParameter('{{ value }}', Argument::any())->willReturn($constraintViolationBuilder);
-        $constraintViolationBuilder->setCode(Url::INVALID_URL_ERROR)->willReturn($constraintViolationList);
+        $context->buildViolation(Argument::any())->willReturn($constraintViolationBuilder);
+        $constraintViolationBuilder->setParameter(Argument::cetera())->willReturn($constraintViolationBuilder);
+        $constraintViolationBuilder->setCode(Argument::any())->willReturn($constraintViolationBuilder);
         $constraintViolationBuilder->addViolation()->shouldBeCalled();
 
+        $constraintViolationList = new ConstraintViolationList([$constraintViolation->getWrappedObject()]);
         $context->getViolations()->willReturn($constraintViolationList);
-        $constraintViolationList->rewind()->willReturn($violation);
-        $constraintViolationList->valid()->willReturn(true, false);
-        $constraintViolationList->current()->willReturn($violation);
-        $constraintViolationList->key()->willReturn('propertyPath');
-        $violation->getCode()->willReturn(Url::INVALID_URL_ERROR);
-
-        $constraintViolationList->remove('propertyPath')->shouldBeCalledTimes(1);
-
+        $constraintViolation->getCode()->willReturn(Url::INVALID_URL_ERROR);
         $context->buildViolation($constraint->message)->willReturn($constraintViolationBuilder);
         $constraintViolationBuilder->setParameter('%attribute%', $constraint->attributeCode)
             ->willReturn($constraintViolationBuilder)->shouldBeCalledTimes(1);
@@ -97,7 +93,6 @@ class UrlValidatorSpec extends ObjectBehavior
         $constraintViolationBuilder->setCode(Url::INVALID_URL_ERROR)
             ->willReturn($constraintViolationBuilder)->shouldBeCalledTimes(2);
         $constraintViolationBuilder->addViolation()->shouldBeCalledTimes(2);
-        $constraintViolationList->next()->willReturn(null);
 
         $this->validate($badUrl, $constraint);
     }
