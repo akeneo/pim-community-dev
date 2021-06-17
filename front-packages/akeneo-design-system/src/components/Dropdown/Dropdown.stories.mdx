@@ -3,7 +3,7 @@ import {Meta, Story, ArgsTable, Canvas} from '@storybook/addon-docs/blocks';
 import {Dropdown} from './Dropdown';
 import {Button, Image, Badge, Link, Checkbox, Search} from '../../components';
 import {useBooleanState, usePaginatedResults, useDebounce} from '../../hooks';
-import {PreviewGrid, SpaceContainer, useSelection, fakeFetcher} from '../../storybook';
+import {SpaceBetweenContainer, SpaceContainer, useSelection, fakeFetcher} from '../../storybook';
 import {ArrowDownIcon} from '../../icons';
 import {action} from '@storybook/addon-actions';
 
@@ -121,16 +121,17 @@ For accessibility reasons, we must put the full text in an HTML title attribute.
 </Canvas>
 
 ## Position
+
 <Canvas>
-  <Story name="Position" height={260}>
+  <Story name="Position" height={350}>
     {args => {
       const [isOpenTopLeft, openTopLeft, closeTopLeft] = useBooleanState(false);
       const [isOpenTopRight, openTopRight, closeTopRight] = useBooleanState(false);
       const [isOpenBottomLeft, openBottomLeft, closeBottomLeft] = useBooleanState(false);
-      const [isOpenBottomRight, openBottomRight, closeBottomRight] = useBooleanState(false);
-        return (
+      const [isOpenBottomRight, openBottomRight, closeBottomRight] = useBooleanState(true);
+      return (
         <SpaceContainer height={300}>
-          <PreviewGrid width="40%">
+          <SpaceBetweenContainer>
             <Dropdown>
               <Button onClick={openTopLeft}>
                 Dropdown <ArrowDownIcon />
@@ -167,15 +168,15 @@ For accessibility reasons, we must put the full text in an HTML title attribute.
                 </Dropdown.Overlay>
               )}
             </Dropdown>
-              </PreviewGrid>
-            <SpaceContainer height={200} />
-              <PreviewGrid width="40%">
+          </SpaceBetweenContainer>
+          <SpaceContainer height={200} />
+          <SpaceBetweenContainer>
             <Dropdown>
               <Button onClick={openBottomLeft}>
                 Dropdown <ArrowDownIcon />
               </Button>
               {isOpenBottomLeft && (
-                <Dropdown.Overlay verticalPosition="up" onClose={closeBottomLeft}>
+                <Dropdown.Overlay onClose={closeBottomLeft}>
                   <Dropdown.Header>
                     <Dropdown.Title>Elements</Dropdown.Title>
                   </Dropdown.Header>
@@ -193,7 +194,7 @@ For accessibility reasons, we must put the full text in an HTML title attribute.
                 Dropdown <ArrowDownIcon />
               </Button>
               {isOpenBottomRight && (
-                <Dropdown.Overlay verticalPosition="up" onClose={closeBottomRight}>
+                <Dropdown.Overlay onClose={closeBottomRight}>
                   <Dropdown.Header>
                     <Dropdown.Title>Elements</Dropdown.Title>
                   </Dropdown.Header>
@@ -206,11 +207,11 @@ For accessibility reasons, we must put the full text in an HTML title attribute.
                 </Dropdown.Overlay>
               )}
             </Dropdown>
-          </PreviewGrid>
+          </SpaceBetweenContainer>
         </SpaceContainer>
-        );
-      }}
-    </Story>
+      );
+    }}
+  </Story>
 </Canvas>
 
 ## Search & pagination
