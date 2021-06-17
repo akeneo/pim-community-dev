@@ -36,6 +36,13 @@ const InviteUserApp = () => {
     setNewInvitedUsers([]);
   };
 
+  const handleInvitedUsersChange = (emails: string[]) => {
+    const validEmails = emails.filter((email: string) => {
+      return email.match(/^[a-zA-Z0-9.!#$%&'*+/=?^_`{|}~-]+@[a-zA-Z0-9-]+(?:\.[a-zA-Z0-9-]+)*$/);
+    })
+    setNewInvitedUsers(validEmails);
+  }
+
   return (
     <>
       <PageHeader>
@@ -62,7 +69,7 @@ const InviteUserApp = () => {
         <FieldContainer label={translate('free_trial.invite_users.invite_input_label')}>
           <FieldContent>
             <TagInputContainer>
-              <TagInput onChange={setNewInvitedUsers} value={newInvitedUsers} />
+              <TagInput onChange={handleInvitedUsersChange} value={newInvitedUsers} />
             </TagInputContainer>
             <Button ghost level="tertiary" disabled={newInvitedUsers.length < 1} onClick={() => addNewUsers()}>
               {translate('pim_common.add')}
