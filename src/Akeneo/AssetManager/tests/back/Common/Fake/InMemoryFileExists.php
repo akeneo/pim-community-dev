@@ -18,7 +18,7 @@ use Akeneo\AssetManager\Domain\Query\File\FileExistsInterface;
 class InMemoryFileExists implements FileExistsInterface
 {
     /** @var string[] */
-    private $fileKeys = [];
+    private array $fileKeys = [];
 
     public function exists(string $fileKey): bool
     {

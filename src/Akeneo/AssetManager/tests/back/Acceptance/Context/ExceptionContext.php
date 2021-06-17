@@ -24,8 +24,7 @@ use Webmozart\Assert\Assert;
  */
 final class ExceptionContext implements Context
 {
-    /** @var \Exception */
-    private $exceptionThrown = null;
+    private ?\Exception $exceptionThrown = null;
 
     /**
      * @Then /^an exception is thrown with message "(.*)"$/

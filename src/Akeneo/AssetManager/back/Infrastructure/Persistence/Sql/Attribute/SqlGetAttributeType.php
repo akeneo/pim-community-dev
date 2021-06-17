@@ -17,8 +17,7 @@ use PDO;
  */
 class SqlGetAttributeType implements GetAttributeTypeInterface
 {
-    /** @var Connection */
-    private $sqlConnection;
+    private Connection $sqlConnection;
 
     /**
      * @param Connection $sqlConnection

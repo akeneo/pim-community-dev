@@ -22,8 +22,7 @@ use Doctrine\DBAL\Connection;
  */
 class SqlFindExistingAssetCodes implements FindExistingAssetCodesInterface
 {
-    /** @var Connection */
-    private $sqlConnection;
+    private Connection $sqlConnection;
 
     public function __construct(Connection $sqlConnection)
     {

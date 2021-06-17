@@ -35,14 +35,11 @@ class MigrateAssetCategoryLabelsCommand extends Command
 
     private const DEFAULT_CATEGORIES_CODE = 'categories';
 
-    /** @var AttributeRepositoryInterface */
-    private $attributeRepository;
+    private AttributeRepositoryInterface $attributeRepository;
 
-    /** @var EditAttributeHandler */
-    private $editAttributeHandler;
+    private EditAttributeHandler $editAttributeHandler;
 
-    /** @var Connection */
-    private $connection;
+    private Connection $connection;
 
     public function __construct(
         AttributeRepositoryInterface $attributeRepository,

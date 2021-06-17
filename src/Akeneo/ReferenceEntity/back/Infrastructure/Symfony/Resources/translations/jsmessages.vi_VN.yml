@@ -1,0 +1,98 @@
+pim_reference_entity:
+  app:
+    image:
+      small:
+        remove: Gỡ bỏ
+        download: Tải về
+  reference_entity:
+    button:
+      save: Lưu
+      save_permission: Lưu
+      create: Tạo
+    tab:
+      attribute: Thuộc tính
+      properties: Thuộc tính
+    properties:
+      identifier: Mã
+      label: Nhãn
+      image: Hình ảnh
+    create:
+      header:
+        title: Tạo
+      input:
+        label: Nhãn
+      confirm: Lưu
+    delete:
+      title: Thuộc tính
+  record:
+    button:
+      save: Lưu
+      delete: Xóa
+    product:
+      title: Sản phẩm
+    enrich:
+      code: Mã
+      label: Nhãn
+    create:
+      header:
+        title: Tạo
+      input:
+        label: Nhãn
+      confirm: Lưu
+    grid:
+      filter:
+        completeness:
+          all: Tất cả
+          'yes': 'Đồng ý'
+          'no': 'Không'
+        option:
+          all: Tất cả
+          operator:
+            in: Trong danh sách
+      column:
+        code: Mã
+        image: Hình ảnh
+        label: Nhãn
+    tab:
+      enrich: Sản phẩm
+      product: Sản phẩm
+  attribute:
+    default:
+      code: Mã
+      label: Nhãn
+      image: Hình ảnh
+    type:
+      text: Văn bản
+      image: Hình ảnh
+    create:
+      header:
+        title: Tạo
+      input:
+        label: Nhãn
+        type: Kiểu thuộc tính
+      confirm: Lưu
+    edit:
+      save: Lưu
+      cancel: Hủy bỏ
+      input:
+        label: Nhãn
+        type: Kiểu thuộc tính
+        max_length: Số ký tự tối đa
+        textarea: Khung văn bản
+        max_file_size: Kích thước tập tin tối đa (MB)
+        allowed_extensions: Đuôi tập tin cho phép
+        validation_rule: Quy tắc kiểm tra
+        regular_expression: Biểu thức chính quy
+        options:
+          validation_rule:
+            none: Không có
+            email: Thư điện tử
+            regular_expression: Biểu thức chính quy
+            url: URL
+    delete:
+      title: Thuộc tính
+  modal:
+    delete:
+      button:
+        cancel: Hủy bỏ
+        confirm: Xóa

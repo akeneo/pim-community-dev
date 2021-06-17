@@ -24,7 +24,6 @@ pimee_workflow:
     proposal:
       modal.title: Pozostaw komentarz (opcjonalnie - 255 znaków max.)
   proposal:
-    selected: wniosek wybrany
     mass_action_group:
       review:
         label: Masowe działania

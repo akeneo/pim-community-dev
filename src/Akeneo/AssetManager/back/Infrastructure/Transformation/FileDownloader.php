@@ -30,17 +30,14 @@ class FileDownloader
 {
     private const MAX_CACHED_FILES = 10;
 
-    /** @var FilesystemProvider */
-    private $filesystemProvider;
+    private FilesystemProvider $filesystemProvider;
 
-    /** @var FileFetcherInterface */
-    private $fileFetcher;
+    private FileFetcherInterface $fileFetcher;
 
-    /** @var Filesystem */
-    private $filesystem;
+    private Filesystem $filesystem;
 
     /** @var string[] */
-    private $cachedFiles;
+    private ?array $cachedFiles = null;
 
     public function __construct(
         FilesystemProvider $filesystemProvider,

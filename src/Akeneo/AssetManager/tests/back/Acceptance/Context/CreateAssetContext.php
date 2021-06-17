@@ -33,23 +33,17 @@ use Webmozart\Assert\Assert;
  */
 final class CreateAssetContext implements Context
 {
-    /** @var CreateAssetHandler */
-    private $createAssetHandler;
+    private CreateAssetHandler $createAssetHandler;
 
-    /** @var AssetRepositoryInterface */
-    private $assetRepository;
+    private AssetRepositoryInterface $assetRepository;
 
-    /** @var AssetFamilyRepositoryInterface  */
-    private $assetFamilyRepository;
+    private AssetFamilyRepositoryInterface $assetFamilyRepository;
 
-    /** @var ExceptionContext */
-    private $exceptionContext;
+    private ExceptionContext $exceptionContext;
 
-    /** @var ValidatorInterface */
-    private $validator;
+    private ValidatorInterface $validator;
 
-    /** @var ConstraintViolationsContext */
-    private $violationsContext;
+    private ConstraintViolationsContext $violationsContext;
 
     public function __construct(
         AssetRepositoryInterface $assetRepository,

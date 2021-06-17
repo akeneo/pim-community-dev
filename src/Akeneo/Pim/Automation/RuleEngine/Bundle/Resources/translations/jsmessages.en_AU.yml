@@ -52,6 +52,14 @@ pimee_catalog_rule:
           success: You successfuly deleted the rules.
           error: An error occurred during the deletion of the rules.
           empty_selection: No rules selected.
+      tags:
+        set: Set
+        add: Add
+        calculate: Calculate
+        clear: Clear
+        concatenate: Concatenate
+        copy: Copy
+        remove: Remove
   form:
     category:
       catalog: Catalog

@@ -34,14 +34,11 @@ class ExecuteNamingConventionActionTest extends ControllerIntegrationTestCase
     private const EXECUTE_NAMING_CONVENTION_ACL = 'akeneo_assetmanager_asset_family_execute_naming_conventions';
     private const EDIT_ASSET_FAMILY_ACL = 'akeneo_assetmanager_asset_family_edit';
 
-    /** @var WebClientHelper */
-    private $webClientHelper;
+    private WebClientHelper $webClientHelper;
 
-    /** @var NamingConventionLauncherSpy */
-    private $namingConventionLauncherSpy;
+    private NamingConventionLauncherSpy $namingConventionLauncherSpy;
 
-    /** @var SecurityFacadeStub */
-    private $securityFacade;
+    private SecurityFacadeStub $securityFacade;
 
     public function setUp(): void
     {

@@ -46,6 +46,6 @@ final class ValuesDecoder
             return $data;
         }
 
-        return strip_tags(html_entity_decode(str_replace(["\r", "\n"], ' ', $data)));
+        return preg_replace('/<[^>]*>/', '', html_entity_decode(str_replace(["\r", "\n"], ' ', $data)));
     }
 }

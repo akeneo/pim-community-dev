@@ -21,7 +21,6 @@ interface FormProps {
     };
     assetFamily: {
       edit: boolean;
-      delete: boolean;
     };
   };
   onLabelUpdated: (value: string, locale: string) => void;

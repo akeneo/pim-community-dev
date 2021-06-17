@@ -25,20 +25,15 @@ use Symfony\Component\Validator\Validator\ValidatorInterface;
  */
 class UploadAction
 {
-    /** @var ValidatorInterface */
-    protected $validator;
+    protected ValidatorInterface $validator;
 
-    /** @var PathGeneratorInterface */
-    protected $pathGenerator;
+    protected PathGeneratorInterface $pathGenerator;
 
-    /** @var FileStorer */
-    private $fileStorer;
+    private FileStorer $fileStorer;
 
-    /** @var FileInfoRepositoryInterface */
-    private $fileInfoRepository;
+    private FileInfoRepositoryInterface $fileInfoRepository;
 
-    /** @var NormalizerInterface */
-    private $normalizer;
+    private NormalizerInterface $normalizer;
 
     public function __construct(
         ValidatorInterface $validator,

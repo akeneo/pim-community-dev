@@ -19,8 +19,7 @@ use Symfony\Component\Routing\Router;
 
 class AddHalDownloadLinkToAssetFamilyImage
 {
-    /** @var Router */
-    private $router;
+    private Router $router;
 
     public function __construct(
         Router $router

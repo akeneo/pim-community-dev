@@ -1,0 +1,70 @@
+pimee_enrich.acl.locale.edit_permissions: Behandle nasjonale tillatelser
+pimee_enrich.acl.category.edit_permissions: Administrere kategoritillatelser
+pimee_enrich.acl.attribute_group.edit_permissions: Administrer attributt gruppetillatelser
+pimee_importexport.acl.export_profile.edit_permissions: Administrere eksport profiltillatelser
+pimee_importexport.acl.import_profile.edit_permissions: Behandle import profiltillatelser
+pimee_enrich.groups.label: Eiergrupperinger
+job_profile.permissions:
+  execute.label: Kan kjøre jobbprofilen
+  edit.label: Tillatelse til å redigere jobbprofilen
+pim_title.locale:
+  edit: "Steder %locale.code% | Rediger"
+attribute group.permissions:
+  view.label: Tillatelse til å vise attributter
+  view.help: Tillate for å vise produktene i denne gruppen for attributt
+  edit.label: Tillatelse til å endre attributter
+  edit.help: Tillate å endre produktene i denne attributtgruppen
+  no_access_to_attributes: Du har ikke tilgang til noen attributter for dette produktet. Kontakt systemansvarlig.
+category.permissions:
+  view.label: Tillatelse til å vise produkter
+  view.help: Tillate å se produktene i denne kategorien
+  edit.label: Tillatelse til å endre produkter
+  edit.help: Tillat å rediger produktene i denne kategorien (innebærer tillatelsen vise)
+  own.label: Tillatelse til å eie produkter
+  own.help: Tillatt å gjennomgå, publisere, oppheve publiseringen, klassifisere, knytte produkter i denne kategorien (innebærer redigeringstillatelse)
+  no_access_to_products: Du har ikke tilgang til produktene i et tre, kontakt systemansvarlig
+  apply_on_children.label: Bruk endringer på barn
+  apply_on_children.help: Kopier tillatelser endringene på alle barn, beholder eksisterende tillatelser for barn
+locale.permissions:
+  no_access_to_products: Du har ikke tilgang til produktdata i noen aktiverte lokaliteter, kontakt systemansvarlig
+flash.locale.updated: Lokalitets innstilling og tillatelser er oppdatert
+pim_enrich:
+  mass_edit_action:
+    product:
+      not_editable: Du har ikke tillatelse til å redigere produktene "%identifiers%".
+      page_title: Produkter
+      page_subtitle: Masse redigere (1 produkt) | Masse redigere (%count% produkter)
+      title: Velg operasjon
+      subtitle: Velg operasjonen du vil utføre på den valgte produkt| Velg operasjonen du vil utføre på de valgte %count% produktene
+      confirm: Du er ferd med å oppdatere et produkt med følgende informasjon, vennligst bekreft. | Du er ferd med å oppdatere %count% produkter med følgende informasjon, vennligst bekreft.
+      steps:
+        first: Velg produkt
+        second: Velg operasjon
+        third: Konfigurer
+        fourth: Bekreft
+    publish:
+      message:
+        warning: Du er ikke eier av alle valgte produkter. Du kan ikke publisere produktene "%notGranted%".
+      not_editable: Du har ikke tillatelse til å redigere produktene "%identifiers%".
+    unpublish:
+      message:
+        warning: Du er ikke eier av alle valgte produkter. Du kan ikke avpublisere produktene "%notGranted%".
+        info: '%nbProducts% valgte produkt vil bli avpublisert.'
+      not_editable: Du har ikke tillatelse til å redigere produktene "%identifiers%".
+    classify:
+      message:
+        warning: Du er ikke eier av alle valgte produkter. Du kan ikke klassifisere produktene "%notGranted%".
+pimee_enrich:
+  attribute_group:
+    tab:
+      permission.title: Rettigheter
+  acl.product_ownership.title: Eierskap
+  attributes:
+    empty: ingen
+  category:
+    tab:
+      permission:
+        title: Rettigheter
+  groups:
+    label: eiergrupperinger
+    empty: ingen

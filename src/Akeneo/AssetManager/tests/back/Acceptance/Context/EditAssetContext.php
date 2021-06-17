@@ -107,6 +107,7 @@ final class EditAssetContext implements Context
     private const NUMBER_ATTRIBUTE_IDENTIFIER = 'age_designer_fingerprint';
     private const DUMMY_ORIGINAL_VALUE = 'Une valeur naïve';
     private const DUMMY_UPDATED_VALUE = 'An updated dummy data';
+    private const WEBSITE_MEDIA_FILE_ATTRIBUTE_CODE = 'website';
 
     private const DUMMY_FILEPATH_PREFIX = '/a/dummy/key';
     private const UPDATED_DUMMY_FILENAME = 'dummy_filename.png';
@@ -132,47 +133,33 @@ final class EditAssetContext implements Context
     private const GOOD_EXTENSION_FILE_FILEPATH = __DIR__ . DIRECTORY_SEPARATOR . '..' . DIRECTORY_SEPARATOR . '..'
         . DIRECTORY_SEPARATOR . 'Common' . DIRECTORY_SEPARATOR . 'TestFixtures' . DIRECTORY_SEPARATOR . self::GOOD_EXTENSION_FILENAME;
 
-    /** @var AssetFamilyRepositoryInterface */
-    private $assetFamilyRepository;
+    private AssetFamilyRepositoryInterface $assetFamilyRepository;
 
-    /** @var InMemoryAttributeRepository */
-    private $attributeRepository;
+    private AttributeRepositoryInterface $attributeRepository;
 
-    /** @var InMemoryAssetRepository */
-    private $assetRepository;
+    private AssetRepositoryInterface $assetRepository;
 
-    /** @var EditAssetCommandFactory */
-    private $editAssetCommandFactory;
+    private EditAssetCommandFactory $editAssetCommandFactory;
 
-    /** @var EditAssetHandler */
-    private $editAssetHandler;
+    private EditAssetHandler $editAssetHandler;
 
-    /** @var ValidatorInterface */
-    private $validator;
+    private ValidatorInterface $validator;
 
-    /** @var ExceptionContext */
-    private $exceptionContext;
+    private ExceptionContext $exceptionContext;
 
-    /** @var ConstraintViolationsContext */
-    private $violationsContext;
+    private ConstraintViolationsContext $violationsContext;
 
-    /** @var InMemoryChannelExists */
-    private $channelExists;
+    private InMemoryChannelExists $channelExists;
 
-    /** @var InMemoryFindActivatedLocalesByIdentifiers */
-    private $activatedLocales;
+    private InMemoryFindActivatedLocalesByIdentifiers $activatedLocales;
 
-    /** @var InMemoryFindActivatedLocalesPerChannels */
-    private $activatedLocalesPerChannels;
+    private InMemoryFindActivatedLocalesPerChannels $activatedLocalesPerChannels;
 
-    /** @var CreateAssetFamilyHandler */
-    private $createAssetFamilyHandler;
+    private CreateAssetFamilyHandler $createAssetFamilyHandler;
 
-    /** @var InMemoryFindFileDataByFileKey */
-    private $findFileData;
+    private InMemoryFindFileDataByFileKey $findFileData;
 
-    /** @var InMemoryFileExists */
-    private $fileExists;
+    private InMemoryFileExists $fileExists;
 
     public function __construct(
         AssetFamilyRepositoryInterface $assetFamilyRepository,
@@ -1566,7 +1553,7 @@ final class EditAssetContext implements Context
     public function theUserUpdatesTheMediaFileAttributeOfTheAssetWithABiggerUploadedFileThanTheLimit()
     {
         $fileData = $this->initUploadedFileData([
-            'size' => intval(10e6),
+            'size' => (int) 10_000_000.0,
         ]);
         $editCommand = $this->editAssetCommandFactory->create([
             'asset_family_identifier' => self::ASSET_FAMILY_IDENTIFIER,
@@ -2387,9 +2374,7 @@ final class EditAssetContext implements Context
         $value = current(
             array_filter(
                 $valueCollection,
-                function (array $value) use ($attributeAsMainMedia) {
-                    return $value['attribute'] === $attributeAsMainMedia;
-                }
+                fn (array $value) => $value['attribute'] === $attributeAsMainMedia
             )
         );
 
@@ -2548,6 +2533,18 @@ final class EditAssetContext implements Context
         $this->violationsContext->assertThereShouldBeViolations(1);
         $this->violationsContext->assertViolationOnPropertyWithMesssage(
             'values.' . self::NUMBER_ATTRIBUTE_CODE,
+            $expectedMessage
+        );
+    }
+
+    /**
+     * @Then /^there should be a validation error on the media file value with message "([^\']*)"$/
+     */
+    public function thereShouldBeAValidationErrorOnThMediaFileValueWithMessage($expectedMessage)
+    {
+        $this->violationsContext->assertThereShouldBeViolations(1);
+        $this->violationsContext->assertViolationOnPropertyWithMesssage(
+            'values.' . self::WEBSITE_MEDIA_FILE_ATTRIBUTE_CODE,
             $expectedMessage
         );
     }

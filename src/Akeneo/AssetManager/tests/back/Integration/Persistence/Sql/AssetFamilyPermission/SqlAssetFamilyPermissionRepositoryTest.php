@@ -19,8 +19,7 @@ use PHPUnit\Framework\Assert;
 
 class SqlAssetFamilyPermissionRepositoryTest extends SqlIntegrationTestCase
 {
-    /** @var AssetFamilyPermissionRepositoryInterface */
-    private $repository;
+    private AssetFamilyPermissionRepositoryInterface $repository;
 
     public function setUp(): void
     {

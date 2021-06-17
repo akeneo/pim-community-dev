@@ -22,8 +22,7 @@ use Symfony\Component\Validator\Exception\UnexpectedTypeException;
 
 class AttributeAssetTypeAssetFamilyShouldExistValidator extends ConstraintValidator
 {
-    /** @var AssetFamilyExistsInterface */
-    private $assetFamilyExists;
+    private AssetFamilyExistsInterface $assetFamilyExists;
 
     public function __construct(AssetFamilyExistsInterface $assetFamilyExists)
     {
@@ -36,7 +35,7 @@ class AttributeAssetTypeAssetFamilyShouldExistValidator extends ConstraintValida
         $this->checkCommandType($command);
 
         $assetFamilyIdentifier = AssetFamilyIdentifier::fromString($command->assetType);
-        if (false === $this->assetFamilyExists->withIdentifier($assetFamilyIdentifier)) {
+        if (!$this->assetFamilyExists->withIdentifier($assetFamilyIdentifier)) {
             $this->context->buildViolation(AttributeAssetTypeAssetFamilyShouldExist::ERROR_MESSAGE)
                 ->atPath('asset_family_code')
                 ->setParameter('%asset_family_code%', $command->assetType)

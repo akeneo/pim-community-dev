@@ -25,7 +25,7 @@ use Akeneo\AssetManager\Domain\Query\Asset\Connector\FindConnectorAssetByAssetFa
 class InMemoryFindConnectorAssetByAssetFamilyAndCode implements FindConnectorAssetByAssetFamilyAndCodeInterface
 {
     /** @var ConnectorAsset[] */
-    private $results;
+    private array $results;
 
     public function __construct()
     {

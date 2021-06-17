@@ -10,21 +10,15 @@ namespace Akeneo\AssetManager\Domain\Query\Asset;
  */
 class SearchableAssetItem
 {
-    /** @var string */
-    public $identifier;
+    public string $identifier;
 
-    /** @var string */
-    public $assetFamilyIdentifier;
+    public string $assetFamilyIdentifier;
     
-    /** @var string */
-    public $code;
+    public string $code;
 
-    /** @var array */
-    public $labels;
+    public array $labels;
     
-    /** @var array */
-    public $values;
+    public array $values;
 
-    /** @var \DateTimeImmutable */
-    public $updatedAt;
+    public \DateTimeImmutable $updatedAt;
 }

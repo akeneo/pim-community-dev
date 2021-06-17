@@ -21,11 +21,9 @@ use Webmozart\Assert\Assert;
 
 class ComputeTransformationFromAssetIdentifiersLauncher implements ComputeTransformationFromAssetIdentifiersLauncherInterface
 {
-    /** @var PublishJobToQueue */
-    private $publishJobToQueue;
+    private PublishJobToQueue $publishJobToQueue;
 
-    /** @var TokenStorageInterface */
-    private $tokenStorage;
+    private TokenStorageInterface $tokenStorage;
 
     public function __construct(PublishJobToQueue $publishJobToQueue, TokenStorageInterface $tokenStorage)
     {
@@ -41,9 +39,7 @@ class ComputeTransformationFromAssetIdentifiersLauncher implements ComputeTransf
         Assert::allIsInstanceOf($assetIdentifiers, AssetIdentifier::class);
 
         $config = [
-            'asset_identifiers' => array_map(function (AssetIdentifier $assetIdentifier) {
-                return (string) $assetIdentifier;
-            }, $assetIdentifiers),
+            'asset_identifiers' => array_map(fn (AssetIdentifier $assetIdentifier) => (string) $assetIdentifier, $assetIdentifiers),
         ];
 
         $token = $this->tokenStorage->getToken();

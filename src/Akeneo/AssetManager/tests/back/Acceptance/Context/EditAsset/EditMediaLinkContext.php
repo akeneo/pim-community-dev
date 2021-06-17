@@ -56,29 +56,21 @@ class EditMediaLinkContext implements Context
     private const NEW_URL = 'house_2345112';
     private const OLD_URL = 'garden_5124';
 
-    /** @var AssetFamilyRepositoryInterface */
-    private $assetFamilyRepository;
+    private AssetFamilyRepositoryInterface $assetFamilyRepository;
 
-    /** @var InMemoryAttributeRepository */
-    private $attributeRepository;
+    private AttributeRepositoryInterface $attributeRepository;
 
-    /** @var InMemoryAssetRepository */
-    private $assetRepository;
+    private AssetRepositoryInterface $assetRepository;
 
-    /** @var EditAssetCommandFactory */
-    private $editAssetCommandFactory;
+    private EditAssetCommandFactory $editAssetCommandFactory;
 
-    /** @var EditAssetHandler */
-    private $editAssetHandler;
+    private EditAssetHandler $editAssetHandler;
 
-    /** @var ValidatorInterface */
-    private $validator;
+    private ValidatorInterface $validator;
 
-    /** @var ExceptionContext */
-    private $exceptionContext;
+    private ExceptionContext $exceptionContext;
 
-    /** @var ConstraintViolationsContext */
-    private $violationsContext;
+    private ConstraintViolationsContext $violationsContext;
 
     public function __construct(
         AssetFamilyRepositoryInterface $assetFamilyRepository,
@@ -111,9 +103,19 @@ class EditMediaLinkContext implements Context
     }
 
     /**
-     * @When /^the user updates the mediaLink value of the asset$/
+     * @Given /^an asset family with an media_link attribute with prefix and an asset belonging to this asset family$/
      */
-    public function theUserUpdatesTheMediaLinkValueOfTheAsset(): void
+    public function aAssetFamilyWithAnMediaLinkAttributeWithPrefixAndAnAssetBelongingToThisAssetFamily(): void
+    {
+        $this->createAssetFamily();
+        $this->createMediaLinkAttribute(['prefix' => Prefix::fromString('file:')]);
+        $this->createAsset();
+    }
+
+    /**
+     * @When /^the user updates the mediaLink value of the asset with "(?P<path>(?:[^"]|\\")*)"$/
+     */
+    public function theUserUpdatesTheMediaLinkValueOfTheAssetWith(string $path): void
     {
         $editCommand = $this->editAssetCommandFactory->create(
             [
@@ -125,7 +127,7 @@ class EditMediaLinkContext implements Context
                         'attribute' => self::ATTRIBUTE_IDENTIFIER,
                         'channel'   => null,
                         'locale'    => null,
-                        'data'      => self::NEW_URL,
+                        'data'      => $path,
                     ],
                 ],
             ]
@@ -146,9 +148,9 @@ class EditMediaLinkContext implements Context
     }
 
     /**
-     * @Then /^the asset should have the mediaLink value for this attribute$/
+     * @Then /^the asset should have the mediaLink value equal to "(?P<value>(?:[^"]|\\")*)"$/
      */
-    public function theAssetShouldHaveTheMediaLinkValueForThisAttribute(): void
+    public function theAssetShouldHaveTheMediaLinkValueEqualTo(string $value): void
     {
         $this->violationsContext->assertThereIsNoViolations();
         $this->exceptionContext->assertThereIsNoExceptionThrown();
@@ -157,7 +159,7 @@ class EditMediaLinkContext implements Context
             AssetFamilyIdentifier::fromString(self::ASSET_FAMILY_IDENTIFIER),
             AssetCode::fromString(self::ASSET_CODE)
         );
-        $value = $asset->findValue(
+        $assetValue = $asset->findValue(
             ValueKey::create(
                 AttributeIdentifier::create(
                     self::ASSET_FAMILY_IDENTIFIER,
@@ -169,8 +171,8 @@ class EditMediaLinkContext implements Context
             )
         );
 
-        Assert::assertNotNull($value);
-        Assert::assertSame(self::NEW_URL, $value->getData()->normalize());
+        Assert::assertNotNull($assetValue);
+        Assert::assertSame($value, $assetValue->getData()->normalize());
     }
 
     private function createAssetFamily(): void
@@ -184,7 +186,7 @@ class EditMediaLinkContext implements Context
         $this->assetFamilyRepository->create($assetFamily);
     }
 
-    private function createMediaLinkAttribute(): void
+    private function createMediaLinkAttribute(array $options = []): void
     {
         $attribute = MediaLinkAttribute::create(
             AttributeIdentifier::create(
@@ -200,7 +202,7 @@ class EditMediaLinkContext implements Context
             AttributeIsReadOnly::fromBoolean(false),
             AttributeValuePerChannel::fromBoolean(false),
             AttributeValuePerLocale::fromBoolean(false),
-            Prefix::createEmpty(),
+            $options['prefix'] ?? Prefix::createEmpty(),
             Suffix::createEmpty(),
             MediaType::fromString('image')
         );

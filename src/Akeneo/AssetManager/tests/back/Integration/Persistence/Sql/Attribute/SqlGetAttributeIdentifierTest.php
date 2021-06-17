@@ -36,8 +36,7 @@ use PHPUnit\Framework\Assert;
 
 class SqlGetAttributeIdentifierTest extends SqlIntegrationTestCase
 {
-    /** @var GetAttributeIdentifierInterface */
-    private $getAttributeIdentifier;
+    private GetAttributeIdentifierInterface $getAttributeIdentifier;
 
     public function setUp(): void
     {

@@ -23,11 +23,9 @@ use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 
 class ComputeTransformationsAction
 {
-    /** @var FindAssetFamilyDetailsInterface */
-    private $findOneAssetFamilyQuery;
+    private FindAssetFamilyDetailsInterface $findOneAssetFamilyQuery;
 
-    /** @var ComputeTransformationFromAssetFamilyIdentifierLauncherInterface */
-    private $computeTransformationsLauncher;
+    private ComputeTransformationFromAssetFamilyIdentifierLauncherInterface $computeTransformationsLauncher;
 
     public function __construct(
         FindAssetFamilyDetailsInterface $findOneAssetFamilyQuery,

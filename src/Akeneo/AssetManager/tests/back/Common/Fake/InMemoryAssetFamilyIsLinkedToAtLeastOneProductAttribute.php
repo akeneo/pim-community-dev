@@ -25,8 +25,7 @@ use Akeneo\Test\Acceptance\Attribute\InMemoryAttributeRepository as InMemoryProd
  */
 class InMemoryAssetFamilyIsLinkedToAtLeastOneProductAttribute implements AssetFamilyIsLinkedToAtLeastOneProductAttributeInterface
 {
-    /** @var InMemoryProductAttributeRepository */
-    private $inMemoryAttributeRepository;
+    private InMemoryProductAttributeRepository $inMemoryAttributeRepository;
 
     public function __construct(InMemoryProductAttributeRepository $inMemoryAttributeRepository)
     {

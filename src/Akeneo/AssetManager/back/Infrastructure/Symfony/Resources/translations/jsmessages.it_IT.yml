@@ -1,23 +1,25 @@
-#pim_title:
-#akeneo_asset_manager_asset_family_index: Create a new entity
-#akeneo_asset_manager_asset_family_edit: Edit an asset family
-#akeneo_asset_manager_asset_edit: Edit an asset
+pim_title:
+  akeneo_asset_manager_asset_family_edit: Modifica una famiglia di asset.
+  akeneo_asset_manager_asset_edit: Modifica un asset
 pim_asset_manager:
+  editor:
+    embedded:
+      invalid_link:
+        title: Collegamento incorporato sospetto
+        message: Questo elemento incorporato non viene visualizzato ma sarà salvato correttamente
+  result_counter: '{0} Nessun risultato|{1} {{ count }} risultato|]1,Inf] {{ count }} risultati'
+  asset_counter: '{0} Nessun asset|{1} {{ count }} asset|]1,Inf] {{ count }} asset'
   asset_collection:
-    asset_count: '{0} Nessun attività|{1} {{ resultCount }} attività|]1,Inf] {{ resultCount }} attività'
     add_asset: 'Aggiungi attività'
     add_asset_title: 'Apri il selettore attività per aggiungere attività alla raccolta'
     no_asset_in_collection: 'Spiacenti, non c''è alcuna attività in questa raccolta.'
     helper:
-      title: 'Benvenuto alla tua nuova area di gestione attività prodotto!'
-      text: 'Non ci sono raccolte di attività per la famiglia {{ family }}! Come aggiungere una raccolta di attività?'
       link: 'Come aggiungere una raccolta di attività?'
-    no_asset:
-      title: 'Spiacenti, non ci sono attività per questo prodotto'
-      text: 'Non ci sono raccolte di attività per la famiglia {{ family }}!'
     notification:
       product_rule: 'Questa raccolta può essere aggiornata da una regola di prodotto:'
       limit: 'Hai raggiunto il limite di {{ limit }} attività per raccolta, non puoi più aggiungere attività alla tua raccolta.'
+    edit_asset: Modifica attività
+    remove_asset: Rimuovi asset
     remove_one_asset: Rimuovi attività {{ assetName }} dalla raccolta attività
     remove_all_assets: Rimuovi tutte le attività
     other_actions: Altre azioni
@@ -44,163 +46,236 @@ pim_asset_manager:
   asset_preview:
     previous: Attività precedente
     next: Attività successiva
-    empty_main_image: Questa attività non ha un'immagine.
+    empty_main_media: Questo asset non ha media.
     edit_asset: Modifica attività
     download: Scarica
     copy_url: Copia URl
+    error: Si è verificato un errore durante la generazione dell'anteprima
   close: Chiudi il modale
   breadcrumb:
     products: Prodotti
-  #app:
-  #image:
-  #wide:
-  #remove: Remove the image
-  #download: Download the image
-  #upload: Drag and drop to upload or click here
-  #small:
-  #remove: Remove
-  #download: Download
-  #upload: Drag and drop to upload
+  app:
+    image:
+      wide:
+        remove: Rimuovi il file
+        download: Scarica il file
+        upload: Trascina e rilascia qui un file per caricarlo o fai click qui
+      small:
+        remove: Rimuovi
+        download: Scarica
+        upload: Trascina e rilascia per caricare
   grid:
     counter: '{{ resultCount }} risultati'
     counter_empty: '0 risultati'
   asset_family:
-    #validation:
-    #code:
-    #pattern: 'This field may only contain letters, numbers and underscores.'
-    #should_be_unique: 'This code already exists for this entity.'
-    #limit_reached: 'You cannot create the asset family "{{ %asset_family_label% }}" because you have reached the limit of {{ %limit% }} asset families'
-    #button:
-    #save: Save
-    #save_permission: Save
-    #create: Create
-    #permission:
-    #title: Entity permissions
+    column:
+      title: Navigazione asset
+      selector:
+        title: Famiglie di asset
+        no_data: Nessuna famiglia di asset disponibile
+    validation:
+      code:
+        pattern: 'Questo campo può contenere solo lettere, numeri e trattini bassi.'
+        should_be_unique: 'Esiste già una famiglia di asset con il codice "{{ %asset_family_identifier% }}"'
+        limit_reached: 'Non è possibile creare una famiglia di asset "{{ %asset_family_label% }}" perché hai raggiunto il limite di {{ %limit% }} famiglie di asset.'
+      transformation:
+        limit_reached: 'E'' stato raggiunto il limite di {{ %limit% }} trasformazioni'
+        same_operation_twice: 'L''operazione "{{%operation_type%}}" non può essere definita due volte in una sola trasformazione'
+        source_can_not_be_a_target: 'L''attributo sorgente "{{%attribute_code%}}" non può essere un attributo target di una trasformazione.'
+        attribute_reference_should_exist: 'L''attributo "{{%attribute_code%}}" non esiste per questa famiglia di asset'
+        filename_is_not_unique: 'Già esiste una trasformazione con prefisso al nome del file "{{%filename_prefix%}}" e suffisso "{{%filename_suffix%}}" per l''attributo sorgente "{{%attribute_code%}}"'
+        code_is_not_unique: 'Non è possibile definire due trasformazioni con lo stesso codice "{{%transformation_code%}}"'
+      rule_template:
+        extrapolated_attribute_should_exist: 'L''attributo "{{%attribute_code%}}" non esiste per questa famiglia di asset'
+    button:
+      save: Salva
+      save_permission: Salva
+      create: Crea una famiglia di asset
+      edit: Modifica famiglia
+      view: Visualizzare famiglia
+    permission:
+      title: Permessi famiglia asset
     title: Attività
-  #breadcrumb: Asset Families
-  #img: The main image of the asset family named "{{ label }}"
-  #tab:
-  #assets: Assets
-  #attribute: Attributes
-  #properties: Properties
-  #permission: Permissions
-  #properties:
-  #title: Entity properties
-  #identifier: Code
-  #label: Label
-  #image: Image
-  #attribute:
-  #title: Asset attributes
-  #attribute:
-  #error:
-  #render_list: 'An error occured during the rendering of the "{{ %attribute_code% }}" attribute'
-  #render_edit: 'An error occured during the rendering of the "{{ %attribute_code% }}" attribute additional properties fields'
-  #module:
-  #delete:
-  #button: Delete entity
-  #confirm: Are you sure you want to delete this entity?
-  #index:
-  #grid:
-  #count: '{0} No Asset Family|{1} {{ count }} Asset Family|]1,Inf] {{ count }} Asset Families'
-  #help:
-  #title: 'Welcome to the Asset Families!'
-  #description_part_one: Enrich relevant information related to products (e.g. brands, manufacturers, colors, materials, ingredients...).
-  #description_part_two: It will enable you to provide a better Product Experience to your customers.
-  #description_part_three: Click on the “Create” button to create your 1st asset family, set its attributes and assets.
-  #description_part_four: Then, to link to products, create a product attribute type related to this asset family.
-  #description_part_five: For more details, we invite you to browse this article.
-  #create:
-  #header:
-  #title: Create
-  #subtitle: Asset Families
-  #title: Create a new entity
-  #input:
-  #label: Label
-  #code: Code (required)
-  #confirm: Save
-  #delete:
-  #message: Are you sure you want to delete the entity "{{ assetFamilyLabel }}"?
-  #title: Attribute
-  #notification:
-  #save:
-  #success: Asset family successfully updated.
-  #fail: An error occured during the save of the asset family
-  #create:
-  #success: Asset family successfully created.
-  #fail: An error occured during the creation of the asset family
-  #delete:
-  #success: Asset family successfully deleted.
-  #fail: An error occured during the deletion of the asset family
-  #permission:
-  #notification:
-  #save:
-  #success: Asset family permissions successfully updated.
-  #fail: At least one user group should have edit permission on this entity
-  #no_data:
-  #title: You have no user group
-  #subtitle: To manage permission on asset family you need to have at least one user group.
-  #link: Clic here to add your first user group
+    breadcrumb: Famiglie di asset
+    img: Il media principale della famiglia di asset denominato "{{ label }}"
+    tab:
+      assets: Attività
+      attribute: Attributi
+      properties: Proprietà
+      permission: Permessi
+      transformations: Trasformazioni
+    transformations:
+      help:
+        title: 'Benvenuto alla tua nuova area di gestione degli asset!'
+        description: 'È possibile definire qui fino a 10 trasformazioni per famiglia di asset.'
+        link: 'Se vuoi andare più a fondo nelle nuove trasformazioni del Gestore Asset, clicca qui'
+      subsection: 'Proprietà della trasformazione'
+    product_link_rules:
+      help:
+        title: 'Benvenuto alla tua nuova area di gestione degli asset!'
+        description: 'È possibile definire qui fino a 2 regole di collegamento dei prodotti per famiglia di asset.'
+        link: 'Se vuoi andare più a fondo della funzionalità di regole di collegamento prodotto, clicca qui'
+      execute_rules:
+        confirm_title: Conferma esecuzione
+        confirm_content: Sei sicuro di voler eseguire tutte le regole? (potrebbe richiedere molto tempo)
+        cancel: Annulla
+      execute_naming_convention:
+        cancel: Annulla
+    properties:
+      title: Proprietà famiglia asset
+      identifier: Codice
+      label: Etichetta
+      media_file: File media
+      attribute_as_main_media: Attributo come media principale
+    attribute:
+      title: Attributi asset
+      attribute:
+        error:
+          render_list: 'Si è verificato un errore durante il rendering dell''attributo "{{ %attribute_code% }}"'
+          render_edit: 'Si è verificato un errore durante il rendering dei campi di proprietà aggiuntivi dell''attributo "{{ %attribute_code% }}"'
+    module:
+      delete:
+        button: Elimina una famiglia di asset
+        confirm: Sei sicuro di voler eliminare questa famiglia?
+    index:
+      grid:
+        count: '{0} Nessuna famiglia di asset|{1} {{ count }} Famiglia di asset|]1,Inf] {{ count }} Famiglie di asset'
+        help:
+          title: 'Benvenuti nelle famiglie di asset!'
+          description_part_one: Arricchisci le informazioni rilevanti relative ai prodotti (es. marchi, produttori, colori, materiali, ingredienti...).
+          description_part_two: Ti permetterà di fornire un'esperienza di prodotto migliore ai tuoi clienti.
+          description_part_three: Fai clic sul pulsante "Crea" per creare la tua prima famiglia di asset, impostare i suoi attributi e asset.
+          description_part_four: Poi, per collegare i prodotti, crea un tipo di attributo correlato a questa famiglia di asset.
+          description_part_five: Per ulteriori dettagli, ti invitiamo a leggere questo articolo.
+    create:
+      header:
+        title: Crea
+      subtitle: Famiglie di Asset
+      title: Crea una nuova famiglia di asset
+      input:
+        label: Etichetta
+        code: Codice (richiesto)
+      confirm: Salva
+    delete:
+      message: Sei sicuro di voler eliminare la famiglia di asset "{{ assetFamilyLabel }}"?
+      title: Attributo
+    notification:
+      save:
+        success: Famiglia di asset aggiornata correttamente.
+        fail: Si è verificato un errore durante il salvataggio della famiglia di asset
+      create:
+        success: Famiglia di asset creata correttamente.
+        fail: Si è verificato un errore durante la creazione della famiglia di asset
+      delete:
+        success: Famiglia di asset eliminata correttamente.
+        fail: Si è verificato un errore durante l'eliminazione della famiglia di asset
+      compute_transformations:
+        success: Le trasformazioni sono state avviate. Una volta terminata questa attività, vedrai le tue nuove variazioni aggiornate nei tuoi asset.
+        fail: Si è verificato un errore durante l'elaborazione delle trasformazioni
+    helper:
+      no_asset_family:
+        link: Per ulteriori dettagli, ti invitiamo a leggere questo articolo.
+    no_data:
+      no_asset:
+        link: Fai clic qui per aggiungere un asset
+      no_asset_family:
+        title: Non esistono famiglie di asset!
+        link: Fai clic qui per aggiungere una famiglia di asset
+  permission:
+    notification:
+      save:
+        success: I permessi della famiglia di asset sono stati aggiornati correttamente.
+        fail: Almeno un gruppo di utenti dovrebbe avere i permessi di modifica per questa famiglia di asset
+    no_data:
+      title: Non ci sono gruppi utenti
+      subtitle: Per gestire i permessi sulla famiglia di asset devi avere almeno un gruppo utente.
+      link: Fai clic qui per aggiungere il tuo primo gruppo utente
   asset:
-    #validation:
-    #limit_reached: 'You cannot create the asset "{{ %asset_label% }}" because you have reached the limit of {{ %limit% }} assets for this asset family'
-    #code:
-    #pattern: 'This field may only contain letters, numbers and underscores.'
-    #should_be_unique: 'This code already exists for this entity.'
-    #no_data:
-    #title: There are no asset for {{ entityLabel }}
-    #subtitle: Click on the button "Add new" to create the first asset
-    #no_result:
-    #title: There are no result for your search
-    #subtitle: Try again with new search criteria.
+    img: Il media principale dell'asset denominato "{{ label }}"
+    created_at: Creato
+    updated_at: Aggiornato
+    validation:
+      limit_reached: 'Non puoi creare l''asset "{{ %asset_label% }}" perché hai raggiunto il limite di {{ %limit% }} asset per questa famiglia di asset'
+      code:
+        pattern: 'Questo campo può contenere solo lettere, numeri e trattini bassi.'
+        should_be_unique: 'Questo codice è già esistente per un altro asset.'
+    no_data:
+      subtitle: Fai clic sul pulsante "Aggiungi nuovo" per creare il primo asset
+    no_result:
+      subtitle: Riprova con nuovi criteri di ricerca.
     selector:
       no_value: Clicca qui per selezionare un'attività.
-    #error:
-    #value: Oops, it seems that the rendering of the "{{ fieldName }}" field failed. See the developer console for more details.
-    #button:
-    #save: Save
-    #create: Add new
-    #delete: Delete
-    #delete_all: Delete all assets
-    #back: Back to list
-    #product:
-    #attribute: Product attribute
-    #counter: '{{ totalCount }} result|{{ totalCount }} results'
-    #dropdown:
-    #attribute: Product attribute
-    #title: Products
-    #no_attribute:
-    #title: There is no product attribute linked to the asset family "{{ entityLabel }}"
-    #subtitle: "To start linking products to this asset family you can create a new one: "
-    #link: Create a new product attribute
-    #not_enough_items:
-    #title: Damn! You can see only {{ productCount }}/{{ totalCount }} products.
-    #subtitle:
-    #usable_in_grid: To discover all the products linked, just click below!
-    #not_usable_in_grid: To discover all the products linked, the product attribute must be set as "usable in grid".
-    #button: View all products
-    #no_product:
-    #title: There are no products linked for the product attribute "{{ entityLabel }}"
-    #subtitle: "Start linking products to this attribute to see them here"
-    #enrich:
-    #title: Asset attributes
-    #code: Code
-    #label: Label
-    #title: Assets
-    #create:
-    #header:
-    #title: Create
-    #subtitle: Asset Families
-    #title: Add new {{ entityLabel }}
-    #input:
-    #label: Label
-    #code: Code (required)
-    #create_another: Create another asset
-    #confirm: Save
-    #delete:
-    #message: Are you sure you want to delete the asset "{{ assetLabel }}"? If it's linked to products or assets, the links will be removed.
-    #title: Asset
-    #delete_all:
-    #confirm: Are you sure you want to delete all "{{ entityIdentifier }}" assets? If they are linked to products, the links to the products will be removed.
+      error:
+        value: Oops, sembra che il rendering del campo "{{ fieldName }}" non sia riuscito. Controlla la console per sviluppatori per maggiori dettagli.
+    button:
+      save: Salva
+      create: Crea un asset
+      mass_upload: Caricamento di massa
+      delete: Elimina
+      delete_all: Elimina tutti gli asset
+      back: Torna all'elenco
+      launch_transformations: Avvia trasformazioni
+      fullscreen: Schermo intero
+    product:
+      attribute: Attributo prodotto
+      counter: '{{ totalCount }} risultato|{{ totalCount }} risultati'
+      dropdown:
+        attribute: Attributo prodotto
+      title: Prodotti
+      no_attribute:
+        title: Non ci sono attributi prodotto collegati alla famiglia di asset "{{ entityLabel }}"
+        subtitle: 'Per iniziare a collegare prodotti a questa famiglia puoi crearne uno nuovo: '
+        link: Crea un nuovo attributo prodotto
+      not_enough_items:
+        button: Mostra tutti i prodotti
+      no_product:
+        title: Questo asset non è collegato a nessun prodotto tramite l'attributo prodotto "{{ entityLabel }}"
+        subtitle: 'Inizia a collegare prodotti a questo attributo per vederli qui'
+    enrich:
+      title: Attributi asset
+      code: Codice
+      label: Etichetta
+      edit_subsection: Modifica attività
+    title: Attività
+    create:
+      header:
+        title: Crea
+      subtitle: Famiglie di asset
+      title: Aggiungi nuovo asset in {{ entityLabel }}
+      input:
+        label: Etichetta
+        code: Codice (richiesto)
+        create_another: Crea un altro asset
+      confirm: Salva
+    upload:
+      line_count: '[0,1]{{ count }} file|]1,Inf] {{ count }} file'
+      title: Carica asset
+      lines: File
+      retry: Riprova
+      remove: Rimuovi
+      remove_all: Rimuovi tutto
+      confirm: Crea
+      drop_or_click_here: Trascina e rilascia qui i file o fai click qui
+      will_appear_here: Carica gli asset e saranno visualizzati qui!
+      discard_changes: Perderai i tuoi asset se chiudi questa finestra senza crearli.
+      list:
+        asset: Asset
+        filename: Nome file
+        code: Codice (richiesto)
+        locale: Impostazioni locali (richiesto)
+        channel: Canale (richiesto)
+        status: Stato
+      status:
+        waiting_for_upload: non caricato
+        upload_in_progress: in corso
+        uploaded: caricato
+        valid: pronto per creare
+        invalid: errore
+        created: creato
+    delete:
+      title: Asset
+    delete_all:
+      confirm: Sei sicuro di voler eliminare tutti gli asset "{{ entityIdentifier }}"? Se sono collegati a prodotti, i collegamenti ai prodotti saranno eliminati.
     grid:
       search: Cerca su attributi di testo, di codice ed etichetta
       filter:
@@ -217,149 +292,179 @@ pim_asset_manager:
       more_result:
         title: Non è così!
         description: Hai appena scorso attraverso i primi {{ maxDisplayedAssets }} risultati di {{ total }} attività. Per vedere altro, prova con criteri di ricerca più specifici.
-  #column:
-  #code: Code
-  #image: Image
-  #label: Label
-  #complete: Complete
-  #action: Actions
-  #completeness:
-  #title_no_required: No attribute required
-  #title_non_complete: 0 out of {{ required }} attributes complete
-  #title_ongoing: '{{ complete }} out of {{ required }} attributes complete'
-  #title_complete: All {{ required }} attributes complete
-  #tab:
-  #enrich: Enrich
-  #product: Products
-  #notification:
-  #save:
-  #success: Asset successfully updated.
-  #fail: An error occured during the save of the asset
-  #validation_error: The asset could not be updated
-  #create:
-  #success: Asset successfully created.
-  #fail: An error occured during the creation of the asset
-  #delete:
-  #success: Asset "{{ code }}" successfully deleted.
-  #fail: An error occured during the deletion of the asset
-  #delete_all:
-  #success: All "{{ entityIdentifier }}" assets successfully deleted.
-  #fail: An error occured during the deletion of all this asset family's assets
-  #completeness:
-  #label: Complete
+      column:
+        code: Codice
+        image: Immagine
+        label: Etichetta
+        complete: Completo
+        action: Azioni
+      completeness:
+        title_no_required: Nessun attributo richiesto
+        title_non_complete: 0 di {{ required }} attributi completati
+        title_ongoing: '{{ complete }} di {{ required }} attributi completati'
+        title_complete: Tutti {{ required }} attributi completati
+    tab:
+      enrich: Arricchisci
+      product: Prodotti
+    notification:
+      save:
+        success: Asset aggiornato correttamente.
+        fail: Si è verificato un errore durante il salvataggio dell'asset
+        validation_error: L'asset non può essere aggiornato
+      create:
+        success: Asset creato correttamente.
+        fail: Si è verificato un errore durante la creazione dell'asset
+      delete:
+        success: L'asset "{{ code }}" è stato eliminato correttamente.
+        fail: Si è verificato un errore durante l'eliminazione dell'asset
+      delete_all:
+        success: Tutti gli asset "{{ entityIdentifier }}" sono stati eliminati correttamente.
+        fail: Si è verificato un errore durante l'eliminazione degli asset di questa famiglia di asset
+    completeness:
+      label: Completo
   attribute:
-    #validation:
-    #limit_reached: 'You cannot create the attribute "{{ %attribute_label% }}" because you have reached the limit of {{ %limit% }} attributes for this asset family'
-    #default:
-    #code: Code
-    #label: Label
-    #image: Image
-    #type:
-    #text: Text
-    #image: Image
-    #asset: Asset single link
-    #asset_collection: Asset multiple links
-    #option: Single option
-    #option_collection: Multiple options
-    #number: Number
+    validation:
+      limit_reached: 'Non puoi creare l''attributo "{{ %attribute_label% }}" perché hai raggiunto il limite di {{ %limit% }} attributi per questa famiglia di asset'
+    default:
+      code: Codice
+      label: Etichetta
+      media_file: File media
+    type:
+      text: Testo
+      media_file: File media
+      asset: Asset collegamento singolo
+      asset_collection: Raccolta di asset
+      option: Opzione singola
+      option_collection: Opzioni multiple
+      number: Numero
+      media_link: Link a contenuti multimediali
     is_required: richiesto per completezza
-#media_type_preview: Preview of media type
-#no_data:
-#title: There are no custom attributes for {{ entityLabel }}
-#subtitle: Click on the button "Add an attribute" to configure your first custom attribute
-#button:
-#add: Add an attribute
-#create:
-#header:
-#title: Create
-#subtitle: Asset Families
-#title: Add new asset attribute
-#description: The following parameters, except the label, cannot be updated after the attribute creation
-#input:
-#code: Code (required)
-#label: Label
-#type: Attribute type
-#asset_type: Asset family to link (required)
-#value_per_locale: Value per locale
-#value_per_channel: Value per channel
-#placeholder:
-#asset_type: Select your linked asset family
-#confirm: Save
-#edit:
-#delete: Delete the attribute
-#title: Edit attribute {{ code }}
-#save: Save
-#cancel: Cancel
-#input:
-#code: Code (required)
-#label: Label
-#type: Attribute type
-#asset_type: Related asset family (required)
-#value_per_locale: Value per locale
-#value_per_channel: Value per channel
-#is_required: Required for completeness
-#max_length: Max characters
-#textarea: Text Area
-#is_rich_text_editor: Rich Text Editor
-#max_file_size: Max file size (MB)
-#allowed_extensions: Allowed extensions
-#validation_rule: Validation rule
-#regular_expression: Regular expression
-#min_value: Min value
-#max_value: Max value
-#manage_options:
-#confirmation:
-#discard_changes: You will lose changes made to the list of options if you leave the page
-#quick_edit:
-#label: Manage options
-#option:
-#label:
-#placeholder: Write you new option label here
-#options:
-#validation_rule:
-#none: None
-#email: E-mail
-#regular_expression: Regular expression
-#url: URL
-#decimals_allowed: Decimal values allowed
-#delete:
-#message: Are you sure you want to delete the attribute "{{ attributeLabel }}"?
-#title: Attribute
-#notification:
-#list:
-#fail: An error occured during the update of the attribute list
-#save:
-#success: Attribute successfully updated.
-#fail: An error occured during the save of the attribute
-#validation_error: The attribute could not be updated
-#create:
-#success: Attribute successfully created.
-#fail: An error occured during the creation of the attribute
-#validation_error: The attribute could not be created
-#delete:
-#success: Attribute successfully deleted.
-#fail: An error occured during the deletion of the attribute
-#options:
-#no_value: Click here to select an option.
-#sub_title: Asset Families
-#helper:
-#title: Label translations
-#modal:
-#delete:
-#subtitle: Confirm deletion
-#button:
-#cancel: Cancel
-#confirm: Delete
+    is_read_only: Sola lettura nell'interfaccia utente
+    media_type_preview: Anteprima del tipo di media
+    no_data:
+      title: Non ci sono attributi personalizzati per {{ entityLabel }}
+      subtitle: Fai clic sul pulsante "Aggiungi un attributo" per configurare il tuo primo attributo
+    button:
+      add: Aggiungi un attributo
+    create:
+      header:
+        title: Crea
+      subtitle: Famiglie di Asset
+      title: Aggiungi nuovo attributo di asset
+      description: I parametri seguenti, ad eccezione dell'etichetta, non possono essere aggiornati dopo la creazione dell'attributo
+      input:
+        code: Codice (richiesto)
+        label: Etichetta
+        type: Tipo di attributo
+        asset_type: Famiglia di asset da collegare (richiesto)
+        value_per_locale: Valore per impostazioni localizzate
+        value_per_channel: Valore per canale
+      placeholder:
+        asset_type: Seleziona la tua famiglia di asset collegata
+      confirm: Salva
+    edit:
+      delete: Elimina l'attributo
+      title: Modifica attributo {{ code }}
+      save: Salva
+      cancel: Annulla
+      input:
+        code: Codice (richiesto)
+        label: Etichetta
+        type: Tipo di attributo
+        asset_type: Attività di famiglia correlate (richiesto)
+        value_per_locale: Valore per impostazioni localizzate
+        value_per_channel: Valore per canale
+        is_required: Richiesto per la completezza
+        is_read_only: Sola lettura nell'interfaccia utente
+        max_length: Numero massimo di caratteri
+        textarea: Area di testo
+        is_rich_text_editor: Editor di Testi Avanzato
+        max_file_size: Dimensione massima del file (MB)
+        allowed_extensions: Estensioni consentite
+        validation_rule: Regola di validazione
+        regular_expression: Espressione regolare
+        min_value: Valore minimo
+        max_value: Valore massimo
+        manage_options:
+          confirmation:
+            discard_changes: Perderai le modifiche fatte all'elenco delle opzioni se lasci la pagina
+          quick_edit:
+            label: Gestisci opzioni
+          option:
+            label:
+              placeholder: Scrivi qui l'etichetta della nuova opzione
+        options:
+          validation_rule:
+            none: Nessuna
+            email: E-mail
+            regular_expression: Espressione regolare
+            url: URL
+        decimals_allowed: Valori decimali consentiti
+        prefix: Prefisso
+        suffix: Suffisso
+        media_type: Tipo di media
+    delete:
+      message: Sei sicuro di voler eliminare l'attributo "{{ attributeLabel }}"?
+      title: Attributo
+    notification:
+      list:
+        fail: Si è verificato un errore durante l'aggiornamento dell'elenco attributi
+      save:
+        success: Attributo aggiornato correttamente.
+        fail: Si è verificato un errore durante il salvataggio dell'attributo
+        validation_error: L'attributo non può essere aggiornato
+      create:
+        success: Attributo creato correttamente.
+        fail: Si è verificato un errore durante la creazione dell'attributo
+        validation_error: L'attributo non può essere creato
+      delete:
+        success: Attributo eliminato correttamente.
+        fail: Si è verificato un errore durante l'eliminazione dell'attributo
+    options:
+      no_value: Clicca qui per selezionare un'opzione.
+      sub_title: Famiglie di Asset
+      helper:
+        title: Traduzioni etichetta
+    media_file:
+      placeholder: Trascina e rilascia per caricare o fai click qui
+      uploading: Caricamento...
+  modal:
+    delete:
+      subtitle: Conferma eliminazione
+      button:
+        cancel: Annulla
+        confirm: Elimina
 pim_enrich:
-  #confirmation:
-  #discard_changes: 'You will lose changes to the "{{ entity }}" entity if you leave the page.'
+  confirmation:
+    discard_changes: 'Perderai tutte le modifiche all''entità "{{ entity }}" se abbandoni la pagina.'
   entity:
     attribute:
       property:
-        #type:
-        #pim_catalog_asset_collection: Asset multiple links
-        #section:
-        #type_specific: Type specific parameters
+        type:
+          pim_catalog_asset_collection: Raccolta di asset
+        section:
+          type_specific: Parametri specifici del tipo
         asset_family:
           identifier: Attività di famiglia correlate (richiesto)
           default_label: Sei pregato di selezionare un'attività di famiglia
+permission:
+  mass_action: Applica il diritto {{ rightLevel }} a tutti i gruppi
+#Analytics
+pim_catalog_volume:
+  section:
+    asset_family:
+      title: Assi sulle famiglie di asset
+      hint: Se stai usando le famiglie di asset, qui ci sono gli assi per aiutarti a monitorare il volume.
+  axis:
+    count_asset_family: Famiglie di asset
+    average_max_assets_per_asset_family: Asset per famiglia di asset
+    average_max_attributes_per_asset_family: Attributio per famiglia di asset
+pim_import_export:
+  widget:
+    last_operations:
+      job_type:
+        asset_manager_compute_transformations: "Calcola trasformazioni asset"
+        asset_manager_link_assets_to_products: "Collega asset ai prodotti"
+job_execution:
+  summary:
+    assets: Attività

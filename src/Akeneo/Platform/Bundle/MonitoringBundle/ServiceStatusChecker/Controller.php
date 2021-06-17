@@ -14,6 +14,8 @@ declare(strict_types=1);
 namespace Akeneo\Platform\Bundle\MonitoringBundle\ServiceStatusChecker;
 
 use Akeneo\Platform\Bundle\MonitoringBundle\ServiceStatusChecker\PubSub\PubSubStatusCheckerInterface;
+use Akeneo\Platform\Component\Monitoring\Exception\StatusCheckException;
+use Psr\Log\LoggerInterface;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -96,6 +98,10 @@ final class Controller
 
         $responseStatus = $this->isResponseSuccesful($responseContent['service_status'], $failOnOptionalServices) ?
             Response::HTTP_OK : Response::HTTP_INTERNAL_SERVER_ERROR;
+
+        if (Response::HTTP_OK !== $responseStatus) {
+            throw new StatusCheckException(json_encode($responseContent), Response::HTTP_INTERNAL_SERVER_ERROR);
+        }
 
         return new JsonResponse($responseContent, $responseStatus);
     }

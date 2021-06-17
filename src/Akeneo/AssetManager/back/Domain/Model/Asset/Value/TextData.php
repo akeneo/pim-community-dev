@@ -8,8 +8,7 @@ use Webmozart\Assert\Assert;
 
 class TextData implements ValueDataInterface
 {
-    /** @var string */
-    private $text;
+    private string $text;
 
     private function __construct(string $text)
     {

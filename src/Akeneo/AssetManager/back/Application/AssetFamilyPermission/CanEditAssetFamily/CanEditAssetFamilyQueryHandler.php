@@ -20,11 +20,9 @@ use Akeneo\AssetManager\Domain\Repository\AssetFamilyPermissionRepositoryInterfa
  */
 class CanEditAssetFamilyQueryHandler
 {
-    /** @var AssetFamilyPermissionRepositoryInterface */
-    private $assetFamilyPermissionRepository;
+    private AssetFamilyPermissionRepositoryInterface $assetFamilyPermissionRepository;
 
-    /** @var FindUserGroupsForSecurityIdentifierInterface */
-    private $findUserGroupsForSecurityIdentifier;
+    private FindUserGroupsForSecurityIdentifierInterface $findUserGroupsForSecurityIdentifier;
 
     public function __construct(
         AssetFamilyPermissionRepositoryInterface $assetFamilyPermissionRepository,

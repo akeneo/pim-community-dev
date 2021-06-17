@@ -1,16 +1,16 @@
 pimee_workflow:
   product_draft:
-    author: Upphovsman
+    author: Författare
     created: På förslag
     changes: Förändringar
     locale: Lokalt sammanhang
     product:
-      label: Produkt etikett
+      label: Produktetikett
     attribute:
       label: Attribut
     status:
       label: Status
-      working_copy: Arbetar kopia
+      working_copy: Arbetskopia
       in_progress: Pågående
       ready: Väntar på godkännande
       can_be_partially_reviewed: Kan delvis granskas
@@ -37,6 +37,7 @@ pimee_workflow:
       approve: '%owner% har accepterat ert förslag för den produkten %product%'
       refuse: '%owner% har avvisat ert förslag för produkt %product%'
       remove: '%owner% har raderat ditt förslag för produkt %product%'
+      mass_edit_sent_for_approval: 'Massredigering <strong>%jobLabel% </strong> avslutad:%sentForApprovalCount% förslag genererade av %readProductsCount% produkter'
     mass_review_action:
       approve: Godkänna alla valda
       refuse: Avvisa alla valda
@@ -61,7 +62,7 @@ pimee_workflow:
   product:
     permission:
       own: Granska / publicera
-      edit: Redigera
+      edit: Ändra
       view: Visa
   steps:
     product_draft_processor.title: Förslag-processor
@@ -83,17 +84,14 @@ btn:
   publish: Publicera
   unpublish: Avpublicera
   save working copy: Spara arbetskopian
-  save draft: Spara utkast
   save working copy and next: Spara arbetskopian och nästa
-  save draft and next: Spara utkast och nästa
   save working copy and finish: Spara arbetskopian och avsluta
-  save draft and finish: Spara utkast och finish
   send for approval: Skicka för godkännande
   sent for approval: Skickat för godkännande
   editworkingcopy: Redigera arbetskopian
 flash:
   product:
-    updated: Produkten arbetskopia har uppdaterats
+    updated: Produktens arbetskopia har uppdaterats
     published: Produkten har publicerats.
     unpublished: Produkten har inte publicerats.
   product_draft:
@@ -139,7 +137,7 @@ pimee_dashboard:
     product_drafts:
       title: Förslag att granska
       date: Datum
-      author: Upphovsman
+      author: Författare
       product: Produkt
       review: Granska
       empty: Inga produktutkast att granska

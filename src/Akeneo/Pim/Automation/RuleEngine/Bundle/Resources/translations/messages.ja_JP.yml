@@ -2,61 +2,17 @@ pimee_catalog_rule:
   datagrid:
     rule-grid:
       actions:
-        delete: 削除
         execute: 実行
       title: ルール
-      column:
-        conditions: 状態
-        actions: アクション
-        impacted_product_count:
-          label: 影響を受けた商品
-          count: '影響を受けた {0,1}%count% 商品 |]1、Inf [影響を受けた%count% 商品'
-          no_yet_calculated: 未計算
       mass_edit_action:
-        impacted_product_count: 影響を受けた商品を計算する
         execute: 実行
         delete: 削除
-  actions:
-    type:
-      "copy": '%from_field% は %to_field% にコピーされる'
-      "copy_value": '%from_field% は %to_field% にコピーされる'
-      "set": '%value% は %field% に設定される'
-      "set_value": '%value% は %field% に設定される'
-      "add": '%value% は %field% に追加される'
-      "remove": '%field% から %value% が削除される'
-      "concatenate": '%fields% は %to_field%に連結済'
-    options:
-      include_children: 下位も含む
-  condition:
-    label: 条件は、 %field% %operator% %value%
-    operators:
-      "STARTS WITH": '次の内容で始まる:'
-      "ENDS WITH": '次の内容で終わる:'
-      "CONTAINS": '次を含む:'
-      "DOES NOT CONTAIN": '次を含まない:'
-      "EMPTY": 空値
-      "NOT EMPTY": 空ではない
-      "IN": '次に含む:'
-      "NOT IN": '次に含まない:'
-      "IN CHILDREN": 下位に含まれる
-      "NOT IN CHILDREN": 下位に含まれない
-      "UNCLASSIFIED": は未分類
-      "IN OR UNCLASSIFIED": 'は未分類か、あるいは次に含まれる:'
-      "BETWEEN": '次の範囲内:'
-      "NOT BETWEEN": '次の範囲内でない:'
-      "=": '＝'
-      "!=": '≠'
-      ">": <
-      ">=": '≦'
-      "<": <
-      "<=": '≦'
   acl_group:
     rule: ルール
   acl:
     rule:
       view_permissions: ルールの表示
       delete_permissions: ルールを削除
-      impacted_product_count_permissions: ルールの影響を受けた商品を計算する
       execute_permissions: ルールを実行
   attribute:
     tab:
@@ -66,29 +22,16 @@ pimee_catalog_rule:
     acl:
       rule.view_permissions: ルールを表示
   product:
-    tooltip:
-      product_attribute_affected_by_a_rule.content: この属性の値は<strong>%rule%</strong>に従います。つまり、ルールの条件が有効な場合、変更が上書きされます。
-      loading.title: 読み込み中...
     history: 適用されたルール 「%rule%」
-  product_value:
-    tooltip:
-      affected_by.title: '次のルールから影響を受けます:'
   steps:
-    product_rule_definition_reader.title: 商品ルールインポートリーダー
-    rule_definition_processor.title: 商品ルールインポートプロセッサー
-    product_rule_definition_writer.title: 商品ルールインポートライター
     rules_execution.title: ルールの実行
-  notification:
-    rule:
-      executed: ルールの実行完了
-    mass_edit_rule:
-      success: ルール完了の影響を受ける商品を計算する
-      error: ルールの影響を受ける商品の計算中に発生したエラー
 btn:
   Execute rules: ルールを実行
-mass_edit_rule: ルールの設定
-job_execution.summary.rule_calculated: ルールの数
+job_execution:
+  summary:
+    rule_calculated: ルールの数
 pim_datagrid:
   cells:
     type:
       mass_edit_rule: ルールの設定
+      execute_rules: ルールの実行

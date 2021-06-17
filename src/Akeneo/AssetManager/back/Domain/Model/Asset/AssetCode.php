@@ -21,8 +21,7 @@ use Webmozart\Assert\Assert;
  */
 class AssetCode
 {
-    /** @var string */
-    private $code;
+    private string $code;
 
     private function __construct(string $code)
     {

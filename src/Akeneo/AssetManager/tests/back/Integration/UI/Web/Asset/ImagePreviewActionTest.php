@@ -28,17 +28,13 @@ final class ImagePreviewActionTest extends ControllerIntegrationTestCase
     private const URL_VALUE_PREVIEW_ROUTE = 'akeneo_asset_manager_image_preview';
     private const FILENAME = '2016/04/Fred-site-web.jpg';
 
-    /** @var WebClientHelper */
-    private $webClientHelper;
+    private WebClientHelper $webClientHelper;
 
-    /** @var FixturesLoader */
-    private $fixturesLoader;
+    private FixturesLoader $fixturesLoader;
 
-    /** @var MediaLinkAttribute */
-    private $attribute;
+    private MediaLinkAttribute $attribute;
 
-    /** @var CacheManager */
-    private $cacheManager;
+    private CacheManager $cacheManager;
 
     public function setUp(): void
     {

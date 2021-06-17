@@ -38,11 +38,9 @@ use Symfony\Component\EventDispatcher\EventDispatcher;
 
 class InMemoryFindMediaFileAttributeCodesTest extends TestCase
 {
-    /** @var InMemoryFindAttributesIndexedByIdentifier */
-    private $findMediaFileAttributeCodes;
+    private InMemoryFindMediaFileAttributeCodes $findMediaFileAttributeCodes;
 
-    /** @var InMemoryAttributeRepository */
-    private $attributeRepository;
+    private InMemoryAttributeRepository $attributeRepository;
 
     public function setUp(): void
     {

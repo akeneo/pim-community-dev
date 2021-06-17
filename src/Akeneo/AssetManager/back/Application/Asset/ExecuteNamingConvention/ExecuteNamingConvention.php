@@ -27,17 +27,13 @@ use Symfony\Component\Validator\Validator\ValidatorInterface;
  */
 class ExecuteNamingConvention
 {
-    /** @var AssetRepositoryInterface */
-    private $assetRepository;
+    private AssetRepositoryInterface $assetRepository;
 
-    /** @var EditAssetCommandFactory */
-    private $editAssetCommandFactory;
+    private EditAssetCommandFactory $editAssetCommandFactory;
 
-    /** @var EditAssetHandler */
-    private $editAssetHandler;
+    private EditAssetHandler $editAssetHandler;
 
-    /** @var ValidatorInterface */
-    private $validator;
+    private ValidatorInterface $validator;
 
     public function __construct(
         AssetRepositoryInterface $assetRepository,

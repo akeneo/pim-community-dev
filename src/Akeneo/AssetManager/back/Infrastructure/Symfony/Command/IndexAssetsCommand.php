@@ -36,20 +36,15 @@ class IndexAssetsCommand extends Command
     public const INDEX_ASSETS_COMMAND_NAME = 'akeneo:asset-manager:index-assets';
     private const ERROR_CODE_USAGE = 1;
 
-    /** @var Client */
-    private $assetClient;
+    private Client $assetClient;
 
-    /** @var AssetFamilyRepositoryInterface */
-    private $assetFamilyRepository;
+    private AssetFamilyRepositoryInterface $assetFamilyRepository;
 
-    /** @var AssetIndexerInterface */
-    private $assetIndexer;
+    private AssetIndexerInterface $assetIndexer;
 
-    /** @var AssetFamilyExistsInterface */
-    private $assetFamilyExists;
+    private AssetFamilyExistsInterface $assetFamilyExists;
 
-    /** @var string */
-    private $assetIndexName;
+    private string $assetIndexName;
 
     public function __construct(
         Client $client,

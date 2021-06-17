@@ -1,0 +1,8 @@
+pimee_catalog_rule:
+  datagrid:
+    rule-grid:
+      mass_edit_action:
+        delete: Xóa
+  attribute:
+    grid:
+      is_smart.label: Thông minh

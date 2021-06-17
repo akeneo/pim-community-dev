@@ -52,41 +52,30 @@ class GetConnectorAssetContext implements Context
 {
     private const REQUEST_CONTRACT_DIR = 'Asset/Connector/Distribute/';
 
-    /** @var OauthAuthenticatedClientFactory */
-    private $clientFactory;
+    private OauthAuthenticatedClientFactory $clientFactory;
 
-    /** @var WebClientHelper */
-    private $webClientHelper;
+    private WebClientHelper $webClientHelper;
 
-    /** @var InMemoryFindConnectorAssetByAssetFamilyAndCode */
-    private $findConnectorAsset;
+    private InMemoryFindConnectorAssetByAssetFamilyAndCode $findConnectorAsset;
 
-    /** @var AssetFamilyRepositoryInterface */
-    private $assetFamilyRepository;
+    private AssetFamilyRepositoryInterface $assetFamilyRepository;
 
-    /** @var null|Response */
-    private $existentAsset;
+    private ?Response $existentAsset = null;
 
-    /** @var null|Response */
-    private $nonExistentAsset;
+    private ?Response $nonExistentAsset = null;
 
-    /** @var AttributeRepositoryInterface */
-    private $attributeRepository;
+    private AttributeRepositoryInterface $attributeRepository;
 
-    /** @var InMemoryMediaFileRepository */
-    private $mediaFileRepository;
+    private InMemoryMediaFileRepository $mediaFileRepository;
 
-    /** @var InMemoryFilesystemProviderStub */
-    private $filesystemProvider;
+    private InMemoryFilesystemProviderStub $filesystemProvider;
 
-    /** @var null|StreamedResponse */
-    private $mediaFileDownloadResponse;
+    private ?Response $mediaFileDownloadResponse = null;
 
     /** @var null|string */
     private $downloadedMediaFile;
 
-    /** @var null|Response */
-    private $imageNotFoundResponse;
+    private ?Response $imageNotFoundResponse = null;
 
     public function __construct(
         OauthAuthenticatedClientFactory $clientFactory,
@@ -140,7 +129,9 @@ class GetConnectorAssetContext implements Context
                         'data' => '2/4/3/7/24378761474c58aeee26016ee881b3b15069de52_kartell_cover.jpg'
                     ]
                 ]
-            ]
+            ],
+            new \DateTimeImmutable('@0'),
+            new \DateTimeImmutable('@3600'),
         );
         $this->findConnectorAsset->save(
             AssetFamilyIdentifier::fromString($assetFamilyIdentifier),
@@ -192,7 +183,9 @@ class GetConnectorAssetContext implements Context
         for ($i = 0; $i < 10 ; $i++) {
             $asset = new ConnectorAsset(
                 AssetCode::fromString('asset_code_' . $i),
-                []
+                [],
+                new \DateTimeImmutable('@0'),
+                new \DateTimeImmutable('@3600'),
             );
             $this->findConnectorAsset->save(
                 AssetFamilyIdentifier::fromString($assetFamilyIdentifier),
@@ -237,7 +230,9 @@ class GetConnectorAssetContext implements Context
             for ($j = 0; $j < 10 ; $j++) {
                 $asset = new ConnectorAsset(
                     AssetCode::fromString(sprintf('asset_code_%s_%s', $i, $j)),
-                    []
+                    [],
+                    new \DateTimeImmutable('@0'),
+                    new \DateTimeImmutable('@3600'),
                 );
                 $this->findConnectorAsset->save(
                     AssetFamilyIdentifier::fromString(sprintf('asset_family_%s', $i)),

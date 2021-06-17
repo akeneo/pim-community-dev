@@ -17,8 +17,7 @@ use Doctrine\DBAL\Types\Type;
  */
 class SqlFindSearchableAssets implements FindSearchableAssetsInterface
 {
-    /** @var Connection */
-    private $connection;
+    private Connection $connection;
 
     public function __construct(Connection $connection)
     {
@@ -37,26 +36,32 @@ SQL;
         $statement = $this->connection->executeQuery($sqlQuery, ['asset_identifier' => (string) $assetIdentifier]);
         $result = $statement->fetch(\PDO::FETCH_ASSOC);
 
-        return !$result ? null : $this->hydrateAssetToIndex(
+        return $result ? $this->hydrateAssetToIndex(
             $result['identifier'],
             $result['asset_family_identifier'],
             $result['code'],
             $result['updated_at'],
             ValuesDecoder::decode($result['value_collection']),
             $result['attribute_as_label']
-        );
+        ) : null;
     }
 
-    public function byAssetFamilyIdentifier(AssetFamilyIdentifier $assetFamilyIdentifier): \Iterator
+    public function byAssetIdentifiers(array $assetIdentifiers): \Iterator
     {
         $sqlQuery = <<<SQL
-        SELECT ass.identifier, ass.asset_family_identifier, ass.code, ass.value_collection, assfam.attribute_as_label, ass.updated_at
-        FROM akeneo_asset_manager_asset ass
-        INNER JOIN akeneo_asset_manager_asset_family assfam ON assfam.identifier = ass.asset_family_identifier
-        WHERE assfam.identifier = :asset_family_identifier;
+        SELECT asset.identifier, asset.asset_family_identifier, asset.code, asset.value_collection, asset_family.attribute_as_label, asset.updated_at
+        FROM akeneo_asset_manager_asset asset
+        INNER JOIN akeneo_asset_manager_asset_family asset_family
+            ON asset_family.identifier = asset.asset_family_identifier
+        WHERE asset.identifier IN (:asset_identifiers)
 SQL;
 
-        $statement = $this->connection->executeQuery($sqlQuery, ['asset_family_identifier' => (string) $assetFamilyIdentifier]);
+        $statement = $this->connection->executeQuery(
+            $sqlQuery,
+            ['asset_identifiers' => $assetIdentifiers],
+            ['asset_identifiers' => Connection::PARAM_STR_ARRAY]
+        );
+
         while (false !== $result = $statement->fetch(\PDO::FETCH_ASSOC)) {
             yield $this->hydrateAssetToIndex(
                 $result['identifier'],
@@ -103,7 +108,7 @@ SQL;
             return [];
         }
 
-        $labels = array_reduce(
+        return array_reduce(
             $values,
             function (array $labels, array $value) use ($attributeAsLabelIdentifier) {
                 if ($value['attribute'] === $attributeAsLabelIdentifier) {
@@ -114,7 +119,5 @@ SQL;
             },
             []
         );
-
-        return $labels;
     }
 }

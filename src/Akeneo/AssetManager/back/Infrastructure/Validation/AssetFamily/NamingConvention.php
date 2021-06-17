@@ -22,8 +22,7 @@ use Symfony\Component\Validator\Constraint;
  */
 class NamingConvention extends Constraint
 {
-    /** @var AssetFamilyIdentifier */
-    private $assetFamilyIdentifier;
+    private AssetFamilyIdentifier $assetFamilyIdentifier;
 
     public function __construct(AssetFamilyIdentifier $assetFamilyIdentifier)
     {

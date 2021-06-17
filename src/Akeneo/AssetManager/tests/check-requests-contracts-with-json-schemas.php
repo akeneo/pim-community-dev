@@ -110,9 +110,7 @@ function removeEmptyLine(array $result): array
 function removeDoubleSlashes(array $paths): array
 {
     return array_map(
-        function (string $path) {
-            return str_replace('//', '/', $path);
-        },
+        fn (string $path) => str_replace('//', '/', $path),
         $paths
     );
 }
@@ -127,9 +125,8 @@ function getRequestContracts(string $requestContractsDir): array
     $command = sprintf('find %s -type f -name "*.json" -not -path "/*Connector*"', $requestContractsDir);
     $shellResult = shell_exec($command);
     $result = explode("\n", $shellResult);
-    $result = removeDoubleSlashes(removeEmptyLine($result));
 
-    return $result;
+    return removeDoubleSlashes(removeEmptyLine($result));
 }
 
 /**
@@ -138,12 +135,11 @@ function getRequestContracts(string $requestContractsDir): array
 $backendRequestContractsDir = sprintf('%s/%s', __DIR__, 'back/Integration/Resources/responses/');
 $frontendRequestContractsDir = sprintf('%s/%s', __DIR__, 'front/integration/responses/');
 
-$hasError = checkJsonSchemas($backendRequestContractsDir);
-$hasError |= checkJsonSchemas($frontendRequestContractsDir);
+$hasError = checkJsonSchemas($backendRequestContractsDir) ||checkJsonSchemas($frontendRequestContractsDir);
 
-if (!$hasError) {
+if ($hasError === false) {
     writeln('No error found in Request Contracts', 'info');
 }
 
-$exitCode = $hasError ? 1 : 0;
+$exitCode = $hasError === true ? 1 : 0;
 exit($exitCode);

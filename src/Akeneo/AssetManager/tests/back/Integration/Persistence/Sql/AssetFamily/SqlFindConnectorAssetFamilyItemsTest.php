@@ -30,11 +30,9 @@ use Akeneo\Tool\Component\FileStorage\Model\FileInfo;
 
 class SqlFindConnectorAssetFamilyItemsTest extends SqlIntegrationTestCase
 {
-    /** @var AssetFamilyRepositoryInterface */
-    private $assetFamilyRepository;
+    private AssetFamilyRepositoryInterface $assetFamilyRepository;
 
-    /** @var FindConnectorAssetFamilyItemsInterface*/
-    private $findConnectorAssetFamilyItems;
+    private FindConnectorAssetFamilyItemsInterface $findConnectorAssetFamilyItems;
 
     protected function setUp(): void
     {

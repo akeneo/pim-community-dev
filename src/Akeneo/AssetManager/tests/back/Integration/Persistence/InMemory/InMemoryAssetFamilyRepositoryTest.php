@@ -26,8 +26,7 @@ use Symfony\Component\EventDispatcher\EventDispatcher;
 
 class InMemoryAssetFamilyRepositoryTest extends TestCase
 {
-    /** @var InMemoryAssetFamilyRepository */
-    private $assetFamilyRepository;
+    private InMemoryAssetFamilyRepository $assetFamilyRepository;
 
     public function setUp(): void
     {

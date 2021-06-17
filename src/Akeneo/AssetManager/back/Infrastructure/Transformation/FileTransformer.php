@@ -22,8 +22,7 @@ use Symfony\Component\HttpFoundation\File\File;
 
 class FileTransformer
 {
-    /** @var OperationApplierRegistry */
-    private $operationApplierRegistry;
+    private OperationApplierRegistry $operationApplierRegistry;
 
     public function __construct(OperationApplierRegistry $operationApplierRegistry)
     {

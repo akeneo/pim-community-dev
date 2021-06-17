@@ -30,8 +30,7 @@ use Doctrine\DBAL\Types\Type;
  */
 class SqlFindAssetFamilyItems implements FindAssetFamilyItemsInterface
 {
-    /** @var Connection */
-    private $sqlConnection;
+    private Connection $sqlConnection;
 
     /**
      * @param Connection $sqlConnection

@@ -3,6 +3,7 @@ pim_title:
   akeneo_asset_manager_asset_family_edit: Editar una categoría de recursos
   akeneo_asset_manager_asset_edit: Editar recurso
 pim_asset_manager:
+  result_counter: '{0} Ningún resultado |{1} {{ count }} resultado|]1,Inf] {{ count }} resultados'
   asset_collection:
     add_asset: 'Añadir recurso'
     no_asset_in_collection: 'Lo sentimos, no hay ningún recurso en esta colección.'
@@ -41,11 +42,13 @@ pim_asset_manager:
     edit_asset: Editar recurso
     download: Descargar
     copy_url: Copiar URL
+    error: Se ha producido un error durante el procesamiento de la vista previa
   breadcrumb:
     products: Productos
   app:
     image:
       wide:
+        remove: Eliminar el archivo
         download: Descargar el archivo
         upload: Arrastre y suelte aquí o haga clic aquí para subir el fichero
       small:
@@ -62,12 +65,19 @@ pim_asset_manager:
         should_be_unique: 'Ya existe una familia de activos con el código "{{ %asset_family_identifier% }}"'
         limit_reached: 'No puede crear la familia de recursos "{{ %asset_family_label% }}" porque ha llegado al límite de {{ %limit% }} familias de recursos'
       transformation:
+        limit_reached: 'Has alcanzado el límite de transformaciones {{ %limit% }}'
+        same_operation_twice: 'La operación "{{ %operation_type% }}" no puede definirse dos veces en una sola transformación'
+        source_can_not_be_a_target: 'La fuente de atributo "{{ %attribute_code% }}" no puede ser un objetivo de atributo de una transformación.'
         attribute_reference_should_exist: 'El atributo "{{ %attribute_code% }}" no existe para esta familia de recursos'
+        filename_is_not_unique: 'Ya existe una transformación con el prefijo de nombre de archivo "{{ %filename_prefix% }}" y el sufijo "{{ %filename_suffix% }}" para la fuente de atributo "{{ %attribute_code% }}"'
+        code_is_not_unique: 'No puedes definir dos transformaciones con el mismo código "{{ %transformation_code% }}"'
+        unknown_extra_field: 'La propiedad {{ {{ field }} }} no se esperaba.'
       naming_convention:
         property_should_exist: 'La propiedad "{{ %property% }}" no existe para esta familia de activos'
         not_main_media_attribute_code: 'La propiedad debe coincidir con el código del atributo definido como medio principal'
       rule_template:
         limit_reached: 'Ha alcanzado el límite de reglas de enlace de producto {{ %limit% }} para la familia de activos "{{ %asset_family_identifier% }}".'
+        product_selection_cannot_be_empty: 'Debe especificar al menos una selección de producto en la regla de enlace de su producto'
         extrapolated_attribute_should_exist: 'El atributo "{{ %attribute_code% }}" no existe para esta familia de recursos'
         extrapolated_attribute_type_should_be_supported: 'El atributo "{{ %attribute_code% }}" de tipo "{{ %attribute_type% }}" no es compatible, solo se soportan los siguientes tipos de atributos para este campo: {{ %supported_attribute_type% }}'
         channel_should_exist: 'El canal "{{ %channel_code% }}" no existe'
@@ -78,6 +88,8 @@ pim_asset_manager:
         channel_not_supported_for_field: 'No puede especificar un canal para el campo "{{ %product_field% }}"'
         locale_not_supported_for_field: 'No puede especificar un local para el campo "{{ %product_field% }}"'
         assignmement_attribute_does_not_support_this_asset_family: 'El atributo de producto "{{ %product_attribute_code% }}" no puede contener activos de la familia de activos "{{ %asset_family_identifier% }}"'
+        assignmement_attribute_does_not_exist: 'no existe el atributo de producto "{{ %product_attribute_code% }}"'
+        assignmement_attribute_is_not_an_asset_collection: 'el atributo de producto "{{ %product_attribute_code% }}" no es un atributo de tipo colección de activos'
     button:
       save: Guardar
       save_permission: Guardar
@@ -91,7 +103,11 @@ pim_asset_manager:
       assets: Recursos
       attribute: Atributos
       properties: Propiedades
+      permission: Permisos
+      transformations: Transformaciones
       product_link_rules: Reglas de enlace de producto
+    transformations:
+      subsection: 'Propiedades de transformación'
     product_link_rules:
       product_link_rules_subsection: 'Propiedades de reglas de enlace de producto'
       execute_rules:
@@ -101,13 +117,28 @@ pim_asset_manager:
       execute_naming_convention:
         confirm_title: Confirmar la ejecución
     properties:
+      title: Propiedades de la familia de activos
       identifier: Código
       label: Etiqueta
       media_file: Archivo multimedia
       attribute_as_main_media: Atributo como medio principal
+    attribute:
+      title: Atributos de activos
+      attribute:
+        error:
+          render_list: 'Se ha producido un error durante la representación del atributo "{{ %attribute_code% }}"'
+          render_edit: 'Se ha producido un error durante la representación del atributo "{{ %attribute_code% }}" campos de propiedades adicionales'
+    module:
+      delete:
+        button: Eliminar familia de activos
+        confirm: '¿Está seguro que desea eliminar esta familia de activos?'
     index:
       grid:
+        count: '{0} Sin familia de activos |{1} {{ count }} familia de activos |]1,Inf] {{ count }} familias de activos'
         help:
+          title: '¡Bienvenido a las Familias de Activos!'
+          description_part_three: Haga clic en el botón “Crear” para crear su primera familia de activos, establecer sus atributos y activos.
+          description_part_four: Luego, para vincular a los productos, crear un tipo de atributo de producto relacionado con esta familia de activos.
           description_part_five: Para más detalles, le invitamos a navegar por este artículo.
     create:
       header:
@@ -117,12 +148,20 @@ pim_asset_manager:
       input:
         label: Etiqueta
         code: Código (requerido)
+    delete:
+      message: '¿Está seguro de que desea eliminar la familia de activos "{{ assetFamilyLabel }}"?'
     notification:
       save:
         success: Familia de recursos actualizada con éxito.
+        fail: Se ha producido un error al guardar la familia de activos
+      create:
+        success: Familia de recursos creada correctamente.
+        fail: Se ha producido un error durante la creación de la familia de activos
       execute_product_link_rules:
         success: Reglas de enlace de producto han sido lanzadas
         fail: Ocurrió un error al intentar lanzar las reglas de enlace del producto
+      execute_naming_convention:
+        fail: Ocurrió un error al intentar lanzar la convención de nombres
     helper:
       title: '¡Bienvenido al Administrador de Activos!'
       no_asset:
@@ -152,6 +191,7 @@ pim_asset_manager:
     selector:
       no_value: Haz clic aquí para seleccionar un recurso.
     button:
+      save_and_execute_naming_convention: Guardar y ejecutar la convención de nombres
       save: Guardar
       delete: Borrar
       back: Volver a la lista
@@ -164,6 +204,7 @@ pim_asset_manager:
       no_attribute:
         link: Crear un nuevo atributo de producto
       not_enough_items:
+        title: Solo puedes ver {{ productCount }}/{{ totalCount }} productos.
         subtitle:
           usable_in_grid: Para descubrir todos los productos vinculados, haga clic justo abajo!
           not_usable_in_grid: Para descubrir todos los productos vinculados, el atributo del producto debe establecerse como "utilizable en la cuadrícula".
@@ -171,6 +212,7 @@ pim_asset_manager:
     no_linked_products: Este activo no está vinculado a los productos
     enrich:
       code: Código
+      label: Etiqueta
       edit_subsection: Editar recurso
       product_subsection: Productos vinculados
       main_media_preview: Vista previa de medios principales
@@ -178,12 +220,15 @@ pim_asset_manager:
     create:
       header:
         title: Crear
+      subtitle: Lista de familias
       input:
         label: Etiqueta
         code: Código (requerido)
     upload:
       retry: Reintentar
+      remove: Eliminar
       remove_all: Remover todos
+      confirm: Crear
       add_to_product: Añadir al producto
       files_limit: Estás intentando subir demasiados archivos, solo se cargarán los primeros {{ limit }}.
       disabled_for_media_link: No puede subir recursos en esta familia ya que el atributo usado como medio principal es un atributo de enlace de medios
@@ -199,8 +244,11 @@ pim_asset_manager:
         waiting_for_upload: no cargado
         upload_in_progress: en progreso
         uploaded: subido
+        invalid: error
+        created: creado
     delete:
       message: '¿Está seguro que desea eliminar el activo "{{ assetLabel }}"? Si está vinculado a los productos, los enlaces se eliminarán.'
+      title: Activo
     mass_delete:
       title: Recursos
     grid:
@@ -227,13 +275,66 @@ pim_asset_manager:
       completeness:
         title_no_required: No se requiere ningún atributo
         title_non_complete: 0 de los atributos {{ required }} completos
+        title_ongoing: '{{ complete }} de {{ required }} atributos completados'
+        title_complete: Todos los atributos {{ required }} completados
     tab:
       enrich: Enriquecer
       product: Productos
+    notification:
+      save:
+        success: Activo actualizado correctamente.
+        fail: Se ha producido un error al guardar el activo
+        validation_error: El activo no pudo ser actualizado
+      create:
+        success: Activo creado con éxito.
+        fail: Se ha producido un error durante la creación del activo
+      delete:
+        success: El activo "{{ code }}" se ha eliminado correctamente.
+        fail: Se ha producido un error durante la eliminación del activo
+      execute_naming_convention:
+        success: Convención de nombres ejecutada con éxito
+        fail: Se ha producido un error durante la ejecución de la convención de nombres
     completeness:
       label: Completo
   attribute:
+    validation:
+      limit_reached: 'No puedes crear el atributo "{{ %attribute_label% }}" porque has alcanzado el límite de atributos {{ %limit% }} para esta familia de activos'
+    default:
+      code: Código
+      label: Etiqueta
+      media_file: Archivo multimedia
+    type:
+      text: Texto
+      media_file: Archivo multimedia
+      asset: Enlace único de activos
+      asset_collection: Colección de activos
+      option: Opción única
+      option_collection: Múltiples opciones
+      number: Número
+      media_link: Enlace multimedia
     is_required: requerido para la completitud
+    is_read_only: Sólo lectura en la interfaz de usuario
+    media_type_preview: Vista previa del tipo de medio
+    no_data:
+      title: No hay atributos personalizados para {{ entityLabel }}
+      subtitle: Haga clic en el botón "Añadir un atributo" para configurar su primer atributo personalizado
+    button:
+      add: Añadir un atributo
+    create:
+      header:
+        title: Crear
+      subtitle: Familias de activos
+      title: Añadir nuevo atributo de activo
+      description: Los siguientes parámetros, excepto la etiqueta, no se pueden actualizar después de la creación de atributos
+      input:
+        code: Código (requerido)
+        label: Etiqueta
+        type: Tipo de atributo
+        asset_type: Familia de activos a vincular (requerido)
+        value_per_locale: Valor por local
+        value_per_channel: Valor por canal
+      placeholder:
+        asset_type: Seleccione su familia de activos vinculados
     edit:
       delete: Eliminar el atributo
       title: Editar atributo {{ code }}
@@ -246,12 +347,66 @@ pim_asset_manager:
         asset_type: Familia de recursos relacionada (requerida)
         value_per_locale: Valor por local
         value_per_channel: Valor por canal
+        is_required: Requerido para completar
+        is_read_only: Sólo lectura en la interfaz de usuario
+        max_length: Caracteres máximos
+        textarea: Área de texto
+        is_rich_text_editor: Editor de texto enriquecido
+        max_file_size: Tamaño máximo de archivo (MB)
+        allowed_extensions: Extensiones permitidas
+        validation_rule: Regla de validación
+        regular_expression: Expresión regular
+        min_value: Valor mínimo
+        max_value: Valor máximo
+        manage_options:
+          confirmation:
+            discard_changes: Perderá todos los cambios realizados a la lista de opciones si sale de la página actual
+          quick_edit:
+            label: Administrar opciones
+          option:
+            label:
+              placeholder: Escriba su nueva etiqueta para opciones aqui
+        options:
+          validation_rule:
+            none: Ninguna
+            email: E-mail
+            regular_expression: Expresión regular
+            url: URL
+        decimals_allowed: Valores decimales permitidos
+        prefix: Prefijo
+        suffix: Sufijo
+        media_type: Tipo de medios
+    delete:
+      message: '¿Está seguro que desea eliminar el atributo "{{ attributeLabel }}"?'
+      title: Atributo
+    notification:
+      list:
+        fail: Se ha producido un error durante la actualización de la lista de atributos
+      save:
+        success: Atributo exitosamente actualizado.
+        fail: Se ha producido un error durante el guardado del atributo
+        validation_error: El atributo no pudo ser actualizado
+      create:
+        success: Atributo creado exitosamente.
+        fail: Se ha producido un error durante la creación del atributo
+        validation_error: El atributo no pudo ser creado
+      delete:
+        success: Atributo exitosamente borrado.
+        fail: Se ha producido un error durante la eliminación del atributo
+    options:
+      no_value: Haz clic aquí para seleccionar una opción.
+      sub_title: Lista de familias
+      helper:
+        title: Traducciones de etiqueta
     media_link:
       placeholder: Introduzca aquí su enlace
       read_only: Este enlace de medios es de solo lectura
     media_file:
       read_only: Este archivo de medios es de solo lectura
       uploading: Subiendo...
+  jobs:
+    asset_manager_execute_naming_convention:
+      error: 'La convención de nombres falló en el activo "{{ asset }}"'
 pim_enrich:
   entity:
     attribute:
@@ -259,6 +414,25 @@ pim_enrich:
         asset_family:
           identifier: Familia de recursos relacionada (requerida)
           default_label: Por favor, seleccione una familia de recursos
+pim_import_export:
+  widget:
+    last_operations:
+      job_type:
+        asset_manager_execute_naming_convention: Ejecutar la convención de nombres de familia de activos
+  form:
+    job_instance:
+      tab:
+        properties:
+          with_prefix_suffix:
+            title: Exportar prefijo y sufijo
+            help: Exportar prefijo y sufijo de los atributos activos del enlace de medios
+pim_datagrid:
+  cells:
+    type:
+      asset_manager_execute_naming_convention: Ejecutar la convención de nombres de familia de activos
+batch_jobs:
+  default_steps:
+    execute_naming_convention: Ejecutar la convención de nombres de familia de activos
 job_execution:
   summary:
     assets: Recursos

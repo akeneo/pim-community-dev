@@ -22,11 +22,9 @@ use Akeneo\AssetManager\Domain\Query\Channel\ChannelExistsInterface;
  */
 class CacheChannelExists implements ChannelExistsInterface
 {
-    /** @var ChannelExistsInterface */
-    private $channelExists;
+    private ChannelExistsInterface $channelExists;
 
-    /** @var array */
-    private $channels;
+    private array $channels;
 
     public function __construct(ChannelExistsInterface $channelExists)
     {

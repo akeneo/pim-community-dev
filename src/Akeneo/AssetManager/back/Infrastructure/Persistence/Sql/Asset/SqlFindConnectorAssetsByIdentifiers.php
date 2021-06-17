@@ -29,17 +29,13 @@ use Doctrine\DBAL\Types\Type;
  */
 class SqlFindConnectorAssetsByIdentifiers implements FindConnectorAssetsByIdentifiersInterface
 {
-    /** @var Connection */
-    private $sqlConnection;
+    private Connection $sqlConnection;
 
-    /** @var FindValueKeyCollectionInterface */
-    private $findValueKeyCollection;
+    private FindValueKeyCollectionInterface $findValueKeyCollection;
 
-    /** @var FindAttributesIndexedByIdentifierInterface */
-    private $findAttributesIndexedByIdentifier;
+    private FindAttributesIndexedByIdentifierInterface $findAttributesIndexedByIdentifier;
 
-    /** @var ConnectorAssetHydrator */
-    private $assetHydrator;
+    private ConnectorAssetHydrator $assetHydrator;
 
     public function __construct(
         Connection $connection,
@@ -59,11 +55,13 @@ class SqlFindConnectorAssetsByIdentifiers implements FindConnectorAssetsByIdenti
     public function find(array $identifiers, AssetQuery $assetQuery): array
     {
         $sql = <<<SQL
-            SELECT 
-                identifier, 
-                code, 
-                asset_family_identifier, 
-                value_collection
+            SELECT
+                identifier,
+                code,
+                asset_family_identifier,
+                value_collection,
+                created_at,
+                updated_at
             FROM akeneo_asset_manager_asset
             WHERE identifier IN (:identifiers)
             ORDER BY FIELD(identifier, :identifiers);

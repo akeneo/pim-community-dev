@@ -24,32 +24,23 @@ use Akeneo\AssetManager\Domain\Model\LabelCollection;
  */
 abstract class AbstractAttribute
 {
-    /** @var AttributeIdentifier */
-    protected $identifier;
+    protected AttributeIdentifier $identifier;
 
-    /** @var AssetFamily */
-    protected $assetFamilyIdentifier;
+    protected AssetFamilyIdentifier $assetFamilyIdentifier;
 
-    /** @var AttributeCode */
-    protected $code;
+    protected AttributeCode $code;
 
-    /** @var LabelCollection */
-    protected $labelCollection;
+    protected LabelCollection $labelCollection;
 
-    /** @var AttributeOrder */
-    protected $order;
+    protected AttributeOrder $order;
 
-    /** @var AttributeIsRequired */
-    protected $isRequired;
+    protected AttributeIsRequired $isRequired;
 
-    /** @var AttributeIsReadOnly */
-    protected $isReadOnly;
+    protected AttributeIsReadOnly $isReadOnly;
 
-    /** @var AttributeValuePerChannel */
-    protected $valuePerChannel;
+    protected AttributeValuePerChannel $valuePerChannel;
 
-    /** @var AttributeValuePerLocale */
-    protected $valuePerLocale;
+    protected AttributeValuePerLocale $valuePerLocale;
 
     protected function __construct(
         AttributeIdentifier $identifier,

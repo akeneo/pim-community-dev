@@ -20,6 +20,7 @@ use Akeneo\AssetManager\Infrastructure\Persistence\Sql\Asset\Hydrator\Transforme
 use Doctrine\DBAL\Connection;
 use Doctrine\DBAL\Platforms\AbstractPlatform;
 use Doctrine\DBAL\Types\Type;
+use Doctrine\DBAL\Types\Types;
 use Webmozart\Assert\Assert;
 
 /**
@@ -28,11 +29,9 @@ use Webmozart\Assert\Assert;
  */
 class ConnectorAssetHydrator
 {
-    /** @var AbstractPlatform */
-    private $platform;
+    private AbstractPlatform $platform;
 
-    /** @var ConnectorValueTransformerRegistry */
-    private $valueTransformerRegistry;
+    private ConnectorValueTransformerRegistry $valueTransformerRegistry;
 
     public function __construct(
         Connection $connection,
@@ -48,6 +47,10 @@ class ConnectorAssetHydrator
             ->convertToPHPValue($row['value_collection'], $this->platform);
         $assetCode = Type::getType(Type::STRING)
             ->convertToPHPValue($row['code'], $this->platform);
+        $createdAt = Type::getType(Types::DATETIME_IMMUTABLE)
+            ->convertToPHPValue($row['created_at'], $this->platform);
+        $updatedAt = Type::getType(Types::DATETIME_IMMUTABLE)
+            ->convertToPHPValue($row['updated_at'], $this->platform);
 
         $filteredRawValues = [];
         foreach ($valueKeyCollection as $valueKey) {
@@ -60,9 +63,8 @@ class ConnectorAssetHydrator
         }
 
         $normalizedValues = $this->normalizeValues($filteredRawValues, $attributes);
-        $connectorAsset = new ConnectorAsset(AssetCode::fromString($assetCode), $normalizedValues);
 
-        return $connectorAsset;
+        return new ConnectorAsset(AssetCode::fromString($assetCode), $normalizedValues, $createdAt, $updatedAt);
     }
 
     private function normalizeValues(array $rawValues, array $attributes): array
@@ -72,7 +74,8 @@ class ConnectorAssetHydrator
         foreach ($rawValues as $key => $rawValue) {
             $attributeIdentifier = $rawValue['attribute'];
             Assert::notNull($attributes[$attributeIdentifier] ?? null, sprintf(
-                'Attribute not found for the identifier %s', $attributeIdentifier
+                'Attribute not found for the identifier %s',
+                $attributeIdentifier
             ));
 
             $attribute = $attributes[$attributeIdentifier];

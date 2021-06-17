@@ -108,12 +108,20 @@ pim:
   replicas: 2
   extraLabels: {}
   secret: null # Generate me with `uuidgen`
-  resources:
-    limits:
-      memory: "2048Mi"
-    requests:
-      cpu: "200m"
-      memory: "512Mi"
+  fpm:
+    resources:
+      limits:
+        memory: "2048Mi"
+      requests:
+        cpu: "200m"
+        memory: "512Mi"
+  httpd:
+    resources:
+      limits:
+        memory: "128Mi"
+      requests:
+        cpu: "200m"
+        memory: "128Mi"
   elasticsearch:
     settings:
       totalFieldsLimit: 10000
@@ -222,6 +230,10 @@ onboarder:
     queueName: null
     maxReplicas: 10
   serviceAccount: null
+
+# Free Trial
+free_trial:
+  enabled: false
 
 mysql:
   image:

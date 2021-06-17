@@ -13,6 +13,7 @@ declare(strict_types=1);
 
 namespace spec\Akeneo\AssetManager\Domain\Model\AssetFamily\Transformation\Operation;
 
+use Akeneo\AssetManager\Domain\Model\AssetFamily\Transformation\Operation\ResizeOperation;
 use Akeneo\AssetManager\Domain\Model\AssetFamily\Transformation\Operation;
 use PhpSpec\ObjectBehavior;
 
@@ -33,7 +34,7 @@ class ResizeOperationSpec extends ObjectBehavior
 
     function it_is_initializable()
     {
-        $this->shouldHaveType(Operation\ResizeOperation::class);
+        $this->shouldHaveType(ResizeOperation::class);
     }
 
     function it_returns_its_type()

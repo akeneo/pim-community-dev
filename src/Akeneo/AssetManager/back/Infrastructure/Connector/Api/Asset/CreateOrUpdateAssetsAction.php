@@ -47,50 +47,35 @@ use Symfony\Component\Validator\Validator\ValidatorInterface;
  */
 class CreateOrUpdateAssetsAction
 {
-    /** @var AssetFamilyExistsInterface */
-    private $assetFamilyExists;
+    private AssetFamilyExistsInterface $assetFamilyExists;
 
-    /** @var AssetExistsInterface */
-    private $assetExists;
+    private AssetExistsInterface $assetExists;
 
-    /** @var EditAssetCommandFactory */
-    private $editAssetCommandFactory;
+    private \Akeneo\AssetManager\Application\Asset\EditAsset\CommandFactory\Connector\EditAssetCommandFactory $editAssetCommandFactory;
 
-    /** @var EditAssetHandler */
-    private $editAssetHandler;
+    private EditAssetHandler $editAssetHandler;
 
-    /** @var CreateAssetHandler */
-    private $createAssetHandler;
+    private CreateAssetHandler $createAssetHandler;
 
-    /** @var Router */
-    private $router;
+    private Router $router;
 
-    /** @var ValidatorInterface */
-    private $assetDataValidator;
+    private ValidatorInterface $assetDataValidator;
 
-    /** @var ViolationNormalizer */
-    private $violationNormalizer;
+    private ViolationNormalizer $violationNormalizer;
 
-    /** @var AssetValidator */
-    private $assetStructureValidator;
+    private AssetValidator $assetStructureValidator;
 
-    /** @var AssetListValidator */
-    private $assetListValidator;
+    private AssetListValidator $assetListValidator;
 
-    /** @var BatchAssetsToLink */
-    private $batchAssetsToLink;
+    private BatchAssetsToLink $batchAssetsToLink;
 
-    /** @var NamingConventionEditAssetCommandFactory */
-    private $namingConventionEditAssetCommandFactory;
+    private NamingConventionEditAssetCommandFactory $namingConventionEditAssetCommandFactory;
 
-    /** @var IndexAssetEventAggregator */
-    private $indexAssetEventAggregator;
+    private \Akeneo\AssetManager\Infrastructure\Search\Elasticsearch\Asset\EventAggregatorInterface $indexAssetEventAggregator;
 
-    /** @var ComputeTransformationEventAggregatorInterface */
-    private $computeTransformationEventAggregator;
+    private ComputeTransformationEventAggregatorInterface $computeTransformationEventAggregator;
 
-    /** @var int */
-    private $maximumAssetsPerRequest;
+    private int $maximumAssetsPerRequest;
 
     public function __construct(
         AssetFamilyExistsInterface $assetFamilyExists,
@@ -211,7 +196,7 @@ class CreateOrUpdateAssetsAction
         $shouldBeCreated = !$this->assetExists->withAssetFamilyAndCode($assetFamilyIdentifier, $assetCode);
         $createAssetCommand = null;
 
-        if (true === $shouldBeCreated) {
+        if ($shouldBeCreated) {
             $createAssetCommand = new CreateAssetCommand(
                 $assetFamilyIdentifier->normalize(),
                 $normalizedAsset['code'],
@@ -231,7 +216,7 @@ class CreateOrUpdateAssetsAction
             throw new ViolationHttpException($violations, 'The asset has data that does not comply with the business rules.');
         }
 
-        if (true === $shouldBeCreated) {
+        if ($shouldBeCreated) {
             $namingConventionEditCommand = $this->createValidatedNamingConventionCommandIfNeeded(
                 $assetFamilyIdentifier,
                 $normalizedAsset
@@ -266,9 +251,7 @@ class CreateOrUpdateAssetsAction
             );
         } catch (NamingConventionException $e) {
             if ($e->namingConventionAbortOnError()) {
-                throw new \InvalidArgumentException(
-                    sprintf('Error during naming convention execution: %s', $e->getMessage())
-                );
+                throw new \InvalidArgumentException(sprintf('Error during naming convention execution: %s', $e->getMessage()), $e->getCode(), $e);
             }
 
             // The naming convention execution can not be executed but we continue.

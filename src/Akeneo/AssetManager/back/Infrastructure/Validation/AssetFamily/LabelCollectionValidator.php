@@ -17,6 +17,9 @@ use Akeneo\AssetManager\Domain\Model\LocaleIdentifierCollection;
 use Akeneo\AssetManager\Domain\Query\Locale\FindActivatedLocalesByIdentifiersInterface;
 use Symfony\Component\Validator\Constraint;
 use Symfony\Component\Validator\Constraints;
+use Symfony\Component\Validator\Constraints\NotBlank;
+use Symfony\Component\Validator\Constraints\NotNull;
+use Symfony\Component\Validator\Constraints\Type;
 use Symfony\Component\Validator\ConstraintValidator;
 use Symfony\Component\Validator\Exception\UnexpectedTypeException;
 use Symfony\Component\Validator\Validation;
@@ -28,8 +31,7 @@ use Symfony\Component\Validator\Validator\ValidatorInterface;
  */
 class LabelCollectionValidator extends ConstraintValidator
 {
-    /** @var FindActivatedLocalesByIdentifiersInterface */
-    private $findActivatedLocales;
+    private FindActivatedLocalesByIdentifiersInterface $findActivatedLocales;
 
     public function __construct(FindActivatedLocalesByIdentifiersInterface $findActivatedLocales)
     {
@@ -66,8 +68,8 @@ class LabelCollectionValidator extends ConstraintValidator
     private function validateLocaleCode(ValidatorInterface $validator, $localeCode): void
     {
         $violations = $validator->validate($localeCode, [
-            new Constraints\NotBlank(),
-            new Constraints\Type(['type' => 'string']),
+            new NotBlank(),
+            new Type(['type' => 'string']),
         ]);
 
         if ($violations->count() > 0) {
@@ -86,8 +88,8 @@ class LabelCollectionValidator extends ConstraintValidator
     private function validateLabelForLocale(ValidatorInterface $validator, $localeCode, $label): void
     {
         $violations = $validator->validate($label, [
-            new Constraints\NotNull(),
-            new Constraints\Type(['type' => 'string']),
+            new NotNull(),
+            new Type(['type' => 'string']),
         ]);
 
         if ($violations->count() > 0) {
@@ -107,9 +109,7 @@ class LabelCollectionValidator extends ConstraintValidator
 
     private function validateActivatedLocales(array $labels): void
     {
-        $locales = array_filter(array_keys($labels), function ($label) {
-            return is_string($label) && '' !== $label;
-        });
+        $locales = array_filter(array_keys($labels), fn ($label) => is_string($label) && '' !== $label);
 
         if (empty($locales)) {
             return;

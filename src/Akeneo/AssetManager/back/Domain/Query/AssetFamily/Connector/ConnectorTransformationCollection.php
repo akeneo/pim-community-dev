@@ -22,7 +22,7 @@ use Webmozart\Assert\Assert;
 class ConnectorTransformationCollection
 {
     /** @var ConnectorTransformation[] */
-    private $connectorTransformations = [];
+    private array $connectorTransformations = [];
 
     public function __construct(array $connectorTransformations)
     {
@@ -33,9 +33,7 @@ class ConnectorTransformationCollection
     public function normalize(): array
     {
         return array_map(
-            function (ConnectorTransformation $connectorTransformation) {
-                return $connectorTransformation->normalize();
-            },
+            fn (ConnectorTransformation $connectorTransformation) => $connectorTransformation->normalize(),
             $this->connectorTransformations
         );
     }

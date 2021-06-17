@@ -26,11 +26,9 @@ use Doctrine\DBAL\Platforms\AbstractPlatform;
  */
 class ValueHydrator implements ValueHydratorInterface
 {
-    /** @var AbstractPlatform */
-    private $platform;
+    private AbstractPlatform $platform;
 
-    /** @var DataHydratorRegistry */
-    private $dataHydratorRegistry;
+    private DataHydratorRegistry $dataHydratorRegistry;
 
     public function __construct(
         Connection $sqlConnection,

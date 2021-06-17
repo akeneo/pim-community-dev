@@ -17,8 +17,7 @@ use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
  */
 class GetAction
 {
-    /** @var FindAssetFamilyPermissionsDetailsInterface */
-    private $findAssetFamilyPermissionsDetails;
+    private FindAssetFamilyPermissionsDetailsInterface $findAssetFamilyPermissionsDetails;
 
     public function __construct(FindAssetFamilyPermissionsDetailsInterface $findAssetFamilyPermissionsDetails)
     {
@@ -48,8 +47,6 @@ class GetAction
      */
     private function normalizePermissionDetails(array $assetFamilyPermissionDetails): array
     {
-        return array_map(function (PermissionDetails $permissionDetails) {
-            return $permissionDetails->normalize();
-        }, $assetFamilyPermissionDetails);
+        return array_map(fn (PermissionDetails $permissionDetails) => $permissionDetails->normalize(), $assetFamilyPermissionDetails);
     }
 }

@@ -19,3 +19,10 @@ services:
             - 'average_max_attributes_per_asset_families'
         tags:
             - { name: pim_volume_monitoring.persistence.average_max_query }
+
+    akeneo.asset_manager.infrastructure.public_api.analytics.aggregated_average_max_number_of_value_per_asset:
+        class: AkeneoTest\Platform\Acceptance\CatalogVolumeMonitoring\Persistence\Query\InMemory\InMemoryAverageMaxQuery
+        arguments:
+            - '%average_max_number_of_values_per_asset_limit%'
+        tags:
+            - { name: pim_volume_monitoring.persistence.average_max_query }

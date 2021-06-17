@@ -27,8 +27,7 @@ use PHPUnit\Framework\TestCase;
  */
 class InMemoryAssetFamilyIsLinkedToAtLeastOneProductAttributeTest extends TestCase
 {
-    /** @var InMemoryAssetFamilyIsLinkedToAtLeastOneProductAttribute */
-    private $query;
+    private InMemoryAssetFamilyIsLinkedToAtLeastOneProductAttribute $query;
 
     public function setUp(): void
     {

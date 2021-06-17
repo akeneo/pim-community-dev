@@ -32,11 +32,9 @@ use Akeneo\AssetManager\Domain\Repository\AssetRepositoryInterface;
  */
 class CreateAssetHandler
 {
-    /** @var AssetRepositoryInterface */
-    private $assetRepository;
+    private AssetRepositoryInterface $assetRepository;
 
-    /** @var FindAssetFamilyAttributeAsLabelInterface */
-    private $findAttributeAsLabel;
+    private FindAssetFamilyAttributeAsLabelInterface $findAttributeAsLabel;
 
     public function __construct(
         AssetRepositoryInterface $assetRepository,

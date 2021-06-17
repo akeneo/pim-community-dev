@@ -71,7 +71,7 @@ SQL;
         $result = $statement->fetch(\PDO::FETCH_ASSOC);
         $statement->closeCursor();
 
-        return !$result ? [] : $result;
+        return $result ? $result : [];
     }
 
     private function getAssetFamilyIdentifier($result): AssetFamilyIdentifier

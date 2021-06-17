@@ -18,11 +18,9 @@ use PHPUnit\Framework\Assert;
  */
 class AssetIndexerSpy implements AssetIndexerInterface
 {
-    /** @var array */
-    private $indexedAssetFamilies = [];
+    private array $indexedAssetFamilies = [];
 
-    /** @var bool */
-    private $isIndexRefreshed = false;
+    private bool $isIndexRefreshed = false;
 
     /**
      * Indexes all assets belonging to the given asset family.

@@ -49,7 +49,7 @@ class AssetQueryBuilder implements AssetQueryBuilderInterface
         $codeLabelFilter = ($assetQuery->hasFilter('code_label')) ? $assetQuery->getFilter('code_label') : null;
         $codeFilter = ($assetQuery->hasFilter('code')) ? $assetQuery->getFilter('code') : null;
         $completeFilter = ($assetQuery->hasFilter('complete')) ? $assetQuery->getFilter('complete') : null;
-        $updatedFilter = ($assetQuery->hasFilter('updated')) ? $assetQuery->getFilter('updated') : null;
+        $updatedFilters = ($assetQuery->hasFilter('updated')) ? $assetQuery->getFilters('updated') : [];
         $attributeFilters = ($assetQuery->hasFilter('values.*')) ? $assetQuery->getValueFilters() : [];
 
         $query = [
@@ -125,13 +125,45 @@ class AssetQueryBuilder implements AssetQueryBuilderInterface
             ];
         }
 
-        if (null !== $updatedFilter && !empty($updatedFilter['value'] && '>' === $updatedFilter['operator'])) {
-            $query['query']['constant_score']['filter']['bool']['filter'][] = [
-                'range' => [
-                    'updated_at' => ['gt' => $this->getFormattedDate($updatedFilter['value'])]
-                ]
-            ];
-        }
+        $query['query']['constant_score']['filter']['bool'] = array_reduce(
+            $updatedFilters,
+            function (array $query, array $filter): array {
+                if (empty($filter['value'])) {
+                    return $query;
+                }
+                switch ($filter['operator']) {
+                    case '<':
+                        $query['filter'][] = ['range' => ['updated_at' => [
+                            'lt' => $this->getFormattedDate($filter['value']),
+                        ]]];
+                        break;
+                    case '>':
+                        $query['filter'][] = ['range' => ['updated_at' => [
+                            'gt' => $this->getFormattedDate($filter['value']),
+                        ]]];
+                        break;
+                    case 'BETWEEN':
+                        $query['filter'][] = ['range' => ['updated_at' => [
+                            'gt' => $this->getFormattedDate($filter['value'][0]),
+                            'lt' => $this->getFormattedDate($filter['value'][1]),
+                        ]]];
+                        break;
+                    case 'NOT BETWEEN':
+                        $query['must_not'][] = ['range' => ['updated_at' => [
+                            'gt' => $this->getFormattedDate($filter['value'][0]),
+                            'lt' => $this->getFormattedDate($filter['value'][1]),
+                        ]]];
+                        break;
+                    case 'SINCE LAST N DAYS':
+                        $query['filter'][] = ['range' => ['updated_at' => [
+                            'gt' => $this->getFormattedDate(sprintf('%s days ago', $filter['value'])),
+                        ]]];
+                        break;
+                }
+                return $query;
+            },
+            $query['query']['constant_score']['filter']['bool']
+        );
 
         if (!empty($attributeFilters)) {
             foreach ($attributeFilters as $attributeFilter) {
@@ -147,9 +179,7 @@ class AssetQueryBuilder implements AssetQueryBuilderInterface
                             $attributeFilter['value']
                         );
 
-                        $value = array_values(array_map(function (AssetIdentifier $assetIdentifier) {
-                            return (string) $assetIdentifier;
-                        }, $assetIdentifiers));
+                        $value = array_values(array_map(fn (AssetIdentifier $assetIdentifier) => (string) $assetIdentifier, $assetIdentifiers));
                     }
 
                     $valueKey = $this->getValueKeyForAttributeChannelAndLocale->fetch(
@@ -186,12 +216,9 @@ class AssetQueryBuilder implements AssetQueryBuilderInterface
     {
         $loweredTerms = strtolower($searchFilter['value']);
         $terms = explode(' ', $loweredTerms);
-        $wildcardTerms = array_map(function (string $term) {
-            return sprintf('*%s*', QueryString::escapeValue($term));
-        }, $terms);
-        $query = implode(' AND ', $wildcardTerms);
+        $wildcardTerms = array_map(fn (string $term) => sprintf('*%s*', QueryString::escapeValue($term)), $terms);
 
-        return $query;
+        return implode(' AND ', $wildcardTerms);
     }
 
     private function getRequiredValueKeys(
@@ -217,32 +244,28 @@ class AssetQueryBuilder implements AssetQueryBuilderInterface
             LocaleIdentifierCollection::fromNormalized($locales)
         );
         if (true === $completeFilter['value']) {
-            $clauses = array_map(function (string $requiredValueKey) {
-                return [
-                    'exists' => [
-                        'field' => sprintf('complete_value_keys.%s', $requiredValueKey),
-                    ],
-                ];
-            }, $requiredValueKeys->normalize());
+            $clauses = array_map(fn (string $requiredValueKey) => [
+                'exists' => [
+                    'field' => sprintf('complete_value_keys.%s', $requiredValueKey),
+                ],
+            ], $requiredValueKeys->normalize());
             $query['query']['constant_score']['filter']['bool']['filter'] = array_merge(
                 $query['query']['constant_score']['filter']['bool']['filter'],
                 $clauses
             );
         }
         if (false === $completeFilter['value']) {
-            $clauses = array_map(function (string $requiredValueKey) {
-                return [
-                    'bool' => [
-                        'must_not' => [
-                            [
-                                'exists' => [
-                                    'field' => sprintf('complete_value_keys.%s', $requiredValueKey),
-                                ],
+            $clauses = array_map(fn (string $requiredValueKey) => [
+                'bool' => [
+                    'must_not' => [
+                        [
+                            'exists' => [
+                                'field' => sprintf('complete_value_keys.%s', $requiredValueKey),
                             ],
                         ],
                     ],
-                ];
-            }, $requiredValueKeys->normalize());
+                ],
+            ], $requiredValueKeys->normalize());
             $query['query']['constant_score']['filter']['bool']['minimum_should_match'] = 1;
             $query['query']['constant_score']['filter']['bool']['should'] = array_merge(
                 $query['query']['constant_score']['filter']['bool']['should'] ?? [],

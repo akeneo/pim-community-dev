@@ -22,8 +22,7 @@ use PHPUnit\Framework\TestCase;
 
 class InMemoryFindConnectorAssetTest extends TestCase
 {
-    /** @var InMemoryFindConnectorAssetByAssetFamilyAndCode */
-    private $query;
+    private InMemoryFindConnectorAssetByAssetFamilyAndCode $query;
 
     public function setUp(): void
     {
@@ -50,7 +49,9 @@ class InMemoryFindConnectorAssetTest extends TestCase
     {
         $asset = new ConnectorAsset(
             AssetCode::fromString('asset_code'),
-            []
+            [],
+            new \DateTimeImmutable('@0'),
+            new \DateTimeImmutable('@3600'),
         );
         $this->query->save(
             AssetFamilyIdentifier::fromString('asset_family'),

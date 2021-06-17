@@ -27,10 +27,9 @@ use Symfony\Component\EventDispatcher\EventDispatcherInterface;
 class InMemoryAssetFamilyRepository implements AssetFamilyRepositoryInterface
 {
     /** @var AssetFamily[] */
-    private $assetFamilies = [];
+    private array $assetFamilies = [];
 
-    /** @var EventDispatcherInterface */
-    private $eventDispatcher;
+    private EventDispatcherInterface $eventDispatcher;
 
     public function __construct(EventDispatcherInterface $eventDispatcher)
     {
@@ -45,8 +44,7 @@ class InMemoryAssetFamilyRepository implements AssetFamilyRepositoryInterface
         $this->assetFamilies[(string) $assetFamily->getIdentifier()] = $assetFamily;
 
         $this->eventDispatcher->dispatch(
-            new AssetFamilyCreatedEvent($assetFamily->getIdentifier()),
-            AssetFamilyCreatedEvent::class
+            new AssetFamilyCreatedEvent($assetFamily->getIdentifier())
         );
     }
 
@@ -92,7 +90,7 @@ class InMemoryAssetFamilyRepository implements AssetFamilyRepositoryInterface
 
     public function hasAssetFamily(AssetFamilyIdentifier $identifier, bool $caseSensitive = true): bool
     {
-        if (true === $caseSensitive) {
+        if ($caseSensitive) {
             return isset($this->assetFamilies[(string)$identifier]);
         }
 

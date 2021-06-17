@@ -19,8 +19,7 @@ namespace Akeneo\AssetManager\Domain\Model\Permission;
  */
 class UserGroupIdentifier
 {
-    /** @var int */
-    private $identifier;
+    private int $identifier;
 
     private function __construct(int $identifier)
     {

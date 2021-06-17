@@ -19,14 +19,11 @@ namespace Akeneo\AssetManager\Application\Attribute\CreateAttribute;
  */
 class CreateMediaFileAttributeCommand extends AbstractCreateAttributeCommand
 {
-    /** @var string|null */
-    public $maxFileSize;
+    public ?string $maxFileSize = null;
 
-    /** @var array */
-    public $allowedExtensions;
+    public array $allowedExtensions;
 
-    /** @var string */
-    public $mediaType;
+    public string $mediaType;
 
     public function __construct(
         string $assetFamilyIdentifier,

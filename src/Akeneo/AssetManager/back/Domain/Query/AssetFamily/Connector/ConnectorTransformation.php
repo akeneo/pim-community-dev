@@ -24,23 +24,17 @@ use Akeneo\AssetManager\Domain\Model\AssetFamily\Transformation\TransformationLa
  */
 class ConnectorTransformation
 {
-    /** @var TransformationLabel */
-    private $label;
+    private TransformationLabel $label;
 
-    /** @var Source */
-    private $source;
+    private Source $source;
 
-    /** @var Target */
-    private $target;
+    private Target $target;
 
-    /** @var OperationCollection */
-    private $operations;
+    private OperationCollection $operations;
 
-    /** @var ?string */
-    private $filenamePrefix;
+    private ?string $filenamePrefix = null;
 
-    /** @var ?string */
-    private $filenameSuffix;
+    private ?string $filenameSuffix = null;
 
     public function __construct(
         TransformationLabel $label,
@@ -69,9 +63,7 @@ class ConnectorTransformation
                 'filename_prefix' => $this->filenamePrefix,
                 'filename_suffix' => $this->filenameSuffix,
             ],
-            function ($value) {
-                return null !== $value;
-            }
+            fn ($value) => null !== $value
         );
     }
 }

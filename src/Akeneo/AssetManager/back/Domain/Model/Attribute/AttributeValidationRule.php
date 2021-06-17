@@ -18,8 +18,7 @@ class AttributeValidationRule
     public const URL = 'url';
     public const VALIDATION_RULE_TYPES = [self::EMAIL, self::REGULAR_EXPRESSION, self::URL, self::NONE];
 
-    /** @var ?string */
-    private $validationRule;
+    private ?string $validationRule = null;
 
     private function __construct(?string $validationRule)
     {

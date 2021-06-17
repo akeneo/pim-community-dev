@@ -41,26 +41,19 @@ use Symfony\Component\Validator\Validator\ValidatorInterface;
  */
 class GetConnectorAssetsAction
 {
-    /** @var AssetFamilyExistsInterface */
-    private $assetFamilyExists;
+    private AssetFamilyExistsInterface $assetFamilyExists;
 
-    /** @var Limit */
-    private $limit;
+    private Limit $limit;
 
-    /** @var SearchConnectorAsset */
-    private $searchConnectorAsset;
+    private SearchConnectorAsset $searchConnectorAsset;
 
-    /** @var PaginatorInterface */
-    private $halPaginator;
+    private PaginatorInterface $halPaginator;
 
-    /** @var AddHalDownloadLinkToAssetImages */
-    private $addHalLinksToImageValues;
+    private AddHalDownloadLinkToAssetImages $addHalLinksToImageValues;
 
-    /** @var ValidatorInterface */
-    private $validator;
+    private ValidatorInterface $validator;
 
-    /** @var SearchFiltersValidator */
-    private $searchFiltersValidator;
+    private SearchFiltersValidator $searchFiltersValidator;
 
     public function __construct(
         AssetFamilyExistsInterface $assetFamilyExists,
@@ -87,7 +80,7 @@ class GetConnectorAssetsAction
     public function __invoke(Request $request, string $assetFamilyIdentifier): JsonResponse
     {
         $searchFilters = $this->getSearchFiltersFromRequest($request);
-        $searchFiltersErrors = !empty($searchFilters) ? $this->searchFiltersValidator->validate($searchFilters) : [];
+        $searchFiltersErrors = empty($searchFilters) ? [] : $this->searchFiltersValidator->validate($searchFilters);
 
         if (!empty($searchFiltersErrors)) {
             return new JsonResponse([
@@ -120,14 +113,12 @@ class GetConnectorAssetsAction
             throw new ViolationHttpException($violations, 'Invalid query parameters');
         }
 
-        if (false === $this->assetFamilyExists->withIdentifier($assetFamilyIdentifier)) {
+        if (!$this->assetFamilyExists->withIdentifier($assetFamilyIdentifier)) {
             throw new NotFoundHttpException(sprintf('Asset family "%s" does not exist.', $assetFamilyIdentifier));
         }
 
         $result = ($this->searchConnectorAsset)($assetQuery);
-        $assets = array_map(function (ConnectorAsset $asset) {
-            return $asset->normalize();
-        }, $result->assets());
+        $assets = array_map(fn (ConnectorAsset $asset) => $asset->normalize(), $result->assets());
 
         $assets = ($this->addHalLinksToImageValues)($assetFamilyIdentifier, $assets);
         $paginatedAssets = $this->paginateAssets($assets, $request, $assetFamilyIdentifier, $result->lastSortValue());
@@ -206,11 +197,13 @@ class GetConnectorAssetsAction
         }
 
         if (isset($rawFilters['updated'])) {
-            $formattedFilters[] = [
-                'field' => 'updated',
-                'operator' => current($rawFilters['updated'])['operator'],
-                'value' => current($rawFilters['updated'])['value']
-            ];
+            foreach ($rawFilters['updated'] as $rawFilter) {
+                $formattedFilters[] = [
+                    'field' => 'updated',
+                    'operator' => $rawFilter['operator'],
+                    'value' => $rawFilter['value']
+                ];
+            }
         }
 
         return $formattedFilters;

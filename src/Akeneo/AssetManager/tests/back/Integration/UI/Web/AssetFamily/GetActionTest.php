@@ -23,14 +23,14 @@ use Akeneo\AssetManager\Domain\Model\Attribute\MediaFile\MediaType;
 use Akeneo\AssetManager\Domain\Model\Image;
 use Akeneo\AssetManager\Domain\Model\LabelCollection;
 use Akeneo\AssetManager\Domain\Query\AssetFamily\AssetFamilyDetails;
+use Akeneo\AssetManager\Domain\Query\AssetFamily\Connector\ConnectorTransformationCollection;
 use Akeneo\AssetManager\Domain\Query\Attribute\AttributeDetails;
 use Akeneo\AssetManager\Integration\ControllerIntegrationTestCase;
 use Akeneo\Tool\Component\FileStorage\Model\FileInfo;
 
 class GetActionTest extends ControllerIntegrationTestCase
 {
-    /** @var WebClientHelper */
-    private $webClientHelper;
+    private WebClientHelper $webClientHelper;
 
     public function setUp(): void
     {
@@ -84,7 +84,7 @@ class GetActionTest extends ControllerIntegrationTestCase
         $entityItem->assetCount = 123;
         $entityItem->attributeAsMainMedia = AttributeAsMainMediaReference::createFromNormalized('designer_portrait_123456');
         $entityItem->attributeAsLabel = AttributeAsLabelReference::createFromNormalized('designer_name_123456');
-        $entityItem->transformations = TransformationCollection::noTransformation();
+        $entityItem->transformations = new ConnectorTransformationCollection([]);
         $entityItem->namingConvention = NamingConvention::createFromNormalized([
             'source' => ['property' => 'media', 'locale' => null, 'channel' => null],
             'pattern' => '/the_pattern/',

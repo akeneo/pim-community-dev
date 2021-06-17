@@ -19,8 +19,7 @@ namespace Akeneo\AssetManager\Domain\Model\Attribute;
  */
 class AttributeIsReadOnly
 {
-    /** @var bool */
-    private $value;
+    private bool $value;
 
     private function __construct(bool $value)
     {

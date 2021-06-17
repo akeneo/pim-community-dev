@@ -24,14 +24,11 @@ use Akeneo\Tool\Component\StorageUtils\Exception\InvalidPropertyTypeException;
 
 class RuleTemplateExecutor
 {
-    /** @var CompiledRuleRunnerInterface */
-    private $compiledRuleRunner;
+    private CompiledRuleRunnerInterface $compiledRuleRunner;
 
-    /** @var FindPropertyAccessibleAssetInterface */
-    private $findPropertyAccessibleAsset;
+    private FindPropertyAccessibleAssetInterface $findPropertyAccessibleAsset;
 
-    /** @var AssetFamilyRepositoryInterface */
-    private $assetFamilyRepository;
+    private AssetFamilyRepositoryInterface $assetFamilyRepository;
 
     public function __construct(
         AssetFamilyRepositoryInterface $assetFamilyRepository,
@@ -71,9 +68,8 @@ class RuleTemplateExecutor
     private function ruleTemplateCollection(AssetFamilyIdentifier $assetFamilyIdentifier): RuleTemplateCollection
     {
         $assetFamily = $this->assetFamilyRepository->getByIdentifier($assetFamilyIdentifier);
-        $ruleTemplates = $assetFamily->getRuleTemplateCollection();
 
-        return $ruleTemplates;
+        return $assetFamily->getRuleTemplateCollection();
     }
 
     private function run(RuleTemplate $ruleTemplate, ?PropertyAccessibleAsset $asset): void

@@ -23,23 +23,33 @@ use Akeneo\AssetManager\Domain\Model\LocaleIdentifierCollection;
  */
 class ConnectorAsset
 {
-    /** @var AssetCode */
-    private $code;
+    private AssetCode $code;
 
-    /** @var array */
-    private $normalizedValues;
+    private array $normalizedValues;
 
-    public function __construct(AssetCode $code, array $normalizedValues)
-    {
+    private \DateTimeImmutable $createdAt;
+
+    private \DateTimeImmutable $updatedAt;
+
+    public function __construct(
+        AssetCode $code,
+        array $normalizedValues,
+        \DateTimeImmutable $createdAt,
+        \DateTimeImmutable $updatedAt
+    ) {
         $this->code = $code;
         $this->normalizedValues = $normalizedValues;
+        $this->createdAt = $createdAt;
+        $this->updatedAt = $updatedAt;
     }
 
     public function normalize(): array
     {
         return [
             'code'   => $this->code->normalize(),
-            'values' => empty($this->normalizedValues) ? (object) []: $this->normalizedValues,
+            'values' => empty($this->normalizedValues) ? (object) [] : $this->normalizedValues,
+            'created' => $this->createdAt->format(\DateTimeInterface::ATOM),
+            'updated' => $this->updatedAt->format(\DateTimeInterface::ATOM),
         ];
     }
 
@@ -47,34 +57,26 @@ class ConnectorAsset
     {
         $filteredValues = [];
         foreach ($this->normalizedValues as $key => $normalizedValue) {
-            $filteredValue = array_values(array_filter($normalizedValue, function ($value) use ($channelIdentifier) {
-                return null === $value['channel']
-                    || $channelIdentifier->equals(ChannelIdentifier::fromCode($value['channel']));
-            }));
+            $filteredValue = array_values(array_filter($normalizedValue, fn ($value) => null === $value['channel']
+                || $channelIdentifier->equals(ChannelIdentifier::fromCode($value['channel']))));
 
             if (!empty($filteredValue)) {
                 $filteredValues[$key] = $filteredValue;
             }
         }
 
-        return new self($this->code, $filteredValues);
+        return new self($this->code, $filteredValues, $this->createdAt, $this->updatedAt);
     }
 
     public function getAssetWithValuesFilteredOnLocales(LocaleIdentifierCollection $localeIdentifiers): ConnectorAsset
     {
         $localeCodes = $localeIdentifiers->normalize();
 
-        $filteredValues = array_map(function ($normalizedValue) use ($localeCodes) {
-            return array_values(array_filter($normalizedValue, function ($value) use ($localeCodes) {
-                return null === $value['locale']
-                    || in_array($value['locale'], $localeCodes);
-            }));
-        }, $this->normalizedValues);
+        $filteredValues = array_map(fn ($normalizedValue) => array_values(array_filter($normalizedValue, fn ($value) => null === $value['locale']
+            || in_array($value['locale'], $localeCodes))), $this->normalizedValues);
 
-        $filteredValues = array_filter($filteredValues, function ($filteredValue) {
-            return !empty($filteredValue);
-        });
+        $filteredValues = array_filter($filteredValues, fn ($filteredValue) => !empty($filteredValue));
 
-        return new self($this->code, $filteredValues);
+        return new self($this->code, $filteredValues, $this->createdAt, $this->updatedAt);
     }
 }

@@ -13,7 +13,6 @@ declare(strict_types=1);
 
 namespace spec\Akeneo\AssetManager\Infrastructure\Persistence\Sql\Asset;
 
-use Akeneo\AssetManager\back\Infrastructure\Persistence\Sql\Asset\ValuesDecoder;
 use PhpSpec\ObjectBehavior;
 
 class ValuesDecoderSpec extends ObjectBehavior
@@ -37,20 +36,18 @@ class ValuesDecoderSpec extends ObjectBehavior
         }';
 
         $expectedDecodedValues = [
-            'label_foo_en_US' =>
-                [
-                    'data' => 'foo label',
-                    'locale' => 'en_US',
-                    'channel' => null,
-                    'attribute' => 'label_foo',
-                ],
-            'att_bar_en_US' =>
-                [
-                    'data' => 'bar value',
-                    'locale' => 'en_US',
-                    'channel' => null,
-                    'attribute' => 'att_bar',
-                ],
+            'label_foo_en_US' => [
+                'data' => 'foo label',
+                'locale' => 'en_US',
+                'channel' => null,
+                'attribute' => 'label_foo',
+            ],
+            'att_bar_en_US' => [
+                'data' => 'bar value',
+                'locale' => 'en_US',
+                'channel' => null,
+                'attribute' => 'att_bar',
+            ],
         ];
 
         $this->decode($values)->shouldBeLike($expectedDecodedValues);
@@ -75,20 +72,54 @@ class ValuesDecoderSpec extends ObjectBehavior
         }';
 
         $expectedDecodedValues = [
-            'label_foo_en_US' =>
-                [
-                    'data' => 'foo label',
-                    'locale' => 'en_US',
-                    'channel' => null,
-                    'attribute' => 'label_foo',
-                ],
-            'att_bar_en_US' =>
-                [
-                    'data' => 'my value with tags',
-                    'locale' => 'en_US',
-                    'channel' => null,
-                    'attribute' => 'att_bar',
-                ],
+            'label_foo_en_US' => [
+                'data' => 'foo label',
+                'locale' => 'en_US',
+                'channel' => null,
+                'attribute' => 'label_foo',
+            ],
+            'att_bar_en_US' => [
+                'data' => 'my value with tags',
+                'locale' => 'en_US',
+                'channel' => null,
+                'attribute' => 'att_bar',
+            ],
+        ];
+
+        $this->decode($values)->shouldBeLike($expectedDecodedValues);
+    }
+
+    function it_decodes_values_and_clean_html_but_not_invalid_tags()
+    {
+        $values = '
+        {
+          "label_foo_en_US": {
+            "data": "foo label",
+            "locale": "en_US",
+            "channel": null,
+            "attribute": "label_foo"
+          },
+          "att_bar_en_US": {
+            "data": "<p>my value <span>with >89 tags</span></p> <20%",
+            "locale": "en_US",
+            "channel": null,
+            "attribute": "att_bar"
+          }
+        }';
+
+        $expectedDecodedValues = [
+            'label_foo_en_US' => [
+                'data' => 'foo label',
+                'locale' => 'en_US',
+                'channel' => null,
+                'attribute' => 'label_foo',
+            ],
+            'att_bar_en_US' => [
+                'data' => 'my value with >89 tags <20%',
+                'locale' => 'en_US',
+                'channel' => null,
+                'attribute' => 'att_bar',
+            ],
         ];
 
         $this->decode($values)->shouldBeLike($expectedDecodedValues);
@@ -113,13 +144,12 @@ class ValuesDecoderSpec extends ObjectBehavior
         }';
 
         $expectedDecodedValues = [
-            'label_foo_en_US' =>
-                [
-                    'data' => 'foo label',
-                    'locale' => 'en_US',
-                    'channel' => null,
-                    'attribute' => 'label_foo',
-                ],
+            'label_foo_en_US' => [
+                'data' => 'foo label',
+                'locale' => 'en_US',
+                'channel' => null,
+                'attribute' => 'label_foo',
+            ],
             'att_bar_en_US' => [
                 'data' => [
                     0 => ['bar1' => 'fubar'],

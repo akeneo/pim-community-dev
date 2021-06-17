@@ -15,8 +15,7 @@ use Webmozart\Assert\Assert;
  */
 class ValueCollection implements \IteratorAggregate, \Countable
 {
-    /** @var array */
-    private $values;
+    private array $values;
 
     private function __construct(array $values)
     {
@@ -25,16 +24,14 @@ class ValueCollection implements \IteratorAggregate, \Countable
 
     public function normalize(): array
     {
-        return array_map(function (Value $value) {
-            return $value->normalize();
-        }, $this->values);
+        return array_map(fn (Value $value) => $value->normalize(), $this->values);
     }
 
     public function findValue(ValueKey $valueKey): ?Value
     {
         $key = (string) $valueKey;
 
-        return (array_key_exists($key, $this->values)) ? $this->values[$key] : null;
+        return $this->values[$key] ?? null;
     }
 
     public function hasValue(Value $value): bool

@@ -21,8 +21,7 @@ use Akeneo\AssetManager\Application\Attribute\EditAttribute\CommandFactory\Abstr
  */
 class EditMediaTypeCommand extends AbstractEditAttributeCommand
 {
-    /** @var string */
-    public $mediaType;
+    public string $mediaType;
 
     public function __construct(string $identifier, string $mediaType)
     {

@@ -27,7 +27,7 @@ class AttributeAllowedExtensions
     public const EXTENSION_SEPARATOR = '.';
 
     /** @var string[] */
-    private $allowedExtensions;
+    private array $allowedExtensions;
 
     private function __construct(array $allowedExtensions)
     {

@@ -1,0 +1,84 @@
+pimee_catalog_rule:
+  execution_button: Kuralları gerçekleştir
+  popin:
+    execute_rules:
+      confirm_title: Yürütmeyi onayla
+  notification:
+    launched: Kuralların gerçekleştirimi başladı. Tamamlandığında bilgilendirileceksiniz.
+  attribute:
+    list:
+      code.label: Kod
+      condition.label: Durum
+      action.label: İşlem
+  rule:
+    condition:
+      if.label: eğer
+    action:
+      then.label: o zaman
+      set_value.label: içine ayarla
+      copy_value.label: içine kopyalanır
+      set.label: içine ayarla
+      copy.label: içine kopyalanır
+      add.label: içine eklenir
+      remove.label: silindi
+  datagrid:
+    rule-grid:
+      actions:
+        execute:
+          confirm_title: Yürütmeyi onayla
+          confirm_content: Bu kuralı uygulamak istediğinizden emin misiniz?
+      mass_edit_action:
+        confirm_title: Hesaplamayı onayla
+      mass_action:
+        execute:
+          confirm_title: Yürütmeyi onayla
+          success: Kuralların gerçekleştirimi başladı. Tamamlandığında bilgilendirileceksiniz.
+          empty_selection: Seçili kural yok.
+        delete:
+          confirm_title: Yürütmeyi onayla
+          confirm_content: Seçilen kuralları silmek istediğinize emin misiniz?
+          success: Kurallar başarı ile silindi.
+          empty_selection: Hiç bir kural seçilmedi.
+  form:
+    attribute:
+      tab:
+        rules:
+          title: Kurallar
+pim_enrich:
+  entity:
+    rule:
+      module:
+        delete:
+          confirm: Bu kuralı silmek istediğinizden emin misiniz? Bu eylemi geri almak mümkün değildir
+flash:
+  rule:
+    executed: Kuralların gerçekleştirimi başladı. Tamamlandığında bilgilendirileceksiniz.
+pim_dashboard.widget.last_operations.job_type.mass_edit_rule: Kural ayarları
+batch_jobs:
+  add_attribute_value:
+    execute_rules.label: Kuralların uygulanması
+  default_steps:
+    execute_rules: Kuralların uygulanması
+  rule_impacted_product_count:
+    perform.label: Etkilenen ürünleri say
+  csv_product_import_with_rules:
+    label: Kurallar dahilinde CVS'de ürünü içe aktarma
+    import.label: Ürünleri içe aktar
+  xlsx_product_import_with_rules:
+    label: Kurallar dahilinde XLSX'de ürünü içe aktarma
+    import.label: Ürünleri içe aktar
+pim_notification:
+  types:
+    rule: Kural Ayarları
+    execute_rules: Kuralların uygulanması
+pim_menu:
+  item:
+    rule: Kurallar
+pim_title:
+  pimee_catalog_rule_rule_index: Kurallar
+  pimee_catalog_rule_new: Kurallar
+pim_import_export:
+  widget:
+    last_operations:
+      job_type:
+        execute_rules: Kuralların uygulanması

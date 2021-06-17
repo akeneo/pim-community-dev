@@ -11,8 +11,7 @@ namespace Akeneo\AssetManager\Application\Attribute\EditAttribute\CommandFactory
  */
 class AbstractEditAttributeCommand
 {
-    /** @var string */
-    public $identifier;
+    public string $identifier;
 
     public function __construct(string $identifier)
     {

@@ -18,8 +18,7 @@ use Akeneo\AssetManager\Domain\Query\Asset\FindAssetIdentifiersByAssetFamilyInte
 
 class InMemoryFindAssetIdentifiersByAssetFamily implements FindAssetIdentifiersByAssetFamilyInterface
 {
-    /** @var InMemoryAssetRepository */
-    private $assetRepository;
+    private InMemoryAssetRepository $assetRepository;
 
     public function __construct(InMemoryAssetRepository $assetRepository)
     {

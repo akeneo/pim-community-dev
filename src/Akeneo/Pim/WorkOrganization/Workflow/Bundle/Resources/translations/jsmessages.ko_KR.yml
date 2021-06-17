@@ -1,0 +1,212 @@
+View the product: 제품 보기
+Unpublish the product: 제품 게시 취소
+Approve: 승인
+Refuse: 거부
+Approve selected: 선택 항목 승인
+Refuse selected: 선택 항목 거부
+pim_datagrid:
+  no_entities:
+    proposal: 검토할 제안이 없습니다.
+    product_draft: 검토할 제품 초안이 없습니다.
+  no_results:
+    proposal: 검토할 제안이 없습니다. 검색 조건을 변경하십시오.
+    product_draft: 검토할 제품 초안이 없습니다. 검색 조건을 변경하십시오.
+pimee_datagrid:
+  cells:
+    expand:
+      expand_text: 확장
+      collapse_text: 축소
+pimee_workflow:
+  entity:
+    published_product:
+      btn:
+        original_product: 작업 복사본 편집
+    proposal:
+      modal.title: 코멘트 남기기(옵션 - 최대 255자)
+  proposal:
+    overview: "]-Inf, 1]{{ count }} 제안|]1, Inf[{{ count }} 제안"
+    mass_action_group:
+      review:
+        label: 일괄 작업
+    partial_accept:
+      modal.title: 일부 정보 승인
+      modal.label: 코멘트 남기기(옵션)
+      modal.error: 오류가 발생했습니다. 제안 일부가 승인되지 않았습니다
+      modal.success: 제안 일부가 검증되었습니다
+    partial_approve:
+      modal:
+        title: 변경 사항 일부 승인
+        label: 코멘트 남기기(옵션)
+        error: 오류가 발생했습니다. 제안 일부가 승인되지 않았습니다
+        success: 변경 사항이 승인되었습니다
+    partial_reject:
+      modal:
+        title: 변경 사항 일부 거부
+        label: 코멘트 남기기(옵션)
+        error: 오류가 발생했습니다. 제안 일부가 거부되지 않았습니다
+        success: 변경 사항이 거부되었습니다
+batch_jobs:
+  csv_published_product_export:
+    label: CSV로 게시 제품 내보내기
+    export.label: 게시 제품 내보내기
+  csv_product_proposal_import:
+    label: CSV로 제품 제안 가져오기
+    import.label: 제품 제안 가져오기
+  csv_product_model_proposal_import:
+    label: CSV로 모델 제품 제안 가져오기
+    import.label: CSV로 모델 제품 제안 가져오기
+  approve_product_draft:
+    label: 제안 승인
+    perform.label: 제안 승인
+  refuse_product_draft:
+    label: 제안 거부
+    perform.label: 제안 거부
+  xlsx_published_product_export:
+    label: XSLX로 게시 제품 내보내기
+    export.label: 게시 제품 내보내기
+  xlsx_product_proposal_import:
+    label: XLSX로 제품 제안 가져오기
+    import.label: XLSX로 제품 제안 가져오기
+  xlsx_product_model_proposal_import:
+    label: XLSX로 모델 제품 제안 가져오기
+    import.label: XLSX로 모델 제품 제안 가져오기
+  csv_published_product_quick_export:
+    export.label: CSV 게시 제품의 빠른 내보내기
+    perform.label: CSV 게시 제품의 빠른 내보내기
+  csv_published_product_grid_context_quick_export:
+    export.label: CSV 게시 제품 그리드 컨텍스트의 빠른 내보내기
+    perform.label: CSV 게시 제품 그리드 컨텍스트의 빠른 내보내기
+  xlsx_published_product_quick_export:
+    export.label: XSLX 게시 제품의 빠른 내보내기
+    perform.label: XSLX 게시 제품의 빠른 내보내기
+  xlsx_published_product_grid_context_quick_export:
+    export.label: XSLX 게시 제품 그리드 컨텍스트의 빠른 내보내기
+    perform.label: XSLX 게시 제품 그리드 컨텍스트의 빠른 내보내기
+  publish_product:
+    perform.label: 게시한 제품
+pim_notification:
+  types:
+    pimee_workflow_product_draft_notification_new_proposal: 새 제안
+    pimee_workflow_import_notification_new_proposals: 가져오기의 새 제안
+    pimee_workflow_product_draft_notification_partial_approve: 제안 일부 승인됨
+    pimee_workflow_product_draft_notification_partial_reject: 제안 일부 거부됨
+    pimee_workflow_product_draft_notification_partial_remove: 제안 일부 삭제됨
+    pimee_workflow_product_draft_notification_approve: 제안 승인됨
+    pimee_workflow_product_draft_notification_refuse: 제안 거부됨
+    pimee_workflow_product_draft_notification_remove: 제안 삭제됨
+    pimee_workflow_product_draft_notification_sent: 제안 전송됨
+pimee_dashboard:
+  widget:
+    product_drafts:
+      date: 날짜
+      author: 작성자
+      product: 제품
+      review: 검토
+      empty: 검토할 제안 없음
+    header.view_all: 모두 보기
+pimee_enrich.entity.product:
+  module:
+    history:
+      published: 게시됨
+      revert: 복원
+    attribute:
+      value_updated: 이 값은 현재 초안에서 업데이트되었습니다
+    meta:
+      published_version: 게시된 버전
+      owner_groups: 소유자 그룹
+      draft_status: 초안 상태
+      draft:
+        in_progress: 진행 중
+        sent_for_approval: 승인 대기 중
+        working_copy: 작업 사본
+    revert:
+      title: 복원 확인
+      content: 제품을 이 버전으로 복원하시겠습니까?
+    publish:
+      title: 이 제품 게시
+      content: 이 제품을 게시하시겠습니까?
+    unpublish:
+      title: 이 제품 게시 취소
+      content: 이 제품을 게시 취소하시겠습니까?
+    copy:
+      working_copy: 작업 사본
+      draft: 내 초안
+      draft_of: "{{ author }} 님의 초안"
+    approval:
+      send: 승인용으로 보내기
+      sent: 승인용으로 보냄
+      send_and_next: 보내기 후 다음
+      send_and_finish: 보내기 후 완료
+pimee_enrich.entity.published_product:
+  flash:
+    publish:
+      success: 제품 게시됨
+      fail: 이 제품을 게시하지 못함
+    unpublish:
+      success: 제품 게시 취소됨
+      fail: 이 제품을 게시 취소하지 못함
+    revert:
+      success: 제품 복원됨
+  page_title:
+    index: "]-Inf, 1]{{ count }} 게시 제품|]1, Inf[{{ count }} 게시 제품"
+  module:
+    publish:
+      label: 게시
+      publish_this_version: 이 버전 게시
+    unpublish:
+      label: 게시 취소
+pimee_enrich.entity.product_draft:
+  flash:
+    approve:
+      success: 제안이 적용되었습니다.
+      fail: "다음 오류로 인해 제안을 적용할 수 없습니다: {{ error }}"
+    reject:
+      success: 제안이 거부되었습니다.
+    remove:
+      success: 제안이 제거되었습니다.
+    update:
+      success: 제품 초안이 저장되었습니다
+      fail: 제품 초안을 업데이트할 수 없습니다
+    create:
+      success: 승인용으로 제품 초안 전송됨
+      fail: 승인용으로 이 초안을 전송할 수 없습니다
+      skip: 편집된 값이 없으므로 제품 초안이 승인용으로 전송되지 않았습니다
+  module:
+    proposal:
+      accept: 제안 수락
+      accept_selected: 선택한 제안 수락
+      reject: 제안 거부
+      reject_selected: 선택한 제안 거부
+      remove: 제안 제거
+      comment_title: 제안에 대한 코멘트 입력(옵션 - 최대 255자)
+      comment_chars: 문자
+      confirm: 보내기
+    edit:
+      discard_changes: 저장하지 않은 변경 사항은 손실됩니다. 변경 사항을 저장하지 않고 초안을 승인용으로 보내시겠습니까?
+      discard_changes_title: 이 초안을 보내시겠습니까?
+pimee_enrich.mass_edit.product:
+  operation:
+    publish:
+      label: 게시
+      label_count: "{1}<span class=\"AknFullPage-title--highlight\">1개 제품</span> 게시|]1, Inf[<span class=\"AknFullPage-title--highlight\">{{ itemsCount }}개 제품</span>게시"
+      description: 제품이 게시됩니다
+      warning: 선택된 {{ itemsCount }}개 제품이 게시됩니다.
+    unpublish:
+      label: 게시 취소
+      label_count: "{1}<span class=\"AknFullPage-title--highlight\">1개 제품</span> 게시 취소|]1, Inf[<span class=\"AknFullPage-title--highlight\">{{ itemsCount }}개 제품</span>게시 취소"
+      description: 제품이 게시 취소됩니다
+      warning: 선택된 {{ itemsCount }}개 제품이 게시 취소됩니다.
+pimee_enrich.entity.category:
+  flash:
+    remove:
+      error_linked: 게시된 제품에 링크된 카테고리를 삭제할 수 없습니다.
+pim_menu:
+  navigation:
+    published_products: 게시된 제품
+  item:
+    proposal: 제안
+    published_product: 게시된 제품
+pim_title:
+  pimee_workflow_proposal_index: 제안
+  pimee_workflow_published_product_index: 게시된 제품
+  pimee_workflow_published_product_view: 제품 {{ product.label }} 게시됨 | 보기

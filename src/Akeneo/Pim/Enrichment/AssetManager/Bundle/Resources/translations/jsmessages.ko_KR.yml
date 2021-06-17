@@ -1,0 +1,10 @@
+batch_jobs:
+  asset_manager_csv_asset_export:
+    label: CSV로 자산 내보내기
+    export.label: 자산 내보내기
+  asset_manager_xlsx_asset_export:
+    label: XLSX로 자산 내보내기
+    export.label: 자산 내보내기
+  asset_manager_csv_asset_import:
+    label: CSV로 자산 가져오기
+akeneo_assetmanager.export.assets.filter.asset_family: 자산 패밀리

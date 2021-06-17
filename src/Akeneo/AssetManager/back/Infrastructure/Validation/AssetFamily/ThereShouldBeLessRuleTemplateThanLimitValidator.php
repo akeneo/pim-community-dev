@@ -25,8 +25,7 @@ use Symfony\Component\Validator\Exception\UnexpectedTypeException;
  */
 class ThereShouldBeLessRuleTemplateThanLimitValidator extends ConstraintValidator
 {
-    /** @var int */
-    private $ruleTemplateByAssetFamilyLimit;
+    private int $ruleTemplateByAssetFamilyLimit;
 
     public function __construct(int $ruleTemplateByAssetFamilyLimit)
     {

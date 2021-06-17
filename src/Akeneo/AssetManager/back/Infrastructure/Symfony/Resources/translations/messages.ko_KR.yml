@@ -1,0 +1,46 @@
+akeneo_assetmanager:
+  acl_group:
+    asset_manager: 자산 관리자
+  acl:
+    asset_family:
+      create: 자산 패밀리 만들기
+      edit: 자산 패밀리 속성 편집
+      delete: 자산 패밀리 삭제
+      manage_permission: 자산 패밀리 권한 관리
+      manage_transformation: 자산 패밀리 변환 관리
+      manage_product_link_rule: 자산 패밀리 제품 링크 규칙 관리
+      execute_product_link_rule: 자산 패밀리의 모든 자산에서 제품 링크 규칙 실행
+    asset:
+      create: 자산 만들기
+      edit: 자산 편집
+      delete: 자산 삭제
+      delete_all: 모든 자산 삭제
+      list_product: 자산에 대한 링크된 제품 나열
+    attribute:
+      create: 자산 패밀리에 특성 추가
+      edit: 자산 패밀리의 특성 편집
+      delete: 자산 패밀리의 특성 삭제
+    option:
+      edit: 옵션 편집
+      delete: 옵션 제거
+pim_import_export:
+  widget:
+    last_operations:
+      job_type:
+        asset_manager_compute_transformations: "자산 변환 계산"
+        asset_manager_link_assets_to_products: "제품에 자산 링크 연결"
+#average_percentage_localizable_only_attributes: Average percentage of localizable only attributes per asset family
+#average_percentage_scopable_only_attributes: Average percentage of scopable only attributes per asset family
+#average_percentage_scopable_and_localizable_attributes: Average percentage of localizable and scopable attributes per asset family
+pim_catalog_asset_collection: 자산 컬렉션
+pim_datagrid:
+  cells:
+    type:
+      asset_manager_link_assets_to_products: 제품에 자산 링크 연결
+batch_jobs:
+  default_steps:
+    link_assets_to_products: 제품에 자산 링크 연결
+    compute_transformations: 자산 변환 계산
+job_execution:
+  summary:
+    assets: 자산

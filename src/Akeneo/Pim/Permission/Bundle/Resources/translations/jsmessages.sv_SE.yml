@@ -2,7 +2,7 @@ pim_enrich:
   entity:
     attribute:
       property:
-        is_read_only: Endast läsning
+        is_read_only: Endast läs
 pimee_enrich.entity.category:
   module:
     permissions:
@@ -33,7 +33,7 @@ pimee_enrich.entity.job_instance:
 batch_jobs:
   add_product_value_with_permission_and_rules:
     label: Lägg till produkt värde med behörighet kontrollera & regler ansökan
-    perform.label: Lägga till produktens värde
+    perform.label: Lägg till produkt värde
   update_product_value_with_permission_and_rules:
     label: Uppdatera produkt värde med behörighet kontrollera & regler ansökan
     perform.label: Uppdatera produktens värde

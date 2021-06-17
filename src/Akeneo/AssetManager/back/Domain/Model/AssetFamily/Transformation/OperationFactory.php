@@ -19,8 +19,7 @@ namespace Akeneo\AssetManager\Domain\Model\AssetFamily\Transformation;
  */
 class OperationFactory
 {
-    /** @var array */
-    private $operationClasses = [];
+    private array $operationClasses = [];
 
     public function __construct(array $operationClasses)
     {

@@ -16,8 +16,7 @@ use Doctrine\DBAL\Types\Type;
 
 class SqlAssetFamilyPermissionRepository implements AssetFamilyPermissionRepositoryInterface
 {
-    /** @var Connection */
-    private $sqlConnection;
+    private Connection $sqlConnection;
 
     public function __construct(Connection $sqlConnection)
     {

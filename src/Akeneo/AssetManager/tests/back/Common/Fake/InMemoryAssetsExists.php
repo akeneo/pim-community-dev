@@ -24,8 +24,7 @@ use Akeneo\AssetManager\Domain\Repository\AssetNotFoundException;
  */
 class InMemoryAssetsExists
 {
-    /** @var InMemoryAssetRepository */
-    private $assetRepository;
+    private InMemoryAssetRepository $assetRepository;
 
     public function __construct(InMemoryAssetRepository $assetRepository)
     {

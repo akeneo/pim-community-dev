@@ -45,11 +45,9 @@ use Doctrine\DBAL\DBALException;
 
 class SqlAssetFamilyRepositoryTest extends SqlIntegrationTestCase
 {
-    /** @var AssetFamilyRepositoryInterface */
-    private $repository;
+    private AssetFamilyRepositoryInterface $repository;
 
-    /** @var AttributeRepositoryInterface */
-    private $attributeRepository;
+    private AttributeRepositoryInterface $attributeRepository;
 
     public function setUp(): void
     {

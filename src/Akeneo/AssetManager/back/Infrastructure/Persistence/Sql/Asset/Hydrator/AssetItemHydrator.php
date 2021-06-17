@@ -36,20 +36,15 @@ class AssetItemHydrator implements AssetItemHydratorInterface
 {
     public const THUMBNAIL_PREVIEW_TYPE = 'thumbnail';
 
-    /** @var AbstractPlatform */
-    private $platform;
+    private AbstractPlatform $platform;
 
-    /** @var FindRequiredValueKeyCollectionForChannelAndLocalesInterface */
-    private $findRequiredValueKeyCollectionForChannelAndLocales;
+    private FindRequiredValueKeyCollectionForChannelAndLocalesInterface $findRequiredValueKeyCollectionForChannelAndLocales;
 
-    /** @var FindAttributesIndexedByIdentifierInterface */
-    private $findAttributesIndexedByIdentifier;
+    private FindAttributesIndexedByIdentifierInterface $findAttributesIndexedByIdentifier;
 
-    /** @var ValueHydratorInterface */
-    private $valueHydrator;
+    private ValueHydratorInterface $valueHydrator;
 
-    /** @var ImagePreviewUrlGenerator */
-    private $imagePreviewUrlGenerator;
+    private ImagePreviewUrlGenerator $imagePreviewUrlGenerator;
 
     public function __construct(
         Connection $connection,
@@ -120,13 +115,11 @@ class AssetItemHydrator implements AssetItemHydratorInterface
         $channelIdentifier = ChannelIdentifier::fromCode($query->getChannel());
         $localeIdentifiers = LocaleIdentifierCollection::fromNormalized([$query->getLocale()]);
 
-        $result = $this->findRequiredValueKeyCollectionForChannelAndLocales->find(
+        return $this->findRequiredValueKeyCollectionForChannelAndLocales->find(
             $assetFamilyIdentifier,
             $channelIdentifier,
             $localeIdentifiers
         );
-
-        return $result;
     }
 
     private function getLabels(array $valueCollection, string $attributeAsLabel): array
@@ -146,14 +139,10 @@ class AssetItemHydrator implements AssetItemHydratorInterface
 
     private function getImages(AssetQuery $query, array $valueCollection, string $attributeAsMainMediaIdentifier): array
     {
-        $images = array_values(array_filter(
+        return array_values(array_filter(
             $valueCollection,
-            function (array $value) use ($attributeAsMainMediaIdentifier) {
-                return $value['attribute'] === $attributeAsMainMediaIdentifier;
-            }
+            fn (array $value) => $value['attribute'] === $attributeAsMainMediaIdentifier
         ));
-
-        return $images;
     }
 
     /**
@@ -166,7 +155,7 @@ class AssetItemHydrator implements AssetItemHydratorInterface
 
         foreach ($valueCollection as $valueKey => $normalizedValue) {
             $attributeIdentifier = $normalizedValue['attribute'];
-            if (!key_exists($attributeIdentifier, $indexedAttributes)) {
+            if (!array_key_exists($attributeIdentifier, $indexedAttributes)) {
                 continue;
             }
 

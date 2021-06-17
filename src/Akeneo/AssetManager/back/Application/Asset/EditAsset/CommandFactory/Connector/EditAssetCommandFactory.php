@@ -24,11 +24,9 @@ use Akeneo\AssetManager\Domain\Query\Attribute\FindAttributesIndexedByIdentifier
  */
 class EditAssetCommandFactory
 {
-    /** @var FindAttributesIndexedByIdentifierInterface */
-    private $findAttributesIndexedByIdentifier;
+    private FindAttributesIndexedByIdentifierInterface $findAttributesIndexedByIdentifier;
 
-    /** @var EditValueCommandFactoryRegistryInterface */
-    private $editValueCommandFactoryRegistry;
+    private EditValueCommandFactoryRegistryInterface $editValueCommandFactoryRegistry;
 
     public function __construct(
         EditValueCommandFactoryRegistryInterface $editValueCommandFactoryRegistry,
@@ -40,13 +38,11 @@ class EditAssetCommandFactory
 
     public function create(AssetFamilyIdentifier $assetFamilyIdentifier, array $normalizedAsset): EditAssetCommand
     {
-        $command = new EditAssetCommand(
+        return new EditAssetCommand(
             $assetFamilyIdentifier->normalize(),
             $normalizedAsset['code'],
             $this->createEditAssetValueCommands($assetFamilyIdentifier, $normalizedAsset)
         );
-
-        return $command;
     }
 
     private function createEditAssetValueCommands(AssetFamilyIdentifier $assetFamilyIdentifier, array $normalizedAsset): array

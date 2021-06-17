@@ -83,6 +83,7 @@ services:
         class: 'Akeneo\Pim\WorkOrganization\Workflow\Bundle\Storage\Sql\SqlSavePublishedProductCompletenesses'
         arguments:
             - '@database_connection'
+            - '@logger'
 
     pimee_workflow.query.select_attribute_labels_from_codes:
         class: Akeneo\Pim\WorkOrganization\Workflow\Bundle\Doctrine\ORM\Query\SelectAttributeLabelsFromCodesQuery
@@ -99,3 +100,10 @@ services:
         arguments:
             - '@database_connection'
             - 100
+
+    pimee_security.published_product_grid.query.list_available_columns:
+        class: Akeneo\Pim\Permission\Bundle\Datagrid\Query\Sql\ListProductGridAvailableColumns
+        arguments:
+            - '@database_connection'
+            - '@oro_datagrid.configuration.provider.chain'
+            - 'published-product-grid'

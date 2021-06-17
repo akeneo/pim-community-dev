@@ -26,8 +26,7 @@ class ColorspaceOperation implements Operation
     private const OPERATION_NAME = 'colorspace';
     private const COLORSPACE_CHOICES = ['grey', 'cmyk', 'rgb'];
 
-    /** @var string */
-    private $colorspace;
+    private string $colorspace;
 
     private function __construct(string $colorspace)
     {

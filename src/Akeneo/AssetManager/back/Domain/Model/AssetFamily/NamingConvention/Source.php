@@ -21,14 +21,11 @@ class Source
 {
     private const ASSET_CODE_PROPERTY = 'code';
 
-    /** @var string */
-    private $property;
+    private string $property;
 
-    /** @var ChannelReference */
-    private $channelReference;
+    private ChannelReference $channelReference;
 
-    /** @var LocaleReference */
-    private $localeReference;
+    private LocaleReference $localeReference;
 
     public function __construct(
         string $property,

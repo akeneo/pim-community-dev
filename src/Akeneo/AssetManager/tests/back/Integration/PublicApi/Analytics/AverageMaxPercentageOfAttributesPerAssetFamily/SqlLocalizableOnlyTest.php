@@ -27,11 +27,9 @@ use Ramsey\Uuid\Uuid;
  */
 class SqlLocalizableOnlyTest extends SqlIntegrationTestCase
 {
-    /** @var SqlLocalizableOnly */
-    private $averageMaxPercentageOfLocalizableOnlyAttributessPerAssetFamily;
+    private SqlLocalizableOnly $averageMaxPercentageOfLocalizableOnlyAttributessPerAssetFamily;
 
-    /** @var CreateAttributesHelper */
-    private $createAttributesHelper;
+    private CreateAttributesHelper $createAttributesHelper;
 
     public function setUp(): void
     {

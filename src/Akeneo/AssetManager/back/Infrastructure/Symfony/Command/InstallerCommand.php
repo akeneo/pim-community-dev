@@ -35,14 +35,11 @@ class InstallerCommand extends Command implements EventSubscriberInterface
 
     protected static $defaultName = self::RESET_FIXTURES_COMMAND_NAME;
 
-    /** @var FixturesInstaller */
-    private $fixturesInstaller;
+    private FixturesInstaller $fixturesInstaller;
 
-    /** @var AssetsInstaller */
-    private $assetInstaller;
+    private AssetsInstaller $assetInstaller;
 
-    /** @var bool */
-    private $shouldLoadAssetsFixtures;
+    private bool $shouldLoadAssetsFixtures;
 
     public function __construct(
         FixturesInstaller $fixturesInstaller,

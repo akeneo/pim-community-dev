@@ -11,11 +11,9 @@ use PHPUnit\Framework\Assert;
 
 class ProductLinkRuleLauncherSpy implements ProductLinkRuleLauncherInterface
 {
-    /** @var InMemoryAssetRepository */
-    private $assetRepository;
+    private InMemoryAssetRepository $assetRepository;
 
-    /** @var array */
-    private $launches = [];
+    private array $launches = [];
 
     public function __construct(InMemoryAssetRepository $assetRepository)
     {
@@ -86,9 +84,7 @@ class ProductLinkRuleLauncherSpy implements ProductLinkRuleLauncherInterface
      */
     public function assertHasRunForAssetsInSameLaunch(string $assetFamilyIdentifier, array $assetCodes): void
     {
-        $fingerprintedCodes = array_map(function ($assetCode) use ($assetFamilyIdentifier) {
-            return $this->fingerprint($assetFamilyIdentifier, $assetCode);
-        }, $assetCodes);
+        $fingerprintedCodes = array_map(fn ($assetCode) => $this->fingerprint($assetFamilyIdentifier, $assetCode), $assetCodes);
 
         $allPresent = false;
 

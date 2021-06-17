@@ -24,8 +24,7 @@ use Doctrine\DBAL\Connection;
  */
 class DatabaseHelper
 {
-    /** @var Connection */
-    private $sqlConnection;
+    private Connection $sqlConnection;
 
     public function __construct(Connection $sqlConnection)
     {

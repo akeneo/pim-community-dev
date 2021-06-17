@@ -1,12 +1,10 @@
 import React from 'react';
 import styled from 'styled-components';
+import {getColor, Helper} from 'akeneo-design-system';
+import {useRouter, useSecurity, useTranslate} from '@akeneo-pim-community/shared';
 import {AttributeCode} from 'akeneoassetmanager/platform/model/structure/attribute';
 import {getRulesForAttribute} from 'akeneoassetmanager/platform/model/structure/rule-relation';
-import {getColor, Helper} from 'akeneo-design-system';
-import {useRouter, useTranslate} from '@akeneo-pim-community/shared';
 import {RulesNumberByAttribute} from 'akeneoassetmanager/platform/model/structure/rule-relation';
-
-const securityContext = require('pim/security-context');
 
 const HelperContent = styled.div`
   span {
@@ -23,6 +21,7 @@ type RuleNotificationProps = {
 
 const RuleNotification = ({attributeCode, rulesNumberByAttribute}: RuleNotificationProps) => {
   const translate = useTranslate();
+  const {isGranted} = useSecurity();
   const rulesForAttribute: number = getRulesForAttribute(attributeCode, rulesNumberByAttribute);
   const router = useRouter();
 
@@ -30,7 +29,7 @@ const RuleNotification = ({attributeCode, rulesNumberByAttribute}: RuleNotificat
     return null;
   }
 
-  const translation = securityContext.isGranted('pimee_catalog_rule_rule_view_permissions')
+  const translation = isGranted('pimee_catalog_rule_rule_view_permissions')
     ? 'pimee_enrich.entity.product.module.attribute.can_be_updated_by_rules'
     : 'pimee_enrich.entity.product.module.attribute.can_be_updated_by_rules_readonly';
 

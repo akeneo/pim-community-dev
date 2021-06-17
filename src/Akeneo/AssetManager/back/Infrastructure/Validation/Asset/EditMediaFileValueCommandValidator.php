@@ -21,6 +21,8 @@ use Akeneo\AssetManager\Domain\Query\File\FileExistsInterface;
 use Akeneo\AssetManager\Infrastructure\Validation\Asset\EditMediaFileValueCommand as EditMediaFileValueCommandConstraint;
 use Symfony\Component\Validator\Constraint;
 use Symfony\Component\Validator\Constraints;
+use Symfony\Component\Validator\Constraints\Callback;
+use Symfony\Component\Validator\Constraints\Type;
 use Symfony\Component\Validator\ConstraintValidator;
 use Symfony\Component\Validator\ConstraintViolationList;
 use Symfony\Component\Validator\ConstraintViolationListInterface;
@@ -35,8 +37,7 @@ use Symfony\Component\Validator\Validation;
  */
 class EditMediaFileValueCommandValidator extends ConstraintValidator
 {
-    /** @var FileExistsInterface */
-    private $fileExists;
+    private FileExistsInterface $fileExists;
 
     public function __construct(FileExistsInterface $fileExists)
     {
@@ -58,7 +59,7 @@ class EditMediaFileValueCommandValidator extends ConstraintValidator
         if (!$command instanceof EditMediaFileValueCommand && !$command instanceof EditMediaFileTargetValueCommand) {
             throw new \InvalidArgumentException(
                 sprintf(
-                    'Expected argument to be one of these classes "%s", "%s" given', join(', ', [
+                    'Expected argument to be one of these classes "%s", "%s" given', implode(', ', [
                         EditMediaFileValueCommand::class,
                         EditMediaFileTargetValueCommand::class
                     ]),
@@ -121,11 +122,11 @@ class EditMediaFileValueCommandValidator extends ConstraintValidator
     private function checkPropertyTypes(AbstractEditValueCommand $command): ConstraintViolationListInterface
     {
         $validator = Validation::createValidator();
-        $violations = $validator->validate($command->originalFilename, [new Constraints\Type('string')]);
-        $violations->addAll($validator->validate($command->filePath, [new Constraints\Type('string')]));
-        $violations->addAll($validator->validate($command->size, [new Constraints\Type('int')]));
-        $violations->addAll($validator->validate($command->mimeType, [new Constraints\Type('string')]));
-        $violations->addAll($validator->validate($command->extension, [new Constraints\Type('string')]));
+        $violations = $validator->validate($command->originalFilename, [new Type('string')]);
+        $violations->addAll($validator->validate($command->filePath, [new Type('string')]));
+        $violations->addAll($validator->validate($command->size, [new Type('int')]));
+        $violations->addAll($validator->validate($command->mimeType, [new Type('string')]));
+        $violations->addAll($validator->validate($command->extension, [new Type('string')]));
 
         return $violations;
     }
@@ -139,7 +140,7 @@ class EditMediaFileValueCommandValidator extends ConstraintValidator
             $violations->addAll($validator->validate(
                 $command->extension,
                 [
-                    new Constraints\Callback(function ($extension) use ($attribute) {
+                    new Callback(function ($extension) use ($attribute) {
                         if (!in_array(strtolower($extension), $attribute->getAllowedExtensions()->normalize())) {
                             $this->context
                                 ->buildViolation(EditMediaFileValueCommandConstraint::FILE_EXTENSION_NOT_ALLOWED_MESSAGE)
@@ -154,13 +155,11 @@ class EditMediaFileValueCommandValidator extends ConstraintValidator
             ));
         }
 
-        if ($attribute->hasMaxFileSizeLimit()) {
-            if ($command->size > $this->getMaxFileSizeInByte($attribute)) {
-                $this->context
-                    ->buildViolation(EditMediaFileValueCommandConstraint::FILE_SIZE_EXCEEDED_MESSAGE)
-                    ->atPath((string) $attribute->getCode())
-                    ->addViolation();
-            }
+        if ($attribute->hasMaxFileSizeLimit() && $command->size > $this->getMaxFileSizeInByte($attribute)) {
+            $this->context
+                ->buildViolation(EditMediaFileValueCommandConstraint::FILE_SIZE_EXCEEDED_MESSAGE)
+                ->atPath((string) $attribute->getCode())
+                ->addViolation();
         }
 
         return $violations;
@@ -168,6 +167,6 @@ class EditMediaFileValueCommandValidator extends ConstraintValidator
 
     private function getMaxFileSizeInByte(MediaFileAttribute $attribute): float
     {
-        return $attribute->getMaxFileSize()->floatValue() * 1000000;
+        return $attribute->getMaxFileSize()->floatValue() * 1_000_000;
     }
 }

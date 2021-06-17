@@ -23,17 +23,13 @@ class ProductAssignmentsValidator
     private const LOCALE_FIELD = 'locale';
     private const MODE_FIELD = 'mode';
 
-    /** @var RuleEngineValidatorACLInterface */
-    private $ruleEngineValidatorACL;
+    private RuleEngineValidatorACLInterface $ruleEngineValidatorACL;
 
-    /** @var ExtrapolatedAttributeValidator */
-    private $extrapolatedAttributeValidator;
+    private ExtrapolatedAttributeValidator $extrapolatedAttributeValidator;
 
-    /** @var ChannelAndLocaleValidator */
-    private $channelAndLocaleValidator;
+    private ChannelAndLocaleValidator $channelAndLocaleValidator;
 
-    /** @var GetAssetCollectionTypeAdapterInterface */
-    private $findAssetCollectionTypeACL;
+    private GetAssetCollectionTypeAdapterInterface $findAssetCollectionTypeACL;
 
     public function __construct(
         RuleEngineValidatorACLInterface $ruleEngineValidatorACL,
@@ -133,18 +129,18 @@ class ProductAssignmentsValidator
     private function checkNotEmpty(array $productAssignments): ConstraintViolationListInterface
     {
         $validator = Validation::createValidator();
-        $ruleEngineViolations = $validator->validate($productAssignments,
+
+        return $validator->validate($productAssignments,
             [new NotBlank(['message' => ProductLinkRulesShouldBeExecutable::PRODUCT_ASSIGNMENT_CANNOT_BE_EMPTY])]
         );
-
-        return $ruleEngineViolations;
     }
 
     private function checkMode(array $productAssignment): ConstraintViolationListInterface
     {
         $allowedModes = Action::ALLOWED_MODES;
         $validator = Validation::createValidator();
-        $result = $validator->validate(
+
+        return $validator->validate(
             $productAssignment[self::MODE_FIELD],
             new Callback(function ($actualMode, ExecutionContextInterface $context) use ($allowedModes) {
                 if (!in_array($actualMode, $allowedModes)) {
@@ -158,8 +154,6 @@ class ProductAssignmentsValidator
             }
             )
         );
-
-        return $result;
     }
 
     private function checkProductAttributeReferencesThisAssetFamily(
@@ -167,7 +161,8 @@ class ProductAssignmentsValidator
         string $expectedAssetFamilyIdentifier
     ): ConstraintViolationListInterface {
         $validator = Validation::createValidator();
-        $result = $validator->validate(
+
+        return $validator->validate(
             $productAssignment['attribute'],
             new Callback(function ($productAttributeCode, ExecutionContextInterface $context) use ($expectedAssetFamilyIdentifier) {
                 try {
@@ -197,7 +192,5 @@ class ProductAssignmentsValidator
             }
             )
         );
-
-        return $result;
     }
 }

@@ -17,11 +17,9 @@ final class MediaLinkPdfGeneratorTest extends PreviewGeneratorIntegrationTestCas
 {
     protected const IMAGE_FILENAME = '2016/04/Fred-site-web.pdf';
 
-    /** @var PreviewGeneratorInterface */
-    private $mediaLinkPdfGenerator;
+    private PreviewGeneratorInterface $mediaLinkPdfGenerator;
 
-    /** @var MediaLinkAttribute */
-    private $mediaLinkAttribute;
+    private MediaLinkAttribute $mediaLinkAttribute;
 
     public function setUp(): void
     {

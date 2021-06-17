@@ -30,11 +30,9 @@ use Symfony\Component\Security\Core\Authentication\Token\UsernamePasswordToken;
  */
 class OauthAuthenticatedClientFactory
 {
-    /** @var UserRepositoryInterface */
-    private $userRepository;
+    private InMemoryUserRepository $userRepository;
 
-    /** @var KernelInterface */
-    private $kernel;
+    private KernelInterface $kernel;
 
     public function __construct(InMemoryUserRepository $userRepository, KernelInterface $kernel)
     {

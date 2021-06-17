@@ -29,11 +29,9 @@ abstract class PreviewGeneratorIntegrationTestCase extends KernelTestCase
     protected const IMAGE_FILENAME = '2016/04/Fred-site-web.jpg';
     protected const DOCUMENT_FILENAME = '2016/04/1_4_user_guide.pdf';
 
-    /** @var FixturesLoader */
-    protected $fixturesLoader;
+    protected FixturesLoader $fixturesLoader;
 
-    /** @var CacheManager */
-    private $cacheManager;
+    private CacheManager $cacheManager;
 
     public function setUp(): void
     {

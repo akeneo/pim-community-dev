@@ -28,6 +28,7 @@ use Akeneo\AssetManager\Domain\Model\AssetFamily\TransformationCollection;
 use Akeneo\AssetManager\Domain\Model\Image;
 use Akeneo\AssetManager\Domain\Model\LabelCollection;
 use Akeneo\AssetManager\Domain\Query\AssetFamily\AssetFamilyDetails;
+use Akeneo\AssetManager\Domain\Query\AssetFamily\Connector\ConnectorTransformation;
 use Akeneo\AssetManager\Domain\Query\AssetFamily\Connector\ConnectorTransformationCollection;
 use Akeneo\AssetManager\Domain\Query\AssetFamily\FindAssetFamilyDetailsInterface;
 use Akeneo\AssetManager\Integration\SqlIntegrationTestCase;
@@ -35,8 +36,7 @@ use PHPUnit\Framework\Assert;
 
 class SqlFindAssetFamilyDetailsTest extends SqlIntegrationTestCase
 {
-    /** @var FindAssetFamilyDetailsInterface */
-    private $findAssetFamilyDetails;
+    private FindAssetFamilyDetailsInterface $findAssetFamilyDetails;
 
     public function setUp(): void
     {
@@ -67,8 +67,8 @@ class SqlFindAssetFamilyDetailsTest extends SqlIntegrationTestCase
         $designer = new AssetFamilyDetails();
         $designer->identifier = AssetFamilyIdentifier::fromString('designer');
         $designer->labels = LabelCollection::fromArray(['fr_FR' => 'Concepteur', 'en_US' => 'Designer']);
-        $designer->transformations = TransformationCollection::create([
-            Transformation::create(
+        $designer->transformations = new ConnectorTransformationCollection([
+            new ConnectorTransformation(
                 TransformationLabel::fromString('thumbnail_100x80'),
                 Source::createFromNormalized(['attribute' => 'main_image', 'channel'=> null, 'locale' => null]),
                 Target::createFromNormalized(['attribute' => 'thumbnail', 'channel'=> null, 'locale' => null]),
@@ -76,8 +76,7 @@ class SqlFindAssetFamilyDetailsTest extends SqlIntegrationTestCase
                     ThumbnailOperation::create(['width' => 100, 'height' => 80]),
                 ]),
                 '1_',
-                '_2',
-                InMemoryClock::$actualDateTime
+                '_2'
             ),
         ]);
         $designer->namingConvention = NamingConvention::createFromNormalized([

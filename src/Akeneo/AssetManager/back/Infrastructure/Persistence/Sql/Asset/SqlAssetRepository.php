@@ -76,8 +76,8 @@ class SqlAssetRepository implements AssetRepositoryInterface
 
         $insert = <<<SQL
         INSERT INTO akeneo_asset_manager_asset
-            (identifier, code, asset_family_identifier, value_collection)
-        VALUES (:identifier, :code, :asset_family_identifier, :value_collection);
+            (identifier, code, asset_family_identifier, value_collection, created_at, updated_at)
+        VALUES (:identifier, :code, :asset_family_identifier, :value_collection, :created_at, :updated_at);
 SQL;
         $affectedRows = $this->sqlConnection->executeUpdate(
             $insert,
@@ -204,16 +204,13 @@ SQL;
             ]
         );
 
-        $assetCodeDeleted = array_filter($assetCodes, function ($assetCode) use ($identifiers) {
-            return array_key_exists($assetCode->normalize(), $identifiers);
-        });
+        $assetCodeDeleted = array_filter($assetCodes, fn ($assetCode) => array_key_exists($assetCode->normalize(), $identifiers));
 
         $this->eventDispatcher->dispatch(
             new AssetsDeletedEvent(
                 $assetFamilyIdentifier,
                 $assetCodeDeleted,
-            ),
-            AssetsDeletedEvent::class
+            )
         );
     }
 
@@ -244,8 +241,7 @@ SQL;
                 $identifiers[$code->normalize()],
                 $code,
                 $assetFamilyIdentifier
-            ),
-            AssetDeletedEvent::class
+            )
         );
     }
 
@@ -293,7 +289,7 @@ SQL;
                 continue;
             }
 
-            $this->eventDispatcher->dispatch($event, get_class($event));
+            $this->eventDispatcher->dispatch($event);
         }
 
         $asset->clearRecordedEvents();

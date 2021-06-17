@@ -25,7 +25,7 @@ use Akeneo\AssetManager\Domain\Query\Asset\FindAssetDetailsInterface;
 class InMemoryFindAssetDetails implements FindAssetDetailsInterface
 {
     /** @var AssetDetails[] */
-    private $results;
+    private array $results;
 
     public function __construct()
     {

@@ -25,8 +25,7 @@ class RawSource extends Constraint
     public const ATTRIBUTE_NOT_FOUND_ERROR = 'pim_asset_manager.asset_family.validation.naming_convention.property_should_exist';
     public const ATTRIBUTE_IS_NOT_MAIN_MEDIA = 'pim_asset_manager.asset_family.validation.naming_convention.not_main_media_attribute_code';
 
-    /** @var AssetFamilyIdentifier */
-    private $assetFamilyIdentifier;
+    private AssetFamilyIdentifier $assetFamilyIdentifier;
 
     public function __construct(AssetFamilyIdentifier $assetFamilyIdentifier)
     {

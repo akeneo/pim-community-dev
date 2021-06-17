@@ -24,8 +24,7 @@ use Akeneo\AssetManager\Domain\Repository\AttributeNotFoundException;
  */
 class InMemoryAttributeHasOneValuePerLocale implements AttributeHasOneValuePerLocaleInterface
 {
-    /** @var InMemoryAttributeRepository */
-    private $attributeRepository;
+    private InMemoryAttributeRepository $attributeRepository;
 
     public function __construct(InMemoryAttributeRepository $attributeRepository)
     {

@@ -19,8 +19,7 @@ use Symfony\Component\Routing\Router;
 
 class AddHalSelfLinkToNormalizedConnectorAttribute
 {
-    /** @var Router */
-    private $router;
+    private Router $router;
 
     public function __construct(
         Router $router

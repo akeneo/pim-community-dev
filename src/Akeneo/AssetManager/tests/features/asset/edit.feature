@@ -420,10 +420,28 @@ Feature: Edit an asset
     Then there should be a validation error on the number value with message "This integer is too big"
 
   @acceptance-back
-  Scenario: Updating a mediaLink value
+  Scenario: Updating a mediaLink value with an authorized protocol
     Given an asset family with an media_link attribute and an asset belonging to this asset family
-    When the user updates the mediaLink value of the asset
-    Then the asset should have the mediaLink value for this attribute
+    When the user updates the mediaLink value of the asset with "HTTP://www.example.com/an_image.png"
+    Then the asset should have the mediaLink value equal to "HTTP://www.example.com/an_image.png"
+
+  @acceptance-back
+  Scenario: Updating a mediaLink value with a relative URL
+    Given an asset family with an media_link attribute and an asset belonging to this asset family
+    When the user updates the mediaLink value of the asset with "/an_image.png"
+    Then the asset should have the mediaLink value equal to "/an_image.png"
+
+  @acceptance-back
+  Scenario: Updating a mediaLink value with a non http(s) protocol
+    Given an asset family with an media_link attribute and an asset belonging to this asset family
+    When the user updates the mediaLink value of the asset with "file://an_image.png"
+    Then there should be a validation error on the media file value with message "This field should start with a valid protocol. Allowed protocols are: http, https."
+
+  @acceptance-back
+  Scenario: Updating a mediaLink value with an authorized protocol when attribute has a prefix
+    Given an asset family with an media_link attribute with prefix and an asset belonging to this asset family
+    When the user updates the mediaLink value of the asset with "//a_file.png"
+    Then there should be a validation error on the media file value with message "This field should start with a valid protocol. Allowed protocols are: http, https."
 
   @acceptance-front
   Scenario: Updating an asset details

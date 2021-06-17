@@ -23,11 +23,9 @@ use Symfony\Component\Security\Core\Authentication\Token\Storage\TokenStorageInt
  */
 class NamingConventionLauncher implements NamingConventionLauncherInterface
 {
-    /** @var PublishJobToQueue */
-    private $publishJobToQueue;
+    private PublishJobToQueue $publishJobToQueue;
 
-    /** @var TokenStorageInterface */
-    private $tokenStorage;
+    private TokenStorageInterface $tokenStorage;
 
     public function __construct(
         PublishJobToQueue $publishJobToQueue,

@@ -11,5 +11,5 @@ namespace Akeneo\AssetManager\Application\Asset\LinkAssets;
 class LinkMultipleAssetsCommand
 {
     /** @var LinkAssetCommand[] */
-    public $linkAssetCommands = [];
+    public array $linkAssetCommands = [];
 }

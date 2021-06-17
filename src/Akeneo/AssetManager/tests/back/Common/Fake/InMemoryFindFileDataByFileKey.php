@@ -18,8 +18,7 @@ use Webmozart\Assert\Assert;
 
 class InMemoryFindFileDataByFileKey implements FindFileDataByFileKeyInterface
 {
-    /** @var array */
-    private $files = [];
+    private array $files = [];
 
     public function find(string $fileKey): ?array
     {

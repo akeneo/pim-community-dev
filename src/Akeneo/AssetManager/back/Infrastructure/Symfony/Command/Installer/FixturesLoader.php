@@ -46,37 +46,29 @@ use Akeneo\Pim\Enrichment\Component\Product\Query\Filter\Operators;
 
 class FixturesLoader
 {
-    /** @var AssetFamilyRepositoryInterface */
-    private $assetFamilyRepository;
+    private AssetFamilyRepositoryInterface $assetFamilyRepository;
 
-    /** @var AttributeRepositoryInterface */
-    private $attributeRepository;
+    private AttributeRepositoryInterface $attributeRepository;
 
-    /** @var AssetRepositoryInterface */
-    private $assetRepository;
+    private AssetRepositoryInterface $assetRepository;
 
-    /** @var ValueHydratorInterface */
-    private $valueHydrator;
+    private ValueHydratorInterface $valueHydrator;
 
-    /** @var string */
-    private $loadedAssetFamily;
+    private ?string $loadedAssetFamily = null;
 
     /** @var string[] */
-    private $loadedAttributes = [];
+    private array $loadedAttributes = [];
 
     /** @var string[] */
-    private $customLoadedAttributes = [];
+    private array $customLoadedAttributes = [];
 
-    private $namingConvention = null;
+    private ?NamingConventionInterface $namingConvention = null;
 
-    /** @var string */
-    private $loadedAssetFamilyOfAsset;
+    private ?string $loadedAssetFamilyOfAsset = null;
 
-    /** @var string */
-    private $loadedAssetCode;
+    private ?string $loadedAssetCode = null;
 
-    /** @var array */
-    private $loadedValues;
+    private ?array $loadedValues = null;
 
     public function __construct(
         AssetFamilyRepositoryInterface $assetFamilyRepository,
@@ -757,9 +749,7 @@ class FixturesLoader
             AssetFamilyIdentifier::fromString($this->loadedAssetFamilyOfAsset)
         );
         foreach ($this->loadedValues as $attributeCode => $values) {
-            $attribute = current(array_filter($attributes, function (AbstractAttribute $attribute) use ($attributeCode) {
-                return (string) $attribute->getCode() === $attributeCode;
-            }));
+            $attribute = current(array_filter($attributes, fn (AbstractAttribute $attribute) => (string) $attribute->getCode() === $attributeCode));
             if (!$attribute) {
                 throw new \RuntimeException(sprintf('Impossible to load value for attribute "%s", attribute not found.', $attributeCode));
             }

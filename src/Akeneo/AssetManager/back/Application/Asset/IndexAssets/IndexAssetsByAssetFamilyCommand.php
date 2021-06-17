@@ -11,7 +11,7 @@ namespace Akeneo\AssetManager\Application\Asset\IndexAssets;
 class IndexAssetsByAssetFamilyCommand
 {
     /** string $assetFamily */
-    public $assetFamilyIdentifier;
+    public string $assetFamilyIdentifier;
 
     public function __construct(string $assetFamilyIdentifier)
     {

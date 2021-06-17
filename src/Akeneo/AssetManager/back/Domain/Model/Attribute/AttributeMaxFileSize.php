@@ -26,7 +26,7 @@ class AttributeMaxFileSize
     private const LIMIT = 9999.99;
 
     /*** @var ?string */
-    private $maxFileSize;
+    private ?string $maxFileSize = null;
 
     private function __construct(?string $maxFileSize)
     {

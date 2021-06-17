@@ -42,7 +42,8 @@ class CreateMediaFileAttributeCommandFactory extends AbstractCreateAttributeComm
             $normalizedCommand['allowed_extensions'] : AttributeAllowedExtensions::ALL_ALLOWED;
         $mediaType = isset($normalizedCommand['media_type']) ?
             (string) $normalizedCommand['media_type'] : MediaType::IMAGE;
-        $command = new CreateMediaFileAttributeCommand(
+
+        return new CreateMediaFileAttributeCommand(
             $normalizedCommand['asset_family_identifier'],
             $normalizedCommand['code'],
             $normalizedCommand['labels'] ?? [],
@@ -54,7 +55,5 @@ class CreateMediaFileAttributeCommandFactory extends AbstractCreateAttributeComm
             $allowedExtensions,
             $mediaType
         );
-
-        return $command;
     }
 }

@@ -12,7 +12,7 @@ use Doctrine\DBAL\Driver\Connection;
 class FindVariations
 {
     /** * @var Connection */
-    private $connection;
+    private Connection $connection;
 
     public function __construct(Connection $connection)
     {
@@ -44,7 +44,7 @@ UNION ALL
 ;
 SQL;
 
-        $stmt = $this->connection->query($fetchAssetsQuery);
+        $stmt = $this->connection->executeQuery($fetchAssetsQuery);
         while ($row = $stmt->fetch()) {
             yield $row;
         }

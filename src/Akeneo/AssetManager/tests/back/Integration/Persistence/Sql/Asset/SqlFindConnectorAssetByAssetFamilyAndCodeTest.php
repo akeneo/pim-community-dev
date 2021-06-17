@@ -63,11 +63,9 @@ use Akeneo\Tool\Component\FileStorage\Model\FileInfo;
 
 class SqlFindConnectorAssetByAssetFamilyAndCodeTest extends SqlIntegrationTestCase
 {
-    /** @var AssetRepositoryInterface */
-    private $assetRepository;
+    private AssetRepositoryInterface $assetRepository;
 
-    /** @var FindConnectorAssetByAssetFamilyAndCodeInterface*/
-    private $findConnectorAssetQuery;
+    private FindConnectorAssetByAssetFamilyAndCodeInterface $findConnectorAssetQuery;
 
     protected function setUp(): void
     {
@@ -136,7 +134,11 @@ class SqlFindConnectorAssetByAssetFamilyAndCodeTest extends SqlIntegrationTestCa
                         'data'    => 'house_front_view'
                     ]
                 ],
-            ]
+            ],
+            (new \DateTimeImmutable('@0'))
+                ->setTimezone(new \DateTimeZone(date_default_timezone_get())),
+            (new \DateTimeImmutable('@3600'))
+                ->setTimezone(new \DateTimeZone(date_default_timezone_get())),
         );
 
         $assetFound = $this->findConnectorAssetQuery->find(AssetFamilyIdentifier::fromString('designer'), $asset->getCode());
@@ -176,7 +178,7 @@ class SqlFindConnectorAssetByAssetFamilyAndCodeTest extends SqlIntegrationTestCa
             ->setMimeType('image/jpeg')
             ->setExtension('jpg');
 
-        $asset = Asset::create(
+        $asset = Asset::fromState(
             $identifier,
             $assetFamilyIdentifier,
             $assetCode,
@@ -223,7 +225,9 @@ class SqlFindConnectorAssetByAssetFamilyAndCodeTest extends SqlIntegrationTestCa
                     LocaleReference::noReference(),
                     MediaLinkData::fromString('house_front_view')
                 )
-            ])
+            ]),
+            new \DateTimeImmutable('@0'),
+            new \DateTimeImmutable('@3600'),
         );
 
         $this->assetRepository->create($asset);
@@ -348,7 +352,7 @@ class SqlFindConnectorAssetByAssetFamilyAndCodeTest extends SqlIntegrationTestCa
         $attributesRepository->create($frontView);
         $attributesRepository->create($frontViewDam);
 
-        $countryAsset = Asset::create(
+        $countryAsset = Asset::fromState(
             AssetIdentifier::fromString('country_france_fingerprint'),
             AssetFamilyIdentifier::fromString('country'),
             AssetCode::fromString('france'),
@@ -359,12 +363,14 @@ class SqlFindConnectorAssetByAssetFamilyAndCodeTest extends SqlIntegrationTestCa
                     LocaleReference::fromLocaleIdentifier(LocaleIdentifier::fromCode('en_US')),
                     TextData::fromString('France')
                 ),
-            ])
+            ]),
+            new \DateTimeImmutable('@0'),
+            new \DateTimeImmutable('@3600'),
         );
         $this->assetRepository->create($countryAsset);
 
         foreach (['kartell', 'lexon', 'cogip'] as $code) {
-            $brandAsset = Asset::create(
+            $brandAsset = Asset::fromState(
                 AssetIdentifier::fromString(sprintf('brand_%s_fingerprint', $code)),
                 AssetFamilyIdentifier::fromString('brand'),
                 AssetCode::fromString($code),
@@ -375,7 +381,9 @@ class SqlFindConnectorAssetByAssetFamilyAndCodeTest extends SqlIntegrationTestCa
                         LocaleReference::fromLocaleIdentifier(LocaleIdentifier::fromCode('en_US')),
                         TextData::fromString(ucfirst($code))
                     ),
-                ])
+                ]),
+                new \DateTimeImmutable('@0'),
+                new \DateTimeImmutable('@3600'),
             );
             $this->assetRepository->create($brandAsset);
         }

@@ -141,7 +141,12 @@ final class ExecuteRulesTasklet implements TaskletInterface, TrackableTaskletInt
     {
         $totalProductsImpacted = 0;
         foreach ($this->getRuleDefinitions() as $ruleDefinition) {
-            $totalProductsImpacted += $this->countProducts($ruleDefinition);
+            try {
+                $totalProductsImpacted += $this->countProducts($ruleDefinition);
+            } catch (\LogicException $e) {
+                // Do nothing
+            }
+
             $this->cacheClearer->clear();
         }
 

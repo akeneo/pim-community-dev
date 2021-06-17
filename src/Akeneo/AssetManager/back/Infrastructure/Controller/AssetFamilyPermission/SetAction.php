@@ -34,23 +34,17 @@ use Symfony\Component\Validator\Validator\ValidatorInterface;
  */
 class SetAction
 {
-    /** @var SetAssetFamilyPermissionsHandler */
-    private $setAssetFamilyPermissionsHandler;
+    private SetAssetFamilyPermissionsHandler $setAssetFamilyPermissionsHandler;
 
-    /** @var CanEditAssetFamilyQueryHandler */
-    private $canEditAssetFamilyQueryHandler;
+    private CanEditAssetFamilyQueryHandler $canEditAssetFamilyQueryHandler;
 
-    /** @var TokenStorageInterface */
-    private $tokenStorage;
+    private TokenStorageInterface $tokenStorage;
 
-    /** @var SecurityFacade */
-    private $securityFacade;
+    private SecurityFacade $securityFacade;
 
-    /** @var ValidatorInterface */
-    private $validator;
+    private ValidatorInterface $validator;
 
-    /** @var Serializer */
-    private $serializer;
+    private Serializer $serializer;
 
     public function __construct(
         SetAssetFamilyPermissionsHandler $setAssetFamilyPermissionsHandler,

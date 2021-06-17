@@ -51,11 +51,14 @@ $rules = [
         'Imagine\Image',
         'Imagine\Exception',
         'League\Flysystem\FilesystemInterface',
+        'League\Flysystem\FileNotFoundException',
 
         // TODO: asset families should not depend on PIM
         'Akeneo\Pim\Enrichment\AssetManager\Component',
         'Akeneo\Pim\Enrichment\Component\Product', // because of migration
-        'Akeneo\Pim\Structure\Component'
+        'Akeneo\Pim\Structure\Component',
+        'Akeneo\Platform\Component\CatalogVolumeMonitoring\Volume\ReadModel\AverageMaxVolumes',
+        'Akeneo\Platform\Component\CatalogVolumeMonitoring\Volume\Query\AverageMaxQuery',
     ])->in('Akeneo\AssetManager\Infrastructure'),
 ];
 

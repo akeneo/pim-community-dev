@@ -35,6 +35,8 @@ config:
                     aclResourceId: pimee_enrich_locale_edit_permissions
                 pimee_workflow_product_draft_mass_approve:
                     module: pim/controller/redirect
+                pimee_workflow_product_draft_mass_refuse:
+                    module: pim/controller/redirect
                 teamwork_assistant_project_show:
                     module: pim/controller/template
                 pimee_catalog_rule_rule_index:
@@ -84,6 +86,7 @@ config:
         pimee/product-edit-form/convert-to-simple-product:            pimenterpriseui/js/product/form/convert-to-simple-product.ts
         pimee/product-edit-form/duplicate:                            pimenterpriseui/js/product/form/duplicate.ts
         pimee/product-edit-form/duplicate/modal:                      pimenterpriseui/js/product/form/duplicate/modal.ts
+        pimee/product-edit-form/main-image:                           pimenterpriseui/js/product/form/main-image.ts
 
         pimee/mass-edit-form/product/publish:                         pimenterpriseui/js/mass-edit/form/product/publish
         # Common

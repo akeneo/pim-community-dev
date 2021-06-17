@@ -19,19 +19,14 @@ use Webmozart\Assert\Assert;
  */
 final class DeleteAssetFamilyContext implements Context
 {
-    /** @var AssetFamilyRepositoryInterface  */
-    private $assetFamilyRepository;
+    private AssetFamilyRepositoryInterface $assetFamilyRepository;
 
-    /** @var DeleteAssetFamilyHandler */
-    private $deleteAssetFamilyHandler;
+    private DeleteAssetFamilyHandler $deleteAssetFamilyHandler;
 
-    /** @var AssetFamilyExistsInterface */
-    private $assetFamilyExists;
+    private AssetFamilyExistsInterface $assetFamilyExists;
 
-    /** @var ValidatorInterface */
-    private $validator;
-    /** @var ConstraintViolationsContext */
-    private $constraintViolationsContext;
+    private ValidatorInterface $validator;
+    private ConstraintViolationsContext $constraintViolationsContext;
 
     public function __construct(
         AssetFamilyRepositoryInterface $assetFamilyRepository,

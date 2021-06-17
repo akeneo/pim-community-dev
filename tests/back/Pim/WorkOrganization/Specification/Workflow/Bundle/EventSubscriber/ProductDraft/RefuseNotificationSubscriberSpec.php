@@ -2,6 +2,7 @@
 
 namespace Specification\Akeneo\Pim\WorkOrganization\Workflow\Bundle\EventSubscriber\ProductDraft;
 
+use Akeneo\Pim\Enrichment\Component\Product\Model\ProductModelInterface;
 use Akeneo\Pim\WorkOrganization\Workflow\Bundle\EventSubscriber\ProductDraft\RefuseNotificationSubscriber;
 use Akeneo\Tool\Component\StorageUtils\Factory\SimpleFactoryInterface;
 use PhpSpec\ObjectBehavior;
@@ -184,7 +185,7 @@ class RefuseNotificationSubscriberSpec extends ObjectBehavior
         UserInterface $owner,
         UserInterface $author,
         EntityWithValuesDraftInterface $draft,
-        ProductInterface $product,
+        ProductModelInterface $productModel,
         ValueInterface $identifier,
         AttributeInterface $attribute,
         NotificationInterface $notification
@@ -222,12 +223,10 @@ class RefuseNotificationSubscriberSpec extends ObjectBehavior
         $context->getUser()->willReturn($owner);
 
         $draft->getAuthor()->willReturn('author');
-        $draft->getEntityWithValue()->willReturn($product);
+        $draft->getEntityWithValue()->willReturn($productModel);
 
-        $product->getId()->willReturn(42);
-        $product->getLabel(Argument::any())->willReturn('T-Shirt');
-
-        $identifier->getData()->willReturn('tshirt');
+        $productModel->getId()->willReturn(42);
+        $productModel->getLabel(Argument::any())->willReturn('T-Shirt');
 
         $notificationFactory->create()->willReturn($notification);
         $notification->setType('error')->willReturn($notification);
@@ -240,7 +239,7 @@ class RefuseNotificationSubscriberSpec extends ObjectBehavior
                 '%attributes%' => 'Name'
             ]
         )->willReturn($notification);
-        $notification->setRoute('pim_enrich_product_edit')->willReturn($notification);
+        $notification->setRoute('pim_enrich_product_model_edit')->willReturn($notification);
         $notification->setRouteParams(['id' => 42])->willReturn($notification);
         $notification->setComment('a comment')->willReturn($notification);
         $notification->setContext(

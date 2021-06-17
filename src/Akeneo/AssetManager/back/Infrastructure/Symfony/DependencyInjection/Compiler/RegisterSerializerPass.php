@@ -15,8 +15,7 @@ use Symfony\Component\DependencyInjection\Reference;
  */
 class RegisterSerializerPass implements CompilerPassInterface
 {
-    /** @var string  */
-    protected $serializerServiceId;
+    protected string $serializerServiceId;
 
     /** @staticvar integer The default priority for services */
     const DEFAULT_PRIORITY = 100;

@@ -23,7 +23,7 @@ class CreateOptionAttributeCommandFactory extends AbstractCreateAttributeCommand
     {
         $this->checkCommonProperties($normalizedCommand);
 
-        $command = new CreateOptionAttributeCommand(
+        return new CreateOptionAttributeCommand(
             $normalizedCommand['asset_family_identifier'],
             $normalizedCommand['code'],
             $normalizedCommand['labels'] ?? [],
@@ -32,7 +32,5 @@ class CreateOptionAttributeCommandFactory extends AbstractCreateAttributeCommand
             $normalizedCommand['value_per_channel'] ?? false,
             $normalizedCommand['value_per_locale'] ?? false
         );
-
-        return $command;
     }
 }

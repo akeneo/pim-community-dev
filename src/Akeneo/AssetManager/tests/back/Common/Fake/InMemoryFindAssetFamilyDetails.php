@@ -25,10 +25,9 @@ use Akeneo\AssetManager\Domain\Query\AssetFamily\FindAssetFamilyDetailsInterface
 class InMemoryFindAssetFamilyDetails implements FindAssetFamilyDetailsInterface
 {
     /** @var AssetFamilyDetails[] */
-    private $results = [];
+    private array $results = [];
 
-    /** @var InMemoryFindActivatedLocales */
-    private $activatedLocalesQuery;
+    private InMemoryFindActivatedLocales $activatedLocalesQuery;
 
     public function __construct(InMemoryFindActivatedLocales $activatedLocalesQuery)
     {

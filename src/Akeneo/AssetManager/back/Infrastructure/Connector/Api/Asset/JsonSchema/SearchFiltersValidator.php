@@ -59,17 +59,53 @@ class SearchFiltersValidator
                     'type' => 'array',
                     'minItems' => 1,
                     'items' => [
-                        'type' => 'object',
-                        'required' => ['operator', 'value'],
-                        'properties' => [
-                            'operator' => [
-                                'type' => 'string',
-                                'enum' => ['>']
+                        'oneOf' => [
+                            [
+                                'type' => 'object',
+                                'required' => ['operator', 'value'],
+                                'properties' => [
+                                    'operator' => [
+                                        'type' => 'string',
+                                        'enum' => ['>', '<']
+                                    ],
+                                    'value' => [
+                                        'type' => 'string',
+                                        'format' => 'date-time'
+                                    ]
+                                ]
                             ],
-                            'value' => [
-                                'type' => 'string',
-                                'format' => 'date-time'
-                            ]
+                            [
+                                'type' => 'object',
+                                'required' => ['operator', 'value'],
+                                'properties' => [
+                                    'operator' => [
+                                        'type' => 'string',
+                                        'enum' => ['BETWEEN', 'NOT BETWEEN']
+                                    ],
+                                    'value' => [
+                                        'type' => 'array',
+                                        "minItems" => 2,
+                                        "maxItems" => 2,
+                                        'items' => [
+                                            ['type' => 'string', 'format' => 'date-time'],
+                                            ['type' => 'string', 'format' => 'date-time'],
+                                        ],
+                                    ]
+                                ]
+                            ],
+                            [
+                                'type' => 'object',
+                                'required' => ['operator', 'value'],
+                                'properties' => [
+                                    'operator' => [
+                                        'type' => 'string',
+                                        'enum' => ['SINCE LAST N DAYS']
+                                    ],
+                                    'value' => [
+                                        'type' => 'integer',
+                                    ]
+                                ]
+                            ],
                         ]
                     ],
                 ]

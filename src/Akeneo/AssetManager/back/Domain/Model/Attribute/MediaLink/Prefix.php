@@ -21,8 +21,7 @@ class Prefix
 {
     public const EMPTY = null;
 
-    /** @var ?string */
-    private $prefix;
+    private ?string $prefix = null;
 
     private function __construct(?string $prefix)
     {

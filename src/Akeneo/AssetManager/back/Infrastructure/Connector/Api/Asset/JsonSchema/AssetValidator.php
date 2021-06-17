@@ -23,11 +23,9 @@ use Akeneo\AssetManager\Domain\Model\AssetFamily\AssetFamilyIdentifier;
  */
 class AssetValidator
 {
-    /** @var AssetPropertiesValidator */
-    private $assetPropertiesValidator;
+    private AssetPropertiesValidator $assetPropertiesValidator;
 
-    /** @var AssetValuesValidator */
-    private $assetValuesValidator;
+    private AssetValuesValidator $assetValuesValidator;
 
     public function __construct(AssetPropertiesValidator $assetPropertiesValidator, AssetValuesValidator $assetValuesValidator)
     {

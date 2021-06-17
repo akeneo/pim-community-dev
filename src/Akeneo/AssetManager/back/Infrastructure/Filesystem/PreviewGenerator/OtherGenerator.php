@@ -32,8 +32,7 @@ class OtherGenerator implements PreviewGeneratorInterface
         PreviewGeneratorRegistry::PREVIEW_TYPE => 'am_binary_image_preview'
     ];
 
-    /** @var DefaultImageProviderInterface  */
-    private $defaultImageProvider;
+    private DefaultImageProviderInterface $defaultImageProvider;
 
     public function __construct(DefaultImageProviderInterface $defaultImageProvider)
     {

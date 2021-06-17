@@ -25,8 +25,7 @@ class RawTargetExist extends Constraint
     public const ATTRIBUTE_NOT_FOUND_ERROR = 'pim_asset_manager.asset_family.validation.transformation.attribute_reference_should_exist';
     public const NOT_MEDIA_FILE_ATTRIBUTE_ERROR = 'pim_asset_manager.asset_family.validation.transformation.target_should_be_media_file';
 
-    /** @var AssetFamilyIdentifier */
-    private $assetFamilyIdentifier;
+    private AssetFamilyIdentifier $assetFamilyIdentifier;
 
     public function __construct(AssetFamilyIdentifier $assetFamilyIdentifier)
     {

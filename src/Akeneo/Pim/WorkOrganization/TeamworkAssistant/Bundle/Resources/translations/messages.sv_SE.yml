@@ -8,6 +8,7 @@ teamwork_assistant:
     project_calculation:
       error: Projektets beräkning för <strong>%project_label%</strong> misslyckades
       warning: Projektets beräkning för <strong>%project_label%</strong> slutade med några varningar
+      success: I projektet <strong>%project_label%</strong> är klar och bidragsgivarna meddelas. Låt oss börja!
       start: Start
     message: Du har nya produkter att berika för "%project_label%". Due date är "%due_date%".
     project_finished:
@@ -15,9 +16,9 @@ teamwork_assistant:
       show: Visa
     due_date:
       contributor: Du är %percent%% av produkten gjort med %project_label%. Glöm inte att fylla i de senaste produkterna för %due_date%.
-      owner: '%project_label% för %due_date% är inte 100% klart.'
       start: Start
   datagrid:
+    project_completeness: Projektstatus
     contributor_todo: Att-göra
     contributor_in_progress: Pågående
     contributor_done: Slutförd

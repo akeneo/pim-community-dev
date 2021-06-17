@@ -18,8 +18,7 @@ use Akeneo\AssetManager\Integration\SqlIntegrationTestCase;
 
 class SqlFindAssetFamilyPermissionsDetailsTest extends SqlIntegrationTestCase
 {
-    /** @var FindAssetFamilyPermissionsDetailsInterface */
-    private $query;
+    private FindAssetFamilyPermissionsDetailsInterface $query;
 
     public function setUp(): void
     {
@@ -133,9 +132,7 @@ SQL;
         array $actualPermissionsDetails
     ): void {
         $actualNormalizedPermissionDetails = array_map(
-            function (PermissionDetails $permissionDetails) {
-                return $permissionDetails->normalize();
-            },
+            fn (PermissionDetails $permissionDetails) => $permissionDetails->normalize(),
             $actualPermissionsDetails
         );
         $this->assertEquals($expectedNormalizedPermissionsDetails, $actualNormalizedPermissionDetails);

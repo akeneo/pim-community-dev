@@ -31,17 +31,13 @@ use Symfony\Component\Security\Core\Authentication\Token\Storage\TokenStorageInt
  */
 class ExecuteNamingConventionAction
 {
-    /** @var ExecuteAssetFamilyNamingConventionHandler */
-    private $executeAssetFamilyNamingConventionHandler;
+    private ExecuteAssetFamilyNamingConventionHandler $executeAssetFamilyNamingConventionHandler;
 
-    /** @var CanEditAssetFamilyQueryHandler */
-    private $canEditAssetFamilyQueryHandler;
+    private CanEditAssetFamilyQueryHandler $canEditAssetFamilyQueryHandler;
 
-    /** @var SecurityFacade */
-    private $securityFacade;
+    private SecurityFacade $securityFacade;
 
-    /** @var TokenStorageInterface */
-    private $tokenStorage;
+    private TokenStorageInterface $tokenStorage;
 
     public function __construct(
         ExecuteAssetFamilyNamingConventionHandler $executeAssetFamilyNamingConventionHandler,

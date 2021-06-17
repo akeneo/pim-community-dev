@@ -8,9 +8,11 @@ pim_datagrid:
   no_entities:
     proposal: Es gibt keinen Vorschlag zu prüfen.
     product_draft: Es gibt keinen Produktentwurf zu überprüfen.
+  no_entities.published product: Kein veröffentlichtes Produkt gefunden
   no_results:
     proposal: Es gibt keinen Vorschlag zu prüfen. Versuchen Sie, Ihre Suchkriterien zu ändern.
     product_draft: Es gibt keinen Produktentwurf zum überprüfen. Versuchen Sie, Ihre Suchkriterien zu ändern.
+  no_results.published product: Leider gibt es kein veröffentlichtes Produkt für Ihre Suche.
   workflow:
     partial_approve: Änderungen am Attribut {{ attribute }} des Produkts {{ product }} genehmigen
     partial_reject: Änderungen am Attribut {{ attribute }} des Produkts {{ product }} ablehnen
@@ -48,6 +50,7 @@ pimee_workflow:
         original_product: Arbeitskopie bearbeiten
     proposal:
       modal.title: Kommentar hinterlassen (optional - max. 255 Zeichen)
+    removing_error: Entitäten, die mit veröffentlichten Produkten verbunden sind, können nicht entfernt werden.
   proposal:
     overview: "] -Inf, 1] {{ count }} Vorschlag|] 1, Inf [{{ count }} Vorschläge"
     selected: "]-Inf, 1]{{ count }} Vorschlag ausgewählt|]1, Inf[{{ count }} Vorschläge ausgewählt"

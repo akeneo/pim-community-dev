@@ -52,14 +52,11 @@ use Webmozart\Assert\Assert;
 
 class SqlFindTransformationAssetsByIdentifiersTest extends SqlIntegrationTestCase
 {
-    /** @var AssetRepositoryInterface */
-    private $repository;
+    private AssetRepositoryInterface $repository;
 
-    /** @var FindTransformationAssetsByIdentifiersInterface */
-    private $findTransformationAssetsQuery;
+    private FindTransformationAssetsByIdentifiersInterface $findTransformationAssetsQuery;
 
-    /** @var SaverInterface */
-    private $fileInfoSaver;
+    private SaverInterface $fileInfoSaver;
 
     protected function setUp(): void
     {

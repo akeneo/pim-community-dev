@@ -24,7 +24,7 @@ use Akeneo\AssetManager\Domain\Query\Attribute\Connector\FindConnectorAttributeO
 class InMemoryFindConnectorAttributeOptions implements FindConnectorAttributeOptionsInterface
 {
     /** @var ConnectorAttribute[] */
-    private $attributes;
+    private array $attributes;
 
     public function __construct()
     {

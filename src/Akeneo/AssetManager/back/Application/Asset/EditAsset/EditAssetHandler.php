@@ -28,14 +28,11 @@ use Akeneo\Tool\Component\FileStorage\File\FileStorerInterface;
  */
 class EditAssetHandler
 {
-    /** @var ValueUpdaterRegistryInterface  */
-    private $valueUpdaterRegistry;
+    private ValueUpdaterRegistryInterface $valueUpdaterRegistry;
 
-    /** @var AssetRepositoryInterface */
-    private $assetRepository;
+    private AssetRepositoryInterface $assetRepository;
 
-    /** @var FileStorerInterface */
-    private $storer;
+    private FileStorerInterface $storer;
 
     public function __construct(
         ValueUpdaterRegistryInterface $valueUpdaterRegistry,
@@ -65,9 +62,8 @@ class EditAssetHandler
     {
         $assetFamilyIdentifier = AssetFamilyIdentifier::fromString($editAssetCommand->assetFamilyIdentifier);
         $code = AssetCode::fromString($editAssetCommand->code);
-        $asset = $this->assetRepository->getByAssetFamilyAndCode($assetFamilyIdentifier, $code);
 
-        return $asset;
+        return $this->assetRepository->getByAssetFamilyAndCode($assetFamilyIdentifier, $code);
     }
 
     private function editValues(Asset $asset, EditAssetCommand $editAssetCommand): void

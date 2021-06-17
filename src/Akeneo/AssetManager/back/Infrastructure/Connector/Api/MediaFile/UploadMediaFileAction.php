@@ -29,11 +29,9 @@ use Symfony\Component\Routing\RouterInterface;
  */
 class UploadMediaFileAction
 {
-    /** @var FileStorerInterface */
-    private $fileStorer;
+    private FileStorerInterface $fileStorer;
 
-    /** @var RouterInterface */
-    private $router;
+    private RouterInterface $router;
 
     public function __construct(FileStorerInterface $fileStorer, RouterInterface $router)
     {
@@ -48,7 +46,7 @@ class UploadMediaFileAction
         }
 
         if (preg_match(
-            '/[' . preg_quote('& \ + * ? [ ^ ] $ ( ) { } = ! < > | : - # @ ;') . ']/',
+            '/[' . preg_quote('& \ + * ? [ ^ ] $ ( ) { } = ! < > | : - # @ ;', '/') . ']/',
             $request->files->get('file')->getClientOriginalExtension())
         ) {
             throw new UnprocessableEntityHttpException('File extension cannot contain special characters.');

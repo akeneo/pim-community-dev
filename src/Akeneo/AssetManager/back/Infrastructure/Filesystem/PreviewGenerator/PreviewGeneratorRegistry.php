@@ -22,7 +22,7 @@ use Akeneo\AssetManager\Domain\Model\Attribute\AbstractAttribute;
 class PreviewGeneratorRegistry implements PreviewGeneratorInterface
 {
     /** @var PreviewGeneratorInterface[] */
-    private $previewGenerators;
+    private ?array $previewGenerators = null;
 
     public const THUMBNAIL_TYPE = 'thumbnail';
     public const THUMBNAIL_SMALL_TYPE = 'thumbnail_small';

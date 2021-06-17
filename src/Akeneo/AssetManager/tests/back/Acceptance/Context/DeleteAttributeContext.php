@@ -24,14 +24,11 @@ use Behat\Behat\Context\Context;
 
 class DeleteAttributeContext implements Context
 {
-    /** @var EditAttributeHandler */
-    private $editAttributeHandler;
+    private EditAttributeHandler $editAttributeHandler;
 
-    /** @var GetAttributeIdentifierInterface */
-    private $getAttributeIdentifier;
+    private GetAttributeIdentifierInterface $getAttributeIdentifier;
 
-    /** @var DeleteAttributeHandler */
-    private $deleteAttributeHandler;
+    private DeleteAttributeHandler $deleteAttributeHandler;
 
     public function __construct(
         EditAttributeHandler $editAttributeHandler,

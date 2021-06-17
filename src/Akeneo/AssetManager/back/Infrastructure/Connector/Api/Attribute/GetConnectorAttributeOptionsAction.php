@@ -23,17 +23,13 @@ use Symfony\Component\HttpKernel\Exception\UnprocessableEntityHttpException;
 
 class GetConnectorAttributeOptionsAction
 {
-    /** @var FindConnectorAttributeOptionsInterface */
-    private $findConnectorAttributeOptionsQuery;
+    private FindConnectorAttributeOptionsInterface $findConnectorAttributeOptionsQuery;
 
-    /** @var AssetFamilyExistsInterface */
-    private $assetFamilyExists;
+    private AssetFamilyExistsInterface $assetFamilyExists;
 
-    /** @var AttributeExistsInterface */
-    private $attributeExists;
+    private AttributeExistsInterface $attributeExists;
 
-    /** @var AttributeSupportsOptions */
-    private $attributeSupportsOptions;
+    private AttributeSupportsOptions $attributeSupportsOptions;
 
     public function __construct(
         FindConnectorAttributeOptionsInterface $findConnectorAttributeOptionsQuery,
@@ -61,7 +57,7 @@ class GetConnectorAttributeOptionsAction
 
         $assetFamilyExists = $this->assetFamilyExists->withIdentifier($assetFamilyIdentifier);
 
-        if (false === $assetFamilyExists) {
+        if (!$assetFamilyExists) {
             throw new NotFoundHttpException(sprintf('Asset family "%s" does not exist.', $assetFamilyIdentifier));
         }
 
@@ -73,7 +69,7 @@ class GetConnectorAttributeOptionsAction
 
         $attributeExists = $this->attributeExists->withAssetFamilyAndCode($assetFamilyIdentifier, $attributeCode);
 
-        if (false === $attributeExists) {
+        if (!$attributeExists) {
             throw new NotFoundHttpException(sprintf(
                 'Attribute "%s" does not exist for asset family "%s".',
                 (string) $attributeCode,
@@ -83,7 +79,7 @@ class GetConnectorAttributeOptionsAction
 
         $attributeSupportsOptions = $this->attributeSupportsOptions->supports($assetFamilyIdentifier, $attributeCode);
 
-        if (false === $attributeSupportsOptions) {
+        if (!$attributeSupportsOptions) {
             throw new NotFoundHttpException(sprintf('Attribute "%s" does not support options.', $attributeCode));
         }
 

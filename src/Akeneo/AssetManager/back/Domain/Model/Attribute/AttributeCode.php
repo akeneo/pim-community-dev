@@ -25,8 +25,7 @@ class AttributeCode
     public const REGEX = '/^[a-zA-Z0-9_]+$/';
     public const MAX_LENGTH = 255;
 
-    /** @var string */
-    private $code;
+    private string $code;
 
     private function __construct(string $code)
     {

@@ -21,7 +21,7 @@
             "Akeneo\\Platform\\CommunicationChannel\\": "vendor/akeneo/pim-community-dev/src/Akeneo/Platform/Bundle/CommunicationChannelBundle/back",
             "Akeneo\\Pim\\Automation\\DataQualityInsights\\": ["src/Akeneo/Pim/Automation/DataQualityInsights/back", "vendor/akeneo/pim-community-dev/src/Akeneo/Pim/Automation/DataQualityInsights/back"],
             "AkeneoEnterprise\\Connectivity\\Connection\\": "src/Akeneo/Connectivity/Connection/back",
-            "Akeneo\\Pim\\TrialEdition\\": "src/Akeneo/TrialEdition/back"
+            "Akeneo\\FreeTrial\\": ["src/Akeneo/FreeTrial/back", "vendor/akeneo/pim-community-dev/src/Akeneo/FreeTrial/back"]
         },
         "exclude-from-classmap": [
             "vendor/akeneo/pim-community-dev/src/Kernel.php"
@@ -90,8 +90,8 @@
         "sensiolabs/behat-page-object-extension": "2.1.0",
         "friends-of-behat/symfony-extension": "^2.0",
         "liuggio/fastest": "1.8.*",
-        "phpstan/phpstan": "^0.12.25",
-        "phpstan/phpstan-symfony": "^0.12.6",
+        "phpstan/phpstan": "^0.12",
+        "phpstan/phpstan-symfony": "^0.12",
         "mcustiel/phiremock": "2.1.1",
         "phpstan/phpstan-webmozart-assert": "^0.12.7",
         "jfcherng/php-diff": "^6.10"

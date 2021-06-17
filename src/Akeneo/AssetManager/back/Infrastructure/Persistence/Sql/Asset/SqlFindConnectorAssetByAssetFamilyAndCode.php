@@ -29,17 +29,13 @@ use Doctrine\DBAL\Types\Type;
  */
 class SqlFindConnectorAssetByAssetFamilyAndCode implements FindConnectorAssetByAssetFamilyAndCodeInterface
 {
-    /** @var Connection */
-    private $connection;
+    private Connection $connection;
 
-    /** @var FindValueKeyCollectionInterface */
-    private $findValueKeyCollection;
+    private FindValueKeyCollectionInterface $findValueKeyCollection;
 
-    /** @var FindAttributesIndexedByIdentifierInterface */
-    private $findAttributesIndexedByIdentifier;
+    private FindAttributesIndexedByIdentifierInterface $findAttributesIndexedByIdentifier;
 
-    /** @var ConnectorAssetHydrator */
-    private $assetHydrator;
+    private ConnectorAssetHydrator $assetHydrator;
 
     public function __construct(
         Connection $connection,
@@ -60,7 +56,9 @@ class SqlFindConnectorAssetByAssetFamilyAndCode implements FindConnectorAssetByA
                 identifier, 
                 code, 
                 asset_family_identifier, 
-                value_collection
+                value_collection,
+                created_at,
+                updated_at
             FROM akeneo_asset_manager_asset
             WHERE 
                 code = :code AND asset_family_identifier = :asset_family_identifier;

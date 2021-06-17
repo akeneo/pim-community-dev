@@ -12,7 +12,7 @@ import {
   Dropdown,
   MoreIcon,
 } from 'akeneo-design-system';
-import {useTranslate, Section, ValidationError} from '@akeneo-pim-community/shared';
+import {useTranslate, Section, ValidationError, useSecurity} from '@akeneo-pim-community/shared';
 import {AssetFamilyBreadcrumb} from 'akeneoassetmanager/application/component/app/breadcrumb';
 import Header from 'akeneoassetmanager/application/component/asset-family/edit/header';
 import {AssetFamily, getAssetFamilyLabel} from 'akeneoassetmanager/domain/model/asset-family/asset-family';
@@ -37,7 +37,6 @@ import namingConventionSchema from 'akeneoassetmanager/infrastructure/model/asse
 import productLinkRulesSchema from 'akeneoassetmanager/infrastructure/model/asset-family/product-link-rules.schema.json';
 
 const ajv = new Ajv({allErrors: true, verbose: true});
-const securityContext = require('pim/security-context');
 
 interface StateProps {
   form: EditionFormState;
@@ -48,10 +47,7 @@ interface StateProps {
   errors: ValidationError[];
   rights: {
     assetFamily: {
-      edit_naming_convention: boolean;
-      edit_product_link_rules: boolean;
-      execute_product_link_rules: boolean;
-      execute_naming_conventions: boolean;
+      edit: boolean;
     };
   };
 }
@@ -201,6 +197,7 @@ interface DispatchProps {
 
 const ProductLinkRule = ({assetFamily, context, form, errors, events, rights}: StateProps & DispatchProps) => {
   const translate = useTranslate();
+  const {isGranted} = useSecurity();
   const [isExecuteRulesModalOpen, openExecuteRulesModal, closeExecuteRulesModal] = useBooleanState();
   const [
     isExecuteNamingConventionModalOpen,
@@ -209,13 +206,30 @@ const ProductLinkRule = ({assetFamily, context, form, errors, events, rights}: S
   ] = useBooleanState();
   const assetFamilyLabel = getAssetFamilyLabel(assetFamily, context.locale);
 
+  const canEditNamingConvention =
+    isGranted('akeneo_assetmanager_asset_family_edit') &&
+    isGranted('akeneo_assetmanager_asset_family_manage_product_link_rule') &&
+    rights.assetFamily.edit;
+  const canEditProductLinkRules =
+    isGranted('akeneo_assetmanager_asset_family_edit') &&
+    isGranted('akeneo_assetmanager_asset_family_manage_product_link_rule') &&
+    rights.assetFamily.edit;
+  const canExecuteProductLinkRules =
+    isGranted('akeneo_assetmanager_asset_family_edit') &&
+    isGranted('akeneo_assetmanager_asset_family_execute_product_link_rule') &&
+    rights.assetFamily.edit;
+  const canExecuteNamingConvention =
+    isGranted('akeneo_assetmanager_asset_family_edit') &&
+    isGranted('akeneo_assetmanager_asset_family_execute_naming_conventions') &&
+    rights.assetFamily.edit;
+
   return (
     <>
       <Header
         label={translate('pim_asset_manager.asset_family.tab.product_link_rules')}
         image={null}
         primaryAction={(defaultFocus: React.RefObject<any>) =>
-          rights.assetFamily.edit_naming_convention ? (
+          canEditNamingConvention ? (
             <Button onClick={events.onSaveEditForm} ref={defaultFocus}>
               {translate('pim_asset_manager.asset_family.button.save')}
             </Button>
@@ -223,9 +237,9 @@ const ProductLinkRule = ({assetFamily, context, form, errors, events, rights}: S
         }
         secondaryActions={
           <SecondaryActions
-            canExecuteRules={rights.assetFamily.execute_product_link_rules}
+            canExecuteRules={canExecuteProductLinkRules}
             onExecuteRules={openExecuteRulesModal}
-            canExecuteNamingConvention={rights.assetFamily.execute_naming_conventions}
+            canExecuteNamingConvention={canExecuteNamingConvention}
             onExecuteNamingConvention={openExecuteNamingConventionModal}
           />
         }
@@ -255,7 +269,7 @@ const ProductLinkRule = ({assetFamily, context, form, errors, events, rights}: S
           namingConvention={assetFamily.namingConvention}
           errors={errors}
           onAssetFamilyNamingConventionChange={events.onAssetFamilyNamingConventionUpdated}
-          editMode={rights.assetFamily.edit_naming_convention}
+          editMode={canEditNamingConvention}
         />
       </Section>
       <Section>
@@ -278,7 +292,7 @@ const ProductLinkRule = ({assetFamily, context, form, errors, events, rights}: S
           onAssetFamilyProductLinkRulesChange={(productLinkRules: ProductLinkRuleCollection) => {
             events.onAssetFamilyProductLinkRulesUpdated(productLinkRules);
           }}
-          editMode={rights.assetFamily.edit_product_link_rules}
+          editMode={canEditProductLinkRules}
         />
       </Section>
       {isExecuteRulesModalOpen && (
@@ -326,22 +340,7 @@ export default connect(
       errors: state.form.errors,
       rights: {
         assetFamily: {
-          edit_naming_convention:
-            securityContext.isGranted('akeneo_assetmanager_asset_family_edit') &&
-            securityContext.isGranted('akeneo_assetmanager_asset_family_manage_product_link_rule') &&
-            canEditAssetFamily(state.right.assetFamily, state.form.data.identifier),
-          edit_product_link_rules:
-            securityContext.isGranted('akeneo_assetmanager_asset_family_edit') &&
-            securityContext.isGranted('akeneo_assetmanager_asset_family_manage_product_link_rule') &&
-            canEditAssetFamily(state.right.assetFamily, state.form.data.identifier),
-          execute_product_link_rules:
-            securityContext.isGranted('akeneo_assetmanager_asset_family_edit') &&
-            securityContext.isGranted('akeneo_assetmanager_asset_family_execute_product_link_rule') &&
-            canEditAssetFamily(state.right.assetFamily, state.form.data.identifier),
-          execute_naming_conventions:
-            securityContext.isGranted('akeneo_assetmanager_asset_family_edit') &&
-            securityContext.isGranted('akeneo_assetmanager_asset_family_execute_naming_conventions') &&
-            canEditAssetFamily(state.right.assetFamily, state.form.data.identifier),
+          edit: canEditAssetFamily(state.right.assetFamily, state.form.data.identifier),
         },
       },
     };

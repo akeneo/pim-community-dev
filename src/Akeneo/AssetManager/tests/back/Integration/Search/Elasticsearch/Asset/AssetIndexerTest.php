@@ -54,8 +54,7 @@ class AssetIndexerTest extends SearchIntegrationTestCase
     private const STARK_ASSET_IDENTIFIER = 'stark_designer_fingerprint';
     private const COCO_ASSET_IDENTIFIER = 'coco_designer_fingerprint';
 
-    /** @var AssetIndexerInterface */
-    private $assetIndexer;
+    private AssetIndexerInterface $assetIndexer;
 
     /** * @var IndexAssetEventAggregator */
     private $indexAssetsEventAggregator;
