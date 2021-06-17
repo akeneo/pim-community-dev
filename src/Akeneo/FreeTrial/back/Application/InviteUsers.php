@@ -6,6 +6,7 @@ namespace Akeneo\FreeTrial\Application;
 
 use Akeneo\FreeTrial\Domain\API\InviteUserAPI;
 use Akeneo\FreeTrial\Domain\Model\InvitedUser;
+use Akeneo\FreeTrial\Domain\Model\InviteUsersAcknowledge;
 use Akeneo\FreeTrial\Domain\Repository\InvitedUserRepository;
 use Akeneo\FreeTrial\Domain\ValueObject\InvitedUserStatus;
 
@@ -13,7 +14,7 @@ use Akeneo\FreeTrial\Domain\ValueObject\InvitedUserStatus;
  * @copyright 2021 Akeneo SAS (http://www.akeneo.com)
  * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
  */
-class InviteUser
+class InviteUsers
 {
     private InviteUserAPI $inviteUserAPI;
 
@@ -25,11 +26,17 @@ class InviteUser
         $this->invitedUserRepository = $invitedUserRepository;
     }
 
-    public function __invoke(string $email): void
+    public function __invoke(array $emails): InviteUsersAcknowledge
     {
-        $user = new InvitedUser($email, InvitedUserStatus::invited());
+        $acknowledge = new InviteUsersAcknowledge();
+        foreach ($emails as $email) {
+            $user = new InvitedUser($email, InvitedUserStatus::invited());
 
-        $this->inviteUserAPI->inviteUser($email);
-        $this->invitedUserRepository->save($user);
+            $this->inviteUserAPI->inviteUser($email);
+            $this->invitedUserRepository->save($user);
+            $acknowledge->success();
+        }
+
+        return $acknowledge;
     }
 }

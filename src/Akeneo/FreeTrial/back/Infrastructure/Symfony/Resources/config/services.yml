@@ -1,5 +1,5 @@
 services:
-  Akeneo\FreeTrial\Application\InviteUser:
+  Akeneo\FreeTrial\Application\InviteUsers:
     arguments:
       - '@Akeneo\FreeTrial\Domain\API\InviteUserAPI'
       - '@Akeneo\FreeTrial\Domain\Repository\InvitedUserRepository'

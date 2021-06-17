@@ -8,5 +8,5 @@ services:
   Akeneo\FreeTrial\Infrastructure\Controller\SaveUsersController:
     public: true
     arguments:
-      - '@Akeneo\FreeTrial\Application\InviteUser'
+      - '@Akeneo\FreeTrial\Application\InviteUsers'
       - '@akeneo.free_trial.feature'
