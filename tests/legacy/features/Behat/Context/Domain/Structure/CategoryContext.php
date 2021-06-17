@@ -111,19 +111,10 @@ final class CategoryContext extends PimContext
     {
         /** @var NodeElement $tab */
         $tab = $this->spin(function () use ($tabName) {
-            $tabList = $this->getCurrentPage()->find('css', 'div[role=tablist]');
-            if (!$tabList) {
-                return false;
-            }
-
-            return $tabList->find('named', ['content', $tabName]);
+            return $this->getCurrentPage()->find('css', 'div[role=tab]:contains('.$tabName.')');
         }, sprintf('Tab "%s" not found', $tabName));
 
-        $this->spin(function () use ($tab, $tabName) {
-            $tab->click();
-
-            return $tab->getAttribute('aria-selected') === 'true';
-        }, sprintf('Can not open the "%s" tab', $tabName));
+        $tab->click();
     }
 
     /**
