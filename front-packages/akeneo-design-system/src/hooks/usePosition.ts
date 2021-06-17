@@ -20,6 +20,8 @@ const useVerticalPosition = (ref: RefObject<HTMLElement>, forcedPosition?: Verti
       const elementIsOverlappingBottom = distanceToBottom < 0;
       const elementIsOverlappingTop = distanceToTop < 0;
 
+      console.log("vertical", distanceToBottom, distanceToTop);
+
       setVerticalPosition(elementIsOverlappingBottom ? (elementIsOverlappingTop ? 'down' : 'up') : 'down');
     }
   }, [forcedPosition]);
@@ -39,6 +41,10 @@ const useHorizontalPosition = (ref: RefObject<HTMLElement>, forcedPosition?: Hor
       const {width: elementWidth, left: distanceToLeft} = ref.current.getBoundingClientRect();
       const windowWidth = window.innerWidth;
       const distanceToRight = windowWidth - (elementWidth + distanceToLeft);
+
+      console.log("horizontal", windowWidth, elementWidth, distanceToLeft);
+      console.log("horizontal", distanceToLeft);
+      console.log("horizontal", distanceToRight);
 
       setHorizontalPosition(distanceToLeft > distanceToRight ? 'left' : 'right');
     }

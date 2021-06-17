@@ -1,4 +1,4 @@
-import React, {ReactNode, useRef, useState, useEffect} from 'react';
+import React, {ReactNode, useRef, useState, useEffect, RefObject} from 'react';
 import styled, {css} from 'styled-components';
 import {Key, Override} from '../../../shared';
 import {
@@ -8,15 +8,18 @@ import {
   useVerticalPosition,
   VerticalPosition,
 } from '../../../hooks';
-import {AkeneoThemedProps, getColor} from '../../../theme';
+import {AkeneoThemedProps, CommonStyle, getColor} from '../../../theme';
+import {createPortal} from "react-dom";
 
 const Container = styled.div<
   {
     visible: boolean;
     verticalPosition: VerticalPosition;
     horizontalPosition: HorizontalPosition;
+    parentRect: DOMRect
   } & AkeneoThemedProps
 >`
+  ${CommonStyle}
   background: ${getColor('white')};
   box-shadow: 0 0 4px 0 rgba(0, 0, 0, 0.3);
   padding: 10px 0;
@@ -27,21 +30,21 @@ const Container = styled.div<
   transition: opacity 0.15s ease-in-out;
   z-index: 11;
 
-  ${({verticalPosition}) =>
+  ${({verticalPosition, parentRect}) =>
     'up' === verticalPosition
       ? css`
-          bottom: -1px;
+          bottom: ${parentRect.top + parentRect.height}px;
         `
       : css`
-          top: -1px;
+          top: ${parentRect.top}px;
         `}
-  ${({horizontalPosition}) =>
+  ${({horizontalPosition, parentRect}) =>
     'left' === horizontalPosition
       ? css`
-          right: -1px;
+          right: ${parentRect.left + parentRect.width}px;
         `
       : css`
-          left: -1px;
+          left: ${parentRect.left}px;
         `};
 `;
 
@@ -59,6 +62,9 @@ type OverlayProps = Override<
     onClose: () => void;
 
     children: ReactNode;
+
+    /** @private */
+    parentRef?: RefObject<HTMLDivElement>;
   }
 >;
 
@@ -71,8 +77,11 @@ const Backdrop = styled.div<{isOpen: boolean} & AkeneoThemedProps>`
   z-index: 10;
 `;
 
-const Overlay = ({verticalPosition, onClose, children, ...rest}: OverlayProps) => {
-  const overlayRef = useRef<HTMLDivElement>(null);
+const Overlay = ({verticalPosition, parentRef, onClose, children, ...rest}: OverlayProps) => {
+  const portalNode = document.createElement('div');
+  portalNode.setAttribute('id', 'dropdown-root');
+  const overlayRef = useRef<HTMLDivElement>(portalNode);
+
   verticalPosition = useVerticalPosition(overlayRef, verticalPosition);
   const horizontalPosition = useHorizontalPosition(overlayRef);
   const [visible, setVisible] = useState<boolean>(false);
@@ -80,21 +89,31 @@ const Overlay = ({verticalPosition, onClose, children, ...rest}: OverlayProps) =
 
   useEffect(() => {
     setVisible(true);
+    document.body.appendChild(overlayRef.current);
+
+    return () => {
+      document.body.removeChild(overlayRef.current);
+    };
   }, []);
 
-  return (
+  if (undefined === parentRef || null === parentRef.current) {
+    return null;
+  }
+
+  return createPortal(
     <>
       <Backdrop data-testid="backdrop" onClick={onClose} />
       <Container
-        ref={overlayRef}
         visible={visible}
+        parentRect={parentRef.current.getBoundingClientRect()}
         horizontalPosition={horizontalPosition}
         verticalPosition={verticalPosition}
         {...rest}
       >
         {children}
       </Container>
-    </>
+    </>,
+    overlayRef.current
   );
 };
 
