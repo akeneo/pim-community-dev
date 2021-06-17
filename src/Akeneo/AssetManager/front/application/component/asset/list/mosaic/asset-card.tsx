@@ -1,6 +1,6 @@
 import React, {useCallback, useEffect, useState} from 'react';
 import {Context} from 'akeneoassetmanager/domain/model/context';
-import {getAssetEditUrl, getMediaPreviewUrl} from 'akeneoassetmanager/tools/media-url-generator';
+import {getMediaPreviewUrl} from 'akeneoassetmanager/tools/media-url-generator';
 import ListAsset, {
   assetHasCompleteness,
   getAssetLabel,
@@ -13,6 +13,7 @@ import {emptyMediaPreview} from 'akeneoassetmanager/domain/model/asset/media-pre
 import {Card, Link} from 'akeneo-design-system';
 import {CompletenessBadge} from 'akeneoassetmanager/application/component/app/completeness';
 import Completeness from 'akeneoassetmanager/domain/model/asset/completeness';
+import {useRouter} from '@akeneo-pim-community/shared';
 
 type AssetCardProps = {
   asset: ListAsset;
@@ -33,12 +34,18 @@ const AssetCard = ({
   assetWithLink = false,
   onClick,
 }: AssetCardProps) => {
+  const router = useRouter();
   const [url, setUrl] = useState<string | null>(null);
-  const imageUrl = getMediaPreviewUrl(getListAssetMainMediaThumbnail(asset, context.channel, context.locale));
+  const imageUrl = getMediaPreviewUrl(router, getListAssetMainMediaThumbnail(asset, context.channel, context.locale));
   const [, , refreshedUrl] = useRegenerate(imageUrl);
-  const emptyMediaUrl = getMediaPreviewUrl(emptyMediaPreview());
-  const assetEditUrl = getAssetEditUrl(asset);
+  const emptyMediaUrl = getMediaPreviewUrl(router, emptyMediaPreview());
   const assetLabel = getAssetLabel(asset, context.locale);
+
+  const assetEditUrl = router.generate('akeneo_asset_manager_asset_edit', {
+    assetFamilyIdentifier: asset.assetFamilyIdentifier,
+    assetCode: asset.code,
+    tab: 'enrich',
+  });
 
   let isDisplayed = true;
   useEffect(() => {
@@ -82,7 +89,7 @@ const AssetCard = ({
           <CompletenessBadge completeness={Completeness.createFromNormalized(asset.completeness)} />
         </Card.BadgeContainer>
       )}
-      {assetWithLink && undefined !== onClick ? <Link href={assetEditUrl}>{assetLabel}</Link> : assetLabel}
+      {assetWithLink && undefined !== onClick ? <Link href={`#${assetEditUrl}`}>{assetLabel}</Link> : assetLabel}
     </Card>
   );
 };

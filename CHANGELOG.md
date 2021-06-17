@@ -50,6 +50,10 @@
 - PIM-9871: Fix Published Product Grid takes long time to load for high number of attribute usable in grid
 - PIM-9874: Fix slow SQL query when many assets are linked to products when getting products through API
 - PIM-9879: Fix notification link when a proposal on a product model was accepted or rejected 
+- PIM-9897: Simultaneous different mass publish jobs create Deadlock issue
+- PIM-9912: Exception is not caught at the beginning of rules execution
+- PIM-9704: Disable possibility to have media link with unauthorized protocol for security propose
+- PIM-9913: Fix very long loading of the proposal page
 
 ## Improvements
 

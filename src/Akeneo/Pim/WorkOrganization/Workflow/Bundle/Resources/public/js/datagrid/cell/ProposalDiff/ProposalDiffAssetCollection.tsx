@@ -18,6 +18,7 @@ import {MediaTypes} from 'akeneoassetmanager/domain/model/attribute/type/media-l
 import {isDataEmpty} from 'akeneoassetmanager/domain/model/asset/data';
 import {isMediaFileData} from 'akeneoassetmanager/domain/model/asset/data/media-file';
 import {getMediaLinkUrl} from 'akeneoassetmanager/domain/model/asset/data/media-link';
+import {useRouter} from '@akeneo-pim-community/shared';
 
 type AssetFamilyIdentifier = string;
 
@@ -32,6 +33,7 @@ type ProposalDiffAssetCollectionProps = {
 
 const ProposalDiffAssetCollection: React.FC<ProposalDiffAssetCollectionProps> = ({accessor, change, ...rest}) => {
   const [assets, setAssets] = React.useState<(EditionAsset | undefined)[]>(new Array((change[accessor] || []).length));
+  const router = useRouter();
 
   React.useEffect(() => {
     (change[accessor] || []).forEach((assetCode, i) => {
@@ -53,6 +55,7 @@ const ProposalDiffAssetCollection: React.FC<ProposalDiffAssetCollectionProps> = 
         const data = getEditionAssetMediaData(asset, UserContext.get('catalogScope'), UserContext.get('catalogLocale'));
         const label = getEditionAssetLabel(asset, UserContext.get('catalogLocale'));
         const thumbnailUrl = getMediaPreviewUrl(
+          router,
           getEditionAssetMainMediaThumbnail(
             asset,
             UserContext.get('catalogScope'),
@@ -68,7 +71,7 @@ const ProposalDiffAssetCollection: React.FC<ProposalDiffAssetCollectionProps> = 
             isDataEmpty(data)
           )
         ) {
-          downloadUrl = isMediaFileData(data) ? getImageDownloadUrl(data) : getMediaLinkUrl(data, attribute);
+          downloadUrl = isMediaFileData(data) ? getImageDownloadUrl(router, data) : getMediaLinkUrl(data, attribute);
         }
 
         const isDiff =

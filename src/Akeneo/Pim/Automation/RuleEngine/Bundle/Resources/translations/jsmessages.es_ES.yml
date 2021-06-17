@@ -100,22 +100,34 @@ pimee_catalog_rule:
       character_left: "]-Inf, 1]{{ count }} Caracteres restantes|]1, +Inf[{{ count }} Caracteres restantes"
       priority:
         label: Prioridad
+      status:
+        label: Estado
+        enabled: Habilitado
+        disabled: Inhabilitado
       add_to_category: Agregar a la categoría
       add_conditions: Agregar condiciones
       products_count:
+        products: "]-Inf, 1]{{ count }} producto|]1, +Inf[{{ count }} productos"
+        product_models: "]-Inf, 1]{{ count }} modelo de producto|]1, +Inf[{{ count }} modelos de producto"
+        products_and_product_models: "{{ products }} y {{ product_models }}"
         pending: Calculando productos y modelos de productos
         error: Imposible calcular productos y modelos de productos
       product_selection: Selección de producto
       preview: Previsualizar
       fields:
         family: Familia
+        family_variant: Variantes de familia
         category: Categoría
+        identifier: Identificador
         attribute: Atributo
         groups: Grupos
+        parent: Padre
         measurement_unit: Unidad de medida
         measurement_default_unit: "Unidad por defecto ({{ unit }})"
         currency: Moneda
         operator: operador
+        entity_type:
+          label: Tipo de entidad
       execute:
         button: Guardar y ejecutar
         title: Guardar y ejecutar la regla
@@ -153,6 +165,34 @@ pimee_catalog_rule:
           attribute_placeholder: Seleccione su atributo de destino
           select_reference_entity: Seleccione sus entidades de referencia
           select_asset: Seleccione sus activos
+        set_associations:
+          add_group: Añadir un grupo
+          add_product: Añadir un producto
+          add_product_model: Añadir un modelo de producto
+          add_association_type: Añadir un tipo de asociación
+          select_title:
+            products: Seleccione sus productos
+            product_models: Seleccione sus modelos de producto
+            groups: Selecciona tus grupos
+          select:
+            products: Productos
+            product_models: Modelos de producto
+            groups: Grupos
+          counts:
+            products: ']-Inf, 1]{{ count }} producto|]1, +Inf[{{ count }} productos'
+            product_models: ']-Inf, 1]{{ count }} modelo de producto|]1, +Inf[{{ count }} modelos de producto'
+            groups: ']-Inf, 1]{{ count }} grupo|]1, +Inf[{{ count }} grupos'
+        add_associations:
+          title: Agregar asociaciones
+          helper: Para añadir asociaciones, seleccione su(s) tipo(s) de asociación y, a continuación, los productos, modelos de productos o grupos que desea asociar a su selección de productos.
+        clear_attribute:
+          subtitle: Seleccione el atributo a limpiar
+          attribute_label: Atributo
+        clear_associations:
+          title: Limpiar Asociaciones
+          helper: Se eliminarán todas las asociaciones para los productos seleccionados.
+        clear_quantified_associations:
+          helper: Se eliminarán todas las asociaciones cuantificadas para los productos seleccionados.
         remove_category:
           helper: Para eliminar su selección de productos de una o más categorías, comience seleccionando sus árboles de categorías y luego, sus categorías
         remove_attribute_value:
@@ -192,6 +232,10 @@ pimee_catalog_rule:
             choose: Elige tu operador
         concatenate:
           helper: Para concatenar los valores de los atributos, agregue los atributos y, a continuación, seleccione el atributo destino.
+          add_text: Añadir texto
+          add_attribute: Añadir atributo
+          add_new_line: Añadir un salto de línea
+          line_break: Salto de línea
           date_format: Seleccione un formato de fecha
       conditions:
         delete:
@@ -203,11 +247,18 @@ pimee_catalog_rule:
           "DOES NOT CONTAIN": no contiene
           "EMPTY": Está vacío
           "NOT EMPTY": no está vacío
+          "IN": en
+          "NOT IN": no en
+          "IN CHILDREN": en descendiente
+          "NOT IN CHILDREN": no en descendiente
           "UNCLASSIFIED": sin clasificar
           "IN OR UNCLASSIFIED": no está clasificado o en
           "BETWEEN": entre
+          "NOT BETWEEN": no entre
           "=": igual
           "!=": no es igual a
+          ">": mayor que
+          ">=": igual o mayor que
           "<": es inferior a
           "<=": igual o menor que
       notification:
@@ -231,6 +282,7 @@ pimee_catalog_rule:
       add_to_category: Crear una acción
     tree:
       item:
+        selected: Elemento seleccionado
         not_selected: Seleccionar elemento
     date:
       operators:
@@ -241,12 +293,14 @@ pimee_catalog_rule:
         date: Elige una fecha.
         relative_date: Elige una fecha.
         locale: Elegir un local
+        scope: Elija un ámbito
         period: Elija una unidad de tiempo
         open_period: Abrir menú de unidad de tiempo
         date_from: Elija una fecha de inicio
         date_to: Elija una fecha de fin
         date_past: Fecha en el pasado
         date_future: Fecha en el futuro
+        date_present: Ahora
       day: "]-Inf, 1] Día|]1, +Inf[ Días"
       week: "]-Inf, 1] Semana|]1, +Inf[ Semanas"
       month: "]-Inf, 1] Mes|]1, +Inf[ Meses"

@@ -5,8 +5,6 @@ import AssetCard from 'akeneoassetmanager/application/component/asset/list/mosai
 import loadImage from 'akeneoassetmanager/tools/image-loader';
 
 const flushPromises = () => new Promise(setImmediate);
-const routing = require('routing');
-jest.mock('routing');
 
 const asset = {
   code: 'iphone',
@@ -17,6 +15,17 @@ const asset = {
   completeness: {},
 };
 jest.mock('akeneoassetmanager/tools/image-loader');
+
+jest.mock('@akeneo-pim-community/shared/lib/hooks/useRouter', () => ({
+  useRouter: () => {
+    return {
+      redirect: jest.fn(),
+      generate: jest.fn(
+        (route: string, parameters: URLSearchParams) => route + '?' + new URLSearchParams(parameters).toString()
+      ),
+    };
+  },
+}));
 
 loadImage.mockImplementation(
   () =>
@@ -42,7 +51,9 @@ describe('Test Asset create modal component', () => {
 
     const image = screen.getByRole('img') as HTMLImageElement;
 
-    expect(image.src).toEqual('http://localhost/akeneo_asset_manager_image_preview');
+    expect(image.src).toEqual(
+      'http://localhost/akeneo_asset_manager_image_preview?type=thumbnail&attributeIdentifier=nice&data=bXlfaW1hZ2VfdXJs'
+    );
     expect(screen.getByRole('checkbox')).toBeInTheDocument();
     expect(screen.getByRole('checkbox')).toHaveAttribute('aria-checked', 'false');
     expect(screen.getByText(asset.labels.en_US)).toBeInTheDocument();
@@ -65,7 +76,9 @@ describe('Test Asset create modal component', () => {
 
     const image = screen.getByRole('img') as HTMLImageElement;
 
-    expect(image.src).toEqual('http://localhost/akeneo_asset_manager_image_preview');
+    expect(image.src).toEqual(
+      'http://localhost/akeneo_asset_manager_image_preview?type=thumbnail&attributeIdentifier=nice&data=bXlfaW1hZ2VfdXJs'
+    );
     expect(screen.getByRole('checkbox')).toBeInTheDocument();
     expect(screen.getByRole('checkbox')).toHaveAttribute('aria-checked', 'true');
     expect(screen.getByText(asset.labels.en_US)).toBeInTheDocument();
@@ -151,13 +164,9 @@ describe('Test Asset create modal component', () => {
   });
 
   test('It displays nothing if the asset fetch failed', async () => {
-    routing.generate = jest
-      .fn()
-      .mockImplementation((route: string, parameters: any) => route + '?' + new URLSearchParams(parameters).toString());
-
     loadImage.mockImplementation(
-      url =>
-        new Promise((resolve, reject) => {
+      () =>
+        new Promise((_resolve, reject) => {
           act(() => reject());
         })
     );

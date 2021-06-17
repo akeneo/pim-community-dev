@@ -104,6 +104,10 @@ Akeneo\AssetManager\Application\Asset\EditAsset\CommandFactory\EditMediaFileTarg
     constraints:
         - Akeneo\AssetManager\Infrastructure\Validation\Asset\EditMediaFileValueCommand: ~
 
+Akeneo\AssetManager\Application\Asset\EditAsset\CommandFactory\EditMediaLinkValueCommand:
+    constraints:
+        - Akeneo\AssetManager\Infrastructure\Validation\Asset\EditMediaLinkValueCommand: ~
+
 Akeneo\AssetManager\Application\Asset\EditAsset\CommandFactory\EditOptionValueCommand:
     constraints:
         - Akeneo\AssetManager\Infrastructure\Validation\Asset\EditOptionValueCommand: ~

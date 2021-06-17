@@ -142,9 +142,16 @@ services:
             - '@pim_catalog.repository.category'
             - '@oro_security.security_facade'
             - '@translator'
+            - '@pim_internal_api_serializer'
+            - '@pim_catalog.updater.category'
+            - '@validator'
+            - '@pim_enrich.normalizer.violation'
+            - '@pim_enrich.doctrine.counter.category_product'
+            - '@Akeneo\Pim\Enrichment\Bundle\Storage\Sql\Category\CountTreesChildren'
             - { related_entity: published_product, form_type: 'Akeneo\Pim\Enrichment\Bundle\Form\Type\CategoryType', acl: pim_enrich_product, route: pim_enrich }
             - '@pimee_security.repository.category_access'
             - '@security.token_storage'
+            - '@Akeneo\Pim\Enrichment\Bundle\Form\CategoryFormViewNormalizer'
         calls:
             - [ setContainer, [ '@service_container' ] ]
 

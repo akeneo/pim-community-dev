@@ -25,6 +25,10 @@ GOOGLE_STORAGE_lOCATION ?= eu
 REGISTRY ?= eu.gcr.io
 HELM_REPO_PROD := akeneo-charts
 DEPLOYMENTS_INSTANCES_DIR ?= $(PWD)/deployments/instances
+CLOUD_CUSTOMERS_DEV_DIR ?= /root/cloud-customers-dev
+OPERATIONS_TOOLS_DIR ?= /root/operation-tools
+OPERATIONS_TOOLS_BRANCH ?= master
+GRTH_BUCKET ?= growth-edition-dev
 INSTANCE_DIR ?= $(DEPLOYMENTS_INSTANCES_DIR)/$(PFID)
 MYSQL_DISK_SIZE ?= 10
 MYSQL_DISK_DESCRIPTION ?=
@@ -38,7 +42,7 @@ PIM_SRC_DIR_GE ?=
 MAIN_TF_TEMPLATE ?= serenity_instance
 
 ifeq ($(TYPE),grth)
-	PIM_SRC_DIR_GE := gcs::https://www.googleapis.com/storage/v1/akecld-terraform-modules/growth-edition-dev/$(IMAGE_TAG)
+	PIM_SRC_DIR_GE := gcs::https://www.googleapis.com/storage/v1/akecld-terraform-modules/$(GRTH_BUCKET)/$(IMAGE_TAG)
 	MAIN_TF_TEMPLATE := growth_instance
 endif
 
@@ -134,11 +138,11 @@ delete:
 	if [ -f "$(INSTANCE_DIR)/main.tf.json" ]; then \
 		cd $(INSTANCE_DIR) ;\
 		echo "Destroying $(INSTANCE_DIR) ..." ;\
-		TYPE=$(TYPE) INSTANCE_NAME=$(INSTANCE_NAME) TF_INPUT_FALSE=$(TF_INPUT_FALSE) TF_AUTO_APPROVE=$(TF_AUTO_APPROVE) bash $(PWD)/deployments/bin/delete_instance.sh ;\
+		ENV_NAME=$(ENV_NAME) TYPE=$(TYPE) INSTANCE_NAME=$(INSTANCE_NAME) TF_INPUT_FALSE=$(TF_INPUT_FALSE) TF_AUTO_APPROVE=$(TF_AUTO_APPROVE) bash $(PWD)/deployments/bin/delete_instance.sh ;\
 	elif [ -f "$(DEPLOYMENTS_INSTANCES_DIR)/3.2/main.tf" ]; then \
 		cd $(DEPLOYMENTS_INSTANCES_DIR)/3.2 ;\
 		echo "Destroying $(DEPLOYMENTS_INSTANCES_DIR)/3.2 ..." ;\
-		TYPE=$(TYPE) INSTANCE_NAME=$(INSTANCE_NAME) TF_INPUT_FALSE=$(TF_INPUT_FALSE) TF_AUTO_APPROVE=$(TF_AUTO_APPROVE) bash $(PWD)/deployments/bin/delete_instance.sh ;\
+		ENV_NAME=$(ENV_NAME) TYPE=$(TYPE) INSTANCE_NAME=$(INSTANCE_NAME) TF_INPUT_FALSE=$(TF_INPUT_FALSE) TF_AUTO_APPROVE=$(TF_AUTO_APPROVE) bash $(PWD)/deployments/bin/delete_instance.sh ;\
 	fi
 
 .PHONY: delete_clone_flexibility
@@ -172,6 +176,11 @@ ifeq ($(INSTANCE_NAME_PREFIX),pimup32)
 	yq w -i $(INSTANCE_DIR)/values.yaml pim.hook.intermediateUpgrades[+] "v20200401020139"
 endif
 ifeq ($(INSTANCE_NAME),pimci-helpdesk)
+	yq w -i $(INSTANCE_DIR)/values.yaml pim.hook.installPim.enabled true
+	yq w -i $(INSTANCE_DIR)/values.yaml pim.hook.upgradePim.enabled true
+	yq w -i $(INSTANCE_DIR)/values.yaml pim.hook.upgradeES.enabled false
+endif
+ifeq ($(INSTANCE_NAME),pimci-helpdesk-ge)
 	yq w -i $(INSTANCE_DIR)/values.yaml pim.hook.installPim.enabled true
 	yq w -i $(INSTANCE_DIR)/values.yaml pim.hook.upgradePim.enabled true
 	yq w -i $(INSTANCE_DIR)/values.yaml pim.hook.upgradeES.enabled false
@@ -261,11 +270,55 @@ ifeq ($(ACTIVATE_MONITORING),true)
 endif
 endif
 ifeq ($(TYPE),grth)
-	yq w -j -P -i ${INSTANCE_DIR}/main.tf.json 'module.pim.source' "gcs::https://www.googleapis.com/storage/v1/akecld-terraform-modules/growth-edition/$(IMAGE_TAG)/terraform/deployments/terraform"
+	yq w -j -P -i ${INSTANCE_DIR}/main.tf.json 'module.pim.source' "gcs::https://www.googleapis.com/storage/v1/akecld-terraform-modules/$(GRTH_BUCKET)/$(IMAGE_TAG)/terraform"
 ifeq ($(ACTIVATE_MONITORING),true)
-	yq w -j -P -i ${INSTANCE_DIR}/main.tf.json 'module.pim-monitoring.source' "gcs::https://www.googleapis.com/storage/v1/akecld-terraform-modules/growth-edition/$(IMAGE_TAG)/terraform/deployments/terraform/monitoring/"
+	yq w -j -P -i ${INSTANCE_DIR}/main.tf.json 'module.pim-monitoring.source' "gcs::https://www.googleapis.com/storage/v1/akecld-terraform-modules/$(GRTH_BUCKET)/$(IMAGE_TAG)/terraform/monitoring"
 endif
 endif
+
+.PHONY: commit-instance
+commit-instance:
+	git clone git@github.com:akeneo/cloud-customers-dev.git $(CLOUD_CUSTOMERS_DEV_DIR)
+	mkdir -p $(DEPLOYMENTS_INSTANCES_DIR)/$(PFID)
+	IMAGE_TAG=$(IMAGE_TAG) $(MAKE) create-ci-release-files
+	IMAGE_TAG=$(IMAGE_TAG) $(MAKE) change-terraform-source-version
+	GIT_SSH_COMMAND='ssh -i ~/.ssh/id_rsa_1f25f8bb595295f6e2f2972f30d4e966 -o UserKnownHostsFile=~/.ssh/known_hosts -o IdentitiesOnly=Yes' \
+	make deploy
+	git config --global user.email "pim_ci@akeneo.com"
+	git config --global user.name "pim_ci_instance_creation"
+	cd $(CLOUD_CUSTOMERS_DEV_DIR) && git add $(DEPLOYMENTS_INSTANCES_DIR)/$(PFID)
+	cd $(CLOUD_CUSTOMERS_DEV_DIR) && git pull --no-commit && git commit -am "Created instance $(PFID)" && git push
+
+.PHONY: uncommit-instance
+uncommit-instance:
+	git clone git@cloud-customers-dev:akeneo/cloud-customers-dev.git $(CLOUD_CUSTOMERS_DEV_DIR)
+	make delete
+	rm -rf $(DEPLOYMENTS_INSTANCES_DIR)/$(PFID)
+	git config --global user.email "pim_ci@akeneo.com"
+	git config --global user.name "pim_ci_instance_deletion"
+	cd $(CLOUD_CUSTOMERS_DEV_DIR) && git add $(DEPLOYMENTS_INSTANCES_DIR)/$(PFID)
+	cd $(CLOUD_CUSTOMERS_DEV_DIR) && git pull --no-commit && git commit -am "Deleted instance $(PFID)" && git push
+
+.PHONY: upgrade-instance
+upgrade-instance:
+	git clone git@operation-tools:akeneo/operation-tools.git $(OPERATIONS_TOOLS_DIR)
+	cd $(OPERATIONS_TOOLS_DIR) && git checkout $(OPERATIONS_TOOLS_BRANCH)
+	cp $(OPERATIONS_TOOLS_DIR)/jenkins.yaml /usr/share/jenkins/ref/casc/jenkins.yaml
+	mkdir -p /workspace && cp ${HOME}/gcloud-service-key.json /workspace/pim_ci.json
+	JENKINS_LIBS_SSH_PRIVATE_FILE_PATH=~/.ssh/id_rsa_2c6118646e36aa7476fd5e6b735923c6 \
+	PERRYBOT_SSH_PRIVATE_FILE_PATH=~/.ssh/id_rsa_5f7bb3cbd43de2c2365f9db487865f67 \
+	DEVTEST=true \
+	DEVTEST_INSTANCE=$(PFID) \
+	JENKINSFILE_PATH=$(OPERATIONS_TOOLS_DIR)/saas-instances-upgrade.Jenkinsfile \
+	/app/bin/jenkinsfile-runner-launcher -ns -u \
+	-a "batchMode=false" \
+	-a "skipShutdown=false" \
+	-a "autoApply=true" \
+	-a "release=$(IMAGE_TAG)" \
+	-a "productTypePrefixFilter=$(TYPE)" \
+	-a "googleProjectIdFilter=akecld-saas-dev" \
+	-a "googleCloudZoneFilter=*" \
+	-a "forceUpdate=false"
 
 .PHONY: test-prod
 test-prod:
@@ -293,11 +346,21 @@ endif
 
 .PHONY: slack_helpdesk
 slack_helpdesk:
+ifeq ($(TYPE),srnt)
 	curl -X POST -H 'Content-type: application/json' --data '{"text":"Serenity env has been deployed with the last tag $(IMAGE_TAG) : https://pimci-helpdesk.preprod.cloud.akeneo.com"}' $${SLACK_URL_HELPDESK};
+endif
+ifeq ($(TYPE),grth)
+	curl -X POST -H 'Content-type: application/json' --data '{"text":"Growth env has been deployed with the last tag $(IMAGE_TAG) : https://pimci-helpdesk-ge.preprod.cloud.akeneo.com"}' $${SLACK_URL_HELPDESK};
+endif
 
 .PHONY: delete_pr_environments_hourly
 delete_pr_environments_hourly:
-	ENV_NAME=${ENV_NAME} bash $(PWD)/deployments/bin/remove_pr_instances.sh
+	@echo "Deprecated"
+	ENV_NAME=${ENV_NAME} bash $(PWD)/deployments/bin/remove_instances.sh
+
+.PHONY: delete_environments_hourly
+delete_environments_hourly:
+	ENV_NAME=${ENV_NAME} bash $(PWD)/deployments/bin/remove_instances.sh
 
 .PHONY: clone_serenity
 clone_serenity:
@@ -338,7 +401,3 @@ test-helm-cronjob: #Doc: Test declared cronjob job are available via the PIM con
 .PHONY: test_helm_generated_k8s_files
 test_helm_generated_k8s_files: #Doc Test helm generated templates are K8S compliant
 	bash $(PWD)/deployments/bin/test_helm_generated_k8s_files.sh
-
-.PHONY: mr-proper
-mr-proper: #Doc: Clean olds or orphans google resources
-	bash $(PWD)/deployments/bin/ci-mrproper.sh

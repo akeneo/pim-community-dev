@@ -35,7 +35,8 @@
     "packages:build": "yarn --cwd=$npm_package_config_source packages:build && yarn enterprise-packages:build",
     "packages:unit": "yarn --cwd=$npm_package_config_source packages:unit && yarn --cwd=front-packages/tailored-export test:run",
     "packages:lint": "yarn --cwd=front-packages/tailored-export lint:check",
-    "enterprise-packages:build": "yarn tailored-export:build"
+    "enterprise-packages:build": "yarn tailored-export:build",
+    "dsm:build": "yarn --cwd=$npm_package_config_source dsm:build",
   },
   "devDependencies": {
     "@types/draft-js": "^0.10.25",

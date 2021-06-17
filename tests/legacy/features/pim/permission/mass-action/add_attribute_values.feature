@@ -9,33 +9,33 @@ Feature: Mass add product value to products at once via a form
     Given a "catalog_modeling" catalog configuration
     Given I am logged in as "Mary"
     And I edit the "master_accessories_hats" category
-    And I visit the "Permissions" tab
-    And I fill in the following information:
+    And I open the category tab "Permissions"
+    And I fill in the category permission with:
       | Allowed to view products | Redactor |
       | Allowed to edit products |          |
       | Allowed to own products  |          |
-    And I save the category
+    And I submit the category changes
     And I edit the "supplier_abibas" category
-    And I visit the "Permissions" tab
-    And I fill in the following information:
+    And I open the category tab "Permissions"
+    And I fill in the category permission with:
       | Allowed to view products | Redactor |
       | Allowed to edit products |          |
       | Allowed to own products  |          |
-    And I save the category
+    And I submit the category changes
     And I edit the "print_accessories" category
-    And I visit the "Permissions" tab
-    And I fill in the following information:
+    And I open the category tab "Permissions"
+    And I fill in the category permission with:
       | Allowed to view products | Redactor |
       | Allowed to edit products |          |
       | Allowed to own products  |          |
-    And I save the category
+    And I submit the category changes
     And I edit the "master_accessories_scarves" category
-    And I visit the "Permissions" tab
-    And I fill in the following information:
+    And I open the category tab "Permissions"
+    And I fill in the category permission with:
       | Allowed to view products | Redactor |
       | Allowed to edit products | Redactor |
       | Allowed to own products  | Redactor |
-    And I save the category
+    And I submit the category changes
     When I am on the products grid
     And I select rows Hat and Scarf
     And I press the "Bulk actions" button

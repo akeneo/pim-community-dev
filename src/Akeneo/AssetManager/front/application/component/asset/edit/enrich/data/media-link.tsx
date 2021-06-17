@@ -9,7 +9,7 @@ import {
   useBooleanState,
   useInModal,
 } from 'akeneo-design-system';
-import {useTranslate} from '@akeneo-pim-community/shared';
+import {useRouter, useTranslate} from '@akeneo-pim-community/shared';
 import {canCopyToClipboard, copyToClipboard, getMediaPreviewUrl} from 'akeneoassetmanager/tools/media-url-generator';
 import {
   canDownloadMediaLink,
@@ -31,6 +31,7 @@ import {FullscreenPreview} from 'akeneoassetmanager/application/component/asset/
 
 const View = ({id, value, locale, onChange, onSubmit, canEditData}: ViewGeneratorProps) => {
   const translate = useTranslate();
+  const router = useRouter();
   const [reloadPreview, onReloadPreview] = useReloadPreview();
   const [isFullscreenModalOpen, openFullscreenModal, closeFullScreenModal] = useBooleanState();
 
@@ -38,7 +39,7 @@ const View = ({id, value, locale, onChange, onSubmit, canEditData}: ViewGenerato
     id = `pim_asset_manager.asset.enrich.${value.attribute.code}`;
   }
 
-  const mediaPreviewUrl = getMediaPreviewUrl({
+  const mediaPreviewUrl = getMediaPreviewUrl(router, {
     type: MediaPreviewType.ThumbnailSmall,
     attributeIdentifier: value.attribute.identifier,
     data: getMediaData(value.data),
