@@ -1,12 +1,14 @@
 import React, { Ref } from "react";
 import styled from "styled-components";
 import { Override } from "../../../../shared";
+import { getColor } from "../../../../theme";
 
 const TableInputTh = styled.th`
   font-weight: normal;
-  padding: 0 15px;
-  color: #11324d;
+  padding: 0 10px;
+  color: ${getColor('grey', 140)};
   text-align: left;
+  font-weight: bold;
 `;
 
 type TableInputHeaderCellProps = Override<
