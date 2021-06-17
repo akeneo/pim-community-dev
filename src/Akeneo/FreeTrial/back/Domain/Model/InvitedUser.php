@@ -6,6 +6,7 @@ namespace Akeneo\FreeTrial\Domain\Model;
 
 use Akeneo\FreeTrial\Domain\Exception\InvalidEmailException;
 use Akeneo\FreeTrial\Domain\ValueObject\InvitedUserStatus;
+use Webmozart\Assert\Assert;
 
 /**
  * @copyright 2021 Akeneo SAS (http://www.akeneo.com)
@@ -19,7 +20,9 @@ final class InvitedUser
 
     public function __construct(string $email, InvitedUserStatus $status)
     {
-        if ($email === '') {
+        try {
+            Assert::email($email);
+        } catch (\Exception $e) {
             throw new InvalidEmailException();
         }
 

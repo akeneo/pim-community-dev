@@ -10,6 +10,7 @@ use Akeneo\FreeTrial\Domain\Model\InvitedUser;
 use Akeneo\FreeTrial\Domain\Model\InviteUsersAcknowledge;
 use Akeneo\FreeTrial\Domain\Repository\InvitedUserRepository;
 use Akeneo\FreeTrial\Domain\ValueObject\InvitedUserStatus;
+use Webmozart\Assert\Assert;
 
 /**
  * @copyright 2021 Akeneo SAS (http://www.akeneo.com)
@@ -29,6 +30,7 @@ class InviteUsers
 
     public function __invoke(array $emails): InviteUsersAcknowledge
     {
+        $emails = array_unique($emails);
         $acknowledge = new InviteUsersAcknowledge();
         foreach ($emails as $email) {
             try {
