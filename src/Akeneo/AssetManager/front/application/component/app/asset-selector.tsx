@@ -24,6 +24,7 @@ const renderRow = (
 ) => {
   return `
   <img width="34" height="34" src="${getMediaPreviewUrl(
+    routing,
     getListAssetMainMediaThumbnail(normalizedAsset, channel, locale)
   )}" style="object-fit: cover;"/>
   <span class="select2-result-label-main">

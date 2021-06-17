@@ -1,7 +1,7 @@
 import React, {useState} from 'react';
 import styled from 'styled-components';
 import {ArrowLeftIcon, ArrowRightIcon, Button, EditIcon, getColor, Key, Modal, useShortcut} from 'akeneo-design-system';
-import {useTranslate} from '@akeneo-pim-community/shared';
+import {useRouter, useTranslate} from '@akeneo-pim-community/shared';
 import {ProductIdentifier} from 'akeneopimenrichmentassetmanager/assets-collection/reducer/product';
 import {ContextState} from 'akeneopimenrichmentassetmanager/assets-collection/reducer/context';
 import {Attribute} from 'akeneoassetmanager/platform/model/structure/attribute';
@@ -19,7 +19,6 @@ import ListAsset, {
 import AssetFamilyIdentifier from 'akeneoassetmanager/domain/model/asset-family/identifier';
 import AssetCode from 'akeneoassetmanager/domain/model/asset/code';
 import {useAssetFamily, AssetFamilyDataProvider} from 'akeneoassetmanager/application/hooks/asset-family';
-import {getAssetEditUrl} from 'akeneoassetmanager/tools/media-url-generator';
 import {MediaPreview} from 'akeneoassetmanager/application/component/asset/edit/preview/media-preview';
 import {DownloadAction, CopyUrlAction} from 'akeneoassetmanager/application/component/asset/edit/enrich/data/media';
 
@@ -98,6 +97,7 @@ const AssetPreview = ({
   dataProvider,
 }: AssetPreviewProps) => {
   const translate = useTranslate();
+  const router = useRouter();
   const [currentAssetCode, setCurrentAssetCode] = useState<AssetCode>(initialAssetCode);
   const selectedAsset: ListAsset | undefined = getAssetByCode(assetCollection, currentAssetCode);
   const {assetFamily} = useAssetFamily(dataProvider, assetFamilyIdentifier);
@@ -113,7 +113,11 @@ const AssetPreview = ({
   }
 
   const selectedAssetLabel = getAssetLabel(selectedAsset, context.locale);
-  const editUrl = getAssetEditUrl(selectedAsset);
+  const editUrl = router.generate('akeneo_asset_manager_asset_edit', {
+    assetFamilyIdentifier: selectedAsset.assetFamilyIdentifier,
+    assetCode: selectedAsset.code,
+    tab: 'enrich',
+  });
   const data = getListAssetMediaData(selectedAsset, context.channel, context.locale);
   const attributeAsMainMedia = getAttributeAsMainMedia(assetFamily);
 
@@ -144,7 +148,7 @@ const AssetPreview = ({
                   attribute={attributeAsMainMedia}
                   label={translate('pim_asset_manager.asset_preview.download')}
                 />
-                <Button level="tertiary" ghost={true} href={editUrl} target="_blank">
+                <Button level="tertiary" ghost={true} href={`#${editUrl}`} target="_blank">
                   <EditIcon /> {translate('pim_asset_manager.asset_preview.edit_asset')}
                 </Button>
               </ButtonContainer>

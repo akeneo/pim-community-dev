@@ -1,9 +1,10 @@
 import React from 'react';
 import styled from 'styled-components';
-import __ from 'akeneoassetmanager/tools/translator';
+import {ArrowLeftIcon, ArrowRightIcon, CloseIcon, EditIcon, AkeneoThemedProps, getColor} from 'akeneo-design-system';
+import {useRouter, useTranslate} from '@akeneo-pim-community/shared';
 import {ContextState} from 'akeneopimenrichmentassetmanager/assets-collection/reducer/context';
 import {TransparentButton} from 'akeneoassetmanager/application/component/app/button';
-import {getAssetEditUrl, getMediaPreviewUrl} from 'akeneoassetmanager/tools/media-url-generator';
+import {getMediaPreviewUrl} from 'akeneoassetmanager/tools/media-url-generator';
 import ListAsset, {
   getListAssetMainMediaThumbnail,
   MoveDirection,
@@ -11,7 +12,6 @@ import ListAsset, {
   assetWillNotMoveInCollection,
 } from 'akeneoassetmanager/domain/model/asset/list-asset';
 import {useRegenerate} from 'akeneoassetmanager/application/hooks/regenerate';
-import {ArrowLeftIcon, ArrowRightIcon, CloseIcon, EditIcon, AkeneoThemedProps, getColor} from 'akeneo-design-system';
 
 const Img = styled.img`
   width: 140px;
@@ -86,19 +86,27 @@ const Label = styled.span`
   font-size: ${(props: AkeneoThemedProps<{readonly: boolean}>) => props.theme.fontSize.small};
 `;
 
-const RemoveAction = (props: any) => (
-  <Action {...props}>
-    <CloseIcon size={14} />
-    <Label>{__('pim_asset_manager.asset_collection.remove_asset')}</Label>
-  </Action>
-);
+const RemoveAction = (props: any) => {
+  const translate = useTranslate();
 
-const EditAction = (props: any) => (
-  <Action {...props} className={'edit-asset-from-thumbnail'} target="_blank">
-    <EditIcon size={14} />
-    <Label>{__('pim_asset_manager.asset_collection.edit_asset')}</Label>
-  </Action>
-);
+  return (
+    <Action {...props}>
+      <CloseIcon size={14} />
+      <Label>{translate('pim_asset_manager.asset_collection.remove_asset')}</Label>
+    </Action>
+  );
+};
+
+const EditAction = (props: any) => {
+  const translate = useTranslate();
+
+  return (
+    <Action {...props} className={'edit-asset-from-thumbnail'} target="_blank">
+      <EditIcon size={14} />
+      <Label>{translate('pim_asset_manager.asset_collection.edit_asset')}</Label>
+    </Action>
+  );
+};
 
 export const Thumbnail = ({
   asset,
@@ -117,10 +125,13 @@ export const Thumbnail = ({
   onMove: (direction: MoveDirection) => void;
   onClick?: () => void;
 }) => {
-  const moveAfterLabel = __('pim_asset_manager.asset_collection.move_asset_to_right', {
+  const translate = useTranslate();
+  const router = useRouter();
+
+  const moveAfterLabel = translate('pim_asset_manager.asset_collection.move_asset_to_right', {
     assetName: getAssetLabel(asset, context.locale),
   });
-  const moveBeforeLabel = __('pim_asset_manager.asset_collection.move_asset_to_left', {
+  const moveBeforeLabel = translate('pim_asset_manager.asset_collection.move_asset_to_left', {
     assetName: getAssetLabel(asset, context.locale),
   });
 
@@ -131,8 +142,14 @@ export const Thumbnail = ({
     }
   };
 
-  const previewUrl = getMediaPreviewUrl(getListAssetMainMediaThumbnail(asset, context.channel, context.locale));
+  const previewUrl = getMediaPreviewUrl(router, getListAssetMainMediaThumbnail(asset, context.channel, context.locale));
   const [, , refreshedUrl] = useRegenerate(previewUrl);
+
+  const assetEditUrl = router.generate('akeneo_asset_manager_asset_edit', {
+    assetFamilyIdentifier: asset.assetFamilyIdentifier,
+    assetCode: asset.code,
+    tab: 'enrich',
+  });
 
   return (
     <Container readonly={readonly}>
@@ -140,7 +157,7 @@ export const Thumbnail = ({
         <Overlay onClick={handleOverlayClick} ref={overlayRef} data-testid="overlay">
           <Actions>
             <RemoveAction onClick={onRemove} data-remove={asset.code} />
-            <EditAction href={getAssetEditUrl(asset)} data-edit={asset.code} />
+            <EditAction href={`#${assetEditUrl}`} data-edit={asset.code} />
           </Actions>
           {!assetWillNotMoveInCollection(assetCollection, asset, MoveDirection.Before) ? (
             <MoveButton

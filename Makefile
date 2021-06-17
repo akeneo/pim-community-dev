@@ -36,6 +36,10 @@ javascript-extensions:
 front-packages: #Doc: install & build the PIM front packages
 	$(YARN_RUN) packages:build
 
+.PHONY: dsm
+dsm: #Doc: install & build the DSM front package
+	$(YARN_RUN) dsm:build
+
 .PHONY: assets
 assets: #Doc: clean & reinstall assets
 	$(DOCKER_COMPOSE) run -u www-data --rm php rm -rf public/bundles public/js
