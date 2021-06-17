@@ -5,16 +5,16 @@ declare(strict_types=1);
 namespace Specification\Akeneo\Pim\Enrichment\Component\Error\DocumentationBuilder;
 
 use Akeneo\Pim\Enrichment\Component\Error\Documentation\DocumentationCollection;
-use Akeneo\Pim\Enrichment\Component\Error\DocumentationBuilder\ScopableAttribute;
+use Akeneo\Pim\Enrichment\Component\Error\DocumentationBuilder\NotScopableAttribute;
 use Akeneo\Pim\Enrichment\Component\Error\DocumentationBuilderInterface;
-use Akeneo\Pim\Enrichment\Component\Product\Exception\ScopableAttributeException;
+use Akeneo\Pim\Enrichment\Component\Product\Exception\NotScopableAttributeException;
 use PhpSpec\ObjectBehavior;
 
-class ScopableAttributeSpec extends ObjectBehavior
+class NotScopableAttributeSpec extends ObjectBehavior
 {
     function it_is_initializable()
     {
-        $this->beAnInstanceOf(ScopableAttribute::class);
+        $this->beAnInstanceOf(NotScopableAttribute::class);
     }
 
     function it_is_a_documentation_builder()
@@ -24,7 +24,7 @@ class ScopableAttributeSpec extends ObjectBehavior
 
     function it_supports_the_error_scopable_attribute()
     {
-        $scopableException = ScopableAttributeException::withCode('attribute_code');
+        $scopableException = NotScopableAttributeException::withCode('attribute_code');
 
         $this->support($scopableException)->shouldReturn(true);
     }
@@ -38,21 +38,15 @@ class ScopableAttributeSpec extends ObjectBehavior
 
     function it_builds_the_documentation()
     {
-        $exception = ScopableAttributeException::withCode('attribute_code');
+        $exception = NotScopableAttributeException::withCode('attribute_code');
 
         $documentation = $this->buildDocumentation($exception);
 
         $documentation->shouldHaveType(DocumentationCollection::class);
         $documentation->normalize()->shouldReturn([
             [
-                'message' => 'Please check your {channels_settings} or the {attribute_edit_route}.',
+                'message' => 'Please check the {attribute_edit_route}.',
                 'parameters' => [
-                    'channels_settings' => [
-                        'type' => 'route',
-                        'route' => 'pim_enrich_channel_rest_index',
-                        'routeParameters' => [],
-                        'title' => 'Channel settings',
-                    ],
                     'attribute_edit_route' => [
                         'type' => 'route',
                         'route' => 'pim_enrich_attribute_edit',
