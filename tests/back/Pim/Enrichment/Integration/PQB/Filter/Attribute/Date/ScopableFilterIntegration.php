@@ -129,7 +129,7 @@ class ScopableFilterIntegration extends AbstractProductQueryBuilderTestCase
     public function testErrorMetricScopable()
     {
         $this->expectException(InvalidPropertyException::class);
-        $this->expectExceptionMessage('Attribute "a_scopable_date" expects a scope, none given.');
+        $this->expectExceptionMessage('The a_scopable_date attribute requires a value per channel.');
 
         $this->executeFilter([['a_scopable_date', Operators::NOT_EQUAL, '2016-09-23']]);
     }

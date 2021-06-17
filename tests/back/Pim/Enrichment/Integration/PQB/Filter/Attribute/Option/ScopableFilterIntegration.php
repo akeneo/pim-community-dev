@@ -98,7 +98,7 @@ class ScopableFilterIntegration extends AbstractProductQueryBuilderTestCase
     public function testErrorOptionScopable()
     {
         $this->expectException(InvalidPropertyException::class);
-        $this->expectExceptionMessage('Attribute "a_select_scopable_simple_select" expects a scope, none given.');
+        $this->expectExceptionMessage('The a_select_scopable_simple_select attribute requires a value per channel.');
 
         $this->executeFilter([['a_select_scopable_simple_select', Operators::IN_LIST, ['orange']]]);
     }
