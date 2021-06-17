@@ -125,8 +125,8 @@ class ProductController
 
     private GetConnectorProducts $getConnectorProductsWithOptions;
 
-    private ApiAggregatorForProductPostSaveEventSubscriber $apiAggregatorForProductPostSave
-;
+    private ApiAggregatorForProductPostSaveEventSubscriber $apiAggregatorForProductPostSave;
+
     private WarmupQueryCache $warmupQueryCache;
 
     private EventDispatcherInterface $eventDispatcher;
