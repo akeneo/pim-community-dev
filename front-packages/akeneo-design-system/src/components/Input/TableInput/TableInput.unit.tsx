@@ -1,6 +1,6 @@
 import React from 'react';
 import {TableInput} from './TableInput';
-import {render, screen} from '../../storybook/test-util';
+import {render, screen} from '../../../storybook/test-util';
 
 test('it renders its children properly', () => {
   render(<TableInput>Table content</TableInput>);
