@@ -1,6 +1,6 @@
 import {act, renderHook} from '@testing-library/react-hooks';
+import {fireEvent} from '../storybook/test-util';
 import {useWindowResize} from './useWindowResize';
-import {fireEvent} from '@testing-library/dom';
 
 const resizeWindow = (height: number, width: number) => {
   Object.assign(window, {innerWidth: width, innerHeight: height});
@@ -8,7 +8,7 @@ const resizeWindow = (height: number, width: number) => {
   fireEvent(window, new Event('resize'));
 };
 
-test('It can register listener on keyboard events', () => {
+test('It can tell when the window is resized', () => {
   const {result} = renderHook(() => useWindowResize());
 
   expect(result.current).toEqual({height: window.innerHeight, width: window.innerWidth});
