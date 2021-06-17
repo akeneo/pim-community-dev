@@ -5,12 +5,13 @@ declare(strict_types=1);
 namespace Akeneo\FreeTrial\Infrastructure\AkeneoConnect;
 
 use Symfony\Contracts\HttpClient\HttpClientInterface;
+use Symfony\Contracts\HttpClient\ResponseInterface;
 
 /**
  * @copyright 2021 Akeneo SAS (http://www.akeneo.com)
  * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
  */
-final class APIClient
+class APIClient
 {
     private const INVITE_USER_URI = '/api/v1/console/trial/invite';
 
@@ -44,9 +45,9 @@ final class APIClient
         $this->akeneoConnectBaseUri = $akeneoConnectBaseUri;
     }
 
-    public function inviteUser(string $email): void
+    public function inviteUser(string $email): ResponseInterface
     {
-        $this->httpClient->request('POST');
+        return $this->httpClient->request('POST');
     }
 
 }
