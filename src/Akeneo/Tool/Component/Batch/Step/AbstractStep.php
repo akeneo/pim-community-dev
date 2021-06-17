@@ -35,19 +35,23 @@ abstract class AbstractStep implements StepInterface
     /** @var JobRepositoryInterface */
     protected $jobRepository;
 
+    private Logger $logger;
+
     /**
-     * @param string                   $name
-     * @param EventDispatcherInterface $eventDispatcher
      * @param JobRepositoryInterface   $jobRepository
+     * @param EventDispatcherInterface $eventDispatcher
+     * @param string                   $name
      */
     public function __construct(
-        $name,
+        JobRepositoryInterface $jobRepository,
         EventDispatcherInterface $eventDispatcher,
-        JobRepositoryInterface $jobRepository
+//        Logger $logger,
+        $name
     ) {
         $this->name = $name;
         $this->jobRepository = $jobRepository;
         $this->eventDispatcher = $eventDispatcher;
+//        $this->logger = $logger;
     }
 
     /**
@@ -116,14 +120,13 @@ abstract class AbstractStep implements StepInterface
             $stepExecution->upgradeStatus($this->determineBatchStatus($e));
 
             $exitStatus = $exitStatus->logicalAnd($this->getDefaultExitStatusForFailure($e));
-
             $stepExecution->addFailureException($e);
             $this->jobRepository->updateStepExecution($stepExecution);
 
             if ($stepExecution->getStatus()->getValue() == BatchStatus::STOPPED) {
-                $this->dispatchStepExecutionEvent(EventInterface::STEP_EXECUTION_INTERRUPTED, $stepExecution);
+                $this->dispatchStepExecutionEvent(EventInterface::STEP_EXECUTION_INTERRUPTED, $stepExecution,$e);
             } else {
-                $this->dispatchStepExecutionEvent(EventInterface::STEP_EXECUTION_ERRORED, $stepExecution);
+                $this->dispatchStepExecutionEvent(EventInterface::STEP_EXECUTION_ERRORED, $stepExecution,$e);
             }
         }
 
@@ -176,9 +179,9 @@ abstract class AbstractStep implements StepInterface
      * @param string        $eventName     Name of the event
      * @param StepExecution $stepExecution Step object
      */
-    protected function dispatchStepExecutionEvent($eventName, StepExecution $stepExecution)
+    protected function dispatchStepExecutionEvent($eventName, StepExecution $stepExecution, \Exception $exception = null)
     {
-        $event = new StepExecutionEvent($stepExecution);
+        $event = new StepExecutionEvent($stepExecution,$exception);
         $this->dispatch($event, $eventName);
     }
 

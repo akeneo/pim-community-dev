@@ -17,12 +17,20 @@ class StepExecutionEvent extends Event implements EventInterface
     /** @var StepExecution */
     protected $stepExecution;
 
+    protected \Exception  $exception;
+
+    public function getException(): ?\Exception
+    {
+        return $this->exception;
+    }
+
     /**
      * @param StepExecution $stepExecution
      */
-    public function __construct(StepExecution $stepExecution)
+    public function __construct(StepExecution $stepExecution, \Exception $exception=null)
     {
         $this->stepExecution = $stepExecution;
+        $this->exception = $exception;
     }
 
     /**

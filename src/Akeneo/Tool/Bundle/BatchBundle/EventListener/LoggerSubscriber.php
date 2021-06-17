@@ -207,8 +207,11 @@ class LoggerSubscriber implements EventSubscriberInterface
     public function stepExecutionErrored(StepExecutionEvent $event)
     {
         $stepExecution = $event->getStepExecution();
+        $e = $event->getException();
 
-        $this->logger->error(
+        $this->logger->error($e,['exception'=>$e]);
+
+        $this->logger->warning(
             sprintf(
                 'Encountered an error executing the step: %s',
                 implode(
