@@ -6,6 +6,7 @@ use Akeneo\Channel\Component\Repository\ChannelRepositoryInterface;
 use Akeneo\Channel\Component\Repository\LocaleRepositoryInterface;
 use Akeneo\Pim\Enrichment\Component\Product\Exception\LocalizableAttributeException;
 use Akeneo\Pim\Enrichment\Component\Product\Exception\NotLocalizableAttributeException;
+use Akeneo\Pim\Enrichment\Component\Product\Exception\ScopableAttributeException;
 use Akeneo\Pim\Enrichment\Component\Product\Exception\UnavailableLocaleException;
 use Akeneo\Pim\Enrichment\Component\Product\Exception\UnavailableSpecificLocaleException;
 use Akeneo\Pim\Structure\Component\Model\AttributeInterface;
@@ -110,12 +111,7 @@ class AttributeValidatorHelper
         }
 
         if ($attribute->isScopable() && null === $scope) {
-            throw new \LogicException(
-                sprintf(
-                    'Attribute "%s" expects a scope, none given.',
-                    $attribute->getCode()
-                )
-            );
+            throw ScopableAttributeException::withCode($attribute->getCode());
         }
 
         if (!$attribute->isScopable() && null !== $scope) {

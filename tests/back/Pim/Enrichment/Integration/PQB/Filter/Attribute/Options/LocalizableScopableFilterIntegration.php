@@ -118,7 +118,7 @@ class LocalizableScopableFilterIntegration extends AbstractProductQueryBuilderTe
     public function testErrorOptionScopable()
     {
         $this->expectException(InvalidPropertyException::class);
-        $this->expectExceptionMessage('Attribute "a_localizable_scopable_multi_select" expects a scope, none given.');
+        $this->expectExceptionMessage('The a_localizable_scopable_multi_select attribute requires a value per channel.');
 
         $this->executeFilter([['a_localizable_scopable_multi_select', Operators::IN_LIST, ['orange'], ['locale' => 'fr_FR']]]);
     }

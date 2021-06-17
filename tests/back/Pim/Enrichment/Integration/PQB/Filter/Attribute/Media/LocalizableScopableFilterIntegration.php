@@ -124,7 +124,7 @@ class LocalizableScopableFilterIntegration extends AbstractProductQueryBuilderTe
     public function testErrorScope()
     {
         $this->expectException(InvalidPropertyException::class);
-        $this->expectExceptionMessage('Attribute "a_localizable_scopable_image" expects a scope, none given.');
+        $this->expectExceptionMessage('The a_localizable_scopable_image attribute requires a value per channel.');
 
         $this->executeFilter([['a_localizable_scopable_image', Operators::NOT_EQUAL, '2016-09-23', ['locale' => 'fr_FR']]]);
     }

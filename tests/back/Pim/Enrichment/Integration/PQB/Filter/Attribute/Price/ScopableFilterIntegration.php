@@ -345,7 +345,7 @@ class ScopableFilterIntegration extends AbstractProductQueryBuilderTestCase
     public function testErrorPriceScopable()
     {
         $this->expectException(InvalidPropertyException::class);
-        $this->expectExceptionMessage('Attribute "a_scopable_price" expects a scope, none given.');
+        $this->expectExceptionMessage('The a_scopable_price attribute requires a value per channel.');
 
         $this->executeFilter([['a_scopable_price', Operators::NOT_EQUAL, ['amount' => 250, 'currency' => 'EUR']]]);
     }

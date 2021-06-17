@@ -158,7 +158,7 @@ class ErrorListProductEndToEnd extends AbstractProductTestCase
         $client = $this->createAuthenticatedClient();
 
         $client->request('GET', '/api/rest/v1/products?search={"a_scopable_image":[{"operator":"CONTAINS", "value":"text"}]}');
-        $this->assert($client, 'Attribute "a_scopable_image" expects a scope, none given.', Response::HTTP_UNPROCESSABLE_ENTITY);
+        $this->assert($client, 'The a_scopable_image attribute requires a value per channel.', Response::HTTP_UNPROCESSABLE_ENTITY);
     }
 
     public function testSearchWithNotFoundLocale()
