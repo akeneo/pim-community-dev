@@ -1231,10 +1231,10 @@ jobs:
   ##################
   # Deploy         #
   ##################
-  deploy_helpdesk_environment:
+  deploy_srnt_helpdesk_environment:
       environment:
         <<: *envVarsDeployPreprod
-      <<: *dockerCloudDeployer
+      <<: *dockerJenkinsCloudDeployer
       steps:
             - attach_workspace:
                 at: ~/
@@ -1244,9 +1244,7 @@ jobs:
                 name: Define value for next steps
                 command: |
                   TYPE="srnt"
-                  ssh-keyscan github.com >> ~/.ssh/known_hosts
-                  git tag --list | grep -E "^v?[0-9]+$" | sort -r > /tmp/pim-tags.txt
-                  RELEASE_TO_DEPLOY=$(head -n 1 /tmp/pim-tags.txt)
+                  RELEASE_TO_DEPLOY=$(gcloud container images list-tags eu.gcr.io/akeneo-cloud/pim-enterprise-dev --filter="v" --sort-by="~tags" --limit=1 --format="value(tags)")
                   INSTANCE_NAME="pimci-helpdesk"
                   PRODUCT_REFERENCE_TYPE="serenity_instance"
                   PRODUCT_REFERENCE_CODE="serenity_${ENV_NAME}"
@@ -1262,23 +1260,28 @@ jobs:
                   echo export ACTIVATE_MONITORING=${ACTIVATE_MONITORING} >> $BASH_ENV
 
                   echo "Instance name: ${INSTANCE_NAME}"
-                  echo "Image tag: ${IMAGE_TAG}"
                   echo "Release to deploy: ${RELEASE_TO_DEPLOY}"
             - run:
-                name: Generate config files and deploy
+                name: Setup key for Jenkins
                 command: |
-                    IMAGE_TAG=${RELEASE_TO_DEPLOY} make create-ci-release-files
-                    IMAGE_TAG=${RELEASE_TO_DEPLOY} make change-terraform-source-version
-                    UPGRADE_STEP_2=true IMAGE_TAG=${RELEASE_TO_DEPLOY} make deploy
+                  ssh-keyscan github.com >> ~/.ssh/known_hosts
+                  echo '' > /root/.ssh/config #clean github exclusions automatically added by circleci
+                  REPO_TO_ADD=github.com KEY_TO_ADD=/root/.ssh/id_rsa_1f25f8bb595295f6e2f2972f30d4e966 bash deployments/bin/add-deploy-key.sh
+                  REPO_TO_ADD=cloud-customers-dev KEY_TO_ADD=/root/.ssh/id_rsa_5f7bb3cbd43de2c2365f9db487865f67 bash deployments/bin/add-deploy-key.sh
+                  REPO_TO_ADD=jenkins-k8s-utils KEY_TO_ADD=/root/.ssh/id_rsa_2c6118646e36aa7476fd5e6b735923c6 bash deployments/bin/add-deploy-key.sh
+                  REPO_TO_ADD=operation-tools KEY_TO_ADD=/root/.ssh/id_rsa_9871a29f0e320bbf564ab34189c7b429 bash deployments/bin/add-deploy-key.sh
+            - run:
+                name: Jenkins Upgrade
+                command: IMAGE_TAG=${RELEASE_TO_DEPLOY} make upgrade-instance
             - run:
                 name: Communicate
                 command: |
-                    make slack_helpdesk
+                  make slack_helpdesk
 
   deploy_pm_environment:
       environment:
           <<: *envVarsDeployPreprod
-      <<: *dockerCloudDeployer
+      <<: *dockerJenkinsCloudDeployer
       steps:
           - attach_workspace:
                 at: ~/
@@ -1288,8 +1291,7 @@ jobs:
               name: Define value for next steps
               command: |
                 TYPE="srnt"
-                IMAGE_TAG=${CIRCLE_SHA1}
-                IMAGE_TAG_SHORTED=$(echo ${IMAGE_TAG} | cut -c -7)
+                RELEASE_TO_DEPLOY=$(gcloud container images list-tags eu.gcr.io/akeneo-cloud/pim-enterprise-dev --filter="v" --sort-by="~tags" --limit=1 --format="value(tags)")
                 INSTANCE_NAME="pimci-pm"
                 PRODUCT_REFERENCE_TYPE="serenity_instance"
                 PRODUCT_REFERENCE_CODE="serenity_${ENV_NAME}"
@@ -1297,7 +1299,7 @@ jobs:
                 ACTIVATE_MONITORING=true
 
                 echo export TYPE=${TYPE} >> $BASH_ENV
-                echo export IMAGE_TAG=${IMAGE_TAG} >> $BASH_ENV
+                echo export RELEASE_TO_DEPLOY=${RELEASE_TO_DEPLOY} >> $BASH_ENV
                 echo export INSTANCE_NAME=${INSTANCE_NAME} >> $BASH_ENV
                 echo export PRODUCT_REFERENCE_TYPE=${PRODUCT_REFERENCE_TYPE} >> $BASH_ENV
                 echo export PRODUCT_REFERENCE_CODE=${PRODUCT_REFERENCE_CODE} >> $BASH_ENV
@@ -1305,11 +1307,19 @@ jobs:
                 echo export ACTIVATE_MONITORING=${ACTIVATE_MONITORING} >> $BASH_ENV
 
                 echo "Instance name: ${INSTANCE_NAME}"
-                echo "Image tag: ${IMAGE_TAG}"
+                echo "Release to deploy: ${RELEASE_TO_DEPLOY}"
           - run:
-              name: Latest master version for PMs
+              name: Setup key for Jenkins
               command: |
-                UPGRADE_STEP_2=true make deploy-instance
+                ssh-keyscan github.com >> ~/.ssh/known_hosts
+                echo '' > /root/.ssh/config #clean github exclusions automatically added by circleci
+                REPO_TO_ADD=github.com KEY_TO_ADD=/root/.ssh/id_rsa_1f25f8bb595295f6e2f2972f30d4e966 bash deployments/bin/add-deploy-key.sh
+                REPO_TO_ADD=cloud-customers-dev KEY_TO_ADD=/root/.ssh/id_rsa_5f7bb3cbd43de2c2365f9db487865f67 bash deployments/bin/add-deploy-key.sh
+                REPO_TO_ADD=jenkins-k8s-utils KEY_TO_ADD=/root/.ssh/id_rsa_2c6118646e36aa7476fd5e6b735923c6 bash deployments/bin/add-deploy-key.sh
+                REPO_TO_ADD=operation-tools KEY_TO_ADD=/root/.ssh/id_rsa_9871a29f0e320bbf564ab34189c7b429 bash deployments/bin/add-deploy-key.sh
+          - run:
+              name: Jenkins Upgrade
+              command: IMAGE_TAG=${RELEASE_TO_DEPLOY} make upgrade-instance
 
   deploy_pr_srnt_environment:
       environment:
@@ -1739,7 +1749,7 @@ workflows:
 
       jobs:
           - checkout
-          - deploy_helpdesk_environment:
+          - deploy_srnt_helpdesk_environment:
                 requires:
                     - checkout
           - deploy_pm_environment:
