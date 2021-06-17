@@ -7,9 +7,6 @@ import {MediaPreview} from 'akeneoassetmanager/application/component/asset/edit/
 import {ReloadPreviewProvider} from 'akeneoassetmanager/application/hooks/useReloadPreview';
 import {renderWithAssetManagerProviders} from '../../../../../tools';
 
-const routing = require('routing');
-jest.mock('routing');
-
 const mediaLinkImageAttribute = {
   identifier: 'media_link_image_attribute_identifier',
   type: MEDIA_LINK_ATTRIBUTE_TYPE,
@@ -43,6 +40,17 @@ const mediaFileData = {
 const mediaLinkData = 'pim';
 const otherData = {some: 'thing'};
 
+jest.mock('@akeneo-pim-community/shared/lib/hooks/useRouter', () => ({
+  useRouter: () => {
+    return {
+      redirect: jest.fn(),
+      generate: jest.fn(
+        (route: string, parameters: URLSearchParams) => route + '?' + new URLSearchParams(parameters).toString()
+      ),
+    };
+  },
+}));
+
 describe('Tests media preview component', () => {
   test('It renders a empty media preview', () => {
     renderWithAssetManagerProviders(<MediaPreview data={null} label="" attribute={mediaFileAttribute} />);
@@ -51,10 +59,6 @@ describe('Tests media preview component', () => {
   });
 
   test('It renders a media preview impossible to generate', () => {
-    routing.generate = jest
-      .fn()
-      .mockImplementation((route: string, parameters: any) => route + '?' + new URLSearchParams(parameters).toString());
-
     renderWithAssetManagerProviders(<MediaPreview data={mediaFileData} label="" attribute={mediaFileAttribute} />);
 
     const previewImg = screen.getByRole('img');

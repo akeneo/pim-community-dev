@@ -1,7 +1,7 @@
 import React from 'react';
 import styled from 'styled-components';
 import {getColor} from 'akeneo-design-system';
-import {useTranslate} from '@akeneo-pim-community/shared';
+import {useRouter, useTranslate} from '@akeneo-pim-community/shared';
 import EditionAsset, {
   getEditionAssetLabel,
   getEditionAssetMainMediaThumbnail,
@@ -45,8 +45,9 @@ const Img = styled.img`
 
 const MainMediaThumbnail = ({asset, context}: MainMediaThumbnailProps) => {
   const translate = useTranslate();
-  const url = getMediaPreviewUrl(getEditionAssetMainMediaThumbnail(asset, context.channel, context.locale));
-  const emptyMediaUrl = getMediaPreviewUrl(emptyMediaPreview());
+  const router = useRouter();
+  const url = getMediaPreviewUrl(router, getEditionAssetMainMediaThumbnail(asset, context.channel, context.locale));
+  const emptyMediaUrl = getMediaPreviewUrl(router, emptyMediaPreview());
   const label = getEditionAssetLabel(asset, context.locale);
   const [regenerate, doRegenerate, refreshedUrl] = useRegenerate(url);
   const [reloadPreview] = useReloadPreview();

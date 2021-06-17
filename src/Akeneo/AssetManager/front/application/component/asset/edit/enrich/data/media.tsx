@@ -16,7 +16,7 @@ import {
   IconButtonProps,
   Button,
 } from 'akeneo-design-system';
-import {useTranslate} from '@akeneo-pim-community/shared';
+import {useRouter, useTranslate} from '@akeneo-pim-community/shared';
 import {useReloadPreview} from 'akeneoassetmanager/application/hooks/useReloadPreview';
 
 type ActionProps = {
@@ -38,6 +38,7 @@ const buttonProps: Partial<ButtonProps> = {
 
 const DownloadAction = ({data, attribute, label}: ActionProps) => {
   const translate = useTranslate();
+  const router = useRouter();
 
   if (
     (isMediaLinkAttribute(attribute) &&
@@ -46,7 +47,7 @@ const DownloadAction = ({data, attribute, label}: ActionProps) => {
   )
     return null;
 
-  const url = isMediaFileData(data) ? getImageDownloadUrl(data) : getMediaLinkUrl(data, attribute);
+  const url = isMediaFileData(data) ? getImageDownloadUrl(router, data) : getMediaLinkUrl(data, attribute);
   const fileName = null !== data && isMediaFileData(data) ? data.originalFilename : url;
   const title = label || translate('pim_asset_manager.asset_preview.download');
 
