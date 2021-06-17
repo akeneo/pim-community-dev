@@ -5,17 +5,17 @@ import {CommonStyle, pimTheme} from 'akeneo-design-system';
 import {MicroFrontendDependenciesProvider, Routes} from '@akeneo-pim-community/shared';
 import {routes} from './routes.json';
 import translations from './translations.json';
-import {InvitedUser, InviteUserApp} from './feature';
-import {InvitedUserProvider} from './feature/providers/InvitedUserProvider';
+import {InvitedUser, InviteUserApp, InviteUsersResponse, InvitedUserProvider} from './feature';
 
 const Container = styled.div`
   ${CommonStyle}
 `;
 
-const saveUsers = async (emails: string[]): Promise<InvitedUser[]> => {
-  return emails.map((email: string) => {
-    return {email, status: 'invited'};
-  });
+const saveUsers = async (emails: string[]): Promise<InviteUsersResponse> => {
+  return {
+    success: true,
+    errors: [],
+  };
 };
 const retrieveUsers = async (): Promise<InvitedUser[]> => {
   return [];

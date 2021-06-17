@@ -17,24 +17,24 @@ const useInvitedUsers = () => {
     }, [retrieveInvitedUsers]);
 
     const addInvitedUsers = (newInvitedUsers: string[]) => {
-        saveNewInvitedUsers(newInvitedUsers).then((success) => {
-            if (success) {
-                retrieveInvitedUsers().then((invitedUsers) => {
-                    setInvitedUsers(invitedUsers);
-                });
-
+        saveNewInvitedUsers(newInvitedUsers).then((response) => {
+            if (response.success) {
                 notify(
                     NotificationLevel.SUCCESS,
                     translate('free_trial.invite_users.invite_messages.success.title'),
                     translate('free_trial.invite_users.invite_messages.success.description')
                 );
-            } else {
-                notify(
-                    NotificationLevel.ERROR,
-                    translate('free_trial.invite_users.invite_messages.error.title'),
-                    translate('free_trial.invite_users.invite_messages.error.description')
-                );
             }
+            response.errors.forEach((error: string) => {
+                notify(
+                  NotificationLevel.ERROR,
+                  translate(`free_trial.invite_users.invite_messages.error.${error}.title`),
+                  translate(`free_trial.invite_users.invite_messages.error.${error}.description`)
+                );
+            });
+            retrieveInvitedUsers().then((invitedUsers) => {
+                setInvitedUsers(invitedUsers);
+            });
         });
     }
 

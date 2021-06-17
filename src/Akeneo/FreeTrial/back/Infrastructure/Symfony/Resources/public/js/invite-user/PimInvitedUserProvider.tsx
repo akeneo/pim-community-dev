@@ -1,5 +1,5 @@
 import React, {FC} from 'react';
-import {InvitedUser, InvitedUserProvider} from '@akeneo-pim-community/invite-user';
+import {InvitedUser, InvitedUserProvider, InviteUsersResponse} from '@akeneo-pim-community/invite-user';
 import {useRoute} from "@akeneo-pim-community/shared";
 
 const PimInvitedUserProvider: FC = ({children}) => {
@@ -12,10 +12,10 @@ const PimInvitedUserProvider: FC = ({children}) => {
     return await response.json();
   }
 
-  const saveInvitedUsers = async(emails: string[]): Promise<boolean> => {
+  const saveInvitedUsers = async(emails: string[]): Promise<InviteUsersResponse> => {
     const response = await fetch(saveUsersUrl, {method: 'POST', body: JSON.stringify(emails)});
 
-    return response.ok;
+    return response.json();
   }
 
   return (

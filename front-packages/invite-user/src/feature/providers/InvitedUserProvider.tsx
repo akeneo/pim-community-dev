@@ -1,13 +1,18 @@
 import React, {createContext, FC} from 'react';
 import {InvitedUser} from '../models';
 
+export type InviteUsersResponse = {
+  success: boolean;
+  errors: string[];
+}
+
 type InvitedUserState = {
-  saveNewInvitedUsers: (emails: string[]) => Promise<boolean>;
+  saveNewInvitedUsers: (emails: string[]) => Promise<InviteUsersResponse>;
   retrieveInvitedUsers: () => Promise<InvitedUser[]>;
 };
 
 const InvitedUserContext = createContext<InvitedUserState>({
-  saveNewInvitedUsers: () => Promise.resolve(true),
+  saveNewInvitedUsers: () => Promise.resolve({success: false, errors: []}),
   retrieveInvitedUsers: () => Promise.resolve([]),
 });
 

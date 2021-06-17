@@ -17,8 +17,12 @@ free_trial:
         title: Invitations sent to new users
         description: They are about to receive an email with a link to join your Akeneo PIM Free Trial.
       error:
-        title: Invitation couldn't be sent
-        description: Please make sure the email exists and is properly spelled.
-      already_sent_error:
-        title: Invitation already sent
-        description: Invitations with a link to join Akeneo PIM Free Trial have already been sent to some users. Let them know about it!
+        invitation_failed:
+          title: Invitation couldn't be sent
+          description: Please make sure the email exists and is properly spelled.
+        invalid_email:
+          title: invalid_email title
+          description: invalid_email description
+        invitation_already_sent:
+          title: Invitation already sent
+          description: Invitations with a link to join Akeneo PIM Free Trial have already been sent to some users. Let them know about it!

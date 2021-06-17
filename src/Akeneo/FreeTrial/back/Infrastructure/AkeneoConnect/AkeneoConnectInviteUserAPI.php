@@ -21,19 +21,20 @@ class AkeneoConnectInviteUserAPI implements InviteUserAPI
     public const INVALID_EMAIL = 'invalid_email';
     public const INVALID_REQUEST_BODY = 'invalid_request_body';
 
-    private APIClient $client;
+//    private APIClient $client;
 
     private LoggerInterface $logger;
 
-    public function __construct(APIClient $client, LoggerInterface $logger)
+    public function __construct(LoggerInterface $logger)
     {
-        $this->client = $client;
+//        $this->client = $client;
         $this->logger = $logger;
     }
 
     public function inviteUser(string $email): void
     {
-        $response = $this->client->inviteUser($email);
+        return;
+//        $response = $this->client->inviteUser($email);
         try {
             if ($response->getStatusCode() === Response::HTTP_OK) {
                 return;

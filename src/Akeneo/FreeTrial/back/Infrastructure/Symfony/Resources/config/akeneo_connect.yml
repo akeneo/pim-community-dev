@@ -1,3 +1,5 @@
 services:
   Akeneo\FreeTrial\Domain\API\InviteUserAPI:
     class: Akeneo\FreeTrial\Infrastructure\AkeneoConnect\AkeneoConnectInviteUserAPI
+    arguments:
+      - '@logger'
