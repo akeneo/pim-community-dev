@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Akeneo\FreeTrial\Domain\Model;
 
+use Akeneo\FreeTrial\Domain\Exception\InvalidEmailException;
 use Akeneo\FreeTrial\Domain\ValueObject\InvitedUserStatus;
 
 /**
@@ -19,7 +20,7 @@ final class InvitedUser
     public function __construct(string $email, InvitedUserStatus $status)
     {
         if ($email === '') {
-            throw new \InvalidArgumentException('Email should not be empty.');
+            throw new InvalidEmailException();
         }
 
         $this->email = $email;

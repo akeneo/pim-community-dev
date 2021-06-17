@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace Akeneo\FreeTrial\Application;
 
 use Akeneo\FreeTrial\Domain\API\InviteUserAPI;
+use Akeneo\FreeTrial\Domain\Exception\InvitationException;
 use Akeneo\FreeTrial\Domain\Model\InvitedUser;
 use Akeneo\FreeTrial\Domain\Model\InviteUsersAcknowledge;
 use Akeneo\FreeTrial\Domain\Repository\InvitedUserRepository;
@@ -30,11 +31,15 @@ class InviteUsers
     {
         $acknowledge = new InviteUsersAcknowledge();
         foreach ($emails as $email) {
-            $user = new InvitedUser($email, InvitedUserStatus::invited());
+            try {
+                $user = new InvitedUser($email, InvitedUserStatus::invited());
 
-            $this->inviteUserAPI->inviteUser($email);
-            $this->invitedUserRepository->save($user);
-            $acknowledge->success();
+                $this->inviteUserAPI->inviteUser($email);
+                $this->invitedUserRepository->save($user);
+                $acknowledge->success();
+            } catch (InvitationException $e) {
+                $acknowledge->error($e->getErrorCode());
+            }
         }
 
         return $acknowledge;
