@@ -38,6 +38,10 @@ test('it renders its children properly', () => {
   expect(handleClick).toBeCalled();
 });
 
+test('it supports having "null" children', () => {
+  render(<TabBar moreButtonTitle="More">{[null]}</TabBar>);
+});
+
 test('it throws when using invalid children', () => {
   const mockConsole = jest.spyOn(console, 'error').mockImplementation();
 
