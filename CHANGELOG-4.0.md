@@ -6,6 +6,7 @@
 
 - PIM-9902: fix specific local attribute export in model and product model
 - PIM-9901: Error 403 on a 2-levels product variant when displaying a variant product without having permission on product model
+- PIM-9914: Fix backslash "\" incorrectly considered as an escape character in exports
 
 # 4.0.113 (2021-06-04)
 
