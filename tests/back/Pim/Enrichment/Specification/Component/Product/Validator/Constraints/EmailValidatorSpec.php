@@ -41,7 +41,7 @@ class EmailValidatorSpec extends ObjectBehavior
         );
     }
 
-    function it_does_not_validate_email_field(
+    function it_does_not_validate_an_incorrect_email(
         ExecutionContextInterface $context,
         ConstraintViolationListInterface $constraintViolationList,
         ConstraintViolationBuilderInterface $constraintViolationBuilder,
