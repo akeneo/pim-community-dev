@@ -1,7 +1,7 @@
 import React from 'react';
 import { DependenciesProvider } from "@akeneo-pim-community/legacy-bridge";
 import { ThemeProvider } from "styled-components";
-import { Locale, pimTheme } from "akeneo-design-system";
+import { Button, Locale, pimTheme, TextInput } from "akeneo-design-system";
 import { TableInputValue } from "./TableInputValue";
 import { TableValue } from "../models/TableValue";
 import { TemplateContext } from "./table-field";
@@ -25,6 +25,15 @@ const TableFieldApp: React.FC<TableFieldAppProps> = ({
   onChange,
   elements,
 }) => {
+  const valueClone = valueData.map(row => {
+    return Object.keys(row).reduce((previousRow, columnCode) => {
+      previousRow[columnCode] = row[columnCode];
+      return previousRow;
+    }, {});
+  });
+  const [tableValue, setTableValue] = React.useState<TableValue>(valueClone);
+  const [searchText, setSearchText] = React.useState<string>('');
+
   const renderElements: (position: string) => React.ReactNode = (position) => {
     return <>
       {Object.keys(elements[position] || []).map(elementKey => {
@@ -37,6 +46,17 @@ const TableFieldApp: React.FC<TableFieldAppProps> = ({
         }
       })}
     </>;
+  }
+
+  const handleChange = (value: TableValue) => {
+    setTableValue(value);
+    onChange(value);
+  }
+
+  const addFakeRow = () => {
+    const newValue = [...tableValue];
+    newValue.push({});
+    handleChange([...newValue]);
   }
 
   return (
@@ -61,6 +81,8 @@ const TableFieldApp: React.FC<TableFieldAppProps> = ({
                     </span>
                   }
                 </span>
+            <Button size="small" onClick={() => {addFakeRow()}}>Add row</Button>
+            <TextInput value={searchText} onChange={setSearchText}/>
             {context.optional && context.removable && 'edit' === editMode &&
             <i className="AknIconButton AknIconButton--small icon-remove remove-attribute"
                data-attribute={attribute.code} data-toggle="tooltip"
@@ -68,8 +90,12 @@ const TableFieldApp: React.FC<TableFieldAppProps> = ({
             }
           </div>
           <div className="AknFieldContainer-inputContainer field-input">
-            <TableInputValue valueData={valueData} tableConfiguration={attribute.table_configuration}
-                             onChange={onChange}/>
+            <TableInputValue
+              valueData={tableValue}
+              tableConfiguration={attribute.table_configuration}
+              onChange={handleChange}
+              searchText={searchText}
+            />
             {renderElements('field-input')}
           </div>
           <footer>
