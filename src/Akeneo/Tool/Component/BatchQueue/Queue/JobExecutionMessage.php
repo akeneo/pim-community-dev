@@ -53,9 +53,11 @@ abstract class JobExecutionMessage implements JobExecutionMessageInterface
         return new static(
             Uuid::fromString($normalized['id']),
             $normalized['job_execution_id'],
-            new \DateTime($normalized['created_time']),
-            null !== $normalized['updated_time'] ? new \DateTime($normalized['updated_time']) : null,
-            $normalized['options']
+            new \DateTime($normalized['created_time'] ?? 'now', new \DateTimeZone('UTC')),
+            null !== $normalized['updated_time']
+                ? new \DateTime($normalized['updated_time'], new \DateTimeZone('UTC'))
+                : null,
+            $normalized['options'] ?? []
         );
     }
 
