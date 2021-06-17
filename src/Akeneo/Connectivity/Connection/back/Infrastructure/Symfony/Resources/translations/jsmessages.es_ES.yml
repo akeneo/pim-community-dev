@@ -57,6 +57,7 @@ akeneo_connectivity.connection:
   connection_count: 'Conexión de {{ count }} | {{ count }} conexiones'
   no_connection:
     title: No hay conexión declarada aún.
+    message: Añada su primera haciendo clic en el botón «Crear» de arriba o
     message_link: pulse aquí.
   create_connection:
     title: Crear una conexión nueva
@@ -111,6 +112,8 @@ akeneo_connectivity.connection:
     link: Esto es lo que sucederá.
     action:
       regenerate: Regenerar
+    flash:
+      success: Secreto de conexión regenerado con éxito.
   delete_connection:
     title: Confirmar la eliminación
     link: Esto es lo que sucederá.
