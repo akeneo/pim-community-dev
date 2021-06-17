@@ -7,6 +7,8 @@ use Akeneo\Pim\Enrichment\Component\Product\Validator\Constraints\EmailValidator
 use PhpSpec\ObjectBehavior;
 use Prophecy\Argument;
 use Symfony\Component\Validator\Constraints\Email as BaseEmail;
+use Symfony\Component\Validator\ConstraintViolation;
+use Symfony\Component\Validator\ConstraintViolationList;
 use Symfony\Component\Validator\ConstraintViolationListInterface;
 use Symfony\Component\Validator\Context\ExecutionContextInterface;
 use Symfony\Component\Validator\Exception\UnexpectedTypeException;
@@ -43,43 +45,36 @@ class EmailValidatorSpec extends ObjectBehavior
 
     function it_does_not_validate_an_incorrect_email(
         ExecutionContextInterface $context,
-        ConstraintViolationListInterface $constraintViolationList,
         ConstraintViolationBuilderInterface $constraintViolationBuilder,
-        ConstraintViolationInterface $violation
+        ConstraintViolation $constraintViolation
     ) {
         $badEmail = 'bad_email';
         $constraint = new Email(['attributeCode' => 'a_code']);
 
-        $context->buildViolation($constraint->message)->willReturn($constraintViolationBuilder);
-        $constraintViolationBuilder->setParameter('{{ value }}', Argument::any())->willReturn(
-            $constraintViolationBuilder
-        );
-        $constraintViolationBuilder->setCode(Email::INVALID_FORMAT_ERROR)->willReturn($constraintViolationList);
+        $context->buildViolation(Argument::any())->willReturn($constraintViolationBuilder);
+        $constraintViolationBuilder->setParameter(Argument::cetera())->willReturn($constraintViolationBuilder);
+        $constraintViolationBuilder->setCode(Argument::any())->willReturn($constraintViolationBuilder);
         $constraintViolationBuilder->addViolation()->shouldBeCalled();
 
-        $constraintViolationList->remove('propertyPath')->shouldBeCalledTimes(1);
+        $constraintViolationList = new ConstraintViolationList([$constraintViolation->getWrappedObject()]);
 
-        $context->getViolations()->willReturn($constraintViolationList);
-        $constraintViolationList->rewind()->willReturn($violation);
-        $constraintViolationList->valid()->willReturn(true, false);
-        $constraintViolationList->current()->willReturn($violation);
-        $constraintViolationList->key()->willReturn('propertyPath');
-        $violation->getCode()->willReturn(Email::INVALID_FORMAT_ERROR);
-
-        $context->buildViolation($constraint->message)->willReturn($constraintViolationBuilder);
-
+        $context->getViolations()
+            ->willReturn($constraintViolationList);
+        $constraintViolation->getCode()
+            ->willReturn(Email::INVALID_FORMAT_ERROR);
+        $context->buildViolation($constraint->message)
+            ->willReturn($constraintViolationBuilder);
         $constraintViolationBuilder->setParameter('%attribute%', $constraint->attributeCode)
-            ->willReturn($constraintViolationBuilder)->shouldBeCalledTimes(1);
-
+            ->willReturn($constraintViolationBuilder)
+            ->shouldBeCalledTimes(1);
         $constraintViolationBuilder->setInvalidValue($badEmail)
-            ->willReturn($constraintViolationBuilder)->shouldBeCalledTimes(1);
-
+            ->willReturn($constraintViolationBuilder)
+            ->shouldBeCalledTimes(1);
         $constraintViolationBuilder->setCode(Email::INVALID_FORMAT_ERROR)
-            ->willReturn($constraintViolationBuilder)->shouldBeCalledTimes(2);
-
-        $constraintViolationBuilder->addViolation()->shouldBeCalledTimes(2);
-
-        $constraintViolationList->next()->willReturn(null);
+            ->willReturn($constraintViolationBuilder)
+            ->shouldBeCalledTimes(2);
+        $constraintViolationBuilder->addViolation()
+            ->shouldBeCalledTimes(2);
 
         $this->validate($badEmail, $constraint);
     }
