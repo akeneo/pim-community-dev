@@ -7,6 +7,7 @@ import {
   useHorizontalPosition,
   useShortcut,
   useVerticalPosition,
+  useWindowResize,
   VerticalPosition,
 } from '../../../hooks';
 import {AkeneoThemedProps, CommonStyle, getColor} from '../../../theme';
@@ -104,6 +105,7 @@ const Overlay = ({verticalPosition, parentRef, onClose, children, ...rest}: Over
   const horizontalPosition = useHorizontalPosition(overlayRef);
   const [visible, setVisible] = useState<boolean>(false);
   useShortcut(Key.Escape, onClose);
+  useWindowResize();
 
   useEffect(() => {
     setVisible(true);
