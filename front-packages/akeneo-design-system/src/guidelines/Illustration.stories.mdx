@@ -23,7 +23,7 @@ Illustrations are visually and emotionally powerful tools. Carefully identify th
   <Story name="Standard">
     {args => {
       return (
-        <PreviewGrid width={`${args.size + 40}px`}>
+        <PreviewGrid width={args.size + 40}>
           {Object.keys(Illustrations).map(illustrationName => {
             return (
               <PreviewCard key={illustrationName}>
