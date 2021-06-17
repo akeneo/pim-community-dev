@@ -17,7 +17,7 @@ class StepExecutionEvent extends Event implements EventInterface
     /** @var StepExecution */
     protected $stepExecution;
 
-    protected \Exception  $exception;
+    protected ?\Exception  $exception;
 
     public function getException(): ?\Exception
     {

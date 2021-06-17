@@ -35,23 +35,19 @@ abstract class AbstractStep implements StepInterface
     /** @var JobRepositoryInterface */
     protected $jobRepository;
 
-    private Logger $logger;
-
     /**
-     * @param JobRepositoryInterface   $jobRepository
-     * @param EventDispatcherInterface $eventDispatcher
      * @param string                   $name
+     * @param EventDispatcherInterface $eventDispatcher
+     * @param JobRepositoryInterface   $jobRepository
      */
     public function __construct(
-        JobRepositoryInterface $jobRepository,
+        $name,
         EventDispatcherInterface $eventDispatcher,
-//        Logger $logger,
-        $name
+        JobRepositoryInterface $jobRepository
     ) {
         $this->name = $name;
         $this->jobRepository = $jobRepository;
         $this->eventDispatcher = $eventDispatcher;
-//        $this->logger = $logger;
     }
 
     /**
