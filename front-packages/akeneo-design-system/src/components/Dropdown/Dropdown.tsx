@@ -36,15 +36,19 @@ type DropdownProps = {
  */
 const Dropdown = ({children, ...rest}: DropdownProps) => {
   const ref = useRef<HTMLDivElement>(null);
-  const decoratedChildren = Children.map(children, (child) => {
+  const decoratedChildren = Children.map(children, child => {
     if (!isValidElement(child) || child.type !== Overlay) return child;
 
     return cloneElement(child, {
       parentRef: ref,
-    })
+    });
   });
 
-  return <DropdownContainer ref={ref} {...rest}>{decoratedChildren}</DropdownContainer>;
+  return (
+    <DropdownContainer ref={ref} {...rest}>
+      {decoratedChildren}
+    </DropdownContainer>
+  );
 };
 
 Overlay.displayName = 'Dropdown.Overlay';
