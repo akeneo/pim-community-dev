@@ -9,9 +9,24 @@ import { TableInputRow } from "./TableInputRow/TableInputRow";
 import { TableInputTextInput } from "./TableInputTextInput/TableInputTextInput";
 import { TableInputNumberInput } from "./TableInputNumberInput/TableInputNumberInput";
 
-const TableInputContainer = styled.table`
-  border-spacing: 0 4px;
+const TableInputContainer = styled.div`
   width: 100%;
+  overflow: auto;
+`;
+
+const TableInputTable = styled.table`
+  border-spacing: 0;
+  width: 100%;
+  
+  & th:first-child, & tr > td:first-child {
+    transition: box-shadow 0.15s;
+  }
+  &.shadowed th:first-child {
+    box-shadow: rgba(0,0,0,0.2) 0px 7.5px 15px 0px;
+  }
+  &.shadowed tr > td:first-child {
+    box-shadow: rgba(0,0,0,0.2) 0px 15px 15px 0px;
+  }
 `;
 
 type TableInputProps = Override<
@@ -28,9 +43,15 @@ type TableInputProps = Override<
  * TODO.
  */
 const TableInput = ({ children, ...rest }: TableInputProps) => {
+  const [shadowed, setShadowed] = React.useState<boolean>(false);
+  const handleScroll = (event: React.UIEvent<HTMLElement>) => {
+    setShadowed(event.currentTarget.scrollLeft > 0);
+  }
   return (
-    <TableInputContainer {...rest}>
-      {children}
+    <TableInputContainer onScroll={handleScroll} {...rest}>
+      <TableInputTable className={shadowed ? 'shadowed' : ''}>
+        {children}
+      </TableInputTable>
     </TableInputContainer>
   );
 };
