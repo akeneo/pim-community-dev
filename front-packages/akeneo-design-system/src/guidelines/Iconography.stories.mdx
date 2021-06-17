@@ -35,7 +35,7 @@ The icons are always stroke and monochromatic and must respect the color contras
   <Story name="Standard">
     {args => {
       return (
-        <PreviewGrid size={args.size}>
+        <PreviewGrid width={`${args.size}px`}>
           {Object.keys(Icons).map(iconName => {
             return (
               <PreviewCard key={iconName}>

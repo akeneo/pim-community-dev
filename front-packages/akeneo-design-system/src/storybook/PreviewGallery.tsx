@@ -8,15 +8,16 @@ const StoryStyle = styled.div`
   }
 `;
 
-const PreviewGrid = styled.div<{width: number}>`
+const PreviewGrid = styled.div<{width: string}>`
   display: grid;
-  grid-template-columns: repeat(auto-fill, ${({width}) => width}px);
+  grid-template-columns: repeat(auto-fill, ${({width}) => width});
   gap: 16px;
   margin-bottom: 50px;
+  justify-content: center;
 `;
 
 PreviewGrid.defaultProps = {
-  width: 140,
+  width: '140px',
 };
 
 const PreviewCard = styled.div`
