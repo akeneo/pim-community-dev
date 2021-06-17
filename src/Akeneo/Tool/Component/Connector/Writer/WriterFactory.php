@@ -6,7 +6,6 @@ namespace Akeneo\Tool\Component\Connector\Writer;
 
 
 use Box\Spout\Writer\WriterFactory as SpoutWriterFactory;
-use Box\Spout\Writer\WriterInterface;
 
 /**
  * @author    Pierre Jolly <pierre.jolly@akeneo.com>
