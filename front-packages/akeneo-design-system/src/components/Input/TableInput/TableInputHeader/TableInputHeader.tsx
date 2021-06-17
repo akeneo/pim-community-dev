@@ -1,24 +1,22 @@
 import React, { ReactNode, Ref } from "react";
 import styled from "styled-components";
+import { getColor } from "../../../../theme";
 
 const TableInputHead = styled.thead``;
 
 const TableInputHeadTr = styled.tr`
   height: 40px;
-  background: #f0f1f3;
-  border-radius: 2px;
+  background: ${getColor('grey', 40)};
   & > * {
-    border: 1px solid #c7cbd4;
+    border: 1px solid ${getColor('grey', 60)};
     border-left-width: 0;
   }
   & > *:first-child {
     border-left-width: 1px;
-    border-top-left-radius: 2px;
-    border-bottom-left-radius: 2px;
-  }
-  & > *:last-child {
-    border-top-right-radius: 2px;
-    border-bottom-right-radius: 2px;
+    position: sticky;
+    left: 0;
+    background: ${getColor('grey', 40)};
+    z-index: 1;
   }
 `;
 

@@ -1,12 +1,13 @@
 import styled from "styled-components";
 import React, { ReactNode, Ref } from "react";
+import { getColor } from "../../../../theme";
 
 const TableInputTbody = styled.tbody`
-  & > * {
-    background: #ffffff;
+  & > * > * {
+    background: ${getColor('white')};
   }
-  & > *:nth-child(2n) {
-    background: #f6f7fb;
+  & > *:nth-child(2n) > * {
+    background: ${getColor('grey', 20)};
   }
 `;
 
