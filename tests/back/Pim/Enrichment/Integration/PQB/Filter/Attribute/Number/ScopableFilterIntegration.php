@@ -123,7 +123,7 @@ class ScopableFilterIntegration extends AbstractProductQueryBuilderTestCase
     public function testErrorScopable()
     {
         $this->expectException(InvalidPropertyException::class);
-        $this->expectExceptionMessage('The attribute_code attribute requires a value per channel.');
+        $this->expectExceptionMessage('The a_scopable_number attribute requires a value per channel.');
 
         $this->executeFilter([['a_scopable_number', Operators::NOT_EQUAL, 12]]);
     }
