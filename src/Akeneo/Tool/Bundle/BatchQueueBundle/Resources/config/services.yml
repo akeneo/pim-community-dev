@@ -71,6 +71,15 @@ services:
         tags:
             - { name: console.command }
 
+    Akeneo\Tool\Bundle\BatchQueueBundle\Command\MigrateJobMessagesFromOldQueueCommand:
+        arguments:
+            - '@akeneo_batch_queue.factory.job_execution_message'
+            - '@akeneo_batch_queue.queue.job_execution_queue'
+            - '@pim_connector.doctrine.cache_clearer'
+            - '@database_connection'
+        tags:
+            - { name: console.command }
+
     akeneo_batch_queue.factory.job_execution_message:
         class: Akeneo\Tool\Component\BatchQueue\Factory\JobExecutionMessageFactory
         arguments:
