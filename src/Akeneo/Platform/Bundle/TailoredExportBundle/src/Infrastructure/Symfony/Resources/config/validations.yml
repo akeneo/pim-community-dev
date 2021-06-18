@@ -1,0 +1,57 @@
+services:
+  akeneo.tailored_export.validation.source.code_label_selection.constraint:
+    class: 'Akeneo\Platform\TailoredExport\Infrastructure\Validation\Selection\CodeLabelSelection'
+
+  akeneo.tailored_export.validation.source.code_label_collection_selection.constraint:
+    class: 'Akeneo\Platform\TailoredExport\Infrastructure\Validation\Selection\CodeLabelCollectionSelection'
+
+  akeneo.tailored_export.validation.source.price_collection_selection.constraint:
+    class: 'Akeneo\Platform\TailoredExport\Infrastructure\Validation\Selection\PriceCollectionSelection'
+
+  akeneo.tailored_export.validation.source.measurement_selection.constraint:
+    class: 'Akeneo\Platform\TailoredExport\Infrastructure\Validation\Selection\MeasurementSelection'
+
+  akeneo.tailored_export.validation.source:
+    class: 'Akeneo\Platform\TailoredExport\Infrastructure\Validation\SourcesValidator'
+    arguments:
+      - '@akeneo.pim.structure.query.get_attributes'
+      -
+#        - 'pim_catalog_date':
+#        - 'pim_catalog_file':
+#        - 'pim_catalog_image':
+#        - 'pim_catalog_number':
+        pim_catalog_metric: '@akeneo.tailored_export.validation.source.measurement_selection.constraint'
+        pim_catalog_multiselect: '@akeneo.tailored_export.validation.source.code_label_collection_selection.constraint'
+        pim_catalog_simpleselect: '@akeneo.tailored_export.validation.source.code_label_selection.constraint'
+        pim_catalog_price_collection: '@akeneo.tailored_export.validation.source.price_collection_selection.constraint'
+        akeneo_reference_entity: '@akeneo.tailored_export.validation.source.code_label_selection.constraint'
+        akeneo_reference_entity_collection: '@akeneo.tailored_export.validation.source.code_label_collection_selection.constraint'
+        pim_catalog_asset_collection: '@akeneo.tailored_export.validation.source.code_label_collection_selection.constraint'
+      - []
+    tags:
+      - { name: validator.constraint_validator, alias: akeneo.tailored_export.validation.source }
+    public: true
+
+  akeneo.tailored_export.validation.source.code_label_collection_selection:
+    class: 'Akeneo\Platform\TailoredExport\Infrastructure\Validation\Selection\CodeLabelCollectionSelectionValidator'
+    arguments:
+      - [',', ';', '|']
+    tags:
+      - { name: validator.constraint_validator, alias: 'akeneo.tailored_export.validation.source.code_label_collection_selection' }
+    public: true
+
+  akeneo.tailored_export.validation.locale_should_be_active:
+    class: 'Akeneo\Platform\TailoredExport\Infrastructure\Validation\LocaleShouldBeActiveValidator'
+    arguments:
+      - '@pim_channel.query.cache.channel_exists_with_locale'
+    tags:
+      - { name: validator.constraint_validator, alias: 'akeneo.tailored_export.validation.locale_should_be_active' }
+    public: true
+
+  akeneo.tailored_export.validation.channel_should_exist:
+    class: 'Akeneo\Platform\TailoredExport\Infrastructure\Validation\ChannelShouldExistValidator'
+    arguments:
+      - '@pim_channel.query.cache.channel_exists_with_locale'
+    tags:
+      - { name: validator.constraint_validator, alias: 'akeneo.tailored_export.validation.channel_should_exist' }
+    public: true

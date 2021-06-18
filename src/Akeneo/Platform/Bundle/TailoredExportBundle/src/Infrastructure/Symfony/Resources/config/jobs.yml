@@ -1,0 +1,63 @@
+services:
+  akeneo.tailored_export.job.xlsx_product.export:
+    class: '%pim_connector.job.simple_job.class%'
+    arguments:
+      - '%akeneo.tailored_export.connector.xlsx.code%'
+      - '@event_dispatcher'
+      - '@akeneo_batch.job_repository'
+      -
+        - '@akeneo.tailored_export.connector.step.xlsx_product.export'
+    tags:
+      - { name: akeneo_batch.job, connector: '%akeneo.tailored_export.connector.name%', type: '%pim_connector.job.export_type%' }
+
+  akeneo.tailored_export.job.job_parameters.xlsx_default_values_provider:
+    class: 'Akeneo\Platform\TailoredExport\Infrastructure\Connector\DefaultValueProvider'
+    arguments:
+      - '@akeneo_pim_enrichment.job.job_parameters.default_values_provider.simple_xlsx_export'
+      -
+        - '%akeneo.tailored_export.connector.xlsx.code%'
+    tags:
+      - { name: akeneo_batch.job.job_parameters.default_values_provider }
+
+  akeneo.tailored_export.job.job_parameters.xlsx_constraint_collection_provider:
+    class: 'Akeneo\Platform\TailoredExport\Infrastructure\Connector\ConstraintCollectionProvider'
+    arguments:
+      - '@pim_user.job.job_parameters.constraint_collection_provider.simple_xlsx_export'
+      -
+        - '%akeneo.tailored_export.connector.xlsx.code%'
+    tags:
+      - { name: akeneo_batch.job.job_parameters.constraint_collection_provider }
+
+  akeneo.tailored_export.connector.reader.database.product:
+    class: 'Akeneo\Platform\TailoredExport\Infrastructure\Connector\Reader\Database\ProductReader'
+    arguments:
+      - '@pim_catalog.query.product_query_builder_factory'
+
+  akeneo.tailored_export.connector.processor.product_export:
+    class: 'Akeneo\Platform\TailoredExport\Infrastructure\Connector\Processor\ProductExportProcessor'
+    arguments:
+      - '@Akeneo\Platform\TailoredExport\Infrastructure\Connector\Processor\AttributeSelector\AttributeSelectorRegistry'
+      - '@akeneo.pim.structure.query.get_attributes'
+
+  akeneo.tailored_export.connector.xlsx.file_writer_factory:
+    class: Akeneo\Platform\TailoredExport\Infrastructure\Connector\Writer\File\FileWriterFactory
+    arguments:
+      - 'xlsx'
+
+  akeneo.tailored_export.connector.writer.xlsx.product:
+    class: 'Akeneo\Platform\TailoredExport\Infrastructure\Connector\Writer\File\Xlsx\ProductWriter'
+    arguments:
+      - '@filesystem'
+      - '@akeneo.tailored_export.connector.xlsx.file_writer_factory'
+
+  akeneo.tailored_export.connector.step.xlsx_product.export:
+    class: '%pim_connector.step.item_step.class%'
+    arguments:
+      - 'export'
+      - '@event_dispatcher'
+      - '@akeneo_batch.job_repository'
+      - '@akeneo.tailored_export.connector.reader.database.product'
+      - '@akeneo.tailored_export.connector.processor.product_export'
+      - '@akeneo.tailored_export.connector.writer.xlsx.product'
+      - '%pim_job_product_batch_size%'
+      - '@akeneo_batch.job.job_stopper'

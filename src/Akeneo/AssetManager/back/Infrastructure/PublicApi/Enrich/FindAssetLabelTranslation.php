@@ -7,7 +7,6 @@ namespace Akeneo\AssetManager\Infrastructure\PublicApi\Enrich;
 use Akeneo\AssetManager\Domain\Model\AssetFamily\AssetFamilyIdentifier;
 use Akeneo\AssetManager\Domain\Model\LabelCollection;
 use Akeneo\AssetManager\Domain\Query\Asset\FindAssetLabelsByCodesInterface;
-use Akeneo\AssetManager\Infrastructure\Persistence\Sql\Asset\SqlFindAssetLabelsByCodes;
 
 /**
  * @author    Samir Boulil <samir.boulil@akeneo.com>

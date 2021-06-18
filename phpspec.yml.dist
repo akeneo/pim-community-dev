@@ -50,6 +50,14 @@ suites:
         src_path: src/Akeneo/FreeTrial
         spec_prefix: Specification
 
+    ## Tailored export context
+    TailoredExport:
+        namespace: Akeneo\Platform\TailoredExport
+        psr4_prefix: Akeneo\Platform\TailoredExport
+        spec_path: src/Akeneo/Platform/Bundle/TailoredExportBundle/tests
+        src_path: src/Akeneo/Platform/Bundle/TailoredExportBundle/src
+        spec_prefix: Specification
+
     ## Pim extension
     ReferenceEntityExtension:
         namespace: Akeneo\Pim\Enrichment\ReferenceEntity

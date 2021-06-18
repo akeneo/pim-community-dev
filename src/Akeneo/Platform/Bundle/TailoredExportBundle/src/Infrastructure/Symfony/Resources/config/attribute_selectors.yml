@@ -1,0 +1,79 @@
+services:
+  Akeneo\Platform\TailoredExport\Infrastructure\Connector\Processor\AttributeSelector\AttributeSelectorRegistry:
+    public: true
+    arguments:
+      - !tagged_iterator akeneo.tailored_export.attribute_selector
+
+  Akeneo\Platform\TailoredExport\Infrastructure\Connector\Processor\AttributeSelector\ScalarSelector:
+    public: true
+    arguments:
+      -
+        - 'pim_catalog_boolean'
+        - 'pim_catalog_identifier'
+        - 'pim_catalog_number'
+        - 'pim_catalog_text'
+        - 'pim_catalog_textarea'
+    tags:
+      - { name: akeneo.tailored_export.attribute_selector }
+
+  Akeneo\Platform\TailoredExport\Infrastructure\Connector\Processor\AttributeSelector\SimpleSelectSelector:
+    public: true
+    arguments:
+      -
+        - 'pim_catalog_simpleselect'
+      - '@akeneo.pim.structure.query.lru_cached_get_existing_attribute_options_with_values'
+    tags:
+      - { name: akeneo.tailored_export.attribute_selector }
+
+  Akeneo\Platform\TailoredExport\Infrastructure\Connector\Processor\AttributeSelector\MultiSelectSelector:
+    public: true
+    arguments:
+      -
+        - 'pim_catalog_multiselect'
+      - '@akeneo.pim.structure.query.lru_cached_get_existing_attribute_options_with_values'
+    tags:
+      - { name: akeneo.tailored_export.attribute_selector }
+
+  Akeneo\Platform\TailoredExport\Infrastructure\Connector\Processor\AttributeSelector\ReferenceEntitySimpleSelectSelector:
+    public: true
+    arguments:
+      -
+        - 'akeneo_reference_entity'
+      - '@akeneo_referenceentity.infrastructure.persistence.query.enrich.find_records_labels_public_api'
+    tags:
+      - { name: akeneo.tailored_export.attribute_selector }
+
+  Akeneo\Platform\TailoredExport\Infrastructure\Connector\Processor\AttributeSelector\ReferenceEntityMultiSelectSelector:
+    public: true
+    arguments:
+      -
+        - 'akeneo_reference_entity_collection'
+      - '@akeneo_referenceentity.infrastructure.persistence.query.enrich.find_records_labels_public_api'
+    tags:
+      - { name: akeneo.tailored_export.attribute_selector }
+
+  Akeneo\Platform\TailoredExport\Infrastructure\Connector\Processor\AttributeSelector\AssetCollectionSelector:
+    public: true
+    arguments:
+      -
+        - 'pim_catalog_asset_collection'
+      - '@akeneo_assetmanager.infrastructure.persistence.query.enrich.find_asset_label_translation_public_api'
+    tags:
+      - { name: akeneo.tailored_export.attribute_selector }
+
+  Akeneo\Platform\TailoredExport\Infrastructure\Connector\Processor\AttributeSelector\MeasurementSelector:
+    public: true
+    arguments:
+      -
+        - 'pim_catalog_metric'
+      - '@akeneo_measurement.public_api.get_unit_translations'
+    tags:
+      - { name: akeneo.tailored_export.attribute_selector }
+
+  Akeneo\Platform\TailoredExport\Infrastructure\Connector\Processor\AttributeSelector\PriceCollectionSelector:
+    public: true
+    arguments:
+      -
+        - 'pim_catalog_price_collection'
+    tags:
+      - { name: akeneo.tailored_export.attribute_selector }
