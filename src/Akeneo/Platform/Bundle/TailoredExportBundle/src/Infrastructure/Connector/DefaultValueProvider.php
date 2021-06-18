@@ -53,12 +53,7 @@ class DefaultValueProvider implements DefaultValuesProviderInterface
                     'field' => 'categories',
                     'operator' => Operators::NOT_IN_LIST,
                     'value' => []
-                ],
-                [
-                    'field' => 'completeness',
-                    'operator' => Operators::ALL_COMPLETE,
-                    'value' => 100,
-                ],
+                ]
             ],
         ];
 
