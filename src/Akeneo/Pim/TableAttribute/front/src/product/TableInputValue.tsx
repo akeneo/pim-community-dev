@@ -76,17 +76,19 @@ const TableInputValue: React.FC<TableInputValueProps> = ({valueData, tableConfig
                   const columnType = columnDefinition.data_type;
 
                   return (
-                    <TableInput.Cell key={`${rowIndex}-${columnCode}`} highlighted={cellMatchSearch(`${row[columnCode]}`)}>
+                    <TableInput.Cell key={`${rowIndex}-${columnCode}`}>
                       {'number' === columnType && (
                         <TableInput.NumberInput
                           value={`${row[columnCode] as number}`}
                           onChange={value => handleChange(rowIndex, columnCode, value)}
+                          highlighted={cellMatchSearch(`${row[columnCode]}`)}
                         />
                       )}
                       {('text' === columnType || 'select' === columnType) && (
                         <TableInput.TextInput
                           value={row[columnCode] as string}
                           onChange={value => handleChange(rowIndex, columnCode, value)}
+                          highlighted={cellMatchSearch(`${row[columnCode]}`)}
                         />
                       )}
                       {'boolean' === columnType && (
