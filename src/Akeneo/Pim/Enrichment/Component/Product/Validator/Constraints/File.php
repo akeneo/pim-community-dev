@@ -15,12 +15,16 @@ use Symfony\Component\Validator\Constraints\File as BaseFile;
  */
 class File extends BaseFile
 {
+    public const EXTENSION_NOT_ALLOWED_ERROR = 'ead50d07-6369-48a2-b108-3f7e4eda0048';
+
     /** @var array */
     public $allowedExtensions = [];
 
     /** @var string */
-    public $extensionsMessage = 'The file extension is not allowed (allowed extensions: %extensions%).';
+    public string $extensionsMessage = 'The %type% file extension is not allowed for the %attribute% attribute. Allowed extensions are %extensions%.';
 
     /** @var string */
     public $mimeTypeMessage = 'The MIME type is not allowed for %extension% (allowed types: %types%, found %type%).';
+
+    public string $attributeCode = '';
 }

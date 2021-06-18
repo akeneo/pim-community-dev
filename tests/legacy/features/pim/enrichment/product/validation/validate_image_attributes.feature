@@ -33,10 +33,10 @@ Feature: Validate image attributes of a product
   Scenario: Validate the allowed extensions constraint of image attribute
     Given I attach file "fanatic-freewave-76.gif" to "Image"
     And I save the product
-    Then I should see the text "The file extension is not allowed (allowed extensions: jpg)."
+    Then I should see the text "The gif file extension is not allowed for the image attribute. Allowed extensions are jpg."
 
   Scenario: Validate the allowed extensions constraint of scopable image attribute
     Given I switch the scope to "ecommerce"
     And I attach file "fanatic-freewave-76.gif" to "Thumbnail"
     And I save the product
-    Then I should see the text "The file extension is not allowed (allowed extensions: jpg)."
+    Then I should see the text "The gif file extension is not allowed for the thumbnail attribute. Allowed extensions are jpg."

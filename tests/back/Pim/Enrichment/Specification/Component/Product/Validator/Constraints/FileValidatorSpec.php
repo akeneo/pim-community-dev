@@ -7,6 +7,7 @@ use Akeneo\Tool\Component\FileStorage\Model\FileInfoInterface;
 use PhpSpec\ObjectBehavior;
 use Akeneo\Pim\Enrichment\Component\Product\Validator\Constraints\File;
 use Prophecy\Argument;
+use Symfony\Component\Validator\ConstraintValidator;
 use Symfony\Component\Validator\Context\ExecutionContextInterface;
 use Symfony\Component\Validator\Violation\ConstraintViolationBuilderInterface;
 
@@ -26,6 +27,11 @@ class FileValidatorSpec extends ObjectBehavior
     function it_is_initializable()
     {
         $this->shouldHaveType(FileValidator::class);
+    }
+
+    function it_is_a_validator_constraint()
+    {
+        $this->beAnInstanceOf(ConstraintValidator::class);
     }
 
     function it_validates_extensions_and_mimetype(
@@ -70,22 +76,31 @@ class FileValidatorSpec extends ObjectBehavior
         $context,
         File $constraint,
         FileInfoInterface $fileInfo,
-        ConstraintViolationBuilderInterface $violation
+        ConstraintViolationBuilderInterface $violationBuilder
     ) {
+        $extension = 'jpg';
         $constraint->allowedExtensions = ['pdf', 'docx'];
+        $constraint->attributeCode = 'a_code';
         $fileInfo->getId()->willReturn(12);
         $fileInfo->getUploadedFile()->willReturn(null);
-        $fileInfo->getExtension()->willReturn('jpg');
+        $fileInfo->getExtension()->willReturn($extension);
         $fileInfo->getSize()->willReturn(100);
         $fileInfo->getMimeType()->willReturn('image/jpeg');
 
         $context
             ->buildViolation(
                 $constraint->extensionsMessage,
-                ['%extensions%' => implode(', ', $constraint->allowedExtensions)]
+                [
+                '%extensions%' => implode(', ', $constraint->allowedExtensions),
+                    '%type%' => $extension,
+                    '%attribute%' => $constraint->attributeCode,
+                ]
             )
-            ->shouldBeCalled()
-            ->willReturn($violation);
+            ->shouldBeCalledTimes(1)
+            ->willReturn($violationBuilder);
+        $violationBuilder->setCode(File::EXTENSION_NOT_ALLOWED_ERROR)
+            ->shouldBeCalledTimes(1)->willReturn($violationBuilder);
+        $violationBuilder->addViolation()->shouldBeCalledTimes(1)->willReturn($violationBuilder);
 
         $this->validate($fileInfo, $constraint);
     }

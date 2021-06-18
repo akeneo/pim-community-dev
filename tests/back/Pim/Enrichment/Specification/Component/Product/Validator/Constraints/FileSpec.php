@@ -4,6 +4,7 @@ namespace Specification\Akeneo\Pim\Enrichment\Component\Product\Validator\Constr
 
 use Akeneo\Pim\Enrichment\Component\Product\Validator\Constraints\File;
 use PhpSpec\ObjectBehavior;
+use Symfony\Component\Validator\Constraint;
 
 class FileSpec extends ObjectBehavior
 {
@@ -14,16 +15,21 @@ class FileSpec extends ObjectBehavior
 
     function it_is_a_validator_constraint()
     {
-        $this->shouldBeAnInstanceOf('Symfony\Component\Validator\Constraint');
+        $this->shouldBeAnInstanceOf(Constraint::class);
     }
 
     function it_has_extension_message()
     {
-        $this->extensionsMessage->shouldBe('The file extension is not allowed (allowed extensions: %extensions%).');
+        $this->extensionsMessage->shouldBe('The %type% file extension is not allowed for the %attribute% attribute. Allowed extensions are %extensions%.');
     }
 
     function it_has_allowed_extensions()
     {
         $this->allowedExtensions->shouldBe(array());
+    }
+
+    function it_has_attribute_code()
+    {
+        $this->attributeCode->shouldBe('');
     }
 }

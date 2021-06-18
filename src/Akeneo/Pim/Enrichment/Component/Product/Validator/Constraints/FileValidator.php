@@ -63,12 +63,16 @@ class FileValidator extends ConstraintValidator
         if (empty($constraint->allowedExtensions)) {
             return;
         }
-
-        if (!in_array($this->getExtension($fileInfo), $constraint->allowedExtensions)) {
+        $extension = $this->getExtension($fileInfo);
+        if (!in_array($extension, $constraint->allowedExtensions)) {
             $this->context->buildViolation(
                 $constraint->extensionsMessage,
-                ['%extensions%' => implode(', ', $constraint->allowedExtensions)]
-            )->addViolation();
+                [
+                    '%extensions%' => implode(', ', $constraint->allowedExtensions),
+                    '%type%' => $extension,
+                    '%attribute%' => $constraint->attributeCode,
+                ]
+            )->setCode(File::EXTENSION_NOT_ALLOWED_ERROR)->addViolation();
         }
     }
 
