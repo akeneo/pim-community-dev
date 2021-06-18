@@ -250,6 +250,8 @@ onboarder:
       enabled: true
     pushChannelToOnboarder:
       enabled: true
+    pushMeasurementFamiliesToOnboarder:
+      enabled: true
     pushCatalogToOnboarder:
       enabled: false
     importAdditionalOnboarderFixtures:
