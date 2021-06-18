@@ -40,7 +40,7 @@ final class DefaultAttributeValidation implements DocumentationBuilderInterface
         Range::TOO_LOW_ERROR,
         Regex::REGEX_FAILED_ERROR,
         UniqueValue::UNIQUE_VALUE,
-        Url::INVALID_URL_ERROR
+        Url::INVALID_URL_ERROR,
     ];
 
     public function support($object): bool
