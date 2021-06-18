@@ -5,10 +5,10 @@ import {LocaleCode, Channel} from '@akeneo-pim-community/shared';
 import {pimTheme} from 'akeneo-design-system';
 import {DependenciesProvider} from '@akeneo-pim-community/legacy-bridge';
 import {Attribute, CompletenessFilter, FetcherContext, Operator} from '@akeneo-pim-enterprise/tailored-export';
+const _ = require('underscore');
+const __ = require('oro/translator');
 const BaseFilter = require('pim/filter/filter');
 const BaseCompletenessFilter = require('pim/filter/product/completeness');
-
-const __ = require('oro/translator');
 const fetcherRegistry = require('pim/fetcher-registry');
 
 class FilterLocalizedCompleteness extends BaseCompletenessFilter {
