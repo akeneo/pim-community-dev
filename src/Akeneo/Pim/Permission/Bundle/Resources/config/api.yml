@@ -44,6 +44,7 @@ services:
             - '@pim_catalog.repository.product_model'
             - '@pimee_catalog.security.updater.granted_product_model'
             - '@pim_catalog.saver.product_model'
+            - '@event_dispatcher'
             - '%pim_api.configuration%'
 
     pimee_security.api.warmup_query_cache.get_viewable_attribute_codes_for_user:

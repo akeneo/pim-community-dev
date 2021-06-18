@@ -32,9 +32,9 @@ Feature: Validate file attributes of a draft
   Scenario: Validate the allowed extensions constraint of file attribute
     Given I attach file "fanatic-freewave-76.gif" to "Brief"
     And I save the product
-    Then I should see the text "The file extension is not allowed (allowed extensions: txt)."
+    Then I should see the text "The gif file extension is not allowed for the brief attribute. Allowed extensions are txt."
 
   Scenario: Validate the allowed extensions constraint of scopable file attribute
     Given I attach file "fanatic-freewave-76.gif" to "Attachment"
     And I save the product
-    Then I should see the text "The file extension is not allowed (allowed extensions: txt)."
+    Then I should see the text "The gif file extension is not allowed for the attachment attribute. Allowed extensions are txt."

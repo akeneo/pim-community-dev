@@ -32,9 +32,9 @@ Feature: Validate image attributes of a draft
   Scenario: Validate the allowed extensions constraint of image attribute
     Given I attach file "fanatic-freewave-76.gif" to "Image"
     And I save the product
-    Then I should see validation error "The file extension is not allowed (allowed extensions: jpg)."
+    Then I should see validation error "The gif file extension is not allowed for the image attribute. Allowed extensions are jpg."
 
   Scenario: Validate the allowed extensions constraint of scopable image attribute
     Given I attach file "fanatic-freewave-76.gif" to "Thumbnail"
     And I save the product
-    Then I should see validation error "The file extension is not allowed (allowed extensions: jpg)."
+    Then I should see validation error "he gif file extension is not allowed for the thumbnail attribute. Allowed extensions are jpg."
