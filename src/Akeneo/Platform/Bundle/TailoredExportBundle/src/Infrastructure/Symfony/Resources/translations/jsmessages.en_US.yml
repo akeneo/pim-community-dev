@@ -4,7 +4,7 @@ akeneo.tailored_export:
   filters:
     completeness:
       locales:
-        label: Define the locale for the completeness
+        label: Define the locales for the completeness
         placeholder: Select some locales
         remove: Remove the locale
   form:

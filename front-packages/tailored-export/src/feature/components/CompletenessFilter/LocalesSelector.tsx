@@ -20,8 +20,6 @@ const LocalesSelector = ({locales, onChange, validationErrors}: LocalesSelectorP
   const channels = useChannels();
   const availableLocales = getAllLocalesFromChannels(channels);
 
-  if (availableLocales.length === 0) return null;
-
   return (
     <Section>
       <Field label={translate('akeneo.tailored_export.filters.completeness.locales.label')}>

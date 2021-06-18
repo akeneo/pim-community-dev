@@ -177,7 +177,6 @@ extensions:
     akeneo-product-localized-completeness-filter:
         module: akeneotailoredexport/js/job/product/edit/filter-localized-completeness
         config:
-            neverEmpty: true
             operators:
                 - ALL
                 - GREATER OR EQUALS THAN ON AT LEAST ONE LOCALE

@@ -112,6 +112,7 @@ class FilterLocalizedCompleteness extends BaseCompletenessFilter {
 
                 this.render();
               },
+              validationErrors: [],
             })
           )
         )

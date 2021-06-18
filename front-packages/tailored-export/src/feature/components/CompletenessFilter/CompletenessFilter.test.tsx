@@ -1,6 +1,6 @@
 import React from 'react';
-import {screen, act} from '@testing-library/react';
-import {renderWithProviders, Channel} from '@akeneo-pim-community/shared';
+import {act, screen} from '@testing-library/react';
+import {Channel, renderWithProviders, ValidationError} from '@akeneo-pim-community/shared';
 import {CompletenessFilter, Operator} from './CompletenessFilter';
 import {FetcherContext} from '../../contexts';
 import {Attribute} from '../../models';
@@ -68,6 +68,7 @@ test.each(operatorsAndVisiblity)(
             locales={['fr_FR', 'en_US']}
             onOperatorChange={() => {}}
             onLocalesChange={() => {}}
+            validationErrors={[]}
           />
         </FetcherContext.Provider>
       );
@@ -93,7 +94,8 @@ test('it can switch operator', async () => {
           operator="ALL"
           locales={['fr_FR', 'en_US']}
           onOperatorChange={handleOperatorChange}
-          onLocalesChange={jest.fn()}
+          onLocalesChange={() => {}}
+          validationErrors={[]}
         />
       </FetcherContext.Provider>
     );
@@ -120,6 +122,7 @@ test('it can  select locales', async () => {
           locales={[]}
           onOperatorChange={jest.fn()}
           onLocalesChange={handleLocalesChange}
+          validationErrors={[]}
         />
       </FetcherContext.Provider>
     );
@@ -131,4 +134,60 @@ test('it can  select locales', async () => {
   await userEvent.click(greaterThanButton);
 
   expect(handleLocalesChange).toHaveBeenCalledWith(['en_US']);
+});
+
+test('it displays locales validation errors', async () => {
+  const localesErrorMessage = 'error with the locales';
+
+  await act(async () => {
+    renderWithProviders(
+      <FetcherContext.Provider value={fetchers}>
+        <CompletenessFilter
+          operator="GREATER OR EQUALS THAN ON ALL LOCALES"
+          locales={[]}
+          onOperatorChange={() => {}}
+          onLocalesChange={() => {}}
+          validationErrors={[
+            {
+              messageTemplate: localesErrorMessage,
+              parameters: {},
+              message: '',
+              propertyPath: '[locales]',
+              invalidValue: '',
+            },
+          ]}
+        />
+      </FetcherContext.Provider>
+    );
+  });
+
+  expect(screen.getByText(localesErrorMessage)).toBeInTheDocument();
+});
+
+test('it displays operator validation errors', async () => {
+  const operatorErrorMessage = 'error with the operator';
+
+  await act(async () => {
+    renderWithProviders(
+      <FetcherContext.Provider value={fetchers}>
+        <CompletenessFilter
+          operator="GREATER OR EQUALS THAN ON ALL LOCALES"
+          locales={[]}
+          onOperatorChange={() => {}}
+          onLocalesChange={() => {}}
+          validationErrors={[
+            {
+              messageTemplate: operatorErrorMessage,
+              parameters: {},
+              message: '',
+              propertyPath: '[operator]',
+              invalidValue: '',
+            },
+          ]}
+        />
+      </FetcherContext.Provider>
+    );
+  });
+
+  expect(screen.getByText(operatorErrorMessage)).toBeInTheDocument();
 });

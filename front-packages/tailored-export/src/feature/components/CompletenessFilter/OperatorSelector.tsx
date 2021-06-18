@@ -1,6 +1,6 @@
 import React from 'react';
-import {useTranslate, Section} from '@akeneo-pim-community/shared';
-import {SelectInput} from 'akeneo-design-system';
+import {useTranslate, Section, ValidationError} from '@akeneo-pim-community/shared';
+import {Helper, SelectInput} from 'akeneo-design-system';
 
 const availableOperators = [
   'ALL',
@@ -16,8 +16,9 @@ const isValidOperator = (operatorToCheck: unknown): operatorToCheck is Operator 
 type OperatorSelectorProps = {
   operator: Operator;
   onChange: (newOperator: Operator) => void;
+  validationErrors: ValidationError[];
 };
-const OperatorSelector = ({operator, onChange}: OperatorSelectorProps) => {
+const OperatorSelector = ({operator, onChange, validationErrors}: OperatorSelectorProps) => {
   const translate = useTranslate();
 
   return (
@@ -39,6 +40,11 @@ const OperatorSelector = ({operator, onChange}: OperatorSelectorProps) => {
           </SelectInput.Option>
         ))}
       </SelectInput>
+      {validationErrors.map((error, index) => (
+        <Helper key={index} inline={true} level="error">
+          {translate(error.messageTemplate, error.parameters)}
+        </Helper>
+      ))}
     </Section>
   );
 };

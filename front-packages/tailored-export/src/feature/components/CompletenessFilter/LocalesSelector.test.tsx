@@ -59,7 +59,7 @@ test('it notifies when a locale is added to the selection', async () => {
   expect(onLocalesSelectionChange).toHaveBeenCalledWith(['fr_FR', 'en_US']);
 });
 
-test('it validations errors if any', async () => {
+test('it displays validations errors if any', async () => {
   const myErrorMessage = 'My message.';
 
   await renderWithProviders(

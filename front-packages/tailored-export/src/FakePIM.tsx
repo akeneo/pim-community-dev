@@ -232,6 +232,7 @@ const FakePIM = () => {
               locales={['fr_FR']}
               onOperatorChange={handleCompletenessOperatorFilterChange}
               onLocalesChange={handleCompletenessLocalesFilterChange}
+              validationErrors={validationErrors}
             />
           </FieldContainer>
         )}

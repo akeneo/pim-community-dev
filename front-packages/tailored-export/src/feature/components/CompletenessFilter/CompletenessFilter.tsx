@@ -1,6 +1,6 @@
 import React from 'react';
 import styled from 'styled-components';
-import {LocaleCode} from '@akeneo-pim-community/shared';
+import {filterErrors, LocaleCode, ValidationError} from '@akeneo-pim-community/shared';
 import {OperatorSelector, Operator} from './OperatorSelector';
 import {LocalesSelector} from './LocalesSelector';
 
@@ -17,13 +17,25 @@ type CompletenessFilterProps = {
   locales: LocaleCode[];
   onOperatorChange: (operator: string) => void;
   onLocalesChange: (locales: LocaleCode[]) => void;
+  validationErrors: ValidationError[];
 };
 
-const CompletenessFilter = ({operator, locales, onOperatorChange, onLocalesChange}: CompletenessFilterProps) => {
+const CompletenessFilter = ({
+  operator,
+  locales,
+  onOperatorChange,
+  onLocalesChange,
+  validationErrors,
+}: CompletenessFilterProps) => {
+  const operatorErrors = filterErrors(validationErrors, '[operator]');
+  const localesErrors = filterErrors(validationErrors, '[locales]');
+
   return (
     <Container>
-      <OperatorSelector operator={operator} onChange={onOperatorChange} />
-      {operator !== 'ALL' && <LocalesSelector locales={locales} onChange={onLocalesChange} />}
+      <OperatorSelector operator={operator} onChange={onOperatorChange} validationErrors={operatorErrors} />
+      {operator !== 'ALL' && (
+        <LocalesSelector locales={locales} onChange={onLocalesChange} validationErrors={localesErrors} />
+      )}
     </Container>
   );
 };
