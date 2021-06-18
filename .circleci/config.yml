@@ -1277,7 +1277,7 @@ jobs:
             - run:
                 name: Communicate
                 command: |
-                  make slack_helpdesk
+                  IMAGE_TAG=${RELEASE_TO_DEPLOY} make slack_helpdesk
 
   deploy_grth_helpdesk_environment:
       environment:
@@ -1325,7 +1325,7 @@ jobs:
             - run:
                 name: Communicate
                 command: |
-                    make slack_helpdesk
+                    IMAGE_TAG=${RELEASE_TO_DEPLOY} make slack_helpdesk
 
   deploy_pm_environment:
       environment:
