@@ -1,6 +1,7 @@
-import {PanelCloseIcon, PanelOpenIcon} from '../../../icons';
+import {useBooleanState} from 'hooks';
 import React from 'react';
 import styled from 'styled-components';
+import {PanelCloseIcon, PanelOpenIcon} from '../../../icons';
 import {AkeneoThemedProps, getColor} from '../../../theme';
 
 const Panel = styled.div<{isOpen: boolean} & AkeneoThemedProps>`
@@ -10,46 +11,33 @@ const Panel = styled.div<{isOpen: boolean} & AkeneoThemedProps>`
   flex-direction: column;
   height: 100%;
   max-width: ${({isOpen}) => (isOpen ? '280px' : '40px')};
+  transition: max-width 0.3s ease-in-out;
 `;
 
-const PanelContent = styled.div`
+const PanelContent = styled.div<{isOpen: boolean} & AkeneoThemedProps>`
   flex-grow: 1;
+  opacity: ${({isOpen}) => (isOpen ? 1 : 0)};
   padding: 20px;
+  transition: opacity 0.3s;
+  transition-delay: 0.3s;
 `;
 
-const CloseButton = styled.button`
+const ToogleButton = styled.button<{isOpen: boolean} & AkeneoThemedProps>`
   align-items: center;
   background: none;
   border: none;
   border-top: 1px solid ${getColor('grey', 80)};
   cursor: pointer;
-  display: flex;
   height: 54px;
-  margin: 0 20px;
-  padding: 0;
-`;
+  margin: ${({isOpen}) => (isOpen ? '0 20px' : '0')};
+  padding: ${({isOpen}) => (isOpen ? '0' : '0 12.5px')};
+  transition: margin 0.3s ease-in-out;
+  text-align: left;
 
-const CloseIcon = styled(PanelCloseIcon)`
-  color: ${getColor('grey', 100)};
-  width: 15px;
-`;
-
-const OpenButton = styled.button`
-  align-items: center;
-  background: none;
-  border: none;
-  border-top: 1px solid ${getColor('grey', 80)};
-  cursor: pointer;
-  display: flex;
-  height: 54px;
-  justify-content: center;
-  margin: 0;
-  padding: 0;
-`;
-
-const OpenIcon = styled(PanelOpenIcon)`
-  color: ${getColor('grey', 100)};
-  width: 15px;
+  svg {
+    color: ${getColor('grey', 100)};
+    width: 15px;
+  }
 `;
 
 type SubNavigationPanelProps = {
@@ -62,11 +50,6 @@ type SubNavigationPanelProps = {
    * Whether or not the panel is open.
    */
   isOpen?: boolean;
-
-  /**
-   * Handler called when the collapse button is clicked.
-   */
-  onCollapse: (isOpen: boolean) => void;
 };
 
 /**
@@ -74,22 +57,18 @@ type SubNavigationPanelProps = {
  */
 const SubNavigationPanel = React.forwardRef<HTMLDivElement, SubNavigationPanelProps>(
   (
-    {children, isOpen = true, onCollapse, ...rest}: SubNavigationPanelProps,
+    {children, isOpen: defaultIsOpen = true, ...rest}: SubNavigationPanelProps,
     forwardedRef: React.Ref<HTMLDivElement>
   ) => {
+    const [isOpen, open, close] = useBooleanState(defaultIsOpen);
+
     return (
       <Panel ref={forwardedRef} isOpen={isOpen} {...rest}>
-        <PanelContent>{isOpen && children}</PanelContent>
+        <PanelContent isOpen={isOpen}>{isOpen && children}</PanelContent>
 
-        {isOpen ? (
-          <CloseButton onClick={() => onCollapse(false)} title="Close">
-            <CloseIcon />
-          </CloseButton>
-        ) : (
-          <OpenButton onClick={() => onCollapse(true)} title="Open">
-            <OpenIcon />
-          </OpenButton>
-        )}
+        <ToogleButton isOpen={isOpen} onClick={() => (isOpen ? close() : open())} title="Close">
+          {isOpen ? <PanelCloseIcon /> : <PanelOpenIcon />}
+        </ToogleButton>
       </Panel>
     );
   }

@@ -1,6 +1,7 @@
 import {Meta, Story, ArgsTable, Canvas} from '@storybook/addon-docs/blocks';
 import {useArgs, updateArgs} from '@storybook/client-api';
 import {SubNavigationPanel} from './SubNavigationPanel.tsx';
+import {SpaceContainer} from '../../../storybook/PreviewGallery';
 
 <Meta
   title="Components/Navigation/SubNavigationPanel"
@@ -26,9 +27,11 @@ When the panel is collapsed the content is hidden.
 <Canvas>
   <Story name="Standard">
     {args => {
-      const [{isOpen}, updateArgs] = useArgs();
-      const handleCollapse = isOpen => updateArgs({isOpen});
-      return <SubNavigationPanel {...args} onCollapse={handleCollapse} />;
+      return (
+        <SpaceContainer height={200}>
+          <SubNavigationPanel {...args} />
+        </SpaceContainer>
+      );
     }}
   </Story>
 </Canvas>
@@ -40,7 +43,11 @@ When the panel is collapsed the content is hidden.
 <Canvas>
   <Story name="Collapsed">
     {args => {
-      return <SubNavigationPanel {...args} isOpen={false} />;
+      return (
+        <SpaceContainer height={200}>
+          <SubNavigationPanel {...args} isOpen={false} />
+        </SpaceContainer>
+      );
     }}
   </Story>
 </Canvas>
