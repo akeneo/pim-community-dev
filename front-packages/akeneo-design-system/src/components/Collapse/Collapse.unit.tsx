@@ -22,6 +22,8 @@ test('it renders its children along with its label', () => {
     </Collapse>
   );
 
+  jest.runAllTimers();
+
   expect(screen.getByText('Hello')).toBeInTheDocument();
   expect(screen.getByText('42')).toBeInTheDocument();
   expect(screen.getByRole('alert')).toBeInTheDocument();
@@ -38,8 +40,6 @@ test('it calls the onCollapse handler when hitting the collapse button', () => {
   );
 
   userEvent.click(screen.getByTitle('Collapse'));
-
-  jest.runAllTimers();
 
   expect(handleCollapse).toHaveBeenCalledWith(true);
 });
