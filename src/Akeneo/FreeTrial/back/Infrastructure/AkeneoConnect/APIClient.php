@@ -53,7 +53,7 @@ class APIClient
                 'Content-type' => 'application/json',
                 'Authorization' => sprintf('Bearer %s', $token),
             ],
-            'body' => [
+            'json' => [
                 'fqdn' => ($this->retrievePimFQDN)(),
                 'email' => $email,
             ],
@@ -75,7 +75,7 @@ class APIClient
             'headers' => [
                 'Content-type' => 'application/x-www-form-urlencoded',
             ],
-            'body' => http_build_query($params)
+            'form_params' => $params,
         ]);
 
         $response = json_decode($response->getBody()->getContents(), true, 512, JSON_THROW_ON_ERROR);

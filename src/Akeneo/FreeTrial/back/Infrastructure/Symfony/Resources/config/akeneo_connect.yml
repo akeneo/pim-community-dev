@@ -1,8 +1,10 @@
 parameters:
+  # @todo handle env parameters
   akeneo.free_trial.akeneo_connect.api.client_id: 'portal'
   akeneo.free_trial.akeneo_connect.api.client_secret: 'secret'
   akeneo.free_trial.akeneo_connect.api.username: 'username'
   akeneo.free_trial.akeneo_connect.api.password: 'password'
+  akeneo.free_trial.akeneo_connect.api.base_uri: 'http://akeneo-connect-api:3000'
 
 services:
   Akeneo\FreeTrial\Domain\API\InviteUserAPI:
@@ -23,4 +25,4 @@ services:
   akeneo.free_trial.akeneo_connect.guzzle_client:
     class: GuzzleHttp\Client
     arguments:
-      - { base_uri: 'http://localhost:3000' }
+      - { base_uri: '%akeneo.free_trial.akeneo_connect.api.base_uri%' }
