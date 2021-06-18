@@ -52,7 +52,14 @@ const DownloadAction = ({data, attribute, label}: ActionProps) => {
   const title = label || translate('pim_asset_manager.asset_preview.download');
 
   return undefined === label ? (
-    <IconButton {...iconButtonProps} icon={<DownloadIcon />} title={title} />
+    <IconButton
+      {...iconButtonProps}
+      icon={<DownloadIcon />}
+      title={title}
+      href={url}
+      download={fileName}
+      target="_blank"
+    />
   ) : (
     <Button {...buttonProps} href={url} download={fileName} target="_blank">
       <DownloadIcon />
@@ -71,7 +78,7 @@ const CopyUrlAction = ({data, attribute, label}: ActionProps) => {
   const title = label || translate('pim_asset_manager.asset_preview.copy_url');
 
   return undefined === label ? (
-    <IconButton {...iconButtonProps} icon={<CopyIcon />} title={title} />
+    <IconButton {...iconButtonProps} icon={<CopyIcon />} title={title} onClick={() => copyToClipboard(url)} />
   ) : (
     <Button {...buttonProps} onClick={() => copyToClipboard(url)}>
       <CopyIcon />
