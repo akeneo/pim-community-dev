@@ -83,7 +83,10 @@ const addAttributeSource = (
 ): ColumnConfiguration => {
   const channelCode = attribute.scopable ? channels[0].code : null;
   const locales = getLocalesFromChannel(channels, channelCode);
-  const locale = attribute.localizable ? locales[0].code : null;
+  const filteredLocaleSpecificLocales = attribute.is_locale_specific
+    ? locales.filter(({code}) => attribute.available_locales.includes(code))
+    : locales;
+  const locale = attribute.localizable ? filteredLocaleSpecificLocales[0].code : null;
   const selection = getDefaultSelectionByAttribute(attribute);
 
   return {

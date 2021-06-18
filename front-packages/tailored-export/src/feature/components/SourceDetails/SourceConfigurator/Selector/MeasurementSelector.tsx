@@ -64,6 +64,7 @@ const MeasurementSelector = ({selection, validationErrors, onSelectionChange}: M
         <LocaleDropdown
           value={selection.locale}
           validationErrors={localeErrors}
+          locales={locales}
           onChange={updatedValue => onSelectionChange({...selection, locale: updatedValue})}
         />
       )}

@@ -1,31 +1,28 @@
 import {
-  getLocalesFromChannel,
   useTranslate,
   Locale as LocaleModel,
   LocaleCode,
   ChannelReference,
   ValidationError,
 } from '@akeneo-pim-community/shared';
-import {Field, Helper, Locale, SelectInput} from 'akeneo-design-system';
-import {useChannels} from '../../../hooks';
-import React from 'react';
+import {Field, Helper, Locale, SelectInput, HelperProps} from 'akeneo-design-system';
+import React, {ReactElement} from 'react';
 
 type LocaleDropdownProps = {
   value: LocaleCode;
-  channel?: ChannelReference;
+  locales: LocaleModel[];
   validationErrors: ValidationError[];
+  channel?: ChannelReference;
   onChange: (updatedValue: LocaleCode) => void;
+  children?: ReactElement<HelperProps> | null | false;
 };
 
-const LocaleDropdown = ({value, channel = null, validationErrors, onChange}: LocaleDropdownProps) => {
+const LocaleDropdown = ({value, locales, onChange, validationErrors, children = null}: LocaleDropdownProps) => {
   const translate = useTranslate();
-  const channels = useChannels();
-  const locales = getLocalesFromChannel(channels, channel);
 
   return (
     <Field label={translate('pim_common.locale')}>
       <SelectInput
-        invalid={0 < validationErrors.length}
         clearable={false}
         emptyResultLabel={translate('pim_common.no_result')}
         openLabel={translate('pim_common.open')}
@@ -38,6 +35,7 @@ const LocaleDropdown = ({value, channel = null, validationErrors, onChange}: Loc
           </SelectInput.Option>
         ))}
       </SelectInput>
+      {children}
       {validationErrors.map((error, index) => (
         <Helper key={index} inline={true} level="error">
           {translate(error.messageTemplate, error.parameters)}

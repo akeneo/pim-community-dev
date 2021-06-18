@@ -13,6 +13,17 @@ const attributes = [
     labels: {},
     scopable: false,
     localizable: false,
+    is_locale_specific: false,
+    available_locales: [],
+  },
+  {
+    code: 'locale_specific',
+    type: 'pim_catalog_text',
+    labels: {},
+    scopable: false,
+    localizable: false,
+    is_locale_specific: true,
+    available_locales: ['de_DE'],
   },
 ];
 const channels = [
@@ -44,14 +55,17 @@ const channels = [
 ];
 
 const fetchers = {
-  attribute: {fetchByIdentifiers: (): Promise<Attribute[]> => Promise.resolve<Attribute[]>(attributes)},
+  attribute: {
+    fetchByIdentifiers: (identifiers: string[]): Promise<Attribute[]> =>
+      Promise.resolve<Attribute[]>(attributes.filter(({code}) => identifiers.includes(code))),
+  },
   channel: {fetchAll: (): Promise<Channel[]> => Promise.resolve<Channel[]>(channels)},
 };
 
 test('it display source configurator', async () => {
   const source: Source = {
     uuid: 'cffd560e-1e40-4c55-a415-89c7958b270d',
-    code: 'Description',
+    code: 'description',
     type: 'attribute',
     locale: null,
     channel: null,
@@ -77,7 +91,7 @@ test('it display source configurator', async () => {
 test('it display locale dropdown when attribute is localizable', async () => {
   const source: Source = {
     uuid: 'cffd560e-1e40-4c55-a415-89c7958b270d',
-    code: 'Description',
+    code: 'description',
     type: 'attribute',
     locale: 'fr_FR',
     channel: null,
@@ -99,10 +113,38 @@ test('it display locale dropdown when attribute is localizable', async () => {
   expect(screen.queryByLabelText(/pim_common.channel/i)).not.toBeInTheDocument();
 });
 
+test('it displays a filtered locale dropdown when attribute is localizable and locale specific', async () => {
+  const source: Source = {
+    uuid: 'cffd560e-1e40-4c55-a415-89c7958b270d',
+    code: 'locale_specific',
+    type: 'attribute',
+    locale: 'de_DE',
+    channel: null,
+    operations: [],
+    selection: {
+      type: 'code',
+    },
+  };
+
+  await act(async () => {
+    renderWithProviders(
+      <FetcherContext.Provider value={fetchers}>
+        <SourceConfigurator source={source} onSourceChange={jest.fn} validationErrors={[]} />
+      </FetcherContext.Provider>
+    );
+  });
+
+  const localeDropdown = screen.getByLabelText(/pim_common.locale/i);
+  userEvent.click(localeDropdown);
+
+  expect(screen.getAllByTitle('German (Germany)').length).toEqual(2);
+  expect(screen.queryByTitle('English (United States)')).not.toBeInTheDocument();
+});
+
 test('it display channel dropdown when attribute is scopable', async () => {
   const source: Source = {
     uuid: 'cffd560e-1e40-4c55-a415-89c7958b270d',
-    code: 'Description',
+    code: 'description',
     type: 'attribute',
     locale: null,
     channel: 'ecommerce',
@@ -127,7 +169,7 @@ test('it display channel dropdown when attribute is scopable', async () => {
 test('it display channel dropdown when attribute is scopable and localizable', async () => {
   const source: Source = {
     uuid: 'cffd560e-1e40-4c55-a415-89c7958b270d',
-    code: 'Description',
+    code: 'description',
     type: 'attribute',
     locale: 'fr_FR',
     channel: 'ecommerce',
@@ -153,7 +195,7 @@ test('it calls handler when channel changed', async () => {
   const handleSourceChange = jest.fn();
   const source: Source = {
     uuid: 'cffd560e-1e40-4c55-a415-89c7958b270d',
-    code: 'Description',
+    code: 'description',
     type: 'attribute',
     locale: 'fr_FR',
     channel: 'ecommerce',
@@ -183,7 +225,7 @@ test('it calls handler when locale changed', async () => {
   const handleSourceChange = jest.fn();
   const source: Source = {
     uuid: 'cffd560e-1e40-4c55-a415-89c7958b270d',
-    code: 'Description',
+    code: 'description',
     type: 'attribute',
     locale: 'fr_FR',
     channel: 'ecommerce',

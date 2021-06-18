@@ -2,16 +2,19 @@ import React from 'react';
 import styled from 'styled-components';
 import {
   filterErrors,
-  getLocaleFromChannel,
   ChannelCode,
   LocaleCode,
   ValidationError,
+  getLocalesFromChannel,
+  getLocaleFromChannel,
+  useTranslate,
 } from '@akeneo-pim-community/shared';
-import {useChannels} from '../../hooks';
+import {useAttribute, useChannels} from '../../hooks';
 import {Source} from '../../models';
 import {ChannelDropdown} from './SourceConfigurator/ChannelDropdown';
-import {LocaleDropdown} from './SourceConfigurator/LocaleDropdown';
 import {Operations} from './SourceConfigurator/Operations';
+import {LocaleDropdown} from './SourceConfigurator/LocaleDropdown';
+import {Helper} from 'akeneo-design-system';
 
 const Container = styled.div`
   display: flex;
@@ -28,9 +31,16 @@ type SourceConfiguratorProps = {
 };
 
 const SourceConfigurator = ({source, validationErrors, onSourceChange}: SourceConfiguratorProps) => {
+  const translate = useTranslate();
   const channels = useChannels();
   const localeErrors = filterErrors(validationErrors, '[locale]');
   const channelErrors = filterErrors(validationErrors, '[channel]');
+  const locales = getLocalesFromChannel(channels, source.channel);
+  const attribute = useAttribute(source.code);
+  const localeSpecificFilteredLocales =
+    attribute && attribute.is_locale_specific
+      ? locales.filter(({code}) => attribute.available_locales.includes(code))
+      : locales;
 
   return (
     <Container>
@@ -48,12 +58,16 @@ const SourceConfigurator = ({source, validationErrors, onSourceChange}: SourceCo
       {null !== source.locale && (
         <LocaleDropdown
           value={source.locale}
-          channel={source.channel}
           validationErrors={localeErrors}
+          locales={localeSpecificFilteredLocales}
           onChange={(localeCode: LocaleCode) => {
             onSourceChange({...source, locale: localeCode});
           }}
-        />
+        >
+          {attribute && attribute.is_locale_specific && (
+            <Helper inline>{translate('akeneo.tailored_export.column_details.sources.locale_specific.info')}</Helper>
+          )}
+        </LocaleDropdown>
       )}
       <Operations source={source} validationErrors={validationErrors} onSourceChange={onSourceChange} />
     </Container>

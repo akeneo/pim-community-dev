@@ -27,6 +27,7 @@ akeneo.tailored_export:
       title: Sources
       add: Add source
       no_result: Sorry, there is no results.
+      locale_specific.info: This attribute is locale specific
       remove:
         title: source
         text: Are you sure you want to remove this source?

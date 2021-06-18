@@ -61,6 +61,7 @@ const CodeLabelCollectionSelector = ({
       </Field>
       {'label' === selection.type && (
         <LocaleDropdown
+          locales={locales}
           value={selection.locale}
           validationErrors={localeErrors}
           onChange={updatedValue => onSelectionChange({...selection, locale: updatedValue})}

@@ -138,6 +138,43 @@ test('it add attribute source', () => {
   });
 });
 
+test('it adds a locale specific attribute source', () => {
+  const columnConfiguration = createColumn('The first column', 'fbf9cff9-e95c-4e7d-983b-2947c7df90df');
+  const localeSpecificAttribute = {
+    code: 'name',
+    labels: {
+      fr_FR: 'Nom',
+    },
+    scopable: true,
+    localizable: true,
+    is_locale_specific: true,
+    available_locales: ['fr_FR'],
+  };
+
+  const newColumnConfiguration = addAttributeSource(columnConfiguration, 'name', localeSpecificAttribute, channels);
+  expect(newColumnConfiguration).toEqual({
+    uuid: columnConfiguration.uuid,
+    target: 'The first column',
+    sources: [
+      {
+        uuid: newColumnConfiguration.sources[0].uuid,
+        type: 'attribute',
+        code: 'name',
+        channel: 'ecommerce',
+        locale: 'fr_FR',
+        operations: [],
+        selection: {
+          type: 'code',
+        },
+      },
+    ],
+    format: {
+      type: 'concat',
+      elements: [],
+    },
+  });
+});
+
 test('it add property source', () => {
   const columnConfiguration = createColumn('The first column', 'fbf9cff9-e95c-4e7d-983b-2947c7df90df');
   const newColumnConfiguration = addPropertySource(columnConfiguration, 'category');

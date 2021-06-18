@@ -58,6 +58,7 @@ const CodeLabelSelector = ({selection, validationErrors, onSelectionChange}: Cod
         <LocaleDropdown
           value={selection.locale}
           validationErrors={localeErrors}
+          locales={locales}
           onChange={updatedValue => onSelectionChange({...selection, locale: updatedValue})}
         />
       )}
