@@ -145,11 +145,15 @@ jobs:
       steps:
           - attach_workspace:
                 at: ~/
-          - add_ssh_keys
+          - add_ssh_keys:
+              fingerprints:
+                  - "1f:25:f8:bb:59:52:95:f6:e2:f2:97:2f:30:d4:e9:66"
           - run:
               name: Checkout BigCommerce Connector
               working_dir: ~/project
               command: |
+                  ssh-add -D
+                  ssh-add ~/.ssh/id_rsa_1f25f8bb595295f6e2f2972f30d4e966
                   mkdir -p tmp
                   git clone git@github.com:akeneo/bigcommerce-connector.git tmp/build-connector
           - set_gcloud_config_dev
