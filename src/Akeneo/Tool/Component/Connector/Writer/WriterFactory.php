@@ -4,7 +4,6 @@ declare(strict_types=1);
 
 namespace Akeneo\Tool\Component\Connector\Writer;
 
-
 use Box\Spout\Writer\WriterFactory as SpoutWriterFactory;
 
 /**
