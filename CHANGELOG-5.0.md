@@ -3,6 +3,7 @@
 ## Bug fixes
 
 - PIM-9919: Breadcrumb for Reference Entities now redirects to the record list
+- PIM-9915: Permissions tabs are missing for Assets and Reference Entity Records import profiles
 
 # 5.0.32 (2021-06-16)
 
