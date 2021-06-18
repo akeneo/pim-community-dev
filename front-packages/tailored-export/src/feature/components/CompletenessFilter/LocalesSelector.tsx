@@ -1,13 +1,21 @@
 import React from 'react';
-import {useTranslate, LocaleCode, Section, getAllLocalesFromChannels, Locale} from '@akeneo-pim-community/shared';
-import {Field, MultiSelectInput} from 'akeneo-design-system';
+import {
+  useTranslate,
+  LocaleCode,
+  Section,
+  getAllLocalesFromChannels,
+  Locale,
+  ValidationError,
+} from '@akeneo-pim-community/shared';
+import {Field, MultiSelectInput, Helper} from 'akeneo-design-system';
 import {useChannels} from '../../hooks';
 
 type LocalesSelectorProps = {
   locales: LocaleCode[];
   onChange: (newLocales: LocaleCode[]) => void;
+  validationErrors: ValidationError[];
 };
-const LocalesSelector = ({locales, onChange}: LocalesSelectorProps) => {
+const LocalesSelector = ({locales, onChange, validationErrors}: LocalesSelectorProps) => {
   const translate = useTranslate();
   const channels = useChannels();
   const availableLocales = getAllLocalesFromChannels(channels);
@@ -31,6 +39,11 @@ const LocalesSelector = ({locales, onChange}: LocalesSelectorProps) => {
             </MultiSelectInput.Option>
           ))}
         </MultiSelectInput>
+        {validationErrors.map((error, index) => (
+          <Helper key={index} inline={true} level="error">
+            {translate(error.messageTemplate, error.parameters)}
+          </Helper>
+        ))}
       </Field>
     </Section>
   );
