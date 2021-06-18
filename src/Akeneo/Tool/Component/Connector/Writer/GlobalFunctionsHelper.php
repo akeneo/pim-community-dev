@@ -7,9 +7,7 @@ namespace Akeneo\Tool\Component\Connector\Writer;
 use Box\Spout\Common\Helper\GlobalFunctionsHelper as SpoutGlobalFunctionsHelper;
 
 /**
- * @author    Pierre Jolly <pierre.jolly@akeneo.com>
- * @copyright 2021 Akeneo SAS (http://www.akeneo.com)
- * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
+ * @todo merge master/6.0: drop this class and bump box/spout to v3
  */
 class GlobalFunctionsHelper extends SpoutGlobalFunctionsHelper
 {
