@@ -4,8 +4,9 @@ declare(strict_types=1);
 
 namespace Akeneo\FreeTrial\Infrastructure\AkeneoConnect;
 
-use Symfony\Contracts\HttpClient\HttpClientInterface;
-use Symfony\Contracts\HttpClient\ResponseInterface;
+use Akeneo\FreeTrial\Infrastructure\RetrievePimFQDN;
+use GuzzleHttp\ClientInterface;
+use Psr\Http\Message\ResponseInterface;
 
 /**
  * @copyright 2021 Akeneo SAS (http://www.akeneo.com)
@@ -27,10 +28,13 @@ class APIClient
 
     private string $token;
 
-    private HttpClientInterface $httpClient;
+    private ClientInterface $httpClient;
+
+    private RetrievePimFQDN $retrievePimFQDN;
 
     public function __construct(
-        HttpClientInterface $httpClient,
+        ClientInterface $httpClient,
+        RetrievePimFQDN $retrievePimFQDN,
         string $clientId,
         string $clientSecret,
         string $userName,
@@ -43,11 +47,28 @@ class APIClient
         $this->password = $password;
         $this->httpClient = $httpClient;
         $this->akeneoConnectBaseUri = $akeneoConnectBaseUri;
+        $this->retrievePimFQDN = $retrievePimFQDN;
     }
 
     public function inviteUser(string $email): ResponseInterface
     {
-        return $this->httpClient->request('POST');
+        $token = $this->connect();
+
+        return $this->httpClient->request('POST', $this->akeneoConnectBaseUri . '/api/v1/console/trial/invite', [
+            'headers' => [
+                'Content-type' => 'application/json',
+                'Authorization' => sprintf('Bearer %s', $token),
+            ],
+            'body' => [
+                'fqdn' => ($this->retrievePimFQDN)(),
+                'email' => $email,
+            ],
+            'http_errors' => false,
+        ]);
     }
 
+    private function connect(): string
+    {
+        return 'toto';
+    }
 }
