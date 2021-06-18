@@ -1,6 +1,6 @@
 import React from 'react';
 import '@testing-library/jest-dom/extend-expect';
-import {screen, render} from '@testing-library/react';
+import {act, screen, render} from '@testing-library/react';
 import {EventLogDateTimeRangeFilter} from '@src/webhook/components/DateRangeFilter/EventLogDateTimeRangeFilter';
 import {fireEvent} from '@testing-library/dom';
 import {UserContext} from '@src/shared/user';
@@ -46,7 +46,10 @@ test('it opens the dropdown', () => {
     expect(screen.queryByText(/date_range_filter\.to/)).not.toBeInTheDocument();
 
     const dropdownButton = screen.getByRole('button');
-    fireEvent.click(dropdownButton);
+
+    act(() => {
+        fireEvent.click(dropdownButton);
+    })
 
     expect(screen.queryByText(/date_range_filter\.from/)).toBeInTheDocument();
     expect(screen.queryByText(/date_range_filter\.to/)).toBeInTheDocument();
@@ -82,7 +85,9 @@ test('it displays the clear button when the datetime range is modified', () => {
     const {rerender} = renderEventLogDateTimeRangeFilter(defaultProps, {timeZone: 'UTC'});
 
     const dropdownButton = screen.getByRole('button');
-    fireEvent.click(dropdownButton);
+    act(() => {
+        fireEvent.click(dropdownButton);
+    });
 
     expect(screen.queryByTitle(/date_range_filter\.reset/)).not.toBeInTheDocument();
 
@@ -96,7 +101,9 @@ test('it clears the datetime range', () => {
     renderEventLogDateTimeRangeFilter({...defaultProps, value: {start: 0}, onChange}, {timeZone: 'UTC'});
 
     const dropdownButton = screen.getByRole('button');
-    fireEvent.click(dropdownButton);
+    act(() => {
+        fireEvent.click(dropdownButton);
+    });
 
     const clearButton = screen.getByTitle(/date_range_filter\.reset/);
     fireEvent.click(clearButton);
