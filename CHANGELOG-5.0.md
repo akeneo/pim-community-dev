@@ -1,5 +1,7 @@
 # 5.0.x
 
+- PIM-9916: Fix value updating for text, simple select and date attribute used as product export filter not saved
+
 # 5.0.33 (2021-06-18)
 
 # 5.0.32 (2021-06-16)
