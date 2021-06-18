@@ -281,8 +281,8 @@ pim_title:
   pim_enrich_catalog_volume_index: Monitoreo del volumen del catálogo
   pim_enrich_categorytree_index: Árbol de categoría
   pim_enrich_categorytree_create: Árboles de categoría | Crear
-  pim_enrich_categorytree_edit: Árbol de categoría {{ category.label }} | Editar
   pim_enrich_categorytree_create_tree: Árboles de categoría | Crear
+  pim_enrich_categorytree_tree: Árbol de categoría {{ category.label }} | Editar
   pim_enrich_attribute_index: Atributos
   pim_enrich_attribute_create: Atributos | Crear
   pim_enrich_attribute_edit: Atributo {{ attribute.label }} | Editar
