@@ -202,6 +202,8 @@ pim_asset_manager:
         attribute: Atributo del producto
       title: Productos
       no_attribute:
+        title: No hay ningún atributo de producto vinculado a la familia de activos «{{ entityLabel }}»
+        subtitle: 'Para empezar a vincular productos a esta familia de activos puede crear uno nuevo: '
         link: Crear un nuevo atributo de producto
       not_enough_items:
         title: Solo puedes ver {{ productCount }}/{{ totalCount }} productos.
@@ -209,8 +211,12 @@ pim_asset_manager:
           usable_in_grid: Para descubrir todos los productos vinculados, haga clic justo abajo!
           not_usable_in_grid: Para descubrir todos los productos vinculados, el atributo del producto debe establecerse como "utilizable en la cuadrícula".
         button: Ver todos los productos
+      no_product:
+        title: Este activo no está vinculado a ningún producto a través del atributo de producto «{{ entityLabel }}»
+        subtitle: 'Empiece a vincular los productos a este atributo para verlos aquí'
     no_linked_products: Este activo no está vinculado a los productos
     enrich:
+      title: Atributos de activos
       code: Código
       label: Etiqueta
       edit_subsection: Editar recurso
@@ -221,16 +227,24 @@ pim_asset_manager:
       header:
         title: Crear
       subtitle: Lista de familias
+      title: Añadir nuevo activo en {{ entityLabel }}
       input:
         label: Etiqueta
         code: Código (requerido)
+        create_another: Crear otro activo
     upload:
+      line_count: '[0,1]{{ count }} archivo|]1,Inf] {{ count }} archivos'
+      title: Cargar recursos
+      lines: Archivos
       retry: Reintentar
       remove: Eliminar
       remove_all: Remover todos
       confirm: Crear
       add_to_product: Añadir al producto
+      drop_or_click_here: Arrastre y suelte sus archivos o haga clic aquí
+      will_appear_here: '¡Suba los activos y aparecerán justo aquí!'
       files_limit: Estás intentando subir demasiados archivos, solo se cargarán los primeros {{ limit }}.
+      discard_changes: Perderá sus activos si cierra este modal sin crearlos.
       disabled_for_media_link: No puede subir recursos en esta familia ya que el atributo usado como medio principal es un atributo de enlace de medios
       upload_failure: Se ha producido un error al subir el archivo.
       cannot_retry: Ocurrió un error al intentar subir el archivo.
@@ -238,12 +252,14 @@ pim_asset_manager:
         asset: Recursos
         filename: Nombre de fichero
         code: Código (requerido)
+        locale: Configuración regional (obligatoria)
         channel: Canal (requerido)
         status: Estado
       status:
         waiting_for_upload: no cargado
         upload_in_progress: en progreso
         uploaded: subido
+        valid: listo para crear
         invalid: error
         created: creado
     delete:
@@ -401,23 +417,46 @@ pim_asset_manager:
     media_link:
       placeholder: Introduzca aquí su enlace
       read_only: Este enlace de medios es de solo lectura
+      reload: Recargar la miniatura del enlace multimedia
     media_file:
+      placeholder: Arrastre y suelte para cargar o haga clic aquí
       read_only: Este archivo de medios es de solo lectura
       uploading: Subiendo...
+    used_as_transformation_target: Este campo es de solo lectura, ya que se utiliza como objetivo en una transformación de activos.
   jobs:
     asset_manager_execute_naming_convention:
       error: 'La convención de nombres falló en el activo "{{ asset }}"'
 pim_enrich:
+  confirmation:
+    discard_changes: 'Si abandona esta página, perderá los cambios realizados a la entidad «{{ entity }}».'
   entity:
     attribute:
       property:
+        type:
+          pim_catalog_asset_collection: Colección de activos
+        section:
+          type_specific: Escriba parámetros específicos
         asset_family:
           identifier: Familia de recursos relacionada (requerida)
           default_label: Por favor, seleccione una familia de recursos
+permission:
+  mass_action: Aplicar derechos de {{ rightLevel }} en todos los grupos
+#Analytics
+pim_catalog_volume:
+  section:
+    asset_family:
+      title: Ejes de las familias de activos
+      hint: Si utiliza las familias de activos, estos son los ejes que le ayudarán a controlar su volumen.
+  axis:
+    count_asset_family: Familias de activos
+    average_max_assets_per_asset_family: Activos por familia de activos
+    average_max_attributes_per_asset_family: Atributos por familia de activos
 pim_import_export:
   widget:
     last_operations:
       job_type:
+        asset_manager_compute_transformations: "Calcular transformaciones de activos"
+        asset_manager_link_assets_to_products: "Vincular activos a productos"
         asset_manager_execute_naming_convention: Ejecutar la convención de nombres de familia de activos
   form:
     job_instance:
@@ -433,6 +472,7 @@ pim_datagrid:
 batch_jobs:
   default_steps:
     execute_naming_convention: Ejecutar la convención de nombres de familia de activos
+    link_assets_to_products: Vincular activos a productos
 job_execution:
   summary:
     assets: Recursos
