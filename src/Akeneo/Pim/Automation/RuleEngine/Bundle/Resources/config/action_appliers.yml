@@ -84,8 +84,14 @@ services:
         arguments:
             -
                 - 'pim_catalog_identifier'
-                - 'pim_catalog_number'
                 - 'pim_catalog_text'
+        tags:
+            - { name: akeneo_rule_engine.concatenate_applier.stringifier }
+
+    Akeneo\Pim\Automation\RuleEngine\Component\ActionApplier\Concatenate\NumberValueStringifier:
+        arguments:
+            -
+                - 'pim_catalog_number'
         tags:
             - { name: akeneo_rule_engine.concatenate_applier.stringifier }
 

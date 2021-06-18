@@ -4,6 +4,7 @@
 
 - PIM-9919: Breadcrumb for Reference Entities now redirects to the record list
 - PIM-9915: Permissions tabs are missing for Assets and Reference Entity Records import profiles
+- PIM-9918: Concatenate rule does not keep anymore the trailing zeros on a decimal number
 
 # 5.0.32 (2021-06-16)
 
