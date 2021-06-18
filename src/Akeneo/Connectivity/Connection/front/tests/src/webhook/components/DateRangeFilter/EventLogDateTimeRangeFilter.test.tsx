@@ -49,7 +49,7 @@ test('it opens the dropdown', () => {
 
     act(() => {
         fireEvent.click(dropdownButton);
-    })
+    });
 
     expect(screen.queryByText(/date_range_filter\.from/)).toBeInTheDocument();
     expect(screen.queryByText(/date_range_filter\.to/)).toBeInTheDocument();

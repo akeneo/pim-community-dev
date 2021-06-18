@@ -52,7 +52,7 @@ test('It can change the selected levels by opening the dropdown and clicking on 
 
     act(() => {
         fireEvent.click(button);
-    })
+    });
 
     const levelInfoCheckboxLabel = screen.getByText('akeneo_connectivity.connection.webhook.event_logs.level.info');
     fireEvent.click(levelInfoCheckboxLabel);
