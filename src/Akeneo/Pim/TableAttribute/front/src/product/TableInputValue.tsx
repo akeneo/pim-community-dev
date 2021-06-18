@@ -2,9 +2,9 @@ import React from 'react';
 import { AddingValueIllustration, BooleanInput, TableInput } from 'akeneo-design-system';
 import {ColumnCode, TableConfiguration} from '../models/TableConfiguration';
 import {getLabel, useUserContext} from '@akeneo-pim-community/shared';
-import {TableValue} from '../models/TableValue';
 import { TableFooter } from "./TableFooter";
 import styled from "styled-components";
+import { TableValueWithId } from "./TableFieldApp";
 
 const TABLE_VALUE_ITEMS_PER_PAGE = [2, 5, 10, 20, 50, 100];
 
@@ -13,9 +13,9 @@ const CenteredHelper = styled.div`
 `;
 
 type TableInputValueProps = {
-  valueData: TableValue;
+  valueData: TableValueWithId;
   tableConfiguration: TableConfiguration;
-  onChange: (tableValue: TableValue) => void;
+  onChange: (tableValue: TableValueWithId) => void;
   searchText: string;
 };
 
@@ -70,7 +70,7 @@ const TableInputValue: React.FC<TableInputValueProps> = ({valueData, tableConfig
         <TableInput.Body>
           {valueDataPage.map((row, rowIndex) => {
             return (
-              <TableInput.Row key={`${rowIndex}`}>
+              <TableInput.Row key={row["unique id"]}>
                 {tableConfiguration.map(columnDefinition => {
                   const columnCode = columnDefinition.code;
                   const columnType = columnDefinition.data_type;

@@ -1,2 +1,3 @@
 export type TableCell = string | boolean | number;
-export type TableValue = {[columnCode: string]: TableCell}[];
+export type TableRow = {[columnCode: string]: TableCell};
+export type TableValue = TableRow[];

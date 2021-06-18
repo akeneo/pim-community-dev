@@ -1,9 +1,9 @@
 import React from 'react';
 import { DependenciesProvider } from "@akeneo-pim-community/legacy-bridge";
 import { ThemeProvider } from "styled-components";
-import { Button, Locale, pimTheme, TextInput } from "akeneo-design-system";
+import { Button, Locale, pimTheme, TextInput, uuid } from "akeneo-design-system";
 import { TableInputValue } from "./TableInputValue";
-import { TableValue } from "../models/TableValue";
+import { TableRow, TableValue } from "../models/TableValue";
 import { TemplateContext } from "./table-field";
 
 type TableFieldAppProps = TemplateContext & {
@@ -11,6 +11,9 @@ type TableFieldAppProps = TemplateContext & {
   onChange: (tableValue: TableValue) => void;
   elements: { [position: string]: { [elementKey: string]: any } };
 };
+
+// As we can't have space, the 'unique id' can not be used as column
+export type TableValueWithId = (TableRow & {'unique id': string})[];
 
 const TableFieldApp: React.FC<TableFieldAppProps> = ({
   type,
@@ -25,13 +28,14 @@ const TableFieldApp: React.FC<TableFieldAppProps> = ({
   onChange,
   elements,
 }) => {
-  const valueClone = valueData.map(row => {
+  const valueClone: TableValueWithId = valueData.map(row => {
     return Object.keys(row).reduce((previousRow, columnCode) => {
       previousRow[columnCode] = row[columnCode];
+
       return previousRow;
-    }, {});
+    }, {'unique id': uuid()});
   });
-  const [tableValue, setTableValue] = React.useState<TableValue>(valueClone);
+  const [tableValue, setTableValue] = React.useState<TableValueWithId>(valueClone);
   const [searchText, setSearchText] = React.useState<string>('');
 
   const renderElements: (position: string) => React.ReactNode = (position) => {
@@ -48,14 +52,19 @@ const TableFieldApp: React.FC<TableFieldAppProps> = ({
     </>;
   }
 
-  const handleChange = (value: TableValue) => {
+  const handleChange = (value: TableValueWithId) => {
     setTableValue(value);
-    onChange(value);
+    onChange(value.map(row => {
+      return Object.keys(row).filter(columnCode => columnCode !== 'unique id').reduce((newRow, columnCode) => {
+        newRow[columnCode] = row[columnCode];
+        return newRow;
+      }, {});
+    }));
   }
 
   const addFakeRow = () => {
     const newValue = [...tableValue];
-    newValue.push({});
+    newValue.push({'unique id': uuid()});
     handleChange([...newValue]);
   }
 
