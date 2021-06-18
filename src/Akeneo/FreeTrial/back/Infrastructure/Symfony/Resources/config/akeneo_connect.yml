@@ -1,5 +1,26 @@
+parameters:
+  akeneo.free_trial.akeneo_connect.api.client_id: 'portal'
+  akeneo.free_trial.akeneo_connect.api.client_secret: 'secret'
+  akeneo.free_trial.akeneo_connect.api.username: 'username'
+  akeneo.free_trial.akeneo_connect.api.password: 'password'
+
 services:
   Akeneo\FreeTrial\Domain\API\InviteUserAPI:
     class: Akeneo\FreeTrial\Infrastructure\AkeneoConnect\AkeneoConnectInviteUserAPI
     arguments:
+      - '@Akeneo\FreeTrial\Infrastructure\AkeneoConnect\APIClient'
       - '@logger'
+
+  Akeneo\FreeTrial\Infrastructure\AkeneoConnect\APIClient:
+    arguments:
+      - '@akeneo.free_trial.akeneo_connect.guzzle_client'
+      - '@Akeneo\FreeTrial\Infrastructure\RetrievePimFQDN'
+      - '%akeneo.free_trial.akeneo_connect.api.client_id%'
+      - '%akeneo.free_trial.akeneo_connect.api.client_secret%'
+      - '%akeneo.free_trial.akeneo_connect.api.username%'
+      - '%akeneo.free_trial.akeneo_connect.api.password%'
+
+  akeneo.free_trial.akeneo_connect.guzzle_client:
+    class: GuzzleHttp\Client
+    arguments:
+      - { base_uri: 'http://localhost:3000' }

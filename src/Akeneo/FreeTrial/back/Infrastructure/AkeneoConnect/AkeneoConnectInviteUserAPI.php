@@ -38,8 +38,8 @@ class AkeneoConnectInviteUserAPI implements InviteUserAPI
             if ($response->getStatusCode() === Response::HTTP_OK) {
                 return;
             }
-            //TODO: test that we can decode the body
-            $responseContentError = json_decode($response->getBody()->getContents(), true);
+
+            $responseContentError = json_decode($response->getBody()->getContents(), true, 512, JSON_THROW_ON_ERROR);
         } catch (\Throwable $e) {
             $this->logger->error(sprintf('Error while calling Akeneo Connect : %s', $e->getMessage()));
             throw new InvitationFailedException();

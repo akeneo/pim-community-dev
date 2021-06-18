@@ -16,7 +16,7 @@ final class APIClientSpec extends ObjectBehavior
 {
     public function let(ClientInterface $httpClient, RetrievePimFQDN $retrievePimFQDN)
     {
-        $this->beConstructedWith($httpClient, $retrievePimFQDN, '', '', '', '', 'https://testUri');
+        $this->beConstructedWith($httpClient, $retrievePimFQDN, '', '', '', '');
     }
 
     public function it_invites_a_user(
@@ -30,7 +30,7 @@ final class APIClientSpec extends ObjectBehavior
         $retrievePimFQDN->__invoke()->willReturn('token');
         $httpClient->request(
             'POST',
-            'https://testUri/auth/realms/connect/protocol/openid-connect/token',
+            '/auth/realms/connect/protocol/openid-connect/token',
             Argument::any()
         )->willReturn($tokenResponse)->shouldBeCalled();
 
@@ -39,7 +39,7 @@ final class APIClientSpec extends ObjectBehavior
             'access_token' => 'token'
         ]));
 
-        $httpClient->request('POST', 'https://testUri/api/v1/console/trial/invite', Argument::withEntry('headers', [
+        $httpClient->request('POST', '/api/v1/console/trial/invite', Argument::withEntry('headers', [
             'Content-type' => 'application/json',
             'Authorization' => 'Bearer token',
         ]))
