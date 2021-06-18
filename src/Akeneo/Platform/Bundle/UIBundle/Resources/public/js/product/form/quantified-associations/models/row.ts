@@ -30,12 +30,14 @@ const getAssociationIdentifiers = (rows: Row[]): AssociationIdentifiers =>
     }
   );
 
-const filterOnLabelOrIdentifier = (searchValue: string) => (row: Row): boolean =>
-  (null !== row.product &&
-    null !== row.product.label &&
-    -1 !== row.product.label.toLowerCase().indexOf(searchValue.toLowerCase())) ||
-  (undefined !== row.quantifiedLink.identifier &&
-    -1 !== row.quantifiedLink.identifier.toLowerCase().indexOf(searchValue.toLowerCase()));
+const filterOnLabelOrIdentifier =
+  (searchValue: string) =>
+  (row: Row): boolean =>
+    (null !== row.product &&
+      null !== row.product.label &&
+      -1 !== row.product.label.toLowerCase().indexOf(searchValue.toLowerCase())) ||
+    (undefined !== row.quantifiedLink.identifier &&
+      -1 !== row.quantifiedLink.identifier.toLowerCase().indexOf(searchValue.toLowerCase()));
 
 const updateRowInCollection = (rows: Row[], {quantifiedLink, productType}: Row) =>
   rows.map(row => {

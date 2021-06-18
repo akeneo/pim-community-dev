@@ -196,7 +196,7 @@ describe('testing source chart from Dashboard page', () => {
                 value = 'uiLocale' === key ? 'en_US' : value;
                 value = 'timezone' === key ? 'UTC' : value;
 
-                return (value as unknown) as T;
+                return value as unknown as T;
             },
             set: () => undefined,
             refresh: () => Promise.resolve(),
