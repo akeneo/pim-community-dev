@@ -53,6 +53,8 @@ pim_enrich.entity.channel:
   property:
     category_tree: Category tree
     do_not_convert: Do not convert
+    measurement: Measurement settings
+    label_conversion_units: Pick a conversion unit for each measurement attribute that will be used during product export
   module:
     create:
       button: Create channel
@@ -62,6 +64,8 @@ pim_enrich.entity.locale:
   label: locale
   uppercase_label: Locale
   plural_label: Locales
+  grid:
+    no_search_result: Sorry, there is no result for your search.
 pim_enrich.entity.currency:
   plural_label: Currencies
   page_title:

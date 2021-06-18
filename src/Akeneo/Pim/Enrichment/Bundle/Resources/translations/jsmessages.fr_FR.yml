@@ -408,6 +408,7 @@ pim_datagrid:
       product: "]-Inf, 1]{{ count }} résultat sélectionné|]1, +Inf[{{ count }} résultats sélectionnés"
   view_selector:
     view: Vues
+    choose_type: Je veux créer une vue privée
   actions:
     edit_product_attributes: Modifier les attributs du produit
     classify_product: Classer le produit

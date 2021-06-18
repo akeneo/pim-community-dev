@@ -5,7 +5,6 @@ declare(strict_types=1);
 namespace Specification\Akeneo\Pim\Enrichment\Bundle\Elasticsearch\Model;
 
 use Akeneo\Pim\Enrichment\Bundle\Elasticsearch\Model\ElasticsearchProductProjection;
-use Akeneo\Pim\Enrichment\Component\Product\Model\ProductInterface;
 use PhpSpec\ObjectBehavior;
 
 /**
@@ -22,6 +21,7 @@ class ElasticsearchProductProjectionSpec extends ObjectBehavior
             'identifier',
             new \DateTimeImmutable('2019-04-23 15:55:50', new \DateTimeZone('UTC')),
             new \DateTimeImmutable('2019-04-25 15:55:50', new \DateTimeZone('UTC')),
+            new \DateTimeImmutable('2019-04-24 15:55:50', new \DateTimeZone('UTC')),
             true,
             'family_code',
             ['family_label_1', 'family_label_2'],
@@ -56,6 +56,7 @@ class ElasticsearchProductProjectionSpec extends ObjectBehavior
             'identifier' => 'identifier',
             'created' => (new \DateTime('2019-04-23 15:55:50', new \DateTimeZone('UTC')))->format('c'),
             'updated' => (new \DateTime('2019-04-25 15:55:50', new \DateTimeZone('UTC')))->format('c'),
+            'entity_updated' => (new \DateTime('2019-04-24 15:55:50', new \DateTimeZone('UTC')))->format('c'),
             'family' => [
                 'code' => 'family_code',
                 'labels' => ['family_label_1', 'family_label_2'],
@@ -94,6 +95,7 @@ class ElasticsearchProductProjectionSpec extends ObjectBehavior
                 'identifier',
                 new \DateTimeImmutable('2019-04-23 15:55:50', new \DateTimeZone('UTC')),
                 new \DateTimeImmutable('2019-04-25 15:55:50', new \DateTimeZone('UTC')),
+                new \DateTimeImmutable('2019-04-24 15:55:50', new \DateTimeZone('UTC')),
                 true,
                 'family_code',
                 ['family_label_1', 'family_label_2'],

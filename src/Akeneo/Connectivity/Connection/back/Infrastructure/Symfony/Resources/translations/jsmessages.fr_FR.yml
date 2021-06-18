@@ -40,6 +40,7 @@ akeneo_connectivity.connection:
     marketplace:
       title: Vous voulez connecter votre PIM avec une autre application ? 🤟
       sub_title: Consultez notre marketplace pour voir quelles applications peuvent être connectées avec Akeneo PIM.
+      link: Accéder à la marketplace
   connections: Connexions
   secondary_actions:
     title: Autres actions
@@ -230,6 +231,7 @@ akeneo_connectivity.connection:
       required: Ce champ est obligatoire.
       not_found: Vous essayez de mettre à jour une connexion qui n'existe pas.
       limit_reached: Vous avez atteint le nombre maximal de souscriptions aux événements activées. 
+      not_allowed_url: Cette url n'est pas autorisée.
     flash:
       success: La souscription aux événements a bien été mise à jour.
       error: Désolé, une erreur s'est produit lors de la mise à jour de la souscription aux événements.

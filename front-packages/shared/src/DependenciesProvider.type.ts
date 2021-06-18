@@ -26,8 +26,14 @@ type UserContext = {
   set: (key: string, value: string, options: {}) => void;
 };
 
+type View = {
+  setElement: (element: HTMLElement | null) => View;
+  render: () => void;
+  remove: () => void;
+};
+
 type ViewBuilder = {
-  build(viewName: string): Promise<any>;
+  build(viewName: string): Promise<View>;
 };
 
 type Mediator = {
@@ -37,4 +43,4 @@ type Mediator = {
 };
 
 export {NotificationLevel};
-export type {Notify, RouteParams, Router, Security, Translate, UserContext, ViewBuilder, Mediator};
+export type {Notify, RouteParams, Router, Security, Translate, UserContext, View, ViewBuilder, Mediator};

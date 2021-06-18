@@ -32,6 +32,10 @@ javascript-extensions:
 front-packages:
 	$(YARN_RUN) packages:build
 
+.PHONY: dsm
+dsm:
+	$(YARN_RUN) dsm:build
+
 .PHONY: assets
 assets:
 	$(DOCKER_COMPOSE) run -u www-data --rm php rm -rf public/bundles public/js

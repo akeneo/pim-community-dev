@@ -70,6 +70,9 @@ pim_enrich:
       description: Se aplicarán los siguientes requisitos de atributo a las familias seleccionadas
       success_flash: Requisitos de atributo se aplicaron a las familias seleccionadas
       launched_flash: La acción en masa "definir requisitos de atributos" ha sido lanzada. Será notificado una vez finalizada.
+    convert_to_simple_products:
+      warning:
+        non_variant_product: El producto "{{ identifier }}" ya es un producto simple, sin necesidad de convertirlo.
     mass_action:
       quick_export:
         launched_flash: El trabajo de exportación de productos está ejecutándose

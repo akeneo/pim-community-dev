@@ -3,6 +3,9 @@ import styled from 'styled-components';
 import {getColor, getFontSize} from '../../theme';
 import {IconButton} from '../../components';
 import {CheckPartialIcon, PlusIcon} from '../../icons';
+import {useIsMounted} from '../../hooks';
+
+const ANIMATION_DURATION = 100;
 
 const CollapseContainer = styled.div`
   width: 100%;
@@ -14,11 +17,11 @@ const CollapseContainer = styled.div`
   }
 `;
 
-const Content = styled.div<{$height: number}>`
-  // +10 to account for the content padding
-  height: ${({$height}) => (0 < $height ? $height + 10 : 0)}px;
-  transition: height 0.2s ease-in-out;
-  overflow: hidden;
+const Content = styled.div<{$height: number; overflow: string}>`
+  max-height: ${({$height}) => $height}px;
+  overflow: ${({overflow}) => overflow};
+  transition: max-height ${ANIMATION_DURATION}ms ease-in-out;
+  padding-bottom: ${({$height}) => (0 === $height ? 0 : 10)}px;
 `;
 
 const LabelContainer = styled.div`
@@ -73,13 +76,23 @@ const Collapse = React.forwardRef<HTMLDivElement, CollapseProps>(
     forwardedRef: Ref<HTMLDivElement>
   ) => {
     const [contentHeight, setContentHeight] = useState<number>(0);
+    const [overflow, setOverflow] = useState<string>(isOpen ? 'inherit' : 'hidden');
     const contentRef = useRef<HTMLDivElement>(null);
+    const isMounted = useIsMounted();
 
     const handleCollapse = () => onCollapse(!isOpen);
 
     useEffect(() => {
-      setContentHeight(isOpen && null !== contentRef.current ? contentRef.current.scrollHeight : 0);
-    }, [isOpen]);
+      if (contentRef.current) {
+        if (isOpen) {
+          setContentHeight(contentRef.current.scrollHeight);
+          setTimeout(() => isMounted() && setOverflow('inherit'), ANIMATION_DURATION);
+        } else {
+          setContentHeight(0);
+          setOverflow('hidden');
+        }
+      }
+    }, [isOpen, children]);
 
     return (
       <CollapseContainer ref={forwardedRef} {...rest}>
@@ -94,7 +107,7 @@ const Collapse = React.forwardRef<HTMLDivElement, CollapseProps>(
             icon={isOpen ? <CheckPartialIcon /> : <PlusIcon />}
           />
         </LabelContainer>
-        <Content ref={contentRef} $height={contentHeight}>
+        <Content ref={contentRef} overflow={overflow} $height={contentHeight}>
           {children}
         </Content>
       </CollapseContainer>

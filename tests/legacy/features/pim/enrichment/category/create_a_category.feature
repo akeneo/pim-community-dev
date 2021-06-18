@@ -10,21 +10,17 @@ Feature: Create a category
 
   @critical
   Scenario: Create a category tree
-    Given I am on the category tree creation page
-    When I fill in the following information:
-      | Code | shoe |
-    And I save the category
-    Then I should not see the text "There are unsaved changes."
-    And I should be on the category "shoe" edit page
-    And The tree "[shoe]" should be open
+    Given I am on the categories page
+    When I press the "Create" button
+    And I create the category with code shoe
+    Then I should see the text "[shoe]"
+    And I should see the text "successfully created"
 
   @critical
   Scenario: Create a sub-category
-    Given the following category:
-      | code | label-en_US |
-      | shoe | Shoe        |
-    And I am on the category "shoe" node creation page
-    When I fill in the following information:
-      | Code | flipflap |
-    And I save the category
-    Then I should be on the category "flipflap" edit page
+    Given I am on the category tree "default" page
+    When I hover over the category tree item "Master catalog"
+    And I press the "New category" button
+    And I create the category with code shoe
+    Then I should see the text "[shoe]"
+    And I should see the text "successfully created"
