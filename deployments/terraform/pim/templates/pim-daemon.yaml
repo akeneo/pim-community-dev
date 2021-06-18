@@ -60,7 +60,7 @@ spec:
 {{- if $daemonOptions.trapped }}
           command: ['setpriv','--reuid=www-data','--regid=www-data','--init-groups','bin/queue-daemon-wrapper.sh','{{ $daemonOptions.pimCommand }}']
 {{- else }}
-          command: ['sh', '-c', 'export HOME=/srv/pim && cd /srv/pim && su www-data -s /bin/bash -c "php bin/console {{ $daemonOptions.pimCommand }}"']
+          command: ['sh', '-c', 'export HOME=/srv/pim && cd /srv/pim && su www-data -s /bin/bash -c "php bin/console --quiet {{ $daemonOptions.pimCommand }}"']
 {{- end }}
           resources:
 {{- if $daemonOptions.resources }}
