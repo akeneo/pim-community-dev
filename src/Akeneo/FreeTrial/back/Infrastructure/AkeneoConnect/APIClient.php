@@ -41,13 +41,13 @@ class APIClient
         string $password,
         string $akeneoConnectBaseUri
     ) {
+        $this->httpClient = $httpClient;
+        $this->retrievePimFQDN = $retrievePimFQDN;
         $this->clientId = $clientId;
         $this->clientSecret = $clientSecret;
         $this->userName = $userName;
         $this->password = $password;
-        $this->httpClient = $httpClient;
         $this->akeneoConnectBaseUri = $akeneoConnectBaseUri;
-        $this->retrievePimFQDN = $retrievePimFQDN;
     }
 
     public function inviteUser(string $email): ResponseInterface
@@ -69,6 +69,27 @@ class APIClient
 
     private function connect(): string
     {
-        return 'toto';
+        $params = [
+            'username' => $this->userName,
+            'password' => $this->password,
+            'grant_type' => 'password',
+            'client_secret' => $this->clientSecret,
+            'client_id' => $this->clientId,
+        ];
+
+        $response = $this->httpClient->request('POST', $this->akeneoConnectBaseUri . '/auth/realms/connect/protocol/openid-connect/token', [
+            'headers' => [
+                'Content-type' => 'application/x-www-form-urlencoded',
+            ],
+            'body' => http_build_query($params)
+        ]);
+
+        $response = json_decode($response->getBody()->getContents(), true);
+
+        if (!isset($response['access_token'])) {
+            throw new \Exception('Invalid authentication response from Akeneo Connect API');
+        }
+
+        return $response['access_token'];
     }
 }

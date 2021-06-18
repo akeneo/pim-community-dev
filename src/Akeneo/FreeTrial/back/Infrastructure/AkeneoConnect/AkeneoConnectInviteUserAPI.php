@@ -25,7 +25,7 @@ class AkeneoConnectInviteUserAPI implements InviteUserAPI
 
     private LoggerInterface $logger;
 
-    public function __construct(LoggerInterface $logger)
+    public function __construct(APIClient $client, LoggerInterface $logger)
     {
         $this->client = $client;
         $this->logger = $logger;
