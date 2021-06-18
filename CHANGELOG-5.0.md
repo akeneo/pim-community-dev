@@ -1,5 +1,9 @@
 # 5.0.x
 
+## Bug fixes
+
+- PIM-9919: Breadcrumb for Reference Entities now redirects to the record list
+
 # 5.0.32 (2021-06-16)
 
 # 5.0.31 (2021-06-10)
