@@ -191,7 +191,7 @@ RUN php -d 'memory_limit=4G' /usr/local/bin/composer install \
 WORKDIR /srv/pim/tmp/build-connector/front
 
 RUN yarnpkg install --frozen-lockfile
-RUN REACT_APP_API_WEB_PATH="/connectors/bigcommerce/api-web" REACT_APP_URL_BASENAME="/connectors/bigcommerce" node yarn build
+RUN REACT_APP_API_WEB_PATH="/connectors/bigcommerce/api-web" REACT_APP_URL_BASENAME="/connectors/bigcommerce" yarnpkg run build
 
 #
 # Image used for production
