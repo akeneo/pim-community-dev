@@ -6,9 +6,7 @@ namespace Akeneo\Tool\Component\Connector;
 
 use Akeneo\Tool\Component\Batch\Event\EventInterface;
 use Akeneo\Tool\Component\Batch\Event\JobExecutionEvent;
-use Akeneo\Tool\Component\Batch\Model\JobExecution;
-use Akeneo\Tool\Component\Batch\Model\JobInstance;
-use League\Flysystem\Filesystem;
+use League\Flysystem\FilesystemWriter;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 
 /**
@@ -20,10 +18,9 @@ use Symfony\Component\EventDispatcher\EventSubscriberInterface;
  */
 class LogArchiver implements EventSubscriberInterface
 {
-    /** @var Filesystem */
-    private $filesystem;
+    private FilesystemWriter $filesystem;
 
-    public function __construct(Filesystem $filesystem)
+    public function __construct(FilesystemWriter $filesystem)
     {
         $this->filesystem = $filesystem;
     }
@@ -42,7 +39,7 @@ class LogArchiver implements EventSubscriberInterface
         }
     }
 
-    public static function getSubscribedEvents()
+    public static function getSubscribedEvents(): array
     {
         return [
             EventInterface::BEFORE_JOB_STATUS_UPGRADE => 'archive'

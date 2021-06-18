@@ -6,7 +6,6 @@ namespace Akeneo\Platform\Bundle\ImportExportBundle\Persistence\Filesystem;
 
 use Doctrine\DBAL\Connection;
 use League\Flysystem\DirectoryListing;
-use League\Flysystem\Filesystem;
 use League\Flysystem\FilesystemOperator;
 use League\Flysystem\StorageAttributes;
 
@@ -22,7 +21,7 @@ final class DeleteOrphanJobExecutionDirectories
     /** @var array<int, bool> */
     private array $jobExecutionIds = [];
 
-    public function __construct(Filesystem $archivistFilesystem, Connection $connection)
+    public function __construct(FilesystemOperator $archivistFilesystem, Connection $connection)
     {
         $this->archivistFilesystem = $archivistFilesystem;
         $this->connection = $connection;

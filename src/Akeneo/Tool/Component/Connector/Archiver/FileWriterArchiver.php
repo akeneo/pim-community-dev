@@ -9,7 +9,7 @@ use Akeneo\Tool\Component\Batch\Step\ItemStep;
 use Akeneo\Tool\Component\Connector\Writer\File\ArchivableWriterInterface;
 use Akeneo\Tool\Component\Connector\Writer\File\WrittenFileInfo;
 use Akeneo\Tool\Component\FileStorage\FilesystemProvider;
-use League\Flysystem\Filesystem;
+use League\Flysystem\FilesystemOperator;
 use League\Flysystem\UnableToReadFile;
 use Psr\Log\LoggerInterface;
 
@@ -27,7 +27,7 @@ class FileWriterArchiver extends AbstractFilesystemArchiver
     private LoggerInterface $logger;
 
     public function __construct(
-        Filesystem $filesystem,
+        FilesystemOperator $filesystem,
         JobRegistry $jobRegistry,
         FilesystemProvider $fsProvider,
         LoggerInterface $logger

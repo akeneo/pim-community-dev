@@ -11,12 +11,12 @@ use Akeneo\Test\Integration\TestCase;
 use Akeneo\Tool\Bundle\BatchBundle\Job\JobInstanceRepository;
 use Akeneo\Tool\Component\Batch\Job\JobParameters;
 use Akeneo\Tool\Component\Batch\Model\JobExecution;
-use League\Flysystem\Filesystem;
+use League\Flysystem\FilesystemOperator;
 use PHPUnit\Framework\Assert;
 
 class DeleteOrphanJobExecutionDirectoriesIntegration extends TestCase
 {
-    /** @var Filesystem */
+    /** @var FilesystemOperator */
     private $archivistFilesystem;
 
     /** @var JobExecutionRepository */

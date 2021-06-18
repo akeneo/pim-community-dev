@@ -16,17 +16,15 @@ use Akeneo\Tool\Component\Connector\Writer\File\WrittenFileInfo;
 use Akeneo\Tool\Component\FileStorage\FilesystemProvider;
 use League\Flysystem\DirectoryListing;
 use League\Flysystem\FileAttributes;
-use League\Flysystem\Filesystem;
 use League\Flysystem\FilesystemOperator;
 use PhpSpec\ObjectBehavior;
 use Prophecy\Argument;
 use Psr\Log\LoggerInterface;
-use spec\Akeneo\AssetManager\Domain\Model\Attribute\AttributeAllowedExtensionsSpec;
 
 class FileWriterArchiverSpec extends ObjectBehavior
 {
     function let(
-        Filesystem $filesystem,
+        FilesystemOperator $filesystem,
         JobRegistry $jobRegistry,
         FilesystemProvider $filesystemProvider,
         LoggerInterface $logger

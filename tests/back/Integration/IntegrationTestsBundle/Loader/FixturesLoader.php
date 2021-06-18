@@ -19,8 +19,7 @@ use Akeneo\Tool\Bundle\MeasureBundle\Installer\MeasurementInstaller;
 use Doctrine\DBAL\Connection;
 use Elasticsearch\ClientBuilder;
 use League\Flysystem\DirectoryAttributes;
-use League\Flysystem\Filesystem;
-use League\Flysystem\Plugin\ListPaths;
+use League\Flysystem\FilesystemOperator;
 use League\Flysystem\StorageAttributes;
 use Oro\Bundle\SecurityBundle\Acl\Persistence\AclManager;
 use Psr\EventDispatcher\EventDispatcherInterface;
@@ -54,7 +53,7 @@ class FixturesLoader implements FixturesLoaderInterface
     /** @var ReferenceDataLoader */
     private $referenceDataLoader;
 
-    /** @var Filesystem */
+    /** @var FilesystemOperator */
     private $archivistFilesystem;
 
     /** @var DoctrineJobRepository */
@@ -113,7 +112,7 @@ class FixturesLoader implements FixturesLoaderInterface
         DatabaseSchemaHandler $databaseSchemaHandler,
         SystemUserAuthenticator $systemUserAuthenticator,
         ReferenceDataLoader $referenceDataLoader,
-        Filesystem $archivistFilesystem,
+        FilesystemOperator $archivistFilesystem,
         DoctrineJobRepository $doctrineJobRepository,
         FixtureJobLoader $fixtureJobLoader,
         AclManager $aclManager,
