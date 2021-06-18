@@ -1,6 +1,12 @@
 akeneo_assetmanager:
+  acl_group:
+    asset_manager: Gestor de activos
   acl:
     asset_family:
+      create: Crear una familia de activos
+      edit: Editar las propiedades de la familia de activos
+      delete: Eliminar una familia de activos
+      manage_permission: Gestionar permisos de familia de activos
       manage_transformation: Gestionar transformaciones familiares de activos
       manage_product_link_rule: Administrar reglas de enlace de productos de la familia de activos
       execute_product_link_rule: Ejecutar reglas de enlace de producto en todos los activos de una familia de activos
@@ -8,7 +14,12 @@ akeneo_assetmanager:
     asset:
       create: Crear un activo
       edit: Editar los activos
+      list_product: Listar productos vinculados al activo
       execute_naming_conventions: Ejecutar convenciones de nombres
+    attribute:
+      create: Añadir un atributo a una familia de activos
+      edit: Editar un atributo de una familia de activos
+      delete: Eliminar un atributo de una familia de activos
     option:
       edit: Editar opciones
       delete: Eliminar una opción
