@@ -1,0 +1,8 @@
+batch_jobs:
+  asset_manager_csv_asset_export:
+    label: Exportar recursos en CSV
+    export.label: Exportar recursos
+  asset_manager_xlsx_asset_export:
+    label: Exportar recursos en XLSX
+    export.label: Exportar recursos
+akeneo_assetmanager.export.assets.filter.asset_family: Familia de recursos

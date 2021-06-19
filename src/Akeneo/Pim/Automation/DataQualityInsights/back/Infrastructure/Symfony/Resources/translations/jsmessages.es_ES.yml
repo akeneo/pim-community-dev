@@ -1,0 +1,85 @@
+akeneo_data_quality_insights:
+  title: Inclusiones de calidad de datos
+  dqi_dashboard:
+    menu: Inclusiones de calidad de datos
+    title: Vista general de calidad de datos
+    helper:
+      title: Presentación de la calidad de los datos en Akeneo
+      description: Con el panel de control de calidad de datos, puede medir la calidad de los datos de su catálogo. También puede centrarse en una categoría o familia.
+      help_center: Consulta nuestro Centro de Ayuda para obtener más información.
+    no_data_title: Lo sentimos, aún no tenemos suficientes datos para mostrar la visión general de la calidad de los datos.
+    no_data_subtitle: Por favor, regrese mas tarde.
+    time_period:
+      label: Período de tiempo
+      daily: Diariamente
+      weekly: Semanalmente
+      monthly: Mensualmente
+    legend:
+      excellent: Excelente
+      good: Bien
+      average: Promedio
+      below_average: Por debajo de la media
+      to_improve: Para mejorar
+    category_modal_filter:
+      subtitle: Filtrar en una categoría
+      message: Elige la categoría a explorar en tu panel de control
+    widgets:
+      family_modal:
+        subtitle: Añadir familias
+        message: Elige las familias a añadir en tu panel de control
+        max_families_msg: Lo sentimos, no puedes añadir más de {{ count }} familias para seguir en tu panel de control
+      category_modal:
+        subtitle: Añadir categorías
+        message: Elige las categorías a añadir en su panel de control
+        max_categories_msg: Lo sentimos, no puedes añadir más de {{ count }} categorías para seguir en tu panel de control
+      add_families: Añadir familias
+      add_categories: Añadir categorías
+      title: Título
+      no_family_helper_msg: Seleccione las familias para las que desea medir la calidad de los datos
+      no_category_helper_msg: Seleccione las categorías para las que desea medir la calidad de los datos
+      see_in_grid: Ver en cuadrícula
+    time_axis:
+      day: día
+  product_evaluation:
+    criteria:
+      completeness_of_required_attributes:
+        recommendation: Atributos requeridos con valores faltantes
+      completeness_of_non_required_attributes:
+        recommendation: Atributos no requeridos con valores faltantes
+      consistency_textarea_uppercase_words:
+        recommendation: Atributos con problemas en mayúsculas
+      consistency_textarea_lowercase_words:
+        recommendation: Atributos con incidencias en minúsculas
+      consistency_spelling:
+        recommendation: Atributos con problemas de ortografía
+    axis:
+      enrichment:
+        title: Enriquecimiento
+        attributes_link: Mostrar todos los atributos que faltan
+        success: Los datos de tu producto están completamente enriquecidos. ¡Felicidades!
+      consistency:
+        title: Consistencia
+        attributes_link: Mostrar todos los atributos mejorables
+        success: Los datos de tu producto son totalmente coherentes. ¡Felicidades!
+    messages:
+      error:
+        axis_error: Debido a un error, la nota no pudo ser calculada completamente. Inténtalo de nuevo más tarde.
+        criterion_error: No se ha podido calcular la categoría.
+      success:
+        criterion: Todo está bien.
+      grading_in_progress: Calificación en progreso.
+      axis_grading_in_progress: Calificación en progreso. Vuelve más tarde.
+  product_edit_form:
+    attribute_filter:
+      all_missing_attributes: Todos los atributos que faltan
+      all_improvable_attributes: Todos los atributos mejorables
+    spellcheck_popover:
+      title: Correciones
+      original_text_title: Original
+      suggestions_title: Propuestas
+      ignore_all_suggestions_button_label: Ignorar
+    title_suggestion_popover:
+      title: Sugerencias
+      ignore_all_suggestions_button_label: Ignorar
+pim_title:
+  akeneo_data_quality_insights_dashboard: Inclusiones de calidad de datos

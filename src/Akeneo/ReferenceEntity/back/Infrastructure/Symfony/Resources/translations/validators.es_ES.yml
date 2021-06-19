@@ -8,7 +8,7 @@ pim_reference_entity:
       records:
         should_have_no_record: 'No puede eliminar esta entidad debido a que existen registros para esta entidad'
       reference_entity_attributes:
-        should_not_be_linked: 'No puede eliminar esta entidad debido a que ciertos atributos de entidad de referencia están relacionados a esta entidad'
+        should_not_be_linked: 'Para eliminar esta entidad de referencia, primero revise los atributos en todas sus entidades de referencia y luego elimine las vinculadas a esta'
       reference_entity_permissions:
         at_least_one_user_group_should_have_edit_permission: 'Al menos un grupo de usuarios debe tener permiso de edición sobre esta entidad'
       product_attributes:
@@ -21,7 +21,9 @@ pim_reference_entity:
         should_be_unique: 'El código de registro ya existe para la entidad de referencia "%reference_entity_identifier%" y el código de registro "%code%"'
         should_exist: 'No se encontró el registro'
       text:
-        incompatible_with_regular_expression: 'El texto es incompatible con la expresión regular "%regular_expression%"'
+        incompatible_with_regular_expression: 'Por favor, introduzca un texto que satisfaga la expresión regular: "%regular_expression%"'
+        invalid_email: 'Por favor, introduzca una dirección de correo electrónico: xxxx@xx.xx'
+        invalid_url: 'Por favor, introduzca una URL: http(s)://xxxx.XXX'
       file:
         extension_not_allowed: 'Los archivos "%file_extension%" no están permitidos para este atributo. Las extensiones permitidas son: %allowed_file_extensions%'
         file_size_exceeded: 'El archivo excede el tamaño máximo del archivo establecido para el atributo.'
@@ -32,6 +34,7 @@ pim_reference_entity:
         codes_dont_exist: "Los siguientes códigos de opción no existen para este atributo : \"%option_codes%\""
       record:
         should_exist: 'No se encontró el registro "%record_code%".'
+        should_not_be_used_as_product_variant_axis: 'No puede eliminar esta entidad ya que se utiliza como eje de variantes en una de sus variantes de producto'
       record_collection:
         should_exist: 'No se encontraron los registros "%record_codes%".'
       limit_reached: 'No puedes crear el registro "%record_label%" porque has alcanzado el límite de %limit% registros para esta entidad de referencia'
@@ -45,6 +48,7 @@ pim_reference_entity:
         is_not_activated: 'El local "%locale_identifier%" no está activado.'
         is_not_activated_for_channel: 'El local "%locale_identifier%" no está activado para el canal "%channel_identifier%".'
       number:
+        should_be_string: 'Este campo debe ser una cadena'
         should_be_integer: 'Este campo debe ser un entero'
         integer_too_long: 'Este entero es demasiado grande'
         should_be_numeric: 'Este campo debe ser un valor numérico con el separador decimal correcto'
@@ -83,3 +87,13 @@ pim_reference_entity:
       record_type:
         is_required: 'Necesita especificar el tipo de entidad de referencia para crear un atributo de enlace de Entidad de Referencia'
         reference_entity_should_exist: 'No se encontró la entidad de referencia "%reference_entity_code%".'
+      prefix:
+        should_not_be_empty: 'El prefijo no puede ser una cadena vacía.'
+      suffix:
+        should_not_be_empty: 'El sufijo no puede ser una cadena vacía.'
+      media_type:
+        not_expected: 'El tipo de medio dado no corresponde a los esperados (%supported_media_types%).'
+  product_value:
+    validation:
+      record_should_exist: 'La propiedad "%attribute_code%" espera un código de registro válido. El registro "%invalid_record%" no existe'
+      records_should_exist: 'La propiedad "%attribute_code%" espera códigos de registro válidos. Los siguientes registros no existen: "%invalid_records%"'

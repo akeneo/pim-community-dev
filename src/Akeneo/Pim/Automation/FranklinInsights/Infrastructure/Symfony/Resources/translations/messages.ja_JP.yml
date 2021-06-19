@@ -32,6 +32,7 @@ job_execution.summary:
   subscribed: サブスクリプション済
   unsubscribed: サブスク解除済
   unsubscription_skipped_not_subscribed: スキップ済(未サブスク)
+  identifiers_mapping_validation: 識別子マッピングの検証
 pim_datagrid:
   cells:
     type:

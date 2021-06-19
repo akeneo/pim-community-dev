@@ -1,6 +1,7 @@
 pimee_workflow:
   product_draft:
     author: Autor
+    source: Fuente
     created: Propuesto el
     changes: Cambios
     locale: Configuración regional

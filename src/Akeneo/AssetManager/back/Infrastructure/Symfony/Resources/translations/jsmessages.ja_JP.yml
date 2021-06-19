@@ -110,6 +110,8 @@ pim_asset_manager:
         channel_not_supported_for_field: '分野「%product_field%」に対してチャンネルを特定できません'
         locale_not_supported_for_field: '分野「%product_field%」に対してロケールを特定できません'
         assignmement_attribute_does_not_support_this_asset_family: '属性「{{%product_attribute_code%}}」にはアセットファミリー「{{%asset_family_identifier%}}」を含むことができません'
+        assignmement_attribute_does_not_exist: '商品属性「{{ %product_attribute_code% }}」は存在しません'
+        assignmement_attribute_is_not_an_asset_collection: '商品属性「{{ %product_attribute_code% }}」はタイプアセットコレクションの属性ではありません'
     button:
       save: 保存
       save_permission: 保存
@@ -477,10 +479,12 @@ pim_asset_manager:
     media_link:
       placeholder: ここにメディアリンクを配置
       read_only: このメディアリンクは読み取り専用です
+      reload: メディアリンクのサムネイルをリロード
     media_file:
       placeholder: ドラッグ＆ドロップでアップロードするか、こちらをクリック
       read_only: このメディアリンクは読み取り専用です
       uploading: アップロード中...
+    used_as_transformation_target: このフィールドはアセット変換のターゲットとして使用されているため、読み取り専用です。
   modal:
     delete:
       subtitle: 削除を確認

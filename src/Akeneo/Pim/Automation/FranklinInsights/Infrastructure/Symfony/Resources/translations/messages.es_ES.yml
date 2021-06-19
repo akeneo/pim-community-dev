@@ -32,8 +32,10 @@ job_execution.summary:
   subscribed: suscrito
   unsubscribed: darse de baja
   unsubscription_skipped_not_subscribed: omitido (no suscrito)
+  identifiers_mapping_validation: Validación de mapeo de identificadores
 pim_datagrid:
   cells:
     type:
       franklin_insights_fetch_products: Franklin Insights
+      franklin_insights: Franklin Insights
 Franklin subscription: Suscripción de Franklin
