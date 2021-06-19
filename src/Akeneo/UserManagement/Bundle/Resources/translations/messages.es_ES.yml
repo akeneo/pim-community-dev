@@ -67,11 +67,13 @@ pim_user:
       username_or_email: Nombre de usuario o Email
       remember_me: Recordarme en esta computadora
       password_forgotten: '¿Olvidó su contraseña?'
+      log_in: Ingresar
       forgot_password: Contraseña olvidada
       request: Petición
       password_reset: Reiniciar contraseña
       reset: Reiniciar
       password_reset_email_sent: Un correo electrónico se ha enviado al usuario. Contiene un enlace para restablecer la contraseña.
+      homepage: Volver a la página de inicio
   group:
     tab:
       general.title: General

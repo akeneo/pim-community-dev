@@ -154,6 +154,7 @@ pim_common:
   before: Anterior
   by: por
   cancel: Cancelar
+  clear_value: Limpiar valor
   close: Cerrar
   code: Código
   completeness: Completitud
@@ -202,6 +203,7 @@ pim_common:
   to: hasta
   type: Tipo
   update: Actualizar
+  updated: Actualizado
   "yes": "Sí"
   operator: Operador
   operators:
