@@ -335,3 +335,5 @@ pim_catalog_volume:
     count_reference_entity: Entidades de referencia
     average_max_records_per_reference_entity: Registros por entidad de referencia
     average_max_attributes_per_reference_entity: Atributos por entidad de referencia
+batch_jobs:
+  reference_entity_label: Entidad de referencia

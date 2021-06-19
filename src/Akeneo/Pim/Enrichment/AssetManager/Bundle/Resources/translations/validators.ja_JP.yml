@@ -3,3 +3,4 @@ pim_asset_manager:
     validation:
       asset_multiple_link:
         limit_reached: 'コレクション毎の上限%limit%アセットに達しました。これ以上コレクションにアセットを追加できません。'
+      assets_should_belong_to_asset_family: '「%asset_code%」アセットが存在し、「%attribute%」属性の「%asset_family_identifier%」アセットファミリーに属することを確認してください。'
