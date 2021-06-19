@@ -53,6 +53,7 @@ pim_enrich.entity.channel:
   property:
     category_tree: Árbol de categoría
     do_not_convert: No convertir
+    measurement: Ajustes de medición
     label_conversion_units: Elija una unidad de conversión para cada atributo de medida que se utilizará durante la exportación del producto
   module:
     create:
@@ -63,6 +64,15 @@ pim_enrich.entity.locale:
   label: local
   uppercase_label: Local
   plural_label: Locales
+  page_title:
+    index: "]-Inf, 1]{{ count }} local activado|]1, Inf[{{ count }} locales activados"
+  helper: "Para activar o desactivar un locale, vaya a uno de <a href={{ href }}>sus canales</a> y agregue o elimine un local."
+  grid:
+    columns:
+      code: Locales activados
+    filters:
+      search_placeholder: Buscar un local activado
+    no_search_result: Lo sentimos, no hay ningún resultado para su búsqueda.
 pim_enrich.entity.currency:
   plural_label: Monedas
   page_title:

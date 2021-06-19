@@ -16,6 +16,8 @@ pim_title:
   akeneo_connectivity_connection_audit_any: Panel de conexión
   akeneo_connectivity_connection_error_management_dashboard: Panel de conexión
   akeneo_connectivity_connection_error_management_connection_monitoring: Monitoreo de conexión
+  akeneo_connectivity_connection_webhook_edit: Suscripción de evento (BETA)
+  akeneo_connectivity_connection_webhook_regenerate_secret: Suscripción de evento (BETA)
 akeneo_connectivity.connection:
   connections: Conexiones
   secondary_actions:
@@ -54,6 +56,7 @@ akeneo_connectivity.connection:
   connection_count: 'Conexión de {{ count }} | {{ count }} conexiones'
   no_connection:
     title: No hay conexión declarada aún.
+    message: Añada su primera haciendo clic en el botón «Crear» de arriba o
     message_link: pulse aquí.
   create_connection:
     title: Crear una conexión nueva
@@ -99,8 +102,20 @@ akeneo_connectivity.connection:
       user_role_helper:
         message: El rol predeterminado `{{ role }}` no es la mejor opción para tu conexión. Le recomendamos encarecidamente que elija un rol adaptado a sus necesidades de conexión.
         link: Más información aquí...
+      user_group_helper:
+        message: Le recomendamos encarecidamente que elija un grupo adaptado a sus necesidades de conexión.
+        link: Más información aquí...
+  regenerate_secret:
+    title: Confirmar regeneración
+    description: '¿Estás seguro de que quieres regenerar el secreto de conexión? ¿No estás seguro de los impactos?'
+    link: Esto es lo que sucederá.
+    action:
+      regenerate: Regenerar
+    flash:
+      success: Secreto de conexión regenerado con éxito.
   delete_connection:
     title: Confirmar la eliminación
+    link: Esto es lo que sucederá.
   helper:
     title: '👋 ¡Bienvenido a la característica que conectará correctamente tu PIM!'
   flow_type_helper:
@@ -151,11 +166,26 @@ akeneo_connectivity.connection:
         message: Solicite a su administrador que cree uno.
         link: Más información sobre conexiones aquí...
   webhook:
+    title: Suscripción de evento (BETA)
+    event_subscription: Suscripción al evento (beta)
+    helper:
+      message: Usted puede ser notificado de eventos que ocurren en el PIM para productos sincronizados con esta aplicación conectada. Sólo necesita definir una URL y el tipo de evento que desea seguir.
+      link: Más información sobre la configuración de suscripción a eventos...
     form:
+      url: URL
       secret: Secreto
+      enabled: Activación de suscripción al evento
+      test: Prueba
+    error:
+      wrong_url: Este valor no es una URL válida.
+      required: Este campo es obligatorio.
+      not_found: Estás intentando actualizar una conexión que no existe.
+      limit_reached: Ha alcanzado el límite de suscripciones a eventos activos.
     regenerate_secret:
+      title: Confirmar regeneración
       action:
         regenerate: Regenerar
+      link: Esto es lo que sucederá.
   error_management:
     connection_monitoring:
       title: Monitoreo
@@ -187,3 +217,6 @@ akeneo_connectivity.connection:
           3: en la configuración.
       not_data_source:
         title: Por ahora, la página de monitoreo sólo está disponible para conexión fuente.
+  runtime_error:
+    reload_helper: Por favor, recargue la página e inténtelo de nuevo.
+    reload_button: Recargar

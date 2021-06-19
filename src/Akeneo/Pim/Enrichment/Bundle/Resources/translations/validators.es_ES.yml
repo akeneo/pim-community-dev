@@ -33,10 +33,12 @@ file.extensions.message: 'La extensión del fichero no está permitida (las exte
 product_model.code.not_blank.message: El código de modelo del producto no debe estar vacío.
 product_model.code.unique.message: El mismo código se encuentra ya en otro modelo de producto.
 product_model.family_variant.not_blank.message: La variante de familia del modelo del producto no debe estar vacío.
+"The %attribute% attribute requires a string, a %givenType% was detected.": El atributo %attribute% requiere una cadena, se ha detectado un %givenType%.
 "The {{ attribute_code }} attribute requires a date that should be {{ limit }} or after.": El atributo {{ attribute_code }} requiere una fecha que debe ser {{ limit }} o posterior.
 "The {{ attribute_code }} attribute requires a date that should be {{ limit }} or before.": El atributo {{ attribute_code }} requiere una fecha que debe ser {{ limit }} o anterior.
 "The {{ attribute }} attribute requires a number, and the submitted {{ value }} value is not.": El atributo {{ attribute }} requiere un número, y el valor {{ value }} enviado no lo es.
 "The %attribute% attribute must not contain more than %limit% characters. The submitted value is too long.": El atributo %attribute% no debe contener más de %limit% caracteres. El valor enviado es demasiado largo.
+'The {{ attribute_code }} attribute must match the following regular expression: {{ pattern }}.': 'El atributo {{ attribute_code }} debe coincidir con la siguiente expresión regular: {{ pattern }}.'
 'The {{ attribute_code }} attribute cannot be empty.': 'El atributo {{ attribute_code }} no puede estar vacío.'
 pim_catalog:
   constraint:
@@ -68,6 +70,8 @@ pim_catalog:
     family_variant_maximum_number_of_level: La variante de la familia no puede contener mas de "%level%" niveles
     family_variant_unique_attributes_in_last_level: El atributo único "%attribute%" debe ser configurado en el nivel del producto
     product_identifier: Estos identificadores "%s" no existen.
+    blacklisted_attribute_code: Código bloqueado temporalmente hasta que se complete el trabajo de limpieza en curso.
+    blacklisted_attribute_code_with_link: "Código bloqueado temporalmente hasta que finalice el trabajo de limpieza en curso. Para obtener más información, consulte el <a href='{{ link }}' target='_blank'>detalle del trabajo</a>."
     0: Se ha producido un error inesperado.
     100: Valor no previsto
     101: Este campo debe contener un valor booleano.
