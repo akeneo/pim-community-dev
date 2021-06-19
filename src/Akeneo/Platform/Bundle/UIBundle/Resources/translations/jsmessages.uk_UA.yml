@@ -3,6 +3,7 @@
 "Yes, do it": "Так, зробити це"
 "Ok, got it.": "Гаразд, зрозуміло."
 "Edit": "Редагувати"
+"Unexpected error occurred. Please contact system administrator.": "Сталася невідома помилка. Будь ласка, зв'яжіться з адміністратором."
 "Yes, revoke": "Так, відкликати"
 "Revoke Confirmation": "Відкликати підтвердження"
 Prev: Назад
@@ -168,6 +169,7 @@ pim_common:
   history: Історія
   label: Мітка
   label_translations: Переклади міток
+  Label or identifier: ярлик або ідентифікатор
   less_than: Менше ніж
   loading: Завантаження...
   media_upload: Перетягніть для вивантаження, або натисніть тут
@@ -209,14 +211,17 @@ pim_common:
     STARTS WITH: Розпочинається з
     ENDS WITH: Закінчується на
 error:
+  exception: Ой, ні! Сталася помилка {{ status_code }}...
   forbidden: Заборонено. У вас немає доступу до цієї сторінки
 alert:
   attribute_option:
+    error_occurred_during_submission: Під час відправки форми на сервер сталася помилка 
     save_before_edit_other: Будь ласка, зафіксуйте ваші зміні на інших рядках перед редагуванням цього
   session_storage:
     not_available: Здається, ваш веб-браузер не сумісний з sessionStorage. Будь ласка, зверніться до адміністратора
 pim_enrich.entity.fallback:
   flash:
+    generic_error: Сталася помилка
     update:
       fail: Помилка оновлення
       success: Успішно оновлено
