@@ -21,6 +21,11 @@ Second: Segundo
 Millisecond: Milisegundo
 Microsecond: Microsegundo
 "Time Zone": "Zona Horaria"
+duration:
+  days: "{0}0 días|{1}1 día|]1, Inf[{{ count }} días"
+  hours: "{0}0 horas|{1}1 hora|]1, Inf[{{ count }} horas"
+  minutes: "{0}0 minutos|{1}1 minuto|]1, Inf[{{ count }} minutos"
+  seconds: "{0}0 segundos|{1}1 segundo|]1, Inf[{{ count }} segundos"
 #PIM messages
 Localized value: Valor localizado
 Columns: Columnas
@@ -281,6 +286,7 @@ pim_title:
   pim_enrich_catalog_volume_index: Monitoreo del volumen del catálogo
   pim_enrich_categorytree_index: Árbol de categoría
   pim_enrich_categorytree_create: Árboles de categoría | Crear
+  pim_enrich_categorytree_edit: Categoría {{ category.label }} | Editar
   pim_enrich_categorytree_create_tree: Árboles de categoría | Crear
   pim_enrich_categorytree_tree: Árbol de categoría {{ category.label }} | Editar
   pim_enrich_attribute_index: Atributos
@@ -375,3 +381,6 @@ pim_settings:
     families: Tienes {{ count }} familias
     measurements: Tiene {{ count }} mediciones
     association_types: Tienes {{ count }} tipos de asociación
+    group_types: Tiene {{ count }} tipos de grupos
+    groups: Tiene {{ count }} grupos
+    rules: Tiene {{ count }} reglas habilitadas
