@@ -61,3 +61,11 @@ pim_analytics:
     nb_custom_locale_accesses: Anzahl der benutzerdefinierten Zugriffe auf das Gebietsschema
     nb_custom_category_accesses: Anzahl der benutzerdefinierten Zugriffe auf Kategorien
     nb_custom_attribute_group_accesses: Anzahl der benutzerdefinierten Zugriffe auf Attributgruppen
+category.permissions:
+  view.label: Berechtigte Produkte anzuzeigen
+  edit.label: Berechtigte Produkte bearbeiten
+  own.label: Erlaubt eigene Produkte
+  own.help: Artikel bewerten, veröffentlichen, unveröffentlichen, klassifizieren und verknüpfen
+  no_access_to_products: Sie haben keinen Zugriff auf Produkte in einem Strukturbaum. Bitte kontaktieren Sie Ihren Administrator.
+  apply_on_children.label: Übernehme Änderungen auf Kindelemente
+  apply_on_children.help: Vorhandene Berechtigungen für Kinder werden beibehalten

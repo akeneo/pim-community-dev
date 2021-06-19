@@ -34,6 +34,7 @@ pim_datagrid:
     no_diff: Der Wert "{{ value }}" ist derselbe zwischen dem Vorschlag und der Arbeitskopie.
     new_value: 'Neuer Wert:'
     old_value: 'Alter Wert:'
+    see_more: Mehr sehen
     actions:
       approve_all: Alle genehmigen
       refuse_all: Alle ablehnen
