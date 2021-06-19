@@ -34,6 +34,7 @@ pim_reference_entity:
         codes_dont_exist: "次のオプションコードはこの属性に存在しません: 「%option_codes%」"
       record:
         should_exist: '記録「%record_code%」は検出されませんでした。'
+        should_not_be_used_as_product_variant_axis: 'このエンティティは商品バリアントの 1 つでバリアント軸として使用されているため削除できません'
       record_collection:
         should_exist: '記録「%record_code%」は検出されませんでした。'
       limit_reached: '記録「%record_label%」を作成できません。この参照エンティティに対する記録の上限%limit%に達しています。'
