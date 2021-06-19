@@ -66,3 +66,4 @@ pim_notification:
     project_created: 新規プロジェクトがあります
     project_finished: プロジェクト完成済
     project_calculation: プロジェクトの計算
+    project_due_date: プロジェクトの期日

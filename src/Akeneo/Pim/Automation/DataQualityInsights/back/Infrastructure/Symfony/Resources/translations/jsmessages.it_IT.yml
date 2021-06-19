@@ -3,6 +3,8 @@ akeneo_data_quality_insights:
   dqi_dashboard:
     menu: Approfondimenti sulla qualità dei dati
     title: Panoramica della qualità dei dati
+    helper:
+      title: Introduzione alla qualità dei dati in Akeneo
     no_data_title: Non ci sono ancora abbastanza dati per visualizzare la panoramica della qualità dei dati.
     no_data_subtitle: Ti preghiamo di tornare più tardi.
     time_period:

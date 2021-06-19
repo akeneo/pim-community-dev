@@ -19,6 +19,7 @@ akeneo_franklin_insights:
       plural_label: Identificadores
       flash:
         update:
+          first: 'Gracias por asignar los identificadores de productos de su catálogo. Ahora puede suscribir productos para su enriquecimiento con Franklin Insights.'
           success: 'La asignación de identificadores se ha guardado correctamente.'
           fail: 'La asignación de identificadores no se ha guardado debido a un error.'
       fields:
@@ -35,15 +36,23 @@ akeneo_franklin_insights:
           active: Activo
           inactive: Inactivo
       constraint:
+        duplicate_attribute_code: "Un mapeo permitido por atributo de catálogo"
+        missing_or_invalid_identifiers: "Faltan algunas claves de asignación de identificadores o no son válidas. Se esperaba: «{{ expected }}», se obtuvo «{{ given }}»."
+        mandatory_identifier_mapping: "Se requiere la asignación de la marca y el MPN"
         attribute_type: "No se puede definir el tipo de este atributo como un identificador"
         localizable_not_allowed: "Los atributos localizables no están permitidos como identificador"
+        scopable_not_allowed: "Los atributos definibles no están permitidos como identificador"
+        locale_specific_not_allowed: "Los atributos específicos de la configuración regional no están permitidos como identificador"
     attributes_mapping:
       label: Mapeo de los atributos
       flash:
         do_not_map_attribute_success: 'Atributo exitosamente actualizado.'
+        create_attribute_success: '{0} Lo sentimos, no se ha creado ninguno de los atributos {{ requestCount }}. |{1} Atributo creado con éxito y adjuntado a la familia «{{ family }}». |[2,Inf[ {{ successCount }} atributos de {{ requestCount }} han sido creados con éxito y adjuntados a la familia «{{ family }}».'
+        create_attribute_error: 'Lo sentimos, se ha producido un error al crear o adjuntar el atributo a la familia.'
         suggest_attribute_mapping_error: 'El atributo de catálogo "[{{ catalogAttributeCode }}]" ya está mapeado en el atributo Franklin "{{ franklinAttributeLabel }}".'
         add_attribute_to_family_success: '{1} Atributo adjunto con éxito a la familia "{{ family }}". |[2,Inf[ Atributos adjuntos con éxito a la familia "{{ family }}".'
         add_attribute_to_family_error: 'Lo sentimos, se ha producido un error al adjuntar el atributo a la familia.'
+        fail_to_retrieve_franklin_mapping: 'El mapeo de atributos no está disponible en este momento. Vuelve más tarde.'
       fields:
         search_bar.placeholder: 'Buscar en atributo Franklin'
         franklin_attribute: 'Atributo de Franklin'
@@ -65,19 +74,29 @@ akeneo_franklin_insights:
           subscribe: 'Suscribir familia a Franklin'
           subscribed: 'Suscribir a Franklin'
         index:
+          family_selector:
+            title: 'Elija una familia para asignar'
           error: "Es necesario crear una familia en su catálogo para acceder a esta página."
           family_status:
             pending: 'Nuevos atributos de Franklin para revisar'
+            full: 'Todos los atributos de Franklin asignados'
           types_mismatch_warning: 'Advertencia: los tipos de atributos no coinciden.'
+          family_progress:
+            title: 'Número de atributos asignados'
+            description: "Utilice esta barra para ver de un vistazo el estado de su trabajo"
+            mapped_attribute: '{{ mapped_count }} atributos mapeados y {{ suggested_count }} sugeridos'
+          suggested: Sugerido
         toolbar:
           bulk_create_attribute: Crear atributo
           bulk_add_to_family: Añadir a la Familia
           selection_count: '{{ count }} elemento seleccionado | {{ count }} elementos seleccionados'
       modal:
         deactivate_franklin_attribute:
+          title: "¿Está seguro de que no quiere asignar este atributo?"
           subtitle: 'Franklin Insights'
           ok: "No mapear"
         bulk_create_attribute:
+          title: '{1} Crear 1 atributo |[2,Inf[ Crear {{ count }} atributos'
           subtitle: 'Franklin Insights'
           description: '{1} El atributo seleccionado se creará y se añadirá a la familia |[2,Inf[ Los atributos seleccionados se crearán y se añadirán a la familia'
           warning: '{1} Confirma la creación de un nuevo atributo. |[2,Inf[ Confirma la creación de {{ count }} nuevos atributos.'
@@ -86,16 +105,29 @@ akeneo_franklin_insights:
           title: '{1} Añadir 1 atributo a la familia |[2,Inf[ Añadir {{ count }} atributos a la familia'
           subtitle: 'Franklin Insights'
           description: '{1} El atributo seleccionado se añadirá a la familia |[2,Inf[ Los atributos seleccionados se añadirán a la familia'
+          warning: '{1} Confirme la adición de un nuevo atributo a la familia. |[2,Inf[ Confirme la adición de {{ count }} nuevos atributos a la familia.'
           ok: Confirmar
       constraint:
+        missing_target_key: 'Falta la clave de destino para la asignación'
+        missing_attribute_key: 'Falta la clave {{ expectedKey }} para la asignación con la clave de destino «{{ targetKey }}»'
+        invalid_attribute_type_mapping: 'Los atributos Franklin no pueden asignarse al tipo de atributo PIM «{{ pimType }}»'
+        empty_mapping: 'Los atributos Franklin no pueden asignarse con una asignación vacía'
+        localizable_not_allowed: 'Los atributos Franklin no pueden asignarse a un atributo localizable PIM'
+        scopable_not_allowed: 'Los atributos Franklin no pueden asignarse a un atributo definible por PIM'
+        locale_specific_not_allowed: 'Los atributos Franklin no pueden asignarse a un atributo específico de la configuración regional PIM'
+        duplicated_pim_attribute: "La asignación no puede guardarse ya que ha asignado varios atributos Franklin al mismo atributo PIM"
         attribute_not_in_family_not_allowed: 'El atributo PIM debe estar en la familia seleccionada.'
         only_unknown_mapped_attributes: 'No se puede encontrar ningún atributo en el mapeo de atributos'
+      search:
+        no_result_title: Lo sentimos, no hay ningún atributo Franklin para su búsqueda.
+        no_result_subtitle: Pruebe con nuevos criterios de búsqueda.
     product_subscription:
       flash:
         create:
           success: 'Producto suscrito con éxito a Franklin'
           fail: 'Imposible suscribir el producto a Franklin'
         delete:
+          success: 'Producto dado de baja con éxito de Franklin'
           fail: 'Imposible cancelar la suscripción del producto de Franklin'
       constraint:
         family_required: 'Lo sentimos, se requiere una familia de productos para suscribir el producto a Franklin Insights.'
@@ -112,7 +144,11 @@ akeneo_franklin_insights:
         product_edit_form:
           family_required: 'Familia de producto requerida.'
           no_identifier_filled: 'Identificadores del producto requeridos.'
+          invalid_mapping: "Se requiere la asignación de identificadores."
     attribute_options_mapping:
+      label: 'Asignación de opciones de atributos'
+      constraint:
+        no_attribute_options_mapped: 'Las opciones de atributos de Franklin no se pueden asignar con una asignación vacía'
       fields:
         franklin_attribute_option: Opción de atributo de Franklin
         catalog_attribute_option: Opciones de atributo del catálogo
@@ -121,6 +157,9 @@ akeneo_franklin_insights:
         edit:
           title: '{{ familyLabel }} - {{ franklinAttributeLabel }} opciones de atributo'
           sub_title: '¡Conoce a Franklin, su <span class="AknDescriptionHeader-title--highlight">Asistente IA de Información de Producto</span>!'
+          description: 'Para ayudar a enriquecer su catálogo, Franklin necesitará conocer las opciones de atributos de su catálogo que coincidan con las suyas. <a href="https://help.akeneo.com/pim/articles/franklin-insights-mappings.html#attributes-and-options-mapping" target="_blank" class="AknDescriptionHeader-link">Leer más</a>'
+      flash:
+        load_failed: 'Error al actualizar'
   product:
     edit:
       btn.push: Sugerencia de datos
@@ -145,44 +184,64 @@ akeneo_franklin_insights:
         activate: 'Activar'
   settings:
     page_title: 'Configuración de Franklin Insights'
+    attributes_mapping_title: 'Mapeo de los atributos'
+    identifiers_mapping_title: 'Asignación de identificadores'
     module:
       title:
         sub_title: '¡Conoce a Franklin, su <span class="AknDescriptionHeader-title--highlight">Asistente IA de Información de Producto</span>!'
         description:
           first_step: 'Para ayudarle a enriquecer su catálogo, Franklin necesitará conocer sus identificadores de catálogo.'
+          second_step: 'Al asignar sus identificadores, tenga en cuenta que la Marca y el MPN van juntos. <a href="https://help.akeneo.com/articles/franklin-insights-mappings.html" class="AknDescriptionHeader-link" target="_blank">Leer más</a>'
       inactive_connection:
         title: 'Lo sentimos, no hay nada que mostrar aquí todavía'
         sub_title: 'Por favor, active su cuenta en el Sistema > Conexión Franklin y vuelva de nuevo.'
       no_active_english_locale:
+        title: 'Franklin insights solo está disponible para configuraciones regionales en inglés.'
         sub_title: 'Mantente atento, los locales están llegando.'
       save:
+        warning: '{1}Cambiar la asignación puede afectar a 1 suscripción. ¿Está seguro?|]1,+Inf[Cambiar la asignación puede afectar a {{ count }} suscripciones. ¿Está seguro?'
         title: 'Warning!'
   mass_edit:
     product:
       operation:
         franklin_insights:
           label: 'Suscripción a Franklin Insights'
+          label_count: "{1}Gestionar las suscripciones a Franklin Insights para <span class=\"AknFullPage-title--highlight\">1 producto</span>|]1, Inf[Suscribirse a Franklin Insights para <span class=\"AknFullPage-title--highlight\">{{ itemsCount }} productos</span>"
           description: Por favor, seleccione la acción que desea aplicar en los productos seleccionados en la grilla
           subscribe_label: Subscribirte
           unsubscribe_label: Cancelar la suscripción
           constraint:
             franklin_activation: "Por favor <a href=\"#\" data-action=\"franklin-connection\" class=\"AknMessageBox-link\">activar</a> Franklin Insights antes de suscribirse a los productos."
+            invalid_mapping: "Asigne los identificadores de producto en Ajustes > Franklin Insights antes de suscribir los productos."
   key_figures:
+    menu: Cifras clave de Franklin
     section_title:
       credits: Créditos Franklin
+      key_figures: Cifras clave de Franklin
     axis:
-      franklin_attribute_created: Número de atributos creados por Franklin
-      franklin_attribute_added_to_family: Número de atributos añadidos a una familia por Franklin
+      franklin_attribute_created: Atributos creados
+      franklin_attribute_added_to_family: Atributos añadidos a una familia
       credits_total: Total de créditos
       credits_consumed: Créditos consumidos
       credits_left: Créditos restantes
+      franklin_values_validated: Valores de atributo validados
+      franklin_values_in_error: Valores de atributo en error
+      franklin_values_suggested: Valores de atributo sugeridos
+      franklin_names_and_values_suggested: Nombres y valores de atributos sugeridos
 batch_jobs:
   default_steps:
     fetch_products: Obtener los datos de producto
     create_proposals: Crear propuestas
+    notify_if_pending_attributes: Notificar a los usuarios de atributos pendientes al mapa
+    validate_configuration: Validar la configuración de Franklin Insights
   franklin_insights_subscribe_products:
+    label: Suscripción en masa a Franklin Insights
+    validate_configuration.label: Validar la configuración de Franklin Insights
+    validate_identifiers_mapping.label: Validar la asignación de identificadores
     subscribe_products.label: Suscribirse a productos
   franklin_insights_unsubscribe_products:
+    label: Baja en masa de Franklin Insights
+    validate_configuration.label: Validar la configuración de Franklin Insights
     unsubscribe_products.label: Cancelar la suscripción de productos
   franklin_insights_fetch_products:
     label: Obtener datos de productos de Franklin Insights
@@ -198,6 +257,15 @@ pim_enrich.entity.attribute:
       warning: '{1}Eliminar un atributo puede afectar a 1 suscripción Franklin. ¿Está seguro?|]1,+Inf[Eliminar un atributo puede afectar a {{ count }} suscripciones Franklin. ¿Está seguro?'
 pim_title:
   akeneo_franklin_insights_connection_edit: Conexión Franklin Insights
+  akeneo_franklin_insights_mapping_index: Asignación de Franklin Insights
+  akeneo_franklin_insights_identifiers_mapping_edit: Editar asignación de identificadores de Franklin Insights
+  akeneo_franklin_insights_attributes_mapping_edit: Editar asignación de atributos de Franklin Insights
+  akeneo_franklin_insights_key_figure_index: Cifras clave de Franklin Insights
 pim_notification:
   types:
     franklin_insights: Franklin Insights
+pim_import_export:
+  widget:
+    last_operations:
+      job_type:
+        franklin_insights: Franklin Insights

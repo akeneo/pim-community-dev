@@ -52,6 +52,7 @@ akeneo_franklin_insights:
         suggest_attribute_mapping_error: 'カタログ属性「[{{ catalogAttributeCode }}]」はすでにフランクリン属性「{{ franklinAttributeLabel }}」にマップ済です。'
         add_attribute_to_family_success: '{1}属性がファミリー「{{ family }}」に正常に適用されました。 |[2,Inf[ 属性がファミリー「{{ family }}」に正常に適用されました。'
         add_attribute_to_family_error: '申し訳ございませんが属性をファミリーに適用中にエラーが発生しました。'
+        fail_to_retrieve_franklin_mapping: '属性マッピングは現在使用できません。後で確認してください。'
       fields:
         search_bar.placeholder: 'フランクリン属性内で検索'
         franklin_attribute: 'フランクリン属性'
@@ -231,6 +232,7 @@ batch_jobs:
   default_steps:
     fetch_products: 商品データを取得
     create_proposals: 提案を作成
+    notify_if_pending_attributes: マッピングが必要な保留中の属性についてユーザーに通知する
     validate_configuration: フランクリンインサイト構成を確認
   franklin_insights_subscribe_products:
     label: フランクリンインサイトの一括サブスクリプション
