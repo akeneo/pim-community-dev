@@ -3,6 +3,7 @@ teamwork_assistant:
     required: Este valor no debe estar vacío.
     label_maxlength: Este valor es demasiado largo. Debe tener {{ max }} caracteres o menos.
     project_identifier: El proyecto {{ project }} no existe.
+    project_locale: La configuración regional {{ locale }} no es compatible con el canal {{ channel }}.
     project_due_date: No puede seleccionar una fecha en el pasado.
   notification:
     project_calculation:
@@ -31,6 +32,9 @@ teamwork_assistant:
     deletion:
       user_linked_to_project: Este usuario está todavía vinculado a uno o más proyectos(s). Por favor, elimina los grupos a los que está vinculado en su cuenta de usuario.
       user_is_project_owner: Este usuario sigue siendo dueño de uno o más proyectos. Por favor, elimina todos los proyectos de este usuario.
+  user_group:
+    deletion:
+      group_linked_to_project: Este grupo de usuarios se utiliza en un proyecto de Asistente de Teamwork, no se puede eliminar
 job_execution:
   summary:
     processed_products: Productos procesados
