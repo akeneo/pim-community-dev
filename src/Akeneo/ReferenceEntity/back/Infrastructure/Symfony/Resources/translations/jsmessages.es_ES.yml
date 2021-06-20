@@ -98,7 +98,11 @@ pim_reference_entity:
       link: Haga clic aquí para añadir su primer grupo de usuarios
   record:
     mass_delete:
+      confirm: '[0,1]¿Está seguro de que desea eliminar el registro seleccionado {{ count }}?'
+      extra_information: Si están vinculados a productos, se eliminarán los enlaces a los mismos.
+      confirm_label: Escriba «{{ referenceEntityIdentifier }}»
       title: Registros
+    record_selected: '{0} {{ count }} registro seleccionado|{1} {{ count }} registro seleccionado|]1,Inf] {{ count }} registros seleccionados'
     validation:
       limit_reached: 'No puede crear el registro "{{ %record_label% }}" porque ha llegado al límite de registros {{ %limit% }} para esta entidad de referencia'
       code:
@@ -121,7 +125,10 @@ pim_reference_entity:
     button:
       save: Guardar
       create: Añadir nuevo
+      delete: Eliminar registro
       back: Volver a la lista
+      edit: Editar registro
+      view: Ver registro
     product:
       attribute: Atributo del producto
       counter: '{{ totalCount }} resultado|{{ totalCount }} resultados'
@@ -200,6 +207,9 @@ pim_reference_entity:
       delete:
         success: Registro "{{ code }}" eliminado con éxito.
         fail: Se ha producido un error durante la eliminación del registro
+      mass_delete:
+        success: Se ha lanzado la acción en masa «Eliminar en masa». Se le notificará cuando se haya completado.
+        fail: "Se produjo un error durante el lanzamiento del trabajo de eliminación en masa: {{ error }}"
     completeness:
       label: Completo
   attribute:
@@ -325,7 +335,39 @@ pim_catalog_volume:
     average_max_records_per_reference_entity: Registros por entidad de referencia
     average_max_attributes_per_reference_entity: Atributos por entidad de referencia
 batch_jobs:
+  default_steps:
+    mass_delete_records: Ejecutar eliminación en masa de registros
   reference_entity_label: Entidad de referencia
+  csv_reference_entity_record_export:
+    label: Exportar registros de entidad de referencia en CSV
+    export.label: Exportar registros
+  xlsx_reference_entity_record_export:
+    label: Exportar registros de entidad de referencia en XLSX
+    export.label: Exportar registros
+  csv_reference_entity_record_import:
+    label: Importar registros de entidad de referencia en CSV
+    import.label: Importar registros
+  xlsx_reference_entity_record_import:
+    label: Importar registros de entidad de referencia en XLSX
+    import.label: Importar registros
+pim_datagrid:
+  cells:
+    type:
+      reference_entity_mass_delete_records: Ejecutar eliminación en masa de registros
 job_execution:
   summary:
     records: Registros
+pim_notification:
+  types:
+    reference_entity_mass_delete_records: Eliminar en masa registros
+pim_analytics:
+  info_type:
+    nb_reference_entities: Número de entidades de referencia
+    max_number_of_records_per_reference_entity: Número máximo de registros por entidad de referencia
+    average_number_of_values_per_records: Promedio de valores por registro en todas las entidades de referencia
+    average_number_of_records_per_reference_entity: Promedio de registros por entidad de referencia
+    max_number_of_attributes_per_reference_entity: Número máximo de atributos por entidad de referencia
+    average_number_of_attributes_per_reference_entity: Promedio de atributos por entidad de referencia
+    average_percentage_localizable_only_attributes: Porcentaje promedio de atributos localizables por entidad de referencia
+    average_percentage_scopable_only_attributes: Porcentaje promedio de atributos scopable por entidad de referencia
+    average_percentage_scopable_and_localizable_attributes: Porcentaje promedio de atributos localizables y scopables por entidad de referencia

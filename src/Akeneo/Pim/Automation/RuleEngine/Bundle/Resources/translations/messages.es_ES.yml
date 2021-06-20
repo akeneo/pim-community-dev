@@ -7,12 +7,15 @@ pimee_catalog_rule:
       column:
         label: Etiqueta
         impacted_product_count:
+          label: Productos afectados
+          count: '{0,1}%count% producto afectado|]1,Inf[%count% productos afectados'
           no_yet_calculated: Aún no calculado
         tags:
           label: Acciones
         priority: Prioridad
         status: Estado
       mass_edit_action:
+        impacted_product_count: Calcular los productos afectados
         execute: Ejecutar
         delete: Borrar
   condition:
@@ -51,7 +54,18 @@ pimee_catalog_rule:
   product:
     history: Regla aplicada "%rule%"
   steps:
+    product_rule_definition_reader.title: Importar lector de reglas de producto
+    rule_definition_processor.title: Procesador de importación de reglas de productos
+    product_rule_definition_writer.title: Escritor de reglas de importación de productos
     rules_execution.title: Ejecución de las reglas
+  notification:
+    execute_rules:
+      success: Ejecución de la(s) regla(s) completada
+      warning: Ejecución de la(s) regla(s) completada con advertencia(s)
+      error: Se ha producido un error durante la ejecución de las reglas
+    mass_edit_rule:
+      success: Cálculo de los productos afectados por las reglas terminadas
+      error: Se ha producido un error durante el cálculo del número de productos afectados por las reglas
   datetime:
     now: ahora
     relative_date:
