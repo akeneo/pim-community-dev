@@ -1,4 +1,4 @@
-import React, { Ref, ReactElement, ReactNode } from 'react';
+import React, {Ref, ReactElement, ReactNode} from 'react';
 import styled from 'styled-components';
 import {Helper, HelperProps, InputProps, Locale, LocaleProps, Pill} from '../../components';
 import {useId} from '../../hooks';
@@ -86,7 +86,17 @@ type FieldProps = {
  */
 const Field = React.forwardRef<HTMLDivElement, FieldProps>(
   (
-    {label, locale, channel, incomplete = false, fullWidth = false, requiredLabel, children, actions, ...rest}: FieldProps,
+    {
+      label,
+      locale,
+      channel,
+      incomplete = false,
+      fullWidth = false,
+      requiredLabel,
+      children,
+      actions,
+      ...rest
+    }: FieldProps,
     forwardedRef: Ref<HTMLDivElement>
   ) => {
     const inputId = useId('input_');
