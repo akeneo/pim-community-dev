@@ -67,7 +67,10 @@ final class LocalizableValuesValidator extends ConstraintValidator
                         '%attribute_code%' => $localizableValue->getAttributeCode(),
                         '%invalid_locale%' => $localizableValue->getLocaleCode(),
                     ]
-                )->atPath(sprintf('[%s]', $key))->addViolation();
+                )
+                    ->atPath(sprintf('[%s]', $key))
+                    ->setCode(LocalizableValues::NON_ACTIVE_LOCALE)
+                    ->addViolation();
 
                 continue;
             }
