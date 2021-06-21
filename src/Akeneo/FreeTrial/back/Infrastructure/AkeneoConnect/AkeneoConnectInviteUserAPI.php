@@ -5,9 +5,9 @@ declare(strict_types=1);
 namespace Akeneo\FreeTrial\Infrastructure\AkeneoConnect;
 
 use Akeneo\FreeTrial\Domain\API\InviteUserAPI;
+use Akeneo\FreeTrial\Domain\Exception\InvalidEmailException;
 use Akeneo\FreeTrial\Domain\Exception\InvitationAlreadySentException;
 use Akeneo\FreeTrial\Domain\Exception\InvitationFailedException;
-use PharIo\Manifest\InvalidEmailException;
 use Psr\Log\LoggerInterface;
 use Symfony\Component\HttpFoundation\Response;
 
@@ -50,7 +50,7 @@ class AkeneoConnectInviteUserAPI implements InviteUserAPI
 
     private function handleError(array $responseContentError): void
     {
-        if (! isset($responseContentError['error']['code'])) {
+        if (!isset($responseContentError['error']['code'])) {
             throw new InvitationFailedException();
         }
 
