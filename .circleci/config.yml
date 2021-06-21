@@ -1777,7 +1777,7 @@ workflows:
   growth_edition_release:
       triggers:
           - schedule:
-                cron: "0 4 * * *"
+                cron: "0 3 * * *"
                 filters:
                     branches:
                         only:
@@ -1795,14 +1795,15 @@ workflows:
                 requires:
                     - test_cronjobs_existence_grth
           - test_deploy_grth_last_release:
-                    requires:
-                        - test_deploy_grth
+                requires:
+                    - test_cronjobs_existence_grth
           - test_upgrade_grth_from_last_release:
-                    requires:
-                        - test_deploy_grth_last_release
+                requires:
+                    - test_deploy_grth_last_release
           - release_grth:
-                    requires:
-                        - test_upgrade_grth_from_last_release
+                requires:
+                    - test_deploy_grth
+                    - test_upgrade_grth_from_last_release
 
   nightly_deployments:
       triggers:
