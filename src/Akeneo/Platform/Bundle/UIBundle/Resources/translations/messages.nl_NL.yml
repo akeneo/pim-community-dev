@@ -62,6 +62,7 @@ pim_common:
   name: Naam
   remove: Verwijder
   code: Code
+  label: Label
   quantity: Aantal
   products: Producten
   product_models: Productmodels
@@ -524,7 +525,6 @@ pim_mass_edit:
       success: Groepsgewijs verwijderen <strong>%label%</strong> beëindigd
 job_execution.summary:
   mass_edited: Groepsgewijs bewerken
-  skip: Overgeslagen
   skipped_products: Overgeslagen producten
   skipped_attributes: Overgeslagen attributen
   skipped_families: Overgeslagen families

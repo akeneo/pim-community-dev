@@ -52,7 +52,7 @@ class WebhookReachabilityCheckerSpec extends ObjectBehavior
                 $this->getWrappedObject()::POST === $object->getMethod() &&
                 $validUrl === (string) $object->getUri();
         }))->willReturn(new Response(200, [], null, '1.1', 'OK'));
-        $validator->validate($validUrl, [new ValidatorAssert\Url(), new ValidatorAssert\NotBlank(),])->willReturn([]);
+        $validator->validate($validUrl, Argument::any())->willReturn([]);
 
         $resultUrlReachabilityStatus = $this->check($validUrl, $secret);
 
@@ -74,7 +74,7 @@ class WebhookReachabilityCheckerSpec extends ObjectBehavior
 
         $validator->validate(
             $notValidUrl,
-            [new ValidatorAssert\Url(), new ValidatorAssert\NotBlank(),]
+            Argument::any()
         )->willReturn($violationList);
 
         $resultUrlReachabilityStatus = $this->check($notValidUrl, $secret);
@@ -97,7 +97,7 @@ class WebhookReachabilityCheckerSpec extends ObjectBehavior
 
         $validator->validate(
             $emptyUrl,
-            [new ValidatorAssert\Url(), new ValidatorAssert\NotBlank(),]
+            Argument::any()
         )->willReturn($violationList);
 
         $resultUrlReachabilityStatus = $this->check($emptyUrl, $secret);
@@ -125,7 +125,7 @@ class WebhookReachabilityCheckerSpec extends ObjectBehavior
                 $this->getWrappedObject()::POST === $object->getMethod() &&
                 $validUrl === (string) $object->getUri();
         }))->willThrow($requestException);
-        $validator->validate($validUrl, [new ValidatorAssert\Url(), new ValidatorAssert\NotBlank(),])->willReturn([]);
+        $validator->validate($validUrl, Argument::any())->willReturn([]);
 
         $resultUrlReachabilityStatus = $this->check($validUrl, $secret);
 
@@ -150,7 +150,7 @@ class WebhookReachabilityCheckerSpec extends ObjectBehavior
                 $this->getWrappedObject()::POST === $object->getMethod() &&
                 $validUrl === (string) $object->getUri();
         }))->willThrow($connectException);
-        $validator->validate($validUrl, [new ValidatorAssert\Url(), new ValidatorAssert\NotBlank(),])->willReturn([]);
+        $validator->validate($validUrl, Argument::any())->willReturn([]);
 
         $resultUrlReachabilityStatus = $this->check($validUrl, $secret);
 
@@ -174,7 +174,7 @@ class WebhookReachabilityCheckerSpec extends ObjectBehavior
                 $this->getWrappedObject()::POST === $object->getMethod() &&
                 $validUrl === (string) $object->getUri();
         }))->willThrow($transferException);
-        $validator->validate($validUrl, [new ValidatorAssert\Url(), new ValidatorAssert\NotBlank(),])->willReturn([]);
+        $validator->validate($validUrl, Argument::any())->willReturn([]);
 
         $resultUrlReachabilityStatus = $this->check($validUrl, $secret);
 

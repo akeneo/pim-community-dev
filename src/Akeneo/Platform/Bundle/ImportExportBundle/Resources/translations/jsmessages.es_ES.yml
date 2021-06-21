@@ -48,6 +48,7 @@ pim_import_export:
   form:
     job_execution:
       title.details: Detalles de la ejecución
+      refreshing: Actualizando detalles de ejecución
       refreshBtn.title: Actualizar
       button:
         show_profile.title: Ver perfil
@@ -99,6 +100,9 @@ pim_import_export:
           with_header:
             title: Con encabezado
             help: Imprimir o no el nombre de columnas
+          with_media:
+            title: Exportar medios
+            help: Exportar o no medios
           lines_per_file:
             title: Número de líneas por archivo
             help: Definir la cantidad límite de líneas por archivo
@@ -126,11 +130,24 @@ pim_import_export:
           real_time_versioning:
             title: Actualización del historial en tiempo real
             help: Significa que el historial del producto es actualizada automáticamente, puede ser desactivada para mejorar el desempeño
+          convert_variant_to_simple:
+            title: Convertir productos variantes en productos simples
+            help: Trate de convertir los productos variantes en productos simples cuando la columna «principal» esté vacía. Si se ajusta a «No», se ignorará una columna «principal» vacía
           family_variant_column:
             title: Columna de la variante de familia
+          with_label:
+            title: Con etiquetas
+            help: Defina si el archivo de exportación muestra las etiquetas de los valores en lugar de los códigos de los mismos
+          header_with_label:
+            title: Encabezados con etiquetas
+            help: Definir si el archivo de exportación muestra las etiquetas de los encabezados en lugar de los códigos de los encabezados
+          file_locale:
+            title: Local de archivo
+            help: Definir la configuración regional en la que se muestran las etiquetas
       file_path: Camino del fichero
   widget:
     last_operations:
+      empty: No hay ninguna operación para mostrar por ahora.
       date: Fecha
       profile_name: Nombre del perfil
       details: Detalles
@@ -145,6 +162,7 @@ pim_import_export:
         compute_family_variant_structure_changes: Calcular los cambios de estructura de las variantes de la familia
         compute_completeness_of_products_family: Calcular la completitud de la familia de productos
         mass_delete: Eliminación masiva de prodcutos
+        clean_removed_attribute_job: Limpiando valores de atributos eliminados
       header.view_all: Ver todo
   batch_status:
     1: Finalizado
@@ -164,6 +182,12 @@ pim_import_export:
     FAILED: Fallido
     ABANDONED: Abandonado
     UNKNOWN: Desconocido
+  tracking:
+    completed: "Tiempo empleado: {{ duration }}"
+    in_progress: "Tiempo restante estimado: {{ duration }}"
+    not_started: "Pendiente"
+    untrackable: Paso no rastreable
+    estimating: "Tiempo restante estimando..."
 confirmation:
   remove:
     import_profile: '¿Está seguro que desea eliminar este perfil de importación?'

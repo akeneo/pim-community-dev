@@ -90,6 +90,7 @@ pim_enrich.entity.attribute_option:
 pim_enrich.entity.association_type:
   label: tipo de asociación
   property:
+    is_two_way: Asociación de 2 vías
     is_quantified: Asociación con cantidad
   flash:
     update:
@@ -107,8 +108,16 @@ pim_enrich.entity.association_type:
     create:
       title: Crear un nuevo tipo de asociación
       button: Crear un tipo de asociación
+      is_two_way:
+        message_on_read_only: El tipo de asociación puede ser cuantificado o de dos vías, para seleccionar este, desmarcar el otro
+      is_quantified:
+        message_on_read_only: El tipo de asociación puede ser cuantificado o de dos vías, para seleccionar este, desmarcar el otro
     delete:
       confirm: '¿Está seguro que desea eliminar este tipo de asociación?'
+  hint: <a href="{{link}}" target="_blank">En este artículo</a>encontrará todo lo que necesita para crear su propio tipo de asociación.
+  no_association_types:
+    title: No tiene ningún tipo de asociación
+    hint: Cree su primera
 pim_enrich.entity.group_type:
   label: tipo de grupo
   flash:
@@ -136,6 +145,7 @@ pim_enrich.entity.attribute:
       success: Atributo exitosamente actualizado.
       fail: El atributo no pudo ser actualizado.
       fields_not_ready: "El atributo no puede ser guardado ahora. No están listos los siguientes campos: {{ fields }}"
+      cant_remove_attributes_used_as_label: Los atributos usados como etiquetas en una familia no se pueden eliminar.
     delete:
       success: Atributo eliminado correctamente
       fail: No se puede eliminar este atributo
@@ -151,6 +161,7 @@ pim_enrich.entity.attribute:
     default_metric_unit:
       label: Unidad de medición por defecto
       choose: Elegir una unidad
+    guidelines: Directrices de atributos
     group:
       label: Grupo de atributos
       choose: Elija el grupo de atributos
@@ -159,6 +170,7 @@ pim_enrich.entity.attribute:
     max_characters: Caracteres Max
     max_file_size: Tamaño máximo de archivo (MB)
     metric_family:
+      label: Familia de medición
       choose: Seleccionar familia
     minimum_input_length: Longitud mínima para la autocompleción
     name: Nombre
@@ -194,6 +206,7 @@ pim_enrich.entity.attribute:
       regexp: Expresión regular
       url: URL
     wysiwyg_enabled: Editor de texto enriquecido habilitado
+    default_value: Valor predeterminado
   module:
     add_attribute:
       no_available_attributes: No hay más atributos a agregar
@@ -204,8 +217,16 @@ pim_enrich.entity.attribute:
       common: Parámetros generales
       type_specific: Escriba los parámetros específicos
       validation: Parámetros de validación
+      select_locale: Seleccione su configuración regional
     delete:
       confirm: '¿Está seguro que desea eliminar este atributo?'
+      product_count: '{0}0 productos|{1}1 producto|]1, Inf[{{ count }} productos'
+      product_model_count: '{0}0 modelos de producto|{1}1 modelo de producto|]1, Inf[{{ count }} modelos de producto'
+      used: actualmente tienen valores establecidos para este atributo, se eliminarán.
+      helper:
+        content: Si necesita cambiar su tipo de atributo, para hacerlo localizable o definible, manteniendo el acceso a sus valores de atributo existentes.
+        link: le guiamos a través de los diferentes pasos aquí.
+      type: Escriba «{{ attributeCode }}»
       confirm_from_family: '¿Está seguro que quiere eliminar este atributo de la familia?'
       confirm_from_group: '¿Está seguro que desea eliminar el atributo {{ attribute }} de este grupo de atributos?'
       confirm_from_product: '¿Está usted seguro que desea eliminar el atributo de este producto?'
@@ -213,6 +234,7 @@ pim_enrich.entity.attribute_group:
   label: grupo de atributo
   uppercase_label: Grupo de atributos
   plural_label: Grupos de atributos
+  result_count: '{0}0 grupos de atributos|{1}1 grupo de atributos|]1, Inf[{{ count }} grupos de atributos'
   show_more_attribute:
     title: Está un poco cruzado por aquí, te mostramos {{ attributeCount }}/{{ totalAttributeCount }} atributos.
     subtitle: Para descubrir todos los atributos de este grupo, haga clic a continuación!
@@ -232,6 +254,10 @@ pim_enrich.entity.attribute_group:
       attributes_groups_selected: '{{ itemsCount }} grupo(s) seleccionado'
     delete:
       confirm: '¿Está seguro que desea eliminar este grupo de atributo?'
+  grid:
+    columns:
+      name: Nombre de los grupos de atributos
+    no_search_result: Lo sentimos, no hay ningún resultado para su búsqueda.
 pim_enrich.mass_edit.family:
   title: Acción masiva sobre las familias
   confirm: "{1}Está a punto de actualizar una familia con la siguiente información, por favor confirme.|]1, Inf[Está a punto de actualizar {{ itemsCount }} familias con la información siguiente, por favor confirme."

@@ -4,6 +4,8 @@ import {Collapse} from './Collapse';
 import {render, screen} from '../../storybook/test-util';
 import {Badge, Pill} from '../../components';
 
+jest.useFakeTimers();
+
 test('it renders its children along with its label', () => {
   render(
     <Collapse
@@ -19,6 +21,8 @@ test('it renders its children along with its label', () => {
       Collapse content
     </Collapse>
   );
+
+  jest.runAllTimers();
 
   expect(screen.getByText('Hello')).toBeInTheDocument();
   expect(screen.getByText('42')).toBeInTheDocument();

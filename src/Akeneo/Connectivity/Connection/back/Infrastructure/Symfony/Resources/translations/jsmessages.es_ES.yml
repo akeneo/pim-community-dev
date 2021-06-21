@@ -1,4 +1,10 @@
 pim_menu:
+  tab:
+    connect: Conectar
+  navigation:
+    connect: Conectar navegación
+  navigation_back:
+    connection: Volver a conectar
   navigation_block:
     connection: Navegación de conexión
   item:
@@ -7,8 +13,14 @@ pim_menu:
     connection_settings_edit: Ajustes de conexión
     connection_monitoring: Monitoreo
     connection_webhook_edit: Subscripciones a eventos
+    connection_webhook_event_logs: Registro de eventos
+    data_flows: Flujos de datos
     connect_connection_settings: Ajustes de conexión
+    marketplace: Mercado
+    new_label: NUEVO
 pim_title:
+  akeneo_connectivity_connection_connect_marketplace: Mercado
+  akeneo_connectivity_connection_settings_index: Ajustes de conexiones
   akeneo_connectivity_connection_settings_edit: Ajustes de conexión
   akeneo_connectivity_connection_settings_any: Ajustes de conexión
   akeneo_connectivity_connection_audit_index: Panel de conexión
@@ -17,9 +29,18 @@ pim_title:
   akeneo_connectivity_connection_error_management_connection_monitoring: Monitoreo de conexión
   akeneo_connectivity_connection_webhook_edit: Subscripciones a eventos
   akeneo_connectivity_connection_webhook_regenerate_secret: Subscripcion al evento
+  akeneo_connectivity_connection_webhook_event_logs: Registros de eventos
   akeneo_connectivity_connection_redirect_audit: Panel de conexión
   akeneo_connectivity_connection_settings_redirect: Conexiones
 akeneo_connectivity.connection:
+  connect:
+    redirect.link: Para ir allí, haga clic aquí
+    dashboard_redirect.title: Su panel de conexión está en el menú Conectar
+    settings_redirect.title: Su información de conexión está en el menú Conectar
+    marketplace:
+      title: '¿Quiere conectar su PIM con otra aplicación? 🤟'
+      sub_title: Consulte nuestro mercado para ver qué aplicación se puede conectar con el PIM de Akeneo.
+      link: Acceder al mercado
   connections: Conexiones
   secondary_actions:
     title: Otras acciones
@@ -57,6 +78,7 @@ akeneo_connectivity.connection:
   connection_count: 'Conexión de {{ count }} | {{ count }} conexiones'
   no_connection:
     title: No hay conexión declarada aún.
+    message: Añada su primera haciendo clic en el botón «Crear» de arriba o
     message_link: pulse aquí.
   create_connection:
     title: Crear una conexión nueva
@@ -102,19 +124,58 @@ akeneo_connectivity.connection:
       user_role_helper:
         message: El rol predeterminado `{{ role }}` no es la mejor opción para tu conexión. Le recomendamos encarecidamente que elija un rol adaptado a sus necesidades de conexión.
         link: Más información aquí...
+      user_group_helper:
+        message: Le recomendamos encarecidamente que elija un grupo adaptado a sus necesidades de conexión.
+        link: Más información aquí...
+  regenerate_secret:
+    title: Confirmar regeneración
+    description: '¿Estás seguro de que quieres regenerar el secreto de conexión? ¿No estás seguro de los impactos?'
+    link: Esto es lo que sucederá.
+    action:
+      regenerate: Regenerar
+    flash:
+      success: Secreto de conexión regenerado con éxito.
+      error: Lo sentimos, se ha producido un error al regenerar el secreto de conexión.
+  regenerate_password:
+    title: Confirmar regeneración
+    description: '¿Está seguro de que quiere regenerar la contraseña de conexión? ¿No está seguro del impacto?'
+    link: Esto es lo que sucederá.
+    action:
+      regenerate: Regenerar
+    flash:
+      success: Contraseña de conexión regenerada correctamente.
+      error: Lo sentimos, se ha producido un error al regenerar la contraseña de conexión.
   delete_connection:
     title: Confirmar la eliminación
+    description: '¿Está seguro que desea eliminar la conexión? ¿No está seguro del impacto?'
+    link: Esto es lo que sucederá.
+    flash:
+      success: Conexión eliminada correctamente.
+  helper:
+    title: '{0} Por ahora, no tiene ninguna conexión que vincule su PIM con aplicaciones de terceros.|{1} Tiene 1 conexión que vincula su PIM con aplicaciones de terceros. Bien hecho, así su PIM está bien integrado en su ecosistema.|]1,Inf] Tiene {{ count }} conexiones que vinculan su PIM con aplicaciones de terceros. Bien hecho, así su PIM está bien integrado en su ecosistema.'
+    description: Un PIM sin integraciones de terceros es un poco inútil, ¿no? Gracias a las conexiones, puede declarar todos los flujos de datos que serán empujados dentro y sacados fuera de su PIM.
+    link: Para saber más sobre Conexiones, consulte esta página
   flow_type_helper:
+    message: '¿Se pregunta qué tipo de flujo es?'
     link: '¡Podemos ayudarte aquí mismo!'
   auditable_helper:
     message: Solo puede realizar un seguimiento de las conexiones "Origen" y "Destino".
     link: Más información…
   edit_image:
+    upload_helper: Cambie su imagen, arrastre y suelte o
     remove_helper: Eliminar la imagen
     click_here: haz clic aquí
+    flash:
+      extension_not_allowed: Lo sentimos, el archivo que está intentando subir no tiene una extensión permitida.
   grid.wrong_credentials_combination_helper: Algunas de las conexiones a continuación no utilizan sus nombres de usuario de conexión. Se identifican con una señal de alerta amarilla.
   dashboard:
+    helper:
+      title: '👋 ¡Le damos la bienvenida a los flujos de datos!'
+      description: Aquí puede seguir el flujo de datos entre su PIM y terceros.
+      link: '¿Quiere saber más sobre el menú Conectar y los flujos de datos? ¡Aquí tiene!'
     user_survey:
+      title: '¿Quiere más datos sobre este panel de control?'
+      content: Sus comentarios son realmente valiosos para nosotros. Ayúdenos a elegir el próximo widget respondiendo a esta encuesta de una sola pregunta.
       button: '¡Vamos!'
     connection_selector:
       title:
@@ -138,9 +199,12 @@ akeneo_connectivity.connection:
         chart:
           title: Número de errores por día
       widget:
+        title: Errores de negocio por conexión de origen
         over_the_last_seven_days: En los últimos 7 días
+        business_errors: errores de negocio
     no_connection:
       title:
+        default: '¿Desea ver algunos bonitos gráficos sobre sus conexiones?'
         data_source: '¿Quieres ver algunos gráficos elegantes sobre tus conexiones de origen?'
         data_destination: '¿Quieres ver algunos gráficos elegantes sobre tus conexiones de destino?'
       message_with_permission:
@@ -152,22 +216,73 @@ akeneo_connectivity.connection:
   webhook:
     title: Subscripcion al evento
     event_subscription: Subscripcion al evento
+    download_logs: Descargar registros
     helper:
       message: Puede ser notificado de eventos que ocurren en el PIM para productos sincronizados con esta aplicación conectada. Sólo tiene que definir una URL.
+      link: Más información sobre la configuración de suscripción a eventos...
       url.test_disabled: Por favor, haga clic en el botón Guardar para poder probar la URL.
     form:
+      url: URL
       secret: Secreto
+      enabled: Activación de suscripción al evento
+      test: Prueba
+    error:
+      wrong_url: Este valor no es una URL válida.
+      required: Este campo es obligatorio.
+      not_found: Estás intentando actualizar una conexión que no existe.
+      limit_reached: Ha alcanzado el límite de suscripciones a eventos activos.
+      not_allowed_url: Esta URL no está permitida.
+    flash:
+      success: La suscripción al evento se ha actualizado con éxito.
+      error: Lo sentimos, se ha producido un error al editar la suscripción al evento.
     regenerate_secret:
+      title: Confirmar regeneración
+      description: '¿Está seguro de que quiere regenerar el secreto de suscripción al evento?'
       action:
         regenerate: Regenerar
+      link: Esto es lo que sucederá.
+      flash:
+        success: El secreto del webhook se ha regenerado con éxito.
+        error: Lo sentimos, se ha producido un error al regenerar el secreto del webhook.
     active_event_subscriptions_limit_reached:
+      message: Puede conectar hasta {{ limit }} conexiones a la función de Suscripción a eventos. Ha alcanzado este límite.
       link: Lea para mas información sobre subcripción a eventos
     event_logs:
+      title: Registros de eventos
+      event_subscription_disabled:
+        title: La suscripción a eventos no está habilitada para esta conexión.
+        link: Habilitar la suscripción a eventos
+      no_event_logs:
+        title: De momento no hay registro.
+      no_event_logs_with_those_filters:
+        title: Lo sentimos, no hay registro para su búsqueda.
+        caption: Pruebe con nuevos criterios de búsqueda.
+      level:
+        info: Información
+        notice: Aviso
+        warning: Advertencia
+        error: Error
       list:
         search:
+          placeholder: Buscar en mensajes
+          total: '{0} Sin resultados |{1} 1 resultado|[2,Inf] {{ total }} resultados'
+          level: Nivel
           all: Todo
+          none: Ninguno
         date_range_filter:
+          label: Fecha y hora
+          reset: Restablecer
+          from: Desde
+          to: Hasta
           all: Todo
+        info:
+          title: Aquí están los registros relacionados con todas las solicitudes de eventos enviadas a esta conexión.
+          content: Esta página muestra los registros de errores y avisos de las últimas 72 horas, y los últimos 100 registros de información y avisos.
+          link: Más información sobre los registros de eventos.
+        headers:
+          datetime: Fecha y hora
+          level: Nivel
+          message: Mensaje
   error_management:
     connection_monitoring:
       title: Monitoreo
@@ -177,10 +292,12 @@ akeneo_connectivity.connection:
         link: Para entender cómo resolver esto, por favor visite el centro de ayuda de API.
       search_filter:
         placeholder: Buscar en mensajes de error
+        result_count: '{0} Sin resultados |{1} 1 resultado|[2,Inf] {{ count }} resultados'
       error_list:
         date_time_column:
           title: Día y hora
         content_column:
+          title: Mensaje de error de negocio
           product_name: Nombre del producto
           with_id: con el ID
         details_column:
@@ -198,3 +315,7 @@ akeneo_connectivity.connection:
           3: en la configuración.
       not_data_source:
         title: Por ahora, la página de monitoreo sólo está disponible para conexión fuente.
+  runtime_error:
+    error_message: '¡Oh! Se ha producido un error...'
+    reload_helper: Por favor, recargue la página e inténtelo de nuevo.
+    reload_button: Recargar

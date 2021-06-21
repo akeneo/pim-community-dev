@@ -99,7 +99,7 @@ class NavigationContext extends BaseNavigationContext
             Assert::assertTrue($result, sprintf('Expecting to be on page "%s", not "%s"', $url, $actualFullUrl));
 
             return true;
-        }, "Expected to be redirected to channel '%s'", $url);
+        }, sprintf("Expected to be redirected to channel '%s'", $url));
     }
 
     /**
@@ -110,6 +110,18 @@ class NavigationContext extends BaseNavigationContext
     public function iAmOnTheCategoryNodeCreationPage(Category $category)
     {
         $this->openPage('Category node creation', ['id' => $category->getId()]);
+    }
+
+    /**
+     * @param Category $category
+     *
+     * @Given /^I am on the category tree "([^"]*)" page$/
+     * @When /^I go to the category tree "([^"]*)" page$/
+     */
+    public function iAmOnTheCategoryTreePage(string $code)
+    {
+        $category = $this->getFixturesContext()->getEntity('Category', ['code' => $code]);
+        $this->openPage('Category tree', ['id' => $category->getId()]);
     }
 
     /**

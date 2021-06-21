@@ -62,12 +62,17 @@ pim_common:
   name: Nombre
   remove: Eliminar
   code: Código
+  label: Etiqueta
+  quantity: Cantidad
   products: Productos
   product_models: Modelos de producto
   categories: Categorías
+  family_variant: Variantes de familia
   enabled: Habilitado
   family: Familia
+  parent: Padre
   groups: Grupos
+  unit: Unidad
   yes: "Sí"
   no: "No"
 pim_enrich:
@@ -95,11 +100,13 @@ pim_enrich:
       comment: Comentario de Productos
       download: Descargar el producto en formato PDF
       history: Ver historial de producto
+      convert_variant_to_simple: Convierta un producto variante en un producto simple
     product_model:
       create: Cree un modelo de producto
       edit_attributes: Editar atributos de un modelo del producto
       categories_view: Consultar las categorías de un modelo del producto
       history: Ver el historial del modelo del producto
+      remove: Eliminar un modelo de producto (incluidos secundarios)
     category:
       list: Lista de categorías
       create: Crear una categoría
@@ -162,6 +169,8 @@ pim_enrich:
       remove: Remover las asociaciones de un producto
     job_tracker:
       index: Visualizar los procesos ejecutados
+      view_all_jobs: Ver todos los trabajos en el rastreador de procesos
+      stop_job: Detener un trabajo en curso
   acl_group:
     association_type: Tipos de asociaciones
     attribute: Atributos
@@ -438,6 +447,14 @@ pim_datagrid:
       label: Estado
     completeness:
       label: Completo
+    created:
+      label: Creado el
+    updated:
+      label: Actualizado el
+    label_or_identifier:
+      label: Etiqueta o identificador
+    parent:
+      label: Principal
     identifier:
       label: Identificador
 #Versioning / history
@@ -504,7 +521,6 @@ pim_mass_edit:
       success: Eliminación en masa <strong>%label%</strong> finalizada
 job_execution.summary:
   mass_edited: Editado en masa
-  skip: Omitido
   skipped_products: Productos omitidos
   skipped_attributes: Atributos omitidos
   skipped_families: Familias omitidas
@@ -525,3 +541,8 @@ job_tracker:
     title: Seguimiento de procesos
   filter:
     started_at: Ejecutado el
+pim_login:
+  logo_title: Akeneo PIM
+  footer:
+    powered: Creado con
+    powered_image_title: logo de Akeneo

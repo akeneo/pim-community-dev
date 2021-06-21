@@ -21,22 +21,24 @@ class FillMissingProductModelValuesSpec extends ObjectBehavior
         IdentifiableObjectRepositoryInterface $familyVariantRepository,
         ChannelRepositoryInterface $channelRepository,
         LocaleRepositoryInterface $localeRepository
-    ) {
+    )
+    {
         $sku = (new Builder())->aIdentifier()->withCode('sku')->build();
         $name = (new Builder())->aTextAttribute()->withCode('name')->build();
         $localizableName = (new Builder())->aTextAttribute()->withCode('localizable_name')->localizable()->build();
         $scopableName = (new Builder())->aTextAttribute()->withCode('scopable_name')->scopable()->build();
         $scopableLocalizableName = (new Builder())->aTextAttribute()->withCode('scopable_localizable_name')->scopable()
-                                                  ->localizable()->build();
+            ->localizable()->build();
         $attributeWithNumericCode = (new Builder())->withCode('123')->aTextAttribute()->build();
         $price = (new Builder())->aPriceCollectionAttribute()->withCode('price')->build();
         $localizablePrice = (new Builder())->aPriceCollectionAttribute()->withCode('localizable_price')->localizable()
-                                           ->build();
+            ->build();
         $scopablePrice = (new Builder())->aPriceCollectionAttribute()->withCode('scopable_price')->scopable()->build();
         $scopableLocalizablePrice = (new Builder())->aPriceCollectionAttribute()->withCode('scopable_localizable_price')
-                                                   ->scopable()->localizable()->build();
+            ->scopable()->localizable()->build();
 
         $family = new Family();
+        $specificLocalizableName = (new Builder())->aTextAttribute()->withCode('specific_localizable_name')->specificlocalizable()->build();
         $family
             ->addAttribute($sku)
             ->addAttribute($name)
@@ -47,7 +49,9 @@ class FillMissingProductModelValuesSpec extends ObjectBehavior
             ->addAttribute($price)
             ->addAttribute($localizablePrice)
             ->addAttribute($scopablePrice)
-            ->addAttribute($scopableLocalizablePrice);
+            ->addAttribute($scopableLocalizablePrice)
+            ->addAttribute($specificLocalizableName);
+
 
         // common attributes: name, scopable_localizable_name, 123
         // level 1 attributes: localizable_name, scopable_name
@@ -128,6 +132,11 @@ class FillMissingProductModelValuesSpec extends ObjectBehavior
                     '123' => [
                         ['scope' => null, 'locale' => null, 'data' => null],
                     ],
+                    'specific_localizable_name' => [[
+                        'scope' => null,
+                        'locale' => null,
+                        'data' => null,
+                    ]],
                 ],
             ]
         );
@@ -168,6 +177,11 @@ class FillMissingProductModelValuesSpec extends ObjectBehavior
                         ['scope' => 'tablet', 'locale' => null, 'data' => null],
                         ['scope' => 'ecommerce', 'locale' => null, 'data' => null],
                     ],
+                    'specific_localizable_name' => [[
+                        'scope' => null,
+                        'locale' => null,
+                        'data' => null,
+                    ]],
                 ],
             ]
         );
@@ -223,6 +237,11 @@ class FillMissingProductModelValuesSpec extends ObjectBehavior
                         ['scope' => 'tablet', 'locale' => null, 'data' => 'foo'],
                         ['scope' => 'ecommerce', 'locale' => null, 'data' => null],
                     ],
+                    'specific_localizable_name' => [[
+                        'scope' => null,
+                        'locale' => null,
+                        'data' => null,
+                    ]],
                 ],
             ]
         );
@@ -333,6 +352,11 @@ class FillMissingProductModelValuesSpec extends ObjectBehavior
                             ],
                         ],
                     ],
+                    'specific_localizable_name' => [[
+                        'scope' => null,
+                        'locale' => null,
+                        'data' => null,
+                    ]],
                 ],
             ]
         );
@@ -505,6 +529,11 @@ class FillMissingProductModelValuesSpec extends ObjectBehavior
                             ],
                         ],
                     ],
+                    'specific_localizable_name' => [[
+                        'scope' => null,
+                        'locale' => null,
+                        'data' => null,
+                    ]],
                 ],
             ]
         );
