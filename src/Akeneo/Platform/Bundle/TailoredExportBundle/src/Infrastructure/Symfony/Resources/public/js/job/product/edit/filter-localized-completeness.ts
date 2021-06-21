@@ -103,7 +103,7 @@ class FilterLocalizedCompleteness extends BaseCompletenessFilter {
             React.createElement(CompletenessFilter, {
               availableOperators: this.config.operators,
               filter: this.getFormData(),
-              onFilterChange: newFilter => {
+              onChange: newFilter => {
                 this.setData(newFilter);
                 this.render();
               },

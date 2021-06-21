@@ -50,24 +50,29 @@ const fetchers = {
   },
 };
 
-const operatorsAndVisiblity = [
+const operatorsAndVisibility = [
   {operator: 'ALL', shouldAppear: false},
   {operator: 'GREATER OR EQUALS THAN ON AT LEAST ONE LOCALE', shouldAppear: true},
   {operator: 'GREATER OR EQUALS THAN ON ALL LOCALES', shouldAppear: true},
   {operator: 'LOWER THAN ON ALL LOCALES', shouldAppear: true},
 ] as const;
+let availableOperators = operatorsAndVisibility.map(operatorAndVisibility => operatorAndVisibility.operator);
 
-test.each(operatorsAndVisiblity)(
+test.each(operatorsAndVisibility)(
   'it displays the locale selector depending on the operator',
   async ({operator, shouldAppear}: {operator: Operator; shouldAppear: boolean}) => {
     await act(async () => {
       renderWithProviders(
         <FetcherContext.Provider value={fetchers}>
           <CompletenessFilter
-            operator={operator}
-            locales={['fr_FR', 'en_US']}
-            onOperatorChange={() => {}}
-            onLocalesChange={() => {}}
+            availableOperators={availableOperators}
+            filter={{
+              field: 'completeness',
+              value: 100,
+              operator: operator,
+              context: {locales: ['fr_FR', 'en_US']},
+            }}
+            onChange={() => {}}
             validationErrors={[]}
           />
         </FetcherContext.Provider>
@@ -91,10 +96,14 @@ test('it can switch operator', async () => {
     renderWithProviders(
       <FetcherContext.Provider value={fetchers}>
         <CompletenessFilter
-          operator="ALL"
-          locales={['fr_FR', 'en_US']}
-          onOperatorChange={handleOperatorChange}
-          onLocalesChange={() => {}}
+          availableOperators={availableOperators}
+          filter={{
+            field: 'completeness',
+            value: 100,
+            operator: 'ALL',
+            context: {locales: ['fr_FR', 'en_US']},
+          }}
+          onChange={handleOperatorChange}
           validationErrors={[]}
         />
       </FetcherContext.Provider>
@@ -108,20 +117,29 @@ test('it can switch operator', async () => {
   );
   await userEvent.click(greaterThanButton);
 
-  expect(handleOperatorChange).toHaveBeenCalledWith('GREATER OR EQUALS THAN ON ALL LOCALES');
+  expect(handleOperatorChange).toHaveBeenCalledWith({
+    context: {locales: ['fr_FR', 'en_US']},
+    field: 'completeness',
+    operator: 'GREATER OR EQUALS THAN ON ALL LOCALES',
+    value: 100,
+  });
 });
 
-test('it can  select locales', async () => {
+test('it can select locales', async () => {
   const handleLocalesChange = jest.fn();
 
   await act(async () => {
     renderWithProviders(
       <FetcherContext.Provider value={fetchers}>
         <CompletenessFilter
-          operator="GREATER OR EQUALS THAN ON ALL LOCALES"
-          locales={[]}
-          onOperatorChange={jest.fn()}
-          onLocalesChange={handleLocalesChange}
+          availableOperators={availableOperators}
+          filter={{
+            field: 'completeness',
+            value: 100,
+            operator: 'GREATER OR EQUALS THAN ON ALL LOCALES',
+            context: {locales: []},
+          }}
+          onChange={handleLocalesChange}
           validationErrors={[]}
         />
       </FetcherContext.Provider>
@@ -133,7 +151,12 @@ test('it can  select locales', async () => {
   const greaterThanButton = screen.getByText('English');
   await userEvent.click(greaterThanButton);
 
-  expect(handleLocalesChange).toHaveBeenCalledWith(['en_US']);
+  expect(handleLocalesChange).toHaveBeenCalledWith({
+    context: {locales: ['en_US']},
+    field: 'completeness',
+    operator: 'GREATER OR EQUALS THAN ON ALL LOCALES',
+    value: 100,
+  });
 });
 
 test('it displays locales validation errors', async () => {
@@ -143,16 +166,20 @@ test('it displays locales validation errors', async () => {
     renderWithProviders(
       <FetcherContext.Provider value={fetchers}>
         <CompletenessFilter
-          operator="GREATER OR EQUALS THAN ON ALL LOCALES"
-          locales={[]}
-          onOperatorChange={() => {}}
-          onLocalesChange={() => {}}
+          availableOperators={availableOperators}
+          filter={{
+            field: 'completeness',
+            value: 100,
+            operator: 'GREATER OR EQUALS THAN ON ALL LOCALES',
+            context: {locales: []},
+          }}
+          onChange={() => {}}
           validationErrors={[
             {
               messageTemplate: localesErrorMessage,
               parameters: {},
               message: '',
-              propertyPath: '[locales]',
+              propertyPath: '[context][locales]',
               invalidValue: '',
             },
           ]}
@@ -171,10 +198,14 @@ test('it displays operator validation errors', async () => {
     renderWithProviders(
       <FetcherContext.Provider value={fetchers}>
         <CompletenessFilter
-          operator="GREATER OR EQUALS THAN ON ALL LOCALES"
-          locales={[]}
-          onOperatorChange={() => {}}
-          onLocalesChange={() => {}}
+          availableOperators={availableOperators}
+          filter={{
+            field: 'completeness',
+            value: 100,
+            operator: 'GREATER OR EQUALS THAN ON ALL LOCALES',
+            context: {locales: []},
+          }}
+          onChange={() => {}}
           validationErrors={[
             {
               messageTemplate: operatorErrorMessage,

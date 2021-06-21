@@ -228,7 +228,7 @@ const FakePIM = () => {
                 value: 100,
                 context: {locales: ['fr_FR']},
               }}
-              onFilterChange={handleFilterChange}
+              onChange={handleFilterChange}
               validationErrors={filterErrors(validationErrors, '[filters][data][2]')}
             />
           </FieldContainer>

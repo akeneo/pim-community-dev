@@ -23,26 +23,21 @@ type Filter = {
 type CompletenessFilterProps = {
   availableOperators: Operator[];
   filter: Filter;
-  onFilterChange: (newFilter: Filter) => void;
+  onChange: (newFilter: Filter) => void;
   validationErrors: ValidationError[];
 };
 
-const CompletenessFilter = ({
-  availableOperators,
-  filter,
-  onFilterChange,
-  validationErrors,
-}: CompletenessFilterProps) => {
+const CompletenessFilter = ({availableOperators, filter, onChange, validationErrors}: CompletenessFilterProps) => {
   const operatorErrors = filterErrors(validationErrors, '[operator]');
   const localesErrors = filterErrors(validationErrors, '[context][locales]');
 
   const onOperatorChange = (newOperator: Operator) => {
     const newFilter = {...filter, operator: newOperator};
-    onFilterChange(newFilter);
+    onChange(newFilter);
   };
   const onLocalesChange = (newLocales: LocaleCode[]) => {
     const newFilter = {...filter, context: {locales: newLocales}};
-    onFilterChange(newFilter);
+    onChange(newFilter);
   };
 
   return (

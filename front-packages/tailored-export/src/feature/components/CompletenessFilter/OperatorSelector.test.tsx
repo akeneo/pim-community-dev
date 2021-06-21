@@ -4,8 +4,17 @@ import {OperatorSelector} from './OperatorSelector';
 import React from 'react';
 import userEvent from '@testing-library/user-event';
 
+const availableOperators = ['ALL', 'LOWER THAN ON ALL LOCALES'];
+
 test('it displays the selected operator', () => {
-  renderWithProviders(<OperatorSelector operator="ALL" onChange={() => {}} validationErrors={[]} />);
+  renderWithProviders(
+    <OperatorSelector
+      availableOperators={availableOperators}
+      operator="ALL"
+      onChange={() => {}}
+      validationErrors={[]}
+    />
+  );
 
   expect(screen.getByText('pim_enrich.export.product.filter.completeness.operators.ALL')).toBeInTheDocument();
 });
@@ -13,7 +22,14 @@ test('it displays the selected operator', () => {
 test('it notifies when the operator is changed', async () => {
   const onOperatorChange = jest.fn();
 
-  await renderWithProviders(<OperatorSelector operator="ALL" onChange={onOperatorChange} validationErrors={[]} />);
+  await renderWithProviders(
+    <OperatorSelector
+      availableOperators={availableOperators}
+      operator="ALL"
+      onChange={onOperatorChange}
+      validationErrors={[]}
+    />
+  );
 
   userEvent.click(screen.getByTitle('pim_common.open'));
   userEvent.click(
@@ -28,6 +44,7 @@ test('it displays validations errors if any', async () => {
 
   await renderWithProviders(
     <OperatorSelector
+      availableOperators={availableOperators}
       operator="ALL"
       onChange={() => {}}
       validationErrors={[
