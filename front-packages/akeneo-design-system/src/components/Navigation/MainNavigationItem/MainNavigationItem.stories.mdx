@@ -15,10 +15,12 @@ import {Tag} from '../../Tags/Tags';
     disabled: {control: {type: 'boolean'}},
     active: {control: {type: 'boolean'}},
     href: {control: {type: 'text'}},
+    children: {control: {type: 'text'}},
   }}
   args={{
     icon: 'CardIcon',
     href: '#',
+    children: 'Default',
   }}
 />
 
@@ -35,11 +37,7 @@ journey.
 <Canvas>
   <Story name="Standard">
     {args => {
-      return (
-        <MainNavigationItem {...args} icon={React.createElement(Icons[args.icon])}>
-          Default
-        </MainNavigationItem>
-      );
+      return <MainNavigationItem {...args} icon={React.createElement(Icons[args.icon])} />;
     }}
   </Story>
 </Canvas>
