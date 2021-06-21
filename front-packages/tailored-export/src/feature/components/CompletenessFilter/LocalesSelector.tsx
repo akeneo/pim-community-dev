@@ -1,24 +1,15 @@
 import React from 'react';
-import {
-  useTranslate,
-  LocaleCode,
-  Section,
-  getAllLocalesFromChannels,
-  Locale,
-  ValidationError,
-} from '@akeneo-pim-community/shared';
+import {useTranslate, LocaleCode, Section, Locale, ValidationError} from '@akeneo-pim-community/shared';
 import {Field, MultiSelectInput, Helper} from 'akeneo-design-system';
-import {useChannels} from '../../hooks';
 
 type LocalesSelectorProps = {
-  locales: LocaleCode[];
+  value: LocaleCode[];
+  locales: Locale[];
   onChange: (newLocales: LocaleCode[]) => void;
   validationErrors: ValidationError[];
 };
-const LocalesSelector = ({locales, onChange, validationErrors}: LocalesSelectorProps) => {
+const LocalesSelector = ({locales, value, onChange, validationErrors}: LocalesSelectorProps) => {
   const translate = useTranslate();
-  const channels = useChannels();
-  const availableLocales = getAllLocalesFromChannels(channels);
 
   return (
     <Section>
@@ -29,9 +20,9 @@ const LocalesSelector = ({locales, onChange, validationErrors}: LocalesSelectorP
           openLabel={translate('pim_common.open')}
           placeholder={translate('akeneo.tailored_export.filters.completeness.locales.placeholder')}
           removeLabel={translate('akeneo.tailored_export.filters.completeness.locales.remove')}
-          value={locales}
+          value={value}
         >
-          {availableLocales.map((locale: Locale) => (
+          {locales.map((locale: Locale) => (
             <MultiSelectInput.Option key={locale.code} value={locale.code}>
               {locale.label}
             </MultiSelectInput.Option>

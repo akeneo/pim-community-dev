@@ -1,8 +1,17 @@
 import React from 'react';
 import styled from 'styled-components';
-import {filterErrors, LocaleCode, ValidationError} from '@akeneo-pim-community/shared';
+import {
+  filterErrors,
+  LocaleCode,
+  ValidationError,
+  ChannelCode,
+  formatParameters,
+  getLocalesFromChannel,
+} from '@akeneo-pim-community/shared';
 import {OperatorSelector, Operator} from './OperatorSelector';
 import {LocalesSelector} from './LocalesSelector';
+import {ChannelDropdown} from '../ChannelDropdown';
+import {useChannels} from '../../hooks';
 
 const Container = styled.div`
   display: flex;
@@ -18,6 +27,7 @@ type Filter = {
   value: number;
   context: {
     locales: LocaleCode[];
+    channel: ChannelCode;
   };
 };
 type CompletenessFilterProps = {
@@ -28,18 +38,26 @@ type CompletenessFilterProps = {
 };
 
 const CompletenessFilter = ({availableOperators, filter, onChange, validationErrors}: CompletenessFilterProps) => {
-  const operatorErrors = filterErrors(validationErrors, '[operator]');
-  const localesErrors = filterErrors(validationErrors, '[context][locales]');
+  const availableChannels = useChannels();
+  const channel = filter.context.channel ?? availableChannels[0];
+  const availableLocales = getLocalesFromChannel(availableChannels, channel);
+  const formattedValidationErrors = formatParameters(validationErrors);
+  const operatorErrors = filterErrors(formattedValidationErrors, '[operator]');
+  const channelErrors = filterErrors(formattedValidationErrors, '[context][channel]');
+  const localesErrors = filterErrors(formattedValidationErrors, '[context][locales]');
 
   const onOperatorChange = (newOperator: Operator) => {
     const newFilter = {...filter, operator: newOperator};
     onChange(newFilter);
   };
   const onLocalesChange = (newLocales: LocaleCode[]) => {
-    const newFilter = {...filter, context: {locales: newLocales}};
+    const newFilter = {...filter, context: {...filter.context, locales: newLocales}};
     onChange(newFilter);
   };
-
+  const onChannelChange = (newChannel: ChannelCode) => {
+    const newFilter = {...filter, context: {...filter.context, channel: newChannel}};
+    onChange(newFilter);
+  };
   return (
     <Container>
       <OperatorSelector
@@ -49,7 +67,20 @@ const CompletenessFilter = ({availableOperators, filter, onChange, validationErr
         validationErrors={operatorErrors}
       />
       {filter.operator !== 'ALL' && (
-        <LocalesSelector locales={filter.context.locales} onChange={onLocalesChange} validationErrors={localesErrors} />
+        <>
+          <ChannelDropdown
+            value={channel}
+            channels={availableChannels}
+            validationErrors={channelErrors}
+            onChange={onChannelChange}
+          />
+          <LocalesSelector
+            value={filter.context.locales}
+            locales={availableLocales}
+            onChange={onLocalesChange}
+            validationErrors={localesErrors}
+          />
+        </>
       )}
     </Container>
   );

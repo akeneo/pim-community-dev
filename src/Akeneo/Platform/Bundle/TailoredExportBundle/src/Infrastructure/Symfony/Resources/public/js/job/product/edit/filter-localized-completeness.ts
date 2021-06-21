@@ -45,7 +45,7 @@ class FilterLocalizedCompleteness extends BaseCompletenessFilter {
         field: this.getCode(),
         operator: _.first(this.config.operators),
         value: 100,
-        context: {locales: []},
+        context: {locales: [], channels: ''},
       });
     });
 

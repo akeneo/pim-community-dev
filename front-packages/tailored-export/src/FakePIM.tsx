@@ -129,7 +129,7 @@ const FakePIM = () => {
     const newFilters = jobConfiguration.configuration.filters.data.map(filter => {
       if (filter.field !== 'completeness') return filter;
 
-      return filter;
+      return newFilter;
     });
 
     setJobConfiguration({
@@ -226,7 +226,7 @@ const FakePIM = () => {
                 field: 'completeness',
                 operator: 'GREATER OR EQUALS THAN ON AT LEAST ONE LOCALE',
                 value: 100,
-                context: {locales: ['fr_FR']},
+                context: {locales: ['fr_FR'], channel: 'ecommerce'},
               }}
               onChange={handleFilterChange}
               validationErrors={filterErrors(validationErrors, '[filters][data][2]')}

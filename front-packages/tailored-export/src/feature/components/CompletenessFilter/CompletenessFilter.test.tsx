@@ -70,7 +70,7 @@ test.each(operatorsAndVisibility)(
               field: 'completeness',
               value: 100,
               operator: operator,
-              context: {locales: ['fr_FR', 'en_US']},
+              context: {locales: ['fr_FR', 'en_US'], channel: 'ecommerce'},
             }}
             onChange={() => {}}
             validationErrors={[]}
@@ -101,7 +101,7 @@ test('it can switch operator', async () => {
             field: 'completeness',
             value: 100,
             operator: 'ALL',
-            context: {locales: ['fr_FR', 'en_US']},
+            context: {locales: ['fr_FR', 'en_US'], channel: 'ecommerce'},
           }}
           onChange={handleOperatorChange}
           validationErrors={[]}
@@ -118,7 +118,7 @@ test('it can switch operator', async () => {
   await userEvent.click(greaterThanButton);
 
   expect(handleOperatorChange).toHaveBeenCalledWith({
-    context: {locales: ['fr_FR', 'en_US']},
+    context: {locales: ['fr_FR', 'en_US'], channel: 'ecommerce'},
     field: 'completeness',
     operator: 'GREATER OR EQUALS THAN ON ALL LOCALES',
     value: 100,
@@ -137,7 +137,7 @@ test('it can select locales', async () => {
             field: 'completeness',
             value: 100,
             operator: 'GREATER OR EQUALS THAN ON ALL LOCALES',
-            context: {locales: []},
+            context: {locales: [], channel: 'ecommerce'},
           }}
           onChange={handleLocalesChange}
           validationErrors={[]}
@@ -146,13 +146,13 @@ test('it can select locales', async () => {
     );
   });
 
-  const openDropdownButton = screen.getAllByTitle('pim_common.open')[1];
+  const openDropdownButton = screen.getAllByTitle('pim_common.open')[2];
   userEvent.click(openDropdownButton);
   const greaterThanButton = screen.getByText('English');
   await userEvent.click(greaterThanButton);
 
   expect(handleLocalesChange).toHaveBeenCalledWith({
-    context: {locales: ['en_US']},
+    context: {locales: ['en_US'], channel: ''},
     field: 'completeness',
     operator: 'GREATER OR EQUALS THAN ON ALL LOCALES',
     value: 100,
@@ -171,7 +171,7 @@ test('it displays locales validation errors', async () => {
             field: 'completeness',
             value: 100,
             operator: 'GREATER OR EQUALS THAN ON ALL LOCALES',
-            context: {locales: []},
+            context: {locales: [], channel: ''},
           }}
           onChange={() => {}}
           validationErrors={[
@@ -203,7 +203,7 @@ test('it displays operator validation errors', async () => {
             field: 'completeness',
             value: 100,
             operator: 'GREATER OR EQUALS THAN ON ALL LOCALES',
-            context: {locales: []},
+            context: {locales: [], channel: ''},
           }}
           onChange={() => {}}
           validationErrors={[

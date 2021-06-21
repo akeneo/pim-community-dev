@@ -69,3 +69,9 @@ services:
     tags:
       - { name: validator.constraint_validator, alias: 'akeneo.tailored_export.validation.channel_should_exist' }
     public: true
+
+  akeneo.tailored_export.validation.completeness_operator_should_be_valid:
+    class: Akeneo\Platform\Bundle\TailoredExportBundle\src\Infrastructure\Validation\CompletenessOperatorShouldBeValidValidator
+    tags:
+      - { name: validator.constraint_validator, alias: 'akeneo.tailored_export.validation.completeness_operator_should_be_valid' }
+    public: true
