@@ -49,7 +49,7 @@ spec:
         - name: init-httpd
           image:  {{ template "pim.imageNameAndTag" . }}
           imagePullPolicy: {{ .Values.image.pim.pullPolicy | quote }}
-          command: ['sh', '-c', 'cp -p -r -f /srv/pim/public/* /srv/pim/public/.htaccess /web-src/. && cp -p -r -f /srv/pim/connectors/* /connectors-web-src/.']
+          command: ['sh', '-c', 'cp -p -r -f /srv/pim/public/* /srv/pim/public/.htaccess /web-src/. && cp -p -r -f /srv/pim/connectors/bigcommerce/back/public/* /connectors-web-src/bigcommerce/back/public/. && cp -p -r -f /srv/pim/connectors/front/* /connectors-web-src/bigcommerce/front/.']
           volumeMounts:
             - name: web-src
               mountPath: /web-src
@@ -135,9 +135,11 @@ spec:
             - name: CONTAINER_NAME
               value: httpd
           volumeMounts:
+            {{- if .Values.connectors.bigcommerce.enabled }}
             - name: connectors-web-src
               mountPath: /srv/pim/connectors
               readOnly: true
+            {{- end }}
             - name: web-src
               mountPath: /srv/pim/public
               readOnly: true
