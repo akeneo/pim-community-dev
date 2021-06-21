@@ -1,6 +1,5 @@
 import React, {Ref} from 'react';
 import styled from 'styled-components';
-import {Override} from '../../../../shared';
 import {getColor} from '../../../../theme';
 
 const TableInputTh = styled.th`
