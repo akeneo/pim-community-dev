@@ -10,6 +10,7 @@ use Akeneo\Pim\Enrichment\Component\Error\Documentation\HrefMessageParameter;
 use Akeneo\Pim\Enrichment\Component\Error\Documentation\RouteMessageParameter;
 use Akeneo\Pim\Enrichment\Component\Error\DocumentationBuilderInterface;
 use Akeneo\Pim\Enrichment\Component\Product\Validator\Constraints\Boolean;
+use Akeneo\Pim\Enrichment\Component\Product\Validator\Constraints\File;
 use Akeneo\Pim\Enrichment\Component\Product\Validator\Constraints\IsNumeric;
 use Akeneo\Pim\Enrichment\Component\Product\Validator\Constraints\IsString;
 use Akeneo\Pim\Enrichment\Component\Product\Validator\Constraints\Length;
@@ -18,7 +19,6 @@ use Akeneo\Pim\Enrichment\Component\Product\Validator\Constraints\NotDecimal;
 use Akeneo\Pim\Enrichment\Component\Product\Validator\Constraints\Range;
 use Akeneo\Pim\Enrichment\Component\Product\Validator\Constraints\Regex;
 use Akeneo\Pim\Enrichment\Component\Product\Validator\Constraints\UniqueValue;
-use Akeneo\Tool\Component\StorageUtils\Exception\InvalidPropertyTypeException;
 use Symfony\Component\Validator\ConstraintViolationInterface;
 
 /**
@@ -40,6 +40,7 @@ final class DefaultAttributeValidation implements DocumentationBuilderInterface
         Range::TOO_LOW_ERROR,
         Regex::REGEX_FAILED_ERROR,
         UniqueValue::UNIQUE_VALUE,
+        File::TOO_LARGE_ERROR,
     ];
 
     public function support($object): bool
