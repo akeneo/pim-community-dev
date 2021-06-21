@@ -54,7 +54,7 @@ const TableFooter: React.FC<TableFooterProps> = ({
   }
 
   return <TableFooterContainer>
-    <TableFooterElement>
+    <TableFooterElement grow={false}>
       <Dropdown>
         <SwitcherButton label={'Items per page'} onClick={openItemsPerPage}>{itemsPerPage}</SwitcherButton>
         {isItemsPerPageOpen && <Dropdown.Overlay verticalPosition="down" onClose={close}>
@@ -76,7 +76,7 @@ const TableFooter: React.FC<TableFooterProps> = ({
     <TableFooterElement grow={true}>
       {Math.min(itemsPerPage * currentPage + 1, rowsCount)}-{Math.min(itemsPerPage * (currentPage + 1), rowsCount)} of {rowsCount} items
     </TableFooterElement>
-    <TableFooterElement>
+    <TableFooterElement grow={false}>
       Page {currentPage + 1} / {Math.ceil(rowsCount / itemsPerPage)}
     </TableFooterElement>
     <IconContainer>
