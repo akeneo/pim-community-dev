@@ -22,7 +22,7 @@ const PanelContent = styled.div<{isOpen: boolean} & AkeneoThemedProps>`
   transition-delay: 0.3s;
 `;
 
-const ToogleButton = styled.button<{isOpen: boolean} & AkeneoThemedProps>`
+const ToggleButton = styled.button<{isOpen: boolean} & AkeneoThemedProps>`
   align-items: center;
   background: none;
   border: none;
@@ -66,9 +66,9 @@ const SubNavigationPanel = React.forwardRef<HTMLDivElement, SubNavigationPanelPr
       <Panel ref={forwardedRef} isOpen={isOpen} {...rest}>
         <PanelContent isOpen={isOpen}>{isOpen && children}</PanelContent>
 
-        <ToogleButton isOpen={isOpen} onClick={() => (isOpen ? close() : open())} title="Close">
+        <ToggleButton isOpen={isOpen} onClick={() => (isOpen ? close() : open())} title="Close">
           {isOpen ? <PanelCloseIcon /> : <PanelOpenIcon />}
-        </ToogleButton>
+        </ToggleButton>
       </Panel>
     );
   }
