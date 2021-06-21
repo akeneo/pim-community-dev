@@ -13,19 +13,19 @@ declare(strict_types=1);
 
 namespace Specification\Akeneo\Platform\TailoredExport\Infrastructure\Connector\Processor\PropertySelector;
 
-use Akeneo\Pim\Enrichment\Component\Category\Model\CategoryInterface;
 use Akeneo\Pim\Structure\Component\Query\PublicApi\Category\GetCategoryTranslations;
 use Akeneo\Tool\Component\Classification\CategoryAwareInterface;
-use Doctrine\Common\Collections\ArrayCollection;
 use PhpSpec\ObjectBehavior;
 
 class CategoriesSelectorSpec extends ObjectBehavior
 {
-    public function it_returns_property_name_supported(
-        GetCategoryTranslations $getCategoryTranslations
-    ) {
+    public function let(GetCategoryTranslations $getCategoryTranslations)
+    {
         $this->beConstructedWith($getCategoryTranslations);
+    }
 
+    public function it_supports_categories_selection()
+    {
         $this->supports(['type' => 'code'], 'categories')->shouldReturn(true);
         $this->supports(['type' => 'code'], 'family')->shouldReturn(false);
         $this->supports(['type' => 'label'], 'categories')->shouldReturn(true);
@@ -34,30 +34,18 @@ class CategoriesSelectorSpec extends ObjectBehavior
 
     public function it_selects_the_code(
         GetCategoryTranslations $getCategoryTranslations,
-        CategoryAwareInterface $entity,
-        CategoryInterface $category1,
-        CategoryInterface $category2
+        CategoryAwareInterface $entity
     ) {
-        $this->beConstructedWith($getCategoryTranslations);
-
-        $category1->getCode()->willReturn('shoes');
-        $category2->getCode()->willReturn('men');
-        $entity->getCategories()->willReturn(new ArrayCollection([$category1->getWrappedObject(), $category2->getWrappedObject()]));
+        $entity->getCategoryCodes()->willReturn(['shoes', 'men']);
 
         $this->applySelection(['type' => 'code', 'separator' => ','], $entity)->shouldReturn('shoes,men');
     }
 
     public function it_selects_the_label(
         GetCategoryTranslations $getCategoryTranslations,
-        CategoryAwareInterface $entity,
-        CategoryInterface $category1,
-        CategoryInterface $category2
+        CategoryAwareInterface $entity
     ) {
-        $this->beConstructedWith($getCategoryTranslations);
-
-        $category1->getCode()->willReturn('shoes');
-        $category2->getCode()->willReturn('men');
-        $entity->getCategories()->willReturn(new ArrayCollection([$category1->getWrappedObject(), $category2->getWrappedObject()]));
+        $entity->getCategoryCodes()->willReturn(['shoes', 'men']);
         $getCategoryTranslations->byCategoryCodesAndLocale(['shoes', 'men'], 'fr_FR')
             ->willReturn(['shoes' => 'chaussures']);
 

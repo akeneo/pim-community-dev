@@ -112,6 +112,7 @@ const getDefaultSelectionByAttribute = (attribute: Attribute): Selection => {
 const getDefaultSelectionByProperty = (propertyName: string): Selection => {
   switch (propertyName) {
     case 'categories':
+    case 'groups':
       return {type: 'code', separator: ','};
     default:
       return {type: 'code'};

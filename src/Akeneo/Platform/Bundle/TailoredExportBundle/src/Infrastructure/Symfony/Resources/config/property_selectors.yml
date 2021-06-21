@@ -36,3 +36,10 @@ services:
       - '@akeneo.pim.enrichment.product.query.get_product_model_labels'
     tags:
       - { name: akeneo.tailored_export.property_selector }
+
+  Akeneo\Platform\TailoredExport\Infrastructure\Connector\Processor\PropertySelector\GroupsSelector:
+    public: true
+    arguments:
+      - '@akeneo.pim.structure.query.get_group_translations'
+    tags:
+      - { name: akeneo.tailored_export.property_selector }

@@ -23,6 +23,7 @@ const PropertySelector = ({propertyName, selection, validationErrors, onSelectio
         />
       );
     case 'categories':
+    case 'groups':
       return (
         <CodeLabelCollectionSelector
           selection={selection as CodeLabelCollectionSelection}

@@ -13,38 +13,38 @@ declare(strict_types=1);
 
 namespace Akeneo\Platform\TailoredExport\Infrastructure\Connector\Processor\PropertySelector;
 
-use Akeneo\Pim\Structure\Component\Query\PublicApi\Category\GetCategoryTranslations;
+use Akeneo\Pim\Enrichment\Component\Product\Model\ProductInterface;
+use Akeneo\Pim\Structure\Component\Query\PublicApi\Group\GetGroupTranslations;
 use Akeneo\Platform\TailoredExport\Domain\SelectionTypes;
-use Akeneo\Tool\Component\Classification\CategoryAwareInterface;
 
-class CategoriesSelector implements PropertySelectorInterface
+class GroupsSelector implements PropertySelectorInterface
 {
-    private GetCategoryTranslations $getCategoryTranslations;
+    private GetGroupTranslations $getGroupTranslations;
 
     public function __construct(
-        GetCategoryTranslations $getCategoryTranslations
+        GetGroupTranslations $getGroupTranslations
     ) {
-        $this->getCategoryTranslations = $getCategoryTranslations;
+        $this->getGroupTranslations = $getGroupTranslations;
     }
 
     public function applySelection(array $selectionConfiguration, $entity): string
     {
-        if (!$entity instanceof CategoryAwareInterface) {
-            throw new \LogicException('Cannot apply Categories selection on this entity');
+        if (!$entity instanceof ProductInterface) {
+            throw new \LogicException('Cannot apply group selection on this entity');
         }
 
-        $categoryCodes = $entity->getCategoryCodes();
+        $groupCodes = $entity->getGroupCodes();
 
         switch ($selectionConfiguration['type']) {
             case SelectionTypes::CODE:
-                $selectedData = $categoryCodes;
+                $selectedData = $groupCodes;
                 break;
             case SelectionTypes::LABEL:
-                $categoryTranslations = $this->getCategoryTranslations
-                    ->byCategoryCodesAndLocale($categoryCodes, $selectionConfiguration['locale']);
+                $groupTranslations = $this->getGroupTranslations
+                    ->byGroupCodesAndLocale($groupCodes, $selectionConfiguration['locale']);
 
-                $selectedData = array_map(fn ($categoryCode) => $categoryTranslations[$categoryCode] ??
-                    sprintf('[%s]', $categoryCode), $categoryCodes);
+                $selectedData = array_map(fn ($groupCode) => $groupTranslations[$groupCode] ??
+                    sprintf('[%s]', $groupCode), $groupCodes);
 
                 break;
             default:
@@ -57,6 +57,6 @@ class CategoriesSelector implements PropertySelectorInterface
     public function supports(array $selectionConfiguration, string $propertyName): bool
     {
         return in_array($selectionConfiguration['type'], [SelectionTypes::LABEL, SelectionTypes::CODE])
-            && 'categories' === $propertyName;
+            && 'groups' === $propertyName;
     }
 }
