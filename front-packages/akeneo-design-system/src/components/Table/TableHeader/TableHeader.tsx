@@ -3,8 +3,6 @@ import styled, {css} from 'styled-components';
 import {AkeneoThemedProps, getColor} from '../../../theme';
 import {TableContext} from '../TableContext';
 
-
-
 const TableHead = styled.thead<{sticky?: number} & AkeneoThemedProps>`
   ${({sticky}) =>
     undefined !== sticky &&
