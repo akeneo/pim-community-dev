@@ -1,6 +1,6 @@
-import React, { ReactNode, Ref } from "react";
-import styled from "styled-components";
-import { getColor } from "../../../../theme";
+import React, {ReactNode, Ref} from 'react';
+import styled from 'styled-components';
+import {getColor} from '../../../../theme';
 
 const TableInputHead = styled.thead``;
 
@@ -26,12 +26,13 @@ type TableInputHeaderProps = {
 
 const TableInputHeader = React.forwardRef<HTMLTableSectionElement, TableInputHeaderProps>(
   ({children, ...rest}: TableInputHeaderProps, forwardedRef: Ref<HTMLTableSectionElement>) => {
-  return <TableInputHead ref={forwardedRef} {...rest}>
-    <TableInputHeadTr>
-      {children}
-    </TableInputHeadTr>
-  </TableInputHead>;
-});
+    return (
+      <TableInputHead ref={forwardedRef} {...rest}>
+        <TableInputHeadTr>{children}</TableInputHeadTr>
+      </TableInputHead>
+    );
+  }
+);
 
 TableInputHeader.displayName = 'TableInput.Header';
 
