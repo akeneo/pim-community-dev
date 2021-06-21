@@ -4,6 +4,7 @@ import {ReactController} from '@akeneo-pim-community/legacy-bridge/src/bridge/re
 import {DependenciesProvider} from '@akeneo-pim-community/legacy-bridge';
 import {ThemeProvider} from 'styled-components';
 import {InviteUserApp} from '@akeneo-pim-community/invite-user';
+import {PimInvitedUserProvider} from "./PimInvitedUserProvider";
 
 class InviteUserController extends ReactController {
   private static container = document.createElement('div');
@@ -12,7 +13,9 @@ class InviteUserController extends ReactController {
     return (
       <ThemeProvider theme={pimTheme}>
         <DependenciesProvider>
-          <InviteUserApp/>
+          <PimInvitedUserProvider>
+              <InviteUserApp/>
+          </PimInvitedUserProvider>
         </DependenciesProvider>
       </ThemeProvider>
     );

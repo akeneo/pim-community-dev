@@ -12,3 +12,20 @@ free_trial:
         invited_user: Invitation sent to
         status: Status
       empty_list_message: You haven't spread the word yet.
+    invite_messages:
+      success:
+        title: Invitations sent to new users
+        description: They are about to receive an email with a link to join your Akeneo PIM Free Trial.
+      error:
+        invitation_failed:
+          title: Invitation couldn't be sent
+          description: Please make sure the email exists and is properly spelled.
+        invalid_email:
+          title: invalid_email title
+          description: invalid_email description
+        invitation_already_sent:
+          title: Invitation already sent
+          description: Invitations with a link to join Akeneo PIM Free Trial have already been sent to some users. Let them know about it!
+
+pim_title:
+  akeneo_invite_user: Invite users

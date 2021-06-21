@@ -64,6 +64,10 @@
             <directory suffix="Integration.php">src/Akeneo/Pim/Automation/DataQualityInsights/tests/back/Integration</directory>
         </testsuite>
 
+        <testsuite name="Free_Trial">
+            <directory suffix="Integration.php">src/Akeneo/FreeTrial/tests/back/Integration</directory>
+        </testsuite>
+
         <testsuite name="End_to_End">
             <directory suffix="EndToEnd.php">tests/back</directory>
             <directory suffix="EndToEnd.php">src</directory>

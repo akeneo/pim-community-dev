@@ -220,3 +220,12 @@ suites:
         psr4_prefix: Oro\Bundle\PimFilterBundle
         spec_path: src/Oro/Bundle/PimFilterBundle
         src_path: src/Oro/Bundle/PimFilterBundle
+
+    ## Free Trial
+    FreeTrial:
+        namespace: Akeneo\FreeTrial
+        psr4_prefix: Akeneo\FreeTrial
+        spec_path: src/Akeneo/FreeTrial/tests/back/
+        src_path: src/Akeneo/FreeTrial/back
+        spec_prefix: Specification
+
