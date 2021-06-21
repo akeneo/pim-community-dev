@@ -28,6 +28,7 @@ test('it scrolls', () => {
   );
 
   fireEvent.scroll(screen.getByTestId('tableContainer'), 100);
+  expect(screen.getByClass('shadowed')).toBeInTheDocument();
 });
 
 test('TableInput supports ...rest props', () => {
