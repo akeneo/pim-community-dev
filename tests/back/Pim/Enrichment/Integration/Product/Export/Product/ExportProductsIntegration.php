@@ -76,6 +76,10 @@ class ExportProductsIntegration extends AbstractExportTestCase
                 'tablet' => ['sku', 'name']
             ]
         ]);
+        $this->createFamily([
+            'code' => 'a_family',
+            'attributes' => ['sku', 'a_text_area']
+        ]);
         $this->createFamilyVariant([
             'code'        => 'clothing_color_size',
             'family'      => 'clothing',
@@ -131,6 +135,10 @@ class ExportProductsIntegration extends AbstractExportTestCase
                 ]
             ]
         );
+    }
+
+    public function testVariantProductExport()
+    {
         $this->createVariantProduct(
             'apollon_pink_m',
             [
@@ -166,15 +174,32 @@ class ExportProductsIntegration extends AbstractExportTestCase
                 ]
             ]
         );
-    }
 
-    public function testVariantProductExport()
-    {
         $expectedCsv = <<<CSV
 sku;categories;enabled;family;parent;groups;color;ean;name-en_US;size;variation_name
 apollon_pink_m;round-neck,spring,tshirt;1;clothing;apollon_pink;;pink;12345678;;m;"my pink tshirt"
 apollon_pink_l;round-neck,tshirt;1;clothing;apollon_pink;;pink;12345679;;l;"my pink tshirt"
 apollon_pink_xl;round-neck,summer,tshirt;1;clothing;apollon_pink;;pink;12345465;;xl;"my pink tshirt"
+
+CSV;
+
+        $this->assertProductExport($expectedCsv, []);
+    }
+
+    public function testItEscapeCharacterCorrectly()
+    {
+        $this->createProduct('product_1', [
+            'family' => 'a_family',
+            'values'     => [
+                'a_text_area' => [
+                    ['data' => 'test "1234" DLE test  \" joli produit ; vive la data "', 'locale' => null, 'scope' => null]
+                ]
+            ]
+        ]);
+
+        $expectedCsv = <<<CSV
+sku;categories;enabled;family;groups;a_text_area
+product_1;;1;a_family;;"test ""1234"" DLE test  \"" joli produit ; vive la data """
 
 CSV;
 

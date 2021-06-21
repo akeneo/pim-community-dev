@@ -1,5 +1,9 @@
 # 4.0.x
 
+## Bug fixes
+
+- PIM-9914: Fix backslash incorrectly considered as an escape character in exports
+
 # 4.0.114 (2021-06-14)
 
 ## Bug fixes
