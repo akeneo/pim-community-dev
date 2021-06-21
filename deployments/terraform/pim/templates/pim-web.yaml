@@ -46,13 +46,15 @@ spec:
                   release: "{{ .Release.Name }}"
                   component: pim-web
       initContainers:
-        - name: init-fpm
+        - name: init-httpd
           image:  {{ template "pim.imageNameAndTag" . }}
           imagePullPolicy: {{ .Values.image.pim.pullPolicy | quote }}
-          command: ['sh', '-c', 'cp -p -r -f /srv/pim/public/* /srv/pim/public/.htaccess /web-src/.']
+          command: ['sh', '-c', 'cp -p -r -f /srv/pim/public/* /srv/pim/public/.htaccess /web-src/. && cp -p -r -f /srv/pim/connectors/* /connectors-web-src/.']
           volumeMounts:
             - name: web-src
               mountPath: /web-src
+            - name: connectors-web-src
+              mountPath: /connectors-web-src
             {{- if .Values.onboarder.enabled }}
             # we need the key
             - name: google-cloud-onboarder-key
@@ -67,7 +69,7 @@ spec:
             - { name: APP_DATABASE_PASSWORD, valueFrom: { secretKeyRef: { name: pim-secrets, key: mysqlPimUserPassword } } }
             - { name: GOOGLE_NAMESPACE, valueFrom: { fieldRef: { fieldPath: metadata.namespace } } }
             - { name: GOOGLE_POD_NAME, valueFrom: { fieldRef: { fieldPath: metadata.name } } }
-            - { name: CONTAINER_NAME, value: init-fpm }
+            - { name: CONTAINER_NAME, value: init-httpd }
       containers:
         - name: fpm
           image: {{ template "pim.imageNameAndTag" . }}
@@ -82,8 +84,6 @@ spec:
               subPath: zzz-akeneo.conf
               name: conf-fpm
               readOnly: true
-            - name: web-src
-              mountPath: /srv/pim/public
             - name: google-cloud-pim-storage-key
               mountPath: /var/secrets/google/srnt.json
               subPath: srnt.json
@@ -135,6 +135,9 @@ spec:
             - name: CONTAINER_NAME
               value: httpd
           volumeMounts:
+            - name: connectors-web-src
+              mountPath: /srv/pim/connectors
+              readOnly: true
             - name: web-src
               mountPath: /srv/pim/public
               readOnly: true
@@ -158,6 +161,8 @@ spec:
               port: httpd
             timeoutSeconds: 5
       volumes:
+        - name: connectors-web-src
+          emptyDir: {}
         - name: web-src
           emptyDir: {}
         - name: conf-httpd

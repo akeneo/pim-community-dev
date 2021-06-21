@@ -214,7 +214,6 @@ COPY --from=builder --chown=www-data:www-data /srv/pim/.env.local.php .
 COPY --from=builder --chown=www-data:www-data /srv/pim/composer.lock .
 
 # Copy big commerce connector
-RUN mkdir -p connectors/bigcommerce/{back,front}
 COPY --from=bigcommerceconnector --chown=www-data:www-data /srv/pim/tmp/build-connector/back connectors/bigcommerce/back
 COPY --from=bigcommerceconnector --chown=www-data:www-data /srv/pim/tmp/build-connector/front/build connectors/bigcommerce/front
 

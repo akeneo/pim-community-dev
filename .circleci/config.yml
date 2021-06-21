@@ -292,6 +292,14 @@ jobs:
           git checkout $CE_COMMIT_HASH
           /home/circleci/ee_project/growth_edition/prepare_growth_edition.sh /home/circleci/project
     - run:
+          name: Checkout BigCommerce Connector
+          working_dir: ~/project
+          command: |
+              ssh-add -D
+              ssh-add ~/.ssh/id_rsa_1f25f8bb595295f6e2f2972f30d4e966
+              mkdir -p tmp
+              git clone git@github.com:akeneo/bigcommerce-connector.git tmp/build-connector
+    - run:
         name: Build the Growth Edition prod image
         command: TYPE=${TYPE} IMAGE_TAG_DATE=${IMAGE_TAG_DATE} make php-image-prod
     - run:
