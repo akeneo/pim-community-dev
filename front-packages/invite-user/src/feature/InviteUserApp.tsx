@@ -14,6 +14,10 @@ const TagInputContainer = styled.div`
   margin-right: 10px;
 `;
 
+const DivContainer = styled.div`
+  font-size: 15px;
+`;
+
 const FieldContainer = styled(Field)`
   width: 500px;
   margin: 30px auto 20px auto;
@@ -96,7 +100,9 @@ const InviteUserApp = () => {
         {invitedUsers && invitedUsers.length === 0 && (
           <IllustrationContainer>
             <SurveyIllustration />
-            <div>{translate('free_trial.invite_users.users_list.empty_list_message')}</div>
+            <DivContainer>
+              <div>{translate('free_trial.invite_users.users_list.empty_list_message')}</div>
+            </DivContainer>
           </IllustrationContainer>
         )}
       </PageContent>
