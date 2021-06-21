@@ -1,3 +1,4 @@
+import userEvent from '@testing-library/user-event';
 import React from 'react';
 import {render, screen} from '../../../storybook/test-util';
 import {SubNavigationPanel} from './SubNavigationPanel';
@@ -21,4 +22,16 @@ test('it supports ...rest props', () => {
 test('it doesnt render its children when collapsed', () => {
   render(<SubNavigationPanel isOpen={false}>SubNavigationPanel content</SubNavigationPanel>);
   expect(screen.queryByText('SubNavigationPanel content')).toBeNull();
+});
+
+test('it closes when hitting the toggle button while opened', () => {
+  render(<SubNavigationPanel isOpen={true}>SubNavigationPanel content</SubNavigationPanel>);
+  userEvent.click(screen.getByTitle('Close'));
+  expect(screen.queryByText('SubNavigationPanel content')).toBeNull();
+});
+
+test('it opens when hitting the toggle button while closed', () => {
+  render(<SubNavigationPanel isOpen={false}>SubNavigationPanel content</SubNavigationPanel>);
+  userEvent.click(screen.getByTitle('Open'));
+  expect(screen.getByText('SubNavigationPanel content')).toBeInTheDocument();
 });
