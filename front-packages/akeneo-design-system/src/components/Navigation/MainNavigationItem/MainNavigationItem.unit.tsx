@@ -49,6 +49,8 @@ test('MainNavigationItem displays a tag', () => {
 });
 
 test('MainNavigationItem doesnt support multiple tags', () => {
+  const mockConsole = jest.spyOn(console, 'error').mockImplementation();
+
   expect(() =>
     render(
       <MainNavigationItem icon={<CardIcon />}>
@@ -58,6 +60,8 @@ test('MainNavigationItem doesnt support multiple tags', () => {
       </MainNavigationItem>
     )
   ).toThrowError('You can only provide one component of type Tag.');
+
+  mockConsole.mockRestore();
 });
 
 test('MainNavigationItem triggers onClick when MainNavigationItem is clicked', () => {

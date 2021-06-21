@@ -33,9 +33,8 @@ export const EditConnectionWebhook: FC = () => {
 
     const {connectionCode} = useParams<{connectionCode: string}>();
     const {connection} = useFetchConnection(connectionCode);
-    const {eventSubscription, eventSubscriptionsLimit, fetchEventSubscription} = useFetchEventSubscription(
-        connectionCode
-    );
+    const {eventSubscription, eventSubscriptionsLimit, fetchEventSubscription} =
+        useFetchEventSubscription(connectionCode);
 
     useEffect(() => {
         fetchEventSubscription();

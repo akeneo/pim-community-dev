@@ -278,8 +278,8 @@ pim_title:
   pim_enrich_catalog_volume_index: Catalogus volume monitoring
   pim_enrich_categorytree_index: Categorie boomstructuren
   pim_enrich_categorytree_create: Categoriestructuren|Aanmaken
-  pim_enrich_categorytree_edit: Categorie boom {{ category.label }} | Bewerken
   pim_enrich_categorytree_create_tree: Categoriestructuren|Aanmaken
+  pim_enrich_categorytree_tree: Categorie boom {{ category.label }} | Bewerken
   pim_enrich_attribute_index: Attributen
   pim_enrich_attribute_create: Attributen | Aanmaken
   pim_enrich_attribute_edit: Attribuut {{ attribute.label }} | Bewerken
