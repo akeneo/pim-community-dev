@@ -169,7 +169,7 @@ jobs:
               working_dir: ~/project
               command: |
                   mkdir -p tmp
-                  git clone --branch CONNECTOR_BC_BRANCH git@github.com:akeneo/bigcommerce-connector.git tmp/build-connector
+                  git clone --branch $CONNECTOR_BC_BRANCH git@github.com:akeneo/bigcommerce-connector.git tmp/build-connector
           - set_gcloud_config_dev
           - when:
                 condition: << parameters.is_pull_request >>
