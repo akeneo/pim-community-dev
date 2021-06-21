@@ -1,6 +1,6 @@
-import styled from "styled-components";
-import React, { ReactNode, Ref } from "react";
-import { getColor } from "../../../../theme";
+import styled from 'styled-components';
+import React, {ReactNode, Ref} from 'react';
+import {getColor} from '../../../../theme';
 
 const TableInputTbody = styled.tbody`
   & > * > * {
@@ -17,11 +17,14 @@ type TableInputBodyProps = {
 
 const TableInputBody = React.forwardRef<HTMLTableSectionElement, TableInputBodyProps>(
   ({children, ...rest}: TableInputBodyProps, forwardedRef: Ref<HTMLTableSectionElement>) => {
-  return <TableInputTbody ref={forwardedRef} {...rest}>
-    {children}
-  </TableInputTbody>;
-});
+    return (
+      <TableInputTbody ref={forwardedRef} {...rest}>
+        {children}
+      </TableInputTbody>
+    );
+  }
+);
 
 TableInputBody.displayName = 'TableInput.Body';
 
-export {TableInputBody}
+export {TableInputBody};
