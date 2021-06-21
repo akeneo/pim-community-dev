@@ -67,4 +67,4 @@ image:
 
 connectors:
   bigcommerce:
-    enabled: false
+    enabled: true
