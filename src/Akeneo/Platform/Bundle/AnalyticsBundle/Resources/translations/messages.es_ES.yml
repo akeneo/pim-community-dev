@@ -52,6 +52,15 @@ pim_analytics:
     php_extensions: Extensiones de PHP
     email_domains: Dominios de email asociados
     api_connection: Conexiones API
+    nb_media_files_in_products: Número de archivos multimedia en los productos
+    nb_media_images_in_products: Número de imágenes multimedia en los productos
+    is_demo_catalog: Catálogo de demostración instalado
+    data_source.tracked: Número de conexiones de origen de la API rastreadas
+    data_source.untracked: Número de conexiones de origen de la API no rastreadas
+    data_destination.tracked: Número de conexiones de destino de la API rastreadas
+    data_destination.untracked: Número de conexiones de destino de la API no rastreadas
+    other.tracked: Número de otras conexiones de la API rastreadas
+    other.untracked: Número de otras conexiones de la API no rastreadas
   acl:
     system_info:
       index: Información del sistema
