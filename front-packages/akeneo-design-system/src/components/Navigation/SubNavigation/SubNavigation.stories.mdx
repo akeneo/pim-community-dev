@@ -1,0 +1,79 @@
+import {Meta, Story, ArgsTable, Canvas} from '@storybook/addon-docs/blocks';
+import {useArgs, updateArgs} from '@storybook/client-api';
+import {SubNavigation} from './SubNavigation.tsx';
+import {Tag} from '../../Tags/Tags';
+import {Link} from '../../Link/Link';
+
+<Meta
+  title="Components/Navigation/SubNavigation"
+  component={SubNavigation}
+  subcomponents={{
+    'SubNavigation.Item': SubNavigation.Item,
+    'SubNavigation.Section': SubNavigation.Section,
+  }}
+  args={{isOpen: true, onCollapse: () => undefined}}
+/>
+
+# SubNavigation
+
+## Usage
+
+The Sub Navigation is used by the Navigation pattern. This components helps the users in their daily usage as an easy
+way to discover and navigate the interface. Also, it's a companion for them to understand where they are in their
+journey.
+
+### Interaction
+
+The panel is open by default and can be collapsed with the dedicated button.
+
+When the panel is collapsed the content is hidden and a dropdown menu is available with the SubNavigation.Section(s) and
+their SubNavigation.Item(s)
+
+## Playground
+
+<Canvas>
+  <Story name="Standard">
+    {args => {
+      const [{isOpen}, updateArgs] = useArgs();
+      const handleCollapse = isOpen => updateArgs({isOpen});
+      return (
+        <SubNavigation {...args} onCollapse={handleCollapse}>
+          <SubNavigation.Section>
+            <SubNavigation.Item target="_blank" href="/">
+              Item
+            </SubNavigation.Item>
+            <SubNavigation.Item target="_blank" href="/">
+              Item with Tag<Tag tint="blue">Tag</Tag>
+            </SubNavigation.Item>
+            <SubNavigation.Item target="_blank" href="/" disabled>
+              Disabled Item
+            </SubNavigation.Item>
+          </SubNavigation.Section>
+          <SubNavigation.Item target="_blank" href="/">
+            Item outside a Section
+          </SubNavigation.Item>
+        </SubNavigation>
+      );
+    }}
+  </Story>
+</Canvas>
+
+<ArgsTable story="Standard" />
+
+## Collapsed
+
+<Canvas>
+  <Story name="Collapsed">
+    {args => {
+      return (
+        <SubNavigation {...args} isOpen={false}>
+          <SubNavigation.Section>
+            <SubNavigation.Item target="_blank" href="/">
+              Item
+            </SubNavigation.Item>
+          </SubNavigation.Section>
+        </SubNavigation>
+      );
+    }}
+  </Story>
+</Canvas>
