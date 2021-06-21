@@ -26,8 +26,8 @@ class ScalarSelectorSpec extends ObjectBehavior
         $booleanAttribute = $this->createAttribute('pim_catalog_boolean');
         $this->supports(['type' => 'code'], $booleanAttribute)->shouldReturn(true);
 
-        $booleanAttribute = $this->createAttribute('pim_catalog_text_area');
-        $this->supports(['type' => 'code'], $booleanAttribute)->shouldReturn(false);
+        $textAreaAttribute = $this->createAttribute('pim_catalog_text_area');
+        $this->supports(['type' => 'code'], $textAreaAttribute)->shouldReturn(false);
     }
 
     public function it_selects_the_data(ValueInterface $value)

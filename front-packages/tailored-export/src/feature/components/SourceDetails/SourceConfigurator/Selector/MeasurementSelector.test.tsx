@@ -6,7 +6,17 @@ import {MeasurementSelector} from './MeasurementSelector';
 import {Attribute} from '../../../../models';
 import {FetcherContext} from '../../../../contexts';
 
-const attributes = [{code: 'length', type: 'pim_catalog_metric', labels: {}, scopable: false, localizable: false}];
+const attributes = [
+  {
+    code: 'length',
+    type: 'pim_catalog_metric',
+    labels: {},
+    scopable: false,
+    localizable: false,
+    is_locale_specific: false,
+    available_locales: [],
+  },
+];
 const channels: Channel[] = [
   {
     code: 'ecommerce',

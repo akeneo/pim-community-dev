@@ -46,6 +46,7 @@ akeneo.tailored_export:
         type:
           amount: Amount
           currency: Currency
+        format: Format
   column:
     delete_message: Are you sure you want to remove this column?
   validation:

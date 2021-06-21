@@ -10,6 +10,8 @@ const getAttribute = (type: string): Attribute => ({
   labels: {},
   scopable: false,
   localizable: false,
+  is_locale_specific: false,
+  available_locales: [],
 });
 
 jest.mock('./CodeLabelSelector', () => ({
@@ -22,6 +24,10 @@ jest.mock('./CodeLabelCollectionSelector', () => ({
 
 jest.mock('./MeasurementSelector', () => ({
   MeasurementSelector: () => 'This is a measurement selector',
+}));
+
+jest.mock('./DateSelector', () => ({
+  DateSelector: () => 'This is a date selector',
 }));
 
 jest.mock('./PriceCollectionSelector', () => ({
@@ -38,7 +44,12 @@ test.each([
   const onSelectionChange = jest.fn();
 
   renderWithProviders(
-    <Selector selection={{type: 'code'}} attribute={getAttribute(type)} onSelectionChange={onSelectionChange} />
+    <Selector
+      selection={{type: 'code'}}
+      validationErrors={[]}
+      attribute={getAttribute(type)}
+      onSelectionChange={onSelectionChange}
+    />
   );
 
   expect(screen.queryByText('pim_common.type')).not.toBeInTheDocument();
@@ -50,7 +61,12 @@ test.each(['pim_catalog_simpleselect', 'akeneo_reference_entity'])(
     const onSelectionChange = jest.fn();
 
     renderWithProviders(
-      <Selector selection={{type: 'code'}} attribute={getAttribute(type)} onSelectionChange={onSelectionChange} />
+      <Selector
+        selection={{type: 'code'}}
+        validationErrors={[]}
+        attribute={getAttribute(type)}
+        onSelectionChange={onSelectionChange}
+      />
     );
 
     expect(screen.getByText('This is a code and label selector')).toBeInTheDocument();
@@ -63,7 +79,12 @@ test.each(['pim_catalog_multiselect', 'akeneo_reference_entity_collection', 'pim
     const onSelectionChange = jest.fn();
 
     renderWithProviders(
-      <Selector selection={{type: 'code'}} attribute={getAttribute(type)} onSelectionChange={onSelectionChange} />
+      <Selector
+        validationErrors={[]}
+        selection={{type: 'code'}}
+        attribute={getAttribute(type)}
+        onSelectionChange={onSelectionChange}
+      />
     );
 
     expect(screen.getByText('This is a code and label collection selector')).toBeInTheDocument();
@@ -75,6 +96,7 @@ test('it renders a measurement selector for measurement attribute', () => {
 
   renderWithProviders(
     <Selector
+      validationErrors={[]}
       selection={{type: 'code'}}
       attribute={getAttribute('pim_catalog_metric')}
       onSelectionChange={onSelectionChange}
@@ -89,6 +111,7 @@ test('it renders a price collection selector for price collection attribute', ()
 
   renderWithProviders(
     <Selector
+      validationErrors={[]}
       selection={{type: 'amount'}}
       attribute={getAttribute('pim_catalog_price_collection')}
       onSelectionChange={onSelectionChange}
@@ -96,4 +119,19 @@ test('it renders a price collection selector for price collection attribute', ()
   );
 
   expect(screen.getByText('This is a price collection selector')).toBeInTheDocument();
+});
+
+test('it renders a date selector for date attribute', () => {
+  const onSelectionChange = jest.fn();
+
+  renderWithProviders(
+    <Selector
+      validationErrors={[]}
+      selection={{format: 'yyyy-mm-dd'}}
+      attribute={getAttribute('pim_catalog_date')}
+      onSelectionChange={onSelectionChange}
+    />
+  );
+
+  expect(screen.getByText('This is a date selector')).toBeInTheDocument();
 });

@@ -5,6 +5,9 @@ services:
   akeneo.tailored_export.validation.source.code_label_collection_selection.constraint:
     class: 'Akeneo\Platform\TailoredExport\Infrastructure\Validation\Selection\CodeLabelCollectionSelection'
 
+  akeneo.tailored_export.validation.source.date_selection.constraint:
+    class: 'Akeneo\Platform\TailoredExport\Infrastructure\Validation\Selection\DateSelection'
+
   akeneo.tailored_export.validation.source.price_collection_selection.constraint:
     class: 'Akeneo\Platform\TailoredExport\Infrastructure\Validation\Selection\PriceCollectionSelection'
 
@@ -16,10 +19,10 @@ services:
     arguments:
       - '@akeneo.pim.structure.query.get_attributes'
       -
-#        - 'pim_catalog_date':
-#        - 'pim_catalog_file':
-#        - 'pim_catalog_image':
-#        - 'pim_catalog_number':
+        pim_catalog_date: '@akeneo.tailored_export.validation.source.date_selection.constraint'
+#       pim_catalog_file:
+#       pim_catalog_image:
+#       pim_catalog_number:
         pim_catalog_metric: '@akeneo.tailored_export.validation.source.measurement_selection.constraint'
         pim_catalog_multiselect: '@akeneo.tailored_export.validation.source.code_label_collection_selection.constraint'
         pim_catalog_simpleselect: '@akeneo.tailored_export.validation.source.code_label_selection.constraint'

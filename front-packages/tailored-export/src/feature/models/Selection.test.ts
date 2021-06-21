@@ -1,4 +1,4 @@
-import {getDefaultSelectionByAttribute, isCollectionSeparator} from './Selection';
+import {availableDateFormats, getDefaultSelectionByAttribute, isCollectionSeparator, isDateFormat} from './Selection';
 import {Attribute} from './Attribute';
 
 const getAttribute = (type: string): Attribute => ({
@@ -7,6 +7,8 @@ const getAttribute = (type: string): Attribute => ({
   labels: {},
   scopable: false,
   localizable: false,
+  is_locale_specific: false,
+  available_locales: [],
 });
 
 test('it returns default selection by attribute type', () => {
@@ -24,6 +26,9 @@ test('it returns default selection by attribute type', () => {
     type: 'code',
     separator: ',',
   });
+  expect(getDefaultSelectionByAttribute(getAttribute('pim_catalog_date'))).toEqual({
+    format: 'yyyy-mm-dd',
+  });
 });
 
 test('it can tell if something is a valid selection separator', () => {
@@ -33,4 +38,14 @@ test('it can tell if something is a valid selection separator', () => {
   expect(isCollectionSeparator('coucou')).toEqual(false);
   expect(isCollectionSeparator('')).toEqual(false);
   expect(isCollectionSeparator('.')).toEqual(false);
+});
+
+test.each(availableDateFormats)('it can tell if "%s" is a valid date format', dateFormat => {
+  expect(isDateFormat(dateFormat)).toEqual(true);
+});
+
+test('it can tell if something is an invalid date format', () => {
+  expect(isDateFormat('.')).toEqual(false);
+  expect(isDateFormat(' ')).toEqual(false);
+  expect(isDateFormat('hello')).toEqual(false);
 });

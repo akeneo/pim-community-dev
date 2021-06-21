@@ -16,6 +16,14 @@ services:
     tags:
       - { name: akeneo.tailored_export.attribute_selector }
 
+  Akeneo\Platform\TailoredExport\Infrastructure\Connector\Processor\AttributeSelector\DateSelector:
+    public: true
+    arguments:
+      -
+        - 'pim_catalog_date'
+    tags:
+      - { name: akeneo.tailored_export.attribute_selector }
+
   Akeneo\Platform\TailoredExport\Infrastructure\Connector\Processor\AttributeSelector\SimpleSelectSelector:
     public: true
     arguments:

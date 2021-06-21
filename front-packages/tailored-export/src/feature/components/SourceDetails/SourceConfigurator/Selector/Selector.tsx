@@ -7,11 +7,13 @@ import {
   CodeLabelSelection,
   MeasurementSelection,
   PriceCollectionSelection,
+  DateSelection,
 } from '../../../../models';
 import {CodeLabelSelector} from './CodeLabelSelector';
 import {MeasurementSelector} from './MeasurementSelector';
 import {PriceCollectionSelector} from './PriceCollectionSelector';
 import {CodeLabelCollectionSelector} from './CodeLabelCollectionSelector';
+import {DateSelector} from './DateSelector';
 
 type SelectorProps = {
   attribute: Attribute;
@@ -28,6 +30,14 @@ const Selector = ({attribute, selection, validationErrors, onSelectionChange}: S
       return (
         <CodeLabelCollectionSelector
           selection={selection as CodeLabelCollectionSelection}
+          validationErrors={validationErrors}
+          onSelectionChange={onSelectionChange}
+        />
+      );
+    case 'pim_catalog_date':
+      return (
+        <DateSelector
+          selection={selection as DateSelection}
           validationErrors={validationErrors}
           onSelectionChange={onSelectionChange}
         />
