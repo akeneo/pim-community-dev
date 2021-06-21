@@ -1,5 +1,9 @@
 # 5.0.x
 
+## Bug fixes
+
+- PIM-9921: Add a translation for the title of category creation form
+
 # 5.0.33 (2021-06-18)
 
 # 5.0.32 (2021-06-16)
