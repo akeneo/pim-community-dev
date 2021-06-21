@@ -31,10 +31,6 @@ class LoggerSubscriber implements EventSubscriberInterface
     /** @var string */
     protected $translationDomain = 'messages';
 
-    /**
-     * @param LoggerInterface $logger
-     * @param TranslatorInterface $translator
-     */
     public function __construct(LoggerInterface $logger, TranslatorInterface $translator)
     {
         $this->logger = $logger;
