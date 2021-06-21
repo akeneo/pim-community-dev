@@ -113,7 +113,7 @@ class TeamworkAssistantWidgetDecorator extends ElementDecorator
         $this->openWidgetDropdown('.contributor-selector');
 
         $contributorLabel = $this->spin(function () use ($contributorName) {
-            $label = $this->find('css', sprintf('.contributor-label:contains("%s")', $contributorName));
+            $label = $this->getBody()->find('css', sprintf('.contributor-label:contains("%s")', $contributorName));
             if ($label === null) {
                 return false;
             }
@@ -130,7 +130,7 @@ class TeamworkAssistantWidgetDecorator extends ElementDecorator
         $this->openWidgetDropdown('.project-selector');
 
         $projectLabel = $this->spin(function () use ($projectLabel) {
-            $label = $this->find('css', sprintf('.project-label:contains("%s")', $projectLabel));
+            $label = $this->getBody()->find('css', sprintf('.project-label:contains("%s")', $projectLabel));
             if ($label === null) {
                 return false;
             }
@@ -147,7 +147,7 @@ class TeamworkAssistantWidgetDecorator extends ElementDecorator
         $this->openWidgetDropdown('.project-selector');
 
         $projectsLabels = $this->spin(function () {
-            $labelElements = $this->findAll('css', '.project-label');
+            $labelElements = $this->getBody()->findAll('css', '.project-label');
             if (count($labelElements) === 0) {
                 return false;
             }
@@ -160,7 +160,7 @@ class TeamworkAssistantWidgetDecorator extends ElementDecorator
             return $labels;
         }, 'projects labels not found');
 
-        $this->find('css', '[data-testid="backdrop"]')->click();
+        $this->getBody()->find('css', '[data-testid="backdrop"]')->click();
 
         return $projectsLabels;
     }
