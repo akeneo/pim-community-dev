@@ -32,7 +32,7 @@ class LoggerSubscriber implements EventSubscriberInterface
     protected $translationDomain = 'messages';
 
     /**
-     * @param LoggerInterface     $logger
+     * @param LoggerInterface $logger
      * @param TranslatorInterface $translator
      */
     public function __construct(LoggerInterface $logger, TranslatorInterface $translator)
@@ -47,18 +47,18 @@ class LoggerSubscriber implements EventSubscriberInterface
     public static function getSubscribedEvents()
     {
         return array(
-            EventInterface::JOB_EXECUTION_CREATED      => 'jobExecutionCreated',
-            EventInterface::BEFORE_JOB_EXECUTION       => 'beforeJobExecution',
-            EventInterface::JOB_EXECUTION_STOPPED      => 'jobExecutionStopped',
-            EventInterface::JOB_EXECUTION_INTERRUPTED  => 'jobExecutionInterrupted',
-            EventInterface::JOB_EXECUTION_FATAL_ERROR  => 'jobExecutionFatalError',
-            EventInterface::BEFORE_JOB_STATUS_UPGRADE  => 'beforeJobStatusUpgrade',
-            EventInterface::BEFORE_STEP_EXECUTION      => 'beforeStepExecution',
-            EventInterface::STEP_EXECUTION_SUCCEEDED   => 'stepExecutionSucceeded',
+            EventInterface::JOB_EXECUTION_CREATED => 'jobExecutionCreated',
+            EventInterface::BEFORE_JOB_EXECUTION => 'beforeJobExecution',
+            EventInterface::JOB_EXECUTION_STOPPED => 'jobExecutionStopped',
+            EventInterface::JOB_EXECUTION_INTERRUPTED => 'jobExecutionInterrupted',
+            EventInterface::JOB_EXECUTION_FATAL_ERROR => 'jobExecutionFatalError',
+            EventInterface::BEFORE_JOB_STATUS_UPGRADE => 'beforeJobStatusUpgrade',
+            EventInterface::BEFORE_STEP_EXECUTION => 'beforeStepExecution',
+            EventInterface::STEP_EXECUTION_SUCCEEDED => 'stepExecutionSucceeded',
             EventInterface::STEP_EXECUTION_INTERRUPTED => 'stepExecutionInterrupted',
-            EventInterface::STEP_EXECUTION_ERRORED     => 'stepExecutionErrored',
-            EventInterface::STEP_EXECUTION_COMPLETED   => 'stepExecutionCompleted',
-            EventInterface::INVALID_ITEM               => 'invalidItem',
+            EventInterface::STEP_EXECUTION_ERRORED => 'stepExecutionErrored',
+            EventInterface::STEP_EXECUTION_COMPLETED => 'stepExecutionCompleted',
+            EventInterface::INVALID_ITEM => 'invalidItem',
         );
     }
 
@@ -209,7 +209,7 @@ class LoggerSubscriber implements EventSubscriberInterface
         $stepExecution = $event->getStepExecution();
         $e = $event->getException();
 
-        $this->logger->error($e,['exception'=>$e]);
+        $this->logger->error($e, ['exception' => $e]);
 
         $this->logger->warning(
             sprintf(
@@ -296,6 +296,6 @@ class LoggerSubscriber implements EventSubscriberInterface
             return $data->format('Y-m-d');
         }
 
-        return (string) $data;
+        return (string)$data;
     }
 }
