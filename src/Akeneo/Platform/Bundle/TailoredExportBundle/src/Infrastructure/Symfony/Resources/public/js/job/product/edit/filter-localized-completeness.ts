@@ -101,30 +101,10 @@ class FilterLocalizedCompleteness extends BaseCompletenessFilter {
               },
             },
             React.createElement(CompletenessFilter, {
-              // availableOperators: this.config.operators,
-              // filter: this.getFormData,
-              // onFilterChange: this.setData,
-
-              operator: this.getFormData().operator,
-              locales: this.getFormData()?.context.locales ?? [],
-              onOperatorChange: (operator: Operator) => {
-                this.setData({
-                  field: this.getField(),
-                  operator: operator,
-                  value: 100,
-                  context: {locales: this.getFormData()?.context.locales ?? []},
-                });
-
-                this.render();
-              },
-              onLocalesChange: (locales: LocaleCode[]) => {
-                this.setData({
-                  field: this.getField(),
-                  operator: this.getFormData().operator,
-                  value: 100,
-                  context: {locales},
-                });
-
+              availableOperators: this.config.operators,
+              filter: this.getFormData(),
+              onFilterChange: newFilter => {
+                this.setData(newFilter);
                 this.render();
               },
               // TODO: Find a way to get rid of the [2] part below

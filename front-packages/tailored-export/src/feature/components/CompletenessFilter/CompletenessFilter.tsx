@@ -12,29 +12,49 @@ const Container = styled.div`
   width: 100%;
 `;
 
-type CompletenessFilterProps = {
+type Filter = {
+  field: 'completeness';
   operator: Operator;
-  locales: LocaleCode[];
-  onOperatorChange: (operator: string) => void;
-  onLocalesChange: (locales: LocaleCode[]) => void;
+  value: number;
+  context: {
+    locales: LocaleCode[];
+  };
+};
+type CompletenessFilterProps = {
+  availableOperators: Operator[];
+  filter: Filter;
+  onFilterChange: (newFilter: Filter) => void;
   validationErrors: ValidationError[];
 };
 
 const CompletenessFilter = ({
-  operator,
-  locales,
-  onOperatorChange,
-  onLocalesChange,
+  availableOperators,
+  filter,
+  onFilterChange,
   validationErrors,
 }: CompletenessFilterProps) => {
   const operatorErrors = filterErrors(validationErrors, '[operator]');
   const localesErrors = filterErrors(validationErrors, '[context][locales]');
 
+  const onOperatorChange = (newOperator: Operator) => {
+    const newFilter = {...filter, operator: newOperator};
+    onFilterChange(newFilter);
+  };
+  const onLocalesChange = (newLocales: LocaleCode[]) => {
+    const newFilter = {...filter, context: {locales: newLocales}};
+    onFilterChange(newFilter);
+  };
+
   return (
     <Container>
-      <OperatorSelector operator={operator} onChange={onOperatorChange} validationErrors={operatorErrors} />
-      {operator !== 'ALL' && (
-        <LocalesSelector locales={locales} onChange={onLocalesChange} validationErrors={localesErrors} />
+      <OperatorSelector
+        availableOperators={availableOperators}
+        operator={filter.operator}
+        onChange={onOperatorChange}
+        validationErrors={operatorErrors}
+      />
+      {filter.operator !== 'ALL' && (
+        <LocalesSelector locales={filter.context.locales} onChange={onLocalesChange} validationErrors={localesErrors} />
       )}
     </Container>
   );

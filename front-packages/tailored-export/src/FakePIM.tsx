@@ -19,11 +19,9 @@ import {
   useRoute,
   useTranslate,
   ValidationError,
-  LocaleCode,
   filterErrors,
 } from '@akeneo-pim-community/shared';
 import {ColumnConfiguration} from './feature/models/ColumnConfiguration';
-import {Operator} from './feature';
 
 const JOB_CODE = 'mmm';
 
@@ -97,6 +95,12 @@ const FakePIM = () => {
   const saveRoute = useRoute('pim_enrich_job_instance_rest_export_put', {identifier: JOB_CODE});
   const notify = useNotify();
   const translate = useTranslate();
+  const AVAILABLE_OPERATORS = [
+    'ALL',
+    'GREATER OR EQUALS THAN ON AT LEAST ONE LOCALE',
+    'GREATER OR EQUALS THAN ON ALL LOCALES',
+    'LOWER THAN ON ALL LOCALES',
+  ];
 
   const handleColumnConfigurationChange = (columnConfiguration: ColumnConfiguration[]) => {
     if (null !== jobConfiguration) {
@@ -121,23 +125,11 @@ const FakePIM = () => {
     });
   };
 
-  const handleCompletenessOperatorFilterChange = (operator: Operator) => {
+  const handleFilterChange = newFilter => {
     const newFilters = jobConfiguration.configuration.filters.data.map(filter => {
       if (filter.field !== 'completeness') return filter;
 
-      return {...filter, operator: operator, value: 100};
-    });
-
-    setJobConfiguration({
-      ...jobConfiguration,
-      configuration: {...jobConfiguration.configuration, filters: {data: newFilters}},
-    });
-  };
-  const handleCompletenessLocalesFilterChange = (locales: LocaleCode[]) => {
-    const newFilters = jobConfiguration.configuration.filters.data.map(filter => {
-      if (filter.field !== 'completeness') return filter;
-
-      return {...filter, context: {locales}};
+      return filter;
     });
 
     setJobConfiguration({
@@ -229,10 +221,14 @@ const FakePIM = () => {
             {categoriesSelected.length === 0 ? 'All products' : `${categoriesSelected.length} selected category`}
             <CategoryFilter initialCategorySelection={categoriesSelected} onCategorySelection={handleCategoryChange} />
             <CompletenessFilter
-              operator="GREATER OR EQUALS THAN ON AT LEAST ONE LOCALE"
-              locales={['fr_FR']}
-              onOperatorChange={handleCompletenessOperatorFilterChange}
-              onLocalesChange={handleCompletenessLocalesFilterChange}
+              availableOperators={AVAILABLE_OPERATORS}
+              filter={{
+                field: 'completeness',
+                operator: 'GREATER OR EQUALS THAN ON AT LEAST ONE LOCALE',
+                value: 100,
+                context: {locales: ['fr_FR']},
+              }}
+              onFilterChange={handleFilterChange}
               validationErrors={filterErrors(validationErrors, '[filters][data][2]')}
             />
           </FieldContainer>
