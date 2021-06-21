@@ -13,6 +13,7 @@ import {
 import {
   BreadcrumbStepSkeleton,
   FullScreenError,
+  getLabel,
   PageContent,
   PageHeader,
   PimView,
@@ -97,16 +98,10 @@ const CategoryEditPage: FC = () => {
     }
 
     const uiLocale = userContext.get('uiLocale');
-    const rootCategory = category && category.root ? category.root : category;
+    const rootCategory = category.root ? category.root : category;
 
-    setCategoryLabel(
-      category && category.labels.hasOwnProperty(uiLocale) ? category.labels[uiLocale] : `[${category.code}]`
-    );
-    setTreeLabel(
-      rootCategory && rootCategory.labels.hasOwnProperty(uiLocale)
-        ? rootCategory.labels[uiLocale]
-        : `[${rootCategory.code}]`
-    );
+    setCategoryLabel(getLabel(category.labels, uiLocale, category.code));
+    setTreeLabel(getLabel(rootCategory.labels, uiLocale, rootCategory.code));
     setTree(rootCategory);
   }, [category]);
 
