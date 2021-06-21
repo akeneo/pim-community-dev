@@ -929,7 +929,7 @@ config:
     pim/menu/resizable:                                  pimui/js/menu/resizable
     pim/menu/user-navigation:                            pimui/js/menu/user-navigation
     pim/menu/logo:                                       pimui/js/menu/logo
-    pim/menu/column:                                     pimui/js/menu/column
+    pim/menu/column:                                     pimui/js/menu/column_new
 
     # Common fields
     pim/form/common/fields/field:                   pimui/js/form/common/fields/field
