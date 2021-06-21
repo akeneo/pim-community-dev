@@ -69,6 +69,10 @@ final class MigrateJobMessagesFromOldQueueCommandIntegration extends TestCase
         $this->connection = $this->get('database_connection');
         $this->jobLauncher = $this->get('akeneo_integration_tests.launcher.job_launcher');
 
+        $this->jobLauncher->flushJobQueue();
+
+        $this->createJobQueueTableIfNeeded();
+        $this->connection->executeQuery('TRUNCATE akeneo_batch_job_execution_queue');
         $this->connection->executeQuery(<<<SQL
         INSERT INTO akeneo_batch_job_instance (id, code, job_name, status, connector, raw_parameters, type)
         VALUES (1, 'test', '', 0, '', '', '');
@@ -112,5 +116,27 @@ final class MigrateJobMessagesFromOldQueueCommandIntegration extends TestCase
         $query = 'SELECT count(id) FROM akeneo_batch_job_execution_queue WHERE consumer IS NULL';
 
         return (int) $this->connection->executeQuery($query)->fetchColumn();
+    }
+
+    private function createJobQueueTableIfNeeded(): void
+    {
+        $showTables = $this->get('database_connection')->executeQuery(
+            "SHOW TABLES LIKE 'akeneo_batch_job_execution_queue';"
+        );
+        if (1 <= $showTables->rowCount()) {
+            return;
+        }
+
+        $this->get('database_connection')->executeQuery(<<<SQL
+        create table akeneo_batch_job_execution_queue
+        (
+            id               int auto_increment primary key,
+            job_execution_id int          null,
+            options          json         null,
+            consumer         varchar(255) null,
+            create_time      datetime     null,
+            updated_time     datetime     null
+        ) collate = utf8mb4_unicode_ci;
+        SQL);
     }
 }
