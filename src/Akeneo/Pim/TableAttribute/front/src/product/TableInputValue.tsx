@@ -5,8 +5,9 @@ import {getLabel, useUserContext} from '@akeneo-pim-community/shared';
 import { TableFooter } from "./TableFooter";
 import styled from "styled-components";
 import { TableValueWithId } from "./TableFieldApp";
+import {useTranslate} from '@akeneo-pim-community/legacy-bridge';
 
-const TABLE_VALUE_ITEMS_PER_PAGE = [2, 5, 10, 20, 50, 100];
+const TABLE_VALUE_ITEMS_PER_PAGE = [10, 20, 50, 100];
 
 const CenteredHelper = styled.div`
   text-align: center;
@@ -28,6 +29,7 @@ const TableInputValue: React.FC<TableInputValueProps> = ({valueData, tableConfig
     onChange(newTableValue);
   };
 
+  const translate = useTranslate();
   const userContext = useUserContext();
   const [itemsPerPage, setItemsPerPage] = React.useState<number>(TABLE_VALUE_ITEMS_PER_PAGE[0]);
   const [currentPage, setCurrentPage] = React.useState<number>(0);
@@ -39,7 +41,7 @@ const TableInputValue: React.FC<TableInputValueProps> = ({valueData, tableConfig
   if (isSearching) {
     filteredData = valueData.filter(row => {
       return tableConfiguration.map(columnDefinition => columnDefinition.code).some(columnCode => {
-        return (`${row[columnCode] || ''}`).indexOf(searchText) >= 0;
+        return cellMatchSearch(`${row[columnCode]}`);
       });
     })
     valueDataPage = filteredData.slice(0, itemsPerPage);
@@ -49,16 +51,8 @@ const TableInputValue: React.FC<TableInputValueProps> = ({valueData, tableConfig
     return isSearching && cellAsString.indexOf(searchText) >= 0;
   }
 
-  if (isSearching) {
-    valueDataPage = valueData.filter(row => {
-      return tableConfiguration.map(columnDefinition => columnDefinition.code).some(columnCode => {
-        return cellMatchSearch(`${row[columnCode]}`);
-      });
-    }).slice(0, itemsPerPage);
-  }
-
   return (
-    <div style={{marginBottom: 500, width: 1000}}>
+    <div style={{width: 1000}}>
       <TableInput>
         <TableInput.Header>
           {tableConfiguration.map(columnDefinition => (
@@ -113,7 +107,7 @@ const TableInputValue: React.FC<TableInputValueProps> = ({valueData, tableConfig
       {isSearching && valueDataPage.length === 0 &&
       <CenteredHelper>
         <AddingValueIllustration size={120} />
-        No results!
+        {translate('pim_table_attribute.form.product.no_search_result')}
       </CenteredHelper>
       }
       <TableFooter

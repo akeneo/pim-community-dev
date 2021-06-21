@@ -10,6 +10,7 @@ import {
 } from "akeneo-design-system";
 import { TABLE_VALUE_ITEMS_PER_PAGE } from "./TableInputValue";
 import styled from "styled-components";
+import {useTranslate} from '@akeneo-pim-community/legacy-bridge';
 
 const TableFooterContainer = styled.div`
   display: flex;  
@@ -46,6 +47,7 @@ const TableFooter: React.FC<TableFooterProps> = ({
   setItemsPerPage,
 }) => {
   const [isItemsPerPageOpen, openItemsPerPage, closeItemsPerPage] = useBooleanState();
+  const translate = useTranslate();
 
   const handleChangeItemsPerPage = (itemsPerPageChoice: number) => {
     setItemsPerPage(itemsPerPageChoice);
@@ -56,10 +58,10 @@ const TableFooter: React.FC<TableFooterProps> = ({
   return <TableFooterContainer>
     <TableFooterElement grow={false}>
       <Dropdown>
-        <SwitcherButton label={'Items per page'} onClick={openItemsPerPage}>{itemsPerPage}</SwitcherButton>
+        <SwitcherButton label={translate('pim_table_attribute.form.items_per_page')} onClick={openItemsPerPage}>{itemsPerPage}</SwitcherButton>
         {isItemsPerPageOpen && <Dropdown.Overlay verticalPosition="down" onClose={close}>
           <Dropdown.Header>
-            <Dropdown.Title>Items per page</Dropdown.Title>
+            <Dropdown.Title>{translate('pim_table_attribute.form.items_per_page')}</Dropdown.Title>
           </Dropdown.Header>
           <Dropdown.ItemCollection>
             {TABLE_VALUE_ITEMS_PER_PAGE.map(itemsPerPageChoice => {
@@ -74,17 +76,28 @@ const TableFooter: React.FC<TableFooterProps> = ({
       </Dropdown>
     </TableFooterElement>
     <TableFooterElement grow={true}>
-      {Math.min(itemsPerPage * currentPage + 1, rowsCount)}-{Math.min(itemsPerPage * (currentPage + 1), rowsCount)} of {rowsCount} items
+      {
+        translate('pim_table_attribute.form.current_items', {
+          minItem: Math.min(itemsPerPage * currentPage + 1, rowsCount),
+          maxItem: Math.min(itemsPerPage * (currentPage + 1), rowsCount),
+          itemCount: rowsCount,
+        })
+      }
     </TableFooterElement>
     <TableFooterElement grow={false}>
-      Page {currentPage + 1} / {Math.ceil(rowsCount / itemsPerPage)}
+      {
+        translate('pim_table_attribute.form.current_page', {
+          currentPage: currentPage + 1
+          pageCount: Math.ceil(rowsCount / itemsPerPage),
+        })
+      }
     </TableFooterElement>
     <IconContainer>
       <IconButton
         ghost="borderless"
         level="tertiary"
         icon={<ArrowLeftIcon/>}
-        title={'Gauche'}
+        title={translate('pim_common.previous'}
         onClick={() => setCurrentPage(currentPage - 1)}
         disabled={currentPage <= 0}
       />
@@ -92,7 +105,7 @@ const TableFooter: React.FC<TableFooterProps> = ({
         ghost="borderless"
         level="tertiary"
         icon={<ArrowRightIcon/>}
-        title={'Droite'}
+        title={translate('pim_common.next')}
         onClick={() => setCurrentPage(currentPage + 1)}
         disabled={currentPage >= (Math.ceil(rowsCount / itemsPerPage) - 1)}
       />

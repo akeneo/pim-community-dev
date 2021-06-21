@@ -54,7 +54,7 @@ class TableField extends (Field as {new (config: any): any}) {
 
     Promise.all(promises).then(() => {
       this.getTemplateContext().then((templateContext: TemplateContext) => {
-        const valueData = templateContext.value.data;
+        const valueData = templateContext.value.data || [];
         const handleChange = (value: TableValue) => {
           this.setCurrentValue(value);
         };
@@ -72,8 +72,6 @@ class TableField extends (Field as {new (config: any): any}) {
           </DependenciesProvider>,
           this.el
         );
-
-        //this.delegateEvents();
       });
     });
 

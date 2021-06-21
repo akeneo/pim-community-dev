@@ -28,14 +28,13 @@ const TableFieldApp: React.FC<TableFieldAppProps> = ({
   onChange,
   elements,
 }) => {
-  const valueClone: TableValueWithId = valueData.map(row => {
+  const [tableValue, setTableValue] = React.useState<TableValueWithId>(valueData.map(row => {
     return Object.keys(row).reduce((previousRow, columnCode) => {
       previousRow[columnCode] = row[columnCode];
 
       return previousRow;
     }, {'unique id': uuid()});
   });
-  const [tableValue, setTableValue] = React.useState<TableValueWithId>(valueClone);
   const [searchText, setSearchText] = React.useState<string>('');
 
   const renderElements: (position: string) => React.ReactNode = (position) => {

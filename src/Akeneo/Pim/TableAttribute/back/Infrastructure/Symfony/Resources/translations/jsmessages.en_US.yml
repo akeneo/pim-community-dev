@@ -18,6 +18,11 @@ pim_table_attribute:
             empty_subtitle: Add new columns to define your table composition
             unique_title: Your table attribute is almost ready!
             unique_subtitle: You need 2 columns minimum for your attribute to be valid.
+        product:
+            items_per_page: Items per page
+            current_items: "{{ minItem }}-{{ maxItem }} of {{ itemCount }}"
+            current_page: "Page {{ currentPage }} / {{ pageCount }}"
+            no_search_result: "Sorry, there are no lines for your search!"
     properties:
         data_type:
             text: Text
