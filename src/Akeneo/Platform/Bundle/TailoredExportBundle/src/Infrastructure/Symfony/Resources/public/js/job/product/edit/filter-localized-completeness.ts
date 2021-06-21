@@ -1,7 +1,7 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
 import {ThemeProvider} from 'styled-components';
-import {LocaleCode, Channel} from '@akeneo-pim-community/shared';
+import {LocaleCode, Channel, ValidationError, filterErrors} from '@akeneo-pim-community/shared';
 import {pimTheme} from 'akeneo-design-system';
 import {DependenciesProvider} from '@akeneo-pim-community/legacy-bridge';
 import {Attribute, CompletenessFilter, FetcherContext, Operator} from '@akeneo-pim-enterprise/tailored-export';
@@ -12,6 +12,8 @@ const BaseCompletenessFilter = require('pim/filter/product/completeness');
 const fetcherRegistry = require('pim/fetcher-registry');
 
 class FilterLocalizedCompleteness extends BaseCompletenessFilter {
+  private validationErrors: ValidationError[] = [];
+
   /**
    * {@inheritdoc}
    */
@@ -34,6 +36,10 @@ class FilterLocalizedCompleteness extends BaseCompletenessFilter {
    * {@inheritdoc}
    */
   configure() {
+    this.listenTo(this.parentForm.getRoot(), 'pim_enrich:form:entity:pre_save', () => this.setValidationErrors([]));
+    this.listenTo(this.parentForm.getRoot(), 'pim_enrich:form:entity:bad_request', (event: any) =>
+      this.setValidationErrors(event.response.normalized_errors)
+    );
     this.listenTo(this.getRoot(), 'pim_enrich:form:entity:pre_update', (data: unknown) => {
       _.defaults(data, {
         field: this.getCode(),
@@ -44,6 +50,11 @@ class FilterLocalizedCompleteness extends BaseCompletenessFilter {
     });
 
     return BaseFilter.prototype.configure.apply(this, arguments);
+  }
+
+  setValidationErrors(validationErrors: ValidationError[]) {
+    this.validationErrors = validationErrors;
+    this.postRender();
   }
 
   /**
@@ -90,6 +101,10 @@ class FilterLocalizedCompleteness extends BaseCompletenessFilter {
               },
             },
             React.createElement(CompletenessFilter, {
+              // availableOperators: this.config.operators,
+              // filter: this.getFormData,
+              // onFilterChange: this.setData,
+
               operator: this.getFormData().operator,
               locales: this.getFormData()?.context.locales ?? [],
               onOperatorChange: (operator: Operator) => {
@@ -112,20 +127,14 @@ class FilterLocalizedCompleteness extends BaseCompletenessFilter {
 
                 this.render();
               },
-              validationErrors: [],
+              // TODO: Find a way to get rid of the [2] part below
+              validationErrors: filterErrors(this.validationErrors, '[filters][data][2]'),
             })
           )
         )
       ),
       this.$('.completeness-filter-container')[0]
     );
-  }
-
-  /**
-   * {@inheritdoc}
-   */
-  isEmpty() {
-    return this.config.neverEmpty ? false : 'ALL' === this.getOperator();
   }
 }
 

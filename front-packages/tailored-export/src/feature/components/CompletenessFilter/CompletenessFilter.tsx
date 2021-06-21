@@ -28,7 +28,7 @@ const CompletenessFilter = ({
   validationErrors,
 }: CompletenessFilterProps) => {
   const operatorErrors = filterErrors(validationErrors, '[operator]');
-  const localesErrors = filterErrors(validationErrors, '[locales]');
+  const localesErrors = filterErrors(validationErrors, '[context][locales]');
 
   return (
     <Container>

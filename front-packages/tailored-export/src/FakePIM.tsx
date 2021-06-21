@@ -20,6 +20,7 @@ import {
   useTranslate,
   ValidationError,
   LocaleCode,
+  filterErrors,
 } from '@akeneo-pim-community/shared';
 import {ColumnConfiguration} from './feature/models/ColumnConfiguration';
 import {Operator} from './feature';
@@ -232,7 +233,7 @@ const FakePIM = () => {
               locales={['fr_FR']}
               onOperatorChange={handleCompletenessOperatorFilterChange}
               onLocalesChange={handleCompletenessLocalesFilterChange}
-              validationErrors={validationErrors}
+              validationErrors={filterErrors(validationErrors, '[filters][data][2]')}
             />
           </FieldContainer>
         )}

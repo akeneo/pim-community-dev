@@ -1,6 +1,6 @@
 import React from 'react';
 import {act, screen} from '@testing-library/react';
-import {Channel, renderWithProviders, ValidationError} from '@akeneo-pim-community/shared';
+import {Channel, renderWithProviders} from '@akeneo-pim-community/shared';
 import {CompletenessFilter, Operator} from './CompletenessFilter';
 import {FetcherContext} from '../../contexts';
 import {Attribute} from '../../models';
