@@ -1,7 +1,9 @@
-import React from 'react';
+import React, {useState} from 'react';
 import {PageContent, PageHeader, PimView, useTranslate} from '@akeneo-pim-community/shared';
 import {Breadcrumb, Button, Field, Helper, Table, TagInput, SurveyIllustration, Badge} from 'akeneo-design-system';
 import styled from 'styled-components';
+import {InvitedUser} from './models';
+import {useInvitedUsers} from './hooks';
 
 const FieldContent = styled.div`
   display: flex;
@@ -10,6 +12,10 @@ const FieldContent = styled.div`
 const TagInputContainer = styled.div`
   flex: 1;
   margin-right: 10px;
+`;
+
+const DivContainer = styled.div`
+  font-size: 15px;
 `;
 
 const FieldContainer = styled(Field)`
@@ -23,25 +29,30 @@ const IllustrationContainer = styled.div`
   margin: 0 auto;
 `;
 
-type User = {
-  email: string;
-  status: 'invited' | 'active';
-};
-
 const InviteUserApp = () => {
   const translate = useTranslate();
+  const [newInvitedUsers, setNewInvitedUsers] = useState<string[]>([]);
+  const {invitedUsers, addInvitedUsers} = useInvitedUsers();
 
-  const users: User[] = [
-    {email: 'test@test.com', status: 'invited'},
-    {email: 'test1@test1.com', status: 'active'},
-    {email: 'test2@test2.com', status: 'invited'},
-    {email: 'test3@test3.com', status: 'active'},
-  ];
+  const addNewUsers = () => {
+    addInvitedUsers(newInvitedUsers);
+
+    setNewInvitedUsers([]);
+  };
+
+  const handleInvitedUsersChange = (emails: string[]) => {
+    const validEmails = emails.filter((email: string) => {
+      return email.match(/^[a-zA-Z0-9.!#$%&'*+/=?^_`{|}~-]+@[a-zA-Z0-9-]+(?:\.[a-zA-Z0-9-]+)*$/);
+    })
+    setNewInvitedUsers(validEmails);
+  }
 
   return (
     <>
       <PageHeader>
-        <PageHeader.Title>{translate('free_trial.invite_users.title', {count: 0}, 0)}</PageHeader.Title>
+        <PageHeader.Title>
+          {translate('free_trial.invite_users.title', {count: invitedUsers.length}, invitedUsers.length)}
+        </PageHeader.Title>
         <PageHeader.Breadcrumb>
           <Breadcrumb>
             <Breadcrumb.Step>{translate('free_trial.invite_users.breadcrumb')}</Breadcrumb.Step>
@@ -62,9 +73,9 @@ const InviteUserApp = () => {
         <FieldContainer label={translate('free_trial.invite_users.invite_input_label')}>
           <FieldContent>
             <TagInputContainer>
-              <TagInput onChange={() => {}} value={[]} />
+              <TagInput onChange={handleInvitedUsersChange} value={newInvitedUsers} />
             </TagInputContainer>
-            <Button ghost level="tertiary" onClick={() => {}}>
+            <Button ghost level="tertiary" disabled={newInvitedUsers.length < 1} onClick={() => addNewUsers()}>
               {translate('pim_common.add')}
             </Button>
           </FieldContent>
@@ -75,20 +86,23 @@ const InviteUserApp = () => {
             <Table.HeaderCell>{translate('free_trial.invite_users.users_list.headers.status')}</Table.HeaderCell>
           </Table.Header>
           <Table.Body>
-            {users.map(user => (
-              <Table.Row key={user.email}>
-                <Table.Cell rowTitle>{user.email}</Table.Cell>
-                <Table.Cell>
-                  <Badge level={user.status === 'active' ? 'primary' : 'tertiary'}>{user.status}</Badge>
-                </Table.Cell>
-              </Table.Row>
-            ))}
+            {invitedUsers &&
+              invitedUsers.map((invitedUser: InvitedUser) => (
+                <Table.Row key={invitedUser.email}>
+                  <Table.Cell rowTitle>{invitedUser.email}</Table.Cell>
+                  <Table.Cell>
+                    <Badge level={invitedUser.status === 'active' ? 'primary' : 'tertiary'}>{invitedUser.status}</Badge>
+                  </Table.Cell>
+                </Table.Row>
+              ))}
           </Table.Body>
         </Table>
-        {users.length === 0 && (
+        {invitedUsers && invitedUsers.length === 0 && (
           <IllustrationContainer>
             <SurveyIllustration />
-            <div>{translate('free_trial.invite_users.users_list.empty_list_message')}</div>
+            <DivContainer>
+              <div>{translate('free_trial.invite_users.users_list.empty_list_message')}</div>
+            </DivContainer>
           </IllustrationContainer>
         )}
       </PageContent>

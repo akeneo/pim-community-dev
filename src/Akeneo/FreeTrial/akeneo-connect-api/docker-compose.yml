@@ -1,0 +1,14 @@
+version: "3.7"
+services:
+  akeneo-connect-api:
+    image: akeneo-connect-api:dev
+    build:
+      context: src/Akeneo/FreeTrial/akeneo-connect-api/
+      dockerfile: Dockerfile
+    ports:
+      - "${DOCKER_PORT_AKENEO_CONNECT_API:-3030}:3000"
+    networks:
+      - 'pim'
+
+networks:
+  pim:
