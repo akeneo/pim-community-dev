@@ -31,7 +31,6 @@ final class ColumnCode
     public static function fromString(string $code): self
     {
         Assert::stringNotEmpty($code);
-        // @todo: validate the format
 
         return new self($code);
     }

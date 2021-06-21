@@ -12,7 +12,6 @@ final class TableFieldProvider implements FieldProviderInterface
      */
     public function getField($attribute): string
     {
-        // TODO Change this
         return 'akeneo-table-field';
     }
 

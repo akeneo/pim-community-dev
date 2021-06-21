@@ -2,7 +2,7 @@ pim_table_attribute:
     form:
         attribute:
             tab:
-                # TODO Right wording?
+                # TODO Change to table structure
                 table_options: Table options
             table_attribute: Table attribute
             add_column: Add a new column
