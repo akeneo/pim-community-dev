@@ -34,14 +34,15 @@ type TableInputProps = Override<
   React.HTMLAttributes<HTMLTableElement>,
   {
     /**
-     * TODO.
+     * The children of a TableInput. Ideally it should be `TableInput.Header` or `TableInput.Body`, but you can also
+     * use `thead` or `tbody`.
      */
     children?: ReactNode;
   }
 >;
 
 /**
- * TODO.
+ * Table input allows the user to input content in a table.
  */
 const TableInput = ({children, ...rest}: TableInputProps) => {
   const [shadowed, setShadowed] = React.useState<boolean>(false);
