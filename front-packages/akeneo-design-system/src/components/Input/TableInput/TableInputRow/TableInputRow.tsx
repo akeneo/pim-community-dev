@@ -1,7 +1,7 @@
-import styled from "styled-components";
-import React, { forwardRef, HTMLAttributes, Ref } from "react";
-import { Override } from "../../../../shared";
-import { getColor } from "../../../../theme";
+import styled from 'styled-components';
+import React, {forwardRef, HTMLAttributes, Ref} from 'react';
+import {Override} from '../../../../shared';
+import {getColor} from '../../../../theme';
 
 const TableInputTr = styled.tr`
   height: 40px;
@@ -18,17 +18,15 @@ const TableInputTr = styled.tr`
   }
 `;
 
-type TableInputRowProps = Override<
-  HTMLAttributes<HTMLTableRowElement>,
-  {}
->;
-
-const TableInputRow = forwardRef<HTMLTableRowElement, TableInputRowProps>(
-  ({children, ...rest}: TableInputRowProps, forwardedRef: Ref<HTMLTableRowElement>) => {
-  return <TableInputTr ref={forwardedRef} {...rest}>
-    {children}
-  </TableInputTr>;
-});
+const TableInputRow = forwardRef<HTMLTableRowElement, HTMLAttributes<HTMLTableRowElement>>(
+  ({children, ...rest}: HTMLAttributes<HTMLTableRowElement>, forwardedRef: Ref<HTMLTableRowElement>) => {
+    return (
+      <TableInputTr ref={forwardedRef} {...rest}>
+        {children}
+      </TableInputTr>
+    );
+  }
+);
 
 TableInputRow.displayName = 'TableInput.Row';
 
