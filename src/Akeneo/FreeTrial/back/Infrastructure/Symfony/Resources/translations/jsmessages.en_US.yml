@@ -26,3 +26,6 @@ free_trial:
         invitation_already_sent:
           title: Invitation already sent
           description: Invitations with a link to join Akeneo PIM Free Trial have already been sent to some users. Let them know about it!
+
+pim_title:
+  akeneo_invite_user: Invite users
