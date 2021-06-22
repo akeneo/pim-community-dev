@@ -7,7 +7,7 @@ namespace Akeneo\Tool\Component\Connector\Writer;
 use Box\Spout\Common\Helper\GlobalFunctionsHelper as SpoutGlobalFunctionsHelper;
 
 /**
- * @todo CPM-248
+ * @todo CPM-248 remove this class
  */
 class GlobalFunctionsHelper extends SpoutGlobalFunctionsHelper
 {
