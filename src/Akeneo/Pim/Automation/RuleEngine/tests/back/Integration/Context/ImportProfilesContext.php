@@ -25,7 +25,7 @@ use Behat\Behat\Context\Context;
 use Behat\Gherkin\Node\PyStringNode;
 use Behat\Gherkin\Node\TableNode;
 use Box\Spout\Common\Type;
-use Box\Spout\Writer\WriterFactory;
+use Akeneo\Tool\Component\Connector\Writer\WriterFactory;
 use Symfony\Component\Security\Core\User\UserProviderInterface;
 
 /**

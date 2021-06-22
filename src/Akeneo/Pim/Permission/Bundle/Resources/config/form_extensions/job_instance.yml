@@ -294,3 +294,47 @@ extensions:
             identifier:
                 path: code
                 name: code
+
+    pim-job-instance-csv-asset-import-edit-permission:
+        module: pimee/common/tab/permission
+        parent: pim-job-instance-csv-asset-import-edit-tabs
+        targetZone: container
+        aclResourceId: pimee_importexport_import_profile_edit_permissions
+        position: 110
+        config:
+            title: pim_common.permissions
+            entity: job_instance
+            tabCode: pim-job-instance-permission
+
+    pim-job-instance-xlsx-asset-import-edit-permission:
+        module: pimee/common/tab/permission
+        parent: pim-job-instance-xlsx-asset-import-edit-tabs
+        targetZone: container
+        aclResourceId: pimee_importexport_import_profile_edit_permissions
+        position: 110
+        config:
+            title: pim_common.permissions
+            entity: job_instance
+            tabCode: pim-job-instance-permission
+
+    pim-job-instance-csv-reference-entity-record-import-edit-permission:
+        module: pimee/common/tab/permission
+        parent: pim-job-instance-csv-reference-entity-record-import-edit-tabs
+        targetZone: container
+        aclResourceId: pimee_importexport_import_profile_edit_permissions
+        position: 110
+        config:
+            title: pim_common.permissions
+            entity: job_instance
+            tabCode: pim-job-instance-permission
+
+    pim-job-instance-xlsx-reference-entity-record-import-edit-permission:
+        module: pimee/common/tab/permission
+        parent: pim-job-instance-xlsx-reference-entity-record-import-edit-tabs
+        targetZone: container
+        aclResourceId: pimee_importexport_import_profile_edit_permissions
+        position: 110
+        config:
+            title: pim_common.permissions
+            entity: job_instance
+            tabCode: pim-job-instance-permission
