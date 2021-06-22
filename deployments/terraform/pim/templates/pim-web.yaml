@@ -49,8 +49,10 @@ spec:
         - name: init-httpd
           image:  {{ template "pim.imageNameAndTag" . }}
           imagePullPolicy: {{ .Values.image.pim.pullPolicy | quote }}
-          command: ['sh', '-c', 'cp -p -r -f /srv/pim/public/* /srv/pim/public/.htaccess /web-src/. && mkdir -p /connectors-web-src/bigcommerce/back/public &&  cp -p -r -f /srv/pim/connectors/bigcommerce/back/public/* /connectors-web-src/bigcommerce/back/public/. && mkdir -p /connectors-web-src/bigcommerce/front && cp -p -r -f /srv/pim/connectors/bigcommerce/front/* /connectors-web-src/bigcommerce/front/.']
+          command: ["bash", "/scripts-dir/copy-web-entrypoint-files-to-httpd-mouting-point.sh"]
           volumeMounts:
+            - name: pim-scripts
+              mountPath: /scripts-dir
             - name: web-src
               mountPath: /web-src
             - name: connectors-web-src
@@ -163,6 +165,9 @@ spec:
               port: httpd
             timeoutSeconds: 5
       volumes:
+        - name: pim-scripts
+          configMap:
+            name:  pim-scripts
         - name: connectors-web-src
           emptyDir: {}
         - name: web-src
