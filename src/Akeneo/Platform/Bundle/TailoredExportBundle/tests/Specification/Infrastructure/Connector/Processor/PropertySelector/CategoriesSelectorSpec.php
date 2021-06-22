@@ -32,10 +32,8 @@ class CategoriesSelectorSpec extends ObjectBehavior
         $this->supports(['type' => 'unknown'], 'categories')->shouldReturn(false);
     }
 
-    public function it_selects_the_code(
-        GetCategoryTranslations $getCategoryTranslations,
-        CategoryAwareInterface $entity
-    ) {
+    public function it_selects_the_code(CategoryAwareInterface $entity)
+    {
         $entity->getCategoryCodes()->willReturn(['shoes', 'men']);
 
         $this->applySelection(['type' => 'code', 'separator' => ','], $entity)->shouldReturn('shoes,men');
