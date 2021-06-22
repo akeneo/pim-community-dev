@@ -2,7 +2,7 @@ import React, {useState} from 'react';
 import {Collapse} from 'akeneo-design-system';
 import {filterErrors, useTranslate, ValidationError} from '@akeneo-pim-community/shared';
 import {Attribute, Source} from '../../../models';
-import {NoOperationsPlaceholder} from './NoOperationsPlaceholder';
+import {NoOperationsPlaceholder} from '../NoOperationsPlaceholder';
 import {AttributeSelector} from './AttributeSelector/AttributeSelector';
 
 type AttributeOperationsProps = {

@@ -11,6 +11,26 @@ jest.mock('./PropertySelector', () => ({
   ),
 }));
 
+test.each(['enabled'])('it renders a no operations placeholder for "%s" property', propertyName => {
+  const onSourceChange = jest.fn();
+
+  const source: Source = {
+    uuid: '22',
+    code: propertyName,
+    channel: null,
+    locale: null,
+    operations: [],
+    selection: {type: 'code'},
+    type: 'property',
+  };
+
+  renderWithProviders(<PropertyOperations source={source} validationErrors={[]} onSourceChange={onSourceChange} />);
+
+  expect(
+    screen.getByText('akeneo.tailored_export.column_details.sources.no_source_configuration.title')
+  ).toBeInTheDocument();
+});
+
 test.each(['categories'])('it renders a selector for "%s" property', propertyName => {
   const onSourceChange = jest.fn();
 
