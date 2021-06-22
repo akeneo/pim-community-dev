@@ -35,7 +35,7 @@ services:
       ASPELL_BINARY_PATH: '${ASPELL_BINARY_PATH:-aspell}'
     volumes:
       - './:/srv/pim'
-      - './deployments/terraform/pim/pim-config/fpm.conf:/etc/php/7.4/fpm/pool.d/zzz-akeneo.conf'
+      - './docker/fpm.conf:/etc/php/7.4/fpm/pool.d/zzz-akeneo.conf'
     working_dir: '/srv/pim'
     command: 'php-fpm -F'
     networks:
@@ -75,7 +75,7 @@ services:
       - '${DOCKER_PORT_HTTPS:-8443}:443'
     volumes:
       - './:/srv/pim:ro'
-      - './deployments/terraform/pim/pim-config/httpd.conf:/usr/local/apache2/conf/httpd.conf:ro'
+      - './docker/httpd.conf:/usr/local/apache2/conf/httpd.conf:ro'
       - './docker/akeneo.conf:/usr/local/apache2/conf/vhost.conf:ro'
       - './docker/server.crt:/usr/local/apache2/conf/server.crt:ro'
       - './docker/server.key:/usr/local/apache2/conf/server.key:ro'
