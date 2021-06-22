@@ -1,6 +1,7 @@
 import React from 'react';
 import {ValidationError} from '@akeneo-pim-community/shared';
-import {Selection, CodeLabelCollectionSelection} from '../../../models';
+import {Selection, CodeLabelCollectionSelection, CodeLabelSelection} from '../../../models';
+import {CodeLabelSelector} from '../Selector/CodeLabelSelector';
 import {CodeLabelCollectionSelector} from '../Selector/CodeLabelCollectionSelector';
 
 type PropertySelectorProps = {
@@ -12,6 +13,14 @@ type PropertySelectorProps = {
 
 const PropertySelector = ({propertyName, selection, validationErrors, onSelectionChange}: PropertySelectorProps) => {
   switch (propertyName) {
+    case 'family':
+      return (
+        <CodeLabelSelector
+          selection={selection as CodeLabelSelection}
+          validationErrors={validationErrors}
+          onSelectionChange={onSelectionChange}
+        />
+      );
     case 'categories':
       return (
         <CodeLabelCollectionSelector

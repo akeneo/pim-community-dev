@@ -58,7 +58,7 @@ final class GetGroupedSourcesAction
         $fields = [
             'categories',
             // 'enabled',
-            // 'family',
+            'family',
             // 'parent',
             // 'groups',
             // 'family_variant',

@@ -35,6 +35,7 @@ $rules = [
             'Akeneo\AssetManager\Infrastructure\PublicApi\Enrich\FindAssetLabelTranslation',
             'Akeneo\Channel\Component\Query\PublicApi\ChannelExistsWithLocaleInterface',
             'Akeneo\Pim\Structure\Component\Query\PublicApi',
+            'Akeneo\Pim\Enrichment\Component\Product\Model\EntityWithFamilyInterface',
             'Akeneo\Pim\Enrichment\Component\Product\Model\ValueInterface',
             'Akeneo\Pim\Enrichment\Component\Product\Query\ProductQueryBuilderFactoryInterface',
             'Akeneo\Pim\Enrichment\Component\Product\Model\ProductInterface',
@@ -42,7 +43,6 @@ $rules = [
             'Akeneo\Pim\Enrichment\Component\Product\Query\Filter\Operators',
             'Akeneo\Pim\Permission\Bundle\User\UserContext',
             'Akeneo\ReferenceEntity\Infrastructure\PublicApi\Enrich\FindRecordsLabelTranslations',
-            'Akeneo\Tool\Bundle\MeasureBundle\PublicApi\GetUnitTranslations',
         ]
     )->in('Akeneo\Platform\TailoredExport'),
 ];

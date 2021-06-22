@@ -10,3 +10,10 @@ services:
       - '@akeneo.pim.structure.query.get_category_translations'
     tags:
       - { name: akeneo.tailored_export.property_selector }
+
+  Akeneo\Platform\TailoredExport\Infrastructure\Connector\Processor\PropertySelector\FamilySelector:
+    public: true
+    arguments:
+      - '@akeneo.pim.structure.query.get_family_translations'
+    tags:
+      - { name: akeneo.tailored_export.property_selector }

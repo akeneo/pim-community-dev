@@ -68,7 +68,7 @@ class ProductExportProcessor implements ItemProcessorInterface, StepExecutionAwa
                         $attribute,
                         $value
                     );
-                } else if (SourceTypes::PROPERTY === $source['type']) {
+                } elseif (SourceTypes::PROPERTY === $source['type']) {
                     $operationSourceValues[] = $this->propertySelectorRegistry->applyPropertySelection(
                         $source['selection'],
                         $product,

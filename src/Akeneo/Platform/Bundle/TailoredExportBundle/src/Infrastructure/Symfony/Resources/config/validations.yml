@@ -32,6 +32,7 @@ services:
         pim_catalog_asset_collection: '@akeneo.tailored_export.validation.source.code_label_collection_selection.constraint'
       -
         categories: '@akeneo.tailored_export.validation.source.code_label_collection_selection.constraint'
+        family: '@akeneo.tailored_export.validation.source.code_label_selection.constraint'
     tags:
       - { name: validator.constraint_validator, alias: akeneo.tailored_export.validation.source }
     public: true
