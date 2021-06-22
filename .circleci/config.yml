@@ -148,7 +148,7 @@ jobs:
           - add_ssh_keys:
               fingerprints:
                   - "1f:25:f8:bb:59:52:95:f6:e2:f2:97:2f:30:d4:e9:66"
-          - checkout_bigcommerce_connector:
+          - connector_bigcommerce_checkout_steps:
                 is_pull_request: << parameters.is_pull_request >>
           - set_gcloud_config_dev
           - when:
@@ -285,7 +285,7 @@ jobs:
           cd /home/circleci/project
           git checkout $CE_COMMIT_HASH
           /home/circleci/ee_project/growth_edition/prepare_growth_edition.sh /home/circleci/project
-    - checkout_bigcommerce_connector:
+    - connector_bigcommerce_checkout_steps:
         is_pull_request: << parameters.is_pull_request >>
     - run:
         name: Build the Growth Edition prod image
@@ -1920,7 +1920,7 @@ commands:
             sudo mv yq_linux_386 /usr/local/bin/yq
             sudo chmod +x /usr/local/bin/yq
 
-  checkout_bigcommerce_connector:
+  connector_bigcommerce_checkout_steps:
       description: "Checkout big commerce connector repository"
       parameters:
           is_pull_request:
@@ -1928,7 +1928,7 @@ commands:
               default: true
       steps:
           - run:
-                name: Ensure to use the ssh key of akeneo-circle-ci account
+                name: BIG COMMERCE CONNECTOR - Ensure to use the ssh key of akeneo-circle-ci account
                 command: |
                     ssh-add -D
                     ssh-add ~/.ssh/id_rsa_1f25f8bb595295f6e2f2972f30d4e966
@@ -1936,7 +1936,7 @@ commands:
               condition: << parameters.is_pull_request >>
               steps:
                   - run:
-                      name: Get connector branch if the same branch exists
+                      name: BIG COMMERCE CONNECTOR - Get connector branch if the same branch exists than the PIM one
                       command: |
                           if git ls-remote --exit-code --heads git@github.com:akeneo/bigcommerce-connector.git ${CIRCLE_BRANCH}; then
                             CONNECTOR_BC_BRANCH=${CIRCLE_BRANCH}
@@ -1947,17 +1947,17 @@ commands:
                           echo export CONNECTOR_BC_BRANCH=${CONNECTOR_BC_BRANCH} >> $BASH_ENV
           - when:
               condition:
-                not: << parameters.is_pull_request >>
+                  not: << parameters.is_pull_request >>
               steps:
                   - run:
-                      name: Get last tagged connector version ready for production
+                      name: BIG COMMERCE CONNECTOR - Get last tagged connector version ready for production
                       command: |
                           #TODO Retrieve last tagged version for production
                           CONNECTOR_BC_BRANCH=master
 
                           echo export CONNECTOR_BC_BRANCH=${CONNECTOR_BC_BRANCH} >> $BASH_ENV
           - run:
-              name: Checkout BigCommerce Connector
+              name: BIG COMMERCE CONNECTOR - Checkout BigCommerce Connector
               working_dir: ~/project
               command: |
                   mkdir -p tmp
