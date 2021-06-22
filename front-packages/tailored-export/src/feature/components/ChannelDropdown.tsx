@@ -1,5 +1,5 @@
-import React from 'react';
-import {Field, Helper, SelectInput} from 'akeneo-design-system';
+import React, {ReactElement} from 'react';
+import {Field, Helper, HelperProps, SelectInput} from 'akeneo-design-system';
 import {
   Channel,
   ChannelCode,
@@ -14,9 +14,10 @@ type ChannelDropdownProps = {
   channels: Channel[];
   validationErrors: ValidationError[];
   onChange: (updatedValue: ChannelCode) => void;
+  children?: ReactElement<HelperProps> | null | false;
 };
 
-const ChannelDropdown = ({value, channels, validationErrors, onChange}: ChannelDropdownProps) => {
+const ChannelDropdown = ({value, children, channels, validationErrors, onChange}: ChannelDropdownProps) => {
   const translate = useTranslate();
   const userContext = useUserContext();
 
@@ -39,6 +40,7 @@ const ChannelDropdown = ({value, channels, validationErrors, onChange}: ChannelD
           </SelectInput.Option>
         ))}
       </SelectInput>
+      {children}
       {validationErrors.map((error, index) => (
         <Helper key={index} inline={true} level="error">
           {translate(error.messageTemplate, error.parameters)}

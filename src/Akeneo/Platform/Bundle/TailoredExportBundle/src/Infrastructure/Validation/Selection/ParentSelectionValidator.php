@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace Akeneo\Platform\TailoredExport\Infrastructure\Validation\Selection;
 
 use Akeneo\Platform\TailoredExport\Domain\SelectionTypes;
+use Akeneo\Platform\TailoredExport\Infrastructure\Validation\ChannelShouldExist;
 use Akeneo\Platform\TailoredExport\Infrastructure\Validation\LocaleShouldBeActive;
 use Symfony\Component\Validator\Constraint;
 use Symfony\Component\Validator\Constraints\Choice;
@@ -13,8 +14,9 @@ use Symfony\Component\Validator\Constraints\NotBlank;
 use Symfony\Component\Validator\Constraints\Optional;
 use Symfony\Component\Validator\Constraints\Type;
 use Symfony\Component\Validator\ConstraintValidator;
+use Symfony\Component\Validator\ConstraintViolationInterface;
 
-class CodeLabelSelectionValidator extends ConstraintValidator
+class ParentSelectionValidator extends ConstraintValidator
 {
     public function validate($selection, Constraint $constraint)
     {
@@ -35,6 +37,7 @@ class CodeLabelSelectionValidator extends ConstraintValidator
                                 ]
                             )
                         ],
+                        'channel' => new Optional([new Type(['type' => 'string'])]),
                         'locale' => new Optional([new Type(['type' => 'string'])]),
                     ],
                 ]
@@ -42,6 +45,7 @@ class CodeLabelSelectionValidator extends ConstraintValidator
         ]);
 
         if (0 < $violations->count()) {
+            /** @var ConstraintViolationInterface $violation */
             foreach ($violations as $violation) {
                 $this->context->buildViolation(
                     $violation->getMessage(),
@@ -55,19 +59,21 @@ class CodeLabelSelectionValidator extends ConstraintValidator
         }
 
         if (SelectionTypes::LABEL === $selection['type']) {
-            $violations = $validator->validate($selection['locale'], [
-                new NotBlank(),
-                new LocaleShouldBeActive()
-            ]);
+            $this->context->getValidator()
+                ->inContext($this->context)
+                ->atPath('[channel]')
+                ->validate($selection['channel'], [
+                    new NotBlank(),
+                    new ChannelShouldExist(),
+                ]);
 
-            foreach ($violations as $violation) {
-                $this->context->buildViolation(
-                    $violation->getMessage(),
-                    $violation->getParameters()
-                )
-                    ->atPath('[locale]')
-                    ->addViolation();
-            }
+            $this->context->getValidator()
+                ->inContext($this->context)
+                ->atPath('[locale]')
+                ->validate($selection['locale'], [
+                    new NotBlank(),
+                    new LocaleShouldBeActive(),
+                ]);
         }
     }
 }
