@@ -95,8 +95,11 @@ final class EvaluateAttributeOptionSpelling implements EvaluateCriterionInterfac
             if (empty($optionCodes)) {
                 continue;
             }
-            if (is_string($optionCodes)) {
+            if (is_string($optionCodes)) { //simple select
                 $optionCodes = [$optionCodes];
+            }
+            if (!is_array($optionCodes)) {
+                continue;
             }
 
             if (array_key_exists($attributeCode, $this->optionsByAttribute)) {
