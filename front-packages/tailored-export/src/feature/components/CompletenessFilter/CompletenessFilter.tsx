@@ -28,7 +28,7 @@ type Filter = {
   value: number;
   context: {
     locales: LocaleCode[];
-    channel: ChannelCode | null;
+    scope: ChannelCode | null;
   };
 };
 type CompletenessFilterProps = {
@@ -40,19 +40,19 @@ type CompletenessFilterProps = {
 
 const CompletenessFilter = ({availableOperators, filter, onChange, validationErrors}: CompletenessFilterProps) => {
   const availableChannels = useChannels();
-  const availableLocales = getLocalesFromChannel(availableChannels, filter.context.channel);
+  const availableLocales = getLocalesFromChannel(availableChannels, filter.context.scope);
   const formattedValidationErrors = formatParameters(validationErrors);
   const operatorErrors = filterErrors(formattedValidationErrors, '[operator]');
-  const channelErrors = filterErrors(formattedValidationErrors, '[context][channel]');
+  const scopeErrors = filterErrors(formattedValidationErrors, '[context][scope]');
   const localesErrors = filterErrors(formattedValidationErrors, '[context][locales]');
 
   const handleOperatorChange = (newOperator: Operator) => {
     if (newOperator !== 'ALL') {
       const newLocales = filter.context.locales ?? [];
-      const newChannel = filter.context.channel ?? availableChannels[0].code;
-      onChange({...filter, operator: newOperator, context: {locales: newLocales, channel: newChannel}});
+      const newScope = filter.context.scope ?? availableChannels[0].code;
+      onChange({...filter, operator: newOperator, context: {locales: newLocales, scope: newScope}});
     } else {
-      onChange({...filter, operator: newOperator, context: {locales: [], channel: null}});
+      onChange({...filter, operator: newOperator, context: {locales: [], scope: null}});
     }
   };
   const handleLocalesChange = (newLocales: LocaleCode[]) => {
@@ -66,7 +66,7 @@ const CompletenessFilter = ({availableOperators, filter, onChange, validationErr
     const newLocales = filter.context.locales.filter((localeCode: LocaleCode) =>
       newAvailableLocaleCodes.includes(localeCode)
     );
-    const newFilter = {...filter, context: {channel: newChannel, locales: newLocales}};
+    const newFilter = {...filter, context: {scope: newChannel, locales: newLocales}};
     onChange(newFilter);
   };
 
@@ -81,9 +81,9 @@ const CompletenessFilter = ({availableOperators, filter, onChange, validationErr
       {filter.operator !== 'ALL' && (
         <>
           <ChannelDropdown
-            value={filter.context.channel ?? ''}
+            value={filter.context.scope ?? ''}
             channels={availableChannels ?? []}
-            validationErrors={channelErrors}
+            validationErrors={scopeErrors}
             onChange={handleChannelChange}
           />
           <LocalesSelector
