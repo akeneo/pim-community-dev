@@ -15,12 +15,12 @@ jest.mock('./PropertySelector/ParentSelector', () => ({
   ParentSelector: () => 'This is a parent selector',
 }));
 
-test.each(['parent'])('it renders a code label selector for "%s" property', propertyName => {
+test('it renders a parent selector for the parent property', () => {
     const onSelectionChange = jest.fn();
 
     renderWithProviders(
       <PropertySelector
-        propertyName={propertyName}
+        propertyName='parent'
         selection={{type: 'code'}}
         validationErrors={[]}
         onSelectionChange={onSelectionChange}
