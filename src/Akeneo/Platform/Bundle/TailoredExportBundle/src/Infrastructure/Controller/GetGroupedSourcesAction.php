@@ -61,7 +61,7 @@ final class GetGroupedSourcesAction
             'family',
             // 'parent',
             // 'groups',
-            // 'family_variant',
+            'family_variant',
             // 'identifier',
             // 'created',
             // 'updated',

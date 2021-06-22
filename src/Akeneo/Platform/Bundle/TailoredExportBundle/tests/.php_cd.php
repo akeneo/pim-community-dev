@@ -36,6 +36,7 @@ $rules = [
             'Akeneo\Channel\Component\Query\PublicApi\ChannelExistsWithLocaleInterface',
             'Akeneo\Pim\Structure\Component\Query\PublicApi',
             'Akeneo\Pim\Enrichment\Component\Product\Model\EntityWithFamilyInterface',
+            'Akeneo\Pim\Enrichment\Component\Product\Model\EntityWithFamilyVariantInterface',
             'Akeneo\Pim\Enrichment\Component\Product\Model\ValueInterface',
             'Akeneo\Pim\Enrichment\Component\Product\Query\ProductQueryBuilderFactoryInterface',
             'Akeneo\Pim\Enrichment\Component\Product\Model\ProductInterface',

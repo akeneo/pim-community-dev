@@ -45,7 +45,7 @@ class FamilySelectorSpec extends ObjectBehavior
     }
 
     public function it_selects_the_label(
-        $getFamilyTranslations,
+        GetFamilyTranslations $getFamilyTranslations,
         EntityWithFamilyInterface $entity,
         FamilyInterface $family
     ) {
@@ -61,7 +61,7 @@ class FamilySelectorSpec extends ObjectBehavior
     }
 
     public function it_fallbacks_on_the_code_when_not_translated(
-        $getFamilyTranslations,
+        GetFamilyTranslations $getFamilyTranslations,
         EntityWithFamilyInterface $entity,
         FamilyInterface $family
     ) {

@@ -26,7 +26,7 @@ test.each(['categories'])('it renders a code label collection selector for "%s" 
   expect(screen.getByText('This is a code and label collection selector')).toBeInTheDocument();
 });
 
-test.each(['family'])('it renders a code label selector for "%s" property', propertyName => {
+test.each(['family', 'family_variant'])('it renders a code label selector for "%s" property', propertyName => {
   const onSelectionChange = jest.fn();
 
   renderWithProviders(

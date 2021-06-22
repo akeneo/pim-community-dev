@@ -14,6 +14,7 @@ type PropertySelectorProps = {
 const PropertySelector = ({propertyName, selection, validationErrors, onSelectionChange}: PropertySelectorProps) => {
   switch (propertyName) {
     case 'family':
+    case 'family_variant':
       return (
         <CodeLabelSelector
           selection={selection as CodeLabelSelection}
