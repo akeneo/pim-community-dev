@@ -4,6 +4,7 @@ declare(strict_types=1);
 namespace Specification\Akeneo\Pim\Enrichment\Component\Product\Factory\Value;
 
 use Akeneo\Pim\Enrichment\Component\Product\Exception\InvalidAttributeValueTypeException;
+use Akeneo\Pim\Enrichment\Component\Product\Exception\InvalidDateAttributeException;
 use Akeneo\Pim\Enrichment\Component\Product\Factory\Value\DateValueFactory;
 use Akeneo\Pim\Enrichment\Component\Product\Factory\Value\ValueFactory;
 use Akeneo\Pim\Enrichment\Component\Product\Value\DateValue;
@@ -88,15 +89,8 @@ final class DateValueFactorySpec extends ObjectBehavior
     {
         $attribute = $this->getAttribute(false, false);
 
-        $exception = InvalidPropertyException::dateExpected(
-            'an_attribute',
-            'yyyy-mm-dd',
-            DateValueFactory::class,
-            'foobar is no date'
-        );
-
         $this
-            ->shouldThrow($exception)
+            ->shouldThrow(InvalidDateAttributeException::class)
             ->during('createByCheckingData', [$attribute, 'ecommerce', 'en_US', 'foobar is no date']);
     }
 
@@ -104,16 +98,8 @@ final class DateValueFactorySpec extends ObjectBehavior
     {
         $attribute = $this->getAttribute(false, false);
 
-
-        $exception = InvalidPropertyException::dateExpected(
-            'an_attribute',
-            'yyyy-mm-dd',
-            DateValueFactory::class,
-            '03-04-2013'
-        );
-
         $this
-            ->shouldThrow($exception)
+            ->shouldThrow(InvalidDateAttributeException::class)
             ->during('createByCheckingData', [$attribute, 'ecommerce', 'en_US', '03-04-2013']);
     }
 
