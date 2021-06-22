@@ -193,11 +193,24 @@ akeneo_connectivity.connection:
     form:
       url: URL
       secret: 非公開
+    error:
+      required: このフィールドは必須です。
+      not_found: 存在しない接続を更新しようとしています。
+      limit_reached: 有効なイベントサブスクリプションの上限に達しました。
+    flash:
+      success: イベントサブスクリプションは正常に更新されました。
+      error: 申し訳ございません。イベントサブスクリプションの編集中にエラーが発生しました。
     regenerate_secret:
       title: 再生成を確認
       action:
         regenerate: 再生成
       link: 何が起こるかご確認ください。
+      flash:
+        success: Webhook シークレットは正常に再作成されました。
+        error: 申し訳ございません。Webhook シークレットを再作成中にエラーが発生しました。
+    active_event_subscriptions_limit_reached:
+      message: イベントサブスクリプション機能には {{ limit }} 個まで接続できます。 この上限に達しました。
+      link: イベントサブスクリプションの構成についてさらに詳しく。
   error_management:
     connection_monitoring:
       title: モニタリング
