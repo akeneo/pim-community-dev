@@ -6,8 +6,8 @@ import {TableInputHeaderCell} from './TableInputHeaderCell/TableInputHeaderCell'
 import {TableInputBody} from './TableInputBody/TableInputBody';
 import {TableInputCell} from './TableInputCell/TableInputCell';
 import {TableInputRow} from './TableInputRow/TableInputRow';
-import {TableInputTextInput} from './TableInputTextInput/TableInputTextInput';
-import {TableInputNumberInput} from './TableInputNumberInput/TableInputNumberInput';
+import {TableInputText} from './TableInputText/TableInputText';
+import {TableInputNumber} from './TableInputNumber/TableInputNumber';
 
 const TableInputContainer = styled.div`
   width: 100%;
@@ -61,7 +61,7 @@ TableInput.HeaderCell = TableInputHeaderCell;
 TableInput.Body = TableInputBody;
 TableInput.Row = TableInputRow;
 TableInput.Cell = TableInputCell;
-TableInput.TextInput = TableInputTextInput;
-TableInput.NumberInput = TableInputNumberInput;
+TableInput.TextInput = TableInputText;
+TableInput.NumberInput = TableInputNumber;
 
 export {TableInput};
