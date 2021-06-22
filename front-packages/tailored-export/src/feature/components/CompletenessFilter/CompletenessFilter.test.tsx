@@ -21,7 +21,7 @@ const fetchers = {
         act(() => {
           resolve([
             {
-              code: 'Ecommerce',
+              code: 'ecommerce',
               labels: {},
               locales: [
                 {
@@ -39,6 +39,24 @@ const fetchers = {
                 {
                   code: 'br_FR',
                   label: 'Breton',
+                  region: '',
+                  language: '',
+                },
+              ],
+            },
+            {
+              code: 'print',
+              labels: {},
+              locales: [
+                {
+                  code: 'en_US',
+                  label: 'English',
+                  region: '',
+                  language: '',
+                },
+                {
+                  code: 'fr_FR',
+                  label: 'French',
                   region: '',
                   language: '',
                 },
@@ -100,7 +118,79 @@ test('it can switch operator', async () => {
           filter={{
             field: 'completeness',
             value: 100,
+            operator: 'LOWER THAN ON ALL LOCALES',
+            context: {locales: ['fr_FR'], channel: 'ecommerce'},
+          }}
+          onChange={handleOperatorChange}
+          validationErrors={[]}
+        />
+      </FetcherContext.Provider>
+    );
+  });
+
+  const openDropdownButton = screen.getAllByTitle(`pim_common.open`)[0];
+  userEvent.click(openDropdownButton);
+  const greaterThanButton = screen.getByText(
+    `pim_enrich.export.product.filter.completeness.operators.GREATER OR EQUALS THAN ON ALL LOCALES`
+  );
+  await userEvent.click(greaterThanButton);
+
+  expect(handleOperatorChange).toHaveBeenCalledWith({
+    context: {locales: ['fr_FR'], channel: 'ecommerce'},
+    field: 'completeness',
+    operator: 'GREATER OR EQUALS THAN ON ALL LOCALES',
+    value: 100,
+  });
+});
+
+test('it initializes the context when the user switch operator from "ALL" to another operator', async () => {
+  const handleOperatorChange = jest.fn();
+
+  await act(async () => {
+    renderWithProviders(
+      <FetcherContext.Provider value={fetchers}>
+        <CompletenessFilter
+          availableOperators={availableOperators}
+          filter={{
+            field: 'completeness',
+            value: 100,
             operator: 'ALL',
+            context: {locales: [], channel: null},
+          }}
+          onChange={handleOperatorChange}
+          validationErrors={[]}
+        />
+      </FetcherContext.Provider>
+    );
+  });
+
+  const openDropdownButton = screen.getAllByTitle(`pim_common.open`)[0];
+  userEvent.click(openDropdownButton);
+  const greaterThanButton = screen.getByText(
+    `pim_enrich.export.product.filter.completeness.operators.GREATER OR EQUALS THAN ON ALL LOCALES`
+  );
+  await userEvent.click(greaterThanButton);
+
+  expect(handleOperatorChange).toHaveBeenCalledWith({
+    context: {locales: [], channel: 'ecommerce'},
+    field: 'completeness',
+    operator: 'GREATER OR EQUALS THAN ON ALL LOCALES',
+    value: 100,
+  });
+});
+
+test('it removes the context when the user switch the operator to "ALL"', async () => {
+  const handleOperatorChange = jest.fn();
+
+  await act(async () => {
+    renderWithProviders(
+      <FetcherContext.Provider value={fetchers}>
+        <CompletenessFilter
+          availableOperators={availableOperators}
+          filter={{
+            field: 'completeness',
+            value: 100,
+            operator: 'GREATER OR EQUALS THAN ON ALL LOCALES',
             context: {locales: ['fr_FR', 'en_US'], channel: 'ecommerce'},
           }}
           onChange={handleOperatorChange}
@@ -110,15 +200,113 @@ test('it can switch operator', async () => {
     );
   });
 
-  const openDropdownButton = screen.getByTitle(`pim_common.open`);
+  const openDropdownButton = screen.getAllByTitle(`pim_common.open`)[0];
+  userEvent.click(openDropdownButton);
+  const greaterThanButton = screen.getByText(`pim_enrich.export.product.filter.completeness.operators.ALL`);
+  await userEvent.click(greaterThanButton);
+
+  expect(handleOperatorChange).toHaveBeenCalledWith({
+    context: {locales: [], channel: null},
+    field: 'completeness',
+    operator: 'ALL',
+    value: 100,
+  });
+});
+
+test('it keeps the channel when switching an operator that is not "ALL"', async () => {
+  const handleOperatorChange = jest.fn();
+
+  await act(async () => {
+    renderWithProviders(
+      <FetcherContext.Provider value={fetchers}>
+        <CompletenessFilter
+          availableOperators={availableOperators}
+          filter={{
+            field: 'completeness',
+            value: 100,
+            operator: 'GREATER OR EQUALS THAN ON ALL LOCALES',
+            context: {locales: ['fr_FR', 'en_US'], channel: 'ecommerce'},
+          }}
+          onChange={handleOperatorChange}
+          validationErrors={[]}
+        />
+      </FetcherContext.Provider>
+    );
+  });
+
+  const openDropdownButton = screen.getAllByTitle(`pim_common.open`)[0];
   userEvent.click(openDropdownButton);
   const greaterThanButton = screen.getByText(
-    `pim_enrich.export.product.filter.completeness.operators.GREATER OR EQUALS THAN ON ALL LOCALES`
+    `pim_enrich.export.product.filter.completeness.operators.LOWER THAN ON ALL LOCALES`
   );
   await userEvent.click(greaterThanButton);
 
   expect(handleOperatorChange).toHaveBeenCalledWith({
     context: {locales: ['fr_FR', 'en_US'], channel: 'ecommerce'},
+    field: 'completeness',
+    operator: 'LOWER THAN ON ALL LOCALES',
+    value: 100,
+  });
+});
+
+test('it selects a channel', async () => {
+  const handleOperatorChange = jest.fn();
+
+  await act(async () => {
+    renderWithProviders(
+      <FetcherContext.Provider value={fetchers}>
+        <CompletenessFilter
+          availableOperators={availableOperators}
+          filter={{
+            field: 'completeness',
+            value: 100,
+            operator: 'GREATER OR EQUALS THAN ON ALL LOCALES',
+            context: {locales: ['fr_FR', 'en_US'], channel: 'ecommerce'},
+          }}
+          onChange={handleOperatorChange}
+          validationErrors={[]}
+        />
+      </FetcherContext.Provider>
+    );
+  });
+
+  userEvent.click(screen.getByLabelText(`pim_common.channel`));
+  await userEvent.click(screen.getByText(`[print]`));
+
+  expect(handleOperatorChange).toHaveBeenCalledWith({
+    context: {locales: ['fr_FR', 'en_US'], channel: 'print'},
+    field: 'completeness',
+    operator: 'GREATER OR EQUALS THAN ON ALL LOCALES',
+    value: 100,
+  });
+});
+
+test('it filters the locales that do not belong to a channel when the channel changes', async () => {
+  const handleOperatorChange = jest.fn();
+
+  await act(async () => {
+    renderWithProviders(
+      <FetcherContext.Provider value={fetchers}>
+        <CompletenessFilter
+          availableOperators={availableOperators}
+          filter={{
+            field: 'completeness',
+            value: 100,
+            operator: 'GREATER OR EQUALS THAN ON ALL LOCALES',
+            context: {locales: ['fr_FR', 'en_US', 'breton'], channel: 'ecommerce'},
+          }}
+          onChange={handleOperatorChange}
+          validationErrors={[]}
+        />
+      </FetcherContext.Provider>
+    );
+  });
+
+  userEvent.click(screen.getByLabelText(`pim_common.channel`));
+  await userEvent.click(screen.getByText(`[print]`));
+
+  expect(handleOperatorChange).toHaveBeenCalledWith({
+    context: {locales: ['fr_FR', 'en_US'], channel: 'print'},
     field: 'completeness',
     operator: 'GREATER OR EQUALS THAN ON ALL LOCALES',
     value: 100,
@@ -146,13 +334,11 @@ test('it can select locales', async () => {
     );
   });
 
-  const openDropdownButton = screen.getAllByTitle('pim_common.open')[2];
-  userEvent.click(openDropdownButton);
-  const greaterThanButton = screen.getByText('English');
-  await userEvent.click(greaterThanButton);
+  userEvent.click(screen.getByLabelText(`akeneo.tailored_export.filters.completeness.locales.label`));
+  await userEvent.click(screen.getByText('English'));
 
   expect(handleLocalesChange).toHaveBeenCalledWith({
-    context: {locales: ['en_US'], channel: ''},
+    context: {locales: ['en_US'], channel: 'ecommerce'},
     field: 'completeness',
     operator: 'GREATER OR EQUALS THAN ON ALL LOCALES',
     value: 100,

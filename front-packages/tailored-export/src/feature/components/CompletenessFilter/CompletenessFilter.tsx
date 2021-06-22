@@ -48,9 +48,11 @@ const CompletenessFilter = ({availableOperators, filter, onChange, validationErr
 
   const handleOperatorChange = (newOperator: Operator) => {
     if (newOperator !== 'ALL') {
-      onChange({...filter, operator: newOperator, context: {locales: [], channel: availableChannels[0].code}});
+      const newLocales = filter.context.locales ?? [];
+      const newChannel = filter.context.channel ?? availableChannels[0].code;
+      onChange({...filter, operator: newOperator, context: {locales: newLocales, channel: newChannel}});
     } else {
-      onChange({...filter, operator: newOperator});
+      onChange({...filter, operator: newOperator, context: {locales: [], channel: null}});
     }
   };
   const handleLocalesChange = (newLocales: LocaleCode[]) => {
@@ -58,9 +60,12 @@ const CompletenessFilter = ({availableOperators, filter, onChange, validationErr
     onChange(newFilter);
   };
   const handleChannelChange = (newChannel: ChannelCode) => {
-    const newLocales = getLocalesFromChannel(availableChannels, newChannel)
-      .filter((locale: Locale) => filter.context.locales.includes(locale.code))
-      .map((locale: Locale) => locale.code);
+    const newAvailableLocaleCodes = getLocalesFromChannel(availableChannels, newChannel).map(
+      (locale: Locale) => locale.code
+    );
+    const newLocales = filter.context.locales.filter((localeCode: LocaleCode) =>
+      newAvailableLocaleCodes.includes(localeCode)
+    );
     const newFilter = {...filter, context: {channel: newChannel, locales: newLocales}};
     onChange(newFilter);
   };
