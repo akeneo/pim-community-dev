@@ -148,28 +148,7 @@ jobs:
           - add_ssh_keys:
               fingerprints:
                   - "1f:25:f8:bb:59:52:95:f6:e2:f2:97:2f:30:d4:e9:66"
-          - when:
-              condition: << parameters.is_pull_request >>
-              steps:
-                - run:
-                    name: Get connector branch if the same branch exists
-                    command: |
-                      ssh-add -D
-                      ssh-add ~/.ssh/id_rsa_1f25f8bb595295f6e2f2972f30d4e966
-                      if git ls-remote --exit-code --heads git@github.com:akeneo/bigcommerce-connector.git ${CIRCLE_BRANCH}; then
-                        CONNECTOR_BC_BRANCH=${CIRCLE_BRANCH}
-                      else
-                        #TODO retrieve last tag
-                        CONNECTOR_BC_BRANCH=master
-                      fi
-
-                      echo export CONNECTOR_BC_BRANCH=${CONNECTOR_BC_BRANCH} >> $BASH_ENV
-          - run:
-              name: Checkout BigCommerce Connector
-              working_dir: ~/project
-              command: |
-                  mkdir -p tmp
-                  git clone --branch $CONNECTOR_BC_BRANCH git@github.com:akeneo/bigcommerce-connector.git tmp/build-connector
+          - checkout_bigcommerce_connector
           - set_gcloud_config_dev
           - when:
                 condition: << parameters.is_pull_request >>
@@ -305,14 +284,7 @@ jobs:
           cd /home/circleci/project
           git checkout $CE_COMMIT_HASH
           /home/circleci/ee_project/growth_edition/prepare_growth_edition.sh /home/circleci/project
-    - run:
-          name: Checkout BigCommerce Connector
-          working_dir: ~/project
-          command: |
-              ssh-add -D
-              ssh-add ~/.ssh/id_rsa_1f25f8bb595295f6e2f2972f30d4e966
-              mkdir -p tmp
-              git clone git@github.com:akeneo/bigcommerce-connector.git tmp/build-connector
+    - checkout_bigcommerce_connector
     - run:
         name: Build the Growth Edition prod image
         command: TYPE=${TYPE} IMAGE_TAG_DATE=${IMAGE_TAG_DATE} make php-image-prod
@@ -1945,3 +1917,42 @@ commands:
             wget https://github.com/mikefarah/yq/releases/download/3.3.1/yq_linux_386
             sudo mv yq_linux_386 /usr/local/bin/yq
             sudo chmod +x /usr/local/bin/yq
+
+  checkout_bigcommerce_connector:
+      description: "Checkout big commerce connector repository"
+      steps:
+          - run:
+                name: Ensure to use the ssh key of akeneo-circle-ci account
+                command: |
+                    ssh-add -D
+                    ssh-add ~/.ssh/id_rsa_1f25f8bb595295f6e2f2972f30d4e966
+          - when:
+              condition: << parameters.is_pull_request >>
+              steps:
+                  - run:
+                      name: Get connector branch if the same branch exists
+                      command: |
+                          if git ls-remote --exit-code --heads git@github.com:akeneo/bigcommerce-connector.git ${CIRCLE_BRANCH}; then
+                            CONNECTOR_BC_BRANCH=${CIRCLE_BRANCH}
+                          else
+                            CONNECTOR_BC_BRANCH=master
+                          fi
+
+                          echo export CONNECTOR_BC_BRANCH=${CONNECTOR_BC_BRANCH} >> $BASH_ENV
+          - when:
+              condition:
+                not: << parameters.is_pull_request >>
+              steps:
+                  - run:
+                      name: Get last tagged connector version ready for production
+                      command: |
+                          #TODO Retrieve last tagged version for production
+                          CONNECTOR_BC_BRANCH=master
+
+                          echo export CONNECTOR_BC_BRANCH=${CONNECTOR_BC_BRANCH} >> $BASH_ENV
+          - run:
+              name: Checkout BigCommerce Connector
+              working_dir: ~/project
+              command: |
+                  mkdir -p tmp
+                  git clone --branch $CONNECTOR_BC_BRANCH git@github.com:akeneo/bigcommerce-connector.git tmp/build-connector
