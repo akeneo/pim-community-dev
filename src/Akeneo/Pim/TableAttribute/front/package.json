@@ -10,7 +10,5 @@
     "prettier-check": "prettier --check \"./src/**/*.{ts,tsx}\" --config .prettierrc"
   },
   "private": true,
-  "dependencies": {
-    "core-js": "^3.6.5"
-  }
+  "dependencies": {}
 }
