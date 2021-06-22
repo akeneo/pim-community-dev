@@ -344,10 +344,10 @@ const SelectInput = ({
             {filteredChildren.length === 0 ? (
               <EmptyResultContainer>{emptyResultLabel}</EmptyResultContainer>
             ) : (
-              filteredChildren.map((child, i) => {
+              filteredChildren.map((child, index) => {
                 const value = child.props.value;
                 let ref = undefined;
-                switch (i) {
+                switch (index) {
                   case 0:
                     ref = firstOptionRef;
                     break;
@@ -358,6 +358,7 @@ const SelectInput = ({
 
                 return (
                   <OptionContainer
+                    data-testid={value}
                     key={value}
                     onClick={handleOptionClick(value)}
                     onKeyDown={handleOptionKeyDown}
