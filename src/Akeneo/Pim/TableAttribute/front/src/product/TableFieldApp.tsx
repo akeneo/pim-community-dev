@@ -1,10 +1,14 @@
 import React from 'react';
 import { DependenciesProvider } from "@akeneo-pim-community/legacy-bridge";
-import { ThemeProvider } from "styled-components";
-import { Button, Locale, pimTheme, TextInput, uuid } from "akeneo-design-system";
+import styled, { ThemeProvider } from "styled-components";
+import { Button, Locale, pimTheme, uuid, Search} from "akeneo-design-system";
 import { TableInputValue } from "./TableInputValue";
 import { TableRow, TableValue } from "../models/TableValue";
 import { TemplateContext } from "./table-field";
+
+const TableInputContainer = styled.div`
+  flex-basis: 100% !important;
+`
 
 type TableFieldAppProps = TemplateContext & {
   valueData: TableValue;
@@ -34,7 +38,7 @@ const TableFieldApp: React.FC<TableFieldAppProps> = ({
 
       return previousRow;
     }, {'unique id': uuid()});
-  });
+  }));
   const [searchText, setSearchText] = React.useState<string>('');
 
   const renderElements: (position: string) => React.ReactNode = (position) => {
@@ -44,8 +48,7 @@ const TableFieldApp: React.FC<TableFieldAppProps> = ({
         if (typeof element.render === 'function') {
           return <span key={elementKey} dangerouslySetInnerHTML={{__html: element.render().el.innerHTML as string}}/>;
         } else {
-          // TODO Check this one
-          return <span key={elementKey} dangerouslySetInnerHTML={{__html: element as string}}/>;
+          return <span key={elementKey} dangerouslySetInnerHTML={{__html: element[0].outerHTML as string}}/>;
         }
       })}
     </>;
@@ -70,7 +73,7 @@ const TableFieldApp: React.FC<TableFieldAppProps> = ({
   return (
     <DependenciesProvider>
       <ThemeProvider theme={pimTheme}>
-        <div className={`${type} AknComparableFields-item AknFieldContainer original-field ${editMode}`}>
+        <TableInputContainer className={`${type} AknComparableFields-item AknFieldContainer original-field ${editMode}`}>
           <div className="AknFieldContainer-header">
             <label className="AknFieldContainer-label" htmlFor={fieldId}>
               <span className="AknFieldContainer-labelAnnotation badge-elements-container">
@@ -89,8 +92,13 @@ const TableFieldApp: React.FC<TableFieldAppProps> = ({
                     </span>
                   }
                 </span>
+            <Search
+              onSearchChange={setSearchText}
+              placeholder="Search"
+              searchValue={searchText}
+              title="Search"
+            />
             <Button size="small" onClick={() => {addFakeRow()}}>Add row</Button>
-            <TextInput value={searchText} onChange={setSearchText}/>
             {context.optional && context.removable && 'edit' === editMode &&
             <i className="AknIconButton AknIconButton--small icon-remove remove-attribute"
                data-attribute={attribute.code} data-toggle="tooltip"
@@ -111,7 +119,7 @@ const TableFieldApp: React.FC<TableFieldAppProps> = ({
               {renderElements('footer')}
             </div>
           </footer>
-        </div>
+        </TableInputContainer>
         <div
           className="AknComparableFields-item AknComparableFields-item--comparisonContainer AknFieldContainer comparison-elements-container">
           {renderElements('comparison')}

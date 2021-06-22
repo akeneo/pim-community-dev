@@ -5,9 +5,13 @@ import {getLabel, useUserContext} from '@akeneo-pim-community/shared';
 import { TableFooter } from "./TableFooter";
 import styled from "styled-components";
 import { TableValueWithId } from "./TableFieldApp";
-import {useTranslate} from '@akeneo-pim-community/legacy-bridge';
+import {useTranslate} from '@akeneo-pim-community/shared';
 
 const TABLE_VALUE_ITEMS_PER_PAGE = [10, 20, 50, 100];
+
+const TableInputContainer = styled.div`
+  width: 100%;
+`
 
 const CenteredHelper = styled.div`
   text-align: center;
@@ -21,7 +25,11 @@ type TableInputValueProps = {
 };
 
 const TableInputValue: React.FC<TableInputValueProps> = ({valueData, tableConfiguration, onChange, searchText = ''}) => {
-  const handleChange = (rowIndex: number, columnCode: ColumnCode, cellValue: any) => {
+  const handleChange = (uniqueId: string, columnCode: ColumnCode, cellValue: any) => {
+    const rowIndex = valueData.findIndex(row => row['unique id'] === uniqueId);
+    if (rowIndex < 0) {
+      throw new Error(`Undefined unique id ${uniqueId}`);
+    }
     const row = valueData[rowIndex];
     row[columnCode] = cellValue;
     valueData[rowIndex] = row;
@@ -38,6 +46,10 @@ const TableInputValue: React.FC<TableInputValueProps> = ({valueData, tableConfig
   let filteredData = valueData;
   let valueDataPage = valueData.slice(currentPage * itemsPerPage, (currentPage + 1) * itemsPerPage);
 
+  const cellMatchSearch = (cellAsString: string) => {
+    return isSearching && cellAsString.indexOf(searchText) >= 0;
+  }
+
   if (isSearching) {
     filteredData = valueData.filter(row => {
       return tableConfiguration.map(columnDefinition => columnDefinition.code).some(columnCode => {
@@ -47,12 +59,8 @@ const TableInputValue: React.FC<TableInputValueProps> = ({valueData, tableConfig
     valueDataPage = filteredData.slice(0, itemsPerPage);
   }
 
-  const cellMatchSearch = (cellAsString: string) => {
-    return isSearching && cellAsString.indexOf(searchText) >= 0;
-  }
-
   return (
-    <div style={{width: 1000}}>
+    <TableInputContainer>
       <TableInput>
         <TableInput.Header>
           {tableConfiguration.map(columnDefinition => (
@@ -62,7 +70,7 @@ const TableInputValue: React.FC<TableInputValueProps> = ({valueData, tableConfig
           ))}
         </TableInput.Header>
         <TableInput.Body>
-          {valueDataPage.map((row, rowIndex) => {
+          {valueDataPage.map((row) => {
             return (
               <TableInput.Row key={row["unique id"]}>
                 {tableConfiguration.map(columnDefinition => {
@@ -70,18 +78,18 @@ const TableInputValue: React.FC<TableInputValueProps> = ({valueData, tableConfig
                   const columnType = columnDefinition.data_type;
 
                   return (
-                    <TableInput.Cell key={`${rowIndex}-${columnCode}`}>
+                    <TableInput.Cell key={`${row["unique id"]}-${columnCode}`}>
                       {'number' === columnType && (
                         <TableInput.NumberInput
                           value={`${row[columnCode] as number}`}
-                          onChange={value => handleChange(rowIndex, columnCode, value)}
+                          onChange={value => handleChange(row["unique id"], columnCode, value)}
                           highlighted={cellMatchSearch(`${row[columnCode]}`)}
                         />
                       )}
                       {('text' === columnType || 'select' === columnType) && (
                         <TableInput.TextInput
                           value={row[columnCode] as string}
-                          onChange={value => handleChange(rowIndex, columnCode, value)}
+                          onChange={value => handleChange(row["unique id"], columnCode, value)}
                           highlighted={cellMatchSearch(`${row[columnCode]}`)}
                         />
                       )}
@@ -91,7 +99,7 @@ const TableInputValue: React.FC<TableInputValueProps> = ({valueData, tableConfig
                           clearLabel='Clear value'
                           noLabel='No'
                           yesLabel='Yes'
-                          onChange={value => handleChange(rowIndex, columnCode, value)}
+                          onChange={value => handleChange(row["unique id"], columnCode, value)}
                           value={(row[columnCode] as boolean) ?? null}
                           readOnly={false}
                         />
@@ -117,7 +125,7 @@ const TableInputValue: React.FC<TableInputValueProps> = ({valueData, tableConfig
         setCurrentPage={setCurrentPage}
         setItemsPerPage={setItemsPerPage}
       />
-    </div>
+    </TableInputContainer>
   );
 };
 

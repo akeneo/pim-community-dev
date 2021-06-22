@@ -47,12 +47,12 @@ define([
       var field = event.field;
       var isOwner = this.getFormData().meta.is_owner;
 
-      if (this.isValueChanged(field) && !isOwner) {
+//      if (this.isValueChanged(field) && !isOwner) {
         var $element = $(this.modifiedByDraftTemplate());
         $element.on('click', this.showWorkingCopy.bind(this));
 
         field.addElement('label', 'modified_by_draft', $element);
-      }
+//      }
 
       return this;
     },
