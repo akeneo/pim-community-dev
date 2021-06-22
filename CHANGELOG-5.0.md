@@ -1,5 +1,17 @@
 # 5.0.x
 
+# 5.0.34 (2021-06-22)
+
+# 5.0.33 (2021-06-18)
+
+## Bug fixes
+
+- PIM-9919: Breadcrumb for Reference Entities now redirects to the record list
+- PIM-9915: Permissions tabs are missing for Assets and Reference Entity Records import profiles
+- PIM-9918: Concatenate rule does not keep anymore the trailing zeros on a decimal number
+
+# 5.0.32 (2021-06-16)
+
 # 5.0.31 (2021-06-10)
 
 ## Bug fixes
