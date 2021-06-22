@@ -31,7 +31,7 @@ test('it renders a parent selector for the parent property', () => {
   }
 );
 
-test.each(['categories'])('it renders a code label collection selector for "%s" property', propertyName => {
+test.each(['categories', 'groups'])('it renders a code label collection selector for "%s" property', propertyName => {
   const onSelectionChange = jest.fn();
 
   renderWithProviders(

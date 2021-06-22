@@ -38,6 +38,7 @@ services:
         family: '@akeneo.tailored_export.validation.source.code_label_selection.constraint'
         family_variant: '@akeneo.tailored_export.validation.source.code_label_selection.constraint'
         parent: '@akeneo.tailored_export.validation.source.parent_selection.constraint'
+        groups: '@akeneo.tailored_export.validation.source.code_label_collection_selection.constraint'
     tags:
       - { name: validator.constraint_validator, alias: akeneo.tailored_export.validation.source }
     public: true

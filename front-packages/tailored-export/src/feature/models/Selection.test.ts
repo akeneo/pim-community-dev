@@ -39,6 +39,7 @@ test('it returns default selection by attribute type', () => {
 
 test('it returns default selection by property name', () => {
   expect(getDefaultSelectionByProperty('categories')).toEqual({type: 'code', separator: ','});
+  expect(getDefaultSelectionByProperty('groups')).toEqual({type: 'code', separator: ','});
   expect(getDefaultSelectionByProperty('family')).toEqual({type: 'code'});
   expect(getDefaultSelectionByProperty('parent')).toEqual({type: 'code'});
 });

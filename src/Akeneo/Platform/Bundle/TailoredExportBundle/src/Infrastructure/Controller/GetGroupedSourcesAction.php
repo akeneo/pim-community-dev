@@ -60,7 +60,7 @@ final class GetGroupedSourcesAction
             'enabled',
             'family',
             'parent',
-            // 'groups',
+            'groups',
             'family_variant',
             // 'identifier',
             // 'created',
