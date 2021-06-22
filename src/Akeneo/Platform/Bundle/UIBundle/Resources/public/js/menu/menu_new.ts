@@ -1,10 +1,20 @@
 'use strict';
 
 import {ViewOptions} from 'backbone';
+import {NavigationEntry, PimNavigation} from '../PimNavigation';
+import View from '../view/base-interface';
+import React from 'react';
+import {CardIcon} from 'akeneo-design-system';
 
 const BaseForm = require('pim/form');
 const _ = require('underscore');
 const template = require('pim/template/menu/menu');
+
+type EntryView = View & {
+  config: {
+    title: string;
+  };
+};
 
 /**
  * Base extension for menu
@@ -27,9 +37,17 @@ class Menu extends BaseForm {
    * {@inheritdoc}
    */
   render() {
-    this.$el.empty().append(this.template());
+    if (!this.configured) {
+      return this;
+    }
 
-    super.render(arguments);
+    this.renderReact(
+      PimNavigation,
+      {
+        entries: this.findMainEntries(),
+      },
+      this.el
+    );
 
     return this;
   }
@@ -48,6 +66,36 @@ class Menu extends BaseForm {
     }
 
     super.renderExtension(extension);
+  }
+
+  findMainEntries(): NavigationEntry[] {
+    const extensions = Object.values(this.extensions).filter((extension: View) => {
+      if (extension.targetZone !== 'mainMenu') {
+        return false;
+      }
+
+      return extension.code !== 'pim-menu-logo';
+    });
+
+    const entries: NavigationEntry[] = extensions.map((extension: EntryView, index) => {
+      const {title} = extension.config;
+
+      return {
+        code: extension.code,
+        label: title,
+        active: false,
+        disabled: false,
+        route: 'pim_settings_index',
+        icon: React.createElement(CardIcon),
+        position: index,
+      };
+    });
+
+    entries.sort((entryA: NavigationEntry, entryB: NavigationEntry) => {
+      return entryA.position - entryB.position;
+    });
+
+    return entries;
   }
 }
 

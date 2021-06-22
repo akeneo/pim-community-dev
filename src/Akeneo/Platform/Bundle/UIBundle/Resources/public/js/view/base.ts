@@ -201,7 +201,6 @@ class BaseView extends Backbone.View<any> implements View {
    * {@inheritdoc}
    */
   render(): View {
-    console.log('BaseView render')
     if (!this.configured) {
       return this;
     }
