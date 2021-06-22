@@ -14,6 +14,6 @@ class Date extends BaseDate
 {
     /** @var string */
     public $message = 'The %attribute% attribute requires a valid date. Please use the following format %date_format% for dates.';
-    
+
     public string $attributeCode = '';
 }

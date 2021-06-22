@@ -9,7 +9,6 @@ use Akeneo\Pim\Enrichment\Component\Product\Model\ValueInterface;
 use Akeneo\Pim\Enrichment\Component\Product\Value\DateValue;
 use Akeneo\Pim\Structure\Component\AttributeTypes;
 use Akeneo\Pim\Structure\Component\Query\PublicApi\AttributeType\Attribute;
-use Akeneo\Tool\Component\StorageUtils\Exception\InvalidPropertyException;
 
 /**
  * @author    Anael Chardan <anael.chardan@akeneo.com>
@@ -54,10 +53,18 @@ final class DateValueFactory implements ValueFactory
             $date = new \DateTime($data);
 
             if (!\preg_match('/^\d{4}-\d{2}-\d{2}/', $data)) {
-                throw InvalidDateAttributeException::withCode($attribute->code(), self::DATE_FORMAT);
+                throw new InvalidDateAttributeException(
+                    $attribute->code(),
+                    self::DATE_FORMAT,
+                    static::class
+                );
             }
         } catch (\Exception $e) {
-            throw InvalidDateAttributeException::withCode($attribute->code(), self::DATE_FORMAT);
+            throw new InvalidDateAttributeException(
+                $attribute->code(),
+                self::DATE_FORMAT,
+                static::class
+            );
         }
 
         return $this->createWithoutCheckingData($attribute, $channelCode, $localeCode, $data);

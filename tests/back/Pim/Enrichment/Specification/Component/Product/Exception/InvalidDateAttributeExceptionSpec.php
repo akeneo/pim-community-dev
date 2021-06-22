@@ -8,8 +8,7 @@ use Akeneo\Pim\Enrichment\Component\Error\DomainErrorInterface;
 use Akeneo\Pim\Enrichment\Component\Error\TemplatedErrorMessage\TemplatedErrorMessage;
 use Akeneo\Pim\Enrichment\Component\Error\TemplatedErrorMessage\TemplatedErrorMessageInterface;
 use Akeneo\Pim\Enrichment\Component\Product\Exception\InvalidDateAttributeException;
-use Akeneo\Pim\Enrichment\Component\Product\Exception\UnknownAttributeException;
-use Akeneo\Tool\Component\StorageUtils\Exception\PropertyException;
+use Akeneo\Tool\Component\StorageUtils\Exception\InvalidPropertyException;
 use PhpSpec\ObjectBehavior;
 
 /**
@@ -18,9 +17,9 @@ use PhpSpec\ObjectBehavior;
  */
 class InvalidDateAttributeExceptionSpec extends ObjectBehavior
 {
-    function let(TemplatedErrorMessage $templatedMessage)
+    function let()
     {
-        $this->beConstructedThrough('withCode', ['date_attribute', 'yyyy-mm-dd']);
+        $this->beConstructedWith('date_attribute', 'yyyy-mm-dd', self::class);
     }
 
     function it_is_initializable()
@@ -30,17 +29,12 @@ class InvalidDateAttributeExceptionSpec extends ObjectBehavior
 
     function it_is_a_property_exception()
     {
-        $this->shouldHaveType(PropertyException::class);
+        $this->shouldHaveType(InvalidPropertyException::class);
     }
 
     function it_is_an_exception()
     {
         $this->shouldHaveType(\Exception::class);
-    }
-
-    function it_is_a_logic_exception()
-    {
-        $this->shouldHaveType(\LogicException::class);
     }
 
     function it_is_a_domain_error()
