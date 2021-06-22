@@ -88,7 +88,7 @@ test.each(operatorsAndVisibility)(
               field: 'completeness',
               value: 100,
               operator: operator,
-              context: {locales: ['fr_FR', 'en_US'], channel: 'ecommerce'},
+              context: {locales: ['fr_FR', 'en_US'], scope: 'ecommerce'},
             }}
             onChange={() => {}}
             validationErrors={[]}
@@ -119,7 +119,7 @@ test('it can switch operator', async () => {
             field: 'completeness',
             value: 100,
             operator: 'LOWER THAN ON ALL LOCALES',
-            context: {locales: ['fr_FR'], channel: 'ecommerce'},
+            context: {locales: ['fr_FR'], scope: 'ecommerce'},
           }}
           onChange={handleOperatorChange}
           validationErrors={[]}
@@ -136,7 +136,7 @@ test('it can switch operator', async () => {
   await userEvent.click(greaterThanButton);
 
   expect(handleOperatorChange).toHaveBeenCalledWith({
-    context: {locales: ['fr_FR'], channel: 'ecommerce'},
+    context: {locales: ['fr_FR'], scope: 'ecommerce'},
     field: 'completeness',
     operator: 'GREATER OR EQUALS THAN ON ALL LOCALES',
     value: 100,
@@ -155,7 +155,7 @@ test('it initializes the context when the user switch operator from "ALL" to ano
             field: 'completeness',
             value: 100,
             operator: 'ALL',
-            context: {locales: [], channel: null},
+            context: {locales: [], scope: null},
           }}
           onChange={handleOperatorChange}
           validationErrors={[]}
@@ -172,7 +172,7 @@ test('it initializes the context when the user switch operator from "ALL" to ano
   await userEvent.click(greaterThanButton);
 
   expect(handleOperatorChange).toHaveBeenCalledWith({
-    context: {locales: [], channel: 'ecommerce'},
+    context: {locales: [], scope: 'ecommerce'},
     field: 'completeness',
     operator: 'GREATER OR EQUALS THAN ON ALL LOCALES',
     value: 100,
@@ -191,7 +191,7 @@ test('it removes the context when the user switch the operator to "ALL"', async 
             field: 'completeness',
             value: 100,
             operator: 'GREATER OR EQUALS THAN ON ALL LOCALES',
-            context: {locales: ['fr_FR', 'en_US'], channel: 'ecommerce'},
+            context: {locales: ['fr_FR', 'en_US'], scope: 'ecommerce'},
           }}
           onChange={handleOperatorChange}
           validationErrors={[]}
@@ -206,7 +206,7 @@ test('it removes the context when the user switch the operator to "ALL"', async 
   await userEvent.click(greaterThanButton);
 
   expect(handleOperatorChange).toHaveBeenCalledWith({
-    context: {locales: [], channel: null},
+    context: {locales: [], scope: null},
     field: 'completeness',
     operator: 'ALL',
     value: 100,
@@ -225,7 +225,7 @@ test('it keeps the channel when switching an operator that is not "ALL"', async 
             field: 'completeness',
             value: 100,
             operator: 'GREATER OR EQUALS THAN ON ALL LOCALES',
-            context: {locales: ['fr_FR', 'en_US'], channel: 'ecommerce'},
+            context: {locales: ['fr_FR', 'en_US'], scope: 'ecommerce'},
           }}
           onChange={handleOperatorChange}
           validationErrors={[]}
@@ -242,7 +242,7 @@ test('it keeps the channel when switching an operator that is not "ALL"', async 
   await userEvent.click(greaterThanButton);
 
   expect(handleOperatorChange).toHaveBeenCalledWith({
-    context: {locales: ['fr_FR', 'en_US'], channel: 'ecommerce'},
+    context: {locales: ['fr_FR', 'en_US'], scope: 'ecommerce'},
     field: 'completeness',
     operator: 'LOWER THAN ON ALL LOCALES',
     value: 100,
@@ -261,7 +261,7 @@ test('it selects a channel', async () => {
             field: 'completeness',
             value: 100,
             operator: 'GREATER OR EQUALS THAN ON ALL LOCALES',
-            context: {locales: ['fr_FR', 'en_US'], channel: 'ecommerce'},
+            context: {locales: ['fr_FR', 'en_US'], scope: 'ecommerce'},
           }}
           onChange={handleOperatorChange}
           validationErrors={[]}
@@ -274,7 +274,7 @@ test('it selects a channel', async () => {
   await userEvent.click(screen.getByText(`[print]`));
 
   expect(handleOperatorChange).toHaveBeenCalledWith({
-    context: {locales: ['fr_FR', 'en_US'], channel: 'print'},
+    context: {locales: ['fr_FR', 'en_US'], scope: 'print'},
     field: 'completeness',
     operator: 'GREATER OR EQUALS THAN ON ALL LOCALES',
     value: 100,
@@ -293,7 +293,7 @@ test('it filters the locales that do not belong to a channel when the channel ch
             field: 'completeness',
             value: 100,
             operator: 'GREATER OR EQUALS THAN ON ALL LOCALES',
-            context: {locales: ['fr_FR', 'en_US', 'breton'], channel: 'ecommerce'},
+            context: {locales: ['fr_FR', 'en_US', 'breton'], scope: 'ecommerce'},
           }}
           onChange={handleOperatorChange}
           validationErrors={[]}
@@ -306,7 +306,7 @@ test('it filters the locales that do not belong to a channel when the channel ch
   await userEvent.click(screen.getByText(`[print]`));
 
   expect(handleOperatorChange).toHaveBeenCalledWith({
-    context: {locales: ['fr_FR', 'en_US'], channel: 'print'},
+    context: {locales: ['fr_FR', 'en_US'], scope: 'print'},
     field: 'completeness',
     operator: 'GREATER OR EQUALS THAN ON ALL LOCALES',
     value: 100,
@@ -325,7 +325,7 @@ test('it can select locales', async () => {
             field: 'completeness',
             value: 100,
             operator: 'GREATER OR EQUALS THAN ON ALL LOCALES',
-            context: {locales: [], channel: 'ecommerce'},
+            context: {locales: [], scope: 'ecommerce'},
           }}
           onChange={handleLocalesChange}
           validationErrors={[]}
@@ -338,7 +338,7 @@ test('it can select locales', async () => {
   await userEvent.click(screen.getByText('English'));
 
   expect(handleLocalesChange).toHaveBeenCalledWith({
-    context: {locales: ['en_US'], channel: 'ecommerce'},
+    context: {locales: ['en_US'], scope: 'ecommerce'},
     field: 'completeness',
     operator: 'GREATER OR EQUALS THAN ON ALL LOCALES',
     value: 100,
@@ -357,7 +357,7 @@ test('it displays locales validation errors', async () => {
             field: 'completeness',
             value: 100,
             operator: 'GREATER OR EQUALS THAN ON ALL LOCALES',
-            context: {locales: [], channel: ''},
+            context: {locales: [], scope: ''},
           }}
           onChange={() => {}}
           validationErrors={[
@@ -389,7 +389,7 @@ test('it displays operator validation errors', async () => {
             field: 'completeness',
             value: 100,
             operator: 'GREATER OR EQUALS THAN ON ALL LOCALES',
-            context: {locales: [], channel: ''},
+            context: {locales: [], scope: ''},
           }}
           onChange={() => {}}
           validationErrors={[

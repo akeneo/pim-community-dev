@@ -58,7 +58,7 @@ class DefaultValueProvider implements DefaultValuesProviderInterface
                     'field' => 'completeness',
                     'operator' => 'ALL',
                     'value' => 100,
-                    'context' => ['channel' => null, 'locales' => []]
+                    'context' => ['scope' => null, 'locales' => []]
                 ]
             ],
         ];

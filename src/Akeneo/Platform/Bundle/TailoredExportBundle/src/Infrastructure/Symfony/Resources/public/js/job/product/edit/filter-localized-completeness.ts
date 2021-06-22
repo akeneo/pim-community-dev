@@ -1,11 +1,10 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
 import {ThemeProvider} from 'styled-components';
-import {LocaleCode, Channel, ValidationError, filterErrors} from '@akeneo-pim-community/shared';
+import {Channel, ValidationError, filterErrors} from '@akeneo-pim-community/shared';
 import {pimTheme} from 'akeneo-design-system';
 import {DependenciesProvider} from '@akeneo-pim-community/legacy-bridge';
-import {Attribute, CompletenessFilter, FetcherContext, Operator} from '@akeneo-pim-enterprise/tailored-export';
-const _ = require('underscore');
+import {Attribute, CompletenessFilter, FetcherContext} from '@akeneo-pim-enterprise/tailored-export';
 const __ = require('oro/translator');
 const BaseFilter = require('pim/filter/filter');
 const BaseCompletenessFilter = require('pim/filter/product/completeness');
@@ -46,7 +45,9 @@ class FilterLocalizedCompleteness extends BaseCompletenessFilter {
 
   setValidationErrors(validationErrors: ValidationError[]) {
     this.validationErrors = validationErrors;
-    this.postRender();
+    if (this.$('.completeness-filter-container').length > 0) {
+      this.postRender();
+    }
   }
 
   /**
@@ -61,6 +62,10 @@ class FilterLocalizedCompleteness extends BaseCompletenessFilter {
    */
   renderInput() {
     return '<div class="completeness-filter-container" style="width: 100%"></div>';
+  }
+
+  isEmpty() {
+    return false;
   }
 
   /**

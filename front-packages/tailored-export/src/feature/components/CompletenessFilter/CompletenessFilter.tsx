@@ -59,14 +59,14 @@ const CompletenessFilter = ({availableOperators, filter, onChange, validationErr
     const newFilter = {...filter, context: {...filter.context, locales: newLocales}};
     onChange(newFilter);
   };
-  const handleChannelChange = (newChannel: ChannelCode) => {
-    const newAvailableLocaleCodes = getLocalesFromChannel(availableChannels, newChannel).map(
+  const handleChannelChange = (newScope: ChannelCode) => {
+    const newAvailableLocaleCodes = getLocalesFromChannel(availableChannels, newScope).map(
       (locale: Locale) => locale.code
     );
     const newLocales = filter.context.locales.filter((localeCode: LocaleCode) =>
       newAvailableLocaleCodes.includes(localeCode)
     );
-    const newFilter = {...filter, context: {scope: newChannel, locales: newLocales}};
+    const newFilter = {...filter, context: {scope: newScope, locales: newLocales}};
     onChange(newFilter);
   };
 

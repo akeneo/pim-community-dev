@@ -179,6 +179,10 @@ const FakePIM = () => {
     return filter.field === 'categories';
   });
 
+  const completenessFilter = jobConfiguration.configuration.filters.data.find(filter => {
+    return filter.field === 'completeness';
+  });
+
   const categoriesSelected = categoryFilter ? categoryFilter['value'] : [];
 
   return (
@@ -222,12 +226,7 @@ const FakePIM = () => {
             <CategoryFilter initialCategorySelection={categoriesSelected} onCategorySelection={handleCategoryChange} />
             <CompletenessFilter
               availableOperators={AVAILABLE_OPERATORS}
-              filter={{
-                field: 'completeness',
-                operator: 'GREATER OR EQUALS THAN ON AT LEAST ONE LOCALE',
-                value: 100,
-                context: {locales: [], channel: null},
-              }}
+              filter={completenessFilter}
               onChange={handleFilterChange}
               validationErrors={filterErrors(validationErrors, '[filters][data][2]')}
             />
