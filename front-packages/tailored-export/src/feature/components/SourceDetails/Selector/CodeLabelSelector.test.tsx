@@ -3,8 +3,8 @@ import {act, screen} from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
 import {Channel, renderWithProviders as baseRender, ValidationError} from '@akeneo-pim-community/shared';
 import {CodeLabelSelector} from './CodeLabelSelector';
-import {Attribute} from '../../../../models';
-import {FetcherContext} from '../../../../contexts';
+import {Attribute} from '../../../models';
+import {FetcherContext} from '../../../contexts';
 
 const attributes = [
   {

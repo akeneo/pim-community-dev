@@ -13,9 +13,6 @@ declare(strict_types=1);
 
 namespace Akeneo\Platform\TailoredExport\Infrastructure\Connector\Processor\PropertySelector;
 
-use Akeneo\Pim\Enrichment\Component\Product\Model\ValueInterface;
-use Akeneo\Pim\Structure\Component\Query\PublicApi\AttributeType\Attribute;
-
 class PropertySelectorRegistry
 {
     private iterable $propertySelectors;
@@ -25,11 +22,11 @@ class PropertySelectorRegistry
         $this->propertySelectors = $propertySelectors;
     }
 
-    public function applyPropertySelection(array $selectionConfiguration, $data): string
+    public function applyPropertySelection(array $selectionConfiguration, $entity, string $propertyName): string
     {
         foreach ($this->propertySelectors as $valueSelector) {
-            if ($valueSelector->supports($selectionConfiguration)) {
-                return $valueSelector->applySelection($selectionConfiguration, $data);
+            if ($valueSelector->supports($selectionConfiguration, $propertyName)) {
+                return $valueSelector->applySelection($selectionConfiguration, $entity);
             }
         }
 

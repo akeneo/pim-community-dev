@@ -15,7 +15,9 @@ namespace Akeneo\Platform\TailoredExport\Infrastructure\Connector\Processor;
 
 use Akeneo\Pim\Enrichment\Component\Product\Model\ProductInterface;
 use Akeneo\Pim\Structure\Component\Query\PublicApi\AttributeType\GetAttributes;
+use Akeneo\Platform\TailoredExport\Domain\SourceTypes;
 use Akeneo\Platform\TailoredExport\Infrastructure\Connector\Processor\AttributeSelector\AttributeSelectorRegistry;
+use Akeneo\Platform\TailoredExport\Infrastructure\Connector\Processor\PropertySelector\PropertySelectorRegistry;
 use Akeneo\Tool\Component\Batch\Item\ItemProcessorInterface;
 use Akeneo\Tool\Component\Batch\Model\StepExecution;
 use Akeneo\Tool\Component\Batch\Step\StepExecutionAwareInterface;
@@ -24,13 +26,16 @@ class ProductExportProcessor implements ItemProcessorInterface, StepExecutionAwa
 {
     private ?StepExecution $stepExecution = null;
     private AttributeSelectorRegistry $attributeSelectorRegistry;
+    private PropertySelectorRegistry $propertySelectorRegistry;
     private GetAttributes $getAttributes;
 
     public function __construct(
         AttributeSelectorRegistry $attributeSelectorRegistry,
+        PropertySelectorRegistry $propertySelectorRegistry,
         GetAttributes $getAttributes
     ) {
         $this->attributeSelectorRegistry = $attributeSelectorRegistry;
+        $this->propertySelectorRegistry = $propertySelectorRegistry;
         $this->getAttributes = $getAttributes;
     }
 
@@ -55,13 +60,19 @@ class ProductExportProcessor implements ItemProcessorInterface, StepExecutionAwa
             $operationSourceValues = [];
 
             foreach ($column['sources'] as $source) {
-                if ('attribute' === $source['type']) {
+                if (SourceTypes::ATTRIBUTE === $source['type']) {
                     $value = $product->getValue($source['code'], $source['locale'], $source['channel']);
                     $attribute = $this->getAttributes->forCode($source['code']);
                     $operationSourceValues[] = $this->attributeSelectorRegistry->applyAttributeSelection(
                         $source['selection'],
                         $attribute,
                         $value
+                    );
+                } else if (SourceTypes::PROPERTY === $source['type']) {
+                    $operationSourceValues[] = $this->propertySelectorRegistry->applyPropertySelection(
+                        $source['selection'],
+                        $product,
+                        $source['code']
                     );
                 } else {
                     throw new \Exception('Source type is unsupported');

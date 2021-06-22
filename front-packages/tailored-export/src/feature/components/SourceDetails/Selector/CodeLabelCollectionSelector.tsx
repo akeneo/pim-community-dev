@@ -7,9 +7,9 @@ import {
   useTranslate,
   ValidationError,
 } from '@akeneo-pim-community/shared';
-import {availableSeparators, isCollectionSeparator, CodeLabelCollectionSelection} from '../../../../models';
-import {useChannels} from '../../../../hooks';
-import {LocaleDropdown} from '../LocaleDropdown';
+import {availableSeparators, isCollectionSeparator, CodeLabelCollectionSelection} from '../../../models';
+import {useChannels} from '../../../hooks';
+import {LocaleDropdown} from '../../LocaleDropdown';
 
 type CodeLabelCollectionSelectorProps = {
   selection: CodeLabelCollectionSelection;

@@ -5,7 +5,6 @@ import {Channel, renderWithProviders as baseRender, ValidationError} from '@aken
 import {PriceCollectionSelector} from './PriceCollectionSelector';
 import {Attribute} from '../../../../models';
 import {FetcherContext} from '../../../../contexts';
-import {CodeLabelCollectionSelector} from './CodeLabelCollectionSelector';
 
 const attributes = [
   {code: 'price', type: 'pim_catalog_price_collection', labels: {}, scopable: false, localizable: false},

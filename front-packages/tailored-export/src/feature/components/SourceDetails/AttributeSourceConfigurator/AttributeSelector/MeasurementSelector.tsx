@@ -9,7 +9,7 @@ import {
 } from '@akeneo-pim-community/shared';
 import {MeasurementSelection} from '../../../../models';
 import {useChannels} from '../../../../hooks';
-import {LocaleDropdown} from '../LocaleDropdown';
+import {LocaleDropdown} from '../../../LocaleDropdown';
 
 type MeasurementSelectorProps = {
   selection: MeasurementSelection;

@@ -1,7 +1,7 @@
 import React from 'react';
 import {screen} from '@testing-library/react';
 import {renderWithProviders} from '@akeneo-pim-community/shared';
-import {Selector} from './Selector';
+import {AttributeSelector} from './AttributeSelector';
 import {Attribute} from '../../../../models';
 
 const getAttribute = (type: string): Attribute => ({
@@ -14,11 +14,11 @@ const getAttribute = (type: string): Attribute => ({
   available_locales: [],
 });
 
-jest.mock('./CodeLabelSelector', () => ({
+jest.mock('../../Selector/CodeLabelSelector', () => ({
   CodeLabelSelector: () => 'This is a code and label selector',
 }));
 
-jest.mock('./CodeLabelCollectionSelector', () => ({
+jest.mock('../../Selector/CodeLabelCollectionSelector', () => ({
   CodeLabelCollectionSelector: () => 'This is a code and label collection selector',
 }));
 
@@ -44,7 +44,7 @@ test.each([
   const onSelectionChange = jest.fn();
 
   renderWithProviders(
-    <Selector
+    <AttributeSelector
       selection={{type: 'code'}}
       validationErrors={[]}
       attribute={getAttribute(type)}
@@ -61,7 +61,7 @@ test.each(['pim_catalog_simpleselect', 'akeneo_reference_entity'])(
     const onSelectionChange = jest.fn();
 
     renderWithProviders(
-      <Selector
+      <AttributeSelector
         selection={{type: 'code'}}
         validationErrors={[]}
         attribute={getAttribute(type)}
@@ -79,7 +79,7 @@ test.each(['pim_catalog_multiselect', 'akeneo_reference_entity_collection', 'pim
     const onSelectionChange = jest.fn();
 
     renderWithProviders(
-      <Selector
+      <AttributeSelector
         validationErrors={[]}
         selection={{type: 'code'}}
         attribute={getAttribute(type)}
@@ -95,7 +95,7 @@ test('it renders a measurement selector for measurement attribute', () => {
   const onSelectionChange = jest.fn();
 
   renderWithProviders(
-    <Selector
+    <AttributeSelector
       validationErrors={[]}
       selection={{type: 'code'}}
       attribute={getAttribute('pim_catalog_metric')}
@@ -110,7 +110,7 @@ test('it renders a price collection selector for price collection attribute', ()
   const onSelectionChange = jest.fn();
 
   renderWithProviders(
-    <Selector
+    <AttributeSelector
       validationErrors={[]}
       selection={{type: 'amount'}}
       attribute={getAttribute('pim_catalog_price_collection')}
@@ -125,7 +125,7 @@ test('it renders a date selector for date attribute', () => {
   const onSelectionChange = jest.fn();
 
   renderWithProviders(
-    <Selector
+    <AttributeSelector
       validationErrors={[]}
       selection={{format: 'yyyy-mm-dd'}}
       attribute={getAttribute('pim_catalog_date')}

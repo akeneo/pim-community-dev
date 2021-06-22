@@ -250,19 +250,19 @@ test('We can add a property source', async () => {
   });
 });
 
-test('We can udpate a source', async () => {
+test('We can update a source', async () => {
   const columnConfiguration: ColumnConfiguration = {
     uuid: '3a6645e0-0d70-411d-84ee-79833144544a',
     sources: [
       {
         channel: null,
-        code: 'category',
+        code: 'name',
         locale: 'en_US',
         operations: [],
         selection: {
           type: 'code',
         },
-        type: 'property',
+        type: 'attribute',
         uuid: '266b6361-badb-48a1-98ef-d75baa235148',
       },
     ],
@@ -297,13 +297,13 @@ test('We can udpate a source', async () => {
     sources: [
       {
         channel: null,
-        code: 'category',
+        code: 'name',
         locale: 'br_FR',
         operations: [],
         selection: {
           type: 'code',
         },
-        type: 'property',
+        type: 'attribute',
         uuid: '266b6361-badb-48a1-98ef-d75baa235148',
       },
     ],

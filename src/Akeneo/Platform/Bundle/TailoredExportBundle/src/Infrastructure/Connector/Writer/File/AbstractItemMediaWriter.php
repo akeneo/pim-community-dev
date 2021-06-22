@@ -105,7 +105,9 @@ abstract class AbstractItemMediaWriter implements
             $this->writtenFiles[] = WrittenFileInfo::fromLocalFile($this->openedPath, basename($this->openedPath));
         }
 
-        $this->writer->close();
+        if (null !== $this->writer) {
+            $this->writer->close();
+        }
     }
 
     /**

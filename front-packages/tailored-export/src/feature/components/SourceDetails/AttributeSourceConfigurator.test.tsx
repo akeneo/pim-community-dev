@@ -2,7 +2,7 @@ import React from 'react';
 import {screen, act, fireEvent} from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
 import {renderWithProviders, Channel} from '@akeneo-pim-community/shared';
-import {SourceConfigurator} from './SourceConfigurator';
+import {AttributeSourceConfigurator} from './AttributeSourceConfigurator';
 import {Attribute, Source} from '../../models';
 import {FetcherContext} from '../../contexts';
 
@@ -78,7 +78,7 @@ test('it display source configurator', async () => {
   await act(async () => {
     renderWithProviders(
       <FetcherContext.Provider value={fetchers}>
-        <SourceConfigurator source={source} validationErrors={[]} onSourceChange={jest.fn} />
+        <AttributeSourceConfigurator source={source} validationErrors={[]} onSourceChange={jest.fn} />
       </FetcherContext.Provider>
     );
   });
@@ -104,7 +104,7 @@ test('it display locale dropdown when attribute is localizable', async () => {
   await act(async () => {
     renderWithProviders(
       <FetcherContext.Provider value={fetchers}>
-        <SourceConfigurator source={source} validationErrors={[]} onSourceChange={jest.fn} />
+        <AttributeSourceConfigurator source={source} validationErrors={[]} onSourceChange={jest.fn} />
       </FetcherContext.Provider>
     );
   });
@@ -129,7 +129,7 @@ test('it displays a filtered locale dropdown when attribute is localizable and l
   await act(async () => {
     renderWithProviders(
       <FetcherContext.Provider value={fetchers}>
-        <SourceConfigurator source={source} onSourceChange={jest.fn} validationErrors={[]} />
+        <AttributeSourceConfigurator source={source} onSourceChange={jest.fn} validationErrors={[]} />
       </FetcherContext.Provider>
     );
   });
@@ -157,7 +157,7 @@ test('it display channel dropdown when attribute is scopable', async () => {
   await act(async () => {
     renderWithProviders(
       <FetcherContext.Provider value={fetchers}>
-        <SourceConfigurator source={source} validationErrors={[]} onSourceChange={jest.fn} />
+        <AttributeSourceConfigurator source={source} validationErrors={[]} onSourceChange={jest.fn} />
       </FetcherContext.Provider>
     );
   });
@@ -182,7 +182,7 @@ test('it display channel dropdown when attribute is scopable and localizable', a
   await act(async () => {
     renderWithProviders(
       <FetcherContext.Provider value={fetchers}>
-        <SourceConfigurator source={source} validationErrors={[]} onSourceChange={jest.fn} />
+        <AttributeSourceConfigurator source={source} validationErrors={[]} onSourceChange={jest.fn} />
       </FetcherContext.Provider>
     );
   });
@@ -208,7 +208,7 @@ test('it calls handler when channel changed', async () => {
   await act(async () => {
     renderWithProviders(
       <FetcherContext.Provider value={fetchers}>
-        <SourceConfigurator source={source} validationErrors={[]} onSourceChange={handleSourceChange} />
+        <AttributeSourceConfigurator source={source} validationErrors={[]} onSourceChange={handleSourceChange} />
       </FetcherContext.Provider>
     );
   });
@@ -238,7 +238,7 @@ test('it calls handler when locale changed', async () => {
   await act(async () => {
     renderWithProviders(
       <FetcherContext.Provider value={fetchers}>
-        <SourceConfigurator source={source} validationErrors={[]} onSourceChange={handleSourceChange} />
+        <AttributeSourceConfigurator source={source} validationErrors={[]} onSourceChange={handleSourceChange} />
       </FetcherContext.Provider>
     );
   });

@@ -98,7 +98,22 @@ const getDefaultSelectionByAttribute = (attribute: Attribute): Selection => {
   }
 };
 
-export {availableDateFormats, availableSeparators, isCollectionSeparator, isDateFormat, getDefaultSelectionByAttribute};
+const getDefaultSelectionByProperty = (propertyName: string): Selection => {
+  switch (propertyName) {
+    case 'categories':
+      return {type: 'code', separator: ','};
+    default:
+      return {type: 'code'};
+  }
+};
+export {
+  availableDateFormats,
+  availableSeparators,
+  isCollectionSeparator,
+  isDateFormat,
+  getDefaultSelectionByAttribute,
+  getDefaultSelectionByProperty,
+};
 export type {
   CodeLabelCollectionSelection,
   CodeLabelSelection,

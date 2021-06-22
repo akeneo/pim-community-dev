@@ -1,3 +1,5 @@
+import React, {ReactElement} from 'react';
+import {Field, Helper, Locale, SelectInput, HelperProps} from 'akeneo-design-system';
 import {
   useTranslate,
   Locale as LocaleModel,
@@ -5,8 +7,6 @@ import {
   ChannelReference,
   ValidationError,
 } from '@akeneo-pim-community/shared';
-import {Field, Helper, Locale, SelectInput, HelperProps} from 'akeneo-design-system';
-import React, {ReactElement} from 'react';
 
 type LocaleDropdownProps = {
   value: LocaleCode;

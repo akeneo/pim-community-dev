@@ -15,7 +15,7 @@ namespace Akeneo\Platform\TailoredExport\Infrastructure\Connector\Processor\Prop
 
 interface PropertySelectorInterface
 {
-    public function applySelection(array $selectionConfiguration, $data): string;
+    public function applySelection(array $selectionConfiguration, $entity): string;
 
-    public function supports(array $selectionConfiguration): bool;
+    public function supports(array $selectionConfiguration, string $propertyName): bool;
 }

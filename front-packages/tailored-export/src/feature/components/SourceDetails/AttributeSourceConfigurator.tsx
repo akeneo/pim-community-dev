@@ -1,5 +1,6 @@
 import React from 'react';
 import styled from 'styled-components';
+import {Helper} from 'akeneo-design-system';
 import {
   filterErrors,
   ChannelCode,
@@ -11,10 +12,9 @@ import {
 } from '@akeneo-pim-community/shared';
 import {useAttribute, useChannels} from '../../hooks';
 import {Source} from '../../models';
-import {ChannelDropdown} from './SourceConfigurator/ChannelDropdown';
-import {Operations} from './SourceConfigurator/Operations';
-import {LocaleDropdown} from './SourceConfigurator/LocaleDropdown';
-import {Helper} from 'akeneo-design-system';
+import {ChannelDropdown} from './AttributeSourceConfigurator/ChannelDropdown';
+import {AttributeOperations} from './AttributeSourceConfigurator/AttributeOperations';
+import {LocaleDropdown} from '../LocaleDropdown';
 
 const Container = styled.div`
   display: flex;
@@ -24,23 +24,25 @@ const Container = styled.div`
   flex: 1;
 `;
 
-type SourceConfiguratorProps = {
+type AttributeSourceConfiguratorProps = {
   source: Source;
   validationErrors: ValidationError[];
   onSourceChange: (updatedSource: Source) => void;
 };
 
-const SourceConfigurator = ({source, validationErrors, onSourceChange}: SourceConfiguratorProps) => {
+const AttributeSourceConfigurator = ({source, validationErrors, onSourceChange}: AttributeSourceConfiguratorProps) => {
   const translate = useTranslate();
   const channels = useChannels();
   const localeErrors = filterErrors(validationErrors, '[locale]');
   const channelErrors = filterErrors(validationErrors, '[channel]');
   const locales = getLocalesFromChannel(channels, source.channel);
   const attribute = useAttribute(source.code);
-  const localeSpecificFilteredLocales =
-    attribute && attribute.is_locale_specific
-      ? locales.filter(({code}) => attribute.available_locales.includes(code))
-      : locales;
+
+  if (null === attribute) return null;
+
+  const localeSpecificFilteredLocales = attribute.is_locale_specific
+    ? locales.filter(({code}) => attribute.available_locales.includes(code))
+    : locales;
 
   return (
     <Container>
@@ -69,9 +71,14 @@ const SourceConfigurator = ({source, validationErrors, onSourceChange}: SourceCo
           )}
         </LocaleDropdown>
       )}
-      <Operations source={source} validationErrors={validationErrors} onSourceChange={onSourceChange} />
+      <AttributeOperations
+        attribute={attribute}
+        source={source}
+        validationErrors={validationErrors}
+        onSourceChange={onSourceChange}
+      />
     </Container>
   );
 };
 
-export {SourceConfigurator};
+export {AttributeSourceConfigurator};

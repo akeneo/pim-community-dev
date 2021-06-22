@@ -9,20 +9,20 @@ import {
   PriceCollectionSelection,
   DateSelection,
 } from '../../../../models';
-import {CodeLabelSelector} from './CodeLabelSelector';
+import {CodeLabelSelector} from '../../Selector/CodeLabelSelector';
+import {CodeLabelCollectionSelector} from '../../Selector/CodeLabelCollectionSelector';
 import {MeasurementSelector} from './MeasurementSelector';
 import {PriceCollectionSelector} from './PriceCollectionSelector';
-import {CodeLabelCollectionSelector} from './CodeLabelCollectionSelector';
 import {DateSelector} from './DateSelector';
 
-type SelectorProps = {
+type AttributeSelectorProps = {
   attribute: Attribute;
   selection: Selection;
   validationErrors: ValidationError[];
   onSelectionChange: (selection: Selection) => void;
 };
 
-const Selector = ({attribute, selection, validationErrors, onSelectionChange}: SelectorProps) => {
+const AttributeSelector = ({attribute, selection, validationErrors, onSelectionChange}: AttributeSelectorProps) => {
   switch (attribute.type) {
     case 'akeneo_reference_entity_collection':
     case 'pim_catalog_asset_collection':
@@ -72,4 +72,4 @@ const Selector = ({attribute, selection, validationErrors, onSelectionChange}: S
   }
 };
 
-export {Selector};
+export {AttributeSelector};

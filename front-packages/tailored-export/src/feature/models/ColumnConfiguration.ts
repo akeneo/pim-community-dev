@@ -1,7 +1,7 @@
 import {Channel, ChannelReference, getLocalesFromChannel, LocaleReference} from '@akeneo-pim-community/shared';
 import {uuid} from 'akeneo-design-system';
 import {Attribute} from './Attribute';
-import {Selection, getDefaultSelectionByAttribute} from './Selection';
+import {Selection, getDefaultSelectionByAttribute, getDefaultSelectionByProperty} from './Selection';
 
 type Operation = {
   type: string;
@@ -107,6 +107,8 @@ const addAttributeSource = (
 };
 
 const addPropertySource = (columnConfiguration: ColumnConfiguration, sourceCode: string): ColumnConfiguration => {
+  const selection = getDefaultSelectionByProperty(sourceCode);
+
   return {
     ...columnConfiguration,
     sources: [
@@ -118,7 +120,7 @@ const addPropertySource = (columnConfiguration: ColumnConfiguration, sourceCode:
         locale: null,
         channel: null,
         operations: [],
-        selection: {type: 'code'},
+        selection,
       },
     ],
   };

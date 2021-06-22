@@ -1,23 +1,20 @@
 import React, {useState} from 'react';
 import {Collapse} from 'akeneo-design-system';
 import {filterErrors, useTranslate, ValidationError} from '@akeneo-pim-community/shared';
-import {useAttribute} from '../../../hooks';
-import {Source} from '../../../models';
+import {Attribute, Source} from '../../../models';
 import {NoOperationsPlaceholder} from './NoOperationsPlaceholder';
-import {Selector} from './Selector/Selector';
+import {AttributeSelector} from './AttributeSelector/AttributeSelector';
 
-type OperationsProps = {
+type AttributeOperationsProps = {
+  attribute: Attribute;
   source: Source;
   validationErrors: ValidationError[];
   onSourceChange: (updatedSource: Source) => void;
 };
 
-const Operations = ({source, validationErrors, onSourceChange}: OperationsProps) => {
+const AttributeOperations = ({attribute, source, validationErrors, onSourceChange}: AttributeOperationsProps) => {
   const translate = useTranslate();
   const [isSelectorCollapsed, toggleSelectorCollapse] = useState<boolean>(true);
-  const attribute = useAttribute(source.code);
-
-  if (null === attribute) return null;
 
   switch (attribute.type) {
     case 'pim_catalog_text':
@@ -29,7 +26,7 @@ const Operations = ({source, validationErrors, onSourceChange}: OperationsProps)
   }
 
   const selector = (
-    <Selector
+    <AttributeSelector
       attribute={attribute}
       selection={source.selection}
       validationErrors={filterErrors(validationErrors, '[selection]')}
@@ -51,4 +48,4 @@ const Operations = ({source, validationErrors, onSourceChange}: OperationsProps)
   );
 };
 
-export {Operations};
+export {AttributeOperations};

@@ -56,7 +56,7 @@ final class GetGroupedSourcesAction
         $attributeTypes = isset($options['attributeTypes']) ? explode(',', $options['attributeTypes']) : null;
 
         $fields = [
-            // 'categories',
+            'categories',
             // 'enabled',
             // 'family',
             // 'parent',

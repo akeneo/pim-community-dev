@@ -16,7 +16,6 @@ namespace Specification\Akeneo\Platform\TailoredExport\Infrastructure\Connector\
 use Akeneo\Pim\Enrichment\Component\Product\Model\ValueInterface;
 use Akeneo\Pim\Structure\Component\Query\PublicApi\AttributeOption\GetExistingAttributeOptionsWithValues;
 use Akeneo\Pim\Structure\Component\Query\PublicApi\AttributeType\Attribute;
-use Akeneo\ReferenceEntity\Infrastructure\PublicApi\Enrich\FindRecordsLabelTranslations;
 use PhpSpec\ObjectBehavior;
 
 class MultiSelectSelectorSpec extends ObjectBehavior

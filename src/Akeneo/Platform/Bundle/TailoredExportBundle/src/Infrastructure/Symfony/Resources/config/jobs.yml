@@ -37,6 +37,7 @@ services:
     class: 'Akeneo\Platform\TailoredExport\Infrastructure\Connector\Processor\ProductExportProcessor'
     arguments:
       - '@Akeneo\Platform\TailoredExport\Infrastructure\Connector\Processor\AttributeSelector\AttributeSelectorRegistry'
+      - '@Akeneo\Platform\TailoredExport\Infrastructure\Connector\Processor\PropertySelector\PropertySelectorRegistry'
       - '@akeneo.pim.structure.query.get_attributes'
 
   akeneo.tailored_export.connector.xlsx.file_writer_factory:

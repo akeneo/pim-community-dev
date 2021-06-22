@@ -11,7 +11,8 @@ import {
   updateSource,
 } from '../../models/ColumnConfiguration';
 import {AddSourceDropdown} from './AddSourceDropdown/AddSourceDropdown';
-import {SourceConfigurator} from '../SourceDetails/SourceConfigurator';
+import {AttributeSourceConfigurator} from '../SourceDetails/AttributeSourceConfigurator';
+import {PropertySourceConfigurator} from '../SourceDetails/PropertySourceConfigurator';
 import {SourceTabBar} from '../SourceDetails/SourceTabBar';
 import {useFetchers, useValidationErrors} from '../../contexts';
 import {useChannels} from '../../hooks';
@@ -96,8 +97,15 @@ const ColumnDetails = ({columnConfiguration, onColumnChange}: ColumnDetailsProps
             {translate(error.messageTemplate, error.parameters)}
           </Helper>
         ))}
-        {currentSource && (
-          <SourceConfigurator
+        {'attribute' === currentSource?.type && (
+          <AttributeSourceConfigurator
+            source={currentSource}
+            validationErrors={filterErrors(validationErrors, `[${currentSource.uuid}]`)}
+            onSourceChange={handleSourceChange}
+          />
+        )}
+        {'property' === currentSource?.type && (
+          <PropertySourceConfigurator
             source={currentSource}
             validationErrors={filterErrors(validationErrors, `[${currentSource.uuid}]`)}
             onSourceChange={handleSourceChange}

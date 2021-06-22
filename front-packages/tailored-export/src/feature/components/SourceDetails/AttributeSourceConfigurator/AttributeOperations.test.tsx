@@ -2,7 +2,7 @@ import React from 'react';
 import {screen} from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
 import {renderWithProviders} from '@akeneo-pim-community/shared';
-import {Operations} from './Operations';
+import {AttributeOperations} from './AttributeOperations';
 import {Attribute, Source} from '../../../models';
 
 const getAttribute = (type: string): Attribute => ({
@@ -11,21 +11,12 @@ const getAttribute = (type: string): Attribute => ({
   labels: {},
   scopable: false,
   localizable: false,
+  is_locale_specific: false,
+  available_locales: [],
 });
 
-jest.mock('../../../hooks/useAttributes', () => ({
-  useAttribute: (attributeCode: string) => {
-    switch (attributeCode) {
-      case 'null':
-        return null;
-      default:
-        return getAttribute(attributeCode);
-    }
-  },
-}));
-
-jest.mock('./Selector/Selector', () => ({
-  Selector: ({onSelectionChange}: {onSelectionChange: () => void}) => (
+jest.mock('./AttributeSelector/AttributeSelector', () => ({
+  AttributeSelector: ({onSelectionChange}: {onSelectionChange: () => void}) => (
     <button onClick={onSelectionChange}>This is a selector</button>
   ),
 }));
@@ -49,7 +40,14 @@ test.each([
     type: 'attribute',
   };
 
-  renderWithProviders(<Operations source={source} validationErrors={[]} onSourceChange={onSourceChange} />);
+  renderWithProviders(
+    <AttributeOperations
+      attribute={getAttribute(type)}
+      source={source}
+      validationErrors={[]}
+      onSourceChange={onSourceChange}
+    />
+  );
 
   expect(
     screen.getByText('akeneo.tailored_export.column_details.sources.no_source_configuration.title')
@@ -75,29 +73,16 @@ test.each([
     type: 'attribute',
   };
 
-  renderWithProviders(<Operations source={source} validationErrors={[]} onSourceChange={onSourceChange} />);
+  renderWithProviders(
+    <AttributeOperations
+      attribute={getAttribute(type)}
+      source={source}
+      validationErrors={[]}
+      onSourceChange={onSourceChange}
+    />
+  );
 
   userEvent.click(screen.getByText('This is a selector'));
 
   expect(onSourceChange).toHaveBeenCalled();
-});
-
-test('it renders nothing if the attribute is not found', () => {
-  const onSourceChange = jest.fn();
-
-  const source: Source = {
-    uuid: '22',
-    code: 'null',
-    channel: null,
-    locale: null,
-    operations: [],
-    selection: {type: 'code'},
-    type: 'attribute',
-  };
-
-  renderWithProviders(<Operations source={source} validationErrors={[]} onSourceChange={onSourceChange} />);
-
-  expect(
-    screen.queryByText('akeneo.tailored_export.column_details.sources.no_source_configuration.title')
-  ).not.toBeInTheDocument();
 });

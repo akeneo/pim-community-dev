@@ -3,3 +3,10 @@ services:
     public: true
     arguments:
       - !tagged_iterator akeneo.tailored_export.property_selector
+
+  Akeneo\Platform\TailoredExport\Infrastructure\Connector\Processor\PropertySelector\CategoriesSelector:
+    public: true
+    arguments:
+      - '@akeneo.pim.structure.query.get_category_translations'
+    tags:
+      - { name: akeneo.tailored_export.property_selector }
