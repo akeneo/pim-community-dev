@@ -4,6 +4,10 @@
 
 ## Bug fixes
 
+- PIM-9921: Add a translation for the title of category creation form
+
+## Bug fixes
+
 - PIM-9914: Fix backslash incorrectly considered as an escape character in exports
 
 # 4.0.114 (2021-06-14)
