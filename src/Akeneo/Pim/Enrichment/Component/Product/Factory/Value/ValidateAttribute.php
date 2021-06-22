@@ -4,7 +4,10 @@ declare(strict_types=1);
 
 namespace Akeneo\Pim\Enrichment\Component\Product\Factory\Value;
 
-use Akeneo\Pim\Enrichment\Component\Product\Exception\InvalidAttributeException;
+use Akeneo\Pim\Enrichment\Component\Product\Exception\LocalizableAndNotScopableAttributeException;
+use Akeneo\Pim\Enrichment\Component\Product\Exception\LocalizableAndScopableAttributeException;
+use Akeneo\Pim\Enrichment\Component\Product\Exception\NotLocalizableAndNotScopableAttributeException;
+use Akeneo\Pim\Enrichment\Component\Product\Exception\NotLocalizableAndScopableAttributeException;
 use Akeneo\Pim\Structure\Component\Query\PublicApi\AttributeType\Attribute;
 
 /**
@@ -22,41 +25,13 @@ final class ValidateAttribute
     public static function validate(Attribute $attribute, ?string $channelCode, ?string $localeCode): void
     {
         if ($attribute->isLocalizableAndScopable() && (null === $channelCode || null === $localeCode)) {
-            $message = 'Attribute "%s" expects a channel code and a locale code, "%s" channel code and "%s" locale code given.';
-
-            throw new InvalidAttributeException(
-                'attribute',
-                null,
-                ValueFactory::class,
-                sprintf($message, $attribute->code(), $channelCode, $localeCode),
-            );
+            throw LocalizableAndScopableAttributeException::fromAttributeChannelAndLocale($attribute->code(), (string) $channelCode, (string) $localeCode);
         } elseif ((!$attribute->isScopable() && $attribute->isLocalizable()) && (null !== $channelCode || null === $localeCode)) {
-            $message = 'Attribute "%s" expects a locale code and a null channel code, "%s" channel code and "%s" locale code given.';
-
-            throw new InvalidAttributeException(
-                'attribute',
-                null,
-                ValueFactory::class,
-                sprintf($message, $attribute->code(), $channelCode, $localeCode),
-            );
+            throw LocalizableAndNotScopableAttributeException::fromAttributeChannelAndLocale($attribute->code(), (string) $channelCode, (string) $localeCode);
         } elseif (($attribute->isScopable() && !$attribute->isLocalizable()) && (null === $channelCode || null !== $localeCode)) {
-            $message = 'Attribute "%s" expects a channel code and a null locale code, "%s" channel code and "%s" locale code given.';
-
-            throw new InvalidAttributeException(
-                'attribute',
-                null,
-                ValueFactory::class,
-                sprintf($message, $attribute->code(), $channelCode, $localeCode),
-            );
-        } elseif ((!$attribute->isScopable() &&! $attribute->isLocalizable()) && (null !== $channelCode || null !== $localeCode)) {
-            $message = 'Attribute "%s" expects a null channel code and a null locale code, "%s" channel code and "%s" locale code given.';
-
-            throw new InvalidAttributeException(
-                'attribute',
-                null,
-                ValueFactory::class,
-                sprintf($message, $attribute->code(), $channelCode, $localeCode),
-            );
+            throw NotLocalizableAndScopableAttributeException::fromAttributeChannelAndLocale($attribute->code(), (string) $channelCode, (string) $localeCode);
+        } elseif ((!$attribute->isScopable() && !$attribute->isLocalizable()) && (null !== $channelCode || null !== $localeCode)) {
+            throw NotLocalizableAndNotScopableAttributeException::fromAttributeChannelAndLocale($attribute->code(), (string) $channelCode, (string) $localeCode);
         }
     }
 }
