@@ -148,7 +148,8 @@ jobs:
           - add_ssh_keys:
               fingerprints:
                   - "1f:25:f8:bb:59:52:95:f6:e2:f2:97:2f:30:d4:e9:66"
-          - checkout_bigcommerce_connector
+          - checkout_bigcommerce_connector:
+                is_pull_request: << parameters.is_pull_request >>
           - set_gcloud_config_dev
           - when:
                 condition: << parameters.is_pull_request >>
@@ -284,7 +285,8 @@ jobs:
           cd /home/circleci/project
           git checkout $CE_COMMIT_HASH
           /home/circleci/ee_project/growth_edition/prepare_growth_edition.sh /home/circleci/project
-    - checkout_bigcommerce_connector
+    - checkout_bigcommerce_connector:
+        is_pull_request: << parameters.is_pull_request >>
     - run:
         name: Build the Growth Edition prod image
         command: TYPE=${TYPE} IMAGE_TAG_DATE=${IMAGE_TAG_DATE} make php-image-prod
@@ -1920,6 +1922,10 @@ commands:
 
   checkout_bigcommerce_connector:
       description: "Checkout big commerce connector repository"
+      parameters:
+          is_pull_request:
+              type: boolean
+              default: true
       steps:
           - run:
                 name: Ensure to use the ssh key of akeneo-circle-ci account
