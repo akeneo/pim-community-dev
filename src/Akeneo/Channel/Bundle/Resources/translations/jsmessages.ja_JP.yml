@@ -53,6 +53,7 @@ pim_enrich.entity.channel:
   property:
     category_tree: カテゴリツリー
     do_not_convert: 変換しない
+    measurement: 測定の設定
     label_conversion_units: 商品のエクスポート時に使用する各計量属性のための変換ユニットを選択してください
   module:
     create:
@@ -63,6 +64,15 @@ pim_enrich.entity.locale:
   label: ロケール
   uppercase_label: ロケール
   plural_label: ロケール
+  page_title:
+    index: "]-Inf, 1]{{ count }} 有効なロケール]1, Inf[{{ count }} 有効なロケール"
+  helper: "ロケールを有効化または無効化するには、いずれかの<a href={{ href }}>チャンネル</a>に移動し、ロケールを追加または削除してください。"
+  grid:
+    columns:
+      code: 有効なロケール
+    filters:
+      search_placeholder: 有効なロケールを検索
+    no_search_result: 検索結果はありません。
 pim_enrich.entity.currency:
   plural_label: 通貨
   page_title:

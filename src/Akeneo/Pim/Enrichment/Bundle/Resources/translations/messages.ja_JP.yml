@@ -80,3 +80,4 @@ tree:
   edit: ツリーを編集
   remove:
     error_linked: このカテゴリツリーはチャンネルにリンクしているため削除できません。
+  create: カテゴリツリーを作成
