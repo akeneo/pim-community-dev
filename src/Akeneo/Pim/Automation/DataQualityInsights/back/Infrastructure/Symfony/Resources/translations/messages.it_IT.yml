@@ -1,0 +1,4 @@
+akeneo_data_quality_insights:
+  product_grid:
+    filter_label:
+      images_quality: Immagine prodotto

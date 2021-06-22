@@ -1,0 +1,47 @@
+pim_analytics:
+  new_patch_available: Nuova patch disponibile
+  system_info:
+    title: Informazioni di sistema
+    download: Scarica
+  info_header:
+    property: Proprietà
+    information: Informazioni
+  info_type:
+    pim_edition: Edizione
+    pim_version: Versione
+    pim_storage_driver: Storage
+    pim_environment: Ambiente
+    registered_bundles: Bundle registrati
+    nb_channels: Numero di canali
+    nb_products: Numero di prodotti
+    nb_product_models: Numero di modelli prodotto
+    nb_variant_products: Numero di prodotti variante
+    nb_family_variants: Numero di varianti di famiglia
+    nb_attributes: Numero di attributi
+    nb_localizable_attributes: Numero di attributi localizzabili
+    nb_useable_as_grid_filter_attributes: Numero di attributi usabili come filtri griglia
+    avg_percentage_localizable_attributes_per_family: Percentuale media di attributi localizzabili per famiglia (%)
+    avg_number_attributes_per_family: Numero medio di attributi per famiglia
+    nb_families: Numero di famiglie
+    nb_users: Numero di utenti
+    nb_categories: Numero di categorie
+    nb_category_trees: Numero di alberi di categorie
+    max_category_in_one_category: Numero massimo di categorie in un'unica categoria
+    max_category_levels: Numero massimo di livelli di categoria
+    nb_product_values: Numero di valori di prodotto
+    avg_product_values_by_product: Numero medio di valori di prodotto per prodotto
+    avg_product_values_by_family: Numero medio di valori di prodotto potenziali per famiglia
+    pim_storage_version: Versione storage
+    os_version: Versione OS
+    php_version: Versione PHP
+    mysql_version: Versione MySQL
+    mariadb_version: Versione MariaDB
+    mongodb_version: Versione MongoDB
+    server_version: Versione server
+    php_extensions: Estensioni PHP
+    email_domains: Domini e-mail associati
+    api_connection: Connessioni API
+    nb_media_files_in_products: Numero di file multimediali nei prodotti
+    nb_media_images_in_products: Numero di immagini multimediali nei prodotti
+    is_demo_catalog: Catalogo demo installato
+
