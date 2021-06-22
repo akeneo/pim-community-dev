@@ -11,6 +11,7 @@ services:
     tags:
       - { name: akeneo.tailored_export.property_selector }
 
+
   Akeneo\Platform\TailoredExport\Infrastructure\Connector\Processor\PropertySelector\FamilySelector:
     public: true
     arguments:
@@ -27,5 +28,12 @@ services:
 
   Akeneo\Platform\TailoredExport\Infrastructure\Connector\Processor\PropertySelector\EnabledSelector:
     public: true
+    tags:
+      - { name: akeneo.tailored_export.property_selector }
+
+  Akeneo\Platform\TailoredExport\Infrastructure\Connector\Processor\PropertySelector\ParentSelector:
+    public: true
+    arguments:
+      - '@akeneo.pim.enrichment.product.query.get_product_model_labels'
     tags:
       - { name: akeneo.tailored_export.property_selector }

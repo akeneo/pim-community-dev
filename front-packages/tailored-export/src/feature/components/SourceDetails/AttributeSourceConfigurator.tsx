@@ -12,7 +12,7 @@ import {
 } from '@akeneo-pim-community/shared';
 import {useAttribute, useChannels} from '../../hooks';
 import {Source} from '../../models';
-import {ChannelDropdown} from './AttributeSourceConfigurator/ChannelDropdown';
+import {ChannelDropdown} from '../ChannelDropdown';
 import {AttributeOperations} from './AttributeSourceConfigurator/AttributeOperations';
 import {LocaleDropdown} from '../LocaleDropdown';
 

@@ -47,6 +47,10 @@ akeneo.tailored_export:
           amount: Amount
           currency: Currency
         format: Format
+        parent:
+          info:
+            locale: In case of the attribute used as label is localisable, the locale value to select
+            channel: In case of the attribute used as label is scopable, the channel value to select
   column:
     delete_message: Are you sure you want to remove this column?
   validation:

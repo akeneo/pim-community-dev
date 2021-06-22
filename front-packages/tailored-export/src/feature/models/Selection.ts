@@ -1,4 +1,4 @@
-import {LocaleCode} from '@akeneo-pim-community/shared';
+import {ChannelCode, LocaleCode} from '@akeneo-pim-community/shared';
 import {Attribute} from './Attribute';
 
 const availableSeparators = [',', ';', '|'];
@@ -66,6 +66,16 @@ type MeasurementSelection =
       type: 'amount';
     };
 
+type ParentSelection =
+  | {
+  type: 'code';
+}
+  | {
+  type: 'label';
+  channel: ChannelCode;
+  locale: LocaleCode;
+};
+
 type DateSelection = {
   format: DateFormat;
 };
@@ -75,7 +85,8 @@ type Selection =
   | CodeLabelCollectionSelection
   | PriceCollectionSelection
   | MeasurementSelection
-  | DateSelection;
+  | DateSelection
+  | ParentSelection;
 
 const isCollectionSeparator = (separator: unknown): separator is CollectionSeparator =>
   typeof separator === 'string' && availableSeparators.includes(separator);
@@ -120,5 +131,6 @@ export type {
   DateSelection,
   MeasurementSelection,
   PriceCollectionSelection,
+  ParentSelection,
   Selection,
 };

@@ -11,6 +11,9 @@ services:
   akeneo.tailored_export.validation.source.price_collection_selection.constraint:
     class: 'Akeneo\Platform\TailoredExport\Infrastructure\Validation\Selection\PriceCollectionSelection'
 
+  akeneo.tailored_export.validation.source.parent_selection.constraint:
+    class: 'Akeneo\Platform\TailoredExport\Infrastructure\Validation\Selection\ParentSelection'
+
   akeneo.tailored_export.validation.source.measurement_selection.constraint:
     class: 'Akeneo\Platform\TailoredExport\Infrastructure\Validation\Selection\MeasurementSelection'
 
@@ -34,6 +37,7 @@ services:
         categories: '@akeneo.tailored_export.validation.source.code_label_collection_selection.constraint'
         family: '@akeneo.tailored_export.validation.source.code_label_selection.constraint'
         family_variant: '@akeneo.tailored_export.validation.source.code_label_selection.constraint'
+        parent: '@akeneo.tailored_export.validation.source.parent_selection.constraint'
     tags:
       - { name: validator.constraint_validator, alias: akeneo.tailored_export.validation.source }
     public: true
