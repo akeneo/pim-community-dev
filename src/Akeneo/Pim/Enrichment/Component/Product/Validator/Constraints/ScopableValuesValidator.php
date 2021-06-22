@@ -19,8 +19,7 @@ use Symfony\Component\Validator\Exception\UnexpectedTypeException;
  */
 class ScopableValuesValidator extends ConstraintValidator
 {
-    /** @var IdentifiableObjectRepositoryInterface */
-    private $channelRepository;
+    private IdentifiableObjectRepositoryInterface $channelRepository;
 
     public function __construct(IdentifiableObjectRepositoryInterface $channelRepository)
     {
@@ -45,7 +44,10 @@ class ScopableValuesValidator extends ConstraintValidator
                         '%attribute_code%' => $value->getAttributeCode(),
                         '%channel%' => $value->getScopeCode(),
                     ]
-                )->atPath(sprintf('[%s]', $key))->addViolation();
+                )
+                    ->atPath(sprintf('[%s]', $key))
+                    ->setCode(Scopablevalues::SCOPABLE_VALUES)
+                    ->addViolation();
             }
         }
     }
