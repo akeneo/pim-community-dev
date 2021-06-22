@@ -7,7 +7,7 @@ namespace Akeneo\Tool\Component\Connector\Writer;
 use Box\Spout\Writer\WriterFactory as SpoutWriterFactory;
 
 /**
- * @todo merge master/6.0: drop this class and bump box/spout to v3
+ * @todo CPM-248
  */
 final class WriterFactory extends SpoutWriterFactory
 {
