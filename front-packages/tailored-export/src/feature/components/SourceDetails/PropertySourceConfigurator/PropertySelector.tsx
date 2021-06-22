@@ -3,7 +3,6 @@ import {ValidationError} from '@akeneo-pim-community/shared';
 import {Selection, CodeLabelCollectionSelection, CodeLabelSelection, ParentSelection} from '../../../models';
 import {CodeLabelSelector} from '../Selector/CodeLabelSelector';
 import {CodeLabelCollectionSelector} from '../Selector/CodeLabelCollectionSelector';
-import {ParentSelector} from "./PropertySelector/ParentSelector";
 
 type PropertySelectorProps = {
   propertyName: string;

@@ -65,13 +65,15 @@ class ParentSelectorSpec extends ObjectBehavior
         ProductModelInterface $productModel
     ) {
         $productModel->getCode()->willReturn('scanners');
-        $entity->getFamily()->willReturn($family);
-        $getFamilyTranslations->byFamilyCodesAndLocale(['scanners'], 'fr_FR')
+        $entity->getParent()->willReturn($productModel);
+
+        $getProductModelLabels->byCodesAndLocaleAndScope(['scanners'], 'fr_FR', 'ecommerce')
             ->willReturn([]);
 
         $this->applySelection([
             'type' => 'label',
             'locale' => 'fr_FR',
+            'channel' => 'ecommerce',
         ], $entity)->shouldReturn('[scanners]');
     }
 }
