@@ -40,14 +40,6 @@ class FilterLocalizedCompleteness extends BaseCompletenessFilter {
     this.listenTo(this.parentForm.getRoot(), 'pim_enrich:form:entity:bad_request', (event: any) =>
       this.setValidationErrors(event.response.normalized_errors)
     );
-    this.listenTo(this.getRoot(), 'pim_enrich:form:entity:pre_update', (data: unknown) => {
-      _.defaults(data, {
-        field: this.getCode(),
-        operator: _.first(this.config.operators),
-        value: 100,
-        context: {locales: [], channel: null},
-      });
-    });
 
     return BaseFilter.prototype.configure.apply(this, arguments);
   }

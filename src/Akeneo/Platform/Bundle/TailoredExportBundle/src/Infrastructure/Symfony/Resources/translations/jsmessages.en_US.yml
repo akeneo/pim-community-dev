@@ -75,5 +75,3 @@ akeneo.tailored_export:
       should_be_active: Locale {{ locale_code }} should be active
     channel:
       should_exist: Channel {{ channel_code }} should exist
-    completeness:
-      not_supported_operators: Operator {{ operator }} is not supported
