@@ -24,3 +24,8 @@ services:
       - '@akeneo.pim.structure.query.get_family_variant_translations'
     tags:
       - { name: akeneo.tailored_export.property_selector }
+
+  Akeneo\Platform\TailoredExport\Infrastructure\Connector\Processor\PropertySelector\EnabledSelector:
+    public: true
+    tags:
+      - { name: akeneo.tailored_export.property_selector }

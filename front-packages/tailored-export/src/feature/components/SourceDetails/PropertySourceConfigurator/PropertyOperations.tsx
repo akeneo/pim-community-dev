@@ -3,6 +3,7 @@ import {Collapse} from 'akeneo-design-system';
 import {filterErrors, useTranslate, ValidationError} from '@akeneo-pim-community/shared';
 import {Source} from '../../../models';
 import {PropertySelector} from './PropertySelector';
+import {NoOperationsPlaceholder} from '../NoOperationsPlaceholder';
 
 type PropertyOperationsProps = {
   source: Source;
@@ -13,6 +14,11 @@ type PropertyOperationsProps = {
 const PropertyOperations = ({source, validationErrors, onSourceChange}: PropertyOperationsProps) => {
   const translate = useTranslate();
   const [isSelectorCollapsed, toggleSelectorCollapse] = useState<boolean>(true);
+
+  switch (source.code) {
+    case 'enabled':
+      return <NoOperationsPlaceholder />;
+  }
 
   const selector = (
     <PropertySelector
