@@ -6,6 +6,7 @@ use Akeneo\Tool\Component\Batch\Event\EventInterface;
 use Akeneo\Tool\Component\Batch\Event\InvalidItemEvent;
 use Akeneo\Tool\Component\Batch\Event\JobExecutionEvent;
 use Akeneo\Tool\Component\Batch\Event\StepExecutionEvent;
+use Akeneo\Tool\Component\Batch\Model\JobExecution;
 use Psr\Log\LoggerInterface;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 use Symfony\Contracts\Translation\TranslatorInterface;
@@ -19,22 +20,11 @@ use Symfony\Contracts\Translation\TranslatorInterface;
  */
 class LoggerSubscriber implements EventSubscriberInterface
 {
-    /** @var LoggerInterface */
-    protected $logger;
+    protected LoggerInterface $logger;
+    protected TranslatorInterface $translator;
+    protected string $translationLocale = 'en';
+    protected string $translationDomain = 'messages';
 
-    /** @var TranslatorInterface */
-    protected $translator;
-
-    /** @var string */
-    protected $translationLocale = 'en';
-
-    /** @var string */
-    protected $translationDomain = 'messages';
-
-    /**
-     * @param LoggerInterface     $logger
-     * @param TranslatorInterface $translator
-     */
     public function __construct(LoggerInterface $logger, TranslatorInterface $translator)
     {
         $this->logger = $logger;
@@ -44,22 +34,22 @@ class LoggerSubscriber implements EventSubscriberInterface
     /**
      * {@inheritdoc}
      */
-    public static function getSubscribedEvents()
+    public static function getSubscribedEvents(): array
     {
-        return array(
-            EventInterface::JOB_EXECUTION_CREATED      => 'jobExecutionCreated',
-            EventInterface::BEFORE_JOB_EXECUTION       => 'beforeJobExecution',
-            EventInterface::JOB_EXECUTION_STOPPED      => 'jobExecutionStopped',
-            EventInterface::JOB_EXECUTION_INTERRUPTED  => 'jobExecutionInterrupted',
-            EventInterface::JOB_EXECUTION_FATAL_ERROR  => 'jobExecutionFatalError',
-            EventInterface::BEFORE_JOB_STATUS_UPGRADE  => 'beforeJobStatusUpgrade',
-            EventInterface::BEFORE_STEP_EXECUTION      => 'beforeStepExecution',
-            EventInterface::STEP_EXECUTION_SUCCEEDED   => 'stepExecutionSucceeded',
+        return [
+            EventInterface::JOB_EXECUTION_CREATED => 'jobExecutionCreated',
+            EventInterface::BEFORE_JOB_EXECUTION => 'beforeJobExecution',
+            EventInterface::JOB_EXECUTION_STOPPED => 'jobExecutionStopped',
+            EventInterface::JOB_EXECUTION_INTERRUPTED => 'jobExecutionInterrupted',
+            EventInterface::JOB_EXECUTION_FATAL_ERROR => 'jobExecutionFatalError',
+            EventInterface::BEFORE_JOB_STATUS_UPGRADE => 'beforeJobStatusUpgrade',
+            EventInterface::BEFORE_STEP_EXECUTION => 'beforeStepExecution',
+            EventInterface::STEP_EXECUTION_SUCCEEDED => 'stepExecutionSucceeded',
             EventInterface::STEP_EXECUTION_INTERRUPTED => 'stepExecutionInterrupted',
-            EventInterface::STEP_EXECUTION_ERRORED     => 'stepExecutionErrored',
-            EventInterface::STEP_EXECUTION_COMPLETED   => 'stepExecutionCompleted',
-            EventInterface::INVALID_ITEM               => 'invalidItem',
-        );
+            EventInterface::STEP_EXECUTION_ERRORED => 'stepExecutionErrored',
+            EventInterface::STEP_EXECUTION_COMPLETED => 'stepExecutionCompleted',
+            EventInterface::INVALID_ITEM => 'invalidItem',
+        ];
     }
 
     /**
@@ -84,78 +74,68 @@ class LoggerSubscriber implements EventSubscriberInterface
 
     /**
      * Log the job execution creation
-     *
-     * @param JobExecutionEvent $event
      */
     public function jobExecutionCreated(JobExecutionEvent $event)
     {
         $jobExecution = $event->getJobExecution();
 
-        $this->logger->debug(sprintf('Job execution is created: %s', $jobExecution));
+        $this->log('debug', sprintf('Job execution is created: %s', $jobExecution), $jobExecution);
     }
 
     /**
      * Log the job execution before the job execution
-     *
-     * @param JobExecutionEvent $event
      */
     public function beforeJobExecution(JobExecutionEvent $event)
     {
         $jobExecution = $event->getJobExecution();
 
-        $this->logger->debug(sprintf('Job execution starting: %s', $jobExecution));
+        $this->log('debug', sprintf('Job execution starting: %s', $jobExecution), $jobExecution);
     }
 
     /**
      * Log the job execution when the job execution stopped
-     *
-     * @param JobExecutionEvent $event
      */
     public function jobExecutionStopped(JobExecutionEvent $event)
     {
         $jobExecution = $event->getJobExecution();
 
-        $this->logger->info(sprintf('Job execution was stopped: %s', $jobExecution));
+        $this->log('info', sprintf('Job execution was stopped: %s', $jobExecution), $jobExecution);
     }
 
     /**
      * Log the job execution when the job execution was interrupted
-     *
-     * @param JobExecutionEvent $event
      */
     public function jobExecutionInterrupted(JobExecutionEvent $event)
     {
         $jobExecution = $event->getJobExecution();
 
-        $this->logger->info(sprintf('Encountered interruption executing job: %s', $jobExecution));
-        $this->logger->debug('Full exception', ['exception', $jobExecution->getFailureExceptions()]);
+        $this->log('info', sprintf('Encountered interruption executing job: %s', $jobExecution), $jobExecution);
+        $this->log('debug', 'Full exception', $jobExecution, ['exception', $jobExecution->getFailureExceptions()]);
     }
 
     /**
      * Log the job execution when a fatal error was raised during job execution
-     *
-     * @param JobExecutionEvent $event
      */
     public function jobExecutionFatalError(JobExecutionEvent $event)
     {
         $jobExecution = $event->getJobExecution();
 
-        $this->logger->error(
+        $this->log(
+            'error',
             'Encountered fatal error executing job',
+            $jobExecution,
             ['exception', $jobExecution->getFailureExceptions()]
         );
     }
 
     /**
      * Log the job execution before its status is upgraded
-     *
-     * @param JobExecutionEvent $event
      */
     public function beforeJobStatusUpgrade(JobExecutionEvent $event)
     {
         $jobExecution = $event->getJobExecution();
 
-        $this->logger->debug(sprintf('Upgrading JobExecution status: %s', $jobExecution));
+        $this->log('debug', sprintf('Upgrading JobExecution status: %s', $jobExecution), $jobExecution);
     }
 
     /**
@@ -263,14 +243,19 @@ class LoggerSubscriber implements EventSubscriberInterface
         );
     }
 
-    /**
-     * Format anything as a string
-     *
-     * @param mixed $data
-     *
-     * @return string
-     */
-    private function formatAsString($data)
+    private function log(string $level, string $message, JobExecution $jobExecution, array $context = []): void
+    {
+        if (!isset($context['connector'])) {
+            $context['connector'] = $jobExecution->getJobInstance()->getConnector();
+        }
+        if (!isset($context['jobname'])) {
+            $context['jobname'] = $jobExecution->getJobInstance()->getJobName();
+        }
+
+        $this->logger->$level($message, $context);
+    }
+
+    private function formatAsString($data): string
     {
         if (is_array($data)) {
             $result = [];
@@ -293,6 +278,6 @@ class LoggerSubscriber implements EventSubscriberInterface
             return $data->format('Y-m-d');
         }
 
-        return (string) $data;
+        return (string)$data;
     }
 }

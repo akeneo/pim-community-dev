@@ -128,7 +128,7 @@ class JobQueueConsumerCommand extends Command
 
                     $process->setTimeout(null);
 
-                    $this->logger->notice(sprintf('Launching job execution "%s".', $jobExecutionMessage->getJobExecutionId()));
+                    $this->logger->info(sprintf('Launching job execution "%s".', $jobExecutionMessage->getJobExecutionId()));
                     $this->logger->debug(sprintf('Command line: "%s"', $process->getCommandLine()));
 
                     $this->executionManager->updateHealthCheck($jobExecutionMessage);
