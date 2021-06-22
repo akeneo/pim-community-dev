@@ -226,7 +226,7 @@ const FakePIM = () => {
                 field: 'completeness',
                 operator: 'GREATER OR EQUALS THAN ON AT LEAST ONE LOCALE',
                 value: 100,
-                context: {locales: ['fr_FR'], channel: 'ecommerce'},
+                context: {locales: [], channel: null},
               }}
               onChange={handleFilterChange}
               validationErrors={filterErrors(validationErrors, '[filters][data][2]')}

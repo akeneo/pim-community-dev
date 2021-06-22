@@ -56,7 +56,7 @@ class DefaultValueProvider implements DefaultValuesProviderInterface
                 ],
                 [
                     'field' => 'completeness',
-                    'operator' => Operators::ALL_COMPLETE, // TODO: Check operator by default
+                    'operator' => 'ALL',
                     'value' => [],
                     'context' => []
                 ]
