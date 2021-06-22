@@ -57,7 +57,7 @@ class LoggerSubscriber implements EventSubscriberInterface
      *
      * @param string $translationLocale
      */
-    public function setTranslationLocale($translationLocale)
+    public function setTranslationLocale($translationLocale): void
     {
         $this->translationLocale = $translationLocale;
     }
@@ -67,7 +67,7 @@ class LoggerSubscriber implements EventSubscriberInterface
      *
      * @param string $translationDomain
      */
-    public function setTranslationDomain($translationDomain)
+    public function setTranslationDomain($translationDomain): void
     {
         $this->translationDomain = $translationDomain;
     }
@@ -75,7 +75,7 @@ class LoggerSubscriber implements EventSubscriberInterface
     /**
      * Log the job execution creation
      */
-    public function jobExecutionCreated(JobExecutionEvent $event)
+    public function jobExecutionCreated(JobExecutionEvent $event): void
     {
         $jobExecution = $event->getJobExecution();
 
@@ -85,7 +85,7 @@ class LoggerSubscriber implements EventSubscriberInterface
     /**
      * Log the job execution before the job execution
      */
-    public function beforeJobExecution(JobExecutionEvent $event)
+    public function beforeJobExecution(JobExecutionEvent $event): void
     {
         $jobExecution = $event->getJobExecution();
 
@@ -95,7 +95,7 @@ class LoggerSubscriber implements EventSubscriberInterface
     /**
      * Log the job execution when the job execution stopped
      */
-    public function jobExecutionStopped(JobExecutionEvent $event)
+    public function jobExecutionStopped(JobExecutionEvent $event): void
     {
         $jobExecution = $event->getJobExecution();
 
@@ -105,7 +105,7 @@ class LoggerSubscriber implements EventSubscriberInterface
     /**
      * Log the job execution when the job execution was interrupted
      */
-    public function jobExecutionInterrupted(JobExecutionEvent $event)
+    public function jobExecutionInterrupted(JobExecutionEvent $event): void
     {
         $jobExecution = $event->getJobExecution();
 
@@ -116,7 +116,7 @@ class LoggerSubscriber implements EventSubscriberInterface
     /**
      * Log the job execution when a fatal error was raised during job execution
      */
-    public function jobExecutionFatalError(JobExecutionEvent $event)
+    public function jobExecutionFatalError(JobExecutionEvent $event): void
     {
         $jobExecution = $event->getJobExecution();
 
@@ -128,67 +128,54 @@ class LoggerSubscriber implements EventSubscriberInterface
         );
     }
 
-    /**
-     * Log the job execution before its status is upgraded
-     */
-    public function beforeJobStatusUpgrade(JobExecutionEvent $event)
+    public function beforeJobStatusUpgrade(JobExecutionEvent $event): void
     {
         $jobExecution = $event->getJobExecution();
 
         $this->log('debug', sprintf('Upgrading JobExecution status: %s', $jobExecution), $jobExecution);
     }
 
-    /**
-     * Log the step execution before the step execution
-     *
-     * @param StepExecutionEvent $event
-     */
-    public function beforeStepExecution(StepExecutionEvent $event)
+    public function beforeStepExecution(StepExecutionEvent $event): void
     {
         $stepExecution = $event->getStepExecution();
 
-        $this->logger->info(sprintf('Step execution starting: %s', $stepExecution));
+        $this->log('info', sprintf('Step execution starting: %s', $stepExecution), $stepExecution->getJobExecution());
     }
 
-    /**
-     * Log the step execution when the step execution succeeded
-     *
-     * @param StepExecutionEvent $event
-     */
-    public function stepExecutionSucceeded(StepExecutionEvent $event)
+    public function stepExecutionSucceeded(StepExecutionEvent $event): void
     {
         $stepExecution = $event->getStepExecution();
 
-        $this->logger->debug(sprintf('Step execution success: id= %d', $stepExecution->getId()));
-    }
-
-    /**
-     * Log the step execution when the step execution was interrupted
-     *
-     * @param StepExecutionEvent $event
-     */
-    public function stepExecutionInterrupted(StepExecutionEvent $event)
-    {
-        $stepExecution = $event->getStepExecution();
-
-        $this->logger->info(
-            sprintf('Encountered interruption executing step: %s', $stepExecution->getFailureExceptionMessages())
+        $this->log(
+            'debug',
+            sprintf('Step execution success: id= %d', $stepExecution->getId()),
+            $stepExecution->getJobExecution()
         );
-        $this->logger->debug('Full exception', ['exception', $stepExecution->getFailureExceptions()]);
     }
 
-    /**
-     * Log the step execution when the step execution was errored
-     *
-     * @param StepExecutionEvent $event
-     *
-     * @return null
-     */
-    public function stepExecutionErrored(StepExecutionEvent $event)
+    public function stepExecutionInterrupted(StepExecutionEvent $event): void
     {
         $stepExecution = $event->getStepExecution();
 
-        $this->logger->error(
+        $this->log(
+            'info',
+            sprintf('Encountered interruption executing step: %s', $stepExecution->getFailureExceptionMessages()),
+            $stepExecution->getJobExecution()
+        );
+        $this->log(
+            'debug',
+            'Full exception',
+            $stepExecution->getJobExecution(),
+            ['exception', $stepExecution->getFailureExceptions()]
+        );
+    }
+
+    public function stepExecutionErrored(StepExecutionEvent $event): void
+    {
+        $stepExecution = $event->getStepExecution();
+
+        $this->log(
+            'error',
             sprintf(
                 'Encountered an error executing the step: %s',
                 implode(
@@ -205,28 +192,19 @@ class LoggerSubscriber implements EventSubscriberInterface
                         $stepExecution->getFailureExceptions()
                     )
                 )
-            )
+            ),
+            $stepExecution->getJobExecution()
         );
     }
 
-    /**
-     * Log the step execution when the step execution was completed
-     *
-     * @param StepExecutionEvent $event
-     */
-    public function stepExecutionCompleted(StepExecutionEvent $event)
+    public function stepExecutionCompleted(StepExecutionEvent $event): void
     {
         $stepExecution = $event->getStepExecution();
 
-        $this->logger->info(sprintf('Step execution complete: %s', $stepExecution));
+        $this->log('info', sprintf('Step execution complete: %s', $stepExecution), $stepExecution->getJobExecution());
     }
 
-    /**
-     * Log invalid item event
-     *
-     * @param InvalidItemEvent $event
-     */
-    public function invalidItem(InvalidItemEvent $event)
+    public function invalidItem(InvalidItemEvent $event): void
     {
         $this->logger->warning(
             sprintf(
