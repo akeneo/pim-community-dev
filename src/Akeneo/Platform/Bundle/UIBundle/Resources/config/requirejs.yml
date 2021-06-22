@@ -921,15 +921,15 @@ config:
     pim/form/common/exclusif-boolean: pimui/js/form/common/exclusif-boolean
 
     pim/menu/menu:                                       pimui/js/menu/menu_new.ts
-    pim/menu/tab:                                        pimui/js/menu/tab_new
-    pim/menu/item:                                       pimui/js/menu/item
+    pim/menu/tab:                                        pimui/js/menu/tab_new.ts
+    pim/menu/item:                                       pimui/js/menu/item_new.ts
     pim/menu/help:                                       pimui/js/menu/help.ts
     pim/menu/navigation-back:                            pimui/js/menu/navigation-back.ts
-    pim/menu/navigation-block:                           pimui/js/menu/navigation-block
+    pim/menu/navigation-block:                           pimui/js/menu/navigation-block_new.ts
     pim/menu/resizable:                                  pimui/js/menu/resizable
     pim/menu/user-navigation:                            pimui/js/menu/user-navigation
     pim/menu/logo:                                       pimui/js/menu/logo
-    pim/menu/column:                                     pimui/js/menu/column
+    pim/menu/column:                                     pimui/js/menu/column_new.ts
 
     # Common fields
     pim/form/common/fields/field:                   pimui/js/form/common/fields/field

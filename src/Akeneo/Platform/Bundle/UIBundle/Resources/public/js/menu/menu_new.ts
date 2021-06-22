@@ -10,17 +10,25 @@ const BaseForm = require('pim/form');
 const _ = require('underscore');
 const template = require('pim/template/menu/menu');
 
+type SubEntry = {
+  position: number;
+  route: string;
+  routeParams?: any;
+  target: string;
+}
+
 type EntryView = View & {
   config: {
     title: string;
   };
+  items: SubEntry[]
+  sections: any[]
 };
 
 /**
  * Base extension for menu
  *
- * @author    Julien Sanchez <julien@akeneo.com>
- * @copyright 2017 Akeneo SAS (http://www.akeneo.com)
+ * @copyright 2021 Akeneo SAS (http://www.akeneo.com)
  * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
  */
 class Menu extends BaseForm {
@@ -79,7 +87,7 @@ class Menu extends BaseForm {
 
     const entries: NavigationEntry[] = extensions.map((extension: EntryView, index) => {
       const {title} = extension.config;
-
+      console.log(extension.items);
       return {
         code: extension.code,
         label: title,
@@ -88,6 +96,8 @@ class Menu extends BaseForm {
         route: 'pim_settings_index',
         icon: React.createElement(CardIcon),
         position: index,
+        items: extension.items,
+        sections: extension.sections,
       };
     });
 
