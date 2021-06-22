@@ -437,6 +437,8 @@ Disabled: Inhabilitado
 Status: Estado
 pim_datagrid:
   filters:
+    product_typology:
+      label: Tipología de producto
     entity_type:
       label: Variante
     family:
@@ -445,6 +447,8 @@ pim_datagrid:
       label: Grupos
     enabled:
       label: Estado
+    scope:
+      label: Ámbito
     completeness:
       label: Completo
     created:
