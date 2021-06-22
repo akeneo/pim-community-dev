@@ -50,14 +50,14 @@ Feature: Validate text attributes of a product
   Scenario: Validate the email validation rule constraint of text attribute
     Given I change the Email to "foo"
     And I save the product
-    Then I should see validation tooltip "This value is not a valid email address."
+    Then I should see validation tooltip "The email attribute requires an e-mail address."
     And there should be 1 error in the "Other" tab
 
   Scenario: Validate the email validation rule constraint of scopable text attribute
     Given I switch the scope to "ecommerce"
     And I change the Recipient to "foo"
     And I save the product
-    Then I should see validation tooltip "This value is not a valid email address."
+    Then I should see validation tooltip "The recipient attribute requires an e-mail address."
     And there should be 1 error in the "Other" tab
 
   Scenario: Validate the url validation rule constraint of text attribute

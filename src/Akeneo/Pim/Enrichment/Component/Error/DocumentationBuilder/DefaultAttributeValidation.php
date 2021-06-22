@@ -19,6 +19,7 @@ use Akeneo\Pim\Enrichment\Component\Product\Validator\Constraints\NotDecimal;
 use Akeneo\Pim\Enrichment\Component\Product\Validator\Constraints\Range;
 use Akeneo\Pim\Enrichment\Component\Product\Validator\Constraints\Regex;
 use Akeneo\Pim\Enrichment\Component\Product\Validator\Constraints\UniqueValue;
+use Symfony\Component\Validator\Constraints\Email;
 use Symfony\Component\Validator\ConstraintViolationInterface;
 
 /**
@@ -41,6 +42,7 @@ final class DefaultAttributeValidation implements DocumentationBuilderInterface
         Regex::REGEX_FAILED_ERROR,
         UniqueValue::UNIQUE_VALUE,
         File::TOO_LARGE_ERROR,
+        Email::INVALID_FORMAT_ERROR
     ];
 
     public function support($object): bool
