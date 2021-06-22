@@ -4,6 +4,7 @@ batch_jobs:
     export: Esportazioni
     validation: Validazione file
     import_associations: Importazione associazioni
+    import_model_associations: Importazione associazioni
     import_root_product_model: Importazione modello di prodotto radice
     import_sub_product_model: Importazione sotto-modelli di prodotto
     compute_data_related_to_family_root_product_models: Calcola dati modelli di prodotto radice

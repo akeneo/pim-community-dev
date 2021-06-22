@@ -98,3 +98,6 @@ pim_user_management:
       module:
         create:
           button: Crea gruppo
+  form:
+    error:
+      required: Questo campo è obbligatorio.

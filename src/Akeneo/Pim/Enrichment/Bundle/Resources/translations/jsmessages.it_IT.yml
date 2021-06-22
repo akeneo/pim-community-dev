@@ -32,6 +32,8 @@ pim_enrich.entity.product:
   page_title:
     index: "]-Inf, 1]{{ count }} risultato|]1, Inf[{{ count }} risultati"
     product: "]-Inf, 1]{{ count }} prodotto|]1, Inf[{{ count }} prodotti"
+    product_model: "]-Inf, 1]{{ count }} modello di prodotto|]1, Inf[{{ count }} modelli di prodotto"
+    product_and_product_model: "{{ productCount }}, {{ productModelCount }}"
   module:
     create:
       subtitle: Crea prodotto
@@ -50,6 +52,9 @@ pim_enrich.entity.product:
       select: Selezionare
       all_visible: Tutti visibili
       copy: Copia
+    convert_variant_to_simple:
+      dialog:
+        title: Conferma conversione
     history:
       version: Versione
       author: Autore
@@ -155,7 +160,6 @@ pim_enrich.entity.product_model:
     variant_axis:
       label: 'asse variante'
       create: Aggiungi nuovo
-      create_label: "Aggiungi un nuovo {{ axes }}"
       required_label: '(asse variante)'
     completeness:
       variant_product: "]-Inf, 1]{{ complete }} / {{ total }} prodotto variante|]1, Inf[{{ complete }} / {{ total }} prodotti varianti"
@@ -193,6 +197,10 @@ pim_enrich.entity.category:
   label: Categoria
   uppercase_label: Categoria
   plural_label: Categorie
+  content:
+    tree_list:
+      columns:
+        number_of_categories: Numero di categorie
 pim_enrich.export.product:
   data:
     title: Filtra i prodotti
@@ -312,6 +320,7 @@ pim_enrich.mass_edit.product:
     move_to_category:
       label: Sposta tra categorie
       description: I prodotti saranno classificati nelle seguenti categorie, la classificazione esistente sarà persa.
+      no_update: Seleziona una categoria.
     remove_from_category:
       label: Rimuovi dalle categorie
       description: I prodotti verranno rimossi dalle seguenti categorie.
