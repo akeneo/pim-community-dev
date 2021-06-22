@@ -1,9 +1,9 @@
 import {TableInputRow} from '../TableInputRow/TableInputRow';
 import styled, {css} from 'styled-components';
-import {TextInput} from '../../TextInput/TextInput';
+import {NumberInput} from '../../NumberInput/NumberInput';
 import {AkeneoThemedProps, getColor} from '../../../../theme';
 
-const TableInputTextInput = styled(TextInput)<{highlighted: boolean} & AkeneoThemedProps>`
+const TableInputNumber = styled(NumberInput)<{highlighted: boolean} & AkeneoThemedProps>`
   height: 39px;
   padding-left: 10px;
   padding-right: 10px;
@@ -20,6 +20,6 @@ const TableInputTextInput = styled(TextInput)<{highlighted: boolean} & AkeneoThe
         `};
 `;
 
-TableInputRow.displayName = 'TableInput.TextInput';
+TableInputRow.displayName = 'TableInput.NumberInput';
 
-export {TableInputTextInput};
+export {TableInputNumber};
