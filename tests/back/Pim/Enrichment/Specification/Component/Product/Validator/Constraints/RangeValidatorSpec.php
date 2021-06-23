@@ -126,7 +126,7 @@ class RangeValidatorSpec extends ObjectBehavior
         $violation->setCode(Range::TOO_LOW_ERROR)->willReturn($violation);
         $violation->addViolation()->shouldBeCalled();
 
-        $this->validate( 9.99999, $constraint);
+        $this->validate(9.99999, $constraint);
     }
 
     function it_does_not_validate_a_value_as_string_limit_min(
