@@ -5,7 +5,7 @@ import {getColor} from '../../../../theme';
 const TableInputHeadTr = styled.tr`
   height: 40px;
   background: ${getColor('grey', 40)};
-  & > td {
+  & > th {
     border: 1px solid ${getColor('grey', 60)};
     border-left-width: 0;
 
