@@ -52,6 +52,10 @@ class RangeValidator extends BaseRangeValidator
                     ->addViolation();
                 break;
 
+            case  is_numeric($value) && $value > $constraint->max && null !== $constraint->max:
+                $this->validateData($value, $constraint);
+                break;
+
             default:
                 // it allows to have a proper message when the value is superior to the technical maximum value allowed by PHP
                 // we don't put it by default, as otherwise the message is quite weird for the user (between 0 and 9.22E18)
@@ -89,8 +93,8 @@ class RangeValidator extends BaseRangeValidator
 
         if (null !== $constraint->max && $value > $constraint->max) {
             $this->context->buildViolation($constraint->maxMessage, [
-                '{{ value }}' => $value,
-                '{{ limit }}' => $constraint->max,
+                '%attribute%' => $constraint->attributeCode,
+                '%max_value%' => $constraint->max,
             ])
                 ->atPath('data')
                 ->setCode(Range::TOO_HIGH_ERROR)
