@@ -61,7 +61,12 @@ class ConstraintCollectionProvider implements ConstraintCollectionProviderInterf
                                         'fields' => [
                                             'scope' => new Assert\Optional(),
                                             'locale' => new Assert\Optional(),
-                                            'locales' => new Assert\Optional(new Assert\All([new LocaleShouldBeActive()])),
+                                            'locales' => new Assert\Optional(
+                                                [
+                                                    new Assert\All(new LocaleShouldBeActive()),
+                                                    new Assert\NotBlank(),
+                                                ]
+                                            ),
                                             'channel' => new Assert\Optional(new ChannelShouldExist())
                                         ],
                                     ]),

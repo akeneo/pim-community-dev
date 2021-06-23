@@ -125,16 +125,16 @@ const FakePIM = () => {
     });
   };
 
-  const handleFilterChange = newFilter => {
-    const newFilters = jobConfiguration.configuration.filters.data.map(filter => {
+  const handleFilterChange = updatedFilter => {
+    const updatedFilters = jobConfiguration.configuration.filters.data.map(filter => {
       if (filter.field !== 'completeness') return filter;
 
-      return newFilter;
+      return updatedFilter;
     });
 
     setJobConfiguration({
       ...jobConfiguration,
-      configuration: {...jobConfiguration.configuration, filters: {data: newFilters}},
+      configuration: {...jobConfiguration.configuration, filters: {data: updatedFilters}},
     });
   };
 

@@ -128,12 +128,10 @@ test('it can switch operator', async () => {
     );
   });
 
-  const openDropdownButton = screen.getAllByTitle(`pim_common.open`)[0];
-  userEvent.click(openDropdownButton);
-  const greaterThanButton = screen.getByText(
-    `pim_enrich.export.product.filter.completeness.operators.GREATER OR EQUALS THAN ON ALL LOCALES`
+  userEvent.click(screen.getAllByTitle(`pim_common.open`)[0]);
+  await userEvent.click(
+    screen.getByText(`pim_enrich.export.product.filter.completeness.operators.GREATER OR EQUALS THAN ON ALL LOCALES`)
   );
-  await userEvent.click(greaterThanButton);
 
   expect(handleOperatorChange).toHaveBeenCalledWith({
     context: {locales: ['fr_FR'], scope: 'ecommerce'},
@@ -155,7 +153,6 @@ test('it initializes the context when the user switch operator from "ALL" to ano
             field: 'completeness',
             value: 100,
             operator: 'ALL',
-            context: {locales: [], scope: null},
           }}
           onChange={handleOperatorChange}
           validationErrors={[]}
@@ -164,12 +161,10 @@ test('it initializes the context when the user switch operator from "ALL" to ano
     );
   });
 
-  const openDropdownButton = screen.getAllByTitle(`pim_common.open`)[0];
-  userEvent.click(openDropdownButton);
-  const greaterThanButton = screen.getByText(
-    `pim_enrich.export.product.filter.completeness.operators.GREATER OR EQUALS THAN ON ALL LOCALES`
+  userEvent.click(screen.getAllByTitle(`pim_common.open`)[0]);
+  await userEvent.click(
+    screen.getByText(`pim_enrich.export.product.filter.completeness.operators.GREATER OR EQUALS THAN ON ALL LOCALES`)
   );
-  await userEvent.click(greaterThanButton);
 
   expect(handleOperatorChange).toHaveBeenCalledWith({
     context: {locales: [], scope: 'ecommerce'},
@@ -200,13 +195,10 @@ test('it removes the context when the user switch the operator to "ALL"', async 
     );
   });
 
-  const openDropdownButton = screen.getAllByTitle(`pim_common.open`)[0];
-  userEvent.click(openDropdownButton);
-  const greaterThanButton = screen.getByText(`pim_enrich.export.product.filter.completeness.operators.ALL`);
-  await userEvent.click(greaterThanButton);
+  userEvent.click(screen.getAllByTitle(`pim_common.open`)[0]);
+  await userEvent.click(screen.getByText(`pim_enrich.export.product.filter.completeness.operators.ALL`));
 
   expect(handleOperatorChange).toHaveBeenCalledWith({
-    context: {locales: [], scope: null},
     field: 'completeness',
     operator: 'ALL',
     value: 100,
@@ -234,12 +226,10 @@ test('it keeps the channel when switching an operator that is not "ALL"', async 
     );
   });
 
-  const openDropdownButton = screen.getAllByTitle(`pim_common.open`)[0];
-  userEvent.click(openDropdownButton);
-  const greaterThanButton = screen.getByText(
-    `pim_enrich.export.product.filter.completeness.operators.LOWER THAN ON ALL LOCALES`
+  userEvent.click(screen.getAllByTitle(`pim_common.open`)[0]);
+  await userEvent.click(
+    screen.getByText(`pim_enrich.export.product.filter.completeness.operators.LOWER THAN ON ALL LOCALES`)
   );
-  await userEvent.click(greaterThanButton);
 
   expect(handleOperatorChange).toHaveBeenCalledWith({
     context: {locales: ['fr_FR', 'en_US'], scope: 'ecommerce'},
