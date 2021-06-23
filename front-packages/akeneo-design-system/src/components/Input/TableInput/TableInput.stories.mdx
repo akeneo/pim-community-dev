@@ -1,0 +1,56 @@
+import {Meta, Story, ArgsTable, Canvas} from '@storybook/addon-docs/blocks';
+import {TableInput} from './TableInput.tsx';
+
+<Meta
+  title="Components/Inputs/Table input"
+  component={TableInput}
+  argTypes={{}}
+  args={{children: []}}
+/>
+
+# TableInput
+
+## Usage
+
+Table input allows the user to input content in a table.
+
+## Playground
+
+<Canvas>
+  <Story name="Standard">
+    {args => {
+      const [value1, setValue1] = React.useState(12);
+      const [value2, setValue2] = React.useState(13);
+      const [value3, setValue3] = React.useState(14);
+      const [value4, setValue4] = React.useState(15);
+      const [value5, setValue5] = React.useState();
+      const [value6, setValue6] = React.useState();
+      return <TableInput {...args}>
+        <TableInput.Header>
+          <TableInput.HeaderCell rowTitle={true}>Ingredient</TableInput.HeaderCell>
+          <TableInput.HeaderCell>Quantity</TableInput.HeaderCell>
+          <TableInput.HeaderCell>Is allergenic</TableInput.HeaderCell>
+        </TableInput.Header>
+        <TableInput.Body>
+          <TableInput.Row>
+            <TableInput.Cell rowTitle={true}>Sugar</TableInput.Cell>
+            <TableInput.Cell><TableInput.TextInput value={value1} onChange={setValue1} highlighted={true}/></TableInput.Cell>
+            <TableInput.Cell><TableInput.NumberInput value={value2} onChange={setValue2}/></TableInput.Cell>
+          </TableInput.Row>
+          <TableInput.Row>
+            <TableInput.Cell rowTitle={true}>Salt</TableInput.Cell>
+            <TableInput.Cell><TableInput.TextInput value={value3} onChange={setValue3}/></TableInput.Cell>
+            <TableInput.Cell><TableInput.NumberInput value={value4} onChange={setValue4} highlighted={true}/></TableInput.Cell>
+          </TableInput.Row>
+          <TableInput.Row>
+            <TableInput.Cell rowTitle={true}>Pepper</TableInput.Cell>
+            <TableInput.Cell><TableInput.TextInput value={value5} onChange={setValue5}/></TableInput.Cell>
+            <TableInput.Cell><TableInput.NumberInput value={value6} onChange={setValue6}/></TableInput.Cell>
+          </TableInput.Row>
+        </TableInput.Body>
+      </TableInput>;
+    }}
+  </Story>
+</Canvas>
+
+<ArgsTable story="Standard" />

@@ -1,4 +1,4 @@
-import React, {Ref, ReactElement} from 'react';
+import React, {Ref, ReactElement, ReactNode} from 'react';
 import styled from 'styled-components';
 import {Helper, HelperProps, InputProps, Locale, LocaleProps, Pill} from '../../components';
 import {useId} from '../../hooks';
@@ -74,6 +74,11 @@ type FieldProps = {
    * Children of the Field, can only be an Input or Helpers, other children will not be displayed.
    */
   children: FieldChild;
+
+  /**
+   * Adds actions for this field
+   */
+  actions?: ReactNode;
 };
 
 /**
@@ -81,7 +86,17 @@ type FieldProps = {
  */
 const Field = React.forwardRef<HTMLDivElement, FieldProps>(
   (
-    {label, locale, channel, incomplete = false, fullWidth = false, requiredLabel, children, ...rest}: FieldProps,
+    {
+      label,
+      locale,
+      channel,
+      incomplete = false,
+      fullWidth = false,
+      requiredLabel,
+      children,
+      actions,
+      ...rest
+    }: FieldProps,
     forwardedRef: Ref<HTMLDivElement>
   ) => {
     const inputId = useId('input_');
@@ -113,6 +128,7 @@ const Field = React.forwardRef<HTMLDivElement, FieldProps>(
           </Label>
           {channel && <Channel>{channel}</Channel>}
           {locale && ('string' === typeof locale ? <Locale code={locale} /> : locale)}
+          {actions}
         </LabelContainer>
         {decoratedChildren}
       </FieldContainer>
