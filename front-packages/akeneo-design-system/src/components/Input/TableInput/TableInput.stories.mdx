@@ -19,33 +19,58 @@ Table input allows the user to input content in a table.
 <Canvas>
   <Story name="Standard">
     {args => {
-      const [value1, setValue1] = React.useState(12);
-      const [value2, setValue2] = React.useState(13);
-      const [value3, setValue3] = React.useState(14);
-      const [value4, setValue4] = React.useState(15);
-      const [value5, setValue5] = React.useState();
-      const [value6, setValue6] = React.useState();
+      const [sugarPart, setSugarPart] = React.useState('10g');
+      const [sugarQuantity, setSugarQuantity] = React.useState(13);
+      const [sugarIsAllergenic, setSugarIsAllergenic] = React.useState(false);
+      const [saltPart, setSaltPart] = React.useState('125g');
+      const [saltQuantity, setSaltQuantity] = React.useState(15);
+      const [saltIsAllergenic, setSaltIsAllergenic] = React.useState(true);
+      const [pepperPart, setPepperPart] = React.useState();
+      const [pepperQuantity, setPepperQuantity] = React.useState();
+      const [pepperIsAllergenic, setPepperIsAllergenic] = React.useState();
       return <TableInput {...args}>
         <TableInput.Header>
           <TableInput.HeaderCell rowTitle={true}>Ingredient</TableInput.HeaderCell>
+          <TableInput.HeaderCell>For 1 part</TableInput.HeaderCell>
           <TableInput.HeaderCell>Quantity</TableInput.HeaderCell>
           <TableInput.HeaderCell>Is allergenic</TableInput.HeaderCell>
         </TableInput.Header>
         <TableInput.Body>
           <TableInput.Row>
             <TableInput.Cell rowTitle={true}>Sugar</TableInput.Cell>
-            <TableInput.Cell><TableInput.TextInput value={value1} onChange={setValue1} highlighted={true}/></TableInput.Cell>
-            <TableInput.Cell><TableInput.NumberInput value={value2} onChange={setValue2}/></TableInput.Cell>
+            <TableInput.Cell><TableInput.Text value={sugarPart} onChange={setSugarPart} highlighted={true}/></TableInput.Cell>
+            <TableInput.Cell><TableInput.Number value={sugarQuantity} onChange={setSugarQuantity}/></TableInput.Cell>
+            <TableInput.Cell><TableInput.Boolean yesLabel="Yes" noLabel="No" value={sugarIsAllergenic} onChange={setSugarIsAllergenic}/></TableInput.Cell>
           </TableInput.Row>
           <TableInput.Row>
             <TableInput.Cell rowTitle={true}>Salt</TableInput.Cell>
-            <TableInput.Cell><TableInput.TextInput value={value3} onChange={setValue3}/></TableInput.Cell>
-            <TableInput.Cell><TableInput.NumberInput value={value4} onChange={setValue4} highlighted={true}/></TableInput.Cell>
+            <TableInput.Cell><TableInput.Text value={saltPart} onChange={setSaltPart}/></TableInput.Cell>
+            <TableInput.Cell><TableInput.Number value={saltQuantity} onChange={setSaltQuantity} highlighted={true}/></TableInput.Cell>
+            <TableInput.Cell><TableInput.Boolean yesLabel="Yes" noLabel="No" value={saltIsAllergenic} onChange={setSaltIsAllergenic} highlighted={true}/></TableInput.Cell>
           </TableInput.Row>
           <TableInput.Row>
             <TableInput.Cell rowTitle={true}>Pepper</TableInput.Cell>
-            <TableInput.Cell><TableInput.TextInput value={value5} onChange={setValue5}/></TableInput.Cell>
-            <TableInput.Cell><TableInput.NumberInput value={value6} onChange={setValue6}/></TableInput.Cell>
+            <TableInput.Cell><TableInput.Text value={pepperPart} onChange={setPepperPart}/></TableInput.Cell>
+            <TableInput.Cell><TableInput.Number value={pepperQuantity} onChange={setPepperQuantity}/></TableInput.Cell>
+            <TableInput.Cell><TableInput.Boolean yesLabel="Yes" noLabel="No" value={pepperIsAllergenic} onChange={setPepperIsAllergenic}/></TableInput.Cell>
+          </TableInput.Row>
+          <TableInput.Row>
+            <TableInput.Cell rowTitle={true}>Sugar</TableInput.Cell>
+            <TableInput.Cell><TableInput.Text value={sugarPart} onChange={setSugarPart} highlighted={true}/></TableInput.Cell>
+            <TableInput.Cell><TableInput.Number value={sugarQuantity} onChange={setSugarQuantity}/></TableInput.Cell>
+            <TableInput.Cell><TableInput.Boolean yesLabel="Yes" noLabel="No" value={sugarIsAllergenic} onChange={setSugarIsAllergenic}/></TableInput.Cell>
+          </TableInput.Row>
+          <TableInput.Row>
+            <TableInput.Cell rowTitle={true}>Salt</TableInput.Cell>
+            <TableInput.Cell><TableInput.Text value={saltPart} onChange={setSaltPart}/></TableInput.Cell>
+            <TableInput.Cell><TableInput.Number value={saltQuantity} onChange={setSaltQuantity} highlighted={true}/></TableInput.Cell>
+            <TableInput.Cell><TableInput.Boolean yesLabel="Yes" noLabel="No" value={saltIsAllergenic} onChange={setSaltIsAllergenic} highlighted={true}/></TableInput.Cell>
+          </TableInput.Row>
+          <TableInput.Row>
+            <TableInput.Cell rowTitle={true}>Pepper</TableInput.Cell>
+            <TableInput.Cell><TableInput.Text value={pepperPart} onChange={setPepperPart}/></TableInput.Cell>
+            <TableInput.Cell><TableInput.Number value={pepperQuantity} onChange={setPepperQuantity}/></TableInput.Cell>
+            <TableInput.Cell><TableInput.Boolean yesLabel="Yes" noLabel="No" value={pepperIsAllergenic} onChange={setPepperIsAllergenic}/></TableInput.Cell>
           </TableInput.Row>
         </TableInput.Body>
       </TableInput>;
