@@ -27,7 +27,7 @@ describe('TableStructureApp', () => {
     const english = screen.getByLabelText('English (United States)') as HTMLInputElement;
     const german = screen.getByLabelText('German (Germany)') as HTMLInputElement;
     expect(codeInput.value).toEqual('ingredients');
-    expect(dataTypeInput.value).toEqual('pim_table_attribute.properties.data_type.text');
+    expect(dataTypeInput.value).toEqual('pim_table_attribute.properties.data_type.select');
     expect(english.value).toEqual('Ingredients');
     expect(german.value).toEqual('');
   });
@@ -75,7 +75,12 @@ describe('TableStructureApp', () => {
     });
 
     expect(handleChange).toBeCalledWith([
-      {data_type: 'text', code: 'ingredients', labels: {en_US: 'Ingredients', fr_FR: 'French label'}, validations: {}},
+      {
+        data_type: 'select',
+        code: 'ingredients',
+        labels: {en_US: 'Ingredients', fr_FR: 'French label'},
+        validations: {},
+      },
     ]);
   });
 
@@ -230,9 +235,7 @@ describe('TableStructureApp', () => {
     renderWithProviders(
       <TableStructureApp
         onChange={handleChange}
-        initialTableConfiguration={[
-          {data_type: 'text', code: 'ingredients', labels: {en_US: 'Ingredients'}, validations: {}},
-        ]}
+        initialTableConfiguration={getSimpleTableConfiguration()}
         savedColumnCodes={[]}
       />
     );
@@ -245,7 +248,7 @@ describe('TableStructureApp', () => {
       fireEvent.click(screen.getByText('Mock create'));
     });
     expect(handleChange).toBeCalledWith([
-      {data_type: 'text', code: 'ingredients', labels: {en_US: 'Ingredients'}, validations: {}},
+      {data_type: 'select', code: 'ingredients', labels: {en_US: 'Ingredients'}, validations: {}},
       {data_type: 'text', code: 'new_column', labels: {en_US: 'New column'}, validations: {}},
     ]);
   });

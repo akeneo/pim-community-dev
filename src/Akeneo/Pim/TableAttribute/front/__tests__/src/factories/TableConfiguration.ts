@@ -11,6 +11,6 @@ export const getComplexTableConfiguration: () => TableConfiguration = () => {
 
 export const getSimpleTableConfiguration: () => TableConfiguration = () => {
   return [
-    {data_type: 'text', code: 'ingredients', labels: {en_US: 'Ingredients'}, validations: {}},
+    {data_type: 'select', code: 'ingredients', labels: {en_US: 'Ingredients'}, validations: {}},
   ] as TableConfiguration;
 };

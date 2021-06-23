@@ -44,7 +44,7 @@ describe('ColumnDefinitionProperties', () => {
       validations: {},
       data_type: 'select',
       labels: {},
-      id: 'ingredientid',
+      id: 'uniqueidingredient',
     });
   });
 
@@ -64,13 +64,13 @@ describe('ColumnDefinitionProperties', () => {
     const maxLengthInput = screen.getByLabelText('pim_table_attribute.validations.max_length') as HTMLInputElement;
     fireEvent.change(maxLengthInput, {target: {value: '10'}});
     expect(handleChange).toBeCalledWith({
-      code: 'aqr',
+      code: 'part',
       validations: {
         max_length: 10,
       },
       data_type: 'text',
       labels: {},
-      id: 'aqrid',
+      id: 'uniqueidpart',
     });
   });
 

@@ -1,6 +1,5 @@
 import React from 'react';
 import {ColumnCode, ColumnDefinition} from '../../models/TableConfiguration';
-import {LabelCollection} from '@akeneo-pim-community/shared';
 
 type AddColumnModalProps = {
   close: () => void;
@@ -10,12 +9,10 @@ type AddColumnModalProps = {
 
 const AddColumnModal: React.FC<AddColumnModalProps> = ({close, onCreate}) => {
   const handleCreate = () => {
-    const labels: LabelCollection = {};
-    labels['en_US'] = 'New column';
     close();
     onCreate({
       code: 'new_column',
-      labels: labels,
+      labels: {en_US: 'New column'},
       data_type: 'text',
       validations: {},
     });

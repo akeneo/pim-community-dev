@@ -6,17 +6,17 @@ export const getSelectColumnDefinitionWithId: () => ColumnDefinitionWithId = () 
     validations: {},
     data_type: 'select',
     labels: {},
-    id: 'ingredientid',
+    id: 'uniqueidingredient',
   } as ColumnDefinitionWithId;
 };
 
 export const getTextColumnDefinitionWithId: () => ColumnDefinitionWithId = () => {
   return {
-    code: 'aqr',
+    code: 'part',
     validations: {},
     data_type: 'text',
     labels: {},
-    id: 'aqrid',
+    id: 'uniqueidpart',
   } as ColumnDefinitionWithId;
 };
 
@@ -26,6 +26,6 @@ export const getNumberColumnDefinitionWithId: () => ColumnDefinitionWithId = () 
     validations: {},
     data_type: 'number',
     labels: {},
-    id: 'quantityid',
+    id: 'uniqueidquantity',
   } as ColumnDefinitionWithId;
 };
