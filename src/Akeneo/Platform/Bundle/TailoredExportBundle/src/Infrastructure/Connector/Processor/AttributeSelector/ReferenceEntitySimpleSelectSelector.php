@@ -32,7 +32,7 @@ class ReferenceEntitySimpleSelectSelector implements AttributeSelectorInterface
         $this->findRecordsLabelTranslations = $findRecordsLabelTranslations;
     }
 
-    public function applySelection(array $selectionConfiguration, Attribute $attribute, ValueInterface $value): string
+    public function applySelection(array $selectionConfiguration, $entity,Attribute $attribute, ValueInterface $value): string
     {
         $recordCode = (string) $value->getData();
         $referenceEntityIdentifier = $attribute->properties()['reference_data_name'] ?? null;

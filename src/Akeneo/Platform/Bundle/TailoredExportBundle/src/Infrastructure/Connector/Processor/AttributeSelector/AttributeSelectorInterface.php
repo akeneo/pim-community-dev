@@ -18,7 +18,7 @@ use Akeneo\Pim\Structure\Component\Query\PublicApi\AttributeType\Attribute;
 
 interface AttributeSelectorInterface
 {
-    public function applySelection(array $selectionConfiguration, Attribute $attribute, ValueInterface $value): string;
+    public function applySelection(array $selectionConfiguration, $entity, Attribute $attribute, ValueInterface $value): string;
 
     public function supports(array $selectionConfiguration, Attribute $attribute): bool;
 }

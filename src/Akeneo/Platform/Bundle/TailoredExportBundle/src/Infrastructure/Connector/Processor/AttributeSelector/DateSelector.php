@@ -29,7 +29,7 @@ class DateSelector implements AttributeSelectorInterface
         $this->supportedAttributeTypes = $supportedAttributeTypes;
     }
 
-    public function applySelection(array $selectionConfiguration, Attribute $attribute, ValueInterface $value): string
+    public function applySelection(array $selectionConfiguration, $entity, Attribute $attribute, ValueInterface $value): string
     {
         return DateFormat::format($value->getData(), $selectionConfiguration['format']);
     }

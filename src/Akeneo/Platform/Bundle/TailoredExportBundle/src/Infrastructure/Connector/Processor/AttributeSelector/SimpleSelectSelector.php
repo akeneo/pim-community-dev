@@ -35,7 +35,7 @@ class SimpleSelectSelector implements AttributeSelectorInterface
         $this->getExistingAttributeOptionsWithValues = $getExistingAttributeOptionsWithValues;
     }
 
-    public function applySelection(array $selectionConfiguration, Attribute $attribute, ValueInterface $value): string
+    public function applySelection(array $selectionConfiguration, $entity, Attribute $attribute, ValueInterface $value): string
     {
         $optionCode = $value->getData();
 

@@ -65,6 +65,7 @@ class ProductExportProcessor implements ItemProcessorInterface, StepExecutionAwa
                     $attribute = $this->getAttributes->forCode($source['code']);
                     $operationSourceValues[] = $this->attributeSelectorRegistry->applyAttributeSelection(
                         $source['selection'],
+                        $product,
                         $attribute,
                         $value
                     );

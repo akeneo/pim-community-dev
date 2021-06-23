@@ -14,6 +14,7 @@ declare(strict_types=1);
 namespace Specification\Akeneo\Platform\TailoredExport\Infrastructure\Connector\Processor\AttributeSelector;
 
 use Akeneo\Pim\Enrichment\Component\Product\Model\PriceCollection;
+use Akeneo\Pim\Enrichment\Component\Product\Model\ProductInterface;
 use Akeneo\Pim\Enrichment\Component\Product\Model\ProductPrice;
 use Akeneo\Pim\Enrichment\Component\Product\Model\ValueInterface;
 use Akeneo\Pim\Structure\Component\Query\PublicApi\AttributeType\Attribute;
@@ -21,18 +22,23 @@ use PhpSpec\ObjectBehavior;
 
 class PriceCollectionSelectorSpec extends ObjectBehavior
 {
-    public function it_returns_attribute_type_supported()
+    public function let()
     {
         $this->beConstructedWith(['pim_catalog_price_collection']);
+    }
 
+    public function it_returns_attribute_type_supported()
+    {
         $attribute = $this->createAttribute('pim_catalog_price_collection');
         $this->supports(['type' => 'amount'], $attribute)->shouldReturn(true);
         $this->supports(['type' => 'currency'], $attribute)->shouldReturn(true);
         $this->supports(['type' => 'label'], $attribute)->shouldReturn(false);
     }
 
-    public function it_selects_the_amount(ValueInterface $value)
-    {
+    public function it_selects_the_amount(
+        ValueInterface $value,
+        ProductInterface $entity
+    ) {
         $this->beConstructedWith(['pim_catalog_price_collection']);
         $attribute = $this->createAttribute('pim_catalog_price_collection');
         $value->getData()->willReturn(
@@ -42,12 +48,13 @@ class PriceCollectionSelectorSpec extends ObjectBehavior
             ])
         );
 
-        $this->applySelection(['type' => 'amount'], $attribute, $value)->shouldReturn('40, 30');
+        $this->applySelection(['type' => 'amount'], $entity, $attribute, $value)->shouldReturn('40, 30');
     }
 
-    public function it_selects_the_currency(ValueInterface $value)
-    {
-        $this->beConstructedWith(['pim_catalog_price_collection']);
+    public function it_selects_the_currency(
+        ValueInterface $value,
+        ProductInterface $entity
+    ) {
         $attribute = $this->createAttribute('pim_catalog_price_collection');
         $value->getData()->willReturn(
             new PriceCollection([
@@ -56,7 +63,7 @@ class PriceCollectionSelectorSpec extends ObjectBehavior
             ])
         );
 
-        $this->applySelection(['type' => 'currency'], $attribute, $value)->shouldReturn('EUR, USD');
+        $this->applySelection(['type' => 'currency'], $entity, $attribute, $value)->shouldReturn('EUR, USD');
     }
 
     private function createAttribute(string $attributeType): Attribute

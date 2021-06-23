@@ -8,12 +8,14 @@ import {
   MeasurementSelection,
   PriceCollectionSelection,
   DateSelection,
+  FileSelection,
 } from '../../../../models';
 import {CodeLabelSelector} from '../../Selector/CodeLabelSelector';
 import {CodeLabelCollectionSelector} from '../../Selector/CodeLabelCollectionSelector';
 import {MeasurementSelector} from './MeasurementSelector';
 import {PriceCollectionSelector} from './PriceCollectionSelector';
 import {DateSelector} from './DateSelector';
+import {FileSelector} from './FileSelector';
 
 type AttributeSelectorProps = {
   attribute: Attribute;
@@ -63,6 +65,14 @@ const AttributeSelector = ({attribute, selection, validationErrors, onSelectionC
       return (
         <PriceCollectionSelector
           selection={selection as PriceCollectionSelection}
+          validationErrors={validationErrors}
+          onSelectionChange={onSelectionChange}
+        />
+      );
+    case 'pim_catalog_file':
+      return (
+        <FileSelector
+          selection={selection as FileSelection}
           validationErrors={validationErrors}
           onSelectionChange={onSelectionChange}
         />

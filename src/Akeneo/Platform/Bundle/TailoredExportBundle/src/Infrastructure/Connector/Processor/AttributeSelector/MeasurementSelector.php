@@ -32,7 +32,7 @@ class MeasurementSelector implements AttributeSelectorInterface
         $this->getUnitTranslations = $getUnitTranslations;
     }
 
-    public function applySelection(array $selectionConfiguration, Attribute $attribute, ValueInterface $value): string
+    public function applySelection(array $selectionConfiguration, $entity, Attribute $attribute, ValueInterface $value): string
     {
         $data = $value->getData();
 

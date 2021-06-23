@@ -26,7 +26,7 @@ class AttributeSelectorRegistry
         $this->attributeSelectors = $attributeSelectors;
     }
 
-    public function applyAttributeSelection(array $selectionConfiguration, Attribute $attribute, $value): string
+    public function applyAttributeSelection(array $selectionConfiguration, $entity, Attribute $attribute, $value): string
     {
         if (!$value instanceof ValueInterface) {
             return $value ?? '';
@@ -34,10 +34,10 @@ class AttributeSelectorRegistry
 
         foreach ($this->attributeSelectors as $valueSelector) {
             if ($valueSelector->supports($selectionConfiguration, $attribute)) {
-                return $valueSelector->applySelection($selectionConfiguration, $attribute, $value);
+                return $valueSelector->applySelection($selectionConfiguration, $entity, $attribute, $value);
             }
         }
 
-        throw new \Exception('No selection available for ' . $attribute->code());
+        throw new \LogicException('No selection available for ' . $attribute->code());
     }
 }

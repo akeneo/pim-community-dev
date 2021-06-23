@@ -13,6 +13,7 @@ declare(strict_types=1);
 
 namespace Specification\Akeneo\Platform\TailoredExport\Infrastructure\Connector\Processor\AttributeSelector;
 
+use Akeneo\Pim\Enrichment\Component\Product\Model\ProductInterface;
 use Akeneo\Pim\Enrichment\Component\Product\Model\ValueInterface;
 use Akeneo\Pim\Structure\Component\Query\PublicApi\AttributeType\Attribute;
 use Akeneo\ReferenceEntity\Infrastructure\PublicApi\Enrich\FindRecordsLabelTranslations;
@@ -20,11 +21,13 @@ use PhpSpec\ObjectBehavior;
 
 class ReferenceEntityMultiSelectSelectorSpec extends ObjectBehavior
 {
-    public function it_returns_attribute_type_supported(
-        FindRecordsLabelTranslations $findRecordsLabelTranslations
-    ) {
+    public function let(FindRecordsLabelTranslations $findRecordsLabelTranslations)
+    {
         $this->beConstructedWith(['akeneo_reference_entity_collection'], $findRecordsLabelTranslations);
+    }
 
+    public function it_returns_attribute_type_supported()
+    {
         $referenceEntityMultiSelectAttribute = $this->createReferenceEntityMultiAttribute('marque', 'brand');
         $this->supports(['type' => 'code'], $referenceEntityMultiSelectAttribute)->shouldReturn(true);
         $this->supports(['type' => 'label'], $referenceEntityMultiSelectAttribute)->shouldReturn(true);
@@ -33,7 +36,8 @@ class ReferenceEntityMultiSelectSelectorSpec extends ObjectBehavior
 
     public function it_selects_the_code(
         ValueInterface $value,
-        FindRecordsLabelTranslations $findRecordsLabelTranslations
+        FindRecordsLabelTranslations $findRecordsLabelTranslations,
+        ProductInterface $entity
     ) {
         $this->beConstructedWith(['akeneo_reference_entity_collection'], $findRecordsLabelTranslations);
 
@@ -42,6 +46,7 @@ class ReferenceEntityMultiSelectSelectorSpec extends ObjectBehavior
 
         $this->applySelection(
             ['type' => 'code', 'separator' => ';'],
+            $entity,
             $referenceEntityMultiSelectAttribute,
             $value
         )->shouldReturn('alessi;starck;jean-paul');
@@ -49,7 +54,8 @@ class ReferenceEntityMultiSelectSelectorSpec extends ObjectBehavior
 
     public function it_selects_the_label(
         ValueInterface $value,
-        FindRecordsLabelTranslations $findRecordsLabelTranslations
+        FindRecordsLabelTranslations $findRecordsLabelTranslations,
+        ProductInterface $entity
     ) {
         $this->beConstructedWith(['akeneo_reference_entity_collection'], $findRecordsLabelTranslations);
 
@@ -65,6 +71,7 @@ class ReferenceEntityMultiSelectSelectorSpec extends ObjectBehavior
 
         $this->applySelection(
             ['type' => 'label', 'locale' => 'fr_FR', 'separator' => ','],
+            $entity,
             $referenceEntityMultiSelectAttribute,
             $value
         )->shouldReturn('Alessi le français,Philippe Starck,Jean-Paul Deploy');
@@ -72,7 +79,8 @@ class ReferenceEntityMultiSelectSelectorSpec extends ObjectBehavior
 
     public function it_selects_the_code_when_label_is_undefined(
         ValueInterface $value,
-        FindRecordsLabelTranslations $findRecordsLabelTranslations
+        FindRecordsLabelTranslations $findRecordsLabelTranslations,
+        ProductInterface $entity
     ) {
         $this->beConstructedWith(['akeneo_reference_entity_collection'], $findRecordsLabelTranslations);
 
@@ -88,6 +96,7 @@ class ReferenceEntityMultiSelectSelectorSpec extends ObjectBehavior
 
         $this->applySelection(
             ['type' => 'label', 'locale' => 'fr_FR', 'separator' => '|'],
+            $entity,
             $referenceEntityMultiSelectAttribute,
             $value
         )->shouldReturn('Alessi le français|[starck]|Jean-Paul Deploy');

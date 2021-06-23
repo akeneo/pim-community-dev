@@ -34,6 +34,10 @@ jest.mock('./PriceCollectionSelector', () => ({
   PriceCollectionSelector: () => 'This is a price collection selector',
 }));
 
+jest.mock('./FileSelector', () => ({
+  FileSelector: () => 'This is a file selector',
+}));
+
 test.each([
   'pim_catalog_text',
   'pim_catalog_textarea',
@@ -134,4 +138,19 @@ test('it renders a date selector for date attribute', () => {
   );
 
   expect(screen.getByText('This is a date selector')).toBeInTheDocument();
+});
+
+test('it renders a file selector for file attribute', () => {
+  const onSelectionChange = jest.fn();
+
+  renderWithProviders(
+    <AttributeSelector
+      validationErrors={[]}
+      selection={{type: 'path'}}
+      attribute={getAttribute('pim_catalog_file')}
+      onSelectionChange={onSelectionChange}
+    />
+  );
+
+  expect(screen.getByText('This is a file selector')).toBeInTheDocument();
 });

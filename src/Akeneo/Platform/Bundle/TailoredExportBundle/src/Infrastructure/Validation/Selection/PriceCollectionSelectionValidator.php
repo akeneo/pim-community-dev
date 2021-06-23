@@ -10,7 +10,6 @@ use Symfony\Component\Validator\Constraints\Choice;
 use Symfony\Component\Validator\Constraints\Collection;
 use Symfony\Component\Validator\Constraints\NotBlank;
 use Symfony\Component\Validator\ConstraintValidator;
-use Symfony\Component\Validator\Validation;
 
 class PriceCollectionSelectionValidator extends ConstraintValidator
 {

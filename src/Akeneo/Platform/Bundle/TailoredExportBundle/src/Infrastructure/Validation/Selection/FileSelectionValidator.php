@@ -5,16 +5,13 @@ declare(strict_types=1);
 namespace Akeneo\Platform\TailoredExport\Infrastructure\Validation\Selection;
 
 use Akeneo\Platform\TailoredExport\Domain\SelectionTypes;
-use Akeneo\Platform\TailoredExport\Infrastructure\Validation\LocaleShouldBeActive;
 use Symfony\Component\Validator\Constraint;
 use Symfony\Component\Validator\Constraints\Choice;
 use Symfony\Component\Validator\Constraints\Collection;
 use Symfony\Component\Validator\Constraints\NotBlank;
-use Symfony\Component\Validator\Constraints\Optional;
-use Symfony\Component\Validator\Constraints\Type;
 use Symfony\Component\Validator\ConstraintValidator;
 
-class MeasurementSelectionValidator extends ConstraintValidator
+class FileSelectionValidator extends ConstraintValidator
 {
     public function validate($selection, Constraint $constraint)
     {
@@ -29,14 +26,13 @@ class MeasurementSelectionValidator extends ConstraintValidator
                                 [
                                     'strict' => true,
                                     'choices' => [
-                                        SelectionTypes::CODE,
-                                        SelectionTypes::LABEL,
-                                        SelectionTypes::AMOUNT,
+                                        SelectionTypes::PATH,
+                                        SelectionTypes::KEY,
+                                        SelectionTypes::NAME,
                                     ],
                                 ]
                             )
                         ],
-                        'locale' => new Optional([new Type(['type' => 'string'])]),
                     ],
                 ]
             ),
@@ -48,24 +44,7 @@ class MeasurementSelectionValidator extends ConstraintValidator
                     $violation->getMessage(),
                     $violation->getParameters()
                 )
-                    ->addViolation();
-            }
-
-            return;
-        }
-
-        if (SelectionTypes::LABEL === $selection['type']) {
-            $violations = $validator->validate($selection['locale'], [
-                new NotBlank(),
-                new LocaleShouldBeActive()
-            ]);
-
-            foreach ($violations as $violation) {
-                $this->context->buildViolation(
-                    $violation->getMessage(),
-                    $violation->getParameters()
-                )
-                    ->atPath('[locale]')
+                    ->atPath($violation->getPropertyPath())
                     ->addViolation();
             }
         }

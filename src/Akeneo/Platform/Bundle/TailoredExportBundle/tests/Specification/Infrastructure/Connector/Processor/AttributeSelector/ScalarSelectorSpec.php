@@ -13,16 +13,20 @@ declare(strict_types=1);
 
 namespace Specification\Akeneo\Platform\TailoredExport\Infrastructure\Connector\Processor\AttributeSelector;
 
+use Akeneo\Pim\Enrichment\Component\Product\Model\ProductInterface;
 use Akeneo\Pim\Enrichment\Component\Product\Model\ValueInterface;
 use Akeneo\Pim\Structure\Component\Query\PublicApi\AttributeType\Attribute;
 use PhpSpec\ObjectBehavior;
 
 class ScalarSelectorSpec extends ObjectBehavior
 {
-    public function it_returns_attribute_type_supported()
+    public function let()
     {
         $this->beConstructedWith(['pim_catalog_boolean', 'pim_catalog_text']);
+    }
 
+    public function it_returns_attribute_type_supported()
+    {
         $booleanAttribute = $this->createAttribute('pim_catalog_boolean');
         $this->supports(['type' => 'code'], $booleanAttribute)->shouldReturn(true);
 
@@ -30,13 +34,14 @@ class ScalarSelectorSpec extends ObjectBehavior
         $this->supports(['type' => 'code'], $textAreaAttribute)->shouldReturn(false);
     }
 
-    public function it_selects_the_data(ValueInterface $value)
-    {
-        $this->beConstructedWith(['pim_catalog_boolean', 'pim_catalog_text']);
+    public function it_selects_the_data(
+        ValueInterface $value,
+        ProductInterface $entity
+    ) {
         $booleanAttribute = $this->createAttribute('pim_catalog_boolean');
         $value->getData()->willReturn('The value');
 
-        $this->applySelection(['type' => 'code'], $booleanAttribute, $value)->shouldReturn('The value');
+        $this->applySelection(['type' => 'code'], $entity, $booleanAttribute, $value)->shouldReturn('The value');
     }
 
     private function createAttribute(string $attributeType): Attribute

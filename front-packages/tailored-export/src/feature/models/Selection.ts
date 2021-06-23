@@ -46,13 +46,9 @@ type CodeLabelCollectionSelection =
       separator: CollectionSeparator;
     };
 
-type PriceCollectionSelection =
-  | {
-      type: 'amount';
-    }
-  | {
-      type: 'currency';
-    };
+type PriceCollectionSelection = {
+  type: 'amount' | 'currency';
+};
 
 type MeasurementSelection =
   | {
@@ -80,13 +76,18 @@ type DateSelection = {
   format: DateFormat;
 };
 
+type FileSelection = {
+  type: 'path' | 'key' | 'name';
+};
+
 type Selection =
-  | CodeLabelSelection
   | CodeLabelCollectionSelection
-  | PriceCollectionSelection
-  | MeasurementSelection
+  | CodeLabelSelection
   | DateSelection
-  | ParentSelection;
+  | FileSelection
+  | MeasurementSelection
+  | ParentSelection
+  | PriceCollectionSelection;
 
 const isCollectionSeparator = (separator: unknown): separator is CollectionSeparator =>
   typeof separator === 'string' && availableSeparators.includes(separator);
@@ -104,6 +105,8 @@ const getDefaultSelectionByAttribute = (attribute: Attribute): Selection => {
       return {type: 'code', separator: ','};
     case 'pim_catalog_date':
       return {format: 'yyyy-mm-dd'};
+    case 'pim_catalog_file':
+      return {type: 'path'};
     default:
       return {type: 'code'};
   }
@@ -130,6 +133,7 @@ export type {
   CodeLabelCollectionSelection,
   CodeLabelSelection,
   DateSelection,
+  FileSelection,
   MeasurementSelection,
   PriceCollectionSelection,
   ParentSelection,

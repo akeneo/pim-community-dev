@@ -13,6 +13,7 @@ declare(strict_types=1);
 
 namespace Specification\Akeneo\Platform\TailoredExport\Infrastructure\Connector\Processor\AttributeSelector;
 
+use Akeneo\Pim\Enrichment\Component\Product\Model\ProductInterface;
 use Akeneo\Pim\Enrichment\Component\Product\Model\ValueInterface;
 use Akeneo\Pim\Structure\Component\Query\PublicApi\AttributeOption\GetExistingAttributeOptionsWithValues;
 use Akeneo\Pim\Structure\Component\Query\PublicApi\AttributeType\Attribute;
@@ -20,11 +21,14 @@ use PhpSpec\ObjectBehavior;
 
 class MultiSelectSelectorSpec extends ObjectBehavior
 {
-    public function it_returns_attribute_type_supported(
+    public function let(
         GetExistingAttributeOptionsWithValues $getExistingAttributeOptionsWithValues
     ) {
         $this->beConstructedWith(['pim_catalog_multiselect'], $getExistingAttributeOptionsWithValues);
+    }
 
+    public function it_returns_attribute_type_supported()
+    {
         $attribute = $this->createAttribute('pim_catalog_multiselect');
         $this->supports(['type' => 'code'], $attribute)->shouldReturn(true);
         $this->supports(['type' => 'label'], $attribute)->shouldReturn(true);
@@ -33,20 +37,19 @@ class MultiSelectSelectorSpec extends ObjectBehavior
 
     public function it_selects_the_code(
         ValueInterface $value,
-        GetExistingAttributeOptionsWithValues $getExistingAttributeOptionsWithValues
+        ProductInterface $entity
     ) {
-        $this->beConstructedWith(['pim_catalog_multiselect'], $getExistingAttributeOptionsWithValues);
         $attribute = $this->createAttribute('pim_catalog_multiselect');
         $value->getData()->willReturn(['code1', 'code2']);
 
-        $this->applySelection(['type' => 'code', 'separator' => ','], $attribute, $value)->shouldReturn('code1,code2');
+        $this->applySelection(['type' => 'code', 'separator' => ','], $entity, $attribute, $value)->shouldReturn('code1,code2');
     }
 
     public function it_selects_the_label(
         ValueInterface $value,
-        GetExistingAttributeOptionsWithValues $getExistingAttributeOptionsWithValues
+        GetExistingAttributeOptionsWithValues $getExistingAttributeOptionsWithValues,
+        ProductInterface $entity
     ) {
-        $this->beConstructedWith(['pim_catalog_multiselect'], $getExistingAttributeOptionsWithValues);
         $attribute = $this->createAttribute('pim_catalog_multiselect');
         $value->getData()->willReturn(['code1', 'code2', 'code3']);
         $getExistingAttributeOptionsWithValues->fromAttributeCodeAndOptionCodes(
@@ -73,6 +76,7 @@ class MultiSelectSelectorSpec extends ObjectBehavior
 
         $this->applySelection(
             ['type' => 'label', 'locale' => 'fr_FR', 'separator' => ';'],
+            $entity,
             $attribute,
             $value
         )->shouldReturn('label1;label2;[code3]');

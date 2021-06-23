@@ -31,7 +31,7 @@ class PriceCollectionSelector implements AttributeSelectorInterface
         $this->supportedAttributeTypes = $supportedAttributeTypes;
     }
 
-    public function applySelection(array $selectionConfiguration, Attribute $attribute, ValueInterface $value): string
+    public function applySelection(array $selectionConfiguration, $entity, Attribute $attribute, ValueInterface $value): string
     {
         $priceCollection = $value->getData()->toArray();
         switch ($selectionConfiguration['type']) {

@@ -21,6 +21,9 @@ final class SelectionTypes
     public const AMOUNT = 'amount';
     public const CODE = 'code';
     public const CURRENCY = 'currency';
+    public const KEY = 'key';
     public const LABEL = 'label';
+    public const NAME = 'name';
+    public const PATH = 'path';
     public const UNIT = 'unit';
 }

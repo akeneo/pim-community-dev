@@ -24,6 +24,15 @@ services:
     tags:
       - { name: akeneo.tailored_export.attribute_selector }
 
+  Akeneo\Platform\TailoredExport\Infrastructure\Connector\Processor\AttributeSelector\FileSelector:
+    public: true
+    arguments:
+      -
+        - 'pim_catalog_file'
+      - '@pim_connector.writer.file.media_exporter_path_generator'
+    tags:
+      - { name: akeneo.tailored_export.attribute_selector }
+
   Akeneo\Platform\TailoredExport\Infrastructure\Connector\Processor\AttributeSelector\SimpleSelectSelector:
     public: true
     arguments:

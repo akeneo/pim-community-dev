@@ -46,6 +46,9 @@ akeneo.tailored_export:
         type:
           amount: Amount
           currency: Currency
+          key: Filekey
+          path: Path
+          name: Filename
         format: Format
         parent:
           info:

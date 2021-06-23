@@ -32,7 +32,7 @@ class AssetCollectionSelector implements AttributeSelectorInterface
         $this->findAssetLabelTranslations = $findAssetLabelTranslations;
     }
 
-    public function applySelection(array $selectionConfiguration, Attribute $attribute, ValueInterface $value): string
+    public function applySelection(array $selectionConfiguration, $entity, Attribute $attribute, ValueInterface $value): string
     {
         $assetCodes = array_map('strval', $value->getData());
         $assetFamilyIdentifier = $attribute->properties()['reference_data_name'] ?? null;

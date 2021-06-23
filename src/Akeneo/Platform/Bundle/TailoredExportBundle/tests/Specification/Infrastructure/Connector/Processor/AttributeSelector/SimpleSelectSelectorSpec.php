@@ -13,6 +13,7 @@ declare(strict_types=1);
 
 namespace Specification\Akeneo\Platform\TailoredExport\Infrastructure\Connector\Processor\AttributeSelector;
 
+use Akeneo\Pim\Enrichment\Component\Product\Model\ProductInterface;
 use Akeneo\Pim\Enrichment\Component\Product\Model\ValueInterface;
 use Akeneo\Pim\Structure\Component\Query\PublicApi\AttributeOption\GetExistingAttributeOptionsWithValues;
 use Akeneo\Pim\Structure\Component\Query\PublicApi\AttributeType\Attribute;
@@ -20,11 +21,13 @@ use PhpSpec\ObjectBehavior;
 
 class SimpleSelectSelectorSpec extends ObjectBehavior
 {
-    public function it_returns_attribute_type_supported(
-        GetExistingAttributeOptionsWithValues $getExistingAttributeOptionsWithValues
-    ) {
+    public function let(GetExistingAttributeOptionsWithValues $getExistingAttributeOptionsWithValues)
+    {
         $this->beConstructedWith(['pim_catalog_simpleselect'], $getExistingAttributeOptionsWithValues);
+    }
 
+    public function it_returns_attribute_type_supported()
+    {
         $simpleSelectAttribute = $this->createAttribute('pim_catalog_simpleselect');
         $this->supports(['type' => 'code'], $simpleSelectAttribute)->shouldReturn(true);
         $this->supports(['type' => 'label'], $simpleSelectAttribute)->shouldReturn(true);
@@ -33,20 +36,19 @@ class SimpleSelectSelectorSpec extends ObjectBehavior
 
     public function it_selects_the_code(
         ValueInterface $value,
-        GetExistingAttributeOptionsWithValues $getExistingAttributeOptionsWithValues
+        ProductInterface $entity
     ) {
-        $this->beConstructedWith(['pim_catalog_simpleselect'], $getExistingAttributeOptionsWithValues);
         $simpleSelectAttribute = $this->createAttribute('pim_catalog_simpleselect');
         $value->getData()->willReturn('the_code');
 
-        $this->applySelection(['type' => 'code'], $simpleSelectAttribute, $value)->shouldReturn('the_code');
+        $this->applySelection(['type' => 'code'], $entity, $simpleSelectAttribute, $value)->shouldReturn('the_code');
     }
 
     public function it_selects_the_label(
         ValueInterface $value,
-        GetExistingAttributeOptionsWithValues $getExistingAttributeOptionsWithValues
+        GetExistingAttributeOptionsWithValues $getExistingAttributeOptionsWithValues,
+        ProductInterface $entity
     ) {
-        $this->beConstructedWith(['pim_catalog_simpleselect'], $getExistingAttributeOptionsWithValues);
         $simpleSelectAttribute = $this->createAttribute('pim_catalog_simpleselect');
         $value->getData()->willReturn('the_code');
         $getExistingAttributeOptionsWithValues->fromAttributeCodeAndOptionCodes(['description.the_code'])
@@ -54,14 +56,15 @@ class SimpleSelectSelectorSpec extends ObjectBehavior
                 'description.the_code' => ['fr_FR' => 'Le label', 'en_US' => 'The label']
             ]);
 
-        $this->applySelection(['type' => 'label', 'locale' => 'fr_FR'], $simpleSelectAttribute, $value)->shouldReturn('Le label');
+        $this->applySelection(['type' => 'label', 'locale' => 'fr_FR'], $entity, $simpleSelectAttribute, $value)
+            ->shouldReturn('Le label');
     }
 
     public function it_selects_the_code_when_label_is_undefined(
         ValueInterface $value,
-        GetExistingAttributeOptionsWithValues $getExistingAttributeOptionsWithValues
+        GetExistingAttributeOptionsWithValues $getExistingAttributeOptionsWithValues,
+        ProductInterface $entity
     ) {
-        $this->beConstructedWith(['pim_catalog_simpleselect'], $getExistingAttributeOptionsWithValues);
         $simpleSelectAttribute = $this->createAttribute('pim_catalog_simpleselect');
         $value->getData()->willReturn('the_code');
         $getExistingAttributeOptionsWithValues->fromAttributeCodeAndOptionCodes(['description.the_code'])
@@ -69,7 +72,8 @@ class SimpleSelectSelectorSpec extends ObjectBehavior
                 'description.the_code' => ['en_US' => 'The label']
             ]);
 
-        $this->applySelection(['type' => 'label', 'locale' => 'fr_FR'], $simpleSelectAttribute, $value)->shouldReturn('[the_code]');
+        $this->applySelection(['type' => 'label', 'locale' => 'fr_FR'], $entity, $simpleSelectAttribute, $value)
+            ->shouldReturn('[the_code]');
     }
 
     private function createAttribute(string $attributeType): Attribute
