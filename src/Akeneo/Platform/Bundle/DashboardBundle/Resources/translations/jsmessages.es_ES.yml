@@ -1,4 +1,5 @@
 pim_dashboard:
+  title: Panel de actividades
   greetings: '¡Hola {{ name }}!'
   welcome_sentence:
     message0: Este va a ser un gran día.
@@ -14,6 +15,7 @@ pim_dashboard:
   widget:
     completeness:
       load_more: 'Cargar más...'
+      title: Integridad sobre canales y configuraciones regionales
       progress_messages:
         message1: Prepárate para comenzar el viaje de enriquecimiento hacia la completitud.
         message2: Aún tienes trabajo por hacer, pero estás en el buen camino.

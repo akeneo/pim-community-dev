@@ -286,8 +286,8 @@ pim_title:
   pim_enrich_catalog_volume_index: Volumétrie du catalogue
   pim_enrich_categorytree_index: Arborescences des catégories
   pim_enrich_categorytree_create: Arborescences | Créer
-  pim_enrich_categorytree_edit: Arbre de catégories {{ category.label }} | Édition
   pim_enrich_categorytree_create_tree: Arborescences | Créer
+  pim_enrich_categorytree_tree: Arbre de catégories {{ category.label }} | Édition
   pim_enrich_attribute_index: Attributs
   pim_enrich_attribute_create: Attributs | Créer
   pim_enrich_attribute_edit: Attribut {{ attribute.label }} | Édition

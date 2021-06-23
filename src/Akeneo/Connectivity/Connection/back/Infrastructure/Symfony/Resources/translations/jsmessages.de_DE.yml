@@ -231,6 +231,7 @@ akeneo_connectivity.connection:
       required: Dieses Feld ist erforderlich.
       not_found: Sie versuchen eine Verbindung zu aktualisieren, die nicht existiert.
       limit_reached: Sie haben das Limit der aktiven Event-Abonnements erreicht.
+      not_allowed_url: Diese URL ist nicht erlaubt.
     flash:
       success: Ereignisabonnement erfolgreich aktualisiert.
       error: Leider ist ein Fehler beim Bearbeiten des Ereignis-Abonnements aufgetreten.

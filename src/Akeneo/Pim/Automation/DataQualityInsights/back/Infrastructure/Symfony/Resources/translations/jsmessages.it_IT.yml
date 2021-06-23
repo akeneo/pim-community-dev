@@ -4,3 +4,64 @@ akeneo_data_quality_insights:
     menu: Approfondimenti sulla qualità dei dati
     helper:
       title: Introduzione alla qualità dei dati in Akeneo
+    no_data_subtitle: Ti preghiamo di tornare più tardi.
+    time_period:
+      label: Periodo temporale
+      daily: Giornalmente
+      weekly: Settimanalmente
+      monthly: Mensilmente
+    legend:
+      excellent: Eccellente
+      good: Buona
+      average: Media
+      below_average: Sotto la media
+      to_improve: Da migliorare
+    average_grade: Valutazione media
+    widgets:
+      family_modal:
+        subtitle: Aggiungi famiglie
+      category_modal:
+        subtitle: Aggiungi categorie
+      add_families: Aggiungi famiglie
+      add_categories: Aggiungi categorie
+      title: Titolo
+      score: Punteggio
+    time_axis:
+      day: giorno
+    key_indicators:
+      no_data_subtitle: Ti preghiamo di tornare più tardi.
+    quality_score_evolution:
+      current_month_label: Questo mese
+  product_evaluation:
+    criteria:
+      completeness_of_required_attributes:
+        recommendation: Attributi obbligatori con valori mancanti
+      completeness_of_non_required_attributes:
+        recommendation: Attributi non obbligatori con valori mancanti
+      enrichment_image:
+        recommendation: Immagine mancante
+    axis:
+      enrichment:
+        title: Arricchimento
+        success: I tuoi dati di prodotto sono completamente arricchiti. Congratulazioni!
+    messages:
+      success:
+        criterion: Tutto a posto.
+  product_edit_form:
+    attribute_filter:
+      all_missing_attributes: Tutti gli attributi mancanti
+    back_to_products: Torna ai prodotti
+  attribute_group:
+    activation: Attivato
+    activated: Attivato
+    disabled: Disattivato
+  product_grid:
+    filter_label:
+      images_quality: Immagine prodotto
+    filter_value:
+      good: Buona
+      to_improve: Da migliorare
+      yes: true
+      no: false
+pim_title:
+  akeneo_data_quality_insights_dashboard: Approfondimenti sulla qualità dei dati

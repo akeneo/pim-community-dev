@@ -41,6 +41,7 @@ The %attribute% attribute must not contain more than %limit% characters. The sub
 The %type% file extension is not allowed for the %attribute% attribute. Allowed extensions are %extensions%.: The %type% file extension is not allowed for the %attribute% attribute. Allowed extensions are %extensions%.
 'The {{ attribute_code }} attribute must match the following regular expression: {{ pattern }}.': 'The {{ attribute_code }} attribute must match the following regular expression: {{ pattern }}.'
 'The {{ attribute_code }} attribute cannot be empty.': 'The {{ attribute_code }} attribute cannot be empty.'
+The %attribute% attribute requires an e-mail address.: 'The %attribute% attribute requires an e-mail address.'
 pim_catalog:
     constraint:
         can_have_family_variant_empty_axis_value: 'Attribute "%attribute%" cannot be empty, as it is defined as an axis for this entity'

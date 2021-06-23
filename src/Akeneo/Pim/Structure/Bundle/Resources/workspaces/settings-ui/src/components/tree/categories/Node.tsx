@@ -22,17 +22,8 @@ type Props = {
 };
 
 const Node: FC<Props> = ({id, label, followCategory, addCategory, deleteCategory, orderable = false, index = 0}) => {
-  const {
-    node,
-    children,
-    loadChildren,
-    moveTo,
-    onDeleteCategory,
-    onCreateCategory,
-    isOpen,
-    open,
-    close,
-  } = useCategoryTreeNode(id);
+  const {node, children, loadChildren, moveTo, onDeleteCategory, onCreateCategory, isOpen, open, close} =
+    useCategoryTreeNode(id);
   const {isDragged, isDraggable, ...dragProps} = useDragTreeNode(node, index);
   const {placeholderPosition, ...dropProps} = useDropTreeNode(node, moveTo);
 

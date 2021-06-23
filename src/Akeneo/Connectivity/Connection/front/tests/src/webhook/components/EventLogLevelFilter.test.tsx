@@ -1,6 +1,6 @@
 import React from 'react';
 import '@testing-library/jest-dom/extend-expect';
-import {screen} from '@testing-library/react';
+import {act, screen} from '@testing-library/react';
 import {EventSubscriptionLogLevel} from '@src/webhook/model/EventSubscriptionLogLevel';
 import {renderWithProviders} from '../../../test-utils';
 import {EventLogLevelFilter} from '@src/webhook/components/EventLogLevelFilter';
@@ -49,7 +49,11 @@ test('It can change the selected levels by opening the dropdown and clicking on 
     const button = screen
         .getByText('akeneo_connectivity.connection.webhook.event_logs.list.search.level', {exact: false})
         .closest('button') as HTMLButtonElement;
-    fireEvent.click(button);
+
+    act(() => {
+        fireEvent.click(button);
+    });
+
     const levelInfoCheckboxLabel = screen.getByText('akeneo_connectivity.connection.webhook.event_logs.level.info');
     fireEvent.click(levelInfoCheckboxLabel);
 
