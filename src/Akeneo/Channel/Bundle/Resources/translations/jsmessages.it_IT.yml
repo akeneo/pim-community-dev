@@ -65,6 +65,8 @@ pim_enrich.entity.locale:
   uppercase_label: Impostazioni locali
   plural_label: Impostazioni locali
   grid:
+    filters:
+      search_placeholder: Cerca un'impostazione locale attivata
     no_search_result: Non ci sono risultati per la tua ricerca.
 pim_enrich.entity.currency:
   plural_label: Valute
