@@ -20,6 +20,8 @@ type SubEntry = {
 type EntryView = View & {
   config: {
     title: string;
+    to?: string;
+    isLandingSectionPage?: boolean;
   };
   items: SubEntry[]
   sections: any[]
@@ -40,6 +42,8 @@ class Menu extends BaseForm {
       className: 'AknHeader',
     });
   }
+
+
 
   /**
    * {@inheritdoc}
@@ -86,18 +90,18 @@ class Menu extends BaseForm {
     });
 
     const entries: NavigationEntry[] = extensions.map((extension: EntryView, index) => {
-      const {title} = extension.config;
-      console.log(extension.items);
+      const {title, isLandingSectionPage} = extension.config;
       return {
         code: extension.code,
         label: title,
         active: false,
         disabled: false,
-        route: 'pim_settings_index',
+        route: this.findEntryRoute(extension),
         icon: React.createElement(CardIcon),
         position: index,
         items: extension.items,
         sections: extension.sections,
+        isLandingSectionPage: isLandingSectionPage ?? false,
       };
     });
 
@@ -106,6 +110,22 @@ class Menu extends BaseForm {
     });
 
     return entries;
+  }
+
+  findEntryRoute(entry: EntryView): string {
+    if (entry.config.to !== undefined) {
+      return entry.config.to;
+    }
+
+    if (entry.items.length > 0) {
+      entry.items.sort((itemA: SubEntry, itemB: SubEntry) => {
+        return itemA.position - itemB.position;
+      });
+
+      return entry.items[0].route;
+    }
+
+    return 'pim_settings_index';
   }
 }
 

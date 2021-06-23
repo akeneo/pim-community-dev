@@ -118,8 +118,6 @@ class Column extends BaseColumn {
   }) {
     super.registerNavigationItem(navigationItem);
 
-    console.log('column item', navigationItem);
-
     this.getRoot().trigger('pim_menu:register_item', {
       target: this.getTab(),
       label: navigationItem.label,

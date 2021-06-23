@@ -1,6 +1,6 @@
 import React, {FC, useState} from 'react';
 import styled from 'styled-components';
-import {PimView, useTranslate} from '@akeneo-pim-community/shared';
+import {PimView, useRouter, useTranslate} from '@akeneo-pim-community/shared';
 import {IconProps, MainNavigationItem, SubNavigationPanel} from 'akeneo-design-system';
 
 const NavContainer = styled.nav`
@@ -50,6 +50,7 @@ type NavigationEntry = {
   icon: React.ReactElement<IconProps>;
   position: number;
   items: SubNavigationEntry[];
+  isLandingSectionPage: boolean;
 };
 
 type Props = {
@@ -57,27 +58,29 @@ type Props = {
 };
 const PimNavigation: FC<Props> = ({entries}) => {
   const translate = useTranslate();
-  const handleFollowEntry = (code: string) => {
-    setActiveEntry(code);
+  const router = useRouter();
+
+  const handleFollowEntry = (entry: NavigationEntry) => {
+    setActiveEntry(entry);
+    router.redirect(router.generate(entry.route));
   };
 
   // @todo initial state: set the initial state with the active entry or the first of the list
-  const [activeEntry, setActiveEntry] = useState<string>(entries[0].code || '');
-  const isActiveEntry = (code: string) => code === activeEntry;
+  const [activeEntry, setActiveEntry] = useState<NavigationEntry | null>(entries[0] || null);
+  const isActiveEntry = (code: string) => code === (activeEntry ? activeEntry.code : null);
 
   // @todo read default value by main navigation entry from Session storage
   // @example: collapsedColumn_pim-menu-settings: 1
   const isSubNavigationOpened = true;
 
   const getEntrySubNavigation = () => {
-    const entry = entries.find((entry: NavigationEntry) => entry.code === activeEntry);
-
-    if (!entry) {
+    if (!activeEntry) {
       return [];
     }
-    console.log('getEntrySubNavigation', entry);
-    return entry.items;
+    return activeEntry.items;
   };
+
+  console.log('entries', entries);
 
   const subNavigationItems = getEntrySubNavigation();
 
@@ -88,15 +91,15 @@ const PimNavigation: FC<Props> = ({entries}) => {
           <PimView viewName="pim-menu-logo" />
         </LogoContainer>
         <MenuContainer>
-          {entries.map(({code, label, disabled, icon}) => (
+          {entries.map((entry) => (
             <MainNavigationItem
-              key={code}
-              active={isActiveEntry(code)}
-              disabled={disabled}
-              icon={icon}
-              onClick={() => handleFollowEntry(code)}
+              key={entry.code}
+              active={isActiveEntry(entry.code)}
+              disabled={entry.disabled}
+              icon={entry.icon}
+              onClick={() => handleFollowEntry(entry)}
             >
-              {translate(label)}
+              {translate(entry.label)}
             </MainNavigationItem>
           ))}
         </MenuContainer>
@@ -104,16 +107,18 @@ const PimNavigation: FC<Props> = ({entries}) => {
           <PimView viewName="pim-menu-help" />
         </HelpContainer>
       </MainNavContainer>
-      <SubNavContainer>
-        <SubNavigationPanel isOpen={isSubNavigationOpened}>
-          {activeEntry}
-          {subNavigationItems.map(item => (
-            <div key={`${item.target}-${item.label}`}>
-              {item.label} {JSON.stringify(item.section)}
-            </div>
-          ))}
-        </SubNavigationPanel>
-      </SubNavContainer>
+      {activeEntry && !activeEntry.isLandingSectionPage && subNavigationItems.length > 0 && (
+        <SubNavContainer>
+          <SubNavigationPanel isOpen={isSubNavigationOpened}>
+            {activeEntry ? activeEntry.code : 'No entry'}
+            {subNavigationItems.map(item => (
+              <div key={`${item.target}-${item.label}`}>
+                {item.label} {JSON.stringify(item.section)}
+              </div>
+            ))}
+          </SubNavigationPanel>
+        </SubNavContainer>
+      )}
     </NavContainer>
   );
 };
