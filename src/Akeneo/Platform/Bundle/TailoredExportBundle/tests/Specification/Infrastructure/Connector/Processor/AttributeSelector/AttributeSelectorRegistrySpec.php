@@ -27,6 +27,7 @@ class AttributeSelectorRegistrySpec extends ObjectBehavior
         ValueInterface $value
     ) {
         $attribute = $this->createAttribute();
+        $entity = new \StdClass();
         $sourceConfiguration = ['type' => 'code'];
         $this->beConstructedWith([
             $firstAttributeSelector,
@@ -39,16 +40,17 @@ class AttributeSelectorRegistrySpec extends ObjectBehavior
         $thirdAttributeSelector->supports($sourceConfiguration, $attribute)->shouldNotBeCalled();
 
         $secondAttributeSelector
-            ->applySelection($sourceConfiguration, $attribute, $value)
+            ->applySelection($sourceConfiguration, $entity, $attribute, $value)
             ->shouldBeCalled()
             ->willReturn('The value selected');
 
-        $this->applyAttributeSelection($sourceConfiguration, $attribute, $value)->shouldReturn('The value selected');
+        $this->applyAttributeSelection($sourceConfiguration, $entity, $attribute, $value)->shouldReturn('The value selected');
     }
 
     public function it_does_nothing_if_value_is_not_value_interface(AttributeSelectorInterface $firstAttributeSelector)
     {
         $attribute = $this->createAttribute();
+        $entity = new \StdClass();
         $sourceConfiguration = ['type' => 'code'];
         $this->beConstructedWith([
             $firstAttributeSelector,
@@ -57,7 +59,7 @@ class AttributeSelectorRegistrySpec extends ObjectBehavior
         $firstAttributeSelector->supports($sourceConfiguration, $attribute)->shouldNotBeCalled();
 
         $this
-            ->applyAttributeSelection($sourceConfiguration, $attribute, 'Not a value interface')
+            ->applyAttributeSelection($sourceConfiguration, $entity, $attribute, 'Not a value interface')
             ->shouldReturn('Not a value interface');
     }
 
@@ -66,6 +68,7 @@ class AttributeSelectorRegistrySpec extends ObjectBehavior
         ValueInterface $value
     ) {
         $attribute = $this->createAttribute();
+        $entity = new \Stdclass();
         $sourceConfiguration = ['type' => 'code'];
         $this->beConstructedWith([
             $firstAttributeSelector,
@@ -73,7 +76,7 @@ class AttributeSelectorRegistrySpec extends ObjectBehavior
 
         $firstAttributeSelector->supports($sourceConfiguration, $attribute)->shouldBeCalled()->willReturn(false);
 
-        $this->shouldThrow()->during('applyAttributeSelection', [$sourceConfiguration, $attribute, $value]);
+        $this->shouldThrow()->during('applyAttributeSelection', [$sourceConfiguration, $entity, $attribute, $value]);
     }
 
     private function createAttribute(): Attribute

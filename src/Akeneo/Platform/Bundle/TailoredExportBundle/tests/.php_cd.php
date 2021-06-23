@@ -45,6 +45,7 @@ $rules = [
             'Akeneo\Pim\Permission\Bundle\User\UserContext',
             'Akeneo\ReferenceEntity\Infrastructure\PublicApi\Enrich\FindRecordsLabelTranslations',
             'Akeneo\Pim\Enrichment\Component\Product\Query\GetProductModelLabelsInterface',
+            'Akeneo\Pim\Enrichment\Component\Product\Model\ProductModelInterface',
         ]
     )->in('Akeneo\Platform\TailoredExport'),
 ];

@@ -9,10 +9,18 @@ import {
   getColor,
   getFontSize,
   TabBar,
+  useTabBar,
 } from 'akeneo-design-system';
-import {CategoryFilter, ColumnsTab} from './feature';
+import {CompletenessFilter, CategoryFilter, ColumnsTab} from './feature';
 import {useEffect} from 'react';
-import {NotificationLevel, useNotify, useRoute, useTranslate, ValidationError} from '@akeneo-pim-community/shared';
+import {
+  NotificationLevel,
+  useNotify,
+  useRoute,
+  useTranslate,
+  ValidationError,
+  filterErrors,
+} from '@akeneo-pim-community/shared';
 import {ColumnConfiguration} from './feature/models/ColumnConfiguration';
 
 const JOB_CODE = 'mmm';
@@ -51,6 +59,13 @@ const Page = styled.div`
   padding: 40px;
 `;
 
+const FieldContainer = styled.div`
+  width: 400px;
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+`;
+
 const SaveButton = styled(Button)`
   position: absolute;
   top: 40px;
@@ -75,10 +90,17 @@ type JobConfiguration = {
 const FakePIM = () => {
   const [jobConfiguration, setJobConfiguration] = useState<JobConfiguration | null>(null);
   const [validationErrors, setValidationErrors] = useState<ValidationError[]>([]);
+  const [isCurrent, switchTo] = useTabBar('columns');
   const route = useRoute('pim_enrich_job_instance_rest_export_get', {identifier: JOB_CODE});
   const saveRoute = useRoute('pim_enrich_job_instance_rest_export_put', {identifier: JOB_CODE});
   const notify = useNotify();
   const translate = useTranslate();
+  const AVAILABLE_OPERATORS = [
+    'ALL',
+    'GREATER OR EQUALS THAN ON AT LEAST ONE LOCALE',
+    'GREATER OR EQUALS THAN ON ALL LOCALES',
+    'LOWER THAN ON ALL LOCALES',
+  ];
 
   const handleColumnConfigurationChange = (columnConfiguration: ColumnConfiguration[]) => {
     if (null !== jobConfiguration) {
@@ -100,6 +122,19 @@ const FakePIM = () => {
     setJobConfiguration({
       ...jobConfiguration,
       configuration: {...jobConfiguration.configuration, filters: {data: newFilters}},
+    });
+  };
+
+  const handleFilterChange = updatedFilter => {
+    const updatedFilters = jobConfiguration.configuration.filters.data.map(filter => {
+      if (filter.field !== 'completeness') return filter;
+
+      return updatedFilter;
+    });
+
+    setJobConfiguration({
+      ...jobConfiguration,
+      configuration: {...jobConfiguration.configuration, filters: {data: updatedFilters}},
     });
   };
 
@@ -144,6 +179,10 @@ const FakePIM = () => {
     return filter.field === 'categories';
   });
 
+  const completenessFilter = jobConfiguration.configuration.filters.data.find(filter => {
+    return filter.field === 'completeness';
+  });
+
   const categoriesSelected = categoryFilter ? categoryFilter['value'] : [];
 
   return (
@@ -160,23 +199,39 @@ const FakePIM = () => {
             </Breadcrumb>
             <Title>Tailored Exports</Title>
           </div>
-          {categoriesSelected.length === 0 ? 'All products' : `${categoriesSelected.length} selected category`}
-          <CategoryFilter initialCategorySelection={categoriesSelected} onCategorySelection={handleCategoryChange} />
           <SaveButton onClick={saveJobConfiguration}>Save</SaveButton>
         </Header>
         <TabBar moreButtonTitle={translate('pim_common.more')}>
           <TabBar.Tab isActive={false}>Properties</TabBar.Tab>
           <TabBar.Tab isActive={false}>Permissions</TabBar.Tab>
           <TabBar.Tab isActive={false}>Global settings</TabBar.Tab>
-          <TabBar.Tab isActive={false}>Filter the data</TabBar.Tab>
-          <TabBar.Tab isActive={true}>Select the columns</TabBar.Tab>
+          <TabBar.Tab isActive={isCurrent('lines')} onClick={() => switchTo('lines')}>
+            Filter the data
+          </TabBar.Tab>
+          <TabBar.Tab isActive={isCurrent('columns')} onClick={() => switchTo('columns')}>
+            Select the columns
+          </TabBar.Tab>
           <TabBar.Tab isActive={false}>History</TabBar.Tab>
         </TabBar>
-        <ColumnsTab
-          validationErrors={validationErrors}
-          columnsConfiguration={jobConfiguration.configuration.columns}
-          onColumnsConfigurationChange={handleColumnConfigurationChange}
-        />
+        {isCurrent('columns') && (
+          <ColumnsTab
+            validationErrors={validationErrors}
+            columnsConfiguration={jobConfiguration.configuration.columns}
+            onColumnsConfigurationChange={handleColumnConfigurationChange}
+          />
+        )}
+        {isCurrent('lines') && (
+          <FieldContainer>
+            {categoriesSelected.length === 0 ? 'All products' : `${categoriesSelected.length} selected category`}
+            <CategoryFilter initialCategorySelection={categoriesSelected} onCategorySelection={handleCategoryChange} />
+            <CompletenessFilter
+              availableOperators={AVAILABLE_OPERATORS}
+              filter={completenessFilter}
+              onChange={handleFilterChange}
+              validationErrors={filterErrors(validationErrors, '[filters][data][2]')}
+            />
+          </FieldContainer>
+        )}
       </Page>
     </Container>
   );

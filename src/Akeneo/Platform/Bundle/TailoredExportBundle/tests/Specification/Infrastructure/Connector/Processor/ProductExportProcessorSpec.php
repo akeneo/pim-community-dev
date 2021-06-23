@@ -85,7 +85,7 @@ class ProductExportProcessorSpec extends ObjectBehavior
         $product->getValue('name', null, null)->willReturn($nameValue);
         $getAttributes->forCode('name')->willReturn($name);
         $attributeSelectorRegistry
-            ->applyAttributeSelection(['type' => 'code'], $name, $nameValue)
+            ->applyAttributeSelection(['type' => 'code'], $product, $name, $nameValue)
             ->willReturn('name value');
 
         $propertySelectorRegistry
