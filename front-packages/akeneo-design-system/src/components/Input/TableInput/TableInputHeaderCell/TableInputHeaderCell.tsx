@@ -8,6 +8,7 @@ const TableInputTh = styled.th`
   color: ${getColor('grey', 140)};
   text-align: left;
   font-weight: bold;
+  white-space: nowrap;
 `;
 
 const TableInputHeaderCell = React.forwardRef<HTMLTableHeaderCellElement, React.TdHTMLAttributes<HTMLTableCellElement>>(
