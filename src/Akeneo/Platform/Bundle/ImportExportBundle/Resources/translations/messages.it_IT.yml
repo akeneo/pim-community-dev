@@ -27,6 +27,8 @@ pim_import_export:
       error: Esportazione <strong>%label%</strong> non riuscita
       warning: Esportazione <strong>%label%</strong> completata con alcuni avvisi
       success: Esportazione <strong>%label%</strong> completata
+      warnings:
+        xlsx_cell_conversion_error: Eccezione durante la conversione della colonna "{0}" al tipo di attributo di prodotto PIM di destinazione (controlla il formato cella Excel)
     import:
       error: Importazione <strong>%label%</strong> non riuscita
       warning: Importazione <strong>%label%</strong> completata con alcuni avvisi
