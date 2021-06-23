@@ -1,4 +1,4 @@
-import { ColumnDefinitionWithId } from "../../../src/attribute/TableOptionsApp";
+import { ColumnDefinitionWithId } from "../../../src/attribute/TableStructureApp";
 
 export const getSelectColumnDefinitionWithId: () => ColumnDefinitionWithId = () => {
   return {

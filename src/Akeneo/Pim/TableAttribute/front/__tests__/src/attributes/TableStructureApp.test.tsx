@@ -1,7 +1,7 @@
 import React from 'react';
 import {renderWithProviders} from '@akeneo-pim-community/legacy-bridge/tests/front/unit/utils';
 import {screen, act, fireEvent} from '@testing-library/react';
-import {TableOptionsApp} from '../../../src/attribute/TableOptionsApp';
+import {TableStructureApp} from '../../../src/attribute/TableStructureApp';
 import { getComplexTableConfiguration, getSimpleTableConfiguration } from "../factories/TableConfiguration";
 jest.mock('../../../src/fetchers/LocaleFetcher');
 jest.mock('../../../src/attribute/AddColumnModal');
@@ -10,11 +10,11 @@ const waitPageToBeLoaded = async () => {
   expect(await screen.findByText('English (United States)')).toBeInTheDocument();
 };
 
-describe('TableOptionsApp', () => {
+describe('TableStructureApp', () => {
   it('should render the columns', async () => {
     const handleChange = jest.fn();
     renderWithProviders(
-      <TableOptionsApp onChange={handleChange} initialTableConfiguration={getSimpleTableConfiguration()} savedColumnCodes={[]} />
+      <TableStructureApp onChange={handleChange} initialTableConfiguration={getSimpleTableConfiguration()} savedColumnCodes={[]} />
     );
     await waitPageToBeLoaded();
 
@@ -31,7 +31,7 @@ describe('TableOptionsApp', () => {
   it('should display column information', async () => {
     const handleChange = jest.fn();
     renderWithProviders(
-      <TableOptionsApp
+      <TableStructureApp
         onChange={handleChange}
         initialTableConfiguration={getComplexTableConfiguration()}
         savedColumnCodes={[]}
@@ -57,7 +57,7 @@ describe('TableOptionsApp', () => {
   it('should update labels', async () => {
     const handleChange = jest.fn();
     renderWithProviders(
-      <TableOptionsApp
+      <TableStructureApp
         onChange={handleChange}
         initialTableConfiguration={getSimpleTableConfiguration()}
         savedColumnCodes={['ingredients']}
@@ -78,7 +78,7 @@ describe('TableOptionsApp', () => {
   it('should drag and drop', async () => {
     const handleChange = jest.fn();
     renderWithProviders(
-      <TableOptionsApp
+      <TableStructureApp
         onChange={handleChange}
         initialTableConfiguration={getComplexTableConfiguration()}
         savedColumnCodes={[]}
@@ -107,7 +107,7 @@ describe('TableOptionsApp', () => {
   it('should render without column', async () => {
     const handleChange = jest.fn();
     renderWithProviders(
-      <TableOptionsApp onChange={handleChange} initialTableConfiguration={[]} savedColumnCodes={[]} />
+      <TableStructureApp onChange={handleChange} initialTableConfiguration={[]} savedColumnCodes={[]} />
     );
     expect(await screen.findByText('pim_table_attribute.form.attribute.empty_title')).toBeInTheDocument();
   });
@@ -115,7 +115,7 @@ describe('TableOptionsApp', () => {
   it('falls back to the first column when deleting a selected column', async () => {
     const handleChange = jest.fn();
     renderWithProviders(
-      <TableOptionsApp
+      <TableStructureApp
         onChange={handleChange}
         initialTableConfiguration={getComplexTableConfiguration()}
         savedColumnCodes={[]}
@@ -152,7 +152,7 @@ describe('TableOptionsApp', () => {
   it('should set the code field as readonly if the column is saved', async () => {
     const handleChange = jest.fn();
     renderWithProviders(
-      <TableOptionsApp
+      <TableStructureApp
         onChange={handleChange}
         initialTableConfiguration={getSimpleTableConfiguration()}
         savedColumnCodes={['ingredients']}
@@ -167,7 +167,7 @@ describe('TableOptionsApp', () => {
   it('should render validation fields', async () => {
     const handleChange = jest.fn();
     renderWithProviders(
-      <TableOptionsApp
+      <TableStructureApp
         onChange={handleChange}
         initialTableConfiguration={getComplexTableConfiguration()}
         savedColumnCodes={[]}
@@ -224,7 +224,7 @@ describe('TableOptionsApp', () => {
   it('should add a column', async () => {
     const handleChange = jest.fn();
     renderWithProviders(
-      <TableOptionsApp onChange={handleChange} initialTableConfiguration={[
+      <TableStructureApp onChange={handleChange} initialTableConfiguration={[
         {data_type: 'text', code: 'ingredients', labels: {en_US: 'Ingredients'}, validations: {}},
       ]} savedColumnCodes={[]} />
     );

@@ -3,7 +3,7 @@ import {Field, Helper, NumberInput, SectionTitle, TextInput} from 'akeneo-design
 import {getLabel, Locale, LocaleCode, useTranslate} from '@akeneo-pim-community/shared';
 import {ColumnCode, ColumnValidation} from '../models/TableConfiguration';
 import styled from 'styled-components';
-import {ColumnDefinitionWithId} from './TableOptionsApp';
+import {ColumnDefinitionWithId} from './TableStructureApp';
 import {Checkbox} from '@akeneo-pim-community/connectivity-connection/src/common';
 
 const FieldsList = styled.div`

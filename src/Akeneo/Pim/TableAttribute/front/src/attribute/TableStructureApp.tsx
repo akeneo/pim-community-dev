@@ -40,7 +40,7 @@ const EmptyTableTitle = styled.div`
   color: ${getColor('grey', 140)};
 `;
 
-type TableOptionsAppProps = {
+type TableStructureAppProps = {
   initialTableConfiguration: TableConfiguration;
   onChange: (tableConfiguration: TableConfiguration) => void;
   savedColumnCodes: ColumnCode[];
@@ -49,11 +49,11 @@ type TableOptionsAppProps = {
 export type ColumnDefinitionWithId = ColumnDefinition & {id: string};
 type TableConfigurationWithId = ColumnDefinitionWithId[];
 
-const TableOptionsActionCell = styled(Table.ActionCell)`
+const TableStructureActionCell = styled(Table.ActionCell)`
   width: 44px;
 `;
 
-const TableOptionsApp: React.FC<TableOptionsAppProps> = ({initialTableConfiguration, onChange, savedColumnCodes}) => {
+const TableStructureApp: React.FC<TableStructureAppProps> = ({initialTableConfiguration, onChange, savedColumnCodes}) => {
   const translate = useTranslate();
   const router = useRouter();
   const userContext = useUserContext();
@@ -173,7 +173,7 @@ const TableOptionsApp: React.FC<TableOptionsAppProps> = ({initialTableConfigurat
               <Table.Cell rowTitle={true}>
                 {getLabel(columnDefinition.labels, userContext.get('catalogLocale'), columnDefinition.code)}
               </Table.Cell>
-              <TableOptionsActionCell>
+              <TableStructureActionCell>
                 <IconButton
                   ghost='borderless'
                   icon={<CloseIcon />}
@@ -184,7 +184,7 @@ const TableOptionsApp: React.FC<TableOptionsAppProps> = ({initialTableConfigurat
                   title={translate('pim_common.delete')}
                   level='tertiary'
                 />
-              </TableOptionsActionCell>
+              </TableStructureActionCell>
             </Table.Row>
           ))}
         </Table.Body>
@@ -244,4 +244,4 @@ const TableOptionsApp: React.FC<TableOptionsAppProps> = ({initialTableConfigurat
   );
 };
 
-export {TableOptionsApp};
+export {TableStructureApp};

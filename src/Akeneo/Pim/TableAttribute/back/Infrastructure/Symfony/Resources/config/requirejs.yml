@@ -1,6 +1,6 @@
 config:
     paths:
-        pim/table-attribute/attribute/tab: akeneopimtableattribute/legacy/table-options-tab
+        pim/table-attribute/attribute/tab: akeneopimtableattribute/legacy/table-structure-tab
         pim/table-attribute/attribute/create-button: akeneopimtableattribute/legacy/create-button
         pim/table-attribute/product/table-field: akeneopimtableattribute/legacy/table-field
 

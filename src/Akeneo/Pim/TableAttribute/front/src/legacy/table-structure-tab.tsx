@@ -1,7 +1,7 @@
 import BaseView = require('pimui/js/view/base');
 import React from 'react';
 import ReactDOM from 'react-dom';
-import {TableOptionsApp} from '../attribute/TableOptionsApp';
+import {TableStructureApp} from '../attribute/TableStructureApp';
 import {TableConfiguration} from '../models/TableConfiguration';
 import {DependenciesProvider} from '@akeneo-pim-community/legacy-bridge';
 import {TEMPLATES} from '../models/Template';
@@ -9,15 +9,15 @@ import {AttributeType} from '../models/Attribute';
 // eslint-disable-next-line @typescript-eslint/no-var-requires
 const translate = require('oro/translator');
 
-type TableOptionsTabConfig = {
+type TableStructureTabConfig = {
   label: string;
   activeForTypes: AttributeType[];
 };
 
-class TableOptionsTab extends (BaseView as {new (options: {config: TableOptionsTabConfig}): any}) {
-  private config: TableOptionsTabConfig;
+class TableStructureTab extends (BaseView as {new (options: {config: TableStructureTabConfig}): any}) {
+  private config: TableStructureTabConfig;
 
-  initialize(options: {config: TableOptionsTabConfig}): void {
+  initialize(options: {config: TableStructureTabConfig}): void {
     this.config = options.config;
 
     BaseView.prototype.initialize.apply(this, options);
@@ -71,7 +71,7 @@ class TableOptionsTab extends (BaseView as {new (options: {config: TableOptionsT
 
     ReactDOM.render(
       <DependenciesProvider>
-        <TableOptionsApp
+        <TableStructureApp
           initialTableConfiguration={initialTableConfiguration}
           onChange={this.handleChange.bind(this)}
           savedColumnCodes={savedColumnCodes}
@@ -93,4 +93,4 @@ class TableOptionsTab extends (BaseView as {new (options: {config: TableOptionsT
   }
 }
 
-export = TableOptionsTab;
+export = TableStructureTab;
