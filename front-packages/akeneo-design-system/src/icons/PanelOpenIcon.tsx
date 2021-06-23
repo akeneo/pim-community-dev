@@ -5,7 +5,7 @@ const PanelOpenIcon = ({title, size = 24, color = 'currentColor', ...props}: Ico
   <svg viewBox="0 0 24 24" width={size} height={size} {...props}>
     {title && <title>{title}</title>}
     <path
-      d="M16 17.749V21h5V3h-5v3.375M2 12h15H2zm10 5l5.5-5L12 7h0"
+      d="M10,21 L19,12 L10,3 M5,21 L14,12 L5,3"
       stroke={color}
       fill="none"
       fillRule="evenodd"

@@ -135,7 +135,6 @@ pim_import_export:
       file_path: Percorso del file
   widget:
     last_operations:
-      empty: Nessun operazione trovata
       date: Data
       profile_name: Nome profilo
       details: Dettaglio

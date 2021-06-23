@@ -1,0 +1,53 @@
+import {Meta, Story, ArgsTable, Canvas} from '@storybook/addon-docs/blocks';
+import {useArgs, updateArgs} from '@storybook/client-api';
+import {SubNavigationPanel} from './SubNavigationPanel.tsx';
+import {SpaceContainer} from '../../../storybook/PreviewGallery';
+
+<Meta
+  title="Components/Navigation/SubNavigationPanel"
+  component={SubNavigationPanel}
+  args={{children: 'Some content', isOpen: true}}
+/>
+
+# SubNavigationPanel
+
+## Usage
+
+SubNavigationPanel is used to display a collapsable panel on the left side of the screen.
+
+This panel can contain navigation links or other type of content.
+
+### Interaction
+
+The panel is open by default and can be collapsed with the dedicated button.
+When the panel is collapsed the content is hidden.
+
+## Playground
+
+<Canvas>
+  <Story name="Standard">
+    {args => {
+      return (
+        <SpaceContainer height={200}>
+          <SubNavigationPanel {...args} />
+        </SpaceContainer>
+      );
+    }}
+  </Story>
+</Canvas>
+
+<ArgsTable story="Standard" />
+
+## Panel is collapsed
+
+<Canvas>
+  <Story name="Collapsed">
+    {args => {
+      return (
+        <SpaceContainer height={200}>
+          <SubNavigationPanel {...args} isOpen={false} />
+        </SpaceContainer>
+      );
+    }}
+  </Story>
+</Canvas>

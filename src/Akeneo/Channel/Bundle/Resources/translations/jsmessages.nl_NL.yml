@@ -64,7 +64,14 @@ pim_enrich.entity.locale:
   label: lokalisatie
   uppercase_label: Lokalisatie
   plural_label: Lokalisaties
+  page_title:
+    index: "]-Inf, 1]{{ count }} geactiveerde taal]1, Inf[{{ count }} geactiveerde talen"
+  helper: "Om een taal in of uit te schakelen, gaat u naar een van <a href={{ href }}>uw kanalen</a> om een taal toe te voegen of te verwijderen."
   grid:
+    columns:
+      code: Ingeschakelde talen
+    filters:
+      search_placeholder: Zoek een ingeschakelde taal
     no_search_result: Sorry, er is geen resultaat voor uw zoekopdracht.
 pim_enrich.entity.currency:
   plural_label: Valuta's

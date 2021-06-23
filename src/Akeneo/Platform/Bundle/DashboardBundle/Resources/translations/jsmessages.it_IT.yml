@@ -2,5 +2,8 @@ pim_dashboard:
   widget:
     completeness:
       load_more: 'Carica di più...'
+    last_operations:
+      title: Ultime operazioni
+  version: Versione
 pim_title:
   pim_dashboard_index: Dashboard
