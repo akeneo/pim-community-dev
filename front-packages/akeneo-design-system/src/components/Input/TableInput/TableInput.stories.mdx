@@ -79,3 +79,32 @@ Table input allows the user to input content in a table.
 </Canvas>
 
 <ArgsTable story="Standard" />
+
+## With a high number of columns
+
+<Canvas>
+  <Story name="With a high number of tags">
+    {args => {
+      return (
+        <TableInput {...args}>
+          <TableInput.Header>
+            {[0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0].map((_, i) => {
+              return <TableInput.HeaderCell rowTitle={true} key={i}>Column label</TableInput.HeaderCell>
+            })}
+          </TableInput.Header>
+          <TableInput.Body>
+            {[0,0,0,0,0,0,0,0].map((_,r) => {
+              return <TableInput.Row key={r}>
+                <TableInput.Cell rowTitle={true}>Value</TableInput.Cell>
+                {[0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0].map((_, i) => {
+                  return <TableInput.Cell key={i}><TableInput.Text value={'Value'} onChange={() => {}}/></TableInput.Cell>
+                })}
+              </TableInput.Row>
+              })
+            }
+          </TableInput.Body>
+        </TableInput>
+      );
+    }}
+  </Story>
+</Canvas>
