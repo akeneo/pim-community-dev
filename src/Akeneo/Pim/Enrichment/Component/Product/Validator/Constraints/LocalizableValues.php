@@ -10,6 +10,8 @@ use Symfony\Component\Validator\Constraint;
  */
 class LocalizableValues extends Constraint
 {
+    public const NOT_AVAILABLE_LOCALE_ERROR = '8a2a99c0-c4f7-4f07-a1d4-0a3b1afa8d93';
+
     /** @var string */
     public $nonActiveLocaleMessage = 'Attribute "%attribute_code%" expects an existing and activated locale, "%invalid_locale%" given.';
 
@@ -17,7 +19,7 @@ class LocalizableValues extends Constraint
     public $invalidLocaleForChannelMessage = 'Attribute "%attribute_code%" expects a valid locale, "%invalid_locale%" is not bound to channel "%channel_code%".';
 
     /** @var string */
-    public $invalidLocaleSpecificMessage = '"%invalid_locale%" is not part of the available locales for the locale specific attribute "%attribute_code%".';
+    public $invalidLocaleSpecificMessage = 'The %locale% locale is not available locales on the %attribute% attribute.';
 
     /**
      * {@inheritdoc}

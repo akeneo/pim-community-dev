@@ -38,6 +38,7 @@ The {{ attribute_code }} attribute requires a date that should be {{ limit }} or
 The {{ attribute_code }} attribute requires a date that should be {{ limit }} or before.: The {{ attribute_code }} attribute requires a date that should be {{ limit }} or before.
 The {{ attribute }} attribute requires a number, and the submitted {{ value }} value is not.: The {{ attribute }} attribute requires a number, and the submitted {{ value }} value is not.
 The %attribute% attribute must not contain more than %limit% characters. The submitted value is too long.: The %attribute% attribute must not contain more than %limit% characters. The submitted value is too long.
+The %locale% locale is not available locales on the %attribute% attribute.: The %locale% locale is not available locales on the %attribute% attribute.
 'The {{ attribute_code }} attribute must match the following regular expression: {{ pattern }}.': 'The {{ attribute_code }} attribute must match the following regular expression: {{ pattern }}.'
 'The {{ attribute_code }} attribute cannot be empty.': 'The {{ attribute_code }} attribute cannot be empty.'
 The %attribute% attribute requires an e-mail address.: 'The %attribute% attribute requires an e-mail address.'
