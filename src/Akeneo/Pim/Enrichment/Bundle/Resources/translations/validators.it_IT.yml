@@ -82,3 +82,7 @@ pim_catalog:
 mass_edit:
   edit_common_attributes:
     invalid_values: Ci sono errori nel modulo attributi
+pim_datagrid:
+  column_configurator:
+    label:
+      unique_message: L'etichetta deve essere univoca

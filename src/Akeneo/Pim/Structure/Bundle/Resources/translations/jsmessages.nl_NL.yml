@@ -115,6 +115,9 @@ pim_enrich.entity.association_type:
     delete:
       confirm: Weet u zeker dat u dit associatietype wilt verwijderen?
   hint: <a href="{{link}}" target="_blank">In dit artikel</a>vind je alles wat je nodig hebt om je eigen koppelingstype te maken.
+  no_association_types:
+    title: U heeft geen associatietypes
+    hint: Maak uw eerste associatietype aan
 pim_enrich.entity.group_type:
   label: groepstype
   flash:
