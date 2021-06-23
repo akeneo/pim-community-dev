@@ -12,7 +12,7 @@ declare(strict_types=1);
  */
 namespace Akeneo\Platform\TailoredExport\Infrastructure\Connector\Writer\File;
 
-use Box\Spout\Writer\WriterFactory;
+use Akeneo\Tool\Component\Connector\Writer\WriterFactory;
 use Box\Spout\Writer\WriterInterface;
 
 class FileWriterFactory

@@ -1,38 +1,36 @@
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: pim-web
+  name: pim-api
   labels:
-    component: "pim-web" # Deprecated. Cf https://www.notion.so/akeneo/Tagging-strategy-782b4ae037c44d4884b02c8c62e81117
-    app.kubernetes.io/component: "pim-web"
-    role: pim-web # Deprecated. Cf https://www.notion.so/akeneo/Tagging-strategy-782b4ae037c44d4884b02c8c62e81117
+    component: "pim-api" # Deprecated. Cf https://www.notion.so/akeneo/Tagging-strategy-782b4ae037c44d4884b02c8c62e81117
+    app.kubernetes.io/component: "pim-api"
+    role: pim-api # Deprecated. Cf https://www.notion.so/akeneo/Tagging-strategy-782b4ae037c44d4884b02c8c62e81117
     {{- include "pim.standardLabels" . | indent 4 }}
     {{- include "pim.extraLabels" . | indent 4 }}
 spec:
-  replicas: {{ .Values.pim.web.replicas }}
+  replicas: {{ .Values.pim.api.replicas }}
   minReadySeconds: 30
   selector:
     matchLabels:
-      component: "pim-web"
-      role: pim-web
+      component: "pim-api"
+      role: pim-api
   strategy:
     type: {{ .Values.pim.updateStrategy.type }}
   template:
     metadata:
       labels:
-        component: "pim-web" # Deprecated. Cf https://www.notion.so/akeneo/Tagging-strategy-782b4ae037c44d4884b02c8c62e81117
-        app.kubernetes.io/component: "pim-web"
-        role: pim-web # Deprecated. Cf https://www.notion.so/akeneo/Tagging-strategy-782b4ae037c44d4884b02c8c62e81117
+        component: "pim-api" # Deprecated. Cf https://www.notion.so/akeneo/Tagging-strategy-782b4ae037c44d4884b02c8c62e81117
+        app.kubernetes.io/component: "pim-api"
+        role: pim-api # Deprecated. Cf https://www.notion.so/akeneo/Tagging-strategy-782b4ae037c44d4884b02c8c62e81117
         {{- include "pim.standardLabels" . | indent 8 }}
         {{- include "pim.extraLabels" . | indent 8 }}
       annotations:
         ad.datadoghq.com/fpm.check_names: '["php_fpm"]'
         ad.datadoghq.com/fpm.init_configs: '[{}]'
         ad.datadoghq.com/fpm.instances: '[[{"status_url":"http://%%host%%:9000/status", "use_fastcgi": true}, {"status_url":"http://%%host%%:9001/status", "use_fastcgi": true}]]'
-        ad.datadoghq.com/fpm.logs: '[{ "service": "pim-enterprise-dev", "source": "pim-enterprise-dev", "log_processing_rules": [{ "type": "exclude_at_match","name": "exclude_php_status_logs", "pattern" : "uri\":\"/status\""},{ "type":"exclude_at_match", "name": "exclude_php_status_logs", "pattern" : "path_info\":\"[^\"]*(/notification/count_unread|/monitoring/services_status)\""}]}]'
-        ad.datadoghq.com/httpd.logs: '[{ "service": "httpd", "source": "httpd", "log_processing_rules": [{ "type": "exclude_at_match", "name": "exclude_php_status_logs", "pattern" : "\"(/monitoring/services_status|/status|/notification/count_unread)\""}]}]'
         checksum/env-config: {{ include (print $.Template.BasePath "/env-configmap.yaml") . | replace  (printf "%s-%s" .Chart.Name .Chart.Version ) "" | sha256sum }} # force reload of pods upon change of the configmap
-        checksum/pim-web-config: {{ include (print $.Template.BasePath "/pim-web-configmap.yaml") . | replace  (printf "%s-%s" .Chart.Name .Chart.Version ) "" | sha256sum }} # force reload of pods upon change of the configmap
+        checksum/pim-api-config: {{ include (print $.Template.BasePath "/pim-api-configmap.yaml") . | replace  (printf "%s-%s" .Chart.Name .Chart.Version ) "" | sha256sum }} # force reload of pods upon change of the configmap
         checksum/secrets: {{ include (print $.Template.BasePath "/pim-secrets.yaml") . | replace  (printf "%s-%s" .Chart.Name .Chart.Version ) "" | sha256sum }} # force reload of pods upon change of the configmap
     spec:
       affinity:
@@ -44,7 +42,7 @@ spec:
               labelSelector:
                 matchLabels:
                   release: "{{ .Release.Name }}"
-                  component: pim-web
+                  component: pim-api
       initContainers:
         - name: init-fpm
           image:  {{ template "pim.imageNameAndTag" . }}
@@ -73,7 +71,7 @@ spec:
           image: {{ template "pim.imageNameAndTag" . }}
           imagePullPolicy: {{ .Values.image.pim.pullPolicy | quote }}
           command: ['/usr/local/sbin/php-fpm', '-F']
-          resources: {{ toYaml .Values.pim.web.fpm.resources | nindent 12 }}
+          resources: {{ toYaml .Values.pim.api.fpm.resources | nindent 12 }}
           ports:
             - name: fpm
               containerPort: 9000
@@ -125,7 +123,7 @@ spec:
         - name: httpd
           image: "{{ .Values.image.httpd.repository }}:{{ .Values.image.httpd.tag }}"
           imagePullPolicy: {{ .Values.image.httpd.pullPolicy | quote }}
-          resources: {{ toYaml .Values.pim.web.httpd.resources | nindent 12 }}
+          resources: {{ toYaml .Values.pim.api.httpd.resources | nindent 12 }}
           ports:
             - containerPort: 80
               name: httpd
@@ -162,7 +160,7 @@ spec:
           emptyDir: {}
         - name: conf-httpd
           configMap:
-            name: pim-web-config
+            name: pim-api-config
             items:
               - key: httpd.conf
                 path: httpd.conf
@@ -170,7 +168,7 @@ spec:
                 path: mime.types
         - name: conf-fpm
           configMap:
-            name: pim-web-config
+            name: pim-api-config
             items:
               - key: fpm.conf
                 path: zzz-akeneo.conf

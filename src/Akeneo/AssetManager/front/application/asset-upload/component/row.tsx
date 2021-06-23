@@ -63,6 +63,7 @@ const StyledFilename = styled.div`
   overflow: hidden;
   text-overflow: ellipsis;
   max-width: 100%;
+  word-break: break-all;
 `;
 const Thumbnail = styled.img`
   height: 48px;
@@ -226,7 +227,7 @@ const Row = React.memo(
         <Cells>
           <Cell width={ColumnWidths.asset}>{null !== line.thumbnail && <Thumbnail src={line.thumbnail} alt="" />}</Cell>
           <Cell width={ColumnWidths.filename}>
-            <StyledFilename>{line.filename}</StyledFilename>
+            <StyledFilename title={line.filename}>{line.filename}</StyledFilename>
           </Cell>
           <Cell className={'edit-asset-code-input'} width={ColumnWidths.code}>
             <Input
