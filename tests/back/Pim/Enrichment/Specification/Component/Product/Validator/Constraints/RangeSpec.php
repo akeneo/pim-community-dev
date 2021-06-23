@@ -38,7 +38,7 @@ class RangeSpec extends ObjectBehavior
 
     function it_has_a_min_message()
     {
-        $this->beConstructedWith(['max' => new \DateTime()]);
+         $this->beConstructedWith(['min' => 1]);
         $this->minMessage->shouldBe('The %attribute% attribute requires an equal or greater than %min_value% value.');
     }
 
