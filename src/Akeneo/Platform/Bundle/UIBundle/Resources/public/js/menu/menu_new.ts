@@ -12,6 +12,7 @@ const template = require('pim/template/menu/menu');
 const mediator = require('oro/mediator');
 
 type SubEntry = {
+  code: string;
   position: number;
   label: string;
   route: string;
@@ -38,6 +39,7 @@ type EntryView = View & {
 class Menu extends BaseForm {
   template = _.template(template);
   activeEntryCode;
+  activeSubEntryCode;
 
   constructor(options?: ViewOptions<any>) {
     super({
@@ -46,10 +48,12 @@ class Menu extends BaseForm {
     });
 
     this.activeEntryCode = '';
+    this.activeSubEntryCode = '';
   }
 
   configure() {
-    mediator.on('pim_menu:highlight:tab', this.highlight, this);
+    mediator.on('pim_menu:highlight:tab', this.highlightTab, this);
+    mediator.on('pim_menu:highlight:item', this.highlightItem, this);
 
     return super.configure();
   }
@@ -104,6 +108,8 @@ class Menu extends BaseForm {
         code: extension.code,
         label: title,
         active: extension.code === this.activeEntryCode,
+        // @fixme: Find a better way to determine what is the active sub-navigation entry
+        activeSubEntryCode: this.activeSubEntryCode,
         disabled: false,
         route: this.findEntryRoute(extension),
         icon: React.createElement(CardIcon),
@@ -137,8 +143,14 @@ class Menu extends BaseForm {
     return 'pim_settings_index';
   }
 
-  highlight(event: any) {
+  highlightTab(event: any) {
     this.activeEntryCode = event.extension;
+
+    this.render();
+  }
+
+  highlightItem(event: any) {
+    this.activeSubEntryCode = event.extension || '';
 
     this.render();
   }

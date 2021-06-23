@@ -61,6 +61,7 @@ class Item extends BaseForm {
   configure() {
     this.getRoot().on('pim_menu:item:update_route_params', this.updateRouteParams, this);
     this.trigger('pim_menu:column:register_navigation_item', {
+      code: this.code,
       route: this.getRoute(),
       label: this.getLabel(),
       position: this.position,

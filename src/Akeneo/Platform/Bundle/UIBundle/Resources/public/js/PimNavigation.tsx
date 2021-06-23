@@ -20,6 +20,20 @@ const MainNavContainer = styled.div`
 `;
 const SubNavContainer = styled.div``;
 
+const SubNavEntry = styled.a`
+    display: block;
+    font-size: 15px;
+    margin: 0 0 20px 0;
+    color: #11324D;
+    cursor: pointer;
+    opacity: 0.85;
+    transition: opacity 0.2s ease-in;
+`;
+
+const ActiveSubNavEntry = styled(SubNavEntry)`
+  color: #9452BA;
+`;
+
 const LogoContainer = styled.div`
   height: 80px;
   min-height: 80px;
@@ -34,6 +48,7 @@ const HelpContainer = styled.div`
 `;
 
 type SubNavigationEntry = {
+  code: string;
   position: number;
   route: string;
   target: string;
@@ -45,6 +60,8 @@ type NavigationEntry = {
   code: string;
   label: string;
   active: boolean;
+  // @fixme  Find a better way to determine what is the active sub-navigation entry
+  activeSubEntryCode: string;
   disabled?: boolean;
   route: string;
   icon: React.ReactElement<IconProps>;
@@ -70,9 +87,21 @@ const PimNavigation: FC<Props> = ({entries}) => {
     router.redirect(router.generate(entry.route));
   };
 
-  // @todo initial state: set the initial state with the active entry or the first of the list
+  // @fixme: same than handleFollowEntry
+  const handleFollowSubEntry = (subEntry: SubNavigationEntry) => {
+    // @fixme
+    if (!subEntry.route) {
+      console.error('sub-Entry has no route', subEntry);
+      return;
+    }
+    router.redirect(router.generate(subEntry.route));
+  };
+
   const [activeEntry, setActiveEntry] = useState<NavigationEntry | null>(null);
   const isActiveEntry = (code: string) => code === (activeEntry ? activeEntry.code : null);
+
+  const [activeSubEntry, setActiveSubEntry] = useState<SubNavigationEntry | null>(null);
+  const isActiveSubEntry = (code: string) => code === (activeSubEntry ? activeSubEntry.code : null);
 
   // @todo read default value by main navigation entry from Session storage
   // @example: collapsedColumn_pim-menu-settings: 1
@@ -90,8 +119,14 @@ const PimNavigation: FC<Props> = ({entries}) => {
   const subNavigationItems = getEntrySubNavigation();
 
   useEffect(() => {
-    const activeEntry = entries.find((entry: NavigationEntry) => entry.active);
-    setActiveEntry(activeEntry || null);
+    const newActiveEntry = entries.find((entry: NavigationEntry) => entry.active);
+    setActiveEntry(newActiveEntry || null);
+
+    const newActiveSubEntry = newActiveEntry ? newActiveEntry.items.find(
+      (subEntry: SubNavigationEntry) => subEntry.code === newActiveEntry.activeSubEntryCode
+    ) : null;
+    setActiveSubEntry(newActiveSubEntry || null);
+
   }, [entries]);
 
   return (
@@ -120,12 +155,27 @@ const PimNavigation: FC<Props> = ({entries}) => {
       {activeEntry && !activeEntry.isLandingSectionPage && subNavigationItems.length > 0 && (
         <SubNavContainer>
           <SubNavigationPanel isOpen={isSubNavigationOpened}>
-            {activeEntry ? activeEntry.code : 'No entry'}
-            {subNavigationItems.map(item => (
-              <div key={`${item.target}-${item.label}`}>
-                {item.label} {JSON.stringify(item.section)}
-              </div>
-            ))}
+            {subNavigationItems.map(subEntry => {
+              // @fixme: Find a better way to display active sub-navigation entry
+              if (isActiveSubEntry(subEntry.code)) {
+                return (
+                  <ActiveSubNavEntry
+                    key={`${subEntry.target}-${subEntry.label}`}
+                    onClick={() => handleFollowSubEntry(subEntry)}
+                  >
+                    {subEntry.label}
+                  </ActiveSubNavEntry>
+                );
+              }
+              return (
+                <SubNavEntry
+                  key={`${subEntry.target}-${subEntry.label}`}
+                  onClick={() => handleFollowSubEntry(subEntry)}
+                >
+                  {subEntry.label}
+                </SubNavEntry>
+              );
+            })}
           </SubNavigationPanel>
         </SubNavContainer>
       )}

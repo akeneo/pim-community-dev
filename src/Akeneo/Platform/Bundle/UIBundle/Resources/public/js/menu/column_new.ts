@@ -110,6 +110,7 @@ class Column extends BaseColumn {
    * @param {number}   navigationItem.position
    */
   registerNavigationItem(navigationItem: {
+    code: string;
     label: string;
     section: string;
     route: string;
@@ -119,6 +120,7 @@ class Column extends BaseColumn {
     super.registerNavigationItem(navigationItem);
 
     this.getRoot().trigger('pim_menu:register_item', {
+      code: navigationItem.code,
       target: this.getTab(),
       label: navigationItem.label,
       section: navigationItem.section,
