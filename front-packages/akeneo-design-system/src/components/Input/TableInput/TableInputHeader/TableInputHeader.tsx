@@ -8,7 +8,7 @@ const TableInputHeadTr = styled.tr`
   & > td {
     border: 1px solid ${getColor('grey', 60)};
     border-left-width: 0;
-    
+
     &:first-child {
       border-left-width: 1px;
       position: sticky;
