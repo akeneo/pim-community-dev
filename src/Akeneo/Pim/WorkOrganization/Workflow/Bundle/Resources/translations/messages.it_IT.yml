@@ -12,22 +12,6 @@ pimee_workflow:
     status:
       label: Stato
       working_copy: Copia di lavoro
-      in_progress: In corso
-      ready: In attesa di approvazione
-      can_be_partially_reviewed: Può essere parzialmente rivisto
-      can_not_be_approved: Non può essere revisionato
-      can_not_be_deleted: Non può essere eliminato
-    status_message:
-      can_be_partially_reviewed: È possibile revisionare questa proposta solo parzialmente perché alcune modifiche sono state fatte su valori che non ti è possibile modificare. Si prega di contattare l'amministratore per modificare i tuoi diritti.
-      can_not_be_approved: Non è possibile revisionare questa proposta perché alcune modifiche sono state fatte su valori che non ti è possibile modificare. Si prega di contattare l'amministratore per modificare i tuoi diritti.
-      can_not_be_deleted: Non è possibile eliminare questa proposta perché ciò impatterebbe su valori che non ti è possibile modificare. Si prega di contattare l'amministratore per modificare i tuoi diritti.
-      in_progress: Questa proposta è attualmente in corso e non è stata ancora inviata.
-    action:
-      approve: Approva tutto
-      refuse: Respingi tutto
-      remove: Rimuovere
-      partial_approve: Approva le modifiche sull'attributo %attribute% del prodotto %product%
-      partial_reject: Respingi le modifiche sull'attributo %attribute% del prodotto %product%
     notification:
       partial_approve: '%owner% ha accettato il valore o i valori per %attributes% del prodotto %product%'
       partial_approve_number: '%owner% ha accettato i valori per %attributes_count% attributi del prodotto %product%'
@@ -52,9 +36,6 @@ pimee_workflow:
     individual_import: '%author.firstname% %author.lastname% ha inviato proposte per la revisione da un job di importazione'
     generic_import: Hai proposte da revisionare da un job di importazione
     original_value: Originale
-    new_value: Nuovo
-    no_diff: Il valore "%value%" è lo stesso per la proposta e per la copia di lavoro.
-    draft_in_progress: Una bozza è in corso da parte di %author% per questo prodotto.
   published_product:
     index: Prodotti Pubblicati
     title: Prodotto pubblicato

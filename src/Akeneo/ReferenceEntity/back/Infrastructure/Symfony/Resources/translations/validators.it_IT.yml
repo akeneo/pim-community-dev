@@ -34,11 +34,9 @@ pim_reference_entity:
         should_exist: 'I registri "%record_codes%" non sono stati trovati.'
       limit_reached: 'Non puoi creare il registro "%record_label%" perché hai raggiunto il limite di registri %limit% per quest''entità di riferimento'
       channel:
-        is_expected: 'Si attende un canale per l''attributo "%attribute_code%" perché ha un valore per canale.'
         is_not_expected: 'Un canale non è atteso per l''attributo "%attribute_code%" perché non ha un valore per canale.'
         should_exist: 'Il canale "%channel_identifier%" non esiste.'
       locale:
-        is_expected: 'Si attende un locale per l''attributo "%attribute_code%" perché ha un valore per locale.'
         is_not_expected: 'Non si attende un locale per l''attributo "%attribute_code%" perché non ha un valore per locale.'
         is_not_activated: 'Il locale "%locale_identifier%" non è attivato.'
         is_not_activated_for_channel: 'Il locale "%locale_identifier%" non è attivato per il canale "%channel_identifier%".'

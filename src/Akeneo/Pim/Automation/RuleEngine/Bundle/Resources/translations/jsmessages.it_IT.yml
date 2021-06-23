@@ -45,6 +45,13 @@ pimee_catalog_rule:
           success: Hai eliminato correttamente le regole.
           error: Si è verificato un errore durante l'eliminazione delle regole.
           empty_selection: Nessuna regola selezionata.
+      tags:
+        set: Imposta
+        add: Aggiungi
+        calculate: Calcola
+        clear: Cancella
+        concatenate: Concatena
+        copy: Copia
   form:
     category:
       catalog: Catalogo
@@ -107,6 +114,8 @@ pimee_catalog_rule:
             products: Prodotti
             product_models: Modelli di prodotto
             groups: Gruppi
+        clear_attribute:
+          attribute_label: Attributo
         calculate:
           operator:
             add: Aggiungi
@@ -147,6 +156,7 @@ pimee_catalog_rule:
       notification:
         success: Regola aggiornata correttamente
     delete:
+      description: Sei sicuro di voler eliminare questa regola? Non è possibile annullare questa azione.
       notification:
         failed: Cancellazione della regola non riuscita
         success: Regola eliminata con successo
@@ -182,6 +192,9 @@ pim_enrich:
       module:
         delete:
           confirm: Sei sicuro di voler eliminare questa regola? Non è possibile annullare questa azione
+      flash:
+        delete:
+          success: Regola eliminata con successo
 flash:
   rule:
     executed: L'esecuzione delle regole è stata lanciata. Sarai avvisato quando finisce.
@@ -209,6 +222,9 @@ pim_notification:
     mass_edit_rule: Regola di modifica di massa
     execute_rules: Esecuzione regole
 pim_menu:
+  navigation:
+    settings:
+      automation: Automazione
   item:
     rule: Regole
 pim_title:
