@@ -1,8 +1,8 @@
 config:
     paths:
-        pim/table-attribute/attribute/tab: akeneopimtableattribute/attribute/table-options-tab
-        pim/table-attribute/attribute/create-button: akeneopimtableattribute/attribute/create-button
-        pim/table-attribute/product/table-field: akeneopimtableattribute/product/table-field
+        pim/table-attribute/attribute/tab: akeneopimtableattribute/legacy/table-options-tab
+        pim/table-attribute/attribute/create-button: akeneopimtableattribute/legacy/create-button
+        pim/table-attribute/product/table-field: akeneopimtableattribute/legacy/table-field
 
     config:
         pim/form/common/attributes/create-button:

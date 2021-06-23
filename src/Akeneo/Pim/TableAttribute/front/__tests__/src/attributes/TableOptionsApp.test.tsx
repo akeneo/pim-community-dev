@@ -2,19 +2,9 @@ import React from 'react';
 import {renderWithProviders} from '@akeneo-pim-community/legacy-bridge/tests/front/unit/utils';
 import {screen, act, fireEvent} from '@testing-library/react';
 import {TableOptionsApp} from '../../../src/attribute/TableOptionsApp';
-import {TableConfiguration} from '../../../src/models/TableConfiguration';
+import { getComplexTableConfiguration, getSimpleTableConfiguration } from "../factories/TableConfiguration";
 jest.mock('../../../src/fetchers/LocaleFetcher');
-
-const tableConfiguration: TableConfiguration = [
-  {data_type: 'text', code: 'ingredients', labels: {en_US: 'Ingredients'}, validations: {}},
-];
-
-const complexTableConfiguration: TableConfiguration = [
-  {data_type: 'select', code: 'ingredients', labels: {en_US: 'Ingredients'}, validations: {}},
-  {data_type: 'number', code: 'quantity', labels: {en_US: 'Quantity'}, validations: {}},
-  {data_type: 'boolean', code: 'is_allergenic', labels: {en_US: 'Is allergenic'}, validations: {}},
-  {data_type: 'text', code: 'part', labels: {en_US: 'For 1 part'}, validations: {}},
-];
+jest.mock('../../../src/attribute/AddColumnModal');
 
 const waitPageToBeLoaded = async () => {
   expect(await screen.findByText('English (United States)')).toBeInTheDocument();
@@ -24,9 +14,9 @@ describe('TableOptionsApp', () => {
   it('should render the columns', async () => {
     const handleChange = jest.fn();
     renderWithProviders(
-      <TableOptionsApp onChange={handleChange} initialTableConfiguration={tableConfiguration} savedColumnCodes={[]} />
+      <TableOptionsApp onChange={handleChange} initialTableConfiguration={getSimpleTableConfiguration()} savedColumnCodes={[]} />
     );
-    expect(await screen.findByText('English (United States)')).toBeInTheDocument();
+    await waitPageToBeLoaded();
 
     const codeInput = screen.getByLabelText('pim_common.code') as HTMLInputElement;
     const dataTypeInput = screen.getByLabelText('pim_table_attribute.form.attribute.data_type') as HTMLInputElement;
@@ -43,11 +33,11 @@ describe('TableOptionsApp', () => {
     renderWithProviders(
       <TableOptionsApp
         onChange={handleChange}
-        initialTableConfiguration={complexTableConfiguration}
+        initialTableConfiguration={getComplexTableConfiguration()}
         savedColumnCodes={[]}
       />
     );
-    expect(await screen.findByText('English (United States)')).toBeInTheDocument();
+    await waitPageToBeLoaded();
 
     await act(async () => {
       await fireEvent.click(screen.getAllByRole('row')[1]);
@@ -58,6 +48,10 @@ describe('TableOptionsApp', () => {
     expect(codeInput.value).toEqual('quantity');
     expect(codeInput).not.toHaveAttribute('readonly');
     expect(english.value).toEqual('Quantity');
+
+    await act(async () => {
+      await fireEvent.click(screen.getAllByRole('row')[0]);
+    });
   });
 
   it('should update labels', async () => {
@@ -65,11 +59,11 @@ describe('TableOptionsApp', () => {
     renderWithProviders(
       <TableOptionsApp
         onChange={handleChange}
-        initialTableConfiguration={tableConfiguration}
+        initialTableConfiguration={getSimpleTableConfiguration()}
         savedColumnCodes={['ingredients']}
       />
     );
-    expect(await screen.findByText('English (United States)')).toBeInTheDocument();
+    await waitPageToBeLoaded();
 
     const french = screen.getByLabelText('French (France)') as HTMLInputElement;
     await act(async () => {
@@ -86,11 +80,11 @@ describe('TableOptionsApp', () => {
     renderWithProviders(
       <TableOptionsApp
         onChange={handleChange}
-        initialTableConfiguration={complexTableConfiguration}
+        initialTableConfiguration={getComplexTableConfiguration()}
         savedColumnCodes={[]}
       />
     );
-    expect(await screen.findByText('English (United States)')).toBeInTheDocument();
+    await waitPageToBeLoaded();
 
     await act(async () => {
       await fireEvent.mouseDown(screen.getAllByTestId('dragAndDrop')[1]);
@@ -123,11 +117,12 @@ describe('TableOptionsApp', () => {
     renderWithProviders(
       <TableOptionsApp
         onChange={handleChange}
-        initialTableConfiguration={complexTableConfiguration}
+        initialTableConfiguration={getComplexTableConfiguration()}
         savedColumnCodes={[]}
       />
     );
     await waitPageToBeLoaded();
+
     act(() => {
       fireEvent.click(screen.getAllByRole('row')[1]);
     });
@@ -159,11 +154,12 @@ describe('TableOptionsApp', () => {
     renderWithProviders(
       <TableOptionsApp
         onChange={handleChange}
-        initialTableConfiguration={tableConfiguration}
+        initialTableConfiguration={getSimpleTableConfiguration()}
         savedColumnCodes={['ingredients']}
       />
     );
-    expect(await screen.findByText('English (United States)')).toBeInTheDocument();
+    await waitPageToBeLoaded();
+
     const codeInput = screen.getByLabelText('pim_common.code') as HTMLInputElement;
     expect(codeInput).toHaveAttribute('readonly');
   });
@@ -173,11 +169,12 @@ describe('TableOptionsApp', () => {
     renderWithProviders(
       <TableOptionsApp
         onChange={handleChange}
-        initialTableConfiguration={complexTableConfiguration}
+        initialTableConfiguration={getComplexTableConfiguration()}
         savedColumnCodes={[]}
       />
     );
-    expect(await screen.findByText('English (United States)')).toBeInTheDocument();
+    await waitPageToBeLoaded();
+
     act(() => {
       fireEvent.click(screen.getAllByRole('row')[1]);
     });
@@ -192,10 +189,11 @@ describe('TableOptionsApp', () => {
 
     await act(async () => {
       fireEvent.change(minInput, {target: {value: '10'}});
+      fireEvent.change(maxInput, {target: {value: '50'}});
     });
     expect(handleChange).toHaveBeenCalledWith([
       {code: 'ingredients', data_type: 'select', labels: {en_US: 'Ingredients'}, validations: {}},
-      {code: 'quantity', data_type: 'number', labels: {en_US: 'Quantity'}, validations: {min: '10'}},
+      {code: 'quantity', data_type: 'number', labels: {en_US: 'Quantity'}, validations: {min: '10', max: '50'}},
       {code: 'is_allergenic', data_type: 'boolean', labels: {en_US: 'Is allergenic'}, validations: {}},
       {code: 'part', data_type: 'text', labels: {en_US: 'For 1 part'}, validations: {}},
     ]);
@@ -203,13 +201,14 @@ describe('TableOptionsApp', () => {
     await act(async () => {
       fireEvent.click(decimalsAllowedCheckbox);
     });
+
     expect(handleChange).toHaveBeenCalledWith([
       {code: 'ingredients', data_type: 'select', labels: {en_US: 'Ingredients'}, validations: {}},
       {
         code: 'quantity',
         data_type: 'number',
         labels: {en_US: 'Quantity'},
-        validations: {min: '10', decimals_allowed: true},
+        validations: {min: '10', max: '50', decimals_allowed: true},
       },
       {code: 'is_allergenic', data_type: 'boolean', labels: {en_US: 'Is allergenic'}, validations: {}},
       {code: 'part', data_type: 'text', labels: {en_US: 'For 1 part'}, validations: {}},
@@ -220,5 +219,26 @@ describe('TableOptionsApp', () => {
     });
     const maxLengthInput = screen.getByLabelText('pim_table_attribute.validations.max_length') as HTMLInputElement;
     expect(maxLengthInput).toBeInTheDocument();
+  });
+
+  it('should add a column', async () => {
+    const handleChange = jest.fn();
+    renderWithProviders(
+      <TableOptionsApp onChange={handleChange} initialTableConfiguration={[
+        {data_type: 'text', code: 'ingredients', labels: {en_US: 'Ingredients'}, validations: {}},
+      ]} savedColumnCodes={[]} />
+    );
+    await waitPageToBeLoaded();
+
+    act(() => {
+      fireEvent.click(screen.getByText('pim_table_attribute.form.attribute.add_column'));
+    });
+    act(() => {
+      fireEvent.click(screen.getByText('Mock create'));
+    });
+    expect(handleChange).toBeCalledWith([
+      {data_type: 'text', code: 'ingredients', labels: {en_US: 'Ingredients'}, validations: {}},
+      {data_type: 'text', code: 'new_column', labels: {en_US: 'New column'}, validations: {}}
+    ]);
   });
 });

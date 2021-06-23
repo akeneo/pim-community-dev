@@ -32,14 +32,13 @@ const TableInputValue: React.FC<TableInputValueProps> = ({
 }) => {
   const handleChange = (uniqueId: string, columnCode: ColumnCode, cellValue: any) => {
     const rowIndex = valueData.findIndex(row => row['unique id'] === uniqueId);
-    if (rowIndex < 0) {
-      throw new Error(`Undefined unique id ${uniqueId}`);
+    if (rowIndex >= 0) {
+      const row = valueData[rowIndex];
+      row[columnCode] = cellValue;
+      valueData[rowIndex] = row;
+      const newTableValue = [...valueData];
+      onChange(newTableValue);
     }
-    const row = valueData[rowIndex];
-    row[columnCode] = cellValue;
-    valueData[rowIndex] = row;
-    const newTableValue = [...valueData];
-    onChange(newTableValue);
   };
 
   const translate = useTranslate();
@@ -91,6 +90,7 @@ const TableInputValue: React.FC<TableInputValueProps> = ({
                           value={`${row[columnCode] as number}`}
                           onChange={(value: string) => handleChange(row['unique id'], columnCode, value)}
                           highlighted={cellMatchSearch(`${row[columnCode]}`)}
+                          data-testid={`input-${row['unique id']}-${columnCode}`}
                         />
                       )}
                       {('text' === columnType || 'select' === columnType) && (
@@ -98,17 +98,19 @@ const TableInputValue: React.FC<TableInputValueProps> = ({
                           value={row[columnCode] as string}
                           onChange={(value: string) => handleChange(row['unique id'], columnCode, value)}
                           highlighted={cellMatchSearch(`${row[columnCode]}`)}
+                          data-testid={`input-${row['unique id']}-${columnCode}`}
                         />
                       )}
                       {'boolean' === columnType && (
                         <BooleanInput
                           clearable={true}
                           clearLabel='Clear value'
-                          noLabel='No'
-                          yesLabel='Yes'
+                          noLabel={translate('pim_common.no')}
+                          yesLabel={translate('pim_common.yes')}
                           onChange={value => handleChange(row['unique id'], columnCode, value)}
                           value={(row[columnCode] as boolean) ?? null}
                           readOnly={false}
+                          data-testid={`input-${row['unique id']}-${columnCode}`}
                         />
                       )}
                     </TableInput.Cell>

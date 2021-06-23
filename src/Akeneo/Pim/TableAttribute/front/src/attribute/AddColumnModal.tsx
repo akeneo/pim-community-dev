@@ -107,10 +107,6 @@ const AddColumnModal: React.FC<AddColumnModalProps> = ({close, onCreate, existin
   };
 
   const handleCreate = () => {
-    if (!isValid(false)) {
-      return;
-    }
-
     const labels: LabelCollection = {};
     labels[catalogLocale] = columnDefinition.label;
     close();
@@ -187,3 +183,4 @@ const AddColumnModal: React.FC<AddColumnModalProps> = ({close, onCreate, existin
 };
 
 export {AddColumnModal};
+

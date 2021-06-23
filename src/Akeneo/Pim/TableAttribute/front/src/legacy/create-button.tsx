@@ -3,7 +3,7 @@ import ReactDOM from 'react-dom';
 import {DependenciesProvider} from '@akeneo-pim-community/legacy-bridge';
 import {pimTheme} from 'akeneo-design-system';
 import {ThemeProvider} from 'styled-components';
-import {SelectTemplateApp} from './SelectTemplateApp';
+import {SelectTemplateApp} from '../attribute/SelectTemplateApp';
 import {Template, TEMPLATES} from '../models/Template';
 import {AttributeType} from '../models/Attribute';
 // eslint-disable-next-line @typescript-eslint/no-var-requires

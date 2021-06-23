@@ -13,7 +13,13 @@ module.exports = {
   collectCoverageFrom: [
     'src/**/*.{js,jsx,ts,tsx}',
     '!src/fetchers/**/*.{js,jsx,ts,tsx}',
-    '!src/attribute/table-options-tab.tsx',
-    '!src/attribute/create-button.tsx',
+    '!src/legacy/*.{js,jsx,ts,tsx}',
   ],
+  coverageThreshold: {
+    global: {
+      statements: 100,
+      functions: 100,
+      lines: 100,
+    },
+  },
 };

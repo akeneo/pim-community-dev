@@ -5,7 +5,7 @@ import {DependenciesProvider} from '@akeneo-pim-community/legacy-bridge';
 import {ThemeProvider} from 'styled-components';
 import {pimTheme} from 'akeneo-design-system';
 import {TableValue} from '../models/TableValue';
-import {TableFieldApp} from './TableFieldApp';
+import {TableFieldApp} from '../product/TableFieldApp';
 import {ChannelCode, LocaleCode} from '@akeneo-pim-community/shared';
 // eslint-disable-next-line @typescript-eslint/no-var-requires
 const Field = require('pim/field');
@@ -59,7 +59,6 @@ class TableField extends (Field as {new (config: any): any}) {
 
     Promise.all(promises).then(() => {
       this.getTemplateContext().then((templateContext: TemplateContext) => {
-        const valueData = templateContext.value.data || [];
         const handleChange = (value: TableValue) => {
           this.setCurrentValue(value);
         };
@@ -69,7 +68,6 @@ class TableField extends (Field as {new (config: any): any}) {
             <ThemeProvider theme={pimTheme}>
               <TableFieldApp
                 {...templateContext}
-                valueData={valueData}
                 onChange={handleChange}
                 elements={this.elements}
               />

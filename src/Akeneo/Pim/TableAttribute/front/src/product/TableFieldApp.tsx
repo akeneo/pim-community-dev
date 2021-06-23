@@ -4,14 +4,13 @@ import styled, {ThemeProvider} from 'styled-components';
 import {Button, Locale, pimTheme, uuid, Search} from 'akeneo-design-system';
 import {TableInputValue} from './TableInputValue';
 import {TableRow, TableValue} from '../models/TableValue';
-import {TemplateContext} from './table-field';
+import {TemplateContext} from '../legacy/table-field';
 
 const TableInputContainer = styled.div`
   flex-basis: 100% !important;
 `;
 
 type TableFieldAppProps = TemplateContext & {
-  valueData: TableValue;
   onChange: (tableValue: TableValue) => void;
   elements: {[position: string]: {[elementKey: string]: any}};
 };
@@ -28,12 +27,12 @@ const TableFieldApp: React.FC<TableFieldAppProps> = ({
   scope,
   context,
   attribute,
-  valueData,
+  value,
   onChange,
   elements,
 }) => {
   const [tableValue, setTableValue] = React.useState<TableValueWithId>(
-    valueData.map(row => {
+    (value.data || []).map(row => {
       return Object.keys(row).reduce(
         (previousRow, columnCode) => {
           previousRow[columnCode] = row[columnCode];
