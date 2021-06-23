@@ -63,7 +63,7 @@ class FileSelector implements AttributeSelectorInterface
 
                 return sprintf('%s%s', $exportDirectory, $data->getOriginalFilename());
             default:
-                throw new \LogicException(sprintf('Selection type "%s" is not supported', $selectionConfiguration['type']));
+                throw new LogicException(sprintf('Selection type "%s" is not supported', $selectionConfiguration['type']));
         }
     }
 
