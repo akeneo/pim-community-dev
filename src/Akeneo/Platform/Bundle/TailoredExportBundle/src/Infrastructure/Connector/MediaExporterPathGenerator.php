@@ -6,7 +6,7 @@ namespace Akeneo\Platform\TailoredExport\Infrastructure\Connector;
 
 class MediaExporterPathGenerator
 {
-    public static function generate(string $identifier, string $attributeCode, ?string $scope,  ?string $locale): string
+    public static function generate(string $identifier, string $attributeCode, ?string $scope, ?string $locale): string
     {
         $identifier = str_replace(DIRECTORY_SEPARATOR, '_', $identifier);
         $target = sprintf('files/%s/%s', $identifier, $attributeCode);

@@ -35,7 +35,7 @@ class MultiSelectSelector implements AttributeSelectorInterface
         $this->getExistingAttributeOptionsWithValues = $getExistingAttributeOptionsWithValues;
     }
 
-    public function applySelection(array $selectionConfiguration,$entity, Attribute $attribute, ValueInterface $value): string
+    public function applySelection(array $selectionConfiguration, $entity, Attribute $attribute, ValueInterface $value): string
     {
         $optionsCodes = $value->getData();
         switch ($selectionConfiguration['type']) {

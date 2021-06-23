@@ -70,6 +70,7 @@ const AttributeSelector = ({attribute, selection, validationErrors, onSelectionC
         />
       );
     case 'pim_catalog_file':
+    case 'pim_catalog_image':
       return (
         <FileSelector
           selection={selection as FileSelection}

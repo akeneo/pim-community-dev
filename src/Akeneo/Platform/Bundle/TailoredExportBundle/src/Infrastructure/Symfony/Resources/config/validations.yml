@@ -27,7 +27,7 @@ services:
       -
         pim_catalog_date: '@akeneo.tailored_export.validation.source.date_selection.constraint'
         pim_catalog_file: '@akeneo.tailored_export.validation.source.file_selection.constraint'
-#       pim_catalog_image:
+        pim_catalog_image: '@akeneo.tailored_export.validation.source.file_selection.constraint'
 #       pim_catalog_number:
         pim_catalog_metric: '@akeneo.tailored_export.validation.source.measurement_selection.constraint'
         pim_catalog_multiselect: '@akeneo.tailored_export.validation.source.code_label_collection_selection.constraint'

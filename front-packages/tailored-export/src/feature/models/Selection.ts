@@ -106,6 +106,7 @@ const getDefaultSelectionByAttribute = (attribute: Attribute): Selection => {
     case 'pim_catalog_date':
       return {format: 'yyyy-mm-dd'};
     case 'pim_catalog_file':
+    case 'pim_catalog_image':
       return {type: 'path'};
     default:
       return {type: 'code'};

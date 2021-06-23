@@ -38,6 +38,9 @@ test('it returns default selection by attribute type', () => {
   expect(getDefaultSelectionByAttribute(getAttribute('pim_catalog_file'))).toEqual({
     type: 'path',
   });
+  expect(getDefaultSelectionByAttribute(getAttribute('pim_catalog_image'))).toEqual({
+    type: 'path',
+  });
 });
 
 test('it returns default selection by property name', () => {

@@ -19,6 +19,7 @@ use Akeneo\Pim\Enrichment\Component\Product\Model\ValueInterface;
 use Akeneo\Pim\Structure\Component\Query\PublicApi\AttributeType\Attribute;
 use Akeneo\Platform\TailoredExport\Domain\SelectionTypes;
 use Akeneo\Platform\TailoredExport\Infrastructure\Connector\MediaExporterPathGenerator;
+use Akeneo\Tool\Component\FileStorage\Model\FileInfoInterface;
 
 class FileSelector implements AttributeSelectorInterface
 {
@@ -38,9 +39,12 @@ class FileSelector implements AttributeSelectorInterface
         }
 
         $data = $value->getData();
-
         if (null === $data) {
             return '';
+        }
+
+        if (!$data instanceof FileInfoInterface) {
+            throw new \LogicException('Cannot apply File selection on this data');
         }
 
         switch ($selectionConfiguration['type']) {

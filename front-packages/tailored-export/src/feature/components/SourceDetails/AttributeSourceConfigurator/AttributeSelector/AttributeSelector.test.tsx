@@ -140,14 +140,14 @@ test('it renders a date selector for date attribute', () => {
   expect(screen.getByText('This is a date selector')).toBeInTheDocument();
 });
 
-test('it renders a file selector for file attribute', () => {
+test.each(['pim_catalog_file', 'pim_catalog_image'])('it renders a file selector for "%s" attribute', type => {
   const onSelectionChange = jest.fn();
 
   renderWithProviders(
     <AttributeSelector
       validationErrors={[]}
       selection={{type: 'path'}}
-      attribute={getAttribute('pim_catalog_file')}
+      attribute={getAttribute(type)}
       onSelectionChange={onSelectionChange}
     />
   );

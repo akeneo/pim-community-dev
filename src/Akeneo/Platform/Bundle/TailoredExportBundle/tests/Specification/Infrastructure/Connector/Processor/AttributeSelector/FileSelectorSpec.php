@@ -23,25 +23,31 @@ class FileSelectorSpec extends ObjectBehavior
 {
     public function let()
     {
-        $this->beConstructedWith(['pim_catalog_file']);
+        $this->beConstructedWith(['pim_catalog_file', 'pim_catalog_image']);
     }
 
     public function it_returns_attribute_type_supported()
     {
-        $fileAttribute = $this->createFileAttribute();
+        $fileAttribute = $this->createAttribute('pim_catalog_file');
+        $imageAttribute = $this->createAttribute('pim_catalog_image');
 
         $this->supports(['type' => 'key'], $fileAttribute)->shouldReturn(true);
         $this->supports(['type' => 'path'], $fileAttribute)->shouldReturn(true);
         $this->supports(['type' => 'name'], $fileAttribute)->shouldReturn(true);
+        $this->supports(['type' => 'key'], $imageAttribute)->shouldReturn(true);
+        $this->supports(['type' => 'path'], $imageAttribute)->shouldReturn(true);
+        $this->supports(['type' => 'name'], $imageAttribute)->shouldReturn(true);
         $this->supports(['type' => 'code'], $fileAttribute)->shouldReturn(false);
         $this->supports(['type' => 'label'], $fileAttribute)->shouldReturn(false);
+        $this->supports(['type' => 'code'], $imageAttribute)->shouldReturn(false);
+        $this->supports(['type' => 'label'], $imageAttribute)->shouldReturn(false);
     }
 
     public function it_returns_empty_string_when_data_is_null(
         ValueInterface $value,
         ProductInterface $entity
     ) {
-        $fileAttribute = $this->createFileAttribute();
+        $fileAttribute = $this->createAttribute('pim_catalog_file');
         $value->getData()->willReturn(null);
 
         $this->applySelection(['type' => 'key'], $entity, $fileAttribute, $value)
@@ -53,7 +59,7 @@ class FileSelectorSpec extends ObjectBehavior
         FileInfo $file,
         ProductInterface $entity
     ) {
-        $fileAttribute = $this->createFileAttribute();
+        $fileAttribute = $this->createAttribute('pim_catalog_file');
         $value->getData()->willReturn($file);
         $file->getKey()->willReturn('f/e/w/t/file.jpg');
 
@@ -66,7 +72,7 @@ class FileSelectorSpec extends ObjectBehavior
         FileInfo $file,
         ProductInterface $entity
     ) {
-        $fileAttribute = $this->createFileAttribute();
+        $fileAttribute = $this->createAttribute('pim_catalog_file');
         $value->getData()->willReturn($file);
         $file->getOriginalFilename()->willReturn('file.jpg');
 
@@ -79,7 +85,7 @@ class FileSelectorSpec extends ObjectBehavior
         FileInfo $file,
         ProductInterface $entity
     ) {
-        $fileAttribute = $this->createFileAttribute();
+        $fileAttribute = $this->createAttribute('pim_catalog_file');
         $value->getData()->willReturn($file);
         $value->getScopeCode()->willReturn('mobile');
         $value->getLocaleCode()->willReturn('fr_FR');
@@ -87,21 +93,21 @@ class FileSelectorSpec extends ObjectBehavior
         $file->getOriginalFilename()->willReturn('file.jpg');
 
         $this->applySelection(['type' => 'path'], $entity, $fileAttribute, $value)
-            ->shouldReturn('files/product_identifier/file_attribute/fr_FR/mobile/file.jpg');
+            ->shouldReturn('files/product_identifier/nice_attribute/fr_FR/mobile/file.jpg');
     }
 
-    private function createFileAttribute(): Attribute
+    private function createAttribute(string $attributeType): Attribute
     {
         return new Attribute(
-            'file_attribute',
-            'pim_catalog_file',
+            'nice_attribute',
+            $attributeType,
             [],
             false,
             false,
             null,
             null,
             null,
-            'file',
+            $attributeType,
             []
         );
     }

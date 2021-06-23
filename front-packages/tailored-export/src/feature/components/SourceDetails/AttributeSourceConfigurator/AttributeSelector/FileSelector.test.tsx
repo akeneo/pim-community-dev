@@ -25,7 +25,6 @@ const fetchers = {
 const renderWithProviders = async (node: ReactNode) =>
   await act(async () => void baseRender(<FetcherContext.Provider value={fetchers}>{node})</FetcherContext.Provider>));
 
-
 test('it can select a key selection type', async () => {
   const onSelectionChange = jest.fn();
 
