@@ -48,7 +48,7 @@ Background:
     When a product is created with values:
       | attribute   | data       | scope     | locale  |
       | description | My product | ecommerce | fr_FR   |
-    Then the error 'The description attribute requires a valid locale. The fr_FR locale is not bound to the ecommerce channel or does not exist.' is raised
+    Then the error 'The description attribute requires a valid locale. The fr_FR locale is not bound to the ecommerce channel.' is raised
 
   @acceptance-back
   Scenario: Providing a locale part of a locale specific attribute's available locales should not raise an error
