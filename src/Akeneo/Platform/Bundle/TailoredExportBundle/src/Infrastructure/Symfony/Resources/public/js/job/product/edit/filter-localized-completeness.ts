@@ -86,13 +86,21 @@ class FilterLocalizedCompleteness extends BaseCompletenessFilter {
                 attribute: {
                   fetchByIdentifiers: (identifiers: string[]): Promise<Attribute[]> => {
                     return new Promise(resolve =>
-                      fetcherRegistry.getFetcher('attribute').fetchByIdentifiers(identifiers).then(resolve)
+                      fetcherRegistry
+                        .getFetcher('attribute')
+                        .fetchByIdentifiers(identifiers)
+                        .then(resolve)
                     );
                   },
                 },
                 channel: {
                   fetchAll: (): Promise<Channel[]> => {
-                    return new Promise(resolve => fetcherRegistry.getFetcher('channel').fetchAll().then(resolve));
+                    return new Promise(resolve =>
+                      fetcherRegistry
+                        .getFetcher('channel')
+                        .fetchAll()
+                        .then(resolve)
+                    );
                   },
                 },
               },
