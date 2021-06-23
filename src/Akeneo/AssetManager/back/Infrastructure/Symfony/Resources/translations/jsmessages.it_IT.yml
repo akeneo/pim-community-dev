@@ -39,7 +39,6 @@ pim_asset_manager:
     filter:
       title: Filtri attività
     basket:
-      title: '{{ assetCount }} attività selezionata|{{ assetCount }} attività selezionate'
       empty_title: Il tuo cestino della spesa è vuoto
       remove_one_asset: Rimuovi l'attività {{ assetName }} dalla selezione attività
       remove_all_assets: Rimuovi tutto
@@ -51,7 +50,6 @@ pim_asset_manager:
     download: Scarica
     copy_url: Copia URl
     error: Si è verificato un errore durante la generazione dell'anteprima
-  close: Chiudi il modale
   breadcrumb:
     products: Prodotti
   app:
@@ -105,22 +103,13 @@ pim_asset_manager:
       permission: Permessi
       transformations: Trasformazioni
     transformations:
-      help:
-        title: 'Benvenuto alla tua nuova area di gestione degli asset!'
-        description: 'È possibile definire qui fino a 10 trasformazioni per famiglia di asset.'
-        link: 'Se vuoi andare più a fondo nelle nuove trasformazioni del Gestore Asset, clicca qui'
       subsection: 'Proprietà della trasformazione'
     product_link_rules:
-      help:
-        title: 'Benvenuto alla tua nuova area di gestione degli asset!'
-        description: 'È possibile definire qui fino a 2 regole di collegamento dei prodotti per famiglia di asset.'
-        link: 'Se vuoi andare più a fondo della funzionalità di regole di collegamento prodotto, clicca qui'
       execute_rules:
         confirm_title: Conferma esecuzione
         confirm_content: Sei sicuro di voler eseguire tutte le regole? (potrebbe richiedere molto tempo)
-        cancel: Annulla
       execute_naming_convention:
-        cancel: Annulla
+        confirm_title: Conferma esecuzione
     properties:
       title: Proprietà famiglia asset
       identifier: Codice
@@ -155,10 +144,8 @@ pim_asset_manager:
       input:
         label: Etichetta
         code: Codice (richiesto)
-      confirm: Salva
     delete:
       message: Sei sicuro di voler eliminare la famiglia di asset "{{ assetFamilyLabel }}"?
-      title: Attributo
     notification:
       save:
         success: Famiglia di asset aggiornata correttamente.
@@ -212,7 +199,6 @@ pim_asset_manager:
       create: Crea un asset
       mass_upload: Caricamento di massa
       delete: Elimina
-      delete_all: Elimina tutti gli asset
       back: Torna all'elenco
       launch_transformations: Avvia trasformazioni
       fullscreen: Schermo intero
@@ -246,7 +232,6 @@ pim_asset_manager:
         label: Etichetta
         code: Codice (richiesto)
         create_another: Crea un altro asset
-      confirm: Salva
     upload:
       line_count: '[0,1]{{ count }} file|]1,Inf] {{ count }} file'
       title: Carica asset
@@ -274,8 +259,12 @@ pim_asset_manager:
         created: creato
     delete:
       title: Asset
-    delete_all:
-      confirm: Sei sicuro di voler eliminare tutti gli asset "{{ entityIdentifier }}"? Se sono collegati a prodotti, i collegamenti ai prodotti saranno eliminati.
+    mass_delete:
+      title: Attività
+    mass_edit:
+      action:
+        append: Aggiungi
+        replace: Sostituisci
     grid:
       search: Cerca su attributi di testo, di codice ed etichetta
       filter:
@@ -317,9 +306,6 @@ pim_asset_manager:
       delete:
         success: L'asset "{{ code }}" è stato eliminato correttamente.
         fail: Si è verificato un errore durante l'eliminazione dell'asset
-      delete_all:
-        success: Tutti gli asset "{{ entityIdentifier }}" sono stati eliminati correttamente.
-        fail: Si è verificato un errore durante l'eliminazione degli asset di questa famiglia di asset
     completeness:
       label: Completo
   attribute:
@@ -361,7 +347,6 @@ pim_asset_manager:
         value_per_channel: Valore per canale
       placeholder:
         asset_type: Seleziona la tua famiglia di asset collegata
-      confirm: Salva
     edit:
       delete: Elimina l'attributo
       title: Modifica attributo {{ code }}
@@ -428,12 +413,6 @@ pim_asset_manager:
     media_file:
       placeholder: Trascina e rilascia per caricare o fai click qui
       uploading: Caricamento...
-  modal:
-    delete:
-      subtitle: Conferma eliminazione
-      button:
-        cancel: Annulla
-        confirm: Elimina
 pim_enrich:
   confirmation:
     discard_changes: 'Perderai tutte le modifiche all''entità "{{ entity }}" se abbandoni la pagina.'
@@ -465,6 +444,9 @@ pim_import_export:
       job_type:
         asset_manager_compute_transformations: "Calcola trasformazioni asset"
         asset_manager_link_assets_to_products: "Collega asset ai prodotti"
+batch_jobs:
+  default_steps:
+    link_assets_to_products: Collega asset ai prodotti
 job_execution:
   summary:
     assets: Attività

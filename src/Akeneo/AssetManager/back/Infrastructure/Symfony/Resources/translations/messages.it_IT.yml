@@ -11,8 +11,6 @@ akeneo_assetmanager:
     asset:
       create: Crea un asset
       edit: Modifica gli asset
-      delete: Elimina un asset
-      delete_all: Elimina tutti gli asset
       list_product: Elenca i prodotti collegati all'asset
     attribute:
       create: Aggiungi un attributo ad una famiglia di asset

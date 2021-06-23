@@ -29,6 +29,8 @@ pimee_catalog_rule:
       entity_type: Tipo di entità
       created: Creato
       updated: Caricato
+    field_groups:
+      system: Sistema
   acl_group:
     rule: Regole
   acl:
@@ -46,6 +48,9 @@ pimee_catalog_rule:
   product:
     history: Applicata la regola "%rule%"
   steps:
+    product_rule_definition_reader.title: Lettore di importazione per le regole di prodotto
+    rule_definition_processor.title: Processore di importazione per le regole di prodotto
+    product_rule_definition_writer.title: Scrittore di importazione per le regole di prodotto
     rules_execution.title: Esecuzione regole
 btn:
   Execute rules: Esegui le regole

@@ -20,3 +20,12 @@ akeneo_data_quality_insights:
     quality:
       to_improve: Da migliorare
       good: Buona
+      n_a: N/A
+  dictionary:
+    no_search_results:
+      subtitle: Riprova con nuovi criteri di ricerca.
+pimee_enrich.entity.locale:
+  grid:
+    columns:
+      dictionary_words_count:
+        title: Numero di parole

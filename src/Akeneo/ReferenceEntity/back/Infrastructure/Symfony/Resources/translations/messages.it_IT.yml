@@ -10,8 +10,6 @@ akeneo_referenceentity:
     record:
       create: Crea una riga
       edit: Modifica i record
-      delete: Elimina una riga
-      delete_all: Elimina tutte le righe entità
       list_product: Elenca i prodotti collegati per registrare
     attribute:
       create: Aggiungi un attributo ad un'entità di riferimento

@@ -33,7 +33,6 @@ authentication:
           label: URL di Logout
         certificate:
           label: Certificato
-          expiration_warning: Questo certificato scade il {{date}}.
         private_key:
           label: Chiave privata
         metadata_url:
