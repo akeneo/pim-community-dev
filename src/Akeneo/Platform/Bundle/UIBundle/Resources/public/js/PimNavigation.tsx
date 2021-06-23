@@ -1,4 +1,4 @@
-import React, {FC, useState} from 'react';
+import React, {FC, useEffect, useState} from 'react';
 import styled from 'styled-components';
 import {PimView, useRouter, useTranslate} from '@akeneo-pim-community/shared';
 import {IconProps, MainNavigationItem, SubNavigationPanel} from 'akeneo-design-system';
@@ -62,12 +62,16 @@ const PimNavigation: FC<Props> = ({entries}) => {
   const router = useRouter();
 
   const handleFollowEntry = (entry: NavigationEntry) => {
-    setActiveEntry(entry);
+    // @fixme
+    if (!entry.route) {
+      console.error('Entry has no route', entry);
+      return;
+    }
     router.redirect(router.generate(entry.route));
   };
 
   // @todo initial state: set the initial state with the active entry or the first of the list
-  const [activeEntry, setActiveEntry] = useState<NavigationEntry | null>(entries[0] || null);
+  const [activeEntry, setActiveEntry] = useState<NavigationEntry | null>(null);
   const isActiveEntry = (code: string) => code === (activeEntry ? activeEntry.code : null);
 
   // @todo read default value by main navigation entry from Session storage
@@ -84,6 +88,11 @@ const PimNavigation: FC<Props> = ({entries}) => {
   console.log('entries', entries);
 
   const subNavigationItems = getEntrySubNavigation();
+
+  useEffect(() => {
+    const activeEntry = entries.find((entry: NavigationEntry) => entry.active);
+    setActiveEntry(activeEntry || null);
+  }, [entries]);
 
   return (
     <NavContainer aria-label="Main Navigation">

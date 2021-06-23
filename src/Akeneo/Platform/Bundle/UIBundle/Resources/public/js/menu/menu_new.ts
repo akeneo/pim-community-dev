@@ -9,6 +9,7 @@ import {CardIcon} from 'akeneo-design-system';
 const BaseForm = require('pim/form');
 const _ = require('underscore');
 const template = require('pim/template/menu/menu');
+const mediator = require('oro/mediator');
 
 type SubEntry = {
   position: number;
@@ -36,12 +37,21 @@ type EntryView = View & {
  */
 class Menu extends BaseForm {
   template = _.template(template);
+  activeEntryCode;
 
   constructor(options?: ViewOptions<any>) {
     super({
       ...options,
       className: 'AknHeader',
     });
+
+    this.activeEntryCode = '';
+  }
+
+  configure() {
+    mediator.on('pim_menu:highlight:tab', this.highlight, this);
+
+    return super.configure();
   }
 
   /**
@@ -93,7 +103,7 @@ class Menu extends BaseForm {
       return {
         code: extension.code,
         label: title,
-        active: false,
+        active: extension.code === this.activeEntryCode,
         disabled: false,
         route: this.findEntryRoute(extension),
         icon: React.createElement(CardIcon),
@@ -125,6 +135,12 @@ class Menu extends BaseForm {
     }
 
     return 'pim_settings_index';
+  }
+
+  highlight(event: any) {
+    this.activeEntryCode = event.extension;
+
+    this.render();
   }
 }
 
