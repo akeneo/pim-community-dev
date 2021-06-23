@@ -50,6 +50,7 @@ type NavigationEntry = {
   icon: React.ReactElement<IconProps>;
   position: number;
   items: SubNavigationEntry[];
+  sections: any[];
   isLandingSectionPage: boolean;
 };
 
@@ -91,7 +92,7 @@ const PimNavigation: FC<Props> = ({entries}) => {
           <PimView viewName="pim-menu-logo" />
         </LogoContainer>
         <MenuContainer>
-          {entries.map((entry) => (
+          {entries.map(entry => (
             <MainNavigationItem
               key={entry.code}
               active={isActiveEntry(entry.code)}

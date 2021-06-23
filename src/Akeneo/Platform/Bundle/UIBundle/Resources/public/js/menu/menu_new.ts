@@ -12,10 +12,11 @@ const template = require('pim/template/menu/menu');
 
 type SubEntry = {
   position: number;
+  label: string;
   route: string;
   routeParams?: any;
   target: string;
-}
+};
 
 type EntryView = View & {
   config: {
@@ -23,8 +24,8 @@ type EntryView = View & {
     to?: string;
     isLandingSectionPage?: boolean;
   };
-  items: SubEntry[]
-  sections: any[]
+  items: SubEntry[];
+  sections: any[];
 };
 
 /**
@@ -42,8 +43,6 @@ class Menu extends BaseForm {
       className: 'AknHeader',
     });
   }
-
-
 
   /**
    * {@inheritdoc}
@@ -89,7 +88,7 @@ class Menu extends BaseForm {
       return extension.code !== 'pim-menu-logo';
     });
 
-    const entries: NavigationEntry[] = extensions.map((extension: EntryView, index) => {
+    const entries: NavigationEntry[] = extensions.map((extension: EntryView, index: number) => {
       const {title, isLandingSectionPage} = extension.config;
       return {
         code: extension.code,
