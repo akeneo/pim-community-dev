@@ -1,6 +1,4 @@
 pim_menu:
-  navigation_back:
-    connection: Torna alle connessioni
   navigation_block:
     connection: Navigazione di connessione
   item:
@@ -8,16 +6,16 @@ pim_menu:
     connection_settings: Connessioni
     connection_settings_edit: Impostazioni di connessione
     connection_monitoring: Monitoraggio
+    connect_connection_settings: Impostazioni di connessione
 pim_title:
-  akeneo_connectivity_connection_settings_index: Connessioni
   akeneo_connectivity_connection_settings_edit: Impostazioni di connessione
   akeneo_connectivity_connection_settings_any: Impostazioni di connessione
   akeneo_connectivity_connection_audit_index: Dashboard connessioni
   akeneo_connectivity_connection_audit_any: Dashboard connessioni
   akeneo_connectivity_connection_error_management_dashboard: Dashboard connessioni
   akeneo_connectivity_connection_error_management_connection_monitoring: Monitoraggio della connessione
-  akeneo_connectivity_connection_webhook_edit: Iscrizione evento (BETA)
-  akeneo_connectivity_connection_webhook_regenerate_secret: Iscrizione evento (BETA)
+  akeneo_connectivity_connection_redirect_audit: Dashboard connessioni
+  akeneo_connectivity_connection_settings_redirect: Connessioni
 akeneo_connectivity.connection:
   connections: Connessioni
   secondary_actions:
@@ -131,7 +129,6 @@ akeneo_connectivity.connection:
       success: Connessione eliminata correttamente.
   helper:
     description: Un PIM senza integrazioni con altri servizi è abbastanza inutile, vero? Grazie alle connessioni, è possibile dichiarare tutti i flussi dati che saranno inviati ed estratti dal PIM.
-    link: Curioso di saperne di più? Scopri cos'è una connessione e come sfruttarla al massimo cliccando qui!
   flow_type_helper:
     message: Ti stai chiedendo cosa sia un tipo di flusso?
     link: Possiamo aiutarti cliccando qui!
@@ -146,9 +143,6 @@ akeneo_connectivity.connection:
       extension_not_allowed: Il file che si sta tentando di caricare ha una estensione non consentita.
   grid.wrong_credentials_combination_helper: Alcune delle connessioni sotto non stanno usando i loro nomi utenti della connessione. Sono identificati da un segnale di avviso giallo.
   dashboard:
-    helper:
-      description: Da qui sarai in grado di tracciare tutti i flussi dati che sono raccolti nel PIM tramite le tue connessioni, così come tutti i flussi dati che sono distribuiti ai canali tramite le tue connessioni.
-      link: Vuoi saperne di più? Ecco qui!
     user_survey:
       title: Vuoi più dati in questa dashboard?
       content: Il tuo feedback è prezioso per noi. Aiutaci a scegliere il prossimo widget rispondendo a questo sondaggio di una sola domanda!
@@ -189,10 +183,8 @@ akeneo_connectivity.connection:
         message: Chiedi all'amministratore di crearne una.
         link: Maggiori informazioni sulle connessioni qui...
   webhook:
-    title: Iscrizione evento (BETA)
-    event_subscription: Iscrizione evento (bêta)
     helper:
-      message: Puoi essere notificato degli eventi che si verificano nel PIM per i prodotti sincronizzati con quest'app connessa. Devi solo definire un URL e i tipi di evento di cui vuoi tenere traccia.
+      message: Puoi essere notificato degli eventi che si verificano nel PIM per i prodotti sincronizzati con quest'app connessa. Devi solo definire un URL.
       link: Scopri di più sulla configurazione dell'iscrizione evento...
     form:
       url: URL
@@ -219,6 +211,27 @@ akeneo_connectivity.connection:
     active_event_subscriptions_limit_reached:
       message: Puoi collegare fino a {{ limit }} connessioni alla funzione di iscrizione evento. Hai raggiunto questo limite.
       link: Scopri di più sulla configurazione degli abbonamenti agli eventi.
+    event_logs:
+      no_event_logs_with_those_filters:
+        caption: Riprova con nuovi criteri di ricerca.
+      level:
+        info: Info
+        error: Errore
+      list:
+        search:
+          level: Livello
+          all: Tutte
+          none: Nessuno
+        date_range_filter:
+          label: Data e ora
+          reset: Azzera
+          from: Da
+          to: A
+          all: Tutte
+        headers:
+          datetime: Data e ora
+          level: Livello
+          message: Messaggio
   error_management:
     connection_monitoring:
       title: Monitoraggio
@@ -228,7 +241,6 @@ akeneo_connectivity.connection:
         link: Per capire come risolvere questo problema, visita il centro di aiuto API.
       search_filter:
         placeholder: Cerca nei messaggi di errore
-        result_count: '{0} Nessun risultato |[1,Inf] {{ count }} risultati'
       error_list:
         date_time_column:
           title: Giorno e ora
