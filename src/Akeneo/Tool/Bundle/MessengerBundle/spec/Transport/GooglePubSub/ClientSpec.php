@@ -76,15 +76,12 @@ class ClientSpec extends ObjectBehavior
 
     public function it_can_be_setup(Topic $topic, Subscription $subscription): void
     {
-        $topic->exists()
-            ->willReturn(false);
-        $subscription->exists()
-            ->willReturn(false);
+        $topic->exists()->willReturn(false);
+        $subscription->reload()->shouldBeCalled();
+        $subscription->exists()->willReturn(false);
 
-        $topic->create()
-            ->shouldBeCalled();
-        $subscription->create([])
-            ->shouldBeCalled();
+        $topic->create()->shouldBeCalled();
+        $subscription->create([])->shouldBeCalled();
 
         $this->setup();
     }
@@ -107,15 +104,12 @@ class ClientSpec extends ObjectBehavior
             ],
         ]);
 
-        $topic->exists()
-            ->willReturn(false);
-        $subscription->exists()
-            ->willReturn(false);
+        $topic->exists()->willReturn(false);
+        $subscription->reload()->shouldBeCalled();
+        $subscription->exists()->willReturn(false);
 
-        $topic->create()
-            ->shouldBeCalled();
-        $subscription->create(['filter' => 'the_filter'])
-            ->shouldBeCalled();
+        $topic->create()->shouldBeCalled();
+        $subscription->create(['filter' => 'the_filter'])->shouldBeCalled();
 
         $this->setup();
     }

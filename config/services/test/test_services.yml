@@ -55,6 +55,7 @@ services:
             - '@akeneo_measure.installer.measurement_installer'
             - '@messenger.transport.business_event'
             - '@event_dispatcher'
+            - '@akeneo_integration_tests.launcher.job_launcher'
             - '%env(APP_DATABASE_HOST)%'
             - '%env(APP_DATABASE_NAME)%'
             - '%env(APP_DATABASE_USER)%'
@@ -156,7 +157,6 @@ services:
         arguments:
             - '@kernel'
             - '@database_connection'
-            - '@messenger.receiver_locator'
             - !tagged akeneo.pim.tests.pub_sub_queue_status.job
 
     akeneo_integration_tests.pub_sub_queue_status.ui_job:
