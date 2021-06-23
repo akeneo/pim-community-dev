@@ -42,14 +42,14 @@ Feature: Validate number attributes of a product
   Scenario: Validate the negative allowed constraint of number attribute
     Given I change the Sold to "-1"
     And I save the product
-    Then I should see validation tooltip "This value should be 0 or more."
+    Then I should see validation tooltip "The sold attribute requires an equal or greater than 0 value."
     And there should be 1 error in the "Other" tab
 
   Scenario: Validate the negative allowed constraint of scopable number attribute
     Given I switch the scope to "ecommerce"
     And I change the Available to "-1"
     And I save the product
-    Then I should see validation tooltip "This value should be 0 or more."
+    Then I should see validation tooltip "The available attribute requires an equal or greater than 0 value."
     And there should be 1 error in the "Other" tab
 
   Scenario: Validate the decimals allowed constraint of number attribute
@@ -68,14 +68,14 @@ Feature: Validate number attributes of a product
   Scenario: Validate the number min constraint of number attribute
     Given I change the Rating to "0"
     And I save the product
-    Then I should see validation tooltip "This value should be between 1 and 5."
+    Then I should see validation tooltip "The rating attribute requires an equal or greater than 1 value."
     And there should be 1 error in the "Other" tab
 
   Scenario: Validate the number min constraint of scopable number attribute
     Given I switch the scope to "ecommerce"
     And I change the Popularity to "0"
     And I save the product
-    Then I should see validation tooltip "This value should be between 1 and 10."
+    Then I should see validation tooltip "The popularity attribute requires an equal or greater than 1 value."
     And there should be 1 error in the "Other" tab
 
   Scenario: Validate the number max constraint of number attribute

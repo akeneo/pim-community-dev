@@ -107,45 +107,46 @@ class RangeValidatorSpec extends ObjectBehavior
     }
 
     function it_does_not_validate_a_value_as_integer_limit_min(
-        $context,
+        ExecutionContextInterface $context,
         Range $constraint,
         ConstraintViolationBuilderInterface $violation
     ) {
+        $constraint->attributeCode = 'an_attribute';
         $constraint->min = 10;
-        $constraint->max = 100;
 
         $context
-            ->buildViolation($constraint->notInRangeMessage)
+            ->buildViolation($constraint->minMessage, [
+                '%attribute%' => $constraint->attributeCode,
+                '%min_value%' => $constraint->min,
+            ])
             ->shouldBeCalled()
             ->willReturn($violation);
 
-        $violation->setParameter('{{ value }}', 9.99999)->shouldBeCalled()->willReturn($violation);
-        $violation->setParameter('{{ min }}', 10)->shouldBeCalled()->willReturn($violation);
-        $violation->setParameter('{{ max }}', 100)->shouldBeCalled()->willReturn($violation);
-
-        $violation->setCode(Argument::any())->shouldBeCalled()->willReturn($violation);
+        $violation->atPath('data')->shouldBeCalled()->willReturn($violation);
+        $violation->setCode(Range::TOO_LOW_ERROR)->willReturn($violation);
         $violation->addViolation()->shouldBeCalled();
 
-        $this->validate(9.99999, $constraint);
+        $this->validate( 9.99999, $constraint);
     }
 
     function it_does_not_validate_a_value_as_string_limit_min(
-        $context,
+        ExecutionContextInterface $context,
         Range $constraint,
         ConstraintViolationBuilderInterface $violation
     ) {
+        $constraint->attributeCode = 'an_attribute';
         $constraint->min = 10;
-        $constraint->max = 100;
 
         $context
-            ->buildViolation($constraint->notInRangeMessage)
+            ->buildViolation($constraint->minMessage, [
+                '%attribute%' => $constraint->attributeCode,
+                '%min_value%' => $constraint->min,
+            ])
             ->shouldBeCalled()
             ->willReturn($violation);
 
-        $violation->setParameter('{{ value }}', Argument::any())->shouldBeCalled()->willReturn($violation);
-        $violation->setParameter('{{ min }}', 10)->shouldBeCalled()->willReturn($violation);
-        $violation->setParameter('{{ max }}', 100)->shouldBeCalled()->willReturn($violation);
-        $violation->setCode(Argument::any())->shouldBeCalled()->willReturn($violation);
+        $violation->atPath('data')->shouldBeCalled()->willReturn($violation);
+        $violation->setCode(Range::TOO_LOW_ERROR)->willReturn($violation);
         $violation->addViolation()->shouldBeCalled();
 
         $this->validate('9.99999', $constraint);

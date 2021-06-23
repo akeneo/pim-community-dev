@@ -5,6 +5,7 @@ namespace Akeneo\Pim\Enrichment\Component\Product\Validator\Constraints;
 use Akeneo\Pim\Enrichment\Component\Product\Model\MetricInterface;
 use Akeneo\Pim\Enrichment\Component\Product\Model\ProductPriceInterface;
 use Symfony\Component\Validator\Constraint;
+use Symfony\Component\Validator\Constraints\Range;
 use Symfony\Component\Validator\Constraints\RangeValidator as BaseRangeValidator;
 use Symfony\Component\Validator\Exception\UnexpectedTypeException;
 use Webmozart\Assert\Assert;
@@ -52,6 +53,10 @@ class RangeValidator extends BaseRangeValidator
                     ->addViolation();
                 break;
 
+            case is_numeric($value) && $value < $constraint->min:
+                $this->validateData($value, $constraint);
+            break;
+
             default:
                 // it allows to have a proper message when the value is superior to the technical maximum value allowed by PHP
                 // we don't put it by default, as otherwise the message is quite weird for the user (between 0 and 9.22E18)
@@ -79,8 +84,8 @@ class RangeValidator extends BaseRangeValidator
 
         if (null !== $constraint->min && $value < $constraint->min) {
             $this->context->buildViolation($constraint->minMessage, [
-                '{{ value }}' => $value,
-                '{{ limit }}' => $constraint->min,
+                '%attribute%' => $constraint->attributeCode,
+                '%min_value%' => $constraint->min,
             ])
                 ->atPath('data')
                 ->setCode(Range::TOO_LOW_ERROR)
