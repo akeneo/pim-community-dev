@@ -68,13 +68,13 @@ type MeasurementSelection =
 
 type ParentSelection =
   | {
-  type: 'code';
-}
+      type: 'code';
+    }
   | {
-  type: 'label';
-  channel: ChannelCode;
-  locale: LocaleCode;
-};
+      type: 'label';
+      channel: ChannelCode;
+      locale: LocaleCode;
+    };
 
 type DateSelection = {
   format: DateFormat;

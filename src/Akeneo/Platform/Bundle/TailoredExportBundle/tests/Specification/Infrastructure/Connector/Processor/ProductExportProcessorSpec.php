@@ -18,6 +18,7 @@ use Akeneo\Pim\Enrichment\Component\Product\Model\ValueInterface;
 use Akeneo\Pim\Structure\Component\Query\PublicApi\AttributeType\Attribute;
 use Akeneo\Pim\Structure\Component\Query\PublicApi\AttributeType\GetAttributes;
 use Akeneo\Platform\TailoredExport\Infrastructure\Connector\Processor\AttributeSelector\AttributeSelectorRegistry;
+use Akeneo\Platform\TailoredExport\Infrastructure\Connector\Processor\PropertySelector\PropertySelectorRegistry;
 use Akeneo\Tool\Component\Batch\Job\JobParameters;
 use Akeneo\Tool\Component\Batch\Model\StepExecution;
 use PhpSpec\ObjectBehavior;
@@ -26,25 +27,45 @@ class ProductExportProcessorSpec extends ObjectBehavior
 {
     function let(
         StepExecution $stepExecution,
+        JobParameters $jobParameters,
         AttributeSelectorRegistry $attributeSelectorRegistry,
+        PropertySelectorRegistry $propertySelectorRegistry,
         GetAttributes $getAttributes
     ) {
         $this->beConstructedWith(
             $attributeSelectorRegistry,
+            $propertySelectorRegistry,
             $getAttributes
         );
         $this->setStepExecution($stepExecution);
+
+        $stepExecution->getJobParameters()->willReturn($jobParameters);
     }
 
     public function it_processes_product(
         ProductInterface $product,
         JobParameters $jobParameters,
         ValueInterface $nameValue,
-        $stepExecution,
-        $getAttributes,
-        $attributeSelectorRegistry
+        GetAttributes $getAttributes,
+        AttributeSelectorRegistry $attributeSelectorRegistry,
+        PropertySelectorRegistry $propertySelectorRegistry
     ) {
-        $columns = [
+        $name = $this->createAttribute('name');
+        $jobParameters->get('columns')->willReturn([
+            [
+                'target' => 'categories-export',
+                'sources' => [
+                    [
+                        'type' => 'property',
+                        'code' => 'categories',
+                        'locale' => null,
+                        'channel' => null,
+                        'selection' => [
+                            'type' => 'code'
+                        ],
+                    ],
+                ],
+            ],
             [
                 'target' => 'name-export',
                 'sources' => [
@@ -54,22 +75,27 @@ class ProductExportProcessorSpec extends ObjectBehavior
                         'locale' => null,
                         'channel' => null,
                         'selection' => [
-                            'type' => 'code'
-                        ]
-                    ]
+                            'type' => 'code',
+                        ],
+                    ],
                 ],
-            ]
-        ];
-        $name = $this->createAttribute('name');
-        $stepExecution->getJobParameters()->willReturn($jobParameters);
-        $jobParameters->get('columns')->willReturn($columns);
+            ],
+        ]);
+
         $product->getValue('name', null, null)->willReturn($nameValue);
         $getAttributes->forCode('name')->willReturn($name);
-        $attributeSelectorRegistry->applyAttributeSelection(['type' => 'code'], $name, $nameValue)->willReturn('name value');
+        $attributeSelectorRegistry
+            ->applyAttributeSelection(['type' => 'code'], $name, $nameValue)
+            ->willReturn('name value');
+
+        $propertySelectorRegistry
+            ->applyPropertySelection(['type' => 'code'], $product, 'categories')
+            ->willReturn('my category');
 
         $this->process($product)->shouldReturn(
             [
-                'name-export' => 'name value'
+                'categories-export' => 'my category',
+                'name-export' => 'name value',
             ]
         );
     }

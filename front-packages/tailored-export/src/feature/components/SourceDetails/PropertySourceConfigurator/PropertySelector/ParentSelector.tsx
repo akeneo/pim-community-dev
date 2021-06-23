@@ -64,7 +64,7 @@ const ParentSelector = ({selection, validationErrors, onSelectionChange}: Parent
             validationErrors={channelErrors}
             onChange={updatedValue => onSelectionChange({...selection, channel: updatedValue})}
           >
-            <Helper inline={true} level='info'>
+            <Helper inline={true} level="info">
               {translate('akeneo.tailored_export.column_details.sources.selection.parent.information.channel')}
             </Helper>
           </ChannelDropdown>
@@ -74,7 +74,7 @@ const ParentSelector = ({selection, validationErrors, onSelectionChange}: Parent
             validationErrors={localeErrors}
             onChange={updatedValue => onSelectionChange({...selection, locale: updatedValue})}
           >
-            <Helper inline={true} level='info'>
+            <Helper inline={true} level="info">
               {translate('akeneo.tailored_export.column_details.sources.selection.parent.information.locale')}
             </Helper>
           </LocaleDropdown>

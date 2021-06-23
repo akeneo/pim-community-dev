@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace Specification\Akeneo\Platform\TailoredExport\Infrastructure\Connector\Processor\PropertySelector;
 
-use Akeneo\Pim\Enrichment\Component\Product\Model\ValueInterface;
+use Akeneo\Pim\Enrichment\Component\Product\Model\ProductInterface;
 use Akeneo\Platform\TailoredExport\Infrastructure\Connector\Processor\PropertySelector\PropertySelectorInterface;
 use PhpSpec\ObjectBehavior;
 
@@ -13,7 +13,8 @@ class PropertySelectorRegistrySpec extends ObjectBehavior
     public function it_returns_the_value_selected_by_the_first_valid_selector(
         PropertySelectorInterface $firstPropertySelector,
         PropertySelectorInterface $secondPropertySelector,
-        PropertySelectorInterface $thirdPropertySelector
+        PropertySelectorInterface $thirdPropertySelector,
+        ProductInterface $entity
     ) {
         $sourceConfiguration = ['type' => 'code'];
         $this->beConstructedWith([
@@ -22,29 +23,29 @@ class PropertySelectorRegistrySpec extends ObjectBehavior
             $thirdPropertySelector
         ]);
 
-        $firstPropertySelector->supports($sourceConfiguration)->shouldBeCalled()->willReturn(false);
-        $secondPropertySelector->supports($sourceConfiguration)->shouldBeCalled()->willReturn(true);
-        $thirdPropertySelector->supports($sourceConfiguration)->shouldNotBeCalled();
+        $firstPropertySelector->supports($sourceConfiguration, 'categories')->shouldBeCalled()->willReturn(false);
+        $secondPropertySelector->supports($sourceConfiguration, 'categories')->shouldBeCalled()->willReturn(true);
+        $thirdPropertySelector->supports($sourceConfiguration, 'categories')->shouldNotBeCalled();
 
         $secondPropertySelector
-            ->applySelection($sourceConfiguration, [])
+            ->applySelection($sourceConfiguration, $entity)
             ->shouldBeCalled()
             ->willReturn('The value selected');
 
-        $this->applyPropertySelection($sourceConfiguration, [])->shouldReturn('The value selected');
+        $this->applyPropertySelection($sourceConfiguration, $entity, 'categories')->shouldReturn('The value selected');
     }
 
     public function it_throws_an_error_when_no_selector_is_found(
         PropertySelectorInterface $firstPropertySelector,
-        ValueInterface $value
+        ProductInterface $entity
     ) {
         $sourceConfiguration = ['type' => 'code'];
         $this->beConstructedWith([
             $firstPropertySelector,
         ]);
 
-        $firstPropertySelector->supports($sourceConfiguration)->shouldBeCalled()->willReturn(false);
+        $firstPropertySelector->supports($sourceConfiguration, 'associations')->shouldBeCalled()->willReturn(false);
 
-        $this->shouldThrow()->during('applyPropertySelection', [$sourceConfiguration, $value]);
+        $this->shouldThrow()->during('applyPropertySelection', [$sourceConfiguration, $entity, 'associations']);
     }
 }

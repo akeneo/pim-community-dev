@@ -75,11 +75,7 @@ test('it displays a type dropdown when the selection type is code', async () => 
   const onSelectionChange = jest.fn();
 
   await renderWithProviders(
-    <ParentSelector
-      validationErrors={[]}
-      selection={{type: 'code'}}
-      onSelectionChange={onSelectionChange}
-    />
+    <ParentSelector validationErrors={[]} selection={{type: 'code'}} onSelectionChange={onSelectionChange} />
   );
 
   expect(screen.getByText('pim_common.type')).toBeInTheDocument();
@@ -131,11 +127,7 @@ test('it can select a label selection type', async () => {
   const onSelectionChange = jest.fn();
 
   await renderWithProviders(
-    <ParentSelector
-      validationErrors={[]}
-      selection={{type: 'code'}}
-      onSelectionChange={onSelectionChange}
-    />
+    <ParentSelector validationErrors={[]} selection={{type: 'code'}} onSelectionChange={onSelectionChange} />
   );
 
   userEvent.click(screen.getByText('pim_common.type'));
