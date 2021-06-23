@@ -41,6 +41,7 @@ The %attribute% attribute must not contain more than %limit% characters. The sub
 'The {{ attribute_code }} attribute must match the following regular expression: {{ pattern }}.': 'The {{ attribute_code }} attribute must match the following regular expression: {{ pattern }}.'
 'The {{ attribute_code }} attribute cannot be empty.': 'The {{ attribute_code }} attribute cannot be empty.'
 'The %attribute_code% attribute requires a valid locale. The %invalid_locale% locale does not exist.': 'The %attribute_code% attribute requires a valid locale. The %invalid_locale% locale does not exist.'
+'The %attribute_code% attribute requires a valid locale. The %invalid_locale% locale is not bound to the %channel_code% channel or does not exist.': 'The %attribute_code% attribute requires a valid locale. The %invalid_locale% locale is not bound to the %channel_code% channel or does not exist.'
 The %attribute% attribute requires an e-mail address.: 'The %attribute% attribute requires an e-mail address.'
 pim_catalog:
     constraint:

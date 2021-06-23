@@ -27,11 +27,17 @@ class LocalizableAttributeSpec extends ObjectBehavior
         $this->beAnInstanceOf(DocumentationBuilderInterface::class);
     }
 
-    function it_supports_the_constraint_non_active_locale(ConstraintViolationInterface $constraintViolation)
+    function it_supports_constraints_on_locale(ConstraintViolationInterface $constraintViolation)
     {
-        $constraintViolation->getCode()->willReturn(LocalizableValues::NON_ACTIVE_LOCALE);
+        $constraintCodes = [
+            LocalizableValues::NON_ACTIVE_LOCALE,
+            LocalizableValues::INVALID_LOCALE_FOR_CHANNEL,
+        ];
 
-        $this->support($constraintViolation)->shouldReturn(true);
+        foreach ($constraintCodes as $contraintCode) {
+            $constraintViolation->getCode()->willReturn($contraintCode);
+            $this->support($constraintViolation)->shouldReturn(true);
+        }
     }
 
     function it_does_not_support_other_types_of_error()
@@ -41,7 +47,7 @@ class LocalizableAttributeSpec extends ObjectBehavior
         $this->support($exception)->shouldReturn(false);
     }
 
-    function it_builds_the_documentation_for_the_constraint_non_active_locale(
+    function it_builds_the_documentation(
         ConstraintViolationInterface $constraintViolation
     ) {
         $constraintViolation->getCode()->willReturn(LocalizableValues::NON_ACTIVE_LOCALE);

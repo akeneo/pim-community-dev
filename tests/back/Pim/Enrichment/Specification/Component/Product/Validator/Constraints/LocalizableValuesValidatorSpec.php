@@ -178,6 +178,7 @@ class LocalizableValuesValidatorSpec extends ObjectBehavior
             ]
         )->willReturn($violationBuilder);
         $violationBuilder->atPath('[scopable_localizable_text-mobile-fr_FR]')->willReturn($violationBuilder);
+        $violationBuilder->setCode(LocalizableValues::INVALID_LOCALE_FOR_CHANNEL)->willReturn($violationBuilder);
         $violationBuilder->addViolation()->shouldBeCalled();
 
         $this->validate($values, $constraint);
