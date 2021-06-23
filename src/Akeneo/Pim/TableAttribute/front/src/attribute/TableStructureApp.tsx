@@ -53,7 +53,11 @@ const TableStructureActionCell = styled(Table.ActionCell)`
   width: 44px;
 `;
 
-const TableStructureApp: React.FC<TableStructureAppProps> = ({initialTableConfiguration, onChange, savedColumnCodes}) => {
+const TableStructureApp: React.FC<TableStructureAppProps> = ({
+  initialTableConfiguration,
+  onChange,
+  savedColumnCodes,
+}) => {
   const translate = useTranslate();
   const router = useRouter();
   const userContext = useUserContext();

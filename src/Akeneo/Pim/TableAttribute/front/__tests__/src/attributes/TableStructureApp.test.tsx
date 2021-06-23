@@ -2,7 +2,7 @@ import React from 'react';
 import {renderWithProviders} from '@akeneo-pim-community/legacy-bridge/tests/front/unit/utils';
 import {screen, act, fireEvent} from '@testing-library/react';
 import {TableStructureApp} from '../../../src/attribute/TableStructureApp';
-import { getComplexTableConfiguration, getSimpleTableConfiguration } from "../factories/TableConfiguration";
+import {getComplexTableConfiguration, getSimpleTableConfiguration} from '../factories/TableConfiguration';
 jest.mock('../../../src/fetchers/LocaleFetcher');
 jest.mock('../../../src/attribute/AddColumnModal');
 
@@ -14,7 +14,11 @@ describe('TableStructureApp', () => {
   it('should render the columns', async () => {
     const handleChange = jest.fn();
     renderWithProviders(
-      <TableStructureApp onChange={handleChange} initialTableConfiguration={getSimpleTableConfiguration()} savedColumnCodes={[]} />
+      <TableStructureApp
+        onChange={handleChange}
+        initialTableConfiguration={getSimpleTableConfiguration()}
+        savedColumnCodes={[]}
+      />
     );
     await waitPageToBeLoaded();
 
@@ -224,9 +228,13 @@ describe('TableStructureApp', () => {
   it('should add a column', async () => {
     const handleChange = jest.fn();
     renderWithProviders(
-      <TableStructureApp onChange={handleChange} initialTableConfiguration={[
-        {data_type: 'text', code: 'ingredients', labels: {en_US: 'Ingredients'}, validations: {}},
-      ]} savedColumnCodes={[]} />
+      <TableStructureApp
+        onChange={handleChange}
+        initialTableConfiguration={[
+          {data_type: 'text', code: 'ingredients', labels: {en_US: 'Ingredients'}, validations: {}},
+        ]}
+        savedColumnCodes={[]}
+      />
     );
     await waitPageToBeLoaded();
 
@@ -238,7 +246,7 @@ describe('TableStructureApp', () => {
     });
     expect(handleChange).toBeCalledWith([
       {data_type: 'text', code: 'ingredients', labels: {en_US: 'Ingredients'}, validations: {}},
-      {data_type: 'text', code: 'new_column', labels: {en_US: 'New column'}, validations: {}}
+      {data_type: 'text', code: 'new_column', labels: {en_US: 'New column'}, validations: {}},
     ]);
   });
 });

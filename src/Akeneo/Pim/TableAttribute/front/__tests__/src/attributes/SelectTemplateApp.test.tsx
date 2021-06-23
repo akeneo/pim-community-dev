@@ -2,7 +2,7 @@ import React from 'react';
 import {renderWithProviders} from '@akeneo-pim-community/legacy-bridge/tests/front/unit/utils';
 import {act, screen, fireEvent} from '@testing-library/react';
 import {SelectTemplateApp} from '../../../src/attribute/SelectTemplateApp';
-import { TEMPLATES } from '../../../src/models/Template';
+import {TEMPLATES} from '../../../src/models/Template';
 
 describe('SelectTemplateApp', () => {
   it('should render the component', () => {

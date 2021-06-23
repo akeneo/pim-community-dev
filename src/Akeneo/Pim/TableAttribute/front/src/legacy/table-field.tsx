@@ -66,11 +66,7 @@ class TableField extends (Field as {new (config: any): any}) {
         ReactDOM.render(
           <DependenciesProvider>
             <ThemeProvider theme={pimTheme}>
-              <TableFieldApp
-                {...templateContext}
-                onChange={handleChange}
-                elements={this.elements}
-              />
+              <TableFieldApp {...templateContext} onChange={handleChange} elements={this.elements} />
             </ThemeProvider>
           </DependenciesProvider>,
           this.el

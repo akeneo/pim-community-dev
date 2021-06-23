@@ -183,4 +183,3 @@ const AddColumnModal: React.FC<AddColumnModalProps> = ({close, onCreate, existin
 };
 
 export {AddColumnModal};
-

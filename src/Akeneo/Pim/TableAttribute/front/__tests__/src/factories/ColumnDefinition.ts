@@ -1,4 +1,4 @@
-import { ColumnDefinitionWithId } from "../../../src/attribute/TableStructureApp";
+import {ColumnDefinitionWithId} from '../../../src/attribute/TableStructureApp';
 
 export const getSelectColumnDefinitionWithId: () => ColumnDefinitionWithId = () => {
   return {
@@ -8,8 +8,7 @@ export const getSelectColumnDefinitionWithId: () => ColumnDefinitionWithId = () 
     labels: {},
     id: 'ingredientid',
   } as ColumnDefinitionWithId;
-}
-
+};
 
 export const getTextColumnDefinitionWithId: () => ColumnDefinitionWithId = () => {
   return {
@@ -19,7 +18,7 @@ export const getTextColumnDefinitionWithId: () => ColumnDefinitionWithId = () =>
     labels: {},
     id: 'aqrid',
   } as ColumnDefinitionWithId;
-}
+};
 
 export const getNumberColumnDefinitionWithId: () => ColumnDefinitionWithId = () => {
   return {
@@ -29,4 +28,4 @@ export const getNumberColumnDefinitionWithId: () => ColumnDefinitionWithId = () 
     labels: {},
     id: 'quantityid',
   } as ColumnDefinitionWithId;
-}
+};

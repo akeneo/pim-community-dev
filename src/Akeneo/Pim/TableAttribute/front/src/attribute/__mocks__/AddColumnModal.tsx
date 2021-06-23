@@ -21,9 +21,7 @@ const AddColumnModal: React.FC<AddColumnModalProps> = ({close, onCreate}) => {
     });
   };
 
-  return (
-    <button onClick={handleCreate}>Mock create</button>
-  );
+  return <button onClick={handleCreate}>Mock create</button>;
 };
 
 export {AddColumnModal};

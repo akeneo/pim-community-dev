@@ -1,4 +1,4 @@
-import { Locale } from "@akeneo-pim-community/shared";
+import {Locale} from '@akeneo-pim-community/shared';
 
 export const getEnUsLocale: () => Locale = () => {
   return {
@@ -6,5 +6,5 @@ export const getEnUsLocale: () => Locale = () => {
     label: 'English (United States)',
     region: 'United States',
     language: 'English',
-  }
+  };
 };
