@@ -1941,7 +1941,7 @@ commands:
                           if git ls-remote --exit-code --heads git@github.com:akeneo/bigcommerce-connector.git ${CIRCLE_BRANCH}; then
                             CONNECTOR_BC_BRANCH=${CIRCLE_BRANCH}
                           else
-                            CONNECTOR_BC_BRANCH=master
+                            CONNECTOR_BC_BRANCH=v0
                           fi
 
                           echo export CONNECTOR_BC_BRANCH=${CONNECTOR_BC_BRANCH} >> $BASH_ENV
@@ -1953,7 +1953,7 @@ commands:
                       name: BIG COMMERCE CONNECTOR - Get last tagged connector version ready for production
                       command: |
                           #TODO Retrieve last tagged version for production
-                          CONNECTOR_BC_BRANCH=master
+                          CONNECTOR_BC_BRANCH=v0
 
                           echo export CONNECTOR_BC_BRANCH=${CONNECTOR_BC_BRANCH} >> $BASH_ENV
           - run:
