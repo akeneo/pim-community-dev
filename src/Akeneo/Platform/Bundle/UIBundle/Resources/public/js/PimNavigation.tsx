@@ -123,11 +123,9 @@ const PimNavigation: FC<Props> = ({entries}) => {
 
   const getSubNavigationColumn = (): SubEntryColumn | undefined => {
     if (activeEntry && activeSubEntry) {
-      return (
-        activeEntry.columns.find((column: SubEntryColumn) => {
-          return undefined !== column.entries.find((entry: SubNavigationEntry) => entry.code === activeSubEntry.code);
-        })
-      );
+      return activeEntry.columns.find((column: SubEntryColumn) => {
+        return undefined !== column.entries.find((entry: SubNavigationEntry) => entry.code === activeSubEntry.code);
+      });
     }
 
     return;

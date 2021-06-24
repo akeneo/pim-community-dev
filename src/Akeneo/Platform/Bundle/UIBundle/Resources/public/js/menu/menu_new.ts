@@ -23,7 +23,7 @@ type SubEntry = {
 type SubEntryColumn = {
   entries: SubEntry[];
   title?: string;
-}
+};
 
 type EntryView = View & {
   config: {
