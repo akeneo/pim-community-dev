@@ -8,16 +8,21 @@ const TableInputText = styled(TextInput)<{highlighted: boolean} & AkeneoThemedPr
   padding-left: 10px;
   padding-right: 10px;
   border-radius: 0;
+  border: none;
+  
   ${({highlighted}) =>
     highlighted
       ? css`
           background: ${getColor('green', 10)};
-          border-color: ${getColor('green', 80)};
+          box-shadow: 0 0 0 1px ${getColor('green', 80)};
         `
       : css`
           background: none;
-          border-color: rgba(0, 0, 0, 0);
         `};
+  
+  &:focus {
+    box-shadow: 0 0 0 1px ${getColor('grey', 100)};
+  }
 `;
 
 TableInputRow.displayName = 'TableInput.TextInput';
