@@ -30,6 +30,14 @@ const SubNavEntry = styled.a`
   transition: opacity 0.2s ease-in;
 `;
 
+const SubNavigationTitle = styled.div`
+  margin-bottom: 30px;
+  color: #a1a9b7;
+  text-transform: uppercase;
+  font-size: 11px;
+  line-height: 20px;
+`;
+
 const ActiveSubNavEntry = styled(SubNavEntry)`
   color: #9452ba;
 `;
@@ -57,6 +65,11 @@ type SubNavigationEntry = {
   section?: any;
 };
 
+type SubEntryColumn = {
+  entries: SubNavigationEntry[];
+  title?: string;
+};
+
 type NavigationEntry = {
   code: string;
   label: string;
@@ -67,7 +80,7 @@ type NavigationEntry = {
   route: string;
   icon: React.ReactElement<IconProps>;
   position: number;
-  columns: SubNavigationEntry[][];
+  columns: SubEntryColumn[];
   sections: any[];
   isLandingSectionPage: boolean;
 };
@@ -108,23 +121,21 @@ const PimNavigation: FC<Props> = ({entries}) => {
   // @example: collapsedColumn_pim-menu-settings: 1
   const isSubNavigationOpened = true;
 
-  const getEntrySubNavigation = () => {
-    if (!activeEntry) {
-      return [];
+  const getSubNavigationColumn = (): SubEntryColumn | undefined => {
+    if (activeEntry && activeSubEntry) {
+      return (
+        activeEntry.columns.find((column: SubEntryColumn) => {
+          return undefined !== column.entries.find((entry: SubNavigationEntry) => entry.code === activeSubEntry.code);
+        })
+      );
     }
 
-    if (activeSubEntry) {
-      return activeEntry.columns.find((column: SubNavigationEntry[]) => {
-        return undefined !== column.find((entry: SubNavigationEntry) => entry.code === activeSubEntry.code);
-      });
-    }
-
-    return [];
+    return;
   };
 
   console.log('entries', entries);
 
-  const subNavigationItems = getEntrySubNavigation();
+  const subNavigationColumn = getSubNavigationColumn();
 
   useEffect(() => {
     const newActiveEntry = entries.find((entry: NavigationEntry) => entry.active);
@@ -132,14 +143,14 @@ const PimNavigation: FC<Props> = ({entries}) => {
 
     // @fixme find a better way to find the new activated sub-entry
     const newColumn = newActiveEntry
-      ? newActiveEntry.columns.find((column: SubNavigationEntry[]) => {
-          return column.find((entry: SubNavigationEntry) => entry.code === newActiveEntry.activeSubEntryCode);
+      ? newActiveEntry.columns.find((column: SubEntryColumn) => {
+          return column.entries.find((entry: SubNavigationEntry) => entry.code === newActiveEntry.activeSubEntryCode);
         })
       : null;
 
     const newActiveSubEntry =
       newActiveEntry && newColumn
-        ? newColumn.find((subEntry: SubNavigationEntry) => subEntry.code === newActiveEntry.activeSubEntryCode)
+        ? newColumn.entries.find((subEntry: SubNavigationEntry) => subEntry.code === newActiveEntry.activeSubEntryCode)
         : null;
 
     setActiveSubEntry(newActiveSubEntry || null);
@@ -170,11 +181,14 @@ const PimNavigation: FC<Props> = ({entries}) => {
       </MainNavContainer>
       {activeEntry &&
         (!activeEntry.isLandingSectionPage || activeSubEntry) &&
-        subNavigationItems &&
-        subNavigationItems.length > 0 && (
+        subNavigationColumn &&
+        subNavigationColumn.entries.length > 0 && (
           <SubNavContainer>
             <SubNavigationPanel isOpen={isSubNavigationOpened}>
-              {subNavigationItems.map(subEntry => {
+              {subNavigationColumn.title && (
+                <SubNavigationTitle>{translate(subNavigationColumn.title)}</SubNavigationTitle>
+              )}
+              {subNavigationColumn.entries.map(subEntry => {
                 // @fixme: use DSM components
                 if (isActiveSubEntry(subEntry.code)) {
                   return (

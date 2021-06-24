@@ -20,6 +20,11 @@ type SubEntry = {
   target: string;
 };
 
+type SubEntryColumn = {
+  entries: SubEntry[];
+  title?: string;
+}
+
 type EntryView = View & {
   config: {
     title: string;
@@ -31,13 +36,13 @@ type EntryView = View & {
   sections: any[];
 };
 
-// @fixme Don't declare a type just for navigationItems
-type EntryColumn = View & {
+// @fixme Define what is an entry column
+type EntryColumnView = View & {
   config: {
     title: string;
     to?: string;
-    isLandingSectionPage?: boolean;
     tab?: string;
+    navigationTitle?: string;
   };
   navigationItems: SubEntry[];
   sections: any[];
@@ -108,6 +113,8 @@ class Menu extends BaseForm {
   }
 
   findMainEntries(): NavigationEntry[] {
+    console.log(this.extensions);
+
     const extensions = Object.values(this.extensions).filter((extension: View) => {
       if (extension.targetZone !== 'mainMenu') {
         return false;
@@ -141,13 +148,19 @@ class Menu extends BaseForm {
     return entries;
   }
 
-  findMainEntryColumns(entryCode: string): SubEntry[][] {
+  findMainEntryColumns(entryCode: string): SubEntryColumn[] {
     const columns = Object.values(this.extensions).filter((extension: EntryView) => {
       // @todo Ensure that we should use "tab" (it's not always defined. ex: pim-menu-connection-column)
       return extension.targetZone === 'column' && extension.config.tab === entryCode;
     });
 
-    return columns.map((column: EntryColumn) => column.navigationItems);
+    return columns.map((column: EntryColumnView) => {
+      return {
+        entries: column.navigationItems,
+        // @fixme Handle columns without title
+        title: column.config.navigationTitle,
+      };
+    });
   }
 
   findEntryRoute(entry: EntryView): string {
