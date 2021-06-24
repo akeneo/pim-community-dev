@@ -2,6 +2,10 @@
 # yarn lockfile v1
 
 
+"@akeneo-pim-community/measurement@link:vendor/akeneo/pim-community-dev/front-packages/measurement":
+  version "0.0.0"
+  uid ""
+
 "@akeneo-pim-community/shared@link:vendor/akeneo/pim-community-dev/front-packages/shared":
   version "0.0.0"
   uid ""

@@ -46,13 +46,13 @@ Feature: Validate text attributes of a draft
   Scenario: Validate the email validation rule constraint of text attribute
     Given I change the Email to "foo"
     And I save the product
-    Then I should see validation error "This value is not a valid email address."
+    Then I should see validation error "The email attribute requires an e-mail address."
     And there should be 1 error in the "Product information" tab
 
   Scenario: Validate the email validation rule constraint of scopable text attribute
     Given I change the Emails for scope mobile to "foo"
     And I save the product
-    Then I should see validation error "This value is not a valid email address."
+    Then I should see validation error "The emails attribute requires an e-mail address."
     And there should be 1 error in the "Product information" tab
 
   Scenario: Validate the url validation rule constraint of text attribute

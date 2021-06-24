@@ -12,7 +12,7 @@ const RefEntityBreadcrumb = ({referenceEntityIdentifier, recordCode}: RefEntityB
   const indexHref = `#${useRoute('akeneo_reference_entities_reference_entity_index')}`;
   const referenceEntityHref = `#${useRoute('akeneo_reference_entities_reference_entity_edit', {
     identifier: referenceEntityIdentifier,
-    tab: 'attribute',
+    tab: 'record',
   })}`;
 
   const router = useRouter();

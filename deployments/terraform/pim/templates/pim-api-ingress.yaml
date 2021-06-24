@@ -1,0 +1,29 @@
+apiVersion: networking.k8s.io/v1beta1
+kind: Ingress
+metadata:
+  name: pim-api-external-{{ .Values.global.extraLabels.instanceName }}
+  annotations:
+    traefik.ingress.kubernetes.io/router.tls: "true"
+    traefik.ingress.kubernetes.io/router.tls.options: default
+    traefik.ingress.kubernetes.io/router.entrypoints: websecure
+    traefik.ingress.kubernetes.io/priority: "9"
+    kubernetes.io/ingress.class: traefik
+  labels:
+    component: "pim-api-ingress" # Deprecated. Cf https://www.notion.so/akeneo/Tagging-strategy-782b4ae037c44d4884b02c8c62e81117
+    app.kubernetes.io/component: "pim-api-ingress"
+    app.kubernetes.io/instance: "{{ .Values.global.extraLabels.instanceName }}"
+    role: "pim-api-ingress" # Deprecated. Cf https://www.notion.so/akeneo/Tagging-strategy-782b4ae037c44d4884b02c8c62e81117
+    {{- include "pim.standardLabels" . | indent 4 }}
+    {{- include "pim.extraLabels" . | indent 4 }}
+spec:
+  tls:
+  - hosts:
+    - {{ required ".Values.common.pimMasterDomain" .Values.common.pimMasterDomain }}
+  rules:
+  - host: {{ required ".Values.common.pimMasterDomain" .Values.common.pimMasterDomain }}
+    http:
+      paths:
+      - path: /api
+        backend:
+          serviceName: pim-api
+          servicePort: pim-api-http

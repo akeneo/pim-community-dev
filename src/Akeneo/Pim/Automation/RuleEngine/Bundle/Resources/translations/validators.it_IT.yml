@@ -1,0 +1,16 @@
+pimee_catalog_rule:
+  rule_definition:
+    validation:
+      currency:
+        unknown: 'È richiesta una valuta valida; la valuta "{{ currency }}" non esiste o non è attivata'
+      measurement:
+        invalid_unit: 'Il codice unità "{{ unitCode }}" non esiste o non appartiene alla famiglia di unità di misura dell''attributo "{{ attributeCode }}"'
+      attribute:
+        unexpected_type: 'L''attributo "{{ attribute_code }}" ha un tipo di attributo "{{ invalid_type }}" non valido. È richiesto un attributo {{ expected_types }}'
+      actions:
+        concatenate:
+          missing_source_key: 'È richiesta una singola chiave tra "campo", "testo" o "nuova_riga". Selezionane una'
+          only_one_source_key_expected: 'È richiesta una singola chiave tra "campo", "testo" o "nuova_riga". Selezionane solo una'
+        calculate:
+          missing_operand_key: 'È richiesta la chiave "valore" o "campo", ma entrambe sono mancanti o vuote'
+          only_one_key_expected: 'È richiesta la chiave "valore" o "campo". Scegline una'

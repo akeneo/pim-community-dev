@@ -14,9 +14,11 @@ teamwork_assistant:
     message: '「%project_label%」を充実させるための新商品があります。予定日は「%due_date%」'
     project_finished:
       contributor: おめでとうございます! あなたの %project_label% で作成された商品が100%完了しました
+      owner: '<strong>%due_date%</strong> が期日のプロジェクト <strong>%project_label%</strong> は終了しました。'
       show: 表示
     due_date:
       contributor: 商品の %percent%% を%project_label%で完了しています。%due_date% を最後の商品に記入するのを忘れないでください。
+      owner: '<strong>%due_date%</strong> が期日のプロジェクト <strong>%project_label%</strong> は 100% 完了ではありません。'
       start: 開始
   datagrid:
     project_completeness: プロジェクトの進捗状況
@@ -29,6 +31,7 @@ teamwork_assistant:
   user:
     deletion:
       user_linked_to_project: このユーザーはまだ１件以上のプロジェクトにリンクされています。このユーザーアカウント内でリンクされているグループを削除してください。
+      user_is_project_owner: このユーザーはまだ 1 つ以上のプロジェクトのオーナーです。このユーザーのプロジェクトをすべて削除してください。
 job_execution:
   summary:
     processed_products: 処理済商品

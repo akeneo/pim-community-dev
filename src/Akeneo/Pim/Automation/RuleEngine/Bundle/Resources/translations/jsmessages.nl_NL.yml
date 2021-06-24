@@ -42,6 +42,13 @@ pimee_catalog_rule:
           success: U verwijderde de geselecteerde regels met succes.
           error: Er deed zich een fout voor tijdens het verwijderen van de regels.
           empty_selection: Geen regels geselecteerd.
+      tags:
+        set: Instellen
+        calculate: Berekenen
+        clear: Wissen
+        concatenate: Samenvoegen
+        copy: Kopiëren
+        remove: Verwijderen
   form:
     attribute:
       tab:
@@ -80,6 +87,9 @@ pim_notification:
     mass_edit_rule: Massa bewerkregel
     execute_rules: Uitvoering van regels
 pim_menu:
+  navigation:
+    settings:
+      automation: Automatisering
   item:
     rule: Regels
 pim_title:

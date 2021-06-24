@@ -108,20 +108,38 @@ pim:
   replicas: 2
   extraLabels: {}
   secret: null # Generate me with `uuidgen`
-  fpm:
-    resources:
-      limits:
-        memory: "2048Mi"
-      requests:
-        cpu: "200m"
-        memory: "512Mi"
-  httpd:
-    resources:
-      limits:
-        memory: "128Mi"
-      requests:
-        cpu: "200m"
-        memory: "128Mi"
+  web:
+    replicas: 2
+    fpm:
+      resources:
+        limits:
+          memory: "1024Mi"
+        requests:
+          cpu: "200m"
+          memory: "256Mi"
+    httpd:
+      resources:
+        limits:
+          memory: "128Mi"
+        requests:
+          cpu: "200m"
+          memory: "128Mi"
+  api:
+    replicas: 2
+    fpm:
+      resources:
+        limits:
+          memory: "1024Mi"
+        requests:
+          cpu: "200m"
+          memory: "256Mi"
+    httpd:
+      resources:
+        limits:
+          memory: "128Mi"
+        requests:
+          cpu: "200m"
+          memory: "128Mi"
   elasticsearch:
     settings:
       totalFieldsLimit: 10000

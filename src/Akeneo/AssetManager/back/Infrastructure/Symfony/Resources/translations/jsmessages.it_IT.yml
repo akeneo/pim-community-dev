@@ -1,4 +1,5 @@
 pim_title:
+  akeneo_asset_manager_asset_family_index: Gestore asset
   akeneo_asset_manager_asset_family_edit: Modifica una famiglia di asset.
   akeneo_asset_manager_asset_edit: Modifica un asset
 pim_asset_manager:
@@ -11,6 +12,7 @@ pim_asset_manager:
   asset_counter: '{0} Nessun asset|{1} {{ count }} asset|]1,Inf] {{ count }} asset'
   asset_collection:
     add_asset: 'Aggiungi attività'
+    upload_asset: 'Carica asset'
     add_asset_title: 'Apri il selettore attività per aggiungere attività alla raccolta'
     no_asset_in_collection: 'Spiacenti, non c''è alcuna attività in questa raccolta.'
     helper:
@@ -39,7 +41,6 @@ pim_asset_manager:
     filter:
       title: Filtri attività
     basket:
-      title: '{{ assetCount }} attività selezionata|{{ assetCount }} attività selezionate'
       empty_title: Il tuo cestino della spesa è vuoto
       remove_one_asset: Rimuovi l'attività {{ assetName }} dalla selezione attività
       remove_all_assets: Rimuovi tutto
@@ -47,11 +48,11 @@ pim_asset_manager:
     previous: Attività precedente
     next: Attività successiva
     empty_main_media: Questo asset non ha media.
+    other_main_media: Impossibile generare l'anteprima di questo asset.
     edit_asset: Modifica attività
     download: Scarica
     copy_url: Copia URl
     error: Si è verificato un errore durante la generazione dell'anteprima
-  close: Chiudi il modale
   breadcrumb:
     products: Prodotti
   app:
@@ -85,14 +86,28 @@ pim_asset_manager:
         attribute_reference_should_exist: 'L''attributo "{{%attribute_code%}}" non esiste per questa famiglia di asset'
         filename_is_not_unique: 'Già esiste una trasformazione con prefisso al nome del file "{{%filename_prefix%}}" e suffisso "{{%filename_suffix%}}" per l''attributo sorgente "{{%attribute_code%}}"'
         code_is_not_unique: 'Non è possibile definire due trasformazioni con lo stesso codice "{{%transformation_code%}}"'
+        unknown_extra_field: 'La proprietà {{ {{ field }} }} non era prevista.'
+      naming_convention:
+        property_should_exist: 'La proprietà "{{ %property% }}" non esiste per questa famiglia di asset'
+        not_main_media_attribute_code: 'La proprietà deve corrispondere al codice dell''attributo definito come media principale'
       rule_template:
+        limit_reached: 'Hai raggiunto il limite di {{ %limit% }} regole di link prodotto per la famiglia di asset "{{ %asset_family_identifier%}}".'
+        product_selection_cannot_be_empty: 'Devi specificare almeno una selezione del prodotto nella tua regola di link prodotto'
+        product_assignment_cannot_be_empty: 'Devi specificare almeno un''assegnazione prodotto nella tua regola di link prodotto'
         extrapolated_attribute_should_exist: 'L''attributo "{{%attribute_code%}}" non esiste per questa famiglia di asset'
+        extrapolated_attribute_type_should_not_have_one_value_per_channel: 'L''attributo "{{ %attribute_code% }}" non può essere usato per l''estrapolazione poiché ha un solo valore per canale'
+        extrapolated_attribute_type_should_not_have_one_value_per_locale: 'L''attributo "{{ %attribute_code% }}" non può essere usato per l''estrapolazione poiché ha un solo valore per impostazione locale'
+        assignment_mode_not_supported: 'Modalità di assegnazione "{{ %assignment_mode% }}" non valida trovata in una regola di link prodotto; prevista: "sostituisci" o "aggiungi"'
+        assignmement_attribute_does_not_support_this_asset_family: 'L''attributo di prodotto "{{ %product_attribute_code% }}" non può contenere gli asset della famiglia di asset "{{ %asset_family_identifier% }}"'
+        assignmement_attribute_does_not_exist: 'l''attributo di prodotto "{{ %product_attribute_code% }}" non esiste'
+        assignmement_attribute_is_not_an_asset_collection: 'l''attributo di prodotto "{{ %product_attribute_code% }}" non è un attributo di tipo raccolta asset'
     button:
       save: Salva
       save_permission: Salva
       create: Crea una famiglia di asset
       edit: Modifica famiglia
       view: Visualizzare famiglia
+      execute_product_link_rules: Esegui regole
     permission:
       title: Permessi famiglia asset
     title: Attività
@@ -104,23 +119,23 @@ pim_asset_manager:
       properties: Proprietà
       permission: Permessi
       transformations: Trasformazioni
+      product_link_rules: Regole di link prodotto
     transformations:
-      help:
-        title: 'Benvenuto alla tua nuova area di gestione degli asset!'
-        description: 'È possibile definire qui fino a 10 trasformazioni per famiglia di asset.'
-        link: 'Se vuoi andare più a fondo nelle nuove trasformazioni del Gestore Asset, clicca qui'
       subsection: 'Proprietà della trasformazione'
     product_link_rules:
+      naming_convention_subsection: 'Proprietà convenzione di denominazione'
+      product_link_rules_subsection: 'Proprietà regole di link prodotto'
       help:
-        title: 'Benvenuto alla tua nuova area di gestione degli asset!'
-        description: 'È possibile definire qui fino a 2 regole di collegamento dei prodotti per famiglia di asset.'
-        link: 'Se vuoi andare più a fondo della funzionalità di regole di collegamento prodotto, clicca qui'
+        description: 'Qui puoi definire fino a 2 regole di link prodotto per ciascuna famiglia di asset.'
+        link: 'Se vuoi andare più a fondo nella funzionalità di regole di link prodotto, clicca qui'
       execute_rules:
         confirm_title: Conferma esecuzione
         confirm_content: Sei sicuro di voler eseguire tutte le regole? (potrebbe richiedere molto tempo)
-        cancel: Annulla
+        execute_rules: Esegui regole
       execute_naming_convention:
-        cancel: Annulla
+        confirm_title: Conferma esecuzione
+        confirm_content: Sei sicuro di voler eseguire la convenzione di denominazione? (potrebbe richiedere molto tempo)
+        execute_naming_convention: Esegui convenzione di denominazione
     properties:
       title: Proprietà famiglia asset
       identifier: Codice
@@ -155,10 +170,8 @@ pim_asset_manager:
       input:
         label: Etichetta
         code: Codice (richiesto)
-      confirm: Salva
     delete:
       message: Sei sicuro di voler eliminare la famiglia di asset "{{ assetFamilyLabel }}"?
-      title: Attributo
     notification:
       save:
         success: Famiglia di asset aggiornata correttamente.
@@ -172,6 +185,9 @@ pim_asset_manager:
       compute_transformations:
         success: Le trasformazioni sono state avviate. Una volta terminata questa attività, vedrai le tue nuove variazioni aggiornate nei tuoi asset.
         fail: Si è verificato un errore durante l'elaborazione delle trasformazioni
+      execute_product_link_rules:
+        success: Le regole di link prodotto sono state lanciate
+        fail: Si è verificato un errore durante il tentativo di lanciare le regole di link prodotto
     helper:
       no_asset_family:
         link: Per ulteriori dettagli, ti invitiamo a leggere questo articolo.
@@ -202,6 +218,7 @@ pim_asset_manager:
     no_data:
       subtitle: Fai clic sul pulsante "Aggiungi nuovo" per creare il primo asset
     no_result:
+      title: La tua ricerca non ha restituito risultati
       subtitle: Riprova con nuovi criteri di ricerca.
     selector:
       no_value: Clicca qui per selezionare un'attività.
@@ -212,7 +229,6 @@ pim_asset_manager:
       create: Crea un asset
       mass_upload: Caricamento di massa
       delete: Elimina
-      delete_all: Elimina tutti gli asset
       back: Torna all'elenco
       launch_transformations: Avvia trasformazioni
       fullscreen: Schermo intero
@@ -227,6 +243,8 @@ pim_asset_manager:
         subtitle: 'Per iniziare a collegare prodotti a questa famiglia puoi crearne uno nuovo: '
         link: Crea un nuovo attributo prodotto
       not_enough_items:
+        subtitle:
+          not_usable_in_grid: Per scoprire tutti i prodotti collegati, l'attributo di prodotto deve essere impostato su "utilizzabile nella griglia".
         button: Mostra tutti i prodotti
       no_product:
         title: Questo asset non è collegato a nessun prodotto tramite l'attributo prodotto "{{ entityLabel }}"
@@ -236,6 +254,7 @@ pim_asset_manager:
       code: Codice
       label: Etichetta
       edit_subsection: Modifica attività
+      main_media_preview: Anteprima media principale
     title: Attività
     create:
       header:
@@ -246,7 +265,6 @@ pim_asset_manager:
         label: Etichetta
         code: Codice (richiesto)
         create_another: Crea un altro asset
-      confirm: Salva
     upload:
       line_count: '[0,1]{{ count }} file|]1,Inf] {{ count }} file'
       title: Carica asset
@@ -258,6 +276,7 @@ pim_asset_manager:
       drop_or_click_here: Trascina e rilascia qui i file o fai click qui
       will_appear_here: Carica gli asset e saranno visualizzati qui!
       discard_changes: Perderai i tuoi asset se chiudi questa finestra senza crearli.
+      disabled_for_media_link: Impossibile caricare asset in questa famiglia poiché l'attributo utilizzato come media principale è un attributo link multimediale
       list:
         asset: Asset
         filename: Nome file
@@ -274,8 +293,13 @@ pim_asset_manager:
         created: creato
     delete:
       title: Asset
-    delete_all:
-      confirm: Sei sicuro di voler eliminare tutti gli asset "{{ entityIdentifier }}"? Se sono collegati a prodotti, i collegamenti ai prodotti saranno eliminati.
+    mass_delete:
+      title: Attività
+    mass_edit:
+      title: "[0, 1]Modifica valori attributo di {{ count }} asset|]1,Inf] Modifica valori attributo di {{ count }} asset"
+      action:
+        append: Aggiungi
+        replace: Sostituisci
     grid:
       search: Cerca su attributi di testo, di codice ed etichetta
       filter:
@@ -317,9 +341,6 @@ pim_asset_manager:
       delete:
         success: L'asset "{{ code }}" è stato eliminato correttamente.
         fail: Si è verificato un errore durante l'eliminazione dell'asset
-      delete_all:
-        success: Tutti gli asset "{{ entityIdentifier }}" sono stati eliminati correttamente.
-        fail: Si è verificato un errore durante l'eliminazione degli asset di questa famiglia di asset
     completeness:
       label: Completo
   attribute:
@@ -361,7 +382,6 @@ pim_asset_manager:
         value_per_channel: Valore per canale
       placeholder:
         asset_type: Seleziona la tua famiglia di asset collegata
-      confirm: Salva
     edit:
       delete: Elimina l'attributo
       title: Modifica attributo {{ code }}
@@ -425,15 +445,12 @@ pim_asset_manager:
       sub_title: Famiglie di Asset
       helper:
         title: Traduzioni etichetta
+    media_link:
+      reload: Ricarica la thumbnail del link a contenuti multimediali
     media_file:
       placeholder: Trascina e rilascia per caricare o fai click qui
       uploading: Caricamento...
-  modal:
-    delete:
-      subtitle: Conferma eliminazione
-      button:
-        cancel: Annulla
-        confirm: Elimina
+    used_as_transformation_target: Questo campo è di sola lettura poiché è usato come destinazione in una trasformazione asset.
 pim_enrich:
   confirmation:
     discard_changes: 'Perderai tutte le modifiche all''entità "{{ entity }}" se abbandoni la pagina.'
@@ -465,6 +482,9 @@ pim_import_export:
       job_type:
         asset_manager_compute_transformations: "Calcola trasformazioni asset"
         asset_manager_link_assets_to_products: "Collega asset ai prodotti"
+batch_jobs:
+  default_steps:
+    link_assets_to_products: Collega asset ai prodotti
 job_execution:
   summary:
     assets: Attività

@@ -90,6 +90,8 @@ pim_asset_manager:
         should_be_numeric: 'Dieses Feld sollte ein numerischer Wert mit dem richtigen Dezimaltrennzeichen sein'
       main_media:
         not_main_media_attribute: 'Das erwartete Attribut als Hauptmedium ist "%main_media_attribute%", "%attribute%" gegeben.'
+      media_link:
+        protocol_not_allowed: 'Dieses Feld sollte mit einem gültigen Protokoll beginnen. Erlaubte Protokolle sind: %allowed_protocols%.'
   attribute:
     validation:
       options:
@@ -127,6 +129,7 @@ pim_asset_manager:
         asset_family_should_exist: 'Die Asset-Familie "%asset_family_code%" wurde nicht gefunden.'
       prefix:
         should_not_be_empty: 'Das Präfix darf keine leere Zeichenfolge sein.'
+        protocol_not_allowed: 'Dieses Feld sollte mit einem gültigen Protokoll beginnen. Erlaubte Protokolle sind: %allowed_protocols%.'
       suffix:
         should_not_be_empty: 'Das Suffix darf keine leere Zeichenfolge sein.'
       media_type:

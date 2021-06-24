@@ -1,5 +1,5 @@
 import React from 'react';
-import {screen} from '@testing-library/react';
+import {act, screen} from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
 import {renderWithProviders} from '@akeneo-pim-community/legacy-bridge/tests/front/unit/utils';
 import {AddAttributeDropdown} from './AddAttributeDropdown';
@@ -42,7 +42,9 @@ test('it renders all not read only attribute properly', () => {
 
   const dropdownButton = screen.getByText('Add attributes');
   expect(dropdownButton).toBeInTheDocument();
-  userEvent.click(dropdownButton);
+  act(() => {
+    userEvent.click(dropdownButton);
+  });
 
   expect(screen.getByText('Description')).toBeInTheDocument();
   expect(screen.getByText('Name')).toBeInTheDocument();
@@ -58,7 +60,10 @@ test('it call onAdd handler when user select an attribute', () => {
 
   const dropdownButton = screen.getByText('Add attributes');
   expect(dropdownButton).toBeInTheDocument();
-  userEvent.click(dropdownButton);
+  act(() => {
+    userEvent.click(dropdownButton);
+  });
+
   const attributeToAdd = screen.getByText('Name');
   userEvent.click(attributeToAdd);
 

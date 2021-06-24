@@ -8,15 +8,37 @@ pim_datagrid:
   no_entities:
     proposal: Ninguna propuesta a revisar.
     product_draft: No hay ningún proyecto de producto a revisar.
+  no_entities.published product: No se ha encontrado ningún producto publicado
   no_results:
     proposal: Ninguna propuesta a revisar. Intente cambiar los criterios de búsqueda.
     product_draft: No hay ningún proyecto de producto a revisar. Intentar cambiar tu criterio de búsqueda.
+  no_results.published product: Lo sentimos, no hay ningún producto publicado para su búsqueda.
   workflow:
+    partial_approve: Aprobar cambios en el atributo {{ attribute }} del producto {{ product }}
+    partial_reject: Rechazar cambios en el atributo {{ attribute }} del producto {{ product }}
+    by: por
+    at: a las
     status:
       in_progress: En progreso
       ready: Aguardando aprobación
+      can_be_partially_reviewed: Puede ser revisado parcialmente
+      can_not_be_approved: No puede ser revisado
+      can_not_be_deleted: No puede ser eliminado
     status_message:
       ready: Aguardando aprobación
+      in_progress: Esta propuesta está actualmente en progreso y aún no ha sido enviada.
+      can_be_partially_reviewed: Solo puede revisar parcialmente esta propuesta debido a que ciertos cambios se aplican a valores que usted no tiene el permiso de editar. Contacte con el administrador para cambiar sus permisos.
+      can_not_be_approved: No puede revisar esta propuesta debido a que todos los cambios se aplicarán en valores que usted no tiene el permiso de editar. Contacte con el administrador para cambiar sus permisos.
+      can_not_be_deleted: No puede eliminar esta propuesta debido a que todos los cambios se aplicarán en valores que usted no tiene el permiso de editar. Contacte con el administrador para cambiar sus permisos.
+    draft_in_progress: Hay un borrador de {{ author }} en curso para este producto.
+    no_diff: El valor «{{ value }}» es el mismo entre la propuesta y la copia de trabajo.
+    new_value: 'Nuevo valor:'
+    old_value: 'Valor antiguo:'
+    see_more: Ver más
+    actions:
+      approve_all: Aprobar todo
+      refuse_all: Rechazar todo
+    characters_left: ']-Inf, 1]{{ count }} carácter restante|]1, Inf[{{ count }} caracteres restantes'
 pimee_datagrid:
   cells:
     expand:
@@ -29,6 +51,7 @@ pimee_workflow:
         original_product: Editar copia de trabajo
     proposal:
       modal.title: Hacer un comentario (opcional - 255 caracteres max.)
+    removing_error: Las entidades vinculadas a productos publicados no se pueden eliminar.
   proposal:
     overview: "]-Inf, 1]{{ count }} propuesta|]1, Inf[{{ count }} propuestas"
     selected: "]-Inf, 1]{{ count }} propuesta seleccionada|]1, Inf[{{ count }} propuestas seleccionadas"
@@ -41,14 +64,20 @@ pimee_workflow:
       error: "La propuesta no puede ser aplicada debido al siguiente error: {{ error }}"
     reject:
       title: Rechazar propuesta
+      success: La propuesta ha sido rechazada
+      error: "La propuesta no se puede rechazar debido al siguiente error: {{ error }}"
     remove:
       title: Suprimir propuesta
+      success: La propuesta ha sido eliminada
+      error: "La propuesta no se puede eliminar debido al siguiente error: {{ error }}"
     partial_approve:
       title: Aprobar información parcial
       success: La propuesta ha sido validada parcialmente con éxito
+      error: "La propuesta no puede ser parcialmente aprobada debido al siguiente error: {{ error }}"
     partial_reject:
       title: Cambios rechazados parcialmente
       success: Los cambios han sido rechazados con éxito
+      error: "La propuesta no puede ser parcialmente rechazada debido al siguiente error: {{ error }}"
 batch_jobs:
   csv_published_product_export:
     label: Exportar productos publicados en CSV
@@ -73,6 +102,7 @@ batch_jobs:
     import.label: Importar propuestas de productos en XLSX
   xlsx_product_model_proposal_import:
     label: Importar propuestas de modelo de producto en XLSX
+    import.label: Importar propuestas de modelo de producto en XLSX
   csv_published_product_quick_export:
     export.label: Exportación rápida en CSV de los productos publicados
     perform.label: Exportación rápida en CSV de los productos publicados
@@ -87,6 +117,11 @@ batch_jobs:
     perform.label: Exportación rápida de la cuadrícula de productos publicados en Xlsx
   publish_product:
     perform.label: Productos publicados
+  unpublish_product:
+    perform.label: Despublicar productos
+  default_steps:
+    clean_attribute:
+      clean_draft: Propuestas de limpieza
 pim_notification:
   types:
     pimee_workflow_product_draft_notification_new_proposal: Nueva propuesta
@@ -97,6 +132,7 @@ pim_notification:
     pimee_workflow_product_draft_notification_approve: Propuesta aprobada
     pimee_workflow_product_draft_notification_refuse: Propuesta rechazada
     pimee_workflow_product_draft_notification_remove: Propuesta eliminada
+    pimee_workflow_product_draft_notification_sent: Propuestas enviadas
 pimee_dashboard:
   widget:
     product_drafts:
@@ -105,6 +141,8 @@ pimee_dashboard:
       product: Producto
       review: Revisión
       empty: Ninguna propuesta a revisar
+      title: Propuestas para revisar
+      view_all: Ver todas las propuestas
     header.view_all: Ver todo
 pimee_enrich.entity.product:
   module:
@@ -112,6 +150,8 @@ pimee_enrich.entity.product:
       published: Publicado
       revert: Restaurar
     attribute:
+      can_be_updated_by_rules: "]-Inf, 1]Este atributo se puede actualizar por <span>una regla</span>|]1, +Inf[Este atributo se puede actualizar por <span>{{ count }} reglas</span>"
+      can_be_updated_by_rules_readonly: "]-Inf, 1]Este atributo se puede actualizar por una regla|]1, +Inf[Este atributo se puede actualizar por {{ count }} reglas"
       value_updated: Este valor se actualizará para el proyecto actual
     meta:
       published_version: Versión publicada
@@ -201,3 +241,7 @@ pim_title:
   pimee_workflow_proposal_index: Propuestas
   pimee_workflow_published_product_index: Productos publicados
   pimee_workflow_published_product_view: Producto publicado {{ product.label }} | Ver
+pim_analytics:
+  info_type:
+    nb_published_products: Número de productos publicados
+    nb_product_drafts: Número de borradores de productos

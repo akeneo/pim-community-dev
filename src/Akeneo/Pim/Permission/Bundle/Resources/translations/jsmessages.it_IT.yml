@@ -50,3 +50,12 @@ batch_jobs:
     send_for_approval: Invia per approvazione
 pim_title:
   pimee_enrich_locale_edit: Impostazioni locali | Modifica
+pim_analytics:
+  info_type:
+    nb_custom_category_accesses: Numero di accessi alle categorie personalizzate
+    nb_custom_attribute_group_accesses: Numero di accessi ai gruppi di attributi personalizzati
+category.permissions:
+  view.label: Consentita la visualizzazione dei prodotti
+  edit.label: Consentita la modifica dei prodotti
+  own.label: Consentita la ownership dei prodotti
+  apply_on_children.label: Applica le modifiche sui figli

@@ -9,7 +9,7 @@ metadata:
     {{- include "pim.standardLabels" . | indent 4 }}
     {{- include "pim.extraLabels" . | indent 4 }}
 spec:
-  replicas: {{ .Values.pim.replicas }}
+  replicas: {{ .Values.pim.web.replicas }}
   minReadySeconds: 30
   selector:
     matchLabels:
@@ -32,7 +32,7 @@ spec:
         ad.datadoghq.com/fpm.logs: '[{ "service": "pim-enterprise-dev", "source": "pim-enterprise-dev", "log_processing_rules": [{ "type": "exclude_at_match","name": "exclude_php_status_logs", "pattern" : "uri\":\"/status\""},{ "type":"exclude_at_match", "name": "exclude_php_status_logs", "pattern" : "path_info\":\"[^\"]*(/notification/count_unread|/monitoring/services_status)\""}]}]'
         ad.datadoghq.com/httpd.logs: '[{ "service": "httpd", "source": "httpd", "log_processing_rules": [{ "type": "exclude_at_match", "name": "exclude_php_status_logs", "pattern" : "\"(/monitoring/services_status|/status|/notification/count_unread)\""}]}]'
         checksum/env-config: {{ include (print $.Template.BasePath "/env-configmap.yaml") . | replace  (printf "%s-%s" .Chart.Name .Chart.Version ) "" | sha256sum }} # force reload of pods upon change of the configmap
-        checksum/pim-config: {{ include (print $.Template.BasePath "/pim-configmap.yaml") . | replace  (printf "%s-%s" .Chart.Name .Chart.Version ) "" | sha256sum }} # force reload of pods upon change of the configmap
+        checksum/pim-web-config: {{ include (print $.Template.BasePath "/pim-web-configmap.yaml") . | replace  (printf "%s-%s" .Chart.Name .Chart.Version ) "" | sha256sum }} # force reload of pods upon change of the configmap
         checksum/secrets: {{ include (print $.Template.BasePath "/pim-secrets.yaml") . | replace  (printf "%s-%s" .Chart.Name .Chart.Version ) "" | sha256sum }} # force reload of pods upon change of the configmap
     spec:
       affinity:
@@ -73,7 +73,7 @@ spec:
           image: {{ template "pim.imageNameAndTag" . }}
           imagePullPolicy: {{ .Values.image.pim.pullPolicy | quote }}
           command: ['/usr/local/sbin/php-fpm', '-F']
-          resources: {{ toYaml .Values.pim.fpm.resources | nindent 12 }}
+          resources: {{ toYaml .Values.pim.web.fpm.resources | nindent 12 }}
           ports:
             - name: fpm
               containerPort: 9000
@@ -125,7 +125,7 @@ spec:
         - name: httpd
           image: "{{ .Values.image.httpd.repository }}:{{ .Values.image.httpd.tag }}"
           imagePullPolicy: {{ .Values.image.httpd.pullPolicy | quote }}
-          resources: {{ toYaml .Values.pim.httpd.resources | nindent 12 }}
+          resources: {{ toYaml .Values.pim.web.httpd.resources | nindent 12 }}
           ports:
             - containerPort: 80
               name: httpd
@@ -162,7 +162,7 @@ spec:
           emptyDir: {}
         - name: conf-httpd
           configMap:
-            name: pim-config
+            name: pim-web-config
             items:
               - key: httpd.conf
                 path: httpd.conf
@@ -170,7 +170,7 @@ spec:
                 path: mime.types
         - name: conf-fpm
           configMap:
-            name: pim-config
+            name: pim-web-config
             items:
               - key: fpm.conf
                 path: zzz-akeneo.conf

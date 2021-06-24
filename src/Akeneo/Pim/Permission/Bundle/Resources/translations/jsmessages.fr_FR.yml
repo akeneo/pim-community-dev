@@ -61,3 +61,11 @@ pim_analytics:
     nb_custom_locale_accesses: Nombre de locales avec un accès personnalisé
     nb_custom_category_accesses: Nombre de catégories avec un accès personnalisé
     nb_custom_attribute_group_accesses: Nombre de groupes d'attributs avec un accès personnalisé
+category.permissions:
+  view.label: Autorisé à voir les produits
+  edit.label: Autorisé à modifier les produits
+  own.label: Autorisé à gérer les produits
+  own.help: Examiner, publier, dépublier, classer et associer des produits
+  no_access_to_products: Vous n'avez accès à aucun produit dans aucune arborescence, contactez votre administrateur pour résoudre le problème
+  apply_on_children.label: Appliquer les changements aux sous-catégories
+  apply_on_children.help: Les permissions existantes sur les enfants sont conservées

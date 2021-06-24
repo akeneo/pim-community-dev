@@ -27,6 +27,7 @@ import {formatDateForUILocale} from 'akeneoassetmanager/tools/format-date';
 import {Label} from 'akeneoassetmanager/application/component/app/label';
 import {saveAndExecuteNamingConvention} from 'akeneoassetmanager/application/action/asset/save-and-execute-naming-convention';
 import {ReloadPreviewProvider} from 'akeneoassetmanager/application/hooks/useReloadPreview';
+import {ButtonContainer} from 'akeneoassetmanager/application/component/app/button';
 
 interface StateProps {
   form: {
@@ -69,10 +70,6 @@ const MetaContainer = styled.div`
   align-items: center;
 `;
 
-const SecondaryActionsButton = styled(IconButton)`
-  margin-right: 10px;
-`;
-
 const SecondaryActions = ({
   canDelete,
   canExecuteNamingConvention,
@@ -89,7 +86,7 @@ const SecondaryActions = ({
 
   return (
     <Dropdown>
-      <SecondaryActionsButton
+      <IconButton
         icon={<MoreIcon />}
         ghost="borderless"
         level="tertiary"
@@ -171,7 +168,7 @@ const AssetEditView = ({form, asset, context, structure, events, hasEditRightOnA
                             viewName="pim-asset-family-index-user-navigation"
                           />
                         </div>
-                        <div className="AknTitleContainer-actionsContainer AknButtonList">
+                        <ButtonContainer className="AknTitleContainer-actionsContainer AknButtonList">
                           <SecondaryActions
                             canExecuteNamingConvention={executeNamingConventions}
                             canDelete={canDeleteAsset}
@@ -187,7 +184,7 @@ const AssetEditView = ({form, asset, context, structure, events, hasEditRightOnA
                               </Button>
                             </div>
                           ) : null}
-                        </div>
+                        </ButtonContainer>
                       </div>
                     </div>
                     <div className="AknTitleContainer-line">

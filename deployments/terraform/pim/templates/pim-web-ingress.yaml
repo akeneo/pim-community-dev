@@ -6,6 +6,7 @@ metadata:
     traefik.ingress.kubernetes.io/router.tls: "true"
     traefik.ingress.kubernetes.io/router.tls.options: default
     traefik.ingress.kubernetes.io/router.entrypoints: websecure
+    traefik.ingress.kubernetes.io/priority: "1"
     kubernetes.io/ingress.class: traefik
   labels:
     component: "pim-web-ingress" # Deprecated. Cf https://www.notion.so/akeneo/Tagging-strategy-782b4ae037c44d4884b02c8c62e81117
@@ -14,7 +15,6 @@ metadata:
     role: "pim-web-ingress" # Deprecated. Cf https://www.notion.so/akeneo/Tagging-strategy-782b4ae037c44d4884b02c8c62e81117
     {{- include "pim.standardLabels" . | indent 4 }}
     {{- include "pim.extraLabels" . | indent 4 }}
-
 spec:
   tls:
   - hosts:
@@ -25,5 +25,5 @@ spec:
       paths:
       - path: /
         backend:
-          serviceName: pim-http
-          servicePort: pim-http
+          serviceName: pim-web
+          servicePort: pim-web-http

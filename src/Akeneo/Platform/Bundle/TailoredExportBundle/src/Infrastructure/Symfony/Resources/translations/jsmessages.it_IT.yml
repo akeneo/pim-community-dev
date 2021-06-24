@@ -1,0 +1,18 @@
+akeneo.tailored_export:
+  column_list:
+    title: Colonne
+    header:
+      column_name: Nome colonna
+    column_row:
+      remove: Rimuovi colonna
+  column_details:
+    sources:
+      no_source_configuration:
+        title: Non sono presenti operazioni disponibili per questa origine. Solo il suo valore verrà esportato.
+      selection:
+        title: Selezione
+        separator: Separatore
+        type:
+          currency: Valuta
+  column:
+    delete_message: Sei sicuro di voler rimuovere questa colonna?

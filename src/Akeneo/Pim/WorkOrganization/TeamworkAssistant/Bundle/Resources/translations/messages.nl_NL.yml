@@ -27,6 +27,9 @@ teamwork_assistant:
     deletion:
       user_linked_to_project: Deze gebruiker is nog gekoppeld aan een of meer projecten. Verwijder de groepen waaraan hij gekoppeld is in zijn gebruikersaccount.
       user_is_project_owner: Deze gebruiker is nog steeds eigenaar van één of meer projecten. Verwijder alle projecten van deze gebruiker.
+  user_group:
+    deletion:
+      group_linked_to_project: Deze gebruikersgroep wordt gebruikt in een project in Teamwork Assistent en kan niet worden verwijderd
 job_execution:
   summary:
     processed_products: Verwerkte producten

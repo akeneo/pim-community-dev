@@ -14,6 +14,7 @@ akeneo_assetmanager:
     asset:
       create: Crear un activo
       edit: Editar los activos
+      delete: Eliminar activos
       list_product: Listar productos vinculados al activo
       execute_naming_conventions: Ejecutar convenciones de nombres
     attribute:
@@ -26,19 +27,32 @@ akeneo_assetmanager:
   jobs:
     asset_manager_execute_naming_convention:
       error: 'La convención de nombres falló en el activo "{{ asset }}"'
+    asset_manager_mass_delete:
+      error: 'La eliminación en masa ha fallado en los activos «{{ assets }}» con el error «{{ error }}»'
+    asset_manager_mass_edit:
+      error: 'La edición en masa ha fallado en los activos «{{ assets }}» con el error «{{ error }}»'
 pim_import_export:
   widget:
     last_operations:
       job_type:
         asset_manager_compute_transformations: "Calcular transformaciones de activos"
         asset_manager_link_assets_to_products: "Vincular activos a productos"
+        asset_manager_execute_naming_convention: "Ejecutar la convención de nombres de familia de activos"
 pim_analytics:
   info_type:
     api_connection: Número de conexiones API
     nb_asset_families: Número de familias de activos
+    max_number_of_assets_per_asset_family: Número máximo de activos por familia de activos
     average_number_of_values_per_assets: Número promedio de valores por activos
+    average_number_of_assets_per_asset_family: Número promedio de activos por familia de activos
     max_number_of_attributes_per_asset_family: Número máximo de atributos por familia de activos
     average_number_of_attributes_per_asset_family: Número promedio de atributos por familia de activos
+    data_source:
+      tracked: Destino de datos con seguimiento
+      untracked: Destino de Datos sin seguimiento
+    data_destination:
+      tracked: Fuente de datos con seguimiento
+      untracked: Fuente de datos sin seguimiento
     other:
       tracked: Otros rastreados
       untracked: Otros no rastreados
@@ -51,9 +65,22 @@ pim_datagrid:
     type:
       asset_manager_execute_naming_convention: Ejecutar la convención de nombres de familia de activos
       asset_manager_link_assets_to_products: Vincular activos a productos
+      asset_manager_compute_transformations: Calcular transformaciones de activos
+      asset_manager_mass_delete_assets: Eliminar activos en masa
+      asset_manager_mass_edit_assets: Edición en masa los activos
 batch_jobs:
   default_steps:
+    execute_naming_convention: Ejecutar la convención de nombres de familia de activos
     link_assets_to_products: Vincular activos a productos
+    compute_transformations: Calcular transformaciones de activos
 job_execution:
   summary:
     assets: Recursos
+pim_mass_edit.notification.asset_manager_mass_delete_assets:
+  warning: Activos eliminados con éxito con advertencias
+  success: Activos eliminados correctamente
+  error: Error al eliminar el activo
+pim_mass_edit.notification.asset_manager_mass_edit_assets:
+  warning: Activos editados con éxito con advertencias
+  success: Activos editados con éxito
+  error: Edición de activos fallida
