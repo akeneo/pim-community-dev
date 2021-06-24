@@ -1,0 +1,21 @@
+<?php
+
+declare(strict_types=1);
+
+$finder = PhpCsFixer\Finder::create()
+    ->name('*.php')
+    ->notName('*Spec.php')
+    ->in(__DIR__ . '/tests')
+    ->in(__DIR__ . '/src');
+
+$rules = [
+    '@Symfony' => true,
+];
+
+$config = new PhpCsFixer\Config();
+
+return $config
+    ->setRules($rules)
+    ->setFinder($finder)
+    ->setCacheFile('var/.php_cs_symfony.cache')
+    ->setRiskyAllowed(true);
