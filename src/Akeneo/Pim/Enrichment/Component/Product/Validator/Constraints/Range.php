@@ -28,6 +28,9 @@ class Range extends BaseRange
     /** @var string */
     public $minMessage = 'The %attribute% attribute requires an equal or greater than %min_value% value.';
 
+    /** @var string */
+    public $maxMessage = 'The %attribute% attribute requires an equal or lesser than %max_value% value.';
+
     /**
      * {@inheritdoc}
      */

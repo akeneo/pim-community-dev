@@ -81,14 +81,14 @@ Feature: Validate number attributes of a product
   Scenario: Validate the number max constraint of number attribute
     Given I change the Rating to "6"
     And I save the product
-    Then I should see validation tooltip "This value should be between 1 and 5."
+    Then I should see validation tooltip "The rating attribute requires an equal or lesser than 5 value."
     And there should be 1 error in the "Other" tab
 
   Scenario: Validate the number max constraint of scopable number attribute
     Given I switch the scope to "ecommerce"
     And I change the Popularity to "11"
     And I save the product
-    Then I should see validation tooltip "This value should be between 1 and 10."
+    Then I should see validation tooltip "The popularity attribute requires an equal or lesser than 10 value."
     And there should be 1 error in the "Other" tab
 
   Scenario: Validate the type constraint of decimal attribute
