@@ -13,6 +13,7 @@ namespace Akeneo\Pim\Automation\RuleEngine\Component\Connector\Tasklet;
 
 use Akeneo\Tool\Bundle\RuleEngineBundle\Repository\RuleDefinitionRepositoryInterface;
 use Akeneo\Tool\Bundle\RuleEngineBundle\Runner\DryRunnerInterface;
+use Akeneo\Tool\Component\Batch\Item\DataInvalidItem;
 use Akeneo\Tool\Component\Batch\Model\StepExecution;
 use Akeneo\Tool\Component\Connector\Step\TaskletInterface;
 use Akeneo\Tool\Component\StorageUtils\Detacher\BulkObjectDetacherInterface;
@@ -40,12 +41,6 @@ class ImpactedProductCountTasklet implements TaskletInterface
     /** @var BulkObjectDetacherInterface */
     protected $detacher;
 
-    /**
-     * @param RuleDefinitionRepositoryInterface $ruleDefinitionRepo
-     * @param DryRunnerInterface                $productRuleRunner
-     * @param BulkSaverInterface                $saver
-     * @param BulkObjectDetacherInterface       $detacher
-     */
     public function __construct(
         RuleDefinitionRepositoryInterface $ruleDefinitionRepo,
         DryRunnerInterface $productRuleRunner,
@@ -66,10 +61,17 @@ class ImpactedProductCountTasklet implements TaskletInterface
         $jobParameters = $this->stepExecution->getJobParameters();
         $ruleDefinitions = $this->ruleDefinitionRepo->findBy(['id' => $jobParameters->get('ruleIds')]);
         foreach ($ruleDefinitions as $ruleDefinition) {
-            $ruleSubjectSet = $this->productRuleRunner->dryRun($ruleDefinition);
-            $ruleDefinition->setImpactedSubjectCount($ruleSubjectSet->getSubjectsCursor()->count());
-
-            $this->stepExecution->incrementSummaryInfo('rule_calculated');
+            try {
+                $ruleSubjectSet = $this->productRuleRunner->dryRun($ruleDefinition);
+                $ruleDefinition->setImpactedSubjectCount($ruleSubjectSet->getSubjectsCursor()->count());
+                $this->stepExecution->incrementSummaryInfo('rule_calculated');
+            } catch (\Exception $e) {
+                $this->stepExecution->addWarning(
+                    sprintf('Invalid rule "%s": could not calculate the impacted product count. Internal error : %s', $ruleDefinition->getCode(), $e->getMessage()),
+                    [],
+                    new DataInvalidItem(['rule_code' => $ruleDefinition->getCode()])
+                );
+            }
         }
 
         $this->saver->saveAll($ruleDefinitions);

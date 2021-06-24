@@ -15,6 +15,7 @@ use Akeneo\Tool\Bundle\RuleEngineBundle\Model\RuleDefinitionInterface;
 use Akeneo\Tool\Bundle\RuleEngineBundle\Model\RuleSubjectSetInterface;
 use Akeneo\Tool\Bundle\RuleEngineBundle\Repository\RuleDefinitionRepositoryInterface;
 use Akeneo\Tool\Bundle\RuleEngineBundle\Runner\DryRunnerInterface;
+use Akeneo\Tool\Component\Batch\Item\DataInvalidItem;
 use Akeneo\Tool\Component\Batch\Job\Job;
 use Akeneo\Tool\Component\Batch\Job\JobParameters;
 use Akeneo\Tool\Component\Batch\Model\StepExecution;
@@ -72,6 +73,50 @@ class ImpactedProductCountTaskletSpec extends ObjectBehavior
         $ruleDefinition1->setImpactedSubjectCount(1000)->willReturn($ruleDefinition2);
 
         $stepExecution->incrementSummaryInfo('rule_calculated')->shouldBeCalled();
+
+        $saver->saveAll([$ruleDefinition1, $ruleDefinition2])->shouldBeCalled();
+        $detacher->detachAll([$ruleDefinition1, $ruleDefinition2])->shouldBeCalled();
+
+        $this->execute();
+    }
+
+    function it_does_not_block_other_rules_if_a_product_count_fails(
+        $ruleDefinitionRepo,
+        $productRuleRunner,
+        $saver,
+        $detacher,
+        $stepExecution,
+        RuleDefinitionInterface $ruleDefinition1,
+        RuleDefinitionInterface $ruleDefinition2,
+        RuleSubjectSetInterface $ruleSubjectSet2,
+        CursorInterface $cursor2,
+        JobParameters $jobParameters
+    ) {
+        $configuration = [
+            'ruleIds' => [1,2]
+        ];
+        $ruleDefinition1->getCode()->willReturn('rule_1');
+        $stepExecution->getJobParameters()->willReturn($jobParameters);
+        $jobParameters->get('ruleIds')->willReturn($configuration['ruleIds']);
+
+        $ruleDefinitionRepo->findBy(['id' => [1,2]])->willReturn([$ruleDefinition1, $ruleDefinition2]);
+
+        $exception = new \Exception('error message');
+        $productRuleRunner->dryRun($ruleDefinition1)->shouldBeCalled()->willThrow($exception);
+        $productRuleRunner->dryRun($ruleDefinition2)->shouldBeCalled()->willReturn($ruleSubjectSet2);
+
+        $ruleSubjectSet2->getSubjectsCursor()->willReturn($cursor2);
+
+        $cursor2->count()->willReturn(1000);
+
+        $ruleDefinition2->setImpactedSubjectCount(1000)->shouldBeCalled()->willReturn($ruleDefinition2);
+
+        $stepExecution->addWarning(
+            'Invalid rule "rule_1": could not calculate the impacted product count. Internal error : error message',
+            [],
+            new DataInvalidItem(['rule_code' => $ruleDefinition1->getWrappedObject()->getCode()])
+        )->shouldBeCalledOnce();
+        $stepExecution->incrementSummaryInfo('rule_calculated')->shouldBeCalledOnce();
 
         $saver->saveAll([$ruleDefinition1, $ruleDefinition2])->shouldBeCalled();
         $detacher->detachAll([$ruleDefinition1, $ruleDefinition2])->shouldBeCalled();

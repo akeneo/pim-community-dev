@@ -1,5 +1,9 @@
 # 4.0.x
 
+## Bug fixes
+
+- PIM-9932: Fix invalid rule that prevented the affected products calculation for the other rules
+
 # 4.0.115 (2021-06-22)
 
 # 4.0.114 (2021-06-14)
