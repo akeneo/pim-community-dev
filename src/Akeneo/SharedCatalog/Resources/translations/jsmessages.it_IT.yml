@@ -1,0 +1,7 @@
+shared_catalog:
+  recipients:
+    add: Aggiungi e-mail utenti qui
+    email: Indirizzo e-mail
+    invalid_email: Questo valore non è un indirizzo e-mail valido.
+    no_result: Spiacenti, nessuna e-mail corrisponde alla tua ricerca
+    no_data: Ancora nessun indirizzo e-mail dichiarato

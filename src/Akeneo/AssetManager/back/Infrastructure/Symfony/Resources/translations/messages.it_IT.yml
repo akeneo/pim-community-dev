@@ -8,6 +8,8 @@ akeneo_assetmanager:
       delete: Elimina una famiglia di asset
       manage_permission: Gestisci i permessi di una famiglia di asset
       manage_transformation: Gestisci le trasformazioni di una famiglia di asset
+      manage_product_link_rule: Gestisci regole di link prodotto per famiglia di asset
+      execute_product_link_rule: Esegui regole di link prodotto su tutti gli asset di una famiglia di asset
     asset:
       create: Crea un asset
       edit: Modifica gli asset
@@ -24,6 +26,9 @@ pim_import_export:
     last_operations:
       job_type:
         asset_manager_link_assets_to_products: "Collega gli asset ai prodotti"
+pim_analytics:
+  info_type:
+    api_connection: Numero di connessioni API
 #average_percentage_localizable_only_attributes: Average percentage of localizable only attributes per asset family
 #average_percentage_scopable_only_attributes: Average percentage of scopable only attributes per asset family
 #average_percentage_scopable_and_localizable_attributes: Average percentage of localizable and scopable attributes per asset family

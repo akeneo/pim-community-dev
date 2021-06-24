@@ -4,3 +4,11 @@ pimee_enrich.entity.product:
   duplicate:
     title: Duplica il prodotto {{ product_identifier }}
     button: Duplicato
+    flash:
+      success: Il prodotto {{ product_identifier }} è stato duplicato con successo.
+      success_with_attribute_codes: Il prodotto {{ product_identifier }} è stato duplicato con successo. Devi arricchire {{ unique_attribute_codes }} con valori univoci
+pim_dashboard:
+  widget:
+    teamwork_assistant:
+      no_project:
+        title: I progetti possono aiutarti a tracciare i progressi nell'arricchimento di una selezione del prodotto.

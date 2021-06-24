@@ -47,6 +47,7 @@ teamwork_assistant:
       in_progress: PRODOTTI IN CORSO
       done: PRODOTTI FATTI
     searching: ricerca...
+    no_search_results: Spiacenti, nessun risultato presente.
 pim_datagrid:
   view_selector:
     project: Progetti
@@ -69,6 +70,7 @@ pim_notification:
     project_created: Un nuovo progetto per te
     project_finished: Progetto finito
     project_calculation: Calcolo del progetto
+    project_due_date: Data di scadenza progetto
 pim_analytics:
   info_type:
     nb_projects: Numero di progetti

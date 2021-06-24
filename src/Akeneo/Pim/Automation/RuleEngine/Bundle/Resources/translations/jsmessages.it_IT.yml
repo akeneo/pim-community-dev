@@ -67,7 +67,12 @@ pimee_catalog_rule:
           title: Regole
     creation:
       title: Crea una nuova regola
+      constraint:
+        code:
+          required: È richiesto un codice regola
     edit:
+      header:
+        description: Per creare una regola, devi definire la selezione del prodotto e poi aggiungere una o più azioni.
       properties:
         section:
           general: Parametri generali
@@ -101,28 +106,61 @@ pimee_catalog_rule:
         title: Duplica la regola "{{ originalRuleCode }}"
       actions:
         add_action: Aggiungi azione
+        add_category:
+          helper: Per aggiungere la selezione del prodotto a una o più categorie, inizia selezionando gli alberi di categorie e poi seleziona le categorie
+        set_category:
+          helper: Per impostare la selezione del prodotto su una o più categorie, inizia selezionando gli alberi di categorie e poi seleziona le categorie
         category:
           category_tree: Struttura della categoria
           categories_selected: "]-Inf, 1]{{ count }} categoria selezionata|]1, +Inf[{{ count }} categorie selezionate"
+        set_attribute:
+          title: IMPOSTA valore attributo
+          helper: Per impostare i valori per il tuo attributo, inizia selezionando l'attributo di destinazione e poi seleziona il valore che vuoi impostare
+          value_subtitle: Definisci il tuo valore
+        set_quantified_associations:
+          helper: Per impostare le associazioni quantificate, seleziona i tipi di associazione e poi i prodotti, i modelli prodotto o i gruppi che vuoi associare alla selezione del prodotto.
         set_associations:
+          helper: Per impostare le associazioni, seleziona i tipi di associazione e poi i prodotti, i modelli prodotto o i gruppi che vuoi associare alla selezione del prodotto.
           association_types: Tipi di associazione
           add_group: Aggiungi un gruppo
           add_product: Aggiungi un prodotto
           add_product_model: Aggiungi un modello di prodotto
           add_association_type: Aggiungi un tipo di associazione
+          select_title:
+            product_models: Seleziona i tuoi modelli prodotto
           select:
             products: Prodotti
             product_models: Modelli di prodotto
             groups: Gruppi
+          counts:
+            product_models: ']-Inf, 1]{{ count }} modello prodotto|]1, +Inf[{{ count }} modelli prodotto'
+        add_associations:
+          helper: Per aggiungere le associazioni, seleziona i tipi di associazione e poi i prodotti, i modelli prodotto o i gruppi che vuoi associare alla selezione del prodotto.
         clear_attribute:
+          title: CANCELLA valore attributo
           attribute_label: Attributo
+        remove_category:
+          helper: Per rimuovere la selezione del prodotto da una o più categorie, inizia selezionando gli alberi di categorie e poi seleziona le categorie
+        remove_attribute_value:
+          title: RIMUOVI valore attributo
+          helper: Per rimuovere i valori dal tuo attributo, inizia selezionando l'attributo di destinazione e poi seleziona i valori che vuoi rimuovere.
+          value_subtitle: Definisci i tuoi valori da rimuovere
+        add_attribute_value:
+          title: AGGIUNGI valore attributo
+          helper: Per aggiungere valori al tuo attributo, inizia selezionando l'attributo di destinazione e poi seleziona i valori che vuoi aggiungere
+          value_subtitle: Definisci i tuoi valori da aggiungere
+        copy:
+          title: COPIA valore attributo
+          helper: Per copiare i valori da un attributo a un altro, inizia selezionando l'attributo d'origine e poi seleziona l'attributo di destinazione.
         calculate:
+          helper: Per calcolare i valori degli attributi numerici, scegli gli attributi e/o i valori e poi seleziona l'attributo di destinazione in cui inserire il risultato. Se necessario, puoi anche arrotondare il risultato finale.
           operator:
             add: Aggiungi
             subtract: Sottrarre
             multiply: Moltiplica
             divide: Dividi
         concatenate:
+          helper: Per concatenare i valori attributo, aggiungi gli attributi e poi seleziona l'attributo di destinazione.
           add_text: Aggiungi testo
           add_attribute: Aggiungi attributo
           add_new_line: Aggiungi interruzione di linea
@@ -155,11 +193,23 @@ pimee_catalog_rule:
           "<=": è uguale o inferiore a
       notification:
         success: Regola aggiornata correttamente
+      unhandled_attribute_type: Spiacenti, questo tipo di attributo non è ancora gestito. Utilizza l'importazione delle regole.
+      empty_section:
+        set_up_action: Ben fatto! Hai definito la selezione del prodotto. Ora è il momento di configurare la tua azione.
+        add_action: Poi aggiungi una o più azioni da applicare ai tuoi prodotti/modelli prodotto.
     delete:
       description: Sei sicuro di voler eliminare questa regola? Non è possibile annullare questa azione.
       notification:
         failed: Cancellazione della regola non riuscita
         success: Regola eliminata con successo
+    helper:
+      add_to_category: Per aggiungere la selezione del prodotto a una o più categorie, inizia selezionando gli alberi di categorie e poi seleziona le categorie.
+      clear_attribute: Per cancellare il valore attributo, inizia selezionando l'attributo da cancellare.
+      product_selection: "Devi definire la selezione del prodotto per creare la tua regola. Se non sai come, "
+      product_selection_doc_link: dai un'occhiata a questo articolo.
+      set_attribute_info_clear: Devi definire il valore da impostare. Se desideri cancellare il valore attributo, utilizza l'azione Cancella valore attributo.
+    legend:
+      product_selection: Crea una condizione
     tree:
       item:
         selected: Elemento selezionato
@@ -185,7 +235,25 @@ pimee_catalog_rule:
       hour: "]-Inf, 1] Ora|]1, +Inf[ Ore"
       minute: "]-Inf, 1] Minuto|]1, +Inf[ Minuti"
   exceptions:
+    required: Questo campo è obbligatorio
+    required_attribute: È richiesto un attributo
+    required_locale: È richiesta un'impostazione locale per l'attributo {{ attributeLabel }}
+    required_scope: È richiesto un canale per l'attributo {{ attributeLabel }}
+    required_currency: È richiesta una valuta per l'attributo {{ attributeLabel }}
+    required_locale_completeness: È richiesta un'impostazione locale per il completamento
+    required_scope_completeness: È richiesto un canale per il completamento
+    required_value: È richiesto un valore per questa azione
+    required_categories: È richiesta almeno una categoria per questa azione
+    required_constant_for_operation: È richiesto un valore costante per questa operazione
+    required_operator_for_operation: È richiesto un operatore per questa operazione
+    required_unit: È richiesta un'unità di misura
+    identifier_or_quantity_missing: Sono richiesti un identificatore e una quantità per ciascun elemento
+    required_item: È richiesto almeno un elemento per questa azione
+    two_operations_are_required: L'elenco delle operazioni deve contenere 2 o più operazioni.
+    two_items_are_required: L'elenco deve contenere 2 o più elementi.
     or: o
+    measurement_family_not_found: La famiglia di unità di misura "{{ measurement_code }}" non esiste
+    unit_not_found: L'unità "{{ unitCode }}" non è stata trovata nella famiglia di unità di misura "{{ measurement_code }}"
 pim_enrich:
   entity:
     rule:
@@ -203,7 +271,15 @@ batch_jobs:
   add_attribute_value:
     execute_rules.label: Esecuzione regole
   default_steps:
+    export_rules: Esportazione regole
+    import_rules: Importazione regole
     execute_rules: Esecuzione regole
+  yml_rule_import:
+    label: Importazione regole in YAML
+    import.label: Importazione regole
+  yml_rule_export:
+    label: Esportazione regole in YAML
+    export.label: Esportazione regole
   rule_impacted_product_count:
     perform.label: Conta i prodotti interessati
   csv_product_import_with_rules:
