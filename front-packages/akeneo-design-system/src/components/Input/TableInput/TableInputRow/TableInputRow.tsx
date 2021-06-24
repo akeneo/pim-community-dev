@@ -6,14 +6,16 @@ const TableInputTr = styled.tr`
   height: 40px;
   & > td {
     border: 1px solid ${getColor('grey', 60)};
-    border-left-width: 0;
+    border-right-width: 0;
     border-top-width: 0;
   }
   & > td:first-child {
-    border-left-width: 1px;
     position: sticky;
     left: 0;
     z-index: 1;
+  }
+  & > td:last-child {
+    border-right-width: 1px;
   }
 `;
 
