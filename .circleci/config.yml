@@ -574,11 +574,8 @@ jobs:
                     mkdir secret
                     echo "{}" > secret/serviceAccount.json
           - run:
-                name: Start containers
-                command: |
-                    docker load -i php-pim-image.tar
-                    APP_ENV=test C='mysql elasticsearch object-storage pubsub-emulator' make up
-                    docker/wait_docker_up.sh
+                name: Load php image
+                command: docker load -i php-pim-image.tar
           - run:
                 name: Load make commands
                 command: cp vendor/akeneo/pim-onboarder/onboarder.mk make-file/onboarder.mk
@@ -589,6 +586,11 @@ jobs:
                     PIM_VERSION=master SETUP_FOR_CI=1 PIM_CONTEXT=onboarder make setup-onboarder-parameters
                     PIM_VERSION=master PIM_CONTEXT=onboarder make setup-onboarder-tests
                     docker-compose run --rm php php /usr/local/bin/composer dumpautoload
+          - run:
+                name: Start containers
+                command: |
+                    APP_ENV=test C='mysql elasticsearch object-storage pubsub-emulator' make up
+                    docker/wait_docker_up.sh
           - run:
                 name: Change owner of PIM as some files have been created with wrong owner
                 command: sudo chown -R 1000:1000 ~/project

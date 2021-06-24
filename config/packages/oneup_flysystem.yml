@@ -9,8 +9,6 @@ oneup_flysystem:
         archivist:
             adapter: archivist_adapter
             mount: archivist
-            plugins:
-                - oneup_flysystem.plugin.list_files
         jobs_storage:
             adapter: jobs_storage_adapter
             mount: jobsStorage

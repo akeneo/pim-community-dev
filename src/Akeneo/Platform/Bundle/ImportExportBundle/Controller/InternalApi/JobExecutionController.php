@@ -7,7 +7,7 @@ use Akeneo\Tool\Bundle\BatchQueueBundle\Manager\JobExecutionManager;
 use Akeneo\Tool\Bundle\ConnectorBundle\EventListener\JobExecutionArchivist;
 use Akeneo\Tool\Component\Batch\Model\JobExecution;
 use Akeneo\Tool\Component\Connector\LogKey;
-use League\Flysystem\Filesystem;
+use League\Flysystem\FilesystemReader;
 use Oro\Bundle\SecurityBundle\SecurityFacade;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
@@ -29,7 +29,7 @@ class JobExecutionController
     private NormalizerInterface $normalizer;
     private SecurityFacade $securityFacade;
     private array $jobSecurityMapping;
-    private Filesystem $logFilesystem;
+    private FilesystemReader $logFilesystem;
 
     public function __construct(
         TranslatorInterface $translator,
@@ -38,7 +38,7 @@ class JobExecutionController
         JobExecutionRepository $jobExecutionRepo,
         NormalizerInterface $normalizer,
         SecurityFacade $securityFacade,
-        Filesystem $logFilesystem,
+        FilesystemReader $logFilesystem,
         array $jobSecurityMapping
     ) {
         $this->translator = $translator;
@@ -53,16 +53,6 @@ class JobExecutionController
 
     public function getAction($identifier): JsonResponse
     {
-        // TODO: remove this line when upgrading flysystem library
-        /* at the moment the listing of the archives can be very slow if
-            - there are a lot of files for a given job execution (>100000)
-            - the storage is Google Cloud Storage
-          because the GS adapter we currently use ignores the $recursive option and returns every file in the bucket
-          for the given path.
-          The league/flysystem-google-cloud-storage seems to handle this case, but it's only compatible with flysystem v2
-        */
-        \set_time_limit(0);
-
         /** @var JobExecution $jobExecution */
         $jobExecution = $this->jobExecutionRepo->find($identifier);
         if (null === $jobExecution) {
@@ -80,7 +70,7 @@ class JobExecutionController
         $jobResponse = $this->normalizer->normalize($jobExecution, 'internal_api', $context);
 
         $jobResponse['meta'] = [
-            'logExists' => !empty($jobExecution->getLogFile()) && $this->logFilesystem->has(new LogKey($jobExecution)),
+            'logExists' => !empty($jobExecution->getLogFile()) && $this->logFilesystem->fileExists(new LogKey($jobExecution)),
             'archives' => $this->archives($jobExecution),
             'generateZipArchive' => $this->archivist->hasAtLeastTwoArchives($jobExecution),
             'id' => $identifier,

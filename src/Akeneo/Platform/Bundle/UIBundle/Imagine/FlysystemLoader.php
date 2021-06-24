@@ -72,11 +72,11 @@ class FlysystemLoader implements LoaderInterface
 
         foreach ($this->filesystemAliases as $alias) {
             $fs = $this->filesystemProvider->getFilesystem($alias);
-            if ($fs->has($path)) {
+            if ($fs->fileExists($path)) {
                 //TODO: we should use readStream, the problem is that
                 // \Liip\ImagineBundle\Model\Binary expects the full content...
                 $content = $fs->read($path);
-                $mimeType = $fs->getMimetype($path);
+                $mimeType = $fs->mimetype($path);
             }
         }
 

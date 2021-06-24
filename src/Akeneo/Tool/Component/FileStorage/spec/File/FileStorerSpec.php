@@ -5,11 +5,11 @@ namespace spec\Akeneo\Tool\Component\FileStorage\File;
 use Akeneo\Tool\Component\FileStorage\Exception\FileTransferException;
 use Akeneo\Tool\Component\FileStorage\Exception\InvalidFile;
 use Akeneo\Tool\Component\FileStorage\FileInfoFactoryInterface;
+use Akeneo\Tool\Component\FileStorage\FilesystemProvider;
 use Akeneo\Tool\Component\FileStorage\Model\FileInfoInterface;
 use Akeneo\Tool\Component\StorageUtils\Saver\SaverInterface;
-use League\Flysystem\FileExistsException;
-use League\Flysystem\Filesystem;
-use League\Flysystem\MountManager;
+use League\Flysystem\FilesystemOperator;
+use League\Flysystem\UnableToWriteFile;
 use PhpSpec\ObjectBehavior;
 use Prophecy\Argument;
 use Prophecy\Exception\Prediction\FailedPredictionException;
@@ -17,30 +17,32 @@ use Prophecy\Exception\Prediction\FailedPredictionException;
 class FileStorerSpec extends ObjectBehavior
 {
     function let(
-        MountManager $mountManager,
+        FilesystemProvider $filesystemProvider,
         SaverInterface $saver,
-        FileInfoFactoryInterface $factory
+        FileInfoFactoryInterface $factory,
+        FileInfoInterface $fileInfo,
+        FilesystemOperator $filesystem
     ) {
-        $this->beConstructedWith($mountManager, $saver, $factory);
+        $fileInfo->getKey()->willReturn('a/b/c/image.png');
+        $fileInfo->getMimeType()->willReturn('image/png');
+        $factory->createFromRawFile(Argument::type(\SplFileInfo::class), Argument::type('string'))
+                ->willReturn($fileInfo);
+        $filesystemProvider->getFilesystem(Argument::type('string'))->willReturn($filesystem);
+        $this->beConstructedWith($filesystemProvider, $saver, $factory);
     }
 
     function it_stores_a_raw_file(
-        $mountManager,
-        $factory,
-        $saver,
-        \SplFileInfo $rawFile,
-        Filesystem $fs,
-        FileInfoInterface $fileInfo
+        SaverInterface $saver,
+        FileInfoInterface $fileInfo,
+        FilesystemOperator $filesystem,
+        \SplFileInfo $rawFile
     ) {
         $localPathname = sys_get_temp_dir() . DIRECTORY_SEPARATOR . 'my file.php';
         touch($localPathname);
         $rawFile->getPathname()->willReturn($localPathname);
-        $fs->has(Argument::any())->willReturn(false);
 
-        $mountManager->getFilesystem('destination')->willReturn($fs);
-        $factory->createFromRawFile($rawFile, 'destination')->willReturn($fileInfo);
-
-        $fs->writeStream(Argument::cetera())->shouldBeCalled();
+        $filesystem->fileExists('a/b/c/image.png')->willReturn(false);
+        $filesystem->writeStream('a/b/c/image.png', Argument::cetera())->shouldBeCalled();
 
         $saver->save($fileInfo)->shouldBeCalled();
         $this->store($rawFile, 'destination');
@@ -53,22 +55,17 @@ class FileStorerSpec extends ObjectBehavior
     }
 
     function it_stores_a_raw_file_and_deletes_it_locally(
-        $mountManager,
-        $factory,
-        $saver,
-        \SplFileInfo $rawFile,
-        Filesystem $fs,
-        FileInfoInterface $fileInfo
+        SaverInterface $saver,
+        FileInfoInterface $fileInfo,
+        FilesystemOperator $filesystem,
+        \SplFileInfo $rawFile
     ) {
         $localPathname = sys_get_temp_dir() . DIRECTORY_SEPARATOR . 'my file.php';
         touch($localPathname);
         $rawFile->getPathname()->willReturn($localPathname);
-        $fs->has(Argument::any())->willReturn(false);
 
-        $mountManager->getFilesystem('destination')->willReturn($fs);
-        $factory->createFromRawFile($rawFile, 'destination')->willReturn($fileInfo);
-
-        $fs->writeStream(Argument::cetera())->shouldBeCalled();
+        $filesystem->fileExists('a/b/c/image.png')->willReturn(false);
+        $filesystem->writeStream('a/b/c/image.png', Argument::cetera())->shouldBeCalled();
 
         $saver->save($fileInfo)->shouldBeCalled();
         $this->store($rawFile, 'destination', true);
@@ -79,17 +76,16 @@ class FileStorerSpec extends ObjectBehavior
     }
 
     function it_throws_an_exception_if_the_file_can_not_be_writen_on_the_filesystem(
-        $mountManager,
-        $factory,
-        $saver,
-        \SplFileInfo $rawFile,
-        Filesystem $fs,
-        FileInfoInterface $fileInfo
+        SaverInterface $saver,
+        FilesystemOperator $filesystem,
+        \SplFileInfo $rawFile
     ) {
         $rawFile->getPathname()->willReturn(__FILE__);
-        $mountManager->getFilesystem('destination')->willReturn($fs);
-        $factory->createFromRawFile($rawFile, 'destination')->willReturn($fileInfo);
-        $fs->writeStream(Argument::cetera())->willReturn(false);
+
+        $filesystem->fileExists('a/b/c/image.png')->willReturn(false);
+        $filesystem->writeStream('a/b/c/image.png', Argument::cetera())->willThrow(
+            UnableToWriteFile::atLocation(__FILE__, 'Directory is not writable')
+        );
 
         $saver->save(Argument::any())->shouldNotBeCalled();
 
@@ -101,19 +97,15 @@ class FileStorerSpec extends ObjectBehavior
     }
 
     function it_throws_an_exception_if_the_file_already_exists_on_the_filesystem(
-        $mountManager,
-        $factory,
-        \SplFileInfo $rawFile,
-        Filesystem $fs,
-        FileInfoInterface $fileInfo
+        SaverInterface $saver,
+        FilesystemOperator $filesystem,
+        \SplFileInfo $rawFile
     ) {
         $rawFile->getPathname()->willReturn(__FILE__);
-        $fs->has(Argument::any())->willReturn(true);
-        $fs->writeStream(Argument::cetera())->willThrow(new FileExistsException('The file exists.'));
-        $mountManager->getFilesystem('destination')->willReturn($fs);
-        $factory->createFromRawFile($rawFile, 'destination')->willReturn($fileInfo);
-        $fileInfo->getKey()->willReturn('key-file');
-        $fileInfo->getMimeType()->willReturn('mime-type');
+
+        $filesystem->fileExists(Argument::any())->willReturn(true);
+        $filesystem->writeStream(Argument::cetera())->shouldNotBeCalled();
+        $saver->save(Argument::any())->shouldNotBeCalled();
 
         $this->shouldThrow(
             new FileTransferException(

@@ -13,7 +13,7 @@ use Akeneo\Tool\Component\Batch\Model\StepExecution;
 use Akeneo\Tool\Component\Connector\Reader\File\FileIteratorFactory;
 use Akeneo\Tool\Component\Connector\Reader\File\FileIteratorInterface;
 use Doctrine\Common\Collections\ArrayCollection;
-use League\Flysystem\FilesystemInterface;
+use League\Flysystem\FilesystemOperator;
 
 /**
  * Mutualizes code for writers
@@ -36,7 +36,7 @@ abstract class AbstractInvalidItemWriter extends AbstractFilesystemArchiver
         InvalidItemsCollector $collector,
         ItemWriterInterface $writer,
         FileIteratorFactory $fileIteratorFactory,
-        FilesystemInterface $filesystem,
+        FilesystemOperator $filesystem,
         DefaultValuesProviderInterface $defaultValuesProvider,
         $invalidItemFileFormat
     ) {

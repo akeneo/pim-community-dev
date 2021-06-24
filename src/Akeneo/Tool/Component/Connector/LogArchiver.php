@@ -35,7 +35,7 @@ class LogArchiver implements EventSubscriberInterface
 
         if (is_file($logPath)) {
             $log = fopen($logPath, 'r');
-            $this->filesystem->writeStream(new LogKey($jobExecution), $log);
+            $this->filesystem->writeStream((string) new LogKey($jobExecution), $log);
             if (is_resource($log)) {
                 fclose($log);
             }

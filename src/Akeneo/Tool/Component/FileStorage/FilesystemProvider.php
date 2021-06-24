@@ -2,14 +2,10 @@
 
 namespace Akeneo\Tool\Component\FileStorage;
 
-use League\Flysystem\FilesystemInterface;
-use League\Flysystem\MountManager;
+use League\Flysystem\FilesystemOperator;
 
 /**
  * Resolves a filesystem registered in the MountManager.
- *
- * It's a small wrapper to the \League\Flysystem\MountManager to allow the Akeneo and PIM
- * services to be totally independent/agnostic from Flysystem.
  *
  * @author    Julien Janvier <jjanvier@akeneo.com>
  * @copyright 2016 Akeneo SAS (http://www.akeneo.com)
@@ -17,28 +13,21 @@ use League\Flysystem\MountManager;
  */
 class FilesystemProvider
 {
-    /** @var MountManager */
-    protected $mountManager;
+    private array $mountedFilesystems = [];
 
-    /**
-     * @param MountManager $mountManager
-     */
-    public function __construct(MountManager $mountManager)
+    public function __construct(iterable $filesystems)
     {
-        $this->mountManager = $mountManager;
+        foreach ($filesystems as $key => $filesystem) {
+            $this->mountedFilesystems[$key] = $filesystem;
+        }
     }
 
-    /**
-     * Get the filesystem with the corresponding name.
-     *
-     * @param string $name
-     *
-     * @throws \LogicException
-     *
-     * @return FilesystemInterface
-     */
-    public function getFilesystem($name)
+    public function getFilesystem($name): FilesystemOperator
     {
-        return $this->mountManager->getFilesystem($name);
+        if (!isset($this->mountedFilesystems[$name])) {
+            throw new \LogicException(\sprintf('Could not find the %s filesystem', $name));
+        }
+
+        return $this->mountedFilesystems[$name];
     }
 }

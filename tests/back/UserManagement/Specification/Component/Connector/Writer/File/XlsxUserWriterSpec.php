@@ -19,7 +19,7 @@ use Akeneo\Tool\Component\FileStorage\FilesystemProvider;
 use Akeneo\Tool\Component\FileStorage\Model\FileInfoInterface;
 use Akeneo\Tool\Component\FileStorage\Repository\FileInfoRepositoryInterface;
 use Akeneo\UserManagement\Component\Connector\Writer\File\XlsxUserWriter;
-use League\Flysystem\FilesystemInterface;
+use League\Flysystem\FilesystemOperator;
 use PhpSpec\ObjectBehavior;
 
 class XlsxUserWriterSpec extends ObjectBehavior
@@ -80,7 +80,7 @@ class XlsxUserWriterSpec extends ObjectBehavior
         FlatItemBuffer $flatRowBuffer,
         StepExecution $stepExecution,
         FileInfoInterface $fileInfo,
-        FilesystemInterface $filesystem
+        FilesystemOperator $filesystem
     ) {
         $item = [
             'username' => 'julia',
@@ -101,7 +101,7 @@ class XlsxUserWriterSpec extends ObjectBehavior
             ['code' => 'avatar', 'identifier' => 'julia']
         )->shouldBeCalled()->willReturn('files/julia/avatar/');
         $filesystemProvider->getFilesystem('catalogStorage')->willReturn($filesystem);
-        $filesystem->has('a/b/c/abc_julia.png')->shouldBeCalled()->willReturn(true);
+        $filesystem->fileExists('a/b/c/abc_julia.png')->shouldBeCalled()->willReturn(true);
 
         $flatItem = [
             'username' => 'julia',

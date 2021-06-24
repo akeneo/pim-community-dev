@@ -5,7 +5,10 @@ declare(strict_types=1);
 namespace Akeneo\Platform\Bundle\ImportExportBundle\Persistence\Filesystem;
 
 use Doctrine\DBAL\Connection;
+use League\Flysystem\DirectoryListing;
 use League\Flysystem\Filesystem;
+use League\Flysystem\FilesystemOperator;
+use League\Flysystem\StorageAttributes;
 
 /**
  * @copyright 2019 Akeneo SAS (http://www.akeneo.com)
@@ -13,13 +16,11 @@ use League\Flysystem\Filesystem;
  */
 final class DeleteOrphanJobExecutionDirectories
 {
-    private const BATCH_SIZE = 100;
+    private FilesystemOperator $archivistFilesystem;
+    private Connection $connection;
 
-    /** @var Filesystem */
-    private $archivistFilesystem;
-
-    /** @var Connection */
-    private $connection;
+    /** @var array<int, bool> */
+    private array $jobExecutionIds = [];
 
     public function __construct(Filesystem $archivistFilesystem, Connection $connection)
     {
@@ -29,106 +30,47 @@ final class DeleteOrphanJobExecutionDirectories
 
     public function execute(): void
     {
-        $pathsByBatch = $this->getPathsAtLevel3ByBatch();
-
-        foreach ($pathsByBatch as $paths) {
-            $jobExecutionIds = $this->getJobExecutionIdsFromPaths($paths);
-            $existingJobExecutionIds = $this->getExistingJobExecutionIds($jobExecutionIds);
-            $this->deleteOrphanJobExecutionDirectories($paths, $existingJobExecutionIds);
-        }
-    }
-
-    /**
-     * With flysystem v2 we have a memory leak when we fetch all files/paths recursively: the listContents
-     * method gathers all file/directory data in one array. An out of memory error occurred when there is too many
-     * files/directories. With flysystem v2 the problem should be resolved as the function uses a generator instead.
-     * To try to fix this error with flysystem v2, we list the paths step by step to prevent memory errors.
-     * We stop the listing at level 3 as for our use case we don't need to go deeper: the level 3
-     * contains the id of the jobs that we are looking for.
-     *
-     * @TIP-1536: when flysystem v2 will be out, try to replace this method
-     * by $this->archivistFilesystem->listPaths('.', true);
-     *
-     * @return \Iterator
-     */
-    private function getPathsAtLevel3ByBatch(): \Iterator
-    {
-        $paths = [];
-        $directoryFilterFunction = function (array $content) {
-            return $content['type'] === 'dir';
-        };
-
-        $firstLevelContents = array_filter(
-            $this->archivistFilesystem->listContents('.', false),
-            $directoryFilterFunction
-        );
-        foreach ($firstLevelContents as $firstLevelContent) {
-            $secondLevelContents = array_filter(
-                $this->archivistFilesystem->listContents($firstLevelContent['path'], false),
-                $directoryFilterFunction
+        $listDirs = fn (string $path): DirectoryListing => $this->archivistFilesystem
+            ->listContents($path, false)
+            ->filter(
+                fn (StorageAttributes $attributes): bool => $attributes->isDir()
             );
-            foreach ($secondLevelContents as $secondLevelContent) {
-                $thirdLevelPaths = array_filter(
-                    $this->archivistFilesystem->listContents($secondLevelContent['path'], false),
-                    $directoryFilterFunction
-                );
-                foreach ($thirdLevelPaths as $thirdLevelPath) {
-                    $paths[] = $thirdLevelPath['path'];
-                    if (count($paths) >= self::BATCH_SIZE) {
-                        yield $paths;
-                        $paths = [];
+
+        foreach ($listDirs('.') as $level1Directory) {
+            foreach ($listDirs($level1Directory->path()) as $level2Directory) {
+                foreach ($listDirs($level2Directory->path()) as $level3Directory) {
+                    $jobExecutionId = $this->getJobExecutionIdFromPath($level3Directory->path());
+                    if (null !== $jobExecutionId && false === $this->jobExecutionExists($jobExecutionId)) {
+                        $this->archivistFilesystem->deleteDirectory($level3Directory->path());
                     }
                 }
             }
         }
-
-        if (count($paths) > 0) {
-            yield $paths;
-        }
     }
 
-    private function getJobExecutionIdsFromPaths(array $paths): array
+    private function getJobExecutionIdFromPath(string $path): ?int
     {
-        $jobExecutionIds = [];
-        foreach ($paths as $path) {
-            $directories = explode(DIRECTORY_SEPARATOR, $path);
-            if (!isset($directories[2])) {
-                continue;
-            }
-
-            $jobExecutionIds[] = $directories[2];
+        $dirNames = \explode(DIRECTORY_SEPARATOR, $path);
+        if (!isset($dirNames[2]) || !\preg_match('/^\d+$/', $dirNames[2])) {
+            return null;
         }
 
-        return $jobExecutionIds;
+        return (int) $dirNames[2];
     }
 
-    private function getExistingJobExecutionIds(array $jobExecutionIds): array
+    private function jobExecutionExists(int $jobExecutionId): bool
     {
-        $sql = 'SELECT id FROM akeneo_batch_job_execution WHERE id IN (:job_execution_ids)';
+        if (!isset($this->jobExecutionIds[$jobExecutionId])) {
+            $sql = 'SELECT EXISTS(SELECT * FROM akeneo_batch_job_execution WHERE id = :job_execution_id)';
 
-        $existingJobExecutionIds = $this->connection->executeQuery(
-            $sql,
-            ['job_execution_ids' => $jobExecutionIds],
-            ['job_execution_ids' => Connection::PARAM_STR_ARRAY]
-        )->fetchAll(\PDO::FETCH_COLUMN);
+            $exists = $this->connection->executeQuery(
+                $sql,
+                ['job_execution_id' => $jobExecutionId]
+            )->fetchColumn();
 
-        return $existingJobExecutionIds;
-    }
-
-    private function deleteOrphanJobExecutionDirectories(array $paths, array $existingJobExecutionIds): void
-    {
-        foreach ($paths as $path) {
-            $directories = explode(DIRECTORY_SEPARATOR, $path);
-            if (!isset($directories[2])) {
-                continue;
-            }
-
-            [$jobExecutionType, $jobName, $jobExecutionId] = explode(DIRECTORY_SEPARATOR, $path);
-            $pathToDelete = $jobExecutionType . DIRECTORY_SEPARATOR . $jobName . DIRECTORY_SEPARATOR . $jobExecutionId;
-
-            if (!in_array($jobExecutionId, $existingJobExecutionIds) && $this->archivistFilesystem->has($pathToDelete)) {
-                $this->archivistFilesystem->deleteDir($pathToDelete);
-            }
+            $this->jobExecutionIds[$jobExecutionId] = (bool) $exists;
         }
+
+        return $this->jobExecutionIds[$jobExecutionId];
     }
 }

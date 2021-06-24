@@ -6,9 +6,11 @@ use Akeneo\Tool\Component\FileStorage\Exception\FileRemovalException;
 use Akeneo\Tool\Component\FileStorage\Exception\FileTransferException;
 use Akeneo\Tool\Component\FileStorage\Exception\InvalidFile;
 use Akeneo\Tool\Component\FileStorage\FileInfoFactoryInterface;
+use Akeneo\Tool\Component\FileStorage\FilesystemProvider;
+use Akeneo\Tool\Component\FileStorage\Model\FileInfoInterface;
 use Akeneo\Tool\Component\StorageUtils\Saver\SaverInterface;
-use League\Flysystem\FileExistsException;
-use League\Flysystem\MountManager;
+use League\Flysystem\FilesystemException;
+use League\Flysystem\UnableToWriteFile;
 use Symfony\Component\Filesystem\Exception\IOException;
 use Symfony\Component\Filesystem\Filesystem;
 
@@ -23,26 +25,16 @@ use Symfony\Component\Filesystem\Filesystem;
  */
 class FileStorer implements FileStorerInterface
 {
-    /** @var SaverInterface */
-    protected $saver;
+    protected FilesystemProvider $filesystemProvider;
+    protected SaverInterface $saver;
+    protected FileInfoFactoryInterface $factory;
 
-    /** @var MountManager */
-    protected $mountManager;
-
-    /** @var FileInfoFactoryInterface */
-    protected $factory;
-
-    /**
-     * @param MountManager             $mountManager
-     * @param SaverInterface           $saver
-     * @param FileInfoFactoryInterface $factory
-     */
     public function __construct(
-        MountManager $mountManager,
+        FilesystemProvider $filesystemProvider,
         SaverInterface $saver,
         FileInfoFactoryInterface $factory
     ) {
-        $this->mountManager = $mountManager;
+        $this->filesystemProvider = $filesystemProvider;
         $this->saver = $saver;
         $this->factory = $factory;
     }
@@ -50,13 +42,13 @@ class FileStorer implements FileStorerInterface
     /**
      * {@inheritdoc}
      */
-    public function store(\SplFileInfo $localFile, $destFsAlias, $deleteRawFile = false)
+    public function store(\SplFileInfo $localFile, string $destFsAlias, bool $deleteRawFile = false): FileInfoInterface
     {
         if (!is_file($localFile->getPathname())) {
             throw new InvalidFile(sprintf('The file "%s" does not exist.', $localFile->getPathname()));
         }
 
-        $filesystem = $this->mountManager->getFilesystem($destFsAlias);
+        $filesystem = $this->filesystemProvider->getFilesystem($destFsAlias);
         $file = $this->factory->createFromRawFile($localFile, $destFsAlias);
 
         $error = sprintf(
@@ -80,13 +72,12 @@ class FileStorer implements FileStorerInterface
                 $options['ContentType'] = $mimeType; // AWS S3
                 $options['metadata']['contentType'] = $mimeType; // Google Cloud Storage
             }
-            $isFileWritten = $filesystem->writeStream($file->getKey(), $resource, $options);
-        } catch (FileExistsException $e) {
+            if ($filesystem->fileExists($file->getKey())) {
+                throw UnableToWriteFile::atLocation($file->getKey(), 'The file already exists');
+            }
+            $filesystem->writeStream($file->getKey(), $resource, $options);
+        } catch (FilesystemException $e) {
             throw new FileTransferException($error, $e->getCode(), $e);
-        }
-
-        if (false === $isFileWritten) {
-            throw new FileTransferException($error);
         }
 
         $this->saver->save($file);
@@ -103,7 +94,7 @@ class FileStorer implements FileStorerInterface
      *
      * @throws FileRemovalException
      */
-    protected function deleteRawFile(\SplFileInfo $file)
+    protected function deleteRawFile(\SplFileInfo $file): void
     {
         $filesystem = new Filesystem();
 

@@ -8,7 +8,6 @@ use Akeneo\Tool\Component\Batch\Item\DataInvalidItem;
 use Akeneo\Tool\Component\Batch\Item\FlushableInterface;
 use Akeneo\Tool\Component\Batch\Item\InitializableInterface;
 use Akeneo\Tool\Component\Batch\Item\ItemWriterInterface;
-use Akeneo\Tool\Component\Batch\Job\JobInterface;
 use Akeneo\Tool\Component\Buffer\BufferFactory;
 use Akeneo\Tool\Component\Connector\ArrayConverter\ArrayConverterInterface;
 use Akeneo\Tool\Component\Connector\Writer\File\AbstractFileWriter;
@@ -19,7 +18,6 @@ use Akeneo\Tool\Component\Connector\Writer\File\WrittenFileInfo;
 use Akeneo\Tool\Component\FileStorage\FilesystemProvider;
 use Akeneo\Tool\Component\FileStorage\Model\FileInfoInterface;
 use Akeneo\Tool\Component\FileStorage\Repository\FileInfoRepositoryInterface;
-use Symfony\Component\Filesystem\Filesystem;
 
 /**
  * @copyright 2021 Akeneo SAS (http://www.akeneo.com)
@@ -120,7 +118,7 @@ abstract class AbstractUserWriter extends AbstractFileWriter implements
             );
             $outputAvatarPath = $outputPath . $fileInfo->getOriginalFilename();
 
-            if (!$this->filesystemProvider->getFilesystem($fileInfo->getStorage())->has($fileInfo->getKey())) {
+            if (!$this->filesystemProvider->getFilesystem($fileInfo->getStorage())->fileExists($fileInfo->getKey())) {
                 $this->stepExecution->addWarning(
                     'The media has not been found or is not currently available',
                     [],

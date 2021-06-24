@@ -29,7 +29,7 @@ use Akeneo\Tool\Component\Connector\Writer\File\WrittenFileInfo;
 use Akeneo\Tool\Component\FileStorage\FilesystemProvider;
 use Akeneo\Tool\Component\FileStorage\Model\FileInfoInterface;
 use Akeneo\Tool\Component\FileStorage\Repository\FileInfoRepositoryInterface;
-use League\Flysystem\FilesystemInterface;
+use League\Flysystem\FilesystemOperator;
 use PhpSpec\ObjectBehavior;
 use Prophecy\Argument;
 use Symfony\Component\Filesystem\Filesystem;
@@ -103,7 +103,7 @@ class ProductWriterSpec extends ObjectBehavior
         StepExecution $stepExecution,
         JobExecution $jobExecution,
         FileInfoInterface $fileInfo,
-        FilesystemInterface $catalogFilesystem
+        FilesystemOperator $catalogFilesystem
     ) {
         $jobParameters = new JobParameters(
             [
@@ -172,7 +172,7 @@ class ProductWriterSpec extends ObjectBehavior
         )->shouldBeCalled()->willReturn('files/jacket/media/');
 
         $filesystemProvider->getFilesystem('catalogStorage')->willReturn($catalogFilesystem);
-        $catalogFilesystem->has('a/b/c/123456_filename.jpg')->shouldBeCalled()->willReturn(true);
+        $catalogFilesystem->fileExists('a/b/c/123456_filename.jpg')->shouldBeCalled()->willReturn(true);
 
         $productStandardWithMedia = \array_replace_recursive(
             $productStandard,
@@ -227,7 +227,7 @@ class ProductWriterSpec extends ObjectBehavior
         StepExecution $stepExecution,
         JobExecution $jobExecution,
         FileInfoInterface $fileInfo,
-        FilesystemInterface $catalogFilesystem
+        FilesystemOperator $catalogFilesystem
     ) {
         $jobParameters = new JobParameters(
             [
@@ -272,7 +272,7 @@ class ProductWriterSpec extends ObjectBehavior
 
         $fileInfoRepository->findOneByIdentifier('a/b/c/abc123_filename.png')->shouldBeCalled()->willReturn($fileInfo);
         $filesystemProvider->getFilesystem('catalogStorage')->willReturn($catalogFilesystem);
-        $catalogFilesystem->has('a/b/c/abc123_filename.png')->shouldBeCalled()->willReturn(false);
+        $catalogFilesystem->fileExists('a/b/c/abc123_filename.png')->shouldBeCalled()->willReturn(false);
 
         $stepExecution->addWarning(
             'The media has not been found or is not currently available',

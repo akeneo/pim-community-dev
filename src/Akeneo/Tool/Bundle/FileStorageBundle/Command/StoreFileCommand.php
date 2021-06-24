@@ -3,12 +3,11 @@
 namespace Akeneo\Tool\Bundle\FileStorageBundle\Command;
 
 use Akeneo\Tool\Component\FileStorage\File\FileStorerInterface;
-use League\Flysystem\MountManager;
+use Akeneo\Tool\Component\FileStorage\FilesystemProvider;
 use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Input\InputArgument;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
-use Symfony\Component\DependencyInjection\Exception\ServiceNotFoundException;
 
 /**
  * Store a raw file in a storage filesystem
@@ -21,20 +20,17 @@ class StoreFileCommand extends Command
 {
     protected static $defaultName = 'akeneo:file-storage:store';
 
-    /** @var FileStorerInterface */
-    private $fileStorer;
-
-    /** @var MountManager */
-    private $mountManager;
+    private FileStorerInterface $fileStorer;
+    private FilesystemProvider $filesystemProvider;
 
     public function __construct(
         FileStorerInterface $fileStorer,
-        MountManager $mountManager
+        FilesystemProvider $filesystemProvider
     ) {
         parent::__construct();
 
         $this->fileStorer = $fileStorer;
-        $this->mountManager = $mountManager;
+        $this->filesystemProvider = $filesystemProvider;
     }
 
     /**
@@ -90,8 +86,8 @@ class StoreFileCommand extends Command
     protected function hasFileSystem($storageFsAlias)
     {
         try {
-            $this->mountManager->getFilesystem($storageFsAlias);
-        } catch (ServiceNotFoundException $e) {
+            $this->filesystemProvider->getFilesystem($storageFsAlias);
+        } catch (\LogicException $e) {
             return false;
         }
 

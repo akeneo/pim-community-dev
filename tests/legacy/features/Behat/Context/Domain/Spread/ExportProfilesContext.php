@@ -343,7 +343,7 @@ class ExportProfilesContext extends ImportExportContext
 
         $archivistFilesystem = $this->getMainContext()->getContainer()->get('oneup_flysystem.archivist_filesystem');
 
-        if (!$archivistFilesystem->has($archivePath)) {
+        if (!$archivistFilesystem->fileExists($archivePath)) {
             throw $this->getMainContext()->createExpectationException(
                 sprintf('Archived File "%s" doesn\'t exist', $archivePath)
             );

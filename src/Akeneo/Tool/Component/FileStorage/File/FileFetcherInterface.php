@@ -3,7 +3,7 @@
 namespace Akeneo\Tool\Component\FileStorage\File;
 
 use Akeneo\Tool\Component\FileStorage\Exception\FileTransferException;
-use League\Flysystem\FilesystemInterface;
+use League\Flysystem\FilesystemReader;
 
 /**
  * Fetch the raw file of a file stored in a virtual filesystem
@@ -16,7 +16,7 @@ use League\Flysystem\FilesystemInterface;
 interface FileFetcherInterface
 {
     /**
-     * @param FilesystemInterface $filesystem
+     * @param FilesystemReader $filesystem
      * @param string              $fileKey
      * @param array               $options
      *
@@ -25,5 +25,5 @@ interface FileFetcherInterface
      *
      * @return \SplFileInfo
      */
-    public function fetch(FilesystemInterface $filesystem, $fileKey, array $options = []);
+    public function fetch(FilesystemReader $filesystem, $fileKey, array $options = []);
 }

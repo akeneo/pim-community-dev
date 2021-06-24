@@ -250,10 +250,7 @@ class JobContext extends PimContext
      */
     public function getJobInstanceFilenames(string $code): array
     {
-        $archives = $this->getJobInstanceArchives($code);
-        $filenames = array_keys($archives);
-
-        return $filenames;
+        return \array_keys($this->getJobInstanceArchives($code));
     }
 
     /**
@@ -293,7 +290,7 @@ class JobContext extends PimContext
         $archiver = $this->getMainContext()->getContainer()->get('pim_connector.archiver.file_writer_archiver');
         $archives = $archiver->getArchives($jobExecution);
 
-        return $archives;
+        return \is_array($archives) ? $archives : \iterator_to_array($archives);
     }
 
     /**

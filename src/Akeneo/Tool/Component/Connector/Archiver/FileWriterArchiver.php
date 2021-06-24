@@ -9,8 +9,8 @@ use Akeneo\Tool\Component\Batch\Step\ItemStep;
 use Akeneo\Tool\Component\Connector\Writer\File\ArchivableWriterInterface;
 use Akeneo\Tool\Component\Connector\Writer\File\WrittenFileInfo;
 use Akeneo\Tool\Component\FileStorage\FilesystemProvider;
-use League\Flysystem\FileNotFoundException;
 use League\Flysystem\Filesystem;
+use League\Flysystem\UnableToReadFile;
 use Psr\Log\LoggerInterface;
 
 /**
@@ -90,7 +90,7 @@ class FileWriterArchiver extends AbstractFilesystemArchiver
      */
     protected function isUsableWriter(ItemWriterInterface $writer): bool
     {
-        return $writer instanceof ArchivableWriterInterface && 0 < count($writer->getWrittenFiles());
+        return $writer instanceof ArchivableWriterInterface;
     }
 
     /**
@@ -108,7 +108,6 @@ class FileWriterArchiver extends AbstractFilesystemArchiver
             );
 
             try {
-                $stream = null;
                 if ($fileToArchive->isLocalFile()) {
                     $stream = \fopen($fileToArchive->sourceKey(), 'r');
                 } else {
@@ -117,12 +116,12 @@ class FileWriterArchiver extends AbstractFilesystemArchiver
                     );
                 }
                 if ($stream) {
-                    $this->filesystem->putStream($archivedFilePath, $stream);
+                    $this->filesystem->writeStream($archivedFilePath, $stream);
                 }
                 if (\is_resource($stream)) {
                     \fclose($stream);
                 }
-            } catch (FileNotFoundException $e) {
+            } catch (UnableToReadFile $e) {
                 $this->logger->warning(
                     'The remote file could not be read from the remote filesystem',
                     [

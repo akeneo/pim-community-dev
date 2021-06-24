@@ -361,7 +361,7 @@ abstract class AbstractItemMediaWriter implements
         $outputFilePath = \sprintf('%s%s', $outputDirectory, $fileInfo->getOriginalFilename());
         $filesystem = $this->filesystemProvider->getFilesystem($fileInfo->getStorage());
 
-        if (!$filesystem->has($fileInfo->getKey())) {
+        if (!$filesystem->fileExists($fileInfo->getKey())) {
             $this->stepExecution->addWarning(
                 'The media has not been found or is not currently available',
                 [],

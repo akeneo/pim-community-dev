@@ -4,7 +4,8 @@ namespace Akeneo\Tool\Component\FileStorage\File;
 
 use Akeneo\Tool\Component\FileStorage\Exception\FileTransferException;
 use Akeneo\Tool\Component\FileStorage\StreamedFileResponse;
-use League\Flysystem\FilesystemInterface;
+use League\Flysystem\FilesystemReader;
+use League\Flysystem\UnableToReadFile;
 use Symfony\Component\HttpFoundation\File\Exception\FileNotFoundException;
 
 /**
@@ -19,19 +20,22 @@ class StreamedFileFetcher implements FileFetcherInterface
     /**
      * {@inheritdoc}
      */
-    public function fetch(FilesystemInterface $filesystem, $fileKey, array $options = [])
+    public function fetch(FilesystemReader $filesystem, $fileKey, array $options = [])
     {
-        if (!$filesystem->has($fileKey)) {
+        if (!$filesystem->fileExists($fileKey)) {
             throw new FileNotFoundException($fileKey);
         }
 
-        if (false === $stream = $filesystem->readStream($fileKey)) {
+        try {
+            $stream = $filesystem->readStream($fileKey);
+        } catch (UnableToReadFile $e) {
             throw new FileTransferException(
-                sprintf('Unable to fetch the file "%s" from the filesystem.', $fileKey)
+                \sprintf('Unable to fetch the file "%s" from the filesystem.', $fileKey),
+                0,
+                $e
             );
         }
-
-        $headers = isset($options['headers']) ? $options['headers'] : [];
+        $headers = $options['headers'] ?? [];
 
         return new StreamedFileResponse($stream, 200, $headers);
     }

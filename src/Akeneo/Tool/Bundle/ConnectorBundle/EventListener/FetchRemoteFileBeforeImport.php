@@ -7,12 +7,8 @@ use Akeneo\Tool\Component\Batch\Event\JobExecutionEvent;
 use Akeneo\Tool\Component\Batch\Job\JobInterface;
 use Akeneo\Tool\Component\Batch\Model\JobInstance;
 use Akeneo\Tool\Component\Connector\Job\JobFileLocation;
-use League\Flysystem\FilesystemInterface;
+use League\Flysystem\FilesystemReader;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
-use Symfony\Component\Security\Core\Authentication\Token\Storage\TokenStorageInterface;
-use Symfony\Component\Security\Core\Authentication\Token\UsernamePasswordToken;
-use Symfony\Component\Security\Core\Exception\UsernameNotFoundException;
-use Symfony\Component\Security\Core\User\UserProviderInterface;
 
 /**
  * As the import system only work on local file, we need to fetch the file to import
@@ -24,10 +20,9 @@ use Symfony\Component\Security\Core\User\UserProviderInterface;
  */
 final class FetchRemoteFileBeforeImport implements EventSubscriberInterface
 {
-    /** @var FilesystemInterface */
-    private $filesystem;
+    private FilesystemReader $filesystem;
 
-    public function __construct(FilesystemInterface $filesystem)
+    public function __construct(FilesystemReader $filesystem)
     {
         $this->filesystem = $filesystem;
     }
