@@ -1941,7 +1941,7 @@ commands:
                           if git ls-remote --exit-code --heads git@github.com:akeneo/bigcommerce-connector.git ${CIRCLE_BRANCH}; then
                             CONNECTOR_BC_BRANCH=${CIRCLE_BRANCH}
                           else
-                            CONNECTOR_BC_BRANCH=v0
+                            CONNECTOR_BC_BRANCH=master
                           fi
 
                           echo export CONNECTOR_BC_BRANCH=${CONNECTOR_BC_BRANCH} >> $BASH_ENV
