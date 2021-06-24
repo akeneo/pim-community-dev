@@ -152,7 +152,7 @@ const PimNavigation: FC<Props> = ({entries}) => {
           <PimView viewName="pim-menu-help" />
         </HelpContainer>
       </MainNavContainer>
-      {activeEntry && !activeEntry.isLandingSectionPage && subNavigationItems.length > 0 && (
+      {activeEntry && (!activeEntry.isLandingSectionPage || activeSubEntry) && subNavigationItems.length > 0 && (
         <SubNavContainer>
           <SubNavigationPanel isOpen={isSubNavigationOpened}>
             {subNavigationItems.map(subEntry => {

@@ -54,6 +54,7 @@ class Menu extends BaseForm {
   configure() {
     mediator.on('pim_menu:highlight:tab', this.highlightTab, this);
     mediator.on('pim_menu:highlight:item', this.highlightItem, this);
+    mediator.on('pim_menu:hide', this.hideSubNavigation, this);
 
     return super.configure();
   }
@@ -151,6 +152,12 @@ class Menu extends BaseForm {
 
   highlightItem(event: any) {
     this.activeSubEntryCode = event.extension || '';
+
+    this.render();
+  }
+
+  hideSubNavigation() {
+    this.activeSubEntryCode = '';
 
     this.render();
   }
