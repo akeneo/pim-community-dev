@@ -88,7 +88,6 @@ spec:
               readOnly: true
             - name: web-src
               mountPath: /srv/pim/public
-              readOnly: true
             - name: google-cloud-pim-storage-key
               mountPath: /var/secrets/google/srnt.json
               subPath: srnt.json
