@@ -18,3 +18,6 @@ services:
 
     Akeneo\Pim\Enrichment\Component\Error\DocumentationBuilder\UnknownFamily:
         tags: [pim_enrich.error.documentation_builder]
+
+    Akeneo\Pim\Enrichment\Component\Error\DocumentationBuilder\LocalizableAttribute:
+        tags: [pim_enrich.error.documentation_builder]
