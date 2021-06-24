@@ -1,6 +1,6 @@
 describe('edit product sanity check', () => {
   it('User can enrich the first product of the products grid', () => {
-    cy.login('admin', 'admin');
+    cy.login('adminakeneo', 'adminakeneo');
     cy.goToProductsGrid();
     cy.selectFirstProductInDatagrid();
     cy.updateField('Name', 'updated product');
