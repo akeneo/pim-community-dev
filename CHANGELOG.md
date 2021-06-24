@@ -79,6 +79,7 @@
 - PIM-9863: Remove temporisation and add unit tests for product model reindexation.
 - PIM-9891: Fix missing sanity checks when computing enrichment status
 - PIM-9886: Fix display of completeness in the PEF when the selected locale is deactivated
+- PIM-9925: Fix roles that couldn't contain dashes in their codes
 
 ## New features
 

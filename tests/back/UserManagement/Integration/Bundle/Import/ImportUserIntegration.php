@@ -8,7 +8,7 @@ use Akeneo\Test\IntegrationTestsBundle\Launcher\JobLauncher;
 use Akeneo\Tool\Bundle\BatchBundle\Persistence\Sql\SqlCreateJobInstance;
 use Akeneo\UserManagement\Component\Model\UserInterface;
 use Akeneo\UserManagement\Component\Repository\UserRepositoryInterface;
-use Box\Spout\Writer\WriterFactory;
+use Akeneo\Tool\Component\Connector\Writer\WriterFactory;
 use PHPUnit\Framework\Assert;
 
 final class ImportUserIntegration extends TestCase
