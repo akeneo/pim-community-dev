@@ -77,7 +77,6 @@ class RangeValidator extends BaseRangeValidator
 
     private function validateDateTime(\DateTimeInterface $dateTime, Range $constraint): void
     {
-        Assert::isInstanceOf($constraint, Range::class);
         if ($constraint->min && $dateTime < $constraint->min) {
             $this->context->buildViolation(
                 $constraint->minDateMessage,
