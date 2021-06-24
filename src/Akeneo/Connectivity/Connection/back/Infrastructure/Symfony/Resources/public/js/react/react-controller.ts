@@ -49,4 +49,4 @@ abstract class ReactController extends BaseController {
   }
 }
 
-export = ReactController;
+export default ReactController;

@@ -2,12 +2,17 @@ import React from 'react';
 import {pimTheme} from 'akeneo-design-system';
 import {ReactController} from '@akeneo-pim-community/legacy-bridge/src/bridge/react';
 import {DependenciesProvider} from '@akeneo-pim-community/legacy-bridge';
-import {MeasurementApp, ConfigContext, UnsavedChangesContext} from '@akeneo-pim-community/measurement';
+// import {ConfigContext, UnsavedChangesContext} from '@akeneo-pim-community/measurement';
 import {measurementsDependencies} from '../dependencies';
 import {ThemeProvider} from 'styled-components';
 
 const mediator = require('oro/mediator');
 const __ = require('oro/translator');
+require('regenerator-runtime/runtime');
+
+const MeasurementApp = React.lazy(
+  () => import(/* webpackChunkName: "measurement" */ '@akeneo-pim-community/measurement/lib/MeasurementApp')
+);
 
 class SettingsController extends ReactController {
   private static container = document.createElement('div');
@@ -16,11 +21,11 @@ class SettingsController extends ReactController {
     return (
       <ThemeProvider theme={pimTheme}>
         <DependenciesProvider>
-          <ConfigContext.Provider value={measurementsDependencies.config}>
-            <UnsavedChangesContext.Provider value={measurementsDependencies.unsavedChanges}>
-              <MeasurementApp />
-            </UnsavedChangesContext.Provider>
-          </ConfigContext.Provider>
+          {/* <ConfigContext.Provider value={measurementsDependencies.config}>
+            <UnsavedChangesContext.Provider value={measurementsDependencies.unsavedChanges}> */}
+          <MeasurementApp />
+          {/* </UnsavedChangesContext.Provider>
+          </ConfigContext.Provider> */}
         </DependenciesProvider>
       </ThemeProvider>
     );
@@ -46,4 +51,4 @@ class SettingsController extends ReactController {
   }
 }
 
-export = SettingsController;
+export default SettingsController;

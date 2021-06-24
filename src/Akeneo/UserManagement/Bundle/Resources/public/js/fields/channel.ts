@@ -41,4 +41,4 @@ class ChannelField extends BaseSelect {
   }
 }
 
-export = ChannelField;
+export default ChannelField;

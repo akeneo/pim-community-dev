@@ -12,4 +12,4 @@ class DQIActivation extends BaseView {
   }
 }
 
-export = DQIActivation;
+export default DQIActivation;

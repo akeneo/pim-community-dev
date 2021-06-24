@@ -7,4 +7,4 @@ const DefaultPimOnboarding: PimOnboarding = {
   init: () => {},
 };
 
-export = DefaultPimOnboarding;
+export default DefaultPimOnboarding;

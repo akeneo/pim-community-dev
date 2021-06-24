@@ -11,4 +11,4 @@ class AllowFileUpload extends BaseField {
   }
 }
 
-export = AllowFileUpload;
+export default AllowFileUpload;

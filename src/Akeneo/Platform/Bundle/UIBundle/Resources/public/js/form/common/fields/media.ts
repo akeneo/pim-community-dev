@@ -124,4 +124,4 @@ class MediaField extends BaseField {
   }
 }
 
-export = MediaField;
+export default MediaField;

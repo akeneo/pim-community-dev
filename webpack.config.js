@@ -30,32 +30,12 @@ const webpackConfig = {
     version: true,
   },
   optimization: {
+    runtimeChunk: 'single',
     splitChunks: {
-      cacheGroups: {
-        vendor: {
-          test: /[\\/]node_modules[\\/]/,
-          name: "vendor",
-          filename: "vendor.min.js",
-          chunks: "all"
-        },
-        main: {
-          filename: 'main.min.js'
-        }
-      }
-    },
-    moduleIds: 'hashed',
-    minimizer: [new TerserPlugin({
-      cache: true,
-      parallel: true,
-      sourceMap: false,
-      terserOptions: {
-        ecma: 6,
-        mangle: true,
-        output: {
-          comments: false,
-        },
-      },
-    })]
+      chunks: 'all',
+      maxInitialRequests: Infinity,
+      minSize: 0
+    }
   },
   mode: (isProd ? 'production' : 'development'),
   target: 'web',
@@ -192,6 +172,7 @@ const webpackConfig = {
             loader: 'ts-loader',
             options: {
               transpileOnly: !isStrict,
+              allowTsInNodeModules: true,
               configFile: path.resolve(rootDir, 'tsconfig.json'),
               context: path.resolve(rootDir),
               getCustomTransformers: () => ({ before: [styledComponentsTransformer] })

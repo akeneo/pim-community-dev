@@ -21,4 +21,4 @@ class AttributeGroupsSettings extends ReactController {
   }
 }
 
-export = AttributeGroupsSettings;
+export default AttributeGroupsSettings;

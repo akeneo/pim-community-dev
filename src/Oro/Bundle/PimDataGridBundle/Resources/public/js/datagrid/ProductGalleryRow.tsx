@@ -173,4 +173,4 @@ class ProductGalleryRow extends BaseRow {
   }
 }
 
-export = ProductGalleryRow;
+export default ProductGalleryRow;

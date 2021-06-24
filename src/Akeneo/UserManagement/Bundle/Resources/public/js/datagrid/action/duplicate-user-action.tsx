@@ -34,4 +34,4 @@ class DuplicateUserAction extends AbstractAction {
   }
 }
 
-export = DuplicateUserAction;
+export default DuplicateUserAction;

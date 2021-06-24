@@ -31,4 +31,4 @@ class Guidelines extends BaseView {
   }
 }
 
-export = Guidelines;
+export default Guidelines;

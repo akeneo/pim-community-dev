@@ -32,4 +32,4 @@ class ConnectionParamsProvider extends View {
   }
 }
 
-export = ConnectionParamsProvider;
+export default ConnectionParamsProvider;

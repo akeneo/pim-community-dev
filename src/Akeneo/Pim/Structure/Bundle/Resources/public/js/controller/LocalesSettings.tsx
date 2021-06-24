@@ -21,4 +21,4 @@ class LocalesSettings extends ReactController {
   }
 }
 
-export = LocalesSettings;
+export default LocalesSettings;

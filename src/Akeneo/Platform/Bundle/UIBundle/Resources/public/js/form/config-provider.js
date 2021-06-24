@@ -1,6 +1,6 @@
 'use strict';
 
-define(['jquery', 'pim/security-context', 'pim/feature-flags'], function ($, SecurityContext, FeatureFlags) {
+define(['jquery', 'pim/security-context', 'pim/feature-flags'], function ($, SecurityContext, {FeatureFlags}) {
   var promise = null;
 
   /**

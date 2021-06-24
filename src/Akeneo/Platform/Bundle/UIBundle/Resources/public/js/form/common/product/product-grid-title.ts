@@ -67,4 +67,4 @@ class ProductGridTitle extends BaseGridTitle {
   }
 }
 
-export = ProductGridTitle;
+export default ProductGridTitle;

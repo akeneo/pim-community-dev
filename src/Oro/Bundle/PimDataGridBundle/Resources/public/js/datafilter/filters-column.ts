@@ -307,4 +307,4 @@ class FiltersColumn extends BaseView {
   }
 }
 
-export = FiltersColumn;
+export default FiltersColumn;

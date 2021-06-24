@@ -39,4 +39,4 @@ class UiLocaleField extends BaseSelect {
   }
 }
 
-export = UiLocaleField;
+export default UiLocaleField;

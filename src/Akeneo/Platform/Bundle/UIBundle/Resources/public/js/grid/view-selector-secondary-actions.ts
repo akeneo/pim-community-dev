@@ -22,4 +22,4 @@ class ViewSelectorSecondaryActions extends BaseView {
   }
 }
 
-export = ViewSelectorSecondaryActions;
+export default ViewSelectorSecondaryActions;

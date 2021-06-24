@@ -100,4 +100,4 @@ class BaseDashboard extends BaseView {
   }
 }
 
-export = BaseDashboard;
+export default BaseDashboard;

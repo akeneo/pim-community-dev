@@ -57,4 +57,4 @@ class Choices extends BaseView {
   }
 }
 
-export = Choices;
+export default Choices;

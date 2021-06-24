@@ -108,4 +108,4 @@ class SectionView extends BaseView {
   }
 }
 
-export = SectionView;
+export default SectionView;

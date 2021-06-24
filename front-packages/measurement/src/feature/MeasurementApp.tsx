@@ -18,4 +18,4 @@ const MeasurementApp = () => {
   );
 };
 
-export {MeasurementApp};
+export default MeasurementApp;

@@ -485,4 +485,4 @@ class ColumnSelector extends BaseView {
   }
 }
 
-export = ColumnSelector;
+export default ColumnSelector;

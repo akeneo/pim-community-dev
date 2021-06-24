@@ -20,4 +20,4 @@ class AssociationTypesSettings extends ReactController {
   }
 }
 
-export = AssociationTypesSettings;
+export default AssociationTypesSettings;

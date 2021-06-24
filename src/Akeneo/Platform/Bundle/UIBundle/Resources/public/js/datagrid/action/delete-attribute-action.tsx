@@ -35,4 +35,4 @@ class DeleteAttributeAction extends DeleteAction {
   }
 }
 
-export = DeleteAttributeAction;
+export default DeleteAttributeAction;

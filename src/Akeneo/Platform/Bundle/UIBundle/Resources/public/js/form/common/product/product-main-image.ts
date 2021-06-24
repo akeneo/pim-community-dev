@@ -27,4 +27,4 @@ class ProductMainImage extends MainImage {
   }
 }
 
-export = ProductMainImage;
+export default ProductMainImage;
