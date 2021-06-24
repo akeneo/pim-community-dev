@@ -57,6 +57,9 @@ btn:
 job_execution:
   summary:
     rule_calculated: Numero di regole
+    selected_entities: prodotti/modelli prodotto selezionati
+    skipped_invalid: prodotti/modelli prodotto ignorati (non validi)
+    updated_entities: prodotti/modelli prodotto aggiornati
 pim_datagrid:
   cells:
     type:

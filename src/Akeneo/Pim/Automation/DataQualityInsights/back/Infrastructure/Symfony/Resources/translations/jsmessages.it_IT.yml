@@ -1,13 +1,23 @@
 akeneo_data_quality_insights:
   product_evaluation:
     criteria:
+      consistency_textarea_uppercase_words:
+        recommendation: Attributi con problemi in maiuscolo
+      consistency_textarea_lowercase_words:
+        recommendation: Attributi con problemi in minuscolo
       consistency_spelling:
         recommendation: Attributi con problemi ortografici
+      consistency_attribute_spelling:
+        recommendation: Etichette di attributi con errori ortografici
+      consistency_attribute_option_spelling:
+        recommendation: Opzioni attributo con errori di digitazione
     axis:
       consistency:
         title: Coerenza
         attributes_link: Visualizza tutti gli attributi migliorabili
         success: I tuoi dati di prodotto sono completamente coerenti. Congratulazioni!
+    messages:
+      add_image_attribute_recommendation: Un'immagine vale più di mille parole. Aggiungi una raccolta asset per migliorare la qualità dei dati di questo prodotto.
   product_edit_form:
     attribute_filter:
       all_improvable_attributes: Tutti gli attributi migliorabili
@@ -21,8 +31,21 @@ akeneo_data_quality_insights:
       to_improve: Da migliorare
       good: Buona
       n_a: N/A
+  attribute_edit_form:
+    quality_summary: Migliorando questo attributo migliorerai la qualità complessiva di {{ count }} prodotti.
+  dqi_dashboard:
+    key_indicators:
+      list:
+        has_image:
+          no_data: Le tue raccolte asset e i tuoi attributi immagine sembrano vuoti. Carica immagini per questo indicatore chiave per mettere in evidenza la qualità dei tuoi prodotti.
+        attributes_perfect_spelling:
+          messages:
+            second_step:
+              message1: Dai un'occhiata più da vicino ai tuoi attributi e alle tue etichette di opzioni. In questo modo, i tuoi prodotti appariranno ancora meglio.
   dictionary:
+    searchPlaceholder: Cerca una parola
     no_search_results:
+      title: La ricerca non ha restituito risultati
       subtitle: Riprova con nuovi criteri di ricerca.
 pimee_enrich.entity.locale:
   grid:

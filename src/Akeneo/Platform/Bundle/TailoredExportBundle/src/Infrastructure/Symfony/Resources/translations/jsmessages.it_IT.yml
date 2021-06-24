@@ -7,6 +7,8 @@ akeneo.tailored_export:
       remove: Rimuovi colonna
   column_details:
     sources:
+      no_source_configuration:
+        title: Non sono presenti operazioni disponibili per questa origine. Solo il suo valore verrà esportato.
       selection:
         title: Selezione
         separator: Separatore

@@ -6,3 +6,6 @@ batch_jobs:
     label: Esportazione asset in XLSX
     export.label: Esportazione asset
 akeneo_assetmanager.export.assets.filter.asset_family: Famiglia di asset
+pim_analytics:
+  info_type:
+    api_connection: Numero di connessioni API

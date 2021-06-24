@@ -11,7 +11,10 @@ pim_datagrid:
   no_results:
     proposal: Non ci sono proposte da revisionare. Prova a cambiare i criteri di ricerca.
     product_draft: Non c'è nessuna bozza di prodotto da revisionare. Prova a modificare i criteri di ricerca.
+  no_results.published product: Spiacenti, la tua ricerca non ha restituito prodotti pubblicati.
   workflow:
+    partial_approve: Approva le modifiche all'attributo {{ attribute }} del prodotto {{ product }}
+    partial_reject: Rifiuta le modifiche all'attributo {{ attribute }} del prodotto {{ product }}
     by: da
     at: a
     status:
@@ -128,6 +131,8 @@ pimee_enrich.entity.product:
       published: Pubblicato
       revert: Ripristina
     attribute:
+      can_be_updated_by_rules: "]-Inf, 1]Questo attributo può essere aggiornato da <span>una regola</span>|]1, +Inf[Questo attributo può essere aggiornato da <span>{{ count }} regole</span>"
+      can_be_updated_by_rules_readonly: "]-Inf, 1]Questo attributo può essere aggiornato da una regola|]1, +Inf[Questo attributo può essere aggiornato da {{ count }} regole"
       value_updated: Questo valore viene modificato dalla bozza corrente
     meta:
       published_version: Versione pubblicata
@@ -203,6 +208,10 @@ pimee_enrich.mass_edit.product:
       label_count: "{1}Annulla pubblicazione di <span class=\"AknFullPage-title--highlight\">1 prodotto</span>|]1, Inf[Annulla pubblicazione di <span class=\"AknFullPage-title--highlight\">{{ itemsCount }} prodotti</span>"
       description: I prodotti saranno ritirati
       warning: I {{ itemsCount }} prodotti selezionati saranno ritirati.
+pimee_enrich.entity.category:
+  flash:
+    remove:
+      error_linked: Impossibile eliminare una categoria collegata a un prodotto pubblicato.
 pim_menu:
   navigation:
     published_products: Prodotti pubblicati

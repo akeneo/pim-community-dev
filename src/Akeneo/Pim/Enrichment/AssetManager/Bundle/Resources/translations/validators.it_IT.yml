@@ -3,3 +3,4 @@ pim_asset_manager:
     validation:
       asset_multiple_link:
         limit_reached: 'Hai raggiunto il limite di %limit% attività per raccolta, non puoi più aggiungere attività alla tua raccolta.'
+      assets_should_belong_to_asset_family: 'Assicurati che l''asset "%asset_code%" esista e appartenga alla famiglia di asset "%asset_family_identifier%" per l''attributo "%attribute%".'
