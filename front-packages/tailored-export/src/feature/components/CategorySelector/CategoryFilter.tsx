@@ -1,6 +1,6 @@
 import React, {useState} from 'react';
 import styled from 'styled-components';
-import {Button, Modal, ProductCategoryIllustration, useBooleanState} from 'akeneo-design-system';
+import {BooleanInput, Button, Field, Modal, ProductCategoryIllustration, useBooleanState} from 'akeneo-design-system';
 import {useTranslate} from '@akeneo-pim-community/shared';
 import {MultiCategoryTreeSelector} from './MultiCategoryTreeSelector';
 
@@ -10,22 +10,34 @@ const Container = styled.div`
   justify-content: space-between;
   width: 100%;
 `;
-
+type Operator = 'IN CHILDREN LIST' | 'IN' | 'NOT IN';
+// How to export component CategoryFilter + type CategoryFilter (same name)
+type CategoryFilterType = {
+  field: 'categories';
+  operator: Operator;
+  value: string[];
+};
 type CategoryFilterProps = {
-  initialCategorySelection: string[];
-  onCategorySelection: (updatedCategorySelection: string[]) => void;
+  filter: CategoryFilterType;
+  onChange: (updatedFilter: CategoryFilterType) => void;
 };
 
-const CategoryFilter = ({initialCategorySelection, onCategorySelection}: CategoryFilterProps) => {
+const CategoryFilter = ({filter, onChange}: CategoryFilterProps) => {
   const translate = useTranslate();
   const [isCategoriesModalOpen, openCategoriesModal, closeCategoriesModal] = useBooleanState();
-  const [selectedCategories, setSelectedCategories] = useState(initialCategorySelection);
+  const [categorySelection, setSelectedCategories] = useState<string[]>(filter.value);
+  const [operator, setOperator] = useState<Operator>(filter.operator);
+  const handleShouldIndludeSubCategoryChange = (updatedValue: boolean) => {
+    const newOperator = updatedValue ? 'IN CHILDREN LIST' : filter.value.length === 0 ? 'NOT IN' : 'IN';
+    setOperator(newOperator);
+  };
   const handleConfirm = () => {
-    onCategorySelection(selectedCategories);
+    onChange({...filter, operator, value: categorySelection});
     closeCategoriesModal();
   };
   const handleClose = () => {
-    setSelectedCategories(initialCategorySelection);
+    setSelectedCategories(filter.value);
+    setOperator(filter.operator);
     closeCategoriesModal();
   };
 
@@ -38,8 +50,18 @@ const CategoryFilter = ({initialCategorySelection, onCategorySelection}: Categor
           illustration={<ProductCategoryIllustration />}
         >
           <Modal.Title>{translate('pim_connector.export.categories.selector.modal.title')}</Modal.Title>
+          <Field label={translate('jstree.include_sub')}>
+            <BooleanInput
+              noLabel={translate('pim_common.no')}
+              yesLabel={translate('pim_common.yes')}
+              value={operator === 'IN CHILDREN LIST'}
+              clearLabel={translate('pim_common.clear_value')}
+              readOnly={false}
+              onChange={handleShouldIndludeSubCategoryChange}
+            />
+          </Field>
           <MultiCategoryTreeSelector
-            categorySelection={selectedCategories}
+            categorySelection={categorySelection}
             onCategorySelection={setSelectedCategories}
           />
           <Modal.BottomButtons>
@@ -53,11 +75,7 @@ const CategoryFilter = ({initialCategorySelection, onCategorySelection}: Categor
         </Modal>
       )}
       <span>
-        {translate(
-          'pim_connector.export.categories.selector.label',
-          {count: initialCategorySelection.length},
-          initialCategorySelection.length
-        )}
+        {translate('pim_connector.export.categories.selector.label', {count: filter.value.length}, filter.value.length)}
       </span>
       <Button level="secondary" onClick={openCategoriesModal}>
         {translate('pim_common.edit')}
@@ -67,3 +85,4 @@ const CategoryFilter = ({initialCategorySelection, onCategorySelection}: Categor
 };
 
 export {CategoryFilter};
+export type {CategoryFilterType};
