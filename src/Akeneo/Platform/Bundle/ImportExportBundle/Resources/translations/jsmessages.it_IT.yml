@@ -101,6 +101,7 @@ pim_import_export:
             help: Stampare o no la l'intestazione della colonna
           with_media:
             title: Esporta media
+            help: Esportare o meno file multimediali
           lines_per_file:
             title: Numero di linee per file
             help: Definisci il numero limite di righe per file
@@ -128,14 +129,23 @@ pim_import_export:
           real_time_versioning:
             title: Aggiornamento cronologia in tempo reale
             help: Significa che la cronologia del prodotto viene aggiornata automaticamente, può essere disattivato per migliorare le prestazioni
+          convert_variant_to_simple:
+            title: Converti prodotti variante in prodotti semplici
+            help: Prova a convertire prodotti variante in prodotti semplici quando la colonna "genitore" è vuota. Se impostata su "No", la colonna "genitore" vuota verrà ignorata
           family_variant_column:
             title: Colonna famiglia variante
           with_label:
             title: Con etichette
+            help: Definisci se il file di esportazione visualizza le etichette dei valori invece dei codici valori
+          header_with_label:
+            title: Intestazioni con etichette
+            help: Definisci se il file di esportazione visualizza le etichette delle intestazioni invece dei codici intestazioni
+          file_locale:
+            title: Impostazione locale file
+            help: Definisci l'impostazione locale in cui visualizzare le etichette
       file_path: Percorso del file
   widget:
     last_operations:
-      empty: Nessun operazione trovata
       date: Data
       profile_name: Nome profilo
       details: Dettaglio
@@ -150,6 +160,7 @@ pim_import_export:
         compute_family_variant_structure_changes: Calcola le modifiche della struttura della famiglia variante
         compute_completeness_of_products_family: Calcola la completezza della famiglia di prodotti
         mass_delete: Eliminazione in massa prodotti
+        clean_removed_attribute_job: Pulizia valori attributo rimossi
       header.view_all: Mostra tutti
   batch_status:
     1: Completato
@@ -170,7 +181,11 @@ pim_import_export:
     ABANDONED: Abbandonato
     UNKNOWN: Sconosciuto
   tracking:
+    completed: "Tempo speso: {{ duration }}"
+    in_progress: "Tempo rimanente stimato: {{ duration }}"
     not_started: "In attesa"
+    untrackable: Passo non tracciabile
+    estimating: "Stima del tempo rimanente..."
 confirmation:
   remove:
     import_profile: Sei sicuro di voler eliminare questo profilo di importazione?

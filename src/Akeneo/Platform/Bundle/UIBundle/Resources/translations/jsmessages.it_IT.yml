@@ -170,6 +170,7 @@ pim_common:
   created: Creato
   delete: Elimina
   done: Completato
+  duplicate: Duplicato
   edit: Modifica
   entity_updated: Ci sono modifiche non salvate.
   export: Esportazioni
@@ -184,6 +185,7 @@ pim_common:
   less_than: Meno di
   loading: Caricamento in corso...
   media_upload: Trascina e rilascia qui un file per caricarlo o fai click qui
+  more_actions: Altre azioni
   more_than: Più di
   next: Successivo
   "no": "No"
@@ -191,6 +193,8 @@ pim_common:
   not_available: N/A
   now: Ora
   ok: OK
+  open: Apri
+  no_result: Nessun risultato trovato
   other_actions: Altre azioni
   permissions: Autorizzazioni
   previous: Precedente
@@ -225,6 +229,13 @@ pim_common:
     STARTS WITH: Inizia con
     ENDS WITH: Termina con
   read_more: Maggiori informazioni
+  locale: Impostazione locale
+  categories: Categorie
+  family_variant: Famiglia variante
+  enabled: Attivato
+  family: Famiglia
+  groups: Gruppi
+  more: Altro
 error:
   exception: Accidenti! Si è verificato un errore {{ status_code}}...
   forbidden: Vietato. Non è consentito accedere a questa pagina
@@ -273,8 +284,9 @@ pim_title:
   pim_enrich_catalog_volume_index: Monitoraggio del volume di catalogo
   pim_enrich_categorytree_index: Albero della categoria
   pim_enrich_categorytree_create: Strutture di categoria | Crea
-  pim_enrich_categorytree_edit: Albero di categoria {{ category.label }} | Modifica
+  pim_enrich_categorytree_edit: Categoria {{ category.label }} | Modifica
   pim_enrich_categorytree_create_tree: Strutture di categoria | Crea
+  pim_enrich_categorytree_tree: Albero di categoria {{ category.label }} | Modifica
   pim_enrich_attribute_index: Atributi
   pim_enrich_attribute_create: Attributi | Crea
   pim_enrich_attribute_edit: Attributo {{ attribute.label }} | Modifica
@@ -301,6 +313,7 @@ pim_title:
   pim_enrich_job_tracker_show: Tracker di processo | Visualizza lavoro
   pim_enrich_mass_edit_action: Modifica di massa
   pim_analytics_system_info_index: Informazioni di sistema
+  pim_settings_index: Impostazioni
 pim_menu:
   tab:
     activity: Attività
@@ -316,7 +329,6 @@ pim_menu:
     attribute_group: Gruppi di attributi
     channel: Canali
     currency: Valute
-    dashboard: Dashboard
     family: Famiglie
     group: Gruppi
     group_type: Tipi di gruppo
@@ -337,7 +349,10 @@ pim_menu:
     activity: Navigazione attività
     system: Sistema
     user: Gestione utenti
-    settings: Impostazioni
+    settings:
+      product: Impostazioni prodotti
+      catalog: Impostazioni catalogo
+      collapsed_label: Impostazioni
     product: Navigazione prodotti
     product_infos: Info prodotto
   user:
@@ -349,3 +364,7 @@ pim_notification:
     export: Esportazioni
     quick_export: Esportazione rapida
     mass_edit: Modifica di massa
+pim_settings:
+  settings_menu: Menu Impostazioni
+  catalog_settings: Impostazioni catalogo
+  product_settings: Impostazioni prodotti

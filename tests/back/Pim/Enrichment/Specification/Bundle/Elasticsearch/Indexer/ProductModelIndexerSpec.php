@@ -170,6 +170,7 @@ class ProductModelIndexerSpec extends ObjectBehavior
             $code,
             new \DateTimeImmutable('2000-12-30'),
             new \DateTimeImmutable('2000-12-31'),
+            new \DateTimeImmutable('2000-12-31'),
             'familyCode',
             [],
             'familyVariantCode',

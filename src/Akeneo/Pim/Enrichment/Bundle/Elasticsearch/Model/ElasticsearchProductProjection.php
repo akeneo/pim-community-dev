@@ -16,71 +16,34 @@ final class ElasticsearchProductProjection
     private const INDEX_PREFIX_ID   = 'product_';
     private const INDEX_DATE_FORMAT = 'c';
 
-    /** @var string */
-    private $id;
-
-    /** @var string */
-    private $identifier;
-
-    /** @var \DateTimeImmutable */
-    private $createdDate;
-
-    /** @var \DateTimeImmutable */
-    private $updatedDate;
-
-    /** @var bool */
-    private $isEnabled;
-
-    /** @var null|string */
-    private $familyCode;
-
-    /** @var null|array */
-    private $familyLabels;
-
-    /** @var null|string */
-    private $familyVariantCode;
-
-    /** @var array */
-    private $categoryCodes;
-
-    /** @var array */
-    private $categoryCodesOfAncestors;
-
-    /** @var array */
-    private $groupCodes;
-
-    /** @var array */
-    private $completeness;
-
-    /** @var null|string */
-    private $parentProductModelCode;
-
-    /** @var array */
-    private $values;
-
-    /** @var array */
-    private $ancestorsIds;
-
-    /** @var array */
-    private $ancestorsCodes;
-
-    /** @var null|array */
-    private $label;
-
-    /** @var array */
-    private $attributeCodesForAncestor;
-
-    /** @var array */
-    private $attributeCodesForThisLevel;
-
-    /** @var array */
-    private $additionalData = [];
+    private string $id;
+    private string $identifier;
+    private \DateTimeImmutable $createdDate;
+    private \DateTimeImmutable $updatedDate;
+    private \DateTimeImmutable $entityUpdatedDate;
+    private bool $isEnabled;
+    private ?string $familyCode;
+    private ?array $familyLabels;
+    private ?string $familyVariantCode;
+    private array $categoryCodes;
+    private array $categoryCodesOfAncestors;
+    private array $groupCodes;
+    private array $completeness;
+    private ?string $parentProductModelCode;
+    private array $values;
+    private array $ancestorsIds;
+    private array $ancestorsCodes;
+    private ?array $label;
+    private array $attributeCodesForAncestor;
+    private array $attributeCodesForThisLevel;
+    private array $additionalData = [];
 
     public function __construct(
         string $id,
         string $identifier,
         \DateTimeImmutable $createdDate,
         \DateTimeImmutable $updatedDate,
+        \DateTimeImmutable $entityUpdatedDate,
         bool $isEnabled,
         ?string $familyCode,
         ?array $familyLabels,
@@ -102,6 +65,7 @@ final class ElasticsearchProductProjection
         $this->identifier = $identifier;
         $this->createdDate = $createdDate;
         $this->updatedDate = $updatedDate;
+        $this->entityUpdatedDate = $entityUpdatedDate;
         $this->isEnabled = $isEnabled;
         $this->familyCode = $familyCode;
         $this->familyLabels = $familyLabels;
@@ -129,6 +93,7 @@ final class ElasticsearchProductProjection
             $this->identifier,
             $this->createdDate,
             $this->updatedDate,
+            $this->entityUpdatedDate,
             $this->isEnabled,
             $this->familyCode,
             $this->familyLabels,
@@ -171,6 +136,7 @@ final class ElasticsearchProductProjection
             'identifier' => $this->identifier,
             'created' => $this->createdDate->format(self::INDEX_DATE_FORMAT),
             'updated' => $this->updatedDate->format(self::INDEX_DATE_FORMAT),
+            'entity_updated' => $this->entityUpdatedDate->format(self::INDEX_DATE_FORMAT),
             'family' => $familyCode,
             'enabled' => $this->isEnabled,
             'categories' => $this->categoryCodes,

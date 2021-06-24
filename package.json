@@ -114,8 +114,8 @@
     "yamljs": "0.3.0"
   },
   "dependencies": {
-    "@akeneo-pim-community/shared": "link:front-packages/shared",
     "@akeneo-pim-community/measurement": "link:front-packages/measurement",
+    "@akeneo-pim-community/shared": "link:front-packages/shared",
     "ajv": "^6.10.2",
     "akeneo-design-system": "link:front-packages/akeneo-design-system",
     "babel-polyfill": "6.26.0",
@@ -144,9 +144,6 @@
     "summernote": "0.6.16",
     "underscore": "1.8.3",
     "victory": "^33.1.6"
-  },
-  "resolutions": {
-    "jest/**/ip-regex": "2.1.0"
   },
   "private": true,
   "workspaces": [

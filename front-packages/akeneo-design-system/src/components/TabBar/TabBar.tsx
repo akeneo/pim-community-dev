@@ -186,6 +186,10 @@ const TabBar = ({moreButtonTitle, children, ...rest}: TabBarProps) => {
 
   const hiddenTabs: ReactElement<TabProps>[] = [];
   const decoratedChildren = Children.map(children, (child, index) => {
+    if (!child) {
+      return;
+    }
+
     if (!isValidElement<TabProps>(child)) {
       throw new Error('TabBar only accepts TabBar.Tab as children');
     }

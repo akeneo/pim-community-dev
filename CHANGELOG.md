@@ -79,6 +79,7 @@
 - PIM-9863: Remove temporisation and add unit tests for product model reindexation.
 - PIM-9891: Fix missing sanity checks when computing enrichment status
 - PIM-9886: Fix display of completeness in the PEF when the selected locale is deactivated
+- PIM-9925: Fix roles that couldn't contain dashes in their codes
 
 ## New features
 
@@ -91,6 +92,7 @@
 
 - PIM-9648: Mitigate DDoS risk on API auth endpoint by rejecting too large content
 - PIM-9697: Exported files streamer
+- PIM-9719: Add the real "updated" values in ES for product and product models
 
 ## Classes
 

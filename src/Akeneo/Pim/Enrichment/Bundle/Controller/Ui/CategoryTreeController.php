@@ -2,11 +2,15 @@
 
 namespace Akeneo\Pim\Enrichment\Bundle\Controller\Ui;
 
+use Akeneo\Pim\Enrichment\Bundle\Doctrine\ORM\Counter\CategoryItemsCounterInterface;
+use Akeneo\Pim\Enrichment\Component\Category\Form\CategoryFormViewNormalizerInterface;
+use Akeneo\Pim\Enrichment\Component\Category\Query\CountTreesChildrenInterface;
 use Akeneo\Tool\Component\Classification\Model\CategoryInterface;
 use Akeneo\Tool\Component\Classification\Repository\CategoryRepositoryInterface;
 use Akeneo\Tool\Component\StorageUtils\Factory\SimpleFactoryInterface;
 use Akeneo\Tool\Component\StorageUtils\Remover\RemoverInterface;
 use Akeneo\Tool\Component\StorageUtils\Saver\SaverInterface;
+use Akeneo\Tool\Component\StorageUtils\Updater\ObjectUpdaterInterface;
 use Akeneo\UserManagement\Bundle\Context\UserContext;
 use Doctrine\Common\Collections\ArrayCollection;
 use Oro\Bundle\SecurityBundle\SecurityFacade;
@@ -19,6 +23,8 @@ use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 use Symfony\Component\Security\Core\Exception\AccessDeniedException;
+use Symfony\Component\Serializer\Normalizer\NormalizerInterface;
+use Symfony\Component\Validator\Validator\ValidatorInterface;
 use Symfony\Contracts\Translation\TranslatorInterface;
 
 /**
@@ -57,6 +63,20 @@ class CategoryTreeController extends Controller
     /** @var TranslatorInterface */
     protected $translator;
 
+    private ObjectUpdaterInterface $categoryUpdater;
+
+    private NormalizerInterface $normalizer;
+
+    private ValidatorInterface $validator;
+
+    private NormalizerInterface $constraintViolationNormalizer;
+
+    private CategoryItemsCounterInterface $categoryItemsCounter;
+
+    private CountTreesChildrenInterface $countTreesChildrenQuery;
+
+    private CategoryFormViewNormalizerInterface $categoryFormViewNormalizer;
+
     public function __construct(
         EventDispatcherInterface $eventDispatcher,
         UserContext $userContext,
@@ -66,6 +86,13 @@ class CategoryTreeController extends Controller
         CategoryRepositoryInterface $categoryRepository,
         SecurityFacade $securityFacade,
         TranslatorInterface $translator,
+        NormalizerInterface $normalizer,
+        ObjectUpdaterInterface $categoryUpdater,
+        ValidatorInterface $validator,
+        NormalizerInterface $constraintViolationNormalizer,
+        CategoryItemsCounterInterface $categoryItemsCounter,
+        CountTreesChildrenInterface $countTreesChildrenQuery,
+        CategoryFormViewNormalizerInterface $categoryFormViewNormalizer,
         array $rawConfiguration
     ) {
         $this->eventDispatcher = $eventDispatcher;
@@ -81,6 +108,13 @@ class CategoryTreeController extends Controller
 
         $this->rawConfiguration = $resolver->resolve($rawConfiguration);
         $this->translator = $translator;
+        $this->normalizer = $normalizer;
+        $this->categoryUpdater = $categoryUpdater;
+        $this->validator = $validator;
+        $this->constraintViolationNormalizer = $constraintViolationNormalizer;
+        $this->categoryItemsCounter = $categoryItemsCounter;
+        $this->countTreesChildrenQuery = $countTreesChildrenQuery;
+        $this->categoryFormViewNormalizer = $categoryFormViewNormalizer;
     }
 
     /**
@@ -225,77 +259,42 @@ class CategoryTreeController extends Controller
     }
 
     /**
-     * @throws AccessDeniedException
-     *
-     * @return Response
-     */
-    public function indexAction(): Response
-    {
-        if (false === $this->securityFacade->isGranted($this->buildAclName('category_list'))) {
-            throw new AccessDeniedException();
-        }
-
-        return $this->render(
-            'AkeneoPimEnrichmentBundle:CategoryTree:index.html.twig',
-            [
-                'related_entity' => $this->rawConfiguration['related_entity'],
-                'route'          => $this->rawConfiguration['route'],
-                'acl'            => $this->rawConfiguration['acl'],
-            ]
-        );
-    }
-
-    /**
      * Create a tree or category
      *
      * @param Request $request
-     * @param int     $parent
      *
      * @throws AccessDeniedException
      *
      * @return Response
      */
-    public function createAction(Request $request, $parent = null)
+    public function createAction(Request $request)
     {
         if (false === $this->securityFacade->isGranted($this->buildAclName('category_create'))) {
             throw new AccessDeniedException();
         }
 
         $category = $this->categoryFactory->create();
-        if ($parent) {
-            $parent = $this->findCategory($parent);
-            $category->setParent($parent);
+        $data = json_decode($request->getContent(), true);
+        $this->categoryUpdater->update($category, $data);
+        $violations = $this->validator->validate($category);
+
+        $normalizedViolations = [];
+        foreach ($violations as $violation) {
+            $normalizedViolation = $this->constraintViolationNormalizer->normalize(
+                $violation,
+                'internal_api',
+                ['category' => $category]
+            );
+            $normalizedViolations[$normalizedViolation['path']] = $normalizedViolation['message'];
         }
 
-        $category->setCode($request->get('label'));
-        $form = $this->createForm($this->rawConfiguration['form_type'], $category, $this->getFormOptions($category));
-
-        if ($request->isMethod('POST')) {
-            $form->handleRequest($request);
-
-            if ($form->isValid()) {
-                $this->categorySaver->save($category);
-                $message = sprintf('flash.%s.created', $category->getParent() ? 'category' : 'tree');
-                $this->addFlash('success', $this->translator->trans($message));
-
-                return new JsonResponse(
-                    [
-                        'route'  => $this->buildRouteName('categorytree_edit'),
-                        'params' => ['id' => $category->getId()]
-                    ]
-                );
-            }
+        if (count($normalizedViolations) > 0) {
+            return new JsonResponse($normalizedViolations, Response::HTTP_BAD_REQUEST);
         }
 
-        return $this->render(
-            sprintf('AkeneoPimEnrichmentBundle:CategoryTree:%s.html.twig', $request->get('content', 'edit')),
-            [
-                'form'           => $form->createView(),
-                'related_entity' => $this->rawConfiguration['related_entity'],
-                'acl'            => $this->rawConfiguration['acl'],
-                'route'          => $this->rawConfiguration['route'],
-            ]
-        );
+        $this->categorySaver->save($category);
+
+        return new JsonResponse(null, JsonResponse::HTTP_CREATED);
     }
 
     /**
@@ -315,6 +314,7 @@ class CategoryTreeController extends Controller
         }
 
         $category = $this->findCategory($id);
+        $responseStatus = Response::HTTP_OK;
         $form = $this->createForm($this->rawConfiguration['form_type'], $category, $this->getFormOptions($category));
 
         if ($request->isMethod('POST')) {
@@ -322,20 +322,24 @@ class CategoryTreeController extends Controller
 
             if ($form->isValid()) {
                 $this->categorySaver->save($category);
-                $message = sprintf('flash.%s.updated', $category->getParent() ? 'category' : 'tree');
-                $this->addFlash('success', $this->translator->trans($message));
+            } else {
+                $responseStatus = Response::HTTP_BAD_REQUEST;
             }
         }
 
-        return $this->render(
-            sprintf('AkeneoPimEnrichmentBundle:CategoryTree:%s.html.twig', $request->get('content', 'edit')),
-            [
-                'form'           => $form->createView(),
-                'related_entity' => $this->rawConfiguration['related_entity'],
-                'acl'            => $this->rawConfiguration['acl'],
-                'route'          => $this->rawConfiguration['route'],
-            ]
-        );
+        $rootCategory = null;
+        if ($category->isRoot() === false) {
+            $rootCategory = $this->findCategory($category->getRoot());
+        }
+
+        $normalizedCategory = $this->normalizer->normalize($category, 'internal_api');
+        $normalizedCategory = array_merge($normalizedCategory, [
+            'root' => $rootCategory === null ? null : $this->normalizer->normalize($rootCategory, 'internal_api')
+        ]);
+
+        $formData = $this->categoryFormViewNormalizer->normalizeFormView($form->createView());
+
+        return new JsonResponse(['category' => $normalizedCategory, 'form' => $formData], $responseStatus);
     }
 
     /**
@@ -362,6 +366,39 @@ class CategoryTreeController extends Controller
         $this->categoryRemover->remove($category);
 
         return new Response('', 204);
+    }
+
+
+    public function getCategoryTreesProductsNumberAction(): JsonResponse
+    {
+        $trees = $this->categoryRepository->getTrees();
+
+        $productsCountByCategories = array_fill_keys(
+            array_map(fn (CategoryInterface $category) => $category->getId(), $trees),
+            0
+        );
+
+        foreach ($trees as $tree) {
+            $productsCountByCategories[$tree->getId()] = $this->categoryItemsCounter->getItemsCountInCategory($tree, true);
+        }
+
+        return new JsonResponse($productsCountByCategories);
+    }
+
+    public function countCategoryProducts(int $id): Response
+    {
+        $category = $this->findCategory($id);
+
+        $numberOfProducts = $this->categoryItemsCounter->getItemsCountInCategory($category, true);
+
+        return new JsonResponse($numberOfProducts);
+    }
+
+    public function countTreesChildrenAction(): JsonResponse
+    {
+        $countChildren = $this->countTreesChildrenQuery->execute();
+
+        return new JsonResponse($countChildren);
     }
 
     /**
