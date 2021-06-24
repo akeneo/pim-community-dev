@@ -174,6 +174,7 @@ akeneo_connectivity.connection:
         business_errors: errori aziendali
     no_connection:
       title:
+        default: Vuoi vedere qualche grafico dettagliato sulle tue connessioni?
         data_source: Vuoi vedere qualche grafico fantasioso sulle tue connessioni sorgente?
         data_destination: Vuoi vedere qualche grafico fantasioso sulle tue connessioni di destinazione?
       message_with_permission:
@@ -213,12 +214,15 @@ akeneo_connectivity.connection:
       link: Scopri di più sulla configurazione degli abbonamenti agli eventi.
     event_logs:
       no_event_logs_with_those_filters:
+        title: Spiacenti, la tua ricerca non ha restituito registri
         caption: Riprova con nuovi criteri di ricerca.
       level:
         info: Info
         error: Errore
       list:
         search:
+          placeholder: Cerca nei messaggi
+          total: '{0} Nessun risultato|{1} 1 risultato|[2,Inf] {{ total }} risultati'
           level: Livello
           all: Tutte
           none: Nessuno
@@ -241,6 +245,7 @@ akeneo_connectivity.connection:
         link: Per capire come risolvere questo problema, visita il centro di aiuto API.
       search_filter:
         placeholder: Cerca nei messaggi di errore
+        result_count: '{0} Nessun risultato|{1} 1 risultato|[2,Inf] {{ count }} risultati'
       error_list:
         date_time_column:
           title: Giorno e ora
