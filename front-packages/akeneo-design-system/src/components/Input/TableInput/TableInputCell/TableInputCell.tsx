@@ -5,6 +5,9 @@ import {Override} from '../../../../shared';
 
 const TableInputTd = styled.td<{rowTitle: boolean} & AkeneoThemedProps>`
   padding: 0;
+  min-width: 150px;
+  max-width: 250px;
+  
   ${({rowTitle}) =>
     rowTitle &&
     css`

@@ -9,6 +9,8 @@ const TableInputTh = styled.th`
   text-align: left;
   font-weight: bold;
   white-space: nowrap;
+  min-width: 150px;
+  max-width: 250px;
 `;
 
 const TableInputHeaderCell = React.forwardRef<HTMLTableHeaderCellElement, React.TdHTMLAttributes<HTMLTableCellElement>>(
