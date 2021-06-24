@@ -128,7 +128,7 @@ class Menu extends BaseForm {
         route: this.findEntryRoute(extension),
         icon: React.createElement(CardIcon),
         position: index,
-        columns:  this.findMainEntryColumns(extension.code),
+        columns: this.findMainEntryColumns(extension.code),
         sections: extension.sections,
         isLandingSectionPage: isLandingSectionPage ?? false,
       };

@@ -21,17 +21,17 @@ const MainNavContainer = styled.div`
 const SubNavContainer = styled.div``;
 
 const SubNavEntry = styled.a`
-    display: block;
-    font-size: 15px;
-    margin: 0 0 20px 0;
-    color: #11324D;
-    cursor: pointer;
-    opacity: 0.85;
-    transition: opacity 0.2s ease-in;
+  display: block;
+  font-size: 15px;
+  margin: 0 0 20px 0;
+  color: #11324d;
+  cursor: pointer;
+  opacity: 0.85;
+  transition: opacity 0.2s ease-in;
 `;
 
 const ActiveSubNavEntry = styled(SubNavEntry)`
-  color: #9452BA;
+  color: #9452ba;
 `;
 
 const LogoContainer = styled.div`
@@ -131,16 +131,18 @@ const PimNavigation: FC<Props> = ({entries}) => {
     setActiveEntry(newActiveEntry || null);
 
     // @fixme find a better way to find the new activated sub-entry
-    const newColumn = newActiveEntry ? newActiveEntry.columns.find((column: SubNavigationEntry[]) => {
-      return column.find((entry: SubNavigationEntry) => entry.code === newActiveEntry.activeSubEntryCode);
-    }) : null;
+    const newColumn = newActiveEntry
+      ? newActiveEntry.columns.find((column: SubNavigationEntry[]) => {
+          return column.find((entry: SubNavigationEntry) => entry.code === newActiveEntry.activeSubEntryCode);
+        })
+      : null;
 
-    const newActiveSubEntry = newActiveEntry && newColumn ? newColumn.find(
-      (subEntry: SubNavigationEntry) => subEntry.code === newActiveEntry.activeSubEntryCode
-    ) : null;
+    const newActiveSubEntry =
+      newActiveEntry && newColumn
+        ? newColumn.find((subEntry: SubNavigationEntry) => subEntry.code === newActiveEntry.activeSubEntryCode)
+        : null;
 
     setActiveSubEntry(newActiveSubEntry || null);
-
   }, [entries]);
 
   return (
@@ -166,33 +168,36 @@ const PimNavigation: FC<Props> = ({entries}) => {
           <PimView viewName="pim-menu-help" />
         </HelpContainer>
       </MainNavContainer>
-      {activeEntry && (!activeEntry.isLandingSectionPage || activeSubEntry) && subNavigationItems && subNavigationItems.length > 0 && (
-        <SubNavContainer>
-          <SubNavigationPanel isOpen={isSubNavigationOpened}>
-            {subNavigationItems.map(subEntry => {
-              // @fixme: Find a better way to display active sub-navigation entry
-              if (isActiveSubEntry(subEntry.code)) {
+      {activeEntry &&
+        (!activeEntry.isLandingSectionPage || activeSubEntry) &&
+        subNavigationItems &&
+        subNavigationItems.length > 0 && (
+          <SubNavContainer>
+            <SubNavigationPanel isOpen={isSubNavigationOpened}>
+              {subNavigationItems.map(subEntry => {
+                // @fixme: Find a better way to display active sub-navigation entry
+                if (isActiveSubEntry(subEntry.code)) {
+                  return (
+                    <ActiveSubNavEntry
+                      key={`${subEntry.target}-${subEntry.label}`}
+                      onClick={() => handleFollowSubEntry(subEntry)}
+                    >
+                      {subEntry.label}
+                    </ActiveSubNavEntry>
+                  );
+                }
                 return (
-                  <ActiveSubNavEntry
+                  <SubNavEntry
                     key={`${subEntry.target}-${subEntry.label}`}
                     onClick={() => handleFollowSubEntry(subEntry)}
                   >
                     {subEntry.label}
-                  </ActiveSubNavEntry>
+                  </SubNavEntry>
                 );
-              }
-              return (
-                <SubNavEntry
-                  key={`${subEntry.target}-${subEntry.label}`}
-                  onClick={() => handleFollowSubEntry(subEntry)}
-                >
-                  {subEntry.label}
-                </SubNavEntry>
-              );
-            })}
-          </SubNavigationPanel>
-        </SubNavContainer>
-      )}
+              })}
+            </SubNavigationPanel>
+          </SubNavContainer>
+        )}
     </NavContainer>
   );
 };
