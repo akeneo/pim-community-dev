@@ -310,7 +310,7 @@ JSON;
     "errors": [
         {
             "property": "values",
-            "message": "Attribute \"a_localizable_scopable_image\" expects an existing scope, \"Oumuamua\" given.",
+            "message": "The a_localizable_scopable_image attribute requires a value per channel. The Oumuamua channel (scope) must exist in your PIM",
             "attribute": "a_localizable_scopable_image",
             "locale": "en_US",
             "scope": "Oumuamua"
