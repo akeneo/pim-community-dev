@@ -29,16 +29,19 @@ class NotLocalizableAndScopableAttributeException extends PropertyException impl
         $this->propertyName = 'attribute';
     }
 
-    public static function fromAttributeChannelAndLocale(string $attributeCode, string $channelCode, string $localeCode): self
-    {
+    public static function fromAttributeChannelAndLocale(
+        string $attributeCode,
+        ?string $channelCode,
+        ?string $localeCode
+    ): self {
         return new self(
             new TemplatedErrorMessage(
                 'The {attribute_code} attribute requires a value per channel ({channel_code} was detected)' .
                 ' but does not require a value per locale ({locale_code} was detected).',
                 [
                     'attribute_code' => $attributeCode,
-                    'channel_code' => $channelCode,
-                    'locale_code' => $localeCode,
+                    'channel_code' => $channelCode ?? 'nothing',
+                    'locale_code' => $localeCode ?? 'nothing',
                 ]
             ),
             $attributeCode

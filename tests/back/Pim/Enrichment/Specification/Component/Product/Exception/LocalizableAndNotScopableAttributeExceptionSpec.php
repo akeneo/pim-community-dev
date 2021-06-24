@@ -48,4 +48,13 @@ class LocalizableAndNotScopableAttributeExceptionSpec extends ObjectBehavior
     {
         $this->getPropertyName()->shouldReturn('attribute');
     }
+
+    public function it_provides_a_message_with_null_parameters(): void
+    {
+        $this->beConstructedThrough('fromAttributeChannelAndLocale', ['description', null, null]);
+        $this->getMessage()->shouldReturn(
+            'The description attribute does not require a value per channel' .
+            ' (nothing was detected) but requires a value per locale (nothing was detected).'
+        );
+    }
 }

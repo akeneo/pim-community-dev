@@ -25,13 +25,13 @@ final class ValidateAttribute
     public static function validate(Attribute $attribute, ?string $channelCode, ?string $localeCode): void
     {
         if ($attribute->isLocalizableAndScopable() && (null === $channelCode || null === $localeCode)) {
-            throw LocalizableAndScopableAttributeException::fromAttributeChannelAndLocale($attribute->code(), (string) $channelCode, (string) $localeCode);
+            throw LocalizableAndScopableAttributeException::fromAttributeChannelAndLocale($attribute->code(), $channelCode, $localeCode);
         } elseif ((!$attribute->isScopable() && $attribute->isLocalizable()) && (null !== $channelCode || null === $localeCode)) {
-            throw LocalizableAndNotScopableAttributeException::fromAttributeChannelAndLocale($attribute->code(), (string) $channelCode, (string) $localeCode);
+            throw LocalizableAndNotScopableAttributeException::fromAttributeChannelAndLocale($attribute->code(), $channelCode, $localeCode);
         } elseif (($attribute->isScopable() && !$attribute->isLocalizable()) && (null === $channelCode || null !== $localeCode)) {
-            throw NotLocalizableAndScopableAttributeException::fromAttributeChannelAndLocale($attribute->code(), (string) $channelCode, (string) $localeCode);
+            throw NotLocalizableAndScopableAttributeException::fromAttributeChannelAndLocale($attribute->code(), $channelCode, $localeCode);
         } elseif ((!$attribute->isScopable() && !$attribute->isLocalizable()) && (null !== $channelCode || null !== $localeCode)) {
-            throw NotLocalizableAndNotScopableAttributeException::fromAttributeChannelAndLocale($attribute->code(), (string) $channelCode, (string) $localeCode);
+            throw NotLocalizableAndNotScopableAttributeException::fromAttributeChannelAndLocale($attribute->code(), $channelCode, $localeCode);
         }
     }
 }
