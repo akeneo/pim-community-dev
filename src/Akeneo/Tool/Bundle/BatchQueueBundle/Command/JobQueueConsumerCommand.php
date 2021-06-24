@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Akeneo\Tool\Bundle\BatchQueueBundle\Command;
 
+use Akeneo\Platform\Bundle\FrameworkBundle\BoundedContext\BoundedContextResolver;
 use Akeneo\Tool\Bundle\BatchQueueBundle\Manager\JobExecutionManager;
 use Akeneo\Tool\Bundle\BatchQueueBundle\Queue\JobExecutionMessageRepository;
 use Akeneo\Tool\Component\BatchQueue\Queue\JobExecutionMessage;
@@ -51,25 +52,20 @@ class JobQueueConsumerCommand extends Command
     /** Interval in microseconds before checking if the process is still running. */
     private const RUNNING_PROCESS_CHECK_INTERVAL = 200000;
 
-    /** @var JobExecutionQueueInterface */
-    private $jobExecutionQueue;
-
-    /** @var JobExecutionMessageRepository */
-    private $executionMessageRepository;
-
-    /** @var JobExecutionManager */
-    private $executionManager;
-
-    /** @var string */
-    private $projectDir;
+    private JobExecutionQueueInterface $jobExecutionQueue;
+    private JobExecutionMessageRepository $executionMessageRepository;
+    private JobExecutionManager $executionManager;
+    private string $projectDir;
 
     private LoggerInterface $logger;
+    private BoundedContextResolver $boundedContextResolver;
 
     public function __construct(
         LoggerInterface $logger,
         JobExecutionQueueInterface $jobExecutionQueue,
         JobExecutionMessageRepository $executionMessageRepository,
         JobExecutionManager $executionManager,
+        BoundedContextResolver $boundedContextResolver,
         string $projectDir
     ) {
         parent::__construct();
@@ -78,6 +74,7 @@ class JobQueueConsumerCommand extends Command
         $this->jobExecutionQueue = $jobExecutionQueue;
         $this->executionMessageRepository = $executionMessageRepository;
         $this->executionManager = $executionManager;
+        $this->boundedContextResolver = $boundedContextResolver;
         $this->projectDir = $projectDir;
     }
 
@@ -87,11 +84,27 @@ class JobQueueConsumerCommand extends Command
     protected function configure()
     {
         $this
-            ->setDescription('Launch a daemon that will consume job execution messages and launch the associated job execution in backgrounds')
-            ->addOption('run-once', null, InputOption::VALUE_NONE, 'Launch only one job execution and stop the daemon once the job execution is finished')
-            ->addOption('job', 'j', InputOption::VALUE_REQUIRED | InputOption::VALUE_IS_ARRAY, 'Job instance codes that should be consumed')
-            ->addOption('blacklisted-job', 'b', InputOption::VALUE_REQUIRED | InputOption::VALUE_IS_ARRAY, 'Job instance codes that should not be consumed')
-        ;
+            ->setDescription(
+                'Launch a daemon that will consume job execution messages and launch the associated job execution in backgrounds'
+            )
+            ->addOption(
+                'run-once',
+                null,
+                InputOption::VALUE_NONE,
+                'Launch only one job execution and stop the daemon once the job execution is finished'
+            )
+            ->addOption(
+                'job',
+                'j',
+                InputOption::VALUE_REQUIRED | InputOption::VALUE_IS_ARRAY,
+                'Job instance codes that should be consumed'
+            )
+            ->addOption(
+                'blacklisted-job',
+                'b',
+                InputOption::VALUE_REQUIRED | InputOption::VALUE_IS_ARRAY,
+                'Job instance codes that should not be consumed'
+            );
     }
 
     /**
@@ -117,18 +130,32 @@ class JobQueueConsumerCommand extends Command
         $this->logger->debug(sprintf('Consumer name: "%s"', $consumerName->toString()));
         $pathFinder = new PhpExecutableFinder();
         $console = sprintf('%s%sbin%sconsole', $this->projectDir, DIRECTORY_SEPARATOR, DIRECTORY_SEPARATOR);
+        $akeneoContext = 'Platform';
 
         do {
             try {
                 $jobExecutionMessage = $this->jobExecutionQueue->consume($consumerName->toString(), $configuration);
 
                 if (null !== $jobExecutionMessage) {
-                    $arguments = array_merge([$pathFinder->find(), $console, 'akeneo:batch:job'], $this->getArguments($jobExecutionMessage));
+                    $arguments = array_merge(
+                        [$pathFinder->find(), $console, 'akeneo:batch:job'],
+                        $this->getArguments($jobExecutionMessage)
+                    );
                     $process = new Process($arguments);
 
                     $process->setTimeout(null);
 
-                    $this->logger->info(sprintf('Launching job execution "%s".', $jobExecutionMessage->getJobExecutionId()));
+                    $jobInstanceCode = $this->executionMessageRepository->getJobInstanceCode($jobExecutionMessage);
+                    $akeneoContext = $this->boundedContextResolver->fromJobName($jobInstanceCode);
+
+                    $this->logger->info(
+                        sprintf('Launching job execution "%s".', $jobExecutionMessage->getJobExecutionId()),
+                        [
+                            'context' => [
+                                'akeneo_context' => $akeneoContext,
+                            ],
+                        ]
+                    );
                     $this->logger->debug(sprintf('Command line: "%s"', $process->getCommandLine()));
 
                     $this->executionManager->updateHealthCheck($jobExecutionMessage);
@@ -169,12 +196,25 @@ class JobQueueConsumerCommand extends Command
                     */
                     $errOutput->write($process->getIncrementalErrorOutput());
 
-                    $this->logger->notice(sprintf('Job execution "%s" is finished.', $jobExecutionMessage->getJobExecutionId()));
+                    $this->logger->info(
+                        sprintf('Job execution "%s" is finished.', $jobExecutionMessage->getJobExecutionId()),
+                        [
+                            'context' => [
+                                'akeneo_context' => $akeneoContext,
+                            ],
+                        ]
+                    );
                 }
             } catch (\Throwable $t) {
-                $this->logger->error(sprintf('An error occurred: %s', $t->getMessage()));
-                $this->logger->error($t->getTraceAsString());
-
+                $this->logger->error(
+                    sprintf('An error occurred: %s', $t->getMessage()),
+                    [
+                        'context' => [
+                            'akeneo_context' => $akeneoContext,
+                        ],
+                        'trace' => $t->getTraceAsString(),
+                    ]
+                );
                 sleep(self::EXCEPTION_WAIT_INTERVAL);
             }
         } while (false === $input->getOption('run-once'));
@@ -183,10 +223,6 @@ class JobQueueConsumerCommand extends Command
     /**
      * Return all the arguments of the command to execute.
      * Options are considered as arguments.
-     *
-     * @param JobExecutionMessage $jobExecutionMessage
-     *
-     * @return array
      */
     protected function getArguments(JobExecutionMessage $jobExecutionMessage): array
     {
