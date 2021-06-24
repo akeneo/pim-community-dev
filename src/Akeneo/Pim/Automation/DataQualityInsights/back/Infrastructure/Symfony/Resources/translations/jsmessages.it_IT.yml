@@ -4,6 +4,7 @@ akeneo_data_quality_insights:
     menu: Approfondimenti sulla qualità dei dati
     helper:
       title: Introduzione alla qualità dei dati in Akeneo
+      description: Con la dashboard sulla qualità dei dati, puoi misurare la qualità dei dati del tuo catalogo. Puoi anche concentrarti su una categoria o una famiglia.
     no_data_subtitle: Ti preghiamo di tornare più tardi.
     time_period:
       label: Periodo temporale
@@ -26,9 +27,18 @@ akeneo_data_quality_insights:
       add_categories: Aggiungi categorie
       title: Titolo
       score: Punteggio
+      no_family_helper_msg: Seleziona le famiglie per le quali desideri misurare la qualità dei dati
     time_axis:
       day: giorno
     key_indicators:
+      list:
+        has_image:
+          no_data: I tuoi attributi immagine sembrano vuoti. Carica immagini per questo indicatore chiave per mettere in evidenza la qualità dei tuoi prodotti.
+        good_enrichment:
+          no_data: I tuoi prodotti sembrano vuoti. Aggiungi attributi per questo indicatore chiave per mettere in evidenza la qualità dei tuoi prodotti.
+          messages:
+            second_step:
+              message4: Hai bisogno di una mano per arricchire i tuoi prodotti? Scopri come selezionare con attenzione gli attributi più rilevanti <a href="{{ link }}" target="_blank">qui</a>.
       no_data_subtitle: Ti preghiamo di tornare più tardi.
     quality_score_evolution:
       current_month_label: Questo mese
@@ -43,10 +53,18 @@ akeneo_data_quality_insights:
     axis:
       enrichment:
         title: Arricchimento
+        attributes_link: Mostra tutti gli attributi mancanti
         success: I tuoi dati di prodotto sono completamente arricchiti. Congratulazioni!
     messages:
       success:
         criterion: Tutto a posto.
+      too_many_attributes: Hai {{ count }} attributi da migliorare.
+      no_attribute_groups:
+        title: Spiacenti, non siamo riusciti a calcolare il tuo punteggio qualità.
+        subtitle: "Il punteggio qualità non può essere calcolato: nessuno dei gruppi di attributi di questo prodotto è attivato."
+        help_center_link: Scopri come gli approfondimenti sulla qualità dei dati possono aiutarti a migliorare la qualità dei tuoi dati nel nostro Help Center.
+      add_image_attribute_recommendation: Un'immagine vale più di mille parole. Aggiungi un attributo immagine per migliorare la qualità dei dati di questo prodotto.
+      fill_image_attribute_recommendation: La nostra esperienza ci dice che le immagini fanno davvero la differenza. Aggiungi almeno un'immagine per migliorare la qualità dei dati di questo prodotto.
   product_edit_form:
     attribute_filter:
       all_missing_attributes: Tutti gli attributi mancanti
@@ -55,6 +73,7 @@ akeneo_data_quality_insights:
     activation: Attivato
     activated: Attivato
     disabled: Disattivato
+    all_groups_evaluated: Tutti i gruppi di attributi di questo prodotto sono considerati per il calcolo del punteggio qualità. Per ottenere il punteggio qualità più rilevante, <a href="{{ link }}" target="_blank">scopri come disattivare i gruppi di attributi nel nostro Help Center.</a>
   product_grid:
     filter_label:
       images_quality: Immagine prodotto

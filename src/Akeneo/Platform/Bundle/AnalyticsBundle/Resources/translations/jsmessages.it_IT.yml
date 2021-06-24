@@ -44,4 +44,10 @@ pim_analytics:
     nb_media_files_in_products: Numero di file multimediali nei prodotti
     nb_media_images_in_products: Numero di immagini multimediali nei prodotti
     is_demo_catalog: Catalogo demo installato
+    data_source.tracked: Numero di connessioni a origine API tracciate
+    data_source.untracked: Numero di connessioni a origine API non tracciate
+    data_destination.tracked: Numero di connessioni a destinazione API tracciate
+    data_destination.untracked: Numero di connessioni a destinazione API non tracciate
+    other.tracked: Numero di altre connessioni ad API tracciate
+    other.untracked: Numero di altre connessioni ad API non tracciate
 
