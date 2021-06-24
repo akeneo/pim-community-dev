@@ -122,14 +122,14 @@ class JobExecutionProgress extends ReactView {
       <ThemeProvider theme={pimTheme}>
         <Container>
           {data.tracking.steps.map((step: StepExecutionTracking, i: number) => (
-              <ProgressBar
-                key={i}
-                title={getStepExecutionTrackingTitle(step)}
-                progressLabel={getStepExecutionTrackingProgressLabel(data.status, step)}
-                level={guessStepExecutionTrackingLevel(step)}
-                percent={getStepExecutionTrackingPercent(step)}
-                size="large"
-              />
+            <ProgressBar
+              key={i}
+              title={getStepExecutionTrackingTitle(step)}
+              progressLabel={getStepExecutionTrackingProgressLabel(data.status, step)}
+              level={guessStepExecutionTrackingLevel(step)}
+              percent={getStepExecutionTrackingPercent(step)}
+              size="large"
+            />
           ))}
         </Container>
       </ThemeProvider>
