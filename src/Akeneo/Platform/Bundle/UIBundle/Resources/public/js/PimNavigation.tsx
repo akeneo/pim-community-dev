@@ -51,6 +51,7 @@ type SubNavigationEntry = {
   code: string;
   position: number;
   route: string;
+  routeParams?: {[key: string]: any}; // @fixme fix type?
   target: string;
   label: string;
   section?: any;
@@ -66,7 +67,7 @@ type NavigationEntry = {
   route: string;
   icon: React.ReactElement<IconProps>;
   position: number;
-  items: SubNavigationEntry[];
+  columns: SubNavigationEntry[][];
   sections: any[];
   isLandingSectionPage: boolean;
 };
@@ -94,7 +95,7 @@ const PimNavigation: FC<Props> = ({entries}) => {
       console.error('sub-Entry has no route', subEntry);
       return;
     }
-    router.redirect(router.generate(subEntry.route));
+    router.redirect(router.generate(subEntry.route, subEntry.routeParams));
   };
 
   const [activeEntry, setActiveEntry] = useState<NavigationEntry | null>(null);
@@ -111,7 +112,14 @@ const PimNavigation: FC<Props> = ({entries}) => {
     if (!activeEntry) {
       return [];
     }
-    return activeEntry.items;
+
+    if (activeSubEntry) {
+      return activeEntry.columns.find((column: SubNavigationEntry[]) => {
+        return column.find((entry: SubNavigationEntry) => entry.code === activeSubEntry.code);
+      });
+    }
+
+    return [];
   };
 
   console.log('entries', entries);
@@ -122,9 +130,15 @@ const PimNavigation: FC<Props> = ({entries}) => {
     const newActiveEntry = entries.find((entry: NavigationEntry) => entry.active);
     setActiveEntry(newActiveEntry || null);
 
-    const newActiveSubEntry = newActiveEntry ? newActiveEntry.items.find(
+    // @fixme find a better way to find the new activated sub-entry
+    const newColumn = newActiveEntry ? newActiveEntry.columns.find((column: SubNavigationEntry[]) => {
+      return column.find((entry: SubNavigationEntry) => entry.code === newActiveEntry.activeSubEntryCode);
+    }) : null;
+
+    const newActiveSubEntry = newActiveEntry && newColumn ? newColumn.find(
       (subEntry: SubNavigationEntry) => subEntry.code === newActiveEntry.activeSubEntryCode
     ) : null;
+
     setActiveSubEntry(newActiveSubEntry || null);
 
   }, [entries]);
@@ -152,7 +166,7 @@ const PimNavigation: FC<Props> = ({entries}) => {
           <PimView viewName="pim-menu-help" />
         </HelpContainer>
       </MainNavContainer>
-      {activeEntry && (!activeEntry.isLandingSectionPage || activeSubEntry) && subNavigationItems.length > 0 && (
+      {activeEntry && (!activeEntry.isLandingSectionPage || activeSubEntry) && subNavigationItems && subNavigationItems.length > 0 && (
         <SubNavContainer>
           <SubNavigationPanel isOpen={isSubNavigationOpened}>
             {subNavigationItems.map(subEntry => {

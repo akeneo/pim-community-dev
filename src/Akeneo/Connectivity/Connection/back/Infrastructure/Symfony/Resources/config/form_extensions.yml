@@ -51,6 +51,7 @@ extensions:
         parent: pim-menu
         targetZone: column
         config:
+            tab: pim-menu-connect
             stateCode: pim-menu-connection
             navigationTitle: pim_menu.navigation_block.connection
 

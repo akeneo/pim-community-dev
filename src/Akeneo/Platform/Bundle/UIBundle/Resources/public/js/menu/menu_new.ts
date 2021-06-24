@@ -16,7 +16,7 @@ type SubEntry = {
   position: number;
   label: string;
   route: string;
-  routeParams?: any;
+  routeParams?: {[key: string]: any};
   target: string;
 };
 
@@ -25,8 +25,21 @@ type EntryView = View & {
     title: string;
     to?: string;
     isLandingSectionPage?: boolean;
+    tab?: string;
   };
   items: SubEntry[];
+  sections: any[];
+};
+
+// @fixme Don't declare a type just for navigationItems
+type EntryColumn = View & {
+  config: {
+    title: string;
+    to?: string;
+    isLandingSectionPage?: boolean;
+    tab?: string;
+  };
+  navigationItems: SubEntry[];
   sections: any[];
 };
 
@@ -115,7 +128,7 @@ class Menu extends BaseForm {
         route: this.findEntryRoute(extension),
         icon: React.createElement(CardIcon),
         position: index,
-        items: extension.items,
+        columns:  this.findMainEntryColumns(extension.code),
         sections: extension.sections,
         isLandingSectionPage: isLandingSectionPage ?? false,
       };
@@ -126,6 +139,15 @@ class Menu extends BaseForm {
     });
 
     return entries;
+  }
+
+  findMainEntryColumns(entryCode: string): SubEntry[][] {
+    const columns = Object.values(this.extensions).filter((extension: EntryView) => {
+      // @todo Ensure that we should use "tab" (it's not always defined. ex: pim-menu-connection-column)
+      return extension.targetZone === 'column' && extension.config.tab === entryCode;
+    });
+
+    return columns.map((column: EntryColumn) => column.navigationItems);
   }
 
   findEntryRoute(entry: EntryView): string {
