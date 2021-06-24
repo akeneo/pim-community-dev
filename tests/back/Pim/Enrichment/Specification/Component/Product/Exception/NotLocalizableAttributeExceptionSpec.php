@@ -4,8 +4,6 @@ declare(strict_types=1);
 
 namespace Specification\Akeneo\Pim\Enrichment\Component\Product\Exception;
 
-use Akeneo\Pim\Enrichment\Component\Error\DomainErrorInterface;
-use Akeneo\Pim\Enrichment\Component\Error\TemplatedErrorMessage\TemplatedErrorMessageInterface;
 use Akeneo\Pim\Enrichment\Component\Product\Exception\NotLocalizableAttributeException;
 use PhpSpec\ObjectBehavior;
 
@@ -16,22 +14,13 @@ class NotLocalizableAttributeExceptionSpec extends ObjectBehavior
         $this->beConstructedThrough('withCode', ['description']);
     }
 
-    public function it_is_a_domain_and_templated_error_exception(): void
+    public function it_is_a_not_localizable_attribute_exception(): void
     {
         $this->shouldHaveType(NotLocalizableAttributeException::class);
-        $this->shouldImplement(DomainErrorInterface::class);
-        $this->shouldImplement(TemplatedErrorMessageInterface::class);
     }
 
-    public function it_provides_a_templated_error_message(): void
+    public function it_provides_a_message(): void
     {
-        $templatedMessage = $this->getTemplatedErrorMessage();
-        $templatedMessage->getTemplate()->shouldReturn('The {attribute_code} attribute is not localisable.');
-        $templatedMessage->getParameters()->shouldReturn(['attribute_code' => 'description']);
-    }
-
-    public function it_provides_the_attribute_code(): void
-    {
-        $this->getAttributeCode()->shouldReturn('description');
+        $this->getMessage()->shouldReturn('The description attribute is not localisable.');
     }
 }
