@@ -79,12 +79,12 @@ const getStepExecutionTrackingTitle = (step: StepExecutionTracking): string => {
   return __(key);
 };
 
-const getStepExecutionTrackingProgressLabel = (step: StepExecutionTracking): string => {
+const getStepExecutionTrackingProgressLabel = (jobStatus: string | undefined, step: StepExecutionTracking): string => {
   switch (step.status) {
     case 'STARTING':
       return __('pim_import_export.tracking.not_started');
     case 'STARTED':
-      if (!step.isTrackable) {
+      if (!step.isTrackable || 'Failed' === jobStatus) {
         return __('pim_import_export.tracking.untrackable');
       }
 
@@ -119,20 +119,20 @@ class JobExecutionProgress extends ReactView {
     const data = this.getRoot().getFormData();
 
     return (
-      <ThemeProvider theme={pimTheme}>
-        <Container>
-          {data.tracking.steps.map((step: StepExecutionTracking, i: number) => (
-            <ProgressBar
-              key={i}
-              title={getStepExecutionTrackingTitle(step)}
-              progressLabel={getStepExecutionTrackingProgressLabel(step)}
-              level={guessStepExecutionTrackingLevel(step)}
-              percent={getStepExecutionTrackingPercent(step)}
-              size="large"
-            />
-          ))}
-        </Container>
-      </ThemeProvider>
+        <ThemeProvider theme={pimTheme}>
+          <Container>
+            {data.tracking.steps.map((step: StepExecutionTracking, i: number) => (
+                <ProgressBar
+                    key={i}
+                    title={getStepExecutionTrackingTitle(step)}
+                    progressLabel={getStepExecutionTrackingProgressLabel(data.status, step)}
+                    level={guessStepExecutionTrackingLevel(step)}
+                    percent={getStepExecutionTrackingPercent(step)}
+                    size="large"
+                />
+            ))}
+          </Container>
+        </ThemeProvider>
     );
   }
 
