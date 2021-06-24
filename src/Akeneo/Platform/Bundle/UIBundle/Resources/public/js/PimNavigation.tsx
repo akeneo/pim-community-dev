@@ -115,7 +115,7 @@ const PimNavigation: FC<Props> = ({entries}) => {
 
     if (activeSubEntry) {
       return activeEntry.columns.find((column: SubNavigationEntry[]) => {
-        return column.find((entry: SubNavigationEntry) => entry.code === activeSubEntry.code);
+        return undefined !== column.find((entry: SubNavigationEntry) => entry.code === activeSubEntry.code);
       });
     }
 
@@ -175,7 +175,7 @@ const PimNavigation: FC<Props> = ({entries}) => {
           <SubNavContainer>
             <SubNavigationPanel isOpen={isSubNavigationOpened}>
               {subNavigationItems.map(subEntry => {
-                // @fixme: Find a better way to display active sub-navigation entry
+                // @fixme: use DSM components
                 if (isActiveSubEntry(subEntry.code)) {
                   return (
                     <ActiveSubNavEntry
