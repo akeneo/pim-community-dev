@@ -10,6 +10,7 @@ use Akeneo\Tool\Component\Batch\Model\JobExecution;
 use AkeneoTest\Integration\IntegrationTestsBundle\Launcher\PubSubQueueStatus;
 use Doctrine\DBAL\Driver\Connection;
 use Google\Cloud\PubSub\Message;
+use Psr\Log\LoggerInterface;
 use Symfony\Bundle\FrameworkBundle\Console\Application;
 use Symfony\Component\Console\Input\ArrayInput;
 use Symfony\Component\Console\Output\BufferedOutput;
@@ -40,16 +41,19 @@ class JobLauncher
     private Connection $dbConnection;
     /** @var PubSubQueueStatus[] */
     private iterable $pubSubQueueStatuses;
+    private LoggerInterface $logger;
 
     public function __construct(
         KernelInterface $kernel,
         Connection $dbConnection,
-        iterable $pubSubQueueStatuses
+        iterable $pubSubQueueStatuses,
+        LoggerInterface $logger
     ) {
         Assert::allIsInstanceOf($pubSubQueueStatuses, PubSubQueueStatus::class);
         $this->kernel = $kernel;
         $this->dbConnection = $dbConnection;
         $this->pubSubQueueStatuses = $pubSubQueueStatuses;
+        $this->logger = $logger;
     }
 
     /**
@@ -367,7 +371,13 @@ class JobLauncher
         );
 
         $process = new Process($command);
-        $process->start();
+        $process->start(function (string $type, string $data) {
+            if ($type === Process::ERR) {
+                $this->logger->error($data);
+            } else {
+                $this->logger->info($data);
+            }
+        });
 
         return $process;
     }
