@@ -56,6 +56,8 @@ describe('TableStructureApp', () => {
     await act(async () => {
       await fireEvent.click(screen.getAllByRole('row')[0]);
     });
+
+    expect(codeInput.value).toEqual('ingredients');
   });
 
   it('should update labels', async () => {
