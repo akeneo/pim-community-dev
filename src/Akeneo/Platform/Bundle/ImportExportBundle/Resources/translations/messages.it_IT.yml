@@ -29,6 +29,7 @@ pim_import_export:
       success: Esportazione <strong>%label%</strong> completata
       warnings:
         xlsx_cell_conversion_error: Eccezione durante la conversione della colonna "{0}" al tipo di attributo di prodotto PIM di destinazione (controlla il formato cella Excel)
+        xlsx_cell_date_to_text_conversion_error: Impossibile convertire la cella {0} con formato data in attributo di tipo testo
     import:
       error: Importazione <strong>%label%</strong> non riuscita
       warning: Importazione <strong>%label%</strong> completata con alcuni avvisi

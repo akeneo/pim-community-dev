@@ -2,6 +2,7 @@ pim_measurements:
   validation:
     common:
       code:
+        pattern: 'Questo campo può contenere solo lettere, numeri e underscore.'
         limit_reached: 'Non puoi creare la famiglia di unità di misura "%measurement_family_code%" poiché hai raggiunto il limite di %limit% famiglie di unità di misura'
     measurement_family:
       standard_unit_code:
@@ -26,3 +27,6 @@ pim_measurements:
         should_contain_at_least_one_unit: 'Devono essere presenti almeno %limit% unità nella famiglia di unità di misura.'
         should_not_contain_duplicates: 'Abbiamo trovato alcune unità duplicate nella famiglia di unità di misura. La famiglia di unità di misura richiede unità univoche.'
         must_be_indexed_by_code: 'L''indice non corrisponde al codice unità.'
+    unit:
+      code:
+        must_be_unique: 'Il codice unità esiste già.'

@@ -209,10 +209,45 @@ pim_enrich.entity.category:
   label: Categoria
   uppercase_label: Categoria
   plural_label: Categorie
+  page_title:
+    index: "]-Inf, 1]{{ count }} albero|]1, Inf[{{ count }} alberi"
   content:
+    empty_tree_list:
+      title: Non hai alcun albero
+      hint: Crea il tuo primo.
     tree_list:
       columns:
+        label: Etichetta albero
         number_of_categories: Numero di categorie
+        count_categories: ']-Inf, 1]{{ count }} categoria|]1, Inf[{{ count }} categorie'
+    tree:
+      not_found: Albero di categorie non trovato
+    edit:
+      not_found: Categoria non trovata
+      default_tree_label: Albero
+      success: Categoria aggiornata con successo
+      fail: Impossibile aggiornare la categoria
+  new_category: Nuova categoria
+  new_category_tree: Nuovo albero di categorie
+  category_created: La categoria "{{ name }}" è stata creata con successo
+  category_creation_error: Impossibile creare la categoria "{{ code }}"
+  category_tree_creation:
+    success: L'albero "{{ code }}" è stato creato con successo
+    error: Impossibile creare l'albero "{{ code }}"
+  category_tree_deletion:
+    success: L'albero "{{ tree }}" è stato eliminato con successo
+    error: Impossibile eliminare l'albero "{{ tree }}"
+    confirmation: Sei sicuro di voler eliminare l'albero {{ name }}? Tutte le categorie in quell'albero saranno eliminate, e i prodotti saranno rimossi da tutte quelle categorie.
+    products_limit_exceeded:
+      title: Impossibile eliminare l'albero
+      message: L'albero "{{ tree }}" contiene più di {{ limit }} prodotti, pertanto non può essere eliminato.
+  category_deletion:
+    success: La categoria "{{ name }}" è stata eliminata con successo
+    error: Impossibile eliminare la categoria "{{ name }}"
+    confirmation: Sei sicuro di voler eliminare la categoria {{ name }}? I prodotti in questa categoria non saranno eliminati.
+    products_limit_exceeded:
+      title: Impossibile eliminare questa categoria
+      message: La categoria "{{ name }}" contiene più di {{ limit }} prodotti, pertanto non può essere eliminata.
 pim_enrich.export.product:
   data:
     title: Filtra i prodotti
@@ -287,7 +322,12 @@ pim_enrich.export.product:
         BETWEEN: Compreso tra
         NOT BETWEEN: Non compreso tra
     quality-score:
+      title: Punteggio qualità
+      operator_choice_title: Esporta punteggi qualità per
       empty_selection: Nessuna condizione su punteggio qualità
+      operators:
+        IN AT LEAST ONE LOCALE: Almeno una impostazione locale
+        IN ALL LOCALES: Tutte le impostazioni locali selezionate
   global_settings:
     title: Impostazioni Globali
 pim_enrich.mass_edit.product:
@@ -368,6 +408,7 @@ pim_enrich.mass_edit.product:
       description: Il padre dei prodotti varianti o sotto-modelli di prodotto selezionati nella griglia saranno modificati al modello di prodotto scelto.
 pim_datagrid:
   no_entities: "Nessun {{ entityHint }} trovato"
+  no_entities.product: "Nessun prodotto trovato" #Custom translation for product grid
   no_results: "Spiacenti, la tua ricerca non ha restituito {{ entityHint }}."
   no_results.product: "Spiacenti, la tua ricerca non ha restituito prodotti." #Custom translation for product grid
   mass_action_group:
@@ -406,6 +447,7 @@ pim_datagrid:
       product: "]-Inf, 1]{{ count }} risultato selezionato|]1, Inf[{{ count }} risultati selezionati"
   view_selector:
     view: Visualizzazione
+    choose_type: Voglio creare una vista privata
   actions:
     edit_product_attributes: Modificare gli attributi del prodotto
     classify_product: Classificare il prodotto
