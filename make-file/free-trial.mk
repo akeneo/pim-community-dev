@@ -16,3 +16,7 @@ api-stop:
 api-logs:
 	${DOCKER_COMPOSE_API} logs -f akeneo-connect-api
 
+.PHONY: free-trial-lint-back
+free-trial-lint-back: #Doc: launch PHPStan for the free trial
+	$(PHP_RUN) vendor/bin/php-cs-fixer fix --diff --dry-run --config=.php_cs.php src/Akeneo/FreeTrial/back
+	$(PHP_RUN) vendor/bin/phpstan analyse --configuration=src/Akeneo/FreeTrial/tests/back/phpstan.neon.dist

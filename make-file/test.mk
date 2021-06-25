@@ -32,6 +32,7 @@ lint-back:
 	$(MAKE) communication-channel-lint-back
 	$(MAKE) data-quality-insights-lint-back
 	$(MAKE) data-quality-insights-phpstan
+	$(MAKE) free-trial-lint-back
 
 .PHONY: lint-front
 lint-front:
