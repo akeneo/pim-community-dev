@@ -10,10 +10,12 @@ use Akeneo\Pim\Enrichment\Component\Error\Documentation\HrefMessageParameter;
 use Akeneo\Pim\Enrichment\Component\Error\Documentation\RouteMessageParameter;
 use Akeneo\Pim\Enrichment\Component\Error\DocumentationBuilderInterface;
 use Akeneo\Pim\Enrichment\Component\Product\Validator\Constraints\Boolean;
+use Akeneo\Pim\Enrichment\Component\Product\Validator\Constraints\Date;
 use Akeneo\Pim\Enrichment\Component\Product\Validator\Constraints\File;
 use Akeneo\Pim\Enrichment\Component\Product\Validator\Constraints\IsNumeric;
 use Akeneo\Pim\Enrichment\Component\Product\Validator\Constraints\IsString;
 use Akeneo\Pim\Enrichment\Component\Product\Validator\Constraints\Length;
+use Akeneo\Pim\Enrichment\Component\Product\Validator\Constraints\LocalizableValues;
 use Akeneo\Pim\Enrichment\Component\Product\Validator\Constraints\NotBlank;
 use Akeneo\Pim\Enrichment\Component\Product\Validator\Constraints\NotDecimal;
 use Akeneo\Pim\Enrichment\Component\Product\Validator\Constraints\Range;
@@ -31,9 +33,12 @@ final class DefaultAttributeValidation implements DocumentationBuilderInterface
 {
     const SUPPORTED_CONSTRAINTS_CODES = [
         Boolean::NOT_BOOLEAN_ERROR,
+        Date::INVALID_FORMAT_ERROR,
+        Date::INVALID_DATE_ERROR,
         IsNumeric::IS_NUMERIC,
         IsString::IS_STRING,
         Length::TOO_LONG_ERROR,
+        LocalizableValues::NOT_AVAILABLE_LOCALE_ERROR,
         NotBlank::IS_BLANK_ERROR,
         NotDecimal::NOT_DECIMAL,
         Range::INVALID_CHARACTERS_ERROR,

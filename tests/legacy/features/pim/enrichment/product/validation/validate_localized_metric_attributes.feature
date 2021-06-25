@@ -38,14 +38,14 @@ Feature: Validate localized metric attributes of a product
     Given I switch the scope to "ecommerce"
     And I change the Vitesse to "-7,5 Yard par heure"
     And I save the product
-    Then I should see validation tooltip "Cette valeur doit être supérieure ou égale à 5.5."
+    Then I should see validation tooltip "L'attribut speed requiert une valeur égale ou supérieure à 5.5."
     And there should be 1 error in the "[other]" tab
 
   Scenario: Validate the number max constraint of scopable metric attribute
     Given I switch the scope to "ecommerce"
     And I change the Vitesse to "111,1 Yard par heure"
     And I save the product
-    Then I should see validation tooltip "Cette valeur doit être inférieure ou égale à 100."
+    Then I should see validation tooltip "L'attribut speed requiert une valeur inférieure ou égale à 100."
     And there should be 1 error in the "[other]" tab
 
   Scenario: Validate the decimal separator constraint of metric attribute

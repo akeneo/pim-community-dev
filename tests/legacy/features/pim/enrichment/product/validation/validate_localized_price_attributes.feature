@@ -36,25 +36,25 @@ Feature: Validate localized price attributes of a product
   Scenario: Validate the number min constraint of price attribute
     Given I change the "Taxe" to "5,5 USD"
     And I save the product
-    Then I should see validation tooltip "Cette valeur doit être supérieure ou égale à 10."
+    Then I should see validation tooltip "L'attribut tax requiert une valeur égale ou supérieure à 10"
     And there should be 1 error in the "[other]" tab
 
   Scenario: Validate the number min constraint of scopable price attribute
     Given I change the "Douane" to "9,9 EUR"
     And I save the product
-    Then I should see validation tooltip "Cette valeur doit être supérieure ou égale à 10."
+    Then I should see validation tooltip "L'attribut customs requiert une valeur égale ou supérieure à 10"
     And there should be 1 error in the "[other]" tab
 
   Scenario: Validate the number max constraint of price attribute
     Given I change the "Taxe" to "110 USD"
     And I save the product
-    Then I should see validation tooltip "Cette valeur doit être inférieure ou égale à 100."
+    Then I should see validation tooltip "L'attribut tax requiert une valeur inférieure ou égale à 100"
     And there should be 1 error in the "[other]" tab
 
   Scenario: Validate the number max constraint of scopable price attribute
     Given I change the "Douane" to "222,2 EUR"
     And I save the product
-    Then I should see validation tooltip "Cette valeur doit être inférieure ou égale à 100."
+    Then I should see validation tooltip "L'attribut customs requiert une valeur inférieure ou égale à 100"
     And there should be 1 error in the "[other]" tab
 
   Scenario: Validate the type constraint of price attribute
@@ -63,7 +63,7 @@ Feature: Validate localized price attributes of a product
     And I save the product
     Then I should see validation tooltip "L'attribut tax requiert une valeur numérique et la valeur bar soumise ne l'est pas."
     Then I should see validation tooltip "L'attribut tax requiert une valeur numérique et la valeur qux soumise ne l'est pas."
-    Then I should see validation tooltip "Cette valeur doit être supérieure ou égale à 10."
+    Then I should see validation tooltip "L'attribut tax requiert une valeur égale ou supérieure à 10"
     And there should be 3 error in the "[other]" tab
 
   Scenario: Validate the decimal separator constraint of price attribute
