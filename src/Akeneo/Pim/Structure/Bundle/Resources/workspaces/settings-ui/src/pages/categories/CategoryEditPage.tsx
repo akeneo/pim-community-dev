@@ -164,6 +164,7 @@ const CategoryEditPage: FC = () => {
                             openDeleteCategoryModal();
                           }
                         });
+                        closeSecondaryAction();
                       }}
                       className="AknDropdown-menuLink"
                     >

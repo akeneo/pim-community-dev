@@ -41,7 +41,11 @@ The %attribute% attribute must not contain more than %limit% characters. The sub
 The %attribute% attribute requires a valid date. Please use the following format %date_format% for dates.: The %attribute% attribute requires a valid date. Please use the following format %date_format% for dates.
 'The {{ attribute_code }} attribute must match the following regular expression: {{ pattern }}.': 'The {{ attribute_code }} attribute must match the following regular expression: {{ pattern }}.'
 'The {{ attribute_code }} attribute cannot be empty.': 'The {{ attribute_code }} attribute cannot be empty.'
+'The file %file_name% is too large (%file_size% %suffix%). The %attribute% attribute can not exceed %max_file_size% %suffix%.': The file %file_name% is too large (%file_size% %suffix%). The %attribute% attribute can not exceed %max_file_size% %suffix%.
+'The %attribute_code% attribute requires a valid locale. The %invalid_locale% locale does not exist.': 'The %attribute_code% attribute requires a valid locale. The %invalid_locale% locale does not exist.'
+'The %attribute_code% attribute requires a valid locale. The %invalid_locale% locale is not bound to the %channel_code% channel.': 'The %attribute_code% attribute requires a valid locale. The %invalid_locale% locale is not bound to the %channel_code% channel.'
 The %attribute% attribute requires an e-mail address.: 'The %attribute% attribute requires an e-mail address.'
+The %attribute_code% attribute requires a value per channel. The %channel% channel (scope) must exist in your PIM: 'The %attribute_code% attribute requires a value per channel. The %channel% channel (scope) must exist in your PIM'
 pim_catalog:
     constraint:
         can_have_family_variant_empty_axis_value: 'Attribute "%attribute%" cannot be empty, as it is defined as an axis for this entity'
