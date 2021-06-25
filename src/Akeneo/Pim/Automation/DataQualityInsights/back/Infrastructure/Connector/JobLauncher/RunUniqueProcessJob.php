@@ -27,20 +27,11 @@ final class RunUniqueProcessJob
     /** Time for which a job execution is considered as outdated. */
     private const OUTDATED_JOB_EXECUTION_TIME = '-3 HOUR';
 
-    /** @var EntityManager */
-    private $entityManager;
-
-    /** @var JobExecutionManager */
-    private $executionManager;
-
-    /** @var JobRepositoryInterface */
-    private $jobRepository;
-
-    /** @var LoggerInterface */
-    private $logger;
-
-    /** @var string */
-    private $projectDir;
+    private EntityManager $entityManager;
+    private JobExecutionManager $executionManager;
+    private JobRepositoryInterface $jobRepository;
+    private LoggerInterface $logger;
+    private string $projectDir;
 
     public function __construct(
         EntityManager $entityManager,
@@ -64,7 +55,13 @@ final class RunUniqueProcessJob
 
         $jobExecution = $this->createJobExecution($jobInstance, $buildJobParameters);
         $jobExecutionMessage = JobExecutionMessage::createJobExecutionMessage($jobExecution->getId(), []);
-        $this->logger->info('Job execution "{job_id}" is starting', ['message' => 'job_execution_started', 'job_id' => $jobExecution->getId()]);
+        $this->logger->info(
+            'Job execution "{job_id}" is starting',
+            [
+                'message' => 'job_execution_started',
+                'job_id' => $jobExecution->getId()
+            ]
+        );
 
         try {
             $this->executionManager->updateHealthCheck($jobExecutionMessage);
@@ -91,7 +88,12 @@ final class RunUniqueProcessJob
             }
         }
 
-        $this->logger->info('Job execution "{job_id}" is finished', ['message' => 'job_execution_finished', 'job_id' => $jobExecutionMessage->getJobExecutionId()]);
+        $this->logger->info('Job execution "{job_id}" is finished',
+                            [
+                                'message' => 'job_execution_finished',
+                                'job_id' => $jobExecutionMessage->getJobExecutionId(),
+                            ]
+        );
     }
 
     private function initializeProcess(JobInstance $jobInstance, JobExecution $jobExecution): Process

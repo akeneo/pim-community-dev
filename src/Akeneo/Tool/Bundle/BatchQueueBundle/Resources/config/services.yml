@@ -83,6 +83,7 @@ services:
             - '@akeneo_batch_queue.queue.database_job_execution_queue'
             - '@akeneo_batch_queue.queue.job_execution_message_repository'
             - '@akeneo_batch_queue.manager.job_execution_manager'
+            - '@Akeneo\Platform\Bundle\FrameworkBundle\BoundedContext\BoundedContextResolver'
             - '%kernel.project_dir%'
         tags:
             - { name: console.command }
