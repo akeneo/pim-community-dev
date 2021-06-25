@@ -16,11 +16,12 @@ type CategoryTreeModel = {
 type CategoryTreeProps = {
   categoryTreeCode?: string;
   init: (categoryTreeCode?: string) => Promise<CategoryTreeModel>;
-  childrenCallback: (value: any) => Promise<CategoryTreeModel[]>;
+  childrenCallback: (value: any, parentCategory?: CategoryTreeModel) => Promise<CategoryTreeModel[]>;
   onChange?: (value: string, checked: boolean) => void;
   onClick?: any;
   initCallback?: (treeLabel: string, categoryLabel?: string) => void;
   isCategorySelected?: (category: CategoryValue) => boolean;
+  shouldRerender?: boolean;
 };
 
 const CategoryTree: React.FC<CategoryTreeProps> = ({
@@ -31,8 +32,10 @@ const CategoryTree: React.FC<CategoryTreeProps> = ({
   onClick,
   initCallback,
   isCategorySelected,
+                                                     // @ts-ignore
+                                                     shouldRerender,
   ...rest
-}) => {
+}: CategoryTreeProps) => {
   const [tree, setTree] = React.useState<CategoryTreeModel>();
 
   const recursiveGetFirstSelectedCategoryLabel: (category: CategoryTreeModel) => string | undefined = category => {
@@ -74,6 +77,7 @@ const CategoryTree: React.FC<CategoryTreeProps> = ({
       onChange={onChange}
       onClick={onClick}
       isCategorySelected={isCategorySelected}
+      shouldRerender={shouldRerender}
       {...rest}
     />
   );

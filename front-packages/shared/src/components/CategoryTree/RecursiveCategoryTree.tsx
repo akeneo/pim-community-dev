@@ -10,10 +10,11 @@ type CategoryValue = {
 
 type RecursiveCategoryTreeProps = {
   tree: CategoryTreeModel;
-  childrenCallback: (value: any) => Promise<CategoryTreeModel[]>;
+  childrenCallback: (value: any, parentCategory?: CategoryTreeModel) => Promise<CategoryTreeModel[]>;
   onChange?: (value: string, checked: boolean) => void;
   onClick?: any;
   isCategorySelected?: (category: CategoryValue) => boolean;
+  shouldRerender?: boolean
 };
 
 const RecursiveCategoryTree: React.FC<RecursiveCategoryTreeProps> = ({
@@ -22,13 +23,14 @@ const RecursiveCategoryTree: React.FC<RecursiveCategoryTreeProps> = ({
   onChange,
   onClick,
   isCategorySelected,
+  shouldRerender,
 }) => {
   const [categoryState, setCategoryState] = React.useState<CategoryTreeModel>(tree);
 
   const handleOpen = React.useCallback(() => {
     if (typeof categoryState.children === 'undefined') {
       setCategoryState(currentCategoryState => ({...currentCategoryState, loading: true}));
-      childrenCallback(categoryState.id).then(children => {
+      childrenCallback(categoryState.id, tree).then(children => {
         setCategoryState(currentCategoryState => ({...currentCategoryState, loading: false, children}));
       });
     }
@@ -49,7 +51,7 @@ const RecursiveCategoryTree: React.FC<RecursiveCategoryTreeProps> = ({
         code: categoryState.code,
         label: categoryState.label,
       }}
-      selected={isCategorySelected ? isCategorySelected(categoryState) : categoryState.selected}
+      selected={categoryState.selected || (isCategorySelected ? isCategorySelected(categoryState) : categoryState.selected)}
       isLoading={categoryState.loading}
       readOnly={categoryState.readOnly}
       selectable={categoryState.selectable}
@@ -68,6 +70,7 @@ const RecursiveCategoryTree: React.FC<RecursiveCategoryTreeProps> = ({
               childrenCallback={childrenCallback}
               onClick={onClick}
               isCategorySelected={isCategorySelected}
+              shouldRerender={shouldRerender}
             />
           );
         })}
