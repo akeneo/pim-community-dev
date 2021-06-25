@@ -1,16 +1,64 @@
 pimee_catalog_rule:
   rule_definition:
     validation:
+      locale:
+        unknown: 'L''impostazione locale "{{ locale_code }}" non esiste o non è attivata'
       currency:
         unknown: 'È richiesta una valuta valida; la valuta "{{ currency }}" non esiste o non è attivata'
+        missing_key: 'La chiave "{{ key }}" è mancante o vuota'
+        unexpected_key: 'La chiave {{ key }} è irrilevante'
       measurement:
         invalid_unit: 'Il codice unità "{{ unitCode }}" non esiste o non appartiene alla famiglia di unità di misura dell''attributo "{{ attributeCode }}"'
+        invalid_attribute_type: 'La chiave {{ key }} è irrilevante per l''attributo {{ attributeCode }}'
       attribute:
+        unknown: 'L''attributo "{{ code }}" non esiste'
         unexpected_type: 'L''attributo "{{ attribute_code }}" ha un tipo di attributo "{{ invalid_type }}" non valido. È richiesto un attributo {{ expected_types }}'
+        missing_locale: 'L''attributo "{{ attributeCode }}" richiede un''impostazione locale'
+        unexpected_locale: 'L''attributo "{{ attributeCode }}" non richiede un''impostazione locale. Rimuovila'
+        unknown_locale: 'L''attributo "{{ attributeCode }}" richiede un''impostazione locale esistente e attivata. Assicurati che la tua impostazione locale sia esistente e attivata'
+        invalid_specific_locale: 'L''attributo "{{ attributeCode }}" è specifico per impostazioni locali e richiede una delle seguenti impostazioni locali: {{ expectedLocales }}'
+        locale_not_bound_to_channel: 'Non è presente alcuna impostazione locale "{{ invalidLocale }}" nel canale "{{ channelCode }}"'
+        missing_scope: 'L''attributo "{{ attributeCode }}" richiede un ambito'
+        unexpected_scope: 'L''attributo "{{ attributeCode }}" non richiede un ambito. Rimuovilo'
+        unknown_scope: 'L''attributo "{{ attributeCode }}" richiede un ambito esistente'
+      invalid_code: 'Il codice regola può contenere solo lettere, numeri e underscore'
+      conditions:
+        missing_key: 'La chiave "condizioni" è mancante o vuota'
+        missing_value_key: 'La chiave "valore" è mancante o vuota'
+        missing_operator_key: 'La chiave "operatore" è mancante o vuota'
+        existing_field: 'Il campo "{{ field }}" non può essere filtrato o non può essere usato con l''operatore "{{ operator }}"'
+        missing_field_key: 'La chiave "campo" è mancante o vuota'
       actions:
+        missing_key: 'La chiave "azioni" è mancante o vuota'
+        add:
+          invalid_field: 'Impossibile aggiungere elementi al campo "{{ field }}"'
+        clear:
+          invalid_field: 'Impossibile cancellare dati dal campo "{{ field }}"'
+        copy:
+          invalid_fields: 'Impossibile copiare dati dal campo "{{ from_field }}" al campo "{{ to_field }}"'
+          missing_from_field_key: 'La chiave "campo_da" è mancante o vuota'
+          missing_to_field_key: 'La chiave "campo_a" è mancante o vuota'
         concatenate:
+          invalid_source: 'Impossibile concatenare dati dal campo "{{ field }}"'
           missing_source_key: 'È richiesta una singola chiave tra "campo", "testo" o "nuova_riga". Selezionane una'
           only_one_source_key_expected: 'È richiesta una singola chiave tra "campo", "testo" o "nuova_riga". Selezionane solo una'
+          text_target_does_not_accept_new_line: 'L''attributo di destinazione "{{ targetField }}" non accetta la nuova riga'
+          unexpected_source_option: 'La chiave {{ key }} è irrilevante per l''attributo {{ attribute }}'
+          missing_from_key: 'La chiave "da" è mancante o vuota'
+          missing_to_key: 'La chiave "a" è mancante o vuota'
+          source_count: 'Questo valore deve contenere almeno 2 elementi'
         calculate:
+          division_by_zero: 'Le divisioni per zero non sono possibili'
           missing_operand_key: 'È richiesta la chiave "valore" o "campo", ma entrambe sono mancanti o vuote'
           only_one_key_expected: 'È richiesta la chiave "valore" o "campo". Scegline una'
+          unexpected_key: 'La chiave "{{ key }}" è irrilevante'
+          invalid_operator: 'Questo valore deve essere "aggiungi", "sottrai", "moltiplica" o "dividi"'
+        remove:
+          invalid_field: 'Impossibile rimuovere elementi dal campo "{{ field }}"'
+          include_children_option: 'L''opzione "includi_figli" può essere applicata solo con il campo "categorie"'
+        set:
+          invalid_field: 'Impossibile impostare dati nel campo "{{ field }}"'
+          missing_value_key: 'La chiave "valore" è mancante o vuota'
+        custom:
+          unkown_type: 'Tipo di azione sconosciuto'
+          missing_type_key: 'La chiave "tipo" è mancante o vuota'
