@@ -17,7 +17,7 @@ services:
   pim-daemon:
     image: 'eu.gcr.io/akeneo-ci/pim-enterprise-dev:master'
     working_dir: '/srv/pim'
-    command: 'su www-data -s /bin/bash -c "cd /srv/pim && php bin/console akeneo:batch:job-queue-consumer-daemon"'
+    command: 'su www-data -s /bin/bash -c "cd /srv/pim && php bin/console messenger:consume ui_job import_export_job data_maintenance_job"'
     environment:
       SRNT_GOOGLE_APPLICATION_CREDENTIALS: '/srv/pim/config/gcp_credentials.json'
       SRNT_GOOGLE_BUCKET_NAME: 'akecld-saas-dev-core-dev-test'
