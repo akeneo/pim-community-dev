@@ -245,7 +245,7 @@ const MultiSelectInput = ({
           ref={inputRef}
           id={id}
           placeholder={placeholder}
-          value={value.map(chipCode => indexedChips[chipCode])}
+          value={value.map(chipCode => indexedChips[chipCode] ?? {code: chipCode, label: chipCode})}
           searchValue={searchValue}
           removeLabel={removeLabel}
           readOnly={readOnly}

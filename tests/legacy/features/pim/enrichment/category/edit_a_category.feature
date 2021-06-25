@@ -12,15 +12,7 @@ Feature: Edit a category
     Given I edit the "Sandals" category
     Then I should see the Code field
     And the field Code should be disabled
-    When I fill in the following information:
-      | English (United States) | My sandals |
-    And I save the category
-    Then I should see the flash message "Category successfully updated"
-    And I should be on the category "sandals" edit page
+    When I fill the input labelled 'English' with 'My sandals'
+    And I press the "Save" button
+    Then I should see the text "Category successfully updated"
     And I should see the text "My sandals"
-
-  Scenario: Go to category edit page from the category tree
-    Given I am on the categories page
-    And I select the "2014 collection" tree
-    And I click on the "summer_collection" category
-    Then I should be on the category "summer_collection" edit page

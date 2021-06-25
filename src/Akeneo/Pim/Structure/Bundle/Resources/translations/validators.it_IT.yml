@@ -1,0 +1,4 @@
+pim_structure:
+  validation:
+    association_type:
+      cannot_be_quantified_and_two_way: Il tipo di associazione può essere quantificato o bi-direzionale

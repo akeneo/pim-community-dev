@@ -20,6 +20,8 @@ mappings:
             type: 'date'
         updated:
             type: 'date'
+        entity_updated:
+            type: 'date'
         identifier:
             type: 'keyword'
             normalizer: 'identifier_normalizer'

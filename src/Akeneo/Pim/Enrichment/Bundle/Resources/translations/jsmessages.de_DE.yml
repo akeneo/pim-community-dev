@@ -209,6 +209,45 @@ pim_enrich.entity.category:
   label: Kategorie
   uppercase_label: Kategorie
   plural_label: Kategorien
+  page_title:
+    index: "]-Inf, 1]{{ count }} Baum|]1, Inf[{{ count }} Bäume"
+  content:
+    empty_tree_list:
+      title: Du hast keinen Baum
+      hint: Erstelle deinen ersten.
+    tree_list:
+      columns:
+        label: Baumbezeichnung
+        number_of_categories: Anzahl der Kategorien
+        count_categories: ']-Inf, 1]{{ count }} Kategorie|]1, Inf[{{ count }} Kategorien'
+    tree:
+      not_found: Kategoriebaum nicht gefunden
+    edit:
+      not_found: Kategorie nicht gefunden
+      default_tree_label: Baum
+      success: Kategorie erfolgreich aktualisiert
+      fail: Die Kategorie konnte nicht aktualisiert werden
+  new_category: Neue Kategorie
+  new_category_tree: Neuer Kategoriebaum
+  category_created: Die Kategorie "{{ code }}" wurde erfolgreich erstellt
+  category_creation_error: Die Kategorie "{{ code }}" konnte nicht erstellt werden
+  category_tree_creation:
+    success: Der Baum "{{ code }}" wurde erfolgreich erstellt
+    error: Der Baum "{{ code }}" konnte nicht erstellt werden
+  category_tree_deletion:
+    success: Der Baum "{{ tree }}" wurde erfolgreich gelöscht
+    error: Der Baum "{{ tree }}" konnte nicht gelöscht werden
+    confirmation: Sind Sie sicher, dass Sie den {{ name }} Baum löschen möchten? Alle Kategorien in diesem Baum werden gelöscht und die Produkte werden aus all diesen Kategorien entfernt.
+    products_limit_exceeded:
+      title: Dieser Baum kann nicht gelöscht werden
+      message: Der Baum "{{ tree }}" enthält mehr als {{ limit }} Produkte und kann daher nicht gelöscht werden.
+  category_deletion:
+    success: Die Kategorie "{{ name }}" wurde erfolgreich gelöscht
+    error: Die Kategorie "{{ name }}" konnte nicht gelöscht werden
+    confirmation: Sind Sie sicher, dass Sie die Kategorie {{ name }} löschen möchten? Produkte in dieser Kategorie werden nicht gelöscht.
+    products_limit_exceeded:
+      title: Diese Kategorie kann nicht gelöscht werden
+      message: Die "{{ name }}" Kategorie enthält mehr als {{ limit }} Produkte und kann daher nicht gelöscht werden.
 pim_enrich.export.product:
   data:
     title: Produkte filtern

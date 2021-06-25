@@ -9,5 +9,6 @@ export * from './page';
 export * from './PimView';
 export * from './SearchBar';
 export * from './SecondaryActions';
+export * from './skeleton';
 export * from './TextField';
 export * from './UnsavedChanges';

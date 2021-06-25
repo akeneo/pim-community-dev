@@ -3,6 +3,7 @@
 namespace Specification\Akeneo\Pim\Enrichment\Component\Product\Validator\ConstraintGuesser;
 
 use Akeneo\Pim\Enrichment\Component\Product\Validator\ConstraintGuesserInterface;
+use Akeneo\Pim\Enrichment\Component\Product\Validator\Constraints\Email;
 use PhpSpec\ObjectBehavior;
 use Akeneo\Pim\Structure\Component\Model\AttributeInterface;
 
@@ -34,12 +35,15 @@ class EmailGuesserSpec extends ObjectBehavior
         $attribute->getValidationRule()
             ->willReturn('email')
             ->shouldBeCalled();
+        $attribute->getCode()->willReturn('code');
+
         $constraints = $this->guessConstraints($attribute);
 
         $constraints->shouldHaveCount(1);
 
         $firstConstraint = $constraints[0];
-        $firstConstraint->shouldBeAnInstanceOf('Symfony\Component\Validator\Constraints\Email');
+        $firstConstraint->shouldBeAnInstanceOf(Email::class);
+        $firstConstraint->attributeCode->shouldReturn('code');
     }
 
     public function it_does_not_guess_email(AttributeInterface $attribute)

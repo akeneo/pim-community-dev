@@ -22,17 +22,11 @@ final class GetElasticsearchProductProjection implements GetElasticsearchProduct
 {
     private const INDEXING_FORMAT_PRODUCT_AND_MODEL_INDEX = 'indexing_product_and_product_model';
 
-    /** @var Connection */
-    private $connection;
-
-    /** @var NormalizerInterface */
-    private $valuesNormalizer;
-
-    /** @var ReadValueCollectionFactory */
-    private $readValueCollectionFactory;
-
+    private Connection $connection;
+    private NormalizerInterface $valuesNormalizer;
+    private ReadValueCollectionFactory $readValueCollectionFactory;
     /** @var GetAdditionalPropertiesForProductProjectionInterface[] */
-    private $additionalDataProviders = [];
+    private iterable $additionalDataProviders;
 
     public function __construct(
         Connection $connection,
@@ -85,6 +79,7 @@ final class GetElasticsearchProductProjection implements GetElasticsearchProduct
                 $row['identifier'],
                 Type::getType(Types::DATETIME_IMMUTABLE)->convertToPhpValue($row['created_date'], $platform),
                 Type::getType(Types::DATETIME_IMMUTABLE)->convertToPhpValue($row['updated_date'], $platform),
+                Type::getType(Types::DATETIME_IMMUTABLE)->convertToPhpValue($row['entity_updated_date'], $platform),
                 (bool) $row['is_enabled'],
                 $row['family_code'],
                 \json_decode($row['family_labels'], true),
@@ -132,6 +127,7 @@ WITH
             JSON_ARRAY(sub_product_model.code, root_product_model.code) AS ancestor_codes,
             product.created AS created_date,
             GREATEST(product.updated, COALESCE(sub_product_model.updated, 0), COALESCE(root_product_model.updated, 0)) AS updated_date,
+            product.updated AS entity_updated_date,
             JSON_KEYS(product.raw_values) AS attribute_codes_in_product_raw_values,
             JSON_MERGE_PATCH(
                 product.raw_values,
@@ -261,6 +257,7 @@ WITH
         product.ancestor_codes,
         product.created_date,
         product.updated_date,
+        product.entity_updated_date,
         product.attribute_codes_in_product_raw_values,
         product.raw_values,
         product.attribute_as_label_code,
