@@ -88,7 +88,6 @@ class ClientSpec extends ObjectBehavior
 
     public function it_can_be_setup_with_a_subscription_filter(
         PubSubClientFactory $pubSubClientFactory,
-        PubSubClient $pubSubClient,
         Topic $topic,
         Subscription $subscription
     ): void {
@@ -110,6 +109,28 @@ class ClientSpec extends ObjectBehavior
 
         $topic->create()->shouldBeCalled();
         $subscription->create(['filter' => 'the_filter'])->shouldBeCalled();
+
+        $this->setup();
+    }
+
+    public function it_can_be_setup_without_subscription(
+        PubSubClientFactory $pubSubClientFactory,
+        Topic $topic
+    ): void {
+        $this->beConstructedThrough('fromDsn', [
+            $pubSubClientFactory,
+            'gps:dsn',
+            [
+                'project_id' => self::PROJECT_ID,
+                'topic_name' => self::TOPIC_NAME,
+                'subscription_name' => null,
+                'subscription_filter' => 'the_filter',
+                'auto_setup' => true,
+            ],
+        ]);
+
+        $topic->exists()->willReturn(false);
+        $topic->create()->shouldBeCalled();
 
         $this->setup();
     }
