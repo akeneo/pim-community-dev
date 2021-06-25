@@ -24,3 +24,7 @@ free-trial-lint-back: #Doc: launch PHPStan and php-cs-fixer for the free trial
 .PHONY: free-trial-cs-fix-back
 free-trial-cs-fix-back: #Doc: fix CS back for the free trial
 	$(PHP_RUN) vendor/bin/php-cs-fixer fix --config=.php_cs.php src/Akeneo/FreeTrial/back
+
+.PHONY: free-trial-unit-back
+free-trial-unit-back: #Doc: launch PHPSec for the free trial
+	$(PHP_RUN) vendor/bin/phpspec run src/Akeneo/FreeTrial/tests/back/Specification
