@@ -17,9 +17,9 @@ use Symfony\Component\HttpFoundation\Response;
  */
 class AkeneoConnectInviteUserAPI implements InviteUserAPI
 {
-    public const INVITATION_ALREADY_SENT = 'rial.already_invited_user';
+    public const INVITATION_ALREADY_SENT = 'invitation_already_sent';
     public const INVALID_EMAIL = 'invalid_email';
-    public const INVALID_REQUEST_BODY = 'trial.invalid_parameters';
+    public const INVALID_REQUEST_BODY = 'invalid_request_body';
 
     private APIClient $client;
 
@@ -50,11 +50,11 @@ class AkeneoConnectInviteUserAPI implements InviteUserAPI
 
     private function handleError(array $responseContentError): void
     {
-        if (!isset($responseContentError['error']['type'])) {
+        if (!isset($responseContentError['type'])) {
             throw new InvitationFailedException();
         }
 
-        switch ($responseContentError['error']['type']) {
+        switch ($responseContentError['type']) {
             case self::INVITATION_ALREADY_SENT:
                 throw new InvitationAlreadySentException();
             case self::INVALID_EMAIL:

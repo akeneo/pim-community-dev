@@ -45,8 +45,8 @@ app.post('/api/v1/console/trial/invite', (req, res) => {
     res.json({
       error: 400,
       message: `PIM Trial instance with instance FQDN ${fqdn} not found`,
-      type: 'trial.unknown_instance',
-    });
+      type: 'unknown_instance',
+    });trial.
 
     return;
   }
@@ -56,7 +56,7 @@ app.post('/api/v1/console/trial/invite', (req, res) => {
     res.json({
       error: 400,
       message: `User with email ${email} already has a PIM Trial instance`,
-      type: 'trial.already_registered_user',
+      type: 'already_registered_user',
     });
 
     return;
@@ -75,7 +75,7 @@ app.post('/api/v1/console/trial/invite', (req, res) => {
     res.json({
       error: 400,
       message: 'The request is invalid, please see the project console API documentation for more information',
-      type: 'trial.invalid_parameters', // @todo How are validate the emails?
+      type: 'invalid_request_body', // @todo How are validate the emails?
     });
 
     return;
@@ -86,7 +86,7 @@ app.post('/api/v1/console/trial/invite', (req, res) => {
     res.json({
       error: 400,
       message: `User with email ${email} already has a PIM Trial instance invitation`,
-      type: 'trial.already_invited_user',
+      type: 'invitation_already_sent',
     });
 
     return;
