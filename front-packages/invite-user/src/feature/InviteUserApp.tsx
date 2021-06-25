@@ -23,6 +23,11 @@ const FieldContainer = styled(Field)`
   margin: 30px auto 20px auto;
 `;
 
+const SurveyIllustrationContainer = styled(SurveyIllustration)`
+  width: 128px;
+  height: 128px;
+`;
+
 const IllustrationContainer = styled.div`
   text-align: center;
   width: 500px;
@@ -99,7 +104,7 @@ const InviteUserApp = () => {
         </Table>
         {invitedUsers && invitedUsers.length === 0 && (
           <IllustrationContainer>
-            <SurveyIllustration />
+            <SurveyIllustrationContainer />
             <DivContainer>
               <div>{translate('free_trial.invite_users.users_list.empty_list_message')}</div>
             </DivContainer>
