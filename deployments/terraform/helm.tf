@@ -26,16 +26,20 @@ data "template_file" "helm_pim_config" {
       0,
       min(63, length(var.papo_project_code)),
     )
-    papoProjectCodeHashed           = md5(var.papo_project_code)
-    pimVersion                      = var.pim_version
-    monitoring_authentication_token = local.monitoring_authentication_token
-    mysql_disk_name                 = google_compute_disk.mysql-disk.name
-    mysql_disk_size                 = google_compute_disk.mysql-disk.size
-    mysql_disk_storage_class        = google_compute_disk.mysql-disk.type == "pd-ssd" ? "ssd-retain" : "standard-retain"
-    subscription_webhook            = google_pubsub_subscription.webhook.name
-    subscription_job_queue          = google_pubsub_subscription.job-queue.name
-    topic_business_event            = google_pubsub_topic.business-event.name
-    topic_job_queue                 = google_pubsub_topic.job-queue.name
+    papoProjectCodeHashed                   = md5(var.papo_project_code)
+    pimVersion                              = var.pim_version
+    monitoring_authentication_token         = local.monitoring_authentication_token
+    mysql_disk_name                         = google_compute_disk.mysql-disk.name
+    mysql_disk_size                         = google_compute_disk.mysql-disk.size
+    mysql_disk_storage_class                = google_compute_disk.mysql-disk.type == "pd-ssd" ? "ssd-retain" : "standard-retain"
+    subscription_webhook                    = google_pubsub_subscription.webhook.name
+    subscription_job_queue_ui               = google_pubsub_subscription.job-queue-ui.name
+    subscription_job_queue_import_export    = google_pubsub_subscription.job-queue-import-export.name
+    subscription_job_queue_data_maintenance = google_pubsub_subscription.job-queue-data-maintenance.name
+    topic_business_event                    = google_pubsub_topic.business-event.name
+    topic_job_queue_ui                      = google_pubsub_topic.job-queue-ui.name
+    topic_job_queue_import_export           = google_pubsub_topic.job-queue-import-export.name
+    topic_job_queue_data_maintenance        = google_pubsub_topic.job-queue-data-maintenance.name
   }
 }
 

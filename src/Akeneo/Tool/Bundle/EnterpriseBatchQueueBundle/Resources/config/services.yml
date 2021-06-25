@@ -1,0 +1,10 @@
+services:
+    akeneo_batch_queue.factory.job_execution_message:
+        class: Akeneo\Tool\Component\BatchQueue\Factory\JobExecutionMessageFactory
+        arguments:
+            - '@pim_enrich.repository.job_execution'
+            -
+                'Akeneo\Tool\Component\BatchQueue\Queue\UiJobExecutionMessage': [ 'mass_edit', 'mass_delete', 'execute_rules', 'mass_edit_rule', 'asset_manager_mass_delete_assets' ]
+                'Akeneo\Tool\Component\BatchQueue\Queue\ImportJobExecutionMessage': [ 'import' ]
+                'Akeneo\Tool\Component\BatchQueue\Queue\ExportJobExecutionMessage': [ 'export', 'quick_export' ]
+            - 'Akeneo\Tool\Component\BatchQueue\Queue\DataMaintenanceJobExecutionMessage'

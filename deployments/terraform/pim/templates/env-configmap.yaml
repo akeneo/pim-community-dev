@@ -51,9 +51,13 @@ data:
   COMM_PANEL_API_URL: {{ .Values.pim.comm_panel_api_url | quote }}
   {{- end }}
   PUBSUB_SUBSCRIPTION_WEBHOOK: {{ .Values.pim.pubsub.subscription_webhook }}
-  PUBSUB_SUBSCRIPTION_JOB_QUEUE: {{ .Values.pim.pubsub.subscription_job_queue }}
+  PUBSUB_SUBSCRIPTION_JOB_QUEUE_UI: {{ .Values.pim.pubsub.subscription_job_queue_ui }}
+  PUBSUB_SUBSCRIPTION_JOB_QUEUE_IMPORT_EXPORT: {{ .Values.pim.pubsub.subscription_job_queue_import_export }}
+  PUBSUB_SUBSCRIPTION_JOB_QUEUE_DATA_MAINTENANCE: {{ .Values.pim.pubsub.subscription_job_queue_data_maintenance }}
   PUBSUB_TOPIC_BUSINESS_EVENT: {{ .Values.pim.pubsub.topic_business_event }}
-  PUBSUB_TOPIC_JOB_QUEUE: {{ .Values.pim.pubsub.topic_job_queue }}
+  PUBSUB_TOPIC_JOB_QUEUE_UI: {{ .Values.pim.pubsub.topic_job_queue_ui }}
+  PUBSUB_TOPIC_JOB_QUEUE_IMPORT_EXPORT: {{ .Values.pim.pubsub.topic_job_queue_import_export }}
+  PUBSUB_TOPIC_JOB_QUEUE_DATA_MAINTENANCE: {{ .Values.pim.pubsub.topic_job_queue_data_maintenance }}
   LOGGING_LEVEL: {{ .Values.pim.logging_level }}
   {{- if .Values.free_trial.enabled }}
   FLAG_FREE_TRIAL_ENABLED: "1"

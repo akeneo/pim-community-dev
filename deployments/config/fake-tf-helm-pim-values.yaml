@@ -66,9 +66,13 @@ pim:
   serviceAccountKey: ewogICJ0eXBlIjogInNlcnZpY2VfYWNjb3VudCIsCiAgInByb2plY3RfaWQiOiAiZ29vZ2xlLXByb2plY3QtaWQiLAogICJwcml2YXRlX2tleV9pZCI6ICIxMjMxNDIzNTM2NTc2NDI1MzI0MjQyIiwKICAicHJpdmF0ZV9rZXkiOiAiLS0tLS1CRUdJTiBQUklWQVRFIEtFWS0tLS0tXG4tLS0tLUVORCBQUklWQVRFIEtFWS0tLS0tXG4iLAogICJjbGllbnRfZW1haWwiOiAic2FtcGxlQGV4YW1wbGUuY29tIiwKICAiY2xpZW50X2lkIjogIjEyMzQ1Njc4OTAiLAogICJhdXRoX3VyaSI6ICJodHRwczovL2FjY291bnRzLmdvb2dsZS5jb20vby9vYXV0aDIvYXV0aCIsCiAgInRva2VuX3VyaSI6ICJodHRwczovL29hdXRoMi5nb29nbGVhcGlzLmNvbS90b2tlbiIsCiAgImF1dGhfcHJvdmlkZXJfeDUwOV9jZXJ0X3VybCI6ICJodHRwczovL3d3dy5nb29nbGVhcGlzLmNvbS9vYXV0aDIvdjEvY2VydHMiLAogICJjbGllbnRfeDUwOV9jZXJ0X3VybCI6ICJodHRwczovL3d3dy5nb29nbGVhcGlzLmNvbS9yb2JvdC92MS9tZXRhZGF0YS94NTA5L3NhbXBsZUBleGFtcGxlLmNvbSIKfQo==
   pubsub:
     subscription_webhook: srnt-fake-instancename-webhook
-    subscription_job_queue: srnt-fake-instancename-job-queue
+    subscription_job_queue_ui: srnt-fake-instancename-job-queue-ui
+    subscription_job_queue_import_export: srnt-fake-instancename-job-queue-import-export
+    subscription_job_queue_ui-data_maintenance: srnt-fake-instancename-job-queue-data-maintenance
     topic_business_event: srnt-fake-instancename-business-event
-    topic_job_queue: srnt-fake-instancename-job-queue
+    topic_job_queue_ui: srnt-fake-instancename-job-queue-ui
+    topic_job_queue-import_export: srnt-fake-instancename-job-queue-import-export
+    topic_job_queue_data_maintenance: srnt-fake-instancename-job-queue-data-maintenance
   storage:
     bucketName: srnt-fake-instancename
   monitoring:

@@ -90,21 +90,10 @@ pim:
   # `deployments/terraform/helm.tf` script to stop & restart daemons while a
   # migration is running.
   daemons:
-    all-but-linking-assets-to-products:
+    job-consumer-process:
       enabled: true
-      pimCommand: "akeneo:batch:job-queue-consumer-daemon --run-once --blacklisted-job asset_manager_link_assets_to_products --blacklisted-job clean_removed_attribute_job"
-      replicas: 1
-      trapped: true
-      resources:
-        limits:
-          memory: "2048Mi"
-        requests:
-          memory: "512Mi"
-          cpu: "200m"
-    default:
-      enabled: true
-      pimCommand: "akeneo:batch:job-queue-consumer-daemon --run-once"
-      replicas: 1
+      pimCommand: "messenger:consume ui_job import_export_job data_maintenance_job --limit=1"
+      replicas: 2
       trapped: true
       resources:
         limits:
@@ -243,6 +232,10 @@ pim:
         requests:
           cpu: "100m"
           memory: "128Mi"
+    migrate-job-messages-from-old-queue:
+      enabled: true
+      pimCommand: "akeneo:batch:migrate-job-messages-from-old-queue --no-interaction"
+      schedule: "*/15 * * * *"
 
 # Onboarder
 onboarder:
