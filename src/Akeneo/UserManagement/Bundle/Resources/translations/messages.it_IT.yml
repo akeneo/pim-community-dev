@@ -42,9 +42,10 @@ pim_user:
       inactive: Inattivo
     fields_errors:
       new_password:
-        minimum_length: La password deve contenere almeno 2 caratteri
+        minimum_length: La password deve contenere almeno 8 caratteri
+        maximum_length: La password deve contenere meno di 4096 caratteri.
       new_password_repeat:
-        not_match: La password non corrisponde
+        not_match: Le password non corrispondono
       current_password:
         wrong: Password errata
     tabs:

@@ -91,17 +91,3 @@ test('MainNavigationItem will not trigger onClick when MainNavigationItem is dis
 
   expect(onClick).not.toBeCalled();
 });
-
-test('MainNavigationItem will not trigger onClick when onClick is undefined', () => {
-  const onClick = jest.fn();
-
-  render(
-    <MainNavigationItem icon={<CardIcon />} onClick={undefined}>
-      My title
-    </MainNavigationItem>
-  );
-
-  fireEvent.click(screen.getByText('My title'));
-
-  expect(onClick).not.toBeCalled();
-});

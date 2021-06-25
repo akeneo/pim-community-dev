@@ -465,3 +465,5 @@ batch_jobs:
     quick_export.label: XLSX商品のクイックエクスポート
     quick_export_product_model.label: XLSX商品モデルのクイックエクスポート
     perform.label: XLSX商品のクイックエクスポート
+  default_steps:
+    delete_products_and_product_models: 商品と商品モデルを削除
