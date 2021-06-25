@@ -51,6 +51,9 @@ pim_asset_manager:
         not_main_media_attribute_code: 'La proprietà deve corrispondere al codice dell''attributo definito come media principale'
   asset:
     validation:
+      mass_edit:
+        updater_cannot_be_empty: 'Gli attributi utilizzati nelle trasformazioni o in modalità di sola lettura non possono essere selezionati.'
+        updater_must_be_unique: 'Assicurati che questo attributo e, se applicabile, il canale e l''impostazione locale correlati, non siano già selezionati.'
       code:
         pattern: 'Questo campo può solo contenere lettere, numeri e trattini bassi.'
         should_be_unique: 'Un''attività esiste già con codice "%code%"'
@@ -87,6 +90,8 @@ pim_asset_manager:
         should_be_numeric: 'Questo campo dovrebbe essere un valore numerico con il separatore decimale a destra'
       main_media:
         not_main_media_attribute: 'L''attributo atteso come media principale è "%main_media_attribute%", mentre è stato impostato"%attribute%".'
+      media_link:
+        protocol_not_allowed: 'Questo campo deve iniziare con un protocollo valido. I protocolli consentiti sono: %allowed_protocols%.'
   attribute:
     validation:
       options:
@@ -124,6 +129,7 @@ pim_asset_manager:
         asset_family_should_exist: 'La famiglia di attività "%asset_family_code%" non è stata trovata.'
       prefix:
         should_not_be_empty: 'Il prefisso non può essere una stringa vuota.'
+        protocol_not_allowed: 'Questo campo deve iniziare con un protocollo valido. I protocolli consentiti sono: %allowed_protocols%.'
       suffix:
         should_not_be_empty: 'Il suffisso non può essere una stringa vuota.'
       media_type:

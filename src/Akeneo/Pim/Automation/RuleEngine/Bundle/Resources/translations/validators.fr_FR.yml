@@ -52,7 +52,7 @@ pimee_catalog_rule:
           missing_operand_key: 'La clé "value" ou "fied" est requise, mais les deux sont manquantes ou vides'
           only_one_key_expected: 'La clé "valeur" ou "champ" est requise, veuillez en choisir une'
           unexpected_key: 'La clé "{{ key }}" n''est pas pertinente'
-          invalid_operator: 'Cette valeur doit être soit "add", "subtract", "multiply" ou "divide"'
+          invalid_operator: 'Cette valeur doit être soit "ajouter", "soustraire", "multiplier" ou "diviser"'
         remove:
           invalid_field: 'Vous ne pouvez pas ajouter d''éléments au champ "{{ field }}"'
           include_children_option: 'L''option "include_children" ne peut être appliquée qu''avec le champ "categories"'

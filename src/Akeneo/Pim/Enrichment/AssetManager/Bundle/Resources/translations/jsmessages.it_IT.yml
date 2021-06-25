@@ -5,7 +5,28 @@ batch_jobs:
   asset_manager_xlsx_asset_export:
     label: Esportazione asset in XLSX
     export.label: Esportazione asset
+  asset_manager_csv_asset_import:
+    label: Importazione asset in CSV
+    import.label: Importazione asset
+  asset_manager_xlsx_asset_import:
+    label: Importazione asset in XLSX
+    import.label: Importazione asset
 akeneo_assetmanager.export.assets.filter.asset_family: Famiglia di asset
 pim_analytics:
   info_type:
     api_connection: Numero di connessioni API
+    nb_asset_families: Numero di famiglie di asset
+    max_number_of_assets_per_asset_family: Numero massimo di asset per famiglia di asset
+    max_number_of_attributes_per_asset_family: Numero massimo di attributi per famiglia di asset
+    average_number_of_assets_per_asset_family: Numero medio di asset per famiglia di asset
+    average_number_of_values_per_assets: Numero medio di valori per asset
+    average_number_of_attributes_per_asset_family: Numero medio di attributi per famiglia di asset
+    data_source:
+      tracked: Destinazione dati tracciata
+      untracked: Destinazione dati non tracciata
+    data_destination:
+      tracked: Origine dati tracciata
+      untracked: Origine dati non tracciata
+    other:
+      tracked: Altro tracciato
+      untracked: Altro non tracciato

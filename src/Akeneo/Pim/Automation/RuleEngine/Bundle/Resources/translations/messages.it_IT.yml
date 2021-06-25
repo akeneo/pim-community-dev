@@ -7,12 +7,15 @@ pimee_catalog_rule:
       column:
         label: Etichetta
         impacted_product_count:
+          label: Prodotti influenzati
           count: '{0,1}%count% prodotto impatto|]1,Inf[%count% prodotti impattati'
+          no_yet_calculated: Non ancora calcolato
         tags:
           label: Azioni
         priority: Priorità
         status: Stato
       mass_edit_action:
+        impacted_product_count: Calcola i prodotti influenzati
         execute: Esegui
         delete: Elimina
   condition:
@@ -35,8 +38,11 @@ pimee_catalog_rule:
     rule: Regole
   acl:
     rule:
+      edit_permissions: Modifica regole
       view_permissions: Visualizza regole
       delete_permissions: Elimina regole
+      impacted_product_count_permissions: Calcola il numero di prodotti influenzati dalle regole
+      create_permissions: Crea regole
       execute_permissions: Esegui le regole
   attribute:
     tab:
@@ -52,14 +58,37 @@ pimee_catalog_rule:
     rule_definition_processor.title: Processore di importazione per le regole di prodotto
     product_rule_definition_writer.title: Scrittore di importazione per le regole di prodotto
     rules_execution.title: Esecuzione regole
+  notification:
+    execute_rules:
+      success: Esecuzione delle regole completata
+      warning: Esecuzione delle regole completata con avvisi
+      error: Si è verificato un errore durante l'esecuzione delle regole
+    mass_edit_rule:
+      success: Il calcolo dei prodotti influenzati dalle regole è terminato
+      error: Si è verificato un errore durante il calcolo del numero di prodotti influenzati dalle regole
+  datetime:
+    now: ora
+    relative_date:
+      minute: ']-Inf, -1[%absolute_count% minuti fa|{-1}1 minuto fa|{1}tra 1 minuto|]1, +Inf[tra%absolute_count% minuti'
+      hour: ']-Inf, -1[%absolute_count% ore fa|{-1}1 ora fa|{1}tra 1 ora|]1, +Inf[tra%absolute_count% ore'
+      day: ']-Inf, -1[%absolute_count% giorni fa|{-1}1 giorno fa|{1}tra 1 giorno|]1, +Inf[tra%absolute_count% giorni'
+      week: ']-Inf, -1[%absolute_count% settimane fa|{-1}1 settimana fa|{1}tra 1 settimana|]1, +Inf[tra%absolute_count% settimane'
+      month: ']-Inf, -1[%absolute_count% mesi fa|{-1}1 mese fa|{1}tra 1 mese|]1, +Inf[tra%absolute_count% mesi'
+      year: ']-Inf, -1[%absolute_count% anni fa|{-1}1 anno fa|{1}tra 1 anno|]1, +Inf[tra %absolute_count% anni'
+  status:
+    enabled: Attivato
+    disabled: Disattivato
 btn:
   Execute rules: Esegui le regole
 job_execution:
   summary:
     rule_calculated: Numero di regole
+    read_rules: leggi regole
     selected_entities: prodotti/modelli prodotto selezionati
     skipped_invalid: prodotti/modelli prodotto ignorati (non validi)
     updated_entities: prodotti/modelli prodotto aggiornati
+    executed_rules: regole eseguite con successo
+    errored_rules: regole ignorate (non valide)
 pim_datagrid:
   cells:
     type:
