@@ -67,7 +67,10 @@ final class LocalizableValuesValidator extends ConstraintValidator
                         '%attribute_code%' => $localizableValue->getAttributeCode(),
                         '%invalid_locale%' => $localizableValue->getLocaleCode(),
                     ]
-                )->atPath(sprintf('[%s]', $key))->addViolation();
+                )
+                    ->atPath(sprintf('[%s]', $key))
+                    ->setCode(LocalizableValues::NON_ACTIVE_LOCALE)
+                    ->addViolation();
 
                 continue;
             }
@@ -85,7 +88,10 @@ final class LocalizableValuesValidator extends ConstraintValidator
                             '%channel_code%' => $localizableValue->getScopeCode(),
                             '%invalid_locale%' => $localizableValue->getLocaleCode(),
                         ]
-                    )->atPath(sprintf('[%s]', $key))->addViolation();
+                    )
+                        ->atPath(sprintf('[%s]', $key))
+                        ->setCode(LocalizableValues::INVALID_LOCALE_FOR_CHANNEL)
+                        ->addViolation();
 
                     continue;
                 }

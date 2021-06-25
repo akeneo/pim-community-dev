@@ -10,6 +10,7 @@ use Akeneo\Pim\Enrichment\Component\Error\Documentation\HrefMessageParameter;
 use Akeneo\Pim\Enrichment\Component\Error\Documentation\RouteMessageParameter;
 use Akeneo\Pim\Enrichment\Component\Error\DocumentationBuilderInterface;
 use Akeneo\Pim\Enrichment\Component\Product\Validator\Constraints\Boolean;
+use Akeneo\Pim\Enrichment\Component\Product\Validator\Constraints\File;
 use Akeneo\Pim\Enrichment\Component\Product\Validator\Constraints\IsNumeric;
 use Akeneo\Pim\Enrichment\Component\Product\Validator\Constraints\IsString;
 use Akeneo\Pim\Enrichment\Component\Product\Validator\Constraints\Length;
@@ -42,7 +43,8 @@ final class DefaultAttributeValidation implements DocumentationBuilderInterface
         Range::TOO_LOW_ERROR,
         Regex::REGEX_FAILED_ERROR,
         UniqueValue::UNIQUE_VALUE,
-        Email::INVALID_FORMAT_ERROR,
+        File::TOO_LARGE_ERROR,
+        Email::INVALID_FORMAT_ERROR
     ];
 
     public function support($object): bool
