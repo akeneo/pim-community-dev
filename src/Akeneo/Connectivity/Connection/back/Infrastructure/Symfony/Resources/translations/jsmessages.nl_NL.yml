@@ -17,7 +17,6 @@ pim_title:
   akeneo_connectivity_connection_error_management_connection_monitoring: Verbindingen monitoren
   akeneo_connectivity_connection_webhook_edit: Abonnement voor gebeurtenissen
   akeneo_connectivity_connection_webhook_regenerate_secret: Abonnement voor gebeurtenissen
-  akeneo_connectivity_connection_redirect_audit: Connectie dashboard
   akeneo_connectivity_connection_settings_redirect: Verbindingen
 akeneo_connectivity.connection:
   connections: Verbindingen
