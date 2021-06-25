@@ -40,6 +40,8 @@ product_model.family_variant.not_blank.message: La variante de famille du modèl
 "The %attribute% attribute must not contain more than %limit% characters. The submitted value is too long.": L’attribut %attribute% ne peut excéder %limit% caractères. La valeur soumise est trop longue.
 'The {{ attribute_code }} attribute must match the following regular expression: {{ pattern }}.': 'L''attribut {{ attribute_code }} doit respecter le modèle donné dans l''expression régulière (ou regex) suivante : {{ pattern }}.'
 'The {{ attribute_code }} attribute cannot be empty.': 'L''attribut {{ attribute_code }} ne peut pas être vide.'
+'The %attribute% attribute requires an equal or greater than %min_value% value.': L'attribut %attribute% requiert une valeur égale ou supérieure à %min_value%.
+'The %attribute% attribute requires an equal or lesser than %max_value% value.': L'attribut %attribute% requiert une valeur inférieure ou égale à %max_value%.
 pim_catalog:
   constraint:
     can_have_family_variant_empty_axis_value: 'L''attribut "%attribute%" ne peut pas être vide, car il a été défini comme axe pour cette entité'
