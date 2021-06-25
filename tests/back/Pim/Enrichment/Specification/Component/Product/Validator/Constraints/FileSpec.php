@@ -32,4 +32,9 @@ class FileSpec extends ObjectBehavior
     {
         $this->attributeCode->shouldBe('');
     }
+
+    function it_has_max_size_message()
+    {
+        $this->maxSizeMessage->shouldBe('The file %file_name% is too large (%file_size% %suffix%). The %attribute% attribute can not exceed %max_file_size% %suffix%.');
+    }
 }

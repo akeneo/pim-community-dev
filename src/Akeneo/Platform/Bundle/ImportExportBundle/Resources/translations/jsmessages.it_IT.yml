@@ -48,6 +48,7 @@ pim_import_export:
   form:
     job_execution:
       title.details: Dettagli esecuzione
+      refreshing: Aggiornamento dettagli esecuzione
       refreshBtn.title: Aggiorna
       button:
         show_profile.title: Visualizza profilo
@@ -146,6 +147,7 @@ pim_import_export:
       file_path: Percorso del file
   widget:
     last_operations:
+      empty: Al momento non ci sono operazioni da visualizzare.
       date: Data
       profile_name: Nome profilo
       details: Dettaglio

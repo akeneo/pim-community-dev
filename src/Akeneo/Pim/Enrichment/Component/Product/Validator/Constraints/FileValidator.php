@@ -2,6 +2,7 @@
 
 namespace Akeneo\Pim\Enrichment\Component\Product\Validator\Constraints;
 
+use Akeneo\Pim\Enrichment\Component\Product\Model\AbstractValue;
 use Akeneo\Tool\Component\FileStorage\Model\FileInfoInterface;
 use Symfony\Component\Validator\Constraint;
 use Symfony\Component\Validator\Constraints\FileValidator as BaseFileValidator;
@@ -92,11 +93,16 @@ class FileValidator extends ConstraintValidator
                 $factorizeSizes = $this->factorizeSizes($fileInfo->getSize(), $limitInBytes, $constraint->binaryFormat);
                 list($sizeAsString, $limitAsString, $suffix) = $factorizeSizes;
 
+                $attribute = $this->context->getObject() instanceof AbstractValue ?
+                    $this->context->getObject()->getAttributeCode()
+                    : '';
+
                 $this->context->buildViolation($constraint->maxSizeMessage)
-                    ->setParameter('{{ file }}', $this->formatValue($fileInfo->getOriginalFilename()))
-                    ->setParameter('{{ size }}', $sizeAsString)
-                    ->setParameter('{{ limit }}', $limitAsString)
-                    ->setParameter('{{ suffix }}', $suffix)
+                    ->setParameter('%file_name%', $fileInfo->getOriginalFilename())
+                    ->setParameter('%file_size%', $sizeAsString)
+                    ->setParameter('%max_file_size%', $limitAsString)
+                    ->setParameter('%suffix%', $suffix)
+                    ->setParameter('%attribute%', $attribute)
                     ->setCode(File::TOO_LARGE_ERROR)
                     ->addViolation();
 

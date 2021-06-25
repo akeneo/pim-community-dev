@@ -27,4 +27,7 @@ class File extends BaseFile
     public $mimeTypeMessage = 'The MIME type is not allowed for %extension% (allowed types: %types%, found %type%).';
 
     public string $attributeCode = '';
+
+    /** @var string  */
+    public $maxSizeMessage = 'The file %file_name% is too large (%file_size% %suffix%). The %attribute% attribute can not exceed %max_file_size% %suffix%.';
 }

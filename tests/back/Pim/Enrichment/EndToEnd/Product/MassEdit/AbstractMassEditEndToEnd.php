@@ -34,6 +34,7 @@ abstract class AbstractMassEditEndToEnd extends InternalApiTestCase
         $this->dbalConnection = $this->get('database_connection');
         $this->authenticate($this->getAdminUser());
         $this->clearMessengerTransport();
+        $this->jobLauncher->flushJobQueue();
     }
 
     protected function executeMassEdit(array $data): void
@@ -56,9 +57,7 @@ abstract class AbstractMassEditEndToEnd extends InternalApiTestCase
 
     protected function launchAndWaitForJob(string $jobInstanceCode): void
     {
-        while ($this->jobLauncher->hasJobInQueue()) {
-            $this->jobLauncher->launchConsumerOnce();
-        }
+        $this->jobLauncher->launchConsumerUntilQueueIsEmpty();
 
         $query = <<<SQL
 SELECT exec.status, exec.id

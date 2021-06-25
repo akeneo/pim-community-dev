@@ -30,11 +30,8 @@ final class ImportExportFileContext extends PimContext implements SnippetAccepti
 {
     use SpinCapableTrait;
 
-    /** @var JobInstance */
-    private $jobInstance;
-
-    /** @var JobExecution */
-    private $jobExecution;
+    private ?JobInstance $jobInstance;
+    private ?JobExecution $jobExecution;
 
     private const USERNAME_FOR_JOB_LAUNCH = 'admin';
 
@@ -110,16 +107,20 @@ final class ImportExportFileContext extends PimContext implements SnippetAccepti
 
     private function waitForJobToFinish(JobInstance $jobInstance): JobExecution
     {
-        $jobInstance->getJobExecutions()->setInitialized(false);
-        $this->getFixturesContext()->refresh($jobInstance);
-        $jobExecution = $jobInstance->getJobExecutions()->last();
-
-        $this->spin(function () use ($jobExecution) {
-            $this->getFixturesContext()->refresh($jobExecution);
+        $jobExecutionRepository = $this->getService('pim_enrich.repository.job_execution');
+        $this->spin(function () use ($jobInstance, $jobExecutionRepository) {
+            $jobExecutionRepository->clear();
+            $jobExecution = $jobExecutionRepository->findOneBy(
+                ['jobInstance' => $jobInstance],
+                ['createTime' => 'desc']
+            );
 
             return $jobExecution && !$jobExecution->isRunning();
         }, sprintf('The job execution of "%s" was too long', $jobInstance->getJobName()));
 
-        return $jobExecution;
+        return $jobExecutionRepository->findOneBy(
+            ['jobInstance' => $jobInstance],
+            ['createTime' => 'desc']
+        );
     }
 }

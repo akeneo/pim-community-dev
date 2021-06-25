@@ -2,6 +2,7 @@
 
 namespace Specification\Akeneo\Pim\Enrichment\Component\Product\Validator\Constraints;
 
+use Akeneo\Pim\Enrichment\Component\Product\Model\AbstractValue;
 use Akeneo\Pim\Enrichment\Component\Product\Validator\Constraints\FileValidator;
 use Akeneo\Tool\Component\FileStorage\Model\FileInfoInterface;
 use PhpSpec\ObjectBehavior;
@@ -109,7 +110,8 @@ class FileValidatorSpec extends ObjectBehavior
         $context,
         File $constraint,
         FileInfoInterface $fileInfo,
-        ConstraintViolationBuilderInterface $violation
+        ConstraintViolationBuilderInterface $violation,
+        AbstractValue $abstractValue
     ) {
         $constraint->maxSize = '1M';
         $fileInfo->getId()->willReturn(12);
@@ -117,15 +119,19 @@ class FileValidatorSpec extends ObjectBehavior
         $fileInfo->getExtension()->willReturn('jpg');
         $fileInfo->getSize()->willReturn(1075200);
         $fileInfo->getOriginalFilename()->willReturn('my file.jpg');
+        $abstractValue->getAttributeCode()->willReturn('a_attribute_code');
+
+        $context->getObject()->willReturn($abstractValue);
 
         $context
             ->buildViolation($constraint->maxSizeMessage)
             ->shouldBeCalled()
             ->willReturn($violation);
-        $violation->setParameter('{{ file }}', Argument::any())->shouldBeCalled()->willReturn($violation);
-        $violation->setParameter('{{ size }}', Argument::any())->shouldBeCalled()->willReturn($violation);
-        $violation->setParameter('{{ limit }}', Argument::any())->shouldBeCalled()->willReturn($violation);
-        $violation->setParameter('{{ suffix }}', Argument::any())->shouldBeCalled()->willReturn($violation);
+        $violation->setParameter('%file_name%', Argument::any())->shouldBeCalled()->willReturn($violation);
+        $violation->setParameter('%file_size%', Argument::any())->shouldBeCalled()->willReturn($violation);
+        $violation->setParameter('%max_file_size%', Argument::any())->shouldBeCalled()->willReturn($violation);
+        $violation->setParameter('%suffix%', Argument::any())->shouldBeCalled()->willReturn($violation);
+        $violation->setParameter('%attribute%', Argument::any())->shouldBeCalled()->willReturn($violation);
         $violation->setCode(Argument::any())->shouldBeCalled()->willReturn($violation);
         $violation->addViolation()->shouldBeCalled();
 

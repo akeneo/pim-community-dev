@@ -10,6 +10,7 @@ use Google\Cloud\PubSub\PubSubClient;
 use Google\Cloud\PubSub\Subscription;
 use Google\Cloud\PubSub\Topic;
 use PhpSpec\ObjectBehavior;
+use Symfony\Component\OptionsResolver\Exception\InvalidOptionsException;
 
 /**
  * @copyright 2020 Akeneo SAS (http://www.akeneo.com)
@@ -75,17 +76,63 @@ class ClientSpec extends ObjectBehavior
 
     public function it_can_be_setup(Topic $topic, Subscription $subscription): void
     {
-        $topic->exists()
-            ->willReturn(false);
-        $subscription->exists()
-            ->willReturn(false);
+        $topic->exists()->willReturn(false);
+        $subscription->reload()->shouldBeCalled();
+        $subscription->exists()->willReturn(false);
 
-        $topic->create()
-            ->shouldBeCalled();
-        $subscription->create()
-            ->shouldBeCalled();
+        $topic->create()->shouldBeCalled();
+        $subscription->create([])->shouldBeCalled();
 
         $this->setup();
+    }
+
+    public function it_can_be_setup_with_a_subscription_filter(
+        PubSubClientFactory $pubSubClientFactory,
+        PubSubClient $pubSubClient,
+        Topic $topic,
+        Subscription $subscription
+    ): void {
+        $this->beConstructedThrough('fromDsn', [
+            $pubSubClientFactory,
+            'gps:dsn',
+            [
+                'project_id' => self::PROJECT_ID,
+                'topic_name' => self::TOPIC_NAME,
+                'subscription_name' => self::SUBSCRIPTION_NAME,
+                'subscription_filter' => 'the_filter',
+                'auto_setup' => true,
+            ],
+        ]);
+
+        $topic->exists()->willReturn(false);
+        $subscription->reload()->shouldBeCalled();
+        $subscription->exists()->willReturn(false);
+
+        $topic->create()->shouldBeCalled();
+        $subscription->create(['filter' => 'the_filter'])->shouldBeCalled();
+
+        $this->setup();
+    }
+
+    public function it_cannot_be_setup_with_a_invalid_project_id(
+        PubSubClientFactory $pubSubClientFactory,
+        PubSubClient $pubSubClient,
+        Topic $topic,
+        Subscription $subscription
+    ): void {
+        $this->beConstructedThrough('fromDsn', [
+            $pubSubClientFactory,
+            'gps:dsn',
+            [
+                'project_id' => 10,
+                'topic_name' => self::TOPIC_NAME,
+                'subscription_name' => self::SUBSCRIPTION_NAME,
+                'subscription_filter' => 'the_filter',
+                'auto_setup' => true,
+            ],
+        ]);
+
+        $this->shouldThrow(InvalidOptionsException::class)->duringInstantiation();
     }
 
     public function it_returns_the_topic(Topic $topic): void

@@ -17,7 +17,6 @@ pim_menu:
     data_flows: Flujos de datos
     connect_connection_settings: Ajustes de conexión
     marketplace: Mercado
-    new_label: NUEVO
 pim_title:
   akeneo_connectivity_connection_connect_marketplace: Mercado
   akeneo_connectivity_connection_settings_index: Ajustes de conexiones
@@ -30,13 +29,9 @@ pim_title:
   akeneo_connectivity_connection_webhook_edit: Subscripciones a eventos
   akeneo_connectivity_connection_webhook_regenerate_secret: Subscripcion al evento
   akeneo_connectivity_connection_webhook_event_logs: Registros de eventos
-  akeneo_connectivity_connection_redirect_audit: Panel de conexión
   akeneo_connectivity_connection_settings_redirect: Conexiones
 akeneo_connectivity.connection:
   connect:
-    redirect.link: Para ir allí, haga clic aquí
-    dashboard_redirect.title: Su panel de conexión está en el menú Conectar
-    settings_redirect.title: Su información de conexión está en el menú Conectar
     marketplace:
       title: '¿Quiere conectar su PIM con otra aplicación? 🤟'
       sub_title: Consulte nuestro mercado para ver qué aplicación se puede conectar con el PIM de Akeneo.
