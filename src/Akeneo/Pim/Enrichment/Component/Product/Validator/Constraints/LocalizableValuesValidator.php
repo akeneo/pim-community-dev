@@ -102,10 +102,13 @@ final class LocalizableValuesValidator extends ConstraintValidator
                 $this->context->buildViolation(
                     $constraint->invalidLocaleSpecificMessage,
                     [
-                        '%attribute_code%' => $localizableValue->getAttributeCode(),
-                        '%invalid_locale%' => $localizableValue->getLocaleCode(),
+                        '%attribute%' => $localizableValue->getAttributeCode(),
+                        '%locale%' => $localizableValue->getLocaleCode(),
                     ]
-                )->atPath(sprintf('[%s]', $key))->addViolation();
+                )
+                    ->atPath(sprintf('[%s]', $key))
+                    ->setCode(LocalizableValues::NOT_AVAILABLE_LOCALE_ERROR)
+                    ->addViolation();
             }
         }
     }
