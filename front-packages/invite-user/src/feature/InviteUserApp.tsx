@@ -99,7 +99,7 @@ const InviteUserApp = () => {
         </Table>
         {invitedUsers && invitedUsers.length === 0 && (
           <IllustrationContainer>
-            <SurveyIllustration />
+            <SurveyIllustration size={128} />
             <DivContainer>
               <div>{translate('free_trial.invite_users.users_list.empty_list_message')}</div>
             </DivContainer>
