@@ -28,3 +28,7 @@ free-trial-cs-fix-back: #Doc: fix CS back for the free trial
 .PHONY: free-trial-unit-back
 free-trial-unit-back: #Doc: launch PHPSec for the free trial
 	$(PHP_RUN) vendor/bin/phpspec run src/Akeneo/FreeTrial/tests/back/Specification
+
+.PHONY: free-trial-coupling-back
+free-trial-coupling-back: #Doc: launch coupling detector for the free trial
+	$(PHP_RUN) vendor/bin/php-coupling-detector detect --config-file=src/Akeneo/FreeTrial/tests/back/.php_cd.php src/Akeneo/FreeTrial/back
