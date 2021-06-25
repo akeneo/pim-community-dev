@@ -1,5 +1,9 @@
 # 5.0.x
 
+## Bug fixes
+
+- PIM-9931: [Backport] PIM-9678: The time counter is still running despite the job failed
+
 # 5.0.35 (2021-06-22)
 
 ## Bug fixes
