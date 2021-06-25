@@ -3,7 +3,9 @@
 namespace Akeneo\Pim\Enrichment\Component\Product\Validator\Constraints;
 
 use Akeneo\Channel\Component\Repository\CurrencyRepositoryInterface;
+use Akeneo\Pim\Enrichment\Component\Product\Model\PriceCollectionInterface;
 use Akeneo\Pim\Enrichment\Component\Product\Model\ProductPriceInterface;
+use Akeneo\Pim\Enrichment\Component\Product\Value\PriceCollectionValueInterface;
 use Symfony\Component\Validator\Constraint;
 use Symfony\Component\Validator\ConstraintValidator;
 use Symfony\Component\Validator\Exception\UnexpectedTypeException;
@@ -46,8 +48,12 @@ class CurrencyValidator extends ConstraintValidator
 
         if ($object instanceof ProductPriceInterface) {
             if (!in_array($object->getCurrency(), $this->getCurrencyCodes())) {
-                $this->context->buildViolation($constraint->unitMessage)
+                $this->context->buildViolation($constraint->message, [
+                    '%attribute_code%' => $this->context->getObject()->getAttributeCode(),
+                    '%currency_code%' => $object->getCurrency(),
+                ])
                     ->atPath('currency')
+                    ->setCode(Currency::CURRENCY)
                     ->addViolation();
             }
         }
