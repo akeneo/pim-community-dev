@@ -18,11 +18,17 @@ const CategoryTreeContainer = styled.div`
 
 type CategorySelectorProps = {
   categoryTreeCode: string;
-  onChange: (value: string[]) => void;
   initialCategoryCodes: string[];
+  shouldIncludeSubCategories: boolean;
+  onChange: (value: string[]) => void;
 };
 
-const CategorySelector = ({categoryTreeCode, onChange, initialCategoryCodes}: CategorySelectorProps) => {
+const CategorySelector = ({
+  categoryTreeCode,
+  onChange,
+  initialCategoryCodes,
+  shouldIncludeSubCategories,
+}: CategorySelectorProps) => {
   const [selectedCategoryCodes, setSelectedCategoryCodes] = useState<string[]>(initialCategoryCodes);
   const catalogLocale = useUserContext().get('catalogLocale');
   const router = useRouter();
@@ -57,18 +63,27 @@ const CategorySelector = ({categoryTreeCode, onChange, initialCategoryCodes}: Ca
     }
   };
 
-  const childrenCallback: (id: number) => Promise<CategoryTreeModel[]> = async id => {
+  const childrenCallback: (id: number, parentCategory?: CategoryTreeModel) => Promise<CategoryTreeModel[]> = async (
+    id,
+    parentCategory?
+  ) => {
     const childrenUrl = router.generate('pim_enrich_categorytree_children', {_format: 'json', id});
     const response = await fetch(childrenUrl);
     const json: CategoryResponse[] = await response.json();
 
+    const areChildrenIncluded =
+      parentCategory !== undefined && shouldIncludeSubCategories
+        ? parentCategory.selected || selectedCategoryCodes.includes(parentCategory.code)
+        : true;
+
     return json.map(child =>
       parseResponse(child, {
+        readOnly: areChildrenIncluded ? true : undefined,
+        selected: areChildrenIncluded ? true : undefined,
         selectable: true,
       })
     );
   };
-
   const init = useCallback(
     async (categoryTreeCode?: string) => {
       const categoryRoute = router.generate('pim_enrich_category_rest_get', {identifier: categoryTreeCode});
@@ -79,6 +94,7 @@ const CategorySelector = ({categoryTreeCode, onChange, initialCategoryCodes}: Ca
       const response = await fetch(childrenUrl);
       const json: CategoryResponse[] = await response.json();
 
+      const areChildrenIncluded = shouldIncludeSubCategories ? selectedCategoryCodes.includes(category.code) : false;
       return {
         id: category.id,
         code: category.code,
@@ -86,21 +102,23 @@ const CategorySelector = ({categoryTreeCode, onChange, initialCategoryCodes}: Ca
         selectable: true,
         children: json.map(child =>
           parseResponse(child, {
+            readOnly: areChildrenIncluded ? true : undefined,
+            selected: areChildrenIncluded ? true : undefined,
             selectable: true,
           })
         ),
       };
     },
-    [catalogLocale, router]
+    [catalogLocale, router, shouldIncludeSubCategories, selectedCategoryCodes]
   );
 
   return (
     <CategoryTreeContainer>
       <CategoryTree
-        onChange={handleChange}
-        childrenCallback={childrenCallback}
         categoryTreeCode={categoryTreeCode}
         init={init}
+        onChange={handleChange}
+        childrenCallback={childrenCallback}
         isCategorySelected={isCategorySelected}
       />
     </CategoryTreeContainer>

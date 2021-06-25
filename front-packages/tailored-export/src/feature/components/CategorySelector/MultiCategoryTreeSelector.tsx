@@ -6,10 +6,15 @@ import {useCategoryTrees} from '../../hooks';
 
 type MultiCategoryTreeSelectorProps = {
   categorySelection: string[];
+  shouldIncludeSubCategories: boolean;
   onCategorySelection: (updatedCategorySelection: string[]) => void;
 };
 
-const MultiCategoryTreeSelector = ({categorySelection, onCategorySelection}: MultiCategoryTreeSelectorProps) => {
+const MultiCategoryTreeSelector = ({
+  categorySelection,
+  onCategorySelection,
+  shouldIncludeSubCategories,
+}: MultiCategoryTreeSelectorProps) => {
   const [activeCategoryTree, setActiveCategoryTree] = useState<string>('');
   const categoryTrees = useCategoryTrees(categorySelection, setActiveCategoryTree);
   const translate = useTranslate();
@@ -39,6 +44,7 @@ const MultiCategoryTreeSelector = ({categorySelection, onCategorySelection}: Mul
           categoryTreeCode={activeCategoryTree}
           initialCategoryCodes={categorySelection}
           onChange={onCategorySelection}
+          shouldIncludeSubCategories={shouldIncludeSubCategories}
         />
       )}
     </>

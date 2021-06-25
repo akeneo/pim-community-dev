@@ -23,13 +23,15 @@ const parseResponse: (
     lockedCategoryIds?: number[];
     isRoot?: boolean;
     selectable?: boolean;
+    selected?: boolean;
   }
 ) => CategoryTreeModel = (json, options) => {
-  const {readOnly, lockedCategoryIds, isRoot, selectable} = {
+  const {selected, readOnly, lockedCategoryIds, isRoot, selectable} = {
     readOnly: false,
     lockedCategoryIds: [] as number[],
     isRoot: false,
     selectable: false,
+    selected: false,
     ...options,
   };
 
@@ -41,7 +43,9 @@ const parseResponse: (
       return [];
     }
     if (json.children) {
-      return json.children.map(child => parseResponse(child, {readOnly, lockedCategoryIds, isRoot: false, selectable}));
+      return json.children.map(child =>
+        parseResponse(child, {readOnly, lockedCategoryIds, isRoot: false, selectable, selected})
+      );
     }
     return undefined;
   };
@@ -53,9 +57,9 @@ const parseResponse: (
     code: json.attr['data-code'],
     label: json.data,
     children: getChildren(),
-    selected: json.state.includes('jstree-checked'),
+    selected: selected || json.state.includes('jstree-checked'),
     readOnly: readOnly || lockedCategoryIds.indexOf(categoryId) >= 0,
-    selectable: !isRoot && selectable,
+    selectable: selected ? true : !isRoot && selectable,
   };
 };
 

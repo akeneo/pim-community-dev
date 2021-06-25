@@ -27,6 +27,7 @@ const CategoryFilter = ({filter, onChange}: CategoryFilterProps) => {
   const [isCategoriesModalOpen, openCategoriesModal, closeCategoriesModal] = useBooleanState();
   const [categorySelection, setSelectedCategories] = useState<string[]>(filter.value);
   const [operator, setOperator] = useState<Operator>(filter.operator);
+  const shouldIncludeSubCategories = operator === 'IN CHILDREN LIST';
   const handleShouldIndludeSubCategoryChange = (updatedValue: boolean) => {
     const newOperator = updatedValue ? 'IN CHILDREN LIST' : filter.value.length === 0 ? 'NOT IN' : 'IN';
     setOperator(newOperator);
@@ -40,7 +41,6 @@ const CategoryFilter = ({filter, onChange}: CategoryFilterProps) => {
     setOperator(filter.operator);
     closeCategoriesModal();
   };
-
   return (
     <Container>
       {isCategoriesModalOpen && (
@@ -54,7 +54,7 @@ const CategoryFilter = ({filter, onChange}: CategoryFilterProps) => {
             <BooleanInput
               noLabel={translate('pim_common.no')}
               yesLabel={translate('pim_common.yes')}
-              value={operator === 'IN CHILDREN LIST'}
+              value={shouldIncludeSubCategories}
               clearLabel={translate('pim_common.clear_value')}
               readOnly={false}
               onChange={handleShouldIndludeSubCategoryChange}
@@ -63,6 +63,7 @@ const CategoryFilter = ({filter, onChange}: CategoryFilterProps) => {
           <MultiCategoryTreeSelector
             categorySelection={categorySelection}
             onCategorySelection={setSelectedCategories}
+            shouldIncludeSubCategories={shouldIncludeSubCategories}
           />
           <Modal.BottomButtons>
             <Button level="tertiary" onClick={handleClose}>
