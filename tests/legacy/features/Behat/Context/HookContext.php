@@ -9,6 +9,7 @@ use Behat\Mink\Driver\Selenium2Driver;
 use Behat\Mink\Exception\UnsupportedDriverActionException;
 use Behat\Testwork\Tester\Result\TestResult;
 use Context\FeatureContext;
+use Psr\Log\LoggerInterface;
 use Symfony\Bridge\Doctrine\RegistryInterface;
 use Symfony\Component\Process\Process;
 use WebDriver\Exception\UnexpectedAlertOpen;
@@ -44,7 +45,15 @@ class HookContext extends PimContext
     {
         $process = new Process(sprintf('exec bin/console %s --env=behat', self::MESSENGER_JOB_COMMAND_NAME));
         $process->setTimeout(null);
-        $process->start();
+        $process->start(function (string $type, string $data) {
+            /** @var LoggerInterface $logger */
+            $logger = $this->getService('logger');
+            if ($type === Process::ERR) {
+                $logger->error($data);
+            } else {
+                $logger->info($data);
+            }
+        });
 
         $this->jobConsumerProcess = $process;
     }

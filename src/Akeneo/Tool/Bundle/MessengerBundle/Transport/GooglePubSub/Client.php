@@ -7,7 +7,6 @@ namespace Akeneo\Tool\Bundle\MessengerBundle\Transport\GooglePubSub;
 use Google\Cloud\PubSub\Subscription;
 use Google\Cloud\PubSub\Topic;
 use Symfony\Component\OptionsResolver\OptionsResolver;
-use Webmozart\Assert\Assert;
 
 /**
  * Simple abstraction over the Google PubSubClient.
@@ -86,7 +85,17 @@ class Client
             $this->topic->create();
         }
 
-        if (null !== $this->subscription && !$this->subscription->exists()) {
+        if (null === $this->subscription) {
+            $this->subscription->create($this->subscriptionOptions);
+            return;
+        }
+
+        try {
+            // The "exist" method below use cached info. "reload" avoid to have cache problems.
+            $this->subscription->reload();
+        } catch (\Exception $e) {
+        }
+        if (!$this->subscription->exists()) {
             $this->subscription->create($this->subscriptionOptions);
         }
     }

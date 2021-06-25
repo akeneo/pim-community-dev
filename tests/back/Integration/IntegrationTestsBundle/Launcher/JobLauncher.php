@@ -10,7 +10,7 @@ use Akeneo\Tool\Component\Batch\Model\JobExecution;
 use AkeneoTest\Integration\IntegrationTestsBundle\Launcher\PubSubQueueStatus;
 use Doctrine\DBAL\Driver\Connection;
 use Google\Cloud\PubSub\Message;
-use Psr\Container\ContainerInterface;
+use Psr\Log\LoggerInterface;
 use Symfony\Bundle\FrameworkBundle\Console\Application;
 use Symfony\Component\Console\Input\ArrayInput;
 use Symfony\Component\Console\Output\BufferedOutput;
@@ -31,7 +31,7 @@ use Webmozart\Assert\Assert;
 class JobLauncher
 {
     private const MESSENGER_COMMAND_NAME = 'messenger:consume';
-    private const MESSENGER_RECEIVERS = ['ui_job', 'import_export_job', 'data_maintenance_job'];
+    private const MESSENGER_RECEIVERS = ['data_maintenance_job', 'import_export_job', 'ui_job'];
 
     const EXPORT_DIRECTORY = 'pim-integration-tests-export';
 
@@ -39,21 +39,21 @@ class JobLauncher
 
     private KernelInterface $kernel;
     private Connection $dbConnection;
-    private ContainerInterface $receiverLocator;
     /** @var PubSubQueueStatus[] */
     private iterable $pubSubQueueStatuses;
+    private LoggerInterface $logger;
 
     public function __construct(
         KernelInterface $kernel,
         Connection $dbConnection,
-        ContainerInterface $receiverLocator,
-        iterable $pubSubQueueStatuses
+        iterable $pubSubQueueStatuses,
+        LoggerInterface $logger
     ) {
         Assert::allIsInstanceOf($pubSubQueueStatuses, PubSubQueueStatus::class);
         $this->kernel = $kernel;
         $this->dbConnection = $dbConnection;
-        $this->receiverLocator = $receiverLocator;
         $this->pubSubQueueStatuses = $pubSubQueueStatuses;
+        $this->logger = $logger;
     }
 
     /**
@@ -371,7 +371,13 @@ class JobLauncher
         );
 
         $process = new Process($command);
-        $process->start();
+        $process->start(function (string $type, string $data) {
+            if ($type === Process::ERR) {
+                $this->logger->error($data);
+            } else {
+                $this->logger->info($data);
+            }
+        });
 
         return $process;
     }
@@ -459,15 +465,22 @@ class JobLauncher
 
     public function flushJobQueue(): void
     {
-        foreach (static::MESSENGER_RECEIVERS as $receiverName) {
-            Assert::true($this->receiverLocator->has($receiverName), sprintf(
-                'The "%s" transport does not exist',
-                $receiverName
-            ));
+        foreach ($this->pubSubQueueStatuses as $pubSubStatus) {
+            $subscription = $pubSubStatus->getSubscription();
+            try {
+                $subscription->reload();
+            } catch (\Exception $e) {
+            }
+            if (!$subscription->exists()) {
+                continue;
+            }
+
             do {
-                $receiver = $this->receiverLocator->get($receiverName);
-                $envelopes = $receiver->get();
-                $count = is_array($envelopes) ? count($envelopes) : iterator_count($envelopes);
+                $messages = $subscription->pull(['maxMessages' => 10, 'returnImmediately' => true]);
+                $count = count($messages);
+                if ($count > 0) {
+                    $subscription->acknowledgeBatch($messages);
+                }
             } while (0 < $count);
         }
     }
