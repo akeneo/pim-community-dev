@@ -63,3 +63,7 @@ Cypress.Commands.add('saveProduct', () => {
 Cypress.Commands.add('updateField', (label, value) => {
   cy.findByLabelText(label).clear().type(value);
 });
+
+Cypress.Commands.add('findFirstTextField', () => {
+  return cy.get('input.AknTextField').first();
+});
