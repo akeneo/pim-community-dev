@@ -35,11 +35,6 @@ final class ImportExportFileContext extends PimContext implements SnippetAccepti
 
     private const USERNAME_FOR_JOB_LAUNCH = 'admin';
 
-    public function __construct(string $mainContextClass)
-    {
-        parent::__construct($mainContextClass);
-    }
-
     /**
      * @When /^the (.*) are imported via the job ([\w\_]+)$/
      */
