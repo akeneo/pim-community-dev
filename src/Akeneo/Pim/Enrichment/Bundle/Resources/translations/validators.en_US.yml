@@ -44,6 +44,8 @@ The %attribute% attribute must not contain more than %limit% characters. The sub
 'The %attribute_code% attribute requires a valid locale. The %invalid_locale% locale does not exist.': 'The %attribute_code% attribute requires a valid locale. The %invalid_locale% locale does not exist.'
 'The %attribute_code% attribute requires a valid locale. The %invalid_locale% locale is not bound to the %channel_code% channel.': 'The %attribute_code% attribute requires a valid locale. The %invalid_locale% locale is not bound to the %channel_code% channel.'
 The %attribute% attribute requires an e-mail address.: 'The %attribute% attribute requires an e-mail address.'
+'The %attribute% attribute requires an equal or greater than %min_value% value.': 'The %attribute% attribute requires an equal or greater than %min_value% value.'
+'The %attribute% attribute requires an equal or lesser than %max_value% value.': 'The %attribute% attribute requires an equal or lesser than %max_value% value.'
 The %attribute_code% attribute requires a value per channel. The %channel% channel (scope) must exist in your PIM: 'The %attribute_code% attribute requires a value per channel. The %channel% channel (scope) must exist in your PIM'
 pim_catalog:
     constraint:
