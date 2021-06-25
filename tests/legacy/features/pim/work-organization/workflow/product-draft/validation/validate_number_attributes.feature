@@ -33,13 +33,13 @@ Feature: Validate number attributes of a draft
   Scenario: Validate the negative allowed constraint of number attribute
     Given I change the Sold to "-1"
     And I save the product
-    Then I should see validation error "This value should be 0 or more."
+    Then I should see validation error "The sold attribute requires an equal or greater than 0 value."
     And there should be 1 error in the "Product information" tab
 
   Scenario: Validate the negative allowed constraint of scopable number attribute
     Given I change the Available for scope mobile to "-1"
     And I save the product
-    Then I should see validation error "This value should be 0 or more."
+    Then I should see validation error "The available attribute requires an equal or greater than 0 value."
     And there should be 1 error in the "Product information" tab
 
   Scenario: Validate the decimals allowed constraint of number attribute
@@ -57,25 +57,25 @@ Feature: Validate number attributes of a draft
   Scenario: Validate the number min constraint of number attribute
     Given I change the Rating to "0"
     And I save the product
-    Then I should see validation error "This value should be between 1 and 5."
+    Then I should see validation error "The note attribute requires an equal or greater than 1 value."
     And there should be 1 error in the "Product information" tab
 
   Scenario: Validate the number min constraint of scopable number attribute
     Given I change the Popularity for scope mobile to "0"
     And I save the product
-    Then I should see validation error "This value should be between 1 and 10."
+    Then I should see validation error "The popularity attribute requires an equal or greater than 1 value."
     And there should be 1 error in the "Product information" tab
 
   Scenario: Validate the number max constraint of number attribute
     Given I change the Rating to "6"
     And I save the product
-    Then I should see validation error "This value should be between 1 and 5."
+    Then I should see validation error "The note attribute requires an equal or lesser than 5 value."
     And there should be 1 error in the "Product information" tab
 
   Scenario: Validate the number max constraint of scopable number attribute
     Given I change the Popularity for scope mobile to "11"
     And I save the product
-    Then I should see validation error "This value should be between 1 and 10."
+    Then I should see validation error "The popularity attribute requires an equal or lesser than 10 value."
     And there should be 1 error in the "Product information" tab
 
   Scenario: Validate the type constraint of decimal attribute

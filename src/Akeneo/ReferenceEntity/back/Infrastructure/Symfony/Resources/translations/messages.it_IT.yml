@@ -10,6 +10,7 @@ akeneo_referenceentity:
     record:
       create: Crea una riga
       edit: Modifica i record
+      delete: Elimina registri
       list_product: Elenca i prodotti collegati per registrare
     attribute:
       create: Aggiungi un attributo ad un'entità di riferimento
@@ -18,6 +19,9 @@ akeneo_referenceentity:
     option:
       edit: Modifica opzioni
       delete: Rimuovi una opzione
+  jobs:
+    reference_entity_mass_delete:
+      error: 'Eliminazione di massa non riuscita sui registri "{{ records }}" con errore: "{{ error }}"'
 pim_analytics:
   info_type:
     nb_reference_entities: Numero di entità di riferimento
@@ -29,5 +33,22 @@ pim_analytics:
     average_percentage_localizable_only_attributes: Percentuale media di attributi solo localizzabili per entità di riferimento
     average_percentage_scopable_only_attributes: Percentuale media di attributi a solo scopo per entità di riferimento
     average_percentage_scopable_and_localizable_attributes: Percentuale media di attributi localizzabili e di scopo per entità di riferimento
+pim_datagrid:
+  cells:
+    type:
+      reference_entity_mass_delete_records: Esegui eliminazione di massa registri
+  reference_entity_mass_delete_records: Eliminazione di massa registri
+job_execution:
+  summary:
+    records: Registri
+pim_notification:
+  types:
+    reference_entity_mass_delete_records: Eliminazione di massa registri
+pim_mass_edit:
+  notification:
+    reference_entity_mass_delete_records:
+      warning: Registri eliminati con successo con avvisi
+      success: Registri eliminati con successo
+      error: Eliminazione del registro non riuscita
 akeneo_reference_entity: Entità di riferimento a collegamento singolo
 akeneo_reference_entity_collection: Entità di riferimento a collegamenti multipli

@@ -8,6 +8,7 @@ pim_datagrid:
   no_entities:
     proposal: Non ci sono proposte da revisionare.
     product_draft: Non c'è nessuna bozza di prodotto da revisionare.
+  no_entities.published product: Nessun prodotto pubblicato trovato
   no_results:
     proposal: Non ci sono proposte da revisionare. Prova a cambiare i criteri di ricerca.
     product_draft: Non c'è nessuna bozza di prodotto da revisionare. Prova a modificare i criteri di ricerca.
@@ -22,6 +23,7 @@ pim_datagrid:
       ready: In attesa di approvazione
       can_be_partially_reviewed: Può essere parzialmente rivisto
       can_not_be_approved: Non può essere rivisto
+      can_not_be_deleted: Impossibile eliminare
     status_message:
       ready: In attesa di approvazione
       in_progress: Questa proposta è attualmente in corso e non è stata ancora inviata.
@@ -30,8 +32,13 @@ pim_datagrid:
       can_not_be_deleted: Non è possibile eliminare questa proposta perché ciò impatterebbe su valori che non ti è possibile modificare. Si prega di contattare l'amministratore per modificare i tuoi diritti.
     draft_in_progress: Una bozza è in corso da parte di {{ author }} per questo prodotto.
     no_diff: Il valore "{{ value }}" è lo stesso per la proposta e per la copia di lavoro.
+    new_value: 'Nuovo valore:'
+    old_value: 'Valore precedente:'
+    see_more: Vedi altro
     actions:
       approve_all: Approva tutto
+      refuse_all: Rifiuta tutto
+    characters_left: ']-Inf, 1]{{ count }} carattere rimasto|]1, Inf[{{ count }} caratteri rimasti'
 pimee_datagrid:
   cells:
     expand:
@@ -44,8 +51,10 @@ pimee_workflow:
         original_product: Modifica la copia di lavoro
     proposal:
       modal.title: Lascia un commento (facoltativo - 255 caratteri max.)
+    removing_error: Impossibile rimuovere entità collegate a prodotti pubblicati.
   proposal:
     overview: "]-Inf, 1]{{ count }} proposta|]1, Inf[{{ count }} proposte"
+    selected: "]-Inf, 1]{{ count }} proposta selezionata|]1, Inf[{{ count }} proposte selezionate"
     mass_action_group:
       review:
         label: Azione Massiva
@@ -55,14 +64,20 @@ pimee_workflow:
       error: "La proposta non può essere applicata a causa del seguente errore: {{ error }}"
     reject:
       title: Rifiuta la proposta
+      success: La proposta è stata rifiutata
+      error: "La proposta non può essere rifiutata a causa del seguente errore: {{ error }}"
     remove:
       title: Rimuovi la proposta
+      success: La proposta è stata rimossa
+      error: "La proposta non può essere rimossa a causa del seguente errore: {{ error }}"
     partial_approve:
       title: Approva le informazioni parziali
       success: La proposta è stata parzialmente validata con successo
+      error: "La proposta non può essere parzialmente approvata a causa del seguente errore: {{ error }}"
     partial_reject:
       title: Respingi le modifiche parzialmente
       success: Le modifiche sono state respinte con successo
+      error: "La proposta non può essere parzialmente rifiutata a causa del seguente errore: {{ error }}"
 batch_jobs:
   csv_published_product_export:
     label: Esportazione dei prodotti pubblicati in CSV
@@ -104,6 +119,9 @@ batch_jobs:
     perform.label: Pubblica i prodotti
   unpublish_product:
     perform.label: Annulla la pubblicazione dei prodotti
+  default_steps:
+    clean_attribute:
+      clean_draft: Proposte di pulizia
 pim_notification:
   types:
     pimee_workflow_product_draft_notification_new_proposal: Nuova proposta
@@ -124,6 +142,7 @@ pimee_dashboard:
       review: Da rivedere
       empty: Nessuna proposta da revisionare
       title: Proposte da rivedere
+      view_all: Visualizza tutte le proposte
     header.view_all: Mostra tutti
 pimee_enrich.entity.product:
   module:

@@ -62,6 +62,12 @@
 - PLG-45: Activate SSO authentication from a command CLI
 - RAC-509: Upgrade asset limit by asset family to 10 millions
 - PIM-9777: Fix error message when trying to delete an attribute linked to an entity
+- CPM-152: Use Symfony Messenger to handle job queue messages. Therefore the `akeneo_batch_job_execution_queue` table is removed.
+  Depending on your environment, please check the associated `messenger.yml` to figure out how the messages are sent/received.
+  The former command to launch job consumption is removed and replaced by:
+```bash
+bin/console messenger:consume ui_job import_export_job data_maintenance_job
+```
 
 ## New features
 

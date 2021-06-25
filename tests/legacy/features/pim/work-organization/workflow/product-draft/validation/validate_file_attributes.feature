@@ -22,12 +22,12 @@ Feature: Validate file attributes of a draft
   Scenario: Validate the max file size constraint of file attribute
     Given I attach file "huge.txt" to "Brief"
     And I save the product
-    Then I should see the text "The file is too large (11.03 kB). Allowed maximum size is 10 kB."
+    Then I should see the text "The file huge.txt is too large (11.03 kB). The brief attribute can not exceed 10 kB."
 
   Scenario: Validate the max file size constraint of scopable file attribute
     Given I attach file "huge.txt" to "Attachment"
     And I save the product
-    Then I should see the text "The file is too large (11.03 kB). Allowed maximum size is 10 kB."
+    Then I should see the text "The file huge.txt is too large (11.03 kB). The attachment attribute can not exceed 10 kB."
 
   Scenario: Validate the allowed extensions constraint of file attribute
     Given I attach file "fanatic-freewave-76.gif" to "Brief"

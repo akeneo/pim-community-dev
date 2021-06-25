@@ -63,11 +63,7 @@ spec:
           command: ['sh', '-c', 'export HOME=/srv/pim && cd /srv/pim && su www-data -s /bin/bash -c "php bin/console --quiet {{ $daemonOptions.pimCommand }}"']
 {{- end }}
           resources:
-{{- if $daemonOptions.resources }}
-{{ toYaml $daemonOptions.resources | indent 12 }}
-{{- else }}
-{{ toYaml $tplCtx.Values.pim.resources | indent 12 }}
-{{- end }}
+{{ toYaml (required ( printf "Missing daemon resources for %s" $daemonName ) $daemonOptions.resources) | indent 12 }}
           volumeMounts:
             - name: google-cloud-pim-storage-key
               mountPath: /var/secrets/google/srnt.json

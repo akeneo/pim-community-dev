@@ -30,25 +30,89 @@ akeneo_data_quality_insights:
     quality:
       to_improve: Da migliorare
       good: Buona
+      in_progress: Elaborazione in corso
       n_a: N/A
   attribute_edit_form:
     quality_summary: Migliorando questo attributo migliorerai la qualità complessiva di {{ count }} prodotti.
+  spellcheck:
+    popover:
+      default_aria_label: Suggerimenti ortografici
+      aria_label: "Suggerimenti ortografici per: {{ mistake }}"
   dqi_dashboard:
     key_indicators:
+      attributes_to_work_on: '{1}Hai <button>1 attributo</button> su cui lavorare.|]1, 200[Hai <button>{{ count }} attributi</button> su cui lavorare.|[200, Inf[Hai <button>più di {{ count }} attributi</button> su cui lavorare.'
       list:
         has_image:
           no_data: Le tue raccolte asset e i tuoi attributi immagine sembrano vuoti. Carica immagini per questo indicatore chiave per mettere in evidenza la qualità dei tuoi prodotti.
         attributes_perfect_spelling:
+          title: Attributi correttamente etichettati
+          no_data: Le tue etichette di attributi e opzioni sembrano vuote. Arricchiscile per questo indicatore chiave per mettere in evidenza la qualità dei tuoi prodotti.
           messages:
+            first_step:
+              message1: Hai difficoltà con le etichette di attributi e opzioni? Che ne dici di tornare alle basi <a href="{{ link }}" target="_blank">qui</a>?
+              message2: Ti serve aiuto con gli attributi e le opzioni attributo? Dai un'occhiata <a href="{{ link }}" target="_blank">qui<a href="{{ link }}" target="_blank">!
             second_step:
               message1: Dai un'occhiata più da vicino ai tuoi attributi e alle tue etichette di opzioni. In questo modo, i tuoi prodotti appariranno ancora meglio.
+              message2: Sembra che ti sei perso da qualche parte lungo la strada! Alcune delle tue etichette hanno ancora bisogno di essere elaborate.
+            third_step:
+              message1: Ci sei davvero vicino! Solo pochi ritocchi finali e sarà tutto pronto.
+              message2: Alcuni dei tuoi attributi ed etichette hanno ancora bisogno di un po' di lavoro, ma sei sulla strada giusta.
+            perfect_score_step:
+              message1: Il tuo catalogo è perfetto! Hai fatto un ottimo lavoro!
+              message2: Ottimo lavoro sulle etichette di attributi e opzioni!
+        values_perfect_spelling:
+          title: Prodotti con ortografia perfetta nei valori prodotto di testo
+          no_data: Le tue aree di testo sembrano vuote. Arricchiscile per questo indicatore chiave per mettere in evidenza la qualità dei tuoi prodotti.
+          messages:
+            first_step:
+              message1: I tuoi prodotti meritano di essere descritti correttamente. Controlla l'ortografia!
+              message2: 'Sei il miglior sostenitore dei tuoi prodotti: non tralasciare l''ortografia.'
+              message3: Le descrizioni dei prodotti sono l'immagine della tua azienda, quindi sbarazziamoci di quegli errori di digitazione! La prima impressione è quella che conta.
+              message4: Più errori ci sono, peggiore è l'impressione che dai. Presta maggiore attenzione alla tua ortografia.
+            second_step:
+              message1: Hai già ottimi prodotti, ora hai solo bisogno di un'ortografia impeccabile!
+              message2: Un errore di ortografia potrebbe tenere un cliente lontano, per questo bisogna essere precisi!
+              message3: Alcuni dei tuoi prodotti hanno bisogno di un piccolo aiuto per essere perfetti. Attenzione agli errori di digitazione!
+            third_step:
+              message1: Un'ortografia impeccabile fa una vera differenza, e tu ci sei quasi!
+              message2: Ci siamo quasi, la tua ortografia è quasi perfetta!
+              message3: Sei a un paio di errori ortografici da valori prodotto perfetti.
+              message4: Solo qualche sforzo in più e otterrai una descrizione di prodotto impeccabile!
+            perfect_score_step:
+              message1: Ortografia perfetta in tutto il catalogo. Ben fatto!
+              message2: "Impressionante: i tuoi prodotti sono impeccabili!"
+              message3: Hai fatto un lavoro incredibile sbarazzandoti del 100% degli errori di ortografia. Congratulazioni!
+  product_grid:
+    filter_label:
+      spelling_quality: Qualità ortografica
   dictionary:
+    helper:
+      content: Il dizionario ti consente di registrare le parole che saranno ignorate da Approfondimenti sulla qualità dei dati.
+      link_label: Maggiori info nel nostro Help Center.
+    words: Parole
     searchPlaceholder: Cerca una parola
+    add_words: Aggiungi parole qui
     no_search_results:
       title: La ricerca non ha restituito risultati
       subtitle: Riprova con nuovi criteri di ricerca.
+    no_data:
+      title: Ancora nessuna parola
+      subtitle: Aggiungi il primo sopra, clicca su "Aggiungi" o premi Invio.
 pimee_enrich.entity.locale:
   grid:
     columns:
       dictionary_words_count:
         title: Numero di parole
+        label: "]-Inf, 1]{{ count }} parola|]1, Inf[{{ count }} parole"
+        not_available: Non disponibile
+    add_words: Aggiungi parole
+    items_selected: "{1}1 elemento selezionato|[2, Inf[{{ count }} elementi selezionati"
+    modal:
+      title: Aggiungi parole a {{ count }} impostazioni locali
+      subtitle: Digita le tue parole qui sotto. Saranno aggiunte a tutte le impostazioni locali selezionate.
+      locales_added_notification:
+        title: Parole aggiunte a {{ count }} impostazioni locali
+        content: Le nuove parole sono state aggiunte ai dizionari delle impostazioni locali selezionate.
+      no_supported_locales:
+        title: Le impostazioni locali selezionate non possono essere sottoposte a controllo ortografico da Approfondimenti sulla qualità dei dati.
+        content: Per conoscere l'elenco delle impostazioni locali supportate, consulta il nostro <a href="{{ link }}" target="_blank">Help Center</a>

@@ -249,8 +249,7 @@ class ComputeTransformationsTest extends SqlIntegrationTestCase
 
         // Run job
         $jobLauncher = $this->get('akeneo_integration_tests.launcher.job_launcher');
-        Assert::assertTrue($jobLauncher->hasJobInQueue());
-        $jobLauncher->launchConsumerOnce();
+        Assert::assertGreaterThan(0, $jobLauncher->launchConsumerUntilQueueIsEmpty(), 'No job is consumed.');
 
         $lastExecution = $this->getLastExecution();
         Assert::assertsame(BatchStatus::COMPLETED, $lastExecution->getStatus()->getValue());
@@ -270,6 +269,7 @@ class ComputeTransformationsTest extends SqlIntegrationTestCase
         $this->get('akeneo_assetmanager.client.asset')->resetIndex();
         $this->loadFixtures();
         $this->workingDir = sys_get_temp_dir() . DIRECTORY_SEPARATOR . uniqid('akeneo_batch_');
+        $this->get('akeneo_integration_tests.launcher.job_launcher')->flushJobQueue();
     }
 
     protected function tearDown(): void
@@ -475,8 +475,7 @@ SQL
         )->launch([$assetIdentifier]);
 
         $jobLauncher = $this->get('akeneo_integration_tests.launcher.job_launcher');
-        Assert::assertTrue($jobLauncher->hasJobInQueue());
-        $jobLauncher->launchConsumerOnce();
+        Assert::assertGreaterThan(0, $jobLauncher->launchConsumerUntilQueueIsEmpty(), 'No job is consumed.');
     }
 
     private function getLastExecution(): ?JobExecution
