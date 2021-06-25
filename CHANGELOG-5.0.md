@@ -3,6 +3,7 @@
 ## Bug fixes
 
 - PIM-9931: [Backport] PIM-9678: The time counter is still running despite the job failed
+- PIM-9935: [Backport] PIM-9890: Creating Channels with numeric code breaks the PIM
 
 # 5.0.35 (2021-06-22)
 
