@@ -52,5 +52,20 @@ batch_jobs:
     label: Editar atributos con verificación de permisos y aplicación de reglas
     perform.label: Editar atributos
     cleaner.label: Eliminar archivos temporales
+  default_steps:
+    send_for_approval: Enviar para su aprobación
 pim_title:
   pimee_enrich_locale_edit: Local | Editar
+pim_analytics:
+  info_type:
+    nb_custom_locale_accesses: Número de configuraciones regionales con accesos personalizados
+    nb_custom_category_accesses: Número de categorías con accesos personalizados
+    nb_custom_attribute_group_accesses: Número de grupo de atributos con accesos personalizados
+category.permissions:
+  view.label: Autorizado a ver los productos
+  edit.label: Autorizado a editar los productos
+  own.label: Autorizado a administrar productos
+  own.help: Revisar, publicar, despublicar, clasificar y asociar productos
+  no_access_to_products: Usted no tiene acceso a productos en ningún árbol. Contacte con su administrador
+  apply_on_children.label: Aplicar cambios en secundarios
+  apply_on_children.help: Se mantienen los permisos existentes en secundarios

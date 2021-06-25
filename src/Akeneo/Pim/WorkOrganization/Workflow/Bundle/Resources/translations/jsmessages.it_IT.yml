@@ -8,9 +8,37 @@ pim_datagrid:
   no_entities:
     proposal: Non ci sono proposte da revisionare.
     product_draft: Non c'è nessuna bozza di prodotto da revisionare.
+  no_entities.published product: Nessun prodotto pubblicato trovato
   no_results:
     proposal: Non ci sono proposte da revisionare. Prova a cambiare i criteri di ricerca.
     product_draft: Non c'è nessuna bozza di prodotto da revisionare. Prova a modificare i criteri di ricerca.
+  no_results.published product: Spiacenti, la tua ricerca non ha restituito prodotti pubblicati.
+  workflow:
+    partial_approve: Approva le modifiche all'attributo {{ attribute }} del prodotto {{ product }}
+    partial_reject: Rifiuta le modifiche all'attributo {{ attribute }} del prodotto {{ product }}
+    by: da
+    at: a
+    status:
+      in_progress: In corso
+      ready: In attesa di approvazione
+      can_be_partially_reviewed: Può essere parzialmente rivisto
+      can_not_be_approved: Non può essere rivisto
+      can_not_be_deleted: Impossibile eliminare
+    status_message:
+      ready: In attesa di approvazione
+      in_progress: Questa proposta è attualmente in corso e non è stata ancora inviata.
+      can_be_partially_reviewed: È possibile rivedere questa proposta solo parzialmente perché alcune modifiche sono state fatte su valori che non ti è possibile modificare. Si prega di contattare l'amministratore per modificare i tuoi diritti.
+      can_not_be_approved: Non è possibile rivedere questa proposta perché alcune modifiche sono state fatte su valori che non ti è possibile modificare. Si prega di contattare l'amministratore per modificare i tuoi diritti.
+      can_not_be_deleted: Non è possibile eliminare questa proposta perché ciò impatterebbe su valori che non ti è possibile modificare. Si prega di contattare l'amministratore per modificare i tuoi diritti.
+    draft_in_progress: Una bozza è in corso da parte di {{ author }} per questo prodotto.
+    no_diff: Il valore "{{ value }}" è lo stesso per la proposta e per la copia di lavoro.
+    new_value: 'Nuovo valore:'
+    old_value: 'Valore precedente:'
+    see_more: Vedi altro
+    actions:
+      approve_all: Approva tutto
+      refuse_all: Rifiuta tutto
+    characters_left: ']-Inf, 1]{{ count }} carattere rimasto|]1, Inf[{{ count }} caratteri rimasti'
 pimee_datagrid:
   cells:
     expand:
@@ -23,28 +51,33 @@ pimee_workflow:
         original_product: Modifica la copia di lavoro
     proposal:
       modal.title: Lascia un commento (facoltativo - 255 caratteri max.)
+    removing_error: Impossibile rimuovere entità collegate a prodotti pubblicati.
   proposal:
     overview: "]-Inf, 1]{{ count }} proposta|]1, Inf[{{ count }} proposte"
+    selected: "]-Inf, 1]{{ count }} proposta selezionata|]1, Inf[{{ count }} proposte selezionate"
     mass_action_group:
       review:
         label: Azione Massiva
-    partial_accept:
-      modal.title: Approva le informazioni parziali
-      modal.label: Lascia un commento (facoltativo)
-      modal.error: Si è verificato un errore, la proposta non è stata approvata parzialmente
-      modal.success: La proposta è stata parzialmente validata con successo
+    approve:
+      title: Approva la proposta
+      success: La proposta è stata applicata con successo.
+      error: "La proposta non può essere applicata a causa del seguente errore: {{ error }}"
+    reject:
+      title: Rifiuta la proposta
+      success: La proposta è stata rifiutata
+      error: "La proposta non può essere rifiutata a causa del seguente errore: {{ error }}"
+    remove:
+      title: Rimuovi la proposta
+      success: La proposta è stata rimossa
+      error: "La proposta non può essere rimossa a causa del seguente errore: {{ error }}"
     partial_approve:
-      modal:
-        title: Approva le modifiche parzialmente
-        label: Lascia un commento (facoltativo)
-        error: Si è verificato un errore, la proposta non è stata approvata parzialmente
-        success: Le modifiche sono state approvate con successo
+      title: Approva le informazioni parziali
+      success: La proposta è stata parzialmente validata con successo
+      error: "La proposta non può essere parzialmente approvata a causa del seguente errore: {{ error }}"
     partial_reject:
-      modal:
-        title: Respingi le modifiche parzialmente
-        label: Lascia un commento (facoltativo)
-        error: Si è verificato un errore, la proposta non è stata parzialmente rifiutata
-        success: Le modifiche sono state respinte con successo
+      title: Respingi le modifiche parzialmente
+      success: Le modifiche sono state respinte con successo
+      error: "La proposta non può essere parzialmente rifiutata a causa del seguente errore: {{ error }}"
 batch_jobs:
   csv_published_product_export:
     label: Esportazione dei prodotti pubblicati in CSV
@@ -84,6 +117,11 @@ batch_jobs:
     perform.label: Esportazione rapida in Xlsx dei prodotti pubblicati presenti nel contesto griglia
   publish_product:
     perform.label: Pubblica i prodotti
+  unpublish_product:
+    perform.label: Annulla la pubblicazione dei prodotti
+  default_steps:
+    clean_attribute:
+      clean_draft: Proposte di pulizia
 pim_notification:
   types:
     pimee_workflow_product_draft_notification_new_proposal: Nuova proposta
@@ -103,6 +141,8 @@ pimee_dashboard:
       product: Articolo
       review: Da rivedere
       empty: Nessuna proposta da revisionare
+      title: Proposte da rivedere
+      view_all: Visualizza tutte le proposte
     header.view_all: Mostra tutti
 pimee_enrich.entity.product:
   module:
@@ -110,6 +150,8 @@ pimee_enrich.entity.product:
       published: Pubblicato
       revert: Ripristina
     attribute:
+      can_be_updated_by_rules: "]-Inf, 1]Questo attributo può essere aggiornato da <span>una regola</span>|]1, +Inf[Questo attributo può essere aggiornato da <span>{{ count }} regole</span>"
+      can_be_updated_by_rules_readonly: "]-Inf, 1]Questo attributo può essere aggiornato da una regola|]1, +Inf[Questo attributo può essere aggiornato da {{ count }} regole"
       value_updated: Questo valore viene modificato dalla bozza corrente
     meta:
       published_version: Versione pubblicata
@@ -157,13 +199,6 @@ pimee_enrich.entity.published_product:
       label: Annulla la pubblicazione
 pimee_enrich.entity.product_draft:
   flash:
-    approve:
-      success: La proposta è stata applicata con successo.
-      fail: "La proposta non può essere applicata a causa del seguente errore: {{ error }}"
-    reject:
-      success: La proposta non è stata accettata.
-    remove:
-      success: La proposta è stata rimossa.
     update:
       success: La bozza del prodotto è stata salvata con successo
       fail: La bozza di prodotto non può essere aggiornata
@@ -173,14 +208,10 @@ pimee_enrich.entity.product_draft:
       skip: La bozza del prodotto non è stata inviata per approvazione non essendo stato modificato alcun valore
   module:
     proposal:
-      accept: Accetta la proposta
-      accept_selected: Accetta la(e) proposta(e) selezionata(e)
-      reject: Rifiuta la proposta
-      reject_selected: Rifiuta la(e) proposta(e) selezionata(e)
-      remove: Rimuovi la proposta
-      comment_title: Commenta la tua proposta (opzionale - 255 caratteri max.)
       comment_chars: caratteri.
       confirm: Invia
+      accept_selected: Accetta la(e) proposta(e) selezionata(e)
+      reject_selected: Rifiuta la(e) proposta(e) selezionata(e)
     edit:
       discard_changes: Le modifiche non salvate andranno perse. Sei sicuro di voler inviare la bozza per l'approvazione senza che vengano salvate le modifiche?
       discard_changes_title: Sei sicuro di voler inviare questa bozza?
@@ -196,6 +227,10 @@ pimee_enrich.mass_edit.product:
       label_count: "{1}Annulla pubblicazione di <span class=\"AknFullPage-title--highlight\">1 prodotto</span>|]1, Inf[Annulla pubblicazione di <span class=\"AknFullPage-title--highlight\">{{ itemsCount }} prodotti</span>"
       description: I prodotti saranno ritirati
       warning: I {{ itemsCount }} prodotti selezionati saranno ritirati.
+pimee_enrich.entity.category:
+  flash:
+    remove:
+      error_linked: Impossibile eliminare una categoria collegata a un prodotto pubblicato.
 pim_menu:
   navigation:
     published_products: Prodotti pubblicati
@@ -206,3 +241,7 @@ pim_title:
   pimee_workflow_proposal_index: Proposte
   pimee_workflow_published_product_index: Prodotti pubblicati
   pimee_workflow_published_product_view: Pubblica prodotto {{ product.label }} | Visualizza
+pim_analytics:
+  info_type:
+    nb_published_products: Numero di prodotti pubblicati
+    nb_product_drafts: Numero di bozze di prodotto

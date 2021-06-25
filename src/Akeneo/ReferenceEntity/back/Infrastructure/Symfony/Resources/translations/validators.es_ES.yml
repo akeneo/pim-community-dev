@@ -39,12 +39,16 @@ pim_reference_entity:
         should_exist: 'No se encontraron los registros "%record_codes%".'
       limit_reached: 'No puedes crear el registro "%record_label%" porque has alcanzado el límite de %limit% registros para esta entidad de referencia'
       channel:
+        is_expected: 'El atributo «%attribute_code%» de la entidad de referencia «%reference_entity_identifier%» requiere un valor por canal.'
         is_not_expected: 'No se espera que un canal sea de atributo "%attribute_code%" porque no tiene un valor por canal.'
         should_exist: 'El canal "%channel_identifier%" no existe.'
       locale:
+        is_expected: 'El atributo «%attribute_code%» de la entidad de referencia «%reference_entity_identifier%» requiere un valor por configuración regional.'
         is_not_expected: 'No se espera un local para el atributo "%attribute_code%" porque no tiene un valor por local.'
         is_not_activated: 'El local "%locale_identifier%" no está activado.'
         is_not_activated_for_channel: 'El local "%locale_identifier%" no está activado para el canal "%channel_identifier%".'
+      channel_and_locale:
+        are_expected: 'El atributo «%attribute_code%» de la entidad de referencia «%reference_entity_identifier%» requiere un valor por canal y uno por configuración regional'
       number:
         should_be_string: 'Este campo debe ser una cadena'
         should_be_integer: 'Este campo debe ser un entero'

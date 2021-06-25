@@ -26,15 +26,20 @@ teamwork_assistant:
   create_project_modal:
     saved: El proyecto se ha guardado, se le notificará cuando se realice el cálculo.
     title: Proyecto
+    label_already_used: Este valor ya se utiliza para un proyecto.
   widget:
     no_project: No tiene ningún proyecto
     no_project_create: crear un nuevo proyecto
     description: Descripción
     due_date: Vencimiento
+    todo: Pendientes
+    in_progress: En progreso
+    done: Hecho
     all_contributors: Todos los colaboradores
     you: Usted
     display_products: Mostrar productos
     projects: Proyectos
+    contributors: Colaboradores
     placeholder:
       contributor_selector: Buscar colaborador
       project_selector: Buscar proyecto
@@ -42,6 +47,8 @@ teamwork_assistant:
       to_start: PRODUCTOS A COMENZAR
       in_progress: PRODUCTOS EN CURSO
       done: PRODUCTOS TERMINADOS
+    searching: buscando...
+    no_search_results: Lo sentimos, no hay resultados.
 pim_datagrid:
   view_selector:
     project: Proyectos
@@ -65,3 +72,6 @@ pim_notification:
     project_finished: Proyecto finalizado
     project_calculation: Cálculo del proyecto
     project_due_date: Fecha de finalización del proyecto
+pim_analytics:
+  info_type:
+    nb_projects: Número de proyectos

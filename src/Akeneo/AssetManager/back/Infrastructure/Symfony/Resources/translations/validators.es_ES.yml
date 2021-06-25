@@ -51,6 +51,9 @@ pim_asset_manager:
         not_main_media_attribute_code: 'La propiedad debe coincidir con el código del atributo definido como medio principal'
   asset:
     validation:
+      mass_edit:
+        updater_cannot_be_empty: 'Los atributos utilizados en las transformaciones o en modo de solo lectura no se pueden seleccionar.'
+        updater_must_be_unique: 'Asegúrese de que este atributo y su canal y configuración regional, si procede, no estén ya seleccionados.'
       code:
         pattern: 'Este campo sólo puede contener letras, números y guiones bajos.'
         should_be_unique: 'Un recurso ya existe con el código "%code%"'
@@ -87,6 +90,8 @@ pim_asset_manager:
         should_be_numeric: 'Este campo debe ser un valor numérico con el separador decimal correcto'
       main_media:
         not_main_media_attribute: 'El atributo esperado como medio principal es "%main_media_attribute%", "%attribute%".'
+      media_link:
+        protocol_not_allowed: 'Este campo debe comenzar con un protocolo válido. Los protocolos permitidos son: %allowed_protocols%'
   attribute:
     validation:
       options:
@@ -124,6 +129,7 @@ pim_asset_manager:
         asset_family_should_exist: 'El recurso "%asset_code%" no se encontró.'
       prefix:
         should_not_be_empty: 'El prefijo no puede ser una cadena vacía.'
+        protocol_not_allowed: 'Este campo debe comenzar con un protocolo válido. Los protocolos permitidos son: %allowed_protocols%'
       suffix:
         should_not_be_empty: 'El sufijo no puede ser una cadena vacía.'
       media_type:

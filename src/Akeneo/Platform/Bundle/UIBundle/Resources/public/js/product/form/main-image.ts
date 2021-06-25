@@ -56,6 +56,7 @@ class MainImage extends BasePefMainImage {
                 const assetCode = imageData[0];
                 this.fetchAssetWithCache(assetFamilyIdentifier, assetCode).then((result: AssetResult) => {
                   this.el.src = getMediaPreviewUrl(
+                    Routing,
                     getEditionAssetMainMediaThumbnail(
                       result.asset,
                       UserContext.get('catalogScope'),

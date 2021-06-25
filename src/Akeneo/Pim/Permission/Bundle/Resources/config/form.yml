@@ -88,3 +88,9 @@ services:
             - { name: form.type, alias: pimee_enrich_locale }
         calls:
             - [addEventSubscriber, ['@pimee_security.form.subscriber.locale_permissions']]
+
+    Akeneo\Pim\Permission\Bundle\Form\CategoryFormViewNormalizerWithPermissions:
+        decorates: Akeneo\Pim\Enrichment\Bundle\Form\CategoryFormViewNormalizer
+        decoration_inner_name: 'Akeneo\Pim\Enrichment\Bundle\Form\CategoryFormViewNormalizer.CE'
+        arguments:
+            - '@Akeneo\Pim\Enrichment\Bundle\Form\CategoryFormViewNormalizer.CE'

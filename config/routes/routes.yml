@@ -11,6 +11,9 @@ pim_versioning:
 pim_catalog_rule:
     resource: "@AkeneoPimRuleEngineBundle/Resources/config/routing.yml"
 
+pim_tailored_export:
+    resource: "@AkeneoTailoredExportBundle/Resources/config/routing.yml"
+
 pimee_reference_entity:
     resource: "@AkeneoReferenceEntityBundle/Resources/config/routing.yml"
 

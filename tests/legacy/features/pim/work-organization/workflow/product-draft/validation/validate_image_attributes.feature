@@ -22,12 +22,12 @@ Feature: Validate image attributes of a draft
   Scenario: Validate the max file size constraint of image attribute
     Given I attach file "akeneo.jpg" to "Image"
     And I save the product
-    Then I should see validation error "The file is too large (10.58 kB). Allowed maximum size is 10 kB."
+    Then I should see validation error "The file akeneo.jpg is too large (10.58 kB). The image attribute can not exceed 10 kB."
 
   Scenario: Validate the max file size constraint of scopable image attribute
     Given I attach file "akeneo.jpg" to "Thumbnail"
     And I save the product
-    Then I should see validation error "The file is too large (10.58 kB). Allowed maximum size is 10 kB."
+    Then I should see validation error "The file akeneo.jpg is too large (10.58 kB). The thumbnail attribute can not exceed 10 kB."
 
   Scenario: Validate the allowed extensions constraint of image attribute
     Given I attach file "fanatic-freewave-76.gif" to "Image"

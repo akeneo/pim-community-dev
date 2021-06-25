@@ -33,6 +33,7 @@ authentication:
           label: URL de Desconexión
         certificate:
           label: Certificar
+          expiration_warning: Este certificado caduca el {{ date }}.
         private_key:
           label: Clave privada
         metadata_url:
@@ -41,3 +42,4 @@ authentication:
         acs_url:
           label: URL ACS
           tooltip_label: Copiar URL
+        copy: Copiar

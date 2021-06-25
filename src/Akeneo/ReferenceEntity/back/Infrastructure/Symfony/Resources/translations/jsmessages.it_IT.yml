@@ -76,7 +76,7 @@ pim_reference_entity:
       confirm: Salva
     delete:
       message: Sei sicuro di voler eliminare l'entità "{{ referenceEntityLabel }}"?
-      title: Attributo
+      title: Entità di riferimento
     notification:
       save:
         success: Entità di riferimento aggiornata correttamente.
@@ -97,13 +97,21 @@ pim_reference_entity:
       subtitle: Per gestire i permessi sulle entità di riferimento devi avere almeno un gruppo utente.
       link: Fai clic qui per aggiungere il tuo primo gruppo
   record:
+    mass_delete:
+      confirm: '[0,1]Sei sicuro di voler eliminare {{ count }} registro selezionato?<unk> ]1,Inf]Sei sicuro di voler eliminare {{ count }} registri selezionati?'
+      extra_information: Se sono collegati a prodotti, i link ai prodotti saranno rimossi.
+      confirm_label: Digita "{{ referenceEntityIdentifier }}"
+      title: Record
+    record_selected: '{0} {{ count }} registri selezionati<unk>{1} {{ count }} registro selezionato<unk> ]1,Inf] {{ count }} registri selezionati'
     validation:
       limit_reached: 'Non puoi creare il record "%record_label%" perché hai raggiunto il limite di {{ %limit% }} record per questa entità di riferimento'
       code:
         pattern: 'Questo campo può contenere solo lettere, numeri e trattini bassi (underscore).'
         should_be_unique: 'Questo codice è già esistente per questa entità.'
       text:
+        incompatible_with_regular_expression: 'Inserisci un testo che soddisfi l''espressione regolare: "{{ %regular_expression% }}"'
         invalid_email: 'Per favore, inserisci un indirizzo email: xxxxx@xx.xx'
+        invalid_url: 'Inserisci un URL: http(s)://xxxx.XXX'
     no_data:
       title: Non ci sono record per {{ entityLabel }}
       subtitle: Fai clic sul pulsante "Aggiungi nuovo" per creare il primo record
@@ -117,9 +125,10 @@ pim_reference_entity:
     button:
       save: Salva
       create: Aggiungi nuovo
-      delete: Elimina
-      delete_all: Elimina tutti i record
+      delete: Elimina registro
       back: Torna all'elenco
+      edit: Modifica registro
+      view: Visualizza registro
     product:
       attribute: Attributo prodotto
       counter: '{{ totalCount }} risultato|{{ totalCount }} risultati'
@@ -157,8 +166,6 @@ pim_reference_entity:
     delete:
       message: Sei sicuro di voler eliminare il record "{{ recordLabel }}"? Se è collegato a prodotti o record, i collegamenti verranno rimossi.
       title: Record
-    delete_all:
-      confirm: Sei sicuro di voler eliminare tutti i record di "{{ entityIdentifier }}"? Se sono collegati ai prodotti, i collegamenti ai prodotti saranno rimossi.
     grid:
       search: Cerca nell'etichetta, nel codice e nel testo degli attributi
       filter:
@@ -200,9 +207,9 @@ pim_reference_entity:
       delete:
         success: Record "{{ code }}" eliminato correttamente.
         fail: Si è verificato un errore durante l'eliminazione del registro
-      delete_all:
-        success: Tutti i record di "{{ entityIdentifier }}" sono stati eliminati correttamente.
-        fail: Si è verificato un errore durante l'eliminazione di tutti questi registri dell'entità di riferimento
+      mass_delete:
+        success: L'azione di massa "Eliminazione di massa" è stata lanciata. Sarai avvisato al completamento.
+        fail: "Si è verificato un errore durante il lancio del job di eliminazione di massa: {{ error }}"
     completeness:
       label: Completo
   attribute:
@@ -301,12 +308,6 @@ pim_reference_entity:
       sub_title: Entità di riferimento
       helper:
         title: Traduzioni etichetta
-  modal:
-    delete:
-      subtitle: Conferma cancellazione
-      button:
-        cancel: Annulla
-        confirm: Elimina
 pim_enrich:
   confirmation:
     discard_changes: 'Perderai tutte le modifiche all''entità "{{ entity }}" se abbandoni la pagina.'
@@ -334,4 +335,39 @@ pim_catalog_volume:
     average_max_records_per_reference_entity: Registri per entità di riferimento
     average_max_attributes_per_reference_entity: Attributi per entità di riferimento
 batch_jobs:
+  default_steps:
+    mass_delete_records: Esegui eliminazione di massa registri
   reference_entity_label: Entità di riferimento
+  csv_reference_entity_record_export:
+    label: Esportazione registro per entità di riferimento in CSV
+    export.label: Esportazione registro
+  xlsx_reference_entity_record_export:
+    label: Esportazione registro per entità di riferimento in XLSX
+    export.label: Esportazione registro
+  csv_reference_entity_record_import:
+    label: Importazione registro per entità di riferimento in CSV
+    import.label: Importazione registro
+  xlsx_reference_entity_record_import:
+    label: Importazione registro per entità di riferimento in XLSX
+    import.label: Importazione registro
+pim_datagrid:
+  cells:
+    type:
+      reference_entity_mass_delete_records: Esegui eliminazione di massa registri
+job_execution:
+  summary:
+    records: Record
+pim_notification:
+  types:
+    reference_entity_mass_delete_records: Eliminazione di massa registri
+pim_analytics:
+  info_type:
+    nb_reference_entities: Numero di entità di riferimento
+    max_number_of_records_per_reference_entity: Numero massimo di registri per entità di riferimento
+    average_number_of_values_per_records: Numero medio di valori per registro su tutte le entità di riferimento
+    average_number_of_records_per_reference_entity: Numero medio di registri per entità di riferimento
+    max_number_of_attributes_per_reference_entity: Numero massimo di attributi per entità di riferimento
+    average_number_of_attributes_per_reference_entity: Numero medio di attributi per entità di riferimento
+    average_percentage_localizable_only_attributes: Percentuale media di attributi solo localizzabili per entità di riferimento
+    average_percentage_scopable_only_attributes: Percentuale media di attributi solo customizzabili per entità di riferimento
+    average_percentage_scopable_and_localizable_attributes: Percentuale media di attributi localizzabili e customizzabili per entità di riferimento

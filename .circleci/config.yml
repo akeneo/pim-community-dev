@@ -13,7 +13,14 @@ aliases:
       GOOGLE_COMPUTE_ZONE: "europe-west3-a"
       CLUSTER_NAME: "europe-west3-a"
 
-  - &dockerCloudDeployer
+  - &dockerCloudDeployerCurrent   # cloudDeployer version used in prod (used for lastest release deployement)
+      docker:
+        - image: eu.gcr.io/akeneo-cloud/cloud-deployer:2.10
+          auth:
+            username: _json_key  # default username when using a JSON key file to authenticate
+            password: $GCLOUD_SERVICE_KEY_DEV  # JSON service account you created, do not encode to base64
+
+  - &dockerCloudDeployerNext      # cloudDeployer version (used for lastest current deployement)
       docker:
         - image: eu.gcr.io/akeneo-cloud/cloud-deployer:2.10
           auth:
@@ -93,27 +100,28 @@ jobs:
       - run:
           name: Create hash for front packages
           command: |
-            find vendor/akeneo/pim-community-dev/front-packages -type f -print0 | sort -z | xargs -0 sha1sum | sha1sum > ~/front-packages.hash
-            date +%F >> ~/front-packages.hash
+            find vendor/akeneo/pim-community-dev/front-packages/akeneo-design-system -type f -print0 | sort -z | xargs -0 sha1sum | sha1sum > ~/akeneo-design-system.hash
+            date +%F >> ~/akeneo-design-system.hash
       - run:
-          name: Set front-packages directory owner to circleci
-          command: sudo chown -R 1001:1001 vendor/akeneo/pim-community-dev/front-packages
+          name: Set DSM directory owner to circleci
+          command: sudo chown -R 1001:1001 vendor/akeneo/pim-community-dev/front-packages/akeneo-design-system
       - restore_cache:
-          name: Restore front-packages cache
-          key: front-packages-libs-{{ checksum "~/front-packages.hash" }}
+          name: Restore DSM cache
+          key: dsm-lib-{{ checksum "~/akeneo-design-system.hash" }}
       - run:
-          name: Set front-packages directory owner to docker
-          command: sudo chown -R 1000:1000 vendor/akeneo/pim-community-dev/front-packages
+          name: Set DSM directory owner to docker
+          command: sudo chown -R 1000:1000 vendor/akeneo/pim-community-dev/front-packages/akeneo-design-system
       - run:
-          name: Build front-packages
-          command: ls vendor/akeneo/pim-community-dev/front-packages/*/lib 1> /dev/null 2>&1 || make front-packages
+          name: Build DSM
+          command: ls vendor/akeneo/pim-community-dev/front-packages/akeneo-design-system/lib 1> /dev/null 2>&1 || make dsm
       - save_cache:
-          name: Save front-packages cache
-          key: front-packages-libs-{{ checksum "~/front-packages.hash" }}
+          name: Save DSM cache
+          key: dsm-lib-{{ checksum "~/akeneo-design-system.hash" }}
           paths:
             - vendor/akeneo/pim-community-dev/front-packages/akeneo-design-system/lib
-            - vendor/akeneo/pim-community-dev/front-packages/measurement/lib
-            - vendor/akeneo/pim-community-dev/front-packages/shared/lib
+      - run:
+          name: Build front-packages
+          command: make front-packages
       - run:
           name: Build Javascript
           command: make javascript-dev
@@ -283,6 +291,9 @@ jobs:
         command: |
           mkdir -p /home/circleci/project/deployments/terraform/deployments
           cp -r /home/circleci/project/deployments/automation /home/circleci/project/deployments/terraform/deployments
+          cp -r /home/circleci/project/deployments/bin /home/circleci/project/deployments/terraform/deployments
+          cp -r /home/circleci/project/deployments/config /home/circleci/project/deployments/terraform/deployments
+          cp -r /home/circleci/project/deployments/share /home/circleci/project/deployments/terraform/deployments
     - run:
         name: Push Terraform modules to GCS
         command: |
@@ -782,7 +793,7 @@ jobs:
   test_helm_generated_k8s_files:
       environment:
         <<: *envVarsDeployDev
-      <<: *dockerCloudDeployer
+      <<: *dockerCloudDeployerNext
       steps:
           - attach_workspace:
                 at: ~/
@@ -841,7 +852,7 @@ jobs:
   test_deploy_srnt:
       environment:
         <<: *envVarsDeployDev
-      <<: *dockerCloudDeployer
+      <<: *dockerCloudDeployerNext
       steps:
           - attach_workspace:
                 at: ~/
@@ -882,7 +893,7 @@ jobs:
   test_deploy_grth:
       environment:
         <<: *envVarsDeployDev
-      <<: *dockerCloudDeployer
+      <<: *dockerCloudDeployerNext
       steps:
           - attach_workspace:
                 at: ~/
@@ -923,7 +934,7 @@ jobs:
   test_deploy_srnt_last_release:
       environment:
           <<: *envVarsDeployDev
-      <<: *dockerCloudDeployer
+      <<: *dockerCloudDeployerCurrent
       steps:
           - attach_workspace:
                 at: ~/
@@ -959,6 +970,11 @@ jobs:
                 name: DATADOG deployment Livetail logs page
                 command: echo "https://app.datadoghq.eu/logs/livetail?query=kube_namespace%3A${TYPE}-${INSTANCE_NAME}"
           - run:
+                name: Pull Terraform modules from last release
+                command: |
+                    rm -r ~/project/deployments
+                    BOTO_CONFIG=/dev/null gsutil -m cp -r gs://akecld-terraform-modules/serenity-edition/${LATEST_RELEASE}/terraform/deployments/ ~/project/
+          - run:
                 name: Deploy instance with latest release
                 command: |
                     ssh-keyscan -t rsa github.com >> ~/.ssh/known_hosts
@@ -975,7 +991,7 @@ jobs:
                 - project/persisted_env_vars
           - run:
               name: Remove env on kubernetes
-              command: IMAGE_TAG=${LATEST_RELEASE} make commit-instance
+              command: IMAGE_TAG=${LATEST_RELEASE} make uncommit-instance
               when: on_fail
 
   test_upgrade_srnt_from_last_release:
@@ -1022,7 +1038,7 @@ jobs:
   test_deploy_grth_last_release:
       environment:
           <<: *envVarsDeployDev
-      <<: *dockerCloudDeployer
+      <<: *dockerCloudDeployerCurrent
       steps:
           - attach_workspace:
                 at: ~/
@@ -1058,6 +1074,11 @@ jobs:
               name: DATADOG deployment Livetail logs page
               command: echo "https://app.datadoghq.eu/logs/livetail?query=kube_namespace%3A${TYPE}-${INSTANCE_NAME}"
           - run:
+              name: Pull Terraform modules from last release
+              command: |
+                  rm -r ~/project/deployments
+                  BOTO_CONFIG=/dev/null gsutil -m cp -r gs://akecld-terraform-modules/growth-edition/${LATEST_RELEASE}/terraform/deployments/ ~/project/
+          - run:
                 name: Deploy instance with latest release
                 command: |
                     ssh-keyscan -t rsa github.com >> ~/.ssh/known_hosts
@@ -1074,7 +1095,7 @@ jobs:
                 - project/persisted_env_vars
           - run:
               name: Remove env on kubernetes
-              command: IMAGE_TAG=${LATEST_RELEASE} make commit-instance
+              command: IMAGE_TAG=${LATEST_RELEASE} make uncommit-instance
               when: on_fail
 
   test_upgrade_grth_from_last_release:
@@ -1121,7 +1142,7 @@ jobs:
   test_upgrade_from_srnt_customer_db:
       environment:
           <<: *envVarsDeployDev
-      <<: *dockerCloudDeployer
+      <<: *dockerCloudDeployerNext
       steps:
           - attach_workspace:
                 at: ~/
@@ -1190,6 +1211,7 @@ jobs:
               command: |
                 SERENITY_RELEASE_NAME=v$(docker run --rm eu.gcr.io/akeneo-ci/pim-enterprise-dev:${IMAGE_TAG} grep -o "const VERSION = '.*';$" src/Akeneo/Platform/EnterpriseVersion.php | sed "s/const VERSION = '//" | sed "s/';//")
                 BOTO_CONFIG=/dev/null gsutil -m cp -r /home/circleci/project/deployments/terraform gs://akecld-terraform-modules/serenity-edition/$SERENITY_RELEASE_NAME/
+                BOTO_CONFIG=/dev/null gsutil -m cp -r /home/circleci/project/deployments gs://akecld-terraform-modules/serenity-edition/$SERENITY_RELEASE_NAME/terraform/
           - run:
               name: PIM_CONTEXT=deployment make release
               command: OLD_IMAGE_TAG=$IMAGE_TAG PIM_CONTEXT=deployment make release
@@ -1227,10 +1249,10 @@ jobs:
   ##################
   # Deploy         #
   ##################
-  deploy_helpdesk_environment:
+  deploy_srnt_helpdesk_environment:
       environment:
         <<: *envVarsDeployPreprod
-      <<: *dockerCloudDeployer
+      <<: *dockerJenkinsCloudDeployer
       steps:
             - attach_workspace:
                 at: ~/
@@ -1240,9 +1262,7 @@ jobs:
                 name: Define value for next steps
                 command: |
                   TYPE="srnt"
-                  ssh-keyscan github.com >> ~/.ssh/known_hosts
-                  git tag --list | grep -E "^v?[0-9]+$" | sort -r > /tmp/pim-tags.txt
-                  RELEASE_TO_DEPLOY=$(head -n 1 /tmp/pim-tags.txt)
+                  RELEASE_TO_DEPLOY=$(gcloud container images list-tags eu.gcr.io/akeneo-cloud/pim-enterprise-dev --filter="v" --sort-by="~tags" --limit=1 --format="value(tags)")
                   INSTANCE_NAME="pimci-helpdesk"
                   PRODUCT_REFERENCE_TYPE="serenity_instance"
                   PRODUCT_REFERENCE_CODE="serenity_${ENV_NAME}"
@@ -1258,23 +1278,76 @@ jobs:
                   echo export ACTIVATE_MONITORING=${ACTIVATE_MONITORING} >> $BASH_ENV
 
                   echo "Instance name: ${INSTANCE_NAME}"
-                  echo "Image tag: ${IMAGE_TAG}"
                   echo "Release to deploy: ${RELEASE_TO_DEPLOY}"
             - run:
-                name: Generate config files and deploy
+                name: Setup key for Jenkins
                 command: |
-                    IMAGE_TAG=${RELEASE_TO_DEPLOY} make create-ci-release-files
-                    IMAGE_TAG=${RELEASE_TO_DEPLOY} make change-terraform-source-version
-                    UPGRADE_STEP_2=true IMAGE_TAG=${RELEASE_TO_DEPLOY} make deploy
+                  ssh-keyscan github.com >> ~/.ssh/known_hosts
+                  echo '' > /root/.ssh/config #clean github exclusions automatically added by circleci
+                  REPO_TO_ADD=github.com KEY_TO_ADD=/root/.ssh/id_rsa_1f25f8bb595295f6e2f2972f30d4e966 bash deployments/bin/add-deploy-key.sh
+                  REPO_TO_ADD=cloud-customers-dev KEY_TO_ADD=/root/.ssh/id_rsa_5f7bb3cbd43de2c2365f9db487865f67 bash deployments/bin/add-deploy-key.sh
+                  REPO_TO_ADD=jenkins-k8s-utils KEY_TO_ADD=/root/.ssh/id_rsa_2c6118646e36aa7476fd5e6b735923c6 bash deployments/bin/add-deploy-key.sh
+                  REPO_TO_ADD=operation-tools KEY_TO_ADD=/root/.ssh/id_rsa_9871a29f0e320bbf564ab34189c7b429 bash deployments/bin/add-deploy-key.sh
+            - run:
+                name: Jenkins Upgrade
+                command: IMAGE_TAG=${RELEASE_TO_DEPLOY} make upgrade-instance
             - run:
                 name: Communicate
                 command: |
-                    make slack_helpdesk
+                  IMAGE_TAG=${RELEASE_TO_DEPLOY} make slack_helpdesk
+
+  deploy_grth_helpdesk_environment:
+      environment:
+        <<: *envVarsDeployPreprod
+      <<: *dockerJenkinsCloudDeployer
+      steps:
+            - attach_workspace:
+                at: ~/
+            - set_gcloud_config_preprod
+            - add_ssh_keys
+            - run:
+                name: Define value for next steps
+                command: |
+                  TYPE="grth"
+                  RELEASE_TO_DEPLOY=$(gcloud container images list-tags eu.gcr.io/akeneo-cloud/pim-enterprise-dev --filter="growth-v" --sort-by="~tags" --limit=1 --format="value(tags)")
+                  INSTANCE_NAME="pimci-helpdesk-ge"
+                  PRODUCT_REFERENCE_TYPE="growth_edition_instance"
+                  PRODUCT_REFERENCE_CODE="growth_edition_${ENV_NAME}"
+                  PIM_CONTEXT=deployment
+                  ACTIVATE_MONITORING=true
+
+                  echo export TYPE=${TYPE} >> $BASH_ENV
+                  echo export RELEASE_TO_DEPLOY=${RELEASE_TO_DEPLOY} >> $BASH_ENV
+                  echo export INSTANCE_NAME=${INSTANCE_NAME} >> $BASH_ENV
+                  echo export PRODUCT_REFERENCE_TYPE=${PRODUCT_REFERENCE_TYPE} >> $BASH_ENV
+                  echo export PRODUCT_REFERENCE_CODE=${PRODUCT_REFERENCE_CODE} >> $BASH_ENV
+                  echo export PIM_CONTEXT=${PIM_CONTEXT} >> $BASH_ENV
+                  echo export ACTIVATE_MONITORING=${ACTIVATE_MONITORING} >> $BASH_ENV
+
+                  echo "Instance name: ${INSTANCE_NAME}"
+                  echo "Image tag: ${IMAGE_TAG}"
+                  echo "Release to deploy: ${RELEASE_TO_DEPLOY}"
+            - run:
+                name: Setup key for Jenkins
+                command: |
+                  ssh-keyscan github.com >> ~/.ssh/known_hosts
+                  echo '' > /root/.ssh/config #clean github exclusions automatically added by circleci
+                  REPO_TO_ADD=github.com KEY_TO_ADD=/root/.ssh/id_rsa_1f25f8bb595295f6e2f2972f30d4e966 bash deployments/bin/add-deploy-key.sh
+                  REPO_TO_ADD=cloud-customers-dev KEY_TO_ADD=/root/.ssh/id_rsa_5f7bb3cbd43de2c2365f9db487865f67 bash deployments/bin/add-deploy-key.sh
+                  REPO_TO_ADD=jenkins-k8s-utils KEY_TO_ADD=/root/.ssh/id_rsa_2c6118646e36aa7476fd5e6b735923c6 bash deployments/bin/add-deploy-key.sh
+                  REPO_TO_ADD=operation-tools KEY_TO_ADD=/root/.ssh/id_rsa_9871a29f0e320bbf564ab34189c7b429 bash deployments/bin/add-deploy-key.sh
+            - run:
+                  name: Jenkins Upgrade
+                  command: IMAGE_TAG=${RELEASE_TO_DEPLOY} make upgrade-instance
+            - run:
+                name: Communicate
+                command: |
+                    IMAGE_TAG=${RELEASE_TO_DEPLOY} make slack_helpdesk
 
   deploy_pm_environment:
       environment:
           <<: *envVarsDeployPreprod
-      <<: *dockerCloudDeployer
+      <<: *dockerJenkinsCloudDeployer
       steps:
           - attach_workspace:
                 at: ~/
@@ -1284,8 +1357,7 @@ jobs:
               name: Define value for next steps
               command: |
                 TYPE="srnt"
-                IMAGE_TAG=${CIRCLE_SHA1}
-                IMAGE_TAG_SHORTED=$(echo ${IMAGE_TAG} | cut -c -7)
+                RELEASE_TO_DEPLOY=$(gcloud container images list-tags eu.gcr.io/akeneo-cloud/pim-enterprise-dev --filter="v" --sort-by="~tags" --limit=1 --format="value(tags)")
                 INSTANCE_NAME="pimci-pm"
                 PRODUCT_REFERENCE_TYPE="serenity_instance"
                 PRODUCT_REFERENCE_CODE="serenity_${ENV_NAME}"
@@ -1293,7 +1365,7 @@ jobs:
                 ACTIVATE_MONITORING=true
 
                 echo export TYPE=${TYPE} >> $BASH_ENV
-                echo export IMAGE_TAG=${IMAGE_TAG} >> $BASH_ENV
+                echo export RELEASE_TO_DEPLOY=${RELEASE_TO_DEPLOY} >> $BASH_ENV
                 echo export INSTANCE_NAME=${INSTANCE_NAME} >> $BASH_ENV
                 echo export PRODUCT_REFERENCE_TYPE=${PRODUCT_REFERENCE_TYPE} >> $BASH_ENV
                 echo export PRODUCT_REFERENCE_CODE=${PRODUCT_REFERENCE_CODE} >> $BASH_ENV
@@ -1301,16 +1373,24 @@ jobs:
                 echo export ACTIVATE_MONITORING=${ACTIVATE_MONITORING} >> $BASH_ENV
 
                 echo "Instance name: ${INSTANCE_NAME}"
-                echo "Image tag: ${IMAGE_TAG}"
+                echo "Release to deploy: ${RELEASE_TO_DEPLOY}"
           - run:
-              name: Latest master version for PMs
+              name: Setup key for Jenkins
               command: |
-                UPGRADE_STEP_2=true make deploy-instance
+                ssh-keyscan github.com >> ~/.ssh/known_hosts
+                echo '' > /root/.ssh/config #clean github exclusions automatically added by circleci
+                REPO_TO_ADD=github.com KEY_TO_ADD=/root/.ssh/id_rsa_1f25f8bb595295f6e2f2972f30d4e966 bash deployments/bin/add-deploy-key.sh
+                REPO_TO_ADD=cloud-customers-dev KEY_TO_ADD=/root/.ssh/id_rsa_5f7bb3cbd43de2c2365f9db487865f67 bash deployments/bin/add-deploy-key.sh
+                REPO_TO_ADD=jenkins-k8s-utils KEY_TO_ADD=/root/.ssh/id_rsa_2c6118646e36aa7476fd5e6b735923c6 bash deployments/bin/add-deploy-key.sh
+                REPO_TO_ADD=operation-tools KEY_TO_ADD=/root/.ssh/id_rsa_9871a29f0e320bbf564ab34189c7b429 bash deployments/bin/add-deploy-key.sh
+          - run:
+              name: Jenkins Upgrade
+              command: IMAGE_TAG=${RELEASE_TO_DEPLOY} make upgrade-instance
 
   deploy_pr_srnt_environment:
       environment:
           <<: *envVarsDeployDev
-      <<: *dockerCloudDeployer
+      <<: *dockerCloudDeployerNext
       steps:
           - attach_workspace:
                 at: ~/
@@ -1355,7 +1435,7 @@ jobs:
   deploy_pr_grth_environment:
       environment:
           <<: *envVarsDeployDev
-      <<: *dockerCloudDeployer
+      <<: *dockerCloudDeployerNext
       steps:
           - attach_workspace:
               at: ~/
@@ -1403,7 +1483,7 @@ jobs:
   delete_environments_hourly:
       environment:
           <<: *envVarsDeployDev
-      <<: *dockerCloudDeployer
+      <<: *dockerCloudDeployerNext
       steps:
           - attach_workspace:
                 at: ~/
@@ -1697,7 +1777,7 @@ workflows:
   growth_edition_release:
       triggers:
           - schedule:
-                cron: "0 4 * * *"
+                cron: "0 3 * * *"
                 filters:
                     branches:
                         only:
@@ -1715,14 +1795,15 @@ workflows:
                 requires:
                     - test_cronjobs_existence_grth
           - test_deploy_grth_last_release:
-                    requires:
-                        - test_deploy_grth
+                requires:
+                    - test_cronjobs_existence_grth
           - test_upgrade_grth_from_last_release:
-                    requires:
-                        - test_deploy_grth_last_release
+                requires:
+                    - test_deploy_grth_last_release
           - release_grth:
-                    requires:
-                        - test_upgrade_grth_from_last_release
+                requires:
+                    - test_deploy_grth
+                    - test_upgrade_grth_from_last_release
 
   nightly_deployments:
       triggers:
@@ -1735,7 +1816,10 @@ workflows:
 
       jobs:
           - checkout
-          - deploy_helpdesk_environment:
+          - deploy_srnt_helpdesk_environment:
+                requires:
+                    - checkout
+          - deploy_grth_helpdesk_environment:
                 requires:
                     - checkout
           - deploy_pm_environment:

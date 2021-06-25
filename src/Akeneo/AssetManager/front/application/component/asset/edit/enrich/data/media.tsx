@@ -16,7 +16,7 @@ import {
   IconButtonProps,
   Button,
 } from 'akeneo-design-system';
-import {useTranslate} from '@akeneo-pim-community/shared';
+import {useRouter, useTranslate} from '@akeneo-pim-community/shared';
 import {useReloadPreview} from 'akeneoassetmanager/application/hooks/useReloadPreview';
 
 type ActionProps = {
@@ -38,6 +38,7 @@ const buttonProps: Partial<ButtonProps> = {
 
 const DownloadAction = ({data, attribute, label}: ActionProps) => {
   const translate = useTranslate();
+  const router = useRouter();
 
   if (
     (isMediaLinkAttribute(attribute) &&
@@ -46,12 +47,19 @@ const DownloadAction = ({data, attribute, label}: ActionProps) => {
   )
     return null;
 
-  const url = isMediaFileData(data) ? getImageDownloadUrl(data) : getMediaLinkUrl(data, attribute);
+  const url = isMediaFileData(data) ? getImageDownloadUrl(router, data) : getMediaLinkUrl(data, attribute);
   const fileName = null !== data && isMediaFileData(data) ? data.originalFilename : url;
   const title = label || translate('pim_asset_manager.asset_preview.download');
 
   return undefined === label ? (
-    <IconButton {...iconButtonProps} icon={<DownloadIcon />} title={title} />
+    <IconButton
+      {...iconButtonProps}
+      icon={<DownloadIcon />}
+      title={title}
+      href={url}
+      download={fileName}
+      target="_blank"
+    />
   ) : (
     <Button {...buttonProps} href={url} download={fileName} target="_blank">
       <DownloadIcon />
@@ -70,7 +78,7 @@ const CopyUrlAction = ({data, attribute, label}: ActionProps) => {
   const title = label || translate('pim_asset_manager.asset_preview.copy_url');
 
   return undefined === label ? (
-    <IconButton {...iconButtonProps} icon={<CopyIcon />} title={title} />
+    <IconButton {...iconButtonProps} icon={<CopyIcon />} title={title} onClick={() => copyToClipboard(url)} />
   ) : (
     <Button {...buttonProps} onClick={() => copyToClipboard(url)}>
       <CopyIcon />

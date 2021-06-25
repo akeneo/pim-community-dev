@@ -8,12 +8,15 @@ akeneo_assetmanager:
       delete: Elimina una famiglia di asset
       manage_permission: Gestisci i permessi di una famiglia di asset
       manage_transformation: Gestisci le trasformazioni di una famiglia di asset
+      manage_product_link_rule: Gestisci regole di link prodotto per famiglia di asset
+      execute_product_link_rule: Esegui regole di link prodotto su tutti gli asset di una famiglia di asset
+      execute_naming_conventions: Esegui convenzioni di denominazione su asset
     asset:
       create: Crea un asset
       edit: Modifica gli asset
-      delete: Elimina un asset
-      delete_all: Elimina tutti gli asset
+      delete: Elimina asset
       list_product: Elenca i prodotti collegati all'asset
+      execute_naming_conventions: Esegui convenzioni di denominazione
     attribute:
       create: Aggiungi un attributo ad una famiglia di asset
       edit: Modifica un attributo di una famiglia di asset
@@ -21,11 +24,38 @@ akeneo_assetmanager:
     option:
       edit: Modifica opzioni
       delete: Rimuovi una opzione
+  jobs:
+    asset_manager_execute_naming_convention:
+      error: 'Convenzione di denominazione non riuscita sull''asset "{{ asset }}"'
+    asset_manager_mass_delete:
+      error: 'Eliminazione di massa non riuscita sugli asset "{{ assets }}" con errore: "{{ error }}"'
+    asset_manager_mass_edit:
+      error: 'Modifica di massa non riuscita sugli asset "{{ assets }}" con errore: "{{ error }}"'
 pim_import_export:
   widget:
     last_operations:
       job_type:
+        asset_manager_compute_transformations: "Calcola trasformazioni asset"
         asset_manager_link_assets_to_products: "Collega gli asset ai prodotti"
+        asset_manager_execute_naming_convention: "Esegui convenzione di denominazione per famiglia di asset"
+pim_analytics:
+  info_type:
+    api_connection: Numero di connessioni API
+    nb_asset_families: Numero di famiglie di asset
+    max_number_of_assets_per_asset_family: Numero massimo di asset per famiglia di asset
+    average_number_of_values_per_assets: Numero medio di valori per asset
+    average_number_of_assets_per_asset_family: Numero medio di asset per famiglia di asset
+    max_number_of_attributes_per_asset_family: Numero massimo di attributi per famiglia di asset
+    average_number_of_attributes_per_asset_family: Numero medio di attributi per famiglia di asset
+    data_source:
+      tracked: Destinazione dati tracciata
+      untracked: Destinazione dati non tracciata
+    data_destination:
+      tracked: Origine dati tracciata
+      untracked: Origine dati non tracciata
+    other:
+      tracked: Altro tracciato
+      untracked: Altro non tracciato
 #average_percentage_localizable_only_attributes: Average percentage of localizable only attributes per asset family
 #average_percentage_scopable_only_attributes: Average percentage of scopable only attributes per asset family
 #average_percentage_scopable_and_localizable_attributes: Average percentage of localizable and scopable attributes per asset family
@@ -33,7 +63,24 @@ pim_catalog_asset_collection: Raccolta di asset
 pim_datagrid:
   cells:
     type:
+      asset_manager_execute_naming_convention: Esegui convenzione di denominazione per famiglia di asset
       asset_manager_link_assets_to_products: Collega gli asset ai prodotti
+      asset_manager_compute_transformations: Calcola trasformazioni asset
+      asset_manager_mass_delete_assets: Eliminazione di massa asset
+      asset_manager_mass_edit_assets: Modifica di massa asset
 batch_jobs:
   default_steps:
+    execute_naming_convention: Esegui convenzione di denominazione per famiglia di asset
     link_assets_to_products: Collega gli asset ai prodotti
+    compute_transformations: Calcola trasformazioni asset
+job_execution:
+  summary:
+    assets: Asset
+pim_mass_edit.notification.asset_manager_mass_delete_assets:
+  warning: Asset eliminati con successo con avvisi
+  success: Asset eliminati con successo
+  error: Eliminazione asset non riuscita
+pim_mass_edit.notification.asset_manager_mass_edit_assets:
+  warning: Asset modificati con successo con avvisi
+  success: Asset modificati con successo
+  error: Modifica asset non riuscita

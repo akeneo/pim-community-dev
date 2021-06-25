@@ -3,9 +3,18 @@ pim_title:
   akeneo_asset_manager_asset_family_edit: Editar una categoría de recursos
   akeneo_asset_manager_asset_edit: Editar recurso
 pim_asset_manager:
+  editor:
+    embedded:
+      invalid_link:
+        title: Enlace embebido sospechoso
+        message: Lo sentimos; no mostramos este elemento incrustado, pero se guardará correctamente
   result_counter: '{0} Ningún resultado |{1} {{ count }} resultado|]1,Inf] {{ count }} resultados'
+  asset_counter: '{0} Ningún activo|{1} {{ count }} activo|]1,Inf] {{ count }} activos'
+  asset_selected: '{0} {{ assetCount }} activo seleccionado|{1} {{ assetCount }} activo seleccionado|]1,Inf] {{ assetCount }} activos seleccionados'
   asset_collection:
     add_asset: 'Añadir recurso'
+    upload_asset: 'Subir activo'
+    add_asset_title: 'Abrir el selector de recursos para añadir recursos a la colección'
     no_asset_in_collection: 'Lo sentimos, no hay ningún recurso en esta colección.'
     helper:
       title: '¡Bienvenido a su nuevo espacio de gestión de activos de producto!'
@@ -15,6 +24,7 @@ pim_asset_manager:
       title: 'Lo sentimos, no hay recursos para este producto.'
     notification:
       product_rule: 'Esta colección puede ser actualizada por una regla de producto:'
+      limit: 'Ha alcanzado el límite de {{ limit }} activos por distribución, ya no puede añadir activos a su colección.'
     edit_asset: Editar recurso
     remove_asset: Quitar un recurso
     remove_one_asset: Eliminar el recurso {{ assetName }} de la colección de recursos
@@ -24,8 +34,12 @@ pim_asset_manager:
     dismiss_other_actions: Descartar otras acciones
     move_asset_to_left: Mover recurso {{ assetName }} a la izquierda
     move_asset_to_right: Mover recurso {{ assetName }} a la derecha
+    legacy_helper:
+      moved_to_assets_tab: Para ver la colección de activos {{ label }}, vaya a la sección de activos del producto.
+      is_missing_required: Se requiere la colección de activos {{ label }}. Enriquézala en la sección de activos del producto.
   asset_picker:
     title: Añadir recursos a su producto
+    sub_title: Elija los activos que desea adjuntar a su producto {{ productLabel }} en la colección {{ attributeLabel }}
     no_result:
       title: Lo sentimos, no hay recursos para su búsqueda
       sub_title: Pruebe con nuevos criterios de búsqueda
@@ -38,6 +52,7 @@ pim_asset_manager:
   asset_preview:
     previous: Recurso anterior
     next: Próximo recurso
+    empty_main_media: Este activo no tiene ningún medio.
     other_main_media: No podemos generar la vista previa de este activo.
     edit_asset: Editar recurso
     download: Descargar
@@ -59,6 +74,11 @@ pim_asset_manager:
     counter: '{{ resultCount }} resultados'
     counter_empty: '0 resultado'
   asset_family:
+    column:
+      title: Navegación de activos
+      selector:
+        title: Familias de activos
+        no_data: No hay ninguna familia de activos disponible
     validation:
       code:
         pattern: 'Este campo sólo puede contener letras, números y guiones bajos.'
@@ -78,6 +98,7 @@ pim_asset_manager:
       rule_template:
         limit_reached: 'Ha alcanzado el límite de reglas de enlace de producto {{ %limit% }} para la familia de activos "{{ %asset_family_identifier% }}".'
         product_selection_cannot_be_empty: 'Debe especificar al menos una selección de producto en la regla de enlace de su producto'
+        product_assignment_cannot_be_empty: 'Debe especificar al menos una selección de producto en la regla de enlace de su producto'
         extrapolated_attribute_should_exist: 'El atributo "{{ %attribute_code% }}" no existe para esta familia de recursos'
         extrapolated_attribute_type_should_be_supported: 'El atributo "{{ %attribute_code% }}" de tipo "{{ %attribute_type% }}" no es compatible, solo se soportan los siguientes tipos de atributos para este campo: {{ %supported_attribute_type% }}'
         channel_should_exist: 'El canal "{{ %channel_code% }}" no existe'
@@ -97,8 +118,12 @@ pim_asset_manager:
       edit: Editar familia
       view: Ver familia
       execute_product_link_rules: Ejecutar reglas
+      execute_naming_convention: Ejecutar convención de nombres
+    permission:
+      title: Permisos de familia de activos
     title: Recursos
     breadcrumb: Familia de recursos
+    img: El medio principal de la familia de activos llamado «{{ label }}»
     tab:
       assets: Recursos
       attribute: Atributos
@@ -107,15 +132,28 @@ pim_asset_manager:
       transformations: Transformaciones
       product_link_rules: Reglas de enlace de producto
     transformations:
+      help:
+        description: Aquí puede definir aquí hasta 10 transformaciones por familia de activos.
+        link: Si desea profundizar en las transformaciones de activos, haga clic aquí.
       subsection: 'Propiedades de transformación'
     product_link_rules:
+      naming_convention_subsection: 'Propiedades de la convención de nombres'
       product_link_rules_subsection: 'Propiedades de reglas de enlace de producto'
+      help:
+        description: 'Aquí puede definir hasta 2 reglas de enlace de producto para cada familia de activos.'
+        link: 'Si desea profundizar en las reglas de enlace de producto, haga clic aquí.'
       execute_rules:
         confirm_title: Confirmar la ejecución
         confirm_content: '¿Estás seguro de que quieres ejecutar todas las reglas? (esto podría tardar mucho tiempo)'
         execute_rules: Ejecutar reglas
       execute_naming_convention:
         confirm_title: Confirmar la ejecución
+        confirm_content: '¿Está seguro de que quiere ejecutar la convención de nombres? (esto podría llevar mucho tiempo)'
+        execute_naming_convention: Ejecutar convención de nombres
+    naming_convention:
+      help:
+        description: Aquí es donde puede definir las propiedades de la convención de nombres.
+        link: Aprenda todo lo que necesita saber sobre su formato.
     properties:
       title: Propiedades de la familia de activos
       identifier: Código
@@ -137,6 +175,8 @@ pim_asset_manager:
         count: '{0} Sin familia de activos |{1} {{ count }} familia de activos |]1,Inf] {{ count }} familias de activos'
         help:
           title: '¡Bienvenido a las Familias de Activos!'
+          description_part_one: Enriquecer la información relevante relacionada con los productos (por ejemplo, marcas, fabricantes, colores, materiales, ingredientes...).
+          description_part_two: Le permitirá ofrecer una mejor experiencia del producto a sus clientes.
           description_part_three: Haga clic en el botón “Crear” para crear su primera familia de activos, establecer sus atributos y activos.
           description_part_four: Luego, para vincular a los productos, crear un tipo de atributo de producto relacionado con esta familia de activos.
           description_part_five: Para más detalles, le invitamos a navegar por este artículo.
@@ -150,6 +190,9 @@ pim_asset_manager:
         code: Código (requerido)
     delete:
       message: '¿Está seguro de que desea eliminar la familia de activos "{{ assetFamilyLabel }}"?'
+      title: Familia de activos
+    edit:
+      discard_changes: Perderá los cambios en la familia de activos «{{ assetFamilyLabel }}» si abandona la página.
     notification:
       save:
         success: Familia de recursos actualizada con éxito.
@@ -157,10 +200,17 @@ pim_asset_manager:
       create:
         success: Familia de recursos creada correctamente.
         fail: Se ha producido un error durante la creación de la familia de activos
+      delete:
+        success: Familia de activos eliminada con éxito.
+        fail: Se ha producido un error durante la eliminación de la familia de activos
+      compute_transformations:
+        success: Las transformaciones han sido lanzadas. Una vez terminado este trabajo, verá sus nuevas variaciones actualizadas en sus activos.
+        fail: Se ha producido un error al intentar calcular las transformaciones
       execute_product_link_rules:
         success: Reglas de enlace de producto han sido lanzadas
         fail: Ocurrió un error al intentar lanzar las reglas de enlace del producto
       execute_naming_convention:
+        success: Se ha lanzado la convención de nombres
         fail: Ocurrió un error al intentar lanzar la convención de nombres
     helper:
       title: '¡Bienvenido al Administrador de Activos!'
@@ -168,12 +218,18 @@ pim_asset_manager:
         text: No hay ningún activo en la familia {{ family }} . Haga clic en "Crear" y elija si desea crear un activo vacío o un activo de subida en masa.
       no_asset_family:
         text: Una biblioteca que recoge sus activos (imágenes, vídeos, documentos...), filtrados por familias de activos. ¡Crea su primera familia de activos, establezca sus atributos y suba activos!
+        link: Para más información, le invitamos a consultar este artículo.
     no_data:
       no_asset:
         title: '¡Lo sentimos, no hay activo!'
+        link: Haga clic aquí para añadir un recurso
+      no_asset_family:
+        title: '¡Lo sentimos, no hay ninguna familia de activos!'
+        link: Haga clic aquí para añadir una familia de activos
   permission:
     notification:
       save:
+        success: Permisos de la familia de activos actualizados con éxito.
         fail: Al menos un grupo de usuarios debe tener permiso de edición sobre esta entidad de la familia de recursos
     no_data:
       title: No tienes grupos de usuarios
@@ -183,18 +239,31 @@ pim_asset_manager:
     img: El medio principal del activo llamado "{{ label }}"
     created_at: Creado
     updated_at: Actualizado
+    validation:
+      limit_reached: 'No puede crear el activo «{{ %asset_label% }}» porque ha alcanzado el límite de activos {{ %limit% }} para esta familia de activos'
+      code:
+        pattern: 'Este campo solo puede contener letras, números y guiones bajos.'
+        should_be_unique: 'Este código ya existe para otro activo.'
+      server_error: 'Se ha producido un error durante la creación del activo'
     no_data:
       title: No hay ningún activo para {{ entityLabel }}
+      subtitle: Haga clic en el botón «Añadir nuevo» para crear el primer activo
     no_result:
       title: No hay ningún resultado para su búsqueda
       subtitle: Pruebe con nuevos criterios de búsqueda.
     selector:
       no_value: Haz clic aquí para seleccionar un recurso.
+      error:
+        value: Ups parece que el procesamiento del campo «{{ fieldName }}» ha fallado. Revise la consola de administración para más detalles.
     button:
       save_and_execute_naming_convention: Guardar y ejecutar la convención de nombres
       save: Guardar
+      create: Crear un activo
+      mass_upload: Carga en masa
       delete: Borrar
       back: Volver a la lista
+      launch_transformations: Lanzar transformaciones
+      fullscreen: Pantalla completa
     product:
       attribute: Atributo del producto
       counter: '{{ totalCount }} resultado|{{ totalCount }} resultados'
@@ -202,6 +271,8 @@ pim_asset_manager:
         attribute: Atributo del producto
       title: Productos
       no_attribute:
+        title: No hay ningún atributo de producto vinculado a la familia de activos «{{ entityLabel }}»
+        subtitle: 'Para empezar a vincular productos a esta familia de activos puede crear uno nuevo: '
         link: Crear un nuevo atributo de producto
       not_enough_items:
         title: Solo puedes ver {{ productCount }}/{{ totalCount }} productos.
@@ -209,8 +280,12 @@ pim_asset_manager:
           usable_in_grid: Para descubrir todos los productos vinculados, haga clic justo abajo!
           not_usable_in_grid: Para descubrir todos los productos vinculados, el atributo del producto debe establecerse como "utilizable en la cuadrícula".
         button: Ver todos los productos
+      no_product:
+        title: Este activo no está vinculado a ningún producto a través del atributo de producto «{{ entityLabel }}»
+        subtitle: 'Empiece a vincular los productos a este atributo para verlos aquí'
     no_linked_products: Este activo no está vinculado a los productos
     enrich:
+      title: Atributos de activos
       code: Código
       label: Etiqueta
       edit_subsection: Editar recurso
@@ -221,16 +296,24 @@ pim_asset_manager:
       header:
         title: Crear
       subtitle: Lista de familias
+      title: Añadir nuevo activo en {{ entityLabel }}
       input:
         label: Etiqueta
         code: Código (requerido)
+        create_another: Crear otro activo
     upload:
+      line_count: '[0,1]{{ count }} archivo|]1,Inf] {{ count }} archivos'
+      title: Cargar recursos
+      lines: Archivos
       retry: Reintentar
       remove: Eliminar
       remove_all: Remover todos
       confirm: Crear
       add_to_product: Añadir al producto
+      drop_or_click_here: Arrastre y suelte sus archivos o haga clic aquí
+      will_appear_here: '¡Suba los activos y aparecerán justo aquí!'
       files_limit: Estás intentando subir demasiados archivos, solo se cargarán los primeros {{ limit }}.
+      discard_changes: Perderá sus activos si cierra este modal sin crearlos.
       disabled_for_media_link: No puede subir recursos en esta familia ya que el atributo usado como medio principal es un atributo de enlace de medios
       upload_failure: Se ha producido un error al subir el archivo.
       cannot_retry: Ocurrió un error al intentar subir el archivo.
@@ -238,19 +321,43 @@ pim_asset_manager:
         asset: Recursos
         filename: Nombre de fichero
         code: Código (requerido)
+        locale: Configuración regional (obligatoria)
         channel: Canal (requerido)
         status: Estado
       status:
         waiting_for_upload: no cargado
         upload_in_progress: en progreso
         uploaded: subido
+        valid: listo para crear
         invalid: error
         created: creado
     delete:
       message: '¿Está seguro que desea eliminar el activo "{{ assetLabel }}"? Si está vinculado a los productos, los enlaces se eliminarán.'
       title: Activo
     mass_delete:
+      confirm: '[0,1]¿Está seguro de que desea eliminar el {{ assetCount }} activo seleccionado?|]1,Inf]¿Está seguro de que desea eliminar los {{ assetCount }} activos seleccionados?'
+      extra_information: Si están vinculados a productos, se eliminarán los enlaces a los mismos.
+      confirm_label: Escriba «{{ assetFamilyIdentifier }}»
       title: Recursos
+    mass_edit:
+      subtitle: Acción en masa de activos
+      title: "[0, 1]Editar valores de atributo de {{ count }} activo|]1,Inf] Editar valores de atributo de {{ count }} activos"
+      attribute_selected: "{0}Ningún atributo seleccionado|{1}Un atributo seleccionado|]1,Inf]{{ count }} atributos seleccionados"
+      empty_selection:
+        title: Su selección de atributos está vacía, añada atributos para editar.
+        body: '¿No sabe lo que es una acción en masa?'
+        link: Eche un vistazo a este artículo.
+      action:
+        append: Añadir
+        replace: Reemplazar
+      select:
+        channel: Seleccione un canal
+        locale: Seleccione una configuración regional
+        action: Seleccione una acción
+      helper:
+        content: Tenga en cuenta que es posible añadir el mismo atributo varias veces, así que asegúrese de seleccionar los atributos con cuidado.
+        link: Puede consultar nuestra documentación para evitar cualquier problema.
+      unsupported_attribute: Este tipo de atributo «{{ attributeType }}» no es compatible
     grid:
       search: Buscar en la etiqueta, el código y el texto de los atributos
       filter:
@@ -266,6 +373,7 @@ pim_asset_manager:
             in: En la lista
       more_result:
         title: '¡No es eso!'
+        description: Acaba de desplazarse por los primeros resultados {{ maxDisplayedAssets }} de {{ total }} activos. Para ver más, pruebe con criterios de búsqueda más específicos.
       column:
         code: Código
         image: Imagen
@@ -291,6 +399,15 @@ pim_asset_manager:
       delete:
         success: El activo "{{ code }}" se ha eliminado correctamente.
         fail: Se ha producido un error durante la eliminación del activo
+      mass_delete:
+        success: Se ha lanzado la acción en masa «Eliminar en masa». Se le notificará cuando se haya completado.
+        fail: Se ha producido un error durante el lanzamiento del trabajo de eliminación en masa
+      mass_edit:
+        launch:
+          success: Se ha lanzado la acción en masa «Edición en masa». Se le notificará cuando se haya completado.
+          fail: Se ha producido un error durante el lanzamiento del trabajo de edición en masa
+        validation:
+          fail: Se ha producido un error durante la validación de la edición en masa
       execute_naming_convention:
         success: Convención de nombres ejecutada con éxito
         fail: Se ha producido un error durante la ejecución de la convención de nombres
@@ -401,23 +518,46 @@ pim_asset_manager:
     media_link:
       placeholder: Introduzca aquí su enlace
       read_only: Este enlace de medios es de solo lectura
+      reload: Recargar la miniatura del enlace multimedia
     media_file:
+      placeholder: Arrastre y suelte para cargar o haga clic aquí
       read_only: Este archivo de medios es de solo lectura
       uploading: Subiendo...
+    used_as_transformation_target: Este campo es de solo lectura, ya que se utiliza como objetivo en una transformación de activos.
   jobs:
     asset_manager_execute_naming_convention:
       error: 'La convención de nombres falló en el activo "{{ asset }}"'
 pim_enrich:
+  confirmation:
+    discard_changes: 'Si abandona esta página, perderá los cambios realizados a la entidad «{{ entity }}».'
   entity:
     attribute:
       property:
+        type:
+          pim_catalog_asset_collection: Colección de activos
+        section:
+          type_specific: Escriba parámetros específicos
         asset_family:
           identifier: Familia de recursos relacionada (requerida)
           default_label: Por favor, seleccione una familia de recursos
+permission:
+  mass_action: Aplicar derechos de {{ rightLevel }} en todos los grupos
+#Analytics
+pim_catalog_volume:
+  section:
+    asset_family:
+      title: Ejes de las familias de activos
+      hint: Si utiliza las familias de activos, estos son los ejes que le ayudarán a controlar su volumen.
+  axis:
+    count_asset_family: Familias de activos
+    average_max_assets_per_asset_family: Activos por familia de activos
+    average_max_attributes_per_asset_family: Atributos por familia de activos
 pim_import_export:
   widget:
     last_operations:
       job_type:
+        asset_manager_compute_transformations: "Calcular transformaciones de activos"
+        asset_manager_link_assets_to_products: "Vincular activos a productos"
         asset_manager_execute_naming_convention: Ejecutar la convención de nombres de familia de activos
   form:
     job_instance:
@@ -430,9 +570,16 @@ pim_datagrid:
   cells:
     type:
       asset_manager_execute_naming_convention: Ejecutar la convención de nombres de familia de activos
+      asset_manager_mass_delete_assets: Ejecutar la eliminación en masa de activos
+      asset_manager_mass_edit_assets: Ejecutar la edición en masa de activos
 batch_jobs:
   default_steps:
     execute_naming_convention: Ejecutar la convención de nombres de familia de activos
+    mass_delete_assets: Ejecutar la eliminación en masa de activos
+    mass_edit_assets: Ejecutar la edición en masa de activos
+    link_assets_to_products: Vincular activos a productos
 job_execution:
   summary:
     assets: Recursos
+pim_notification.types.asset_manager_mass_delete_assets: Eliminar activos en masa
+pim_notification.types.asset_manager_mass_edit_assets: Edición en masa los activos

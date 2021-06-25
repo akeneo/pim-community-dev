@@ -3,4 +3,11 @@ akeneo_data_quality_insights:
     consistency: Consistencia
   attribute_grid:
     quality_column_label: Calidad
+    to_improve_locale: Para mejorar en {{ locale }}
+  product_grid:
+    filter_label:
+      spelling_quality: Calidad ortográfica
+  dictionary:
+    title: Diccionario
 Consistency: Consistencia
+akeneo_data_quality_insights_dictionary: Diccionario

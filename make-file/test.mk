@@ -16,6 +16,7 @@ coupling-back: #Doc: launch all coupling detector tests
 	PIM_CONTEXT=permission $(MAKE) permission-coupling-back
 	PIM_CONTEXT=connectivity-connection $(MAKE) connectivity-connection-coupling-back
 	PIM_CONTEXT=communication-channel $(MAKE) communication-channel-coupling-back
+	PIM_CONTEXT=tailored-export $(MAKE) coupling-back
 	PIM_CONTEXT=free-trial $(MAKE) coupling-back
 
 ### Static tests
@@ -45,7 +46,9 @@ lint-back: #Doc: launch all PHP linter tests
 	PIM_CONTEXT=asset-manager $(MAKE) asset-manager-lint-back
 	PIM_CONTEXT=connectivity-connection $(MAKE) connectivity-connection-lint-back
 	PIM_CONTEXT=communication-channel $(MAKE) communication-channel-lint-back
+	PIM_CONTEXT=tailored-export $(MAKE) lint-back
 	PIM_CONTEXT=free-trial $(MAKE) lint-back
+
 	$(DOCKER_COMPOSE) run -u www-data --rm php rm -rf var/cache/dev
 	${PHP_RUN} vendor/bin/php-cs-fixer fix --diff --dry-run --config=.php_cs.php
 	${PHP_RUN} vendor/bin/php-cs-fixer fix --diff --dry-run --config=.php_cs_ce.php
@@ -61,6 +64,7 @@ lint-front: #Doc: launch all YARN linter tests
 unit-back: var/tests/phpspec community-unit-back #Doc: launch all PHPSec unit tests
 	PIM_CONTEXT=reference-entity $(MAKE) reference-entity-unit-back
 	PIM_CONTEXT=asset-manager $(MAKE) asset-manager-unit-back
+	PIM_CONTEXT=tailored-export $(MAKE) unit-back
 ifeq ($(CI),true)
 	$(DOCKER_COMPOSE) run -T -u www-data --rm php php vendor/bin/phpspec run --format=junit > var/tests/phpspec/specs.xml
 	vendor/akeneo/pim-community-dev/.circleci/find_non_executed_phpspec.sh
@@ -105,6 +109,7 @@ integration-back: var/tests/phpunit pim-integration-back #Doc: launch all integr
 	PIM_CONTEXT=reference-entity $(MAKE) reference-entity-integration-back
 	PIM_CONTEXT=asset-manager $(MAKE) asset-manager-integration-back
 	PIM_CONTEXT=rule-engine $(MAKE) rule-engine-integration-back
+	PIM_CONTEXT=tailored-export $(MAKE) integration-back
 
 .PHONY: pim-integration-back
 pim-integration-back: #Doc: launch all PHPUnit integration tests

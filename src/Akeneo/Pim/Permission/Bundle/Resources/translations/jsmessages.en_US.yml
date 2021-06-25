@@ -70,3 +70,12 @@ pim_analytics:
         nb_custom_locale_accesses: Number of custom locale accesses
         nb_custom_category_accesses: Number of custom category accesses
         nb_custom_attribute_group_accesses: Number of custom attribute group accesses
+
+category.permissions:
+    view.label: Allowed to view products
+    edit.label: Allowed to edit products
+    own.label: Allowed to own products
+    own.help: Review, publish, unpublish, classify and associate products
+    no_access_to_products: You don't have access to products in any tree, please contact your administrator
+    apply_on_children.label: Apply changes on children
+    apply_on_children.help: Existing permissions on children are kept

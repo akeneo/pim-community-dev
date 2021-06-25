@@ -29,7 +29,7 @@ spec:
         - name: pim-add-admin
           image:  {{ template "pim.imageNameAndTag" . }}
           imagePullPolicy: {{ .Values.image.pim.pullPolicy | quote }}
-          command: ['sh', '-c', 'su www-data -s /bin/bash -c "cd /srv/pim && php bin/console  pim:user:create ${PIM_ADMIN_LOGIN} \"${PIM_ADMIN_PASSWORD}\" ${PIM_ADMIN_EMAIL} \"${PIM_ADMIN_FIRSTNAME}\" \"${PIM_ADMIN_LASTNAME}\" ${PIM_ADMIN_UI_LOCALE} --admin -n"']
+          command: ['sh', '-c', 'su www-data -s /bin/bash -c "cd /srv/pim && php bin/console --quiet pim:user:create ${PIM_ADMIN_LOGIN} \"${PIM_ADMIN_PASSWORD}\" ${PIM_ADMIN_EMAIL} \"${PIM_ADMIN_FIRSTNAME}\" \"${PIM_ADMIN_LASTNAME}\" ${PIM_ADMIN_UI_LOCALE} --admin -n"']
           envFrom: [ configMapRef: { name: {{ template "pim.fullName" . }}-env } ]
           env:
             - { name: MAILER_USER, valueFrom: { secretKeyRef: { name: pim-secrets, key: mailerLogin } } }

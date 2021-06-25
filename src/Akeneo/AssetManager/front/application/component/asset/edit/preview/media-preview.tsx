@@ -22,7 +22,7 @@ import {MediaPreviewType, emptyMediaPreview} from 'akeneoassetmanager/domain/mod
 import {getMediaData, MediaData, isDataEmpty} from 'akeneoassetmanager/domain/model/asset/data';
 import ErrorBoundary from 'akeneoassetmanager/application/component/app/error-boundary';
 import {useRegenerate} from 'akeneoassetmanager/application/hooks/regenerate';
-import {useTranslate} from '@akeneo-pim-community/shared';
+import {useRouter, useTranslate} from '@akeneo-pim-community/shared';
 import {useReloadPreview} from 'akeneoassetmanager/application/hooks/useReloadPreview';
 
 const Image = styled.img`
@@ -76,7 +76,8 @@ const MediaDataPreview = ({
   attribute: NormalizedMediaFileAttribute | NormalizedMediaLinkAttribute;
 }) => {
   const translate = useTranslate();
-  const url = getMediaPreviewUrl({
+  const router = useRouter();
+  const url = getMediaPreviewUrl(router, {
     type: MediaPreviewType.Preview,
     attributeIdentifier: attribute.identifier,
     data: getMediaData(mediaData),
@@ -92,7 +93,7 @@ const MediaDataPreview = ({
   }, [reloadPreview]);
 
   const handlePreviewError = (event: SyntheticEvent<HTMLImageElement, Event>) => {
-    const emptyMediaUrl = getMediaPreviewUrl(emptyMediaPreview());
+    const emptyMediaUrl = getMediaPreviewUrl(router, emptyMediaPreview());
     (event.target as HTMLInputElement).setAttribute('src', emptyMediaUrl);
     setPreviewError(true);
   };
@@ -140,10 +141,11 @@ const MediaLinkPreview = ({
 
 export const EmptyMediaPreview = ({label = ''}: {label?: string}) => {
   const translate = useTranslate();
+  const router = useRouter();
 
   return (
     <>
-      <LazyLoadedImage src={getMediaPreviewUrl(emptyMediaPreview())} alt={label} />
+      <LazyLoadedImage src={getMediaPreviewUrl(router, emptyMediaPreview())} alt={label} />
       <Message title={translate('pim_asset_manager.asset_preview.empty_main_media')}>
         {translate('pim_asset_manager.asset_preview.empty_main_media')}
       </Message>

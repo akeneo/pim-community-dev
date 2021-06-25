@@ -95,33 +95,68 @@ pim:
       pimCommand: "akeneo:batch:job-queue-consumer-daemon --run-once --blacklisted-job asset_manager_link_assets_to_products --blacklisted-job clean_removed_attribute_job"
       replicas: 1
       trapped: true
+      resources:
+        limits:
+          memory: "2048Mi"
+        requests:
+          memory: "512Mi"
+          cpu: "200m"
     default:
       enabled: true
       pimCommand: "akeneo:batch:job-queue-consumer-daemon --run-once"
       replicas: 1
       trapped: true
+      resources:
+        limits:
+          memory: "2048Mi"
+        requests:
+          memory: "512Mi"
+          cpu: "200m"
     webhook-consumer-process:
       enabled: true
       pimCommand: "messenger:consume webhook --quiet --time-limit=3600 --memory-limit=384M"
       replicas: 1
       trapped: false
-  replicas: 2
+      resources:
+        limits:
+          memory: "512Mi"
+        requests:
+          memory: "256Mi"
+          cpu: "200m"
   extraLabels: {}
   secret: null # Generate me with `uuidgen`
-  fpm:
-    resources:
-      limits:
-        memory: "2048Mi"
-      requests:
-        cpu: "200m"
-        memory: "512Mi"
-  httpd:
-    resources:
-      limits:
-        memory: "128Mi"
-      requests:
-        cpu: "200m"
-        memory: "128Mi"
+  web:
+    replicas: 2
+    fpm:
+      resources:
+        limits:
+          memory: "1024Mi"
+        requests:
+          cpu: "200m"
+          memory: "256Mi"
+    httpd:
+      resources:
+        limits:
+          memory: "128Mi"
+        requests:
+          cpu: "200m"
+          memory: "128Mi"
+  api:
+    replicas: 2
+    fpm:
+      resources:
+        limits:
+          memory: "1024Mi"
+        requests:
+          cpu: "200m"
+          memory: "256Mi"
+    httpd:
+      resources:
+        limits:
+          memory: "128Mi"
+        requests:
+          cpu: "200m"
+          memory: "128Mi"
   elasticsearch:
     settings:
       totalFieldsLimit: 10000

@@ -28,15 +28,21 @@ teamwork_assistant:
     no_project: Je hebt geen huidig project
     description: Beschrijving
     due_date: Inleverdatum
+    todo: Taken
+    in_progress: In uitvoering
+    done: Gedaan
     all_contributors: Alle medewerkers
     display_products: Producten weergeven
     projects: Projecten
+    contributors: Bijdragers
     placeholder:
       contributor_selector: Zoek medewerker
       project_selector: Zoek project
     completeness:
       in_progress: PRODUCTEN IN UITVOERING
       done: PRODUCTEN GEDAAN
+    searching: bezig met zoeken...
+    no_search_results: Sorry, er zijn geen resultaten.
 pim_datagrid:
   view_selector:
     project: Projecten

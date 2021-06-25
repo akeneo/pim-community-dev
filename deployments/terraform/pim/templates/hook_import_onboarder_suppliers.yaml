@@ -37,8 +37,8 @@ spec:
             - '-c'
             - |
               cd /srv/pim && \
-              bin/console akeneo:batch:job csv_supplier_user_import -c "{\"filePath\": \"/srv/pim/vendor/akeneo/pim-onboarder/src/Bundle/Resources/fixtures/setup/supplier_users.csv\"}" && \
-              bin/console akeneo:batch:job csv_supplier_import -c "{\"filePath\": \"/srv/pim/vendor/akeneo/pim-onboarder/src/Bundle/Resources/fixtures/setup/suppliers.csv\"}"
+              bin/console --quiet akeneo:batch:job csv_supplier_user_import -c "{\"filePath\": \"/srv/pim/vendor/akeneo/pim-onboarder/src/Bundle/Resources/fixtures/setup/supplier_users.csv\"}" && \
+              bin/console --quiet akeneo:batch:job csv_supplier_import -c "{\"filePath\": \"/srv/pim/vendor/akeneo/pim-onboarder/src/Bundle/Resources/fixtures/setup/suppliers.csv\"}"
           envFrom: [ configMapRef: { name: {{ template "pim.fullName" . }}-env } ]
           env:
             - { name: MAILER_USER, valueFrom: { secretKeyRef: { name: pim-secrets, key: mailerLogin } } }

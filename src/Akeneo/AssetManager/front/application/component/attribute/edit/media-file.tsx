@@ -58,8 +58,8 @@ const MediaFileView = ({
           clearable={false}
           verticalPosition="up"
           value={attribute.mediaType.toString()}
-          onChange={mediaType => {
-            onAdditionalPropertyUpdated('media_type', createMediaTypeFromString(mediaType ?? MediaTypes.image));
+          onChange={(mediaType: string) => {
+            onAdditionalPropertyUpdated('media_type', createMediaTypeFromString(mediaType));
           }}
         >
           {Object.values(MediaTypes).map(mediaType => (

@@ -5,6 +5,7 @@ import {getMediaData} from 'akeneoassetmanager/domain/model/asset/data';
 const StringCell = require('oro/datagrid/string-cell');
 const Template = require('pim/template/datagrid/cell/image-cell');
 const _ = require('underscore');
+const routing = require('routing');
 
 class AssetMultipleLinkCell extends StringCell {
   render() {
@@ -14,7 +15,7 @@ class AssetMultipleLinkCell extends StringCell {
       return this;
     }
 
-    const src = getMediaPreviewUrl({
+    const src = getMediaPreviewUrl(routing, {
       type: MediaPreviewType.Thumbnail,
       attributeIdentifier: assetMulti.attribute,
       data: getMediaData(assetMulti.data),

@@ -8,7 +8,7 @@ import {
   useBooleanState,
   useInModal,
 } from 'akeneo-design-system';
-import {useTranslate, useUploader} from '@akeneo-pim-community/shared';
+import {useRouter, useTranslate, useUploader} from '@akeneo-pim-community/shared';
 import {localeReferenceStringValue} from 'akeneoassetmanager/domain/model/locale-reference';
 import {isMediaFileData} from 'akeneoassetmanager/domain/model/asset/data/media-file';
 import {isMediaFileAttribute} from 'akeneoassetmanager/domain/model/attribute/type/media-file';
@@ -23,6 +23,7 @@ import {usePreventClosing} from 'akeneoassetmanager/application/hooks/prevent-cl
 
 const View = ({id, value, locale, canEditData, onChange, invalid}: ViewGeneratorProps) => {
   const translate = useTranslate();
+  const router = useRouter();
   const [uploader, isUploading] = useUploader('akeneo_asset_manager_file_upload');
   usePreventClosing(() => isUploading, translate('pim_enrich.confirmation.discard_changes', {entity: 'asset'}));
 
@@ -49,8 +50,8 @@ const View = ({id, value, locale, canEditData, onChange, invalid}: ViewGenerator
   }
 
   const downloadFilename = value.data?.originalFilename;
-  const downloadUrl = getImageDownloadUrl(value.data);
-  const previewUrl = getMediaPreviewUrl({
+  const downloadUrl = getImageDownloadUrl(router, value.data);
+  const previewUrl = getMediaPreviewUrl(router, {
     type: MediaPreviewType.Thumbnail,
     attributeIdentifier: value.attribute.identifier,
     data: getMediaData(value.data),

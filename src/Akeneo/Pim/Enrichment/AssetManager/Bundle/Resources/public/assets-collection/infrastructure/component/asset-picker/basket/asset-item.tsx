@@ -1,6 +1,7 @@
 import React from 'react';
 import styled from 'styled-components';
 import {CloseIcon, getColor, getFontSize, IconButton} from 'akeneo-design-system';
+import {useRouter, useTranslate} from '@akeneo-pim-community/shared';
 import {Context} from 'akeneoassetmanager/domain/model/context';
 import {getMediaPreviewUrl} from 'akeneoassetmanager/tools/media-url-generator';
 import ListAsset, {
@@ -8,7 +9,6 @@ import ListAsset, {
   getAssetLabel,
 } from 'akeneoassetmanager/domain/model/asset/list-asset';
 import {useRegenerate} from 'akeneoassetmanager/application/hooks/regenerate';
-import {useTranslate} from '@akeneo-pim-community/shared';
 
 const Container = styled.li`
   padding: 10px 0;
@@ -64,10 +64,11 @@ const AssetItem = ({
   onRemove?: () => void;
   isLoading?: boolean;
 }) => {
-  const label = getAssetLabel(asset, context.locale);
-  const previewUrl = getMediaPreviewUrl(getListAssetMainMediaThumbnail(asset, context.channel, context.locale));
-  const [, , refreshedUrl] = useRegenerate(previewUrl);
   const translate = useTranslate();
+  const router = useRouter();
+  const label = getAssetLabel(asset, context.locale);
+  const previewUrl = getMediaPreviewUrl(router, getListAssetMainMediaThumbnail(asset, context.channel, context.locale));
+  const [, , refreshedUrl] = useRegenerate(previewUrl);
 
   return (
     <Container

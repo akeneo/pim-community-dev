@@ -12,9 +12,11 @@ authentication:
           label: Entiteit-ID
         certificate:
           label: Certificaat
+          expiration_warning: Dit certificaat verloopt op {{ date }}.
         private_key:
           label: Privésleutel
         metadata_url:
           tooltip_label: URL kopiëren
         acs_url:
           tooltip_label: URL kopiëren
+        copy: Kopiëren

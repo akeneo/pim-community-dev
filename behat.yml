@@ -144,6 +144,10 @@ legacy:
                     - '@messenger.transport.business_event'
                 - Pim\Behat\Context\Domain\Structure\AssociationTypeContext:
                     - 'Context\EnterpriseFeatureContext'
+                - Pim\Behat\Context\Domain\Structure\CategoryContext:
+                    - 'Context\EnterpriseFeatureContext'
+                - Context\EnterprisePermissionContext:
+                      - 'Context\EnterpriseFeatureContext'
         all:
             paths:
                 - tests/legacy/features
@@ -291,6 +295,10 @@ legacy:
                      - '@messenger.transport.business_event'
                 - Pim\Behat\Context\Domain\Structure\AssociationTypeContext:
                     - 'Context\EnterpriseFeatureContext'
+                - Pim\Behat\Context\Domain\Structure\CategoryContext:
+                    - 'Context\EnterpriseFeatureContext'
+                - Context\EnterprisePermissionContext:
+                      - 'Context\EnterpriseFeatureContext'
         chipmunk:
             paths:
                 - tests/legacy/features/pim/enrichment/

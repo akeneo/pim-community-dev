@@ -11,8 +11,11 @@ pim_asset_manager:
         should_not_be_linked: 'Non puoi eliminare questa famiglia perché ci sono degli attributi di famiglia di asset collegati a questa famiglia'
       asset_family_permissions:
         at_least_one_user_group_should_have_edit_permission: 'Almeno un gruppo di utenti dovrebbe avere i permessi di modifica per questa famiglia'
+      product_attributes:
+        should_not_be_linked: 'Non puoi eliminare questa famiglia perché c''è una raccolta asset collegata a essa'
       should_exist: 'La famiglia dell''attività "%asset_family_code%" non è stata trovata.'
       rule_template:
+        limit_reached: 'Hai raggiunto il limite di %limit% regole di link prodotto per la famiglia di asset "%asset_family_identifier%".'
         product_selection_cannot_be_empty: 'Devi specificare almeno una selezione di prodotto nella tua regola del collegamento del prodotto'
         product_assignment_cannot_be_empty: 'Devi specificare almeno un''assegnazione prodotto nella tua regola di collegamento del prodotto'
         extrapolated_attribute_should_exist: 'L''attributo "%attribute_code%" non esiste per questa famiglia di attività'
@@ -25,6 +28,8 @@ pim_asset_manager:
         channel_not_supported_for_field: 'Non puoi specificare un canale per il campo "%product_field%"'
         locale_not_supported_for_field: 'Non puoi specificare un locale per il campo "%product_field%"'
         assignmement_attribute_does_not_support_this_asset_family: 'L''attributo del prodotto "%product_attribute_code%" non può contenere le attività della famiglia di attività "%asset_family_identifier%"'
+        assignmement_attribute_does_not_exist: 'l''attributo di prodotto "%product_attribute_code%" non esiste'
+        assignmement_attribute_is_not_an_asset_collection: 'l''attributo di prodotto "%product_attribute_code%" non è un attributo di tipo raccolta asset'
       attribute_as_main_media:
         not_found: 'L''attributo "%attribute_as_main_media%" impostato come media principale per la famiglia di asset non esiste'
         invalid_type: 'L''attributo impostato come media principale della famiglia di asset dovrebbe essere del tipo: %valid_attribute_as_main_media_types%'
@@ -40,10 +45,15 @@ pim_asset_manager:
         code_is_not_unique: 'Non è possibile definire due trasformazione con lo stesso codice "%transformation_code%"'
         filename_prefix_suffix_empty: 'Dovrebbe essere impostata almeno una proprietà  filename_prefix o filename_suffix e una di esse dovrebbe non essere una stringa vuota.'
         empty_operation_list: 'Almeno una operazione di trasformazione è obbligatoria.'
+        unknown_extra_field: 'La proprietà {{ field }} non era prevista.'
       naming_convention:
         property_should_exist: 'La proprietà "%property%" non esiste per questa famiglia di asset'
+        not_main_media_attribute_code: 'La proprietà deve corrispondere al codice dell''attributo definito come media principale'
   asset:
     validation:
+      mass_edit:
+        updater_cannot_be_empty: 'Gli attributi utilizzati nelle trasformazioni o in modalità di sola lettura non possono essere selezionati.'
+        updater_must_be_unique: 'Assicurati che questo attributo e, se applicabile, il canale e l''impostazione locale correlati, non siano già selezionati.'
       code:
         pattern: 'Questo campo può solo contenere lettere, numeri e trattini bassi.'
         should_be_unique: 'Un''attività esiste già con codice "%code%"'
@@ -80,6 +90,8 @@ pim_asset_manager:
         should_be_numeric: 'Questo campo dovrebbe essere un valore numerico con il separatore decimale a destra'
       main_media:
         not_main_media_attribute: 'L''attributo atteso come media principale è "%main_media_attribute%", mentre è stato impostato"%attribute%".'
+      media_link:
+        protocol_not_allowed: 'Questo campo deve iniziare con un protocollo valido. I protocolli consentiti sono: %allowed_protocols%.'
   attribute:
     validation:
       options:
@@ -117,6 +129,7 @@ pim_asset_manager:
         asset_family_should_exist: 'La famiglia di attività "%asset_family_code%" non è stata trovata.'
       prefix:
         should_not_be_empty: 'Il prefisso non può essere una stringa vuota.'
+        protocol_not_allowed: 'Questo campo deve iniziare con un protocollo valido. I protocolli consentiti sono: %allowed_protocols%.'
       suffix:
         should_not_be_empty: 'Il suffisso non può essere una stringa vuota.'
       media_type:

@@ -1,0 +1,61 @@
+akeneo.tailored_export:
+  form:
+    job_instance:
+      tab:
+        content:
+          title: Daten filtern
+        column:
+          title: Spalten auswählen
+  column_list:
+    title: Spalten
+    header:
+      column_name: Spaltenname
+      source_data: Quelldaten
+    column_row:
+      target_placeholder: Legen Sie hier Ihren neuen Spaltennamen fest
+      remove: Spalte entfernen
+      no_source: Keine Quelle
+    no_column_selection:
+      title: Keine Spaltenauswahl zum Exportieren
+      subtitle: Um mehr über Mapping und Operationen zu erfahren,
+      link: kann dieser Artikel Ihnen helfen
+      add_column: Erste Spalte hinzufügen
+  column_details:
+    sources:
+      title: Quellen
+      add: Quelle hinzufügen
+      no_result: Leider gibt es keine Ergebnisse.
+      locale_specific.info: Dieses Attribut ist gebietsschemaspezifisch
+      remove:
+        title: Quelle
+        text: Sind Sie sicher, dass Sie diese Quelle entfernen möchten?
+        button: Diese Quelle entfernen
+      no_source_configuration:
+        title: Für diese Quelle sind keine Operationen verfügbar. Nur der Wert wird exportiert.
+      no_source_selected:
+        title: Keine Quelle für den Moment ausgewählt.
+        subtitle: Um mehr über Mapping und Operationen zu erfahren,
+        link: kann dieser Artikel Ihnen helfen
+      no_column_selected:
+        title: Keine Spalte für den Moment ausgewählt.
+      selection:
+        title: Auswahl
+        separator: Trennzeichen
+        type:
+          amount: Anzahl
+          currency: Währung
+  column:
+    delete_message: Sind Sie sicher, dass Sie diese Spalte entfernen möchten?
+  validation:
+    columns:
+      max_column_count_reached: Sie haben die maximale Spaltenanzahl von {{ limit }} erreicht
+      target:
+        should_not_be_blank: Spaltenname darf nicht leer sein
+        max_length_reached: Der Spaltenname ist zu lang. Er sollte {{ limit }} oder weniger Zeichen enthalten.
+        should_be_unique: Spaltenname muss eindeutig sein
+    sources:
+      max_source_count_reached: Du hast die maximale Anzahl an Quellen von {{ limit }} erreicht
+    locale:
+      should_be_active: Gebietsschema {{ locale_code }} sollte aktiv sein
+    channel:
+      should_exist: Kanal {{ channel_code }} sollte existieren

@@ -1,7 +1,7 @@
 import React from 'react';
 import styled from 'styled-components';
 import {AkeneoThemedProps, getColor, SectionTitle} from 'akeneo-design-system';
-import {useTranslate} from '@akeneo-pim-community/shared';
+import {useRouter, useTranslate} from '@akeneo-pim-community/shared';
 import AssetCode from 'akeneoassetmanager/domain/model/asset/code';
 import {Attribute, getAttributeLabel} from 'akeneoassetmanager/platform/model/structure/attribute';
 import {Context} from 'akeneoassetmanager/domain/model/context';
@@ -45,6 +45,7 @@ type CarouselProps = {
 const Carousel = ({assetCollection, selectedAssetCode, productAttribute, context, onAssetChange}: CarouselProps) => {
   const {containerRef, elementRef} = useKeepVisibleX<HTMLDivElement>();
   const translate = useTranslate();
+  const router = useRouter();
 
   return (
     <Container>
@@ -56,7 +57,10 @@ const Carousel = ({assetCollection, selectedAssetCode, productAttribute, context
       </SectionTitle>
       <Thumbnails ref={containerRef} role="listbox">
         {assetCollection.map(asset => {
-          const previewUrl = getMediaPreviewUrl(getListAssetMainMediaThumbnail(asset, context.channel, context.locale));
+          const previewUrl = getMediaPreviewUrl(
+            router,
+            getListAssetMainMediaThumbnail(asset, context.channel, context.locale)
+          );
           const [, , refreshedUrl] = useRegenerate(previewUrl);
           const assetLabel = getAssetLabel(asset, context.locale);
 
