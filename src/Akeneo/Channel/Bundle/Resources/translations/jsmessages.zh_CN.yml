@@ -64,7 +64,14 @@ pim_enrich.entity.locale:
   label: 区域设置
   uppercase_label: 区域设置
   plural_label: 区域设置
+  page_title:
+    index: "]-Inf, 1]{{ count }} 个已激活区域|]1, Inf[{{ count }} 个已激活区域"
+  helper: "要激活或停用某个区域，请转到您的其中一个<a href={{ href }}>渠道</a>，然后添加或移除区域。"
   grid:
+    columns:
+      code: 已激活区域
+    filters:
+      search_placeholder: 搜索已激活区域
     no_search_result: 抱歉，找不到与你的搜索相符的结果
 pim_enrich.entity.currency:
   plural_label: 货币

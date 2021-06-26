@@ -12,6 +12,11 @@ batch_jobs:
     compute_family_variant_structure_changes: 计算品类变型结构变化
     compute_completeness_of_products_family: 计算产品品类的完成度
     delete_products_and_product_models: 批量删除产品
+    clean_attribute:
+      register_clean_job: 将代码添加到黑名单
+      clean_product_model: 清理产品模型
+      clean_product: 清理产品
+      remove_attribute_codes_from_blacklist: 从黑名单中移除代码
   csv_product_export:
     label: 以 CSV 格式导出产品
     export.label: 导出产品

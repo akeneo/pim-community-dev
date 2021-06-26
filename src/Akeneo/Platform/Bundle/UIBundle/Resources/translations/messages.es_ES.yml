@@ -99,11 +99,13 @@ pim_enrich:
       comment: Comentario de Productos
       download: Descargar el producto en formato PDF
       history: Ver historial de producto
+      convert_variant_to_simple: Convierta un producto variante en un producto simple
     product_model:
       create: Cree un modelo de producto
       edit_attributes: Editar atributos de un modelo del producto
       categories_view: Consultar las categorías de un modelo del producto
       history: Ver el historial del modelo del producto
+      remove: Eliminar un modelo de producto (incluidos secundarios)
     category:
       list: Lista de categorías
       create: Crear una categoría
@@ -166,6 +168,8 @@ pim_enrich:
       remove: Remover las asociaciones de un producto
     job_tracker:
       index: Visualizar los procesos ejecutados
+      view_all_jobs: Ver todos los trabajos en el rastreador de procesos
+      stop_job: Detener un trabajo en curso
   acl_group:
     association_type: Tipos de asociaciones
     attribute: Atributos
@@ -432,6 +436,8 @@ Disabled: Inhabilitado
 Status: Estado
 pim_datagrid:
   filters:
+    product_typology:
+      label: Tipología de producto
     entity_type:
       label: Variante
     family:
@@ -440,8 +446,18 @@ pim_datagrid:
       label: Grupos
     enabled:
       label: Estado
+    scope:
+      label: Ámbito
     completeness:
       label: Completo
+    created:
+      label: Creado el
+    updated:
+      label: Actualizado el
+    label_or_identifier:
+      label: Etiqueta o identificador
+    parent:
+      label: Principal
     identifier:
       label: Identificador
 #Versioning / history
@@ -530,6 +546,8 @@ job_tracker:
   filter:
     started_at: Ejecutado el
 pim_login:
+  logo_title: Akeneo PIM
   footer:
     powered: Creado con
     powered_image_title: logo de Akeneo
+    baseline: Desbloquear el crecimiento a través de las experiencias de los productos

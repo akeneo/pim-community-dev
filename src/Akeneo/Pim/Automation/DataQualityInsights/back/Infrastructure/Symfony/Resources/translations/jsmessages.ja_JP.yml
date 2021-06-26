@@ -40,12 +40,46 @@ akeneo_data_quality_insights:
       see_in_grid: 一覧表で表示
     time_axis:
       day: 日
+    key_indicators:
+      list:
+        good_enrichment:
+          messages:
+            first_step:
+              message2: PIM の仕組みがまだよくわかりませんか？<a href="{{ link }}" target="_blank">活用方法についてご覧ください</a>。 
+              message3: この PIM を開発したのは私たちですが、それを生かすのはあなたです！
+              message4: 商品情報が詳しいと、お客様への印象が大きく変わります。ゲームチェンジャーになりましょう！
+            second_step:
+              message1: もう少し高めを狙ってみましょう！きっとお客様に喜ばれます。
+              message2: 半分まで来ました！もう少し頑張れば、商品がうまく充実します。
+              message3: どんな業界でも細部の詰めが肝心です！
+              message4: 商品を充実化するための手磨きが必要ですか？最も関連性の高い属性を慎重に選択する方法について、<a href="{{ link }}" target="_blank">こちら</a>をご覧ください。
+            third_step:
+              message1: ここまで順調です。もう少し進みましょう！
+              message2: この比率も非常に良いですが、100% であればさらに良いと思いませんか？
+              message3: 一部の商品には完了までもう少しヘルプが必要です！あともう少しです！
+              message4: もう少し細部にこだわれば、完璧です。
+            perfect_score_step:
+              message1: 商品はひとりでに売れるでしょう！よくできました。
+              message2: 大仕事でした。自分の仕事を誇りに思ってください。
+              message3: あなたは真のカタログ更新マスターです。
+              message4: おめでとうございます！汚点が全くありません！
+      no_data: 申し訳ありません。指標を示すのに十分なデータがまだありません。
+      no_data_subtitle: 後ほどご確認ください。
+    score_distribution:
+      title: 品質スコアの分布
+    quality_score_evolution:
+      title: 品質スコアの発展
+      current_score: は、このスコープにおけるあなたの現在のカタログ品質スコアです。
+      current_month_label: 今月
+      no_catalog_score: 現在の品質スコアを計算できませんでした。
   product_evaluation:
     criteria:
       completeness_of_required_attributes:
         recommendation: 欠損値のある必須属性
       completeness_of_non_required_attributes:
         recommendation: 欠損値のある必須属性はありません
+      enrichment_image:
+        recommendation: 画像がありません
     axis:
       enrichment:
         title: Enrichment
@@ -60,8 +94,35 @@ akeneo_data_quality_insights:
       grading_in_progress: 等級評価の進行中です
       axis_grading_in_progress: 等級評価の進行中です。後で確認してください。
       too_many_attributes: 改良する属性が{{ count }}件あります。
+      no_attribute_groups:
+        title: 申し訳ありません。品質スコアを計算できませんでした。
+        subtitle: "品質スコアを計算できません。この商品の属性グループはどれも有効になっていません。"
+        help_center_link: データ品質インサイトでデータ品質がどのように改善されるかについて、ヘルプセンターをご覧ください。
+      add_image_attribute_recommendation: 画像は百聞にしかずです。この商品のデータ品質を改善するには、画像の属性を追加してください。
+      fill_image_attribute_recommendation: 私たちの経験では、画像で成果が大きく変わります。この商品のデータ品質を改善するには、少なくとも画像を 1 つ追加する必要があります。
+      not_applicable:
+        message: この条件はあなたのコンテキストには適用されません。
+        help_center_link: ヘルプセンターで理由をご確認ください。
   product_edit_form:
     attribute_filter:
       all_missing_attributes: 全ての欠損属性
+    back_to_products: 商品に戻る
+  attribute_group:
+    helper_dqi_info: 品質スコアの計算には、データ品質で有効になっている属性グループに属する属性のみが考慮されます。
+    helper_dqi_link: 詳細はヘルプセンターをご覧ください。
+    activation: 有効化
+    dqi_status: データ品質インサイトのステータス
+    activated: 有効
+    disabled: 無効
+    used_groups_helper: "次の属性グループは、データ品質インサイトの計算に考慮されます。"
+    all_groups_evaluated: この商品のすべての属性グループは、品質スコアの計算に考慮されます。最も関連性の高い品質スコアを得るには、<a href="{{ link }}" target="_blank">属性グループを無効にする方法についてヘルプセンターをご覧ください</a>。
+  product_grid:
+    filter_label:
+      quality_score: 品質スコア
+      enrichment_quality: 充実性
+      images_quality: 画像の品質
+    filter_value:
+      good: 良い
+      to_improve: 要改善
 pim_title:
   akeneo_data_quality_insights_dashboard: データ品質インサイト

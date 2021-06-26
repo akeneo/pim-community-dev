@@ -113,24 +113,47 @@ akeneo_connectivity.connection:
       regenerate: Regenerar
     flash:
       success: Secreto de conexión regenerado con éxito.
+      error: Lo sentimos, se ha producido un error al regenerar el secreto de conexión.
+  regenerate_password:
+    title: Confirmar regeneración
+    description: '¿Está seguro de que quiere regenerar la contraseña de conexión? ¿No está seguro del impacto?'
+    link: Esto es lo que sucederá.
+    action:
+      regenerate: Regenerar
+    flash:
+      success: Contraseña de conexión regenerada correctamente.
+      error: Lo sentimos, se ha producido un error al regenerar la contraseña de conexión.
   delete_connection:
     title: Confirmar la eliminación
+    description: '¿Está seguro que desea eliminar la conexión? ¿No está seguro del impacto?'
     link: Esto es lo que sucederá.
+    flash:
+      success: Conexión eliminada correctamente.
   helper:
     title: '👋 ¡Bienvenido a la característica que conectará correctamente tu PIM!'
+    description: Un PIM sin integraciones de terceros es un poco inútil, ¿no? Gracias a las conexiones, puede declarar todos los flujos de datos que serán empujados dentro y sacados fuera de su PIM.
+    link: '¿Quiere saber más? Descubra aquí qué es una conexión y cómo sacarle el máximo partido.'
   flow_type_helper:
+    message: '¿Se pregunta qué tipo de flujo es?'
     link: '¡Podemos ayudarte aquí mismo!'
   auditable_helper:
     message: Solo puede realizar un seguimiento de las conexiones "Origen" y "Destino".
     link: Más información…
   edit_image:
+    upload_helper: Cambie su imagen, arrastre y suelte o
     remove_helper: Eliminar la imagen
     click_here: haz clic aquí
+    flash:
+      extension_not_allowed: Lo sentimos, el archivo que está intentando subir no tiene una extensión permitida.
   grid.wrong_credentials_combination_helper: Algunas de las conexiones a continuación no utilizan sus nombres de usuario de conexión. Se identifican con una señal de alerta amarilla.
   dashboard:
     helper:
       title: '👋 ¡Bienvenido a su panel de conexión!'
+      description: Aquí podrá rastrear todos los flujos de datos que se recogen en su PIM a través de sus conexiones, así como todos los flujos de datos que se distribuyen a sus canales a través de sus conexiones.
+      link: '¿Quiere saber más? Aquí tiene.'
     user_survey:
+      title: '¿Quiere más datos sobre este panel de control?'
+      content: Sus comentarios son realmente valiosos para nosotros. Ayúdenos a elegir el próximo widget respondiendo a esta encuesta de una sola pregunta.
       button: '¡Vamos!'
     connection_selector:
       title:
@@ -154,9 +177,12 @@ akeneo_connectivity.connection:
         chart:
           title: Número de errores por día
       widget:
+        title: Errores de negocio por conexión de origen
         over_the_last_seven_days: En los últimos 7 días
+        business_errors: errores de negocio
     no_connection:
       title:
+        default: '¿Desea ver algunos bonitos gráficos sobre sus conexiones?'
         data_source: '¿Quieres ver algunos gráficos elegantes sobre tus conexiones de origen?'
         data_destination: '¿Quieres ver algunos gráficos elegantes sobre tus conexiones de destino?'
       message_with_permission:
@@ -181,11 +207,21 @@ akeneo_connectivity.connection:
       required: Este campo es obligatorio.
       not_found: Estás intentando actualizar una conexión que no existe.
       limit_reached: Ha alcanzado el límite de suscripciones a eventos activos.
+    flash:
+      success: La suscripción al evento se ha actualizado con éxito.
+      error: Lo sentimos, se ha producido un error al editar la suscripción al evento.
     regenerate_secret:
       title: Confirmar regeneración
+      description: '¿Está seguro de que quiere regenerar el secreto de suscripción al evento?'
       action:
         regenerate: Regenerar
       link: Esto es lo que sucederá.
+      flash:
+        success: El secreto del webhook se ha regenerado con éxito.
+        error: Lo sentimos, se ha producido un error al regenerar el secreto del webhook.
+    active_event_subscriptions_limit_reached:
+      message: Puede conectar hasta {{ limit }} conexiones a la función de Suscripción a eventos. Ha alcanzado este límite.
+      link: Obtenga más información sobre la configuración de las suscripciones a eventos.
   error_management:
     connection_monitoring:
       title: Monitoreo
@@ -200,6 +236,7 @@ akeneo_connectivity.connection:
         date_time_column:
           title: Día y hora
         content_column:
+          title: Mensaje de error de negocio
           product_name: Nombre del producto
           with_id: con el ID
         details_column:
@@ -218,5 +255,6 @@ akeneo_connectivity.connection:
       not_data_source:
         title: Por ahora, la página de monitoreo sólo está disponible para conexión fuente.
   runtime_error:
+    error_message: '¡Oh! Se ha producido un error...'
     reload_helper: Por favor, recargue la página e inténtelo de nuevo.
     reload_button: Recargar
