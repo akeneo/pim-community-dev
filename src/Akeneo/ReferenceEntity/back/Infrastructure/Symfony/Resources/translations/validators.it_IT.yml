@@ -7,6 +7,8 @@ pim_reference_entity:
         limit_reached: 'Non puoi creare l''entità di riferimento "%reference_entity_label%" perché hai raggiunto il limite di %limit% entità di riferimento'
       records:
         should_have_no_record: 'Non puoi eliminare quest''entità perché esistono registri per quest''entità'
+      reference_entity_attributes:
+        should_not_be_linked: 'Per eliminare questa entità di riferimento, controlla prima gli attributi in tutte le entità di riferimento e poi elimina quelli a essa collegati'
       reference_entity_permissions:
         at_least_one_user_group_should_have_edit_permission: 'Almeno un gruppo utente dovrebbe avere permesso di modifica su questa entità'
       product_attributes:
@@ -19,7 +21,9 @@ pim_reference_entity:
         should_be_unique: 'Il codice di registro esiste già per l''entità di riferimento "%reference_entity_identifier%" ed il codice registro "%code%"'
         should_exist: 'Il registro non è stato trovato'
       text:
+        incompatible_with_regular_expression: 'Inserisci un testo che soddisfi l''espressione regolare: "%regular_expression%"'
         invalid_email: 'Per favore, inserisci un indirizzo email: xxxxx@xx.xx'
+        invalid_url: 'Inserisci un URL: http(s)://xxxx.XXX'
       file:
         extension_not_allowed: 'I file "%file_extension%" non sono consentiti per questo attributo. Le estensioni consentite sono: %allowed_file_extensions%'
         file_size_exceeded: 'Il file eccede la dimensione massima dei file impostata per l''attributo.'
@@ -30,6 +34,7 @@ pim_reference_entity:
         codes_dont_exist: "I codici opzione seguenti non esistono per questo attributo : \"%option_codes%\""
       record:
         should_exist: 'Il registro "%record_code%" non è stato trovato.'
+        should_not_be_used_as_product_variant_axis: 'Impossibile eliminare questa entità poiché è utilizzata come un asse variante in uno dei tuoi prodotti variante'
       record_collection:
         should_exist: 'I registri "%record_codes%" non sono stati trovati.'
       limit_reached: 'Non puoi creare il registro "%record_label%" perché hai raggiunto il limite di registri %limit% per quest''entità di riferimento'
@@ -88,3 +93,7 @@ pim_reference_entity:
         should_not_be_empty: 'Il suffisso non può essere una stringa vuota.'
       media_type:
         not_expected: 'Il tipo di media dato non è corrispondente a quelli attesi (%supported_media_types%).'
+  product_value:
+    validation:
+      record_should_exist: 'La proprietà "%attribute_code%" prevede un codice registro valido. Il registro "%invalid_record%" non esiste'
+      records_should_exist: 'La proprietà "%attribute_code%" prevede codici registro validi. I seguenti registri non esistono: "%invalid_records%"'

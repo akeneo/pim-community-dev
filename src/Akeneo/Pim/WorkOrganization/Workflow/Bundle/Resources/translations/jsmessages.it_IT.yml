@@ -25,6 +25,7 @@ pimee_workflow:
       modal.title: Lascia un commento (facoltativo - 255 caratteri max.)
   proposal:
     overview: "]-Inf, 1]{{ count }} proposta|]1, Inf[{{ count }} proposte"
+    selected: "]-Inf, 1]{{ count }} proposta selezionata|]1, Inf[{{ count }} proposte selezionate"
     mass_action_group:
       review:
         label: Azione Massiva
@@ -84,6 +85,9 @@ batch_jobs:
     perform.label: Esportazione rapida in Xlsx dei prodotti pubblicati presenti nel contesto griglia
   publish_product:
     perform.label: Pubblica i prodotti
+  default_steps:
+    clean_attribute:
+      clean_draft: Proposte di pulizia
 pim_notification:
   types:
     pimee_workflow_product_draft_notification_new_proposal: Nuova proposta
@@ -110,6 +114,7 @@ pimee_enrich.entity.product:
       published: Pubblicato
       revert: Ripristina
     attribute:
+      can_be_updated_by_a_rule: "]-Inf, 1]Questo attributo può essere aggiornato da una regola:<unk> ]1, +Inf[Questo attributo può essere aggiornato dalle regole:"
       value_updated: Questo valore viene modificato dalla bozza corrente
     meta:
       published_version: Versione pubblicata
@@ -196,6 +201,10 @@ pimee_enrich.mass_edit.product:
       label_count: "{1}Annulla pubblicazione di <span class=\"AknFullPage-title--highlight\">1 prodotto</span>|]1, Inf[Annulla pubblicazione di <span class=\"AknFullPage-title--highlight\">{{ itemsCount }} prodotti</span>"
       description: I prodotti saranno ritirati
       warning: I {{ itemsCount }} prodotti selezionati saranno ritirati.
+pimee_enrich.entity.category:
+  flash:
+    remove:
+      error_linked: Impossibile eliminare una categoria collegata a un prodotto pubblicato.
 pim_menu:
   navigation:
     published_products: Prodotti pubblicati

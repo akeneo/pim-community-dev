@@ -16,6 +16,8 @@ akeneo_data_quality_insights:
         title: Consistencia
         attributes_link: Mostrar todos los atributos mejorables
         success: Los datos de tu producto son totalmente coherentes. ¡Felicidades!
+    messages:
+      add_image_attribute_recommendation: Una imagen vale más que mil palabras. Debería añadir una colección de activos o un atributo de imagen para mejorar la calidad de los datos de este producto.
   product_edit_form:
     attribute_filter:
       all_improvable_attributes: Todos los atributos mejorables
@@ -36,3 +38,50 @@ akeneo_data_quality_insights:
     popover:
       default_aria_label: Sugerencias ortográficas
       aria_label: "Sugerencias ortográficas para: {{ mistake }}"
+  dqi_dashboard:
+    key_indicators:
+      attributes_to_work_on: '{1}Tiene <button>1 atributo</button> para trabajar.|]1, 200[Tiene <button>{{ count }} atributos</button> para trabajar.|[200, Inf[Tiene más de <button>{{ count }} atributos</button> para trabajar.'
+      list:
+        has_image:
+          no_data: Sus colecciones de activos y atributos de imagen parecen estar vacíos, debería subir imágenes para este indicador clave para destacar la calidad de sus productos.
+        attributes_perfect_spelling:
+          title: Atributos etiquetados correctamente
+          no_data: Sus etiquetas de atributos y opciones parecen estar vacías, debería enriquecerlas para este indicador clave para destacar la calidad de sus atributos.
+          messages:
+            first_step:
+              message1: '¿Tiene problemas con las etiquetas de atributos y opciones? ¿Qué tal volver a lo básico <a href="{{ link }}" target="_blank">aquí</a>?'
+              message2: '¿Necesita ayuda con sus atributos y opciones de atributos? ¡Eche un vistazo <a href="{{ link }}" target="_blank">aquí<a href="{{ link }}" target="_blank">!'
+            second_step:
+              message1: Observe detenidamente las etiquetas de sus atributos y opciones. Sus productos tendrán un aspecto aún mejor después.
+              message2: Parece que se ha perdido en algún punto del camino. Algunas de sus etiquetas aún necesitan mejoras.
+            third_step:
+              message1: '¡Está muy cerca! Solo unos pocos retoques finales y estará todo listo.'
+              message2: Algunos de sus atributos y etiquetas todavía necesitan un poco de trabajo, pero va por el buen camino.
+            perfect_score_step:
+              message1: '¡Su catálogo está más listo que nunca! ¡Ha hecho un gran trabajo!'
+              message2: '¡Gran trabajo en las etiquetas de atributos y opciones!'
+        values_perfect_spelling:
+          title: Productos con una ortografía perfecta en los valores de los productos de texto
+          no_data: Sus áreas de texto parecen estar vacías, debería enriquecerlas con este indicador clave para destacar la calidad de sus productos.
+          messages:
+            first_step:
+              message1: Sus productos merecen estar descritos correctamente. ¡Compruebe la ortografía!
+              message2: Usted es el mejor defensor de sus productos, fíjese bien en la ortografía.
+              message3: Las descripciones de sus productos son la imagen de su empresa, ¡deshágase de esas erratas! La primera impresión es importante.
+              message4: Cuantos más errores tenga, peor impresión dará. Preste especial atención a su ortografía.
+            second_step:
+              message1: Ya tiene grandes productos, ¡ahora solo necesita una gran ortografía!
+              message2: Un error ortográfico puede alejar a un cliente, ¡sea minucioso!
+              message3: Algunos de sus productos necesitan un poco de ayuda para ser perfectos. ¡Cuidado con las erratas!
+            third_step:
+              message1: Una buena ortografía realmente marca la diferencia, ¡no está tan lejos!
+              message2: Ya casi está, ¡está muy cerca de la ortografía perfecta!
+              message3: Está a un par de faltas de ortografía de los valores perfectos del producto.
+              message4: '¡Solo un poco más de esfuerzo para alcanzar una descripción de producto impecable!'
+            perfect_score_step:
+              message1: Una ortografía perfecta en todo su catálogo. ¡Bien hecho!
+              message2: "Es impresionante: ¡sus productos son impecables!"
+              message3: Ha hecho un trabajo increíble al eliminar el 100 % de las faltas de ortografía. ¡Enhorabuena!
+  product_grid:
+    filter_label:
+      spelling_quality: Calidad ortográfica

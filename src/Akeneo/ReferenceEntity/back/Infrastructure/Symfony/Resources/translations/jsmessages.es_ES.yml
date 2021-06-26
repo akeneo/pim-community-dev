@@ -337,3 +337,15 @@ pim_catalog_volume:
     average_max_attributes_per_reference_entity: Atributos por entidad de referencia
 batch_jobs:
   reference_entity_label: Entidad de referencia
+  csv_reference_entity_record_export:
+    label: Exportar registros de entidad de referencia en CSV
+    export.label: Exportar registros
+  xlsx_reference_entity_record_export:
+    label: Exportar registros de entidad de referencia en XLSX
+    export.label: Exportar registros
+  csv_reference_entity_record_import:
+    label: Importar registros de entidad de referencia en CSV
+    import.label: Importar registros
+  xlsx_reference_entity_record_import:
+    label: Importar registros de entidad de referencia en XLSX
+    import.label: Importar registros

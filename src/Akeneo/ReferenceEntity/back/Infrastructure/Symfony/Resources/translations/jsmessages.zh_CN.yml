@@ -335,3 +335,17 @@ pim_catalog_volume:
     count_reference_entity: 参考实体
     average_max_records_per_reference_entity: 每个参考实体的记录
     average_max_attributes_per_reference_entity: 每个参考实体的属性
+batch_jobs:
+  reference_entity_label: 参考实体
+  csv_reference_entity_record_export:
+    label: 以 CSV 格式导出参考实体记录
+    export.label: 导出记录
+  xlsx_reference_entity_record_export:
+    label: 以 XLSX 格式导出参考实体记录
+    export.label: 导出记录
+  csv_reference_entity_record_import:
+    label: 以 CSV 格式导入参考实体记录
+    import.label: 导入记录
+  xlsx_reference_entity_record_import:
+    label: 以 XLSX 格式导入参考实体记录
+    import.label: 导入记录

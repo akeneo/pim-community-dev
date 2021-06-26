@@ -3,6 +3,12 @@ pim_enrich:
     attribute:
       property:
         is_read_only: 只读
+pimee_import_export:
+  entity:
+    job_instance:
+      flash:
+        update:
+          fail_empty_permission: 必须至少选择一个允许编辑的作业
 pimee_enrich.entity.category:
   module:
     permissions:

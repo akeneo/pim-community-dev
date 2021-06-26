@@ -277,6 +277,7 @@ pim_asset_manager:
         subtitle: '要开始将产品链接到该资产品类，可新建一个： '
         link: 创建新的产品属性
       not_enough_items:
+        title: 您只能查看 {{ productCount }} 个产品，总共 {{ totalCount }} 个产品。
         subtitle:
           usable_in_grid: 要发现所有链接的产品，请点击下方！
           not_usable_in_grid: 要发现所有链接的产品，产品属性必须设置为“在网格中可用”。
@@ -540,6 +541,13 @@ pim_import_export:
         asset_manager_compute_transformations: "计算资产转换"
         asset_manager_link_assets_to_products: "将资产链接到产品"
         asset_manager_execute_naming_convention: 执行资产品类命名约定
+  form:
+    job_instance:
+      tab:
+        properties:
+          with_prefix_suffix:
+            title: 导出前缀和后缀
+            help: 导出媒体链接资产属性的前缀和后缀
 pim_datagrid:
   cells:
     type:
