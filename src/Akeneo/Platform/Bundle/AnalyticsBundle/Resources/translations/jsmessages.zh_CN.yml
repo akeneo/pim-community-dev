@@ -1,15 +1,11 @@
 pim_analytics:
   new_patch_available: 有可用新补丁
-  system_config:
-    group:
-      notification.title: 通知
-      version_update.title: 版本更新
-    form:
-      version_update.label: 新版本通知
-      version_update.tooltip: 向远程服务器发送请求以取得有关新补丁发布的信息
   system_info:
     title: 系统信息
-    download: TXT
+    download: 下载
+  info_header:
+    property: 属性
+    information: 信息
   info_type:
     pim_edition: 版本
     pim_version: 版本
@@ -55,15 +51,11 @@ pim_analytics:
     nb_media_files_in_products: 产品中媒体文件的数量
     nb_media_images_in_products: 产品中媒体图像的数量
     is_demo_catalog: 已安装演示目录
+    nb_active_event_subscription: 已激活的 web-hook 的数量
     data_source.tracked: 已跟踪的 API 源连接的数量
     data_source.untracked: 已取消跟踪的 API 源连接的数量
     data_destination.tracked: 已跟踪的 API 目的地连接的数量
     data_destination.untracked: 已取消跟踪的 API 目的地连接的数量
     other.tracked: 已跟踪的 API 其他连接的数量
     other.untracked: 已取消跟踪的 API 其他连接的数量
-  acl:
-    system_info:
-      index: 系统信息
-pim_menu:
-  item:
-    system_info: 系统信息
+
