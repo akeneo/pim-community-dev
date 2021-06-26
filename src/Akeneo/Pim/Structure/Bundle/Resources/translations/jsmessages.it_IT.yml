@@ -227,6 +227,7 @@ pim_enrich.entity.attribute_group:
   result_count: '{0}0 gruppi di attributo|{1}1 gruppo di attributo|]1, Inf[{{ count }} gruppi di attributo'
   show_more_attribute:
     title: Qui è un po' affollato, ti mostriamo {{ attributeCount }}/{{ totalAttributeCount }} attributi.
+    subtitle: Per scoprire tutti gli attributi di questo gruppo, clicca semplicemente sotto!
     button: Visualizza tutti gli attributi
   flash:
     update:
