@@ -203,6 +203,7 @@ pim_enrich.entity.attribute_group:
   uppercase_label: Grupo de atributos
   plural_label: Grupos de atributos
   show_more_attribute:
+    title: Está un poco cruzado por aquí, te mostramos {{ attributeCount }}/{{ totalAttributeCount }} atributos.
     subtitle: Para descubrir todos los atributos de este grupo, haga clic a continuación!
     button: Mostrar todos los atributos
   flash:

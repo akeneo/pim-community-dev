@@ -1,6 +1,7 @@
 pim_notification:
   types:
     settings: Configuración
+    mass_delete: Eliminación
 flash:
   comment:
     create:
@@ -313,6 +314,7 @@ pim_enrich.mass_edit.product:
       label: Mover entre categorias
       label_count: "{1}Mover <span class=\"AknFullPage-title--highlight\">1 producto</span> entre categorías|]1, Inf[Mover <span class=\"AknFullPage-title--highlight\">{{ itemsCount }} productos</span> entre categorías"
       description: Los productos serán clasificados en las siguientes categorías, la clasificación actual no se mantendrá.
+      no_update: Por favor, seleccione una categoría.
     remove_from_category:
       label: Eliminar de las categorías
       label_count: "{1}Eliminar <span class=\"AknFullPage-title--highlight\">1 producto</span> de categorías|]1, Inf[Eliminar <span class=\"AknFullPage-title--highlight\">{{ itemsCount }} productos</span> de categorías"
@@ -371,6 +373,7 @@ pim_datagrid:
   filters:
     label: Filtros
     system: Sistema
+  search: Buscar en {{ label }}
 batch_jobs:
   add_association:
     label: Asociar
@@ -429,3 +432,5 @@ batch_jobs:
     quick_export.label: Exportación rápida de producto en XSLX
     quick_export_product_model.label: Exportación rápida de modelo de producto en XSLX
     perform.label: Exportación rápida de producto en XSLX
+  default_steps:
+    delete_products_and_product_models: Eliminar productos y modelos de productos

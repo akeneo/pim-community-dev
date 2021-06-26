@@ -1,0 +1,154 @@
+pim_menu.item:
+  connection_settings: Conexiones
+  connection_audit: Panel de conexión
+pim_title:
+  akeneo_connectivity_connection_settings_index: Conexiones
+  akeneo_connectivity_connection_settings_any: Conexiones
+  akeneo_connectivity_connection_audit_index: Panel de conexión
+  akeneo_connectivity_connection_audit_any: Panel de conexión
+akeneo_connectivity.connection:
+  connections: Conexiones
+  secondary_actions:
+    title: Otras acciones
+  connection:
+    code: Código
+    label: Etiqueta
+    flow_type: Tipo de flujo
+    image: Imagen
+    client_id: ID de cliente
+    secret: Secreto
+    username: Nombre de usuario
+    password: Contraseña
+    user_role_id: Rol
+    user_group_id: Grupo
+    constraint:
+      code:
+        required: Se requiere código de conexión.
+        invalid: El código de conexión sólo puede contener letras, números y guiones bajos.
+        too_short: El código de conexión es demasiado corto. Debe tener 3 caracteres o más.
+        too_long: El código de conexión es demasiado largo. Debe tener 100 caracteres o menos.
+        must_be_unique: El código de conexión debe ser único.
+      label:
+        required: Se requiere una etiqueta de conexión.
+        too_short: La etiqueta de conexión es demasiado corta. Debe tener 3 caracteres o más.
+        too_long: La etiqueta de conexión es demasiado larga. Debe tener 100 caracteres o menos.
+      flow_type:
+        invalid: El tipo de flujo de conexión sólo puede ser 'data_source', 'data_destination' u 'otro'.
+      image:
+        must_exist: No se encontró la imagen. Por favor, inténtelo de nuevo.
+  flow_type:
+    data_source: Fuente de datos | Fuentes de datos
+    data_destination: Destino de datos | Destinos de datos
+    other: Otro | Otros
+  connection_count: 'Conexión de {{ count }} | {{ count }} conexiones'
+  no_connection:
+    title: No hay conexión declarada aún.
+    message: Añada su primera haciendo clic en el botón «Crear» de arriba o
+    message_link: pulse aquí.
+  create_connection:
+    title: Crear una conexión nueva
+    description: Puede crear hasta 50 conexiones.
+    flash:
+      success: Conexión creada correctamente.
+      error: Lo sentimos, se ha producido un error al crear la conexión.
+  edit_connection:
+    subtitle: Configuración
+    flash:
+      success: Conexión actualizada correctamente.
+      error: Lo sentimos, se ha producido un error al editar la conexión.
+    image_uploader:
+      extension_not_allowed: Lo sentimos, el archivo que estás intentando subir no tiene una extensión permitida.
+    credentials:
+      title: Credenciales
+      helper:
+        message: 'Aquí están las credenciales para usar en su conector {{ label }}.'
+        link: Más información aquí...
+      password_helper:
+        message: Si olvidó su contraseña, puede generar una nueva aquí.
+        link: Más información…
+      clear_password_helper:
+        message: Asegúrate de guardar esta contraseña en algún lugar ya que no te la mostraremos dos veces.
+        link: Más información…
+      action:
+        copy: Copiar en el portapapeles
+        regenerate: Regenerar
+      flash:
+        copied: '{{ name }} copiado al portapapeles'
+    permissions:
+      title: Permisos
+      helper:
+        message: 'En esta sección, puede definir permisos para su conexión {{ label }}.'
+        link: Más información sobre los permisos de conexión...
+      user_role_helper:
+        message: El rol predeterminado `{{ role }}` no es la mejor opción para tu conexión. Le recomendamos encarecidamente que elija un rol adaptado a sus necesidades de conexión.
+        link: Más información aquí...
+      user_group_helper:
+        message: Le recomendamos encarecidamente que elija un grupo adaptado a sus necesidades de conexión.
+        link: Más información aquí...
+  regenerate_secret:
+    title: Confirmar regeneración
+    description: '¿Estás seguro de que quieres regenerar el secreto de conexión? ¿No estás seguro de los impactos?'
+    link: Esto es lo que sucederá.
+    action:
+      regenerate: Regenerar
+    flash:
+      success: Secreto de conexión regenerado con éxito.
+      error: Lo sentimos, se ha producido un error al regenerar el secreto de conexión.
+  regenerate_password:
+    title: Confirmar regeneración
+    description: '¿Está seguro de que quiere regenerar la contraseña de conexión? ¿No está seguro del impacto?'
+    link: Esto es lo que sucederá.
+    action:
+      regenerate: Regenerar
+    flash:
+      success: Contraseña de conexión regenerada correctamente.
+      error: Lo sentimos, se ha producido un error al regenerar la contraseña de conexión.
+  delete_connection:
+    title: Confirmar la eliminación
+    description: '¿Está seguro que desea eliminar la conexión? ¿No está seguro del impacto?'
+    link: Esto es lo que sucederá.
+    flash:
+      success: Conexión eliminada correctamente.
+  helper:
+    title: '👋 ¡Bienvenido a la característica que conectará correctamente tu PIM!'
+    description: Un PIM sin integraciones de terceros es un poco inútil, ¿no? Gracias a las conexiones, puede declarar todos los flujos de datos que serán empujados dentro y sacados fuera de su PIM.
+    link: '¿Quiere saber más? Descubra aquí qué es una conexión y cómo sacarle el máximo partido.'
+  flow_type_helper:
+    message: '¿Se pregunta qué tipo de flujo es?'
+    link: '¡Podemos ayudarte aquí mismo!'
+  edit_image:
+    upload_helper: Cambie su imagen, arrastre y suelte o
+    remove_helper: Eliminar la imagen
+    click_here: haz clic aquí
+    flash:
+      extension_not_allowed: Lo sentimos, el archivo que está intentando subir no tiene una extensión permitida.
+  dashboard:
+    helper:
+      title: '👋 ¡Bienvenido a su panel de conexión!'
+      description: Aquí podrá rastrear todos los flujos de datos que se recogen en su PIM a través de sus conexiones, así como todos los flujos de datos que se distribuyen a sus canales a través de sus conexiones.
+      link: '¿Quiere saber más? Aquí tiene.'
+    user_survey:
+      title: '¿Quiere más datos sobre este panel de control?'
+      content: Sus comentarios son realmente valiosos para nosotros. Ayúdenos a elegir el próximo widget respondiendo a esta encuesta de una sola pregunta.
+      button: '¡Vamos!'
+    connection_selector:
+      title: Conexiones de origen
+      all: Todo
+    charts:
+      number_of_products_created: Número de productos creados
+      number_of_products_updated: Número de productos actualizados
+      legend:
+        during_the_last_seven_days: Durante los últimos siete días
+        today: Hoy
+    no_connection:
+      title: '¿Desea ver algunos bonitos gráficos sobre sus conexiones?'
+      message_with_permission:
+        message: Cree y empiece a hacer un seguimiento de su primera conexión justo
+        link: aquí. 
+      message_without_permission:
+        message: Solicite a su administrador que cree uno.
+        link: Más información sobre conexiones aquí...
+  runtime_error:
+    error_message: '¡Oh! Se ha producido un error...'
+    reload_helper: Por favor, recargue la página e inténtelo de nuevo.
+    reload_button: Recargar
