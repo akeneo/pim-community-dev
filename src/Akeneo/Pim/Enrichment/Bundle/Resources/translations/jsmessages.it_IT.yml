@@ -1,6 +1,7 @@
 pim_notification:
   types:
     settings: Impostazioni
+    mass_delete: Eliminazione
 flash:
   comment:
     create:
@@ -462,3 +463,5 @@ batch_jobs:
     quick_export.label: Esportazione rapida prodotti in XLSX
     quick_export_product_model.label: Esportazione rapida modelli di prodotto in XLSX
     perform.label: Esportazione rapida prodotti in XLSX
+  default_steps:
+    delete_products_and_product_models: Elimina prodotti e modelli prodotto
