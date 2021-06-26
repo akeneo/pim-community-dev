@@ -201,6 +201,7 @@ pim_enrich.entity.attribute:
       regexp: Expresión regular
       url: URL
     wysiwyg_enabled: Editor de texto enriquecido habilitado
+    default_value: Valor predeterminado
   module:
     add_attribute:
       no_available_attributes: No hay más atributos a agregar
@@ -213,6 +214,13 @@ pim_enrich.entity.attribute:
       validation: Parámetros de validación
     delete:
       confirm: '¿Está seguro que desea eliminar este atributo?'
+      product_count: '{0}0 productos|{1}1 producto|]1, Inf[{{ count }} productos'
+      product_model_count: '{0}0 modelos de producto|{1}1 modelo de producto|]1, Inf[{{ count }} modelos de producto'
+      used: actualmente tienen valores establecidos para este atributo, se eliminarán.
+      helper:
+        content: Si necesita cambiar su tipo de atributo, para hacerlo localizable o definible, manteniendo el acceso a sus valores de atributo existentes.
+        link: le guiamos a través de los diferentes pasos aquí.
+      type: Escriba «{{ attributeCode }}»
       confirm_from_family: '¿Está seguro que quiere eliminar este atributo de la familia?'
       confirm_from_group: '¿Está seguro que desea eliminar el atributo {{ attribute }} de este grupo de atributos?'
       confirm_from_product: '¿Está usted seguro que desea eliminar el atributo de este producto?'
@@ -220,6 +228,7 @@ pim_enrich.entity.attribute_group:
   label: grupo de atributo
   uppercase_label: Grupo de atributos
   plural_label: Grupos de atributos
+  result_count: '{0}0 grupos de atributos|{1}1 grupo de atributos|]1, Inf[{{ count }} grupos de atributos'
   show_more_attribute:
     title: Está un poco cruzado por aquí, te mostramos {{ attributeCount }}/{{ totalAttributeCount }} atributos.
     subtitle: Para descubrir todos los atributos de este grupo, haga clic a continuación!
@@ -240,6 +249,8 @@ pim_enrich.entity.attribute_group:
     delete:
       confirm: '¿Está seguro que desea eliminar este grupo de atributo?'
   grid:
+    columns:
+      name: Nombre de los grupos de atributos
     no_search_result: Lo sentimos, no hay ningún resultado para su búsqueda.
 pim_enrich.mass_edit.family:
   title: Acción masiva sobre las familias

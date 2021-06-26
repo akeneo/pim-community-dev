@@ -130,6 +130,7 @@ akeneo_connectivity.connection:
     flash:
       success: Connessione eliminata correttamente.
   helper:
+    title: '👋 Benvenuto nella funzione che ti permetterà di connettere correttamente il tuo PIM!'
     description: Un PIM senza integrazioni con altri servizi è abbastanza inutile, vero? Grazie alle connessioni, è possibile dichiarare tutti i flussi dati che saranno inviati ed estratti dal PIM.
     link: Curioso di saperne di più? Scopri cos'è una connessione e come sfruttarla al massimo cliccando qui!
   flow_type_helper:
@@ -147,6 +148,7 @@ akeneo_connectivity.connection:
   grid.wrong_credentials_combination_helper: Alcune delle connessioni sotto non stanno usando i loro nomi utenti della connessione. Sono identificati da un segnale di avviso giallo.
   dashboard:
     helper:
+      title: '👋 Benvenuto nella tua dashboard connessioni!'
       description: Da qui sarai in grado di tracciare tutti i flussi dati che sono raccolti nel PIM tramite le tue connessioni, così come tutti i flussi dati che sono distribuiti ai canali tramite le tue connessioni.
       link: Vuoi saperne di più? Ecco qui!
     user_survey:
@@ -180,6 +182,7 @@ akeneo_connectivity.connection:
         business_errors: errori aziendali
     no_connection:
       title:
+        default: Vuoi vedere qualche grafico dettagliato sulle tue connessioni?
         data_source: Vuoi vedere qualche grafico fantasioso sulle tue connessioni sorgente?
         data_destination: Vuoi vedere qualche grafico fantasioso sulle tue connessioni di destinazione?
       message_with_permission:

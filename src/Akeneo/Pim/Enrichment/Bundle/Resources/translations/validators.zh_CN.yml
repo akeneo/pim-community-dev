@@ -70,6 +70,8 @@ pim_catalog:
     family_variant_maximum_number_of_level: 品类变型的级别不能超过"%level%"个
     family_variant_unique_attributes_in_last_level: 唯一的属性“%attribute%”必须在产品级别上设置
     product_identifier: 这些标识符"%s"不存在。
+    blacklisted_attribute_code: 完成正在进行的清理作业之前，临时阻止代码。
+    blacklisted_attribute_code_with_link: "完成正在进行的清理作业之前，临时阻止代码。要查找更多信息，请查看<a href='{{ link }}' target='_blank'>作业详情</a>。"
     0: 发生意外错误。
     100: 非预期的值
     101: 此字段需要填入布尔值。

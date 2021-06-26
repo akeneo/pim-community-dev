@@ -67,11 +67,13 @@ pim_user:
       username_or_email: 用户名或电子邮件
       remember_me: 在这台计算机上记住我
       password_forgotten: 忘记密码？
+      log_in: 登录
       forgot_password: 忘记密码
       request: 请求
       password_reset: 密码重置
       reset: 重置
       password_reset_email_sent: 已向用户发送了一封电子邮件，其中包含重置密码的链接。
+      homepage: 返回主页
   group:
     tab:
       general.title: 常规​​​​​

@@ -31,6 +31,8 @@ pim_enrich.entity.product:
       fail: 没有属性被配置为产品标识符，或者您没有编辑的权限。
   page_title:
     index: "]-Inf, 1]{{ count }} 个结果|]1, Inf[{{ count }} 个结果"
+    product: "]-Inf, 1]{{ count }} 个产品|]1, Inf[{{ count }} 个产品"
+    product_model: "]-Inf, 1]{{ count }} 个产品模型|]1, Inf[{{ count }} 个产品模型"
     product_and_product_model: "{{ productCount }}, {{ productModelCount }}"
   module:
     create:
@@ -51,8 +53,10 @@ pim_enrich.entity.product:
       all_visible: 所有可见
       copy: 复制
     convert_variant_to_simple:
+      label: 转换为简单产品
       dialog:
         title: 确认转换
+        content: "确定要将此变型产品转换为简单的产品吗？其以前的所有值、类别和关联都将被保存。"
     history:
       version: 版本
       author: 作者
@@ -341,6 +345,10 @@ pim_enrich.mass_edit.product:
       label_count: "{0}将一些<span class=\"AknFullPage-title--highlight\">产品</span>添加到现有的产品模型|{1}将 <span class=\"AknFullPage-title--highlight\">1 件产品</span>添加到现有的产品模型|]1, Inf[将 <span class=\"AknFullPage-title--highlight\">{{ itemsCount }} 件产品</span>添加到现有的产品模型"
       description: 选定的产品模型将收集这些产品，并使其通用属性更加丰富。
       no_update: 请先选择一个产品模型以继续
+    convert_to_simple_products:
+      label: 转换为简单产品
+      label_count: "{0}将一些<span class=\"AknFullPage-title--highlight\">产品</span>转换为简单产品|{1}将 <span class=\"AknFullPage-title--highlight\">1 个产品</span>转换为简单产品|]1, Inf[将 <span class=\"AknFullPage-title--highlight\">{{ itemsCount }} 个产品</span>转换为简单产品"
+      description: 所有之前的值、类别和关联将被保存。
     associate_to_product_and_product_model:
       label: 关联
       label_count: "{0}将一些<span class=\"AknFullPage-title--highlight\">产品</span>关联到产品或产品模型|{1}将 <span class=\"AknFullPage-title--highlight\">1 件产品关联到产品或产品模型</span>|]1, Inf[将 <span class=\"AknFullPage-title--highlight\">{{ itemsCount }} 件产品</span>关联到产品或产品模型。"
@@ -372,8 +380,14 @@ pim_datagrid:
         title: 选择操作
         csv: CSV
         xlsx: XLSX
+        grid_context: 网格上下文
         all_attributes: 全部属性
+        with_codes: 使用代码
         with_labels: 有标签
+        without_media: 无媒体
+        with_media: 含媒体
+      flash:
+        message: "可在此处查看导出进度。"
     mass_edit: 批量操作
     sequential_edit: 顺序编辑
     mass_delete: 批量删除
@@ -397,10 +411,13 @@ pim_datagrid:
     label: 筛选器
     system: 系统
     product_typology:
+      label: '产品类型'
       simple: '简单'
       variant: '变型'
     entity_type:
       label: '变型'
+      grouped: '已分组'
+      ungrouped: '未分组'
     family:
       label: 品类
     groups:
@@ -438,6 +455,9 @@ batch_jobs:
   add_to_existing_product_model:
     label: 添加到现有的产品模型
     perform.label: 添加到现有的产品模型
+  convert_to_simple_products:
+    label: 转换为简单产品
+    perform.label: 转换为简单产品
   csv_product_grid_context_quick_export:
     quick_export.label: Csv 产品网格上下文快速导出
     quick_export_product_model.label: CSV 产品模型网格上下文快速导出

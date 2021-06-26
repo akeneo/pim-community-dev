@@ -100,6 +100,7 @@ pim_catalog:
       products_do_not_exist: "Los siguientes productos no existen: {{ values }}. Por favor, asegúrese de que los productos no han sido eliminados mientras tanto."
       product_models_do_not_exist: "Los siguientes modelos de productos no existen: {{ values }}. Por favor, asegúrese de que los modelos de productos no han sido eliminados mientras tanto."
       association_type_does_not_exist: Este tipo de asociación no existe. Por favor, asegúrese de que no ha sido eliminado mientras tanto.
+      association_type_is_not_quantified: '«{{ association_type }}» no se puede utilizar para las asociaciones con cantidades. Elija otro tipo de asociación con cantidades o utilice la propiedad «asociaciones».'
       association_type_should_not_be_quantified: '"{{ association_type }}" sólo puede utilizarse para asociaciones con cantidades. Por favor, elija un tipo de asociación diferente o utilice la propiedad "quantified_associations".'
 mass_edit:
   edit_common_attributes:

@@ -21,6 +21,11 @@ Second: Segundo
 Millisecond: Milisegundo
 Microsecond: Microsegundo
 "Time Zone": "Zona Horaria"
+duration:
+  days: "{0}0 días|{1}1 día|]1, Inf[{{ count }} días"
+  hours: "{0}0 horas|{1}1 hora|]1, Inf[{{ count }} horas"
+  minutes: "{0}0 minutos|{1}1 minuto|]1, Inf[{{ count }} minutos"
+  seconds: "{0}0 segundos|{1}1 segundo|]1, Inf[{{ count }} segundos"
 #PIM messages
 Localized value: Valor localizado
 Columns: Columnas
