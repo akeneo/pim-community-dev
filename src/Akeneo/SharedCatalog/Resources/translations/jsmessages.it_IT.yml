@@ -1,0 +1,23 @@
+batch_jobs.akeneo_shared_catalog.label: Invia a cataloghi condivisi
+pim_common:
+  recipients: Destinatari
+  branding: Personalizzazione
+  result_count: "{0}0 risultati|{1}1 risultato|]1, Inf[{{ itemsCount }} risultati"
+  items_selected: "{0}0 elementi selezionati|{1}1 elemento selezionato|]1, Inf[{{ itemsCount }} elementi selezionati"
+shared_catalog:
+  recipients:
+    add: Aggiungi e-mail utenti qui
+    placeholder: betty@akeneo.com
+    email: Indirizzo e-mail
+    invalid_email: Questo valore non è un indirizzo e-mail valido.
+    duplicates: Hai già condiviso con questo destinatario
+    helper: "Aggiungi destinatari per dare loro accesso al tuo nuovo catalogo condiviso. Puoi compilare un elenco di indirizzi con separatori: spazio, virgola, punto e virgola e interruzione di riga."
+    no_result: Spiacenti, nessuna e-mail corrisponde alla tua ricerca
+    no_data: Ancora nessun indirizzo e-mail dichiarato
+    max_limit_reached: Hai raggiunto il limite di 500 destinatari.
+  branding:
+    upload: "Carica il tuo logo (dimensione max: 2 MB; formato file: PNG o JPG)"
+    invalid_extension: "Estensione file non valida, le estensioni consentite sono: {{ allowed_extensions }}"
+    filesize_too_large: Il file fornito è troppo grande, la dimensione massima è di 2 MB
+  button:
+    save: Salva e condividi

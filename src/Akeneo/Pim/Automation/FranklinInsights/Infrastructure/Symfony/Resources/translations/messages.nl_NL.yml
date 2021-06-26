@@ -1,7 +1,7 @@
 akeneo_franklin_insights:
   mapping_identifier:
-    success: De koppeling is succesvol opgeslagen
-    error: Er is een fout opgetreden tijdens het opslaan van de koppeling
+    success: De toewijzing is opgeslagen
+    error: Er is een fout opgetreden tijdens het opslaan van de toewijzing
   entity:
     product_subscription:
       constraint:

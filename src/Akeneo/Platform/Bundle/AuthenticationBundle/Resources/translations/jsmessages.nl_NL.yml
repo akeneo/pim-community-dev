@@ -6,7 +6,7 @@ authentication:
         update_failed: Fout bij het opslaan van de configuratie
       section:
         activation:
-          title: SSO activatie
+          title: Eenmalige aanmelding activeren
       field:
         entity_id:
           label: Entiteit-ID

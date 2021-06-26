@@ -3,9 +3,17 @@ pim_title:
   akeneo_asset_manager_asset_family_edit: Editar una categoría de recursos
   akeneo_asset_manager_asset_edit: Editar recurso
 pim_asset_manager:
+  editor:
+    embedded:
+      invalid_link:
+        title: Enlace embebido sospechoso
+        message: Lo sentimos; no mostramos este elemento incrustado, pero se guardará correctamente
   result_counter: '{0} Ningún resultado |{1} {{ count }} resultado|]1,Inf] {{ count }} resultados'
+  asset_counter: '{0} Ningún activo|{1} {{ count }} activo|]1,Inf] {{ count }} activos'
   asset_collection:
     add_asset: 'Añadir recurso'
+    upload_asset: 'Subir activo'
+    add_asset_title: 'Abrir el selector de recursos para añadir recursos a la colección'
     no_asset_in_collection: 'Lo sentimos, no hay ningún recurso en esta colección.'
     helper:
       title: '¡Bienvenido a su nuevo espacio de gestión de activos de producto!'
@@ -15,6 +23,7 @@ pim_asset_manager:
       title: 'Lo sentimos, no hay recursos para este producto.'
     notification:
       product_rule: 'Esta colección puede ser actualizada por una regla de producto:'
+      limit: 'Ha alcanzado el límite de {{ limit }} activos por distribución, ya no puede añadir activos a su colección.'
     edit_asset: Editar recurso
     remove_asset: Quitar un recurso
     remove_one_asset: Eliminar el recurso {{ assetName }} de la colección de recursos
@@ -24,8 +33,12 @@ pim_asset_manager:
     dismiss_other_actions: Descartar otras acciones
     move_asset_to_left: Mover recurso {{ assetName }} a la izquierda
     move_asset_to_right: Mover recurso {{ assetName }} a la derecha
+    legacy_helper:
+      moved_to_assets_tab: Para ver la colección de activos {{ label }}, vaya a la sección de activos del producto.
+      is_missing_required: Se requiere la colección de activos {{ label }}. Enriquézala en la sección de activos del producto.
   asset_picker:
     title: Añadir recursos a su producto
+    sub_title: Elija los activos que desea adjuntar a su producto {{ productLabel }} en la colección {{ attributeLabel }}
     no_result:
       title: Lo sentimos, no hay recursos para su búsqueda
       sub_title: Pruebe con nuevos criterios de búsqueda
@@ -39,11 +52,13 @@ pim_asset_manager:
   asset_preview:
     previous: Recurso anterior
     next: Próximo recurso
+    empty_main_media: Este activo no tiene ningún medio.
     other_main_media: No podemos generar la vista previa de este activo.
     edit_asset: Editar recurso
     download: Descargar
     copy_url: Copiar URL
     error: Se ha producido un error durante el procesamiento de la vista previa
+  close: Cerrar el modal
   breadcrumb:
     products: Productos
   app:
@@ -60,6 +75,11 @@ pim_asset_manager:
     counter: '{{ resultCount }} resultados'
     counter_empty: '0 resultado'
   asset_family:
+    column:
+      title: Navegación de activos
+      selector:
+        title: Familias de activos
+        no_data: No hay ninguna familia de activos disponible
     validation:
       code:
         pattern: 'Este campo sólo puede contener letras, números y guiones bajos.'
@@ -79,6 +99,7 @@ pim_asset_manager:
       rule_template:
         limit_reached: 'Ha alcanzado el límite de reglas de enlace de producto {{ %limit% }} para la familia de activos "{{ %asset_family_identifier% }}".'
         product_selection_cannot_be_empty: 'Debe especificar al menos una selección de producto en la regla de enlace de su producto'
+        product_assignment_cannot_be_empty: 'Debe especificar al menos una selección de producto en la regla de enlace de su producto'
         extrapolated_attribute_should_exist: 'El atributo "{{ %attribute_code% }}" no existe para esta familia de recursos'
         extrapolated_attribute_type_should_be_supported: 'El atributo "{{ %attribute_code% }}" de tipo "{{ %attribute_type% }}" no es compatible, solo se soportan los siguientes tipos de atributos para este campo: {{ %supported_attribute_type% }}'
         channel_should_exist: 'El canal "{{ %channel_code% }}" no existe'
@@ -98,8 +119,11 @@ pim_asset_manager:
       edit: Editar familia
       view: Ver familia
       execute_product_link_rules: Ejecutar reglas
+    permission:
+      title: Permisos de familia de activos
     title: Recursos
     breadcrumb: Familia de recursos
+    img: El medio principal de la familia de activos llamado «{{ label }}»
     tab:
       assets: Recursos
       attribute: Atributos
@@ -111,12 +135,15 @@ pim_asset_manager:
       help:
         title: '¡Bienvenido a su nueva área de gestión de activos!'
         description: 'Aquí puede definir hasta 10 transformaciones por familia de activos.'
+        link: 'Si quiere profundizar en las nuevas transformaciones del Gestor de activos, haga clic aquí'
       subsection: 'Propiedades de transformación'
     product_link_rules:
+      naming_convention_subsection: 'Propiedades de la convención de nombres'
       product_link_rules_subsection: 'Propiedades de reglas de enlace de producto'
       help:
         title: '¡Bienvenido a su nueva área de gestión de activos!'
         description: 'Aquí puede definir hasta 2 reglas de enlace de producto por familia de activos.'
+        link: 'Si quiere profundizar en la función de Reglas de enlace de producto, haga clic aquí'
       execute_rules:
         confirm_title: Confirmar la ejecución
         confirm_content: '¿Estás seguro de que quieres ejecutar todas las reglas? (esto podría tardar mucho tiempo)'
@@ -143,6 +170,8 @@ pim_asset_manager:
         count: '{0} Sin familia de activos |{1} {{ count }} familia de activos |]1,Inf] {{ count }} familias de activos'
         help:
           title: '¡Bienvenido a las Familias de Activos!'
+          description_part_one: Enriquecer la información relevante relacionada con los productos (por ejemplo, marcas, fabricantes, colores, materiales, ingredientes...).
+          description_part_two: Le permitirá ofrecer una mejor experiencia del producto a sus clientes.
           description_part_three: Haga clic en el botón “Crear” para crear su primera familia de activos, establecer sus atributos y activos.
           description_part_four: Luego, para vincular a los productos, crear un tipo de atributo de producto relacionado con esta familia de activos.
           description_part_five: Para más detalles, le invitamos a navegar por este artículo.
@@ -158,6 +187,8 @@ pim_asset_manager:
     delete:
       message: '¿Está seguro de que desea eliminar la familia de activos "{{ assetFamilyLabel }}"?'
       title: Atributo
+    edit:
+      discard_changes: Perderá los cambios en la familia de activos «{{ assetFamilyLabel }}» si abandona la página.
     notification:
       save:
         success: Familia de recursos actualizada con éxito.
@@ -165,6 +196,12 @@ pim_asset_manager:
       create:
         success: Familia de recursos creada correctamente.
         fail: Se ha producido un error durante la creación de la familia de activos
+      delete:
+        success: Familia de activos eliminada con éxito.
+        fail: Se ha producido un error durante la eliminación de la familia de activos
+      compute_transformations:
+        success: Las transformaciones han sido lanzadas. Una vez terminado este trabajo, verá sus nuevas variaciones actualizadas en sus activos.
+        fail: Se ha producido un error al intentar calcular las transformaciones
       execute_product_link_rules:
         success: Reglas de enlace de producto han sido lanzadas
         fail: Ocurrió un error al intentar lanzar las reglas de enlace del producto
@@ -174,12 +211,18 @@ pim_asset_manager:
         text: No hay ningún activo en la familia {{ family }} . Haga clic en "Crear" y elija si desea crear un activo vacío o un activo de subida en masa.
       no_asset_family:
         text: Una biblioteca que recoge sus activos (imágenes, vídeos, documentos...), filtrados por familias de activos. ¡Crea su primera familia de activos, establezca sus atributos y suba activos!
+        link: Para más información, le invitamos a consultar este artículo.
     no_data:
       no_asset:
         title: '¡Lo sentimos, no hay activo!'
+        link: Haga clic aquí para añadir un recurso
+      no_asset_family:
+        title: '¡Lo sentimos, no hay ninguna familia de activos!'
+        link: Haga clic aquí para añadir una familia de activos
   permission:
     notification:
       save:
+        success: Permisos de la familia de activos actualizados con éxito.
         fail: Al menos un grupo de usuarios debe tener permiso de edición sobre esta entidad de la familia de recursos
     no_data:
       title: No tienes grupos de usuarios
@@ -187,17 +230,30 @@ pim_asset_manager:
       link: Haga clic aquí para añadir su primer grupo de usuarios
   asset:
     img: El medio principal del activo llamado "{{ label }}"
+    validation:
+      limit_reached: 'No puede crear el activo «{{ %asset_label% }}» porque ha alcanzado el límite de activos {{ %limit% }} para esta familia de activos'
+      code:
+        pattern: 'Este campo solo puede contener letras, números y guiones bajos.'
+        should_be_unique: 'Este código ya existe para otro activo.'
     no_data:
       title: No hay ningún activo para {{ entityLabel }}
+      subtitle: Haga clic en el botón «Añadir nuevo» para crear el primer activo
     no_result:
       title: No hay ningún resultado para su búsqueda
       subtitle: Pruebe con nuevos criterios de búsqueda.
     selector:
       no_value: Haz clic aquí para seleccionar un recurso.
+      error:
+        value: Ups parece que el procesamiento del campo «{{ fieldName }}» ha fallado. Revise la consola de administración para más detalles.
     button:
       save: Guardar
+      create: Crear un activo
+      mass_upload: Carga en masa
       delete: Borrar
+      delete_all: Eliminar todos los activos
       back: Volver a la lista
+      launch_transformations: Lanzar transformaciones
+      fullscreen: Pantalla completa
     product:
       attribute: Atributo del producto
       counter: '{{ totalCount }} resultado|{{ totalCount }} resultados'
@@ -286,6 +342,7 @@ pim_asset_manager:
             in: En la lista
       more_result:
         title: '¡No es eso!'
+        description: Acaba de desplazarse por los primeros resultados {{ maxDisplayedAssets }} de {{ total }} activos. Para ver más, pruebe con criterios de búsqueda más específicos.
       column:
         code: Código
         image: Imagen
