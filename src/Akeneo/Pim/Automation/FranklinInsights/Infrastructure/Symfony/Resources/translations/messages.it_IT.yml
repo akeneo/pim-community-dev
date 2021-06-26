@@ -32,6 +32,7 @@ job_execution.summary:
   subscribed: iscritto
   unsubscribed: disiscritto
   unsubscription_skipped_not_subscribed: saltato (non iscritto)
+  identifiers_mapping_validation: Convalida mappatura identificatori
 pim_datagrid:
   cells:
     type:

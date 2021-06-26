@@ -52,6 +52,7 @@ akeneo_franklin_insights:
         suggest_attribute_mapping_error: 'L''attributo del catalogo "[{{ catalogAttributeCode }}]" è già mappato sull''attributo Franklin "{{ franklinAttributeLabel }}".'
         add_attribute_to_family_success: '{1} Attributo allegato alla famiglia "{{ family }} " con successo. |[2,Inf[ Attributi allegati alla famiglia "{{ family }}" con successo.'
         add_attribute_to_family_error: 'Spiacenti, si è verificato un errore durante l''associazione dell''attributo alla famiglia.'
+        fail_to_retrieve_franklin_mapping: 'La mappatura degli attributi non è disponibile al momento. Torna più tardi.'
       fields:
         search_bar.placeholder: 'Cerca sull''attributo Franklin'
         franklin_attribute: 'Attributi di Franklin'
@@ -231,6 +232,7 @@ batch_jobs:
   default_steps:
     fetch_products: Recupera i dati del prodotto
     create_proposals: Crea proposte
+    notify_if_pending_attributes: Notifica agli utenti gli attributi in sospeso sulla mappa
     validate_configuration: Validazione configurazione Franklin Insights
   franklin_insights_subscribe_products:
     label: Iscrizione in massa a Franklin Insights

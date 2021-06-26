@@ -5,6 +5,8 @@ akeneo_data_quality_insights:
     title: Panoramica della qualità dei dati
     helper:
       title: Introduzione alla qualità dei dati in Akeneo
+      description: Con la dashboard sulla qualità dei dati, puoi misurare la qualità dei dati del tuo catalogo. Puoi anche concentrarti su una categoria o una famiglia.
+      help_center: Consulta il nostro Help Center per ulteriori informazioni.
     no_data_title: Non ci sono ancora abbastanza dati per visualizzare la panoramica della qualità dei dati.
     no_data_subtitle: Ti preghiamo di tornare più tardi.
     time_period:
@@ -18,14 +20,24 @@ akeneo_data_quality_insights:
       average: Media
       below_average: Sotto la media
       to_improve: Da migliorare
+    category_modal_filter:
+      subtitle: Filtra per categoria
+      message: Scegli la categoria da esplorare sulla tua dashboard 
     widgets:
       family_modal:
         subtitle: Aggiungi famiglie
+        message: Scegli le famiglie da aggiungere sulla tua dashboard
+        max_families_msg: Spiacenti, non puoi aggiungere più di {{ count }} famiglie da tracciare sulla tua dashboard
       category_modal:
         subtitle: Aggiungi categorie
+        message: Scegli le categorie da aggiungere sulla tua dashboard
+        max_categories_msg: Spiacenti, non puoi aggiungere più di {{ count }} categorie da tracciare sulla tua dashboard
       add_families: Aggiungi famiglie
       add_categories: Aggiungi categorie
       title: Titolo
+      no_family_helper_msg: Seleziona le famiglie per le quali desideri misurare la qualità dei dati
+      no_category_helper_msg: Seleziona le categorie per le quali desideri misurare la qualità dei dati
+      see_in_grid: Vedi nella griglia
     time_axis:
       day: giorno
   product_evaluation:
@@ -34,19 +46,29 @@ akeneo_data_quality_insights:
         recommendation: Attributi obbligatori con valori mancanti
       completeness_of_non_required_attributes:
         recommendation: Attributi non obbligatori con valori mancanti
+      consistency_textarea_uppercase_words:
+        recommendation: Attributi con problemi in maiuscolo
+      consistency_textarea_lowercase_words:
+        recommendation: Attributi con problemi in minuscolo
       consistency_spelling:
         recommendation: Attributi con problemi ortografici
     axis:
       enrichment:
         title: Arricchimento
+        attributes_link: Mostra tutti gli attributi mancanti
         success: I tuoi dati di prodotto sono completamente arricchiti. Congratulazioni!
       consistency:
         title: Coerenza
         attributes_link: Visualizza tutti gli attributi migliorabili
         success: I tuoi dati di prodotto sono completamente coerenti. Congratulazioni!
     messages:
+      error:
+        axis_error: A causa di un errore, la valutazione non può essere completamente calcolata. Riprova più tardi.
+        criterion_error: La valutazione non può essere calcolata.
       success:
         criterion: Tutto a posto.
+      grading_in_progress: Valutazione in corso.
+      axis_grading_in_progress: Valutazione in corso. Torna più tardi.
   product_edit_form:
     attribute_filter:
       all_missing_attributes: Tutti gli attributi mancanti

@@ -70,6 +70,7 @@ batch_jobs:
     import.label: Importar propuestas de productos en XLSX
   xlsx_product_model_proposal_import:
     label: Importar propuestas de modelo de producto en XLSX
+    import.label: Importar propuestas de modelo de producto en XLSX
   csv_published_product_quick_export:
     export.label: Exportación rápida en CSV de los productos publicados
     perform.label: Exportación rápida en CSV de los productos publicados
@@ -94,6 +95,7 @@ pim_notification:
     pimee_workflow_product_draft_notification_approve: Propuesta aprobada
     pimee_workflow_product_draft_notification_refuse: Propuesta rechazada
     pimee_workflow_product_draft_notification_remove: Propuesta eliminada
+    pimee_workflow_product_draft_notification_sent: Propuestas enviadas
 pimee_dashboard:
   widget:
     product_drafts:

@@ -47,6 +47,9 @@ batch_jobs:
   csv_published_product_export:
     label: Gepubliceerd product exporteren in CSV
     export.label: Gepubliceerd product exporteren
+  csv_product_proposal_import:
+    label: Productvoorstel importeren in CSV
+    import.label: Productvoorstel importeren
   approve_product_draft:
     label: Keur voorstel goed
     perform.label: Keur voorstel goed
