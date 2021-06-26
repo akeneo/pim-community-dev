@@ -24,3 +24,10 @@ akeneo_data_quality_insights:
     quality:
       to_improve: 개선하려면
       good: 우수
+  dqi_dashboard:
+    key_indicators:
+      list:
+        attributes_perfect_spelling:
+          messages:
+            second_step:
+              message2: 문제를 겪고 계신 것 같습니다. 일부 레이블에 작업할 사항이 남아 있습니다.

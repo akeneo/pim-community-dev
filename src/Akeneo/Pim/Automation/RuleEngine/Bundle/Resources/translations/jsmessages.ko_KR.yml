@@ -175,7 +175,7 @@ pimee_catalog_rule:
         specific_date: 특정 날짜
       label:
         operator: 연산자 선택
-        date: 날짜를 선택하세요
+        date: 날짜를 선택하십시오
   exceptions:
     loading: 규칙 정의 로드 중에 오류가 발생했습니다.
     required: 필수 기재 항목입니다

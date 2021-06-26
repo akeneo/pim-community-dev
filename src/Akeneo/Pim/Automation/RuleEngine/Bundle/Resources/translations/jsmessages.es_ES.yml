@@ -65,6 +65,9 @@ pimee_catalog_rule:
       folders:
         selected: Carpetas seleccionadas
         not_selected: Carpetas
+      arrow:
+        open: Abrir categoría de rama
+        close: Cerrar categoría de rama
     tab:
       list: Constructor de reglas y pestañas de propiedades
       rule_builder: Constructor de reglas
@@ -126,10 +129,14 @@ pimee_catalog_rule:
         operator: operador
         entity_type:
           label: Tipo de entidad
+          placeholder: Seleccione un tipo de entidad
       execute:
         button: Guardar y ejecutar
         title: Guardar y ejecutar la regla
         description: Guardarás la regla actual y la ejecutarás en segundo plano. Cuando termines, serás notificado.
+      duplicate:
+        button: Guardar y duplicar
+        title: Duplicar la regla «{{ originalRuleCode }}»
       actions:
         add_action: Añadir acción
         add_category:
@@ -144,6 +151,7 @@ pimee_catalog_rule:
           helper: Para establecer los grupos de productos, seleccione uno o varios grupos
           subtitle: Selecciona tus grupos
         set_category:
+          title: ESTABLECER categorías
           helper: Para establecer su selección de productos en una o más categorías, por favor comience seleccionando sus árboles de categorías y luego, sus categorías
         category:
           select_category_trees: Selecciona tus árboles de categorías
@@ -155,15 +163,26 @@ pimee_catalog_rule:
           no_category_tree: Por favor, seleccione primero un árbol de categorías
           remove_unknown_category: " Haga clic aquí para eliminar esta categoría."
         set_family:
+          title: ESTABLECER familia
           subtitle: Selecciona tu familia
         set_attribute:
+          title: ESTABLECER valor del atributo
           helper: Para establecer los valores de su atributo, comience seleccionando su atributo de destino y luego, el valor que desea establecer
+          target_subtitle: Seleccione su objetivo
           value_subtitle: Definir su valor
           attribute_label: Atributo
           attribute_placeholder: Seleccione su atributo de destino
           select_reference_entity: Seleccione sus entidades de referencia
           select_asset: Seleccione sus activos
+          select_measurement_unit: Seleccione su unidad
+        set_quantified_associations:
+          title: ESTABLECER asociaciones cuantificadas
+          helper: Para establecer asociaciones cuantificadas, seleccione su(s) tipo(s) de asociación y, a continuación, los productos, modelos de productos o grupos que desee asociar a su selección de productos.
         set_associations:
+          title: ESTABLECER asociaciones
+          helper: Para establecer asociaciones, seleccione su(s) tipo(s) de asociación y, a continuación, los productos, modelos de productos o grupos que desee asociar a su selección de productos.
+          select_association_type: Seleccione su tipo de asociación
+          association_types: Tipos de asociaciones
           add_group: Añadir un grupo
           add_product: Añadir un producto
           add_product_model: Añadir un modelo de producto
@@ -184,22 +203,32 @@ pimee_catalog_rule:
           title: Agregar asociaciones
           helper: Para añadir asociaciones, seleccione su(s) tipo(s) de asociación y, a continuación, los productos, modelos de productos o grupos que desea asociar a su selección de productos.
         clear_attribute:
+          title: BORRAR valor del atributo
           subtitle: Seleccione el atributo a limpiar
           attribute_label: Atributo
         clear_associations:
           title: Limpiar Asociaciones
           helper: Se eliminarán todas las asociaciones para los productos seleccionados.
         clear_quantified_associations:
+          title: BORRAR asociaciones cuantificadas
           helper: Se eliminarán todas las asociaciones cuantificadas para los productos seleccionados.
+        clear_categories:
+          title: BORRAR categorías
+        clear_groups:
+          title: BORRAR grupos
         remove_category:
+          title: ELIMINAR categorías
           helper: Para eliminar su selección de productos de una o más categorías, comience seleccionando sus árboles de categorías y luego, sus categorías
         remove_attribute_value:
+          title: ELIMINAR valor del atributo
           helper: Para eliminar los valores de su atributo, comience seleccionando su atributo de destino y luego, los valores que desea eliminar.
           value_subtitle: Defina sus valores a eliminar
         add_attribute_value:
+          title: AÑADIR valor del atributo
           helper: Para añadir valores a su atributo, comience seleccionando su atributo de destino y, a continuación, los valores que desea añadir.
           value_subtitle: Defina sus valores a añadir
         copy:
+          title: COPIAR valor del atributo
           helper: Para copiar valores de un atributo a otro, por favor comience seleccionando su atributo fuente y luego, su atributo destino.
           select_source: Seleccione su fuente
           select_target: Selecciona tu objetivo
@@ -217,11 +246,13 @@ pimee_catalog_rule:
           helper: Para eliminar productos de grupos, por favor seleccione uno o varios grupos
           subtitle: Selecciona tus grupos
         calculate:
+          title: CALCULAR valores
           helper: Para calcular los valores numéricos de los atributos, elija atributo(s) y/o valor(es) y, a continuación, seleccione el atributo de destino en el que desea poner el resultado. También puede redondear el resultado final si es necesario.
           add_value: Añadir valor
           add_attribute: Añadir atributo
           select_target: Selecciona tu objetivo
           attribute_placeholder: Seleccione su atributo de destino
+          round_precision: Precisión de redondeo
           operator:
             add: Añadir
             subtract: Sustraer
@@ -229,15 +260,24 @@ pimee_catalog_rule:
             divide: Dividir
             choose: Elige tu operador
         concatenate:
+          title: CONCATENAR valores
           helper: Para concatenar los valores de los atributos, agregue los atributos y, a continuación, seleccione el atributo destino.
+          select_target: Seleccione su objetivo
+          attribute_placeholder: Seleccione su atributo de destino
           add_text: Añadir texto
           add_attribute: Añadir atributo
           add_new_line: Añadir un salto de línea
           line_break: Salto de línea
           date_format: Seleccione un formato de fecha
+          label_locale: Configuración regional de etiqueta
+          unit_label_locale: Configuración regional de unidad
+          remove_new_line_confirm:
+            label: Eliminar el salto de línea de la lista de operaciones
+            description: El nuevo atributo de destino no acepta saltos de línea. Este cambio eliminará todos los saltos de línea.
       conditions:
         delete:
           label: Eliminar condición
+          description: '¿Está seguro de que quiere eliminar esta condición?'
         operators:
           "STARTS WITH": empieza por
           "ENDS WITH": termina con
@@ -269,6 +309,10 @@ pimee_catalog_rule:
       unhandled_attribute_type: Lo sentimos, este tipo de atributo no está administrado todavía. Por favor, utilice las reglas de importación.
       empty_section:
         set_up_action: '¡Bien hecho! Has definido tu selección de producto. Ahora es el momento de configurar tu acción.'
+        set_up_condition: Si no quiere afectar a todo su catálogo, añada al menos una condición.
+        add_action: Y luego, añada una o varias acciones para aplicarlas a sus productos/modelos de productos.
+        doc: '¿No sabe lo que es una acción?'
+        doc_link: Este artículo puede ayudarle.
     delete:
       description: '¿Está seguro que desea eliminar esta regla? No es posible deshacer esta acción.'
       notification:
@@ -276,8 +320,15 @@ pimee_catalog_rule:
         success: Regla eliminada correctamente
     helper:
       add_to_category: Para añadir su selección de productos a una o más categorías, comience seleccionando sus árboles de categorías y luego, sus categorías
+      clear_attribute: Para borrar el valor del atributo, comience por seleccionar el atributo que desea borrar.
+      clear_categories: Se borrarán todas las categorías de los productos seleccionados.
+      clear_groups: Se borrarán todos los grupos de los productos seleccionados.
+      product_selection: "Debe definir su selección de productos para crear su regla. Si no sabe cómo hacerlo, "
+      product_selection_doc_link: eche un vistazo a este artículo.
+      set_attribute_info_clear: Debe definir el valor a establecer. Si desea borrar el valor del atributo, utilice la acción Borrar valor del atributo.
     legend:
       add_to_category: Crear una acción
+      product_selection: Crear una condición
     tree:
       item:
         selected: Elemento seleccionado
@@ -318,6 +369,9 @@ pimee_catalog_rule:
     required_categories: Se requiere al menos una categoría para esta acción
     required_constant_for_operation: Se requiere un valor constante para esta operación
     required_operator_for_operation: Se requiere un operador para esta operación
+    required_unit: Se requiere una unidad de medida
+    identifier_or_quantity_missing: Se requiere un identificador y una cantidad para cada elemento
+    required_item: Se requiere al menos un elemento para esta acción
     division_by_zero: Divisiones por cero no son posibles
     two_operations_are_required: La lista de operaciones debe contener 2 operaciones o más.
     two_items_are_required: La lista debe contener 2 elementos o más.
@@ -329,6 +383,7 @@ pimee_catalog_rule:
     unknown_scope: 'El canal "{{ scopeCode }}" no existe'
     scope_on_unscopable_attribute: Este atributo no es rastreable. Por favor, elimine el canal antes de continuar.
     unknown_families: "{1}La familia {{ familyCodes }} no existe|]1,+Inf[Las {{ familyCodes }} familias no existen"
+    unknown_family_variants: "{1}La variante de familia {{ familyVariantCodes }} no existe|]1,+Inf[Las variantes de familia {{ familyVariantCodes }} no existen"
     unknown_attribute_options: "{1}La opción {{ attributeOptionCodes }} no existe|]1,+Inf[Las opciones {{ attributeOptionCodes }} no existen"
     unknown_attribute_code: "El atributo {{ attributeCode }} no existe"
     unknown_categories: "{1}La categoría {{ categoryCodes }} no existe.|]1, +Inf[Las {{ categoryCodes }} categorías no existen"
@@ -342,6 +397,7 @@ pimee_catalog_rule:
     wrong_date_timespan: Para definir un lapso de tiempo válido, asegúrese de que su fecha de fin no está establecida antes de su fecha de inicio.
     measurement_family_not_found: La familia de medida "{{ measurement_code }}" no existe
     unit_not_found: La unidad de medida "{{ unitCode }}" no se encontró en la familia de medida "{{ measurement_code }}"
+    empty_association_warning: Si deja esta lista vacía, esta regla borrará este tipo de asociación.
 pim_enrich:
   entity:
     rule:
@@ -355,6 +411,8 @@ flash:
   rule:
     impacted_product_count: La acción en masa para calcular el número de productos impactados ha sido lanzada. Se le notificará cuando termine.
     executed: La ejecución de la(s) regla(s) ha sido lanzada. Será notificado una vez finalizada.
+    enabled: La regla ha sido habilitada
+    disabled: La regla ha sido deshabilitada
 pim_dashboard.widget.last_operations.job_type.mass_edit_rule: Configuración de reglas
 batch_jobs:
   add_attribute_value:

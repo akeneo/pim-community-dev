@@ -1,20 +1,25 @@
 pimee_catalog_rule:
   overview: "]-Inf, 1]{{ count }} regola|]1, Inf[{{ count }} regole"
   execution_button: Esegui le regole
+  selected: "]-Inf, 1]{{ count }} regola selezionata|]1, Inf[{{ count }} regole selezionate"
   dropdown:
     title: Altre azioni
   popin:
     execute_rules:
       confirm_title: Conferma esecuzione
+      confirm_content: Sei sicuro di voler eseguire le regole? (potrebbe richiedere qualche istante)
   notification:
+    fail: Azione non eseguita
     launched: L'esecuzione delle regole è stata lanciata. Sarai avvisato quando finisce.
   attribute:
     list:
       code.label: Codice
       condition.label: Condizione
       action.label: Azione
+      no_rule_yet.label: Nessuna regola per ora
   rule:
     value: Valore
+    include_children: Includi figli
     condition:
       if.label: se
     action:
@@ -33,9 +38,11 @@ pimee_catalog_rule:
           confirm_content: Sei sicuro di voler eseguire la regola?
       mass_edit_action:
         confirm_title: Conferma calcolo
+        confirm_content: Sei sicuro di voler calcolare il numero di prodotti influenzati dalle regole?
       mass_action:
         execute:
           confirm_title: Conferma esecuzione
+          confirm_content: Sei sicuro di voler eseguire le regole? (potrebbe richiedere qualche istante)
           success: L'esecuzione delle regole è stata lanciata. Sarai avvisato quando finisce.
           error: Si è verificato un errore durante l'esecuzione delle regole.
           empty_selection: Nessuna regola selezionata.
@@ -49,22 +56,55 @@ pimee_catalog_rule:
     category:
       catalog: Catalogo
       select: Seleziona una categoria
+      open_tree: Apri albero di categorie
       tree: Albero Categoria
+      menu: Seleziona un albero di categorie
       folder:
+        selected: Cartella selezionata
         not_selected: Cartella
       folders:
+        selected: Cartelle selezionate
         not_selected: Cartelle
+      arrow:
+        open: Apri categoria ramo
+        close: Chiudi categoria ramo
+    tab:
+      list: Schede generatore di regole e proprietà
+      rule_builder: Generatore di regole
     attribute:
       tab:
         rules:
           title: Regole
     creation:
+      helper: Il motore regole può aumentare radicalmente la tua produttività nel PIM automatizzando le azioni,
+      english_flag: Etichetta per l'inglese
       title: Crea una nuova regola
+      notification:
+        success: Regola creata con successo
+        failed: Creazione della regola non riuscita
+      constraint:
+        code:
+          required: È richiesto un codice regola
+          too_short: "Il codice regola è troppo corto. Richiede {{ characterLimit }} caratteri o più."
+          allowed_characters: Il codice regola può contenere solo caratteri alfanumerici e underscore.
+          unique: Questo codice è già in uso.
+      cross_link: Abbandona modulo di creazione regola
     edit:
+      header:
+        welcome: Benvenuto alla tua nuova area del motore regole!
+        description: Per creare una regola, devi definire la selezione del prodotto e poi aggiungere una o più azioni.
+        documentation_link: Clicca qui per scoprire la piena portata delle funzionalità del motore regole.
       properties:
         section:
           general: Parametri generali
           labels: Traduzioni etichetta
+      character_left: "]-Inf, 1]{{ count }} carattere rimasto|]1, +Inf[{{ count }} caratteri rimasti"
+      priority:
+        label: Priorità
+      status:
+        label: Stato
+        enabled: Attivato
+        disabled: Disattivato
       add_to_category: Aggiungi a categoria
       add_conditions: Aggiungere condizioni
       products_count:
@@ -89,36 +129,151 @@ pimee_catalog_rule:
         operator: operatore
         entity_type:
           label: Tipo di entità
+          placeholder: Seleziona un tipo di entità
+      execute:
+        button: Salva ed esegui
+        title: Salva ed esegui la regola
+        description: Salverai la regola corrente e la eseguirai in background. Al termine, verrai avvisato.
       duplicate:
         button: Salva e duplica
         title: Duplica la regola "{{ originalRuleCode }}"
       actions:
         add_action: Aggiungi azione
+        add_category:
+          title: AGGIUNGI categorie
+          helper: Per aggiungere la selezione del prodotto a una o più categorie, inizia selezionando gli alberi di categorie e poi seleziona le categorie
+        add_groups:
+          title: AGGIUNGI prodotti a gruppi
+          helper: Per aggiungere i prodotti ai gruppi, seleziona uno o più gruppi
+          subtitle: Seleziona i tuoi gruppi
+        set_groups:
+          title: IMPOSTA gruppi di prodotti
+          helper: Per impostare i gruppi di prodotti, seleziona uno o più gruppi
+          subtitle: Seleziona i tuoi gruppi
+        set_category:
+          title: IMPOSTA categorie
+          helper: Per impostare la selezione del prodotto su una o più categorie, inizia selezionando gli alberi di categorie e poi seleziona le categorie
         category:
+          select_category_trees: Seleziona i tuoi alberi di categorie
+          select_category_tree: Seleziona il tuo albero di categorie
+          select_categories: Seleziona le tue categorie
+          select_category: Seleziona la tua categoria
           category_tree: Struttura della categoria
           categories_selected: "]-Inf, 1]{{ count }} categoria selezionata|]1, +Inf[{{ count }} categorie selezionate"
+          no_category_tree: Seleziona prima un albero di categorie
+          remove_unknown_category: "Clicca qui per rimuovere questa categoria."
+        set_family:
+          title: IMPOSTA famiglia
+          subtitle: Seleziona la tua famiglia
+        set_attribute:
+          title: IMPOSTA valore attributo
+          helper: Per impostare i valori per il tuo attributo, inizia selezionando l'attributo di destinazione e poi seleziona il valore che vuoi impostare
+          target_subtitle: Seleziona la tua destinazione
+          value_subtitle: Definisci il tuo valore
+          attribute_label: Attributo
+          attribute_placeholder: Seleziona il tuo attributo di destinazione
+          select_reference_entity: Seleziona le tue entità di riferimento
+          select_asset: Seleziona i tuoi asset
+          select_measurement_unit: Seleziona la tua unità
+        set_quantified_associations:
+          title: IMPOSTA associazioni quantificate
+          helper: Per impostare le associazioni quantificate, seleziona i tipi di associazione e poi i prodotti, i modelli prodotto o i gruppi che vuoi associare alla selezione del prodotto.
         set_associations:
+          title: IMPOSTA associazioni
+          helper: Per impostare le associazioni, seleziona i tipi di associazione e poi i prodotti, i modelli prodotto o i gruppi che vuoi associare alla selezione del prodotto.
+          select_association_type: Seleziona il tuo tipo di associazione
           association_types: Tipi di associazione
           add_group: Aggiungi un gruppo
           add_product: Aggiungi un prodotto
           add_product_model: Aggiungi un modello di prodotto
           add_association_type: Aggiungi un tipo di associazione
+          select_title:
+            products: Seleziona i tuoi prodotti
+            product_models: Seleziona i tuoi modelli prodotto
+            groups: Seleziona i tuoi gruppi
           select:
             products: Prodotti
             product_models: Modelli di prodotto
             groups: Gruppi
+          counts:
+            products: ']-Inf, 1]{{ count }} prodotto|]1, +Inf[{{ count }} prodotti'
+            product_models: ']-Inf, 1]{{ count }} modello prodotto|]1, +Inf[{{ count }} modelli prodotto'
+            groups: ']-Inf, 1]{{ count }} gruppo|]1, Inf[{{ count }} gruppi'
+        add_associations:
+          title: AGGIUNGI associazioni
+          helper: Per aggiungere le associazioni, seleziona i tipi di associazione e poi i prodotti, i modelli prodotto o i gruppi che vuoi associare alla selezione del prodotto.
+        clear_attribute:
+          title: CANCELLA valore attributo
+          subtitle: Seleziona l'attributo da cancellare
+          attribute_label: Attributo
+        clear_associations:
+          title: CANCELLA associazioni
+          helper: Tutte le associazioni per i prodotti selezionati saranno cancellate.
+        clear_quantified_associations:
+          title: CANCELLA associazioni quantificate
+          helper: Tutte le associazioni quantificate per i prodotti selezionati saranno cancellate.
+        clear_categories:
+          title: CANCELLA categorie
+        clear_groups:
+          title: CANCELLA gruppi
+        remove_category:
+          title: RIMUOVI categorie
+          helper: Per rimuovere la selezione del prodotto da una o più categorie, inizia selezionando gli alberi di categorie e poi seleziona le categorie
+        remove_attribute_value:
+          title: RIMUOVI valore attributo
+          helper: Per rimuovere i valori dal tuo attributo, inizia selezionando l'attributo di destinazione e poi seleziona i valori che vuoi rimuovere.
+          value_subtitle: Definisci i tuoi valori da rimuovere
+        add_attribute_value:
+          title: AGGIUNGI valore attributo
+          helper: Per aggiungere valori al tuo attributo, inizia selezionando l'attributo di destinazione e poi seleziona i valori che vuoi aggiungere
+          value_subtitle: Definisci i tuoi valori da aggiungere
+        copy:
+          title: COPIA valore attributo
+          helper: Per copiare i valori da un attributo a un altro, inizia selezionando l'attributo d'origine e poi seleziona l'attributo di destinazione.
+          select_source: Seleziona la tua origine
+          select_target: Seleziona la tua destinazione
+          no_source: Seleziona prima il tuo attributo di origine
+        delete:
+          label: Rimuovi azione
+          description: Sei sicuro di voler rimuovere questa azione?
+        set_status:
+          title: IMPOSTA stato
+          subtitle: Definisci il tuo stato
+          helper: Per impostare uno stato per i prodotti, selezionane uno nell'elenco qui sotto
+          placeholder: Seleziona il tuo stato
+        remove_groups:
+          title: RIMUOVI prodotti da gruppi
+          helper: Per rimuovere i prodotti dai gruppi, seleziona uno o più gruppi
+          subtitle: Seleziona i tuoi gruppi
         calculate:
+          title: CALCOLA valori
+          helper: Per calcolare i valori degli attributi numerici, scegli gli attributi e/o i valori e poi seleziona l'attributo di destinazione in cui inserire il risultato. Se necessario, puoi anche arrotondare il risultato finale.
+          add_value: Aggiungi valore
+          add_attribute: Aggiungi attributo
+          select_target: Seleziona la tua destinazione
+          attribute_placeholder: Seleziona il tuo attributo di destinazione
+          round_precision: Precisione arrotondamento
           operator:
             add: Aggiungi
             subtract: Sottrarre
             multiply: Moltiplica
             divide: Dividi
+            choose: Scegli il tuo operatore
         concatenate:
+          title: CONCATENA valori
+          helper: Per concatenare i valori attributo, aggiungi gli attributi e poi seleziona l'attributo di destinazione.
+          select_target: Seleziona la tua destinazione
+          attribute_placeholder: Seleziona il tuo attributo di destinazione
           add_text: Aggiungi testo
           add_attribute: Aggiungi attributo
           add_new_line: Aggiungi interruzione di linea
           line_break: Interruzione di linea
           date_format: Seleziona un formato data
+          label_locale: Etichetta impostazione locale
+          unit_label_locale: Impostazione locale unità
+          remove_new_line_confirm:
+            label: Rimuovi interruzione di riga da elenco operazioni
+            description: Il nuovo attributo di destinazione non accetta interruzioni di riga. Questa modifica rimuoverà tutte le interruzioni di riga.
       conditions:
         delete:
           label: Rimuovi condizione
@@ -146,10 +301,34 @@ pimee_catalog_rule:
           "<=": è uguale o inferiore a
       notification:
         success: Regola aggiornata correttamente
+        failed: Aggiornamento della regola non riuscito
+        execute_success: Regola aggiornata ed eseguita con successo
+        execute_failed: La regola è stata salvata ma si è verificato un errore durante l'esecuzione
+      discard_changes: Se lasci la pagina, le tue modifiche andranno perse.
+      please_select_attribute: Seleziona prima un attributo di destinazione.
+      unhandled_attribute_type: Spiacenti, questo tipo di attributo non è ancora gestito. Utilizza l'importazione delle regole.
+      empty_section:
+        set_up_action: Ben fatto! Hai definito la selezione del prodotto. Ora è il momento di configurare la tua azione.
+        set_up_condition: Se non desideri influenzare l'intero catalogo, aggiungi almeno una condizione.
+        add_action: Poi aggiungi una o più azioni da applicare ai tuoi prodotti/modelli prodotto.
+        doc: Non sai cos'è un'azione?
+        doc_link: Questo articolo potrebbe aiutarti.
     delete:
+      description: Sei sicuro di voler eliminare questa regola? Non è possibile annullare questa azione.
       notification:
         failed: Cancellazione della regola non riuscita
         success: Regola eliminata con successo
+    helper:
+      add_to_category: Per aggiungere la selezione del prodotto a una o più categorie, inizia selezionando gli alberi di categorie e poi seleziona le categorie.
+      clear_attribute: Per cancellare il valore attributo, inizia selezionando l'attributo da cancellare.
+      clear_categories: Tutte le categorie per i prodotti selezionati saranno cancellate.
+      clear_groups: Tutti i gruppi per i prodotti selezionati saranno cancellati.
+      product_selection: "Devi definire la selezione del prodotto per creare la tua regola. Se non sai come, "
+      product_selection_doc_link: dai un'occhiata a questo articolo.
+      set_attribute_info_clear: Devi definire il valore da impostare. Se desideri cancellare il valore attributo, utilizza l'azione Cancella valore attributo.
+    legend:
+      add_to_category: Crea un'azione
+      product_selection: Crea una condizione
     tree:
       item:
         selected: Elemento selezionato
@@ -158,11 +337,14 @@ pimee_catalog_rule:
       operators:
         specific_date: Data specifica
       label:
+        date_type: Scegli un tipo di data
+        operator: Scegli un operatore
         date: Scegli una data
         relative_date: Scegli una data
         locale: Scegli una lingua
         scope: Scegli un ambito
         period: Scegli una unità di tempo
+        open_period: Apri menu unità tempo
         date_from: Scegli una data di inizio
         date_to: Scegli una data di fine
         date_past: Data nel passato
@@ -175,23 +357,79 @@ pimee_catalog_rule:
       hour: "]-Inf, 1] Ora|]1, +Inf[ Ore"
       minute: "]-Inf, 1] Minuto|]1, +Inf[ Minuti"
   exceptions:
+    loading: Si è verificato un errore durante il caricamento della definizione delle regole.
+    required: Questo campo è obbligatorio
+    required_attribute: È richiesto un attributo
+    required_locale: È richiesta un'impostazione locale per l'attributo {{ attributeLabel }}
+    required_scope: È richiesto un canale per l'attributo {{ attributeLabel }}
+    required_currency: È richiesta una valuta per l'attributo {{ attributeLabel }}
+    required_locale_completeness: È richiesta un'impostazione locale per il completamento
+    required_scope_completeness: È richiesto un canale per il completamento
+    required_value: È richiesto un valore per questa azione
+    required_categories: È richiesta almeno una categoria per questa azione
+    required_constant_for_operation: È richiesto un valore costante per questa operazione
+    required_operator_for_operation: È richiesto un operatore per questa operazione
+    required_unit: È richiesta un'unità di misura
+    identifier_or_quantity_missing: Sono richiesti un identificatore e una quantità per ciascun elemento
+    required_item: È richiesto almeno un elemento per questa azione
+    division_by_zero: Le divisioni per zero non sono possibili
+    two_operations_are_required: L'elenco delle operazioni deve contenere 2 o più operazioni.
+    two_items_are_required: L'elenco deve contenere 2 o più elementi.
+    unknown_or_inactive_locale: 'L''impostazione locale "{{ localeCode }}" non esiste o non è attivata'
+    unknown_or_inactive_currency: 'La valuta "{{ currencyCode }}" non esiste o non è attivata'
+    unbound_locale: 'L''impostazione locale "{{ localeCode }}" non è attivata nel canale "{{ channelCode }}"'
+    unbound_currency: 'La valuta "{{ currencyCode }}" non è attivata nel canale "{{ channelCode }}"'
+    locale_on_unlocalizable_attribute: Questo attributo non è localizzabile. Rimuovi l'impostazione locale prima di continuare.
+    unknown_scope: 'Il canale "{{ scopeCode }}" non esiste'
+    scope_on_unscopable_attribute: Questo attributo non è customizzabile. Rimuovi il canale prima di continuare.
+    unknown_families: "{1}La famiglia {{ familyCodes }} non esiste|]1,+Inf[Le famiglie {{ familyCodes }} non esistono"
+    unknown_family_variants: "{1}La famiglia variante {{ familyVariantCodes }} non esiste|]1,+Inf[Le famiglie variante {{ familyVariantCodes }} non esistono"
+    unknown_attribute_options: "{1}L'opzione {{ attributeOptionCodes }} non esiste]1,+Inf[Le opzioni {{ attributeOptionCodes }} non esistono"
+    unknown_attribute_code: "L'attributo {{ attributeCode }} non esiste"
+    unknown_categories: "{1}La categoria {{ categoryCodes }} non esiste.<unk> ]1, +Inf[Le categorie {{ categoryCodes }} non esistono"
+    unknown_attribute: "Questo attributo non esiste."
+    unknown_groups: "{1} Il gruppo {{ groupCodes }} non esiste<unk> ]1, +Inf[I seguenti gruppi non esistono: {{ groupCodes }}"
+    select_another_attribute_or_remove_action: "Seleziona un altro attributo o rimuovi questa azione."
+    select_another_attribute: "Seleziona un altro attributo"
     or: o
+    create_attribute_link: clicca qui per creare l'attributo
+    edit_unauthorize: Non sei autorizzato a modificare le regole
+    wrong_date_timespan: Per definire un intervallo di tempo valido, assicurati che la data di fine non sia impostata prima della data di inizio.
+    measurement_family_not_found: La famiglia di unità di misura "{{ measurement_code }}" non esiste
+    unit_not_found: L'unità "{{ unitCode }}" non è stata trovata nella famiglia di unità di misura "{{ measurement_code }}"
+    empty_association_warning: Se lasci vuoto l'elenco, questa regola cancellerà questo tipo di associazione.
 pim_enrich:
   entity:
     rule:
       module:
         delete:
           confirm: Sei sicuro di voler eliminare questa regola? Non è possibile annullare questa azione
+      flash:
+        delete:
+          success: Regola eliminata con successo
 flash:
   rule:
+    impacted_product_count: L'azione di massa per calcolare il numero di prodotti influenzati è stata lanciata. Sarai avvisato quando finisce.
     executed: L'esecuzione delle regole è stata lanciata. Sarai avvisato quando finisce.
+    enabled: La regola è stata attivata.
+    disabled: La regola è stata disattivata
 pim_dashboard.widget.last_operations.job_type.mass_edit_rule: Impostazioni delle regole
 batch_jobs:
   add_attribute_value:
     execute_rules.label: Esecuzione regole
   default_steps:
+    export_rules: Esportazione regole
+    import_rules: Importazione regole
+    calculate_affected_products: Calcola prodotti interessati
     execute_rules: Esecuzione regole
+  yml_rule_import:
+    label: Importazione regole in YAML
+    import.label: Importazione regole
+  yml_rule_export:
+    label: Esportazione regole in YAML
+    export.label: Esportazione regole
   rule_impacted_product_count:
+    label: Numero di prodotti influenzati
     perform.label: Conta i prodotti interessati
   csv_product_import_with_rules:
     label: Importazione prodotti in formato CSV con regole

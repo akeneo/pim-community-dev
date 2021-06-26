@@ -62,10 +62,12 @@ pim_datagrid:
     type:
       asset_manager_execute_naming_convention: 执行资产品类命名约定
       asset_manager_link_assets_to_products: 将资产链接到产品
+      asset_manager_compute_transformations: 计算资产转换
 batch_jobs:
   default_steps:
     execute_naming_convention: 执行资产品类命名约定
     link_assets_to_products: 将资产链接到产品
+    compute_transformations: 计算资产转换
 job_execution:
   summary:
     assets: 资产

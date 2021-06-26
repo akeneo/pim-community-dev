@@ -34,13 +34,22 @@ pim_import_export:
       job_type:
         asset_manager_compute_transformations: "Calcular transformaciones de activos"
         asset_manager_link_assets_to_products: "Vincular activos a productos"
+        asset_manager_execute_naming_convention: "Ejecutar la convención de nombres de familia de activos"
 pim_analytics:
   info_type:
     api_connection: Número de conexiones API
     nb_asset_families: Número de familias de activos
+    max_number_of_assets_per_asset_family: Número máximo de activos por familia de activos
     average_number_of_values_per_assets: Número promedio de valores por activos
+    average_number_of_assets_per_asset_family: Número promedio de activos por familia de activos
     max_number_of_attributes_per_asset_family: Número máximo de atributos por familia de activos
     average_number_of_attributes_per_asset_family: Número promedio de atributos por familia de activos
+    data_source:
+      tracked: Destino de datos con seguimiento
+      untracked: Destino de Datos sin seguimiento
+    data_destination:
+      tracked: Fuente de datos con seguimiento
+      untracked: Fuente de datos sin seguimiento
     other:
       tracked: Otros rastreados
       untracked: Otros no rastreados
@@ -53,9 +62,12 @@ pim_datagrid:
     type:
       asset_manager_execute_naming_convention: Ejecutar la convención de nombres de familia de activos
       asset_manager_link_assets_to_products: Vincular activos a productos
+      asset_manager_compute_transformations: Calcular transformaciones de activos
 batch_jobs:
   default_steps:
+    execute_naming_convention: Ejecutar la convención de nombres de familia de activos
     link_assets_to_products: Vincular activos a productos
+    compute_transformations: Calcular transformaciones de activos
 job_execution:
   summary:
     assets: Recursos

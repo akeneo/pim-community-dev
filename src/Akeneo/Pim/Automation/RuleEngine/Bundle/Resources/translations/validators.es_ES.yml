@@ -40,6 +40,9 @@ pimee_catalog_rule:
           missing_to_field_key: 'Falta la clave "to_field" o está vacía'
         concatenate:
           invalid_source: 'No se pueden concatenar los datos del campo "{{ field }}"'
+          missing_source_key: 'Se requiere una sola clave entre «campo», «texto» o «new_line», seleccione una'
+          only_one_source_key_expected: 'Se requiere una sola clave entre «campo», «texto» o «new_line», seleccione solo una'
+          text_target_does_not_accept_new_line: 'El atributo de destino «{{ targetField }}» no acepta una nueva línea'
           unexpected_source_option: 'La clave {{ key }} es irrelevante para el atributo {{ attribute }}'
           missing_from_key: 'Falta la clave "desde" o está vacía'
           missing_to_key: 'Falta la clave "a" o está vacía'
@@ -52,7 +55,10 @@ pimee_catalog_rule:
           invalid_operator: 'Este valor debe ser "add", "subtract", "multiply" o "divide"'
         remove:
           invalid_field: 'No puede eliminar elementos del campo "{{ field }}"'
+          include_children_option: 'La opción «include_children» solo puede aplicarse con el campo «categories»'
         set:
           invalid_field: 'No puede establecer datos en el campo "{{ field }}"'
+          missing_value_key: 'Falta la clave «valor» o está vacía'
         custom:
           unkown_type: 'Tipo de acción desconocido'
+          missing_type_key: 'Falta la clave «tipo» o está vacía'

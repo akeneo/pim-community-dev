@@ -85,6 +85,9 @@ batch_jobs:
     perform.label: 以 Xlsx 格式网格上下文快速导出已发布的产品
   publish_product:
     perform.label: 发布产品
+  default_steps:
+    clean_attribute:
+      clean_draft: 清理提案
 pim_notification:
   types:
     pimee_workflow_product_draft_notification_new_proposal: 新提案
