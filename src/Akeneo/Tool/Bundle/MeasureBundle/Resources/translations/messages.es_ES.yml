@@ -18,6 +18,7 @@ pim_measure:
     Pressure: Presión
     Energy: Energía
     CaseBox: Embalaje
+    Brightness: Brillo
   units:
     #Area
     ACRE: Acre
@@ -63,7 +64,7 @@ pim_measure:
     INCH: Pulgadas
     HECTOMETER: Hectómetro
     KILOMETER: Kilómetro
-    METER: Medidor
+    METER: Metro
     MIL: Mil
     MILE: Milla
     MILLIMETER: Milímetro
@@ -148,7 +149,6 @@ pim_measure:
     GALLON: Galón
     LITER: Litro
     MILLILITER: Mililitro
-    OUNCE: Onza
     PINT: Pinta
     #Weight
     DENIER: Denier
@@ -159,6 +159,7 @@ pim_measure:
     MARC: Marc
     MILLIGRAM: Miligramo
     ONCE: Onza
+    OUNCE: Onza
     POUND: Libra
     TON: Tonelada
     #Pressure
@@ -178,3 +179,6 @@ pim_measure:
     #CaseBox
     PIECE: Pieza
     DOZEN: Docena
+    #Brightness
+    LUMEN: Lumen
+    NIT: Nit

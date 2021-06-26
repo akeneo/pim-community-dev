@@ -17,7 +17,7 @@ This value should not be a decimal.: Este valor no debe ser un decimal.
 'The file extension is not allowed (allowed extensions: %extensions%).': 'La extensión del fichero no está permitida (las extensiones permitidas son: %extensions%).'
 "The value %value% is already set on another product for the unique attribute %attribute%": El valor %value% ya es usado en otro producto por el atributo único %attribute%
 The same identifier is already set on another product: El mismo identificador se encuentra ya en otro producto
-regex.comma_or_semicolon.message: Este campo no debería contener comas o punto y comas.
+regex.comma_or_semicolon_or_surrounding_space.message: Este campo no debe contener ninguna coma o punto y coma o espacio principal o final
 file.extensions.message: 'La extensión del fichero no está permitida (las extensiones permitidas son: %extensions%).'
 "This type of value expects the use of {{ decimal_separator }} to separate decimals.": Se espera el uso de {{ decimal_separator }} para separar los decimales.
 "This type of value expects the use of dot (.) to separate decimals.": Este valor debería usar un punto (.) como separación de decimales.

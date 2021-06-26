@@ -3,7 +3,7 @@
 "Yes, do it": "Sí, hazlo"
 "Ok, got it.": "De acuerdo."
 "Edit": "Editar"
-"Unexpected error occurred. Please contact system administrator.": "Ocurrió un error inesperado. Por favor, póngase en contacto con el administrador del sistema."
+"Unexpected error occurred. Please contact system administrator.": "Se ha producido un error inesperado. Por favor, contacte con el administrador del sistema."
 "Yes, revoke": "Si, revocar"
 "Revoke Confirmation": "Revocar confirmación"
 Prev: Ant
@@ -210,18 +210,19 @@ pim_common:
     DOES NOT CONTAIN: No contiene
     STARTS WITH: Comienza por
     ENDS WITH: Termina por
+  read_more: Leer más
 error:
   exception: Oups! Un error {{ status_code }} ha ocurrido...
   forbidden: Prohibido. Usted no tiene permitido acceder a esta página
 alert:
   attribute_option:
-    error_occurred_during_submission: Se produjo un error durante el envío del formulario al servidor
+    error_occurred_during_submission: Se ha producido un error durante el envió del formulario en el servidor
     save_before_edit_other: Por favor registre sus modificaciones en otras filas antes de editar este
   session_storage:
     not_available: Su navegador parece no ser compatible con sessionStorage. Por favor contacte a su administrador
 pim_enrich.entity.fallback:
   flash:
-    generic_error: Ocurrió un error
+    generic_error: Ha ocurrido un error
     update:
       fail: Error al actualizar
       success: Actualización exitosa
@@ -238,18 +239,6 @@ pim_enrich.entity.fallback:
       leave: '¿Está usted seguro que desea abandonar esta página?'
       discard_changes: Perderá los cambios realizados sobre {{ entity }} si abandona esta página.
       discard_changes_title: '¿Está seguro?'
-pim_enrich.entity.api_connection:
-  flash:
-    create:
-      success: Conexión API creada exitosamente
-    delete:
-      success: Conexión API revocada con éxito
-      fail: No puede revocar esta conexión API
-  page_title:
-    index: "]-Inf, 1]{{ count }} conexión API|]1, Inf[{{ count }} conexiones API"
-  module:
-    revoke:
-      confirm: '¿Está seguro de que desea revocar esta conexión API?'
 pim_enrich.entity.job_execution:
   page_title:
     index: "]-Inf, 1]{{ count }} operación|]1, Inf[{{ count }} operaciones"
@@ -296,8 +285,6 @@ pim_title:
   pim_enrich_mass_edit_action_perform: Edición masiva | Realizar
   pim_enrich_job_tracker_index: Seguimiento de procesos
   pim_enrich_job_tracker_show: Seguimiento de procesos | Ver el trabajo
-  pim_enrich_api_connection_index: Conexiones API
-  pim_enrich_api_connection_create: Conexiones API | Crear
   pim_enrich_mass_edit_action: Edición en masa
   pim_analytics_system_info_index: Información del sistema
 pim_menu:
@@ -331,7 +318,6 @@ pim_menu:
     user_role: Roles
     info: Información del sistema
     job_tracker: Seguimiento de procesos
-    api_connection: Conexiones API
     catalog_volume: Monitoreo del volumen del catálogo
   navigation:
     activity: Actividad de navegación
@@ -349,3 +335,11 @@ pim_notification:
     export: Export
     quick_export: Exportación rápida
     mass_edit: Edición en masa
+akeneo_communication_channel:
+  link:
+    title: Anuncios
+  panel:
+    title: Anuncios
+    list:
+      empty: No hay noticias por el momento. ¡Estate atento!
+      error: No pudimos recuperar las noticias. Por favor, inténtalo de nuevo más tarde.

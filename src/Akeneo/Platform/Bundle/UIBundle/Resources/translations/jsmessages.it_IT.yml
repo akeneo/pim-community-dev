@@ -340,3 +340,6 @@ akeneo_communication_channel:
     title: Annunci
   panel:
     title: Annunci
+    list:
+      empty: Al momento, non ci sono notizie. Rimani sintonizzato!
+      error: Impossibile recuperare le notizie. Riprova più tardi.
