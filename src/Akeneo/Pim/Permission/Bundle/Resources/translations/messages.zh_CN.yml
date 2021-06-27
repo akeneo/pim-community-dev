@@ -75,6 +75,7 @@ pim_enrich:
     edit_common_attributes:
       message:
         error: 您不是该产品的所有者，您不能对其进行编辑。
+To be able to convert this variant product you need to have the 'Own' permission on its categories.: "为了能够转换此变型产品，您需要拥有其类别的“所有”权限。"
 pimee_enrich:
   attribute_group:
     tab:
