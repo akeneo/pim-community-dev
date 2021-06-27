@@ -26,17 +26,20 @@ teamwork_assistant:
   create_project_modal:
     saved: 项目已保存，计算完成后会通知您。
     title: 项目
+    label_already_used: 此值已用于一个项目。
   widget:
     no_project: 当前没有项目
     no_project_create: 创建新项目
     description: 描述
     due_date: 截止日期
     todo: 待办事项
-    in_progress: 正在进行中
-    done: 已完成
+    in_progress: 进行中
+    done: 完成
     all_contributors: 全部贡献者
     you: 您
     display_products: 显示产品
+    projects: 项目
+    contributors: "贡献者\n"
     placeholder:
       contributor_selector: 搜索贡献者
       project_selector: 搜索项目
@@ -44,6 +47,8 @@ teamwork_assistant:
       to_start: 待开始产品
       in_progress: 正在进行中的产品
       done: 已完成的产品
+    searching: 正在搜索...
+    no_search_results: 抱歉，找不到结果 
 pim_datagrid:
   view_selector:
     project: 项目
@@ -67,3 +72,6 @@ pim_notification:
     project_finished: 项目已完成
     project_calculation: 项目计算
     project_due_date: 项目截止日期
+pim_analytics:
+  info_type:
+    nb_projects: 项目数量
