@@ -11,7 +11,7 @@ type CategoryTreeModel = {
   selected?: boolean;
   readOnly?: boolean;
   children?: CategoryTreeModel[];
-  parent?: CategoryTreeModel;
+  parent?: CategoryTreeModel | null;
 };
 
 type CategoryTreeProps = {
