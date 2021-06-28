@@ -40,6 +40,7 @@ product_model.family_variant.not_blank.message: La famiglia variante del modello
 "The %attribute% attribute must not contain more than %limit% characters. The submitted value is too long.": L'attributo %attribute% non deve contenere più di %limit% caratteri. Il valore inviato è troppo lungo.
 'The {{ attribute_code }} attribute must match the following regular expression: {{ pattern }}.': 'L''attributo {{ attribute_code }} deve corrispondere alla seguente espressione regolare: {{ pattern }}.'
 'The {{ attribute_code }} attribute cannot be empty.': 'L''attributo {{ attribute_code }} non può essere vuoto.'
+"The %attribute% attribute requires an e-mail address.": 'L''attributo %attribute% richiede un indirizzo e-mail.'
 pim_catalog:
   constraint:
     can_have_family_variant_empty_axis_value: 'L''attributo "%attribute%" non può essere vuoto, in quanto è definito come asse per questa entità'
@@ -72,6 +73,7 @@ pim_catalog:
     product_identifier: Questi identificatori "%s" non esistono.
     blacklisted_attribute_code: Codice temporaneamente bloccato fino al completamento del job di pulizia in corso.
     blacklisted_attribute_code_with_link: "Codice temporaneamente bloccato fino al completamento del job di pulizia in corso. Per saperne di più, controlla il <a href='{{ link }}' target='_blank'>dettaglio del job</a>."
+    duplicate_options: '{1} La seguente opzione è stata utilizzata più volte: "{{ duplicate_options }}". Controlla nuovamente l''elenco delle opzioni. ]1, +Inf] Le seguenti opzioni sono state utilizzate più volte: "{{ duplicate_options }}". Controlla nuovamente l''elenco delle opzioni.'
     0: Si è verificato un errore imprevisto.
     100: Valore non previsto
     101: In questo campo è previsto un valore booleano.

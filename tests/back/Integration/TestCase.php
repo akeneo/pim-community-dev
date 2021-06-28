@@ -48,6 +48,9 @@ abstract class TestCase extends KernelTestCase
         $authenticator->createSystemUser();
 
         $this->get('pim_connector.doctrine.cache_clearer')->clear();
+
+        // Some messages can be in the queue after a failing test. To prevent error we remove then before each tests.
+        $this->get('akeneo_integration_tests.launcher.job_launcher')->flushJobQueue();
     }
 
     /**

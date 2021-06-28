@@ -51,9 +51,48 @@ services:
             - '@akeneo_measure.installer.measurement_installer'
             - '@messenger.transport.business_event'
             - '@event_dispatcher'
+            - '@akeneo_integration_tests.launcher.job_launcher'
             - '%env(APP_DATABASE_HOST)%'
             - '%env(APP_DATABASE_NAME)%'
             - '%env(APP_DATABASE_USER)%'
             - '%env(APP_DATABASE_PASSWORD)%'
             - '%kernel.cache_dir%/sql-dump/'
             - '%index_hosts%'
+
+    akeneo_integration_tests.launcher.job_launcher:
+        class: Akeneo\Test\IntegrationTestsBundle\Launcher\JobLauncher
+        arguments:
+            - '@kernel'
+            - '@database_connection'
+            - !tagged akeneo.pim.tests.pub_sub_queue_status.job
+            - '@logger'
+
+    akeneo_integration_tests.pub_sub_queue_status.ui_job:
+        class: AkeneoTest\Integration\IntegrationTestsBundle\Launcher\PubSubQueueStatus
+        arguments:
+            - '@Akeneo\Tool\Bundle\MessengerBundle\Transport\GooglePubSub\PubSubClientFactory'
+            - '%env(GOOGLE_CLOUD_PROJECT)%'
+            - '%env(PUBSUB_TOPIC_JOB_QUEUE_UI)%'
+            - '%env(PUBSUB_SUBSCRIPTION_JOB_QUEUE_UI)%'
+        tags:
+            - { name: 'akeneo.pim.tests.pub_sub_queue_status.job' }
+
+    akeneo_integration_tests.pub_sub_queue_status.import_export_job:
+        class: AkeneoTest\Integration\IntegrationTestsBundle\Launcher\PubSubQueueStatus
+        arguments:
+            - '@Akeneo\Tool\Bundle\MessengerBundle\Transport\GooglePubSub\PubSubClientFactory'
+            - '%env(GOOGLE_CLOUD_PROJECT)%'
+            - '%env(PUBSUB_TOPIC_JOB_QUEUE_IMPORT_EXPORT)%'
+            - '%env(PUBSUB_SUBSCRIPTION_JOB_QUEUE_IMPORT_EXPORT)%'
+        tags:
+            - { name: 'akeneo.pim.tests.pub_sub_queue_status.job' }
+
+    akeneo_integration_tests.pub_sub_queue_status.data_maintenance_job:
+        class: AkeneoTest\Integration\IntegrationTestsBundle\Launcher\PubSubQueueStatus
+        arguments:
+            - '@Akeneo\Tool\Bundle\MessengerBundle\Transport\GooglePubSub\PubSubClientFactory'
+            - '%env(GOOGLE_CLOUD_PROJECT)%'
+            - '%env(PUBSUB_TOPIC_JOB_QUEUE_DATA_MAINTENANCE)%'
+            - '%env(PUBSUB_SUBSCRIPTION_JOB_QUEUE_DATA_MAINTENANCE)%'
+        tags:
+            - { name: 'akeneo.pim.tests.pub_sub_queue_status.job' }
