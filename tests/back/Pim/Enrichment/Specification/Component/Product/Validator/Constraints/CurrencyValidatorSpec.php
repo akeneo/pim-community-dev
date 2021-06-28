@@ -50,7 +50,7 @@ class CurrencyValidatorSpec extends ObjectBehavior
             ->shouldBeCalled()
             ->willReturn($violation);
         $violation->atPath('currency')->shouldBeCalled()->willReturn($violation);
-        $violation->setCode(Argument::type('string'))->shouldBeCalled()->willReturn($violation);
+        $violation->setCode(Currency::CURRENCY)->shouldBeCalled()->willReturn($violation);
         $violation->addViolation()->shouldBeCalled();
 
         $this->validate($price, $constraint)->shouldReturn(null);

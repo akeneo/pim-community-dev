@@ -27,7 +27,7 @@ class UnknownCurrencySpec extends ObjectBehavior
         $this->beAnInstanceOf(DocumentationBuilderInterface::class);
     }
 
-    function it_supports_scopable_values_constraint(ConstraintViolationInterface $constraintViolation)
+    function it_supports_currency_constraint(ConstraintViolationInterface $constraintViolation)
     {
         $constraintViolation->getCode()->willReturn(Currency::CURRENCY);
         $this->support($constraintViolation)->shouldReturn(true);
