@@ -106,3 +106,9 @@ services:
     Akeneo\Tool\Bundle\BatchBundle\Persistence\Sql\SqlMarkJobExecutionAsFailedWhenInterrupted:
         arguments:
             - '@database_connection'
+
+    Akeneo\Tool\Component\Batch\Event\ErrorHandlerConfigurationListener:
+        arguments:
+          - '@logger'
+        tags:
+          - { name: kernel.event_listener, event: console.command }
