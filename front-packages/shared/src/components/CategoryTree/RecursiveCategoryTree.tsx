@@ -32,7 +32,7 @@ const RecursiveCategoryTree: React.FC<RecursiveCategoryTreeProps> = ({
   const handleOpen = React.useCallback(() => {
     if (typeof categoryState.children === 'undefined') {
       setCategoryState(currentCategoryState => ({...currentCategoryState, loading: true}));
-      childrenCallback(categoryState.id, tree).then(children => {
+      childrenCallback(categoryState.id, parentTree).then(children => {
         setCategoryState(currentCategoryState => ({...currentCategoryState, loading: false, children}));
       });
     }
@@ -54,7 +54,7 @@ const RecursiveCategoryTree: React.FC<RecursiveCategoryTreeProps> = ({
         code: categoryState.code,
         label: categoryState.label,
       }}
-      selected={categoryState.selected || (isCategorySelected ? isCategorySelected(categoryState, parentTree) : categoryState.selected)}
+      selected={isCategorySelected ? isCategorySelected(categoryState) : categoryState.selected}
       isLoading={categoryState.loading}
       readOnly={categoryState.readOnly}
       selectable={categoryState.selectable}

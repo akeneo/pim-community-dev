@@ -33,13 +33,12 @@ const CategoryTree: React.FC<CategoryTreeProps> = ({
   onClick,
   initCallback,
   isCategorySelected,
-   // @ts-ignore
-   shouldRerender,
+  shouldRerender,
   ...rest
-}: CategoryTreeProps) => {
+}) => {
   const [tree, setTree] = React.useState<CategoryTreeModel>();
 
-  const recursiveGetFirstSelectedCategoryLabel: (category: CategoryTreeModel, tree?: CategoryTreeModel) => string | undefined = (category, tree) => {
+  const recursiveGetFirstSelectedCategoryLabel: (category: CategoryTreeModel) => string | undefined = category => {
     if (
       isCategorySelected &&
       isCategorySelected({
@@ -51,7 +50,7 @@ const CategoryTree: React.FC<CategoryTreeProps> = ({
       return category.label;
     }
     return (category.children || []).reduce(
-      (previous, subCategory) => previous || recursiveGetFirstSelectedCategoryLabel(subCategory, tree),
+      (previous, subCategory) => previous || recursiveGetFirstSelectedCategoryLabel(subCategory),
       undefined as string | undefined
     );
   };
@@ -74,6 +73,7 @@ const CategoryTree: React.FC<CategoryTreeProps> = ({
   return (
     <RecursiveCategoryTree
       tree={tree}
+      parentTree={tree}
       childrenCallback={childrenCallback}
       onChange={onChange}
       onClick={onClick}
