@@ -10,6 +10,7 @@ monolog:
       path:       'php://stderr'
       formatter:  'monolog.formatter.json'
       channels:   ['!event_api', '!business_event']
+      include_stacktraces: true
     event_and_business_api:
       type: stream
       path: 'php://stderr'
