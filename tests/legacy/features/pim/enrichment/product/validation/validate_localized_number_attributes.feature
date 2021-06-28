@@ -24,7 +24,7 @@ Feature: Validate localized number attributes of a product
   Scenario: Validate the negative allowed constraint of number attribute
     Given I change the Vendu to "-1"
     And I save the product
-    Then I should see validation tooltip "L'attribut sold requiert une valeur égale ou supérieure à 0"
+    Then I should see validation tooltip "L'attribut sold requiert une valeur supérieure ou égale à 0"
     And there should be 1 error in the "[other]" tab
 
   Scenario: Validate the decimals allowed constraint of number attribute
@@ -43,7 +43,7 @@ Feature: Validate localized number attributes of a product
   Scenario: Validate the number min constraint of number attribute
     Given I change the Classement to "0"
     And I save the product
-    Then I should see validation tooltip "L'attribut rating requiert une valeur égale ou supérieure à 1"
+    Then I should see validation tooltip "L'attribut rating requiert une valeur supérieure ou égale à 1."
     And there should be 1 error in the "[other]" tab
 
   Scenario: Validate the type constraint of decimal attribute

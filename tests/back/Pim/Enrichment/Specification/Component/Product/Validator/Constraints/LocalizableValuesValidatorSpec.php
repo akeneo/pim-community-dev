@@ -215,11 +215,12 @@ class LocalizableValuesValidatorSpec extends ObjectBehavior
         $context->buildViolation(
             $constraint->invalidLocaleSpecificMessage,
             [
-                '%attribute_code%' => 'name',
-                '%invalid_locale%' => 'fr_FR',
+                '%attribute%' => 'name',
+                '%locale%' => 'fr_FR',
             ]
         )->willReturn($violationBuilder);
         $violationBuilder->atPath('[name-<all_channels>-fr_FR]')->willReturn($violationBuilder);
+        $violationBuilder->setCode(LocalizableValues::NOT_AVAILABLE_LOCALE_ERROR)->willReturn($violationBuilder);
         $violationBuilder->addViolation()->shouldBeCalled();
 
         $this->validate($values, $constraint);

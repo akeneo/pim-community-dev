@@ -62,6 +62,7 @@ pim_common:
   name: 名称
   remove: 移除
   code: 代码
+  label: 标签
   quantity: 数量
   products: 产品
   product_models: 产品模型
@@ -99,11 +100,13 @@ pim_enrich:
       comment: 评论产品
       download: 下载 PDF 格式的产品
       history: 查看产品历史记录
+      convert_variant_to_simple: 将变型产品转换为简单产品
     product_model:
       create: 创建产品模型
       edit_attributes: 编辑产品模型的属性
       categories_view: 查阅产品模型的类别
       history: 查看产品模型的历史记录
+      remove: 移除产品模型（包括子产品）
     category:
       list: 列出类别
       create: 创建类别
@@ -167,6 +170,7 @@ pim_enrich:
     job_tracker:
       index: 查看进程跟踪器
       view_all_jobs: 查看进程跟踪器中的所有作业
+      stop_job: 停止正在进行的作业
   acl_group:
     association_type: 关联类型
     attribute: 属性
@@ -433,6 +437,8 @@ Disabled: 已禁用
 Status: 状态
 pim_datagrid:
   filters:
+    product_typology:
+      label: 产品类型
     entity_type:
       label: 变量
     family:
@@ -519,7 +525,6 @@ pim_mass_edit:
       success: 批量删除 <strong>%label%</strong> 已完成
 job_execution.summary:
   mass_edited: 已批量编辑
-  skip: 已跳过
   skipped_products: 已跳过产品
   skipped_attributes: 已跳过属性
   skipped_families: 已跳过品类
@@ -545,4 +550,3 @@ pim_login:
   footer:
     powered: 提供者
     powered_image_title: Logo Akeneo
-    baseline: Unlocking Growth Through Product Experiences

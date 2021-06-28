@@ -151,6 +151,9 @@
     "dompdf/dompdf": {
         "version": "v0.6.2"
     },
+    "dvdoug/behat-code-coverage": {
+        "version": "v5.2.1"
+    },
     "egulias/email-validator": {
         "version": "2.1.11"
     },
@@ -177,6 +180,9 @@
             "version": "2.0",
             "ref": "3d21344765fd3440a85bdd27d4cada186ec628bd"
         }
+    },
+    "friends-of-phpspec/phpspec-code-coverage": {
+        "version": "v6.1.0"
     },
     "friendsofphp/php-cs-fixer": {
         "version": "2.2",
@@ -276,9 +282,6 @@
     },
     "laminas/laminas-diactoros": {
         "version": "2.5.0"
-    },
-    "laminas/laminas-eventmanager": {
-        "version": "3.3.0"
     },
     "laminas/laminas-zendframework-bridge": {
         "version": "1.1.1"
