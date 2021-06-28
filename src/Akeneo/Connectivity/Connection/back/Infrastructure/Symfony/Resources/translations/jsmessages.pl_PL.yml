@@ -1,6 +1,10 @@
 pim_menu:
+  tab:
+    connect: Połącz
+  navigation:
+    connect: Połącz nawigację
   navigation_back:
-    connection: Powrót do połączeń
+    connection: Powrót do Połączenia
   navigation_block:
     connection: Nawigacja po połączeniach
   item:
@@ -8,15 +12,30 @@ pim_menu:
     connection_settings: Połączenia
     connection_settings_edit: Ustawienia połączeń
     connection_monitoring: Monitorowanie
+    connection_webhook_edit: Subskrypcja zdarzeń
+    connection_webhook_event_logs: Dziennik zdarzeń
+    data_flows: Przepływy danych
+    connect_connection_settings: Ustawienia połączeń
+    marketplace: Rynek
 pim_title:
-  akeneo_connectivity_connection_settings_index: Połączenia
+  akeneo_connectivity_connection_connect_marketplace: Rynek
+  akeneo_connectivity_connection_settings_index: Ustawienia połączeń
   akeneo_connectivity_connection_settings_edit: Ustawienia połączeń
   akeneo_connectivity_connection_settings_any: Ustawienie połączenia
   akeneo_connectivity_connection_audit_index: Panel połączenia
   akeneo_connectivity_connection_audit_any: Panel połączenia
   akeneo_connectivity_connection_error_management_dashboard: Panel połączenia
   akeneo_connectivity_connection_error_management_connection_monitoring: Monitorowanie połączeń
+  akeneo_connectivity_connection_webhook_edit: Subskrypcja zdarzeń
+  akeneo_connectivity_connection_webhook_regenerate_secret: Subskrypcja zdarzeń
+  akeneo_connectivity_connection_webhook_event_logs: Dziennik zdarzeń
+  akeneo_connectivity_connection_settings_redirect: Połączenia
 akeneo_connectivity.connection:
+  connect:
+    marketplace:
+      title: Chcesz połączyć PIM z inną aplikacją? 🤟
+      sub_title: Sprawdź nasz rynek, aby zobaczyć, którą aplikację można połączyć z Akeneo PIM.
+      link: Dostęp do rynku
   connections: Połączenia
   secondary_actions:
     title: Inne działania
@@ -128,9 +147,9 @@ akeneo_connectivity.connection:
     flash:
       success: Połączenie pomyślnie usunięte.
   helper:
-    title: '👋 Witamy w funkcji, która poprawnie połączy Twój PIM!'
+    title: '{0} Na razie nie masz połączenia z aplikacjami zewnętrznymi.{1} Masz 1 połączenie PIM z aplikacjami zewnętrznymi. Dobra robota, w ten sposób PIM jest dobrze zintegrowany z ekosystemem.|]1,Inf] Masz {{ count }} połączeń PIM z aplikacjami zewnętrznymi. Dobra robota, w ten sposób PIM jest dobrze zintegrowany z ekosystemem.'
     description: PIM bez integracji z innymi firmami nie jest bezużyteczny, prawda? Dzięki połączeniom możesz zadeklarować wszystkie przepływy danych, które zostaną przepchnięte i pobrane poza PIM.
-    link: Chcesz dowiedzieć się więcej? Dowiedz się, co jest połączenie i jak je wykorzystać tutaj!
+    link: Aby dowiedzieć się więcej o Połączeniach, sprawdź tę stronę
   flow_type_helper:
     message: Zastanawiasz się czym jest typ przepływu danych?
     link: Możemy Ci pomóc tutaj!
@@ -146,9 +165,9 @@ akeneo_connectivity.connection:
   grid.wrong_credentials_combination_helper: Niektóre z poniższych połączeń nie używają swoich nazw użytkowników. Są one oznaczone za pomocą żółtego znaku ostrzegawczego.
   dashboard:
     helper:
-      title: '👋 Witaj w panelu połączeń!'
-      description: Tutaj będziesz mógł śledzić wszystkie przepływy danych, które są zbierane do Twojego PIM za pośrednictwem połączeń, a także wszystkie przepływy danych, które są rozprowadzane do kanałów za pośrednictwem połączeń.
-      link: Chcesz wiedzieć więcej? Proszę bardzo!
+      title: '👋 Witamy w Przepływach danych!'
+      description: Tutaj możesz śledzić przepływ danych między PIM a rozwiązaniami zewnętrznymi.
+      link: Chcesz dowiedzieć się więcej o menu Połącz i przepływach danych? Prosimy bardzo!
     user_survey:
       title: Chcesz więcej danych na tym pulpicie?
       content: Twoja opinia jest dla nas bardzo cenna. Pomóż nam wybrać następny widżet odpowiadając na jedno pytanie!
@@ -168,6 +187,12 @@ akeneo_connectivity.connection:
         during_the_last_seven_days: 'Łącznie w ciągu ostatnich 7 dni:'
         today: Dzisiaj
     error_management:
+      data_source_error_chart:
+        section:
+          title: Błędy w połączeniach źródłowych
+          helper: Tutaj możesz zobaczyć łączną liczbę błędów, w tym błędy biznesowe.
+        chart:
+          title: Licznik błędów dziennie
       widget:
         title: Błędy biznesowe dla połączenia źródłowego
         over_the_last_seven_days: W ciągu ostatnich 7 dni
@@ -184,13 +209,75 @@ akeneo_connectivity.connection:
         message: Poproś administratora o utworzenie.
         link: Dowiedz się więcej o połączeniach tutaj...
   webhook:
+    title: Subskrypcja zdarzeń
+    event_subscription: Subskrypcja zdarzeń
+    download_logs: Pobierz dziennik
+    helper:
+      message: W ramach PIM możesz otrzymywać powiadomienia o zdarzeniach dla produktów synchronizowanych z podłączoną aplikacją. Wystarczy zdefiniować adres URL.
+      link: Dowiedz się więcej o konfiguracji subskrypcji zdarzeń...
+      url.test_disabled: Aby przetestować adres URL, kliknij przycisk Zapisz.
     form:
+      url: URL
       secret: Sekret
+      enabled: Aktywacja subskrypcji zdarzeń
+      test: Test
+    error:
+      wrong_url: Ta wartość nie jest prawidłowym adresem URL.
+      required: To pole jest wymagane.
+      not_found: Próbujesz zaktualizować połączenie, które nie istnieje.
+      limit_reached: Osiągnięto limit aktywnych subskrypcji zdarzeń.
+      not_allowed_url: Ten adres URL jest niedozwolony.
+    flash:
+      success: Zaktualizowano subskrypcję zdarzeń.
+      error: Przepraszamy, wystąpił błąd podczas edycji subskrypcji zdarzeń.
     regenerate_secret:
       title: Potwierdź regenerację
+      description: Czy na pewno chcesz ponownie wygenerować sekret subskrypcji zdarzeń?
       action:
         regenerate: Wygeneruj ponownie
       link: Oto co się stanie.
+      flash:
+        success: Ponownie wygenerowano sekret webhooka.
+        error: Przepraszamy, wystąpił błąd podczas ponownej generacji sekretu webhooka.
+    active_event_subscriptions_limit_reached:
+      message: 'Możesz maksymalnie zrealizować następującą liczbę połączeń: {{ limit }} z funkcją subskrypcji zdarzeń. Osiągnięto ten limit.'
+      link: Dowiedz się więcej o konfiguracji subskrypcji zdarzeń.
+    event_logs:
+      title: Dziennik zdarzeń
+      event_subscription_disabled:
+        title: Subskrypcja zdarzeń nie jest włączona dla tego połączenia.
+        link: Włącz subskrypcję zdarzeń
+      no_event_logs:
+        title: W tej chwili nie ma dziennika.
+      no_event_logs_with_those_filters:
+        title: Przepraszamy, dla tego wyszukiwania nie ma dziennika.
+        caption: Spróbuj ponownie, podając nowe kryteria wyszukiwania.
+      level:
+        info: Info
+        notice: Informacja
+        warning: Ostrzeżenie
+        error: Błąd
+      list:
+        search:
+          placeholder: Szukaj w wiadomościach
+          total: '{0} Brak wyników|{1} 1 wynik|[2,Inf] {{ total }} wyników'
+          level: Poziom
+          all: Wszystkie
+          none: Brak
+        date_range_filter:
+          label: Data i godzina
+          reset: Reset
+          from: Od
+          to: Do
+          all: Wszystkie
+        info:
+          title: Oto logi związane ze wszystkimi żądaniami zdarzeń wysłanymi do tego połączenia.
+          content: Ta strona wyświetla dziennik błędów i ostrzeżeń z ostatnich 72 godzin, a także ostatnie 100 informacji i logów powiadomień.
+          link: Więcej informacji o dzienniku zdarzeń.
+        headers:
+          datetime: Data i godzina
+          level: Poziom
+          message: Wiadomość
   error_management:
     connection_monitoring:
       title: Monitorowanie
@@ -200,9 +287,29 @@ akeneo_connectivity.connection:
         link: Aby zrozumieć, jak to rozwiązać, odwiedź centrum pomocy API.
       search_filter:
         placeholder: Szukaj w komunikatach błędów
-        result_count: '{0} Brak wyniku |[1,Inf] {{ count }} wyników'
+        result_count: '{0} Brak wyników|{1} 1 wynik|[2,Inf] {{ count }} wyników'
+      error_list:
+        date_time_column:
+          title: Dzień i godzina
+        content_column:
+          title: Komunikat o błędzie biznesowym
+          product_name: Nazwa produktu
+          with_id: z ID
+        details_column:
+          title: Szczegóły
+          locale: Wersja językowa
+          channel: Kanał
+          family: Rodzina
       no_error:
         title: Wspaniale! Nie znaleziono błędu!
+      not_auditable:
+        title: Połączenie niemonitorowane
+        description:
+          1: Aby śledzić błędy w tym połączeniu,
+          2: aktywuj monitorowanie
+          3: w ustawieniach.
+      not_data_source:
+        title: Na razie strona monitorowania dostępna jest tylko dla połączenia źródłowego.
   runtime_error:
     error_message: Motyla noga! Mamy błąd...
     reload_helper: Proszę odświeżyć stronę i spróbować ponownie

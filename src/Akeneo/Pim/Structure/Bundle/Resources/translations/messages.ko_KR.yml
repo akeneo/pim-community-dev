@@ -30,6 +30,7 @@ pim_enrich:
     association_type:
       property:
         is_two_way: 양방향 연결
+        is_quantified: 수량 연결
 pim_enrich_attribute_form:
   code: 코드
   type: 특성 유형
