@@ -297,32 +297,6 @@ workflows:
                     - back_phpunit_integration
                     - back_phpunit_end_to_end
 
-  nightly:
-      triggers:
-          - schedule:
-                cron: "0 2 * * *"
-                filters:
-                    branches:
-                        only:
-                            - "3.2"
-      jobs:
-          - setup
-          - back_static_and_acceptance:
-                requires:
-                    - setup
-          - front_static_acceptance_and_integration:
-                requires:
-                    - setup
-          - back_phpunit_integration:
-                requires:
-                    - setup
-          - back_phpunit_end_to_end:
-                requires:
-                    - setup
-          - back_behat_legacy:
-                requires:
-                    - setup
-
   pull_up:
       jobs:
           - pull-up/pull-up:
