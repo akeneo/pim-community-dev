@@ -2,6 +2,7 @@
 batch_jobs:
   default_steps:
     export: Exporteer
+    import: Importeren
     validation: Bestandsvalidatie
     import_associations: Productassociatie import
     import_model_associations: Productassociatie import
@@ -45,6 +46,15 @@ batch_jobs:
   csv_family_variant_export:
     label: Familie-variant export in CSV
     export.label: Familie-variant export
+  csv_user_group_export:
+    label: Export van gebruikersgroep in CSV
+    export.label: Export van gebruikersgroep
+  csv_user_role_export:
+    label: Export van gebruikersrol in CSV
+    export.label: Export van gebruikersrol
+  csv_user_export:
+    label: Export van gebruiker in CSV
+    export.label: Export van gebruiker
   csv_product_import:
     label: Productimport in CSV
     import.label: Productimport
@@ -85,6 +95,15 @@ batch_jobs:
   csv_group_type_import:
     label: Groepstype-import in CSV
     import.label: Groep type import
+  csv_user_group_import:
+    label: Import van gebruikersgroep in CSV
+    import.label: Import van gebruikersgroep
+  csv_user_import:
+    label: Import van gebruiker in CSV
+    import.label: Import van gebruiker
+  csv_user_role_import:
+    label: Import van gebruikersrol in CSV
+    import.label: Import van gebruikersrol
   xlsx_category_import:
     label: Categorie import in XLSX
     import.label: Categorie-import
@@ -145,9 +164,27 @@ batch_jobs:
   xlsx_group_type_export:
     label: Groepstype export in XLSX
     export.label: Groepstype export
+  xlsx_user_group_export:
+    label: Export van gebruikersgroep in XLSX
+    export.label: Export van gebruikersgroep
+  xlsx_user_role_export:
+    label: Export van gebruikersrol in XLSX
+    export.label: Export van gebruikersrol
+  xlsx_user_export:
+    label: Export van gebruiker in XLSX
+    export.label: Export van gebruiker
   xlsx_attribute_group_import:
     label: Attribuut groep import in XLSX
     import.label: Attribuut groep import
   xlsx_group_type_import:
     label: Groepstype import in XLSX
     import.label: Groep type import
+  xlsx_user_group_import:
+    label: Import van gebruikersgroep in XLSX
+    import.label: Import van gebruikersgroep
+  xlsx_user_import:
+    label: Import van gebruiker in XLSX
+    import.label: Import van gebruiker
+  xlsx_user_role_import:
+    label: Import van gebruikersrol in XLSX
+    import.label: Import van gebruikersrol

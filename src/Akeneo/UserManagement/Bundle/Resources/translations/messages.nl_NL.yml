@@ -41,6 +41,11 @@ pim_user:
       active: Actief
       inactive: Inactief
     fields_errors:
+      new_password:
+        minimum_length: Het wachtwoord moet ten minste 8 tekens bevatten
+        maximum_length: Het wachtwoord moet minder dan 4096 tekens bevatten.
+      new_password_repeat:
+        not_match: De wachtwoorden komen niet overeen
       current_password:
         wrong: Verkeerd wachtwoord
     tabs:
