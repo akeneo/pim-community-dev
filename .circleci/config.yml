@@ -1943,7 +1943,7 @@ commands:
                           else
                             CONNECTOR_BC_BRANCH=master
                           fi
-
+                          echo ${CONNECTOR_BC_BRANCH}
                           echo export CONNECTOR_BC_BRANCH=${CONNECTOR_BC_BRANCH} >> $BASH_ENV
           - when:
               condition:
@@ -1961,4 +1961,7 @@ commands:
               working_dir: ~/project
               command: |
                   mkdir -p tmp
+                  echo ${CONNECTOR_BC_BRANCH}
                   git clone --branch $CONNECTOR_BC_BRANCH git@github.com:akeneo/bigcommerce-connector.git tmp/build-connector
+                  cd tmp/build-connector
+                  echo `git rev-parse --short HEAD`
