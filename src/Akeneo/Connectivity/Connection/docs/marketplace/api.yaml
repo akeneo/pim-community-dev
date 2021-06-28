@@ -1,7 +1,7 @@
 swagger: "2.0"
 info:
     description: ""
-    version: "1.0.2"
+    version: "1.0.3"
     title: "Marketplace"
 host: "marketplace.akeneo.com"
 basePath: "/api/1.0"
@@ -81,6 +81,79 @@ paths:
                                   certified: false
                 "400":
                     description: "Invalid parameters"
+    /apps:
+        get:
+            tags:
+                - "apps"
+            summary: "Finds apps"
+            description: >
+                Apps with certified:true are returned first, ordered from newest to oldest. Then, all the other apps are returned, ordered from newest to oldest.
+            produces:
+                - "application/json"
+            parameters:
+                - name: edition
+                  in: query
+                  type: string
+                  required: true
+                  enum:
+                      - serenity
+                      - growth-edition
+                      - enterprise-edition
+                      - community-edition
+                - name: version
+                  in: query
+                  type: string
+                  enum:
+                      - "5.0"
+                      - "4.0"
+                      - "3.2"
+                      - "3.1"
+                      - "3.0"
+                - name: offset
+                  in: query
+                  type: integer
+                  default: 0
+                  minimum: 0
+                - name: limit
+                  in: query
+                  type: integer
+                  minimum: 1
+                  default: 10
+                  maximum: 100
+            responses:
+                "200":
+                    description: "OK"
+                    schema:
+                        type: "object"
+                        properties:
+                            total:
+                                type: "number"
+                            offset:
+                                type: "number"
+                            limit:
+                                type: "number"
+                            items:
+                                type: "array"
+                                items:
+                                    $ref: "#/definitions/App"
+                    examples:
+                        application/json:
+                            total: 1
+                            offset: 0
+                            limit: 10
+                            items:
+                                - id: "ab7b0bd8-692e-4589-b17e-91d01e46ce0f"
+                                  name: "Shopify App"
+                                  logo: "https://marketplace.akeneo.com/sites/default/files/styles/extension_logo_large/public/extension-logos/shopify-connector-logo-1200x.png?itok=mASOVlwC"
+                                  author: "Akeneo"
+                                  partner: "Akeneo"
+                                  description: "App compatible with the Akeneo Simple Activation Process that seamlessly connects Akeneo PIM to the Shopify platform."
+                                  url: "https://marketplace.akeneo.com/extension/shopify-app"
+                                  categories: ["E-commerce"]
+                                  certified: false
+                                  activate_url: "https://fake.shopify.akeneo.com/activate"
+                "400":
+                    description: "Invalid parameters"
 definitions:
     Extension:
         type: "object"
@@ -107,3 +180,30 @@ definitions:
                     type: "string"
             certified:
                 type: "boolean"
+    App:
+        type: "object"
+        properties:
+            id:
+                type: "string"
+                description: "UUID v4"
+            name:
+                type: "string"
+            logo:
+                type: "string"
+                description: "Url of the 325x325px image"
+            author:
+                type: "string"
+            partner:
+                type: "string"
+            description:
+                type: "string"
+            url:
+                type: "string"
+            categories:
+                type: "array"
+                items:
+                    type: "string"
+            certified:
+                type: "boolean"
+            activate_url:
+                type: "string"
