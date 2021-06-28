@@ -84,112 +84,116 @@ class RangeValidatorSpec extends ObjectBehavior
     }
 
     function it_does_not_validate_a_value_not_in_range(
-        $context,
+        ExecutionContextInterface $context,
         Range $constraint,
         ConstraintViolationBuilderInterface $violation
     ) {
+        $constraint->attributeCode = 'an_attribute';
         $constraint->min = 0;
         $constraint->max = 100;
 
         $context
-            ->buildViolation($constraint->notInRangeMessage)
+            ->buildViolation($constraint->maxMessage, [
+                '%attribute%' => $constraint->attributeCode,
+                '%max_value%' => $constraint->max,
+            ])
             ->shouldBeCalled()
             ->willReturn($violation);
 
-        $violation->setParameter('{{ value }}', 150)->shouldBeCalled()->willReturn($violation);
-        $violation->setParameter('{{ min }}', 0)->shouldBeCalled()->willReturn($violation);
-        $violation->setParameter('{{ max }}', 100)->shouldBeCalled()->willReturn($violation);
+        $violation->setCode(Range::TOO_HIGH_ERROR)->willReturn($violation);
 
-        $violation->setCode(Argument::any())->shouldBeCalled()->willReturn($violation);
         $violation->addViolation()->shouldBeCalled();
 
         $this->validate(150, $constraint);
     }
 
     function it_does_not_validate_a_value_as_integer_limit_min(
-        $context,
+        ExecutionContextInterface $context,
         Range $constraint,
         ConstraintViolationBuilderInterface $violation
     ) {
+        $constraint->attributeCode = 'an_attribute';
         $constraint->min = 10;
-        $constraint->max = 100;
 
         $context
-            ->buildViolation($constraint->notInRangeMessage)
+            ->buildViolation($constraint->minMessage, [
+                '%attribute%' => $constraint->attributeCode,
+                '%min_value%' => $constraint->min,
+            ])
             ->shouldBeCalled()
             ->willReturn($violation);
 
-        $violation->setParameter('{{ value }}', 9.99999)->shouldBeCalled()->willReturn($violation);
-        $violation->setParameter('{{ min }}', 10)->shouldBeCalled()->willReturn($violation);
-        $violation->setParameter('{{ max }}', 100)->shouldBeCalled()->willReturn($violation);
-
-        $violation->setCode(Argument::any())->shouldBeCalled()->willReturn($violation);
+        $violation->setCode(Range::TOO_LOW_ERROR)->willReturn($violation);
         $violation->addViolation()->shouldBeCalled();
 
         $this->validate(9.99999, $constraint);
     }
 
     function it_does_not_validate_a_value_as_string_limit_min(
-        $context,
+        ExecutionContextInterface $context,
         Range $constraint,
         ConstraintViolationBuilderInterface $violation
     ) {
+        $constraint->attributeCode = 'an_attribute';
         $constraint->min = 10;
-        $constraint->max = 100;
 
         $context
-            ->buildViolation($constraint->notInRangeMessage)
+            ->buildViolation($constraint->minMessage, [
+                '%attribute%' => $constraint->attributeCode,
+                '%min_value%' => $constraint->min,
+            ])
             ->shouldBeCalled()
             ->willReturn($violation);
 
-        $violation->setParameter('{{ value }}', Argument::any())->shouldBeCalled()->willReturn($violation);
-        $violation->setParameter('{{ min }}', 10)->shouldBeCalled()->willReturn($violation);
-        $violation->setParameter('{{ max }}', 100)->shouldBeCalled()->willReturn($violation);
-        $violation->setCode(Argument::any())->shouldBeCalled()->willReturn($violation);
+        $violation->setCode(Range::TOO_LOW_ERROR)->willReturn($violation);
         $violation->addViolation()->shouldBeCalled();
 
         $this->validate('9.99999', $constraint);
     }
 
     function it_does_not_validate_a_value_as_integer_limit_max(
-        $context,
+        ExecutionContextInterface $context,
         Range $constraint,
         ConstraintViolationBuilderInterface $violation
     ) {
+        $constraint->attributeCode = 'an_attribute';
         $constraint->min = 10;
         $constraint->max = 100;
 
         $context
-            ->buildViolation($constraint->notInRangeMessage)
+            ->buildViolation($constraint->maxMessage, [
+                '%attribute%' => $constraint->attributeCode,
+                '%max_value%' => $constraint->max,
+            ])
             ->shouldBeCalled()
             ->willReturn($violation);
 
-        $violation->setParameter('{{ value }}', Argument::any())->shouldBeCalled()->willReturn($violation);
-        $violation->setParameter('{{ min }}', 10)->shouldBeCalled()->willReturn($violation);
-        $violation->setParameter('{{ max }}', 100)->shouldBeCalled()->willReturn($violation);
-        $violation->setCode(Argument::any())->shouldBeCalled()->willReturn($violation);
+        $violation->setCode(Range::TOO_HIGH_ERROR)->willReturn($violation);
+
         $violation->addViolation()->shouldBeCalled();
 
         $this->validate(100.00001, $constraint);
     }
 
     function it_does_not_validate_a_value_as_string_limit_max(
-        $context,
+        ExecutionContextInterface $context,
         Range $constraint,
         ConstraintViolationBuilderInterface $violation
     ) {
+        $constraint->attributeCode = 'an_attribute';
         $constraint->min = 10;
         $constraint->max = 100;
 
         $context
-            ->buildViolation($constraint->notInRangeMessage)
+            ->buildViolation($constraint->maxMessage, [
+                '%attribute%' => $constraint->attributeCode,
+                '%max_value%' => $constraint->max,
+            ])
             ->shouldBeCalled()
             ->willReturn($violation);
 
-        $violation->setParameter('{{ value }}', Argument::any())->shouldBeCalled()->willReturn($violation);
-        $violation->setParameter('{{ min }}', 10)->shouldBeCalled()->willReturn($violation);
-        $violation->setParameter('{{ max }}', 100)->shouldBeCalled()->willReturn($violation);
-        $violation->setCode(Argument::any())->shouldBeCalled()->willReturn($violation);
+        $violation->setCode(Range::TOO_HIGH_ERROR)->willReturn($violation);
+
         $violation->addViolation()->shouldBeCalled();
 
         $this->validate('100.00001', $constraint);
@@ -341,17 +345,21 @@ class RangeValidatorSpec extends ObjectBehavior
     }
 
     function it_does_not_validate_a_product_price(
-        $context,
+        ExecutionContextInterface $context,
         Range $constraint,
         ProductPriceInterface $productPrice,
         ConstraintViolationBuilderInterface $violation
     ) {
+        $constraint->attributeCode = 'an_attribute';
         $constraint->min = 0;
         $constraint->max = 100;
 
         $productPrice->getData()->willReturn(150);
         $context
-            ->buildViolation($constraint->maxMessage, ['{{ value }}' => 150, '{{ limit }}' => 100])
+            ->buildViolation($constraint->maxMessage, [
+                '%attribute%' => $constraint->attributeCode,
+                '%max_value%' => $constraint->max,
+            ])
             ->shouldBeCalled()
             ->willReturn($violation);
         $violation->atPath('data')->shouldBeCalled()->willReturn($violation);
@@ -375,17 +383,21 @@ class RangeValidatorSpec extends ObjectBehavior
     }
 
     function it_does_not_validate_metric(
-        $context,
+        ExecutionContextInterface $context,
         Range $constraint,
         MetricInterface $metric,
         ConstraintViolationBuilderInterface $violation
     ) {
+        $constraint->attributeCode = 'an_attribute';
         $constraint->min = 0;
         $constraint->max = 100;
 
         $metric->getData()->willReturn(150);
         $context
-            ->buildViolation($constraint->maxMessage, ['{{ value }}' => 150, '{{ limit }}' => 100])
+            ->buildViolation($constraint->maxMessage, [
+                '%attribute%' => $constraint->attributeCode,
+                '%max_value%' => $constraint->max,
+            ])
             ->shouldBeCalled()
             ->willReturn($violation);
 
@@ -417,17 +429,19 @@ class RangeValidatorSpec extends ObjectBehavior
         Range $constraint,
         ConstraintViolationBuilderInterface $violation
     ) {
+        $constraint->attributeCode = 'an_attribute';
         $constraint->min = 10;
 
         $context
-            ->buildViolation($constraint->notInRangeMessage)
+            ->buildViolation($constraint->maxMessage, [
+                '%attribute%' => $constraint->attributeCode,
+                '%max_value%' => PHP_INT_MAX,
+            ])
             ->shouldBeCalled()
             ->willReturn($violation);
 
-        $violation->setParameter('{{ value }}', Argument::any())->shouldBeCalled()->willReturn($violation);
-        $violation->setParameter('{{ min }}', 10)->shouldBeCalled()->willReturn($violation);
-        $violation->setParameter('{{ max }}', PHP_INT_MAX)->shouldBeCalled()->willReturn($violation);
-        $violation->setCode(Argument::any())->shouldBeCalled()->willReturn($violation);
+        $violation->setCode(Range::TOO_HIGH_ERROR)->willReturn($violation);
+
         $violation->addViolation()->shouldBeCalled();
 
         $this->validate('6666666666666666666666666666666666666', $constraint);
@@ -438,18 +452,20 @@ class RangeValidatorSpec extends ObjectBehavior
         Range $constraint,
         ConstraintViolationBuilderInterface $violation
     ) {
+        $constraint->attributeCode = 'an_attribute';
         $constraint->min = 10;
         $constraint->max = '6666666666666666666666666666666666666';
 
         $context
-            ->buildViolation($constraint->notInRangeMessage)
+            ->buildViolation($constraint->maxMessage, [
+                '%attribute%' => $constraint->attributeCode,
+                '%max_value%' => PHP_INT_MAX,
+            ])
             ->shouldBeCalled()
             ->willReturn($violation);
 
-        $violation->setParameter('{{ value }}', Argument::any())->shouldBeCalled()->willReturn($violation);
-        $violation->setParameter('{{ min }}', 10)->shouldBeCalled()->willReturn($violation);
-        $violation->setParameter('{{ max }}', PHP_INT_MAX)->shouldBeCalled()->willReturn($violation);
-        $violation->setCode(Argument::any())->shouldBeCalled()->willReturn($violation);
+        $violation->setCode(Range::TOO_HIGH_ERROR)->willReturn($violation);
+
         $violation->addViolation()->shouldBeCalled();
 
         $this->validate('6666666666666666666666666666666666666', $constraint);

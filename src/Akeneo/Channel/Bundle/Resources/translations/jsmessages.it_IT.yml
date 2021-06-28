@@ -64,7 +64,14 @@ pim_enrich.entity.locale:
   label: Impostazioni locali
   uppercase_label: Impostazioni locali
   plural_label: Impostazioni locali
+  page_title:
+    index: "]-Inf, 1]{{ count }} impostazione locale attivata|]1, Inf[{{ count }} impostazioni locali attivate"
+  helper: "Per attivare o disattivare un'impostazione locale, vai a uno dei <a href={{ href }}>tuoi canali</a> e aggiungi o rimuovi tale impostazione."
   grid:
+    columns:
+      code: Impostazioni locali attivate
+    filters:
+      search_placeholder: Cerca un'impostazione locale attivata
     no_search_result: Non ci sono risultati per la tua ricerca.
 pim_enrich.entity.currency:
   plural_label: Valute

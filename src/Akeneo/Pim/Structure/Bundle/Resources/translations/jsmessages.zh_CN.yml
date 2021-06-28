@@ -14,7 +14,7 @@ pim_enrich.entity.family:
       success: 品类已成功创建
     delete:
       success: 品类已成功移除
-      fail: 不能删除该品类
+      fail: 不能删除此品类
   property:
     attribute_as_label: 用作标签的属性
     attribute_as_image: 用作主要图片的属性
@@ -115,6 +115,9 @@ pim_enrich.entity.association_type:
     delete:
       confirm: 确定要删除此关联类型吗?
   hint: <a href="{{link}}" target="_blank">在此文章中</a>，您可找到创建自己关联类型所需的一切信息。
+  no_association_types:
+    title: 您没有任何关联类型
+    hint: 创建您的第一个
 pim_enrich.entity.group_type:
   label: 分组类型
   flash:
@@ -142,6 +145,7 @@ pim_enrich.entity.attribute:
       success: 属性已成功更新。
       fail: 属性无法更新。
       fields_not_ready: "该属性目前无法保存。以下字段未准备好： {{ fields }}"
+      cant_remove_attributes_used_as_label: 无法移除品类中用作标签的属性。
     delete:
       success: 属性已成功移除
       fail: 不能删除该属性
@@ -157,6 +161,7 @@ pim_enrich.entity.attribute:
     default_metric_unit:
       label: 默认测量单位
       choose: 选择单位
+    guidelines: 属性准则
     group:
       label: 属性组
       choose: 选择属性组
@@ -201,6 +206,7 @@ pim_enrich.entity.attribute:
       regexp: 正则表达式
       url: URL
     wysiwyg_enabled: 富文本编辑器已启用
+    default_value: 默认值
   module:
     add_attribute:
       no_available_attributes: 没有需要再添加的属性
@@ -211,8 +217,16 @@ pim_enrich.entity.attribute:
       common: 一般参数
       type_specific: 类型特定参数
       validation: 验证参数
+      select_locale: 选择区域
     delete:
       confirm: 确定要删除此属性吗？
+      product_count: '{0}0 个产品|{1}1 个产品|]1, Inf[{{ count }} 个产品'
+      product_model_count: '{0}0 个产品模型|{1}1 个产品模型|]1, Inf[{{ count }} 个产品模型'
+      used: 此属性当前已存在设置的值，它们将被删除。
+      helper:
+        content: 如果您需要更改属性类型，使其具有区域或范围属性，同时保持对现有属性值的访问，
+        link: 可执行下列不同步骤。
+      type: 请输入"{{ attributeCode }}"
       confirm_from_family: 确定要从品类中删除此属性吗？
       confirm_from_group: 确定要从该属性组中移除属性 {{ attribute }}？
       confirm_from_product: 确定要从产品中删除此属性？
@@ -220,6 +234,7 @@ pim_enrich.entity.attribute_group:
   label: 属性组
   uppercase_label: 属性组
   plural_label: 属性组
+  result_count: '{0}0 个属性组|{1}1 个属性组|]1, Inf[{{ count }} 个属性组'
   show_more_attribute:
     title: 这里比较拥挤，我们会显示 {{ attributeCount }}/{{ totalAttributeCount }} 个属性。
     subtitle: 要探索此组的所有属性，请点击下面！
@@ -239,6 +254,10 @@ pim_enrich.entity.attribute_group:
       attributes_groups_selected: '已选定 {{ itemsCount }} 个分组'
     delete:
       confirm: 确定要删除此属性组吗？
+  grid:
+    columns:
+      name: 属性组名称
+    no_search_result: 抱歉，找不到与搜索相符的结果。
 pim_enrich.mass_edit.family:
   title: 品类批量操作
   confirm: "{1}您将更新品类的以下信息，请确认。|]1, Inf[您将更新 {{ itemsCount }} 个品类的以下信息，请确认。"

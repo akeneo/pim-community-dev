@@ -36,6 +36,18 @@ class RangeSpec extends ObjectBehavior
         $this->invalidMessage->shouldBe('The {{ attribute }} attribute requires a number, and the submitted {{ value }} value is not.');
     }
 
+    function it_has_a_min_message()
+    {
+         $this->beConstructedWith(['min' => 1]);
+        $this->minMessage->shouldBe('The %attribute% attribute requires an equal or greater than %min_value% value.');
+    }
+
+    function it_has_a_max_message()
+    {
+        $this->beConstructedWith(['max' => 100]);
+        $this->maxMessage->shouldBe('The %attribute% attribute requires an equal or lesser than %max_value% value.');
+    }
+
     function it_has_an_attribute_code()
     {
         $this->beConstructedWith(['min' => new \DateTime(), 'attributeCode' => 'a_code']);

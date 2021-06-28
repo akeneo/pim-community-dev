@@ -14,7 +14,6 @@ pim_title:
   akeneo_connectivity_connection_audit_any: Connection dashboard
   akeneo_connectivity_connection_error_management_dashboard: Connection dashboard
   akeneo_connectivity_connection_error_management_connection_monitoring: Connection monitoring
-  akeneo_connectivity_connection_redirect_audit: Connection dashboard
   akeneo_connectivity_connection_settings_redirect: Connections
 akeneo_connectivity.connection:
   connections: Connections

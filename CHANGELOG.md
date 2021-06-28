@@ -79,7 +79,8 @@
 - PIM-9863: Remove temporisation and add unit tests for product model reindexation.
 - PIM-9891: Fix missing sanity checks when computing enrichment status
 - PIM-9886: Fix display of completeness in the PEF when the selected locale is deactivated
-- PIM-9925: Fix roles that couldn't contain dashes in their codes
+- PIM-9925: Fix roles that couldn't contain dashes in their codes 
+- PIM-9933: Fix delete category menu that stays displayed on screen
 
 ## New features
 
@@ -93,6 +94,12 @@
 - PIM-9648: Mitigate DDoS risk on API auth endpoint by rejecting too large content
 - PIM-9697: Exported files streamer
 - PIM-9719: Add the real "updated" values in ES for product and product models
+- CPM-152: Use Symfony Messenger to handle job queue messages. Therefore the `akeneo_batch_job_execution_queue` table is removed.
+  Depending on your environment, please check the associated `messenger.yml` to figure out how the messages are sent/received.
+  The former command to launch job consumption is removed and replaced by:
+```bash
+bin/console messenger:consume ui_job import_export_job data_maintenance_job
+```
 - PIM-9929: Improve performances of attribute options list PATCH endpoint when Data Quality Insights is enabled 
 
 ## Classes
