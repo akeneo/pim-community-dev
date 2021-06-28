@@ -27,8 +27,8 @@ const CategoryFilter = ({filter, onChange}: CategoryFilterProps) => {
   const [categorySelection, setSelectedCategories] = useState<string[]>(filter.value);
   const [operator, setOperator] = useState<Operator>(filter.operator);
   const shouldIncludeSubCategories = operator === 'IN CHILDREN LIST';
-  const handleShouldIndludeSubCategoryChange = (updatedValue: boolean) => {
-    const newOperator = updatedValue ? 'IN CHILDREN LIST' : filter.value.length === 0 ? 'NOT IN' : 'IN';
+  const handleShouldIncludeSubCategoryChange = (shouldIncludeSubCategory: boolean) => {
+    const newOperator = shouldIncludeSubCategory ? 'IN CHILDREN LIST' : filter.value.length === 0 ? 'NOT IN' : 'IN';
     setOperator(newOperator);
   };
   const handleConfirm = () => {
@@ -56,7 +56,7 @@ const CategoryFilter = ({filter, onChange}: CategoryFilterProps) => {
               value={shouldIncludeSubCategories}
               clearLabel={translate('pim_common.clear_value')}
               readOnly={false}
-              onChange={handleShouldIndludeSubCategoryChange}
+              onChange={handleShouldIncludeSubCategoryChange}
             />
           </Field>
           <MultiCategoryTreeSelector

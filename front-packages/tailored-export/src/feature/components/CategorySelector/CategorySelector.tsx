@@ -34,16 +34,16 @@ const CategorySelector = ({
   const catalogLocale = useUserContext().get('catalogLocale');
   const router = useRouter();
 
-  // @ts-ignore
-  const isCategorySelected: (category: CategoryValue, parentCategory?: CategoryTreeModel) => boolean = (
+  const isCategorySelected: (category: CategoryValue, parentCategory?: CategoryTreeModel | null) => boolean = (
     category,
     parentCategory
   ) => {
     if (selectedCategoryCodes.includes(category.code)) {
       return true;
     }
+
     return shouldIncludeSubCategories
-      ? parentCategory !== undefined && isCategorySelected(parentCategory, parentCategory.parent)
+      ? parentCategory !== undefined && parentCategory !== null && isCategorySelected(parentCategory, parentCategory.parent)
       : false;
   };
 
@@ -76,7 +76,7 @@ const CategorySelector = ({
     }
   };
 
-  const childrenCallback: (id: number) => Promise<CategoryTreeModel[]> = async id => {
+  const childrenCallback: (id: number, parentTree?: CategoryTreeModel) => Promise<CategoryTreeModel[]> = async (id, parentTree) => {
     const childrenUrl = router.generate('pim_enrich_categorytree_children', {_format: 'json', id});
     const response = await fetch(childrenUrl);
     const json: CategoryResponse[] = await response.json();
@@ -84,6 +84,7 @@ const CategorySelector = ({
     return json.map(child =>
       parseResponse(child, {
         selectable: true,
+        parent: parentTree
       })
     );
   };
@@ -98,17 +99,22 @@ const CategorySelector = ({
       const response = await fetch(childrenUrl);
       const json: CategoryResponse[] = await response.json();
 
-      return {
+      const categoryTree = {
         id: category.id,
         code: category.code,
         label: getLabel(category.labels, catalogLocale, category.code),
         selectable: true,
+      };
+
+      return {
+        ...categoryTree,
         children: json.map(child =>
           parseResponse(child, {
             selectable: true,
+            parent: categoryTree,
           })
         ),
-      };
+      }
     },
     [catalogLocale, router]
   );

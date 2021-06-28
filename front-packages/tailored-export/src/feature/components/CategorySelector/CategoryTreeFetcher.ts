@@ -23,39 +23,53 @@ const parseResponse: (
     lockedCategoryIds?: number[];
     isRoot?: boolean;
     selectable?: boolean;
+    parent?: CategoryTreeModel | null;
   }
 ) => CategoryTreeModel = (json, options) => {
-  const {readOnly, lockedCategoryIds, isRoot, selectable} = {
+  const {readOnly, lockedCategoryIds, isRoot, parent, selectable} = {
     readOnly: false,
     lockedCategoryIds: [] as number[],
     isRoot: false,
     selectable: false,
+    parent: null,
     ...options,
+  };
+
+  const categoryId = Number(json.attr.id.replace(/^node_(\d+)$/, '$1'));
+  const categoryTree = {
+    id: categoryId,
+    code: json.attr['data-code'],
+    label: json.data,
+    selected: json.state.includes('jstree-checked'),
+    readOnly: readOnly || lockedCategoryIds.indexOf(categoryId) >= 0,
+    selectable: !isRoot && selectable,
+    parent
   };
 
   const getChildren: () => CategoryTreeModel[] | undefined = () => {
     if (json.state.includes('closed')) {
       return undefined;
     }
+
     if (json.state.includes('leaf')) {
       return [];
     }
+
     if (json.children) {
-      return json.children.map(child => parseResponse(child, {readOnly, lockedCategoryIds, isRoot: false, selectable}));
+      return json.children.map(child => parseResponse(child, {
+        readOnly,
+        lockedCategoryIds,
+        isRoot: false,
+        selectable,
+        parent: categoryTree
+      }));
     }
     return undefined;
   };
 
-  const categoryId = Number(json.attr.id.replace(/^node_(\d+)$/, '$1'));
-
   return {
-    id: categoryId,
-    code: json.attr['data-code'],
-    label: json.data,
+    ...categoryTree,
     children: getChildren(),
-    selected: json.state.includes('jstree-checked'),
-    readOnly: readOnly || lockedCategoryIds.indexOf(categoryId) >= 0,
-    selectable: !isRoot && selectable,
   };
 };
 
