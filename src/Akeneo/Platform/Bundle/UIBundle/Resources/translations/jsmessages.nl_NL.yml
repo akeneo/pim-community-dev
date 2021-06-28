@@ -193,6 +193,8 @@ pim_common:
   not_available: Niet beschikbaar
   now: Nu
   ok: OK
+  open: Openen
+  no_result: Geen resultaten gevonden
   other_actions: Andere acties
   permissions: Machtigingen
   previous: Vorige
@@ -229,7 +231,13 @@ pim_common:
   read_more: Lees meer
   channel: Kanaal
   locale: Locale
+  categories: Categorieën
+  family_variant: Familievariatie
+  enabled: Ingeschakeld
+  family: Familie
+  parent: Bovenliggende
   groups: Groepen
+  more: Meer
 error:
   exception: Oh, nee! Een {{ status_code }} fout deed zich voor...
   forbidden: U heeft geen toegang tot deze pagina
@@ -278,8 +286,9 @@ pim_title:
   pim_enrich_catalog_volume_index: Catalogus volume monitoring
   pim_enrich_categorytree_index: Categorie boomstructuren
   pim_enrich_categorytree_create: Categoriestructuren|Aanmaken
-  pim_enrich_categorytree_edit: Categorie boom {{ category.label }} | Bewerken
+  pim_enrich_categorytree_edit: Categorie {{ category.label }} | Bewerken
   pim_enrich_categorytree_create_tree: Categoriestructuren|Aanmaken
+  pim_enrich_categorytree_tree: Categorie boom {{ category.label }} | Bewerken
   pim_enrich_attribute_index: Attributen
   pim_enrich_attribute_create: Attributen | Aanmaken
   pim_enrich_attribute_edit: Attribuut {{ attribute.label }} | Bewerken
@@ -322,6 +331,7 @@ pim_menu:
     attribute_group: Attribuutgroepen
     channel: Kanalen
     currency: Valuta
+    dashboard: Activiteitendashboard
     family: Families
     group: Groepen
     group_type: Groepstypen
@@ -343,6 +353,8 @@ pim_menu:
     system: Systeem navigatie
     user: Gebruikersbeheer navigatie
     settings:
+      product: Productinstellingen
+      catalog: Catalogusinstellingen
       collapsed_label: Instellingen navigatie
     product: Product navigatie
     product_infos: Product informatie
@@ -355,3 +367,20 @@ pim_notification:
     export: Exporteer
     quick_export: Snelle export
     mass_edit: Massa bewerken
+pim_settings:
+  settings_menu: Menu Instellingen
+  catalog_settings: Catalogusinstellingen
+  product_settings: Productinstellingen
+  count:
+    categories: U hebt {{ countTrees }} bomen en {{ countCategories }} categorieën
+    channels: U hebt {{ count }} kanalen
+    locales: U hebt {{ count }} ingeschakelde talen
+    currencies: U hebt {{ count }} ingeschakelde munteenheden
+    attribute_groups: U hebt {{ count }} attribuutgroepen
+    attributes: U hebt {{ count }} attributen
+    families: U hebt {{ count }} families
+    measurements: U hebt {{ count }} metingen
+    association_types: U hebt {{ count }} associatietypes
+    group_types: U hebt {{ count }} groepstypes
+    groups: U hebt {{ count }} groepen
+    rules: U hebt {{ count }} ingeschakelde regels

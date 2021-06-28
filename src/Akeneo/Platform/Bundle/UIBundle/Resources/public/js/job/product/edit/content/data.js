@@ -87,6 +87,10 @@ define([
         .then(this.buildFilterView.bind(this))
         .then(
           function (filterView) {
+            //condition to avoid adding the same filter twice
+            if (this.filterViews.some(filterView => filterView.filterCode === fieldCode)) {
+              return;
+            }
             this.listenTo(filterView, 'pim_enrich:form:entity:post_update', this.updateModel.bind(this));
             this.listenTo(filterView, 'filter:remove', this.removeFilter.bind(this));
             this.listenTo(

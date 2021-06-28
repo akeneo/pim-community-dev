@@ -40,6 +40,7 @@ product_model.family_variant.not_blank.message: Die Produktfamilie des Produktmo
 "The %attribute% attribute must not contain more than %limit% characters. The submitted value is too long.": Das %attribute% -Attribut darf nicht mehr als %limit% Zeichen enthalten. Der angegebene Wert ist zu lang.
 'The {{ attribute_code }} attribute must match the following regular expression: {{ pattern }}.': 'Das Attribut {{ attribute_code }} muss mit dem folgenden regulären Ausdruck übereinstimmen: {{ pattern }}.'
 'The {{ attribute_code }} attribute cannot be empty.': 'Das Attribut {{ attribute_code }} darf nicht leer sein.'
+"The %attribute% attribute requires an e-mail address.": 'Das %attribute% -Attribut erfordert eine E-Mail-Adresse.'
 pim_catalog:
   constraint:
     can_have_family_variant_empty_axis_value: 'Attribut "%attribute%" darf nicht leer sein, da es als Achse für dieses Objekt definiert ist'

@@ -18,7 +18,6 @@ pim_menu:
         data_flows: Data flows
         connect_connection_settings: Connection settings
         marketplace: Marketplace
-        new_label: NEW
 
 pim_title:
     akeneo_connectivity_connection_connect_marketplace: Marketplace
@@ -32,15 +31,10 @@ pim_title:
     akeneo_connectivity_connection_webhook_edit: Event subscription
     akeneo_connectivity_connection_webhook_regenerate_secret: Event subscription
     akeneo_connectivity_connection_webhook_event_logs: Event logs
-    akeneo_connectivity_connection_redirect_audit: Connection dashboard
     akeneo_connectivity_connection_settings_redirect: Connections
 
 akeneo_connectivity.connection:
     connect:
-        redirect.link: To go there, click here
-        dashboard_redirect.title: Find your Connection dashboard in the Connect menu
-        settings_redirect.title: Find your connection information in the Connect menu
-
         marketplace:
             title: Want to connect your PIM with another application? 🤟
             sub_title: Check our marketplace to see which application can be connected with Akeneo PIM.

@@ -62,9 +62,9 @@ jobs:
         is_ee_built:
             type: boolean
             default: true
-        path_to_front_packages:
+        path_to_dsm:
             type: string
-            default: front-packages
+            default: front-packages/akeneo-design-system
     machine:
       image: ubuntu-2004:202101-01
     steps:
@@ -118,6 +118,28 @@ jobs:
       - run:
           name: Build css
           command: make css
+      - run:
+          name: Create hash for front packages
+          command: |
+            find << parameters.path_to_dsm >>  -type f -print0 | sort -z | xargs -0 sha1sum | sha1sum > ~/akeneo-design-system.hash
+            date +%F >> ~/akeneo-design-system.hash
+      - run:
+          name: Set DSM directory owner to circleci
+          command: sudo chown -R 1001:1001 << parameters.path_to_dsm >>
+      - restore_cache:
+          name: Restore DSM cache
+          key: dsm-lib-{{ checksum "~/akeneo-design-system.hash" }}
+      - run:
+          name: Set DSM directory owner to docker
+          command: sudo chown -R 1000:1000 << parameters.path_to_dsm >>
+      - run:
+          name: Build DSM
+          command: ls << parameters.path_to_dsm >>/lib 1> /dev/null 2>&1 || make dsm
+      - save_cache:
+          name: Save DSM cache
+          key: dsm-lib-{{ checksum "~/akeneo-design-system.hash" }}
+          paths:
+            - << parameters.path_to_dsm >>/lib
       - run:
           name: Build front-packages
           command: make front-packages
@@ -226,6 +248,9 @@ jobs:
       - run:
           name: Install database
           command: APP_ENV=dev O="--catalog src/Akeneo/Platform/Bundle/InstallerBundle/Resources/fixtures/icecat_demo_dev" make database
+      - run:
+          name: Add "adminakeneo" user
+          command: APP_ENV=dev docker-compose exec -u www-data fpm bin/console pim:user:create adminakeneo adminakeneo product-team@akeneo.com admin1 admin2 en_US --admin -n
       - run:
           name: Launch Cypress
           command: CYPRESS_defaultCommandTimeout=8000 CYPRESS_requestTimeout=10000 make end-to-end-front
@@ -644,7 +669,7 @@ workflows:
                 requires:
                     - ready_to_build?
           - build_dev:
-                path_to_front_packages: vendor/akeneo/pim-community-dev/front-packages
+                path_to_dsm: vendor/akeneo/pim-community-dev/front-packages/akeneo-design-system
                 requires:
                     - checkout_ee
           - build_prod:

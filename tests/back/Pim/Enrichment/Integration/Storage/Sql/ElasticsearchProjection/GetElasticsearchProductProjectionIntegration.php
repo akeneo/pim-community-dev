@@ -36,6 +36,7 @@ class GetElasticsearchProductProjectionIntegration extends TestCase
             'identifier' => 'bar',
             'created' => $date->format('c'),
             'updated' => $date->format('c'),
+            'entity_updated' => $date->format('c'),
             'family' => [
                 'code' => 'familyA',
                 'labels' => [
@@ -153,6 +154,7 @@ class GetElasticsearchProductProjectionIntegration extends TestCase
             'identifier' => 'bar',
             'created' => $date->format('c'),
             'updated' => $date->format('c'),
+            'entity_updated' => $date->format('c'),
             'family' => [
                 'code' => 'familyA',
                 'labels' => [
@@ -265,6 +267,7 @@ class GetElasticsearchProductProjectionIntegration extends TestCase
             'identifier' => 'bar',
             'created' => $date->format('c'),
             'updated' => $date->format('c'),
+            'entity_updated' => $date->format('c'),
             'family' => null,
             'enabled' => true,
             'categories' => [],
@@ -709,6 +712,7 @@ class GetElasticsearchProductProjectionIntegration extends TestCase
     {
         $productProjection['created']= DateSanitizer::sanitize($productProjection['created']);
         $productProjection['updated']= DateSanitizer::sanitize($productProjection['updated']);
+        $productProjection['entity_updated']= DateSanitizer::sanitize($productProjection['entity_updated']);
 
         self::sanitizeMediaAttributeData($productProjection);
         sort($productProjection['categories']);

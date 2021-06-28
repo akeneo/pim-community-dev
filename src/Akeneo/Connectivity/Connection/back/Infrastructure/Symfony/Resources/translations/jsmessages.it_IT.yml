@@ -1,6 +1,10 @@
 pim_menu:
+  tab:
+    connect: Connetti
+  navigation:
+    connect: Connetti navigazione
   navigation_back:
-    connection: Torna alle connessioni
+    connection: Torna a Connetti
   navigation_block:
     connection: Navigazione di connessione
   item:
@@ -8,17 +12,30 @@ pim_menu:
     connection_settings: Connessioni
     connection_settings_edit: Impostazioni di connessione
     connection_monitoring: Monitoraggio
+    connection_webhook_edit: Iscrizione evento
+    connection_webhook_event_logs: Registri eventi
+    data_flows: Flussi di dati
+    connect_connection_settings: Impostazioni di connessione
+    marketplace: Marketplace
 pim_title:
-  akeneo_connectivity_connection_settings_index: Connessioni
+  akeneo_connectivity_connection_connect_marketplace: Marketplace
+  akeneo_connectivity_connection_settings_index: Impostazioni di connessione
   akeneo_connectivity_connection_settings_edit: Impostazioni di connessione
   akeneo_connectivity_connection_settings_any: Impostazioni di connessione
   akeneo_connectivity_connection_audit_index: Dashboard connessioni
   akeneo_connectivity_connection_audit_any: Dashboard connessioni
   akeneo_connectivity_connection_error_management_dashboard: Dashboard connessioni
   akeneo_connectivity_connection_error_management_connection_monitoring: Monitoraggio della connessione
-  akeneo_connectivity_connection_webhook_edit: Iscrizione evento (BETA)
-  akeneo_connectivity_connection_webhook_regenerate_secret: Iscrizione evento (BETA)
+  akeneo_connectivity_connection_webhook_edit: Iscrizione evento
+  akeneo_connectivity_connection_webhook_regenerate_secret: Iscrizione evento
+  akeneo_connectivity_connection_webhook_event_logs: Registri eventi
+  akeneo_connectivity_connection_settings_redirect: Connessioni
 akeneo_connectivity.connection:
+  connect:
+    marketplace:
+      title: Vuoi connettere il tuo PIM con un'altra applicazione? 🤟
+      sub_title: Controlla il nostro marketplace per vedere quale applicazione può essere connessa con Akeneo PIM.
+      link: Accedi al marketplace
   connections: Connessioni
   secondary_actions:
     title: Altre azioni
@@ -130,8 +147,9 @@ akeneo_connectivity.connection:
     flash:
       success: Connessione eliminata correttamente.
   helper:
+    title: '{0} Per ora, non hai alcuna connessione per collegare il tuo PIM ad applicazioni di terze parti.{1} Hai 1 connessione che collega il tuo PIM ad applicazioni di terze parti. Ben fatto, in questo modo il tuo PIM è ben integrato nel suo ecosistema.<unk> ]1,Inf] Hai {{ count }} connessioni che collegano il tuo PIM ad applicazioni di terze parti. Ben fatto, in questo modo il tuo PIM è ben integrato nel suo ecosistema.'
     description: Un PIM senza integrazioni con altri servizi è abbastanza inutile, vero? Grazie alle connessioni, è possibile dichiarare tutti i flussi dati che saranno inviati ed estratti dal PIM.
-    link: Curioso di saperne di più? Scopri cos'è una connessione e come sfruttarla al massimo cliccando qui!
+    link: Per scoprire di più sulle connessioni, consulta questa pagina
   flow_type_helper:
     message: Ti stai chiedendo cosa sia un tipo di flusso?
     link: Possiamo aiutarti cliccando qui!
@@ -147,8 +165,9 @@ akeneo_connectivity.connection:
   grid.wrong_credentials_combination_helper: Alcune delle connessioni sotto non stanno usando i loro nomi utenti della connessione. Sono identificati da un segnale di avviso giallo.
   dashboard:
     helper:
-      description: Da qui sarai in grado di tracciare tutti i flussi dati che sono raccolti nel PIM tramite le tue connessioni, così come tutti i flussi dati che sono distribuiti ai canali tramite le tue connessioni.
-      link: Vuoi saperne di più? Ecco qui!
+      title: '👋 Benvenuto nei flussi di dati!'
+      description: Qui puoi tracciare il flusso di dati tra il PIM e terzi.
+      link: Vuoi scoprire di più sul menu Connetti e sui flussi di dati? Eccoti servito!
     user_survey:
       title: Vuoi più dati in questa dashboard?
       content: Il tuo feedback è prezioso per noi. Aiutaci a scegliere il prossimo widget rispondendo a questo sondaggio di una sola domanda!
@@ -180,6 +199,7 @@ akeneo_connectivity.connection:
         business_errors: errori aziendali
     no_connection:
       title:
+        default: Vuoi vedere qualche grafico dettagliato sulle tue connessioni?
         data_source: Vuoi vedere qualche grafico fantasioso sulle tue connessioni sorgente?
         data_destination: Vuoi vedere qualche grafico fantasioso sulle tue connessioni di destinazione?
       message_with_permission:
@@ -189,11 +209,13 @@ akeneo_connectivity.connection:
         message: Chiedi all'amministratore di crearne una.
         link: Maggiori informazioni sulle connessioni qui...
   webhook:
-    title: Iscrizione evento (BETA)
-    event_subscription: Iscrizione evento (bêta)
+    title: Iscrizione eventi
+    event_subscription: Iscrizione eventi
+    download_logs: Scarica registri
     helper:
-      message: Puoi essere notificato degli eventi che si verificano nel PIM per i prodotti sincronizzati con quest'app connessa. Devi solo definire un URL e i tipi di evento di cui vuoi tenere traccia.
+      message: Puoi essere notificato degli eventi che si verificano nel PIM per i prodotti sincronizzati con quest'app connessa. Devi solo definire un URL.
       link: Scopri di più sulla configurazione dell'iscrizione evento...
+      url.test_disabled: Clicca sul pulsante Salva per testare l'URL.
     form:
       url: URL
       secret: Chiave segreta
@@ -204,6 +226,7 @@ akeneo_connectivity.connection:
       required: Questo campo è obbligatorio.
       not_found: Stai provando ad aggiornare una connessione che non esiste.
       limit_reached: Hai raggiunto il limite di iscrizioni all'evento attivo.
+      not_allowed_url: Questo URL non è consentito.
     flash:
       success: Iscrizione dell'evento aggiornata correttamente.
       error: Spiacenti, si è verificato un errore modificando l'iscrizione dell'evento.
@@ -219,6 +242,42 @@ akeneo_connectivity.connection:
     active_event_subscriptions_limit_reached:
       message: Puoi collegare fino a {{ limit }} connessioni alla funzione di iscrizione evento. Hai raggiunto questo limite.
       link: Scopri di più sulla configurazione degli abbonamenti agli eventi.
+    event_logs:
+      title: Registri eventi
+      event_subscription_disabled:
+        title: L'iscrizione all'evento non è attivata per questa connessione.
+        link: Attiva l'iscrizione all'evento
+      no_event_logs:
+        title: Al momento non ci sono registri.
+      no_event_logs_with_those_filters:
+        title: Spiacenti, la tua ricerca non ha restituito registri
+        caption: Riprova con nuovi criteri di ricerca.
+      level:
+        info: Info
+        notice: Nota
+        warning: Avviso
+        error: Errore
+      list:
+        search:
+          placeholder: Cerca nei messaggi
+          total: '{0} Nessun risultato|{1} 1 risultato|[2,Inf] {{ total }} risultati'
+          level: Livello
+          all: Tutte
+          none: Nessuno
+        date_range_filter:
+          label: Data e ora
+          reset: Azzera
+          from: Da
+          to: A
+          all: Tutte
+        info:
+          title: Ecco i registri relativi a tutte le richieste di eventi inviate a questa connessione.
+          content: Questa pagina visualizza i registri di errori e avvisi per le passate 72 ore e gli ultimi 100 registri di info e notizie.
+          link: Più informazioni sui registri eventi.
+        headers:
+          datetime: Data e ora
+          level: Livello
+          message: Messaggio
   error_management:
     connection_monitoring:
       title: Monitoraggio
@@ -228,7 +287,7 @@ akeneo_connectivity.connection:
         link: Per capire come risolvere questo problema, visita il centro di aiuto API.
       search_filter:
         placeholder: Cerca nei messaggi di errore
-        result_count: '{0} Nessun risultato |[1,Inf] {{ count }} risultati'
+        result_count: '{0} Nessun risultato|{1} 1 risultato|[2,Inf] {{ count }} risultati'
       error_list:
         date_time_column:
           title: Giorno e ora

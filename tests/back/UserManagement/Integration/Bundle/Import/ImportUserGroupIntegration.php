@@ -7,7 +7,7 @@ use Akeneo\Test\Integration\TestCase;
 use Akeneo\Test\IntegrationTestsBundle\Launcher\JobLauncher;
 use Akeneo\Tool\Bundle\BatchBundle\Persistence\Sql\SqlCreateJobInstance;
 use Akeneo\UserManagement\Component\Repository\GroupRepositoryInterface;
-use Box\Spout\Writer\WriterFactory;
+use Akeneo\Tool\Component\Connector\Writer\WriterFactory;
 
 final class ImportUserGroupIntegration extends TestCase
 {

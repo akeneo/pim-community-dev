@@ -3,7 +3,7 @@ import {Meta, Story, ArgsTable, Canvas} from '@storybook/addon-docs/blocks';
 import {Dropdown} from './Dropdown';
 import {Button, Image, Badge, Link, Checkbox, Search} from '../../components';
 import {useBooleanState, usePaginatedResults, useDebounce} from '../../hooks';
-import {SpaceContainer, useSelection, fakeFetcher} from '../../storybook';
+import {SpaceBetweenContainer, SpaceContainer, useSelection, fakeFetcher} from '../../storybook';
 import {ArrowDownIcon} from '../../icons';
 import {action} from '@storybook/addon-actions';
 
@@ -114,6 +114,100 @@ For accessibility reasons, we must put the full text in an HTML title attribute.
               </Dropdown.Overlay>
             )}
           </Dropdown>
+        </SpaceContainer>
+      );
+    }}
+  </Story>
+</Canvas>
+
+## Position
+
+<Canvas>
+  <Story name="Position" height={350}>
+    {args => {
+      const [isOpenTopLeft, openTopLeft, closeTopLeft] = useBooleanState(false);
+      const [isOpenTopRight, openTopRight, closeTopRight] = useBooleanState(false);
+      const [isOpenBottomLeft, openBottomLeft, closeBottomLeft] = useBooleanState(false);
+      const [isOpenBottomRight, openBottomRight, closeBottomRight] = useBooleanState(false);
+      return (
+        <SpaceContainer height={300}>
+          <SpaceBetweenContainer>
+            <Dropdown>
+              <Button onClick={openTopLeft}>
+                Dropdown <ArrowDownIcon />
+              </Button>
+              {isOpenTopLeft && (
+                <Dropdown.Overlay onClose={closeTopLeft}>
+                  <Dropdown.Header>
+                    <Dropdown.Title>Elements</Dropdown.Title>
+                  </Dropdown.Header>
+                  <Dropdown.ItemCollection>
+                    <Dropdown.Item onClick={action('Clicked')}>Item 1</Dropdown.Item>
+                    <Dropdown.Item>Item 2</Dropdown.Item>
+                    <Dropdown.Item>Item 3</Dropdown.Item>
+                    <Dropdown.Item>Item 4</Dropdown.Item>
+                  </Dropdown.ItemCollection>
+                </Dropdown.Overlay>
+              )}
+            </Dropdown>
+            <Dropdown>
+              <Button onClick={openTopRight}>
+                Dropdown <ArrowDownIcon />
+              </Button>
+              {isOpenTopRight && (
+                <Dropdown.Overlay onClose={closeTopRight}>
+                  <Dropdown.Header>
+                    <Dropdown.Title>Elements</Dropdown.Title>
+                  </Dropdown.Header>
+                  <Dropdown.ItemCollection>
+                    <Dropdown.Item onClick={action('Clicked')}>Item 1</Dropdown.Item>
+                    <Dropdown.Item>Item 2</Dropdown.Item>
+                    <Dropdown.Item>Item 3</Dropdown.Item>
+                    <Dropdown.Item>Item 4</Dropdown.Item>
+                  </Dropdown.ItemCollection>
+                </Dropdown.Overlay>
+              )}
+            </Dropdown>
+          </SpaceBetweenContainer>
+          <SpaceContainer height={200} />
+          <SpaceBetweenContainer>
+            <Dropdown>
+              <Button onClick={openBottomLeft}>
+                Dropdown <ArrowDownIcon />
+              </Button>
+              {isOpenBottomLeft && (
+                <Dropdown.Overlay onClose={closeBottomLeft}>
+                  <Dropdown.Header>
+                    <Dropdown.Title>Elements</Dropdown.Title>
+                  </Dropdown.Header>
+                  <Dropdown.ItemCollection>
+                    <Dropdown.Item onClick={action('Clicked')}>Item 1</Dropdown.Item>
+                    <Dropdown.Item>Item 2</Dropdown.Item>
+                    <Dropdown.Item>Item 3</Dropdown.Item>
+                    <Dropdown.Item>Item 4</Dropdown.Item>
+                  </Dropdown.ItemCollection>
+                </Dropdown.Overlay>
+              )}
+            </Dropdown>
+            <Dropdown>
+              <Button onClick={openBottomRight}>
+                Dropdown <ArrowDownIcon />
+              </Button>
+              {isOpenBottomRight && (
+                <Dropdown.Overlay onClose={closeBottomRight}>
+                  <Dropdown.Header>
+                    <Dropdown.Title>Elements</Dropdown.Title>
+                  </Dropdown.Header>
+                  <Dropdown.ItemCollection>
+                    <Dropdown.Item onClick={action('Clicked')}>Item 1</Dropdown.Item>
+                    <Dropdown.Item>Item 2</Dropdown.Item>
+                    <Dropdown.Item>Item 3</Dropdown.Item>
+                    <Dropdown.Item>Item 4</Dropdown.Item>
+                  </Dropdown.ItemCollection>
+                </Dropdown.Overlay>
+              )}
+            </Dropdown>
+          </SpaceBetweenContainer>
         </SpaceContainer>
       );
     }}

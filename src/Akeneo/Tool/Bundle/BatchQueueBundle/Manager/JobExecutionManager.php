@@ -4,13 +4,13 @@ declare(strict_types=1);
 
 namespace Akeneo\Tool\Bundle\BatchQueueBundle\Manager;
 
-use Akeneo\Tool\Bundle\BatchQueueBundle\Command\JobQueueConsumerCommand;
+use Akeneo\Tool\Bundle\BatchQueueBundle\MessageHandler\JobExecutionMessageHandler;
 use Akeneo\Tool\Component\Batch\Job\BatchStatus;
 use Akeneo\Tool\Component\Batch\Job\ExitStatus;
 use Akeneo\Tool\Component\Batch\Model\JobExecution;
-use Akeneo\Tool\Component\BatchQueue\Queue\JobExecutionMessage;
+use Akeneo\Tool\Component\BatchQueue\Queue\JobExecutionMessageInterface;
+use Doctrine\DBAL\Connection;
 use Doctrine\DBAL\Types\Type;
-use Doctrine\ORM\EntityManagerInterface;
 
 /**
  * Repository to manage the status of a job.
@@ -25,23 +25,15 @@ class JobExecutionManager
 {
     private const MAX_TIME_TO_UPDATE_HEALTH_CHECK = 5;
 
-    /** @var EntityManagerInterface */
-    private $entityManager;
+    private Connection $connection;
 
-    /**
-     * @param EntityManagerInterface $entityManager
-     */
-    public function __construct(EntityManagerInterface $entityManager)
+    public function __construct(Connection $connection)
     {
-        $this->entityManager = $entityManager;
+        $this->connection = $connection;
     }
 
     /**
      * Resolve the status of the job execution in case of crash of the daemon that launched the job.
-     *
-     * @param JobExecution $jobExecution
-     *
-     * @return JobExecution
      */
     public function resolveJobExecutionStatus(JobExecution $jobExecution): JobExecution
     {
@@ -59,7 +51,7 @@ class JobExecutionManager
         $now = new \DateTime('now', new \DateTimeZone('UTC'));
         $diffInSeconds = $now->getTimestamp() - $healthCheck->getTimestamp();
 
-        if ($diffInSeconds > JobQueueConsumerCommand::HEALTH_CHECK_INTERVAL + self::MAX_TIME_TO_UPDATE_HEALTH_CHECK) {
+        if ($diffInSeconds > JobExecutionMessageHandler::HEALTH_CHECK_INTERVAL + self::MAX_TIME_TO_UPDATE_HEALTH_CHECK) {
             $jobExecution->setStatus(new BatchStatus(BatchStatus::FAILED));
             $jobExecution->setExitStatus(new ExitStatus(ExitStatus::FAILED));
         }
@@ -69,16 +61,12 @@ class JobExecutionManager
 
     /**
      * Get the exit status of job execution associated to a job execution message.
-     *
-     * @param JobExecutionMessage $jobExecutionMessage
-     *
-     * @return ExitStatus|null
      */
-    public function getExitStatus(JobExecutionMessage $jobExecutionMessage): ?ExitStatus
+    public function getExitStatus(JobExecutionMessageInterface $jobExecutionMessage): ?ExitStatus
     {
         $sql = 'SELECT je.exit_code FROM akeneo_batch_job_execution je WHERE je.id = :id';
 
-        $stmt = $this->entityManager->getConnection()->prepare($sql);
+        $stmt = $this->connection->prepare($sql);
         $stmt->bindValue('id', $jobExecutionMessage->getJobExecutionId());
         $stmt->execute();
         $row = $stmt->fetch();
@@ -88,10 +76,8 @@ class JobExecutionManager
 
     /**
      * Update the status of a job execution associated to a job execution message.
-     *
-     * @param JobExecutionMessage $jobExecutionMessage
      */
-    public function markAsFailed(JobExecutionMessage $jobExecutionMessage): void
+    public function markAsFailed(int $jobExecutionId): void
     {
         $sql = <<<SQL
 UPDATE 
@@ -104,8 +90,8 @@ WHERE
     je.id = :id;
 SQL;
 
-        $stmt = $this->entityManager->getConnection()->prepare($sql);
-        $stmt->bindValue('id', $jobExecutionMessage->getJobExecutionId());
+        $stmt = $this->connection->prepare($sql);
+        $stmt->bindValue('id', $jobExecutionId);
         $stmt->bindValue('status', BatchStatus::FAILED);
         $stmt->bindValue('exit_code', ExitStatus::FAILED);
         $stmt->bindValue('updated_time', new \DateTime('now', new \DateTimeZone('UTC')), Type::DATETIME);
@@ -114,10 +100,8 @@ SQL;
 
     /**
      * Update the health check of the job execution associated to a job execution message.
-     *
-     * @param JobExecutionMessage $jobExecutionMessage
      */
-    public function updateHealthCheck(JobExecutionMessage $jobExecutionMessage): void
+    public function updateHealthCheck(JobExecutionMessageInterface $jobExecutionMessage): void
     {
         $sql = <<<SQL
 UPDATE 
@@ -129,7 +113,7 @@ WHERE
     je.id = :id;
 SQL;
 
-        $stmt = $this->entityManager->getConnection()->prepare($sql);
+        $stmt = $this->connection->prepare($sql);
         $stmt->bindValue('id', $jobExecutionMessage->getJobExecutionId());
         $stmt->bindValue('health_check_time', new \DateTime('now', new \DateTimeZone('UTC')), Type::DATETIME);
         $stmt->bindValue('updated_time', new \DateTime('now', new \DateTimeZone('UTC')), Type::DATETIME);
