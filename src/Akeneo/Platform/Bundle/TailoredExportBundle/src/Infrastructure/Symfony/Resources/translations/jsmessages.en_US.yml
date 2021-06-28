@@ -57,9 +57,9 @@ akeneo.tailored_export:
           name: Filename
         format: Format
         parent:
-          info:
-            locale: In case of the attribute used as label is localisable, the locale value to select
-            channel: In case of the attribute used as label is scopable, the channel value to select
+          information:
+            locale: If the attribute used as label is localisable, you may select a locale
+            channel: If the attribute used as label is scopable, you may select a channel
   column:
     delete_message: Are you sure you want to remove this column?
   validation:
