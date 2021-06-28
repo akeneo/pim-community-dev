@@ -10,15 +10,17 @@ type CategoryValue = {
 
 type RecursiveCategoryTreeProps = {
   tree: CategoryTreeModel;
+  parentTree?: CategoryTreeModel;
   childrenCallback: (value: any, parentCategory?: CategoryTreeModel) => Promise<CategoryTreeModel[]>;
   onChange?: (value: string, checked: boolean) => void;
   onClick?: any;
-  isCategorySelected?: (category: CategoryValue) => boolean;
+  isCategorySelected?: (category: CategoryValue, parentCategory?: CategoryTreeModel) => boolean;
   shouldRerender?: boolean
 };
 
 const RecursiveCategoryTree: React.FC<RecursiveCategoryTreeProps> = ({
   tree,
+  parentTree,
   childrenCallback,
   onChange,
   onClick,
@@ -43,6 +45,7 @@ const RecursiveCategoryTree: React.FC<RecursiveCategoryTreeProps> = ({
     }
   };
 
+
   return (
     <Tree<CategoryValue>
       label={categoryState.label}
@@ -51,7 +54,7 @@ const RecursiveCategoryTree: React.FC<RecursiveCategoryTreeProps> = ({
         code: categoryState.code,
         label: categoryState.label,
       }}
-      selected={categoryState.selected || (isCategorySelected ? isCategorySelected(categoryState) : categoryState.selected)}
+      selected={categoryState.selected || (isCategorySelected ? isCategorySelected(categoryState, parentTree) : categoryState.selected)}
       isLoading={categoryState.loading}
       readOnly={categoryState.readOnly}
       selectable={categoryState.selectable}
@@ -66,10 +69,11 @@ const RecursiveCategoryTree: React.FC<RecursiveCategoryTreeProps> = ({
             <RecursiveCategoryTree
               key={childNode.id}
               tree={childNode}
+              parentTree={categoryState}
               onChange={onChange}
               childrenCallback={childrenCallback}
               onClick={onClick}
-              isCategorySelected={isCategorySelected}
+              isCategorySelected={isCategorySelected} // Give a reference of the parent to the child via currying ? or just pass the parent tree to the child
               shouldRerender={shouldRerender}
             />
           );

@@ -11,6 +11,7 @@ type CategoryTreeModel = {
   selected?: boolean;
   readOnly?: boolean;
   children?: CategoryTreeModel[];
+  parent?: CategoryTreeModel;
 };
 
 type CategoryTreeProps = {
@@ -20,7 +21,7 @@ type CategoryTreeProps = {
   onChange?: (value: string, checked: boolean) => void;
   onClick?: any;
   initCallback?: (treeLabel: string, categoryLabel?: string) => void;
-  isCategorySelected?: (category: CategoryValue) => boolean;
+  isCategorySelected?: (category: CategoryValue, parentCategory?: CategoryTreeModel) => boolean;
   shouldRerender?: boolean;
 };
 
@@ -32,13 +33,13 @@ const CategoryTree: React.FC<CategoryTreeProps> = ({
   onClick,
   initCallback,
   isCategorySelected,
-                                                     // @ts-ignore
-                                                     shouldRerender,
+   // @ts-ignore
+   shouldRerender,
   ...rest
 }: CategoryTreeProps) => {
   const [tree, setTree] = React.useState<CategoryTreeModel>();
 
-  const recursiveGetFirstSelectedCategoryLabel: (category: CategoryTreeModel) => string | undefined = category => {
+  const recursiveGetFirstSelectedCategoryLabel: (category: CategoryTreeModel, tree?: CategoryTreeModel) => string | undefined = (category, tree) => {
     if (
       isCategorySelected &&
       isCategorySelected({
@@ -50,7 +51,7 @@ const CategoryTree: React.FC<CategoryTreeProps> = ({
       return category.label;
     }
     return (category.children || []).reduce(
-      (previous, subCategory) => previous || recursiveGetFirstSelectedCategoryLabel(subCategory),
+      (previous, subCategory) => previous || recursiveGetFirstSelectedCategoryLabel(subCategory, tree),
       undefined as string | undefined
     );
   };
