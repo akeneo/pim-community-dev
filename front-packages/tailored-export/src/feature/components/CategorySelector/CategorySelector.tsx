@@ -76,7 +76,7 @@ const CategorySelector = ({
     }
   };
 
-  const childrenCallback: (id: number, parentTree?: CategoryTreeModel) => Promise<CategoryTreeModel[]> = async (id, parentTree) => {
+  const childrenCallback = async (id: number, parentTree?: CategoryTreeModel): Promise<CategoryTreeModel[]> => {
     const childrenUrl = router.generate('pim_enrich_categorytree_children', {_format: 'json', id});
     const response = await fetch(childrenUrl);
     const json: CategoryResponse[] = await response.json();
