@@ -11,7 +11,6 @@ const Container = styled.div`
   width: 100%;
 `;
 type Operator = 'IN CHILDREN LIST' | 'IN' | 'NOT IN';
-// How to export component CategoryFilter + type CategoryFilter (same name)
 type CategoryFilterType = {
   field: 'categories';
   operator: Operator;

@@ -39,19 +39,12 @@ const CategorySelector = ({
     category,
     parentCategory
   ) => {
-    let hasSelectedParent = false;
-    let aParent = parentCategory;
-    while (aParent !== undefined) {
-      if (aParent.selected === true) {
-        hasSelectedParent = true;
-        break;
-      }
-      aParent = aParent.parent;
+    if (selectedCategoryCodes.includes(category.code)) {
+      return true;
     }
-    return (
-      selectedCategoryCodes.includes(category.code) ||
-      (parentCategory !== undefined && shouldIncludeSubCategories && hasSelectedParent)
-    );
+    return shouldIncludeSubCategories
+      ? parentCategory !== undefined && isCategorySelected(parentCategory, parentCategory.parent)
+      : false;
   };
 
   const handleCheckCategory = (value: string) => {
@@ -60,9 +53,6 @@ const CategorySelector = ({
       const newSelectedCategoryCodes = [...selectedCategoryCodes, value];
       setSelectedCategoryCodes(newSelectedCategoryCodes);
       onChange(newSelectedCategoryCodes);
-      if (shouldIncludeSubCategories) {
-        forceUpdateChildren(!shouldUpdateChildren);
-      }
     }
   };
 
@@ -86,27 +76,18 @@ const CategorySelector = ({
     }
   };
 
-  const childrenCallback: (id: number, parentCategory?: CategoryTreeModel) => Promise<CategoryTreeModel[]> = async (
-    id,
-    parentCategory?
-  ) => {
+  const childrenCallback: (id: number) => Promise<CategoryTreeModel[]> = async id => {
     const childrenUrl = router.generate('pim_enrich_categorytree_children', {_format: 'json', id});
     const response = await fetch(childrenUrl);
     const json: CategoryResponse[] = await response.json();
 
-    const areChildrenIncluded =
-      parentCategory !== undefined && shouldIncludeSubCategories
-        ? parentCategory.selected || selectedCategoryCodes.includes(parentCategory.code)
-        : true;
-
     return json.map(child =>
       parseResponse(child, {
-        readOnly: areChildrenIncluded ? true : undefined,
-        selected: areChildrenIncluded ? true : undefined,
         selectable: true,
       })
     );
   };
+
   const init = useCallback(
     async (categoryTreeCode?: string) => {
       const categoryRoute = router.generate('pim_enrich_category_rest_get', {identifier: categoryTreeCode});
@@ -117,7 +98,6 @@ const CategorySelector = ({
       const response = await fetch(childrenUrl);
       const json: CategoryResponse[] = await response.json();
 
-      const areChildrenIncluded = shouldIncludeSubCategories ? selectedCategoryCodes.includes(category.code) : false;
       return {
         id: category.id,
         code: category.code,
@@ -125,14 +105,12 @@ const CategorySelector = ({
         selectable: true,
         children: json.map(child =>
           parseResponse(child, {
-            readOnly: areChildrenIncluded ? true : undefined,
-            selected: areChildrenIncluded ? true : undefined,
             selectable: true,
           })
         ),
       };
     },
-    [catalogLocale, router, shouldIncludeSubCategories, selectedCategoryCodes]
+    [catalogLocale, router]
   );
 
   return (
