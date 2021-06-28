@@ -49,7 +49,7 @@ final class JobExecutionMessageHandler implements MessageHandlerInterface
         $startTime = time();
         try {
             $arguments = array_merge(
-                [$pathFinder->find(), $console, 'akeneo:batch:job'],
+                [$pathFinder->find(), $console, 'akeneo:batch:job', '--quiet'],
                 $this->extractArgumentsFromMessage($jobExecutionMessage)
             );
             $process = new Process($arguments);
