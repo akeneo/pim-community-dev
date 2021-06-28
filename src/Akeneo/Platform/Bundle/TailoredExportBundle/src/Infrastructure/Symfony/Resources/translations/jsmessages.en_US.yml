@@ -60,6 +60,12 @@ akeneo.tailored_export:
           information:
             locale: If the attribute used as label is localisable, you may select a locale
             channel: If the attribute used as label is scopable, you may select a channel
+      operation:
+        replacement:
+          title: Replacement
+          placeholder: Define the replacement value
+          enabled: Enabled replacement value
+          disabled: Disabled replacement value
   column:
     delete_message: Are you sure you want to remove this column?
   validation:

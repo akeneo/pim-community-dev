@@ -9,16 +9,22 @@ import {Attribute} from '../../models';
 
 const attributes: Attribute[] = [
   {
+    type: 'pim_catalog_text',
     code: 'name',
     labels: {fr_FR: 'French name', en_US: 'English name'},
     scopable: false,
     localizable: false,
+    is_locale_specific: false,
+    available_locales: [],
   },
   {
+    type: 'pim_catalog_textarea',
     code: 'description',
     labels: {fr_FR: 'French description', en_US: 'English description'},
     scopable: false,
     localizable: false,
+    is_locale_specific: false,
+    available_locales: [],
   },
 ];
 
@@ -396,11 +402,11 @@ test('it displays the sources labels on the row', async () => {
         },
         {
           uuid: '1235',
-          code: 'enabled',
+          code: 'parent',
           type: 'property',
           locale: null,
           channel: null,
-          operations: [],
+          operations: {},
           selection: {type: 'code'},
         },
       ],
@@ -435,6 +441,6 @@ test('it displays the sources labels on the row', async () => {
 
   const [_headerRow, firstRow, secondRow] = screen.getAllByRole('row');
 
-  expect(within(firstRow).getByText('English name, pim_common.enabled')).toBeInTheDocument();
+  expect(within(firstRow).getByText('English name, pim_common.parent')).toBeInTheDocument();
   expect(within(secondRow).getByText('akeneo.tailored_export.column_list.column_row.no_source')).toBeInTheDocument();
 });

@@ -7,14 +7,25 @@ import {ColumnConfiguration} from './models/ColumnConfiguration';
 import {Attribute, AvailableSourceGroup} from './models';
 import {FetcherContext} from './contexts';
 
-const attributes = [{code: 'description', type: 'pim_catalog_text', labels: {}, scopable: false, localizable: false}];
+const attributes: Attribute[] = [
+  {
+    code: 'description',
+    type: 'pim_catalog_text',
+    labels: {},
+    scopable: false,
+    localizable: false,
+    is_locale_specific: false,
+    available_locales: [],
+  },
+];
+
 const fetchers = {
   attribute: {fetchByIdentifiers: (): Promise<Attribute[]> => Promise.resolve<Attribute[]>(attributes)},
   channel: {fetchAll: (): Promise<Channel[]> => Promise.resolve([])},
 };
 
 const renderWithProviders = async (node: ReactNode) =>
-  await act(async () => void baseRender(<FetcherContext.Provider value={fetchers}>{node})</FetcherContext.Provider>));
+  await act(async () => void baseRender(<FetcherContext.Provider value={fetchers}>{node}</FetcherContext.Provider>));
 
 jest.mock('akeneo-design-system/lib/shared/uuid', () => ({
   uuid: () => '276b6361-badb-48a1-98ef-d75baa235148',
@@ -261,7 +272,7 @@ test('It add source when user click on add source', async () => {
           channel: null,
           code: 'description',
           locale: null,
-          operations: [],
+          operations: {},
           selection: {
             type: 'code',
           },

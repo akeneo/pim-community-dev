@@ -1,4 +1,4 @@
-import {flattenSections} from 'feature/components/ColumnDetails/AddSourceDropdown/flattenSections';
+import {flattenSections} from '../../../components/ColumnDetails/AddSourceDropdown/flattenSections';
 
 test('it flattens sections in array', () => {
   expect(

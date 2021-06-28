@@ -1,8 +1,8 @@
 import React, {useMemo} from 'react';
-import {getLabel, useTranslate, useUserContext} from '@akeneo-pim-community/shared';
 import {TabBar} from 'akeneo-design-system';
-import {Source} from '../../models';
+import {getLabel, useTranslate, useUserContext} from '@akeneo-pim-community/shared';
 import {useAttributes} from '../../hooks';
+import {Source} from '../../models';
 
 type SourceTabBarProps = {
   sources: Source[];

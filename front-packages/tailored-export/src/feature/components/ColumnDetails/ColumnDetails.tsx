@@ -7,9 +7,9 @@ import {
   addPropertySource,
   ColumnConfiguration,
   removeSource,
-  Source,
   updateSource,
-} from '../../models/ColumnConfiguration';
+  Source,
+} from '../../models';
 import {AddSourceDropdown} from './AddSourceDropdown/AddSourceDropdown';
 import {AttributeSourceConfigurator} from '../SourceDetails/AttributeSourceConfigurator';
 import {PropertySourceConfigurator} from '../SourceDetails/PropertySourceConfigurator';
@@ -72,7 +72,7 @@ const ColumnDetails = ({columnConfiguration, onColumnChange}: ColumnDetailsProps
       switchTo(updatedColumnConfiguration.sources[updatedColumnConfiguration.sources.length - 1]?.uuid ?? '');
     } else {
       const [attribute] = await attributeFetcher.fetchByIdentifiers([addedSourceCode]);
-      const updatedColumnConfiguration = addAttributeSource(columnConfiguration, addedSourceCode, attribute, channels);
+      const updatedColumnConfiguration = addAttributeSource(columnConfiguration, attribute, channels);
       onColumnChange(updatedColumnConfiguration);
       switchTo(updatedColumnConfiguration.sources[updatedColumnConfiguration.sources.length - 1]?.uuid ?? '');
     }

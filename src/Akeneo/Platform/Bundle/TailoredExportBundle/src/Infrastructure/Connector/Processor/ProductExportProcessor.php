@@ -45,11 +45,11 @@ class ProductExportProcessor implements ItemProcessorInterface, StepExecutionAwa
     public function process($product)
     {
         if (!$product instanceof ProductInterface) {
-            throw new \Exception('Invalid argument');
+            throw new \LogicException('Invalid argument');
         }
 
         if (!$this->stepExecution instanceof StepExecution) {
-            throw new \Exception('Processor have not been properly initialized');
+            throw new \LogicException('Processor has not been properly initialized');
         }
 
         $columns = $this->stepExecution->getJobParameters()->get('columns');
@@ -76,7 +76,7 @@ class ProductExportProcessor implements ItemProcessorInterface, StepExecutionAwa
                         $source['code']
                     );
                 } else {
-                    throw new \Exception('Source type is unsupported');
+                    throw new \LogicException(sprintf('Source type "%s" is unsupported', $source['type']));
                 }
             }
 
