@@ -1,0 +1,6 @@
+akeneo_authentication:
+  acl:
+    sso:
+      title: Eenmalige aanmelding (SSO) beheren 
+  sso:
+    unknown_user_error: U hebt geen toegangsrechten voor deze applicatie. Neem contact op met uw beheerder.
