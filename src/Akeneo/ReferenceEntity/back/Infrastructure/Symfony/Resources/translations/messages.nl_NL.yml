@@ -1,13 +1,54 @@
 akeneo_referenceentity:
+  acl_group:
+    reference_entity: Referentie-entiteiten
   acl:
     reference_entity:
       create: Een entiteit aanmaken
       edit: De entity eigenschappen aanpassen
       delete: Verwijder een entiteit
+      manage_permission: Rechten voor referentie-entiteiten beheren
     record:
       create: Een record aanmaken
+      edit: Records bewerken
+      delete: Records verwijderen
+      list_product: Lijst van aan record gekoppelde producten weergeven
+    attribute:
+      create: Een attribuut toevoegen aan een referentie-entiteit
+      edit: Een attribuut van een referentie-entiteit bewerken
+      delete: Een attribuut van een referentie-entiteit verwijderen
     option:
       edit: Opties bewerken
       delete: Een optie verwijderen
+  jobs:
+    reference_entity_mass_delete:
+      error: 'Het groepsgewijs verwijderen is mislukt voor de asset(s) "{{ assets }}" met fout: "{{ error }}"'
+pim_analytics:
+  info_type:
+    nb_reference_entities: Aantal referentie-entiteiten
+    max_number_of_records_per_reference_entity: Maximaal aantal records per referentie-entiteit
+    average_number_of_values_per_records: Gemiddeld aantal waarden per record voor alle referentie-entiteiten
+    average_number_of_records_per_reference_entity: Gemiddeld aantal records per referentie-entiteit
+    max_number_of_attributes_per_reference_entity: Maximaal aantal attributen per referentie-entiteit
+    average_number_of_attributes_per_reference_entity: Gemiddeld aantal attributen per referentie-entiteit
+    average_percentage_localizable_only_attributes: Gemiddeld percentage van attributen per referentie-entiteit die alleen kunnen worden vertaald
+    average_percentage_scopable_only_attributes: Gemiddeld percentage van attributen per referentie-entiteit die alleen meerdere toepassingsgebieden hebben 
+    average_percentage_scopable_and_localizable_attributes: Gemiddelde percentage van attributen per referentie-entiteit die kunnen worden vertaald en meerdere toepassingsgebieden hebben
+pim_datagrid:
+  cells:
+    type:
+      reference_entity_mass_delete_records: Groepsgewijze verwijdering van records uitvoeren
+  reference_entity_mass_delete_records: Groepsgewijs records verwijderen
+job_execution:
+  summary:
+    records: Records
+pim_notification:
+  types:
+    reference_entity_mass_delete_records: Groepsgewijs records verwijderen
+pim_mass_edit:
+  notification:
+    reference_entity_mass_delete_records:
+      warning: De records zijn verwijderd met waarschuwingen
+      success: Records zijn verwijderd
+      error: Record verwijderen mislukt
 akeneo_reference_entity: Referentie entiteit enkele link
 akeneo_reference_entity_collection: Referentie entiteit meerdere links

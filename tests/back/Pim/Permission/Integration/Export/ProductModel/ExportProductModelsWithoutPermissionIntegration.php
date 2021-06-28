@@ -60,10 +60,7 @@ CSV;
 
         $jobExecution = $this->get('akeneo_batch_queue.launcher.queue_job_launcher')->launch($jobInstance, $user, $config);
 
-        while ($this->jobLauncher->hasJobInQueue()) {
-            $this->jobLauncher->launchConsumerOnce();
-        }
-
+        $this->jobLauncher->launchConsumerUntilQueueIsEmpty();
         $this->jobLauncher->waitCompleteJobExecution($jobExecution);
 
         $csv = file_get_contents($filePath);

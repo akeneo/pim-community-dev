@@ -107,6 +107,14 @@ check-requirements: #Doc: check if PIM requirements are set
 database: #Doc: install a new icecat catalog database
 	$(PHP_RUN) bin/console pim:installer:db ${O}
 
+.PHONY: start-job-worker
+start-job-worker:
+	$(PHP_RUN) bin/console messenger:consume ui_job import_export_job data_maintenance_job ${O}
+
+.PHONY: stop-workers
+stop-workers:
+	$(PHP_RUN) bin/console messenger:stop-workers
+
 ##
 ## PIM install
 ##

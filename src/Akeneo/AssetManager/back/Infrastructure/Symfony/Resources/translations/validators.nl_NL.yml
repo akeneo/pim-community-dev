@@ -1,6 +1,10 @@
 pim_asset_manager:
   asset_family:
     validation:
+      code:
+        pattern: 'Dit veld mag alleen letters, cijfers en liggende streepjes bevatten.'
+        should_be_unique: 'Er bestaat al een assetfamilie met code "%asset_family_identifier%"'
+        limit_reached: 'U kunt de assetfamilie "%asset_family_identifier%" niet aanmaken omdat u de limiet van %limit% assetfamilies heeft bereikt'
       assets:
         should_have_no_asset: 'U kunt deze familie niet verwijderen omdat er assets bestaan voor deze asset familie'
       asset_family_attributes:
@@ -9,9 +13,21 @@ pim_asset_manager:
         at_least_one_user_group_should_have_edit_permission: 'Ten minste één gebruikersgroep moet de toestemming hebben om deze familie te bewerken'
       product_attributes:
         should_not_be_linked: 'U kunt deze familie niet verwijderen omdat er asset familie attributen gekoppeld zijn aan deze asset familie'
+      should_exist: 'De assetfamilie %asset_family_code%" is niet gevonden.'
       rule_template:
         limit_reached: 'Je hebt de limiet bereikt van %limit% product link regels voor de "%asset_family_identifier%" asset familie.'
+        product_selection_cannot_be_empty: 'U moet ten minste één productselectie opgeven in de productlinkregel'
+        product_assignment_cannot_be_empty: 'U moet ten minste één producttoewijzing opgeven in de productlinkregel'
+        extrapolated_attribute_should_exist: 'Het attribuut "%attribute_code%" bestaat niet voor deze assetfamilie'
         extrapolated_attribute_type_should_be_supported: 'Het attribuut "%attribute_code%" van het type "%attribute_type%" wordt niet ondersteund, alleen de volgende attribuuttypes worden ondersteund voor dit veld: %supported_attribute_type%'
+        channel_should_exist: 'Het kanaal "%channel_code%" bestaat niet'
+        locale_should_exist: 'De taal "%locale_code%" is niet geactiveerd of bestaat niet'
+        extrapolated_attribute_type_should_not_have_one_value_per_channel: 'Het attribuut "%attribute_code%" kan niet worden gebruikt voor extrapolatie omdat het één waarde per kanaal heeft'
+        extrapolated_attribute_type_should_not_have_one_value_per_locale: 'Het attribuut "%attribute_code%" kan niet worden gebruikt voor extrapolatie omdat het één waarde per taal heeft'
+        assignment_mode_not_supported: 'Ongeldige toewijzingsmodus "%assignment_mode%" gevonden in een productlinkregel, waarschijnlijk "vervangen" of "toevoegen"'
+        channel_not_supported_for_field: 'U kunt geen kanaal opgeven voor het veld "%product_field%"'
+        locale_not_supported_for_field: 'U kunt geen taal opgeven voor het veld "%product_field%"'
+        assignmement_attribute_does_not_support_this_asset_family: 'Het productattribuut "%product_attribute_code%" kan geen assets van de assetfamilie "%asset_family_identifier%" bevatten'
         assignmement_attribute_does_not_exist: 'productattribuut "%product_attribute_code%" bestaat niet'
         assignmement_attribute_is_not_an_asset_collection: 'productattribuut "%product_attribute_code%" is geen attribuut van het type asset collectie'
       attribute_as_main_media:
@@ -21,6 +37,7 @@ pim_asset_manager:
         limit_reached: 'Je hebt de limiet van %limit% transformaties bereikt'
         same_operation_twice: 'De bewerking "%operation_type%" kan niet twee keer worden gedefinieerd in één transformatie'
         source_can_not_be_a_target: 'De attribuutbron "%attribute_code%" kan geen attribuut doel zijn van een transformatie.'
+        attribute_reference_should_exist: 'Het attribuut "%attribute_code%" bestaat niet voor deze assetfamilie'
         source_should_be_media_file: 'Het bronattribuut moet van het type mediabestand zijn.'
         target_should_be_media_file: 'Het doelattribuut moet van het type mediabestand zijn.'
         filename_is_not_unique: 'Een transformatie met de prefix "%filename_prefix%" en achtervoegsel "%filename_suffix%" bestaat al voor de attribuutbron "%attribute_code%"'
@@ -34,12 +51,89 @@ pim_asset_manager:
         not_main_media_attribute_code: 'De eigenschap moet overeenkomen met de code van het attribuut dat is gedefinieerd als de belangrijkste media'
   asset:
     validation:
+      mass_edit:
+        updater_cannot_be_empty: 'Attributen die worden gebruikt in transformaties of in alleen-lezen modus kunnen niet worden geselecteerd.'
+        updater_must_be_unique: 'Zorg ervoor dat dit attribuut en indien van toepassing het kanaal en de taal, nog niet zijn geselecteerd.'
+      code:
+        pattern: 'Dit veld mag alleen letters, cijfers en liggende streepjes bevatten.'
+        should_be_unique: 'Er bestaat al een asset met code "%code%"'
+        should_exist: 'De asset is niet gevonden'
+      text:
+        incompatible_with_regular_expression: 'De tekst is niet compatibel met de reguliere expressie "%regular_expression%"'
       file:
+        extension_not_allowed: '"%file_extension%"-bestanden zijn niet toegestaan voor dit attribuut. Toegestane extensies zijn: %allowed_file_extensions%'
+        file_size_exceeded: 'Het bestand is groter dan de ingestelde maximale bestandsgrootte voor het attribuut.'
+        should_exist: 'Het bestand "%file_path%" is niet gevonden.'
         target_readonly: 'U kunt de waarde van "%attribute_code%" niet bijwerken omdat deze als doelveld voor een transformatie is ingesteld.'
+      option:
+        code_does_not_exist: 'De optie met code "%option_code%" bestaat niet voor dit attribuut'
+      option_collection:
+        codes_dont_exist: "De volgende optiecodes bestaan niet voor dit attribuut : \"%option_codes%\""
+      asset:
+        should_exist: 'De asset "%asset_code%" is niet gevonden.'
+      asset_collection:
+        should_exist: 'De assets "%asset_codes%" zijn niet gevonden.'
+      limit_reached: 'U kunt de asset "%asset_label%" niet aanmaken omdat u de limiet van %limit% assets voor deze assetfamilie heeft bereikt'
+      channel:
+        is_expected: 'Er wordt een kanaal verwacht voor attribuut "%attribute_code%" omdat het een waarde per kanaal heeft.'
+        is_not_expected: 'Er wordt geen kanaal verwacht voor attribuut "%attribute_code%" omdat het geen waarde per kanaal heeft.'
+        should_exist: 'Het kanaal "%channel_identifier%" bestaat niet.'
+      locale:
+        is_expected: 'Er wordt een taal verwacht voor attribuut "%attribute_code%" omdat het een waarde per taal heeft.'
+        is_not_expected: 'Er wordt geen locale verwacht voor attribuut "%attribute_code%" omdat het geen waarde per locale heeft.'
+        is_not_activated: 'De taal "%locale_identifier%" is niet geactiveerd.'
+        is_not_activated_for_channel: 'De taal "%locale_identifier%" is niet geactiveerd voor het kanaal "%channel_identifier%".'
+      number:
+        should_be_string: 'Dit veld moet een tekenreeks zijn'
+        should_be_integer: 'Dit veld moet een heel getal zijn'
+        integer_too_long: 'Dit hele getal is te lang'
+        should_be_numeric: 'Dit veld moet een numerieke waarde zijn met het juiste scheidingsteken voor decimalen'
       main_media:
         not_main_media_attribute: 'Het verwachte attribuut als belangrijkste media is "%main_media_attribute%", "%attribute%" gegeven.'
+      media_link:
+        protocol_not_allowed: 'Dit veld moet beginnen met een geldig protocol. Toegestane protocollen zijn: %allowed_protocols%.'
   attribute:
     validation:
+      options:
+        should_exist: 'De optie is niet gevonden.'
+        duplicated: 'De optie "%option_code%" bestaat al'
+        too_many: 'U hebt de limiet van {{ limit }} attribuutopties per attribuut bereikt.'
+        code:
+          pattern: 'Dit veld mag alleen letters, cijfers en liggende streepjes bevatten.'
+          should_not_be_blank: 'De code van de optie mag niet leeg zijn'
+      max_length:
+        should_be_an_integer: 'Deze waarde moet een heel getal zijn.'
+      max_file_size:
+        should_be_a_number: 'Deze waarde moet een getal zijn.'
+      min_value:
+        should_be_a_number: 'Deze waarde moet een numerieke waarde zijn met het juiste scheidingsteken voor decimalen'
+        cannot_be_greater_than_max: 'Het minimum kan niet hoger zijn dan het maximum'
+      max_value:
+        should_be_a_number: 'Deze waarde moet een getal zijn met het juiste scheidingsteken voor decimalen'
+        cannot_be_lower_than_min: 'Het maximum kan niet lager zijn dan het minimum'
+      code:
+        pattern: 'Dit veld mag alleen letters, cijfers en liggende streepjes bevatten. "{{ value }}" gegeven.'
+        reserved_codes: 'De code kan niet een van deze waarden zijn: "{{ comma_separated_reserved_keywords }}"'
+        should_not_exist: 'Het attribuut bestaat al voor de assetfamilie "{{ asset_family_identifier }}" en de attribuutcode "{{ code }}"'
+        should_exist: 'Het attribuut is niet gevonden'
+      regular_expression:
+        invalid_regular_expression: 'Deze reguliere expressie is niet geldig. Dit is een voorbeeld van een geldige reguliere expressie: "/[a-z]+[0-9]*/"'
+        should_not_be_empty: 'De reguliere expressie mag niet leeg zijn.'
+      should_be_a_textarea_to_update_is_rich_text_editor: 'Een attribuut in platte tekst kan geen editor voor tekst met opmaak hebben'
+      should_be_a_simple_text_to_set_validation_rule_to_something_else_than_none: 'Een attribuut voor een tekstgebied kan geen validatieregel hebben'
+      cannot_set_a_non_empty_regular_expression: 'Het attribuut mag geen reguliere expressie bevatten'
+      cannot_update_the_regular_expression: 'Kan geen reguliere expressie instellen voor het tekstattribuut'
+      limit_reached: 'U kunt het attribuut "%attribute_label%" niet aanmaken omdat u de limiet van %limit% attributen voor deze assetfamilie heeft bereikt'
+      asset_type:
+        is_required: 'U moet het type assetfamilie opgeven om een linkattribuut voor een assetfamilie aan te maken'
+        asset_family_should_exist: 'De assetfamilie %asset_family_code%" is niet gevonden.'
+      prefix:
+        should_not_be_empty: 'Het voorvoegsel mag geen lege tekenreeks zijn.'
+        protocol_not_allowed: 'Dit veld moet beginnen met een geldig protocol. Toegestane protocollen zijn: %allowed_protocols%.'
+      suffix:
+        should_not_be_empty: 'Het achtervoegsel mag geen lege tekenreeks zijn.'
+      media_type:
+        not_expected: 'Het gegeven mediatype komt niet overeen met de verwachte (%supported_media_types%).'
       media_file:
         cannot_contain_extension_separator: 'Extensies kunnen het extensie scheidingsteken ".", "%wrong_extension%" niet bevatten.'
         should_only_contain_lowercase_letters_and_numbers: 'Extensies mogen alleen kleine letters en cijfers bevatten, "%wrong_extension%" gegeven.'

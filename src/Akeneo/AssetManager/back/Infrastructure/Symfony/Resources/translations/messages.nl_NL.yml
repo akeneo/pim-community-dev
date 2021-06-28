@@ -29,6 +29,8 @@ akeneo_assetmanager:
       error: 'Het toepassen van de asset familie naamgevingsregels is mislukt op asset "{{ asset }}"'
     asset_manager_mass_delete:
       error: 'Het massa-verwijderen is mislukt op asset(s) "{{ assets }}" met fout: "{{ error }}"'
+    asset_manager_mass_edit:
+      error: 'Het groepsgewijs verwijderen is mislukt voor de asset(s) "{{ assets }}" met fout: "{{ error }}"'
 pim_import_export:
   widget:
     last_operations:
@@ -65,6 +67,7 @@ pim_datagrid:
       asset_manager_link_assets_to_products: Koppel assets aan producten
       asset_manager_compute_transformations: Bereken asset transformaties
       asset_manager_mass_delete_assets: Massaal assets verwijderen
+      asset_manager_mass_edit_assets: Assets groepsgewijs bewerken
 batch_jobs:
   default_steps:
     execute_naming_convention: Toepassen asset familie naamgevingsregels
@@ -77,3 +80,7 @@ pim_mass_edit.notification.asset_manager_mass_delete_assets:
   warning: Assets succesvol verwijderd met waarschuwingen
   success: Assets succesvol verwijderd
   error: Asset verwijderen mislukt
+pim_mass_edit.notification.asset_manager_mass_edit_assets:
+  warning: De assets zijn bewerkt met waarschuwingen
+  success: De assets zijn bewerkt
+  error: Het bewerken van de assets is mislukt

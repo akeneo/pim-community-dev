@@ -78,9 +78,13 @@ pim:
   serviceAccountKey: ${pimStoragekey}
   pubsub:
     subscription_webhook: ${subscription_webhook}
-    subscription_job_queue: ${subscription_job_queue}
+    subscription_job_queue_ui: ${subscription_job_queue_ui}
+    subscription_job_queue_import_export: ${subscription_job_queue_import_export}
+    subscription_job_queue_data_maintenance: ${subscription_job_queue_data_maintenance}
     topic_business_event: ${topic_business_event}
-    topic_job_queue: ${topic_job_queue}
+    topic_job_queue_ui: ${topic_job_queue_ui}
+    topic_job_queue_import_export: ${topic_job_queue_import_export}
+    topic_job_queue_data_maintenance: ${topic_job_queue_data_maintenance}
   storage:
     bucketName: ${bucketName}
   monitoring:

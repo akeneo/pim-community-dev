@@ -10,7 +10,6 @@ akeneo_asset_manager_asset_family | BASE TABLE
 akeneo_asset_manager_asset_family_permissions | BASE TABLE
 akeneo_asset_manager_attribute | BASE TABLE
 akeneo_batch_job_execution | BASE TABLE
-akeneo_batch_job_execution_queue | BASE TABLE
 akeneo_batch_job_instance | BASE TABLE
 akeneo_batch_step_execution | BASE TABLE
 akeneo_batch_warning | BASE TABLE
@@ -228,12 +227,6 @@ akeneo_batch_job_execution | exit_description | YES | longtext |
 akeneo_batch_job_execution | failure_exceptions | YES | longtext | 
 akeneo_batch_job_execution | log_file | YES | varchar(255) | 
 akeneo_batch_job_execution | raw_parameters | NO | json | 
-akeneo_batch_job_execution_queue | id | NO | int | PRI
-akeneo_batch_job_execution_queue | job_execution_id | YES | int | 
-akeneo_batch_job_execution_queue | options | YES | json | 
-akeneo_batch_job_execution_queue | consumer | YES | varchar(255) | 
-akeneo_batch_job_execution_queue | create_time | YES | datetime | 
-akeneo_batch_job_execution_queue | updated_time | YES | datetime | 
 akeneo_batch_job_instance | id | NO | int | PRI
 akeneo_batch_job_instance | code | NO | varchar(100) | UNI
 akeneo_batch_job_instance | label | YES | varchar(255) | 

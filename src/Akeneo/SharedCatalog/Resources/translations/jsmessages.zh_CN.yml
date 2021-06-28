@@ -3,6 +3,7 @@ pim_common:
   recipients: 收件人
   branding: 品牌推广
   result_count: "{0}0 个结果|{1}1 个结果|]1, Inf[{{ itemsCount }} 个结果"
+  items_selected: "{0}0 个选定条目|{1}1 个选定条目|]1, Inf[{{ itemsCount }} 个选定条目"
 shared_catalog:
   recipients:
     add: 在此处添加用户电子邮件

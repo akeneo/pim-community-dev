@@ -47,7 +47,6 @@ class DatabaseHelper
             SET foreign_key_checks = 0;
 
             DELETE FROM akeneo_batch_job_execution;
-            DELETE FROM akeneo_batch_job_execution_queue;
             DELETE FROM akeneo_batch_step_execution;
             DELETE FROM akeneo_batch_warning;
             DELETE FROM akeneo_asset_manager_attribute;

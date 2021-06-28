@@ -225,7 +225,7 @@ Feature: Import rules
                   scope: tablet
     """
     Then an exception with message "conditions[0]: Property \"release_date\" expects a string with the format \"yyyy-mm-dd\" as data, \"invalid\" given." has been thrown
-    And an exception with message "actions[0]: Property \"release_date\" expects a string with the format \"yyyy-mm-dd\" as data, \"invalid\" given." has been thrown
+    And an exception with message "actions[0]: The release_date attribute requires a valid date. Please use the following format yyyy-mm-dd for dates." has been thrown
     And the rule list does not contain the "canon_beautiful_description" rule
 
   @integration-back

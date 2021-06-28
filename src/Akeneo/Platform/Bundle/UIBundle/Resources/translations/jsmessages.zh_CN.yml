@@ -7,3 +7,11 @@ pimee_enrich.entity.product:
     flash:
       success: 产品 {{ product_identifier }} 已成功复制。
       success_with_attribute_codes: 产品 {{ product_identifier }} 已成功复制。您需要用唯一值丰富 {{ unique_attribute_codes }}
+pim_dashboard:
+  widget:
+    teamwork_assistant:
+      title: 项目
+      helper: 要了解更多关于项目以及如何提高完成度的信息，<a href="{{ link }}" target="_blank">请查阅我们的帮助中心</a>。
+      no_project:
+        title: 项目可以帮助您跟踪产品选择丰富度进度。
+        subtitle: 创建您的第一个项目。

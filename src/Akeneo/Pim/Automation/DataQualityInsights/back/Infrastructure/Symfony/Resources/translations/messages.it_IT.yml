@@ -1,4 +1,13 @@
 akeneo_data_quality_insights:
   axis:
     consistency: Coerenza
+  attribute_grid:
+    quality_column_label: Qualità
+    to_improve_locale: Da migliorare in {{ locale }}
+  product_grid:
+    filter_label:
+      spelling_quality: Qualità ortografica
+  dictionary:
+    title: Dizionario
 Consistency: Coerenza
+akeneo_data_quality_insights_dictionary: Dizionario

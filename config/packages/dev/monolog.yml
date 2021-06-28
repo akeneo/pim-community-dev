@@ -12,3 +12,4 @@ monolog:
     console:
       type:  console
       channels: ['!event', '!doctrine']
+      include_stacktraces: true
