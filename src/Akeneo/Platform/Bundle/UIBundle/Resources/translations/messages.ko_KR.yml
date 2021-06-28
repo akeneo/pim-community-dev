@@ -62,6 +62,7 @@ pim_common:
   name: 이름
   remove: 제거
   code: 코드
+  label: 레이블
   quantity: 수량
   products: 제품
   product_models: 제품 모델
@@ -99,11 +100,13 @@ pim_enrich:
       comment: 제품에 코멘트 작성
       download: PDF로 제품 다운로드
       history: 제품 기록 보기
+      convert_variant_to_simple: 변형 제품을 단일 제품으로 변환
     product_model:
       create: 제품 모델 만들기
       edit_attributes: 제품 모델 특성 편집
       categories_view: 제품 모델 카테고리 상담
       history: 제품 모델 기록 보기
+      remove: 제품 모델 제거(하위 항목 포함)
     category:
       list: 카테고리 나열
       create: 카테고리 만들기
@@ -167,6 +170,7 @@ pim_enrich:
     job_tracker:
       index: 프로세스 트래커 보기
       view_all_jobs: 프로세스 트래커에서 모든 작업 보기
+      stop_job: 진행 중인 작업 중지
   acl_group:
     association_type: 연결 유형
     attribute: 특성
@@ -433,6 +437,8 @@ Disabled: 비활성화됨
 Status: 상태
 pim_datagrid:
   filters:
+    product_typology:
+      label: 제품 분류체계
     entity_type:
       label: 변형
     family:
@@ -519,7 +525,6 @@ pim_mass_edit:
       success: <strong>%label%</strong> 대량 삭제 완료
 job_execution.summary:
   mass_edited: 대량 편집됨
-  skip: 건너뜀
   skipped_products: 건너뛴 제품
   skipped_attributes: 건너뛴 특성
   skipped_families: 건너뛴 패밀리
@@ -541,6 +546,7 @@ job_tracker:
   filter:
     started_at: '시작:'
 pim_login:
+  logo_title: Akeneo PIM
   footer:
+    powered: '제공자:'
     powered_image_title: logo Akeneo
-    baseline: Unlocking Growth Through Product Experiences

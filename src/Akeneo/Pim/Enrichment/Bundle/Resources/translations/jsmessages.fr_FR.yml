@@ -209,6 +209,45 @@ pim_enrich.entity.category:
   label: catégorie
   uppercase_label: Catégorie
   plural_label: Catégories
+  page_title:
+    index: "]-Inf, 1]{{ count }} arbre|]1, Inf[{{ count }} arbres"
+  content:
+    empty_tree_list:
+      title: Vous n'avez aucune arborescence
+      hint: Créez votre première arborescence.
+    tree_list:
+      columns:
+        label: Libellé d'arborescence
+        number_of_categories: Nombre de catégories
+        count_categories: ']-Inf, 1]{{ count }} catégorie|]1, Inf[{{ count }} catégories'
+    tree:
+      not_found: Arborescence des catégories introuvable
+    edit:
+      not_found: La catégorie est introuvable
+      default_tree_label: Arborescence
+      success: Catégorie correctement mise à jour
+      fail: La catégorie n'a pas pu être mise à jour
+  new_category: Nouvelle catégorie
+  new_category_tree: Nouvelle arborescence de catégories
+  category_created: La catégorie "{{ code }}" a été créée avec succès
+  category_creation_error: La catégorie "{{ code }}" n'a pas pu être créée
+  category_tree_creation:
+    success: L'arborescence "{{ code }}" a été créée avec succès
+    error: L'arborescence "{{ code }}" n'a pas pu être créée
+  category_tree_deletion:
+    success: L'arborescence "{{ tree }}" a bien été supprimée
+    error: L'arborescence "{{ tree }}" n'a pas pu être supprimée
+    confirmation: Êtes-vous sûr(e) de vouloir supprimer l'arborescence {{ name }} ? Toutes les catégories de cette arborescence seront supprimées, et les produits seront supprimés de toutes ces catégories.
+    products_limit_exceeded:
+      title: Cette arborescence ne peut pas être supprimée
+      message: L'arbre "{{ tree }}" contient plus de {{ limit }} produits et ne peut donc pas être supprimé.
+  category_deletion:
+    success: La catégorie "{{ name }}" a été supprimée avec succès
+    error: La catégorie "{{ name }}" n'a pas pu être supprimée
+    confirmation: Êtes-vous sûr(e) de vouloir supprimer la catégorie {{ name }}? Les produits de cette catégorie ne seront pas supprimés.
+    products_limit_exceeded:
+      title: Cette catégorie ne peut pas être supprimée
+      message: La catégorie "{{ name }}" contient plus de {{ limit }} produits et ne peut donc pas être supprimée.
 pim_enrich.export.product:
   data:
     title: Filtrer les produits

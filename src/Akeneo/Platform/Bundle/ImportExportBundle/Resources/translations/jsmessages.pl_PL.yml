@@ -48,6 +48,7 @@ pim_import_export:
   form:
     job_execution:
       title.details: Szczegóły wykonania
+      refreshing: Odświeżanie szczegółów wykonywania
       refreshBtn.title: Odśwież
       button:
         show_profile.title: Pokaż profil
@@ -99,6 +100,9 @@ pim_import_export:
           with_header:
             title: Z nagłówkiem
             help: Drukować, czy nie nazwę kolumny
+          with_media:
+            title: Eksportuj multimedia
+            help: Czy eksportować multimedia?
           lines_per_file:
             title: Liczba wierszy na plik
             help: Określ limit liczby wierszy na plik
@@ -126,12 +130,24 @@ pim_import_export:
           real_time_versioning:
             title: Aktualizacja historii w czasie rzeczywistym
             help: Oznacza że historia dla produktu będzie aktualizowana automatycznie, wyłącz w celu poprawy wydajności
+          convert_variant_to_simple:
+            title: Konwertuj produkty z wariantami na produkty proste
+            help: Gdy kolumna "element nadrzędny" jest pusta, spróbuj skonwertować produkty z wariantami na produkty proste. Jeśli ustawiono "Nie", pusta kolumna "element nadrzędny" będzie ignorowana
           family_variant_column:
             title: Kolumna wariantów rodziny
+          with_label:
+            title: Z etykietami
+            help: Zdefiniuj czy plik eksportu wyświetla etykiety wartości zamiast kodów wartości
+          header_with_label:
+            title: Nagłówki z etykietami
+            help: Zdefiniuj czy plik eksportu wyświetla etykiety nagłówków zamiast kodów nagłówków
+          file_locale:
+            title: Język pliku
+            help: Zdefiniuj wersję językową, w której wyświetlane są etykiety
       file_path: Ścieżka do pliku
   widget:
     last_operations:
-      empty: Nie znaleziono żadnych operacji
+      empty: Obecnie nie ma operacji do wyświetlenia.
       date: Data
       profile_name: Nazwa profilu
       details: Szczegóły
@@ -146,6 +162,7 @@ pim_import_export:
         compute_family_variant_structure_changes: Oblicz zmiany w strukturze wariantu rodziny
         compute_completeness_of_products_family: Oblicz kompletność rodziny produktów
         mass_delete: Usuń wiele produktów
+        clean_removed_attribute_job: Czyszczenie usuniętych wartości atrybutów
       header.view_all: Zobacz wszystko
   batch_status:
     1: Zakończone
@@ -165,6 +182,12 @@ pim_import_export:
     FAILED: Niepowodzenie
     ABANDONED: Opuszczone
     UNKNOWN: Nieznany
+  tracking:
+    completed: "Spędzony czas: {{ duration }}"
+    in_progress: "Pozostały szacowany czas: {{ duration }}"
+    not_started: "Oczekiwanie"
+    untrackable: Krok niemożliwy do śledzenia
+    estimating: "Szacowanie pozostałego czasu..."
 confirmation:
   remove:
     import_profile: Czy na pewno chcesz usunąć ten profil importu?
