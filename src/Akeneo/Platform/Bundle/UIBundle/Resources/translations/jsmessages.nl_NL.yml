@@ -7,3 +7,11 @@ pimee_enrich.entity.product:
     flash:
       success: Het product {{ product_identifier }} is met succes gedupliceerd.
       success_with_attribute_codes: Het product {{ product_identifier }} is met succes gedupliceerd. U moet de {{ unique_attribute_codes }} verrijken met unieke waarden
+pim_dashboard:
+  widget:
+    teamwork_assistant:
+      title: Projecten
+      helper: <a href="{{ link }}" target="_blank">Bezoek ons helpcentrum</a> voor meer informatie over projecten en hoe u uw volledigheid kunt verbeteren.
+      no_project:
+        title: Projecten kunnen u helpen de voortgang van de verrijking van een selectie producten bij te houden.
+        subtitle: Maak uw eerste project aan.

@@ -1,6 +1,7 @@
 teamwork_assistant:
   common:
     required: Verplicht
+    warning: Geen zorgen, de projectberekening kan even duren. Uw project is mogelijk niet meteen zichtbaar.
   grid:
     view_selector:
       create: Project aanmaken
@@ -18,20 +19,24 @@ teamwork_assistant:
     description: Beschrijving
     due_date: Inleverdatum
     due_date_past: Je kan geen datum in het verleden selecteren.
+    leaving_scope: U verlaat het toepassingsgebied van het project.
   edit_project_modal:
     saved: Het project werd opgeslagen.
     title: Project bewerken
   create_project_modal:
     saved: Het project werd opgeslagen, je wordt gewaarschuwd wanneer de berekening is uitgevoerd.
+    title: Project
     label_already_used: Deze waarde wordt al gebruikt voor een project.
   widget:
     no_project: Je hebt geen huidig project
+    no_project_create: maak een nieuw project aan
     description: Beschrijving
     due_date: Inleverdatum
     todo: Taken
     in_progress: In uitvoering
     done: Gedaan
     all_contributors: Alle medewerkers
+    you: U
     display_products: Producten weergeven
     projects: Projecten
     contributors: Bijdragers
@@ -39,6 +44,7 @@ teamwork_assistant:
       contributor_selector: Zoek medewerker
       project_selector: Zoek project
     completeness:
+      to_start: PRODUCTEN OM MEE TE BEGINNEN
       in_progress: PRODUCTEN IN UITVOERING
       done: PRODUCTEN GEDAAN
     searching: bezig met zoeken...
@@ -46,10 +52,17 @@ teamwork_assistant:
 pim_datagrid:
   view_selector:
     project: Projecten
+pim_dashboard:
+  widget:
+    last_operations:
+      job_type:
+        refresh_project_completeness_calculation: Teamwork-assistent
+        project_calculation: Teamwork-assistent
 batch_jobs:
   project_calculation:
     project_calculation.label: Projectberekening
     prepare_project_calculation.label: Bereid de projectberekening voor
+    clean_contributor_group.label: Controleer de rechten van de gebruiker voor de taal van het project
   refresh_project_completeness_calculation:
     label: Vernieuw projectvolledigheid
     refresh_project_completeness_calculation.label: Vernieuw projectvolledigheid

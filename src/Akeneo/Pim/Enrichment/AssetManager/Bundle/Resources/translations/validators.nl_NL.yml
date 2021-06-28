@@ -1,4 +1,6 @@
 pim_asset_manager:
   product_value:
     validation:
+      asset_multiple_link:
+        limit_reached: 'U hebt de limiet van %limit% assets per collectie bereikt. U kunt geen assets meer toevoegen aan uw collectie.'
       assets_should_belong_to_asset_family: 'Zorg ervoor dat de "%asset_code%" asset bestaat en behoort tot de "%asset_family_identifier%" asset familie voor het "%attribute%" attribuut.'
