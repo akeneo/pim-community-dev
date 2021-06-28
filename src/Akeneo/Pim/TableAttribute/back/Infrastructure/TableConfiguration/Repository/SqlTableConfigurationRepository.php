@@ -15,6 +15,7 @@ namespace Akeneo\Pim\TableAttribute\Infrastructure\TableConfiguration\Repository
 
 use Akeneo\Pim\TableAttribute\Domain\TableConfiguration\ColumnDefinition;
 use Akeneo\Pim\TableAttribute\Domain\TableConfiguration\Factory\ColumnFactory;
+use Akeneo\Pim\TableAttribute\Domain\TableConfiguration\Repository\SelectOptionCollectionRepository;
 use Akeneo\Pim\TableAttribute\Domain\TableConfiguration\Repository\TableConfigurationNotFoundException;
 use Akeneo\Pim\TableAttribute\Domain\TableConfiguration\Repository\TableConfigurationRepository;
 use Akeneo\Pim\TableAttribute\Domain\TableConfiguration\TableConfiguration;
@@ -28,11 +29,13 @@ final class SqlTableConfigurationRepository implements TableConfigurationReposit
 {
     private Connection $connection;
     private ColumnFactory $columnFactory;
+    private SelectOptionCollectionRepository $selectOptionCollectionRepository;
 
-    public function __construct(Connection $connection, ColumnFactory $columnFactory)
+    public function __construct(Connection $connection, ColumnFactory $columnFactory, SelectOptionCollectionRepository $selectOptionCollectionRepository)
     {
         $this->connection = $connection;
         $this->columnFactory = $columnFactory;
+        $this->selectOptionCollectionRepository = $selectOptionCollectionRepository;
     }
 
     private function getNextIdentifier(string $columnCode): string
@@ -92,16 +95,33 @@ final class SqlTableConfigurationRepository implements TableConfigurationReposit
                 ]
             );
         }
+        foreach ($tableConfiguration->getSelectColumns() as $column) {
+            $this->selectOptionCollectionRepository->save($attributeCode, $column->code(), $column->optionCollection());
+        }
     }
 
     public function getByAttributeCode(string $attributeCode): TableConfiguration
     {
         $statement = $this->connection->executeQuery(
             <<<SQL
-            SELECT table_column.id, table_column.code, data_type, column_order, labels, validations
+            SELECT
+                table_column.id,
+                table_column.code,
+                data_type,
+                column_order,
+                table_column.labels,
+                validations,
+                JSON_ARRAYAGG(
+                    CASE
+                        WHEN select_option.code IS NULL THEN null
+                        ELSE JSON_OBJECT('code', select_option.code, 'labels', select_option.labels)
+                    END
+                ) as options
             FROM pim_catalog_table_column table_column
-            INNER JOIN pim_catalog_attribute attribute ON attribute.id = table_column.attribute_id  
+                INNER JOIN pim_catalog_attribute attribute ON attribute.id = table_column.attribute_id
+                LEFT JOIN pim_catalog_table_column_select_option select_option ON select_option.column_id = table_column.id
             WHERE attribute.code = :attributeCode
+            GROUP BY table_column.id, table_column.code, data_type, column_order, labels, validations
             ORDER BY column_order
             SQL,
             [
@@ -121,6 +141,7 @@ final class SqlTableConfigurationRepository implements TableConfigurationReposit
                         'data_type' => $row['data_type'],
                         'labels' => \json_decode($row['labels'], true),
                         'validations' => \json_decode($row['validations'], true),
+                        'options' => \array_filter(\json_decode($row['options'], true)),
                     ]
                 ),
                 $results

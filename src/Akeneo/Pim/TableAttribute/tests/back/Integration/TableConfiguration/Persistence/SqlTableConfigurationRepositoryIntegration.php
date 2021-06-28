@@ -15,6 +15,7 @@ namespace Akeneo\Pim\TableAttribute\tests\back\Integration\TableConfiguration\Pe
 
 use Akeneo\Pim\TableAttribute\Domain\TableConfiguration\NumberColumn;
 use Akeneo\Pim\TableAttribute\Domain\TableConfiguration\Repository\TableConfigurationNotFoundException;
+use Akeneo\Pim\TableAttribute\Domain\TableConfiguration\SelectColumn;
 use Akeneo\Pim\TableAttribute\Domain\TableConfiguration\TableConfiguration;
 use Akeneo\Pim\TableAttribute\Domain\TableConfiguration\TextColumn;
 use Akeneo\Pim\TableAttribute\Infrastructure\TableConfiguration\Repository\SqlTableConfigurationRepository;
@@ -46,6 +47,10 @@ final class SqlTableConfigurationRepositoryIntegration extends TestCase
         $tableConfiguration = TableConfiguration::fromColumnDefinitions([
             TextColumn::fromNormalized(['code' => 'ingredients']),
             TextColumn::fromNormalized(['code' => 'quantity']),
+            SelectColumn::fromNormalized(['code' => 'isAllergenic', 'options' => [
+                ['code' => 'sugar'],
+                ['code' => 'salt', 'labels' => ['en_US' => 'Salt', 'fr_FR' => 'Sel']],
+            ]]),
         ]);
         $this->sqlTableConfigurationRepository->save('nutrition', $tableConfiguration);
 
@@ -54,7 +59,7 @@ final class SqlTableConfigurationRepositoryIntegration extends TestCase
             ['attribute_id' => $this->tableAttributeId]
         )->fetchAll();
 
-        self::assertCount(2, $rows);
+        self::assertCount(3, $rows);
         self::assertEquals(0, $rows[0]['column_order']);
         self::assertSame('ingredients', $rows[0]['code']);
         self::assertSame('text', $rows[0]['data_type']);
@@ -63,6 +68,16 @@ final class SqlTableConfigurationRepositoryIntegration extends TestCase
         self::assertSame('quantity', $rows[1]['code']);
         self::assertSame('text', $rows[1]['data_type']);
         self::assertSame('quantity_', substr($rows[1]['id'], 0, strlen('quantity_')));
+        self::assertSame('select', $rows[2]['data_type']);
+        self::assertSame('isAllergenic', $rows[2]['code']);
+        self::assertSame('2', $rows[2]['column_order']);
+
+        $rows = $this->connection->executeQuery(
+            'SELECT * FROM pim_catalog_table_column_select_option WHERE column_id = :column_id',
+            ['column_id' => $rows[2]['id']]
+        )->fetchAll();
+
+        self::assertCount(2, $rows);
     }
 
     /** @test */
@@ -191,7 +206,7 @@ final class SqlTableConfigurationRepositoryIntegration extends TestCase
                 'id' => 'ingredients_1234567890',
                 'attribute_id' => $this->tableAttributeId,
                 'code' => 'ingredients',
-                'data_type' => 'text',
+                'data_type' => 'select',
                 'column_order' => 0,
                 'labels' => \json_encode(['en_US' => 'Ingredients', 'fr_FR' => 'Ingrédients']),
                 'validations' => '{}',
@@ -210,15 +225,36 @@ final class SqlTableConfigurationRepositoryIntegration extends TestCase
             ]
         );
 
+        $sql = <<<SQL
+        INSERT INTO pim_catalog_table_column_select_option (column_id, code, labels)
+        VALUES (:column_id, :code, :labels)
+        SQL;
+
+        $this->connection->executeQuery($sql, [
+            'column_id' => 'ingredients_1234567890',
+            'code' => 'sugar',
+            'labels' => '{}',
+        ]);
+
+        $this->connection->executeQuery($sql, [
+            'column_id' => 'ingredients_1234567890',
+            'code' => 'salt',
+            'labels' => '{}',
+        ]);
+
         $result = $this->sqlTableConfigurationRepository->getByAttributeCode('nutrition');
 
-        self::assertEquals(
+        self::assertEqualsCanonicalizing(
             [
                 [
                     'code' => 'ingredients',
-                    'data_type' => 'text',
+                    'data_type' => 'select',
                     'labels' => ['en_US' => 'Ingredients', 'fr_FR' => 'Ingrédients'],
                     'validations' => (object)[],
+                    'options' => [
+                        ['code' => 'sugar', 'labels' => (object) []],
+                        ['code' => 'salt', 'labels' => (object) []],
+                    ],
                 ],
                 [
                     'code' => 'quantity',

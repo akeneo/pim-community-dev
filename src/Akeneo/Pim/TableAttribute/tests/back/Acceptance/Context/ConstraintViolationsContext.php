@@ -42,7 +42,7 @@ final class ConstraintViolationsContext implements Context
     {
         $violationMessages = [];
         foreach ($this->constraintViolationList->getIterator() as $constraintViolation) {
-            $violationMessages[] = $constraintViolation->getMessage();
+            $violationMessages[] = \sprintf('%s: %s', $constraintViolation->getPropertyPath(), $constraintViolation->getMessage());
         }
 
         Assert::count($violationMessages, 0, \sprintf(
@@ -62,7 +62,7 @@ final class ConstraintViolationsContext implements Context
             if ($constraintViolation->getMessage() === $message) {
                 return;
             }
-            $actualViolationMessages[] = $constraintViolation->getMessage();
+            $actualViolationMessages[] = \sprintf('%s: %s', $constraintViolation->getPropertyPath(), $constraintViolation->getMessage());
         }
 
         if (empty($actualViolationMessages)) {

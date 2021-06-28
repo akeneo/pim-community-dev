@@ -45,7 +45,7 @@ CSV;
         // TODO Import validations
         Assert::assertEqualsCanonicalizing(
             [
-                ['code' => 'ingredients', 'data_type' => 'select', 'labels' => ['en_US' => 'Ingredients'], 'validations' => (object) []],
+                ['code' => 'ingredients', 'data_type' => 'select', 'labels' => ['en_US' => 'Ingredients'], 'validations' => (object) [], 'options' => []],
                 ['code' => 'quantity', 'data_type' => 'text', 'labels' => ['en_US' => 'Quantity'], 'validations' => ['max_length' => 50]],
             ],
             $nutritionAttribute->getRawTableConfiguration()
@@ -56,7 +56,7 @@ CSV;
         Assert::assertSame(AttributeTypes::TABLE, $storageAttribute->getType());
         Assert::assertEqualsCanonicalizing(
             [
-                ['code' => 'dimension', 'data_type' => 'select', 'labels' => ['en_US' => 'Dimension'], 'validations' => (object) []],
+                ['code' => 'dimension', 'data_type' => 'select', 'labels' => ['en_US' => 'Dimension'], 'validations' => (object) [], 'options' => []],
                 ['code' => 'value', 'data_type' => 'text', 'labels' => ['en_US' => 'Value'], 'validations' => (object) []],
             ],
             $storageAttribute->getRawTableConfiguration()
@@ -110,7 +110,7 @@ CSV;
         // TODO Import validations
         Assert::assertEqualsCanonicalizing(
             [
-                ['code' => 'ingredients', 'data_type' => 'select', 'labels' => ['en_US' => 'Ingredients'], 'validations' => (object) []],
+                ['code' => 'ingredients', 'data_type' => 'select', 'labels' => ['en_US' => 'Ingredients'], 'validations' => (object) [], 'options' => []],
                 ['code' => 'quantity', 'data_type' => 'text', 'labels' => ['en_US' => 'Quantity'], 'validations' => (object) []],
             ],
             $nutritionAttribute->getRawTableConfiguration()
@@ -121,7 +121,7 @@ CSV;
         Assert::assertSame(AttributeTypes::TABLE, $storageAttribute->getType());
         Assert::assertEqualsCanonicalizing(
             [
-                ['code' => 'dimension', 'data_type' => 'select', 'labels' => ['en_US' => 'Dimension'], 'validations' => (object) []],
+                ['code' => 'dimension', 'data_type' => 'select', 'labels' => ['en_US' => 'Dimension'], 'validations' => (object) [], 'options' => []],
                 ['code' => 'value', 'data_type' => 'text', 'labels' => ['en_US' => 'Value'], 'validations' => (object) []],
             ],
             $storageAttribute->getRawTableConfiguration()

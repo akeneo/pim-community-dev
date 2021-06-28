@@ -46,6 +46,7 @@ final class ExportTableAttributeIntegration extends TestCase
                         'en_US' => 'Ingredients',
                     ],
                     'validations' => (object)[],
+                    'options' => [],
                 ],
                 [
                     'code' => 'quantity',
@@ -100,6 +101,7 @@ final class ExportTableAttributeIntegration extends TestCase
                         'en_US' => 'Ingredients',
                     ],
                     'validations' => (object)[],
+                    'options' => [],
                 ],
                 [
                     'code' => 'quantity',

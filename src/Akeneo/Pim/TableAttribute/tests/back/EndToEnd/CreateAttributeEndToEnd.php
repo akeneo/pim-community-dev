@@ -70,7 +70,8 @@ JSON;
                     "en_US" => "Ingredients",
                     "fr_FR" => "Ingrédients",
                 ],
-                'validations' => []
+                'validations' => [],
+                'options' => [['code' => 'sugar', 'labels' => ['en_US' => 'Sugar', 'fr_FR' => 'Sucre']]],
             ],
             [
                 'code' => 'quantity',
@@ -151,7 +152,8 @@ JSON;
                 "labels": {
                     "en_US":"Ingredients",
                     "fr_FR":"Ingrédients"
-                }
+                },
+                "options": [{"code": "sugar", "labels": {"en_US": "Sugar", "fr_FR": "Sucre"}}]
             },
             {
                 "code": "quantity",

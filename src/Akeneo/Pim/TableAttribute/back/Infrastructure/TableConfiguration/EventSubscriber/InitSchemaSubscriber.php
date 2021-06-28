@@ -48,7 +48,7 @@ final class InitSchemaSubscriber implements EventSubscriberInterface
             column_order int not null,
             validations json not null default ('{}'),
             labels json not null default ('{}')
-        );
+        ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
         ALTER TABLE pim_catalog_table_column
             ADD CONSTRAINT pim_catalog_table_column_pk PRIMARY KEY (id);
         ALTER TABLE pim_catalog_table_column
@@ -60,7 +60,7 @@ final class InitSchemaSubscriber implements EventSubscriberInterface
             column_id varchar(64) not null,
             code varchar(100) not null,
             labels json not null default ('{}')
-        );
+        ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
         ALTER TABLE pim_catalog_table_column_select_option
             ADD CONSTRAINT pim_catalog_table_column_select_option_pk PRIMARY KEY (column_id, code);
         ALTER TABLE pim_catalog_table_column_select_option

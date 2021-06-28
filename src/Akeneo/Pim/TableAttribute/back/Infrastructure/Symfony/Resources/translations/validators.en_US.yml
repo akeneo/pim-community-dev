@@ -4,19 +4,26 @@ pim_table_configuration:
             must_be_filled: The table attribute configuration must be filled
             must_contain_at_least_two_columns: The table attribute must contain at least 2 columns
             missing_column: The {{ field }} column must be filled
+            missing_option_field: TODO The {{ field }} must be filled
             column_code_must_be_filled: The column code must be filled
+            option_code_must_be_filled: The option code must be filled
             invalid_code: The column code can only contain letters, numbers and underscores
+            invalid_option_code: The option code can only contain letters, numbers and underscores
             too_long_code: "The column code is too long: it must be 100 characters or less"
+            too_long_option_code: "The option code is too long: it must be 100 characters or less"
             duplicated_column_code: Each column requires a unique code. "%duplicateCodes%" is already used
             column_type_must_be_a_string: The column data type must be a string
             unknown_data_type: "The column data type is unknown. Please choose one of the following: number, text, select, boolean"
             column_label_must_be_a_string: The column label must be a string
+            option_label_must_be_a_string: The option label must be a string
             label_locale_does_not_exist_or_is_not_activated: The "{{ locale_code }}" locale doesn't exist or is not activated
             invalid_labels_format: The column labels must be a key/value object
+            invalid_option_labels_format: The option labels must be a key/value object
             must_not_be_filled: The type %type% does not allow table_configuration
             first_column_should_be_select: TODO The first column should be select, "{{ data_type }}" given
             first_column_code_cannot_be_changed: TODO do not change first column
-
+            unknown_option_field: TODO the {{ field }} field was not expected
+            unknown_column_field: TODO the {{ field }} field was not expected
         product_value:
             non_existing_columns: '[0,1]The "{{ non_existing_columns }}" column does not exist|]1,Inf[The "{{ non_existing_columns }}" columns do not exist'
             unexpected_data_type: 'The "{{ columnCode }}" column expects a {{ expected }}, {{ given }} given'

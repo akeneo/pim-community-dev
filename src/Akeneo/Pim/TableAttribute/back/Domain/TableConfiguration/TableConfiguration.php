@@ -84,4 +84,14 @@ final class TableConfiguration
     {
         return $this->columnDefinitions[0]->code();
     }
+
+    /**
+     * @return SelectColumn[]
+     */
+    public function getSelectColumns(): array
+    {
+        return \array_values(\array_filter($this->columnDefinitions,
+            fn (ColumnDefinition $columnDefinition): bool => $columnDefinition instanceof SelectColumn
+        ));
+    }
 }

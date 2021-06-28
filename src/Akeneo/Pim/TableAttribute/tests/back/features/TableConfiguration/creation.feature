@@ -107,3 +107,43 @@ Feature: Create a table attribute
   Scenario: Cannot create a table configuration with a min or max validation greater than 100
     When I create a table attribute with a configuration '{"data_type": "text", "code": "quantity", "validations": { "max_length": 200 }}'
     Then There is a violation with message: TODO max_length should be less than or equal to 100 (given: 200)
+
+  Scenario: Cannot create a table configuration if options is not an array
+    When I create a table attribute with a configuration '{"data_type": "select", "code": "ingredient", "options": "test"}'
+    Then There is a violation with message: TODO options should be an array
+
+  Scenario: Cannot create a table configuration with an invalid option type
+    When I create a table attribute with a configuration '{"data_type": "select", "code": "ingredient", "options": ["test"]}'
+    Then There is a violation with message: TODO each option should be an array
+
+  Scenario: Cannot create a table configuration with an option without code
+    When I create a table attribute with a configuration '{"data_type": "select", "code": "ingredient", "options": [{"labels": []}]}'
+    Then There is a violation with message: TODO The "code" must be filled
+
+  Scenario: Cannot create a table configuration with an option with an invalid code type
+    When I create a table attribute with a configuration '{"data_type": "select", "code": "ingredient", "options": [{"code": false}]}'
+    Then There is a violation with message: The option code can only contain letters, numbers and underscores
+
+  Scenario: Cannot create a table configuration with an option with an empty code
+    When I create a table attribute with a configuration '{"data_type": "select", "code": "ingredient", "options": [{"code": ""}]}'
+    Then There is a violation with message: The option code must be filled
+
+  Scenario: Cannot create a table configuration with an option with invalid labels
+    When I create a table attribute with a configuration '{"data_type": "select", "code": "ingredient", "options": [{"code": "sugar", "labels": "invalid_type"}]}'
+    Then There is a violation with message: The option labels must be a key/value object
+
+  Scenario: Cannot create a table configuration with an option with an invalid label type
+    When I create a table attribute with a configuration '{"data_type": "select", "code": "ingredient", "options": [{"code": "sugar", "labels": {"en_US": false}}]}'
+    Then There is a violation with message: The option label must be a string
+
+  Scenario: Cannot create a table configuration with an option with an invalid label locale
+    When I create a table attribute with a configuration '{"data_type": "select", "code": "ingredient", "options": [{"code": "sugar", "labels": {"pt_DTC": "label"}}]}'
+    Then There is a violation with message: The "pt_DTC" locale doesn't exist or is not activated
+
+  Scenario: Cannot create a table configuration with options for a non select column
+    When I create a table attribute with a configuration '{"data_type": "text", "code": "ingredient", "options": [{"code": "sugar", "labels": {"en_US": "Sugar"}}]}'
+    Then There is a violation with message: TODO options cannot be set for a "text" column data type
+
+  Scenario: Cannot create a table configuration with an unknown column field
+    When I create a table attribute with a configuration '{"data_type": "select", "code": "ingredient", "toto": "titi"}'
+    Then There is a violation with message: TODO the "toto" field was not expected

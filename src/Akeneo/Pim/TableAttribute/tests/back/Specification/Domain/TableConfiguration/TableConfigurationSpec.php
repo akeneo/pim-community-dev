@@ -4,6 +4,7 @@ namespace Specification\Akeneo\Pim\TableAttribute\Domain\TableConfiguration;
 
 use Akeneo\Pim\TableAttribute\Domain\TableConfiguration\ColumnDefinition;
 use Akeneo\Pim\TableAttribute\Domain\TableConfiguration\NumberColumn;
+use Akeneo\Pim\TableAttribute\Domain\TableConfiguration\SelectColumn;
 use Akeneo\Pim\TableAttribute\Domain\TableConfiguration\TableConfiguration;
 use Akeneo\Pim\TableAttribute\Domain\TableConfiguration\TextColumn;
 use Akeneo\Pim\TableAttribute\Domain\TableConfiguration\ValueObject\ColumnCode;
@@ -62,6 +63,19 @@ class TableConfigurationSpec extends ObjectBehavior
             ->shouldBeLike(ColumnCode::fromString('ingredient'));
     }
 
+    function it_returns_the_select_columns(){
+        $this->beConstructedThrough('fromColumnDefinitions', [[
+            SelectColumn::fromNormalized(['code' => 'ingredient']),
+            NumberColumn::fromNormalized(['code' => 'quantity']),
+            SelectColumn::fromNormalized(['code' => 'isAllergenic']),
+        ]]);
+
+        $this->getSelectColumns()
+            ->shouldBeLike([
+                SelectColumn::fromNormalized(['code' => 'ingredient']),
+                SelectColumn::fromNormalized(['code' => 'isAllergenic']),
+            ]);
+    }
 //    TODO: implement when select columns are implemented
 //    function it_must_have_a_select_column_as_first_column()
 //    {

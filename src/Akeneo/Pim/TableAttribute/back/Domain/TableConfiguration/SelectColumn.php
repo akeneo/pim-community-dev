@@ -21,6 +21,19 @@ class SelectColumn extends AbstractColumnDefinition
 {
     public const DATATYPE = 'select';
 
+    private SelectOptionCollection $options;
+
+    public function __construct(
+        ColumnCode $code,
+        ColumnDataType $dataType,
+        LabelCollection $labels,
+        ValidationCollection $validations,
+        SelectOptionCollection $options
+    ) {
+        parent::__construct($code, $dataType, $labels, $validations);
+        $this->options = $options;
+    }
+
     /**
      * @param array<string, mixed> $normalized
      */
@@ -34,11 +47,27 @@ class SelectColumn extends AbstractColumnDefinition
         $validations = $normalized['validations'] ?? [];
         Assert::isArray($validations);
 
+        $options = $normalized['options'] ?? [];
+        Assert::isArray($options);
+
         return new self(
             ColumnCode::fromString($normalized['code']),
             ColumnDataType::fromString(self::DATATYPE),
             LabelCollection::fromNormalized($labels),
             ValidationCollection::fromNormalized($validations),
+            SelectOptionCollection::fromNormalized($options)
         );
+    }
+
+    public function normalize(): array
+    {
+        return parent::normalize() + [
+            'options' => $this->options->normalize(),
+        ];
+    }
+
+    public function optionCollection(): SelectOptionCollection
+    {
+        return $this->options;
     }
 }

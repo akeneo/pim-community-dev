@@ -54,11 +54,15 @@ final class CreateAttributeContext implements Context
         $attribute->setRawTableConfiguration([
             [
                 'data_type' => 'select',
-                'code' => 'ingredients'
+                'code' => 'ingredients',
+                'options' => [
+                    ['code' => 'sugar'],
+                    ['code' => 'salt'],
+                ],
             ],
             [
                 'data_type' => 'number',
-                'code' => 'quantity'
+                'code' => 'quantity',
             ],
             [
                 'data_type' => 'boolean',
@@ -66,7 +70,7 @@ final class CreateAttributeContext implements Context
             ],
             [
                 'data_type' => 'text',
-                'code' => 'comments'
+                'code' => 'comments',
             ],
         ]);
         $this->saveAttribute($attribute);
