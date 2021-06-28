@@ -30,11 +30,28 @@ const CategorySelector = ({
   shouldIncludeSubCategories,
 }: CategorySelectorProps) => {
   const [selectedCategoryCodes, setSelectedCategoryCodes] = useState<string[]>(initialCategoryCodes);
+  const [shouldUpdateChildren, forceUpdateChildren] = useState<boolean>(false);
   const catalogLocale = useUserContext().get('catalogLocale');
   const router = useRouter();
 
-  const isCategorySelected: (category: CategoryValue) => boolean = category => {
-    return selectedCategoryCodes.includes(category.code);
+  // @ts-ignore
+  const isCategorySelected: (category: CategoryValue, parentCategory?: CategoryTreeModel) => boolean = (
+    category,
+    parentCategory
+  ) => {
+    let hasSelectedParent = false;
+    let aParent = parentCategory;
+    while (aParent !== undefined) {
+      if (aParent.selected === true) {
+        hasSelectedParent = true;
+        break;
+      }
+      aParent = aParent.parent;
+    }
+    return (
+      selectedCategoryCodes.includes(category.code) ||
+      (parentCategory !== undefined && shouldIncludeSubCategories && hasSelectedParent)
+    );
   };
 
   const handleCheckCategory = (value: string) => {
@@ -43,6 +60,9 @@ const CategorySelector = ({
       const newSelectedCategoryCodes = [...selectedCategoryCodes, value];
       setSelectedCategoryCodes(newSelectedCategoryCodes);
       onChange(newSelectedCategoryCodes);
+      if (shouldIncludeSubCategories) {
+        forceUpdateChildren(!shouldUpdateChildren);
+      }
     }
   };
 
@@ -60,6 +80,9 @@ const CategorySelector = ({
       handleCheckCategory(value);
     } else {
       handleUncheckCategory(value);
+    }
+    if (shouldIncludeSubCategories) {
+      forceUpdateChildren(!shouldUpdateChildren);
     }
   };
 
@@ -120,6 +143,7 @@ const CategorySelector = ({
         onChange={handleChange}
         childrenCallback={childrenCallback}
         isCategorySelected={isCategorySelected}
+        shouldRerender={shouldUpdateChildren}
       />
     </CategoryTreeContainer>
   );

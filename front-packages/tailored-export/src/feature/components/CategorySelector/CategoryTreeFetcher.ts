@@ -59,7 +59,7 @@ const parseResponse: (
     children: getChildren(),
     selected: selected || json.state.includes('jstree-checked'),
     readOnly: readOnly || lockedCategoryIds.indexOf(categoryId) >= 0,
-    selectable: selected ? true : !isRoot && selectable,
+    selectable: selected || (!isRoot && selectable),
   };
 };
 
