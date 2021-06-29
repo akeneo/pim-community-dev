@@ -55,6 +55,7 @@
 - PIM-9704: Disable possibility to have media link with unauthorized protocol for security propose
 - PIM-9913: Fix very long loading of the proposal page
 - PIM-9927: Fix data_quality_insights_evaluations job when simple or multiselect product values are invalid
+- PIM-9937: Rule engine - Fix remove action for reference entity collection and asset collection attributes
 
 ## Improvements
 
