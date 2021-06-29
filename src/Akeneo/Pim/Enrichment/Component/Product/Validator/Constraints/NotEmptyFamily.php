@@ -12,6 +12,8 @@ use Symfony\Component\Validator\Constraint;
  */
 class NotEmptyFamily extends Constraint
 {
+    const NOT_EMPTY_FAMILY = 'd3b19dba-d82a-11eb-b8bc-0242ac130003';
+
     public const MESSAGE = 'pim_catalog.constraint.not_null_family';
 
     /** @var string */

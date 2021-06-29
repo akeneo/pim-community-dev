@@ -72,6 +72,7 @@ class NotEmptyFamilyValidatorSpec extends ObjectBehavior
             )
             ->willReturn($violation);
         $violation->atPath('family')->willReturn($violation);
+        $violation->setCode(NotEmptyFamily::NOT_EMPTY_FAMILY)->willReturn($violation);
         $violation->addViolation()->shouldBeCalled();
 
         $this->validate($entity, $constraint);
