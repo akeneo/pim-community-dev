@@ -22,6 +22,7 @@ pimee_workflow:
       approve: '%owner% heeft je voorstel geaccepteerd voor het product %product%'
       refuse: '%owner% heeft je voorstel afgekeurd voor het product %product%'
       remove: '%owner% heeft je voorstel verwijderd voor het product %product%'
+      mass_edit_sent_for_approval: 'Groepsgewijze bewerking <strong>%jobLabel%</strong> afgerond: %sentForApprovalCount% voorstellen gegenereerd uit %readProductsCount% producten'
     mass_review_action:
       approve: Alle geselecteerde goedkeuren
       refuse: Alle geselecteerde afkeuren
@@ -32,6 +33,7 @@ pimee_workflow:
         invalid_draft: 'Het voorstel kan niet worden toegepast wegens de volgende fout: %error%'
   proposal:
     to_review: '%author.firstname% %author.lastname% heeft voorgesteld om product %product.label% na te kijken'
+    individual_import: '%author.firstname% %author.lastname% heeft uit de geïmporteerde taak voorstellen verzonden om te beoordelen'
     generic_import: U heeft voorstellen om te bekijken uit job import
     original_value: Origineel
   published_product:
@@ -51,7 +53,9 @@ pimee_workflow:
   mass_edit_action:
     published:
       page_title: Gepubliceerde producten
+      page_subtitle: Groepsgewijs bewerken (1 gepubliceerd product)|Groepsgewijs bewerken (%count% gepubliseerde producten)
       title: Kies operatie
+      subtitle: Kies de bewerking die u wilt uitvoeren voor het geselecteerde gepubliceerde product|Kies de bewerking die u wilt uitvoeren voor de geselecteerde %count% gepubliceerde producten
       confirm: U staat op het punt een gepubliceerd product bij te werken met de volgende informatie. Alstublieft bevestigen. |U staat op het punt %count% gepubliceerde producten bij te werken met de volgende informatie. Alstublieft bevestigen.
       steps:
         first: Kies gepubliceerde producten
@@ -69,6 +73,7 @@ btn:
   editworkingcopy: Wijzig werkkopie
 flash:
   product:
+    updated: Werkdocument product is bijgewerkt
     published: Het product is succesvol gepubliceerd.
     unpublished: Het product is successful gedepubliceerd.
   product_draft:

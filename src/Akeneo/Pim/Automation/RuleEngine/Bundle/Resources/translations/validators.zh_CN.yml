@@ -40,6 +40,9 @@ pimee_catalog_rule:
           missing_to_field_key: '“to_field”键缺失或为空'
         concatenate:
           invalid_source: '无法从"{{ field }}"字段中连接数据'
+          missing_source_key: '"field"、"text" 或 "new_line" 需要单独的键，请选择一个'
+          only_one_source_key_expected: '"field"、"text" 或 "new_line" 需要单独的键，请选择一个'
+          text_target_does_not_accept_new_line: '目标属性“{{ targetField }}”不接受新行'
           unexpected_source_option: '{{ key }} 键与属性 {{ attribute }} 无关。'
           missing_from_key: '“from”键缺失或为空'
           missing_to_key: '“to”键缺失或为空'

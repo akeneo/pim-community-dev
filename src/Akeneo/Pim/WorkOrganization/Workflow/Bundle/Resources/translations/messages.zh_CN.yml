@@ -12,22 +12,6 @@ pimee_workflow:
     status:
       label: 状态
       working_copy: 工作副本
-      in_progress: 正在进行中
-      ready: 等待批准中
-      can_be_partially_reviewed: 可部分审查
-      can_not_be_approved: 不能审查
-      can_not_be_deleted: 不能删除
-    status_message:
-      can_be_partially_reviewed: 您仅能审查部分提案，因为 一些更改应用到了您不能编辑的值上。请联系您的管理员以更改您的权限。
-      can_not_be_approved: 您不能审查该提案，因为所有更改应用到了您不能编辑的值上。请联系您的管理员以更改您的权限。
-      can_not_be_deleted: 您不能删除该提案，因为所有更改应用到了您不能编辑的值上。请联系您的管理员以更改您的权限。
-      in_progress: 这项提案目前正在走流程中，尚未提交。
-    action:
-      approve: 全部批准
-      refuse: 全部拒绝
-      remove: 移除
-      partial_approve: 批准对产品 %product% 的属性 %attribute% 的更改
-      partial_reject: 拒绝对产品 %product% 的属性 %attribute% 的更改
     notification:
       partial_approve: '%owner% 已接受产品 %product% 的属性 %attributes% 的值'
       partial_approve_number: '%owner% 已接受产品 %product% 的 %attributes_count% 个属性的值'
@@ -52,9 +36,6 @@ pimee_workflow:
     individual_import: '%author.firstname% %author.lastname% 已从作业导入发送提案以进行审查'
     generic_import: 您有来自作业导入的提案要审查
     original_value: 原始值
-    new_value: 新值
-    no_diff: 值"%value%"在提案和工作副本之间是相同的。
-    draft_in_progress: '%author% 正在为此产品拟定提案草稿。'
   published_product:
     index: 已发布的产品
     title: 已发布的产品

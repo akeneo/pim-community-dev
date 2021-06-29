@@ -12,9 +12,20 @@ pim_reference_entity:
       small:
         remove: Usuń
         download: Pobierz
+        upload: Przeciągnij i upuść, aby przesłać
+  editor:
+    embedded:
+      invalid_link:
+        title: Podejrzany osadzony link
+        message: Przepraszamy, nie wyświetlamy tego osadzonego elementu, ale zostanie on poprawnie zapisany
   grid:
     counter: '{{ count }} wynik|{{ count }} wyników'
   reference_entity:
+    validation:
+      code:
+        pattern: 'To pole może zawierać tylko litery, cyfry i podkreślenia.'
+        should_be_unique: 'Ten kod już istnieje dla innego obiektu.'
+        limit_reached: 'Nie można utworzyć obiektu referencyjnego "{{ %reference_entity_label% }}", ponieważ osiągnięto limit {{ %limit% }} obiektów referencyjnych'
     button:
       save: Zapisz
       save_permission: Zapisz
@@ -23,42 +34,77 @@ pim_reference_entity:
       title: Uprawnienia obiektu
     title: Obiekty
     breadcrumb: Obiekty referencyjne
+    img: Główny obraz obiektu referencyjnego o nazwie "{{ label }}"
     tab:
       records: Wyniki
       attribute: Atrybuty
       properties: Ustawienia
       permission: Uprawnienia
     properties:
+      title: Właściwości obiektu
       identifier: Pod Produktu
       label: Etykieta
       image: Zdjęcie
     attribute:
+      title: Atrybuty rekordu
       attribute:
         error:
           render_list: 'Wystąpił błąd podczas renderowania atrybutu "{{ %attribute_code%}}"'
           render_edit: 'Wystąpił błąd podczas renderowania dodatkowych pól właściwości atrybutu "{{ %attribute_code%}}"'
+    module:
+      delete:
+        button: Usuń obiekt
+        confirm: Czy na pewno chcesz usunąć ten obiekt?
+    index:
+      grid:
+        count: '{0} Brak obiektu referencyjnego|{1} {{ count }} obiekt referencyjny|]1,Inf] {{ count }} obiektów referencyjnych'
+        help:
+          title: 'Witamy w Obiektach referencyjnych!'
+          description_part_one: Wzbogacaj istotne informacje dotyczące produktów (np. marki, producentów, kolory, materiały, składniki...).
+          description_part_two: Pozwoli to na zapewnienie klientom lepszych doświadczeń produktowych.
+          description_part_three: Kliknij przycisk "Utwórz", aby utworzyć pierwszy obiekt referencyjny, ustaw jego atrybuty i rekordy.
+          description_part_four: Następnie, aby połączyć z produktami, utwórz typ atrybutu produktu powiązany z tym obiektem referencyjnym.
+          description_part_five: Aby uzyskać więcej informacji, przejrzyj ten artykuł.
     create:
       header:
         title: Utwórz
+      subtitle: Obiekty referencyjne
+      title: Utwórz nowy obiekt
       input:
         label: Etykieta
         code: Kod (wymagany)
       confirm: Zapisz
     delete:
-      title: Atrybut
+      message: Czy na pewno chcesz usunąć obiekt "{{ referenceEntityLabel }}"?
+      title: Obiekt referencyjny
     notification:
       save:
+        success: Zaktualizowano obiekt referencyjny.
         fail: Wystąpił błąd podczas zapisywania obiektów referencyjnych
       create:
+        success: Utworzono obiekt referencyjny.
         fail: Wystąpił błąd podczas zapisywania obiektu referencyjnego
       delete:
+        success: Usunięto obiekt referencyjny.
         fail: Wystąpił błąd podczas usuwania obiektu referencyjnego
   permission:
     notification:
       save:
         success: Uprawnienia odniesienia obiektu zostały pomyślnie zaktualizowane.
+        fail: Co najmniej jedna grupa użytkowników powinna mieć uprawnienia do edycji tego obiektu
+    no_data:
+      title: Nie masz żadnej grupy użytkowników
+      subtitle: Aby zarządzać uprawnieniami dotyczącymi obiektu referencyjnego, musisz mieć co najmniej jedną grupę użytkowników.
+      link: Kliknij tutaj, aby dodać pierwszą grupę użytkowników
   record:
+    mass_delete:
+      confirm: '[0,1]Czy na pewno chcesz usunąć {{ count }} wybrany rekord?|]1,Inf]Czy na pewno chcesz usunąć {{ count }} wybranych rekordów?'
+      extra_information: Jeśli są one powiązane z produktami, linki do produktów zostaną usunięte.
+      confirm_label: Wprowadź "{{ referenceEntityIdentifier }}"
+      title: Wyniki
+    record_selected: '{0} {{ count }} wybranych rekordów|{1} {{ count }} wybrany rekord|]1,Inf] {{ count }} wybranych rekordów'
     validation:
+      limit_reached: 'Nie można utworzyć rekordu "{{ %record_label% }}", ponieważ osiągnięto limit {{ %limit% }} rekordów dla tego obiektu referencyjnego'
       code:
         pattern: 'To pole może zawierać tylko litery, cyfry i podkreślenia.'
         should_be_unique: 'Ten kod już istnieje dla innego zasobu.'
@@ -79,27 +125,47 @@ pim_reference_entity:
     button:
       save: Zapisz
       create: Dodaj nowy
-      delete: Skasuj
-      delete_all: Usuń wszystkie rekordy
+      delete: Usuń rekord
       back: Powrót do listy
+      edit: Edytuj rekord
+      view: Wyświetl rekord
     product:
+      attribute: Atrybut produktu
+      counter: '{{ totalCount }} wynik|wyników: {{ totalCount }}'
       dropdown:
         attribute: Atrybut produktu
       title: Produkty
       no_attribute:
+        title: Nie ma atrybutu produktu powiązanego z obiektem referencyjnym "{{ entityLabel }}"
+        subtitle: "Aby rozpocząć powiązywanie produktów z tym obiektem referencyjnym, możesz utworzyć nowy: "
         link: Utwórz nowy atrybut produktu
       not_enough_items:
+        title: Trochę tu tłoczno, pokazujemy {{ productCount }}/{{ totalCount }} produktów.
+        subtitle:
+          usable_in_grid: Aby odkryć wszystkie powiązane produkty, kliknij poniżej!
+          not_usable_in_grid: Aby odkryć wszystkie powiązane produkty, atrybut produktu musi być ustawiony jako „używalny w tabeli”.
         button: Zobacz wszystkie produkty
+      no_product:
+        title: Nie ma produktów powiązanych dla atrybutu produktu "{{ entityLabel }}"
+        subtitle: "Aby zobaczyć produkty tutaj, zacznij łączyć je z tym atrybutem"
     enrich:
+      title: Atrybuty rekordu
       code: Pod Produktu
       label: Etykieta
+    title: Rekordy
     create:
       header:
         title: Utwórz
+      subtitle: Obiekty referencyjne
+      title: Dodaj nowy {{ entityLabel }}
       input:
         label: Etykieta
         code: Kod (wymagany)
+        create_another: Utwórz kolejny rekord
       confirm: Zapisz
+    delete:
+      message: Czy na pewno chcesz usunąć rekord "{{ recordLabel }}"? Jeśli jest on powiązany z produktami lub rekordami, linki zostaną usunięte.
+      title: Rekord
     grid:
       search: Szukaj na etykiecie, kodzie i tekstach atrybutów
       filter:
@@ -110,6 +176,7 @@ pim_reference_entity:
           'no': 'Nie'
         option:
           all: Wszystkie
+          no_value: Wybierz opcję do filtrowania
           operator:
             in: Na liście
       column:
@@ -118,23 +185,36 @@ pim_reference_entity:
         label: Etykieta
         complete: Kompletny
         action: Działania
+      more_result:
+        title: To nie tak!
+        description: Właśnie przejrzano pierwsze 500 wyników z {{ total }} rekordów. Aby zobaczyć więcej, użyj bardziej szczegółowych kryteriów wyszukiwania.
       completeness:
         title_no_required: Nie jest wymagany atrybut
+        title_non_complete: 'Ukończono 0 z następującej liczby atrybutów: {{ required }}'
+        title_ongoing: 'Ukończono {{ complete }} z następującej liczby atrybutów: {{ required }}'
+        title_complete: Ukończono wszystkie {{ required }} atrybuty
     tab:
       enrich: Uzupełnianie
       product: Produkty
     notification:
       save:
+        success: Zaktualizowano rekord.
         fail: Wystąpił błąd podczas zapisywania rekordu
+        validation_error: Nie można zaktualizować rekordu
       create:
+        success: Utworzono rekord.
         fail: Wystąpił błąd podczas tworzenia rekordu
       delete:
+        success: Usunięto rekord "{{ code }}".
         fail: Wystąpił błąd podczas usuwania rekordu
-      delete_all:
-        fail: Wystąpił błąd podczas usuwania wszystkich rekordów tego obiektu referencyjnego
+      mass_delete:
+        success: Zbiorcze działanie "Masowe usuwanie" zostało uruchomione. Otrzymasz powiadomienie o jego zakończeniu.
+        fail: "Wystąpił błąd podczas uruchamiania zadania masowego usuwania: {{ error }}"
     completeness:
       label: Kompletny
   attribute:
+    validation:
+      limit_reached: 'Nie można utworzyć atrybutu "{{ %attribute_label% }}", ponieważ osiągnięto limit {{ %limit% }} atrybutów dla tego obiektu referencyjnego'
     default:
       code: Pod Produktu
       label: Etykieta
@@ -142,39 +222,72 @@ pim_reference_entity:
     type:
       text: Tekst
       image: Zdjęcie
+      record: Pojedynczy link do obiektu referencyjnego
+      record_collection: Wiele linków do obiektu referencyjnego
+      option: Jedna opcja
+      option_collection: Wiele opcji
+      number: Liczba
     is_required: wymagane do kompletności
+    no_data:
+      title: Brak niestandardowych atrybutów dla {{ entityLabel }}
+      subtitle: Aby skonfigurować pierwszy atrybut niestandardowy, kliknij przycisk "Dodaj atrybut"
+    button:
+      add: Dodaj atrybut
     create:
       header:
         title: Utwórz
+      subtitle: Obiekty referencyjne
+      title: Dodaj nowy atrybut rekordu
+      description: Następujące parametry, za wyjątkiem etykiety, nie mogą być aktualizowane po utworzeniu atrybutu
       input:
         code: Kod (wymagany)
         label: Etykieta
         type: Typ atrybutu
+        record_type: Obiekt referencyjny do powiązania (wymagane)
         value_per_locale: Wartość dla wersji językowej
         value_per_channel: Wartość dla kanału
+      placeholder:
+        record_type: Wybierz powiązany obiekt referencyjny
       confirm: Zapisz
     edit:
+      delete: Usuń atrybut
+      title: Edytuj atrybut {{ code }}
       save: Zapisz
       cancel: Anuluj
       input:
         code: Kod (wymagany)
         label: Etykieta
         type: Typ atrybutu
+        record_type: Powiązany obiekt referencyjny (wymagane)
         value_per_locale: Wartość dla wersji językowej
         value_per_channel: Wartość dla kanału
+        is_required: Wymagane do kompletności
         max_length: Maksymalna liczba znaków
         textarea: Pole tekstowe
+        is_rich_text_editor: Edytor tekstu sformatowanego
         max_file_size: Maksymalny rozmiar pliku (MB)
         allowed_extensions: Dozwolone rozszerzenia
         validation_rule: Reguła poprawności
         regular_expression: Wyrażenie regularne
+        min_value: Wartość minimalna
+        max_value: Wartość maksymalna
+        manage_options:
+          confirmation:
+            discard_changes: Jeśli opuścisz stronę, utracisz zmiany w liście opcji
+          quick_edit:
+            label: Zarządzaj opcjami
+          option:
+            label:
+              placeholder: Wprowadź tutaj nową etykietę opcji
         options:
           validation_rule:
             none: Żaden
             email: E-mail
             regular_expression: Wyrażenie regularne
             url: URL
+        decimals_allowed: Dopuszczalne wartości dziesiętne
     delete:
+      message: Czy na pewno chcesz usunąć atrybut "{{ attributeLabel }}"?
       title: Atrybut
     notification:
       list:
@@ -182,24 +295,79 @@ pim_reference_entity:
       save:
         success: Atrybut pomyślnie zaktualizowany.
         fail: Wystąpił błąd podczas zapisywania atrybutu
+        validation_error: Nie można zaktualizować atrybutu
       create:
         success: Atrybut pomyślnie utworzony.
         fail: Wystąpił błąd podczas tworzenia atrybutu
+        validation_error: Nie można utworzyć atrybutu
       delete:
         success: Atrybut pomyślnie usunięty.
         fail: Wystąpił błąd podczas usuwania atrybutu
     options:
+      no_value: Aby wybrać opcję, kliknij tutaj.
+      sub_title: Obiekty referencyjne
       helper:
         title: Tłumaczenia etykiety
-  modal:
-    delete:
-      subtitle: Potwierdź usunięcie
-      button:
-        cancel: Anuluj
-        confirm: Skasuj
 pim_enrich:
+  confirmation:
+    discard_changes: 'Jeśli opuścisz tę stronę, utracisz wszystkie zmiany w obiekcie "{{ entity }}".'
   entity:
     attribute:
       property:
+        type:
+          akeneo_reference_entity_collection: Wiele linków do obiektu referencyjnego
+          akeneo_reference_entity: Pojedynczy link do obiektu referencyjnego
         section:
           type_specific: Określone parametry
+        reference_entity:
+          identifier: Powiązany obiekt referencyjny (wymagane)
+          default_label: Wybierz obiekt referencyjny
+permission:
+  mass_action: Zastosuj {{ rightLevel }} do wszystkich grup
+#Analytics
+pim_catalog_volume:
+  section:
+    reference_entity:
+      title: Osie na obiektach referencyjnych
+      hint: Jeśli używasz obiektów referencyjnych skorzystaj z tych osi by monitorować objętość.
+  axis:
+    count_reference_entity: Obiekty referencyjne
+    average_max_records_per_reference_entity: Rekordów na obiekt referencyjny
+    average_max_attributes_per_reference_entity: Atrybutów na obiekt referencyjny
+batch_jobs:
+  default_steps:
+    mass_delete_records: Wykonaj masowe usuwanie rekordów
+  reference_entity_label: Obiekt referencyjny
+  csv_reference_entity_record_export:
+    label: Eksport rekordów obiektów referencyjnych w formacie CSV
+    export.label: Eksport rekordów
+  xlsx_reference_entity_record_export:
+    label: Eksport rekordów obiektów referencyjnych w formacie XLSX
+    export.label: Eksport rekordów
+  csv_reference_entity_record_import:
+    label: Import rekordów obiektów referencyjnych w formacie CSV
+    import.label: Import rekordów
+  xlsx_reference_entity_record_import:
+    label: Import rekordów obiektów referencyjnych w formacie XLSX
+    import.label: Import rekordów
+pim_datagrid:
+  cells:
+    type:
+      reference_entity_mass_delete_records: Wykonaj masowe usuwanie rekordów
+job_execution:
+  summary:
+    records: Wyniki
+pim_notification:
+  types:
+    reference_entity_mass_delete_records: Masowe usuwanie rekordów
+pim_analytics:
+  info_type:
+    nb_reference_entities: Liczba obiektów referencyjnych
+    max_number_of_records_per_reference_entity: Maksymalna liczba rekordów na obiekt referencyjny
+    average_number_of_values_per_records: Średnia liczba wartości na rekord we wszystkich obiektach referencyjnych
+    average_number_of_records_per_reference_entity: Średnia liczba rekordów na obiekt referencyjny
+    max_number_of_attributes_per_reference_entity: Maksymalna liczba atrybutów na obiekt referencyjny
+    average_number_of_attributes_per_reference_entity: Średnia liczba atrybutów na obiekt referencyjny
+    average_percentage_localizable_only_attributes: Średni procent tylko tłumaczonych atrybutów na obiekt referencyjny
+    average_percentage_scopable_only_attributes: Średni procent tylko zmiennych atrybutów na obiekt referencyjny
+    average_percentage_scopable_and_localizable_attributes: Średni procent tłumaczonych i zmiennych atrybutów na obiekt referencyjny

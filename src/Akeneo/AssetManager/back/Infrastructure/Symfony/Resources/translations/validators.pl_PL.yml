@@ -51,6 +51,9 @@ pim_asset_manager:
         not_main_media_attribute_code: 'Właściwość musi odpowiadać kodowi atrybutu zdefiniowanego jako media główne'
   asset:
     validation:
+      mass_edit:
+        updater_cannot_be_empty: 'Nie można wybrać atrybutów używanych w transformacjach lub w trybie tylko do odczytu.'
+        updater_must_be_unique: 'Upewnij się, że ten atrybut oraz jego kanał i wersja językowa, jeśli dotyczy, nie jest już wybrany.'
       code:
         pattern: 'To pole może zawierać tylko litery, cyfry i podkreślenia.'
         should_be_unique: 'Zasób już istnieje z kodem "%code%"'
@@ -87,6 +90,8 @@ pim_asset_manager:
         should_be_numeric: 'To pole powinno być wartością liczbową z właściwym separatorem dziesiętnym'
       main_media:
         not_main_media_attribute: 'Oczekiwany atrybut jako główne medium to "%main_media_attribute%", podano "%attribute%".'
+      media_link:
+        protocol_not_allowed: 'To pole powinno zaczynać się od prawidłowego protokołu. Dopuszczalne protokoły to: %allowed_protocols%.'
   attribute:
     validation:
       options:
@@ -124,6 +129,7 @@ pim_asset_manager:
         asset_family_should_exist: 'Nie znaleziono rodziny zasobów "%asset_family_code%".'
       prefix:
         should_not_be_empty: 'Prefiks nie może być pustym ciągiem znaków.'
+        protocol_not_allowed: 'To pole powinno zaczynać się od prawidłowego protokołu. Dopuszczalne protokoły to: %allowed_protocols%.'
       suffix:
         should_not_be_empty: 'Sufiks nie może być pustym ciągiem znaków.'
       media_type:

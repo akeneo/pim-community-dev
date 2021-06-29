@@ -36,6 +36,7 @@ abstract class AbstractProductModelExportTestCase extends TestCase
         ]);
 
         $this->get('doctrine')->getManager()->clear();
+        $this->jobLauncher->flushJobQueue();
     }
 
     /**

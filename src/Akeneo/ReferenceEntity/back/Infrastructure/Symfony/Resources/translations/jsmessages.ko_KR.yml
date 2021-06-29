@@ -76,7 +76,7 @@ pim_reference_entity:
       confirm: 저장
     delete:
       message: '"{{ referenceEntityLabel }}" 엔터티를 삭제하시겠습니까?'
-      title: 특성
+      title: 참조 엔터티
     notification:
       save:
         success: 참조 엔터티가 업데이트되었습니다.
@@ -97,6 +97,12 @@ pim_reference_entity:
       subtitle: 참조 엔터티에 대한 권한을 관리하려면 하나 이상의 사용자 그룹이 있어야 합니다.
       link: 첫 번째 사용자 그룹을 추가하려면 여기 클릭하십시오
   record:
+    mass_delete:
+      confirm: '[0,1]{{ count }}개의 선택한 레코드를 삭제하시겠습니까?|]1,Inf]{{ count }}개의 선택한 레코드를 삭제하시겠습니까?'
+      extra_information: 제품에 연결되어 있는 경우 제품 연결이 제거됩니다.
+      confirm_label: '''{{ referenceEntityIdentifier }}''을(를) 입력하십시오'
+      title: 레코드
+    record_selected: '{0} {{ count }}개 레코드 선택|{1} {{ count }}개 레코드 선택|]1,Inf[ {{ count }}개 레코드 선택'
     validation:
       limit_reached: '이 참조 엔터티의 {{ %limit% }} 레코드 제한에 도달했으므로 "{{ %record_label% }}" 레코드를 만들 수 없습니다'
       code:
@@ -119,9 +125,10 @@ pim_reference_entity:
     button:
       save: 저장
       create: 새로 추가
-      delete: 삭제
-      delete_all: 모든 레코드 삭제
+      delete: 레코드 삭제
       back: 목록으로 돌아가기
+      edit: 레코드 수정
+      view: 레코드 보기
     product:
       attribute: 제품 특성
       counter: '{{ totalCount }} 결과|{{ totalCount }} 결과'
@@ -159,8 +166,6 @@ pim_reference_entity:
     delete:
       message: '"{{ recordLabel }}" 레코드를 삭제하시겠습니까? 이 레코드가 제품 또는 레코드에 링크된 경우 해당 링크가 제거됩니다.'
       title: 레코드
-    delete_all:
-      confirm: 모든 "{{ entityIdentifier }}" 레코드를 삭제하시겠습니까? 이 레코드가 제품에 링크된 경우 해당 제품에 대한 링크가 제거됩니다.
     grid:
       search: 레이블, 코드 및 텍스트 특성 검색
       filter:
@@ -202,9 +207,9 @@ pim_reference_entity:
       delete:
         success: '"{{ code }}" 레코드가 삭제되었습니다.'
         fail: 레코드를 삭제하는 중에 오류가 발생했습니다
-      delete_all:
-        success: 모든 "{{ entityIdentifier }}" 레코드가 삭제되었습니다.
-        fail: 이 참조 엔터티의 레코드를 모두 삭제하는 중에 오류가 발생했습니다
+      mass_delete:
+        success: 일괄 작업 '대량 삭제'가 실행되었습니다. 완료되면 알림이 전송됩니다.
+        fail: "대량 삭제 작업을 실행하는 동안 오류가 발생했습니다. {{ error }}"
     completeness:
       label: 완료
   attribute:
@@ -303,12 +308,6 @@ pim_reference_entity:
       sub_title: 참조 엔터티
       helper:
         title: 레이블 번역
-  modal:
-    delete:
-      subtitle: 삭제 확인
-      button:
-        cancel: 취소
-        confirm: 삭제
 pim_enrich:
   confirmation:
     discard_changes: '이 페이지를 나가면 "{{ entity }}"에 대한 변경 사항이 손실됩니다.'
@@ -333,7 +332,42 @@ pim_catalog_volume:
       hint: 참조 엔터티를 사용할 경우, 해당 볼륨 모니터링에 유용한 축은 다음과 같습니다.
   axis:
     count_reference_entity: 참조 엔터티
-    average_max_records_per_reference_entity: 참조 엔터티별 레코드
-    average_max_attributes_per_reference_entity: 참조 엔터티별 특성
+    average_max_records_per_reference_entity: 참조 엔터티당 레코드
+    average_max_attributes_per_reference_entity: 참조 엔터티당 특성
 batch_jobs:
+  default_steps:
+    mass_delete_records: 레코드 대량 삭제 실행
   reference_entity_label: 참조 엔터티
+  csv_reference_entity_record_export:
+    label: 참조 엔터티 레코드를 CSV로 내보내기
+    export.label: 레코드 내보내기
+  xlsx_reference_entity_record_export:
+    label: 참조 엔터티 레코드를 XLSX로 내보내기
+    export.label: 레코드 내보내기
+  csv_reference_entity_record_import:
+    label: 참조 엔터티 레코드를 CSV로 가져오기
+    import.label: 레코드 가져오기
+  xlsx_reference_entity_record_import:
+    label: 참조 엔터티 레코드를 XLSX로 가져오기
+    import.label: 레코드 가져오기
+pim_datagrid:
+  cells:
+    type:
+      reference_entity_mass_delete_records: 레코드 대량 삭제 실행
+job_execution:
+  summary:
+    records: 레코드
+pim_notification:
+  types:
+    reference_entity_mass_delete_records: 대량 삭제 레코드
+pim_analytics:
+  info_type:
+    nb_reference_entities: 참조 엔터티 수
+    max_number_of_records_per_reference_entity: 참조 엔터티당 최대 레코드 수
+    average_number_of_values_per_records: 모든 참조 엔터티의 레코드별 평균 값 수
+    average_number_of_records_per_reference_entity: 참조 엔터티당 평균 레코드 수
+    max_number_of_attributes_per_reference_entity: 참조 엔터티당 최대 특성 수
+    average_number_of_attributes_per_reference_entity: 참조 엔터티당 평균 특성 수
+    average_percentage_localizable_only_attributes: 참조 엔터티당 지역화만 가능한 특성의 평균 퍼센트
+    average_percentage_scopable_only_attributes: 참조 엔터티당 확장만 가능한 특성의 평균 퍼센트
+    average_percentage_scopable_and_localizable_attributes: 참조 엔터티당 지역화 가능 및 확장 가능 특성의 평균 퍼센트

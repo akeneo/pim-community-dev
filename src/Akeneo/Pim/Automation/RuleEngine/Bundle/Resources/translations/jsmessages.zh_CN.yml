@@ -52,6 +52,14 @@ pimee_catalog_rule:
           success: 已成功删除规则。
           error: 删除规则时发生错误。
           empty_selection: 没有选中规则。
+      tags:
+        set: 设置
+        add: 添加
+        calculate: 计算
+        clear: 清除
+        concatenate: 连接
+        copy: 复制
+        remove: 移除
   form:
     category:
       catalog: 目录
@@ -108,6 +116,9 @@ pimee_catalog_rule:
       add_to_category: 添加到类别
       add_conditions: 添加条件
       products_count:
+        products: "]-Inf, 1]{{ count }} 个产品|]1, +Inf[{{ count }} 个产品"
+        product_models: "]-Inf, 1]{{ count }} 个产品模型|]1, +Inf[{{ count }} 个产品模型"
+        products_and_product_models: "{{ products }} 和 {{ product_models }}"
         pending: 计算产品和产品模型
         error: 无法计算产品和产品模型
       product_selection: 产品选择
@@ -120,14 +131,20 @@ pimee_catalog_rule:
         attribute: 属性
         groups: 分组
         parent: 父级
+        measurement_unit: 测量单位
+        measurement_default_unit: "默认单位 ({{ unit }})"
         currency: 货币
         operator: 运算符
         entity_type:
           label: 实体类型
+          placeholder: 请选择实体类型
       execute:
         button: 保存并执行
         title: 保存并执行规则
         description: 您将保存当前规则并在后台执行。完成后会通知您。
+      duplicate:
+        button: 保存与复制
+        title: 复制规则"{{ originalRuleCode }}" 
       actions:
         add_action: 添加操作
         add_category:
@@ -165,19 +182,44 @@ pimee_catalog_rule:
           attribute_placeholder: 选择目标属性
           select_reference_entity: 选择参考实体
           select_asset: 选择资产
+          select_measurement_unit: 选择单位
+        set_quantified_associations:
+          title: SET 量化关联
+          helper: 要设置量化关联，请选择您的关联类型，然后选择您想要关联到产品选择的产品、产品模型或组。
         set_associations:
+          title: SET 关联
+          helper: 要设置关联，请选择您的关联类型，然后选择您想要关联到产品选择的产品、产品模型或组。
+          select_association_type: 选择关联类型
+          association_types: 关联类型
+          add_group: 添加组
+          add_product: 添加产品
+          add_product_model: 添加产品模型
+          add_association_type: 添加关联类型
           select_title:
+            products: 选择产品
+            product_models: 选择产品模型
             groups: 选择组
           select:
             products: 商品
             product_models: 产品模型
             groups: 分组
+          counts:
+            products: ']-Inf, 1]{{ count }} 个产品|]1, +Inf[{{ count }} 个产品'
+            product_models: ']-Inf, 1]{{ count }} 个产品模型|]1, +Inf[{{ count }} 个产品模型'
+            groups: ']-Inf, 1]{{ count }} 个组|]1, +Inf[{{ count }} 个组'
+        add_associations:
+          title: 添加关联
+          helper: 要添加关联，请选择关联类型，然后选择想要关联到产品选择的产品、产品模型或组。
         clear_attribute:
           title: 清除属性值
           subtitle: 选择要清除的属性 
           attribute_label: 属性
         clear_associations:
           title: 清除关联
+          helper: 所选产品的所有关联将被清除。
+        clear_quantified_associations:
+          title: 清除量化关联
+          helper: 所选产品的所有量化关联将被清除。
         clear_categories:
           title: 清除类别
         clear_groups:
@@ -212,13 +254,34 @@ pimee_catalog_rule:
           helper: 要从组中移除产品，请选择一个或多个组
           subtitle: 选择组
         calculate:
+          title: 计算值
+          helper: 要计算数字属性值，请选择属性和/或值，然后选择想要将结果放入其中的目标属性。如果需要，还可以将最终结果四舍五入。
+          add_value: 添加值
+          add_attribute: 添加属性
+          select_target: 选择目标
+          attribute_placeholder: 选择目标属性
+          round_precision: 四舍五入精度
           operator:
             add: 添加
             subtract: 减去
             multiply: 乘
             divide: 除
+            choose: 选择运算符
         concatenate:
+          title: 连接值
+          helper: 要连接属性值，请添加属性，然后选择目标属性。
           select_target: 选择目标
+          attribute_placeholder: 选择目标属性
+          add_text: 添加文本
+          add_attribute: 添加属性
+          add_new_line: 添加换行符
+          line_break: 换行符
+          date_format: 选择日期格式
+          label_locale: 标签区域
+          unit_label_locale: 单位区域
+          remove_new_line_confirm:
+            label: 从运算列表中删除换行符
+            description: 新的目标属性不接受换行符。此更改将移除所有换行符。
       conditions:
         delete:
           label: 移除条件
@@ -252,6 +315,12 @@ pimee_catalog_rule:
       discard_changes: 如果离开此页面，您的更改将会丢失。
       please_select_attribute: 请先选择目标属性。
       unhandled_attribute_type: 抱歉，此属性类型尚未管理。请使用规则导入。
+      empty_section:
+        set_up_action: 很棒！您已定义了产品选择。现在该设置操作了。
+        set_up_condition: 如果不想影响整个目录，请至少添加一个条件。
+        add_action: 然后添加一个或多个操作以应用于产品/产品模型。
+        doc: 不知道何为操作？
+        doc_link: 这篇文章可以帮助您。
     delete:
       description: 确定要删除此规则吗？此操作不可撤消！
       notification:
@@ -288,6 +357,7 @@ pimee_catalog_rule:
         date_to: 选择结束日期
         date_past: 过去的日期
         date_future: 未来的日期
+        date_present: 现在
       day: "]-Inf, 1] 天|]1, +Inf[ 天"
       week: "]-Inf, 1] 周|]1, +Inf[ 周"
       month: "]-Inf, 1] 月|]1, +Inf[ 月"
@@ -300,16 +370,28 @@ pimee_catalog_rule:
     required_attribute: 属性为必填
     required_locale: 属性 {{ attributeLabel }} 需要区域设置
     required_scope: 属性 {{ attributeLabel }} 需要一个渠道
+    required_currency: 属性 {{ attributeLabel }} 需要指定一种货币
     required_locale_completeness: 完整性需要区域设置
     required_scope_completeness: 完整性需要渠道
     required_value: 此操作需要一个值
     required_categories: 此操作需要至少一个类别
+    required_constant_for_operation: 此运算需要常量值
+    required_operator_for_operation: 此运算需要运算符
+    required_unit: 需要测量单位
+    identifier_or_quantity_missing: 每个元素都需要有标识符和数量
+    required_item: 此操作需要至少一个条目
+    division_by_zero: 不可用零除
+    two_operations_are_required: 运算列表应包含 2 个或更多运算。
+    two_items_are_required: 该列表应该包含 2 个或更多条目。
     unknown_or_inactive_locale: '区域设置"{{ localeCode }}"不存在或未激活'
+    unknown_or_inactive_currency: '货币“{{ currencyCode }}”不存在或未激活'
     unbound_locale: '区域设置"{{ localeCode }}"未在 "{{ channelCode }}"渠道激活'
+    unbound_currency: '货币“{{ currencyCode }}”在渠道“{{ channelCode }}”未激活'
     locale_on_unlocalizable_attribute: 此属性无法本地化。请在继续之前移除此区域设置。
     unknown_scope: '“{{ scopeCode }}”渠道不存在'
     scope_on_unscopable_attribute: 此属性不可确定范围。请在继续之前移除该渠道。
     unknown_families: "{1} {{ familyCodes }} 品类不存在|]1,+Inf[{{ familyCodes }} 品类不存在"
+    unknown_family_variants: "{1}品类变体 {{ familyVariantCodes }} 不存在|]1,+Inf[品类变体 {{ familyVariantCodes }} 不存在"
     unknown_attribute_options: "{1} {{ attributeOptionCodes }} 选项不存在|]1,+Inf[ {{ attributeOptionCodes }} 选项不存在"
     unknown_attribute_code: "{{ attributeCode }} 属性不存在"
     unknown_categories: "{1} {{ categoryCodes }} 类别不存在。|]1,+Inf[ {{ categoryCodes }} 类别不存在"
@@ -321,6 +403,9 @@ pimee_catalog_rule:
     create_attribute_link: 点击此处创建属性
     edit_unauthorize: 您无权编辑规则
     wrong_date_timespan: 要定义一个有效的时间范围，请确保结束日期不在开始日期之前。
+    measurement_family_not_found: 测量单位群“{{ measurement_code }}”不存在
+    unit_not_found: 在测量单位群"{{ measurement_code }}"中没有找到单位"{{ unitCode }}" 
+    empty_association_warning: 如果让此列表为空，此规则将清除此关联类型。
 pim_enrich:
   entity:
     rule:
@@ -334,6 +419,8 @@ flash:
   rule:
     impacted_product_count: 已启动计算受影响产品数量的批量操作。完成后将通知您。
     executed: 规则执行已经启动。完成后会通知您。
+    enabled: 规则已启用
+    disabled: 规则已禁用
 pim_dashboard.widget.last_operations.job_type.mass_edit_rule: 规则设置 
 batch_jobs:
   add_attribute_value:
@@ -368,6 +455,9 @@ pim_notification:
     mass_edit_rule: 批量编辑规则
     execute_rules: 执行规则
 pim_menu:
+  navigation:
+    settings:
+      automation: 自动化
   item:
     rule: 规则
 pim_title:

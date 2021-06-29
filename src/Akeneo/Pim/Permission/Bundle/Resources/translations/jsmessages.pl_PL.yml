@@ -3,6 +3,12 @@ pim_enrich:
     attribute:
       property:
         is_read_only: Tylko do odczytu
+pimee_import_export:
+  entity:
+    job_instance:
+      flash:
+        update:
+          fail_empty_permission: Musisz wybrać co najmniej jedną grupę użytkowników, aby edytować zadanie
 pimee_enrich.entity.category:
   module:
     permissions:
@@ -50,3 +56,16 @@ batch_jobs:
     send_for_approval: Wyślij do zatwierdzenia
 pim_title:
   pimee_enrich_locale_edit: Lokalizacja | Edytuj
+pim_analytics:
+  info_type:
+    nb_custom_locale_accesses: Liczba dostępów do niestandardowych wersji językowych
+    nb_custom_category_accesses: Liczba dostępów do niestandardowych kategorii
+    nb_custom_attribute_group_accesses: Liczba dostępów do niestandardowych grup atrybutów
+category.permissions:
+  view.label: Dopuszczone wyświetlanie produktów
+  edit.label: Dopuszczona edycja produktów
+  own.label: Dopuszczone posiadanie produktów
+  own.help: Przeglądaj, publikuj, cofaj publikacje, klasyfikuj i powiązuj produkty
+  no_access_to_products: Nie masz dostępu do produktów w żadnym drzewie. Skontaktuj się z administratorem
+  apply_on_children.label: Zastosuj zmiany do elementów podrzędnych
+  apply_on_children.help: Istniejące uprawnienia dotyczące elementów podrzędnych są zachowywane

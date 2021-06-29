@@ -8,9 +8,37 @@ pim_datagrid:
   no_entities:
     proposal: 没有待审查的提案。
     product_draft: 没有待审查的产品草稿。
+  no_entities.published product: 未找到已发布的产品
   no_results:
     proposal: 没有待审查的提案。请尝试更改搜索条件。
     product_draft: 没有待审查的产品草稿。请尝试更改搜索条件。
+  no_results.published product: 抱歉，找不到与搜索相符的已发布产品。
+  workflow:
+    partial_approve: 批准对产品 {{ product }} 的属性 {{ attribute }} 的更改
+    partial_reject: 拒绝对产品 {{ product }} 的属性 {{ attribute }} 的更改
+    by: 被
+    at: 在
+    status:
+      in_progress: 正在进行中
+      ready: 等待批准中
+      can_be_partially_reviewed: 可部分审查
+      can_not_be_approved: 不能审查
+      can_not_be_deleted: 不能删除
+    status_message:
+      ready: 等待批准中
+      in_progress: 这项提案目前正在走流程中，尚未提交。
+      can_be_partially_reviewed: 您仅能审查部分提案，因为一些更改应用到了您不能编辑的值上。请联系您的管理员以更改您的权限。
+      can_not_be_approved: 您不能审查该提案，因为所有更改应用到了您不能编辑的值上。请联系您的管理员以更改您的权限。
+      can_not_be_deleted: 您不能删除该提案，因为所有更改应用到了您不能编辑的值上。请联系您的管理员以更改您的权限。
+    draft_in_progress: '{{ author }} 正在为此产品拟定提案草稿。'
+    no_diff: 值“{{ value }}”在提案和工作副本之间是相同的。
+    new_value: '新的值：'
+    old_value: '旧值：'
+    see_more: 查看更多
+    actions:
+      approve_all: 全部批准
+      refuse_all: 全部拒绝
+    characters_left: ']-Inf, 1]剩余 {{ count }} 个字符|]1, Inf[剩余 {{ count }} 个字符'
 pimee_datagrid:
   cells:
     expand:
@@ -23,29 +51,33 @@ pimee_workflow:
         original_product: 编辑工作副本
     proposal:
       modal.title: 请留下您的评论 (可选，最多 255 个字符)
+    removing_error: 无法移除与已发布产品相关联的实体。
   proposal:
     overview: "]-Inf, 1]{{ count }} 个提案|]1, Inf[{{ count }} 个提案"
     selected: "]-Inf, 1]已选定 {{ count }} 个提案|]1, Inf[已选定 {{ count }} 个提案"
     mass_action_group:
       review:
         label: 批量操作
-    partial_accept:
-      modal.title: 批准部分信息
-      modal.label: 请留下您的评论 (可选)
-      modal.error: 发生错误，提案尚未被部分批准
-      modal.success: 提案已成功部分验证
+    approve:
+      title: 批准提案
+      success: 提案已成功应用。
+      error: "由于以下错误，这项提案不能被应用：{{ error }}"
+    reject:
+      title: 拒绝提案
+      success: 提案已被拒绝。
+      error: "由于以下错误，这项提案不能被拒绝：{{ error }}"
+    remove:
+      title: 移除提案
+      success: 提案已被移除。
+      error: "由于以下错误，这项提案不能被移除：{{ error }}"
     partial_approve:
-      modal:
-        title: 部分批准更改
-        label: 请留下您的评论 (可选)
-        error: 发生错误，提案尚未被部分批准
-        success: 更改已成功批准
+      title: 批准部分信息
+      success: 提案已成功部分验证
+      error: "由于以下错误，这项提案不能被部分批准：{{ error }}"
     partial_reject:
-      modal:
-        title: 部分拒绝更改
-        label: 请留下您的评论 (可选)
-        error: 发生错误，提案尚未被部分拒绝
-        success: 更改已成功拒绝
+      title: 部分拒绝更改
+      success: 更改已成功拒绝
+      error: "由于以下错误，这项提案不能被部分拒绝：{{ error }}"
 batch_jobs:
   csv_published_product_export:
     label: 以 CSV 格式导出已发布的产品
@@ -85,6 +117,11 @@ batch_jobs:
     perform.label: 以 Xlsx 格式网格上下文快速导出已发布的产品
   publish_product:
     perform.label: 发布产品
+  unpublish_product:
+    perform.label: 取消发布产品
+  default_steps:
+    clean_attribute:
+      clean_draft: 清理提案
 pim_notification:
   types:
     pimee_workflow_product_draft_notification_new_proposal: 新提案
@@ -104,6 +141,8 @@ pimee_dashboard:
       product: 产品
       review: 审查
       empty: 没有要审查的提案
+      title: 待审查提案
+      view_all: 查看所有提案
     header.view_all: 查看全部
 pimee_enrich.entity.product:
   module:
@@ -111,7 +150,8 @@ pimee_enrich.entity.product:
       published: 已发布
       revert: 恢复
     attribute:
-      can_be_updated_by_a_rule: "]-Inf, 1]此属性可通过以下规则更新：|]1, +Inf[此属性可通过以下规则更新："
+      can_be_updated_by_rules: "]-Inf, 1]此属性可以通过<span> 1 个规则</span>更新|]1, +Inf[此属性可以通过 <span>{{ count }} 个规则</span>更新"
+      can_be_updated_by_rules_readonly: "]-Inf, 1]此属性可通过 1 个规则更新|]1, +Inf[此属性可通过 {{ count }} 个规则更新"
       value_updated: 此值被当前的草稿更新
     meta:
       published_version: 已发布的版本
@@ -159,13 +199,6 @@ pimee_enrich.entity.published_product:
       label: 取消发布
 pimee_enrich.entity.product_draft:
   flash:
-    approve:
-      success: 提案已成功应用。
-      fail: "由于以下错误，这项提案不能被应用：{{ error }}"
-    reject:
-      success: 提案已被拒绝。
-    remove:
-      success: 提案已被移除。
     update:
       success: 产品草稿已成功保存
       fail: 产品草稿无法更新
@@ -175,14 +208,10 @@ pimee_enrich.entity.product_draft:
       skip: 产品草稿尚未发送供审批，因为没有修改任何值
   module:
     proposal:
-      accept: 接受提案
-      accept_selected: 接受选定的提案
-      reject: 拒绝提案
-      reject_selected: 拒绝选定的提案
-      remove: 移除提案
-      comment_title: 评论您的提案 （可选，最多 255 个字符）
       comment_chars: 字符
       confirm: 发送
+      accept_selected: 接受选定的提案
+      reject_selected: 拒绝选定的提案
     edit:
       discard_changes: 未保存的更改将会丢失。确定要在未保存的情况下，发送您的草稿以进行审批？
       discard_changes_title: 确定要发送此草稿?
@@ -212,3 +241,7 @@ pim_title:
   pimee_workflow_proposal_index: 提案
   pimee_workflow_published_product_index: 已发布的产品
   pimee_workflow_published_product_view: 已发布的产品 {{ product.label }} | 查看
+pim_analytics:
+  info_type:
+    nb_published_products: 已发布产品的数量
+    nb_product_drafts: 产品草稿数量

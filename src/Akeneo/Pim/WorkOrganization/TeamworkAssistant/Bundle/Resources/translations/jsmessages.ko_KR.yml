@@ -31,12 +31,10 @@ teamwork_assistant:
     no_project_create: 새 프로젝트 만들기
     description: 설명
     due_date: 마감일
-    todo: 할 일
-    in_progress: 진행 중
-    done: 완료
     all_contributors: 모든 기여자
     you: 나
     display_products: 제품 표시
+    projects: 프로젝트
     placeholder:
       contributor_selector: 기여자 검색
       project_selector: 프로젝트 검색
@@ -66,3 +64,4 @@ pim_notification:
     project_created: 새 프로젝트가 있습니다
     project_finished: 프로젝트 완료
     project_calculation: 프로젝트 계산
+    project_due_date: 프로젝트 기한

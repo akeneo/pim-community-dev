@@ -3,3 +3,4 @@ pim_asset_manager:
     validation:
       asset_multiple_link:
         limit_reached: '컬렉션별 %limit% 자산 제한에 도달했습니다. 더 이상 컬렉션에 자산을 추가할 수 없습니다.'
+      assets_should_belong_to_asset_family: '''%attribute%'' 특성에 대한 ''%asset_code%'' 애셋이 있으며 ''%asset_family_identifier%'' 애셋 패밀리에 속하는지 "%attribute%" 확인해주십시오.'

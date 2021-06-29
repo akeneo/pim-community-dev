@@ -61,7 +61,7 @@ class RemoveProjectIntegration extends TeamworkAssistantTestCase
 
         $viewId = $project->getDatagridView()->getId();
 
-        $this->get('pimee_teamwork_assistant.remover.project')->remove($project);
+        $this->removeProject($project);
 
         $view = $this->get('pim_datagrid.repository.datagrid_view')->find($viewId);
         $this->assertTrue(null === $view, 'View should be deleted on a project deletion, but is still in database.');

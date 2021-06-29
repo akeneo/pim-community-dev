@@ -23,8 +23,7 @@ use Doctrine\DBAL\Connection;
 
 final class GetAttributeSpellcheckQuery implements GetAttributeSpellcheckQueryInterface
 {
-    /** @var Connection */
-    private $dbConnection;
+    private Connection $dbConnection;
 
     public function __construct(Connection $dbConnection)
     {
@@ -34,7 +33,7 @@ final class GetAttributeSpellcheckQuery implements GetAttributeSpellcheckQueryIn
     public function getByAttributeCode(AttributeCode $attributeCode): ?AttributeSpellcheck
     {
         $result = $this->getByAttributeCodes([$attributeCode]);
-        if (empty($result)) {
+        if (empty($result) || !array_key_exists(strval($attributeCode), $result)) {
             return null;
         }
 

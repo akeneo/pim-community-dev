@@ -13,8 +13,6 @@ akeneo_assetmanager:
     asset:
       create: 자산 만들기
       edit: 자산 편집
-      delete: 자산 삭제
-      delete_all: 모든 자산 삭제
       list_product: 자산에 대한 링크된 제품 나열
     attribute:
       create: 자산 패밀리에 특성 추가
