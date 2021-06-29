@@ -90,7 +90,7 @@ type JobConfiguration = {
 const FakePIM = () => {
   const [jobConfiguration, setJobConfiguration] = useState<JobConfiguration | null>(null);
   const [validationErrors, setValidationErrors] = useState<ValidationError[]>([]);
-  const [isCurrent, switchTo] = useTabBar('lines');
+  const [isCurrent, switchTo] = useTabBar('columns');
   const route = useRoute('pim_enrich_job_instance_rest_export_get', {identifier: JOB_CODE});
   const saveRoute = useRoute('pim_enrich_job_instance_rest_export_put', {identifier: JOB_CODE});
   const notify = useNotify();

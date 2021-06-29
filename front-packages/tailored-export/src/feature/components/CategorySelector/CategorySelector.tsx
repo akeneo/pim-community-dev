@@ -95,11 +95,7 @@ const CategorySelector = ({
     const childrenUrl = router.generate('pim_enrich_categorytree_children', {_format: 'json', id});
     const response = await fetch(childrenUrl);
     const json: CategoryResponse[] = await response.json();
-console.log(json.map(child =>
-  parseResponse(child, {
-    selectable: true,
-  })
-));
+
     return json.map(child =>
       parseResponse(child, {
         selectable: true,
@@ -117,16 +113,11 @@ console.log(json.map(child =>
       const response = await fetch(childrenUrl);
       const json: CategoryResponse[] = await response.json();
 
-      const categoryTree = {
+      return {
         id: category.id,
         code: category.code,
         label: getLabel(category.labels, catalogLocale, category.code),
         selectable: true,
-        parent: null,
-      };
-
-      return {
-        ...categoryTree,
         children: json.map(child =>
           parseResponse(child, {
             selectable: true,
@@ -140,10 +131,10 @@ console.log(json.map(child =>
   return (
     <CategoryTreeContainer>
       <CategoryTree
-        categoryTreeCode={categoryTreeCode}
-        init={init}
         onChange={handleChange}
         childrenCallback={childrenCallback}
+        categoryTreeCode={categoryTreeCode}
+        init={init}
         isCategorySelected={isCategorySelected}
         isCategoryReadOnly={isCategoryReadOnly}
       />

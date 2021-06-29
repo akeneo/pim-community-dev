@@ -37,32 +37,26 @@ const parseResponse = (
     if (json.state.includes('closed')) {
       return undefined;
     }
-
     if (json.state.includes('leaf')) {
       return [];
     }
-
     if (json.children) {
-      return json.children.map(child => parseResponse(child, {
-        readOnly,
-        lockedCategoryIds,
-        isRoot: false,
-        selectable,
-      }));
+      return json.children.map(child => parseResponse(child, {readOnly, lockedCategoryIds, isRoot: false, selectable}));
     }
 
     return undefined;
   };
 
   const categoryId = Number(json.attr.id.replace(/^node_(\d+)$/, '$1'));
+
   return {
     id: categoryId,
     code: json.attr['data-code'],
     label: json.data,
+    children: getChildren(),
     selected: json.state.includes('jstree-checked'),
     readOnly: readOnly || lockedCategoryIds.indexOf(categoryId) >= 0,
     selectable: !isRoot && selectable,
-    children: getChildren(),
   };
 };
 
