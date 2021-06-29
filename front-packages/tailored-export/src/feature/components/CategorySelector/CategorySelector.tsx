@@ -31,7 +31,6 @@ const CategorySelector = ({
   shouldIncludeSubCategories,
 }: CategorySelectorProps) => {
   const [selectedCategoryCodes, setSelectedCategoryCodes] = useState<string[]>(initialCategoryCodes);
-  const [shouldUpdateChildren, forceUpdateChildren] = useState<boolean>(false);
   const catalogLocale = useUserContext().get('catalogLocale');
   const router = useRouter();
 
@@ -90,9 +89,6 @@ const CategorySelector = ({
     } else {
       handleUncheckCategory(value);
     }
-    if (shouldIncludeSubCategories) {
-      forceUpdateChildren(!shouldUpdateChildren);
-    }
   };
 
   const childrenCallback = async (id: number): Promise<CategoryTreeModel[]> => {
@@ -150,7 +146,6 @@ console.log(json.map(child =>
         childrenCallback={childrenCallback}
         isCategorySelected={isCategorySelected}
         isCategoryReadOnly={isCategoryReadOnly}
-        shouldRerender={shouldUpdateChildren}
       />
     </CategoryTreeContainer>
   );
