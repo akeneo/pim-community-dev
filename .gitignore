@@ -37,4 +37,5 @@ deployments/terraform/pim/charts/*
 deployments/instances
 deployments/logs
 deployments/terraform/pim/Chart.yaml
+deployments/terraform/pim/Chart.lock
 /pim-enterprise-cloud
