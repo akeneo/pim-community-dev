@@ -95,20 +95,18 @@ const CategorySelector = ({
     }
   };
 
-  const childrenCallback = async (id: number, parentTree: ParentCategoryTree): Promise<CategoryTreeModel[]> => {
+  const childrenCallback = async (id: number): Promise<CategoryTreeModel[]> => {
     const childrenUrl = router.generate('pim_enrich_categorytree_children', {_format: 'json', id});
     const response = await fetch(childrenUrl);
     const json: CategoryResponse[] = await response.json();
 console.log(json.map(child =>
   parseResponse(child, {
     selectable: true,
-    parent: parentTree
   })
 ));
     return json.map(child =>
       parseResponse(child, {
         selectable: true,
-        parent: parentTree
       })
     );
   };
@@ -136,10 +134,6 @@ console.log(json.map(child =>
         children: json.map(child =>
           parseResponse(child, {
             selectable: true,
-            parent: {
-              code: category.code,
-              parent: null
-            },
           })
         ),
       }

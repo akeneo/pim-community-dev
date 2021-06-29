@@ -1,4 +1,4 @@
-import {CategoryTreeModel, ParentCategoryTree} from '@akeneo-pim-community/shared';
+import {CategoryTreeModel} from '@akeneo-pim-community/shared';
 
 type CategoryResponse = {
   attr: {
@@ -23,19 +23,16 @@ const parseResponse = (
     lockedCategoryIds?: number[];
     isRoot?: boolean;
     selectable?: boolean;
-    parent?: ParentCategoryTree;
   }
 ): CategoryTreeModel => {
-  const {readOnly, lockedCategoryIds, isRoot, parent, selectable} = {
+  const {readOnly, lockedCategoryIds, isRoot, selectable} = {
     readOnly: false,
     lockedCategoryIds: [] as number[],
     isRoot: false,
     selectable: false,
-    parent: null,
     ...options,
   };
 
-  const categoryCode = json.attr['data-code'];
   const getChildren = (): CategoryTreeModel[] | undefined => {
     if (json.state.includes('closed')) {
       return undefined;
@@ -51,10 +48,6 @@ const parseResponse = (
         lockedCategoryIds,
         isRoot: false,
         selectable,
-        parent: {
-          code: categoryCode,
-          parent
-        }
       }));
     }
 
@@ -70,7 +63,6 @@ const parseResponse = (
     readOnly: readOnly || lockedCategoryIds.indexOf(categoryId) >= 0,
     selectable: !isRoot && selectable,
     children: getChildren(),
-    parent
   };
 };
 
