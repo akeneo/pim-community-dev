@@ -2,6 +2,11 @@ import React from 'react';
 import {CategoryValue, RecursiveCategoryTree} from './RecursiveCategoryTree';
 import {Tree} from 'akeneo-design-system/lib/components/Tree/Tree';
 
+type ParentCategoryTree = {
+  code: string;
+  parent: ParentCategoryTree;
+} | null;
+
 type CategoryTreeModel = {
   id: number;
   code: string;
@@ -11,17 +16,17 @@ type CategoryTreeModel = {
   selected?: boolean;
   readOnly?: boolean;
   children?: CategoryTreeModel[];
-  parent?: CategoryTreeModel | null;
+  parent?: ParentCategoryTree;
 };
 
 type CategoryTreeProps = {
   categoryTreeCode?: string;
   init: (categoryTreeCode?: string) => Promise<CategoryTreeModel>;
-  childrenCallback: (value: any, parentCategory?: CategoryTreeModel) => Promise<CategoryTreeModel[]>;
+  childrenCallback: (value: any, parentCategory: ParentCategoryTree) => Promise<CategoryTreeModel[]>;
   onChange?: (value: string, checked: boolean) => void;
   onClick?: any;
   initCallback?: (treeLabel: string, categoryLabel?: string) => void;
-  isCategorySelected?: (category: CategoryValue, parentCategory?: CategoryTreeModel) => boolean;
+  isCategorySelected?: (category: CategoryValue, parentCategory: ParentCategoryTree) => boolean;
   shouldRerender?: boolean;
 };
 
@@ -45,7 +50,7 @@ const CategoryTree: React.FC<CategoryTreeProps> = ({
         id: category.id,
         code: category.code,
         label: category.label,
-      })
+      }, null)
     ) {
       return category.label;
     }
@@ -73,7 +78,6 @@ const CategoryTree: React.FC<CategoryTreeProps> = ({
   return (
     <RecursiveCategoryTree
       tree={tree}
-      parentTree={tree}
       childrenCallback={childrenCallback}
       onChange={onChange}
       onClick={onClick}
@@ -84,5 +88,5 @@ const CategoryTree: React.FC<CategoryTreeProps> = ({
   );
 };
 
-export type {CategoryTreeModel};
+export type {CategoryTreeModel, ParentCategoryTree};
 export {CategoryTree};
