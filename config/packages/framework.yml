@@ -27,11 +27,3 @@ framework:
         pools:
             name:
                 adapter: cache.adapter.apcu
-    messenger:
-        default_bus:  messenger.bus.default
-        buses:
-            messenger.bus.default:
-                default_middleware: true
-                middleware: ~
-            query.bus:
-                middleware: ~

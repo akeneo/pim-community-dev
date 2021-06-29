@@ -7,13 +7,13 @@ namespace Akeneo\Connectivity\Connection\Application\Webhook;
 use Akeneo\Connectivity\Connection\Application\Webhook\Service\ApiEventBuildErrorLogger;
 use Akeneo\Connectivity\Connection\Domain\Webhook\Exception\WebhookEventDataBuilderNotFoundException;
 use Akeneo\Connectivity\Connection\Domain\Webhook\Model\WebhookEvent;
-use Akeneo\Platform\Component\Webhook\Context;
 use Akeneo\Platform\Component\EventQueue\BulkEventInterface;
 use Akeneo\Platform\Component\EventQueue\EventInterface;
+use Akeneo\Platform\Component\Webhook\Context;
 use Akeneo\Platform\Component\Webhook\EventDataBuilderInterface;
 use Akeneo\Platform\Component\Webhook\EventDataCollection;
+use Akeneo\UserManagement\Component\Model\UserInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
-use Akeneo\UserManagement\Bundle\PublicApi\Query\GetUserById\User;
 
 /**
  * @author    Willy Mesnage <willy.mesnage@akeneo.com>
@@ -47,12 +47,12 @@ class WebhookEventBuilder
         $context = $this->resolveOptions($context);
         $eventDataBuilder = $this->getEventDataBuilder($pimEventBulk);
 
-        /** @var User $user */
+        /** @var UserInterface $user */
         $user = $context['user'];
 
         $eventDataCollection = $eventDataBuilder->build(
             $pimEventBulk,
-           new Context($user->getUsername(), $user->getId())
+            new Context($user->getUsername(), $user->getId())
         );
 
         return $this->buildWebhookEvents(
@@ -71,7 +71,7 @@ class WebhookEventBuilder
     {
         $resolver = new OptionsResolver();
         $resolver->setRequired(['user', 'pim_source', 'connection_code']);
-        $resolver->setAllowedTypes('user', User::class);
+        $resolver->setAllowedTypes('user', UserInterface::class);
         $resolver->setAllowedTypes('pim_source', 'string');
         $resolver->setAllowedTypes('connection_code', 'string');
 

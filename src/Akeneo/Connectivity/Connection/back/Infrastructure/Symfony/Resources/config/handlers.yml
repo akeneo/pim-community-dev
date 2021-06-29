@@ -103,8 +103,6 @@ services:
             - '@monolog.logger.event_api'
             - '@akeneo_connectivity.connection.webhook.events_api_debug_logger'
             - '%env(AKENEO_PIM_URL)%'
-        tags:
-            - 'akeneo_messenger.query_bus'
 
     akeneo_connectivity.connection.application.webhook.handler.update_connection_webhook:
         class: Akeneo\Connectivity\Connection\Application\Webhook\Command\UpdateWebhookHandler
