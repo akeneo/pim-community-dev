@@ -27,6 +27,9 @@ pim_import_export:
       error: <strong>%label%</strong> 내보내기 실패
       warning: <strong>%label%</strong> 내보내기 완료 및 경고 발생
       success: <strong>%label%</strong> 내보내기 완료
+      warnings:
+        xlsx_cell_conversion_error: '''{0}'' 열을 대상 PIM 제품 특성 유형으로 변환하는 동안 예외가 발생했습니다(Excel 셀 형식을 확인하십시오)'
+        xlsx_cell_date_to_text_conversion_error: 날짜 형식의 셀 {0}을(를) 유형 텍스트의 특성으로 변환할 수 없습니다
     import:
       error: <strong>%label%</strong> 가져오기 실패
       warning: <strong>%label%</strong> 가져오기 완료 및 경고 발생

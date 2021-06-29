@@ -1,0 +1,4 @@
+pim_structure:
+  validation:
+    association_type:
+      cannot_be_quantified_and_two_way: 연결 유형은 수량 또는 양방향일 수 있습니다

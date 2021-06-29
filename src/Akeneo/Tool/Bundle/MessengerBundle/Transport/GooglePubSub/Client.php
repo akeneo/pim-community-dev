@@ -86,7 +86,6 @@ class Client
         }
 
         if (null === $this->subscription) {
-            $this->subscription->create($this->subscriptionOptions);
             return;
         }
 

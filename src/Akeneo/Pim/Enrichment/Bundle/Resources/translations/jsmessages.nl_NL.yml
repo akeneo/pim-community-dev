@@ -209,6 +209,45 @@ pim_enrich.entity.category:
   label: categorie
   uppercase_label: Categorie
   plural_label: Categorieën
+  page_title:
+    index: "]-Inf, 1]{{ count }} boom|]1, Inf[{{ count }} bomen"
+  content:
+    empty_tree_list:
+      title: U hebt nog geen boom.
+      hint: Maak uw eerste boom aan.
+    tree_list:
+      columns:
+        label: Boomlabel
+        number_of_categories: Aantal categorieën
+        count_categories: ']-Inf, 1]{{ count }} categorie|]1, Inf[{{ count }} categorieën'
+    tree:
+      not_found: Categorieboom niet gevonden
+    edit:
+      not_found: Categorie niet gevonden
+      default_tree_label: Boom
+      success: De categorie is bijgewerkt
+      fail: De categorie kon niet worden bijgewerkt
+  new_category: Nieuwe categorie
+  new_category_tree: Nieuwe categorieboom
+  category_created: De categorie "{{ code }}" is aangemaakt
+  category_creation_error: De categorie "{{ code }}" kon niet worden aangemaakt
+  category_tree_creation:
+    success: De boom "{{ code }}" is aangemaakt
+    error: De boom "{{ code }}" kon niet worden aangemaakt
+  category_tree_deletion:
+    success: De boom "{{ tree }}" is verwijderd
+    error: De boom "{{ tree }}" kon niet worden verwijderd
+    confirmation: Weet u zeker dat u de boom {{ name }} wilt verwijderen? Alle categorieën in die boom worden verwijderd en de producten worden uit alle categorieën verwijderd.
+    products_limit_exceeded:
+      title: Deze boom kan niet worden verwijderd.
+      message: De boom "{{ tree }}" bevat meer dan {{ limit }} producten en kan daarom niet verwijderd worden.
+  category_deletion:
+    success: De categorie "{{ name }}" is verwijderd
+    error: De categorie "{{ name }}" kon niet worden verwijderd
+    confirmation: Weet u zeker dat u de categorie {{ name }} wilt verwijderen? De producten in deze categorie worden niet verwijderd.
+    products_limit_exceeded:
+      title: Deze categorie kan niet worden verwijderd
+      message: De categorie "{{ name }}" bevat meer dan {{ limit }} producten en kan daarom niet worden verwijderd.
 pim_enrich.export.product:
   data:
     title: Filter de producten
@@ -343,6 +382,7 @@ pim_enrich.mass_edit.product:
       label: Verplaats tussen categorieën
       label_count: "{0}Verplaats sommige <span class=\"AknFullPage-title--highlight\">producten</span> tussen categorieën|{1}Verplaats <span class=\"AknFullPage-title--highlight\">1 product</span> tussen categorieën|]1, Inf[Verplaats <span class=\"AknFullPage-title--highlight\">{{ itemsCount }} producten</span> tussen categorieën"
       description: De producten zullen worden geclassificeerd in de volgende categorieën. De bestaande classificatie gaat verloren.
+      no_update: Selecteer een categorie.
     remove_from_category:
       label: Verwijder uit categorieën
       label_count: "{0}Verwijder sommige <span class=\"AknFullPage-title--highlight\">producten</span> van categorieën|{1}Verwijder <span class=\"AknFullPage-title--highlight\">1 product</span> van categorieën|]1, Inf[Verwijder <span class=\"AknFullPage-title--highlight\">{{ itemsCount }} producten</span> van categorieën"
@@ -368,6 +408,9 @@ pim_enrich.mass_edit.product:
       description: In het overzicht zal het overkoepelende productmodel van het variantproduct of sub-productmodel worden aangepast naar het gekozen productmodel.
 pim_datagrid:
   no_entities: "Geen {{ entityHint }} gevonden"
+  no_entities.product: "Geen product gevonden" #Custom translation for product grid
+  no_results: "Er is geen {{ entityHint }} voor uw zoekopdracht."
+  no_results.product: "Er is geen product voor uw zoekopdracht." #Custom translation for product grid
   mass_action_group:
     bulk_actions:
       label: Bulkacties
@@ -404,6 +447,7 @@ pim_datagrid:
       product: "]-Inf, 1]{{ count }} resultaat geselecteerd|]1, Inf[{{ count }} resultaten geselecteerd"
   view_selector:
     view: Weergaves
+    choose_type: Ik wil een privéweergave aanmaken
   actions:
     edit_product_attributes: Bewerk attributen van het product
     classify_product: Classificeer het product

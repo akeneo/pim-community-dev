@@ -38,16 +38,17 @@ product_model.family_variant.not_blank.message: La variante de famille du modèl
 "The {{ attribute_code }} attribute requires a date that should be {{ limit }} or before.": L'attribut {{ attribute_code }} requiert une date antérieure ou égale à {{ limit }}.
 "The {{ attribute }} attribute requires a number, and the submitted {{ value }} value is not.": L'attribut {{ attribute }} requiert une valeur numérique et la valeur {{ value }} soumise ne l'est pas.
 "The %attribute% attribute must not contain more than %limit% characters. The submitted value is too long.": L’attribut %attribute% ne peut excéder %limit% caractères. La valeur soumise est trop longue.
+"The %attribute% attribute requires a valid date. Please use the following format %date_format% for dates.": 'L''attribut %attribute% requiert une date valide. Merci d''utiliser le format suivant pour les dates : %date_format%.'
 "The %locale% locale is not available on the %attribute% attribute.": La langue %locale% n'est pas autorisée pour l'attribut %attribute%.
 'The {{ attribute_code }} attribute must match the following regular expression: {{ pattern }}.': 'L''attribut {{ attribute_code }} doit respecter le modèle donné dans l''expression régulière (ou regex) suivante : {{ pattern }}.'
 'The {{ attribute_code }} attribute cannot be empty.': 'L''attribut {{ attribute_code }} ne peut pas être vide.'
 'The file %file_name% is too large (%file_size% %suffix%). The %attribute% attribute can not exceed %max_file_size% %suffix%.': Le fichier %file_name% est trop lourd (%file_size% %suffix%). L'attribute %attribute% ne peut contenir un fichier excédent %max_file_size% %suffix%.
-'The %attribute_code% attribute requires a valid locale. The %invalid_locale% locale does not exist.': 'L''attribut %attribute_code% requiert une langue valide. La langue %invalid_locale% n''existe pas.'
-'The %attribute_code% attribute requires a valid locale. The %invalid_locale% locale is not bound to the %channel_code% channel.': 'L''attribut %attribute_code% requiert une langue valide. La langue %invalid_locale% n''est pas liée au canal %channel_code%.'
+'The %attribute_code% attribute requires a valid locale. The %invalid_locale% locale does not exist.': 'L''attribut %attribute_code% requiert une langue valide. La langue %invalid_locale% n''existe pas dans votre PIM.'
+'The %attribute_code% attribute requires a valid locale. The %invalid_locale% locale is not bound to the %channel_code% channel.': 'L''attribut %attribute_code% requiert une langue valide. La langue %invalid_locale% n''est pas activée sur le canal %channel_code%.'
 "The %attribute% attribute requires an e-mail address.": 'L''attribut %attribute% requiert une adresse e-mail.'
-'The %attribute% attribute requires an equal or greater than %min_value% value.': 'L''attribut %attribute% requiert une valeur supérieure ou égale à %min_value%. '
-'The %attribute% attribute requires an equal or lesser than %max_value% value.': 'L''attribut %attribute% requiert une valeur inférieure ou égale à %min_value%.'
-"The %attribute_code% attribute requires a value per channel. The %channel% channel (scope) must exist in your PIM": 'L''attribut %attribute_code% requiert une valeur par canal. Le canal %channel% (scope) doit exister dans votre PIM.'
+'The %attribute% attribute requires an equal or greater than %min_value% value.': 'L''attribut %attribute% requiert une valeur égale ou supérieure à %min_value%. '
+'The %attribute% attribute requires an equal or lesser than %max_value% value.': 'L''attribut %attribute% requiert une valeur inférieure ou égale à %max_value%.'
+"The %attribute_code% attribute requires a value per channel. The %channel% channel (scope) must exist in your PIM": 'L''attribut %attribute_code% requiert une valeur par canal. Le canal %channel% doit exister dans votre PIM.'
 pim_catalog:
   constraint:
     can_have_family_variant_empty_axis_value: 'L''attribut "%attribute%" ne peut pas être vide, car il a été défini comme axe pour cette entité'

@@ -27,6 +27,9 @@ pim_import_export:
       error: 导出 <strong>%label%</strong> 失败
       warning: 导出 <strong>%label%</strong> 完成，但有一些警告
       success: 导出 <strong>%label%</strong> 完成
+      warnings:
+        xlsx_cell_conversion_error: 将"{0}"列转换为目标 PIM 产品属性类型时出现异常（请检查 Excel 单元格格式）
+        xlsx_cell_date_to_text_conversion_error: 无法将具有日期格式的单元格 {0} 转换为文本类型的属性
     import:
       error: 导入 <strong>%label%</strong> 失败
       warning: 导入 <strong>%label%</strong> 完成，但有一些警告

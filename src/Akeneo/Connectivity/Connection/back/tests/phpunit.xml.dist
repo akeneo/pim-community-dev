@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<phpunit xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:noNamespaceSchemaLocation="https://schema.phpunit.de/9.5/phpunit.xsd"
+         bootstrap="../../../../../../config/bootstrap.php"
+         executionOrder="depends,defects"
+         forceCoversAnnotation="false"
+         beStrictAboutCoversAnnotation="true"
+         beStrictAboutOutputDuringTests="true"
+         beStrictAboutTodoAnnotatedTests="true"
+         failOnRisky="true"
+         failOnWarning="true"
+         verbose="true">
+    <php>
+        <ini name="date.timezone" value="Europe/Paris"/>
+        <ini name="intl.default_locale" value="en"/>
+        <ini name="intl.error_level" value="0"/>
+        <ini name="memory_limit" value="-1"/>
+        <ini name="zend.enable_gc" value="1"/>
+        <server name="KERNEL_CLASS" value="Kernel" force="true" />
+    </php>
+    <testsuites>
+        <testsuite name="Integration">
+            <directory suffix="Integration.php">.</directory>
+        </testsuite>
+        <testsuite name="EndToEnd">
+            <directory suffix="EndToEnd.php">.</directory>
+        </testsuite>
+    </testsuites>
+    <coverage processUncoveredFiles="true">
+        <include>
+            <directory suffix=".php">..</directory>
+        </include>
+        <exclude>
+            <directory>.</directory>
+        </exclude>
+    </coverage>
+</phpunit>

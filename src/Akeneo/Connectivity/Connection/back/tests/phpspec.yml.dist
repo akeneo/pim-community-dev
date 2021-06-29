@@ -1,0 +1,22 @@
+## Rename this file in phpspec.yml to customize the phpspec configuration
+extensions:
+  FriendsOfPhpSpec\PhpSpec\CodeCoverage\CodeCoverageExtension:
+    format:
+      - html
+      - clover
+      - php
+    output:
+      html: coverage/Connectivity/Back/Unit
+      clover: coverage/Connectivity/Back/Unit/coverage.cov
+      php: coverage/Connectivity/Back/Unit/coverage.php
+    whitelist:
+      - src/Akeneo/Connectivity/Connection/back
+    blacklist:
+      - src/Akeneo/Connectivity/Connection/back/tests
+suites:
+    ## Apps context
+    Apps:
+        namespace: Akeneo\Connectivity\Connection
+        psr4_prefix: Akeneo\Connectivity\Connection
+        spec_path: src/Akeneo/Connectivity/Connection/back/tests/Unit
+        src_path: src/Akeneo/Connectivity/Connection/back

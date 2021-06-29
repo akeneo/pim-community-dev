@@ -70,6 +70,9 @@ pim_enrich:
       description: 下列属性要求将应用于所选的品类中
       success_flash: 属性要求被应用于所选的品类中
       launched_flash: 批量操作"设置属性要求"已经启动。完成后会通知您。
+    convert_to_simple_products:
+      warning:
+        non_variant_product: 产品“{{ identifier }}”已经是一个简单的产品，无需转换。
     mass_action:
       quick_export:
         launched_flash: 导出产品的作业正在运行
