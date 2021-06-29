@@ -19,6 +19,14 @@ Table input allows the user to input content in a table.
 <Canvas>
   <Story name="Standard">
     {args => {
+      const fetchNextPage = async () => {
+        return Promise.resolve([
+          {id: '1', text: 'A'},
+          {id: '2', text: 'B'},
+          {id: '3', text: 'C'},
+        ]);
+      };
+      const [nutritionScore, setNutritionScore] = React.useState('B');
       const [sugarPart, setSugarPart] = React.useState('10g');
       const [sugarQuantity, setSugarQuantity] = React.useState(13);
       const [sugarIsAllergenic, setSugarIsAllergenic] = React.useState(false);
@@ -31,6 +39,7 @@ Table input allows the user to input content in a table.
       return <TableInput {...args}>
         <TableInput.Header>
           <TableInput.HeaderCell rowTitle={true}>Ingredient</TableInput.HeaderCell>
+          <TableInput.HeaderCell>Nutrition Score</TableInput.HeaderCell>
           <TableInput.HeaderCell>For 1 part</TableInput.HeaderCell>
           <TableInput.HeaderCell>Quantity</TableInput.HeaderCell>
           <TableInput.HeaderCell>Is allergenic</TableInput.HeaderCell>
@@ -38,6 +47,7 @@ Table input allows the user to input content in a table.
         <TableInput.Body>
           <TableInput.Row>
             <TableInput.Cell rowTitle={true}>Sugar</TableInput.Cell>
+            <TableInput.Cell><TableInput.Select removeValueLabel="remove" openDropdownLabel="open" value={nutritionScore} onChange={setNutritionScore} highlighted={true} fetchNextPage={fetchNextPage} searchLabel={'Search'}/></TableInput.Cell>
             <TableInput.Cell><TableInput.Text value={sugarPart} onChange={setSugarPart} highlighted={true}/></TableInput.Cell>
             <TableInput.Cell><TableInput.Number value={sugarQuantity} onChange={setSugarQuantity}/></TableInput.Cell>
             <TableInput.Cell><TableInput.Boolean yesLabel="Yes" noLabel="No" value={sugarIsAllergenic} onChange={setSugarIsAllergenic}/></TableInput.Cell>
