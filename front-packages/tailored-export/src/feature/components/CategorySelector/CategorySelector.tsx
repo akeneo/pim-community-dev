@@ -5,6 +5,7 @@ import {
   CategoryTree,
   CategoryTreeModel,
   CategoryValue,
+  ParentCategoryTree,
   getLabel,
   useRouter,
   useUserContext,
@@ -34,17 +35,28 @@ const CategorySelector = ({
   const catalogLocale = useUserContext().get('catalogLocale');
   const router = useRouter();
 
-  const isCategorySelected: (category: CategoryValue, parentCategory?: CategoryTreeModel | null) => boolean = (
-    category,
-    parentCategory
-  ) => {
+  const isParentCategoryIsSelected = (parentCategory: ParentCategoryTree): boolean => {
+    if (parentCategory === null) {
+      return false;
+    }
+
+    if (selectedCategoryCodes.includes(parentCategory.code)) {
+      return true;
+    }
+
+    return isParentCategoryIsSelected(parentCategory.parent);
+  };
+
+  const isCategorySelected = (category: CategoryValue, parentCategory: ParentCategoryTree): boolean => {
     if (selectedCategoryCodes.includes(category.code)) {
       return true;
     }
 
-    return shouldIncludeSubCategories
-      ? parentCategory !== undefined && parentCategory !== null && isCategorySelected(parentCategory, parentCategory.parent)
-      : false;
+    if (!shouldIncludeSubCategories) {
+      return false;
+    }
+
+    return isParentCategoryIsSelected(parentCategory);
   };
 
   const handleCheckCategory = (value: string) => {
@@ -76,11 +88,16 @@ const CategorySelector = ({
     }
   };
 
-  const childrenCallback = async (id: number, parentTree?: CategoryTreeModel): Promise<CategoryTreeModel[]> => {
+  const childrenCallback = async (id: number, parentTree: ParentCategoryTree): Promise<CategoryTreeModel[]> => {
     const childrenUrl = router.generate('pim_enrich_categorytree_children', {_format: 'json', id});
     const response = await fetch(childrenUrl);
     const json: CategoryResponse[] = await response.json();
-
+console.log(json.map(child =>
+  parseResponse(child, {
+    selectable: true,
+    parent: parentTree
+  })
+));
     return json.map(child =>
       parseResponse(child, {
         selectable: true,
@@ -104,6 +121,7 @@ const CategorySelector = ({
         code: category.code,
         label: getLabel(category.labels, catalogLocale, category.code),
         selectable: true,
+        parent: null,
       };
 
       return {
@@ -111,7 +129,10 @@ const CategorySelector = ({
         children: json.map(child =>
           parseResponse(child, {
             selectable: true,
-            parent: categoryTree,
+            parent: {
+              code: category.code,
+              parent: null
+            },
           })
         ),
       }

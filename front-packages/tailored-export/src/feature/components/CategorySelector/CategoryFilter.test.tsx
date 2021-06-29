@@ -7,7 +7,7 @@ import {CategoryFilter} from './CategoryFilter';
 test('it opens a modal when clicking on the Category Filter button and closes it when cancelling', () => {
   const onCategorySelection = jest.fn();
 
-  renderWithProviders(<CategoryFilter initialCategorySelection={[]} onChange={onCategorySelection} />);
+  renderWithProviders(<CategoryFilter filter={{field: 'categories', value: [], operator: 'IN'}} onChange={onCategorySelection} />);
 
   expect(screen.queryByText('pim_connector.export.categories.selector.modal.title')).not.toBeInTheDocument();
 
@@ -24,7 +24,7 @@ test('it opens a modal when clicking on the Category Filter button and closes it
 test('it calls the onCategorySelection callback and closes the modal when confirming', () => {
   const onCategorySelection = jest.fn();
 
-  renderWithProviders(<CategoryFilter initialCategorySelection={[]} onChange={onCategorySelection} />);
+  renderWithProviders(<CategoryFilter filter={{field: 'categories', value: [], operator: 'IN'}} onChange={onCategorySelection} />);
 
   expect(screen.queryByText('pim_connector.export.categories.selector.modal.title')).not.toBeInTheDocument();
 

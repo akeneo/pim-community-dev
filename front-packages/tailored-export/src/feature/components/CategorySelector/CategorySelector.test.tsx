@@ -42,7 +42,12 @@ test('it displays a Category tree with its children categories', async () => {
 
   await act(async () => {
     renderWithProviders(
-      <CategorySelector categoryTreeCode="root" initialCategoryCodes={initialCategoryCodes} onChange={onChange} />
+      <CategorySelector
+        categoryTreeCode="root"
+        shouldIncludeSubCategories={false}
+        initialCategoryCodes={initialCategoryCodes}
+        onChange={onChange}
+      />
     );
   });
 
@@ -69,7 +74,12 @@ test('it can select then unselect a Category tree', async () => {
 
   await act(async () => {
     renderWithProviders(
-      <CategorySelector categoryTreeCode="root" initialCategoryCodes={initialCategoryCodes} onChange={onChange} />
+      <CategorySelector
+        categoryTreeCode="root"
+        shouldIncludeSubCategories={false}
+        initialCategoryCodes={initialCategoryCodes}
+        onChange={onChange}
+      />
     );
   });
 

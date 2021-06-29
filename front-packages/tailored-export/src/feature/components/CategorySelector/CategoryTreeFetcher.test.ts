@@ -15,6 +15,7 @@ test('it parses a Category response', async () => {
     readOnly: false,
     selectable: false,
     selected: false,
+    parent: null
   });
 
   const responseWithChildren = {
@@ -32,6 +33,10 @@ test('it parses a Category response', async () => {
         readOnly: false,
         selectable: false,
         selected: false,
+        parent: {
+          code: 'child-1',
+          parent: null,
+        },
       },
       {
         children: undefined,
@@ -41,6 +46,10 @@ test('it parses a Category response', async () => {
         readOnly: false,
         selectable: false,
         selected: false,
+        parent: {
+          code: 'child-1',
+          parent: null,
+        },
       },
     ],
     code: 'child-1',
@@ -49,5 +58,6 @@ test('it parses a Category response', async () => {
     readOnly: false,
     selectable: false,
     selected: false,
+    parent: null,
   });
 });

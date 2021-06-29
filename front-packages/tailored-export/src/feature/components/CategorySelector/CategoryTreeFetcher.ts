@@ -1,4 +1,4 @@
-import {CategoryTreeModel} from '@akeneo-pim-community/shared';
+import {CategoryTreeModel, ParentCategoryTree} from '@akeneo-pim-community/shared';
 
 type CategoryResponse = {
   attr: {
@@ -23,7 +23,7 @@ const parseResponse = (
     lockedCategoryIds?: number[];
     isRoot?: boolean;
     selectable?: boolean;
-    parent?: CategoryTreeModel | null;
+    parent?: ParentCategoryTree;
   }
 ): CategoryTreeModel => {
   const {readOnly, lockedCategoryIds, isRoot, parent, selectable} = {
@@ -35,17 +35,7 @@ const parseResponse = (
     ...options,
   };
 
-  const categoryId = Number(json.attr.id.replace(/^node_(\d+)$/, '$1'));
-  const categoryTree = {
-    id: categoryId,
-    code: json.attr['data-code'],
-    label: json.data,
-    selected: json.state.includes('jstree-checked'),
-    readOnly: readOnly || lockedCategoryIds.indexOf(categoryId) >= 0,
-    selectable: !isRoot && selectable,
-    parent
-  };
-
+  const categoryCode = json.attr['data-code'];
   const getChildren = (): CategoryTreeModel[] | undefined => {
     if (json.state.includes('closed')) {
       return undefined;
@@ -61,15 +51,26 @@ const parseResponse = (
         lockedCategoryIds,
         isRoot: false,
         selectable,
-        parent: categoryTree
+        parent: {
+          code: categoryCode,
+          parent
+        }
       }));
     }
+
     return undefined;
   };
 
+  const categoryId = Number(json.attr.id.replace(/^node_(\d+)$/, '$1'));
   return {
-    ...categoryTree,
+    id: categoryId,
+    code: json.attr['data-code'],
+    label: json.data,
+    selected: json.state.includes('jstree-checked'),
+    readOnly: readOnly || lockedCategoryIds.indexOf(categoryId) >= 0,
+    selectable: !isRoot && selectable,
     children: getChildren(),
+    parent
   };
 };
 
