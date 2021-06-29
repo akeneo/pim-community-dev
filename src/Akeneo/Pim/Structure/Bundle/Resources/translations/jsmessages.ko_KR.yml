@@ -78,11 +78,20 @@ pim_enrich.entity.attribute_option:
     edit:
       cancel_title: 수정 취소
       cancel_description: '경고: 저장되지 않은 데이터는 손실됩니다. 이 새로운 옵션에 대한 수정을 취소하시겠습니까?'
+      options_labels: 옵션 레이블
+      options_settings: 옵션 설정
+      options_codes: 옵션 코드
+      option_code: 옵션 코드
+      new_option_code: new_option
+      no_options_msg: 죄송합니다. 옵션이 없습니다.
       add_option: 여기를 클릭하여 추가하십시오
+      delete_confirmation_title_msg: 옵션에서 '{{ optionCode }}'을(를) 삭제하시겠습니까?
+      delete_confirmation_subtitle_msg: 이 옵션을 삭제하시겠습니까? 이 작업은 실행 취소할 수 없습니다.
 pim_enrich.entity.association_type:
   label: 연결 유형
   property:
     is_two_way: 양방향 연결
+    is_quantified: 수량 연결
   flash:
     update:
       success: 연결 유형이 업데이트되었습니다.
@@ -99,6 +108,10 @@ pim_enrich.entity.association_type:
     create:
       title: 새 연결 유형 만들기
       button: 연결 유형 만들기
+      is_two_way:
+        message_on_read_only: 연결 유형은 수량 또는 양방향일 수 있습니다. 이 유형을 선택하려면 다른 유형을 선택 해제하십시오.
+      is_quantified:
+        message_on_read_only: 연결 유형은 수량 또는 양방향일 수 있습니다. 이 유형을 선택하려면 다른 유형을 선택 해제하십시오.
     delete:
       confirm: 이 연결 유형을 삭제하시겠습니까?
   hint: <a href="{{link}}" target="_blank">이 문서에서</a> 고유한 연결 유형을 만드는 데 필요한 모든 내용을 볼 수 있습니다.
@@ -201,6 +214,13 @@ pim_enrich.entity.attribute:
       validation: 유효성 검사 매개변수
     delete:
       confirm: 이 특성을 삭제하시겠습니까?
+      product_count: '{0}0개 제품|{1}1개 제품|]1, Inf[{{ count }}개 제품'
+      product_model_count: '{0}0개 제품 모델|{1}1개 제품 모델|]1, Inf[{{ count }}개 제품 모델'
+      used: 현재 이 특성에 대해 설정된 값이 있습니다. 이 값이 제거됩니다.
+      helper:
+        content: 기존 특성 값에 계속 액세스하면서 특성 유형을 변경하거나 지역화 또는 확장 가능하도록 만들어야 하는 경우
+        link: 여기에서 다양한 단계를 안내받을 수 있습니다.
+      type: '''{{ attributeCode }}''을(를) 입력하십시오'
       confirm_from_family: 패밀리에서 이 특성을 삭제하시겠습니까?
       confirm_from_group: 이 특성 그룹에서 {{ attribute }} 특성을 제거하시겠습니까?
       confirm_from_product: 제품에서 이 특성을 삭제하시겠습니까?
@@ -208,6 +228,7 @@ pim_enrich.entity.attribute_group:
   label: 특성 그룹
   uppercase_label: 특성 그룹
   plural_label: 특성 그룹
+  result_count: '{0}0개 특성 그룹|{1}1개 특성 그룹|]1, Inf[{{ count }}개 특성 그룹'
   show_more_attribute:
     title: 여기는 약간 혼잡합니다. {{ attributeCount }}/{{ totalAttributeCount }}개 특성이 표시됩니다.
     subtitle: 이 그룹의 모든 특성을 알아보려면 아래를 클릭하면 됩니다!
@@ -227,6 +248,10 @@ pim_enrich.entity.attribute_group:
       attributes_groups_selected: '{{ itemsCount }}개 그룹 선택됨'
     delete:
       confirm: 이 특성 그룹을 삭제하시겠습니까?
+  grid:
+    columns:
+      name: 특성 그룹 이름
+    no_search_result: 죄송합니다. 검색 결과가 없습니다.
 pim_enrich.mass_edit.family:
   title: 패밀리 일괄 작업
   confirm: "{1}다음 정보로 1개 패밀리를 업데이트하려고 합니다. 확인해주십시오.|]1, Inf[다음 정보로 {{ itemsCount }}개 패밀리를 업데이트하려고 합니다. 확인해주십시오."

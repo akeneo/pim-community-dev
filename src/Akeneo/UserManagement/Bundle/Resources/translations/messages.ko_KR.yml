@@ -41,10 +41,6 @@ pim_user:
       active: 활성
       inactive: 비활성
     fields_errors:
-      new_password:
-        minimum_length: 암호는 2자 이상이어야 합니다.
-      new_password_repeat:
-        not_match: 암호가 일치하지 않습니다
       current_password:
         wrong: 잘못된 암호
     tabs:
