@@ -33,7 +33,7 @@ authentication:
           label: 로그아웃 URL
         certificate:
           label: 인증서
-          expiration_warning: 이 인증서는 {{date}}에 만료됩니다.
+          expiration_warning: 이 인증서는 {{ date }}에 만료됩니다.
         private_key:
           label: 개인 키
         metadata_url:
@@ -42,3 +42,4 @@ authentication:
         acs_url:
           label: ACS URL
           tooltip_label: URL 복사
+        copy: 복사
