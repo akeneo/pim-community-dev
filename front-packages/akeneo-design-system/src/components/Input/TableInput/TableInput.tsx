@@ -9,6 +9,7 @@ import {TableInputRow} from './TableInputRow/TableInputRow';
 import {TableInputText} from './TableInputText/TableInputText';
 import {TableInputNumber} from './TableInputNumber/TableInputNumber';
 import {TableInputBoolean} from './TableInputBoolean/TableInputBoolean';
+import {TableInputSelect} from './TableInputSelect/TableInputSelect';
 
 const TableInputContainer = styled.div`
   width: 100%;
@@ -65,5 +66,6 @@ TableInput.Cell = TableInputCell;
 TableInput.Text = TableInputText;
 TableInput.Number = TableInputNumber;
 TableInput.Boolean = TableInputBoolean;
+TableInput.Select = TableInputSelect;
 
 export {TableInput};
