@@ -6,11 +6,9 @@ namespace Specification\Akeneo\Pim\Enrichment\AssetManager\Component\Factory\Rea
 use Akeneo\AssetManager\Domain\Model\Asset\AssetCode;
 use Akeneo\Pim\Enrichment\AssetManager\Component\AttributeType\AssetCollectionType;
 use Akeneo\Pim\Enrichment\AssetManager\Component\Value\AssetCollectionValue;
-use Akeneo\Pim\Structure\Component\AttributeTypes;
 use Akeneo\Pim\Structure\Component\Query\PublicApi\AttributeType\Attribute;
 use Akeneo\Tool\Component\StorageUtils\Exception\InvalidPropertyException;
 use Akeneo\Tool\Component\StorageUtils\Exception\InvalidPropertyTypeException;
-use Akeneo\Tool\Component\StorageUtils\Exception\PropertyException;
 use PhpSpec\ObjectBehavior;
 
 class AssetCollectionValueFactorySpec extends ObjectBehavior
@@ -41,6 +39,19 @@ class AssetCollectionValueFactorySpec extends ObjectBehavior
             null,
             ['code1', []]
         ]);
+    }
+
+    function it_throws_an_error_when_the_data_is_an_associative_array()
+    {
+        $this->shouldThrow(InvalidPropertyTypeException::class)->during(
+            'createByCheckingData',
+            [
+                $this->buildAttribute('attribute_code'),
+                null,
+                null,
+                ['media' => 'my_asset_code']
+            ]
+        );
     }
 
     function it_throws_an_error_when_one_of_values_does_not_satisfy_the_code_business_rules()
