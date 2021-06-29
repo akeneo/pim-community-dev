@@ -751,7 +751,7 @@ JSON;
         "errors": [
             {
                 "property": "values",
-                "message": "The file extension is not allowed (allowed extensions: pdf, doc, docx, txt).",
+                "message": "The jpg file extension is not allowed for the a_file attribute. Allowed extensions are pdf, doc, docx, txt.",
                 "attribute": "a_file",
                 "locale": null,
                 "scope": null
