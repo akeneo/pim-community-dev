@@ -37,6 +37,9 @@ akeneo_connectivity_connection_marketplace_rest:
 akeneo_connectivity_connection_connect_marketplace:
   path: '/connect/marketplace'
 
+akeneo_connectivity_connection_connect_marketplace_profile:
+    path: '/connect/marketplace/profile'
+
 ## Error Management
 akeneo_connectivity_connection_error_management_dashboard:
    path: '/connect/data-flows/business-errors'
