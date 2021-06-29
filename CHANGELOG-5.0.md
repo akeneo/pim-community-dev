@@ -1,5 +1,9 @@
 # 5.0.x
 
+## Bug fixes
+
+- PIM-9926: API - Display an error when setting an asset collection value with an invalid data format
+
 # 5.0.36 (2021-06-25)
 
 # 5.0.35 (2021-06-22)
