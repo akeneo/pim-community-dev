@@ -41,6 +41,11 @@ pim_user:
       active: 활성
       inactive: 비활성
     fields_errors:
+      new_password:
+        minimum_length: 비밀번호는 8자 이상이어야 합니다.
+        maximum_length: 비밀번호는 4096자 미만이어야 합니다.
+      new_password_repeat:
+        not_match: 비밀번호가 일치하지 않습니다.
       current_password:
         wrong: 잘못된 암호
     tabs:

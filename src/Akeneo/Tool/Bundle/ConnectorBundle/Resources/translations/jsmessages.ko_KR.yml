@@ -101,6 +101,9 @@ batch_jobs:
   csv_user_import:
     label: CSV로 사용자 가져오기
     import.label: 사용자 가져오기
+  csv_user_role_import:
+    label: CSV로 사용자 역할 가져오기
+    import.label: 사용자 역할 가져오기
   xlsx_category_import:
     label: XLSX로 카테고리 가져오기
     import.label: 카테고리 가져오기
@@ -161,9 +164,27 @@ batch_jobs:
   xlsx_group_type_export:
     label: XLSX로 그룹 유형 내보내기
     export.label: 그룹 유형 내보내기
+  xlsx_user_group_export:
+    label: XLSX로 사용자 그룹 내보내기
+    export.label: 사용자 그룹 내보내기
+  xlsx_user_role_export:
+    label: XLSX로 사용자 역할 내보내기
+    export.label: 사용자 역할 내보내기
+  xlsx_user_export:
+    label: XLSX로 사용자 내보내기
+    export.label: 사용자 내보내기
   xlsx_attribute_group_import:
     label: XLSX로 특성 그룹 가져오기
     import.label: 특성 그룹 가져오기
   xlsx_group_type_import:
     label: XLSX로 그룹 유형 가져오기
     import.label: 그룹 유형 가져오기
+  xlsx_user_group_import:
+    label: XLSX로 사용자 그룹 가져오기
+    import.label: 사용자 그룹 가져오기
+  xlsx_user_import:
+    label: XLSX로 사용자 가져오기
+    import.label: 사용자 가져오기
+  xlsx_user_role_import:
+    label: XLSX로 사용자 역할 가져오기
+    import.label: 사용자 역할 가져오기

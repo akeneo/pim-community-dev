@@ -1,35 +1,35 @@
 An identifier attribute already exists.: 식별자 특성이 이미 존재합니다.
-Attribute code may contain only letters, numbers and underscore: 특성 코드는 문자, 숫자 및 밑줄만 포함할 수 있습니다
+Attribute code may contain only letters, numbers and underscore: 특성 코드는 문자, 숫자 및 밑줄만 포함할 수 있습니다.
 Attribute code may contain only letters (at least one), numbers and underscores: 특성 코드는 문자(하나 이상), 숫자 및 밑줄만 포함할 수 있습니다.
-Attribute code may not contain line-feed characters: 특성 코드에는 줄 바꿈 문자가 포함될 수 없습니다
-Attribute group code may contain only letters, numbers and underscores: 특성 그룹 코드는 문자, 숫자 및 밑줄만 포함할 수 있습니다
-This attribute type can't be used as a grid filter: 이 특성 유형은 그리드 필터로 사용할 수 없습니다
-This code is not available: 이 코드는 사용할 수 없습니다
-This attribute type must be required: 이 특성 유형은 필수입니다
-This attribute type can't be required: 이 특성 유형은 필수가 아닙니다
-This attribute type can't have unique value: 이 특성 유형은 고유한 값을 가질 수 없습니다
-No default value may be specified for this attribute type: 이 특성 유형에 기본값을 지정할 수 없습니다
-This value should be Yes or No: 이 값은 예 또는 아니요여야 합니다
-This value should not be blank: 이 값은 비워둘 수 없습니다
-Option code may contain only letters, numbers and underscores: 옵션 코드는 문자, 숫자 및 밑줄만 포함할 수 있습니다
+Attribute code may not contain line-feed characters: 특성 코드에는 줄 바꿈 문자가 포함될 수 없습니다.
+Attribute group code may contain only letters, numbers and underscores: 특성 그룹 코드는 문자, 숫자 및 밑줄만 포함할 수 있습니다.
+This attribute type can't be used as a grid filter: 이 특성 유형은 그리드 필터로 사용할 수 없습니다.
+This code is not available: 이 코드는 사용할 수 없습니다.
+This attribute type must be required: 이 특성 유형은 필수입니다.
+This attribute type can't be required: 이 특성 유형은 필수가 아닙니다.
+This attribute type can't have unique value: 이 특성 유형은 고유한 값을 가질 수 없습니다.
+No default value may be specified for this attribute type: 이 특성 유형에 기본값을 지정할 수 없습니다.
+This value should be Yes or No: 이 값은 예 또는 아니요여야 합니다.
+This value should not be blank: 이 값은 비워둘 수 없습니다.
+Option code may contain only letters, numbers and underscores: 옵션 코드는 문자, 숫자 및 밑줄만 포함할 수 있습니다.
 Option code may contain only letters (at least one), numbers and underscores: 옵션 코드는 하나 이상의 문자, 숫자 및 밑줄만 포함할 수 있습니다.
 This value should not be a decimal.: 이 값은 소수가 아니어야 합니다.
 "The %attribute% attribute requires a non-decimal value, and %value% is not a valid value.": '%attribute% 특성에는 10진이 아닌 값이 필요하며, %value%은(는) 유효한 값이 아닙니다.'
-'The file extension is not allowed (allowed extensions: %extensions%).': '이 파일 확장명은 허용되지 않습니다(허용되는 확장명: %extensions%).'
+'The file extension is not allowed (allowed extensions: %extensions%).': '이 파일 확장명은 허용되지 않습니다.(허용되는 확장명: %extensions%).'
 "The {{ attribute_code }} attribute can not have the same value more than once. The {{ value }} value is already set on another product.": '{{ attribute_code }} 특성은 같은 값을 두 번 이상 가질 수 없습니다. {{ value }} 값은 이미 다른 제품에 설정되어 있습니다.'
-The same identifier is already set on another product: 동일한 식별자가 이미 다른 제품에 설정되어 있습니다
-regex.comma_or_semicolon_or_surrounding_space.message: 이 필드에는 쉼표 또는 세미콜론이나 선행/후행 공백이 포함되지 않아야 합니다
-file.extensions.message: '이 파일 확장명은 허용되지 않습니다(허용되는 확장명: %extensions%).'
+The same identifier is already set on another product: 동일한 식별자가 이미 다른 제품에 설정되어 있습니다.
+regex.comma_or_semicolon_or_surrounding_space.message: 이 필드에는 쉼표 또는 세미콜론이나 선행/후행 공백이 포함되지 않아야 합니다.
+file.extensions.message: '이 파일 확장명은 허용되지 않습니다.(허용되는 확장명: %extensions%).'
 "This type of value expects the use of {{ decimal_separator }} to separate decimals.": 이 유형의 값은 소수를 구분하기 위해 {{ decimal_separator }}을(를) 사용해야 합니다.
 "This type of value expects the use of dot (.) to separate decimals.": 이 유형의 값은 소수를 구분하기 위해 점(.)을 사용해야 합니다.
 "This type of value expects the use of comma (,) to separate decimals.": 이 유형의 값은 소수를 구분하기 위해 쉼표(,)를 사용해야 합니다.
 "This type of value expects the use of arabic decimal separator (٫) to separate decimals.": 이 유형의 값은 소수를 구분하기 위해 아라비아 소수 구분 기호(٫)를 사용해야 합니다.
 "This type of value expects the use of the format {{ date_format }} for dates.": 이 유형의 값에는 날짜의 형식 {{date_format}}을(를) 사용해야 합니다.
-"The category \"%category%\" has to be a root category.": '"%category%" 카테고리는 루트 카테고리여야 합니다.'
-"The attribute \"%attributeCode%\" does not exist.": '"%attributeCode%" 특성이 존재하지 않습니다.'
-"The attribute \"%attributeCode%\" is not a metric attribute.": '"%attributeCode%" 특성이 측정 특성이 아닙니다.'
-"The unit \"%unitCode%\" does not exist or does not belong to the default metric family of the given attribute \"%attributeCode%\".": '"%unitCode%" 단위가 존재하지 않거나 지정된 특성 "%attributeCode%"의 기본 측정 패밀리에 속하지 않습니다.'
-"The currency \"%currency%\" has to be activated.": '"%currency%" 통화를 활성화해야 합니다.'
+"The category \"%category%\" has to be a root category.": '''%category%'' 카테고리는 루트 카테고리여야 합니다.'
+"The attribute \"%attributeCode%\" does not exist.": '''%attributeCode%'' 특성이 존재하지 않습니다.'
+"The attribute \"%attributeCode%\" is not a metric attribute.": '''%attributeCode%'' 특성이 측정 특성이 아닙니다.'
+"The unit \"%unitCode%\" does not exist or does not belong to the default metric family of the given attribute \"%attributeCode%\".": '''%unitCode%'' 단위가 존재하지 않거나 지정된 특성 ''%attributeCode%''의 기본 측정 패밀리에 속하지 않습니다.'
+"The currency \"%currency%\" has to be activated.": '''%currency%'' 통화를 활성화해야 합니다.'
 product_model.code.not_blank.message: 제품 모델 코드는 비워둘 수 없습니다.
 product_model.code.unique.message: 동일한 코드가 이미 다른 제품 모델에 설정되어 있습니다.
 product_model.family_variant.not_blank.message: 제품 모델 패밀리 변형은 비워둘 수 없습니다.
@@ -38,40 +38,50 @@ product_model.family_variant.not_blank.message: 제품 모델 패밀리 변형�
 "The {{ attribute_code }} attribute requires a date that should be {{ limit }} or before.": '{{ attribute_code }} 특성에는 {{ limit }} 또는 이전의 날짜가 필요합니다.'
 "The {{ attribute }} attribute requires a number, and the submitted {{ value }} value is not.": '{{ attribute }} 특성에는 숫자가 필요하나 제출된 {{ value }} 값은 숫자가 아닙니다.'
 "The %attribute% attribute must not contain more than %limit% characters. The submitted value is too long.": '%attribute% 특성에 포함된 문자는 %limit%자를 초과할 수 없습니다. 제출된 값이 너무 깁니다.'
+"The %attribute% attribute requires a valid date. Please use the following format %date_format% for dates.": '%attribute% 특성에 유효한 날짜가 필요합니다. 날짜에 다음 형식, %date_format%을(를) 사용하십시오.'
+"The %locale% locale is not available on the %attribute% attribute.": '%locale% 로케일은 %attribute% 특성에서 사용할 수 없습니다.'
 'The {{ attribute_code }} attribute must match the following regular expression: {{ pattern }}.': '{{ attribute_code }} 특성은 다음 정규식과 일치해야 합니다. {{ pattern }}'
 'The {{ attribute_code }} attribute cannot be empty.': '{{ attribute_code }} 특성은 공백일 수 없습니다.'
+'The file %file_name% is too large (%file_size% %suffix%). The %attribute% attribute can not exceed %max_file_size% %suffix%.': 파일 %file_name%이(가) 너무 큽니다.(%file_size%%suffix%). %attribute% 특성은 %max_file_size%%suffix%을(를) 초과할 수 없습니다.
+'The %attribute_code% attribute requires a valid locale. The %invalid_locale% locale does not exist.': '%attribute_code% 특성에 유효한 로케일이 필요합니다. %invalid_locale% 로케일이 없습니다.'
+'The %attribute_code% attribute requires a valid locale. The %invalid_locale% locale is not bound to the %channel_code% channel.': '%attribute_code% 특성에 유효한 로케일이 필요합니다. %invalid_locale% 로케일은 %channel_code% 채널에 바운드되지 않았습니다.'
+"The %attribute% attribute requires an e-mail address.": '%attribute% 특성에 이메일 주소가 필요합니다.'
+'The %attribute% attribute requires an equal or greater than %min_value% value.': '%attribute% 특성에 %min_value% 이상의 값이 필요합니다.'
+'The %attribute% attribute requires an equal or lesser than %max_value% value.': '%attribute% 특성에 %max_value% 이하의 값이 필요합니다.'
+"The %attribute_code% attribute requires a value per channel. The %channel% channel (scope) must exist in your PIM": '%attribute_code% 특성에 채널당 하나의 값이 필요합니다. %channel% 채널(범위)가 PIM에 없습니다.'
 pim_catalog:
   constraint:
-    can_have_family_variant_empty_axis_value: '특성 "%attribute%"은(는) 이 엔터티에 대한 축으로 정의되었으므로 비워둘 수 없습니다'
-    product_model_with_same_axis_value_already_exists: '제품 모델 "%validated_entity%"에서 특성 축 %attributes%에 대한 %values% 값을 설정할 수 없습니다. 제품 모델 "%sibling_with_same_value%"에 이미 이 값이 있기 때문입니다.'
-    variant_product_with_same_axis_value_already_exists: '변형 제품 "%validated_entity%"에서 특성 축 %attributes%에 대한 %values% 값을 설정할 수 없습니다. 변형 제품 "%sibling_with_same_value%"에 이미 이 값이 있기 때문입니다.'
-    can_have_family_variant_unexpected_attribute: '"%attribute%" 속성은 특성 세트에 없으므로 이 엔터티로 설정할 수 없습니다'
-    cannot_have_product_model_as_parent: '제품 모델 "%product_model%"은(는) 제품 모델 "%parent_product_model%"을(를) 상위 모델로 가질 수 없습니다'
-    cannot_have_parent: '제품 모델 "%product_model%"은(는) 상위 모델을 가질 수 없습니다'
-    attribute_does_not_belong_to_family: '"%attribute%" 특성은 "%family%" 패밀리에 속하지 않습니다'
-    variant_product_invalid_family: '변형 제품 패밀리는 상위와 같아야 합니다'
+    can_have_family_variant_empty_axis_value: '특성 ''%attribute%''은(는) 이 엔터티에 대한 축으로 정의되었으므로 비워둘 수 없습니다.'
+    product_model_with_same_axis_value_already_exists: '제품 모델 ''%validated_entity%''에서 특성 축 %attributes%에 대한 %values% 값을 설정할 수 없습니다. 제품 모델 ''%sibling_with_same_value%''에 이미 이 값이 있기 때문입니다.'
+    variant_product_with_same_axis_value_already_exists: '변형 제품 ''%validated_entity%''에서 특성 축 %attributes%에 대한 %values% 값을 설정할 수 없습니다. 변형 제품 ''%sibling_with_same_value%''에 이미 이 값이 있기 때문입니다.'
+    can_have_family_variant_unexpected_attribute: '''%attribute%'' 속성은 특성 세트에 없으므로 이 엔터티로 설정할 수 없습니다.'
+    cannot_have_product_model_as_parent: '제품 모델 ''%product_model%''은(는) 제품 모델 ''%parent_product_model%''을(를) 상위 모델로 가질 수 없습니다.'
+    cannot_have_parent: '제품 모델 ''%product_model%''은(는) 상위 모델을 가질 수 없습니다.'
+    attribute_does_not_belong_to_family: '''%attribute%'' 특성은 ''%family%'' 패밀리에 속하지 않습니다.'
+    variant_product_invalid_family: '변형 제품 패밀리는 상위와 같아야 합니다.'
     php_int_max_reached: '최대 수는 %php_int_max% 미만이어야 합니다.'
-    not_null_family: 식별자가 "%sku%"인 제품은 변형 제품이기 때문에 패밀리가 "null"일 수 없습니다.
-    variant_product_has_parent: '변형 제품 "%variant_product%"에는 상위가 있어야 합니다'
-    invalid_variant_product_parent: '변형 제품 "%variant_product%"은(는) 제품 모델 "%product_model%"을(를) 상위 모델로 가질 수 없습니다(이 제품 모델은 다른 제품 모델만 하위 모델로 가질 수 있습니다)'
-    modified_variant_axis_value: '변형 축 "%variant_axis%"은(는) 수정할 수 없으며, "%provided_value%"이(가) 지정되었습니다'
-    family_variant_attributes_unique: 특성은 고유해야 합니다. "%attributes%"은(는) 변형 특성 세트에서 여러 번 사용되었습니다.
-    family_variant_axes_unique: 변형 축은 고유해야 합니다. "%attributes%"은(는) 변형 특성 세트에서 여러 번 사용되었습니다.
-    family_variant_axes_immutable: '레벨 "%level%"에 대한 변형 축을 수정할 수 없습니다'
-    family_variant_axes_attribute_type_unique: 변형 축 "%axis%"은(는) 고유하거나 식별자일 수 없습니다
-    family_variant_axes_attribute_type: 변형 축 "%axis%"은(는) 부울, 단일 선택, 단일 참조 데이터 또는 측정이어야 합니다
-    family_variant_axes_wrong_type: 변형 축 "%axis%"은(는) 지역화/확장 가능하지 않으며 로케일 관련이 아닙니다
-    family_variant_axes_number_of_axes: '변형 특성 세트에는 축이 %max_axes_number%개 이하여야 합니다 '
-    family_variant_no_axis: 레벨 "%level%"의 특성 세트에 대한 축으로 정의된 특성이 하나 이상 있어야 합니다
-    family_variant_axis_level: 특성 "%axis%"은(는) 축으로 설정된 동일한 변형 특성 세트에서 특성으로 설정해야 합니다
-    family_variant_has_family_attribute: '"%attribute%" 특성을 "%family_variant%" 패밀리 변형에 추가할 수 없습니다. "%family%" 패밀리의 특성이 아니기 때문입니다.'
-    family_variant_level_do_not_exist: 레벨 "%level%"에 대한 변형 특성 세트가 없습니다
-    family_variant_no_level: 패밀리 변형에서 정의된 레벨이 하나 이상 있어야 합니다
-    family_variant_maximum_number_of_level: 패밀리 변형에는 "%level%" 레벨 이하가 있어야 합니다
-    family_variant_unique_attributes_in_last_level: 고유한 특성 "%attribute%"을(를) 제품 레벨에서 설정해야 합니다
-    product_identifier: 해당 식별자 "%s"이(가) 존재하지 않습니다.
+    not_null_family: 식별자가 '%sku%'인 제품은 변형 제품이기 때문에 패밀리가 'null'일 수 없습니다.
+    variant_product_has_parent: '변형 제품 ''%variant_product%''에는 상위가 있어야 합니다.'
+    invalid_variant_product_parent: '변형 제품 ''%variant_product%''은(는) 제품 모델 ''%product_model%''을(를) 상위 모델로 가질 수 없습니다.(이 제품 모델은 다른 제품 모델만 하위 모델로 가질 수 있습니다.)'
+    modified_variant_axis_value: '변형 축 ''%variant_axis%''은(는) 수정할 수 없으며, ''%provided_value%''이(가) 지정되었습니다.'
+    family_variant_attributes_unique: 특성은 고유해야 합니다. '%attributes%'은(는) 변형 특성 세트에서 여러 번 사용되었습니다.
+    family_variant_axes_unique: 변형 축은 고유해야 합니다. '%attributes%'은(는) 변형 특성 세트에서 여러 번 사용되었습니다.
+    family_variant_axes_immutable: '레벨 ''%level%''에 대한 변형 축을 수정할 수 없습니다.'
+    family_variant_axes_attribute_type_unique: 변형 축 '%axis%'은(는) 고유하거나 식별자일 수 없습니다.
+    family_variant_axes_attribute_type: 변형 축 '%axis%'은(는) 부울, 단일 선택, 단일 참조 데이터 또는 측정이어야 합니다.
+    family_variant_axes_wrong_type: 변형 축 '%axis%'은(는) 지역화/확장 가능하지 않으며 로케일 관련이 아닙니다.
+    family_variant_axes_number_of_axes: '변형 특성 세트에는 축이 %max_axes_number%개 이하여야 합니다. '
+    family_variant_no_axis: 레벨 '%level%'의 특성 세트에 대한 축으로 정의된 특성이 하나 이상 있어야 합니다.
+    family_variant_axis_level: 특성 '%axis%'은(는) 축으로 설정된 동일한 변형 특성 세트에서 특성으로 설정해야 합니다.
+    family_variant_has_family_attribute: '''%attribute%'' 특성을 ''%family_variant%'' 패밀리 변형에 추가할 수 없습니다. ''%family%'' 패밀리의 특성이 아니기 때문입니다.'
+    family_variant_level_do_not_exist: 레벨 '%level%'에 대한 변형 특성 세트가 없습니다.
+    family_variant_no_level: 패밀리 변형에서 정의된 레벨이 하나 이상 있어야 합니다.
+    family_variant_maximum_number_of_level: 패밀리 변형에는 '%level%' 레벨 이하가 있어야 합니다.
+    family_variant_unique_attributes_in_last_level: 고유한 특성 '%attribute%'을(를) 제품 레벨에서 설정해야 합니다.
+    product_identifier: 해당 식별자 '%s'이(가) 존재하지 않습니다.
     blacklisted_attribute_code: 진행 중인 정리 작업이 완료될 때까지 코드가 일시적으로 차단됩니다.
     blacklisted_attribute_code_with_link: "진행 중인 정리 작업이 완료될 때까지 코드가 일시적으로 차단됩니다. 자세한 내용은 <a href='{{ link }}' target='_blank'>작업 세부 정보</a>를 확인해주십시오."
+    duplicate_options: '{1} 다음 옵션이 여러 번 사용되었습니다. ''{{ duplicate_options }}''. 옵션 목록을 다시 확인해주십시오.|]1, +Inf] 다음 옵션이 여러 번 사용되었습니다. ''{{ duplicate_options }}''. 옵션 목록을 다시 확인해주십시오.'
     0: 예기치 않은 오류가 발생했습니다.
     100: 예상치 않은 값
     101: 이 필드에는 부울 값이 필요합니다.
@@ -81,17 +91,17 @@ pim_catalog:
     105: 이 필드에는 문자열 값이 필요합니다.
     106: 이 필드에는 배열 값이 필요합니다.
     107: 이 필드에는 배열의 배열이 값으로 필요합니다.
-    200: 내부 오류가 발생했습니다
-    201: 내부 오류가 발생했습니다
+    200: 내부 오류가 발생했습니다.
+    201: 내부 오류가 발생했습니다.
     202: 이 필드에는 숫자 값이 필요합니다.
     203: 이 필드에는 문자열 값이 필요합니다.
     204: 이 필드에는 문자열 값이 필요합니다.
-    205: 내부 오류가 발생했습니다
+    205: 내부 오류가 발생했습니다.
     300: 이 필드에는 유효한 엔터티 코드가 필요합니다.
     301: 이 필드에는 유효한 범위 또는 로케일이 필요합니다.
     302: 이 필드에는 유효한 범위가 필요합니다.
     303: 이 필드에는 유효한 연결 형식이 필요합니다.
-    pim_immutable_product_validator: 동일한 식별자가 이미 다른 제품에 설정되어 있습니다
+    pim_immutable_product_validator: 동일한 식별자가 이미 다른 제품에 설정되어 있습니다.
     pim_immutable_product_model_validator: 동일한 코드가 이미 다른 제품 모델에 설정되어 있습니다.
     quantified_associations:
       unexpected_link_type: 링크 유형 '{{ value }}'이(가) 없습니다. 제품 또는 제품 모델만 연결할 수 있습니다.
@@ -105,3 +115,7 @@ pim_catalog:
 mass_edit:
   edit_common_attributes:
     invalid_values: 특성 양식에 오류가 있습니다.
+pim_datagrid:
+  column_configurator:
+    label:
+      unique_message: 레이블은 고유해야 합니다.
