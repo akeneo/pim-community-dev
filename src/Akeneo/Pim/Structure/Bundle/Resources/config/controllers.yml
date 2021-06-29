@@ -49,6 +49,8 @@ services:
             - '@pim_api.pagination.offset_hal_paginator'
             - '@pim_api.pagination.parameter_validator'
             - '@pim_api.stream.attribute_option_partial_update_stream'
+            - '@Akeneo\Pim\Structure\Bundle\EventSubscriber\ApiAggregatorForAttributeOptionPostSaveEventSubscriber'
+            - '@logger'
             - '%pim_api.configuration%'
             - ['pim_catalog_simpleselect', 'pim_catalog_multiselect']
 

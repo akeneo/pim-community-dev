@@ -100,6 +100,7 @@
 ```bash
 bin/console messenger:consume ui_job import_export_job data_maintenance_job
 ```
+- PIM-9929: Improve performances of attribute options list PATCH endpoint when Data Quality Insights is enabled 
 
 ## Classes
 
