@@ -1,0 +1,6 @@
+akeneo_authentication:
+  acl:
+    sso:
+      title: Zarządzaj logowaniem jednokrotnym (SSO)
+  sso:
+    unknown_user_error: Nie masz uprawnień dostępu do tej aplikacji. Skontaktuj się z administratorem.

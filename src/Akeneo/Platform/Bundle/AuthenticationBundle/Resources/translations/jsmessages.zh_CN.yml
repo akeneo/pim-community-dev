@@ -33,7 +33,7 @@ authentication:
           label: 退出 URL
         certificate:
           label: 证书
-          expiration_warning: 此证书于 {{date}} 过期。
+          expiration_warning: 此证书于 {{ date }} 过期。
         private_key:
           label: 私钥
         metadata_url:
@@ -42,3 +42,4 @@ authentication:
         acs_url:
           label: ACS URL
           tooltip_label: 复制 URL
+        copy: 复制

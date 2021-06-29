@@ -10,6 +10,7 @@ pim_asset_manager:
         message: 抱歉，我们不会显示该嵌入条目，但它将被正确保存
   result_counter: '{0} 无结果|{1} {{ count }} 个结果|]1,Inf] {{ count }} 个结果'
   asset_counter: '{0} 无资产|{1} {{ count }} 个资产|]1,Inf] {{ count }} 个资产'
+  asset_selected: '{0} {{ assetCount }} 个资产被选定|{1} {{ assetCount }} 个资产被选定|]1，Inf] {{ assetCount }} 个资产被选定'
   asset_collection:
     add_asset: '添加资产'
     upload_asset: '上传资产'
@@ -45,7 +46,6 @@ pim_asset_manager:
     filter:
       title: 资产筛选器
     basket:
-      title: '{{ assetCount }} 个资产已选定|{{ assetCount }} 个资产已选定'
       empty_title: 您的购物车为空
       remove_one_asset: 从资产选择中移除资产 {{ assetName }}
       remove_all_assets: 全部移除
@@ -58,7 +58,6 @@ pim_asset_manager:
     download: 下载
     copy_url: 复制 URL
     error: 在渲染预览过程中发生错误
-  close: 关闭模式
   breadcrumb:
     products: 产品
   app:
@@ -134,27 +133,27 @@ pim_asset_manager:
       product_link_rules: 产品链接规则
     transformations:
       help:
-        title: '欢迎来到您的新资产管理区域！'
-        description: '您可以根据资产品类在此定义最多 10 个转换。'
-        link: '如果您想要挖掘新的资产管理器的各种转换，请点击此处'
+        description: 可以根据资产品类在此定义最多 10 个转换。
+        link: 如果您想深入了解各种资产转换，请点击此处。
       subsection: '转换属性'
     product_link_rules:
       naming_convention_subsection: '命名约定属性'
       product_link_rules_subsection: '产品链接规则属性'
       help:
-        title: '欢迎来到您的新资产管理区域！'
-        description: '您可以根据资产品类在此定义最多 2 个产品链接规则。'
-        link: '如果您想要挖掘产品链接规则功能，请点击此处'
+        description: '在此处，您可以为每个资产品类定义最多 2 个产品链接规则。'
+        link: '如果您想深入了解产品链接功能，请点击此处。'
       execute_rules:
         confirm_title: 确认执行
         confirm_content: 确定要执行所有的规则吗？(可能需要一段时间)
         execute_rules: 执行规则
-        cancel: 取消
       execute_naming_convention:
         confirm_title: 确认执行
         confirm_content: 确定要执行该命名约定吗？(可能需要很长时间)
         execute_naming_convention: 执行命名约定
-        cancel: 取消
+    naming_convention:
+      help:
+        description: 您可以在这里定义命名约定属性。
+        link: 了解它们格式方面的全面信息。
     properties:
       title: 资产品类属性
       identifier: 代码
@@ -189,10 +188,9 @@ pim_asset_manager:
       input:
         label: 标签
         code: 代码 (必填)
-      confirm: 保存
     delete:
       message: 确定要删除资产品类“{{ assetFamilyLabel }} ”吗？
-      title: 属性
+      title: 资产品类
     edit:
       discard_changes: 如果离开页面，您将丢失对资产品类"{{ assetFamilyLabel }}"的更改。
     notification:
@@ -246,6 +244,7 @@ pim_asset_manager:
       code:
         pattern: '此字段只能包含字母、数字和下划线。'
         should_be_unique: '此代码已经存在于另一个资产。'
+      server_error: '创建资产时发生错误'
     no_data:
       title: '{{ entityLabel }} 没有资产'
       subtitle: 点击按钮“新增”来创建第一个资产
@@ -262,7 +261,6 @@ pim_asset_manager:
       create: 创建资产
       mass_upload: 批量上传
       delete: 删除
-      delete_all: 删除所有资产
       back: 返回列表　
       launch_transformations: 启动转换
       fullscreen: 全屏
@@ -277,6 +275,7 @@ pim_asset_manager:
         subtitle: '要开始将产品链接到该资产品类，可新建一个： '
         link: 创建新的产品属性
       not_enough_items:
+        title: 您只能查看 {{ productCount }} 个产品，总共 {{ totalCount }} 个产品。
         subtitle:
           usable_in_grid: 要发现所有链接的产品，请点击下方！
           not_usable_in_grid: 要发现所有链接的产品，产品属性必须设置为“在网格中可用”。
@@ -302,7 +301,6 @@ pim_asset_manager:
         label: 标签
         code: 代码 (必填)
         create_another: 创建另一个资产
-      confirm: 保存
     upload:
       line_count: '[0,1]{{ count }} 个文件|]1,Inf] {{ count }} 个文件'
       title: 上传资产
@@ -336,8 +334,30 @@ pim_asset_manager:
     delete:
       message: 确定要删除资产"{{ assetLabel }}"吗？如果其与产品相关联，链接将被移除。
       title: 资产
-    delete_all:
-      confirm: 确定要删除所有的"{{ entityIdentifier }}"资产吗？ 如果它们与产品相关联，它们与产品的链接将被删除。
+    mass_delete:
+      confirm: '[0,1]确定要删除选定的 {{ assetCount }} 个资产吗?|]1,Inf]确定要删除选定的 {{ assetCount }} 个资产吗？'
+      extra_information: 如果将它们与产品相关联，则到产品的链接将被删除。
+      confirm_label: 请输入"{{ assetFamilyIdentifier }}"
+      title: 资产
+    mass_edit:
+      subtitle: 资产批量操作
+      title: "[0, 1]编辑 {{ count }} 个资产的属性值|]1,Inf] 编辑 {{ count }} 个资产的属性值"
+      attribute_selected: "{0}没有选择任何属性|{1}选择了 1 个属性|]1,Inf]选择了 {{ count }} 个属性"
+      empty_selection:
+        title: 您的属性选择为空，请添加属性进行编辑。
+        body: 不知道何为批量操作？
+        link: 请阅读这篇文章。
+      action:
+        append: 添加
+        replace: 替换
+      select:
+        channel: 选择渠道
+        locale: 选择区域
+        action: 选择操作
+      helper:
+        content: 请注意，可以多次添加相同的属性，以确保您仔细选择属性。
+        link: 您可以查阅我们的文档以避免任何问题。
+      unsupported_attribute: 不支持属性类型"{{ attributeType }}"
     grid:
       search: 搜索标签、代码和文本属性
       filter:
@@ -379,9 +399,15 @@ pim_asset_manager:
       delete:
         success: 已成功删除资产"{{ code }}" 。
         fail: 删除资产时出错
-      delete_all:
-        success: 所有的"{{ entityIdentifier }}"资产已成功删除。
-        fail: 删除此资产品类的所有资产时发生错误
+      mass_delete:
+        success: 批量操作"批量删除"已经启动。完成后会通知您。
+        fail: 批量删除作业启动时发生错误
+      mass_edit:
+        launch:
+          success: 批量操作"批量编辑"已经启动。完成后会通知您。
+          fail: 批量编辑作业启动时发生错误
+        validation:
+          fail: 批量编辑验证时发生错误
       execute_naming_convention:
         success: 命名约定已成功执行
         fail: 命名约定执行过程中发生错误
@@ -426,7 +452,6 @@ pim_asset_manager:
         value_per_channel: 每个渠道的值
       placeholder:
         asset_type: 选择您链接的资产品类
-      confirm: 保存
     edit:
       delete: 删除此属性
       title: 编辑属性 {{ code }}
@@ -499,12 +524,6 @@ pim_asset_manager:
       read_only: 此媒体文件为只读
       uploading: 正在上传...
     used_as_transformation_target: 此字段为只读，因其被用作一个资产转换中的目标。
-  modal:
-    delete:
-      subtitle: 确认删除
-      button:
-        cancel: 取消
-        confirm: 删除
   jobs:
     asset_manager_execute_naming_convention:
       error: '对资产"{{ asset }}"执行命名约定失败'
@@ -540,13 +559,27 @@ pim_import_export:
         asset_manager_compute_transformations: "计算资产转换"
         asset_manager_link_assets_to_products: "将资产链接到产品"
         asset_manager_execute_naming_convention: 执行资产品类命名约定
+  form:
+    job_instance:
+      tab:
+        properties:
+          with_prefix_suffix:
+            title: 导出前缀和后缀
+            help: 导出媒体链接资产属性的前缀和后缀
 pim_datagrid:
   cells:
     type:
       asset_manager_execute_naming_convention: 执行资产品类命名约定
+      asset_manager_mass_delete_assets: 执行资产批量删除
+      asset_manager_mass_edit_assets: 执行资产批量编辑
 batch_jobs:
   default_steps:
     execute_naming_convention: 执行资产品类命名约定
+    mass_delete_assets: 执行资产批量删除
+    mass_edit_assets: 执行资产批量编辑
+    link_assets_to_products: 将资产链接到产品
 job_execution:
   summary:
     assets: 资产
+pim_notification.types.asset_manager_mass_delete_assets: 批量删除资产
+pim_notification.types.asset_manager_mass_edit_assets: 批量编辑资产

@@ -15,7 +15,6 @@ akeneo_assetmanager:
       create: 创建资产
       edit: 编辑资产
       delete: 删除资产
-      delete_all: 删除所有资产
       list_product: 列出已链接到资产的产品
       execute_naming_conventions: 执行命名约定
     attribute:
@@ -28,6 +27,10 @@ akeneo_assetmanager:
   jobs:
     asset_manager_execute_naming_convention:
       error: '对资产"{{ asset }}"执行命名约定失败'
+    asset_manager_mass_delete:
+      error: '对资产“{{ assets }}”执行批量删除时失败，错误：“{{ error }}”'
+    asset_manager_mass_edit:
+      error: '对资产“{{ assets }}”执行批量编辑时失败，错误：“{{ error }}”'
 pim_import_export:
   widget:
     last_operations:
@@ -62,10 +65,22 @@ pim_datagrid:
     type:
       asset_manager_execute_naming_convention: 执行资产品类命名约定
       asset_manager_link_assets_to_products: 将资产链接到产品
+      asset_manager_compute_transformations: 计算资产转换
+      asset_manager_mass_delete_assets: 批量删除资产
+      asset_manager_mass_edit_assets: 批量编辑资产
 batch_jobs:
   default_steps:
     execute_naming_convention: 执行资产品类命名约定
     link_assets_to_products: 将资产链接到产品
+    compute_transformations: 计算资产转换
 job_execution:
   summary:
     assets: 资产
+pim_mass_edit.notification.asset_manager_mass_delete_assets:
+  warning: 成功删除资产，但显示警告
+  success: 资产已成功删除
+  error: 资产删除失败
+pim_mass_edit.notification.asset_manager_mass_edit_assets:
+  warning: 成功编辑资产，但显示警告
+  success: 资产已成功编辑
+  error: 资产编辑失败

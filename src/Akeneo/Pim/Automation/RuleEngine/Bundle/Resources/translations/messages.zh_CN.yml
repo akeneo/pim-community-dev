@@ -12,6 +12,8 @@ pimee_catalog_rule:
           no_yet_calculated: 尚未计算
         tags:
           label: 操作
+        priority: 优先级
+        status: 状态
       mass_edit_action:
         impacted_product_count: 计算受影响的产品
         execute: 执行
@@ -19,11 +21,15 @@ pimee_catalog_rule:
   condition:
     fields:
       family: 品类
+      family_variant: 品类变型
       associations: 关联
       groups: 分组
       categories: 类别
       completeness: 完成度
+      identifier: 标识符
+      parent: 父级
       enabled: 状态
+      entity_type: 实体类型
       created: 已创建
       updated: 已更新
     field_groups:
@@ -69,6 +75,9 @@ pimee_catalog_rule:
       week: ']-Inf, -1[%absolute_count% 周前 |{-1}1 周前 |{1}1 周内|]1, +Inf[ %absolute_count% 周内'
       month: ']-Inf, -1[%absolute_count% 月前 |{-1}1 月前 |{1}1 月内|]1, +Inf[ %absolute_count% 月内'
       year: ']-Inf, -1[%absolute_count% 年前 |{-1}1 年前 |{1}1 年内|]1, +Inf[ %absolute_count% 年内'
+  status:
+    enabled: 已启用
+    disabled: 已禁用
 btn:
   Execute rules: 执行规则
 job_execution:

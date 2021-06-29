@@ -7,15 +7,38 @@ Refuse selected: Geselecteerde afkeuren
 pim_datagrid:
   no_entities:
     proposal: Er is geen voorstel om na te kijken.
+    product_draft: Er is geen productconcept om te beoordelen.
+  no_entities.published product: Geen gepubliceerd product gevonden
   no_results:
     proposal: Er is geen voorstel om na te kijken. Probeer je zoekcriteria aan te passen.
     product_draft: Er is geen product concept om te beoordelen. Probeer te zoeken met andere criteria.
+  no_results.published product: Er is geen gepubliceerd product voor uw zoekopdracht.
   workflow:
+    partial_approve: Wijzigingen goedkeuren voor attribuut {{ attribute }} van het product {{ product }}
+    partial_reject: Wijzigingen afwijzen voor attribuut {{ attribute }} van het product {{ product }}
+    by: door
+    at: op
     status:
       in_progress: In uitvoering
       ready: Wachtend op goedkeuring
+      can_be_partially_reviewed: Kan gedeeltelijk worden beoordeeld
+      can_not_be_approved: Kan niet worden beoordeeld
+      can_not_be_deleted: Kan niet worden verwijderd
     status_message:
       ready: Wachtend op goedkeuring
+      in_progress: Dit voorstel wordt momenteel uitgevoerd en is nog niet ingediend.
+      can_be_partially_reviewed: U kunt dit voorstel slechts gedeeltelijk beoordelen omdat sommige wijzigingen betrekking hebben op waarden die u niet kunt bewerken. Neem contact op met uw beheerder om uw rechten aan te passen.
+      can_not_be_approved: U kunt dit voorstel niet beoordelen omdat sommige wijzigingen betrekking hebben op waarden die u niet kunt bewerken. Neem contact op met uw beheerder om uw rechten aan te passen.
+      can_not_be_deleted: U kunt dit voorstel niet verwijderen omdat alle wijzigingen betrekking hebben op waarden die u niet kunt bewerken. Neem contact op met uw beheerder om uw rechten aan te passen.
+    draft_in_progress: Er wordt een concept voor dit product gemaakt door {{ author }}.
+    no_diff: De waarde "{{ value }}" is dezelfde in het voorstel en het werkdocument.
+    new_value: 'Nieuwe waarde:'
+    old_value: 'Oude waarde:'
+    see_more: Meer bekijken
+    actions:
+      approve_all: Alles goedkeuren
+      refuse_all: Alles afwijzen
+    characters_left: ']-Inf, 1]{{ count }} teken over|]1, Inf[{{ count }} tekens over'
 pimee_datagrid:
   cells:
     expand:
@@ -28,7 +51,9 @@ pimee_workflow:
         original_product: Wijzig werkkopie
     proposal:
       modal.title: Schrijf een reactie (optioneel - 255 tekens max.)
+    removing_error: Entiteiten die zijn gekoppeld aan gepubliceerde producten kunnen niet worden verwijderd.
   proposal:
+    overview: "]-Inf, 1]{{ count }} voorstel|]1, Inf[{{ count }} voorstellen"
     selected: "]-Inf, 1]{{ count }} voorstel geselecteerd|]1, Inf[{{ count }} voorstelle geselecteerd"
     mass_action_group:
       review:
@@ -36,20 +61,33 @@ pimee_workflow:
     approve:
       title: Keur voorstel goed
       success: Het voorstel is succesvol toegepast.
+      error: "Het voorstel kan niet worden toegepast vanwege de volgende fout: {{ error }}"
     reject:
       title: Keur voorstel af
+      success: Het voorstel is afgewezen
+      error: "Het voorstel kan niet worden afgewezen vanwege de volgende fout: {{ error }}"
     remove:
       title: Verwijder voorstel
+      success: Het voorstel is verwijderd
+      error: "Het voorstel kan niet worden verwijderd vanwege de volgende fout: {{ error }}"
     partial_approve:
       title: Keur gedeeltelijke informatie goed
       success: Het voorstel werd met succes gedeeltelijk goedgekeurd
+      error: "Het voorstel kan niet deels worden goedgekeurd vanwege de volgende fout: {{ error }}"
     partial_reject:
       title: Keur wijzigingen gedeeltelijk af
       success: De wijzigingen zijn met succes afgekeurd
+      error: "Het voorstel kan niet deels worden afgewezen vanwege de volgende fout: {{ error }}"
 batch_jobs:
   csv_published_product_export:
     label: Gepubliceerd product exporteren in CSV
     export.label: Gepubliceerd product exporteren
+  csv_product_proposal_import:
+    label: Productvoorstel importeren in CSV
+    import.label: Productvoorstel importeren
+  csv_product_model_proposal_import:
+    label: Voorstel productmodel importeren in CSV
+    import.label: Voorstel productmodel importeren in CSV
   approve_product_draft:
     label: Keur voorstel goed
     perform.label: Keur voorstel goed
@@ -57,21 +95,44 @@ batch_jobs:
     label: Keur voorstellen af
     perform.label: Keur voorstellen af
   xlsx_published_product_export:
+    label: Gepubliceerd product exporteren in XLSX
     export.label: Gepubliceerd product exporteren
+  xlsx_product_proposal_import:
+    label: Productvoorstel importeren in XLSX
+    import.label: Productvoorstel importeren in XLSX
+  xlsx_product_model_proposal_import:
+    label: Voorstel productmodel importeren in XLSX
+    import.label: Voorstel productmodel importeren in XLSX
+  csv_published_product_quick_export:
+    export.label: Gepubliceerde producten snel exporteren in CSV
+    perform.label: Gepubliceerde producten snel exporteren in CSV
+  csv_published_product_grid_context_quick_export:
+    export.label: Gepubliceerde producten in rastercontext snel exporteren in CSV
+    perform.label: Gepubliceerde producten in rastercontext snel exporteren in CSV
+  xlsx_published_product_quick_export:
+    export.label: Gepubliceerde producten snel exporteren in xlsx
+    perform.label: Gepubliceerde producten snel exporteren in xlsx
+  xlsx_published_product_grid_context_quick_export:
+    export.label: Gepubliceerde producten in rastercontext snel exporteren in xlsx
+    perform.label: Gepubliceerde producten in rastercontext snel exporteren in xlsx
   publish_product:
     perform.label: Product publiceren
+  unpublish_product:
+    perform.label: Publicatie producten ongedaan maken
   default_steps:
     clean_attribute:
       clean_draft: Voorstellen voor opschonen
 pim_notification:
   types:
     pimee_workflow_product_draft_notification_new_proposal: Nieuw voorstel
+    pimee_workflow_import_notification_new_proposals: Nieuwe voorstellen uit import
     pimee_workflow_product_draft_notification_partial_approve: Voorstel gedeeltelijk goedgekeurd
     pimee_workflow_product_draft_notification_partial_reject: Voorstel gedeeltelijk afgekeurd
     pimee_workflow_product_draft_notification_partial_remove: Voorstel gedeeltelijk verwijderd
     pimee_workflow_product_draft_notification_approve: Voorstel goedgekeurd
     pimee_workflow_product_draft_notification_refuse: Voorstel afgekeurd
     pimee_workflow_product_draft_notification_remove: Voorstel verwijderd
+    pimee_workflow_product_draft_notification_sent: Verzonden voorstellen
 pimee_dashboard:
   widget:
     product_drafts:
@@ -80,6 +141,8 @@ pimee_dashboard:
       product: Product
       review: Beoordeel
       empty: Geen voorstellen te beoordelen
+      title: Te beoordelen voorstellen
+      view_all: Alle voorstellen bekijken
     header.view_all: Alles weergeven
 pimee_enrich.entity.product:
   module:
@@ -89,9 +152,11 @@ pimee_enrich.entity.product:
     attribute:
       can_be_updated_by_rules: "]-Inf, 1]Dit attribuut kan geüpdatet worden door <span>een regel</span>|]1, +Inf[Dit attribuut kan geüpdatet worden door <span>{{ count }} regels</span>"
       can_be_updated_by_rules_readonly: "]-Inf, 1]Dit attribuut kan door een regel geupdate worden|]1, +Inf[Dit attribuut kan geüpdatet worden door {{ count }} regels"
+      value_updated: Deze waarde wordt bijgewerkt met het huidige concept
     meta:
       published_version: Gepubliceerde versie
       owner_groups: Eigenaar groepen
+      draft_status: Conceptstatus
       draft:
         in_progress: In uitvoering
         sent_for_approval: Wachtend op goedkeuring
@@ -107,9 +172,13 @@ pimee_enrich.entity.product:
       content: Weet u zeker dat u de publicatie van dit product ongedaan wilt maken?
     copy:
       working_copy: Werkkopie
+      draft: Mijn concept
+      draft_of: "Concept van {{ author }}"
     approval:
       send: Verzenden voor goedkeuring
       sent: Verzonden voor goedkeuring
+      send_and_next: Verzenden en volgende
+      send_and_finish: Verzenden en afsluiten
 pimee_enrich.entity.published_product:
   flash:
     publish:
@@ -120,6 +189,8 @@ pimee_enrich.entity.published_product:
       fail: Ongedaan maken van publicatie mislukt
     revert:
       success: Product succesvol hersteld
+  page_title:
+    index: "]-Inf, 1]{{ count }} gepubliceerd product|]1, Inf[{{ count }} gepubliceerde producten"
   module:
     publish:
       label: Publiceren
@@ -127,17 +198,35 @@ pimee_enrich.entity.published_product:
     unpublish:
       label: Depubliceer
 pimee_enrich.entity.product_draft:
+  flash:
+    update:
+      success: Het productconcept is opgeslagen
+      fail: Het productconcept kan niet worden bijgewerkt
+    create:
+      success: Het productontwerp is verzonden voor goedkeuring
+      fail: U kunt dit concept niet verzenden voor goedkeuring
+      skip: Het productontwerp is niet verzonden voor goedkeuring omdat er geen enkele waarde is gewijzigd
   module:
     proposal:
+      comment_chars: tekens.
       confirm: Verzenden
       accept_selected: Accepteer geselecteerde voorstel(len)
       reject_selected: Keur geselecteerde voorstel(len) af
+    edit:
+      discard_changes: Niet-opgeslagen wijzigingen worden niet bewaard. Weet u zeker dat u het concept wilt verzenden voor goedkeuring zonder de wijzigingen op te slaan?
+      discard_changes_title: Weet u zeker dat u dit concept wilt verzenden?
 pimee_enrich.mass_edit.product:
   operation:
     publish:
       label: Publiceren
+      label_count: "{1}<span class=\"AknFullPage-title--highlight\">1 product</span> publiceren|]1, Inf[<span class=\"AknFullPage-title--highlight\">{{ itemsCount }} producten</span> publiceren"
+      description: De producten worden gepubliceerd
+      warning: De {{ itemsCount }} geselecteerde producten worden gepubliceerd.
     unpublish:
       label: Depubliceer
+      label_count: "{1}Publicatie ongedaan maken van <span class=\"AknFullPage-title--highlight\">1 product</span>|]1, Inf [Publicatie ongedaan maken van <span class=\"AknFullPage-title--highlight\">{{ itemsCount }} producten</span>"
+      description: De publicatie van de producten wordt ongedaan gemaakt
+      warning: De publicatie van {{ itemsCount }} geselecteerde producten wordt ongedaan gemaakt.
 pimee_enrich.entity.category:
   flash:
     remove:
@@ -151,6 +240,7 @@ pim_menu:
 pim_title:
   pimee_workflow_proposal_index: Voorstellen
   pimee_workflow_published_product_index: Gepubliceerde producten
+  pimee_workflow_published_product_view: Gepubliceerd product {{ product.label }} | Bekijken
 pim_analytics:
   info_type:
     nb_published_products: Aantal gepubliceerde producten

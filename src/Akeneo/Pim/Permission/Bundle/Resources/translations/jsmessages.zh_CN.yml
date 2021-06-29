@@ -3,6 +3,12 @@ pim_enrich:
     attribute:
       property:
         is_read_only: 只读
+pimee_import_export:
+  entity:
+    job_instance:
+      flash:
+        update:
+          fail_empty_permission: 必须至少选择一个允许编辑的作业
 pimee_enrich.entity.category:
   module:
     permissions:
@@ -50,3 +56,16 @@ batch_jobs:
     send_for_approval: 发送以进行审批
 pim_title:
   pimee_enrich_locale_edit: 区域设置 | 编辑
+pim_analytics:
+  info_type:
+    nb_custom_locale_accesses: 自定义区域的访问次数
+    nb_custom_category_accesses: 自定义类别的访问次数
+    nb_custom_attribute_group_accesses: 自定义属性组的访问次数
+category.permissions:
+  view.label: 允许查看产品
+  edit.label: 允许编辑产品
+  own.label: 允许拥有产品
+  own.help: 审查、发布、取消发布、分类和关联产品
+  no_access_to_products: 您无权访问任何树中的产品，请联系您的管理员
+  apply_on_children.label: 将更改应用于子级
+  apply_on_children.help: 保留对子级的现有权限

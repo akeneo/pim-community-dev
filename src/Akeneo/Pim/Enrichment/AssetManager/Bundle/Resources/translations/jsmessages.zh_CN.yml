@@ -5,6 +5,12 @@ batch_jobs:
   asset_manager_xlsx_asset_export:
     label: 以 XLSX 格式导出资产
     export.label: 导出资产
+  asset_manager_csv_asset_import:
+    label: 以 CSV 格式导入资产
+    import.label: 导入资产
+  asset_manager_xlsx_asset_import:
+    label: 以 XLSX 格式导入资产
+    import.label: 导入资产
 akeneo_assetmanager.export.assets.filter.asset_family: 资产品类
 pim_analytics:
   info_type:

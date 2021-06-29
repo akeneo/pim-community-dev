@@ -11,7 +11,6 @@ akeneo_referenceentity:
       create: 创建记录
       edit: 编辑记录
       delete: 删除记录
-      delete_all: 删除所有实体记录
       list_product: 列出已链接到记录的产品
     attribute:
       create: 将属性添加到参考实体
@@ -20,6 +19,9 @@ akeneo_referenceentity:
     option:
       edit: 编辑选项
       delete: 移除选项
+  jobs:
+    reference_entity_mass_delete:
+      error: '对记录“{{ records }}”执行批量删除时失败，错误：“{{ error }}”'
 pim_analytics:
   info_type:
     nb_reference_entities: 参考实体数
@@ -31,5 +33,22 @@ pim_analytics:
     average_percentage_localizable_only_attributes: 每个参考实体可本地化属性的平均百分比
     average_percentage_scopable_only_attributes: 每个参考实体可扩展属性的平均百分比
     average_percentage_scopable_and_localizable_attributes: 每个参考实体可本地化和可扩展属性的平均百分比
+pim_datagrid:
+  cells:
+    type:
+      reference_entity_mass_delete_records: 执行记录批量删除
+  reference_entity_mass_delete_records: 批量删除记录
+job_execution:
+  summary:
+    records: 记录
+pim_notification:
+  types:
+    reference_entity_mass_delete_records: 批量删除记录
+pim_mass_edit:
+  notification:
+    reference_entity_mass_delete_records:
+      warning: 成功删除记录，但显示警告
+      success: 记录已成功删除
+      error: 记录删除失败。
 akeneo_reference_entity: 参考实体单个链接
 akeneo_reference_entity_collection: 参考实体多个链接

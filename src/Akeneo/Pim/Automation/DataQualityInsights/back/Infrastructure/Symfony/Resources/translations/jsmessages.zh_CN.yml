@@ -16,6 +16,8 @@ akeneo_data_quality_insights:
         title: 一致性
         attributes_link: 显示所有可改进的属性
         success: 您的产品数据完全一致。恭喜！
+    messages:
+      add_image_attribute_recommendation: 图像要比文字更直观。您应该添加资产集合或图像属性来提高该产品的数据质量。
   product_edit_form:
     attribute_filter:
       all_improvable_attributes: 所有可改进的属性
@@ -36,3 +38,81 @@ akeneo_data_quality_insights:
     popover:
       default_aria_label: 拼写建议
       aria_label: "拼写建议：{{ mistake }}"
+  dqi_dashboard:
+    key_indicators:
+      attributes_to_work_on: '{1}您有 <button>1 个属性</button>待处理。|]1, 200[您有 <button>{{ count }} 个属性</button>待处理。|[200, Inf[您有超过 <button>{{ count }} 个属性</button>待处理。'
+      list:
+        has_image:
+          no_data: 您的资产集合和图像属性似乎是空的，您应该为这个关键指标上传图像以突出显示您产品的质量。
+        attributes_perfect_spelling:
+          title: 属性已正确标记
+          no_data: 您的属性和选项标签似乎是空的，您应该丰富这个关键指标，以突出您属性的质量。
+          messages:
+            first_step:
+              message1: 对丰富属性和选项标签有不解之处？在<a href="{{ link }}" target="_blank">此处</a>温习其基础知识吧！
+              message2: 需要属性和属性选项方面的帮助？请查看<a href="{{ link }}" target="_blank">此处<a href="{{ link }}" target="_blank">！
+            second_step:
+              message1: 请精心打理您的属性和选项标签。这样您的产品会越来越丰富。
+              message2: 工作尚未完成！您的部分标签仍需要工作。
+            third_step:
+              message1: 胜利在望！只需最后一点儿工作， 您将大功告成。
+              message2: 您的某些属性和标签仍需要一些工作，但您已步入正轨。
+            perfect_score_step:
+              message1: 您的目录现在清晰明了无比！干得漂亮！
+              message2: 属性和选项标签处理得真不错！
+        values_perfect_spelling:
+          title: 文本产品值拼写完美的产品
+          no_data: 您的文本区域似乎是空的，您应该丰富该关键指标，以突出您产品的质量。
+          messages:
+            first_step:
+              message1: 您的产品应得到正确描述。检查一下拼写吧！
+              message2: 您是您产品的最佳拥护者，请仔细检查拼写。
+              message3: 您的产品描述展现的是贵公司的形象，让我们杜绝那些错字吧！第一印象很重要。
+              message4: 错误越多，给人的印象越差。请特别留意拼写。
+            second_step:
+              message1: 您的产品很出色，现在您需要配上出色的拼写！
+              message2: 拼写错误可能会导致客户流失，请慎重！
+              message3: 您的部分产品需要一点帮助才能做到完美。请留心拼写错误！
+            third_step:
+              message1: 出色的拼写会带来与众不同的效果，您已距此不远了！
+              message2: 大功即将告成，您离完美的拼写仅一步之遥！
+              message3: 要达到完美的产品值，还有几个错误需要处理。
+              message4: 只需再努力一点儿，就可以让您的产品描述完美无瑕了！
+            perfect_score_step:
+              message1: 您的目录拼写完美。太棒了！
+              message2: "这给人留下深刻的印象：您的产品完美无缺！"
+              message3: 您消除了全部的拼写错误，简直棒极了。祝贺您！
+  product_grid:
+    filter_label:
+      spelling_quality: 拼写质量
+  dictionary:
+    helper:
+      content: 字典允许您注册将被数据质量洞察忽略的文字。
+      link_label: 有关更多信息，请访问我们的帮助中心。
+    words: 词条
+    searchPlaceholder: 搜索词条
+    add_words: 在此处添加词条
+    no_search_results:
+      title: 搜索没有任何结果
+      subtitle: 请用新的搜索条件再进行搜索。
+    no_data:
+      title: 还没有词条
+      subtitle: 添加上面的第一个，点击"添加"或按 Enter。
+pimee_enrich.entity.locale:
+  grid:
+    columns:
+      dictionary_words_count:
+        title: 词条数量
+        label: "]-Inf, 1]{{ count }} 个词条|]1, Inf[{{ count }} 个词条"
+        not_available: 不可用
+    add_words: 添加词条
+    items_selected: "{1}1 个条目被选中|[2, Inf[{{ count }} 个条目被选中"
+    modal:
+      title: 添加词条到 {{ count }} 区域
+      subtitle: 在下面输入您的词条。它们将被添加到所有选定的区域中。
+      locales_added_notification:
+        title: 添加至 {{ count }} 区域的词条
+        content: 新的词条已添加到选定区域的字典中。
+      no_supported_locales:
+        title: 无法通过数据质量洞察对选定的区域进行拼写检查。
+        content: 要了解受支持区域的列表，请查阅我们的<a href="{{ link }}" target="_blank">帮助中心</a>

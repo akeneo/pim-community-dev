@@ -10,6 +10,7 @@ pim_asset_manager:
         message: 죄송하지만 이 임베드 항목을 표시할 수 없습니다. 하지만 제대로 저장됩니다.
   result_counter: '{0} 결과 없음|{1} {{ count }} 결과|]1,Inf] {{ count }} 결과'
   asset_counter: '{0} 자산 없음|{1} {{ count }} 자산|]1,Inf] {{ count }} 자산'
+  asset_selected: '{0} {{ assetCount }}개 자산 선택|{1} {{ assetCount }}개 자산 선택|]1,Inf] {{ assetCount }}개 자산 선택'
   asset_collection:
     add_asset: '자산 추가'
     upload_asset: '자산 업로드'
@@ -45,7 +46,6 @@ pim_asset_manager:
     filter:
       title: 자산 필터
     basket:
-      title: '{{ assetCount }}개 자산 선택됨|{{ assetCount }}개 자산 선택됨'
       empty_title: 장바구니가 비어 있습니다
       remove_one_asset: 자산 선택에서 자산 {{ assetName }} 제거
       remove_all_assets: 모두 제거
@@ -58,7 +58,6 @@ pim_asset_manager:
     download: 다운로드
     copy_url: URL 복사
     error: 미리 보기를 렌더링하는 중에 오류가 발생했습니다
-  close: 모달 닫기
   breadcrumb:
     products: 제품
   app:
@@ -119,6 +118,7 @@ pim_asset_manager:
       edit: 패밀리 편집
       view: 패밀리 보기
       execute_product_link_rules: 규칙 실행
+      execute_naming_convention: 명명 규칙 실행
     permission:
       title: 자산 패밀리 권한
     title: 자산
@@ -133,25 +133,22 @@ pim_asset_manager:
       product_link_rules: 제품 링크 규칙
     transformations:
       help:
-        title: '새로운 자산 관리 영역입니다!'
-        description: '여기서 자산 패밀리로 최대 10개의 변환을 정의할 수 있습니다.'
-        link: '새 자산 관리자 변환에 대해 자세히 알아보려면, 여기를 클릭하십시오'
+        description: 여기에서 자산 패밀리로 최대 10개의 변환을 정의할 수 있습니다.
+        link: 자산 변환에 대해 자세히 알아보려면 여기를 클릭하십시오.
       subsection: '변환 속성'
     product_link_rules:
       naming_convention_subsection: '명명 규칙 속성'
       product_link_rules_subsection: '제품 링크 규칙 속성'
       help:
-        title: '새로운 자산 관리 영역입니다!'
-        description: '여기서 자산 패밀리로 최대 2개의 제품 링크 규칙을 정의할 수 있습니다.'
-        link: '제품 링크 규칙 기능에 대해 자세히 알아보려면, 여기를 클릭하십시오'
+        description: '여기에서 각 자산 패밀리의 제품 링크 규칙을 최대 2개 정의할 수 있습니다.'
       execute_rules:
         confirm_title: 실행 확인
         confirm_content: 모든 규칙을 실행하시겠습니까? (시간이 오래 걸릴 수 있음)
         execute_rules: 규칙 실행
-        cancel: 취소
       execute_naming_convention:
         confirm_title: 실행 확인
-        cancel: 취소
+        confirm_content: 명명 규칙을 실행하시겠습니까? (시간이 오래 걸릴 수 있음)
+        execute_naming_convention: 명명 규칙 실행
     properties:
       title: 자산 패밀리 속성
       identifier: 코드
@@ -186,10 +183,8 @@ pim_asset_manager:
       input:
         label: 레이블
         code: 코드(필수)
-      confirm: 저장
     delete:
       message: 자산 패밀리 "{{ assetFamilyLabel }}"을(를) 삭제하시겠습니까?
-      title: 특성
     edit:
       discard_changes: 페이지를 나가면 자산 패밀리 "{{ assetFamilyLabel }}"에 대한 변경 사항이 손실됩니다.
     notification:
@@ -208,6 +203,9 @@ pim_asset_manager:
       execute_product_link_rules:
         success: 제품 링크 규칙이 실행되었습니다
         fail: 제품 링크 규칙을 실행하려는 동안 오류가 발생했습니다
+      execute_naming_convention:
+        success: 명명 규칙이 실행되었습니다
+        fail: 명명 규칙을 실행하려는 동안 오류가 발생했습니다
     helper:
       title: 자산 관리자입니다!
       no_asset:
@@ -251,11 +249,11 @@ pim_asset_manager:
       error:
         value: 죄송합니다. "{{ fieldName }}" 필드 렌더링이 실패한 것 같습니다. 자세한 내용은 개발자 콘솔을 참조하십시오.
     button:
+      save_and_execute_naming_convention: 명명 규칙 저장 및 실행
       save: 저장
       create: 자산 만들기
       mass_upload: 대량 업로드
       delete: 삭제
-      delete_all: 모든 자산 삭제
       back: 목록으로 돌아가기
       launch_transformations: 변환 실행
       fullscreen: 전체 화면
@@ -296,7 +294,6 @@ pim_asset_manager:
         label: 레이블
         code: 코드(필수)
         create_another: 다른 자산 만들기
-      confirm: 저장
     upload:
       line_count: '[0,1]{{ count }} 파일|]1,Inf] {{ count }} 파일'
       title: 자산 업로드
@@ -330,8 +327,8 @@ pim_asset_manager:
     delete:
       message: '"{{ assetLabel }}" 자산을 삭제하시겠습니까? 이 자산이 제품에 링크된 경우 해당 링크가 제거됩니다.'
       title: 자산
-    delete_all:
-      confirm: 모든 "{{ entityIdentifier }}" 자산을 삭제하시겠습니까? 이 자산이 제품에 링크된 경우 해당 제품에 대한 링크가 제거됩니다.
+    mass_delete:
+      title: 자산
     grid:
       search: 레이블, 코드 및 텍스트 특성 검색
       filter:
@@ -373,9 +370,9 @@ pim_asset_manager:
       delete:
         success: '"{{ code }}" 자산이 삭제되었습니다.'
         fail: 자산을 삭제하는 중에 오류가 발생했습니다
-      delete_all:
-        success: 모든 "{{ entityIdentifier }}" 자산이 삭제되었습니다.
-        fail: 이 자산 패밀리의 자산을 모두 삭제하는 중에 오류가 발생했습니다
+      execute_naming_convention:
+        success: 명명 규칙이 성공적으로 실행되었습니다
+        fail: 명명 규칙을 실행하는 중에 오류가 발생했습니다
     completeness:
       label: 완료
   attribute:
@@ -417,7 +414,6 @@ pim_asset_manager:
         value_per_channel: 채널별 값
       placeholder:
         asset_type: 링크된 자산 패밀리 선택
-      confirm: 저장
     edit:
       delete: 특성 삭제
       title: 특성 {{ code }} 편집
@@ -490,12 +486,9 @@ pim_asset_manager:
       read_only: 이 미디어 파일은 읽기 전용입니다
       uploading: 업로드 중...
     used_as_transformation_target: 이 필드는 자산 변환의 대상으로 사용되므로 읽기 전용입니다.
-  modal:
-    delete:
-      subtitle: 삭제 확인
-      button:
-        cancel: 취소
-        confirm: 삭제
+  jobs:
+    asset_manager_execute_naming_convention:
+      error: '명명 규칙이 자산 ''{{ asset }}''에서 실패했습니다'
 pim_enrich:
   confirmation:
     discard_changes: '이 페이지를 나가면 "{{ entity }}"에 대한 변경 사항이 손실됩니다.'
@@ -527,6 +520,22 @@ pim_import_export:
       job_type:
         asset_manager_compute_transformations: "자산 변환 계산"
         asset_manager_link_assets_to_products: "제품에 자산 링크 연결"
+        asset_manager_execute_naming_convention: 자산 패밀리 명명 규칙 실행
+  form:
+    job_instance:
+      tab:
+        properties:
+          with_prefix_suffix:
+            title: 접두사 및 접미사 내보내기
+            help: 미디어 링크 자산 특성의 접두사 및 접미사 내보내기
+pim_datagrid:
+  cells:
+    type:
+      asset_manager_execute_naming_convention: 자산 패밀리 명명 규칙 실행
+batch_jobs:
+  default_steps:
+    execute_naming_convention: 자산 패밀리 명명 규칙 실행
+    link_assets_to_products: 제품에 자산 링크 연결
 job_execution:
   summary:
     assets: 자산
