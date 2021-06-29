@@ -18,6 +18,11 @@ backup:
       weeklyBackups: 5
       monthlyBackups: 12
       yearlyBackups: 10
+  archive:
+    enabled: false
+    schedule: "0 0 0 * * *" # Each day at midnight
+
+
 
 common:
   extraLabels: {}
