@@ -27,7 +27,6 @@ type CategoryTreeProps = {
   initCallback?: (treeLabel: string, categoryLabel?: string) => void;
   isCategorySelected?: (category: CategoryValue, parentCategory: ParentCategoryTree) => boolean;
   isCategoryReadOnly?: (category: CategoryTreeModel, parentCategory: ParentCategoryTree) => boolean;
-  shouldRerender?: boolean;
 };
 
 const CategoryTree: React.FC<CategoryTreeProps> = ({
@@ -39,7 +38,6 @@ const CategoryTree: React.FC<CategoryTreeProps> = ({
   initCallback,
   isCategorySelected,
   isCategoryReadOnly,
-  shouldRerender,
   ...rest
 }) => {
   const [tree, setTree] = React.useState<CategoryTreeModel>();
@@ -85,7 +83,6 @@ const CategoryTree: React.FC<CategoryTreeProps> = ({
       onClick={onClick}
       isCategorySelected={isCategorySelected}
       isCategoryReadOnly={isCategoryReadOnly}
-      shouldRerender={shouldRerender}
       {...rest}
     />
   );

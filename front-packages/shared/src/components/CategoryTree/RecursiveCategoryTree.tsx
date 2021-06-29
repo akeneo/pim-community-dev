@@ -16,7 +16,6 @@ type RecursiveCategoryTreeProps = {
   onClick?: any;
   isCategorySelected?: (category: CategoryValue, categoryParentTree: ParentCategoryTree) => boolean;
   isCategoryReadOnly?: (category: CategoryTreeModel, categoryParentTree: ParentCategoryTree) => boolean;
-  shouldRerender?: boolean
 };
 
 const RecursiveCategoryTree: React.FC<RecursiveCategoryTreeProps> = ({
@@ -27,7 +26,6 @@ const RecursiveCategoryTree: React.FC<RecursiveCategoryTreeProps> = ({
   onClick,
   isCategorySelected,
   isCategoryReadOnly,
-  shouldRerender,
 }) => {
   const [categoryState, setCategoryState] = React.useState<CategoryTreeModel>(tree);
 
@@ -74,7 +72,6 @@ const RecursiveCategoryTree: React.FC<RecursiveCategoryTreeProps> = ({
               onClick={onClick}
               isCategorySelected={isCategorySelected}
               isCategoryReadOnly={isCategoryReadOnly}
-              shouldRerender={shouldRerender}
             />
           );
         })}
