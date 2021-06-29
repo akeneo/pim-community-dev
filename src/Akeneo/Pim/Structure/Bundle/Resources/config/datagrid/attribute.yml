@@ -26,6 +26,7 @@ datagrid:
                 frontend_type: boolean-status
         properties:
             id: ~
+            code: ~
             edit_link:
                 type: url
                 route: pim_enrich_attribute_edit
@@ -48,7 +49,7 @@ datagrid:
             delete:
                 launcherOptions:
                     className: AknIconButton AknIconButton--small AknIconButton--trash
-                type:  delete
+                type:  delete-attribute
                 label: pim_common.delete
                 link:  delete_link
                 acl_resource: pim_enrich_attribute_remove

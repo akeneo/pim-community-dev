@@ -123,6 +123,17 @@
     }
   }
 
+  .jstree-locked {
+    a {
+      color: @AknDarkBlue !important;
+      cursor: default;
+    }
+
+    .jstree-checkbox {
+      display: none;
+    }
+  }
+
   .jstree-tree-toolbar {
     .select2-container-active .select2-choice {
       box-shadow: none;
@@ -214,6 +225,19 @@
     background: url("/bundles/pimui/images/jstree/icon-folders.svg") 0 0;
     opacity: 1;
     height: 22px;
+  }
+}
+
+.jstree-default {
+  .jstree-locked {
+    a {
+      color: @AknDarkBlue !important;
+      cursor: default;
+    }
+
+    .jstree-checkbox {
+      display: none;
+    }
   }
 }
 

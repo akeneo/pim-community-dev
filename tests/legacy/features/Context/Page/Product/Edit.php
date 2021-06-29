@@ -8,11 +8,10 @@ use Behat\Mink\Element\NodeElement;
 use Behat\Mink\Exception\ElementNotFoundException;
 use Context\Page\Base\ProductEditForm;
 use Context\Spin\TimeoutException;
-use Pim\Behat\Decorator\Completeness\PanelDecorator;
 use Pim\Behat\Decorator\ContextSwitcherDecorator;
 use Pim\Behat\Decorator\Tab\ComparableTabDecorator;
 use Pim\Behat\Decorator\TabElement\ComparisonPanelDecorator;
-use Pim\Behat\Decorator\Tree\JsTreeDecorator;
+use Pim\Behat\Decorator\Tree\TreeDecorator;
 
 /**
  * Product edit page
@@ -45,17 +44,12 @@ class Edit extends ProductEditForm
                 'Status switcher'         => ['css' => '.status-switcher'],
                 'Image preview'           => ['css' => '#lbImage'],
                 'Form fields'             => ['css' => '.AknComparableFields'],
-                'Completeness'            => [
-                    'css'        => '.completeness-panel',
-                    'decorators' => [
-                        PanelDecorator::class
-                    ]
-                ],
+                'Completeness'            => ['css' => '.completeness-panel',],
                 'Category pane'           => ['css' => '#product-categories'],
                 'Category tree'           => [
                     'css'        => '#trees',
                     'decorators' => [
-                        JsTreeDecorator::class
+                        TreeDecorator::class
                     ]
                 ],
                 'Copy actions'            => ['css' => '.copy-actions'],
@@ -232,7 +226,7 @@ class Edit extends ProductEditForm
 
         if (strstr($field, 'USD') || strstr($field, 'EUR')) {
             if (false !== strpos($field, ' ')) {
-                list($subLabelContent, $labelContent) = explode(' ', $field);
+                [$subLabelContent, $labelContent] = explode(' ', $field);
             }
         }
 

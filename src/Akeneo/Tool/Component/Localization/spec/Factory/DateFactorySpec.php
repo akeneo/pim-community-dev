@@ -13,13 +13,7 @@ class DateFactorySpec extends ObjectBehavior
 
     function it_returns_intl_formatter()
     {
-        $date = new \IntlDateFormatter(
-            'fr_FR',
-            \IntlDateFormatter::SHORT,
-            \IntlDateFormatter::NONE
-        );
-
-        $this->create([])->shouldReturnAnInstanceOf(get_class($date));
+        $this->create([])->shouldReturnAnInstanceOf(\IntlDateFormatter::class);
     }
 
     function it_creates_a_date_with_intl_format()
@@ -34,9 +28,10 @@ class DateFactorySpec extends ObjectBehavior
         $this->create($options)->getPattern()->shouldReturn('d/M/yy');
     }
 
-    function it_creates_an_english_date_without_locale()
+    function it_replaces_2_digit_years_by_4_digit_when_the_format_is_not_specified(\IntlDateFormatter $formatter)
     {
-        $options = [];
-        $this->create($options)->getPattern()->shouldReturn('M/d/yy');
+        $options = ['locale' => 'en_AU'];
+        $this->create($options, false)->getPattern()->shouldReturn('d/M/yy');
+        $this->create($options, true)->getPattern()->shouldReturn('d/M/yyyy');
     }
 }

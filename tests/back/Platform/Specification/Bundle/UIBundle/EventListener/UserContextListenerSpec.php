@@ -6,7 +6,7 @@ use Akeneo\Pim\Enrichment\Bundle\Context\CatalogContext;
 use Akeneo\Platform\Bundle\UIBundle\EventListener\AddLocaleListener;
 use Akeneo\UserManagement\Bundle\Context\UserContext;
 use PhpSpec\ObjectBehavior;
-use Symfony\Component\HttpKernel\Event\GetResponseEvent;
+use Symfony\Component\HttpKernel\Event\RequestEvent;
 use Symfony\Component\HttpKernel\HttpKernel;
 use Symfony\Component\HttpKernel\KernelEvents;
 use Symfony\Component\Security\Core\Authentication\Token\Storage\TokenStorageInterface;
@@ -18,7 +18,7 @@ class UserContextListenerSpec extends ObjectBehavior
         AddLocaleListener $listener,
         CatalogContext $catalogContext,
         UserContext $userContext,
-        GetResponseEvent $event
+        RequestEvent $event
     ) {
         $tokenStorage->getToken()->willReturn(true);
         $event->getRequestType()->willReturn(HttpKernel::MASTER_REQUEST);

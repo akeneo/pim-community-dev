@@ -12,9 +12,13 @@ $rules = [
     $builder->only([
         'Symfony\Component',
         'Doctrine\Common',
+        'Doctrine\Inflector',
         'Akeneo\Tool',
+        'Webmozart\Assert\Assert',
         // TODO: The feature uses the datagrid
         'Oro\Bundle\PimDataGridBundle',
+        //PIM-9806
+        'Doctrine\ORM\Mapping',
 
         // TIP-945: User Management should not depend on Channel and Enrichment
         'Akeneo\Channel\Component\Model\LocaleInterface',
@@ -27,6 +31,9 @@ $rules = [
 
         // TODO: This dependency should be removed, Bundle dependency
         'Oro\Bundle\SecurityBundle\Acl\Persistence\AclManager',
+        'Oro\Bundle\SecurityBundle\Acl\AccessLevel',
+        'Oro\Bundle\SecurityBundle\Acl\Persistence\AclPrivilegeRepository',
+        'Oro\Bundle\SecurityBundle\Model\AclPrivilege',
         'Oro\Bundle\SecurityBundle\SecurityFacade',
 
         'Oro\Bundle\UserBundle\Exception\UserCannotBeDeletedException',
@@ -37,14 +44,17 @@ $rules = [
     $builder->only([
         'Doctrine',
         'Symfony\Component',
+        'Symfony\Contracts',
         'Akeneo\Tool',
         'Akeneo\UserManagement',
+        'Webmozart\Assert\Assert',
         'Oro\Bundle\SecurityBundle',
         'Sensio\Bundle\FrameworkExtraBundle',
         'Symfony\Bundle\FrameworkBundle',
         'FOS\OAuthServerBundle\Entity\ClientManager', // used by API client controller
         'OAuth2\OAuth2', // used by API client controller
         'Swift_Mailer',
+        'Oro\Bundle\DataGridBundle\Extension\Action\Actions\NavigateAction',
 
         // TIP-1007: Clean VisibilityChecker system
         'Akeneo\Platform\Bundle\UIBundle\ViewElement\Checker\NonEmptyPropertyVisibilityChecker',
@@ -62,6 +72,10 @@ $rules = [
         'Akeneo\Platform\Bundle\UIBundle\Form\Type\EntityIdentifierType',
 
         'Oro\Bundle\UserBundle\Exception\UserCannotBeDeletedException',
+
+        // TIP-1539: clean installer events
+        'Akeneo\Platform\Bundle\InstallerBundle\Event\InstallerEvent',
+        'Akeneo\Platform\Bundle\InstallerBundle\Event\InstallerEvents',
     ])->in('Akeneo\UserManagement\Bundle'),
 ];
 

@@ -12,6 +12,7 @@ use Akeneo\Tool\Component\StorageUtils\StorageEvents;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 use Symfony\Component\EventDispatcher\GenericEvent;
 use Symfony\Component\Validator\Validator\ValidatorInterface;
+use Webmozart\Assert\Assert;
 
 /**
  * Validates and saves the family variants belonging to a family whenever it is updated.
@@ -25,7 +26,7 @@ class SaveFamilyVariantOnFamilyUpdateSubscriber implements EventSubscriberInterf
     /** @var ValidatorInterface */
     private $validator;
 
-    /** @var BulkSaverInterface */
+    /** @var SaverInterface */
     private $familyVariantSaver;
 
     /** @var BulkSaverInterface */
@@ -84,6 +85,7 @@ class SaveFamilyVariantOnFamilyUpdateSubscriber implements EventSubscriberInterf
         $validFamilyVariants = $validationResponse['valid_family_variants'];
         $allViolations = $validationResponse['violations'];
 
+        Assert::isArray($validFamilyVariants);
         foreach ($validFamilyVariants as $familyVariant) {
             $this->familyVariantSaver->save($familyVariant);
         }
@@ -148,11 +150,6 @@ class SaveFamilyVariantOnFamilyUpdateSubscriber implements EventSubscriberInterf
         return $errorMessage;
     }
 
-    /**
-     * @param FamilyInterface $family
-     *
-     * @return FamilyVariantInterface[]
-     */
     private function validateFamilyVariants(FamilyInterface $family): array
     {
         $validFamilyVariants = [];

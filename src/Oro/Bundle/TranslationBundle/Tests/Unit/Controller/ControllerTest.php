@@ -4,6 +4,7 @@ namespace Oro\Bundle\TranslationBundle\Tests\Unit\Controller;
 
 use Oro\Bundle\TranslationBundle\Controller\Controller;
 use Oro\Bundle\TranslationBundle\Translation\Translator;
+use Twig\Environment;
 
 class ControllerTest extends \PHPUnit_Framework_TestCase
 {
@@ -24,7 +25,7 @@ class ControllerTest extends \PHPUnit_Framework_TestCase
      */
     public function testConstructor()
     {
-        $templating = $this->getMockBuilder('Symfony\Bundle\FrameworkBundle\Templating\EngineInterface')
+        $templating = $this->getMockBuilder(Environment::class)
             ->getMockForAbstractClass();
         $translator = $this->getMockBuilder(Translator::class)
             ->disableOriginalConstructor()
@@ -35,7 +36,7 @@ class ControllerTest extends \PHPUnit_Framework_TestCase
     public function testIndexAction()
     {
         $content = 'CONTENT';
-        $templating = $this->getMockBuilder('Symfony\Bundle\FrameworkBundle\Templating\EngineInterface')
+        $templating = $this->getMockBuilder(Environment::class)
             ->getMockForAbstractClass();
         $templating->expects($this->once())
             ->method('render')
@@ -72,7 +73,7 @@ class ControllerTest extends \PHPUnit_Framework_TestCase
      */
     public function testRenderJsTranslationContent($params, $expected)
     {
-        $templating = $this->createMock('Symfony\Bundle\FrameworkBundle\Templating\EngineInterface');
+        $templating = $this->createMock(Environment::class);
         $templating
             ->expects($this->any())
             ->method('render')

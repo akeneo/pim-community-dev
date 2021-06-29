@@ -1,4 +1,5 @@
 <?php
+
 declare(strict_types=1);
 
 namespace Akeneo\Connectivity\Connection\Domain\Webhook\Model\Read;
@@ -10,33 +11,24 @@ namespace Akeneo\Connectivity\Connection\Domain\Webhook\Model\Read;
  */
 class ConnectionWebhook
 {
-    /** @var string */
-    private $connectionCode;
+    private string $connectionCode;
 
-    /** @var ?string */
-    private $secret;
+    private ?string $secret;
 
-    /** @var ?string */
-    private $url;
+    private ?string $url;
 
-    /** @var bool */
-    private $enabled;
-
-    /** @var ?string */
-    private $connectionImage;
+    private bool $enabled;
 
     public function __construct(
         string $connectionCode,
         bool $enabled,
         ?string $secret = null,
-        ?string $url = null,
-        ?string $connectionImage = null
+        ?string $url = null
     ) {
         $this->enabled = $enabled;
         $this->connectionCode = $connectionCode;
         $this->secret = $secret;
         $this->url = $url;
-        $this->connectionImage = $connectionImage;
     }
 
     public function connectionCode(): string
@@ -59,18 +51,12 @@ class ConnectionWebhook
         return $this->enabled;
     }
 
-    public function connectionImage(): ?string
-    {
-        return $this->connectionImage;
-    }
-
     /**
      * @return array{
      *  connectionCode: string,
      *  enabled: boolean,
      *  secret: ?string,
      *  url: ?string,
-     *  connectionImage: ?string
      * }
      */
     public function normalize(): array
@@ -80,7 +66,6 @@ class ConnectionWebhook
             'enabled' => $this->enabled(),
             'secret' => $this->secret(),
             'url' => $this->url(),
-            'connectionImage' => $this->connectionImage(),
         ];
     }
 }

@@ -4,8 +4,8 @@ declare(strict_types=1);
 namespace Specification\Akeneo\Pim\Enrichment\Component\Product\Factory\NonExistentValuesFilter;
 
 use Akeneo\Pim\Enrichment\Component\Product\Factory\NonExistentValuesFilter\NonExistentMultiSelectValuesFilter;
-use Akeneo\Pim\Structure\Component\AttributeTypes;
 use Akeneo\Pim\Enrichment\Component\Product\Factory\NonExistentValuesFilter\OnGoingFilteredRawValues;
+use Akeneo\Pim\Structure\Component\AttributeTypes;
 use Akeneo\Pim\Structure\Component\Query\PublicApi\AttributeOption\GetExistingAttributeOptionCodes;
 use PhpSpec\ObjectBehavior;
 
@@ -39,7 +39,7 @@ final class NonExistentMultiSelectValuesFilterSpec extends ObjectBehavior
                                 ],
                                 'tablet' => [
                                     'en_US' => ['jean', 'claude', 'van', 'damm'],
-                                    'fr_FR' => ['des', 'fraises'],
+                                    'fr_FR' => ['des', 'fraises', 'Fraises', 'FRAISES'],
 
                                 ],
                             ]
@@ -70,13 +70,15 @@ final class NonExistentMultiSelectValuesFilterSpec extends ObjectBehavior
                 'van',
                 'damm',
                 'des',
-                'fraises'
+                'fraises',
+                'Fraises',
+                'FRAISES',
             ]
         ];
 
-        $getExistingAttributeOptionCodes->fromOptionCodesByAttributeCode($optionCodes)->willReturn(
+        $getExistingAttributeOptionCodes->fromOptionCodesByAttributeCode($optionCodes)->shouldBeCalled()->willReturn(
             [
-                'a_multi_select' => ['michel', 'fraises']
+                'a_multi_select' => ['michel', 'fraises'],
             ]
         );
 
@@ -95,7 +97,6 @@ final class NonExistentMultiSelectValuesFilterSpec extends ObjectBehavior
                                 'tablet' => [
                                     'en_US' => [],
                                     'fr_FR' => ['fraises'],
-
                                 ],
                             ]
                         ]

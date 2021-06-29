@@ -55,7 +55,7 @@ class RegisterFormExtensionsPass implements CompilerPassInterface
     }
 
     /**
-     * Get all the form extension configuration files in the Resources/form_extensions/ directories
+     * Get all the form extension configuration files in the Resources/config/form_extensions/ directories
      *
      * @param ContainerBuilder $container
      *

@@ -1,6 +1,7 @@
 pim_notification:
   types:
     settings: Settings
+    mass_delete: Deletion
 flash:
   comment:
     create:
@@ -52,6 +53,11 @@ pim_enrich.entity.product:
       select: Select
       all_visible: All visible
       copy: Copy
+    convert_variant_to_simple:
+      label: Convert to a simple product
+      dialog:
+        title: Confirm conversion
+        content: "Are you sure you want to convert this variant product to a simple product? All of its former values, categories and associations will be saved."
     history:
       version: Version
       author: Author
@@ -165,10 +171,11 @@ pim_enrich.entity.product_model:
     variant_axis:
       label: 'variant axis'
       create: Add new
-      create_label: "Add a new {{ axes }}"
+      title_create_label: "]-Inf, 1]Add a new {{ axes }}|]1, Inf[Add a new {{ axes }}"
       required_label: '(variant axis)'
     completeness:
       variant_product: "]-Inf, 1]{{ complete }} / {{ total }} variant product|]1, Inf[{{ complete }} / {{ total }} variant products"
+      label: Variant
     delete:
       confirm: Are you sure you want to delete this product model? All its children, product models and variant products, will be also deleted.
       confirm_for_products_and_product_models: Are you sure you want to delete the selected products and product models? All the product models' children will be also deleted.
@@ -275,11 +282,18 @@ pim_enrich.export.product:
       operators:
         BETWEEN: Between
         NOT BETWEEN: Not between
+    quality-score:
+      title: Quality Score
+      operator_choice_title: Export Quality Score(s) for
+      empty_selection: No condition on Quality Score
+      operators:
+        IN AT LEAST ONE LOCALE: At least one locale
+        IN ALL LOCALES: All selected locales
   global_settings:
     title: Global settings
 pim_enrich.mass_edit.product:
   title: Products bulk action
-  confirm: "Select the products you want to associate to the {{ productCount }} selected product(s)"
+  confirm: "{0}You are about to update some products with the following information, please confirm.|{1}You are about to update a product with the following information, please confirm.|]1, Inf[You are about to update {{ itemsCount }} products with the following information, please confirm."
   step:
     select:
       label: Choose products
@@ -329,6 +343,7 @@ pim_enrich.mass_edit.product:
       label: Move between categories
       label_count: "{0}Move some <span class=\"AknFullPage-title--highlight\">products</span> between categories|{1}Move <span class=\"AknFullPage-title--highlight\">1 product</span> between categories|]1, Inf[Move <span class=\"AknFullPage-title--highlight\">{{ itemsCount }} products</span> between categories"
       description: The products will be classified into following categories, the existing classification is lost.
+      no_update: Please select a category.
     remove_from_category:
       label: Remove from categories
       label_count: "{0}Remove some <span class=\"AknFullPage-title--highlight\">products</span> from categories|{1}Remove <span class=\"AknFullPage-title--highlight\">1 product</span> from categories|]1, Inf[Remove <span class=\"AknFullPage-title--highlight\">{{ itemsCount }} products</span> from categories"
@@ -339,6 +354,10 @@ pim_enrich.mass_edit.product:
       label_count: "{0}Add some <span class=\"AknFullPage-title--highlight\">products</span> to an existing product model|{1}Add <span class=\"AknFullPage-title--highlight\">1 product</span> to an existing product model|]1, Inf[Add <span class=\"AknFullPage-title--highlight\">{{ itemsCount }} products</span> to an existing product model"
       description: The product model selected will gather the products and allows the enrichment of their common properties.
       no_update: Please select a product model before to continue
+    convert_to_simple_products:
+      label: Convert to simple products
+      label_count: "{0}Convert some <span class=\"AknFullPage-title--highlight\">products</span> to simple products|{1}Convert <span class=\"AknFullPage-title--highlight\">1 product</span> to a simple product|]1, Inf[Convert <span class=\"AknFullPage-title--highlight\">{{ itemsCount }} products</span> to simple products"
+      description: All of the former values, categories and associations will be saved.
     associate_to_product_and_product_model:
       label: Associate
       label_count: "{0}Associate some <span class=\"AknFullPage-title--highlight\">products</span> to products or product models|{1}Associate <span class=\"AknFullPage-title--highlight\">1 product</span> to products or product models|]1, Inf[Associate <span class=\"AknFullPage-title--highlight\">{{ itemsCount }} products</span> to products or product models"
@@ -350,6 +369,9 @@ pim_enrich.mass_edit.product:
       description: The parent of the variant products or sub-product models selected in the grid will be changed to the chosen product model.
 pim_datagrid:
   no_entities: "No {{ entityHint }} found"
+  no_entities.product: "No product found" #Custom translation for product grid
+  no_results: "Sorry, there is no {{ entityHint }} for your search."
+  no_results.product: "Sorry, there is no product for your search." #Custom translation for product grid
   mass_action_group:
     bulk_actions:
       label: Bulk Actions
@@ -374,8 +396,10 @@ pim_datagrid:
         all_attributes: All attributes
         with_codes: With codes
         with_labels: With labels
-      success_message: "You can follow {{ job_link }}."
-      job_link_label: the progress of the execution here
+        without_media: Without media
+        with_media: With media
+      flash:
+        message: "You can follow the progression of your export here."
     mass_edit: Bulk actions
     sequential_edit: Sequential edit
     mass_delete: Mass delete
@@ -384,6 +408,7 @@ pim_datagrid:
       product: "]-Inf, 1]{{ count }} result selected|]1, Inf[{{ count }} results selected"
   view_selector:
     view: Views
+    choose_type: I want to create a private view
   actions:
     edit_product_attributes: Edit attributes of the product
     classify_product: Classify the product
@@ -443,6 +468,9 @@ batch_jobs:
   add_to_existing_product_model:
     label: Add to an existing product model
     perform.label: Add to an existing product model
+  convert_to_simple_products:
+    label: Convert to simple products
+    perform.label: Convert to simple products
   csv_product_grid_context_quick_export:
     quick_export.label: Csv product grid context quick export
     quick_export_product_model.label: CSV product model grid context quick export

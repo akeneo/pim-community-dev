@@ -2,7 +2,7 @@
 
 namespace Akeneo\Tool\Component\Localization;
 
-use Symfony\Component\Translation\TranslatorInterface;
+use Symfony\Contracts\Translation\TranslatorInterface;
 
 /**
  * Symfony Translator proxy for the Localization component.
@@ -13,12 +13,8 @@ use Symfony\Component\Translation\TranslatorInterface;
  */
 class TranslatorProxy
 {
-    /** @var TranslatorInterface */
-    protected $translator;
+    protected TranslatorInterface $translator;
 
-    /**
-     * @param TranslatorInterface $translator
-     */
     public function __construct(TranslatorInterface $translator)
     {
         $this->translator = $translator;

@@ -1,2 +1,4 @@
 pim_notification:
   report: Ulat
+  mark_all_as_read: Markahan lahat bilang nabasa
+  no_notifications: Walang mga abiso

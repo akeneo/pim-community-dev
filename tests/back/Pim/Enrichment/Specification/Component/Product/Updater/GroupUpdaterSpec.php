@@ -10,7 +10,7 @@ use Akeneo\Pim\Enrichment\Component\Product\Model\GroupTranslation;
 use Akeneo\Pim\Structure\Component\Model\AttributeInterface;
 use Akeneo\Pim\Enrichment\Component\Product\Model\GroupInterface;
 use Akeneo\Pim\Structure\Component\Model\GroupTypeInterface;
-use Akeneo\Pim\Enrichment\Component\Product\Model\ProductInterface;
+use Akeneo\Pim\Enrichment\Component\Product\Model\Product;
 use Akeneo\Pim\Enrichment\Component\Product\Query\ProductQueryBuilderFactoryInterface;
 use Akeneo\Pim\Enrichment\Component\Product\Query\ProductQueryBuilderInterface;
 use Akeneo\Pim\Structure\Component\Repository\AttributeRepositoryInterface;
@@ -59,13 +59,15 @@ class GroupUpdaterSpec extends ObjectBehavior
         GroupTranslation $translatable,
         AttributeInterface $attributeColor,
         AttributeInterface $attributeSize,
-        ProductInterface $removedProduct,
-        ProductInterface $addedProduct,
         ProductQueryBuilderInterface $pqb
     ) {
         $groupTypeRepository->findOneByIdentifier('RELATED')->willReturn($type);
         $attributeRepository->findOneByIdentifier('color')->willReturn($attributeColor);
         $attributeRepository->findOneByIdentifier('size')->willReturn($attributeSize);
+
+        $addedProduct = (new Product())->setIdentifier('foo');
+        $productAlreadyInGroup = (new Product())->setIdentifier('bar');
+        $removedProduct = (new Product())->setIdentifier('ziggy');
 
         $pqbFactory->create()->willReturn($pqb);
         $pqb->addFilter('identifier', 'IN', ['foo'])->shouldBeCalled();
@@ -80,7 +82,7 @@ class GroupUpdaterSpec extends ObjectBehavior
 
         $group->removeProduct($removedProduct)->shouldBeCalled();
         $group->addProduct($addedProduct)->shouldBeCalled();
-        $group->getProducts()->willReturn([$removedProduct]);
+        $group->getProducts()->willReturn([$removedProduct, $productAlreadyInGroup]);
 
         $values = [
             'code'     => 'mycode',
@@ -88,7 +90,7 @@ class GroupUpdaterSpec extends ObjectBehavior
             'labels'   => [
                 'fr_FR' => 'T-shirt super beau',
             ],
-            'products' => ['foo']
+            'products' => ['foo', 'bar']
         ];
 
         $this->update($group, $values, []);

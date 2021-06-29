@@ -29,10 +29,10 @@ class CheckWebhookReachabilityHandlerSpec extends ObjectBehavior
 
     public function it_returns_url_reachability_status($reachabilityChecker): void
     {
-        $command = new CheckWebhookReachabilityCommand('http://172.17.0.1:8000/webhook');
+        $command = new CheckWebhookReachabilityCommand('http://172.17.0.1:8000/webhook', '1234');
         $expectedUrlReachabilityStatus = new UrlReachabilityStatus(true, "200: OK");
 
-        $reachabilityChecker->check($command->webhookUrl())->willReturn($expectedUrlReachabilityStatus);
+        $reachabilityChecker->check($command->webhookUrl(), $command->secret())->willReturn($expectedUrlReachabilityStatus);
 
         $handleResult = $this->handle($command);
 

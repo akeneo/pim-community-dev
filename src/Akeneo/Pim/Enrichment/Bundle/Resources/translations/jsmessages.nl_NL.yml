@@ -1,6 +1,7 @@
 pim_notification:
   types:
     settings: Instellingen
+    mass_delete: Verwijderen
 flash:
   comment:
     create:
@@ -31,6 +32,9 @@ pim_enrich.entity.product:
       fail: Er is geen attribuut geconfigureerd als product-id of je hebt niet de benodigde bewerkingsrechten.
   page_title:
     index: "]-Inf, 1]{{ count }} resultaat|]1, Inf[{{ count }} resultaten"
+    product: "]-Inf, 1]{{ count }} product|]1, Inf[{{ count }} producten"
+    product_model: "]-Inf, 1]{{ count }} productmodel|]1, Inf[{{ count }} productmodellen"
+    product_and_product_model: "{{ productCount }}, {{ productModelCount }}"
   module:
     create:
       subtitle: Product aanmaken
@@ -49,6 +53,11 @@ pim_enrich.entity.product:
       select: Selecteer
       all_visible: Alle zichtbare
       copy: kopiëren
+    convert_variant_to_simple:
+      label: Converteren naar een eenvoudig product
+      dialog:
+        title: Conversie bevestigen
+        content: "Weet u zeker dat u dit variantproduct wilt converteren naar een eenvoudig product? Alle oude waarden, categorieën en associaties blijven behouden."
     history:
       version: Versie
       author: Auteur
@@ -162,10 +171,11 @@ pim_enrich.entity.product_model:
     variant_axis:
       label: 'variant as'
       create: Nieuwe toevoegen
-      create_label: "Nieuwe {{ axes }} toevoegen"
+      title_create_label: "]-Inf, 1]Voeg een nieuwe {{ axes }}|]1, Inf[Voeg een nieuwe {{ axes }} toe"
       required_label: '(variant as)'
     completeness:
       variant_product: "]-Inf, 1]{{ complete }} / {{ total }} variant product|]1, Inf[{{ complete }}   {{ total }} variant producten"
+      label: Variant
     delete:
       confirm: Weet u zeker dat u dit product model wil verwijderen? Alle kinderen, productmodellen en productvarianten zullen ook verwijderd worden.
       confirm_for_products_and_product_models: Weet u zeker dat u de geselecteerde producten en productmodellen wil verwijderen? Alle kinderen van deze productmodellen worden ook verwijderd.
@@ -199,6 +209,45 @@ pim_enrich.entity.category:
   label: categorie
   uppercase_label: Categorie
   plural_label: Categorieën
+  page_title:
+    index: "]-Inf, 1]{{ count }} boom|]1, Inf[{{ count }} bomen"
+  content:
+    empty_tree_list:
+      title: U hebt nog geen boom.
+      hint: Maak uw eerste boom aan.
+    tree_list:
+      columns:
+        label: Boomlabel
+        number_of_categories: Aantal categorieën
+        count_categories: ']-Inf, 1]{{ count }} categorie|]1, Inf[{{ count }} categorieën'
+    tree:
+      not_found: Categorieboom niet gevonden
+    edit:
+      not_found: Categorie niet gevonden
+      default_tree_label: Boom
+      success: De categorie is bijgewerkt
+      fail: De categorie kon niet worden bijgewerkt
+  new_category: Nieuwe categorie
+  new_category_tree: Nieuwe categorieboom
+  category_created: De categorie "{{ code }}" is aangemaakt
+  category_creation_error: De categorie "{{ code }}" kon niet worden aangemaakt
+  category_tree_creation:
+    success: De boom "{{ code }}" is aangemaakt
+    error: De boom "{{ code }}" kon niet worden aangemaakt
+  category_tree_deletion:
+    success: De boom "{{ tree }}" is verwijderd
+    error: De boom "{{ tree }}" kon niet worden verwijderd
+    confirmation: Weet u zeker dat u de boom {{ name }} wilt verwijderen? Alle categorieën in die boom worden verwijderd en de producten worden uit alle categorieën verwijderd.
+    products_limit_exceeded:
+      title: Deze boom kan niet worden verwijderd.
+      message: De boom "{{ tree }}" bevat meer dan {{ limit }} producten en kan daarom niet verwijderd worden.
+  category_deletion:
+    success: De categorie "{{ name }}" is verwijderd
+    error: De categorie "{{ name }}" kon niet worden verwijderd
+    confirmation: Weet u zeker dat u de categorie {{ name }} wilt verwijderen? De producten in deze categorie worden niet verwijderd.
+    products_limit_exceeded:
+      title: Deze categorie kan niet worden verwijderd
+      message: De categorie "{{ name }}" bevat meer dan {{ limit }} producten en kan daarom niet worden verwijderd.
 pim_enrich.export.product:
   data:
     title: Filter de producten
@@ -272,6 +321,13 @@ pim_enrich.export.product:
       operators:
         BETWEEN: Tussen
         NOT BETWEEN: Niet tussen
+    quality-score:
+      title: Kwaliteitsscore
+      operator_choice_title: Kwaliteit scores exporteren voor
+      empty_selection: Geen voorwaarde op kwaliteitsscore
+      operators:
+        IN AT LEAST ONE LOCALE: Minstens één lokalisatie
+        IN ALL LOCALES: Alle geselecteerde lokalisaties
   global_settings:
     title: Algemene instellingen
 pim_enrich.mass_edit.product:
@@ -326,6 +382,7 @@ pim_enrich.mass_edit.product:
       label: Verplaats tussen categorieën
       label_count: "{0}Verplaats sommige <span class=\"AknFullPage-title--highlight\">producten</span> tussen categorieën|{1}Verplaats <span class=\"AknFullPage-title--highlight\">1 product</span> tussen categorieën|]1, Inf[Verplaats <span class=\"AknFullPage-title--highlight\">{{ itemsCount }} producten</span> tussen categorieën"
       description: De producten zullen worden geclassificeerd in de volgende categorieën. De bestaande classificatie gaat verloren.
+      no_update: Selecteer een categorie.
     remove_from_category:
       label: Verwijder uit categorieën
       label_count: "{0}Verwijder sommige <span class=\"AknFullPage-title--highlight\">producten</span> van categorieën|{1}Verwijder <span class=\"AknFullPage-title--highlight\">1 product</span> van categorieën|]1, Inf[Verwijder <span class=\"AknFullPage-title--highlight\">{{ itemsCount }} producten</span> van categorieën"
@@ -336,6 +393,10 @@ pim_enrich.mass_edit.product:
       label_count: "{0}Voeg sommige <span class=\"AknFullPage-title--highlight\">producten</span> toe aan een bestaand productmodel|{1}Voeg <span class=\"AknFullPage-title--highlight\">1 product</span> toe aan een bestaand productmodel|]1, Inf[Voeg <span class=\"AknFullPage-title--highlight\">{{ itemsCount }} producten</span> toe aan een bestaand productmodel"
       description: Het geselecteerde productmodel verzamelt de producten en maakt de verrijking van hun gemeenschappelijke eigenschappen mogelijk.
       no_update: Selecteer een product model voordat u wilt doorgaan
+    convert_to_simple_products:
+      label: Converteren naar een eenvoudig product
+      label_count: "{0}Converteer een selectie van <span class=\"AknFullPage-title--highlight\">producten</span> naar eenvoudige producten|{1}Converteer <span class=\"AknFullPage-title--highlight\">één product</span> naar een simpel product|]1, Inf[Converteer <span class=\"AknFullPage-title--highlight\">{{ itemsCount }} producten</span> naar eenvoudige producten"
+      description: Alle bestaande waarden, categorieën en associaties worden behouden.
     associate_to_product_and_product_model:
       label: Associëren
       label_count: "{0}Koppel sommige <span class=\"AknFullPage-title--highlight\">producten</span> aan producten of product modellen|{1}Koppel <span class=\"AknFullPage-title--highlight\">1 product</span> aan producten of product modellen|]1, Inf[Koppel <span class=\"AknFullPage-title--highlight\">{{ itemsCount }} producten</span> aan producten of product modellen"
@@ -347,6 +408,9 @@ pim_enrich.mass_edit.product:
       description: In het overzicht zal het overkoepelende productmodel van het variantproduct of sub-productmodel worden aangepast naar het gekozen productmodel.
 pim_datagrid:
   no_entities: "Geen {{ entityHint }} gevonden"
+  no_entities.product: "Geen product gevonden" #Custom translation for product grid
+  no_results: "Er is geen {{ entityHint }} voor uw zoekopdracht."
+  no_results.product: "Er is geen product voor uw zoekopdracht." #Custom translation for product grid
   mass_action_group:
     bulk_actions:
       label: Bulkacties
@@ -363,8 +427,18 @@ pim_datagrid:
       xlsx_all: Excel (alle attributen)
       xlsx_grid_context: Excel (rastercontext)
       configurator:
+        subtitle: Snelle export
         title: Selecteer een actie
+        csv: CSV
+        xlsx: XLSX
+        grid_context: Overzicht context
         all_attributes: Alle attributen
+        with_codes: Met codes
+        with_labels: Met labels
+        without_media: Zonder media
+        with_media: Met media
+      flash:
+        message: "Je kunt hier de voortgang van je export volgen."
     mass_edit: Bulk acties
     sequential_edit: Sequentiële bewerking
     mass_delete: Groepsgewijs verwijderen
@@ -373,6 +447,7 @@ pim_datagrid:
       product: "]-Inf, 1]{{ count }} resultaat geselecteerd|]1, Inf[{{ count }} resultaten geselecteerd"
   view_selector:
     view: Weergaves
+    choose_type: Ik wil een privéweergave aanmaken
   actions:
     edit_product_attributes: Bewerk attributen van het product
     classify_product: Classificeer het product
@@ -388,19 +463,34 @@ pim_datagrid:
     label: Filters
     system: Systeem
     product_typology:
+      label: 'Product typologie'
+      simple: 'Eenvoudig'
       variant: 'Variant'
     entity_type:
       label: 'Variant'
+      grouped: 'Gegroepeerd'
+      ungrouped: 'Niet-gegroepeerd'
     family:
       label: Familie
     groups:
       label: Groepen
     enabled:
       label: Status
+    scope:
+      label: Bereik
     completeness:
       label: Compleet
+    created:
+      label: Aangemaakt op
+    updated:
+      label: Bijgewerkt op
+    label_or_identifier:
+      label: Label of identifier
+    parent:
+      label: Bovenliggende
     identifier:
       label: Identifier
+  search: Zoeken op {{ label }}
 batch_jobs:
   add_association:
     label: Associëren
@@ -417,6 +507,9 @@ batch_jobs:
   add_to_existing_product_model:
     label: Toevoegen aan een bestaand productmodel
     perform.label: Toevoegen aan een bestaand productmodel
+  convert_to_simple_products:
+    label: Converteren naar een eenvoudig product
+    perform.label: Converteren naar een eenvoudig product
   csv_product_grid_context_quick_export:
     quick_export.label: Csv productoverzicht context snelle export
     quick_export_product_model.label: CSV product model raster context snel exporteren

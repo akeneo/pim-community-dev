@@ -34,8 +34,10 @@ class BooleanFilterSpec extends ObjectBehavior
 
     function it_parses_data()
     {
-        $this->parseData(['value' => 0])->shouldReturn(['value' => false]);
-        $this->parseData(['value' => 1])->shouldReturn(['value' => true]);
+        $this->parseData(['value' => 0])->shouldReturn(['value' => 0]);
+        $this->parseData(['value' => 1])->shouldReturn(['value' => 1]);
+        $this->parseData(['value' => 2])->shouldReturn(['value' => 2]);
+        $this->parseData(['value' => 3])->shouldReturn(['value' => 3]);
         $this->parseData(['value' => true])->shouldReturn(false);
         $this->parseData(['value' => false])->shouldReturn(false);
         $this->parseData(null)->shouldReturn(false);
@@ -51,6 +53,24 @@ class BooleanFilterSpec extends ObjectBehavior
         $utility->applyFilter($datasource, 'bar', '=', true)->shouldBeCalled();
 
         $this->apply($datasource, ['value' => BooleanFilterType::TYPE_YES])->shouldReturn(true);
+    }
+
+    function it_applies_empty_filter_on_the_datasource(
+        FilterDatasourceAdapterInterface $datasource,
+        $utility
+    ) {
+        $utility->applyFilter($datasource, 'bar', 'EMPTY', '')->shouldBeCalled();
+
+        $this->apply($datasource, ['value' => BooleanFilterType::TYPE_EMPTY])->shouldReturn(true);
+    }
+
+    function it_applies_not_empty_filter_on_the_datasource(
+        FilterDatasourceAdapterInterface $datasource,
+        $utility
+    ) {
+        $utility->applyFilter($datasource, 'bar', 'NOT EMPTY', '')->shouldBeCalled();
+
+        $this->apply($datasource, ['value' => BooleanFilterType::TYPE_NOT_EMPTY])->shouldReturn(true);
     }
 
     function it_does_not_apply_boolean_flexible_filter_on_unparsable_data(
@@ -81,6 +101,8 @@ class BooleanFilterSpec extends ObjectBehavior
         FormView $typeView,
         ChoiceView $yesChoice,
         ChoiceView $noChoice,
+        ChoiceView $emptyChoice,
+        ChoiceView $notEmptyChoice,
         ChoiceView $maybeChoice,
         $factory,
         $utility
@@ -95,13 +117,17 @@ class BooleanFilterSpec extends ObjectBehavior
         $typeFormBuilder->getOption('choices')->willReturn(['overriden_choice_1' => 0, 'overriden_choice_2' => 1]);
         $formView->children = ['value' => $fieldView, 'type' => $typeView];
         $formView->vars = ['populate_default' => true];
-        $fieldView->vars = ['multiple' => true, 'choices' => [$yesChoice, $noChoice]];
+        $fieldView->vars = ['multiple' => true, 'choices' => [$yesChoice, $noChoice, $emptyChoice, $notEmptyChoice]];
         $typeView->vars = ['choices' => [$maybeChoice]];
 
         $yesChoice->label = 'Yes';
         $yesChoice->value = 1;
         $noChoice->label = 'No';
         $noChoice->value = 0;
+        $emptyChoice->label = 'Empty';
+        $emptyChoice->value = 2;
+        $notEmptyChoice->label = 'Not empty';
+        $notEmptyChoice->value = 3;
 
         $this->getMetadata()->shouldReturn(
             [
@@ -111,10 +137,15 @@ class BooleanFilterSpec extends ObjectBehavior
                     [
                         'label' => 'Yes',
                         'value' => 1,
-                    ],
-                    [
+                    ], [
                         'label' => 'No',
                         'value' => 0,
+                    ], [
+                        'label' => 'Empty',
+                        'value' => 2,
+                    ], [
+                        'label' => 'Not empty',
+                        'value' => 3,
                     ]
                 ],
                 'enabled'              => true,

@@ -110,7 +110,7 @@ class PropertyClearerIntegration extends TestCase
         ];
         $product = $this->createProduct('a_product_with_association', $parameters);
 
-        $this->assertGreaterThan(0, $this->getAssociationsCount($product));
+        $this->assertSame(2, $this->getAssociationsCount($product));
 
         $this->propertyClearer->clear($product, 'associations');
         $this->assertSame(0, $this->getAssociationsCount($product));

@@ -1,4 +1,4 @@
-import * as _ from "underscore";
+import * as _ from 'underscore';
 import {EventsHash} from 'backbone';
 
 const $ = require('jquery');
@@ -13,11 +13,10 @@ interface Channel {
   code: string;
   labels: {
     [locale: string]: string;
-  }
+  };
 }
 
-class ChannelSwitcher extends BaseForm
-{
+class ChannelSwitcher extends BaseForm {
   private template = _.template(template);
 
   private channels: Channel[] = [];
@@ -32,23 +31,22 @@ class ChannelSwitcher extends BaseForm
     };
   }
 
-  configure () {
+  configure() {
     this.listenTo(this.getRoot(), 'pim_enrich:form:locale_switcher:change', (_: any) => {
       this.render();
     });
 
     return $.when(
       BaseForm.prototype.configure.apply(this, arguments),
-      this.fetchChannels()
-        .then((channels: Channel[]) => {
-          this.channels = channels;
-          const currentChannelCode = UserContext.get('catalogScope');
-          let currentChannel = this.channels.find((channel: Channel) => channel.code === currentChannelCode);
-          if (undefined === currentChannel) {
-            [currentChannel] = this.channels;
-            UserContext.set('catalogScope', currentChannel.code);
-          }
-        })
+      this.fetchChannels().then((channels: Channel[]) => {
+        this.channels = channels;
+        const currentChannelCode = UserContext.get('catalogScope');
+        let currentChannel = this.channels.find((channel: Channel) => channel.code === currentChannelCode);
+        if (undefined === currentChannel) {
+          [currentChannel] = this.channels;
+          UserContext.set('catalogScope', currentChannel.code);
+        }
+      })
     );
   }
 
@@ -60,27 +58,23 @@ class ChannelSwitcher extends BaseForm
     this.$el.html(
       this.template({
         channels: this.channels,
-        currentScope: i18n.getLabel(
-          currentChannel.labels,
-          UserContext.get('catalogLocale'),
-          currentChannel.code
-        ),
+        currentScope: i18n.getLabel(currentChannel.labels, UserContext.get('catalogLocale'), currentChannel.code),
         catalogLocale: UserContext.get('catalogLocale'),
         i18n: i18n,
         displayInline: false,
         displayLabel: true,
-        label: __('pim_enrich.entity.channel.uppercase_label')
+        label: __('pim_enrich.entity.channel.uppercase_label'),
       })
     );
 
     return this;
   }
 
-  changeChannel (event: any) {
+  changeChannel(event: any) {
     UserContext.set('catalogScope', event.currentTarget.dataset.scope);
     this.getRoot().trigger('pim_enrich:form:scope_switcher:change', {
       scopeCode: event.currentTarget.dataset.scope,
-      context: "base_product"
+      context: 'base_product',
     });
     this.render();
   }

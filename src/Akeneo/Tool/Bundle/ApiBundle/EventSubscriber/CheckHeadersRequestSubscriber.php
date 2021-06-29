@@ -7,7 +7,7 @@ use FOS\RestBundle\FOSRestBundle;
 use FOS\RestBundle\Negotiation\FormatNegotiator;
 use FOS\RestBundle\Util\StopFormatListenerException;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
-use Symfony\Component\HttpKernel\Event\GetResponseEvent;
+use Symfony\Component\HttpKernel\Event\RequestEvent;
 use Symfony\Component\HttpKernel\Exception\NotAcceptableHttpException;
 use Symfony\Component\HttpKernel\Exception\UnsupportedMediaTypeHttpException;
 use Symfony\Component\HttpKernel\HttpKernelInterface;
@@ -55,12 +55,10 @@ class CheckHeadersRequestSubscriber implements EventSubscriberInterface
     /**
      * Check the content-type and accept headers in the request.
      *
-     * @param GetResponseEvent $event The event
-     *
      * @throws NotAcceptableHttpException
      * @throws UnsupportedMediaTypeHttpException
      */
-    public function onKernelRequest(GetResponseEvent $event)
+    public function onKernelRequest(RequestEvent $event)
     {
         $request = $event->getRequest();
 

@@ -9,7 +9,7 @@ Feature: Classify many products and product models at once
     And I am logged in as "Julia"
     And I am on the products grid
 
-  @critical
+  @critical @purge-messenger
   Scenario: Add several products and product models to categories at once
     When I sort by "ID" value ascending
     Given I select rows aphrodite, 1111111171 and amor
@@ -17,12 +17,14 @@ Feature: Classify many products and product models at once
     And I choose the "Add to categories" operation
     And I move on to the choose step
     And I choose the "Add to categories" operation
-    And I press the "Master" button
-    And I expand the "master" category
-    And I click on the "master_men" category
+    And I visit the "Master" tab
+    And I expand the "Master" category
+    And I click on the "Men" category
     When I confirm mass edit
     And I wait for the "add_to_category" job to finish
     Then the categories of the product model "aphrodite" should be "master_men, master_women_blouses, print_clothing and supplier_zaro"
     Then the categories of the product "1111111114" should be "master_men, master_women_blouses, print_clothing and supplier_zaro"
     Then the categories of the product "1111111171" should be "master_accessories_bags, master_men, print_accessories and supplier_zaro"
     Then the categories of the product model "amor" should be "master_men, master_men_blazers and supplier_zaro"
+    And 1 event of type "product.updated" should have been raised
+    And 2 events of type "product_model.updated" should have been raised

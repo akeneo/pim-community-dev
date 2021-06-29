@@ -6,9 +6,8 @@ namespace Specification\Akeneo\Pim\Structure\Bundle\Datagrid\Attribute;
 
 use Akeneo\Pim\Structure\Bundle\Datagrid\Attribute\FamilyFilter;
 use Doctrine\ORM\QueryBuilder;
-use Oro\Bundle\FilterBundle\Datasource\FilterDatasourceAdapterInterface;
-use Oro\Bundle\FilterBundle\Datasource\Orm\OrmFilterDatasourceAdapter;
 use Oro\Bundle\FilterBundle\Filter\FilterUtility;
+use Oro\Bundle\PimFilterBundle\Datasource\Orm\OrmFilterDatasourceAdapter;
 use PhpSpec\ObjectBehavior;
 use Prophecy\Argument;
 use Symfony\Component\Form\FormFactoryInterface;
@@ -25,7 +24,7 @@ final class FamilyFilterSpec extends ObjectBehavior
         $this->shouldHaveType(FamilyFilter::class);
     }
 
-    public function it_does_nothing_if_filter_value_is_empty(FilterDatasourceAdapterInterface $ds)
+    public function it_does_nothing_if_filter_value_is_empty(OrmFilterDatasourceAdapter $ds)
     {
         $this->apply($ds, null)->shouldReturn(false);
         $this->apply($ds, [])->shouldReturn(false);

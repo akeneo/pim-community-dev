@@ -849,7 +849,7 @@ final class QuantifiedAssociationsContext implements Context
     {
         if ($this->exception) {
             Assert::isInstanceOf($this->exception, InvalidPropertyException::class);
-            Assert::same($this->exception->getMessage(), 'Property "associations" expects a valid association type code. The association type does not exist, "PACK" given.');
+            Assert::same($this->exception->getMessage(), 'Property "associations" expects a valid association type code. The association type does not exist or is quantified, "PACK" given.');
         } else {
             $this->assertEntityHasValidationError(
                 $this->product,
@@ -895,7 +895,7 @@ final class QuantifiedAssociationsContext implements Context
     {
         if ($this->exception) {
             Assert::isInstanceOf($this->exception, InvalidPropertyException::class);
-            Assert::same($this->exception->getMessage(), 'Property "associations" expects a valid association type code. The association type does not exist, "PACK" given.');
+            Assert::same($this->exception->getMessage(), 'Property "associations" expects a valid association type code. The association type does not exist or is quantified, "PACK" given.');
         } else {
             $this->assertEntityHasValidationError(
                 $this->productModel,

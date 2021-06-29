@@ -4,6 +4,8 @@ declare(strict_types=1);
 
 namespace Akeneo\Pim\Enrichment\Component\Product\Connector\ReadModel;
 
+use Akeneo\Pim\Automation\DataQualityInsights\Domain\Model\ChannelLocaleRateCollection;
+use Akeneo\Pim\Enrichment\Component\Product\Completeness\Model\ProductCompletenessCollection;
 use Akeneo\Pim\Enrichment\Component\Product\Model\ReadValueCollection;
 use Akeneo\Pim\Enrichment\Component\Product\Model\ValueInterface;
 use Akeneo\Pim\Enrichment\Component\Product\Value\OptionsValue;
@@ -58,6 +60,10 @@ final class ConnectorProduct
     /** @var ReadValueCollection */
     private $values;
 
+    private ?ChannelLocaleRateCollection $qualityScores;
+
+    private ?ProductCompletenessCollection $completenesses;
+
     public function __construct(
         int $id,
         string $identifier,
@@ -71,7 +77,9 @@ final class ConnectorProduct
         array $associations,
         array $quantifiedAssociations,
         array $metadata,
-        ReadValueCollection $values
+        ReadValueCollection $values,
+        ?ChannelLocaleRateCollection $qualityScores,
+        ?ProductCompletenessCollection $completenesses
     ) {
         $this->id = $id;
         $this->identifier = $identifier;
@@ -86,6 +94,8 @@ final class ConnectorProduct
         $this->associations = $associations;
         $this->quantifiedAssociations = $quantifiedAssociations;
         $this->metadata = $metadata;
+        $this->qualityScores = $qualityScores;
+        $this->completenesses = $completenesses;
     }
 
     public function id(): int
@@ -158,6 +168,16 @@ final class ConnectorProduct
         return $this->values->getAttributeCodes();
     }
 
+    public function qualityScores(): ?ChannelLocaleRateCollection
+    {
+        return $this->qualityScores;
+    }
+
+    public function completenesses(): ?ProductCompletenessCollection
+    {
+        return $this->completenesses;
+    }
+
     /**
      * The value cannot be an object.
      *
@@ -178,7 +198,9 @@ final class ConnectorProduct
             $this->associations,
             $this->quantifiedAssociations,
             array_merge($this->metadata, [$key => $value]),
-            $this->values
+            $this->values,
+            $this->qualityScores,
+            $this->completenesses
         );
     }
 
@@ -236,7 +258,30 @@ final class ConnectorProduct
             $this->associations,
             $this->quantifiedAssociations,
             $this->metadata,
-            $values
+            $values,
+            $this->qualityScores,
+            $this->completenesses
+        );
+    }
+
+    public function buildWithQualityScores(ChannelLocaleRateCollection $productQualityScores): self
+    {
+        return new self(
+            $this->id,
+            $this->identifier,
+            $this->createdDate,
+            $this->updatedDate,
+            $this->enabled,
+            $this->familyCode,
+            $this->categoryCodes,
+            $this->groupCodes,
+            $this->parentProductModelCode,
+            $this->associations,
+            $this->quantifiedAssociations,
+            $this->metadata,
+            $this->values,
+            $productQualityScores,
+            $this->completenesses
         );
     }
 
@@ -263,7 +308,9 @@ final class ConnectorProduct
             $this->associations,
             $this->quantifiedAssociations,
             $this->metadata,
-            $values
+            $values,
+            $this->qualityScores,
+            $this->completenesses
         );
     }
 
@@ -338,7 +385,9 @@ final class ConnectorProduct
             $filteredAssociations,
             $this->quantifiedAssociations,
             $this->metadata,
-            $this->values
+            $this->values,
+            $this->qualityScores,
+            $this->completenesses
         );
     }
 
@@ -370,7 +419,9 @@ final class ConnectorProduct
             $this->associations,
             $filteredQuantifiedAssociations,
             $this->metadata,
-            $this->values
+            $this->values,
+            $this->qualityScores,
+            $this->completenesses
         );
     }
 
@@ -402,7 +453,9 @@ final class ConnectorProduct
             $this->associations,
             $filteredQuantifiedAssociations,
             $this->metadata,
-            $this->values
+            $this->values,
+            $this->qualityScores,
+            $this->completenesses
         );
     }
 
@@ -431,7 +484,9 @@ final class ConnectorProduct
             $filteredAssociations,
             $this->quantifiedAssociations,
             $this->metadata,
-            $this->values
+            $this->values,
+            $this->qualityScores,
+            $this->completenesses
         );
     }
 
@@ -452,7 +507,30 @@ final class ConnectorProduct
             $this->associations,
             $this->quantifiedAssociations,
             $this->metadata,
-            $this->values
+            $this->values,
+            $this->qualityScores,
+            $this->completenesses
+        );
+    }
+
+    public function buildWithCompletenesses(ProductCompletenessCollection $productCompletenessCollection): ConnectorProduct
+    {
+        return new self(
+            $this->id,
+            $this->identifier,
+            $this->createdDate,
+            $this->updatedDate,
+            $this->enabled,
+            $this->familyCode,
+            $this->categoryCodes,
+            $this->groupCodes,
+            $this->parentProductModelCode,
+            $this->associations,
+            $this->quantifiedAssociations,
+            $this->metadata,
+            $this->values,
+            $this->qualityScores,
+            $productCompletenessCollection
         );
     }
 }

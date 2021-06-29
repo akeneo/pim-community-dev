@@ -16,8 +16,8 @@ Feature: Display the attribute history
     And I create a "Reference data simple select" attribute
     And I fill in the following information:
       | Code                | mycolor |
-      | Reference data type | color   |
       | Attribute group     | Other   |
+      | Reference data type | color   |
     And I save the attribute
     Then I should see the flash message "Attribute successfully created"
     And I should not see the text "There are unsaved changes."

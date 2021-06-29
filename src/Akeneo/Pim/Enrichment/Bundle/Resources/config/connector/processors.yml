@@ -63,6 +63,12 @@ services:
             - '@pim_catalog.entity_with_family_variant.add_parent_to_product'
             - '@validator'
 
+    pim_enrich.connector.processor.mass_edit.product.convert_to_simple_product:
+        class: 'Akeneo\Pim\Enrichment\Component\Product\Connector\Processor\MassEdit\ConvertToSimpleProductProcessor'
+        arguments:
+            - '@pim_catalog.entity_with_family_variant.remove_parent_from_product'
+            - '@validator'
+
     pim_enrich.connector.processor.quick_export.product:
         class: '%pim_enrich.connector.processor.quick_export.product_and_product_model.class%'
         arguments:
@@ -74,7 +80,6 @@ services:
             - '@akeneo_storage_utils.doctrine.object_detacher'
             - '@pim_user.provider.user'
             - '@security.token_storage'
-            - '@pim_connector.processor.bulk_media_fetcher'
 
     pim_enrich.connector.processor.quick_export.product_model:
         class: '%pim_enrich.connector.processor.quick_export.product_and_product_model.class%'
@@ -87,7 +92,6 @@ services:
             - '@akeneo_storage_utils.doctrine.object_detacher'
             - '@pim_user.provider.user'
             - '@security.token_storage'
-            - '@pim_connector.processor.bulk_media_fetcher'
 
     pim_enrich.connector.processor.mass_edit.product.change_parent:
         class: Akeneo\Pim\Enrichment\Component\Product\Connector\Processor\MassEdit\ChangeParentProcessor

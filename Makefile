@@ -24,10 +24,17 @@ include make-file/*.mk
 node_modules:
 	$(YARN_RUN) install --frozen-lockfile
 
+.PHONY: javascript-extensions
+javascript-extensions:
+	$(YARN_RUN) run update-extensions
+
+.PHONY: front-packages
+front-packages:
+	$(YARN_RUN) packages:build
+
 .PHONY: dsm
 dsm:
-	$(YARN_RUN) --cwd=akeneo-design-system install --frozen-lockfile
-	$(YARN_RUN) --cwd=akeneo-design-system run lib:build
+	$(YARN_RUN) dsm:build
 
 .PHONY: assets
 assets:
@@ -40,27 +47,27 @@ css:
 	$(YARN_RUN) run less
 
 .PHONY: javascript-prod
-javascript-prod: dsm
+javascript-prod: javascript-extensions
 	$(NODE_RUN) rm -rf public/dist
 	$(YARN_RUN) run webpack
 
 .PHONY: javascript-dev
-javascript-dev: dsm
+javascript-dev: javascript-extensions
 	$(NODE_RUN) rm -rf public/dist
 	$(YARN_RUN) run webpack-dev
 
 .PHONY: javascript-dev-strict
-javascript-dev-strict: dsm
+javascript-dev-strict: javascript-extensions
 	$(NODE_RUN) rm -rf public/dist
 	$(YARN_RUN) run webpack-dev --strict
 
 .PHONY: javascript-test
-javascript-test: dsm
+javascript-test: javascript-extensions
 	$(NODE_RUN) rm -rf public/dist
 	$(YARN_RUN) run webpack-test
 
 .PHONY: front
-front: assets css javascript-test javascript-dev
+front: assets css front-packages javascript-dev
 
 ##
 ## Back
@@ -91,6 +98,14 @@ check-requirements:
 database:
 	$(PHP_RUN) bin/console pim:installer:db ${O}
 
+.PHONY: start-job-worker
+start-job-worker:
+	$(PHP_RUN) bin/console messenger:consume ui_job import_export_job data_maintenance_job ${O}
+
+.PHONY: stop-workers
+stop-workers:
+	$(PHP_RUN) bin/console messenger:stop-workers
+
 ##
 ## PIM install
 ##
@@ -115,6 +130,7 @@ pim-behat:
 	APP_ENV=behat $(MAKE) cache
 	$(MAKE) assets
 	$(MAKE) css
+	$(MAKE) front-packages
 	$(MAKE) javascript-dev
 	docker/wait_docker_up.sh
 	APP_ENV=behat $(MAKE) database
@@ -133,6 +149,7 @@ pim-dev:
 	APP_ENV=dev $(MAKE) cache
 	$(MAKE) assets
 	$(MAKE) css
+	$(MAKE) front-packages
 	$(MAKE) javascript-dev
 	docker/wait_docker_up.sh
 	APP_ENV=dev O="--catalog src/Akeneo/Platform/Bundle/InstallerBundle/Resources/fixtures/icecat_demo_dev" $(MAKE) database
@@ -143,6 +160,7 @@ pim-prod:
 	APP_ENV=prod $(MAKE) cache
 	$(MAKE) assets
 	$(MAKE) css
+	$(MAKE) front-packages
 	$(MAKE) javascript-prod
 	docker/wait_docker_up.sh
 	APP_ENV=prod $(MAKE) database
@@ -154,3 +172,13 @@ up:
 .PHONY: down
 down:
 	$(DOCKER_COMPOSE) down -v
+
+.PHONY: upgrade-front
+upgrade-front:
+	$(MAKE) node_modules
+	$(MAKE) cache
+	$(MAKE) assets
+	$(MAKE) front-packages
+	$(MAKE) javascript-prod
+	$(MAKE) css
+	$(MAKE) javascript-extensions

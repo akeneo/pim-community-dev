@@ -3,10 +3,9 @@
 namespace Specification\Akeneo\UserManagement\Component\Model;
 
 use Akeneo\UserManagement\Component\Model\Group;
-use PhpSpec\ObjectBehavior;
 use Akeneo\UserManagement\Component\Model\GroupInterface;
 use Akeneo\UserManagement\Component\Model\Role;
-use Prophecy\Argument;
+use PhpSpec\ObjectBehavior;
 
 class GroupSpec extends ObjectBehavior
 {
@@ -41,8 +40,11 @@ class GroupSpec extends ObjectBehavior
 
     function it_returns_its_roles_as_string()
     {
-        $user = new Role('user');
-        $admin = new Role('admin');
+        $user = new Role('ROLE_USER');
+        $user->setLabel('user');
+
+        $admin = new Role('ROLE_ADMIN');
+        $admin->setLabel('admin');
 
         $this->addRole($user);
         $this->addRole($admin);

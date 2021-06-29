@@ -25,7 +25,7 @@ export const RegenerateConnectionPassword = () => {
     const dispatch = useConnectionsDispatch();
 
     const handleRedirect = () => {
-        history.push(`/connections/${code}/edit`);
+        history.push(`/connect/connection-settings/${code}/edit`);
     };
 
     const handleClick = async () => {

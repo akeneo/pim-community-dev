@@ -31,7 +31,9 @@ class ConnectorProductListSpec extends ObjectBehavior
                 [],
                 [],
                 [],
-                new ReadValueCollection()
+                new ReadValueCollection(),
+                null,
+                null
             )
         ]);
     }

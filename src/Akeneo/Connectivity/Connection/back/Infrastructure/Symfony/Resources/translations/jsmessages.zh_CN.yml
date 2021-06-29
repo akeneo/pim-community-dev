@@ -1,4 +1,8 @@
 pim_menu:
+  tab:
+    connect: 连接
+  navigation:
+    connect: 连接导航
   navigation_back:
     connection: 返回连接
   navigation_block:
@@ -8,15 +12,30 @@ pim_menu:
     connection_settings: 连接
     connection_settings_edit: 连接设置
     connection_monitoring: 监测
+    connection_webhook_edit: 事件订阅
+    connection_webhook_event_logs: 事件日志
+    data_flows: 数据流
+    connect_connection_settings: 连接设置
+    marketplace: 商城
 pim_title:
-  akeneo_connectivity_connection_settings_index: 连接
+  akeneo_connectivity_connection_connect_marketplace: 商城
+  akeneo_connectivity_connection_settings_index: 连接设置
   akeneo_connectivity_connection_settings_edit: 连接设置
   akeneo_connectivity_connection_settings_any: 连接设置
   akeneo_connectivity_connection_audit_index: 连接仪表板
   akeneo_connectivity_connection_audit_any: 连接仪表板
   akeneo_connectivity_connection_error_management_dashboard: 连接仪表板
   akeneo_connectivity_connection_error_management_connection_monitoring: 连接监测
+  akeneo_connectivity_connection_webhook_edit: 事件订阅
+  akeneo_connectivity_connection_webhook_regenerate_secret: 事件订阅
+  akeneo_connectivity_connection_webhook_event_logs: 事件日志
+  akeneo_connectivity_connection_settings_redirect: 连接
 akeneo_connectivity.connection:
+  connect:
+    marketplace:
+      title: 想要将您的 PIM 连接到另一个应用程序？🤟
+      sub_title: 请检查我们的商城以查看哪些应用程序可以与 Akeneo PIM 连接。
+      link: 访问商城
   connections: 连接
   secondary_actions:
     title: 其他操作
@@ -128,9 +147,9 @@ akeneo_connectivity.connection:
     flash:
       success: 已成功删除连接。
   helper:
-    title: '👋 欢迎使用能够正确连接您的 PIM 的功能！'
+    title: '{0} 目前，您没有将 PIM 链接到第三方应用程序的连接。{1} 您有 1 个将 PIM 链接到第三方应用程序的连接。很好，这样您的 PIM 将很好地集成到其生态系统。|]1，Inf] 您有 {{ count }} 个将 PIM 链接到第三方应用程序的连接。很好，这样您的 PIM 将很好地集成到其生态系统。'
     description: 没有任何第三方整合的 PIM 是没有用处的。通过连接，您可以声明所有导入和推出 PIM 的数据流。
-    link: 想知道更多？您可以在这里了解什么是连接，以及如何充分利用它！
+    link: 要了解更多关于连接的信息，请查看此页面
   flow_type_helper:
     message: 想知道什么是流类型？
     link: 我们可以在这里帮助您！
@@ -146,9 +165,9 @@ akeneo_connectivity.connection:
   grid.wrong_credentials_combination_helper: 下面的一些连接没有使用其连接用户名，已用黄色警告标志加以识别。
   dashboard:
     helper:
-      title: '👋 欢迎来到连接仪表板！'
-      description: 在这里，您将能够通过连接跟踪收集到您的 PIM 的所有数据流，以及通过连接发送到您渠道的所有数据流。
-      link: 想了解更多？看这里！
+      title: '👋 欢迎使用数据流！'
+      description: 在这里，您可以跟踪您的 PIM 和第三方之间的数据流。
+      link: 想要了解更多关于“连接”菜单和数据流方面的信息？这里为您提供！
     user_survey:
       title: 想要在此仪表板上获得更多数据吗？
       content: 您的反馈对我们非常宝贵。恳请您参与此简短调查，帮助我们选择下一个小部件！
@@ -190,13 +209,75 @@ akeneo_connectivity.connection:
         message: 向您的管理员请求以创建一个连接。
         link: 在此处了解更多关于连接的信息...
   webhook:
+    title: 事件订阅
+    event_subscription: 事件订阅
+    download_logs: 下载日志
+    helper:
+      message: 对于与已连接的 PIM 同步的产品，PIM 会将发生的事件通知您。您只需定义一个 URL。
+      link: 了解有关事件订阅配置的更多信息…
+      url.test_disabled: 请点击“保存”按钮以便能够测试 URL。
     form:
+      url: 链接
       secret: 密钥
+      enabled: 事件订阅激活
+      test: 测试
+    error:
+      wrong_url: 网址无效。
+      required: 必填项。
+      not_found: 您正在尝试更新一个不存在的连接。
+      limit_reached: 您已达到活动事件订阅的上限。
+      not_allowed_url: 不允许使用此 URL。
+    flash:
+      success: 已成功更新事件订阅。
+      error: 抱歉，编辑事件订阅时发生错误。
     regenerate_secret:
       title: 确认重新生成
+      description: 确定要重新生成事件订阅密钥吗？
       action:
         regenerate: 重新生成
       link: 此处可查看产生的影响。
+      flash:
+        success: 已成功重新生成 Webhook 密钥。
+        error: 抱歉，重新生成 webhook 密钥时出错。
+    active_event_subscriptions_limit_reached:
+      message: 您最多可将 {{ limit }} 个连接与事件订阅功能相连接。您已达到该上限。
+      link: 了解有关事件订阅配置的更多信息。
+    event_logs:
+      title: 事件日志
+      event_subscription_disabled:
+        title: 此连接未启用事件订阅。
+        link: 启用事件订阅
+      no_event_logs:
+        title: 目前没有日志。
+      no_event_logs_with_those_filters:
+        title: 抱歉，找不到与搜索相符的日志。
+        caption: 请用新的搜索条件再进行搜索。
+      level:
+        info: 信息
+        notice: 通知
+        warning: 警告
+        error: 错误
+      list:
+        search:
+          placeholder: 搜索消息
+          total: '{0} 无结果|{1} 1 个结果|[2,Inf] {{ total }} 个结果'
+          level: 等级
+          all: 所有
+          none: 无
+        date_range_filter:
+          label: 日期时间
+          reset: 重置
+          from: 从
+          to: 至
+          all: 所有
+        info:
+          title: 这里是与发送到此连接的所有事件请求相关的日志。
+          content: 此页面显示过去 72 小时的错误和警告日志以及最近 100 条信息和通知日志。
+          link: 有关事件日志的更多信息
+        headers:
+          datetime: 日期时间
+          level: 等级
+          message: 消息
   error_management:
     connection_monitoring:
       title: 监测
@@ -206,7 +287,7 @@ akeneo_connectivity.connection:
         link: 要了解如何解决，请访问 API 帮助中心。
       search_filter:
         placeholder: 搜索错误消息
-        result_count: '{0} 无结果 |[1,Inf] {{ count }} 个结果'
+        result_count: '{0} 无结果|{1} 1 个结果|[2,Inf] {{ count }} 个结果'
       error_list:
         date_time_column:
           title: 日期和时间

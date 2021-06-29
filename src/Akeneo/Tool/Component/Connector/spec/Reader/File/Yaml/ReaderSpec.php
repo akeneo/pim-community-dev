@@ -27,6 +27,33 @@ class ReaderSpec extends ObjectBehavior
     {
         $this->shouldImplement('\Akeneo\Tool\Component\Batch\Item\ItemReaderInterface');
         $this->shouldImplement('\Akeneo\Tool\Component\Batch\Step\StepExecutionAwareInterface');
+        $this->shouldImplement('\Akeneo\Tool\Component\Batch\Item\TrackableItemReaderInterface');
+    }
+
+    function it_return_empty_count_on_invalid_file(
+        StepExecution $stepExecution,
+        JobParameters $jobParameters
+    ) {
+        $this->setStepExecution($stepExecution);
+        $stepExecution->getJobParameters()->willReturn($jobParameters);
+        $incorrectlyFormattedFilePath = realpath(__DIR__ . '/../../../fixtures/fake_incorrectly_formatted_yml_file.yml');
+        $jobParameters->get('filePath')->willReturn($incorrectlyFormattedFilePath);
+
+        $stepExecution->setSummary(['item_position' => 0])->shouldBeCalledTimes(1);
+        $this->totalItems()->shouldReturn(0);
+    }
+
+    function it_return_item_count(
+        StepExecution $stepExecution,
+        JobParameters $jobParameters
+    ) {
+        $this->setStepExecution($stepExecution);
+        $stepExecution->getJobParameters()->willReturn($jobParameters);
+        $incorrectlyFormattedFilePath = realpath(__DIR__ . '/../../../fixtures/fake_products_with_code.yml');
+        $jobParameters->get('filePath')->willReturn($incorrectlyFormattedFilePath);
+
+        $stepExecution->setSummary(['item_position' => 0])->shouldBeCalledTimes(1);
+        $this->totalItems()->shouldReturn(3);
     }
 
     function it_initializes_the_summary_info_if_the_yaml_file_is_not_correctly_formatted(

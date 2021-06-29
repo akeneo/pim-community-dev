@@ -1,0 +1,166 @@
+#Entities
+Job: İş
+Connector: Bağlayıcı
+pim_import_export:
+  job: İş
+  connector: Bağlayıcı
+  ## Job status
+  status:
+    0: Hazır
+  batch_status:
+    1: Tamamlandı
+    2: Başlatılıyor
+    3: Başladı
+    4: Durduruluyor
+    5: Durduruldu
+    6: Başarısız
+    7: İptal edildi
+    8: Bilinmeyen
+  download_archive:
+    archive: oluşturulan arşivi indir | oluşturulan arşivleri indir
+    output: Oluşturulan dosyayı indirin | oluşturulan dosyaları indirin
+    input: Dosya okumayı indir | Dosyaları okumayı indir
+    invalid_xlsx: Geçersiz veri indirme
+    invalid_csv: Geçersiz veri indirme
+  notification:
+    export:
+      error: <strong>%label%</strong> dışa aktarımı başarısız
+      warning: <strong>%label%</strong> etiketinin dışa aktarımı, bazı uyarılar ile tamamlandı
+      success: <strong>%label%</strong> dışa aktarımı tamamlandı
+    import:
+      error: <strong>%label%</strong> içe aktarma başarısız
+      warning: <strong>%label%</strong> içe aktarımı bazı uyarılar ile tamamlandı
+      success: <strong>%label%</strong> içe aktarımı tamamlandı
+  list: Bir iş seçin
+  job_profile:
+    tab:
+      property.title: Genel özellikler
+      history.title: Geçmiş
+      job_content.title: İçerik
+#Page titles:
+pim_title.export_profile.index: Profil yönetimini dışa aktar
+pim_title.export_profile.edit: Dışa aktarılan profil %job.label% | Düzenle
+pim_title.export_profile.show: Dışa aktarılan profil %job.label% | Göster
+pim_title.export_execution.index: İşlem geçmişini dışa aktarın
+pim_title.export_execution.show: İşlemleri dışa aktarın | Detaylar
+pim_title.import_profile.index: Profillerin yönetimini içe aktarın
+pim_title.import_profile.edit: İçe aktarım profili %job.label% | Düzenle
+pim_title.import_profile.show: İçe aktarım profili %job.label% | Göster
+pim_title.import_execution.index: İşlem geçmişini içe aktarın
+pim_title.import_execution.show: İşlemleri içe aktarın | Detaylar
+#Entity and page header titles
+export profile:
+  title: profili dışa aktar
+  edit: Dışa aktarım profilini düzenle
+import profile:
+  title: profili içe aktar
+  edit: İçe aktarım profilini düzenle
+#ACLs
+pim_importexport:
+  acl:
+    export_profile:
+      index: Dışa aktarım profil listesini düzenle
+      create: Dışa aktarım profili oluşturma
+      show: Bir dışa aktarım profili göster
+      edit: Bir dışa aktarım profili düzenle
+      remove: Bir dışa aktarım profili kaldır
+      launch: Bir dışa aktarım profili başlat
+      property_edit: Dışa aktarılan bir profilin genel özelliklerini düzenleyin
+      property_show: Dışa aktarılan bir profilin genel özelliklerini gösterin
+      history: Dışa aktarım geçmişini görüntüle
+      content_edit: Dışa aktarım profil içeriğini düzenle
+      content_show: Dışa aktarım profil içeriğini görüntüle
+    import_profile:
+      index: İçe aktarım profil listesini görüntüle
+      create: Bir içe aktarım profili oluştur
+      show: Bir içe aktarım profili görüntüle
+      edit: Bir içe aktarım profili düzenle
+      remove: İçe aktarılmış bir profili kaldırın
+      launch: İçe aktarılmış bir profili başlatın
+      history: İçe aktarılmış profil geçmişini görüntüle
+    export_execution:
+      index: Dışa aktarılan raporların listesini görüntüle
+      show: Dışa aktarılan raporun detaylarını görüntüle
+      dl_log: Dışa aktarılan rapor günlüğünü indir
+      dl_files: Dışarı aktarılan dosyaları indir
+    import_execution:
+      index: İçe aktarılan raporların listesini görüntüle
+      show: İçe aktarım raporunun detaylarını görüntüle
+      dl_log: İçe aktarılan rapor günlüğünü indir
+      dl_files: İçe aktarılan dosyaları indir
+  acl_group:
+    export: Profilleri dışa aktar
+    import: Profilleri içe aktar
+#Buttons
+btn:
+  create:
+    export profile: Dışa aktarma profili oluştur
+    import profile: İçe aktarma profili oluştur
+Upload and import now: Karşıya yükle ve şimdi içe aktar
+import now: Şimdi içe aktar
+export now: Şimdi dışa aktar
+#Confirmation messages
+confirmation:
+  remove:
+    export profile: Dışa aktarılan %name% profilini silmek istediğinize emin misiniz?
+    import profile: İçe aktarılan %name% profilini silmek istediğinize emiin misiniz?
+#Flash messages
+flash:
+  export:
+    created: Dışa aktarım başarıyla oluşturuldu
+    removed: Dışa aktarım kaldırıldı
+    updated: Dışa aktarım başarıyla güncellendi
+    running: Dışa aktarma işlemi çalışıyor
+  import:
+    created: İçe aktarım başarıyla oluşturuldu
+    removed: İçe aktarım kaldırıldı
+    updated: İçe aktarım başarıyla güncellendi
+    running: İçe aktarma işlemi çalışıyor
+#Tabs
+General properties: Genel özellikler
+History: Geçmiş
+pane.accordion:
+  properties: Özellikler
+  global_settings: Genel ayarlar
+  filters: Filtreler
+#Popin titles
+popin.create:
+  export_profile.title: Yeni bir dışa aktarım profili oluşturun
+  import_profile.title: Yeni bir içe aktarım profili oluşturun
+#Job execution
+'Display item': Öğeyi göster
+'Hide item': Öğeyi gizle
+'Collecting data about job execution...': İşin yürütülmesi hakkında veri toplanıyor...
+'You must select a file to upload': Yüklemek için bir dosya seçmelisin
+Download log: Günlüğü indir
+Show profile: Profili göster
+execution details: Uygulama ayrıntıları
+job_execution.summary:
+  read: oku
+  write: Yazıldı
+  skip: atlandı
+  create: oluşturuldu
+  update: güncellendi
+  update_products: güncellenmiş ürünler
+  skip_products: atlanan ürünler
+  displayed: görüntülenen ilk uyarılar
+  charset_validator:
+    title: 'Dosya kodlaması:'
+    skipped: Geçildi, uzantı beyaz listede
+Step: Adım
+Status: Durum
+Warnings: Uyarılar
+Summary: Özet
+Start: Başla
+End: Bitir
+#Process tracker
+set_attribute_requirements: Özellik gereksinimlerini ayarla
+COMPLETED: Tamamlandı
+STARTING: Başlıyor
+STARTED: Başladı
+STOPPING: Durduruluyor
+STOPPED: Durduruldu
+FAILED: Başarısız
+ABANDONED: İptal edildi
+UNKNOWN: Bilinmeyen
+warning.label: Uyarı

@@ -4,8 +4,8 @@ namespace Akeneo\Tool\Component\Connector\Writer\File;
 
 use Akeneo\Tool\Component\Batch\Model\StepExecution;
 use Akeneo\Tool\Component\Batch\Step\StepExecutionAwareInterface;
+use Akeneo\Tool\Component\Connector\Writer\WriterFactory;
 use Box\Spout\Common\Exception\UnsupportedTypeException;
-use Box\Spout\Writer\WriterFactory;
 use Box\Spout\Writer\WriterInterface;
 
 /**
@@ -48,7 +48,7 @@ class FlatItemBufferFlusher implements StepExecutionAwareInterface
      */
     public function flush(
         FlatItemBuffer $buffer,
-        array $writerOptions = [],
+        array $writerOptions,
         $basePathname,
         $maxLinesPerFile = -1
     ) {

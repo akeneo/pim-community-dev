@@ -8,17 +8,16 @@ use PhpSpec\ObjectBehavior;
 use Akeneo\Platform\Bundle\NotificationBundle\Entity\Repository\UserNotificationRepositoryInterface;
 use Akeneo\Platform\Bundle\NotificationBundle\Entity\UserNotificationInterface;
 use Akeneo\UserManagement\Bundle\Context\UserContext;
-use Prophecy\Argument;
-use Symfony\Bundle\FrameworkBundle\Templating\DelegatingEngine;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Security\Core\User\UserInterface;
+use Twig\Environment;
 
 class NotificationControllerSpec extends ObjectBehavior
 {
     function let(
-        DelegatingEngine $templating,
+        Environment $templating,
         UserContext $context,
         UserNotificationRepositoryInterface $userNotifRepository,
         RemoverInterface $userNotifRemover
@@ -44,13 +43,12 @@ class NotificationControllerSpec extends ObjectBehavior
             ->willReturn([$userNotification]);
         $context->getUserTimezone()->willReturn('Europe/Paris');
 
-        $templating->renderResponse(
+        $templating->render(
             'PimNotificationBundle:Notification:list.json.twig',
             [
                 'userNotifications' => [$userNotification],
                 'userTimezone' => 'Europe/Paris',
-            ],
-            Argument::type(JsonResponse::class)
+            ]
         )->shouldBeCalled();
 
         $this->listAction($request);

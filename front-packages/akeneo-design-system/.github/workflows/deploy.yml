@@ -1,0 +1,33 @@
+name: Deploy
+on:
+  push:
+    branches:
+      - master
+jobs:
+  master:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout the current branch
+        uses: actions/checkout@v2
+
+      - name: Install node 13.13 for the rest of the workflow
+        uses: actions/setup-node@v1
+        with:
+          node-version: 13.13
+
+      - name: Install peer dependencies
+        # TODO RAC-594 Do not used fixed peer dependencies
+        run: yarn add --dev react@^16.14.0 react-dom@^16.9.12 styled-components@^5.1.1
+
+      - name: Install node modules
+        run: yarn install
+
+      - name: Build storybook
+        run: yarn run storybook:build
+
+      - name: Deploy to gh-pages
+        uses: peaceiris/actions-gh-pages@v3
+        with:
+          github_token: ${{ secrets.GITHUB_TOKEN }}
+          publish_dir: ./storybook-static
+          keep_files: true

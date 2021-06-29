@@ -60,7 +60,7 @@ Feature: Import variant products
     When I am on the "csv_catalog_modeling_product_import" import job page
     And I launch the import job
     And I wait for the "csv_catalog_modeling_product_import" job to finish
-    Then I should see the text "Status: Completed"
+    Then I should see job execution status "COMPLETED"
     And I should see the text "skipped 1"
     And I should see the text "Property \"parent\" expects a valid parent code. The parent product model does not exist, \"code-001\" given."
     And the invalid data file of "csv_catalog_modeling_product_import" should contain:
@@ -82,7 +82,7 @@ Feature: Import variant products
     When I am on the "csv_catalog_modeling_product_import" import job page
     And I launch the import job
     And I wait for the "csv_catalog_modeling_product_import" job to finish
-    Then I should see the text "Status: Completed"
+    Then I should see job execution status "COMPLETED"
     And I should see the text "skipped 1"
     And I should see the text "The variant product \"apollon_blue_medium\" cannot have product model \"apollon\" as parent, (this product model can only have other product models as children)"
     And the invalid data file of "csv_catalog_modeling_product_import" should contain:
@@ -105,7 +105,7 @@ Feature: Import variant products
     When I am on the "csv_catalog_modeling_product_import" import job page
     And I launch the import job
     And I wait for the "csv_catalog_modeling_product_import" job to finish
-    Then I should see the text "Status: Completed"
+    Then I should see job execution status "COMPLETED"
     And I should see the text "skipped 2"
     And I should not see the text "Cannot set value \"\" for the attribute axis \"size\""
     But I should see the text "Attribute \"size\" cannot be empty, as it is defined as an axis for this entity: apollon_blue_medium"

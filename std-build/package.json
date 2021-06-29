@@ -13,14 +13,18 @@
     "webpack-dev": "yarn requirements && yarn generate-models && NODE_PATH=node_modules webpack --config $npm_package_config_source/webpack.config.js",
     "less": "node $npm_package_config_styles",
     "update-extensions": "node $npm_package_config_source/frontend/build/update-extensions.js",
-    "generate-models": "yarn --cwd=node_modules/@akeneo-pim-community/communication-channel generate-models"
+    "generate-models": "yarn --cwd=node_modules/@akeneo-pim-community/communication-channel generate-models",
+    "packages:build": "yarn --cwd=$npm_package_config_source packages:build"
   },
   "workspaces": [
     "vendor/akeneo/pim-community-dev",
     "vendor/akeneo/pim-community-dev/src/Akeneo/Connectivity/Connection/front",
     "vendor/akeneo/pim-community-dev/src/Akeneo/Platform/Bundle/UIBundle/Resources/workspaces/legacy-bridge",
-    "vendor/akeneo/pim-community-dev/src/Akeneo/Platform/Bundle/UIBundle/Resources/workspaces/shared",
     "vendor/akeneo/pim-community-dev/src/Akeneo/Platform/Bundle/CommunicationChannelBundle/front",
-    "vendor/akeneo/pim-community-dev/src/Akeneo/Pim/Automation/DataQualityInsights/front"
+    "vendor/akeneo/pim-community-dev/src/Akeneo/Pim/Automation/DataQualityInsights/front",
+    "vendor/akeneo/pim-community-dev/src/Akeneo/Pim/Structure/Bundle/Resources/workspaces/settings-ui",
+    "vendor/akeneo/pim-community-dev/src/Akeneo/UserManagement/Bundle/Resources/workspaces/user-ui",
+    "vendor/akeneo/pim-community-dev/src/Akeneo/Platform/Bundle/UIBundle/Resources/workspaces/activity",
+    "vendor/akeneo/pim-community-dev/src/Akeneo/Pim/Enrichment/Bundle/Resources/workspaces/enrichment"
   ]
 }

@@ -1,0 +1,315 @@
+import {useState} from 'react';
+import {Meta, Story, ArgsTable, Canvas} from '@storybook/addon-docs/blocks';
+import {SelectInput} from './SelectInput.tsx';
+import {SpaceContainer} from '../../../storybook/PreviewGallery.tsx';
+import {Locale} from '../../../components';
+
+<Meta
+  title="Components/Inputs/Select input"
+  component={SelectInput}
+  args={{
+    placeholder: 'Please enter a value in the Select input',
+    emptyResultLabel: 'No result found',
+    value: null,
+  }}
+  argTypes={{
+    readOnly: {
+      control: {type: 'boolean'},
+      description:
+        'Defines if the input should be read only. If defined so, the user cannot change the value of the input.',
+      table: {type: {summary: 'boolean'}},
+    },
+    onChange: {
+      description: 'The handler called when the value of the input changes.',
+      table: {type: {summary: '(newValue: string | null) => void'}},
+    },
+  }}
+/>
+
+# Select input (Beta)
+
+## Usage
+
+Select input allows the user to select content and data when the expected user input is composed of one option value.
+
+### Placeholder text
+
+The placeholder text provides tips or examples of items to enter. Placeholder text disappears when the user begins entering data.
+
+## Playground
+
+<Canvas>
+  <Story name="Standard">
+    {args => {
+      const [value, setValue] = useState(null);
+      return (
+        <SpaceContainer height={170}>
+          <SelectInput {...args} value={value} onChange={setValue}>
+            <SelectInput.Option value="en_US" title="English (United States)">
+              <Locale code="en_US" languageLabel="English" />
+            </SelectInput.Option>
+            <SelectInput.Option value="fr_FR" title="French (France)">
+              <Locale code="fr_FR" languageLabel="French" />
+            </SelectInput.Option>
+            <SelectInput.Option value="de_DE" title="German (Germany)">
+              <Locale code="de_DE" languageLabel="German" />
+            </SelectInput.Option>
+          </SelectInput>
+        </SpaceContainer>
+      );
+    }}
+  </Story>
+</Canvas>
+
+<ArgsTable story="Standard" />
+
+## Variation on readOnly
+
+<Canvas>
+  <Story name="ReadOnly">
+    {args => {
+      const [value, setValue] = useState(null);
+      return (
+        <>
+          <SelectInput
+            {...args}
+            readOnly={true}
+            value={null}
+            placeholder="Placeholder"
+            emptyResultLabel="Not matches found"
+          >
+            <SelectInput.Option value="en_US" title="English (United States)">
+              <Locale code="en_US" languageLabel="English" />
+            </SelectInput.Option>
+            <SelectInput.Option value="fr_FR" title="French (France)">
+              <Locale code="fr_FR" languageLabel="French" />
+            </SelectInput.Option>
+            <SelectInput.Option value="de_DE" title="German (Germany)">
+              <Locale code="de_DE" languageLabel="German" />
+            </SelectInput.Option>
+            <SelectInput.Option value="es_ES" title="Spanish (Spain)">
+              <Locale code="es_ES" languageLabel="Spanish" />
+            </SelectInput.Option>
+          </SelectInput>
+          <SelectInput readOnly={true} value="en_US" onChange={setValue} emptyResultLabel="No result found">
+            <SelectInput.Option value="en_US" title="English (United States)">
+              <Locale code="en_US" languageLabel="English" />
+            </SelectInput.Option>
+          </SelectInput>
+          <SelectInput
+            readOnly={false}
+            value={value}
+            onChange={setValue}
+            placeholder="Editable select"
+            emptyResultLabel="No result found"
+          >
+            <SelectInput.Option value="en_US" title="English (United States)">
+              <Locale code="en_US" languageLabel="English" />
+            </SelectInput.Option>
+            <SelectInput.Option value="fr_FR" title="French (France)">
+              <Locale code="fr_FR" languageLabel="French" />
+            </SelectInput.Option>
+            <SelectInput.Option value="de_DE" title="German (Germany)">
+              <Locale code="de_DE" languageLabel="German" />
+            </SelectInput.Option>
+            <SelectInput.Option value="es_ES" title="Spanish (Spain)">
+              <Locale code="es_ES" languageLabel="Spanish" />
+            </SelectInput.Option>
+          </SelectInput>
+          <SpaceContainer height={100} />
+        </>
+      );
+    }}
+  </Story>
+</Canvas>
+
+## Variation on invalid
+
+<Canvas>
+  <Story name="Invalid">
+    {args => {
+      const [validValue, setValidValue] = useState(null);
+      const [invalidValue, setInvalidValue] = useState(null);
+      return (
+        <>
+          <SelectInput
+            {...args}
+            value={invalidValue}
+            onChange={setInvalidValue}
+            invalid={true}
+            placeholder="Invalid input value"
+          >
+            <SelectInput.Option value="en_US" title="English (United States)">
+              <Locale code="en_US" languageLabel="English" />
+            </SelectInput.Option>
+            <SelectInput.Option value="fr_FR" title="French (France)">
+              <Locale code="fr_FR" languageLabel="French" />
+            </SelectInput.Option>
+            <SelectInput.Option value="de_DE" title="German (Germany)">
+              <Locale code="de_DE" languageLabel="German" />
+            </SelectInput.Option>
+            <SelectInput.Option value="es_ES" title="Spanish (Spain)">
+              <Locale code="es_ES" languageLabel="Spanish" />
+            </SelectInput.Option>
+          </SelectInput>
+          <SelectInput
+            value={validValue}
+            onChange={setValidValue}
+            invalid={false}
+            placeholder="Valid input value"
+            emptyResultLabel="No result found"
+          >
+            <SelectInput.Option value="en_US" title="English (United States)">
+              <Locale code="en_US" languageLabel="English" />
+            </SelectInput.Option>
+            <SelectInput.Option value="fr_FR" title="French (France)">
+              <Locale code="fr_FR" languageLabel="French" />
+            </SelectInput.Option>
+            <SelectInput.Option value="de_DE" title="German (Germany)">
+              <Locale code="de_DE" languageLabel="German" />
+            </SelectInput.Option>
+            <SelectInput.Option value="es_ES" title="Spanish (Spain)">
+              <Locale code="es_ES" languageLabel="Spanish" />
+            </SelectInput.Option>
+          </SelectInput>
+          <SpaceContainer height={100} />
+        </>
+      );
+    }}
+  </Story>
+</Canvas>
+
+## Variation on vertical position
+
+<Canvas>
+  <Story name="Vertical position">
+    {args => {
+      const [upValue, setUpValue] = useState(null);
+      const [downValue, setDownValue] = useState(null);
+      return (
+        <>
+          <SpaceContainer height={120} />
+          <SelectInput {...args} value={upValue} onChange={setUpValue} verticalPosition="up" placeholder="Up input">
+            <SelectInput.Option value="en_US" title="English (United States)">
+              <Locale code="en_US" languageLabel="English" />
+            </SelectInput.Option>
+            <SelectInput.Option value="fr_FR" title="French (France)">
+              <Locale code="fr_FR" languageLabel="French" />
+            </SelectInput.Option>
+            <SelectInput.Option value="de_DE" title="German (Germany)">
+              <Locale code="de_DE" languageLabel="German" />
+            </SelectInput.Option>
+            <SelectInput.Option value="es_ES" title="Spanish (Spain)">
+              <Locale code="es_ES" languageLabel="Spanish" />
+            </SelectInput.Option>
+          </SelectInput>
+          <SelectInput
+            value={downValue}
+            onChange={setDownValue}
+            verticalPosition="down"
+            placeholder="Down input"
+            emptyResultLabel="No result found"
+          >
+            <SelectInput.Option value="en_US" title="English (United States)">
+              <Locale code="en_US" languageLabel="English" />
+            </SelectInput.Option>
+            <SelectInput.Option value="fr_FR" title="French (France)">
+              <Locale code="fr_FR" languageLabel="French" />
+            </SelectInput.Option>
+            <SelectInput.Option value="de_DE" title="German (Germany)">
+              <Locale code="de_DE" languageLabel="German" />
+            </SelectInput.Option>
+            <SelectInput.Option value="es_ES" title="Spanish (Spain)">
+              <Locale code="es_ES" languageLabel="Spanish" />
+            </SelectInput.Option>
+          </SelectInput>
+          <SpaceContainer height={100} />
+        </>
+      );
+    }}
+  </Story>
+</Canvas>
+
+## Variation on large select input
+
+<Canvas>
+  <Story name="Large">
+    {args => {
+      const [value, setValue] = useState(null);
+      return (
+        <>
+          <SelectInput {...args} value={value} onChange={setValue} emptyResultLabel="Not matches found">
+            <SelectInput.Option value="en_US" title="English (United States)">
+              <Locale code="en_US" languageLabel="English" />
+            </SelectInput.Option>
+            <SelectInput.Option value="fr_FR" title="French (France)">
+              <Locale code="fr_FR" languageLabel="French large" />
+            </SelectInput.Option>
+            <SelectInput.Option value="de_DE" title="German (Germany)">
+              <Locale code="de_DE" languageLabel="German" />
+            </SelectInput.Option>
+            <SelectInput.Option value="es_ES" title="Spanish (Spain)">
+              <Locale code="es_ES" languageLabel="Spanish" />
+            </SelectInput.Option>
+            <SelectInput.Option value="ad_AD" title="Andorra">
+              <Locale code="ad_AD" languageLabel="Andorra" />
+            </SelectInput.Option>
+            <SelectInput.Option value="ae_AE" title="United Arab Emirates">
+              <Locale code="ae_AE" languageLabel="United Arab Emirates" />
+            </SelectInput.Option>
+            <SelectInput.Option value="af_AF" title="Afghanistan">
+              <Locale code="af_AF" languageLabel="Afghanistan" />
+            </SelectInput.Option>
+            <SelectInput.Option value="ag_AG" title="Antigua and Barbuda">
+              <Locale code="ag_AG" languageLabel="Antigua and Barbuda" />
+            </SelectInput.Option>
+            <SelectInput.Option value="ai_AI" title="Anguilla">
+              <Locale code="ai_AI" languageLabel="Anguilla" />
+            </SelectInput.Option>
+            <SelectInput.Option value="al_AL" title="Albania">
+              <Locale code="al_AL" languageLabel="Albania" />
+            </SelectInput.Option>
+            <SelectInput.Option value="au_AU" title="Australia">
+              <Locale code="au_AU" languageLabel="Australia" />
+            </SelectInput.Option>
+            <SelectInput.Option value="be_BE" title="Belgium">
+              <Locale code="be_BE" languageLabel="Belgium" />
+            </SelectInput.Option>
+            <SelectInput.Option value="br_BR" title="Brazil">
+              <Locale code="br_BR" languageLabel="Brazil" />
+            </SelectInput.Option>
+            <SelectInput.Option value="bs_BS" title="Bahamas">
+              <Locale code="bs_BS" languageLabel="Bahamas" />
+            </SelectInput.Option>
+          </SelectInput>
+          <SpaceContainer height={350} />
+        </>
+      );
+    }}
+  </Story>
+</Canvas>
+
+## Variation on clearable
+
+<Canvas>
+  <Story name="Clearable">
+    {args => {
+      const [value, setValue] = useState(null);
+      return (
+        <SpaceContainer height={170}>
+          <SelectInput {...args} clearable={false} value={value} onChange={setValue}>
+            <SelectInput.Option value="en_US" title="English (United States)">
+              <Locale code="en_US" languageLabel="English" />
+            </SelectInput.Option>
+            <SelectInput.Option value="fr_FR" title="French (France)">
+              <Locale code="fr_FR" languageLabel="French" />
+            </SelectInput.Option>
+            <SelectInput.Option value="de_DE" title="German (Germany)">
+              <Locale code="de_DE" languageLabel="German" />
+            </SelectInput.Option>
+          </SelectInput>
+        </SpaceContainer>
+      );
+    }}
+  </Story>
+</Canvas>

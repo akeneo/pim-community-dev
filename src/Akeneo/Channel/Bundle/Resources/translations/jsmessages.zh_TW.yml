@@ -1,0 +1,71 @@
+batch_jobs:
+  csv_currency_export:
+    label: 貨幣匯出為CSV
+    export.label: 貨幣匯出
+  csv_currency_import:
+    label: 從CSV檔案匯入貨幣
+    import.label: 貨幣匯入
+  xlsx_currency_export:
+    label: 貨幣匯出為XLSX檔案
+    export.label: 貨幣匯出
+  xlsx_currency_import:
+    label: 從XLSX檔案匯入貨幣
+    import.label: 貨幣匯入
+  csv_locale_export:
+    label: 區域設定匯出為CSV檔案
+    export.label: 區域設定匯出
+  csv_locale_import:
+    label: 從CSV檔案匯入區域設定
+    import.label: 區域設定匯入
+  xlsx_locale_export:
+    label: 區域設定匯出為XLSX檔案
+    export.label: 區域設定匯出
+  xlsx_locale_import:
+    label: 從XLSX檔案匯入區域設定
+    import.label: 區域設定匯入
+  csv_channel_export:
+    label: 渠道匯出為CSV檔案
+    export.label: 渠道匯出
+  csv_channel_import:
+    label: 從CSV檔案匯入渠道
+    import.label: 渠道匯入
+  xlsx_channel_export:
+    label: 渠道匯出為XLSX檔案
+    export.label: 渠道匯出
+  xlsx_channel_import:
+    label: 從XLSX檔案匯入渠道
+    import.label: 渠道匯入
+pim_enrich.entity.channel:
+  label: 渠道
+  uppercase_label: 渠道
+  flash:
+    update:
+      success: 渠道已成功更新。
+      fail: 渠道不能更新。
+    create:
+      success: 渠道已成功創建。
+      fail: 渠道不能創建。
+    delete:
+      success: 渠道已成功移除
+      fail: 不能移除此渠道
+  page_title:
+    index: "]-Inf, 1]{{ count }} 個渠道|]1, Inf[{{ count }} 個渠道"
+  property:
+    category_tree: 類別目錄
+    do_not_convert: 不轉換
+    label_conversion_units: 在產品匯出時，為每一個計量單位選擇一個轉換單位。
+  module:
+    create:
+      button: 創建渠道
+    delete:
+      confirm: 確定移除該頻道嗎？
+pim_enrich.entity.locale:
+  label: 區域
+  uppercase_label: 區域
+  plural_label: 區域
+  page_title:
+    index: "]-Inf, 1]{{ count }} 個區域|]1, Inf[{{ count }} 個區域"
+pim_enrich.entity.currency:
+  plural_label: 貨幣
+  page_title:
+    index: "]-Inf, 1]{{ count }} 個貨幣|]1, Inf[{{ count }} 個貨幣"

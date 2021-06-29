@@ -98,4 +98,23 @@ class BooleanIntegration extends AbstractAttributeTestCase
     {
         $this->assertDoesNotHaveAMaxFileSize('pim_catalog_boolean');
     }
+
+    public function testBooleanDefaultValueShouldBeABoolean()
+    {
+        $attribute = $this->createAttribute();
+        $this->updateAttribute(
+            $attribute,
+            [
+                'code' => 'yes_no_with_default_value',
+                'type' => 'pim_catalog_boolean',
+                'group' => 'attributeGroupA',
+                'default_value' => 'foo/bar',
+            ]
+        );
+
+        $violations = $this->validateAttribute($attribute);
+        $this->assertCount(1, $violations);
+        $this->assertSame('This value should be of type bool.', $violations->get(0)->getMessage());
+        $this->assertSame('default_value', $violations->get(0)->getPropertyPath());
+    }
 }

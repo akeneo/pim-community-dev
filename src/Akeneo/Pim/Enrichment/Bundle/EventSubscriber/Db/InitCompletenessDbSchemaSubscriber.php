@@ -38,7 +38,7 @@ class InitCompletenessDbSchemaSubscriber implements EventSubscriberInterface
     {
         $completenessTableSql = <<<SQL
 CREATE TABLE IF NOT EXISTS `pim_catalog_completeness` (
-    `id` int(11) NOT NULL AUTO_INCREMENT,
+    `id` bigint NOT NULL AUTO_INCREMENT,
     `locale_id` int(11) NOT NULL,
     `channel_id` int(11) NOT NULL,
     `product_id` int(11) NOT NULL,

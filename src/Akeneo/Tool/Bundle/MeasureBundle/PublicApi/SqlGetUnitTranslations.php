@@ -6,7 +6,7 @@ namespace Akeneo\Tool\Bundle\MeasureBundle\PublicApi;
 
 use Doctrine\DBAL\Connection;
 
-class SqlGetUnitTranslations
+class SqlGetUnitTranslations implements GetUnitTranslations
 {
     /** @var Connection */
     private $connection;
@@ -21,10 +21,10 @@ class SqlGetUnitTranslations
         $sql = <<<SQL
 SELECT unit_labels.*
 FROM akeneo_measurement am, JSON_TABLE(am.units,
-	'$[*]' COLUMNS(
-		code VARCHAR(100) PATH '$.code',
-		label VARCHAR(100) PATH :labelPath
-	)
+    '$[*]' COLUMNS(
+        code VARCHAR(100) PATH '$.code',
+        label VARCHAR(100) PATH :labelPath
+    )
 ) AS unit_labels
 WHERE am.code = :measurementFamilyCode;
 SQL;

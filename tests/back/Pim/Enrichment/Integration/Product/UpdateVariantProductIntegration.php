@@ -6,7 +6,7 @@ namespace AkeneoTest\Pim\Enrichment\Integration\Product;
 
 use Akeneo\Test\Integration\Configuration;
 use Akeneo\Test\Integration\TestCase;
-use Akeneo\Tool\Component\StorageUtils\Exception\InvalidPropertyException;
+use Akeneo\Tool\Component\StorageUtils\Exception\ImmutablePropertyException;
 
 /**
  * @author    Damien Carcel (damien.carcel@akeneo.com)
@@ -17,8 +17,8 @@ class UpdateVariantProductIntegration extends TestCase
 {
     public function testTheParentCannotBeRemoved(): void
     {
-        $this->expectException(InvalidPropertyException::class);
-        $this->expectExceptionMessage('Property "parent" expects a valid parent code. The parent product model does not exist, "" given.');
+        $this->expectException(ImmutablePropertyException::class);
+        $this->expectExceptionMessage('Property "parent" cannot be modified, "" given.');
 
         $product = $this->get('pim_catalog.repository.product')->findOneByIdentifier('apollon_blue_xl');
         $this->get('pim_catalog.updater.product')->update($product, ['parent' => '']);
@@ -36,29 +36,6 @@ class UpdateVariantProductIntegration extends TestCase
         $this->assertEquals(1, $errors->count());
         $this->assertEquals(
             'The variant product family must be the same than its parent',
-            $errors->get(0)->getMessage()
-        );
-    }
-
-    public function testTheVariantAxisValuesCannotBeUpdated(): void
-    {
-        $product = $this->get('pim_catalog.repository.product')->findOneByIdentifier('apollon_blue_xl');
-        $this->get('pim_catalog.updater.product')->update($product, [
-            'values' => [
-                'size' => [
-                    [
-                        'locale' => null,
-                        'scope' => null,
-                        'data' => 'xs',
-                    ],
-                ],
-            ],
-        ]);
-
-        $errors = $this->get('pim_catalog.validator.product')->validate($product);
-        $this->assertEquals(1, $errors->count());
-        $this->assertEquals(
-            'Variant axis "size" cannot be modified, "[xs]" given',
             $errors->get(0)->getMessage()
         );
     }

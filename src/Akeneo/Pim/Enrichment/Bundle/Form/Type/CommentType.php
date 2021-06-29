@@ -9,7 +9,7 @@ use Symfony\Component\Form\Extension\Core\Type\HiddenType;
 use Symfony\Component\Form\Extension\Core\Type\TextareaType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
-use Symfony\Component\Translation\TranslatorInterface;
+use Symfony\Contracts\Translation\TranslatorInterface;
 
 /**
  * Comment type
@@ -30,11 +30,6 @@ class CommentType extends AbstractType
     /** @var string */
     protected $dataClass;
 
-    /**
-     * @param CommentRepositoryInterface $repository
-     * @param TranslatorInterface        $translator
-     * @param string                     $dataClass
-     */
     public function __construct(CommentRepositoryInterface $repository, TranslatorInterface $translator, $dataClass)
     {
         $this->repository = $repository;

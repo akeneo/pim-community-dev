@@ -6,7 +6,7 @@ services:
     pim_pdf_generator.renderer.product_pdf:
         class: '%pim_pdf_generator.renderer.product_pdf.class%'
         arguments:
-            - '@templating'
+            - '@twig'
             - '@pim_pdf_generator.builder.dompdf'
             - '@liip_imagine.data.manager'
             - '@liip_imagine.cache.manager'

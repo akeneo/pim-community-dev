@@ -1,10 +1,9 @@
-import React, {PropsWithChildren} from 'react';
+import React from 'react';
 import {act, renderHook} from '@testing-library/react-hooks';
 import {useDataGridState, useInitialDataGridState} from '@akeneo-pim-community/settings-ui/src/hooks/shared';
 import {
   AfterMoveRowHandler,
   CompareRowDataHandler,
-  DataGridStateProvider,
 } from '@akeneo-pim-community/settings-ui/src/components/shared/providers';
 import {aDragEvent, aListOfData} from '../../../utils/provideDataGridHelper';
 
@@ -17,7 +16,9 @@ describe('useInitialDataGridState', () => {
     isFilterable: boolean,
     isReorderActive: boolean
   ) => {
-    return renderHook(() => useInitialDataGridState(isDraggable, dataSource, handleAfterMove, compareRowData, isFilterable, isReorderActive));
+    return renderHook(() =>
+      useInitialDataGridState(isDraggable, dataSource, handleAfterMove, compareRowData, isFilterable, isReorderActive)
+    );
   };
 
   beforeEach(() => {
@@ -106,9 +107,14 @@ describe('useInitialDataGridState', () => {
   test('it moves item up', () => {
     const dataSource = aListOfData();
     const afterMoveHandler = jest.fn();
-    const {result} = renderUseInitialDataGridState(true, dataSource, afterMoveHandler, ((itemA: any, itemB: any) =>
-      Object.is(itemA, itemB) ? 0 : -1
-    ), false, false);
+    const {result} = renderUseInitialDataGridState(
+      true,
+      dataSource,
+      afterMoveHandler,
+      (itemA: any, itemB: any) => (Object.is(itemA, itemB) ? 0 : -1),
+      false,
+      false
+    );
 
     act(() => {
       result.current.moveUp(dataSource[2], dataSource[1]);
@@ -121,9 +127,14 @@ describe('useInitialDataGridState', () => {
   test('it moves item down', () => {
     const dataSource = aListOfData();
     const afterMoveHandler = jest.fn();
-    const {result} = renderUseInitialDataGridState(true, dataSource, afterMoveHandler, ((itemA: any, itemB: any) =>
-      Object.is(itemA, itemB) ? 0 : -1
-    ), false, false);
+    const {result} = renderUseInitialDataGridState(
+      true,
+      dataSource,
+      afterMoveHandler,
+      (itemA: any, itemB: any) => (Object.is(itemA, itemB) ? 0 : -1),
+      false,
+      false
+    );
 
     act(() => {
       result.current.moveDown(dataSource[2], dataSource[3]);
@@ -144,4 +155,3 @@ describe('useDataGridState', () => {
     expect(result.error).not.toBeNull();
   });
 });
-

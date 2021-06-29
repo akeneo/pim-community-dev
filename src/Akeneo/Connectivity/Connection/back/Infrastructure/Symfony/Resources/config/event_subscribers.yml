@@ -3,6 +3,7 @@ services:
         arguments:
             - '@akeneo_connectivity.connection.service.connection_context'
             - '@akeneo_connectivity.connection.application.audit.handler.update_data_destination_product_event_count'
+            - '@akeneo_connectivity.connection.persistence.repository.connection'
         tags:
             - { name: kernel.event_subscriber }
 
@@ -15,5 +16,34 @@ services:
     Akeneo\Connectivity\Connection\Infrastructure\EventSubscriber\ApiErrorEventSubscriber:
         arguments:
             - '@akeneo_connectivity.connection.error_management.service.collect_api_error'
+        tags:
+            - { name: kernel.event_subscriber }
+
+    Akeneo\Connectivity\Connection\Infrastructure\EventSubscriber\EventsApiRequestsLimitEventSubscriber:
+        arguments:
+            - '@akeneo_connectivity.connection.webhook.get_delay_until_next_request'
+            - '%webhook_requests_limit%'
+            - '@akeneo_connectivity.connection.webhook.sleep'
+            - '@akeneo_connectivity.connection.webhook.reach_request_limit_logger'
+            - '@akeneo_connectivity.connection.webhook.events_api_debug_logger'
+            - '@akeneo_connectivity.connection.persistence.repository.events_api_debug'
+        tags:
+            - { name: kernel.event_subscriber }
+
+    Akeneo\Connectivity\Connection\Infrastructure\EventSubscriber\EventsApiRequestsLimitIncrementSubscriber:
+        arguments:
+            - '@akeneo_connectivity.connection.persistence.repository.events_api_request_count'
+        tags:
+            - { name: kernel.event_subscriber }
+
+    Akeneo\Connectivity\Connection\Infrastructure\EventSubscriber\EventsApiClearCacheSubscriber:
+        arguments:
+            - '@akeneo_connectivity.connection.webhook.cache_clearer'
+        tags:
+            - { name: kernel.event_subscriber }
+    
+    Akeneo\Connectivity\Connection\Infrastructure\EventSubscriber\EventsApiLoggingSubscriber:
+        arguments:
+            - '@akeneo_connectivity.connection.persistence.repository.events_api_debug'
         tags:
             - { name: kernel.event_subscriber }

@@ -60,12 +60,17 @@ pim_user_management:
         new_password_repeat: Uusi salasana (toista)
         password: Salasana
         password_repeat: Salasana (toista)
+        last_logged_in: Viimeksi kirjautunut
+        login_count: Kirjautumisten määrä
         ui_locale: Käyttöliittymän kieli
         timezone: Aikavyöhyke
         default_product_grid_view: Tuoteruudukon oletusnäkymä
         default_published_product_grid_view: Oletusarvoinen julkaistujen tuotteiden ruudukkonäkymä #EE Only
         proposals_to_review_notification: Kun uusi muutosehdotus on hyväksyttävissä #EE Only
         proposals_state_notifications: Kun uusi muutosehdotus on hyväksytty tai hylätty #EE Only
+      meta:
+        created: Luotu
+        updated: Päivitetty
       module:
         create:
           button: Luo käyttäjä
@@ -73,7 +78,7 @@ pim_user_management:
           confirm: Haluatko varmasti poistaa tämän käyttäjän?
         update:
           additional: Lisää
-          groups_and_roles: Käyttäjäyhmät ja roolit
+          groups_and_roles: Käyttäjäryhmät ja roolit
           password: Salasana
           interfaces: Käyttöliittymä
           notifications: Ilmoitukset #TODO EE Only

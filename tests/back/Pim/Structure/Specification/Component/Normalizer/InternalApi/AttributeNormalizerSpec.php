@@ -2,13 +2,12 @@
 
 namespace Specification\Akeneo\Pim\Structure\Component\Normalizer\InternalApi;
 
-use Akeneo\Tool\Component\Localization\Localizer\LocalizerInterface;
-use Akeneo\Tool\Component\Versioning\Model\Version;
-use PhpSpec\ObjectBehavior;
+use Akeneo\Pim\Structure\Component\Model\AttributeInterface;
 use Akeneo\Platform\Bundle\UIBundle\Provider\EmptyValue\EmptyValueProviderInterface;
 use Akeneo\Platform\Bundle\UIBundle\Provider\Field\FieldProviderInterface;
 use Akeneo\Platform\Bundle\UIBundle\Provider\Filter\FilterProviderInterface;
-use Akeneo\Pim\Structure\Component\Model\AttributeInterface;
+use Akeneo\Tool\Component\Localization\Localizer\LocalizerInterface;
+use PhpSpec\ObjectBehavior;
 use Prophecy\Argument;
 use Symfony\Component\Serializer\Normalizer\NormalizerInterface;
 
@@ -66,6 +65,7 @@ class AttributeNormalizerSpec extends ObjectBehavior
                 'scopable'               => false,
                 'labels'                 => [],
                 'auto_option_sorting'    => null,
+                'guidelines'             => ['en_US' => 'the guidelines'],
             ]
         );
 
@@ -106,6 +106,7 @@ class AttributeNormalizerSpec extends ObjectBehavior
                 'scopable'               => false,
                 'labels'                 => [],
                 'auto_option_sorting'    => null,
+                'guidelines'             => ['en_US' => 'the guidelines'],
                 'empty_value'            => [],
                 'field_type'             => 'akeneo-text-field',
                 'filter_types'           => ['product-export-builder' => 'akeneo-attribute-string-filter'],
@@ -152,6 +153,7 @@ class AttributeNormalizerSpec extends ObjectBehavior
                 'scopable'               => false,
                 'labels'                 => [],
                 'auto_option_sorting'    => null,
+                'guidelines'             => ['en_US' => 'the guidelines'],
             ]
         );
 
@@ -194,6 +196,7 @@ class AttributeNormalizerSpec extends ObjectBehavior
                 'scopable'               => false,
                 'labels'                 => [],
                 'auto_option_sorting'    => null,
+                'guidelines'             => ['en_US' => 'the guidelines'],
                 'empty_value'            => [],
                 'field_type'             => 'akeneo-text-field',
                 'filter_types'           => ['product-export-builder' => 'akeneo-attribute-string-filter'],

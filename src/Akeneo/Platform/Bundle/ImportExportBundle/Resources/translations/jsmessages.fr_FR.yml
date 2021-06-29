@@ -48,6 +48,7 @@ pim_import_export:
   form:
     job_execution:
       title.details: Détails d'exécution
+      refreshing: Actualisation des détails d'exécution
       refreshBtn.title: Mettre à jour
       button:
         show_profile.title: Afficher le profil
@@ -100,8 +101,8 @@ pim_import_export:
             title: Avec en-tête
             help: Définit si la première ligne du fichier contient les libellés des colonnes
           with_media:
-            title: Exporter les fichiers et les images
-            help: Exporter ou non les fichiers produits et les images
+            title: Exporter les média
+            help: Exportation ou non des média
           lines_per_file:
             title: Nombre de lignes par fichier
             help: Définit la limite de nombre de lignes par fichier
@@ -129,6 +130,9 @@ pim_import_export:
           real_time_versioning:
             title: Mise à jour de l'historique en temps réel
             help: Signifie que l'historique des produits est automatiquement mis à jour, peut être désactivé pour améliorer les performances
+          convert_variant_to_simple:
+            title: Convertir des produits variants en produits simples
+            help: Essayer de convertir des produits variants en produits simples lorsque la colonne "parent" est vide. Si réglé sur "Non", la colonne "parent" sera ignorée si elle est vide.
           family_variant_column:
             title: Colonne variante de famille
           with_label:
@@ -143,7 +147,7 @@ pim_import_export:
       file_path: Chemin du fichier
   widget:
     last_operations:
-      empty: Aucune opération trouvée
+      empty: Il n'y a aucune opération à afficher pour le moment.
       date: Date
       profile_name: Nom du profil
       details: Détails
@@ -158,6 +162,7 @@ pim_import_export:
         compute_family_variant_structure_changes: Calcul des changements de structure des familles variantes
         compute_completeness_of_products_family: Calcul de la complétude des familles variantes
         mass_delete: Suppression massive de produits
+        clean_removed_attribute_job: Traitement des valeurs de l'attribut supprimé
       header.view_all: Afficher tout
   batch_status:
     1: Terminé
@@ -168,6 +173,21 @@ pim_import_export:
     6: Echoué
     7: Abandonné
     8: Inconnu
+  job_status:
+    COMPLETED: Terminé
+    STARTING: Démarrage
+    STARTED: Démarré
+    STOPPING: En cours d'arrêt
+    STOPPED: Arrêté
+    FAILED: Echoué
+    ABANDONED: Abandonné
+    UNKNOWN: Inconnu
+  tracking:
+    completed: "Temps écoulé : {{ duration }}"
+    in_progress: "Temps restant estimé : {{ duration }}"
+    not_started: "En cours"
+    untrackable: Temps restant inconnu
+    estimating: "Estimation du temps restant..."
 confirmation:
   remove:
     import_profile: Êtes-vous sûr(e) de que vouloir supprimer ce profil d'import ?

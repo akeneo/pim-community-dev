@@ -115,6 +115,9 @@ pim_enrich.entity.association_type:
     delete:
       confirm: Weet u zeker dat u dit associatietype wilt verwijderen?
   hint: <a href="{{link}}" target="_blank">In dit artikel</a>vind je alles wat je nodig hebt om je eigen koppelingstype te maken.
+  no_association_types:
+    title: U heeft geen associatietypes
+    hint: Maak uw eerste associatietype aan
 pim_enrich.entity.group_type:
   label: groepstype
   flash:
@@ -142,6 +145,7 @@ pim_enrich.entity.attribute:
       success: Attribuut met succes bijgewerkt.
       fail: Het attribuut kon niet geüpdatet worden.
       fields_not_ready: "Het attribuut kan nu niet worden opgeslagen. De volgende velden zijn niet volledig: {{ fields }}"
+      cant_remove_attributes_used_as_label: Attributen die worden gebruikt als labels in een familie kunnen niet worden verwijderd.
     delete:
       success: Attribuut succesvol verwijderd
       fail: Kan dit attribuut niet verwijderen
@@ -157,6 +161,7 @@ pim_enrich.entity.attribute:
     default_metric_unit:
       label: Standaard meeteenheid
       choose: Kies een eenheid
+    guidelines: Richtlijnen voor attributen
     group:
       label: Attribuutgroep
       choose: Kies een attribuutgroep
@@ -201,6 +206,7 @@ pim_enrich.entity.attribute:
       regexp: Reguliere expressie
       url: URL
     wysiwyg_enabled: Rich text editor ingeschakeld
+    default_value: Standaardwaarde
   module:
     add_attribute:
       no_available_attributes: Er zijn geen attributen meer om toe te voegen
@@ -211,8 +217,16 @@ pim_enrich.entity.attribute:
       common: Algemene parameters
       type_specific: Type specifieke parameters
       validation: Validatieparameters
+      select_locale: Selecteer uw taal
     delete:
       confirm: Weet u zeker dat u attribuut wilt verwijderen?
+      product_count: ']-Inf, 1]{{ count }} product|]1, Inf[{{ count }} producten'
+      product_model_count: ']-Inf, 1]{{ count }} productmodel|]1, Inf[{{ count }} productmodellen'
+      used: momenteel zijn waarden ingesteld voor dit attribuut, ze zullen worden verwijderd.
+      helper:
+        content: Als u uw attribuuttype wilt wijzigen, om het lokaliseerbaar of per kanaal instelbaar te maken, terwijl de toegang tot uw bestaande attribuutwaarden behouden blijft
+        link: we helpen je door de verschillende stappen heen.
+      type: Typ alstublieft "{{ attributeCode }}"
       confirm_from_family: Weet u zeker dat u dit attribuut uit de familie wilt verwijderen?
       confirm_from_group: Weet u zeker dat u het attribuut {{ attribute }} van deze attribuutgroep wilt verwijderen?
       confirm_from_product: Bent u zeker dat u dit attribuut wil verwijderen van het product?
@@ -220,6 +234,7 @@ pim_enrich.entity.attribute_group:
   label: attribuutgroep
   uppercase_label: Attribuutgroep
   plural_label: Attribuutgroepen
+  result_count: '{0}0 attribuutgroepen|{1}1 attribuutgroep|]1, Inf[{{ count }} attribuutgroepen'
   show_more_attribute:
     title: Het is hier een beetje vol, we laten je {{ attributeCount }}/{{ totalAttributeCount }} attributen zien.
     subtitle: Om alle attributen van deze groep te ontdekken, klik hieronder!
@@ -239,6 +254,10 @@ pim_enrich.entity.attribute_group:
       attributes_groups_selected: '{{ itemsCount }} groep(en) geselecteerd'
     delete:
       confirm: Weet u zeker dat u deze attribuut groep wilt verwijderen?
+  grid:
+    columns:
+      name: Attribuutgroep naam
+    no_search_result: Sorry, er is geen resultaat voor uw zoekopdracht.
 pim_enrich.mass_edit.family:
   title: Gezamenlijke actie voor families
   confirm: "{1}U staat op het punt een familie te updaten met de volgende informatie, bevestig alstublieft.|]1, Inf[U staat op het punt om {{ itemsCount }} families te updaten met de volgende informatie, bevestig alstublieft."

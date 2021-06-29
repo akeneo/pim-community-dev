@@ -21,6 +21,11 @@ Second: Seconde
 Millisecond: Milliseconde
 Microsecond: Microseconde
 "Time Zone": "Fuseau horaire"
+duration:
+  days: "{0}0 jours|{1}1 jour|]1, Inf[{{ count }} jours"
+  hours: "{0}0 heures|{1}1 heure|]1, Inf[{{ count }} heures"
+  minutes: "{0}0 minutes|{1}1 minute|]1, Inf[{{ count }} minutes"
+  seconds: "{0}0 secondes|{1}1 seconde|]1, Inf[{{ count }} secondes"
 #PIM messages
 Localized value: Valeur localisée
 Columns: Colonnes
@@ -154,6 +159,7 @@ pim_common:
   before: Avant
   by: par
   cancel: Annuler
+  clear_value: Effacer la valeur
   close: Fermer
   code: Code
   completeness: Complétude
@@ -164,6 +170,7 @@ pim_common:
   created: Créé
   delete: Supprimer
   done: Fermer
+  duplicate: Dupliquer
   edit: Modifier
   entity_updated: Des modifications n'ont pas encore été sauvegardées.
   export: Export
@@ -178,6 +185,7 @@ pim_common:
   less_than: Moins de
   loading: Chargement en cours...
   media_upload: Glissez et déposez un fichier pour le télécharger ou cliquez ici
+  more_actions: Autres actions
   more_than: Plus de
   next: Suivant
   "no": "Non"
@@ -185,6 +193,8 @@ pim_common:
   not_available: N/A
   now: Maintenant
   ok: OK
+  open: Ouvrir
+  no_result: Aucun résultat
   other_actions: Autres actions
   permissions: Autorisations
   previous: Précédent
@@ -202,6 +212,7 @@ pim_common:
   to: jusqu'au
   type: Type
   update: Mettre à jour
+  updated: Mis à jour
   "yes": "Oui"
   operator: Opérateur
   operators:
@@ -218,6 +229,15 @@ pim_common:
     STARTS WITH: Commence par
     ENDS WITH: Finit par
   read_more: En savoir plus
+  channel: Canal
+  locale: Locale
+  categories: Catégories
+  family_variant: Variante de famille
+  enabled: Activé
+  family: Famille
+  parent: Parent
+  groups: Groupes
+  more: Plus
 error:
   exception: Oups! Une erreur {{ status_code }} s'est produite...
   forbidden: Désolé, vous n'êtes pas autorisé(e) à accéder à cette page
@@ -266,8 +286,9 @@ pim_title:
   pim_enrich_catalog_volume_index: Volumétrie du catalogue
   pim_enrich_categorytree_index: Arborescences des catégories
   pim_enrich_categorytree_create: Arborescences | Créer
-  pim_enrich_categorytree_edit: Arbre de catégories {{ category.label }} | Édition
+  pim_enrich_categorytree_edit: Catégorie {{ category.label }} | Édition
   pim_enrich_categorytree_create_tree: Arborescences | Créer
+  pim_enrich_categorytree_tree: Arbre de catégories {{ category.label }} | Édition
   pim_enrich_attribute_index: Attributs
   pim_enrich_attribute_create: Attributs | Créer
   pim_enrich_attribute_edit: Attribut {{ attribute.label }} | Édition
@@ -294,6 +315,7 @@ pim_title:
   pim_enrich_job_tracker_show: Traqueur de processus | Voir la tâche
   pim_enrich_mass_edit_action: Edition en masse
   pim_analytics_system_info_index: Informations système
+  pim_settings_index: Paramètres
 pim_menu:
   tab:
     activity: Activité
@@ -309,7 +331,7 @@ pim_menu:
     attribute_group: Groupes d'attributs
     channel: Canaux
     currency: Devises
-    dashboard: Tableau de bord
+    dashboard: Tableau de bord des activités
     family: Familles
     group: Groupes
     group_type: Types de groupes
@@ -330,7 +352,10 @@ pim_menu:
     activity: Centre d'activité
     system: Navigation système
     user: Navigation utilisateurs
-    settings: Navigation paramètres
+    settings:
+      product: Paramètres produit
+      catalog: Paramètres du catalogue
+      collapsed_label: Navigation paramètres
     product: Navigation produit
     product_infos: Infos produit
   user:
@@ -342,3 +367,20 @@ pim_notification:
     export: Export
     quick_export: Export rapide
     mass_edit: Edition en masse
+pim_settings:
+  settings_menu: Menu des paramètres
+  catalog_settings: Paramètres du catalogue
+  product_settings: Paramètres produit
+  count:
+    categories: Vous avez {{ countTrees }} arbres et {{ countCategories }} catégories
+    channels: Vous avez {{ count }} canaux
+    locales: Vous avez {{ count }} locales activées
+    currencies: Vous avez {{ count }} devises activées
+    attribute_groups: Vous avez {{ count }} groupes d'attributs
+    attributes: Vous avez {{ count }} attributs
+    families: Vous avez {{ count }} familles
+    measurements: Vous avez {{ count }} mesures
+    association_types: Vous avez {{ count }} types d'association
+    group_types: Vous avez {{ count }} types de groupe
+    groups: Vous avez {{ count }} groupes
+    rules: Vous avez {{ count }} règles activées

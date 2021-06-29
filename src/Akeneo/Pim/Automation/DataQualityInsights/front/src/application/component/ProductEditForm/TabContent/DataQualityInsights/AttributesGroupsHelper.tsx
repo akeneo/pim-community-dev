@@ -1,6 +1,6 @@
 import React from 'react';
 import styled from 'styled-components';
-import {AttributeGroup, AttributeGroupCollection} from "@akeneo-pim-community/settings-ui/src/models";
+import {AttributeGroup, AttributeGroupCollection} from '@akeneo-pim-community/settings-ui/src/models';
 
 const translate = require('oro/translator');
 
@@ -9,7 +9,7 @@ const Helper = styled.div`
   background-color: ${({theme}) => theme.color.blue10};
   padding: 10px 0px 10px 0;
   display: flex;
-  
+
   a {
     color: ${({theme}) => theme.color.purple100};
     text-decoration: underline ${({theme}) => theme.color.purple100};
@@ -33,32 +33,37 @@ type Props = {
 };
 
 const AttributeGroupsHelper = ({evaluatedAttributeGroups, allGroupsEvaluated, locale}: Props) => {
-  if (!allGroupsEvaluated && (evaluatedAttributeGroups === null || Object.keys(evaluatedAttributeGroups).length === 0)) {
-    return <></>
+  if (
+    !allGroupsEvaluated &&
+    (evaluatedAttributeGroups === null || Object.keys(evaluatedAttributeGroups).length === 0)
+  ) {
+    return <></>;
   }
 
   return (
     <Helper>
-      <HelperIcon/>
+      <HelperIcon />
       <div>
-        {
-          allGroupsEvaluated ?
-            <span dangerouslySetInnerHTML={{
-              __html: translate(
-                'akeneo_data_quality_insights.attribute_group.all_groups_evaluated',
-                {link: "https://help.akeneo.com/pim/serenity/articles/manage-data-quality.html"}
-              )
-            }}/> :
-            <>
-              {translate('akeneo_data_quality_insights.attribute_group.used_groups_helper')}&nbsp;
-              <span data-testid='dqi-evaluated-attribute-groups'>
-                {evaluatedAttributeGroups && Object.entries(evaluatedAttributeGroups)
-                  .map(([_, group]:[string, AttributeGroup]) => group.labels[locale])
-                  .join(', ')
-                }.
-              </span>
-            </>
-        }
+        {allGroupsEvaluated ? (
+          <span
+            dangerouslySetInnerHTML={{
+              __html: translate('akeneo_data_quality_insights.attribute_group.all_groups_evaluated', {
+                link: 'https://help.akeneo.com/pim/serenity/articles/manage-data-quality.html',
+              }),
+            }}
+          />
+        ) : (
+          <>
+            {translate('akeneo_data_quality_insights.attribute_group.used_groups_helper')}&nbsp;
+            <span data-testid="dqi-evaluated-attribute-groups">
+              {evaluatedAttributeGroups &&
+                Object.entries(evaluatedAttributeGroups)
+                  .map(([_, group]: [string, AttributeGroup]) => group.labels[locale])
+                  .join(', ')}
+              .
+            </span>
+          </>
+        )}
       </div>
     </Helper>
   );

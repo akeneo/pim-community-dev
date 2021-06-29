@@ -92,9 +92,8 @@ class Creation extends Form
             $labelField = $this->spin(function () use ($locale) {
                 return $this->find('css', sprintf('.AknTextField[data-locale="%s"]', $locale));
             }, 'Unable to find the attribute option label for locale ' . $locale);
-            $labelField->setValue($label);
-            $this->spin(function () use ($locale, $label) {
-                $labelField = $this->find('css', sprintf('.AknTextField[data-locale="%s"]', $locale));
+            $this->spin(function () use ($locale, $label, $labelField) {
+                $labelField->setValue($label);
 
                 return $labelField->getValue() === $label;
             }, 'Unable to fill the attribute option label for locale ' . $locale);

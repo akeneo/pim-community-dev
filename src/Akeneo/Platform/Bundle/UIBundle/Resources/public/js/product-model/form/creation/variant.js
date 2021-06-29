@@ -15,7 +15,7 @@ define([
   'pim/router',
   'pim/user-context',
   'pim/form/common/fields/simple-select-async',
-], function($, _, __, FetcherRegistry, Routing, UserContext, SimpleSelectAsync) {
+], function ($, _, __, FetcherRegistry, Routing, UserContext, SimpleSelectAsync) {
   return SimpleSelectAsync.extend({
     previousFamily: null,
 
@@ -98,7 +98,7 @@ define([
     select2InitSelection(element, callback) {
       const id = $(element).val();
       if ('' !== id) {
-        this.getFamilyVariantLabelFromCode(id).then(function(label) {
+        this.getFamilyVariantLabelFromCode(id).then(function (label) {
           callback({
             id: id,
             text: label,

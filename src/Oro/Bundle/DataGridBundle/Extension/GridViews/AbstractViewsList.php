@@ -3,15 +3,12 @@
 namespace Oro\Bundle\DataGridBundle\Extension\GridViews;
 
 use Doctrine\Common\Collections\ArrayCollection;
-use Symfony\Component\Translation\TranslatorInterface;
+use Symfony\Contracts\Translation\TranslatorInterface;
 
 abstract class AbstractViewsList
 {
-    /** @var TranslatorInterface */
-    protected $translator;
-
-    /** @var null|ArrayCollection */
-    protected $views = null;
+    protected TranslatorInterface $translator;
+    protected ?ArrayCollection $views = null;
 
     public function __construct(TranslatorInterface $translator)
     {

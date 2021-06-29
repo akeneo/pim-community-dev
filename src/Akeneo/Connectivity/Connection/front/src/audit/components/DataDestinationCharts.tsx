@@ -1,5 +1,5 @@
 import React from 'react';
-import {Section, Loading} from '../../common';
+import {Loading} from '../../common';
 import styled from '../../common/styled-with-theme';
 import {FlowType} from '../../model/flow-type.enum';
 import {Translate, useTranslate} from '../../shared/translate';
@@ -8,6 +8,7 @@ import {useDashboardState} from '../dashboard-context';
 import useConnectionSelect from '../hooks/useConnectionSelect';
 import {WeeklyAuditChart} from './Chart/WeeklyAuditChart';
 import {NoConnection} from './NoConnection';
+import {SectionTitle} from 'akeneo-design-system';
 
 export const DataDestinationCharts = () => {
     const translate = useTranslate();
@@ -18,7 +19,11 @@ export const DataDestinationCharts = () => {
     if (0 === connections.filter(connection => connection.code !== '<all>').length) {
         return (
             <DataDestinationChartsContainer>
-                <Section title={<Translate id='akeneo_connectivity.connection.dashboard.charts.outbound' />} />
+                <SectionTitle>
+                    <SectionTitle.Title>
+                        <Translate id='akeneo_connectivity.connection.dashboard.charts.outbound' />
+                    </SectionTitle.Title>
+                </SectionTitle>
                 <NoConnectionContainer>
                     <NoConnection small flowType={FlowType.DATA_DESTINATION} />
                 </NoConnectionContainer>
@@ -28,7 +33,11 @@ export const DataDestinationCharts = () => {
 
     return (
         <DataDestinationChartsContainer>
-            <Section title={<Translate id='akeneo_connectivity.connection.dashboard.charts.outbound' />}>
+            <SectionTitle>
+                <SectionTitle.Title>
+                    <Translate id='akeneo_connectivity.connection.dashboard.charts.outbound' />
+                </SectionTitle.Title>
+                <SectionTitle.Spacer />
                 <ConnectionSelect
                     connections={connections}
                     onChange={code => selectConnectionCode(code!)}
@@ -36,7 +45,7 @@ export const DataDestinationCharts = () => {
                         <Translate id='akeneo_connectivity.connection.dashboard.connection_selector.title.destination' />
                     }
                 />
-            </Section>
+            </SectionTitle>
 
             {events.product_read[connectionCode] ? (
                 <WeeklyAuditChart

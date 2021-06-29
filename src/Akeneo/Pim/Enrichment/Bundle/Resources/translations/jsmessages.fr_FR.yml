@@ -1,6 +1,7 @@
 pim_notification:
   types:
     settings: Paramètres
+    mass_delete: Suppression
 flash:
   comment:
     create:
@@ -52,6 +53,11 @@ pim_enrich.entity.product:
       select: Sélectionner
       all_visible: Tous les éléments visibles
       copy: Copier
+    convert_variant_to_simple:
+      label: Convertir en produit simple
+      dialog:
+        title: Confirmer la conversion
+        content: "Êtes-vous sûr de vouloir convertir ce produit variant en produit simple ? Toutes ses valeurs, catégories et associations initiales seront conservées."
     history:
       version: Version
       author: Auteur
@@ -91,7 +97,7 @@ pim_enrich.entity.product:
       show_products: Afficher les produits
       show_groups: Afficher les groupes
       number_of_associations: "{{ productCount }} produit(s), {{ productModelCount }} modèle(s) de produit et {{ groupCount }} groupe(s)"
-      number_of_quantified_associations: "{ productCount }} produit(s) and {{ productModelCount }} modèle(s) de produit"
+      number_of_quantified_associations: "{{ productCount }} produit(s) et {{ productModelCount }} modèle(s) de produit"
       association_type_selector: Type d'association
       target: Destination
       manage: Ajouter des associations {{ associationType }}
@@ -165,10 +171,11 @@ pim_enrich.entity.product_model:
     variant_axis:
       label: 'axe de variante'
       create: Créer
-      create_label: "Créer un nouveau variant sur l'/les axe(s) {{ axes }}"
+      title_create_label: "]-Inf, 1]Créer un nouveau variant sur l'axe {{ axes }}|]1, Inf[Créer un nouveau variant sur les axes {{ axes }}"
       required_label: '(axe de variante)'
     completeness:
       variant_product: "]-Inf, 1]{{ complete }} / {{ total }} produit variant|]1, Inf[{{ complete }} / {{ total }} produits variants"
+      label: Variante
     delete:
       confirm: Êtes-vous sûr de que vouloir supprimer ce modèle de produit ? Tous ses enfants, modèles de produit et de variantes de produits seront également supprimés.
       confirm_for_products_and_product_models: Êtes-vous sûr(e) de vouloir supprimer les produits et modèles de produits sélectionnés ? Tous les enfants des modèles de produits seront aussi supprimés.
@@ -202,6 +209,45 @@ pim_enrich.entity.category:
   label: catégorie
   uppercase_label: Catégorie
   plural_label: Catégories
+  page_title:
+    index: "]-Inf, 1]{{ count }} arbre|]1, Inf[{{ count }} arbres"
+  content:
+    empty_tree_list:
+      title: Vous n'avez aucune arborescence
+      hint: Créez votre première arborescence.
+    tree_list:
+      columns:
+        label: Libellé d'arborescence
+        number_of_categories: Nombre de catégories
+        count_categories: ']-Inf, 1]{{ count }} catégorie|]1, Inf[{{ count }} catégories'
+    tree:
+      not_found: Arborescence des catégories introuvable
+    edit:
+      not_found: La catégorie est introuvable
+      default_tree_label: Arborescence
+      success: Catégorie correctement mise à jour
+      fail: La catégorie n'a pas pu être mise à jour
+  new_category: Nouvelle catégorie
+  new_category_tree: Nouvelle arborescence de catégories
+  category_created: La catégorie "{{ code }}" a été créée avec succès
+  category_creation_error: La catégorie "{{ code }}" n'a pas pu être créée
+  category_tree_creation:
+    success: L'arborescence "{{ code }}" a été créée avec succès
+    error: L'arborescence "{{ code }}" n'a pas pu être créée
+  category_tree_deletion:
+    success: L'arborescence "{{ tree }}" a bien été supprimée
+    error: L'arborescence "{{ tree }}" n'a pas pu être supprimée
+    confirmation: Êtes-vous sûr(e) de vouloir supprimer l'arborescence {{ name }} ? Toutes les catégories de cette arborescence seront supprimées, et les produits seront supprimés de toutes ces catégories.
+    products_limit_exceeded:
+      title: Cette arborescence ne peut pas être supprimée
+      message: L'arbre "{{ tree }}" contient plus de {{ limit }} produits et ne peut donc pas être supprimé.
+  category_deletion:
+    success: La catégorie "{{ name }}" a été supprimée avec succès
+    error: La catégorie "{{ name }}" n'a pas pu être supprimée
+    confirmation: Êtes-vous sûr(e) de vouloir supprimer la catégorie {{ name }}? Les produits de cette catégorie ne seront pas supprimés.
+    products_limit_exceeded:
+      title: Cette catégorie ne peut pas être supprimée
+      message: La catégorie "{{ name }}" contient plus de {{ limit }} produits et ne peut donc pas être supprimée.
 pim_enrich.export.product:
   data:
     title: Filtrer les produits
@@ -239,8 +285,8 @@ pim_enrich.export.product:
       operators:
         ALL: Pas de condition de date
         "SINCE LAST N DAYS": Produits mis à jour durant les n derniers jours (par ex. 6)
-        ">": Produits mis à jours depuis cette date
-        "SINCE LAST JOB": Produits mis à jour depuis le dernière export
+        ">": Produits mis à jour depuis cette date
+        "SINCE LAST JOB": Produits mis à jour depuis le dernier export
     enabled:
       title: État
       help: "Choisir les produits à exporter selon leur statut. Par ex. : exporter les produits quel que soit leur statut."
@@ -275,6 +321,13 @@ pim_enrich.export.product:
       operators:
         BETWEEN: Entre
         NOT BETWEEN: Pas entre
+    quality-score:
+      title: Score de qualité
+      operator_choice_title: Exporter le(s) score(s) de qualité pour
+      empty_selection: Aucune condition sur le score de qualité
+      operators:
+        IN AT LEAST ONE LOCALE: Au moins une locale
+        IN ALL LOCALES: Toutes les locales sélectionnées
   global_settings:
     title: Paramètres généraux
 pim_enrich.mass_edit.product:
@@ -329,6 +382,7 @@ pim_enrich.mass_edit.product:
       label: Déplacer vers d'autres catégories
       label_count: "{0}Déplacer certains <span class=\"AknFullPage-title--highlight\">produits</span> parmi les catégories|{1}Déplacer <span class=\"AknFullPage-title--highlight\">1 produit</span> parmi les catégories|]1, Inf[Déplacer <span class=\"AknFullPage-title--highlight\">{{ itemsCount }} produits</span> parmi les catégories"
       description: Les produits seront classés dans les catégories suivantes, la classification actuelle sera perdue.
+      no_update: Veuillez sélectionner une catégorie.
     remove_from_category:
       label: Retirer des catégories
       label_count: "{0}Supprimer certains <span class=\"AknFullPage-title--highlight\">produits</span> des catégories|{1}Supprimer <span class=\"AknFullPage-title--highlight\">1 produit</span> des catégories|]1, Inf[Supprimer <span class=\"AknFullPage-title--highlight\">{{ itemsCount }} produits</span> des catégories"
@@ -339,6 +393,10 @@ pim_enrich.mass_edit.product:
       label_count: "{0}Ajouter certains <span class=\"AknFullPage-title--highlight\">produits</span> à un modèle de produit existant|{1}Ajouter <span class=\"AknFullPage-title--highlight\">1 produit</span> à un modèle de produit existant|]1, Inf[Ajouter <span class=\"AknFullPage-title--highlight\">{{ itemsCount }} produits</span> à un modèle de produit existant"
       description: Le modèle de produit sélectionné va rassembler des produits et améliorer l'enrichissement de leurs propriétés communes.
       no_update: Veuillez sélectionner un modèle de produit avant de continuer
+    convert_to_simple_products:
+      label: Convertir en produits simples
+      label_count: "{0}Convertissez des <span class=\"AknFullPage-title--highlight\">produits</span> en produits simples |{1}Convertissez <span class=\"AknFullPage-title--highlight\">1 produit</span> en produit simple|]1, Inf[Convertir <span class=\"AknFullPage-title--highlight\">{{ itemsCount }} produits</span> en produits simples"
+      description: Toutes les valeurs, catégories et associations initiales seront conservées.
     associate_to_product_and_product_model:
       label: Associer
       label_count: "{0}Associer certains <span class=\"AknFullPage-title--highlight\">produits</span> à d'autres produits ou modèles de produit|{1}Associer <span class=\"AknFullPage-title--highlight\">1 produit</span> à d'autres produits ou modèles de produit|]1, Inf[Associer <span class=\"AknFullPage-title--highlight\">{{ itemsCount }} produits</span> à d'autres produits ou modèles de produit"
@@ -350,6 +408,9 @@ pim_enrich.mass_edit.product:
       description: Le parent des produits variants et des sous modèles de produits sélectionnés dans la grille va être modifié avec ce modèle de produit.
 pim_datagrid:
   no_entities: "Aucune {{ entityHint }} trouvée"
+  no_entities.product: "Aucun produit trouvé" #Custom translation for product grid
+  no_results: "Désolé, il n’y a aucun(e) {{ entityHint }} pour votre recherche."
+  no_results.product: "Désolé, il n’y a aucun résultat pour votre recherche." #Custom translation for product grid
   mass_action_group:
     bulk_actions:
       label: Actions de masse
@@ -374,8 +435,10 @@ pim_datagrid:
         all_attributes: Tous les attributs
         with_codes: Avec codes
         with_labels: Avec libellés
-      success_message: "Vous pouvez {{ job_link }}."
-      job_link_label: suivre l’avancement de votre export ici
+        without_media: Sans image
+        with_media: Avec images
+      flash:
+        message: "Vous pouvez suivre l'avancement de votre export ici."
     mass_edit: Actions de masse
     sequential_edit: Modification séquentielle
     mass_delete: Suppression massive
@@ -384,6 +447,7 @@ pim_datagrid:
       product: "]-Inf, 1]{{ count }} résultat sélectionné|]1, +Inf[{{ count }} résultats sélectionnés"
   view_selector:
     view: Vues
+    choose_type: Je veux créer une vue privée
   actions:
     edit_product_attributes: Modifier les attributs du produit
     classify_product: Classer le produit
@@ -443,6 +507,9 @@ batch_jobs:
   add_to_existing_product_model:
     label: Ajouter à un modèle de produit existant
     perform.label: Ajouter à un modèle de produit existant
+  convert_to_simple_products:
+    label: Convertir en produits simples
+    perform.label: Convertir en produits simples
   csv_product_grid_context_quick_export:
     quick_export.label: Export rapide de la grille de produits en CSV
     quick_export_product_model.label: Export rapide de la grille de modèles de produit en CSV

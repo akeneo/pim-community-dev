@@ -1,6 +1,6 @@
 import React, {useRef, useEffect, useCallback} from 'react';
 import styled from 'styled-components';
-import {useTranslate} from '@akeneo-pim-community/legacy-bridge';
+import {useTranslate} from '@akeneo-pim-community/shared';
 import {AnnouncementComponent, EmptyAnnouncementList} from './announcement';
 import {Announcement} from '../../models/announcement';
 import {useInfiniteScroll} from '../../hooks/useInfiniteScroll';
@@ -21,10 +21,7 @@ const AnnouncementList = ({campaign, panelIsClosed}: ListAnnouncementProps) => {
   const __ = useTranslate();
   const containerRef = useRef<HTMLUListElement | null>(null);
   const scrollableElement = null !== containerRef.current ? containerRef.current.parentElement : null;
-  const [announcementResponse, handleFetchingResults] = useInfiniteScroll(
-    fetchAnnouncements,
-    scrollableElement
-  );
+  const [announcementResponse, handleFetchingResults] = useInfiniteScroll(fetchAnnouncements, scrollableElement);
   const handleHasNewAnnouncements = useHasNewAnnouncements();
   const handleAddViewedAnnouncements = useAddViewedAnnouncements();
 

@@ -13,3 +13,4 @@ parameters:
         - '#Call to an undefined method Symfony\\Component\\Config\\Definition\\Builder\\NodeDefinition\:\:children\(\).#'
     excludes_analyse:
         - %currentWorkingDirectory%/src/Akeneo/Pim/Automation/DataQualityInsights/tests
+        - %currentWorkingDirectory%/src/Akeneo/Pim/Enrichment/Bundle/Resources/fonts

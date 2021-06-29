@@ -18,8 +18,7 @@ use Doctrine\Common\Persistence\ObjectRepository;
  */
 class InMemoryRoleRepository implements RoleRepositoryInterface, SaverInterface, ObjectRepository
 {
-    /** @var RoleInterface[] */
-    private $roles;
+    private ArrayCollection $roles;
 
     public function __construct()
     {

@@ -2,7 +2,12 @@
     <ul class="AknHorizontalNavtab-list nav nav-tabs form-tabs">
         <% _.each(tabs, function (tab) { %>
             <li class="AknHorizontalNavtab-item<% if (currentTab === tab.code) { %> active<% } %>" data-tab="<%- tab.code %>">
-                <a class="AknHorizontalNavtab-link <% if (currentTab === tab.code) { %> AknHorizontalNavtab-link--active<% } %>" href="javascript:void(0);"><%= tab.label %></a>
+                <a class="AknHorizontalNavtab-link <% if (currentTab === tab.code) { %> AknHorizontalNavtab-link--active<% } %>" href="javascript:void(0);">
+                    <%= tab.label %>
+                    <% if (tab.fieldErrorCount > 0) { %>
+                        <div class="AknBadge AknBadge--small  AknBadge--highlight AknBadge--highlight--below-average"></div>
+                    <% } %>
+                </a>
             </li>
         <% }); %>
     </ul>

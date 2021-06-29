@@ -8,7 +8,8 @@ use Akeneo\Pim\Structure\Bundle\Doctrine\ORM\Repository\AttributeRepository;
 use Akeneo\Pim\Structure\Component\AttributeTypes;
 use Akeneo\Tool\Component\Api\Exception\ViolationHttpException;
 use Akeneo\Tool\Component\StorageUtils\Repository\IdentifiableObjectRepositoryInterface;
-use Doctrine\Common\Inflector\Inflector;
+use Doctrine\Inflector\Inflector;
+use Doctrine\Inflector\NoopWordInflector;
 use Symfony\Component\Serializer\Normalizer\CacheableSupportsMethodInterface;
 use Symfony\Component\Serializer\Normalizer\NormalizerInterface;
 use Symfony\Component\Validator\ConstraintViolationInterface;
@@ -167,7 +168,7 @@ class ViolationNormalizer implements NormalizerInterface, CacheableSupportsMetho
             return $constraint->payload['standardPropertyName'];
         }
 
-        return Inflector::tableize($violation->getPropertyPath());
+        return $this->getInflector()->tableize($violation->getPropertyPath());
     }
 
     /**
@@ -228,5 +229,10 @@ class ViolationNormalizer implements NormalizerInterface, CacheableSupportsMetho
         }
 
         return $error;
+    }
+
+    private function getInflector(): Inflector
+    {
+        return new Inflector(new NoopWordInflector(), new NoopWordInflector());
     }
 }

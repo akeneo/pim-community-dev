@@ -1,4 +1,5 @@
 <?php
+
 declare(strict_types=1);
 
 namespace Akeneo\Connectivity\Connection\Infrastructure\InternalApi\Controller;
@@ -22,21 +23,16 @@ use Symfony\Component\Validator\ConstraintViolationListInterface;
 
 class WebhookController
 {
-    /** @var GetAConnectionWebhookHandler */
-    private $getAConnectionWebhookHandler;
+    private GetAConnectionWebhookHandler $getAConnectionWebhookHandler;
 
-    /** @var CheckWebhookReachabilityHandler */
-    private $checkWebhookReachabilityHandler;
+    private CheckWebhookReachabilityHandler $checkWebhookReachabilityHandler;
 
-    /** @var UpdateWebhookHandler */
-    private $updateConnectionWebhookHandler;
+    private UpdateWebhookHandler $updateConnectionWebhookHandler;
 
-    /** @var SecurityFacade */
-    private $securityFacade;
-  
-    /** @var GenerateWebhookSecretHandler */
-    private $generateWebhookSecretHandler;
-  
+    private SecurityFacade $securityFacade;
+
+    private GenerateWebhookSecretHandler $generateWebhookSecretHandler;
+
     public function __construct(
         SecurityFacade $securityFacade,
         GetAConnectionWebhookHandler $getAConnectionWebhookHandler,
@@ -53,27 +49,28 @@ class WebhookController
 
     public function get(Request $request): JsonResponse
     {
-        $connectionWebhook = $this->getAConnectionWebhookHandler->handle(
-            new GetAConnectionWebhookQuery($request->get('code', ''))
+        $eventSubscriptionFormData = $this->getAConnectionWebhookHandler->handle(
+            new GetAConnectionWebhookQuery($request->get('code', '')),
         );
 
-        if (null === $connectionWebhook) {
+        if (null === $eventSubscriptionFormData) {
             return new JsonResponse(null, Response::HTTP_NOT_FOUND);
         }
 
-        return new JsonResponse($connectionWebhook->normalize());
+        return new JsonResponse($eventSubscriptionFormData->normalize());
     }
 
     public function checkWebhookReachability(Request $request): JsonResponse
     {
         $url = $request->get('url', '');
+        $secret = $request->get('secret', '');
         $checkWebhookReachability = $this->checkWebhookReachabilityHandler->handle(
-            new CheckWebhookReachabilityCommand($url)
+            new CheckWebhookReachabilityCommand($url, $secret)
         );
 
         return new JsonResponse($checkWebhookReachability->normalize());
     }
-  
+
     public function update(Request $request): JsonResponse
     {
         if (true !== $this->securityFacade->isGranted('akeneo_connectivity_connection_manage_settings')) {
@@ -81,7 +78,7 @@ class WebhookController
         }
 
         try {
-            $webhook = $this->updateConnectionWebhookHandler->handle(
+            $this->updateConnectionWebhookHandler->handle(
                 new UpdateWebhookCommand(
                     $request->get('code', ''),
                     $request->get('enabled'),
@@ -99,7 +96,7 @@ class WebhookController
             );
         }
 
-        return new JsonResponse($webhook->normalize());
+        return new JsonResponse(null, Response::HTTP_NO_CONTENT);
     }
 
     public function regenerateSecret(Request $request): JsonResponse

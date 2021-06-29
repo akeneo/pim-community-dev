@@ -4,6 +4,7 @@ declare(strict_types=1);
 namespace Specification\Akeneo\Pim\Enrichment\Component\Product\Factory;
 
 use Akeneo\Pim\Enrichment\Component\Product\Exception\InvalidAttributeException;
+use Akeneo\Pim\Enrichment\Component\Product\Exception\NotLocalizableAndNotScopableAttributeException;
 use Akeneo\Pim\Enrichment\Component\Product\Factory\Value\ValueFactory as SingleValueFactory;
 use Akeneo\Pim\Enrichment\Component\Product\Model\ValueInterface;
 use Akeneo\Pim\Structure\Component\Query\PublicApi\AttributeType\Attribute;
@@ -55,7 +56,7 @@ final class ValueFactorySpec extends ObjectBehavior
 
     public function it_throws_an_exception_if_attribute_is_not_consistent_with_provided_locale_code_or_channel_code()
     {
-        $this->shouldThrow(InvalidAttributeException::class)->during(
+        $this->shouldThrow(NotLocalizableAndNotScopableAttributeException::class)->during(
             'createByCheckingData',
             [
                 new Attribute('an_attribute', 'an_attribute_type1', [], false, false, null, null, false, 'backend_type', []),

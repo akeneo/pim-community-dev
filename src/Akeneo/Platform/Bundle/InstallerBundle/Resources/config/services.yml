@@ -1,9 +1,18 @@
 parameters:
-    pim_installer.install_status_manager.class:       Akeneo\Platform\Bundle\InstallerBundle\InstallStatusManager\InstallStatusManager
+    pim_installer.install_status_manager.class: Akeneo\Platform\Bundle\InstallerBundle\InstallStatusManager\InstallStatusManager
 
 services:
     pim_installer.install_status_manager:
-            class: '%pim_installer.install_status_manager.class%'
-            arguments:
-                - '@doctrine'
-                - '%env(APP_DATABASE_NAME)%'
+        class: '%pim_installer.install_status_manager.class%'
+        arguments:
+            - '@doctrine'
+            - '%env(APP_DATABASE_NAME)%'
+
+    pim_installer.processor.denormalization.user:
+        class: '%pim_connector.processor.denormalization.class%'
+        arguments:
+            - '@pim_user.repository.user'
+            - '@pim_user.factory.user'
+            - '@pim_user.updater.user'
+            - '@validator'
+            - '@akeneo_storage_utils.doctrine.object_detacher'

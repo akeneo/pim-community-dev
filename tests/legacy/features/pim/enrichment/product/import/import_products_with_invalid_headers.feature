@@ -20,7 +20,7 @@ Feature: Execute a job
     When I am on the "csv_footwear_product_import" import job page
     And I launch the import job
     And I wait for the "csv_footwear_product_import" job to finish
-    Then I should see the text "Status: FAILED"
+    Then I should see job execution status "FAILED"
     And I should see the text " The field \"comment-fr_FR-mobile\" does not exist"
 
   @jira https://akeneo.atlassian.net/browse/PIM-3374
@@ -35,7 +35,7 @@ Feature: Execute a job
     When I am on the "csv_footwear_product_import" import job page
     And I launch the import job
     And I wait for the "csv_footwear_product_import" job to finish
-    Then I should see the text "Status: FAILED"
+    Then I should see job execution status "FAILED"
     And I should see the text " The field \"comment-mobile\" does not exist"
 
   @jira https://akeneo.atlassian.net/browse/PIM-3375
@@ -50,7 +50,7 @@ Feature: Execute a job
     When I am on the "csv_footwear_product_import" import job page
     And I launch the import job
     And I wait for the "csv_footwear_product_import" job to finish
-    Then I should see the text "Status: FAILED"
+    Then I should see job execution status "FAILED"
     And I should see the text " The field \"comment-fr_FR\" does not exist"
 
   @jira https://akeneo.atlassian.net/browse/PIM-3372
@@ -65,7 +65,7 @@ Feature: Execute a job
     When I am on the "csv_footwear_product_import" import job page
     And I launch the import job
     And I wait for the "csv_footwear_product_import" job to finish
-    Then I should see the text "Status: FAILED"
+    Then I should see job execution status "FAILED"
     And I should see the text " The field \"name-fr_CA\" does not exist"
 
   @jira https://akeneo.atlassian.net/browse/PIM-3370
@@ -80,7 +80,7 @@ Feature: Execute a job
     When I am on the "csv_footwear_product_import" import job page
     And I launch the import job
     And I wait for the "csv_footwear_product_import" job to finish
-    Then I should see the text "Status: FAILED"
+    Then I should see job execution status "FAILED"
     And I should see the text " The field \"description-en_US-noexistingchannel\" does not exist"
 
 
@@ -166,7 +166,7 @@ Feature: Execute a job
     When I am on the "csv_footwear_product_import" import job page
     And I launch the import job
     And I wait for the "csv_footwear_product_import" job to finish
-    Then I should see the text "Status: FAILED"
+    Then I should see job execution status "FAILED"
     And I should see the text "The field \"description-fr_FR-print\" does not exist"
 
   Scenario: Skip import with many not existing fields
@@ -180,7 +180,7 @@ Feature: Execute a job
     When I am on the "csv_footwear_product_import" import job page
     And I launch the import job
     And I wait for the "csv_footwear_product_import" job to finish
-    Then I should see the text "Status: FAILED"
+    Then I should see job execution status "FAILED"
     And I should see the text "The fields \"unknownfield1, unknownfield2\" do not exist"
 
   @jira https://akeneo.atlassian.net/browse/PIM-3369
@@ -195,5 +195,5 @@ Feature: Execute a job
     When I am on the "csv_footwear_product_import" import job page
     And I launch the import job
     And I wait for the "csv_footwear_product_import" job to finish
-    Then I should see the text "Status: FAILED"
+    Then I should see job execution status "FAILED"
     And I should see the text "The field \"description\" needs an additional locale and/or a channel information"

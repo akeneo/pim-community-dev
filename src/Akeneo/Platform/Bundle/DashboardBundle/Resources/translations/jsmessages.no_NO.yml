@@ -1,0 +1,6 @@
+pim_dashboard:
+  widget:
+    completeness:
+      load_more: 'Last mer...'
+pim_title:
+  pim_dashboard_index: Kontrollpanel

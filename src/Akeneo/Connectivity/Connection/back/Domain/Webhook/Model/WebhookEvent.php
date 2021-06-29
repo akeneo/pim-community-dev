@@ -4,6 +4,9 @@ declare(strict_types=1);
 
 namespace Akeneo\Connectivity\Connection\Domain\Webhook\Model;
 
+use Akeneo\Platform\Component\EventQueue\Author;
+use Akeneo\Platform\Component\EventQueue\EventInterface;
+
 /**
  * @author    Willy Mesnage <willy.mesnage@akeneo.com>
  * @copyright 2020 Akeneo SAS (http://www.akeneo.com)
@@ -11,23 +14,20 @@ namespace Akeneo\Connectivity\Connection\Domain\Webhook\Model;
  */
 class WebhookEvent
 {
-    /** @var string */
-    private $action;
+    private string $action;
 
-    /** @var string */
-    private $eventId;
+    private string $eventId;
 
-    /** @var string */
-    private $eventDate;
+    private string $eventDateTime;
 
     /** @var array<mixed> */
-    private $data;
+    private array $data;
 
-    /** @var string */
-    private $author;
+    private Author $author;
 
-    /** @var string */
-    private $pimSource;
+    private string $pimSource;
+
+    private EventInterface $pimEvent;
 
     /**
      * @param array<mixed> $data
@@ -35,17 +35,19 @@ class WebhookEvent
     public function __construct(
         string $action,
         string $eventId,
-        string $eventDate,
-        string $author,
+        string $eventDateTime,
+        Author $author,
         string $pimSource,
-        array $data
+        array $data,
+        EventInterface $pimEvent
     ) {
         $this->action = $action;
         $this->eventId = $eventId;
-        $this->eventDate = $eventDate;
+        $this->eventDateTime = $eventDateTime;
         $this->data = $data;
         $this->author = $author;
         $this->pimSource = $pimSource;
+        $this->pimEvent = $pimEvent;
     }
 
     public function action(): string
@@ -58,12 +60,12 @@ class WebhookEvent
         return $this->eventId;
     }
 
-    public function eventDate(): string
+    public function eventDateTime(): string
     {
-        return $this->eventDate;
+        return $this->eventDateTime;
     }
 
-    public function author(): string
+    public function author(): Author
     {
         return $this->author;
     }
@@ -79,5 +81,10 @@ class WebhookEvent
     public function data(): array
     {
         return $this->data;
+    }
+
+    public function getPimEvent(): EventInterface
+    {
+        return $this->pimEvent;
     }
 }

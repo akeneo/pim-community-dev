@@ -53,6 +53,7 @@ pim_enrich.entity.channel:
   property:
     category_tree: Drzewo kategorii
     do_not_convert: Nie konwertuj
+    measurement: Ustawienia pomiaru
     label_conversion_units: Wybierz jednostkę konwersji dla każdego atrybutu pomiaru, który będzie używany podczas eksportu produktu
   module:
     create:
@@ -64,7 +65,14 @@ pim_enrich.entity.locale:
   uppercase_label: Wersja językowa
   plural_label: Ustawienia regionalne
   page_title:
-    index: "]-Inf, 1]{{ count }} lokalizacja|]1, Inf[{{ count }} lokalizacji"
+    index: "]-Inf, 1]{{ count }} włączona wersja językowa|]1, Inf[{{ count }} włączonych wersji językowych"
+  helper: "Aby włączyć lub wyłączyć wersję językową, przejdź do jednego z <a href={{ href }}>kanałów</a> i dodaj lub usuń wersję językową."
+  grid:
+    columns:
+      code: Włączone wersje językowe
+    filters:
+      search_placeholder: Wyszukaj włączoną wersję językową
+    no_search_result: Przepraszamy, brak wyników twojego wyszukiwania.
 pim_enrich.entity.currency:
   plural_label: Waluty
   page_title:

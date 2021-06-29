@@ -1,8 +1,7 @@
 import React from 'react';
 import styled, {css} from 'styled-components';
-import {useTranslate, useRoute} from '@akeneo-pim-community/legacy-bridge';
-import {filterErrors, InputErrors} from '@akeneo-pim-community/shared';
-import {BrokenLinkIcon, EditIcon, CloseIcon, useTheme} from 'akeneo-design-system';
+import {filterErrors, formatParameters, useTranslate, useRoute} from '@akeneo-pim-community/shared';
+import {BrokenLinkIcon, EditIcon, CloseIcon, useTheme, Helper, Badge} from 'akeneo-design-system';
 import {ProductType, Row, QuantifiedLink, MAX_QUANTITY} from '../models';
 import {useProductThumbnail} from '../hooks';
 
@@ -62,15 +61,6 @@ const LabelCell = styled.td<{isProductModel: boolean}>`
   color: ${({theme, isProductModel}) => (isProductModel ? 'inherit' : theme.color.purple100)};
   min-width: 200px;
   vertical-align: top;
-`;
-
-const Badge = styled.span`
-  font-size: ${({theme}) => theme.fontSize.small};
-  border-radius: 2px;
-  background-color: ${({theme}) => theme.color.white};
-  border: 1px solid ${({theme}) => theme.color.green100};
-  color: ${({theme}) => theme.color.green140};
-  padding: 2px 5px;
 `;
 
 const QuantityInput = styled.input<{isInvalid: boolean}>`
@@ -200,7 +190,11 @@ const QuantifiedAssociationRow = ({
               }}
             />
           </InputCellContainer>
-          <InputErrors errors={row.errors} />
+          {formatParameters(row.errors).map((error, key) => (
+            <Helper key={key} level="error" inline={true}>
+              {translate(error.messageTemplate, error.parameters, error.plural)}
+            </Helper>
+          ))}
         </Cell>
         {!isCompact ? (
           <Cell>

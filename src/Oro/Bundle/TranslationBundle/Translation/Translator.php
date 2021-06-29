@@ -3,11 +3,13 @@
 namespace Oro\Bundle\TranslationBundle\Translation;
 
 use Symfony\Bundle\FrameworkBundle\Translation\Translator as BaseTranslator;
+use Symfony\Component\Translation\TranslatorBagInterface;
+use Symfony\Contracts\Translation\LocaleAwareInterface;
 
 /**
  * Class Translator, Override the default Symfony Translator to expose translations (used by js translations)
  */
-class Translator extends BaseTranslator
+class Translator extends BaseTranslator implements LocaleAwareInterface, TranslatorBagInterface
 {
     /**
      * Collector of translations

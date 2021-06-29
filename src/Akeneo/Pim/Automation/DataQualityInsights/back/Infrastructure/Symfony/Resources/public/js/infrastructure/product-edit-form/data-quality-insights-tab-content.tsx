@@ -20,9 +20,12 @@ class DataQualityInsightsTabContent extends BaseView {
   }
 
   public render() {
-    this.el.insertAdjacentHTML('beforeend', `
+    this.el.insertAdjacentHTML(
+      'beforeend',
+      `
       <div id="${DATA_QUALITY_INSIGHTS_TAB_CONTENT_CONTAINER_ELEMENT_ID}"></div>
-    `);
+    `
+    );
 
     this.showTabContent();
     return this;
@@ -30,10 +33,17 @@ class DataQualityInsightsTabContent extends BaseView {
 
   private showTabContent() {
     const productData = this.getFormData();
-    const tab = productData.meta.model_type === 'product_model' ? PRODUCT_MODEL_DATA_QUALITY_INSIGHTS_TAB_NAME : PRODUCT_DATA_QUALITY_INSIGHTS_TAB_NAME;
-    window.dispatchEvent(new CustomEvent(PRODUCT_TAB_CHANGED, {detail: {
-      currentTab: tab,
-    }}));
+    const tab =
+      productData.meta.model_type === 'product_model'
+        ? PRODUCT_MODEL_DATA_QUALITY_INSIGHTS_TAB_NAME
+        : PRODUCT_DATA_QUALITY_INSIGHTS_TAB_NAME;
+    window.dispatchEvent(
+      new CustomEvent(PRODUCT_TAB_CHANGED, {
+        detail: {
+          currentTab: tab,
+        },
+      })
+    );
   }
 }
 

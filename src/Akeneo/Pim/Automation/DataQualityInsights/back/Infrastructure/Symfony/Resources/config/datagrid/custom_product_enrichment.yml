@@ -1,13 +1,29 @@
 datagrid:
     product-grid:
-        other_columns:
-            data_quality_insights_enrichment:
-                label:         Enrichment
-                data_name:     data_quality_insights_enrichment
+        columns:
+            data_quality_insights_score:
+                label:         Quality score
+                data_name:     data_quality_insights_score
                 type:          field
-                frontend_type: rate-badge
+                frontend_type: quality-score-badge
         sorters:
             columns:
-                data_quality_insights_enrichment:
-                    data_name: rates_enrichment
-                    sorter: data_quality_insights_enrichment
+                data_quality_insights_score:
+                    data_name: quality_score
+                    sorter: data_quality_insights_score
+        filters:
+            columns:
+                data_quality_insights_score:
+                    type: data_quality_insights_score
+                    ftype: choice
+                    label: 'akeneo_data_quality_insights.product_grid.filter_label.quality_score'
+                    data_name: data_quality_insights_score
+                    options:
+                        field_options:
+                            multiple: true
+                            choices:
+                                A: 1
+                                B: 2
+                                C: 3
+                                D: 4
+                                E: 5

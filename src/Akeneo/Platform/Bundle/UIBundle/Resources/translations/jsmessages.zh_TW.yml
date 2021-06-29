@@ -1,0 +1,346 @@
+#ORO messages
+"Yes, I Agree": "好的，我同意"
+"Yes, do it": "好，開始"
+"Ok, got it.": "好，了解了。"
+"Edit": "編輯"
+"Yes, revoke": "对，撤銷"
+"Revoke Confirmation": "撤銷確認"
+Prev: 上一天
+Today: 今天
+Wk: 週 
+AM: 上午
+A: A
+PM: 下午
+P: P
+"Choose Time": "選擇時間"
+Time: 時間
+Hour: 小時
+Minute: 分鐘
+Second: 秒
+Millisecond: 毫秒
+Microsecond: 微秒
+"Time Zone": "時區"
+#PIM messages
+Localized value: 本地化後的值
+Columns: 列
+Datagrid Configuration: 數據網格配置
+#Filters
+Action: 操作
+Unit: 單位
+Currency: 貨幣
+jstree:
+  all: 全部產品
+  unclassified: 未分類產品
+  product:
+    all: 全部產品
+    unclassified: 未分類產品
+  no_tree: 沒有可用的目錄
+  include_sub: 包含次級類別
+#Datetimepicker
+datetimepicker:
+  days:
+    Sunday: 星期日
+    Monday: 星期一
+    Tuesday: 星期二
+    Wednesday: 星期三
+    Thursday: 星期四
+    Friday: 星期五
+    Saturday: 星期六
+  daysShort:
+    Sun: 星期日
+    Mon: 星期一 
+    Tue: 星期二 
+    Wed: 星期三
+    Thu: 星期四
+    Fri: 星期五
+    Sat: 星期六
+  daysMin:
+    Su: 星期日
+    Mo: 星期一
+    Tu: 星期二 
+    We: 星期三
+    Th: 星期四
+    Fr: 星期五
+    Sa: 星期六 
+  months:
+    January: 一月
+    February: 二月
+    March: 三月
+    April: 四月
+    May: 五月
+    June: 六月
+    July: 七月
+    August: 八月
+    September: 九月
+    October: 十月
+    November: 十一月
+    December: 十二月
+  monthsShort:
+    Jan: 一月
+    Feb: 二月
+    Mar: 三月
+    Apr: 四月
+    May: 五月
+    Jun: 六月
+    Jul: 七月
+    Aug: 八月
+    Sep: 九月
+    Oct: 十月
+    Nov: 十一月
+    Dec: 十二月
+#ORO
+oro_config:
+  form:
+    config:
+      title: 系統配置
+      tab:
+        system:
+          title: 系統
+      group:
+        localization:
+          title: 本地化
+          system_locale: 語言
+        notification:
+          title: 通知
+          system_notification: 新版本通知
+        loading_message:
+          title: 正在載入訊息
+          label: 開啟載入訊息
+        loading_messages:
+          label: 可用的載入訊息
+pim_ui:
+  flash:
+    unsaved_changes: '您有未儲存的修改，確定您想取消嗎？'
+"Sorry, page was not loaded correctly": "抱歉，頁面沒有正確加載"
+"Your local changes will be lost. Are you sure you want to refresh the page?": "您的本地更改將丟失。是否確認要刷新頁面？"
+"navigation.message.content.outdated": "{{ title }}頁面的內容已過期，請<a href='#' data-action='page-refresh'>刷新此頁面</a>"
+"Content of pinned page is outdated": "固定頁面內容已過期"
+#Global structure of translation files
+#pim_bundle_name:
+#entity:
+#entity_name:
+#label: entity
+#uppercase_label: Entity
+#plural_label: Entities
+#flash:
+#update:
+#fail: Update failed
+#success: Entity Successfully updated
+#delete:
+#fail: Cannot delete this entity
+#success: Entity successfully removed
+#create:
+#fail: Can not create this entity
+#success: Entity successfully created
+#page_title:
+#index: "]-Inf, 1]1 entity|]1, Inf[{{ count }} entities"
+#property:
+#field_name: Field name
+#complex_field:
+#label: Field name
+#choose: Choose a field name
+#module:
+#module_name:
+#key: message
+pim_common:
+  actions: 操作 
+  add: 添加
+  add_attributes: 添加屬性
+  after: 之後 
+  all: 全部
+  and: 和
+  apply: 套用
+  before: 之前
+  by: 根據
+  cancel: 取消
+  code: 代碼
+  confirm: 確認
+  confirm_deletion: 確認刪除
+  confirm_revocation: 確認撤銷
+  create: 創建
+  created: 已創建
+  delete: 刪除
+  done: 完成
+  edit: 編輯
+  entity_updated: 有尚未儲存的變更。
+  from: 來自
+  general_properties: 常规属性
+  history: 歷史紀錄
+  label: 標籤
+  label_translations: 標記翻譯
+  less_than: 小於
+  loading: 載入中...
+  media_upload: 拖拽到此處上傳或點擊此處
+  more_than: 大於
+  next: 下一個
+  "no": "否"
+  none: 無
+  not_available: 不適用
+  now: 現在
+  ok: 確定
+  permissions: 權限
+  previous: 上一步
+  properties: 屬性
+  remove: 移除
+  required_label: '（必填）'
+  save: 儲存
+  search: 搜索
+  select2:
+    search: 搜索…
+    no_match: 沒有找到匹配項
+    load_more: 正在加載更多結果...
+  status: 狀態
+  to: 至
+  type: 類型
+  update: 更新
+  "yes": "是"
+  operator: 操作員
+  operators:
+    "=": 等於
+    "!=": 不等於
+    ">=": 大於或等於
+    ">": 大於
+    "<=": 小於或等於
+    "<": 小於
+    EMPTY: 为空
+    NOT EMPTY: 不是空的
+    CONTAINS: 包含
+    DOES NOT CONTAIN: 不含
+    STARTS WITH: 開始於
+    ENDS WITH: 結束於
+error:
+  forbidden: 此操作被拒絕。您無權訪問此頁面。
+alert:
+  attribute_option:
+    save_before_edit_other: 在編輯此行之前，請在其他行上註冊您的修改。
+  session_storage:
+    not_available: 您的網頁瀏覽器似乎不兼容 sessionStorage 。 請與您的管理員聯繫
+pim_enrich.entity.fallback:
+  flash:
+    update:
+      fail: 更新失敗
+      success: 成功更新
+    delete:
+      fail: 無法刪除此項目
+      success: 成功刪除項目
+  module:
+    delete:
+      title: 刪除{{ itemName }}
+      alternative_title: 確認移除
+      item: 您确定要删除此项目吗？
+      item_placeholder: 確定要刪除{{ itemName }}嗎？此操作不可撤銷。
+    edit:
+      leave: 您確定要離開此頁面嗎？
+      discard_changes: 如果離開頁面，您將丟失對{{ entity }}的更改。
+      discard_changes_title: 確定嗎？
+pim_enrich.entity.api_connection:
+  flash:
+    create:
+      success: API 連結已成功創建
+    delete:
+      success: API 連結已成功撤銷
+      fail: 無法撤銷此 API 連結
+  page_title:
+    index: "]-Inf, 1]{{ count }} API 連結|]1, Inf[{{ count }} API 連結"
+  module:
+    revoke:
+      confirm: 您確定要撤銷這個API連結嗎？
+pim_enrich.entity.job_execution:
+  page_title:
+    index: "]-Inf, 1]{{ count }} 個操作|]1, Inf[{{ count }} 個操作"
+  module:
+    create:
+      upload: 把您的{{ type }}檔案拖到此處或點擊瀏覽
+    download:
+      archive: 下載生成的記錄
+      output: 下載生成的檔案
+      input: 下載已讀的檔案
+      invalid_xlsx: 下載無效數據
+      invalid_csv: 下載無效數據
+pim_title:
+  oro_default: 控制面板
+  pim_enrich_attributegroup_index: 屬性分組
+  pim_enrich_attributegroup_create: 屬性分組 | 創建
+  pim_enrich_attributegroup_edit: 屬性分組{{ group.label }} | 編輯
+  pim_enrich_catalog_volume_index: 目錄體積監控
+  pim_enrich_categorytree_index: 類別目錄
+  pim_enrich_categorytree_create: 類別目錄 | 創建
+  pim_enrich_categorytree_edit: 類別目錄 {{ category.label }} | 創建
+  pim_enrich_categorytree_create_tree: 類別目錄 | 創建
+  pim_enrich_attribute_index: 屬性
+  pim_enrich_attribute_create: 屬性 | 創建
+  pim_enrich_attribute_edit: 屬性 {{ attribute.label }} | 編輯
+  pim_enrich_product_index: 產品
+  pim_enrich_product_edit: 產品 {{ group.label }} | 編輯
+  pim_enrich_product_model_edit: 產品型號 {{ group.label }} | 編輯
+  pim_enrich_family_index: 品類
+  pim_enrich_family_edit: 品類 {{ family.label }} | 編輯
+  pim_enrich_channel_index: 渠道
+  pim_enrich_channel_create: 渠道 | 創建
+  pim_enrich_channel_edit: 渠道{{ channel.label }} | 編輯
+  pim_enrich_currency_index: 貨幣
+  pim_enrich_locale_index: 區域
+  pim_enrich_group_index: 分組
+  pim_enrich_group_edit: 分組{{ group.label }} | 編輯
+  pim_enrich_associationtype_index: 關聯類型
+  pim_enrich_associationtype_edit: 關聯類型 {{ association type.label }} | 編輯
+  pim_enrich_grouptype_index: 分組類型
+  pim_enrich_grouptype_edit: 分組類型 {{ group type.label }} | 編輯
+  pim_enrich_mass_edit_action_choose: 批量編輯 | 選擇
+  pim_enrich_mass_edit_action_configure: 批量編輯 | 配置
+  pim_enrich_mass_edit_action_perform: 批量編輯 | 執行
+  pim_enrich_job_tracker_index: 流程追蹤
+  pim_enrich_job_tracker_show: 流程追蹤 | 顯示工作
+  pim_enrich_api_connection_index: API 連結
+  pim_enrich_api_connection_create: API 連結 | 創建
+  pim_enrich_mass_edit_action: 批量編輯
+  pim_analytics_system_info_index: 系統資訊
+pim_menu:
+  tab:
+    activity: 活動 
+    imports: 匯入
+    exports: 匯出
+    settings: 設定
+    system: 系統
+    help:
+      title: 幫助
+      helper: Akeneo 幫助中心
+  item:
+    association_type: 關聯類型
+    attribute_group: 屬性分組
+    channel: 渠道
+    currency: 貨幣
+    dashboard: 控制面板
+    family: 品類
+    group: 分組
+    group_type: 分組類型
+    product_model: 產品型號
+    export_history: 匯出歷史資料
+    export_profile: 匯出資料
+    import_history: 匯入歷史紀錄
+    import_profile: 匯入資料
+    configuration: 配置
+    user_management: 用戶管理
+    user: 用戶
+    user_group: 用戶分組
+    user_role: 角色
+    info: 系統資訊
+    job_tracker: 流程追蹤
+    api_connection: API 連結
+    catalog_volume: 目錄體積監控
+  navigation:
+    activity: 活動導航
+    system: 系統導航
+    user: 用戶管理導航
+    settings: 設定導航
+    product: 產品導航
+    product_infos: 產品資訊
+  user:
+    logout: 登出
+    user_account: 我的帳戶
+pim_notification:
+  types:
+    import: 匯入
+    export: 匯出
+    quick_export: 快速匯出
+    mass_edit: 批量編輯

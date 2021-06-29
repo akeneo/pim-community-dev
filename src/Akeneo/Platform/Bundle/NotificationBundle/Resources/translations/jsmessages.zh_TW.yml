@@ -1,0 +1,4 @@
+pim_notification:
+  report: 報告
+  mark_all_as_read: 全部標記為已讀
+  no_notifications: 沒有通知

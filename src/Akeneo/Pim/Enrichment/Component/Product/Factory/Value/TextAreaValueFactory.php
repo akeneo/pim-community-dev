@@ -17,7 +17,7 @@ final class TextAreaValueFactory extends ScalarValueFactory implements ValueFact
 {
     public function createByCheckingData(Attribute $attribute, ?string $channelCode, ?string $localeCode, $data): ValueInterface
     {
-        if (!is_scalar($data) || (is_string($data) && '' === trim($data))) {
+        if (!\is_scalar($data) || (\is_string($data) && '' === \trim($data))) {
             throw InvalidAttributeValueTypeException::stringExpected(
                 $attribute->code(),
                 static::class,

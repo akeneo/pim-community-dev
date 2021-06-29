@@ -11,11 +11,8 @@ use PHPUnit\Framework\Assert;
 
 class PurgeConnectionErrorsQueryIntegration extends TestCase
 {
-    /** @var Client */
-    private $esClient;
-
-    /** @var PurgeConnectionErrorsQuery */
-    private $purgeQuery;
+    private Client $esClient;
+    private PurgeConnectionErrorsQuery $purgeQuery;
 
     public function test_it_purges_errors_older_than_the_given_days()
     {

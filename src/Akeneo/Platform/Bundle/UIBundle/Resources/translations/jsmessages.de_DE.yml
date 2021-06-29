@@ -21,6 +21,11 @@ Second: Sekunde
 Millisecond: Millisekunde
 Microsecond: Mikrosekunde
 "Time Zone": "Zeitzone"
+duration:
+  days: "{0}0 Tage|{1}1 Tage|]1, Inf[{{ count }} Tage"
+  hours: "{0}0 Stunden|{1}1 Stunde|]1, Inf[{{ count }} Stunden"
+  minutes: "{0}0 Minuten|{1}1 Minute|]1, Inf[{{ count }} Minuten"
+  seconds: "{0}0 Sekunden|{1}1 Sekunde|]1, Inf[{{ count }} Sekunden"
 #PIM messages
 Localized value: Vom Gebietsschema abhängiger Wert
 Columns: Spalten
@@ -154,6 +159,7 @@ pim_common:
   before: Vor
   by: von
   cancel: Abbrechen
+  clear_value: Wert leeren
   close: Schließen
   code: Code
   completeness: Vollständigkeit
@@ -164,6 +170,7 @@ pim_common:
   created: Erstellt
   delete: Löschen
   done: Fertig
+  duplicate: Duplizieren
   edit: Bearbeiten
   entity_updated: Es gibt ungespeicherte Änderungen.
   export: Export
@@ -178,6 +185,7 @@ pim_common:
   less_than: Weniger als
   loading: Lädt...
   media_upload: Upload per Drag & Drop oder hier klicken
+  more_actions: Weitere Aktionen
   more_than: Mehr als
   next: Vor
   "no": "Nein"
@@ -185,6 +193,8 @@ pim_common:
   not_available: N/A
   now: Jetzt
   ok: OK
+  open: Öffnen
+  no_result: Kein Ergebnis gefunden
   other_actions: Weitere Aktionen
   permissions: Berechtigungen
   previous: Zurück
@@ -202,6 +212,7 @@ pim_common:
   to: An
   type: Typ
   update: Aktualisieren
+  updated: Aktualisiert
   "yes": "Ja"
   operator: Operator
   operators:
@@ -218,6 +229,15 @@ pim_common:
     STARTS WITH: Beginnt mit
     ENDS WITH: Endet mit
   read_more: Mehr lesen
+  channel: Kanal
+  locale: Gebietsschema
+  categories: Kategorien
+  family_variant: Varianten der Produktfamilien
+  enabled: Aktiviert
+  family: Produktfamilie
+  parent: Eltern
+  groups: Gruppen
+  more: Mehr
 error:
   exception: Oh nein! Ein {{ status_code }} Fehler ist aufgetreten...
   forbidden: Sie haben keine Berechtigung, diese Seite anzuzeigen
@@ -266,8 +286,9 @@ pim_title:
   pim_enrich_catalog_volume_index: Überwachung Katalogumfang
   pim_enrich_categorytree_index: Kategorie-Strukturbäume
   pim_enrich_categorytree_create: Kategorie-Strukturbäume | Anlegen
-  pim_enrich_categorytree_edit: Kategoriebaum {{ category.label }} | Bearbeiten
+  pim_enrich_categorytree_edit: Kategorie {{ category.label }} | Bearbeiten
   pim_enrich_categorytree_create_tree: Kategorie-Strukturbäume | Anlegen
+  pim_enrich_categorytree_tree: Kategoriebaum {{ category.label }} | Bearbeiten
   pim_enrich_attribute_index: Attribute
   pim_enrich_attribute_create: Attribute | Anlegen
   pim_enrich_attribute_edit: Attribute {{ attribute.label }} | Bearbeiten
@@ -294,6 +315,7 @@ pim_title:
   pim_enrich_job_tracker_show: Prozess-Tracker | Job anzeigen
   pim_enrich_mass_edit_action: Massenbearbeitung
   pim_analytics_system_info_index: Systeminformationen
+  pim_settings_index: Einstellungen
 pim_menu:
   tab:
     activity: Übersicht
@@ -309,7 +331,7 @@ pim_menu:
     attribute_group: Attributgruppen
     channel: Ausgabekanäle
     currency: Währungen
-    dashboard: Dashboard
+    dashboard: Aktivitäts-Dashboard
     family: Produktfamilien
     group: Gruppen
     group_type: Gruppentypen
@@ -330,7 +352,10 @@ pim_menu:
     activity: Navigation Übersicht
     system: Navigation System
     user: Navigation Benutzerverwaltung
-    settings: Navigation Einstellung
+    settings:
+      product: Artikel Einstellungen
+      catalog: Katalogeinstellungen
+      collapsed_label: Navigation Einstellung
     product: Navigation Produkte
     product_infos: Produktinformationen
   user:
@@ -342,3 +367,20 @@ pim_notification:
     export: Export
     quick_export: Schnellexport
     mass_edit: Massenbearbeitung
+pim_settings:
+  settings_menu: Konfigurationsmenü
+  catalog_settings: Katalogeinstellungen
+  product_settings: Artikel Einstellungen
+  count:
+    categories: Du hast {{ countTrees }} Bäume und {{ countCategories }} Kategorien
+    channels: Du hast {{ count }} Kanäle
+    locales: Sie haben {{ count }} Gebietsschemata aktiviert
+    currencies: Sie haben {{ count }} Währungen aktiviert
+    attribute_groups: Sie haben {{ count }} Attributgruppen
+    attributes: Sie haben {{ count }} Attribute
+    families: Du hast {{ count }} Familien
+    measurements: Sie haben {{ count }} Messungen
+    association_types: Sie haben {{ count }} Verbindungstypen
+    group_types: Sie haben {{ count }} Gruppentypen
+    groups: Du hast {{ count }} Gruppen
+    rules: Du hast {{ count }} aktivierte Regeln

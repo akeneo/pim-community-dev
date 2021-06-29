@@ -5,6 +5,7 @@ namespace Specification\Akeneo\Pim\Enrichment\Component\Product\Normalizer\Stand
 use Akeneo\Pim\Enrichment\Component\Product\Model\ValueInterface;
 use Akeneo\Pim\Enrichment\Component\Product\Normalizer\Standard\Product\ProductValueNormalizer;
 use Akeneo\Pim\Enrichment\Component\Product\Value\OptionsValueInterface;
+use Akeneo\Pim\Enrichment\Component\Product\Value\ScalarValue;
 use Akeneo\Pim\Structure\Component\AttributeTypes;
 use Akeneo\Pim\Structure\Component\Model\AttributeOptionInterface;
 use Akeneo\Pim\Structure\Component\Query\PublicApi\AttributeType\Attribute;
@@ -332,6 +333,67 @@ class ProductValueNormalizerSpec extends ObjectBehavior
                 'locale' => 'en_US',
                 'scope'  => 'ecommerce',
                 'data'   => '15.0000',
+            ]
+        );
+    }
+
+    function it_normalizes_an_integer_as_number_product_value_with_decimal_allowed(
+        NormalizerInterface $normalizer,
+        GetAttributes $getAttributes
+    ) {
+        $value = ScalarValue::value('attribute_with_decimal_allowed', '1535000');
+        $attribute = new Attribute(
+            'attribute_with_decimal_allowed',
+            AttributeTypes::NUMBER,
+            [],
+            true,
+            true,
+            null,
+            null,
+            true,
+            'decimal',
+            []
+        );
+
+        $normalizer->normalize('1535000', null, [])
+            ->shouldNotBeCalled();
+        $getAttributes->forCode('attribute_with_decimal_allowed')->willReturn($attribute);
+
+        $this->normalize($value)->shouldReturn(
+            [
+                'locale' => null,
+                'scope'  => null,
+                'data'   => '1535000.0000',
+            ]
+        );
+    }
+
+    function it_normalizes_an_integer_with_decimal_allowed_and_add_trailing_zeros(
+        NormalizerInterface $normalizer,
+        GetAttributes $getAttributes
+    ) {
+        $value = ScalarValue::value('attribute_with_decimal_allowed', 15);
+        $attribute = new Attribute(
+            'attribute_with_decimal_allowed',
+            AttributeTypes::NUMBER,
+            [],
+            true,
+            true,
+            null,
+            null,
+            true,
+            'decimal',
+            []
+        );
+
+        $normalizer->normalize(15, null, [])->shouldNotBeCalled();
+        $getAttributes->forCode('attribute_with_decimal_allowed')->willReturn($attribute);
+
+        $this->normalize($value)->shouldReturn(
+            [
+                'locale' => null,
+                'scope'  => null,
+                'data'   => "15.0000",
             ]
         );
     }

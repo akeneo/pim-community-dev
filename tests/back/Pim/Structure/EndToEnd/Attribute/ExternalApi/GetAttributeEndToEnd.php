@@ -2,7 +2,6 @@
 
 namespace AkeneoTest\Pim\Structure\EndToEnd\Attribute\ExternalApi;
 
-use Akeneo\Test\Integration\Configuration;
 use Akeneo\Tool\Bundle\ApiBundle\tests\integration\ApiTestCase;
 use Symfony\Component\HttpFoundation\Response;
 
@@ -49,7 +48,9 @@ class GetAttributeEndToEnd extends ApiTestCase
     "localizable": false,
     "scopable": false,
     "labels": {},
-    "auto_option_sorting": null
+    "auto_option_sorting": null,
+    "default_value": null,
+    "guidelines": {"en_US": "this is the sku"}
 }
 JSON;
 

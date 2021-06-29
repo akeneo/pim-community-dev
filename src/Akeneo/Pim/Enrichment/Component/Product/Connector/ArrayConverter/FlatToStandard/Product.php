@@ -2,6 +2,7 @@
 
 namespace Akeneo\Pim\Enrichment\Component\Product\Connector\ArrayConverter\FlatToStandard;
 
+use Akeneo\Pim\Enrichment\Component\Product\Connector\UseCase\GetProductsWithQualityScoresInterface;
 use Akeneo\Pim\Structure\Component\Repository\AttributeRepositoryInterface;
 use Akeneo\Tool\Component\Connector\ArrayConverter\ArrayConverterInterface;
 use Akeneo\Tool\Component\Connector\ArrayConverter\FieldsRequirementChecker;
@@ -216,24 +217,10 @@ class Product implements ArrayConverterInterface
     protected function filterFields(array $mappedItem, bool $withAssociations): array
     {
         if (false === $withAssociations) {
-            $isGroupAssociationPattern = sprintf('/^\w+%s$/', AssociationColumnsResolver::GROUP_ASSOCIATION_SUFFIX);
-            $isProductAssociationPattern = sprintf('/^\w+%s$/', AssociationColumnsResolver::PRODUCT_ASSOCIATION_SUFFIX);
-            $isProductModelAssociationPattern = sprintf('/^\w+%s$/', AssociationColumnsResolver::PRODUCT_MODEL_ASSOCIATION_SUFFIX);
-            $isProductAssociationQuantityPattern = sprintf('/^\w+%s%s$/', AssociationColumnsResolver::PRODUCT_ASSOCIATION_SUFFIX, AssociationColumnsResolver::QUANTITY_SUFFIX);
-            $isProductModelAssociationQuantityPattern = sprintf('/^\w+%s%s$/', AssociationColumnsResolver::PRODUCT_MODEL_ASSOCIATION_SUFFIX, AssociationColumnsResolver::QUANTITY_SUFFIX);
-            foreach (array_keys($mappedItem) as $field) {
-                $isGroup = (1 === preg_match($isGroupAssociationPattern, $field));
-                $isProduct = (1 === preg_match($isProductAssociationPattern, $field));
-                $isProductModel = (1 === preg_match($isProductModelAssociationPattern, $field));
-                $isProductQuantity = (1 === preg_match($isProductAssociationQuantityPattern, $field));
-                $isProductModelQuantity = (1 === preg_match($isProductModelAssociationQuantityPattern, $field));
-                if ($isGroup || $isProduct || $isProductModel || $isProductQuantity || $isProductModelQuantity) {
-                    unset($mappedItem[$field]);
-                }
-            }
+            $mappedItem = $this->filterAssociationsFields($mappedItem);
         }
 
-        return $mappedItem;
+        return $this->filterQualityScoreFields($mappedItem);
     }
 
     /**
@@ -395,5 +382,34 @@ class Product implements ArrayConverterInterface
         }
 
         return $result;
+    }
+
+    private function filterAssociationsFields(array $mappedItem): array
+    {
+        $isGroupAssociationPattern = sprintf('/^\w+%s$/', AssociationColumnsResolver::GROUP_ASSOCIATION_SUFFIX);
+        $isProductAssociationPattern = sprintf('/^\w+%s$/', AssociationColumnsResolver::PRODUCT_ASSOCIATION_SUFFIX);
+        $isProductModelAssociationPattern = sprintf('/^\w+%s$/', AssociationColumnsResolver::PRODUCT_MODEL_ASSOCIATION_SUFFIX);
+        $isProductAssociationQuantityPattern = sprintf('/^\w+%s%s$/', AssociationColumnsResolver::PRODUCT_ASSOCIATION_SUFFIX, AssociationColumnsResolver::QUANTITY_SUFFIX);
+        $isProductModelAssociationQuantityPattern = sprintf('/^\w+%s%s$/', AssociationColumnsResolver::PRODUCT_MODEL_ASSOCIATION_SUFFIX, AssociationColumnsResolver::QUANTITY_SUFFIX);
+
+        foreach (array_keys($mappedItem) as $field) {
+            $isGroup = (1 === preg_match($isGroupAssociationPattern, $field));
+            $isProduct = (1 === preg_match($isProductAssociationPattern, $field));
+            $isProductModel = (1 === preg_match($isProductModelAssociationPattern, $field));
+            $isProductQuantity = (1 === preg_match($isProductAssociationQuantityPattern, $field));
+            $isProductModelQuantity = (1 === preg_match($isProductModelAssociationQuantityPattern, $field));
+            if ($isGroup || $isProduct || $isProductModel || $isProductQuantity || $isProductModelQuantity) {
+                unset($mappedItem[$field]);
+            }
+        }
+
+        return $mappedItem;
+    }
+
+    private function filterQualityScoreFields(array $mappedItem): array
+    {
+        return array_filter($mappedItem, function ($field) {
+            return 0 !== strpos($field, sprintf('%s-', GetProductsWithQualityScoresInterface::FLAT_FIELD_PREFIX));
+        }, ARRAY_FILTER_USE_KEY);
     }
 }

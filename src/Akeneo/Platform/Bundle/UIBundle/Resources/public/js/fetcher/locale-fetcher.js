@@ -1,15 +1,14 @@
 'use strict';
 
-define(['jquery', 'underscore', 'pim/base-fetcher', 'routing'], function($, _, BaseFetcher, Routing) {
+define(['jquery', 'underscore', 'pim/base-fetcher', 'routing'], function ($, _, BaseFetcher, Routing) {
   return BaseFetcher.extend({
-
     activatedLocalesListPromise: null,
     nonFilteredActivatedLocalesListPromise: null,
 
     /**
      * @param {Object} options
      */
-    initialize: function(options) {
+    initialize: function (options) {
       this.options = options || {};
     },
 
@@ -18,8 +17,7 @@ define(['jquery', 'underscore', 'pim/base-fetcher', 'routing'], function($, _, B
      *
      * @return {Promise}
      */
-    fetchActivated: function(searchOptions) {
-
+    fetchActivated: function (searchOptions) {
       searchOptions = _.extend({}, searchOptions);
       const nonFiltered = _.has(searchOptions, 'filter_locales') && false === searchOptions.filter_locales;
 
@@ -30,9 +28,7 @@ define(['jquery', 'underscore', 'pim/base-fetcher', 'routing'], function($, _, B
 
       if (!promise) {
         if (!_.has(this.options.urls, 'list')) {
-          return $.Deferred()
-            .reject()
-            .promise();
+          return $.Deferred().reject().promise();
         }
 
         promise = $.getJSON(
@@ -61,7 +57,7 @@ define(['jquery', 'underscore', 'pim/base-fetcher', 'routing'], function($, _, B
     /**
      * {inheritdoc}
      */
-    clear: function() {
+    clear: function () {
       this.activatedLocalesListPromise = null;
       this.nonFilteredActivatedLocalesListPromise = null;
 

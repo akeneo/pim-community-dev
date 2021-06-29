@@ -2,22 +2,30 @@
 
 namespace Specification\Akeneo\Pim\Enrichment\Component\Product\Updater\Setter;
 
-use Akeneo\Pim\Enrichment\Bundle\Doctrine\ORM\Updater\TwoWayAssociationUpdater;
 use Akeneo\Pim\Enrichment\Component\Product\Association\MissingAssociationAdder;
+use Akeneo\Pim\Enrichment\Component\Product\Model\AssociationInterface;
+use Akeneo\Pim\Enrichment\Component\Product\Model\Group;
+use Akeneo\Pim\Enrichment\Component\Product\Model\GroupInterface;
+use Akeneo\Pim\Enrichment\Component\Product\Model\Product;
+use Akeneo\Pim\Enrichment\Component\Product\Model\ProductAssociation;
+use Akeneo\Pim\Enrichment\Component\Product\Model\ProductInterface;
+use Akeneo\Pim\Enrichment\Component\Product\Model\ProductModel;
+use Akeneo\Pim\Enrichment\Component\Product\Model\ProductModelAssociation;
+use Akeneo\Pim\Enrichment\Component\Product\Model\ProductModelInterface;
+use Akeneo\Pim\Enrichment\Component\Product\Updater\Adder\AssociationFieldAdder;
 use Akeneo\Pim\Enrichment\Component\Product\Updater\Setter\AssociationFieldSetter;
 use Akeneo\Pim\Enrichment\Component\Product\Updater\Setter\FieldSetterInterface;
 use Akeneo\Pim\Enrichment\Component\Product\Updater\Setter\SetterInterface;
 use Akeneo\Pim\Enrichment\Component\Product\Updater\TwoWayAssociationUpdaterInterface;
+use Akeneo\Pim\Structure\Component\Model\AssociationType;
+use Akeneo\Pim\Structure\Component\Model\AssociationTypeInterface;
+use Akeneo\Pim\Structure\Component\Repository\AssociationTypeRepositoryInterface;
 use Akeneo\Tool\Component\StorageUtils\Exception\InvalidPropertyException;
 use Akeneo\Tool\Component\StorageUtils\Exception\InvalidPropertyTypeException;
 use Akeneo\Tool\Component\StorageUtils\Repository\IdentifiableObjectRepositoryInterface;
 use Doctrine\Common\Collections\ArrayCollection;
 use PhpSpec\ObjectBehavior;
-use Akeneo\Pim\Enrichment\Component\Product\Model\AssociationInterface;
-use Akeneo\Pim\Structure\Component\Model\AssociationTypeInterface;
-use Akeneo\Pim\Enrichment\Component\Product\Model\GroupInterface;
-use Akeneo\Pim\Enrichment\Component\Product\Model\ProductInterface;
-use Akeneo\Pim\Enrichment\Component\Product\Model\ProductModelInterface;
+use Prophecy\Argument;
 
 class AssociationFieldSetterSpec extends ObjectBehavior
 {
@@ -25,10 +33,19 @@ class AssociationFieldSetterSpec extends ObjectBehavior
         IdentifiableObjectRepositoryInterface $productRepository,
         IdentifiableObjectRepositoryInterface $productModelRepository,
         IdentifiableObjectRepositoryInterface $groupRepository,
-        TwoWayAssociationUpdaterInterface $associationUpdater,
-        MissingAssociationAdder $missingAssociationAdder
+        MissingAssociationAdder $missingAssociationAdder,
+        TwoWayAssociationUpdaterInterface $twoWayAssociationUpdater,
+        AssociationTypeRepositoryInterface $associationTypeRepository
     ) {
-        $this->beConstructedWith($productRepository, $productModelRepository, $groupRepository, $associationUpdater, $missingAssociationAdder, ['associations']);
+        $this->beConstructedWith(
+            $productRepository,
+            $productModelRepository,
+            $groupRepository,
+            $twoWayAssociationUpdater,
+            $missingAssociationAdder,
+            $associationTypeRepository,
+            ['associations']
+        );
     }
 
     function it_is_a_setter()
@@ -80,7 +97,11 @@ class AssociationFieldSetterSpec extends ObjectBehavior
             )
         )->during(
             'setFieldData',
-            [$product, 'associations', ['assoc_type_code' => ['products' => [1], 'groups' => [], 'product_models' => []]]]
+            [
+                $product,
+                'associations',
+                ['assoc_type_code' => ['products' => [1], 'groups' => [], 'product_models' => []]],
+            ]
         );
 
         $this->shouldThrow(
@@ -105,7 +126,11 @@ class AssociationFieldSetterSpec extends ObjectBehavior
             )
         )->during(
             'setFieldData',
-            [$product, 'associations', ['assoc_type_code' => ['products' => 'string', 'groups' => [], 'product_models' => []]]]
+            [
+                $product,
+                'associations',
+                ['assoc_type_code' => ['products' => 'string', 'groups' => [], 'product_models' => []]],
+            ]
         );
     }
 
@@ -114,38 +139,32 @@ class AssociationFieldSetterSpec extends ObjectBehavior
         $productModelRepository,
         $groupRepository,
         $missingAssociationAdder,
+        $associationTypeRepository,
         ProductInterface $product,
         AssociationInterface $xsellAssociation,
-        AssociationInterface $upsellAssociation,
-        ProductInterface $assocProductOne,
-        ProductInterface $assocProductTwo,
-        ProductInterface $assocProductThree,
-        ProductModelInterface $assocProductModelOne,
-        ProductModelInterface $assocProductModelTwo,
-        ProductModelInterface $assocProductModelThree,
-        GroupInterface $assocGroupOne,
-        GroupInterface $assocGroupTwo,
-        AssociationTypeInterface $xsellAssociationType,
-        AssociationTypeInterface $upsellAssociationType
+        AssociationTypeInterface $xsellAssociationType
     ) {
+        $xsellAssociationType->getCode()->willReturn('xsell');
         $xsellAssociationType->isTwoWay()->willReturn(false);
+        $xsellAssociationType->isQuantified()->willReturn(false);
         $xsellAssociation->getAssociationType()->willReturn($xsellAssociationType);
-        $xsellAssociation->getGroups()->willReturn(new ArrayCollection());
-        $xsellAssociation->getProducts()->willReturn(new ArrayCollection());
-        $xsellAssociation->getProductModels()->willReturn(new ArrayCollection());
-        $upsellAssociationType->isTwoWay()->willReturn(false);
-        $upsellAssociation->getAssociationType()->willReturn($upsellAssociationType);
-        $upsellAssociation->getGroups()->willReturn(new ArrayCollection());
-        $upsellAssociation->getProducts()->willReturn(new ArrayCollection());
-        $upsellAssociation->getProductModels()->willReturn(new ArrayCollection());
+        $associationTypeRepository->findOneByIdentifier('xsell')->willReturn($xsellAssociationType);
 
-        $product->getAssociations()->willReturn(
-            new ArrayCollection([$xsellAssociation->getWrappedObject(), $upsellAssociation->getWrappedObject()])
-        );
+        $product->getAssociations()->willReturn(new ArrayCollection([$xsellAssociation->getWrappedObject()]));
 
-        $missingAssociationAdder->addMissingAssociations($product)->shouldBeCalled();
-        $product->getAssociationForTypeCode('xsell')->willReturn($xsellAssociation);
-        $product->getAssociationForTypeCode('upsell')->willReturn($upsellAssociation);
+        $assocProductOne = (new Product())->setIdentifier('assocProductOne');
+        $assocProductTwo = (new Product())->setIdentifier('assocProductTwo');
+        $assocProductThree = (new Product())->setIdentifier('assocProductThree');
+        $assocProductModelOne = new ProductModel();
+        $assocProductModelOne->setCode('assocProductModelOne');
+        $assocProductModelTwo = new ProductModel();
+        $assocProductModelTwo->setCode('assocProductModelTwo');
+        $assocProductModelThree = new ProductModel();
+        $assocProductModelThree->setCode('assocProductModelThree');
+        $assocGroupOne = new Group();
+        $assocGroupOne->setCode('assocGroupOne');
+        $assocGroupTwo = new Group();
+        $assocGroupTwo->setCode('assocGroupTwo');
 
         $productRepository->findOneByIdentifier('assocProductOne')->willReturn($assocProductOne);
         $productRepository->findOneByIdentifier('assocProductTwo')->willReturn($assocProductTwo);
@@ -158,15 +177,27 @@ class AssociationFieldSetterSpec extends ObjectBehavior
         $groupRepository->findOneByIdentifier('assocGroupOne')->willReturn($assocGroupOne);
         $groupRepository->findOneByIdentifier('assocGroupTwo')->willReturn($assocGroupTwo);
 
-        $xsellAssociation->addProduct($assocProductOne)->shouldBeCalled();
-        $xsellAssociation->addProduct($assocProductTwo)->shouldBeCalled();
-        $xsellAssociation->addGroup($assocGroupOne)->shouldBeCalled();
-        $xsellAssociation->addProductModel($assocProductModelOne)->shouldBeCalled();
-        $xsellAssociation->addProductModel($assocProductModelTwo)->shouldBeCalled();
+        $missingAssociationAdder->addMissingAssociations($product)->shouldBeCalled();
+        $product->getAssociatedProducts('xsell')->willReturn(
+            new ArrayCollection([$assocProductOne, $assocProductThree])
+        );
+        $product->getAssociatedProductModels('xsell')->willReturn(
+            new ArrayCollection([$assocProductModelThree])
+        );
+        $product->getAssociatedGroups('xsell')->willReturn(
+            new ArrayCollection([$assocGroupOne, $assocGroupTwo])
+        );
 
-        $upsellAssociation->addProduct($assocProductThree)->shouldBeCalled();
-        $upsellAssociation->addGroup($assocGroupTwo)->shouldBeCalled();
-        $upsellAssociation->addProductModel($assocProductModelThree)->shouldBeCalled();
+        $product->removeAssociatedProduct($assocProductThree, 'xsell')->shouldBeCalled();
+        $product->addAssociatedProduct($assocProductTwo, 'xsell')->shouldBeCalled();
+        $product->removeAssociatedProductModel($assocProductModelThree, 'xsell')->shouldBeCalled();
+        $product->addAssociatedProductModel($assocProductModelOne, 'xsell')->shouldBeCalled();
+        $product->addAssociatedProductModel($assocProductModelTwo, 'xsell')->shouldBeCalled();
+        $product->removeAssociatedGroup($assocGroupTwo, 'xsell')->shouldBeCalled();
+
+        $product->removeAssociatedProduct($assocProductOne, 'xsell')->shouldNotBeCalled();
+        $product->addAssociatedProduct($assocProductOne, 'xsell')->shouldNotBeCalled();
+        $product->addAssociatedGroup(Argument::cetera())->shouldNotBeCalled();
 
         $this->setFieldData(
             $product,
@@ -175,47 +206,45 @@ class AssociationFieldSetterSpec extends ObjectBehavior
                 'xsell' => [
                     'products' => ['assocProductOne', 'assocProductTwo'],
                     'product_models' => ['assocProductModelOne', 'assocProductModelTwo'],
-                    'groups' => ['assocGroupOne']
+                    'groups' => ['assocGroupOne'],
                 ],
-                'upsell' => [
-                    'products' => ['assocProductThree'],
-                    'product_models' => ['assocProductModelThree'],
-                    'groups' => ['assocGroupTwo']
-                ]
             ]
         );
     }
 
-    function it_create_inversed_association_on_create_association(
-        AssociationTypeInterface $compatibilityAssociationType,
-        AssociationInterface $compatibilityAssociation,
-        ProductInterface $product,
-        IdentifiableObjectRepositoryInterface $productRepository,
-        IdentifiableObjectRepositoryInterface $productModelRepository,
-        IdentifiableObjectRepositoryInterface $groupRepository,
-        ProductInterface $productAssociated,
-        ProductModelInterface $productModelAssociated,
-        GroupInterface $groupAssociated,
-        TwoWayAssociationUpdaterInterface $associationUpdater
+    function it_creates_inversed_association_on_product(
+        $productRepository,
+        $productModelRepository,
+        $associationTypeRepository,
+        $missingAssociationAdder,
+        $twoWayAssociationUpdater
     ) {
-        $compatibilityAssociationType->isTwoWay()->willReturn(true);
+        $compatibilityAssociationType = new AssociationType();
+        $compatibilityAssociationType->setIsTwoWay(true);
+        $compatibilityAssociationType->setCode('COMPATIBILITY');
+        $associationTypeRepository->findOneByIdentifier('COMPATIBILITY')->willReturn($compatibilityAssociationType);
 
-        $compatibilityAssociation->getAssociationType()->willReturn($compatibilityAssociationType);
-        $compatibilityAssociation->getGroups()->willReturn(new ArrayCollection());
-        $compatibilityAssociation->getProducts()->willReturn(new ArrayCollection());
-        $compatibilityAssociation->getProductModels()->willReturn(new ArrayCollection());
+        $compatibilityAssociation = new ProductAssociation();
+        $compatibilityAssociation->setAssociationType($compatibilityAssociationType);
 
-        $product->getAssociationForTypeCode('COMPATIBILITY')->willReturn($compatibilityAssociation);
+        $product = new Product();
+        $product->addAssociation($compatibilityAssociation);
+
+        $productAssociated = (new Product())->setIdentifier('productAssociated');
+
+        $productModelAssociated = new ProductModel();
+        $productModelAssociated->setCode('productModelAssociated');
 
         $productRepository->findOneByIdentifier('productAssociated')->willReturn($productAssociated);
         $productModelRepository->findOneByIdentifier('productModelAssociated')->willReturn($productModelAssociated);
-        $groupRepository->findOneByIdentifier('groupAssociated')->willReturn($groupAssociated);
 
-        $compatibilityAssociation->addProduct($productAssociated)->shouldBeCalled();
-        $compatibilityAssociation->addProductModel($productModelAssociated)->shouldBeCalled();
-        $compatibilityAssociation->addGroup($groupAssociated)->shouldBeCalled();
-        $associationUpdater->createInversedAssociation($compatibilityAssociation, $productAssociated)->shouldBeCalled();
-        $associationUpdater->createInversedAssociation($compatibilityAssociation, $productModelAssociated)->shouldBeCalled();
+        $missingAssociationAdder->addMissingAssociations($product)->shouldBeCalled();
+        $twoWayAssociationUpdater
+            ->createInversedAssociation($product, 'COMPATIBILITY', $productAssociated)
+            ->shouldBeCalled();
+        $twoWayAssociationUpdater
+            ->createInversedAssociation($product, 'COMPATIBILITY', $productModelAssociated)
+            ->shouldBeCalled();
 
         $this->setFieldData(
             $product,
@@ -224,42 +253,44 @@ class AssociationFieldSetterSpec extends ObjectBehavior
                 'COMPATIBILITY' => [
                     'products' => ['productAssociated'],
                     'product_models' => ['productModelAssociated'],
-                    'groups' => ['groupAssociated']
                 ],
             ]
         );
     }
 
-    function it_remove_inversed_association_on_remove_association(
-        AssociationTypeInterface $compatibilityAssociationType,
-        AssociationInterface $compatibilityAssociation,
-        ProductInterface $product,
-        IdentifiableObjectRepositoryInterface $productRepository,
-        IdentifiableObjectRepositoryInterface $productModelRepository,
-        IdentifiableObjectRepositoryInterface $groupRepository,
-        ProductInterface $productAssociated,
-        ProductModelInterface $productModelAssociated,
-        GroupInterface $groupAssociated,
-        TwoWayAssociationUpdaterInterface $associationUpdater
+    function it_removes_inversed_association_on_product(
+        $productRepository,
+        $productModelRepository,
+        $associationTypeRepository,
+        $twoWayAssociationUpdater
     ) {
-        $compatibilityAssociationType->isTwoWay()->willReturn(true);
+        $compatibilityAssociationType = new AssociationType();
+        $compatibilityAssociationType->setIsTwoWay(true);
+        $compatibilityAssociationType->setCode('COMPATIBILITY');
+        $associationTypeRepository->findOneByIdentifier('COMPATIBILITY')->willReturn($compatibilityAssociationType);
+
+        $productAssociated = (new Product())->setIdentifier('productAssociated');
+
+        $productModelAssociated = new ProductModel();
+        $productModelAssociated->setCode('productModelAssociated');
+
+        $compatibilityAssociation = new ProductAssociation();
+        $compatibilityAssociation->setAssociationType($compatibilityAssociationType);
+        $compatibilityAssociation->addProduct($productAssociated);
+        $compatibilityAssociation->addProductModel($productModelAssociated);
+
+        $product = new Product();
+        $product->addAssociation($compatibilityAssociation);
 
         $productRepository->findOneByIdentifier('productAssociated')->willReturn($productAssociated);
         $productModelRepository->findOneByIdentifier('productModelAssociated')->willReturn($productModelAssociated);
-        $groupRepository->findOneByIdentifier('groupAssociated')->willReturn($groupAssociated);
 
-        $compatibilityAssociation->getAssociationType()->willReturn($compatibilityAssociationType);
-        $compatibilityAssociation->getProducts()->willReturn(new ArrayCollection([$productAssociated->getWrappedObject()]));
-        $compatibilityAssociation->getProductModels()->willReturn(new ArrayCollection([$productModelAssociated->getWrappedObject()]));
-        $compatibilityAssociation->getGroups()->willReturn(new ArrayCollection([$groupAssociated->getWrappedObject()]));
-
-        $product->getAssociationForTypeCode('COMPATIBILITY')->willReturn($compatibilityAssociation);
-
-        $compatibilityAssociation->removeProduct($productAssociated)->shouldBeCalled();
-        $compatibilityAssociation->removeProductModel($productModelAssociated)->shouldBeCalled();
-        $compatibilityAssociation->removeGroup($groupAssociated)->shouldBeCalled();
-        $associationUpdater->removeInversedAssociation($compatibilityAssociation, $productAssociated)->shouldBeCalled();
-        $associationUpdater->removeInversedAssociation($compatibilityAssociation, $productModelAssociated)->shouldBeCalled();
+        $twoWayAssociationUpdater
+            ->removeInversedAssociation($product, 'COMPATIBILITY', $productAssociated)
+            ->shouldBeCalled();
+        $twoWayAssociationUpdater
+            ->removeInversedAssociation($product, 'COMPATIBILITY', $productModelAssociated)
+            ->shouldBeCalled();
 
         $this->setFieldData(
             $product,
@@ -268,25 +299,71 @@ class AssociationFieldSetterSpec extends ObjectBehavior
                 'COMPATIBILITY' => [
                     'products' => [],
                     'product_models' => [],
-                    'groups' => []
+                ],
+            ]
+        );
+    }
+
+    function it_creates_and_removes_inversed_association_on_product_model(
+        $productRepository,
+        $productModelRepository,
+        $associationTypeRepository,
+        $missingAssociationAdder,
+        $twoWayAssociationUpdater
+    ) {
+        $compatibilityAssociationType = new AssociationType();
+        $compatibilityAssociationType->setIsTwoWay(true);
+        $compatibilityAssociationType->setCode('COMPATIBILITY');
+        $associationTypeRepository->findOneByIdentifier('COMPATIBILITY')->willReturn($compatibilityAssociationType);
+
+        $productAssociated = (new Product())->setIdentifier('productAssociated');
+
+        $productModelAssociated = new ProductModel();
+        $productModelAssociated->setCode('productModelAssociated');
+
+        $compatibilityAssociation = new ProductModelAssociation();
+        $compatibilityAssociation->setAssociationType($compatibilityAssociationType);
+        $compatibilityAssociation->addProductModel($productModelAssociated);
+
+        $productModel = new ProductModel();
+        $productModel->addAssociation($compatibilityAssociation);
+
+        $productRepository->findOneByIdentifier('productAssociated')->willReturn($productAssociated);
+        $productModelRepository->findOneByIdentifier('productModelAssociated')->willReturn($productModelAssociated);
+
+        $missingAssociationAdder->addMissingAssociations($productModel)->shouldBeCalled();
+        $twoWayAssociationUpdater
+            ->createInversedAssociation($productModel, 'COMPATIBILITY', $productAssociated)
+            ->shouldBeCalled();
+        $twoWayAssociationUpdater
+            ->removeInversedAssociation($productModel, 'COMPATIBILITY', $productModelAssociated)
+            ->shouldBeCalled();
+
+        $this->setFieldData(
+            $productModel,
+            'associations',
+            [
+                'COMPATIBILITY' => [
+                    'products' => ['productAssociated'],
+                    'product_models' => [],
                 ],
             ]
         );
     }
 
     function it_fails_if_one_of_the_association_type_code_does_not_exist(
-        $missingAssociationAdder,
+        MissingAssociationAdder $missingAssociationAdder,
+        AssociationTypeRepositoryInterface $associationTypeRepository,
         ProductInterface $product
     ) {
-        $product->getAssociations()->willReturn(new ArrayCollection());
+        $associationTypeRepository->findOneByIdentifier('non valid association type code')->willReturn(null);
         $missingAssociationAdder->addMissingAssociations($product)->shouldBeCalled();
-        $product->getAssociationForTypeCode('non valid association type code')->willReturn(null);
 
         $this->shouldThrow(
             InvalidPropertyException::validEntityCodeExpected(
                 'associations',
                 'association type code',
-                'The association type does not exist',
+                'The association type does not exist or is quantified',
                 AssociationFieldSetter::class,
                 'non valid association type code'
             )
@@ -295,28 +372,29 @@ class AssociationFieldSetterSpec extends ObjectBehavior
             [
                 $product,
                 'associations',
-                ['non valid association type code' => ['groups' => [], 'products' => [], 'product_models' => []]]
+                ['non valid association type code' => ['groups' => [], 'products' => [], 'product_models' => []]],
             ]
         );
     }
 
     function it_fails_if_one_of_the_associated_product_does_not_exist(
-        $missingAssociationAdder,
-        $productRepository,
+        MissingAssociationAdder $missingAssociationAdder,
+        IdentifiableObjectRepositoryInterface $productRepository,
+        AssociationTypeRepositoryInterface $associationTypeRepository,
         ProductInterface $product,
-        AssociationInterface $xsellAssociation,
         AssociationTypeInterface $associationType
     ) {
-        $xsellAssociation->getAssociationType()->willReturn($associationType);
-        $xsellAssociation->getGroups()->willReturn(new ArrayCollection());
-        $xsellAssociation->getProducts()->willReturn(new ArrayCollection());
+        $associationType->getCode()->willReturn('xsell');
+        $associationType->isTwoWay()->willReturn(false);
+        $associationType->isQuantified()->willReturn(false);
+        $associationTypeRepository->findOneByIdentifier('xsell')->willReturn($associationType);
+        $productRepository->findOneByIdentifier('not existing product')->willReturn(null);
 
-        $product->getAssociations()->willReturn(new ArrayCollection([$xsellAssociation->getWrappedObject()]));
+        $product->getAssociatedProducts('xsell')->willReturn(new ArrayCollection());
+        $product->getAssociatedProductModels('xsell')->willReturn(new ArrayCollection());
+        $product->getAssociatedGroups('xsell')->willReturn(new ArrayCollection());
 
         $missingAssociationAdder->addMissingAssociations($product)->shouldBeCalled();
-        $product->getAssociationForTypeCode('xsell')->willReturn($xsellAssociation);
-
-        $productRepository->findOneByIdentifier('not existing product')->willReturn(null);
 
         $this->shouldThrow(
             InvalidPropertyException::validEntityCodeExpected(
@@ -331,102 +409,44 @@ class AssociationFieldSetterSpec extends ObjectBehavior
             [
                 $product,
                 'associations',
-                ['xsell' => ['groups' => [], 'products' => ['not existing product']]]
+                ['xsell' => ['products' => ['not existing product']]],
             ]
         );
     }
 
-    function it_fails_if_one_of_the_associated_group_does_not_exist(
-        $missingAssociationAdder,
-        $groupRepository,
-        ProductInterface $product,
-        AssociationInterface $xsellAssociation,
+    function it_fails_if_one_of_the_associated_product_models_does_not_exist(
+        MissingAssociationAdder $missingAssociationAdder,
+        IdentifiableObjectRepositoryInterface $productModelRepository,
+        AssociationTypeRepositoryInterface $associationTypeRepository,
+        ProductModelInterface $productModel,
         AssociationTypeInterface $associationType
     ) {
-        $xsellAssociation->getAssociationType()->willReturn($associationType);
-        $xsellAssociation->getGroups()->willReturn(new ArrayCollection([]));
-        $xsellAssociation->getProducts()->willReturn(new ArrayCollection([]));
-        $xsellAssociation->getProductModels()->willReturn(new ArrayCollection([]));
-        $product->getAssociations()->willReturn(new ArrayCollection([$xsellAssociation->getWrappedObject()]));
-        $missingAssociationAdder->addMissingAssociations($product)->shouldBeCalled();
-        $product->getAssociationForTypeCode('xsell')->willReturn($xsellAssociation);
+        $associationType->getCode()->willReturn('xsell');
+        $associationType->isTwoWay()->willReturn(false);
+        $associationType->isQuantified()->willReturn(false);
+        $associationTypeRepository->findOneByIdentifier('xsell')->willReturn($associationType);
+        $productModelRepository->findOneByIdentifier('not existing product model')->willReturn(null);
 
-        $groupRepository->findOneByIdentifier('not existing group')->willReturn(null);
+        $productModel->getAssociatedProducts('xsell')->willReturn(new ArrayCollection());
+        $productModel->getAssociatedProductModels('xsell')->willReturn(new ArrayCollection());
+        $productModel->getAssociatedGroups('xsell')->willReturn(new ArrayCollection());
+
+        $missingAssociationAdder->addMissingAssociations($productModel)->shouldBeCalled();
 
         $this->shouldThrow(
             InvalidPropertyException::validEntityCodeExpected(
                 'associations',
-                'group code',
-                'The group does not exist',
+                'product model identifier',
+                'The product model does not exist',
                 AssociationFieldSetter::class,
-                'not existing group'
+                'not existing product model'
             )
         )->during(
             'setFieldData',
             [
-                $product,
+                $productModel,
                 'associations',
-                ['xsell' => ['groups' => ['not existing group'], 'products' => [], 'product_models' => [],]]
-            ]
-        );
-    }
-
-    function it_should_clear_concerned_associations(
-        $missingAssociationAdder,
-        ProductInterface $product,
-        AssociationInterface $xsellAssociation,
-        AssociationInterface $upsellAssociation,
-        AssociationTypeInterface $upsellAssociationType,
-        AssociationTypeInterface $xsellAssociationType,
-        ProductInterface $product1,
-        ProductInterface $product2,
-        ProductModelInterface $productModel1,
-        ProductModelInterface $productModel2,
-        GroupInterface $group1,
-        GroupInterface $group2
-    ) {
-        $xsellAssociationType->getCode()->willReturn('xsell');
-        $xsellAssociationType->isTwoWay()->willReturn(false);
-        $xsellAssociation->getAssociationType()->willReturn($xsellAssociationType);
-        $xsellAssociation->getProducts()->willReturn(new ArrayCollection([$product1->getWrappedObject(), $product2->getWrappedObject()]));
-        $xsellAssociation->getProductModels()->willReturn(new ArrayCollection([$productModel1->getWrappedObject(), $productModel2->getWrappedObject()]));
-
-        $upsellAssociationType->getCode()->willReturn('upsell');
-        $upsellAssociationType->isTwoWay()->willReturn(false);
-        $upsellAssociation->getAssociationType()->willReturn($upsellAssociationType);
-        $upsellAssociation->getGroups()->willReturn(new ArrayCollection([$group1->getWrappedObject(), $group2->getWrappedObject()]));
-        $upsellAssociation->getProductModels()->willReturn(new ArrayCollection([$productModel1->getWrappedObject(), $productModel2->getWrappedObject()]));
-
-        $product->getAssociations()->willReturn(
-            new ArrayCollection([$xsellAssociation->getWrappedObject(), $upsellAssociation->getWrappedObject()])
-        );
-
-        $xsellAssociation->removeProduct($product1)->shouldBeCalled();
-        $xsellAssociation->removeProduct($product2)->shouldBeCalled();
-        $xsellAssociation->removeProductModel($productModel1)->shouldBeCalled();
-        $xsellAssociation->removeProductModel($productModel2)->shouldBeCalled();
-
-        $upsellAssociation->removeGroup($group1)->shouldBeCalled();
-        $upsellAssociation->removeGroup($group2)->shouldBeCalled();
-        $upsellAssociation->removeProductModel($productModel1)->shouldBeCalled();
-        $upsellAssociation->removeProductModel($productModel2)->shouldBeCalled();
-
-        $missingAssociationAdder->addMissingAssociations($product)->shouldBeCalled();
-        $product->getAssociationForTypeCode('xsell')->willReturn($xsellAssociation);
-        $product->getAssociationForTypeCode('upsell')->willReturn($upsellAssociation);
-
-        $this->setFieldData(
-            $product,
-            'associations',
-            [
-                'xsell' => [
-                    'products' => [],
-                    'product_models' => [],
-                ],
-                'upsell' => [
-                    'groups' => [],
-                    'product_models' => [],
-                ]
+                ['xsell' => ['product_models' => ['not existing product model']]],
             ]
         );
     }

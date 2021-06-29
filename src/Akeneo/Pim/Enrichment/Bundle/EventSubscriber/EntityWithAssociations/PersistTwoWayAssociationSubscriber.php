@@ -6,7 +6,8 @@ namespace Akeneo\Pim\Enrichment\Bundle\EventSubscriber\EntityWithAssociations;
 
 use Akeneo\Pim\Enrichment\Component\Product\Model\AssociationInterface;
 use Akeneo\Pim\Enrichment\Component\Product\Model\EntityWithAssociationsInterface;
-use Akeneo\Pim\Structure\Component\Model\AssociationTypeInterface;
+use Akeneo\Pim\Enrichment\Component\Product\Storage\Indexer\ProductIndexerInterface;
+use Akeneo\Pim\Enrichment\Component\Product\Storage\Indexer\ProductModelIndexerInterface;
 use Akeneo\Tool\Component\StorageUtils\StorageEvents;
 use Doctrine\Common\Persistence\ManagerRegistry;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
@@ -14,19 +15,30 @@ use Symfony\Component\EventDispatcher\GenericEvent;
 
 final class PersistTwoWayAssociationSubscriber implements EventSubscriberInterface
 {
-    /** @var ManagerRegistry */
-    private $registry;
+    private ManagerRegistry $registry;
+
+    private ProductIndexerInterface $productIndexer;
+
+    private ProductModelIndexerInterface $productModelIndexer;
+
+    private array $productIdentifiersToIndex = [];
+    private array $productModelCodesToIndex = [];
 
     public function __construct(
-        ManagerRegistry $registry
+        ManagerRegistry $registry,
+        ProductIndexerInterface $productIndexer,
+        ProductModelIndexerInterface $productModelIndexer
     ) {
         $this->registry = $registry;
+        $this->productIndexer = $productIndexer;
+        $this->productModelIndexer = $productModelIndexer;
     }
 
     public static function getSubscribedEvents(): array
     {
         return [
             StorageEvents::PRE_SAVE => 'handlePreSave',
+            StorageEvents::POST_SAVE => 'indexAssociatedEntities',
         ];
     }
 
@@ -38,6 +50,8 @@ final class PersistTwoWayAssociationSubscriber implements EventSubscriberInterfa
             return;
         }
 
+        $em = $this->registry->getManager();
+
         /** @var AssociationInterface $association */
         foreach ($entity->getAssociations() as $association) {
             $associationType = $association->getAssociationType();
@@ -47,25 +61,23 @@ final class PersistTwoWayAssociationSubscriber implements EventSubscriberInterfa
             }
 
             foreach ($association->getProducts() as $product) {
-                $this->persistInversedAssociation($associationType, $product);
+                $em->persist($product);
+                $this->productIdentifiersToIndex[] = $product->getIdentifier();
             }
 
             foreach ($association->getProductModels() as $productModel) {
-                $this->persistInversedAssociation($associationType, $productModel);
+                $em->persist($productModel);
+                $this->productModelCodesToIndex[] = $productModel->getCode();
             }
         }
     }
 
-    private function persistInversedAssociation(
-        AssociationTypeInterface $associationType,
-        EntityWithAssociationsInterface $associatedEntity
-    ): void {
-        $em = $this->registry->getManager();
+    public function indexAssociatedEntities()
+    {
+        $this->productIndexer->indexFromProductIdentifiers($this->productIdentifiersToIndex);
+        $this->productModelIndexer->indexFromProductModelCodes($this->productModelCodesToIndex);
 
-        $inversedAssociation = $associatedEntity->getAssociationForType($associationType);
-
-        if (null !== $inversedAssociation) {
-            $em->persist($inversedAssociation);
-        }
+        $this->productIdentifiersToIndex = [];
+        $this->productModelCodesToIndex = [];
     }
 }

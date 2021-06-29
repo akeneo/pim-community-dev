@@ -34,10 +34,10 @@ class DefaultViewDataTransformer implements DataTransformerInterface
             return;
         }
 
-        $types = $this->datagridViewRepo->getDatagridViewTypeByUser($value);
-        foreach ($types as $type) {
-            $field = 'default_' . str_replace('-', '_', $type['datagridAlias']) . '_view';
-            $value->$field = $value->getDefaultGridView($type['datagridAlias']);
+        $aliases = $this->datagridViewRepo->getDatagridViewAliasesByUser($value);
+        foreach ($aliases as $alias) {
+            $field = 'default_' . str_replace('-', '_', $alias) . '_view';
+            $value->$field = $value->getDefaultGridView($alias);
         }
 
         return $value;
@@ -52,13 +52,13 @@ class DefaultViewDataTransformer implements DataTransformerInterface
             return null;
         }
 
-        $types = $this->datagridViewRepo->getDatagridViewTypeByUser($value);
-        foreach ($types as $type) {
-            $field = 'default_' . str_replace('-', '_', $type['datagridAlias']) . '_view';
+        $aliases = $this->datagridViewRepo->getDatagridViewAliasesByUser($value);
+        foreach ($aliases as $alias) {
+            $field = 'default_' . str_replace('-', '_', $alias) . '_view';
 
             if (property_exists($value, $field)) {
-                if ($value->getDefaultGridView($type['datagridAlias']) !== $value->$field) {
-                    $value->setDefaultGridView($type['datagridAlias'], $value->$field);
+                if ($value->getDefaultGridView($alias) !== $value->$field) {
+                    $value->setDefaultGridView($alias, $value->$field);
                 }
             }
         }

@@ -21,6 +21,11 @@ Second: Sekunda
 Millisecond: Milisekunda
 Microsecond: Mikrosekunda
 "Time Zone": "Strefa Czasowa"
+duration:
+  days: "{0}0 dni|{1}1 dzień|]1, Inf[{{ count }} dni"
+  hours: "{0}0 godz.|{1}1 godz.|]1, Inf[{{ count }} godz."
+  minutes: "{0}0 min{1}1 min|]1, Inf[{{ count }} min"
+  seconds: "{0}0 sekund|{1}1 sekunda|]1, Inf[{{ count }} skund\n"
 #PIM messages
 Localized value: Przetłumaczona wartość
 Columns: Kolumny
@@ -154,6 +159,7 @@ pim_common:
   before: Przed
   by: autorstwa
   cancel: Anuluj
+  clear_value: Wyczyść wartość
   close: Zamknij
   code: Pod Produktu
   completeness: Kompletność
@@ -164,8 +170,10 @@ pim_common:
   created: Utworzono
   delete: Skasuj
   done: Gotowe
+  duplicate: Powiel
   edit: Edytuj
   entity_updated: Istnieją niezapisane zmiany.
+  export: Eksport
   from: Od
   general_properties: Właściwości ogólne
   history: Historia
@@ -177,6 +185,7 @@ pim_common:
   less_than: Mniej niż
   loading: Ładuję...
   media_upload: Przeciągnij i upuść aby przesłać, lub kliknij tutaj
+  more_actions: Więcej działań
   more_than: Więcej niż
   next: Następna
   "no": "Nie"
@@ -184,6 +193,8 @@ pim_common:
   not_available: ND.
   now: Teraz
   ok: OK
+  open: Otwórz
+  no_result: Brak wyników
   other_actions: Inne akcje
   permissions: Uprawnienia
   previous: Poprzedni
@@ -201,6 +212,7 @@ pim_common:
   to: do
   type: Typ
   update: Aktualizuj
+  updated: Zaktualizowano
   "yes": "Tak"
   operator: Operator
   operators:
@@ -216,6 +228,16 @@ pim_common:
     DOES NOT CONTAIN: Nie zawiera
     STARTS WITH: Rozpoczyna się od
     ENDS WITH: Kończy się na
+  read_more: Dowiedz się więcej
+  channel: Kanał
+  locale: Wersja językowa
+  categories: Kategorie
+  family_variant: Wariant rodziny
+  enabled: Włączono
+  family: Rodzina
+  parent: Element nadrzędny
+  groups: Grupy
+  more: Więcej
 error:
   exception: O rany! Wystąpił błąd {{ status_code }}...
   forbidden: Nie posiadasz uprawnień do przeglądania tej strony
@@ -264,8 +286,9 @@ pim_title:
   pim_enrich_catalog_volume_index: Monitorowanie objętości katalogu
   pim_enrich_categorytree_index: Drzewo kategorii
   pim_enrich_categorytree_create: Drzewa kategorii | Utwórz
-  pim_enrich_categorytree_edit: Drzewo kategorii {{ category.label }} | Edytuj
+  pim_enrich_categorytree_edit: Kategoria {{ category.label }} | Edycja
   pim_enrich_categorytree_create_tree: Drzewa kategorii | Utwórz
+  pim_enrich_categorytree_tree: Drzewo kategorii {{ category.label }} | Edytuj
   pim_enrich_attribute_index: Atrybuty
   pim_enrich_attribute_create: Atrybuty | Utwórz
   pim_enrich_attribute_edit: Atrybut {{ attribute.label }} | Edytuj
@@ -292,6 +315,7 @@ pim_title:
   pim_enrich_job_tracker_show: Śledzenie procesu | Pokaż zadanie
   pim_enrich_mass_edit_action: Edycja masowa
   pim_analytics_system_info_index: Informacje o systemie
+  pim_settings_index: Ustawienia
 pim_menu:
   tab:
     activity: Aktywność
@@ -307,7 +331,7 @@ pim_menu:
     attribute_group: Grupy atrybutów
     channel: Kanały
     currency: Waluty
-    dashboard: Pulpit
+    dashboard: Pulpit aktywności
     family: Rodziny
     group: Grupy
     group_type: Typy grup
@@ -328,7 +352,10 @@ pim_menu:
     activity: Nawigacji aktywności
     system: Nawigacja systemu
     user: Nawigacja zarządzaniem użytkownikami
-    settings: Nawigacja ustawień
+    settings:
+      product: Ustawienia produktów
+      catalog: Ustawienia katalogu
+      collapsed_label: Nawigacja ustawień
     product: Nawigacja produktu
     product_infos: Informacje o produkcie
   user:
@@ -340,3 +367,20 @@ pim_notification:
     export: Eksport
     quick_export: Szybki Eksport
     mass_edit: Edycja masowa
+pim_settings:
+  settings_menu: Menu ustawień
+  catalog_settings: Ustawienia katalogu
+  product_settings: Ustawienia produktów
+  count:
+    categories: 'Posiadasz następującą liczbę drzew: {{ countTrees }} i następującą liczbę kategorii: {{ countCategories }}'
+    channels: 'Posiadasz następującą liczbę kanałów: {{ count }}'
+    locales: 'Posiadasz następującą liczbę włączonych wersji językowych: {{ count }}'
+    currencies: 'Posiadasz następującą liczbę włączonych walut: {{ count }}'
+    attribute_groups: 'Posiadasz następującą liczbę grup atrybutów: {{ count }}'
+    attributes: 'Posiadasz następującą liczbę atrybutów: {{ count }}'
+    families: 'Posiadasz następującą liczbę rodzin: {{ count }}'
+    measurements: 'Posiadasz następującą liczbę pomiarów: {{ count }}'
+    association_types: 'Posiadasz następującą liczbę typów powiązań: {{ count }}'
+    group_types: 'Posiadasz następującą liczbę typów grup: {{ count }}'
+    groups: 'Posiadasz następującą liczbę grup: {{ count }}'
+    rules: 'Posiadasz następującą liczbę włączonych reguł: {{ count }}'

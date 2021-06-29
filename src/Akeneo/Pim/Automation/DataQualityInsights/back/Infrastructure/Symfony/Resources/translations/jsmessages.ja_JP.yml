@@ -2,7 +2,6 @@ akeneo_data_quality_insights:
   title: データ品質インサイト
   dqi_dashboard:
     menu: データ品質インサイト
-    title: データ品質の概要
     helper:
       title: Akeneoで紹介しているデータ品質について
       description: データ品質のダッシュボードを使用すると、カタログデータの品質を測定できます。カテゴリやファミリーに焦点を当てることもできます。

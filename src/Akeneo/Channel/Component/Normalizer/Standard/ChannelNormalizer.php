@@ -36,7 +36,6 @@ class ChannelNormalizer implements NormalizerInterface, CacheableSupportsMethodI
             'category_tree'    => $channel->getCategory()->getCode(),
             'conversion_units' => $channel->getConversionUnits(),
             'labels'           => $this->translationNormalizer->normalize($channel, $format, $context)
-
         ];
     }
 

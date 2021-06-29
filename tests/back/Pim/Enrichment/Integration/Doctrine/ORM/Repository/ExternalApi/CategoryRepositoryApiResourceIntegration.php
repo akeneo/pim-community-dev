@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace AkeneoTest\Pim\Structure\Integration\Doctrine\ORM\Repository\ExternalApi;
+namespace AkeneoTest\Pim\Enrichment\Integration\Doctrine\ORM\Repository\ExternalApi;
 
 use Akeneo\Pim\Enrichment\Bundle\Doctrine\ORM\Repository\ExternalApi\CategoryRepository;
 use Akeneo\Pim\Enrichment\Component\Category\Model\Category;
@@ -115,6 +115,58 @@ class CategoryRepositoryApiResourceIntegration extends TestCase
         Assert::assertEquals('hat', $categories[2]->getCode());
         Assert::assertEquals('melon', $categories[3]->getCode());
         Assert::assertEquals('ring', $categories[4]->getCode());
+    }
+
+    public function test_to_search_root_categories_only(): void
+    {
+        $this->initFixtures();
+
+        $categories = $this->getRepository()->searchAfterOffset(
+            ['is_root' => [['operator' => '=', 'value' => true]]],
+            ['code' => 'ASC'],
+            10,
+            0
+        );
+        Assert::assertCount(3, $categories);
+        Assert::assertEquals('accessories', $categories[0]->getCode());
+        Assert::assertEquals('clothes', $categories[1]->getCode());
+        Assert::assertEquals('master', $categories[2]->getCode());
+    }
+
+    public function test_to_search_non_root_categories_only(): void
+    {
+        $this->initFixtures();
+
+        $categories = $this->getRepository()->searchAfterOffset(
+            ['is_root' => [['operator' => '=', 'value' => false]]],
+            ['code' => 'ASC'],
+            10,
+            0
+        );
+
+        Assert::assertCount(9, $categories);
+        Assert::assertEquals('bob', $categories[0]->getCode());
+        Assert::assertEquals('women', $categories[8]->getCode());
+    }
+
+    public function test_to_search_categories_after_update_date(): void
+    {
+        $this->initFixtures();
+
+        $connection = $this->get('database_connection');
+        $connection->exec('UPDATE pim_catalog_category SET updated="2019-05-15 16:27:00"');
+        $connection->exec('UPDATE pim_catalog_category SET updated="2019-07-15 16:27:00" WHERE code IN ("ring","men")');
+
+        $categories = $this->getRepository()->searchAfterOffset(
+            ['updated' => [['operator' => '>', 'value' => '2019-06-09T12:00:00+00:00']]],
+            ['code' => 'ASC'],
+            10,
+            0
+        );
+
+        Assert::assertCount(2, $categories);
+        Assert::assertEquals('men', $categories[0]->getCode());
+        Assert::assertEquals('ring', $categories[1]->getCode());
     }
 
     protected function getConfiguration(): Configuration

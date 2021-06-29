@@ -59,13 +59,10 @@ class SqlGetPurgeableVersionListQueryIntegration extends TestCase
             $purgeableVersionsIds = array_merge($purgeableVersionsIds, $purgeableVersionList->getVersionIds());
         }
 
-        $this->assertEquals(
+        $this->assertEqualsCanonicalizing(
             $oldProductVersionIds,
             $purgeableVersionsIds,
             'All oldest versions, and only they, should be returned',
-            0,
-            2,
-            true
         );
     }
 

@@ -6,6 +6,7 @@ import {
   infiniteScrollNextResultsFetched,
   infiniteScrollResultsNotFetched,
 } from '../actions/infiniteScrollActions';
+import {useIsMounted} from '@akeneo-pim-community/shared';
 
 type ResultsResponse = {
   items: any[];
@@ -28,17 +29,20 @@ const useInfiniteScroll = (
   threshold: number = 4000
 ): [ResultsResponse, (searchAfter: string | null) => void] => {
   const [state, dispatch] = useReducer(reducer, initialState);
+  const isMounted = useIsMounted();
 
   const handleFetchingResults = useCallback(async (searchAfter: string | null) => {
     try {
       dispatch(infiniteScrollFetchingResults());
       const data = await fetch(searchAfter);
 
-      if (null === searchAfter) {
-        dispatch(infiniteScrollFirstResultsFetched(data));
-      } else {
-        const lastAppend = data.length == 0;
-        dispatch(infiniteScrollNextResultsFetched(data, lastAppend));
+      if (isMounted()) {
+        if (null === searchAfter) {
+          dispatch(infiniteScrollFirstResultsFetched(data));
+        } else {
+          const lastAppend = data.length == 0;
+          dispatch(infiniteScrollNextResultsFetched(data, lastAppend));
+        }
       }
     } catch (error) {
       dispatch(infiniteScrollResultsNotFetched());

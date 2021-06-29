@@ -3,19 +3,19 @@
         <% if (!file) { %>
             <input class="AknMediaField-fileUploaderInput" type="file" name="Drag and drop a file or click here"/>
             <div class="AknMediaField-emptyContainer">
-                <span title="upload icon" class="AknMediaField-uploadIcon"/>
+                <span title="upload icon" class="AknMediaField-uploadIcon"></span>
                 <span><%- __('pim_enrich.entity.job_execution.module.create.upload', {type})%></span>
             </div>
         <% } else { %>
             <div class="AknMediaField-preview preview">
                 <div class="AknMediaField-thumb file">
-                    <span title="upload icon" class="AknMediaField-uploadIcon"/>
+                    <span title="upload icon" class="AknMediaField-uploadIcon"></span>
                 </div>
                 <div class="AknMediaField-info info">
                     <div class="filename" title="<%- file.name %>"><%- file.name %></div>
                     <div class="AknButtonList AknButtonList--centered actions">
                         <span class="AknButtonList-item clear-field">
-                            <span class="AknMediaField-remove"/>
+                            <span class="AknMediaField-remove"></span>
                         </span>
                     </div>
                 </div>

@@ -7,6 +7,7 @@ namespace AkeneoTest\Pim\Enrichment\Integration\Storage\ElasticsearchAndSql\Prod
 use Akeneo\Pim\Enrichment\Bundle\Storage\ElasticsearchAndSql\ProductAndProductModel\ESGetProductAndProductModelIdentifiersWithValuesIgnoringLocaleAndScope;
 use Akeneo\Test\Integration\Configuration;
 use Akeneo\Test\Integration\TestCase;
+use PHPUnit\Framework\Assert;
 
 /**
  * @author    Nicolas Marniesse <nicolas.marniesse@akeneo.com>
@@ -62,6 +63,25 @@ final class ESGetProductAndProductModelIdentifiersWithValuesIgnoringLocaleAndSco
 
         $this->assertCount(1, $totalIdentifiers);
         $this->assertSame('athena', $totalIdentifiers[0]);
+    }
+
+    public function test_it_returns_all_products_and_models_with_non_empty_values_if_provided_options_are_empty()
+    {
+        $results = $this->eSGetProductAndProductModelIdentifiers->forAttributeAndValues(
+            'size',
+            'option',
+            []
+        );
+
+        $totalIdentifiers = [];
+        foreach ($results as $identifiers) {
+            $totalIdentifiers = array_merge($totalIdentifiers, $identifiers);
+        }
+
+        Assert::assertContains('1111111111', $totalIdentifiers);
+        Assert::assertNotContains('1111111173', $totalIdentifiers);
+        Assert::assertContains('tshirt-divided-navy-blue-xxs', $totalIdentifiers);
+        Assert::assertNotContains('artemis_red', $totalIdentifiers);
     }
 
     /**

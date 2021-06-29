@@ -1,9 +1,8 @@
 <?php
+
 declare(strict_types=1);
 
 namespace Akeneo\Connectivity\Connection\Domain\Webhook\Exception;
-
-use Throwable;
 
 /**
  * @author    Willy Mesnage <willy.mesnage@akeneo.com>
@@ -13,9 +12,9 @@ use Throwable;
 class ConnectionWebhookNotFoundException extends \DomainException
 {
     public function __construct(
-        $message = 'akeneo_connectivity.connection.webhook.error.not_found',
-        $code = 0,
-        Throwable $previous = null
+        string $message = 'akeneo_connectivity.connection.webhook.error.not_found',
+        int $code = 0,
+        \Throwable $previous = null
     ) {
         parent::__construct($message, $code, $previous);
     }

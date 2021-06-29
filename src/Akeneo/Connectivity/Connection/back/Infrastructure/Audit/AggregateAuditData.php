@@ -34,7 +34,7 @@ final class AggregateAuditData
     {
         return array_reduce(
             $periodEventCounts,
-            function (array $data, PeriodEventCount $periodEventCount) use ($dateTimeZone) {
+            function (array $data, PeriodEventCount $periodEventCount) use ($dateTimeZone): array {
                 $dailyEventCounts = self::groupHourlyEventCountByDay(
                     $periodEventCount->hourlyEventCounts(),
                     $dateTimeZone
@@ -71,7 +71,7 @@ final class AggregateAuditData
     {
         return array_reduce(
             $hourlyEventCounts,
-            function (array $dailyEventCounts, HourlyEventCount $hourlyEventCount) use ($dateTimeZone) {
+            function (array $dailyEventCounts, HourlyEventCount $hourlyEventCount) use ($dateTimeZone): array {
                 $eventDate = $hourlyEventCount->dateTime()->setTimezone($dateTimeZone)->format('Y-m-d');
 
                 if (false === isset($dailyEventCounts[$eventDate])) {

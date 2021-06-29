@@ -15,7 +15,7 @@ Feature: Update the product associations
     And I visit the "Associations (0)" column tab
     And I visit the "Cross sell (0)" association type
 
-  @critical
+  @critical @purge-messenger
   Scenario: Successfully add an association
     Given I add associations
     And I search "pat"
@@ -24,7 +24,9 @@ Feature: Update the product associations
     When I press the "Confirm" button in the popin
     Then I should see product "patrick"
     And I should see the text "1 product(s), 0 product model(s) and 0 group(s)"
+    And 1 event of type "product.updated" should have been raised
 
+  @purge-messenger
   Scenario: Successfully delete an association
     Given I add associations
     And I search "pat"
@@ -38,6 +40,7 @@ Feature: Update the product associations
     When I save the product
     Then I should not see product "patrick"
     And I should see the text "0 product(s), 0 product model(s) and 0 group(s)"
+    And 2 event of type "product.updated" should have been raised
 
   @critical
   Scenario: Successfully add a product model as association

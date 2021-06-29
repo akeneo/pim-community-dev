@@ -2,12 +2,16 @@
 
 namespace AkeneoTest\Pim\Structure\EndToEnd\Family\ExternalApi;
 
+use Akeneo\Pim\Enrichment\Component\Product\Message\ProductUpdated;
 use Akeneo\Test\Integration\Configuration;
+use Akeneo\Test\IntegrationTestsBundle\Messenger\AssertEventCountTrait;
 use Akeneo\Tool\Bundle\ApiBundle\tests\integration\ApiTestCase;
 use Symfony\Component\HttpFoundation\Response;
 
 class PartialUpdateFamilyEndToEnd extends ApiTestCase
 {
+    use AssertEventCountTrait;
+
     public function testHttpHeadersInResponseWhenAFamilyIsUpdated()
     {
         $client = $this->createAuthenticatedClient();
@@ -407,6 +411,7 @@ JSON;
         $response = $client->getResponse();
         $this->assertSame(Response::HTTP_NO_CONTENT, $response->getStatusCode());
         $this->assertSame($familyStandard, $normalizer->normalize($family));
+        $this->assertEventCount(0, ProductUpdated::class);
     }
 
     public function testResponseWhenContentIsEmpty()

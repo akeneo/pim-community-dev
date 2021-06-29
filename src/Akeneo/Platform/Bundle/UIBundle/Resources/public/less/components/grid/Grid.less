@@ -98,6 +98,10 @@
       cursor: default;
     }
 
+    &--unclickable {
+      cursor: default;
+    }
+
     &--actions,
     &:first-child&--checkbox,
     .AknGrid-onHoverElement {
@@ -117,7 +121,7 @@
     &--highlight {
       color: @AknLightPurple;
       font-style: italic;
-      font-size: @AknFontSizeBig;
+      font-size: @AknDefaultFontSize;
       max-width: 15vw;
       overflow: hidden;
       text-overflow: ellipsis;
@@ -126,7 +130,7 @@
     &--highlightWithTooltip {
       color: @AknLightPurple;
       font-style: italic;
-      font-size: @AknFontSizeBig;
+      font-size: @AknDefaultFontSize;
       white-space: nowrap;
       max-width: 15vw;
       text-overflow: ellipsis;

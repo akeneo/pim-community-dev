@@ -10,7 +10,7 @@ type Props<T> = {
   isReorderAllowed?: boolean;
   isReorderActive?: boolean;
   dataSource: T[];
-  handleAfterMove: AfterMoveRowHandler<T>;
+  handleAfterMove?: AfterMoveRowHandler<T>;
   compareData: CompareRowDataHandler<T>;
   isFilterable?: boolean;
 };
@@ -20,7 +20,7 @@ const DataGrid = <T extends {}>({
   isReorderAllowed = false,
   isReorderActive = false,
   dataSource,
-  handleAfterMove,
+  handleAfterMove = () => {},
   compareData,
   isFilterable,
 }: PropsWithChildren<Props<T>>) => {
@@ -35,10 +35,10 @@ const DataGrid = <T extends {}>({
     >
       <TableContainer>
         <Table>
-          {Children.map(children, (child) => {
-            if (isValidElement(child) && (child.type === HeaderRow)) {
+          {Children.map(children, child => {
+            if (isValidElement(child) && child.type === HeaderRow) {
               return React.cloneElement(child, {
-                isDraggable: isReorderAllowed
+                isDraggable: isReorderAllowed,
               });
             }
 
@@ -49,7 +49,6 @@ const DataGrid = <T extends {}>({
     </DataGridStateProvider>
   );
 };
-
 
 DataGrid.Body = Body;
 DataGrid.Cell = Cell;

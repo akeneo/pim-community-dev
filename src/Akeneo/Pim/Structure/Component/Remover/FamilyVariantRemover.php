@@ -89,16 +89,16 @@ class FamilyVariantRemover implements RemoverInterface
         $options['unitary'] = true;
 
         $this->eventDispatcher->dispatch(
-            StorageEvents::PRE_REMOVE,
-            new RemoveEvent($familyVariant, $objectId, $options)
+            new RemoveEvent($familyVariant, $objectId, $options),
+            StorageEvents::PRE_REMOVE
         );
 
         $this->objectManager->remove($familyVariant);
         $this->objectManager->flush();
 
         $this->eventDispatcher->dispatch(
-            StorageEvents::POST_REMOVE,
-            new RemoveEvent($familyVariant, $objectId, $options)
+            new RemoveEvent($familyVariant, $objectId, $options),
+            StorageEvents::POST_REMOVE
         );
     }
 }

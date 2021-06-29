@@ -4,19 +4,34 @@ declare(strict_types=1);
 
 namespace Akeneo\Pim\Enrichment\Component\Product\Message;
 
-use Akeneo\Platform\Component\EventQueue\BusinessEvent;
+use Akeneo\Platform\Component\EventQueue\Author;
+use Akeneo\Platform\Component\EventQueue\Event;
+use Webmozart\Assert\Assert;
 
 /**
- * Business event triggered when a product model is updated.
- * The `data` property contains a product model normalized to the standard format.
- *
  * @copyright 202O Akeneo SAS (http://www.akeneo.com)
  * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
  */
-class ProductModelUpdated extends BusinessEvent
+class ProductModelUpdated extends Event
 {
-    public function name(): string
+    /**
+     * @var array{code: string} $data
+     */
+    public function __construct(Author $author, array $data, int $timestamp = null, string $uuid = null)
+    {
+        Assert::keyExists($data, 'code');
+        Assert::stringNotEmpty($data['code']);
+
+        parent::__construct($author, $data, $timestamp, $uuid);
+    }
+
+    public function getName(): string
     {
         return 'product_model.updated';
+    }
+
+    public function getCode(): string
+    {
+        return $this->data['code'];
     }
 }

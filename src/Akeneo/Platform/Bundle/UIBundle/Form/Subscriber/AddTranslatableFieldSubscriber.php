@@ -5,7 +5,8 @@ namespace Akeneo\Platform\Bundle\UIBundle\Form\Subscriber;
 use Akeneo\Platform\Bundle\UIBundle\Exception\MissingOptionException;
 use Akeneo\Tool\Component\Localization\Factory\TranslationFactory;
 use Akeneo\UserManagement\Bundle\Context\UserContext;
-use Doctrine\Common\Inflector\Inflector;
+use Doctrine\Inflector\Inflector;
+use Doctrine\Inflector\NoopWordInflector;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 use Symfony\Component\Form\FormError;
 use Symfony\Component\Form\FormEvent;
@@ -101,7 +102,7 @@ class AddTranslatableFieldSubscriber implements EventSubscriberInterface
         }
         $translations = $this->bindTranslations($data);
         foreach ($translations as $binded) {
-            $method = 'get'.Inflector::camelize($this->getOption('field'));
+            $method = 'get'.$this->getInflector()->camelize($this->getOption('field'));
             $content = $binded['translation']->$method();
             $form->add(
                 $this->formFactory->createNamed(
@@ -140,7 +141,7 @@ class AddTranslatableFieldSubscriber implements EventSubscriberInterface
             }
 
             $translation = $this->translationFactory->createTranslation($locale);
-            $method = 'set'.Inflector::camelize($this->getOption('field'));
+            $method = 'set'.$this->getInflector()->camelize($this->getOption('field'));
             $translation->$method($content);
 
             $errors = $this->validator->validate(
@@ -173,7 +174,7 @@ class AddTranslatableFieldSubscriber implements EventSubscriberInterface
             $content = $form->get($binded['fieldName'])->getData();
             $translation = $binded['translation'];
 
-            $method = 'set'.Inflector::camelize($this->getOption('field'));
+            $method = 'set'.$this->getInflector()->camelize($this->getOption('field'));
             $translation->$method($content);
             $translation->setForeignKey($entity);
             $entity->addTranslation($translation);
@@ -264,5 +265,10 @@ class AddTranslatableFieldSubscriber implements EventSubscriberInterface
         $translateIn = $translateIn ?: $this->userContext->getCurrentLocaleCode();
 
         return \Locale::getDisplayName($code, $translateIn);
+    }
+
+    private function getInflector(): Inflector
+    {
+        return new Inflector(new NoopWordInflector(), new NoopWordInflector());
     }
 }

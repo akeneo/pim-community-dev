@@ -1,7 +1,7 @@
-import {useEffect} from "react";
-import {useDispatch, useSelector} from "react-redux";
-import {ProductEditFormState} from "../../store";
-import {getProductEvaluationAction} from "../../reducer";
+import {useEffect} from 'react';
+import {useDispatch, useSelector} from 'react-redux';
+import {ProductEditFormState} from '../../store';
+import {getProductEvaluationAction} from '../../reducer';
 
 const useProductEvaluation = () => {
   const dispatchAction = useDispatch();
@@ -24,11 +24,10 @@ const useProductEvaluation = () => {
     }
   }, [productId, evaluation]);
 
-
   return {
     evaluation,
     productId,
-    productUpdated
+    productUpdated,
   };
 };
 

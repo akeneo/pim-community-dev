@@ -27,7 +27,7 @@ services:
     pim_user.event_subscriber.remove_role:
         class: '%pim_user.event_subscriber.remove_role.class%'
         arguments:
-            - '@pim_user.query.is_there_user_without_role'
+            - '@pim_user.query.get_user_count'
         tags:
             - { name: kernel.event_subscriber }
 
@@ -49,3 +49,10 @@ services:
             - '@pim_user.factory.user'
         tags:
             - { name: kernel.event_listener, event: console.command, method: createUserSystem }
+
+    Akeneo\UserManagement\Bundle\EventListener\AddDefaultPrivilegesSubscriber:
+        arguments:
+            - '@pim_user.repository.role'
+            - '@oro_security.acl.manager'
+        tags:
+            - { name: kernel.event_subscriber }

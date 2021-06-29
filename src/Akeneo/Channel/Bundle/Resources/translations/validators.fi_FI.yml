@@ -1,0 +1,3 @@
+pim_enrich.entity.locale:
+  constraint:
+    invalid_locale_code: Tämä lokaatiokoodi ei vastaa odotettua muotoa

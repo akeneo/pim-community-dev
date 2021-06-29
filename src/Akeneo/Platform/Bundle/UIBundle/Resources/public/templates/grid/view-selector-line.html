@@ -1,3 +1,10 @@
 <div class="select2-result-label-view">
-    <span class="view-label <%- isCurrent ? 'view-label-current' : '' %>"><%- view.text %></span>
+    <div class="view-line">
+        <span class="view-label <%- isCurrent ? 'view-label-current' : '' %>">
+            <%- view.text %>
+        </span>
+        <% if (view.type === 'public') { %>
+        <span class="view-type"><%- _.__('pim_datagrid.view_selector.public_label') %></span>
+        <% } %>
+    </div>
 </div>

@@ -20,6 +20,8 @@ mappings:
             type: 'date'
         updated:
             type: 'date'
+        entity_updated:
+            type: 'date'
         identifier:
             type: 'keyword'
             normalizer: 'identifier_normalizer'
@@ -272,3 +274,19 @@ mappings:
                 path_match: 'rates.*'
                 mapping:
                     type: 'keyword'
+        -
+            data_quality_insights_structure:
+                path_match: 'data_quality_insights.*'
+                match_mapping_type: 'object'
+                mapping:
+                    type: 'object'
+        -
+            data_quality_insights_key_indicators:
+                path_match: 'data_quality_insights.key_indicators.*'
+                mapping:
+                    type: 'boolean'
+        -
+            data_quality_insights_scores:
+                path_match: 'data_quality_insights.scores.*'
+                mapping:
+                    type: 'short'

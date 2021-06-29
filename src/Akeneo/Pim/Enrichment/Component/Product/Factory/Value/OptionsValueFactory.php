@@ -19,7 +19,7 @@ final class OptionsValueFactory implements ValueFactory
 {
     public function createWithoutCheckingData(Attribute $attribute, ?string $channelCode, ?string $localeCode, $data): ValueInterface
     {
-        sort($data);
+        \sort($data);
         $attributeCode = $attribute->code();
 
         if ($attribute->isLocalizableAndScopable()) {
@@ -39,14 +39,14 @@ final class OptionsValueFactory implements ValueFactory
 
     public function createByCheckingData(Attribute $attribute, ?string $channelCode, ?string $localeCode, $data): ValueInterface
     {
-        if (!is_array($data)) {
+        if (!\is_array($data)) {
             throw InvalidPropertyTypeException::arrayExpected(
                 $attribute->code(),
                 static::class,
                 $data
             );
         }
-        
+
         try {
             Assert::allString($data);
         } catch (\Exception $exception) {

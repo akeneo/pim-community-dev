@@ -6,7 +6,7 @@ const mediator = require('oro/mediator');
 
 class AttributeGroupsSettings extends ReactController {
   reactElementToMount() {
-    return (<AttributeGroupsApp />);
+    return <AttributeGroupsApp />;
   }
 
   routeGuardToUnmount() {

@@ -36,6 +36,7 @@ class LocaleNormalizer implements NormalizerInterface, CacheableSupportsMethodIn
     public function normalize($locale, $format = null, array $context = [])
     {
         return [
+            'id'     => $locale->getId(),
             'code'     => $locale->getCode(),
             'label'    => $this->getLocaleLabel($locale->getCode()),
             'region'   => \Locale::getDisplayRegion($locale->getCode()),

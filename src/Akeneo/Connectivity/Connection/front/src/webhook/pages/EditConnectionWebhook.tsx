@@ -1,20 +1,22 @@
-import React, {FC, useEffect, useState} from 'react';
+import React, {FC, useEffect} from 'react';
 import {FormContext, useForm, useFormContext} from 'react-hook-form';
 import {useHistory, useParams} from 'react-router';
 import styled from 'styled-components';
 import defaultImageUrl from '../../common/assets/illustrations/NewAPI.svg';
-import {ApplyButton, Breadcrumb, BreadcrumbItem, PageContent, PageHeader, Section} from '../../common/components';
+import {ApplyButton, PageContent, PageHeader} from '../../common/components';
 import {Loading} from '../../common/components/Loading';
-import {PimView} from '../../infrastructure/pim-view/PimView';
 import {useMediaUrlGenerator} from '../../settings/use-media-url-generator';
 import {isErr} from '../../shared/fetch-result/result';
-import {BreadcrumbRouterLink} from '../../shared/router';
 import {Translate} from '../../shared/translate';
 import {EditForm} from '../components/EditForm';
 import {EventSubscriptionHelper} from '../components/EventSubscriptionHelper';
 import {useUpdateWebhook} from '../hooks/api/use-update-webhook';
-import {useWebhook} from '../hooks/api/use-webhook';
+import {useFetchEventSubscription} from '../hooks/api/use-fetch-event-subscription';
 import {Webhook} from '../model/Webhook';
+import {Breadcrumb, SectionTitle} from 'akeneo-design-system';
+import {useFetchConnection} from '../hooks/api/use-fetch-connection';
+import {UserButtons} from '../../shared/user';
+import {useRouter} from '../../shared/router/use-router';
 
 export type FormInput = {
     connectionCode: string;
@@ -27,47 +29,39 @@ export const EditConnectionWebhook: FC = () => {
     const history = useHistory();
     const generateMediaUrl = useMediaUrlGenerator();
     const formMethods = useForm<FormInput>();
+    const generateUrl = useRouter();
 
     const {connectionCode} = useParams<{connectionCode: string}>();
-    const fetchedWebhook = useWebhook(connectionCode);
+    const {connection} = useFetchConnection(connectionCode);
+    const {eventSubscription, eventSubscriptionsLimit, fetchEventSubscription} =
+        useFetchEventSubscription(connectionCode);
 
-    const [webhook, setWebhook] = useState(fetchedWebhook.webhook);
     useEffect(() => {
-        if (!webhook) {
-            setWebhook(fetchedWebhook.webhook);
-        }
-    }, [fetchedWebhook]);
+        fetchEventSubscription();
+    }, [fetchEventSubscription]);
 
-    // Reset form on webhook change.
     useEffect(() => {
-        if (webhook) {
-            formMethods.reset(webhook);
+        if (eventSubscription) {
+            formMethods.reset(eventSubscription);
         }
-    }, [webhook]);
+    }, [eventSubscription]);
 
-    if (fetchedWebhook.loading || !webhook) {
+    if (!connection || !eventSubscription || !eventSubscriptionsLimit) {
         return <Loading />;
     }
 
     const breadcrumb = (
         <Breadcrumb>
-            <BreadcrumbRouterLink route={'oro_config_configuration_system'}>
-                <Translate id='pim_menu.tab.system' />
-            </BreadcrumbRouterLink>
-            <BreadcrumbItem onClick={() => history.push('/connections')}>
-                <Translate id='pim_menu.item.connection_settings' />
-            </BreadcrumbItem>
-            <BreadcrumbItem>
+            <Breadcrumb.Step href={`#${generateUrl('akeneo_connectivity_connection_audit_index')}`}>
+                <Translate id='pim_menu.tab.connect' />
+            </Breadcrumb.Step>
+            <Breadcrumb.Step href={history.createHref({pathname: '/connect/connection-settings'})}>
+                <Translate id='pim_menu.item.connect_connection_settings' />
+            </Breadcrumb.Step>
+            <Breadcrumb.Step>
                 <Translate id='akeneo_connectivity.connection.webhook.title' />
-            </BreadcrumbItem>
+            </Breadcrumb.Step>
         </Breadcrumb>
-    );
-
-    const userButtons = (
-        <PimView
-            className='AknTitleContainer-userMenuContainer AknTitleContainer-userMenu'
-            viewName='pim-connectivity-connection-user-navigation'
-        />
     );
 
     return (
@@ -75,23 +69,27 @@ export const EditConnectionWebhook: FC = () => {
             <form>
                 <PageHeader
                     breadcrumb={breadcrumb}
-                    userButtons={userButtons}
+                    userButtons={<UserButtons />}
                     imageSrc={
-                        null === webhook.connectionImage
-                            ? defaultImageUrl
-                            : generateMediaUrl(webhook.connectionImage, 'thumbnail')
+                        null === connection.image ? defaultImageUrl : generateMediaUrl(connection.image, 'thumbnail')
                     }
-                    buttons={[<SaveButton key={0} webhook={webhook} setWebhook={webhook => setWebhook(webhook)} />]}
+                    buttons={[
+                        <SaveButton key={0} webhook={eventSubscription} onSaveSuccess={fetchEventSubscription} />,
+                    ]}
                     state={<FormState />}
                 >
-                    {connectionCode}
+                    {connection.label}
                 </PageHeader>
 
                 <PageContent>
                     <Layout>
-                        <Section title={<Translate id='akeneo_connectivity.connection.webhook.event_subscription' />} />
+                        <SectionTitle>
+                            <SectionTitle.Title>
+                                <Translate id='akeneo_connectivity.connection.webhook.event_subscription' />
+                            </SectionTitle.Title>
+                        </SectionTitle>
                         <EventSubscriptionHelper />
-                        <EditForm webhook={webhook} />
+                        <EditForm webhook={eventSubscription} activeEventSubscriptionsLimit={eventSubscriptionsLimit} />
                     </Layout>
                 </PageContent>
             </form>
@@ -101,14 +99,15 @@ export const EditConnectionWebhook: FC = () => {
 
 type SaveButtonProps = {
     webhook: Webhook;
-    setWebhook: (webhook: Webhook) => void;
+    onSaveSuccess: () => void;
 };
 
-const SaveButton: FC<SaveButtonProps> = ({webhook, setWebhook}) => {
+const SaveButton: FC<SaveButtonProps> = ({webhook, onSaveSuccess}) => {
     const {formState, getValues, triggerValidation, handleSubmit, setError} = useFormContext<FormInput>();
     const updateWebhook = useUpdateWebhook(webhook.connectionCode);
     const handleSave = async () => {
         const {enabled, url} = getValues();
+
         const isValid = await triggerValidation();
         if (isValid) {
             const result = await updateWebhook({
@@ -124,7 +123,7 @@ const SaveButton: FC<SaveButtonProps> = ({webhook, setWebhook}) => {
                 return;
             }
 
-            setWebhook({...result.value, connectionImage: webhook.connectionImage});
+            onSaveSuccess();
         }
     };
 

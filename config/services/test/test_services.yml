@@ -10,7 +10,8 @@ parameters:
 
 imports:
     # Akeneo/Connectivity/Connection
-    - { resource: ../../../src/Akeneo/Connectivity/Connection/back/tests/Integration/Resources/config/loaders.yml }
+    - { resource: ../../../src/Akeneo/Connectivity/Connection/back/tests/CatalogBuilder/Resources/config/loaders.yml }
+    - { resource: ../../../src/Akeneo/Connectivity/Connection/back/tests/Integration/Resources/config/services.yml }
     # Akeneo/Platform/CommunicationChannel
     - { resource: ../../../src/Akeneo/Platform/Bundle/CommunicationChannelBundle/back/tests/Integration/Resources/config/in_memory.yml }
 
@@ -52,6 +53,9 @@ services:
             - '@akeneo_elasticsearch.client.product_and_product_model'
             - '@database_connection'
             - '@akeneo_measure.installer.measurement_installer'
+            - '@messenger.transport.business_event'
+            - '@event_dispatcher'
+            - '@akeneo_integration_tests.launcher.job_launcher'
             - '%env(APP_DATABASE_HOST)%'
             - '%env(APP_DATABASE_NAME)%'
             - '%env(APP_DATABASE_USER)%'
@@ -153,7 +157,38 @@ services:
         arguments:
             - '@kernel'
             - '@database_connection'
-            - '@akeneo_batch_queue.queue.job_execution_message_repository'
+            - !tagged akeneo.pim.tests.pub_sub_queue_status.job
+            - '@logger'
+
+    akeneo_integration_tests.pub_sub_queue_status.ui_job:
+        class: AkeneoTest\Integration\IntegrationTestsBundle\Launcher\PubSubQueueStatus
+        arguments:
+            - '@Akeneo\Tool\Bundle\MessengerBundle\Transport\GooglePubSub\PubSubClientFactory'
+            - '%env(GOOGLE_CLOUD_PROJECT)%'
+            - '%env(PUBSUB_TOPIC_JOB_QUEUE_UI)%'
+            - '%env(PUBSUB_SUBSCRIPTION_JOB_QUEUE_UI)%'
+        tags:
+            - { name: 'akeneo.pim.tests.pub_sub_queue_status.job' }
+
+    akeneo_integration_tests.pub_sub_queue_status.import_export_job:
+        class: AkeneoTest\Integration\IntegrationTestsBundle\Launcher\PubSubQueueStatus
+        arguments:
+            - '@Akeneo\Tool\Bundle\MessengerBundle\Transport\GooglePubSub\PubSubClientFactory'
+            - '%env(GOOGLE_CLOUD_PROJECT)%'
+            - '%env(PUBSUB_TOPIC_JOB_QUEUE_IMPORT_EXPORT)%'
+            - '%env(PUBSUB_SUBSCRIPTION_JOB_QUEUE_IMPORT_EXPORT)%'
+        tags:
+            - { name: 'akeneo.pim.tests.pub_sub_queue_status.job' }
+
+    akeneo_integration_tests.pub_sub_queue_status.data_maintenance_job:
+        class: AkeneoTest\Integration\IntegrationTestsBundle\Launcher\PubSubQueueStatus
+        arguments:
+            - '@Akeneo\Tool\Bundle\MessengerBundle\Transport\GooglePubSub\PubSubClientFactory'
+            - '%env(GOOGLE_CLOUD_PROJECT)%'
+            - '%env(PUBSUB_TOPIC_JOB_QUEUE_DATA_MAINTENANCE)%'
+            - '%env(PUBSUB_SUBSCRIPTION_JOB_QUEUE_DATA_MAINTENANCE)%'
+        tags:
+            - { name: 'akeneo.pim.tests.pub_sub_queue_status.job' }
 
     akeneo_integration_tests.launcher.job_execution_observer:
         class: '%akeneo_integration_tests.launcher.job_execution_observer.class%'
@@ -197,6 +232,13 @@ services:
             - '@pim_catalog.updater.family'
             - '@validator'
 
+    akeneo_integration_tests.base.family_variant.builder:
+        class: 'Akeneo\Test\Common\EntityBuilder'
+        arguments:
+            - '@pim_catalog.factory.family_variant'
+            - '@pim_catalog.updater.family_variant'
+            - '@validator'
+
     akeneo_integration_tests.catalog.product_model.builder:
         class: 'Akeneo\Test\Common\EntityWithValue\Builder\ProductModel'
         shared: false
@@ -217,3 +259,28 @@ services:
         decoration_inner_name: akeneo.pim.structure.query.get_existing_attribute_option_codes_from_option_codes.sql
         arguments:
             - '@akeneo.pim.structure.query.get_existing_attribute_option_codes_from_option_codes.sql'
+
+    akeneo_integration_tests.fixture.loader.product_and_product_model_with_removed_attribute:
+        class: 'AkeneoTest\Pim\Enrichment\Integration\Fixture\ProductAndProductModelWithRemovedAttributeLoader'
+        arguments:
+            $productBuilder: '@akeneo_integration_tests.catalog.product.builder'
+            $productSaver: '@pim_catalog.saver.product'
+            $productModelBuilder: '@akeneo_integration_tests.base.product_model.builder'
+            $productModelSaver: '@pim_catalog.saver.product_model'
+            $familyVariantBuilder: '@akeneo_integration_tests.base.family_variant.builder'
+            $familyVariantSaver: '@pim_catalog.saver.family_variant'
+            $familyBuilder: '@akeneo_integration_tests.base.family.builder'
+            $familySaver: '@pim_catalog.saver.family'
+            $attributeBuilder: '@akeneo_integration_tests.base.attribute.builder'
+            $attributeSaver: '@pim_catalog.saver.attribute'
+            $attributeRepository: '@pim_catalog.repository.attribute'
+            $attributeRemover: '@pim_catalog.remover.attribute'
+            $entityValidator: '@validator'
+            $productAndProductModelEsClient: '@akeneo_elasticsearch.client.product_and_product_model'
+
+    akeneo_integration_tests.message_bus_observer:
+        class: Symfony\Component\Messenger\TraceableMessageBus
+        decorates: messenger.default_bus
+        decoration_inner_name: messenger.default_bus.inner
+        arguments:
+            - '@messenger.default_bus.inner'

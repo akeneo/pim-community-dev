@@ -15,7 +15,6 @@ Feature: Edit a channel
     And I press the "Save" button
     Then I should not see the text "There are unsaved changes."
     And I am on the locales page
-    And I filter by "activated" with operator "equals" and value "yes"
     Then the grid should contain 3 elements
     And I should see locales "en_US", "br_FR" and "fr_FR"
     When I am on the "tablet" channel page
@@ -36,7 +35,6 @@ Feature: Edit a channel
     And I press the "Save" button
     Then I should not see the text "There are unsaved changes."
     When I am on the locales page
-    And I filter by "activated" with operator "equals" and value "yes"
     Then the grid should contain 1 elements
     And I should see locales "de_DE"
 

@@ -16,8 +16,7 @@ use FOS\OAuthServerBundle\Model\ClientManagerInterface;
  */
 class DeleteClient implements DeleteClientInterface
 {
-    /** @var ClientManagerInterface */
-    private $clientManager;
+    private ClientManagerInterface $clientManager;
 
     public function __construct(ClientManagerInterface $clientManager)
     {

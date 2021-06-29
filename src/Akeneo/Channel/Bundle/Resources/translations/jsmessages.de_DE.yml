@@ -53,6 +53,7 @@ pim_enrich.entity.channel:
   property:
     category_tree: Kategorie-Strukturbaum
     do_not_convert: Werden nicht konvertiert
+    measurement: Messeinstellungen
     label_conversion_units: Wählen Sie eine Konvertierungseinheit für jedes Messattribut aus, das während des Produkt-Exports verwendet wird
   module:
     create:
@@ -64,7 +65,14 @@ pim_enrich.entity.locale:
   uppercase_label: Gebietsschema
   plural_label: Gebietsschemata
   page_title:
-    index: "]-Inf, 1]{{ count }} Gebietsschema|]1, Inf[{{ count }} Gebietsschemata"
+    index: "]-Inf, 1]{{ count }} aktivierte Gebietsschema|]1, Inf[{{ count }} aktivierte Gebietsschema"
+  helper: "Um eine Gebietsschema zu aktivieren oder zu deaktivieren, gehen Sie zu einem von <a href={{ href }}>Ihren Kanälen</a> und fügen oder entfernen Sie eine Gebietsschema."
+  grid:
+    columns:
+      code: Aktivierte Gebietsschemata
+    filters:
+      search_placeholder: Ein aktiviertes Gebietsschema suchen
+    no_search_result: Für Ihre Suche wurden leider keine passenden Treffer gefunden.
 pim_enrich.entity.currency:
   plural_label: Währungen
   page_title:

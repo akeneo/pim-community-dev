@@ -13,8 +13,7 @@ use Akeneo\Tool\Bundle\ElasticsearchBundle\Client;
  */
 class PurgeConnectionErrorsQuery
 {
-    /** @var Client */
-    private $esClient;
+    private Client $esClient;
 
     public function __construct(Client $esClient)
     {

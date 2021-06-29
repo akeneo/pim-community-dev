@@ -15,14 +15,16 @@ use Akeneo\Connectivity\Connection\Infrastructure\Persistence\InMemory\Repositor
  */
 class InMemorySelectConnectionsQuery implements SelectConnectionsQuery
 {
-    /** @var InMemoryConnectionRepository */
-    private $connectionRepository;
+    private InMemoryConnectionRepository $connectionRepository;
 
     public function __construct(InMemoryConnectionRepository $connectionRepository)
     {
         $this->connectionRepository = $connectionRepository;
     }
 
+    /**
+     * @return Connection[]
+     */
     public function execute(): array
     {
         $connections = [];

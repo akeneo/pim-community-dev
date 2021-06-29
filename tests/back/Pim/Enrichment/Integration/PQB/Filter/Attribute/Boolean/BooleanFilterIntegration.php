@@ -33,7 +33,7 @@ class BooleanFilterIntegration extends AbstractProductQueryBuilderTestCase
             ]
         ]);
 
-        $this->createProduct('empty', []);
+        $this->createProduct('empty', ['family' => 'familyA']);
     }
 
     public function testOperatorEquals()
@@ -59,21 +59,27 @@ class BooleanFilterIntegration extends AbstractProductQueryBuilderTestCase
         $result = $this->executeFilter([['a_yes_no', Operators::IS_NOT_EMPTY, '']]);
         $this->assert($result, ['yes', 'no']);
     }
-    
+
+    public function testOperatorEmpty()
+    {
+        $result = $this->executeFilter([['a_yes_no', Operators::IS_EMPTY, '']]);
+        $this->assert($result, ['empty']);
+    }
+
     public function testErrorDataIsMalformed()
     {
         $this->expectException(InvalidPropertyTypeException::class);
         $this->expectExceptionMessage('Property "a_yes_no" expects a boolean as data, "string" given.');
         $this->executeFilter([['a_yes_no', Operators::NOT_EQUAL, 'string']]);
     }
-    
+
     public function testErrorDataIsNull()
     {
         $this->expectException(InvalidPropertyTypeException::class);
         $this->expectExceptionMessage('Property "a_yes_no" expects a boolean as data, "NULL" given.');
         $this->executeFilter([['a_yes_no', Operators::NOT_EQUAL, null]]);
     }
-    
+
     public function testErrorOperatorNotSupported()
     {
         $this->expectException(UnsupportedFilterException::class);

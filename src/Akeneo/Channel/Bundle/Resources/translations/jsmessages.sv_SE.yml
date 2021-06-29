@@ -48,10 +48,13 @@ pim_enrich.entity.channel:
     delete:
       success: Kanalen har tagits bort
       fail: Kan inte ta bort denna kanal
+  page_title:
+    index: "]-Inf, 1]{{ count }} kanal|]1, Inf[{{ count }} kanaler"
   property:
     category_tree: Kategoriträd
     do_not_convert: Konvertera inte
-    label_conversion_units: Välj en konverteringsenhet för varje metriska attribut för att användas under produktexporten
+    measurement: Inställningar för måttenheter
+    label_conversion_units: Välj en konverteringsenhet för varje måttattribut för att användas under produktexporten
   module:
     create:
       button: Skapa kanal
@@ -61,5 +64,16 @@ pim_enrich.entity.locale:
   label: språk
   uppercase_label: Språk
   plural_label: Språk
+  page_title:
+    index: "]-Inf, 1]{{ count }} aktiverad region|]1, Inf[{{ count }} aktiverade regioner"
+  helper: "För att aktivera eller inaktivera en region, gå till en av <a href={{ href }}>dina kanaler</a> och lägga till eller ta bort en region."
+  grid:
+    columns:
+      code: Aktiverade regioner
+    filters:
+      search_placeholder: Sök efter en aktiverad region
+    no_search_result: Tyvärr finns det inget resultat för din sökning.
 pim_enrich.entity.currency:
   plural_label: Valutor
+  page_title:
+    index: "]-Inf, 1]{{ count }} valuta|]1, Inf[{{ count }} valutor"

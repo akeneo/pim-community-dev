@@ -39,7 +39,12 @@ class AttributeGroupRepository extends EntityRepository implements TranslatedLab
 
         $choices = [];
         foreach ($queryBuilder->getArrayResult() as $code) {
-            $choices[$code['label']] = $code['code'];
+            $label = $code['label'];
+
+            if (isset($choices[$label])) {
+                $label = "${code['label']} [${code['code']}]";
+            }
+            $choices[$label] = $code['code'];
         }
 
         return $choices;

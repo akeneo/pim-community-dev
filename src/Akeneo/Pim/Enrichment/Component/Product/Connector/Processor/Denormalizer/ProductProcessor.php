@@ -3,12 +3,16 @@
 namespace Akeneo\Pim\Enrichment\Component\Product\Connector\Processor\Denormalizer;
 
 use Akeneo\Pim\Enrichment\Component\Product\Comparator\Filter\FilterInterface;
+use Akeneo\Pim\Enrichment\Component\Product\Connector\Processor\CleanLineBreaksInTextAttributes;
 use Akeneo\Pim\Enrichment\Component\Product\EntityWithFamilyVariant\AddParent;
+use Akeneo\Pim\Enrichment\Component\Product\EntityWithFamilyVariant\RemoveParentInterface;
 use Akeneo\Pim\Enrichment\Component\Product\Model\ProductInterface;
 use Akeneo\Pim\Enrichment\Component\Product\ProductModel\Filter\AttributeFilterInterface;
 use Akeneo\Tool\Component\Batch\Item\FileInvalidItem;
 use Akeneo\Tool\Component\Batch\Item\InvalidItemException;
 use Akeneo\Tool\Component\Batch\Item\ItemProcessorInterface;
+use Akeneo\Tool\Component\Batch\Item\NonBlockingWarningAggregatorInterface;
+use Akeneo\Tool\Component\Batch\Model\Warning;
 use Akeneo\Tool\Component\Batch\Step\StepExecutionAwareInterface;
 use Akeneo\Tool\Component\Connector\Processor\Denormalization\AbstractProcessor;
 use Akeneo\Tool\Component\StorageUtils\Detacher\ObjectDetacherInterface;
@@ -33,7 +37,7 @@ use Symfony\Component\Validator\Validator\ValidatorInterface;
  * @copyright 2015 Akeneo SAS (http://www.akeneo.com)
  * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
  */
-class ProductProcessor extends AbstractProcessor implements ItemProcessorInterface, StepExecutionAwareInterface
+class ProductProcessor extends AbstractProcessor implements ItemProcessorInterface, StepExecutionAwareInterface, NonBlockingWarningAggregatorInterface
 {
     /** @var FindProductToImport */
     private $findProductToImport;
@@ -59,6 +63,14 @@ class ProductProcessor extends AbstractProcessor implements ItemProcessorInterfa
     /** @var MediaStorer */
     private $mediaStorer;
 
+    /** @var RemoveParentInterface */
+    private $removeParent;
+
+    private CleanLineBreaksInTextAttributes $cleanLineBreaksInTextAttributes;
+
+    /** @var Warning[] */
+    private array $nonBlockingWarnings = [];
+
     public function __construct(
         IdentifiableObjectRepositoryInterface $repository,
         FindProductToImport $findProductToImport,
@@ -68,7 +80,9 @@ class ProductProcessor extends AbstractProcessor implements ItemProcessorInterfa
         ObjectDetacherInterface $detacher,
         FilterInterface $productFilter,
         AttributeFilterInterface $productAttributeFilter,
-        MediaStorer $mediaStorer
+        MediaStorer $mediaStorer,
+        RemoveParentInterface $removeParent,
+        CleanLineBreaksInTextAttributes $cleanLineBreaksInTextAttributes
     ) {
         parent::__construct($repository);
 
@@ -81,6 +95,8 @@ class ProductProcessor extends AbstractProcessor implements ItemProcessorInterfa
         $this->productAttributeFilter = $productAttributeFilter;
         $this->repository = $repository;
         $this->mediaStorer = $mediaStorer;
+        $this->removeParent = $removeParent;
+        $this->cleanLineBreaksInTextAttributes = $cleanLineBreaksInTextAttributes;
     }
 
     /**
@@ -100,6 +116,11 @@ class ProductProcessor extends AbstractProcessor implements ItemProcessorInterfa
         }
 
         $parentProductModelCode = $item['parent'] ?? '';
+        $jobParameters = $this->stepExecution->getJobParameters();
+        $convertVariantToSimple = $jobParameters->get('convertVariantToSimple');
+        if (true !== $convertVariantToSimple && '' === $parentProductModelCode) {
+            unset($item['parent']);
+        }
 
         try {
             $familyCode = $this->getFamilyCode($item);
@@ -117,7 +138,6 @@ class ProductProcessor extends AbstractProcessor implements ItemProcessorInterfa
             unset($filteredItem['enabled']);
         }
 
-        $jobParameters = $this->stepExecution->getJobParameters();
         $enabledComparison = $jobParameters->get('enabledComparison');
         if ($enabledComparison) {
             $filteredItem = $this->filterIdenticalData($product, $filteredItem);
@@ -127,6 +147,15 @@ class ProductProcessor extends AbstractProcessor implements ItemProcessorInterfa
                 $this->stepExecution->incrementSummaryInfo('product_skipped_no_diff');
 
                 return null;
+            }
+        }
+
+        if ($convertVariantToSimple && $product->isVariant() && '' === $filteredItem['parent'] ?? null) {
+            try {
+                $this->removeParent->from($product);
+            } catch (InvalidArgumentException $e) {
+                $this->detachProduct($product);
+                $this->skipItemWithMessage($item, $e->getMessage(), $e);
             }
         }
 
@@ -148,8 +177,22 @@ class ProductProcessor extends AbstractProcessor implements ItemProcessorInterfa
             }
         }
 
+        $cleanedFilteredItem = $this->cleanLineBreaksInTextAttributes->cleanStandardFormat($filteredItem);
+        if (is_array($filteredItem['values'] ?? null) && is_array($cleanedFilteredItem['values'] ?? null)) {
+            foreach ($cleanedFilteredItem['values'] as $field => $values) {
+                if ($values !== $filteredItem['values'][$field]) {
+                    $this->nonBlockingWarnings[] = new Warning(
+                        $this->stepExecution,
+                        'The value for the "%attribute_code%" attribute contains at least one line break. It or they have been replaced by a space during the import.',
+                        ['%attribute_code%' => $field],
+                        $item
+                    );
+                }
+            }
+        }
+
         try {
-            $this->updateProduct($product, $filteredItem);
+            $this->updateProduct($product, $cleanedFilteredItem);
         } catch (PropertyException $exception) {
             $this->detachProduct($product);
             $message = sprintf('%s: %s', $exception->getPropertyName(), $exception->getMessage());
@@ -275,7 +318,18 @@ class ProductProcessor extends AbstractProcessor implements ItemProcessorInterfa
         }
         $itemPosition = null !== $this->stepExecution ? $this->stepExecution->getSummaryInfo('item_position') : 0;
         $invalidItem = new FileInvalidItem($item, $itemPosition);
-        
+
         return new InvalidItemException($message, $invalidItem, [], 0, $previousException);
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    public function flushNonBlockingWarnings(): array
+    {
+        $nonBlockingWarnings = $this->nonBlockingWarnings;
+        $this->nonBlockingWarnings = [];
+
+        return $nonBlockingWarnings;
     }
 }

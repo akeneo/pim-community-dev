@@ -258,6 +258,30 @@ class QuantifiedAssociationCollection
         return new self($filteredQuantifiedAssociations);
     }
 
+    public function equals(QuantifiedAssociationCollection $otherCollection): bool
+    {
+        $sortByIdentifiers = fn (
+            array $quantifiedLinkA,
+            array $quantifiedLinkB
+        ): int => $quantifiedLinkA['identifier'] <=> $quantifiedLinkB['identifier'];
+
+        $normalized = $this->normalize();
+        ksort($normalized);
+        foreach ($normalized as $associationType => $associations) {
+            usort($normalized[$associationType][self::PRODUCTS_QUANTIFIED_LINKS_KEY], $sortByIdentifiers);
+            usort($normalized[$associationType][self::PRODUCT_MODELS_QUANTIFIED_LINKS_KEY], $sortByIdentifiers);
+        }
+
+        $otherNormalized = $otherCollection->normalize();
+        ksort($otherNormalized);
+        foreach ($otherNormalized as $associationType => $associations) {
+            usort($otherNormalized[$associationType][self::PRODUCTS_QUANTIFIED_LINKS_KEY], $sortByIdentifiers);
+            usort($otherNormalized[$associationType][self::PRODUCT_MODELS_QUANTIFIED_LINKS_KEY], $sortByIdentifiers);
+        }
+
+        return $normalized === $otherNormalized;
+    }
+
     private function getAssociationTypeCodes()
     {
         return array_keys($this->quantifiedAssociations);

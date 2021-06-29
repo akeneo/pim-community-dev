@@ -11,8 +11,7 @@ namespace Akeneo\Connectivity\Connection\Domain\Settings\Model\ValueObject;
  */
 class ConnectionCode
 {
-    /** @var string */
-    private $code;
+    private string $code;
 
     public function __construct(string $code)
     {
@@ -27,7 +26,7 @@ class ConnectionCode
         if (mb_strlen($code) > 100) {
             throw new \InvalidArgumentException('akeneo_connectivity.connection.connection.constraint.code.too_long');
         }
-        if (!preg_match('/^[0-9a-zA-Z_]+$/', $code)) {
+        if (!preg_match('/^\w+$/', $code)) {
             throw new \InvalidArgumentException('akeneo_connectivity.connection.connection.constraint.code.invalid');
         }
 

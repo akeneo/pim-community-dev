@@ -87,6 +87,19 @@ class JobContext extends PimContext
     }
 
     /**
+     * @Then /^I should see job execution status "([^"]*)"$/
+     */
+    public function theJobExecutionStatusShouldBe(string $jobStatus)
+    {
+        $page = $this->getCurrentPage();
+        $field = $this->spin(function () use ($page) {
+            return $page->find('css', '[data-test-id="job-status"]');
+        }, 'Job execution badge was not found.');
+
+        Assert::assertEquals($jobStatus, $field->getText());
+    }
+
+    /**
      * @param string $file
      * @param string $field
      *
@@ -288,7 +301,7 @@ class JobContext extends PimContext
      */
     public function copyArchiveLocally(string $archivePath): string
     {
-        $tmpDir =  getenv('BEHAT_TMPDIR') ?: '/tmp/pim-behat';
+        $tmpDir = !empty($_ENV['BEHAT_TMPDIR'] ?? '') ?  $_ENV['BEHAT_TMPDIR'] : '/tmp/pim-behat';
 
         if (!is_dir($tmpDir)) {
             mkdir($tmpDir);

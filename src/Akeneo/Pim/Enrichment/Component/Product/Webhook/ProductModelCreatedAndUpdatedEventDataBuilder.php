@@ -4,13 +4,18 @@ declare(strict_types=1);
 
 namespace Akeneo\Pim\Enrichment\Component\Product\Webhook;
 
+use Akeneo\Pim\Enrichment\Component\Product\Connector\ReadModel\ConnectorProductModel;
 use Akeneo\Pim\Enrichment\Component\Product\Message\ProductModelCreated;
 use Akeneo\Pim\Enrichment\Component\Product\Message\ProductModelUpdated;
+use Akeneo\Pim\Enrichment\Component\Product\Normalizer\ExternalApi\ConnectorProductModelNormalizer;
+use Akeneo\Pim\Enrichment\Component\Product\ProductModel\Query\GetConnectorProductModels;
+use Akeneo\Pim\Enrichment\Component\Product\Query\Filter\Operators;
+use Akeneo\Pim\Enrichment\Component\Product\Query\ProductQueryBuilderFactoryInterface;
 use Akeneo\Pim\Enrichment\Component\Product\Webhook\Exception\ProductModelNotFoundException;
-use Akeneo\Platform\Component\EventQueue\BusinessEventInterface;
+use Akeneo\Platform\Component\EventQueue\BulkEventInterface;
 use Akeneo\Platform\Component\Webhook\EventDataBuilderInterface;
-use Akeneo\Tool\Component\StorageUtils\Repository\IdentifiableObjectRepositoryInterface;
-use Symfony\Component\Serializer\Normalizer\NormalizerInterface;
+use Akeneo\Platform\Component\Webhook\EventDataCollection;
+use Akeneo\UserManagement\Component\Model\UserInterface;
 
 /**
  * @author    Thomas Galvaing <thomas.galvaing@akeneo.com>
@@ -19,41 +24,88 @@ use Symfony\Component\Serializer\Normalizer\NormalizerInterface;
  */
 class ProductModelCreatedAndUpdatedEventDataBuilder implements EventDataBuilderInterface
 {
-    private $productModelRepository;
-    private $externalApiNormalizer;
+    private GetConnectorProductModels $getConnectorProductModelsQuery;
+    private ConnectorProductModelNormalizer $connectorProductModelNormalizer;
 
     public function __construct(
-        IdentifiableObjectRepositoryInterface $productModelRepository,
-        NormalizerInterface $externalApiNormalizer
+        GetConnectorProductModels $getConnectorProductModelsQuery,
+        ConnectorProductModelNormalizer $connectorProductModelNormalizer
     ) {
-        $this->productModelRepository = $productModelRepository;
-        $this->externalApiNormalizer = $externalApiNormalizer;
+        $this->getConnectorProductModelsQuery = $getConnectorProductModelsQuery;
+        $this->connectorProductModelNormalizer = $connectorProductModelNormalizer;
     }
 
-    public function supports(BusinessEventInterface $businessEvent): bool
+    public function supports(BulkEventInterface $event): bool
     {
-        return $businessEvent instanceof ProductModelUpdated || $businessEvent instanceof ProductModelCreated;
+        if (false === $event instanceof BulkEventInterface) {
+            return false;
+        }
+
+        foreach ($event->getEvents() as $event) {
+            if (false === $event instanceof ProductModelCreated && false === $event instanceof ProductModelUpdated) {
+                return false;
+            }
+        }
+
+        return true;
+    }
+
+    public function build(BulkEventInterface $bulkEvent, UserInterface $user): EventDataCollection
+    {
+        $productModels = $this->getConnectorProductModels($this->getProductModelCodes($bulkEvent->getEvents()), $user->getId());
+
+        $collection = new EventDataCollection();
+
+        /** @var ProductModelCreated|ProductModelUpdated $event */
+        foreach ($bulkEvent->getEvents() as $event) {
+            $productModel = $productModels[$event->getCode()] ?? null;
+
+            if (null === $productModel) {
+                $collection->setEventDataError($event, new ProductModelNotFoundException($event->getCode()));
+
+                continue;
+            }
+
+            $data = [
+                'resource' => $this->connectorProductModelNormalizer->normalizeConnectorProductModel($productModel),
+            ];
+            $collection->setEventData($event, $data);
+        }
+
+        return $collection;
     }
 
     /**
-     * @param ProductModelUpdated|ProductModelCreated $businessEvent
+     * @param (ProductModelCreated|ProductModelUpdated)[] $events
+     *
+     * @return string[]
      */
-    public function build(BusinessEventInterface $businessEvent): array
+    private function getProductModelCodes(array $events): array
     {
-        if (false === $this->supports($businessEvent)) {
-            throw new \InvalidArgumentException();
+        $codes = [];
+        foreach ($events as $event) {
+            $codes[] = $event->getCode();
         }
 
-        $data = $businessEvent->data();
+        return $codes;
+    }
 
-        $productModel = $this->productModelRepository->findOneByIdentifier($data['code']);
+    /**
+     * @param string[] $codes
+     *
+     * @return array<string, (ConnectorProductModel|null)>
+     */
+    private function getConnectorProductModels(array $codes, int $userId): array
+    {
+        $result = $this->getConnectorProductModelsQuery
+            ->fromProductModelCodes($codes, $userId, null, null, null)
+            ->connectorProductModels();
 
-        if (null === $productModel) {
-            throw new ProductModelNotFoundException($data['code']);
+        $products = array_fill_keys($codes, null);
+        foreach ($result as $product) {
+            $products[$product->code()] = $product;
         }
 
-        return [
-            'resource' => $this->externalApiNormalizer->normalize($productModel, 'external_api'),
-        ];
+        return $products;
     }
 }

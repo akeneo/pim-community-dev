@@ -162,7 +162,9 @@ JSON;
     "localizable": false,
     "scopable": false,
     "labels": {},
-    "auto_option_sorting": null
+    "guidelines": {},
+    "auto_option_sorting": null,
+    "default_value": null
 }
 JSON;
 

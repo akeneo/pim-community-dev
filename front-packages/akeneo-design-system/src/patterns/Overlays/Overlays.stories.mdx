@@ -1,0 +1,131 @@
+import {useState} from 'react';
+import {Meta, Story, Canvas} from '@storybook/addon-docs/blocks';
+import {Content} from '../../storybook/PreviewGallery';
+import {Button, Modal} from '../../components';
+import {AddingValueIllustration, DeleteIllustration} from '../../illustrations';
+
+<Meta title="Patterns/Overlays" />
+
+# Overlays
+
+Overlays communicate information through a secondary window and allow the user to keep the context of a particular job. Use overlays when an action requires the user’s full attention to prevent him from being distracted by the rest of the content.
+
+## Usage
+
+Overlays interrupt the user workflow by design. They are the most effective when a task must be completed before a user is allowed to continue. Although useful when used correctly, the overlay should be used with moderation to minimize the disruption of the user experience.
+
+### Confirm Modal
+
+<Canvas>
+  <Story name="Confirm Modal">
+    {args => {
+      const [isOpen, setOpen] = useState(false);
+      const open = () => setOpen(true);
+      const close = () => setOpen(false);
+      return (
+        <>
+          {isOpen && (
+            <Modal closeTitle="Close" onClose={close} illustration={<DeleteIllustration />}>
+              <Modal.SectionTitle color="brand">Products</Modal.SectionTitle>
+              <Modal.Title>Confirm deletion</Modal.Title>
+              Are you sure you want to delete this product?
+              <Modal.BottomButtons>
+                <Button level="tertiary" onClick={close}>
+                  Cancel
+                </Button>
+                <Button level="danger" onClick={close}>
+                  Delete
+                </Button>
+              </Modal.BottomButtons>
+            </Modal>
+          )}
+          <Button onClick={open}>Open Confirm Modal</Button>
+        </>
+      );
+    }}
+  </Story>
+</Canvas>
+
+### Dismissal
+
+**The overlay may be dismissed in 3 ways:**
+
+- Using the "X" button on the top left corner of the overlay
+- Pressing the ESC key
+- Validating or canceling the main action
+
+## Design properties
+
+Overlays are composed of distinct areas: a header, the body, and sometimes an illustration. There are two separate layouts, which we can use as needed. For example, for the data table, we use the full-width overlay, and for product deletion, we use the split overlay with an illustration on the left.
+
+### Fullscreen Overlay
+
+<Canvas>
+  <Story name="Fullscreen Overlay">
+    {args => {
+      const [isOpen, setOpen] = useState(false);
+      const open = () => setOpen(true);
+      const close = () => setOpen(false);
+      return (
+        <>
+          {isOpen && (
+            <Modal closeTitle="Close" onClose={close}>
+              <Modal.SectionTitle color="brand">Entity type</Modal.SectionTitle>
+              <Modal.Title>Title of Overlay</Modal.Title>
+              Suspendisse lectus tortor, dignissim sit amet, adipiscing nec, ultricies sed, dolor. Cras elementum
+              ultrices diam.
+              <Content width={900} height={400}>
+                CONTENT
+              </Content>
+              <Modal.BottomButtons>
+                <Button level="tertiary" onClick={close}>
+                  Cancel
+                </Button>
+                <Button level="primary" onClick={close}>
+                  Confirm
+                </Button>
+              </Modal.BottomButtons>
+            </Modal>
+          )}
+          <Button onClick={open}>Open Fullscreen Overlay</Button>
+        </>
+      );
+    }}
+  </Story>
+</Canvas>
+
+### Split screen Overlay
+
+<Canvas>
+  <Story name="Split screen Overlay">
+    {args => {
+      const [isOpen, setOpen] = useState(false);
+      const open = () => setOpen(true);
+      const close = () => setOpen(false);
+      return (
+        <>
+          {isOpen && (
+            <Modal closeTitle="Close" onClose={close} illustration={<AddingValueIllustration />}>
+              <Modal.SectionTitle color="brand">Entity type</Modal.SectionTitle>
+              <Modal.Title>Title of Overlay</Modal.Title>
+              Suspendisse lectus tortor, dignissim sit amet, adipiscing nec, ultricies sed, dolor. Cras elementum
+              ultrices diam.
+              <Content width={600} height={300}>
+                CONTENT
+              </Content>
+              <Modal.BottomButtons>
+                <Button level="tertiary" onClick={close}>
+                  Cancel
+                </Button>
+                <Button level="primary" onClick={close}>
+                  Confirm
+                </Button>
+              </Modal.BottomButtons>
+            </Modal>
+          )}
+          <Button onClick={open}>Open Split screen Overlay</Button>
+        </>
+      );
+    }}
+  </Story>
+</Canvas>

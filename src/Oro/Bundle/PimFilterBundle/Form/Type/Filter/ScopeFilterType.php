@@ -6,7 +6,7 @@ use Akeneo\UserManagement\Bundle\Context\UserContext;
 use Oro\Bundle\FilterBundle\Form\Type\Filter\ChoiceFilterType;
 use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
 use Symfony\Component\OptionsResolver\OptionsResolver;
-use Symfony\Component\Translation\TranslatorInterface;
+use Symfony\Contracts\Translation\TranslatorInterface;
 
 /**
  * Overriding of ChoiceFilterType
@@ -20,13 +20,8 @@ class ScopeFilterType extends ChoiceFilterType
     /** @staticvar string */
     const NAME = 'pim_type_scope_filter';
 
-    /** @var UserContext */
-    protected $userContext;
+    protected UserContext $userContext;
 
-    /**
-     * @param TranslatorInterface $translator
-     * @param UserContext         $userContext
-     */
     public function __construct(TranslatorInterface $translator, UserContext $userContext)
     {
         parent::__construct($translator);

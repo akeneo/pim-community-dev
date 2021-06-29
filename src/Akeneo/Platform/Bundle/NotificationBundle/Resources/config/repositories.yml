@@ -4,7 +4,7 @@ parameters:
 services:
     pim_notification.repository.user_notification:
         class: '%pim_notification.repository.user_notification.class%'
-        factory: 'doctrine.orm.entity_manager:getRepository'
+        factory: ['@doctrine.orm.entity_manager', 'getRepository']
         arguments: ['%pim_notification.entity.user_notification.class%']
         tags:
             - { name: 'pim_repository' }

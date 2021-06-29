@@ -10,3 +10,12 @@ services:
         class: 'Akeneo\Tool\Bundle\BatchBundle\Persistence\Sql\DeleteJobExecution'
         arguments:
             - '@database_connection'
+
+    Akeneo\Tool\Bundle\BatchBundle\Persistence\Sql\SqlCreateJobInstance:
+        class: 'Akeneo\Tool\Bundle\BatchBundle\Persistence\Sql\SqlCreateJobInstance'
+        arguments:
+            - '@database_connection'
+
+    Akeneo\Tool\Bundle\BatchBundle\Persistence\Sql\GetJobExecutionIds:
+        arguments:
+            - '@database_connection'

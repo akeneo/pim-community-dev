@@ -34,6 +34,7 @@ Feature: Quick export many products from datagrid
     And I press the "CSV" button
     And I press the "All attributes" button
     And I press the "With codes" button
+    And I press the "With media" button
     And I press the "Export" button
     And I wait for the "csv_product_quick_export" quick export to finish
     And I am on the dashboard page
@@ -61,6 +62,7 @@ Feature: Quick export many products from datagrid
     And I press the "XLSX" button
     And I press the "All attributes" button
     And I press the "With codes" button
+    And I press the "With media" button
     And I press the "Export" button
     And I wait for the "xlsx_product_quick_export" quick export to finish
     And I am on the dashboard page

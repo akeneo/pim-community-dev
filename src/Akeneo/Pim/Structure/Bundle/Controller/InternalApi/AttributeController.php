@@ -16,6 +16,7 @@ use Akeneo\Tool\Component\StorageUtils\Repository\SearchableRepositoryInterface;
 use Akeneo\Tool\Component\StorageUtils\Saver\SaverInterface;
 use Akeneo\Tool\Component\StorageUtils\Updater\ObjectUpdaterInterface;
 use Akeneo\UserManagement\Bundle\Context\UserContext;
+use Akeneo\UserManagement\Component\Model\UserInterface;
 use Doctrine\Common\Persistence\ObjectRepository;
 use Oro\Bundle\SecurityBundle\Annotation\AclAncestor;
 use Symfony\Component\HttpFoundation\JsonResponse;
@@ -25,9 +26,10 @@ use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 use Symfony\Component\Security\Core\Authentication\Token\Storage\TokenStorageInterface;
 use Symfony\Component\Serializer\Normalizer\NormalizerInterface;
-use Symfony\Component\Translation\TranslatorInterface;
 use Symfony\Component\Validator\ConstraintViolationList;
 use Symfony\Component\Validator\Validator\ValidatorInterface;
+use Symfony\Contracts\Translation\TranslatorInterface;
+use Webmozart\Assert\Assert;
 
 /**
  * Attribute rest controller
@@ -183,7 +185,9 @@ class AttributeController
         }
 
         $token = $this->tokenStorage->getToken();
-        $options['user_groups_ids'] = $token->getUser()->getGroupsIds();
+        $user = $token->getUser();
+        Assert::implementsInterface($user, UserInterface::class);
+        $options['user_groups_ids'] = $user->getGroupsIds();
 
         $attributes = $this->attributeSearchRepository->findBySearch(
             $request->get('search'),
@@ -467,7 +471,7 @@ class AttributeController
     public function listAxesAction(Request $request)
     {
         $locale = $request->get('locale');
-        $attributeAxes = $this->attributeRepository->getAxesQuery($locale)->getArrayResult();
+        $attributeAxes = $this->attributeRepository->findAvailableAxes($locale);
 
         return new JsonResponse($attributeAxes);
     }

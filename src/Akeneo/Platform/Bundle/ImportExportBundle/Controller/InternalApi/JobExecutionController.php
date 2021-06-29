@@ -5,10 +5,15 @@ namespace Akeneo\Platform\Bundle\ImportExportBundle\Controller\InternalApi;
 use Akeneo\Platform\Bundle\ImportExportBundle\Repository\InternalApi\JobExecutionRepository;
 use Akeneo\Tool\Bundle\BatchQueueBundle\Manager\JobExecutionManager;
 use Akeneo\Tool\Bundle\ConnectorBundle\EventListener\JobExecutionArchivist;
+use Akeneo\Tool\Component\Batch\Model\JobExecution;
+use Akeneo\Tool\Component\Connector\LogKey;
+use League\Flysystem\Filesystem;
+use Oro\Bundle\SecurityBundle\SecurityFacade;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
+use Symfony\Component\Security\Core\Exception\AccessDeniedException;
 use Symfony\Component\Serializer\Normalizer\NormalizerInterface;
-use Symfony\Component\Translation\TranslatorInterface;
+use Symfony\Contracts\Translation\TranslatorInterface;
 
 /**
  * @author    Alban Alnot <alban.alnot@consertotech.pro>
@@ -17,66 +22,55 @@ use Symfony\Component\Translation\TranslatorInterface;
  */
 class JobExecutionController
 {
-    /** @var TranslatorInterface */
-    protected $translator;
+    protected TranslatorInterface $translator;
+    protected JobExecutionArchivist $archivist;
+    protected JobExecutionManager $jobExecutionManager;
+    protected JobExecutionRepository $jobExecutionRepo;
+    private NormalizerInterface $normalizer;
+    private SecurityFacade $securityFacade;
+    private array $jobSecurityMapping;
+    private Filesystem $logFilesystem;
 
-    /** @var JobExecutionArchivist */
-    protected $archivist;
-
-    /** @var JobExecutionManager */
-    protected $jobExecutionManager;
-
-    /** @var JobExecutionRepository */
-    protected $jobExecutionRepo;
-
-    /** @var NormalizerInterface */
-    private $normalizer;
-
-    /**
-     * @param TranslatorInterface    $translator
-     * @param JobExecutionArchivist  $archivist
-     * @param JobExecutionManager    $jobExecutionManager
-     * @param JobExecutionRepository $jobExecutionRepo
-     * @param NormalizerInterface    $normalizer
-     */
     public function __construct(
         TranslatorInterface $translator,
         JobExecutionArchivist $archivist,
         JobExecutionManager $jobExecutionManager,
         JobExecutionRepository $jobExecutionRepo,
-        NormalizerInterface $normalizer
+        NormalizerInterface $normalizer,
+        SecurityFacade $securityFacade,
+        Filesystem $logFilesystem,
+        array $jobSecurityMapping
     ) {
         $this->translator = $translator;
         $this->archivist = $archivist;
         $this->jobExecutionManager = $jobExecutionManager;
         $this->jobExecutionRepo = $jobExecutionRepo;
         $this->normalizer = $normalizer;
+        $this->securityFacade = $securityFacade;
+        $this->jobSecurityMapping = $jobSecurityMapping;
+        $this->logFilesystem = $logFilesystem;
     }
 
-    /**
-     * Get jobs
-     *
-     * @param $identifier
-     *
-     * @return JsonResponse
-     */
-    public function getAction($identifier)
+    public function getAction($identifier): JsonResponse
     {
+        // TODO: remove this line when upgrading flysystem library
+        /* at the moment the listing of the archives can be very slow if
+            - there are a lot of files for a given job execution (>100000)
+            - the storage is Google Cloud Storage
+          because the GS adapter we currently use ignores the $recursive option and returns every file in the bucket
+          for the given path.
+          The league/flysystem-google-cloud-storage seems to handle this case, but it's only compatible with flysystem v2
+        */
+        \set_time_limit(0);
+
+        /** @var JobExecution $jobExecution */
         $jobExecution = $this->jobExecutionRepo->find($identifier);
         if (null === $jobExecution) {
             throw new NotFoundHttpException('Akeneo\Tool\Component\Batch\Model\JobExecution entity not found');
         }
 
-        $archives = [];
-        foreach ($this->archivist->getArchives($jobExecution) as $archiveName => $files) {
-            $label = $this->translator->transChoice(
-                sprintf('pim_enrich.entity.job_execution.module.download.%s', $archiveName),
-                count($files)
-            );
-            $archives[$archiveName] = [
-                'label' => $label,
-                'files' => $files,
-            ];
+        if (!$this->isJobGranted($jobExecution)) {
+            throw new AccessDeniedException();
         }
 
         $jobExecution = $this->jobExecutionManager->resolveJobExecutionStatus($jobExecution);
@@ -86,11 +80,36 @@ class JobExecutionController
         $jobResponse = $this->normalizer->normalize($jobExecution, 'internal_api', $context);
 
         $jobResponse['meta'] = [
-            'logExists'           => file_exists($jobExecution->getLogFile()),
-            'archives'      => $archives,
-            'id'            => $identifier
+            'logExists' => !empty($jobExecution->getLogFile()) && $this->logFilesystem->has(new LogKey($jobExecution)),
+            'archives' => $this->archives($jobExecution),
+            'generateZipArchive' => $this->archivist->hasAtLeastTwoArchives($jobExecution),
+            'id' => $identifier,
         ];
 
         return new JsonResponse($jobResponse);
+    }
+
+    private function archives(JobExecution $jobExecution): array
+    {
+        $archives = [];
+        foreach ($this->archivist->getArchives($jobExecution) as $archiveName => $files) {
+            $label = $this->translator->trans(sprintf('pim_enrich.entity.job_execution.module.download.%s', $archiveName));
+            $archives[$archiveName] = [
+                'label' => $label,
+                'files' => $files,
+            ];
+        }
+
+        return $archives;
+    }
+
+    private function isJobGranted(JobExecution $jobExecution): bool
+    {
+        $jobExecutionType = $jobExecution->getJobInstance()->getType();
+        if (!array_key_exists($jobExecutionType, $this->jobSecurityMapping)) {
+            return true;
+        }
+
+        return $this->securityFacade->isGranted($this->jobSecurityMapping[$jobExecutionType]);
     }
 }

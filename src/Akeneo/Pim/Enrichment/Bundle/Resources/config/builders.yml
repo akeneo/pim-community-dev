@@ -23,6 +23,7 @@ services:
         class: 'Akeneo\Pim\Enrichment\Bundle\PdfGeneration\Builder\DompdfBuilder'
         arguments:
             - '%kernel.root_dir%'
+            - '%kernel.project_dir%/public'
 
     pim_comment.builder.comment:
         class: 'Akeneo\Pim\Enrichment\Component\Comment\Builder\CommentBuilder'

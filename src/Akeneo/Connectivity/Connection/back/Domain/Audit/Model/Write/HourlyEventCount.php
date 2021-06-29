@@ -13,17 +13,13 @@ use Akeneo\Connectivity\Connection\Domain\ValueObject\HourlyInterval;
  */
 class HourlyEventCount
 {
-    /** @var string */
-    private $connectionCode;
+    private string $connectionCode;
 
-    /** @var HourlyInterval */
-    private $hourlyInterval;
+    private HourlyInterval $hourlyInterval;
 
-    /** @var int */
-    private $eventCount;
+    private int $eventCount;
 
-    /** @var string */
-    private $eventType;
+    private string $eventType;
 
     public function __construct(
         string $connectionCode,

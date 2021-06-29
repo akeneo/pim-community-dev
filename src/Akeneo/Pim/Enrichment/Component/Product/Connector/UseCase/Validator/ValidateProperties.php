@@ -27,6 +27,7 @@ final class ValidateProperties
         'enabled',
         'groups',
         'parent',
+        'quality_score',
     ];
 
     /** @var IdentifiableObjectRepositoryInterface */

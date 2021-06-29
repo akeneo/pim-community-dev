@@ -19,10 +19,6 @@ services:
         abstract:  true
         class:     Doctrine\Common\Cache\PhpFileCache
         arguments: ['%kernel.cache_dir%']
-    twig.extension.intl:
-         class: Twig_Extensions_Extension_Intl
-         tags:
-             - { name: twig.extension }
 
     session.handler.pdo:
         class: Symfony\Component\HttpFoundation\Session\Storage\Handler\PdoSessionHandler

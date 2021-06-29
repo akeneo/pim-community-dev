@@ -1,4 +1,11 @@
 config:
+    config:
+        pim/controller-registry:
+            controllers:
+                pim_analytics_system_info_index:
+                    module: pim-analytics-system-info-controller
     paths:
         pim/data-collector: pimanalytics/js/data-collector
         pim/patch-fetcher:  pimanalytics/js/patch-fetcher
+        pim-analytics-system-info-controller: pimanalytics/js/controller/system-info-controller.tsx
+

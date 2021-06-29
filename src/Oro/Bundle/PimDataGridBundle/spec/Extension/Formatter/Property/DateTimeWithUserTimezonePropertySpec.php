@@ -9,7 +9,7 @@ use Oro\Bundle\DataGridBundle\Datasource\ResultRecord;
 use Oro\Bundle\DataGridBundle\Extension\Formatter\Property\PropertyConfiguration;
 use PhpSpec\ObjectBehavior;
 use Akeneo\UserManagement\Bundle\Context\UserContext;
-use Symfony\Component\Translation\TranslatorInterface;
+use Symfony\Contracts\Translation\TranslatorInterface;
 
 class DateTimeWithUserTimezonePropertySpec extends ObjectBehavior
 {

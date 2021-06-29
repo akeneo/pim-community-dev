@@ -41,7 +41,8 @@ final class GetRequiredAttributesMasksQueryIntegration extends CompletenessTestC
 
         $this->givenFamilies([
             [
-                'code' => 'familyA',
+                // PIM-9542: The code is numeric in order to ensure that using the array_key_fill do not affect the final result
+                'code' => '1234',
                 'attribute_codes' => ['sku', 'a_price', 'a_localizable_non_scopable_price', 'a_non_required_text', 'a_non_localizable_non_scopable_text', 'a_localizable_non_scopable_text', 'a_non_localizable_scopable_text', 'a_localizable_scopable_text', 'a_non_localizable_non_scopable_locale_specific', 'a_localizable_non_scopable_locale_specific', 'a_non_localizable_scopable_locale_specific', 'a_localizable_scopable_locale_specific', 'a_required_deactivated_text'],
                 'attribute_requirements' => [
                     'ecommerce' => [
@@ -76,13 +77,13 @@ final class GetRequiredAttributesMasksQueryIntegration extends CompletenessTestC
             ]
         ]);
 
-        $result = $this->get(GetRequiredAttributesMasksQuery::class)->fromFamilyCodes(['familyA']);
-        $familyAMask = $result['familyA'];
-        $this->assertCount(3, $familyAMask->masks());
+        $result = $this->get(GetRequiredAttributesMasksQuery::class)->fromFamilyCodes(['1234']);
+        $family1234Mask = $result['1234'];
+        $this->assertCount(3, $family1234Mask->masks());
 
-        $ecommerceEnUsMask = $familyAMask->requiredAttributesMaskForChannelAndLocale('ecommerce', 'en_US');
-        $tabletEnUS = $familyAMask->requiredAttributesMaskForChannelAndLocale('tablet', 'en_US');
-        $tabletFrFr = $familyAMask->requiredAttributesMaskForChannelAndLocale('tablet', 'fr_FR');
+        $ecommerceEnUsMask = $family1234Mask->requiredAttributesMaskForChannelAndLocale('ecommerce', 'en_US');
+        $tabletEnUS = $family1234Mask->requiredAttributesMaskForChannelAndLocale('tablet', 'en_US');
+        $tabletFrFr = $family1234Mask->requiredAttributesMaskForChannelAndLocale('tablet', 'fr_FR');
 
         $this->assertEqualsCanonicalizing([
             'sku-<all_channels>-<all_locales>',

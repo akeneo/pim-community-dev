@@ -4,6 +4,9 @@ pim_datagrid:
   label:
     unique_message: The label must be unique
     not_blank_message: The label must not be blank
+  type:
+    not_blank_type: The type is required
+    invalid_type: The type must be either "public" or "private"
   view_selector:
     flash:
       created: Datagrid view successfully created
@@ -18,3 +21,4 @@ pim_datagrid:
       mass_delete: Mass Delete
       compute_family_variant_structure_changes: Compute family variant structure changes
       compute_completeness_of_products_family: Compute completeness of products family
+      clean_removed_attribute_job: Cleaning removed attribute values

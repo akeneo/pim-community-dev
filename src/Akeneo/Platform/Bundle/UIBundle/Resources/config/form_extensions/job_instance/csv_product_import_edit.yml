@@ -217,6 +217,17 @@ extensions:
             label: pim_import_export.form.job_instance.tab.properties.real_time_versioning.title
             tooltip: pim_import_export.form.job_instance.tab.properties.real_time_versioning.help
 
+    pim-job-instance-csv-product-import-edit-properties-convert-variant-to-simple:
+        module: pim/job/common/edit/field/switch
+        parent: pim-job-instance-csv-product-import-edit-global
+        position: 250
+        targetZone: properties
+        config:
+            fieldCode: configuration.convertVariantToSimple
+            readOnly: false
+            label: pim_import_export.form.job_instance.tab.properties.convert_variant_to_simple.title
+            tooltip: pim_import_export.form.job_instance.tab.properties.convert_variant_to_simple.help
+
     pim-job-instance-csv-product-import-edit-label:
         module: pim/job/common/edit/label
         parent: pim-job-instance-csv-product-import-edit

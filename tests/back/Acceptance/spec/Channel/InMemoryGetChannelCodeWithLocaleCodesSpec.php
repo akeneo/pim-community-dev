@@ -6,7 +6,7 @@ namespace spec\Akeneo\Test\Acceptance\Channel;
 
 use Akeneo\Channel\Component\Model\Channel;
 use Akeneo\Channel\Component\Model\Locale;
-use Akeneo\Channel\Component\Query\GetChannelCodeWithLocaleCodesInterface;
+use Akeneo\Channel\Component\Query\PublicApi\GetChannelCodeWithLocaleCodesInterface;
 use Akeneo\Test\Acceptance\Channel\InMemoryChannelRepository;
 use Akeneo\Test\Acceptance\Channel\InMemoryGetChannelCodeWithLocaleCodes;
 use PhpSpec\ObjectBehavior;

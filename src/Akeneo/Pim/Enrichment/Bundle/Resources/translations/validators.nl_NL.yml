@@ -38,8 +38,17 @@ product_model.family_variant.not_blank.message: De product model familie variant
 "The {{ attribute_code }} attribute requires a date that should be {{ limit }} or before.": Het attribuut {{ attribute_code }} vereist een datum die {{ limit }} of eerder moet zijn.
 "The {{ attribute }} attribute requires a number, and the submitted {{ value }} value is not.": Het attribuut {{ attribute }} vereist een getal, en de toegevoegde {{ value }} waarde is dat niet.
 "The %attribute% attribute must not contain more than %limit% characters. The submitted value is too long.": Het attribuut %attribute% mag niet meer dan %limit% tekens bevatten. De opgegeven waarde is te lang.
+"The %attribute% attribute requires a valid date. Please use the following format %date_format% for dates.": Het attribuut %attribute% vereist een geldige datum. Gebruik de volgende indeling %date_format% voor datums.
+"The %locale% locale is not available on the %attribute% attribute.": De taal %locale% is niet beschikbaar voor het attribuut %attribute%.
 'The {{ attribute_code }} attribute must match the following regular expression: {{ pattern }}.': 'Het attribuut {{ attribute_code }} moet overeenkomen met de volgende reguliere expressie: {{ pattern }}.'
 'The {{ attribute_code }} attribute cannot be empty.': 'Het attribuut {{ attribute_code }} mag niet leeg zijn.'
+'The file %file_name% is too large (%file_size% %suffix%). The %attribute% attribute can not exceed %max_file_size% %suffix%.': Het bestand %file_name% is te groot (%file_size% %suffix%). Het attribuut %attribute% mag niet groter zijn dan %max_file_size% %suffix%.
+'The %attribute_code% attribute requires a valid locale. The %invalid_locale% locale does not exist.': 'Het attribuut %attribute_code% vereist een geldige taalinstelling. De taal t%invalid_locale% bestaat niet.'
+'The %attribute_code% attribute requires a valid locale. The %invalid_locale% locale is not bound to the %channel_code% channel.': 'Het attribuut %attribute_code% vereist een geldige taalinstelling. De taal t%invalid_locale% is niet gekoppeld aan het kanaal %channel_code%.'
+"The %attribute% attribute requires an e-mail address.": 'Het attribuut %attribute% vereist een e-mailadres.'
+'The %attribute% attribute requires an equal or greater than %min_value% value.': 'Voor het attribuut %attribute% is een waarde gelijk aan of groter dan %min_value% vereist.'
+'The %attribute% attribute requires an equal or lesser than %max_value% value.': 'Voor het attribuut %attribute% is een waarde gelijk aan of lager dan %max_value% vereist.'
+"The %attribute_code% attribute requires a value per channel. The %channel% channel (scope) must exist in your PIM": 'Voor het attribuut %attribute_code% is per kanaal een waarde vereist. Het kanaal %channel% (toepassingsgebied) moet bestaan in uw PIM'
 pim_catalog:
   constraint:
     can_have_family_variant_empty_axis_value: 'Kenmerk ''%attribute%'' mag niet leeg zijn, omdat dit is gedefinieerd als een as voor deze entiteit'
@@ -70,6 +79,9 @@ pim_catalog:
     family_variant_maximum_number_of_level: Familie variant kan niet meer dan "%level%" niveau hebben
     family_variant_unique_attributes_in_last_level: Het unieke attribuut "%attribute%" moet worden ingesteld op productniveau
     product_identifier: Deze id's "%s" bestaan niet.
+    blacklisted_attribute_code: De code is tijdelijk geblokkeerd tot de lopende opschoningstaak is voltooid.
+    blacklisted_attribute_code_with_link: "De code is tijdelijk geblokkeerd tot de lopende schoonmaaktaak is voltooid. Voor meer informatie, raadpleeg de <a href='{{ link }}' target='_blank'>taakdetails</a>."
+    duplicate_options: '{1} De volgende optie is meerdere keren gebruikt: "{{ duplicate_options }}". Controleer uw optielijst. ]1, +Inf] De volgende opties zijn meerdere keren gebruikt: "{{ duplicate_options }}". Controleer uw optielijst opnieuw.'
     0: Er is een onverwachte fout opgetreden.
     100: Onverwachte waarde
     101: Dit veld verwacht een Boolean invoer (ja- of nee-waarde).
@@ -103,3 +115,7 @@ pim_catalog:
 mass_edit:
   edit_common_attributes:
     invalid_values: Er zijn fouten in het attributenformulier
+pim_datagrid:
+  column_configurator:
+    label:
+      unique_message: Het label moet uniek zijn

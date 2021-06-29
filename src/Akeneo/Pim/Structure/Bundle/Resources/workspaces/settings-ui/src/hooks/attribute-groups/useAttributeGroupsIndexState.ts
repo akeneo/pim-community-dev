@@ -5,7 +5,7 @@ import {fetchAllAttributeGroups, fetchAllAttributeGroupsDqiStatus} from '../../i
 import {saveAttributeGroupsOrder} from '../../infrastructure/savers';
 import {AttributeGroupsIndexContext, AttributeGroupsIndexState} from '../../components/providers';
 
-const FeatureFlags = require("pim/feature-flags");
+const FeatureFlags = require('pim/feature-flags');
 
 const useAttributeGroupsIndexState = (): AttributeGroupsIndexState => {
   const context = useContext(AttributeGroupsIndexContext);

@@ -43,8 +43,9 @@ behat-legacy:
 
 .PHONY: xdebug-on
 xdebug-on:
-	XDEBUG_ENABLED=1 $(MAKE) up
+	XDEBUG_MODE=debug APP_ENV=dev $(MAKE) up
 
-.PHONY: xdebug-off
-xdebug-off:
-	XDEBUG_ENABLED=0 $(MAKE) up
+.PHONY: cypress-interactive
+cypress-interactive:
+	docker-compose -f docker-compose-cypress.yml run --rm -u 1000:1000 -e DISPLAY -v /tmp/.X11-unix:/tmp/.X11-unix --entrypoint cypress cypress open --project .
+

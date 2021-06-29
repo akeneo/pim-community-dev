@@ -1,10 +1,11 @@
 <?php
+
 declare(strict_types=1);
 
 namespace Akeneo\Connectivity\Connection\back\tests\Integration\Persistence\Dbal\Query;
 
-use Akeneo\Connectivity\Connection\back\tests\Integration\Fixtures\ConnectionLoader;
-use Akeneo\Connectivity\Connection\back\tests\Integration\Fixtures\WebhookLoader;
+use Akeneo\Connectivity\Connection\Tests\CatalogBuilder\ConnectionLoader;
+use Akeneo\Connectivity\Connection\Tests\CatalogBuilder\WebhookLoader;
 use Akeneo\Connectivity\Connection\Domain\Settings\Model\ValueObject\FlowType;
 use Akeneo\Connectivity\Connection\Domain\Webhook\Model\Read\ConnectionWebhook;
 use Akeneo\Connectivity\Connection\Domain\Webhook\Persistence\Query\GetAConnectionWebhookQuery;
@@ -36,7 +37,6 @@ class DbalGetAConnectionWebhookQueryIntegration extends TestCase
         Assert::assertTrue($webhook->enabled());
         Assert::assertEquals('secret', $webhook->secret());
         Assert::assertEquals('http://test.com', $webhook->url());
-        Assert::assertNull($webhook->connectionImage());
     }
 
     public function test_it_gets_a_disabled_connection_webhook_for_a_given_code(): void
@@ -51,7 +51,6 @@ class DbalGetAConnectionWebhookQueryIntegration extends TestCase
         Assert::assertFalse($webhook->enabled());
         Assert::assertNull($webhook->secret());
         Assert::assertNull($webhook->url());
-        Assert::assertNull($webhook->connectionImage());
     }
 
     public function test_it_gets_null_if_there_is_no_result(): void

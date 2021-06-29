@@ -6,6 +6,7 @@ namespace Akeneo\Pim\Enrichment\Component\Product\Factory\NonExistentValuesFilte
 
 use Akeneo\Pim\Enrichment\Component\Product\Factory\EmptyValuesCleaner;
 use Akeneo\Pim\Enrichment\Component\Product\Factory\TransformRawValuesCollections;
+use Akeneo\Tool\Component\StorageUtils\Exception\InvalidPropertyTypeException;
 use Akeneo\Tool\Component\StorageUtils\Repository\IdentifiableObjectRepositoryInterface;
 
 /**
@@ -20,20 +21,11 @@ use Akeneo\Tool\Component\StorageUtils\Repository\IdentifiableObjectRepositoryIn
  */
 class ChainedNonExistentValuesFilter implements ChainedNonExistentValuesFilterInterface
 {
-    /** @var iterable */
-    private $nonExistentValueFilters;
-
-    /** @var EmptyValuesCleaner */
-    private $emptyValuesCleaner;
-
-    /** @var TransformRawValuesCollections */
-    private $transformRawValuesCollections;
-
-    /** @var IdentifiableObjectRepositoryInterface*/
-    private $localeRepository;
-
-    /** @var IdentifiableObjectRepositoryInterface*/
-    private $channelRepository;
+    private iterable $nonExistentValueFilters;
+    private EmptyValuesCleaner $emptyValuesCleaner;
+    private TransformRawValuesCollections $transformRawValuesCollections;
+    private IdentifiableObjectRepositoryInterface $localeRepository;
+    private IdentifiableObjectRepositoryInterface $channelRepository;
 
     public function __construct(
         iterable $nonExistentValueFilters,
@@ -59,7 +51,11 @@ class ChainedNonExistentValuesFilter implements ChainedNonExistentValuesFilterIn
         $result = array_reduce(
             $this->iterableToArray($this->nonExistentValueFilters),
             function (OnGoingFilteredRawValues $onGoingFilteredRawValues, NonExistentValuesFilter $obsoleteValuesFilter): OnGoingFilteredRawValues {
-                return $obsoleteValuesFilter->filter($onGoingFilteredRawValues);
+                try {
+                    return $obsoleteValuesFilter->filter($onGoingFilteredRawValues);
+                } catch (\TypeError | InvalidPropertyTypeException $exception) {
+                    return $onGoingFilteredRawValues;
+                }
             },
             $onGoingFilteredRawValues
         );

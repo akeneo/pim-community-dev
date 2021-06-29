@@ -240,7 +240,7 @@ class AttributeGroup implements AttributeGroupInterface
     /**
      * {@inheritdoc}
      */
-    public function getTranslation(?string $locale = null)
+    public function getTranslation(?string $locale = null): ?AttributeGroupTranslationInterface
     {
         $locale = ($locale) ? $locale : $this->locale;
         if (null === $locale) {

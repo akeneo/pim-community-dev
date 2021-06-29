@@ -2,11 +2,13 @@
 
 namespace Specification\Akeneo\Pim\Enrichment\Component\Product\Connector\Processor\Denormalizer;
 
+use Akeneo\Pim\Enrichment\Component\Product\Connector\Processor\CleanLineBreaksInTextAttributes;
 use Akeneo\Pim\Enrichment\Component\Product\Connector\Processor\Denormalizer\MediaStorer;
 use Akeneo\Tool\Component\Batch\Item\InvalidItemException;
 use Akeneo\Tool\Component\Batch\Item\ItemProcessorInterface;
 use Akeneo\Tool\Component\Batch\Job\JobParameters;
 use Akeneo\Tool\Component\Batch\Model\StepExecution;
+use Akeneo\Tool\Component\Batch\Model\Warning;
 use Akeneo\Tool\Component\Batch\Step\StepExecutionAwareInterface;
 use Akeneo\Tool\Component\StorageUtils\Detacher\ObjectDetacherInterface;
 use Akeneo\Tool\Component\StorageUtils\Factory\SimpleFactoryInterface;
@@ -31,7 +33,8 @@ class ProductModelProcessorSpec extends ObjectBehavior
         FilterInterface $productModelFilter,
         ObjectDetacherInterface $objectDetacher,
         ProductModelAttributeFilter $attributeFilter,
-        MediaStorer $mediaStorer
+        MediaStorer $mediaStorer,
+        CleanLineBreaksInTextAttributes $cleanLineBreaksInTextAttributes
     ) {
         $this->beConstructedWith(
             $productModelFactory,
@@ -42,6 +45,7 @@ class ProductModelProcessorSpec extends ObjectBehavior
             $objectDetacher,
             $attributeFilter,
             $mediaStorer,
+            $cleanLineBreaksInTextAttributes,
             'root_product_model'
         );
     }
@@ -61,13 +65,14 @@ class ProductModelProcessorSpec extends ObjectBehavior
         $this->shouldImplement(StepExecutionAwareInterface::class);
     }
 
-    function it_creates_a_product_model_without_comparision(
+    function it_creates_a_product_model_without_comparison(
         $productModelFactory,
         $productModelUpdater,
         $productModelRepository,
         $validator,
         $attributeFilter,
         $mediaStorer,
+        CleanLineBreaksInTextAttributes $cleanLineBreaksInTextAttributes,
         StepExecution $stepExecution,
         ProductModelInterface $productModel,
         JobParameters $jobParameters,
@@ -94,6 +99,8 @@ class ProductModelProcessorSpec extends ObjectBehavior
         $attributeFilter->filter($productModelData)->willReturn($productModelData);
 
         $mediaStorer->store($productModelData['values'])->willReturn($productModelData['values']);
+        $cleanLineBreaksInTextAttributes->cleanStandardFormat($productModelData)
+            ->willReturn($productModelData);
 
         $this->setStepExecution($stepExecution);
 
@@ -103,27 +110,13 @@ class ProductModelProcessorSpec extends ObjectBehavior
         $stepExecution->getJobParameters()->willReturn($jobParameters);
         $jobParameters->get('enabledComparison')->willReturn(false);
 
-        $productModelUpdater->update($productModel, [
-            'family_variant' => 'tshirt',
-            'values' => [
-                'name' => [
-                    'locale' => 'fr_FR',
-                    'scope' => 'null',
-                    'data' => 'T-shirt',
-                ],
-                'description' => [
-                    'locale' => 'fr_FR',
-                    'scope' => 'null',
-                    'data' => 'T-shirt super beau',
-                ]
-            ],
-            'categories' => ['tshirt'],
-        ]);
+        $productModelUpdater->update($productModel, $productModelData)->shouldBeCalled();
 
         $validator->validate($productModel)->willReturn($constraintViolationList);
         $constraintViolationList->count()->willReturn(0);
 
         $this->process($productModelData)->shouldReturn($productModel);
+        $this->flushNonBlockingWarnings()->shouldHaveCount(0);
     }
 
     function it_creates_a_product_model_with_comparision(
@@ -134,6 +127,7 @@ class ProductModelProcessorSpec extends ObjectBehavior
         $validator,
         $attributeFilter,
         $mediaStorer,
+        CleanLineBreaksInTextAttributes $cleanLineBreaksInTextAttributes,
         StepExecution $stepExecution,
         ProductModelInterface $productModel,
         JobParameters $jobParameters,
@@ -199,13 +193,90 @@ class ProductModelProcessorSpec extends ObjectBehavior
         ])->willReturn($filteredData);
 
         $mediaStorer->store($filteredData['values'])->willReturn($filteredData['values']);
+        $cleanLineBreaksInTextAttributes->cleanStandardFormat($filteredData)->willReturn($filteredData);
 
-        $productModelUpdater->update($productModel, $filteredData);
+        $productModelUpdater->update($productModel, $filteredData)->shouldBeCalled();
 
         $validator->validate($productModel)->willReturn($constraintViolationList);
         $constraintViolationList->count()->willReturn(0);
 
         $this->process($productModelData)->shouldReturn($productModel);
+    }
+
+    function it_flushes_non_blocking_warnings_when_text_attributes_contain_a_line_break(
+        $productModelFactory,
+        $productModelUpdater,
+        $productModelFilter,
+        $productModelRepository,
+        $validator,
+        $attributeFilter,
+        $mediaStorer,
+        CleanLineBreaksInTextAttributes $cleanLineBreaksInTextAttributes,
+        StepExecution $stepExecution,
+        ProductModelInterface $productModel,
+        JobParameters $jobParameters,
+        ConstraintViolationListInterface $constraintViolationList
+    ) {
+        $productModelData = [
+            'code' => 'product_model_code',
+            'family_variant' => 'tshirt',
+            'values' => [
+                'name' => [['locale' => 'fr_FR', 'scope' => 'null', 'data' => "T-shirt super \nbeau"]],
+                'description' => [['locale' => 'fr_FR', 'scope' => 'null', 'data' => "T-shirt super \nbeau"]],
+            ],
+            'categories' => ['tshirt'],
+        ];
+
+        $this->setStepExecution($stepExecution);
+
+        $attributeFilter->filter($productModelData)->willReturn($productModelData);
+
+        $productModelRepository->findOneByIdentifier('product_model_code')->willReturn(null);
+
+        $productModelFactory->create()->willReturn($productModel);
+        $stepExecution->getJobParameters()->willReturn($jobParameters);
+        $jobParameters->get('enabledComparison')->willReturn(true);
+
+        $filteredData = [
+            'code' => 'product_model_code',
+            'family_variant' => 'tshirt',
+            'values' => [
+                'name' => [['locale' => 'fr_FR', 'scope' => 'null', 'data' => "T-shirt super \nbeau"]],
+            ],
+            'categories' => ['tshirt'],
+        ];
+
+        $productModel->getId()->willReturn(40);
+        $productModelFilter->filter($productModel, [
+            'family_variant' => 'tshirt',
+            'values' => [
+                'name' => [['locale' => 'fr_FR', 'scope' => 'null', 'data' => "T-shirt super \nbeau"]],
+                'description' => [['locale' => 'fr_FR', 'scope' => 'null', 'data' => "T-shirt super \nbeau"]],
+            ],
+            'categories' => ['tshirt'],
+        ])->willReturn($filteredData);
+
+        $mediaStorer->store($filteredData['values'])->willReturn($filteredData['values']);
+        $cleanedFilteredData = [
+            'code' => 'product_model_code',
+            'family_variant' => 'tshirt',
+            'values' => [
+                'name' => [['locale' => 'fr_FR', 'scope' => 'null', 'data' => 'T-shirt super beau']],
+            ],
+            'categories' => ['tshirt'],
+        ];
+        $cleanLineBreaksInTextAttributes->cleanStandardFormat($filteredData)->willReturn($cleanedFilteredData);
+
+        $productModelUpdater->update($productModel, $cleanedFilteredData)->shouldBeCalled();
+
+        $validator->validate($productModel)->willReturn($constraintViolationList);
+        $constraintViolationList->count()->willReturn(0);
+
+        $this->process($productModelData)->shouldReturn($productModel);
+        $nonBlockingwarnings = $this->flushNonBlockingWarnings();
+        $nonBlockingwarnings->shouldHaveCount(1);
+        $nonBlockingwarnings[0]->shouldBeAnInstanceOf(Warning::class);
+        $this->flushNonBlockingWarnings()->shouldHaveCount(0);
     }
 
     function it_skips_product_if_there_is_no_change(
@@ -336,6 +407,7 @@ class ProductModelProcessorSpec extends ObjectBehavior
         $objectDetacher,
         $attributeFilter,
         $mediaStorer,
+        CleanLineBreaksInTextAttributes $cleanLineBreaksInTextAttributes,
         StepExecution $stepExecution
     ) {
         $this->beConstructedWith(
@@ -347,6 +419,7 @@ class ProductModelProcessorSpec extends ObjectBehavior
             $objectDetacher,
             $attributeFilter,
             $mediaStorer,
+            $cleanLineBreaksInTextAttributes,
             'root_product_model'
         );
 
@@ -370,6 +443,7 @@ class ProductModelProcessorSpec extends ObjectBehavior
         $objectDetacher,
         $attributeFilter,
         $mediaStorer,
+        CleanLineBreaksInTextAttributes $cleanLineBreaksInTextAttributes,
         StepExecution $stepExecution
     ) {
         $this->beConstructedWith(
@@ -381,6 +455,7 @@ class ProductModelProcessorSpec extends ObjectBehavior
             $objectDetacher,
             $attributeFilter,
             $mediaStorer,
+            $cleanLineBreaksInTextAttributes,
             'sub_product_model'
         );
 

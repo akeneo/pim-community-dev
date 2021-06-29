@@ -1,4 +1,5 @@
 export interface User {
-    get: (data: string) => string;
+    get: <T>(data: string) => T;
     set: (key: string, value: string, options: {}) => void;
+    refresh: () => Promise<void>;
 }

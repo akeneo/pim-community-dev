@@ -132,7 +132,7 @@ class NavigationContext extends PimContext implements PageObjectAware
 
         // it allows to set the locale in the session
         $event = new InteractiveLoginEvent($request, $token);
-        $this->getMainContext()->getContainer()->get('event_dispatcher')->dispatch("security.interactive_login", $event);
+        $this->getMainContext()->getContainer()->get('event_dispatcher')->dispatch($event, 'security.interactive_login');
         $session->save();
     }
 
@@ -157,10 +157,6 @@ class NavigationContext extends PimContext implements PageObjectAware
 
             return $signInButton;
         }, sprintf('Cannot log in as %s', $username));
-
-        $this->spin(function () {
-            return $this->getSession()->getPage()->find('css', '.AknWidget');
-        }, 'Can not reach Dashboard after login');
     }
 
     /**

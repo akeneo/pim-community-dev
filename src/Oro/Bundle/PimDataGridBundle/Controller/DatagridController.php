@@ -3,7 +3,6 @@
 namespace Oro\Bundle\PimDataGridBundle\Controller;
 
 use Oro\Bundle\DataGridBundle\Datagrid\MetadataParser;
-use Symfony\Bundle\FrameworkBundle\Templating\EngineInterface;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
 
@@ -16,30 +15,17 @@ use Symfony\Component\HttpFoundation\Request;
  */
 class DatagridController
 {
-    /**
-     * @var EngineInterface
-     */
-    protected $templating;
+    protected MetadataParser $metadata;
 
-    /**
-     * @param EngineInterface $templating
-     * @param MetadataParser  $metadata
-     */
-    public function __construct(EngineInterface $templating, MetadataParser $metadata)
+    public function __construct(MetadataParser $metadata)
     {
-        $this->templating = $templating;
-        $this->metadata   = $metadata;
+        $this->metadata = $metadata;
     }
 
     /**
      * Load a datagrid
-     *
-     * @param Request $request
-     * @param string  $alias
-     *
-     * @return JsonResponse
      */
-    public function loadAction(Request $request, $alias)
+    public function loadAction(Request $request, string $alias): JsonResponse
     {
         $params = $request->get('params', []);
 

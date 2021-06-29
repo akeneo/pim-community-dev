@@ -6,7 +6,7 @@ namespace Akeneo\Platform\Bundle\ImportExportBundle\Purge;
 
 use Akeneo\Platform\Bundle\ImportExportBundle\Persistence\Filesystem\DeleteOrphanJobExecutionDirectories;
 use Akeneo\Tool\Bundle\BatchBundle\Persistence\Sql\DeleteJobExecution;
-use Akeneo\Tool\Component\BatchQueue\Query\DeleteJobExecutionMessageOrphansQueryInterface;
+use Akeneo\Tool\Bundle\BatchBundle\Storage\DeleteJobExecutionLogs;
 
 /**
  * @copyright 2019 Akeneo SAS (http://www.akeneo.com)
@@ -14,29 +14,24 @@ use Akeneo\Tool\Component\BatchQueue\Query\DeleteJobExecutionMessageOrphansQuery
  */
 final class PurgeJobExecution
 {
-    /** @var DeleteJobExecution */
-    private $deleteJobExecution;
-
-    /** @var DeleteJobExecutionMessageOrphansQueryInterface */
-    private $deleteOrphanJobExecutionMessages;
-
-    /** @var DeleteOrphanJobExecutionDirectories */
-    private $deleteOrphansJobExecutionDirectories;
+    private DeleteJobExecution $deleteJobExecution;
+    private DeleteOrphanJobExecutionDirectories $deleteOrphansJobExecutionDirectories;
+    private DeleteJobExecutionLogs $deleteJobExecutionLogs;
 
     public function __construct(
         DeleteJobExecution $deleteJobExecution,
-        DeleteJobExecutionMessageOrphansQueryInterface $deleteOrphanJobExecutionMessages,
-        DeleteOrphanJobExecutionDirectories $deleteOrphansJobExecutionDirectories
+        DeleteOrphanJobExecutionDirectories $deleteOrphansJobExecutionDirectories,
+        DeleteJobExecutionLogs $deleteJobExecutionLogs
     ) {
         $this->deleteJobExecution = $deleteJobExecution;
-        $this->deleteOrphanJobExecutionMessages = $deleteOrphanJobExecutionMessages;
         $this->deleteOrphansJobExecutionDirectories = $deleteOrphansJobExecutionDirectories;
+        $this->deleteJobExecutionLogs = $deleteJobExecutionLogs;
     }
 
     public function olderThanDays(int $days): int
     {
+        $this->deleteJobExecutionLogs->olderThanDays($days);
         $numberOfDeletedJobExecutions = $this->deleteJobExecution->olderThanDays($days);
-        $this->deleteOrphanJobExecutionMessages->execute();
         $this->deleteOrphansJobExecutionDirectories->execute();
 
         return $numberOfDeletedJobExecutions;
@@ -44,8 +39,8 @@ final class PurgeJobExecution
 
     public function all(): void
     {
+        $this->deleteJobExecutionLogs->all();
         $this->deleteJobExecution->all();
-        $this->deleteOrphanJobExecutionMessages->execute();
         $this->deleteOrphansJobExecutionDirectories->execute();
     }
 }

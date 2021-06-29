@@ -2,40 +2,20 @@
 
 namespace Akeneo\UserManagement\Component\Model;
 
-use Symfony\Component\Security\Core\Role\Role as SymfonyRole;
-
 /**
  * @author    Arnaud Langlade <arnaud.langlade@akeneo.com>
  * @copyright 2018 Akeneo SAS (http://www.akeneo.com)
  * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
- *
- * @todo This "write" model should not extend Symfony\Component\Security\Core\Role\Role.We should create a "read"
- * model that extends that class.
- *
- * For now, this model MUST extend Symfony\Component\Security\Core\Role\Role because the symfony security component
- * does some stuff if the role is a instance of this class. You should have a look to
- * Symfony\Component\Security\Acl\Domain\RoleSecurityIdentity for instance
  */
-class Role extends SymfonyRole implements RoleInterface
+class Role implements RoleInterface
 {
-    /** @var int */
-    protected $id;
+    protected ?int $id = null;
+    protected ?string $role = null;
+    protected ?string $label = null;
 
-    /** @var string */
-    protected $role;
-
-    /** @var string */
-    protected $label;
-
-    /**
-     * Populate the role field
-     *
-     * @param string $role ROLE_FOO etc
-     */
-    public function __construct($role = '')
+    public function __construct(?string $role = null)
     {
         $this->role = $role;
-        $this->label = $role;
     }
 
     /**
@@ -65,28 +45,21 @@ class Role extends SymfonyRole implements RoleInterface
     /**
      * {@inheritdoc}
      */
-    public function setRole($role): void
+    public function setRole(?string $role): void
     {
-        $this->role = (string) strtoupper($role);
-
-        // every role should be prefixed with 'ROLE_'
-        if (strpos($this->role, 'ROLE_') !== 0 && User::ROLE_ANONYMOUS !== $role) {
-            $this->role = 'ROLE_' . $this->role;
-        }
+        $this->role = $role;
     }
 
     /**
      * {@inheritdoc}
      */
-    public function setLabel($label): void
+    public function setLabel(?string $label): void
     {
-        $this->label = (string) $label;
+        $this->label = $label;
     }
 
     /**
      * Return the role name field
-     *
-     * @return string
      */
     public function __toString(): string
     {

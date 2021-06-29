@@ -238,3 +238,8 @@ services:
         class: Oro\Bundle\SecurityBundle\Acl\Extension\ActionMaskBuilder
         tags:
             - { name: oro_security.acl.action_mask_builder }
+
+    oro_security.normalizer.acl_privilege:
+        class: Oro\Bundle\SecurityBundle\Normalizer\AclPrivilegeNormalizer
+        tags:
+            - { name: pim_standard_format_serializer.normalizer }

@@ -42,9 +42,10 @@ pim_user:
       inactive: Inattivo
     fields_errors:
       new_password:
-        minimum_length: La password deve contenere almeno 2 caratteri
+        minimum_length: La password deve contenere almeno 8 caratteri
+        maximum_length: La password deve contenere meno di 4096 caratteri.
       new_password_repeat:
-        not_match: La password non corrisponde
+        not_match: Le password non corrispondono
       current_password:
         wrong: Password errata
     tabs:
@@ -67,13 +68,13 @@ pim_user:
       username_or_email: Nome utente o Email
       remember_me: Ricordami su questo computer
       password_forgotten: Hai dimenticato la password?
-      log_in: Accedi
+      log_in: Accesso
       forgot_password: Password Dimenticata
       request: Richiesta
       password_reset: Reimposta password
       reset: Azzera
       password_reset_email_sent: E' stata inviata una email all'utente. Contiene il link per reimpostare la password.
-      homepage: Vai alla Homepage
+      homepage: Tornare alla pagina principale
   group:
     tab:
       general.title: Generale

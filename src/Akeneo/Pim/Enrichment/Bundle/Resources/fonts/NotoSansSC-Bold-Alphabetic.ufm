@@ -1,0 +1,74 @@
+StartFontMetrics 4.1
+Notice Converted by PHP-font-lib
+Comment https://github.com/PhenX/php-font-lib
+EncodingScheme FontSpecific
+FontName NotoSansSC-Bold-Alphabetic
+FontSubfamily Bold-Alphabetic
+UniqueID FontForge 2.0 : NotoSansSC-Bold-Alphabetic : 1-9-2019
+FullName NotoSansSC-Bold-Alphabetic
+Version Version 1.0
+PostScriptName NotoSansSC-Bold-Alphabetic
+Weight Bold
+ItalicAngle 0
+IsFixedPitch false
+UnderlineThickness 50
+UnderlinePosition -175
+FontHeightOffset 90
+Ascender 827
+Descender -244
+FontBBox 10 -244 988 827
+StartCharMetrics 55
+U 65313 ; WX 1000 ; N uniE690 ; G 3
+U 65314 ; WX 1000 ; N uniE691 ; G 4
+U 65315 ; WX 1000 ; N uniE692 ; G 5
+U 65316 ; WX 1000 ; N uniE693 ; G 6
+U 65317 ; WX 1000 ; N uniE694 ; G 7
+U 65318 ; WX 1000 ; N uniE695 ; G 8
+U 65319 ; WX 1000 ; N uniE696 ; G 9
+U 65320 ; WX 1000 ; N uniE697 ; G 10
+U 65321 ; WX 1000 ; N uniE698 ; G 11
+U 65322 ; WX 1000 ; N uniE699 ; G 12
+U 65323 ; WX 1000 ; N uniE69A ; G 13
+U 65324 ; WX 1000 ; N uniE69B ; G 14
+U 65325 ; WX 1000 ; N uniE69C ; G 15
+U 65326 ; WX 1000 ; N uniE69D ; G 16
+U 65327 ; WX 1000 ; N uniE69E ; G 17
+U 65328 ; WX 1000 ; N uniE69F ; G 18
+U 65329 ; WX 1000 ; N uniE6A0 ; G 19
+U 65330 ; WX 1000 ; N uniE6A1 ; G 20
+U 65331 ; WX 1000 ; N uniE6A2 ; G 21
+U 65332 ; WX 1000 ; N uniE6A3 ; G 22
+U 65333 ; WX 1000 ; N uniE6A4 ; G 23
+U 65334 ; WX 1000 ; N uniE6A5 ; G 24
+U 65335 ; WX 1000 ; N uniE6A6 ; G 25
+U 65336 ; WX 1000 ; N uniE6A7 ; G 26
+U 65337 ; WX 1000 ; N uniE6A8 ; G 27
+U 65338 ; WX 1000 ; N uniE6A9 ; G 28
+U 65345 ; WX 1000 ; N uniE6B0 ; G 29
+U 65346 ; WX 1000 ; N uniE6B1 ; G 30
+U 65347 ; WX 1000 ; N uniE6B2 ; G 31
+U 65348 ; WX 1000 ; N uniE6B3 ; G 32
+U 65349 ; WX 1000 ; N uniE6B4 ; G 33
+U 65350 ; WX 1000 ; N uniE6B5 ; G 34
+U 65351 ; WX 1000 ; N uniE6B6 ; G 35
+U 65352 ; WX 1000 ; N uniE6B7 ; G 36
+U 65353 ; WX 1000 ; N uniE6B8 ; G 37
+U 65354 ; WX 1000 ; N uniE6B9 ; G 38
+U 65355 ; WX 1000 ; N uniE6BA ; G 39
+U 65356 ; WX 1000 ; N uniE6BB ; G 40
+U 65357 ; WX 1000 ; N uniE6BC ; G 41
+U 65358 ; WX 1000 ; N uniE6BD ; G 42
+U 65359 ; WX 1000 ; N uniE6BE ; G 43
+U 65360 ; WX 1000 ; N uniE6BF ; G 44
+U 65361 ; WX 1000 ; N uniE6C0 ; G 45
+U 65362 ; WX 1000 ; N uniE6C1 ; G 46
+U 65363 ; WX 1000 ; N uniE6C2 ; G 47
+U 65364 ; WX 1000 ; N uniE6C3 ; G 48
+U 65365 ; WX 1000 ; N uniE6C4 ; G 49
+U 65366 ; WX 1000 ; N uniE6C5 ; G 50
+U 65367 ; WX 1000 ; N uniE6C6 ; G 51
+U 65368 ; WX 1000 ; N uniE6C7 ; G 52
+U 65369 ; WX 1000 ; N uniE6C8 ; G 53
+U 65370 ; WX 1000 ; N uniE6C9 ; G 54
+EndCharMetrics
+EndFontMetrics

@@ -6,8 +6,10 @@ use Akeneo\Channel\Component\Model\ChannelInterface;
 use Akeneo\Pim\Structure\Component\Factory\AttributeRequirementFactory;
 use Akeneo\Pim\Structure\Component\Model\AttributeInterface;
 use Akeneo\Pim\Structure\Component\Model\FamilyInterface;
+use Akeneo\Pim\Structure\Component\Repository\AttributeRepositoryInterface;
 use Doctrine\Common\EventSubscriber;
 use Doctrine\ORM\Event\LifecycleEventArgs;
+use Webmozart\Assert\Assert;
 
 /**
  * Create attribute requirements for each family attributes after creating a channel
@@ -57,6 +59,7 @@ class CreateAttributeRequirementSubscriber implements EventSubscriber
         $families = $entityManager->getRepository(FamilyInterface::class)->findAll();
 
         $attributeRepository = $entityManager->getRepository(AttributeInterface::class);
+        Assert::implementsInterface($attributeRepository, AttributeRepositoryInterface::class);
         $identifierAttribute = $attributeRepository->getIdentifier();
 
         foreach ($families as $family) {

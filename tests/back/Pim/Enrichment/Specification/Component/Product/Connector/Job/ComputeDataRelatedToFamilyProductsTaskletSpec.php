@@ -14,6 +14,7 @@ use Akeneo\Pim\Structure\Component\Model\FamilyInterface;
 use Akeneo\Pim\Structure\Component\Repository\FamilyRepositoryInterface;
 use Akeneo\Tool\Component\Batch\Item\InvalidItemException;
 use Akeneo\Tool\Component\Batch\Item\ItemReaderInterface;
+use Akeneo\Tool\Component\Batch\Item\TrackableTaskletInterface;
 use Akeneo\Tool\Component\Batch\Job\JobRepositoryInterface;
 use Akeneo\Tool\Component\Batch\Model\StepExecution;
 use Akeneo\Tool\Component\StorageUtils\Cache\EntityManagerClearerInterface;
@@ -54,6 +55,12 @@ class ComputeDataRelatedToFamilyProductsTaskletSpec extends ObjectBehavior
         $this->beAnInstanceOf(ComputeDataRelatedToFamilyProductsTasklet::class);
     }
 
+    function it_track_processed_items()
+    {
+        $this->shouldImplement(TrackableTaskletInterface::class);
+        $this->isTrackable()->shouldReturn(true);
+    }
+
     function it_saves_the_products_belonging_to_the_family(
         $familyReader,
         $familyRepository,
@@ -86,14 +93,18 @@ class ComputeDataRelatedToFamilyProductsTaskletSpec extends ObjectBehavior
         $cursor->valid()->willReturn(true, true, true, false);
         $cursor->current()->willReturn($product1, $product2, $product3);
         $cursor->next()->shouldBeCalled();
+        $cursor->count()->shouldBeCalled()->willReturn(3);
 
-        $productSaver->saveAll([$product1, $product2])->shouldBeCalled();
-        $productSaver->saveAll([$product3])->shouldBeCalled();
+        $productSaver->saveAll([$product1, $product2], ['force_save' => true])->shouldBeCalled();
+        $productSaver->saveAll([$product3], ['force_save' => true])->shouldBeCalled();
 
+        $stepExecution->setTotalItems(3)->shouldBeCalledOnce();
         $stepExecution->incrementSummaryInfo(Argument::cetera())->shouldBeCalledTimes(2);
         $stepExecution->incrementSummaryInfo('process', 2)->shouldBeCalled();
         $stepExecution->incrementSummaryInfo('process', 1)->shouldBeCalled();
         $stepExecution->incrementSummaryInfo('skip')->shouldNotBeCalled();
+        $stepExecution->incrementProcessedItems(2)->shouldBeCalledOnce();
+        $stepExecution->incrementProcessedItems(1)->shouldBeCalledOnce();
 
         $jobRepository->updateStepExecution($stepExecution)->shouldBeCalled();
         $cacheClearer->clear()->shouldBeCalledTimes(3);
@@ -139,7 +150,7 @@ class ComputeDataRelatedToFamilyProductsTaskletSpec extends ObjectBehavior
         $cursor->valid()->willReturn(true, true, true, false);
         $cursor->current()->willReturn($variantProduct1, $variantProduct2, $variantProduct3);
         $cursor->next()->shouldBeCalled();
-
+        $cursor->count()->shouldBeCalled()->willReturn(3);
 
         $keepOnlyValuesForVariation->updateEntitiesWithFamilyVariant([$variantProduct1])->shouldBeCalled();
         $keepOnlyValuesForVariation->updateEntitiesWithFamilyVariant([$variantProduct2])->shouldBeCalled();
@@ -152,13 +163,16 @@ class ComputeDataRelatedToFamilyProductsTaskletSpec extends ObjectBehavior
         $validator->validate($variantProduct3)->willReturn($violationList3);
         $violationList3->count()->willReturn(0);
 
-        $productSaver->saveAll([$variantProduct1, $variantProduct2])->shouldBeCalled();
-        $productSaver->saveAll([$variantProduct3])->shouldBeCalled();
+        $productSaver->saveAll([$variantProduct1, $variantProduct2], ['force_save' => true])->shouldBeCalled();
+        $productSaver->saveAll([$variantProduct3], ['force_save' => true])->shouldBeCalled();
 
+        $stepExecution->setTotalItems(3)->shouldBeCalledOnce();
         $stepExecution->incrementSummaryInfo(Argument::cetera())->shouldBeCalledTimes(2);
         $stepExecution->incrementSummaryInfo('process', 2)->shouldBeCalled();
         $stepExecution->incrementSummaryInfo('process', 1)->shouldBeCalled();
         $stepExecution->incrementSummaryInfo('skip')->shouldNotBeCalled();
+        $stepExecution->incrementProcessedItems(2)->shouldBeCalledOnce();
+        $stepExecution->incrementProcessedItems(1)->shouldBeCalledOnce();
 
         $jobRepository->updateStepExecution($stepExecution)->shouldBeCalled();
         $cacheClearer->clear()->shouldBeCalledTimes(3);
@@ -204,7 +218,7 @@ class ComputeDataRelatedToFamilyProductsTaskletSpec extends ObjectBehavior
         $cursor->valid()->willReturn(true, true, true, false);
         $cursor->current()->willReturn($variantProduct1, $variantProduct2, $variantProduct3);
         $cursor->next()->shouldBeCalled();
-
+        $cursor->count()->shouldBeCalled()->willReturn(3);
 
         $keepOnlyValuesForVariation->updateEntitiesWithFamilyVariant([$variantProduct1])->shouldBeCalled();
         $keepOnlyValuesForVariation->updateEntitiesWithFamilyVariant([$variantProduct2])->shouldBeCalled();
@@ -217,10 +231,12 @@ class ComputeDataRelatedToFamilyProductsTaskletSpec extends ObjectBehavior
         $validator->validate($variantProduct3)->willReturn($violationList3);
         $violationList3->count()->willReturn(0);
 
-        $productSaver->saveAll([$variantProduct3])->shouldBeCalled();
+        $productSaver->saveAll([$variantProduct3], ['force_save' => true])->shouldBeCalled();
 
+        $stepExecution->setTotalItems(3)->shouldBeCalledOnce();
         $stepExecution->incrementSummaryInfo('process', 1)->shouldBeCalled();
         $stepExecution->incrementSummaryInfo('skip')->shouldBeCalledTimes(2);
+        $stepExecution->incrementProcessedItems(1)->shouldBeCalledTimes(3);
 
         $jobRepository->updateStepExecution($stepExecution)->shouldBeCalled();
         $cacheClearer->clear()->shouldBeCalledTimes(3);
@@ -243,7 +259,7 @@ class ComputeDataRelatedToFamilyProductsTaskletSpec extends ObjectBehavior
         $stepExecution->incrementSummaryInfo('skip')->shouldBeCalled();
 
         $productQueryBuilderFactory->create()->shouldNotBeCalled();
-        $productSaver->saveAll(Argument::any())->shouldNotBeCalled();
+        $productSaver->saveAll(Argument::any(), Argument::any())->shouldNotBeCalled();
 
         $jobRepository->updateStepExecution($stepExecution)->shouldNotBeCalled();
 
@@ -264,7 +280,7 @@ class ComputeDataRelatedToFamilyProductsTaskletSpec extends ObjectBehavior
 
         $familyRepository->findOneByIdentifier(Argument::any())->shouldNotBeCalled();
         $productQueryBuilderFactory->create()->shouldNotBeCalled();
-        $productSaver->saveAll(Argument::any())->shouldNotBeCalled();
+        $productSaver->saveAll(Argument::any(), Argument::any())->shouldNotBeCalled();
 
         $jobRepository->updateStepExecution($stepExecution)->shouldNotBeCalled();
 

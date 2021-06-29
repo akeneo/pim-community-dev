@@ -54,6 +54,7 @@ extensions:
         config:
             tabTitle: pim_enrich.export.product.global_settings.title
             tabCode: pim-job-instance-global
+            hideForCloudEdition: true
 
     pim-job-instance-xlsx-base-import-edit-history:
         module: pim/common/tab/history

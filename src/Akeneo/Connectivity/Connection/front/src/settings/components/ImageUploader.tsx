@@ -1,5 +1,4 @@
 import React, {useContext, useRef, useState} from 'react';
-import Trash from '../../common/assets/icons/trash';
 import defaultImageUrl from '../../common/assets/illustrations/NewAPI.svg';
 import styled from '../../common/styled-with-theme';
 import {isErr} from '../../shared/fetch-result/result';
@@ -8,6 +7,7 @@ import {Translate, TranslateContext} from '../../shared/translate';
 import {useImageUploader} from '../use-image-uploader';
 import {useMediaUrlGenerator} from '../use-media-url-generator';
 import {Loading} from './Loading';
+import {DeleteIcon} from 'akeneo-design-system';
 
 interface Props {
     image: string | null;
@@ -150,7 +150,7 @@ export const ImageUploader = ({image, onChange, onError}: Props) => {
                 {null !== previewImage && (
                     <div className='AknImage-action'>
                         <span className='AknImage-actionItem' onClick={handleRemove}>
-                            <Trash color='#ffffff' className='AknImage-actionItemIcon' />{' '}
+                            <DeleteIcon className='AknImage-actionItemIcon' />{' '}
                             <Translate id={'akeneo_connectivity.connection.edit_image.remove_helper'} />
                         </span>
                     </div>

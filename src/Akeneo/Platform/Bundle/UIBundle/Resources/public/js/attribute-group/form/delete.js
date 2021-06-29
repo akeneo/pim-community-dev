@@ -8,7 +8,7 @@
  * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
  */
 define(['pim/form/common/delete', 'pim/remover/attribute-group'], function (DeleteForm, AttributeGroupRemover) {
-    return DeleteForm.extend({
-        remover: AttributeGroupRemover
-    });
+  return DeleteForm.extend({
+    remover: AttributeGroupRemover,
+  });
 });

@@ -1,14 +1,6 @@
 @import '../base/variables';
 
 .AknLogin {
-  color: @AknSlateGrey;
-  background: white;
-  background-image: url("/bundles/pimui/images/illustration-login.svg");
-  background-position: center bottom;
-  background-size: 100%;
-  height: 100%;
-  min-height: 280px;
-  background-repeat: no-repeat;
 
   &-link {
     color: @AknLightPurple;
@@ -56,5 +48,273 @@
     position: absolute;
     bottom: 35px;
     width: 100%;
+  }
+}
+
+/* New login page */
+.AknLogin {
+  .AuthenticationWrapper {
+    color: @AknGrey120;
+    width: 100vw;
+    height: 100vh;
+    display: grid;
+    grid-template-columns: 4fr 6fr;
+    @media (max-width: 768px) {
+      grid-template-columns: 1fr;
+    }
+  }
+
+  .LeftWrapper {
+    display: grid;
+    grid-template-rows: 1fr max-content;
+    width: 100%;
+    height: 100%;
+    padding: 40px;
+    box-sizing: border-box;
+  }
+
+  .RightWrapper {
+    background: @AknGrey20;
+    height: 100%;
+    width: 100%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    @media (max-width: 768px) {
+      display: none;
+    }
+  }
+
+  .FormWrapper {
+    display: flex;
+    flex-direction: column;
+    justify-content: start;
+    align-items: center;
+    padding-top: 140px;
+
+    .Logo {
+      margin-bottom: 20px;
+      display: flex;
+      justify-content: center;
+
+      img {
+        max-width: 250px;
+        max-height: 60px;
+      }
+    }
+
+    .ContainerForm {
+      justify-content: center;
+      display: grid;
+      grid-template-rows: max-content 1fr;
+      width: 100%;
+      margin-bottom: 20px;
+    }
+  }
+
+  .Footer {
+    text-decoration: none;
+
+    .Powered {
+      display: flex;
+      justify-content: center;
+      padding-bottom: 0.5em;
+      font-size: 13px;
+      align-items: flex-end;
+      color: @AknGrey140;
+    }
+
+    .PoweredImage {
+      max-height: 20px;
+      margin-left: 0.5em;
+    }
+
+    .BaseLine {
+      color: @AknPurple100;
+      font-size: 13px;
+      text-align: center;
+    }
+  }
+
+  .IllustrationLogin {
+    background-image: url('/bundles/pimui/images/illustrations/login/Artboard.png');
+    background-repeat: no-repeat;
+    height: 100%;
+    width: 100%;
+    background-size: 600px;
+    background-position: center;
+  }
+
+  .Form {
+    width: 296px;
+
+    .InputGroup {
+      margin-bottom: 30px;
+      width: 100%;
+    }
+
+    .InputBlock {
+      width: 100%;
+      display: flex;
+      flex-direction: column;
+      margin-bottom: 10px;
+
+      input {
+        margin-top: 0.6em;
+      }
+    }
+
+    .InputContainer {
+      display: flex;
+      justify-content: flex-end;
+      align-items: center;
+    }
+
+    .InputLabel {
+      color: rgb(103, 118, 138);
+      font-size: 13px;
+    }
+
+    .InputText {
+      background: @AknWhite;
+      border-radius: 2px;
+      border: 1px solid @AknGrey80;
+      padding-left: 15px;
+      padding-right: 15px;
+      height: 40px;
+      width: 100%;
+      box-sizing: border-box;
+
+      :focus {
+        background: @AknWhite;
+        border-radius: 2px;
+        border: 1px solid @AknMediumGrey;
+        box-shadow: 0 0 0 2px rgba(74, 144, 226, 0.3);
+        outline: none;
+      }
+
+      &.error {
+        border: 1px solid @AknRed100;
+        margin-bottom: 5px;
+      }
+    }
+
+    .RememberMe {
+      margin-bottom: 20px;
+      font-size: 13px;
+
+      label {
+        cursor: pointer;
+      }
+
+      input[type="checkbox"] {
+        margin: -3px 8px 0 0;
+        width: 20px;
+        height: 20px;
+      }
+    }
+  }
+
+  .PasswordReset,
+  .CancelPasswordReset {
+    margin-bottom: 20px;
+    font-size: 13px;
+
+    a {
+      color: @AknPurple100;
+      cursor: pointer;
+    }
+  }
+
+  .Messages {
+    width: 296px;
+    margin-bottom: 20px;
+  }
+
+  .AknButton {
+    font-size: @AknDefaultFontSize;
+  }
+
+  /**
+   * Based on the Helper component from Akeneo Design System
+   * @see https://github.com/akeneo/pim-community-dev/blob/master/akeneo-design-system/src/components/Helper/Helper.tsx
+   */
+  .Helper {
+    display: flex;
+    font-weight: 400;
+    padding-right: 20px;
+    color: @AknRed120;
+    min-height: 44px;
+    background-color: @AknRed10;
+
+    .Icon {
+      flex-shrink: 0;
+      width: 20px;
+      height: 20px;
+      margin: 12px 10px;
+      color: @AknRed120;
+      background-image: url("/bundles/pimui/images/icon-danger-darkred.svg");
+      background-repeat: no-repeat;
+      background-size: cover;
+      background-position: center;
+    }
+
+    .Text {
+      white-space: break-spaces;
+      padding-left: 10px;
+      margin: 12px 0;
+      border-left: 1px solid @AknRed120;
+
+      a {
+        color: @AknRed120;
+        margin: 0 3px;
+      }
+    }
+
+    &--info,
+    &--success {
+      color: @AknGrey120;
+      background-color: @AknBlue10;
+      .Icon {
+        color: @AknBlue100;
+        background-image: url("/bundles/pimui/images/icon-info.svg");
+      }
+      .Text {
+        border-left: 1px solid @AknGrey80;
+        a {
+          color: @AknBlue100;
+        }
+      }
+    }
+
+    &--warn {
+      color: @AknYellow120;
+      background-color: @AknYellow10;
+      .Icon {
+        color: @AknYellow120;
+        background-image: url("/bundles/pimui/images/icon-danger-orange.svg");
+      }
+      .Text {
+        border-left: 1px solid @AknYellow120;
+        a {
+          color: @AknYellow120;
+        }
+      }
+    }
+
+    &--inline {
+      min-height: auto;
+      background-color: transparent;
+
+      .Icon {
+        height: 16px;
+        margin: 2px 0;
+      }
+      .Text {
+        padding-left: 4px;
+        margin: 0;
+        border-left: none;
+      }
+    }
   }
 }

@@ -172,35 +172,19 @@ class DateFilterIntegration extends AbstractProductQueryBuilderTestCase
         );
 
         $this->assert(
-            $this->executeFilter([['a_date', Operators::EQUALS, '+10 days']]),
-            ['product_future']
-        );
-        $this->assert(
-            $this->executeFilter([['a_date', Operators::NOT_EQUAL, '+10 days']]),
-            ['product_past', 'product_today']
-        );
-        $this->assert(
-            $this->executeFilter([['a_date', Operators::GREATER_THAN, '+10 days']]),
+            $this->executeFilter([['a_date', Operators::GREATER_THAN, '+12 days']]),
             []
         );
         $this->assert(
-            $this->executeFilter([['a_date', Operators::LOWER_THAN, '+10 days']]),
+            $this->executeFilter([['a_date', Operators::LOWER_THAN, '+8 days']]),
             ['product_today', 'product_past']
         );
         $this->assert(
-            $this->executeFilter([['a_date', Operators::GREATER_THAN, 'now']]),
-            ['product_future']
-        );
-        $this->assert(
-            $this->executeFilter([['a_date', Operators::LOWER_THAN, 'now']]),
-            ['product_past']
-        );
-        $this->assert(
-            $this->executeFilter([['a_date', Operators::GREATER_THAN, '-6 weeks']]),
+            $this->executeFilter([['a_date', Operators::GREATER_THAN, '-5 weeks']]),
             ['product_today', 'product_future']
         );
         $this->assert(
-            $this->executeFilter([['a_date', Operators::LOWER_THAN, '-6 weeks']]),
+            $this->executeFilter([['a_date', Operators::LOWER_THAN, '-7 weeks']]),
             []
         );
     }

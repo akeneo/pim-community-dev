@@ -1,188 +1,126 @@
+
 # master
 
 ## Bug fixes
-
-- PIM-9486: System Information sections Registered bundles and PHP extensions repeat a high number of times
-- PIM-9514: Fix check on API completness for product model
-- PIM-9408: Fix attribute group's updated_at field udpate
-- TIP-1513: Environment variables declared in the env were not loaded when using a compiled .env file
-- PIM-9274: Fix Yaml reader to display the number of lines read for incorrectly formatted files
-- TIP-1406: Add a tag to configure a DIC service based on a feature flag
-- PIM-9133: Fix product save when the user has no permission on some attribute groups
-- Fixes memory leak when indexing product models with a lot of product models in the same family
-- PIM-9119: Fix missing warning when using mass edit with parent filter set to empty
-- PIM-9114: fix errors on mass action when the parent filter is set to empty
-- PIM-9110: avoid deadlock error when loading product and product models in parallel with the API
-- PIM-9113: Locale Specific attribute breaks product grid
-- PIM-9157: Fix performance issue when loading the data of a product group
-- PIM-9163: total_fields limit of elasticsearch should be configurable
-- PIM-9197: Make queries in InMemoryGetAttributes case insensitive
-- PIM-9213: Fix tooltip hover on Ellipsis for Family Name on creating product
-- PIM-9184: API - Fix dbal query group by part for saas instance
-- PIM-9289: Display a correct error message when deleting a group or an association
-- PIM-9327: PDF generation header miss the product name when the attribute used as label is localizable 
-- PIM-9324: Fix product grid not loading when asset used as main picture is deleted
-- PIM-9356: Fix external api endpoint for products with invalid quantified associations
-- PIM-9357: Make rules case-insensitive so it complies with family and attribute codes
-- PIM-9362: Adapt System Information twig file for a clear and a correct display of the number of API connections
-- PIM-9360: Fix PHP Warning raised in PriceComparator
-- PIM-9370: Fixes page freezing with a big number of attribute options
-- PIM-9391: Filter empty prices and measurement values
-- PIM-9407: Fix glitch in family variant selector if the family variant has no label
-- PIM-9425: Fix inaccurate attribute max characters
-- PIM-9443: Do not cache extensions.json
-- PIM-9454: Fix scalar value type check in PQB filters
-- PIM-9460: Fix performance issue on export
-- PIM-9461: Fix display of multiselect fields with a lot of selected options
-- PIM-9466: Fix selection counter in datagrid
-- GITHUB-12578: Fix trailing zeros when formatting numbers
-- PIM-9440: Fix locked MySQL tables during removing DQI evaluations without product
-- PIM-9476: Fix locale selector behavior on the product edit form when the user doesn't have permissions to edit attributes
-- PIM-9478: Allow the modification of the identifier on a variant product
-- PIM-9481: Fix the list of product models when trying to get them by family variant
-- GITHUB-12899: Fix error shown when importing product models with the same code
-- PIM-9491: Translate product grid filters in user additional settings
-- PIM-9494: Fix the performances of attribute-select-filter on long lists of AttributeOptions
-- PIM-9496: Change date format in the locale it_IT from dd/MM/yy to dd/MM/yyyy
-- PIM-9519: Fix translation key for datagrid search field
-- PIM-9517: Fix locale selector default value on localizable attributes in product exports
+- PIM-9885: Associating a product to itself with a 2-way association returns an error 500
+- PIM-9890: Creating Channels with numeric code breaks the PIM
+- PIM-9748: Upgrade JQuery for security reasons
+- PIM-9678: The time counter is still running despite the job failed
+- PIM-9672: Error 500 on the API when inputing [null] on an array
+- PIM-9595: Avoid 403 error when launching import with no view rights on import details
+- PIM-9622: Fix query that can generate a MySQL memory allocation error
+- PIM-9630: Fix SQL sort buffer size issue when the catalog has a very large number of categories
+- PIM-9636: Fix add posibility to contextualize translation when create a variant depending on number of axes
+- PIM-9631: fix attribute groups not displayed in family due to JS error
+- PIM-9649: Fix PDF product renderer disregarding permissions on Attribute groups
+- PIM-9650: Add translation key for mass delete action.
+- PIM-9642: Refresh product image when switching channel or locale
+- PIM-9667: Prevent import of duplicate options in multiselect attributes
+- PIM-9658: Add missing backend permission checks
+- PIM 9657: Make open filters close when opening a new one.
+- PIM-9671: Provide a data quality insight status context for attribute groups
+- PIM-9670: Fix attribute filter "Group" issue when several attribute groups have the same label
+- PIM-9664: Display Ziggy as asset image when the preview cannot be generated
+- PIM-9681: Fix criteria selector closing behavior on the product grid filters
+- PIM-9686: Fix memory leak during "set_attribute_requirements" job
+- PIM-9690: Fix job remaining in stopping status forever
+- PIM-9700: Add batch-size option in index products command and index product-models command
+- PIM-9701: Fix role deletion when a user do not have any role
+- PIM-9699: Fix clicking detail on last operation return 404 on import and export jobs
+- API-1483: Fix the test button of the Event Subscription
+- PLG-63: Fix product-grid grouped variant filter dropdown
+- PIM-9718: Decimals attribute values with no separators are well formatted
+- PIM-9727: Add missing query params to hatoas links
+- API-9698: Refresh ES index after creating a product from the UI in order to well send product created event to event subscriptions
+- PIM-9711: Check that a category root isn't linked to a user or a channel before moving it to a sub-category
+- PIM-9730: Fix category tree initialization in the PEF when switching tabs
+- PIM-9679: Clean existing text attribute values removing linebreaks
+- PIM-9758: Fix bad replacement for line breaks introduced in PIM-9658
+- PIM-9743: Add the "change input" event so that the SKU/code doesn't disappear when doing copy/paste 
+- PIM-9759: Fix step name translation for product models csv import
+- PIM-9740: Prevent to delete a channel used in a product export job
+- PIM-9764: Fix DSM Card component to handle links properly
+- PIM-9773: Fix unique variant axis validator considering 01 and 1 as equal
+- PIM-9767: Fix minimum & maximum user password validation
+- PIM-9765: Fix missing translation key in bulk actions when adding attributes values for some product
+- PIM-9780: Fix completed import/export job notification broken link
+- PIM-9783: Optimize batch query when compute completeness
+- PIM-9783: Optimize SQL query when compute completeness
+- PIM-9715: Prevent the deletion of an attribute used as a label by a family
+- PIM-9781: Fix Category tree not refreshing when switching locale
+- PIM-9779: Fix ACE order when loading ACLs
+- PIM-9739: Fix connection users, users, channels having a link to a sub-category
+- PIM-9763: Make sure that 2 users can each create a private view with the same name
+- PIM-9798: Refresh completeness on product grid after family import
+- PIM-9800: Fix event not sent issue when creating products or product models
+- PIM-9809: Fix missing filters in the product grid for few UI locales with Firefox
+- PIM-9807: Trigger warning when importing date as text attribute via XLSX files
+- PIM-9801: Fix jobs that are still stuck in STARTED and STOPPING and create a command to avoid this again
+- PIM-9771: Fix the image preview when exporting a product as pdf
+- PIM-9829: Fix product grid crash when using a family filter on a deleted family
+- PIM-9820: Fix the Error 500 on the product grid with the date filter
+- PIM-9833: Fix null pointer exception on Product::getVariationLevel (CE contribution)
+- PIM-9826: Display the system attribute filters with the UI locale on the user account settings
+- PIM-9834: Fix MySQL error when trying to import new attribute options to attributes with a lot of options already
+- PIM-9850: Fix broken section title in DQI dashboard
+- PIM-9827: Fix HTTP 500 when using POST/PATCH with incorrect format
+- PIM-9857: Fix Microgram & Microliter conversion operations
+- PIM-9856: Fix children completeness query being too long
+- PIM-9853: Make the word "product" translatable
+- PIM-9741: Fix choice filter mask not closing when selecting with keyboard
+- PIM-9806: Enable authentication temporary lock to protect against brute force attack
+- PIM-9864: Fix 500 error when using DateTime filter with invalid value
+- PIM-9869: Fix download log in job tracker is only available when log is located in the fpm server
+- PIM-9777: Fix error message when trying to delete an attribute linked to an entity
+- PIM-9873: Fix since last n day filter in product export
+- PIM-9852: Fix exception during PRE_REMOVE on removeAll cause ES desynchronisation
+- PIM-9876: Fix purge of products old scores in Data Quality Insights
+- PIM-9881: Do not update a product value which was not modified
+- PIM-9863: Remove temporisation and add unit tests for product model reindexation.
+- PIM-9891: Fix missing sanity checks when computing enrichment status
+- PIM-9886: Fix display of completeness in the PEF when the selected locale is deactivated
+- PIM-9925: Fix roles that couldn't contain dashes in their codes 
+- PIM-9933: Fix delete category menu that stays displayed on screen
 
 ## New features
 
-- MET-197: Add possibility to define that an association type is two way & automatically create inversed association when association type is two way
-- MET-14: Measurements (or metrics) are now stored in database
-- AOB-277: Add an acl to allow a role member to view all job executions in last job execution grids, job tracker and last operations widget.
-- RAC-54: Add a new type of associations: Association with quantity
-- RAC-123: Add possibility to export product/product model with labels instead of code
+- DAPI-1443: Add possibility to export products depending on their Quality Score
+- DAPI-1480: Add possibility to filter products on Quality Score through the API
 
 ## Improvements
 
-- CLOUD-1959: Use cloud-deployer 2.2 and terraform 0.12.25
-- PIM-9306: Enhance catalog volume monitoring count queries for large datasets
-- API-1140: Be able to get attributes searching by a list of attribute codes
-- API-1225: Be able to get attributes searching by updated date
-- API-1226: Be able to get attributes searching by a list of attribute types
-- PIM-9368: Allow minimum translation progress of 70% instead of 80%
-- PIM-9398: Add a primary key on connection table
-- PIM-9371: Disable save button when user creation form is not ready to submit
-- RAC-178: When launching a job, the notification contains a link to the job status
-- PIM-9485: Change ACL name “Remove a product model” to “Remove a product model (including children)”
-
 # Technical Improvements
 
-- TIP-1233: Upgrade to php7.4
-- CPM-38: Upgrade Symfony to 4.4.15
+- PIM-9648: Mitigate DDoS risk on API auth endpoint by rejecting too large content
+- PIM-9697: Exported files streamer
+- PIM-9719: Add the real "updated" values in ES for product and product models
+- CPM-152: Use Symfony Messenger to handle job queue messages. Therefore the `akeneo_batch_job_execution_queue` table is removed.
+  Depending on your environment, please check the associated `messenger.yml` to figure out how the messages are sent/received.
+  The former command to launch job consumption is removed and replaced by:
+```bash
+bin/console messenger:consume ui_job import_export_job data_maintenance_job
+```
+- PIM-9929: Improve performances of attribute options list PATCH endpoint when Data Quality Insights is enabled 
 
 ## Classes
 
-## BC breaks
+## BC Breaks
 
-- API-1140: Change $criteria format from `Akeneo\Pim\Structure\Bundle\Doctrine\ORM\Repository\ExternalApi\AttributeRepository`
-    the new format is `[property: [['operator' => (string), 'value' => (mixed)]]]`.
+- CPM-101: Remove twig/extensions dependency (abandoned)
+- CPM-100: replace deprecated `Symfony\Component\Translation\TranslatorInterface` by `Symfony\Contracts\Translation\TranslatorInterface`
+- CPM-100: replace deprecated `Symfony\Component\HttpKernel\Event\GetResponseEvent` by `Symfony\Component\HttpKernel\Event\RequestEvent`
 
 ### Codebase
 
-- Change constructor of `Akeneo\Tool\Bundle\ElasticsearchBundle\IndexConfiguration\Loader` to
-    - add `Symfony\Component\DependencyInjection\ParameterBag\ParameterBagInterface $parameterBag`
-- Change constructor of `Akeneo\Pim\Enrichment\Bundle\Controller\InternalApi\ProductModelController` to
-    - add `Akeneo\Pim\Enrichment\Bundle\Filter\CollectionFilterInterface $productEditDataFilter`
-- Change constructor of `Akeneo\Pim\Enrichment\Bundle\Controller\InternalApi\ProductController` to
-    - add `Akeneo\Pim\Enrichment\Bundle\Filter\CollectionFilterInterface $productEditDataFilter`
-- Change constructor of `Akeneo\Pim\Structure\Component\Validator\Constraints\ValidMetricValidator` to
-    - remove `array $measures`
-    - add `Akeneo\Tool\Bundle\MeasureBundle\Provider\LegacyMeasurementProvider $provider`
-- Change constructor of `Akeneo\Tool\Bundle\MeasureBundle\Controller\ExternalApi\MeasureFamilyController` to
-    - remove `array $measures`
-    - add `Akeneo\Tool\Bundle\MeasureBundle\Provider\LegacyMeasurementProvider $legacyMeasurementProvider`
-- Change constructor of `Akeneo\Tool\Bundle\MeasureBundle\Controller\MeasuresController` to
-    - remove `array $measures`
-    - add `Akeneo\Tool\Bundle\MeasureBundle\Provider\LegacyMeasurementProvider $provider`
-- Change constructor of `Akeneo\Tool\Bundle\MeasureBundle\Convert\MeasureConverter` to
-    - remove `array $config`
-    - add `Akeneo\Tool\Bundle\MeasureBundle\Provider\LegacyMeasurementProvider $provider`
-- Change constructor of `Akeneo\Tool\Bundle\MeasureBundle\Manager\MeasureManager` to
-     - remove `array $config`
-     - add `Akeneo\Tool\Bundle\MeasureBundle\Provider\LegacyMeasurementProvider $legacyMeasurementProvider`
-- Change constructor of `Akeneo\Pim\Enrichment\Component\Product\Localization\Presenter` to
-    - remove `Akeneo\Tool\Component\Localization\TranslatorProxy $translatorProxy`
-    - add `Akeneo\Tool\Bundle\MeasureBundle\Persistence\MeasurementFamilyRepositoryInterface $measurementFamilyRepository`
-    - add `Akeneo\Tool\Component\StorageUtils\Repository\BaseCachedObjectRepository $baseCachedObjectRepository`
-    - add `Psr\Log\LoggerInterface $logger`
-- Change constructor of `Akeneo\Pim\Enrichment\Component\Product\Normalizer\InternalApi\GroupNormalizer` to
-    - add `Akeneo\Pim\Enrichment\Component\Product\Query\GetGroupProductIdentifiers`
-- Change constructor of `Akeneo\Pim\Structure\Component\Query\PublicApi\AttributeType\Attribute` to
-    - add `(string) $defaultMetricUnit`    
-- Change constructor of `Akeneo\Pim\Enrichment\Bundle\Elasticsearch\IdentifierResultCursor` to add `Akeneo\Pim\Enrichment\Bundle\Elasticsearch\ElasticsearchResult $result`
-- Change constructor of `Akeneo\Pim\Enrichment\Bundle\Storage\ElasticsearchAndSql\ProductGrid\FetchProductAndProductModelRows` to add `Akeneo\Pim\Enrichment\Bundle\Elasticsearch\Facet\ProductAndProductsModelDocumentTypeFacetFactory $productAndProductsModelDocumentTypeFacetFactory`
-- Change constructor of `Akeneo\Pim\Enrichment\Component\Product\Grid\ReadModel\Rows` to
-    - add `?int $totalProductCount`
-    - add `?int $totalProductModelCount`
-- Change constructor of `Akeneo\Pim\Enrichment\Bundle\Elasticsearch\ProductAndProductModelQueryBuilderWithSearchAggregatorFactory` to make not nullable the third parameter `Akeneo\Pim\Enrichment\Bundle\Elasticsearch\ProductAndProductModelSearchAggregator $searchAggregator`
-- Change `Akeneo\Tool\Bundle\MeasureBundle\Manager\MeasureManager` to remove method `setMeasureConfig(array $config)`
-- Remove `Akeneo\Tool\Bundle\MeasureBundle\DependencyInjection\Configuration`
-- Remove `Akeneo\Tool\Bundle\MeasureBundle\Family\AreaFamilyInterface`
-- Remove `Akeneo\Tool\Bundle\MeasureBundle\Family\BinaryFamilyInterface`
-- Remove `Akeneo\Tool\Bundle\MeasureBundle\Family\CaseBoxFamilyInterface`
-- Remove `Akeneo\Tool\Bundle\MeasureBundle\Family\DecibelFamilyInterface`
-- Remove `Akeneo\Tool\Bundle\MeasureBundle\Family\DurationFamilyInterface`
-- Remove `Akeneo\Tool\Bundle\MeasureBundle\Family\ElectricChargeFamilyInterface`
-- Remove `Akeneo\Tool\Bundle\MeasureBundle\Family\EnergyFamilyInterface`
-- Remove `Akeneo\Tool\Bundle\MeasureBundle\Family\FrequencyFamilyInterface`
-- Remove `Akeneo\Tool\Bundle\MeasureBundle\Family\IntensityFamilyInterface`
-- Remove `Akeneo\Tool\Bundle\MeasureBundle\Family\LengthFamilyInterface`
-- Remove `Akeneo\Tool\Bundle\MeasureBundle\Family\PowerFamilyInterface`
-- Remove `Akeneo\Tool\Bundle\MeasureBundle\Family\PressureFamilyInterface`
-- Remove `Akeneo\Tool\Bundle\MeasureBundle\Family\ResistanceFamilyInterface`
-- Remove `Akeneo\Tool\Bundle\MeasureBundle\Family\SpeedFamilyInterface`
-- Remove `Akeneo\Tool\Bundle\MeasureBundle\Family\TemperatureFamilyInterface`
-- Remove `Akeneo\Tool\Bundle\MeasureBundle\Family\VoltageFamilyInterface`
-- Remove `Akeneo\Tool\Bundle\MeasureBundle\Family\VolumeFamilyInterface`
-- Remove `Akeneo\Tool\Bundle\MeasureBundle\Family\WeightFamilyInterface`
-- Rename `Akeneo\Tool\Bundle\MeasureBundle\Exception\UnknownFamilyMeasureException` as `Akeneo\Tool\Bundle\MeasureBundle\Exception\MeasurementFamilyNotFoundException`
-- Rename `Akeneo\Tool\Bundle\MeasureBundle\Exception\UnknownMeasureException` as `Akeneo\Tool\Bundle\MeasureBundle\Exception\UnitNotFoundException`
-- Change constructor of `Akeneo\Pim\Enrichment\Bundle\Command\RefreshProductCommand` to
-    - replace `Akeneo\Tool\Component\StorageUtils\Saver\SaverInterface $productSaver` by `Akeneo\Tool\Component\StorageUtils\Saver\BulkSaverInterface $productSaver`
-    - replace `Akeneo\Tool\Component\StorageUtils\Saver\SaverInterface $productModelSaver` by `Akeneo\Tool\Component\StorageUtils\Saver\BulkSaverInterface $productModelSaver`
-- Change constructor of `Akeneo\Pim\Enrichment\Bundle\Command\RemoveCompletenessForChannelAndLocaleCommand` to
-    - replace `Akeneo\Tool\Component\StorageUtils\Saver\SaverInterface $channelSaver` by `Akeneo\Tool\Component\StorageUtils\Saver\BulkSaverInterface $channelSaver`
-- Add `getChannels()` and `getLabel()` methods in `Akeneo\Pim\Enrichment\Component\Category\Model\CategoryInterface` interface
-- Change `addFieldSorter()` method of `Akeneo\Pim\Enrichment\Component\Product\Query\Sorter\FieldSorterInterface` to return `Akeneo\Pim\Enrichment\Component\Product\Query\Sorter\FieldSorterInterface`
-- The `Akeneo\Tool\Component\Api\Repository\ApiResourceRepositoryInterface` interface now also extends `Doctrine\Common\Persistence\ObjectRepository` interface
-- Rename the `$objectFilter` property in `Akeneo\Pim\Enrichment\Bundle\Controller\InternalApi\CategoryController` to `$collectionFilter`
-- Change constructor of `Akeneo\Pim\Enrichment\Bundle\Storage\Sql\Connector\SqlGetConnectorProducts` to replace `Akeneo\Tool\Component\StorageUtils\Repository\IdentifiableObjectRepositoryInterface $attributeRepository` by `Akeneo\Pim\Structure\Component\Repository\AttributeRepositoryInterface $attributeRepository`
-- Change `Akeneo\Pim\Enrichment\Component\Comment\Model\CommentInterface` to use `Akeneo\UserManagement\Component\Model\UserInterface` instead of `Symfony\Component\Security\Core\User\UserInterface`
-- Change `Akeneo\Pim\Enrichment\Component\Product\Connector\Step\MassEditStep::setCleaner()` to take `Akeneo\Pim\Enrichment\Component\Product\Connector\Item\MassEdit\TemporaryFileCleaner $cleaner` as first argument instead of `Akeneo\Tool\Component\Batch\Step\StepExecutionAwareInterface $cleaner`
-- Change `Akeneo\Pim\Enrichment\Component\Product\Normalizer\Versioning\ProductNormalizer::normalizeAssociations()` to make the first argument not optional
-- Change `Akeneo\Pim\Enrichment\Component\Product\Model\Group::getTranslation()` to return null or an instance of `Akeneo\Pim\Enrichment\Component\Product\Model\GroupTranslationInterface`
-- Change `Akeneo\Pim\Enrichment\Component\Category\Model\Category::getTranslation()` to return null or an instance of `Akeneo\Pim\Enrichment\Component\Category\Model\CategoryTranslationInterface`
-- Change `Akeneo\Pim\Enrichment\Component\Comment\Normalizer\Standard\CommentNormalizer` to implements `Symfony\Component\Serializer\Normalizer\NormalizerAwareInterface` instead of `Symfony\Component\Serializer\SerializerAwareInterface`. That means:
-    - the `setSerializer()` method and the `$serializer` property are removed
-    - the `setNormalizer()` method and the `$normalizer` property are added
-- Change `Akeneo\Pim\Enrichment\Component\Product\Normalizer\Versioning\Product\CollectionNormalizer` to implements `Symfony\Component\Serializer\Normalizer\NormalizerAwareInterface` instead of `Symfony\Component\Serializer\SerializerAwareInterface`. That means:
-    - the `setSerializer()` method and the `$serializer` property are removed
-    - the `setNormalizer()` method and the `$normalizer` property are added
-- Change `Akeneo\Pim\Enrichment\Component\Product\Normalizer\Versioning\Product\ValueNormalizer` to implements `Symfony\Component\Serializer\Normalizer\NormalizerAwareInterface` instead of `Symfony\Component\Serializer\SerializerAwareInterface`. That means:
-    - the `setSerializer()` method and the `$serializer` property are removed
-    - the `setNormalizer()` method and the `$normalizer` property are added
-- Change `Akeneo\Pim\Enrichment\Component\Product\Normalizer\Versioning\ProductModelNormalizer` to implements `Symfony\Component\Serializer\Normalizer\NormalizerAwareInterface` instead of `Symfony\Component\Serializer\SerializerAwareInterface`. That means:
-    - the `setSerializer()` method and the `$serializer` property are removed
-    - the `setNormalizer()` method and the `$normalizer` property are added
-- Change `Akeneo\Pim\Enrichment\Component\Product\Normalizer\Versioning\ProductNormalizer` to implements `Symfony\Component\Serializer\Normalizer\NormalizerAwareInterface` instead of `Symfony\Component\Serializer\SerializerAwareInterface`. That means:
-    - the `setSerializer()` method and the `$serializer` property are removed
-    - the `setNormalizer()` method and the `$normalizer` property are added
-- Remove `Akeneo\Pim\Enrichment\Component\Product\Normalizer\InternalApi\ViolationNormalizer` class, it is replaced by `Akeneo\Pim\Enrichment\Component\Product\Normalizer\InternalApi\ConstraintViolationNormalizer`
-- Change `Akeneo\Pim\Enrichment\Component\Product\Model\EntityWithValuesInterface` to add `getId()` and `getIdentifier()` methods
+- Change constructor of `Oro\Bundle\PimDataGridBundle\Controller\DatagridController` to remove `Symfony\Bundle\FrameworkBundle\Templating\EngineInterface $templating`
+- Change constructor of `Oro\Bundle\FilterBundle\Form\Type\Filter\DateTimeRangeFilterType` to remove `Symfony\Component\Translation\TranslatorInterface $translator`
+- Change constructor of `Oro\Bundle\PimFilterBundle\Filter\ProductValue\MetricFilter` to remove `Symfony\Component\Translation\TranslatorInterface $translator`
+- Change constructor of `Akeneo\Pim\Enrichment\Component\Product\Normalizer\InternalApi\VersionNormalizer` to add `Symfony\Contracts\Translation\LocaleAwareInterface\LocaleAwareInterface $localeAware`
+- Change constructor of `Akeneo\UserManagement\Bundle\EventListener\LocaleSubscriber` to:
+    - remove `Symfony\Component\Translation\TranslatorInterface $translator`
+    - add  `Symfony\Contracts\Translation\LocaleAwareInterface\LocaleAwareInterface $localeAware`
 
 ### CLI commands
 
-The following CLI commands have been deleted:
-
 ### Services
 
-- Update `pim_catalog.validator.constraint.valid_metric` to use `akeneo_measure.provider.measurement_provider`
-- Update `akeneo_measure.measure_converter` to use `akeneo_measure.provider.measurement_provider`
-- Update `akeneo_measure.manager` to use `akeneo_measure.provider.measurement_provider`
-- Update `akeneo_measure.controller.rest.measures` to use `akeneo_measure.provider.measurement_provider`
-- Update `legacy_pim_api.controller.measure_family` to use `akeneo_measure.provider.measurement_provider`
-- Rename `pim_api.controller.measure_family` to  `legacy_pim_api.controller.measure_family`
-- Remove parameter `akeneo_measure.measures_config`

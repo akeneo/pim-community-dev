@@ -44,7 +44,10 @@ class BooleanFilter extends AbstractAttributeFilter implements AttributeFilterIn
         }
 
         $this->checkLocaleAndChannel($attribute, $locale, $channel);
-        $this->checkValue($attribute, $value);
+        if (Operators::IS_EMPTY !== $operator && Operators::IS_NOT_EMPTY !== $operator) {
+            $this->checkValue($attribute, $value);
+        }
+        
 
         $attributePath = $this->getAttributePath($attribute, $locale, $channel);
 
@@ -84,6 +87,37 @@ class BooleanFilter extends AbstractAttributeFilter implements AttributeFilterIn
                 $this->searchQueryBuilder->addFilter($filterClause);
                 break;
 
+            case Operators::IS_EMPTY:
+                $mustNotClause = [
+                    'exists' => [
+                        'field' => $attributePath,
+                    ],
+                ];
+
+                $attributeInEntityClauses = [
+                    [
+                        'terms' => [
+                            self::ATTRIBUTES_FOR_THIS_LEVEL_ES_ID => [$attribute->getCode()],
+                        ],
+                    ],
+                    [
+                        'terms' => [
+                            self::ATTRIBUTES_OF_ANCESTORS_ES_ID => [$attribute->getCode()],
+                        ],
+                    ]
+                ];
+
+                $this->searchQueryBuilder->addFilter(
+                    [
+                        'bool' => [
+                            'should' => $attributeInEntityClauses,
+                            'minimum_should_match' => 1,
+                        ],
+                    ]
+                );
+                $this->searchQueryBuilder->addMustNot($mustNotClause);
+                break;
+
             default:
                 throw InvalidOperatorException::notSupported($operator, static::class);
         }
@@ -99,7 +133,7 @@ class BooleanFilter extends AbstractAttributeFilter implements AttributeFilterIn
      */
     protected function checkValue(AttributeInterface $attribute, $value)
     {
-        if (!(is_bool($value) || '' === $value)) {
+        if (!is_bool($value)) {
             throw InvalidPropertyTypeException::booleanExpected($attribute->getCode(), static::class, $value);
         }
     }

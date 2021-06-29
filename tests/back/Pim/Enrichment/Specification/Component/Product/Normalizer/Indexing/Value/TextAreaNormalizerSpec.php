@@ -190,7 +190,7 @@ description\r\n");
         $this->normalize($textAreaValue, ValueCollectionNormalizer::INDEXING_FORMAT_PRODUCT_AND_MODEL_INDEX)->shouldReturn([
             'description-textarea' => [
                 '<all_channels>' => [
-                    '<all_locales>' => 'a product description'
+                    '<all_locales>' => '<br/><h1>a</h1> <i>product</i><br/> description<hr/><br/>'
                 ]
             ]
         ]);
@@ -222,7 +222,7 @@ description\r\n");
         $this->normalize($textAreaValue, ValueCollectionNormalizer::INDEXING_FORMAT_PRODUCT_AND_MODEL_INDEX)->shouldReturn([
             'description-textarea' => [
                 '<all_channels>' => [
-                    '<all_locales>' => 'a product description'
+                    '<all_locales>' => '<br/><h1>a</h1> <i>product</i><br/> description<hr/><br/>'
                 ]
             ]
         ]);
@@ -253,7 +253,7 @@ description\r\n");
         $this->normalize($textAreaValue, ValueCollectionNormalizer::INDEXING_FORMAT_PRODUCT_AND_MODEL_INDEX)->shouldReturn([
             'description-textarea' => [
                 '<all_channels>' => [
-                    'fr_FR' => 'a product description'
+                    'fr_FR' => '<h1>a product description</h1>'
                 ]
             ]
         ]);
@@ -284,7 +284,7 @@ description\r\n");
         $this->normalize($textAreaValue, ValueCollectionNormalizer::INDEXING_FORMAT_PRODUCT_AND_MODEL_INDEX)->shouldReturn([
             'description-textarea' => [
                 'ecommerce' => [
-                    '<all_locales>' => 'a product description'
+                    '<all_locales>' => '<h1>a product description</h1>'
                 ]
             ]
         ]);
@@ -315,7 +315,38 @@ description\r\n");
         $this->normalize($textAreaValue, ValueCollectionNormalizer::INDEXING_FORMAT_PRODUCT_AND_MODEL_INDEX)->shouldReturn([
             'description-textarea' => [
                 'ecommerce' => [
-                    'fr_FR' => 'a product description'
+                    'fr_FR' => '<h1>a product description</h1>'
+                ]
+            ]
+        ]);
+    }
+
+    function it_normalizes_a_text_area_with_invalid_html_tags(
+        ValueInterface $textAreaValue,
+        GetAttributes $getAttributes
+    ) {
+        $textAreaValue->getAttributeCode()->willReturn('description');
+        $textAreaValue->getLocaleCode()->willReturn(null);
+        $textAreaValue->getScopeCode()->willReturn(null);
+        $textAreaValue->getData()->willReturn("<p>a product <span>description</span> with <invalid html content</p>");
+
+        $getAttributes->forCode('description')->willReturn(new Attribute(
+            'description',
+            'pim_catalog_textarea',
+            [],
+            false,
+            false,
+            null,
+            null,
+            true,
+            'textarea',
+            []
+        ));
+
+        $this->normalize($textAreaValue, ValueCollectionNormalizer::INDEXING_FORMAT_PRODUCT_AND_MODEL_INDEX)->shouldReturn([
+            'description-textarea' => [
+                '<all_channels>' => [
+                    '<all_locales>' => '<p>a product <span>description</span> with <invalid html content</p>'
                 ]
             ]
         ]);

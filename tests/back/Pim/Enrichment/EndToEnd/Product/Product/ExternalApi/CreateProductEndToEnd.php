@@ -4,12 +4,16 @@ declare(strict_types=1);
 
 namespace AkeneoTest\Pim\Enrichment\EndToEnd\Product\Product\ExternalApi;
 
+use Akeneo\Pim\Enrichment\Component\Product\Message\ProductCreated;
 use AkeneoTest\Pim\Enrichment\Integration\Normalizer\NormalizedProductCleaner;
 use Akeneo\Test\Integration\Configuration;
+use Akeneo\Test\IntegrationTestsBundle\Messenger\AssertEventCountTrait;
 use Symfony\Component\HttpFoundation\Response;
 
 class CreateProductEndToEnd extends AbstractProductTestCase
 {
+    use AssertEventCountTrait;
+
     /**
      * {@inheritdoc}
      */
@@ -81,6 +85,8 @@ JSON;
         $this->assertSame('', $response->getContent());
         $this->assertSame(Response::HTTP_CREATED, $response->getStatusCode());
         $this->assertSameProducts($expectedProduct, 'product_creation_family');
+
+        $this->assertEventCount(1, ProductCreated::class);
     }
 
     public function testProductCreationWithGroups()
@@ -971,7 +977,7 @@ JSON;
         $expected = <<<JSON
 {
     "code": 422,
-    "message": "Property \"associations\" expects a valid Product model identifier. The product model does not exist, \"a_non_exiting_product_model\" given. Check the expected format on the API documentation.",
+    "message": "Property \"associations\" expects a valid product model identifier. The product model does not exist, \"a_non_exiting_product_model\" given. Check the expected format on the API documentation.",
     "_links": {
         "documentation": {
             "href": "http:\/\/api.akeneo.com\/api-reference.html#post_products"

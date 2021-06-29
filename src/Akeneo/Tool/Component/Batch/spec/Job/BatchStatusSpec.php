@@ -82,6 +82,12 @@ class BatchStatusSpec extends ObjectBehavior
         $this->isRunning()->shouldReturn(true);
     }
 
+    function it_is_stopping_when_stopping()
+    {
+        $this->beConstructedWith(BatchStatus::STOPPING);
+        $this->isStopping()->shouldReturn(true);
+    }
+
     function it_is_unsuccessful_when_failed()
     {
         $this->beConstructedWith(BatchStatus::FAILED);

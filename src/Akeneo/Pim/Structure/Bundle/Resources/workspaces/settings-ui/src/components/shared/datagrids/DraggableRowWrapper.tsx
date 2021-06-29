@@ -2,7 +2,7 @@ import React, {PropsWithChildren, ReactElement, RefObject} from 'react';
 import {TableCell} from '../layouts/tables';
 import {useDataGridState} from '../../../hooks';
 import {AfterDropRowHandler} from '../providers';
-import {RowIcon} from "akeneo-design-system";
+import {RowIcon} from 'akeneo-design-system';
 import styled from 'styled-components';
 
 type Props<T> = {
@@ -32,20 +32,20 @@ const DraggableRowWrapper = <T extends {}>({
         <DraggableCell
           isDraggable={isReorderAllowed}
           isActive={isReorderActive}
-          onDragStart={event => {
+          onDragStart={(event: React.DragEvent) => {
             moveStart(event, data, index, rowRef.current);
           }}
-          onDragOver={event => {
+          onDragOver={(event: React.DragEvent) => {
             moveOver(event, data, index);
           }}
-          onDrop={event => {
+          onDrop={(event: React.DragEvent) => {
             moveDrop(event, handleDrop);
           }}
-          onDragEnd={event => {
+          onDragEnd={(event: React.DragEvent) => {
             moveEnd(event, handleDrop);
           }}
         >
-          <RowIcon shapeRendering="crispEdges"/>
+          <RowIcon shapeRendering="crispEdges" />
         </DraggableCell>
       )}
       {React.Children.map(children, element => {

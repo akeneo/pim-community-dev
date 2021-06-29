@@ -73,7 +73,7 @@ pim_enrich.entity.product:
       add_option: オプションを追加
     completeness:
       title: 完全性
-      complete: 完了
+      complete: 完全性
       no_family: ファミリーが未定義です。この商品の完全性を計算するファミリーを定義してください。
       no_completeness: 商品のファミリーを変更しました。新しいファミリーの完全性を計算するために、まずは保存して下さい。
       missing_values: "{1}不足値１件 |]、Inf [不足値{{ count }} 件"
@@ -166,6 +166,7 @@ pim_enrich.entity.product_model:
       required_label: 'バリエーションの軸'
     completeness:
       variant_product: "]-Inf, 1]{{ complete }} / {{ total }} バリエーション商品|]1, Inf[{{ complete }} / {{ total }} バリエーション商品"
+      label: バリエーション
     delete:
       confirm: この商品モデルを削除しますか？　全ての下位商品、商品モデルとバリエーション商品も削除されます。
       confirm_for_products_and_product_models: 選択した商品および商品モデルを削除してもよろしいですか？ 　商品モデル下位も全て削除されます
@@ -399,8 +400,13 @@ pim_datagrid:
       label: ステータス
     completeness:
       label: 完了
+    label_or_identifier:
+      label: ラベルもしくは識別子
+    parent:
+      label: 親
     identifier:
       label: 識別子
+  search: '{{ label }} で検索'
 batch_jobs:
   add_association:
     label: 関連付ける
@@ -459,3 +465,5 @@ batch_jobs:
     quick_export.label: XLSX商品のクイックエクスポート
     quick_export_product_model.label: XLSX商品モデルのクイックエクスポート
     perform.label: XLSX商品のクイックエクスポート
+  default_steps:
+    delete_products_and_product_models: 商品と商品モデルを削除

@@ -1,5 +1,277 @@
 # 4.0.x
 
+# 4.0.115 (2021-06-22)
+
+## Bug fixes
+
+- PIM-9914: Fix backslash incorrectly considered as an escape character in exports
+
+# 4.0.114 (2021-06-14)
+
+## Bug fixes
+
+- PIM-9902: fix specific local attribute export in model and product model
+- PIM-9901: Error 403 on a 2-levels product variant when displaying a variant product without having permission on product model
+
+# 4.0.113 (2021-06-04)
+
+## Bug fixes
+
+- PIM-9892: Add possibility to define options when fetching attributes by type
+
+# 4.0.112 (2021-05-27)
+
+## Bug fixes
+
+- PIM:9724: Fix duplicated log files for some job executions
+- PIM-9692: Standardize the thumbnail display on the product grid
+
+# 4.0.111 (2021-05-21)
+
+## Bug fixes
+
+- PIM-9777: Fix error message when trying to delete an attribute linked to an entity
+
+# 4.0.110 (2021-05-14)
+
+## Bug fixes
+
+- PIM-9862: [Backport] Fix SQL sort buffer size issue when the catalog has a very large number of categories
+
+# 4.0.109 (2021-05-11)
+
+## Bug fixes
+
+- PIM-9838: fix project completeness selection filter on product grid's bulk edit and quick export
+- PIM-9859: Fix variant product repository failing when finding last created by parent
+
+# 4.0.108 (2021-05-10)
+
+# 4.0.107 (2021-05-03)
+
+## Bug fixes
+
+- PIM-9831: Fix export profile limitation on content's filters
+
+# 4.0.106 (2021-04-29)
+
+## Bug fixes
+
+- PIM-9832: Fix variant product images query by extracting image values before sorting
+
+# 4.0.105 (2021-04-27)
+
+## Bug fixes
+
+- PIM-9818: Handle SVG image show action in file input
+
+# 4.0.104 (2021-04-22)
+
+# 4.0.103 (2021-04-02)
+
+## Bug fixes
+
+- PIM-9726: Mitigate deadlock issues on category API (backport PIM-9548)
+
+# 4.0.102 (2021-03-31)
+
+## Bug fixes
+
+- PIM-9766: Prevent letter usage in grid Number filters
+- PIM-9774: Fix variant axis 'metric' validation on import.
+- PIM-9789: Synchronously update product form image on change
+
+# 4.0.101 (2021-03-29)
+
+# 4.0.100 (2021-03-26)
+
+## Bug fixes
+
+- PIM-9770: Fix proposal filters not loading when no permissions on attribute groups
+
+# 4.0.99 (2021-03-24)
+
+## Bug fixes
+
+- PIM-9750: Auto_increment reaches max value for pim_catalog_completeness table
+
+# 4.0.98 (2021-03-16)
+
+# 4.0.97 (2021-03-10)
+
+## Bug fixes
+
+- PIM-9717: Fix 500 error when filtering with invalid identifiers value during an API call
+
+## Technical Improvements
+
+- AOB-1340: Add InMemory implem for GetExistingReferenceDataCodes query 
+
+# 4.0.96 (2021-02-23)
+
+## Bug fixes
+
+- PIM-9696: Associations and categories display according to the ownership rights
+
+# 4.0.95 (2021-02-19)
+
+# 4.0.94 (2021-02-17)
+
+# 4.0.93 (2021-02-12)
+
+# 4.0.92 (2021-02-11)
+
+# 4.0.91 (2021-02-09)
+
+## Bug fixes
+
+- PIM-9665: [Backport] PIM-9533: Update wysiwyg editor's style in order to differentiate new paragraphs from mere line breaks
+- PIM-9663: Fix PDF product renderer disregarding permissions on attribute groups (backport of PIM-9649)
+- PIM-9669: [Backport] PIM-9610: Force displaying years with 4 digits in dates for every locale
+
+# 4.0.90 (2021-02-02)
+
+# 4.0.89 (2021-01-29)
+
+# 4.0.88 (2021-01-28)
+
+# 4.0.87 (2021-01-26)
+
+## Bug fixes
+
+- PIM-9644: Now using interface in Clean removed attributes command constructor
+
+## Improvements
+
+- PIM-9623: String filter is now able to filter on codes with spaces
+
+# 4.0.86 (2021-01-22)
+
+## Bug fixes
+
+- PIM-9639: Fix sequential edit when selecting All with a filter on parent
+
+# 4.0.85 (2021-01-19)
+
+## Bug fixes
+
+- PIM-9638: Fix security issue in Symfony < 4.4.13 (see https://symfony.com/blog/cve-2020-15094-prevent-rce-when-calling-untrusted-remote-with-cachinghttpclient)
+- PIM-9635: Fix case insensitive attribute option code in product validation
+
+# 4.0.84 (2021-01-14)
+
+## Bug fixes
+
+- PIM-9627: Empty Family field when creating a product model with family not present in first page
+
+# 4.0.83 (2021-01-06)
+
+## Bug fixes
+
+- PIM-9611: Improve performance of product indexation by forcing a join due to statistics bias for low cardinality
+
+# 4.0.82 (2021-01-05)
+
+# 4.0.81 (2020-12-23)
+
+## Bug fixes
+
+- PIM-9605: Display the unit label instead of its code in the variant navigation component
+
+# 4.0.80 (2020-12-21)
+
+## Bug fixes
+
+- PIM-9601: Fix compute completeness memory usage
+
+# 4.0.79 (2020-12-18)
+
+## Bug fixes
+
+- PIM-9551: Purge logs when calling the command akeneo:batch:purge-job-execution
+- PIM-9602: Fix family dropdown on product model creation modal
+
+# 4.0.78 (2020-12-08)
+
+# 4.0.77 (2020-12-07)
+
+## Bug fixes
+
+- PIM-9513: Fix the use of an unexisting filter on the API so that it does not return an error 500
+- PIM-9586: [Backport] PIM-9571 Fix missing items on the invalid data file when importing product models
+- PIM-9592: Fix month to seconds conversion
+
+# 4.0.76 (2020-12-02)
+
+# 4.0.75 (2020-11-27)
+
+## Bug fixes
+
+- PIM-9575: Prepend hash to navigate actions URLs
+- PIM-9559: Dispatch event when clean removed attributes command is over
+- PIM-9573: Create remove_non_existing_product_values job instance at runtime
+
+# 4.0.74 (2020-11-25)
+
+## Bug fixes
+
+- PIM-9568: Fix performance issue when saving a big product group
+- RAC-388: Fix fatal error when an attribute is removed then re-created with the same code but another type.
+
+# 4.0.73 (2020-11-23)
+
+## Bug fixes
+
+- PIM-9565: Fix StandardToFlat boolean value converter
+- PIM-9550: Add attribute codes as an argument to the command "pim:product:clean-removed-attributes"
+
+# 4.0.72 (2020-11-16)
+
+# 4.0.71 (2020-11-12)
+
+# 4.0.70 (2020-11-09)
+
+## Bug fixes
+
+- PIM-9555: Fix PurgeJobExecutionCommand with 0 day option
+
+# 4.0.69 (2020-11-05)
+
+# 4.0.68 (2020-10-30)
+
+# 4.0.67 (2020-10-28)
+
+## Bug fixes
+
+- PIM-9518: Improve performance of SQL query about fetching images from product model codes
+- PIM-9524: improve purge job execution to limit the out of memory errors
+
+# 4.0.66 (2020-10-23)
+
+# 4.0.65 (2020-10-19)
+
+# 4.0.64 (2020-10-09)
+
+# 4.0.63 (2020-10-08)
+
+## Bug fixes
+
+- PIM-9497: Improve performances of SQL query about product model children completeness
+
+# 4.0.62 (2020-10-07)
+
+## Bug fixes
+
+- PIM-9490: [Backport] PIM-9461: Fix display of multiselect fields with a lot of selected options
+- PIM-9493: Attributes with no values are well rendered in PDF
+
+## Technical Improvements
+
+- PIM-9472: [Backport] API-1253: Add attr group labels inside attribute end-point + API-1260: Add search filters on attribute groups
+- PIM-9470: [Backport] API-1212: Add filters on family search + API-1247: Add filter on category codes + API-1251: Add ability to get categories filtered by parent
+
+# 4.0.61 (2020-10-02)
+
 # 4.0.60 (2020-09-30)
 
 ## Technical Improvements

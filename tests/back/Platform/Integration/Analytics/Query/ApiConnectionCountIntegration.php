@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace AkeneoTest\Platform\Integration\Analytics\Query;
 
-use Akeneo\Connectivity\Connection\back\tests\Integration\Fixtures\ConnectionLoader;
+use Akeneo\Connectivity\Connection\Tests\CatalogBuilder\ConnectionLoader;
 use Akeneo\Connectivity\Connection\Domain\Settings\Model\ValueObject\FlowType;
 use Akeneo\Platform\Bundle\AnalyticsBundle\Query\Sql\ApiConnectionCount;
 use Akeneo\Test\Integration\TestCase;

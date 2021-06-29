@@ -38,8 +38,17 @@ The {{ attribute_code }} attribute requires a date that should be {{ limit }} or
 The {{ attribute_code }} attribute requires a date that should be {{ limit }} or before.: The {{ attribute_code }} attribute requires a date that should be {{ limit }} or before.
 The {{ attribute }} attribute requires a number, and the submitted {{ value }} value is not.: The {{ attribute }} attribute requires a number, and the submitted {{ value }} value is not.
 The %attribute% attribute must not contain more than %limit% characters. The submitted value is too long.: The %attribute% attribute must not contain more than %limit% characters. The submitted value is too long.
+The %attribute% attribute requires a valid date. Please use the following format %date_format% for dates.: The %attribute% attribute requires a valid date. Please use the following format %date_format% for dates.
+The %locale% locale is not available on the %attribute% attribute.: The %locale% locale is not available on the %attribute% attribute.
 'The {{ attribute_code }} attribute must match the following regular expression: {{ pattern }}.': 'The {{ attribute_code }} attribute must match the following regular expression: {{ pattern }}.'
 'The {{ attribute_code }} attribute cannot be empty.': 'The {{ attribute_code }} attribute cannot be empty.'
+'The file %file_name% is too large (%file_size% %suffix%). The %attribute% attribute can not exceed %max_file_size% %suffix%.': The file %file_name% is too large (%file_size% %suffix%). The %attribute% attribute can not exceed %max_file_size% %suffix%.
+'The %attribute_code% attribute requires a valid locale. The %invalid_locale% locale does not exist.': 'The %attribute_code% attribute requires a valid locale. The %invalid_locale% locale does not exist.'
+'The %attribute_code% attribute requires a valid locale. The %invalid_locale% locale is not bound to the %channel_code% channel.': 'The %attribute_code% attribute requires a valid locale. The %invalid_locale% locale is not bound to the %channel_code% channel.'
+The %attribute% attribute requires an e-mail address.: 'The %attribute% attribute requires an e-mail address.'
+'The %attribute% attribute requires an equal or greater than %min_value% value.': 'The %attribute% attribute requires an equal or greater than %min_value% value.'
+'The %attribute% attribute requires an equal or lesser than %max_value% value.': 'The %attribute% attribute requires an equal or lesser than %max_value% value.'
+The %attribute_code% attribute requires a value per channel. The %channel% channel (scope) must exist in your PIM: 'The %attribute_code% attribute requires a value per channel. The %channel% channel (scope) must exist in your PIM'
 pim_catalog:
     constraint:
         can_have_family_variant_empty_axis_value: 'Attribute "%attribute%" cannot be empty, as it is defined as an axis for this entity'
@@ -70,6 +79,9 @@ pim_catalog:
         family_variant_maximum_number_of_level: Family variant cannot have more than "%level%" level
         family_variant_unique_attributes_in_last_level: Unique attribute "%attribute%" must be set at the product level
         product_identifier: These identifiers "%s" don't exist.
+        blacklisted_attribute_code: Code temporarily blocked until the ongoing cleanup job is complete.
+        blacklisted_attribute_code_with_link: "Code temporarily blocked until the ongoing cleanup job is complete. To find out more, please check the <a href='{{ link }}' target='_blank'>job detail</a>."
+        duplicate_options: '{1} The following option was used multiple times: "{{ duplicate_options }}". Please check your option list again.|]1, +Inf] The following options were used multiple times: "{{ duplicate_options }}". Please check your option list again.'
         0: An unexpected error occurred.
         100: Non-expected value
         101: This field expects a boolean value.
@@ -104,3 +116,8 @@ pim_catalog:
 mass_edit:
     edit_common_attributes:
         invalid_values: There are errors in the attributes form
+
+pim_datagrid:
+    column_configurator:
+        label:
+            unique_message: The label must be unique

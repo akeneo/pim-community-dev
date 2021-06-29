@@ -5,8 +5,10 @@ declare(strict_types=1);
 namespace Akeneo\Pim\Enrichment\Component\Product\Webhook;
 
 use Akeneo\Pim\Enrichment\Component\Product\Message\ProductModelRemoved;
-use Akeneo\Platform\Component\EventQueue\BusinessEventInterface;
+use Akeneo\Platform\Component\EventQueue\BulkEventInterface;
 use Akeneo\Platform\Component\Webhook\EventDataBuilderInterface;
+use Akeneo\Platform\Component\Webhook\EventDataCollection;
+use Akeneo\UserManagement\Component\Model\UserInterface;
 
 /**
  * @copyright 2020 Akeneo SAS (http://www.akeneo.com)
@@ -14,24 +16,35 @@ use Akeneo\Platform\Component\Webhook\EventDataBuilderInterface;
  */
 class ProductModelRemovedEventDataBuilder implements EventDataBuilderInterface
 {
-    public function supports(BusinessEventInterface $businessEvent): bool
+    public function supports(BulkEventInterface $event): bool
     {
-        return $businessEvent instanceof ProductModelRemoved;
-    }
-
-    /**
-     * @param ProductModelRemoved $businessEvent
-     */
-    public function build(BusinessEventInterface $businessEvent): array
-    {
-        if (false === $this->supports($businessEvent)) {
-            throw new \InvalidArgumentException();
+        if (false === $event instanceof BulkEventInterface) {
+            return false;
         }
 
-        $data = $businessEvent->data();
+        foreach ($event->getEvents() as $event) {
+            if (false === $event instanceof ProductModelRemoved) {
+                return false;
+            }
+        }
 
-        return [
-            'resource' => ['code' => $data['code']]
-        ];
+        return true;
+    }
+
+    public function build(BulkEventInterface $bulkEvent, UserInterface $user): EventDataCollection
+    {
+        $collection = new EventDataCollection();
+
+        /** @var ProductModelRemoved $event */
+        foreach ($bulkEvent->getEvents() as $event) {
+            $data = [
+                'resource' => [
+                    'code' => $event->getCode()
+                ],
+            ];
+            $collection->setEventData($event, $data);
+        }
+
+        return $collection;
     }
 }

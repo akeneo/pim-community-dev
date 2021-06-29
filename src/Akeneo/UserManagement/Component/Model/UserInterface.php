@@ -554,4 +554,18 @@ interface UserInterface extends AdvancedUserInterface, \Serializable, EntityUplo
     public function isApiUser(): bool;
 
     public function defineAsApiUser(): void;
+
+    public function duplicate(): UserInterface;
+
+    public function getConsecutiveAuthenticationFailureCounter(): int;
+
+    public function setConsecutiveAuthenticationFailureCounter(int $consecutiveAuthenticationFailureCounter);
+
+    public function getAuthenticationFailureResetDate(): ?\DateTime;
+
+    public function setAuthenticationFailureResetDate(?\DateTime $authenticationFailureResetDate);
+
+    public function getProfile(): ?string;
+
+    public function setProfile(?string $profile): void;
 }

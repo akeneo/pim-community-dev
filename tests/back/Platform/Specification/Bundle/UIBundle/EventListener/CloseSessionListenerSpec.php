@@ -6,7 +6,7 @@ use PhpSpec\ObjectBehavior;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Session\SessionInterface;
-use Symfony\Component\HttpKernel\Event\GetResponseEvent;
+use Symfony\Component\HttpKernel\Event\RequestEvent;
 use Symfony\Component\HttpKernel\KernelEvents;
 
 class CloseSessionListenerSpec extends ObjectBehavior
@@ -21,7 +21,7 @@ class CloseSessionListenerSpec extends ObjectBehavior
         $this->getSubscribedEvents()->shouldReturn([KernelEvents::REQUEST => ['closeSession', -100]]);
     }
 
-    function it_closes_an_opened_session(GetResponseEvent $event, Request $request, SessionInterface $session)
+    function it_closes_an_opened_session(RequestEvent $event, Request $request, SessionInterface $session)
     {
         $event->getRequest()->willReturn($request);
         $request->hasSession()->willReturn(true);
@@ -33,7 +33,7 @@ class CloseSessionListenerSpec extends ObjectBehavior
     }
 
     function it_does_not_close_session_if_no_session_in_the_request(
-        GetResponseEvent $event,
+        RequestEvent $event,
         Request $request
     ) {
         $event->getRequest()->willReturn($request);
@@ -44,7 +44,7 @@ class CloseSessionListenerSpec extends ObjectBehavior
     }
 
     function it_does_not_close_session_if_session_is_not_started(
-        GetResponseEvent $event,
+        RequestEvent $event,
         Request $request,
         SessionInterface $session
     ) {

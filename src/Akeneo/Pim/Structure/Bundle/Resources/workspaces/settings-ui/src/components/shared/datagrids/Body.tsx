@@ -1,13 +1,13 @@
 import React, {Children, PropsWithChildren, ReactElement} from 'react';
 import {TableBody} from '../layouts/tables';
-import {Row} from "./Row";
+import {Row} from './Row';
 
 type RowClickHandler<T> = (data: T) => void;
 type RowMoveEndHandler<T> = (data: T) => void;
 
 type Props<T> = {
-  onRowClick: RowClickHandler<T>;
-  onRowMoveEnd: RowMoveEndHandler<T>;
+  onRowClick?: RowClickHandler<T>;
+  onRowMoveEnd?: RowMoveEndHandler<T>;
 };
 
 const Body = <T extends {}>({children, onRowClick, onRowMoveEnd}: PropsWithChildren<Props<T>>) => {

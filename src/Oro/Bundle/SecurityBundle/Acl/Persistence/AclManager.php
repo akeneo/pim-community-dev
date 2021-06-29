@@ -981,7 +981,9 @@ class AclManager extends AbstractAclManager
             $item = $this->items[$key];
             // make sure that a new ACL has a correct state
             if (true === $ifNotExist && (null === $item->getAcl() || 0 === $item->getAcl()->getId())
-                && $item->getState() === BatchItem::STATE_NONE) {
+                && $item->getState() === BatchItem::STATE_NONE
+                && !$this->aclProvider->isObjectIdentityExists($oid)
+            ) {
                 $item->setState(BatchItem::STATE_CREATE);
             }
 

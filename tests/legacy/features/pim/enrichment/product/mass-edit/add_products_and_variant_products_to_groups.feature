@@ -4,6 +4,7 @@ Feature: Add products and variant products to many groups at once via a form
   As a product manager
   I need to be able to add products to many groups at once via a form
 
+  @purge-messenger
   Scenario: Add products to a related group
     Given the "footwear" catalog configuration
     And the following products:
@@ -20,7 +21,9 @@ Feature: Add products and variant products to many groups at once via a form
     When I confirm mass edit
     And I wait for the "add_to_group" job to finish
     Then "similar_boots" group should contain "kickers, hiking_shoes and moon_boots"
+    And 3 events of type "product.updated" should have been raised
 
+  @purge-messenger
   Scenario: Add variant products to a related group by selecting a product model
     Given a "default" catalog configuration
     And the following product groups:
@@ -59,3 +62,5 @@ Feature: Add products and variant products to many groups at once via a form
     And I confirm mass edit
     And I wait for the "add_to_group" job to finish
     Then "bageneo" group should contain "bag_white_large, bag_white_small, bag_red_small and bag_red_large"
+    And 0 events of type "product_model.updated" should have been raised
+    And 4 events of type "product.updated" should have been raised

@@ -29,7 +29,7 @@ services:
             - '@pim_catalog.repository.locale'
             - '@pim_catalog.registry.attribute_type'
             - '@pim_structure.updater.translatable'
-            - ['auto_option_sorting', 'is_read_only']
+            - ['auto_option_sorting', 'is_read_only', 'default_value']
 
     pim_catalog.updater.attribute_option:
         class: 'Akeneo\Pim\Structure\Component\Updater\AttributeOptionUpdater'

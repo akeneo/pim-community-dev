@@ -6,8 +6,11 @@ namespace Akeneo\Test\IntegrationTestsBundle\Loader;
 
 use Akeneo\Pim\Enrichment\Component\Product\Storage\Indexer\ProductIndexerInterface;
 use Akeneo\Pim\Enrichment\Component\Product\Storage\Indexer\ProductModelIndexerInterface;
+use Akeneo\Platform\Bundle\InstallerBundle\Event\InstallerEvent;
+use Akeneo\Platform\Bundle\InstallerBundle\Event\InstallerEvents;
 use Akeneo\Platform\Bundle\InstallerBundle\FixtureLoader\FixtureJobLoader;
 use Akeneo\Test\Integration\Configuration;
+use Akeneo\Test\IntegrationTestsBundle\Launcher\JobLauncher;
 use Akeneo\Test\IntegrationTestsBundle\Security\SystemUserAuthenticator;
 use Akeneo\Tool\Bundle\BatchBundle\Job\DoctrineJobRepository;
 use Akeneo\Tool\Bundle\ElasticsearchBundle\Client;
@@ -18,10 +21,12 @@ use Elasticsearch\ClientBuilder;
 use League\Flysystem\Filesystem;
 use League\Flysystem\Plugin\ListPaths;
 use Oro\Bundle\SecurityBundle\Acl\Persistence\AclManager;
+use Psr\EventDispatcher\EventDispatcherInterface;
 use Symfony\Bundle\FrameworkBundle\Console\Application;
 use Symfony\Component\Console\Input\ArrayInput;
 use Symfony\Component\Console\Output\BufferedOutput;
 use Symfony\Component\HttpKernel\KernelInterface;
+use Symfony\Component\Messenger\Transport\TransportInterface;
 use Symfony\Component\Process\Exception\ProcessFailedException;
 use Symfony\Component\Process\Process;
 
@@ -95,6 +100,12 @@ class FixturesLoader implements FixturesLoaderInterface
     /** @var MeasurementInstaller */
     private $measurementInstaller;
 
+    /** @var TransportInterface */
+    private $transport;
+
+    private EventDispatcherInterface $eventDispatcher;
+    private JobLauncher $jobLauncher;
+
     public function __construct(
         KernelInterface $kernel,
         DatabaseSchemaHandler $databaseSchemaHandler,
@@ -110,6 +121,9 @@ class FixturesLoader implements FixturesLoaderInterface
         Client $esClient,
         Connection $dbConnection,
         MeasurementInstaller $measurementInstaller,
+        TransportInterface $transport,
+        EventDispatcherInterface $eventDispatcher,
+        JobLauncher $jobLauncher,
         string $databaseHost,
         string $databaseName,
         string $databaseUser,
@@ -143,6 +157,9 @@ class FixturesLoader implements FixturesLoaderInterface
         $clientBuilder->setHosts([$elasticsearchHost]);
         $this->nativeElasticsearchClient = $clientBuilder->build();
         $this->measurementInstaller = $measurementInstaller;
+        $this->transport = $transport;
+        $this->eventDispatcher = $eventDispatcher;
+        $this->jobLauncher = $jobLauncher;
     }
 
     public function __destruct()
@@ -169,13 +186,24 @@ class FixturesLoader implements FixturesLoaderInterface
         } else {
             $this->loadData($configuration);
             $this->dumpDatabase($dumpFile);
+            $this->purgeMessengerEvents();
         }
 
-        $this->nativeElasticsearchClient->indices()->refresh(['index' => '_all']);
+        $this->nativeElasticsearchClient->indices()->refresh(['index' => $this->getIndexNames()]);
         $this->clearAclCache();
+        $this->jobLauncher->flushJobQueue();
 
         $this->systemUserAuthenticator->createSystemUser();
 
+    }
+
+    protected function purgeMessengerEvents()
+    {
+        while (!empty($envelopes = $this->transport->get())) {
+            foreach ($envelopes as $envelope) {
+                $this->transport->ack($envelope);
+            }
+        }
     }
 
     protected function loadData(Configuration $configuration): void
@@ -260,6 +288,13 @@ class FixturesLoader implements FixturesLoaderInterface
             if (0 !== $exitCode) {
                 throw new \RuntimeException(sprintf('Catalog not installable! "%s"', $output->fetch()));
             }
+
+            $this->eventDispatcher->dispatch(
+                new InstallerEvent(null, $jobInstance->getCode(), [
+                    'job_name' => $jobInstance->getJobName(),
+                ]),
+                InstallerEvents::POST_LOAD_FIXTURE
+            );
         }
 
         $this->fixtureJobLoader->deleteJobInstances();
@@ -371,6 +406,7 @@ class FixturesLoader implements FixturesLoaderInterface
             '--quick',
             '--skip-add-locks',
             '--skip-disable-keys',
+            '--complete-insert',
             $this->databaseName,
             '> '.$filepath,
         ]);
@@ -445,7 +481,8 @@ class FixturesLoader implements FixturesLoaderInterface
 
     private function deleteAllDocumentsInElasticsearch(): void
     {
-        $this->nativeElasticsearchClient->indices()->refresh(['index' => '_all']);
+        $indexNames = $this->getIndexNames();
+        $this->nativeElasticsearchClient->indices()->refresh(['index' => $indexNames]);
 
         $this->nativeElasticsearchClient->deleteByQuery([
             'body' => [
@@ -453,8 +490,16 @@ class FixturesLoader implements FixturesLoaderInterface
                     'match_all' => new \stdClass()
                 ],
             ],
-            'index' => '_all',
+            'index' => $indexNames,
             'refresh' => true
         ]);
+    }
+
+    private function getIndexNames(): array
+    {
+        return array_map(
+            fn (Client $client) => $client->getIndexName(),
+            $this->clientRegistry->getClients()
+        );
     }
 }

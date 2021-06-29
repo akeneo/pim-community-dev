@@ -5,7 +5,7 @@ services:
         arguments:
             - '@pim_catalog.normalizer.standard.translation'
             - '@pim_catalog.normalizer.standard.datetime'
-            - ['auto_option_sorting']
+            - ['auto_option_sorting', 'default_value']
         tags:
             - { name: pim_standard_format_serializer.normalizer, priority: 90 }
 
@@ -31,6 +31,7 @@ services:
         arguments:
             - '@pim_catalog.normalizer.standard.attribute'
             - '@pim_versioning.serializer.normalizer.flat.label_translation'
+            - '@akeneo.pim.structure.query.get_attribute_option_codes'
         tags:
             - { name: pim_versioning.serializer.normalizer, priority: 90 }
 

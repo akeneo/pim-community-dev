@@ -39,7 +39,7 @@ class UserNormalizer implements NormalizerInterface, CacheableSupportsMethodInte
     private $properties;
 
     /** @var array */
-    protected $supportedFormats = ['array', 'standard', 'internal_api'];
+    protected $supportedFormats = ['internal_api'];
 
     /** @var array */
     private $userNormalizers;
@@ -99,6 +99,7 @@ class UserNormalizer implements NormalizerInterface, CacheableSupportsMethodInte
             'groups'                    => $user->getGroupNames(),
             'roles'                     => $this->getRoleNames($user),
             'product_grid_filters'      => $user->getProductGridFilters(),
+            'profile'                   => $user->getProfile(),
             'avatar'                    => null === $user->getAvatar() ? [
                 'filePath'         => null,
                 'originalFilename' => null,
@@ -116,11 +117,11 @@ class UserNormalizer implements NormalizerInterface, CacheableSupportsMethodInte
             ]
         ];
 
-        $types = $this->datagridViewRepo->getDatagridViewTypeByUser($user);
-        foreach ($types as $type) {
-            $defaultView = $user->getDefaultGridView($type['datagridAlias']);
+        $aliases = $this->datagridViewRepo->getDatagridViewAliasesByUser($user);
+        foreach ($aliases as $alias) {
+            $defaultView = $user->getDefaultGridView($alias);
             // Set default_product_grid_view, default_published_product_grid_view, etc.
-            $result[sprintf('default_%s_view', str_replace('-', '_', $type['datagridAlias']))]
+            $result[sprintf('default_%s_view', str_replace('-', '_', $alias))]
                 = $defaultView === null ? null : $defaultView->getId();
         }
 

@@ -70,6 +70,9 @@ pim_enrich:
       description: I seguenti attributi richiesti verranno applicati alle famiglie selezionate
       success_flash: Gli attributi richiesti sono stati applicati alle famiglie selezionate
       launched_flash: L'azione di massa "imposta i requisiti di attributo" è stata lanciata. Sarai avvisato quando finisce.
+    convert_to_simple_products:
+      warning:
+        non_variant_product: Il prodotto "{{ identifier }}" è già un prodotto semplice; nessuna conversione richiesta.
     mass_action:
       quick_export:
         launched_flash: Il processo di esportazione dei prodotti è attualmente in esecuzione
@@ -80,3 +83,4 @@ tree:
   edit: Modifica struttura
   remove:
     error_linked: Questo albero di categoria non può essere eliminato, è collegato ad un canale
+  create: Crea un albero di categorie

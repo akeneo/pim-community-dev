@@ -3,7 +3,6 @@ import {mountReactElementRef, unmountReactElementRef} from './reactElementHelper
 
 const BaseController = require('pim/controller/base');
 const mediator = require('oro/mediator');
-
 abstract class ReactController extends BaseController {
   /**
    * Base React element to mount (and keep as ref between route changes).
@@ -17,6 +16,13 @@ abstract class ReactController extends BaseController {
    */
   abstract routeGuardToUnmount(): RegExp;
 
+  /**
+   * Return a static reference to a HTMLElement
+   */
+  getContainerRef(): Element {
+    return this.$el.get(0);
+  }
+
   initialize() {
     mediator.on('route_start', this.handleRouteChange, this);
 
@@ -24,7 +30,7 @@ abstract class ReactController extends BaseController {
   }
 
   renderRoute() {
-    this.$el.append(mountReactElementRef(this.reactElementToMount(), this.$el.get(0)));
+    this.$el.append(mountReactElementRef(this.reactElementToMount(), this.getContainerRef()));
 
     return Deferred().resolve();
   }
@@ -45,7 +51,7 @@ abstract class ReactController extends BaseController {
       return;
     }
 
-    unmountReactElementRef(this.$el.get(0));
+    unmountReactElementRef(this.getContainerRef());
   }
 }
 

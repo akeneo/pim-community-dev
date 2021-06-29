@@ -12,6 +12,7 @@ $rules = [
     $builder->only([
         'Doctrine',
         'Symfony\Component',
+        'Symfony\Contracts',
         'Akeneo\Tool',
         'Akeneo\Channel',
         'Oro\Bundle\SecurityBundle\Annotation\AclAncestor',

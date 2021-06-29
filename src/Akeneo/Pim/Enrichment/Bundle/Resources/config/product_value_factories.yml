@@ -72,6 +72,7 @@ services:
             - '@akeneo.pim.enrichment.factory.value'
             - '@akeneo.pim.structure.query.get_attributes'
             - '@akeneo.pim.enrichment.factory.non_existent_values_filter.chained'
+            - '@logger'
 
     akeneo.pim.enrichment.factory.write_value_collection:
         class: Akeneo\Pim\Enrichment\Component\Product\Factory\WriteValueCollectionFactory

@@ -129,6 +129,7 @@ services:
         arguments:
             - '@pim_user.manager'
             - '@translator'
+            - '@translator'
             - '@pim_catalog.localization.presenter.datetime'
             - '@pim_catalog.localization.presenter.registry'
             - '@pim_catalog.repository.attribute'

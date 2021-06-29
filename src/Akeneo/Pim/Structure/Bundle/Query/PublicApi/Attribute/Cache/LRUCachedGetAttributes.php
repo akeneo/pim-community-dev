@@ -5,6 +5,7 @@ namespace Akeneo\Pim\Structure\Bundle\Query\PublicApi\Attribute\Cache;
 
 use Akeneo\Pim\Structure\Component\Query\PublicApi\AttributeType\Attribute;
 use Akeneo\Pim\Structure\Component\Query\PublicApi\AttributeType\GetAttributes;
+use Akeneo\Tool\Component\StorageUtils\Cache\CachedQueryInterface;
 use Akeneo\Tool\Component\StorageUtils\Cache\LRUCache;
 
 /**
@@ -12,7 +13,7 @@ use Akeneo\Tool\Component\StorageUtils\Cache\LRUCache;
  * @copyright 2019 Akeneo SAS (http://www.akeneo.com)
  * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
  */
-final class LRUCachedGetAttributes implements GetAttributes
+final class LRUCachedGetAttributes implements GetAttributes, CachedQueryInterface
 {
     /** @var GetAttributes */
     private $getAttributes;
@@ -54,5 +55,10 @@ final class LRUCachedGetAttributes implements GetAttributes
         };
 
         return $this->cache->getForKey($attributeCode, $fetchNonFoundAttributeCodes);
+    }
+
+    public function clearCache(): void
+    {
+        $this->cache = new LRUCache(1000);
     }
 }

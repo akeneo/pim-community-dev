@@ -26,17 +26,17 @@ Feature: Display the product history
       | version | property           | value      | date |
       | 2       | Weather conditions | snowy,cold | now  |
       | 2       | Name en            | Nice boots | now  |
-    When I am on the "weather_conditions" attribute page
-    And I press the secondary action "Delete"
-    And I confirm the deletion
-    And I am on the "name" attribute page
-    And I press the secondary action "Delete"
-    And I confirm the deletion
+    When I am on the attributes page
+    And I search "Weather conditions"
+    And I click on the "delete" action of the row which contains "Weather conditions"
+    And I fill the input labelled 'Please type "weather_conditions"' with 'weather_conditions'
+    And I press the "Delete" button
     And I edit the "boots" product
     And the history of the product "boots" has been built
     When I visit the "History" column tab
+    And I refresh current page
     Then there should be 2 update
     And I should see history:
-      | version | property           | value      | date |
-      | 2       | weather_conditions | snowy,cold | now  |
-      | 2       | Name en            | Nice boots | now  |
+      | version | property           | value      |
+      | 2       | weather_conditions | snowy,cold |
+      | 2       | Name en            | Nice boots |

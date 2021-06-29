@@ -4,13 +4,17 @@ declare(strict_types=1);
 
 namespace AkeneoTest\Pim\Enrichment\EndToEnd\Product\Product\VariantProduct\ExternalApi;
 
+use Akeneo\Pim\Enrichment\Component\Product\Message\ProductUpdated;
 use Akeneo\Test\Integration\Configuration;
+use Akeneo\Test\IntegrationTestsBundle\Messenger\AssertEventCountTrait;
 use AkeneoTest\Pim\Enrichment\Integration\Normalizer\NormalizedProductCleaner;
 use AkeneoTest\Pim\Enrichment\EndToEnd\Product\Product\ExternalApi\AbstractProductTestCase;
 use Symfony\Component\HttpFoundation\Response;
 
 class PartialUpdateProductToVariantEndToEnd extends AbstractProductTestCase
 {
+    use AssertEventCountTrait;
+
     public function testUpdateProductToVariant()
     {
         $client = $this->createAuthenticatedClient();
@@ -47,6 +51,7 @@ JSON;
 
         $this->assertSame('', $response->getContent());
         $this->assertSame(Response::HTTP_CREATED, $response->getStatusCode());
+        $this->assertEventCount(1, ProductUpdated::class);
 
         $product = $this->get('pim_catalog.repository.product')->findOneByIdentifier('product_family_variant');
         $standardizedProduct = $this->get('pim_standard_format_serializer')->normalize($product, 'standard');

@@ -7,7 +7,7 @@ namespace Oro\Bundle\PimDataGridBundle\Extension\Formatter\Property;
 use Akeneo\Tool\Component\Localization\Presenter\PresenterInterface;
 use Akeneo\UserManagement\Bundle\Context\UserContext;
 use Oro\Bundle\DataGridBundle\Extension\Formatter\Property\FieldProperty;
-use Symfony\Component\Translation\TranslatorInterface;
+use Symfony\Contracts\Translation\TranslatorInterface;
 
 /**
  * Renders a localized datetime value (similarly to
@@ -20,17 +20,9 @@ use Symfony\Component\Translation\TranslatorInterface;
  */
 class DateTimeWithUserTimezoneProperty extends FieldProperty
 {
-    /** @var PresenterInterface */
-    private $presenter;
+    private PresenterInterface $presenter;
+    private UserContext $userContext;
 
-    /** @var UserContext */
-    private $userContext;
-
-    /**
-     * @param TranslatorInterface $translator
-     * @param PresenterInterface  $presenter
-     * @param UserContext         $userContext
-     */
     public function __construct(
         TranslatorInterface $translator,
         PresenterInterface $presenter,

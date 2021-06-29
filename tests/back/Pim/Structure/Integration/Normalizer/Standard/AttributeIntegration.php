@@ -3,6 +3,7 @@
 namespace AkeneoTest\Pim\Structure\Integration\Normalizer\Standard;
 
 use Akeneo\Test\Integration\TestCase;
+use PHPUnit\Framework\Assert;
 
 /**
  * @author    Marie Bochu <marie.bochu@akeneo.com>
@@ -42,7 +43,9 @@ class AttributeIntegration extends TestCase
             'localizable'            => false,
             'scopable'               => false,
             'labels'                 => [],
+            'guidelines'             => ['en_US' => 'this is the sku'],
             'auto_option_sorting'    => null,
+            'default_value'          => null,
         ];
 
         $this->assert('sku', $expected);
@@ -77,7 +80,9 @@ class AttributeIntegration extends TestCase
             'localizable'            => false,
             'scopable'               => false,
             'labels'                 => [],
+            'guidelines'             => ['en_US' => 'date guidelines'],
             'auto_option_sorting'    => null,
+            'default_value'          => null,
         ];
 
         $this->assert('a_date', $expected);
@@ -112,7 +117,9 @@ class AttributeIntegration extends TestCase
             'localizable'            => false,
             'scopable'               => false,
             'labels'                 => [],
+            'guidelines'             => [],
             'auto_option_sorting'    => null,
+            'default_value'          => null,
         ];
 
         $this->assert('a_file', $expected);
@@ -147,7 +154,9 @@ class AttributeIntegration extends TestCase
             'localizable'            => false,
             'scopable'               => false,
             'labels'                 => [],
+            'guidelines'             => [],
             'auto_option_sorting'    => null,
+            'default_value'          => null,
         ];
 
         $this->assert('an_image', $expected);
@@ -182,7 +191,9 @@ class AttributeIntegration extends TestCase
             'localizable'            => false,
             'scopable'               => false,
             'labels'                 => [],
+            'guidelines'             => [],
             'auto_option_sorting'    => null,
+            'default_value'          => null,
         ];
 
         $this->assert('a_metric', $expected);
@@ -217,7 +228,9 @@ class AttributeIntegration extends TestCase
             'localizable'            => false,
             'scopable'               => false,
             'labels'                 => [],
+            'guidelines'             => [],
             'auto_option_sorting'    => null,
+            'default_value'          => null,
         ];
 
         $this->assert('a_metric_without_decimal', $expected);
@@ -252,7 +265,9 @@ class AttributeIntegration extends TestCase
             'localizable'            => false,
             'scopable'               => false,
             'labels'                 => [],
+            'guidelines'             => [],
             'auto_option_sorting'    => null,
+            'default_value'          => null,
         ];
 
         $this->assert('a_metric_without_decimal_negative', $expected);
@@ -287,7 +302,9 @@ class AttributeIntegration extends TestCase
             'localizable'            => false,
             'scopable'               => false,
             'labels'                 => [],
+            'guidelines'             => [],
             'auto_option_sorting'    => null,
+            'default_value'          => null,
         ];
 
         $this->assert('a_metric_negative', $expected);
@@ -322,7 +339,9 @@ class AttributeIntegration extends TestCase
             'localizable'            => false,
             'scopable'               => false,
             'labels'                 => [],
+            'guidelines'             => [],
             'auto_option_sorting'    => false,
+            'default_value'          => null,
         ];
 
         $this->assert('a_multi_select', $expected);
@@ -357,7 +376,9 @@ class AttributeIntegration extends TestCase
             'localizable'            => false,
             'scopable'               => false,
             'labels'                 => [],
+            'guidelines'             => [],
             'auto_option_sorting'    => null,
+            'default_value'          => null,
         ];
 
         $this->assert('a_number_float', $expected);
@@ -392,7 +413,9 @@ class AttributeIntegration extends TestCase
             'localizable'            => false,
             'scopable'               => false,
             'labels'                 => [],
+            'guidelines'             => [],
             'auto_option_sorting'    => null,
+            'default_value'          => null,
         ];
 
         $this->assert('a_number_float_negative', $expected);
@@ -427,7 +450,9 @@ class AttributeIntegration extends TestCase
             'localizable'            => false,
             'scopable'               => false,
             'labels'                 => [],
+            'guidelines'             => [],
             'auto_option_sorting'    => null,
+            'default_value'          => null,
         ];
 
         $this->assert('a_number_integer', $expected);
@@ -462,7 +487,9 @@ class AttributeIntegration extends TestCase
             'localizable'            => false,
             'scopable'               => false,
             'labels'                 => [],
+            'guidelines'             => [],
             'auto_option_sorting'    => null,
+            'default_value'          => null,
         ];
 
         $this->assert('a_number_integer_negative', $expected);
@@ -497,7 +524,9 @@ class AttributeIntegration extends TestCase
             'localizable'            => false,
             'scopable'               => false,
             'labels'                 => [],
+            'guidelines'             => [],
             'auto_option_sorting'    => null,
+            'default_value'          => null,
         ];
 
         $this->assert('a_price', $expected);
@@ -532,7 +561,9 @@ class AttributeIntegration extends TestCase
             'localizable'            => false,
             'scopable'               => false,
             'labels'                 => [],
+            'guidelines'             => [],
             'auto_option_sorting'    => null,
+            'default_value'          => null,
         ];
 
         $this->assert('a_price_without_decimal', $expected);
@@ -567,7 +598,9 @@ class AttributeIntegration extends TestCase
             'localizable'            => false,
             'scopable'               => false,
             'labels'                 => [],
+            'guidelines'             => [],
             'auto_option_sorting'    => null,
+            'default_value'          => null,
         ];
 
         $this->assert('a_ref_data_multi_select', $expected);
@@ -602,7 +635,9 @@ class AttributeIntegration extends TestCase
             'localizable'            => false,
             'scopable'               => false,
             'labels'                 => [],
+            'guidelines'             => [],
             'auto_option_sorting'    => null,
+            'default_value'          => null,
         ];
 
         $this->assert('a_ref_data_simple_select', $expected);
@@ -637,7 +672,9 @@ class AttributeIntegration extends TestCase
             'localizable'            => false,
             'scopable'               => false,
             'labels'                 => [],
+            'guidelines'             => [],
             'auto_option_sorting'    => true,
+            'default_value'          => null,
         ];
 
         $this->assert('a_simple_select', $expected);
@@ -672,7 +709,9 @@ class AttributeIntegration extends TestCase
             'localizable'            => false,
             'scopable'               => false,
             'labels'                 => [],
+            'guidelines'             => [],
             'auto_option_sorting'    => null,
+            'default_value'          => null,
         ];
 
         $this->assert('a_text', $expected);
@@ -707,7 +746,9 @@ class AttributeIntegration extends TestCase
             'localizable'            => false,
             'scopable'               => false,
             'labels'                 => [],
+            'guidelines'             => [],
             'auto_option_sorting'    => null,
+            'default_value'          => null,
         ];
 
         $this->assert('a_text_area', $expected);
@@ -742,7 +783,9 @@ class AttributeIntegration extends TestCase
             'localizable'            => false,
             'scopable'               => false,
             'labels'                 => [],
+            'guidelines'             => [],
             'auto_option_sorting'    => null,
+            'default_value'          => null,
         ];
 
         $this->assert('a_yes_no', $expected);
@@ -777,7 +820,9 @@ class AttributeIntegration extends TestCase
             'localizable'            => true,
             'scopable'               => false,
             'labels'                 => [],
+            'guidelines'             => [],
             'auto_option_sorting'    => null,
+            'default_value'          => null,
         ];
 
         $this->assert('a_localizable_image', $expected);
@@ -812,7 +857,9 @@ class AttributeIntegration extends TestCase
             'localizable'            => false,
             'scopable'               => true,
             'labels'                 => [],
+            'guidelines'             => [],
             'auto_option_sorting'    => null,
+            'default_value'          => null,
         ];
 
         $this->assert('a_scopable_price', $expected);
@@ -847,7 +894,9 @@ class AttributeIntegration extends TestCase
             'localizable'            => true,
             'scopable'               => true,
             'labels'                 => [],
+            'guidelines'             => [],
             'auto_option_sorting'    => null,
+            'default_value'          => null,
         ];
 
         $this->assert('a_localized_and_scopable_text_area', $expected);
@@ -882,10 +931,54 @@ class AttributeIntegration extends TestCase
             'localizable'            => false,
             'scopable'               => false,
             'labels'                 => [],
+            'guidelines'             => [],
             'auto_option_sorting'    => null,
+            'default_value'          => null,
         ];
 
         $this->assert('a_regexp', $expected);
+    }
+
+    public function testBooleanAttributeDefaultValue()
+    {
+        $attribute = $this->get('pim_catalog.repository.attribute')->findOneByIdentifier('a_yes_no');
+        $this->get('pim_catalog.updater.attribute')->update($attribute, ['default_value' => false]);
+        Assert::assertCount(0, $this->get('validator')->validate($attribute));
+        $this->get('pim_catalog.saver.attribute')->save($attribute);
+
+        $expected = [
+            'code' => 'a_yes_no',
+            'type' => 'pim_catalog_boolean',
+            'group' => 'attributeGroupA',
+            'unique' => false,
+            'useable_as_grid_filter' => false,
+            'allowed_extensions' => [],
+            'metric_family' => null,
+            'default_metric_unit' => null,
+            'reference_data_name' => null,
+            'available_locales' => [],
+            'max_characters' => null,
+            'validation_rule' => null,
+            'validation_regexp' => null,
+            'wysiwyg_enabled' => null,
+            'number_min' => null,
+            'number_max' => null,
+            'decimals_allowed' => null,
+            'negative_allowed' => null,
+            'date_min' => null,
+            'date_max' => null,
+            'max_file_size' => null,
+            'minimum_input_length' => null,
+            'sort_order' => 8,
+            'localizable' => false,
+            'scopable' => false,
+            'labels' => [],
+            'guidelines' => [],
+            'auto_option_sorting' => null,
+            'default_value' => false,
+        ];
+
+        $this->assert('a_yes_no', $expected);
     }
 
     /**

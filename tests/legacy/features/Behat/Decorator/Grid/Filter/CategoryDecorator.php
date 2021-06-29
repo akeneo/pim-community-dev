@@ -19,7 +19,7 @@ class CategoryDecorator extends ElementDecorator
     {
         if ('unclassified' === $operator) {
             $this->spin(function () {
-                $node = $this->find('css', '#node_-1 a');
+                $node = $this->find('css', 'button[title="Unclassified products"]');
                 if (null === $node) {
                     return false;
                 }
@@ -33,7 +33,11 @@ class CategoryDecorator extends ElementDecorator
 
             foreach ($values as $value) {
                 $this->spin(function () use ($value) {
-                    $nodeTree = $this->findNodeInTree($value)->find('css', 'a');
+                    $node = $this->findNodeInTree($value);
+                    if (null === $node) {
+                        return false;
+                    }
+                    $nodeTree = $node->find('css', 'button:nth-child(2)');
                     if (null === $nodeTree) {
                         return false;
                     }

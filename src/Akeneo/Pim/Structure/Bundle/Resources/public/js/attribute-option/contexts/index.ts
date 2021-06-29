@@ -1,8 +1,8 @@
 import {
-    AttributeContext,
-    AttributeContextProvider,
-    AttributeContextState,
-    useAttributeContext,
+  AttributeContext,
+  AttributeContextProvider,
+  AttributeContextState,
+  useAttributeContext,
 } from './AttributeContext';
 
 import {LocalesContext, LocalesContextProvider, useLocalesContext} from './LocalesContext';
@@ -10,11 +10,11 @@ import {LocalesContext, LocalesContextProvider, useLocalesContext} from './Local
 export * from './EditingOptionContext';
 
 export {
-    AttributeContext,
-    AttributeContextProvider,
-    AttributeContextState,
-    useAttributeContext,
-    LocalesContext,
-    LocalesContextProvider,
-    useLocalesContext,
+  AttributeContext,
+  AttributeContextProvider,
+  AttributeContextState,
+  useAttributeContext,
+  LocalesContext,
+  LocalesContextProvider,
+  useLocalesContext,
 };

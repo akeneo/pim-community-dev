@@ -336,6 +336,33 @@ JSON;
         $this->assertSame('The access token provided is invalid.', $responseBody['message']);
     }
 
+    public function testGetAccessTokenWithTooLargeRequestContent()
+    {
+        $client = static::createClient();
+
+        $client->request(
+            'POST',
+            'api/oauth/v1/token',
+            [],
+            [],
+            [],
+            json_encode([
+                'large_content' => str_repeat('a', 300)
+            ])
+        );
+
+        $expectedContent = <<<JSON
+    {
+        "code": 413,
+        "message": "Request content exceeded the maximum allowed size of 300 bytes"
+    }
+JSON;
+
+        $response = $client->getResponse();
+        $this->assertSame(Response::HTTP_REQUEST_ENTITY_TOO_LARGE, $response->getStatusCode());
+        $this->assertJsonStringEqualsJsonString($expectedContent, $response->getContent());
+    }
+
     /**
      * {@inheritdoc}
      */

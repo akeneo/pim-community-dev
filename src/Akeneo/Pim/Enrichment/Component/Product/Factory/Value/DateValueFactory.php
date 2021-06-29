@@ -4,11 +4,11 @@ declare(strict_types=1);
 namespace Akeneo\Pim\Enrichment\Component\Product\Factory\Value;
 
 use Akeneo\Pim\Enrichment\Component\Product\Exception\InvalidAttributeValueTypeException;
+use Akeneo\Pim\Enrichment\Component\Product\Exception\InvalidDateAttributeException;
 use Akeneo\Pim\Enrichment\Component\Product\Model\ValueInterface;
 use Akeneo\Pim\Enrichment\Component\Product\Value\DateValue;
 use Akeneo\Pim\Structure\Component\AttributeTypes;
 use Akeneo\Pim\Structure\Component\Query\PublicApi\AttributeType\Attribute;
-use Akeneo\Tool\Component\StorageUtils\Exception\InvalidPropertyException;
 
 /**
  * @author    Anael Chardan <anael.chardan@akeneo.com>
@@ -17,6 +17,8 @@ use Akeneo\Tool\Component\StorageUtils\Exception\InvalidPropertyException;
  */
 final class DateValueFactory implements ValueFactory
 {
+    private const DATE_FORMAT = 'yyyy-mm-dd';
+
     public function createWithoutCheckingData(Attribute $attribute, ?string $channelCode, ?string $localeCode, $data): ValueInterface
     {
         $date = new \DateTime($data);
@@ -39,7 +41,7 @@ final class DateValueFactory implements ValueFactory
 
     public function createByCheckingData(Attribute $attribute, ?string $channelCode, ?string $localeCode, $data): ValueInterface
     {
-        if (!is_string($data)) {
+        if (!\is_string($data)) {
             throw InvalidAttributeValueTypeException::stringExpected(
                 $attribute->code(),
                 static::class,
@@ -50,20 +52,18 @@ final class DateValueFactory implements ValueFactory
         try {
             $date = new \DateTime($data);
 
-            if (!preg_match('/^\d{4}-\d{2}-\d{2}/', $data)) {
-                throw InvalidPropertyException::dateExpected(
+            if (!\preg_match('/^\d{4}-\d{2}-\d{2}/', $data)) {
+                throw new InvalidDateAttributeException(
                     $attribute->code(),
-                    'yyyy-mm-dd',
-                    static::class,
-                    $data
+                    self::DATE_FORMAT,
+                    static::class
                 );
             }
         } catch (\Exception $e) {
-            throw InvalidPropertyException::dateExpected(
+            throw new InvalidDateAttributeException(
                 $attribute->code(),
-                'yyyy-mm-dd',
-                static::class,
-                $data
+                self::DATE_FORMAT,
+                static::class
             );
         }
 

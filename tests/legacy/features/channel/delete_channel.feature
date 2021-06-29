@@ -9,9 +9,9 @@ Feature: Delete a channel
     And I am logged in as "Peter"
 
   Scenario: Successfully delete a channel
-    Given I am on the "mobile" channel page
+    Given I am on the "tablet" channel page
     When I press the secondary action "Delete"
     And I confirm the deletion
     Then I should see the flash message "Channel successfully removed"
     And the grid should contain 1 element
-    And I should not see channel Mobile
+    And I should not see channel Tablet

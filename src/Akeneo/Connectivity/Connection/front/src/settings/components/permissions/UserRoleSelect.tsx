@@ -1,5 +1,6 @@
-import React, {useEffect, useMemo, useState} from 'react';
-import {FormGroup, InlineHelper, Select2, Select2Configuration} from '../../../common';
+import {Helper, Link, SelectInput} from 'akeneo-design-system';
+import React, {useEffect, useState} from 'react';
+import {FormGroup} from '../../../common';
 import {Translate} from '../../../shared/translate';
 import {useFetchUserRoles, UserRole} from '../../api-hooks/use-fetch-user-roles';
 
@@ -21,20 +22,13 @@ export const UserRoleSelect = ({userRoleId, onChange}: Props) => {
         setSelectedUserRole(userRoles.find(userRole => userRole.id === userRoleId));
     }, [userRoles, userRoleId]);
 
-    const handleUserRoleChange = (selectedUserRoleId?: string) => {
-        if (!selectedUserRoleId) {
+    const handleUserRoleChange = (selectedUserRoleId: string | null) => {
+        if (null === selectedUserRoleId) {
             return;
         }
         setSelectedUserRole(userRoles.find(userRole => userRole.id === selectedUserRoleId));
         onChange(selectedUserRoleId);
     };
-
-    const configuration: Select2Configuration = useMemo(
-        () => ({
-            data: userRoles.map(userRole => ({id: userRole.id, text: userRole.label})),
-        }),
-        [userRoles]
-    );
 
     if (!selectedUserRole) {
         return null;
@@ -43,26 +37,38 @@ export const UserRoleSelect = ({userRoleId, onChange}: Props) => {
     return (
         <FormGroup
             label='akeneo_connectivity.connection.connection.user_role_id'
-            helper={
+            helpers={[
                 selectedUserRole.isDefault && (
-                    <InlineHelper warning>
+                    <Helper inline level='warning'>
                         <Translate
                             id='akeneo_connectivity.connection.edit_connection.permissions.user_role_helper.message'
                             placeholders={{role: selectedUserRole.label}}
                         />
                         &nbsp;
-                        <a
+                        <Link
                             href='https://help.akeneo.com/pim/articles/manage-your-connections.html#set-the-permissions'
                             target='_blank'
-                            rel='noopener noreferrer'
                         >
                             <Translate id='akeneo_connectivity.connection.edit_connection.permissions.user_role_helper.link' />
-                        </a>
-                    </InlineHelper>
-                )
-            }
+                        </Link>
+                    </Helper>
+                ),
+            ]}
+            controlId='user_role'
         >
-            <Select2 configuration={configuration} value={selectedUserRole.id} onChange={handleUserRoleChange} />
+            <SelectInput
+                value={selectedUserRole.id}
+                onChange={handleUserRoleChange}
+                clearable={false}
+                emptyResultLabel=''
+                id='user_role'
+            >
+                {userRoles.map(userRole => (
+                    <SelectInput.Option key={userRole.id} value={userRole.id}>
+                        {userRole.label}
+                    </SelectInput.Option>
+                ))}
+            </SelectInput>
         </FormGroup>
     );
 };

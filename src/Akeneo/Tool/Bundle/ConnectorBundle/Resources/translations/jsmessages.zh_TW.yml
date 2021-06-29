@@ -1,0 +1,146 @@
+#Job labels
+batch_jobs:
+  default_steps:
+    validation: 檔案驗證
+    import_associations: 關聯匯入
+    import_root_product_model: 根產品型號匯入
+    import_sub_product_model: 子產品型號匯入
+    compute_data_related_to_family_root_product_models: 計算根產品型號數據
+    compute_data_related_to_family_sub_product_models: 計算子產品型號數據
+    compute_data_related_to_family_products: 計算產品數據
+    compute_product_models_descendants: 計算產品型號衍生物
+    compute_family_variant_structure_changes: 計算品類變量結構更改
+    compute_completeness_of_products_family: 計算產品品類完成度
+  csv_product_export:
+    label: 產品匯出為CSV
+    export.label: 產品匯出
+  csv_product_model_export:
+    label: 產品型號匯出為CSV
+    export.label: 產品型號匯出
+  csv_category_export:
+    label: 目錄匯出為CSV
+    export.label: 目錄匯出
+  csv_attribute_export:
+    label: 屬性匯出為CSV
+    export.label: 屬性匯出
+  csv_attribute_option_export:
+    label: 屬性選項匯出為CSV
+    export.label: 屬性選項匯出
+  csv_association_type_export:
+    label: 關聯類型匯出為CSV
+    export.label: 關聯類型匯出
+  csv_group_export:
+    label: 分組匯出為CSV
+    export.label: 分組匯出
+  csv_family_export:
+    label: 品項匯出為CSV
+    export.label: 品項匯出
+  csv_family_variant_export:
+    label: 品項變量匯出為CSV
+    export.label: 品項變量匯出
+  csv_product_import:
+    label: 從CSV匯入產品
+    import.label: 產品匯入
+  csv_product_model_import:
+    label: 從CSV匯入產品型號
+    import_product_model_descendants.label: 計算產品型號衍生物
+  csv_category_import:
+    label: 從CSV匯入類別
+    import.label: 目錄匯入
+  csv_attribute_import:
+    label: 從CSV匯入屬性
+    import.label: 屬性匯入
+  csv_attribute_option_import:
+    label: 從CSV匯入屬性選項
+    import.label: 屬性選項匯入
+  csv_association_type_import:
+    label: 從CSV匯入關聯類型
+    import.label: 關聯類型匯入
+  csv_family_import:
+    label: 從CSV匯入品項
+    import.label: 品項匯入
+    compute_data_related_to_family_variants.label: 計算產品型號數據
+  csv_family_variant_import:
+    label: 從CSV匯入品項變量
+    import.label: 品項變量匯入
+  csv_group_import:
+    label: 從CSV匯入分組
+    import.label: 分組匯入
+  csv_attribute_group_export:
+    label: 屬性分組匯出為CSV
+    export.label: 屬性分組匯出
+  csv_group_type_export:
+    label: 分組類型匯出為CSV
+    export.label: 分組類型匯出
+  csv_attribute_group_import:
+    label: 從CSV匯入屬性分組
+    import.label: 屬性分組匯入
+  csv_group_type_import:
+    label: 從CSV匯入分組類型
+    import.label: 分組類型匯入
+  xlsx_category_import:
+    label: 從XLSX匯入類別
+    import.label: 類別匯入
+  xlsx_association_type_import:
+    label: 從XLSX匯入關聯類型
+    import.label: 關聯類型匯入
+  xlsx_attribute_import:
+    label: 從XLSX匯入屬性
+    import.label: 屬性匯入
+  xlsx_attribute_option_import:
+    label: 從XLSX匯入屬性選項
+    import.label: 屬性選項匯入
+  xlsx_family_import:
+    label: 從XLSX匯入品項
+    import.label: 品項匯入
+  xlsx_family_variant_import:
+    label: 從XLSX匯入品項變量
+    import.label: 品項變量匯入
+  xlsx_product_export:
+    label: 產品匯出為XLSX
+    export.label: 產品匯出
+  xlsx_product_model_export:
+    label: 產品型號匯出為XLSX
+    export.label: 產品型號匯出
+  xlsx_product_import:
+    label: 從XLSX匯入產品
+    import.label: 產品匯入
+  xlsx_product_model_import:
+    label: 從XLSX匯入產品型號
+    import_product_model_descendants.label: 計算產品型號衍生物
+  xlsx_group_export:
+    label: 分組匯出為XLSX
+    export.label: 分組匯出
+  xlsx_group_import:
+    label: 從XLSX匯入分組
+    import.label: 分組匯入
+  xlsx_family_export:
+    label: 品項匯出為XLSX
+    export.label: 品項匯出
+  xlsx_family_variant_export:
+    label: 品項變量匯出為XLSX
+    export.label: 品項變量匯出
+  xlsx_category_export:
+    label: 類別匯出為XLSX
+    export.label: 目錄匯出
+  xlsx_attribute_export:
+    label: 屬性匯出為XLSX
+    export.label: 屬性匯出為XLSX
+  xlsx_attribute_option_export:
+    label: 屬性選項匯出為XLSX
+    export.label: 屬性選項匯出為XLSX
+  xlsx_association_type_export:
+    label: 關聯類型匯出為XLSX
+    export.label: 關聯類型匯出為XLSX
+  xlsx_attribute_group_export:
+    label: 屬性分組匯出為XLSX
+    export.label: 屬性分組匯出
+  xlsx_group_type_export:
+    label: 分組類型匯出為XLSX
+    export.label: 分組類型匯出
+  xlsx_attribute_group_import:
+    label: 從XLSX匯入屬性分組
+    import.label: 屬性分組匯入
+  xlsx_group_type_import:
+    label: 從XLSX匯入分組類型
+    import.label: 分組類型匯入

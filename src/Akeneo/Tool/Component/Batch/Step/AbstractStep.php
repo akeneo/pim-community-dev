@@ -116,14 +116,13 @@ abstract class AbstractStep implements StepInterface
             $stepExecution->upgradeStatus($this->determineBatchStatus($e));
 
             $exitStatus = $exitStatus->logicalAnd($this->getDefaultExitStatusForFailure($e));
-
             $stepExecution->addFailureException($e);
             $this->jobRepository->updateStepExecution($stepExecution);
 
             if ($stepExecution->getStatus()->getValue() == BatchStatus::STOPPED) {
-                $this->dispatchStepExecutionEvent(EventInterface::STEP_EXECUTION_INTERRUPTED, $stepExecution);
+                $this->dispatchStepExecutionEvent(EventInterface::STEP_EXECUTION_INTERRUPTED, $stepExecution, $e);
             } else {
-                $this->dispatchStepExecutionEvent(EventInterface::STEP_EXECUTION_ERRORED, $stepExecution);
+                $this->dispatchStepExecutionEvent(EventInterface::STEP_EXECUTION_ERRORED, $stepExecution, $e);
             }
         }
 
@@ -176,10 +175,10 @@ abstract class AbstractStep implements StepInterface
      * @param string        $eventName     Name of the event
      * @param StepExecution $stepExecution Step object
      */
-    protected function dispatchStepExecutionEvent($eventName, StepExecution $stepExecution)
+    protected function dispatchStepExecutionEvent($eventName, StepExecution $stepExecution, \Exception $exception = null)
     {
-        $event = new StepExecutionEvent($stepExecution);
-        $this->dispatch($eventName, $event);
+        $event = new StepExecutionEvent($stepExecution, $exception);
+        $this->dispatch($event, $eventName);
     }
 
     /**
@@ -193,17 +192,11 @@ abstract class AbstractStep implements StepInterface
     protected function dispatchInvalidItemEvent($class, $reason, array $reasonParameters, InvalidItemInterface $item)
     {
         $event = new InvalidItemEvent($item, $class, $reason, $reasonParameters);
-        $this->dispatch(EventInterface::INVALID_ITEM, $event);
+        $this->dispatch($event, EventInterface::INVALID_ITEM);
     }
 
-    /**
-     * Generic batch event dispatcher
-     *
-     * @param string $eventName Name of the event
-     * @param Event  $event     Event object
-     */
-    private function dispatch($eventName, Event $event)
+    private function dispatch(Event $event, $eventName)
     {
-        $this->eventDispatcher->dispatch($eventName, $event);
+        $this->eventDispatcher->dispatch($event, $eventName);
     }
 }

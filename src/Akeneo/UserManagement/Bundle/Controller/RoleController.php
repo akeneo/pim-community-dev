@@ -14,24 +14,15 @@ use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
-use Symfony\Component\Translation\TranslatorInterface;
+use Symfony\Contracts\Translation\TranslatorInterface;
 
 class RoleController extends Controller
 {
-    /** @var RoleRepositoryInterface */
-    private $roleRepository;
-
-    /** @var RemoverInterface */
-    private $remover;
-
-    /** @var AclSidManager */
-    private $aclSidManager;
-
-    /** @var AclRoleHandler */
-    private $aclRoleHandler;
-
-    /** @var TranslatorInterface */
-    private $translator;
+    private RoleRepositoryInterface $roleRepository;
+    private RemoverInterface $remover;
+    private AclSidManager $aclSidManager;
+    private AclRoleHandler $aclRoleHandler;
+    private TranslatorInterface $translator;
 
     public function __construct(
         RoleRepositoryInterface $roleRepository,

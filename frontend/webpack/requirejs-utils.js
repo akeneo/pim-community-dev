@@ -21,7 +21,7 @@ const getFrontModules = (sourceDir, originalDir, bundle) => (dir, modules) => {
         } else {
             const filePath = (dir + file).substring(originalDir.length);
             const fileInfo = path.parse(filePath);
-            if (['.ts', '.tsx'].includes(fileInfo.ext)) {
+            if (['.ts', '.tsx'].includes(fileInfo.ext) && fileInfo.name.indexOf('.unit') === -1) {
                 modules[`${fileInfo.dir.substring(1)}/${fileInfo.name}`] =
                     `${sourceDir}/${originalDir.substring(2)}${fileInfo.dir}/${fileInfo.base.replace(fileInfo.ext, '')}`;
             }
@@ -76,10 +76,10 @@ const utils = {
           'require-polyfill': path.resolve(sourceDir, './frontend/webpack/require-polyfill.js'),
           'require-context': path.resolve(sourceDir, './frontend/webpack/require-context.js'),
           'module-registry': path.resolve(baseDir, './public/js/module-registry.js'),
-          routes: path.resolve(baseDir, './public/js/routes.js'),
+          routes: path.resolve(baseDir, './public/js/fos_js_routes.json'),
           'fos-routing-base': path.resolve(
             baseDir,
-            './vendor/friendsofsymfony/jsrouting-bundle/Resources/public/js/router.js'
+            './vendor/friendsofsymfony/jsrouting-bundle/Resources/public/js/router.min.js'
           ),
           summernote: path.resolve(baseDir, 'node_modules/summernote/dist/summernote.js'),
           jquery: require.resolve('jquery'),

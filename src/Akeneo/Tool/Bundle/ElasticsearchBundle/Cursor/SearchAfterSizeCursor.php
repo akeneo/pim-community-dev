@@ -33,23 +33,14 @@ class SearchAfterSizeCursor extends AbstractCursor implements CursorInterface
     /** @var array */
     protected $initialSearchAfter;
 
-    /**
-     * @param Client                        $esClient
-     * @param CursorableRepositoryInterface $repository
-     * @param array                         $esQuery
-     * @param array                         $searchAfter
-     * @param int                           $pageSize
-     * @param int                           $limit
-     * @param string|null                   $searchAfterUniqueKey
-     */
     public function __construct(
         Client $esClient,
         CursorableRepositoryInterface $repository,
         array $esQuery,
-        array $searchAfter = [],
-        $pageSize,
-        $limit,
-        $searchAfterUniqueKey = null
+        array $searchAfter,
+        int $pageSize,
+        int $limit,
+        ?string $searchAfterUniqueKey = null
     ) {
         $this->repository = $repository;
         $this->esClient = $esClient;

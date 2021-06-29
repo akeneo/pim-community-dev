@@ -3,9 +3,12 @@
 namespace Specification\Akeneo\Platform\Bundle\AnalyticsBundle\DataCollector;
 
 use Akeneo\Connectivity\Connection\Domain\Settings\Model\ValueObject\FlowType;
+use Akeneo\Platform\Bundle\AnalyticsBundle\Query\ElasticsearchAndSql\MediaCount;
 use Akeneo\Platform\Bundle\AnalyticsBundle\Query\Sql\ApiConnectionCount;
+use Akeneo\Tool\Component\Analytics\ActiveEventSubscriptionCountQuery;
 use Akeneo\Tool\Component\Analytics\DataCollectorInterface;
 use Akeneo\Tool\Component\Analytics\EmailDomainsQuery;
+use Akeneo\Tool\Component\Analytics\IsDemoCatalogQuery;
 use PhpSpec\ObjectBehavior;
 use Akeneo\Platform\Bundle\AnalyticsBundle\DataCollector\DBDataCollector;
 use Akeneo\Platform\Component\CatalogVolumeMonitoring\Volume\Query\CountQuery;
@@ -32,7 +35,10 @@ class DBDataCollectorSpec extends ObjectBehavior
         AverageMaxQuery $productValueAverageMaxQuery,
         AverageMaxQuery $productValuePerFamilyAverageMaxQuery,
         EmailDomainsQuery $emailDomains,
-        ApiConnectionCount $apiConnectionCount
+        ApiConnectionCount $apiConnectionCount,
+        MediaCount $mediaCount,
+        IsDemoCatalogQuery $isDemoCatalogQuery,
+        ActiveEventSubscriptionCountQuery $activeEventSubscriptionCountQuery
     ) {
         $this->beConstructedWith(
             $channelCountQuery,
@@ -51,7 +57,10 @@ class DBDataCollectorSpec extends ObjectBehavior
             $productValueAverageMaxQuery,
             $productValuePerFamilyAverageMaxQuery,
             $emailDomains,
-            $apiConnectionCount
+            $apiConnectionCount,
+            $mediaCount,
+            $isDemoCatalogQuery,
+            $activeEventSubscriptionCountQuery
         );
     }
 
@@ -78,7 +87,10 @@ class DBDataCollectorSpec extends ObjectBehavior
         $productValueAverageMaxQuery,
         $productValuePerFamilyAverageMaxQuery,
         $emailDomains,
-        ApiConnectionCount $apiConnectionCount
+        ApiConnectionCount $apiConnectionCount,
+        MediaCount $mediaCount,
+        IsDemoCatalogQuery $isDemoCatalogQuery,
+        ActiveEventSubscriptionCountQuery $activeEventSubscriptionCountQuery
     ) {
         $channelCountQuery->fetch()->willReturn(new CountVolume(3, -1, 'count_channels'));
         $productCountQuery->fetch()->willReturn(new CountVolume(1121, -1, 'count_products'));
@@ -101,6 +113,10 @@ class DBDataCollectorSpec extends ObjectBehavior
             'data_destination' => ['tracked' => 0, 'untracked' => 0],
             'other' => ['tracked' => 0, 'untracked' => 0],
         ]);
+        $mediaCount->countFiles()->willReturn(2);
+        $mediaCount->countImages()->willReturn(1);
+        $isDemoCatalogQuery->fetch()->willreturn(true);
+        $activeEventSubscriptionCountQuery->fetch()->willReturn(42);
 
         $this->collect()->shouldReturn(
             [
@@ -126,6 +142,10 @@ class DBDataCollectorSpec extends ObjectBehavior
                     FlowType::DATA_DESTINATION => ['tracked' => 0, 'untracked' => 0],
                     FlowType::OTHER => ['tracked' => 0, 'untracked' => 0],
                 ],
+                'nb_media_files_in_products' => 2,
+                'nb_media_images_in_products' => 1,
+                'is_demo_catalog' => true,
+                'nb_active_event_subscription' => 42,
             ]
         );
     }

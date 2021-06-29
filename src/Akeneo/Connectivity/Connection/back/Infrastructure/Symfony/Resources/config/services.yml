@@ -72,3 +72,32 @@ services:
     akeneo_connectivity.connection.webhook.generate_secret:
         class: Akeneo\Connectivity\Connection\Infrastructure\Webhook\GenerateSecret
 
+    akeneo_connectivity.connection.webhook.cache_clearer:
+        class: Akeneo\Connectivity\Connection\Infrastructure\Webhook\Service\CacheClearer
+        arguments:
+            - '@pim_connector.doctrine.cache_clearer'
+            - '@akeneo.pim.storage_utils.cache.cached_queries_clearer'
+
+    akeneo_connectivity.connection.webhook.get_delay_until_next_request:
+        class: Akeneo\Connectivity\Connection\Infrastructure\Webhook\Service\GetDelayUntilNextRequest
+        arguments:
+            - '@akeneo_connectivity.connection.persistence.query.select_events_api_request_count_within_last_hour_query'
+
+    akeneo_connectivity.connection.webhook.sleep:
+        class: Akeneo\Connectivity\Connection\Infrastructure\Webhook\Service\Sleep
+
+    akeneo_connectivity.connection.clock:
+        class: Akeneo\Connectivity\Connection\Infrastructure\Service\Clock\SystemClock
+
+    akeneo_connectivity.connection.encrypter:
+        class: Akeneo\Connectivity\Connection\Infrastructure\Service\Encrypter
+        arguments:
+            - 'AES-256-OFB'
+            - '%env(APP_SECRET)%'
+            - '%env(APP_SECRET)%'
+
+    akeneo_connectivity.connection.dns_lookup:
+        class: Akeneo\Connectivity\Connection\Infrastructure\Service\DnsLookup
+
+    akeneo_connectivity.connection.ip_matcher:
+        class: Akeneo\Connectivity\Connection\Infrastructure\Service\IpMatcher

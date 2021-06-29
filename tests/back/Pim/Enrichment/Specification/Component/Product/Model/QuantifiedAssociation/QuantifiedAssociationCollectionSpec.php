@@ -569,6 +569,72 @@ class QuantifiedAssociationCollectionSpec extends ObjectBehavior
         ]));
     }
 
+    public function it_can_compare_itself_to_another_collection()
+    {
+        $this->beConstructedThrough(
+            'createFromNormalized',
+            [
+                [
+                    'type1' => [
+                        'products' => [
+                            ['identifier' => 'foo', 'quantity' => 2],
+                            ['identifier' => 'bar', 'quantity' => 5],
+                        ],
+                        'product_models' => [
+                            ['identifier' => 'baz', 'quantity' => 3],
+                        ],
+                    ],
+                    'type2' => [
+                        'products' => [
+                            ['identifier' => 'foo', 'quantity' => 10],
+                        ],
+                    ],
+                ],
+            ]
+        );
+
+        $identicalCollection = QuantifiedAssociationCollection::createFromNormalized(
+            [
+                'type2' => [
+                    'product_models' => [],
+                    'products' => [
+                        ['quantity' => 10, 'identifier' => 'foo'],
+                    ],
+                ],
+                'type1' => [
+                    'product_models' => [
+                        ['identifier' => 'baz', 'quantity' => 3],
+                    ],
+                    'products' => [
+                        ['identifier' => 'bar', 'quantity' => 5],
+                        ['identifier' => 'foo', 'quantity' => 2],
+                    ],
+                ],
+            ]
+        );
+        $this->equals($identicalCollection)->shouldBe(true);
+
+        $differentCollection = $identicalCollection = QuantifiedAssociationCollection::createFromNormalized(
+            [
+                'type2' => [
+                    'product_models' => [],
+                    'products' => [
+                        ['quantity' => 0, 'identifier' => 'foo'],
+                    ],
+                ],
+                'type1' => [
+                    'product_models' => [
+                        ['identifier' => 'other_sku', 'quantity' => 1],
+                    ],
+                    'products' => [
+                        ['identifier' => 'foo', 'quantity' => 2],
+                    ],
+                ],
+            ]
+        );
+        $this->equals($differentCollection)->shouldBe(false);
+    }
+
     private function anIdMapping(): IdMapping
     {
         return IdMapping::createFromMapping(

@@ -1,14 +1,14 @@
 import React, {FunctionComponent, useEffect} from 'react';
-import {useDispatch} from "react-redux";
+import {useDispatch} from 'react-redux';
 import {
   changeCatalogContextChannel,
   changeCatalogContextLocale,
-  initializeCatalogContext
-} from "../../../infrastructure/reducer";
+  initializeCatalogContext,
+} from '../../../infrastructure/reducer';
 
 interface LocaleEvent {
   locale: string;
-  context: string
+  context: string;
 }
 
 interface ChannelEvent {
@@ -28,13 +28,13 @@ const CatalogContextListener: FunctionComponent<CatalogContextListenerProps> = (
   const dispatchAction = useDispatch();
 
   useEffect(() => {
-    const handleCatalogLocaleChanged = ((event: CustomEvent<LocaleEvent>) => {
+    const handleCatalogLocaleChanged = (event: CustomEvent<LocaleEvent>) => {
       dispatchAction(changeCatalogContextLocale(event.detail.locale));
-    });
+    };
 
-    const handleCatalogChannelChanged = ((event: CustomEvent<ChannelEvent>) => {
+    const handleCatalogChannelChanged = (event: CustomEvent<ChannelEvent>) => {
       dispatchAction(changeCatalogContextChannel(event.detail.channel));
-    });
+    };
 
     window.addEventListener(CATALOG_CONTEXT_LOCALE_CHANGED, handleCatalogLocaleChanged as EventListener);
     window.addEventListener(CATALOG_CONTEXT_CHANNEL_CHANGED, handleCatalogChannelChanged as EventListener);
@@ -44,12 +44,10 @@ const CatalogContextListener: FunctionComponent<CatalogContextListenerProps> = (
     return () => {
       window.removeEventListener(CATALOG_CONTEXT_LOCALE_CHANGED, handleCatalogLocaleChanged as EventListener);
       window.removeEventListener(CATALOG_CONTEXT_CHANNEL_CHANGED, handleCatalogChannelChanged as EventListener);
-    }
+    };
   }, []);
 
-  return (
-    <></>
-  )
+  return <></>;
 };
 
 export default CatalogContextListener;

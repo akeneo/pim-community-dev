@@ -48,6 +48,7 @@ class ProductCsvImport implements ConstraintCollectionProviderInterface
         $constraintFields['groupsColumn'] = new NotBlank();
         $constraintFields['enabledComparison'] = new Type('bool');
         $constraintFields['realTimeVersioning'] = new Type('bool');
+        $constraintFields['convertVariantToSimple'] = new Type('bool');
         $constraintFields['invalid_items_file_format'] = new NotBlank();
 
         return new Collection(['fields' => $constraintFields]);

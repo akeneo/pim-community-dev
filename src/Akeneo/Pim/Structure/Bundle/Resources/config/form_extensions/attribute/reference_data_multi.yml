@@ -4,34 +4,6 @@ extensions:
         config:
             template: pim/template/common/drop-zone
 
-    pim-attribute-form-ref-data-multi-usable-as-grid-filter:
-        module: pim/form/common/fields/boolean
-        parent: pim-attribute-form-ref-data-multi
-        targetZone: content
-        position: 60
-        config:
-            fieldName: useable_as_grid_filter
-            label: pim_enrich.entity.attribute.property.useable_as_grid_filter
-
-    pim-attribute-form-ref-data-multi-is-locale-specific:
-        module: pim/attribute-edit-form/properties/is-locale-specific
-        parent: pim-attribute-form-ref-data-multi
-        targetZone: content
-        position: 70
-        config:
-            fieldName: is_locale_specific
-            label: pim_enrich.entity.attribute.property.is_locale_specific
-
-    pim-attribute-reference-data-multi-form-available-locales:
-        module: pim/attribute-edit-form/properties/available-locales
-        parent: pim-attribute-form-ref-data-multi
-        targetZone: content
-        position: 80
-        config:
-            fieldName: available_locales
-            label: pim_enrich.entity.attribute.property.available_locales
-            isMultiple: true
-
     pim-attribute-form-ref-data-multi-type-specific-params:
         module: pim/common/simple-view
         parent: pim-attribute-form-ref-data-multi
@@ -42,6 +14,34 @@ extensions:
             templateParams:
                 sectionTitle: pim_enrich.entity.attribute.module.edit.type_specific
                 dropZone: content
+
+    pim-attribute-form-ref-data-multi-usable-as-grid-filter:
+        module: pim/form/common/fields/boolean
+        parent: pim-attribute-form-ref-data-multi-type-specific-params
+        targetZone: content
+        position: 60
+        config:
+            fieldName: useable_as_grid_filter
+            label: pim_enrich.entity.attribute.property.useable_as_grid_filter
+
+    pim-attribute-form-ref-data-multi-is-locale-specific:
+        module: pim/attribute-edit-form/properties/is-locale-specific
+        parent: pim-attribute-form-ref-data-multi-type-specific-params
+        targetZone: content
+        position: 70
+        config:
+            fieldName: is_locale_specific
+            label: pim_enrich.entity.attribute.property.is_locale_specific
+
+    pim-attribute-reference-data-multi-form-available-locales:
+        module: pim/attribute-edit-form/properties/available-locales
+        parent: pim-attribute-form-ref-data-multi-type-specific-params
+        targetZone: content
+        position: 80
+        config:
+            fieldName: available_locales
+            label: pim_enrich.entity.attribute.property.available_locales
+            isMultiple: true
 
     pim-attribute-form-ref-data-multi-type-specific-params-ref-data-name:
         module: pim/attribute-edit-form/properties/ref-data-name

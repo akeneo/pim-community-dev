@@ -1,0 +1,51 @@
+services:
+    pim_connector.reader.database.user_group:
+        class: 'Akeneo\Tool\Component\Connector\Reader\Database\Reader'
+        arguments:
+            - '@pim_user.repository.group'
+
+    pim_connector.reader.database.user_role:
+        class: 'Akeneo\UserManagement\Component\Connector\Reader\Database\UserRole'
+        arguments:
+            - '@pim_user.repository.role'
+
+    pim_connector.reader.database.user:
+        class: 'Akeneo\UserManagement\Component\Connector\Reader\Database\User'
+        arguments:
+            - '@pim_user.repository.user'
+
+    pim_connector.reader.file.csv_user_group:
+        class: '%pim_connector.reader.file.csv.class%'
+        arguments:
+            - '@pim_connector.reader.file.csv_iterator_factory'
+            - '@pim_connector.array_converter.flat_to_standard.user_group'
+
+    pim_connector.reader.file.xlsx_user_group:
+        class: '%pim_connector.reader.file.xlsx.class%'
+        arguments:
+            - '@pim_connector.reader.file.xlsx_iterator_factory'
+            - '@pim_connector.array_converter.flat_to_standard.user_group'
+
+    pim_connector.reader.file.csv_user:
+        class: 'Akeneo\UserManagement\Component\Connector\Reader\File\CsvUserReader'
+        arguments:
+            - '@pim_connector.reader.file.csv_iterator_factory'
+            - '@pim_connector.array_converter.flat_to_standard.user'
+
+    pim_connector.reader.file.xlsx_user:
+        class: 'Akeneo\UserManagement\Component\Connector\Reader\File\XlsxUserReader'
+        arguments:
+            - '@pim_connector.reader.file.xlsx_iterator_factory'
+            - '@pim_connector.array_converter.flat_to_standard.user'
+
+    pim_connector.reader.file.import.csv_user_role:
+        class: '%pim_connector.reader.file.csv.class%'
+        arguments:
+            - '@pim_connector.reader.file.csv_iterator_factory'
+            - '@pim_connector.array_converter.flat_to_standard.import.user_role'
+
+    pim_connector.reader.file.import.xlsx_user_role:
+        class: '%pim_connector.reader.file.xlsx.class%'
+        arguments:
+            - '@pim_connector.reader.file.xlsx_iterator_factory'
+            - '@pim_connector.array_converter.flat_to_standard.import.user_role'

@@ -6,6 +6,7 @@ use Akeneo\Pim\Enrichment\Bundle\Filter\CollectionFilterInterface;
 use Akeneo\Pim\Structure\Bundle\Event\AttributeGroupEvents;
 use Akeneo\Pim\Structure\Bundle\Query\InternalApi\AttributeGroup\Sql\FindAttributeCodesForAttributeGroup;
 use Akeneo\Pim\Structure\Component\Model\AttributeGroupInterface;
+use Akeneo\Pim\Structure\Component\Repository\AttributeGroupRepositoryInterface;
 use Akeneo\Tool\Component\StorageUtils\Factory\SimpleFactoryInterface;
 use Akeneo\Tool\Component\StorageUtils\Remover\RemoverInterface;
 use Akeneo\Tool\Component\StorageUtils\Repository\SearchableRepositoryInterface;
@@ -35,7 +36,7 @@ use Symfony\Component\Validator\Validator\ValidatorInterface;
  */
 class AttributeGroupController
 {
-    /** @var EntityRepository */
+    /** @var AttributeGroupRepositoryInterface */
     protected $attributeGroupRepo;
 
     /** @var SearchableRepositoryInterface */
@@ -84,7 +85,7 @@ class AttributeGroupController
     private $findAttributeCodesForAttributeGroup;
 
     public function __construct(
-        EntityRepository $attributeGroupRepo,
+        AttributeGroupRepositoryInterface $attributeGroupRepo,
         SearchableRepositoryInterface $attributeGroupSearchableRepository,
         NormalizerInterface $normalizer,
         CollectionFilterInterface $collectionFilter,
@@ -224,8 +225,8 @@ class AttributeGroupController
         $this->saver->save($attributeGroup);
 
         $this->eventDispatcher->dispatch(
-            AttributeGroupEvents::POST_SAVE,
-            new GenericEvent($attributeGroup, ['data' => $data])
+            new GenericEvent($attributeGroup, ['data' => $data]),
+            AttributeGroupEvents::POST_SAVE
         );
 
         return new JsonResponse(
@@ -289,8 +290,8 @@ class AttributeGroupController
         }
 
         $this->eventDispatcher->dispatch(
-            AttributeGroupEvents::POST_SAVE,
-            new GenericEvent($attributeGroup, ['data' => $data])
+            new GenericEvent($attributeGroup, ['data' => $data]),
+            AttributeGroupEvents::POST_SAVE
         );
 
         return new JsonResponse(

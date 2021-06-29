@@ -26,6 +26,6 @@ describe('Connection', () => {
             return Promise.resolve();
         });
 
-        expect(history.location.pathname).toBe('/connections/google-shopping/edit');
+        expect(history.location.pathname).toBe('/connect/connection-settings/google-shopping/edit');
     });
 });

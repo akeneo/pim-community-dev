@@ -349,3 +349,8 @@ pim_notification:
     export: Exportació
     quick_export: Exportació ràpida
     mass_edit: Edició massiva
+akeneo_communication_channel:
+  link:
+    title: Anuncis
+  panel:
+    title: Anuncis

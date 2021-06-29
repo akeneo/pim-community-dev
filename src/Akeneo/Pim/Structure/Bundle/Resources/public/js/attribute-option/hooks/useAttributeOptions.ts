@@ -4,24 +4,24 @@ import {AttributeOptionsState} from '../store/store';
 import {initializeAttributeOptionsAction} from '../reducers';
 import baseFetcher from '../fetchers/baseFetcher';
 import {useAttributeContext} from '../contexts';
-import {useRoute} from '@akeneo-pim-community/legacy-bridge';
+import {useRoute} from '@akeneo-pim-community/shared';
 
 const useAttributeOptions = () => {
-    const dispatchAction = useDispatch();
-    const attribute = useAttributeContext();
-    const route = useRoute('pim_enrich_attributeoption_index', {attributeId: attribute.attributeId.toString()});
-    let attributeOptions = useSelector((state: AttributeOptionsState) => state.attributeOptions);
+  const dispatchAction = useDispatch();
+  const attribute = useAttributeContext();
+  const route = useRoute('pim_enrich_attributeoption_index', {attributeId: attribute.attributeId.toString()});
+  let attributeOptions = useSelector((state: AttributeOptionsState) => state.attributeOptions);
 
-    useEffect(() => {
-        (async () => {
-            if (attributeOptions === null) {
-                attributeOptions = await baseFetcher(route);
-                dispatchAction(initializeAttributeOptionsAction(attributeOptions));
-            }
-        })();
-    }, []);
+  useEffect(() => {
+    (async () => {
+      if (attributeOptions === null) {
+        attributeOptions = await baseFetcher(route);
+        dispatchAction(initializeAttributeOptionsAction(attributeOptions));
+      }
+    })();
+  }, []);
 
-    return attributeOptions;
+  return attributeOptions;
 };
 
 export default useAttributeOptions;

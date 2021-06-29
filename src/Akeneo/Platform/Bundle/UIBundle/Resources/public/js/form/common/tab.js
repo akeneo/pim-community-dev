@@ -5,40 +5,40 @@
  */
 'use strict';
 
-define([
-    'oro/translator',
-    'pim/form'
-],
-function (__, BaseForm) {
-    return BaseForm.extend({
-        /**
-         * {@inheritdoc}
-         */
-        initialize: function (config) {
-            this.config = config.config;
+define(['oro/translator', 'pim/form'], function (__, BaseForm) {
+  return BaseForm.extend({
+    /**
+     * {@inheritdoc}
+     */
+    initialize: function (config) {
+      this.config = config.config;
 
-            BaseForm.prototype.initialize.apply(this, arguments);
-        },
+      BaseForm.prototype.initialize.apply(this, arguments);
+    },
 
-        /**
-         * {@inheritdoc}
-         */
-        configure: function () {
-            this.trigger('tab:register', {
-                code: this.code,
-                label: __(this.config.label)
-            });
+    /**
+     * {@inheritdoc}
+     */
+    configure: function () {
+      this.registerTab();
 
-            return BaseForm.prototype.configure.apply(this, arguments);
-        },
+      return BaseForm.prototype.configure.apply(this, arguments);
+    },
 
-        /**
-         * {@inheritdoc}
-         */
-        render: function () {
-            this.$el.empty();
+    registerTab: function () {
+      this.trigger('tab:register', {
+        code: this.code,
+        label: __(this.config.label),
+      });
+    },
 
-            this.renderExtensions();
-        }
-    });
+    /**
+     * {@inheritdoc}
+     */
+    render: function () {
+      this.$el.empty();
+
+      this.renderExtensions();
+    },
+  });
 });

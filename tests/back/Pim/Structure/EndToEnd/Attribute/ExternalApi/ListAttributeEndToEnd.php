@@ -422,7 +422,9 @@ JSON;
     "localizable"            : false,
     "scopable"               : false,
     "labels"                 : {},
-    "auto_option_sorting"    : null
+    "guidelines"             : {"en_US": "date guidelines"},
+    "auto_option_sorting"    : null,
+    "default_value"          : null
 }
 JSON;
 
@@ -460,7 +462,9 @@ JSON;
     "localizable"            : false,
     "scopable"               : false,
     "labels"                 : {},
-    "auto_option_sorting"    : null
+    "guidelines"             : {},
+    "auto_option_sorting"    : null,
+    "default_value"          : null
 }
 JSON;
 
@@ -498,7 +502,9 @@ JSON;
     "localizable"            : true,
     "scopable"               : false,
     "labels"                 : {},
-    "auto_option_sorting"    : null
+    "guidelines"             : {},
+    "auto_option_sorting"    : null,
+    "default_value"          : null
 }
 JSON;
 
@@ -536,7 +542,9 @@ JSON;
     "localizable"            : true,
     "scopable"               : true,
     "labels"                 : {},
-    "auto_option_sorting"    : null
+    "guidelines"             : {},
+    "auto_option_sorting"    : null,
+    "default_value"          : null
 }
 JSON;
 
@@ -574,7 +582,9 @@ JSON;
     "localizable"            : true,
     "scopable"               : true,
     "labels"                 : {},
-    "auto_option_sorting"    : null
+    "guidelines"             : {},
+    "auto_option_sorting"    : null,
+    "default_value"          : null
 }
 JSON;
 
@@ -612,7 +622,9 @@ JSON;
     "localizable"            : false,
     "scopable"               : false,
     "labels"                 : {},
-    "auto_option_sorting"    : null
+    "guidelines"             : {},
+    "auto_option_sorting"    : null,
+    "default_value"          : null
 }
 JSON;
 
@@ -650,7 +662,9 @@ JSON;
     "localizable"            : false,
     "scopable"               : false,
     "labels"                 : {},
-    "auto_option_sorting"    : null
+    "guidelines"             : {},
+    "auto_option_sorting"    : null,
+    "default_value"          : null
 }
 JSON;
 
@@ -688,7 +702,9 @@ JSON;
     "localizable"            : false,
     "scopable"               : false,
     "labels"                 : {},
-    "auto_option_sorting"    : null
+    "guidelines"             : {},
+    "auto_option_sorting"    : null,
+    "default_value"          : null
 }
 JSON;
 
@@ -726,7 +742,9 @@ JSON;
     "localizable"            : false,
     "scopable"               : false,
     "labels"                 : {},
-    "auto_option_sorting"    : null
+    "guidelines"             : {},
+    "auto_option_sorting"    : null,
+    "default_value"          : null
 }
 JSON;
 
@@ -764,7 +782,9 @@ JSON;
     "localizable"            : false,
     "scopable"               : false,
     "labels"                 : {},
-    "auto_option_sorting"    : false
+    "guidelines"             : {},
+    "auto_option_sorting"    : false,
+    "default_value"          : null
 }
 JSON;
 

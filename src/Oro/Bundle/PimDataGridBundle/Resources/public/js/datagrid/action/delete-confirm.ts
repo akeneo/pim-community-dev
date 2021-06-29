@@ -16,16 +16,12 @@ class DeleteConfirm {
    * @param {string} entityHint
    * @return {Promise}
    */
-  public static getConfirmDialog(
-    entityCode: string,
-    callback: any,
-    entityHint: string
-  ) {
+  public static getConfirmDialog(entityCode: string, callback: any, entityHint: string) {
     return Dialog.confirmDelete(
-        __(`pim_enrich.entity.${entityCode}.module.delete.confirm`),
-        __('pim_common.confirm_deletion'),
-        callback,
-        entityHint
+      __(`pim_enrich.entity.${entityCode}.module.delete.confirm`),
+      __('pim_common.confirm_deletion'),
+      callback,
+      entityHint
     );
   }
 }

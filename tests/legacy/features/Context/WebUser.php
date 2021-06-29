@@ -1625,14 +1625,10 @@ class WebUser extends PimContext
     public function iCreateTheFollowingAttributeOptions(TableNode $table)
     {
         foreach ($table->getHash() as $data) {
-            $this->spin(function () use ($data) {
-                $code = $data['Code'];
-                unset($data['Code']);
+            $code = $data['Code'];
+            unset($data['Code']);
 
-                $this->getCurrentPage()->addOption($code, $data);
-
-                return true;
-            }, sprintf('Unable to create the attribute option %s', $data['Code']));
+            $this->getCurrentPage()->addOption($code, $data);
         }
     }
 
@@ -1771,6 +1767,24 @@ class WebUser extends PimContext
     }
 
     /**
+     * @param string $label
+     * @param string $value
+     *
+     * @When /^I fill the input labelled '(.*)' with '(.*)'$/
+     */
+    public function iFillTheInputLabelledWith($label, $value)
+    {
+        $page = $this->getCurrentPage();
+
+        $label = $this->spin(function () use ($page, $label) {
+            return $page->find('css', sprintf('label:contains(%s)', $label));
+        }, sprintf("Can not find any label with content '%s'", $label));
+
+        $input = $page->findByID($label->getAttribute('for'));
+        $input->setValue($value);
+    }
+
+    /**
      * @param string $button
      *
      * @Given /^I should see the "([^"]*)" button$/
@@ -1850,9 +1864,17 @@ class WebUser extends PimContext
     public function iPressTheButtonInThePopin($buttonLabel)
     {
         $buttonElement = $this->spin(function () use ($buttonLabel) {
+            $selectors = [
+                '.ui-dialog button:contains("%1$s")',
+                '.modal a:contains("%1$s")',
+                '.modal button:contains("%1$s")',
+                '.modal .AknButton:contains("%1$s")',
+                '#modal-root button:contains("%1$s")',
+            ];
+
             return $this
                 ->getCurrentPage()
-                ->find('css', sprintf('.ui-dialog button:contains("%1$s"), .modal a:contains("%1$s"), .modal button:contains("%1$s"), .modal .AknButton:contains("%1$s")', $buttonLabel));
+                ->find('css', sprintf(join(',', $selectors), $buttonLabel));
         }, sprintf('Cannot find "%s" button label in modal', $buttonLabel));
 
         $buttonElement->press();

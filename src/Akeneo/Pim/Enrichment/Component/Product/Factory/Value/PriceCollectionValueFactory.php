@@ -46,7 +46,7 @@ final class PriceCollectionValueFactory implements ValueFactory
 
     public function createByCheckingData(Attribute $attribute, ?string $channelCode, ?string $localeCode, $data): ValueInterface
     {
-        if (!is_array($data)) {
+        if (!\is_array($data)) {
             throw InvalidPropertyTypeException::arrayExpected(
                 $attribute->code(),
                 static::class,
@@ -55,7 +55,7 @@ final class PriceCollectionValueFactory implements ValueFactory
         }
 
         foreach ($data as $price) {
-            if (!is_array($price)) {
+            if (!\is_array($price)) {
                 throw InvalidPropertyTypeException::arrayOfArraysExpected(
                     $attribute->code(),
                     static::class,
@@ -133,7 +133,7 @@ final class PriceCollectionValueFactory implements ValueFactory
             $currencies[] = $price['currency'];
         }
 
-        $sort = array_multisort($currencies, SORT_ASC, $amounts, SORT_ASC, $arrayPrices);
+        $sort = \array_multisort($currencies, SORT_ASC, $amounts, SORT_ASC, $arrayPrices);
 
         if (false === $sort) {
             throw new \LogicException(

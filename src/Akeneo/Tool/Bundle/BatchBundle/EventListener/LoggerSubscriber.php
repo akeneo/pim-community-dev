@@ -8,7 +8,7 @@ use Akeneo\Tool\Component\Batch\Event\JobExecutionEvent;
 use Akeneo\Tool\Component\Batch\Event\StepExecutionEvent;
 use Psr\Log\LoggerInterface;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
-use Symfony\Component\Translation\TranslatorInterface;
+use Symfony\Contracts\Translation\TranslatorInterface;
 
 /**
  * Subscriber to log job execution result
@@ -31,10 +31,6 @@ class LoggerSubscriber implements EventSubscriberInterface
     /** @var string */
     protected $translationDomain = 'messages';
 
-    /**
-     * @param LoggerInterface     $logger
-     * @param TranslatorInterface $translator
-     */
     public function __construct(LoggerInterface $logger, TranslatorInterface $translator)
     {
         $this->logger = $logger;
@@ -47,18 +43,18 @@ class LoggerSubscriber implements EventSubscriberInterface
     public static function getSubscribedEvents()
     {
         return array(
-            EventInterface::JOB_EXECUTION_CREATED      => 'jobExecutionCreated',
-            EventInterface::BEFORE_JOB_EXECUTION       => 'beforeJobExecution',
-            EventInterface::JOB_EXECUTION_STOPPED      => 'jobExecutionStopped',
-            EventInterface::JOB_EXECUTION_INTERRUPTED  => 'jobExecutionInterrupted',
-            EventInterface::JOB_EXECUTION_FATAL_ERROR  => 'jobExecutionFatalError',
-            EventInterface::BEFORE_JOB_STATUS_UPGRADE  => 'beforeJobStatusUpgrade',
-            EventInterface::BEFORE_STEP_EXECUTION      => 'beforeStepExecution',
-            EventInterface::STEP_EXECUTION_SUCCEEDED   => 'stepExecutionSucceeded',
+            EventInterface::JOB_EXECUTION_CREATED => 'jobExecutionCreated',
+            EventInterface::BEFORE_JOB_EXECUTION => 'beforeJobExecution',
+            EventInterface::JOB_EXECUTION_STOPPED => 'jobExecutionStopped',
+            EventInterface::JOB_EXECUTION_INTERRUPTED => 'jobExecutionInterrupted',
+            EventInterface::JOB_EXECUTION_FATAL_ERROR => 'jobExecutionFatalError',
+            EventInterface::BEFORE_JOB_STATUS_UPGRADE => 'beforeJobStatusUpgrade',
+            EventInterface::BEFORE_STEP_EXECUTION => 'beforeStepExecution',
+            EventInterface::STEP_EXECUTION_SUCCEEDED => 'stepExecutionSucceeded',
             EventInterface::STEP_EXECUTION_INTERRUPTED => 'stepExecutionInterrupted',
-            EventInterface::STEP_EXECUTION_ERRORED     => 'stepExecutionErrored',
-            EventInterface::STEP_EXECUTION_COMPLETED   => 'stepExecutionCompleted',
-            EventInterface::INVALID_ITEM               => 'invalidItem',
+            EventInterface::STEP_EXECUTION_ERRORED => 'stepExecutionErrored',
+            EventInterface::STEP_EXECUTION_COMPLETED => 'stepExecutionCompleted',
+            EventInterface::INVALID_ITEM => 'invalidItem',
         );
     }
 
@@ -115,7 +111,7 @@ class LoggerSubscriber implements EventSubscriberInterface
     {
         $jobExecution = $event->getJobExecution();
 
-        $this->logger->debug(sprintf('Job execution was stopped: %s', $jobExecution));
+        $this->logger->info(sprintf('Job execution was stopped: %s', $jobExecution));
     }
 
     /**
@@ -207,8 +203,11 @@ class LoggerSubscriber implements EventSubscriberInterface
     public function stepExecutionErrored(StepExecutionEvent $event)
     {
         $stepExecution = $event->getStepExecution();
+        $e = $event->getException();
 
-        $this->logger->error(
+        $this->logger->error($e, ['exception' => $e]);
+
+        $this->logger->warning(
             sprintf(
                 'Encountered an error executing the step: %s',
                 implode(
@@ -238,7 +237,7 @@ class LoggerSubscriber implements EventSubscriberInterface
     {
         $stepExecution = $event->getStepExecution();
 
-        $this->logger->debug(sprintf('Step execution complete: %s', $stepExecution));
+        $this->logger->info(sprintf('Step execution complete: %s', $stepExecution));
     }
 
     /**
@@ -293,6 +292,6 @@ class LoggerSubscriber implements EventSubscriberInterface
             return $data->format('Y-m-d');
         }
 
-        return (string) $data;
+        return (string)$data;
     }
 }

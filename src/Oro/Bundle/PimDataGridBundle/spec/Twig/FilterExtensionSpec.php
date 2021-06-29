@@ -6,10 +6,9 @@ use Oro\Bundle\DataGridBundle\Datagrid\Common\DatagridConfiguration;
 use Oro\Bundle\DataGridBundle\Datagrid\DatagridInterface;
 use Oro\Bundle\DataGridBundle\Datagrid\Manager;
 use Oro\Bundle\DataGridBundle\Extension\Acceptor;
-use PhpSpec\ObjectBehavior;
 use Oro\Bundle\PimDataGridBundle\Datagrid\Configuration\Product\FiltersConfigurator;
-use Symfony\Component\DependencyInjection\ContainerInterface;
-use Symfony\Component\Translation\TranslatorInterface;
+use PhpSpec\ObjectBehavior;
+use Symfony\Contracts\Translation\TranslatorInterface;
 
 class FilterExtensionSpec extends ObjectBehavior
 {

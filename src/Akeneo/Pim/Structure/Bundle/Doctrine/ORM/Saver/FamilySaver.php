@@ -48,13 +48,13 @@ class FamilySaver implements SaverInterface, BulkSaverInterface
 
         $options['unitary'] = true;
 
-        $this->eventDispatcher->dispatch(StorageEvents::PRE_SAVE, new GenericEvent($family, $options));
+        $this->eventDispatcher->dispatch(new GenericEvent($family, $options), StorageEvents::PRE_SAVE);
 
         $this->objectManager->persist($family);
 
         $this->objectManager->flush();
 
-        $this->eventDispatcher->dispatch(StorageEvents::POST_SAVE, new GenericEvent($family, $options));
+        $this->eventDispatcher->dispatch(new GenericEvent($family, $options), StorageEvents::POST_SAVE);
     }
 
     /**
@@ -68,12 +68,12 @@ class FamilySaver implements SaverInterface, BulkSaverInterface
 
         $options['unitary'] = false;
 
-        $this->eventDispatcher->dispatch(StorageEvents::PRE_SAVE_ALL, new GenericEvent($families, $options));
+        $this->eventDispatcher->dispatch(new GenericEvent($families, $options), StorageEvents::PRE_SAVE_ALL);
 
         foreach ($families as $family) {
             $this->validateFamily($family);
 
-            $this->eventDispatcher->dispatch(StorageEvents::PRE_SAVE, new GenericEvent($family, $options));
+            $this->eventDispatcher->dispatch(new GenericEvent($family, $options), StorageEvents::PRE_SAVE);
 
             $this->objectManager->persist($family);
         }
@@ -81,10 +81,10 @@ class FamilySaver implements SaverInterface, BulkSaverInterface
         $this->objectManager->flush();
 
         foreach ($families as $family) {
-            $this->eventDispatcher->dispatch(StorageEvents::POST_SAVE, new GenericEvent($family, $options));
+            $this->eventDispatcher->dispatch(new GenericEvent($family, $options), StorageEvents::POST_SAVE);
         }
 
-        $this->eventDispatcher->dispatch(StorageEvents::POST_SAVE_ALL, new GenericEvent($families, $options));
+        $this->eventDispatcher->dispatch(new GenericEvent($families, $options), StorageEvents::POST_SAVE_ALL);
     }
 
     protected function validateFamily($family)

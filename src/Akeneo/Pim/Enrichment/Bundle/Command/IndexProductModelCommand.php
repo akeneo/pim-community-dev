@@ -26,7 +26,7 @@ class IndexProductModelCommand extends Command
 {
     protected static $defaultName = 'pim:product-model:index';
 
-    private const BATCH_SIZE = 1000;
+    private const DEFAULT_BATCH_SIZE = 1000;
 
     private const ERROR_CODE_USAGE = 1;
 
@@ -38,6 +38,7 @@ class IndexProductModelCommand extends Command
 
     /** @var Connection */
     private $connection;
+    private BackoffElasticSearchStateHandler $batchEsStateHandler;
 
     public function __construct(
         Client $productAndProductModelClient,
@@ -48,6 +49,15 @@ class IndexProductModelCommand extends Command
         $this->productAndProductModelClient = $productAndProductModelClient;
         $this->productModelDescendantAndAncestorsIndexer = $productModelDescendantAndAncestorsIndexer;
         $this->connection = $connection;
+        $this->batchEsStateHandler = new BackoffElasticSearchStateHandler();
+    }
+
+    /**
+     * @return ProductModelDescendantsAndAncestorsIndexer
+     */
+    public function getProductModelDescendantAndAncestorsIndexer(): ProductModelDescendantsAndAncestorsIndexer
+    {
+        return $this->productModelDescendantAndAncestorsIndexer;
     }
 
     /**
@@ -68,6 +78,13 @@ class IndexProductModelCommand extends Command
                 InputOption::VALUE_NONE,
                 'Index all existing product models into Elasticsearch'
             )
+            ->addOption(
+                'batch-size',
+                false,
+                InputOption::VALUE_REQUIRED,
+                'Number of product models to index per batch',
+                self::DEFAULT_BATCH_SIZE
+            )
             ->setDescription('Index all or some product models into Elasticsearch');
     }
 
@@ -78,8 +95,10 @@ class IndexProductModelCommand extends Command
     {
         $this->checkIndexExists();
 
+        $batchSize = (int) $input->getOption('batch-size') ?: self::DEFAULT_BATCH_SIZE;
+
         if (true === $input->getOption('all')) {
-            $chunkedProductModelCodes = $this->getAllRootProductModelCodes();
+            $chunkedProductModelCodes = $this->getAllRootProductModelCodes($batchSize);
             $productModelCount = $this->getTotalNumberOfRootProductModels();
         } elseif (!empty($input->getArgument('codes'))) {
             $requestedCodes = $input->getArgument('codes');
@@ -93,7 +112,7 @@ class IndexProductModelCommand extends Command
                     )
                 );
             }
-            $chunkedProductModelCodes = array_chunk($existingroductModelCodes, self::BATCH_SIZE);
+            $chunkedProductModelCodes = array_chunk($existingroductModelCodes, $batchSize);
             $productModelCount = count($existingroductModelCodes);
         } else {
             $output->writeln(
@@ -103,30 +122,43 @@ class IndexProductModelCommand extends Command
             return self::ERROR_CODE_USAGE;
         }
 
-        $numberOfIndexedProducts = $this->doIndex($chunkedProductModelCodes, new ProgressBar($output, $productModelCount));
+        $bulkESHandler = new class($this->productModelDescendantAndAncestorsIndexer) implements BulkEsHandlerInterface {
+            private ProductModelDescendantsAndAncestorsIndexer $productModelDescendantsAndAncestorsIndexer;
 
-        $output->writeln('');
+            public function __construct(ProductModelDescendantsAndAncestorsIndexer $productModelDescendantsAndAncestorsIndexer)
+            {
+                $this->productModelDescendantsAndAncestorsIndexer = $productModelDescendantsAndAncestorsIndexer;
+            }
+            public function bulkExecute(array $codes): int
+            {
+                $this->productModelDescendantsAndAncestorsIndexer->indexFromProductModelCodes($codes);
+                return count($codes);
+            }
+        };
+
+        $numberOfIndexedProducts = $this->doIndex($chunkedProductModelCodes, new ProgressBar($output, $productModelCount), $bulkESHandler, $output);
+
         $output->writeln(sprintf('<info>%d product models indexed</info>', $numberOfIndexedProducts));
 
         return 0;
     }
 
-    private function doIndex(iterable $chunkedProductModelCodes, ProgressBar $progressBar): int
+    private function doIndex(iterable $chunkedCodes, ProgressBar $progressBar, BulkEsHandlerInterface $codesEsHandler, OutputInterface $output): int
     {
-        $indexedProductModelCount = 0;
+        $indexedCount = 0;
 
         $progressBar->start();
-        foreach ($chunkedProductModelCodes as $productModelCodes) {
-            $this->productModelDescendantAndAncestorsIndexer->indexFromProductModelCodes($productModelCodes);
-            $indexedProductModelCount += count($productModelCodes);
-            $progressBar->advance(count($productModelCodes));
+        foreach ($chunkedCodes as $codes) {
+            $treatedBachSize = $this->batchEsStateHandler->bulkExecute($codes, $codesEsHandler);
+            $indexedCount+=$treatedBachSize;
+            $progressBar->advance($treatedBachSize);
         }
         $progressBar->finish();
 
-        return $indexedProductModelCount;
+        return $indexedCount;
     }
 
-    private function getAllRootProductModelCodes(): iterable
+    private function getAllRootProductModelCodes(int $batchSize): iterable
     {
         $formerId = 0;
         $sql = <<< SQL
@@ -142,7 +174,7 @@ SQL;
                 $sql,
                 [
                     'formerId' => $formerId,
-                    'limit' => self::BATCH_SIZE,
+                    'limit' => $batchSize,
                 ],
                 [
                     'formerId' => \PDO::PARAM_INT,

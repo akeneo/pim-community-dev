@@ -38,7 +38,7 @@ Feature: Edit common attributes of many products at once
     Then I should not see the "Name" field
     And I should not see a remove link next to the "Name" field
 
-  @critical
+  @critical @purge-messenger
   Scenario: Successfully update many text values at once
     Given I am on the products grid
     And I select rows boots, sandals and sneakers
@@ -52,6 +52,7 @@ Feature: Edit common attributes of many products at once
     Then the english localizable value name of "boots" should be "boots"
     And the english localizable value name of "sandals" should be "boots"
     And the english localizable value name of "sneakers" should be "boots"
+    And 3 events of type "product.updated" should have been raised
 
   @critical
   Scenario: Successfully update many multi-valued values at once

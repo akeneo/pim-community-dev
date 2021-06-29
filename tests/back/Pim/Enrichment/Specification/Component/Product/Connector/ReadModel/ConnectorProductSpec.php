@@ -4,6 +4,8 @@ declare(strict_types=1);
 
 namespace Specification\Akeneo\Pim\Enrichment\Component\Product\Connector\ReadModel;
 
+use Akeneo\Pim\Enrichment\Component\Product\Completeness\Model\ProductCompleteness;
+use Akeneo\Pim\Enrichment\Component\Product\Completeness\Model\ProductCompletenessCollection;
 use Akeneo\Pim\Enrichment\Component\Product\Connector\ReadModel\ConnectorProduct;
 use Akeneo\Pim\Enrichment\Component\Product\Model\ReadValueCollection;
 use Akeneo\Pim\Enrichment\Component\Product\Value\ScalarValue;
@@ -62,7 +64,9 @@ class ConnectorProductSpec extends ObjectBehavior
                 ScalarValue::value('attribute_code_1', 'data'),
                 ScalarValue::localizableValue('attribute_code_2', 'data', 'en_US'),
                 ScalarValue::localizableValue('attribute_code_2', 'data', 'fr_FR')
-            ])
+            ]),
+            null,
+            null
         );
     }
 
@@ -268,12 +272,27 @@ class ConnectorProductSpec extends ObjectBehavior
             [],
             [],
             [],
-            new ReadValueCollection()
+            new ReadValueCollection(),
+            null,
+            null
         );
 
         $this->associatedProductIdentifiers()->shouldReturn([]);
         $this->associatedProductModelCodes()->shouldReturn([]);
         $this->associatedWithQuantityProductIdentifiers()->shouldReturn([]);
         $this->associatedWithQuantityProductModelCodes()->shouldReturn([]);
+    }
+
+    function it_returns_the_product_completeness_collection()
+    {
+        $completenesses = [
+            new ProductCompleteness('ecommerce', 'en_US', 10, 5),
+            new ProductCompleteness('ecommerce', 'fr_FR', 10, 1),
+            new ProductCompleteness('print', 'en_US', 4, 0),
+        ];
+        $completenessCollection = new ProductCompletenessCollection(1, $completenesses);
+        $connectorProduct = $this->buildWithCompletenesses($completenessCollection);
+
+        $connectorProduct->completenesses()->shouldReturn($completenessCollection);
     }
 }

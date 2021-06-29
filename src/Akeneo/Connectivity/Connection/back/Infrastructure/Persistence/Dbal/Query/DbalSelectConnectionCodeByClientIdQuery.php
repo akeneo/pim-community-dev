@@ -9,8 +9,7 @@ use Doctrine\DBAL\Connection;
 
 class DbalSelectConnectionCodeByClientIdQuery implements SelectConnectionCodeByClientIdQuery
 {
-    /** @var Connection */
-    private $dbalConnection;
+    private Connection $dbalConnection;
 
     public function __construct(Connection $dbalConnection)
     {

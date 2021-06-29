@@ -20,5 +20,5 @@ Feature: Validate imported files of family variant
     And I launch the import job
     And I wait for the "csv_catalog_modeling_family_variant_import" job to finish
     Then there should be 8 family variants
-    And I should see the text "Status: Failed"
+    And I should see job execution status "FAILED"
     And I should see the text "Field \"code\" is expected, provided fields are \"family, label-en_US, variant-axes_1, variant-attributes_1\""

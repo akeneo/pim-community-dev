@@ -17,6 +17,11 @@ config:
                     options:
                         urls:
                             list: pim_user_user_role_rest_index
+                user-profiles:
+                    module: pim/base-fetcher
+                    options:
+                        urls:
+                            list: pim_user_rest_find_all_profiles
         pim/controller-registry:
             controllers:
                 pim_user_index:
@@ -57,4 +62,9 @@ config:
         pim/user/fields/default-grid-views:               pimuser/js/fields/default-grid-views.ts
         pim/user/fields/product-grid-filters:             pimuser/js/fields/product-grid-filters.ts
         pim/user-edit-form/delete:                        pimuser/js/form/delete
+        pim/user-edit-form/edit-form:                     pimuser/js/form/edit-form
+        pim/user-edit-form/duplicate:                     pimuser/js/form/duplicate-secondary-action.tsx
         pim/remover/user:                                 pimuser/js/remover/user
+        oro/datagrid/duplicate-user-action:               pimuser/js/datagrid/action/duplicate-user-action.tsx
+        pim/user/form/fields/select-profile:              pimuser/js/form/fields/select-profile.ts
+        pim/templates/user/form/fields/select-profile-container: pimuser/templates/form/fields/select-profile-container.html

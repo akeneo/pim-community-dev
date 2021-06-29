@@ -1,9 +1,9 @@
 import React from 'react';
 import {Typography} from '../../../common';
-import {InfoIcon} from '../../../common/icons';
 import styled from '../../../common/styled-with-theme';
 import {Documentation, DocumentationStyleInformation, HrefType, RouteType} from '../../model/ConnectionError';
 import {RouteDocumentationMessageParameter} from './RouteDocumentationMessageParameter';
+import {InfoRoundIcon, getColor} from 'akeneo-design-system';
 
 type Props = {
     documentation: Documentation;
@@ -54,12 +54,13 @@ export const DocumentationMessage = ({documentation}: Props) => {
 };
 
 const DocLink = styled(Typography.Link)`
-    color: ${({theme}) => theme.color.blue100};
+    color: ${getColor('blue', 100)};
 `;
 
-const InfoImg = styled(InfoIcon)`
+const InfoImg = styled(InfoRoundIcon)`
     width: 16px;
     height: 16px;
     margin-right: 4px;
     vertical-align: middle;
+    color: ${getColor('blue', 100)};
 `;

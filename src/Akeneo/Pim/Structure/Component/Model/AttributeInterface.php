@@ -672,4 +672,13 @@ interface AttributeInterface extends
      * @return bool
      */
     public function isBackendTypeReferenceData();
+
+    /**
+     * @return array    ["en_US" => "US guideline", "fr_FR" => "..."]
+     */
+    public function getGuidelines(): array;
+
+    public function addGuidelines(string $locale, string $localeGuidelines): void;
+
+    public function removeGuidelines(string $locale): void;
 }

@@ -2,17 +2,12 @@
 
 declare(strict_types=1);
 
-/*
- * This file is part of the Akeneo PIM Enterprise Edition.
- *
- * (c) 2020 Akeneo SAS (http://www.akeneo.com)
- *
- * For the full copyright and license information, please view the LICENSE
- * file that was distributed with this source code.
- */
-
 namespace Akeneo\Pim\Automation\DataQualityInsights\Domain\ValueObject;
 
+/**
+ * @copyright 2020 Akeneo SAS (http://www.akeneo.com)
+ * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
+ */
 final class Rank implements \JsonSerializable
 {
     public const LETTERS_MAPPING = [
@@ -53,6 +48,17 @@ final class Rank implements \JsonSerializable
     public static function fromInt(int $value): self
     {
         return new self($value, sprintf('rank_%d', $value));
+    }
+
+    public static function fromLetter(string $letter): self
+    {
+        $ranksByLetter = array_flip(self::LETTERS_MAPPING);
+
+        if (!isset($ranksByLetter[$letter])) {
+            throw new \InvalidArgumentException(sprintf('The letter "%s" does not match any rank.', $letter));
+        }
+
+        return self::fromInt($ranksByLetter[$letter]);
     }
 
     public static function fromRate(Rate $rate): self

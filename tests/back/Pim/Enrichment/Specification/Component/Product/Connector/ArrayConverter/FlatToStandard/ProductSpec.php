@@ -13,6 +13,7 @@ use Akeneo\Pim\Enrichment\Component\Product\Connector\ArrayConverter\FlatToStand
 use Akeneo\Pim\Enrichment\Component\Product\Connector\ArrayConverter\FlatToStandard\ColumnsMapper;
 use Akeneo\Pim\Enrichment\Component\Product\Connector\ArrayConverter\FlatToStandard\ColumnsMerger;
 use Akeneo\Pim\Enrichment\Component\Product\Connector\ArrayConverter\FlatToStandard\FieldConverter;
+use Akeneo\Pim\Enrichment\Component\Product\Connector\UseCase\GetProductsWithQualityScoresInterface;
 use Akeneo\Tool\Component\Connector\Exception\StructureArrayConversionException;
 
 class ProductSpec extends ObjectBehavior
@@ -475,6 +476,72 @@ class ProductSpec extends ObjectBehavior
         $this
             ->convert($item, ['with_associations' => false])
             ->shouldReturn($result);
+    }
+
+    public function it_converts_product_with_quality_scores(
+        $attrColumnsResolver,
+        $assocColumnsResolver,
+        $fieldConverter,
+        $columnsMerger,
+        $attributeRepository,
+        $productValueConverter,
+        ConvertedField $enable,
+        AttributeInterface $attribute
+    ) {
+        $qualityScoreField = sprintf('%s-ecommerce-en_US', GetProductsWithQualityScoresInterface::FLAT_FIELD_PREFIX);
+
+        $product = ['sku' => '1069978', 'enabled' => true, $qualityScoreField => 'B'];
+        $filteredProduct = ['sku' => '1069978', 'enabled' => true];
+
+        $attrColumnsResolver->resolveAttributeColumns()->willReturn(['sku']);
+        $assocColumnsResolver->resolveAssociationColumns()->willReturn([]);
+        $assocColumnsResolver->resolveQuantifiedAssociationColumns()->willReturn([]);
+
+        $columnsMerger->merge($filteredProduct)->willReturn($filteredProduct);
+
+        $attrColumnsResolver->resolveIdentifierField()->willReturn('sku');
+
+        $attribute->getType()->willReturn('sku');
+        $fieldConverter->supportsColumn('sku')->willReturn(false);
+        $fieldConverter->supportsColumn('enabled')->willReturn(true);
+
+        $fieldConverter->convert('enabled', true)->willReturn($enable);
+        $enable->appendTo([])
+            ->willReturn([
+                'enabled' => true
+            ]);
+
+        $attributeRepository->getIdentifierCode()->willReturn('sku');
+
+        $productValueConverter->convert(['sku' => '1069978'])->willReturn(
+            [
+                'sku' => [
+                    [
+                        'locale' => '',
+                        'scope'  => '',
+                        'data'   => 1069978
+                    ]
+                ]
+            ]
+        );
+
+        $convertedProduct = [
+            'enabled'    => true,
+            'values'     => [
+                'sku' => [
+                    [
+                        'locale' => '',
+                        'scope'  => '',
+                        'data'   => 1069978,
+                    ]
+                ],
+            ],
+            'identifier' => 1069978,
+        ];
+
+        $this
+            ->convert($product, ['with_associations' => false])
+            ->shouldReturn($convertedProduct);
     }
 
     function it_throws_an_exception_when_field_does_not_exist(

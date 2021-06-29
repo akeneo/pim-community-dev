@@ -4,18 +4,22 @@ declare(strict_types=1);
 
 namespace Akeneo\Pim\Structure\Bundle\Datagrid\Attribute;
 
+use Akeneo\Pim\Structure\Component\Query\InternalApi\GetAllFamiliesLabelByLocaleQueryInterface;
 use Akeneo\Platform\Bundle\UIBundle\Provider\TranslatedLabelsProviderInterface;
+use Akeneo\UserManagement\Bundle\Context\UserContext;
 use Oro\Bundle\DataGridBundle\Event\BuildBefore;
 use Oro\Bundle\FilterBundle\Grid\Extension\Configuration as FilterConfiguration;
 
 class RegisterFamilyFilter
 {
-    /** @var TranslatedLabelsProviderInterface */
-    private $familyRepository;
+    private GetAllFamiliesLabelByLocaleQueryInterface $familyRepository;
 
-    public function __construct(TranslatedLabelsProviderInterface $familyRepository)
+    private UserContext $userContext;
+
+    public function __construct(GetAllFamiliesLabelByLocaleQueryInterface $familiesLabelByLocaleQuery, UserContext $userContext)
     {
-        $this->familyRepository = $familyRepository;
+        $this->familyRepository = $familiesLabelByLocaleQuery;
+        $this->userContext = $userContext;
     }
 
     public function buildBefore(BuildBefore $event): void
@@ -29,7 +33,7 @@ class RegisterFamilyFilter
                 'options' => [
                     'field_options' => [
                         'multiple' => true,
-                        'choices' => $this->familyRepository->findTranslatedLabels(),
+                        'choices' => array_flip($this->familyRepository->execute($this->userContext->getCurrentLocaleCode())),
                     ],
                 ],
             ]

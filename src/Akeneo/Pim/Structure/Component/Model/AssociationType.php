@@ -144,7 +144,7 @@ class AssociationType implements AssociationTypeInterface
     /**
      * {@inheritdoc}
      */
-    public function getTranslation(?string $locale = null)
+    public function getTranslation(?string $locale = null): ?AssociationTypeTranslationInterface
     {
         $locale = ($locale) ? $locale : $this->locale;
         if (null === $locale) {

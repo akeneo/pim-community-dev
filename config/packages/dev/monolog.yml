@@ -3,11 +3,8 @@ monolog:
         main:
             type:     stream
             path:     "%kernel.logs_dir%/%kernel.environment%.log"
-            level:    debug
-            channels: ['!event','!quality']
-        firephp:
-            type:     firephp
-            level:    info
+            level:    '%env(LOGGING_LEVEL)%'
+            channels: ['!event']
         console:
             type:     console
-            channels: ['!event', '!doctrine', '!quality']
+            channels: ['!event', '!doctrine']

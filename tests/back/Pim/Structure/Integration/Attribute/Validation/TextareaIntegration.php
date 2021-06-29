@@ -93,4 +93,9 @@ class TextareaIntegration extends AbstractAttributeTestCase
     {
         $this->assertDoesNotHaveAMaxFileSize('pim_catalog_textarea');
     }
+
+    public function testTextareaShouldNotHaveADefaultValue()
+    {
+        $this->assertDoesNotHaveDefaultValue('pim_catalog_textarea');
+    }
 }

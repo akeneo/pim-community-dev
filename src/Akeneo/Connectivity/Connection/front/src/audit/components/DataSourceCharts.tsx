@@ -1,5 +1,4 @@
 import React from 'react';
-import {Section} from '../../common';
 import {Loading} from '../../common/components';
 import styled from '../../common/styled-with-theme';
 import {FlowType} from '../../model/flow-type.enum';
@@ -9,6 +8,7 @@ import useConnectionSelect from '../hooks/useConnectionSelect';
 import {WeeklyAuditChart} from './Chart/WeeklyAuditChart';
 import {ConnectionSelect} from './ConnectionSelect';
 import {NoConnection} from './NoConnection';
+import {SectionTitle} from 'akeneo-design-system';
 
 export const DataSourceCharts = () => {
     const translate = useTranslate();
@@ -19,7 +19,11 @@ export const DataSourceCharts = () => {
     if (0 === connections.filter(connection => connection.code !== '<all>').length) {
         return (
             <DataSourceChartsContainer>
-                <Section title={translate('akeneo_connectivity.connection.dashboard.charts.inbound')} />
+                <SectionTitle>
+                    <SectionTitle.Title>
+                        {translate('akeneo_connectivity.connection.dashboard.charts.inbound')}
+                    </SectionTitle.Title>
+                </SectionTitle>
                 <NoConnectionContainer>
                     <NoConnection small flowType={FlowType.DATA_SOURCE} />
                 </NoConnectionContainer>
@@ -29,13 +33,17 @@ export const DataSourceCharts = () => {
 
     return (
         <DataSourceChartsContainer>
-            <Section title={translate('akeneo_connectivity.connection.dashboard.charts.inbound')}>
+            <SectionTitle>
+                <SectionTitle.Title>
+                    {translate('akeneo_connectivity.connection.dashboard.charts.inbound')}
+                </SectionTitle.Title>
+                <SectionTitle.Spacer />
                 <ConnectionSelect
                     connections={connections}
                     onChange={code => selectConnectionCode(code!)}
                     label={translate('akeneo_connectivity.connection.dashboard.connection_selector.title.source')}
                 />
-            </Section>
+            </SectionTitle>
             <ChartsContainer>
                 <EventChartContainer>
                     {events.product_created[connectionCode] ? (

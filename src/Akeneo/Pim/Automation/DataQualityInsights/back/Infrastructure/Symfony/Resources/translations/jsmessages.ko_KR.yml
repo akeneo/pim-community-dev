@@ -1,0 +1,90 @@
+akeneo_data_quality_insights:
+  title: 데이터 품질 인사이트
+  dqi_dashboard:
+    menu: 데이터 품질 인사이트
+    helper:
+      title: Akeneo의 데이터 품질 소개
+      description: 데이터 품질 대시보드에서 카탈로그 데이터의 품질을 측정할 수 있습니다. 카테고리 또는 패밀리에 초점을 맞출 수도 있습니다.
+      help_center: 자세한 내용은 헬프 센터를 확인하십시오.
+    legend:
+      below_average: 평균 이하
+      to_improve: 개선하려면
+    average_grade: 평균 등급
+    category_modal_filter:
+      subtitle: 카테고리에서 필터링
+      message: 카테고리를 선택하여 대시보드에서 탐색
+    widgets:
+      family_modal:
+        subtitle: 패밀리 추가
+        message: 패밀리를 선택하여 대시보드에 추가
+        max_families_msg: 죄송합니다. 해당 대시보드에서 추적하기 위한 패밀리를 {{ count }}개 넘게 추가할 수 없습니다.
+      category_modal:
+        subtitle: 카테고리 추가
+        message: 카테고리를 선택하여 대시보드에 추가
+        max_categories_msg: 죄송합니다. 해당 대시보드에서 추적하기 위한 카테고리를 {{ count }}개 넘게 추가할 수 없습니다.
+      add_families: 패밀리 추가
+      add_categories: 카테고리 추가
+      title: 타이틀
+      score: 결과
+      no_family_helper_msg: 데이터 품질을 측정하려는 패밀리 선택
+      no_category_helper_msg: 데이터 품질을 측정하려는 카테고리 선택
+      see_in_grid: 그리드에서 보기
+    time_axis:
+      day: 일
+    quality_score_evolution:
+      current_score: 이 범위의 현재 카탈로그 품질 점수입니다.
+      current_month_label: 이번 달
+      no_catalog_score: 현재 품질 점수를 계산할 수 없습니다.
+  product_evaluation:
+    criteria:
+      completeness_of_required_attributes:
+        recommendation: 값이 누락된 필수 특성
+      completeness_of_non_required_attributes:
+        recommendation: 값이 누락된 비필수 특성
+      enrichment_image:
+        recommendation: 누락된 이미지
+    axis:
+      enrichment:
+        title: 보강
+        attributes_link: 누락된 모든 특성 표시
+        success: 제품 데이터가 완전히 보강되었습니다. 축하합니다!
+    messages:
+      error:
+        axis_error: 오류로 인해 등급을 완전히 계산할 수 없습니다. 나중에 다시 시도하십시오.
+        criterion_error: 등급을 계산할 수 없습니다.
+      success:
+        criterion: 모두 좋습니다.
+      grading_in_progress: 등급 평가 진행 중입니다.
+      axis_grading_in_progress: 등급 평가 진행 중입니다. 나중에 다시 시도하십시오.
+      too_many_attributes: 개선할 {{ count }}개 특성이 있습니다.
+      no_attribute_groups:
+        title: 죄송합니다. 품질 점수를 계산할 수 없습니다.
+        subtitle: "품질 점수를 계산할 수 없습니다. 이 제품의 특성 그룹 중에 활성화된 그룹이 없습니다."
+        help_center_link: 도움말 센터에서 데이터 품질 인사이트를 이용해 데이터 품질을 개선하는 방법을 알아보십시오.
+      add_image_attribute_recommendation: 한 장의 이미지가 열 마디 말보다 강력합니다. 이미지 특성을 추가하여 이 제품의 데이터 품질을 개선하십시오.
+      fill_image_attribute_recommendation: 경험에 따르면 이미지는 매우 다른 결과를 낳습니다. 하나 이상의 이미지를 추가하여 이 제품의 데이터 품질을 개선하십시오.
+      not_applicable:
+        message: 이 기준은 이 컨텍스트에서 적용할 수 없습니다.
+        help_center_link: 도움말 센터에서 이유를 확인해보십시오.
+  product_edit_form:
+    attribute_filter:
+      all_missing_attributes: 누락된 모든 특성
+    back_to_products: 제품으로 돌아가기
+  attribute_group:
+    helper_dqi_link: 자세한 내용은 도움말 센터에서 확인하십시오.
+    dqi_status: 데이터 품질 인사이트 상태
+    disabled: 비활성화됨
+    used_groups_helper: "데이터 품질 인사이트 계산에는 다음 특성 그룹이 고려됩니다."
+    all_groups_evaluated: 품질 점수 계산에는 이 제품의 모든 특성 그룹이 고려됩니다. 가장 적절한 품질 점수를 얻으려면 <a href="{{ link }}" target="_blank">도움말 센터에서 특성 그룹을 비활성화하는 방법을 알아보십시오.</a>
+  product_grid:
+    filter_label:
+      quality_score: 품질 점수
+      enrichment_quality: 보강 품질
+      images_quality: 제품 이미지
+    filter_value:
+      good: 우수
+      to_improve: 개선 필요
+      yes: true
+      no: false
+pim_title:
+  akeneo_data_quality_insights_dashboard: 데이터 품질 인사이트

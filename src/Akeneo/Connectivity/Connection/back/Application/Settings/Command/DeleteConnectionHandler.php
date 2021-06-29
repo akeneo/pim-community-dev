@@ -15,14 +15,11 @@ use Akeneo\Connectivity\Connection\Domain\Settings\Persistence\Repository\Connec
  */
 class DeleteConnectionHandler
 {
-    /** @var ConnectionRepository */
-    private $repository;
+    private ConnectionRepository $repository;
 
-    /** @var DeleteClientInterface */
-    private $deleteClient;
+    private DeleteClientInterface $deleteClient;
 
-    /** @var DeleteUserInterface */
-    private $deleteUser;
+    private DeleteUserInterface $deleteUser;
 
     public function __construct(
         ConnectionRepository $repository,

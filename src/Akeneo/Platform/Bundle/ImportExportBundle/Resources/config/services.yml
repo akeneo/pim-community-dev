@@ -11,11 +11,17 @@ services:
         class: 'Akeneo\Platform\Bundle\ImportExportBundle\Purge\PurgeJobExecution'
         arguments:
             - '@akeneo_batch.delete_job_execution'
-            - '@akeneo_batch_queue.query.delete_job_execution_message_orphans'
             - '@akeneo.platform.import_export.filesystem.delete_orphans_job_execution_directories'
+            - '@Akeneo\Tool\Bundle\BatchBundle\Storage\DeleteJobExecutionLogs'
 
     Akeneo\Platform\Bundle\ImportExportBundle\Command\PurgeJobExecutionCommand:
         arguments:
             - '@akeneo.platform.import_export.purge_job_execution'
         tags:
             - { name: console.command }
+
+    akeneo.platform.import_export.result_record.hydrator.job_execution:
+        class: 'Akeneo\Platform\Bundle\ImportExportBundle\Datagrid\JobExecutionResultRecordHydrator'
+        arguments:
+            - '@akeneo_batch.job.job_registry'
+            - '@pim_import_export.query.get_job_execution_tracking'

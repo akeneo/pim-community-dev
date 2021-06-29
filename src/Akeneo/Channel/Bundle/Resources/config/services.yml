@@ -50,7 +50,7 @@ services:
 
     pim_catalog.repository.locale:
         class: 'Akeneo\Channel\Bundle\Doctrine\Repository\LocaleRepository'
-        factory: 'doctrine.orm.entity_manager:getRepository'
+        factory: ['@doctrine.orm.entity_manager', 'getRepository']
         arguments: ['%pim_catalog.entity.locale.class%']
         tags:
             - { name: 'channel_repository' }
@@ -90,7 +90,7 @@ services:
     pim_catalog.repository.channel:
         public: true
         class: 'Akeneo\Channel\Bundle\Doctrine\Repository\ChannelRepository'
-        factory: 'doctrine.orm.entity_manager:getRepository'
+        factory: ['@doctrine.orm.entity_manager', 'getRepository']
         arguments: ['%pim_catalog.entity.channel.class%']
         tags:
             - { name: 'pim_repository' }
@@ -139,6 +139,7 @@ services:
             - '@event_dispatcher'
             - '@pim_catalog.repository.channel'
             - '@translator'
+            - '@Akeneo\Channel\Bundle\Query\Sql\IsChannelUsedInProductProductExportJob'
             - '%pim_catalog.entity.channel.class%'
 
     pim_enrich.normalizer.channel:
@@ -169,7 +170,7 @@ services:
 
     pim_catalog.repository.currency:
         class: 'Akeneo\Channel\Bundle\Doctrine\Repository\CurrencyRepository'
-        factory: 'doctrine.orm.entity_manager:getRepository'
+        factory: ['@doctrine.orm.entity_manager', 'getRepository']
         arguments: ['%pim_catalog.entity.currency.class%']
         tags:
             - { name: 'pim_repository' }
@@ -232,3 +233,10 @@ services:
             - '@pim_user.context.user'
         tags:
             - { name: twig.extension }
+
+    pim_catalog.event_subscriber.clear_locale_cache_on_save:
+        class: 'Akeneo\Channel\Bundle\EventListener\ClearCacheSubscriber'
+        arguments:
+            - '@pim_channel.query.cache.channel_exists_with_locale'
+        tags:
+            - { name: kernel.event_subscriber }

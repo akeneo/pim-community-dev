@@ -1,4 +1,4 @@
-import * as $ from "jquery";
+import * as $ from 'jquery';
 import BaseView = require('pimui/js/view/base');
 import DefaultProductGridView = require('pimuser/js/fields/default-product-grid-view');
 const Routing = require('routing');
@@ -24,10 +24,9 @@ class DefaultGridView extends BaseView {
   configure() {
     return $.when(
       BaseView.prototype.configure.apply(this, arguments),
-      $.get(Routing.generate('pim_datagrid_view_rest_types'))
-        .then((datagridViewTypes: string[]) => {
-          this.datagridAliases = datagridViewTypes;
-        })
+      $.get(Routing.generate('pim_datagrid_view_rest_types')).then((datagridViewTypes: string[]) => {
+        this.datagridAliases = datagridViewTypes;
+      })
     );
   }
 
@@ -45,7 +44,7 @@ class DefaultGridView extends BaseView {
           readOnly: this.config.readOnly,
           choiceUrl: 'pim_datagrid_view_rest_index',
           placeholder: 'pim_datagrid.view_selector.default_view',
-        }
+        },
       });
       datagridViewSelector.configure().then(() => {
         datagridViewSelector.setParent(this);
@@ -57,4 +56,4 @@ class DefaultGridView extends BaseView {
   }
 }
 
-export = DefaultGridView
+export = DefaultGridView;

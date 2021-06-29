@@ -2,44 +2,30 @@
 
 declare(strict_types=1);
 
-/*
- * This file is part of the Akeneo PIM Enterprise Edition.
- *
- * (c) 2020 Akeneo SAS (http://www.akeneo.com)
- *
- * For the full copyright and license information, please view the LICENSE
- * file that was distributed with this source code.
- */
-
 namespace Akeneo\Pim\Automation\DataQualityInsights\Infrastructure\Connector\JobLauncher;
 
 use Akeneo\Pim\Automation\DataQualityInsights\Infrastructure\Connector\JobParameters\PeriodicTasksParameters;
 use Akeneo\Tool\Bundle\BatchBundle\Job\JobInstanceRepository;
 use Akeneo\Tool\Bundle\BatchBundle\Launcher\JobLauncherInterface;
-use Akeneo\Tool\Bundle\BatchQueueBundle\Queue\JobExecutionMessageRepository;
 use Akeneo\Tool\Component\Batch\Model\JobInstance;
 use Akeneo\UserManagement\Component\Model\UserInterface;
 use Symfony\Component\Security\Core\User\User;
 
+/**
+ * @copyright 2020 Akeneo SAS (http://www.akeneo.com)
+ * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
+ */
 final class SchedulePeriodicTasks
 {
-    /** @var JobLauncherInterface */
-    private $queueJobLauncher;
-
-    /** @var JobInstanceRepository */
-    private $jobInstanceRepository;
-
-    /** @var JobExecutionMessageRepository */
-    private $jobExecutionMessageRepository;
+    private JobLauncherInterface $queueJobLauncher;
+    private JobInstanceRepository $jobInstanceRepository;
 
     public function __construct(
         JobLauncherInterface $queueJobLauncher,
-        JobInstanceRepository $jobInstanceRepository,
-        JobExecutionMessageRepository $jobExecutionMessageRepository
+        JobInstanceRepository $jobInstanceRepository
     ) {
         $this->queueJobLauncher = $queueJobLauncher;
         $this->jobInstanceRepository = $jobInstanceRepository;
-        $this->jobExecutionMessageRepository = $jobExecutionMessageRepository;
     }
 
     public function schedule(\DateTimeImmutable $date): void

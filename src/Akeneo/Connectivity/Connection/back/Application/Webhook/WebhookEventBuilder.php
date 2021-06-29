@@ -4,10 +4,15 @@ declare(strict_types=1);
 
 namespace Akeneo\Connectivity\Connection\Application\Webhook;
 
+use Akeneo\Connectivity\Connection\Application\Webhook\Service\ApiEventBuildErrorLogger;
 use Akeneo\Connectivity\Connection\Domain\Webhook\Exception\WebhookEventDataBuilderNotFoundException;
 use Akeneo\Connectivity\Connection\Domain\Webhook\Model\WebhookEvent;
-use Akeneo\Platform\Component\EventQueue\BusinessEventInterface;
+use Akeneo\Platform\Component\EventQueue\BulkEventInterface;
+use Akeneo\Platform\Component\EventQueue\EventInterface;
 use Akeneo\Platform\Component\Webhook\EventDataBuilderInterface;
+use Akeneo\Platform\Component\Webhook\EventDataCollection;
+use Akeneo\UserManagement\Component\Model\UserInterface;
+use Symfony\Component\OptionsResolver\OptionsResolver;
 
 /**
  * @author    Willy Mesnage <willy.mesnage@akeneo.com>
@@ -17,49 +22,109 @@ use Akeneo\Platform\Component\Webhook\EventDataBuilderInterface;
 class WebhookEventBuilder
 {
     /** @var iterable<EventDataBuilderInterface> */
-    private $builders;
+    private iterable $eventDataBuilders;
+    private ApiEventBuildErrorLogger $apiEventBuildErrorLogger;
 
     /**
-     * @param iterable<EventDataBuilderInterface> $builders
+     * @param iterable<EventDataBuilderInterface> $eventDataBuilders
      */
-    public function __construct(iterable $builders)
-    {
-        $this->builders = $builders;
+    public function __construct(
+        iterable $eventDataBuilders,
+        ApiEventBuildErrorLogger $apiEventBuildErrorLogger
+    ) {
+        $this->eventDataBuilders = $eventDataBuilders;
+        $this->apiEventBuildErrorLogger = $apiEventBuildErrorLogger;
     }
 
     /**
      * @param array<mixed> $context
+     *
+     * @return array<WebhookEvent>
      */
-    public function build(BusinessEventInterface $businessEvent, array $context = []): WebhookEvent
+    public function build(BulkEventInterface $pimEventBulk, array $context = []): array
     {
-        if (!array_key_exists(
-                'pim_source',
-                $context
-            ) || null === $context['pim_source'] || '' === $context['pim_source']) {
-            throw new \InvalidArgumentException("Context property 'pim_source' is mandatory");
-        }
+        $context = $this->resolveOptions($context);
+        $eventDataBuilder = $this->getEventDataBuilder($pimEventBulk);
 
-        return new WebhookEvent(
-            $businessEvent->name(),
-            $businessEvent->uuid(),
-            date(\DateTimeInterface::ATOM, $businessEvent->timestamp()),
-            $businessEvent->author(),
-            $context['pim_source'],
-            $this->buildEventData($businessEvent)
+        $eventDataCollection = $eventDataBuilder->build(
+            $pimEventBulk,
+            $context['user']
+        );
+
+        return $this->buildWebhookEvents(
+            $pimEventBulk->getEvents(),
+            $eventDataCollection,
+            $context
         );
     }
 
     /**
+     * @param array<mixed> $options
+     *
      * @return array<mixed>
      */
-    private function buildEventData(BusinessEventInterface $businessEvent): array
+    private function resolveOptions(array $options): array
     {
-        foreach ($this->builders as $builder) {
-            if (true === $builder->supports($businessEvent)) {
-                return $builder->build($businessEvent);
+        $resolver = new OptionsResolver();
+        $resolver->setRequired(['user', 'pim_source', 'connection_code']);
+        $resolver->setAllowedTypes('user', UserInterface::class);
+        $resolver->setAllowedTypes('pim_source', 'string');
+        $resolver->setAllowedTypes('connection_code', 'string');
+
+        return $resolver->resolve($options);
+    }
+
+    private function getEventDataBuilder(BulkEventInterface $event): EventDataBuilderInterface
+    {
+        foreach ($this->eventDataBuilders as $builder) {
+            if (true === $builder->supports($event)) {
+                return $builder;
             }
         }
 
-        throw new WebhookEventDataBuilderNotFoundException($businessEvent->name());
+        throw new WebhookEventDataBuilderNotFoundException($event);
+    }
+
+    /**
+     * @param array<EventInterface> $pimEvents
+     * @param array<mixed> $context
+     *
+     * @return array<WebhookEvent>
+     */
+    private function buildWebhookEvents(
+        array $pimEvents,
+        EventDataCollection $eventDataCollection,
+        array $context
+    ): array {
+        $apiEvents = [];
+
+        foreach ($pimEvents as $pimEvent) {
+            $data = $eventDataCollection->getEventData($pimEvent);
+
+            if (null === $data) {
+                throw new \LogicException(sprintf('Event %s should have event data', $pimEvent->getUuid()));
+            }
+
+            if ($data instanceof \Throwable) {
+                $this->apiEventBuildErrorLogger->logResourceNotFoundOrAccessDenied(
+                    $context['connection_code'],
+                    $pimEvent
+                );
+
+                continue;
+            }
+
+            $apiEvents[] = new WebhookEvent(
+                $pimEvent->getName(),
+                $pimEvent->getUuid(),
+                date(\DateTimeInterface::ATOM, $pimEvent->getTimestamp()),
+                $pimEvent->getAuthor(),
+                $context['pim_source'],
+                $data,
+                $pimEvent
+            );
+        }
+
+        return $apiEvents;
     }
 }

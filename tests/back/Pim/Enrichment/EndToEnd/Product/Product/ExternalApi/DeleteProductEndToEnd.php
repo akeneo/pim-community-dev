@@ -4,11 +4,15 @@ declare(strict_types=1);
 
 namespace AkeneoTest\Pim\Enrichment\EndToEnd\Product\Product\ExternalApi;
 
+use Akeneo\Pim\Enrichment\Component\Product\Message\ProductRemoved;
 use Akeneo\Test\Integration\Configuration;
+use Akeneo\Test\IntegrationTestsBundle\Messenger\AssertEventCountTrait;
 use Symfony\Component\HttpFoundation\Response;
 
 class DeleteProductEndToEnd extends AbstractProductTestCase
 {
+    use AssertEventCountTrait;
+
     /**
      * {@inheritdoc}
      */
@@ -32,6 +36,8 @@ class DeleteProductEndToEnd extends AbstractProductTestCase
 
         $this->assertCount(6, $this->get('pim_catalog.repository.product')->findAll());
         $this->assertNull($this->get('pim_catalog.repository.product')->findOneByIdentifier('foo'));
+
+        $this->assertEventCount(1, ProductRemoved::class);
     }
 
     public function testNotFoundAProduct()

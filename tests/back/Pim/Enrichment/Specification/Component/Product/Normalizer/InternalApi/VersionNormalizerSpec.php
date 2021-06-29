@@ -11,13 +11,15 @@ use Akeneo\UserManagement\Bundle\Manager\UserManager;
 use Akeneo\Pim\Enrichment\Component\Product\Localization\Presenter\PresenterRegistryInterface;
 use Akeneo\UserManagement\Component\Model\User;
 use Prophecy\Argument;
-use Symfony\Component\Translation\TranslatorInterface;
+use Symfony\Contracts\Translation\LocaleAwareInterface;
+use Symfony\Contracts\Translation\TranslatorInterface;
 
 class VersionNormalizerSpec extends ObjectBehavior
 {
     function let(
         UserManager $userManager,
         TranslatorInterface $translator,
+        LocaleAwareInterface $localeAware,
         PresenterInterface $datetimePresenter,
         PresenterRegistryInterface $presenterRegistry,
         AttributeRepositoryInterface $attributeRepository,
@@ -26,6 +28,7 @@ class VersionNormalizerSpec extends ObjectBehavior
         $this->beConstructedWith(
             $userManager,
             $translator,
+            $localeAware,
             $datetimePresenter,
             $presenterRegistry,
             $attributeRepository,
@@ -44,6 +47,7 @@ class VersionNormalizerSpec extends ObjectBehavior
         $datetimePresenter,
         $presenterRegistry,
         $userContext,
+        LocaleAwareInterface $localeAware,
         Version $version,
         User $steve,
         PresenterInterface $numberPresenter,
@@ -66,7 +70,7 @@ class VersionNormalizerSpec extends ObjectBehavior
         $version->getContext()->willReturn(['locale' => 'en_US', 'channel' => 'mobile']);
         $version->getVersion()->willReturn(12);
         $version->getLoggedAt()->willReturn($versionTime);
-        $translator->getLocale()->willReturn('en_US');
+        $localeAware->getLocale()->willReturn('en_US');
         $version->isPending()->willReturn(false);
 
         $version->getAuthor()->willReturn('steve');
@@ -87,7 +91,7 @@ class VersionNormalizerSpec extends ObjectBehavior
             'locale' => 'fr_FR',
             'timezone' => 'Europe/Paris',
         ];
-        $translator->getLocale()->willReturn('fr_FR');
+        $localeAware->getLocale()->willReturn('fr_FR');
         $userContext->getUserTimezone()->willReturn('Europe/Paris');
 
         $attributeRepository
@@ -132,6 +136,7 @@ class VersionNormalizerSpec extends ObjectBehavior
         $translator,
         $datetimePresenter,
         $userContext,
+        LocaleAwareInterface $localeAware,
         Version $version
     ) {
         $versionTime = new \DateTime();
@@ -143,7 +148,7 @@ class VersionNormalizerSpec extends ObjectBehavior
         $version->getContext()->willReturn(['locale' => 'en_US', 'channel' => 'mobile']);
         $version->getVersion()->willReturn(12);
         $version->getLoggedAt()->willReturn($versionTime);
-        $translator->getLocale()->willReturn('en_US');
+        $localeAware->getLocale()->willReturn('en_US');
         $datetimePresenter->present($versionTime, Argument::any())->willReturn('01/01/1985 09:41 AM');
         $version->isPending()->willReturn(false);
 

@@ -75,7 +75,7 @@ Feature: Add children to product model
     And I confirm the child creation
     Then I should be on the product model "apollon_black" edit page
 
-  @critical
+  @critical @purge-messenger
   Scenario: Successfully add a variant product to a root product model
     Given I am on the "amor" product model page
     When I open the variant navigation children selector for level 1
@@ -87,6 +87,7 @@ Feature: Add children to product model
       | Size (variant axis)  | XL            |
     And I confirm the child creation
     Then I should be on the product "amor_black_xl" edit page
+    And 1 event of type "product.created" should have been raised
 
   @critical
   Scenario: Successfully add a variant product to a sub product model

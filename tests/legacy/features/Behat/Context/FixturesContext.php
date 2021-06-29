@@ -25,8 +25,9 @@ use Context\Spin\SpinCapableTrait;
 use Context\Spin\TimeoutException;
 use Doctrine\Common\Util\ClassUtils;
 use Doctrine\Common\Util\Debug;
-use Doctrine\Common\Util\Inflector;
 use Doctrine\DBAL\Driver\Connection;
+use Doctrine\Inflector\Inflector;
+use Doctrine\Inflector\NoopWordInflector;
 use PHPUnit\Framework\Assert;
 
 /**
@@ -317,7 +318,9 @@ class FixturesContext extends PimContext
      */
     protected function camelize($string)
     {
-        return Inflector::camelize(str_replace(' ', '_', strtolower($string)));
+        $inflector = new Inflector(new NoopWordInflector(), new NoopWordInflector());
+
+        return $inflector->camelize(str_replace(' ', '_', strtolower($string)));
     }
 
     /**

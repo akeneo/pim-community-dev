@@ -7,11 +7,11 @@ services:
 
     Akeneo\Pim\Automation\DataQualityInsights\Infrastructure\Subscriber\Product\InitializeEvaluationOfAProductSubscriber:
         arguments:
-            $dataQualityInsightsFeature: '@akeneo.pim.automation.data_quality_insights.feature'
-            $createProductsCriteriaEvaluations: '@akeneo.pim.automation.data_quality_insights.create_products_criteria_evaluations'
-            $logger: '@logger'
-            $evaluatePendingCriteria: '@akeneo.pim.automation.data_quality_insights.evaluate_products_pending_criteria'
-            $consolidateProductAxisRates: '@akeneo.pim.automation.data_quality_insights.consolidate_product_axes_rates'
+            - '@akeneo.pim.automation.data_quality_insights.feature'
+            - '@akeneo.pim.automation.data_quality_insights.create_products_criteria_evaluations'
+            - '@logger'
+            - '@akeneo.pim.automation.data_quality_insights.evaluate_products_pending_criteria'
+            - '@Akeneo\Pim\Automation\DataQualityInsights\Application\Consolidation\ConsolidateProductScores'
         tags:
             - { name: kernel.event_subscriber }
 
@@ -21,7 +21,6 @@ services:
             - '@akeneo.pim.automation.data_quality_insights.create_product_models_criteria_evaluations'
             - '@logger'
             - '@akeneo.pim.automation.data_quality_insights.evaluate_product_models_pending_criteria'
-            - '@akeneo.pim.automation.data_quality_insights.consolidate_product_model_axes_rates'
         tags:
             - { name: kernel.event_subscriber }
 

@@ -8,6 +8,8 @@ use Akeneo\Connectivity\Connection\Application\Audit\Command\UpdateDataDestinati
 use Akeneo\Connectivity\Connection\Application\Audit\Command\UpdateDataDestinationProductEventCountHandler;
 use Akeneo\Connectivity\Connection\Application\ConnectionContextInterface;
 use Akeneo\Connectivity\Connection\Domain\Settings\Model\ValueObject\FlowType;
+use Akeneo\Connectivity\Connection\Domain\Settings\Model\Write\Connection;
+use Akeneo\Connectivity\Connection\Domain\Settings\Persistence\Repository\ConnectionRepository;
 use Akeneo\Connectivity\Connection\Domain\ValueObject\HourlyInterval;
 use Akeneo\Pim\Enrichment\Component\Product\Event\Connector\ReadProductsEvent;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
@@ -25,18 +27,18 @@ use Symfony\Component\EventDispatcher\EventSubscriberInterface;
  */
 final class ReadProductsEventSubscriber implements EventSubscriberInterface
 {
-    /** @var ConnectionContextInterface */
-    private $connectionContext;
-
-    /** @var UpdateDataDestinationProductEventCountHandler */
-    private $updateDataDestinationProductEventCountHandler;
+    private ConnectionContextInterface $connectionContext;
+    private UpdateDataDestinationProductEventCountHandler $updateDataDestinationProductEventCountHandler;
+    private ConnectionRepository $connectionRepository;
 
     public function __construct(
         ConnectionContextInterface $connectionContext,
-        UpdateDataDestinationProductEventCountHandler $updateDataDestinationProductEventCountHandler
+        UpdateDataDestinationProductEventCountHandler $updateDataDestinationProductEventCountHandler,
+        ConnectionRepository $connectionRepository
     ) {
         $this->connectionContext = $connectionContext;
         $this->updateDataDestinationProductEventCountHandler = $updateDataDestinationProductEventCountHandler;
+        $this->connectionRepository = $connectionRepository;
     }
 
     public static function getSubscribedEvents(): array
@@ -49,24 +51,49 @@ final class ReadProductsEventSubscriber implements EventSubscriberInterface
      */
     public function saveReadProducts(ReadProductsEvent $event): void
     {
-        if (!$this->connectionContext->isCollectable()) {
-            return;
-        }
-        if (0 === count($event->productIds())) {
+        if (0 === $event->getCount()) {
             return;
         }
 
-        $connection = $this->connectionContext->getConnection();
-        if (FlowType::DATA_DESTINATION !== (string) $connection->flowType()) {
+        $connection = $this->getValidConnectionBehindReadProductsEvent($event);
+
+        if (null === $connection) {
+            return;
+        }
+
+        if (false === $connection->auditable()) {
+            return;
+        }
+
+        if (FlowType::DATA_DESTINATION !== (string)$connection->flowType()) {
             return;
         }
 
         $this->updateDataDestinationProductEventCountHandler->handle(
             new UpdateDataDestinationProductEventCountCommand(
-                (string) $connection->code(),
+                (string)$connection->code(),
                 HourlyInterval::createFromDateTime(new \DateTimeImmutable('now', new \DateTimeZone('UTC'))),
-                count($event->productIds())
+                $event->getCount()
             )
         );
+    }
+
+    /**
+     * If the event does not contain a connection code, check if the active connection in the context uses
+     * valid credentials, if so, fallback to it.
+     */
+    private function getValidConnectionBehindReadProductsEvent(ReadProductsEvent $event): ?Connection
+    {
+        $connectionCode = $event->getConnectionCode();
+
+        if (null !== $connectionCode) {
+            return $this->connectionRepository->findOneByCode($connectionCode);
+        }
+
+        if (false === $this->connectionContext->areCredentialsValidCombination()) {
+            return null;
+        }
+
+        return $this->connectionContext->getConnection();
     }
 }

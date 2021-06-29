@@ -33,6 +33,9 @@ class ConnectorProductList
         return $this->totalNumberOfProducts;
     }
 
+    /**
+     * @return ConnectorProduct[]
+     */
     public function connectorProducts(): array
     {
         return $this->connectorProducts;

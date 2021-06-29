@@ -17,22 +17,21 @@ const LineTemplate = require('pim/template/attribute/attribute-line');
  */
 class ProductGridFilters extends BaseMultiSelectAsync {
   private readonly lineView = _.template(LineTemplate);
-  private attributeGroups: { [key: string]: NormalizedAttributeGroup } = {};
+  private attributeGroups: {[key: string]: NormalizedAttributeGroup} = {};
 
   /**
    * {@inheritdoc}
    */
   public configure(): JQueryPromise<any> {
     this.attributeGroups = {
-      system: ProductGridFilters.getSystemAttributeGroup()
+      system: ProductGridFilters.getSystemAttributeGroup(),
     };
 
     return $.when(
       BaseMultiSelectAsync.prototype.configure.apply(this, arguments),
-      FetcherRegistry
-        .getFetcher('attribute-group')
+      FetcherRegistry.getFetcher('attribute-group')
         .fetchAll()
-        .then((attributeGroups: { [key: string]: NormalizedAttributeGroup }) => {
+        .then((attributeGroups: {[key: string]: NormalizedAttributeGroup}) => {
           this.attributeGroups = {...this.attributeGroups, ...attributeGroups};
         })
     );
@@ -50,19 +49,13 @@ class ProductGridFilters extends BaseMultiSelectAsync {
   }
 
   protected convertBackendItem(item: NormalizedAttribute): Object {
+    const locale = UserContext.get('system' === item.group ? 'uiLocale' : 'catalogLocale');
     return {
       id: item.code,
-      text: i18n.getLabel(item.labels, UserContext.get('catalogLocale'), item.code),
+      text: i18n.getLabel(item.labels, locale, item.code),
       group: {
-        text: (
-          item.group ?
-            i18n.getLabel(
-              this.attributeGroups[item.group].labels,
-              UserContext.get('catalogLocale'),
-              item.group
-            ) : ''
-        )
-      }
+        text: item.group ? i18n.getLabel(this.attributeGroups[item.group].labels, locale, item.group) : '',
+      },
     };
   }
 
@@ -70,22 +63,25 @@ class ProductGridFilters extends BaseMultiSelectAsync {
    * {@inheritdoc}
    */
   protected select2InitSelection(element: any, callback: any): void {
-    const strValues = ($(element)).val() as string;
+    const strValues = $(element).val() as string;
     const values = strValues.split(',');
     if (values.length > 0) {
       $.ajax({
         url: this.choiceUrl,
-        data: { identifiers: strValues },
-        type: this.choiceVerb
+        data: {identifiers: strValues},
+        type: this.choiceVerb,
       }).then(response => {
-        let selecteds: NormalizedAttribute[] = <NormalizedAttribute[]> Object.values(response)
-          .filter((item: NormalizedAttribute) => {
+        let selecteds: NormalizedAttribute[] = <NormalizedAttribute[]>Object.values(response).filter(
+          (item: NormalizedAttribute) => {
             return values.indexOf(item.code) > -1;
-          });
+          }
+        );
 
-        callback(selecteds.map((selected: NormalizedAttribute) => {
-          return this.convertBackendItem(selected);
-        }));
+        callback(
+          selecteds.map((selected: NormalizedAttribute) => {
+            return this.convertBackendItem(selected);
+          })
+        );
       });
     }
   }
@@ -97,7 +93,7 @@ class ProductGridFilters extends BaseMultiSelectAsync {
    */
   private static getSystemAttributeGroup(): NormalizedAttributeGroup {
     const result: NormalizedAttributeGroup = {labels: {}};
-    result['labels'][UserContext.get('catalogLocale')] = __('pim_datagrid.filters.system');
+    result['labels'][UserContext.get('uiLocale')] = __('pim_datagrid.filters.system');
 
     return result;
   }
@@ -109,9 +105,9 @@ class ProductGridFilters extends BaseMultiSelectAsync {
    *
    * @return {Object}
    */
-  private onGetResult(item: { text: string, group: { text: string } }): Object {
+  private onGetResult(item: {text: string; group: {text: string}}): Object {
     return this.lineView({item});
   }
 }
 
-export = ProductGridFilters
+export = ProductGridFilters;

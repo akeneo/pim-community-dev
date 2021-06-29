@@ -5,8 +5,10 @@ declare(strict_types=1);
 namespace Akeneo\Platform\Bundle\CatalogVolumeMonitoringBundle\Controller;
 
 use Akeneo\Platform\Component\CatalogVolumeMonitoring\Volume\Normalizer;
+use Oro\Bundle\SecurityBundle\SecurityFacade;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Response;
+use Symfony\Component\Security\Core\Exception\AccessDeniedException;
 
 /**
  * @author    Alexandre Hocquard <alexandre.hocquard@akeneo.com>
@@ -15,22 +17,22 @@ use Symfony\Component\HttpFoundation\Response;
  */
 class VolumeMonitoringController
 {
-    /** @var Normalizer\Volumes */
-    private $volumesNormalizer;
+    private Normalizer\Volumes $volumesNormalizer;
 
-    /**
-     * @param Normalizer\Volumes $volumesNormalizer
-     */
-    public function __construct(Normalizer\Volumes $volumesNormalizer)
+    private SecurityFacade $securityFacade;
+
+    public function __construct(Normalizer\Volumes $volumesNormalizer, SecurityFacade $securityFacade)
     {
         $this->volumesNormalizer = $volumesNormalizer;
+        $this->securityFacade = $securityFacade;
     }
 
-    /**
-     * @return Response
-     */
     public function getVolumesAction(): Response
     {
+        if (!$this->securityFacade->isGranted('view_catalog_volume_monitoring')) {
+            throw new AccessDeniedException();
+        }
+
         return new JsonResponse($this->volumesNormalizer->volumes());
     }
 }

@@ -16,11 +16,11 @@ Feature: Edit an import
       | File              | /tmp/file.csv |
       | Delimiter         | \|            |
       | Enclosure         | '             |
+      | Decimal separator | .             |
+      | Date format       | yyyy-mm-dd    |
       | Categories column | cat           |
       | Family column     | fam           |
       | Groups column     | grp           |
-      | Decimal separator | .             |
-      | Date format       | yyyy-mm-dd    |
     And I visit the "Global settings" tab
     And I uncheck the "Allow file upload" switch
     And I uncheck the "Enable the product" switch

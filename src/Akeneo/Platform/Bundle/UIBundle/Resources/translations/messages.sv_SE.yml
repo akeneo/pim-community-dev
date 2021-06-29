@@ -18,7 +18,7 @@ Channel list: Kanallista
 Select file: Välj fil
 Change file: Byta fil
 Remove file: Ta bort fil
-Delete: Ta bort
+Delete: Radera
 Save: Spara
 Get help: Få hjälp
 My User: Mitt konto
@@ -48,18 +48,30 @@ other_actions: Andra åtgärder
 pim_common:
   cancel: Avbryt
   save: Spara
-  delete: Ta bort
+  delete: Radera
   update: Uppdatera
   view: Visa
-  edit: Redigera
-  created: Skapat
-  updated: Ändrad
+  edit: Ändra
+  created: Skapad
+  updated: Uppdaterad
   create: Skapa
   permissions: Behörigheter
   properties: Egenskaper
   name: Namn
   remove: Ta bort
+  code: Kod
+  quantity: 'Antal:'
+  products: Produkter
+  product_models: Produktmodeller
+  categories: Kategorier
+  enabled: Aktiverad
+  family: Familj
+  groups: Grupper
+  unit: Enhet
+  yes: "Ja"
+  no: "Nej"
 pim_enrich:
+  #ACLs
   acl:
     locale:
       index: Lista språk
@@ -67,7 +79,7 @@ pim_enrich:
       index: Lista valutor
       toggle: Växla valutor
     product:
-      index: Visa produkter
+      index: Lista produkter
       create: Skapa en produkt
       edit_attributes: Redigera attribut för produkten
       remove: Ta bort en produkt
@@ -75,20 +87,21 @@ pim_enrich:
       remove_attribute: Ta bort ett attribut från en produkt
       categories_view: Rådfråga kategorierna av en produkt
       change_family: Ändra produktfamilj
-      change_state: Ändra status för produkten
       add_to_groups: Lägga till produkten i grupper
       mass_edit: Produkt mass redigera
       comment: Kommentera produkter
       download: Ladda ner produkten som PDF
       history: Visa produkten historik
+    product_model:
+      create: Skapa en produktmodell
     category:
-      list: Visa kategorier
+      list: Lista Kategorier
       create: Skapa en kategori
-      edit: Ändra kategori
-      remove: Ta bort en kategori
+      edit: Redigera kategori
+      remove: Ta bort kategori
       move: Flytta kategori
       children: Se kategori barn
-      products: Se kategoris produkter
+      products: Se kategori produkter
       history: Visa kategori historia
     channel:
       index: Lista kanaler
@@ -113,36 +126,34 @@ pim_enrich:
       remove_attribute: Ta bort attribut från en grupp
       history: Visa attribut grupp historik
     attribute:
-      index: Visa attribut
+      index: Lista attributer
       create: Skapa ett attribut
       edit: Redigera ett attribut
       remove: Ta bort ett attribut
       sort: Sortera attribut inut i attributgrupper
       history: Visa attributhistorik
     group:
-      index: Visa grupper
-      create: Skapa en grupp
-      edit: Redigera en grupp
-      remove: Ta bort en grupp
+      index: Lista grupper
+      create: Skapa grupp
+      edit: Redigera grupp
+      remove: Ta bort grupp
       history: Visa grupp historik
     group_type:
       index: Lista grupptyper
       create: Skapa en grupptyp
-      edit: Redigera en grupptyp
-      remove: Ta bort en grupptyp
+      edit: Redigera grupptyp
+      remove: Ta bort grupptyp
     association_type:
       index: Lista förbindelse typer
-      create: Skapa en associationstypen
-      edit: Redigera en associationstyp
-      remove: Ta bort en associationstyp
-      history: Visa associationstypen(s) historik
+      create: Skapa en förbindelse typ
+      edit: Redigera förbindelse typ
+      remove: Ta bort förbindelse typ
+      history: Visa förbindelsen(s) historik
     job_tracker:
       index: Visa process spårare
-    api_connection:
-      manage: Hantera API-anslutningarna
   acl_group:
-    association_type: Associationstyp
-    attribute: Attribut
+    association_type: Förbindelse typer
+    attribute: Attributer
     attribute_group: Attributgrupper
     category: Kategorier
     channel: Kanaler
@@ -151,7 +162,7 @@ pim_enrich:
     group: Grupper
     group_type: Grupptyper
     locale: Språk
-    product: Products
+    product: Produkter
     product_model: Produktmodeller
   create:
     attribute: skapa attribut
@@ -164,9 +175,10 @@ pim_enrich:
     locale: skapa språk
     product: skapa produkt
     group: skapa grupp
-    association type: skapa associationstyp
+    association type: skapa en förbindelsetyp
     group type: skapa grupptyp
     drag_or_upload: Dra och släpp för att ladda upp eller klicka här
+#Confirmation messages
 confirmation:
   delete: Bekräfta radering
   leave: Är det säkert att du vill lämna den här sidan?
@@ -174,6 +186,7 @@ confirmation:
   remove:
     category: Är du säker på att du vill ta bort kategoriträdet %name%?
     user: Är du säker på att du vill ta bort den här användaren %name%?
+#Flash messages
 flash:
   entity:
     removed: Objektet har tagits bort
@@ -195,8 +208,9 @@ flash:
   user:
     removed: Användaren har tagits bort
   error occurred: Åtgärden misslyckades. Försök igen.
+#Info messages
 info:
-  updated: Det finns ändringar som inte sparats.
+  updated: Det finns osparade ändringar.
   category:
     remove children: Alla underkategorier kommer att raderas.
     keep products: Produkter i dessa kategorier tas inte bort.
@@ -204,15 +218,15 @@ info:
   product:
     no available attributes: Det finns inga fler attribut att lägga till
     no family defined: Ingen familj har definieras
-    change family: Välj produktfamilj
+    change family: Ändra produktfamiljen
     change family to: Ändra familjen till
     merge attributes: Aktuella attribut slås samman med de i den nya familjen.
     keep attributes: Inga attribut kommer att tas bort.
     number of associations: '%productCount% produkter och %groupCount% grupper'
     enable: Aktivera
     enabled: Aktiverad
-    disable: Avaktivera
-    disabled: Avaktiverad
+    disable: Inaktivera
+    disabled: Inaktiverad
   group:
     axis: 'Variation axel %attributes%'
     select products: Välj produkter som bör tillhöra denna grupp.
@@ -229,11 +243,12 @@ info:
     auto option sorting: Om aktiverad, sorteras alternativ automatiskt efter deras lokaliserade etiketter
   completeness:
     not calculated: Ännu inte beräknas
-Created: Skapat
-Updated: Ändrad
-Last update: Senaste uppdatering
+#Form elements
+Created: Skapad
+Updated: Uppdaterad
+Last update: Senast uppdaterad
 by: Av
-N/A: '-'
+N/A: N/A
 Manage products: Hantera produkter
 Manage groups: Hantera grupper
 Code: Kod
@@ -250,7 +265,6 @@ Unique value: Unikt värde
 Attribute group: Attributgrupp
 Other: Övrigt
 Variants behavior when edited: Variant beteende när redigeras
-Edit: Redigera
 Remove: Ta bort
 Parameters: Parametrar
 System: System
@@ -260,8 +274,8 @@ Backend parameters: Backend-parametrar
 Label: Etikett
 Default label: Standardetikett
 Default value: Standardvärde
-Attributetype: Attribut typ
-Attribute type: Attribut typ
+Attributetype: Attributtyp
+Attribute type: Attributtyp
 Defaultvalue: Standardvärde
 Variant: Variant
 Smart: Smart
@@ -269,12 +283,12 @@ Useable as grid column: Kan användas som rutnätskolumn
 Useable as grid filter: Användbara i rutnät
 Family: Familj
 Image: Bild
+Variant products: Variantprodukter
 Available locales: Tillgängliga språk
 Locale specific: Specifik språk
 default: Standard
 Axis: Axel
 Add attributes: Lägg till attribut
-Translate from: Översätt från
 switch_on: "Ja"
 switch_off: "Nej"
 Close: Stäng
@@ -296,17 +310,22 @@ No matches found: Inga träffar hittades
 Category tree: Kategoriträd
 Completeness: Fullständighet
 Attribute used as label: Attribut används som etikett
+Credentials: Referenser
+#Scopes
 Global: Global
 Channel: Kanal
 Expand all channels: Expandera alla kanaler
 Collapse all channels: Kollapsa alla kanaler
+#Variants
 Always override: Alltid åsidosätta
 Ask: Fråga
+#Attribute group
 General Properties: Allmänna egenskaper
 Group values: Gruppvärden
 New group: Ny grupp
 Groups overview: Grupper översikt
 'Y-m-d h:i:s': 'Y-m-d h:i:s'
+#Attribute properties
 Max characters: Max tecken
 Validation rule: Verifieringsuttryck
 Validation regexp: Validering regexp
@@ -317,18 +336,19 @@ Decimals allowed: Tillåt decimaler
 Negative allowed: Tillåta negativa värden
 Date min: Min datum
 Date max: Max datum
-Metric family: Metrisk familj
-Default metric unit: Metrisk standardenhet
 Max file size: Max filstorlek (MB)
 Allowed extensions: Tillåtna tillägg
-None: Ingen
+None: Inga
 E-mail: E-mail
 URL: URL
 Regular expression: Reguljära uttryck
 Minimum input length: Minsta indatalängden
 Default: Standard
-Attributes: Attribut
+#Family
+Attributes: Attributer
+#Category
 Title: Titel
+#Page titles
 pim_catalog_identifier: Identifierare
 pim_catalog_text: Text
 pim_catalog_textarea: Textruta
@@ -340,20 +360,24 @@ pim_catalog_file: Fil
 pim_catalog_image: Bild
 pim_catalog_boolean: "Ja/Nej"
 pim_catalog_date: Datum
-pim_catalog_metric: Metrisk
 pim_reference_data_simpleselect: Referensdata enkel Välj
 pim_reference_data_multiselect: Referens data multi Välj
+#Locales
 Activated: Aktiverad
-Disable: Avaktivera
+Edit: Ändra
+Disable: Inaktivera
 To enable: Aktivera
 Select attributes: Välj attribut
 Select: Välj
 Remove this attribute: Ta bort detta attributet
 Copy: Kopiera
+Translate from: Översätt från
 Current tab: Aktuell flik
+#Product view
 Group: Grupp
 View group: Visa grupp
-Products: Products
+Products: Produkter
+#Tabs
 Properties: Egenskaper
 History: Historik
 pane.accordion:
@@ -364,22 +388,43 @@ pane.accordion:
   general_parameters: Allmänna parametrar
   validation_parameters: Valideringsparametrar
   label_translations: Etikettsöversättningar
-  options: Inställningar
+  options: Alternativ
   group_values: Gruppvärden
+#Popin titles
 popin.create:
   association_type.title: Skapa en ny typ av association
   group.title: Skapa en ny grupp
   product.title: Skapa en ny produkt
   option.title: Skapa ett nytt alternativ
+#Datagrid contents
 In group: I grupp
 Attribute as label: Attribut som etikett
 Is associated: Är associerad
-Complete: Klart
+Complete: Slutförd
 Created At: Skapad den
 Updated At: Uppdaterad den
 Enabled: Aktiverad
-Disabled: Avaktiverad
+Disabled: Inaktiverad
 Status: Status
+pim_datagrid:
+  filters:
+    entity_type:
+      label: Variant
+    family:
+      label: Familj
+    groups:
+      label: Grupper
+    enabled:
+      label: Status
+    completeness:
+      label: Slutförd
+    created:
+      label: Skapad
+    updated:
+      label: Uppdaterad
+    identifier:
+      label: Identifierare
+#Versioning / history
 Change History: Ändra historik
 Data Audit: Data revision
 Data Audit - System: 'Data revision - system'
@@ -389,11 +434,12 @@ Entity type: Entitet typ
 Entity name: Entitetsnamn
 Entity id: Entitet-id
 Data: Data
-Author: Upphovsman
+Author: Författare
 Logged at: Loggad den
 Deleted: Raderad
-Old values: Gammalt värde
+Old values: Gamla värden
 New values: Nytt värde
+#Configuration
 System configuration: Systemkonfiguration
 General setup: Allmänna inställningar
 Localization: Lokalisering
@@ -424,6 +470,7 @@ oro.locale:
       language: "Välj det systemspråk du vill använda"
       timezone: "Välj tidszonen för visning av datum och tid"
       currency: "Välj standardvaluta"
+#Datagrid
 Selected products successfully deleted: Valda produkter har tagits bort
 pim_mass_edit:
   notification:
@@ -446,8 +493,8 @@ edit_common_attributes.steps.edit_common_attributes_processor.title: Redigera At
 update_product_value.steps.update_product_value_processor.title: Uppdatera produktens värde
 remove_product_value.steps.update_product_value_processor.title: Ta bort produktvärde
 edit_common_attributes: Redigera Attribut
-perform.steps.duplicated.title: Duplicerade Axis
-perform.steps.excluded.title: Utesluten produkt
+perform.steps.duplicated.title: Duplicerade Axlar
+perform.steps.excluded.title: Uteslutna produkter
 mass_edit report:
   overview: Massa redigera rapporter
 job_tracker:
@@ -455,5 +502,7 @@ job_tracker:
     title: Spåra process
   filter:
     started_at: Startade den
-
-
+pim_login:
+  logo_title: Akeneo PIM
+  footer:
+    powered_image_title: logotyp Akeneo

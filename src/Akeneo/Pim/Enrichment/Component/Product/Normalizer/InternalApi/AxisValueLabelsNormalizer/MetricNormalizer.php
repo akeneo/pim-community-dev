@@ -9,6 +9,7 @@ use Akeneo\Pim\Enrichment\Component\Product\Model\ValueInterface;
 use Akeneo\Pim\Enrichment\Component\Product\Normalizer\Standard\Product\MetricNormalizer as StandardMetricNormalizer;
 use Akeneo\Pim\Enrichment\Component\Product\Value\MetricValueInterface;
 use Akeneo\Pim\Structure\Component\AttributeTypes;
+use Akeneo\Tool\Bundle\MeasureBundle\PublicApi\GetUnitTranslations;
 use Webmozart\Assert\Assert;
 
 /**
@@ -16,21 +17,23 @@ use Webmozart\Assert\Assert;
  */
 class MetricNormalizer implements AxisValueLabelsNormalizer
 {
-    /** @var StandardMetricNormalizer */
-    private $metricNormalizer;
+    private StandardMetricNormalizer $metricNormalizer;
+    private MetricLocalizer $metricLocalizer;
+    private GetUnitTranslations $getUnitTranslations;
 
-    /** @var MetricLocalizer */
-    private $metricLocalizer;
-
-    public function __construct(StandardMetricNormalizer $metricNormalizer, MetricLocalizer $metricLocalizer)
-    {
+    public function __construct(
+        StandardMetricNormalizer $metricNormalizer,
+        MetricLocalizer $metricLocalizer,
+        GetUnitTranslations $getUnitTranslations
+    ) {
         $this->metricNormalizer = $metricNormalizer;
         $this->metricLocalizer = $metricLocalizer;
+        $this->getUnitTranslations = $getUnitTranslations;
     }
 
     /**
      * @param ValueInterface $value
-     * @param string         $locale
+     * @param string $locale
      *
      * @return string
      */
@@ -41,18 +44,36 @@ class MetricNormalizer implements AxisValueLabelsNormalizer
 
         $normalizedMetric = $this->metricNormalizer->normalize($value, 'standard', $context);
 
+        $amount = $normalizedMetric['amount'];
+        $measurementFamilyCode = $amount->getFamily();
+
         $metric = [
-            'amount' => $normalizedMetric['amount']->getData(),
-            'unit' => $value->getUnit()
+            'amount' => $amount->getData(),
+            'unit' => $amount->getUnit(),
         ];
 
         $localizedMetric = $this->metricLocalizer->localize($metric, $context);
 
-        return sprintf('%s %s', $localizedMetric['amount'], $localizedMetric['unit']);
+        return sprintf(
+            '%s %s',
+            $localizedMetric['amount'],
+            $this->localizeUnit($measurementFamilyCode, $localizedMetric['unit'], $locale)
+        );
     }
 
     public function supports(string $attributeType): bool
     {
         return AttributeTypes::METRIC === $attributeType;
+    }
+
+    private function localizeUnit(string $measurementFamilyCode, string $unitCode, string $locale): string
+    {
+        $unitTranslations = $this->getUnitTranslations->byMeasurementFamilyCodeAndLocale($measurementFamilyCode, $locale);
+
+        if (!isset($unitTranslations[$unitCode])) {
+            return $unitCode;
+        }
+
+        return $unitTranslations[$unitCode];
     }
 }

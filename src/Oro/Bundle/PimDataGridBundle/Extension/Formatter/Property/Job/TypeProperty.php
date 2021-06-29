@@ -3,7 +3,7 @@
 namespace Oro\Bundle\PimDataGridBundle\Extension\Formatter\Property\Job;
 
 use Oro\Bundle\DataGridBundle\Extension\Formatter\Property\FieldProperty;
-use Symfony\Component\Translation\TranslatorInterface;
+use Symfony\Contracts\Translation\TranslatorInterface;
 
 /**
  * Renders the job type

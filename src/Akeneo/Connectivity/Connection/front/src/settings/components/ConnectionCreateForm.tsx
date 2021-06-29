@@ -1,6 +1,7 @@
+import {Helper} from 'akeneo-design-system';
 import React, {ChangeEvent, Dispatch, RefObject, useEffect, useReducer, useRef} from 'react';
 import {useHistory} from 'react-router-dom';
-import {ApplyButton, Form, FormGroup, FormInput, InlineHelper} from '../../common';
+import {ApplyButton, Form, FormGroup, FormInput} from '../../common';
 import {FlowType} from '../../model/flow-type.enum';
 import {isErr} from '../../shared/fetch-result/result';
 import {sanitize} from '../../shared/sanitize';
@@ -119,7 +120,7 @@ export const ConnectionCreateForm = () => {
 
         connectionsDispatch(connectionFetched(result.value));
 
-        history.push(`/connections/${state.controls.code.value}/edit`);
+        history.push(`/connect/connection-settings/${state.controls.code.value}/edit`);
     };
 
     const handleChange = (event: ChangeEvent<HTMLInputElement>) => {
@@ -133,7 +134,11 @@ export const ConnectionCreateForm = () => {
             <FormGroup
                 controlId='label'
                 label='akeneo_connectivity.connection.connection.label'
-                errors={Object.keys(state.controls.label.errors)}
+                helpers={Object.keys(state.controls.label.errors).map((error, i) => (
+                    <Helper inline level='error' key={i}>
+                        <Translate id={error} />
+                    </Helper>
+                ))}
             >
                 <FormInput
                     ref={labelInputRef}
@@ -150,7 +155,11 @@ export const ConnectionCreateForm = () => {
             <FormGroup
                 controlId='code'
                 label='akeneo_connectivity.connection.connection.code'
-                errors={Object.keys(state.controls.code.errors)}
+                helpers={Object.keys(state.controls.code.errors).map((error, i) => (
+                    <Helper inline level='error' key={i}>
+                        <Translate id={error} />
+                    </Helper>
+                ))}
             >
                 <FormInput
                     ref={codeInputRef}
@@ -168,15 +177,23 @@ export const ConnectionCreateForm = () => {
             <FormGroup
                 controlId='flow_type'
                 label='akeneo_connectivity.connection.connection.flow_type'
-                helper={
-                    <InlineHelper info>
+                helpers={[
+                    <Helper inline level='info' key={-1}>
                         <FlowTypeHelper />
-                    </InlineHelper>
-                }
+                    </Helper>,
+                    ...Object.keys(state.controls.flow_type.errors).map((error, i) => (
+                        <Helper inline level='error' key={i}>
+                            <Translate id={error} />
+                        </Helper>
+                    )),
+                ]}
                 required
-                errors={Object.keys(state.controls.flow_type.errors)}
             >
-                <FlowTypeSelect value={state.controls.flow_type.value as FlowType} onChange={handleFlowTypeSelect} />
+                <FlowTypeSelect
+                    value={state.controls.flow_type.value as FlowType}
+                    onChange={handleFlowTypeSelect}
+                    id='flow_type'
+                />
             </FormGroup>
 
             <ApplyButton onClick={handleSave} disabled={false === state.valid}>

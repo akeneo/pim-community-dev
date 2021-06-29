@@ -37,6 +37,7 @@ class CategoryFieldClearerSpec extends ObjectBehavior
         $categories->add(new Category());
         $categories->add(new Category());
         $product->setCategories($categories);
+        Assert::count($product->getCategories(), 2);
 
         $this->clear($product, 'categories');
         Assert::count($product->getCategories(), 0);
@@ -49,6 +50,7 @@ class CategoryFieldClearerSpec extends ObjectBehavior
         $categories->add(new Category());
         $categories->add(new Category());
         $productModel->setCategories($categories);
+        Assert::count($productModel->getCategories(), 2);
 
         $this->clear($productModel, 'categories');
         Assert::count($productModel->getCategories(), 0);

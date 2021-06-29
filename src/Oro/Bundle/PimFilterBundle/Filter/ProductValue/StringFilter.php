@@ -75,7 +75,8 @@ class StringFilter extends OroStringFilter
         }
 
         if (FilterType::TYPE_IN_LIST === $data['type']) {
-            $data['value'] = explode(',', $data['value']);
+            // Here we replace the non-breaking spaces with actual spaces, see: PIM-9623
+            $data['value'] = explode(',', preg_replace('/\xc2\xa0/', ' ', $data['value']));
         }
 
         return $data;

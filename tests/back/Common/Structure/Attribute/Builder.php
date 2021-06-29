@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Akeneo\Test\Common\Structure\Attribute;
 
+use Akeneo\Channel\Component\Model\Locale;
 use Akeneo\Test\Common\EntityWithValue\Code;
 use Akeneo\Pim\Structure\Component\Model;
 use Akeneo\Pim\Structure\Component\AttributeTypes;
@@ -30,10 +31,16 @@ class Builder
     private $localizable;
 
     /** @var bool */
+    private $specificlocalizable;
+
+    /** @var bool */
     private $scopable;
 
     /** @var string */
     private $backendType;
+
+    /** @var string[] */
+    private array $guidelines = [];
 
     public function __construct()
     {
@@ -41,6 +48,7 @@ class Builder
         $this->type = new Type(AttributeTypes::IDENTIFIER);
         $this->isUnique = false;
         $this->localizable = false;
+        $this->specificlocalizable = false;
         $this->scopable = false;
         $this->backendType = AttributeTypes::BACKEND_TYPE_TEXT;
     }
@@ -56,8 +64,16 @@ class Builder
         $attribute->setUnique($this->isUnique);
         $attribute->setScopable($this->scopable);
         $attribute->setLocalizable($this->localizable);
+        if ($this->specificlocalizable) {
+            $locale = new Locale();
+            $locale->setCode("locale_code");
+            $attribute->addAvailableLocale(new Locale());
+        }
         $attribute->setDecimalsAllowed(false);
         $attribute->setBackendType($this->backendType);
+        foreach ($this->guidelines as $localeCode => $localeGuidelines) {
+            $attribute->addGuidelines($localeCode, $localeGuidelines);
+        }
 
         return $attribute;
     }
@@ -112,6 +128,7 @@ class Builder
         $this->scopable = false;
         $this->isUnique = true;
         $this->backendType = AttributeTypes::BACKEND_TYPE_TEXT;
+        $this->guidelines = ['en_US' => 'guidelines'];
 
         return $this;
     }
@@ -120,6 +137,11 @@ class Builder
     {
         $this->localizable = true;
 
+        return $this;
+    }
+
+    public function  specificlocalizable(): Builder {
+        $this->specificlocalizable =true;
         return $this;
     }
 

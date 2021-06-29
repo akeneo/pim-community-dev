@@ -15,6 +15,8 @@ Feature: Validate simple and multi-select attributes of a product
       | color       | red         |
       | collections | spring_2019 |
       | collections | summer_2019 |
+      | collections | fall_2019   |
+      | collections | winter_2019 |
     And the following locales "en_US"
     And the following "ecommerce" channel with locales "en_US"
 
@@ -51,5 +53,19 @@ Feature: Validate simple and multi-select attributes of a product
   Scenario: Providing non-existing simple select options should raise an error
     When a product is created with values:
       | attribute   | data                                          | scope | locale |
-      | collections | winter_2018,spring_2019,summer_2019,fall_2019 |       |        |
-    Then the error 'The fall_2019, winter_2018 values are not in the collections attribute option list.' is raised
+      | collections | winter_2018,spring_2019,summer_2019,fall_2018 |       |        |
+    Then the error 'The fall_2018, winter_2018 values are not in the collections attribute option list.' is raised
+
+  @acceptance-back
+  Scenario: Providing a duplicate option for a multi select attribute should raise an error
+    When a product is created with values:
+      | attribute   | data                                | scope | locale |
+      | collections | spring_2019,summer_2019,spring_2019 |       |        |
+    Then the error 'The following option was used multiple times: "spring_2019". Please check your option list again.' is raised
+
+  @acceptance-back
+  Scenario: Providing several duplicate options for a multi select attribute should raise an error
+    When a product is created with values:
+      | attribute   | data                                                                  | scope | locale |
+      | collections | winter_2019,spring_2019,winter_2019,fall_2019,winter_2019,spring_2019 |       |        |
+    Then the error 'The following options were used multiple times: "spring_2019, winter_2019". Please check your option list again.' is raised

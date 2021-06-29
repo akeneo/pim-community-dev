@@ -3,7 +3,7 @@
 "Yes, do it": "Sì, prosegui"
 "Ok, got it.": "Ok, capito."
 "Edit": "Modifica"
-"Unexpected error occurred. Please contact system administrator.": "Si è verificato un errore imprevisto. Contattare l'amministratore di sistema."
+"Unexpected error occurred. Please contact system administrator.": "Si è verificato un errore inaspettato. Sei pregato di contattare l'amministratore di sistema."
 "Yes, revoke": "Si, revoca"
 "Revoke Confirmation": "Revoca conferma"
 Prev: Precedente
@@ -21,6 +21,11 @@ Second: Secondi
 Millisecond: Millisecondi
 Microsecond: Microsecondi
 "Time Zone": "Fuso orario"
+duration:
+  days: "{0}0 giorni|{1}1 giorno|]1, Inf[{{ count }} giorni"
+  hours: "{0}0 ore|{1}1 ora| ]1, Inf[{{ count }} ore"
+  minutes: "{0}0 minuti|{1}1 minuto|]1, Inf[{{ count }} minuti"
+  seconds: "{0}0 secondi|{1}1 secondo|]1, Inf[{{ count }} secondi"
 #PIM messages
 Localized value: Valori localizzati
 Columns: Colonne
@@ -154,7 +159,10 @@ pim_common:
   before: Prima
   by: da
   cancel: Annulla
+  clear_value: Cancella valore
+  close: Chiudi
   code: Codice
+  completeness: Completamento
   confirm: Conferma
   confirm_deletion: Conferma cancellazione
   confirm_revocation: Conferma revoca
@@ -162,16 +170,22 @@ pim_common:
   created: Creato
   delete: Elimina
   done: Completato
+  duplicate: Duplicato
   edit: Modifica
   entity_updated: Ci sono modifiche non salvate.
+  export: Esportazioni
   from: Da
   general_properties: Proprietà generali
   history: Cronologia
+  identifier: Identificatore
+  image: Immagine
   label: Etichetta
   label_translations: Traduzioni etichetta
+  Label or identifier: etichetta o identificatore
   less_than: Meno di
   loading: Caricamento in corso...
   media_upload: Trascina e rilascia qui un file per caricarlo o fai click qui
+  more_actions: Altre azioni
   more_than: Più di
   next: Successivo
   "no": "No"
@@ -179,11 +193,15 @@ pim_common:
   not_available: N/A
   now: Ora
   ok: OK
+  open: Apri
+  no_result: Nessun risultato trovato
+  other_actions: Altre azioni
   permissions: Autorizzazioni
   previous: Precedente
   properties: Proprietà
   remove: Rimuovere
   required_label: (richiesto)
+  result_count: "{0}0 risultati|{1}1 risultato|]1, Inf[{{ itemsCount }} risultati"
   save: Salva
   search: Ricerca
   select2:
@@ -194,6 +212,7 @@ pim_common:
   to: A
   type: Tipo
   update: Carica
+  updated: Aggiornato
   "yes": "Sì"
   operator: Operatore
   operators:
@@ -209,12 +228,22 @@ pim_common:
     DOES NOT CONTAIN: Non contiene
     STARTS WITH: Inizia con
     ENDS WITH: Termina con
+  read_more: Maggiori informazioni
+  channel: Canale
+  locale: Impostazione locale
+  categories: Categorie
+  family_variant: Famiglia variante
+  enabled: Attivato
+  family: Famiglia
+  parent: Genitore
+  groups: Gruppi
+  more: Altro
 error:
-  exception: Accidenti! Si è verificato un errore con il codice {{ status_code }}...
+  exception: Accidenti! Si è verificato un errore {{ status_code}}...
   forbidden: Vietato. Non è consentito accedere a questa pagina
 alert:
   attribute_option:
-    error_occurred_during_submission: Si è verificato un errore durante l'invio del modulo al server
+    error_occurred_during_submission: Si è verificato un errore durante l'invio del modulo sul server
     save_before_edit_other: Si prega di registrare le modifiche sulle altre righe prima di modificare questa
   session_storage:
     not_available: Il tuo browser non sembra compatibile con il sessionStorage. Contattare l'amministratore
@@ -237,18 +266,6 @@ pim_enrich.entity.fallback:
       leave: Sei sicuro di voler lasciare questa pagina?
       discard_changes: Perderai le modifiche a {{ entity }} se lasci la pagina.
       discard_changes_title: Sei sicuro?
-pim_enrich.entity.api_connection:
-  flash:
-    create:
-      success: Connessione API creata correttamente
-    delete:
-      success: Connessione API revocata correttamente
-      fail: Non è possibile revocare questa connessione API
-  page_title:
-    index: "]-Inf, 1]{{ count }} connessione API|]1, Inf[{{ count }} Connesioni API"
-  module:
-    revoke:
-      confirm: Sei sicuro di voler revocare questa connessione API?
 pim_enrich.entity.job_execution:
   page_title:
     index: "]-Inf, 1]{{ count }} operazione|]1, Inf[{{ count }} operazioni"
@@ -269,8 +286,9 @@ pim_title:
   pim_enrich_catalog_volume_index: Monitoraggio del volume di catalogo
   pim_enrich_categorytree_index: Albero della categoria
   pim_enrich_categorytree_create: Strutture di categoria | Crea
-  pim_enrich_categorytree_edit: Albero di categoria {{ category.label }} | Modifica
+  pim_enrich_categorytree_edit: Categoria {{ category.label }} | Modifica
   pim_enrich_categorytree_create_tree: Strutture di categoria | Crea
+  pim_enrich_categorytree_tree: Albero di categoria {{ category.label }} | Modifica
   pim_enrich_attribute_index: Atributi
   pim_enrich_attribute_create: Attributi | Crea
   pim_enrich_attribute_edit: Attributo {{ attribute.label }} | Modifica
@@ -295,10 +313,9 @@ pim_title:
   pim_enrich_mass_edit_action_perform: Modifica di massa | Esegui
   pim_enrich_job_tracker_index: Tracker di processo
   pim_enrich_job_tracker_show: Tracker di processo | Visualizza lavoro
-  pim_enrich_api_connection_index: Connessioni API
-  pim_enrich_api_connection_create: Connessione API | Crea
   pim_enrich_mass_edit_action: Modifica di massa
   pim_analytics_system_info_index: Informazioni di sistema
+  pim_settings_index: Impostazioni
 pim_menu:
   tab:
     activity: Attività
@@ -314,7 +331,7 @@ pim_menu:
     attribute_group: Gruppi di attributi
     channel: Canali
     currency: Valute
-    dashboard: Dashboard
+    dashboard: Dashboard attività
     family: Famiglie
     group: Gruppi
     group_type: Tipi di gruppo
@@ -330,13 +347,15 @@ pim_menu:
     user_role: Ruoli
     info: Informazioni di sistema
     job_tracker: Tracker di processo
-    api_connection: Connessioni API
     catalog_volume: Monitoraggio del volume di catalogo
   navigation:
     activity: Navigazione attività
     system: Sistema
     user: Gestione utenti
-    settings: Impostazioni
+    settings:
+      product: Impostazioni prodotti
+      catalog: Impostazioni catalogo
+      collapsed_label: Impostazioni
     product: Navigazione prodotti
     product_infos: Info prodotto
   user:
@@ -348,3 +367,20 @@ pim_notification:
     export: Esportazioni
     quick_export: Esportazione rapida
     mass_edit: Modifica di massa
+pim_settings:
+  settings_menu: Menu Impostazioni
+  catalog_settings: Impostazioni catalogo
+  product_settings: Impostazioni prodotti
+  count:
+    categories: Hai {{ countTrees }} alberi e {{ countCategories }} categorie
+    channels: Hai {{ count }} canali
+    locales: Hai {{ count }} impostazioni locali attivate
+    currencies: Hai {{ count }} valute attivate
+    attribute_groups: Hai {{ count }} gruppi di attributi
+    attributes: Hai {{ count }} attributi
+    families: Hai {{ count }} famiglie
+    measurements: Hai {{ count }} unità di misura
+    association_types: Hai {{ count }} tipi di associazione
+    group_types: Hai {{ count }} tipi di gruppo
+    groups: Hai {{ count }} gruppi
+    rules: Hai {{ count }} regole attivate

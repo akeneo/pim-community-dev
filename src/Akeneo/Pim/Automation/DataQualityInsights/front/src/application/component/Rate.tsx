@@ -6,14 +6,15 @@ interface RateProps {
 }
 
 const Rate: FunctionComponent<RateProps> = ({value, isLoading = false}) => {
-
   if (isLoading) {
     return (
       <div className={'AknDataQualityInsightsRate AknDataQualityInsightsRate-Loading'}>
-        <img src={'bundles/akeneodataqualityinsights/images/AxisRateLoader.svg'}
-             className={' AknDataQualityInsightsRate-Loader'}/>
+        <img
+          src={'bundles/akeneodataqualityinsights/images/AxisRateLoader.svg'}
+          className={' AknDataQualityInsightsRate-Loader'}
+        />
       </div>
-    )
+    );
   }
   return (
     <>

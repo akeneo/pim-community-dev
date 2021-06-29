@@ -9,6 +9,7 @@ services:
         arguments:
             - '@translator'
             - '@pim_catalog.normalizer.standard.job_instance'
+            - '@akeneo_batch.job.job_registry'
         tags:
             - { name: pim_serializer.normalizer, priority: 90 }
             - { name: pim_standard_format_serializer.normalizer, priority: 90 }
@@ -30,9 +31,11 @@ services:
             - { name: pim_versioning.serializer.normalizer, priority: 90 }
 
     pim_enrich.normalizer.job_execution:
-        class: 'Akeneo\Pim\Enrichment\Component\Product\Normalizer\InternalApi\JobExecutionNormalizer'
+        class: Akeneo\Platform\Bundle\ImportExportBundle\Normalizer\InternalApi\JobExecutionNormalizer
         arguments:
             - '@pim_import_export.normalizer.job_execution'
             - '@pim_user.context.user'
+            - '@pim_import_export.query.get_job_execution_tracking'
+            - '@serializer'
         tags:
             - { name: pim_internal_api_serializer.normalizer}

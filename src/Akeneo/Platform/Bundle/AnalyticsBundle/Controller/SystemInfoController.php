@@ -4,9 +4,10 @@ namespace Akeneo\Platform\Bundle\AnalyticsBundle\Controller;
 
 use Akeneo\Tool\Component\Analytics\ChainedDataCollector;
 use Oro\Bundle\SecurityBundle\Annotation\AclAncestor;
-use Symfony\Bundle\FrameworkBundle\Templating\EngineInterface;
+use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpFoundation\ResponseHeaderBag;
+use Twig\Environment;
 
 /**
  * System info controller
@@ -17,11 +18,10 @@ use Symfony\Component\HttpFoundation\ResponseHeaderBag;
  */
 class SystemInfoController
 {
-    /**
-     * @param EngineInterface      $templating
-     * @param ChainedDataCollector $dataCollector
-     */
-    public function __construct(EngineInterface $templating, ChainedDataCollector $dataCollector)
+    private Environment $templating;
+    private ChainedDataCollector $dataCollector;
+
+    public function __construct(Environment $templating, ChainedDataCollector $dataCollector)
     {
         $this->templating = $templating;
         $this->dataCollector = $dataCollector;
@@ -48,13 +48,15 @@ class SystemInfoController
         $data = $moveToEnd($data, 'php_extensions');
         $data = $moveToEnd($data, 'registered_bundles');
 
-        $content = $this->templating->render(
-            sprintf('PimAnalyticsBundle:SystemInfo:index.%s.twig', $_format),
-            ['data' => $data]
-        );
+        $response = new JsonResponse($data);
 
-        $response = new Response($content);
         if ('txt' === $_format) {
+            $content = $this->templating->render(
+                'PimAnalyticsBundle:SystemInfo:index.txt.twig',
+                ['data' => $data]
+            );
+
+            $response = new Response($content);
             $response->headers->set('Content-Type', 'text/plain');
             $response->headers->set('Content-Disposition', sprintf(
                 '%s; filename="akeneo-pim-system-info_%s.txt"',

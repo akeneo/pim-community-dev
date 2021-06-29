@@ -5,5 +5,6 @@ parameters:
 services:
     pim_catalog.version_provider:
         class: 'Akeneo\Platform\VersionProvider'
+        public: true
         arguments:
             - '%pim_catalog.version.class%'

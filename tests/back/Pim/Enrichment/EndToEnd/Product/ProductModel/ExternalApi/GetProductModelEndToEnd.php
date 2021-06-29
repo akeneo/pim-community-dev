@@ -103,25 +103,16 @@ class GetProductModelEndToEnd extends ApiTestCase
     {
         $productModel = $this->get('pim_catalog.repository.product_model')->findOneByCode($productModelCode);
 
-        $association = $productModel->getAssociationForTypeCode('X_SELL');
-        if (null === $association) {
-            $associationType = $this->get('pim_catalog.repository.association_type')
-                ->findOneBy(['code' => 'X_SELL']);
-
-            $association = new ProductModelAssociation();
-            $association->setAssociationType($associationType);
-            $productModel->addAssociation($association);
-        }
-        $association->addProductModel(
-            $this->get('pim_catalog.repository.product_model')->findOneByCode('model-biker-jacket-polyester')
+        $this->get('pim_catalog.updater.product_model')->update(
+            $productModel,
+            [
+                'associations' => [
+                    'X_SELL' => [
+                        'products' => ['biker-jacket-leather-m'],
+                        'product_models' => ['model-biker-jacket-polyester'],                    ]
+                ],
+            ]
         );
-
-        $association->addProduct(
-            $this->get('pim_catalog.repository.product')->findOneByIdentifier('biker-jacket-leather-m')
-        );
-
-        $missingAssociationAdder = $this->get('pim_catalog.association.missing_association_adder');
-        $missingAssociationAdder->addMissingAssociations($productModel);
 
         $errors = $this->get('pim_catalog.validator.product_model')->validate($productModel);
 

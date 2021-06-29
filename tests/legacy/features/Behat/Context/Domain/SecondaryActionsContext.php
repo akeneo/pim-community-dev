@@ -51,7 +51,7 @@ class SecondaryActionsContext extends PimContext
             } else {
                 return null === $module->getMenuItem($actionName);
             }
-        }, sprintf('Secondary action "%s" was %sfound', $actionName, $not));
+        }, sprintf('Secondary action "%s" was %sfound', $actionName, '' === $not ? 'not ' : $not));
         $module->close();
     }
 }

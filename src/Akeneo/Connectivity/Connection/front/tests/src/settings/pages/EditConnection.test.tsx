@@ -2,28 +2,25 @@ import {ConnectionsProvider} from '@src/settings/connections-context';
 import {EditConnection} from '@src/settings/pages/EditConnection';
 import {WrongCredentialsCombinationsProvider} from '@src/settings/wrong-credentials-combinations-context';
 import {UserContext} from '@src/shared/user';
-import {act, fireEvent, waitForElement} from '@testing-library/react';
+import {act, fireEvent, screen, waitForElement} from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
 import {createMemoryHistory} from 'history';
 import React, {PropsWithChildren} from 'react';
 import {Route, Router} from 'react-router-dom';
 import {renderWithProviders} from '../../../test-utils';
 
-jest.mock('@src/common/components/Select2');
-
 const UserContextProvider = ({children}: PropsWithChildren<{}>) => {
     const userContext = {
-        get: (key: string) => {
-            if ('uiLocale' === key) {
-                return 'en_US';
-            }
-            if ('timezone' === key) {
-                return 'UTC';
-            }
+        // eslint-disable-next-line
+        get: <T,>(key: string) => {
+            let value = key;
+            value = 'uiLocale' === key ? 'en_US' : value;
+            value = 'timezone' === key ? 'UTC' : value;
 
-            return key;
+            return value as unknown as T;
         },
         set: () => undefined,
+        refresh: () => Promise.resolve(),
     };
     return <UserContext.Provider value={userContext}>{children}</UserContext.Provider>;
 };
@@ -79,7 +76,7 @@ describe('testing EditConnection page', () => {
 
         const history = createMemoryHistory({initialEntries: ['/connections/ecommerce/edit']});
 
-        const {getByText, getByLabelText} = renderWithProviders(
+        const {getByText, getByLabelText, findByText} = renderWithProviders(
             <Router history={history}>
                 <Route path='/connections/:code/edit'>
                     <UserContextProvider>
@@ -99,25 +96,38 @@ describe('testing EditConnection page', () => {
         );
         expect(fetchMock.mock.calls[1][0]).toEqual('akeneo_connectivity_connection_rest_get?code=ecommerce');
 
-        await waitForElement(() => getByText('Franklin'));
+        await findByText('akeneo_connectivity.connection.secondary_actions.title');
         expect(fetchMock).toBeCalledTimes(4);
         expect(fetchMock.mock.calls[2][0]).toEqual('pim_user_user_role_rest_index');
         expect(fetchMock.mock.calls[3][0]).toEqual('pim_user_user_group_rest_index');
 
         const labelInput = getByLabelText(/^akeneo_connectivity\.connection\.connection\.label/) as HTMLInputElement;
-        const flowTypeSelect = getByText('akeneo_connectivity.connection.flow_type.data_source')
-            .parentElement as HTMLSelectElement;
+        const flowTypeSelect = getByLabelText(
+            'akeneo_connectivity.connection.connection.flow_type'
+        ) as HTMLSelectElement;
         const auditableCheckbox = getByLabelText('akeneo_connectivity.connection.connection.auditable');
-        const userRoleSelect = getByText('User').parentElement as HTMLSelectElement;
-        const userGroupSelect = getByText('All').parentElement as HTMLSelectElement;
+        const userRoleSelect = getByLabelText(
+            'akeneo_connectivity.connection.connection.user_role_id'
+        ) as HTMLSelectElement;
+        const userGroupSelect = getByLabelText(
+            'akeneo_connectivity.connection.connection.user_group_id'
+        ) as HTMLSelectElement;
         const saveButton = getByText('pim_common.save') as HTMLButtonElement;
 
         await act(async () => {
             await userEvent.type(labelInput, 'Magento');
-            userEvent.selectOptions(flowTypeSelect, 'data_destination');
+
+            userEvent.click(flowTypeSelect);
+            userEvent.click(await screen.findByText('akeneo_connectivity.connection.flow_type.data_destination'));
+
             userEvent.click(auditableCheckbox);
-            userEvent.selectOptions(userRoleSelect, '2');
-            userEvent.selectOptions(userGroupSelect, '4');
+
+            userEvent.click(userRoleSelect);
+            userEvent.click(await screen.findByText('API Role'));
+
+            userEvent.click(userGroupSelect);
+            userEvent.click(await screen.findByText('API Group'));
+
             userEvent.click(saveButton);
         });
 
@@ -153,7 +163,7 @@ describe('testing EditConnection page', () => {
             </Router>
         );
 
-        await findByText('Franklin');
+        await findByText('akeneo_connectivity.connection.secondary_actions.title');
 
         const labelInput = getByLabelText('akeneo_connectivity.connection.connection.label', {
             exact: false,

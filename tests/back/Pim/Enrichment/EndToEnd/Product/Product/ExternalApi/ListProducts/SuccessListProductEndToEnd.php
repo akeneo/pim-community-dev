@@ -473,8 +473,8 @@ JSON;
         $expected = <<<JSON
 {
     "_links"       : {
-        "self"  : {"href" : "http://localhost/api/rest/v1/products?page=1&with_count=false&pagination_type=page&limit=10"},
-        "first" : {"href" : "http://localhost/api/rest/v1/products?page=1&with_count=false&pagination_type=page&limit=10"}
+        "self"  : {"href" : "http://localhost/api/rest/v1/products?page=1&with_count=false&pagination_type=page&limit=10&with_attribute_options=true"},
+        "first" : {"href" : "http://localhost/api/rest/v1/products?page=1&with_count=false&pagination_type=page&limit=10&with_attribute_options=true"}
     },
     "current_page" : 1,
     "_embedded"    : {
@@ -486,6 +486,152 @@ JSON;
             {$standardizedProducts['product_china']},
             {$standardizedProducts['product_without_category']},
             {$standardizedProducts['product_with_parent']}
+        ]
+    }
+}
+JSON;
+
+        $this->assertListResponse($client->getResponse(), $expected);
+    }
+
+    public function testListProductsWithQualityScores()
+    {
+        $this->createProduct('simple_with_family_and_values', [
+            'categories' => ['master'],
+            'family' => 'familyA',
+            'values' => [
+                'a_text' => [
+                    ['data' => 'Text', 'locale' => null, 'scope' => null]
+                ]
+            ],
+        ]);
+        $this->createProduct('simple_with_no_family', [
+            'categories' => ['master'],
+            'values' => [
+                'a_text' => [
+                    ['data' => 'Text', 'locale' => null, 'scope' => null]
+                ]
+            ],
+        ]);
+        $this->createProduct('simple_with_no_values', [
+            'categories' => ['master'],
+            'family' => 'familyA',
+            'values' => [],
+        ]);
+
+        $values = '{
+            "a_text": [{
+                "locale": null,
+                "scope": null,
+                "data": "Text"
+            }]
+        }';
+        $qualityScores = '[
+            {"scope": "tablet", "locale": "de_DE", "data": "E"},
+            {"scope": "tablet", "locale": "en_US", "data": "E"},
+            {"scope": "tablet", "locale": "fr_FR", "data": "E"},
+            {"scope": "ecommerce", "locale": "en_US", "data": "E"},
+            {"scope": "ecommerce_china", "locale": "en_US", "data": "E"},
+            {"scope": "ecommerce_china", "locale": "zh_CN", "data": "E"}
+        ]';
+        $standardizedProducts['simple_with_family_and_values'] = $this->getStandardizedProductsForQualityScore('simple_with_family_and_values', '"familyA"', $values, $qualityScores);
+        $standardizedProducts['simple_with_no_family'] = $this->getStandardizedProductsForQualityScore('simple_with_no_family', 'null', $values, '[]');
+        $standardizedProducts['simple_with_no_values'] = $this->getStandardizedProductsForQualityScore('simple_with_no_values', '"familyA"', '{}', $qualityScores);
+
+        $client = $this->createAuthenticatedClient();
+        $search = '{"sku":[{"operator":"IN","value":["simple_with_family_and_values","simple_with_no_family","simple_with_no_values"]}]}';
+        $searchEncoded = $this->encodeStringWithSymfonyUrlGeneratorCompatibility($search);
+        $client->request('GET', "/api/rest/v1/products?with_quality_scores=true&search=$searchEncoded");
+
+        $expected = <<<JSON
+{
+    "_links"       : {
+        "self"  : {"href" : "http://localhost/api/rest/v1/products?page=1&with_count=false&pagination_type=page&limit=10&search=$searchEncoded&with_quality_scores=true"},
+        "first" : {"href" : "http://localhost/api/rest/v1/products?page=1&with_count=false&pagination_type=page&limit=10&search=$searchEncoded&with_quality_scores=true"}
+    },
+    "current_page" : 1,
+    "_embedded"    : {
+        "items" : [            
+            {$standardizedProducts['simple_with_no_values']},
+            {$standardizedProducts['simple_with_family_and_values']},
+            {$standardizedProducts['simple_with_no_family']}
+        ]
+    }
+}
+JSON;
+
+        $this->assertListResponse($client->getResponse(), $expected);
+    }
+
+    public function testListProductsWithCompletenesses()
+    {
+        $this->createProduct('simple_with_family_and_values', [
+            'categories' => ['master'],
+            'family' => 'familyA',
+            'values' => [
+                'a_text' => [
+                    ['data' => 'Text', 'locale' => null, 'scope' => null]
+                ]
+            ],
+        ]);
+        $this->createProduct('simple_with_no_family', [
+            'categories' => ['master'],
+            'values' => [
+                'a_text' => [
+                    ['data' => 'Text', 'locale' => null, 'scope' => null]
+                ]
+            ],
+        ]);
+        $this->createProduct('simple_with_no_values', [
+            'categories' => ['master'],
+            'family' => 'familyA',
+            'values' => [],
+        ]);
+
+        $values = '{
+            "a_text": [{
+                "locale": null,
+                "scope": null,
+                "data": "Text"
+            }]
+        }';
+        $completenessesFamVal = '[
+            {"scope":"ecommerce","locale":"en_US","data":10},
+            {"scope":"ecommerce_china","locale":"en_US","data":100},
+            {"scope":"ecommerce_china","locale":"zh_CN","data":100},
+            {"scope":"tablet","locale":"de_DE","data":10},
+            {"scope":"tablet","locale":"en_US","data":10},
+            {"scope":"tablet","locale":"fr_FR","data":10}
+        ]';
+        $completenessesNoVal = '[
+            {"scope":"ecommerce","locale":"en_US","data":5},
+            {"scope":"ecommerce_china","locale":"en_US","data":100},
+            {"scope":"ecommerce_china","locale":"zh_CN","data":100},
+            {"scope":"tablet","locale":"de_DE","data":5},
+            {"scope":"tablet","locale":"en_US","data":5},
+            {"scope":"tablet","locale":"fr_FR","data":5}
+        ]';
+        $standardizedProducts['simple_with_family_and_values'] = $this->getStandardizedProductsForCompletenesses('simple_with_family_and_values', '"familyA"', $values, $completenessesFamVal);
+        $standardizedProducts['simple_with_no_family'] = $this->getStandardizedProductsForCompletenesses('simple_with_no_family', 'null', $values, '[]');
+        $standardizedProducts['simple_with_no_values'] = $this->getStandardizedProductsForCompletenesses('simple_with_no_values', '"familyA"', '{}', $completenessesNoVal);
+
+        $client = $this->createAuthenticatedClient();
+        $search = '{"sku":[{"operator":"IN","value":["simple_with_family_and_values","simple_with_no_family","simple_with_no_values"]}]}';
+        $searchEncoded = $this->encodeStringWithSymfonyUrlGeneratorCompatibility($search);
+        $client->request('GET', "/api/rest/v1/products?with_completenesses=true&search=$searchEncoded");
+
+        $expected = <<<JSON
+{
+    "_links"       : {
+        "self"  : {"href" : "http://localhost/api/rest/v1/products?page=1&with_count=false&pagination_type=page&limit=10&search=$searchEncoded&with_completenesses=true"},
+        "first" : {"href" : "http://localhost/api/rest/v1/products?page=1&with_count=false&pagination_type=page&limit=10&search=$searchEncoded&with_completenesses=true"}
+    },
+    "current_page" : 1,
+    "_embedded"    : {
+        "items" : [
+            {$standardizedProducts['simple_with_no_values']},
+            {$standardizedProducts['simple_with_family_and_values']},
+            {$standardizedProducts['simple_with_no_family']}
         ]
     }
 }
@@ -710,9 +856,42 @@ JSON;
     public function testListProductsWithParent()
     {
         $standardizedProducts = $this->getStandardizedProducts();
+
+        $searchFilters = [
+            '{"parent":[{"operator":"=","value":"prod_mod_optA"}]}',
+            '{"parent":[{"operator":"NOT EMPTY","value":null}]}',
+            '{"parent":[{"operator":"IN","value":["prod_mod_optA"]}]}',
+        ];
+
+        foreach ($searchFilters as $search) {
+            $client = $this->createAuthenticatedClient();
+            $client->request('GET', 'api/rest/v1/products?search=' . $search);
+            $searchEncoded = $this->encodeStringWithSymfonyUrlGeneratorCompatibility($search);
+            $expected = <<<JSON
+{
+    "_links": {
+        "self"  : {"href" : "http://localhost/api/rest/v1/products?page=1&with_count=false&pagination_type=page&limit=10&search=${searchEncoded}"},
+        "first" : {"href" : "http://localhost/api/rest/v1/products?page=1&with_count=false&pagination_type=page&limit=10&search=${searchEncoded}"}
+    },
+    "current_page" : 1,
+    "_embedded"    : {
+        "items" : [
+            {$standardizedProducts['product_with_parent']}
+        ]
+    }
+}
+JSON;
+
+            $this->assertListResponse($client->getResponse(), $expected);
+        }
+    }
+
+    public function testListProductsWithoutParent()
+    {
+        $standardizedProducts = $this->getStandardizedProducts();
         $client = $this->createAuthenticatedClient();
 
-        $search = '{"parent":[{"operator":"=","value":"prod_mod_optA"}]}';
+        $search = '{"parent":[{"operator":"EMPTY","value":null}]}';
         $client->request('GET', 'api/rest/v1/products?search=' . $search);
         $searchEncoded = $this->encodeStringWithSymfonyUrlGeneratorCompatibility($search);
         $expected = <<<JSON
@@ -724,7 +903,12 @@ JSON;
     "current_page" : 1,
     "_embedded"    : {
         "items" : [
-            {$standardizedProducts['product_with_parent']}
+            {$standardizedProducts['simple']},
+            {$standardizedProducts['localizable']},
+            {$standardizedProducts['scopable']},
+            {$standardizedProducts['localizable_and_scopable']},
+            {$standardizedProducts['product_china']},
+            {$standardizedProducts['product_without_category']}
         ]
     }
 }
@@ -1091,5 +1275,65 @@ JSON;
     protected function getConfiguration(): Configuration
     {
         return $this->catalog->useTechnicalCatalog();
+    }
+
+    private function getStandardizedProductsForQualityScore(string $identifier, string $family, string $values, string $qualityScores)
+    {
+        return <<<JSON
+{
+    "_links": {
+        "self": {
+            "href": "http://localhost/api/rest/v1/products/$identifier"
+        }
+    },
+    "identifier": "$identifier",
+    "family": $family,
+    "parent": null,
+    "groups": [],
+    "categories": ["master"],
+    "enabled": true,
+    "values": $values,
+    "created": "2017-03-11T10:39:38+01:00",
+    "updated": "2017-03-11T10:39:38+01:00",
+    "associations": {
+        "PACK": { "products" : [], "product_models": [], "groups": [] },
+        "SUBSTITUTION": { "products" : [], "product_models": [], "groups": [] },
+        "UPSELL": { "products" : [], "product_models": [], "groups": [] },
+        "X_SELL": { "products" : [], "product_models": [], "groups": [] }
+    },
+    "quantified_associations": {},
+    "quality_scores": $qualityScores
+}
+JSON;
+    }
+
+    private function getStandardizedProductsForCompletenesses(string $identifier, string $family, string $values, string $completenesses)
+    {
+        return <<<JSON
+{
+    "_links": {
+        "self": {
+            "href": "http://localhost/api/rest/v1/products/$identifier"
+        }
+    },
+    "identifier": "$identifier",
+    "family": $family,
+    "parent": null,
+    "groups": [],
+    "categories": ["master"],
+    "enabled": true,
+    "values": $values,
+    "created": "2017-03-11T10:39:38+01:00",
+    "updated": "2017-03-11T10:39:38+01:00",
+    "associations": {
+        "PACK": { "products" : [], "product_models": [], "groups": [] },
+        "SUBSTITUTION": { "products" : [], "product_models": [], "groups": [] },
+        "UPSELL": { "products" : [], "product_models": [], "groups": [] },
+        "X_SELL": { "products" : [], "product_models": [], "groups": [] }
+    },
+    "quantified_associations": {},
+    "completenesses": $completenesses
+}
+JSON;
     }
 }

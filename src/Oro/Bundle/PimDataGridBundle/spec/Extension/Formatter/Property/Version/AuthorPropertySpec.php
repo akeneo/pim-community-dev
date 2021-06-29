@@ -7,7 +7,7 @@ use PhpSpec\ObjectBehavior;
 use Akeneo\UserManagement\Bundle\Manager\UserManager;
 use Akeneo\UserManagement\Component\Model\User;
 use Prophecy\Argument;
-use Symfony\Component\Translation\TranslatorInterface;
+use Symfony\Contracts\Translation\TranslatorInterface;
 
 class AuthorPropertySpec extends ObjectBehavior
 {
@@ -28,7 +28,7 @@ class AuthorPropertySpec extends ObjectBehavior
         $this->getValue($record)->shouldReturn('Julia Doe - julia@zaro.com');
     }
 
-    function it_prepares_a_removed_author_value($userManager, ResultRecordInterface $record, $translator)
+    function it_prepares_a_removed_author_value($userManager, ResultRecordInterface $record, TranslatorInterface $translator)
     {
         $record->getValue('author')->willReturn('julia');
         $record->getValue('context')->willReturn(null);

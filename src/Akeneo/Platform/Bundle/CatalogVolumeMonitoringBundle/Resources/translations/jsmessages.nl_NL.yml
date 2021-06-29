@@ -7,6 +7,7 @@ pim_catalog_volume:
       title: Assen die het aantal productwaarden benutten
     catalog_structure:
       hint: U weet wellicht dat een goede catalogus structuur echt belangrijk is en een voorwaarde is voor een efficiënte verrijking. Hieronder zijn de verschillende assen om uw catalogusstructuur te controleren.
+      title: Assen gerelateerd aan de catalogusstructuur
     variant_modelling:
       hint: Als u de variant modellering gebruikt, zijn hier de assen om u te helpen uw volume te controleren.
       title: Assen met betrekking tot het modelleren van varianten

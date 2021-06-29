@@ -53,7 +53,7 @@ class AddParentSpec extends ObjectBehavior
         $product->setFamilyVariant($familyVariant)->shouldBeCalled();
         $product->setValues($filteredValues)->shouldBeCalled();
 
-        $eventDispatcher->dispatch(ParentHasBeenAddedToProduct::EVENT_NAME, Argument::type(ParentHasBeenAddedToProduct::class))
+        $eventDispatcher->dispatch(Argument::type(ParentHasBeenAddedToProduct::class), ParentHasBeenAddedToProduct::EVENT_NAME)
             ->shouldBeCalled();
 
         $this->to($product, 'parent')->shouldReturn($product);
@@ -69,7 +69,7 @@ class AddParentSpec extends ObjectBehavior
         $productModelRepository->findOneByIdentifier(Argument::any())->shouldNotBeCalled();
         $product->setParent(Argument::cetera())->shouldNotBeCalled();
         $product->setValues(Argument::cetera())->shouldNotBeCalled();
-        $eventDispatcher->dispatch(ParentHasBeenAddedToProduct::EVENT_NAME, Argument::type(ParentHasBeenAddedToProduct::class))
+        $eventDispatcher->dispatch(Argument::type(ParentHasBeenAddedToProduct::class), ParentHasBeenAddedToProduct::EVENT_NAME)
             ->shouldNotBeCalled();
 
         $this->to($product, '')->shouldReturn($product);

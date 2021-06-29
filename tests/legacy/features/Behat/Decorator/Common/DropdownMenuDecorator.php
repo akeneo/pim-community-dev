@@ -30,6 +30,14 @@ class DropdownMenuDecorator extends ElementDecorator
                 return true;
             }
 
+            if ('button' === $this->getTagName()) {
+                if (null === $this->getParent()->find('css', 'div[data-testid="backdrop"]')) {
+                    $this->click();
+                }
+
+                return true;
+            }
+
             return false;
         }, 'Could not find open DropdownMenu button');
     }
@@ -44,7 +52,9 @@ class DropdownMenuDecorator extends ElementDecorator
      */
     public function getMenuItem($actionName)
     {
-        $links = $this->findAll('css', '.AknDropdown-menuLink');
+        $dropdownMenu = $this->getBody()->findById('dropdown-root') ?? $this->getParent();
+
+        $links = $dropdownMenu->findAll('css', '.AknDropdown-menuLink, a');
         foreach ($links as $link) {
             if (trim($link->getText()) === $actionName && $link->isVisible()) {
                 return $link;
@@ -59,7 +69,7 @@ class DropdownMenuDecorator extends ElementDecorator
      */
     public function close()
     {
-        if ($this->hasClass('open')) {
+        if ($this->getBody()->find('css', 'div[data-testid="backdrop"]') || $this->hasClass('open')) {
             $this->getBody()->click();
         }
     }

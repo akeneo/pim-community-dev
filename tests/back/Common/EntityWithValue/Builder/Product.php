@@ -4,16 +4,15 @@ declare(strict_types=1);
 
 namespace Akeneo\Test\Common\EntityWithValue\Builder;
 
-use Akeneo\Tool\Component\StorageUtils\Updater\ObjectUpdaterInterface;
+use Akeneo\Pim\Enrichment\Component\Product\Builder\ProductBuilderInterface;
+use Akeneo\Pim\Enrichment\Component\Product\Model\ProductInterface;
 use Akeneo\Test\Common\EntityWithValue\Association;
 use Akeneo\Test\Common\EntityWithValue\Code;
 use Akeneo\Test\Common\EntityWithValue\ListOfCodes;
+use Akeneo\Test\Common\EntityWithValue\ListOfValues;
 use Akeneo\Test\Common\EntityWithValue\Status;
 use Akeneo\Test\Common\EntityWithValue\Value;
-use Akeneo\Test\Common\EntityWithValue\ListOfValues;
-use Doctrine\Common\Collections\Collection;
-use Akeneo\Pim\Enrichment\Component\Product\Builder\ProductBuilderInterface;
-use Akeneo\Pim\Enrichment\Component\Product\Model\ProductInterface;
+use Akeneo\Tool\Component\StorageUtils\Updater\ObjectUpdaterInterface;
 use Symfony\Component\Validator\Validator\ValidatorInterface;
 
 /**
@@ -27,7 +26,10 @@ final class Product
     /** @var Code */
     private $family;
 
-    /** @var Collection */
+    /** @var Code|null */
+    private $parent;
+
+    /** @var ListOfValues */
     private $values;
 
     /** @var ListOfCodes */
@@ -62,13 +64,7 @@ final class Product
         ValidatorInterface $validator
     ) {
 
-        $this->identifier = Code::fromString('my-product');
-        $this->family = Code::emptyCode();
-        $this->values = ListOfValues::initialize();
-        $this->categories = ListOfCodes::initialize();
-        $this->associations = ListOfCodes::initialize();
-        $this->groups = ListOfCodes::initialize();
-        $this->status = Status::enabled();
+        $this->init();
 
         $this->productBuilder = $productBuilder;
         $this->productUpdater = $productUpdater;
@@ -95,6 +91,11 @@ final class Product
             'enabled' => $this->status->toStandardFormat(),
         ];
 
+        // Handle the parent property for product variant
+        if ($this->parent !== null) {
+            $productStandardFormat['parent'] = $this->parent->toStandardFormat();
+        }
+
         $product = $this->productBuilder->createProduct((string) $this->identifier, (string) $this->family);
         $this->productUpdater->update($product, $productStandardFormat);
 
@@ -106,6 +107,20 @@ final class Product
         }
 
         return $product;
+    }
+
+    public function init(): Product
+    {
+        $this->identifier = Code::fromString('my-product');
+        $this->family = Code::emptyCode();
+        $this->parent = null;
+        $this->values = ListOfValues::initialize();
+        $this->categories = ListOfCodes::initialize();
+        $this->associations = ListOfCodes::initialize();
+        $this->groups = ListOfCodes::initialize();
+        $this->status = Status::enabled();
+
+        return $this;
     }
 
     /**
@@ -128,6 +143,18 @@ final class Product
     public function withFamily(string $family): Product
     {
         $this->family = Code::fromString($family);
+
+        return $this;
+    }
+
+    /**
+     * @param string $parent
+     *
+     * @return Product
+     */
+    public function withParent(string $parent): Product
+    {
+        $this->parent = Code::fromString($parent);
 
         return $this;
     }

@@ -52,6 +52,7 @@ class AkeneoPimEnrichmentExtension extends Extension
         $loader->load('entity_with_family_variant.yml');
         $loader->load('event_subscribers.yml');
         $loader->load('factories.yml');
+        $loader->load('forms.yml');
         $loader->load('product_value_factories.yml');
         $loader->load('family_variant.yml');
         $loader->load('filters.yml');
@@ -106,12 +107,12 @@ class AkeneoPimEnrichmentExtension extends Extension
         $loader->load('files.yml');
         $loader->load('category_counters.yml');
         $loader->load('structure_version.yml');
-        $loader->load('view_elements/category.yml');
         $loader->load('command.yml');
         $loader->load('cli_command.yml');
         $loader->load('quantified_associations.yml');
         $loader->load('messenger.yml');
         $loader->load('webhook.yml');
+        $loader->load('lock.yml');
 
         if (!$container->hasParameter('pim_pdf_generator_font')) {
             $container->setParameter('pim_pdf_generator_font', null);

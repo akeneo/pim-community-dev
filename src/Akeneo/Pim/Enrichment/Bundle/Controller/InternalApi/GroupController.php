@@ -164,6 +164,8 @@ class GroupController
      * @throws AccessDeniedHttpException If the user does not have permissions to edit the product
      *
      * @return Response
+     *
+     * @AclAncestor("pim_enrich_group_edit")
      */
     public function postAction(Request $request, $code)
     {
@@ -231,6 +233,8 @@ class GroupController
      * @param Request $request
      *
      * @return Response
+     *
+     * @AclAncestor("pim_enrich_group_create")
      */
     public function createAction(Request $request)
     {

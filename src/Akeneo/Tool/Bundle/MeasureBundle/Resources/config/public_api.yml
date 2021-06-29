@@ -3,3 +3,8 @@ services:
         class: 'Akeneo\Tool\Bundle\MeasureBundle\PublicApi\SqlGetUnitTranslations'
         arguments:
             - '@database_connection'
+            -
+    akeneo_measurement.public_api.onboarder.find_all_measurement_families:
+        class: 'Akeneo\Tool\Bundle\MeasureBundle\PublicApi\Onboarder\FindAllMeasurementFamilies'
+        arguments:
+            - '@akeneo_measure.persistence.measurement_family_repository'

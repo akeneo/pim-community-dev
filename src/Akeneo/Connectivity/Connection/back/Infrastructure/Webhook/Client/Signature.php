@@ -8,7 +8,7 @@ namespace Akeneo\Connectivity\Connection\Infrastructure\Webhook\Client;
  */
 class Signature
 {
-    public static function createSignature(string $secret, string $body, int $timestamp): string
+    public static function createSignature(string $secret, int $timestamp, ?string $body = null): string
     {
         $data = (string)$timestamp . '.' . $body;
 

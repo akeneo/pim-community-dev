@@ -21,6 +21,7 @@ use Akeneo\Tool\Component\StorageUtils\Saver\SaverInterface;
 use Akeneo\Tool\Component\StorageUtils\Updater\ObjectUpdaterInterface;
 use League\Flysystem\FilesystemInterface;
 use Oro\Bundle\SecurityBundle\Annotation\AclAncestor;
+use Oro\Bundle\SecurityBundle\SecurityFacade;
 use Symfony\Component\EventDispatcher\EventDispatcherInterface;
 use Symfony\Component\EventDispatcher\GenericEvent;
 use Symfony\Component\HttpFoundation\File\UploadedFile;
@@ -103,6 +104,9 @@ class JobInstanceController
     /** @var FilesystemInterface */
     protected $filesystem;
 
+    /** @var SecurityFacade */
+    protected $securityFacade;
+
     /**
      * @param IdentifiableObjectRepositoryInterface $repository
      * @param JobRegistry                           $jobRegistry
@@ -123,6 +127,7 @@ class JobInstanceController
      * @param EventDispatcherInterface              $eventDispatcher
      * @param CollectionFilterInterface             $inputFilter
      * @param string                                $uploadTmpDir
+     * @param SecurityFacade                        $securityFacade
      */
     public function __construct(
         IdentifiableObjectRepositoryInterface $repository,
@@ -143,7 +148,8 @@ class JobInstanceController
         JobInstanceFactory $jobInstanceFactory,
         EventDispatcherInterface $eventDispatcher,
         CollectionFilterInterface $inputFilter,
-        FilesystemInterface $filesystem
+        FilesystemInterface $filesystem,
+        SecurityFacade $securityFacade
     ) {
         $this->repository            = $repository;
         $this->jobRegistry           = $jobRegistry;
@@ -164,6 +170,7 @@ class JobInstanceController
         $this->eventDispatcher       = $eventDispatcher;
         $this->inputFilter           = $inputFilter;
         $this->filesystem            = $filesystem;
+        $this->securityFacade        = $securityFacade;
     }
 
     /**
@@ -439,7 +446,7 @@ class JobInstanceController
                 return new JsonResponse($errors, 400);
             }
 
-            $jobFileLocation = new JobFileLocation($code.DIRECTORY_SEPARATOR. $file->getClientOriginalName(), true);
+            $jobFileLocation = new JobFileLocation($code . DIRECTORY_SEPARATOR . $file->getClientOriginalName(), true);
 
             if ($this->filesystem->has($jobFileLocation->path())) {
                 $this->filesystem->delete($jobFileLocation->path());
@@ -464,9 +471,13 @@ class JobInstanceController
 
         $jobExecution = $this->launchJob($jobInstance);
 
+        if (!$this->securityFacade->isGranted(sprintf('pim_importexport_%s_execution_show', $jobInstance->getType()))) {
+            return new JsonResponse('', 200);
+        }
+
         return new JsonResponse([
             'redirectUrl' => '#' . $this->router->generate(
-                sprintf('pim_importexport_%s_execution_show', $jobInstance->getType()),
+                'pim_enrich_job_tracker_show',
                 ['id' => $jobExecution->getId()]
             )
         ], 200);
@@ -494,9 +505,9 @@ class JobInstanceController
             throw new NotFoundHttpException(
                 sprintf(
                     'The following %s does not exist anymore. Please check configuration:<br />' .
-                    'Connector: %s<br />' .
-                    'Type: %s<br />' .
-                    'Alias: %s',
+                        'Connector: %s<br />' .
+                        'Type: %s<br />' .
+                        'Alias: %s',
                     $jobInstance->getType(),
                     $jobInstance->getConnector(),
                     $jobInstance->getType(),
@@ -553,6 +564,13 @@ class JobInstanceController
         if (count($parametersViolations) > 0) {
             foreach ($parametersViolations as $error) {
                 $accessor->setValue($errors, '[configuration]' . $error->getPropertyPath(), $error->getMessage());
+                $errors['normalized_errors'][] = $this->constraintViolationNormalizer->normalize(
+                    $error,
+                    'internal_api',
+                    [
+                        'translate' => false
+                    ]
+                );
             }
         }
 
@@ -560,6 +578,13 @@ class JobInstanceController
         if ($globalViolations->count() > 0) {
             foreach ($globalViolations as $error) {
                 $errors[$error->getPropertyPath()] = $error->getMessage();
+                $errors['normalized_errors'][] = $this->constraintViolationNormalizer->normalize(
+                    $error,
+                    'internal_api',
+                    [
+                        'translate' => false
+                    ]
+                );
             }
         }
 
@@ -592,7 +617,7 @@ class JobInstanceController
      *
      * @return JobExecution
      */
-    protected function launchJob(JobInstance $jobInstance) : JobExecution
+    protected function launchJob(JobInstance $jobInstance): JobExecution
     {
         $user = $this->tokenStorage->getToken()->getUser();
 
@@ -606,6 +631,8 @@ class JobInstanceController
     /**
      * Create an import profile
      *
+     * @AclAncestor("pim_importexport_import_profile_create")
+     *
      * @param Request $request
      *
      * @return JsonResponse
@@ -617,6 +644,8 @@ class JobInstanceController
 
     /**
      * Create an export profile
+     *
+     * @AclAncestor("pim_importexport_export_profile_create")
      *
      * @param Request $request
      *

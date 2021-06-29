@@ -63,7 +63,8 @@ class ConnectionMustExistValidatorSpec extends ObjectBehavior
             ->findOneByCode('magento')
             ->willReturn(null);
 
-        $context->buildViolation('akeneo_connectivity.connection.webhook.constraint.connection_must_exist')
+        $context
+            ->buildViolation('akeneo_connectivity.connection.webhook.error.not_found')
             ->shouldBeCalled()
             ->willReturn($builder);
         $builder->addViolation()->shouldBeCalled();

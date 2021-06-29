@@ -5,11 +5,11 @@ namespace Akeneo\Platform\Bundle\NotificationBundle\Controller;
 use Akeneo\Platform\Bundle\NotificationBundle\Entity\Repository\UserNotificationRepositoryInterface;
 use Akeneo\Tool\Component\StorageUtils\Remover\RemoverInterface;
 use Akeneo\UserManagement\Bundle\Context\UserContext;
-use Symfony\Bundle\FrameworkBundle\Templating\EngineInterface;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
+use Twig\Environment;
 
 /**
  * Notification controller
@@ -20,26 +20,13 @@ use Symfony\Component\HttpFoundation\Response;
  */
 class NotificationController
 {
-    /** @var EngineInterface */
-    protected $templating;
+    protected Environment $templating;
+    protected UserContext $userContext;
+    protected UserNotificationRepositoryInterface $userNotifRepository;
+    protected RemoverInterface $userNotifRemover;
 
-    /** @var UserContext */
-    protected $userContext;
-
-    /** @var UserNotificationRepositoryInterface */
-    protected $userNotifRepository;
-
-    /** @var RemoverInterface */
-    protected $userNotifRemover;
-
-    /**
-     * @param EngineInterface                     $templating
-     * @param UserContext                         $userContext
-     * @param UserNotificationRepositoryInterface $userNotifRepository
-     * @param RemoverInterface                    $userNotifRemover
-     */
     public function __construct(
-        EngineInterface $templating,
+        Environment $templating,
         UserContext $userContext,
         UserNotificationRepositoryInterface $userNotifRepository,
         RemoverInterface $userNotifRemover
@@ -52,24 +39,21 @@ class NotificationController
 
     /**
      * List user notifications for the current user
-     *
-     * @param Request $request
-     *
-     * @return Response
      */
-    public function listAction(Request $request)
+    public function listAction(Request $request): JsonResponse
     {
         $user = $this->userContext->getUser();
         $notifications = $this->userNotifRepository
             ->findBy(['user' => $user], ['id' => 'DESC'], 10, $request->get('skip', 0));
 
-        return $this->templating->renderResponse(
-            'PimNotificationBundle:Notification:list.json.twig',
-            [
-                'userNotifications' => $notifications,
-                'userTimezone' => $this->userContext->getUserTimezone(),
-            ],
-            new JsonResponse()
+        return (new JsonResponse())->setContent(
+            $this->templating->render(
+                'PimNotificationBundle:Notification:list.json.twig',
+                [
+                    'userNotifications' => $notifications,
+                    'userTimezone' => $this->userContext->getUserTimezone(),
+                ]
+            )
         );
     }
 

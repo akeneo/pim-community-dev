@@ -109,4 +109,9 @@ class FileIntegration extends AbstractAttributeTestCase
     {
         $this->assertDoesNotHaveADateMax('pim_catalog_file');
     }
+
+    public function testFileShouldNotHaveDefaultValue()
+    {
+        $this->assertDoesNotHaveDefaultValue('pim_catalog_file');
+    }
 }

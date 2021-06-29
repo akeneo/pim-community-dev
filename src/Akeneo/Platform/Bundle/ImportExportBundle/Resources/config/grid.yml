@@ -7,3 +7,10 @@ services:
         class: '%pim_import_export.datagrid.provider.job.class%'
         arguments:
             - '@akeneo_batch.job.job_registry'
+
+    pim_import_export.datagrid.grid_helper:
+        public: true
+        class: 'Akeneo\Platform\Bundle\ImportExportBundle\Datagrid\GridHelper'
+        arguments:
+            - '@oro_security.security_facade'
+            - {'import': 'pim_importexport_import_execution_show', 'export': 'pim_importexport_export_execution_show'}

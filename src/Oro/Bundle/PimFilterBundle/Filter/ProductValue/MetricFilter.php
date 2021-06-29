@@ -11,7 +11,6 @@ use Oro\Bundle\FilterBundle\Form\Type\Filter\NumberFilterType;
 use Oro\Bundle\PimFilterBundle\Filter\ProductFilterUtility;
 use Oro\Bundle\PimFilterBundle\Form\Type\Filter\MetricFilterType;
 use Symfony\Component\Form\FormFactoryInterface;
-use Symfony\Component\Translation\TranslatorInterface;
 
 /**
  * Metric filter
@@ -23,11 +22,6 @@ use Symfony\Component\Translation\TranslatorInterface;
 class MetricFilter extends OroNumberFilter
 {
     /**
-     * @var TranslatorInterface
-     */
-    protected $translator;
-
-    /**
      * @var MeasureManager
      */
     protected $measureManager;
@@ -37,23 +31,13 @@ class MetricFilter extends OroNumberFilter
      */
     protected $family;
 
-    /**
-     * Constructor
-     *
-     * @param FormFactoryInterface $factory
-     * @param ProductFilterUtility $util
-     * @param TranslatorInterface  $translator
-     * @param MeasureManager       $measureManager
-     */
     public function __construct(
         FormFactoryInterface $factory,
         ProductFilterUtility $util,
-        TranslatorInterface $translator,
         MeasureManager $measureManager
     ) {
         parent::__construct($factory, $util);
 
-        $this->translator = $translator;
         $this->measureManager = $measureManager;
     }
 

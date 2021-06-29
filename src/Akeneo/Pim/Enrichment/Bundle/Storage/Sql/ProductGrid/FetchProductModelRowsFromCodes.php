@@ -168,21 +168,38 @@ SQL;
         }
 
         $sql = <<<SQL
-            SELECT 
+            SELECT
                 pm.code,
                 COUNT(p_child.id) AS nb_children,
                 SUM(IF(completeness.missing_count = 0, 1, 0)) AS nb_children_complete
-            FROM 
+            FROM
                 pim_catalog_product_model pm
                 LEFT JOIN pim_catalog_product_model pm_child ON pm_child.parent_id = pm.id
-                LEFT JOIN pim_catalog_product p_child ON p_child.product_model_id = COALESCE(pm_child.id, pm.id)
+                LEFT JOIN pim_catalog_product p_child ON p_child.product_model_id = pm_child.id
                 LEFT JOIN pim_catalog_completeness completeness ON completeness.product_id = p_child.id
                 LEFT JOIN pim_catalog_channel channel ON channel.id = completeness.channel_id
                 LEFT JOIN pim_catalog_locale locale ON locale.id = completeness.locale_id
             WHERE pm.code IN (:codes)
                 AND channel.code = :channel
                 AND locale.code = :locale
-            GROUP BY 
+            GROUP BY
+                pm.code
+            UNION
+            SELECT
+                pm.code,
+                COUNT(p_child.id) AS nb_children,
+                SUM(IF(completeness.missing_count = 0, 1, 0)) AS nb_children_complete
+            FROM
+                pim_catalog_product_model pm
+                LEFT JOIN pim_catalog_product_model pm_child ON pm_child.parent_id = pm.id
+                LEFT JOIN pim_catalog_product p_child ON p_child.product_model_id = pm.id
+                LEFT JOIN pim_catalog_completeness completeness ON completeness.product_id = p_child.id
+                LEFT JOIN pim_catalog_channel channel ON channel.id = completeness.channel_id
+                LEFT JOIN pim_catalog_locale locale ON locale.id = completeness.locale_id
+            WHERE pm.code IN (:codes)
+                AND channel.code = :channel
+                AND locale.code = :locale
+            GROUP BY
                 pm.code
 SQL;
         $rows = $this->connection->executeQuery(

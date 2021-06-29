@@ -1,9 +1,8 @@
 import {useEffect, useState} from 'react';
-import Family from "../../../domain/Family.interface";
-import fetchFamiliesByCodes from "../../fetcher/Dashboard/fetchFamiliesByCodes";
+import Family from '../../../domain/Family.interface';
+import fetchFamiliesByCodes from '../../fetcher/Dashboard/fetchFamiliesByCodes';
 
 const useFetchFamiliesByCodes = (widgetFamilies: any) => {
-
   const [families, setFamilies] = useState<Family[]>([]);
 
   useEffect(() => {

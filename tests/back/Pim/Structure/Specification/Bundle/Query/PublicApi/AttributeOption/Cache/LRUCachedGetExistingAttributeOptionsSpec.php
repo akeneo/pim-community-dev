@@ -65,4 +65,20 @@ class LRUCachedGetExistingAttributeOptionsSpec extends ObjectBehavior
                  'attribute_2' => ['other_option'],
              ]);
     }
+
+    function it_uses_the_cache_with_case_insensitive(GetExistingAttributeOptionCodes $sqlQuery)
+    {
+        $sqlQuery->fromOptionCodesByAttributeCode(['attribute_1' => ['option1', 'option2']])
+                 ->shouldBeCalledOnce()
+                 ->willReturn(['attribute_1' => ['option1']]);
+
+        // The first time, the cache is set.
+        $this->fromOptionCodesByAttributeCode(['attribute_1' => ['OPTION1', 'option2']])
+             ->shouldReturn(['attribute_1' => ['option1']]);
+        // Nex times, the cache is used.
+        $this->fromOptionCodesByAttributeCode(['attribute_1' => ['OPTION1', 'option2']])
+            ->shouldReturn(['attribute_1' => ['option1']]);
+        $this->fromOptionCodesByAttributeCode(['attribute_1' => ['option1', 'option2']])
+            ->shouldReturn(['attribute_1' => ['option1']]);
+    }
 }

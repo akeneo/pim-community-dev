@@ -78,7 +78,9 @@ JSON;
             'localizable'            => false,
             'scopable'               => false,
             'labels'                 => [],
+            'guidelines'             => [],
             'auto_option_sorting'    => null,
+            'default_value'          => null,
         ];
         $normalizer = $this->get('pim_catalog.normalizer.standard.attribute');
 
@@ -121,7 +123,9 @@ JSON;
         "localizable":false,
         "scopable":false,
         "labels":[],
-        "auto_option_sorting":null
+        "auto_option_sorting":null,
+        "default_value":null,
+        "guidelines": {"en_US": "the guidelines", "fr_FR": "les indications", "de_DE": ""}
     }
 JSON;
 
@@ -156,7 +160,9 @@ JSON;
             'localizable'            => false,
             'scopable'               => false,
             'labels'                 => [],
+            'guidelines'             => ['en_US' => 'the guidelines', 'fr_FR' => 'les indications'],
             'auto_option_sorting'    => null,
+            'default_value'          => null,
         ];
         $normalizer = $this->get('pim_catalog.normalizer.standard.attribute');
 
@@ -214,7 +220,66 @@ JSON;
             'localizable'            => false,
             'scopable'               => false,
             'labels'                 => [],
+            'guidelines'             => [],
             'auto_option_sorting'    => null,
+            'default_value'          => null,
+        ];
+        $normalizer = $this->get('pim_catalog.normalizer.standard.attribute');
+
+        $response = $client->getResponse();
+
+        $this->assertSame(Response::HTTP_CREATED, $response->getStatusCode());
+        $this->assertSame($attributeStandard, $normalizer->normalize($attribute));
+    }
+
+    public function testCreateBooleanAttributeWithDefaultValue()
+    {
+        $client = $this->createAuthenticatedClient();
+
+        $data =
+            <<<JSON
+    {
+        "code":"a_yes_no_with_default_value",
+        "type":"pim_catalog_boolean",
+        "group":"attributeGroupA",
+        "default_value": false
+    }
+JSON;
+
+        $client->request('POST', 'api/rest/v1/attributes', [], [], [], $data);
+
+        $attribute = $this->get('pim_catalog.repository.attribute')->findOneByIdentifier('a_yes_no_with_default_value');
+
+        $attributeStandard = [
+            'code' => 'a_yes_no_with_default_value',
+            'type' => 'pim_catalog_boolean',
+            'group' => 'attributeGroupA',
+            'unique' => false,
+            'useable_as_grid_filter' => false,
+            'allowed_extensions' => [],
+            'metric_family' => null,
+            'default_metric_unit' => null,
+            'reference_data_name' => null,
+            'available_locales' => [],
+            'max_characters' => null,
+            'validation_rule' => null,
+            'validation_regexp' => null,
+            'wysiwyg_enabled' => null,
+            'number_min' => null,
+            'number_max' => null,
+            'decimals_allowed' => null,
+            'negative_allowed' => null,
+            'date_min' => null,
+            'date_max' => null,
+            'max_file_size' => null,
+            'minimum_input_length' => null,
+            'sort_order' => 0,
+            'localizable' => false,
+            'scopable' => false,
+            'labels' => [],
+            'guidelines' => [],
+            'auto_option_sorting' => null,
+            'default_value' => false,
         ];
         $normalizer = $this->get('pim_catalog.normalizer.standard.attribute');
 

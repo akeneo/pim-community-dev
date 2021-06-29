@@ -61,4 +61,14 @@ final class LRUCachedGetAttributesSpec extends ObjectBehavior
         $getAttributes->forCodes(array_keys($attributes))->willReturn(array_values($attributes));
         $this->forCodes(array_keys($attributes))->shouldReturn(array_values($attributes));
     }
+
+    public function it_clears_the_cache(GetAttributes $getAttributes) {
+        $aText = new Attribute('a_text', AttributeTypes::TEXT, [], false, false, null, null, false, 'text', []);
+        $getAttributes->forCodes(['a_text'])->willReturn(['a_text' => $aText]);
+        $getAttributes->forCodes(['a_text'])->shouldBeCalledTimes(2);
+
+        $this->forCodes(['a_text'])->shouldReturn(['a_text' => $aText]);
+        $this->clearCache();
+        $this->forCodes(['a_text'])->shouldReturn(['a_text' => $aText]);
+    }
 }

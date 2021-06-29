@@ -4,13 +4,17 @@ declare(strict_types=1);
 
 namespace AkeneoTest\Pim\Enrichment\EndToEnd\Product\Product\VariantProduct\ExternalApi;
 
+use Akeneo\Pim\Enrichment\Component\Product\Message\ProductUpdated;
 use Akeneo\Test\Integration\Configuration;
+use Akeneo\Test\IntegrationTestsBundle\Messenger\AssertEventCountTrait;
 use AkeneoTest\Pim\Enrichment\EndToEnd\Product\Product\ExternalApi\AbstractProductTestCase;
 use Doctrine\Common\Collections\Collection;
 use Symfony\Component\HttpFoundation\Response;
 
 class PartialUpdateVariantProductEndToEnd extends AbstractProductTestCase
 {
+    use AssertEventCountTrait;
+
     /** @var Collection */
     private $products;
 
@@ -65,6 +69,7 @@ class PartialUpdateVariantProductEndToEnd extends AbstractProductTestCase
         $this->createVariantProduct('apollon_optionb_false', [
             'categories' => ['master'],
             'parent' => 'amor',
+            'groups' => ['groupA'],
             'values' => [
                 'a_yes_no' => [
                     [
@@ -475,6 +480,7 @@ JSON;
         $this->assertSame('', $response->getContent());
         $this->assertSame(Response::HTTP_NO_CONTENT, $response->getStatusCode());
         $this->assertSameProducts($expectedProduct, 'apollon_optionb_false');
+        $this->assertEventCount(1, ProductUpdated::class);
     }
 
     public function testProductVariantPartialUpdateWithTheGroupsDeleted(): void
@@ -560,6 +566,7 @@ JSON;
         $this->assertSame('', $response->getContent());
         $this->assertSame(Response::HTTP_NO_CONTENT, $response->getStatusCode());
         $this->assertSameProducts($expectedProduct, 'apollon_optionb_false');
+        $this->assertEventCount(1, ProductUpdated::class);
     }
 
     public function testProductVariantPartialUpdateWithTheCategoriesUpdated(): void
@@ -646,6 +653,7 @@ JSON;
         $this->assertSame('', $response->getContent());
         $this->assertSame(Response::HTTP_NO_CONTENT, $response->getStatusCode());
         $this->assertSameProducts($expectedProduct, 'apollon_optionb_false');
+        $this->assertEventCount(1, ProductUpdated::class);
     }
 
     public function testProductVariantPartialUpdateWithTheCategoriesDeleted(): void
@@ -732,6 +740,7 @@ JSON;
         $this->assertSame('', $response->getContent());
         $this->assertSame(Response::HTTP_NO_CONTENT, $response->getStatusCode());
         $this->assertSameProducts($expectedProduct, 'apollon_optionb_false');
+        $this->assertEventCount(1, ProductUpdated::class);
     }
 
     public function testProductVariantPartialUpdateWithTheAssociationsUpdated(): void
@@ -848,6 +857,7 @@ JSON;
         $this->assertSame('', $response->getContent());
         $this->assertSame(Response::HTTP_NO_CONTENT, $response->getStatusCode());
         $this->assertSameProducts($expectedProduct, 'apollon_optionb_false');
+        $this->assertEventCount(1, ProductUpdated::class);
     }
 
     public function testProductVariantPartialUpdateWithTheAssociationsDeletedOnGroups(): void
@@ -1041,6 +1051,7 @@ JSON;
         $this->assertSame('', $response->getContent());
         $this->assertSame(Response::HTTP_NO_CONTENT, $response->getStatusCode());
         $this->assertSameProducts($expectedProduct, 'apollon_optionb_false');
+        $this->assertEventCount(1, ProductUpdated::class);
     }
 
     public function testProductVariantPartialUpdateWithProductDisable(): void
@@ -1128,50 +1139,7 @@ JSON;
         $this->assertSame('', $response->getContent());
         $this->assertSame(Response::HTTP_NO_CONTENT, $response->getStatusCode());
         $this->assertSameProducts($expectedProduct, 'apollon_optionb_false');
-    }
-
-
-    public function testProductVariantPartialUpdateNewAxisValues(): void
-    {
-        $client = $this->createAuthenticatedClient();
-
-        $data =
-            <<<JSON
-    {
-        "identifier": "apollon_optionb_false",
-        "enabled": false,
-        "groups": [],
-        "parent": "amor",
-        "categories": [],
-        "values": {
-          "a_yes_no": [
-            {
-              "locale": null,
-              "scope": null,
-              "data": true
-            }
-          ]
-        }
-    }
-JSON;
-
-        $client->request('PATCH', 'api/rest/v1/products/apollon_optionb_false', [], [], [], $data);
-
-        $expectedContent = [
-            'code'    => 422,
-            'message' => 'Validation failed.',
-            'errors'  => [
-                [
-                    'property' => 'attribute',
-                    'message'  => 'Variant axis "a_yes_no" cannot be modified, "true" given',
-                ],
-            ],
-        ];
-
-        $response = $client->getResponse();
-
-        $this->assertSame($expectedContent, json_decode($response->getContent(), true));
-        $this->assertSame(Response::HTTP_UNPROCESSABLE_ENTITY, $response->getStatusCode());
+        $this->assertEventCount(1, ProductUpdated::class);
     }
 
     public function testProductVariantPartialUpdateWhenProductValueAddedOnAttribute(): void
@@ -1265,6 +1233,7 @@ JSON;
         $this->assertSame('', $response->getContent());
         $this->assertSame(Response::HTTP_NO_CONTENT, $response->getStatusCode());
         $this->assertSameProducts($expectedProduct, 'apollon_optionb_false');
+        $this->assertEventCount(1, ProductUpdated::class);
     }
 
     public function testProductVariantPartialUpdateWhenProductValueDeletedOnAttribute(): void
@@ -1468,32 +1437,6 @@ JSON;
         $this->assertSameProducts($expectedProduct, 'apollon_optionb_false');
     }
 
-    public function testProductVariantPartialUpdateSetParentToNull(): void
-    {
-        $client = $this->createAuthenticatedClient();
-
-        $data =
-            <<<JSON
-    {
-        "identifier": "apollon_optionb_false",
-        "parent": null
-    }
-JSON;
-
-        $client->request('PATCH', 'api/rest/v1/products/apollon_optionb_false', [], [], [], $data);
-
-        $expectedContent = [
-            'code'    => 422,
-            'message' => 'Property "parent" cannot be modified, "NULL" given. Check the expected format on the API documentation.',
-            '_links'  => ["documentation" => ["href" => "http://api.akeneo.com/api-reference.html#patch_products__code_"]]
-        ];
-
-        $response = $client->getResponse();
-
-        $this->assertSame($expectedContent, json_decode($response->getContent(), true));
-        $this->assertSame(Response::HTTP_UNPROCESSABLE_ENTITY, $response->getStatusCode());
-    }
-
     public function testProductVariantCannotUpdateCommonAttribute(): void
     {
         $client = $this->createAuthenticatedClient();
@@ -1679,7 +1622,7 @@ JSON;
             'identifier'    => 'apollon_optionb_false',
             'family'        => "familyA",
             'parent'        => "amor",
-            'groups'        => [],
+            'groups'        => ['groupA'],
             'categories'    => ['master'],
             'enabled'       => true,
             'values'        => [
@@ -1809,7 +1752,7 @@ JSON;
             'identifier'    => 'apollon_optionb_false',
             'family'        => "familyA",
             'parent'        => "apollon",
-            'groups'        => [],
+            'groups'        => ['groupA'],
             'categories'    => ['master'],
             'enabled'       => true,
             'values'        => [
@@ -1870,6 +1813,7 @@ JSON;
             'http://localhost/api/rest/v1/products/apollon_optionb_false',
             $response->headers->get('location')
         );
+        $this->assertEventCount(1, ProductUpdated::class);
     }
 
     public function testPartialUpdateResponseWhenMissingIdentifierPropertyAndProvidedIdentifierInValues(): void

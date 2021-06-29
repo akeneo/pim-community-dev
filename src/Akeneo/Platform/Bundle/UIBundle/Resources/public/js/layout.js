@@ -1,110 +1,112 @@
 define(['jquery', 'bootstrap', 'jquery-ui'], function ($) {
-    'use strict';
-    var layout = {};
+  'use strict';
+  var layout = {};
 
-    layout.init = function (container) {
-        container = $(container || document.body);
+  layout.init = function (container) {
+    container = $(container || document.body);
 
-        container.find('[data-spy="scroll"]').each(function () {
-            var $spy = $(this);
-            $spy.scrollspy($spy.data());
-            $spy = $(this).scrollspy('refresh');
-            $('.scrollspy-nav ul.nav li').removeClass('active');
-            $('.scrollspy-nav ul.nav li:first').addClass('active');
+    container.find('[data-spy="scroll"]').each(function () {
+      var $spy = $(this);
+      $spy.scrollspy($spy.data());
+      $spy = $(this).scrollspy('refresh');
+      $('.scrollspy-nav ul.nav li').removeClass('active');
+      $('.scrollspy-nav ul.nav li:first').addClass('active');
+    });
+
+    container.find('[data-toggle="tooltip"]').tooltip();
+
+    var handlePopoverMouseout = function (e, popover) {
+      var popoverHandler = $(e.relatedTarget).closest('.popover');
+      if (!popoverHandler.length) {
+        popover.data(
+          'popover-timer',
+          setTimeout(function () {
+            popover.popover('hide');
+            popover.data('popover-active', false);
+          }, 500)
+        );
+      } else {
+        popoverHandler.one('mouseout', function (evt) {
+          handlePopoverMouseout(evt, popover);
         });
-
-        container.find('[data-toggle="tooltip"]').tooltip();
-
-        var handlePopoverMouseout = function (e, popover) {
-            var popoverHandler = $(e.relatedTarget).closest('.popover');
-            if (!popoverHandler.length) {
-                popover.data('popover-timer',
-                    setTimeout(function () {
-                        popover.popover('hide');
-                        popover.data('popover-active', false);
-                    }, 500));
-            } else {
-                popoverHandler.one('mouseout', function (evt) {
-                    handlePopoverMouseout(evt, popover);
-                });
-            }
-        };
-        $('form label [data-toggle="popover"]')
-            .popover({
-                animation: true,
-                delay: { show: 0, hide: 0 },
-                html: true,
-                trigger: 'manual'
-            })
-            .on('mouseover', function () {
-                var popoverEl = $(this);
-                clearTimeout(popoverEl.data('popover-timer'));
-                if (!popoverEl.data('popover-active')) {
-                    popoverEl.data('popover-active', true);
-                    $(this).popover('show');
-                }
-            })
-            .on('mouseout', function (e) {
-                var popover = $(this);
-                setTimeout(function () {
-                    handlePopoverMouseout(e, popover);
-                }, 500);
-            });
-
+      }
+    };
+    $('form label [data-toggle="popover"]')
+      .popover({
+        animation: true,
+        delay: {show: 0, hide: 0},
+        html: true,
+        trigger: 'manual',
+      })
+      .on('mouseover', function () {
+        var popoverEl = $(this);
+        clearTimeout(popoverEl.data('popover-timer'));
+        if (!popoverEl.data('popover-active')) {
+          popoverEl.data('popover-active', true);
+          $(this).popover('show');
+        }
+      })
+      .on('mouseout', function (e) {
+        var popover = $(this);
         setTimeout(function () {
-            layout.scrollspyTop();
+          handlePopoverMouseout(e, popover);
         }, 500);
-    };
+      });
 
-    layout.adjustScrollspy = function () {
-        $('[data-spy="scroll"]').each(function () {
-            var $spy = $(this);
-            var spyHeight = $spy.innerHeight();
+    setTimeout(function () {
+      layout.scrollspyTop();
+    }, 500);
+  };
 
-            var isMultipleRows = $spy.find('.responsive-section').length > 1;
+  layout.adjustScrollspy = function () {
+    $('[data-spy="scroll"]').each(function () {
+      var $spy = $(this);
+      var spyHeight = $spy.innerHeight();
 
-            $spy.find('.responsive-section:last').each(function () {
-                var $row = $(this);
-                var titleHeight = $row.find('.scrollspy-title').outerHeight();
-                var rowAdjHeight = isMultipleRows ? titleHeight + spyHeight : spyHeight;
+      var isMultipleRows = $spy.find('.responsive-section').length > 1;
 
-                var rowOrigHeight = $row.data('originalHeight');
-                if (!rowOrigHeight) {
-                    rowOrigHeight = $row.height();
-                    $row.data('originalHeight', rowOrigHeight);
-                }
+      $spy.find('.responsive-section:last').each(function () {
+        var $row = $(this);
+        var titleHeight = $row.find('.scrollspy-title').outerHeight();
+        var rowAdjHeight = isMultipleRows ? titleHeight + spyHeight : spyHeight;
 
-                if ($row.height() === rowAdjHeight) {
-                    return;
-                }
+        var rowOrigHeight = $row.data('originalHeight');
+        if (!rowOrigHeight) {
+          rowOrigHeight = $row.height();
+          $row.data('originalHeight', rowOrigHeight);
+        }
 
-                if (rowAdjHeight < rowOrigHeight) {
-                    rowAdjHeight = rowOrigHeight;
-                }
+        if ($row.height() === rowAdjHeight) {
+          return;
+        }
 
-                $row.outerHeight(rowAdjHeight);
-            });
+        if (rowAdjHeight < rowOrigHeight) {
+          rowAdjHeight = rowOrigHeight;
+        }
 
-            $spy.scrollspy('refresh');
-        });
-    };
+        $row.outerHeight(rowAdjHeight);
+      });
 
-    layout.scrollspyTop = function () {
-        $('[data-spy="scroll"]').each(function () {
-            var $spy = $(this);
-            var targetSelector = $spy.data('target');
-            var target = $(targetSelector);
+      $spy.scrollspy('refresh');
+    });
+  };
 
-            target.each(function () {
-                var $target = $(this);
-                var firstItemHref = $target.find('li.active:first a').attr('href');
-                var $firstItem = $(firstItemHref);
-                var top = $firstItem.position().top;
+  layout.scrollspyTop = function () {
+    $('[data-spy="scroll"]').each(function () {
+      var $spy = $(this);
+      var targetSelector = $spy.data('target');
+      var target = $(targetSelector);
 
-                $spy.scrollTop(top);
-            });
-        });
-    };
+      target.each(function () {
+        var $target = $(this);
+        var firstItemHref = $target.find('li.active:first a').attr('href');
+        var $firstItem = $(firstItemHref);
+        var top = $firstItem.position().top;
 
-    return layout;
+        $spy.scrollTop(top);
+      });
+    });
+  };
+
+  return layout;
 });

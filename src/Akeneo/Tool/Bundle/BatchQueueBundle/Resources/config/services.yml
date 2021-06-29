@@ -1,9 +1,6 @@
 parameters:
     ramsey.uuid.provider.node.system_node_provider.class: Ramsey\Uuid\Provider\Node\SystemNodeProvider
-    akeneo_batch_queue.hydrator_job_execution_message_hydrator.class: Akeneo\Tool\Bundle\BatchQueueBundle\Hydrator\JobExecutionMessageHydrator
-    akeneo_batch_queue.queue.database_job_execution_queue.class: Akeneo\Tool\Bundle\BatchQueueBundle\Queue\DatabaseJobExecutionQueue
     akeneo_batch_queue.queue.job_execution_message.class: Akeneo\Tool\Component\BatchQueue\Queue\JobExecutionMessage
-    akeneo_batch_queue.queue.job_execution_message_repository.class: Akeneo\Tool\Bundle\BatchQueueBundle\Queue\JobExecutionMessageRepository
     akeneo_batch_queue.manager.job_execution_manager.class: Akeneo\Tool\Bundle\BatchQueueBundle\Manager\JobExecutionManager
     akeneo_batch_queue.launcher.queue_job_launcher.class: Akeneo\Tool\Bundle\BatchQueueBundle\Launcher\QueueJobLauncher
 
@@ -11,26 +8,15 @@ services:
     ramsey.uuid.provider.node.system_node_provider:
         class: '%ramsey.uuid.provider.node.system_node_provider.class%'
 
-    akeneo_batch_queue.hydrator_job_execution_message_hydrator:
-        class: '%akeneo_batch_queue.hydrator_job_execution_message_hydrator.class%'
+    akeneo_batch_queue.queue.job_execution_queue:
+        class: 'Akeneo\Tool\Bundle\BatchQueueBundle\Queue\MessengerJobExecutionQueue'
         arguments:
-            - '@akeneo_batch.entity_manager.persisted_connection_entity_manager'
-
-    akeneo_batch_queue.queue.job_execution_message_repository:
-        class: '%akeneo_batch_queue.queue.job_execution_message_repository.class%'
-        arguments:
-            - '@akeneo_batch.entity_manager.persisted_connection_entity_manager'
-            - '@akeneo_batch_queue.hydrator_job_execution_message_hydrator'
-
-    akeneo_batch_queue.queue.database_job_execution_queue:
-        class: '%akeneo_batch_queue.queue.database_job_execution_queue.class%'
-        arguments:
-            - '@akeneo_batch_queue.queue.job_execution_message_repository'
+            - '@messenger.bus.default'
 
     akeneo_batch_queue.manager.job_execution_manager:
         class: '%akeneo_batch_queue.manager.job_execution_manager.class%'
         arguments:
-            - '@akeneo_batch.entity_manager.persisted_connection_entity_manager'
+            - '@database_connection'
 
     akeneo_batch_queue.launcher.queue_job_launcher:
         class: '%akeneo_batch_queue.launcher.queue_job_launcher.class%'
@@ -39,7 +25,8 @@ services:
             - '@akeneo_batch.job_parameters_factory'
             - '@akeneo_batch.job.job_registry'
             - '@akeneo_batch.job.job_parameters_validator'
-            - '@akeneo_batch_queue.queue.database_job_execution_queue'
+            - '@akeneo_batch_queue.queue.job_execution_queue'
+            - '@akeneo_batch_queue.factory.job_execution_message'
             - '@event_dispatcher'
             - '@akeneo_batch.logger.batch_log_handler'
             - '%kernel.environment%'
@@ -55,8 +42,10 @@ services:
             - '@akeneo_batch.job_parameters_factory'
             - '@doctrine.orm.default_entity_manager'
             - '@akeneo_batch.job.job_parameters_validator'
-            - '@akeneo_batch_queue.queue.database_job_execution_queue'
+            - '@akeneo_batch_queue.queue.job_execution_queue'
+            - '@akeneo_batch_queue.factory.job_execution_message'
             - '@event_dispatcher'
+            - '@akeneo_batch.logger.batch_log_handler'
 
     # override of the original Akeneo Batch simple job launcher
     akeneo_batch.launcher.simple_job_launcher:
@@ -66,24 +55,11 @@ services:
             - '@akeneo_batch.job_parameters_factory'
             - '@akeneo_batch.job.job_registry'
             - '@akeneo_batch.job.job_parameters_validator'
-            - '@akeneo_batch_queue.queue.database_job_execution_queue'
+            - '@akeneo_batch_queue.queue.job_execution_queue'
+            - '@akeneo_batch_queue.factory.job_execution_message'
             - '@event_dispatcher'
             - '@akeneo_batch.logger.batch_log_handler'
             - '%kernel.environment%'
-
-    akeneo_batch_queue.query.delete_job_execution_message_orphans:
-        class: Akeneo\Tool\Bundle\BatchQueueBundle\Query\SqlDeleteJobExecutionMessageOrphansQuery
-        arguments:
-            - '@database_connection'
-
-    Akeneo\Tool\Bundle\BatchQueueBundle\Command\JobQueueConsumerCommand:
-        arguments:
-            - '@akeneo_batch_queue.queue.database_job_execution_queue'
-            - '@akeneo_batch_queue.queue.job_execution_message_repository'
-            - '@akeneo_batch_queue.manager.job_execution_manager'
-            - '%kernel.project_dir%'
-        tags:
-            - { name: console.command }
 
     Akeneo\Tool\Bundle\BatchQueueBundle\Command\PublishJobToQueueCommand:
         arguments:
@@ -94,3 +70,58 @@ services:
             - '%akeneo_batch.entity.job_instance.class%'
         tags:
             - { name: console.command }
+
+    Akeneo\Tool\Bundle\BatchQueueBundle\Command\MigrateJobMessagesFromOldQueueCommand:
+        arguments:
+            - '@akeneo_batch_queue.factory.job_execution_message'
+            - '@akeneo_batch_queue.queue.job_execution_queue'
+            - '@pim_connector.doctrine.cache_clearer'
+            - '@database_connection'
+        tags:
+            - { name: console.command }
+
+    akeneo_batch_queue.factory.job_execution_message:
+        class: Akeneo\Tool\Component\BatchQueue\Factory\JobExecutionMessageFactory
+        arguments:
+            - '@pim_enrich.repository.job_execution'
+            -
+                'Akeneo\Tool\Component\BatchQueue\Queue\UiJobExecutionMessage': ['mass_edit', 'mass_delete']
+                'Akeneo\Tool\Component\BatchQueue\Queue\ImportJobExecutionMessage': ['import']
+                'Akeneo\Tool\Component\BatchQueue\Queue\ExportJobExecutionMessage': ['export', 'quick_export']
+            - 'Akeneo\Tool\Component\BatchQueue\Queue\DataMaintenanceJobExecutionMessage'
+
+    akeneo_batch_queue.messenger.serializer:
+        class: Akeneo\Tool\Bundle\MessengerBundle\Serialization\JsonSerializer
+        arguments:
+            - !tagged akeneo_batch_queue.messenger.normalizer
+
+    akeneo_batch_queue.normalizer.job_execution_message:
+        class: Akeneo\Tool\Component\BatchQueue\Normalizer\JobExecutionMessageNormalizer
+        arguments:
+            - '@akeneo_batch_queue.factory.job_execution_message'
+        tags:
+            - { name: akeneo_batch_queue.messenger.normalizer, priority: 0 }
+
+    Akeneo\Tool\Bundle\BatchQueueBundle\MessageHandler\JobExecutionMessageHandler:
+        arguments:
+            - '@akeneo_batch.query.get_job_instance_code'
+            - '@akeneo_batch_queue.manager.job_execution_manager'
+            - '@logger'
+            - '%kernel.project_dir%'
+        tags:
+            - { name: messenger.message_handler }
+            - { name: monolog.logger, channel: job_queue }
+
+    akeneo_batch_queue.ordering_key.resolver.job_message:
+        class: Akeneo\Tool\Bundle\MessengerBundle\Ordering\ClassOrderingKeyResolver
+        arguments:
+            - 'Akeneo\Tool\Component\BatchQueue\Queue\JobExecutionMessage'
+            - 'job_key'
+        tags:
+            - { name: 'akeneo_messenger.ordering_key_candidate' }
+
+    Akeneo\Tool\Bundle\BatchQueueBundle\EventListener\AckMessageEventListener:
+        arguments:
+            - '@messenger.receiver_locator'
+        tags:
+            - { name: kernel.event_subscriber }

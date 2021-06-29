@@ -217,11 +217,11 @@ class PimRequirements
         return new PDO(
             sprintf(
                 'mysql:port=%s;host=%s',
-                getenv('APP_DATABASE_PORT'),
-                getenv('APP_DATABASE_HOST')
+                $_ENV['APP_DATABASE_PORT'],
+                $_ENV['APP_DATABASE_HOST']
             ),
-            getenv('APP_DATABASE_USER'),
-            getenv('APP_DATABASE_PASSWORD')
+            $_ENV['APP_DATABASE_USER'],
+            $_ENV['APP_DATABASE_PASSWORD']
         );
     }
 

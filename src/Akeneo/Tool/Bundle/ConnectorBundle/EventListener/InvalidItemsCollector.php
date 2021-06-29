@@ -4,6 +4,7 @@ namespace Akeneo\Tool\Bundle\ConnectorBundle\EventListener;
 
 use Akeneo\Tool\Component\Batch\Event\EventInterface;
 use Akeneo\Tool\Component\Batch\Event\InvalidItemEvent;
+use Akeneo\Tool\Component\Batch\Item\FileInvalidItem;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 
 /**
@@ -35,7 +36,9 @@ class InvalidItemsCollector implements EventSubscriberInterface
      */
     public function collect(InvalidItemEvent $event)
     {
-        $this->invalidItems[$this->getHashKey($event->getItem()->getInvalidData())] = $event->getItem();
+        $invalidItem = $event->getItem();
+        $itemData = $invalidItem instanceof FileInvalidItem ? ['position' => $invalidItem->getItemPosition()] : $invalidItem->getInvalidData();
+        $this->invalidItems[$this->getHashKey($itemData)] = $event->getItem();
     }
 
     /**

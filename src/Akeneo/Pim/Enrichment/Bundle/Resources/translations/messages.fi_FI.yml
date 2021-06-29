@@ -80,3 +80,4 @@ tree:
   edit: Muokkaa kategoriapuuta
   remove:
     error_linked: Kategoriapuuta ei voi poistaa, koska se on linkitetty kanavaan
+  create: Luo uusi kategoriapuu

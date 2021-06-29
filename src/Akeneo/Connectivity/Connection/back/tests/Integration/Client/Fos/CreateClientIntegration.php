@@ -31,8 +31,8 @@ class CreateClientIntegration extends TestCase
 
         $createdClient = $createdClients[0];
         Assert::assertEquals('Magento', $createdClient['label']);
-        Assert::assertRegExp('/password/', $createdClient['allowed_grant_types']);
-        Assert::assertRegExp('/refresh_token/', $createdClient['allowed_grant_types']);
+        Assert::assertMatchesRegularExpression('/password/', $createdClient['allowed_grant_types']);
+        Assert::assertMatchesRegularExpression('/refresh_token/', $createdClient['allowed_grant_types']);
 
         Assert::assertEquals($createdClient['id'], $client->id());
         $publicId = sprintf('%s_%s', $createdClient['id'], $createdClient['random_id']);

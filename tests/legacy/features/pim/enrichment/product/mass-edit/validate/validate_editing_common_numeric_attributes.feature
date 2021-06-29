@@ -97,7 +97,7 @@ Feature: Validate editing common numeric attributes of multiple products
     And I display the Number in stock attribute
     And I change the "Number in stock" to "-10"
     And I move on to the next step
-    Then I should see validation tooltip "This value should be 0 or more."
+    Then I should see validation tooltip "The number_in_stock attribute requires an equal or greater than 0 value."
     And the product "boots" should not have the following values:
       | number_in_stock |
     And the product "sandals" should not have the following values:
@@ -133,5 +133,5 @@ Feature: Validate editing common numeric attributes of multiple products
     And I display the Price attribute
     And I change the "Price" to "500 USD"
     And I move on to the next step
-    Then I should see validation tooltip "This value should be 200 or less."
+    Then I should see validation tooltip "The price attribute requires an equal or lesser than 200 value."
     Then the value "Price" of products boots, sandals and sneakers should be empty

@@ -19,3 +19,10 @@ services:
             - '@doctrine.orm.entity_manager'
             - '@event_dispatcher'
             - '%pim_user.entity.user.class%'
+
+    pim_user.saver.role_with_permissions:
+        class: 'Akeneo\UserManagement\Component\Storage\Saver\RoleWithPermissionsSaver'
+        arguments:
+            - '@doctrine.orm.entity_manager'
+            - '@event_dispatcher'
+            - '@oro_security.acl.manager'

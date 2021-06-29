@@ -1,4 +1,4 @@
-@javascript
+@skip @javascript
 Feature: Ensures acl are respected on the export profile tabs
   In order to give more access to export configuration (content part) for Julia, without giving her all the settings access (Properties tab)
   As peter

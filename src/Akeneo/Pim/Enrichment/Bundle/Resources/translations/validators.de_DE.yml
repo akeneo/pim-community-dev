@@ -38,8 +38,17 @@ product_model.family_variant.not_blank.message: Die Produktfamilie des Produktmo
 "The {{ attribute_code }} attribute requires a date that should be {{ limit }} or before.": Das {{ attribute_code }} -Attribut erfordert ein Datum, das {{ limit }} oder früher sein soll.
 "The {{ attribute }} attribute requires a number, and the submitted {{ value }} value is not.": Das {{ attribute }} -Attribut erfordert eine Zahl, und der angegebene {{ value }} Wert ist dies nicht.
 "The %attribute% attribute must not contain more than %limit% characters. The submitted value is too long.": Das %attribute% -Attribut darf nicht mehr als %limit% Zeichen enthalten. Der angegebene Wert ist zu lang.
+"The %attribute% attribute requires a valid date. Please use the following format %date_format% for dates.": Das %attribute% -Attribut benötigt ein gültiges Datum. Bitte verwenden Sie das folgende Format %date_format% für Datum.
+"The %locale% locale is not available on the %attribute% attribute.": Das Gebietsschema %locale% ist für das Attribut %attribute% nicht verfügbar.
 'The {{ attribute_code }} attribute must match the following regular expression: {{ pattern }}.': 'Das Attribut {{ attribute_code }} muss mit dem folgenden regulären Ausdruck übereinstimmen: {{ pattern }}.'
 'The {{ attribute_code }} attribute cannot be empty.': 'Das Attribut {{ attribute_code }} darf nicht leer sein.'
+'The file %file_name% is too large (%file_size% %suffix%). The %attribute% attribute can not exceed %max_file_size% %suffix%.': Die Datei %file_name% ist zu groß (%file_size% %suffix%). Das %attribute% Attribut kann %max_file_size% %suffix% nicht überschreiten.
+'The %attribute_code% attribute requires a valid locale. The %invalid_locale% locale does not exist.': 'Das %attribute_code% -Attribut erfordert ein gültiges Gebietsschema. Das %invalid_locale% -Gebietsschema existiert nicht.'
+'The %attribute_code% attribute requires a valid locale. The %invalid_locale% locale is not bound to the %channel_code% channel.': 'Das %attribute_code% -Attribut erfordert ein gültiges Gebietsschema. Das %invalid_locale% -Gebietsschema ist nicht an den %channel_code% Kanal gebunden.'
+"The %attribute% attribute requires an e-mail address.": 'Das %attribute% -Attribut erfordert eine E-Mail-Adresse.'
+'The %attribute% attribute requires an equal or greater than %min_value% value.': 'Das %attribute% -Attribut erfordert einen gleichen oder größeren Wert als %min_value% Wert.'
+'The %attribute% attribute requires an equal or lesser than %max_value% value.': 'Das %attribute% -Attribut benötigt einen gleichen oder weniger als %max_value% Wert.'
+"The %attribute_code% attribute requires a value per channel. The %channel% channel (scope) must exist in your PIM": 'Das %attribute_code% -Attribut benötigt einen Wert pro Kanal. Der %channel% Kanal (Bereich) muss in deinem PIM vorhanden sein'
 pim_catalog:
   constraint:
     can_have_family_variant_empty_axis_value: 'Attribut "%attribute%" darf nicht leer sein, da es als Achse für dieses Objekt definiert ist'
@@ -70,6 +79,9 @@ pim_catalog:
     family_variant_maximum_number_of_level: Die Variantenfamilie kann nicht mehr als "%level%" Ebene haben
     family_variant_unique_attributes_in_last_level: Eindeutiges Attribut "%attribute%" muss auf Produktebene gesetzt sein
     product_identifier: Diese Kennungen "%s" sind nicht vorhanden.
+    blacklisted_attribute_code: Code vorübergehend gesperrt, bis der laufende Bereinigungsauftrag abgeschlossen ist.
+    blacklisted_attribute_code_with_link: "Code vorübergehend gesperrt, bis der laufende Bereinigungsauftrag abgeschlossen ist. Um mehr zu erfahren, schaue bitte die <a href='{{ link }}' target='_blank'>Job-Details</a> an."
+    duplicate_options: '{1} Die folgende Option wurde mehrfach verwendet: "{{ duplicate_options }}". Bitte überprüfen Sie Ihre Optionsliste erneut.|]1, +Inf] Die folgenden Optionen wurden mehrfach verwendet: "{{ duplicate_options }}". Bitte überprüfen Sie Ihre Optionsliste erneut.'
     0: Es ist ein unerwarteter Fehler aufgetreten.
     100: Unerwarteter Wert
     101: Dieses Feld erwartet Werte vom Typ Boolean.
@@ -103,3 +115,7 @@ pim_catalog:
 mass_edit:
   edit_common_attributes:
     invalid_values: Es gibt Fehler in der Attribut-Maske
+pim_datagrid:
+  column_configurator:
+    label:
+      unique_message: Die Bezeichnung muss eindeutig sein.

@@ -29,6 +29,7 @@ $rules = [
             //External dependencies
             'Psr\Log\LoggerInterface',
             'Symfony\Component\EventDispatcher\EventDispatcherInterface',
+            'Webmozart\Assert\Assert',
         ]
     )->in('Akeneo\Pim\Automation\DataQualityInsights\Application'),
 
@@ -60,7 +61,6 @@ $rules = [
             'Akeneo\Pim\Enrichment\Component\Product\Query\DescendantProductModelIdsQueryInterface',
             'Akeneo\Tool\Component\StorageUtils\StorageEvents',
             'Akeneo\Tool\Bundle\BatchBundle\Launcher\JobLauncherInterface',
-            'Akeneo\Tool\Bundle\BatchQueueBundle\Queue\JobExecutionMessageRepository',
             'Akeneo\Tool\Component\Batch\Model\JobInstance',
             'Akeneo\Tool\Component\Batch\Job\JobInterface',
 
@@ -96,7 +96,7 @@ $rules = [
             'Akeneo\Pim\Enrichment\Component\Product\Grid\Query\AddAdditionalProductModelProperties',
             'Akeneo\Pim\Enrichment\Component\Product\Query\Filter\FieldFilterInterface',
             'Akeneo\Pim\Enrichment\Component\Product\Query\Sorter\Directions',
-            'Akeneo\Tool\Component\StorageUtils\Exception\InvalidPropertyTypeException',
+            'Akeneo\Tool\Component\StorageUtils\Exception',
             'Akeneo\Tool\Bundle\ElasticsearchBundle\Client',
             'Oro\Bundle\DataGridBundle\Datagrid\Common\DatagridConfiguration',
             'Oro\Bundle\DataGridBundle\Event\BuildBefore',
@@ -104,11 +104,16 @@ $rules = [
             'Oro\Bundle\DataGridBundle\Extension\Formatter\Configuration',
             'Oro\Bundle\DataGridBundle\Datagrid\RequestParameters',
             'Oro\Bundle\DataGridBundle\Extension\AbstractExtension',
+            'Oro\Bundle\DataGridBundle\Extension\Sorter\Configuration',
             'Oro\Bundle\PimDataGridBundle\Extension\Sorter\SorterInterface',
             'Oro\Bundle\FilterBundle\Grid\Extension\Configuration',
             'Oro\Bundle\FilterBundle\Datasource\FilterDatasourceAdapterInterface',
             'Oro\Bundle\FilterBundle\Filter\ChoiceFilter',
             'Oro\Bundle\FilterBundle\Filter\FilterUtility',
+            'Akeneo\Pim\Enrichment\Component\Product\Query\Sorter\FieldSorterInterface',
+            'Oro\Bundle\PimDataGridBundle\Datasource\ProductAndProductModelDatasource',
+            'Oro\Bundle\PimDataGridBundle\Datasource\ProductDatasource',
+
 
             //Necessary for the particular command EvaluatePendingCriteriaCommand
             'Akeneo\Tool\Bundle\BatchQueueBundle\Manager\JobExecutionManager',
@@ -116,6 +121,10 @@ $rules = [
             'Akeneo\Tool\Component\BatchQueue\Queue\JobExecutionMessage',
             'Doctrine\ORM\EntityManager',
             'Symfony\Component\Process',
+
+            //Necessary for the Dashboard
+            'Akeneo\Tool\Component\Classification\Model\CategoryInterface',
+            'Akeneo\Tool\Component\Classification\Repository\CategoryRepositoryInterface',
 
             //Security
             'Oro\Bundle\SecurityBundle\SecurityFacade',
@@ -142,8 +151,11 @@ $rules = [
             'GuzzleHttp\Exception',
             'Mekras\Speller',
             'League\Flysystem',
+            'Webmozart\Assert\Assert',
 
+            // Common Dependencies
             'Akeneo\Platform\Bundle\FeatureFlagBundle\FeatureFlag',
+            'Akeneo\Tool\Component\StorageUtils\Cache\LRUCache',
         ]
     )->in('Akeneo\Pim\Automation\DataQualityInsights\Infrastructure'),
 ];

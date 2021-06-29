@@ -105,7 +105,7 @@ Feature: Create product models through CSV import
     When I am on the "csv_catalog_modeling_product_model_import" import job page
     And I launch the import job
     And I wait for the "csv_catalog_modeling_product_model_import" job to finish
-    Then I should see the text "Status: Completed"
+    Then I should see job execution status "COMPLETED"
     And I should see the text "read lines 3"
     And I should see the text "created 1"
     And I should see the text "created 2"
@@ -125,7 +125,7 @@ Feature: Create product models through CSV import
     When I am on the "csv_catalog_modeling_product_model_import" import job page
     And I launch the import job
     And I wait for the "csv_catalog_modeling_product_model_import" job to finish
-    Then I should see the text "Status: Completed"
+    Then I should see job execution status "COMPLETED"
     And I should see the text "read lines 3"
     And I should see the text "processed 1"
     And I should see the text "processed 2"

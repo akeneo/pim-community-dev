@@ -6,23 +6,23 @@
  */
 'use strict';
 
-define([
-    'pim/form/common/fields/simple-select-async',
-    'pim/form/common/fields/values/values-behavior'
-], (BaseField, ValuesBehavior) => {
-    return BaseField.extend({
-        /**
-         * {@inheritdoc}
-         */
-        updateModel(value) {
-            ValuesBehavior.writeValue.call(this, BaseField, value);
-        },
+define(['pim/form/common/fields/simple-select-async', 'pim/form/common/fields/values/values-behavior'], (
+  BaseField,
+  ValuesBehavior
+) => {
+  return BaseField.extend({
+    /**
+     * {@inheritdoc}
+     */
+    updateModel(value) {
+      ValuesBehavior.writeValue.call(this, BaseField, value);
+    },
 
-        /**
-         * {@inheritdoc}
-         */
-        getModelValue() {
-            return ValuesBehavior.readValue.call(this, BaseField);
-        }
-    });
+    /**
+     * {@inheritdoc}
+     */
+    getModelValue() {
+      return ValuesBehavior.readValue.call(this, BaseField);
+    },
+  });
 });

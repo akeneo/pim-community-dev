@@ -27,7 +27,7 @@ const useInitialDataGridState = <T extends {}>(
   handleAfterMove: AfterMoveRowHandler<T>,
   compareRowData: CompareRowDataHandler<T>,
   isFilterable: boolean,
-  isReorderActive: boolean,
+  isReorderActive: boolean
 ): DataGridState<T> => {
   const [draggedData, setDraggedData] = useState<T | null>(null);
   const [draggedIndex, setDraggedIndex] = useState<number>(DEFAULT_DRAGGED_INDEX);

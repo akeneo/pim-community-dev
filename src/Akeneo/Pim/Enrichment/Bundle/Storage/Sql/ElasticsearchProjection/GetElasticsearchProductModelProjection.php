@@ -12,6 +12,7 @@ use Akeneo\Pim\Enrichment\Component\Product\Factory\ReadValueCollectionFactory;
 use Akeneo\Pim\Enrichment\Component\Product\Normalizer\Indexing\Value\ValueCollectionNormalizer;
 use Doctrine\DBAL\Connection;
 use Doctrine\DBAL\Types\Type;
+use Doctrine\DBAL\Types\Types;
 use Symfony\Component\Serializer\Normalizer\NormalizerInterface;
 
 /**
@@ -21,23 +22,17 @@ use Symfony\Component\Serializer\Normalizer\NormalizerInterface;
  */
 class GetElasticsearchProductModelProjection implements GetElasticsearchProductModelProjectionInterface
 {
-    /** @var Connection */
-    private $connection;
-
-    /** @var ReadValueCollectionFactory */
-    private $readValueCollectionFactory;
-
-    /** @var NormalizerInterface */
-    private $valueCollectionNormalizer;
-
+    private Connection $connection;
+    private ReadValueCollectionFactory $readValueCollectionFactory;
+    private NormalizerInterface $valueCollectionNormalizer;
     /** @var GetAdditionalPropertiesForProductModelProjectionInterface[] */
-    private $additionalDataProviders = [];
+    private iterable $additionalDataProviders;
 
     public function __construct(
         Connection $connection,
         ReadValueCollectionFactory $readValueCollectionFactory,
         NormalizerInterface $valueCollectionNormalizer,
-        iterable $additionalDataProviders
+        iterable $additionalDataProviders = []
     ) {
         $this->connection = $connection;
         $this->readValueCollectionFactory = $readValueCollectionFactory;
@@ -70,6 +65,7 @@ class GetElasticsearchProductModelProjection implements GetElasticsearchProductM
                 $valuesAndProperties[$productModelCode]['code'],
                 $valuesAndProperties[$productModelCode]['created'],
                 $valuesAndProperties[$productModelCode]['updated'],
+                $valuesAndProperties[$productModelCode]['entity_updated'],
                 $valuesAndProperties[$productModelCode]['family_code'],
                 $valuesAndProperties[$productModelCode]['family_labels'],
                 $valuesAndProperties[$productModelCode]['family_variant_code'],
@@ -107,6 +103,7 @@ WITH
             product_model.created,
             root_product_model.code AS parent_code,
             GREATEST(product_model.updated, COALESCE(root_product_model.updated, 0)) as updated,
+            product_model.updated as entity_updated,
             JSON_MERGE_PATCH(COALESCE(root_product_model.raw_values, '{}'), COALESCE(product_model.raw_values, '{}')) AS raw_values,
             family.code AS family_code,
             family_variant.code AS family_variant_code,
@@ -118,7 +115,7 @@ WITH
             pim_catalog_product_model product_model
             INNER JOIN pim_catalog_family_variant family_variant ON family_variant.id = product_model.family_variant_id
             INNER JOIN pim_catalog_family family ON family.id = family_variant.family_id
-            INNER JOIN pim_catalog_attribute attribute ON family.label_attribute_id = attribute.id 
+            LEFT JOIN pim_catalog_attribute attribute ON family.label_attribute_id = attribute.id
             LEFT JOIN pim_catalog_product_model root_product_model ON product_model.parent_id = root_product_model.id
         WHERE
             product_model.code IN (:productModelCodes)
@@ -178,18 +175,16 @@ SQL;
 
         $platform = $this->connection->getDatabasePlatform();
         $results = [];
+        $dateTimeImmutableType = Type::getType(Types::DATETIME_IMMUTABLE);
         foreach ($rows as $row) {
             $values = $row['raw_values'];
 
             $results[$row['code']] = [
                 'id' => (int) $row['id'],
                 'code' => $row['code'],
-                'created' => \DateTimeImmutable::createFromMutable(
-                    Type::getType(Type::DATETIME)->convertToPhpValue($row['created'], $platform)
-                ),
-                'updated' => \DateTimeImmutable::createFromMutable(
-                    Type::getType(Type::DATETIME)->convertToPhpValue($row['updated'], $platform)
-                ),
+                'created' => $dateTimeImmutableType->convertToPhpValue($row['created'], $platform),
+                'updated' => $dateTimeImmutableType->convertToPhpValue($row['updated'], $platform),
+                'entity_updated' => $dateTimeImmutableType->convertToPhpValue($row['entity_updated'], $platform),
                 'family_code' => $row['family_code'],
                 'family_labels' => json_decode($row['family_labels'], true),
                 'family_variant_code' => $row['family_variant_code'],

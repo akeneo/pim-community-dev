@@ -26,6 +26,7 @@ class AkeneoStorageUtilsExtension extends Extension
         $container->setParameter($this->getAlias() . '.mapping_overrides', $config['mapping_overrides']);
 
         $loader = new YamlFileLoader($container, new FileLocator(__DIR__ . '/../Resources/config'));
+        $loader->load('cache.yml');
         $loader->load('doctrine.yml');
         $loader->load('factories.yml');
         $loader->load('removers.yml');

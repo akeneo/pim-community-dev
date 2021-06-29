@@ -197,7 +197,6 @@ services:
         arguments:
             - '@form.factory'
             - '@pim_filter.product_utility'
-            - '@translator'
             - '@akeneo_measure.manager'
         tags:
             - { name: oro_filter.extension.orm_filter.filter, type: product_value_metric }

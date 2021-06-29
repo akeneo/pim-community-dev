@@ -28,10 +28,6 @@ class ProductPdfController
     /** @var RendererRegistry */
     protected $rendererRegistry;
 
-    /**
-     * @param ProductRepositoryInterface $productRepository
-     * @param RendererRegistry           $rendererRegistry
-     */
     public function __construct(ProductRepositoryInterface $productRepository, RendererRegistry $rendererRegistry)
     {
         $this->productRepository = $productRepository;

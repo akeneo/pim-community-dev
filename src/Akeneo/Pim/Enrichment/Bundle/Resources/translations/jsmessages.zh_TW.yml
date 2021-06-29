@@ -1,0 +1,421 @@
+pim_notification:
+  types:
+    settings: 設定
+flash:
+  comment:
+    create:
+      success: 您的評論已成功創建。
+    delete:
+      success: 您的評論已成功移除。
+    reply:
+      success: 您的回復已成功創建。
+pim_enrich.entity.product:
+  label: 產品
+  uppercase_label: 產品
+  plural_label: 產品
+  flash:
+    update:
+      success: 已成功更新產品。
+      fail: 產品不能更新。
+      fields_not_ready: "此產品現在無法保存。以下字段尚未準備就緒：{{ fields }}"
+      already_in_upload: '"{{ locale }}"區域和"{{ scope }}"範圍中的此屬性已有一個檔案正在上傳'
+    delete:
+      success: 產品已成功移除。
+      fail: 產品不能被移除。
+    create:
+      success: 產品已成功創建
+      fail: 沒有將屬性配置為產品標識符，或者您無權對其進行編輯。
+  page_title:
+    index: "]-Inf, 1]{{ count }} 個結果|]1, Inf[{{ count }} 個結果"
+  module:
+    create:
+      subtitle: 創建產品
+      title: 請選擇操作
+      choose_family: 選擇一個品類
+      choose_family_variant: 選擇一個品類變量
+    variant_navigation:
+      common: 通用
+    status:
+      enabled: 已啟用
+      disabled: 已禁用
+    download_pdf:
+      label: PDF
+    copy:
+      label: 對比/翻譯
+      select: 選擇
+      all_visible: 全部可見
+      copy: 複製
+    history:
+      version: 版本
+      author: 作者
+      logged_at: 登錄地點
+      from: 來自
+      modified: 已修改
+      old_value: 舊值
+      new_value: 新值
+    meta:
+      updated: 上次更新
+      groups: 分組
+    show_group:
+      title: 分組 {{ group }}
+      view_group: 查看分組
+      more_products: '{{ count }} 更多產品……'
+    attribute:
+      remove_optional: 移除此屬性
+      locale_specific_unavailable: 此字段在此區域中不可用
+      locale_unavailable: 此可本地化字段不可用於 '{{ locale }}' 區域和 '{{ channel }}' 渠道
+      to_fill_count: "{1} 個必需屬性已丟失|]1，Inf[{{ count }} 個必需屬性已丟失"
+      add_attribute_option: 添加屬性選項
+      add_option: 新增選項
+    completeness:
+      title: 完成度
+      complete: 完成
+      no_family: 沒有定義品類。請定義一個品類來計算此產品的完成度。
+      no_completeness: 您剛修改了產品品類。請保存後再計算新品類的完成度。
+      missing_values: "{1}1 個數值已丟失|]1，Inf[{{ count }} 個數值已丟失"
+    sequential_edit:
+      item_limit: 僅顯示此序列編輯中的前1000個條目（已選{{ count }}項）
+      empty: 您的選擇為空，請修改您的搜索條件
+      save_and_next: 保存並繼續
+      save_and_finish: 保存並完成
+    associations:
+      title: 關聯
+      none_exist: 沒有關聯的類型存在。
+      show_products: 顯示產品
+      show_groups: 顯示分組
+      number_of_associations: "{{ productCount }} 個產品，{{ productModelCount }} 個產品型號和 {{ groupCount }} 個分組"
+      association_type_selector: 關聯類型
+      target: 目標
+      manage: 添加 {{ associationType }} 關聯
+      manage_description: 選擇您想要與此產品關聯的產品
+      add_associations: 添加關聯
+    attribute_filter:
+      display: 顯示
+      all: 所有屬性
+      missing_required: 缺失的全部必需屬性
+      at_this_level: 全部等級特別屬性
+    change_family:
+      title: 修改產品品類
+      merge_attributes: 當前屬性將與新品類中的屬性合併。
+      keep_attributes: 將不會移除屬性。
+      change_family_to: 修改品類為
+      empty_selection: 選擇一個品類
+    basket:
+      title: 購物籃
+      empty_basket: 購物籃為空
+    delete:
+      confirm: 確定移除此產品嗎？
+    comment:
+      post: 添加新評論
+      reply: 回復
+      title: 評論
+      empty: 暫無評論
+      header_comment: '{{ user }} 評論了此產品'
+      header_reply: '{{ user }} 回復了此評論'
+      delete_confirm: 確定刪除此評論嗎？
+    asset:
+      title: 資產
+pim_enrich.entity.product_model:
+  label: 產品型號
+  uppercase_label: 產品型號
+  plural_label: 產品型號
+  flash:
+    create:
+      success: 產品型號已成功創建
+      product_model_added: 產品型號已成功添加到此產品型號
+      variant_product_added: 產品變量已成功添加到此產品型號
+    update:
+      success: 產品型號已成功更新。將重新計算其產品變量的完成度。
+      fail: 產品型號不可更新。
+      fields_not_ready: "此產品型號現在無法保存。以下字段尚未準備就緒：{{ fields }}"
+    delete:
+      success: 產品型號已成功移除。
+      fail: 無法刪除此產品型號
+  choose: 選擇一個產品型號
+  property:
+    family_variant: 變量
+  module:
+    create:
+      title: 創建一個產品型號
+      content: 一個產品型號包含了多個產品變量，使擁有通用屬性的多個產品變得易於理解。
+    attribute:
+      read_only_parent_attribute_from_common: 此屬性已在通用屬性中更新。
+      read_only_parent_attribute_from_model: "此屬性可由 {{ axes }} 在屬性中更新"
+    variant_axis:
+      label: '變量軸'
+      create: 新增
+      create_label: "添加新的 {{ axes }}"
+      required_label: '(變量軸)'
+    completeness:
+      variant_product: "]-Inf, 1]{{ complete }} / {{ total }} 個產品變量|]1, Inf[{{ complete }} / {{ total }} 個產品變量"
+    delete:
+      confirm: 確定要刪除此產品型號嗎？其子項、產品型號和產品變量也將被刪除。
+      confirm_for_products_and_product_models: 確定要刪除已選產品和產品型號嗎？所有產品型號的子項也將被刪除。
+pim_enrich.entity.group:
+  label: 分組
+  flash:
+    update:
+      success: 分組已成功更新。
+      fail: 此分組不能更新。
+      fields_not_ready: "此分組現在無法保存。以下字段尚未準備就緒：{{ fields }}"
+    create:
+      success: 分組已成功創建
+    delete:
+      success: 分組已成功移除
+      fail: 不能刪除此分組
+  page_title:
+    index: "]-Inf, 1]{{ count }} 個分組|]1, Inf[{{ count }} 個分組"
+  module:
+    create:
+      button: 創建分組
+    delete:
+      confirm: 確定要刪除該分組？
+pim_enrich.entity.role:
+  module:
+    delete:
+      confirm: 確定要刪除這個角色？
+  flash:
+    delete:
+      success: 成功刪除角色
+pim_enrich.entity.category:
+  label: 類別
+  uppercase_label: 類別
+  plural_label: 類別
+pim_enrich.export.product:
+  data:
+    title: 篩選產品
+  structure:
+    title: 篩選數據
+  filter:
+    channel:
+      help: 渠道確定了產品值的範圍、用於選擇數據的區域以及用於選擇產品的目錄。
+    locales:
+      help: "區域確定了要匯出的本地化產品值。例如：僅限法語產品信息。"
+    attributes:
+      label: "{0} 全部屬性 |{1} 一個已選屬性|]1,Inf[{{ count }} 個已選屬性"
+      help: "選擇要匯出的產品信息。例如：僅限技術屬性。"
+      empty: 將匯出全部屬性
+      modal:
+        title: 屬性選擇
+    attributes_selector:
+      attributes: "在 {{ itemsCount }} 屬性中搜索"
+      selected: "已選屬性"
+      clear: 清空
+      all_group: 全部分組
+      empty_selection: 將匯出全部屬性
+      description: 選擇要匯出的產品信息
+    family:
+      title: 品類
+      help: "根據品類選擇要匯出的產品。例如：僅匯出鞋類和裙裝。"
+      operators:
+        IN: 在清單中
+        "NOT IN": 不在列表中
+        EMPTY: 沒有品類的產品
+        "NOT EMPTY": 有品類的產品
+      empty_selection: 沒有品類條件
+    updated:
+      title: 時間條件
+      operators:
+        ALL: 無日期條件
+        "SINCE LAST N DAYS": 在過去 n 天中更新過的產品（例如：6）
+        ">": 此日期後更新過的產品
+        "SINCE LAST JOB": 上次匯出後更新過的產品
+    enabled:
+      title: 狀態
+      help: "根據產品的狀態進行選擇。例如：匯出所有狀態的產品。"
+      value:
+        enabled: 已啟用
+        disabled: 已禁用
+    completeness:
+      title: 完成度
+      help: 根據完成度選擇要匯出的產品。
+      operators:
+        ALL: 沒有完成度條件
+        ">=": 完成至少一個選中的區域
+        "GREATER OR EQUALS THAN ON ALL LOCALES": 完成全部選中區域
+        "GREATER OR EQUALS THAN ON AT LEAST ONE LOCALE": 完成至少一個選中的區域
+        LOWER THAN ON ALL LOCALES: 未完成全部已選區域
+        AT LEAST COMPLETE: 至少要完成已選區域中的一個子產品
+        ALL COMPLETE: 完成全部已選區域中的全部子產品
+      empty_selection: 選擇一個品類
+    category:
+      title: 類別
+      help: 使用目錄（由上述渠道決定）中的產品類別選擇要匯出的產品
+    identifier:
+      title: 標識符
+      help: 使用產品標識符匯出產品（用逗號、空格或換行符隔開）
+    string:
+      operators:
+        ALL: 全部
+    select:
+      operators:
+        IN: 在列表中
+    date:
+      operators:
+        BETWEEN: 範圍
+        NOT BETWEEN: 非此範圍
+  global_settings:
+    title: 全局設定
+pim_enrich.mass_edit.product:
+  title: 產品批量操作
+  confirm: "{1}您將要更新包含以下信息的產品，請確認。|]1, Inf[您將要更新{{ itemsCount }}個包含以下信息的產品，請確認。"
+  step:
+    select:
+      label: 選擇產品
+    choose:
+      title: 產品批量操作
+      label_count: "]0, Inf[選擇您的操作"
+    configure:
+      label: 配置
+    confirm:
+      label: 確認
+    launched:
+      label: 批量操作“{{ operation }}”已啟動。完成後您將收到通知。
+  operation:
+    common:
+      select_attributes: 選擇屬性
+    change_status:
+      label: 修改狀態
+      label_count: "{1}修改<span class=\"AknFullPage-title--highlight\">1 個產品</span>的狀態|]1, Inf[修改<span class=\"AknFullPage-title--highlight\">{{ itemsCount }} 個產品</span>的狀態"
+      description: 已選產品將被啟用或禁用。
+      field: 啟用
+    edit_common:
+      label: 修改屬性值
+      label_count: "{1}編輯<span class=\"AknFullPage-title--highlight\">1 個產品</span>的屬性值|]1, Inf[編輯<span class=\"AknFullPage-title--highlight\">{{ itemsCount }} 個產品</span>的屬性值"
+      description: 僅可使用以下{{ locale }}區域和{{ scope }}渠道數據修改屬於此選中產品品類的屬性。
+      no_update: 請選擇至少一個字段更新。
+    add_attribute_value:
+      label: 添加屬性值
+      label_count: "{1}為<span class=\"AknFullPage-title--highlight\">1 個產品</span>添加屬性值|]1, Inf[為<span class=\"AknFullPage-title--highlight\">{{ itemsCount }}個產品</span>添加屬性值"
+      description: 僅可使用以下{{ locale }}區域和{{ scope }}渠道數據修改屬於此選中產品品類的多值屬性。
+    change_family:
+      label: 修改品類
+      label_count: "{1}修改<span class=\"AknFullPage-title--highlight\">1 個產品</span>的品類|]1, Inf[修改<span class=\"AknFullPage-title--highlight\">{{ itemsCount }} 個產品</span>的品類"
+      description: 選定產品的品類將更改為選中的品類
+    add_to_group:
+      label: 添加到分組
+      label_count: "{1}將<span class=\"AknFullPage-title--highlight\">1 個產品</span>添加到分組|]1, Inf[將<span class=\"AknFullPage-title--highlight\">{{ itemsCount }} 個產品</span>添加到分組"
+      description: 選擇分組以添加選中的產品
+      field: 分組
+      no_update: 請在繼續前選擇一個分組
+    add_to_category:
+      label: 添加到類別
+      label_count: "{1}將<span class=\"AknFullPage-title--highlight\">1 個產品</span>添加到類別|]1, Inf[將<span class=\"AknFullPage-title--highlight\">{{ itemsCount }} 個產品</span>添加到類別"
+      description: 產品將被分入下列類別，當前分類將保留。
+    move_to_category:
+      label: 類別移動
+      label_count: "{1}將<span class=\"AknFullPage-title--highlight\">1 個產品</span>移動到類別|]1, Inf[將<span class=\"AknFullPage-title--highlight\">{{ itemsCount }} 個產品</span>移動到類別"
+      description: 產品將被分入下列類別，當前分類將丟失。
+    remove_from_category:
+      label: 從類別中移除
+      label_count: "{1}將<span class=\"AknFullPage-title--highlight\">1 個產品</span>從類別中移除|]1, Inf[將<span class=\"AknFullPage-title--highlight\">{{ itemsCount }} 個產品</span>從類別中移除"
+      description: 產品將從以下目錄中刪除。
+    add_to_existing_product_model:
+      label: 添加到現有產品型號
+      label_count: "{1}將<span class=\"AknFullPage-title--highlight\">1 個產品</span>添加到現有產品型號|]1, Inf[將<span class=\"AknFullPage-title--highlight\">{{ itemsCount }} 個產品</span>添加到現有產品型號"
+      description: 選中的產品型號將收集產品，從而豐富擁有通用屬性的多個產品。
+      no_update: 請在繼續前選擇一個產品型號
+    associate_to_product_and_product_model:
+      label: 關聯
+      label_count: "{1}關聯<span class=\"AknFullPage-title--highlight\">1 個產品</span>到產品或產品型號|]1, Inf[關聯 <span class=\"AknFullPage-title--highlight\">{{ itemsCount }} 個產品</span>到產品或產品型號"
+      description: 界面中選中的產品將關聯到選中關聯類型中選中的產品和產品型號
+      validate: 請在進入下一步前添加關聯
+    change_parent_product_model:
+      label: 修改父級產品型號
+      label_count: "{1}修改<span class=\"AknFullPage-title--highlight\">1 個產品</span>的父級產品型號|]1, Inf[修改 <span class=\"AknFullPage-title--highlight\">{{ itemsCount }} 個產品</span>的父級產品型號"
+      description: 產品變量的父級或界面中選中的子產品型號將修改為選中產品型號。
+pim_datagrid:
+  mass_action_group:
+    bulk_actions:
+      label: 批量操作
+    quick_export:
+      label: 快速匯出
+  mass_action:
+    delete:
+      confirm_content: 確定要刪除選中的產品嗎？
+      success: 已成功刪除選中的產品。
+    quick_export:
+      csv_all: CSV （全部屬性）
+      csv_grid_context: CSV（界面內容）
+      xlsx_all: Excel（全部屬性）
+      xlsx_grid_context: Excel（界面內容）
+    mass_edit: 批量操作
+    sequential_edit: 序列編輯
+    mass_delete: 批量刪除
+    selected:
+      family: 已選品類
+      product: 已選結果
+  view_selector:
+    view: 查看
+  actions:
+    edit_product_attributes: 編輯產品屬性
+    classify_product: 產品分類
+    delete_product: 刪除此產品
+    change_status: 修改狀態
+    toggle_status: 切換狀態
+    other: 其他操作
+  empty_results:
+    associated_product:
+      hint: 沒有關聯產品
+      subHint: '點擊"添加關聯"來關聯此產品'
+  filters:
+    label: 篩選
+    system: 系統
+batch_jobs:
+  add_association:
+    label: 關聯
+    perform.label: 關聯
+  add_attribute_value:
+    label: 添加屬性值
+    perform.label: 添加屬性值
+  add_product_value:
+    label: 添加產品值
+    perform.label: 添加產品值
+  add_to_category:
+    label: 添加到類別
+    perform.label: 添加到類別
+  add_to_existing_product_model:
+    label: 添加到現有產品型號
+    perform.label: 添加到現有產品型號
+  csv_product_grid_context_quick_export:
+    quick_export.label: CSV產品界面內容下快速匯出
+    quick_export_product_model.label: CSV產品型號界面內容下快速匯出
+    perform.label: CSV產品界面內容下快速匯出
+  csv_product_quick_export:
+    quick_export.label: CSV產品快速匯出
+    quick_export_product_model.label: CSV產品型號快速匯出
+    perform.label: CSV產品快速匯出
+  delete_products_and_product_models:
+    label: 批量刪除產品
+    perform.label: 批量刪除產品
+  change_parent_product:
+    label: 修改父級產品型號
+    perform.label: 修改父級產品型號
+  edit_common_attributes:
+    label: 編輯屬性
+    perform.label: 編輯屬性
+    clean.label: 清空屬性文件
+    cleaner.label: 清空屬性文件
+  compute_completeness_of_products_family:
+    label: 計算完成度
+    perform.label: 計算完成度
+  move_to_category:
+    label: 移動到類別
+    perform.label: 移動到類別
+  update_product_value:
+    label: 更新產品值
+    perform.label: 更新產品值
+  remove_from_category:
+    label: 從類別中移除
+    perform.label: 從類別中移除
+  set_attribute_requirements:
+    label: 設置屬性要求
+    perform.label: 設置屬性要求
+  xlsx_product_grid_context_quick_export:
+    quick_export.label: XLSX產品界面內容下快速匯出
+    quick_export_product_model.label: XLSX產品型號界面內容下快速匯出
+    perform.label: XLSX產品界面內容下快速匯出
+  xlsx_product_quick_export:
+    quick_export.label: XLSX產品快速匯出
+    quick_export_product_model.label: XLSX產品型號快速匯出
+    perform.label: XLSX產品快速匯出

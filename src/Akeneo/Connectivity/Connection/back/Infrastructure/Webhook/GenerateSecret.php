@@ -4,7 +4,6 @@ declare(strict_types=1);
 namespace Akeneo\Connectivity\Connection\Infrastructure\Webhook;
 
 use Akeneo\Connectivity\Connection\Application\Webhook\Service\GenerateSecretInterface;
-use Ramsey\Uuid\Uuid;
 
 /**
  * @author    Willy Mesnage <willy.mesnage@akeneo.com>

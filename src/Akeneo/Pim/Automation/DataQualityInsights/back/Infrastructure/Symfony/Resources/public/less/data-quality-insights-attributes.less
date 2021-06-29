@@ -1,4 +1,5 @@
 #data-quality-insights-product-tab-content {
+    @recommendationLineHeight: 20px;
 
     .AknDataQualityInsightsAttribute {
         color: @AknGrey140;
@@ -6,6 +7,8 @@
         display: inline-block;
         font-style: italic;
         text-transform: capitalize;
+        height: @recommendationLineHeight;
+        line-height: @recommendationLineHeight;
 
         &--link {
             & > span {
@@ -36,7 +39,7 @@
     }
 
     .AknSubsection-title {
-        margin-bottom: 0px;
+        margin-bottom: 0;
         color: @AknGrey140;
         border-bottom: 1px solid @AknGrey140;
     }
@@ -45,8 +48,10 @@
         margin-bottom: 20px;
 
         .AknVerticalList-item {
-            min-height: 50px;
+            min-height: 56px;
+            line-height: 56px;
             height: auto;
+            padding: 0;
 
             &--clickable {
                 cursor: pointer;
@@ -61,7 +66,7 @@
     }
 
     .CriterionMessage {
-        line-height: 24px;
+        line-height: @recommendationLineHeight;
         width: 100%;
         margin: 20px auto;
         display: flex;
@@ -75,7 +80,6 @@
 
         .CriterionSuccessMessage {
             color: @AknGreen120;
-            font-style: italic;
         }
 
         .CriterionSuccessContainer {
@@ -96,11 +100,9 @@
 
         .CriterionErrorMessage {
             color: @AknRed100;
-            font-style: italic;
         }
         .CriterionInProgressMessage {
             color: @AknSlateGrey;
-            font-style: italic;
         }
     }
 
@@ -109,15 +111,16 @@
 
         .attributeList:nth-child(2) {
             margin-left: 25px;
-            margin-top: 15px;
+            margin-top: @recommendationLineHeight / 2;
         }
         .attributeList:nth-child(3) {
             margin-left: 50px;
-            margin-top: 15px;
+            margin-top: @recommendationLineHeight / 2;
         }
     }
 
     .CriterionRecommendationMessage {
+        height: @recommendationLineHeight;
         color: @AknGrey140;
         font-size: 13px;
         font-weight: normal;
@@ -165,11 +168,6 @@
 
     .NotApplicableAttribute {
         color: @AknGrey140;
-        font-style: italic;
-    }
-
-    .NonApplicableAttribute {
-        color: @AknGrey;
     }
 
     .AknDataQualityInsightsEvaluation {

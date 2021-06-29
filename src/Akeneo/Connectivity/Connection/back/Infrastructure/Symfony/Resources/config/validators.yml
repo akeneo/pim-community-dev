@@ -1,3 +1,6 @@
+parameters:
+    env(ALLOWED_NETWORK_WHITELIST): ''
+
 services:
     akeneo_connectivity.connection.validators.connection.code_must_be_unique:
         class: Akeneo\Connectivity\Connection\Application\Settings\Validation\Connection\CodeMustBeUniqueValidator
@@ -19,3 +22,20 @@ services:
             - '@akeneo_connectivity.connection.persistence.repository.connection'
         tags:
             - { name: validator.constraint_validator, alias: connection_must_exist }
+
+    akeneo_connectivity.connection.validators.webhook.event_subscriptions_limit:
+        class: Akeneo\Connectivity\Connection\Application\Webhook\Validation\EventSubscriptionsLimitValidator
+        arguments:
+            - '@akeneo_connectivity.connection.persistence.query.select_active_webhooks'
+            - '%webhook_active_event_subscriptions_limit%'
+        tags:
+            - { name: validator.constraint_validator }
+
+    akeneo_connectivity.connection.validators.webhook.external_url:
+        class: Akeneo\Connectivity\Connection\Application\Webhook\Validation\ExternalUrlValidator
+        arguments:
+            - '@akeneo_connectivity.connection.dns_lookup'
+            - '@akeneo_connectivity.connection.ip_matcher'
+            - '%env(string:ALLOWED_NETWORK_WHITELIST)%'
+        tags:
+            - { name: validator.constraint_validator }

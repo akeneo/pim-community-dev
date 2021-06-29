@@ -18,26 +18,19 @@ use Akeneo\Connectivity\Connection\Domain\Settings\Model\ValueObject\UserId;
  */
 class Connection
 {
-    /** @var ConnectionCode */
-    private $code;
+    private ConnectionCode $code;
 
-    /** @var ConnectionLabel */
-    private $label;
+    private ConnectionLabel $label;
 
-    /** @var FlowType */
-    private $flowType;
+    private FlowType $flowType;
 
-    /** @var ClientId */
-    private $clientId;
+    private ClientId $clientId;
 
-    /** @var UserId */
-    private $userId;
+    private UserId $userId;
 
-    /** @var ConnectionImage|null */
-    private $image;
+    private ?ConnectionImage $image = null;
 
-    /** @var bool */
-    private $auditable;
+    private bool $auditable;
 
     public function __construct(
         string $code,

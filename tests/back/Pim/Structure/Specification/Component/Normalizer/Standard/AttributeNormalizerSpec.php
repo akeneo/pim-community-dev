@@ -69,6 +69,7 @@ class AttributeNormalizerSpec extends ObjectBehavior
         $attribute->getMinimumInputLength()->willReturn(null);
         $attribute->getSortOrder()->willReturn(0);
         $attribute->getProperty('auto_option_sorting')->willReturn(null);
+        $attribute->getGuidelines()->willReturn(['en_US' => 'the guidelines', 'fr_FR' => 'les indications']);
 
         $this->normalize($attribute)->shouldReturn(
             [
@@ -98,6 +99,7 @@ class AttributeNormalizerSpec extends ObjectBehavior
                 'localizable'            => false,
                 'scopable'               => false,
                 'labels'                 => [],
+                'guidelines'             => ['en_US' => 'the guidelines', 'fr_FR' => 'les indications'],
                 'auto_option_sorting'    => null,
             ]
         );
@@ -142,6 +144,7 @@ class AttributeNormalizerSpec extends ObjectBehavior
         $attribute->getMinimumInputLength()->willReturn(2);
         $attribute->getSortOrder()->willReturn(4);
         $attribute->getProperty('auto_option_sorting')->willReturn(true);
+        $attribute->getGuidelines()->willReturn(['en_US' => 'the guidelines']);
 
         $dateTimeNormalizer->normalize($dateMin)->willReturn('2015-05-23T15:55:50+01:00');
         $dateTimeNormalizer->normalize($dateMax)->willReturn('2015-06-23T15:55:50+01:00');
@@ -174,6 +177,7 @@ class AttributeNormalizerSpec extends ObjectBehavior
                 'localizable'            => true,
                 'scopable'               => true,
                 'labels'                 => [],
+                'guidelines'             => ['en_US' => 'the guidelines'],
                 'auto_option_sorting'    => true,
             ]
         );

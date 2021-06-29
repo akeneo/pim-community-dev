@@ -3,9 +3,8 @@
 namespace Specification\Akeneo\UserManagement\Component\Model;
 
 use Akeneo\UserManagement\Component\Model\Role;
-use PhpSpec\ObjectBehavior;
 use Akeneo\UserManagement\Component\Model\RoleInterface;
-use Prophecy\Argument;
+use PhpSpec\ObjectBehavior;
 
 class RoleSpec extends ObjectBehavior
 {
@@ -22,16 +21,5 @@ class RoleSpec extends ObjectBehavior
     function it_is_a_role()
     {
         $this->shouldImplement(RoleInterface::class);
-    }
-
-    function its_label_is_the_role_by_default()
-    {
-        $this->getLabel()->shouldReturn('role_name');
-    }
-
-    function its_role_should_be_prefixed()
-    {
-        $this->setRole('user');
-        $this->getRole()->shouldReturn('ROLE_USER');
     }
 }

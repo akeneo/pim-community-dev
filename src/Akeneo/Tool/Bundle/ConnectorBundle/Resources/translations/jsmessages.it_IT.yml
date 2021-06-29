@@ -1,8 +1,11 @@
 #Job labels
 batch_jobs:
   default_steps:
+    export: Esportazioni
+    import: Importa
     validation: Validazione file
     import_associations: Importazione associazioni
+    import_model_associations: Importazione associazioni
     import_root_product_model: Importazione modello di prodotto radice
     import_sub_product_model: Importazione sotto-modelli di prodotto
     compute_data_related_to_family_root_product_models: Calcola dati modelli di prodotto radice
@@ -10,6 +13,12 @@ batch_jobs:
     compute_data_related_to_family_products: Calcola dati prodotto
     compute_family_variant_structure_changes: Calcola le modifiche della struttura della famiglia variante
     compute_completeness_of_products_family: Calcola la completezza della famiglia di prodotti
+    delete_products_and_product_models: Eliminazione in massa prodotti
+    clean_attribute:
+      register_clean_job: Aggiungi codice a blacklist
+      clean_product_model: Modelli di prodotti per la pulizia
+      clean_product: Prodotti per la pulizia
+      remove_attribute_codes_from_blacklist: Rimuovi codice da blacklist
   csv_product_export:
     label: Esportazione prodotti in CSV
     export.label: Esportazione Prodotti
@@ -37,6 +46,15 @@ batch_jobs:
   csv_family_variant_export:
     label: Esportazione famiglie varianti in CSV
     export.label: Esportazione famiglie varianti
+  csv_user_group_export:
+    label: Esportazione gruppo di utenti in CSV
+    export.label: Esportazione gruppo di utenti
+  csv_user_role_export:
+    label: Esportazione ruolo utente in CSV
+    export.label: Esportazione ruolo utente
+  csv_user_export:
+    label: Esportazione utente in CSV
+    export.label: Esportazione utente
   csv_product_import:
     label: Importazione prodotti in CSV
     import.label: Importazione prodotti
@@ -77,6 +95,15 @@ batch_jobs:
   csv_group_type_import:
     label: Importazione dei tipi di gruppo in CSV
     import.label: Importazione dei tipi di gruppo
+  csv_user_group_import:
+    label: Importazione gruppo di utenti in CSV
+    import.label: Importazione gruppo di utenti
+  csv_user_import:
+    label: Importazione utente in CSV
+    import.label: Importazione utente
+  csv_user_role_import:
+    label: Importazione ruolo utente in CSV
+    import.label: Importazione ruolo utente
   xlsx_category_import:
     label: Importazione categorie in XLSX
     import.label: Importazione categorie
@@ -137,9 +164,27 @@ batch_jobs:
   xlsx_group_type_export:
     label: Esportazione dei tipi di gruppo in XLSX
     export.label: Esportazione dei tipi di gruppo
+  xlsx_user_group_export:
+    label: Esportazione gruppo di utenti in XLSX
+    export.label: Esportazione gruppo di utenti
+  xlsx_user_role_export:
+    label: Esportazione ruolo utente in XLSX
+    export.label: Esportazione ruolo utente
+  xlsx_user_export:
+    label: Esportazione utente in XLSX
+    export.label: Esportazione utente
   xlsx_attribute_group_import:
     label: Importazione dei gruppi di attributi in XLSX
     import.label: Importazione dei gruppi di attributi
   xlsx_group_type_import:
     label: Importazione dei tipi di gruppo in XLSX
     import.label: Importazione dei tipi di gruppo
+  xlsx_user_group_import:
+    label: Importazione gruppo di utenti in XLSX
+    import.label: Importazione gruppo di utenti
+  xlsx_user_import:
+    label: Importazione utente in XLSX
+    import.label: Importazione utente
+  xlsx_user_role_import:
+    label: Importazione ruolo utente in XLSX
+    import.label: Importazione ruolo utente

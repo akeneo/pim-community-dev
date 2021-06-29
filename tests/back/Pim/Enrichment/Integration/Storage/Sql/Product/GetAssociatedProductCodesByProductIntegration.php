@@ -24,15 +24,15 @@ class GetAssociatedProductCodesByProductIntegration extends TestCase
         ]);
         $this->get('pim_catalog.saver.product')->save($productA);
 
-        $associationTypeRepository = $this->get('pim_catalog.repository.association_type');
-        $xsell = $associationTypeRepository->findOneByIdentifier('X_SELL');
-        $pack = $associationTypeRepository->findOneByIdentifier('PACK');
-        $upsell = $associationTypeRepository->findOneByIdentifier('UPSELL');
+        $productAssociations = [];
+        foreach ($productA->getAssociations() as $productAssociation) {
+            $productAssociations[$productAssociation->getAssociationType()->getCode()] = $productAssociation;
+        }
 
         $query = $this->get('pim_catalog.query.get_associated_product_codes_by_product');
-        $this->assertSame(['productB'], $query->getCodes($productA->getId(), $productA->getAssociationForType($xsell)));
-        $this->assertSame(['productC', 'productD'], $query->getCodes($productA->getId(), $productA->getAssociationForType($pack)));
-        $this->assertSame([], $query->getCodes($productA->getId(), $productA->getAssociationForType($upsell)));
+        $this->assertSame(['productB'], $query->getCodes($productA->getId(), $productAssociations['X_SELL']));
+        $this->assertSame(['productC', 'productD'], $query->getCodes($productA->getId(), $productAssociations['PACK']));
+        $this->assertSame([], $query->getCodes($productA->getId(), $productAssociations['UPSELL']));
     }
 
     /**

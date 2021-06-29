@@ -5,7 +5,7 @@ namespace Oro\Bundle\FilterBundle\Form\Type\Filter;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\OptionsResolver\OptionsResolver;
-use Symfony\Component\Translation\TranslatorInterface;
+use Symfony\Contracts\Translation\TranslatorInterface;
 
 class TextFilterType extends AbstractType
 {
@@ -17,14 +17,8 @@ class TextFilterType extends AbstractType
     const TYPE_EMPTY = 'empty';
     const NAME = 'oro_type_text_filter';
 
-    /**
-     * @var TranslatorInterface
-     */
-    protected $translator;
+    protected TranslatorInterface $translator;
 
-    /**
-     * @param TranslatorInterface $translator
-     */
     public function __construct(TranslatorInterface $translator)
     {
         $this->translator = $translator;

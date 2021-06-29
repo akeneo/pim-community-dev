@@ -1,14 +1,15 @@
 import React, {memo, useEffect} from 'react';
-import {Breadcrumb, Helper, HelperLink, HelperTitle, PageContent, PageHeader} from '../../common';
-import {PimView} from '../../infrastructure/pim-view/PimView';
+import {Helper, HelperLink, HelperTitle, PageContent, PageHeader} from '../../common';
 import {AuditEventType} from '../../model/audit-event-type.enum';
-import {BreadcrumbRouterLink} from '../../shared/router';
+import {useRoute} from '../../shared/router';
 import {Translate} from '../../shared/translate';
 import {connectionsFetched} from '../actions/dashboard-actions';
 import {DashboardContent} from '../components/DashboardContent';
 import {useDashboardDispatch} from '../dashboard-context';
 import {useConnections} from '../hooks/api/use-connections';
 import {useFetchConnectionsAuditData} from '../hooks/api/use-fetch-connections-audit-data';
+import {Breadcrumb} from 'akeneo-design-system';
+import {UserButtons} from '../../shared/user';
 
 export const Dashboard = memo(() => {
     const {connections} = useConnections();
@@ -26,25 +27,23 @@ export const Dashboard = memo(() => {
     useFetchConnectionsAuditData(AuditEventType.PRODUCT_UPDATED);
     useFetchConnectionsAuditData(AuditEventType.PRODUCT_READ);
 
+    const dashboardHref = `#${useRoute('akeneo_connectivity_connection_audit_index')}`;
+
     const breadcrumb = (
         <Breadcrumb>
-            <BreadcrumbRouterLink route={'pim_dashboard_index'} isLast={false}>
-                <Translate id='pim_menu.tab.activity' />
-            </BreadcrumbRouterLink>
+            <Breadcrumb.Step href={dashboardHref}>
+                <Translate id='pim_menu.tab.connect' />
+            </Breadcrumb.Step>
+            <Breadcrumb.Step>
+                <Translate id='pim_menu.item.data_flows' />
+            </Breadcrumb.Step>
         </Breadcrumb>
-    );
-
-    const userButtons = (
-        <PimView
-            className='AknTitleContainer-userMenuContainer AknTitleContainer-userMenu'
-            viewName='pim-connectivity-connection-user-navigation'
-        />
     );
 
     return (
         <>
-            <PageHeader breadcrumb={breadcrumb} userButtons={userButtons}>
-                <Translate id='pim_menu.item.connection_audit' />
+            <PageHeader breadcrumb={breadcrumb} userButtons={<UserButtons />}>
+                <Translate id='pim_menu.item.data_flows' />
             </PageHeader>
 
             <PageContent>

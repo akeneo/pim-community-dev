@@ -11,57 +11,45 @@
 'use strict';
 
 define([
-    'jquery',
-    'underscore',
-    'backbone',
-    'oro/translator',
-    'pim/form',
-    'pim/form-builder',
-    'pim/attribute-edit-form/type-specific-form-registry'
-], function (
-    $,
-    _,
-    Backbone,
-    __,
-    BaseForm,
-    FormBuilder,
-    FormRegistry
-) {
-    return BaseForm.extend({
-        config: {},
+  'jquery',
+  'underscore',
+  'backbone',
+  'oro/translator',
+  'pim/form',
+  'pim/form-builder',
+  'pim/attribute-edit-form/type-specific-form-registry',
+], function ($, _, Backbone, __, BaseForm, FormBuilder, FormRegistry) {
+  return BaseForm.extend({
+    config: {},
 
-        /**
-         * {@inheritdoc}
-         */
-        initialize: function (config) {
-            this.config = config.config;
+    /**
+     * {@inheritdoc}
+     */
+    initialize: function (config) {
+      this.config = config.config;
 
-            BaseForm.prototype.initialize.apply(this, arguments);
-        },
+      BaseForm.prototype.initialize.apply(this, arguments);
+    },
 
-        /**
-         * {@inheritdoc}
-         */
-        configure: function () {
-            var formName = FormRegistry.getFormName(this.getRoot().getType(), this.config.mode);
+    /**
+     * {@inheritdoc}
+     */
+    configure: function () {
+      var formName = FormRegistry.getFormName(this.getRoot().getType(), this.config.mode);
 
-            if (undefined !== formName && null !== formName) {
-                return FormBuilder.getFormMeta(formName)
-                    .then(FormBuilder.buildForm)
-                    .then(function (form) {
-                        this.addExtension(
-                            form.code,
-                            form,
-                            'self',
-                            100
-                        );
+      if (undefined !== formName && null !== formName) {
+        return FormBuilder.getFormMeta(formName)
+          .then(FormBuilder.buildForm)
+          .then(
+            function (form) {
+              this.addExtension(form.code, form, 'self', 100);
 
-                        return BaseForm.prototype.configure.apply(this);
-                    }.bind(this))
-                ;
-            }
+              return BaseForm.prototype.configure.apply(this);
+            }.bind(this)
+          );
+      }
 
-            return BaseForm.prototype.configure.apply(this);
-        }
-    });
+      return BaseForm.prototype.configure.apply(this);
+    },
+  });
 });

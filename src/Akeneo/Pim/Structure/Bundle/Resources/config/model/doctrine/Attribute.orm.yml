@@ -131,6 +131,9 @@ Akeneo\Pim\Structure\Component\Model\Attribute:
             type: datetime
         updated:
             type: datetime
+        guidelines:
+            type: json
+            columnDefinition: JSON NOT NULL DEFAULT (JSON_OBJECT())
     oneToMany:
         options:
             targetEntity: Akeneo\Pim\Structure\Component\Model\AttributeOptionInterface

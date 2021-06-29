@@ -118,6 +118,12 @@ class CategoryRepository extends EntityRepository implements ApiResourceReposito
                             $qb->andWhere($qb->expr()->gt('r.left', $parentCategory->getLeft()));
                             $qb->andWhere($qb->expr()->lt('r.right', $parentCategory->getRight()));
                             $qb->andWhere($qb->expr()->eq('r.root', $parentCategory->getRoot()));
+                        } elseif ('is_root' === $property) {
+                            if (true === (bool)$criterion['value']) {
+                                $qb->andWhere($qb->expr()->isNull('r.parent'));
+                            } else {
+                                $qb->andWhere($qb->expr()->isNotNull('r.parent'));
+                            }
                         } else {
                             $qb->andWhere($qb->expr()->eq($field, $parameter));
                             $qb->setParameter($parameter, $criterion['value']);
@@ -125,6 +131,10 @@ class CategoryRepository extends EntityRepository implements ApiResourceReposito
                         break;
                     case 'IN':
                         $qb->andWhere($qb->expr()->in($field, $parameter));
+                        $qb->setParameter($parameter, $criterion['value']);
+                        break;
+                    case '>':
+                        $qb->andWhere($qb->expr()->gt($field, $parameter));
                         $qb->setParameter($parameter, $criterion['value']);
                         break;
                     default:
@@ -148,7 +158,7 @@ class CategoryRepository extends EntityRepository implements ApiResourceReposito
                 new Assert\Collection([
                     'operator' => new Assert\IdenticalTo([
                         'value' => 'IN',
-                        'message' => 'In order to search on category codes you must use "IN" operator, {{ compared_value }} given.',
+                        'message' => 'In order to search on category codes you must use "IN" operator, {{ value }} given.',
                     ]),
                     'value' => [
                         new Assert\Type([
@@ -165,7 +175,7 @@ class CategoryRepository extends EntityRepository implements ApiResourceReposito
                 new Assert\Collection([
                     'operator' => new Assert\IdenticalTo([
                         'value' => '=',
-                        'message' => 'In order to search on category parent you must use "=" operator, {{ compared_value }} given.',
+                        'message' => 'In order to search on category parent you must use "=" operator, {{ value }} given.',
                     ]),
                     'value' => [
                         new Assert\Type([
@@ -175,10 +185,36 @@ class CategoryRepository extends EntityRepository implements ApiResourceReposito
                     ],
                 ])
             ]),
+            'is_root' => new Assert\All([
+                new Assert\Collection([
+                    'operator' => new Assert\IdenticalTo([
+                        'value' => '=',
+                        'message' => 'In order to search on category is_root you must use "=" operator, {{ value }} given.',
+                    ]),
+                    'value' => [
+                        new Assert\Type([
+                            'type' => 'bool',
+                            'message' => 'In order to search on category is_root you must send a {{ type }} value, {{ value }} given.'
+                        ]),
+                    ],
+                ])
+            ]),
+            'updated' => new Assert\All([
+                new Assert\Collection([
+                    'operator' => new Assert\IdenticalTo([
+                        'value' => '>',
+                        'message' => 'Searching on the "updated" property require the ">" (greater than) operator, {{ value }} given.',
+                    ]),
+                    'value' => new Assert\DateTime([
+                        'format' => \DateTimeInterface::ATOM,
+                        'message' => 'This value is not in a valid ISO 8601 standard datetime format'
+                    ]),
+                ])
+            ]),
         ];
         $availableSearchFilters = array_keys($constraints);
 
-        $exceptionMessage = '';
+        $exceptionMessages = [];
         foreach ($searchFilters as $property => $searchFilter) {
             if (!in_array($property, $availableSearchFilters)) {
                 throw new \InvalidArgumentException(sprintf(
@@ -188,14 +224,13 @@ class CategoryRepository extends EntityRepository implements ApiResourceReposito
                 ));
             }
             $violations = $validator->validate($searchFilter, $constraints[$property]);
-            if (0 !== $violations->count()) {
-                foreach ($violations as $violation) {
-                    $exceptionMessage .= $violation->getMessage();
-                }
+            foreach ($violations as $violation) {
+                $exceptionMessages[] = $violation->getMessage();
             }
         }
-        if ('' !== $exceptionMessage) {
-            throw new \InvalidArgumentException($exceptionMessage);
+
+        if (!empty($exceptionMessages)) {
+            throw new \InvalidArgumentException(implode(' ', $exceptionMessages));
         }
     }
 }

@@ -12,27 +12,27 @@ parameters:
 services:
     pim_user.form.role:
         class:                        Symfony\Component\Form\Form
-        factory:                      'form.factory:createNamed'
+        factory:                      ['@form.factory', 'createNamed']
         arguments:                    ["pim_user_role_form", '%pim_user.form.type.acl_role_type.class%']
 
     pim_user.form.role.api:
         class:                        Symfony\Component\Form\Form
-        factory:                      'form.factory:createNamed'
+        factory:                      ['@form.factory', 'createNamed']
         arguments:                    ["role", '%pim_user.form.type.role.api.class%', null]
 
     pim_user.form.group:
         class:                        Symfony\Component\Form\Form
-        factory:                      'form.factory:createNamed'
+        factory:                      ['@form.factory', 'createNamed']
         arguments:                    ["pim_user_group_form", '%pim_user.form.type.group.class%']
 
     pim_user.form.group.api:
         class:                        Symfony\Component\Form\Form
-        factory:                      'form.factory:createNamed'
+        factory:                      ['@form.factory', 'createNamed']
         arguments:                    ["group", '%pim_user.form.type.group.api.class%', null]
 
     pim_user.form.reset:
         class:                        Symfony\Component\Form\Form
-        factory:                      'form.factory:createNamed'
+        factory:                      ['@form.factory', 'createNamed']
         arguments:                    ["pim_user_reset_form", '%pim_user.form.type.reset.class%', null, { validation_groups: [ResetPassword, Default] }]
 
     pim_user.form.type.role.api:

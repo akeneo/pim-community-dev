@@ -70,6 +70,9 @@ services:
             - '@event_dispatcher'
             - '@pim_api.checker.duplicate_value'
             - '@logger'
+            - '@akeneo.pim.enrichment.use_cases.get_products_with_quality_scores'
+            - '@pim_catalog.entity_with_family_variant.remove_parent_from_product'
+            - '@akeneo.pim.enrichment.use_cases.get_products_with_completenesses'
 
     pim_api.controller.product_model:
         public: true
@@ -155,6 +158,7 @@ services:
             - '@pim_enrich.normalizer.product_violation'
             - '@pim_catalog.builder.product'
             - '@pim_enrich.filter.product_attribute_filter'
+            - '@pim_catalog.entity_with_family_variant.remove_parent_from_product'
             - '@akeneo_elasticsearch.client.product_and_product_model'
 
     pim_enrich.controller.rest.product_comment:
@@ -280,6 +284,13 @@ services:
             - '@pim_internal_api_serializer'
             - '@pim_user.context.user'
 
+    pim_enrich.controller.rest.count_impacted_items_by_attribute_deletion:
+        public: true
+        class: 'Akeneo\Pim\Enrichment\Bundle\Controller\InternalApi\CountItemsWithAttributeValueAction'
+        arguments:
+            - '@akeneo.pim.enrichment.product.query.count_products_with_removed_attribute'
+            - '@akeneo.pim.enrichment.product.query.count_product_models_with_removed_attribute'
+
     pim_enrich.controller.category_tree.product:
         public: true
         class: 'Akeneo\Pim\Enrichment\Bundle\Controller\Ui\CategoryTreeController'
@@ -292,6 +303,13 @@ services:
             - '@pim_catalog.repository.category'
             - '@oro_security.security_facade'
             - '@translator'
+            - '@pim_internal_api_serializer'
+            - '@pim_catalog.updater.category'
+            - '@validator'
+            - '@pim_enrich.normalizer.violation'
+            - '@pim_enrich.doctrine.counter.category_product'
+            - '@Akeneo\Pim\Enrichment\Bundle\Storage\Sql\Category\CountTreesChildren'
+            - '@Akeneo\Pim\Enrichment\Bundle\Form\CategoryFormViewNormalizer'
             - { related_entity: product, form_type: 'Akeneo\Pim\Enrichment\Bundle\Form\Type\CategoryType', acl: pim_enrich_product, route: pim_enrich }
         calls:
             - [ setContainer, [ '@service_container' ] ]

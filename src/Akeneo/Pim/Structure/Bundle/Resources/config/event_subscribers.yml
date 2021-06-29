@@ -21,6 +21,16 @@ services:
         tags:
             - { name: kernel.event_subscriber }
 
+    pim_catalog.event_subscriber.attribute_removal:
+        class: 'Akeneo\Pim\Structure\Bundle\EventSubscriber\AttributeRemovalSubscriber'
+        arguments:
+            - '@pim_catalog.manager.attribute_code_blacklister'
+            - '@akeneo_batch_queue.launcher.queue_job_launcher'
+            - '@akeneo_batch.job.job_instance_repository'
+            - '@security.token_storage'
+        tags:
+            - { name: kernel.event_subscriber }
+
     pim_catalog.event_subscriber.save_family_variants_on_family_update:
         class: 'Akeneo\Pim\Structure\Bundle\EventSubscriber\SaveFamilyVariantOnFamilyUpdateSubscriber'
         arguments:
@@ -52,3 +62,22 @@ services:
             - '@pim_catalog.factory.attribute_requirement'
         tags:
             - { name: doctrine.event_subscriber }
+
+    Akeneo\Pim\Structure\Bundle\EventSubscriber\ApiAggregatorForAttributePostSaveEventSubscriber:
+        arguments:
+            - '@event_dispatcher'
+        tags:
+            - { name: kernel.event_subscriber }
+
+    Akeneo\Pim\Structure\Bundle\EventSubscriber\ApiAggregatorForAttributeOptionPostSaveEventSubscriber:
+        arguments:
+            - '@event_dispatcher'
+        tags:
+            - { name: kernel.event_subscriber }
+
+    pim_catalog.event_subscriber.check_attribute_on_deletion_subscriber:
+        class: 'Akeneo\Pim\Structure\Bundle\EventSubscriber\CheckAttributeOnDeletionSubscriber'
+        arguments:
+            - '@database_connection'
+        tags:
+            - { name: kernel.event_subscriber }

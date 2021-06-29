@@ -8,7 +8,9 @@ use Akeneo\Tool\Component\Classification\Model\CategoryInterface;
 use Akeneo\Tool\Component\FileStorage\Model\FileInfoInterface;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
-use Doctrine\Common\Inflector\Inflector;
+use Doctrine\Inflector\Inflector;
+use Doctrine\Inflector\NoopWordInflector;
+use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\HttpFoundation\File\UploadedFile;
 
 /**
@@ -151,7 +153,13 @@ class User implements UserInterface
     /** @var array $property bag for properties extension */
     private $properties = [];
 
+    private int $consecutiveAuthenticationFailureCounter=0;
+
+    private ?\DateTime $authenticationFailureResetDate=null;
+
     protected $type = self::TYPE_USER;
+
+    private ?string $profile = null;
 
     public function __construct()
     {
@@ -279,13 +287,13 @@ class User implements UserInterface
      */
     public function getFullName()
     {
-        return implode(' ', [
+        return \implode(' ', array_filter([
             $this->namePrefix,
             $this->firstName,
             $this->middleName,
             $this->lastName,
             $this->nameSuffix
-        ]);
+        ]));
     }
 
     /**
@@ -634,16 +642,9 @@ class User implements UserInterface
     /**
      * {@inheritdoc}
      */
-    public function getRoles()
+    public function getRoles(): array
     {
-        $roles = $this->roles->toArray();
-
-        /** @var GroupInterface $group */
-        foreach ($this->getGroups() as $group) {
-            $roles = array_merge($roles, $group->getRoles()->toArray());
-        }
-
-        return array_unique($roles);
+        return $this->roles->map(fn (RoleInterface $role): string => $role->getRole())->getValues();
     }
 
     /**
@@ -660,7 +661,7 @@ class User implements UserInterface
     public function getRole($roleName)
     {
         /** @var Role $item */
-        foreach ($this->getRoles() as $item) {
+        foreach ($this->roles as $item) {
             if ($roleName == $item->getRole()) {
                 return $item;
             }
@@ -1107,7 +1108,7 @@ class User implements UserInterface
      */
     public function addProperty(string $propertyName, $propertyValue): void
     {
-        $propertyName = Inflector::tableize($propertyName);
+        $propertyName = $this->getInflector()->tableize($propertyName);
 
         $this->properties[$propertyName] = $propertyValue;
     }
@@ -1117,8 +1118,101 @@ class User implements UserInterface
      */
     public function getProperty(string $propertyName)
     {
-        $propertyName = Inflector::tableize($propertyName);
+        $propertyName = $this->getInflector()->tableize($propertyName);
 
         return $this->properties[$propertyName] ?? null;
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function getConsecutiveAuthenticationFailureCounter(): int
+    {
+        return $this->consecutiveAuthenticationFailureCounter;
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function setConsecutiveAuthenticationFailureCounter(int $consecutiveAuthenticationFailureCounter): void
+    {
+        $this->consecutiveAuthenticationFailureCounter = $consecutiveAuthenticationFailureCounter;
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function getAuthenticationFailureResetDate(): ?\DateTime
+    {
+        return $this->authenticationFailureResetDate;
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function setAuthenticationFailureResetDate(?\DateTime $authenticationFailureResetDate): void
+    {
+        $this->authenticationFailureResetDate = $authenticationFailureResetDate;
+    }
+
+    public function duplicate(): UserInterface
+    {
+        $duplicated = new static();
+        $duplicated->setEnabled($this->enabled ?? false);
+        if ($this->timezone) {
+            $duplicated->setTimezone($this->timezone);
+        }
+
+        $duplicated->setPhone($this->phone);
+        $duplicated->setEmailNotifications($this->emailNotifications);
+        if ($this->uiLocale) {
+            $duplicated->setUiLocale($this->uiLocale);
+        }
+
+        if ($this->catalogLocale) {
+            $duplicated->setCatalogLocale($this->catalogLocale);
+        }
+
+        if ($this->catalogScope) {
+            $duplicated->setCatalogScope($this->catalogScope);
+        }
+
+        if ($this->defaultTree) {
+            $duplicated->setDefaultTree($this->defaultTree);
+        }
+
+        $duplicated->setRoles($this->roles);
+        $duplicated->setGroups($this->groups->toArray());
+        $duplicated->setProductGridFilters($this->productGridFilters);
+        foreach ($this->defaultGridViews as $datagridView) {
+            if ($datagridView->isPublic()) {
+                $duplicated->setDefaultGridView($datagridView->getDatagridAlias(), $datagridView);
+            }
+        }
+
+        if ($this->isApiUser()) {
+            $duplicated->defineAsApiUser();
+        }
+
+        foreach ($this->properties as $key => $value) {
+            $duplicated->addProperty($key, $value);
+        }
+
+        return $duplicated;
+    }
+
+    private function getInflector(): Inflector
+    {
+        return new Inflector(new NoopWordInflector(), new NoopWordInflector());
+    }
+
+    public function getProfile(): ?string
+    {
+        return $this->profile;
+    }
+
+    public function setProfile(?string $profile): void
+    {
+        $this->profile = '' === $profile ? null : $profile;
     }
 }

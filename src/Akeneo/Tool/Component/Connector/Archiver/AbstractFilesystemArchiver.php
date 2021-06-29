@@ -3,7 +3,7 @@
 namespace Akeneo\Tool\Component\Connector\Archiver;
 
 use Akeneo\Tool\Component\Batch\Model\JobExecution;
-use League\Flysystem\Filesystem;
+use League\Flysystem\FilesystemInterface;
 
 /**
  * Base archiver
@@ -14,19 +14,22 @@ use League\Flysystem\Filesystem;
  */
 abstract class AbstractFilesystemArchiver implements ArchiverInterface
 {
-    /** @var Filesystem */
-    protected $filesystem;
+    protected FilesystemInterface $filesystem;
 
     /**
      * {@inheritdoc}
      */
-    public function getArchives(JobExecution $jobExecution)
+    public function getArchives(JobExecution $jobExecution, bool $recursive = false): array
     {
         $directory = dirname($this->getRelativeArchivePath($jobExecution));
         $archives = [];
 
-        foreach ($this->filesystem->listFiles($directory) as $key) {
-            $archives[basename($key['path'])] = $key['path'];
+        foreach ($this->filesystem->listFiles($directory, $recursive) as $key) {
+            $relativePath = \dirname($this->getRelativeArchivePath($jobExecution));
+            $relativeFilePath = \substr($key['path'], \strlen($relativePath));
+            $relativeFilePath = \ltrim($relativeFilePath, '\\/');
+
+            $archives[$relativeFilePath] = $key['path'];
         }
 
         return $archives;
@@ -35,9 +38,9 @@ abstract class AbstractFilesystemArchiver implements ArchiverInterface
     /**
      * {@inheritdoc}
      */
-    public function getArchive(JobExecution $jobExecution, $key)
+    public function getArchive(JobExecution $jobExecution, string $key)
     {
-        $archives = $this->getArchives($jobExecution);
+        $archives = $this->getArchives($jobExecution, true);
 
         if (!isset($archives[$key])) {
             throw new \InvalidArgumentException(
@@ -49,13 +52,23 @@ abstract class AbstractFilesystemArchiver implements ArchiverInterface
     }
 
     /**
+     * {@inheritdoc}
+     */
+    public function listContents(JobExecution $jobExecution): array
+    {
+        $directory = dirname($this->getRelativeArchivePath($jobExecution));
+
+        return $this->filesystem->listContents($directory);
+    }
+
+    /**
      * Get the relative archive path in the file system
      *
      * @param JobExecution $jobExecution
      *
      * @return string
      */
-    protected function getRelativeArchivePath(JobExecution $jobExecution)
+    protected function getRelativeArchivePath(JobExecution $jobExecution): string
     {
         $jobInstance = $jobExecution->getJobInstance();
 

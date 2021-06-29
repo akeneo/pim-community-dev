@@ -1,6 +1,0 @@
-pim_dashboard:
-  widget:
-    completeness:
-      load_more: 'Load more...'
-pim_title:
-  pim_dashboard_index: Dashboard

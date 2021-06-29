@@ -7,6 +7,7 @@ namespace AkeneoTest\Pim\Enrichment\Integration\Storage\Sql\Connector\Writer\Fil
 use Akeneo\Pim\Enrichment\Component\Product\Connector\ReadModel\ConnectorProduct;
 use Akeneo\Pim\Enrichment\Component\Product\Connector\ReadModel\ConnectorProductList;
 use Akeneo\Pim\Enrichment\Component\Product\Exception\ObjectNotFoundException;
+use Akeneo\Pim\Enrichment\Component\Product\Model\AbstractProductPrice;
 use Akeneo\Pim\Enrichment\Component\Product\Model\PriceCollection;
 use Akeneo\Pim\Enrichment\Component\Product\Model\ProductInterface;
 use Akeneo\Pim\Enrichment\Component\Product\Model\ProductModelInterface;
@@ -21,6 +22,7 @@ use Akeneo\Pim\Enrichment\Component\Product\Value\ScalarValue;
 use Akeneo\Test\Integration\Configuration;
 use Akeneo\Test\Integration\TestCase;
 use AkeneoTest\Pim\Enrichment\EndToEnd\Product\EntityWithQuantifiedAssociations\QuantifiedAssociationsTestCaseTrait;
+use Doctrine\Common\Collections\ArrayCollection;
 use PHPUnit\Framework\Assert;
 
 class SqlGetConnectorProductsWithOptionsIntegration extends TestCase
@@ -147,8 +149,8 @@ class SqlGetConnectorProductsWithOptionsIntegration extends TestCase
             new ConnectorProduct(
                 (int) $productDataAppolonA['id'],
                 'apollon_A_false',
-                new \DateTimeImmutable($productDataAppolonA['created']),
-                new \DateTimeImmutable($productDataAppolonA['updated']),
+                new \DateTimeImmutable($productDataAppolonA['created'], new \DateTimeZone('UTC')),
+                new \DateTimeImmutable($productDataAppolonA['updated'], new \DateTimeZone('UTC')),
                 true,
                 'familyA',
                 ['categoryA2', 'categoryB', 'categoryC'],
@@ -189,13 +191,15 @@ class SqlGetConnectorProductsWithOptionsIntegration extends TestCase
                     ScalarValue::value('a_yes_no', false),
                     ScalarValue::value('a_number_float', '12.5000'),
                     ScalarValue::scopableLocalizableValue('a_localized_and_scopable_text_area', 'my pink tshirt', 'ecommerce', 'en_US'),
-                ])
+                ]),
+                null,
+                null
             ),
             new ConnectorProduct(
                 (int) $productDataAppolonB['id'],
                 'apollon_B_false',
-                new \DateTimeImmutable($productDataAppolonB['created']),
-                new \DateTimeImmutable($productDataAppolonB['updated']),
+                new \DateTimeImmutable($productDataAppolonB['created'], new \DateTimeZone('UTC')),
+                new \DateTimeImmutable($productDataAppolonB['updated'], new \DateTimeZone('UTC')),
                 true,
                 'familyA',
                 ['categoryA1', 'categoryA2'],
@@ -240,7 +244,9 @@ class SqlGetConnectorProductsWithOptionsIntegration extends TestCase
                     ScalarValue::value('a_yes_no', false),
                     ScalarValue::value('a_number_float', '12.5000'),
                     ScalarValue::scopableLocalizableValue('a_localized_and_scopable_text_area', 'my pink tshirt', 'ecommerce', 'en_US'),
-                ])
+                ]),
+                null,
+                null
             ),
         ]);
 
@@ -279,8 +285,8 @@ class SqlGetConnectorProductsWithOptionsIntegration extends TestCase
             new ConnectorProduct(
                 (int) $productDataAppolonA['id'],
                 'apollon_A_false',
-                new \DateTimeImmutable($productDataAppolonA['created']),
-                new \DateTimeImmutable($productDataAppolonA['updated']),
+                new \DateTimeImmutable($productDataAppolonA['created'], new \DateTimeZone('UTC')),
+                new \DateTimeImmutable($productDataAppolonA['updated'], new \DateTimeZone('UTC')),
                 true,
                 'familyA',
                 ['categoryA2', 'categoryB', 'categoryC'],
@@ -317,13 +323,15 @@ class SqlGetConnectorProductsWithOptionsIntegration extends TestCase
                 [],
                 new ReadValueCollection([
                     PriceCollectionValue::value('a_price', new PriceCollection([new ProductPrice(50, 'EUR')])),
-                ])
+                ]),
+                null,
+                null
             ),
             new ConnectorProduct(
                 (int) $productDataAppolonB['id'],
                 'apollon_B_false',
-                new \DateTimeImmutable($productDataAppolonB['created']),
-                new \DateTimeImmutable($productDataAppolonB['updated']),
+                new \DateTimeImmutable($productDataAppolonB['created'], new \DateTimeZone('UTC')),
+                new \DateTimeImmutable($productDataAppolonB['updated'], new \DateTimeZone('UTC')),
                 true,
                 'familyA',
                 ['categoryA1', 'categoryA2'],
@@ -364,7 +372,9 @@ class SqlGetConnectorProductsWithOptionsIntegration extends TestCase
                 [],
                 new ReadValueCollection([
                     PriceCollectionValue::value('a_price', new PriceCollection([new ProductPrice(50, 'EUR')])),
-                ])
+                ]),
+                null,
+                null
             ),
         ]);
 
@@ -390,8 +400,8 @@ class SqlGetConnectorProductsWithOptionsIntegration extends TestCase
         $expectedProduct = new ConnectorProduct(
             (int) $productData['id'],
             'apollon_B_false',
-            new \DateTimeImmutable($productData['created']),
-            new \DateTimeImmutable($productData['updated']),
+            new \DateTimeImmutable($productData['created'], new \DateTimeZone('UTC')),
+            new \DateTimeImmutable($productData['updated'], new \DateTimeZone('UTC')),
             true,
             'familyA',
             ['categoryA1', 'categoryA2'],
@@ -436,10 +446,141 @@ class SqlGetConnectorProductsWithOptionsIntegration extends TestCase
                 ScalarValue::value('a_yes_no', false),
                 ScalarValue::value('a_number_float', '12.5000'),
                 ScalarValue::scopableLocalizableValue('a_localized_and_scopable_text_area', 'my pink tshirt', 'ecommerce', 'en_US'),
-            ])
+            ]),
+            null,
+            null
         );
 
         $this->assertEquals($expectedProduct, $product);
+    }
+
+    /**
+     * @group ce
+     */
+    public function test_get_product_from_identifiers()
+    {
+        $query = $this->getQuery();
+
+        $userId = $this
+            ->get('database_connection')
+            ->fetchColumn('SELECT id FROM oro_user WHERE username = "admin"', [], 0);
+
+        $product = $query->fromProductIdentifiers(['apollon_A_false', 'apollon_B_false'], (int) $userId, null, null, null);
+
+        $productDataAppolonA = $this->get('database_connection')->executeQuery(
+            'SELECT id, created, updated FROM pim_catalog_product WHERE identifier = "apollon_A_false"'
+        )->fetch();
+        $productDataAppolonB = $this->get('database_connection')->executeQuery(
+            'SELECT id, created, updated FROM pim_catalog_product WHERE identifier = "apollon_B_false"'
+        )->fetch();
+
+
+        $expectedProducts = new ConnectorProductList(2, [
+            new ConnectorProduct(
+                (int) $productDataAppolonA['id'],
+                'apollon_A_false',
+                new \DateTimeImmutable($productDataAppolonA['created'], new \DateTimeZone('UTC')),
+                new \DateTimeImmutable($productDataAppolonA['updated'], new \DateTimeZone('UTC')),
+                true,
+                'familyA',
+                ['categoryA2', 'categoryB', 'categoryC'],
+                [],
+                'amor',
+                [
+                    'X_SELL' => [
+                        'products' => [],
+                        'product_models' => [],
+                        'groups' => ['groupA'],
+                    ],
+                    'UPSELL' => [
+                        'products' => [],
+                        'product_models' => [],
+                        'groups' => []
+                    ],
+                    'PACK' => [
+                        'products' => [],
+                        'product_models' => [],
+                        'groups' => []
+                    ],
+                    'SUBSTITUTION' => [
+                        'products' => [],
+                        'product_models' => [],
+                        'groups' => []
+                    ]
+                ],
+                [
+                    'PRODUCT_SET' => [
+                        'products' => [],
+                        'product_models' => [['identifier' => 'amor', 'quantity' => 4]],
+                    ],
+                ],
+                [],
+                new ReadValueCollection([
+                    new OptionValueWithLinkedData('a_simple_select','optionA', null, null, ['attribute' => 'a_simple_select', 'code' => 'optionA', 'labels' => ['en_US' => 'Option A',],]),
+                    PriceCollectionValue::value('a_price', new PriceCollection([new ProductPrice(50, 'EUR')])),
+                    ScalarValue::value('a_yes_no', false),
+                    ScalarValue::value('a_number_float', '12.5000'),
+                    ScalarValue::scopableLocalizableValue('a_localized_and_scopable_text_area', 'my pink tshirt', 'ecommerce', 'en_US'),
+                ]),
+                null,
+                null
+            ),
+            new ConnectorProduct(
+                (int) $productDataAppolonB['id'],
+                'apollon_B_false',
+                new \DateTimeImmutable($productDataAppolonB['created'], new \DateTimeZone('UTC')),
+                new \DateTimeImmutable($productDataAppolonB['updated'], new \DateTimeZone('UTC')),
+                true,
+                'familyA',
+                ['categoryA1', 'categoryA2'],
+                ['groupA', 'groupB'],
+                'amor',
+                [
+                    'X_SELL' => [
+                        'products' => ['apollon_A_false'],
+                        'product_models' => ['amor'],
+                        'groups' => ['groupA', 'groupB'],
+                    ],
+                    'UPSELL' => [
+                        'products' => [],
+                        'product_models' => [],
+                        'groups' => []
+                    ],
+                    'PACK' => [
+                        'products' => [],
+                        'product_models' => [],
+                        'groups' => []
+                    ],
+                    'SUBSTITUTION' => [
+                        'products' => [],
+                        'product_models' => [],
+                        'groups' => []
+                    ]
+                ],
+                [
+                    'PRODUCT_SET' => [
+                        'products' => [['identifier' => 'apollon_A_false', 'quantity' => 6]],
+                        'product_models' => [],
+                    ],
+                    'ANOTHER_PRODUCT_SET' => [
+                        'products' => [],
+                        'product_models' => [['identifier' => 'amor', 'quantity' => 2]],
+                    ],
+                ],
+                [],
+                new ReadValueCollection([
+                    new OptionValueWithLinkedData('a_simple_select','optionB', null, null, ['attribute' => 'a_simple_select', 'code' => 'optionB', 'labels' => ['en_US' => 'Option B',],]),
+                    PriceCollectionValue::value('a_price', new PriceCollection([new ProductPrice(50, 'EUR')])),
+                    ScalarValue::value('a_yes_no', false),
+                    ScalarValue::value('a_number_float', '12.5000'),
+                    ScalarValue::scopableLocalizableValue('a_localized_and_scopable_text_area', 'my pink tshirt', 'ecommerce', 'en_US'),
+                ]),
+                null,
+                null
+            ),
+        ]);
+
+        Assert::assertEquals($expectedProducts, $product);
     }
 
     public function test_it_throws_an_exception_when_product_is_not_found()

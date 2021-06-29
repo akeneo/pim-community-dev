@@ -217,6 +217,8 @@ class GroupTypeController
      * @param Request $request
      *
      * @return Response
+     *
+     * @AclAncestor("pim_enrich_grouptype_create")
      */
     public function createAction(Request $request)
     {

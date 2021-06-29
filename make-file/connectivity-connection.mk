@@ -85,6 +85,46 @@ else
 	APP_ENV=test ${PHP_RUN} vendor/bin/phpunit -c . --testsuite Akeneo_Connectivity_Connection_EndToEnd $(0)
 endif
 
+connectivity-connection-coverage:
+	# run the backend application unit tests on scope connectivity
+	XDEBUG_MODE=coverage $(PHP_RUN) vendor/bin/phpspec run \
+    		-c src/Akeneo/Connectivity/Connection/back/tests/phpspec.yml.dist \
+    		src/Akeneo/Connectivity/Connection/back/tests/Unit/spec/
+	# run the backend application integration tests on scope connectivity
+	XDEBUG_MODE=coverage APP_ENV=test ${PHP_RUN} vendor/bin/phpunit \
+		-c src/Akeneo/Connectivity/Connection/back/tests/ \
+		--coverage-clover coverage/Connectivity/Back/Integration/coverage.cov \
+		--coverage-php coverage/Connectivity/Back/Integration/coverage.php \
+		--coverage-html coverage/Connectivity/Back/Integration/ \
+		--testsuite Integration $(0)
+	# run the backend application end to end tests on scope connectivity
+	XDEBUG_MODE=coverage APP_ENV=test ${PHP_RUN} vendor/bin/phpunit \
+		-c src/Akeneo/Connectivity/Connection/back/tests/ \
+		--coverage-clover coverage/Connectivity/Back/EndToEnd/coverage.cov \
+		--coverage-php coverage/Connectivity/Back/EndToEnd/coverage.php \
+		--coverage-html coverage/Connectivity/Back/EndToEnd/ \
+		--testsuite EndToEnd $(0)
+	# run the backend application acceptance tests on scope connectivity
+	XDEBUG_MODE=coverage $(PHP_RUN) -d memory_limit=-1 vendor/bin/behat \
+			--config src/Akeneo/Connectivity/Connection/back/tests/Acceptance/behat-coverage.yml \
+			--format pim --out var/tests/behat/connectivity/connection --format progress --out std --colors
+	# download phpcov binary
+	$(DOCKER_COMPOSE) run -u www-data --rm php test -e phpcov.phar || wget https://phar.phpunit.de/phpcov.phar && \
+		php phpcov.phar --version
+	# create a coverage global folder
+	$(DOCKER_COMPOSE) run -u www-data --rm php sh -c "\
+		if [ -d coverage/Connectivity/Back/Global/ ]; then rm -r coverage/Connectivity/Back/Global/; fi && \
+		mkdir -p coverage/Connectivity/Back/Global/ && \
+		cp coverage/Connectivity/Back/Unit/coverage.php coverage/Connectivity/Back/Global/Unit.cov && \
+		cp coverage/Connectivity/Back/Integration/coverage.php coverage/Connectivity/Back/Global/Integration.cov && \
+		cp coverage/Connectivity/Back/EndToEnd/coverage.php coverage/Connectivity/Back/Global/EndToEnd.cov && \
+		cp coverage/Connectivity/Back/Acceptance/coverage.php coverage/Connectivity/Back/Global/Acceptance.cov"
+	# run the command to merge all the code coverage on scope connectivity
+	XDEBUG_MODE=coverage ${PHP_RUN} -d memory_limit=-1 phpcov.phar merge \
+		--clover coverage/Connectivity/Back/Global/coverage.cov \
+		--html coverage/Connectivity/Back/Global/ \
+		coverage/Connectivity/Back/Global/
+
 connectivity-connection-back:
 	$(MAKE) connectivity-connection-coupling-back
 	$(MAKE) connectivity-connection-lint-back

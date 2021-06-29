@@ -12,6 +12,8 @@ services:
             - '@pim_catalog.comparator.filter.product'
             - '@pim_connector.processor.attribute_filter.product'
             - '@pim_connector.processor.denormalization.media_storer'
+            - '@pim_catalog.entity_with_family_variant.remove_parent_from_product'
+            - '@pim_connector.processor.attribute_cleaner.text_attribute_line_break'
 
     pim_connector.processor.denormalization.product_to_import:
         class: 'Akeneo\Pim\Enrichment\Component\Product\Connector\Processor\Denormalizer\FindProductToImport'
@@ -30,6 +32,7 @@ services:
             - '@akeneo_storage_utils.doctrine.object_detacher'
             - '@pim_connector.processor.attribute_filter.product_model'
             - '@pim_connector.processor.denormalization.media_storer'
+            - '@pim_connector.processor.attribute_cleaner.text_attribute_line_break'
             - 'root_product_model'
 
     pim_connector.processor.denormalization.sub_product_model:
@@ -43,6 +46,7 @@ services:
             - '@akeneo_storage_utils.doctrine.object_detacher'
             - '@pim_connector.processor.attribute_filter.product_model'
             - '@pim_connector.processor.denormalization.media_storer'
+            - '@pim_connector.processor.attribute_cleaner.text_attribute_line_break'
             - 'sub_product_model'
 
     pim_connector.processor.denormalization.product_association:
@@ -69,8 +73,8 @@ services:
             - '@pim_catalog.normalizer.standard.product'
             - '@pim_catalog.repository.channel'
             - '@pim_catalog.repository.attribute'
-            - '@pim_connector.processor.bulk_media_fetcher'
             - '@pim_catalog.product_model.fill_missing_values'
+            - '@akeneo.pim.enrichment.use_cases.get_products_with_quality_scores'
 
     pim_connector.processor.normalization.product_model:
         class: 'Akeneo\Pim\Enrichment\Component\Product\Connector\Processor\Normalization\ProductProcessor'
@@ -78,7 +82,6 @@ services:
             - '@pim_catalog.normalizer.standard.product_model'
             - '@pim_catalog.repository.channel'
             - '@pim_catalog.repository.attribute'
-            - '@pim_connector.processor.bulk_media_fetcher'
             - '@pim_catalog.product_model.fill_missing_values'
 
     pim_connector.processor.attribute_filter.product_model:
@@ -101,3 +104,8 @@ services:
         arguments:
             - '@akeneo_file_storage.file_storage.file.file_storer'
             - '@pim_catalog.repository.attribute'
+
+    pim_connector.processor.attribute_cleaner.text_attribute_line_break:
+        class: Akeneo\Pim\Enrichment\Component\Product\Connector\Processor\CleanLineBreaksInTextAttributes
+        arguments:
+            - '@akeneo.pim.structure.query.get_attributes'

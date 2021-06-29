@@ -17,13 +17,14 @@ use Symfony\Component\Console\Output\OutputInterface;
  */
 class PurgeConnectionErrorsCommand extends Command
 {
+    /**
+     * @var string
+     */
     protected static $defaultName = 'akeneo:connectivity-connection:purge-error';
 
-    /** @var SelectAllAuditableConnectionCodeQuery */
-    private $selectAllAuditableConnectionCodes;
+    private SelectAllAuditableConnectionCodeQuery $selectAllAuditableConnectionCodes;
 
-    /** @var PurgeConnectionErrorsQuery */
-    private $purgeErrors;
+    private PurgeConnectionErrorsQuery $purgeErrors;
 
     public function __construct(
         SelectAllAuditableConnectionCodeQuery $selectAllAuditableConnectionCodes,

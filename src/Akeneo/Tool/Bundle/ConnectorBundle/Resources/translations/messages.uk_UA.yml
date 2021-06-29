@@ -1,0 +1,23 @@
+pim_connector:
+  steps:
+    file_reader:
+      invalid_item_columns_count: 'Має бути %totalColumnsCount% стовпців, фактично %itemColumnsCount% в %csvPath%:%lineno%'
+job_execution.summary:
+  read: прочитано
+  write: записано
+  skip: пропущено
+  create: створено
+  process: оброблено
+  update_products: оновлених продуктів
+  process_products: оброблених продуктів
+  skip_products: пропущених продуктів
+  displayed: відображені перші попередження
+  charset_validator:
+    title: 'Кодування файлу:'
+    skipped: пропущено, розширення з білого списку
+  product_skipped_no_diff: пропущений продукт (немає розбіжностей)
+  product_skipped_no_associations: пропущений продукт (не виявлено відповідностей)
+  product_model_skipped_no_diff: пропущена модель продукту (немає розбіжностей)
+  item_position: прочитаних рядків
+  skipped_in_root_product_model: модель продукту пропущена разом з батьківською
+  skipped_in_sub_product_model: модель продукту пропущена без батьківської

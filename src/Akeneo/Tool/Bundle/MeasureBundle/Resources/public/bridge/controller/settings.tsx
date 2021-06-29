@@ -1,14 +1,29 @@
 import React from 'react';
-import ReactController from '../react/react-controller';
-import {Index} from 'akeneomeasure/index';
+import {pimTheme} from 'akeneo-design-system';
+import {ReactController} from '@akeneo-pim-community/legacy-bridge/src/bridge/react';
+import {DependenciesProvider} from '@akeneo-pim-community/legacy-bridge';
+import {MeasurementApp, ConfigContext, UnsavedChangesContext} from '@akeneo-pim-community/measurement';
 import {measurementsDependencies} from '../dependencies';
+import {ThemeProvider} from 'styled-components';
 
 const mediator = require('oro/mediator');
 const __ = require('oro/translator');
 
 class SettingsController extends ReactController {
+  private static container = document.createElement('div');
+
   reactElementToMount() {
-    return <Index dependencies={measurementsDependencies} />;
+    return (
+      <ThemeProvider theme={pimTheme}>
+        <DependenciesProvider>
+          <ConfigContext.Provider value={measurementsDependencies.config}>
+            <UnsavedChangesContext.Provider value={measurementsDependencies.unsavedChanges}>
+              <MeasurementApp />
+            </UnsavedChangesContext.Provider>
+          </ConfigContext.Provider>
+        </DependenciesProvider>
+      </ThemeProvider>
+    );
   }
 
   routeGuardToUnmount() {
@@ -20,6 +35,10 @@ class SettingsController extends ReactController {
     mediator.trigger('pim_menu:highlight:item', {extension: 'pim-menu-measurements-settings'});
 
     return super.renderRoute();
+  }
+
+  getContainerRef(): Element {
+    return SettingsController.container;
   }
 
   canLeave() {

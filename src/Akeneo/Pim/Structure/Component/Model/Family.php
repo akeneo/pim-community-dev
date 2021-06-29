@@ -299,7 +299,7 @@ class Family implements FamilyInterface
     /**
      * {@inheritdoc}
      */
-    public function getTranslation(?string $locale = null)
+    public function getTranslation(?string $locale = null): ?FamilyTranslationInterface
     {
         $locale = ($locale) ? $locale : $this->locale;
         if (null === $locale) {

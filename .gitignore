@@ -33,7 +33,12 @@ package-lock.json
 yarn-error.log
 coverage/*
 .phpunit.result.cache
-akeneo-design-system/lib
+cypress/videos
+cypress/screenshots
+
+# The "lib/" folder must be ignored here to not be taken into account when the DSM is extracted to its own repository.
+# See ".github/actions/extract/entrypoint.sh"
+front-packages/akeneo-design-system/lib
 
 ###> symfony/framework-bundle ###
 /.env.local

@@ -5,7 +5,7 @@ namespace Akeneo\Platform\Bundle\UIBundle;
 use Akeneo\Channel\Component\Model\LocaleInterface;
 use Akeneo\Channel\Component\Repository\LocaleRepositoryInterface;
 use Akeneo\Tool\Component\Localization\Provider\LocaleProviderInterface;
-use Symfony\Component\Translation\TranslatorInterface;
+use Symfony\Contracts\Translation\TranslatorInterface;
 
 /**
  * The LocaleProvider gets the list of available locales for the PIM. A locale is available when it is translated
@@ -19,28 +19,21 @@ class UiLocaleProvider implements LocaleProviderInterface
 {
     const MAIN_LOCALE = 'en_US';
 
-    /** @var TranslatorInterface */
-    protected $translator;
-
-    /** @var float */
-    protected $minPercentage;
+    protected TranslatorInterface $translator;
+    protected float $minPercentage;
 
     /** @var string[] */
-    protected $localeCodes;
+    protected array $localeCodes;
 
-    /** @var LocaleRepositoryInterface */
-    protected $localeRepository;
+    protected LocaleRepositoryInterface $localeRepository;
 
     /**
-     * @param TranslatorInterface       $translator
-     * @param LocaleRepositoryInterface $localeRepository
-     * @param float                     $minPercentage
-     * @param string[]                  $localeCodes
+     * @param string[] $localeCodes
      */
     public function __construct(
         TranslatorInterface $translator,
         LocaleRepositoryInterface $localeRepository,
-        $minPercentage,
+        float $minPercentage,
         array $localeCodes
     ) {
         $this->translator = $translator;

@@ -356,4 +356,29 @@ class MetricIntegration extends AbstractAttributeTestCase
         $this->assertSame('This value should be null.', $violations->get(0)->getMessage());
         $this->assertSame('maxFileSize', $violations->get(0)->getPropertyPath());
     }
+
+    public function testMetricShouldNotHaveDefaultValue()
+    {
+        $attribute = $this->createAttribute();
+
+        $this->updateAttribute(
+            $attribute,
+            [
+                'code' => 'new_metric',
+                'type' => 'pim_catalog_metric',
+                'group' => 'attributeGroupA',
+                'metric_family' => 'Length',
+                'default_metric_unit' => 'METER',
+                'decimals_allowed' => true,
+                'negative_allowed' => false,
+                'default_value' => true,
+            ]
+        );
+
+        $violations = $this->validateAttribute($attribute);
+
+        $this->assertCount(1, $violations);
+        $this->assertSame('This attribute type cannot have a default value.', $violations->get(0)->getMessage());
+        $this->assertSame('default_value', $violations->get(0)->getPropertyPath());
+    }
 }

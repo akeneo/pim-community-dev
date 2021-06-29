@@ -13,7 +13,7 @@ use Oro\Bundle\DataGridBundle\Extension\Formatter\Configuration as FormatterConf
 use Oro\Bundle\FilterBundle\Datasource\Orm\OrmFilterDatasourceAdapter;
 use Oro\Bundle\FilterBundle\Filter\FilterInterface;
 use Oro\Bundle\FilterBundle\Filter\FilterUtility;
-use Symfony\Component\Translation\TranslatorInterface;
+use Symfony\Contracts\Translation\TranslatorInterface;
 
 class OrmFilterExtension extends AbstractExtension
 {
@@ -25,8 +25,7 @@ class OrmFilterExtension extends AbstractExtension
     /** @var FilterInterface[] */
     protected $filters = [];
 
-    /** @var TranslatorInterface */
-    protected $translator;
+    protected TranslatorInterface $translator;
 
     public function __construct(RequestParameters $requestParams, TranslatorInterface $translator)
     {

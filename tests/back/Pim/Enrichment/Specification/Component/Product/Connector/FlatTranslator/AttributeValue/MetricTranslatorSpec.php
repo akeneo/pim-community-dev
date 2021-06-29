@@ -2,13 +2,13 @@
 
 namespace Specification\Akeneo\Pim\Enrichment\Component\Product\Connector\FlatTranslator\AttributeValue;
 
-use Akeneo\Tool\Bundle\MeasureBundle\PublicApi\SqlGetUnitTranslations;
+use Akeneo\Tool\Bundle\MeasureBundle\PublicApi\GetUnitTranslations;
 use PhpSpec\ObjectBehavior;
 
 class MetricTranslatorSpec extends ObjectBehavior
 {
     function let(
-        SqlGetUnitTranslations $getUnitTranslations
+        GetUnitTranslations $getUnitTranslations
     ) {
         $this->beConstructedWith($getUnitTranslations);
     }
@@ -22,7 +22,7 @@ class MetricTranslatorSpec extends ObjectBehavior
     }
 
     function it_translates_metric_attribute_values(
-        SqlGetUnitTranslations $getUnitTranslations
+        GetUnitTranslations $getUnitTranslations
     ) {
         $getUnitTranslations->byMeasurementFamilyCodeAndLocale('Weight', 'fr_FR')->willReturn([
             'MICROGRAM' => 'Microgramme',
@@ -44,7 +44,7 @@ class MetricTranslatorSpec extends ObjectBehavior
     }
 
     function it_should_throw_when_reference_data_is_not_set(
-        SqlGetUnitTranslations $getUnitTranslations
+        GetUnitTranslations $getUnitTranslations
     ) {
         $getUnitTranslations->byMeasurementFamilyCodeAndLocale()->shouldNotBeCalled();
 

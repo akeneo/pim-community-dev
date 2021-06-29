@@ -20,7 +20,7 @@ Feature: Import profiles
     And I launch the import job
     And I wait for the "csv_footwear_product_import" job to finish
     Then I should see the text "COMPLETED"
-    And I should see the text "Execution details - CSV footwear product import [csv_footwear_product_import]"
+    And I should see the text "CSV footwear product import"
     And I should see "Download invalid data" on the "Download generated files" dropdown button
     And I should see "Download read files" on the "Download generated files" dropdown button
     And I should see the secondary action "Show profile"
@@ -37,7 +37,7 @@ Feature: Import profiles
     And I launch the import job
     And I wait for the "csv_footwear_product_import" job to finish
     Then I should see the text "COMPLETED"
-    And I should see the text "Execution details - CSV footwear product import [csv_footwear_product_import]"
+    And I should see the text "CSV footwear product import"
     And I should see the secondary action "Download log"
     And I should see the secondary action "Show profile"
     When I press the secondary action "Show profile"

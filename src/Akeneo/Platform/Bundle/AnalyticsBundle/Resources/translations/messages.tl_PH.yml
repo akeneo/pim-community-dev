@@ -3,10 +3,10 @@ pim_analytics:
   system_config:
     group:
       notification.title: Mga notipikasyon
-      version_update.title: Mga update ng bersyon
+      version_update.title: Mga update sa bersyon
     form:
       version_update.label: Mga notipikasyon sa mga bagong bersyon
-      version_update.tooltip: Magpadala ng bilin sa malayong server para makuha ang impormasyon tungkol sa pagpapalabas ng mga bagong patse
+      version_update.tooltip: Magpadala ng hiling sa malayong server para makakuha ng impormasyon ukol sa pagpapalabas ng mga bagong patse
   system_info:
     title: Impormasyon ng sistema
     download: TXT

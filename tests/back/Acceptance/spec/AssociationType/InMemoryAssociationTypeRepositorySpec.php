@@ -59,7 +59,7 @@ class InMemoryAssociationTypeRepositorySpec extends ObjectBehavior
         $productAssociation = new ProductAssociation();
         $productAssociation->setAssociationType($associationType);
         $productAddedToRepo = new Product();
-        $productAddedToRepo->setAssociations(new ArrayCollection([$productAssociation]));
+        $productAddedToRepo->addAssociation($productAssociation);
 
         $this->save($associationType);
 

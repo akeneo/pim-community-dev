@@ -4,3 +4,4 @@ parameters:
     level: 5
     paths:
         - %rootDir%/../../../src/Akeneo/Pim/Automation/DataQualityInsights/back
+    treatPhpDocTypesAsCertain: false

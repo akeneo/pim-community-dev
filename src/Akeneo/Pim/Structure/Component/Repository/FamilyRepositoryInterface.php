@@ -57,4 +57,9 @@ interface FamilyRepositoryInterface extends
      * @return bool
      */
     public function hasAttribute($id, $attributeCode);
+
+    /**
+     * Get families with family variants
+     */
+    public function getWithVariants(string $search = null, array $options = [], int $limit = null): array;
 }

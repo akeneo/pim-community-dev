@@ -7,4 +7,11 @@ services:
         class: '%pim_dashboard.controller.widget.class%'
         arguments:
             - '@pim_dashboard.widget.registry'
-            - '@templating'
+            - '@twig'
+
+    Akeneo\Platform\Bundle\DashboardBundle\Controller\VersionController:
+        public: true
+        arguments:
+            - '@pim_catalog.version_provider'
+            - '@oro_config.global'
+            - '%pim_analytics_update_server_url%'

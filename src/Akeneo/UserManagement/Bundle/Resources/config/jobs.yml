@@ -1,0 +1,234 @@
+services:
+    ## Export jobs
+    pim_connector.job.csv_user_group_export:
+        class: '%pim_connector.job.simple_job.class%'
+        arguments:
+            - 'csv_user_group_export'
+            - '@event_dispatcher'
+            - '@akeneo_batch.job_repository'
+            -
+                - '@pim_connector.step.csv_user_group_export.export'
+            - true
+        tags:
+            - { name: akeneo_batch.job, connector: '%pim_connector.connector_name.csv%', type: '%pim_connector.job.export_type%' }
+
+    pim_connector.job.xlsx_user_group_export:
+        class: '%pim_connector.job.simple_job.class%'
+        arguments:
+            - 'xlsx_user_group_export'
+            - '@event_dispatcher'
+            - '@akeneo_batch.job_repository'
+            -
+                - '@pim_connector.step.xlsx_user_group_export.export'
+            - true
+        tags:
+            - { name: akeneo_batch.job, connector: '%pim_connector.connector_name.xlsx%', type: '%pim_connector.job.export_type%' }
+
+    pim_connector.job.csv_user_role_export:
+        class: '%pim_connector.job.simple_job.class%'
+        arguments:
+            - 'csv_user_role_export'
+            - '@event_dispatcher'
+            - '@akeneo_batch.job_repository'
+            -
+                - '@pim_connector.step.csv_user_role_export.export'
+            - true
+        tags:
+            - { name: akeneo_batch.job, connector: '%pim_connector.connector_name.csv%', type: '%pim_connector.job.export_type%' }
+
+    pim_connector.job.xlsx_user_role_export:
+        class: '%pim_connector.job.simple_job.class%'
+        arguments:
+            - 'xlsx_user_role_export'
+            - '@event_dispatcher'
+            - '@akeneo_batch.job_repository'
+            -
+                - '@pim_connector.step.xlsx_user_role_export.export'
+            - true
+        tags:
+            - { name: akeneo_batch.job, connector: '%pim_connector.connector_name.xlsx%', type: '%pim_connector.job.export_type%' }
+
+    pim_connector.job.csv_user_export:
+        class: '%pim_connector.job.simple_job.class%'
+        arguments:
+            - 'csv_user_export'
+            - '@event_dispatcher'
+            - '@akeneo_batch.job_repository'
+            -
+                - '@pim_connector.step.csv_user_export.export'
+            - true
+        tags:
+            - { name: akeneo_batch.job, connector: '%pim_connector.connector_name.csv%', type: '%pim_connector.job.export_type%' }
+
+    pim_connector.job.xlsx_user_export:
+        class: '%pim_connector.job.simple_job.class%'
+        arguments:
+            - 'xlsx_user_export'
+            - '@event_dispatcher'
+            - '@akeneo_batch.job_repository'
+            -
+                - '@pim_connector.step.xlsx_user_export.export'
+            - true
+        tags:
+            - { name: akeneo_batch.job, connector: '%pim_connector.connector_name.xlsx%', type: '%pim_connector.job.export_type%' }
+
+    # Import jobs
+    pim_connector.job.csv_user_group_import:
+        class: '%pim_connector.job.simple_job.class%'
+        arguments:
+            - 'csv_user_group_import'
+            - '@event_dispatcher'
+            - '@akeneo_batch.job_repository'
+            -
+                - '@pim_connector.step.charset_validator'
+                - '@pim_connector.step.csv_user_group_import.import'
+            - true
+        tags:
+            - { name: akeneo_batch.job, connector: '%pim_connector.connector_name.csv%', type: '%pim_connector.job.import_type%' }
+
+    pim_connector.job.xlsx_user_group_import:
+        class: '%pim_connector.job.simple_job.class%'
+        arguments:
+            - 'xlsx_user_group_import'
+            - '@event_dispatcher'
+            - '@akeneo_batch.job_repository'
+            -
+                - '@pim_connector.step.charset_validator'
+                - '@pim_connector.step.xlsx_user_group_import.import'
+            - true
+        tags:
+            - { name: akeneo_batch.job, connector: '%pim_connector.connector_name.xlsx%', type: '%pim_connector.job.import_type%' }
+
+    pim_connector.job.csv_user_import:
+        class: '%pim_connector.job.simple_job.class%'
+        arguments:
+            - 'csv_user_import'
+            - '@event_dispatcher'
+            - '@akeneo_batch.job_repository'
+            -
+                - '@pim_connector.step.charset_validator'
+                - '@pim_connector.step.csv_user_import.import'
+            - true
+        tags:
+            - { name: akeneo_batch.job, connector: '%pim_connector.connector_name.csv%', type: '%pim_connector.job.import_type%' }
+
+    pim_connector.job.csv_user_role_import:
+        class: '%pim_connector.job.simple_job.class%'
+        arguments:
+            - 'csv_user_role_import'
+            - '@event_dispatcher'
+            - '@akeneo_batch.job_repository'
+            -
+                - '@pim_connector.step.charset_validator'
+                - '@pim_connector.step.csv_user_role_import.import'
+            - true
+        tags:
+            - { name: akeneo_batch.job, connector: '%pim_connector.connector_name.csv%', type: '%pim_connector.job.import_type%' }
+
+    pim_connector.job.xlsx_user_import:
+        class: '%pim_connector.job.simple_job.class%'
+        arguments:
+            - 'xlsx_user_import'
+            - '@event_dispatcher'
+            - '@akeneo_batch.job_repository'
+            -
+                - '@pim_connector.step.charset_validator'
+                - '@pim_connector.step.xlsx_user_import.import'
+            - true
+        tags:
+            - { name: akeneo_batch.job, connector: '%pim_connector.connector_name.xlsx%', type: '%pim_connector.job.import_type%' }
+
+    pim_connector.job.xlsx_user_role_import:
+        class: '%pim_connector.job.simple_job.class%'
+        arguments:
+            - 'xlsx_user_role_import'
+            - '@event_dispatcher'
+            - '@akeneo_batch.job_repository'
+            -
+                - '@pim_connector.step.charset_validator'
+                - '@pim_connector.step.xlsx_user_role_import.import'
+            - true
+        tags:
+            - { name: akeneo_batch.job, connector: '%pim_connector.connector_name.xlsx%', type: '%pim_connector.job.import_type%' }
+
+    # Job defaults
+    pim_user.job.job_parameters.default_values_provider.simple_csv_export:
+        class: 'Akeneo\Tool\Component\Connector\Job\JobParameters\DefaultValuesProvider\SimpleCsvExport'
+        arguments:
+            -
+                - 'csv_user_group_export'
+                - 'csv_user_role_export'
+                - 'csv_user_export'
+        tags:
+            - { name: akeneo_batch.job.job_parameters.default_values_provider }
+
+    pim_user.job.job_parameters.default_values_provider.simple_xlsx_export:
+        class: 'Akeneo\Tool\Component\Connector\Job\JobParameters\DefaultValuesProvider\SimpleXlsxExport'
+        arguments:
+            -
+                - 'xlsx_user_group_export'
+                - 'xlsx_user_role_export'
+                - 'xlsx_user_export'
+        tags:
+            - { name: akeneo_batch.job.job_parameters.default_values_provider }
+
+    pim_user.job.job_parameters.default_values_provider.simple_csv_import:
+        class: 'Akeneo\Tool\Component\Connector\Job\JobParameters\DefaultValuesProvider\SimpleCsvImport'
+        arguments:
+            -
+                - 'csv_user_group_import'
+                - 'csv_user_import'
+                - 'csv_user_role_import'
+        tags:
+            - { name: akeneo_batch.job.job_parameters.default_values_provider }
+
+    pim_user.job.job_parameters.default_values_provider.simple_xlsx_import:
+        class: 'Akeneo\Tool\Component\Connector\Job\JobParameters\DefaultValuesProvider\SimpleXlsxImport'
+        arguments:
+            -
+                - 'xlsx_user_group_import'
+                - 'xlsx_user_import'
+                - 'xlsx_user_role_import'
+        tags:
+            - { name: akeneo_batch.job.job_parameters.default_values_provider }
+
+    # Job constraints
+    pim_user.job.job_parameters.constraint_collection_provider.simple_csv_export:
+        class: 'Akeneo\Tool\Component\Connector\Job\JobParameters\ConstraintCollectionProvider\SimpleCsvExport'
+        arguments:
+            -
+                - 'csv_user_group_export'
+                - 'csv_user_role_export'
+                - 'csv_user_export'
+        tags:
+            - { name: akeneo_batch.job.job_parameters.constraint_collection_provider }
+
+    pim_user.job.job_parameters.constraint_collection_provider.simple_xlsx_export:
+        class: 'Akeneo\Tool\Component\Connector\Job\JobParameters\ConstraintCollectionProvider\SimpleXlsxExport'
+        arguments:
+            -
+                - 'xlsx_user_group_export'
+                - 'xlsx_user_role_export'
+                - 'xlsx_user_export'
+        tags:
+            - { name: akeneo_batch.job.job_parameters.constraint_collection_provider }
+
+    pim_user.job.job_parameters.constraint_collection_provider.simple_csv_import:
+        class: 'Akeneo\Tool\Component\Connector\Job\JobParameters\ConstraintCollectionProvider\SimpleCsvImport'
+        arguments:
+            -
+                - 'csv_user_group_import'
+                - 'csv_user_import'
+                - 'csv_user_role_import'
+        tags:
+            - { name: akeneo_batch.job.job_parameters.constraint_collection_provider }
+
+    pim_user.job.job_parameters.constraint_collection_provider.simple_xlsx_import:
+        class: 'Akeneo\Tool\Component\Connector\Job\JobParameters\ConstraintCollectionProvider\SimpleXlsxImport'
+        arguments:
+            -
+                - 'xlsx_user_group_import'
+                - 'xlsx_user_import'
+                - 'xlsx_user_role_import'
+        tags:
+            - { name: akeneo_batch.job.job_parameters.constraint_collection_provider }

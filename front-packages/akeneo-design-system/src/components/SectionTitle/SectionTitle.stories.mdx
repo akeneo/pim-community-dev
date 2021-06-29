@@ -1,0 +1,81 @@
+import {Meta, Story, ArgsTable, Canvas} from '@storybook/addon-docs/blocks';
+import {SectionTitle} from './SectionTitle.tsx';
+import {Button, IconButton} from '../../components';
+import {MoreIcon} from '../../icons';
+import {Scrollable, Content} from '../../storybook/PreviewGallery';
+
+<Meta
+  title="Components/Section title"
+  subcomponents={{
+    SectionTitle,
+  }}
+  argTypes={{
+    SectionTitle: {control: {type: 'text'}, description: 'Define the section title text'},
+  }}
+  args={{
+    SectionTitle: 'General parameters',
+  }}
+/>
+
+# SectionTitle
+
+# Usage
+
+The section title allows users to correctly identify the content of the section. In other words, the title identifies the question asked to the user. The content then responds to them.
+
+A page of the application may have to present a set of different functions, so we will use sections to group each item by group. The Section title component will identify the function of the group.
+
+Use this component only for title, not for description or help message.
+
+## Standard
+
+<Canvas>
+  <Story name="Standard">
+    {args => {
+      return (
+        <SectionTitle>
+          <SectionTitle.Title>{args.SectionTitle}</SectionTitle.Title>
+        </SectionTitle>
+      );
+    }}
+  </Story>
+</Canvas>
+
+<ArgsTable story="Standard" />
+
+## With actions
+
+<Canvas>
+  <Story name="Actions">
+    <SectionTitle>
+      <SectionTitle.Title>General parameters</SectionTitle.Title>
+      <SectionTitle.Spacer />
+      <SectionTitle.Information>10 results</SectionTitle.Information>
+      <SectionTitle.Separator />
+      <Button>Action</Button>
+      <Button>Action</Button>
+      <IconButton icon={<MoreIcon />} title="More" />
+    </SectionTitle>
+  </Story>
+</Canvas>
+
+## Sticky
+
+<Canvas>
+  <Story name="Sticky">
+    <Scrollable height={300}>
+      <SectionTitle sticky={0}>
+        <SectionTitle.Title>First section</SectionTitle.Title>
+        <SectionTitle.Spacer />
+        <Button>Action</Button>
+      </SectionTitle>
+      <Content height={400}>Some content</Content>
+      <SectionTitle sticky={0}>
+        <SectionTitle.Title>Second section</SectionTitle.Title>
+        <SectionTitle.Spacer />
+        <Button>Action</Button>
+      </SectionTitle>
+      <Content height={400}>Some other content</Content>
+    </Scrollable>
+  </Story>
+</Canvas>

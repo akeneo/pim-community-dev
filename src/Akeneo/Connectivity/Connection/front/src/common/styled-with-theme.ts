@@ -3,9 +3,12 @@ import searchIconUrl from './assets/icons/search.svg';
 import graphIllustrationUrl from './assets/illustrations/Graph.svg';
 import apiIllustrationUrl from './assets/illustrations/NewAPI.svg';
 import surveyIllustrationUrl from './assets/illustrations/UserSurvey.svg';
+import {pimTheme} from 'akeneo-design-system';
 
 const theme = {
+    ...pimTheme,
     color: {
+        ...pimTheme.color,
         blue10: '#f5f9fc',
         blue100: '#5992c7',
         grey100: '#a1a9b7',

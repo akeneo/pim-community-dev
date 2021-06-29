@@ -2,6 +2,7 @@
 
 namespace Akeneo\Pim\Enrichment\Component\Category\Normalizer\Standard;
 
+use Akeneo\Pim\Enrichment\Component\Product\Normalizer\Standard\DateTimeNormalizer;
 use Akeneo\Pim\Enrichment\Component\Product\Normalizer\Standard\TranslationNormalizer;
 use Akeneo\Tool\Component\Classification\Model\CategoryInterface;
 use Symfony\Component\Serializer\Normalizer\CacheableSupportsMethodInterface;
@@ -17,12 +18,15 @@ class CategoryNormalizer implements NormalizerInterface, CacheableSupportsMethod
     /** @var TranslationNormalizer */
     protected $translationNormalizer;
 
+    private DateTimeNormalizer $dateTimeNormalizer;
+
     /**
      * @param TranslationNormalizer $translationNormalizer
      */
-    public function __construct(TranslationNormalizer $translationNormalizer)
+    public function __construct(TranslationNormalizer $translationNormalizer, DateTimeNormalizer $dateTimeNormalizer)
     {
         $this->translationNormalizer = $translationNormalizer;
+        $this->dateTimeNormalizer = $dateTimeNormalizer;
     }
 
     /**
@@ -31,8 +35,9 @@ class CategoryNormalizer implements NormalizerInterface, CacheableSupportsMethod
     public function normalize($category, $format = null, array $context = [])
     {
         return [
-            'code'   => $category->getCode(),
+            'code' => $category->getCode(),
             'parent' => null !== $category->getParent() ? $category->getParent()->getCode() : null,
+            'updated' => $this->dateTimeNormalizer->normalize($category->getUpdated(), $format),
             'labels' => $this->translationNormalizer->normalize($category, 'standard', $context),
         ];
     }

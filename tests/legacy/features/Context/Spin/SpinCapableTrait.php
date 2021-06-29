@@ -48,10 +48,10 @@ trait SpinCapableTrait
 
         if ($previousException instanceof SpinException) {
             $message = $previousException->getMessage();
-        }
-
-        if (null === $message) {
+        } elseif (null === $message) {
             $message = (null !== $previousException) ? $previousException->getMessage() : 'no message';
+        } elseif ($previousException) {
+            $message = sprintf("%s\n  - %s", $message, $previousException->getMessage());
         }
 
         if (null === $result || false === $result || [] === $result) {

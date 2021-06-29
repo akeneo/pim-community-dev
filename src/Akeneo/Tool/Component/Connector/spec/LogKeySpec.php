@@ -15,12 +15,6 @@ class LogKeySpec extends ObjectBehavior
         $this->shouldThrow(InvalidArgumentException::class)->duringInstantiation();
     }
 
-    function it_fails_when_log_file_does_not_exist()
-    {
-        $this->beConstructedWith((new JobExecution())->setLogFile('/does/not/exist'));
-        $this->shouldThrow(InvalidArgumentException::class)->duringInstantiation();
-    }
-
     function it_is_a_key_built_from_a_job_execution()
     {
         $importInstance = new JobInstance(null, JobInstance::TYPE_IMPORT, 'csv_import');

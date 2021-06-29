@@ -1,0 +1,6 @@
+pim_dashboard:
+  widget:
+    completeness:
+      load_more: '載入更多...'
+pim_title:
+  pim_dashboard_index: 控制面板

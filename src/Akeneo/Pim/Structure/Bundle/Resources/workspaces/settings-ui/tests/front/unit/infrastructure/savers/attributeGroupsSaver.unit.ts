@@ -1,5 +1,5 @@
-import {saveAttributeGroupsOrder} from "@akeneo-pim-community/settings-ui/src/infrastructure/savers";
-import {aCollectionOfAttributeGroups} from "../../../utils/provideAttributeGroupHelper";
+import {saveAttributeGroupsOrder} from '@akeneo-pim-community/settings-ui/src/infrastructure/savers';
+import {aCollectionOfAttributeGroups} from '../../../utils/provideAttributeGroupHelper';
 
 const FetcherRegistry = require('pim/fetcher-registry');
 
@@ -12,7 +12,7 @@ describe('saveAttributeGroupsOrder', () => {
     // @ts-ignore
     global.fetch = jest.fn();
     FetcherRegistry.getFetcher = jest.fn(() => ({
-      clear: clearAttributeGroupFetcher
+      clear: clearAttributeGroupFetcher,
     }));
   });
 
@@ -35,7 +35,7 @@ describe('saveAttributeGroupsOrder', () => {
     jest.spyOn(global, 'fetch').mockImplementation(() => {
       return Promise.resolve({
         status: 200,
-        json: () => Promise.resolve(collection)
+        json: () => Promise.resolve(collection),
       });
     });
 

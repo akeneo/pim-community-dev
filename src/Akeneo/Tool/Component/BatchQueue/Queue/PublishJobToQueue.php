@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace Akeneo\Tool\Component\BatchQueue\Queue;
 
 use Akeneo\Tool\Bundle\BatchBundle\Job\DoctrineJobRepository;
+use Akeneo\Tool\Bundle\BatchBundle\Monolog\Handler\BatchLogHandler;
 use Akeneo\Tool\Component\Batch\Event\EventInterface;
 use Akeneo\Tool\Component\Batch\Event\JobExecutionEvent;
 use Akeneo\Tool\Component\Batch\Job\JobParameters;
@@ -13,6 +14,7 @@ use Akeneo\Tool\Component\Batch\Job\JobParametersValidator;
 use Akeneo\Tool\Component\Batch\Job\JobRegistry;
 use Akeneo\Tool\Component\Batch\Model\JobExecution;
 use Akeneo\Tool\Component\Batch\Model\JobInstance;
+use Akeneo\Tool\Component\BatchQueue\Factory\JobExecutionMessageFactory;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Component\EventDispatcher\EventDispatcherInterface;
 use Symfony\Component\Validator\Constraints as Assert;
@@ -55,8 +57,13 @@ class PublishJobToQueue
     /** @var JobExecutionQueueInterface */
     private $jobExecutionQueue;
 
+    private JobExecutionMessageFactory $jobExecutionMessageFactory;
+
     /** @var EventDispatcherInterface */
     private $eventDispatcher;
+
+    /** @var BatchLogHandler */
+    private $batchLogHandler;
 
     public function __construct(
         string $jobInstanceClass,
@@ -68,7 +75,9 @@ class PublishJobToQueue
         EntityManagerInterface $entityManager,
         JobParametersValidator $jobParametersValidator,
         JobExecutionQueueInterface $jobExecutionQueue,
-        EventDispatcherInterface $eventDispatcher
+        JobExecutionMessageFactory $jobExecutionMessageFactory,
+        EventDispatcherInterface $eventDispatcher,
+        BatchLogHandler $batchLogHandler
     ) {
         $this->jobInstanceClass = $jobInstanceClass;
         $this->jobRepository = $jobRepository;
@@ -79,7 +88,9 @@ class PublishJobToQueue
         $this->entityManager = $entityManager;
         $this->jobParametersValidator = $jobParametersValidator;
         $this->jobExecutionQueue = $jobExecutionQueue;
+        $this->jobExecutionMessageFactory = $jobExecutionMessageFactory;
         $this->eventDispatcher = $eventDispatcher;
+        $this->batchLogHandler = $batchLogHandler;
     }
 
     public function publish(
@@ -119,6 +130,8 @@ class PublishJobToQueue
         $this->validateJobParameters($jobInstance, $jobParameters, $jobInstanceCode);
         $jobExecution = $this->jobRepository->createJobExecution($jobInstance, $jobParameters);
 
+        $this->batchLogHandler->setSubDirectory((string)$jobExecution->getId());
+
         if (null !== $username) {
             $jobExecution->setUser($username);
             $this->jobRepository->updateJobExecution($jobExecution);
@@ -126,8 +139,11 @@ class PublishJobToQueue
 
         $this->jobRepository->updateJobExecution($jobExecution);
 
-        $jobExecutionMessage = JobExecutionMessage::createJobExecutionMessage($jobExecution->getId(), $options);
-
+        $jobExecutionMessage = $this->jobExecutionMessageFactory->buildFromJobInstance(
+            $jobInstance,
+            $jobExecution->getId(),
+            $options
+        );
         $this->jobExecutionQueue->publish($jobExecutionMessage);
 
         $this->dispatchJobExecutionEvent(EventInterface::JOB_EXECUTION_CREATED, $jobExecution);

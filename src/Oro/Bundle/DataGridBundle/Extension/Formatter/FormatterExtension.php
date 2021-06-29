@@ -8,15 +8,14 @@ use Oro\Bundle\DataGridBundle\Datagrid\Common\ResultsIterableObject;
 use Oro\Bundle\DataGridBundle\Extension\AbstractExtension;
 use Oro\Bundle\DataGridBundle\Extension\Formatter\Property\PropertyConfiguration;
 use Oro\Bundle\DataGridBundle\Extension\Formatter\Property\PropertyInterface;
-use Symfony\Component\Translation\TranslatorInterface;
+use Symfony\Contracts\Translation\TranslatorInterface;
 
 class FormatterExtension extends AbstractExtension
 {
     /** @var PropertyInterface[] */
     protected $properties = [];
 
-    /** @var TranslatorInterface */
-    protected $translator;
+    protected TranslatorInterface $translator;
 
     public function __construct(TranslatorInterface $translator)
     {
@@ -72,6 +71,7 @@ class FormatterExtension extends AbstractExtension
 
         if (isset($rows['totalRecords'])) {
             $result->offsetSet('totalRecords', $rows['totalRecords']);
+            $result->offsetSet('meta', $rows['meta'] ?? []);
             $rows = $rows['data'];
         }
 

@@ -5,7 +5,7 @@ declare(strict_types=1);
 namespace Akeneo\Test\Acceptance\Channel;
 
 use Akeneo\Channel\Component\Model\ChannelInterface;
-use Akeneo\Channel\Component\Query\GetChannelCodeWithLocaleCodesInterface;
+use Akeneo\Channel\Component\Query\PublicApi\GetChannelCodeWithLocaleCodesInterface;
 
 /**
  * @author    Nicolas Marniesse <nicolas.marniesse@akeneo.com>

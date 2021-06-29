@@ -4,6 +4,7 @@ namespace AkeneoTest\Pim\Structure\Integration\Attribute\Validation;
 
 use Akeneo\Pim\Structure\Component\Model\AttributeInterface;
 use Akeneo\Test\Integration\TestCase;
+use PHPUnit\Framework\ExpectationFailedException;
 use Symfony\Component\Validator\ConstraintViolationListInterface;
 
 /**
@@ -412,6 +413,27 @@ abstract class AbstractAttributeTestCase extends TestCase
         $this->assertSame('maxFileSize', $violations->get(0)->getPropertyPath());
     }
 
+    protected function assertDoesNotHaveDefaultValue(string $type)
+    {
+        $attribute = $this->createAttribute();
+
+        $this->updateAttribute(
+            $attribute,
+            [
+                'code' => 'new_attribute',
+                'type' => $type,
+                'group' => 'attributeGroupA',
+                'default_value' => true,
+            ]
+        );
+
+        $violations = $this->validateAttribute($attribute);
+
+        $this->assertCount(1, $violations);
+        $this->assertSame('This attribute type cannot have a default value.', $violations->get(0)->getMessage());
+        $this->assertSame('default_value', $violations->get(0)->getPropertyPath());
+    }
+
     /**
      * @param $code
      *
@@ -428,6 +450,22 @@ abstract class AbstractAttributeTestCase extends TestCase
     protected function createAttribute()
     {
         return $this->get('pim_catalog.factory.attribute')->create();
+    }
+
+    /**
+     * @return AttributeInterface
+     */
+    protected function deleteAttribute(AttributeInterface $attribute)
+    {
+        return $this->get('pim_catalog.remover.attribute')->remove($attribute);
+    }
+
+    /**
+     * @return AttributeInterface
+     */
+    protected function saveAttribute(AttributeInterface $attribute)
+    {
+        return $this->get('pim_catalog.saver.attribute')->save($attribute);
     }
 
     /**

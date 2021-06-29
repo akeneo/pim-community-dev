@@ -9,10 +9,10 @@ This attribute type must be required: 此属性类型为必填项
 This attribute type can't be required: 此属性类型非必填项
 This attribute type can't have unique value: 此属性类型的值非唯一
 No default value may be specified for this attribute type: 此属性类型没有指定的默认值
-This value should be Yes or No: 该值应是 Yes 或 No
+This value should be Yes or No: 此值应为 Yes 或 No
 This value should not be blank: 该值不应为空
 Option code may contain only letters, numbers and underscores: 选项代码仅可包含字母、数字和下划线
-Option code may contain only letters (at least one), numbers and underscores: 选项代码仅可包含字母（至少1个）、数字和下划线
+Option code may contain only letters (at least one), numbers and underscores: 选项代码仅可包含字母（至少 1 个）、数字和下划线
 This value should not be a decimal.: 该值不应为小数。
 "The %attribute% attribute requires a non-decimal value, and %value% is not a valid value.": 属性 %attribute% 必须为非小数值， %value% 不是有效值。
 'The file extension is not allowed (allowed extensions: %extensions%).': '不允许的文件扩展名 (允许的扩展名︰ %extensions%)。'
@@ -38,8 +38,17 @@ product_model.family_variant.not_blank.message: 产品模型品类变型不能�
 "The {{ attribute_code }} attribute requires a date that should be {{ limit }} or before.": 属性 {{ attribute_code }} 必须为 {{ limit }} 或更早的日期。
 "The {{ attribute }} attribute requires a number, and the submitted {{ value }} value is not.": 属性 {{ attribute }} 必须为数字，而提交的值 {{ value }} 不是。
 "The %attribute% attribute must not contain more than %limit% characters. The submitted value is too long.": 属性 %attribute% 不能超过 %limit% 个字符。提交的值太长。
+"The %attribute% attribute requires a valid date. Please use the following format %date_format% for dates.": 属性 %attribute% 要求有效的日期。请使用以下日期格式：%date_format%。
+"The %locale% locale is not available on the %attribute% attribute.": 区域 %locale% 在属性 %attribute% 上不可用。
 'The {{ attribute_code }} attribute must match the following regular expression: {{ pattern }}.': '属性 {{ attribute_code }} 必须符合以下正则表达式： {{ pattern }}。'
 'The {{ attribute_code }} attribute cannot be empty.': '属性 {{ attribute_code }} 不能为空。'
+'The file %file_name% is too large (%file_size% %suffix%). The %attribute% attribute can not exceed %max_file_size% %suffix%.': 文件 %file_name% 太大 (%file_size% %suffix%)。属性 %attribute% 不能超过 %max_file_size% %suffix%。
+'The %attribute_code% attribute requires a valid locale. The %invalid_locale% locale does not exist.': '属性 %attribute_code% 要求有效的区域。区域 %invalid_locale% 不存在。'
+'The %attribute_code% attribute requires a valid locale. The %invalid_locale% locale is not bound to the %channel_code% channel.': '属性 %attribute_code% 要求有效的区域。区域 %invalid_locale% 没有绑定到渠道 %channel_code%。'
+"The %attribute% attribute requires an e-mail address.": '属性 %attribute% 需要电子邮件地址。'
+'The %attribute% attribute requires an equal or greater than %min_value% value.': '属性 %attribute% 要求等于或大于值 %min_value%。'
+'The %attribute% attribute requires an equal or lesser than %max_value% value.': '属性 %attribute% 要求等于或小于值 %max_value%。'
+"The %attribute_code% attribute requires a value per channel. The %channel% channel (scope) must exist in your PIM": '属性 %attribute_code% 每个渠道都需要一个值。渠道 %channel%  (范围) 必须存在于您的 PIM 中'
 pim_catalog:
   constraint:
     can_have_family_variant_empty_axis_value: ' 属性"%attribute%"不能为空，因为其被定义为该实体的轴'
@@ -48,6 +57,7 @@ pim_catalog:
     can_have_family_variant_unexpected_attribute: '无法为此实体设置属性"%attribute%"，因为其不属于属性集'
     cannot_have_product_model_as_parent: '产品模型"%product_model%"不能将产品模型"%parent_product_model%"作为父模型'
     cannot_have_parent: '产品模型“%product_model%”不能有父模型'
+    attribute_does_not_belong_to_family: '属性"%attribute%"不属于品类"%family%'
     variant_product_invalid_family: '变型产品品类必须与其父类相同'
     php_int_max_reached: '最大数值必须小于 %php_int_max%。'
     not_null_family: 品类不能为“空 (null)”，因为具有标识符"%sku%"的产品是变型产品。
@@ -69,6 +79,9 @@ pim_catalog:
     family_variant_maximum_number_of_level: 品类变型的级别不能超过"%level%"个
     family_variant_unique_attributes_in_last_level: 唯一的属性“%attribute%”必须在产品级别上设置
     product_identifier: 这些标识符"%s"不存在。
+    blacklisted_attribute_code: 完成正在进行的清理作业之前，临时阻止代码。
+    blacklisted_attribute_code_with_link: "完成正在进行的清理作业之前，临时阻止代码。要查找更多信息，请查看<a href='{{ link }}' target='_blank'>作业详情</a>。"
+    duplicate_options: '{1}下列选项被多次使用：“{{ duplicate_options }}”。请再次检查您的选项列表。]1, +Inf] 下列选项被多次使用：“{{ duplicate_options }}”。请再次检查您的选项列表。'
     0: 发生意外错误。
     100: 非预期的值
     101: 此字段需要填入布尔值。
@@ -102,3 +115,7 @@ pim_catalog:
 mass_edit:
   edit_common_attributes:
     invalid_values: 属性表单中存在错误
+pim_datagrid:
+  column_configurator:
+    label:
+      unique_message: 标签必须是唯一的

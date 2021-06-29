@@ -55,6 +55,7 @@ final class ComputeFamilyVariantStructureChangesTaskletIntegration extends TestC
 
         $this->get('akeneo_elasticsearch.client.product_and_product_model')->refreshIndex();
         $this->get('pim_connector.doctrine.cache_clearer')->clear();
+        $this->get('pim_catalog.validator.unique_value_set')->reset();
         $this->computeFamilyVariantStructureChangesTasklet->execute();
 
         $this->get('pim_connector.doctrine.cache_clearer')->clear();
@@ -91,7 +92,7 @@ final class ComputeFamilyVariantStructureChangesTaskletIntegration extends TestC
     private function createSubProductModel(): ProductModelInterface
     {
         return $this->createProductModel([
-            'code' => 'sub_product_model_code',
+            'code' => 'a_sub_product_model_code',
             'family_variant' => 'familyVariantA1',
             'parent' => 'root_product_model_code',
             'values' => [

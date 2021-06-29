@@ -110,8 +110,20 @@ services:
         tags:
             - { name: kernel.event_subscriber }
 
+    pim_catalog.event_subscriber.category.save.set_updated_property_on_translation_update_subscriber:
+        class: Akeneo\Pim\Enrichment\Bundle\EventSubscriber\Category\OnSave\SetUpdatedPropertyOnTranslationUpdateSubscriber
+        tags:
+            - { name: doctrine.event_subscriber }
+
     pim_catalog.event_subscriber.init_completeness_db_schema:
         class: 'Akeneo\Pim\Enrichment\Bundle\EventSubscriber\Db\InitCompletenessDbSchemaSubscriber'
+        arguments:
+            - '@database_connection'
+        tags:
+            - { name: 'kernel.event_subscriber' }
+
+    pim_catalog.event_subscriber.init_lock_db_schema:
+        class: 'Akeneo\Pim\Enrichment\Bundle\EventSubscriber\Db\InitLockDbSchemaSubscriber'
         arguments:
             - '@database_connection'
         tags:
@@ -173,21 +185,68 @@ services:
         class: 'Akeneo\Pim\Enrichment\Bundle\EventSubscriber\EntityWithAssociations\PersistTwoWayAssociationSubscriber'
         arguments:
             - '@doctrine'
+            - '@pim_catalog.elasticsearch.indexer.product'
+            - '@pim_catalog.elasticsearch.indexer.product_model'
         tags:
             - { name: kernel.event_subscriber }
 
-    Akeneo\Pim\Enrichment\Bundle\EventSubscriber\BusinessEvent\DispatchProductBusinessEventSubscriber:
+    Akeneo\Pim\Enrichment\Bundle\EventSubscriber\BusinessEvent\DispatchProductCreatedAndUpdatedEventSubscriber:
         arguments:
             - '@security.helper'
-            - '@pim_catalog.normalizer.standard.product'
-            - '@Symfony\Component\Messenger\MessageBusInterface'
+            - '@messenger.default_bus'
+            - '%webhook_max_bulk_size%'
+            - '@logger'
+            - '@monolog.logger.business_event'
         tags:
             - { name: kernel.event_subscriber }
 
-    Akeneo\Pim\Enrichment\Bundle\EventSubscriber\BusinessEvent\DispatchProductModelBusinessEventSubscriber:
+    Akeneo\Pim\Enrichment\Bundle\EventSubscriber\BusinessEvent\DispatchProductRemovedEventSubscriber:
         arguments:
             - '@security.helper'
-            - '@pim_catalog.normalizer.standard.product_model'
-            - '@Symfony\Component\Messenger\MessageBusInterface'
+            - '@messenger.default_bus'
+            - '%webhook_max_bulk_size%'
+            - '@logger'
+            - '@monolog.logger.business_event'
+        tags:
+            - { name: kernel.event_subscriber }
+
+    Akeneo\Pim\Enrichment\Bundle\EventSubscriber\BusinessEvent\DispatchProductModelCreatedAndUpdatedEventSubscriber:
+        arguments:
+            - '@security.helper'
+            - '@messenger.default_bus'
+            - '%webhook_max_bulk_size%'
+            - '@logger'
+            - '@monolog.logger.business_event'
+        tags:
+            - { name: kernel.event_subscriber }
+
+    Akeneo\Pim\Enrichment\Bundle\EventSubscriber\BusinessEvent\DispatchProductModelRemovedEventSubscriber:
+        arguments:
+            - '@security.helper'
+            - '@messenger.default_bus'
+            - '%webhook_max_bulk_size%'
+            - '@logger'
+            - '@monolog.logger.business_event'
+        tags:
+            - { name: kernel.event_subscriber }
+
+    Akeneo\Pim\Enrichment\Bundle\EventSubscriber\EntityWithValues\AddDefaultValuesSubscriber:
+        arguments:
+            - '@akeneo.pim.structure.query.get_attributes'
+            - '@akeneo.pim.enrichment.factory.value'
+            - '@pim_channel.query.sql.get_channel_code_with_locale_codes'
+        tags:
+            - { name: kernel.event_subscriber }
+
+    Akeneo\Pim\Enrichment\Bundle\EventSubscriber\EventsApi\DispatchReadProductEventFromEventsApiSubscriber:
+        arguments:
+            - '@event_dispatcher'
+        tags:
+            - { name: kernel.event_subscriber }
+
+    Akeneo\Pim\Enrichment\Bundle\EventSubscriber\Product\OnSave\ReindexFormerAncestorsSubscriber:
+        arguments:
+            - '@akeneo.pim.enrichment.product.query.get_ancestor_and_descendant_product_model_codes'
+            - '@pim_catalog.elasticsearch.indexer.product_model'
         tags:
             - { name: kernel.event_subscriber }

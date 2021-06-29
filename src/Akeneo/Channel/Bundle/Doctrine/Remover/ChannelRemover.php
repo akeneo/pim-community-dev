@@ -2,6 +2,7 @@
 
 namespace Akeneo\Channel\Bundle\Doctrine\Remover;
 
+use Akeneo\Channel\Component\Query\IsChannelUsedInProductExportJobInterface;
 use Akeneo\Channel\Component\Repository\ChannelRepositoryInterface;
 use Akeneo\Tool\Component\StorageUtils\Event\RemoveEvent;
 use Akeneo\Tool\Component\StorageUtils\Remover\RemoverInterface;
@@ -9,7 +10,7 @@ use Akeneo\Tool\Component\StorageUtils\StorageEvents;
 use Doctrine\Common\Persistence\ObjectManager;
 use Doctrine\Common\Util\ClassUtils;
 use Symfony\Component\EventDispatcher\EventDispatcherInterface;
-use Symfony\Component\Translation\TranslatorInterface;
+use Symfony\Contracts\Translation\TranslatorInterface;
 
 /**
  * ChannelRemover used as service to remove given channel
@@ -20,33 +21,20 @@ use Symfony\Component\Translation\TranslatorInterface;
  */
 class ChannelRemover implements RemoverInterface
 {
-    /** @var ObjectManager */
-    protected $objectManager;
+    protected ObjectManager $objectManager;
+    protected EventDispatcherInterface $eventDispatcher;
+    protected ChannelRepositoryInterface $channelRepository;
+    protected TranslatorInterface $translator;
+    protected string $entityClass;
 
-    /** @var EventDispatcherInterface */
-    protected $eventDispatcher;
+    private IsChannelUsedInProductExportJobInterface $isChannelUsedInProductExportJob;
 
-    /** @var ChannelRepositoryInterface */
-    protected $channelRepository;
-
-    /** @var TranslatorInterface */
-    protected $translator;
-
-    /** @var string */
-    protected $entityClass;
-
-    /**
-     * @param ObjectManager               $objectManager
-     * @param EventDispatcherInterface    $eventDispatcher
-     * @param ChannelRepositoryInterface  $channelRepository
-     * @param TranslatorInterface         $translator
-     * @param string                      $entityClass
-     */
     public function __construct(
         ObjectManager $objectManager,
         EventDispatcherInterface $eventDispatcher,
         ChannelRepositoryInterface $channelRepository,
         TranslatorInterface $translator,
+        IsChannelUsedInProductExportJobInterface $isChannelUsedInProductExportJob,
         $entityClass
     ) {
         $this->objectManager = $objectManager;
@@ -54,6 +42,7 @@ class ChannelRemover implements RemoverInterface
         $this->channelRepository = $channelRepository;
         $this->translator = $translator;
         $this->entityClass = $entityClass;
+        $this->isChannelUsedInProductExportJob = $isChannelUsedInProductExportJob;
     }
 
     /**
@@ -97,6 +86,12 @@ class ChannelRemover implements RemoverInterface
             throw new \LogicException($this->translator->trans(
                 'pim_enrich.channel.flash.delete.error',
                 ['%channelCode%' => $object->getCode() ]
+            ));
+        }
+
+        if (true === $this->isChannelUsedInProductExportJob->execute($object->getCode())) {
+            throw new \LogicException($this->translator->trans(
+                'pim_enrich.channel.flash.delete.linked_to_export_profile'
             ));
         }
     }

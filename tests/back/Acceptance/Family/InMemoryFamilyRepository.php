@@ -86,4 +86,9 @@ class InMemoryFamilyRepository implements IdentifiableObjectRepositoryInterface,
     {
         throw new NotImplementedException(__METHOD__);
     }
+
+    public function getWithVariants(string $search = null, array $options = [], int $limit = null): array
+    {
+        throw new NotImplementedException(__METHOD__);
+    }
 }

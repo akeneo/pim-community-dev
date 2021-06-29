@@ -5,7 +5,7 @@ namespace Oro\Bundle\PimDataGridBundle\Extension\Formatter\Property\Version;
 use Akeneo\UserManagement\Bundle\Manager\UserManager;
 use Oro\Bundle\DataGridBundle\Datasource\ResultRecordInterface;
 use Oro\Bundle\DataGridBundle\Extension\Formatter\Property\FieldProperty;
-use Symfony\Component\Translation\TranslatorInterface;
+use Symfony\Contracts\Translation\TranslatorInterface;
 
 /**
  * Renders the full name of the author of the version and adds context

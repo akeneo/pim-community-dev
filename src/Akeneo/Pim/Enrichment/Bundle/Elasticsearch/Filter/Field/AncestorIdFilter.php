@@ -71,11 +71,9 @@ class AncestorIdFilter extends AbstractFieldFilter
             case Operators::IN_LIST:
                 $this->searchQueryBuilder->addShould(
                     [
-                        [
-                            'terms' => [
-                                self::ANCESTOR_ID_ES_FIELD => $values,
-                            ],
-                        ]
+                        'terms' => [
+                            self::ANCESTOR_ID_ES_FIELD => $values,
+                        ],
                     ]
                 );
                 break;

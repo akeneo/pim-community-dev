@@ -1,0 +1,126 @@
+import {useState} from 'react';
+import {Meta, Story, ArgsTable, Canvas} from '@storybook/addon-docs/blocks';
+import {MediaLinkInput} from './MediaLinkInput.tsx';
+import {FullscreenPreview} from '../../../storybook';
+import {IconButton, Button} from '../../../components';
+import {RefreshIcon, CopyIcon, DownloadIcon, FullscreenIcon} from '../../../icons';
+import {useBooleanState} from '../../../hooks';
+
+<Meta
+  title="Components/Inputs/Media Link input"
+  component={MediaLinkInput}
+  args={{
+    value: null,
+    placeholder: 'Put your media link here',
+  }}
+/>
+
+# Media Link Input
+
+## Usage
+
+Media link input allows the user to enter content when the expected user input is a link.
+
+## Playground
+
+<Canvas>
+  <Story name="Standard">
+    {args => {
+      const [value, setValue] = useState('https://picsum.photos/seed/strixos/500/500');
+      const [isFullscreenModalOpen, openFullscreenModal, closeFullscreenModal] = useBooleanState();
+      return (
+        <>
+          <MediaLinkInput {...args} value={value} onChange={setValue} thumbnailUrl={value}>
+            <IconButton icon={<RefreshIcon />} title="Regenerate" onClick={console.log} />
+            <IconButton icon={<CopyIcon />} title="Copy" onClick={console.log} />
+            <IconButton href={value} target="_blank" download={value} icon={<DownloadIcon />} title="Download" />
+            <IconButton icon={<FullscreenIcon />} title="Fullscreen" onClick={openFullscreenModal} />
+          </MediaLinkInput>
+          {isFullscreenModalOpen && value && (
+            <FullscreenPreview title={value.originalFilename} src={value} onClose={closeFullscreenModal}>
+              <Button href={value} ghost={true} level="tertiary" target="_blank" download={value}>
+                <DownloadIcon /> Download
+              </Button>
+            </FullscreenPreview>
+          )}
+        </>
+      );
+    }}
+  </Story>
+</Canvas>
+
+<ArgsTable story="Standard" />
+
+# Variation on readOnly
+
+<Canvas>
+  <Story name="Read only">
+    {args => {
+      const [value, setValue] = useState('https://picsum.photos/seed/strixos/500/500');
+      const [isFullscreenModalOpen, openFullscreenModal, closeFullscreenModal] = useBooleanState();
+      return (
+        <>
+          <MediaLinkInput {...args} readOnly={false} value="" onChange={setValue} thumbnailUrl={value}>
+            <IconButton icon={<RefreshIcon />} title="Regenerate" onClick={console.log} />
+            <IconButton icon={<CopyIcon />} title="Copy" onClick={console.log} />
+            <IconButton href={value} target="_blank" download={value} icon={<DownloadIcon />} title="Download" />
+            <IconButton icon={<FullscreenIcon />} title="Fullscreen" onClick={openFullscreenModal} />
+          </MediaLinkInput>
+          <MediaLinkInput {...args} readOnly={true} value="" onChange={setValue} thumbnailUrl={value}>
+            <IconButton icon={<RefreshIcon />} title="Regenerate" onClick={console.log} />
+            <IconButton icon={<CopyIcon />} title="Copy" onClick={console.log} />
+            <IconButton href={value} target="_blank" download={value} icon={<DownloadIcon />} title="Download" />
+            <IconButton icon={<FullscreenIcon />} title="Fullscreen" onClick={openFullscreenModal} />
+          </MediaLinkInput>
+          <MediaLinkInput {...args} readOnly={true} value={value} onChange={setValue} thumbnailUrl={value}>
+            <IconButton icon={<RefreshIcon />} title="Regenerate" onClick={console.log} />
+            <IconButton icon={<CopyIcon />} title="Copy" onClick={console.log} />
+            <IconButton href={value} target="_blank" download={value} icon={<DownloadIcon />} title="Download" />
+            <IconButton icon={<FullscreenIcon />} title="Fullscreen" onClick={openFullscreenModal} />
+          </MediaLinkInput>
+          {isFullscreenModalOpen && value && (
+            <FullscreenPreview title={value.originalFilename} src={value} onClose={closeFullscreenModal}>
+              <Button href={value} ghost={true} level="tertiary" target="_blank" download={value}>
+                <DownloadIcon /> Download
+              </Button>
+            </FullscreenPreview>
+          )}
+        </>
+      );
+    }}
+  </Story>
+</Canvas>
+
+# Variation on invalid
+
+<Canvas>
+  <Story name="Invalid">
+    {args => {
+      const [value, setValue] = useState('https://picsum.photos/seed/strixos/500/500');
+      const [isFullscreenModalOpen, openFullscreenModal, closeFullscreenModal] = useBooleanState();
+      return (
+        <>
+          <MediaLinkInput {...args} invalid={false} value={value} onChange={setValue} thumbnailUrl={value}>
+            <IconButton icon={<RefreshIcon />} title="Regenerate" onClick={console.log} />
+            <IconButton icon={<CopyIcon />} title="Copy" onClick={console.log} />
+            <IconButton href={value} target="_blank" download={value} icon={<DownloadIcon />} title="Download" />
+            <IconButton icon={<FullscreenIcon />} title="Fullscreen" onClick={openFullscreenModal} />
+          </MediaLinkInput>
+          <MediaLinkInput {...args} invalid={true} value={value} onChange={setValue} thumbnailUrl={value}>
+            <IconButton icon={<RefreshIcon />} title="Regenerate" onClick={console.log} />
+            <IconButton icon={<CopyIcon />} title="Copy" onClick={console.log} />
+            <IconButton href={value} target="_blank" download={value} icon={<DownloadIcon />} title="Download" />
+            <IconButton icon={<FullscreenIcon />} title="Fullscreen" onClick={openFullscreenModal} />
+          </MediaLinkInput>
+          {isFullscreenModalOpen && value && (
+            <FullscreenPreview title={value.originalFilename} src={value} onClose={closeFullscreenModal}>
+              <Button href={value} ghost={true} level="tertiary" target="_blank" download={value}>
+                <DownloadIcon /> Download
+              </Button>
+            </FullscreenPreview>
+          )}
+        </>
+      );
+    }}
+  </Story>
+</Canvas>

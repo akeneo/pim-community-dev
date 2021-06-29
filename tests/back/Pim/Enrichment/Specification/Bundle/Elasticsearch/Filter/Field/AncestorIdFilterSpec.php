@@ -53,9 +53,7 @@ class AncestorIdFilterSpec extends ObjectBehavior
     ) {
         $sqb->addShould(
             [
-                [
-                    'terms' => ['ancestors.ids' => ['product_model_1', 'product_model_2']],
-                ],
+                'terms' => ['ancestors.ids' => ['product_model_1', 'product_model_2']],
             ]
         )->shouldBeCalled();
 

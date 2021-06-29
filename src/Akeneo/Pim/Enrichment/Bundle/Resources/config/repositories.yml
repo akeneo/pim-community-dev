@@ -14,21 +14,21 @@ services:
     # Base repositories
     pim_catalog.repository.group:
         class: '%pim_catalog.repository.group.class%'
-        factory: 'doctrine.orm.entity_manager:getRepository'
+        factory: ['@doctrine.orm.entity_manager', 'getRepository']
         arguments: ['%pim_catalog.entity.group.class%']
         tags:
             - { name: 'pim_repository' }
 
     pim_catalog.repository.product_unique_data:
         class: '%pim_catalog.repository.product_unique_data.class%'
-        factory: 'doctrine.orm.entity_manager:getRepository'
+        factory: ['@doctrine.orm.entity_manager', 'getRepository']
         arguments: ['%pim_catalog.entity.product_unique_data.class%']
         tags:
             - { name: 'pim_repository' }
 
     pim_catalog.repository.product_model:
         class: '%pim_catalog.repository.product_model.class%'
-        factory: 'doctrine.orm.entity_manager:getRepository'
+        factory: ['@doctrine.orm.entity_manager', 'getRepository']
         arguments: ['%pim_catalog.entity.product_model.class%']
         tags:
             - { name: 'pim_repository' }
@@ -71,7 +71,7 @@ services:
 
     pim_catalog.repository.product:
         class: '%pim_catalog.repository.product.class%'
-        factory: 'doctrine.orm.entity_manager:getRepository'
+        factory: ['@doctrine.orm.entity_manager', 'getRepository']
         arguments: ['%pim_catalog.entity.product.class%']
         tags:
             - { name: 'pim_repository' }
@@ -105,7 +105,7 @@ services:
 
     pim_catalog.repository.association:
         class: '%pim_catalog.repository.association.class%'
-        factory: 'doctrine.orm.entity_manager:getRepository'
+        factory: ['@doctrine.orm.entity_manager', 'getRepository']
         arguments: ['%pim_catalog.entity.association.class%']
         tags:
             - { name: 'pim_repository' }
@@ -118,7 +118,7 @@ services:
 
     pim_comment.repository.comment:
         class: 'Akeneo\Pim\Enrichment\Bundle\Doctrine\ORM\Repository\CommentRepository'
-        factory: 'doctrine.orm.entity_manager:getRepository'
+        factory: ['@doctrine.orm.entity_manager', 'getRepository']
         arguments: ['%pim_comment.entity.comment.class%']
         tags:
             - { name: 'pim_repository' }

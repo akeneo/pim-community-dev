@@ -7,6 +7,9 @@ namespace Specification\Akeneo\Pim\Enrichment\Component\Product\Connector\Job;
 use Akeneo\Pim\Structure\Component\AttributeGroup\Query\FindAttributeGroupOrdersEqualOrSuperiorTo;
 use Akeneo\Pim\Structure\Component\Model\AttributeGroup;
 use Akeneo\Tool\Component\Batch\Item\ItemReaderInterface;
+use Akeneo\Tool\Component\Batch\Item\TrackableItemReaderInterface;
+use Akeneo\Tool\Component\Batch\Item\TrackableTaskletInterface;
+use Akeneo\Tool\Component\Batch\Job\JobRepositoryInterface;
 use Akeneo\Tool\Component\Batch\Model\StepExecution;
 use Akeneo\Tool\Component\StorageUtils\Repository\IdentifiableObjectRepositoryInterface;
 use Akeneo\Tool\Component\StorageUtils\Saver\SaverInterface;
@@ -22,20 +25,28 @@ class EnsureConsistentAttributeGroupOrderTaskletSpec extends ObjectBehavior
         ItemReaderInterface $attributeGroupReader,
         SaverInterface $attributeGroupSaver,
         FindAttributeGroupOrdersEqualOrSuperiorTo $findAttributeGroupOrdersEqualOrSuperiorTo,
-        ValidatorInterface $validator
+        ValidatorInterface $validator,
+        JobRepositoryInterface $jobRepository
     ) {
         $this->beConstructedWith(
             $attributeGroupRepository,
             $attributeGroupReader,
             $attributeGroupSaver,
             $findAttributeGroupOrdersEqualOrSuperiorTo,
-            $validator
+            $validator,
+            $jobRepository
         );
     }
 
     function it_is_initializable()
     {
         $this->beAnInstanceOf(EnsureConsistentAttributeGroupOrderTasklet::class);
+    }
+
+    function it_does_not_track_processed_items_when_reader_is_not_trackable()
+    {
+        $this->shouldImplement(TrackableTaskletInterface::class);
+        $this->isTrackable()->shouldReturn(false);
     }
 
     function it_sets_consistent_sort_order_on_an_attribute_group_by_setting_next_available_sort_order(
@@ -62,6 +73,7 @@ class EnsureConsistentAttributeGroupOrderTaskletSpec extends ObjectBehavior
 
         $attributeGroupSaver->save($attributeGroup);
         $stepExecution->incrementSummaryInfo('process')->shouldBeCalled();
+        $stepExecution->incrementProcessedItems()->shouldBeCalledTimes(1);
 
         $this->execute($attributeGroup);
     }
@@ -90,6 +102,7 @@ class EnsureConsistentAttributeGroupOrderTaskletSpec extends ObjectBehavior
 
         $attributeGroupSaver->save($attributeGroup);
         $stepExecution->incrementSummaryInfo('process')->shouldBeCalled();
+        $stepExecution->incrementProcessedItems()->shouldBeCalledTimes(1);
 
         $this->execute($attributeGroup);
     }
@@ -114,6 +127,7 @@ class EnsureConsistentAttributeGroupOrderTaskletSpec extends ObjectBehavior
 
         $attributeGroupSaver->save($attributeGroup)->shouldNotBeCalled();
         $stepExecution->incrementSummaryInfo('skip')->shouldBeCalled();
+        $stepExecution->incrementProcessedItems()->shouldBeCalledTimes(1);
 
         $this->execute($attributeGroup);
     }
@@ -136,6 +150,7 @@ class EnsureConsistentAttributeGroupOrderTaskletSpec extends ObjectBehavior
 
         $attributeGroupSaver->save($attributeGroup)->shouldNotBeCalled();
         $stepExecution->incrementSummaryInfo('skip')->shouldBeCalled();
+        $stepExecution->incrementProcessedItems()->shouldBeCalledTimes(1);
 
         $this->execute($attributeGroup);
     }
@@ -166,7 +181,51 @@ class EnsureConsistentAttributeGroupOrderTaskletSpec extends ObjectBehavior
 
         $attributeGroupSaver->save($attributeGroup)->shouldNotBeCalled();
         $stepExecution->incrementSummaryInfo('skip')->shouldBeCalled();
+        $stepExecution->incrementProcessedItems()->shouldBeCalledTimes(1);
 
         $this->execute($attributeGroup);
+    }
+
+    function it_track_processed_items_when_reader_is_trackable(
+        IdentifiableObjectRepositoryInterface $attributeGroupRepository,
+        SaverInterface $attributeGroupSaver,
+        FindAttributeGroupOrdersEqualOrSuperiorTo $findAttributeGroupOrdersEqualOrSuperiorTo,
+        StepExecution $stepExecution,
+        AttributeGroup $marketingAttributeGroup,
+        AttributeGroup $technicalAttributeGroup,
+        ValidatorInterface $validator,
+        ConstraintViolationList $emptyViolationList,
+        TrackableItemReaderInterface $attributeGroupReader
+    ) {
+        $this->isTrackable()->shouldReturn(true);
+        $this->setStepExecution($stepExecution);
+
+        $attributeGroupReader->totalItems()->willReturn(2);
+        $attributeGroupReader->read()->willReturn(['code' => 'marketing'], ['code' => 'technical'], null);
+        $attributeGroupRepository->findOneByIdentifier('marketing')->willReturn($marketingAttributeGroup);
+        $attributeGroupRepository->findOneByIdentifier('technical')->willReturn($technicalAttributeGroup);
+
+        $marketingAttributeGroup->getSortOrder()->willReturn('10');
+        $technicalAttributeGroup->getSortOrder()->willReturn('11');
+
+        $findAttributeGroupOrdersEqualOrSuperiorTo->execute($marketingAttributeGroup)->willReturn(['10', '11', '12']);
+        $findAttributeGroupOrdersEqualOrSuperiorTo->execute($technicalAttributeGroup)->willReturn(['11', '12', '13']);
+
+        $marketingAttributeGroup->setSortOrder(13)->shouldBeCalled();
+        $technicalAttributeGroup->setSortOrder(14)->shouldBeCalled();
+
+        $validator->validate($marketingAttributeGroup)->willReturn($emptyViolationList);
+        $validator->validate($technicalAttributeGroup)->willReturn($emptyViolationList);
+
+        $emptyViolationList->count()->willReturn(0);
+
+        $attributeGroupSaver->save($technicalAttributeGroup)->shouldBeCalled();
+        $attributeGroupSaver->save($marketingAttributeGroup)->shouldBeCalled();
+
+        $stepExecution->setTotalItems(2)->shouldBeCalledOnce();
+        $stepExecution->incrementProcessedItems()->shouldBeCalledTimes(2);
+        $stepExecution->incrementSummaryInfo('process')->shouldBeCalledTimes(2);
+
+        $this->execute();
     }
 }

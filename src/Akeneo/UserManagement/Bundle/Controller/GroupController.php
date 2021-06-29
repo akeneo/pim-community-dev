@@ -16,27 +16,16 @@ use Symfony\Component\Form\FormInterface;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
-use Symfony\Component\Translation\TranslatorInterface;
+use Symfony\Contracts\Translation\TranslatorInterface;
 
 class GroupController extends Controller
 {
-    /** @var EntityManagerInterface */
-    private $entityManager;
-
-    /** @var RemoverInterface */
-    private $remover;
-
-    /** @var GroupHandler */
-    private $groupHandler;
-
-    /** @var TranslatorInterface */
-    private $translator;
-
-    /** @var FormInterface */
-    private $form;
-
-    /** @var EventDispatcherInterface */
-    private $eventDispatcher;
+    private EntityManagerInterface $entityManager;
+    private RemoverInterface $remover;
+    private GroupHandler $groupHandler;
+    private TranslatorInterface $translator;
+    private FormInterface $form;
+    private EventDispatcherInterface $eventDispatcher;
 
     public function __construct(
         EntityManagerInterface $entityManager,

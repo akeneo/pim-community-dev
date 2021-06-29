@@ -11,9 +11,9 @@ type InterfaceNormalizedDatagridView = {
   id: string;
   label: string;
   owner_id: number;
-  type: 'public'|'project';
+  type: 'public' | 'project';
   datagrid_alias: string;
-}
+};
 
 class DefaultProductGridView extends BaseSelect {
   private config: any;
@@ -28,9 +28,7 @@ class DefaultProductGridView extends BaseSelect {
    * {@inheritdoc}
    */
   configure() {
-    return $.when(
-      BaseSelect.prototype.configure.apply(this, arguments)
-    ).then(() => {
+    return $.when(BaseSelect.prototype.configure.apply(this, arguments)).then(() => {
       this.setChoiceUrl(Routing.generate(this.config.choiceUrl, {alias: this.config.datagridAlias}));
       this.allowClear = true;
     });
@@ -50,14 +48,14 @@ class DefaultProductGridView extends BaseSelect {
    * {@inheritdoc}
    */
   select2InitSelection(element: any, callback: any) {
-    const id: string = <string> $(element).val();
+    const id: string = <string>$(element).val();
     if ('' !== id) {
       $.ajax({
         url: this.choiceUrl,
         data: {options: {identifiers: [id]}},
         type: this.choiceVerb,
       }).then(response => {
-        const selected: InterfaceNormalizedDatagridView|undefined = _.findWhere(response.results, {id: parseInt(id)});
+        const selected: InterfaceNormalizedDatagridView | undefined = _.findWhere(response.results, {id: parseInt(id)});
         if (undefined !== selected) {
           callback(this.convertBackendItem(selected));
         }

@@ -12,6 +12,8 @@ class RemoveQuantifiedAssociationsFromProductEndToEnd extends AbstractProductWit
     public function it_remove_quantified_associations_from_a_product(): void
     {
         $product = $this->createProduct(
+            'yellow_chair',
+            null,
             [
                 'values' => [
                     'sku' => [

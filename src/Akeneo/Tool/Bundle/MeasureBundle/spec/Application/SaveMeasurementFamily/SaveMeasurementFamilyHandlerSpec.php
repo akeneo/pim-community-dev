@@ -15,6 +15,7 @@ use Akeneo\Tool\Bundle\MeasureBundle\Model\UnitCode;
 use Akeneo\Tool\Bundle\MeasureBundle\Persistence\MeasurementFamilyRepositoryInterface;
 use PhpSpec\ObjectBehavior;
 use Prophecy\Argument;
+use Psr\EventDispatcher\EventDispatcherInterface;
 use Webmozart\Assert\Assert;
 
 /**
@@ -24,9 +25,11 @@ use Webmozart\Assert\Assert;
  */
 class SaveMeasurementFamilyHandlerSpec extends ObjectBehavior
 {
-    function let(MeasurementFamilyRepositoryInterface $measurementFamilyRepository)
-    {
-        $this->beConstructedWith($measurementFamilyRepository);
+    function let(
+        MeasurementFamilyRepositoryInterface $measurementFamilyRepository,
+        EventDispatcherInterface $eventDispatcher
+    ) {
+        $this->beConstructedWith($measurementFamilyRepository, $eventDispatcher);
     }
 
     function it_is_initializable()
@@ -42,24 +45,24 @@ class SaveMeasurementFamilyHandlerSpec extends ObjectBehavior
         $saveMeasurementFamilyCommand->labels = ['en_US' => 'Area', 'fr_FR' => 'Surface'];
         $saveMeasurementFamilyCommand->standardUnitCode = 'SQUARE_MILLIMETER';
         $saveMeasurementFamilyCommand->units = [
-          [
-              'code' => 'SQUARE_MILLIMETER',
-              'labels' => ['en_US' => 'Square millimeter', 'fr_FR' => 'Millimètre carré'],
-              'convert_from_standard' => [[
-                  'operator' => 'mul',
-                  'value' => '1'
-              ]],
-              'symbol' => 'mm²'
-          ],
-          [
-              'code' => 'SQUARE_CENTIMETER',
-              'labels' => ['en_US' => 'Square centimeter', 'fr_FR' => 'Centimètre carré'],
-              'convert_from_standard' => [[
-                  'operator' => 'mul',
-                  'value' => '0.0001'
-              ]],
-              'symbol' => 'cm²'
-          ]
+            [
+                'code' => 'SQUARE_MILLIMETER',
+                'labels' => ['en_US' => 'Square millimeter', 'fr_FR' => 'Millimètre carré'],
+                'convert_from_standard' => [[
+                    'operator' => 'mul',
+                    'value' => '1'
+                ]],
+                'symbol' => 'mm²'
+            ],
+            [
+                'code' => 'SQUARE_CENTIMETER',
+                'labels' => ['en_US' => 'Square centimeter', 'fr_FR' => 'Centimètre carré'],
+                'convert_from_standard' => [[
+                    'operator' => 'mul',
+                    'value' => '0.0001'
+                ]],
+                'symbol' => 'cm²'
+            ]
         ];
 
         $expectedArea = MeasurementFamily::create(
@@ -84,9 +87,10 @@ class SaveMeasurementFamilyHandlerSpec extends ObjectBehavior
 
         $measurementFamilyRepository->save(
             Argument::that(function ($area) use ($expectedArea) {
-            Assert::eq($expectedArea, $area);
-            return true;
-        }))->shouldBeCalled();
+                Assert::eq($expectedArea, $area);
+                return true;
+            })
+        )->shouldBeCalled();
 
         $this->handle($saveMeasurementFamilyCommand);
     }

@@ -108,6 +108,22 @@ Akeneo\UserManagement\Component\Model\User:
                 default: user
         properties:
             type: json_array
+        consecutiveAuthenticationFailureCounter:
+            type: integer
+            nullable: false
+            column: consecutive_authentication_failure_counter
+            options:
+                default: 0
+                unsigned: true
+        authenticationFailureResetDate:
+            type: datetime
+            nullable: true
+            column: authentication_failure_reset_date
+        profile:
+            type: string
+            nullable: true
+            length: 255
+
     manyToMany:
         roles:
             targetEntity: Akeneo\UserManagement\Component\Model\Role

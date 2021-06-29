@@ -41,7 +41,7 @@ services:
         class: 'Akeneo\Platform\Bundle\UIBundle\Twig\ViewElementExtension'
         arguments:
             - '@pim_enrich.view_element.registry'
-            - '@templating'
+            - '@twig'
             - '%env(APP_DEBUG)%'
         tags:
             - { name: twig.extension }
@@ -66,4 +66,9 @@ services:
         tags:
             - { name: twig.extension }
 
+    Akeneo\Platform\Bundle\UIBundle\Twig\ExternalJavascriptDependenciesExtension:
+        arguments:
+            - '@Akeneo\Platform\Bundle\UIBundle\Provider\ExternalJavascriptDependenciesProvider'
+        tags:
+            - { name: twig.extension }
 

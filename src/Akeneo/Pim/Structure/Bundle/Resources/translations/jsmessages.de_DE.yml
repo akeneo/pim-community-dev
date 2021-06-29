@@ -115,6 +115,9 @@ pim_enrich.entity.association_type:
     delete:
       confirm: Möchten Sie diesen Verbindungstyp wirklich löschen?
   hint: <a href="{{link}}" target="_blank">In diesem Artikel</a>findest du alles, was du brauchst, um deinen eigenen Verbindungstyp zu erstellen.
+  no_association_types:
+    title: Du hast keine Verbindungstypen
+    hint: Erstelle deinen ersten
 pim_enrich.entity.group_type:
   label: Gruppentyp
   flash:
@@ -142,6 +145,7 @@ pim_enrich.entity.attribute:
       success: Attribut erfolgreich aktualisiert.
       fail: Das Attribut konnte nicht aktualisiert werden.
       fields_not_ready: "Dieses Attribut kann im Augenblick nicht gespeichert werden. Die folgenden Felder sind noch unvollständig {{ fields }}"
+      cant_remove_attributes_used_as_label: Attribute, die als Label in einer Familie verwendet werden, können nicht entfernt werden.
     delete:
       success: Attribut erfolgreich entfernt
       fail: Dieses Attribut kann nicht gelöscht werden
@@ -157,6 +161,7 @@ pim_enrich.entity.attribute:
     default_metric_unit:
       label: Standardmesseinheit
       choose: Wählen Sie eine Einheit
+    guidelines: Attribut-Richtlinien
     group:
       label: Attributgruppe
       choose: Wählen Sie die Attributgruppe
@@ -201,6 +206,7 @@ pim_enrich.entity.attribute:
       regexp: Regulärer Ausdruck
       url: URL
     wysiwyg_enabled: Rich-Text-Editor aktiviert
+    default_value: Standardwert
   module:
     add_attribute:
       no_available_attributes: Es gibt keine weiteren Attribute zum Hinzufügen
@@ -211,8 +217,16 @@ pim_enrich.entity.attribute:
       common: Allgemeine Parameter
       type_specific: Spezifische Parameter
       validation: Validierungsparameter
+      select_locale: Gebietsschema auswählen
     delete:
       confirm: Möchten Sie dieses Attribut wirklich löschen?
+      product_count: '{0}0 Produkte|{1}1 Produkt|]1, Inf[{{ count }} Produkte'
+      product_model_count: '{0}0 Produktmodelle|{1}1 Produktmodell|]1, Inf[{{ count }} Produktmodelle'
+      used: zur Zeit haben Werte für dieses Attribut gesetzt, sie werden entfernt.
+      helper:
+        content: Wenn Sie Ihren Attributtyp ändern müssen, um ihn lokalisierbar oder skalierbar zu machen, während Sie den Zugriff auf Ihre vorhandenen Attributwerte behalten
+        link: wir gehen hier mit Ihnen durch die verschiedenen Schritte.
+      type: Bitte geben Sie "{{ attributeCode }} " ein
       confirm_from_family: Sind Sie sicher, dass Sie dieses Attribut aus der Familie löschen möchten?
       confirm_from_group: Soll das Attribut {{ attribute }} wirklich aus dieser Attributgruppe entfernt werden?
       confirm_from_product: Sind Sie sicher, dass Sie dieses Attribut vom Produkt löschen möchten?
@@ -220,6 +234,7 @@ pim_enrich.entity.attribute_group:
   label: Attributgruppe
   uppercase_label: Attributgruppe
   plural_label: Attributgruppen
+  result_count: '{0}0 Attributgruppen|{1}1 Attributgruppe |]1, Inf [{{ count }} Attributgruppen'
   show_more_attribute:
     title: Es ist ein bisschen überfüllt hier, wir zeigen dir {{ attributeCount }}/{{ totalAttributeCount }} Attribute.
     subtitle: Um alle Attribute dieser Gruppe zu entdecken, klicken Sie einfach unten!
@@ -239,6 +254,10 @@ pim_enrich.entity.attribute_group:
       attributes_groups_selected: '{{ itemsCount }} Gruppe(n) ausgewählt'
     delete:
       confirm: Möchten Sie diese Attributgruppe wirklich löschen?
+  grid:
+    columns:
+      name: Attributgruppen
+    no_search_result: Für Ihre Suche wurden leider keine passenden Treffer gefunden.
 pim_enrich.mass_edit.family:
   title: Massenbearbeitung Produktfamilien
   confirm: "{1}Sie sind im Begriff, eine Familie mit den folgenden Informationen zu aktualisieren, bitte bestätigen Sie.|]1, Inf[Sie sind im Begriff, {{ itemsCount }} Familien mit den folgenden Informationen zu aktualisieren, bitte bestätigen."

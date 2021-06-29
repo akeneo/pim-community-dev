@@ -5,7 +5,7 @@ parameters:
 services:
     pim_datagrid.repository.datagrid_view:
         class: '%pim_datagrid.repository.datagrid_view.class%'
-        factory: 'doctrine.orm.entity_manager:getRepository'
+        factory: ['@doctrine.orm.entity_manager', 'getRepository']
         arguments: ['%pim_datagrid.entity.datagrid_view.class%']
         tags:
             - { name: 'pim_repository' }

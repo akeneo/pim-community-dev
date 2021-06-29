@@ -2,18 +2,9 @@
 
 declare(strict_types=1);
 
-/*
- * This file is part of the Akeneo PIM Enterprise Edition.
- *
- * (c) 2019 Akeneo SAS (http://www.akeneo.com)
- *
- * For the full copyright and license information, please view the LICENSE
- * file that was distributed with this source code.
- */
-
 namespace Specification\Akeneo\Pim\Automation\DataQualityInsights\Infrastructure\Subscriber\Product;
 
-use Akeneo\Pim\Automation\DataQualityInsights\Application\Consolidation\ConsolidateAxesRates;
+use Akeneo\Pim\Automation\DataQualityInsights\Application\Consolidation\ConsolidateProductScores;
 use Akeneo\Pim\Automation\DataQualityInsights\Application\ProductEvaluation\CreateCriteriaEvaluations;
 use Akeneo\Pim\Automation\DataQualityInsights\Application\ProductEvaluation\EvaluatePendingCriteria;
 use Akeneo\Pim\Automation\DataQualityInsights\Domain\ValueObject\ProductId;
@@ -33,14 +24,14 @@ class InitializeEvaluationOfAProductSubscriberSpec extends ObjectBehavior
         CreateCriteriaEvaluations $createProductsCriteriaEvaluations,
         LoggerInterface $logger,
         EvaluatePendingCriteria $evaluatePendingCriteria,
-        ConsolidateAxesRates $consolidateProductAxisRates
+        ConsolidateProductScores $consolidateProductScores
     ) {
         $this->beConstructedWith(
             $dataQualityInsightsFeature,
             $createProductsCriteriaEvaluations,
             $logger,
             $evaluatePendingCriteria,
-            $consolidateProductAxisRates
+            $consolidateProductScores
         );
     }
 
@@ -88,7 +79,7 @@ class InitializeEvaluationOfAProductSubscriberSpec extends ObjectBehavior
         $dataQualityInsightsFeature,
         $createProductsCriteriaEvaluations,
         $evaluatePendingCriteria,
-        $consolidateProductAxisRates,
+        $consolidateProductScores,
         ProductInterface $product
     ) {
         $product->getId()->willReturn(12345);
@@ -96,7 +87,7 @@ class InitializeEvaluationOfAProductSubscriberSpec extends ObjectBehavior
         $createProductsCriteriaEvaluations->createAll([new ProductId(12345)])->shouldBeCalled();
 
         $evaluatePendingCriteria->evaluateSynchronousCriteria([12345])->shouldBeCalled();
-        $consolidateProductAxisRates->consolidate([12345])->shouldBeCalled();
+        $consolidateProductScores->consolidate([12345])->shouldBeCalled();
 
         $this->onPostSave(new GenericEvent($product->getWrappedObject(), ['unitary' => true]));
     }

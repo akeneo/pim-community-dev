@@ -15,22 +15,23 @@ use Akeneo\Pim\Structure\Component\Model\AttributeGroup;
 use Akeneo\Pim\Structure\Component\Model\AttributeGroupInterface;
 use Akeneo\Pim\Structure\Component\Model\AttributeInterface;
 use Akeneo\Pim\Structure\Component\Model\AttributeOption;
-use Akeneo\Pim\Structure\Component\Model\AttributeOptionInterface;
 use Akeneo\Pim\Structure\Component\Model\AttributeOptionValue;
+use Akeneo\Pim\Structure\Component\Model\Family;
+use Akeneo\Pim\Structure\Component\Model\FamilyInterface;
 use Akeneo\Tool\Component\FileStorage\Model\FileInfoInterface;
 use Akeneo\Tool\Component\StorageUtils\Repository\IdentifiableObjectRepositoryInterface;
 use Liip\ImagineBundle\Imagine\Cache\CacheManager;
 use Liip\ImagineBundle\Imagine\Data\DataManager;
 use Liip\ImagineBundle\Imagine\Filter\FilterManager;
 use PhpSpec\ObjectBehavior;
-use Symfony\Bundle\FrameworkBundle\Templating\EngineInterface;
+use Twig\Environment;
 
 class ProductPdfRendererSpec extends ObjectBehavior
 {
     const TEMPLATE_NAME = 'template.html.twig';
 
     function let(
-        EngineInterface $templating,
+        Environment $templating,
         PdfBuilderInterface $pdfBuilder,
         DataManager $dataManager,
         CacheManager $cacheManager,
@@ -66,9 +67,12 @@ class ProductPdfRendererSpec extends ObjectBehavior
         ProductInterface $blender,
         AttributeGroupInterface $design,
         AttributeInterface $color,
+        FamilyInterface $family,
         $attributeRepository
     ) {
         $blender->getUsedAttributeCodes()->willReturn(['color']);
+        $blender->getFamily()->willReturn($family);
+        $family->getAttributeCodes()->willReturn(['color']);
 
         $color->getGroup()->willReturn($design);
         $design->getLabel()->willReturn('Design');
@@ -108,8 +112,12 @@ class ProductPdfRendererSpec extends ObjectBehavior
         ValueInterface $value,
         FileInfoInterface $fileInfo,
         CacheManager $cacheManager,
+        FamilyInterface $family,
         $attributeRepository
     ) {
+        $blender->getFamily()->willReturn($family);
+        $family->getAttributeCodes()->willReturn(['main_image']);
+
         $mainImage->isLocalizable()->willReturn(true);
         $mainImage->isScopable()->willReturn(true);
 
@@ -154,7 +162,7 @@ class ProductPdfRendererSpec extends ObjectBehavior
     }
 
     function it_renders_options_labels(
-        EngineInterface $templating,
+        Environment $templating,
         IdentifiableObjectRepositoryInterface $attributeRepository,
         IdentifiableObjectRepositoryInterface $attributeOptionRepository
     ) {
@@ -187,7 +195,10 @@ class ProductPdfRendererSpec extends ObjectBehavior
         $red->addOptionValue($redValue);
         $attributeOptionRepository->findOneByIdentifier('colors.red')->willReturn($red);
 
+        $family = new Family();
+        $family->addAttribute($colors);
         $product = new Product();
+        $product->setFamily($family);
         $product->setValues(
             new WriteValueCollection(
                 [
@@ -221,9 +232,8 @@ class ProductPdfRendererSpec extends ObjectBehavior
     }
 
     function it_renders_a_simple_select_without_any_option_for_a_given_locale(
-        EngineInterface $templating,
-        IdentifiableObjectRepositoryInterface $attributeRepository,
-        IdentifiableObjectRepositoryInterface $attributeOptionRepository
+        Environment $templating,
+        IdentifiableObjectRepositoryInterface $attributeRepository
     ) {
         $colors = new Attribute();
         $colors->setCode('colors');
@@ -238,7 +248,10 @@ class ProductPdfRendererSpec extends ObjectBehavior
         $colors->setScopable(true);
         $attributeRepository->findOneByIdentifier('colors')->willReturn($colors);
 
+        $family = new Family();
+        $family->addAttribute($colors);
         $product = new Product();
+        $product->setFamily($family);
         $product->setValues(
             new WriteValueCollection(
                 [

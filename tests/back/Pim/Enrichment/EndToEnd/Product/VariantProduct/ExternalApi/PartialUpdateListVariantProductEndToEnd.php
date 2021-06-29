@@ -221,27 +221,6 @@ JSON;
         $this->assertSame($expectedContent, $response['content']);
     }
 
-    public function testCreateAndUpdateSameProductVariantWithUpdatedAxeValue()
-    {
-        $data =
-            <<<JSON
-    {"identifier": "apollon_optionb_true", "parent": "amor", "values": {"a_yes_no": [{"locale": null, "scope": null, "data": false}]}}
-    {"identifier": "apollon_optionb_false", "parent": "amor", "values": {"a_yes_no": [{"locale": null, "scope": null, "data": false}]}}
-JSON;
-
-        $expectedContent =
-            <<<JSON
-{"line":1,"identifier":"apollon_optionb_true","status_code":422,"message":"Validation failed.","errors":[{"property":"attribute","message":"Variant axis \"a_yes_no\" cannot be modified, \"true\" given"}]}
-{"line":2,"identifier":"apollon_optionb_false","status_code":201}
-JSON;
-
-        $response = $this->executeStreamRequest('PATCH', 'api/rest/v1/products', [], [], [], $data);
-        $httpResponse = $response['http_response'];
-
-        $this->assertSame(Response::HTTP_OK, $httpResponse->getStatusCode());
-        $this->assertSame($expectedContent, $response['content']);
-    }
-
     public function testCreateAndUpdateProductVariantWithUpdatedAxeValue()
     {
         $data =

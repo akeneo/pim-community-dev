@@ -1,6 +1,10 @@
 pim_menu:
+  tab:
+    connect: Connect
+  navigation:
+    connect: Connect navigation
   navigation_back:
-    connection: Back to connections
+    connection: Back to Connect
   navigation_block:
     connection: Connection navigation
   item:
@@ -8,15 +12,30 @@ pim_menu:
     connection_settings: Connections
     connection_settings_edit: Connection settings
     connection_monitoring: Monitoring
+    connection_webhook_edit: Event subscription
+    connection_webhook_event_logs: Event logs
+    data_flows: Data flows
+    connect_connection_settings: Connection settings
+    marketplace: Marketplace
 pim_title:
-  akeneo_connectivity_connection_settings_index: Connections
+  akeneo_connectivity_connection_connect_marketplace: Marketplace
+  akeneo_connectivity_connection_settings_index: Connections settings
   akeneo_connectivity_connection_settings_edit: Connection settings
   akeneo_connectivity_connection_settings_any: Connection settings
   akeneo_connectivity_connection_audit_index: Connection dashboard
   akeneo_connectivity_connection_audit_any: Connection dashboard
   akeneo_connectivity_connection_error_management_dashboard: Connection dashboard
   akeneo_connectivity_connection_error_management_connection_monitoring: Connection monitoring
+  akeneo_connectivity_connection_webhook_edit: Event subscription
+  akeneo_connectivity_connection_webhook_regenerate_secret: Event subscription
+  akeneo_connectivity_connection_webhook_event_logs: Event logs
+  akeneo_connectivity_connection_settings_redirect: Connections
 akeneo_connectivity.connection:
+  connect:
+    marketplace:
+      title: Want to connect your PIM with another application? 🤟
+      sub_title: Check our marketplace to see which application can be connected with Akeneo PIM.
+      link: Access the marketplace
   connections: Connections
   secondary_actions:
     title: Other actions
@@ -128,9 +147,9 @@ akeneo_connectivity.connection:
     flash:
       success: Connection successfully deleted.
   helper:
-    title: '👋 Welcome to the feature that will properly connect your PIM!'
+    title: '{0} For now, you have no connection to link your PIM to third-party applications.|{1} You have 1 connection linking your PIM to third-party applications. Well done, this way your PIM is well integrated into its ecosystem.|]1,Inf] You have {{ count }} connections linking your PIM to third-party applications. Well done, this way your PIM is well integrated into its ecosystem.'
     description: A PIM without any third-party integrations is kinda useless, isn't it? Thanks to connections, you can declare all the data flows that will be pushed inside and pulled outside your PIM.
-    link: Eager to know more? Find out what is a connection and how to make the most of it right here!
+    link: To find out more about Connections, check out this page
   flow_type_helper:
     message: Wondering what flow type is?
     link: We can help you right here!
@@ -146,9 +165,9 @@ akeneo_connectivity.connection:
   grid.wrong_credentials_combination_helper: Some of the connections below are not using their connection usernames. They are identified by a yellow warning sign.
   dashboard:
     helper:
-      title: '👋 Welcome to your connection dashboard!'
-      description: Here, you will be able to track all the data flows that are collected into your PIM via your connections, as well as all the data flows that are distributed to your channels via your connections.
-      link: Want to know more? Here you go!
+      title: '👋 Welcome to Data flows!'
+      description: Here, you can track the data flow between your PIM and third parties.
+      link: Want to know more about the Connect menu and Data flows? Here you go!
     user_survey:
       title: Want more data on this dashboard?
       content: Your feedback is really precious to us. Help us choose the next widget by answering this one-question survey!
@@ -190,13 +209,75 @@ akeneo_connectivity.connection:
         message: Ask your administrator to create one.
         link: Learn more about connections here...
   webhook:
+    title: Event subscription
+    event_subscription: Event subscription
+    download_logs: Download logs
+    helper:
+      message: You can be notified of events happening in the PIM for products synchronized with this connected app. You just need to define a URL.
+      link: Learn more about event subscription configuration...
+      url.test_disabled: Please, click on the Save button to be able to test the URL.
     form:
+      url: URL
       secret: Secret
+      enabled: Event subscription activation
+      test: Test
+    error:
+      wrong_url: This value is not a valid URL.
+      required: This field is required.
+      not_found: You are trying to update a connection that does not exist.
+      limit_reached: You have reached the limit of active event subscriptions.
+      not_allowed_url: This url is not allowed.
+    flash:
+      success: Event subscription successfully updated.
+      error: Sorry, an error occurred while editing the event subscription.
     regenerate_secret:
       title: Confirm regeneration
+      description: Are you sure you want to regenerate the event subscription secret?
       action:
         regenerate: Regenerate
       link: Here is what will happen.
+      flash:
+        success: Webhook secret successfully regenerated.
+        error: Sorry, an error occurred while regenerating the webhook secret.
+    active_event_subscriptions_limit_reached:
+      message: You can connect up to {{ limit }} connections to the Event subscription feature. You have reached this limit.
+      link: Learn more about event subscription configuration.
+    event_logs:
+      title: Event logs
+      event_subscription_disabled:
+        title: The event subscription isn’t enabled for this connection.
+        link: Enable the event subscription
+      no_event_logs:
+        title: There is no log for the moment.
+      no_event_logs_with_those_filters:
+        title: Sorry, there is no log for your search.
+        caption: Try again with new search criteria.
+      level:
+        info: Info
+        notice: Notice
+        warning: Warning
+        error: Error
+      list:
+        search:
+          placeholder: Search in messages
+          total: '{0} No results|{1} 1 result|[2,Inf] {{ total }} results'
+          level: Level
+          all: All
+          none: None
+        date_range_filter:
+          label: Date time
+          reset: Reset
+          from: From
+          to: To
+          all: All
+        info:
+          title: Here are the logs related to all the event requests sent to this connection.
+          content: This page displays error and warning logs for the past 72h, and the last 100 info and notice logs.
+          link: More information about event logs.
+        headers:
+          datetime: Datetime
+          level: Level
+          message: Message
   error_management:
     connection_monitoring:
       title: Monitoring
@@ -206,7 +287,7 @@ akeneo_connectivity.connection:
         link: To understand how to solve this, please visit the API help center.
       search_filter:
         placeholder: Search in error messages
-        result_count: '{0} No result |[1,Inf] {{ count }} results'
+        result_count: '{0} No results|{1} 1 result|[2,Inf] {{ count }} results'
       error_list:
         date_time_column:
           title: Day and time

@@ -109,4 +109,9 @@ class ImageIntegration extends AbstractAttributeTestCase
     {
         $this->assertDoesNotHaveADateMax('pim_catalog_image');
     }
+
+    public function testImageShouldNotHaveDefaultValue()
+    {
+        $this->assertDoesNotHaveDefaultValue('pim_catalog_image');
+    }
 }

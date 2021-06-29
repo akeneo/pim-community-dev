@@ -2,7 +2,6 @@
 
 namespace Akeneo\Pim\Structure\Component\Validator\Constraints;
 
-use Akeneo\Pim\Structure\Component\AttributeTypes;
 use Akeneo\Pim\Structure\Component\Model\AttributeOptionInterface;
 use Symfony\Component\Validator\Constraint;
 use Symfony\Component\Validator\ConstraintValidator;
@@ -41,7 +40,6 @@ class AttributeTypeForOptionValidator extends ConstraintValidator
 
         $authorizedTypes = $this->supportedAttributeTypes;
 
-        /** @var AttributeOptionInterface */
         if ($attributeOption instanceof AttributeOptionInterface) {
             $attribute = $attributeOption->getAttribute();
             if (null !== $attribute && !in_array($attribute->getType(), $authorizedTypes)) {

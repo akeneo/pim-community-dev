@@ -27,7 +27,7 @@ Feature: Edit a product
       | sandal  | name        | My sandals name                      |        |           |
       | sandal  | length      | 29 CENTIMETER                        |        |           |
 
-  @critical @validate-migration
+  @critical @validate-migration @purge-messenger
   Scenario: Successfully create, edit and save a product
     Given I am logged in as "Mary"
     And I am on the "sandal" product page
@@ -37,6 +37,7 @@ Feature: Edit a product
     When I press the "Save" button
     Then I should not see the text "There are unsaved changes."
     And the product Name should be "My Sandal"
+    And 1 event of type "product.updated" should have been raised
 
   @critical
   Scenario: Successfully updates the updated date of the product

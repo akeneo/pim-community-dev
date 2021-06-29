@@ -67,7 +67,7 @@ class ProductBuilder implements ProductBuilderInterface
         }
 
         $event = new GenericEvent($product);
-        $this->eventDispatcher->dispatch(ProductEvents::CREATE, $event);
+        $this->eventDispatcher->dispatch($event, ProductEvents::CREATE);
 
         return $product;
     }

@@ -49,7 +49,7 @@ const options = [
 describe('Attribute options list', () => {
     test('it renders an empty attribute options list', async () => {
         await renderComponent([], false, jest.fn(), jest.fn(), jest.fn());
-        expect(getByRole(container, 'attribute-options-list')).toBeEmpty();
+        expect(getByRole(container, 'attribute-options-list')).toBeEmptyDOMElement();
     });
 
     test('it renders a list of 2 options not sorted alphabetically by default', async () => {

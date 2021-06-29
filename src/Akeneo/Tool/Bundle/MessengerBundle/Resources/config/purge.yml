@@ -1,0 +1,11 @@
+services:
+    akeneo_messenger.query.purge:
+        class: Akeneo\Tool\Bundle\MessengerBundle\Query\PurgeDoctrineQueueQuery
+        arguments:
+            - '@database_connection'
+
+    Akeneo\Tool\Bundle\MessengerBundle\Command\PurgeMessengerCommand:
+        arguments:
+            - '@akeneo_messenger.query.purge'
+        tags:
+            - {name: 'console.command'}

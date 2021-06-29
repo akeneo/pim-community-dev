@@ -147,7 +147,7 @@ class FiltersSelector extends BaseView {
 
       if (filterValue) {
         try {
-          filterModule.reset()
+          filterModule.reset();
           filterModule.setValue(filterValue);
           filterModule.enabled = true;
         } catch (e) {

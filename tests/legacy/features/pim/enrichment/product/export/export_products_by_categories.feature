@@ -7,7 +7,7 @@ Feature: Export products from any given categories
   Background:
     Given a "default" catalog configuration
     And the following categories:
-      | code                   | label_en_US               | parent                 |
+      | code                   | label-en_US               | parent                 |
       | toys_games             | Toys & Games              | default                |
       | action_figures         | Action Figures            | toys_games             |
       | dolls                  | Dolls                     | toys_games             |
@@ -52,9 +52,9 @@ Feature: Export products from any given categories
     When I press the "Select categories" button
     Then I should see the text "Categories selection"
     And I should see the text "Master catalog"
-    When I click on the "toys_games" category
-    And I expand the "toys_games" category
-    And I click on the "action_figures" category
+    When I click on the "Toys & Games" category
+    And I expand the "Toys & Games" category
+    And I click on the "Action Figures" category
     And I click on the "1234" category
     And I press the "Confirm" button
     Then I should see the text "3 selected categories"

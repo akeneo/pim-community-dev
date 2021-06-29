@@ -81,7 +81,11 @@ class AttributeUpdaterSpec extends ObjectBehavior
             'labels' => ['en_US' => 'Test1', 'fr_FR' => 'Test2'],
             'group' => 'marketing',
             'type' => 'pim_catalog_text',
-            'date_min' => '2016-12-12T00:00:00+01:00'
+            'date_min' => '2016-12-12T00:00:00+01:00',
+            'guidelines' => [
+                'en_US' => 'new guidelines',
+                'fr_FR' => 'nouvelles indications',
+            ],
         ];
 
         $translatableUpdater->update($attribute, ['en_US' => 'Test1', 'fr_FR' => 'Test2']);
@@ -92,6 +96,8 @@ class AttributeUpdaterSpec extends ObjectBehavior
         $attribute->setBackendType('backend')->shouldBeCalled();
         $attribute->setUnique(true)->shouldBeCalled();
         $attribute->setDateMin(new \DateTime('2016-12-12T00:00:00+01:00'))->shouldBeCalled();
+        $attribute->addGuidelines('en_US', 'new guidelines')->shouldBeCalled();
+        $attribute->addGuidelines('fr_FR', 'nouvelles indications')->shouldBeCalled();
 
         $registry->get('pim_catalog_text')->willReturn($attributeType);
         $attributeType->getName()->willReturn('pim_catalog_text');

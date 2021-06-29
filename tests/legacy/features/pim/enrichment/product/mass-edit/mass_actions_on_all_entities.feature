@@ -19,8 +19,8 @@ Feature: Apply a mass action on all entities
     When I am on the products grid
     And I hide the filter "family"
     And I open the category tree
-    And I filter by "category" with operator "" and value "2014_collection"
-    And I filter by "category" with operator "" and value "winter_collection"
+    And I filter by "category" with operator "" and value "2014 collection"
+    And I filter by "category" with operator "" and value "Winter collection"
     And I close the category tree
     And I switch the scope to "Mobile"
     And I filter by "completeness" with operator "" and value "yes"

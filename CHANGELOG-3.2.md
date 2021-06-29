@@ -1,5 +1,81 @@
 # 3.2.x
 
+# 3.2.84 (2021-05-17)
+
+# 3.2.83 (2021-04-02)
+
+# 3.2.83 (2021-03-31)
+
+## Bug fixes
+
+- PIM-9709: Fix missing translation on move to categories mass edit action
+
+# 3.2.82 (2021-02-16)
+
+# 3.2.81 (2021-02-15)
+
+# Technical Improvements
+
+- PIM-9648: Mitigate DDoS risk on API auth endpoint by rejecting too large content
+
+# 3.2.80 (2021-01-04)
+
+## Bug fixes
+
+- PIM-9614: Fix missing overlay when the announcements panel is open
+
+## Improvement:
+
+- PIM-9483: Users with the ACL "View the associations of a product" can view associations of products, even if they are not owner
+
+# 3.2.79 (2020-12-17)
+
+## Improvement
+
+- PIM-9599: Fix @babel/types dependency to ^7.11.5
+
+# 3.2.78 (2020-12-02)
+
+## Bug fixes
+
+- RAC-384: Fix fatal error when an attribute is removed then re-created with the same code but another type.
+
+# 3.2.77 (2020-11-30)
+
+## Bug fixes
+
+- [Backport] Fix fatal error on display product model associations when they have more than 25 products associated
+- PIM-9578: Revert change on millibar conversion operation
+- PIM-9580: Fix conversion operation for ATM, PSI, TORR & MMHG
+
+# 3.2.76 (2020-10-22)
+
+## Features:
+
+- GITHUB-APD-227: add the PIM communication channel
+
+Four frontend dependencies are required for the backport of this feature (@types/react-dom, react-markdown, styled-components, types/styled-components). Therefore, it will add these dependencies in the file`package.json` of your project automatically when executing `composer update` or `composer install`.  
+
+Please commit changes of the file `package.json` in your CVS.
+
+## Bug fixes:
+
+- PIM-9523: Fix pressure measure multiplicator error
+
+# 3.2.75 (2020-10-14)
+
+## Bug fixes:
+
+- GITHUB-12899: Fix error shown when importing product models with the same code
+
+# 3.2.74 (2020-10-09)
+
+# 3.2.73 (2020-10-09)
+
+## Bug fixes:
+
+- PIM-9501: [Backport] PIM-9494: Fix the performances of attribute-select-filter on long lists of AttributeOptions
+
 # 3.2.72 (2020-09-30)
 
 # 3.2.71 (2020-09-21)

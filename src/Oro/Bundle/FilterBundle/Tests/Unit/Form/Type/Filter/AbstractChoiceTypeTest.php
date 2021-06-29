@@ -6,6 +6,7 @@ use Oro\Bundle\FilterBundle\Form\Type\Filter\AbstractChoiceType;
 use Symfony\Component\Form\Extension\Core\View\ChoiceView;
 use Symfony\Component\Form\FormInterface;
 use Symfony\Component\Form\FormView;
+use Symfony\Contracts\Translation\TranslatorInterface;
 
 class AbstractChoiceTypeTest extends \PHPUnit_Framework_TestCase
 {
@@ -23,7 +24,7 @@ class AbstractChoiceTypeTest extends \PHPUnit_Framework_TestCase
 
     public function setUp(): void
     {
-        $this->translator = $this->getMockBuilder('Symfony\Component\Translation\TranslatorInterface')
+        $this->translator = $this->getMockBuilder(TranslatorInterface::class)
             ->disableOriginalConstructor()
             ->setMethods(['trans'])
             ->getMockForAbstractClass();

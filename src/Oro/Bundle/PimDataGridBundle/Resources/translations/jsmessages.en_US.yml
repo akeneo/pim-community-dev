@@ -42,6 +42,7 @@ pim_datagrid:
     select: Please select view
     confirmation:
       remove: Are you sure you want to delete this view?
+    public_label: (Public)
 
   display_selector:
     label: Display
@@ -72,7 +73,14 @@ pim_datagrid:
       error: Action was not performed
       no_items: Please, select item to perform action.
     show:
-      title: Show
+      title: View
+    stop:
+      title: Stop
+      confirmation:
+        title: Stop {{ jobLabel }}
+        content: "Do you really want to stop this job?\nIt won't revert the actions already performed.\nTo find out more, please check our article on "
+        link: How to stop a job.
+        ok: Stop the job
 
   filters:
     common:

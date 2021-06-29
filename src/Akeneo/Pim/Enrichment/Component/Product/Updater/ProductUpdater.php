@@ -15,6 +15,7 @@ use Akeneo\Tool\Component\StorageUtils\Exception\UnknownPropertyException;
 use Akeneo\Tool\Component\StorageUtils\Updater\ObjectUpdaterInterface;
 use Akeneo\Tool\Component\StorageUtils\Updater\PropertySetterInterface;
 use Doctrine\Common\Util\ClassUtils;
+use Symfony\Component\HttpKernel\Exception\BadRequestHttpException;
 
 /**
  * Updates a product
@@ -164,6 +165,9 @@ class ProductUpdater implements ObjectUpdaterInterface
         }
 
         foreach ($data as $code => $value) {
+            if (!is_string($code)) {
+                throw new BadRequestHttpException('Invalid json message received');
+            }
             $filteredValue = $this->filterData($product, $code, $value, $data);
             $this->setData($product, $code, $filteredValue, $options);
         }

@@ -7,7 +7,7 @@ parameters:
 services:
     pim_versioning.repository.version:
         class: '%pim_versioning.repository.version.class%'
-        factory: 'doctrine.orm.entity_manager:getRepository'
+        factory: ['@doctrine.orm.entity_manager', 'getRepository']
         arguments: ['%pim_versioning.entity.version.class%']
         tags:
             - { name: 'pim_repository' }

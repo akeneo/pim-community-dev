@@ -42,9 +42,10 @@ pim_user:
       inactive: Inactief
     fields_errors:
       new_password:
-        minimum_length: Het wachtwoord moet minstens 2 karakters bevatten
+        minimum_length: Het wachtwoord moet ten minste 8 tekens bevatten
+        maximum_length: Het wachtwoord moet minder dan 4096 tekens bevatten.
       new_password_repeat:
-        not_match: Wachtwoord komt niet overeen
+        not_match: De wachtwoorden komen niet overeen
       current_password:
         wrong: Verkeerd wachtwoord
     tabs:
@@ -67,13 +68,13 @@ pim_user:
       username_or_email: Gebruikersnaam of E-mail
       remember_me: Onthoud mijn gegevens op deze computer
       password_forgotten: Uw wachtwoord vergeten?
-      log_in: Login
+      log_in: Inloggen
       forgot_password: Wachtwoord vergeten
       request: Aanvragen
       password_reset: Wachtwoord resetten
       reset: Resetten
       password_reset_email_sent: Er is een e-mail verzonden naar de gebruiker. Deze mail bevat een wachtwoord-reset link.
-      homepage: Ga naar de homepage
+      homepage: Terug naar de startpagina
   group:
     tab:
       general.title: Algemeen

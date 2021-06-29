@@ -2,7 +2,8 @@
 
 namespace Akeneo\Pim\Enrichment\Component\Product\Normalizer\InternalApi;
 
-use Doctrine\Common\Inflector\Inflector;
+use Doctrine\Inflector\Inflector;
+use Doctrine\Inflector\NoopWordInflector;
 use Symfony\Component\Serializer\Normalizer\CacheableSupportsMethodInterface;
 use Symfony\Component\Serializer\Normalizer\NormalizerInterface;
 use Symfony\Component\Validator\ConstraintViolation;
@@ -27,11 +28,13 @@ class ConstraintViolationNormalizer implements NormalizerInterface, CacheableSup
         $path = $this->getStandardPath($violation);
         $translate = (bool)($context['translate'] ?? true);
 
+        $message = $this->getInternalApiMessage($violation);
+
         if (!$translate) {
             return [
                 'messageTemplate' => $violation->getMessageTemplate(),
                 'parameters' => $violation->getParameters(),
-                'message' => $violation->getMessage(),
+                'message' => $message,
                 'propertyPath' => $path,
                 'invalidValue' => $violation->getInvalidValue(),
             ];
@@ -39,14 +42,14 @@ class ConstraintViolationNormalizer implements NormalizerInterface, CacheableSup
 
         if (null === $path || '' === $path) {
             return [
-                'message' => $violation->getMessage(),
+                'message' => $message,
                 'global'  => true,
             ];
         }
 
         return [
             'path'    => $path,
-            'message' => $violation->getMessage(),
+            'message' => $message,
             'global'  => false,
         ];
     }
@@ -91,6 +94,24 @@ class ConstraintViolationNormalizer implements NormalizerInterface, CacheableSup
             return null;
         }
 
-        return Inflector::tableize($violation->getPropertyPath());
+        return $this->getInflector()->tableize($violation->getPropertyPath());
+    }
+
+    private function getInflector(): Inflector
+    {
+        return new Inflector(new NoopWordInflector(), new NoopWordInflector());
+    }
+
+    private function getInternalApiMessage(ConstraintViolation $violation): string
+    {
+        if (!$violation->getConstraint()) {
+            return $violation->getMessage();
+        }
+
+        if (isset($violation->getConstraint()->payload['internal_api_message'])) {
+            return $violation->getConstraint()->payload['internal_api_message'];
+        }
+
+        return $violation->getMessage();
     }
 }

@@ -13,8 +13,8 @@ Feature: Add attribute options
     Given I create a "Reference data simple select" attribute
     And I fill in the following information:
       | Code                | mycolor |
-      | Reference data type | color   |
       | Attribute group     | Other   |
+      | Reference data type | color   |
     When I save the attribute
     Then I should see the flash message "Attribute successfully created"
 
@@ -22,7 +22,7 @@ Feature: Add attribute options
     Given I create a "Reference data multi select" attribute
     And I fill in the following information:
       | Code                | mycolor |
-      | Reference data type | fabric  |
       | Attribute group     | Other   |
+      | Reference data type | fabric  |
     When I save the attribute
     Then I should see the flash message "Attribute successfully created"

@@ -1,8 +1,8 @@
 import React, {FC} from 'react';
 import {css} from 'styled-components';
-import {ClockIcon, DateIcon} from '../../../common/icons';
 import styled from '../../../common/styled-with-theme';
 import {useDateFormatter} from '../../../shared/formatter/use-date-formatter';
+import {ClockIcon, DateIcon, getColor} from 'akeneo-design-system';
 
 type Props = {
     timestamp: number;
@@ -74,12 +74,14 @@ const Calendar = styled(DateIcon)`
     width: 24px;
     height: 24px;
     vertical-align: middle;
+    color: ${getColor('grey', 100)};
 `;
 
 const Clock = styled(ClockIcon)`
     width: 24px;
     height: 24px;
     vertical-align: middle;
+    color: ${getColor('grey', 100)};
 `;
 
 export {ErrorDateTimeCell};

@@ -2,31 +2,25 @@ services:
     pim_catalog.webhook.event_data_builder.product_created_and_updated:
         class: Akeneo\Pim\Enrichment\Component\Product\Webhook\ProductCreatedAndUpdatedEventDataBuilder
         arguments:
-            - '@pim_api.repository.product'
-            - '@pim_api.normalizer.product'
+            - '@akeneo.pim.enrichment.product.connector.get_product_from_identifiers'
+            - '@pim_api.normalizer.connector_products'
         tags:
             - { name: akeneo_connectivity.connection.webhook.event_data_builder }
 
     pim_catalog.webhook.event_data_builder.product_removed:
         class: Akeneo\Pim\Enrichment\Component\Product\Webhook\ProductRemovedEventDataBuilder
-        arguments:
-            - '@pim_api.repository.product'
-            - '@pim_api.normalizer.product'
         tags:
             - { name: akeneo_connectivity.connection.webhook.event_data_builder }
 
     pim_catalog.webhook.event_data_builder.product_model_created_and_updated:
         class: Akeneo\Pim\Enrichment\Component\Product\Webhook\ProductModelCreatedAndUpdatedEventDataBuilder
         arguments:
-            - '@pim_api.repository.product_model'
-            - '@pim_api.normalizer.product_model'
+            - '@akeneo.pim.enrichment.product.connector.get_product_models_from_codes'
+            - '@pim_api.normalizer.connector_product_models'
         tags:
             - { name: akeneo_connectivity.connection.webhook.event_data_builder }
 
     pim_catalog.webhook.event_data_builder.product_model_removed:
         class: Akeneo\Pim\Enrichment\Component\Product\Webhook\ProductModelRemovedEventDataBuilder
-        arguments:
-            - '@pim_api.repository.product_model'
-            - '@pim_api.normalizer.product_model'
         tags:
             - { name: akeneo_connectivity.connection.webhook.event_data_builder }

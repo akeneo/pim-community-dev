@@ -47,13 +47,13 @@ class AttributeSaver implements SaverInterface, BulkSaverInterface
 
         $options['unitary'] = true;
 
-        $this->eventDispatcher->dispatch(StorageEvents::PRE_SAVE, new GenericEvent($attribute, $options));
+        $this->eventDispatcher->dispatch(new GenericEvent($attribute, $options), StorageEvents::PRE_SAVE);
 
         $this->objectManager->persist($attribute);
 
         $this->objectManager->flush();
 
-        $this->eventDispatcher->dispatch(StorageEvents::POST_SAVE, new GenericEvent($attribute, $options));
+        $this->eventDispatcher->dispatch(new GenericEvent($attribute, $options), StorageEvents::POST_SAVE);
     }
 
     /**
@@ -67,12 +67,12 @@ class AttributeSaver implements SaverInterface, BulkSaverInterface
 
         $options['unitary'] = false;
 
-        $this->eventDispatcher->dispatch(StorageEvents::PRE_SAVE_ALL, new GenericEvent($attributes, $options));
+        $this->eventDispatcher->dispatch(new GenericEvent($attributes, $options), StorageEvents::PRE_SAVE_ALL);
 
         foreach ($attributes as $attribute) {
             $this->validateAttribute($attribute);
 
-            $this->eventDispatcher->dispatch(StorageEvents::PRE_SAVE, new GenericEvent($attribute, $options));
+            $this->eventDispatcher->dispatch(new GenericEvent($attribute, $options), StorageEvents::PRE_SAVE);
 
             $this->objectManager->persist($attribute);
         }
@@ -80,10 +80,10 @@ class AttributeSaver implements SaverInterface, BulkSaverInterface
         $this->objectManager->flush();
 
         foreach ($attributes as $attribute) {
-            $this->eventDispatcher->dispatch(StorageEvents::POST_SAVE, new GenericEvent($attribute, $options));
+            $this->eventDispatcher->dispatch(new GenericEvent($attribute, $options), StorageEvents::POST_SAVE);
         }
 
-        $this->eventDispatcher->dispatch(StorageEvents::POST_SAVE_ALL, new GenericEvent($attributes, $options));
+        $this->eventDispatcher->dispatch(new GenericEvent($attributes, $options), StorageEvents::POST_SAVE_ALL);
     }
 
     protected function validateAttribute($attribute)

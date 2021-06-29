@@ -1,4 +1,4 @@
-import {Action, Reducer} from "redux";
+import {Action, Reducer} from 'redux';
 import {Family as FamilyInformation} from '@akeneo-pim-community/data-quality-insights/src/domain';
 
 export interface ProductFamilyInformationState {
@@ -18,13 +18,16 @@ export const getProductFamilyInformationAction = (family: FamilyInformation): Pr
     type: GET_PRODUCT_FAMILY_INFORMATION,
     payload: {
       family: family,
-    }
-  }
+    },
+  };
 };
 
 const initialState: ProductFamilyInformationState = {};
 
-const productFamilyInformationReducer: Reducer<ProductFamilyInformationState, ProductFamilyInformationAction> = (previousState = initialState, {type, payload}) => {
+const productFamilyInformationReducer: Reducer<ProductFamilyInformationState, ProductFamilyInformationAction> = (
+  previousState = initialState,
+  {type, payload}
+) => {
   switch (type) {
     case GET_PRODUCT_FAMILY_INFORMATION:
       return {

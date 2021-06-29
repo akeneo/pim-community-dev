@@ -1,6 +1,10 @@
 pim_menu:
+  tab:
+    connect: Connect
+  navigation:
+    connect: Navigation dans Connect
   navigation_back:
-    connection: Retour aux connexions
+    connection: Retour vers Connect
   navigation_block:
     connection: Navigation connexions
   item:
@@ -8,15 +12,30 @@ pim_menu:
     connection_settings: Connexions
     connection_settings_edit: Paramètres de connexion
     connection_monitoring: Supervision
+    connection_webhook_edit: Souscription aux événements
+    connection_webhook_event_logs: Journal des événements
+    data_flows: Flux de données
+    connect_connection_settings: Paramètres de connexion
+    marketplace: Marketplace
 pim_title:
-  akeneo_connectivity_connection_settings_index: Connexions
+  akeneo_connectivity_connection_connect_marketplace: Marketplace
+  akeneo_connectivity_connection_settings_index: Paramètres des connexions
   akeneo_connectivity_connection_settings_edit: Paramètres de connexion
   akeneo_connectivity_connection_settings_any: Paramètres de connexion
   akeneo_connectivity_connection_audit_index: Tableau de bord des connexions
   akeneo_connectivity_connection_audit_any: Tableau de bord des connexions
   akeneo_connectivity_connection_error_management_dashboard: Tableau de bord des connexions
   akeneo_connectivity_connection_error_management_connection_monitoring: Supervision
+  akeneo_connectivity_connection_webhook_edit: Souscription aux événements
+  akeneo_connectivity_connection_webhook_regenerate_secret: Souscription aux événements
+  akeneo_connectivity_connection_webhook_event_logs: Journal des événements
+  akeneo_connectivity_connection_settings_redirect: Connexions
 akeneo_connectivity.connection:
+  connect:
+    marketplace:
+      title: Vous voulez connecter votre PIM avec une autre application ? 🤟
+      sub_title: Consultez notre marketplace pour voir quelles applications peuvent être connectées avec Akeneo PIM.
+      link: Accéder à la marketplace
   connections: Connexions
   secondary_actions:
     title: Autres actions
@@ -128,9 +147,9 @@ akeneo_connectivity.connection:
     flash:
       success: Connexion supprimée avec succès.
   helper:
-    title: '👋 Bienvenue dans cette fonctionnalité qui vous aidera à bien connecter votre PIM !'
+    title: '{0} Pour l''instant, vous n''avez aucune connexion pour lier votre PIM à des applications tierces.{1} Vous avez 1 connexion reliant votre PIM à une application tierce. Bien joué, ainsi votre PIM est bien intégré dans son écosystème.|]1,Inf] Vous avez {{ count }} connexions reliant votre PIM à des applications tierces. Bien joué, votre PIM est ainsi bien intégré dans son écosystème.'
     description: Un PIM non connecté, c'est un peu inutile, non ? Grâce aux connexions, vous pouvez déclarer facilement tous les flux de données qui sont envoyés dans votre PIM, ainsi que ceux qui en sortent.
-    link: Envie d'en savoir plus ? Découvrez ce qu'est une connexion et comment en tirer le meilleur parti ici !
+    link: Pour en savoir plus sur les Connexions, consultez cette page
   flow_type_helper:
     message: Mais qu'est-ce qu'un type de flux ?
     link: Nous pouvons vous aider ici !
@@ -146,9 +165,9 @@ akeneo_connectivity.connection:
   grid.wrong_credentials_combination_helper: Certaines des connexions ci-dessous n'utilisent pas leur username. Elles sont identifiées par un warning jaune.
   dashboard:
     helper:
-      title: '👋 Bienvenue dans le tableau de bord de vos connexions !'
-      description: Ici, vous pouvez suivre tous les flux de données qui circulent via vos connexions, que ce soit des données entrantes provenant de vos sources ou de données sortantes distribuées sur vos destinations.
-      link: Envie d'en savoir plus ? Rendez-vous ici !
+      title: '👋 Bienvenue dans le tableau de bord de vos flux de données!'
+      description: Ici, vous pouvez suivre les flux de données entre votre PIM et des applications tierces.
+      link: Vous voulez en savoir plus sur le menu Connect et les flux de données?
     user_survey:
       title: Envie de voir plus de données sur ce tableau de bord ?
       content: Vos retours sont très précieux à nos yeux. Voter pour le prochain widget que vous souhaitez voir apparaître sur ce tableau de bord !
@@ -190,13 +209,75 @@ akeneo_connectivity.connection:
         message: Demandez à votre administrateur d'en créer une.
         link: En savoir plus sur les connexions ici...
   webhook:
+    title: Souscription aux événements
+    event_subscription: Souscription aux événements
+    download_logs: Télécharger les logs
+    helper:
+      message: Vous pouvez recevoir les événements qui se produisent dans le PIM pour les produits synchronisés avec cette application connectée. Vous devez juste définir une URL.
+      link: En savoir plus sur la configuration de la souscription aux événements...
+      url.test_disabled: Veuillez cliquer sur le bouton Enregistrer pour pouvoir tester l'URL.
     form:
+      url: URL
       secret: Secret
+      enabled: Souscription aux événements activée
+      test: Test
+    error:
+      wrong_url: Cette valeur n'est pas une URL valide.
+      required: Ce champ est obligatoire.
+      not_found: Vous essayez de mettre à jour une connexion qui n'existe pas.
+      limit_reached: Vous avez atteint le nombre maximal de souscriptions aux événements activées. 
+      not_allowed_url: Cette url n'est pas autorisée.
+    flash:
+      success: La souscription aux événements a bien été mise à jour.
+      error: Désolé, une erreur s'est produit lors de la mise à jour de la souscription aux événements.
     regenerate_secret:
       title: Confirmer la régénération
+      description: Êtes-vous sûr de vouloir régénérer le secret lié à la souscription aux événements?
       action:
         regenerate: Régénérer
       link: Découvrez-les ici.
+      flash:
+        success: Le secret lié à la souscription aux événements a été régénéré avec succès.
+        error: Désolé, une erreur s'est produite lors du renouvellement du secret lié à la souscription aux événements.
+    active_event_subscriptions_limit_reached:
+      message: Vous pouvez activer la souscription aux événements sur {{ limit }} connexions maximum et vous avez atteint cette limite. 
+      link: En savoir plus sur la configuration de la souscription aux événements.
+    event_logs:
+      title: Journal des événements
+      event_subscription_disabled:
+        title: La souscription aux événements n'est pas activée pour cette connexion.
+        link: Activer la souscription aux événements
+      no_event_logs:
+        title: Il n'y a actuellement aucun log pour cette connexion.
+      no_event_logs_with_those_filters:
+        title: Désolé, il n’y a aucun résultat pour votre recherche.
+        caption: Essayez à nouveau avec d'autres critères de recherche.
+      level:
+        info: Info
+        notice: Notice
+        warning: Avertissement
+        error: Erreur
+      list:
+        search:
+          placeholder: Chercher parmi les messages
+          total: '{0} Aucun résultat|{1} 1 résultat|[2,Inf] {{ total }} résultats'
+          level: Niveau
+          all: Toutes
+          none: Aucun
+        date_range_filter:
+          label: Date / heure
+          reset: Réinitialiser
+          from: De
+          to: À
+          all: Toutes
+        info:
+          title: Vous trouverez ici les logs liés à tous les événements envoyés vers cette connexion.
+          content: Cette page affiche les logs d'erreur et d'avertissement pour les 72 dernières heures, ainsi que les 100 derniers logs de niveau info et notice. 
+          link: En savoir plus sur les logs liés aux événements
+        headers:
+          datetime: Date / heure
+          level: Niveau
+          message: Message
   error_management:
     connection_monitoring:
       title: Supervision
@@ -206,7 +287,7 @@ akeneo_connectivity.connection:
         link: Pour savoir comment résoudre ces erreurs, rendez vous sur la documentation de l'API.
       search_filter:
         placeholder: Rechercher dans les messages d'erreur
-        result_count: '{0} Aucun résultat |[1,Inf] {{ count }} résultats'
+        result_count: '{0} Aucun résultat|{1} 1 résultat|[2,Inf] {{ total }} résultats'
       error_list:
         date_time_column:
           title: Jour et heure

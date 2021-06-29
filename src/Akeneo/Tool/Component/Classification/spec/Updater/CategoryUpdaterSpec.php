@@ -2,6 +2,7 @@
 
 namespace spec\Akeneo\Tool\Component\Classification\Updater;
 
+use Akeneo\Channel\Component\Query\PublicApi\IsCategoryTreeLinkedToChannel;
 use Akeneo\Tool\Component\Classification\Model\CategoryInterface;
 use Akeneo\Tool\Component\Classification\Updater\CategoryUpdater;
 use Akeneo\Tool\Component\StorageUtils\Exception\InvalidObjectException;
@@ -12,13 +13,21 @@ use Akeneo\Tool\Component\StorageUtils\Repository\IdentifiableObjectRepositoryIn
 use Akeneo\Tool\Component\StorageUtils\Updater\ObjectUpdaterInterface;
 use PhpSpec\ObjectBehavior;
 use Akeneo\Pim\Enrichment\Component\Category\Model\CategoryTranslation;
+use Akeneo\UserManagement\Component\Query\PublicApi\IsCategoryTreeLinkedToUser;
 use Symfony\Component\PropertyAccess\Exception\NoSuchPropertyException;
 
 class CategoryUpdaterSpec extends ObjectBehavior
 {
-    function let(IdentifiableObjectRepositoryInterface $categoryRepository)
-    {
-        $this->beConstructedWith($categoryRepository);
+    function let(
+        IdentifiableObjectRepositoryInterface $categoryRepository,
+        IsCategoryTreeLinkedToUser $isCategoryTreeLinkedToUser,
+        IsCategoryTreeLinkedToChannel $isCategoryTreeLinkedToChannel
+    ) {
+        $this->beConstructedWith(
+            $categoryRepository,
+            $isCategoryTreeLinkedToUser,
+            $isCategoryTreeLinkedToChannel
+        );
     }
 
     function it_is_initializable()
@@ -105,6 +114,62 @@ class CategoryUpdaterSpec extends ObjectBehavior
                     'The category does not exist',
                     CategoryUpdater::class,
                     'unknown'
+                )
+            )
+            ->during('update', [$category, $values, []]);
+    }
+
+    function it_throws_an_exception_when_moving_a_root_category_still_linked_to_a_user(
+        $categoryRepository,
+        $isCategoryTreeLinkedToUser,
+        CategoryInterface $category,
+        CategoryInterface $categoryMaster
+    ) {
+        $categoryRepository->findOneByIdentifier('master')->willReturn($categoryMaster);
+
+        $category->getId()->willReturn(1);
+        $category->isRoot()->willReturn(true);
+
+        $isCategoryTreeLinkedToUser->byCategoryTreeId(1)->willReturn(true);
+
+        $values = [
+            'parent' => 'master',
+        ];
+
+        $this
+            ->shouldThrow(
+                InvalidPropertyException::expected(
+                    'You can\'t move a category tree linked to a user.',
+                    CategoryUpdater::class
+                )
+            )
+            ->during('update', [$category, $values, []]);
+    }
+
+    function it_throws_an_exception_when_moving_a_root_category_still_linked_to_a_channel(
+        $categoryRepository,
+        $isCategoryTreeLinkedToUser,
+        $isCategoryTreeLinkedToChannel,
+        CategoryInterface $category,
+        CategoryInterface $categoryMaster
+    ) {
+        $categoryRepository->findOneByIdentifier('master')->willReturn($categoryMaster);
+
+        $category->getId()->willReturn(1);
+        $category->isRoot()->willReturn(true);
+
+        $isCategoryTreeLinkedToUser->byCategoryTreeId(1)->willReturn(false);
+        $isCategoryTreeLinkedToChannel->byCategoryTreeId(1)->willReturn(true);
+
+        $values = [
+            'parent' => 'master',
+        ];
+
+        $this
+            ->shouldThrow(
+                InvalidPropertyException::expected(
+                    'You can\'t move a category tree linked to a channel.',
+                    CategoryUpdater::class
                 )
             )
             ->during('update', [$category, $values, []]);

@@ -54,7 +54,7 @@ class NotificationFactory extends AbstractNotificationFactory implements Notific
             ->setType($status)
             ->setMessage(sprintf('pim_import_export.notification.%s.%s', $type, $status))
             ->setMessageParams(['%label%' => $jobExecution->getJobInstance()->getLabel()])
-            ->setRoute(sprintf('pim_importexport_%s_execution_show', $type))
+            ->setRoute('pim_enrich_job_tracker_show')
             ->setRouteParams(['id' => $jobExecution->getId()])
             ->setContext(['actionType' => $type]);
 

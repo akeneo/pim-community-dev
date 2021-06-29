@@ -1,18 +1,20 @@
 import React, {FC, memo} from 'react';
 import {useHistory, useParams} from 'react-router';
-import {Breadcrumb, BreadcrumbItem, Loading, PageContent, PageHeader} from '../../common';
-import {PimView} from '../../infrastructure/pim-view/PimView';
+import {Loading, PageContent, PageHeader} from '../../common';
 import {FlowType} from '../../model/flow-type.enum';
-import {BreadcrumbRouterLink} from '../../shared/router';
 import {Translate} from '../../shared/translate';
 import {ConnectionErrors} from '../components/ConnectionErrors';
 import {NotAuditableConnection} from '../components/NotAuditableConnection';
 import {NotDataSourceConnection} from '../components/NotDataSourceConnection';
 import {useConnection} from '../hooks/api/use-connection';
+import {Breadcrumb} from 'akeneo-design-system';
+import {UserButtons} from '../../shared/user';
+import {useRouter} from '../../shared/router/use-router';
 
 const ConnectionMonitoring: FC = memo(() => {
     const history = useHistory();
     const {connectionCode} = useParams<{connectionCode: string}>();
+    const generateUrl = useRouter();
 
     const {loading, connection} = useConnection(connectionCode);
     if (loading || !connection) {
@@ -21,28 +23,21 @@ const ConnectionMonitoring: FC = memo(() => {
 
     const breadcrumb = (
         <Breadcrumb>
-            <BreadcrumbRouterLink route={'oro_config_configuration_system'}>
-                <Translate id='pim_menu.tab.system' />
-            </BreadcrumbRouterLink>
-            <BreadcrumbItem onClick={() => history.push('/connections')}>
-                <Translate id='pim_menu.item.connection_settings' />
-            </BreadcrumbItem>
-            <BreadcrumbItem>
+            <Breadcrumb.Step href={`#${generateUrl('akeneo_connectivity_connection_audit_index')}`}>
+                <Translate id='pim_menu.tab.connect' />
+            </Breadcrumb.Step>
+            <Breadcrumb.Step href={history.createHref({pathname: '/connect/connection-settings'})}>
+                <Translate id='pim_menu.item.connect_connection_settings' />
+            </Breadcrumb.Step>
+            <Breadcrumb.Step>
                 <Translate id='akeneo_connectivity.connection.error_management.connection_monitoring.title' />
-            </BreadcrumbItem>
+            </Breadcrumb.Step>
         </Breadcrumb>
-    );
-
-    const userButtons = (
-        <PimView
-            className='AknTitleContainer-userMenuContainer AknTitleContainer-userMenu'
-            viewName='pim-connectivity-connection-user-navigation'
-        />
     );
 
     return (
         <>
-            <PageHeader breadcrumb={breadcrumb} userButtons={userButtons}>
+            <PageHeader breadcrumb={breadcrumb} userButtons={<UserButtons />}>
                 {connection.label}
             </PageHeader>
 

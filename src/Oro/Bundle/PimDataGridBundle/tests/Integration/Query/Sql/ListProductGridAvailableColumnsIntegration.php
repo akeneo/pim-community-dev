@@ -246,6 +246,10 @@ class ListProductGridAvailableColumnsIntegration extends TestCase
                     'code' => 'complete_variant_products',
                     'label' => 'Variant products',
                 ],
+            'data_quality_insights_score' => [
+                'code' => 'data_quality_insights_score',
+                'label' => 'Quality score',
+            ],
             'groups' =>
                 [
                     'code' => 'groups',
@@ -256,10 +260,6 @@ class ListProductGridAvailableColumnsIntegration extends TestCase
                     'code' => 'parent',
                     'label' => 'Parent',
                 ],
-            'data_quality_insights_enrichment' => [
-                'code' => 'data_quality_insights_enrichment',
-                'label' => 'Enrichment',
-            ],
         ];
     }
 }

@@ -3,7 +3,7 @@
 namespace Oro\Bundle\PimDataGridBundle\Extension\Formatter\Property\ProductValue;
 
 use Akeneo\Tool\Component\Localization\Presenter\PresenterInterface;
-use Symfony\Component\Translation\TranslatorInterface;
+use Symfony\Contracts\Translation\TranslatorInterface;
 
 /**
  * Able to render date value

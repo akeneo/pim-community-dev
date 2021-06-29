@@ -99,7 +99,7 @@ class BatchStatus
      */
     public function isStarting()
     {
-        return $this->value == self::STARTING;
+        return $this->value === self::STARTING;
     }
 
     /**
@@ -109,7 +109,12 @@ class BatchStatus
      */
     public function isRunning()
     {
-        return $this->value == self::STARTING || $this->value == self::STARTED;
+        return $this->value === self::STARTING || $this->value === self::STARTED;
+    }
+
+    public function isStopping(): bool
+    {
+        return $this->value === self::STOPPING;
     }
 
     /**
@@ -120,7 +125,7 @@ class BatchStatus
      */
     public function isUnsuccessful()
     {
-        return ($this->value == self::FAILED || $this->value > self::FAILED);
+        return ($this->value === self::FAILED || $this->value > self::FAILED);
     }
 
     /**
@@ -156,7 +161,7 @@ class BatchStatus
             $newStatus = max($this->value, $otherStatus);
         } else {
             // Both less than or equal to STARTED
-            if ($this->value == self::COMPLETED || $otherStatus == self::COMPLETED) {
+            if ($this->value === self::COMPLETED || $otherStatus === self::COMPLETED) {
                 $newStatus = self::COMPLETED;
             } else {
                 $newStatus = max($this->value, $otherStatus);

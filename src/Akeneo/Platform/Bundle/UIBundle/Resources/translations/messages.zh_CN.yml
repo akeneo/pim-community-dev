@@ -62,9 +62,12 @@ pim_common:
   name: 名称
   remove: 移除
   code: 代码
+  label: 标签
+  quantity: 数量
   products: 产品
   product_models: 产品模型
   categories: 类别
+  family_variant: 品类变型
   enabled: 已启用
   family: 品类
   parent: '父目录:'
@@ -97,11 +100,13 @@ pim_enrich:
       comment: 评论产品
       download: 下载 PDF 格式的产品
       history: 查看产品历史记录
+      convert_variant_to_simple: 将变型产品转换为简单产品
     product_model:
       create: 创建产品模型
       edit_attributes: 编辑产品模型的属性
       categories_view: 查阅产品模型的类别
       history: 查看产品模型的历史记录
+      remove: 移除产品模型（包括子产品）
     category:
       list: 列出类别
       create: 创建类别
@@ -165,6 +170,7 @@ pim_enrich:
     job_tracker:
       index: 查看进程跟踪器
       view_all_jobs: 查看进程跟踪器中的所有作业
+      stop_job: 停止正在进行的作业
   acl_group:
     association_type: 关联类型
     attribute: 属性
@@ -267,6 +273,7 @@ info:
 Created: 已创建
 Updated: 已更新
 Last update: 上次更新
+by: 由
 N/A: N/A
 Manage products: 管理产品
 Manage groups: 管理分组
@@ -430,6 +437,8 @@ Disabled: 已禁用
 Status: 状态
 pim_datagrid:
   filters:
+    product_typology:
+      label: 产品类型
     entity_type:
       label: 变量
     family:
@@ -438,6 +447,8 @@ pim_datagrid:
       label: 分组
     enabled:
       label: 状态
+    scope:
+      label: 范围
     completeness:
       label: 完成
     created:
@@ -482,6 +493,7 @@ oro.locale:
       parish: "行政区"
       state: "国家"
       island: "岛"
+      county: "县"
       area: "区域"
       prefecture: "县"
       department: "部门"
@@ -513,7 +525,6 @@ pim_mass_edit:
       success: 批量删除 <strong>%label%</strong> 已完成
 job_execution.summary:
   mass_edited: 已批量编辑
-  skip: 已跳过
   skipped_products: 已跳过产品
   skipped_attributes: 已跳过属性
   skipped_families: 已跳过品类
@@ -534,3 +545,8 @@ job_tracker:
     title: 进程跟踪器
   filter:
     started_at: 开始于
+pim_login:
+  logo_title: Akeneo PIM
+  footer:
+    powered: 提供者
+    powered_image_title: Logo Akeneo

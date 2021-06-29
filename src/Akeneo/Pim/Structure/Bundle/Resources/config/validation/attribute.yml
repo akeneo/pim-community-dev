@@ -63,6 +63,29 @@ Akeneo\Pim\Structure\Component\Model\Attribute:
                 - pim_catalog_metric
                 - pim_reference_data_multiselect
                 - pim_reference_data_simpleselect
+        - Akeneo\Pim\Structure\Component\Validator\Constraints\NullProperties:
+            message: This attribute type cannot have a default value.
+            properties:
+                - default_value
+            groups:
+                - pim_catalog_identifier
+                - pim_catalog_text
+                - pim_catalog_textarea
+                - pim_catalog_number
+                - pim_catalog_price_collection
+                - pim_catalog_file
+                - pim_catalog_image
+                - pim_catalog_multiselect
+                - pim_catalog_simpleselect
+                - pim_catalog_date
+                - pim_catalog_metric
+                - pim_reference_data_multiselect
+                - pim_reference_data_simpleselect
+        - Akeneo\Pim\Structure\Component\Validator\Constraints\AttributePropertyType:
+            type: bool
+            properties:
+                - auto_option_sorting
+                - default_value
     properties:
         type:
             - Type: string
@@ -70,6 +93,7 @@ Akeneo\Pim\Structure\Component\Model\Attribute:
         code:
             - Type: string
             - NotBlank: ~
+            - Akeneo\Pim\Structure\Component\Validator\Constraints\BlacklistedAttributeCode: {}
             - Regex:
                 pattern: /^[a-zA-Z0-9_]+$/
                 message: Attribute code may contain only letters, numbers and underscore
@@ -429,9 +453,19 @@ Akeneo\Pim\Structure\Component\Model\Attribute:
                 exactMessage: This attribute cannot have available locales.
                 groups:
                     - pim_catalog_identifier
+        guidelines:
+            - Type: array
+            - All:
+                - Type: string
+                - Length:
+                      max: 500
     getters:
         group:
             - Valid: ~
+        guidelinesLocaleCodes:
+            - All:
+                - Akeneo\Channel\Component\Validator\Constraint\Locale:
+                    propertyPath: guidelines
 
 Akeneo\Pim\Structure\Component\Model\AttributeTranslation:
     properties:

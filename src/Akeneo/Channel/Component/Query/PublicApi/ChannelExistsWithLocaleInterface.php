@@ -23,4 +23,6 @@ interface ChannelExistsWithLocaleInterface
     public function isLocaleActive(string $localeCode): bool;
 
     public function isLocaleBoundToChannel(string $localeCode, string $channelCode): bool;
+
+    public function clearCache();
 }

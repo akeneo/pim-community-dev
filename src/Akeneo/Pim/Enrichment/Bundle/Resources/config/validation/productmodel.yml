@@ -7,7 +7,6 @@ Akeneo\Pim\Enrichment\Component\Product\Model\ProductModel:
         - Akeneo\Pim\Enrichment\Component\Product\Validator\Constraints\OnlyExpectedAttributes: ~
         - Akeneo\Pim\Enrichment\Component\Product\Validator\Constraints\UniqueVariantAxis:
             groups: [UniqueAxis]
-        - Akeneo\Pim\Enrichment\Component\Product\Validator\Constraints\ImmutableVariantAxesValues: ~
         - Akeneo\Pim\Enrichment\Component\Product\Validator\Constraints\NotEmptyVariantAxes: ~
         - Akeneo\Pim\Enrichment\Component\Product\Validator\Constraints\Product\UniqueProductModelEntity:
             message: pim_catalog.constraint.pim_immutable_product_model_validator

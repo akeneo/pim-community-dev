@@ -16,7 +16,7 @@ interface OptionsValueInterface extends ValueInterface
     /**
      * Return options codes
      */
-    public function getData(): ?array;
+    public function getData(): array;
 
     public function hasCode(string $code): bool;
     public function getOptionCodes(): array;
