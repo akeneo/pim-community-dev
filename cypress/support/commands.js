@@ -27,6 +27,7 @@
 import '@testing-library/cypress/add-commands';
 
 Cypress.Commands.add('login', (username, password) => {
+  cy.viewport(1280, 800)
   cy.visit('/user/login');
   cy.get('input[name="_username"]').type(username);
   cy.get('input[name="_password"]').type(password);
@@ -43,17 +44,34 @@ Cypress.Commands.add('goToProductsGrid', () => {
   cy.intercept('/datagrid_view/rest/product-grid/default*').as('productDatagridViews');
   cy.wait('@productDatagridViews');
   cy.wait('@productDatagrid');
+
+  // switch to the "ungrouped" view to have only products
+  cy.get('.search-zone').find('div[data-type="grouped-variant"]').click()
+  cy.get('.search-zone').find('span[data-value="product"]').click()
+  cy.wait('@productDatagrid');
 });
 
 Cypress.Commands.add('selectFirstProductInDatagrid', () => {
+  Cypress.on('uncaught:exception', (err, runnable, promise) => {
+    // when the exception originated from an unhandled promise
+    // rejection, the promise is provided as a third argument
+    // you can turn off failing the test in this case
+    if (promise) {
+      return false
+    }
+    // we still want to ensure there are no other unexpected
+    // errors, so we let them fail the test
+  })
   cy.findAllByRole('row').eq(1).click();
 
-  cy.intercept('GET', '/enrich/product/rest/*').as('getProduct');
+  cy.intercept('GET', /\/enrich\/product\/rest\/.*/).as('getProduct');
+  cy.intercept('GET', /\/configuration\/rest\/.*/).as('configuration');
   cy.wait('@getProduct');
+  cy.wait('@configuration');
 });
 
 Cypress.Commands.add('saveProduct', () => {
-  cy.intercept('POST', '/enrich/product/rest/*').as('saveProduct');
+  cy.intercept('POST', /\/enrich\/product\/rest\/.*/).as('saveProduct');
 
   cy.findByText('Save').click();
 
@@ -65,5 +83,5 @@ Cypress.Commands.add('updateField', (label, value) => {
 });
 
 Cypress.Commands.add('findFirstTextField', () => {
-  return cy.get('input.AknTextField').first();
+  return cy.get('.edit-form').find('.akeneo-text-field input:not([disabled]).AknTextField').first();
 });
