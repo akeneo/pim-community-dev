@@ -3,16 +3,16 @@ import {Dropdown} from "../../../Dropdown/Dropdown";
 import {useBooleanState, useDebounce, usePaginatedResults} from "../../../../hooks";
 import {ArrowDownIcon, CloseIcon} from "../../../../icons";
 import {Search} from "../../../Search/Search";
-import styled from "styled-components";
+import styled, {css} from "styled-components";
 import {IconButton} from "../../../IconButton/IconButton";
-import {CommonStyle, getColor} from "../../../../theme";
+import {AkeneoThemedProps, CommonStyle, getColor} from "../../../../theme";
 
 const SelectButtonDropdown = styled(Dropdown)`
   width: 100%;
   cursor: pointer;
 `;
 
-const SelectButton = styled.button`
+const SelectButton = styled.button<{highlighted: boolean} & AkeneoThemedProps>`
   color: ${getColor('grey', 140)};
   width: 100%;
   background: none;
@@ -25,6 +25,16 @@ const SelectButton = styled.button`
   line-height: 39px;
   align-items: center;
   cursor: pointer;
+  
+  ${({highlighted}) =>
+  highlighted
+    ? css`
+          background: ${getColor('green', 10)};
+          box-shadow: 0 0 0 1px ${getColor('green', 80)};
+        `
+    : css`
+          background: none;
+        `};
 `;
 
 const IconsPart = styled.div`
@@ -74,7 +84,7 @@ const TableInputSelect: React.FC<TableInputSelectProps> = ({
     };
 
     return <SelectButtonDropdown {...rest}>
-        <SelectButton onClick={open} tabIndex={-1}>
+        <SelectButton onClick={open} tabIndex={-1} highlighted={highlighted}>
           {value}
         </SelectButton>
         <IconsPart>
