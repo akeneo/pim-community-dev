@@ -12,22 +12,6 @@ pimee_workflow:
     status:
       label: Status
       working_copy: Kopia robocza
-      in_progress: W Toku
-      ready: Oczekuje na akceptację
-      can_be_partially_reviewed: Może być częściowo przejrzane
-      can_not_be_approved: Nie może być usunięty
-      can_not_be_deleted: Nie może być usunięty
-    status_message:
-      can_be_partially_reviewed: Możesz przejrzeć tą propozycję tylko częściowo, ponieważ niektóre zmiany dotyczą wartości, których nie możesz edytować. Skontaktuj się z administratorem, aby zmienić swoje uprawnienia.
-      can_not_be_approved: Nie możesz przejrzeć tej propozycji, ponieważ wszystkie zmiany dotyczą wartości, których nie możesz edytować. Skontaktuj się z administratorem, aby zmienić swoje uprawnienia.
-      can_not_be_deleted: Nie możesz usunąć tej propozycji, ponieważ wszystkie zmiany dotyczą wartości, których nie możesz edytować. Skontaktuj się z administratorem, aby zmienić swoje uprawnienia.
-      in_progress: Ta propozycja jest obecnie w tworzeniu i nie może być jeszcze opublikowana.
-    action:
-      approve: Zatwierdź wszystkie
-      refuse: Odrzuć wszystkie
-      remove: Usuń
-      partial_approve: Zatwierdź zmiany w atrybucie %attribute% produktu %product%
-      partial_reject: Odrzuć zmiany w atrybucie %attribute% produktu %product%
     notification:
       partial_approve: '%owner% zaakceptował watrość(i) dla %attributes% dla produktu %product%'
       partial_approve_number: '%owner% zaakceptował wartości dla %attributes_count% atrybutów dla produktu %product%'
@@ -38,6 +22,7 @@ pimee_workflow:
       approve: '%owner% zaakceptował twoją propozycję dla produktu %product%'
       refuse: '%owner% odrzucił twoją propozycję dla produktu %product%'
       remove: '%owner% usunął twoją propozycję dla produktu %product%'
+      mass_edit_sent_for_approval: 'Masowa edycja <strong>%jobLabel%</strong> zakończona: wygenerowano następującą liczbę propozycji %sentForApprovalCount% z następującej liczby produktów: %readProductsCount%'
     mass_review_action:
       approve: Zatwierdź wszystkie zaznaczone
       refuse: Odrzuć wszystkie zaznaczone
@@ -51,9 +36,6 @@ pimee_workflow:
     individual_import: '%author.firstname% %author.lastname% wysłał propozycje przeglądu z importu pracy'
     generic_import: Masz propozycję do przejrzenia z importu zadań
     original_value: Oryginał
-    new_value: Nowy
-    no_diff: Wartość "%value%" jest taka sama między propozycją a kopią roboczą.
-    draft_in_progress: Projekt jest w toku przez %author% dla tego produktu.
   published_product:
     index: Opublikowany produkty
     title: Opublikowany produkt

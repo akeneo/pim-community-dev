@@ -14,9 +14,11 @@ teamwork_assistant:
     message: Masz nowe produkty do wzbogacenia dla "%project_label%". Terminem płatności jest "%due_date%".
     project_finished:
       contributor: Gratulacje! Ukończyłeś produkt w 100% za pomocą %project_label%.
+      owner: 'Projekt <strong>%project_label%</strong> przypadający na <strong>%due_date%</strong> został zakończony.'
       show: Pokaż
     due_date:
       contributor: Jesteś w %percent%% ukończenia produktu za pomocą %project_label%. Nie zapomnij, aby wypełnić ostatnie produkty dla %due_date%.
+      owner: 'Projekt <strong>%project_label%</strong> przypadający na <strong>%due_date%</strong> nie został jeszcze zakończony.'
       start: Start
   datagrid:
     project_completeness: Postęp projektu
@@ -30,6 +32,9 @@ teamwork_assistant:
     deletion:
       user_linked_to_project: Ten użytkownik jest nadal powiązany z jednym lub kilkoma projektami. Usuń grupy, z którymi jest połączony na koncie użytkownika
       user_is_project_owner: Ten użytkownik jest nadal właścicielem jednego lub więcej projektów. Proszę usunąć wszystkie projekty tego użytkownika.
+  user_group:
+    deletion:
+      group_linked_to_project: Ta grupa użytkowników jest używana w projekcie Asystent pracy zespołowej. Nie można jej usunąć
 job_execution:
   summary:
     processed_products: Przetworzone produkty

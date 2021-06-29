@@ -7,11 +7,17 @@ akeneo_data_quality_insights:
         recommendation: Atrybuty z problemami z małymi literami
       consistency_spelling:
         recommendation: Atrybuty z problemami z pisownią
+      consistency_attribute_spelling:
+        recommendation: Etykiety atrybutów z błędami pisowni
+      consistency_attribute_option_spelling:
+        recommendation: Opcje atrybutów z błędami pisowni
     axis:
       consistency:
         title: Spójność
         attributes_link: Wyświetl wszystkie atrybuty, które można ulepszyć
         success: Twoje dane produktu są w pełni spójne. Gratulacje!
+    messages:
+      add_image_attribute_recommendation: Obraz jest warty tysiąca słów. Dodaj zbiór zasobów lub atrybut obrazu, aby poprawić jakość danych tego produktu.
   product_edit_form:
     attribute_filter:
       all_improvable_attributes: Wszystkie atrybuty, które można ulepszyć
@@ -24,3 +30,89 @@ akeneo_data_quality_insights:
     quality:
       to_improve: Do poprawy
       good: Dobrze
+      in_progress: Przetwarzanie
+      n_a: ND.
+  attribute_edit_form:
+    quality_summary: 'Ulepszając ten atrybut poprawisz ogólną jakość następującej liczby produktów: {{ count }}.'
+  spellcheck:
+    popover:
+      default_aria_label: Sugestie poprawy pisowni
+      aria_label: "Sugestie poprawy pisowni dla: {{ mistake }}"
+  dqi_dashboard:
+    key_indicators:
+      attributes_to_work_on: '{1}Masz <button>1 atrybut</button> do opracowania.|]1, 200[Masz <button>{{ count }} atrybutów</button> do opracowania. [200, Inf[Masz więcej niż <button>{{ count }} atrybutów</button> do opracowania.'
+      list:
+        has_image:
+          no_data: Kolekcje zasobów i atrybuty obrazów wydają się być puste. Prześlij obrazy dla tego kluczowego wskaźnika, aby podkreślić jakość produktów.
+        attributes_perfect_spelling:
+          title: Prawidłowo nazwane atrybuty
+          no_data: Nazwy atrybutów i opcji wydają się być puste. Wypełnij je dla tego kluczowego wskaźnika, aby podkreślić jakość atrybutów.
+          messages:
+            first_step:
+              message1: Męczysz się z etykietami atrybutów i opcji? A może warto wrócić do podstaw <a href="{{ link }}" target="_blank">tutaj</a>?
+              message2: Potrzebujesz pomocy z atrybutami i opcjami atrybutów? Spójrz <a href="{{ link }}" target="_blank">tutaj<a href="{{ link }}" target="_blank">!
+            second_step:
+              message1: Zapoznaj się z etykietami atrybutów i opcji. Twoje produkty będą wyglądać jeszcze lepiej.
+              message2: Wyglądasz na zagubioną osobę! Niektóre z Twoich etykiet nadal wymagają dopracowania.
+            third_step:
+              message1: Jesteś tak blisko! Wystarczy kilka ostatnich poprawek i wszystko będzie gotowe.
+              message2: Niektóre z atrybutów i etykiet nadal potrzebują dopracowania, ale jesteś na dobrej drodze.
+            perfect_score_step:
+              message1: Twój katalog jest gotowy! Świetna robota!
+              message2: Świetna robota z etykietami atrybutów i opcji!
+        values_perfect_spelling:
+          title: Produkty z idealną pisownią w tekstowych wartościach produktów
+          no_data: Obszary tekstu wydają się być puste. Wzbogać je dla tego kluczowego wskaźnika, aby podkreślić jakość produktów.
+          messages:
+            first_step:
+              message1: Twoje produkty zasługują na odpowiedni opis. Sprawdź pisownię!
+              message2: To od Ciebie zależy powodzenie Twoich produktów. Przyjrzyj się bliżej pisowni.
+              message3: Opisy produktów są wizytówką firmy. Pozbądźmy się błędów pisowni! Pierwsze wrażenie ma znaczenie.
+              message4: Im więcej błędów, tym gorsze wrażenie. Zwróć szczególną uwagę na pisownię.
+            second_step:
+              message1: Masz już świetne produkty, teraz potrzebujesz świetnej pisowni!
+              message2: Błędna pisownia może odstraszyć klienta. Pilnuj się!
+              message3: Niektóre z produktów wymagają trochę dopracowania. Uważaj na błędy pisowni!
+            third_step:
+              message1: Świetna pisownia robi różnice. Już niedaleko!
+              message2: Już prawie masz doskonałą pisownię!
+              message3: Jesteś kilka błędów pisowni od doskonałych wartości produktów.
+              message4: Jeszcze tylko trochę więcej wysiłku na rzecz doskonałych opisów produktów!
+            perfect_score_step:
+              message1: Idealna pisownia w całym katalogu. Dobra robota!
+              message2: "To imponujące: Twoje produkty są bezbłędne!"
+              message3: Niesamowita robota! Poprawiono 100% błędów pisowni. Gratulacje!
+  product_grid:
+    filter_label:
+      spelling_quality: Jakość pisowni
+  dictionary:
+    helper:
+      content: Słownik umożliwia rejestrowanie słów, które będą ignorowane przez Wgląd w jakość danych.
+      link_label: Więcej informacji znajduje się w naszym centrum pomocy.
+    words: Słowa
+    searchPlaceholder: Wyszukaj słowo
+    add_words: Dodaj słowa tutaj
+    no_search_results:
+      title: Brak wyników wyszukiwania
+      subtitle: Spróbuj ponownie, podając nowe kryteria wyszukiwania.
+    no_data:
+      title: Nie ma jeszcze żadnych słów
+      subtitle: Dodaj pierwsze powyżej. Kliknij "Dodaj" lub naciśnij Enter.
+pimee_enrich.entity.locale:
+  grid:
+    columns:
+      dictionary_words_count:
+        title: Liczba słów
+        label: "]-Inf, 1]{{ count }} słowo|]1, Inf[{{ count }} słów"
+        not_available: Niedostępne
+    add_words: Dodaj słowa
+    items_selected: "{1}1 wybrany element|[2, Inf[{{ count }} wybranych elementów"
+    modal:
+      title: 'Dodaj słowa do następującej liczby języków: {{ count }}'
+      subtitle: Wprowadź słowa poniżej. Zostaną one dodane do wszystkich wybranych języków.
+      locales_added_notification:
+        title: 'Dodano słowa do następującej liczby języków: {{ count }}'
+        content: Nowe słowa zostały dodane do słowników wybranych języków.
+      no_supported_locales:
+        title: Wybrane języki nie mogą być sprawdzane pod kątem pisowni przez Wgląd w jakość danych.
+        content: Aby poznać listę obsługiwanych wersji językowych, sprawdź nasze <a href="{{ link }}" target="_blank">Centrum Pomocy</a>

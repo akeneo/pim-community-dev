@@ -10,6 +10,7 @@ pim_asset_manager:
         message: Przepraszamy, nie wyświetlamy tego osadzonego elementu, ale zostanie on poprawnie zapisany
   result_counter: '{0} Brak wyników|{1} {{ count }} wynik|[1,Inf] {{ count }} wyników'
   asset_counter: '{0} Brak zasobów|{1} {{ count }} zasób|[1,Inf] {{ count }} zasobów'
+  asset_selected: '{0} {{ assetCount }} wybranych zasobów|{1} {{ assetCount }} wybrany zasób|]1,Inf] {{ assetCount }} wybranych zasobów'
   asset_collection:
     add_asset: 'Dodaj zasób'
     upload_asset: 'Wczytaj zasób'
@@ -45,7 +46,6 @@ pim_asset_manager:
     filter:
       title: Filtry zasobów
     basket:
-      title: '{{ assetCount }} wybrany zasób|{{ assetCount }} wybranych/e zasobów/y'
       empty_title: Twój koszyk jest pusty
       remove_one_asset: Usuń zasób {{ assetName }} z wyboru zasobów
       remove_all_assets: Usuń wszystkie
@@ -58,7 +58,6 @@ pim_asset_manager:
     download: Pobierz
     copy_url: Kopiuj adres URL
     error: Wystąpił błąd podczas renderowania podglądu
-  close: Zamknij modal
   breadcrumb:
     products: Produkty
   app:
@@ -119,6 +118,7 @@ pim_asset_manager:
       edit: Edytuj rodzinę
       view: Zobacz rodzinę
       execute_product_link_rules: Wykonaj reguły
+      execute_naming_convention: Wykonaj konwencję nazewnictwa
     permission:
       title: Uprawnienia rodziny zasobów
     title: Zasoby
@@ -133,24 +133,27 @@ pim_asset_manager:
       product_link_rules: Reguły linkowania produktu
     transformations:
       help:
-        title: 'Witaj w nowym obszarze zarządzania zasobami!'
-        description: 'Tutaj możesz zdefiniować do 10 transformacji w rodzinie zasobów.'
-        link: 'Jeśli chcesz dowiedzieć się więcej o nowych transformacjach Menedżera Zasobów, kliknij tutaj'
+        description: Możesz zdefiniować do 10 transformacji w rodzinie zasobów.
+        link: Jeśli chcesz zagłębić się w transformacje zasobów, kliknij tutaj.
       subsection: 'Właściwości transformacji'
     product_link_rules:
       naming_convention_subsection: 'Właściwości konwencji nazewnictwa'
       product_link_rules_subsection: 'Właściwości reguł linkowania produktu'
       help:
-        title: 'Witaj w nowym obszarze zarządzania zasobami!'
-        description: 'Tu możesz określić do dwóch reguł linkowania produktów na rodzinę zasobów.'
-        link: 'Jeśli chcesz dowiedzieć się więcej o regułach linkowania produktów, kliknij tutaj'
+        description: 'Tu możesz określić do 2 reguł linkowania produktów na rodzinę zasobów.'
+        link: 'Jeśli chcesz dowiedzieć się więcej o regułach linkowania produktów, kliknij tutaj.'
       execute_rules:
         confirm_title: Potwierdź wykonanie
         confirm_content: Czy na pewno chcesz wykonać wszystkie reguły? (może to zająć dużo czasu)
         execute_rules: Wykonaj reguły
-        cancel: Anuluj
       execute_naming_convention:
-        cancel: Anuluj
+        confirm_title: Potwierdź wykonanie
+        confirm_content: Czy na pewno chcesz wykonać konwencję nazewnictwa? (może to zająć dużo czasu)
+        execute_naming_convention: Wykonaj konwencję nazewnictwa
+    naming_convention:
+      help:
+        description: Tutaj możesz zdefiniować właściwości konwencji nazewnictwa.
+        link: Dowiedz się wszystkiego, czego potrzebujesz o formacie.
     properties:
       title: Właściwości rodziny zasobów
       identifier: Kod
@@ -185,10 +188,9 @@ pim_asset_manager:
       input:
         label: Etykieta
         code: Kod (wymagany)
-      confirm: Zapisz
     delete:
       message: Czy na pewno chcesz usunąć rodzinę zasobów"{{ assetFamilyLabel }}"?
-      title: Atrybut
+      title: Rodzina zasobów
     edit:
       discard_changes: Stracisz zmiany w rodzinie zasobów "{{ assetFamilyLabel }}" jeśli opuścisz stronę.
     notification:
@@ -207,6 +209,9 @@ pim_asset_manager:
       execute_product_link_rules:
         success: Reguły linkowania do produktu zostały uruchomione
         fail: Wystąpił błąd podczas próby uruchomienia reguł linkowania produktu
+      execute_naming_convention:
+        success: Uruchomiono konwencję nazewnictwa
+        fail: Wystąpił błąd podczas próby uruchomienia konwencji nazewnictwa
     helper:
       title: Witaj w Menedżerze Zasobów!
       no_asset:
@@ -239,6 +244,7 @@ pim_asset_manager:
       code:
         pattern: 'To pole może zawierać tylko litery, cyfry i podkreślenia.'
         should_be_unique: 'Ten kod już istnieje dla innego zasobu.'
+      server_error: 'Wystąpił błąd podczas tworzenia zasobu'
     no_data:
       title: Brak zasobów dla {{ entityLabel }}
       subtitle: Kliknij przycisk "Dodaj nowe", aby utworzyć pierwszy zasób
@@ -250,11 +256,11 @@ pim_asset_manager:
       error:
         value: Ups, wydaje się, że wyświetlanie pola "{{ fieldName }}" nie powiodło się. Zobacz konsolę deweloperską, aby uzyskać więcej informacji.
     button:
+      save_and_execute_naming_convention: Zapisz i wykonaj konwencję nazewnictwa
       save: Zapisz
       create: Utwórz zasób
       mass_upload: Masowe przesyłanie
       delete: Usuń
-      delete_all: Usuń wszystkie zasoby
       back: Powrót do listy
       launch_transformations: Uruchom transformacje
       fullscreen: Pełny ekran
@@ -269,6 +275,7 @@ pim_asset_manager:
         subtitle: 'Aby rozpocząć powiązanie produktów z tą rodziną zasobów, możesz utworzyć nowy: '
         link: Utwórz nowy atrybut produktu
       not_enough_items:
+        title: Możesz zobaczyć tylko {{ productCount }}/{{ totalCount }} produktów.
         subtitle:
           usable_in_grid: Aby odkryć wszystkie powiązane produkty, kliknij poniżej!
           not_usable_in_grid: Aby odkryć wszystkie powiązane produkty, atrybut produktu musi być ustawiony jako „używalny w tabeli”.
@@ -294,7 +301,6 @@ pim_asset_manager:
         label: Etykieta
         code: Kod (wymagany)
         create_another: Utwórz kolejny zasób
-      confirm: Zapisz
     upload:
       line_count: '[0,1]{{ count }} plik|]1,Inf] {{ count }} plików'
       title: Wczytaj zasoby
@@ -328,8 +334,30 @@ pim_asset_manager:
     delete:
       message: Czy na pewno chcesz usunąć zasób "{{ assetLabel }}"? Jeśli jest on powiązany z produktami, linki zostaną usunięte.
       title: Zasób
-    delete_all:
-      confirm: Czy na pewno chcesz usunąć wszystkie zasoby "{{ entityIdentifier }}"? Jeśli są powiązane z produktami, linki do produktów zostaną usunięte.
+    mass_delete:
+      confirm: '[0,1]Czy na pewno chcesz usunąć {{ assetCount }} wybrany rekord?|]1,Inf]Czy na pewno chcesz usunąć {{ assetCount }} wybranych rekordów?'
+      extra_information: Jeśli są one powiązane z produktami, linki do produktów zostaną usunięte.
+      confirm_label: Wprowadź "{{ assetFamilyIdentifier }}"
+      title: Zasoby
+    mass_edit:
+      subtitle: Działanie zbiorcze na zasobach
+      title: "[0, 1]Edytuj wartości atrybutów następującej liczby zasobów: {{ count }}|]1,Inf] Edytuj wartości atrybutów następującej liczby zasobów: {{ count }}"
+      attribute_selected: "{0}Nie wybrano atrybutu|{1}Wybrano jeden atrybut|]1,Inf] {{ count }} wybranych atrybutów"
+      empty_selection:
+        title: Wybór atrybutów jest pusty. Dodaj atrybuty do edycji.
+        body: Nie wiesz czym jest działanie zbiorcze?
+        link: Spójrz na ten artykuł.
+      action:
+        append: Dodaj
+        replace: Zastąp
+      select:
+        channel: Wybierz kanał
+        locale: Wybierz wersję językową
+        action: Wybierz działanie
+      helper:
+        content: Pamiętaj, że możliwe jest wielokrotne dodanie tego samego atrybutu, więc upewnij się, że starannie wybierasz atrybuty.
+        link: Aby uniknąć jakichkolwiek problemów, sprawdź naszą dokumentację.
+      unsupported_attribute: Ten typ atrybutu "{{ attributeType }}" nie jest obsługiwany
     grid:
       search: Szukaj na etykiecie, kodzie i tekstach atrybutów
       filter:
@@ -371,9 +399,18 @@ pim_asset_manager:
       delete:
         success: Zasób "{{ code }}" został usunięty.
         fail: Wystąpił błąd podczas usuwania zasobu
-      delete_all:
-        success: Usunięto wszystkie zasoby "{{ entityIdentifier }}".
-        fail: Wystąpił błąd podczas usuwania wszystkich zasobów tej rodziny
+      mass_delete:
+        success: Zbiorcze działanie "Masowe usuwanie" zostało uruchomione. Otrzymasz powiadomienie o jego zakończeniu.
+        fail: Wystąpił błąd podczas uruchamiania zadania masowego usuwania
+      mass_edit:
+        launch:
+          success: Zbiorcze działanie "Masowa edycja" zostało uruchomione. Otrzymasz powiadomienie o jego zakończeniu.
+          fail: Wystąpił błąd podczas uruchamiania zadania masowej edycji
+        validation:
+          fail: Wystąpił błąd podczas sprawdzania poprawności masowej edycji
+      execute_naming_convention:
+        success: Uruchomiono konwencję nazewnictwa
+        fail: Wystąpił błąd podczas wykonywania konwencji nazewnictwa
     completeness:
       label: Zakończone
   attribute:
@@ -415,7 +452,6 @@ pim_asset_manager:
         value_per_channel: Wartość dla kanału
       placeholder:
         asset_type: Wybierz powiązaną rodzinę zasobów
-      confirm: Zapisz
     edit:
       delete: Usuń atrybut
       title: Edytuj atrybut {{ code }}
@@ -488,12 +524,9 @@ pim_asset_manager:
       read_only: Ten link do mediów jest tylko do odczytu
       uploading: Wysyłanie...
     used_as_transformation_target: To pole jest tylko do odczytu, ponieważ jest używane jako cel w transformacji zasobów.
-  modal:
-    delete:
-      subtitle: Potwierdź usunięcie
-      button:
-        cancel: Anuluj
-        confirm: Usuń
+  jobs:
+    asset_manager_execute_naming_convention:
+      error: 'Wystąpił błąd konwencji nazewnictwa na zasobie "{{ asset }}"'
 pim_enrich:
   confirmation:
     discard_changes: 'Utracisz wszystkie zmiany w obiekcie "{{ entity }}", jeśli opuścisz tę stronę.'
@@ -525,6 +558,28 @@ pim_import_export:
       job_type:
         asset_manager_compute_transformations: "Wykonaj transformację zasobów"
         asset_manager_link_assets_to_products: "Połącz zasoby z produktami"
+        asset_manager_execute_naming_convention: Wykonaj konwencję nazewnictwa rodziny zasobów
+  form:
+    job_instance:
+      tab:
+        properties:
+          with_prefix_suffix:
+            title: Eksportuj prefiks i sufiks
+            help: Eksportuj prefiksy i sufiksy atrybutów zasobów linków do multimediów
+pim_datagrid:
+  cells:
+    type:
+      asset_manager_execute_naming_convention: Wykonaj konwencję nazewnictwa rodziny zasobów
+      asset_manager_mass_delete_assets: Wykonaj masowe usuwanie zasobów
+      asset_manager_mass_edit_assets: Wykonaj masową edycję zasobów
+batch_jobs:
+  default_steps:
+    execute_naming_convention: Wykonaj konwencję nazewnictwa rodziny zasobów
+    mass_delete_assets: Wykonaj masowe usuwanie zasobów
+    mass_edit_assets: Wykonaj masową edycję zasobów
+    link_assets_to_products: Połącz zasoby z produktami
 job_execution:
   summary:
     assets: Zasoby
+pim_notification.types.asset_manager_mass_delete_assets: Masowe usuwanie zasobów
+pim_notification.types.asset_manager_mass_edit_assets: Masowa edycja zasobów

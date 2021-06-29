@@ -1,8 +1,19 @@
+batch_jobs.akeneo_shared_catalog.label: 공유 카탈로그 보내기
 pim_common:
+  recipients: 수신자
   branding: 브랜딩
+  result_count: "{0}0개 결과|{1}1개 결과|]1, Inf[{{ itemsCount }}개 결과"
+  items_selected: "{0}0개 항목 선택|{1}1개 항목 선택|]1, Inf[{{ itemsCount }}개 항목 선택"
 shared_catalog:
   recipients:
+    add: 여기에 사용자 이메일 추가
+    placeholder: betty@akeneo.com
     email: 이메일 주소
     invalid_email: 이 값은 유효한 이메일 주소가 아닙니다.
+    duplicates: 이 수신자와 이미 공유했습니다
+    helper: "새 공유 카탈로그에 액세스할 수 있도록 허용할 수신자를 추가하십시오. 주소 목록은 공백, 쉼표, 세미콜론, 줄 바꿈 구분 기호를 이용해 입력할 수 있습니다."
+    no_result: 죄송합니다. 검색과 일치하는 이메일이 없습니다
+    no_data: 선언된 이메일 주소가 없습니다
+    max_limit_reached: 500명의 수신자 제한에 도달했습니다.
   button:
     save: 저장 및 공유

@@ -1,6 +1,54 @@
 akeneo_referenceentity:
+  acl_group:
+    reference_entity: Obiekty referencyjne
   acl:
     reference_entity:
+      create: Utwórz obiekt
+      edit: Edytuj właściwości obiektu
+      delete: Usuń obiekt
       manage_permission: Zarządzaj uprawnieniami obiektu referencyjnego
+    record:
+      create: Utwórz rekord
+      edit: Edytuj rekordy
+      delete: Usuń rekordy
+      list_product: Lista produktów powiązanych z rekordem
+    attribute:
+      create: Dodaj atrybut do obiektu referencyjnego
+      edit: Edytuj atrybut obiektu referencyjnego
+      delete: Usuń atrybut obiektu referencyjnego
+    option:
+      edit: Edytuj opcje
+      delete: Usuń opcję
+  jobs:
+    reference_entity_mass_delete:
+      error: 'Masowe usuwanie rekordów "{{ records }}" nie powiodło się z błędem: "{{ error }}"'
+pim_analytics:
+  info_type:
+    nb_reference_entities: Liczba obiektów referencyjnych
+    max_number_of_records_per_reference_entity: Maksymalna liczba rekordów na obiekt referencyjny
+    average_number_of_values_per_records: Średnia liczba wartości na rekord we wszystkich obiektach referencyjnych
+    average_number_of_records_per_reference_entity: Średnia liczba rekordów na obiekt referencyjny
+    max_number_of_attributes_per_reference_entity: Maksymalna liczba atrybutów na obiekt referencyjny
+    average_number_of_attributes_per_reference_entity: Średnia liczba atrybutów na obiekt referencyjny
+    average_percentage_localizable_only_attributes: Średni procent tylko tłumaczonych atrybutów na obiekt referencyjny
+    average_percentage_scopable_only_attributes: Średni procent tylko zmiennych atrybutów na obiekt referencyjny
+    average_percentage_scopable_and_localizable_attributes: Średni procent tłumaczonych i zmiennych atrybutów na obiekt referencyjny
+pim_datagrid:
+  cells:
+    type:
+      reference_entity_mass_delete_records: Wykonaj masowe usuwanie rekordów
+  reference_entity_mass_delete_records: Masowe usuwanie rekordów
+job_execution:
+  summary:
+    records: Rekordy
+pim_notification:
+  types:
+    reference_entity_mass_delete_records: Masowe usuwanie rekordów
+pim_mass_edit:
+  notification:
+    reference_entity_mass_delete_records:
+      warning: Rekordy zostały pomyślnie usunięte z ostrzeżeniami
+      success: Usunięto rekordy
+      error: Usunięcie rekordu nie powiodło się
 akeneo_reference_entity: Pojedynczy link do obiektu referencyjnego
 akeneo_reference_entity_collection: Wielokrotne linki do obiektu referencyjnego

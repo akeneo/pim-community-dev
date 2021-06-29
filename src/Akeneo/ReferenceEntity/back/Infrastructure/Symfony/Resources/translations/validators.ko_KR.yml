@@ -7,6 +7,8 @@ pim_reference_entity:
         limit_reached: '%limit% 참조 엔터티 제한에 도달했으므로 참조 엔터티 "%reference_entity_label%"을(를) 만들 수 없습니다'
       records:
         should_have_no_record: '이 엔터티에 대한 레코드가 존재하므로 이 엔터티를 삭제할 수 없습니다'
+      reference_entity_attributes:
+        should_not_be_linked: '이 참조 엔터티를 삭제하려면 먼저 모든 참조 엔터티에서 특성을 확인한 다음, 여기에 연결된 특성을 삭제하십시오'
       reference_entity_permissions:
         at_least_one_user_group_should_have_edit_permission: '하나 이상의 사용자 그룹에 이 엔터티에 대한 편집 권한이 있어야 합니다.'
       product_attributes:
@@ -32,18 +34,21 @@ pim_reference_entity:
         codes_dont_exist: "다음 옵션 코드가 이 특성에서 존재하지 않습니다: \"%option_codes%\""
       record:
         should_exist: '레코드 "%record_code%"을(를) 찾지 못했습니다.'
+        should_not_be_used_as_product_variant_axis: '제품 변형 중 하나에서 변형 축으로 사용되는 이 엔터티를 제거할 수 없습니다'
       record_collection:
         should_exist: '레코드 "%record_codes%"을(를) 찾지 못했습니다.'
       limit_reached: '이 참조 엔터티의 %limit% 레코드 제한에 도달했으므로 "%record_label%" 레코드를 만들 수 없습니다'
       channel:
-        is_expected: '채널별 값이 있으므로 특성 "%attribute_code%"에 대한 채널이 필요합니다'
+        is_expected: '''%reference_entity_identifier%'' 참조 엔터티의 ''%attribute_code%'' 특성에는 채널당 하나의 값이 필요합니다.'
         is_not_expected: '채널별 값이 없으므로 특성 "%attribute_code%"에 대한 채널이 필요하지 않습니다'
         should_exist: '"%channel_identifier%" 채널이 존재하지 않습니다'
       locale:
-        is_expected: '로케일별 값이 있으므로 특성 "%attribute_code%"에 대한 로케일이 필요합니다'
+        is_expected: '''%reference_entity_identifier%'' 참조 엔터티의 ''%attribute_code%'' 특성에는 로케일당 하나의 값이 필요합니다.'
         is_not_expected: '로케일별 값이 없으므로 특성 "%attribute_code%"에 대한 로케일이 필요하지 않습니다'
         is_not_activated: '"%locale_identifier%" 로케일이 활성화되지 않았습니다.'
         is_not_activated_for_channel: '"%locale_identifier%" 로케일이 "%channel_identifier%" 채널에 대해 활성화되지 않았습니다.'
+      channel_and_locale:
+        are_expected: '''%reference_entity_identifier%'' 참조 엔터티의 ''%attribute_code%'' 특성에는 채널당 하나의 값과 로케일당 하나의 값이 필요합니다.'
       number:
         should_be_string: '이 필드는 문자열이어야 합니다'
         should_be_integer: '이 필드는 정수여야 합니다'

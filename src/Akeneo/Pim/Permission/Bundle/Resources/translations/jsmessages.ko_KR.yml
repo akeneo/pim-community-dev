@@ -3,6 +3,12 @@ pim_enrich:
     attribute:
       property:
         is_read_only: 읽기 전용
+pimee_import_export:
+  entity:
+    job_instance:
+      flash:
+        update:
+          fail_empty_permission: 작업을 편집하려면 하나 이상의 항목을 선택해야 합니다
 pimee_enrich.entity.category:
   module:
     permissions:
@@ -50,3 +56,14 @@ batch_jobs:
     send_for_approval: 승인용으로 보내기
 pim_title:
   pimee_enrich_locale_edit: 로케일 | 편집
+pim_analytics:
+  info_type:
+    nb_custom_locale_accesses: 사용자 지정 로케일 액세스 수
+    nb_custom_category_accesses: 사용자 지정 카테고리 액세스 수
+    nb_custom_attribute_group_accesses: 사용자 지정 특성 그룹 액세스 수
+category.permissions:
+  view.label: 제품 보기 허용됨
+  edit.label: 제품 편집 허용됨
+  own.label: 제품 소유 허용됨
+  own.help: 제품 검토, 게시, 게시 취소, 분류 및 연결
+  no_access_to_products: 트리의 제품에 액세스할 수 있는 권한이 없습니다. 관리자에게 문의하십시오.

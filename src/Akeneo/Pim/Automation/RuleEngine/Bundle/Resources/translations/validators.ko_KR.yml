@@ -1,0 +1,64 @@
+pimee_catalog_rule:
+  rule_definition:
+    validation:
+      locale:
+        unknown: '''{{ locale_code }}'' 로케일이 없거나 활성화되지 않았습니다'
+      currency:
+        unknown: '유효한 통화가 필요합니다. ''{{ currency }}'' 통화가 없거나 활성화되지 않았습니다'
+        missing_key: '''{{ key }}'' 키가 누락되었거나 비어 있습니다'
+        unexpected_key: '{{ key }} 키가 적절하지 않습니다'
+      measurement:
+        invalid_unit: '"{{ unitCode }}" 단위 코드가 없거나 "{{ attributeCode }}" 특성의 측정 패밀리에 속하지 않습니다'
+        invalid_attribute_type: '{{ key }} 키가 {{ attributeCode }} 특성에 적절하지 않습니다'
+      attribute:
+        unknown: '''{{ code }}'' 특성이 없습니다'
+        unexpected_type: '"{{ attribute_code }}" 특성에 유효하지 않은 "{{ invalid_type }}" 특성 유형이 있습니다. 필요한 특성은 {{ expected_types }}입니다'
+        missing_locale: '''{{ attributeCode }}'' 특성에는 로케일이 필요합니다'
+        unexpected_locale: '''{{ attributeCode }}'' 특성에는 로케일이 필요하지 않습니다. 제거하십시오'
+        unknown_locale: '''{{ attributeCode }}'' 특성에 기존에 있으며 활성화된 로케일이 필요합니다. 로케일이 있으며 활성화되었는지 확인하십시오'
+        invalid_specific_locale: '''{{ attributeCode }}'' 특성이 특정 로케일에 한정되며 다음 로케일 중 하나가 필요합니다. {{ expectedLocales }}'
+        locale_not_bound_to_channel: '''{{ invalidLocale }}'' 로케일이 ''{{ channelCode }}'' 채널에 없습니다'
+        missing_scope: '''{{ attributeCode }}'' 특성에 범위가 필요합니다'
+        unexpected_scope: '''{{ attributeCode }}'' 특성에는 범위가 필요하지 않습니다. 제거하십시오'
+        unknown_scope: '''{{ attributeCode }}'' 특성에 기존 범위가 필요합니다'
+      invalid_code: '규칙 코드는 문자, 숫자 및 밑줄만 포함할 수 있습니다'
+      conditions:
+        missing_key: '''conditions'' 키가 누락되었거나 비어 있습니다'
+        missing_value_key: '''value'' 키가 누락되었거나 비어 있습니다'
+        missing_operator_key: '''operator'' 키가 누락되었거나 비어 있습니다'
+        existing_field: '''{{ field }}'' 필드를 필터링할 수 없거나 ''{{ operator }}'' 연산자와 함께 사용할 수 없습니다'
+        missing_field_key: '''field'' 키가 누락되었거나 비어 있습니다'
+      actions:
+        missing_key: '''actions'' 키가 누락되었거나 비어 있습니다'
+        add:
+          invalid_field: '''{{ field }}'' 필드에 항목을 추가할 수 없습니다'
+        clear:
+          invalid_field: '''{{ field }}'' 필드의 데이터를 지울 수 없습니다'
+        copy:
+          invalid_fields: '''{{ from_field }}'' 필드의 데이터를 ''{{ to_field }}''(으)로 복사할 수 없습니다'
+          missing_from_field_key: '''from_field'' 키가 누락되었거나 비어 있습니다'
+          missing_to_field_key: '''to_field'' 키가 누락되었거나 비어 있습니다'
+        concatenate:
+          invalid_source: '''{{ field }}'' 필드의 데이터를 연결할 수 없습니다'
+          missing_source_key: '''field'', ''text'' 또는 ''new_line'' 중에서 단 하나의 키가 필요합니다. 하나를 선택하십시오'
+          only_one_source_key_expected: '''field'', ''text'' 또는 ''new_line'' 중에서 단 하나의 키가 필요합니다. 하나만 선택하십시오'
+          text_target_does_not_accept_new_line: '''{{ targetField }}'' 대상 특성에서는 새 라인이 허용되지 않습니다'
+          unexpected_source_option: '{{ key }} 키가 {{ attribute }} 특성에 적절하지 않습니다'
+          missing_from_key: '''from'' 키가 누락되었거나 비어 있습니다'
+          missing_to_key: '''to'' 키가 누락되었거나 비어 있습니다'
+          source_count: '이 값은 2개 이상의 요소를 포함해야 합니다'
+        calculate:
+          division_by_zero: '0으로는 나눌 수 없습니다'
+          missing_operand_key: '''value'' 또는 ''field'' 키가 필요하나 둘 다 없거나 비어 있습니다'
+          only_one_key_expected: '''value'' 또는 ''field'' 키가 필요합니다. 하나를 선택하십시오'
+          unexpected_key: '''{{ key }}'' 키가 적절하지 않습니다'
+          invalid_operator: '이 값은 ''add'', ''subtract'', ''multiply'' 또는 ''divide''여야 합니다'
+        remove:
+          invalid_field: '''{{ field }}'' 필드의 항목을 제거할 수 없습니다'
+          include_children_option: '''include_children'' 옵션은 ''categories'' 필드를 함께 사용해야 적용할 수 있습니다'
+        set:
+          invalid_field: '''{{ field }}'' 필드에 데이터를 설정할 수 없습니다'
+          missing_value_key: '''value'' 키가 누락되었거나 비어 있습니다'
+        custom:
+          unkown_type: '알 수 없는 작업 유형'
+          missing_type_key: '''type'' 키가 누락되었거나 비어 있습니다'

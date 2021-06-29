@@ -90,6 +90,8 @@ pim_asset_manager:
         should_be_numeric: 'Ce champ doit être une valeur numérique avec le bon séparateur de décimales'
       main_media:
         not_main_media_attribute: 'L''attribut attendu comme média principal est "%main_media_attribute%", "%attribute%" fourni.'
+      media_link:
+        protocol_not_allowed: 'Ce champ devrait commencer par un protocole valide. Les protocoles autorisés sont : %allowed_protocols%.'
   attribute:
     validation:
       options:
@@ -127,6 +129,7 @@ pim_asset_manager:
         asset_family_should_exist: 'La famille de ressources numériques "%asset_family_code%" n''existe pas.'
       prefix:
         should_not_be_empty: 'Le préfixe ne peut pas être une chaîne vide.'
+        protocol_not_allowed: 'Ce champ devrait commencer par un protocole valide. Les protocoles autorisés sont : %allowed_protocols%.'
       suffix:
         should_not_be_empty: 'Le suffixe ne peut pas être une chaîne vide.'
       media_type:
