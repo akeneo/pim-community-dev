@@ -22,11 +22,25 @@ pim_enrich:
     user:
       flash:
         delete:
-          fail: 사용자를 삭제할 수 없습니다
-          success: 사용자가 삭제되었습니다
+          fail: 사용자를 삭제할 수 없습니다.
+          success: 사용자가 삭제되었습니다.
       module:
         delete:
           confirm: 이 사용자를 삭제하시겠습니까?
+pim_user.profile:
+  caption: 귀하에게 가장 적절한 콘텐츠를 제공할 수 있도록 먼저 담당하고 계신 주요 업무를 알려주십시오.
+  why_is_it_needed: 이 정보를 요청하는 이유
+  save_button: 마켓플레이스 저장 및 액세스
+  selector:
+    placeholder: 옵션 선택
+    not_found: 결과가 없습니다.
+  product_manager: 제품 카탈로그를 관리합니다.
+  redactor: 제품 데이터를 보강합니다.
+  pim_integrator: Akeneo PIM을 회사 IT 에코시스템에 통합합니다.
+  pim_administrator: Akeneo PIM을 관리합니다.
+  asset_manager: PIM의 자산을 관리합니다.
+  translator: 제품, 자산 및/또는 참조 엔터티 데이터를 번역합니다.
+  third_party_developer: Akeneo PIM에 연결된 솔루션을 개발합니다.
 pim_user_management:
   entity:
     user:
@@ -35,13 +49,14 @@ pim_user_management:
         update:
           success: 사용자가 업데이트되었습니다.
           fail: 사용자를 업데이트할 수 없습니다.
-          fields_not_ready: "이 사용자를 현재 저장할 수 없습니다. 다음 필드가 준비되지 않았습니다: {{ fields }}"
+          fields_not_ready: "이 사용자를 현재 저장할 수 없습니다. 다음 필드가 준비되지 않았습니다.: {{ fields }}"
         create:
           success: 사용자가 생성되었습니다.
       page_title:
         index: "]-Inf, 1] {{ count }} 사용자|]1, Inf [{{ count }} 사용자"
       properties:
         username: 사용자 이름
+        profile: 주요 업무는 무엇인가요?
         name_prefix: 이름 접두사
         first_name: 이름
         middle_name: 중간 이름
@@ -98,3 +113,13 @@ pim_user_management:
       module:
         create:
           button: 그룹 만들기
+  form:
+    error:
+      required: 필수 입력 항목입니다.
+      should_not_contain_space: 사용자 이름은 공백 문자를 포함할 수 없습니다.
+      too_short_value: "이 값은 너무 짧습니다. {{ count }}자 이상이어야 합니다."
+    duplication:
+      title: '사용자 ''{{ username }}'' 복제'
+      notification:
+        success: 사용자자가 복제되었습니다.
+        failure: 사용자 복제 실패

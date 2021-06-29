@@ -73,7 +73,7 @@ akeneo_connectivity.connection:
   connection_count: 'Conexión de {{ count }} | {{ count }} conexiones'
   no_connection:
     title: No hay conexión declarada aún.
-    message: Añada su primera haciendo clic en el botón «Crear» de arriba o
+    message: Añada su primera conexión haciendo clic en el botón «Crear» de arriba o
     message_link: pulse aquí.
   create_connection:
     title: Crear una conexión nueva
@@ -206,7 +206,7 @@ akeneo_connectivity.connection:
         message: Crea y comienza a rastrear tu primer
         link: aquí. 
       message_without_permission:
-        message: Solicite a su administrador que cree uno.
+        message: Solicite a su administrador que cree una.
         link: Más información sobre conexiones aquí...
   webhook:
     title: Subscripcion al evento
@@ -232,7 +232,7 @@ akeneo_connectivity.connection:
       error: Lo sentimos, se ha producido un error al editar la suscripción al evento.
     regenerate_secret:
       title: Confirmar regeneración
-      description: '¿Está seguro de que quiere regenerar el secreto de suscripción al evento?'
+      description: '¿Seguro que quiere regenerar el secreto de suscripción al evento?'
       action:
         regenerate: Regenerar
       link: Esto es lo que sucederá.
