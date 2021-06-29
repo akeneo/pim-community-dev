@@ -46,7 +46,7 @@ product_model.family_variant.not_blank.message: La variante de famille du modèl
 'The %attribute_code% attribute requires a valid locale. The %invalid_locale% locale does not exist.': 'L''attribut %attribute_code% requiert une langue valide. La langue %invalid_locale% n''existe pas dans votre PIM.'
 'The %attribute_code% attribute requires a valid locale. The %invalid_locale% locale is not bound to the %channel_code% channel.': 'L''attribut %attribute_code% requiert une langue valide. La langue %invalid_locale% n''est pas activée sur le canal %channel_code%.'
 "The %attribute% attribute requires an e-mail address.": 'L''attribut %attribute% requiert une adresse e-mail.'
-'The %attribute% attribute requires an equal or greater than %min_value% value.': 'L''attribut %attribute% requiert une valeur égale ou supérieure à %min_value%. '
+'The %attribute% attribute requires an equal or greater than %min_value% value.': 'L''attribut %attribute% requiert une valeur supérieure ou égale à %min_value%.'
 'The %attribute% attribute requires an equal or lesser than %max_value% value.': 'L''attribut %attribute% requiert une valeur inférieure ou égale à %max_value%.'
 "The %attribute_code% attribute requires a value per channel. The %channel% channel (scope) must exist in your PIM": 'L''attribut %attribute_code% requiert une valeur par canal. Le canal %channel% doit exister dans votre PIM.'
 pim_catalog:
