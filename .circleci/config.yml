@@ -775,6 +775,7 @@ workflows:
                     - test_back_performance
                     - test_back_data_migrations
                     - test_onboarder_bundle
+                    - test_database
                     - test_back_behat_legacy_ce
 
   nightly:
