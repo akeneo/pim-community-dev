@@ -59,6 +59,13 @@ const CategorySelector = ({
     return isParentCategoryIsSelected(parentCategory);
   };
 
+  const isCategoryReadOnly = (category: CategoryTreeModel, parentCategory: ParentCategoryTree): boolean => {
+    if (category.readOnly) return true;
+    if (!shouldIncludeSubCategories || selectedCategoryCodes.includes(category.code)) return false;
+
+    return isParentCategoryIsSelected(parentCategory);
+  }
+
   const handleCheckCategory = (value: string) => {
     const categoryCodeIsSelected = selectedCategoryCodes.includes(value);
     if (!categoryCodeIsSelected) {
@@ -148,6 +155,7 @@ console.log(json.map(child =>
         onChange={handleChange}
         childrenCallback={childrenCallback}
         isCategorySelected={isCategorySelected}
+        isCategoryReadOnly={isCategoryReadOnly}
         shouldRerender={shouldUpdateChildren}
       />
     </CategoryTreeContainer>
