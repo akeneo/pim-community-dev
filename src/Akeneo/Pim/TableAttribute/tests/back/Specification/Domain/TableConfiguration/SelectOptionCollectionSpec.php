@@ -28,6 +28,12 @@ class SelectOptionCollectionSpec extends ObjectBehavior
         $this->shouldThrow(\InvalidArgumentException::class)->duringInstantiation();
     }
 
+    function it_can_be_instantiated_with_no_option()
+    {
+        $this->beConstructedThrough('empty');
+        $this->normalize()->shouldBeLike([]);
+    }
+
     function it_can_be_normalized()
     {
         $this->normalize()->shouldBeLike(
@@ -42,5 +48,12 @@ class SelectOptionCollectionSpec extends ObjectBehavior
     {
         $this->getOptionCodes()
             ->shouldReturn(['sugar', 'salt']);
+    }
+
+    function it_returns_true_false_if_it_contains_the_option_code_or_not()
+    {
+        $this->hasOptionCode('sugar')->shouldReturn(true);
+        $this->hasOptionCode('salt')->shouldReturn(true);
+        $this->hasOptionCode('unknown')->shouldReturn(false);
     }
 }

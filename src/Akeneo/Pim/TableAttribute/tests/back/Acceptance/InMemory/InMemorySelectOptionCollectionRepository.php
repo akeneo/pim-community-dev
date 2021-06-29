@@ -1,0 +1,40 @@
+<?php
+
+declare(strict_types=1);
+
+/*
+ * This file is part of the Akeneo PIM Enterprise Edition.
+ *
+ * (c) 2021 Akeneo SAS (http://www.akeneo.com)
+ *
+ * For the full copyright and license information, please view the LICENSE
+ * file that was distributed with this source code.
+ */
+
+namespace Akeneo\Pim\TableAttribute\tests\back\Acceptance\InMemory;
+
+use Akeneo\Pim\TableAttribute\Domain\TableConfiguration\Repository\SelectOptionCollectionRepository;
+use Akeneo\Pim\TableAttribute\Domain\TableConfiguration\SelectOptionCollection;
+use Akeneo\Pim\TableAttribute\Domain\TableConfiguration\ValueObject\ColumnCode;
+
+class InMemorySelectOptionCollectionRepository implements SelectOptionCollectionRepository
+{
+    /** @var array<string, array<string, SelectOptionCollection>>  */
+    private array $options = [];
+
+    public function save(
+        string $attributeCode,
+        ColumnCode $columnCode,
+        SelectOptionCollection $selectOptionCollection
+    ): void {
+        if (!is_array($this->options[$attributeCode] ?? [])) {
+            $this->options[$attributeCode] = [];
+        }
+        $this->options[$attributeCode][$columnCode->asString()] = $selectOptionCollection;
+    }
+
+    public function getByColumn(string $attributeCode, ColumnCode $columnCode): SelectOptionCollection
+    {
+        return $this->options[$attributeCode][$columnCode->asString()] ?? SelectOptionCollection::empty();
+    }
+}

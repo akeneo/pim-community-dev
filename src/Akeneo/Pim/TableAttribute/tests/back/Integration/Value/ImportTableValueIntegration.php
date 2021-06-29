@@ -31,7 +31,7 @@ final class ImportTableValueIntegration extends TestCase
     private JobLauncher $jobLauncher;
 
     /** @test */
-    public function it_imports_table_attributes_from_a_csv_file(): void
+    public function it_imports_table_attribute_values_from_a_csv_file(): void
     {
         $csv = <<<CSV
 sku;nutrition
@@ -55,7 +55,7 @@ CSV;
     }
 
     /** @test */
-    public function it_imports_table_attributes_from_an_xlsx_file(): void
+    public function it_imports_table_attribute_values_from_an_xlsx_file(): void
     {
         $temporaryFile = tempnam(sys_get_temp_dir(), 'test_user_import');
         $writer = WriterFactory::create('xlsx');
@@ -142,6 +142,9 @@ CSV;
                     [
                         'code' => 'ingredient',
                         'data_type' => 'select',
+                        'options' => [
+                            ['code' => 'salt'],
+                        ]
                     ],
                     [
                         'code' => 'quantity',

@@ -31,6 +31,7 @@ $rules = [
             // doctrine
             'Doctrine\Common\EventSubscriber',
             'Doctrine\DBAL\Connection',
+            'Doctrine\DBAL\FetchMode',
             'Doctrine\ORM\Event\LifecycleEventArgs',
             'Doctrine\ORM\Events',
 
@@ -40,6 +41,7 @@ $rules = [
             'Akeneo\Tool\Component\StorageUtils\Saver\SaverInterface',
             'Akeneo\Tool\Component\StorageUtils\Exception\InvalidPropertyTypeException',
             'Akeneo\Tool\Component\Connector\Exception',
+            'Akeneo\Tool\Component\Connector\ArrayConverter\ArrayConverterInterface',
             'Akeneo\Channel\Component\Query\PublicApi',
             'Akeneo\Platform\Bundle\InstallerBundle\Event',
             'Akeneo\Platform\Bundle\UIBundle\Provider\Field\FieldProviderInterface',

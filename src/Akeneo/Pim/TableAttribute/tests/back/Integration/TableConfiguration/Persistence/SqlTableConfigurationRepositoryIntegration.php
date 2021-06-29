@@ -23,9 +23,6 @@ use Akeneo\Test\Integration\Configuration;
 use Akeneo\Test\Integration\TestCase;
 use Doctrine\DBAL\Connection;
 
-/**
- * @author Nicolas Marniesse <nicolas.marniesse@akeneo.com>
- */
 final class SqlTableConfigurationRepositoryIntegration extends TestCase
 {
     private int $tableAttributeId;
@@ -71,13 +68,6 @@ final class SqlTableConfigurationRepositoryIntegration extends TestCase
         self::assertSame('select', $rows[2]['data_type']);
         self::assertSame('isAllergenic', $rows[2]['code']);
         self::assertSame('2', $rows[2]['column_order']);
-
-        $rows = $this->connection->executeQuery(
-            'SELECT * FROM pim_catalog_table_column_select_option WHERE column_id = :column_id',
-            ['column_id' => $rows[2]['id']]
-        )->fetchAll();
-
-        self::assertCount(2, $rows);
     }
 
     /** @test */
@@ -251,10 +241,6 @@ final class SqlTableConfigurationRepositoryIntegration extends TestCase
                     'data_type' => 'select',
                     'labels' => ['en_US' => 'Ingredients', 'fr_FR' => 'Ingrédients'],
                     'validations' => (object)[],
-                    'options' => [
-                        ['code' => 'sugar', 'labels' => (object) []],
-                        ['code' => 'salt', 'labels' => (object) []],
-                    ],
                 ],
                 [
                     'code' => 'quantity',

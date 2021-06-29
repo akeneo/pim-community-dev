@@ -4,7 +4,6 @@ namespace Specification\Akeneo\Pim\TableAttribute\Domain\TableConfiguration;
 
 use Akeneo\Pim\TableAttribute\Domain\TableConfiguration\LabelCollection;
 use Akeneo\Pim\TableAttribute\Domain\TableConfiguration\SelectColumn;
-use Akeneo\Pim\TableAttribute\Domain\TableConfiguration\SelectOptionCollection;
 use Akeneo\Pim\TableAttribute\Domain\TableConfiguration\ValueObject\ColumnCode;
 use Akeneo\Pim\TableAttribute\Domain\TableConfiguration\ValueObject\ColumnDataType;
 use PhpSpec\ObjectBehavior;
@@ -56,17 +55,7 @@ class SelectColumnSpec extends ObjectBehavior
                 'data_type' => 'select',
                 'labels' => ['en_US' => 'Ingredient', 'fr_FR' => 'Ingrédient'],
                 'validations' => (object)[],
-                'options' => [
-                    ['code' => 'sugar', 'labels' => (object)[]],
-                    ['code' => 'salt', 'labels' => (object)[]],
-                ]
             ]
         );
-    }
-
-    function it_returns_select_options()
-    {
-        $this->optionCollection()
-            ->shouldBeLike(SelectOptionCollection::fromNormalized([['code' => 'sugar'], ['code' => 'salt']]));
     }
 }

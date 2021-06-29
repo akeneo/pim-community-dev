@@ -44,6 +44,11 @@ final class SelectOptionCollection
         ));
     }
 
+    public static function empty(): self
+    {
+        return new self([]);
+    }
+
     /**
      * @return array<int, mixed>
      */
@@ -64,5 +69,10 @@ final class SelectOptionCollection
             fn (SelectOption $selectOption): string => $selectOption->code(),
             $this->options
         ));
+    }
+
+    public function hasOptionCode(string $optionCode): bool
+    {
+        return array_key_exists($optionCode, $this->options);
     }
 }

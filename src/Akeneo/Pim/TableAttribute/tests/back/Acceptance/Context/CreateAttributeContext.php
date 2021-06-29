@@ -15,9 +15,13 @@ namespace Akeneo\Pim\TableAttribute\tests\back\Acceptance\Context;
 
 use Akeneo\Pim\Structure\Component\AttributeTypes;
 use Akeneo\Pim\Structure\Component\Model\AttributeInterface;
+use Akeneo\Pim\TableAttribute\Domain\TableConfiguration\SelectOptionCollection;
+use Akeneo\Pim\TableAttribute\Domain\TableConfiguration\ValueObject\ColumnCode;
+use Akeneo\Pim\TableAttribute\tests\back\Acceptance\InMemory\InMemorySelectOptionCollectionRepository;
 use Akeneo\Test\Acceptance\Attribute\InMemoryAttributeRepository;
 use Akeneo\Test\Common\Structure\Attribute\Builder;
 use Behat\Behat\Context\Context;
+use Behat\Gherkin\Node\TableNode;
 use Symfony\Component\Validator\Validator\ValidatorInterface;
 
 /**
@@ -28,16 +32,19 @@ final class CreateAttributeContext implements Context
     private Builder $attributeBuilder;
     private ValidatorInterface $validator;
     private InMemoryAttributeRepository $attributeRepository;
+    private InMemorySelectOptionCollectionRepository $collectionRepository;
     private ConstraintViolationsContext $constraintViolationsContext;
 
     public function __construct(
         ValidatorInterface $validator,
         InMemoryAttributeRepository $attributeRepository,
+        InMemorySelectOptionCollectionRepository $collectionRepository,
         ConstraintViolationsContext $constraintViolationsContext
     ) {
         $this->attributeBuilder = new Builder();
         $this->validator = $validator;
         $this->attributeRepository = $attributeRepository;
+        $this->collectionRepository = $collectionRepository;
         $this->constraintViolationsContext = $constraintViolationsContext;
     }
 
@@ -188,5 +195,19 @@ final class CreateAttributeContext implements Context
         }
 
         $this->attributeRepository->save($attribute);
+    }
+
+    /**
+     * @Given the following select options:
+     */
+    public function theFollowingSelectOptions(TableNode $table): void
+    {
+        foreach ($table as $row) {
+            $this->collectionRepository->save(
+                $row['attribute_code'],
+                ColumnCode::fromString($row['column_code']),
+                SelectOptionCollection::fromNormalized(\json_decode($row['options'], true))
+            );
+        }
     }
 }

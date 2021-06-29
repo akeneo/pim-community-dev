@@ -9,3 +9,10 @@ services:
     Akeneo\Pim\TableAttribute\Infrastructure\Value\ArrayConverter\FlatToStandard:
         tags:
             - { name: pim_connector.array_converter.flat_to_standard.product.value_converter }
+
+    Akeneo\Pim\TableAttribute\Infrastructure\ArrayConverter\StandardToFlat\Attribute:
+        decorates: 'pim_connector.array_converter.standard_to_flat.attribute'
+        decoration_inner_name: 'base_standard_to_flat_attribute'
+        arguments:
+            - '@base_standard_to_flat_attribute'
+            - '@Akeneo\Pim\TableAttribute\Domain\TableConfiguration\Repository\SelectOptionCollectionRepository'

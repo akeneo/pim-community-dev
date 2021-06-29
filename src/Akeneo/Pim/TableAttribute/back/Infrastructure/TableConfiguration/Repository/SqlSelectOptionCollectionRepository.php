@@ -45,30 +45,44 @@ class SqlSelectOptionCollectionRepository implements SelectOptionCollectionRepos
         ColumnCode $columnCode,
         SelectOptionCollection $selectOptionCollection
     ): void {
-        $newAttributeAndOptionCodes = array_map(
-            fn (string $optionCode): string => sprintf(
-                '%s-%s-%s',
-                $attributeCode,
-                $columnCode->asString(),
-                $optionCode
-            ),
-            $selectOptionCollection->getOptionCodes()
-        );
-        $this->connection->executeQuery(<<<SQL
-            DELETE table_column_option.* FROM pim_catalog_table_column_select_option table_column_option
-                INNER JOIN pim_catalog_table_column table_column ON table_column.id = table_column_option.column_id
-                INNER JOIN pim_catalog_attribute attribute ON attribute.id = table_column.attribute_id
-            WHERE table_column.code = :column_code
-                AND CONCAT(attribute.code, '-', table_column.code, '-', table_column_option.code) NOT IN (:newAttributeAndOptionCodes)
-            SQL,
-            [
-                'column_code' => $columnCode->asString(),
-                'newAttributeAndOptionCodes' => $newAttributeAndOptionCodes,
-            ],
-            [
-                'newAttributeAndOptionCodes' => Connection::PARAM_STR_ARRAY,
-            ]
-        );
+        $newOptionCodes = $selectOptionCollection->getOptionCodes();
+        if (count($newOptionCodes) === 0) {
+            $this->connection->executeQuery(<<<SQL
+                DELETE table_column_option.* FROM pim_catalog_table_column_select_option table_column_option
+                    INNER JOIN pim_catalog_table_column table_column ON table_column.id = table_column_option.column_id
+                    INNER JOIN pim_catalog_attribute attribute ON attribute.id = table_column.attribute_id
+                WHERE table_column.code = :column_code AND attribute.code = :attributeCode
+                SQL,
+                ['attributeCode' => $attributeCode, 'column_code' => $columnCode->asString()]
+            );
+        } else {
+            $newAttributeAndOptionCodes = array_map(
+                fn (string $optionCode): string => sprintf(
+                    '%s-%s-%s',
+                    $attributeCode,
+                    $columnCode->asString(),
+                    $optionCode
+                ),
+                $newOptionCodes
+            );
+            $this->connection->executeQuery(<<<SQL
+                DELETE table_column_option.* FROM pim_catalog_table_column_select_option table_column_option
+                    INNER JOIN pim_catalog_table_column table_column ON table_column.id = table_column_option.column_id
+                    INNER JOIN pim_catalog_attribute attribute ON attribute.id = table_column.attribute_id
+                WHERE table_column.code = :column_code
+                    AND attribute.code = :attributeCode
+                    AND CONCAT(attribute.code, '-', table_column.code, '-', table_column_option.code) NOT IN (:newAttributeAndOptionCodes)
+                SQL,
+                [
+                    'attributeCode' => $attributeCode,
+                    'column_code' => $columnCode->asString(),
+                    'newAttributeAndOptionCodes' => $newAttributeAndOptionCodes,
+                ],
+                [
+                    'newAttributeAndOptionCodes' => Connection::PARAM_STR_ARRAY,
+                ]
+            );
+        }
 
         foreach ($selectOptionCollection->normalize() as $selectOption) {
             $this->connection->executeQuery(
@@ -90,5 +104,31 @@ class SqlSelectOptionCollectionRepository implements SelectOptionCollectionRepos
                 ]
             );
         }
+    }
+
+    public function getByColumn(string $attributeCode, ColumnCode $columnCode): SelectOptionCollection
+    {
+        $sql = <<<SQL
+        SELECT pim_catalog_table_column_select_option.* 
+        FROM pim_catalog_table_column_select_option
+            JOIN pim_catalog_table_column ON pim_catalog_table_column.id = pim_catalog_table_column_select_option.column_id
+            JOIN pim_catalog_attribute pca on pim_catalog_table_column.attribute_id = pca.id
+        WHERE pca.code = :attributeCode
+            AND pim_catalog_table_column.code = :columnCode
+SQL;
+
+        $result = $this->connection->executeQuery($sql, [
+            'attributeCode' => $attributeCode,
+            'columnCode' => $columnCode->asString(),
+        ])->fetchAll();
+
+        $options = array_map(function ($rawOption) {
+            return [
+                'code' => $rawOption['code'],
+                'labels' => \json_decode($rawOption['labels'], true),
+            ];
+        }, $result);
+
+        return SelectOptionCollection::fromNormalized($options);
     }
 }

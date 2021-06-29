@@ -17,26 +17,34 @@ use Akeneo\Pim\Structure\Component\AttributeTypes;
 use Akeneo\Pim\Structure\Component\Model\AttributeInterface;
 use Akeneo\Pim\TableAttribute\Domain\TableConfiguration\ColumnDefinition;
 use Akeneo\Pim\TableAttribute\Domain\TableConfiguration\Factory\ColumnFactory;
+use Akeneo\Pim\TableAttribute\Domain\TableConfiguration\Repository\SelectOptionCollectionRepository;
 use Akeneo\Pim\TableAttribute\Domain\TableConfiguration\Repository\TableConfigurationRepository;
+use Akeneo\Pim\TableAttribute\Domain\TableConfiguration\SelectColumn;
+use Akeneo\Pim\TableAttribute\Domain\TableConfiguration\SelectOptionCollection;
 use Akeneo\Pim\TableAttribute\Domain\TableConfiguration\TableConfiguration;
+use Akeneo\Pim\TableAttribute\Domain\TableConfiguration\ValueObject\ColumnCode;
 use Akeneo\Tool\Component\StorageUtils\Saver\SaverInterface;
 use Webmozart\Assert\Assert;
 
 class TableConfigurationSaver implements SaverInterface
 {
     private TableConfigurationRepository $tableConfigurationRepository;
+    private SelectOptionCollectionRepository $optionCollectionRepository;
     private ColumnFactory $columnFactory;
 
     public function __construct(
         TableConfigurationRepository $tableConfigurationRepository,
+        SelectOptionCollectionRepository $optionCollectionRepository,
         ColumnFactory $columnFactory
     ) {
         $this->tableConfigurationRepository = $tableConfigurationRepository;
+        $this->optionCollectionRepository = $optionCollectionRepository;
         $this->columnFactory = $columnFactory;
     }
 
     public function save($attribute, array $options = []): void
     {
+        /** @var AttributeInterface $attribute */
         Assert::isInstanceOf($attribute, AttributeInterface::class);
         if (AttributeTypes::TABLE !== $attribute->getType()) {
             return;
@@ -52,7 +60,17 @@ class TableConfigurationSaver implements SaverInterface
                 $attribute->getRawTableConfiguration(),
             )
         );
-
         $this->tableConfigurationRepository->save($attribute->getCode(), $tableConfiguration);
+
+        foreach ($attribute->getRawTableConfiguration() as $rawColumnDefinition) {
+            if ($rawColumnDefinition['data_type'] === SelectColumn::DATATYPE) {
+                Assert::isArray($rawColumnDefinition['options'] ?? []);
+                $this->optionCollectionRepository->save(
+                    $attribute->getCode(),
+                    ColumnCode::fromString($rawColumnDefinition['code']),
+                    SelectOptionCollection::fromNormalized($rawColumnDefinition['options'] ?? [])
+                );
+            }
+        }
     }
 }

@@ -15,6 +15,8 @@ namespace Akeneo\Pim\TableAttribute\tests\back\Integration\TableConfiguration\Im
 
 use Akeneo\Pim\Structure\Component\AttributeTypes;
 use Akeneo\Pim\Structure\Component\Repository\AttributeRepositoryInterface;
+use Akeneo\Pim\TableAttribute\Domain\TableConfiguration\Repository\SelectOptionCollectionRepository;
+use Akeneo\Pim\TableAttribute\Domain\TableConfiguration\ValueObject\ColumnCode;
 use Akeneo\Test\Integration\Configuration;
 use Akeneo\Test\Integration\TestCase;
 use Akeneo\Test\IntegrationTestsBundle\Launcher\JobLauncher;
@@ -29,26 +31,34 @@ class ImportTableAttributeIntegration extends TestCase
 
     private JobLauncher $jobLauncher;
     private AttributeRepositoryInterface $attributeRepository;
+    private SelectOptionCollectionRepository $optionCollectionRepository;
 
     /** @test */
     public function it_imports_table_attributes_from_a_csv_file(): void
     {
         $csv = <<<CSV
 code;type;localizable;scopable;group;unique;sort_order;table_configuration
-nutrition;pim_catalog_table;0;0;other;0;2;[{"code":"ingredients","data_type":"select","labels":{"en_US":"Ingredients"}},{"code":"quantity","data_type":"text","labels":{"en_US":"Quantity"},"validations":{"max_length":50}}]
+nutrition;pim_catalog_table;0;0;other;0;2;[{"code":"ingredients","data_type":"select","labels":{"en_US":"Ingredients"},"options":[{"code":"salt","labels":{"en_US":"Salt"}}]},{"code":"quantity","data_type":"text","labels":{"en_US":"Quantity"},"validations":{"max_length":50}}]
 storage;pim_catalog_table;0;0;other;0;3;[{"code":"dimension","data_type":"select","labels":{"en_US":"Dimension"}},{"code":"value","data_type":"text","labels":{"en_US":"Value"}}]
 CSV;
         $this->jobLauncher->launchImport(self::CSV_IMPORT_JOB_CODE, $csv);
 
         $nutritionAttribute = $this->attributeRepository->findOneByIdentifier('nutrition');
         Assert::assertNotNull($nutritionAttribute);
-        // TODO Import validations
         Assert::assertEqualsCanonicalizing(
             [
-                ['code' => 'ingredients', 'data_type' => 'select', 'labels' => ['en_US' => 'Ingredients'], 'validations' => (object) [], 'options' => []],
+                ['code' => 'ingredients', 'data_type' => 'select', 'labels' => ['en_US' => 'Ingredients'], 'validations' => (object) []],
                 ['code' => 'quantity', 'data_type' => 'text', 'labels' => ['en_US' => 'Quantity'], 'validations' => ['max_length' => 50]],
             ],
             $nutritionAttribute->getRawTableConfiguration()
+        );
+        Assert::assertEqualsCanonicalizing(
+            [['code' => 'salt', 'labels' => ['en_US' => 'Salt']]],
+            $this->optionCollectionRepository->getByColumn('nutrition', ColumnCode::fromString('ingredients'))->normalize()
+        );
+        Assert::assertEqualsCanonicalizing(
+            [],
+            $this->optionCollectionRepository->getByColumn('nutrition', ColumnCode::fromString('quantity'))->normalize()
         );
 
         $storageAttribute = $this->attributeRepository->findOneByIdentifier('storage');
@@ -56,10 +66,18 @@ CSV;
         Assert::assertSame(AttributeTypes::TABLE, $storageAttribute->getType());
         Assert::assertEqualsCanonicalizing(
             [
-                ['code' => 'dimension', 'data_type' => 'select', 'labels' => ['en_US' => 'Dimension'], 'validations' => (object) [], 'options' => []],
+                ['code' => 'dimension', 'data_type' => 'select', 'labels' => ['en_US' => 'Dimension'], 'validations' => (object) []],
                 ['code' => 'value', 'data_type' => 'text', 'labels' => ['en_US' => 'Value'], 'validations' => (object) []],
             ],
             $storageAttribute->getRawTableConfiguration()
+        );
+        Assert::assertEqualsCanonicalizing(
+            [],
+            $this->optionCollectionRepository->getByColumn('quantity', ColumnCode::fromString('dimension'))->normalize()
+        );
+        Assert::assertEqualsCanonicalizing(
+            [],
+            $this->optionCollectionRepository->getByColumn('quantity', ColumnCode::fromString('value'))->normalize()
         );
     }
 
@@ -80,7 +98,7 @@ CSV;
                     'other',
                     '0',
                     '5',
-                    '[{"code":"ingredients","data_type":"select","labels":{"en_US":"Ingredients"}},{"code":"quantity","data_type":"text","labels":{"en_US":"Quantity"}}]',
+                    '[{"code":"ingredients","data_type":"select","labels":{"en_US":"Ingredients"},"options":[{"code":"salt","labels":{"en_US":"Salt"}}]},{"code":"quantity","data_type":"text","labels":{"en_US":"Quantity"}}]',
                 ],
                 [
                     'storage',
@@ -107,13 +125,20 @@ CSV;
 
         $nutritionAttribute = $this->attributeRepository->findOneByIdentifier('nutrition');
         Assert::assertNotNull($nutritionAttribute);
-        // TODO Import validations
         Assert::assertEqualsCanonicalizing(
             [
-                ['code' => 'ingredients', 'data_type' => 'select', 'labels' => ['en_US' => 'Ingredients'], 'validations' => (object) [], 'options' => []],
+                ['code' => 'ingredients', 'data_type' => 'select', 'labels' => ['en_US' => 'Ingredients'], 'validations' => (object) []],
                 ['code' => 'quantity', 'data_type' => 'text', 'labels' => ['en_US' => 'Quantity'], 'validations' => (object) []],
             ],
             $nutritionAttribute->getRawTableConfiguration()
+        );
+        Assert::assertEqualsCanonicalizing(
+            [['code' => 'salt', 'labels' => ['en_US' => 'Salt']]],
+            $this->optionCollectionRepository->getByColumn('nutrition', ColumnCode::fromString('ingredients'))->normalize()
+        );
+        Assert::assertEqualsCanonicalizing(
+            [],
+            $this->optionCollectionRepository->getByColumn('nutrition', ColumnCode::fromString('quantity'))->normalize()
         );
 
         $storageAttribute = $this->attributeRepository->findOneByIdentifier('storage');
@@ -121,10 +146,18 @@ CSV;
         Assert::assertSame(AttributeTypes::TABLE, $storageAttribute->getType());
         Assert::assertEqualsCanonicalizing(
             [
-                ['code' => 'dimension', 'data_type' => 'select', 'labels' => ['en_US' => 'Dimension'], 'validations' => (object) [], 'options' => []],
+                ['code' => 'dimension', 'data_type' => 'select', 'labels' => ['en_US' => 'Dimension'], 'validations' => (object) []],
                 ['code' => 'value', 'data_type' => 'text', 'labels' => ['en_US' => 'Value'], 'validations' => (object) []],
             ],
             $storageAttribute->getRawTableConfiguration()
+        );
+        Assert::assertEqualsCanonicalizing(
+            [],
+            $this->optionCollectionRepository->getByColumn('quantity', ColumnCode::fromString('dimension'))->normalize()
+        );
+        Assert::assertEqualsCanonicalizing(
+            [],
+            $this->optionCollectionRepository->getByColumn('quantity', ColumnCode::fromString('value'))->normalize()
         );
     }
 
@@ -137,6 +170,7 @@ CSV;
 
         $this->jobLauncher = $this->get('akeneo_integration_tests.launcher.job_launcher');
         $this->attributeRepository = $this->get('pim_catalog.repository.attribute');
+        $this->optionCollectionRepository = $this->get(SelectOptionCollectionRepository::class);
 
         $this->get(SqlCreateJobInstance::class)->createJobInstance(
             [

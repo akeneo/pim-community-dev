@@ -5,9 +5,12 @@ namespace Specification\Akeneo\Pim\TableAttribute\Infrastructure\TableConfigurat
 use Akeneo\Pim\Structure\Component\AttributeTypes;
 use Akeneo\Pim\Structure\Component\Model\AttributeInterface;
 use Akeneo\Pim\TableAttribute\Domain\TableConfiguration\Factory\ColumnFactory;
+use Akeneo\Pim\TableAttribute\Domain\TableConfiguration\Repository\SelectOptionCollectionRepository;
 use Akeneo\Pim\TableAttribute\Domain\TableConfiguration\Repository\TableConfigurationRepository;
+use Akeneo\Pim\TableAttribute\Domain\TableConfiguration\SelectOptionCollection;
 use Akeneo\Pim\TableAttribute\Domain\TableConfiguration\TableConfiguration;
 use Akeneo\Pim\TableAttribute\Domain\TableConfiguration\TextColumn;
+use Akeneo\Pim\TableAttribute\Domain\TableConfiguration\ValueObject\ColumnCode;
 use Akeneo\Pim\TableAttribute\Infrastructure\TableConfiguration\Saver\TableConfigurationSaver;
 use Akeneo\Tool\Component\StorageUtils\Saver\SaverInterface;
 use PhpSpec\ObjectBehavior;
@@ -15,9 +18,12 @@ use Prophecy\Argument;
 
 class TableConfigurationSaverSpec extends ObjectBehavior
 {
-    function let(TableConfigurationRepository $tableConfigurationRepository, ColumnFactory $columnFactory)
-    {
-        $this->beConstructedWith($tableConfigurationRepository, $columnFactory);
+    function let(
+        TableConfigurationRepository $tableConfigurationRepository,
+        SelectOptionCollectionRepository $optionCollectionRepository,
+        ColumnFactory $columnFactory
+    ) {
+        $this->beConstructedWith($tableConfigurationRepository, $optionCollectionRepository, $columnFactory);
     }
 
     function it_is_initializable()
@@ -73,6 +79,34 @@ class TableConfigurationSaverSpec extends ObjectBehavior
             ->willReturn(TextColumn::fromNormalized(['data_type' => 'text', 'code' => 'quantity', 'labels' => []]));
 
         $tableConfigurationRepository->save('nutrition', Argument::type(TableConfiguration::class))->shouldBeCalled();
+        $this->save($attribute);
+    }
+
+    function it_saves_select_options(
+        TableConfigurationRepository $tableConfigurationRepository,
+        SelectOptionCollectionRepository $optionCollectionRepository,
+        ColumnFactory $columnFactory,
+        AttributeInterface $attribute
+    ) {
+        $column1 = ['data_type' => 'select', 'code' => 'ingredients', 'labels' => [], 'options' => [['code' => 'salt', 'labels' => ['en_US' => 'Salt', 'fr_FR' => 'Sel']]]];
+        $column2 = ['data_type' => 'select', 'code' => 'quantity', 'labels' => [], 'options' => [['code' => '100'], ['code' => '8000']]];
+        $column3 = ['data_type' => 'number', 'code' => 'a_number', 'labels' => []];
+        $column4 = ['data_type' => 'select', 'code' => 'is_allergenic', 'labels' => []];
+        $attribute->getType()->willReturn(AttributeTypes::TABLE);
+        $attribute->getRawTableConfiguration()->willReturn([$column1, $column2, $column3, $column4]);
+        $attribute->getCode()->willReturn('nutrition');
+        $columnFactory->createFromNormalized($column1)->willReturn(TextColumn::fromNormalized($column1));
+        $columnFactory->createFromNormalized($column2)->willReturn(TextColumn::fromNormalized($column2));
+        $columnFactory->createFromNormalized($column3)->willReturn(TextColumn::fromNormalized($column3));
+        $columnFactory->createFromNormalized($column4)->willReturn(TextColumn::fromNormalized($column4));
+
+        $tableConfigurationRepository->save('nutrition', Argument::type(TableConfiguration::class))->shouldBeCalled();
+
+        $optionCollectionRepository->save('nutrition', ColumnCode::fromString('ingredients'), SelectOptionCollection::fromNormalized($column1['options']))->shouldBeCalled();
+        $optionCollectionRepository->save('nutrition', ColumnCode::fromString('quantity'), SelectOptionCollection::fromNormalized($column2['options']))->shouldBeCalled();
+        $optionCollectionRepository->save('nutrition', ColumnCode::fromString('a_number'), Argument::any())->shouldNotBeCalled();
+        $optionCollectionRepository->save('nutrition', ColumnCode::fromString('is_allergenic'), SelectOptionCollection::empty())->shouldBeCalled();
+
         $this->save($attribute);
     }
 }

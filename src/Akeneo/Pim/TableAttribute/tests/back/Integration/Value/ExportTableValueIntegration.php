@@ -111,6 +111,11 @@ CSV;
                         'labels' => [
                             'en_US' => 'Ingredients',
                         ],
+                        'options' => [
+                            ['code' => 'salt'],
+                            ['code' => 'egg'],
+                            ['code' => 'butter'],
+                        ]
                     ],
                     [
                         'code' => 'quantity',

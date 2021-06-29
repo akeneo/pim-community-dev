@@ -66,9 +66,12 @@ class GetTableValueEndToEnd extends ApiTestCase
             'type' => AttributeTypes::TABLE,
             'group' => 'other',
             'table_configuration' => [
-                ['code' => 'ingredient', 'data_type' => 'select', 'labels' => ['en_US' => 'ingredient']],
+                ['code' => 'ingredient', 'data_type' => 'select', 'labels' => ['en_US' => 'ingredient'],
+                    'options' => [
+                        ['code' => 'sugar']
+                    ]],
                 ['code' => 'quantity', 'data_type' => 'text', 'labels' => ['en_US' => 'Quantity']],
-            ],
+            ]
         ]);
         $violations = $this->get('validator')->validate($attribute);
         self::assertCount(0, $violations, sprintf('Attribute is not valid: %s', $violations));

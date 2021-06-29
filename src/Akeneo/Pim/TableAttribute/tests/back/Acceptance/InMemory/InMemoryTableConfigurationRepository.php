@@ -54,7 +54,7 @@ class InMemoryTableConfigurationRepository implements TableConfigurationReposito
                     [
                         'code' => $row['code'],
                         'data_type' => $row['data_type'],
-                        'labels' => \json_decode($row['labels'] ?? '{}', true),
+                        'labels' => $row['labels'] ?? [],
                     ]
                 ),
                 $attribute->getRawTableConfiguration()

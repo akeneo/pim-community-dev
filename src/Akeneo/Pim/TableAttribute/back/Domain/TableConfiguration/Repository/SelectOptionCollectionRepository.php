@@ -19,4 +19,6 @@ use Akeneo\Pim\TableAttribute\Domain\TableConfiguration\ValueObject\ColumnCode;
 interface SelectOptionCollectionRepository
 {
     public function save(string $attributeCode, ColumnCode $columnCode, SelectOptionCollection $selectOptionCollection): void;
+
+    public function getByColumn(string $attributeCode, ColumnCode $columnCode): SelectOptionCollection;
 }
