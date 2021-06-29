@@ -1,8 +1,9 @@
 import React from "react";
 import { Badge } from "../../../Badge/Badge";
-import { SelectInput } from "../../SelectInput/SelectInput";
+import { SelectInput, SelectInputProps } from "../../SelectInput/SelectInput";
 import styled, { css } from "styled-components";
 import { AkeneoThemedProps, getColor } from "../../../../theme";
+import {Override} from '../../../../shared';
 
 const BooleanSelectInput = styled(SelectInput)<{highlighted: boolean} & AkeneoThemedProps>`
   ${({highlighted}) => highlighted && css`
@@ -27,44 +28,45 @@ const BooleanSelectInput = styled(SelectInput)<{highlighted: boolean} & AkeneoTh
   }
 `;
 
-type TableInputBooleanProps = {
+type TableInputBooleanProps = Override<
+  SelectInputProps, {
   value: boolean | null;
-  onChange: (value: boolean) => void;
+  onChange: (value: boolean | null) => void;
   yesLabel: string;
   noLabel: string;
-  highlighted: boolean;
-}
+  highlighted?: boolean;
+  emptyResultLabel: string;
+}>
 
-const TableInputBoolean = React.forwardRef<HTMLDivElement, TableInputBooleanProps>(
-  ({
-     value,
-     onChange,
-     yesLabel,
-     noLabel,
-     highlighted = false,
-     ...rest
-   }, forwardedRef: React.Ref<HTMLDivElement>) => {
-    const label = typeof value === 'undefined' ? '' : value ? yesLabel : noLabel;
-    const handleChange = (value) => {
-      if (value === null) {
-        onChange(null);
-      } else {
-        onChange(value === 'true');
-      }
+const TableInputBoolean: React.FC<TableInputBooleanProps> = ({
+  value,
+  onChange,
+  yesLabel,
+  noLabel,
+  emptyResultLabel,
+  highlighted = false,
+  ...rest
+}) => {
+  const handleChange = (value: null | 'true' | 'false') => {
+    if (value === null) {
+      onChange(null);
+    } else {
+      onChange(value === 'true');
     }
-    return (
-      <BooleanSelectInput
-        highlighted={highlighted}
-        onChange={handleChange}
-        value={value === null ? null : value ? 'true' : 'false'}
-        {...rest}
-        ref={forwardedRef}
-      >
-        <SelectInput.Option title={yesLabel} value="true"><Badge level='primary'>{yesLabel}</Badge></SelectInput.Option>
-        <SelectInput.Option title={noLabel} value="false"><Badge level='tertiary'>{noLabel}</Badge></SelectInput.Option>
-      </BooleanSelectInput>
-    );
   }
-);
+
+  return (
+    <BooleanSelectInput
+      highlighted={highlighted}
+      onChange={handleChange}
+      value={value === null ? null : value ? 'true' : 'false'}
+      emptyResultLabel={emptyResultLabel}
+      {...rest}
+    >
+      <SelectInput.Option title={yesLabel} value="true"><Badge level='primary'>{yesLabel}</Badge></SelectInput.Option>
+      <SelectInput.Option title={noLabel} value="false"><Badge level='tertiary'>{noLabel}</Badge></SelectInput.Option>
+    </BooleanSelectInput>
+  );
+};
 
 export {TableInputBoolean};
