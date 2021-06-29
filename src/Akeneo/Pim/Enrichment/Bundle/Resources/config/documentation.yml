@@ -29,4 +29,4 @@ services:
         tags: [pim_enrich.error.documentation_builder]
 
     Akeneo\Pim\Enrichment\Component\Error\DocumentationBuilder\NotEmptyFamily:
-        tags: [ pim_enrich.error.documentation_builder ]
+        tags: [pim_enrich.error.documentation_builder]
