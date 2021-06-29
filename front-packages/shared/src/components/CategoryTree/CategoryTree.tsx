@@ -16,13 +16,12 @@ type CategoryTreeModel = {
   selected?: boolean;
   readOnly?: boolean;
   children?: CategoryTreeModel[];
-  parent?: ParentCategoryTree;
 };
 
 type CategoryTreeProps = {
   categoryTreeCode?: string;
   init: (categoryTreeCode?: string) => Promise<CategoryTreeModel>;
-  childrenCallback: (value: any, parentCategory: ParentCategoryTree) => Promise<CategoryTreeModel[]>;
+  childrenCallback: (value: any) => Promise<CategoryTreeModel[]>;
   onChange?: (value: string, checked: boolean) => void;
   onClick?: any;
   initCallback?: (treeLabel: string, categoryLabel?: string) => void;
@@ -80,6 +79,7 @@ const CategoryTree: React.FC<CategoryTreeProps> = ({
   return (
     <RecursiveCategoryTree
       tree={tree}
+      parentTree={null}
       childrenCallback={childrenCallback}
       onChange={onChange}
       onClick={onClick}
