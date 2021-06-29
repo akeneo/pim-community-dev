@@ -70,6 +70,9 @@ pim_enrich:
       description: 다음 특성 요구 사항은 선택된 패밀리에 적용됩니다.
       success_flash: 특성 요구 사항이 선택된 패밀리에 적용되었습니다
       launched_flash: 일괄 작업 "특성 요구 사항 설정"이 실행되었습니다. 완료되면 알림이 전송됩니다.
+    convert_to_simple_products:
+      warning:
+        non_variant_product: '''{{ identifier }}'' 제품은 이미 단일 제품이므로 변환할 필요가 없습니다.'
     mass_action:
       quick_export:
         launched_flash: 제품을 내보내는 작업이 현재 실행되고 있습니다
@@ -80,3 +83,4 @@ tree:
   edit: 트리 편집
   remove:
     error_linked: 이 카테고리 트리를 삭제할 수 없습니다. 이 트리는 채널에 링크되어 있습니다.
+  create: 카테고리 트리 만들기

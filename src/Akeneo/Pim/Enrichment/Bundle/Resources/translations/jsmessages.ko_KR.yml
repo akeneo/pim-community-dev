@@ -1,6 +1,7 @@
 pim_notification:
   types:
     settings: 설정
+    mass_delete: 삭제
 flash:
   comment:
     create:
@@ -31,6 +32,9 @@ pim_enrich.entity.product:
       fail: 제품 식별자로 특성이 구성되지 않았거나 특성을 편집할 권한이 없습니다.
   page_title:
     index: "]-Inf, 1]{{ count }} 결과|]1, Inf[{{ count }} 결과"
+    product: "]-Inf, 1]{{ count }}개 제품|]1, Inf[{{ count }}개 제품"
+    product_model: "]-Inf, 1]{{ count }}개 제품 모델|]1, Inf[{{ count }}개 제품 모델"
+    product_and_product_model: "{{ productCount }}, {{ productModelCount }}"
   module:
     create:
       subtitle: 제품 만들기
@@ -49,6 +53,11 @@ pim_enrich.entity.product:
       select: 선택
       all_visible: 모두 표시
       copy: 복사
+    convert_variant_to_simple:
+      label: 단일 제품으로 변환
+      dialog:
+        title: 변환 확인
+        content: "이 변형 제품을 단일 제품으로 변환하시겠습니까? 이전 값, 카테고리, 연결은 모두 저장됩니다."
     history:
       version: 버전 
       author: 작성자
@@ -88,6 +97,7 @@ pim_enrich.entity.product:
       show_products: 제품 표시
       show_groups: 그룹 표시
       number_of_associations: "{{ productCount }} 제품, {{ productModelCount }} 제품 모델 및 {{ groupCount }} 그룹"
+      number_of_quantified_associations: "{{ productCount }}개 제품 및 {{ productModelCount }}개 제품 모델"
       association_type_selector: 연결 유형
       target: 대상
       manage: '{{ associationType }} 연결 추가'
@@ -97,8 +107,14 @@ pim_enrich.entity.product:
       variant_products: 변형 제품
       quantified:
         quantity: 수량
+      search:
+        placeholder: 레이블 또는 식별자 검색
+      no_result: 죄송합니다. 검색 결과가 없습니다.
+      no_data: 연결된 제품이 없습니다.
       remove: 연결 해제
       edit: 제품 정보 편집
+      limit_reached: 이 제품에 {{ maxLimit }}개의 연결을 초과하여 추가할 수 없습니다.
+      variant_updated: 변형의 수량을 업데이트했습니다. 수량이 더 이상 동기화되지 않습니다.
     attribute_filter:
       display: 표시
       all: 모든 특성
@@ -155,7 +171,7 @@ pim_enrich.entity.product_model:
     variant_axis:
       label: '변형 축'
       create: 새로 추가
-      create_label: "새 {{ axes }} 추가"
+      title_create_label: "]-Inf, 1]새 {{ axes }} 추가|]1, Inf[새 {{ axes }} 추가"
       required_label: '(변형 축)'
     completeness:
       variant_product: "]-Inf, 1]{{ complete }} / {{ total }} 변형 제품|]1, Inf[{{ complete }} / {{ total }} 변형 제품"
@@ -193,6 +209,16 @@ pim_enrich.entity.category:
   label: 카테고리
   uppercase_label: 카테고리
   plural_label: 카테고리
+  page_title:
+    index: "]-Inf, 1]{{ count }}개 트리|]1, Inf[{{ count }}개 트리"
+  content:
+    empty_tree_list:
+      title: 트리가 없습니다
+      hint: 첫 트리를 만들어 보십시오.
+    tree_list:
+      columns:
+        label: 트리 레이블
+        number_of_categories: 카테고리 수
 pim_enrich.export.product:
   data:
     title: 제품 필터링
@@ -320,6 +346,7 @@ pim_enrich.mass_edit.product:
       label: 카테고리 간 이동
       label_count: "{0}카테고리 간에 일부 <span class=\"AknFullPage-title--highlight\">제품</span> 이동|{1}카테고리 간에 <span class=\"AknFullPage-title--highlight\">1개 제품</span> 이동|]1, Inf[카테고리 간에 <span class=\"AknFullPage-title--highlight\">{{ itemsCount }}개 제품</span> 이동"
       description: 해당 제품은 다음 카테고리로 분류되고, 기존 분류는 손실됩니다.
+      no_update: 카테고리를 선택해주십시오.
     remove_from_category:
       label: 카테고리에서 제거
       label_count: "{0}카테고리에서 일부 <span class=\"AknFullPage-title--highlight\">제품</span> 제거|{1}카테고리에서 <span class=\"AknFullPage-title--highlight\">1개 제품</span> 제거|]1, Inf[카테고리에서 <span class=\"AknFullPage-title--highlight\">{{ itemsCount }}개 제품</span> 제거"
@@ -330,6 +357,10 @@ pim_enrich.mass_edit.product:
       label_count: "{0}기존 제품 모델에 일부 <span class=\"AknFullPage-title--highlight\">제품</span> 추가|{1}기존 제품 모델에 <span class=\"AknFullPage-title--highlight\">1개 제품</span> 추가|]1, Inf[기존 제품 모델에 <span class=\"AknFullPage-title--highlight\">{{ itemsCount }}개 제품</span> 추가"
       description: 선택된 제품 모델은 제품을 모으고 공통 속성 보강을 허용합니다
       no_update: 계속하려면 제품 모델을 선택하십시오.
+    convert_to_simple_products:
+      label: 단일 제품으로 변환
+      label_count: "{0}일부 <span class=\"AknFullPage-title--highlight\">제품</span>을 단일 제품으로 변환|{1}<span class=\"AknFullPage-title--highlight\">1개 제품</span>을 단일 제품으로 변환|]1, Inf[<span class=\"AknFullPage-title--highlight\">{{ itemsCount }}개 제품</span>을 단일 제품으로 변환"
+      description: 이전 값, 카테고리, 연결은 모두 저장됩니다.
     associate_to_product_and_product_model:
       label: 연결
       label_count: "{0}제품 또는 제품 모델에 일부 <span class=\"AknFullPage-title--highlight\">제품</span> 연결|{1}제품 또는 제품 모델에 <span class=\"AknFullPage-title--highlight\">1개 제품</span> 연결|]1, Inf[제품 또는 제품 모델에 <span class=\"AknFullPage-title--highlight\">{{ itemsCount }}개 제품</span> 연결"
@@ -340,6 +371,7 @@ pim_enrich.mass_edit.product:
       label_count: "{0}일부 <span class=\"AknFullPage-title--highlight\">제품</span>의 상위 제품 모델 변경|{1}<span class=\"AknFullPage-title--highlight\">1개 제품</span>의 상위 제품 모델 변경|]1, Inf[<span class=\"AknFullPage-title--highlight\">{{ itemsCount }}개 제품</span>의 상위 제품 모델 변경"
       description: 그리드에서 선택된 변형 제품 또는 하위 제품 모델의 상위 모델이 선택된 제품 모델로 변경됩니다.
 pim_datagrid:
+  no_entities: "{{ entityHint }}을(를) 찾을 수 없습니다"
   mass_action_group:
     bulk_actions:
       label: 일괄 작업
@@ -362,10 +394,18 @@ pim_datagrid:
         xlsx: XLSX
         grid_context: 그리드 컨텍스트
         all_attributes: 모든 특성
+        with_codes: 코드 포함
         with_labels: 라벨 부착
+        without_media: 미디어 미포함
+        with_media: 미디어 포함
+      flash:
+        message: "여기에서 내보내기의 진행상황을 확인할 수 있습니다."
     mass_edit: 일괄 작업
     sequential_edit: 순차 편집
     mass_delete: 대량 삭제
+    selected:
+      family: "]-Inf, 1]{{ count }}개 패밀리 선택|]1, Inf[{{ count }}개 패밀리 선택"
+      product: "]-Inf, 1]{{ count }}개 결과 선택|]1, Inf[{{ count }}개 결과 선택"
   view_selector:
     view: 보기
   actions:
@@ -383,9 +423,13 @@ pim_datagrid:
     label: 필터
     system: 시스템
     product_typology:
+      label: '제품 분류체계'
+      simple: '단일'
       variant: '변형'
     entity_type:
       label: '변형'
+      grouped: '그룹 지정'
+      ungrouped: '그룹 해제'
     family:
       label: 패밀리
     groups:
@@ -406,6 +450,7 @@ pim_datagrid:
       label: 상위
     identifier:
       label: 식별자
+  search: '{{ label }}에서 검색'
 batch_jobs:
   add_association:
     label: 연결
@@ -422,6 +467,9 @@ batch_jobs:
   add_to_existing_product_model:
     label: 기존 제품 모델에 추가
     perform.label: 기존 제품 모델에 추가
+  convert_to_simple_products:
+    label: 단일 제품으로 변환
+    perform.label: 단일 제품으로 변환
   csv_product_grid_context_quick_export:
     quick_export.label: CSV 제품 그리드 컨텍스트의 빠른 내보내기
     quick_export_product_model.label: CSV 제품 모델 그리드 컨텍스트의 빠른 내보내기
@@ -464,3 +512,7 @@ batch_jobs:
     quick_export.label: XLSX 제품의 빠른 내보내기
     quick_export_product_model.label: XLSX 제품 모델의 빠른 내보내기
     perform.label: XLSX 제품의 빠른 내보내기
+error:
+  removing:
+    group: 그룹을 제거할 수 없습니다
+    association type: 연결 유형을 제거할 수 없습니다

@@ -62,12 +62,17 @@ pim_common:
   name: Nazwa
   remove: Usuń
   code: Pod Produktu
+  label: Etykieta
+  quantity: Ilość
   products: Produkty
   product_models: Model produktu
   categories: Kategorie
+  family_variant: Wariant rodziny
   enabled: Włączony
   family: Rodzina
+  parent: Element nadrzędny
   groups: Grupy
+  unit: Jednostka
   yes: "Tak"
   no: "Nie"
 pim_enrich:
@@ -95,11 +100,13 @@ pim_enrich:
       comment: Komentowanie produktów
       download: Pobieranie produktu jako PDF
       history: Przeglądanie historii produktu
+      convert_variant_to_simple: Konwertuj produkt z wariantami na produkt prosty
     product_model:
       create: Utwórz model produktu
       edit_attributes: Edytuj atrybutu modelu produktu
       categories_view: Sprawdź kategorie modelu produktu
       history: Przeglądaj historię modelu produktu
+      remove: Usuń model produktu (w tym elementy podrzędne)
     category:
       list: Przeglądanie kategorii
       create: Tworzenie kategorii
@@ -163,6 +170,7 @@ pim_enrich:
     job_tracker:
       index: Śledzenie wykonania procesów
       view_all_jobs: Zobacz wszystkie zadania w trackerze procesów
+      stop_job: Zatrzymaj bieżące zadanie
   acl_group:
     association_type: Typy powiązań
     attribute: Atrybuty
@@ -429,6 +437,8 @@ Disabled: Wyłączony
 Status: Status
 pim_datagrid:
   filters:
+    product_typology:
+      label: Typologia produktu
     entity_type:
       label: Wariant
     family:
@@ -437,8 +447,18 @@ pim_datagrid:
       label: Grupy
     enabled:
       label: Status
+    scope:
+      label: Zakres
     completeness:
       label: Kompletny
+    created:
+      label: Utworzono
+    updated:
+      label: Zaktualizowano
+    label_or_identifier:
+      label: Etykieta lub identyfikator
+    parent:
+      label: Element nadrzędny
     identifier:
       label: Identyfikator
 #Versioning / history
@@ -505,7 +525,6 @@ pim_mass_edit:
       success: Usuwanie zbiorcze <strong>%label%</strong> zakończone
 job_execution.summary:
   mass_edited: Edytowane zbiorczo
-  skip: Pominięte
   skipped_products: Pominięte produkty
   skipped_attributes: Pominięte atrybuty
   skipped_families: Pominięte rodziny
@@ -526,3 +545,8 @@ job_tracker:
     title: Śledzenie procesu
   filter:
     started_at: Rozpoczęto o
+pim_login:
+  logo_title: Akeneo PIM
+  footer:
+    powered: Wspierane przez
+    powered_image_title: logo Akeneo

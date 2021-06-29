@@ -53,6 +53,7 @@ pim_enrich.entity.channel:
   property:
     category_tree: 카테고리 트리
     do_not_convert: 변환 안 함
+    measurement: 측정 설정
     label_conversion_units: 제품 내보내기 중에 사용되는 각 측정 특성에 대한 변환 단위 선택
   module:
     create:
@@ -63,6 +64,8 @@ pim_enrich.entity.locale:
   label: 로케일
   uppercase_label: 로케일
   plural_label: 로케일
+  grid:
+    no_search_result: 죄송합니다. 검색 결과가 없습니다.
 pim_enrich.entity.currency:
   plural_label: 통화
   page_title:
