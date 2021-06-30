@@ -65,6 +65,8 @@ const TableInputValue: React.FC<TableInputValueProps> = ({
     valueDataPage = filteredData.slice(0, itemsPerPage);
   }
 
+  const [firstColumn, ...otherColumns] = tableConfiguration;
+
   return (
     <TableInputContainer>
       <TableInput>
@@ -79,38 +81,47 @@ const TableInputValue: React.FC<TableInputValueProps> = ({
           {valueDataPage.map(row => {
             return (
               <TableInput.Row key={row['unique id']}>
-                {tableConfiguration.map(columnDefinition => {
+                <TableInput.Cell rowTitle={true}>{row[firstColumn.code]}</TableInput.Cell>
+                {otherColumns.map(columnDefinition => {
                   const columnCode = columnDefinition.code;
                   const columnType = columnDefinition.data_type;
 
                   return (
                     <TableInput.Cell key={`${row['unique id']}-${columnCode}`}>
                       {'number' === columnType && (
-                        <TableInput.NumberInput
+                        <TableInput.Number
                           value={`${row[columnCode] as number}`}
                           onChange={(value: string) => handleChange(row['unique id'], columnCode, value)}
                           highlighted={cellMatchSearch(`${row[columnCode]}`)}
                           data-testid={`input-${row['unique id']}-${columnCode}`}
                         />
                       )}
-                      {('text' === columnType || 'select' === columnType) && (
-                        <TableInput.TextInput
-                          value={row[columnCode] as string}
+                      {'text' === columnType && (
+                        <TableInput.Text
+                          value={`${row[columnCode]}`}
                           onChange={(value: string) => handleChange(row['unique id'], columnCode, value)}
                           highlighted={cellMatchSearch(`${row[columnCode]}`)}
                           data-testid={`input-${row['unique id']}-${columnCode}`}
                         />
                       )}
+                      {'select' === columnType && (
+                        <TableInput.Select
+                          value={row[columnCode]}
+                          onClear={() => handleChange(row['unique id'], columnCode, null)}
+                          clearLabel={'Clear'}
+                          openDropdownLabel={'Open'}
+                          searchPlaceholder={'Search'}
+                          searchTitle={'Search'}
+                        />
+                      )}
                       {'boolean' === columnType && (
-                        <BooleanInput
-                          clearable={true}
-                          clearLabel='Clear value'
-                          noLabel={translate('pim_common.no')}
+                        <TableInput.Boolean
+                          value={typeof row[columnCode] === 'undefined' ? null : row[columnCode]}
+                          onChange={(value: boolean | null) => handleChange(row['unique id'], columnCode, value)}
                           yesLabel={translate('pim_common.yes')}
-                          onChange={value => handleChange(row['unique id'], columnCode, value)}
-                          value={(row[columnCode] as boolean) ?? null}
-                          readOnly={false}
-                          data-testid={`input-${row['unique id']}-${columnCode}`}
+                          noLabel={translate('pim_common.no')}
+                          clearLabel={'Clear'}
+                          openDropdownLabel={'Open'}
                         />
                       )}
                     </TableInput.Cell>
