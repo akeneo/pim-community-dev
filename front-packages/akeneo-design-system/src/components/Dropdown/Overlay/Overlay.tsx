@@ -94,10 +94,7 @@ const getOverlayPosition = (
       : parentRect.top - BORDER_SHADOW_OFFSET;
 
   if (dropdownOpenerVisible) {
-    top =
-      'up' === verticalPosition
-        ? parentRect.top - elementRect.height
-        : parentRect.bottom + 1;
+    top = 'up' === verticalPosition ? parentRect.top - elementRect.height : parentRect.bottom + 1;
   }
 
   const left =
@@ -108,7 +105,14 @@ const getOverlayPosition = (
   return [top, left];
 };
 
-const Overlay = ({verticalPosition, dropdownOpenerVisible = false, parentRef, onClose, children, ...rest}: OverlayProps) => {
+const Overlay = ({
+  verticalPosition,
+  dropdownOpenerVisible = false,
+  parentRef,
+  onClose,
+  children,
+  ...rest
+}: OverlayProps) => {
   const portalNode = document.createElement('div');
   portalNode.setAttribute('id', 'dropdown-root');
   const portalRef = useRef<HTMLDivElement>(portalNode);
@@ -129,7 +133,13 @@ const Overlay = ({verticalPosition, dropdownOpenerVisible = false, parentRef, on
     };
   }, []);
 
-  const [top, left] = getOverlayPosition(verticalPosition, horizontalPosition, dropdownOpenerVisible, parentRef, overlayRef);
+  const [top, left] = getOverlayPosition(
+    verticalPosition,
+    horizontalPosition,
+    dropdownOpenerVisible,
+    parentRef,
+    overlayRef
+  );
 
   return createPortal(
     <>
