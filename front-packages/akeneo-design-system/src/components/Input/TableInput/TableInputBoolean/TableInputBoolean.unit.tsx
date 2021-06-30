@@ -54,7 +54,7 @@ test('it calls Callbacks on Yes change', () => {
   expect(handleChange).toHaveBeenCalledWith(true);
 });
 
-test('it empty the field', () => {
+test('it clears the field', () => {
   const handleChange = jest.fn();
   render(
     <TableInputBoolean
