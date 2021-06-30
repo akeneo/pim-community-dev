@@ -125,19 +125,23 @@ For accessibility reasons, we must put the full text in an HTML title attribute.
 <Canvas>
   <Story name="Position" height={350}>
     {args => {
-      const [isOpenTopLeft, openTopLeft, closeTopLeft] = useBooleanState(false);
-      const [isOpenTopRight, openTopRight, closeTopRight] = useBooleanState(false);
-      const [isOpenBottomLeft, openBottomLeft, closeBottomLeft] = useBooleanState(false);
-      const [isOpenBottomRight, openBottomRight, closeBottomRight] = useBooleanState(false);
+      const [isOpenTopLeftInvisible, openTopLeftInvisible, closeTopLeftInvisible] = useBooleanState(false);
+      const [isOpenTopRightInvisible, openTopRightInvisible, closeTopRightInvisible] = useBooleanState(false);
+      const [isOpenBottomLeftInvisible, openBottomLeftInvisible, closeBottomLeftInvisible] = useBooleanState(false);
+      const [isOpenBottomRightInvisible, openBottomRightInvisible, closeBottomRightInvisible] = useBooleanState(false);
+      const [isOpenTopLeftVisible, openTopLeftVisible, closeTopLeftVisible] = useBooleanState(false);
+      const [isOpenTopRightVisible, openTopRightVisible, closeTopRightVisible] = useBooleanState(false);
+      const [isOpenBottomLeftVisible, openBottomLeftVisible, closeBottomLeftVisible] = useBooleanState(false);
+      const [isOpenBottomRightVisible, openBottomRightVisible, closeBottomRightVisible] = useBooleanState(false);
       return (
-        <SpaceContainer height={300}>
+        <SpaceContainer height={600}>
           <SpaceBetweenContainer>
             <Dropdown>
-              <Button onClick={openTopLeft}>
-                Dropdown <ArrowDownIcon />
+              <Button onClick={openTopLeftInvisible}>
+                Down Right Invisible <ArrowDownIcon />
               </Button>
-              {isOpenTopLeft && (
-                <Dropdown.Overlay onClose={closeTopLeft}>
+              {isOpenTopLeftInvisible && (
+                <Dropdown.Overlay onClose={closeTopLeftInvisible}>
                   <Dropdown.Header>
                     <Dropdown.Title>Elements</Dropdown.Title>
                   </Dropdown.Header>
@@ -151,11 +155,11 @@ For accessibility reasons, we must put the full text in an HTML title attribute.
               )}
             </Dropdown>
             <Dropdown>
-              <Button onClick={openTopRight}>
-                Dropdown <ArrowDownIcon />
+              <Button onClick={openTopRightInvisible}>
+                Down Left Invisible <ArrowDownIcon />
               </Button>
-              {isOpenTopRight && (
-                <Dropdown.Overlay onClose={closeTopRight}>
+              {isOpenTopRightInvisible && (
+                <Dropdown.Overlay onClose={closeTopRightInvisible}>
                   <Dropdown.Header>
                     <Dropdown.Title>Elements</Dropdown.Title>
                   </Dropdown.Header>
@@ -172,11 +176,11 @@ For accessibility reasons, we must put the full text in an HTML title attribute.
           <SpaceContainer height={200} />
           <SpaceBetweenContainer>
             <Dropdown>
-              <Button onClick={openBottomLeft}>
-                Dropdown <ArrowDownIcon />
+              <Button onClick={openBottomLeftInvisible}>
+                Up Right Invisible <ArrowDownIcon />
               </Button>
-              {isOpenBottomLeft && (
-                <Dropdown.Overlay onClose={closeBottomLeft}>
+              {isOpenBottomLeftInvisible && (
+                <Dropdown.Overlay onClose={closeBottomLeftInvisible} verticalPosition='up'>
                   <Dropdown.Header>
                     <Dropdown.Title>Elements</Dropdown.Title>
                   </Dropdown.Header>
@@ -190,11 +194,89 @@ For accessibility reasons, we must put the full text in an HTML title attribute.
               )}
             </Dropdown>
             <Dropdown>
-              <Button onClick={openBottomRight}>
-                Dropdown <ArrowDownIcon />
+              <Button onClick={openBottomRightInvisible}>
+                Up Left Invisible <ArrowDownIcon />
               </Button>
-              {isOpenBottomRight && (
-                <Dropdown.Overlay onClose={closeBottomRight}>
+              {isOpenBottomRightInvisible && (
+                <Dropdown.Overlay onClose={closeBottomRightInvisible} verticalPosition='up'>
+                  <Dropdown.Header>
+                    <Dropdown.Title>Elements</Dropdown.Title>
+                  </Dropdown.Header>
+                  <Dropdown.ItemCollection>
+                    <Dropdown.Item onClick={action('Clicked')}>Item 1</Dropdown.Item>
+                    <Dropdown.Item>Item 2</Dropdown.Item>
+                    <Dropdown.Item>Item 3</Dropdown.Item>
+                    <Dropdown.Item>Item 4</Dropdown.Item>
+                  </Dropdown.ItemCollection>
+                </Dropdown.Overlay>
+              )}
+            </Dropdown>
+          </SpaceBetweenContainer>
+          <SpaceContainer height={20} />
+          <SpaceBetweenContainer>
+            <Dropdown>
+              <Button onClick={openTopLeftVisible}>
+                Down Right Visible <ArrowDownIcon />
+              </Button>
+              {isOpenTopLeftVisible && (
+                <Dropdown.Overlay onClose={closeTopLeftVisible} dropdownOpenerVisible={true} verticalPosition="down">
+                  <Dropdown.Header>
+                    <Dropdown.Title>Elements</Dropdown.Title>
+                  </Dropdown.Header>
+                  <Dropdown.ItemCollection>
+                    <Dropdown.Item onClick={action('Clicked')}>Item 1</Dropdown.Item>
+                    <Dropdown.Item>Item 2</Dropdown.Item>
+                    <Dropdown.Item>Item 3</Dropdown.Item>
+                    <Dropdown.Item>Item 4</Dropdown.Item>
+                  </Dropdown.ItemCollection>
+                </Dropdown.Overlay>
+              )}
+            </Dropdown>
+            <Dropdown>
+              <Button onClick={openTopRightVisible}>
+                Down Left Visible <ArrowDownIcon />
+              </Button>
+              {isOpenTopRightVisible && (
+                <Dropdown.Overlay onClose={closeTopRightVisible} dropdownOpenerVisible={true} verticalPosition="down">
+                  <Dropdown.Header>
+                    <Dropdown.Title>Elements</Dropdown.Title>
+                  </Dropdown.Header>
+                  <Dropdown.ItemCollection>
+                    <Dropdown.Item onClick={action('Clicked')}>Item 1</Dropdown.Item>
+                    <Dropdown.Item>Item 2</Dropdown.Item>
+                    <Dropdown.Item>Item 3</Dropdown.Item>
+                    <Dropdown.Item>Item 4</Dropdown.Item>
+                  </Dropdown.ItemCollection>
+                </Dropdown.Overlay>
+              )}
+            </Dropdown>
+          </SpaceBetweenContainer>
+          <SpaceContainer height={200} />
+          <SpaceBetweenContainer>
+            <Dropdown>
+              <Button onClick={openBottomLeftVisible}>
+                Up Right Visible <ArrowDownIcon />
+              </Button>
+              {isOpenBottomLeftVisible && (
+                <Dropdown.Overlay onClose={closeBottomLeftVisible} dropdownOpenerVisible={true} verticalPosition='up'>
+                  <Dropdown.Header>
+                    <Dropdown.Title>Elements</Dropdown.Title>
+                  </Dropdown.Header>
+                  <Dropdown.ItemCollection>
+                    <Dropdown.Item onClick={action('Clicked')}>Item 1</Dropdown.Item>
+                    <Dropdown.Item>Item 2</Dropdown.Item>
+                    <Dropdown.Item>Item 3</Dropdown.Item>
+                    <Dropdown.Item>Item 4</Dropdown.Item>
+                  </Dropdown.ItemCollection>
+                </Dropdown.Overlay>
+              )}
+            </Dropdown>
+            <Dropdown>
+              <Button onClick={openBottomRightVisible}>
+                Up Left Visible <ArrowDownIcon />
+              </Button>
+              {isOpenBottomRightVisible && (
+                <Dropdown.Overlay onClose={closeBottomRightVisible} dropdownOpenerVisible={true} verticalPosition='up'>
                   <Dropdown.Header>
                     <Dropdown.Title>Elements</Dropdown.Title>
                   </Dropdown.Header>
