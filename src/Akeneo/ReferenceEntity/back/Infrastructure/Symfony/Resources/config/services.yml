@@ -66,6 +66,13 @@ services:
         tags:
             - { name: 'pim_catalog.updater.copier' }
 
+    Akeneo\Pim\Enrichment\ReferenceEntity\Component\Updater\Remover\ReferenceEntityCollectionRemover:
+        arguments:
+            - '@pim_catalog.validator.helper.attribute'
+            - '@pim_catalog.builder.entity_with_values'
+        tags:
+            - { name: 'pim_catalog.updater.remover' }
+
     akeneo_referenceentity.application.attribute.subscribers.set_default_attributes_on_reference_entity_creation_subscriber:
         class: Akeneo\ReferenceEntity\Application\Attribute\Subscribers\SetDefaultAttributesOnReferenceEntityCreationSubscriber
         arguments:
