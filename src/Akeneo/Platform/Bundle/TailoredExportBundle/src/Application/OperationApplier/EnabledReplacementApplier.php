@@ -17,11 +17,11 @@ use Akeneo\Platform\TailoredExport\Domain\Operation;
 use Akeneo\Platform\TailoredExport\Domain\ReplacementOperation;
 use Akeneo\Platform\TailoredExport\Domain\SourceValue\EnabledValue;
 use Akeneo\Platform\TailoredExport\Domain\SourceValue\StringValue;
-use Akeneo\Platform\TailoredExport\Domain\SourceValue;
+use Akeneo\Platform\TailoredExport\Domain\SourceValueInterface;
 
 class EnabledReplacementApplier implements OperationApplierInterface
 {
-    public function applyOperation(Operation $operation, SourceValue $value): SourceValue
+    public function applyOperation(Operation $operation, SourceValueInterface $value): SourceValueInterface
     {
         if (!$operation instanceof ReplacementOperation) {
             throw new \Exception('NOOOOOOO');
@@ -41,7 +41,7 @@ class EnabledReplacementApplier implements OperationApplierInterface
         return $value;
     }
 
-    public function supports(Operation $operation, SourceValue $value): bool
+    public function supports(Operation $operation, SourceValueInterface $value): bool
     {
         return $value instanceof EnabledValue && $operation instanceof ReplacementOperation;
     }

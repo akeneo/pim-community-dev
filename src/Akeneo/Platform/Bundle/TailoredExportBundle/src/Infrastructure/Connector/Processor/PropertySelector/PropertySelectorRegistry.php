@@ -13,7 +13,7 @@ declare(strict_types=1);
 
 namespace Akeneo\Platform\TailoredExport\Infrastructure\Connector\Processor\PropertySelector;
 
-use Akeneo\Platform\TailoredExport\Domain\SourceValue;
+use Akeneo\Platform\TailoredExport\Domain\SourceValueInterface;
 
 class PropertySelectorRegistry
 {
@@ -24,7 +24,7 @@ class PropertySelectorRegistry
         $this->propertySelectors = $propertySelectors;
     }
 
-    public function applyPropertySelection(array $selectionConfiguration, SourceValue $sourceValue): string
+    public function applyPropertySelection(array $selectionConfiguration, SourceValueInterface $sourceValue): string
     {
         foreach ($this->propertySelectors as $valueSelector) {
             if ($valueSelector->supports($selectionConfiguration, $sourceValue)) {

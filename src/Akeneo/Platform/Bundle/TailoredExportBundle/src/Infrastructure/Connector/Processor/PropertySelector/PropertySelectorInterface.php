@@ -13,11 +13,11 @@ declare(strict_types=1);
 
 namespace Akeneo\Platform\TailoredExport\Infrastructure\Connector\Processor\PropertySelector;
 
-use Akeneo\Platform\TailoredExport\Domain\SourceValue;
+use Akeneo\Platform\TailoredExport\Domain\SourceValueInterface;
 
 interface PropertySelectorInterface
 {
-    public function applySelection(array $selectionConfiguration, SourceValue $sourceValue): string;
+    public function applySelection(array $selectionConfiguration, SourceValueInterface $sourceValue): string;
 
-    public function supports(array $selectionConfiguration, SourceValue $sourceValue): bool;
+    public function supports(array $selectionConfiguration, SourceValueInterface $sourceValue): bool;
 }

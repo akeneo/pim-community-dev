@@ -14,7 +14,7 @@ declare(strict_types=1);
 namespace Akeneo\Platform\TailoredExport\Infrastructure\Connector\Processor\PropertySelector;
 
 use Akeneo\Pim\Structure\Component\Query\PublicApi\FamilyVariant\GetFamilyVariantTranslations;
-use Akeneo\Platform\TailoredExport\Domain\SourceValue;
+use Akeneo\Platform\TailoredExport\Domain\SourceValueInterface;
 use Akeneo\Platform\TailoredExport\Domain\SourceValue\FamilyVariantValue;
 use Akeneo\Platform\TailoredExport\Domain\SelectionTypes;
 
@@ -28,7 +28,7 @@ class FamilyVariantSelector implements PropertySelectorInterface
         $this->getFamilyVariantTranslations = $getFamilyVariantTranslations;
     }
 
-    public function applySelection(array $selectionConfiguration, SourceValue $sourceValue): string
+    public function applySelection(array $selectionConfiguration, SourceValueInterface $sourceValue): string
     {
         if (!$sourceValue instanceof FamilyVariantValue) {
             throw new \LogicException('Cannot apply Family variant selection on this entity');
@@ -49,7 +49,7 @@ class FamilyVariantSelector implements PropertySelectorInterface
         }
     }
 
-    public function supports(array $selectionConfiguration, SourceValue $sourceValue): bool
+    public function supports(array $selectionConfiguration, SourceValueInterface $sourceValue): bool
     {
         return in_array($selectionConfiguration['type'], [SelectionTypes::LABEL, SelectionTypes::CODE])
             && $sourceValue instanceof FamilyVariantValue;

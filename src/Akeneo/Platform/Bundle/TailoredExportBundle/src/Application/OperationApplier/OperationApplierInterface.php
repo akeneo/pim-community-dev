@@ -14,11 +14,11 @@ declare(strict_types=1);
 namespace Akeneo\Platform\TailoredExport\Application\OperationApplier;
 
 use Akeneo\Platform\TailoredExport\Domain\Operation;
-use Akeneo\Platform\TailoredExport\Domain\SourceValue;
+use Akeneo\Platform\TailoredExport\Domain\SourceValueInterface;
 
 interface OperationApplierInterface
 {
-    public function applyOperation(Operation $operation, SourceValue $value): SourceValue;
+    public function applyOperation(Operation $operation, SourceValueInterface $value): SourceValueInterface;
 
-    public function supports(Operation $operation, SourceValue $value);
+    public function supports(Operation $operation, SourceValueInterface $value);
 }

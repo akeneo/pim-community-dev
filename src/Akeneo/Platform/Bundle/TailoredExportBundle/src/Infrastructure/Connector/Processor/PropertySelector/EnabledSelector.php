@@ -13,12 +13,12 @@ declare(strict_types=1);
 
 namespace Akeneo\Platform\TailoredExport\Infrastructure\Connector\Processor\PropertySelector;
 
-use Akeneo\Platform\TailoredExport\Domain\SourceValue;
+use Akeneo\Platform\TailoredExport\Domain\SourceValueInterface;
 use Akeneo\Platform\TailoredExport\Domain\SourceValue\EnabledValue;
 
 class EnabledSelector implements PropertySelectorInterface
 {
-    public function applySelection(array $selectionConfiguration, SourceValue $sourceValue): string
+    public function applySelection(array $selectionConfiguration, SourceValueInterface $sourceValue): string
     {
         if (!$sourceValue instanceof EnabledValue) {
             throw new \LogicException('Cannot apply Enabled selection on this entity');
@@ -27,7 +27,7 @@ class EnabledSelector implements PropertySelectorInterface
         return $sourceValue->getData() ? '1' : '0';
     }
 
-    public function supports(array $selectionConfiguration, SourceValue $sourceValue): bool
+    public function supports(array $selectionConfiguration, SourceValueInterface $sourceValue): bool
     {
         return $sourceValue instanceof EnabledValue;
     }

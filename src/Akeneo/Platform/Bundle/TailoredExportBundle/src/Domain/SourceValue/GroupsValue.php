@@ -13,9 +13,9 @@ declare(strict_types=1);
 
 namespace Akeneo\Platform\TailoredExport\Domain\SourceValue;
 
-use Akeneo\Platform\TailoredExport\Domain\SourceValue;
+use Akeneo\Platform\TailoredExport\Domain\SourceValueInterface;
 
-class GroupsValue implements SourceValue
+class GroupsValue implements SourceValueInterface
 {
     private array $data;
 

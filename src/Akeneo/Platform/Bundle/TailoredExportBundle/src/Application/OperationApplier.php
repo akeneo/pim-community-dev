@@ -15,7 +15,7 @@ namespace Akeneo\Platform\TailoredExport\Application;
 
 use Akeneo\Platform\TailoredExport\Application\OperationApplier\OperationApplierInterface;
 use Akeneo\Platform\TailoredExport\Domain\OperationCollection;
-use Akeneo\Platform\TailoredExport\Domain\SourceValue;
+use Akeneo\Platform\TailoredExport\Domain\SourceValueInterface;
 
 class OperationApplier
 {
@@ -28,7 +28,7 @@ class OperationApplier
     }
 
     /** Check how we scale this part (only have handler corresponding to the attribute type or sort handler ?) */
-    public function applyOperations(OperationCollection $operationCollection, SourceValue $value): SourceValue
+    public function applyOperations(OperationCollection $operationCollection, SourceValueInterface $value): SourceValueInterface
     {
         foreach ($this->operationHandlers as $handler) {
             foreach ($operationCollection as $operation) {
