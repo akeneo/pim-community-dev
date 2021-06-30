@@ -28,8 +28,8 @@ pim_import_export:
       warning: <strong>%label%</strong> 내보내기 완료 및 경고 발생
       success: <strong>%label%</strong> 내보내기 완료
       warnings:
-        xlsx_cell_conversion_error: '''{0}'' 열을 대상 PIM 제품 특성 유형으로 변환하는 동안 예외가 발생했습니다(Excel 셀 형식을 확인하십시오)'
-        xlsx_cell_date_to_text_conversion_error: 날짜 형식의 셀 {0}을(를) 유형 텍스트의 특성으로 변환할 수 없습니다
+        xlsx_cell_conversion_error: '''{0}'' 열을 대상 PIM 제품 특성 유형으로 변환하는 동안 예외가 발생했습니다(Excel 셀 형식을 확인하십시오).'
+        xlsx_cell_date_to_text_conversion_error: 날짜 형식의 셀 {0}을(를) 유형 텍스트의 특성으로 변환할 수 없습니다.
     import:
       error: <strong>%label%</strong> 가져오기 실패
       warning: <strong>%label%</strong> 가져오기 완료 및 경고 발생
@@ -110,15 +110,15 @@ confirmation:
 #Flash messages
 flash:
   export:
-    created: 내보내기가 생성되었습니다
-    removed: 내보내기가 제거되었습니다
-    updated: 내보내기가 업데이트되었습니다
-    running: 내보내기가 실행 중입니다
+    created: 내보내기가 생성되었습니다.
+    removed: 내보내기가 제거되었습니다.
+    updated: 내보내기가 업데이트되었습니다.
+    running: 내보내기가 실행 중입니다.
   import:
-    created: 가져오기가 생성되었습니다
-    removed: 가져오기가 제거되었습니다
-    updated: 가져오기가 업데이트되었습니다
-    running: 가져오기가 실행 중입니다
+    created: 가져오기가 생성되었습니다.
+    removed: 가져오기가 제거되었습니다.
+    updated: 가져오기가 업데이트되었습니다.
+    running: 가져오기가 실행 중입니다.
 #Tabs
 General properties: 일반 속성
 History: 기록
@@ -134,7 +134,7 @@ popin.create:
 'Display item': 항목 표시
 'Hide item': 항목 숨기기
 'Collecting data about job execution...': 작업 실행에 대한 데이터 수집 중...
-'You must select a file to upload': 업로드할 파일을 선택해야 합니다
+'You must select a file to upload': 업로드할 파일을 선택해야 합니다.
 Download log: 로그 다운로드
 Show profile: 프로필 표시
 execution details: 실행 세부 정보
