@@ -21,8 +21,8 @@ use Akeneo\Tool\Component\Batch\Job\JobParameters;
 use Akeneo\Tool\Component\Batch\Job\JobRepositoryInterface;
 use Akeneo\Tool\Component\Batch\Job\JobStopper;
 use Akeneo\Tool\Component\Batch\Model\StepExecution;
+use Akeneo\Tool\Component\StorageUtils\Cache\EntityManagerClearerInterface;
 use Akeneo\Tool\Component\StorageUtils\Cursor\CursorInterface;
-use Akeneo\Tool\Component\StorageUtils\Detacher\BulkObjectDetacherInterface;
 use Akeneo\Tool\Component\StorageUtils\Saver\BulkSaverInterface;
 use PhpSpec\ObjectBehavior;
 
@@ -32,10 +32,12 @@ class ImpactedProductCountTaskletSpec extends ObjectBehavior
         RuleDefinitionRepositoryInterface $ruleDefinitionRepo,
         DryRunnerInterface $productRuleRunner,
         BulkSaverInterface $saver,
-        BulkObjectDetacherInterface $detacher,
-        StepExecution $stepExecution
+        EntityManagerClearerInterface $cacheClearer,
+        StepExecution $stepExecution,
+        JobRepositoryInterface  $jobRepository,
+        JobStopper $jobStopper
     ) {
-        $this->beConstructedWith($ruleDefinitionRepo, $productRuleRunner, $saver, $detacher);
+        $this->beConstructedWith($ruleDefinitionRepo, $productRuleRunner, $saver, $cacheClearer, $jobRepository, $jobStopper);
 
         $this->setStepExecution($stepExecution);
     }
@@ -47,11 +49,11 @@ class ImpactedProductCountTaskletSpec extends ObjectBehavior
     }
 
     function it_executes_impacted_product_by_rules(
-        $ruleDefinitionRepo,
-        $productRuleRunner,
-        $saver,
-        $detacher,
-        $stepExecution,
+        RuleDefinitionRepositoryInterface $ruleDefinitionRepo,
+        DryRunnerInterface $productRuleRunner,
+        BulkSaverInterface $saver,
+        EntityManagerClearerInterface $cacheClearer,
+        StepExecution $stepExecution,
         RuleDefinitionInterface $ruleDefinition1,
         RuleDefinitionInterface $ruleDefinition2,
         RuleSubjectSetInterface $ruleSubjectSet1,
@@ -84,22 +86,24 @@ class ImpactedProductCountTaskletSpec extends ObjectBehavior
         $ruleDefinition1->setImpactedSubjectCount(1000)->willReturn($ruleDefinition2);
 
         $stepExecution->incrementSummaryInfo('rule_calculated')->shouldBeCalled();
-        $stepExecution->incrementProcessedItems(2)->shouldBeCalledOnce();
+        $stepExecution->incrementProcessedItems()->shouldBeCalledTimes(2);
 
         $jobRepository->updateStepExecution($stepExecution);
 
         $saver->saveAll([$ruleDefinition1, $ruleDefinition2])->shouldBeCalled();
-        $detacher->detachAll([$ruleDefinition1, $ruleDefinition2])->shouldBeCalled();
+        $cacheClearer->clear()->shouldBeCalled();
+        $jobStopper->isStopping($stepExecution)->willReturn(false);
 
         $this->execute();
     }
 
     function it_does_not_block_other_rules_if_a_product_count_fails(
-        $ruleDefinitionRepo,
-        $productRuleRunner,
-        $saver,
-        $detacher,
-        $stepExecution,
+        RuleDefinitionRepositoryInterface $ruleDefinitionRepo,
+        DryRunnerInterface $productRuleRunner,
+        BulkSaverInterface $saver,
+        EntityManagerClearerInterface $cacheClearer,
+        JobStopper $jobStopper,
+        StepExecution $stepExecution,
         RuleDefinitionInterface $ruleDefinition1,
         RuleDefinitionInterface $ruleDefinition2,
         RuleSubjectSetInterface $ruleSubjectSet2,
@@ -107,13 +111,15 @@ class ImpactedProductCountTaskletSpec extends ObjectBehavior
         JobParameters $jobParameters
     ) {
         $configuration = [
-            'ruleIds' => [1,2]
+            'ruleIds' => [1, 2]
         ];
         $ruleDefinition1->getCode()->willReturn('rule_1');
         $stepExecution->getJobParameters()->willReturn($jobParameters);
         $jobParameters->get('ruleIds')->willReturn($configuration['ruleIds']);
 
-        $ruleDefinitionRepo->findBy(['id' => [1,2]])->willReturn([$ruleDefinition1, $ruleDefinition2]);
+        $stepExecution->setTotalItems(2)->shouldBeCalledOnce();
+
+        $ruleDefinitionRepo->findBy(['id' => [1, 2]])->willReturn([$ruleDefinition1, $ruleDefinition2]);
 
         $exception = new \Exception('error message');
         $productRuleRunner->dryRun($ruleDefinition1)->shouldBeCalled()->willThrow($exception);
@@ -125,6 +131,9 @@ class ImpactedProductCountTaskletSpec extends ObjectBehavior
 
         $ruleDefinition2->setImpactedSubjectCount(1000)->shouldBeCalled()->willReturn($ruleDefinition2);
 
+        $stepExecution->incrementSummaryInfo('rule_calculated')->shouldBeCalled();
+        $stepExecution->incrementProcessedItems()->shouldBeCalledOnce();
+
         $stepExecution->addWarning(
             'Invalid rule "rule_1": could not calculate the impacted product count. Internal error : error message',
             [],
@@ -133,7 +142,8 @@ class ImpactedProductCountTaskletSpec extends ObjectBehavior
         $stepExecution->incrementSummaryInfo('rule_calculated')->shouldBeCalledOnce();
 
         $saver->saveAll([$ruleDefinition1, $ruleDefinition2])->shouldBeCalled();
-        $detacher->detachAll([$ruleDefinition1, $ruleDefinition2])->shouldBeCalled();
+        $cacheClearer->clear()->shouldBeCalled();
+        $jobStopper->isStopping($stepExecution)->willReturn(false);
 
         $this->execute();
     }
