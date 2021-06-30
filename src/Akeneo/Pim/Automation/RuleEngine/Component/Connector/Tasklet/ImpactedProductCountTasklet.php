@@ -13,6 +13,7 @@ namespace Akeneo\Pim\Automation\RuleEngine\Component\Connector\Tasklet;
 
 use Akeneo\Tool\Bundle\RuleEngineBundle\Repository\RuleDefinitionRepositoryInterface;
 use Akeneo\Tool\Bundle\RuleEngineBundle\Runner\DryRunnerInterface;
+use Akeneo\Tool\Component\Batch\Item\DataInvalidItem;
 use Akeneo\Tool\Component\Batch\Item\TrackableTaskletInterface;
 use Akeneo\Tool\Component\Batch\Job\JobRepositoryInterface;
 use Akeneo\Tool\Component\Batch\Job\JobStopper;
@@ -71,11 +72,18 @@ class ImpactedProductCountTasklet implements TaskletInterface, TrackableTaskletI
             $ruleDefinitions = $this->ruleDefinitionRepo->findBy(['id' => $ruleIdsChunk]);
 
             foreach ($ruleDefinitions as $ruleDefinition) {
-                $ruleSubjectSet = $this->productRuleRunner->dryRun($ruleDefinition);
+                try {$ruleSubjectSet = $this->productRuleRunner->dryRun($ruleDefinition);
                 $ruleDefinition->setImpactedSubjectCount($ruleSubjectSet->getSubjectsCursor()->count());
 
                 $this->stepExecution->incrementSummaryInfo('rule_calculated');
+            }catch (\Exception $e) {
+                $this->stepExecution->addWarning(
+                    sprintf('Invalid rule "%s": could not calculate the impacted product count. Internal error : %s', $ruleDefinition->getCode(), $e->getMessage()),
+                    [],
+                    new DataInvalidItem(['rule_code' => $ruleDefinition->getCode()])
+                );
             }
+        }
 
             $this->stepExecution->incrementProcessedItems(count($ruleIdsChunk));
             $this->jobRepository->updateStepExecution($this->stepExecution);
