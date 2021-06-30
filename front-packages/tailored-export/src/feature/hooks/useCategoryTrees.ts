@@ -7,8 +7,8 @@ type CategoryTree = Category & {
 
 const useCategoryTrees = (
   selectedCategoryCodes: string[],
-  setActiveCategoryTree: React.Dispatch<React.SetStateAction<string>>,
-  shouldIncludeChildren: boolean
+  shouldIncludeChildren: boolean,
+  setActiveCategoryTree?: React.Dispatch<React.SetStateAction<string>>
 ) => {
   const [categoryTrees, setCategoryTrees] = useState<CategoryTree[]>([]);
   const isMounted = useIsMounted();
@@ -28,7 +28,7 @@ const useCategoryTrees = (
 
       if (isMounted()) {
         setCategoryTrees(json);
-        setActiveCategoryTree(currentActiveCategoryTree =>
+        setActiveCategoryTree?.(currentActiveCategoryTree =>
           '' === currentActiveCategoryTree ? json[0].code : currentActiveCategoryTree
         );
       }

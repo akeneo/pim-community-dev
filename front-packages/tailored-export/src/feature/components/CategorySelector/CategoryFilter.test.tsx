@@ -60,7 +60,7 @@ test('it allow to include children to the selection', () => {
   expect(onCategorySelection).toHaveBeenCalledWith({
     field: 'categories',
     value: ['category1', 'category2'],
-    operator: 'IN CHILDREN LIST'
+    operator: 'IN CHILDREN',
   });
 });
 
@@ -68,7 +68,7 @@ test('it allow to exclude children to the selection', () => {
   const onCategorySelection = jest.fn();
   renderWithProviders(
     <CategoryFilter
-      filter={{field: 'categories', value: ['category1', 'category2'], operator: 'IN CHILDREN LIST'}}
+      filter={{field: 'categories', value: ['category1', 'category2'], operator: 'IN CHILDREN'}}
       onChange={onCategorySelection}
     />
   );
@@ -82,6 +82,6 @@ test('it allow to exclude children to the selection', () => {
   expect(onCategorySelection).toHaveBeenCalledWith({
     field: 'categories',
     value: ['category1', 'category2'],
-    operator: 'IN'
+    operator: 'IN',
   });
 });

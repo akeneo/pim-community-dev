@@ -3,6 +3,7 @@ import styled from 'styled-components';
 import {BooleanInput, Button, Field, Modal, ProductCategoryIllustration, useBooleanState} from 'akeneo-design-system';
 import {useTranslate} from '@akeneo-pim-community/shared';
 import {MultiCategoryTreeSelector} from './MultiCategoryTreeSelector';
+import {useCategoryTrees} from '../../hooks';
 
 const Container = styled.div`
   display: flex;
@@ -10,7 +11,7 @@ const Container = styled.div`
   justify-content: space-between;
   width: 100%;
 `;
-type Operator = 'IN CHILDREN LIST' | 'IN' | 'NOT IN';
+type Operator = 'IN CHILDREN' | 'IN' | 'NOT IN';
 type CategoryFilterType = {
   field: 'categories';
   operator: Operator;
@@ -26,9 +27,15 @@ const CategoryFilter = ({filter, onChange}: CategoryFilterProps) => {
   const [isCategoriesModalOpen, openCategoriesModal, closeCategoriesModal] = useBooleanState();
   const [categorySelection, setSelectedCategories] = useState<string[]>(filter.value);
   const [operator, setOperator] = useState<Operator>(filter.operator);
-  const shouldIncludeSubCategories = operator === 'IN CHILDREN LIST';
+  const shouldIncludeSubCategories = operator === 'IN CHILDREN';
+
+  const categoryTrees = useCategoryTrees(categorySelection, shouldIncludeSubCategories);
+  const totalCategorySelected = categoryTrees.reduce((carry, categoryTree) => {
+    return carry + Number(categoryTree.selectedCategoryCount);
+  }, 0);
+
   const handleShouldIncludeSubCategoryChange = (shouldIncludeSubCategory: boolean) => {
-    setOperator(shouldIncludeSubCategory ? 'IN CHILDREN LIST' : 'IN');
+    setOperator(shouldIncludeSubCategory ? 'IN CHILDREN' : 'IN');
   };
   const handleConfirm = () => {
     const newOperator = filter.value.length === 0 ? 'NOT IN' : operator;
@@ -76,7 +83,11 @@ const CategoryFilter = ({filter, onChange}: CategoryFilterProps) => {
         </Modal>
       )}
       <span>
-        {translate('pim_connector.export.categories.selector.label', {count: filter.value.length}, filter.value.length)}
+        {translate(
+          'pim_connector.export.categories.selector.label',
+          {count: totalCategorySelected},
+          totalCategorySelected
+        )}
       </span>
       <Button level="secondary" onClick={openCategoriesModal}>
         {translate('pim_common.edit')}
