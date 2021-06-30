@@ -1,0 +1,9 @@
+framework:
+    messenger:
+        default_bus: messenger.bus.default
+        buses:
+            messenger.bus.default: ~
+
+            # Bounded Context cross communication buses
+            messenger.bus.command: ~
+            messenger.bus.query: ~
