@@ -85,3 +85,19 @@ test('it allow to exclude children to the selection', () => {
     operator: 'IN',
   });
 });
+const countPerCategoryTrees = [{selectedCategoryCount: '10'}, {selectedCategoryCount: '3'}];
+jest.mock('../../hooks/useCategoryTrees', () => {
+  return {useCategoryTrees: jest.fn(() => countPerCategoryTrees)};
+});
+jest.mock('@akeneo-pim-community/shared/lib/hooks/useTranslate', () => ({
+  useTranslate: () => {
+    return jest.fn((key: string, params: any, count: number) => count);
+  },
+}));
+
+test('it calculates the total selected categories for all category trees', () => {
+  renderWithProviders(
+    <CategoryFilter filter={{field: 'categories', value: [], operator: 'IN CHILDREN'}} onChange={() => {}} />
+  );
+  expect(screen.getByText(13)).toBeInTheDocument();
+});
