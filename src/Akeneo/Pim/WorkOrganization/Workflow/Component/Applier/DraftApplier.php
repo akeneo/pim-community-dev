@@ -16,6 +16,7 @@ namespace Akeneo\Pim\WorkOrganization\Workflow\Component\Applier;
 use Akeneo\Pim\Enrichment\Component\Product\Model\EntityWithValuesInterface;
 use Akeneo\Pim\WorkOrganization\Workflow\Component\Event\EntityWithValuesDraftEvents;
 use Akeneo\Pim\WorkOrganization\Workflow\Component\Model\EntityWithValuesDraftInterface;
+use Akeneo\Tool\Component\StorageUtils\Exception\InvalidPropertyTypeException;
 use Akeneo\Tool\Component\StorageUtils\Repository\IdentifiableObjectRepositoryInterface;
 use Akeneo\Tool\Component\StorageUtils\Updater\PropertySetterInterface;
 use Symfony\Component\EventDispatcher\EventDispatcherInterface;
@@ -28,14 +29,9 @@ use Symfony\Component\EventDispatcher\GenericEvent;
  */
 class DraftApplier implements DraftApplierInterface
 {
-    /** @var PropertySetterInterface */
-    protected $propertySetter;
-
-    /** @var EventDispatcherInterface */
-    protected $dispatcher;
-
-    /** @var IdentifiableObjectRepositoryInterface */
-    protected $attributeRepository;
+    protected PropertySetterInterface $propertySetter;
+    protected EventDispatcherInterface $dispatcher;
+    protected IdentifiableObjectRepositoryInterface $attributeRepository;
 
     public function __construct(
         PropertySetterInterface $propertySetter,
@@ -90,12 +86,16 @@ class DraftApplier implements DraftApplierInterface
         foreach ($changesValues as $code => $values) {
             if ($this->attributeExists((string) $code)) {
                 foreach ($values as $value) {
-                    $this->propertySetter->setData(
-                        $entityWithValues,
-                        $code,
-                        $value['data'],
-                        ['locale' => $value['locale'], 'scope' => $value['scope']]
-                    );
+                    try {
+                        $this->propertySetter->setData(
+                            $entityWithValues,
+                            $code,
+                            $value['data'],
+                            ['locale' => $value['locale'], 'scope' => $value['scope']]
+                        );
+                    } catch (InvalidPropertyTypeException $exception) {
+                        // do nothing, the data is not valid so we don't want to apply the change
+                    }
                 }
             }
         }
