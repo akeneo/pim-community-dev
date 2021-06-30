@@ -57,13 +57,11 @@ type TableInputSelectProps = {
   onSearchChange?: (search: string) => void;
   searchPlaceholder: string;
   searchTitle: string;
-  fetchNextPage?: () => void;
 };
 
 const TableInputSelect: React.FC<TableInputSelectProps> = ({
   value,
   onClear,
-  fetchNextPage,
   clearLabel,
   openDropdownLabel,
   highlighted = false,

@@ -18,7 +18,7 @@ test('it renders a Select input', () => {
   expect(screen.getByText('Option1')).toBeInTheDocument();
 });
 
-test('it empty the field', () => {
+test('it clears the field', () => {
   const handleClear = jest.fn();
   render(
     <TableInputSelect
