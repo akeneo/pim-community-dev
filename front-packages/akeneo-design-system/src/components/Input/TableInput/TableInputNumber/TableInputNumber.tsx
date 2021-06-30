@@ -9,14 +9,14 @@ const TableInputNumber = styled(NumberInput)<{highlighted: boolean} & AkeneoThem
   padding-right: 10px;
   border-radius: 0;
   border: none;
-  
+
   ${({highlighted}) =>
-          highlighted
-                  ? css`
+    highlighted
+      ? css`
           background: ${getColor('green', 10)};
           box-shadow: 0 0 0 1px ${getColor('green', 80)};
         `
-                  : css`
+      : css`
           background: none;
         `};
 
