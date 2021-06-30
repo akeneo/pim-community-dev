@@ -5,7 +5,7 @@ config:
                 akeneo_connectivity_connection_connect_marketplace:
                     module: pim/controller/connectivity/connection/connect/marketplace
                 akeneo_connectivity_connection_connect_marketplace_profile:
-                    module: pim/controller/connectivity/connection/connect/marketplace/profile
+                    module: pim/controller/connectivity/connection/connect/marketplace
                 akeneo_connectivity_connection_error_management_dashboard:
                     module: pim/controller/connectivity/connection/error-management
                 akeneo_connectivity_connection_error_management_connection_monitoring:
@@ -36,7 +36,6 @@ config:
 
     paths:
         pim/controller/connectivity/connection/connect/marketplace: akeneoconnectivityconnection/js/controller/marketplace.tsx
-        pim/controller/connectivity/connection/connect/marketplace/profile: akeneoconnectivityconnection/js/controller/marketplace-without-user-profile.tsx
         pim/controller/connectivity/connection/settings: akeneoconnectivityconnection/js/controller/settings.tsx
         pim/controller/connectivity/connection/error-management: akeneoconnectivityconnection/js/controller/error-management.tsx
         pim/controller/connectivity/connection/webhook: akeneoconnectivityconnection/js/controller/webhook.tsx
