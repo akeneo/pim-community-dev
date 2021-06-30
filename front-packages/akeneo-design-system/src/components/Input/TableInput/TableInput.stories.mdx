@@ -35,7 +35,7 @@ Table input allows the user to input content in a table.
             <TableInput.Cell rowTitle={true}>{row}</TableInput.Cell>
             <TableInput.Cell>
               <TableInput.Select
-                removeValueLabel="Remove"
+                clearLabel="Remove"
                 openDropdownLabel="Open"
                 value={{'1': 'A', '2': 'B', '3': 'C'}[getValue(index, 'nutritionScore')]}
                 onClear={() => setValue(index, 'nutritionScore', null)}
