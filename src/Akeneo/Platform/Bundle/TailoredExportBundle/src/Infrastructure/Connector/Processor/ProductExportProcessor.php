@@ -63,6 +63,7 @@ class ProductExportProcessor implements ItemProcessorInterface, StepExecutionAwa
                 if (SourceTypes::ATTRIBUTE === $source['type']) {
                     $value = $product->getValue($source['code'], $source['locale'], $source['channel']);
                     $attribute = $this->getAttributes->forCode($source['code']);
+
                     $operationSourceValues[] = $this->attributeSelectorRegistry->applyAttributeSelection(
                         $source['selection'],
                         $product,
@@ -70,10 +71,10 @@ class ProductExportProcessor implements ItemProcessorInterface, StepExecutionAwa
                         $value
                     );
                 } elseif (SourceTypes::PROPERTY === $source['type']) {
+                    $sourceValue = $this->propertyValueGetter->get($source['code'], $product);
                     $operationSourceValues[] = $this->propertySelectorRegistry->applyPropertySelection(
                         $source['selection'],
-                        $product,
-                        $source['code']
+                        $sourceValue
                     );
                 } else {
                     throw new \LogicException(sprintf('Source type "%s" is unsupported', $source['type']));
