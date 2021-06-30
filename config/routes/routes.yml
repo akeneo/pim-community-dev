@@ -52,6 +52,10 @@ pim_volume_monitoring:
 pim_data_quality_insights:
     resource: "@AkeneoDataQualityInsightsBundle/Resources/config/routing.yml"
 
+free_trial:
+    prefix: /free-trial
+    resource: "@AkeneoFreeTrialBundle/Resources/config/routing.yml"
+
 # Oro platform
 
 oro_default:

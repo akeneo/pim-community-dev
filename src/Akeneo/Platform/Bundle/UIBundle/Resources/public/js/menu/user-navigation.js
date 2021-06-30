@@ -20,7 +20,9 @@ define([
   'akeneo/communication-channel',
   'pim/media-url-generator',
   'pim/template/menu/user-navigation',
-], function (_, __, BaseForm, router, UserContext, Notifications, CommunicationChannel, MediaUrlGenerator, template) {
+  'pim/feature-flags',
+  '@akeneo-pim-community/invite-user'
+], function (_, __, BaseForm, router, UserContext, Notifications, CommunicationChannel, MediaUrlGenerator, template, FeatureFlags, {InviteUserButton}) {
   return BaseForm.extend({
     className: 'AknTitleContainer-userMenu',
     template: _.template(template),
@@ -65,6 +67,14 @@ define([
       communicationChannelView.setElement(this.$('.communication-channel')).render();
 
       this.delegateEvents();
+
+      if (FeatureFlags.isEnabled('free_trial')) {
+        this.renderReact(
+            InviteUserButton,
+            {},
+            document.getElementById('invite-user-btn')
+        )
+      }
 
       return BaseForm.prototype.render.apply(this, arguments);
     },

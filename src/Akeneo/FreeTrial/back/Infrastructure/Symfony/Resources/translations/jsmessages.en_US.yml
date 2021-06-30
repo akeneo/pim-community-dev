@@ -1,0 +1,31 @@
+free_trial:
+  invite_users:
+    title: "]-Inf, 1]{{ count }} invited user|]1, Inf[{{ count }} invited users"
+    breadcrumb: Invite users
+    invite_button: Invite users
+    invite_helper:
+      message1: Invite your colleagues or partners to discover Akeneo PIM.
+      message2: We'll send them an email with a link for them to join you on your Free Trial discovery.
+    invite_input_label: Please, share your colleague's or partner's email.
+    users_list:
+      headers:
+        invited_user: Invitation sent to
+        status: Status
+      empty_list_message: You haven't spread the word yet.
+    invite_messages:
+      success:
+        title: Invitations sent to new users
+        description: They are about to receive an email with a link to join your Akeneo PIM Free Trial.
+      error:
+        invitation_failed:
+          title: Invitation couldn't be sent
+          description: invitation_failed message to define
+        invalid_email:
+          title: Invitation couldn't be sent
+          description: Please make sure the email exists and is properly spelled.
+        invitation_already_sent:
+          title: Invitation already sent
+          description: Invitations with a link to join Akeneo PIM Free Trial have already been sent to some users. Let them know about it!
+
+pim_title:
+  akeneo_invite_user: Invite users

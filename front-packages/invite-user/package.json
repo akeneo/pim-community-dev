@@ -1,0 +1,81 @@
+{
+  "name": "@akeneo-pim-community/invite-user",
+  "version": "0.1.0",
+  "private": true,
+  "peerDependencies": {
+    "babel-loader": "8.1.0",
+    "eslint": "^7.11.0",
+    "react": "^16.14.0",
+    "react-dom": "^16.9.12",
+    "styled-components": "^5.1.1"
+  },
+  "devDependencies": {
+    "@testing-library/jest-dom": "^5.11.4",
+    "@testing-library/react": "^11.1.0",
+    "@testing-library/user-event": "^12.1.10",
+    "@types/jest": "^26.0.15",
+    "@types/node": "^12.0.0",
+    "@types/react": "^16.14.0",
+    "@types/react-dom": "^16.9.12",
+    "@types/react-router-dom": "^5.1.7",
+    "@types/styled-components": "^5.1.1",
+    "prettier": "^2.2.1"
+  },
+  "dependencies": {
+    "@akeneo-pim-community/shared": "link:../shared",
+    "akeneo-design-system": "link:../akeneo-design-system",
+    "react-router": "^5.2.0",
+    "react-router-dom": "^5.2.0",
+    "react-scripts": "4.0.1",
+    "typescript": "^4.0.3",
+    "web-vitals": "^0.2.4"
+  },
+  "proxy": "http://httpd:80",
+  "scripts": {
+    "app:start": "yarn translation:build; yarn route:build; yarn packages:build && react-scripts start",
+    "test:unit:run": "react-scripts test --watchAll=false --coverage --coverageDirectory=coverage",
+    "test:unit:watch": "react-scripts test",
+    "lib:build": "tsc -p ./tsconfig.build.json",
+    "translation:build": "cp ../../public/js/translation/en_US.js ./src/translations.json",
+    "route:build": "cp ../../public/js/fos_js_routes.json ./src/routes.json",
+    "packages:build": "yarn --cwd=../akeneo-design-system run lib:build && yarn --cwd=../shared run lib:build",
+    "lint:fix": "prettier --config .prettierrc.json --parser typescript --write \"./src/**/*.{ts,tsx}\"",
+    "lint:check": "prettier --config .prettierrc.json --parser typescript --check \"./src/**/*.{ts,tsx}\""
+  },
+  "eslintConfig": {
+    "extends": [
+      "react-app",
+      "react-app/jest"
+    ]
+  },
+  "main": "lib/index.js",
+  "browserslist": {
+    "production": [
+      ">0.2%",
+      "not dead",
+      "not op_mini all"
+    ],
+    "development": [
+      "last 1 chrome version",
+      "last 1 firefox version",
+      "last 1 safari version"
+    ]
+  },
+  "jest": {
+    "coverageReporters": [
+      "text-summary",
+      "html"
+    ],
+    "coveragePathIgnorePatterns": [
+      "<rootDir>/src/index.tsx",
+      "shared/components/"
+    ],
+    "coverageThreshold": {
+      "global": {
+        "statements": 50,
+        "functions": 50,
+        "lines": 50
+      }
+    }
+  }
+}
