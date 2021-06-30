@@ -141,7 +141,7 @@ pim_enrich.entity.product:
       delete_confirm: 이 코멘트를 삭제하시겠습니까?
       removed_author: 제거된 사용자
     asset:
-      title: 자산
+      title: 애셋
 pim_enrich.entity.product_model:
   label: 제품 모델
   uppercase_label: 제품 모델

@@ -65,7 +65,7 @@ pim_enrich.entity.locale:
   uppercase_label: ロケール
   plural_label: ロケール
   page_title:
-    index: "]-Inf, 1]{{ count }} 有効なロケール]1, Inf[{{ count }} 有効なロケール"
+    index: "]-Inf, 1]{{ count }} 個の有効なロケール]1, Inf[{{ count }} 個の有効なロケール"
   helper: "ロケールを有効化または無効化するには、いずれかの<a href={{ href }}>チャンネル</a>に移動し、ロケールを追加または削除してください。"
   grid:
     columns:
