@@ -158,7 +158,7 @@ const AddColumnModal: React.FC<AddColumnModalProps> = ({close, onCreate, existin
             onChange={(value: string | null) => {
               handleDataTypeChange((value || null) as ColumnType);
             }}
-            openLabel={translate('pim_table_attribute.form.attribute.open')}
+            openLabel={translate('pim_common.open')}
             placeholder={translate('pim_table_attribute.form.attribute.select_type')}
             value={columnDefinition.data_type as string}
             clearable={false}>

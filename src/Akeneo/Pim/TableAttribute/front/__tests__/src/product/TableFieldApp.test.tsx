@@ -36,7 +36,7 @@ describe('TableFieldApp', () => {
     expect(screen.getByText('Nutrition')).toBeInTheDocument();
     expect(screen.getByText('en')).toBeInTheDocument();
     expect(screen.getByText('Ecommerce')).toBeInTheDocument();
-    expect(screen.getByTitle('Search')).toBeInTheDocument();
+    expect(screen.getByTitle('pim_common.search')).toBeInTheDocument();
     expect(screen.getByTitle('pim_enrich.entity.product.module.attribute.remove_optional')).toBeInTheDocument();
   });
 

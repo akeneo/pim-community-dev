@@ -5,6 +5,7 @@ import {Button, Locale, pimTheme, uuid, Search} from 'akeneo-design-system';
 import {TableInputValue} from './TableInputValue';
 import {TableRow, TableValue} from '../models/TableValue';
 import {TemplateContext} from '../legacy/table-field';
+import {useTranslate} from '@akeneo-pim-community/shared';
 
 const TableInputContainer = styled.div`
   flex-basis: 100% !important;
@@ -31,6 +32,7 @@ const TableFieldApp: React.FC<TableFieldAppProps> = ({
   onChange,
   elements,
 }) => {
+  const translate = useTranslate();
   const [tableValue, setTableValue] = React.useState<TableValueWithId>(
     (value.data || []).map(row => {
       return Object.keys(row).reduce(
@@ -105,7 +107,12 @@ const TableFieldApp: React.FC<TableFieldAppProps> = ({
                 </span>
               )}
             </span>
-            <Search onSearchChange={setSearchText} placeholder='Search' searchValue={searchText} title='Search' />
+            <Search
+              onSearchChange={setSearchText}
+              placeholder={translate('pim_common.search')}
+              searchValue={searchText}
+              title={translate('pim_common.search')}
+            />
             <Button
               size='small'
               onClick={() => {

@@ -42,13 +42,13 @@ describe('TableInputValue', () => {
 
     expect(screen.getAllByText('pim_common.yes')).toHaveLength(1);
     expect(screen.getAllByText('pim_common.no')).toHaveLength(1);
-    expect(screen.getAllByTitle('Open')).toHaveLength(6);
+    expect(screen.getAllByTitle('pim_common.open')).toHaveLength(6);
 
     act(() => {
-      fireEvent.click(screen.getAllByTitle('Clear')[1]); // Clear sugar nutrition score
+      fireEvent.click(screen.getAllByTitle('pim_common.clear')[1]); // Clear sugar nutrition score
       fireEvent.change(screen.getByTestId('input-uniqueidsugar-quantity'), {target: {value: '200'}});
       fireEvent.change(screen.getByTestId('input-uniqueidsalt-part'), {target: {value: '42kg'}});
-      fireEvent.click(screen.getAllByTitle('Open')[4]); // Opens the caramel boolean
+      fireEvent.click(screen.getAllByTitle('pim_common.open')[4]); // Opens the caramel boolean
     });
     fireEvent.click(screen.getAllByText('pim_common.yes')[1]);
 

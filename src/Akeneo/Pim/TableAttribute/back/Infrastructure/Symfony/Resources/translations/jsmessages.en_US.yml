@@ -5,7 +5,6 @@ pim_table_attribute:
                 table_structure: Table structure
             table_attribute: Table attribute
             add_column: Add a new column
-            open: Open
             select_type: Select your type
             data_type: Data type
             labels: Labels

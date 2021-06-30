@@ -107,10 +107,10 @@ const TableInputValue: React.FC<TableInputValueProps> = ({
                         <TableInput.Select
                           value={row[columnCode]}
                           onClear={() => handleChange(row['unique id'], columnCode, null)}
-                          clearLabel={'Clear'}
-                          openDropdownLabel={'Open'}
-                          searchPlaceholder={'Search'}
-                          searchTitle={'Search'}
+                          clearLabel={translate('pim_common.clear')}
+                          openDropdownLabel={translate('pim_common.open')}
+                          searchPlaceholder={translate('pim_common.search')}
+                          searchTitle={translate('pim_common.search')}
                           data-testid={`input-${row['unique id']}-${columnCode}`}
                         />
                       )}
@@ -120,8 +120,8 @@ const TableInputValue: React.FC<TableInputValueProps> = ({
                           onChange={(value: boolean | null) => handleChange(row['unique id'], columnCode, value)}
                           yesLabel={translate('pim_common.yes')}
                           noLabel={translate('pim_common.no')}
-                          clearLabel={'Clear'}
-                          openDropdownLabel={'Open'}
+                          clearLabel={translate('pim_common.clear')}
+                          openDropdownLabel={translate('pim_common.open')}
                           data-testid={`input-${row['unique id']}-${columnCode}`}
                         />
                       )}
