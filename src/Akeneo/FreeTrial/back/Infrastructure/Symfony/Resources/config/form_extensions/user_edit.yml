@@ -8,3 +8,13 @@ extensions:
       templateParams:
         sectionTitle: ''
         dropZone: content
+
+  pim-user-edit-form-password-tab-content:
+    module: pim/free-trial/user-edit-form/password-tab
+    parent: pim-user-edit-form-password-tab
+    position: 10
+    config:
+      template: pim/template/form/tab/section
+      templateParams:
+        sectionTitle: ''
+        dropZone: content
