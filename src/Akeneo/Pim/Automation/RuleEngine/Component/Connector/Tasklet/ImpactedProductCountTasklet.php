@@ -72,18 +72,19 @@ class ImpactedProductCountTasklet implements TaskletInterface, TrackableTaskletI
             $ruleDefinitions = $this->ruleDefinitionRepo->findBy(['id' => $ruleIdsChunk]);
 
             foreach ($ruleDefinitions as $ruleDefinition) {
-                try {$ruleSubjectSet = $this->productRuleRunner->dryRun($ruleDefinition);
-                $ruleDefinition->setImpactedSubjectCount($ruleSubjectSet->getSubjectsCursor()->count());
+                try {
+                    $ruleSubjectSet = $this->productRuleRunner->dryRun($ruleDefinition);
+                    $ruleDefinition->setImpactedSubjectCount($ruleSubjectSet->getSubjectsCursor()->count());
 
-                $this->stepExecution->incrementSummaryInfo('rule_calculated');
-            }catch (\Exception $e) {
-                $this->stepExecution->addWarning(
+                    $this->stepExecution->incrementSummaryInfo('rule_calculated');
+                } catch (\Exception $e) {
+                    $this->stepExecution->addWarning(
                     sprintf('Invalid rule "%s": could not calculate the impacted product count. Internal error : %s', $ruleDefinition->getCode(), $e->getMessage()),
                     [],
                     new DataInvalidItem(['rule_code' => $ruleDefinition->getCode()])
                 );
+                }
             }
-        }
 
             $this->stepExecution->incrementProcessedItems(count($ruleIdsChunk));
             $this->jobRepository->updateStepExecution($this->stepExecution);
