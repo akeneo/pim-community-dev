@@ -4,7 +4,7 @@ pim_title:
   akeneo_measurements_settings_index: Medidas
   akeneo_measurements_settings_any: Medidas
 measurements:
-  label_translations: Etiquetar traducciones en UI
+  label_translations: Etiquetar traducciones en la configuración regional de la IU
   helper:
     title: '¡Bienvenido a las mediciones!'
     text: Aquí, usted podrá crear sus propias familias de medida con sus unidades o agregar unidades a las familias de medida existentes.

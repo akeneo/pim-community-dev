@@ -62,4 +62,4 @@ Background:
     When a product is created with values:
       | attribute | data | locale |
       | gdpr      | test | en_US  |
-    Then the error '"en_US" is not part of the available locales for the locale specific attribute "gdpr".' is raised
+    Then the error 'The en_US locale is not available on the gdpr attribute.' is raised

@@ -17,7 +17,6 @@ pim_menu:
     data_flows: Flujos de datos
     connect_connection_settings: Ajustes de conexión
     marketplace: Mercado
-    new_label: NUEVO
 pim_title:
   akeneo_connectivity_connection_connect_marketplace: Mercado
   akeneo_connectivity_connection_settings_index: Ajustes de conexiones
@@ -30,13 +29,9 @@ pim_title:
   akeneo_connectivity_connection_webhook_edit: Subscripciones a eventos
   akeneo_connectivity_connection_webhook_regenerate_secret: Subscripcion al evento
   akeneo_connectivity_connection_webhook_event_logs: Registros de eventos
-  akeneo_connectivity_connection_redirect_audit: Panel de conexión
   akeneo_connectivity_connection_settings_redirect: Conexiones
 akeneo_connectivity.connection:
   connect:
-    redirect.link: Para ir allí, haga clic aquí
-    dashboard_redirect.title: Su panel de conexión está en el menú Conectar
-    settings_redirect.title: Su información de conexión está en el menú Conectar
     marketplace:
       title: '¿Quiere conectar su PIM con otra aplicación? 🤟'
       sub_title: Consulte nuestro mercado para ver qué aplicación se puede conectar con el PIM de Akeneo.
@@ -78,7 +73,7 @@ akeneo_connectivity.connection:
   connection_count: 'Conexión de {{ count }} | {{ count }} conexiones'
   no_connection:
     title: No hay conexión declarada aún.
-    message: Añada su primera haciendo clic en el botón «Crear» de arriba o
+    message: Añada su primera conexión haciendo clic en el botón «Crear» de arriba o
     message_link: pulse aquí.
   create_connection:
     title: Crear una conexión nueva
@@ -211,7 +206,7 @@ akeneo_connectivity.connection:
         message: Crea y comienza a rastrear tu primer
         link: aquí. 
       message_without_permission:
-        message: Solicite a su administrador que cree uno.
+        message: Solicite a su administrador que cree una.
         link: Más información sobre conexiones aquí...
   webhook:
     title: Subscripcion al evento
@@ -237,7 +232,7 @@ akeneo_connectivity.connection:
       error: Lo sentimos, se ha producido un error al editar la suscripción al evento.
     regenerate_secret:
       title: Confirmar regeneración
-      description: '¿Está seguro de que quiere regenerar el secreto de suscripción al evento?'
+      description: '¿Seguro que quiere regenerar el secreto de suscripción al evento?'
       action:
         regenerate: Regenerar
       link: Esto es lo que sucederá.
