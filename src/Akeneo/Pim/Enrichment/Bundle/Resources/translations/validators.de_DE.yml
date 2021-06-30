@@ -38,6 +38,8 @@ product_model.family_variant.not_blank.message: Die Produktfamilie des Produktmo
 "The {{ attribute_code }} attribute requires a date that should be {{ limit }} or before.": Das {{ attribute_code }} -Attribut erfordert ein Datum, das {{ limit }} oder früher sein soll.
 "The {{ attribute }} attribute requires a number, and the submitted {{ value }} value is not.": Das {{ attribute }} -Attribut erfordert eine Zahl, und der angegebene {{ value }} Wert ist dies nicht.
 "The %attribute% attribute must not contain more than %limit% characters. The submitted value is too long.": Das %attribute% -Attribut darf nicht mehr als %limit% Zeichen enthalten. Der angegebene Wert ist zu lang.
+"The %type% file extension is not allowed for the %attribute% attribute. Allowed extensions are %extensions%.": Die %type% -Dateiendung ist für das %attribute% -Attribut nicht erlaubt. Erlaubte Endungen sind %extensions%.
+"The %attribute% attribute requires a url link.": Das %attribute% -Attribut benötigt einen URL-Link.
 "The %attribute% attribute requires a valid date. Please use the following format %date_format% for dates.": Das %attribute% -Attribut benötigt ein gültiges Datum. Bitte verwenden Sie das folgende Format %date_format% für Datum.
 "The %locale% locale is not available on the %attribute% attribute.": Das Gebietsschema %locale% ist für das Attribut %attribute% nicht verfügbar.
 'The {{ attribute_code }} attribute must match the following regular expression: {{ pattern }}.': 'Das Attribut {{ attribute_code }} muss mit dem folgenden regulären Ausdruck übereinstimmen: {{ pattern }}.'
