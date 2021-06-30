@@ -1,6 +1,6 @@
 extensions:
   pim-user-edit-form-general-tab-content:
-    module: pim/free-trial/user-edit-form/general-tab
+    module: pim/free-trial/user-edit-form/readonly-tab-content
     parent: pim-user-edit-form-general-tab
     position: 10
     config:
@@ -10,7 +10,7 @@ extensions:
         dropZone: content
 
   pim-user-edit-form-password-tab-content:
-    module: pim/free-trial/user-edit-form/password-tab
+    module: pim/free-trial/user-edit-form/readonly-tab-content
     parent: pim-user-edit-form-password-tab
     position: 10
     config:

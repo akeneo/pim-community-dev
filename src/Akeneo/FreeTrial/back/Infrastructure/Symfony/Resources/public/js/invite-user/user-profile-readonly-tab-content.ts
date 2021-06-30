@@ -1,7 +1,7 @@
 const BaseView = require('pim/common/simple-view');
 const FeatureFlags = require('pim/feature-flags');
 
-class UserProfilePasswordTab extends BaseView {
+class UserProfileReadonlyTabContent extends BaseView {
   public configure() {
     if (FeatureFlags.isEnabled('free_trial')) {
       Object.values(this.extensions).forEach((extension: any) => {
@@ -13,4 +13,4 @@ class UserProfilePasswordTab extends BaseView {
   }
 }
 
-export = UserProfilePasswordTab;
+export = UserProfileReadonlyTabContent;
