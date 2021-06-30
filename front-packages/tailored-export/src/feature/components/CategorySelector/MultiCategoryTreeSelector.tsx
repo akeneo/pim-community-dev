@@ -16,7 +16,7 @@ const MultiCategoryTreeSelector = ({
   shouldIncludeSubCategories,
 }: MultiCategoryTreeSelectorProps) => {
   const [activeCategoryTree, setActiveCategoryTree] = useState<string>('');
-  const categoryTrees = useCategoryTrees(categorySelection, setActiveCategoryTree);
+  const categoryTrees = useCategoryTrees(categorySelection, setActiveCategoryTree, shouldIncludeSubCategories);
   const translate = useTranslate();
   const catalogLocale = useUserContext().get('catalogLocale');
   const sortedCategoryTrees = categoryTrees.sort((a, b) =>
