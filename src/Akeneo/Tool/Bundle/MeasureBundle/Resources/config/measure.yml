@@ -430,7 +430,7 @@ measures_config:
         units:
             BAR:
                 convert: [{'mul': '1'}]
-                symbol: Bar
+                symbol: bar
             PASCAL:
                 convert: [{'mul': '0.00001'}]
                 symbol: Pa
@@ -439,7 +439,7 @@ measures_config:
                 symbol: hPa
             MILLIBAR:
                 convert: [{'mul': '0.001'}]
-                symbol: mBar
+                symbol: mbar
             ATM:
                 convert: [{'mul': '1.01325'}]
                 symbol: atm

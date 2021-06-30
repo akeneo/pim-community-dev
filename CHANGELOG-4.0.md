@@ -1,5 +1,9 @@
 # 4.0.x
 
+## Bug fixes
+
+PIM-9941: Metrics: Change Bar symbol for bar
+
 # 4.0.116 (2021-06-24)
 
 # 4.0.115 (2021-06-22)
