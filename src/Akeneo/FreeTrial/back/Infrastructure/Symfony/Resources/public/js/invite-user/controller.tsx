@@ -6,6 +6,8 @@ import {ThemeProvider} from 'styled-components';
 import {InviteUserApp} from '@akeneo-pim-community/invite-user';
 import {PimInvitedUserProvider} from "./PimInvitedUserProvider";
 
+const mediator = require('oro/mediator');
+
 class InviteUserController extends ReactController {
   private static container = document.createElement('div');
 
@@ -27,6 +29,12 @@ class InviteUserController extends ReactController {
 
   getContainerRef(): Element {
     return InviteUserController.container;
+  }
+
+  renderRoute() {
+    mediator.trigger('pim_menu:highlight:tab', {extension: null});
+
+    return super.renderRoute();
   }
 }
 
