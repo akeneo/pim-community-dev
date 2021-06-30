@@ -13,33 +13,27 @@ declare(strict_types=1);
 
 namespace Akeneo\Platform\TailoredExport\Infrastructure\Connector\Processor\PropertySelector;
 
-use Akeneo\Pim\Enrichment\Component\Product\Model\EntityWithFamilyInterface;
 use Akeneo\Pim\Structure\Component\Query\PublicApi\Family\GetFamilyTranslations;
+use Akeneo\Platform\TailoredExport\Domain\SourceValueInterface;
+use Akeneo\Platform\TailoredExport\Domain\SourceValue\FamilyValue;
 use Akeneo\Platform\TailoredExport\Domain\SelectionTypes;
 
 class FamilySelector implements PropertySelectorInterface
 {
     private GetFamilyTranslations $getFamilyTranslations;
 
-    public function __construct(
-        GetFamilyTranslations $getFamilyTranslations
-    ) {
+    public function __construct(GetFamilyTranslations $getFamilyTranslations)
+    {
         $this->getFamilyTranslations = $getFamilyTranslations;
     }
 
-    public function applySelection(array $selectionConfiguration, $entity): string
+    public function applySelection(array $selectionConfiguration, SourceValueInterface $sourceValue): string
     {
-        if (!$entity instanceof EntityWithFamilyInterface) {
+        if (!$sourceValue instanceof FamilyValue) {
             throw new \LogicException('Cannot apply Family selection on this entity');
         }
 
-        $family = $entity->getFamily();
-
-        if (null === $family) {
-            return '';
-        }
-
-        $familyCode = $family->getCode();
+        $familyCode = $sourceValue->getData();
 
         switch ($selectionConfiguration['type']) {
             case SelectionTypes::CODE:
@@ -54,9 +48,9 @@ class FamilySelector implements PropertySelectorInterface
         }
     }
 
-    public function supports(array $selectionConfiguration, string $propertyName): bool
+    public function supports(array $selectionConfiguration, SourceValueInterface $sourceValue): bool
     {
         return in_array($selectionConfiguration['type'], [SelectionTypes::LABEL, SelectionTypes::CODE])
-            && 'family' === $propertyName;
+            && $sourceValue instanceof FamilyValue;
     }
 }

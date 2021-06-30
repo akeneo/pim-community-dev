@@ -11,10 +11,10 @@ declare(strict_types=1);
  * file that was distributed with this source code.
  */
 
-namespace Akeneo\Platform\TailoredExport\Infrastructure\Validation\Selection;
+namespace Akeneo\Platform\TailoredExport\Domain;
 
-use Symfony\Component\Validator\Constraint;
-
-class PriceCollectionSelection extends Constraint
+// Maybe OperationValue ?
+interface SourceValueInterface
 {
+
 }

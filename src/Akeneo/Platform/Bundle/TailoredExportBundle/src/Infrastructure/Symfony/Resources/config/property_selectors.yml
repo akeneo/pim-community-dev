@@ -43,3 +43,8 @@ services:
       - '@akeneo.pim.structure.query.get_group_translations'
     tags:
       - { name: akeneo.tailored_export.property_selector }
+
+  Akeneo\Platform\TailoredExport\Infrastructure\Connector\Processor\PropertySelector\ScalarSelector:
+    public: true
+    tags:
+      - { name: akeneo.tailored_export.property_selector }
