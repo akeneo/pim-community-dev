@@ -3,133 +3,139 @@ pim_asset_manager:
     validation:
       code:
         pattern: '이 필드는 문자, 숫자 및 밑줄만 포함할 수 있습니다.'
-        should_be_unique: '코드가 "%asset_family_identifier%"인 자산 패밀리가 이미 존재합니다'
-        limit_reached: '%limit% 자산 패밀리 제한에 도달했으므로 자산 패밀리 "%asset_family_identifier%"을(를) 만들 수 없습니다'
+        should_be_unique: '코드가 ''%asset_family_identifier%''인 자산 패밀리가 이미 존재합니다.'
+        limit_reached: '%limit% 자산 패밀리 제한에 도달했으므로 자산 패밀리 ''%asset_family_identifier%''을(를) 만들 수 없습니다.'
       assets:
-        should_have_no_asset: '이 패밀리에 대한 자산이 존재하므로 이 패밀리를 삭제할 수 없습니다'
+        should_have_no_asset: '이 패밀리에 대한 자산이 존재하므로 이 패밀리를 삭제할 수 없습니다.'
       asset_family_attributes:
-        should_not_be_linked: '자산 패밀리 특성이 이 패밀리와 관련되어 있으므로 이 패밀리를 삭제할 수 없습니다'
+        should_not_be_linked: '자산 패밀리 특성이 이 패밀리와 관련되어 있으므로 이 패밀리를 삭제할 수 없습니다.'
       asset_family_permissions:
-        at_least_one_user_group_should_have_edit_permission: '하나 이상의 사용자 그룹에 이 패밀리에 대한 편집 권한이 있어야 합니다'
+        at_least_one_user_group_should_have_edit_permission: '하나 이상의 사용자 그룹에 이 패밀리에 대한 편집 권한이 있어야 합니다.'
       product_attributes:
         should_not_be_linked: '자산 컬렉션이 이 패밀리에 링크되어 있으므로 이 패밀리를 삭제할 수 없습니다.'
-      should_exist: '자산 패밀리 "%asset_family_code%"을(를) 찾지 못했습니다.'
+      should_exist: '자산 패밀리 ''%asset_family_code%''을(를) 찾지 못했습니다.'
       rule_template:
-        limit_reached: '"%asset_family_identifier%" 자산 패밀리에 대한 %limit% 제품 링크 규칙 제한에 도달했습니다.'
-        product_selection_cannot_be_empty: '제품 링크 규칙에서 하나 이상의 제품 선택을 지정해야 합니다'
-        product_assignment_cannot_be_empty: '제품 링크 규칙에서 하나 이상의 제품 할당을 지정해야 합니다'
-        extrapolated_attribute_should_exist: '"%attribute_code%" 특성이 이 자산 패밀리에 존재하지 않습니다.'
-        extrapolated_attribute_type_should_be_supported: '"%attribute_type%" 유형의 "%attribute_code%" 특성은 지원되지 않습니다. 다음 특성 유형만 이 필드에서 지원됩니다: %supported_attribute_type%'
-        channel_should_exist: '"%channel_code%" 채널이 존재하지 않습니다'
-        locale_should_exist: '"%locale_code%" 로케일이 활성화되지 않았거나 존재하지 않습니다'
-        extrapolated_attribute_type_should_not_have_one_value_per_channel: '"%attribute_code%" 특성은 채널당 하나의 값을 가지고 있으므로 외삽에 사용할 수 없습니다.'
-        extrapolated_attribute_type_should_not_have_one_value_per_locale: '"%attribute_code%" 특성은 로케일당 하나의 값을 가지고 있으므로 외삽에 사용할 수 없습니다.'
-        assignment_mode_not_supported: '잘못된 할당 모드 "%assignment_mode%"이(가) 제품 링크 규칙에서 발견되었습니다. "바꾸기" 또는 "추가"를 수행해야 합니다.'
-        channel_not_supported_for_field: '필드 "%product_field%"에 대한 채널을 지정할 수 없습니다'
-        locale_not_supported_for_field: '필드 "%product_field%"에 대한 로케일을 지정할 수 없습니다'
-        assignmement_attribute_does_not_support_this_asset_family: '제품 특성 "%product_attribute_code%"에는 자산 패밀리 "%asset_family_identifier%"의 자산이 포함될 수 없습니다'
-        assignmement_attribute_does_not_exist: '제품 특성 "%product_attribute_code%"이(가) 없습니다'
-        assignmement_attribute_is_not_an_asset_collection: '제품 특성 "%product_attribute_code%"이(가) 유형 자산 컬렉션의 특성이 아닙니다'
+        limit_reached: '''%asset_family_identifier%'' 자산 패밀리에 대한 %limit% 제품 링크 규칙 제한에 도달했습니다.'
+        product_selection_cannot_be_empty: '제품 링크 규칙에서 하나 이상의 제품 선택을 지정해야 합니다.'
+        product_assignment_cannot_be_empty: '제품 링크 규칙에서 하나 이상의 제품 할당을 지정해야 합니다.'
+        extrapolated_attribute_should_exist: '''%attribute_code%'' 특성이 이 자산 패밀리에 존재하지 않습니다.'
+        extrapolated_attribute_type_should_be_supported: '''%attribute_type%'' 유형의 ''%attribute_code%'' 특성은 지원되지 않습니다. 다음 특성 유형만 이 필드에서 지원됩니다.: %supported_attribute_type%'
+        channel_should_exist: '''%channel_code%'' 채널이 존재하지 않습니다.'
+        locale_should_exist: '''%locale_code%'' 로케일이 활성화되지 않았거나 존재하지 않습니다.'
+        extrapolated_attribute_type_should_not_have_one_value_per_channel: '''%attribute_code%'' 특성은 채널당 하나의 값을 가지고 있으므로 외삽에 사용할 수 없습니다.'
+        extrapolated_attribute_type_should_not_have_one_value_per_locale: '''%attribute_code%'' 특성은 로케일당 하나의 값을 가지고 있으므로 외삽에 사용할 수 없습니다.'
+        assignment_mode_not_supported: '잘못된 할당 모드 ''%assignment_mode%''이(가) 제품 링크 규칙에서 발견되었습니다. ''바꾸기'' 또는 ''추가''를 수행해야 합니다.'
+        channel_not_supported_for_field: '필드 ''%product_field%''에 대한 채널을 지정할 수 없습니다.'
+        locale_not_supported_for_field: '필드 ''%product_field%''에 대한 로케일을 지정할 수 없습니다.'
+        assignmement_attribute_does_not_support_this_asset_family: '제품 특성 ''%product_attribute_code%''에는 자산 패밀리 ''%asset_family_identifier%''의 자산이 포함될 수 없습니다.'
+        assignmement_attribute_does_not_exist: '제품 특성 ''%product_attribute_code%''이(가) 없습니다.'
+        assignmement_attribute_is_not_an_asset_collection: '제품 특성 ''%product_attribute_code%''이(가) 유형 자산 컬렉션의 특성이 아닙니다.'
       attribute_as_main_media:
-        not_found: '자산 패밀리에 대한 기본 미디어로 설정된 "%attribute_as_main_media%" 특성이 존재하지 않습니다'
-        invalid_type: '자산 패밀리에 대한 기본 미디어로 설정된 특성의 유형은 다음과 같아야 합니다: %valid_attribute_as_main_media_types%'
+        not_found: '자산 패밀리에 대한 기본 미디어로 설정된 ''%attribute_as_main_media%'' 특성이 존재하지 않습니다.'
+        invalid_type: '자산 패밀리에 대한 기본 미디어로 설정된 특성의 유형은 다음과 같아야 합니다.: %valid_attribute_as_main_media_types%'
       transformation:
-        limit_reached: '%limit% 변환 제한에 도달했습니다'
-        same_operation_twice: '"%operation_type%" 작업을 단일 변환에서 두 번 정의할 수 없습니다.'
-        source_can_not_be_a_target: '특성 소스 "%attribute_code%"은(는) 변환의 특성 대상일 수 없습니다.'
-        attribute_reference_should_exist: '"%attribute_code%" 특성이 이 자산 패밀리에 존재하지 않습니다.'
+        limit_reached: '%limit% 변환 제한에 도달했습니다.'
+        same_operation_twice: '''%operation_type%'' 작업을 단일 변환에서 두 번 정의할 수 없습니다.'
+        source_can_not_be_a_target: '특성 소스 ''%attribute_code%''은(는) 변환의 특성 대상일 수 없습니다.'
+        attribute_reference_should_exist: '''%attribute_code%'' 특성이 이 자산 패밀리에 존재하지 않습니다.'
         source_should_be_media_file: '소스 특성은 미디어 파일 유형이어야 합니다.'
         target_should_be_media_file: '대상 특성은 미디어 파일 유형이어야 합니다.'
-        filename_is_not_unique: '파일 이름의 접두사 "%filename_prefix%" 및 접미사 "%filename_suffix%"가 포함된 변환이 특성 소스 "%attribute_code%"에서 이미 존재합니다'
+        filename_is_not_unique: '파일 이름의 접두사 ''%filename_prefix%'' 및 접미사 ''%filename_suffix%''가 포함된 변환이 특성 소스 ''%attribute_code%''에서 이미 존재합니다.'
         target_is_not_unique: '두 가지 변환에 동일한 대상이 있을 수 없습니다.'
-        code_is_not_unique: '동일한 코드 "%transformation_code%"(으)로 두 개의 변환을 정의할 수 없습니다'
+        code_is_not_unique: '동일한 코드 ''%transformation_code%''(으)로 두 개의 변환을 정의할 수 없습니다.'
         filename_prefix_suffix_empty: '적어도 속성 filename_prefix 또는 filename_suffix가 있고 그 중 하나는 빈 문자열이 아니어야 합니다.'
         empty_operation_list: '하나 이상의 변환 작업이 필요합니다.'
         unknown_extra_field: '{{ field }} 속성이 필요하지 않습니다.'
       naming_convention:
-        property_should_exist: '"%property%" 속성이 이 자산 패밀리에 존재하지 않습니다.'
-        not_main_media_attribute_code: '속성은 기본 미디어로 정의된 특성 코드와 일치해야 합니다'
+        property_should_exist: '''%property%'' 속성이 이 자산 패밀리에 존재하지 않습니다.'
+        not_main_media_attribute_code: '속성은 기본 미디어로 정의된 특성 코드와 일치해야 합니다.'
   asset:
     validation:
+      mass_edit:
+        updater_cannot_be_empty: '변환 또는 읽기 전용 모드에서 사용된 특성은 선택할 수 없습니다.'
+        updater_must_be_unique: '이 특성 및 해당 채널과 로케일(해당하는 경우)이 선택되어 있는지 확인하십시오.'
       code:
         pattern: '이 필드는 문자, 숫자 및 밑줄만 포함할 수 있습니다.'
-        should_be_unique: '코드가 "%code%"인 자산이 이미 존재합니다'
-        should_exist: '자산을 찾지 못했습니다'
+        should_be_unique: '코드가 ''%code%''인 자산이 이미 존재합니다.'
+        should_exist: '자산을 찾지 못했습니다.'
       text:
-        incompatible_with_regular_expression: '이 텍스트는 "%regular_expression%" 정규식과 호환되지 않습니다'
+        incompatible_with_regular_expression: '이 텍스트는 ''%regular_expression%'' 정규식과 호환되지 않습니다.'
       file:
-        extension_not_allowed: '"%file_extension%" 파일은 이 특성에서 허용되지 않습니다. 허용되는 확장명: %allowed_file_extensions%'
+        extension_not_allowed: '''%file_extension%'' 파일은 이 특성에서 허용되지 않습니다. 허용되는 확장명: %allowed_file_extensions%'
         file_size_exceeded: '이 파일은 특성에 대해 설정된 최대 파일 크기를 초과합니다.'
-        should_exist: '"%file_path%" 파일을 찾지 못했습니다.'
-        target_readonly: '변환의 대상인 "%attribute_code%"의 값을 업데이트할 수 없습니다.'
+        should_exist: '''%file_path%'' 파일을 찾지 못했습니다.'
+        target_readonly: '변환의 대상인 ''%attribute_code%''의 값을 업데이트할 수 없습니다.'
       option:
-        code_does_not_exist: '코드가 "%option_code%"인 옵션이 이 특성에서 존재하지 않습니다'
+        code_does_not_exist: '코드가 ''%option_code%''인 옵션이 이 특성에서 존재하지 않습니다.'
       option_collection:
-        codes_dont_exist: "다음 옵션 코드가 이 특성에서 존재하지 않습니다: \"%option_codes%\""
+        codes_dont_exist: "다음 옵션 코드가 이 특성에서 존재하지 않습니다.: '%option_codes%'"
       asset:
-        should_exist: '자산 "%asset_code%"을(를) 찾지 못했습니다.'
+        should_exist: '자산 ''%asset_code%''을(를) 찾지 못했습니다.'
       asset_collection:
-        should_exist: '자산 "%asset_codes%"을(를) 찾지 못했습니다.'
-      limit_reached: '이 자산 패밀리의 %limit% 자산 제한에 도달했으므로 "%asset_label%" 자산을 만들 수 없습니다'
+        should_exist: '자산 ''%asset_codes%''을(를) 찾지 못했습니다.'
+      limit_reached: '이 자산 패밀리의 %limit% 자산 제한에 도달했으므로 ''%asset_label%'' 자산을 만들 수 없습니다.'
       channel:
-        is_expected: '채널별 값이 있으므로 특성 "%attribute_code%"에 대한 채널이 필요합니다'
-        is_not_expected: '채널별 값이 없으므로 특성 "%attribute_code%"에 대한 채널이 필요하지 않습니다'
-        should_exist: '"%channel_identifier%" 채널이 존재하지 않습니다'
+        is_expected: '채널별 값이 있으므로 특성 ''%attribute_code%''에 대한 채널이 필요합니다.'
+        is_not_expected: '채널별 값이 없으므로 특성 ''%attribute_code%''에 대한 채널이 필요하지 않습니다.'
+        should_exist: '''%channel_identifier%'' 채널이 존재하지 않습니다.'
       locale:
-        is_expected: '로케일별 값이 있으므로 특성 "%attribute_code%"에 대한 로케일이 필요합니다'
-        is_not_expected: '로케일별 값이 없으므로 특성 "%attribute_code%"에 대한 로케일이 필요하지 않습니다'
-        is_not_activated: '"%locale_identifier%" 로케일이 활성화되지 않았습니다.'
-        is_not_activated_for_channel: '"%locale_identifier%" 로케일이 "%channel_identifier%" 채널에 대해 활성화되지 않았습니다.'
+        is_expected: '로케일별 값이 있으므로 특성 ''%attribute_code%''에 대한 로케일이 필요합니다.'
+        is_not_expected: '로케일별 값이 없으므로 특성 ''%attribute_code%''에 대한 로케일이 필요하지 않습니다.'
+        is_not_activated: '''%locale_identifier%'' 로케일이 활성화되지 않았습니다.'
+        is_not_activated_for_channel: '''%locale_identifier%'' 로케일이 ''%channel_identifier%'' 채널에 대해 활성화되지 않았습니다.'
       number:
-        should_be_string: '이 필드는 문자열이어야 합니다'
-        should_be_integer: '이 필드는 정수여야 합니다'
-        integer_too_long: '이 정수는 너무 큽니다'
-        should_be_numeric: '이 필드는 올바른 소수 구분 기호가 포함된 숫자 값이어야 합니다'
+        should_be_string: '이 필드는 문자열이어야 합니다.'
+        should_be_integer: '이 필드는 정수여야 합니다.'
+        integer_too_long: '이 정수는 너무 큽니다.'
+        should_be_numeric: '이 필드는 올바른 소수 구분 기호가 포함된 숫자 값이어야 합니다.'
       main_media:
-        not_main_media_attribute: '기본 미디어로 필요한 특성은 "%main_media_attribute%"입니다. "%attribute%"이(가) 지정되었습니다.'
+        not_main_media_attribute: '기본 미디어로 필요한 특성은 ''%main_media_attribute%''입니다. ''%attribute%''이(가) 지정되었습니다.'
+      media_link:
+        protocol_not_allowed: '이 필드는 유효한 프로토콜로 시작해야 합니다. 허용된 프로토콜은 %allowed_protocols%입니다.'
   attribute:
     validation:
       options:
-        should_exist: '옵션을 찾지 못했습니다'
-        duplicated: '"%option_code%" 옵션이 이미 존재합니다'
-        too_many: '특성별 {{ limit }} 특성 옵션 제한에 도달했습니다'
+        should_exist: '옵션을 찾지 못했습니다.'
+        duplicated: '''%option_code%'' 옵션이 이미 존재합니다.'
+        too_many: '특성별 {{ limit }} 특성 옵션 제한에 도달했습니다.'
         code:
           pattern: '이 필드는 문자, 숫자 및 밑줄만 포함할 수 있습니다.'
-          should_not_be_blank: '옵션 코드는 비워둘 수 없습니다'
+          should_not_be_blank: '옵션 코드는 비워둘 수 없습니다.'
       max_length:
         should_be_an_integer: '이 값은 정수여야 합니다.'
       max_file_size:
         should_be_a_number: '이 값은 숫자여야 합니다.'
       min_value:
         should_be_a_number: '이 값은 올바른 소수 구분 기호가 포함된 숫자여야 합니다.'
-        cannot_be_greater_than_max: '최소값은 최대값보다 클 수 없습니다'
+        cannot_be_greater_than_max: '최소값은 최대값보다 클 수 없습니다.'
       max_value:
         should_be_a_number: '이 값은 올바른 소수 구분 기호가 포함된 숫자여야 합니다.'
-        cannot_be_lower_than_min: '최대값은 최소값보다 작을 수 없습니다'
+        cannot_be_lower_than_min: '최대값은 최소값보다 작을 수 없습니다.'
       code:
-        pattern: '이 필드는 문자, 숫자 및 밑줄만 포함할 수 있습니다. "{{ value }}"이(가) 지정되었습니다.'
-        reserved_codes: '코드에 다음 값을 사용할 수 없습니다: "{{ comma_separated_reserved_keywords }}"'
-        should_not_exist: '이 특성은 자산 패밀리 "{{ asset_family_identifier }}" 및 특성 코드 "{{ code }}"에서 이미 존재합니다'
-        should_exist: '특성을 찾지 못했습니다'
+        pattern: '이 필드는 문자, 숫자 및 밑줄만 포함할 수 있습니다. ''{{ value }}''이(가) 지정되었습니다.'
+        reserved_codes: '코드에 다음 값을 사용할 수 없습니다.: ''{{ comma_separated_reserved_keywords }}'''
+        should_not_exist: '이 특성은 자산 패밀리 ''{{ asset_family_identifier }}'' 및 특성 코드 ''{{ code }}''에서 이미 존재합니다.'
+        should_exist: '특성을 찾지 못했습니다.'
       regular_expression:
-        invalid_regular_expression: '이 정규식이 유효하지 않습니다. 유효한 정규식의 예: "/[a-z]+[0-9]*/"'
+        invalid_regular_expression: '이 정규식이 유효하지 않습니다. 유효한 정규식의 예: ''/[a-z]+[0-9]*/'''
         should_not_be_empty: '정규식은 비워둘 수 없습니다.'
-      should_be_a_textarea_to_update_is_rich_text_editor: '단순 텍스트 특성에는 서식 있는 텍스트 편집기가 있으면 안 됩니다'
-      should_be_a_simple_text_to_set_validation_rule_to_something_else_than_none: '텍스트 영역 특성에는 유효성 검사 규칙이 있으면 안 됩니다'
-      cannot_set_a_non_empty_regular_expression: '이 특성에는 정규식이 없어야 합니다'
-      cannot_update_the_regular_expression: '텍스트 특성에서 정규식을 설정할 수 없습니다'
-      limit_reached: '이 자산 패밀리의 %limit% 특성 제한에 도달했으므로 "%attribute_label%" 특성을 만들 수 없습니다'
+      should_be_a_textarea_to_update_is_rich_text_editor: '단순 텍스트 특성에는 서식 있는 텍스트 편집기가 있으면 안 됩니다.'
+      should_be_a_simple_text_to_set_validation_rule_to_something_else_than_none: '텍스트 영역 특성에는 유효성 검사 규칙이 있으면 안 됩니다.'
+      cannot_set_a_non_empty_regular_expression: '이 특성에는 정규식이 없어야 합니다.'
+      cannot_update_the_regular_expression: '텍스트 특성에서 정규식을 설정할 수 없습니다.'
+      limit_reached: '이 자산 패밀리의 %limit% 특성 제한에 도달했으므로 ''%attribute_label%'' 특성을 만들 수 없습니다.'
       asset_type:
-        is_required: '자산 패밀리 링크 특성을 만들려면 자산 패밀리 유형을 지정해야 합니다'
-        asset_family_should_exist: '자산 패밀리 "%asset_family_code%"을(를) 찾지 못했습니다.'
+        is_required: '자산 패밀리 링크 특성을 만들려면 자산 패밀리 유형을 지정해야 합니다.'
+        asset_family_should_exist: '자산 패밀리 ''%asset_family_code%''을(를) 찾지 못했습니다.'
       prefix:
         should_not_be_empty: '접두사는 빈 문자열일 수 없습니다.'
+        protocol_not_allowed: '이 필드는 유효한 프로토콜로 시작해야 합니다. 허용된 프로토콜은 %allowed_protocols%입니다.'
       suffix:
         should_not_be_empty: '접미사는 빈 문자열일 수 없습니다.'
       media_type:
         not_expected: '지정된 미디어 유형은 필요한 유형(%supported_media_types%)에 해당되지 않습니다.'
       media_file:
-        cannot_contain_extension_separator: '확장명에는 확장명 구분 기호 "."가 포함될 수 없습니다. "%wrong_extension%"이(가) 지정되었습니다.'
-        should_only_contain_lowercase_letters_and_numbers: '확장명에는 소문자와 숫자만 포함되어야 합니다. "%wrong_extension%"이(가) 지정되었습니다.'
+        cannot_contain_extension_separator: '확장명에는 확장명 구분 기호 ''.''가 포함될 수 없습니다. ''%wrong_extension%''이(가) 지정되었습니다.'
+        should_only_contain_lowercase_letters_and_numbers: '확장명에는 소문자와 숫자만 포함되어야 합니다. ''%wrong_extension%''이(가) 지정되었습니다.'
         cannot_be_longer_than_max: '확장명은 %expected_length%자를 넘을 수 없습니다. %actual_length%자 길이가 지정되었습니다.'
-        there_cannot_be_duplicated_extensions: '중복 확장명이 있으면 안 됩니다: %duplicates%이(가) 발견되었습니다.'
+        there_cannot_be_duplicated_extensions: '중복 확장명이 있으면 안 됩니다.: %duplicates%이(가) 발견되었습니다.'

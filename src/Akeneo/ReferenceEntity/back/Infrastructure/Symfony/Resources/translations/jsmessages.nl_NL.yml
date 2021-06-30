@@ -323,7 +323,7 @@ pim_enrich:
           identifier: Gerelateerde referentie-entiteit (verplicht)
           default_label: Selecteer een referentie-entiteit
 permission:
-  mass_action: Recht {{ rightLevel }} toepassen op alle groepen
+  mass_action: Rechten voor {{ rightLevel }} toepassen op alle groepen
 #Analytics
 pim_catalog_volume:
   section:

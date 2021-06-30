@@ -17,7 +17,7 @@ pim_datagrid:
     partial_approve: Aprobar cambios en el atributo {{ attribute }} del producto {{ product }}
     partial_reject: Rechazar cambios en el atributo {{ attribute }} del producto {{ product }}
     by: por
-    at: a las
+    at: el
     status:
       in_progress: En progreso
       ready: Aguardando aprobación

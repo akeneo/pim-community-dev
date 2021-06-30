@@ -9,7 +9,7 @@ pimee_catalog_rule:
       confirm_title: 실행 확인
       confirm_content: 규칙을 실행하시겠습니까? (시간이 다소 걸릴 수 있음)
   notification:
-    fail: 작업이 수행되지 않았습니다
+    fail: 작업이 수행되지 않았습니다.
     launched: 규칙 실행이 시작되었습니다. 완료되면 알림이 전송됩니다.
   attribute:
     list:
@@ -94,7 +94,7 @@ pimee_catalog_rule:
         code:
           required: 규칙 코드가 필요합니다.
           too_short: "규칙 코드가 너무 짧습니다. {{ characterLimit }}자 이상이 필요합니다."
-          allowed_characters: 규칙 코드는 영숫자와 밑줄만 포함할 수 있습니다.
+          allowed_characters: 규칙 코드에는 영숫자와 밑줄만 포함할 수 있습니다.
           unique: 이 코드는 이미 사용 중입니다.
       cross_link: 규칙 생성 양식 끝내기
     edit:
@@ -120,7 +120,7 @@ pimee_catalog_rule:
         product_models: "]-Inf, 1]{{ count }}개 제품 모델|]1, +Inf[{{ count }}개 제품 모델"
         products_and_product_models: "{{ products }} 및 {{ product_models }}"
         pending: 제품 및 제품 모델 계산 중
-        error: 제품 및 제품 모델을 계산할 수 없습니다
+        error: 제품 및 제품 모델을 계산할 수 없습니다.
       product_selection: 제품 선택
       preview: 미리보기
       fields:
@@ -137,7 +137,7 @@ pimee_catalog_rule:
         operator: 연산자
         entity_type:
           label: 엔터티 유형
-          placeholder: 엔터티 유형을 선택하십시오
+          placeholder: 엔터티 유형을 선택하십시오.
       execute:
         button: 저장 후 실행
         title: 규칙 저장 후 실행
@@ -149,18 +149,18 @@ pimee_catalog_rule:
         add_action: 작업 추가
         add_category:
           title: 카테고리 추가
-          helper: 하나 이상의 카테고리에 제품 선택을 추가하려면 먼저 카테고리 트리, 카테고리를 차례로 선택하십시오
+          helper: 하나 이상의 카테고리에 제품 선택을 추가하려면 먼저 카테고리 트리, 카테고리를 차례로 선택하십시오.
         add_groups:
           title: 그룹에 제품 추가
-          helper: 제품을 그룹에 추가하려면 하나 이상의 그룹을 선택하십시오
+          helper: 제품을 그룹에 추가하려면 하나 이상의 그룹을 선택하십시오.
           subtitle: 그룹 선택
         set_groups:
           title: 제품 그룹 설정
-          helper: 제품 그룹을 설정하려면 하나 이상의 그룹을 선택하십시오
+          helper: 제품 그룹을 설정하려면 하나 이상의 그룹을 선택하십시오.
           subtitle: 그룹 선택
         set_category:
           title: 카테고리 설정
-          helper: 하나 이상의 카테고리에 제품 선택을 설정하려면 먼저 카테고리 트리, 카테고리를 차례로 선택하십시오
+          helper: 하나 이상의 카테고리에 제품 선택을 설정하려면 먼저 카테고리 트리, 카테고리를 차례로 선택하십시오.
         category:
           select_category_trees: 카테고리 트리 선택
           select_category_tree: 카테고리 트리 선택
@@ -168,14 +168,14 @@ pimee_catalog_rule:
           select_category: 카테고리 선택
           category_tree: 카테고리 트리
           categories_selected: "]-Inf, 1]{{ count }}개 카테고리 선택|]1, Inf[{{ count }}개 카테고리 선택"
-          no_category_tree: 먼저 카테고리 트리를 선택하십시오
+          no_category_tree: 먼저 카테고리 트리를 선택하십시오.
           remove_unknown_category: " 이 카테고리를 제거하려면 여기를 클릭하십시오."
         set_family:
           title: 패밀리 설정
           subtitle: 패밀리 선택
         set_attribute:
           title: 특성 값 설정
-          helper: 특성에 값을 설정하려면 먼저 대상 특성과 설정하려는 값을 차례로 선택하십시오
+          helper: 특성에 값을 설정하려면 먼저 대상 특성과 설정하려는 값을 차례로 선택하십시오.
           target_subtitle: 대상 선택
           value_subtitle: 값 정의
           attribute_label: 특성
@@ -226,36 +226,36 @@ pimee_catalog_rule:
           title: 그룹 지우기
         remove_category:
           title: 카테고리 제거
-          helper: 하나 이상의 카테고리에서 제품 선택을 제거하려면 먼저 카테고리 트리, 카테고리를 차례로 선택하십시오
+          helper: 하나 이상의 카테고리에서 제품 선택을 제거하려면 먼저 카테고리 트리, 카테고리를 차례로 선택하십시오.
         remove_attribute_value:
           title: 특성 값 제거
           helper: 특성에서 값을 제거하려면 먼저 대상 특성과 제거하려는 값을 차례로 선택하십시오.
-          value_subtitle: 제거하려는 값 정의
+          value_subtitle: 제거할 값 정의
         add_attribute_value:
           title: 특성 값 추가
           helper: 특성에 값을 추가하려면 먼저 대상 특성과 추가하려는 값을 차례로 선택하십시오.
-          value_subtitle: 추가하려는 값 정의
+          value_subtitle: 추가할 값 정의
         copy:
           title: 특성 값 복사
           helper: 하나의 특성에서 다른 특성으로 값을 복사하려면 먼저 소스 특성과 대상 특성을 차례로 선택하십시오.
           select_source: 소스 선택
           select_target: 대상 선택
-          no_source: 먼저 소스 특성을 선택하십시오
+          no_source: 먼저 소스 특성을 선택하십시오.
         delete:
           label: 작업 제거
           description: 이 작업을 제거하시겠습니까?
         set_status:
           title: 상태 설정
           subtitle: 상태 정의
-          helper: 제품에 상태를 설정하려면 아래 목록에서 상태를 선택하십시오
+          helper: 제품에 상태를 설정하려면 아래 목록에서 상태를 선택하십시오.
           placeholder: 상태 선택
         remove_groups:
           title: 그룹에서 제품 제거
-          helper: 제품을 그룹에서 제거하려면 하나 이상의 그룹을 선택하십시오
+          helper: 제품을 그룹에서 제거하려면 하나 이상의 그룹을 선택하십시오.
           subtitle: 그룹 선택
         calculate:
           title: 값 계산
-          helper: 숫자 특성 값을 계산하려면 특성 및/또는 값을 선택한 다음, 결과를 넣으려는 대상 특성을 선택하십시오. 필요한 경우 최종 결과를 반올림할 수도 있습니다.
+          helper: 숫자 특성 값을 계산하려면 특성 및/또는 값을 선택한 다음, 결과를 넣을 대상 특성을 선택하십시오. 필요한 경우 최종 결과를 반올림할 수도 있습니다.
           add_value: 값 추가
           add_attribute: 속성 추가
           select_target: 대상 선택
@@ -281,7 +281,7 @@ pimee_catalog_rule:
           unit_label_locale: 단위 로케일
           remove_new_line_confirm:
             label: 작업 목록에서 줄 바꿈 제거
-            description: 새 대상 특성은 줄 바꿈을 허용하지 않습니다. 이 변경을 실행하면 모든 줄 바꿈이 제거됩니다.
+            description: 새 대상 특성에는 줄 바꿈이 허용되지 않습니다. 이 변경을 실행하면 모든 줄 바꿈이 제거됩니다.
       conditions:
         delete:
           label: 조건 제거
@@ -310,16 +310,16 @@ pimee_catalog_rule:
       notification:
         success: 규칙 업데이트 성공
         failed: 규칙 업데이트 실패
-        execute_success: 규칙이 업데이트 및 실행 완료되었습니다
-        execute_failed: 규칙은 저장되었으나 이를 실행하는 동안 오류가 발생했습니다
-      discard_changes: 페이지를 나가면 변경 사항이 손실됩니다.
+        execute_success: 규칙이 업데이트 및 실행 완료되었습니다.
+        execute_failed: 규칙은 저장되었으나 실행 중 오류가 발생했습니다.
+      discard_changes: 페이지를 나가면 변경 사항이 사라집니다.
       please_select_attribute: 먼저 대상 특성을 선택하십시오.
-      unhandled_attribute_type: 죄송합니다. 이 특성 유형은 아직 관리되지 않습니다. 규칙 가져오기를 사용하십시오.
+      unhandled_attribute_type: 죄송합니다. 이 특성 유형은 아직 관리되고 있지 않습니다. 규칙 가져오기를 사용하십시오.
       empty_section:
         set_up_action: 잘하셨습니다! 제품 선택 정의가 완료되었습니다. 이제 작업을 설정할 차례입니다.
         set_up_condition: 전체 카탈로그에 영향을 주지 않으려면 하나 이상의 조건을 추가하십시오.
         add_action: 그런 다음, 제품/제품 모델에 적용할 하나 이상의 작업을 추가하십시오.
-        doc: 작업이 무엇인지 모르시겠습니까?
+        doc: 작업의 의미를 모르시겠습니까?
         doc_link: 이 문서가 도움이 될 수 있습니다.
     delete:
       description: 이 규칙을 삭제하시겠습니까? 이 작업은 실행 취소할 수 없습니다.
@@ -347,7 +347,7 @@ pimee_catalog_rule:
       label:
         date_type: 날짜 유형 선택
         operator: 연산자 선택
-        date: 날짜를 선택하십시오
+        date: 날짜를 선택하십시오.
         relative_date: 날짜 선택
         locale: 로케일 선택
         scope: 범위 선택
@@ -366,45 +366,45 @@ pimee_catalog_rule:
       minute: "]-Inf, 1]분|]1, +Inf[분"
   exceptions:
     loading: 규칙 정의 로드 중에 오류가 발생했습니다.
-    required: 필수 기재 항목입니다
-    required_attribute: 특성이 필요합니다
-    required_locale: '{{ attributeLabel }} 특성에는 로케일이 필요합니다'
-    required_scope: '{{ attributeLabel }} 특성에는 채널이 필요합니다'
-    required_currency: '{{ attributeLabel }} 특성에는 통화가 필요합니다'
-    required_locale_completeness: 완성도를 위해 로케일이 필요합니다
-    required_scope_completeness: 완성도를 위해 채널이 필요합니다
-    required_value: 이 작업에는 값이 필요합니다
-    required_categories: 이 작업에는 하나 이상의 카테고리가 필요합니다
-    required_constant_for_operation: 이 작업에는 상수 값이 필요합니다
-    required_operator_for_operation: 이 작업에는 연산자가 필요합니다
-    required_unit: 측정 단위가 필요합니다
-    identifier_or_quantity_missing: 각 요소에는 식별자 및 수량이 필요합니다
-    required_item: 이 작업에는 하나 이상의 항목이 필요합니다
-    division_by_zero: 0으로는 나눌 수 없습니다
+    required: 필수 기재 항목입니다.
+    required_attribute: 특성이 필요합니다.
+    required_locale: '{{ attributeLabel }} 특성에 로케일이 필요합니다.'
+    required_scope: '{{ attributeLabel }} 특성에 채널이 필요합니다.'
+    required_currency: '{{ attributeLabel }} 특성에 통화가 필요합니다.'
+    required_locale_completeness: 완성도를 위해 로케일이 필요합니다.
+    required_scope_completeness: 완성도를 위해 채널이 필요합니다.
+    required_value: 이 작업에는 값이 필요합니다.
+    required_categories: 이 작업에는 하나 이상의 카테고리가 필요합니다.
+    required_constant_for_operation: 이 작업에는 상수 값이 필요합니다.
+    required_operator_for_operation: 이 작업에는 연산자가 필요합니다.
+    required_unit: 측정 단위가 필요합니다.
+    identifier_or_quantity_missing: 각 요소에는 식별자 및 수량이 필요합니다.
+    required_item: 이 작업에는 하나 이상의 항목이 필요합니다.
+    division_by_zero: 0으로 나눌 수 없습니다.
     two_operations_are_required: 작업 목록에 둘 이상의 작업이 포함되어야 합니다.
     two_items_are_required: 목록에 둘 이상의 항목이 포함되어야 합니다.
-    unknown_or_inactive_locale: '''{{ localeCode }}'' 로케일이 없거나 활성화되지 않았습니다'
-    unknown_or_inactive_currency: '''{{ currencyCode }}'' 통화가 없거나 활성화되지 않았습니다'
-    unbound_locale: '''{{ localeCode }}'' 로케일이 ''{{ channelCode }}'' 채널에서 활성화되어 있지 않습니다'
-    unbound_currency: '''{{ currencyCode }}'' 통화가 ''{{ channelCode }}'' 채널에서 활성화되어 있지 않습니다'
+    unknown_or_inactive_locale: '''{{ localeCode }}'' 로케일이 없거나 활성화되지 않았습니다.'
+    unknown_or_inactive_currency: '''{{ currencyCode }}'' 통화가 없거나 활성화되지 않았습니다.'
+    unbound_locale: '''{{ localeCode }}'' 로케일이 ''{{ channelCode }}'' 채널에서 활성화되지 않았습니다.'
+    unbound_currency: '''{{ currencyCode }}'' 통화가 ''{{ channelCode }}'' 채널에서 활성화되지 않았습니다.'
     locale_on_unlocalizable_attribute: 이 특성은 지역화할 수 없습니다. 계속 진행하기 전에 로케일을 제거하십시오.
-    unknown_scope: '''{{ scopeCode }}'' 채널이 없습니다'
+    unknown_scope: '''{{ scopeCode }}'' 채널이 없습니다.'
     scope_on_unscopable_attribute: 이 특성은 확장할 수 없습니다. 계속 진행하기 전에 채널을 제거하십시오.
-    unknown_families: "{1}{{ familyCodes }} 패밀리가 없습니다]1,+Inf[{{ familyCodes }} 패밀리가 없습니다"
-    unknown_family_variants: "{1}{{ familyVariantCodes }} 패밀리 변형이 없습니다]1,+Inf[{{ familyVariantCodes }}패밀리 변형이 없습니다"
-    unknown_attribute_options: "{1}{{ attributeOptionCodes }} 옵션이 없습니다]1,+Inf[{{ attributeOptionCodes }} 옵션이 없습니다"
-    unknown_attribute_code: "{{ attributeCode }} 특성이 없습니다"
+    unknown_families: "{1}{{ familyCodes }} 패밀리가 없습니다.]1,+Inf[{{ familyCodes }} 패밀리가 없습니다."
+    unknown_family_variants: "{1}{{ familyVariantCodes }} 패밀리 변형이 없습니다.]1,+Inf[{{ familyVariantCodes }}패밀리 변형이 없습니다."
+    unknown_attribute_options: "{1}{{ attributeOptionCodes }} 옵션이 없습니다.]1,+Inf[{{ attributeOptionCodes }} 옵션이 없습니다."
+    unknown_attribute_code: "{{ attributeCode }} 특성이 없습니다."
     unknown_categories: "{1}{{ categoryCodes }} 카테고리가 없습니다.|]1,+Inf[{{ categoryCodes }} 카테고리가 없습니다."
     unknown_attribute: "이 특성이 없습니다."
-    unknown_groups: "{1} {{ groupCodes }} 그룹이 없습니다|]1, +Inf[다음 그룹이 없습니다. {{ groupCodes }}"
+    unknown_groups: "{1} {{ groupCodes }} 그룹이 없습니다.|]1, +Inf[다음 그룹이 없습니다. {{ groupCodes }}"
     select_another_attribute_or_remove_action: "다른 특성을 선택하거나 이 액션을 제거하십시오."
     select_another_attribute: "다른 특성을 선택하거나"
     or: 또는
-    create_attribute_link: 여기를 클릭하여 특성을 만드십시오
-    edit_unauthorize: 규칙을 편집할 권한이 없습니다
+    create_attribute_link: 여기를 클릭하여 특성을 만드십시오.
+    edit_unauthorize: 규칙을 편집할 권한이 없습니다.
     wrong_date_timespan: 유효한 기간을 정의하려면 종료일이 시작일 이전으로 설정되지 않았는지 확인하십시오.
-    measurement_family_not_found: '''{{ measurement_code }}'' 측정 패밀리가 없습니다'
-    unit_not_found: '''{{ measurement_code }}'' 측정 패밀리에서 ''{{ unitCode }}'' 단위를 찾을 수 없습니다'
+    measurement_family_not_found: '''{{ measurement_code }}'' 측정 패밀리가 없습니다.'
+    unit_not_found: '''{{ measurement_code }}'' 측정 패밀리에서 ''{{ unitCode }}'' 단위를 찾을 수 없습니다.'
     empty_association_warning: 이 목록을 비워 두면 이 규칙으로 이 연결 유형이 지워집니다.
 pim_enrich:
   entity:
@@ -414,13 +414,13 @@ pim_enrich:
           confirm: 이 규칙을 삭제하시겠습니까? 이 작업은 실행 취소할 수 없습니다.
       flash:
         delete:
-          success: 규칙 제거됨
+          success: 규칙이 삭제되었습니다.
 flash:
   rule:
     impacted_product_count: 영향받는 제품의 수를 계산하는 일괄 작업이 시작되었습니다. 완료되면 알림이 전송됩니다.
     executed: 규칙 실행이 시작되었습니다. 완료되면 알림이 전송됩니다.
-    enabled: 규칙이 활성화되었습니다
-    disabled: 규칙이 비활성화되었습니다
+    enabled: 규칙이 활성화되었습니다.
+    disabled: 규칙이 비활성화되었습니다.
 pim_dashboard.widget.last_operations.job_type.mass_edit_rule: 규칙 설정
 batch_jobs:
   add_attribute_value:

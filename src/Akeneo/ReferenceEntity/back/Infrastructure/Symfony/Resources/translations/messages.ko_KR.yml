@@ -47,8 +47,8 @@ pim_notification:
 pim_mass_edit:
   notification:
     reference_entity_mass_delete_records:
-      warning: 레코드가 경고와 함께 삭제되었습니다
-      success: 레코드가 삭제되었습니다
-      error: 레코드 삭제에 실패했습니다
+      warning: 레코드가 경고와 함께 삭제되었습니다.
+      success: 레코드가 삭제되었습니다.
+      error: 레코드 삭제에 실패했습니다.
 akeneo_reference_entity: 참조 엔터티 단일 링크
 akeneo_reference_entity_collection: 참조 엔터티 다중 링크

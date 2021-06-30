@@ -8,36 +8,36 @@ pimee_import_export:
     job_instance:
       flash:
         update:
-          fail_empty_permission: 작업을 편집하려면 하나 이상의 항목을 선택해야 합니다
+          fail_empty_permission: 작업을 편집하려면 하나 이상의 항목을 선택해야 합니다.
 pimee_enrich.entity.category:
   module:
     permissions:
-      grant: <strong>{{ group }}</strong> 그룹이 이 카테고리에서 <strong>{{ permission }}</strong>이(가) 됩니다
-      revoke: <strong>{{ group }}</strong> 그룹이 이 카테고리에서 <strong>{{ permission }}</strong>이(가) 되지 않습니다
+      grant: <strong>{{ group }}</strong> 그룹이 이 카테고리에서 <strong>{{ permission }}</strong>이(가) 됩니다.
+      revoke: <strong>{{ group }}</strong> 그룹이 이 카테고리에서 <strong>{{ permission }}</strong>이(가) 되지 않습니다.
 pimee_enrich.entity.locale:
   module:
     permissions:
-      grant: <strong>{{ group }}</strong> 그룹이 이 로케일에서 <strong>{{ permission }}</strong>이(가) 됩니다
-      revoke: <strong>{{ group }}</strong> 그룹이 이 로케일에서 <strong>{{ permission }}</strong>이(가) 되지 않습니다
+      grant: <strong>{{ group }}</strong> 그룹이 이 로케일에서 <strong>{{ permission }}</strong>이(가) 됩니다.
+      revoke: <strong>{{ group }}</strong> 그룹이 이 로케일에서 <strong>{{ permission }}</strong>이(가) 되지 않습니다.
 pimee_enrich.entity.attribute group:
   module:
     permissions:
-      grant: <strong>{{ group }}</strong> 그룹이 이 특성 그룹에서 <strong>{{ permission }}</strong>이(가) 됩니다
-      revoke: <strong>{{ group }}</strong> 그룹이 이 특성 그룹에서 <strong>{{ permission }}</strong>이(가) 되지 않습니다
+      grant: <strong>{{ group }}</strong> 그룹이 이 특성 그룹에서 <strong>{{ permission }}</strong>이(가) 됩니다.
+      revoke: <strong>{{ group }}</strong> 그룹이 이 특성 그룹에서 <strong>{{ permission }}</strong>이(가) 되지 않습니다.
 pimee_enrich.entity.attribute_group:
   module:
     permissions:
-      added: '{{ group }} 그룹은 특성 그룹 {{ permission }}이(가) 허용됩니다'
+      added: '{{ group }} 그룹은 특성 그룹 {{ permission }}이(가) 허용됩니다.'
       view: 특성을 보도록 허용됨
       edit: 특성을 편집하도록 허용됨
-      removed: '{{ group }} 그룹은 특성 그룹 {{ permission }}이(가) 허용되지 않습니다'
+      removed: '{{ group }} 그룹은 특성 그룹 {{ permission }}이(가) 허용되지 않습니다.'
 pimee_enrich.entity.job_instance:
   module:
     permissions:
-      added: '{{ group }} 그룹은 작업 프로필 {{ permission }}이(가) 허용됩니다'
+      added: '{{ group }} 그룹은 작업 프로필 {{ permission }}이(가) 허용됩니다.'
       execute: 작업 프로필을 실행하도록 허용됨
       edit: 작업 프로필을 편집하도록 허용됨
-      removed: '{{ group }} 그룹은 작업 프로필 {{ permission }}이(가) 허용되지 않습니다'
+      removed: '{{ group }} 그룹은 작업 프로필 {{ permission }}이(가) 허용되지 않습니다.'
 batch_jobs:
   add_product_value_with_permission_and_rules:
     label: 권한 확인 및 규칙 애플리케이션으로 제품 값 추가
@@ -67,3 +67,5 @@ category.permissions:
   own.label: 제품 소유 허용됨
   own.help: 제품 검토, 게시, 게시 취소, 분류 및 연결
   no_access_to_products: 트리의 제품에 액세스할 수 있는 권한이 없습니다. 관리자에게 문의하십시오.
+  apply_on_children.label: 하위 항목에 변경 사항 적용
+  apply_on_children.help: 하위 항목의 기존 권한이 유지됩니다.

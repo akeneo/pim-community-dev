@@ -42,11 +42,11 @@ locale.permissions:
   edit.label: 정보를 편집하도록 허용됨
   edit.help: 이 로케일의 정보를 편집하도록 허용(보기 권한 포함)
   no_access_to_products: 활성화된 로케일의 제품 데이터에 액세스할 수 있는 권한이 없습니다. 관리자에게 문의하십시오.
-flash.locale.updated: 로케일 및 권한이 업데이트되었습니다
+flash.locale.updated: 로케일 및 권한이 업데이트되었습니다.
 pim_enrich:
   mass_edit_action:
     product:
-      not_editable: '"%identifiers%" 제품을 편집할 수 있는 권한이 없습니다.'
+      not_editable: '''%identifiers%'' 제품을 편집할 수 있는 권한이 없습니다.'
       page_title: 제품
       page_subtitle: 대량 편집(1 제품)|대량 편집(%count% 제품)
       title: 작업 선택
@@ -60,18 +60,18 @@ pim_enrich:
     publish:
       message:
         error: 제품의 소유자가 아니므로, 게시할 수 없습니다.
-        warning: 선택한 모든 제품의 소유자가 아니므로, 제품 "%notGranted%"을(를) 게시할 수 없습니다.
-      not_editable: '"%identifiers%" 제품을 편집할 수 있는 권한이 없습니다.'
+        warning: 선택한 모든 제품의 소유자가 아니므로, 제품 '%notGranted%'을(를) 게시할 수 없습니다.
+      not_editable: '''%identifiers%'' 제품을 편집할 수 있는 권한이 없습니다.'
     unpublish:
       message:
         error: 제품의 소유자가 아니므로, 게시 취소할 수 없습니다.
-        warning: 선택한 모든 제품의 소유자가 아니므로, 제품 "%notGranted%"을(를) 게시 취소할 수 없습니다.
+        warning: 선택한 모든 제품의 소유자가 아니므로, 제품 '%notGranted%'을(를) 게시 취소할 수 없습니다.
         info: 선택된 %nbProducts%개 제품이 게시 취소됩니다.
-      not_editable: '"%identifiers%" 제품을 편집할 수 있는 권한이 없습니다.'
+      not_editable: '''%identifiers%'' 제품을 편집할 수 있는 권한이 없습니다.'
     classify:
       message:
         error: 제품의 소유자가 아니므로, 분류할 수 없습니다.
-        warning: 선택한 모든 제품의 소유자가 아니므로, 제품 "%notGranted%"을(를) 분류할 수 없습니다.
+        warning: 선택한 모든 제품의 소유자가 아니므로, 제품 '%notGranted%'을(를) 분류할 수 없습니다.
     edit_common_attributes:
       message:
         error: 제품의 소유자가 아니므로, 편집할 수 없습니다.
