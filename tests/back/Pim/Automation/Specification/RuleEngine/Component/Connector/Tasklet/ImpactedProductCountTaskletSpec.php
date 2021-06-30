@@ -21,8 +21,8 @@ use Akeneo\Tool\Component\Batch\Job\JobParameters;
 use Akeneo\Tool\Component\Batch\Job\JobRepositoryInterface;
 use Akeneo\Tool\Component\Batch\Job\JobStopper;
 use Akeneo\Tool\Component\Batch\Model\StepExecution;
-use Akeneo\Tool\Component\StorageUtils\Cache\EntityManagerClearerInterface;
 use Akeneo\Tool\Component\StorageUtils\Cursor\CursorInterface;
+use Akeneo\Tool\Component\StorageUtils\Detacher\BulkObjectDetacherInterface;
 use Akeneo\Tool\Component\StorageUtils\Saver\BulkSaverInterface;
 use PhpSpec\ObjectBehavior;
 
@@ -32,12 +32,10 @@ class ImpactedProductCountTaskletSpec extends ObjectBehavior
         RuleDefinitionRepositoryInterface $ruleDefinitionRepo,
         DryRunnerInterface $productRuleRunner,
         BulkSaverInterface $saver,
-        EntityManagerClearerInterface $cacheClearer,
-        StepExecution $stepExecution,
-        JobRepositoryInterface  $jobRepository,
-        JobStopper $jobStopper
+        BulkObjectDetacherInterface $detacher,
+        StepExecution $stepExecution
     ) {
-        $this->beConstructedWith($ruleDefinitionRepo, $productRuleRunner, $saver, $cacheClearer, $jobRepository, $jobStopper);
+        $this->beConstructedWith($ruleDefinitionRepo, $productRuleRunner, $saver, $detacher);
 
         $this->setStepExecution($stepExecution);
     }
@@ -49,11 +47,11 @@ class ImpactedProductCountTaskletSpec extends ObjectBehavior
     }
 
     function it_executes_impacted_product_by_rules(
-        RuleDefinitionRepositoryInterface $ruleDefinitionRepo,
-        DryRunnerInterface $productRuleRunner,
-        BulkSaverInterface $saver,
-        EntityManagerClearerInterface $cacheClearer,
-        StepExecution $stepExecution,
+        $ruleDefinitionRepo,
+        $productRuleRunner,
+        $saver,
+        $detacher,
+        $stepExecution,
         RuleDefinitionInterface $ruleDefinition1,
         RuleDefinitionInterface $ruleDefinition2,
         RuleSubjectSetInterface $ruleSubjectSet1,
@@ -135,8 +133,7 @@ class ImpactedProductCountTaskletSpec extends ObjectBehavior
         $stepExecution->incrementSummaryInfo('rule_calculated')->shouldBeCalledOnce();
 
         $saver->saveAll([$ruleDefinition1, $ruleDefinition2])->shouldBeCalled();
-        $cacheClearer->clear()->shouldBeCalled();
-        $jobStopper->isStopping($stepExecution)->willReturn(false);
+        $detacher->detachAll([$ruleDefinition1, $ruleDefinition2])->shouldBeCalled();
 
         $this->execute();
     }
