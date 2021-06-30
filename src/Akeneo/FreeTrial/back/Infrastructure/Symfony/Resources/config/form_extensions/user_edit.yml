@@ -1,0 +1,10 @@
+extensions:
+  pim-user-edit-form-general-tab-content:
+    module: pim/free-trial/user-edit-form/general-tab
+    parent: pim-user-edit-form-general-tab
+    position: 10
+    config:
+      template: pim/template/form/tab/section
+      templateParams:
+        sectionTitle: ''
+        dropZone: content
