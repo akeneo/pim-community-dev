@@ -13,7 +13,7 @@ declare(strict_types=1);
 
 namespace Akeneo\Platform\TailoredExport\Infrastructure\Connector\Processor\PropertySelector;
 
-use Akeneo\Platform\Bundle\TailoredExportBundle\src\Domain\SourceValue;
+use Akeneo\Platform\TailoredExport\Domain\SourceValue;
 
 interface PropertySelectorInterface
 {

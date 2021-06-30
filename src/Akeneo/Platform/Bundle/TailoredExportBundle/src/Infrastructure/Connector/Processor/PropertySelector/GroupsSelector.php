@@ -13,8 +13,9 @@ declare(strict_types=1);
 
 namespace Akeneo\Platform\TailoredExport\Infrastructure\Connector\Processor\PropertySelector;
 
-use Akeneo\Pim\Enrichment\Component\Product\Model\ProductInterface;
 use Akeneo\Pim\Structure\Component\Query\PublicApi\Group\GetGroupTranslations;
+use Akeneo\Platform\TailoredExport\Domain\SourceValue;
+use Akeneo\Platform\TailoredExport\Domain\SourceValue\GroupsValue;
 use Akeneo\Platform\TailoredExport\Domain\SelectionTypes;
 
 class GroupsSelector implements PropertySelectorInterface
@@ -27,13 +28,13 @@ class GroupsSelector implements PropertySelectorInterface
         $this->getGroupTranslations = $getGroupTranslations;
     }
 
-    public function applySelection(array $selectionConfiguration, $entity): string
+    public function applySelection(array $selectionConfiguration, SourceValue $sourceValue): string
     {
-        if (!$entity instanceof ProductInterface) {
+        if (!$sourceValue instanceof GroupsValue) {
             throw new \LogicException('Cannot apply group selection on this entity');
         }
 
-        $groupCodes = $entity->getGroupCodes();
+        $groupCodes = $sourceValue->getData();
 
         switch ($selectionConfiguration['type']) {
             case SelectionTypes::CODE:
@@ -54,9 +55,9 @@ class GroupsSelector implements PropertySelectorInterface
         return implode($selectionConfiguration['separator'], $selectedData);
     }
 
-    public function supports(array $selectionConfiguration, string $propertyName): bool
+    public function supports(array $selectionConfiguration, SourceValue $sourceValue): bool
     {
         return in_array($selectionConfiguration['type'], [SelectionTypes::LABEL, SelectionTypes::CODE])
-            && 'groups' === $propertyName;
+            && $sourceValue instanceof GroupsValue;
     }
 }

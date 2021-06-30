@@ -15,6 +15,10 @@ namespace Akeneo\Platform\TailoredExport\Infrastructure\Connector\Processor;
 
 use Akeneo\Pim\Enrichment\Component\Product\Model\ProductInterface;
 use Akeneo\Pim\Structure\Component\Query\PublicApi\AttributeType\GetAttributes;
+use Akeneo\Platform\TailoredExport\Application\OperationApplier;
+use Akeneo\Platform\TailoredExport\Application\PropertyValueGetter;
+use Akeneo\Platform\TailoredExport\Domain\OperationCollection;
+use Akeneo\Platform\TailoredExport\Domain\ReplacementOperation;
 use Akeneo\Platform\TailoredExport\Domain\SourceTypes;
 use Akeneo\Platform\TailoredExport\Infrastructure\Connector\Processor\AttributeSelector\AttributeSelectorRegistry;
 use Akeneo\Platform\TailoredExport\Infrastructure\Connector\Processor\PropertySelector\PropertySelectorRegistry;
@@ -28,15 +32,21 @@ class ProductExportProcessor implements ItemProcessorInterface, StepExecutionAwa
     private AttributeSelectorRegistry $attributeSelectorRegistry;
     private PropertySelectorRegistry $propertySelectorRegistry;
     private GetAttributes $getAttributes;
+    private PropertyValueGetter $propertyValueGetter;
+    private OperationApplier $operationApplier;
 
     public function __construct(
         AttributeSelectorRegistry $attributeSelectorRegistry,
         PropertySelectorRegistry $propertySelectorRegistry,
-        GetAttributes $getAttributes
+        GetAttributes $getAttributes,
+        PropertyValueGetter $propertyValueGetter,
+        OperationApplier $operationApplier
     ) {
         $this->attributeSelectorRegistry = $attributeSelectorRegistry;
         $this->propertySelectorRegistry = $propertySelectorRegistry;
         $this->getAttributes = $getAttributes;
+        $this->propertyValueGetter = $propertyValueGetter;
+        $this->operationApplier = $operationApplier;
     }
 
     /**
@@ -58,8 +68,8 @@ class ProductExportProcessor implements ItemProcessorInterface, StepExecutionAwa
 
         foreach ($columns as $column) {
             $operationSourceValues = [];
-
             foreach ($column['sources'] as $source) {
+                $operations = $this->createOperations($source['operations']);
                 if (SourceTypes::ATTRIBUTE === $source['type']) {
                     $value = $product->getValue($source['code'], $source['locale'], $source['channel']);
                     $attribute = $this->getAttributes->forCode($source['code']);
@@ -72,6 +82,8 @@ class ProductExportProcessor implements ItemProcessorInterface, StepExecutionAwa
                     );
                 } elseif (SourceTypes::PROPERTY === $source['type']) {
                     $sourceValue = $this->propertyValueGetter->get($source['code'], $product);
+                    $sourceValue = $this->operationApplier->applyOperations($operations, $sourceValue);
+
                     $operationSourceValues[] = $this->propertySelectorRegistry->applyPropertySelection(
                         $source['selection'],
                         $sourceValue
@@ -93,5 +105,23 @@ class ProductExportProcessor implements ItemProcessorInterface, StepExecutionAwa
     public function setStepExecution(StepExecution $stepExecution): void
     {
         $this->stepExecution = $stepExecution;
+    }
+
+    /** Use registry or move this to OperationCollection */
+    private function createOperations($normalizedOperations): OperationCollection
+    {
+        $operations = [];
+        foreach ($normalizedOperations as $normalizedOperation) {
+            $operation = null;
+            if ($normalizedOperation['type'] === 'replacement') {
+                $operation = ReplacementOperation::createFromNormalized($normalizedOperation);
+            }
+
+            if ($operation) {
+                $operations[] = $operation;
+            }
+        }
+
+        return OperationCollection::create($operations);
     }
 }

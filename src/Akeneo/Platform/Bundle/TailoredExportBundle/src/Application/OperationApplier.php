@@ -1,14 +1,25 @@
 <?php
 
-namespace Akeneo\Platform\Bundle\TailoredExportBundle\src\Application;
+declare(strict_types=1);
 
-use Akeneo\Platform\Bundle\TailoredExportBundle\src\Application\OperationApplier\PropertyOperationApplierInterface;
-use Akeneo\Platform\Bundle\TailoredExportBundle\src\Domain\OperationCollection;
-use Akeneo\Platform\Bundle\TailoredExportBundle\src\Domain\SourceValue;
+/*
+ * This file is part of the Akeneo PIM Enterprise Edition.
+ *
+ * (c) 2021 Akeneo SAS (https://www.akeneo.com)
+ *
+ * For the full copyright and license information, please view the LICENSE
+ * file that was distributed with this source code.
+ */
 
-class PropertyOperationApplier
+namespace Akeneo\Platform\TailoredExport\Application;
+
+use Akeneo\Platform\TailoredExport\Application\OperationApplier\OperationApplierInterface;
+use Akeneo\Platform\TailoredExport\Domain\OperationCollection;
+use Akeneo\Platform\TailoredExport\Domain\SourceValue;
+
+class OperationApplier
 {
-    /** @var iterable<PropertyOperationApplierInterface> */
+    /** @var iterable<OperationApplierInterface> */
     private iterable $operationHandlers;
 
     public function __construct(iterable $operationHandlers)

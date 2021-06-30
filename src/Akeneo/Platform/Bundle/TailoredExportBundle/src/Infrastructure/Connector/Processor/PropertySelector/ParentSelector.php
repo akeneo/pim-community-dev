@@ -13,8 +13,9 @@ declare(strict_types=1);
 
 namespace Akeneo\Platform\TailoredExport\Infrastructure\Connector\Processor\PropertySelector;
 
-use Akeneo\Pim\Enrichment\Component\Product\Model\EntityWithFamilyVariantInterface;
 use Akeneo\Pim\Enrichment\Component\Product\Query\GetProductModelLabelsInterface;
+use Akeneo\Platform\TailoredExport\Domain\SourceValue;
+use Akeneo\Platform\TailoredExport\Domain\SourceValue\ParentValue;
 use Akeneo\Platform\TailoredExport\Domain\SelectionTypes;
 
 class ParentSelector implements PropertySelectorInterface
@@ -26,18 +27,13 @@ class ParentSelector implements PropertySelectorInterface
         $this->getProductModelLabels = $getProductModelLabels;
     }
 
-    public function applySelection(array $selectionConfiguration, $entity): string
+    public function applySelection(array $selectionConfiguration, SourceValue $sourceValue): string
     {
-        if (!$entity instanceof EntityWithFamilyVariantInterface) {
+        if (!$sourceValue instanceof ParentValue) {
             throw new \LogicException('Cannot apply parent selection on this entity');
         }
 
-        $parent = $entity->getParent();
-        if (null === $parent) {
-            return '';
-        }
-
-        $parentCode = $parent->getCode();
+        $parentCode = $sourceValue->getData();
         switch ($selectionConfiguration['type']) {
             case SelectionTypes::CODE:
                 return $parentCode;
@@ -54,9 +50,9 @@ class ParentSelector implements PropertySelectorInterface
         }
     }
 
-    public function supports(array $selectionConfiguration, string $propertyName): bool
+    public function supports(array $selectionConfiguration, SourceValue $sourceValue): bool
     {
         return in_array($selectionConfiguration['type'], [SelectionTypes::LABEL, SelectionTypes::CODE])
-            && 'parent' === $propertyName;
+            && $sourceValue instanceof ParentValue;
     }
 }

@@ -15,16 +15,16 @@ namespace Akeneo\Platform\TailoredExport\Domain\SourceValue;
 
 use Akeneo\Platform\TailoredExport\Domain\SourceValue;
 
-class BooleanValue implements SourceValue
+class FamilyValue implements SourceValue
 {
-    private $data;
+    private string $data;
 
-    public function __construct($data)
+    public function __construct(string $data)
     {
         $this->data = $data;
     }
 
-    public function getData()
+    public function getData(): string
     {
         return $this->data;
     }

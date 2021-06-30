@@ -11,21 +11,14 @@ declare(strict_types=1);
  * file that was distributed with this source code.
  */
 
-namespace Akeneo\Platform\TailoredExport\Domain\SourceValue;
+namespace Akeneo\Platform\TailoredExport\Application\OperationApplier;
 
+use Akeneo\Platform\TailoredExport\Domain\Operation;
 use Akeneo\Platform\TailoredExport\Domain\SourceValue;
 
-class BooleanValue implements SourceValue
+interface OperationApplierInterface
 {
-    private $data;
+    public function applyOperation(Operation $operation, SourceValue $value): SourceValue;
 
-    public function __construct($data)
-    {
-        $this->data = $data;
-    }
-
-    public function getData()
-    {
-        return $this->data;
-    }
+    public function supports(Operation $operation, SourceValue $value);
 }

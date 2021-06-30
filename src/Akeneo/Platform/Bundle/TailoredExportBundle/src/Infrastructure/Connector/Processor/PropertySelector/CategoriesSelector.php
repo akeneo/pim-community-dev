@@ -14,8 +14,9 @@ declare(strict_types=1);
 namespace Akeneo\Platform\TailoredExport\Infrastructure\Connector\Processor\PropertySelector;
 
 use Akeneo\Pim\Structure\Component\Query\PublicApi\Category\GetCategoryTranslations;
+use Akeneo\Platform\TailoredExport\Domain\SourceValue;
+use Akeneo\Platform\TailoredExport\Domain\SourceValue\CategoriesValue;
 use Akeneo\Platform\TailoredExport\Domain\SelectionTypes;
-use Akeneo\Tool\Component\Classification\CategoryAwareInterface;
 
 class CategoriesSelector implements PropertySelectorInterface
 {
@@ -27,13 +28,13 @@ class CategoriesSelector implements PropertySelectorInterface
         $this->getCategoryTranslations = $getCategoryTranslations;
     }
 
-    public function applySelection(array $selectionConfiguration, $entity): string
+    public function applySelection(array $selectionConfiguration, SourceValue $sourceValue): string
     {
-        if (!$entity instanceof CategoryAwareInterface) {
+        if (!$sourceValue instanceof CategoriesValue) {
             throw new \LogicException('Cannot apply Categories selection on this entity');
         }
 
-        $categoryCodes = $entity->getCategoryCodes();
+        $categoryCodes = $sourceValue->getData();
 
         switch ($selectionConfiguration['type']) {
             case SelectionTypes::CODE:
@@ -54,9 +55,9 @@ class CategoriesSelector implements PropertySelectorInterface
         return implode($selectionConfiguration['separator'], $selectedData);
     }
 
-    public function supports(array $selectionConfiguration, string $propertyName): bool
+    public function supports(array $selectionConfiguration, SourceValue $sourceValue): bool
     {
         return in_array($selectionConfiguration['type'], [SelectionTypes::LABEL, SelectionTypes::CODE])
-            && 'categories' === $propertyName;
+            && $sourceValue instanceof CategoriesValue;
     }
 }
