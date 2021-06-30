@@ -23,6 +23,11 @@ class NotEmptyFamilySpec extends ObjectBehavior
         $this->shouldBeAnInstanceOf(Constraint::class);
     }
 
+    function it_has_a_message()
+    {
+        $this->message->shouldBe('The family cannot be "null" because your product with the %sku% identifier is a variant product.');
+    }
+
     function it_has_a_property_path()
     {
         $this->propertyPath->shouldBe('family');

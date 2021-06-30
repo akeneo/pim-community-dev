@@ -39,7 +39,7 @@ class NotEmptyFamily implements DocumentationBuilderInterface
                 [
                     'product_variant' => new HrefMessageParameter(
                         'What about products with variants?',
-                        'https://help.akeneo.com/pim/v3/articles/what-about-products-variants.html'
+                        'https://help.akeneo.com/pim/serenity/articles/what-about-products-variants.html'
                     ),
                 ],
                 Documentation::STYLE_INFORMATION

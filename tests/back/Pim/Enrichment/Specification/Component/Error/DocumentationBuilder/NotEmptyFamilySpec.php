@@ -55,7 +55,7 @@ class NotEmptyFamilySpec extends ObjectBehavior
                 'parameters' => [
                     'product_variant' => [
                         'type' => 'href',
-                        'href' => 'https://help.akeneo.com/pim/v3/articles/what-about-products-variants.html',
+                        'href' => 'https://help.akeneo.com/pim/serenity/articles/what-about-products-variants.html',
                         'title' => 'What about products with variants?',
                     ],
                 ],

@@ -14,7 +14,8 @@ class NotEmptyFamily extends Constraint
 {
     const NOT_EMPTY_FAMILY = 'd3b19dba-d82a-11eb-b8bc-0242ac130003';
 
-    public const MESSAGE = 'pim_catalog.constraint.not_null_family';
+    /** @var string */
+    public $message = 'The family cannot be "null" because your product with the %sku% identifier is a variant product.';
 
     /** @var string */
     public $propertyPath = 'family';
