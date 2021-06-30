@@ -4,7 +4,6 @@ import userEvent from '@testing-library/user-event';
 import {renderWithProviders} from '@akeneo-pim-community/shared';
 import {CategorySelector} from './CategorySelector';
 
-let childrenFetchCount = 0;
 const getRootChildren = (count: number) => [
   {
     attr: {id: 'node_0', 'data-code': `child-${count}`},
@@ -21,6 +20,7 @@ const category = {
 };
 
 beforeEach(() => {
+  let childrenFetchCount = 0;
   global.fetch = jest.fn().mockImplementation(async (route: string) => ({
     ok: true,
     json: async () => {
@@ -70,7 +70,6 @@ test('it displays a Category tree with its children categories', async () => {
 test('it can select then unselect a Category tree', async () => {
   const onChange = jest.fn();
   const initialCategoryCodes = ['webcam', 'scanners'];
-  childrenFetchCount = 0;
 
   await act(async () => {
     renderWithProviders(
@@ -93,5 +92,31 @@ test('it can select then unselect a Category tree', async () => {
   // Unselecting the child 0
   userEvent.click(within(treeItems[1]).getByRole('checkbox'));
 
+  expect(onChange).toHaveBeenCalledWith(['webcam', 'scanners']);
+});
+
+test('it can select a category and its children when included', async () => {
+  const onChange = jest.fn();
+  const initialCategoryCodes = ['webcam', 'scanners'];
+
+  await act(async () => {
+    renderWithProviders(
+      <CategorySelector
+        categoryTreeCode="root"
+        shouldIncludeSubCategories={true}
+        initialCategoryCodes={initialCategoryCodes}
+        onChange={onChange}
+      />
+    );
+  });
+
+  const treeItems = screen.getAllByRole('treeitem');
+
+  // Selecting the child 0
+  userEvent.click(within(treeItems[1]).getByRole('checkbox'));
+  expect(onChange).toHaveBeenCalledWith(['webcam', 'scanners', 'child-0']);
+
+  // Unselecting the child 0
+  userEvent.click(within(treeItems[1]).getByRole('checkbox'));
   expect(onChange).toHaveBeenCalledWith(['webcam', 'scanners']);
 });

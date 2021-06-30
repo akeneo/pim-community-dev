@@ -28,11 +28,12 @@ const CategoryFilter = ({filter, onChange}: CategoryFilterProps) => {
   const [operator, setOperator] = useState<Operator>(filter.operator);
   const shouldIncludeSubCategories = operator === 'IN CHILDREN LIST';
   const handleShouldIncludeSubCategoryChange = (shouldIncludeSubCategory: boolean) => {
-    const newOperator = shouldIncludeSubCategory ? 'IN CHILDREN LIST' : filter.value.length === 0 ? 'NOT IN' : 'IN';
-    setOperator(newOperator);
+    setOperator(shouldIncludeSubCategory ? 'IN CHILDREN LIST' : 'IN');
   };
   const handleConfirm = () => {
-    onChange({...filter, operator, value: categorySelection});
+    const newOperator = filter.value.length === 0 ? 'NOT IN' : operator;
+
+    onChange({...filter, operator: newOperator, value: categorySelection});
     closeCategoriesModal();
   };
   const handleClose = () => {
