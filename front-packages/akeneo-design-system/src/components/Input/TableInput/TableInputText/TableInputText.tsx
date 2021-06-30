@@ -9,7 +9,7 @@ const TableInputText = styled(TextInput)<{highlighted: boolean} & AkeneoThemedPr
   padding-right: 10px;
   border-radius: 0;
   border: none;
-  
+
   ${({highlighted}) =>
     highlighted
       ? css`
@@ -19,7 +19,7 @@ const TableInputText = styled(TextInput)<{highlighted: boolean} & AkeneoThemedPr
       : css`
           background: none;
         `};
-  
+
   &:focus {
     box-shadow: 0 0 0 1px ${getColor('grey', 100)};
   }

@@ -1,11 +1,11 @@
-import React, {ReactElement} from 'react';
-import {Dropdown} from "../../../Dropdown/Dropdown";
-import {useBooleanState, useDebounce, usePaginatedResults} from "../../../../hooks";
-import {ArrowDownIcon, CloseIcon} from "../../../../icons";
-import {Search} from "../../../Search/Search";
-import styled, {css} from "styled-components";
-import {IconButton} from "../../../IconButton/IconButton";
-import {AkeneoThemedProps, CommonStyle, getColor} from "../../../../theme";
+import React, {ReactNode} from 'react';
+import {Dropdown} from '../../../Dropdown/Dropdown';
+import {useBooleanState} from '../../../../hooks';
+import {ArrowDownIcon, CloseIcon} from '../../../../icons';
+import {Search} from '../../../Search/Search';
+import styled, {css} from 'styled-components';
+import {IconButton} from '../../../IconButton/IconButton';
+import {AkeneoThemedProps, getColor} from '../../../../theme';
 
 const SelectButtonDropdown = styled(Dropdown)`
   width: 100%;
@@ -25,14 +25,14 @@ const SelectButton = styled.button<{highlighted: boolean} & AkeneoThemedProps>`
   line-height: 39px;
   align-items: center;
   cursor: pointer;
-  
+
   ${({highlighted}) =>
-  highlighted
-    ? css`
+    highlighted
+      ? css`
           background: ${getColor('green', 10)};
           box-shadow: 0 0 0 1px ${getColor('green', 80)};
         `
-    : css`
+      : css`
           background: none;
         `};
 `;
@@ -47,26 +47,27 @@ const IconsPart = styled.div`
 `;
 
 type TableInputSelectProps = {
-  value: ReactElement | null;
+  value: ReactNode | null;
   onClear: () => void;
-  highlighted: boolean;
-  removeValueLabel: string;
+  highlighted?: boolean;
+  clearLabel: string;
   openDropdownLabel: string;
   onNextPage?: () => void;
-  searchValue: string;
-  onSearchChange: (search: string) => void;
+  searchValue?: string;
+  onSearchChange?: (search: string) => void;
   searchPlaceholder: string;
   searchTitle: string;
-}
+  fetchNextPage?: () => void;
+};
 
 const TableInputSelect: React.FC<TableInputSelectProps> = ({
   value,
   onClear,
   fetchNextPage,
-  removeValueLabel,
+  clearLabel,
   openDropdownLabel,
   highlighted = false,
-  searchValue,
+  searchValue = '',
   searchPlaceholder,
   onSearchChange,
   searchTitle,
@@ -74,40 +75,57 @@ const TableInputSelect: React.FC<TableInputSelectProps> = ({
   children,
   ...rest
 }) => {
-    const [isOpen, open, close] = useBooleanState(false);
+  const [isOpen, open, close] = useBooleanState(false);
 
-    React.useEffect(() => {
-      close();
-      onSearchChange('');
-    }, [value]);
+  React.useEffect(() => {
+    close();
+    handleSearchChange('');
+  }, [value]);
 
-    return <SelectButtonDropdown {...rest}>
-        <SelectButton onClick={open} tabIndex={-1} highlighted={highlighted}>
-          {value}&nbsp;
-        </SelectButton>
-        <IconsPart>
-          {value && !isOpen &&
-          <IconButton icon={<CloseIcon/>} size="small" title={removeValueLabel} ghost="borderless" level="tertiary"
-                      onClick={onClear}/>
-          }
-          <IconButton icon={<ArrowDownIcon/>} size="small" title={openDropdownLabel} ghost="borderless" level="tertiary" onClick={open}/>
-        </IconsPart>
-        {isOpen && (
-            <Dropdown.Overlay onClose={close} dropdownOpenerVisible={true}>
-                <Dropdown.Header>
-                    <Search
-                        onSearchChange={onSearchChange}
-                        placeholder={searchPlaceholder}
-                        searchValue={searchValue}
-                        title={searchTitle}
-                    />
-                </Dropdown.Header>
-                <Dropdown.ItemCollection onNextPage={onNextPage}>
-                  {children}
-                </Dropdown.ItemCollection>
-            </Dropdown.Overlay>
+  const handleSearchChange = (search: string) => {
+    if (onSearchChange) onSearchChange(search);
+  };
+
+  return (
+    <SelectButtonDropdown {...rest}>
+      <SelectButton onClick={open} tabIndex={-1} highlighted={highlighted}>
+        {value}&nbsp;
+      </SelectButton>
+      <IconsPart>
+        {value && !isOpen && (
+          <IconButton
+            icon={<CloseIcon />}
+            size="small"
+            title={clearLabel}
+            ghost="borderless"
+            level="tertiary"
+            onClick={onClear}
+          />
         )}
+        <IconButton
+          icon={<ArrowDownIcon />}
+          size="small"
+          title={openDropdownLabel}
+          ghost="borderless"
+          level="tertiary"
+          onClick={open}
+        />
+      </IconsPart>
+      {isOpen && (
+        <Dropdown.Overlay onClose={close} dropdownOpenerVisible={true}>
+          <Dropdown.Header>
+            <Search
+              onSearchChange={handleSearchChange}
+              placeholder={searchPlaceholder}
+              searchValue={searchValue}
+              title={searchTitle}
+            />
+          </Dropdown.Header>
+          <Dropdown.ItemCollection onNextPage={onNextPage}>{children}</Dropdown.ItemCollection>
+        </Dropdown.Overlay>
+      )}
     </SelectButtonDropdown>
+  );
 };
 
-export { TableInputSelect };
+export {TableInputSelect};

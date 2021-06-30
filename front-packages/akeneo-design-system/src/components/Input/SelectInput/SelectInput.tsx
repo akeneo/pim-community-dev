@@ -103,7 +103,7 @@ const Option = styled.span<{value: string}>`
   min-height: 34px;
 `;
 
-export type SelectInputProps = Override<
+type SelectInputProps = Override<
   Override<React.InputHTMLAttributes<HTMLDivElement>, InputProps<string>>,
   (
     | {
