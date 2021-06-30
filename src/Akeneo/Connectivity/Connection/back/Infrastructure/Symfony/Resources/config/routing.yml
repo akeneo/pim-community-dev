@@ -36,7 +36,7 @@ akeneo_connectivity_connection_marketplace_url_rest_get:
 
 ## Marketplace
 akeneo_connectivity_connection_connect_marketplace:
-  path: '/connect/marketplace'
+    path: '/connect/marketplace'
 
 akeneo_connectivity_connection_connect_marketplace_profile:
     path: '/connect/marketplace/profile'
