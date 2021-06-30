@@ -10,10 +10,13 @@ akeneo_assetmanager:
       manage_transformation: 자산 패밀리 변환 관리
       manage_product_link_rule: 자산 패밀리 제품 링크 규칙 관리
       execute_product_link_rule: 자산 패밀리의 모든 자산에서 제품 링크 규칙 실행
+      execute_naming_conventions: 자산에 대해 명명 규칙 실행
     asset:
       create: 자산 만들기
       edit: 자산 편집
+      delete: 자산 삭제
       list_product: 자산에 대한 링크된 제품 나열
+      execute_naming_conventions: 명명 규칙 실행
     attribute:
       create: 자산 패밀리에 특성 추가
       edit: 자산 패밀리의 특성 편집
@@ -21,12 +24,38 @@ akeneo_assetmanager:
     option:
       edit: 옵션 편집
       delete: 옵션 제거
+  jobs:
+    asset_manager_execute_naming_convention:
+      error: '명명 규칙이 자산 ''{{ asset }}''에서 실패했습니다.'
+    asset_manager_mass_delete:
+      error: '자산 ''{{ assets }}''에 대한 대량 삭제가 다음 오류와 함께 실패했습니다. ''{{ error }}'''
+    asset_manager_mass_edit:
+      error: '자산 ''{{ assets }}''에 대한 대량 편집이 다음 오류와 함께 실패했습니다. ''{{ error }}'''
 pim_import_export:
   widget:
     last_operations:
       job_type:
         asset_manager_compute_transformations: "자산 변환 계산"
         asset_manager_link_assets_to_products: "제품에 자산 링크 연결"
+        asset_manager_execute_naming_convention: "자산 패밀리 명명 규칙 실행"
+pim_analytics:
+  info_type:
+    api_connection: API 연결 수
+    nb_asset_families: 자산 패밀리 수
+    max_number_of_assets_per_asset_family: 자산 패밀리당 최대 자산 수
+    average_number_of_values_per_assets: 자산당 값의 평균 수
+    average_number_of_assets_per_asset_family: 자산 패밀리당 평균 자산 수
+    max_number_of_attributes_per_asset_family: 자산 패밀리당 최대 특성 수
+    average_number_of_attributes_per_asset_family: 자산 패밀리당 평균 특성 수
+    data_source:
+      tracked: 데이터 대상 추적됨
+      untracked: 데이터 대상 추적 해제됨
+    data_destination:
+      tracked: 데이터 소스 추적됨
+      untracked: 데이터 소스 추적 해제됨
+    other:
+      tracked: 기타 추적된 항목
+      untracked: 기타 추적 해제된 항목
 #average_percentage_localizable_only_attributes: Average percentage of localizable only attributes per asset family
 #average_percentage_scopable_only_attributes: Average percentage of scopable only attributes per asset family
 #average_percentage_scopable_and_localizable_attributes: Average percentage of localizable and scopable attributes per asset family
@@ -34,11 +63,24 @@ pim_catalog_asset_collection: 자산 컬렉션
 pim_datagrid:
   cells:
     type:
+      asset_manager_execute_naming_convention: 자산 패밀리 명명 규칙 실행
       asset_manager_link_assets_to_products: 제품에 자산 링크 연결
+      asset_manager_compute_transformations: 자산 변환 계산
+      asset_manager_mass_delete_assets: 자산 대량 삭제
+      asset_manager_mass_edit_assets: 자산 대량 편집
 batch_jobs:
   default_steps:
+    execute_naming_convention: 자산 패밀리 명명 규칙 실행
     link_assets_to_products: 제품에 자산 링크 연결
     compute_transformations: 자산 변환 계산
 job_execution:
   summary:
     assets: 자산
+pim_mass_edit.notification.asset_manager_mass_delete_assets:
+  warning: 자산이 경고와 함께 삭제되었습니다.
+  success: 자산이 삭제되었습니다.
+  error: 자산 삭제에 실패했습니다.
+pim_mass_edit.notification.asset_manager_mass_edit_assets:
+  warning: 자산이 경고와 함께 편집되었습니다.
+  success: 자산이 편집되었습니다.
+  error: 자산 편집에 실패했습니다.

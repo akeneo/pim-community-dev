@@ -9,7 +9,7 @@ pimee_catalog_rule:
         impacted_product_count:
           label: 영향받는 제품
           count: '{0,1}%count%개 영향받는 제품|]1,Inf[%count%개 영향받는 제품'
-          no_yet_calculated: 아직 계산되지 않았습니다
+          no_yet_calculated: 아직 계산되지 않았습니다.
         tags:
           label: 작업
         priority: 우선순위
@@ -52,7 +52,7 @@ pimee_catalog_rule:
     acl:
       rule.view_permissions: 규칙 보기
   product:
-    history: 규칙 "%rule%" 적용됨
+    history: 규칙 '%rule%' 적용됨
   steps:
     product_rule_definition_reader.title: 제품 규칙 가져오기 리더
     rule_definition_processor.title: 제품 규칙 가져오기 프로세서
@@ -62,10 +62,10 @@ pimee_catalog_rule:
     execute_rules:
       success: 규칙 실행 완료
       warning: 경고와 함께 규칙 실행 완료
-      error: 규칙을 실행하는 중에 오류가 발생했습니다
+      error: 규칙을 실행하는 중에 오류가 발생했습니다.
     mass_edit_rule:
       success: 규칙의 영향받는 제품 계산 완료
-      error: 규칙에 영향받는 제품의 수를 계산하는 동안 오류가 발생했습니다
+      error: 규칙에 영향받는 제품의 수를 계산하는 동안 오류가 발생했습니다.
   datetime:
     now: 지금
     relative_date:

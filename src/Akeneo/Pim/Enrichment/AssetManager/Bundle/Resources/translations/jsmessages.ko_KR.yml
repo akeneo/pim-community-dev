@@ -7,4 +7,26 @@ batch_jobs:
     export.label: 자산 내보내기
   asset_manager_csv_asset_import:
     label: CSV로 자산 가져오기
+    import.label: 자산 가져오기
+  asset_manager_xlsx_asset_import:
+    label: XLSX로 자산 가져오기
+    import.label: 자산 가져오기
 akeneo_assetmanager.export.assets.filter.asset_family: 자산 패밀리
+pim_analytics:
+  info_type:
+    api_connection: API 연결 수
+    nb_asset_families: 자산 패밀리 수
+    max_number_of_assets_per_asset_family: 자산 패밀리당 최대 자산 수
+    max_number_of_attributes_per_asset_family: 자산 패밀리당 최대 특성 수
+    average_number_of_assets_per_asset_family: 자산 패밀리당 평균 자산 수
+    average_number_of_values_per_assets: 자산당 값의 평균 수
+    average_number_of_attributes_per_asset_family: 자산 패밀리당 평균 특성 수
+    data_source:
+      tracked: 데이터 대상 추적됨
+      untracked: 데이터 대상 추적 해제됨
+    data_destination:
+      tracked: 데이터 소스 추적됨
+      untracked: 데이터 소스 추적 해제됨
+    other:
+      tracked: 기타 추적된 항목
+      untracked: 기타 추적 해제된 항목
