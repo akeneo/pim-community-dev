@@ -3,48 +3,91 @@ import {TableInputBoolean} from './TableInputBoolean';
 import {fireEvent, render, screen} from '../../../../storybook/test-util';
 
 test('it renders a Yes boolean input', () => {
-    const handleChange = jest.fn();
-    render(<TableInputBoolean value={true} onChange={handleChange} yesLabel="Yes" noLabel="No" emptyResultLabel="No results"/>);
+  const handleChange = jest.fn();
+  render(
+    <TableInputBoolean
+      value={true}
+      onChange={handleChange}
+      yesLabel="Yes"
+      noLabel="No"
+      clearLabel={'Clear'}
+      openDropdownLabel={'Open'}
+    />
+  );
 
-    expect(screen.getByText('Yes')).toBeInTheDocument();
+  expect(screen.getByText('Yes')).toBeInTheDocument();
 });
 
-test('it calls callback', () => {
-    const handleChange = jest.fn();
-    render(<TableInputBoolean value={true} onChange={handleChange} yesLabel="Yes" noLabel="No" emptyResultLabel="No results"/>);
+test('it calls Callbacks on No change', () => {
+  const handleChange = jest.fn();
+  render(
+    <TableInputBoolean
+      value={true}
+      onChange={handleChange}
+      yesLabel="Yes"
+      noLabel="No"
+      clearLabel={'Clear'}
+      openDropdownLabel={'Open'}
+    />
+  );
 
-    const input = screen.getAllByRole('textbox')[0];
-    fireEvent.focus(input);
+  fireEvent.click(screen.getByTitle('Open'));
+  fireEvent.click(screen.getByText('No'));
+  expect(handleChange).toHaveBeenCalledWith(false);
+});
 
-    expect(screen.queryByText('No')).toBeInTheDocument();
+test('it calls Callbacks on Yes change', () => {
+  const handleChange = jest.fn();
+  render(
+    <TableInputBoolean
+      value={false}
+      onChange={handleChange}
+      yesLabel="Yes"
+      noLabel="No"
+      clearLabel={'Clear'}
+      openDropdownLabel={'Open'}
+    />
+  );
 
-    fireEvent.click(screen.getByTestId('backdrop'));
-    expect(screen.queryByText('No')).not.toBeInTheDocument();
-
-    fireEvent.focus(screen.getByRole('textbox'));
-    expect(screen.queryByText('No')).toBeInTheDocument();
-
-    const noOption = screen.getByText('No');
-    expect(noOption).toBeInTheDocument();
-    fireEvent.click(noOption);
-    expect(handleChange).toHaveBeenCalledWith(false);
+  fireEvent.click(screen.getByTitle('Open'));
+  fireEvent.click(screen.getByText('Yes'));
+  expect(handleChange).toHaveBeenCalledWith(true);
 });
 
 test('it empty the field', () => {
-    const handleChange = jest.fn();
-    render(<TableInputBoolean value={true} onChange={handleChange} clearLabel="Clear" yesLabel="Yes" noLabel="No" emptyResultLabel="No results"/>);
+  const handleChange = jest.fn();
+  render(
+    <TableInputBoolean
+      value={true}
+      onChange={handleChange}
+      clearLabel="Clear"
+      yesLabel="Yes"
+      noLabel="No"
+      openDropdownLabel={'Open'}
+    />
+  );
 
-    const clearButton = screen.getByTitle('Clear');
-    fireEvent.click(clearButton);
+  const clearButton = screen.getByTitle('Clear');
+  fireEvent.click(clearButton);
 
-    expect(handleChange).toHaveBeenCalledWith(null);
+  expect(handleChange).toHaveBeenCalledWith(null);
 });
 
 test('TableInputBoolean supports ...rest props', () => {
-    const handleChange = jest.fn();
+  const handleChange = jest.fn();
 
-    render(
-        <TableInputBoolean id="myInput" value={true} onChange={handleChange} data-testid="my_value" yesLabel="Yes" noLabel="No" emptyResultLabel="No results" highlighted={true} />
-    );
-    expect(screen.getByTestId('my_value')).toBeInTheDocument();
+  render(
+    <TableInputBoolean
+      id="myInput"
+      value={true}
+      onChange={handleChange}
+      data-testid="my_value"
+      yesLabel="Yes"
+      noLabel="No"
+      highlighted={true}
+      clearLabel={'Clear'}
+      openDropdownLabel={'Open'}
+    />
+  );
+  expect(screen.getByTestId('my_value')).toBeInTheDocument();
 });
