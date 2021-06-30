@@ -1,11 +1,10 @@
 import React from 'react';
-import {AddingValueIllustration, BooleanInput, TableInput} from 'akeneo-design-system';
+import {AddingValueIllustration, TableInput} from 'akeneo-design-system';
 import {ColumnCode, TableConfiguration} from '../models/TableConfiguration';
-import {getLabel, useUserContext} from '@akeneo-pim-community/shared';
+import {getLabel, useTranslate, useUserContext} from '@akeneo-pim-community/shared';
 import {TableFooter} from './TableFooter';
 import styled from 'styled-components';
 import {TableValueWithId} from './TableFieldApp';
-import {useTranslate} from '@akeneo-pim-community/shared';
 
 const TABLE_VALUE_ITEMS_PER_PAGE = [10, 20, 50, 100];
 
@@ -112,16 +111,18 @@ const TableInputValue: React.FC<TableInputValueProps> = ({
                           openDropdownLabel={'Open'}
                           searchPlaceholder={'Search'}
                           searchTitle={'Search'}
+                          data-testid={`input-${row['unique id']}-${columnCode}`}
                         />
                       )}
                       {'boolean' === columnType && (
                         <TableInput.Boolean
-                          value={typeof row[columnCode] === 'undefined' ? null : row[columnCode]}
+                          value={typeof row[columnCode] === 'undefined' ? null : (row[columnCode] as boolean | null)}
                           onChange={(value: boolean | null) => handleChange(row['unique id'], columnCode, value)}
                           yesLabel={translate('pim_common.yes')}
                           noLabel={translate('pim_common.no')}
                           clearLabel={'Clear'}
                           openDropdownLabel={'Open'}
+                          data-testid={`input-${row['unique id']}-${columnCode}`}
                         />
                       )}
                     </TableInput.Cell>

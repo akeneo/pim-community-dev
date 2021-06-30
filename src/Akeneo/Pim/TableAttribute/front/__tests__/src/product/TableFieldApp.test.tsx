@@ -77,6 +77,6 @@ describe('TableFieldApp', () => {
     act(() => {
       fireEvent.click(addRowButton);
     });
-    expect(handleChange).toBeCalledWith([{ingredient: 'sugar', quantity: 100, part: '10g', is_allergenic: true}, {}]);
+    expect(handleChange).toBeCalledWith([getTableValueSelectRow(), {}]);
   });
 });

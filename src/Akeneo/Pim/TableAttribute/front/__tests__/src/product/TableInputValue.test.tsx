@@ -1,6 +1,6 @@
 import React from 'react';
 import {renderWithProviders} from '@akeneo-pim-community/legacy-bridge/tests/front/unit/utils';
-import {screen, fireEvent} from '@testing-library/react';
+import {screen, fireEvent, act} from '@testing-library/react';
 import {TableInputValue} from '../../../src/product/TableInputValue';
 import {getTableValueWithId} from '../factories/TableValue';
 import {getComplexTableConfiguration} from '../factories/TableConfiguration';
@@ -40,14 +40,22 @@ describe('TableInputValue', () => {
       />
     );
 
-    fireEvent.change(screen.getByTestId('input-uniqueidsugar-quantity'), {target: {value: '200'}});
-    fireEvent.change(screen.getByTestId('input-uniqueidsalt-part'), {target: {value: '42kg'}});
-    fireEvent.click(screen.getAllByText('pim_common.yes')[2]);
+    expect(screen.getAllByText('pim_common.yes')).toHaveLength(1);
+    expect(screen.getAllByText('pim_common.no')).toHaveLength(1);
+    expect(screen.getAllByTitle('Open')).toHaveLength(6);
+
+    act(() => {
+      fireEvent.click(screen.getAllByTitle('Clear')[1]); // Clear sugar nutrition score
+      fireEvent.change(screen.getByTestId('input-uniqueidsugar-quantity'), {target: {value: '200'}});
+      fireEvent.change(screen.getByTestId('input-uniqueidsalt-part'), {target: {value: '42kg'}});
+      fireEvent.click(screen.getAllByTitle('Open')[4]); // Opens the caramel boolean
+    });
+    fireEvent.click(screen.getAllByText('pim_common.yes')[1]);
 
     expect(handleChange).toBeCalledWith([
-      {'unique id': 'uniqueidsugar', ingredient: 'sugar', part: '10g', is_allergenic: true, quantity: '200'},
-      {'unique id': 'uniqueidsalt', ingredient: 'salt', part: '42kg', is_allergenic: false},
-      {'unique id': 'uniqueidcaramel', ingredient: 'caramel', is_allergenic: true},
+      {...getTableValueWithId()[0], quantity: '200', nutrition_score: null},
+      {...getTableValueWithId()[1], part: '42kg'},
+      {...getTableValueWithId()[2], is_allergenic: true},
     ]);
   });
 

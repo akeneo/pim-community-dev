@@ -98,6 +98,7 @@ describe('TableStructureApp', () => {
     await waitPageToBeLoaded();
 
     await act(async () => {
+      // Move 2nd column to 4th place
       await fireEvent.mouseDown(screen.getAllByTestId('dragAndDrop')[1]);
       await fireEvent.dragStart(screen.getAllByRole('row')[1]);
       await fireEvent.dragEnter(screen.getAllByRole('row')[2]);
@@ -108,10 +109,11 @@ describe('TableStructureApp', () => {
     });
 
     expect(handleChange).toBeCalledWith([
-      {data_type: 'select', code: 'ingredients', labels: {en_US: 'Ingredients'}, validations: {}},
-      {data_type: 'boolean', code: 'is_allergenic', labels: {en_US: 'Is allergenic'}, validations: {}},
-      {data_type: 'text', code: 'part', labels: {en_US: 'For 1 part'}, validations: {}},
-      {data_type: 'number', code: 'quantity', labels: {en_US: 'Quantity'}, validations: {}},
+      getComplexTableConfiguration()[0],
+      getComplexTableConfiguration()[2],
+      getComplexTableConfiguration()[3],
+      getComplexTableConfiguration()[1],
+      getComplexTableConfiguration()[4],
     ]);
   });
 
@@ -203,10 +205,11 @@ describe('TableStructureApp', () => {
       fireEvent.change(maxInput, {target: {value: '50'}});
     });
     expect(handleChange).toHaveBeenCalledWith([
-      {code: 'ingredients', data_type: 'select', labels: {en_US: 'Ingredients'}, validations: {}},
-      {code: 'quantity', data_type: 'number', labels: {en_US: 'Quantity'}, validations: {min: '10', max: '50'}},
-      {code: 'is_allergenic', data_type: 'boolean', labels: {en_US: 'Is allergenic'}, validations: {}},
-      {code: 'part', data_type: 'text', labels: {en_US: 'For 1 part'}, validations: {}},
+      getComplexTableConfiguration()[0],
+      {...getComplexTableConfiguration()[1], validations: {min: '10', max: '50'}},
+      getComplexTableConfiguration()[2],
+      getComplexTableConfiguration()[3],
+      getComplexTableConfiguration()[4],
     ]);
 
     await act(async () => {
@@ -214,15 +217,11 @@ describe('TableStructureApp', () => {
     });
 
     expect(handleChange).toHaveBeenCalledWith([
-      {code: 'ingredients', data_type: 'select', labels: {en_US: 'Ingredients'}, validations: {}},
-      {
-        code: 'quantity',
-        data_type: 'number',
-        labels: {en_US: 'Quantity'},
-        validations: {min: '10', max: '50', decimals_allowed: true},
-      },
-      {code: 'is_allergenic', data_type: 'boolean', labels: {en_US: 'Is allergenic'}, validations: {}},
-      {code: 'part', data_type: 'text', labels: {en_US: 'For 1 part'}, validations: {}},
+      getComplexTableConfiguration()[0],
+      {...getComplexTableConfiguration()[1], validations: {min: '10', max: '50', decimals_allowed: true}},
+      getComplexTableConfiguration()[2],
+      getComplexTableConfiguration()[3],
+      getComplexTableConfiguration()[4],
     ]);
 
     act(() => {
