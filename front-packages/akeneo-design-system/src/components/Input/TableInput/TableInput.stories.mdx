@@ -1,5 +1,7 @@
 import {Meta, Story, ArgsTable, Canvas} from '@storybook/addon-docs/blocks';
 import {TableInput} from './TableInput.tsx';
+import {Dropdown} from '../../Dropdown/Dropdown.tsx';
+import {useFakeTableInput} from '../../../storybook/hooks/useFakeTableInput'
 
 <Meta
   title="Components/Inputs/Table input"
@@ -19,23 +21,7 @@ Table input allows the user to input content in a table.
 <Canvas>
   <Story name="Standard">
     {args => {
-      const fetchNextPage = async () => {
-        return Promise.resolve([
-          {id: '1', text: 'A'},
-          {id: '2', text: 'B'},
-          {id: '3', text: 'C'},
-        ]);
-      };
-      const [nutritionScore, setNutritionScore] = React.useState('B');
-      const [sugarPart, setSugarPart] = React.useState('10g');
-      const [sugarQuantity, setSugarQuantity] = React.useState(13);
-      const [sugarIsAllergenic, setSugarIsAllergenic] = React.useState(false);
-      const [saltPart, setSaltPart] = React.useState('125g');
-      const [saltQuantity, setSaltQuantity] = React.useState(15);
-      const [saltIsAllergenic, setSaltIsAllergenic] = React.useState(true);
-      const [pepperPart, setPepperPart] = React.useState();
-      const [pepperQuantity, setPepperQuantity] = React.useState();
-      const [pepperIsAllergenic, setPepperIsAllergenic] = React.useState();
+      const {getValue, setValue, searchValue, setSearchValue} = useFakeTableInput(6);
       return <TableInput {...args}>
         <TableInput.Header>
           <TableInput.HeaderCell rowTitle={true}>Ingredient</TableInput.HeaderCell>
@@ -45,43 +31,29 @@ Table input allows the user to input content in a table.
           <TableInput.HeaderCell>Is allergenic</TableInput.HeaderCell>
         </TableInput.Header>
         <TableInput.Body>
-          <TableInput.Row>
-            <TableInput.Cell rowTitle={true}>Sugar</TableInput.Cell>
-            <TableInput.Cell><TableInput.Select removeValueLabel="remove" openDropdownLabel="open" value={nutritionScore} onChange={setNutritionScore} highlighted={true} fetchNextPage={fetchNextPage} searchLabel={'Search'}/></TableInput.Cell>
-            <TableInput.Cell><TableInput.Text value={sugarPart} onChange={setSugarPart} highlighted={true}/></TableInput.Cell>
-            <TableInput.Cell><TableInput.Number value={sugarQuantity} onChange={setSugarQuantity}/></TableInput.Cell>
-            <TableInput.Cell><TableInput.Boolean yesLabel="Yes" noLabel="No" value={sugarIsAllergenic} onChange={setSugarIsAllergenic}/></TableInput.Cell>
+          {['Sugar', 'Salt', 'Pepper', 'Eggs', 'Flour', 'Yeast'].map((row, index) => <TableInput.Row key={row}>
+            <TableInput.Cell rowTitle={true}>{row}</TableInput.Cell>
+            <TableInput.Cell>
+              <TableInput.Select
+                removeValueLabel="Remove"
+                openDropdownLabel="Open"
+                value={{'1': 'A', '2': 'B', '3': 'C'}[getValue(index, 'nutritionScore')]}
+                onClear={() => setValue(index, 'nutritionScore', null)}
+                searchPlaceholder={'Search on Nutrition'}
+                searchValue={searchValue}
+                onSearchChange={setSearchValue}
+                searchTitle={'Search'}
+              >
+                <Dropdown.Item onClick={() => setValue(index, 'nutritionScore', '1')}>A</Dropdown.Item>
+                <Dropdown.Item onClick={() => setValue(index, 'nutritionScore', '2')}>B</Dropdown.Item>
+                <Dropdown.Item onClick={() => setValue(index, 'nutritionScore', '3')}>C</Dropdown.Item>
+              </TableInput.Select>
+            </TableInput.Cell>
+            <TableInput.Cell><TableInput.Text value={getValue(index, 'part')} onChange={(value) => setValue(index, 'part', value)}/></TableInput.Cell>
+            <TableInput.Cell><TableInput.Number value={getValue(index, 'quantity')} onChange={(value) => setValue(index, 'quantity', value)}/></TableInput.Cell>
+            <TableInput.Cell><TableInput.Boolean yesLabel="Yes" noLabel="No" value={getValue(index, 'is_allergenic')} onChange={(value) => setValue(index, 'is_allergenic', value)}/></TableInput.Cell>
           </TableInput.Row>
-          <TableInput.Row>
-            <TableInput.Cell rowTitle={true}>Salt</TableInput.Cell>
-            <TableInput.Cell><TableInput.Text value={saltPart} onChange={setSaltPart}/></TableInput.Cell>
-            <TableInput.Cell><TableInput.Number value={saltQuantity} onChange={setSaltQuantity} highlighted={true}/></TableInput.Cell>
-            <TableInput.Cell><TableInput.Boolean yesLabel="Yes" noLabel="No" value={saltIsAllergenic} onChange={setSaltIsAllergenic} highlighted={true}/></TableInput.Cell>
-          </TableInput.Row>
-          <TableInput.Row>
-            <TableInput.Cell rowTitle={true}>Pepper</TableInput.Cell>
-            <TableInput.Cell><TableInput.Text value={pepperPart} onChange={setPepperPart}/></TableInput.Cell>
-            <TableInput.Cell><TableInput.Number value={pepperQuantity} onChange={setPepperQuantity}/></TableInput.Cell>
-            <TableInput.Cell><TableInput.Boolean yesLabel="Yes" noLabel="No" value={pepperIsAllergenic} onChange={setPepperIsAllergenic}/></TableInput.Cell>
-          </TableInput.Row>
-          <TableInput.Row>
-            <TableInput.Cell rowTitle={true}>Sugar</TableInput.Cell>
-            <TableInput.Cell><TableInput.Text value={sugarPart} onChange={setSugarPart} highlighted={true}/></TableInput.Cell>
-            <TableInput.Cell><TableInput.Number value={sugarQuantity} onChange={setSugarQuantity}/></TableInput.Cell>
-            <TableInput.Cell><TableInput.Boolean yesLabel="Yes" noLabel="No" value={sugarIsAllergenic} onChange={setSugarIsAllergenic}/></TableInput.Cell>
-          </TableInput.Row>
-          <TableInput.Row>
-            <TableInput.Cell rowTitle={true}>Salt</TableInput.Cell>
-            <TableInput.Cell><TableInput.Text value={saltPart} onChange={setSaltPart}/></TableInput.Cell>
-            <TableInput.Cell><TableInput.Number value={saltQuantity} onChange={setSaltQuantity} highlighted={true}/></TableInput.Cell>
-            <TableInput.Cell><TableInput.Boolean yesLabel="Yes" noLabel="No" value={saltIsAllergenic} onChange={setSaltIsAllergenic} highlighted={true}/></TableInput.Cell>
-          </TableInput.Row>
-          <TableInput.Row>
-            <TableInput.Cell rowTitle={true}>Pepper</TableInput.Cell>
-            <TableInput.Cell><TableInput.Text value={pepperPart} onChange={setPepperPart}/></TableInput.Cell>
-            <TableInput.Cell><TableInput.Number value={pepperQuantity} onChange={setPepperQuantity}/></TableInput.Cell>
-            <TableInput.Cell><TableInput.Boolean yesLabel="Yes" noLabel="No" value={pepperIsAllergenic} onChange={setPepperIsAllergenic}/></TableInput.Cell>
-          </TableInput.Row>
+        )}
         </TableInput.Body>
       </TableInput>;
     }}
@@ -95,23 +67,57 @@ Table input allows the user to input content in a table.
 <Canvas>
   <Story name="With a high number of tags">
     {args => {
+      const columnsCount = 10;
+      const linesCount = 6;
       return (
         <TableInput {...args}>
           <TableInput.Header>
-            {[0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0].map((_, i) => {
+            {[...Array(columnsCount).keys()].map((_, i) => {
               return <TableInput.HeaderCell rowTitle={true} key={i}>Column label</TableInput.HeaderCell>
             })}
           </TableInput.Header>
           <TableInput.Body>
-            {[0,0,0,0,0,0,0,0].map((_,r) => {
+            {[...Array(linesCount).keys()].map((_,r) => {
               return <TableInput.Row key={r}>
                 <TableInput.Cell rowTitle={true}>Value</TableInput.Cell>
-                {[0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0].map((_, i) => {
+                {[...Array(columnsCount - 1).keys()].map((_, i) => {
                   return <TableInput.Cell key={i}><TableInput.Text value={'Value'} onChange={() => {}}/></TableInput.Cell>
                 })}
               </TableInput.Row>
               })
             }
+          </TableInput.Body>
+        </TableInput>
+      );
+    }}
+  </Story>
+</Canvas>
+
+## With highlights
+
+<Canvas>
+  <Story name="With highlights">
+    {args => {
+      const linesCount = 5;
+      return (
+        <TableInput {...args}>
+          <TableInput.Header>
+            <TableInput.HeaderCell rowTitle={true}>Title cell</TableInput.HeaderCell>
+            <TableInput.HeaderCell rowTitle={true}>Select cell</TableInput.HeaderCell>
+            <TableInput.HeaderCell rowTitle={true}>Text cell</TableInput.HeaderCell>
+            <TableInput.HeaderCell rowTitle={true}>Number cell</TableInput.HeaderCell>
+            <TableInput.HeaderCell rowTitle={true}>Boolean cell</TableInput.HeaderCell>
+          </TableInput.Header>
+          <TableInput.Body>
+            {[...Array(linesCount).keys()].map((_,r) => {
+              return <TableInput.Row key={r}>
+                <TableInput.Cell rowTitle={true}>Value</TableInput.Cell>
+                <TableInput.Cell><TableInput.Select onSearchChange={() => {}} value={'Select value'} highlighted={r >= 1}/></TableInput.Cell>
+                <TableInput.Cell><TableInput.Text value={'Text value'} highlighted={r >= 2}/></TableInput.Cell>
+                <TableInput.Cell><TableInput.Number value={42} highlighted={r >= 3}/></TableInput.Cell>
+                <TableInput.Cell><TableInput.Boolean value={true} yesLabel={"Yes"} noLabel={"No"} highlighted={r >= 4}/></TableInput.Cell>
+              </TableInput.Row>
+            })}
           </TableInput.Body>
         </TableInput>
       );

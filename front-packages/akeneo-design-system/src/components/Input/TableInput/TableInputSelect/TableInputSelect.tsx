@@ -1,4 +1,4 @@
-import React from 'react';
+import React, {ReactElement} from 'react';
 import {Dropdown} from "../../../Dropdown/Dropdown";
 import {useBooleanState, useDebounce, usePaginatedResults} from "../../../../hooks";
 import {ArrowDownIcon, CloseIcon} from "../../../../icons";
@@ -46,75 +46,64 @@ const IconsPart = styled.div`
   align-items: center;
 `;
 
-type PageResult = {
-  id: string | number;
-  text: string;
-}
-
 type TableInputSelectProps = {
-  value: string | number | null;
-  onChange: (value: string | number | null) => void;
-  searchLabel: string;
+  value: ReactElement | null;
+  onClear: () => void;
   highlighted: boolean;
   removeValueLabel: string;
   openDropdownLabel: string;
-  fetchNextPage: (page: number, searchValue: string) => PageResult[];
+  onNextPage?: () => void;
+  searchValue: string;
+  onSearchChange: (search: string) => void;
+  searchPlaceholder: string;
+  searchTitle: string;
 }
 
 const TableInputSelect: React.FC<TableInputSelectProps> = ({
   value,
-  onChange,
-  searchLabel,
+  onClear,
   fetchNextPage,
   removeValueLabel,
   openDropdownLabel,
   highlighted = false,
+  searchValue,
+  searchPlaceholder,
+  onSearchChange,
+  searchTitle,
+  onNextPage,
+  children,
   ...rest
 }) => {
     const [isOpen, open, close] = useBooleanState(false);
-    const [searchValue, setSearchValue] = React.useState('');
-    const debouncedSearchValue = useDebounce(searchValue);
-    const [items, handleNextPage] = usePaginatedResults<PageResult>(
-        page => Promise.resolve(fetchNextPage(page, debouncedSearchValue)),
-        [debouncedSearchValue],
-        isOpen
-    );
-    const removeValue = () => {
-      onChange(null);
-    };
+
+    React.useEffect(() => {
+      close();
+      onSearchChange('');
+    }, [value]);
 
     return <SelectButtonDropdown {...rest}>
         <SelectButton onClick={open} tabIndex={-1} highlighted={highlighted}>
-          {value}
+          {value}&nbsp;
         </SelectButton>
         <IconsPart>
-          {value !== null && !isOpen &&
+          {value && !isOpen &&
           <IconButton icon={<CloseIcon/>} size="small" title={removeValueLabel} ghost="borderless" level="tertiary"
-                      onClick={removeValue}/>
+                      onClick={onClear}/>
           }
           <IconButton icon={<ArrowDownIcon/>} size="small" title={openDropdownLabel} ghost="borderless" level="tertiary" onClick={open}/>
         </IconsPart>
         {isOpen && (
-            <Dropdown.Overlay verticalPosition="down" onClose={close}>
+            <Dropdown.Overlay onClose={close} dropdownOpenerVisible={true}>
                 <Dropdown.Header>
                     <Search
-                        onSearchChange={setSearchValue}
-                        placeholder="Search"
+                        onSearchChange={onSearchChange}
+                        placeholder={searchPlaceholder}
                         searchValue={searchValue}
-                        title="Search"
+                        title={searchTitle}
                     />
                 </Dropdown.Header>
-                <Dropdown.ItemCollection onNextPage={handleNextPage}>
-                    {items.map((item, index) => (
-                        <Dropdown.Item
-                          key={index}
-                          onClick={() => {
-                            onChange(item.id);
-                            setSearchValue('');
-                            close();
-                          }}
-                        >{item.text}</Dropdown.Item>
-                    ))}
+                <Dropdown.ItemCollection onNextPage={onNextPage}>
+                  {children}
                 </Dropdown.ItemCollection>
             </Dropdown.Overlay>
         )}
