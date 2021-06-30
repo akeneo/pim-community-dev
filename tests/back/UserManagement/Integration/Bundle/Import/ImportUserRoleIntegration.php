@@ -9,6 +9,9 @@ use Akeneo\Tool\Bundle\BatchBundle\Persistence\Sql\SqlCreateJobInstance;
 use Akeneo\Tool\Component\Connector\Writer\WriterFactory;
 use Akeneo\UserManagement\Component\Model\Role;
 use Akeneo\UserManagement\Component\Repository\RoleRepositoryInterface;
+use Box\Spout\Common\Entity\Row;
+use Box\Spout\Writer\Common\Creator\WriterEntityFactory;
+use Box\Spout\Writer\Common\Creator\WriterFactory;
 use Oro\Bundle\SecurityBundle\Acl\AccessLevel;
 use Oro\Bundle\SecurityBundle\Acl\Persistence\AclManager;
 use PHPUnit\Framework\Assert;
@@ -135,14 +138,19 @@ CSV;
     public function it_imports_user_roles_in_xlsx(): void
     {
         $temporaryFile = tempnam(sys_get_temp_dir(), 'test_user_role_import');
-        $writer = WriterFactory::create('xlsx');
+        $writer = WriterFactory::createFromType('xlsx');
         $writer->openToFile($temporaryFile);
-        $writer->addRows([
-            ['role', 'label', 'permissions'],
-            ['ROLE_ADMINISTRATOR', 'Administrator', 'action:pim_enrich_product_create,action:pim_enrich_product_edit_attributes,action:pim_enrich_product_history,action:pim_enrich_product_index'],
-            ['ROLE_USER', 'New user label', 'action:pim_enrich_product_index'],
-            ['ROLE_NEW', 'No permission role', ''],
-        ]);
+        $writer->addRows(
+            \array_map(
+                fn (array $data): Row => WriterEntityFactory::createRowFromArray($data),
+                [
+                    ['role', 'label', 'permissions'],
+                    ['ROLE_ADMINISTRATOR', 'Administrator', 'action:pim_enrich_product_create,action:pim_enrich_product_edit_attributes,action:pim_enrich_product_history,action:pim_enrich_product_index'],
+                    ['ROLE_USER', 'New user label', 'action:pim_enrich_product_index'],
+                    ['ROLE_NEW', 'No permission role', ''],
+                ]
+            )
+        );
         $writer->close();
 
         $userRole = $this->roleRepository->findOneByIdentifier('ROLE_USER');

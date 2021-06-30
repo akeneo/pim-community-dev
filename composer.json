@@ -56,7 +56,7 @@
         "ext-zip": "*",
         "ext-openssl": "*",
         "ass/xmlsecurity": "1.1.1",
-        "box/spout": "2.7.3",
+        "box/spout": "^3.3.0",
         "doctrine/annotations": "^1.13.2",
         "doctrine/cache": "^1.12.1",
         "doctrine/collections": "^v1.6.2",
