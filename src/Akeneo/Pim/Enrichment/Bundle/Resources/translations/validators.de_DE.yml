@@ -62,7 +62,6 @@ pim_catalog:
     attribute_does_not_belong_to_family: 'Attribut "%attribute%" gehört nicht zu der Familie "%family%"'
     variant_product_invalid_family: 'Die Variantenproduktfamilie muss mit der übergeordneten Produktfamilie übereinstimmen'
     php_int_max_reached: 'Die maximale Zahl muss kleiner als %php_int_max% sein.'
-    not_null_family: Die Familie kann nicht "null" sein, da Ihr Produkt mit der Kennung "%sku%" ein Variantenprodukt ist.
     variant_product_has_parent: 'Das Variantenprodukt "%variant_product%" muss ein übergeordnetes Produkt haben'
     invalid_variant_product_parent: 'Die Produktvariante "%variant_product%" kann nicht dem Produktmodell "%product_model%" untergeordnet werden (dem Produktmodell können nur andere Produktmodelle untergeordnet werden)'
     modified_variant_axis_value: 'Variantenachse "%variant_axis%" kann nicht verändert werden, "%provided_value%" wird angegeben'

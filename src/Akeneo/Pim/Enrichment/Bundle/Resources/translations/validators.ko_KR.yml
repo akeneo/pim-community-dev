@@ -62,7 +62,6 @@ pim_catalog:
     attribute_does_not_belong_to_family: '''%attribute%'' 특성은 ''%family%'' 패밀리에 속하지 않습니다.'
     variant_product_invalid_family: '변형 제품 패밀리는 상위와 같아야 합니다.'
     php_int_max_reached: '최대 수는 %php_int_max% 미만이어야 합니다.'
-    not_null_family: 식별자가 '%sku%'인 제품은 변형 제품이기 때문에 패밀리가 'null'일 수 없습니다.
     variant_product_has_parent: '변형 제품 ''%variant_product%''에는 상위가 있어야 합니다.'
     invalid_variant_product_parent: '변형 제품 ''%variant_product%''은(는) 제품 모델 ''%product_model%''을(를) 상위 모델로 가질 수 없습니다.(이 제품 모델은 다른 제품 모델만 하위 모델로 가질 수 있습니다.)'
     modified_variant_axis_value: '변형 축 ''%variant_axis%''은(는) 수정할 수 없으며, ''%provided_value%''이(가) 지정되었습니다.'
