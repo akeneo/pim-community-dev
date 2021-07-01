@@ -1,5 +1,5 @@
 import React from 'react';
-import {Button, Field, Modal, SectionTitle, Table, TextInput, uuid} from "akeneo-design-system";
+import {Button, Field, IconButton, Modal, SectionTitle, Table, TextInput, uuid, CloseIcon} from "akeneo-design-system";
 import {getLabel, Locale, LocaleCode, useRouter, useTranslate, useUserContext} from "@akeneo-pim-community/shared";
 import {ColumnDefinition, SelectOption} from "../models/TableConfiguration";
 import {Attribute} from "../models/Attribute";
@@ -7,6 +7,11 @@ import {TwoColumnsLayout} from "./TwoColumnsLayout";
 import {fetchActivatedLocales} from "../fetchers/LocaleFetcher";
 import {FieldsList} from "../shared/FieldsList";
 import styled from "styled-components";
+
+const TableContainer = styled.div`
+  height: calc(100vh - 200px);
+  overflow: auto;
+`
 
 const OptionsTwoColumnsLayout = styled(TwoColumnsLayout)`
   width: 1200px;
@@ -84,6 +89,14 @@ const ManageOptionsModal: React.FC<ManageOptionsModalProps> = ({
     }
   }
 
+  const handleRemove = (optionId: string) => {
+    if (optionId === selectedOptionId) {
+      const index = options.findIndex(option => option.id === optionId);
+      setSelectedOptionId(options[index + 1].id);
+    }
+    setOptions([...options.filter(option => option.id !== optionId)]);
+  }
+
   const LabelTranslations = <>
     <SectionTitle title={translate('pim_common.label_translations')}>
       <SectionTitle.Title>{translate('pim_common.label_translations')}</SectionTitle.Title>
@@ -112,34 +125,47 @@ const ManageOptionsModal: React.FC<ManageOptionsModalProps> = ({
         <SectionTitle title={columnLabel}>
           <SectionTitle.Title>{columnLabel}</SectionTitle.Title>
         </SectionTitle>
-        <Table>
-          <Table.Header>
-            <Table.HeaderCell>{translate('pim_common.label')}</Table.HeaderCell>
-            <Table.HeaderCell>{translate('pim_common.code')} {translate('pim_common.required_label')}</Table.HeaderCell>
-          </Table.Header>
-          <Table.Body>
-            {options.map((option, index) => <Table.Row
-                key={option.id}
-                isSelected={option.id === selectedOptionId}
-                onClick={() => setSelectedOptionId(option.id)}
-              >
-                <Table.Cell>
-                  <TextInput
-                    onChange={label => handleLabelChange(option.id, currentLocale, label)}
-                    value={option.labels[currentLocale] || ''}
-                    placeholder={index === options.length - 1 ? 'Write your new option label' : ''}
-                  />
-                </Table.Cell>
-                <Table.Cell>
-                  <TextInput
-                    onChange={code => handleCodeChange(option.id, code)}
-                    value={option.code}
-                  />
-                </Table.Cell>
-              </Table.Row>
-            )}
-          </Table.Body>
-        </Table>
+        <TableContainer>
+          <Table>
+            <Table.Header>
+              <Table.HeaderCell>{translate('pim_common.label')}</Table.HeaderCell>
+              <Table.HeaderCell>{translate('pim_common.code')} {translate('pim_common.required_label')}</Table.HeaderCell>
+              <Table.HeaderCell/>
+            </Table.Header>
+            <Table.Body>
+              {options.map((option, index) => <Table.Row
+                  key={option.id}
+                  isSelected={option.id === selectedOptionId}
+                  onClick={() => setSelectedOptionId(option.id)}
+                >
+                  <Table.Cell>
+                    <TextInput
+                      onChange={label => handleLabelChange(option.id, currentLocale, label)}
+                      value={option.labels[currentLocale] || ''}
+                      placeholder={index === options.length - 1 ? translate('pim_table_attribute.form.attribute.new_option_placeholder') : ''}
+                    />
+                  </Table.Cell>
+                  <Table.Cell>
+                    <TextInput
+                      onChange={code => handleCodeChange(option.id, code)}
+                      value={option.code}
+                    />
+                  </Table.Cell>
+                  <Table.ActionCell>
+                    {index !== options.length - 1 && <IconButton
+                      ghost="borderless"
+                      level="tertiary"
+                      icon={<CloseIcon/>}
+                      title={translate('pim_common.remove')}
+                      onClick={() => handleRemove(option.id)}
+                    />
+                    }
+                  </Table.ActionCell>
+                </Table.Row>
+              )}
+            </Table.Body>
+          </Table>
+        </TableContainer>
       </div>
     </OptionsTwoColumnsLayout>
     <Modal.TopRightButtons>
