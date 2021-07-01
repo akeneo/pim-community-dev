@@ -78,8 +78,20 @@ pim_enrich.entity.attribute_option:
     edit:
       cancel_title: 変更をキャンセル
       cancel_description: 警告：未保存のデータは失われます。この新しいオプションの変更を取り消しますか？
+      options_labels: オプションのラベル
+      options_settings: オプションの設定
+      options_codes: オプションのコード
+      option_code: オプションのコード
+      new_option_code: 新しい_オプション
+      no_options_msg: 残念ながら、オプションはありません！
+      add_option: ここをクリックして追加してください
+      delete_confirmation_title_msg: オプションから「{{ optionCode }}」を削除しますか？
+      delete_confirmation_subtitle_msg: 本当にこのオプションを削除しますか？このアクションは元に戻せません。
 pim_enrich.entity.association_type:
   label: 関連タイプ
+  property:
+    is_two_way: 双方向の関連付け
+    is_quantified: 数量との関連付け
   flash:
     update:
       success: 関連タイプが正常に更新されました。
@@ -94,9 +106,18 @@ pim_enrich.entity.association_type:
     index: "]-Inf, 1]{{ count }} 関連タイプ|]1, Inf[{{ count }} 関連タイプ"
   module:
     create:
+      title: 関連タイプを新規作成
       button: 関連タイプを作成
+      is_two_way:
+        message_on_read_only: 関連タイプは数量または双方向のいずれかで、これを選択するには別のオプションをオフにします
+      is_quantified:
+        message_on_read_only: 関連タイプは数量または双方向のいずれかで、これを選択するには別のオプションをオフにします
     delete:
       confirm: この関連タイプを本当に削除してもよろしいですか？
+  hint: <a href="{{link}}" target="_blank">この記事</a>には、独自の関連タイプを作成するために必要な情報が記載されています。
+  no_association_types:
+    title: 関連タイプがありません
+    hint: 最初の関連タイプを作成します。
 pim_enrich.entity.group_type:
   label: グループタイプ
   flash:
@@ -124,6 +145,7 @@ pim_enrich.entity.attribute:
       success: 属性は正常に更新されました
       fail: 属性を更新できませんでした
       fields_not_ready: "この属性は現在保存できません。次のフィールドが準備ができていません：{{ fields }}"
+      cant_remove_attributes_used_as_label: ファミリーでラベルとして使用されている属性は削除できません。
     delete:
       success: 属性を正常に削除しました
       fail: この属性は削除できません
@@ -137,7 +159,9 @@ pim_enrich.entity.attribute:
     date_min: 最短日時
     decimals_allowed: 少数が使用できます
     default_metric_unit:
+      label: 既定の測定ユニット
       choose: 単位を選択
+    guidelines: 属性ガイドライン
     group:
       label: 属性グループ
       choose: 属性グループを選択
@@ -146,6 +170,7 @@ pim_enrich.entity.attribute:
     max_characters: 最大文字数
     max_file_size: 最大ファイル サイズ (MB)
     metric_family:
+      label: 測定ファミリー
       choose: ファミリーを選択
     minimum_input_length: 予測変換の最小文字数
     name: 名前
@@ -169,6 +194,7 @@ pim_enrich.entity.attribute:
       pim_catalog_image: 画像
       pim_catalog_boolean: "Yes/No"
       pim_catalog_date: 日付
+      pim_catalog_metric: 測定
       pim_reference_data_simpleselect: 参照データの単一選択
       pim_reference_data_multiselect: 参照データの複数選択
     unique: 固有値
@@ -180,6 +206,7 @@ pim_enrich.entity.attribute:
       regexp: 正規表現
       url: URL
     wysiwyg_enabled: リッチテキストエディターは有効
+    default_value: 既定値
   module:
     add_attribute:
       no_available_attributes: これ以上追加する属性はありません
@@ -190,8 +217,16 @@ pim_enrich.entity.attribute:
       common: パラメータ全般
       type_specific: タイプ固有のパラメーター
       validation: パラメータ値のチェック
+      select_locale: ロケールを選択
     delete:
       confirm: この属性を削除してもよろしいですか？
+      product_count: '{0}0 個の商品|{1}1 個の商品|]1, Inf[{{ count }} 個の商品'
+      product_model_count: '{0}0 個の商品モデル|{1}1 個の商品モデル|]1, Inf[{{ count }} 個の商品モデル'
+      used: には現在、この属性に設定された値があり、削除されます。
+      helper:
+        content: 既存の属性値へのアクセスを維持したまま、属性タイプを変更してローカライズ可または参照可にする必要がある場合は、
+        link: 別のステップをここで説明します。
+      type: '「{{ attributeCode }}」と入力してください'
       confirm_from_family: この属性をファミリーから本当に削除しますか？
       confirm_from_group: 属性 {{ attribute }} をこの属性グループから本当に削除しますか。
       confirm_from_product: 商品からこの属性を本当に削除しますか？
@@ -199,6 +234,11 @@ pim_enrich.entity.attribute_group:
   label: 属性グループ
   uppercase_label: 属性グループ
   plural_label: 属性グループ
+  result_count: '{0}0 個の属性グループ|{1}1 個の属性グループ|]1, Inf[{{ count }} 個の属性グループ'
+  show_more_attribute:
+    title: 少し混雑しています。{{ attributeCount }}/{{ totalAttributeCount }} 個の属性を表示します。
+    subtitle: このグループのすべての属性を確認するには、下をクリックしてください！
+    button: すべての属性を表示
   flash:
     update:
       success: 属性グループは正常に更新されました
@@ -214,6 +254,10 @@ pim_enrich.entity.attribute_group:
       attributes_groups_selected: '{{ itemsCount }} グループを選択中'
     delete:
       confirm: 本当にこの属性グループを削除しますか?
+  grid:
+    columns:
+      name: 属性グループ名
+    no_search_result: 検索結果はありません。
 pim_enrich.mass_edit.family:
   title: ファミリー一括操作
   confirm: "{1}次の情報を含むファミリー１件を更新しようとしています。ご確認ください|] 1, Inf[次の情報を含むファミリー{{ itemsCount }}券を変更しようとしています。ご確認ください。"

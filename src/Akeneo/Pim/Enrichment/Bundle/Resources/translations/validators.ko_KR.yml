@@ -38,6 +38,8 @@ product_model.family_variant.not_blank.message: 제품 모델 패밀리 변형�
 "The {{ attribute_code }} attribute requires a date that should be {{ limit }} or before.": '{{ attribute_code }} 특성에는 {{ limit }} 또는 이전의 날짜가 필요합니다.'
 "The {{ attribute }} attribute requires a number, and the submitted {{ value }} value is not.": '{{ attribute }} 특성에는 숫자가 필요하나 제출된 {{ value }} 값은 숫자가 아닙니다.'
 "The %attribute% attribute must not contain more than %limit% characters. The submitted value is too long.": '%attribute% 특성에 포함된 문자는 %limit%자를 초과할 수 없습니다. 제출된 값이 너무 깁니다.'
+"The %type% file extension is not allowed for the %attribute% attribute. Allowed extensions are %extensions%.": '%type% 파일 확장자는 %attribute% 특성에서 허용되지 않습니다. 허용되는 확장자는 %extensions%입니다.'
+"The %attribute% attribute requires a url link.": '%attribute% 특성에 URL 링크가 필요합니다.'
 "The %attribute% attribute requires a valid date. Please use the following format %date_format% for dates.": '%attribute% 특성에 유효한 날짜가 필요합니다. 날짜에 다음 형식, %date_format%을(를) 사용하십시오.'
 "The %locale% locale is not available on the %attribute% attribute.": '%locale% 로케일은 %attribute% 특성에서 사용할 수 없습니다.'
 'The {{ attribute_code }} attribute must match the following regular expression: {{ pattern }}.': '{{ attribute_code }} 특성은 다음 정규식과 일치해야 합니다. {{ pattern }}'
