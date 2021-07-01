@@ -53,6 +53,7 @@ extensions:
         targetZone: navigation
         position: 0
         config:
+            tab: pim-menu-connect
             linkText: pim_menu.navigation_back.connection
             redirectRoute: akeneo_connectivity_connection_settings_index
 
