@@ -199,7 +199,7 @@ class DuplicateProductEndToEnd extends InternalApiTestCase
                     'attribute' => 'sku',
                     'locale' => null,
                     'scope' => null,
-                    'message' => 'The same identifier is already set on another product'
+                    'message' => 'The product_to_duplicate identifier is already used for another product.'
                   ]
               ]
             ],
