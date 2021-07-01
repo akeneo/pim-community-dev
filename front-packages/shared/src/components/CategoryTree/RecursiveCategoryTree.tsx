@@ -51,8 +51,8 @@ const RecursiveCategoryTree: React.FC<RecursiveCategoryTreeProps> = ({
         code: categoryState.code,
         label: categoryState.label,
       }}
-      selected={isCategorySelected ? isCategorySelected(categoryState, parentTree) : categoryState.selected}
       isLoading={categoryState.loading}
+      selected={isCategorySelected ? isCategorySelected(categoryState, parentTree) : categoryState.selected}
       readOnly={isCategoryReadOnly ? isCategoryReadOnly(categoryState, parentTree) : categoryState.readOnly}
       selectable={categoryState.selectable}
       isLeaf={Array.isArray(categoryState.children) && categoryState.children.length === 0}
