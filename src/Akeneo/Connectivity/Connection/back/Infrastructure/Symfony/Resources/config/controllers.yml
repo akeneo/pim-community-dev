@@ -51,3 +51,9 @@ services:
         arguments:
             - '@akeneo_connectivity.connection.marketplace.url_generator'
             - '@pim_user.context.user'
+
+    akeneo_connectivity.connection.internal_api.controller.marketplace.get_all_extensions:
+        public: true
+        class: Akeneo\Connectivity\Connection\Infrastructure\InternalApi\Controller\Marketplace\GetAllExtensions
+        arguments:
+            - '@akeneo_connectivity.connection.marketplace.get_all_extensions_query'
