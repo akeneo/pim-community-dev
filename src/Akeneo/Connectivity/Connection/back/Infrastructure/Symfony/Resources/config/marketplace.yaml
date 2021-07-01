@@ -1,0 +1,17 @@
+services:
+  akeneo_connectivity.connection.web_marketplace_api.guzzle_handler:
+    class: GuzzleHttp\HandlerStack
+    factory: [ 'GuzzleHttp\HandlerStack', 'create' ]
+
+  akeneo_connectivity.connection.web_marketplace_api.guzzle_client:
+    class: GuzzleHttp\Client
+    arguments:
+      - { handler: '@akeneo_connectivity.connection.web_marketplace_api.guzzle_handler' }
+
+  Akeneo\Connectivity\Connection\Infrastructure\Marketplace\WebMarketplaceApi:
+    arguments:
+      - '@akeneo_connectivity.connection.web_marketplace_api.guzzle_client'
+    calls:
+      - method: setFixturePath
+          arguments:
+            - '%connectivity.marketplace_fixtures_directory%'

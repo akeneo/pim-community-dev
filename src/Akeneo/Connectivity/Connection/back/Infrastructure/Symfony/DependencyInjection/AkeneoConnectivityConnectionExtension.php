@@ -17,6 +17,7 @@ class AkeneoConnectivityConnectionExtension extends Extension
 {
     public function load(array $configs, ContainerBuilder $container): void
     {
+        $container->setParameter('connectivity.marketplace_fixtures_directory', __DIR__ . '/../Resources/fixtures/');
         $loader = new YamlFileLoader($container, new FileLocator(__DIR__ . '/../Resources/config'));
         $loader->load('cli.yml');
         $loader->load('controllers.yml');
@@ -27,6 +28,7 @@ class AkeneoConnectivityConnectionExtension extends Extension
         $loader->load('marketplace.yml');
         $loader->load('message_handler.yml');
         $loader->load('queries.yml');
+        $loader->load('marketplace.yaml');
         $loader->load('repositories.yml');
         $loader->load('serializers.yml');
         $loader->load('services.yml');
