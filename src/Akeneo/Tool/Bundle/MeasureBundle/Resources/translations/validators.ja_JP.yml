@@ -26,6 +26,7 @@ pim_measurements:
           invalid_operator: 'オペレータ {{ value }}が無効です。代わりに {{ choices }} を使用してください。'
         should_contain_at_least_one_unit: '%limit% 以上が測定ファミリーにあることが必要です。'
         should_not_contain_duplicates: '測定ファミリーに重複したユニットが見つかりました。測定ファミリーでは単一のユニットが要求されます。'
+        must_be_indexed_by_code: 'インデックスがユニットコードと一致していません。'
     unit:
       code:
         must_be_unique: 'このユニットコードは既に存在します。'

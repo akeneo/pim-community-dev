@@ -70,6 +70,9 @@ pim_enrich:
       description: 以下の属性要件が選択したファミリーに適用されます
       success_flash: 属性要件が選択したファミリーに適用されました
       launched_flash: 一括操作「属性要件の設定」が開始されました。終了後に通知されます。
+    convert_to_simple_products:
+      warning:
+        non_variant_product: '「{{ identifier }}」商品はすでにシンプル商品であるため変換する必要はありません。'
     mass_action:
       quick_export:
         launched_flash: 商品エクスポートのジョブを実行中です

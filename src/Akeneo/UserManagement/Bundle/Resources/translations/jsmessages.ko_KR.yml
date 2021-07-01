@@ -38,8 +38,8 @@ pim_user.profile:
   redactor: 제품 데이터를 보강합니다.
   pim_integrator: Akeneo PIM을 회사 IT 에코시스템에 통합합니다.
   pim_administrator: Akeneo PIM을 관리합니다.
-  asset_manager: PIM의 자산을 관리합니다.
-  translator: 제품, 자산 및/또는 참조 엔터티 데이터를 번역합니다.
+  asset_manager: PIM의 애셋을 관리합니다.
+  translator: 제품, 애셋 및/또는 참조 엔터티 데이터를 번역합니다.
   third_party_developer: Akeneo PIM에 연결된 솔루션을 개발합니다.
 pim_user_management:
   entity:
@@ -68,7 +68,7 @@ pim_user_management:
         catalog_locale: 카탈로그 로케일
         catalog_scope: 카탈로그 범위
         default_tree: 기본 트리
-        default_asset_tree: 기본 자산 트리
+        default_asset_tree: 기본 애셋 트리
         product_grid_filters: 제품 그리드 필터
         current_password: 현재 암호
         new_password: 새 암호
