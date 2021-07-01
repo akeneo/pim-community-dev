@@ -1,4 +1,5 @@
 <?php
+
 /*
  * This file is part of the Akeneo PIM Enterprise Edition.
  *
@@ -7,7 +8,9 @@
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
  */
+
 namespace Akeneo\Pim\Automation\RuleEngine\Component\Connector\Tasklet;
+
 use Akeneo\Tool\Bundle\RuleEngineBundle\Repository\RuleDefinitionRepositoryInterface;
 use Akeneo\Tool\Bundle\RuleEngineBundle\Runner\DryRunnerInterface;
 use Akeneo\Tool\Component\Batch\Item\DataInvalidItem;
@@ -18,6 +21,7 @@ use Akeneo\Tool\Component\Batch\Model\StepExecution;
 use Akeneo\Tool\Component\Connector\Step\TaskletInterface;
 use Akeneo\Tool\Component\StorageUtils\Cache\EntityManagerClearerInterface;
 use Akeneo\Tool\Component\StorageUtils\Saver\BulkSaverInterface;
+
 /**
  * Calculation of the count of impacted products by the rules
  *
@@ -26,6 +30,7 @@ use Akeneo\Tool\Component\StorageUtils\Saver\BulkSaverInterface;
 class ImpactedProductCountTasklet implements TaskletInterface, TrackableTaskletInterface
 {
     const CHUNK_SIZE = 300;
+
     protected ?StepExecution $stepExecution = null;
     protected RuleDefinitionRepositoryInterface $ruleDefinitionRepo;
     protected DryRunnerInterface $productRuleRunner;
@@ -33,6 +38,7 @@ class ImpactedProductCountTasklet implements TaskletInterface, TrackableTaskletI
     protected EntityManagerClearerInterface $cacheClearer;
     protected JobStopper $jobStopper;
     private JobRepositoryInterface $jobRepository;
+
     public function __construct(
         RuleDefinitionRepositoryInterface $ruleDefinitionRepo,
         DryRunnerInterface $productRuleRunner,
@@ -48,6 +54,7 @@ class ImpactedProductCountTasklet implements TaskletInterface, TrackableTaskletI
         $this->jobRepository = $jobRepository;
         $this->jobStopper = $jobStopper;
     }
+
     /**
      * {@inheritdoc}
      */
@@ -55,6 +62,7 @@ class ImpactedProductCountTasklet implements TaskletInterface, TrackableTaskletI
     {
         $jobParameters = $this->stepExecution->getJobParameters();
         $ruleIds = $jobParameters->get('ruleIds');
+
         $this->stepExecution->setTotalItems(count($ruleIds));
         foreach (array_chunk($ruleIds, self::CHUNK_SIZE) as $ruleIdsChunk) {
             if ($this->jobStopper->isStopping($this->stepExecution)) {
@@ -62,6 +70,7 @@ class ImpactedProductCountTasklet implements TaskletInterface, TrackableTaskletI
                 return;
             }
             $ruleDefinitions = $this->ruleDefinitionRepo->findBy(['id' => $ruleIdsChunk]);
+
             foreach ($ruleDefinitions as $ruleDefinition) {
                 try {
                     $ruleSubjectSet = $this->productRuleRunner->dryRun($ruleDefinition);
@@ -80,19 +89,24 @@ class ImpactedProductCountTasklet implements TaskletInterface, TrackableTaskletI
                     );
                 }
             }
+
             $this->jobRepository->updateStepExecution($this->stepExecution);
+
             $this->saver->saveAll($ruleDefinitions);
             $this->cacheClearer->clear();
         }
     }
+
     /**
      * {@inheritdoc}
      */
     public function setStepExecution(StepExecution $stepExecution)
     {
         $this->stepExecution = $stepExecution;
+
         return $this;
     }
+
     public function isTrackable(): bool
     {
         return true;
