@@ -1,5 +1,9 @@
 # 5.0.x
 
+## Bug fixes
+
+- PIM-9944: Fix attribute group grid search
+
 # 5.0.37 (2021-07-01)
 
 # 5.0.36 (2021-06-25)
