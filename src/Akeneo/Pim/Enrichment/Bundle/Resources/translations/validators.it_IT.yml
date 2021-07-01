@@ -52,7 +52,6 @@ pim_catalog:
     attribute_does_not_belong_to_family: 'L''attributo "%attribute%" non appartiene alla famiglia "%family%"'
     variant_product_invalid_family: 'La famiglia variante del prodotto deve essere la stessa del proprio genitore'
     php_int_max_reached: 'Il numero massimo deve essere inferiore a %php_int_max%.'
-    not_null_family: La famiglia non può essere "null" perché il prodotto con identificativo "%sku%" è un prodotto variante.
     variant_product_has_parent: 'Il prodotto variante "%variant_product%" deve avere un genitore'
     invalid_variant_product_parent: 'Il prodotto variante "%variant_product%" non può avere come genitore il modello di prodotto "%product_model%", (questo modello di prodotto può avere solo altri modelli di prodotto come figli)'
     modified_variant_axis_value: 'L''asse variante "%variant_axis%" non può essere modificato, dato "%provided_value%"'

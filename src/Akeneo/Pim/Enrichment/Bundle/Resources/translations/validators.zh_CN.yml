@@ -60,7 +60,6 @@ pim_catalog:
     attribute_does_not_belong_to_family: '属性"%attribute%"不属于品类"%family%'
     variant_product_invalid_family: '变型产品品类必须与其父类相同'
     php_int_max_reached: '最大数值必须小于 %php_int_max%。'
-    not_null_family: 品类不能为“空 (null)”，因为具有标识符"%sku%"的产品是变型产品。
     variant_product_has_parent: '变型产品"%variant_product%"必须有父产品'
     invalid_variant_product_parent: '变型产品"%variant_product%"不能以产品模型"%product_model%"作为父模型， (此产品模型只能有其他产品模型作为子模型)'
     modified_variant_axis_value: '变型轴"%variant_axis%"不能修改，"%provided_value%" 已给定'

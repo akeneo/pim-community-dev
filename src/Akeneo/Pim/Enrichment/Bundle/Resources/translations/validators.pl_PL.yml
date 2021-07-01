@@ -60,7 +60,6 @@ pim_catalog:
     attribute_does_not_belong_to_family: 'Atrybut "%attribute%" nie należy do rodziny "%family%"'
     variant_product_invalid_family: 'Rodzina wariantu produktu musi być taka sama, jak jego elementu nadrzędnego'
     php_int_max_reached: 'Maksymalna liczba musi być mniejsza niż %php_int_max%.'
-    not_null_family: Rodzina nie może mieć wartości "null", ponieważ produkt z identyfikatorem "%sku%" jest wariantem produktu.
     variant_product_has_parent: 'Wariant produktu "%variant_product%" musi mieć element nadrzędny'
     invalid_variant_product_parent: 'Wariant produktu "%variant_product%" nie może mieć modelu produktu "%product_model%" jako elementu nadrzędnego (ten model produktu może mieć tylko inne modele produktów jako elementy podrzędne)'
     modified_variant_axis_value: 'Wariant osi "%variant_axis%" nie może zostać zmodyfikowany, "%provided_value%" ustalona'
