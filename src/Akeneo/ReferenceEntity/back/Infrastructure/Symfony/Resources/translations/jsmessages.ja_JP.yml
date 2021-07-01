@@ -76,7 +76,7 @@ pim_reference_entity:
       confirm: 保存
     delete:
       message: エンティティ 「{{ referenceEntityLabel }}」を削除してもよろしいですか？
-      title: 属性
+      title: 参照エンティティ
     notification:
       save:
         success: 参照エンティティが正常に更新されました。
@@ -97,6 +97,12 @@ pim_reference_entity:
       subtitle: 参照エンティティに対する権限を管理するには、少なくとも1つのユーザグループが必要です。
       link: クリックして最初のユーザグループを追加
   record:
+    mass_delete:
+      confirm: '[0,1]選択した {{ count }} 件の記録を本当に削除しますか？|]1,Inf]選択した {{ count }} 件の記録を本当に削除しますか？'
+      extra_information: 商品にリンクされている場合、商品へのリンクは削除されます。
+      confirm_label: '"{{ referenceEntityIdentifier }}" と入力してください'
+      title: 記録
+    record_selected: '{0} {{ count }} 件の記録を選択済み|{1} {{ count }} 件の記録を選択済み|]1,Inf] {{ count }} 件の記録を選択済み'
     validation:
       limit_reached: '記録「%record_label%」を作成できません。この参照エンティティに対する記録の上限「%limit%」に達しています。'
       code:
@@ -119,9 +125,10 @@ pim_reference_entity:
     button:
       save: 保存
       create: 新規追加
-      delete: 削除
-      delete_all: 全記録を削除
+      delete: 記録を削除
       back: 一覧に戻る
+      edit: 記録を編集
+      view: 記録を表示
     product:
       attribute: 商品属性
       counter: '{{ totalCount }}件の結果|{{ totalCount }} 件の結果'
@@ -159,8 +166,6 @@ pim_reference_entity:
     delete:
       message: 記録「{{ recordLabel }}」を削除してもよろしいですか。これが商品や他の記録とリンクされている場合は、リンクも削除されます。
       title: 記録
-    delete_all:
-      confirm: 全ての「{{ entityIdentifier }}」記録を削除してもよろしいですか。記録が商品とリンクされている場合は、商品へのリンクも削除されます。
     grid:
       search: ラベル、コード、テキスト属性で検索
       filter:
@@ -202,9 +207,9 @@ pim_reference_entity:
       delete:
         success: 記録「{{ code }}」 が正常に削除されました。
         fail: 記録の削除中にエラーが発生しました。
-      delete_all:
-        success: '「{{ entityIdentifier }}」件の記録全てが問題なく削除されました。'
-        fail: この参照エンティティの全記録を削除する間にエラーが発生しました
+      mass_delete:
+        success: '"一括削除" が開始されました。終了後に通知されます。'
+        fail: "一括削除ジョブを開始中にエラーが発生しました"
     completeness:
       label: 完了
   attribute:
@@ -303,12 +308,6 @@ pim_reference_entity:
       sub_title: 参照エンティティ
       helper:
         title: ラベルの翻訳
-  modal:
-    delete:
-      subtitle: 削除を確認
-      button:
-        cancel: キャンセル
-        confirm: 削除
 pim_enrich:
   confirmation:
     discard_changes: 'このページから移動する場合は 「{{ entity }}」 に対する変更が失われます。'
@@ -335,3 +334,40 @@ pim_catalog_volume:
     count_reference_entity: 参照エンティティ
     average_max_records_per_reference_entity: 参照エンティティごとの記録
     average_max_attributes_per_reference_entity: 参照エンティティごとの属性
+batch_jobs:
+  default_steps:
+    mass_delete_records: 記録の一括削除を実行
+  reference_entity_label: 参照エンティティ
+  csv_reference_entity_record_export:
+    label: 参照エンティティの記録を CSV 形式でエクスポート
+    export.label: 記録のエクスポート
+  xlsx_reference_entity_record_export:
+    label: 参照エンティティの記録を XLSX 形式でエクスポート
+    export.label: 記録のエクスポート
+  csv_reference_entity_record_import:
+    label: 参照エンティティの記録を CSV 形式でインポート
+    import.label: 記録のインポート
+  xlsx_reference_entity_record_import:
+    label: 参照エンティティの記録を XLSX 形式でインポート
+    import.label: 記録のインポート
+pim_datagrid:
+  cells:
+    type:
+      reference_entity_mass_delete_records: 記録の一括削除を実行
+job_execution:
+  summary:
+    records: 記録
+pim_notification:
+  types:
+    reference_entity_mass_delete_records: 記録を一括削除
+pim_analytics:
+  info_type:
+    nb_reference_entities: 参照エンティティ数
+    max_number_of_records_per_reference_entity: 参照エンティティごとの最大記録数
+    average_number_of_values_per_records: 全参照エンティティの記録ごとの平均値
+    average_number_of_records_per_reference_entity: 参照エンティティごとの平均記録数
+    max_number_of_attributes_per_reference_entity: 参照エンティティごとの最大属性数
+    average_number_of_attributes_per_reference_entity: 参照エンティティごとの平均属性数
+    average_percentage_localizable_only_attributes: 参照エンティティごとにローカライズ可能な属性のみの平均割合 (%)
+    average_percentage_scopable_only_attributes: 参照エンティティごとに参照可能な属性のみの平均割合 (%)
+    average_percentage_scopable_and_localizable_attributes: 参照エンティティごとにローカライズ可能かつ参照可能な属性のみの平均割合 (%)

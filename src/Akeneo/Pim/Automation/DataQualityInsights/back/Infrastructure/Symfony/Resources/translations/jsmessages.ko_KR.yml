@@ -17,7 +17,7 @@ akeneo_data_quality_insights:
         attributes_link: 개선 가능한 모든 특성 표시
         success: 제품 데이터가 완전히 일관됩니다. 축하합니다!
     messages:
-      add_image_attribute_recommendation: 한 장의 이미지가 열 마디 말보다 강력합니다. 자산 컬렉션이나 이미지 특성을 추가하여 이 제품의 데이터 품질을 개선하십시오.
+      add_image_attribute_recommendation: 한 장의 이미지가 열 마디 말보다 강력합니다. 애셋 컬렉션이나 이미지 특성을 추가하여 이 제품의 데이터 품질을 개선하십시오.
   product_edit_form:
     attribute_filter:
       all_improvable_attributes: 개선 가능한 모든 특성
@@ -43,7 +43,7 @@ akeneo_data_quality_insights:
       attributes_to_work_on: '{1}작업 중인 <button>1개의 특성</button>이 있습니다.|]1, 200[작업 중인 <button>{{ count }}개의 특성</button>이 있습니다.|[200, Inf[작업 중인 <button>{{ count }}개 초과한 특성</button>이 있습니다.'
       list:
         has_image:
-          no_data: 자산 컬렉션 및 이미지 특성이 비어 있는 것 같습니다. 제품의 품질을 강조하려면 이 주요 지표에 관한 이미지를 업로드해야 합니다.
+          no_data: 애셋 컬렉션 및 이미지 특성이 비어 있는 것 같습니다. 제품의 품질을 강조하려면 이 주요 지표에 관한 이미지를 업로드해야 합니다.
         attributes_perfect_spelling:
           title: 올바르게 레이블 지정된 특성
           no_data: 특성 및 옵션 레이블이 비어 있는 것 같습니다. 특성의 품질을 강조하려면 이 주요 지표에 관한 특성 및 옵션 레이블을 보강해야 합니다.

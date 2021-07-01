@@ -32,6 +32,9 @@ teamwork_assistant:
     deletion:
       user_linked_to_project: このユーザーはまだ１件以上のプロジェクトにリンクされています。このユーザーアカウント内でリンクされているグループを削除してください。
       user_is_project_owner: このユーザーはまだ 1 つ以上のプロジェクトのオーナーです。このユーザーのプロジェクトをすべて削除してください。
+  user_group:
+    deletion:
+      group_linked_to_project: このユーザーグループはチームワークアシスタントプロジェクトで使用されているため、削除できません
 job_execution:
   summary:
     processed_products: 処理済商品

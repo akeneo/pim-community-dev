@@ -11,6 +11,8 @@ pim_asset_manager:
         should_not_be_linked: 'アセットファミリーの属性がこのファミリーのために現存するため、該当ファミリーを削除できません'
       asset_family_permissions:
         at_least_one_user_group_should_have_edit_permission: 'このファミリーに対する編集権限を少なくとも1つのユーザグループに付与する必要があります'
+      product_attributes:
+        should_not_be_linked: 'アセットコレクションがこのファミリーにリンクされているため、このファミリーを削除できません。'
       should_exist: 'アセットファミリー「%asset_family_code%」は検出できませんでした。'
       rule_template:
         limit_reached: 'アセットファミリー「%asset_family_identifier%」の商品リンクルールの上限 %limit% に達しました。'
@@ -49,6 +51,9 @@ pim_asset_manager:
         not_main_media_attribute_code: 'プロパティは主なメディアで定義された属性のコードと一致している必要があります'
   asset:
     validation:
+      mass_edit:
+        updater_cannot_be_empty: '変換または読み取り専用モードで使用されている属性を選択することはできません。'
+        updater_must_be_unique: 'この属性および該当する場合はチャンネルとロケールが選択済みでないことを確認してください。'
       code:
         pattern: 'フィールドには、文字、数字、アンダースコアを含めることができます。'
         should_be_unique: 'アセットはコード「%code%」にて作成済です'
@@ -85,6 +90,8 @@ pim_asset_manager:
         should_be_numeric: 'このフィールドは正しい小数点を付した数値でなければなりません'
       main_media:
         not_main_media_attribute: '主要メディアとして設定可能なものは「%main_media_attribute%」ですが、「%attribute%」が入力されています。'
+      media_link:
+        protocol_not_allowed: 'このフィールドは有効なプロトコルで始まる必要があります。許可されているプロトコル: %allowed_protocols%。'
   attribute:
     validation:
       options:
@@ -122,6 +129,7 @@ pim_asset_manager:
         asset_family_should_exist: 'アセットファミリー「%asset_family_code%」は検出できませんでした。'
       prefix:
         should_not_be_empty: '接頭辞は空にできません。'
+        protocol_not_allowed: 'このフィールドは有効なプロトコルで始まる必要があります。許可されているプロトコル: %allowed_protocols%。'
       suffix:
         should_not_be_empty: '接尾辞は空にできません。'
       media_type:

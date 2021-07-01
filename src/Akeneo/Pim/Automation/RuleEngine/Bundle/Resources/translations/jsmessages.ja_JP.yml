@@ -1,20 +1,25 @@
 pimee_catalog_rule:
   overview: "]-Inf, 1]{{ count }} ルール|]1, Inf[{{ count }} ルール"
   execution_button: ルールを実行
+  selected: "]-Inf, 1]{{ count }} 個のルールを選択済み|]1, Inf[{{ count }} 個のルールを選択済み"
   dropdown:
     title: その他の操作
   popin:
     execute_rules:
       confirm_title: 実行を確認
+      confirm_content: 本当にツールを実行しますか？(時間がかかる可能性があります)
   notification:
+    fail: 操作は実行されませんでした
     launched: ルール実行が開始されています。終了後に通知されます。
   attribute:
     list:
       code.label: コード
       condition.label: 状態
       action.label: アクション
+      no_rule_yet.label: 現在ルールなし
   rule:
     value: 値
+    include_children: 下位を含める
     condition:
       if.label: '条件:'
     action:
@@ -33,9 +38,11 @@ pimee_catalog_rule:
           confirm_content: このルールを実行しますか？
       mass_edit_action:
         confirm_title: 計算を確認
+        confirm_content: 本当にルールの影響を受ける商品数を計算しますか？
       mass_action:
         execute:
           confirm_title: 実行を確認
+          confirm_content: 本当にツールを実行しますか？(時間がかかる可能性があります)
           success: ルール実行が開始されています。終了後に通知されます。
           error: ルールの実行中にエラーが発生しました。
           empty_selection: ルールが選択されていません。
@@ -45,27 +52,392 @@ pimee_catalog_rule:
           success: ルールは正常に削除されました
           error: ルールの削除中にエラーが発生しました
           empty_selection: ルールが選択されていません。
+      tags:
+        set: 設定
+        add: 加算
+        calculate: 計算
+        clear: 消去
+        concatenate: 連結
+        copy: コピー
+        remove: 削除
   form:
+    category:
+      catalog: カタログ
+      select: カテゴリを選択
+      open_tree: カテゴリツリーを開く
+      tree: カテゴリツリー
+      menu: カテゴリツリーを選択
+      folder:
+        selected: フォルダ選択済み
+        not_selected: フォルダ
+      folders:
+        selected: フォルダ選択済み
+        not_selected: フォルダ
+      arrow:
+        open: ブランチカテゴリを開く
+        close: ブランチカテゴリを閉じる
+    tab:
+      list: ルールビルダーとプロパティタブ
+      rule_builder: ルールビルダー
     attribute:
       tab:
         rules:
           title: ルール
+    creation:
+      helper: ルールエンジンは、操作を自動化することで、PIM 内の生産性を大幅に増大することができます
+      english_flag: 英語のラベル
+      title: ルールの新規作成
+      notification:
+        success: ルールは正常に作成されました
+        failed: ルールの作成に失敗しました
+      constraint:
+        code:
+          required: ルールコードが必要です。
+          too_short: "ルールコードが短すぎます。{{ characterLimit }} 文字以上が必要です。"
+          allowed_characters: ルールコードには英数字とアンダースコアのみを使用できます。
+          unique: このコードはすでに使用されています。
+      cross_link: ルール作成フォームを閉じる
+    edit:
+      header:
+        welcome: 新規ルールエンジンエリアへようこそ！
+        description: ルールを作成するには、商品の選択を定義し、1 つ以上の操作を追加する必要があります。
+        documentation_link: ここをクリックして、ルールエンジンの全機能をご覧ください。
+      properties:
+        section:
+          general: パラメータ全般
+          labels: ラベルの翻訳
+      character_left: "]-Inf, 1]残り {{ count }} 文字|]1, +Inf[残り {{ count }} 文字"
+      priority:
+        label: 優先度
+      status:
+        label: ステータス
+        enabled: 有効
+        disabled: 無効
+      add_to_category: カテゴリに追加
+      add_conditions: 条件を追加
+      products_count:
+        products: "]-Inf, 1]{{ count }} 個の商品|]1, +Inf[{{ count }} 個の商品"
+        product_models: "]-Inf, 1]{{ count }} 個の商品モデル|]1, +Inf[{{ count }} 個の商品モデル"
+        products_and_product_models: "{{ products }} と {{ product_models }}"
+        pending: 商品と商品モデルを計算中
+        error: 商品と商品モデルを計算できません
+      product_selection: 商品の選択
+      preview: プレビュー
+      fields:
+        family: ファミリー
+        family_variant: ファミリーバリエーション
+        category: カテゴリ
+        identifier: 識別子
+        attribute: 属性
+        groups: グループ
+        parent: 上位
+        measurement_unit: 測定ユニット
+        measurement_default_unit: "既定のユニット ({{ unit }})"
+        currency: 通貨
+        operator: オペレータ
+        entity_type:
+          label: エンティティタイプ
+          placeholder: エンティティタイプを選択してください
+      execute:
+        button: 保存して実行
+        title: 保存してルールを実行
+        description: 現在のルールを保存し、バックグラウンドで実行します。終了時に通知します。
+      duplicate:
+        button: 保存して複製
+        title: '"{{ originalRuleCode }}" ルールの複製'
+      actions:
+        add_action: アクションを追加
+        add_category:
+          title: カテゴリの追加
+          helper: 商品の選択を 1 つ以上のカテゴリに追加するには、カテゴリツリーを選択してからカテゴリを選択してください。
+        add_groups:
+          title: 商品をグループに追加
+          helper: グループに商品を追加するには、1 つ以上のグループを選択してください。
+          subtitle: グループを選択してください
+        set_groups:
+          title: 商品グループの設定
+          helper: 商品グループを設定するには、1 つ以上のグループを選択してください
+          subtitle: グループを選択してください
+        set_category:
+          title: カテゴリの設定
+          helper: 商品の選択を 1 つ以上のカテゴリに設定するには、カテゴリツリーを選択してからカテゴリを選択してください。
+        category:
+          select_category_trees: カテゴリツリーを選択
+          select_category_tree: カテゴリツリーを選択
+          select_categories: カテゴリを選択
+          select_category: カテゴリを選択
+          category_tree: カテゴリツリー
+          categories_selected: "]-Inf, 1]{{ count }} このカテゴリを選択済み|]1, +Inf[{{ count }} このカテゴリを選択済み"
+          no_category_tree: まず、カテゴリツリーを選択してください
+          remove_unknown_category: " このカテゴリを削除するにはここをクリックしてください。"
+        set_family:
+          title: ファミリーの設定
+          subtitle: ファミリーを選択してください
+        set_attribute:
+          title: 属性値の設定
+          helper: 属性に値を設定するには、ターゲット属性を選択してから設定する値を選択してください
+          target_subtitle: ターゲットを選択してください
+          value_subtitle: 値を定義してください
+          attribute_label: 属性
+          attribute_placeholder: ターゲット属性を選択してください
+          select_reference_entity: 参照エンティティを選択してください
+          select_asset: アセットを選択してください
+          select_measurement_unit: ユニットを選択してください
+        set_quantified_associations:
+          title: 数量関係の設定
+          helper: 数量の関連を設定するには、関連タイプを選択してから商品の選択に関連付ける商品、商品モデル、またはグループを選択してください。
+        set_associations:
+          title: 関連の設定
+          helper: 関連を設定するには、関連タイプを選択してから商品の選択に関連付ける商品、商品モデル、またはグループを選択してください。
+          select_association_type: 関連タイプを選択
+          association_types: 関連タイプ
+          add_group: グループを追加
+          add_product: 商品を追加
+          add_product_model: 商品モデルを追加
+          add_association_type: 関連タイプを追加
+          select_title:
+            products: 商品の選択
+            product_models: 商品モデルの選択
+            groups: グループの選択
+          select:
+            products: 商品
+            product_models: 商品モデル
+            groups: グループ
+          counts:
+            products: ']-Inf, 1]{{ count }} 個の商品|]1, +Inf[{{ count }} 個の商品'
+            product_models: ']-Inf, 1]{{ count }} 個の商品モデル|]1, +Inf[{{ count }} 個の商品モデル'
+            groups: ']-Inf, 1]{{ count }} 個のグループ|]1, +Inf[{{ count }} 個のグループ'
+        add_associations:
+          title: 関連の追加
+          helper: 関連を追加するには、関連タイプを選択してから商品の選択に関連付ける商品、商品モデル、またはグループを選択してください。
+        clear_attribute:
+          title: 属性値の消去
+          subtitle: 消去する属性を選択してください
+          attribute_label: 属性
+        clear_associations:
+          title: 関係の消去
+          helper: 選択済の商品のすべての関連付けは消去されます。
+        clear_quantified_associations:
+          title: 数量関係の消去
+          helper: 選択済の商品のすべての数量の関連付けは消去されます。
+        clear_categories:
+          title: カテゴリの消去
+        clear_groups:
+          title: グループの消去
+        remove_category:
+          title: カテゴリの削除
+          helper: 1 つ以上のカテゴリから商品の選択を削除するには、カテゴリツリーを選択してからカテゴリを選択してください。
+        remove_attribute_value:
+          title: 属性値の削除
+          helper: 属性から値を削除するには、ターゲット属性を選択してから削除する値を選択してください。
+          value_subtitle: 削除する値を定義してください
+        add_attribute_value:
+          title: 属性値の追加
+          helper: 属性に値を追加するには、ターゲット属性を選択してから追加する値を選択してください。
+          value_subtitle: 追加する値を定義してください
+        copy:
+          title: 属性値のコピー
+          helper: 属性から別の属性に値をコピーするには、ソース属性を選択してからターゲット属性を選択してください。
+          select_source: ソースを選択してください
+          select_target: ターゲットを選択してください
+          no_source: 最初にソース属性を選択してください
+        delete:
+          label: アクションを削除
+          description: このアクションを本当に削除しますか？
+        set_status:
+          title: ステータスの設定
+          subtitle: ステータスを定義してください
+          helper: 商品にステータスを設定するには、下のリストからステータスを選択してください
+          placeholder: ステータスを選択してください
+        remove_groups:
+          title: 商品をグループから削除
+          helper: グループから商品を削除するには、1 つ以上のグループを選択してください
+          subtitle: グループを選択してください
+        calculate:
+          title: 値の計算
+          helper: 数値の属性値を計算するには、属性や値を選択してから、結果を入れるターゲット属性を選択してください。必要に応じて、最終結果を四捨五入することもできます。
+          add_value: 値を追加
+          add_attribute: 属性を追加
+          select_target: ターゲットを選択してください
+          attribute_placeholder: ターゲット属性を選択してください
+          round_precision: 丸め精度
+          operator:
+            add: 加算
+            subtract: 減算
+            multiply: 乗算
+            divide: 除算
+            choose: オペレータを選択してください
+        concatenate:
+          title: 値の連結
+          helper: 属性値を連結するには、属性を追加してからターゲット属性を選択してください。
+          select_target: ターゲットを選択してください
+          attribute_placeholder: ターゲット属性を選択してください
+          add_text: テキストを追加
+          add_attribute: 属性を追加
+          add_new_line: 改行を追加
+          line_break: 改行
+          date_format: 日付フォーマットを選択してください
+          label_locale: ラベルのロケール
+          unit_label_locale: ユニットのロケール
+          remove_new_line_confirm:
+            label: 操作リストから改行を削除
+            description: 新しいターゲット属性は改行を受け付けません。この変更によってすべての開業が削除されます。
+      conditions:
+        delete:
+          label: 条件を削除
+          description: 本当にこの条件を削除しますか？
+        operators:
+          "STARTS WITH": 次で始まる
+          "ENDS WITH": 次で終わる
+          "CONTAINS": 次を含む
+          "DOES NOT CONTAIN": 次を含まない
+          "EMPTY": 空である
+          "NOT EMPTY": 空ではない
+          "IN": 次に含まれる
+          "NOT IN": 次に含まれない
+          "IN CHILDREN": 下位に含まれる
+          "NOT IN CHILDREN": 下位に含まれない
+          "UNCLASSIFIED": は未分類
+          "IN OR UNCLASSIFIED": 未分類か、次に含まれる
+          "BETWEEN": 次の範囲内
+          "NOT BETWEEN": 次の範囲内でない
+          "=": 次に等しい
+          "!=": 次に等しくない
+          ">": 次より大きい
+          ">=": 次以上
+          "<": 次未満
+          "<=": 次以下
+      notification:
+        success: ルールは正常に更新されました
+        failed: ルールの更新に失敗しました
+        execute_success: ルールは正常に更新して実行されました
+        execute_failed: ルールは保存されましたが、実行中にエラーが発生しました
+      discard_changes: このページから移動すると、変更は失われます。
+      please_select_attribute: 最初にターゲット属性を選択してください。
+      unhandled_attribute_type: この属性タイプはまだ管理されていません。ルールのインポートを使用してください。
+      empty_section:
+        set_up_action: よくできました！商品の選択を定義しました。次にアクションを設定しましょう。
+        set_up_condition: カタログ全体に影響を与えないようにするには、少なくとも 1 つの条件を追加してください。
+        add_action: 次に、商品/商品モデルに提供する 1 つ以上のアクションを追加してください。
+        doc: アクションが何かわかりませんか？
+        doc_link: こちらの記事をご覧ください。
+    delete:
+      description: 本当にこのルールを削除しますか？このアクションは元に戻せません。
+      notification:
+        failed: ルールの定義に失敗しました
+        success: ルールは正常に削除されました
+    helper:
+      add_to_category: 商品の選択を 1 つ以上のカテゴリに追加するには、カテゴリツリーを選択してからカテゴリを選択してください。
+      clear_attribute: 属性値を消去するには、消去する属性を選択してください。
+      clear_categories: 選択済の商品のすべてのカテゴリは消去されます。
+      clear_groups: 選択済の商品のすべてのグループは消去されます。
+      product_selection: "ルールを作成するには、商品の選択を定義する必要があります。方法がわからない場合は、"
+      product_selection_doc_link: こちらの記事をご覧ください。
+      set_attribute_info_clear: 設定する値を定義する必要があります。属性値を消去する場合は、属性値の消去アクションを使用してください。
+    legend:
+      add_to_category: アクションの作成
+      product_selection: 条件の作成
+    tree:
+      item:
+        selected: 選択済アイテム
+        not_selected: アイテムを選択
+    date:
+      operators:
+        specific_date: 指定日
+      label:
+        date_type: 日付タイプを選択
+        operator: オペレータを選択
+        date: 日付を選択してください
+        relative_date: 日付を選択
+        locale: ロケールを選択
+        scope: スコープを選択
+        period: 時間ユニットを選択
+        open_period: 時間ユニットメニューを開く
+        date_from: 開始日を選択
+        date_to: 終了日を選択
+        date_past: 過去の日付
+        date_future: 未来の日付
+        date_present: 今
+      day: "]-Inf, 1] 日|]1, +Inf[ 日"
+      week: "]-Inf, 1] 週間|]1, +Inf[ 週間"
+      month: "]-Inf, 1] か月|]1, +Inf[ か月"
+      year: "]-Inf, 1] 年|]1, +Inf[ 年"
+      hour: "]-Inf, 1] 時間|]1, +Inf[ 時間"
+      minute: "]-Inf, 1] 分|]1, +Inf[ 分"
+  exceptions:
+    loading: ルールの定義を読み込み中にエラーが発生しました
+    required: このフィールドは必須です
+    required_attribute: 属性は必須です
+    required_locale: '{{ attributeLabel }} 属性にはロケールが必要です'
+    required_scope: '{{ attributeLabel }} 属性にはチャンネルが必要です'
+    required_currency: '{{ attributeLabel }} 属性には通貨が必要です'
+    required_locale_completeness: 完全性にはロケールが必要です
+    required_scope_completeness: 完全性にはチャンネルが必要です
+    required_value: このアクションには値が必要です
+    required_categories: このアクションには少なくとも 1 つのカテゴリが必要です
+    required_constant_for_operation: この演算には定値が必要です
+    required_operator_for_operation: この演算にはオペレータが必要です
+    required_unit: 測定ユニットが必要です
+    identifier_or_quantity_missing: 各要素に識別子と数量が必要です
+    required_item: このアクションには少なくとも 1 つのアイテムが必要です
+    division_by_zero: ゼロによる除算は不可能です
+    two_operations_are_required: 演算リストには 2 つ以上の演算が含まれている必要があります。
+    two_items_are_required: リストには 2 つ以上のアイテムが含まれている必要があります。
+    unknown_or_inactive_locale: '"{{ localeCode }}" ロケールは存在しないか、有効になっていません'
+    unknown_or_inactive_currency: '"{{ currencyCode }}" 通貨は存在しないか、有効になっていません'
+    unbound_locale: '"{{ localeCode }}" ロケールは "{{ channelCode }}" チャンネルで有効になっていません'
+    unbound_currency: '"{{ currencyCode }}" 通貨は "{{ channelCode }}" チャンネルで有効になっていません'
+    locale_on_unlocalizable_attribute: この属性はローカライズ可ではありません。ロケールを削除してから続行してください。
+    unknown_scope: '"{{ scopeCode }}" チャンネルは存在しません'
+    scope_on_unscopable_attribute: この属性は参照可ではありません。チャンネルを削除してから続行してください。
+    unknown_families: "{1}{{ familyCodes }} ファミリーは存在しません|]1,+Inf[{{ familyCodes }} ファミリーは存在しません"
+    unknown_family_variants: "{1}{{ familyVariantCodes }} ファミリーバリエーションは存在しません|]1,+Inf[The {{ familyVariantCodes }} ファミリーバリエーションは存在しません"
+    unknown_attribute_options: "{1}{{ attributeOptionCodes }} オプションは存在しません|]1,+Inf[The {{ attributeOptionCodes }} オプションは存在しません"
+    unknown_attribute_code: "{{ attributeCode }} 属性は存在しません"
+    unknown_categories: "{1}{{ categoryCodes }} カテゴリは存在しません。|]1, +Inf[{{ categoryCodes }} カテゴリは存在しません。"
+    unknown_attribute: "この属性は存在しません。"
+    unknown_groups: "{1} {{ groupCodes }} グループは存在しません|]1, +Inf[次のグループは存在しません: {{ groupCodes }}"
+    select_another_attribute_or_remove_action: "別の属性を選択するか、このアクションを削除してください。"
+    select_another_attribute: "別の属性を選択する"
+    or: または
+    create_attribute_link: ここをクリックして属性を作成
+    edit_unauthorize: ルールの編集は許可されていません
+    wrong_date_timespan: 有効な期間を定義するには、終了日が開始日より前に設定されていないことを確認してください。
+    measurement_family_not_found: '"{{ measurement_code }}" 測定ファミリーは存在しません'
+    unit_not_found: '"{{ unitCode }}" ユニットは "{{ measurement_code }}" 測定ファミリーに見つかりませんでした'
+    empty_association_warning: このリストを空にした場合、このルールはこの関連タイプを消去します。
 pim_enrich:
   entity:
     rule:
       module:
         delete:
           confirm: このルールを削除してよろしいですか？このアクションは元に戻せません。
+      flash:
+        delete:
+          success: ルールは正常に削除されました
 flash:
   rule:
+    impacted_product_count: 影響のある商品数を計算する一括操作が開始しました。終了後に通知されます。
     executed: ルール実行が開始されています。終了後に通知されます。
+    enabled: ルールが有効になりました
+    disabled: ルールが無効になりました
 pim_dashboard.widget.last_operations.job_type.mass_edit_rule: ルールの設定
 batch_jobs:
   add_attribute_value:
     execute_rules.label: ルールの実行
   default_steps:
+    export_rules: ルールのエクスポート
+    import_rules: ルールのインポート
+    calculate_affected_products: 影響を受けた商品を計算する
     execute_rules: ルールの実行
+  yml_rule_import:
+    label: ルールを YAML 形式でインポートする
+    import.label: ルールのインポート
+  yml_rule_export:
+    label: ルールを YAML 形式でエクスポートする
+    export.label: ルールのエクスポート
   rule_impacted_product_count:
+    label: 影響のある商品数
     perform.label: 影響を受けた商品をカウント
   csv_product_import_with_rules:
     label: ルールによりCSV 形式で商品をインポート
@@ -83,10 +455,14 @@ pim_notification:
     mass_edit_rule: 一括編集ルール
     execute_rules: ルールの実行
 pim_menu:
+  navigation:
+    settings:
+      automation: 自動化
   item:
     rule: ルール
 pim_title:
   pimee_catalog_rule_rule_index: ルール
+  pimee_catalog_rule_edit: ルールの編集
   pimee_catalog_rule_new: ルール
 pim_import_export:
   widget:

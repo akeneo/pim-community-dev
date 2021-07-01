@@ -39,14 +39,16 @@ pim_reference_entity:
         should_exist: '記録「%record_code%」は検出されませんでした。'
       limit_reached: '記録「%record_label%」を作成できません。この参照エンティティに対する記録の上限%limit%に達しています。'
       channel:
-        is_expected: 'チャンネルが属性「%attribute_code%」に必要です。その属性はチャンネルごとに値があるためです。'
+        is_expected: '"%reference_entity_identifier%" 参照エンティティの "%attribute_code%" 属性にはチャンネルごとに 1 つの値が必要です。'
         is_not_expected: 'チャンネルは属性「%attribute_code%」に必要ではありません。その属性はチャンネルごとに値がないためです。'
         should_exist: 'チャンネル「%channel_identifier%」がありません。'
       locale:
-        is_expected: 'ロケールが属性「%attribute_code%」に必要です。その属性はロケールごとに値があるためです。'
+        is_expected: '"%reference_entity_identifier%" 参照エンティティの "%attribute_code%" 属性にはロケールごとに 1 つの値が必要です。'
         is_not_expected: 'ロケールが属性「%attribute_code%」には必要でありません。その属性はロケールごとに値がないためです。'
         is_not_activated: 'ロケール「%locale_identifier%」は無効です。'
         is_not_activated_for_channel: 'ロケール「%locale_identifier%」はチャンネル「%channel_identifier%」に無効です。'
+      channel_and_locale:
+        are_expected: '"%reference_entity_identifier%" 参照エンティティの "%attribute_code%" 属性にはチャンネルごとに 1 つの値とロケールごとに 1 つの値が必要です。'
       number:
         should_be_string: 'このフィールドは列でなければなりません'
         should_be_integer: 'このフィールドは整数でなければなりません'

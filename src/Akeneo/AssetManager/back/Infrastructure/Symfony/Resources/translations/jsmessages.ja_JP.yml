@@ -10,6 +10,7 @@ pim_asset_manager:
         message: 申し訳ございませんがこの埋め込みアイテムは表示できません。保存は正しくじっこうされます。
   result_counter: '{0} 結果がありません|{1} {{ count }} 件の結果|]1,Inf] {{ count }} 件の結果'
   asset_counter: '{0} アセットがありません|{1} {{ count }} 件のアセット|]1,Inf] {{ count }} 件のアセット'
+  asset_selected: '{0} {{ assetCount }} 個のアセットを選択済み|{1} {{ assetCount }} 個のアセットを選択済み|]1,Inf] {{ assetCount }} 個のアセットを選択済み'
   asset_collection:
     add_asset: 'アセットの追加'
     upload_asset: 'アセットをアップロード'
@@ -45,7 +46,6 @@ pim_asset_manager:
     filter:
       title: アセットフィルター
     basket:
-      title: '{{ assetCount }}件の選択済アセット|{{ assetCount }}件の選択済アセット'
       empty_title: 買い物かごには何も入っていません。
       remove_one_asset: アセット{{ assetName }}をアセットセレクションから削除
       remove_all_assets: すべて削除
@@ -58,7 +58,6 @@ pim_asset_manager:
     download: ダウンロード
     copy_url: URLをコピー
     error: プレビューの表示中にエラーが発生しました。
-  close: モダルを閉じる
   breadcrumb:
     products: 商品
   app:
@@ -134,27 +133,27 @@ pim_asset_manager:
       product_link_rules: 商品リンクルール
     transformations:
       help:
-        title: '新規アセット管理エリアへようこそ！'
-        description: 'ここではアセットファミリーによる変換を10件まで定義できます。'
-        link: '新しいアセットマネージャー変換について詳しく知りたい場合は、こちらをクリックしてください'
+        description: ここではアセットファミリーによる変換を 10 件まで定義できます。
+        link: アセット変換について詳しく知りたい場合は、こちらをクリックしてください
       subsection: '変換プロパティ'
     product_link_rules:
       naming_convention_subsection: '命名規則プロパティ'
       product_link_rules_subsection: '商品リンクルールプロパティ'
       help:
-        title: '新規アセット管理エリアへようこそ！'
-        description: 'ここではアセットファミリーによる商品リンクルールを2件まで定義できます。'
-        link: '商品リンクルールの機能について詳しく知りたい場合は、こちらをクリックしてください'
+        description: 'ここでは商品リンクルールをアセットファミリーごとに 2 件まで定義できます。'
+        link: '商品リンクルールの機能について詳しく知りたい場合は、こちらをクリックしてください。'
       execute_rules:
         confirm_title: 実行を確認
         confirm_content: ルールをすべて実行しますか？(長時間を要することがあります)
         execute_rules: ルールを実行
-        cancel: キャンセル
       execute_naming_convention:
         confirm_title: 実行を確認する
         confirm_content: 命名規則を実行してもよろしいですか？（時間がかかる場合があります）
         execute_naming_convention: 命名規則を実行
-        cancel: キャンセル
+    naming_convention:
+      help:
+        description: ここでは命名規則プロパティを定義できます。
+        link: フォーマットについての詳細をご覧ください。
     properties:
       title: アセットファミリープロパティ
       identifier: コード
@@ -189,10 +188,9 @@ pim_asset_manager:
       input:
         label: ラベル
         code: コード（必須）
-      confirm: 保存
     delete:
       message: アセットファミリー 「{{ assetFamilyLabel }}」を削除してもよろしいですか？
-      title: 属性
+      title: アセットファミリー
     edit:
       discard_changes: このページから移動するとアセットファミリー「{{ assetFamilyLabel }}」に対する変更が失われます
     notification:
@@ -246,6 +244,7 @@ pim_asset_manager:
       code:
         pattern: 'このフィールドに含めることができるのは半角英数字とアンダースコアのみです。'
         should_be_unique: 'このコードは別のアセットのためにすでに使用されています'
+      server_error: 'アセットの作成中にエラーが発生しました'
     no_data:
       title: '{{ entityLabel }}のアセットがありません'
       subtitle: 最初のアセットを作成するには、「新規追加」ボタンをクリックして下さい。
@@ -262,7 +261,6 @@ pim_asset_manager:
       create: アセットを作成
       mass_upload: 一括アップロード
       delete: 削除
-      delete_all: アセットをすべて削除
       back: 一覧に戻る
       launch_transformations: 変換を開始
       fullscreen: フルスクリーン
@@ -303,7 +301,6 @@ pim_asset_manager:
         label: ラベル
         code: コード（必須）
         create_another: 他のアセットを作成
-      confirm: 保存
     upload:
       line_count: '[0,1]{{ count }} 件のファイル|]1,Inf] {{ count }} 件のファイル'
       title: アセットをアップロード
@@ -337,8 +334,30 @@ pim_asset_manager:
     delete:
       message: 属性「{{ assetLabel }}」を本当に削除しますか？それが商品へのリンクの場合、リンクも消去されます。
       title: アセット
-    delete_all:
-      confirm: 全ての「{{ entityIdentifier }}」アセットを削除してもよろしいですか。記録が商品とリンクされている場合は、商品へのリンクも削除されます。
+    mass_delete:
+      confirm: '[0,1]選択した {{ assetCount }} 個のアセットを本当に削除しますか？|]1,Inf]選択した {{ assetCount }} 個のアセットを本当に削除しますか？'
+      extra_information: 商品にリンクされている場合、商品へのリンクは削除されます。
+      confirm_label: '"{{ assetFamilyIdentifier }}" と入力してください'
+      title: アセット
+    mass_edit:
+      subtitle: アセット一括操作
+      title: "[0, 1]{{ count }} 個のアセットの属性値を編集|]1,Inf] {{ count }} 個のアセットの属性値を編集"
+      attribute_selected: "{0}属性は選択されていません|{1}1 個の属性を選択済み|]1,Inf]{{ count }} 個の属性を選択済み"
+      empty_selection:
+        title: 属性の選択が空です。編集する属性を追加してください。
+        body: 一括操作がわかりませんか？
+        link: こちらの記事をご覧ください。
+      action:
+        append: 追加
+        replace: 置換
+      select:
+        channel: チャンネルを選択
+        locale: ロケールを選択
+        action: 操作を選択
+      helper:
+        content: 同じ属性を何度も追加することができるため、属性の選択に注意してください。
+        link: 問題を回避できるよう、ドキュメントを確認してください。
+      unsupported_attribute: 属性タイプ "{{ attributeType }}" はサポートされていません
     grid:
       search: ラベル、コード、テキスト属性で検索
       filter:
@@ -380,9 +399,15 @@ pim_asset_manager:
       delete:
         success: アセット「{{ code }}」 が正常に削除されました。
         fail: アセットの削除中にエラーが発生しました
-      delete_all:
-        success: '「{{ entityIdentifier }}」件のアセット全てが問題なく削除されました。'
-        fail: この全アセットファミリーアセットの削除中にエラーが発生しました。
+      mass_delete:
+        success: '"一括削除" が開始されました。終了後に通知されます。'
+        fail: 一括削除ジョブを開始中にエラーが発生しました
+      mass_edit:
+        launch:
+          success: '"一括編集" が開始されました。終了後に通知されます。'
+          fail: 一括編集ジョブを開始中にエラーが発生しました
+        validation:
+          fail: 一括編集を検証中にエラーが発生しました
       execute_naming_convention:
         success: 命名規則が正常に実行されました
         fail: 命名規則の実行中にエラーが発生しました
@@ -427,7 +452,6 @@ pim_asset_manager:
         value_per_channel: チャンネルごとの値
       placeholder:
         asset_type: リンクされたアセットファミリーを選択
-      confirm: 保存
     edit:
       delete: 属性を削除
       title: 属性 {{ code }}を編集
@@ -500,12 +524,6 @@ pim_asset_manager:
       read_only: このメディアリンクは読み取り専用です
       uploading: アップロード中...
     used_as_transformation_target: このフィールドはアセット変換のターゲットとして使用されているため、読み取り専用です。
-  modal:
-    delete:
-      subtitle: 削除を確認
-      button:
-        cancel: キャンセル
-        confirm: 削除
   jobs:
     asset_manager_execute_naming_convention:
       error: 'アセット「{{ asset }}」で命名規則が失敗しました'
@@ -552,9 +570,16 @@ pim_datagrid:
   cells:
     type:
       asset_manager_execute_naming_convention: アセットファミリーの命名規則を実行する
+      asset_manager_mass_delete_assets: アセットの一括削除を実行
+      asset_manager_mass_edit_assets: アセットの一括編集を実行
 batch_jobs:
   default_steps:
     execute_naming_convention: アセットファミリーの命名規則を実行する
+    mass_delete_assets: アセットの一括削除を実行
+    mass_edit_assets: アセットの一括編集を実行
+    link_assets_to_products: アセットを商品にリンク
 job_execution:
   summary:
     assets: アセット
+pim_notification.types.asset_manager_mass_delete_assets: アセット一括削除
+pim_notification.types.asset_manager_mass_edit_assets: アセット一括編集
