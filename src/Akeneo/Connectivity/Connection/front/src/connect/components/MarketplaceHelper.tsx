@@ -16,26 +16,14 @@ const MarketplaceHelper: FC<Props> = ({count}) => {
         fetchMarketplaceUrl().then(setMarketplaceUrl);
     }, [fetchMarketplaceUrl]);
 
-    // Color highlight count number in the title
-    const translatedTitle = translate(
-        'akeneo_connectivity.connection.connect.marketplace.helper.title',
-        {count: '____'},
-        count
-    );
-    let decoratedTitle = <>{translatedTitle}</>;
-    if (count > 0) {
-        const translatedParts = translatedTitle.split('____');
-        decoratedTitle = (
-            <>
-                {translatedParts[0]}
-                <HighlightTitle>{count}</HighlightTitle>
-                {translatedParts[1]}
-            </>
-        );
-    }
+    const title = (<>
+        {translate('akeneo_connectivity.connection.connect.marketplace.helper.title.1')}
+        <HighlightTitle>{count}</HighlightTitle>
+        {translate('akeneo_connectivity.connection.connect.marketplace.helper.title.2')}
+    </>);
 
     return (
-        <Information illustration={<ChannelsIllustration />} title={decoratedTitle}>
+        <Information illustration={<ChannelsIllustration />} title={title}>
             <p>{translate('akeneo_connectivity.connection.connect.marketplace.helper.description')}</p>
             <Link href={marketplaceUrl} target='_blank'>
                 {translate('akeneo_connectivity.connection.connect.marketplace.helper.link')}
