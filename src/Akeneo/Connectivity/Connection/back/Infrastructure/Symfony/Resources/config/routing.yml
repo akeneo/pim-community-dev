@@ -31,11 +31,6 @@ akeneo_connectivity_connection_marketplace_rest:
     resource: ./routing/marketplace.yml
     prefix: /rest/marketplace
 
-akeneo_connectivity_connection_marketplace_url_rest_get:
-    path: '/rest/marketplace-url'
-    defaults: { _controller: akeneo_connectivity.connection.internal_api.controller.marketplace_url:get }
-    methods: [GET]
-
 # Frontend
 
 ## Marketplace
