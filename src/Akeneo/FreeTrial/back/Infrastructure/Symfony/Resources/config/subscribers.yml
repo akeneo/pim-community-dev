@@ -4,3 +4,11 @@ services:
       - '@database_connection'
     tags:
       - { name: 'kernel.event_subscriber' }
+
+  Akeneo\FreeTrial\Infrastructure\Subscriber\UserFirstConnectionSubscriber:
+    arguments:
+      - '@akeneo.free_trial.feature'
+      - '@Akeneo\FreeTrial\Domain\Query\GetInvitedUserQuery'
+      - '@Akeneo\FreeTrial\Domain\Repository\InvitedUserRepository'
+    tags:
+      - { name: 'kernel.event_subscriber' }

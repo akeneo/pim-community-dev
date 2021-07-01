@@ -8,3 +8,8 @@ services:
     class: Akeneo\FreeTrial\Infrastructure\MySql\MySqlGetInvitedUsersQuery
     arguments:
       - '@database_connection'
+
+  Akeneo\FreeTrial\Domain\Query\GetInvitedUserQuery:
+    class: Akeneo\FreeTrial\Infrastructure\MySql\MySqlGetInvitedUserQuery
+    arguments:
+      - '@database_connection'

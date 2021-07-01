@@ -47,4 +47,9 @@ final class InvitedUser
             'status' => (string) $this->status,
         ];
     }
+
+    public function activate()
+    {
+        $this->status = InvitedUserStatus::active();
+    }
 }
