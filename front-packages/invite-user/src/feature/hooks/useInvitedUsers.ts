@@ -17,25 +17,32 @@ const useInvitedUsers = () => {
     }, [retrieveInvitedUsers]);
 
     const addInvitedUsers = (newInvitedUsers: string[]) => {
-        saveNewInvitedUsers(newInvitedUsers).then((response) => {
-            if (response.success) {
+        saveNewInvitedUsers(newInvitedUsers)
+            .then((response) => {
+                if (response.success) {
+                    notify(
+                        NotificationLevel.SUCCESS,
+                        translate('free_trial.invite_users.invite_messages.success.title'),
+                        translate('free_trial.invite_users.invite_messages.success.description')
+                    );
+                }
+                response.errors.forEach((error: string) => {
+                    notify(
+                      NotificationLevel.ERROR,
+                      translate(`free_trial.invite_users.invite_messages.error.${error}.title`),
+                      translate(`free_trial.invite_users.invite_messages.error.${error}.description`)
+                    );
+                });
+                retrieveInvitedUsers().then((invitedUsers) => {
+                    setInvitedUsers(invitedUsers);
+                });
+            }, () => {
                 notify(
-                    NotificationLevel.SUCCESS,
-                    translate('free_trial.invite_users.invite_messages.success.title'),
-                    translate('free_trial.invite_users.invite_messages.success.description')
-                );
-            }
-            response.errors.forEach((error: string) => {
-                notify(
-                  NotificationLevel.ERROR,
-                  translate(`free_trial.invite_users.invite_messages.error.${error}.title`),
-                  translate(`free_trial.invite_users.invite_messages.error.${error}.description`)
+                    NotificationLevel.ERROR,
+                    translate(`free_trial.invite_users.invite_messages.error.invitation_failed.title`),
+                    translate(`free_trial.invite_users.invite_messages.error.invitation_failed.description`)
                 );
             });
-            retrieveInvitedUsers().then((invitedUsers) => {
-                setInvitedUsers(invitedUsers);
-            });
-        });
     }
 
     return {invitedUsers, addInvitedUsers};

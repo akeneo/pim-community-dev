@@ -19,7 +19,7 @@ free_trial:
       error:
         invitation_failed:
           title: Invitation couldn't be sent
-          description: invitation_failed message to define
+          description: There has been a technical error. Please try again.
         invalid_email:
           title: Invitation couldn't be sent
           description: Please make sure the email exists and is properly spelled.
