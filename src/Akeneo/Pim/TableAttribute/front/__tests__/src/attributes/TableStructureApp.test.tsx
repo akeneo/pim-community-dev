@@ -3,6 +3,7 @@ import {renderWithProviders} from '@akeneo-pim-community/legacy-bridge/tests/fro
 import {screen, act, fireEvent} from '@testing-library/react';
 import {TableStructureApp} from '../../../src/attribute/TableStructureApp';
 import {getComplexTableConfiguration, getSimpleTableConfiguration} from '../factories/TableConfiguration';
+import {getTableAttribute} from '../factories/Attributes';
 jest.mock('../../../src/fetchers/LocaleFetcher');
 jest.mock('../../../src/attribute/AddColumnModal');
 
@@ -18,6 +19,7 @@ describe('TableStructureApp', () => {
         onChange={handleChange}
         initialTableConfiguration={getSimpleTableConfiguration()}
         savedColumnCodes={[]}
+        attribute={getTableAttribute()}
       />
     );
     await waitPageToBeLoaded();
@@ -39,6 +41,7 @@ describe('TableStructureApp', () => {
         onChange={handleChange}
         initialTableConfiguration={getComplexTableConfiguration()}
         savedColumnCodes={[]}
+        attribute={getTableAttribute()}
       />
     );
     await waitPageToBeLoaded();
@@ -67,6 +70,7 @@ describe('TableStructureApp', () => {
         onChange={handleChange}
         initialTableConfiguration={getSimpleTableConfiguration()}
         savedColumnCodes={['ingredients']}
+        attribute={getTableAttribute()}
       />
     );
     await waitPageToBeLoaded();
@@ -93,6 +97,7 @@ describe('TableStructureApp', () => {
         onChange={handleChange}
         initialTableConfiguration={getComplexTableConfiguration()}
         savedColumnCodes={[]}
+        attribute={getTableAttribute()}
       />
     );
     await waitPageToBeLoaded();
@@ -120,7 +125,12 @@ describe('TableStructureApp', () => {
   it('should render without column', async () => {
     const handleChange = jest.fn();
     renderWithProviders(
-      <TableStructureApp onChange={handleChange} initialTableConfiguration={[]} savedColumnCodes={[]} />
+      <TableStructureApp
+        onChange={handleChange}
+        initialTableConfiguration={[]}
+        savedColumnCodes={[]}
+        attribute={getTableAttribute()}
+      />
     );
     expect(await screen.findByText('pim_table_attribute.form.attribute.empty_title')).toBeInTheDocument();
   });
@@ -132,6 +142,7 @@ describe('TableStructureApp', () => {
         onChange={handleChange}
         initialTableConfiguration={getComplexTableConfiguration()}
         savedColumnCodes={[]}
+        attribute={getTableAttribute()}
       />
     );
     await waitPageToBeLoaded();
@@ -169,6 +180,7 @@ describe('TableStructureApp', () => {
         onChange={handleChange}
         initialTableConfiguration={getSimpleTableConfiguration()}
         savedColumnCodes={['ingredients']}
+        attribute={getTableAttribute()}
       />
     );
     await waitPageToBeLoaded();
@@ -184,6 +196,7 @@ describe('TableStructureApp', () => {
         onChange={handleChange}
         initialTableConfiguration={getComplexTableConfiguration()}
         savedColumnCodes={[]}
+        attribute={getTableAttribute()}
       />
     );
     await waitPageToBeLoaded();
@@ -238,6 +251,7 @@ describe('TableStructureApp', () => {
         onChange={handleChange}
         initialTableConfiguration={getSimpleTableConfiguration()}
         savedColumnCodes={[]}
+        attribute={getTableAttribute()}
       />
     );
     await waitPageToBeLoaded();

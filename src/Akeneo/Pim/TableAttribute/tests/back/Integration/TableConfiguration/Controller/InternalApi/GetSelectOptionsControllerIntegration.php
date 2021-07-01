@@ -35,7 +35,7 @@ final class GetSelectOptionsControllerIntegration extends ControllerIntegrationT
     {
         $this->webClientHelper->callApiRoute(
             $this->client,
-            'pimee_table_attribute_get_select_options',
+            'pim_table_attribute_get_select_options',
             ['attributeCode' => 'nutrition', 'columnCode' => 'ingredients']
         );
         $response = $this->client->getResponse();
@@ -50,7 +50,7 @@ final class GetSelectOptionsControllerIntegration extends ControllerIntegrationT
 
         $this->webClientHelper->callApiRoute(
             $this->client,
-            'pimee_table_attribute_get_select_options',
+            'pim_table_attribute_get_select_options',
             ['attributeCode' => 'nutrition', 'columnCode' => 'ingredients']
         );
         $response = $this->client->getResponse();
@@ -63,7 +63,7 @@ final class GetSelectOptionsControllerIntegration extends ControllerIntegrationT
         $this->get('akeneo_integration_tests.helper.authenticator')->logIn($this->client, 'julia');
         $this->webClientHelper->callApiRoute(
             $this->client,
-            'pimee_table_attribute_get_select_options',
+            'pim_table_attribute_get_select_options',
             ['attributeCode' => 'nutrition', 'columnCode' => 'ingredients']
         );
         $response = $this->client->getResponse();
@@ -76,7 +76,7 @@ final class GetSelectOptionsControllerIntegration extends ControllerIntegrationT
         $this->get('akeneo_integration_tests.helper.authenticator')->logIn($this->client, 'julia');
         $this->webClientHelper->callApiRoute(
             $this->client,
-            'pimee_table_attribute_get_select_options',
+            'pim_table_attribute_get_select_options',
             ['attributeCode' => 'unknown', 'columnCode' => 'ingredients']
         );
         $response = $this->client->getResponse();
@@ -89,7 +89,7 @@ final class GetSelectOptionsControllerIntegration extends ControllerIntegrationT
         $this->get('akeneo_integration_tests.helper.authenticator')->logIn($this->client, 'julia');
         $this->webClientHelper->callApiRoute(
             $this->client,
-            'pimee_table_attribute_get_select_options',
+            'pim_table_attribute_get_select_options',
             ['attributeCode' => 'a_text', 'columnCode' => 'ingredients']
         );
         $response = $this->client->getResponse();
@@ -102,7 +102,7 @@ final class GetSelectOptionsControllerIntegration extends ControllerIntegrationT
         $this->get('akeneo_integration_tests.helper.authenticator')->logIn($this->client, 'julia');
         $this->webClientHelper->callApiRoute(
             $this->client,
-            'pimee_table_attribute_get_select_options',
+            'pim_table_attribute_get_select_options',
             ['attributeCode' => 'nutrition', 'columnCode' => 'unknown']
         );
         $response = $this->client->getResponse();
@@ -115,7 +115,7 @@ final class GetSelectOptionsControllerIntegration extends ControllerIntegrationT
         $this->get('akeneo_integration_tests.helper.authenticator')->logIn($this->client, 'julia');
         $this->webClientHelper->callApiRoute(
             $this->client,
-            'pimee_table_attribute_get_select_options',
+            'pim_table_attribute_get_select_options',
             ['attributeCode' => 'nutrition', 'columnCode' => 'quantity']
         );
         $response = $this->client->getResponse();

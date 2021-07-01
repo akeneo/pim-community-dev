@@ -1,4 +1,4 @@
-import styled from "styled-components";
+import styled from 'styled-components';
 
 const FieldsList = styled.div`
   gap: 20px;
@@ -7,4 +7,4 @@ const FieldsList = styled.div`
   margin: 20px 0;
 `;
 
-export {FieldsList}
+export {FieldsList};

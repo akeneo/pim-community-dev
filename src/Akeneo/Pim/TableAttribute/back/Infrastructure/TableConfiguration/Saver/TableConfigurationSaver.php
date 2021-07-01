@@ -64,6 +64,13 @@ class TableConfigurationSaver implements SaverInterface
 
         foreach ($attribute->getRawTableConfiguration() as $rawColumnDefinition) {
             if ($rawColumnDefinition['data_type'] === SelectColumn::DATATYPE) {
+                if (
+                    !array_key_exists('options', $rawColumnDefinition) ||
+                    null === $rawColumnDefinition['options']
+                ) {
+                    continue;
+                }
+
                 Assert::isArray($rawColumnDefinition['options'] ?? []);
                 $this->optionCollectionRepository->save(
                     $attribute->getCode(),

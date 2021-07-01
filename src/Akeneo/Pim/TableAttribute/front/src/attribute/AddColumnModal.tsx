@@ -3,8 +3,7 @@ import React from 'react';
 import {ColumnCode, ColumnDefinition, ColumnType, DATA_TYPES} from '../models/TableConfiguration';
 import {useUserContext, useTranslate, LabelCollection} from '@akeneo-pim-community/shared';
 import {LocaleLabel} from './LocaleLabel';
-import styled from 'styled-components';
-import {FieldsList} from "../shared/FieldsList";
+import {FieldsList} from '../shared/FieldsList';
 
 type AddColumnModalProps = {
   close: () => void;

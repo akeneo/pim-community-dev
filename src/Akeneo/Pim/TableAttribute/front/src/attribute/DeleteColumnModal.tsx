@@ -1,9 +1,8 @@
 import {DeleteIllustration, Button, Field, Modal, TextInput, Helper} from 'akeneo-design-system';
 import React from 'react';
 import {useTranslate} from '@akeneo-pim-community/shared';
-import styled from 'styled-components';
 import {ColumnCode} from '../models/TableConfiguration';
-import {FieldsList} from "../shared/FieldsList";
+import {FieldsList} from '../shared/FieldsList';
 
 type DeleteColumnModalProps = {
   close: () => void;

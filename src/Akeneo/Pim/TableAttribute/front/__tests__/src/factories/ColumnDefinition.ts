@@ -1,13 +1,17 @@
 import {ColumnDefinitionWithId} from '../../../src/attribute/TableStructureApp';
+import {SelectColumnDefinition} from '../../../src/models/TableConfiguration';
 
 export const getSelectColumnDefinitionWithId: () => ColumnDefinitionWithId = () => {
+  return {...getSelectColumnDefinition(), id: 'uniqueidingredient'};
+};
+
+export const getSelectColumnDefinition: () => SelectColumnDefinition = () => {
   return {
     code: 'ingredient',
     validations: {},
     data_type: 'select',
     labels: {},
-    id: 'uniqueidingredient',
-  } as ColumnDefinitionWithId;
+  };
 };
 
 export const getTextColumnDefinitionWithId: () => ColumnDefinitionWithId = () => {

@@ -17,6 +17,7 @@ pim_table_attribute:
             unique_title: Your table attribute is almost ready!
             unique_subtitle: You need 2 columns minimum for your attribute to be valid.
             new_option_placeholder: Write your new option label
+            manage_options: Manage options
         product:
             items_per_page: Items per page
             current_items: "{{ minItem }}-{{ maxItem }} of {{ itemCount }}"

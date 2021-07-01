@@ -26,30 +26,42 @@ export type SelectOptionCode = string;
 export type SelectOption = {
   code: SelectOptionCode;
   labels: LabelCollection;
-}
+};
 
-export type ColumnDefinition = {
+export type TextColumnDefinition = {
   code: ColumnCode;
   labels: LabelCollection;
-} & (
-  | {
-      data_type: 'text';
-      validations: TextColumnValidation;
-    }
-  | {
-      data_type: 'number';
-      validations: NumberColumnValidation;
-    }
-  | {
-      data_type: 'boolean';
-      validations: BooleanColumnValidation;
-    }
-  | {
-      data_type: 'select';
-      validations: SelectColumnValidation;
-      options: SelectOption[];
-    }
-);
+  data_type: 'text';
+  validations: TextColumnValidation;
+};
+
+export type NumberColumnDefinition = {
+  code: ColumnCode;
+  labels: LabelCollection;
+  data_type: 'number';
+  validations: NumberColumnValidation;
+};
+
+export type BooleanColumnDefinition = {
+  code: ColumnCode;
+  labels: LabelCollection;
+  data_type: 'boolean';
+  validations: BooleanColumnValidation;
+};
+
+export type SelectColumnDefinition = {
+  code: ColumnCode;
+  labels: LabelCollection;
+  data_type: 'select';
+  validations: SelectColumnValidation;
+  options?: SelectOption[];
+};
+
+export type ColumnDefinition =
+  | TextColumnDefinition
+  | NumberColumnDefinition
+  | BooleanColumnDefinition
+  | SelectColumnDefinition;
 
 export type TableConfiguration = ColumnDefinition[];
 

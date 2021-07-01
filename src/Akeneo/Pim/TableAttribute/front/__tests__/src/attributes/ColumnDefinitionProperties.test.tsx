@@ -8,6 +8,7 @@ import {
   getSelectColumnDefinitionWithId,
   getTextColumnDefinitionWithId,
 } from '../factories/ColumnDefinition';
+import {getTableAttribute} from '../factories/Attributes';
 
 describe('ColumnDefinitionProperties', () => {
   it('should render the component', () => {
@@ -20,6 +21,7 @@ describe('ColumnDefinitionProperties', () => {
         catalogLocaleCode={'en_US'}
         isDuplicateColumnCode={() => false}
         savedColumnIds={[]}
+        attribute={getTableAttribute()}
       />
     );
   });
@@ -34,6 +36,7 @@ describe('ColumnDefinitionProperties', () => {
         catalogLocaleCode={'en_US'}
         isDuplicateColumnCode={() => false}
         savedColumnIds={[]}
+        attribute={getTableAttribute()}
       />
     );
 
@@ -58,6 +61,7 @@ describe('ColumnDefinitionProperties', () => {
         catalogLocaleCode={'en_US'}
         isDuplicateColumnCode={() => false}
         savedColumnIds={[]}
+        attribute={getTableAttribute()}
       />
     );
 
@@ -84,6 +88,7 @@ describe('ColumnDefinitionProperties', () => {
         catalogLocaleCode={'en_US'}
         isDuplicateColumnCode={() => false}
         savedColumnIds={[]}
+        attribute={getTableAttribute()}
       />
     );
 

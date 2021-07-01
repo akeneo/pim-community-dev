@@ -1,17 +1,17 @@
 import React from 'react';
 import {Button, Field, Helper, NumberInput, SectionTitle, TextInput, useBooleanState} from 'akeneo-design-system';
 import {getLabel, Locale, LocaleCode, useTranslate} from '@akeneo-pim-community/shared';
-import {ColumnCode, ColumnValidation} from '../models/TableConfiguration';
+import {ColumnCode, ColumnValidation, SelectColumnDefinition, SelectOption} from '../models/TableConfiguration';
 import styled from 'styled-components';
 import {ColumnDefinitionWithId} from './TableStructureApp';
 import {Checkbox} from '@akeneo-pim-community/connectivity-connection/src/common';
-import {ManageOptionsModal} from "./ManageOptionsModal";
-import {Attribute} from "../models/Attribute";
-import {FieldsList} from "../shared/FieldsList";
+import {ManageOptionsModal} from './ManageOptionsModal';
+import {Attribute} from '../models/Attribute';
+import {FieldsList} from '../shared/FieldsList';
 
 const ManageOptionsButtonContainer = styled.div`
   text-align: right;
-`
+`;
 
 type ColumnDefinitionPropertiesProps = {
   attribute: Attribute;
@@ -47,6 +47,11 @@ const ColumnDefinitionProperties: React.FC<ColumnDefinitionPropertiesProps> = ({
 
   const handleCodeChange = (code: ColumnCode) => {
     selectedColumn.code = code;
+    onChange(selectedColumn);
+  };
+
+  const handleManageOptionChange = (options: SelectOption[]) => {
+    (selectedColumn as SelectColumnDefinition).options = options;
     onChange(selectedColumn);
   };
 
@@ -95,14 +100,17 @@ const ColumnDefinitionProperties: React.FC<ColumnDefinitionPropertiesProps> = ({
       )}
       {selectedColumn.data_type === 'select' && (
         <ManageOptionsButtonContainer>
-          <Button onClick={openManageOption} ghost size="small" level="tertiary">TODO Manage options</Button>
-          {isManageOptionsOpen &&
+          <Button onClick={openManageOption} ghost size='small' level='tertiary'>
+            {translate('pim_table_attribute.form.attribute.manage_options')}
+          </Button>
+          {isManageOptionsOpen && (
             <ManageOptionsModal
               attribute={attribute}
               columnDefinition={selectedColumn}
               onClose={closeManageOption}
+              onChange={handleManageOptionChange}
             />
-          }
+          )}
         </ManageOptionsButtonContainer>
       )}
     </>

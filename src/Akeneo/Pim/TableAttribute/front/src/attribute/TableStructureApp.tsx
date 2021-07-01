@@ -22,7 +22,7 @@ import {AddColumnModal} from './AddColumnModal';
 import {DeleteColumnModal} from './DeleteColumnModal';
 import {fetchActivatedLocales} from '../fetchers/LocaleFetcher';
 import {ColumnDefinitionProperties} from './ColumnDefinitionProperties';
-import {Attribute} from "../models/Attribute";
+import {Attribute} from '../models/Attribute';
 
 const EmptyTableCell = styled(Table.Cell)`
   width: 44px;

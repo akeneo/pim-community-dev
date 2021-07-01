@@ -32,6 +32,6 @@ export type Attribute = {
   filter_types: {[type: string]: string};
   is_locale_specific: boolean;
   meta: {id: string} & {[key: string]: any};
-}
+};
 
 export type AttributeType = string;
