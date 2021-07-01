@@ -38,6 +38,8 @@ The {{ attribute_code }} attribute requires a date that should be {{ limit }} or
 The {{ attribute_code }} attribute requires a date that should be {{ limit }} or before.: The {{ attribute_code }} attribute requires a date that should be {{ limit }} or before.
 The {{ attribute }} attribute requires a number, and the submitted {{ value }} value is not.: The {{ attribute }} attribute requires a number, and the submitted {{ value }} value is not.
 The %attribute% attribute must not contain more than %limit% characters. The submitted value is too long.: The %attribute% attribute must not contain more than %limit% characters. The submitted value is too long.
+The %type% file extension is not allowed for the %attribute% attribute. Allowed extensions are %extensions%.: The %type% file extension is not allowed for the %attribute% attribute. Allowed extensions are %extensions%.
+"The %attribute% attribute requires a url link.": The %attribute% attribute requires a url link.
 The %attribute% attribute requires a valid date. Please use the following format %date_format% for dates.: The %attribute% attribute requires a valid date. Please use the following format %date_format% for dates.
 The %locale% locale is not available on the %attribute% attribute.: The %locale% locale is not available on the %attribute% attribute.
 'The {{ attribute_code }} attribute must match the following regular expression: {{ pattern }}.': 'The {{ attribute_code }} attribute must match the following regular expression: {{ pattern }}.'
@@ -49,6 +51,7 @@ The %attribute% attribute requires an e-mail address.: 'The %attribute% attribut
 'The %attribute% attribute requires an equal or greater than %min_value% value.': 'The %attribute% attribute requires an equal or greater than %min_value% value.'
 'The %attribute% attribute requires an equal or lesser than %max_value% value.': 'The %attribute% attribute requires an equal or lesser than %max_value% value.'
 The %attribute_code% attribute requires a value per channel. The %channel% channel (scope) must exist in your PIM: 'The %attribute_code% attribute requires a value per channel. The %channel% channel (scope) must exist in your PIM'
+The %identifier% identifier is already used for another product.: 'The %identifier% identifier is already used for another product.'
 'Please specify a valid currency for the %attribute_code% attribute, the %currency_code% code was sent.': 'Please specify a valid currency for the %attribute_code% attribute, the %currency_code% code was sent.'
 pim_catalog:
     constraint:
@@ -61,7 +64,7 @@ pim_catalog:
         attribute_does_not_belong_to_family: 'Attribute "%attribute%" does not belong to the family "%family%"'
         variant_product_invalid_family: 'The variant product family must be the same than its parent'
         php_int_max_reached: 'The maximum number must be lower than %php_int_max%.'
-        not_null_family: The family can't be "null" because your product with the identifier "%sku%" is a variant product.
+        not_null_family: The family cannot be "null" because your product with the %sku% identifier is a variant product.
         variant_product_has_parent: 'The variant product "%variant_product%" must have a parent'
         invalid_variant_product_parent: 'The variant product "%variant_product%" cannot have product model "%product_model%" as parent, (this product model can only have other product models as children)'
         modified_variant_axis_value: 'Variant axis "%variant_axis%" cannot be modified, "%provided_value%" given'
@@ -102,7 +105,6 @@ pim_catalog:
         301: This field expects a valid scope and locale.
         302: This field expects a valid scope.
         303: This field expects a valid association format.
-        pim_immutable_product_validator: The same identifier is already set on another product
         pim_immutable_product_model_validator: The same code is already set on another product model.
         quantified_associations:
             unexpected_link_type: The link type "{{ value }}" doesn't exist. You can only associate products or product models.

@@ -1,0 +1,15 @@
+akeneo_data_quality_insights:
+  axis:
+    enrichment: 보강
+  acl:
+    activation_attribute_group:
+      edit: 데이터 품질 인사이트 활성화
+  acl_group:
+    dqi: 데이터 품질 인사이트
+  product_grid:
+    filter_label:
+      quality_score: 품질 점수
+      enrichment_quality: 보강 품질
+      images_quality: 제품 이미지
+Enrichment: 보강
+Quality Score: 품질 점수

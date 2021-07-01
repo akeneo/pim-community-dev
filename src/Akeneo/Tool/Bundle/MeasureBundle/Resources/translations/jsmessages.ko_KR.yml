@@ -16,7 +16,7 @@ measurements:
     not_found: 측정 패밀리 찾지 못함
     no_data:
       title: 죄송합니다. 측정 패밀리가 없습니다!
-      link: 여기를 클릭하여 추가하십시오
+      link: 여기를 클릭하여 추가하십시오.
     no_result:
       title: 죄송합니다. 검색 결과가 없습니다!
     standard_unit: 표준 단위

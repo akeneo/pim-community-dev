@@ -15,3 +15,9 @@ services:
         arguments:
             - '@twig'
             - '@pim_analytics.data_collector.chained'
+
+    pim_analytics.external_api.controller.get_system_information:
+        class: Akeneo\Platform\Bundle\AnalyticsBundle\Controller\ExternalApi\GetSystemInformationController
+        public: true
+        arguments:
+            - '@pim_catalog.version_provider'

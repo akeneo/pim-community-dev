@@ -1,10 +1,10 @@
 #ORO messages
-"Yes, I Agree": "예, 동의합니다"
-"Yes, do it": "예, 수행합니다"
-"Ok, got it.": "예, 알겠습니다"
+"Yes, I Agree": "예, 동의합니다."
+"Yes, do it": "예, 수행합니다."
+"Ok, got it.": "예, 알겠습니다."
 "Edit": "편집"
 "Unexpected error occurred. Please contact system administrator.": "예기치 않은 오류가 발생했습니다. 시스템 관리자에게 문의하십시오."
-"Yes, revoke": "예, 취소합니다"
+"Yes, revoke": "예, 취소합니다."
 "Revoke Confirmation": "취소 확인"
 Prev: 이전
 Today: 오늘
@@ -21,6 +21,11 @@ Second: 초
 Millisecond: 밀리초
 Microsecond: 마이크로초
 "Time Zone": "시간대"
+duration:
+  days: "{0}0일|{1}1일|]1, Inf[{{ count }}일"
+  hours: "{0}0시간|{1}1시간|]1, Inf[{{ count }}시간"
+  minutes: "{0}0분|{1}1분|]1, Inf[{{ count }}분"
+  seconds: "{0}0초|{1}1초|]1, Inf[{{ count }}초"
 #PIM messages
 Localized value: 지역화된 값
 Columns: 열
@@ -114,7 +119,7 @@ pim_ui:
     unsaved_changes: '저장되지 않은 변경 사항이 있습니다. 그래도 나가시겠습니까?'
 "Sorry, page was not loaded correctly": "죄송합니다. 페이지가 제대로 로드되지 않았습니다."
 "Your local changes will be lost. Are you sure you want to refresh the page?": "로컬 변경 사항이 손실됩니다. 페이지를 새로 고치시겠습니까?"
-"navigation.message.content.outdated": "{{ title }} 페이지의 콘텐츠가 오래되었습니다. <a href='#' data-action='page-refresh'>페이지를 새로 고치십시오</a>"
+"navigation.message.content.outdated": "{{ title }} 페이지의 콘텐츠가 오래되었습니다. <a href=\"#' data-action=\"page-refresh\">페이지를 새로 고치십시오.</a>"
 "Content of pinned page is outdated": "고정된 페이지의 콘텐츠가 오래되었습니다."
 #Global structure of translation files
 #pim_bundle_name:
@@ -165,6 +170,7 @@ pim_common:
   created: 생성됨
   delete: 삭제
   done: 완료
+  duplicate: 복제
   edit: 편집
   entity_updated: 저장되지 않은 변경 사항이 있습니다.
   export: 내보내기
@@ -179,6 +185,7 @@ pim_common:
   less_than: 보다 작음
   loading: 로드 중...
   media_upload: 끌어다 놓아 업로드하거나 여기를 클릭
+  more_actions: 작업 더보기
   more_than: 보다 큼
   next: 다음
   "no": "아니요"
@@ -186,6 +193,8 @@ pim_common:
   not_available: 해당 없음
   now: 지금
   ok: 확인
+  open: 열기
+  no_result: 결과를 찾을 수 없습니다.
   other_actions: 기타 작업
   permissions: 권한
   previous: 이전
@@ -220,18 +229,27 @@ pim_common:
     STARTS WITH: 다음으로 시작
     ENDS WITH: 다음으로 끝남
   read_more: 더보기
+  channel: 채널
+  locale: 로케일
+  categories: 카테고리
+  family_variant: 패밀리 변형
+  enabled: 활성화됨
+  family: 패밀리
+  parent: 상위
+  groups: 그룹
+  more: 더보기 
 error:
   exception: 죄송합니다! {{ status_code }} 오류가 발생했습니다...
   forbidden: 금지되었습니다. 이 페이지에 액세스할 권한이 없습니다.
 alert:
   attribute_option:
-    error_occurred_during_submission: 서버에서 양식 제출 중에 오류가 발생했습니다
-    save_before_edit_other: 이 내용을 편집하기 전에 다른 행의 수정 사항을 등록하십시오
+    error_occurred_during_submission: 서버에서 양식 제출 중에 오류가 발생했습니다.
+    save_before_edit_other: 이 내용을 편집하기 전에 다른 행의 수정 사항을 등록하십시오.
   session_storage:
     not_available: 해당 웹 브라우저는 sessionStorage와 호환되지 않는 것 같습니다. 관리자에게 문의하십시오.
 pim_enrich.entity.fallback:
   flash:
-    generic_error: 오류가 발생했습니다
+    generic_error: 오류가 발생했습니다.
     update:
       fail: 업데이트 실패
       success: 업데이트 성공
@@ -268,8 +286,9 @@ pim_title:
   pim_enrich_catalog_volume_index: 카탈로그 볼륨 모니터링
   pim_enrich_categorytree_index: 카테고리 트리
   pim_enrich_categorytree_create: 카테고리 트리 | 만들기
-  pim_enrich_categorytree_edit: 카테고리 트리 {{ category.label }} | 편집
+  pim_enrich_categorytree_edit: 카테고리 {{ category.label }} | 편집
   pim_enrich_categorytree_create_tree: 카테고리 트리 | 만들기
+  pim_enrich_categorytree_tree: 카테고리 트리 {{ category.label }} | 편집
   pim_enrich_attribute_index: 특성
   pim_enrich_attribute_create: 특성 | 만들기
   pim_enrich_attribute_edit: 특성 {{ attribute.label }} | 편집
@@ -296,6 +315,7 @@ pim_title:
   pim_enrich_job_tracker_show: 프로세스 트래커 | 작업 표시
   pim_enrich_mass_edit_action: 대량 편집
   pim_analytics_system_info_index: 시스템 정보
+  pim_settings_index: 설정
 pim_menu:
   tab:
     activity: 활동
@@ -311,7 +331,7 @@ pim_menu:
     attribute_group: 특성 그룹
     channel: 채널
     currency: 통화
-    dashboard: 대시보드
+    dashboard: 활동 대시보드
     family: 패밀리
     group: 그룹
     group_type: 그룹 유형
@@ -332,7 +352,10 @@ pim_menu:
     activity: 활동 탐색
     system: 시스템 탐색
     user: 사용자 관리 탐색
-    settings: 설정 탐색
+    settings:
+      product: 제품 설정
+      catalog: 카탈로그 설정
+      collapsed_label: 설정 탐색
     product: 제품 탐색
     product_infos: 제품 정보
   user:
@@ -344,3 +367,20 @@ pim_notification:
     export: 내보내기
     quick_export: 빠른 내보내기
     mass_edit: 대량 편집
+pim_settings:
+  settings_menu: 설정 메뉴
+  catalog_settings: 카탈로그 설정
+  product_settings: 제품 설정
+  count:
+    categories: '{{ countTrees }}개의 트리와 {{ countCategories }}개의 카테고리가 있습니다.'
+    channels: '{{ count }}개의 채널이 있습니다.'
+    locales: '{{ count }}개의 활성화된 로케일이 있습니다.'
+    currencies: '{{ count }}개의 활성화된 통화가 있습니다.'
+    attribute_groups: '{{ count }}개의 특성 그룹이 있습니다.'
+    attributes: '{{ count }}개의 특성이 있습니다.'
+    families: '{{ count }}개의 패밀리가 있습니다.'
+    measurements: '{{ count }}개의 측정이 있습니다.'
+    association_types: '{{ count }}개의 연결 유형이 있습니다.'
+    group_types: '{{ count }}개의 그룹 유형이 있습니다.'
+    groups: '{{ count }}개의 그룹이 있습니다.'
+    rules: '{{ count }}개의 활성화된 규칙이 있습니다.'
