@@ -41,7 +41,9 @@ akeneo_connectivity.connection:
             sub_title: Check our marketplace to see which application can be connected with Akeneo PIM.
             link: Access the marketplace
             helper:
-                title: '{0} There is no apps or extensions compatible with your PIM version. |[1,Inf] There are {{ count }} apps and extensions compatible with your PIM version.'
+                title:
+                    1: 'There are '
+                    2: ' apps and extensions compatible with your PIM version.'
                 description: This is just an overview for more details, take a look at our web marketplace.
                 link: Go to web marketplace
     connections: Connections
