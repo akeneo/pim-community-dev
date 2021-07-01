@@ -1363,7 +1363,7 @@ JSON;
             'errors'  => [
                 [
                     'property' => 'identifier',
-                    'message'  => 'The same identifier is already set on another product',
+                    'message'  => 'The product_family identifier is already used for another product.',
                 ],
             ],
         ];

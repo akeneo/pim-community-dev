@@ -51,6 +51,7 @@ The %attribute% attribute requires an e-mail address.: 'The %attribute% attribut
 'The %attribute% attribute requires an equal or greater than %min_value% value.': 'The %attribute% attribute requires an equal or greater than %min_value% value.'
 'The %attribute% attribute requires an equal or lesser than %max_value% value.': 'The %attribute% attribute requires an equal or lesser than %max_value% value.'
 The %attribute_code% attribute requires a value per channel. The %channel% channel (scope) must exist in your PIM: 'The %attribute_code% attribute requires a value per channel. The %channel% channel (scope) must exist in your PIM'
+The %identifier% identifier is already used for another product.: 'The %identifier% identifier is already used for another product.'
 pim_catalog:
     constraint:
         can_have_family_variant_empty_axis_value: 'Attribute "%attribute%" cannot be empty, as it is defined as an axis for this entity'
@@ -103,7 +104,6 @@ pim_catalog:
         301: This field expects a valid scope and locale.
         302: This field expects a valid scope.
         303: This field expects a valid association format.
-        pim_immutable_product_validator: The same identifier is already set on another product
         pim_immutable_product_model_validator: The same code is already set on another product model.
         quantified_associations:
             unexpected_link_type: The link type "{{ value }}" doesn't exist. You can only associate products or product models.
