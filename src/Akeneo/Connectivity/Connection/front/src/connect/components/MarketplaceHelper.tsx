@@ -16,11 +16,13 @@ const MarketplaceHelper: FC<Props> = ({count}) => {
         fetchMarketplaceUrl().then(setMarketplaceUrl);
     }, [fetchMarketplaceUrl]);
 
-    const title = (<>
-        {translate('akeneo_connectivity.connection.connect.marketplace.helper.title.1')}
-        <HighlightTitle>{count}</HighlightTitle>
-        {translate('akeneo_connectivity.connection.connect.marketplace.helper.title.2')}
-    </>);
+    const title = (
+        <>
+            {translate('akeneo_connectivity.connection.connect.marketplace.helper.title.1')}
+            <HighlightTitle>{count}</HighlightTitle>
+            {translate('akeneo_connectivity.connection.connect.marketplace.helper.title.2')}
+        </>
+    );
 
     return (
         <Information illustration={<ChannelsIllustration />} title={title}>
