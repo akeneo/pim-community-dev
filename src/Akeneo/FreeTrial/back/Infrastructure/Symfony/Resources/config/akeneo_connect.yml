@@ -1,11 +1,3 @@
-parameters:
-  # @todo handle env parameters
-  akeneo.free_trial.akeneo_connect.api.client_id: 'portal'
-  akeneo.free_trial.akeneo_connect.api.client_secret: 'secret'
-  akeneo.free_trial.akeneo_connect.api.username: 'username'
-  akeneo.free_trial.akeneo_connect.api.password: 'password'
-  akeneo.free_trial.akeneo_connect.api.base_uri: 'http://akeneo-connect-api:3000'
-
 services:
   Akeneo\FreeTrial\Domain\API\InviteUserAPI:
     class: Akeneo\FreeTrial\Infrastructure\AkeneoConnect\AkeneoConnectInviteUserAPI
@@ -17,12 +9,12 @@ services:
     arguments:
       - '@akeneo.free_trial.akeneo_connect.guzzle_client'
       - '@Akeneo\FreeTrial\Infrastructure\RetrievePimFQDN'
-      - '%akeneo.free_trial.akeneo_connect.api.client_id%'
-      - '%akeneo.free_trial.akeneo_connect.api.client_secret%'
-      - '%akeneo.free_trial.akeneo_connect.api.username%'
-      - '%akeneo.free_trial.akeneo_connect.api.password%'
+      - '%env(AKENEO_CONNECT_API_CLIENT_ID)%'
+      - '%env(AKENEO_CONNECT_API_CLIENT_SECRET)%'
+      - '%env(AKENEO_CONNECT_API_CLIENT_USERNAME)%'
+      - '%env(AKENEO_CONNECT_API_CLIENT_PASSWORD)%'
 
   akeneo.free_trial.akeneo_connect.guzzle_client:
     class: GuzzleHttp\Client
     arguments:
-      - { base_uri: '%akeneo.free_trial.akeneo_connect.api.base_uri%' }
+      - { base_uri: '%env(AKENEO_CONNECT_API_CLIENT_BASE_URI)%' }
