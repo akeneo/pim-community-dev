@@ -3,12 +3,7 @@ import React from 'react';
 import {useTranslate} from '@akeneo-pim-community/shared';
 import styled from 'styled-components';
 import {ColumnCode} from '../models/TableConfiguration';
-
-const FieldsList = styled.div`
-  gap: 20px;
-  display: flex;
-  flex-direction: column;
-`;
+import {FieldsList} from "../shared/FieldsList";
 
 type DeleteColumnModalProps = {
   close: () => void;

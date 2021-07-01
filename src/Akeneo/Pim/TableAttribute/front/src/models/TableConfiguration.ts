@@ -21,6 +21,13 @@ type SelectColumnValidation = {};
 
 export type ColumnValidation = TextColumnValidation | NumberColumnValidation | BooleanColumnValidation;
 
+export type SelectOptionCode = string;
+
+export type SelectOption = {
+  code: SelectOptionCode;
+  labels: LabelCollection;
+}
+
 export type ColumnDefinition = {
   code: ColumnCode;
   labels: LabelCollection;
@@ -40,6 +47,7 @@ export type ColumnDefinition = {
   | {
       data_type: 'select';
       validations: SelectColumnValidation;
+      options: SelectOption[];
     }
 );
 

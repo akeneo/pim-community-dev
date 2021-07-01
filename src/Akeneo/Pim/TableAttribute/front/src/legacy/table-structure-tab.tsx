@@ -5,7 +5,7 @@ import {TableStructureApp} from '../attribute/TableStructureApp';
 import {TableConfiguration} from '../models/TableConfiguration';
 import {DependenciesProvider} from '@akeneo-pim-community/legacy-bridge';
 import {TEMPLATES} from '../models/Template';
-import {AttributeType} from '../models/Attribute';
+import {Attribute, AttributeType} from '../models/Attribute';
 // eslint-disable-next-line @typescript-eslint/no-var-requires
 const translate = require('oro/translator');
 
@@ -69,9 +69,12 @@ class TableStructureTab extends (BaseView as {new (options: {config: TableStruct
       }
     }
 
+    const attribute: Attribute = this.getFormData();
+
     ReactDOM.render(
       <DependenciesProvider>
         <TableStructureApp
+          attribute={attribute}
           initialTableConfiguration={initialTableConfiguration}
           onChange={this.handleChange.bind(this)}
           savedColumnCodes={savedColumnCodes}

@@ -22,6 +22,7 @@ import {AddColumnModal} from './AddColumnModal';
 import {DeleteColumnModal} from './DeleteColumnModal';
 import {fetchActivatedLocales} from '../fetchers/LocaleFetcher';
 import {ColumnDefinitionProperties} from './ColumnDefinitionProperties';
+import {Attribute} from "../models/Attribute";
 
 const EmptyTableCell = styled(Table.Cell)`
   width: 44px;
@@ -41,6 +42,7 @@ const EmptyTableTitle = styled.div`
 `;
 
 type TableStructureAppProps = {
+  attribute: Attribute;
   initialTableConfiguration: TableConfiguration;
   onChange: (tableConfiguration: TableConfiguration) => void;
   savedColumnCodes: ColumnCode[];
@@ -54,6 +56,7 @@ const TableStructureActionCell = styled(Table.ActionCell)`
 `;
 
 const TableStructureApp: React.FC<TableStructureAppProps> = ({
+  attribute,
   initialTableConfiguration,
   onChange,
   savedColumnCodes,
@@ -76,6 +79,7 @@ const TableStructureApp: React.FC<TableStructureAppProps> = ({
   const [savedColumnIds, setSavedColumnIds] = React.useState<string[]>([]);
 
   React.useEffect(() => {
+    // TODO Cache this
     fetchActivatedLocales(router).then((activeLocales: Locale[]) => setActiveLocales(activeLocales));
   }, [router]);
 
@@ -224,6 +228,7 @@ const TableStructureApp: React.FC<TableStructureAppProps> = ({
 
   const ColumnDefinitionColumn = selectedColumn ? (
     <ColumnDefinitionProperties
+      attribute={attribute}
       selectedColumn={selectedColumn}
       catalogLocaleCode={userContext.get('catalogLocale')}
       activeLocales={activeLocales}

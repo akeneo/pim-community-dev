@@ -4,12 +4,7 @@ import {ColumnCode, ColumnDefinition, ColumnType, DATA_TYPES} from '../models/Ta
 import {useUserContext, useTranslate, LabelCollection} from '@akeneo-pim-community/shared';
 import {LocaleLabel} from './LocaleLabel';
 import styled from 'styled-components';
-
-const FieldsList = styled.div`
-  gap: 20px;
-  display: flex;
-  flex-direction: column;
-`;
+import {FieldsList} from "../shared/FieldsList";
 
 type AddColumnModalProps = {
   close: () => void;

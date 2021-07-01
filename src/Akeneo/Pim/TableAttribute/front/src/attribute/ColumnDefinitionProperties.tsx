@@ -1,19 +1,20 @@
 import React from 'react';
-import {Field, Helper, NumberInput, SectionTitle, TextInput} from 'akeneo-design-system';
+import {Button, Field, Helper, NumberInput, SectionTitle, TextInput, useBooleanState} from 'akeneo-design-system';
 import {getLabel, Locale, LocaleCode, useTranslate} from '@akeneo-pim-community/shared';
 import {ColumnCode, ColumnValidation} from '../models/TableConfiguration';
 import styled from 'styled-components';
 import {ColumnDefinitionWithId} from './TableStructureApp';
 import {Checkbox} from '@akeneo-pim-community/connectivity-connection/src/common';
+import {ManageOptionsModal} from "./ManageOptionsModal";
+import {Attribute} from "../models/Attribute";
+import {FieldsList} from "../shared/FieldsList";
 
-const FieldsList = styled.div`
-  display: flex;
-  flex-direction: column;
-  gap: 20px;
-  margin: 20px 0;
-`;
+const ManageOptionsButtonContainer = styled.div`
+  text-align: right;
+`
 
 type ColumnDefinitionPropertiesProps = {
+  attribute: Attribute;
   selectedColumn: ColumnDefinitionWithId;
   catalogLocaleCode: LocaleCode;
   activeLocales: Locale[];
@@ -23,6 +24,7 @@ type ColumnDefinitionPropertiesProps = {
 };
 
 const ColumnDefinitionProperties: React.FC<ColumnDefinitionPropertiesProps> = ({
+  attribute,
   selectedColumn,
   catalogLocaleCode,
   activeLocales,
@@ -31,6 +33,7 @@ const ColumnDefinitionProperties: React.FC<ColumnDefinitionPropertiesProps> = ({
   isDuplicateColumnCode,
 }) => {
   const translate = useTranslate();
+  const [isManageOptionsOpen, openManageOption, closeManageOption] = useBooleanState();
 
   const handleValidationChange = (validation: ColumnValidation) => {
     selectedColumn.validations = {...selectedColumn.validations, ...validation};
@@ -89,6 +92,18 @@ const ColumnDefinitionProperties: React.FC<ColumnDefinitionPropertiesProps> = ({
             {translate('pim_table_attribute.validations.decimals_allowed')}
           </Checkbox>
         </>
+      )}
+      {selectedColumn.data_type === 'select' && (
+        <ManageOptionsButtonContainer>
+          <Button onClick={openManageOption} ghost size="small" level="tertiary">TODO Manage options</Button>
+          {isManageOptionsOpen &&
+            <ManageOptionsModal
+              attribute={attribute}
+              columnDefinition={selectedColumn}
+              onClose={closeManageOption}
+            />
+          }
+        </ManageOptionsButtonContainer>
       )}
     </>
   );

@@ -14,9 +14,9 @@ type TwoColumnsLayoutProps = {
   rightColumn: React.ReactElement;
 };
 
-const TwoColumnsLayout: React.FC<TwoColumnsLayoutProps> = ({rightColumn, children}) => {
+const TwoColumnsLayout: React.FC<TwoColumnsLayoutProps> = ({rightColumn, children, ...rest}) => {
   return (
-    <TwoColumnsLayoutContainer>
+    <TwoColumnsLayoutContainer {...rest}>
       {children}
       <div>{rightColumn}</div>
     </TwoColumnsLayoutContainer>
