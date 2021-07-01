@@ -8,9 +8,37 @@ pim_datagrid:
   no_entities:
     proposal: レビューする提案はありません
     product_draft: レビューする商品の下書きはありません。
+  no_entities.published product: 公開済の商品はありません
   no_results:
     proposal: レビュー提案がありません。検索条件を変更してください。
     product_draft: レビューする商品の下書きがありません。検索条件を変更してください。
+  no_results.published product: 検索した公開済の商品はありません。
+  workflow:
+    partial_approve: 商品 {{ product }} の属性 {{ attribute }} に対する変更を承認
+    partial_reject: 商品 {{ product }} の属性 {{ attribute }} に対する変更を拒否
+    by: '承認:'
+    at: '日時:'
+    status:
+      in_progress: 処理中
+      ready: 承認待ち
+      can_be_partially_reviewed: 部分的にレビュー可
+      can_not_be_approved: レビュー不可
+      can_not_be_deleted: 削除不可
+    status_message:
+      ready: 承認待ち
+      in_progress: この提案は現在進行中であり未提出です
+      can_be_partially_reviewed: 値に加えられた変更のいくつかに対する編集権限がないためレビューすることができる提案は一部に限定されます。権限の変更を希望する場合は管理者に問い合わせてください。
+      can_not_be_approved: 値に加えられた全ての変更に対する編集権限がないため提案をレビューすることができません。権限の変更を希望する場合は管理者に問い合わせてください。
+      can_not_be_deleted: 値に加えられた全ての変更に対する編集権限がないため提案を削除することができません。権限の変更を希望する場合は管理者に問い合わせてください。
+    draft_in_progress: この商品の下書きは {{ author }} によって進行中です。
+    no_diff: 値 "{{ value }}" は、提案とワーキングコピー間で同じです。
+    new_value: '新しい値:'
+    old_value: '以前の値:'
+    see_more: さらに表示
+    actions:
+      approve_all: すべて承認
+      refuse_all: すべて拒否
+    characters_left: ']-Inf, 1]残り {{ count }} 文字|]1, Inf[残り {{ count }} 文字'
 pimee_datagrid:
   cells:
     expand:
@@ -23,28 +51,33 @@ pimee_workflow:
         original_product: ワーキングコピーを編集
     proposal:
       modal.title: コメントを残す (オプションとして255 文字まで)
+    removing_error: 公開済の商品にリンクされたエンティティを削除することはできません。
   proposal:
     overview: "]-Inf, 1]{{ count }} 提案|]1, Inf[{{ count }} 提案"
+    selected: "]-Inf, 1]{{ count }} 個の提案を選択済み|]1, Inf[{{ count }} 個の提案を選択済み"
     mass_action_group:
       review:
         label: 一括アクション
-    partial_accept:
-      modal.title: 部分的な情報を承認
-      modal.label: コメント (任意)
-      modal.error: エラーが発生しました。提案が部分的に承認されていません
-      modal.success: 提案は、部分的に正常に検証されました
+    approve:
+      title: 提案を承諾
+      success: 提案が正常に適用されました。
+      error: "この提案は、次のエラーのため適用できません。エラー：{{ error }}"
+    reject:
+      title: 提案を拒否
+      success: 提案は拒否されました
+      error: "この提案は、次のエラーのため拒否できません。エラー: {{ error }}"
+    remove:
+      title: 提案を削除
+      success: この提案は削除されました
+      error: "この提案は、次のエラーのため削除できません。エラー: {{ error }}"
     partial_approve:
-      modal:
-        title: 部分的変更を承認
-        label: コメント (任意)
-        error: エラーが発生しました。提案が部分的に承認されていません
-        success: 変更は正常に承認されました
+      title: 部分的な情報を承認
+      success: 提案は、部分的に正常に検証されました
+      error: "この提案は、次のエラーのため部分的に承認できません。エラー: {{ error }}"
     partial_reject:
-      modal:
-        title: 部分的変更を拒否
-        label: コメント (任意)
-        error: エラーが発生しました、提案が部分的に拒否されています
-        success: 変更は正常に拒否されました。
+      title: 部分的変更を拒否
+      success: 変更は正常に拒否されました。
+      error: "この提案は、次のエラーのため部分的に拒否できません。エラー: {{ error }}"
 batch_jobs:
   csv_published_product_export:
     label: 公開済み商品をCSVにエクスポート
@@ -84,6 +117,11 @@ batch_jobs:
     perform.label: XSLX公開商品の一覧表コンテキストのクイックエクスポート
   publish_product:
     perform.label: 商品を公開
+  unpublish_product:
+    perform.label: 製品を非公開にする
+  default_steps:
+    clean_attribute:
+      clean_draft: 提案を消去中
 pim_notification:
   types:
     pimee_workflow_product_draft_notification_new_proposal: 新規提案
@@ -103,6 +141,8 @@ pimee_dashboard:
       product: 商品
       review: レビュー
       empty: レビュー提案はありません
+      title: レビュー提案
+      view_all: すべての提案を表示
     header.view_all: 全て表示
 pimee_enrich.entity.product:
   module:
@@ -110,6 +150,8 @@ pimee_enrich.entity.product:
       published: 公開済
       revert: 復元
     attribute:
+      can_be_updated_by_rules: "]-Inf, 1]この属性は <span>1 個のルール</span>で更新できます|]1, +Inf[この属性は <span>{{ count }} 個のルール</span>で更新できます"
+      can_be_updated_by_rules_readonly: "]-Inf, 1]この属性は 1 個のルールで更新できます|]1, +Inf[この属性は {{ count }} 個のルールで更新できます"
       value_updated: この値は現在の下書きによって更新されています
     meta:
       published_version: 公開済バージョン
@@ -157,13 +199,6 @@ pimee_enrich.entity.published_product:
       label: 非公開にする
 pimee_enrich.entity.product_draft:
   flash:
-    approve:
-      success: 提案が正常に適用されました。
-      fail: "この提案は、次のエラーのため適用できません。エラー：{{ error }}"
-    reject:
-      success: 提案は拒否されました。
-    remove:
-      success: 提案は削除されました。
     update:
       success: 商品の下書きは正常に保存されました
       fail: 商品の下書きを更新できませんでした。
@@ -173,14 +208,10 @@ pimee_enrich.entity.product_draft:
       skip: 提案のための商品の下書きは送信されていません。値が未編集のためです
   module:
     proposal:
-      accept: 提案を承認
-      accept_selected: 選択した提案を受け入れる
-      reject: 提案を拒否
-      reject_selected: 選択した提案を拒否
-      remove: 提案を削除
-      comment_title: 提案をコメント (オプション - 最大 255 文字)
       comment_chars: 文字数
       confirm: 送信
+      accept_selected: 選択した提案を受け入れる
+      reject_selected: 選択した提案を拒否
     edit:
       discard_changes: 未保存の変更は失われます。変更を保存せずに、下書きを承諾へ送信しますか？
       discard_changes_title: 本当にこの下書きを送信してもよろしいですか？
@@ -210,3 +241,7 @@ pim_title:
   pimee_workflow_proposal_index: 提案
   pimee_workflow_published_product_index: 公開済み商品
   pimee_workflow_published_product_view: 公開済商品 {{ product.label }} | 表示
+pim_analytics:
+  info_type:
+    nb_published_products: 公開済み商品数
+    nb_product_drafts: 商品の下書き数

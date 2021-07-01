@@ -15,8 +15,8 @@ akeneo_assetmanager:
       create: アセットを作成
       edit: アセットを編集
       delete: アセットを削除
-      delete_all: アセットをすべて削除
       list_product: アセットにリンクされた商品を一覧表示
+      execute_naming_conventions: 命名規則を実行
     attribute:
       create: アセットファミリーに属性を追加
       edit: アセットファミリーの属性を編集
@@ -24,12 +24,38 @@ akeneo_assetmanager:
     option:
       edit: オプションを編集
       delete: オプションを削除
+  jobs:
+    asset_manager_execute_naming_convention:
+      error: 'アセット「{{ asset }}」で命名規則が失敗しました'
+    asset_manager_mass_delete:
+      error: '一括削除はアセット "{{ assets }}" で失敗しました。エラー: "{{ error }}"'
+    asset_manager_mass_edit:
+      error: '一括編集はアセット "{{ assets }}" で失敗しました。エラー: "{{ error }}"'
 pim_import_export:
   widget:
     last_operations:
       job_type:
         asset_manager_compute_transformations: "アセット変換を計算"
         asset_manager_link_assets_to_products: "アセットを商品にリンク"
+        asset_manager_execute_naming_convention: "アセットファミリーの命名規則を実行する"
+pim_analytics:
+  info_type:
+    api_connection: API 接続数
+    nb_asset_families: アセットファミリーの数
+    max_number_of_assets_per_asset_family: アセットファミリーごとの最大アセット数
+    average_number_of_values_per_assets: アセットごとの値の平均数
+    average_number_of_assets_per_asset_family: アセットファミリーごとの平均アセット数
+    max_number_of_attributes_per_asset_family: アセットファミリーごとの最大属性数
+    average_number_of_attributes_per_asset_family: アセットファミリーごとの平均属性数
+    data_source:
+      tracked: 追跡中のデータ転送先
+      untracked: 追跡なしのデータ転送先
+    data_destination:
+      tracked: 追跡中のデータソース
+      untracked: 追跡なしのデータソース
+    other:
+      tracked: 追跡中のその他
+      untracked: 追跡なしのその他
 #average_percentage_localizable_only_attributes: Average percentage of localizable only attributes per asset family
 #average_percentage_scopable_only_attributes: Average percentage of scopable only attributes per asset family
 #average_percentage_scopable_and_localizable_attributes: Average percentage of localizable and scopable attributes per asset family
@@ -37,7 +63,24 @@ pim_catalog_asset_collection: アセットコレクション
 pim_datagrid:
   cells:
     type:
+      asset_manager_execute_naming_convention: アセットファミリーの命名規則を実行する
       asset_manager_link_assets_to_products: アセットを商品にリンク
+      asset_manager_compute_transformations: アセット変換を計算
+      asset_manager_mass_delete_assets: アセットを一括削除
+      asset_manager_mass_edit_assets: アセットを一括編集
 batch_jobs:
   default_steps:
+    execute_naming_convention: アセットファミリーの命名規則を実行する
     link_assets_to_products: アセットを商品にリンク
+    compute_transformations: アセット変換を計算
+job_execution:
+  summary:
+    assets: アセット
+pim_mass_edit.notification.asset_manager_mass_delete_assets:
+  warning: アセットは警告付きで正常に削除されました
+  success: アセットは正常に削除されました
+  error: アセットの削除に失敗しました
+pim_mass_edit.notification.asset_manager_mass_edit_assets:
+  warning: アセットは警告付きで正常に編集されました
+  success: アセットは正常に編集されました
+  error: アセットの編集に失敗しました

@@ -3,6 +3,12 @@ pim_enrich:
     attribute:
       property:
         is_read_only: 読み取り専用
+pimee_import_export:
+  entity:
+    job_instance:
+      flash:
+        update:
+          fail_empty_permission: ジョブの編集を許可するユーザーグループを少なくとも 1 つ選択する必要があります
 pimee_enrich.entity.category:
   module:
     permissions:
@@ -50,3 +56,16 @@ batch_jobs:
     send_for_approval: 承認のために送信
 pim_title:
   pimee_enrich_locale_edit: ロケール | 編集
+pim_analytics:
+  info_type:
+    nb_custom_locale_accesses: カスタムロケールのアクセス数
+    nb_custom_category_accesses: カスタムカテゴリのアクセスの数
+    nb_custom_attribute_group_accesses: カスタム属性グループのアクセスの数
+category.permissions:
+  view.label: 商品の表示を許可済
+  edit.label: 商品の編集を許可済
+  own.label: 商品の所有を許可済
+  own.help: 商品をレビュー、公開、非公開、分類、および関連付けます
+  no_access_to_products: どのツリーにおいても商品データへのアクセス権限がありません。管理者に問い合わせてください。
+  apply_on_children.label: 下位への変更を適用
+  apply_on_children.help: 下位の既存の権限は維持されます
