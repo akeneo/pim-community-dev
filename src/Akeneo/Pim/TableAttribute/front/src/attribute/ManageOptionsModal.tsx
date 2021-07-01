@@ -1,5 +1,16 @@
 import React from 'react';
-import {Button, Field, IconButton, Modal, SectionTitle, Table, TextInput, uuid, CloseIcon} from "akeneo-design-system";
+import {
+  Button,
+  Field,
+  IconButton,
+  Modal,
+  SectionTitle,
+  Table,
+  TextInput,
+  uuid,
+  CloseIcon,
+  Helper
+} from "akeneo-design-system";
 import {getLabel, Locale, LocaleCode, useRouter, useTranslate, useUserContext} from "@akeneo-pim-community/shared";
 import {ColumnDefinition, SelectOption} from "../models/TableConfiguration";
 import {Attribute} from "../models/Attribute";
@@ -18,6 +29,14 @@ const OptionsTwoColumnsLayout = styled(TwoColumnsLayout)`
   height: calc(100vh - 150px);
 `
 
+const ManageOptionCell = styled(Table.Cell)`
+  vertical-align: top;
+`
+
+const CellFieldContainer = styled.div`
+  flex-grow: 1;
+`
+
 type ManageOptionsModalProps = {
   onClose: () => void;
   attribute: Attribute;
@@ -26,8 +45,8 @@ type ManageOptionsModalProps = {
 
 type SelectOptionWithId = SelectOption & {
   id: string;
+  violations?: string[];
 }
-
 
 const ManageOptionsModal: React.FC<ManageOptionsModalProps> = ({
   onClose,
@@ -41,12 +60,36 @@ const ManageOptionsModal: React.FC<ManageOptionsModalProps> = ({
   const [activedLocales, setActivatedLocales] = React.useState<Locale[]>();
   const [selectedOptionId, setSelectedOptionId] = React.useState<string | undefined>(undefined);
   const [options, setOptions] = React.useState<SelectOptionWithId[]>();
+  const [autoCompleteCode, setAutoCompleteCode] = React.useState<boolean>(false);
   const currentLocale = 'en_US';
   const columnLabel = getLabel(columnDefinition.labels, userContext.get('catalogLocale'), columnDefinition.code);
 
   React.useEffect(() => {
     fetchActivatedLocales(router).then((activeLocales: Locale[]) => setActivatedLocales(activeLocales));
   }, [router]);
+
+  const setOptionsWithCheck = (options: SelectOptionWithId[]) => {
+    const optionCodes = options.map(option => option.code);
+    const duplicates = optionCodes.filter(optionCode => {
+      return options.filter(o => o.code === optionCode).length > 1;
+    });
+
+    setOptions(options.map((option, index) => {
+      const violations = [];
+      if (index !== options.length - 1) {
+        if (option.code === '') {
+          violations.push(translate('pim_table_attribute.validations.column_code_must_be_filled'));
+        }
+        if (option.code !== '' && !/^[a-zA-Z0-9_]+$/.exec(option.code)) {
+          violations.push(translate('pim_table_attribute.validations.invalid_code'));
+        }
+        if (option.code !== '' && duplicates.includes(option.code)) {
+          violations.push(translate('pim_table_attribute.validations.duplicated_select_code'));
+        }
+      }
+      return { ...option, violations }
+    }));
+  }
 
   React.useEffect(() => {
     const options = [
@@ -57,10 +100,9 @@ const ManageOptionsModal: React.FC<ManageOptionsModalProps> = ({
       {id: uuid(), code: 'option5', labels: {'en_US': 'Option 5'}},
       {id: uuid(), code: '', labels: {}}
     ] as SelectOptionWithId[];
-    setOptions(options);
+    setOptionsWithCheck(options);
     setSelectedOptionId(options[0].id);
   }, []);
-
 
   if (!activedLocales || typeof options === 'undefined') {
     return <div>TODO Loading</div>
@@ -73,11 +115,14 @@ const ManageOptionsModal: React.FC<ManageOptionsModalProps> = ({
     if (index >= 0) {
       const option = options[index];
       option.labels[localeCode] = label;
+      if (autoCompleteCode) {
+        option.code = label.replace(/[^a-zA-Z0-9_]/gi, '_').substring(0, 100);
+      }
       options[index] = option;
       if (index === options.length - 1) {
         options.push({ id: uuid(), code: '', labels: {} });
       }
-      setOptions([...options]);
+      setOptionsWithCheck(options);
     }
   }
 
@@ -85,7 +130,10 @@ const ManageOptionsModal: React.FC<ManageOptionsModalProps> = ({
     const index = options.findIndex(option => option.id === optionId);
     if (index >= 0) {
       options[index] = {...options[index], code};
-      setOptions([...options]);
+      if (index === options.length - 1) {
+        options.push({ id: uuid(), code: '', labels: {} });
+      }
+      setOptionsWithCheck(options);
     }
   }
 
@@ -94,7 +142,16 @@ const ManageOptionsModal: React.FC<ManageOptionsModalProps> = ({
       const index = options.findIndex(option => option.id === optionId);
       setSelectedOptionId(options[index + 1].id);
     }
-    setOptions([...options.filter(option => option.id !== optionId)]);
+    setOptionsWithCheck(options.filter(option => option.id !== optionId));
+  }
+
+  const handleFocus = (optionId: string) => {
+    const option = options.find(option => option.id === optionId) as SelectOptionWithId;
+    setAutoCompleteCode(typeof option.labels[currentLocale] === 'undefined' || option.labels[currentLocale] === '');
+  }
+
+  const handleBlur = () => {
+    setAutoCompleteCode(false);
   }
 
   const LabelTranslations = <>
@@ -108,6 +165,7 @@ const ManageOptionsModal: React.FC<ManageOptionsModalProps> = ({
           <TextInput
             onChange={label => handleLabelChange(selectedOptionId, locale.code, label)}
             value={selectedOption.labels[locale.code] ?? ''}
+            maxLength={255}
           />
         </Field>
       ))}
@@ -138,19 +196,30 @@ const ManageOptionsModal: React.FC<ManageOptionsModalProps> = ({
                   isSelected={option.id === selectedOptionId}
                   onClick={() => setSelectedOptionId(option.id)}
                 >
-                  <Table.Cell>
-                    <TextInput
-                      onChange={label => handleLabelChange(option.id, currentLocale, label)}
-                      value={option.labels[currentLocale] || ''}
-                      placeholder={index === options.length - 1 ? translate('pim_table_attribute.form.attribute.new_option_placeholder') : ''}
-                    />
-                  </Table.Cell>
-                  <Table.Cell>
-                    <TextInput
-                      onChange={code => handleCodeChange(option.id, code)}
-                      value={option.code}
-                    />
-                  </Table.Cell>
+                  <ManageOptionCell>
+                    <CellFieldContainer>
+                      <TextInput
+                        onChange={label => handleLabelChange(option.id, currentLocale, label)}
+                        value={option.labels[currentLocale] || ''}
+                        placeholder={index === options.length - 1 ? translate('pim_table_attribute.form.attribute.new_option_placeholder') : ''}
+                        onFocus={() => handleFocus(option.id)}
+                        onBlur={handleBlur}
+                        maxLength={255}
+                      />
+                    </CellFieldContainer>
+                  </ManageOptionCell>
+                  <ManageOptionCell>
+                    <CellFieldContainer>
+                      <TextInput
+                        onChange={code => handleCodeChange(option.id, code)}
+                        value={option.code}
+                        maxLength={100}
+                      />
+                      {(option.violations ?? []).map(violation => (
+                        <Helper level="error" inline>{violation}</Helper>
+                      ))}
+                    </CellFieldContainer>
+                  </ManageOptionCell>
                   <Table.ActionCell>
                     {index !== options.length - 1 && <IconButton
                       ghost="borderless"
