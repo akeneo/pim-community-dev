@@ -36,8 +36,6 @@ final class SelectOptionCollection
      */
     public static function fromNormalized(array $options): self
     {
-        Assert::allIsArray($options);
-
         return new self(\array_map(
             fn (array $normalizedOption): SelectOption => SelectOption::fromNormalized($normalizedOption),
             $options

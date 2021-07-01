@@ -29,20 +29,24 @@ final class ValidationCollection
     }
 
     /**
-     * @param array<string, mixed> $validations
+     * @param array<string, mixed>|\stdClass $validations
      */
-    public static function fromNormalized(array $validations): ValidationCollection
+    public static function fromNormalized($validations): ValidationCollection
     {
+        if ($validations instanceof \stdClass) {
+            $validations = [];
+        }
+        Assert::isArray($validations);
         Assert::allStringNotEmpty(array_keys($validations));
 
         return new self($validations);
     }
 
     /**
-     * @return array<string, mixed>
+     * @return array<string, mixed>|\stdClass
      */
-    public function normalize(): array
+    public function normalize()
     {
-        return $this->validations;
+        return 0 === count($this->validations) ? (object) [] : $this->validations;
     }
 }

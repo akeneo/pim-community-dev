@@ -44,15 +44,29 @@ class LabelCollectionSpec extends ObjectBehavior
         $this->shouldThrow(\InvalidArgumentException::class)->duringInstantiation();
     }
 
-    function it_returns_the_labels()
+    function it_can_be_instantiated_with_a_stdclass()
+    {
+        $this->beConstructedThrough('fromNormalized', [new \stdClass()]);
+
+        $this->normalize()->shouldBeLike((object) []);
+    }
+
+    function it_normalizes_labels()
     {
         $this->beConstructedThrough('fromNormalized', [[
             'en_US' => '',
             'fr_FR' => '',
         ]]);
-        $this->labels()->shouldBe([
+        $this->normalize()->shouldBe([
             'en_US' => '',
             'fr_FR' => '',
         ]);
+    }
+
+    function it_normalizes_empty_label()
+    {
+        $this->beConstructedThrough('fromNormalized', [[]]);
+
+        $this->normalize()->shouldBeLike((object) []);
     }
 }

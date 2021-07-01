@@ -38,7 +38,7 @@ class NumberColumnSpec extends ObjectBehavior
     function it_has_labels()
     {
         $this->labels()->shouldHaveType(LabelCollection::class);
-        $this->labels()->labels()->shouldReturn(['en_US' => 'Quantities', 'fr_FR' => 'Quantités']);
+        $this->labels()->normalize()->shouldReturn(['en_US' => 'Quantities', 'fr_FR' => 'Quantités']);
     }
 
     function it_can_be_normalized()

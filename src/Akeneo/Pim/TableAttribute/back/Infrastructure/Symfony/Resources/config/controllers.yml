@@ -1,0 +1,8 @@
+services:
+    Akeneo\Pim\TableAttribute\Infrastructure\Controller\InternalApi\GetSelectOptionsController:
+        public: true
+        arguments:
+            - '@pim_catalog.repository.attribute'
+            - '@Akeneo\Pim\TableAttribute\Domain\TableConfiguration\Factory\ColumnFactory'
+            - '@Akeneo\Pim\TableAttribute\Domain\TableConfiguration\Repository\SelectOptionCollectionRepository'
+            - '@oro_security.security_facade'

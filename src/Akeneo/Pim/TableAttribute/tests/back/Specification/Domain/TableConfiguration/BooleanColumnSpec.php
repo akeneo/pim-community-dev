@@ -54,7 +54,7 @@ class BooleanColumnSpec extends ObjectBehavior
     function it_has_labels()
     {
         $this->labels()->shouldHaveType(LabelCollection::class);
-        $this->labels()->labels()->shouldReturn(['en_US' => 'Is allergenic', 'fr_FR' => 'Allergène']);
+        $this->labels()->normalize()->shouldReturn(['en_US' => 'Is allergenic', 'fr_FR' => 'Allergène']);
     }
 
     function it_can_be_normalized()

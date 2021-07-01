@@ -30,17 +30,11 @@ class TextColumn extends AbstractColumnDefinition
     {
         Assert::keyExists($normalized, 'code');
 
-        $labels = $normalized['labels'] ?? [];
-        Assert::isArray($labels);
-
-        $validations = $normalized['validations'] ?? [];
-        Assert::isArray($validations);
-
         return new self(
             ColumnCode::fromString($normalized['code']),
             ColumnDataType::fromString(self::DATATYPE),
-            LabelCollection::fromNormalized($labels),
-            ValidationCollection::fromNormalized($validations),
+            LabelCollection::fromNormalized($normalized['labels'] ?? []),
+            ValidationCollection::fromNormalized($normalized['validations'] ?? [])
         );
     }
 }

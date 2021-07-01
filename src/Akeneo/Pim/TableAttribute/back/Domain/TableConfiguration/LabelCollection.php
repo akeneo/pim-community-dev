@@ -33,12 +33,14 @@ final class LabelCollection
     }
 
     /**
-     * @param array<string, string> $normalizedLabels
-     *
-     * @return static
+     * @param array<string, string>|\stdClass $normalizedLabels
      */
-    public static function fromNormalized(array $normalizedLabels): self
+    public static function fromNormalized($normalizedLabels): self
     {
+        if ($normalizedLabels instanceof \stdClass) {
+            $normalizedLabels = [];
+        }
+        Assert::isArray($normalizedLabels);
         Assert::allString($normalizedLabels);
         Assert::allStringNotEmpty(\array_keys($normalizedLabels));
 
@@ -46,10 +48,10 @@ final class LabelCollection
     }
 
     /**
-     * @return array<string, string>
+     * @return array<string, string>|\stdClass
      */
-    public function labels(): array
+    public function normalize()
     {
-        return $this->labels;
+        return 0 === count($this->labels) ? (object) [] : $this->labels;
     }
 }

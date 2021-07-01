@@ -27,10 +27,14 @@ final class SelectOption
     }
 
     /**
-     * @param array<string, mixed> $normalized
+     * @param array<string, mixed>|\stdClass $normalized
      */
-    public static function fromNormalized(array $normalized): self
+    public static function fromNormalized($normalized): self
     {
+        if ($normalized instanceof \stdClass) {
+            $normalized = [];
+        }
+        Assert::isArray($normalized);
         Assert::keyExists($normalized, 'code');
         Assert::stringNotEmpty($normalized['code']);
 
@@ -47,7 +51,7 @@ final class SelectOption
      */
     public function normalize(): array
     {
-        $labels = $this->labels->labels();
+        $labels = $this->labels->normalize();
 
         return [
             'code' => $this->code,

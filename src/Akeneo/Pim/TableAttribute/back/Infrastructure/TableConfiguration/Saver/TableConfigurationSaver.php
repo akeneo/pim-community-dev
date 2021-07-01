@@ -57,7 +57,7 @@ class TableConfigurationSaver implements SaverInterface
                 fn (array $rawColumnDefinition): ColumnDefinition =>  $this->columnFactory->createFromNormalized(
                     $rawColumnDefinition
                 ),
-                $attribute->getRawTableConfiguration(),
+                $attribute->getRawTableConfiguration()
             )
         );
         $this->tableConfigurationRepository->save($attribute->getCode(), $tableConfiguration);

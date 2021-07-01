@@ -22,12 +22,6 @@ class SelectOptionCollectionSpec extends ObjectBehavior
         $this->shouldHaveType(SelectOptionCollection::class);
     }
 
-    function it_cannot_be_instantiated_with_invalid_data()
-    {
-        $this->beConstructedThrough('fromNormalized', [['sugar', 'salt']]);
-        $this->shouldThrow(\InvalidArgumentException::class)->duringInstantiation();
-    }
-
     function it_can_be_instantiated_with_no_option()
     {
         $this->beConstructedThrough('empty');

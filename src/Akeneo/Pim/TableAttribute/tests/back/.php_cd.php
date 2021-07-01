@@ -21,12 +21,14 @@ $rules = [
 
             // symfony dependencies
             'Symfony\Component\DependencyInjection',
-            'Symfony\Component\HttpKernel\Bundle\Bundle',
+            'Symfony\Component\HttpKernel',
             'Symfony\Component\Config\FileLocator',
             'Symfony\Component\Validator',
             'Symfony\Component\Serializer',
             'Symfony\Component\EventDispatcher\EventSubscriberInterface',
             'Symfony\Component\EventDispatcher\GenericEvent',
+            'Symfony\Component\HttpFoundation',
+            'Symfony\Component\Security\Core\Exception\AccessDeniedException',
 
             // doctrine
             'Doctrine\Common\EventSubscriber',
@@ -55,6 +57,7 @@ $rules = [
             'Akeneo\Pim\Enrichment\Component\Product\Validator\ConstraintGuesserInterface',
             'Akeneo\Pim\Enrichment\Component\Product\Connector\ArrayConverter\StandardToFlat\Product\ValueConverter\AbstractValueConverter',
             'Akeneo\Pim\Enrichment\Component\Product\Connector\ArrayConverter\FlatToStandard\ValueConverter\ValueConverterInterface',
+            'Oro\Bundle\SecurityBundle\SecurityFacade',
         ]
     )->in('Akeneo\Pim\TableAttribute\Infrastructure'),
 ];

@@ -38,7 +38,7 @@ class TextColumnSpec extends ObjectBehavior
     function it_has_labels()
     {
         $this->labels()->shouldHaveType(LabelCollection::class);
-        $this->labels()->labels()->shouldReturn(['en_US' => 'Ingredients', 'fr_FR' => 'Ingrédients']);
+        $this->labels()->normalize()->shouldReturn(['en_US' => 'Ingredients', 'fr_FR' => 'Ingrédients']);
     }
 
     function it_can_be_normalized()

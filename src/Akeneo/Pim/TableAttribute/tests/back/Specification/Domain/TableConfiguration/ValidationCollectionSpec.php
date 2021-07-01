@@ -36,10 +36,24 @@ class ValidationCollectionSpec extends ObjectBehavior
         $this->shouldThrow(\InvalidArgumentException::class)->duringInstantiation();
     }
 
-    function it_normalizes_itself()
+    function it_can_be_instantiated_with_a_stdclass()
+    {
+        $this->beConstructedThrough('fromNormalized', [new \stdClass()]);
+
+        $this->normalize()->shouldBeLike((object) []);
+    }
+
+    function it_normalizes_validations()
     {
         $this->beConstructedThrough('fromNormalized', [['max_length' => 255]]);
 
         $this->normalize()->shouldReturn(['max_length' => 255]);
+    }
+
+    function it_normalizes_empty_validation()
+    {
+        $this->beConstructedThrough('fromNormalized', [[]]);
+
+        $this->normalize()->shouldBeLike((object) []);
     }
 }
