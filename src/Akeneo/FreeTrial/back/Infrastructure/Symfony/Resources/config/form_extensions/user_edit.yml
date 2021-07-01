@@ -18,3 +18,23 @@ extensions:
       templateParams:
         sectionTitle: ''
         dropZone: content
+
+  pim-user-profile-form-general-tab-content:
+    module: pim/free-trial/user-edit-form/readonly-tab-content
+    parent: pim-user-profile-form-general-tab
+    position: 10
+    config:
+      template: pim/template/form/tab/section
+      templateParams:
+        sectionTitle: ''
+        dropZone: content
+
+  pim-user-profile-form-password-tab-content:
+    module: pim/free-trial/user-edit-form/readonly-tab-content
+    parent: pim-user-profile-form-password-tab
+    position: 10
+    config:
+      template: pim/template/form/tab/section
+      templateParams:
+        sectionTitle: ''
+        dropZone: content
