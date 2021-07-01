@@ -1,21 +1,13 @@
 import React, {FC, useContext, useEffect, useState} from 'react';
-import {AkeneoThemedProps, Breadcrumb, ChannelsIllustration, getColor, getFontSize} from 'akeneo-design-system';
+import {Breadcrumb} from 'akeneo-design-system';
 import {useTranslate} from '../../shared/translate';
-import {PageHeader} from '../../common';
+import {PageHeader, PageContent} from '../../common';
 import {UserButtons} from '../../shared/user';
 import styled from 'styled-components';
 import {useRouter} from '../../shared/router/use-router';
 import {UserContext} from '../../shared/user';
 import {useHistory} from 'react-router';
-
-const PageContent = styled.div`
-    text-align: center;
-    margin-top: 196px;
-
-    & > * {
-        margin-bottom: 20px;
-    }
-`;
+import MarketplaceHelper from '../components/MarketplaceHelper';
 
 export const Marketplace: FC = () => {
     const translate = useTranslate();
@@ -23,7 +15,7 @@ export const Marketplace: FC = () => {
     const history = useHistory();
     const generateUrl = useRouter();
     const dashboardHref = `#${generateUrl('akeneo_connectivity_connection_audit_index')}`;
-    const [userProfile, setUserProfile] = useState<string | null >(null);
+    const [userProfile, setUserProfile] = useState<string | null>(null);
 
     useEffect(() => {
         const profile = user.get<string | null>('profile');
@@ -45,6 +37,8 @@ export const Marketplace: FC = () => {
         </Breadcrumb>
     );
 
+    const listCount = 34;
+
     return (
         <>
             <PageHeader breadcrumb={breadcrumb} userButtons={<UserButtons />}>
@@ -52,7 +46,7 @@ export const Marketplace: FC = () => {
             </PageHeader>
 
             <PageContent>
-                Extensions go here
+                <MarketplaceHelper count={listCount} />
             </PageContent>
         </>
     );
