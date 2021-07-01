@@ -38,10 +38,10 @@ datagrid:
                 label:         Complete
                 frontend_type: completeness
             created:
-                label:         Created At
+                label:         Created
                 type:          field
             updated:
-                label:         Updated At
+                label:         Updated
                 type:          field
             groups:
                 label:         Groups
@@ -218,12 +218,12 @@ datagrid:
                     type:      product_date
                     ftype:     date
                     data_name: created
-                    label:     Created At
+                    label:     Created
                 updated:
                     type:      product_date
                     ftype:     date
                     data_name: updated
-                    label:     Updated At
+                    label:     Updated
                 label_or_identifier:
                     type: label_or_identifier
                     label: Label or identifier
