@@ -60,6 +60,19 @@ final class AssetCollectionValueFactory implements ValueFactory
         }
 
         foreach ($data as $key => $value) {
+            if (!is_int($key)) {
+                throw new InvalidPropertyTypeException(
+                    $attribute->code(),
+                    $data,
+                    self::class,
+                    \sprintf(
+                        'The %s attribute requires an array of strings as data, a wrong format was detected.',
+                        $attribute->code()
+                    ),
+                    InvalidPropertyTypeException::VALID_ARRAY_STRUCTURE_EXPECTED_CODE
+                );
+            }
+
             if (!is_string($value)) {
                 throw InvalidPropertyTypeException::validArrayStructureExpected(
                     $attribute->code(),
