@@ -26,6 +26,7 @@ use Akeneo\Tool\Component\Batch\Model\StepExecution;
 use Akeneo\Tool\Component\Batch\Step\StepExecutionAwareInterface;
 use Akeneo\Tool\Component\Connector\Writer\File\ArchivableWriterInterface;
 use Akeneo\Tool\Component\Connector\Writer\File\WrittenFileInfo;
+use Box\Spout\Writer\Common\Creator\WriterEntityFactory;
 use Box\Spout\Writer\WriterInterface;
 use PhpSpec\ObjectBehavior;
 use Symfony\Component\Filesystem\Filesystem;
@@ -116,11 +117,11 @@ class EntityWithValuesWriterSpec extends ObjectBehavior
         $stepExecution->incrementSummaryInfo('write', 5)->shouldBeCalled();
         $fileWriterFactory->build([])->willReturn($writer);
         $writer->openToFile('/tmp/XLSX_Product_export_product.xlsx')->shouldBeCalled();
-        $writer->addRow(['sku' => 42, 'name' => 'bag'])->shouldBeCalled();
-        $writer->addRow(['sku' => 52, 'name' => 'sunglasses'])->shouldBeCalled();
-        $writer->addRow(['sku' => 62, 'name' => 'cap'])->shouldBeCalled();
-        $writer->addRow(['sku' => 72, 'name' => 'bob'])->shouldBeCalled();
-        $writer->addRow(['sku' => 82, 'name' => 'hat'])->shouldBeCalled();
+        $writer->addRow(WriterEntityFactory::createRowFromArray(['sku' => 42, 'name' => 'bag']))->shouldBeCalled();
+        $writer->addRow(WriterEntityFactory::createRowFromArray(['sku' => 52, 'name' => 'sunglasses']))->shouldBeCalled();
+        $writer->addRow(WriterEntityFactory::createRowFromArray(['sku' => 62, 'name' => 'cap']))->shouldBeCalled();
+        $writer->addRow(WriterEntityFactory::createRowFromArray(['sku' => 72, 'name' => 'bob']))->shouldBeCalled();
+        $writer->addRow(WriterEntityFactory::createRowFromArray(['sku' => 82, 'name' => 'hat']))->shouldBeCalled();
         $writer->close()->shouldBeCalled();
 
         $this->initialize();
@@ -159,12 +160,12 @@ class EntityWithValuesWriterSpec extends ObjectBehavior
 
         $fileWriterFactory->build([])->willReturn($writer);
         $writer->openToFile('/tmp/XLSX_Product_export_product.xlsx')->shouldBeCalled();
-        $writer->addRow(['sku', 'name'])->shouldBeCalled();
-        $writer->addRow(['sku' => 42, 'name' => 'bag'])->shouldBeCalled();
-        $writer->addRow(['sku' => 52, 'name' => 'sunglasses'])->shouldBeCalled();
-        $writer->addRow(['sku' => 62, 'name' => 'cap'])->shouldBeCalled();
-        $writer->addRow(['sku' => 72, 'name' => 'bob'])->shouldBeCalled();
-        $writer->addRow(['sku' => 82, 'name' => 'hat'])->shouldBeCalled();
+        $writer->addRow(WriterEntityFactory::createRowFromArray(['sku', 'name']))->shouldBeCalled();
+        $writer->addRow(WriterEntityFactory::createRowFromArray(['sku' => 42, 'name' => 'bag']))->shouldBeCalled();
+        $writer->addRow(WriterEntityFactory::createRowFromArray(['sku' => 52, 'name' => 'sunglasses']))->shouldBeCalled();
+        $writer->addRow(WriterEntityFactory::createRowFromArray(['sku' => 62, 'name' => 'cap']))->shouldBeCalled();
+        $writer->addRow(WriterEntityFactory::createRowFromArray(['sku' => 72, 'name' => 'bob']))->shouldBeCalled();
+        $writer->addRow(WriterEntityFactory::createRowFromArray(['sku' => 82, 'name' => 'hat']))->shouldBeCalled();
         $writer->close()->shouldBeCalled();
 
         $this->initialize();
@@ -205,15 +206,15 @@ class EntityWithValuesWriterSpec extends ObjectBehavior
         $stepExecution->incrementSummaryInfo('write', 2)->shouldBeCalled();
         $fileWriterFactory->build([])->willReturn($firstWriter, $secondWriter, $thirdWriter);
         $firstWriter->openToFile('/tmp/XLSX_Product_export_product_1.xlsx')->shouldBeCalled();
-        $firstWriter->addRow(['sku' => 42, 'name' => 'bag'])->shouldBeCalled();
-        $firstWriter->addRow(['sku' => 52, 'name' => 'sunglasses'])->shouldBeCalled();
+        $firstWriter->addRow(WriterEntityFactory::createRowFromArray(['sku' => 42, 'name' => 'bag']))->shouldBeCalled();
+        $firstWriter->addRow(WriterEntityFactory::createRowFromArray(['sku' => 52, 'name' => 'sunglasses']))->shouldBeCalled();
         $firstWriter->close()->shouldBeCalled();
         $secondWriter->openToFile('/tmp/XLSX_Product_export_product_2.xlsx')->shouldBeCalled();
-        $secondWriter->addRow(['sku' => 62, 'name' => 'cap'])->shouldBeCalled();
-        $secondWriter->addRow(['sku' => 72, 'name' => 'bob'])->shouldBeCalled();
+        $secondWriter->addRow(WriterEntityFactory::createRowFromArray(['sku' => 62, 'name' => 'cap']))->shouldBeCalled();
+        $secondWriter->addRow(WriterEntityFactory::createRowFromArray(['sku' => 72, 'name' => 'bob']))->shouldBeCalled();
         $secondWriter->close()->shouldBeCalled();
         $thirdWriter->openToFile('/tmp/XLSX_Product_export_product_3.xlsx')->shouldBeCalled();
-        $thirdWriter->addRow(['sku' => 82, 'name' => 'hat'])->shouldBeCalled();
+        $thirdWriter->addRow(WriterEntityFactory::createRowFromArray(['sku' => 82, 'name' => 'hat']))->shouldBeCalled();
         $thirdWriter->close()->shouldBeCalled();
 
         $this->initialize();
@@ -262,13 +263,13 @@ class EntityWithValuesWriterSpec extends ObjectBehavior
         $fileWriterFactory->build([])->willReturn($firstWriter, $secondWriter);
 
         $firstWriter->openToFile('/tmp/XLSX_Product_export_product_1.xlsx')->shouldBeCalled();
-        $firstWriter->addRow(['sku' => 42, 'name' => 'bag'])->shouldBeCalled();
-        $firstWriter->addRow(['sku' => 52, 'name' => 'sunglasses'])->shouldBeCalled();
+        $firstWriter->addRow(WriterEntityFactory::createRowFromArray(['sku' => 42, 'name' => 'bag']))->shouldBeCalled();
+        $firstWriter->addRow(WriterEntityFactory::createRowFromArray(['sku' => 52, 'name' => 'sunglasses']))->shouldBeCalled();
         $firstWriter->close()->shouldBeCalled();
 
         $secondWriter->openToFile('/tmp/XLSX_Product_export_product_2.xlsx')->shouldBeCalled();
-        $secondWriter->addRow(['sku' => 62, 'name' => 'bob'])->shouldBeCalled();
-        $secondWriter->addRow(['sku' => 72, 'name' => 'hat'])->shouldBeCalled();
+        $secondWriter->addRow(WriterEntityFactory::createRowFromArray(['sku' => 62, 'name' => 'bob']))->shouldBeCalled();
+        $secondWriter->addRow(WriterEntityFactory::createRowFromArray(['sku' => 72, 'name' => 'hat']))->shouldBeCalled();
         $secondWriter->close()->shouldBeCalled();
 
         $this->initialize();

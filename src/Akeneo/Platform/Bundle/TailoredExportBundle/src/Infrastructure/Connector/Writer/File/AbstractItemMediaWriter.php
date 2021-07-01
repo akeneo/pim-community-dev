@@ -22,6 +22,7 @@ use Akeneo\Tool\Component\Batch\Model\StepExecution;
 use Akeneo\Tool\Component\Batch\Step\StepExecutionAwareInterface;
 use Akeneo\Tool\Component\Connector\Writer\File\ArchivableWriterInterface;
 use Akeneo\Tool\Component\Connector\Writer\File\WrittenFileInfo;
+use Box\Spout\Writer\Common\Creator\WriterEntityFactory;
 use Box\Spout\Writer\WriterInterface;
 use Symfony\Component\Filesystem\Filesystem;
 
@@ -90,8 +91,8 @@ abstract class AbstractItemMediaWriter implements
                 $this->addHeadersIfNeeded($processedTailoredExport->getItems());
             }
 
-            $this->writer->addRow($processedTailoredExport->getItems());
-            $this->writeMedia($processedTailoredExport->getExtractedMediaCollection());
+            $this->writer->addRow(WriterEntityFactory::createRowFromArray($processedTailoredExport->getItems());
+            $this->writeMedia($processedTailoredExport->getExtractedMediaCollection()));
             $this->numberOfWrittenLines++;
         }
 
@@ -207,7 +208,7 @@ abstract class AbstractItemMediaWriter implements
             return;
         }
 
-        $this->writer->addRow(array_keys($item));
+        $this->writer->addRow(WriterEntityFactory::createRowFromArray(array_keys($item)));
     }
 
     private function isMaxLinesPerFileReached(): bool
