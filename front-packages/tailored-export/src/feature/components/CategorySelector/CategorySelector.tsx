@@ -63,7 +63,7 @@ const CategorySelector = ({
     if (!shouldIncludeSubCategories || selectedCategoryCodes.includes(category.code)) return false;
 
     return isParentCategoryIsSelected(parentCategory);
-  }
+  };
 
   const handleCheckCategory = (value: string) => {
     const categoryCodeIsSelected = selectedCategoryCodes.includes(value);
@@ -123,7 +123,7 @@ const CategorySelector = ({
             selectable: true,
           })
         ),
-      }
+      };
     },
     [catalogLocale, router]
   );

@@ -85,13 +85,24 @@ test('it allow to exclude children to the selection', () => {
     operator: 'IN',
   });
 });
-const countPerCategoryTrees = [{selectedCategoryCount: '10'}, {selectedCategoryCount: '3'}];
+
+const countPerCategoryTrees = [
+  {code: 'master', selectedCategoryCount: '10'},
+  {code: 'secondary_tree', selectedCategoryCount: '3'},
+];
 jest.mock('../../hooks/useCategoryTrees', () => {
-  return {useCategoryTrees: jest.fn(() => countPerCategoryTrees)};
+  return {useCategoryTrees: () => countPerCategoryTrees};
 });
 jest.mock('@akeneo-pim-community/shared/lib/hooks/useTranslate', () => ({
   useTranslate: () => {
-    return jest.fn((key: string, params: any, count: number) => count);
+    return jest.fn((key: string, _: any, count: number) => {
+      switch (key) {
+        case 'pim_connector.export.categories.selector.label':
+          return count;
+        default:
+          return key;
+      }
+    });
   },
 }));
 
