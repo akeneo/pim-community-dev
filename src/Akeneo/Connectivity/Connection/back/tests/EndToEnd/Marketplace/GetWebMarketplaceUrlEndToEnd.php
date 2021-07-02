@@ -25,7 +25,7 @@ class GetWebMarketplaceUrlEndToEnd extends WebTestCase
         return $this->catalog->useMinimalCatalog();
     }
 
-    public function test_it_get_the_web_marketplace_url_for_the_current_user(): void
+    public function test_it_gets_the_web_marketplace_url_for_the_current_user(): void
     {
         $this->authenticateAsAdmin();
         $this->client->xmlHttpRequest('GET', '/rest/marketplace/marketplace-url');
