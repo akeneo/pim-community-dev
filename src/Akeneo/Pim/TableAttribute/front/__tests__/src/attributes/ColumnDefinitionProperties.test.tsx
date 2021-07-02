@@ -9,6 +9,7 @@ import {
   getTextColumnDefinitionWithId,
 } from '../factories/ColumnDefinition';
 import {getTableAttribute} from '../factories/Attributes';
+jest.mock('../../../src/attribute/ManageOptionsModal');
 
 describe('ColumnDefinitionProperties', () => {
   it('should render the component', () => {
@@ -42,13 +43,7 @@ describe('ColumnDefinitionProperties', () => {
 
     const codeInput = screen.getByLabelText('pim_common.code') as HTMLInputElement;
     fireEvent.change(codeInput, {target: {value: 'somethingelse'}});
-    expect(handleChange).toBeCalledWith({
-      code: 'somethingelse',
-      validations: {},
-      data_type: 'select',
-      labels: {},
-      id: 'uniqueidingredient',
-    });
+    expect(handleChange).toBeCalledWith({...getSelectColumnDefinitionWithId(), code: 'somethingelse'});
   });
 
   it('should update the max length', () => {
@@ -67,15 +62,7 @@ describe('ColumnDefinitionProperties', () => {
 
     const maxLengthInput = screen.getByLabelText('pim_table_attribute.validations.max_length') as HTMLInputElement;
     fireEvent.change(maxLengthInput, {target: {value: '10'}});
-    expect(handleChange).toBeCalledWith({
-      code: 'part',
-      validations: {
-        max_length: 10,
-      },
-      data_type: 'text',
-      labels: {},
-      id: 'uniqueidpart',
-    });
+    expect(handleChange).toBeCalledWith({...getTextColumnDefinitionWithId(), validations: {max_length: 10}});
   });
 
   it('should display validation errors', () => {
@@ -93,5 +80,28 @@ describe('ColumnDefinitionProperties', () => {
     );
 
     expect(screen.getByText('pim_table_attribute.validations.max_greater_than_min')).toBeInTheDocument();
+  });
+
+  it('should save options', () => {
+    const handleChange = jest.fn();
+    renderWithProviders(
+      <ColumnDefinitionProperties
+        selectedColumn={getSelectColumnDefinitionWithId()}
+        onChange={handleChange}
+        activeLocales={[getEnUsLocale()]}
+        catalogLocaleCode={'en_US'}
+        isDuplicateColumnCode={() => false}
+        savedColumnIds={[]}
+        attribute={getTableAttribute()}
+      />
+    );
+
+    fireEvent.click(screen.getByText('pim_table_attribute.form.attribute.manage_options'));
+    fireEvent.click(screen.getByText('Fake confirm'));
+
+    expect(handleChange).toBeCalledWith({
+      ...getSelectColumnDefinitionWithId(),
+      options: [{code: 'fake_code', labels: {en_US: 'fake label '}}],
+    });
   });
 });

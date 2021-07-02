@@ -114,55 +114,51 @@ const ManageOptionsModal: React.FC<ManageOptionsModalProps> = ({onClose, attribu
   const selectedOption = options ? options.find(option => option.id === selectedOptionId) : undefined;
 
   const handleLabelChange = (optionId: string, localeCode: LocaleCode, label: string) => {
-    if (!options) {
-      return;
-    }
-    const index = options.findIndex(option => option.id === optionId);
-    if (index >= 0) {
-      const option = options[index];
-      option.labels[localeCode] = label;
-      if (autoCompleteCode) {
-        option.code = label.replace(/[^a-zA-Z0-9_]/gi, '_').substring(0, 100);
+    if (options) {
+      const index = options.findIndex(option => option.id === optionId);
+      if (index >= 0) {
+        const option = options[index];
+        option.labels[localeCode] = label;
+        if (autoCompleteCode) {
+          option.code = label.replace(/[^a-zA-Z0-9_]/gi, '_').substring(0, 100);
+        }
+        options[index] = option;
+        if (index === options.length - 1) {
+          options.push({id: uuid(), code: '', labels: {}});
+        }
+        setOptionsWithCheck(options);
       }
-      options[index] = option;
-      if (index === options.length - 1) {
-        options.push({id: uuid(), code: '', labels: {}});
-      }
-      setOptionsWithCheck(options);
     }
   };
 
   const handleCodeChange = (optionId: string, code: string) => {
-    if (!options) {
-      return;
-    }
-    const index = options.findIndex(option => option.id === optionId);
-    if (index >= 0) {
-      options[index] = {...options[index], code};
-      if (index === options.length - 1) {
-        options.push({id: uuid(), code: '', labels: {}});
+    if (options) {
+      const index = options.findIndex(option => option.id === optionId);
+      if (index >= 0) {
+        options[index] = {...options[index], code};
+        if (index === options.length - 1) {
+          options.push({id: uuid(), code: '', labels: {}});
+        }
+        setOptionsWithCheck(options);
       }
-      setOptionsWithCheck(options);
     }
   };
 
   const handleRemove = (optionId: string) => {
-    if (!options) {
-      return;
+    if (options) {
+      if (optionId === selectedOptionId) {
+        const index = options.findIndex(option => option.id === optionId);
+        setSelectedOptionId(options[index + 1].id);
+      }
+      setOptionsWithCheck(options.filter(option => option.id !== optionId));
     }
-    if (optionId === selectedOptionId) {
-      const index = options.findIndex(option => option.id === optionId);
-      setSelectedOptionId(options[index + 1].id);
-    }
-    setOptionsWithCheck(options.filter(option => option.id !== optionId));
   };
 
   const handleFocus = (optionId: string) => {
-    if (!options) {
-      return;
+    if (options) {
+      const option = options.find(option => option.id === optionId) as SelectOptionWithId;
+      setAutoCompleteCode(typeof option.labels[currentLocale] === 'undefined' || option.labels[currentLocale] === '');
     }
-    const option = options.find(option => option.id === optionId) as SelectOptionWithId;
-    setAutoCompleteCode(typeof option.labels[currentLocale] === 'undefined' || option.labels[currentLocale] === '');
   };
 
   const handleBlur = () => {
@@ -170,15 +166,14 @@ const ManageOptionsModal: React.FC<ManageOptionsModalProps> = ({onClose, attribu
   };
 
   const handleSave = () => {
-    if (!options) {
-      return;
+    if (options) {
+      onChange(
+        options.slice(0, -1).map(option => {
+          const {id, violations, ...rest} = option;
+          return rest;
+        })
+      );
     }
-    onChange(
-      options.slice(0, -1).map(option => {
-        const {id, violations, ...rest} = option;
-        return rest;
-      })
-    );
     onClose();
   };
 
