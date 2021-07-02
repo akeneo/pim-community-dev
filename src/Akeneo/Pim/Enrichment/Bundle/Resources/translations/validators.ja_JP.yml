@@ -100,7 +100,6 @@ pim_catalog:
     301: このフィールドは有効な参照とロケールが必要です
     302: このフィールドは有効な参照が必要です
     303: このフィールドは有効な関連付け形式が必要です
-    pim_immutable_product_validator: この識別子は別の商品に設定済です
     pim_immutable_product_model_validator: このコードは別の商品モデルに設定済みです
     quantified_associations:
       unexpected_link_type: リンクタイプ「{{ value }}」は存在しません。商品または商品モデルのみを関連付けることができます。

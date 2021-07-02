@@ -100,7 +100,6 @@ pim_catalog:
     301: To pole oczekuje poprawnego zakresu i ustawienia regionalnego.
     302: To pole oczekuje poprawnego zakresu.
     303: To pole oczekuje poprawnego formatu powiązania.
-    pim_immutable_product_validator: Taki sam identyfikator jest przypisany innemu produktowi
     pim_immutable_product_model_validator: Taki sam kod jest przypisany innemu modelowi produktu.
     quantified_associations:
       unexpected_link_type: Typ linku "{{ value }}" nie istnieje. Możesz powiązać wyłącznie produkty lub modele produktów.

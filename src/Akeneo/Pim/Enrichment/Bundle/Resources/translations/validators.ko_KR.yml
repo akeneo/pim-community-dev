@@ -102,7 +102,6 @@ pim_catalog:
     301: 이 필드에는 유효한 범위 또는 로케일이 필요합니다.
     302: 이 필드에는 유효한 범위가 필요합니다.
     303: 이 필드에는 유효한 연결 형식이 필요합니다.
-    pim_immutable_product_validator: 동일한 식별자가 이미 다른 제품에 설정되어 있습니다.
     pim_immutable_product_model_validator: 동일한 코드가 이미 다른 제품 모델에 설정되어 있습니다.
     quantified_associations:
       unexpected_link_type: 링크 유형 '{{ value }}'이(가) 없습니다. 제품 또는 제품 모델만 연결할 수 있습니다.
