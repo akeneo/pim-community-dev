@@ -59,7 +59,6 @@ const CategorySelector = ({
   };
 
   const isCategoryReadOnly = (category: CategoryTreeModel, parentCategory: ParentCategoryTree): boolean => {
-    if (category.readOnly) return true;
     if (!shouldIncludeSubCategories || selectedCategoryCodes.includes(category.code)) return false;
 
     return isParentCategoryIsSelected(parentCategory);

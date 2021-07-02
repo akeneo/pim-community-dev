@@ -123,7 +123,6 @@ test('it can select a category and its children when included', async () => {
   expect(byTitle).toHaveAttribute('aria-selected', 'true');
 
   // Unselecting the child 0
-  console.log(prettyDOM(treeItems[1]));
   userEvent.click(child0Checkbox);
   expect(onChange).toHaveBeenCalledWith(['webcam', 'scanners']);
 
