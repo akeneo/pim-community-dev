@@ -25,7 +25,7 @@ class SymfonyCacheIntegration extends TestCase
     {
         parent::setUp();
 
-        $this->cache = $this->get('cache.app');
+        $this->cache = $this->get('cache.data');
     }
 
     protected function tearDown(): void

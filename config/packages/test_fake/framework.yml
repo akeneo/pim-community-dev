@@ -3,4 +3,6 @@ framework:
     session:
         storage_id: session.storage.mock_file
     cache:
-        app: cache.adapter.array
+        pools:
+            cache.data:
+                adapter: cache.adapter.array

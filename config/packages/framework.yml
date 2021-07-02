@@ -24,7 +24,9 @@ framework:
             frontend:
                 version_strategy: pim_enrich.version_strategy
     cache:
-        app: cache.adapter.pdo
         pools:
             name:
                 adapter: cache.adapter.apcu
+            cache.data:
+                adapter: cache.adapter.pdo
+                public: true
