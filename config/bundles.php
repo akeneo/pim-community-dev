@@ -36,7 +36,6 @@ return [
     Oneup\FlysystemBundle\OneupFlysystemBundle::class => ['all' => true],
     Akeneo\Tool\Bundle\MessengerBundle\AkeneoMessengerBundle::class => ['all' => true],
 
-
     // PIM bundles
     Oro\Bundle\PimFilterBundle\PimFilterBundle::class => ['all' => true],
     Akeneo\UserManagement\Bundle\PimUserBundle::class => ['all' => true],
@@ -87,12 +86,7 @@ return [
     Akeneo\Platform\TailoredExport\Infrastructure\Symfony\AkeneoTailoredExportBundle::class => ['all' => true],
     Akeneo\Platform\Bundle\FrameworkBundle\PimEnterpriseFrameworkBundle::class => ['all' => true],
     Akeneo\Tool\Bundle\EnterpriseBatchQueueBundle\AkeneoEnterpriseBatchQueueBundle::class => ['all' => true],
-    // @todo: set all on final merge
-    Akeneo\Pim\TableAttribute\Infrastructure\Symfony\AkeneoPimTableAttributeBundle::class => [
-        'dev' => true,
-        'test' => true,
-        'test_fake' => true,
-    ],
+    Akeneo\Pim\TableAttribute\Infrastructure\Symfony\AkeneoPimTableAttributeBundle::class => ['all' => true],
 
     // Dev related bundles
     Akeneo\Tool\Bundle\DatabaseMetadataBundle\AkeneoDatabaseMetadataBundle::class => ['dev' => true, 'test' => true],
