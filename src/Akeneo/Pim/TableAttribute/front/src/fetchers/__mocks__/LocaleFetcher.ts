@@ -1,4 +1,4 @@
-import {Locale, LocaleCode, Router} from '@akeneo-pim-community/shared';
+import {Locale, Router} from '@akeneo-pim-community/shared';
 
 const en_US = {
   code: 'en_US',
@@ -22,20 +22,12 @@ const de_DE = {
 };
 
 /* eslint-disable @typescript-eslint/no-unused-vars */
-const fetchLocale = async (_router: Router, code: LocaleCode): Promise<Locale | undefined> => {
-  if (code === 'en_US') {
-    return new Promise(resolve => resolve(en_US));
-  }
-
-  if (code === 'fr_FR') {
-    return new Promise(resolve => resolve(fr_FR));
-  }
-
-  return new Promise(resolve => resolve(undefined));
+const fetchLocales = async (_router: Router): Promise<Locale[]> => {
+  return new Promise(resolve => resolve([en_US, fr_FR, de_DE]));
 };
 
 const fetchActivatedLocales = async (_router: Router): Promise<Locale[]> => {
   return new Promise(resolve => resolve([en_US, fr_FR, de_DE]));
 };
 
-export {fetchLocale, fetchActivatedLocales};
+export {fetchLocales, fetchActivatedLocales};

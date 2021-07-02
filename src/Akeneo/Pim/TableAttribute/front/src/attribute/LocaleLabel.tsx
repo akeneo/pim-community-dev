@@ -1,7 +1,7 @@
 import React from 'react';
 import {LoaderIcon, Locale as LocaleWithFlag} from 'akeneo-design-system';
 import {Locale, LocaleCode, useIsMounted, useRouter} from '@akeneo-pim-community/shared';
-import {fetchLocale} from '../fetchers/LocaleFetcher';
+import {getLocale} from '../repositories/Locale';
 
 type LocaleProps = {
   localeCode: LocaleCode;
@@ -13,7 +13,7 @@ const LocaleLabel: React.FC<LocaleProps> = ({localeCode}) => {
   const router = useRouter();
 
   React.useEffect(() => {
-    fetchLocale(router, localeCode).then(locale => {
+    getLocale(router, localeCode).then(locale => {
       if (isMounted()) {
         setLocale(locale);
       }

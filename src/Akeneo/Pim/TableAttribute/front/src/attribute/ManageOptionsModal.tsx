@@ -16,10 +16,10 @@ import {getLabel, Locale, LocaleCode, useRouter, useTranslate, useUserContext} f
 import {SelectColumnDefinition, SelectOption} from '../models/TableConfiguration';
 import {Attribute} from '../models/Attribute';
 import {TwoColumnsLayout} from './TwoColumnsLayout';
-import {fetchActivatedLocales} from '../fetchers/LocaleFetcher';
 import {FieldsList} from '../shared/FieldsList';
 import styled from 'styled-components';
 import {fetchSelectOptions} from '../fetchers/SelectOptionsFetcher';
+import {getActivatedLocales} from '../repositories/Locale';
 
 const TableContainer = styled.div`
   height: calc(100vh - 200px);
@@ -64,7 +64,7 @@ const ManageOptionsModal: React.FC<ManageOptionsModalProps> = ({onClose, attribu
   const columnLabel = getLabel(columnDefinition.labels, userContext.get('catalogLocale'), columnDefinition.code);
 
   React.useEffect(() => {
-    fetchActivatedLocales(router).then((activeLocales: Locale[]) => setActivatedLocales(activeLocales));
+    getActivatedLocales(router).then((activeLocales: Locale[]) => setActivatedLocales(activeLocales));
   }, [router]);
 
   const setOptionsWithCheck = (options: SelectOptionWithId[]) => {
