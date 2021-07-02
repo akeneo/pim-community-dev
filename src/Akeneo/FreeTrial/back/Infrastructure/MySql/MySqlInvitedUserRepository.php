@@ -24,7 +24,8 @@ final class MySqlInvitedUserRepository implements InvitedUserRepository
     public function save(InvitedUser $invitedUser): void
     {
         $query = <<<SQL
-INSERT INTO akeneo_free_trial_invited_user (email, status, created_at) VALUES (:email, :status, NOW());
+INSERT INTO akeneo_free_trial_invited_user (email, status, created_at) VALUES (:email, :status, NOW())
+ON DUPLICATE KEY UPDATE status = :status;
 SQL;
 
         $this->dbalConnection->executeQuery($query, [
