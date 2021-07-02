@@ -18,7 +18,7 @@ class WebMarketplaceApi
         $this->fixturePath = $fixturePath;
     }
 
-    public function getExtensions(string $edition, string $version, $offset = 0, $limit = 10)
+    public function getExtensions(string $edition, string $version, $offset = 0, $limit = 10): array
     {
         return json_decode(file_get_contents($this->fixturePath.self::EXTENSIONS_FILENAME), true);
     }
