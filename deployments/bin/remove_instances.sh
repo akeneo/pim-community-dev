@@ -58,7 +58,7 @@ for NAMESPACE in $(kubectl get ns | egrep 'srnt-pimci|srnt-pimup|grth-pimci|grth
         echo "---[TODELETE] namespace ${NAMESPACE} with status ${NS_STATUS} since ${NS_AGE} (instance_name=${INSTANCE_NAME})"
         gsutil rm gs://akecld-terraform-dev/saas/akecld-saas-dev/europe-west3-a/${NAMESPACE}/default.tflock || true
         # retrive the image tag with the image from a pod
-        POD=$(kubectl get pods --namespace=${NAMESPACE} -l component=pim-daemon-default | awk '/pim-daemon-default/ {print $1}')
+        POD=$(kubectl get pods --no-headers --namespace=${NAMESPACE} -l component=pim-web | awk 'NR==1{print $1}')
         if [[ -z "$POD" ]]
         then
             kubectl delete ns ${NAMESPACE} || true
