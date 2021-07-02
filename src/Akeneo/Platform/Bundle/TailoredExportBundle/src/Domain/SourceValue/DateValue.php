@@ -17,14 +17,14 @@ use Akeneo\Platform\TailoredExport\Domain\SourceValueInterface;
 
 class DateValue implements SourceValueInterface
 {
-    private \DateTime $data;
+    private \DateTimeInterface $data;
 
-    public function __construct(\DateTime $data)
+    public function __construct(\DateTimeInterface $data)
     {
         $this->data = $data;
     }
 
-    public function getData(): \DateTime
+    public function getData(): \DateTimeInterface
     {
         return $this->data;
     }

@@ -42,14 +42,19 @@ final class DateFormat
     /**
      * @throws \LogicException
      */
-    public static function format(\DateTime $date, string $format): string
+    public static function format(\DateTimeInterface $date, string $format): string
     {
-        if (!array_key_exists($format, self::DATE_FORMAT_TO_PHP_DATE_FORMAT_MAPPING)) {
+        if (!self::isValidFormat($format)) {
             throw new \LogicException(sprintf('Date format "%s" is not supported', $format));
         }
 
         $phpDateFormat = self::DATE_FORMAT_TO_PHP_DATE_FORMAT_MAPPING[$format];
 
         return $date->format($phpDateFormat);
+    }
+
+    public static function isValidFormat(string $format): bool
+    {
+        return array_key_exists($format, self::DATE_FORMAT_TO_PHP_DATE_FORMAT_MAPPING);
     }
 }
