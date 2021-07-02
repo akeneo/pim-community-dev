@@ -1,4 +1,4 @@
-import React, {FC, useState} from 'react';
+import React, {FC, useEffect, useState} from 'react';
 import {useTranslate} from '@akeneo-pim-community/legacy-bridge';
 import {useFilteredLocales} from '../../../hooks';
 import {Locale} from '../../../models';
@@ -11,13 +11,14 @@ import {FollowLocaleHandler} from '../../../user-actions';
 type Props = {
   locales: Locale[];
   followLocale?: FollowLocaleHandler;
+  onLocaleCountChange: (newLocaleCount: number) => void;
 };
 
 const LocalesSearchBar = styled(SearchBar)`
   margin: 10px 0 20px;
 `;
 
-const LocalesDataGrid: FC<Props> = ({locales, followLocale}) => {
+const LocalesDataGrid: FC<Props> = ({locales, followLocale, onLocaleCountChange}) => {
   const translate = useTranslate();
   const [searchString, setSearchString] = useState('');
   const {filteredLocales, search} = useFilteredLocales(locales);
@@ -28,6 +29,10 @@ const LocalesDataGrid: FC<Props> = ({locales, followLocale}) => {
     setSearchString(searchValue);
     debouncedSearch(searchValue);
   };
+
+  useEffect(() => {
+    onLocaleCountChange(filteredLocales.length);
+  }, [filteredLocales.length]);
 
   return (
     <>

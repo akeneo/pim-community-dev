@@ -3,6 +3,7 @@
 ## Bug fixes
 
 - PIM-9944: Fix attribute group grid search
+- PIM-9945: Fix displayed number of elements in attribute group, locale and measurement family grids
 
 # 5.0.37 (2021-07-01)
 

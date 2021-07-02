@@ -95,8 +95,8 @@ const List = () => {
         ) : (
           __(
             'measurements.family.result_count',
-            {itemsCount: measurementFamiliesCount.toString()},
-            measurementFamiliesCount
+            {itemsCount: filteredMeasurementFamiliesCount.toString()},
+            filteredMeasurementFamiliesCount
           )
         )}
       </PageHeader>
