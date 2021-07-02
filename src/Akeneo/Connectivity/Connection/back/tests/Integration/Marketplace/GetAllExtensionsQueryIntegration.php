@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Akeneo\Connectivity\Connection\Tests\Integration\Marketplace;
 
+use Akeneo\Connectivity\Connection\Domain\Marketplace\DTO\Extension;
 use Akeneo\Connectivity\Connection\Infrastructure\Marketplace\GetAllExtensionsQuery;
 use Akeneo\Test\Integration\Configuration;
 use Akeneo\Test\Integration\TestCase;
@@ -28,6 +29,21 @@ class GetAllExtensionsQueryIntegration extends TestCase
         $result = $this->getAllExtensionsQuery->execute();
 
         $this->assertEquals(120, $result->count());
+        $this->assertEquals(Extension::create([
+                'id' => '90741597-54c5-48a1-98da-a68e7ee0a715',
+                'name' => 'Akeneo Shopware 6 Connector by EIKONA Media',
+                'logo' => 'https://marketplace.akeneo.com/sites/default/files/styles/extension_logo_large/public/extension-logos/akeneo-to-shopware6-eimed_0.jpg?itok=InguS-1N',
+                'author' => 'EIKONA Media GmbH',
+                'partner' => 'Akeneo Preferred Partner',
+                'description' => 'With the new "Akeneo-Shopware-6-Connector" from EIKONA Media, you can smoothly export all your product data from Akeneo to Shopware. The connector uses the standard interfaces provided for data exchange. Benefit from up-to-date product data in all your e-commerce channels and be faster on the market.',
+                'url' => 'https://marketplace.akeneo.com/extension/akeneo-shopware-6-connector-eikona-media',
+                'certified' => false,
+                'categories' => [
+                    'E-commerce'
+                ]
+            ]),
+            $result->extensions()[0]
+        );
         $this->assertEquals(120, count($result->extensions()));
     }
 
