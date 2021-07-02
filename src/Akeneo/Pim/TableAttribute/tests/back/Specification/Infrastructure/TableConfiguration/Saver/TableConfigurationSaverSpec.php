@@ -105,7 +105,7 @@ class TableConfigurationSaverSpec extends ObjectBehavior
         $optionCollectionRepository->save('nutrition', ColumnCode::fromString('ingredients'), SelectOptionCollection::fromNormalized($column1['options']))->shouldBeCalled();
         $optionCollectionRepository->save('nutrition', ColumnCode::fromString('quantity'), SelectOptionCollection::fromNormalized($column2['options']))->shouldBeCalled();
         $optionCollectionRepository->save('nutrition', ColumnCode::fromString('a_number'), Argument::any())->shouldNotBeCalled();
-        $optionCollectionRepository->save('nutrition', ColumnCode::fromString('is_allergenic'), SelectOptionCollection::empty())->shouldBeCalled();
+        $optionCollectionRepository->save('nutrition', ColumnCode::fromString('is_allergenic'), Argument::any())->shouldNotBeCalled();
 
         $this->save($attribute);
     }

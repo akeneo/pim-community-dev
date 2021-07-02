@@ -108,9 +108,11 @@ Akeneo\Pim\Structure\Component\Model\Attribute:
                                         - Type:
                                             type: string
                                             message: pim_table_configuration.validation.table_configuration.option_label_must_be_a_string
+                                        - Length:
+                                            max: 255
+                                            maxMessage: pim_table_configuration.validation.table_configuration.too_long_option_label
                                         - NotNull:
                                             message: pim_table_configuration.validation.table_configuration.option_label_must_be_a_string
-                                    # TODO Max 255 chars
                             missingFieldsMessage: pim_table_configuration.validation.table_configuration.missing_option_field
                             extraFieldsMessage: pim_table_configuration.validation.table_configuration.unknown_option_field
               missingFieldsMessage: pim_table_configuration.validation.table_configuration.missing_column

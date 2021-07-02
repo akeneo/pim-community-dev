@@ -140,6 +140,10 @@ Feature: Create a table attribute
     When I create a table attribute with a configuration '{"data_type": "select", "code": "ingredient", "options": [{"code": "sugar", "labels": {"pt_DTC": "label"}}]}'
     Then There is a violation with message: The "pt_DTC" locale doesn't exist or is not activated
 
+  Scenario: Cannot create a table configuration with an option with a tool long label locale
+    When I create a table attribute with a configuration '{"data_type": "select", "code": "ingredient", "options": [{"code": "sugar", "labels": {"en_US": "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum."}}]}'
+    Then There is a violation with message: The option label is too long: it must be 255 characters or less
+
   Scenario: Cannot create a table configuration with options for a non select column
     When I create a table attribute with a configuration '{"data_type": "text", "code": "ingredient", "options": [{"code": "sugar", "labels": {"en_US": "Sugar"}}]}'
     Then There is a violation with message: TODO options cannot be set for a "text" column data type
