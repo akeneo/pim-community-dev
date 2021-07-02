@@ -4,6 +4,7 @@ declare(strict_types=1);
 namespace Akeneo\Connectivity\Connection\Domain\Marketplace\DTO;
 
 use Ramsey\Uuid\Uuid;
+use Ramsey\Uuid\UuidInterface;
 use Webmozart\Assert\Assert;
 
 /**
@@ -12,7 +13,7 @@ use Webmozart\Assert\Assert;
  */
 class Extension
 {
-    private Uuid $id;
+    private UuidInterface $id;
     private string $name;
     private string $logo;
     private string $author;
@@ -21,7 +22,7 @@ class Extension
     private string $url;
     private bool $certified;
 
-    /** @var array <string> */
+    /** @var array<string> */
     private array $categories;
 
     private const REQUIRED_KEYS = [
@@ -36,8 +37,11 @@ class Extension
         'certified',
     ];
 
+    /**
+     * @param array<string> $categories
+     */
     private function __construct(
-        Uuid $id,
+        UuidInterface $id,
         string $name,
         string $logo,
         string $author,
@@ -58,6 +62,19 @@ class Extension
         $this->certified = $certified;
     }
 
+    /**
+     * @param array{
+     *     id: string,
+     *     name: string,
+     *     logo: string,
+     *     author: string,
+     *     partner: string,
+     *     description: string,
+     *     url: string,
+     *     categories: array<string>,
+     *     certified: bool,
+     * } $values
+     */
     public static function create(array $values): self
     {
         foreach (self::REQUIRED_KEYS as $key) {
@@ -77,7 +94,7 @@ class Extension
         );
     }
 
-    public function id(): Uuid
+    public function id(): UuidInterface
     {
         return $this->id;
     }
@@ -117,6 +134,9 @@ class Extension
         return $this->certified;
     }
 
+    /**
+     * @return  array<string>
+     */
     public function categories(): array
     {
         return $this->categories;

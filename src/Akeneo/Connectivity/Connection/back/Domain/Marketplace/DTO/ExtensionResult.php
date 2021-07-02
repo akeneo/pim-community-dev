@@ -14,12 +14,18 @@ class ExtensionResult
     /** @var array<Extension> */
     private array $extensions;
 
+    /**
+     * @param array<Extension> $extensions
+     */
     private function __construct(int $count, array $extensions)
     {
         $this->count = $count;
         $this->extensions = $extensions;
     }
 
+    /**
+     * @param array<Extension> $extensions
+     */
     public static function create(int $count, array $extensions): self
     {
         return new self($count, $extensions);
@@ -31,7 +37,7 @@ class ExtensionResult
     }
 
     /**
-     * @return Extension[]
+     * @return array<Extension>
      */
     public function extensions(): array
     {
@@ -39,7 +45,7 @@ class ExtensionResult
     }
 
     /**
-     * @return array{count:int, extensions:array{Extension}}
+     * @return array{count:int, extensions:array<Extension>}
      */
     public function normalize(): array
     {
