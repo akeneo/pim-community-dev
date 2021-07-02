@@ -18,6 +18,7 @@ class AkeneoConnectivityConnectionExtension extends Extension
     public function load(array $configs, ContainerBuilder $container): void
     {
         $container->setParameter('connectivity.marketplace_fixtures_directory', __DIR__ . '/../Resources/fixtures/');
+
         $loader = new YamlFileLoader($container, new FileLocator(__DIR__ . '/../Resources/config'));
         $loader->load('cli.yml');
         $loader->load('controllers.yml');

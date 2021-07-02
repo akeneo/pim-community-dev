@@ -12,7 +12,7 @@ use Webmozart\Assert\Assert;
  */
 class Extension
 {
-    private Uuid $uuid;
+    private Uuid $id;
     private string $name;
     private string $logo;
     private string $author;
@@ -25,7 +25,7 @@ class Extension
     private array $categories;
 
     private const REQUIRED_KEYS = [
-        'uuid',
+        'id',
         'name',
         'logo',
         'author',
@@ -37,7 +37,7 @@ class Extension
     ];
 
     private function __construct(
-        Uuid $uuid,
+        Uuid $id,
         string $name,
         string $logo,
         string $author,
@@ -47,7 +47,7 @@ class Extension
         array $categories,
         bool $certified = false
     ) {
-        $this->uuid = $uuid;
+        $this->id = $id;
         $this->name = $name;
         $this->logo = $logo;
         $this->author = $author;
@@ -65,7 +65,7 @@ class Extension
         }
 
         return new self(
-            $values['uuid'],
+            Uuid::fromString($values['id']),
             $values['name'],
             $values['logo'],
             $values['author'],
@@ -77,9 +77,9 @@ class Extension
         );
     }
 
-    public function uuid(): Uuid
+    public function id(): Uuid
     {
-        return $this->uuid;
+        return $this->id;
     }
 
     public function name(): string
@@ -124,7 +124,7 @@ class Extension
 
     /**
      * @return array{
-     *  uuid: string,
+     *  id: string,
      *  name: string,
      *  logo: string,
      *  author: string,
@@ -138,9 +138,9 @@ class Extension
     public function normalize(): array
     {
         return [
-            'uuid' => $this->uuid->toString(),
-            'name' => $this->uuid,
-            'logo' => $this->uuid,
+            'id' => $this->id->toString(),
+            'name' => $this->name,
+            'logo' => $this->logo,
             'author' => $this->author,
             'partner' => $this->partner,
             'description' => $this->description,

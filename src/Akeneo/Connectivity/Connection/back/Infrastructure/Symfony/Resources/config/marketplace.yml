@@ -15,22 +15,11 @@ services:
     arguments:
       - '@database_connection'
 
-  akeneo_connectivity.connection.web_marketplace_api.guzzle_handler:
-    class: GuzzleHttp\HandlerStack
-    factory: [ 'GuzzleHttp\HandlerStack', 'create' ]
+  Akeneo\Connectivity\Connection\Infrastructure\Marketplace\WebMarketplaceApi:
+    calls:
+      - setFixturePath: [ '%connectivity.marketplace_fixtures_directory%' ]
 
-  akeneo_connectivity.connection.web_marketplace_api.guzzle_client:
-    class: GuzzleHttp\Client
+  Akeneo\Connectivity\Connection\Infrastructure\Marketplace\GetAllExtensionsQuery:
     arguments:
-      - { handler: '@akeneo_connectivity.connection.web_marketplace_api.guzzle_handler' }
-
-    Akeneo\Connectivity\Connection\Infrastructure\Marketplace\WebMarketplaceApi:
-      calls:
-        - method: setFixturePath
-            arguments:
-              - '%connectivity.marketplace_fixtures_directory%'
-
-    Akeneo\Connectivity\Connection\Infrastructure\Marketplace\GetAllExtensionsQuery:
-      arguments:
-        - '@Akeneo\Connectivity\Connection\Infrastructure\Marketplace\WebMarketplaceApi'
-        - '@pim_catalog.version_provider'
+      - '@Akeneo\Connectivity\Connection\Infrastructure\Marketplace\WebMarketplaceApi'
+      - '@pim_catalog.version_provider'
