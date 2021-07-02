@@ -106,23 +106,22 @@ class AttributeController
     }
 
     /**
-     * @param Request $request
-     * @param string  $code
-     *
      * @throws NotFoundHttpException
-     *
-     * @return JsonResponse
      *
      * @AclAncestor("pim_api_attribute_list")
      */
-    public function getAction(Request $request, $code)
+    public function getAction(Request $request, string $code): JsonResponse
     {
         $attribute = $this->repository->findOneByIdentifier($code);
         if (null === $attribute) {
             throw new NotFoundHttpException(sprintf('Attribute "%s" does not exist.', $code));
         }
 
-        $attributeApi = $this->normalizer->normalize($attribute, 'external_api');
+        $attributeApi = $this->normalizer->normalize(
+            $attribute,
+            'external_api',
+            $this->getNormalizationContext($request)
+        );
 
         return new JsonResponse($attributeApi);
     }
@@ -169,7 +168,7 @@ class AttributeController
 
         $count = true === $request->query->getBoolean('with_count') ? $this->repository->count($searchFilters) : null;
         $paginatedAttributes = $this->paginator->paginate(
-            $this->normalizer->normalize($attributes, 'external_api'),
+            $this->normalizer->normalize($attributes, 'external_api', $this->getNormalizationContext($request)),
             $parameters,
             $count
         );
@@ -364,5 +363,10 @@ class AttributeController
         $response->headers->set('Location', $url);
 
         return $response;
+    }
+
+    protected function getNormalizationContext(Request $request): array
+    {
+        return [];
     }
 }
