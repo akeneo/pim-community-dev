@@ -1,5 +1,5 @@
 import React from 'react';
-import {act, screen, within, prettyDOM} from '@testing-library/react';
+import {act, screen, within} from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
 import {renderWithProviders} from '@akeneo-pim-community/shared';
 import {CategorySelector} from './CategorySelector';
@@ -113,17 +113,17 @@ test('it can select a category and its children when included', async () => {
   const treeItems = screen.getAllByRole('treeitem');
 
   // Selecting the child 0
-  const child0Checkbox = within(treeItems[1]).getByRole('checkbox');
-  userEvent.click(child0Checkbox);
+  const [, firstChildTree] = screen.getAllByRole('treeitem');
+  const firstChildTreeCheckbox = within(firstChildTree).getByRole('checkbox');
+  userEvent.click(firstChildTreeCheckbox);
   expect(onChange).toHaveBeenCalledWith(['webcam', 'scanners', 'child-0']);
 
   // Displaying children child 1 as selected
   await act(async () => userEvent.click(within(treeItems[1]).getByTitle('child 0')));
-  const byTitle = screen.getByTitle('child 1');
-  expect(byTitle).toHaveAttribute('aria-selected', 'true');
+  expect(screen.getByTitle('child 1')).toHaveAttribute('aria-selected', 'true');
 
   // Unselecting the child 0
-  userEvent.click(child0Checkbox);
+  userEvent.click(firstChildTreeCheckbox);
   expect(onChange).toHaveBeenCalledWith(['webcam', 'scanners']);
 
   // Displaying children child 1 as not selected
