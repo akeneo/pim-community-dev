@@ -1,5 +1,9 @@
 # 5.0.x
 
+## Bug fixes
+
+- PIM-9945: Fix the number of displayed elements in the locale grid
+
 # 5.0.37 (2021-07-01)
 
 ## Bug fixes
