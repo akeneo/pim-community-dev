@@ -100,7 +100,6 @@ pim_catalog:
     301: Dit veld verwacht een geldige scope en regio-instelling.
     302: Dit veld verwacht een geldige scope.
     303: Dit veld verwacht een geldig formaat voor associaties.
-    pim_immutable_product_validator: Dit id-attribuut is al in gebruik bij een ander product
     pim_immutable_product_model_validator: Dezelfde code is al ingesteld op een ander productmodel.
     quantified_associations:
       unexpected_link_type: Link type "{{ value }}" bestaat niet. U kunt alleen producten of productmodellen koppelen.

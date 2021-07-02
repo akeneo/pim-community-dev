@@ -100,7 +100,6 @@ pim_catalog:
     301: 此字段需要填入有效的范围和区域。
     302: 此字段需要填入有效的范围。
     303: 此字段需要填入有效的关联格式。
-    pim_immutable_product_validator: 已在另一产品上设置了同一标识符
     pim_immutable_product_model_validator: 另一产品模型上已经设置了同一代码。
     quantified_associations:
       unexpected_link_type: 链接类型"{{ value }}"不存在。您只能关联产品或产品模型。
