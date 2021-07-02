@@ -122,66 +122,68 @@ const AssetCollection = ({
   const {assets, setAssets} = useLoadAssets(assetCodes, assetFamilyIdentifier, context);
 
   return (
-    <Container>
-      {/* Collection is not empty and is loaded (we also need to check assetCodes because in this case we don't update the fetched assets */}
-      {0 !== assetCodes.length ? (
-        <>
-          {!canAddAssetToCollection(assetCodes) && (
-            <Helper>
-              {translate('pim_asset_manager.asset_collection.notification.limit', {limit: ASSET_COLLECTION_LIMIT})}
-            </Helper>
-          )}
-          {assets.map((asset: ListAsset) => (
-            <AssetCard key={asset.code} data-asset={asset.code}>
-              <Thumbnail
-                asset={asset}
-                context={context}
-                readonly={readonly}
-                assetCollection={assets}
-                onRemove={() => {
-                  const filteredAssets = removeAssetFromAssetCollection(assets, asset.code);
-                  setAssets(filteredAssets);
-                  onChange(getAssetCodes(filteredAssets));
-                }}
-                onMove={(direction: MoveDirection) => {
-                  const orderedAssets = moveAssetInCollection(assets, asset, direction);
-                  setAssets(orderedAssets);
-                  onChange(getAssetCodes(orderedAssets));
-                }}
-                onClick={() => {
-                  setInitialPreviewAssetCode(asset.code);
-                  openPreviewModal();
-                }}
-              />
-              <AssetTitle>
-                <Label readOnly={readonly}>{getAssetLabel(asset, context.locale)}</Label>
-                {!isComplete(asset) && <BaselinePill />}
-              </AssetTitle>
-            </AssetCard>
-          ))}
-          {isPreviewModalOpen && null !== initialPreviewAssetCode && (
-            <AssetPreview
-              productIdentifier={productIdentifier}
-              productAttribute={productAttribute}
-              assetCollection={assets}
-              initialAssetCode={initialPreviewAssetCode}
-              context={context}
-              onClose={closePreviewModal}
-              assetFamilyIdentifier={assetFamilyIdentifier}
-              dataProvider={assetPreviewDataProvider}
-            />
-          )}
-        </>
-      ) : (
-        <EmptyAssetCollection
-          title={translate('pim_asset_manager.asset_collection.no_asset_in_collection')}
-          readonly={readonly}
-        >
-          <AssetsIllustration size={80} />
-          <Label>{translate('pim_asset_manager.asset_collection.no_asset_in_collection')}</Label>
-        </EmptyAssetCollection>
+    <>
+      {0 < assetCodes.length && !canAddAssetToCollection(assetCodes) && (
+        <Helper>
+          {translate('pim_asset_manager.asset_collection.notification.limit', {limit: ASSET_COLLECTION_LIMIT})}
+        </Helper>
       )}
-    </Container>
+      <Container>
+        {/* Collection is not empty and is loaded (we also need to check assetCodes because in this case we don't update the fetched assets */}
+        {0 !== assetCodes.length ? (
+          <>
+            {assets.map((asset: ListAsset) => (
+              <AssetCard key={asset.code} data-asset={asset.code}>
+                <Thumbnail
+                  asset={asset}
+                  context={context}
+                  readonly={readonly}
+                  assetCollection={assets}
+                  onRemove={() => {
+                    const filteredAssets = removeAssetFromAssetCollection(assets, asset.code);
+                    setAssets(filteredAssets);
+                    onChange(getAssetCodes(filteredAssets));
+                  }}
+                  onMove={(direction: MoveDirection) => {
+                    const orderedAssets = moveAssetInCollection(assets, asset, direction);
+                    setAssets(orderedAssets);
+                    onChange(getAssetCodes(orderedAssets));
+                  }}
+                  onClick={() => {
+                    setInitialPreviewAssetCode(asset.code);
+                    openPreviewModal();
+                  }}
+                />
+                <AssetTitle>
+                  <Label readOnly={readonly}>{getAssetLabel(asset, context.locale)}</Label>
+                  {!isComplete(asset) && <BaselinePill />}
+                </AssetTitle>
+              </AssetCard>
+            ))}
+            {isPreviewModalOpen && null !== initialPreviewAssetCode && (
+              <AssetPreview
+                productIdentifier={productIdentifier}
+                productAttribute={productAttribute}
+                assetCollection={assets}
+                initialAssetCode={initialPreviewAssetCode}
+                context={context}
+                onClose={closePreviewModal}
+                assetFamilyIdentifier={assetFamilyIdentifier}
+                dataProvider={assetPreviewDataProvider}
+              />
+            )}
+          </>
+        ) : (
+          <EmptyAssetCollection
+            title={translate('pim_asset_manager.asset_collection.no_asset_in_collection')}
+            readonly={readonly}
+          >
+            <AssetsIllustration size={80} />
+            <Label>{translate('pim_asset_manager.asset_collection.no_asset_in_collection')}</Label>
+          </EmptyAssetCollection>
+        )}
+      </Container>
+    </>
   );
 };
 

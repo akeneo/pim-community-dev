@@ -1,0 +1,64 @@
+pimee_catalog_rule:
+  rule_definition:
+    validation:
+      locale:
+        unknown: 'Wersja językowa "{{ locale_code }}" nie istnieje lub nie jest aktywna'
+      currency:
+        unknown: 'Wymagana jest prawidłowa waluta. Waluta "{{ currency }}" nie istnieje lub nie jest aktywna'
+        missing_key: 'Brakuje klucza "{{ key }}" lub jest on pusty'
+        unexpected_key: 'Klucz {{ key }} jest nieistotny'
+      measurement:
+        invalid_unit: 'Kod jednostki "{{ unitCode }}" nie istnieje lub nie należy do rodziny miar atrybutu "{{ attributeCode }}"'
+        invalid_attribute_type: 'Klucz {{ key }} jest nieistotny dla atrybutu {{ attributeCode }}'
+      attribute:
+        unknown: 'Atrybut "{{ code }}" nie istnieje'
+        unexpected_type: 'Atrybut "{{ attribute_code }}" ma nieprawidłowy typ atrybutu "{{ invalid_type }}". Wymagany jest atrybut {{ expected_types }}'
+        missing_locale: 'Atrybut "{{ attributeCode }}" wymaga wersji językowej'
+        unexpected_locale: 'Atrybut "{{ attributeCode }}" nie wymaga wersji językowej. Usuń ją'
+        unknown_locale: 'Atrybut "{{ attributeCode }}" wymaga istniejącej i aktywnej wersji językowej. Upewnij się, że wersja językowa istnieje i jest aktywna'
+        invalid_specific_locale: 'Atrybut "{{ attributeCode }}" jest specyficzny dla wersji językowej i wymaga jednego z następujących języków: {{ expectedLocales }}'
+        locale_not_bound_to_channel: 'Nie ma wersji językowej "{{ invalidLocale }}" w kanale "{{ channelCode }}"'
+        missing_scope: 'Atrybut "{{ attributeCode }}" wymaga zakresu'
+        unexpected_scope: 'Atrybut "{{ attributeCode }}" nie wymaga zakresu. Usuń go'
+        unknown_scope: 'Atrybut "{{ attributeCode }}" wymaga istniejącego zakresu'
+      invalid_code: 'Kod reguły może zawierać wyłącznie litery, cyfry i podkreślenia'
+      conditions:
+        missing_key: 'Brakuje klucza "conditions" lub jest on pusty'
+        missing_value_key: 'Brakuje klucza "value" lub jest on pusty'
+        missing_operator_key: 'Brakuje klucza "operator" lub jest on pusty'
+        existing_field: 'Pole "{{ field }}" nie może być filtrowane lub nie może być użyte z operatorem "{{ operator }}"'
+        missing_field_key: 'Brakuje klucza „field" lub jest on pusty'
+      actions:
+        missing_key: 'Brakuje klucza "actions" lub jest on pusty'
+        add:
+          invalid_field: 'Nie można dodać pozycji do pola "{{ field }}"'
+        clear:
+          invalid_field: 'Nie można wyczyścić danych z pola "{{ field }}"'
+        copy:
+          invalid_fields: 'Nie można skopiować danych z pola "{{ from_field }}" do pola "{{ to_field }}"'
+          missing_from_field_key: 'Brakuje klucza "from_field" lub jest on pusty'
+          missing_to_field_key: 'Brakuje klucza "to_field" lub jest on pusty'
+        concatenate:
+          invalid_source: 'Nie można konkatenować danych z pola "{{ field }}"'
+          missing_source_key: 'Wybierz jeden z wymaganych kluczy "field", "text" lub "new_line"'
+          only_one_source_key_expected: 'Wybierz tylko jeden z wymaganych kluczy "field", "text" lub "new_line"'
+          text_target_does_not_accept_new_line: 'Atrybut docelowy "{{ targetField }}" nie akceptuje nowej linii'
+          unexpected_source_option: 'Klucz {{ key }} jest nieistotny dla atrybutu {{ attribute }}'
+          missing_from_key: 'Brakuje klucza "from" lub jest on pusty'
+          missing_to_key: 'Brakuje klucza "to" lub jest on pusty'
+          source_count: 'Ta wartość powinna zawierać co najmniej 2 elementy'
+        calculate:
+          division_by_zero: 'Dzielenie przez zero jest niemożliwe'
+          missing_operand_key: 'Wymagany jest klucz "value" lub "field", ale obu brakuje lub są puste'
+          only_one_key_expected: 'Wybierz jeden z wymaganych kluczy "value" lub "field"'
+          unexpected_key: 'Klucz "{{ key }}" jest nieistotny'
+          invalid_operator: 'Ten operator może przyjmować następujące wartości "dodaj", "odejmij", "pomnóż" lub "podziel"'
+        remove:
+          invalid_field: 'Nie można usunąć pozycji z pola "{{ field }}"'
+          include_children_option: 'Opcja "include_children" może być zastosowana wyłącznie w polu "kategorie"'
+        set:
+          invalid_field: 'Nie można ustawić danych na pole "{{ field }}"'
+          missing_value_key: 'Brakuje klucza "value" lub jest on pusty'
+        custom:
+          unkown_type: 'Nieznany typ działania'
+          missing_type_key: 'Brakuje klucza "type" lub jest on pusty'

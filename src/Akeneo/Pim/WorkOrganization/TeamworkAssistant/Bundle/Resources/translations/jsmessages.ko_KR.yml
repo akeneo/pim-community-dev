@@ -26,8 +26,9 @@ teamwork_assistant:
   create_project_modal:
     saved: 프로젝트가 저장되었습니다. 계산 완료 시 알림이 전송됩니다.
     title: 프로젝트
+    label_already_used: 이 값은 프로젝트에서 이미 사용 중입니다.
   widget:
-    no_project: 현재 프로젝트가 없습니다
+    no_project: 현재 프로젝트가 없습니다.
     no_project_create: 새 프로젝트 만들기
     description: 설명
     due_date: 마감일
@@ -37,6 +38,8 @@ teamwork_assistant:
     all_contributors: 모든 기여자
     you: 나
     display_products: 제품 표시
+    projects: 프로젝트
+    contributors: 기여자
     placeholder:
       contributor_selector: 기여자 검색
       project_selector: 프로젝트 검색
@@ -44,6 +47,8 @@ teamwork_assistant:
       to_start: 시작할 제품
       in_progress: 진행 중인 제품
       done: 완료된 제품
+    searching: 검색 중...
+    no_search_results: 죄송합니다. 결과가 없습니다.
 pim_datagrid:
   view_selector:
     project: 프로젝트
@@ -63,6 +68,10 @@ batch_jobs:
     refresh_project_completeness_calculation.label: 프로젝트 완성도 새로 고침
 pim_notification:
   types:
-    project_created: 새 프로젝트가 있습니다
+    project_created: 새 프로젝트가 있습니다.
     project_finished: 프로젝트 완료
     project_calculation: 프로젝트 계산
+    project_due_date: 프로젝트 기한
+pim_analytics:
+  info_type:
+    nb_projects: 프로젝트 수

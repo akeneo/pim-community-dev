@@ -12,22 +12,6 @@ pimee_workflow:
     status:
       label: ステータス
       working_copy: ワーキングコピー
-      in_progress: 処理中
-      ready: 承認待ち
-      can_be_partially_reviewed: 部分的に確認可
-      can_not_be_approved: 確認できません
-      can_not_be_deleted: 削除できません
-    status_message:
-      can_be_partially_reviewed: "値に加えられた変更のいくつかに対する編集権限がないためレビューすることができる提案は一部に限定されます。\n権限の変更を希望する場合は管理者に問い合わせてください。"
-      can_not_be_approved: "値に加えられた全ての変更に対する編集権限がないため提案をレビューすることができません。\n権限の変更を希望する場合は管理者に問い合わせてください。"
-      can_not_be_deleted: "値に加えられた全ての変更に対する編集権限がないため提案を削除することができません。\n権限の変更を希望する場合は管理者に問い合わせてください。"
-      in_progress: この提案は現在進行中であり未提出です
-    action:
-      approve: すべて承認
-      refuse: すべて拒否
-      remove: 削除
-      partial_approve: 商品%product% の属性 %attribute% に対する変更を承認
-      partial_reject: 商品%product% の属性 %attribute% に対する変更を拒否
     notification:
       partial_approve: '%owner% は、商品%product% の %attributes% 値を受領しました'
       partial_approve_number: '%owner% は、商品%product% の %attributes_count%値を受領しました'
@@ -52,9 +36,6 @@ pimee_workflow:
     individual_import: '%author.firstname% %author.lastname% がジョブインポートからレビュー提案を送信しました'
     generic_import: ジョブインポートからのレビュー提案があります
     original_value: オリジナル
-    new_value: 新規
-    no_diff: 値「%value%」は、提案とワーキングコピー間で同じです
-    draft_in_progress: この商品の下書きは、%author% で進行中です
   published_product:
     index: 公開済み商品
     title: 公開済み商品

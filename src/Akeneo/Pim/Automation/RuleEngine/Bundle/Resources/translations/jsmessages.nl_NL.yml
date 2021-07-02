@@ -1,17 +1,25 @@
 pimee_catalog_rule:
   overview: "]-Inf, 1]{{ count }} Regel|]1, Inf[{{ count }} regels"
   execution_button: Voer regels uit
+  selected: "]-Inf, 1]{{ count }} regel geselecteerd|]1, Inf[{{ count }} regels geselecteerd"
+  dropdown:
+    title: Andere acties
   popin:
     execute_rules:
       confirm_title: Uitvoering van regels bevestigen
+      confirm_content: Weet u zeker dat u de regels wilt uitvoeren? Het kan even duren.
   notification:
+    fail: Deze actie is niet uitgevoerd
     launched: De uitvoering van de regels is gelanceerd. U wordt op de hoogte gebracht wanneer dit is voltooid.
   attribute:
     list:
       code.label: Code
       condition.label: Voorwaarde
       action.label: Actie
+      no_rule_yet.label: Momenteel geen regels
   rule:
+    value: Waarde
+    include_children: Inclusief kinderen
     condition:
       if.label: Als
     action:
@@ -30,9 +38,11 @@ pimee_catalog_rule:
           confirm_content: Bent u zeker dat u deze regel wilt verwijderen?
       mass_edit_action:
         confirm_title: Bevestig berekening
+        confirm_content: Weet u zeker dat u het aantal producten wilt berekenen waarop de regels van invloed zijn?
       mass_action:
         execute:
           confirm_title: Uitvoering van regels bevestigen
+          confirm_content: Weet u zeker dat u de regels wilt uitvoeren? Het kan even duren.
           success: De uitvoering van de regels is gelanceerd. U wordt op de hoogte gebracht wanneer dit is voltooid.
           error: Er deed zich een fout voor tijdens de uitvoering van de regels.
           empty_selection: Geen regels geselecteerd.
@@ -42,27 +52,392 @@ pimee_catalog_rule:
           success: U verwijderde de geselecteerde regels met succes.
           error: Er deed zich een fout voor tijdens het verwijderen van de regels.
           empty_selection: Geen regels geselecteerd.
+      tags:
+        set: Instellen
+        add: Toevoegen
+        calculate: Berekenen
+        clear: Wissen
+        concatenate: Samenvoegen
+        copy: Kopiëren
+        remove: Verwijderen
   form:
+    category:
+      catalog: Catalogus
+      select: Kies een categorie
+      open_tree: Open categorieboom
+      tree: Categorieboom
+      menu: Kies een categorieboom
+      folder:
+        selected: Map geselecteerd
+        not_selected: Map
+      folders:
+        selected: Mappen geselecteerd
+        not_selected: Mappen
+      arrow:
+        open: Branchecategorie openen
+        close: Branchecategorie sluiten
+    tab:
+      list: Tabbladen voor regelopsteller en eigenschappen
+      rule_builder: Regelopsteller
     attribute:
       tab:
         rules:
           title: Regels
+    creation:
+      helper: De regelengine kan uw productiviteit in de PIM drastisch verhogen door acties te automatiseren,
+      english_flag: Label voor Engels
+      title: Een nieuwe regel aanmaken
+      notification:
+        success: Regel is gemaakt
+        failed: Regel aanmaken mislukt
+      constraint:
+        code:
+          required: Een regelcode is verplicht.
+          too_short: "De regelcode is te kort. Er zijn {{ characterLimit }} tekens of meer nodig."
+          allowed_characters: De regelcode kan alleen alfanumerieke tekens en liggende streepjes bevatten.
+          unique: Deze code is al in gebruik.
+      cross_link: Formulier voor aanmaken regels verlaten
+    edit:
+      header:
+        welcome: Welkom bij uw nieuwe module met regelengine!
+        description: Om een regel aan te maken, moet u de productselectie definiëren en vervolgens één of meerdere acties toevoegen.
+        documentation_link: Klik hier om te zien wat u allemaal met de regelengine kunt doen.
+      properties:
+        section:
+          general: Algemene parameters
+          labels: Labelvertalingen
+      character_left: "]-Inf, 1]{{ count }} teken over|]1, +Inf[{{ count }} tekens over"
+      priority:
+        label: Prioriteit
+      status:
+        label: Status
+        enabled: Ingeschakeld
+        disabled: Uitgeschakeld
+      add_to_category: Toevoegen aan categorie
+      add_conditions: Voorwaarden toevoegen
+      products_count:
+        products: "]-Inf, 1]{{ count }} product|]1, +Inf[{{ count }} producten"
+        product_models: "]-Inf, 1]{{ count }} productmodel|]1, +Inf[{{ count }} productmodellen"
+        products_and_product_models: "{{ products }} en {{ product_models }}"
+        pending: Producten en productmodellen worden berekend
+        error: Kan producten en productmodellen niet berekenen
+      product_selection: Productselectie
+      preview: Voorbeeld
+      fields:
+        family: Familie
+        family_variant: Familievariatie
+        category: Categorie
+        identifier: ID
+        attribute: Attribuut
+        groups: Groepen
+        parent: Bovenliggende
+        measurement_unit: Meeteenheid
+        measurement_default_unit: "Standaardeenheid ({{ unit }})"
+        currency: Valuta
+        operator: operator
+        entity_type:
+          label: Entiteittype
+          placeholder: Selecteer een entiteittype
+      execute:
+        button: Opslaan en uitvoeren
+        title: De regel opslaan en uitvoeren
+        description: U slaat de huidige regel op en deze wordt uitgevoerd op de achtergrond. Wanneer dit klaar is, ontvangt u een melding.
+      duplicate:
+        button: Opslaan en dupliceren
+        title: Dupliceer de regel "{{ originalRuleCode }}"
+      actions:
+        add_action: Actie toevoegen
+        add_category:
+          title: Categoriën TOEVOEGEN
+          helper: Om uw productselectie toe te voegen aan een of meer categorieën, moet u beginnen met het selecteren van uw categoriebomen en vervolgens uw categorieën
+        add_groups:
+          title: Producten TOEVOEGEN aan groepen
+          helper: Selecteer een of meerdere groepen om producten toe te voegen aan groepen
+          subtitle: Kies uw groepen
+        set_groups:
+          title: Productgroepen INSTELLEN
+          helper: Selecteer een of meerdere groepen om de productgroepen in te stellen
+          subtitle: Kies uw groepen
+        set_category:
+          title: Categorieën INSTELLEN
+          helper: Om uw productselectie in te stellen voor een of meer categorieën, moet u beginnen met het selecteren van uw categoriebomen en vervolgens uw categorieën
+        category:
+          select_category_trees: Kies uw categoriebomen
+          select_category_tree: Kies uw categorieboom
+          select_categories: Kies uw categorieën
+          select_category: Kies uw categorie
+          category_tree: Categorieboom
+          categories_selected: "]-Inf, 1]{{ count }} categorie geselecteerd|]1, +Inf[{{ count }} categorieën geselecteerd"
+          no_category_tree: Selecteer eerst een categorieboom
+          remove_unknown_category: "Klik hier om deze categorie te verwijderen."
+        set_family:
+          title: Familie INSTELLEN
+          subtitle: Selecteer uw familie
+        set_attribute:
+          title: Attribuutwaarde INSTELLEN
+          helper: Om waarden in te stellen op uw attribuut, moet u beginnen met het selecteren van uw doelattribuut en daarna de gewenste waarde instellen
+          target_subtitle: Selecteer uw doel
+          value_subtitle: Definiëer uw waarde
+          attribute_label: Attribuut
+          attribute_placeholder: Selecteer uw doelattribuut
+          select_reference_entity: Selecteer uw refererentie-entiteiten
+          select_asset: Selecteer uw assets
+          select_measurement_unit: Selecteer uw eenheid
+        set_quantified_associations:
+          title: Gekwantificeerde associaties INSTELLEN
+          helper: Om gekwantificeerde associaties in te stellen, selecteert u de associatietype(s) en vervolgens de producten, productmodellen of groepen die u wilt associëren met uw productselectie.
+        set_associations:
+          title: Associaties INSTELLEN
+          helper: Om associaties in te stellen, selecteert u de associatietype(s) en vervolgens de producten, productmodellen of groepen die u wilt associëren met uw productselectie.
+          select_association_type: Selecteer uw associatietype
+          association_types: Associatietypes
+          add_group: Een groep toevoegen
+          add_product: Een product toevoegen
+          add_product_model: Een productmodel toevoegen
+          add_association_type: Een associatietype toevoegen
+          select_title:
+            products: Selecteer uw producten
+            product_models: Selecteer uw productmodellen
+            groups: Selecteer uw groepen
+          select:
+            products: Producten
+            product_models: Productmodellen
+            groups: Groepen
+          counts:
+            products: ']-Inf, 1]{{ count }} product|]1, +Inf[{{ count }} producten'
+            product_models: ']-Inf, 1]{{ count }} productmodel|]1, +Inf[{{ count }} productmodellen'
+            groups: ']-Inf, 1]{{ count }} groep|]1, +Inf[{{ count }} groepen'
+        add_associations:
+          title: Associaties TOEVOEGEN
+          helper: Om associaties toe te voegen, selecteert u de associatietype(s) en vervolgens de producten, productmodellen of groepen die u wilt associëren met uw productselectie.
+        clear_attribute:
+          title: Attribuutwaarde WISSEN
+          subtitle: Selecteer het attribuut dat u wilt wissen
+          attribute_label: Attribuut
+        clear_associations:
+          title: Associaties WISSEN
+          helper: Alle associaties voor de geselecteerde producten worden gewist.
+        clear_quantified_associations:
+          title: Gekwantificeerde associaties WISSEN
+          helper: Alle gekwantificeerde associaties voor de geselecteerde producten worden gewist.
+        clear_categories:
+          title: Categorieën WISSEN
+        clear_groups:
+          title: Groepen WISSEN
+        remove_category:
+          title: Categorieën VERWIJDEREN
+          helper: Om uw productselectie te verwijderen uit een of meer categorieën, moet u beginnen met het selecteren van uw categoriebomen en vervolgens uw categorieën
+        remove_attribute_value:
+          title: Attribuutwaarde VERWIJDEREN
+          helper: Om waarden te verwijderen uit uw attribuut, moet u beginnen met het selecteren van uw doelattribuut en vervolgens de waarden die u wilt verwijderen.
+          value_subtitle: Definieer de waarden die u wilt verwijderen
+        add_attribute_value:
+          title: Attribuutwaarde TOEVOEGEN
+          helper: Om waarden toe te voegen aan uw attribuut, moet u beginnen met het selecteren van uw doelattribuut en vervolgens de waarden die u wilt toevoegen.
+          value_subtitle: Definieer de waarden die u wilt toevoegen
+        copy:
+          title: Attribuutwaarde KOPIËREN
+          helper: Om waarden te kopiëren van het ene attribuut naar het andere, selecteert u eerst uw bronattribuut en vervolgens uw doelattribuut.
+          select_source: Selecteer uw bron
+          select_target: Selecteer uw doel
+          no_source: Selecteer eerst uw doelattribuut
+        delete:
+          label: Actie verwijderen
+          description: Weet u zeker dat u deze actie wilt verwijderen?
+        set_status:
+          title: Status INSTELLEN
+          subtitle: Definiëer uw status
+          helper: Om een status voor producten in te stellen, selecteert u een status in de onderstaande lijst
+          placeholder: Selecteer uw status
+        remove_groups:
+          title: Producten uit groepen VERWIJDEREN
+          helper: Selecteer een of meerdere groepen om producten te verwijderen uit groepen
+          subtitle: Selecteer uw groepen
+        calculate:
+          title: Waarden BEREKENEN
+          helper: Om numerieke attribuutwaarden te berekenen, kiest u een of meer attributen en/of waarden en selecteert vervolgens het doelattribuut voor de resultaten. Zo nodig kunt u het eindresultaat ook afronden.
+          add_value: Waarde toevoegen
+          add_attribute: Attribuut toevoegen
+          select_target: Selecteer uw doel
+          attribute_placeholder: Selecteer uw doelattribuut
+          round_precision: Precisie in afronding
+          operator:
+            add: Toevoegen
+            subtract: Aftrekken
+            multiply: Vermenigvuldigen
+            divide: Delen
+            choose: Kies uw operator
+        concatenate:
+          title: Waarden SAMENVOEGEN
+          helper: Om attribuutwaarden samen te voegen, voegt u de attributen toe en selecteert vervolgens het doelattribuut.
+          select_target: Selecteer uw doel
+          attribute_placeholder: Selecteer uw doelattribuut
+          add_text: Tekst toevoegen
+          add_attribute: Attribuut toevoegen
+          add_new_line: Regeleinde toevoegen
+          line_break: Regeleinde
+          date_format: Selecteer een datumindeling
+          label_locale: Taallabel
+          unit_label_locale: Eenheid taal
+          remove_new_line_confirm:
+            label: Verwijder regeleinden uit lijst met bewerkingen
+            description: Voor het nieuwe doelattribuut kunt u geen regeleinden gebruiken. Met deze wijziging worden alle regeleinden verwijderd.
+      conditions:
+        delete:
+          label: Voorwaarde verwijderen
+          description: Weet u zeker dat u deze voorwaarde wilt verwijderen?
+        operators:
+          "STARTS WITH": begint met
+          "ENDS WITH": eindigt op
+          "CONTAINS": bevat
+          "DOES NOT CONTAIN": bevat geen
+          "EMPTY": is leeg
+          "NOT EMPTY": is niet leeg
+          "IN": in
+          "NOT IN": niet in
+          "IN CHILDREN": in kinderen
+          "NOT IN CHILDREN": niet in kinderen
+          "UNCLASSIFIED": is niet ingedeeld
+          "IN OR UNCLASSIFIED": is niet ingedeeld of in
+          "BETWEEN": tussen
+          "NOT BETWEEN": niet tussen
+          "=": is gelijk aan
+          "!=": is niet gelijk aan
+          ">": groter dan
+          ">=": is gelijk aan of groter dan
+          "<": kleiner dan
+          "<=": is gelijk aan of kleiner dan
+      notification:
+        success: De regel is bijgewerkt
+        failed: Regel bijwerken mislukt
+        execute_success: De regel is bijgewerkt en uitgevoerd
+        execute_failed: De regel is opgeslagen, maar er is een fout opgetreden tijdens de uitvoering
+      discard_changes: De wijzigingen gaan verloren gaan als u de pagina verlaat.
+      please_select_attribute: Selecteer eerst een doelattribuut.
+      unhandled_attribute_type: Dit attribuuttype wordt nog niet beheerd. Gebruik het importeren van regels.
+      empty_section:
+        set_up_action: Goed! U hebt de productselectie gedefinieerd. U kunt nu uw actie instellen.
+        set_up_condition: Als u niet wilt dat dit invloed heeft op uw hele catalogus, voeg dan ten minste één voorwaarde toe.
+        add_action: Voeg vervolgens een of meerdere acties toe om toe te passen op uw producten/productmodellen.
+        doc: Weet u niet wat een actie is?
+        doc_link: Dit artikel kan u helpen.
+    delete:
+      description: Bent u zeker dat u deze regel wilt verwijderen? U kunt deze actie niet ongedaan maken.
+      notification:
+        failed: Regel verwijderen mislukt
+        success: De regel is verwijderd
+    helper:
+      add_to_category: Om uw productselectie toe te voegen aan een of meer categorieën, moet u beginnen met het selecteren van uw categoriebomen en vervolgens uw categorieën.
+      clear_attribute: Om de attribuutwaarde te wissen, moet u eerst het attribuut selecteren dat u wilt wissen.
+      clear_categories: Alle categorieën voor de geselecteerde producten worden gewist.
+      clear_groups: Alle groepen voor de geselecteerde producten worden gewist.
+      product_selection: "U moet uw productselectie definiëren om een regel te maken. Als u niet weet hoe, "
+      product_selection_doc_link: lees dan dit artikel.
+      set_attribute_info_clear: U moet de in te stellen waarde definiëren. Als u de attribuutwaarde wilt wissen, gebruik dan de actie Verwijder attribuutwaarde.
+    legend:
+      add_to_category: Een actie aanmaken
+      product_selection: Een voorwaarde aanmaken
+    tree:
+      item:
+        selected: Geselecteerd item
+        not_selected: Item selecteren
+    date:
+      operators:
+        specific_date: Specifieke datum
+      label:
+        date_type: Kies een type datum
+        operator: Kies een operator
+        date: Kies een datum
+        relative_date: Kies een datum
+        locale: Kies een taal
+        scope: Kies een toepassingsgebied
+        period: Kies een tijdseenheid
+        open_period: Menu tijdseenheden openen
+        date_from: Kies een begindatum
+        date_to: Kies een einddatum
+        date_past: Datum in het verleden
+        date_future: Datum in de toekomst
+        date_present: Nu
+      day: "]-Inf, 1] dag]1, +Inf[ dagen"
+      week: "]-Inf, 1] week]1, +Inf[ weken"
+      month: "]-Inf, 1] maand ]1, +Inf[ maanden"
+      year: "]-Inf, 1] jaar]1, +Inf[ jaar"
+      hour: "]-Inf, 1] uur]1, +Inf[ uur"
+      minute: "]-Inf, 1] minuut ]1, +Inf[ minuten"
+  exceptions:
+    loading: Er is een fout opgetreden bij het laden van de regeldefinitie.
+    required: Dit veld is verplicht
+    required_attribute: Een attribuut is vereist
+    required_locale: Er is een taal vereist voor het attribuut {{ attributeLabel }}
+    required_scope: Er is een kanaal vereist voor het attribuut {{ attributeLabel }}
+    required_currency: Er is een valuta vereist voor het attribuut {{ attributeLabel }}
+    required_locale_completeness: Er is een taal vereist voor de volledigheid
+    required_scope_completeness: Er is een kanaal vereist voor de volledigheid
+    required_value: Er is een waarde vereist voor deze actie
+    required_categories: Er is ten minste één categorie vereist voor deze actie
+    required_constant_for_operation: Er is een constante waarde vereist voor deze bewerking
+    required_operator_for_operation: Er is een operator vereist voor deze bewerking
+    required_unit: Er is een meeteenheid vereist
+    identifier_or_quantity_missing: Er zijn een id en een hoeveelheid vereist voor elk element
+    required_item: Er is ten minste één item vereist voor deze actie
+    division_by_zero: Delen door nul is niet mogelijk
+    two_operations_are_required: De lijst met bewerkingen moet 2 bewerkingen of meer bevatten.
+    two_items_are_required: De lijst moet 2 items of meer bevatten.
+    unknown_or_inactive_locale: 'De "{{ localeCode }}" taal bestaat niet of is niet geactiveerd'
+    unknown_or_inactive_currency: 'De "{{ currencyCode }}" taal bestaat niet of is niet geactiveerd'
+    unbound_locale: 'De taal "{{ localeCode }}" is niet geactiveerd in het kanaal "{{ channelCode }}"'
+    unbound_currency: 'De valuta "{{ currencyCode }}" is niet geactiveerd in het kanaal "{{ channelCode }}"'
+    locale_on_unlocalizable_attribute: Dit attribuut kan niet worden vertaald. Verwijder de taal voordat u doorgaat.
+    unknown_scope: 'Het kanaal "{{ scopeCode }}" bestaat niet'
+    scope_on_unscopable_attribute: Dit attribuut heeft niet meerdere toepassingsgebieden. Verwijder het kanaal voordat u doorgaat.
+    unknown_families: "{1}De familie {{ familyCodes }} bestaat niet [1,+Inf[De families {{ familyCodes }} bestaan niet"
+    unknown_family_variants: "{1}De familie {{ familyVariantCodes }} bestaat niet [1,+Inf[De families {{ familyVariantCodes }} bestaan niet"
+    unknown_attribute_options: "{1}De optie {{ attributeOptionCodes }} bestaat niet [1,+Inf[De opties {{ attributeOptionCodes }} bestaan niet"
+    unknown_attribute_code: "Het attribuut {{ attributeCode }} bestaat niet"
+    unknown_categories: "{1}De categorie {{ categoryCodes }} categorie bestaat niet.|]1, +Inf[De categorieën {{ categoryCodes }} bestaan niet"
+    unknown_attribute: "Dit attribuut bestaat niet"
+    unknown_groups: "{1} De groep {{ groupCodes }} bestaat niet [1, +Inf[De volgende groepen bestaan niet: {{ groupCodes }}"
+    select_another_attribute_or_remove_action: "Selecteer een ander attribuut of verwijder deze actie."
+    select_another_attribute: "Select een ander attribuut"
+    or: of
+    create_attribute_link: klik hier om het attribuut aan te maken
+    edit_unauthorize: U bent niet gemachtigd om bestanden te bewerken
+    wrong_date_timespan: Om een geldige tijdsperiode te definiëren, mag de einddatum niet voor de begindatum zijn ingesteld.
+    measurement_family_not_found: De meetfamilie "{{ measurement_code }}" bestaat niet
+    unit_not_found: De eenheid "{{ unitCode }}" is niet gevonden in de meetfamilie "{{ measurement_code }}"
+    empty_association_warning: Als u deze lijst niet invult, wordt met deze regel dit associatietype gewist.
 pim_enrich:
   entity:
     rule:
       module:
         delete:
           confirm: Bent u zeker dat u deze regel wilt verwijderen? Het is niet mogelijk om deze actie ongedaan te maken
+      flash:
+        delete:
+          success: De regel is verwijderd
 flash:
   rule:
+    impacted_product_count: De bulkactie om te berekenen op hoeveel producten dit van invloed is, is gestart. U ontvangt een medling wanneer het is voltooid.
     executed: De uitvoering van de regels is gelanceerd. U wordt op de hoogte gebracht wanneer dit is voltooid.
+    enabled: De regel is ingeschakeld
+    disabled: De regel is uitgeschakeld
 pim_dashboard.widget.last_operations.job_type.mass_edit_rule: Regelinstellingen
 batch_jobs:
   add_attribute_value:
     execute_rules.label: Uitvoering van regels
   default_steps:
+    export_rules: Regels exporteren
+    import_rules: Regels importeren
+    calculate_affected_products: Betrokken producten berekenen
     execute_rules: Uitvoering van regels
+  yml_rule_import:
+    label: Regels importeren in YAML
+    import.label: Regels importeren
+  yml_rule_export:
+    label: Regels exporteren in YAML
+    export.label: Regels exporteren
   rule_impacted_product_count:
+    label: Aantal betrokken producten
     perform.label: Tel aantal betreffende producten
   csv_product_import_with_rules:
     label: Product import in CSV met regels
@@ -80,10 +455,14 @@ pim_notification:
     mass_edit_rule: Massa bewerkregel
     execute_rules: Uitvoering van regels
 pim_menu:
+  navigation:
+    settings:
+      automation: Automatisering
   item:
     rule: Regels
 pim_title:
   pimee_catalog_rule_rule_index: Regels
+  pimee_catalog_rule_edit: Regel bewerken
   pimee_catalog_rule_new: Regels
 pim_import_export:
   widget:

@@ -16,7 +16,7 @@ Feature: Validate identifier attribute of a draft
     Given I am on the "foo" product page
     And I change the SKU to "bar"
     And I save the product
-    Then I should see validation error "The same identifier is already set on another product"
+    Then I should see validation error "The bar identifier is already used for another product."
     And there should be 1 error in the "Product information" tab
 
   Scenario: Validate the max characters constraint of identifier attribute

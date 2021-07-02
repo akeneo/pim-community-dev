@@ -3,6 +3,12 @@ pim_enrich:
     attribute:
       property:
         is_read_only: Sola lettura
+pimee_import_export:
+  entity:
+    job_instance:
+      flash:
+        update:
+          fail_empty_permission: Devi selezionare almeno uno autorizzato a modificare il job
 pimee_enrich.entity.category:
   module:
     permissions:
@@ -50,3 +56,16 @@ batch_jobs:
     send_for_approval: Invia per approvazione
 pim_title:
   pimee_enrich_locale_edit: Impostazioni locali | Modifica
+pim_analytics:
+  info_type:
+    nb_custom_locale_accesses: Numero di accessi alle impostazioni locali personalizzate
+    nb_custom_category_accesses: Numero di accessi alle categorie personalizzate
+    nb_custom_attribute_group_accesses: Numero di accessi ai gruppi di attributi personalizzati
+category.permissions:
+  view.label: Consentita la visualizzazione dei prodotti
+  edit.label: Consentita la modifica dei prodotti
+  own.label: Consentita la ownership dei prodotti
+  own.help: Rivedi, pubblica, rimuovi dalla pubblicazione, classifica e associa i prodotti
+  no_access_to_products: Non hai accesso ai prodotti in alcun albero. Contatta il tuo amministratore
+  apply_on_children.label: Applica le modifiche sui figli
+  apply_on_children.help: I permessi esistenti sui figli sono mantenuti

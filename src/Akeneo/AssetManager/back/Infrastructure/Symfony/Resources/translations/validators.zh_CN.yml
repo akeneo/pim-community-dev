@@ -6,7 +6,7 @@ pim_asset_manager:
         should_be_unique: '已存在代码为"%asset_family_identifier%"的资产品类'
         limit_reached: '无法创建资产品类 “%asset_family_identifier%”，因为已达到资产品类的上限数目 %limit%'
       assets:
-        should_have_no_asset: '您无法删除此品类，因为此品类存在资产'
+        should_have_no_asset: '您不能删除该品类，因为此品类含有资产'
       asset_family_attributes:
         should_not_be_linked: '您不能删除此品类，因为资产品类属性与此品类相关联。'
       asset_family_permissions:
@@ -51,6 +51,9 @@ pim_asset_manager:
         not_main_media_attribute_code: '属性必须匹配指定为主媒体的属性的代码'
   asset:
     validation:
+      mass_edit:
+        updater_cannot_be_empty: '无法选择转换或只读模式中使用的属性。'
+        updater_must_be_unique: '请确保此属性及其渠道和区域（如果适用的话）未被选中。'
       code:
         pattern: '此字段只能包含字母、数字和下划线。'
         should_be_unique: '已存在代码为"%code%"的资产'
@@ -87,6 +90,8 @@ pim_asset_manager:
         should_be_numeric: '此字段应该是一个数值，使用右小数点分隔符'
       main_media:
         not_main_media_attribute: '主媒体所需的属性应为"%main_media_attribute%"，而给定的是"%attribute%"。'
+      media_link:
+        protocol_not_allowed: '此字段应以有效的协议开始。允许的协议为：%allowed_protocols%。'
   attribute:
     validation:
       options:
@@ -124,6 +129,7 @@ pim_asset_manager:
         asset_family_should_exist: '找不到资产品类"%asset_family_code%" 。'
       prefix:
         should_not_be_empty: '前缀不能为空字符串。'
+        protocol_not_allowed: '此字段应以有效的协议开始。允许的协议为：%allowed_protocols%。'
       suffix:
         should_not_be_empty: '后缀不能为空字符串。'
       media_type:

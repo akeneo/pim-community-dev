@@ -287,17 +287,20 @@ commit-instance:
 	git config --global user.email "pim_ci@akeneo.com"
 	git config --global user.name "pim_ci_instance_creation"
 	cd $(CLOUD_CUSTOMERS_DEV_DIR) && git add $(DEPLOYMENTS_INSTANCES_DIR)/$(PFID)
-	cd $(CLOUD_CUSTOMERS_DEV_DIR) && git pull --no-commit && git commit -am "Created instance $(PFID)" && git push
+	(cd $(CLOUD_CUSTOMERS_DEV_DIR) && git pull --no-commit && git commit -am "Created instance $(PFID)" && git push) || \
+	bash $(PWD)/deployments/bin/pull_push_loop.sh $(CLOUD_CUSTOMERS_DEV_DIR)
 
 .PHONY: uncommit-instance
 uncommit-instance:
+	rm -rf $(CLOUD_CUSTOMERS_DEV_DIR)/*
 	git clone git@cloud-customers-dev:akeneo/cloud-customers-dev.git $(CLOUD_CUSTOMERS_DEV_DIR)
 	make delete
 	rm -rf $(DEPLOYMENTS_INSTANCES_DIR)/$(PFID)
 	git config --global user.email "pim_ci@akeneo.com"
 	git config --global user.name "pim_ci_instance_deletion"
 	cd $(CLOUD_CUSTOMERS_DEV_DIR) && git add $(DEPLOYMENTS_INSTANCES_DIR)/$(PFID)
-	cd $(CLOUD_CUSTOMERS_DEV_DIR) && git pull --no-commit && git commit -am "Deleted instance $(PFID)" && git push
+	(cd $(CLOUD_CUSTOMERS_DEV_DIR) && git pull --no-commit && git commit -am "Deleted instance $(PFID)" && git push) || \
+	bash $(PWD)/deployments/bin/pull_push_loop.sh $(CLOUD_CUSTOMERS_DEV_DIR)
 
 .PHONY: upgrade-instance
 upgrade-instance:

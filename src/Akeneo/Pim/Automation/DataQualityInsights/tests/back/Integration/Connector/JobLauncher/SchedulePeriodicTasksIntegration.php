@@ -41,21 +41,41 @@ final class SchedulePeriodicTasksIntegration extends TestCase
 
     private function assertCountScheduledPeriodicTasks(int $expectedCount): void
     {
+        $jobTransport = $this->get('messenger.transport.data_maintenance_job');
+
+        $count = 0;
+        $stop = false;
+        while (!$stop) {
+            $stop = true;
+
+            foreach ($jobTransport->get() as $envelope) {
+                $stop = false;
+                $jobExecutionId = $envelope->getMessage()->getJobExecutionId();
+                if ('data_quality_insights_periodic_tasks' === $this->getJobCodeFromJobExecutionId($jobExecutionId)) {
+                    $count++;
+                }
+            }
+        }
+
+        $this->assertSame($expectedCount, $count);
+    }
+
+    private function getJobCodeFromJobExecutionId(int $jobExecutionId): string
+    {
         $query = <<<SQL
-SELECT COUNT(*)
-FROM akeneo_batch_job_execution_queue AS queue
-JOIN akeneo_batch_job_execution AS job_execution ON job_execution.id = queue.job_execution_id
-JOIN akeneo_batch_job_instance AS job_instance ON job_instance.id = job_execution.job_instance_id
-WHERE job_instance.code = :job_code
+SELECT job_instance.code
+FROM akeneo_batch_job_execution job_execution
+    JOIN akeneo_batch_job_instance AS job_instance ON job_instance.id = job_execution.job_instance_id
+WHERE job_execution.id = :job_execution_id
 SQL;
 
         $stmt = $this->get('database_connection')->executeQuery(
             $query,
-            ['job_code' => 'data_quality_insights_periodic_tasks']
+            ['job_execution_id' => $jobExecutionId]
         );
+        $jobCode = $stmt->fetchColumn();
+        self::assertIsString($jobCode, 'Job code cannot be found.');
 
-        $count = intval($stmt->fetchColumn());
-
-        $this->assertSame($expectedCount, $count);
+        return $jobCode;
     }
 }

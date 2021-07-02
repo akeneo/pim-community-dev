@@ -1,8 +1,23 @@
+batch_jobs.akeneo_shared_catalog.label: 공유 카탈로그 보내기
 pim_common:
+  recipients: 수신자
   branding: 브랜딩
+  result_count: "{0}0개 결과|{1}1개 결과|]1, Inf[{{ itemsCount }}개 결과"
+  items_selected: "{0}0개 항목 선택|{1}1개 항목 선택|]1, Inf[{{ itemsCount }}개 항목 선택"
 shared_catalog:
   recipients:
+    add: 여기에 사용자 이메일 추가
+    placeholder: betty@akeneo.com
     email: 이메일 주소
     invalid_email: 이 값은 유효한 이메일 주소가 아닙니다.
+    duplicates: 이 수신자와 이미 공유했습니다.
+    helper: "새 공유 카탈로그에 액세스할 수 있는 수신자를 추가하십시오. 주소 목록 입력 시 공백, 쉼표, 세미콜론, 줄 바꿈 구분 기호를 사용할 수 있습니다."
+    no_result: 죄송합니다. 검색과 일치하는 이메일이 없습니다.
+    no_data: 선언된 이메일 주소가 없습니다.
+    max_limit_reached: 500명의 수신자 제한에 도달했습니다.
+  branding:
+    upload: "로고 업로드(최대 크기: 2MB, 파일 형식: PNG 또는 JPG)"
+    invalid_extension: "유효하지 않은 확장자입니다. 허용된 확장자는 {{ allowed_extensions }}입니다."
+    filesize_too_large: 제공된 파일의 크기가 너무 큽니다. 최대 크기는 2MB입니다.
   button:
     save: 저장 및 공유

@@ -5,4 +5,28 @@ batch_jobs:
   asset_manager_xlsx_asset_export:
     label: XLSX形式によるアセットのエクスポート
     export.label: アセットのエクスポート
+  asset_manager_csv_asset_import:
+    label: アセットを CSV 形式でインポート
+    import.label: アセットのインポート
+  asset_manager_xlsx_asset_import:
+    label: アセットを XLSX 形式でインポート
+    import.label: アセットのインポート
 akeneo_assetmanager.export.assets.filter.asset_family: アセットファミリー
+pim_analytics:
+  info_type:
+    api_connection: API 接続数
+    nb_asset_families: アセットファミリーの数
+    max_number_of_assets_per_asset_family: アセットファミリーごとの最大アセット数
+    max_number_of_attributes_per_asset_family: アセットファミリーごとの最大属性数
+    average_number_of_assets_per_asset_family: アセットファミリーごとの平均アセット数
+    average_number_of_values_per_assets: アセットごとの値の平均数
+    average_number_of_attributes_per_asset_family: アセットファミリーごとの平均属性数
+    data_source:
+      tracked: 追跡中のデータ転送先
+      untracked: 追跡なしのデータ転送先
+    data_destination:
+      tracked: 追跡中のデータソース
+      untracked: 追跡なしのデータソース
+    other:
+      tracked: 追跡中のその他
+      untracked: 追跡なしのその他

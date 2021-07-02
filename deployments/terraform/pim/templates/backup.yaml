@@ -21,10 +21,17 @@ spec:
       - data-mysql-server-0
 {{- range $k, $v := until (atoi (quote .Values.elasticsearch.data.replicas) | default 2) }}
       - data-elasticsearch-data-{{ $k }}    
-{{- end }} 
+{{- end }}
 {{- range $k, $v := until (atoi (quote .Values.elasticsearch.master.replicas) | default 2) }}
       - data-elasticsearch-master-{{ $k }}    
-{{- end }} 
+{{- end }}
     retentionPolicy:
 {{ toYaml .Values.backup.snapshot.retentionPolicy | indent 6 }}
+  archive:
+    enabled: {{ .Values.backup.archive.enabled }}
+{{ if .Values.backup.archive.enabled }}    
+    schedule: {{ .Values.backup.archive.schedule }} 
+    sources:
+      - data-mysql-server-0
+{{- end }}
 {{- end }}

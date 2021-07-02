@@ -1,20 +1,45 @@
+pim_menu.item.sso: Eenmalige aanmelding (SSO) op basis van SAML
+pim_title:
+  authentication_sso_configuration_edit: Configuratie van eenmalige aanmelding op basis van SAML
 authentication:
   sso:
     configuration:
+      download_logs_button: Logboeken downloaden
       info:
         update_successful: De instellingen zijn opgeslagen
         update_failed: Fout bij het opslaan van de configuratie
+        fields_not_ready: "De configuratie kan nu niet worden opgeslagen. De volgende velden zijn niet volledig: {{ fields }}"
       section:
         activation:
-          title: SSO activatie
+          title: Eenmalige aanmelding activeren
+          info:
+            description: Als u SSO-authenticatie inschakelt, is uw huidige sessie niet langer geldig. Na het opslaan van de configuratie wordt u uitgelogd en doorgeleid naar uw identiteitsprovider.
+        identity_provider:
+          title: Identiteitsprovider (IdP)
+          info:
+            description: U kunt hier alle parameters instellen die nodig zijn om met uw IdP te communiceren. Deze informatie moet worden verstrekt door uw IdP. Neem contact op met uw SSO-beheerder om de informatie te krijgen.
+        service_provider:
+          title: Serviceprovider (SP)
+          info:
+            description: Hieronder vindt u de informatie over de serviceprovider. Dit zijn automatisch gegenereerde waarden. U kunt ze zo nodig bewerken. Deze informatie moet aan uw SSO-beheerder worden verstrekt om de IdP te configureren.
       field:
+        activation:
+          label: Eenmalige aanmelding ingeschakeld
         entity_id:
           label: Entiteit-ID
+        sign_on_url:
+          label: URL voor aanmelding
+        logout_url:
+          label: URL voor uitloggen
         certificate:
           label: Certificaat
+          expiration_warning: Dit certificaat verloopt op {{ date }}.
         private_key:
           label: Privésleutel
         metadata_url:
+          label: Metagegevens URL
           tooltip_label: URL kopiëren
         acs_url:
+          label: ACS URL
           tooltip_label: URL kopiëren
+        copy: Kopiëren

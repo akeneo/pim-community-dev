@@ -1,5 +1,5 @@
 pim_title:
-  akeneo_reference_entities_reference_entity_index: Een entiteit aanmaken
+  akeneo_reference_entities_reference_entity_index: Een nieuwe entiteit aanmaken
   akeneo_reference_entities_reference_entity_edit: Bewerk een referentie-entiteit
   akeneo_reference_entities_record_edit: Bewerk een record
 pim_reference_entity:
@@ -98,7 +98,11 @@ pim_reference_entity:
       link: Klik hier om je eerste gebruikersgroep toe te voegen
   record:
     mass_delete:
+      confirm: '[0,1]Weet u zeker dat u {{ count }} geselecteerd record wilt verwijderen|]1,Inf]Weet u zeker dat u de {{ count }} geselecteerde records wilt verwijderen?'
+      extra_information: Als ze aan producten zijn gekoppeld, worden de koppelingen naar de producten verwijderd.
+      confirm_label: Typ de "{{ referenceEntityIdentifier }}"
       title: Records
+    record_selected: '{0} {{ count }} record geselecteerd|{1} {{ count }} record geselecteerd|]1,Inf] {{ count }} records geselecteerd'
     validation:
       limit_reached: 'Je kunt het record "{{ %record_label% }}" niet aanmaken omdat je de limiet van {{ %limit% }} records voor deze referentie-entiteit hebt bereikt'
       code:
@@ -121,7 +125,10 @@ pim_reference_entity:
     button:
       save: Opslaan
       create: Nieuwe toevoegen
+      delete: Record verwijderen
       back: Terug naar het overzicht
+      edit: Record bewerken
+      view: Record bekijken
     product:
       attribute: Productattribuut
       counter: '{{ totalCount }} resultaat|{{ totalCount }} resultaten'
@@ -156,7 +163,11 @@ pim_reference_entity:
         code: Code (verplicht)
         create_another: Een record aanmaken
       confirm: Opslaan
+    delete:
+      message: Weet u zeker dat u het record "{{ recordLabel }}" wilt verwijderen? Als het gekoppeld is aan producten of records, worden de koppelingen verwijderd.
+      title: Record
     grid:
+      search: Zoeken op label, code en tekstattributen
       filter:
         completeness:
           label: Voltooien
@@ -165,6 +176,7 @@ pim_reference_entity:
           'no': 'Nee'
         option:
           all: Alle
+          no_value: Selecteer een optie om te filteren
           operator:
             in: In lijst
       column:
@@ -175,19 +187,34 @@ pim_reference_entity:
         action: Acties
       more_result:
         title: Dit is het niet!
+        description: U hebt zojuist door de eerste 500 resultaten van in {{ total }} records gebladerd. Gebruik meer specifieke zoektermen om meer resultaten te zien.
+      completeness:
+        title_no_required: Geen attribuut vereist
+        title_non_complete: 0 van {{ required }} attributen voltooid
+        title_ongoing: '{{ complete }} van {{ required }} attributen voltooid'
+        title_complete: Alle {{ required }} attributen zijn voltooid
     tab:
       enrich: Verrijken
       product: Producten
     notification:
       save:
+        success: Het record is bijgewerkt
         fail: Er deed zich een four voor tijdens het opslaan van het record
+        validation_error: Het record kon niet worden bijgewerkt
       create:
+        success: Het record is aangemaakt
         fail: Er deed zich een four voor tijdens het aanmaken van het record
       delete:
+        success: Record "{{ code }}" is verwijderd.
         fail: Er deed zich een fout voor tijdens het verwijderen van het record
+      mass_delete:
+        success: De bulkactie "Groepsgewijs verwijderen" is gestart. U ontvangt een melding wanneer deze is voltooid.
+        fail: "Fout opgetreden tijdens opstarten taak groepsgewijs verwijderen: {{ error }}"
     completeness:
       label: Voltooien
   attribute:
+    validation:
+      limit_reached: 'U kunt het attribuut "%attribute_label%" niet aanmaken omdat u de limiet van %limit% attributen voor deze referentie-entiteit hebt bereikt'
     default:
       code: Code
       label: Label
@@ -210,13 +237,17 @@ pim_reference_entity:
       header:
         title: Aanmaken
       subtitle: Referentie-entiteiten
+      title: Nieuw recordattribuut toevoegen
       description: De volgende parameters, behalve het label, kunnen niet worden bijgewerkt na het aanmaken van het attribuut
       input:
         code: Code (verplicht)
         label: Label
         type: Attribuuttype
+        record_type: Referentie-entiteit voor koppeling (verplicht)
         value_per_locale: Waarde per taal
         value_per_channel: Waarde per kanaal
+      placeholder:
+        record_type: Selecteer uw gekoppelde referentie-entiteit
       confirm: Opslaan
     edit:
       delete: Verwijder het attribuut
@@ -227,6 +258,7 @@ pim_reference_entity:
         code: Code (verplicht)
         label: Label
         type: Attribuuttype
+        record_type: Gerelateerde referentie-entiteit (verplicht)
         value_per_locale: Waarde per taal
         value_per_channel: Waarde per kanaal
         is_required: Vereist voor compleetheid
@@ -273,6 +305,7 @@ pim_reference_entity:
         fail: Er deed zich een fout voor tijdens het verwijderen van het attribuut
     options:
       no_value: Klik hier om een optie te selecteren.
+      sub_title: Referentie-entiteiten
       helper:
         title: Labelvertalingen
 pim_enrich:
@@ -286,7 +319,24 @@ pim_enrich:
           akeneo_reference_entity: Referentie entiteit enkele link
         section:
           type_specific: Type specifieke parameters
+        reference_entity:
+          identifier: Gerelateerde referentie-entiteit (verplicht)
+          default_label: Selecteer een referentie-entiteit
+permission:
+  mass_action: Rechten voor {{ rightLevel }} toepassen op alle groepen
+#Analytics
+pim_catalog_volume:
+  section:
+    reference_entity:
+      title: Assen bij referentie-entiteiten
+      hint: Als u de referentie-entiteiten gebruikt, zijn dit de assen om u te helpen uw volume te monitoren.
+  axis:
+    count_reference_entity: Referentie-entiteiten
+    average_max_records_per_reference_entity: Records per referentie-entiteit
+    average_max_attributes_per_reference_entity: Attributen per referentie-entiteit
 batch_jobs:
+  default_steps:
+    mass_delete_records: Groepsgewijze verwijdering van records uitvoeren
   reference_entity_label: Referentie entiteit
   csv_reference_entity_record_export:
     label: Referentie entiteit record export in CSV
@@ -300,9 +350,16 @@ batch_jobs:
   xlsx_reference_entity_record_import:
     label: Referentie entiteit record import in XLSX
     import.label: Record importeren
+pim_datagrid:
+  cells:
+    type:
+      reference_entity_mass_delete_records: Groepsgewijze verwijdering van records uitvoeren
 job_execution:
   summary:
     records: Records
+pim_notification:
+  types:
+    reference_entity_mass_delete_records: Groepsgewijs records verwijderen
 pim_analytics:
   info_type:
     nb_reference_entities: Aantal referentie entiteiten

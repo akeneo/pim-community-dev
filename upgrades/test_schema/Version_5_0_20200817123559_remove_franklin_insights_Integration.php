@@ -26,6 +26,18 @@ final class Version_5_0_20200817123559_remove_franklin_insights_Integration exte
         return $this->catalog->useMinimalCatalog();
     }
 
+    protected function setUp(): void
+    {
+        parent::setUp();
+        $this->createJobQueueTableIfNeeded();
+    }
+
+    protected function tearDown(): void
+    {
+        $this->get('database_connection')->executeQuery('DROP TABLE akeneo_batch_job_execution_queue');
+        parent::tearDown();
+    }
+
     public function testItRemovesFranklinInsightsTables()
     {
         $schemaManager = $this->get('database_connection')->getSchemaManager();
@@ -196,5 +208,27 @@ VALUES
     (2001, 1001, '{"env": "prod"}', null, '2020-10-07 07:51:36', null)
 SQL
         );
+    }
+
+    private function createJobQueueTableIfNeeded(): void
+    {
+        $showTables = $this->get('database_connection')->executeQuery(
+            "SHOW TABLES LIKE 'akeneo_batch_job_execution_queue';"
+        );
+        if (1 <= $showTables->rowCount()) {
+            return;
+        }
+
+        $this->get('database_connection')->executeQuery(<<<SQL
+        create table akeneo_batch_job_execution_queue
+        (
+            id               int auto_increment primary key,
+            job_execution_id int          null,
+            options          json         null,
+            consumer         varchar(255) null,
+            create_time      datetime     null,
+            updated_time     datetime     null
+        ) collate = utf8mb4_unicode_ci;
+        SQL);
     }
 }

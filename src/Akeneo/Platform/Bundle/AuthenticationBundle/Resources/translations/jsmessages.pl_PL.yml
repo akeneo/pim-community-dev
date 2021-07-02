@@ -1,6 +1,45 @@
+pim_menu.item.sso: Pojedyncze logowanie oparte na SAML
+pim_title:
+  authentication_sso_configuration_edit: Konfiguracja pojedynczego logowania opartego na SAML
 authentication:
   sso:
     configuration:
+      download_logs_button: Pobierz logi
+      info:
+        update_successful: Konfiguracja została zapisana.
+        update_failed: Błąd przy zapisywaniu konfiguracji
+        fields_not_ready: "Konfiguracja nie może zostać zapisana w tym momencie. Następujące pola nie są gotowe: {{ fields }}"
+      section:
+        activation:
+          title: Aktywacja SSO (Pojedyncze logowanie)
+          info:
+            description: Jeśli zamierzasz włączyć uwierzytelnianie pojedyncze logowanie (SSO), twoja obecna sesja będzie nieważna. Po zapisaniu konfiguracji zostaniesz wylogowany i przekierowany do twojego Dostawcy Tożsamości (Identity Provider).
+        identity_provider:
+          title: Dostawca Tożsamości (Identity Provider, IdP)
+          info:
+            description: Można tu ustawić wszystkie parametry wymagane do komunikacji z danym dostawcom tożsamości (Identity Provider, IdP). Informacje te muszą być dostarczone przez twojego dostawcy tożsamości (Identity Provider, IdP). Skontaktuj się z administratorem pojedynczego logowania (SSO), aby je uzyskać.
+        service_provider:
+          title: Dostawca Treści (Service provider, SP)
+          info:
+            description: Poniżej znajdują się informacje dotyczące usługodawcy. Są to automatycznie generowane wartości. Można je edytować. Te informacje będą musiały zostać dostarczone administratorowi SSO w celu skonfigurowania IdP.
       field:
+        activation:
+          label: SSO włączone
+        entity_id:
+          label: ID obiektu
+        sign_on_url:
+          label: Adres URL logowania
         logout_url:
           label: Adres URL wylogowania
+        certificate:
+          label: Certyfikat
+          expiration_warning: Ten certyfikat wygasa {{ date }}.
+        private_key:
+          label: Klucz prywatny
+        metadata_url:
+          label: Adres URL metadanych
+          tooltip_label: Kopiuj adres URL
+        acs_url:
+          label: Adres URL ACS
+          tooltip_label: Kopiuj adres URL
+        copy: Kopiuj

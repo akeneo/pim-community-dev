@@ -33,7 +33,7 @@ authentication:
           label: URL di Logout
         certificate:
           label: Certificato
-          expiration_warning: Questo certificato scade il {{date}}.
+          expiration_warning: Questo certificato scade il {{ date }}.
         private_key:
           label: Chiave privata
         metadata_url:
@@ -42,3 +42,4 @@ authentication:
         acs_url:
           label: URL ACS
           tooltip_label: Copia URL
+        copy: Copia

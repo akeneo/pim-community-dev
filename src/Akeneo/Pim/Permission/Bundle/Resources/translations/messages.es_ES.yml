@@ -75,7 +75,7 @@ pim_enrich:
     edit_common_attributes:
       message:
         error: Usted no es el dueño del producto, no puede editarlo.
-To be able to convert this variant product you need to have the 'Own' permission on its categories.: "Para poder convertir esta variante de producto necesita tener el permiso «Propio» en sus categorías."
+To be able to convert this variant product you need to have the 'Own' permission on its categories.: "Para poder convertir esta variante de producto necesita tener el permiso «Propietario» en sus categorías."
 pimee_enrich:
   attribute_group:
     tab:

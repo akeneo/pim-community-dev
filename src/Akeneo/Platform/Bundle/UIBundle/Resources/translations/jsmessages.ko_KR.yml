@@ -1,2 +1,17 @@
 user:
   email_notifications: 이메일 알림
+pimee_enrich.entity.product:
+  duplicate:
+    title: 제품 {{ product_identifier }} 복제
+    button: 복제
+    flash:
+      success: 제품 {{ product_identifier }}이(가) 복제되었습니다.
+      success_with_attribute_codes: 제품 {{ product_identifier }}이(가) 복제되었습니다. {{ unique_attribute_codes }}을(를) 고유한 값으로 보강해야 합니다.
+pim_dashboard:
+  widget:
+    teamwork_assistant:
+      title: 프로젝트
+      helper: 완성도를 개선하는 방법 및 프로젝트에 관한 자세한 내용은 <a href="{{ link }}" target="_blank">도움말 센터를 확인</a>하십시오.
+      no_project:
+        title: 프로젝트를 사용하면 제품 선택 보강의 진행상황을 추적할 수 있습니다.
+        subtitle: 첫 프로젝트를 만들어 보십시오.

@@ -58,13 +58,13 @@ Feature: Validate text attributes of a draft
   Scenario: Validate the url validation rule constraint of text attribute
     Given I change the Link to "bar"
     And I save the product
-    Then I should see validation error "This value is not a valid URL."
+    Then I should see validation error "The link attribute requires a url link."
     And there should be 1 error in the "Product information" tab
 
   Scenario: Validate the url validation rule constraint of scopable text attribute
     Given I change the Links for scope mobile to "bar"
     And I save the product
-    Then I should see validation error "This value is not a valid URL."
+    Then I should see validation error "The links attribute requires a url link."
     And there should be 1 error in the "Product information" tab
 
   Scenario: Validate the regexp validation rule constraint of text attribute

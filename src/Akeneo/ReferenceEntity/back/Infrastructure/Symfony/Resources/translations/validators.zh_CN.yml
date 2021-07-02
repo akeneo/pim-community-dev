@@ -39,14 +39,16 @@ pim_reference_entity:
         should_exist: '找不到记录"%record_codes%" 。'
       limit_reached: '您不能创建记录"%record_label%" ，因为已达到此参考实体的记录上限数目 %limit%'
       channel:
-        is_expected: '属性"%attribute_code%"应有一个渠道，因为其具有针对每个渠道的值。'
+        is_expected: '参考实体“%reference_entity_identifier%”的属性“%attribute_code%”要求每个渠道都有一个值。'
         is_not_expected: '属性"%attribute_code%"不应有一个渠道，因为其没有针对每个渠道的值。'
         should_exist: '渠道"%channel_identifier%"不存在。'
       locale:
-        is_expected: '属性"%attribute_code%”应有一个区域，因为其有针对每个区域的值。'
+        is_expected: '参考实体“%reference_entity_identifier%”的属性“%attribute_code%”要求每个区域都有一个值。'
         is_not_expected: '属性"%attribute_code%"不应有一个区域，因为其没有针对每个区域的值。'
         is_not_activated: '区域"%locale_identifier%"未激活。'
         is_not_activated_for_channel: '区域"%locale_identifier%"对于渠道"%channel_identifier%"未激活。'
+      channel_and_locale:
+        are_expected: '参考实体“%reference_entity_identifier%”的属性“%attribute_code%”要求每个渠道和每个区域都有一个值。'
       number:
         should_be_string: '此字段应该是字符串'
         should_be_integer: '此字段应为整数'

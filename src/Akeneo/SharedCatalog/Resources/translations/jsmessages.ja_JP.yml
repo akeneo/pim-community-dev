@@ -1,0 +1,23 @@
+batch_jobs.akeneo_shared_catalog.label: 共有カタログに送信
+pim_common:
+  recipients: 受信者
+  branding: ブランディング
+  result_count: "{0}0 件の結果|{1}1 件の結果|]1, Inf[{{ itemsCount }} 件の結果"
+  items_selected: "{0}0 個のアイテムを選択済み|{1}1 個のアイテムを選択済み|]1, Inf[{{ itemsCount }} 個のアイテムを選択済み"
+shared_catalog:
+  recipients:
+    add: ユーザーのメールアドレスをここに追加
+    placeholder: betty@akeneo.com
+    email: メールアドレス
+    invalid_email: この値は有効なメールアドレスではありません。
+    duplicates: すでにこの受信者に共有済みです
+    helper: "新しい共有カタログにアクセスできるようにする受信者を追加します。スペース、カンマ、セミコロン、または改行の区切り文字でアドレスリストを入力できます。"
+    no_result: 検索に一致するメールアドレスはありません
+    no_data: まだメールアドレスが指定されていません
+    max_limit_reached: 500 人の受信者の上限に達しました。
+  branding:
+    upload: "ロゴをアップロード (最大サイズ: 2 MB、ファイル形式: PNG または JPG)"
+    invalid_extension: "無効なファイル拡張子です。許可される拡張子: {{ allowed_extensions }}"
+    filesize_too_large: 指定されたファイルは大きすぎます。最大サイズは 2 MB です
+  button:
+    save: 保存して共有

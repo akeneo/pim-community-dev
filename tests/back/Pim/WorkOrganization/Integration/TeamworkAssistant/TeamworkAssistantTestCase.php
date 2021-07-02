@@ -125,8 +125,12 @@ class TeamworkAssistantTestCase extends TestCase
      */
     protected function removeProject(ProjectInterface $project)
     {
-        $remover = $this->get('pimee_teamwork_assistant.remover.project');
-        $remover->remove($project);
+        // Reload the project to have it in Doctrine's unit of work
+        $this->get('pimee_teamwork_assistant.remover.project')->remove(
+            $this->get('pimee_teamwork_assistant.repository.project')->findOneByIdentifier(
+                $project->getCode()
+            )
+        );
     }
 
     /**

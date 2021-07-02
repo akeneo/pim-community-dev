@@ -991,7 +991,7 @@ jobs:
                 - project/persisted_env_vars
           - run:
               name: Remove env on kubernetes
-              command: IMAGE_TAG=${LATEST_RELEASE} make commit-instance
+              command: IMAGE_TAG=${LATEST_RELEASE} make uncommit-instance
               when: on_fail
 
   test_upgrade_srnt_from_last_release:
@@ -1095,7 +1095,7 @@ jobs:
                 - project/persisted_env_vars
           - run:
               name: Remove env on kubernetes
-              command: IMAGE_TAG=${LATEST_RELEASE} make commit-instance
+              command: IMAGE_TAG=${LATEST_RELEASE} make uncommit-instance
               when: on_fail
 
   test_upgrade_grth_from_last_release:
@@ -1609,6 +1609,7 @@ workflows:
                     - test_back_performance
                     - test_back_behat_legacy
                     - test_onboarder_bundle
+                    - test_database
                     - test_back_data_migrations
 
   on_demand:

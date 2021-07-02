@@ -1,0 +1,23 @@
+batch_jobs.akeneo_shared_catalog.label: Wyślij do udostępnionych katalogów
+pim_common:
+  recipients: Odbiorcy
+  branding: Marka
+  result_count: "{0}0 wyników|{1}1 wynik|]1, Inf[{{ itemsCount }} wyników"
+  items_selected: "{0}0 wybranych pozycji|{1}1 wybrana pozycja|]1, Inf[{{ itemsCount }} wybranych pozycji"
+shared_catalog:
+  recipients:
+    add: Dodaj tutaj adresy e-mail użytkowników
+    placeholder: betty@akeneo.com
+    email: Adres e-mail
+    invalid_email: Ta wartość nie jest prawidłowym adresem e-mail.
+    duplicates: Już udostępniono temu odbiorcy
+    helper: "Dodaj odbiorców, aby dać im dostęp do nowego katalogu udostępnionego. Możesz wypełnić listę adresów separatorami: spacjami, przecinkami, średnikami i podziałami wierszy."
+    no_result: Przepraszamy, żaden e-mail nie pasuje do tego wyszukiwania
+    no_data: Nie zadeklarowano jeszcze adresu e-mail
+    max_limit_reached: Osiągnięto limit 500 odbiorców.
+  branding:
+    upload: "Prześlij swoje logo (maks. rozmiar: 2 MB; format pliku: PNG lub JPG)"
+    invalid_extension: "Nieprawidłowe rozszerzenie pliku. Dopuszczalne rozszerzenia to: {{ allowed_extensions }}"
+    filesize_too_large: Podany plik jest zbyt duży, maksymalny rozmiar to 2 MB
+  button:
+    save: Zapisz i udostępnij

@@ -1,0 +1,62 @@
+batch_jobs.xlsx_tailored_product_export.label: カスタム商品を XLSX 形式でエクスポート
+akeneo.tailored_export:
+  form:
+    job_instance:
+      tab:
+        content:
+          title: データをフィルタ
+        column:
+          title: 列を選択
+  column_list:
+    title: 列
+    header:
+      column_name: 列名
+      source_data: ソースデータ
+    column_row:
+      target_placeholder: ここに新しい列名を定義します
+      remove: 列を削除
+      no_source: ソースなし
+    no_column_selection:
+      title: エクスポートする列が選択されていません
+      subtitle: マッピングと操作については
+      link: こちらの記事をご覧ください
+      add_column: 最初の列を追加
+  column_details:
+    sources:
+      title: ソース
+      add: ソースを追加
+      no_result: 結果はありません。
+      locale_specific.info: この属性はロケール固有です
+      remove:
+        title: ソース
+        text: このソースを本当に削除しますか？
+        button: このソースを削除
+      no_source_configuration:
+        title: このソースで利用できる操作はありません。値のみがエクスポートされます。
+      no_source_selected:
+        title: 現在選択されたソースはありません。
+        subtitle: マッピングと操作については
+        link: こちらの記事をご覧ください
+      no_column_selected:
+        title: 現在選択された列はありません。
+      selection:
+        title: 選択
+        separator: 区切り
+        type:
+          amount: 数量
+          currency: 通貨
+  column:
+    delete_message: この列を本当に削除しますか？
+  validation:
+    columns:
+      max_column_count_reached: 最大列数の {{ limit }} に達しました 
+      target:
+        should_not_be_blank: 列名は空にできません
+        max_length_reached: 列名が長すぎます。{{ limit }} 文字未満である必要があります。
+        should_be_unique: 列名は一意である必要があります
+    sources:
+      max_source_count_reached: 最大ソース数の {{ limit }} に達しました
+    locale:
+      should_be_active: ロケール {{ locale_code }} はアクティブである必要があります
+    channel:
+      should_exist: チャンネル {{ channel_code }} が存在する必要があります

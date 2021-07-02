@@ -1,3 +1,4 @@
+batch_jobs.xlsx_tailored_product_export.label: Individueller Produktexport in XLSX
 akeneo.tailored_export:
   form:
     job_instance:

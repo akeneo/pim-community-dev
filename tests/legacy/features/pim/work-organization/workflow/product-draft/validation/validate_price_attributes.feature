@@ -36,25 +36,25 @@ Feature: Validate price attributes of a draft
   Scenario: Validate the number min constraint of price attribute
     Given I change the Tax to "5.5 USD"
     And I save the product
-    Then I should see validation error "This value should be 10 or more."
+    Then I should see validation error "The tax attribute requires an equal or greater than 10 value."
     And there should be 1 error in the "Product information" tab
 
   Scenario: Validate the number min constraint of scopable price attribute
     Given I change the Customs to "9.9 EUR"
     And I save the product
-    Then I should see validation error "This value should be 10 or more."
+    Then I should see validation error "The customs attribute requires an equal or greater than 10 value."
     And there should be 1 error in the "Product information" tab
 
   Scenario: Validate the number max constraint of price attribute
     Given I change the Tax to "110 USD"
     And I save the product
-    Then I should see validation error "This value should be 100 or less."
+    Then I should see validation error "The tax attribute requires an equal or lesser than 100 value."
     And there should be 1 error in the "Product information" tab
 
   Scenario: Validate the number max constraint of scopable price attribute
     Given I change the Customs to "222.2 EUR"
     And I save the product
-    Then I should see validation error "This value should be 100 or less."
+    Then I should see validation error "The customs attribute requires an equal or lesser than 100 value."
     And there should be 1 error in the "Product information" tab
 
   Scenario: Validate the type constraint of price attribute
@@ -63,5 +63,5 @@ Feature: Validate price attributes of a draft
     And I save the product
     Then I should see validation error "The tax attribute requires a number, and the submitted bar value is not."
     Then I should see validation error "The tax attribute requires a number, and the submitted qux value is not."
-    Then I should see validation error "This value should be 10 or more."
+    Then I should see validation error "The tax attribute requires an equal or greater than 10 value."
     And there should be 3 error in the "Product information" tab

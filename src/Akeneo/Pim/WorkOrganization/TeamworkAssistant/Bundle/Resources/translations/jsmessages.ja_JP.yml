@@ -26,6 +26,7 @@ teamwork_assistant:
   create_project_modal:
     saved: プロジェクトが保存されました。計算終了時に通知されます。
     title: プロジェクト
+    label_already_used: この値はすでにプロジェクトに使用されています。
   widget:
     no_project: プロジェクトは現在ありません
     no_project_create: プロジェクトを新規作成
@@ -37,6 +38,8 @@ teamwork_assistant:
     all_contributors: 従事者すべて
     you: あなた
     display_products: 商品を陳列
+    projects: プロジェクト
+    contributors: 参加者
     placeholder:
       contributor_selector: 従事者を検索
       project_selector: プロジェクトを検索
@@ -44,6 +47,8 @@ teamwork_assistant:
       to_start: 開始する商品
       in_progress: 処理中の商品
       done: 完成済商品
+    searching: 検索中...
+    no_search_results: 結果はありません。
 pim_datagrid:
   view_selector:
     project: プロジェクト
@@ -67,3 +72,6 @@ pim_notification:
     project_finished: プロジェクト完成済
     project_calculation: プロジェクトの計算
     project_due_date: プロジェクトの期日
+pim_analytics:
+  info_type:
+    nb_projects: プロジェクト数

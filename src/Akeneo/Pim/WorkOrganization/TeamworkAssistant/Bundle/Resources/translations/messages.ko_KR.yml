@@ -11,12 +11,14 @@ teamwork_assistant:
       warning: <strong>%project_label%</strong>에 대한 프로젝트 계산 완료 및 경고 발생
       success: <strong>%project_label%</strong> 프로젝트가 준비되었으며 기여자에게 알림이 전송되었습니다. 시작하십시오!
       start: 시작
-    message: '"%project_label%"용으로 보강하기 위한 새 제품이 있습니다. 마감일은 "%due_date%"입니다.'
+    message: '''%project_label%''용으로 보강하기 위한 새 제품이 있습니다. 마감일은 ''%due_date%''입니다.'
     project_finished:
       contributor: 축하합니다! %project_label%(으)로 만든 제품이 100% 완료되었습니다.
+      owner: '기한이 <strong>%due_date%</strong>인 프로젝트 <strong>%project_label%</strong>이(가) 완료되었습니다.'
       show: 표시
     due_date:
       contributor: '%project_label%(으)로 만든 제품이 %percent% 완료되었습니다. 잊지 말고, %due_date%의 마지막 제품을 기입하십시오.'
+      owner: '기한이 <strong>%due_date%</strong>인 프로젝트 <strong>%project_label%</strong>이(가) 100% 완료되지 않았습니다.'
       start: 시작
   datagrid:
     project_completeness: 프로젝트 진행률
@@ -30,6 +32,9 @@ teamwork_assistant:
     deletion:
       user_linked_to_project: 사용자가 여전히 하나 이상의 프로젝트에 링크되어 있습니다. 해당 사용자 계정에 링크된 그룹을 제거하십시오.
       user_is_project_owner: 이 사용자는 여전히 프로젝트 하나 이상의 소유자입니다. 이 사용자의 프로젝트를 모두 삭제하십시오.
+  user_group:
+    deletion:
+      group_linked_to_project: 이 사용자 그룹은 팀워크 어시스턴트 프로젝트에서 사용되고 있으므로 삭제할 수 없습니다.
 job_execution:
   summary:
     processed_products: 처리한 제품

@@ -54,6 +54,8 @@
 - PIM-9912: Exception is not caught at the beginning of rules execution
 - PIM-9704: Disable possibility to have media link with unauthorized protocol for security propose
 - PIM-9913: Fix very long loading of the proposal page
+- PIM-9927: Fix data_quality_insights_evaluations job when simple or multiselect product values are invalid
+- PIM-9937: Rule engine - Fix remove action for reference entity collection and asset collection attributes
 
 ## Improvements
 
@@ -61,6 +63,12 @@
 - PLG-45: Activate SSO authentication from a command CLI
 - RAC-509: Upgrade asset limit by asset family to 10 millions
 - PIM-9777: Fix error message when trying to delete an attribute linked to an entity
+- CPM-152: Use Symfony Messenger to handle job queue messages. Therefore the `akeneo_batch_job_execution_queue` table is removed.
+  Depending on your environment, please check the associated `messenger.yml` to figure out how the messages are sent/received.
+  The former command to launch job consumption is removed and replaced by:
+```bash
+bin/console messenger:consume ui_job import_export_job data_maintenance_job
+```
 
 ## New features
 

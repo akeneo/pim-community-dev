@@ -84,17 +84,28 @@ class EvaluateAttributeOptionSpellingSpec extends ObjectBehavior
             ],
         ], function ($value) { return $value; });
 
+        $invalidSimpleSelectHeightValues = ChannelLocaleDataCollection::fromNormalizedChannelLocaleData([
+            'ecommerce' => [
+                'en_US' => true,
+            ],
+        ], function ($value) { return $value; });
+
         $productSimpleSelectValues = new ProductValues(
-            new Attribute(new AttributeCode('size'), AttributeType::simpleSelect(), true, false),
+            new Attribute(new AttributeCode('size'), AttributeType::simpleSelect(), true),
             $simpleSelectSizeValues
         );
         $productMultiSelectValues = new ProductValues(
-            new Attribute(new AttributeCode('color'), AttributeType::multiSelect(), true, false),
+            new Attribute(new AttributeCode('color'), AttributeType::multiSelect(), true),
             $multiSelectColorValues
+        );
+        $invalidProductSimpleSelectValues = new ProductValues(
+            new Attribute(new AttributeCode('height'), AttributeType::simpleSelect(), true),
+            $invalidSimpleSelectHeightValues
         );
 
         $productValues = (new ProductValuesCollection())
             ->add($productSimpleSelectValues)
+            ->add($invalidProductSimpleSelectValues)
             ->add($productMultiSelectValues);
 
         $getAttributeOptionSpellcheckQuery
@@ -141,6 +152,10 @@ class EvaluateAttributeOptionSpellingSpec extends ObjectBehavior
                         ->add(new LocaleCode('fr_FR'), SpellCheckResult::good())
                 ),
             ]);
+
+        $getAttributeOptionSpellcheckQuery
+            ->getByAttributeAndOptionCodes(new AttributeCode('height'), true)
+            ->shouldNotBeCalled();
 
         $channelEcommerce = new ChannelCode('ecommerce');
         $channelPrint = new ChannelCode('print');

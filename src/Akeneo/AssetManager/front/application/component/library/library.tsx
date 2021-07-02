@@ -97,6 +97,17 @@ const CreateButton = ({children}: CreateButtonProps) => {
     return <Button onClick={validChildren[0].props.onClick}>{validChildren[0].props.children}</Button>;
   }
 
+  const decoratedChildren = validChildren.map(child => {
+    if (!isValidElement<{onClick?: () => void}>(child)) return child;
+
+    return React.cloneElement(child, {
+      onClick: () => {
+        closeDropdown();
+        child.props.onClick?.();
+      },
+    });
+  });
+
   return (
     <Dropdown>
       <Button onClick={openDropdown}>
@@ -104,7 +115,7 @@ const CreateButton = ({children}: CreateButtonProps) => {
       </Button>
       {isDropdownOpen && (
         <Dropdown.Overlay onClose={closeDropdown}>
-          <Dropdown.ItemCollection>{validChildren}</Dropdown.ItemCollection>
+          <Dropdown.ItemCollection>{decoratedChildren}</Dropdown.ItemCollection>
         </Dropdown.Overlay>
       )}
     </Dropdown>
