@@ -62,7 +62,6 @@ const CategoryFilter = ({filter, onChange}: CategoryFilterProps) => {
               noLabel={translate('pim_common.no')}
               yesLabel={translate('pim_common.yes')}
               value={shouldIncludeSubCategories}
-              clearLabel={translate('pim_common.clear_value')}
               readOnly={false}
               onChange={handleShouldIncludeSubCategoryChange}
             />

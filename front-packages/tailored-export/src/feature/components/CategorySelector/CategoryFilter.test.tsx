@@ -4,6 +4,26 @@ import userEvent from '@testing-library/user-event';
 import {renderWithProviders} from '@akeneo-pim-community/shared';
 import {CategoryFilter} from './CategoryFilter';
 
+const countPerCategoryTrees = [
+  {code: 'master', selectedCategoryCount: '10'},
+  {code: 'secondary_tree', selectedCategoryCount: '3'},
+];
+jest.mock('../../hooks/useCategoryTrees', () => {
+  return {useCategoryTrees: () => countPerCategoryTrees};
+});
+jest.mock('@akeneo-pim-community/shared/lib/hooks/useTranslate', () => ({
+  useTranslate: () => {
+    return jest.fn((key: string, _: any, count: number) => {
+      switch (key) {
+        case 'pim_connector.export.categories.selector.label':
+          return count;
+        default:
+          return key;
+      }
+    });
+  },
+}));
+
 test('it opens a modal when clicking on the Category Filter button and closes it when cancelling', () => {
   const onCategorySelection = jest.fn();
 
@@ -85,26 +105,6 @@ test('it allow to exclude children to the selection', () => {
     operator: 'IN',
   });
 });
-
-const countPerCategoryTrees = [
-  {code: 'master', selectedCategoryCount: '10'},
-  {code: 'secondary_tree', selectedCategoryCount: '3'},
-];
-jest.mock('../../hooks/useCategoryTrees', () => {
-  return {useCategoryTrees: () => countPerCategoryTrees};
-});
-jest.mock('@akeneo-pim-community/shared/lib/hooks/useTranslate', () => ({
-  useTranslate: () => {
-    return jest.fn((key: string, _: any, count: number) => {
-      switch (key) {
-        case 'pim_connector.export.categories.selector.label':
-          return count;
-        default:
-          return key;
-      }
-    });
-  },
-}));
 
 test('it calculates the total selected categories for all category trees', () => {
   renderWithProviders(
