@@ -18,7 +18,7 @@ test('It fetches the categories', async () => {
     json: () => Promise.resolve(categories),
   }));
 
-  const {waitForNextUpdate, result} = renderHookWithProviders(() => useCategoryTrees([], setActiveCategoryTree));
+  const {waitForNextUpdate, result} = renderHookWithProviders(() => useCategoryTrees([], false, setActiveCategoryTree));
 
   await act(async () => {
     await waitForNextUpdate();
@@ -30,7 +30,7 @@ test('It fetches the categories', async () => {
       ['Content-type', 'application/json'],
       ['X-Requested-With', 'XMLHttpRequest'],
     ],
-    body: '[]',
+    body: JSON.stringify({selectedCategoryCodes: [], shouldIncludeChildren: false}),
     method: 'POST',
   });
   expect(result.current).toBe(categories);

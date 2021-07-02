@@ -16,7 +16,7 @@ type CategoryResponse = {
   selectedChildrenCount?: number;
 };
 
-const parseResponse: (
+const parseResponse = (
   json: CategoryResponse,
   options?: {
     readOnly?: boolean;
@@ -24,7 +24,7 @@ const parseResponse: (
     isRoot?: boolean;
     selectable?: boolean;
   }
-) => CategoryTreeModel = (json, options) => {
+): CategoryTreeModel => {
   const {readOnly, lockedCategoryIds, isRoot, selectable} = {
     readOnly: false,
     lockedCategoryIds: [] as number[],
@@ -33,7 +33,7 @@ const parseResponse: (
     ...options,
   };
 
-  const getChildren: () => CategoryTreeModel[] | undefined = () => {
+  const getChildren = (): CategoryTreeModel[] | undefined => {
     if (json.state.includes('closed')) {
       return undefined;
     }
@@ -43,6 +43,7 @@ const parseResponse: (
     if (json.children) {
       return json.children.map(child => parseResponse(child, {readOnly, lockedCategoryIds, isRoot: false, selectable}));
     }
+
     return undefined;
   };
 

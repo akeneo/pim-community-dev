@@ -11,7 +11,7 @@ import {
   TabBar,
   useTabBar,
 } from 'akeneo-design-system';
-import {CompletenessFilter, CategoryFilter, ColumnsTab} from './feature';
+import {CompletenessFilter, CategoryFilter, ColumnsTab, CategoryFilterType} from './feature';
 import {useEffect} from 'react';
 import {
   NotificationLevel,
@@ -110,13 +110,13 @@ const FakePIM = () => {
       }));
     }
   };
-  const handleCategoryChange = (categoriesSelected: string[]) => {
+  const handleCategoryChange = (updatedFilter: CategoryFilterType) => {
     if (jobConfiguration === null) return;
 
     const newFilters = jobConfiguration.configuration.filters.data.map(filter => {
       if (filter.field !== 'categories') return filter;
 
-      return {...filter, operator: categoriesSelected.length === 0 ? 'NOT IN' : 'IN', value: categoriesSelected};
+      return updatedFilter;
     });
 
     setJobConfiguration({
@@ -183,7 +183,7 @@ const FakePIM = () => {
     return filter.field === 'completeness';
   });
 
-  const categoriesSelected = categoryFilter ? categoryFilter['value'] : [];
+  const categorySelection = categoryFilter ? categoryFilter['value'] : [];
 
   return (
     <Container>
@@ -222,8 +222,8 @@ const FakePIM = () => {
         )}
         {isCurrent('lines') && (
           <FieldContainer>
-            {categoriesSelected.length === 0 ? 'All products' : `${categoriesSelected.length} selected category`}
-            <CategoryFilter initialCategorySelection={categoriesSelected} onCategorySelection={handleCategoryChange} />
+            {categorySelection.length === 0 ? 'All products' : `${categorySelection.length} selected category`}
+            <CategoryFilter filter={categoryFilter} onChange={handleCategoryChange} />
             <CompletenessFilter
               availableOperators={AVAILABLE_OPERATORS}
               filter={completenessFilter}
