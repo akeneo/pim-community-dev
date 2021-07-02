@@ -6,3 +6,4 @@ framework:
         pools:
             cache.data:
                 adapter: cache.adapter.array
+                public: true
