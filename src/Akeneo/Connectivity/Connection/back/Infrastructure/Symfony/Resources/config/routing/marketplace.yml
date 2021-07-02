@@ -1,0 +1,4 @@
+akeneo_connectivity_connection_marketplace_rest_get_all_extensions:
+    path: '/extensions'
+    controller: akeneo_connectivity.connection.internal_api.controller.marketplace.get_all_extensions
+    methods: [GET]
