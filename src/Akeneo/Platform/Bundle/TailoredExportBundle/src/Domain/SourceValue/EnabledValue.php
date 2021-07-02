@@ -17,15 +17,15 @@ use Akeneo\Platform\TailoredExport\Domain\SourceValueInterface;
 
 class EnabledValue implements SourceValueInterface
 {
-    private bool $data;
+    private bool $isEnabled;
 
-    public function __construct(bool $data)
+    public function __construct(bool $isEnabled)
     {
-        $this->data = $data;
+        $this->isEnabled = $isEnabled;
     }
 
-    public function getData(): bool
+    public function isEnabled(): bool
     {
-        return $this->data;
+        return $this->isEnabled;
     }
 }

@@ -13,8 +13,6 @@ declare(strict_types=1);
 
 namespace Akeneo\Platform\TailoredExport\Domain;
 
-// Maybe OperationValue ?
 interface SourceValueInterface
 {
-
 }

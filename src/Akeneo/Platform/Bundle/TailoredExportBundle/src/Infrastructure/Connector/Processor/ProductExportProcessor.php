@@ -15,13 +15,13 @@ namespace Akeneo\Platform\TailoredExport\Infrastructure\Connector\Processor;
 
 use Akeneo\Pim\Enrichment\Component\Product\Model\ProductInterface;
 use Akeneo\Pim\Structure\Component\Query\PublicApi\AttributeType\GetAttributes;
+use Akeneo\Platform\TailoredExport\Infrastructure\Hydrator\SelectionHydrator;
 use Akeneo\Platform\TailoredExport\Application\OperationApplier;
-use Akeneo\Platform\TailoredExport\Application\PropertyValueGetter;
+use Akeneo\Platform\TailoredExport\Application\Query\Selection\SelectionHandler;
 use Akeneo\Platform\TailoredExport\Domain\OperationCollection;
 use Akeneo\Platform\TailoredExport\Domain\ReplacementOperation;
 use Akeneo\Platform\TailoredExport\Domain\SourceTypes;
-use Akeneo\Platform\TailoredExport\Infrastructure\Connector\Processor\AttributeSelector\AttributeSelectorRegistry;
-use Akeneo\Platform\TailoredExport\Infrastructure\Connector\Processor\PropertySelector\PropertySelectorRegistry;
+use Akeneo\Platform\TailoredExport\Infrastructure\Hydrator\ValueHydrator;
 use Akeneo\Tool\Component\Batch\Item\ItemProcessorInterface;
 use Akeneo\Tool\Component\Batch\Model\StepExecution;
 use Akeneo\Tool\Component\Batch\Step\StepExecutionAwareInterface;
@@ -29,24 +29,24 @@ use Akeneo\Tool\Component\Batch\Step\StepExecutionAwareInterface;
 class ProductExportProcessor implements ItemProcessorInterface, StepExecutionAwareInterface
 {
     private ?StepExecution $stepExecution = null;
-    private AttributeSelectorRegistry $attributeSelectorRegistry;
-    private PropertySelectorRegistry $propertySelectorRegistry;
+    private SelectionHydrator $selectionHydrator;
     private GetAttributes $getAttributes;
-    private PropertyValueGetter $propertyValueGetter;
+    private ValueHydrator $valueHydrator;
     private OperationApplier $operationApplier;
+    private SelectionHandler $selectionHandler;
 
     public function __construct(
-        AttributeSelectorRegistry $attributeSelectorRegistry,
-        PropertySelectorRegistry $propertySelectorRegistry,
         GetAttributes $getAttributes,
-        PropertyValueGetter $propertyValueGetter,
-        OperationApplier $operationApplier
+        SelectionHydrator $selectionHydrator,
+        ValueHydrator $valueHydrator,
+        OperationApplier $operationApplier,
+        SelectionHandler $selectionHandler
     ) {
-        $this->attributeSelectorRegistry = $attributeSelectorRegistry;
-        $this->propertySelectorRegistry = $propertySelectorRegistry;
+        $this->selectionHydrator = $selectionHydrator;
         $this->getAttributes = $getAttributes;
-        $this->propertyValueGetter = $propertyValueGetter;
+        $this->valueHydrator = $valueHydrator;
         $this->operationApplier = $operationApplier;
+        $this->selectionHandler = $selectionHandler;
     }
 
     /**
@@ -55,7 +55,7 @@ class ProductExportProcessor implements ItemProcessorInterface, StepExecutionAwa
     public function process($product)
     {
         if (!$product instanceof ProductInterface) {
-            throw new \LogicException('Invalid argument');
+            throw new \InvalidArgumentException();
         }
 
         if (!$this->stepExecution instanceof StepExecution) {
@@ -63,34 +63,37 @@ class ProductExportProcessor implements ItemProcessorInterface, StepExecutionAwa
         }
 
         $columns = $this->stepExecution->getJobParameters()->get('columns');
-
         $productStandard = [];
 
         foreach ($columns as $column) {
             $operationSourceValues = [];
             foreach ($column['sources'] as $source) {
                 $operations = $this->createOperations($source['operations']);
+
                 if (SourceTypes::ATTRIBUTE === $source['type']) {
-                    $value = $product->getValue($source['code'], $source['locale'], $source['channel']);
                     $attribute = $this->getAttributes->forCode($source['code']);
-
-                    $operationSourceValues[] = $this->attributeSelectorRegistry->applyAttributeSelection(
-                        $source['selection'],
-                        $product,
+                    $value = $this->valueHydrator->hydrateFromAttribute(
+                        $product->getValue($source['code'], $source['locale'], $source['channel']),
                         $attribute,
-                        $value
+                        $product
                     );
+                    $selection = $this->selectionHydrator->createAttributeSelection($source['selection'], $attribute);
                 } elseif (SourceTypes::PROPERTY === $source['type']) {
-                    $sourceValue = $this->propertyValueGetter->get($source['code'], $product);
-                    $sourceValue = $this->operationApplier->applyOperations($operations, $sourceValue);
-
-                    $operationSourceValues[] = $this->propertySelectorRegistry->applyPropertySelection(
+                    $propertyName = $source['code'];
+                    $value = $this->valueHydrator->hydrateFromProperty($propertyName, $product);
+                    $selection = $this->selectionHydrator->createPropertySelection(
                         $source['selection'],
-                        $sourceValue
+                        $propertyName
                     );
                 } else {
                     throw new \LogicException(sprintf('Source type "%s" is unsupported', $source['type']));
                 }
+
+                $value = $this->operationApplier->applyOperations($operations, $value);
+                $operationSourceValues[] = $this->selectionHandler->applySelection(
+                    $selection,
+                    $value
+                );
             }
 
             $productStandard[$column['target']] = implode(' ', $operationSourceValues);

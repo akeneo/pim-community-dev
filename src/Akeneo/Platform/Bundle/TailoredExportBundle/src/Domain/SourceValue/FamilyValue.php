@@ -17,15 +17,15 @@ use Akeneo\Platform\TailoredExport\Domain\SourceValueInterface;
 
 class FamilyValue implements SourceValueInterface
 {
-    private string $data;
+    private string $familyCode;
 
-    public function __construct(string $data)
+    public function __construct(string $familyCode)
     {
-        $this->data = $data;
+        $this->familyCode = $familyCode;
     }
 
-    public function getData(): string
+    public function getFamilyCode(): string
     {
-        return $this->data;
+        return $this->familyCode;
     }
 }

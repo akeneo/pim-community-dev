@@ -1,0 +1,6 @@
+services:
+  Akeneo\Platform\TailoredExport\Infrastructure\Hydrator\SelectionHydrator:
+    public: true
+
+  Akeneo\Platform\TailoredExport\Infrastructure\Hydrator\ValueHydrator:
+    public: true

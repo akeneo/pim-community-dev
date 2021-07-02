@@ -13,7 +13,8 @@ declare(strict_types=1);
 
 namespace Akeneo\Platform\TailoredExport\Infrastructure\Validation\Selection;
 
-use Akeneo\Platform\TailoredExport\Domain\SelectionTypes;
+use Akeneo\Platform\TailoredExport\Application\Query\Selection\Parent\ParentCodeSelection;
+use Akeneo\Platform\TailoredExport\Application\Query\Selection\Parent\ParentLabelSelection;
 use Akeneo\Platform\TailoredExport\Infrastructure\Validation\ChannelShouldExist;
 use Akeneo\Platform\TailoredExport\Infrastructure\Validation\LocaleShouldBeActive;
 use Symfony\Component\Validator\Constraint;
@@ -40,8 +41,8 @@ class ParentSelectionValidator extends ConstraintValidator
                                 [
                                     'strict' => true,
                                     'choices' => [
-                                        SelectionTypes::CODE,
-                                        SelectionTypes::LABEL,
+                                        ParentCodeSelection::TYPE,
+                                        ParentLabelSelection::TYPE,
                                     ],
                                 ]
                             )
@@ -67,7 +68,7 @@ class ParentSelectionValidator extends ConstraintValidator
             return;
         }
 
-        if (SelectionTypes::LABEL === $selection['type']) {
+        if (ParentLabelSelection::TYPE === $selection['type']) {
             $this->context->getValidator()
                 ->inContext($this->context)
                 ->atPath('[channel]')

@@ -13,7 +13,9 @@ declare(strict_types=1);
 
 namespace Akeneo\Platform\TailoredExport\Infrastructure\Validation\Selection;
 
-use Akeneo\Platform\TailoredExport\Domain\SelectionTypes;
+use Akeneo\Platform\TailoredExport\Application\Query\Selection\File\FileKeySelection;
+use Akeneo\Platform\TailoredExport\Application\Query\Selection\File\FileNameSelection;
+use Akeneo\Platform\TailoredExport\Application\Query\Selection\File\FilePathSelection;
 use Symfony\Component\Validator\Constraint;
 use Symfony\Component\Validator\Constraints\Choice;
 use Symfony\Component\Validator\Constraints\Collection;
@@ -35,9 +37,9 @@ class FileSelectionValidator extends ConstraintValidator
                                 [
                                     'strict' => true,
                                     'choices' => [
-                                        SelectionTypes::PATH,
-                                        SelectionTypes::KEY,
-                                        SelectionTypes::NAME,
+                                        FileKeySelection::TYPE,
+                                        FileNameSelection::TYPE,
+                                        FilePathSelection::TYPE,
                                     ],
                                 ]
                             )

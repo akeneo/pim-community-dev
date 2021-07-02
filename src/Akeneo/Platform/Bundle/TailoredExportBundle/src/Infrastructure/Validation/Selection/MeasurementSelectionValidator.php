@@ -13,7 +13,9 @@ declare(strict_types=1);
 
 namespace Akeneo\Platform\TailoredExport\Infrastructure\Validation\Selection;
 
-use Akeneo\Platform\TailoredExport\Domain\SelectionTypes;
+use Akeneo\Platform\TailoredExport\Application\Query\Selection\Measurement\MeasurementAmountSelection;
+use Akeneo\Platform\TailoredExport\Application\Query\Selection\Measurement\MeasurementUnitCodeSelection;
+use Akeneo\Platform\TailoredExport\Application\Query\Selection\Measurement\MeasurementUnitLabelSelection;
 use Akeneo\Platform\TailoredExport\Infrastructure\Validation\LocaleShouldBeActive;
 use Symfony\Component\Validator\Constraint;
 use Symfony\Component\Validator\Constraints\Choice;
@@ -38,9 +40,9 @@ class MeasurementSelectionValidator extends ConstraintValidator
                                 [
                                     'strict' => true,
                                     'choices' => [
-                                        SelectionTypes::CODE,
-                                        SelectionTypes::LABEL,
-                                        SelectionTypes::AMOUNT,
+                                        MeasurementUnitCodeSelection::TYPE,
+                                        MeasurementUnitLabelSelection::TYPE,
+                                        MeasurementAmountSelection::TYPE,
                                     ],
                                 ]
                             )
@@ -63,7 +65,7 @@ class MeasurementSelectionValidator extends ConstraintValidator
             return;
         }
 
-        if (SelectionTypes::LABEL === $selection['type']) {
+        if (MeasurementUnitLabelSelection::TYPE === $selection['type']) {
             $violations = $validator->validate($selection['locale'], [
                 new NotBlank(),
                 new LocaleShouldBeActive()

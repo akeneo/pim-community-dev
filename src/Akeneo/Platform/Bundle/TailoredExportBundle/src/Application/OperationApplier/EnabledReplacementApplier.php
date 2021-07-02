@@ -23,15 +23,15 @@ class EnabledReplacementApplier implements OperationApplierInterface
 {
     public function applyOperation(Operation $operation, SourceValueInterface $value): SourceValueInterface
     {
-        if (!$operation instanceof ReplacementOperation) {
-            throw new \Exception('NOOOOOOO');
+        if (
+            !$operation instanceof ReplacementOperation
+            || !$value instanceof EnabledValue
+        ) {
+            throw new \LogicException('Cannot apply Enabled replacement operation');
         }
 
-        if (!$value instanceof EnabledValue) {
-            throw new \Exception('NOOOOOOO');
-        }
+        $data = $value->isEnabled() ? 'true' : 'false';
 
-        $data = $value->getData() ? 'true' : 'false';
         if ($operation->hasMappedValue($data)) {
             $mappedValue = $operation->getMappedValue($data);
 

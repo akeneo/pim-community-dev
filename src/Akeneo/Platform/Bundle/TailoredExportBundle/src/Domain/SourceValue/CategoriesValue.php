@@ -14,19 +14,21 @@ declare(strict_types=1);
 namespace Akeneo\Platform\TailoredExport\Domain\SourceValue;
 
 use Akeneo\Platform\TailoredExport\Domain\SourceValueInterface;
+use Webmozart\Assert\Assert;
 
 class CategoriesValue implements SourceValueInterface
 {
-    private array $data;
+    private array $categoryCodes;
 
-    /** Validate  */
-    public function __construct(array $data)
+    public function __construct(array $categoryCodes)
     {
-        $this->data = $data;
+        Assert::allString($categoryCodes);
+
+        $this->categoryCodes = $categoryCodes;
     }
 
-    public function getData(): array
+    public function getCategoryCodes(): array
     {
-        return $this->data;
+        return $this->categoryCodes;
     }
 }

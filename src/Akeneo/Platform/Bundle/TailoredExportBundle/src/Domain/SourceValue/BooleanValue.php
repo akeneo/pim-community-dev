@@ -17,14 +17,14 @@ use Akeneo\Platform\TailoredExport\Domain\SourceValueInterface;
 
 class BooleanValue implements SourceValueInterface
 {
-    private $data;
+    private bool $data;
 
-    public function __construct($data)
+    public function __construct(bool $data)
     {
         $this->data = $data;
     }
 
-    public function getData()
+    public function getData(): bool
     {
         return $this->data;
     }

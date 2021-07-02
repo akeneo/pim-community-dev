@@ -14,14 +14,17 @@ declare(strict_types=1);
 namespace Akeneo\Platform\TailoredExport\Domain\SourceValue;
 
 use Akeneo\Platform\TailoredExport\Domain\SourceValueInterface;
+use Webmozart\Assert\Assert;
 
 class GroupsValue implements SourceValueInterface
 {
+    /** @var string[] */
     private array $data;
 
-    /** Validate  */
     public function __construct(array $data)
     {
+        Assert::allString($data);
+
         $this->data = $data;
     }
 

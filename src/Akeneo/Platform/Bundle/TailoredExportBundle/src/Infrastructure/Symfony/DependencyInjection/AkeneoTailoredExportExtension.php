@@ -26,16 +26,16 @@ class AkeneoTailoredExportExtension extends Extension
     public function load(array $configs, ContainerBuilder $container): void
     {
         $loader = new YamlFileLoader($container, new FileLocator(__DIR__ . '/../Resources/config'));
-        $loader->load('attribute_selectors.yml');
         $loader->load('controllers.yml');
+        $loader->load('hydrators.yml');
         $loader->load('jobs.yml');
         $loader->load('operation_appliers.yml');
-        $loader->load('property_selectors.yml');
         $loader->load('queries.yml');
+        $loader->load('selection_handlers.yml');
         $loader->load('services.yml');
         $loader->load('validations.yml');
 
-        $isEnabled = (bool)($_ENV['FLAG_TAILORED_EXPORT_ENABLED'] ?? false);
+        $isEnabled = (bool) ($_ENV['FLAG_TAILORED_EXPORT_ENABLED'] ?? false);
 
         if (!$isEnabled) {
             $container->removeDefinition('akeneo.tailored_export.job.xlsx_product.export');

@@ -15,5 +15,4 @@ namespace Akeneo\Platform\TailoredExport\Domain;
 
 interface Operation
 {
-
 }
