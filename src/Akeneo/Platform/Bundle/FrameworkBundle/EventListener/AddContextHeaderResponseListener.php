@@ -25,6 +25,7 @@ class AddContextHeaderResponseListener
 {
     private const HEADER_AKENEO_CONTEXT = 'x-akeneo-context';
     private const HEADER_REQUEST_URI = 'x-request-path';
+    private const HEADER_SYMFONY_ROUTE = 'x-symfony-route';
 
     private BoundedContextResolver $boundedContextResolver;
 
@@ -43,6 +44,11 @@ class AddContextHeaderResponseListener
         $event->getResponse()->headers->set(
             self::HEADER_REQUEST_URI,
             $event->getRequest()->getPathInfo()
+        );
+
+        $event->getResponse()->headers->set(
+            self::HEADER_SYMFONY_ROUTE,
+            $event->getRequest()->attributes->get('_route', 'undefined')
         );
     }
 }
