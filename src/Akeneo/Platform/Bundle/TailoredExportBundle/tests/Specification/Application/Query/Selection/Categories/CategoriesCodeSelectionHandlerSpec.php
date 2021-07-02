@@ -23,10 +23,10 @@ class CategoriesCodeSelectionHandlerSpec extends ObjectBehavior
 {
     public function it_applies_the_selection()
     {
-        $categoriesCodeSelection = new CategoriesCodeSelection('-');
-        $categoriesValue = new CategoriesValue(['category_code1', 'category_code2', 'category_code...']);
+        $selection = new CategoriesCodeSelection('-');
+        $value = new CategoriesValue(['category_code1', 'category_code2', 'category_code...']);
 
-        $this->applySelection($categoriesCodeSelection, $categoriesValue)
+        $this->applySelection($selection, $value)
             ->shouldReturn('category_code1-category_code2-category_code...');
     }
 
@@ -42,10 +42,10 @@ class CategoriesCodeSelectionHandlerSpec extends ObjectBehavior
 
     public function it_supports_categories_code_selection_with_categories_value()
     {
-        $categoriesCodeSelection = new CategoriesCodeSelection('-');
-        $categoriesValue = new CategoriesValue([]);
+        $selection = new CategoriesCodeSelection('-');
+        $value = new CategoriesValue([]);
 
-        $this->supports($categoriesCodeSelection, $categoriesValue)->shouldReturn(true);
+        $this->supports($selection, $value)->shouldReturn(true);
     }
 
     public function it_does_not_supports_other_selections_and_values()

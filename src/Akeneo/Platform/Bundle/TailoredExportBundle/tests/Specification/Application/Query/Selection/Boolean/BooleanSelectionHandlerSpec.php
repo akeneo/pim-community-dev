@@ -23,10 +23,10 @@ class BooleanSelectionHandlerSpec extends ObjectBehavior
 {
     public function it_applies_the_selection()
     {
-        $booleanSelection = new BooleanSelection();
-        $booleanValue = new BooleanValue(true);
+        $selection = new BooleanSelection();
+        $value = new BooleanValue(true);
 
-        $this->applySelection($booleanSelection, $booleanValue)
+        $this->applySelection($selection, $value)
             ->shouldReturn('1');
     }
 
@@ -42,10 +42,10 @@ class BooleanSelectionHandlerSpec extends ObjectBehavior
 
     public function it_supports_boolean_selection_with_boolean_value()
     {
-        $booleanSelection = new BooleanSelection();
-        $booleanValue = new BooleanValue(false);
+        $selection = new BooleanSelection();
+        $value = new BooleanValue(false);
 
-        $this->supports($booleanSelection, $booleanValue)->shouldReturn(true);
+        $this->supports($selection, $value)->shouldReturn(true);
     }
 
     public function it_does_not_supports_other_selections_and_values()

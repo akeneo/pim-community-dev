@@ -23,10 +23,10 @@ class DateSelectionHandlerSpec extends ObjectBehavior
 {
     public function it_applies_the_selection()
     {
-        $dateSelection = new DateSelection('yyyy-mm-dd');
-        $dateValue = new DateValue(new \DateTimeImmutable('2020-07-01 16:30:00', new \DateTimeZone('UTC')));
+        $selection = new DateSelection('yyyy-mm-dd');
+        $value = new DateValue(new \DateTimeImmutable('2020-07-01 16:30:00', new \DateTimeZone('UTC')));
 
-        $this->applySelection($dateSelection, $dateValue)
+        $this->applySelection($selection, $value)
             ->shouldReturn('2020-07-01');
     }
 
@@ -42,10 +42,10 @@ class DateSelectionHandlerSpec extends ObjectBehavior
 
     public function it_supports_categories_code_selection_with_categories_value()
     {
-        $dateSelection = new DateSelection('yyyy-mm-dd');
-        $dateValue = new DateValue(new \DateTimeImmutable('2020-07-01 16:30:00', new \DateTimeZone('UTC')));
+        $selection = new DateSelection('yyyy-mm-dd');
+        $value = new DateValue(new \DateTimeImmutable('2020-07-01 16:30:00', new \DateTimeZone('UTC')));
 
-        $this->supports($dateSelection, $dateValue)->shouldReturn(true);
+        $this->supports($selection, $value)->shouldReturn(true);
     }
 
     public function it_does_not_supports_other_selections_and_values()

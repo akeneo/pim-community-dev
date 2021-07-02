@@ -30,7 +30,9 @@ class FamilyLabelSelectionHandler implements SelectionHandlerInterface
 
     public function applySelection(SelectionInterface $selection, SourceValueInterface $value): string
     {
-        if (!$value instanceof FamilyValue || !$selection instanceof FamilyLabelSelection) {
+        if (
+            !$selection instanceof FamilyLabelSelection
+            || !$value instanceof FamilyValue) {
             throw new \InvalidArgumentException('Cannot apply Family selection on this entity');
         }
 
@@ -43,6 +45,7 @@ class FamilyLabelSelectionHandler implements SelectionHandlerInterface
 
     public function supports(SelectionInterface $selection, SourceValueInterface $value): bool
     {
-        return $selection instanceof FamilyLabelSelection && $value instanceof FamilyValue;
+        return $selection instanceof FamilyLabelSelection
+            && $value instanceof FamilyValue;
     }
 }

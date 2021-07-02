@@ -22,7 +22,10 @@ class FamilyCodeSelectionHandler implements SelectionHandlerInterface
 {
     public function applySelection(SelectionInterface $selection, SourceValueInterface $value): string
     {
-        if (!$selection instanceof FamilyCodeSelection || !$value instanceof FamilyValue) {
+        if (
+            !$selection instanceof FamilyCodeSelection
+            || !$value instanceof FamilyValue
+        ) {
             throw new \InvalidArgumentException('Cannot apply Family selection on this entity');
         }
 
@@ -31,6 +34,7 @@ class FamilyCodeSelectionHandler implements SelectionHandlerInterface
 
     public function supports(SelectionInterface $selection, SourceValueInterface $value): bool
     {
-        return $selection instanceof FamilyCodeSelection && $value instanceof FamilyValue;
+        return $selection instanceof FamilyCodeSelection
+            && $value instanceof FamilyValue;
     }
 }

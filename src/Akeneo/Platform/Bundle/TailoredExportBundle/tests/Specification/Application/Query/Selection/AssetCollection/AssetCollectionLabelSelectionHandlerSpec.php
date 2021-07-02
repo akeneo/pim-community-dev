@@ -29,16 +29,16 @@ class AssetCollectionLabelSelectionHandlerSpec extends ObjectBehavior
 
     public function it_applies_the_selection(FindAssetLabelTranslation $findAssetLabelTranslations)
     {
-        $assetCollectionLabelSelection = new AssetCollectionLabelSelection(
+        $selection = new AssetCollectionLabelSelection(
             '/',
             'fr_FR',
             'an_asset_family_code'
         );
-        $assetCollectionValue = new AssetCollectionValue(['asset_code1', 'asset_code2', 'asset_code...']);
+        $value = new AssetCollectionValue(['asset_code1', 'asset_code2', 'asset_code...']);
 
         $findAssetLabelTranslations->byFamilyCodeAndAssetCodes(
             'an_asset_family_code',
-            $assetCollectionValue->getData(),
+            ['asset_code1', 'asset_code2', 'asset_code...'],
             'fr_FR'
         )->willReturn([
             'asset_code1' => 'label1',
@@ -46,7 +46,7 @@ class AssetCollectionLabelSelectionHandlerSpec extends ObjectBehavior
             'asset_code...' => 'label...',
         ]);
 
-        $this->applySelection($assetCollectionLabelSelection, $assetCollectionValue)
+        $this->applySelection($selection, $value)
             ->shouldReturn('label1/label2/label...');
     }
 
@@ -62,14 +62,14 @@ class AssetCollectionLabelSelectionHandlerSpec extends ObjectBehavior
 
     public function it_supports_asset_collection_label_selection_with_asset_collection_value()
     {
-        $assetCollectionLabelSelection = new AssetCollectionLabelSelection(
+        $selection = new AssetCollectionLabelSelection(
             '/',
             'fr_FR',
             'an_asset_family_code'
         );
-        $assetCollectionValue = new AssetCollectionValue([]);
+        $value = new AssetCollectionValue([]);
 
-        $this->supports($assetCollectionLabelSelection, $assetCollectionValue)->shouldReturn(true);
+        $this->supports($selection, $value)->shouldReturn(true);
     }
 
     public function it_does_not_supports_other_selections_and_values()

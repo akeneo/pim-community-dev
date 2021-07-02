@@ -29,8 +29,8 @@ class CategoriesLabelSelectionHandlerSpec extends ObjectBehavior
 
     public function it_applies_the_selection(GetCategoryTranslations $getCategoryTranslations)
     {
-        $categoriesLabelSelection = new CategoriesLabelSelection('-', 'fr_FR');
-        $categoriesValue = new CategoriesValue(['category_code1', 'category_code2', 'category_code3']);
+        $selection = new CategoriesLabelSelection('-', 'fr_FR');
+        $value = new CategoriesValue(['category_code1', 'category_code2', 'category_code3']);
 
         $getCategoryTranslations->byCategoryCodesAndLocale(
             ['category_code1', 'category_code2', 'category_code3'],
@@ -41,7 +41,7 @@ class CategoriesLabelSelectionHandlerSpec extends ObjectBehavior
             'category_code3' => 'Catégorie 3',
         ]);
 
-        $this->applySelection($categoriesLabelSelection, $categoriesValue)
+        $this->applySelection($selection, $value)
             ->shouldReturn('Catégorie 1-Catégorie 2-Catégorie 3');
     }
 
@@ -57,10 +57,10 @@ class CategoriesLabelSelectionHandlerSpec extends ObjectBehavior
 
     public function it_supports_categories_label_selection_with_categories_value()
     {
-        $categoriesLabelSelection = new CategoriesLabelSelection('-', 'fr_FR');
-        $categoriesValue = new CategoriesValue([]);
+        $selection = new CategoriesLabelSelection('-', 'fr_FR');
+        $value = new CategoriesValue([]);
 
-        $this->supports($categoriesLabelSelection, $categoriesValue)->shouldReturn(true);
+        $this->supports($selection, $value)->shouldReturn(true);
     }
 
     public function it_does_not_supports_other_selections_and_values()
