@@ -1,4 +1,4 @@
-import React, {FC, useEffect} from 'react';
+import React, {FC, useEffect, useState} from 'react';
 import {PageContent, PageHeader} from '@akeneo-pim-community/shared';
 import {PimView, useRoute, useSecurity, useTranslate} from '@akeneo-pim-community/legacy-bridge';
 import {LocalesDataGrid, useLocalesIndexState} from '@akeneo-pim-community/settings-ui';
@@ -33,6 +33,8 @@ const LocalesEEIndex: FC = () => {
     })();
   }, []);
 
+  const [localeCount, setLocaleCount] = useState<number>(locales.length);
+
   return (
     <>
       <PageHeader showPlaceholder={isPending}>
@@ -49,7 +51,7 @@ const LocalesEEIndex: FC = () => {
           />
         </PageHeader.UserActions>
         <PageHeader.Title>
-          {translate('pim_enrich.entity.locale.page_title.index', {count: locales.length.toString()}, locales.length)}
+          {translate('pim_enrich.entity.locale.page_title.index', {count: localeCount.toString()}, localeCount)}
         </PageHeader.Title>
       </PageHeader>
       <PageContent>
@@ -65,6 +67,7 @@ const LocalesEEIndex: FC = () => {
         <LocalesDataGrid
           locales={locales}
           followLocale={isGranted('pimee_enrich_locale_edit_permissions') ? followEditLocale : undefined}
+          onLocaleCountChange={setLocaleCount}
         />
       </PageContent>
     </>
