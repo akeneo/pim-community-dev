@@ -1,7 +1,7 @@
-import React, {FC, useEffect, useState} from 'react';
+import React, {FC, useMemo} from 'react';
 import styled from 'styled-components';
 import {PimView, useRouter, useTranslate} from '@akeneo-pim-community/shared';
-import {IconProps, MainNavigationItem, SubNavigationPanel, SubNavigationItem} from 'akeneo-design-system';
+import {IconProps, MainNavigationItem, SubNavigationItem, SubNavigationPanel} from 'akeneo-design-system';
 
 type NavigationEntry = {
   code: string;
@@ -34,8 +34,8 @@ type SubNavigationSection = {
 
 type Props = {
   entries: NavigationEntry[];
-  activeEntryCode: string;
-  activeSubEntryCode: string;
+  activeEntryCode: string | null;
+  activeSubEntryCode: string | null;
 };
 const PimNavigation: FC<Props> = ({entries, activeEntryCode, activeSubEntryCode}) => {
   const translate = useTranslate();
@@ -52,46 +52,23 @@ const PimNavigation: FC<Props> = ({entries, activeEntryCode, activeSubEntryCode}
     router.redirect(router.generate(subEntry.route, subEntry.routeParams));
   };
 
-  const [activeEntry, setActiveEntry] = useState<NavigationEntry | null>(null);
-  const isActiveEntry = (code: string) => code === (activeEntry ? activeEntry.code : null);
-
-  const [activeSubEntry, setActiveSubEntry] = useState<SubNavigationEntry | null>(null);
-  const isActiveSubEntry = (code: string) => code === (activeSubEntry ? activeSubEntry.code : null);
-
   // @todo read default value by main navigation entry from Session storage
   // @example: collapsedColumn_pim-menu-settings: 1
   const isSubNavigationOpened = true;
 
-  const getSubNavigationColumn = (): SubNavigation | undefined => {
-    if (activeEntry && activeSubEntry) {
-      return activeEntry.subNavigations.find((column: SubNavigation) => {
-        return undefined !== column.entries.find((entry: SubNavigationEntry) => entry.code === activeSubEntry.code);
+  const activeNavigationEntry = useMemo((): NavigationEntry | undefined => {
+    return entries.find((entry: NavigationEntry) => entry.code === activeEntryCode);
+  }, [entries, activeEntryCode]);
+
+  const activeSubNavigation = useMemo((): SubNavigation | undefined => {
+    if (activeNavigationEntry) {
+      return activeNavigationEntry.subNavigations.find((column: SubNavigation) => {
+        return undefined !== column.entries.find((entry: SubNavigationEntry) => entry.code === activeSubEntryCode);
       });
     }
 
     return;
-  };
-
-  const subNavigation = getSubNavigationColumn();
-
-  useEffect(() => {
-    const newActiveEntry = entries.find((entry: NavigationEntry) => entry.active);
-    setActiveEntry(newActiveEntry || null);
-
-    // @fixme find a better way to find the new activated sub-entry
-    const newColumn = newActiveEntry
-      ? newActiveEntry.subNavigations.find((column: SubNavigation) => {
-        return column.entries.find((entry: SubNavigationEntry) => entry.code === newActiveEntry.activeSubEntryCode);
-      })
-      : null;
-
-    const newActiveSubEntry =
-      newActiveEntry && newColumn
-        ? newColumn.entries.find((subEntry: SubNavigationEntry) => subEntry.code === newActiveEntry.activeSubEntryCode)
-        : null;
-
-    setActiveSubEntry(newActiveSubEntry || null);
-  }, [entries]);
+  }, [activeNavigationEntry, activeSubEntryCode]);
 
   return (
     <NavContainer aria-label="Main Navigation">
@@ -103,7 +80,7 @@ const PimNavigation: FC<Props> = ({entries, activeEntryCode, activeSubEntryCode}
           {entries.map(entry => (
             <MainNavigationItem
               key={entry.code}
-              active={isActiveEntry(entry.code)}
+              active={entry.code === activeEntryCode}
               disabled={entry.disabled}
               icon={entry.icon}
               onClick={() => handleFollowEntry(entry)}
@@ -116,19 +93,19 @@ const PimNavigation: FC<Props> = ({entries, activeEntryCode, activeSubEntryCode}
           <PimView viewName="pim-menu-help" />
         </HelpContainer>
       </MainNavContainer>
-      {activeEntry &&
-      (!activeEntry.isLandingSectionPage || activeSubEntry) &&
-      subNavigation &&
-      subNavigation.sections.length > 0 && (
+      {activeNavigationEntry &&
+      (!activeNavigationEntry.isLandingSectionPage || activeSubEntryCode) &&
+      activeSubNavigation &&
+      activeSubNavigation.sections.length > 0 && (
         <SubNavContainer>
           <SubNavigationPanel isOpen={isSubNavigationOpened}>
-            {subNavigation.sections.map(section => {
+            {activeSubNavigation.sections.map(section => {
               return <div key={section.code}>
                 <SubNavigationTitle>{translate(section.title)}</SubNavigationTitle>
-                {subNavigation.entries.filter(subNav => subNav.sectionCode === section.code).map(subEntry => {
+                {activeSubNavigation.entries.filter(subNav => subNav.sectionCode === section.code).map(subEntry => {
                   return (
                     <SubNavigationItem
-                      active={isActiveSubEntry(subEntry.code)}
+                      active={subEntry.code === activeSubEntryCode}
                       key={subEntry.code}
                       href={`#${router.generate(subEntry.route, subEntry.routeParams)}`}
                       onClick={(event: any) => handleFollowSubEntry(event, subEntry)}

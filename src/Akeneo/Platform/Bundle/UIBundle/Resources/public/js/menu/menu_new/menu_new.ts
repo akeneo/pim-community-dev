@@ -51,8 +51,8 @@ class Menu extends BaseForm {
       className: 'AknHeader',
     });
 
-    this.activeEntryCode = '';
-    this.activeSubEntryCode = '';
+    this.activeEntryCode = null;
+    this.activeSubEntryCode = null;
   }
 
   configure() {
@@ -75,6 +75,8 @@ class Menu extends BaseForm {
       PimNavigation,
       {
         entries: this.findMainEntries(),
+        activeEntryCode: this.activeEntryCode,
+        activeSubEntryCode: this.activeSubEntryCode
       },
       this.el
     );
