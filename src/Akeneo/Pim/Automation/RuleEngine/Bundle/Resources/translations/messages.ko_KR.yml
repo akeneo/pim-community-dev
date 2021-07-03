@@ -19,12 +19,12 @@ pimee_catalog_rule:
         delete: 삭제
   actions:
     type:
-      "copy": 그런 다음 %from_field%이(가) %to_field%에 복사됩니다
-      "copy_value": 그런 다음 %from_field%이(가) %to_field%에 복사됩니다
-      "set": 그런 다음 %value%이(가) %field%(으)로 설정됩니다
-      "set_value": 그런 다음 %value%이(가) %field%(으)로 설정됩니다
-      "add": 그런 다음 %value%이(가) %field%에 추가됩니다
-      "remove": 그런 다음 %value%이(가) %field%에서 제거됩니다
+      "copy": 그런 다음 %from_field%이(가) %to_field%에 복사됩니다.
+      "copy_value": 그런 다음 %from_field%이(가) %to_field%에 복사됩니다.
+      "set": 그런 다음 %value%이(가) %field%(으)로 설정됩니다.
+      "set_value": 그런 다음 %value%이(가) %field%(으)로 설정됩니다.
+      "add": 그런 다음 %value%이(가) %field%에 추가됩니다.
+      "remove": 그런 다음 %value%이(가) %field%에서 제거됩니다.
     options:
       include_children: 및 하위 항목
   condition:
@@ -69,7 +69,7 @@ pimee_catalog_rule:
     tooltip:
       product_attribute_affected_by_a_rule.content: 이 특성 값은 규칙 <strong>%rule%</strong>에서 나올 수 있습니다. 즉, 규칙의 조건이 유효한 경우 수정 사항이 재정의됩니다.
       loading.title: 로드 중...
-    history: 규칙 "%rule%" 적용됨
+    history: 규칙 '%rule%' 적용됨
   product_value:
     tooltip:
       affected_by.title: '다음 규칙의 영향을 받음:'
@@ -83,7 +83,7 @@ pimee_catalog_rule:
       executed: 규칙 실행 완료
     mass_edit_rule:
       success: 규칙의 영향받는 제품 계산 완료
-      error: 규칙의 영향받는 제품을 계산하는 중에 오류가 발생했습니다
+      error: 규칙의 영향받는 제품을 계산하는 중에 오류가 발생했습니다.
 btn:
   Execute rules: 규칙 실행
 mass_edit_rule: 규칙 설정

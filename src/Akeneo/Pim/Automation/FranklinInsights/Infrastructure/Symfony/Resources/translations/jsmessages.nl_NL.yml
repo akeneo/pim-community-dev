@@ -1,3 +1,6 @@
+pim_menu:
+  item:
+    franklin: Franklin Insights
 akeneo_franklin_insights:
   entity:
     franklin_attribute:
@@ -14,52 +17,255 @@ akeneo_franklin_insights:
       bad_request_error: "Sorry, er is een probleem opgetreden bij het communiceren met Franklin Insights. Neem contact op met uw beheerder."
     identifier_mapping:
       plural_label: Identificaties
+      flash:
+        update:
+          first: 'Bedankt voor het toewijzen van uw catalogusproduct-ID''s. U kunt nu producten aanmelden om deze te verrijken met Franklin Insights.'
+          success: 'De toegewezen ID-s zijn opgeslagen.'
+          fail: 'Door een fout zijn de toegewezen ID-s niet opgeslagen.'
       fields:
         identifier_label:
+          label: Franklin-ID
           values:
+            brand: Merk
             asin: ASIN
             mpn: MPN
             upc: UPC
+        catalog_attribute: Catalogusattribuut
+        franklin_insights: Status Franklin-ID
         status:
           active: Actief
           inactive: Inactief
+      constraint:
+        duplicate_attribute_code: "Eén toewijzing toegestaan per catalogusattribuut"
+        missing_or_invalid_identifiers: "Enkele sleutels voor het toewijzen van ID's ontbreken of zijn ongeldig. Verwacht: \"{{ expected }}\", resultaat \"{{ given }}\"."
+        mandatory_identifier_mapping: "Toewijzen van merk en MPN vereist"
+        attribute_type: "Het type van dit attribuut kan niet als ID worden ingesteld"
+        localizable_not_allowed: "Te vertalen attributen zijn niet toegestaan als ID"
+        scopable_not_allowed: "Attributen met meerdere toepassingsgebieden zijn niet toegestaan als ID"
+        locale_specific_not_allowed: "Specifieke attributen voor een bepaalde taal zijn niet toegestaan als ID"
     attributes_mapping:
+      label: Attributen toewijzen
       flash:
+        do_not_map_attribute_success: 'Attribuut is bijgewerkt.'
+        create_attribute_success: '{0} Helaas, geen van de {{ requestCount }} attributen is aangemaakt. {1} Attribuut is aangemaakt en gekoppeld aan de familie "{{ family }}". |[2,Inf[ {{ successCount }} van {{ requestCount }} attributen zijn aangemaakt en gekoppeld aan de familie "{{ family }}".'
+        create_attribute_error: 'Er is een fout opgetreden tijdens het maken of koppelen van het attribuut aan de familie.'
+        suggest_attribute_mapping_error: 'Catalogusattribuut "[{{ catalogAttributeCode }}]" is al toegewezen aan het Franklin-attribuut "{{ franklinAttributeLabel }}".'
+        add_attribute_to_family_success: '{1} Attribuut is gekoppeld aan de familie "{{ family }}". |[2,Inf[ Attributen zijn gekoppeld aan de familie "{{ family }}".'
+        add_attribute_to_family_error: 'Er is een fout opgetreden tijdens het koppelen van het attribuut aan de familie.'
         fail_to_retrieve_franklin_mapping: 'Attribuuttoewijzing is momenteel niet beschikbaar. Kom later nog terug.'
       fields:
+        search_bar.placeholder: 'Zoeken op Franklin-attribuut'
+        franklin_attribute: 'Franklin-attribuut'
+        franklin_attribute_type: '{{ type }} attribuut'
+        franklin_value_sample: 'Voorbeeld van waarde:'
         franklin_insights:
+          label: Status Franklin-attribuut
+          pending: In behandeling
           active: Actief
           inactive: Inactief
+        create_attribute:
+          btn: Attribuut aanmaken
+        add_attribute_to_family:
+          btn: Toevoegen aan familie
+        secondary_actions:
+          deactivate_franklin_attribute: "Niet toewijzen"
       module:
+        subscribe:
+          subscribe: 'Familie aanmelden bij Franklin'
+          subscribed: 'Aangemeld bij Franklin'
         index:
+          family_selector:
+            title: 'Familie kiezen om toe te wijzen'
+          error: "U moet een familie aanmaken in uw catalogus om toegang te krijgen tot deze pagina."
+          family_status:
+            pending: 'Nieuwe Franklin-attributen om te bekijken'
+            full: 'Alle Franklin-attributen toegewezen'
+          types_mismatch_warning: 'Waarschuwing: attribuuttypes komen niet overeen.'
           family_progress:
+            title: 'Aantal toegewezen attributen'
+            description: "Gebruik deze balk om in een oogopslag de status van uw werk te zien"
             mapped_attribute: '{{ mapped_count }} attributen toegewezen en {{ suggested_count }} voorgesteld'
           suggested: Voorgesteld
-    product_subscription:
+        toolbar:
+          bulk_create_attribute: Attribuut aanmaken
+          bulk_add_to_family: Toevoegen aan familie
+          selection_count: '{{ count }} item geselecteerd {{ count }} items geselecteerd'
+      modal:
+        deactivate_franklin_attribute:
+          title: "Weet u zeker dat u dit attribuut niet wilt toewijzen?"
+          subtitle: 'Franklin Insights'
+          ok: "Niet toewijzen"
+        bulk_create_attribute:
+          title: '{1} 1 attribuut aanmaken |[2,Inf[ {{ count }} attributen aanmaken'
+          subtitle: 'Franklin Insights'
+          description: '{1} Het geselecteerde attribuut wordt aangemaakt en toegevoegd aan de familie |[2,Inf[ De geselecteerde attributen worden aangemaakt en toegevoegd aan de familie'
+          warning: '{1} Bevestig het aanmaken van een nieuw attribuut. |[2,Inf[ Bevestig het aanmaken van {{ count }} nieuwe attributen.'
+          ok: Bevestigen
+        bulk_add_to_family:
+          title: '{1} Voeg 1 attribuut toe aan de familie |[2,Inf[ Voeg {{ count }} attributen toe aan de familie'
+          subtitle: 'Franklin Insights'
+          description: '{1} Het geselecteerde attribuut wordt toegevoegd aan de familie |[2,Inf[ De geselecteerde attributen worden toegevoegd aan de familie'
+          warning: '{1} Bevestig het toevoegen van een nieuw attribuut aan de familie. |[2,Inf[ Bevestig het toevoegen van {{ count }} nieuwe attributen aan de familie.'
+          ok: Bevestigen
       constraint:
+        missing_target_key: 'Ontbrekende doelsleutel voor toewijzing'
+        missing_attribute_key: 'Ontbrekende {{ expectedKey }} sleutel voor toewijzing met doelsleutel "{{ targetKey }}"'
+        invalid_attribute_type_mapping: 'Franklin-attributen kunnen niet worden toegewezen aan attribuut van PIM-type "{{ pimType }}"'
+        empty_mapping: 'Franklin-attributen kunnen niet worden toegewezen met een lege toewijzing'
+        localizable_not_allowed: 'Franklin-attributen kunnen niet worden toegewezen aan een te vertalen PIM-attribuut'
+        scopable_not_allowed: 'Franklin-attributen kunnen niet worden toegewezen aan PIM-attributen met meerdere toepassingsgebieden'
+        locale_specific_not_allowed: 'Franklin-attributen kunnen niet worden toegewezen aan een PIM-attribuut voor een specifieke taal'
+        duplicated_pim_attribute: "De toewijzing kan niet worden opgeslagen omdat u meerdere Franklin-attributen heeft toegewezen aan hetzelfde PIM-attribuut"
+        attribute_not_in_family_not_allowed: 'Het PIM-attribuut moet in de geselecteerde familie voorkomen.'
+        only_unknown_mapped_attributes: 'Er is geen attribuut aangetroffen in de attributentoewijzing'
+      search:
+        no_result_title: Helaas, uw zoekopdracht heeft geen Franklin-attribuut opgeleverd.
+        no_result_subtitle: Probeer het opnieuw met andere zoektermen.
+    product_subscription:
+      flash:
+        create:
+          success: 'Product is aangemeld bij Franklin'
+          fail: 'Kan product niet aanmelden bij Franklin'
+        delete:
+          success: 'Product is afgemeld bij Franklin'
+          fail: 'Kan product niet afmelden bij Franklin'
+      constraint:
+        family_required: 'Er is een productfamilie vereist om het product aan te melden bij Franklin Insights.'
+        no_identifiers_mapping: 'Wijs de ID''s van de catalogusproducten toe in Instellingen > Franklin Insights voordat u producten aanmeldt.'
+        insufficient_credits: "Kan het product niet aanmelden bij Franklin Insights.  U hebt niet genoeg credits."
+        invalid_mapped_values: 'Kan het product niet aanmelden bij Franklin Insights. Meld het product aan met een geldige combinatie ID''s.'
+        data_provider_error: 'Franklin gaf een foutmelding bij het aanmelden van het product' #TODO: check with POs
+        not_subscribed: 'Het product is niet aangemeld'
+        already_subscribed_product: 'Het product is al aangemeld.'
+        variant_product: 'Productvariaties kunnen niet worden aangemeld bij Franklin Insights.'
+        inactive_connection: 'Kan het product niet aanmelden bij Franklin Insights. Configureer uw verbinding met Franklin Insights.'
         product_subscription_with_same_identifier_already_exist: 'Een ander product met ten minste één identieke id is al geabonneerd.'
+      module:
+        product_edit_form:
+          family_required: 'Productfamilie vereist.'
+          no_identifier_filled: 'Product-ID''s vereist.'
+          invalid_mapping: "ID-toewijzing vereist."
     attribute_options_mapping:
+      label: 'Toewijzen van attribuutopties'
+      constraint:
+        no_attribute_options_mapped: 'Opties voor Franklin-attributen kunnen niet worden toegewezen met een lege toewijzing'
+      fields:
+        franklin_attribute_option: Optie voor Franklin-attribuut
+        catalog_attribute_option: Optie voor catalogusattribuut
+        attribute_option_status: Status Franklin-optie
+      module:
+        edit:
+          title: '{{ familyLabel }} - {{ franklinAttributeLabel }} attribuutopties'
+          sub_title: 'Maak kennis met Franklin, uw <span class="AknDescriptionHeader-title--highlight">AI-assistent voor productinformatie</span>!'
+          description: 'Om uw catalogus te kunnen verrijken, moeten de opties van uw catalogusattributen overeenkomen met die van Franklin. <a href="https://help.akeneo.com/pim/articles/franklin-insights-mappings.html#attributes-and-options-mapping" target="_blank" class="AknDescriptionHeader-link">Meer informatie</a>'
       flash:
         load_failed: 'Update mislukt'
   product:
     edit:
       btn.push: Gegevens suggereren
+      subscription_status_title: 'Abonnement op Franklin'
   connection:
+    page_title: 'Verbinding met Franklin Insights'
     flash:
+      success: Activatiecode voor Franklin Insights is opgeslagen.
       invalid: Sorry, ongeldige activeringscode. Probeer het opnieuw met een geldige code.
       error: Sorry, er is iets fout gegaan.
     module:
+      title:
+        sub_title: 'Welkom bij de <span class="AknDescriptionHeader-title--highlight">AI-assistent voor productinformatie</span>!'
+        description:
+          first_step: 'De eerste stap bij het koppelen van de assistent is het configureren van het API-token.'
+          second_step: 'De volgende stap in het koppelproces is om de <a href="#" class="AknDescriptionHeader-link link">ID''s van uw catalogusproducten</a> te laten aansluiten op de ID''s van de assistent.'
       activation:
+        label: 'Verbinding met Franklin'
+        activation_code: 'Activatiecode'
+        paste_activation_code: 'Activatiecode plakken'
         activated: 'Geactiveerd'
+        activate: 'Activeren'
+  settings:
+    page_title: 'Instellingen voor Franklin Insights'
+    attributes_mapping_title: 'Attributen toewijzen'
+    identifiers_mapping_title: 'ID''s toewijzen'
+    module:
+      title:
+        sub_title: 'Maak kennis met Franklin, uw <span class="AknDescriptionHeader-title--highlight">AI-assistent voor productinformatie</span>!'
+        description:
+          first_step: 'Om u te helpen uw catalogus te verrijken, moet Franklin uw catalogus-ID''s weten.'
+          second_step: 'Bij het toewijzen van uw ID''s moet u er rekening mee houden dat het merk en de MPN bij elkaar horen. <a href="https://help.akeneo.com/articles/franklin-insights-mappings.html" class="AknDescriptionHeader-link" target="_blank">Meer informatie</a>'
+      inactive_connection:
+        title: 'Er kan hier nog niets worden weergegeven'
+        sub_title: 'Activeer uw account via Systeem > Verbinding met Franklin en keer terug naar deze pagina.'
+      no_active_english_locale:
+        title: 'Franklin Insights is alleen beschikbaar voor het Engels taalgebied.'
+        sub_title: 'Blijf op de hoogte, andere talen volgen binnenkort.'
+      save:
+        warning: '{1}Het wijzigen van de toewijzing kan gevolgen hebben voor 1 abonnement. Weet u het zeker?|]1,+Inf[Het wijzigen van de toewijzing kan gevolgen hebben voor {{ count }} abonnementen. Weet u het zeker?'
+        title: 'Let op!'
+  mass_edit:
+    product:
+      operation:
+        franklin_insights:
+          label: 'Abonnementen voor Franklin Insights'
+          label_count: "{1}Abonnementen op Franklin Insights beheren voor <span class=\"AknFullPage-title--highlight\">1 product</span>|]1, Inf[Abonnementen op Franklin Insights beheren voor  <span class=\"AknFullPage-title--highlight\">{{ itemsCount }} producten</span>"
+          description: Selecteer de actie voor de geselecteerde producten in het raster
+          subscribe_label: Abonneren
+          unsubscribe_label: Opzeggen
+          constraint:
+            franklin_activation: "<a href=\"#\" data-action=\"franklin-connection\" class=\"AknMessageBox-link\">Activeer</a> Franklin Insights voordat u producten aanmeldt."
+            invalid_mapping: "Wijs de product-ID's toe in Instellingen > Franklin Insights voordat u producten aanmeldt."
   key_figures:
+    menu: Kerncijfers in Franklin
+    section_title:
+      credits: Credits in Franklin
+      key_figures: Kerncijfers in Franklin
     axis:
       franklin_attribute_created: Attributen aangemaakt
       franklin_attribute_added_to_family: Attributen toegevoegd aan een familie
+      credits_total: Totaal aantal credits
       credits_consumed: Credits verbruikt
+      credits_left: Resterende aantal credits
       franklin_values_validated: Attribuutwaarden gevalideerd
       franklin_values_in_error: Attribuutwaarden in fout
       franklin_values_suggested: Voorstel attribuutwaarden
       franklin_names_and_values_suggested: Voorgestelde attribuutnamen en -waarden
 batch_jobs:
   default_steps:
+    fetch_products: Productgegevens ophalen
+    create_proposals: Voorstellen maken
     notify_if_pending_attributes: Gebruikers informeren over te mappen attributen
+    validate_configuration: Configuratie Franklin Insights valideren
+  franklin_insights_subscribe_products:
+    label: Bulkabonnement voor Franklin Insights
+    validate_configuration.label: Configuratie Franklin Insights valideren
+    validate_identifiers_mapping.label: Toewijzing ID's valideren
+    subscribe_products.label: Producten aanmelden
+  franklin_insights_unsubscribe_products:
+    label: Bulkabonnement voor Franklin Insights opzeggen
+    validate_configuration.label: Configuratie Franklin Insights valideren
+    unsubscribe_products.label: Producten afmelden
+  franklin_insights_fetch_products:
+    label: Productgegevens van Franklin Insights ophalen
+pim_dashboard:
+  widget:
+    last_operations:
+      job_type:
+        franklin_insights_fetch_products: Franklin Insights
+pim_enrich.entity.attribute:
+  module:
+    save:
+      title: 'Let op!'
+      warning: '{1}Het verwijderen van een attribuut kan gevolgen hebben voor 1 Franklin-abonnement. Weet u het zeker?· |]1,+Inf[Het verwijderen van een attribuut kan gevolgen hebben voor {{ count }} Franklin-abonnementen. Weet u het zeker?'
+pim_title:
+  akeneo_franklin_insights_connection_edit: Verbinding met Franklin Insights
+  akeneo_franklin_insights_mapping_index: Toewijzen in Franklin Insights
+  akeneo_franklin_insights_identifiers_mapping_edit: ID-toewijzing in Franklin Insights bewerken 
+  akeneo_franklin_insights_attributes_mapping_edit: Toewijzing attributen in Franklin Insights bewerken 
+  akeneo_franklin_insights_key_figure_index: Kerncijfers Franklin Insights 
+pim_notification:
+  types:
+    franklin_insights: Franklin Insights
+pim_import_export:
+  widget:
+    last_operations:
+      job_type:
+        franklin_insights: Franklin Insights

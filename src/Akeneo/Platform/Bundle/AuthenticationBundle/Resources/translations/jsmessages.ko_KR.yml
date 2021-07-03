@@ -6,9 +6,9 @@ authentication:
     configuration:
       download_logs_button: 로그 다운로드
       info:
-        update_successful: 구성이 저장되었습니다
-        update_failed: 구성을 저장할 수 없습니다
-        fields_not_ready: "이 구성은 현재 저장할 수 없습니다. 다음 필드가 준비되지 않았습니다: {{ fields }}"
+        update_successful: 구성이 저장되었습니다.
+        update_failed: 구성을 저장할 수 없습니다.
+        fields_not_ready: "이 구성은 현재 저장할 수 없습니다. 다음 필드가 준비되지 않았습니다.: {{ fields }}"
       section:
         activation:
           title: SSO 활성화

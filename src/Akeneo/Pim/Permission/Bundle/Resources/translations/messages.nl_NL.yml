@@ -6,6 +6,15 @@ pimee_importexport.acl.import_profile.edit_permissions: Beheer rechten import pr
 pimee_enrich.groups.label: Eigenaar groepen
 edit_common_attributes_with_permission_and_rules.steps.edit_common_attributes_processor.title: Bewerk attributen
 add_product_value_with_permission.steps.add_product_value_with_permission_processor.title: Productwaarde met machtigingen toevoegen
+update_product_value_with_permission.steps.update_product_value_with_permission_processor.title: Productwaarde bijwerken inclusief machtiging
+remove_product_value_with_permission.steps.update_product_value_with_permission_processor.title: Productwaarde verwijderen met machtiging
+edit_common_attributes_with_permission: Attributen bewerken met machtiging
+edit_common_attributes_with_permission.steps.edit_common_attributes_processor.title: Attributen bewerken met machtiging
+pim_analytics:
+  info_type:
+    nb_custom_locale_accesses: Aantal toegangen tot aangepaste talen
+    nb_custom_category_accesses: Aantal toegangen tot aangepaste categorieën
+    nb_custom_attribute_group_accesses: Aantal toegangen tot aangepaste attributengroep
 job_profile.permissions:
   execute.label: Toegestaan om profiel uit te voeren
   edit.label: Toegestaan om profiel te wijzigen
@@ -21,11 +30,17 @@ category.permissions:
   view.label: Toegestaan om producten te bekijken
   view.help: Toestaan dat de producten in deze categorie te weergeven
   edit.label: Toegestaan om producten te bewerken
+  edit.help: Sta toe om de producten in deze categorie te bewerken (impliceert machtiging om weer te geven)
   own.label: Toegestaan om producten te beheren
+  own.help: Gemachtigd om producten te beoordelen, te publiceren, te classificeren, aan deze categorie te koppelen of de publicatie ervan ongedaan te maken (impliceert de machtiging om te bewerken)
   no_access_to_products: U heeft geen toegang tot producten in eender welke boom, neem contact op met uw beheerder
   apply_on_children.label: Breng wijzigingen aan de onderliggende elementen
   apply_on_children.help: Kopiëer de wijzigingen van de machtigingen naar alle kinderen, bestaande machtigingen van de kinderen worden bewaard
 locale.permissions:
+  view.label: Gemachtigd om informatie te bekijken
+  view.help: Gemachtigd om productinformatie in deze taal te bekijken
+  edit.label: Gemachtigd om informatie te bewerken
+  edit.help: Gemachtigd om de informatie in deze taal te bewerken (impliceert de machtiging om weer te geven)
   no_access_to_products: U heeft geen toegang tot productdata in eender welke geactiveerde lokalisering, neem contact op met uw beheerder
 flash.locale.updated: De locale en machtigingen zijn bijgewerkt
 pim_enrich:
@@ -48,7 +63,18 @@ pim_enrich:
         warning: U bent niet de eigenaar van alle geselecteerde producten. U kan de producten "%notGranted%" niet publiceren.
       not_editable: U heeft geen machtiging om de producten "%identifiers%" te bewerken.
     unpublish:
+      message:
+        error: U bent niet de eigenaar van het product. U kunt de publicatie niet ongedaan maken.
+        warning: U bent niet de eigenaar van alle geselecteerde producten. U kunt de publicatie van de producten "%notGranted%" niet ongedaan maken.
+        info: De publicatie van de geselecteerde producten %nbProducts% wordt ongedaan gemaakt.
       not_editable: U heeft geen machtiging om de producten "%identifiers%" te bewerken.
+    classify:
+      message:
+        error: U bent niet de eigenaar van het product. U kunt het niet indelen.
+        warning: U bent niet de eigenaar van alle geselecteerde producten. U kunt de producten "%notGranted%" niet indelen.
+    edit_common_attributes:
+      message:
+        error: U bent niet de eigenaar van het product, u kunt het niet bewerken.
 pimee_enrich:
   attribute_group:
     tab:
@@ -70,3 +96,5 @@ update_product_value_with_permission_and_rules:
 edit_common_attributes_with_permission_and_rules:
   steps.perform: Bewerk attributen
   steps.edit_common_attributes_processor.title: Bewerk attributen
+pim_enrich_attribute_form:
+  isReadOnly: Alleen lezen

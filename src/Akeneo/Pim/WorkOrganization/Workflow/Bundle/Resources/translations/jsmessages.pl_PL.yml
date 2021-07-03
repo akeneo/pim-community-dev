@@ -24,6 +24,7 @@ pimee_workflow:
     proposal:
       modal.title: Pozostaw komentarz (opcjonalnie - 255 znaków max.)
   proposal:
+    overview: "]-Inf, 1]{{ count }} propozycja|]1, Inf[{{ count }} propozycji"
     selected: wniosek wybrany
     mass_action_group:
       review:
@@ -52,6 +53,9 @@ batch_jobs:
   csv_product_proposal_import:
     label: Import produktów z csv
     import.label: Import produktów
+  csv_product_model_proposal_import:
+    label: Import propozycji modeli produktów w formacie CSV
+    import.label: Import propozycji modeli produktów w formacie CSV
   approve_product_draft:
     label: Zatwierdzono propozycje
     perform.label: Zatwierdzono propozycje
@@ -64,6 +68,9 @@ batch_jobs:
   xlsx_product_proposal_import:
     label: Import produktów z XLSX
     import.label: Import produktów z XLSX
+  xlsx_product_model_proposal_import:
+    label: Import propozycji modeli produktów w formacie XLSX
+    import.label: Import propozycji modeli produktów w formacie XLSX
   csv_published_product_quick_export:
     export.label: Csv opublikowane produkty szybkiego eksportu
     perform.label: Csv opublikowane produkty szybkiego eksportu
@@ -103,6 +110,9 @@ pimee_enrich.entity.product:
     history:
       published: Opublikowane
       revert: Odzyskaj
+    attribute:
+      can_be_updated_by_a_rule: "Ten atrybut może być aktualizowany przez regułę: {{ rule }}"
+      value_updated: Ta wartość jest aktualizowana przez bieżący szkic
     meta:
       published_version: Opublikowana wersja
       owner_groups: Właściciel grup
@@ -127,6 +137,8 @@ pimee_enrich.entity.product:
     approval:
       send: Wyślij do zatwierdzenia
       sent: Wyślij do zatwierdzenia
+      send_and_next: Wyślij i przejdź dalej
+      send_and_finish: Wyślij i zakończ
 pimee_enrich.entity.published_product:
   flash:
     publish:
@@ -137,6 +149,8 @@ pimee_enrich.entity.published_product:
       fail: Nie udało się cofnąć publikacji tego produktu
     revert:
       success: Produkt pomyślnie przywrócony
+  page_title:
+    index: "]-Inf, 1]{{ count }} opublikowany produkt|]1, Inf[{{ count }} opublikowanych produktów"
   module:
     publish:
       label: Opublikuj
@@ -176,10 +190,12 @@ pimee_enrich.mass_edit.product:
   operation:
     publish:
       label: Opublikuj
+      label_count: "{1}Opublikuj <span class=\"AknFullPage-title--highlight\">1 produkt</span>|]1, Inf[Opublikuj <span class=\"AknFullPage-title--highlight\">{{ itemsCount }} produktów</span>"
       description: Produkty zostaną opublikowane
       warning: '{{ itemsCount }} wybrane produkty zostaną opublikowane.'
     unpublish:
       label: Cofnij publikację
+      label_count: "{1}Cofnij publikację <span class=\"AknFullPage-title--highlight\">1 produktu</span>|]1, Inf[Cofnij publikację <span class=\"AknFullPage-title--highlight\">{{ itemsCount }} produktów</span>"
       description: Produkty nie będą publiczne
       warning: '{{ itemsCount }} wybranym produktom zostanie cofnięta publikacja.'
 pimee_enrich.entity.category:

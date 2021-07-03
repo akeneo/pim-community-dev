@@ -3,23 +3,64 @@ pim_title:
   akeneo_asset_manager_asset_family_edit: Bewerk een asset familie
   akeneo_asset_manager_asset_edit: Bewerk een asset
 pim_asset_manager:
+  editor:
+    embedded:
+      invalid_link:
+        title: Verdachte ingesloten link
+        message: We geven dit ingesloten item niet weer, maar het wordt correct opgeslagen
   result_counter: "{0} Geen resultaten|{1} {{ count }} resultaat|]1,Inf] {{ count }} resultaten\n\n"
   asset_counter: "{0} Geen resultaten|{1} {{ count }} resultaat|]1,Inf] {{ count }} resultaten\n\n"
   asset_collection:
+    add_asset: 'Asset toevoegen'
     upload_asset: 'Upload asset'
+    add_asset_title: 'Open de assetkiezer om assets aan de collectie toe te voegen'
+    no_asset_in_collection: 'Sorry, deze collectie bevat geen assets'
     helper:
       title: 'Welkom bij de gloednieuwe module voor productassetbeheer!'
       text: 'Er is geen asset collectie voor deze familie. Om deze functionaliteit te gebruiken hoef je alleen maar een asset collectie attribuut toe te voegen. '
+      link: 'Hoe voeg ik een assetcollectie toe?'
     no_asset:
       title: 'Sorry, er is geen asset voor dit product.'
+    notification:
+      product_rule: 'Deze collectie kan bijgewerkt worden met een productregel:'
+      limit: 'U hebt de limiet van {{ limit }} assets per collectie bereikt. U kunt geen assets meer toevoegen aan uw collectie.'
+    edit_asset: Asset bewerken
     remove_asset: Verwijder asset
+    remove_one_asset: Asset {{ assetName }} verwijderen uit de assetcollectie
+    remove_all_assets: Alle assets verwijderen
+    other_actions: Andere acties
+    open_other_actions: "Andere acties openen\n"
+    dismiss_other_actions: Andere acties negeren
+    move_asset_to_left: Asset {{ assetName }} naar links verplaatsen
+    move_asset_to_right: Asset {{ assetName }} naar rechts verplaatsen
+    legacy_helper:
+      moved_to_assets_tab: Ga naar de sectie productassets om de assetcollectie {{ label }} te zien.
+      is_missing_required: De assetcollectie {{ label }} is vereist. Verrijk hem in de sectie productassets.
   asset_picker:
+    title: Assets toevoegen aan uw product
+    sub_title: Kies de assets die u aan product {{ productLabel }} wilt toevoegen in de collectie {{ attributeLabel }}
     no_result:
+      title: Uw zoekopdracht heeft geen assets opgeleverd
       sub_title: Probeer opnieuw met nieuwe zoekcriteria
+    filter:
+      title: Assetfilters
+    basket:
+      title: '{{ assetCount }} asset geselecteerd|{{ assetCount }} assets geselecteerd'
+      empty_title: Uw winkelmand is leeg
+      remove_one_asset: Asset {{ assetName }} verwijderen uit de selectie assets
+      remove_all_assets: Alles verwijderen
   asset_preview:
+    previous: Vorige asset
+    next: Volgende asset
     empty_main_media: Deze asset heeft geen bestand.
     other_main_media: We kunnen geen voorbeeldweergave van deze asset genereren.
+    edit_asset: Asset bewerken
+    download: Downloaden
+    copy_url: URL kopiëren
     error: Er is een fout opgetreden bij het genereren van het voorbeeld.
+  close: Venster sluiten
+  breadcrumb:
+    products: Producten
   app:
     image:
       wide:
@@ -28,7 +69,11 @@ pim_asset_manager:
         upload: Klik en sleep een bestand om te uploaden of klik hier
       small:
         remove: Verwijderen
+        download: Downloaden
         upload: Slepen en neerzetten om te uploaden
+  grid:
+    counter: '{{ resultCount }} resultaten'
+    counter_empty: '{0} resultaat'
   asset_family:
     column:
       title: Asset navigatie
@@ -76,9 +121,11 @@ pim_asset_manager:
       execute_product_link_rules: Regels toepassen
     permission:
       title: Beheer rechten asset familie
+    title: Assets
     breadcrumb: Asset families
     img: De hoofdafbeelding van de asset familie genaamd "{{ label }}"
     tab:
+      assets: Assets
       attribute: Attributen
       properties: Eigenschappen
       permission: Machtigingen
@@ -195,6 +242,7 @@ pim_asset_manager:
       title: Er is geen resultaat voor uw zoekopdracht
       subtitle: Probeer opnieuw met nieuwe zoekcriteria.
     selector:
+      no_value: Klik hier om een asset te selecteren.
       error:
         value: Oeps, het lijkt erop dat het rendering van het "{{ fieldName }}" veld is mislukt. Zie de ontwikkelaarsconsole voor meer informatie.
     button:
@@ -211,6 +259,7 @@ pim_asset_manager:
       counter: '{{ totalCount }} resultaat|{{ totalCount }} resultaten'
       dropdown:
         attribute: Productattribuut
+      title: Producten
       no_attribute:
         title: Er is geen product attribuut gekoppeld aan de asset familie "{{ entityLabel }}"
         subtitle: 'Om te beginnen met het koppelen van producten aan deze asset familie kunt u een nieuwe maken: '
@@ -229,8 +278,10 @@ pim_asset_manager:
       title: Asset attributen
       code: Code
       label: Label
+      edit_subsection: Asset bewerken
       product_subsection: Gekoppelde producten
       main_media_preview: Voorbeeldweergave hoofdafbeelding
+    title: Assets
     create:
       header:
         title: Aanmaken
@@ -247,6 +298,7 @@ pim_asset_manager:
       lines: Bestanden
       retry: Opnieuw proberen
       remove: Verwijderen
+      remove_all: Alles verwijderen
       confirm: Aanmaken
       add_to_product: Aan product toevoegen
       drop_or_click_here: Sleep uw bestanden of klik hier
@@ -277,10 +329,25 @@ pim_asset_manager:
       confirm: Weet u zeker dat u alle "{{ entityIdentifier }}" assets wilt verwijderen? Als deze gekoppeld zijn aan producten, worden de koppelingen naar deze producten verwijderd.
     grid:
       search: Zoek op label, code en tekstattributen
+      filter:
+        completeness:
+          label: Voltooid
+          all: Alle
+          'yes': 'Ja'
+          'no': 'Nee'
+        option:
+          all: Alle
+          no_value: Selecteer een optie om te filteren
+          operator:
+            in: In lijst
+      more_result:
+        title: Dit is het niet!
+        description: U hebt door de eerste 500 van de {{ total }} assets gescrold. Probeer specifiekere zoekcriteria om meer te zien.
       column:
         code: Code
         image: Afbeelding
         label: Label
+        complete: Voltooid
         action: Acties
       completeness:
         title_no_required: Geen attribuut vereist
@@ -289,6 +356,7 @@ pim_asset_manager:
         title_complete: Alle {{ required }} attributen zijn voltooid
     tab:
       enrich: Verrijken
+      product: Producten
     notification:
       save:
         success: Asset is succesvol bijgewerkt.
@@ -303,6 +371,8 @@ pim_asset_manager:
       delete_all:
         success: Alle "{{ entityIdentifier }}" assets zijn succesvol verwijderd.
         fail: Er is een fout opgetreden tijdens het verwijderen van alle assets van deze asset familie
+    completeness:
+      label: Voltooid
   attribute:
     validation:
       limit_reached: 'U kunt het attribuut "{{ %attribute_label% }}" niet aanmaken omdat u de limiet van {{ %limit% }} attributen voor deze asset familie hebt bereikt'
@@ -319,6 +389,7 @@ pim_asset_manager:
       option_collection: Meerdere opties
       number: Nummer
       media_link: Medialink
+    is_required: vereist voor volledigheid
     is_read_only: Alleen lezen in de User Interface.
     media_type_preview: Voorvertoning van het mediatype
     no_data:
@@ -351,6 +422,7 @@ pim_asset_manager:
         code: Code (verplicht)
         label: Label
         type: Attribuuttype
+        asset_type: Gerelateerde assetfamilie (verplicht)
         value_per_locale: Waarde per taal
         value_per_channel: Waarde per kanaal
         is_required: Vereist voor compleetheid
@@ -429,6 +501,9 @@ pim_enrich:
           pim_catalog_asset_collection: Asset verzameling
         section:
           type_specific: Type specifieke parameters
+        asset_family:
+          identifier: Gerelateerde assetfamilie (verplicht)
+          default_label: Selecteer een assetfamilie
 permission:
   mass_action: '{{ rightLevel }} toepassen op alle groepen'
 #Analytics

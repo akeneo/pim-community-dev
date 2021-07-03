@@ -1,7 +1,7 @@
 pim_title:
-  akeneo_asset_manager_asset_family_index: 자산 관리자
-  akeneo_asset_manager_asset_family_edit: 자산 패밀리 편집
-  akeneo_asset_manager_asset_edit: 자산 편집
+  akeneo_asset_manager_asset_family_index: 애셋 관리자
+  akeneo_asset_manager_asset_family_edit: 애셋 패밀리 편집
+  akeneo_asset_manager_asset_edit: 애셋 편집
 pim_asset_manager:
   editor:
     embedded:
@@ -9,55 +9,55 @@ pim_asset_manager:
         title: 의심스러운 임베디드 링크
         message: 죄송하지만 이 임베드 항목을 표시할 수 없습니다. 하지만 제대로 저장됩니다.
   result_counter: '{0} 결과 없음|{1} {{ count }} 결과|]1,Inf] {{ count }} 결과'
-  asset_counter: '{0} 자산 없음|{1} {{ count }} 자산|]1,Inf] {{ count }} 자산'
+  asset_counter: '{0} 애셋 없음|{1} {{ count }} 애셋|]1,Inf] {{ count }} 애셋'
   asset_collection:
-    add_asset: '자산 추가'
-    upload_asset: '자산 업로드'
-    add_asset_title: '자산 선택기를 열어 컬렉션에 자산 추가'
-    no_asset_in_collection: '죄송합니다. 이 컬렉션에 자산이 없습니다.'
+    add_asset: '애셋 추가'
+    upload_asset: '애셋 업로드'
+    add_asset_title: '애셋 선택기를 열어 컬렉션에 애셋 추가'
+    no_asset_in_collection: '죄송합니다. 이 컬렉션에 애셋이 없습니다.'
     helper:
-      title: '새로운 제품 자산 관리 공간입니다!'
-      text: '이 패밀리에 대한 자산 컬렉션이 없습니다. 새로운 이 환경에 참여하려면 설정에서 자산 컬렉션 특성을 추가하면 됩니다. '
-      link: '자산 컬렉션을 추가하는 방법은?'
+      title: '새로운 제품 애셋 관리 공간입니다!'
+      text: '이 패밀리에 대한 애셋 컬렉션이 없습니다. 새로운 이 환경에 참여하려면 설정에서 애셋 컬렉션 특성을 추가하면 됩니다. '
+      link: '애셋 컬렉션을 추가하는 방법은?'
     no_asset:
-      title: '죄송합니다. 이 제품에 대한 자산이 없습니다.'
+      title: '죄송합니다. 이 제품에 대한 애셋이 없습니다.'
     notification:
-      product_rule: '이 컬렉션은 다음 제품 규칙에 의해 업데이트될 수 있습니다:'
-      limit: '컬렉션별 {{ limit }} 자산 제한에 도달했습니다. 더 이상 컬렉션에 자산을 추가할 수 없습니다.'
-    edit_asset: 자산 편집
-    remove_asset: 자산 제거
-    remove_one_asset: 자산 컬렉션에서 자산 {{ assetName }} 제거
-    remove_all_assets: 모든 자산 제거
+      product_rule: '이 컬렉션은 다음 제품 규칙에 의해 업데이트될 수 있습니다.:'
+      limit: '컬렉션별 {{ limit }} 애셋 제한에 도달했습니다. 더 이상 컬렉션에 애셋을 추가할 수 없습니다.'
+    edit_asset: 애셋 편집
+    remove_asset: 애셋 제거
+    remove_one_asset: 애셋 컬렉션에서 애셋 {{ assetName }} 제거
+    remove_all_assets: 모든 애셋 제거
     other_actions: 기타 작업
     open_other_actions: 기타 작업 열기
     dismiss_other_actions: 기타 작업 취소
-    move_asset_to_left: 왼쪽으로 자산 {{ assetName }} 이동
-    move_asset_to_right: 오른쪽으로 자산 {{ assetName }} 이동
+    move_asset_to_left: 왼쪽으로 애셋 {{ assetName }} 이동
+    move_asset_to_right: 오른쪽으로 애셋 {{ assetName }} 이동
     legacy_helper:
-      moved_to_assets_tab: 자산 컬렉션 {{ label }}을(를) 보려면 제품의 자산 섹션으로 이동하십시오.
-      is_missing_required: 자산 컬렉션 {{ label }}은(는) 필수입니다. 제품의 자산 섹션에서 이를 보강하십시오.
+      moved_to_assets_tab: 애셋 컬렉션 {{ label }}을(를) 보려면 제품의 애셋 섹션으로 이동하십시오.
+      is_missing_required: 애셋 컬렉션 {{ label }}은(는) 필수입니다. 제품의 애셋 섹션에서 이를 보강하십시오.
   asset_picker:
-    title: 제품에 자산 추가
-    sub_title: '{{ attributeLabel }} 컬렉션에서 {{ productLabel }} 제품에 연결할 자산 선택'
+    title: 제품에 애셋 추가
+    sub_title: '{{ attributeLabel }} 컬렉션에서 {{ productLabel }} 제품에 연결할 애셋 선택'
     no_result:
-      title: 죄송합니다. 검색할 자산이 없습니다.
-      sub_title: 새 검색 조건으로 다시 시도하십시오
+      title: 죄송합니다. 검색할 애셋이 없습니다.
+      sub_title: 새 검색 조건으로 다시 시도하십시오.
     filter:
-      title: 자산 필터
+      title: 애셋 필터
     basket:
-      title: '{{ assetCount }}개 자산 선택됨|{{ assetCount }}개 자산 선택됨'
-      empty_title: 장바구니가 비어 있습니다
-      remove_one_asset: 자산 선택에서 자산 {{ assetName }} 제거
+      title: '{{ assetCount }}개 애셋 선택됨|{{ assetCount }}개 애셋 선택됨'
+      empty_title: 장바구니가 비어 있습니다.
+      remove_one_asset: 애셋 선택에서 애셋 {{ assetName }} 제거
       remove_all_assets: 모두 제거
   asset_preview:
-    previous: 이전 자산
-    next: 다음 자산
-    empty_main_media: 이 자산에 미디어가 없습니다.
-    other_main_media: 이 자산의 미리 보기를 생성할 수 없습니다.
-    edit_asset: 자산 편집
+    previous: 이전 애셋
+    next: 다음 애셋
+    empty_main_media: 이 애셋에 미디어가 없습니다.
+    other_main_media: 이 애셋의 미리 보기를 생성할 수 없습니다.
+    edit_asset: 애셋 편집
     download: 다운로드
     copy_url: URL 복사
-    error: 미리 보기를 렌더링하는 중에 오류가 발생했습니다
+    error: 미리 보기를 렌더링하는 중에 오류가 발생했습니다.
   close: 모달 닫기
   breadcrumb:
     products: 제품
@@ -76,56 +76,56 @@ pim_asset_manager:
     counter_empty: '결과 0개'
   asset_family:
     column:
-      title: 자산 탐색
+      title: 애셋 탐색
       selector:
-        title: 자산 패밀리
-        no_data: 사용 가능한 자산 패밀리 없음
+        title: 애셋 패밀리
+        no_data: 사용 가능한 애셋 패밀리 없음
     validation:
       code:
         pattern: '이 필드는 문자, 숫자 및 밑줄만 포함할 수 있습니다.'
-        should_be_unique: '코드가 "{{ %asset_family_identifier% }}"인 자산 패밀리가 이미 존재합니다'
-        limit_reached: '{{ %limit% }} 자산 패밀리 제한에 도달했으므로 자산 패밀리 "{{ %asset_family_label% }}"을(를) 만들 수 없습니다'
+        should_be_unique: '코드가 ''{{ %asset_family_identifier% }}''인 애셋 패밀리가 이미 존재합니다.'
+        limit_reached: '{{ %limit% }} 애셋 패밀리 제한에 도달했으므로 애셋 패밀리 ''{{ %asset_family_label% }}''을(를) 만들 수 없습니다.'
       transformation:
-        limit_reached: '{{ %limit% }} 변환 제한에 도달했습니다'
-        same_operation_twice: '"{{ %operation_type% }}" 작업을 단일 변환에서 두 번 정의할 수 없습니다.'
-        source_can_not_be_a_target: '특성 소스 "{{ %attribute_code% }}"은(는) 변환의 특성 대상일 수 없습니다.'
-        attribute_reference_should_exist: '"{{ %attribute_code% }}" 특성이 이 자산 패밀리에 존재하지 않습니다'
-        filename_is_not_unique: '파일 이름의 접두사 "{{ %filename_prefix% }}" 및 접미사 "{{ %filename_suffix% }}"가 포함된 변환이 특성 소스 "{{ %attribute_code% }}"에서 이미 존재합니다'
-        code_is_not_unique: '동일한 코드 "{{ %transformation_code% }}"(으)로 두 개의 변환을 정의할 수 없습니다'
+        limit_reached: '{{ %limit% }} 변환 제한에 도달했습니다.'
+        same_operation_twice: '''{{ %operation_type% }}'' 작업을 단일 변환에서 두 번 정의할 수 없습니다.'
+        source_can_not_be_a_target: '특성 소스 ''{{ %attribute_code% }}''은(는) 변환의 특성 대상일 수 없습니다.'
+        attribute_reference_should_exist: '''{{ %attribute_code% }}'' 특성이 이 애셋 패밀리에 존재하지 않습니다.'
+        filename_is_not_unique: '파일 이름의 접두사 ''{{ %filename_prefix% }}'' 및 접미사 ''{{ %filename_suffix% }}''가 포함된 변환이 특성 소스 ''{{ %attribute_code% }}''에서 이미 존재합니다.'
+        code_is_not_unique: '동일한 코드 ''{{ %transformation_code% }}''(으)로 두 개의 변환을 정의할 수 없습니다.'
         unknown_extra_field: '{{ {{ field }} }} 속성이 필요하지 않습니다.'
       naming_convention:
-        property_should_exist: '"{{ %property% }}" 속성이 이 자산 패밀리에 존재하지 않습니다.'
-        not_main_media_attribute_code: '속성은 기본 미디어로 정의된 특성 코드와 일치해야 합니다'
+        property_should_exist: '''{{ %property% }}'' 속성이 이 애셋 패밀리에 존재하지 않습니다.'
+        not_main_media_attribute_code: '속성은 기본 미디어로 정의된 특성 코드와 일치해야 합니다.'
       rule_template:
-        limit_reached: '"{{ %asset_family_identifier% }}" 자산 패밀리에 대한 {{ %limit% }} 제품 링크 규칙 제한에 도달했습니다.'
-        product_selection_cannot_be_empty: '제품 링크 규칙에서 하나 이상의 제품 선택을 지정해야 합니다'
-        product_assignment_cannot_be_empty: '제품 링크 규칙에서 하나 이상의 제품 할당을 지정해야 합니다'
-        extrapolated_attribute_should_exist: '"{{ %attribute_code% }}" 특성이 이 자산 패밀리에 존재하지 않습니다.'
-        extrapolated_attribute_type_should_be_supported: '"{{ %attribute_type% }}" 유형의 "{{ %attribute_code% }}" 특성은 지원되지 않습니다. 다음 특성 유형만 이 필드에서 지원됩니다: {{ %supported_attribute_type% }}'
-        channel_should_exist: '"{{ %channel_code% }}" 채널이 존재하지 않습니다'
-        locale_should_exist: '"{{ %locale_code% }}" 로케일이 활성화되지 않았거나 존재하지 않습니다'
-        extrapolated_attribute_type_should_not_have_one_value_per_channel: '"{{ %attribute_code% }}" 특성은 채널당 하나의 값을 가지고 있으므로 외삽에 사용할 수 없습니다.'
-        extrapolated_attribute_type_should_not_have_one_value_per_locale: '"{{ %attribute_code% }}" 특성은 로케일당 하나의 값을 가지고 있으므로 외삽에 사용할 수 없습니다.'
-        assignment_mode_not_supported: '잘못된 할당 모드 "{{ %assignment_mode% }}"이(가) 제품 링크 규칙에서 발견되었습니다. "바꾸기" 또는 "추가"를 수행해야 합니다.'
-        channel_not_supported_for_field: '필드 "{{ %product_field% }}"에 대한 채널을 지정할 수 없습니다'
-        locale_not_supported_for_field: '필드 "{{ %product_field% }}"에 대한 로케일을 지정할 수 없습니다'
-        assignmement_attribute_does_not_support_this_asset_family: '제품 특성 "{{ %product_attribute_code% }}"에는 자산 패밀리 "{{ %asset_family_identifier% }}"의 자산이 포함될 수 없습니다'
-        assignmement_attribute_does_not_exist: '제품 특성 "{{ %product_attribute_code% }}"이(가) 없습니다'
-        assignmement_attribute_is_not_an_asset_collection: '제품 특성 "{{ %product_attribute_code% }}"이(가) 유형 자산 컬렉션의 특성이 아닙니다'
+        limit_reached: '''{{ %asset_family_identifier% }}'' 애셋 패밀리에 대한 {{ %limit% }} 제품 링크 규칙 제한에 도달했습니다.'
+        product_selection_cannot_be_empty: '제품 링크 규칙에서 하나 이상의 제품 선택을 지정해야 합니다.'
+        product_assignment_cannot_be_empty: '제품 링크 규칙에서 하나 이상의 제품 할당을 지정해야 합니다.'
+        extrapolated_attribute_should_exist: '''{{ %attribute_code% }}'' 특성이 이 애셋 패밀리에 존재하지 않습니다.'
+        extrapolated_attribute_type_should_be_supported: '''{{ %attribute_type% }}'' 유형의 ''{{ %attribute_code% }}'' 특성은 지원되지 않습니다. 다음 특성 유형만 이 필드에서 지원됩니다.: {{ %supported_attribute_type% }}'
+        channel_should_exist: '''{{ %channel_code% }}'' 채널이 존재하지 않습니다.'
+        locale_should_exist: '''{{ %locale_code% }}'' 로케일이 활성화되지 않았거나 존재하지 않습니다.'
+        extrapolated_attribute_type_should_not_have_one_value_per_channel: '''{{ %attribute_code% }}'' 특성은 채널당 하나의 값을 가지고 있으므로 외삽에 사용할 수 없습니다.'
+        extrapolated_attribute_type_should_not_have_one_value_per_locale: '''{{ %attribute_code% }}'' 특성은 로케일당 하나의 값을 가지고 있으므로 외삽에 사용할 수 없습니다.'
+        assignment_mode_not_supported: '잘못된 할당 모드 ''{{ %assignment_mode% }}''이(가) 제품 링크 규칙에서 발견되었습니다. ''바꾸기'' 또는 ''추가''를 수행해야 합니다.'
+        channel_not_supported_for_field: '필드 ''{{ %product_field% }}''에 대한 채널을 지정할 수 없습니다.'
+        locale_not_supported_for_field: '필드 ''{{ %product_field% }}''에 대한 로케일을 지정할 수 없습니다.'
+        assignmement_attribute_does_not_support_this_asset_family: '제품 특성 ''{{ %product_attribute_code% }}''에는 애셋 패밀리 ''{{ %asset_family_identifier% }}''의 애셋이 포함될 수 없습니다.'
+        assignmement_attribute_does_not_exist: '제품 특성 ''{{ %product_attribute_code% }}''이(가) 없습니다.'
+        assignmement_attribute_is_not_an_asset_collection: '제품 특성 ''{{ %product_attribute_code% }}''이(가) 유형 애셋 컬렉션의 특성이 아닙니다.'
     button:
       save: 저장
       save_permission: 저장
-      create: 자산 패밀리 만들기
+      create: 애셋 패밀리 만들기
       edit: 패밀리 편집
       view: 패밀리 보기
       execute_product_link_rules: 규칙 실행
     permission:
-      title: 자산 패밀리 권한
-    title: 자산
-    breadcrumb: 자산 패밀리
-    img: '"{{ label }}"(이)라는 자산 패밀리의 기본 미디어'
+      title: 애셋 패밀리 권한
+    title: 애셋
+    breadcrumb: 애셋 패밀리
+    img: '''{{ label }}''(이)라는 애셋 패밀리의 기본 미디어'
     tab:
-      assets: 자산
+      assets: 애셋
       attribute: 특성
       properties: 속성
       permission: 권한
@@ -133,124 +133,124 @@ pim_asset_manager:
       product_link_rules: 제품 링크 규칙
     transformations:
       help:
-        title: '새로운 자산 관리 영역입니다!'
-        description: '여기서 자산 패밀리로 최대 10개의 변환을 정의할 수 있습니다.'
-        link: '새 자산 관리자 변환에 대해 자세히 알아보려면, 여기를 클릭하십시오'
+        title: '새로운 애셋 관리 영역입니다!'
+        description: '여기서 애셋 패밀리로 최대 10개의 변환을 정의할 수 있습니다.'
+        link: '새 애셋 관리자 변환에 대해 자세히 알아보려면, 여기를 클릭하십시오.'
       subsection: '변환 속성'
     product_link_rules:
       naming_convention_subsection: '명명 규칙 속성'
       product_link_rules_subsection: '제품 링크 규칙 속성'
       help:
-        title: '새로운 자산 관리 영역입니다!'
-        description: '여기서 자산 패밀리로 최대 2개의 제품 링크 규칙을 정의할 수 있습니다.'
-        link: '제품 링크 규칙 기능에 대해 자세히 알아보려면, 여기를 클릭하십시오'
+        title: '새로운 애셋 관리 영역입니다!'
+        description: '여기서 애셋 패밀리로 최대 2개의 제품 링크 규칙을 정의할 수 있습니다.'
+        link: '제품 링크 규칙 기능에 대해 자세히 알아보려면, 여기를 클릭하십시오.'
       execute_rules:
         confirm_title: 실행 확인
         confirm_content: 모든 규칙을 실행하시겠습니까? (시간이 오래 걸릴 수 있음)
         execute_rules: 규칙 실행
         cancel: 취소
     properties:
-      title: 자산 패밀리 속성
+      title: 애셋 패밀리 속성
       identifier: 코드
       label: 레이블
       media_file: 미디어 파일
       attribute_as_main_media: 기본 미디어로서의 특성
     attribute:
-      title: 자산 특성
+      title: 애셋 특성
       attribute:
         error:
-          render_list: '"{{ %attribute_code% }}" 특성을 렌더링하는 중에 오류가 발생했습니다'
-          render_edit: '"{{ %attribute_code% }}" 특성 추가 속성 필드를 렌더링하는 중에 오류가 발생했습니다'
+          render_list: '''{{ %attribute_code% }}'' 특성을 렌더링하는 중에 오류가 발생했습니다.'
+          render_edit: '''{{ %attribute_code% }}'' 특성 추가 속성 필드를 렌더링하는 중에 오류가 발생했습니다.'
     module:
       delete:
-        button: 자산 패밀리 삭제
-        confirm: 이 자산 패밀리를 삭제하시겠습니까?
+        button: 애셋 패밀리 삭제
+        confirm: 이 애셋 패밀리를 삭제하시겠습니까?
     index:
       grid:
-        count: '{0} 자산 패밀리 없음|{1} {{ count }} 자산 패밀리|]1,Inf] {{ count }} 자산 패밀리'
+        count: '{0} 애셋 패밀리 없음|{1} {{ count }} 애셋 패밀리|]1,Inf] {{ count }} 애셋 패밀리'
         help:
-          title: '자산 패밀리입니다!'
-          description_part_one: '제품과 관련된 정보를 보강하십시오(예: 브랜드, 제조업체, 색상, 소재, 성분...)'
+          title: '애셋 패밀리입니다!'
+          description_part_one: '제품과 관련된 정보를 보강하십시오.(예: 브랜드, 제조업체, 색상, 소재, 성분...)'
           description_part_two: 그러면 고객에게 보다 우수한 제품 경험을 제공할 수 있습니다.
-          description_part_three: '"만들기" 버튼을 클릭하여 1번째 자산 패밀리를 만들고, 해당 특성과 자산을 설정하십시오.'
-          description_part_four: 그런 다음 제품에 링크하고, 이 자산 패밀리 관련 제품 특성 유형을 만드십시오.
+          description_part_three: '''만들기'' 버튼을 클릭하여 1번째 애셋 패밀리를 만들고, 해당 특성과 애셋을 설정하십시오.'
+          description_part_four: 그런 다음 제품에 링크하고, 이 애셋 패밀리 관련 제품 특성 유형을 만드십시오.
           description_part_five: 자세한 내용 확인을 위해 이 문서를 탐색할 수 있도록 초대합니다.
     create:
       header:
         title: 만들기
-      subtitle: 자산 패밀리
-      title: 새 자산 패밀리 만들기
+      subtitle: 애셋 패밀리
+      title: 새 애셋 패밀리 만들기
       input:
         label: 레이블
         code: 코드(필수)
       confirm: 저장
     delete:
-      message: 자산 패밀리 "{{ assetFamilyLabel }}"을(를) 삭제하시겠습니까?
+      message: 애셋 패밀리 '{{ assetFamilyLabel }}'을(를) 삭제하시겠습니까?
       title: 특성
     edit:
-      discard_changes: 페이지를 나가면 자산 패밀리 "{{ assetFamilyLabel }}"에 대한 변경 사항이 손실됩니다.
+      discard_changes: 페이지를 나가면 애셋 패밀리 '{{ assetFamilyLabel }}'에 대한 변경 사항이 손실됩니다.
     notification:
       save:
-        success: 자산 패밀리가 업데이트되었습니다.
-        fail: 자산 패밀리를 저장하는 중에 오류가 발생했습니다
+        success: 애셋 패밀리가 업데이트되었습니다.
+        fail: 애셋 패밀리를 저장하는 중에 오류가 발생했습니다.
       create:
-        success: 자산 패밀리가 생성되었습니다.
-        fail: 자산 패밀리를 생성하는 중에 오류가 발생했습니다
+        success: 애셋 패밀리가 생성되었습니다.
+        fail: 애셋 패밀리를 생성하는 중에 오류가 발생했습니다.
       delete:
-        success: 자산 패밀리가 삭제되었습니다.
-        fail: 자산 패밀리를 삭제하는 중에 오류가 발생했습니다
+        success: 애셋 패밀리가 삭제되었습니다.
+        fail: 애셋 패밀리를 삭제하는 중에 오류가 발생했습니다.
       compute_transformations:
-        success: 변환이 실행되었습니다. 이 작업이 완료되면 해당 자산에서 업데이트된 새 변형이 표시됩니다.
-        fail: 변환을 계산하는 중에 오류가 발생했습니다
+        success: 변환이 실행되었습니다. 이 작업이 완료되면 해당 애셋에서 업데이트된 새 변형이 표시됩니다.
+        fail: 변환을 계산하는 중에 오류가 발생했습니다.
       execute_product_link_rules:
-        success: 제품 링크 규칙이 실행되었습니다
-        fail: 제품 링크 규칙을 실행하려는 동안 오류가 발생했습니다
+        success: 제품 링크 규칙이 실행되었습니다.
+        fail: 제품 링크 규칙을 실행하려는 동안 오류가 발생했습니다.
     helper:
-      title: 자산 관리자입니다!
+      title: 애셋 관리자입니다!
       no_asset:
-        text: '{{ family }} 패밀리에 자산이 없습니다. "만들기"를 클릭하고 빈 자산 또는 대량 업로드 자산을 만들지 선택하십시오.'
+        text: '{{ family }} 패밀리에 애셋이 없습니다. ''만들기''를 클릭하고 빈 애셋 또는 대량 업로드 애셋을 만들지 선택하십시오.'
       no_asset_family:
-        text: 자산 패밀리별로 필터링되는 자산(이미지, 동영상, 문서...)을 모으는 라이브러리입니다. 1번째 자산 패밀리를 만들고, 해당 특성을 설정하고, 자산을 업로드하십시오!
+        text: 애셋 패밀리별로 필터링되는 애셋(이미지, 동영상, 문서...)을 모으는 라이브러리입니다. 1번째 애셋 패밀리를 만들고, 해당 특성을 설정하고, 애셋을 업로드하십시오!
         link: 자세한 내용 확인을 위해 이 문서를 탐색할 수 있도록 초대합니다.
     no_data:
       no_asset:
-        title: 죄송합니다. 자산이 없습니다!
-        link: 여기를 클릭하여 자산을 추가하십시오
+        title: 죄송합니다. 애셋이 없습니다!
+        link: 여기를 클릭하여 애셋을 추가하십시오.
       no_asset_family:
-        title: 죄송합니다. 자산 패밀리가 없습니다!
-        link: 여기를 클릭하여 자산 패밀리를 추가하십시오
+        title: 죄송합니다. 애셋 패밀리가 없습니다!
+        link: 여기를 클릭하여 애셋 패밀리를 추가하십시오.
   permission:
     notification:
       save:
-        success: 자산 패밀리 권한이 업데이트되었습니다.
-        fail: 하나 이상의 사용자 그룹에 이 자산 패밀리에 대한 편집 권한이 있어야 합니다.
+        success: 애셋 패밀리 권한이 업데이트되었습니다.
+        fail: 하나 이상의 사용자 그룹에 이 애셋 패밀리에 대한 편집 권한이 있어야 합니다.
     no_data:
-      title: 사용자 그룹이 없습니다
-      subtitle: 자산 패밀리에 대한 권한을 관리하려면 하나 이상의 사용자 그룹이 있어야 합니다.
-      link: 여기를 클릭하여 첫 번째 사용자 그룹을 추가하십시오
+      title: 사용자 그룹이 없습니다.
+      subtitle: 애셋 패밀리에 대한 권한을 관리하려면 하나 이상의 사용자 그룹이 있어야 합니다.
+      link: 여기를 클릭하여 첫 번째 사용자 그룹을 추가하십시오.
   asset:
-    img: '"{{ label }}"(이)라는 자산의 기본 미디어'
+    img: '''{{ label }}''(이)라는 애셋의 기본 미디어'
     validation:
-      limit_reached: '이 자산 패밀리의 {{ %limit% }} 자산 제한에 도달했으므로 "{{ %asset_label% }}" 자산을 만들 수 없습니다'
+      limit_reached: '이 애셋 패밀리의 {{ %limit% }} 애셋 제한에 도달했으므로 ''{{ %asset_label% }}'' 애셋을 만들 수 없습니다.'
       code:
         pattern: '이 필드는 문자, 숫자 및 밑줄만 포함할 수 있습니다.'
-        should_be_unique: '이 코드는 다른 자산에서 이미 존재합니다.'
+        should_be_unique: '이 코드는 다른 애셋에서 이미 존재합니다.'
     no_data:
-      title: '{{ entityLabel }}에 대한 자산이 없습니다'
-      subtitle: '"새로 추가" 버튼을 클릭하여 첫 번째 자산을 만드십시오'
+      title: '{{ entityLabel }}에 대한 애셋이 없습니다.'
+      subtitle: '''새로 추가'' 버튼을 클릭하여 첫 번째 애셋을 만드십시오.'
     no_result:
-      title: 검색 결과가 없습니다
+      title: 검색 결과가 없습니다.
       subtitle: 새 검색 조건으로 다시 시도하십시오.
     selector:
-      no_value: 여기를 클릭하여 자산을 선택하십시오.
+      no_value: 여기를 클릭하여 애셋을 선택하십시오.
       error:
-        value: 죄송합니다. "{{ fieldName }}" 필드 렌더링이 실패한 것 같습니다. 자세한 내용은 개발자 콘솔을 참조하십시오.
+        value: 죄송합니다. '{{ fieldName }}' 필드 렌더링이 실패한 것 같습니다. 자세한 내용은 개발자 콘솔을 참조하십시오.
     button:
       save: 저장
-      create: 자산 만들기
+      create: 애셋 만들기
       mass_upload: 대량 업로드
       delete: 삭제
-      delete_all: 모든 자산 삭제
+      delete_all: 모든 애셋 삭제
       back: 목록으로 돌아가기
       launch_transformations: 변환 실행
       fullscreen: 전체 화면
@@ -261,40 +261,40 @@ pim_asset_manager:
         attribute: 제품 특성
       title: 제품
       no_attribute:
-        title: 자산 패밀리 "{{ entityLabel }}"에 링크된 제품 특성이 없습니다
-        subtitle: '이 자산 패밀리에 대한 제품 링크 연결을 시작하기 위해 새로 만들 수 있습니다: '
+        title: 애셋 패밀리 '{{ entityLabel }}'에 링크된 제품 특성이 없습니다.
+        subtitle: '이 애셋 패밀리에 대한 제품 링크 연결을 시작하기 위해 새로 만들 수 있습니다.: '
         link: 새 제품 특성 만들기
       not_enough_items:
         title: '{{ productCount }}/{{ totalCount }}개 제품만 볼 수 있습니다.'
         subtitle:
           usable_in_grid: 링크된 모든 제품을 검색하려면, 아래를 클릭하면 됩니다!
-          not_usable_in_grid: 링크된 모든 제품을 검색하려면, 제품 특성이 "그리드에서 사용 가능"으로 설정되어야 합니다.
+          not_usable_in_grid: 링크된 모든 제품을 검색하려면, 제품 특성이 '그리드에서 사용 가능'으로 설정되어야 합니다.
         button: 모든 제품 보기
       no_product:
-        title: 이 자산은 "{{ entityLabel }}" 제품 특성을 통해 어떠한 제품에도 링크되지 않았습니다
-        subtitle: '여기에 표시하려면 이 특성에 대한 제품 링크 연결을 시작하십시오 '
-    no_linked_products: 이 자산은 제품에 링크되지 않았습니다
+        title: 이 애셋은 '{{ entityLabel }}' 제품 특성을 통해 어떠한 제품에도 링크되지 않았습니다.
+        subtitle: '여기에 표시하려면 이 특성에 대한 제품 링크 연결을 시작하십시오. '
+    no_linked_products: 이 애셋은 제품에 링크되지 않았습니다.
     enrich:
-      title: 자산 특성
+      title: 애셋 특성
       code: 코드
       label: 레이블
-      edit_subsection: 자산 편집
+      edit_subsection: 애셋 편집
       product_subsection: 링크된 제품
       main_media_preview: 기본 미디어 미리 보기
-    title: 자산
+    title: 애셋
     create:
       header:
         title: 만들기
-      subtitle: 자산 패밀리
-      title: '{{ entityLabel }}에서 새 자산 추가'
+      subtitle: 애셋 패밀리
+      title: '{{ entityLabel }}에서 새 애셋 추가'
       input:
         label: 레이블
         code: 코드(필수)
-        create_another: 다른 자산 만들기
+        create_another: 다른 애셋 만들기
       confirm: 저장
     upload:
       line_count: '[0,1]{{ count }} 파일|]1,Inf] {{ count }} 파일'
-      title: 자산 업로드
+      title: 애셋 업로드
       lines: 파일
       retry: 다시 시도
       remove: 제거
@@ -302,14 +302,14 @@ pim_asset_manager:
       confirm: 만들기
       add_to_product: 제품에 추가
       drop_or_click_here: 파일을 끌어다 놓거나 여기를 클릭
-      will_appear_here: 자산을 업로드하면 여기에 자산이 나타납니다!
+      will_appear_here: 애셋을 업로드하면 여기에 애셋이 나타납니다!
       files_limit: 너무 많은 파일을 업로드하려고 합니다. 처음 {{ limit }}개만 업로드됩니다.
-      discard_changes: 자산을 생성하지 않고 이 모달을 닫으면 자산이 손실됩니다.
-      disabled_for_media_link: 기본 미디어로 사용된 특성은 미디어 링크 특성이므로 이 패밀리의 자산을 업로드할 수 없습니다
+      discard_changes: 애셋을 생성하지 않고 이 모달을 닫으면 애셋이 손실됩니다.
+      disabled_for_media_link: 기본 미디어로 사용된 특성은 미디어 링크 특성이므로 이 패밀리의 애셋을 업로드할 수 없습니다.
       upload_failure: 파일을 업로드하는 동안 오류가 발생했습니다.
       cannot_retry: 파일을 업로드하는 동안 오류가 발생했습니다.
       list:
-        asset: 자산
+        asset: 애셋
         filename: 파일 이름
         code: 코드(필수)
         locale: 로케일(필수)
@@ -323,10 +323,10 @@ pim_asset_manager:
         invalid: 오류
         created: 생성됨
     delete:
-      message: '"{{ assetLabel }}" 자산을 삭제하시겠습니까? 이 자산이 제품에 링크된 경우 해당 링크가 제거됩니다.'
-      title: 자산
+      message: '''{{ assetLabel }}'' 애셋을 삭제하시겠습니까? 이 애셋이 제품에 링크된 경우 해당 링크가 제거됩니다.'
+      title: 애셋
     delete_all:
-      confirm: 모든 "{{ entityIdentifier }}" 자산을 삭제하시겠습니까? 이 자산이 제품에 링크된 경우 해당 제품에 대한 링크가 제거됩니다.
+      confirm: 모든 '{{ entityIdentifier }}' 애셋을 삭제하시겠습니까? 이 애셋이 제품에 링크된 경우 해당 제품에 대한 링크가 제거됩니다.
     grid:
       search: 레이블, 코드 및 텍스트 특성 검색
       filter:
@@ -342,7 +342,7 @@ pim_asset_manager:
             in: 목록에 있음
       more_result:
         title: 끝이 아닙니다!
-        description: '{{ total }}개 자산 중에서 처음 {{ maxDisplayedAssets }}개 레코드까지만 스크롤했습니다. 더 보려면 더 구체적인 검색 조건을 사용해보십시오.'
+        description: '{{ total }}개 애셋 중에서 처음 {{ maxDisplayedAssets }}개 레코드까지만 스크롤했습니다. 더 보려면 더 구체적인 검색 조건을 사용해보십시오.'
       column:
         code: 코드
         image: 이미지
@@ -359,23 +359,23 @@ pim_asset_manager:
       product: 제품
     notification:
       save:
-        success: 자산이 업데이트되었습니다.
-        fail: 자산을 저장하는 중에 오류가 발생했습니다
-        validation_error: 자산을 업데이트할 수 없습니다.
+        success: 애셋이 업데이트되었습니다.
+        fail: 애셋을 저장하는 중에 오류가 발생했습니다.
+        validation_error: 애셋을 업데이트할 수 없습니다.
       create:
-        success: 자산이 생성되었습니다.
-        fail: 자산을 생성하는 중에 오류가 발생했습니다
+        success: 애셋이 생성되었습니다.
+        fail: 애셋을 생성하는 중에 오류가 발생했습니다.
       delete:
-        success: '"{{ code }}" 자산이 삭제되었습니다.'
-        fail: 자산을 삭제하는 중에 오류가 발생했습니다
+        success: '''{{ code }}'' 애셋이 삭제되었습니다.'
+        fail: 애셋을 삭제하는 중에 오류가 발생했습니다.
       delete_all:
-        success: 모든 "{{ entityIdentifier }}" 자산이 삭제되었습니다.
-        fail: 이 자산 패밀리의 자산을 모두 삭제하는 중에 오류가 발생했습니다
+        success: 모든 '{{ entityIdentifier }}' 애셋이 삭제되었습니다.
+        fail: 이 애셋 패밀리의 애셋을 모두 삭제하는 중에 오류가 발생했습니다.
     completeness:
       label: 완료
   attribute:
     validation:
-      limit_reached: '이 자산 패밀리의 {{ %limit% }} 특성 제한에 도달했으므로 "{{ %attribute_label% }}" 특성을 만들 수 없습니다'
+      limit_reached: '이 애셋 패밀리의 {{ %limit% }} 특성 제한에 도달했으므로 ''{{ %attribute_label% }}'' 특성을 만들 수 없습니다.'
     default:
       code: 코드
       label: 레이블
@@ -383,8 +383,8 @@ pim_asset_manager:
     type:
       text: 텍스트
       media_file: 미디어 파일
-      asset: 자산 단일 링크
-      asset_collection: 자산 컬렉션
+      asset: 애셋 단일 링크
+      asset_collection: 애셋 컬렉션
       option: 단일 옵션
       option_collection: 다중 옵션
       number: 숫자
@@ -393,25 +393,25 @@ pim_asset_manager:
     is_read_only: UI에서 읽기 전용
     media_type_preview: 미디어 유형의 미리 보기
     no_data:
-      title: '{{ entityLabel }}에 대한 사용자 지정 특성이 없습니다'
-      subtitle: '"특성 추가" 버튼을 클릭하여 첫 번째 사용자 지정 특성을 구성하십시오'
+      title: '{{ entityLabel }}에 대한 사용자 지정 특성이 없습니다.'
+      subtitle: '''특성 추가'' 버튼을 클릭하여 첫 번째 사용자 지정 특성을 구성하십시오.'
     button:
       add: 특성 추가
     create:
       header:
         title: 만들기
-      subtitle: 자산 패밀리
-      title: 새 자산 특성 추가
-      description: 레이블을 제외한 다음 매개변수는 특성 생성 후 업데이트할 수 없습니다
+      subtitle: 애셋 패밀리
+      title: 새 애셋 특성 추가
+      description: 레이블을 제외한 다음 매개변수는 특성 생성 후 업데이트할 수 없습니다.
       input:
         code: 코드(필수)
         label: 레이블
         type: 특성 유형
-        asset_type: 링크 연결한 자산 패밀리(필수)
+        asset_type: 링크 연결한 애셋 패밀리(필수)
         value_per_locale: 로케일별 값
         value_per_channel: 채널별 값
       placeholder:
-        asset_type: 링크된 자산 패밀리 선택
+        asset_type: 링크된 애셋 패밀리 선택
       confirm: 저장
     edit:
       delete: 특성 삭제
@@ -422,7 +422,7 @@ pim_asset_manager:
         code: 코드(필수)
         label: 레이블
         type: 특성 유형
-        asset_type: 관련 자산 패밀리(필수)
+        asset_type: 관련 애셋 패밀리(필수)
         value_per_locale: 로케일별 값
         value_per_channel: 채널별 값
         is_required: 완성도를 위해 필요
@@ -455,36 +455,36 @@ pim_asset_manager:
         suffix: 접미사
         media_type: 미디어 유형
     delete:
-      message: '"{{ attributeLabel }}" 특성을 삭제하시겠습니까?'
+      message: '''{{ attributeLabel }}'' 특성을 삭제하시겠습니까?'
       title: 특성
     notification:
       list:
-        fail: 특성 목록을 업데이트하는 중에 오류가 발생했습니다
+        fail: 특성 목록을 업데이트하는 중에 오류가 발생했습니다.
       save:
         success: 특성이 업데이트되었습니다.
-        fail: 특성을 저장하는 중에 오류가 발생했습니다
-        validation_error: 특성을 업데이트할 수 없습니다
+        fail: 특성을 저장하는 중에 오류가 발생했습니다.
+        validation_error: 특성을 업데이트할 수 없습니다.
       create:
         success: 특성이 생성되었습니다.
-        fail: 특성을 생성하는 중에 오류가 발생했습니다
+        fail: 특성을 생성하는 중에 오류가 발생했습니다.
         validation_error: 특성을 생성할 수 없습니다.
       delete:
         success: 특성이 삭제되었습니다.
-        fail: 특성을 삭제하는 중에 오류가 발생했습니다
+        fail: 특성을 삭제하는 중에 오류가 발생했습니다.
     options:
       no_value: 여기를 클릭하여 옵션을 선택하십시오.
-      sub_title: 자산 패밀리
+      sub_title: 애셋 패밀리
       helper:
         title: 레이블 번역
     media_link:
       placeholder: 여기에 미디어 링크 놓기
-      read_only: 이 미디어 링크는 읽기 전용입니다
+      read_only: 이 미디어 링크는 읽기 전용입니다.
       reload: 미디어 링크 썸네일 다시 로드
     media_file:
       placeholder: 끌어다 놓아 업로드하거나 여기를 클릭
-      read_only: 이 미디어 파일은 읽기 전용입니다
+      read_only: 이 미디어 파일은 읽기 전용입니다.
       uploading: 업로드 중...
-    used_as_transformation_target: 이 필드는 자산 변환의 대상으로 사용되므로 읽기 전용입니다.
+    used_as_transformation_target: 이 필드는 애셋 변환의 대상으로 사용되므로 읽기 전용입니다.
   modal:
     delete:
       subtitle: 삭제 확인
@@ -493,32 +493,32 @@ pim_asset_manager:
         confirm: 삭제
 pim_enrich:
   confirmation:
-    discard_changes: '이 페이지를 나가면 "{{ entity }}"에 대한 변경 사항이 손실됩니다.'
+    discard_changes: '이 페이지를 나가면 ''{{ entity }}''에 대한 변경 사항이 손실됩니다.'
   entity:
     attribute:
       property:
         type:
-          pim_catalog_asset_collection: 자산 컬렉션
+          pim_catalog_asset_collection: 애셋 컬렉션
         section:
           type_specific: 유형 관련 매개변수
         asset_family:
-          identifier: 관련 자산 패밀리(필수)
-          default_label: 자산 패밀리를 선택하십시오
+          identifier: 관련 애셋 패밀리(필수)
+          default_label: 애셋 패밀리를 선택하십시오.
 permission:
   mass_action: 모든 그룹에 {{ rightLevel }} 적용
 #Analytics
 pim_catalog_volume:
   section:
     asset_family:
-      title: 자산 패밀리의 축
-      hint: 자산 패밀리를 사용할 경우, 해당 볼륨 모니터링에 도움이 되는 축은 다음과 같습니다.
+      title: 애셋 패밀리의 축
+      hint: 애셋 패밀리를 사용할 경우, 해당 볼륨 모니터링에 도움이 되는 축은 다음과 같습니다.
   axis:
-    count_asset_family: 자산 패밀리
-    average_max_assets_per_asset_family: 자산 패밀리별 자산
-    average_max_attributes_per_asset_family: 자산 패밀리별 특성
+    count_asset_family: 애셋 패밀리
+    average_max_assets_per_asset_family: 애셋 패밀리별 애셋
+    average_max_attributes_per_asset_family: 애셋 패밀리별 특성
 pim_import_export:
   widget:
     last_operations:
       job_type:
-        asset_manager_compute_transformations: "자산 변환 계산"
-        asset_manager_link_assets_to_products: "제품에 자산 링크 연결"
+        asset_manager_compute_transformations: "애셋 변환 계산"
+        asset_manager_link_assets_to_products: "제품에 애셋 링크 연결"

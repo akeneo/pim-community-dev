@@ -11,6 +11,8 @@ pim_asset_manager:
         should_not_be_linked: 'アセットファミリーの属性がこのファミリーのために現存するため、該当ファミリーを削除できません'
       asset_family_permissions:
         at_least_one_user_group_should_have_edit_permission: 'このファミリーに対する編集権限を少なくとも1つのユーザグループに付与する必要があります'
+      product_attributes:
+        should_not_be_linked: 'アセットコレクションがこのファミリーにリンクされているため、このファミリーを削除できません。'
       should_exist: 'アセットファミリー「%asset_family_code%」は検出できませんでした。'
       rule_template:
         limit_reached: 'アセットファミリー「%asset_family_identifier%」の商品リンクルールの上限 %limit% に達しました。'
