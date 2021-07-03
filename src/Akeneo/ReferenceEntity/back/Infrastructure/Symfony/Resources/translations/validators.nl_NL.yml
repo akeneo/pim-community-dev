@@ -47,6 +47,11 @@ pim_reference_entity:
         is_not_expected: 'Een locale wordt niet verwacht voor attribuut "%attribute_code%" omdat het geen waarde per locale heeft.'
         is_not_activated: 'De lokalisatie "%locale_identifier%" is niet geactiveerd.'
         is_not_activated_for_channel: 'De lokalisatie "%locale_identifier%" is niet geactiveerd voor het kanaal "%channel_identifier%".'
+      number:
+        should_be_string: 'Dit veld moet een tekenreeks zijn'
+        should_be_integer: 'Dit veld moet een heel getal zijn'
+        integer_too_long: 'Dit hele getal is te lang'
+        should_be_numeric: 'Dit veld moet een numerieke waarde zijn met het juiste scheidingsteken voor decimalen'
   attribute:
     validation:
       options:
@@ -60,6 +65,12 @@ pim_reference_entity:
         should_be_an_integer: 'Deze waarde moet een geheel getal zijn.'
       max_file_size:
         should_be_a_number: 'Deze waarde moet een getal zijn.'
+      min_value:
+        should_be_a_number: 'Deze waarde moet een getal zijn met het juiste scheidingsteken voor decimalen'
+        cannot_be_greater_than_max: 'Het minimum kan niet hoger zijn dan het maximum'
+      max_value:
+        should_be_a_number: 'Deze waarde moet een getal zijn met het juiste scheidingsteken voor decimalen'
+        cannot_be_lower_than_min: 'Het maximum kan niet lager zijn dan het minimum'
       code:
         pattern: 'Dit veld mag alleen letters, cijfers en een laag streepje bevatten.'
         reserved_codes: 'De code kan geen van deze waarden zijn: "{{ comma_separated_reserved_keywords }}"'
@@ -76,3 +87,13 @@ pim_reference_entity:
       record_type:
         is_required: 'Je moet het referentie-entiteitstype opgeven om een Referentie Entiteit Link attribuut te maken'
         reference_entity_should_exist: 'De referentie entiteit "%reference_entity_code%" is niet gevonden.'
+      prefix:
+        should_not_be_empty: 'Het voorvoegsel mag geen lege tekenreeks zijn.'
+      suffix:
+        should_not_be_empty: 'Het achtervoegsel mag geen lege tekenreeks zijn.'
+      media_type:
+        not_expected: 'Het gegeven mediatype komt niet overeen met de verwachte (%supported_media_types%).'
+  product_value:
+    validation:
+      record_should_exist: 'Voor eigenschap "%attribute_code%" moet een geldige recordcode worden opgegeven. Het record "%invalid_record%" bestaat niet'
+      records_should_exist: 'Voor eigenschap "%attribute_code%" moeten geldige recordcodes worden opgegeven. De volgende records "%invalid_record%" bestaan niet'

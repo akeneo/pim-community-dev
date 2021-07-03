@@ -1,7 +1,41 @@
 akeneo_franklin_insights:
+  acl:
+    franklin_insights:
+      index: Subskrypcja produktu Franklin Insights
+    franklin:
+      title: Zarządzaj połączeniem Franklin Insights
+    settings:
+      mapping: Zarządzaj ustawieniami Franklin Insights
+  acl_group:
+    franklin_insights: Ustawienia Franklin Insights
+  mapping_identifier:
+    success: Mapowanie zostało zapisane
+    error: Wystąpił błąd podczas zapisywania mapowania
+  notification:
+    invalid_token: 'Kod aktywacyjny Franklin Insights jest nieprawidłowy. Zaktualizuj kod lub skontaktuj się z nami, aby uzyskać pomoc.'
   entity:
     product_subscription:
       constraint:
+        family_required: 'Do subskrybowania produktu do Franklin Insights wymagana jest rodzina produktów.'
+        no_identifiers_mapping: 'Przed subskrybowaniem produktów zmapuj katalogowe identyfikatory produktów w sekcji Ustawienia > Franklin Insights.'
+        insufficient_credits: "Nie udało się subskrybować produktu do Franklin Insights. Nie masz wystarczającej liczby kredytów."
+        invalid_mapped_values: 'Nie udało się subskrybować produktu do Franklin Insights. Subskrybuj produkt z prawidłową kombinacją identyfikatorów.'
+        already_subscribed_product: 'Produkt jest już zasubskrybowany.'
+        variant_product: 'Produktów z wariantami nie można subskrybować do Franklin Insights.'
+        inactive_connection: 'Nie udało się subskrybować produktu do Franklin Insights. Skonfiguruj połączenie z Franklin Insights.'
         product_subscription_with_same_identifier_already_exist: 'Inny produkt z co najmniej jednym identycznym identyfikatorem został już zapisany.'
+    attributes_mapping:
+      notification:
+        new_attributes_to_map: 'Masz nowe atrybuty do mapowania dla rodziny "%familyLabel%"'
 job_execution.summary:
+  configuration_validation: Konfiguracja Franklin Insights
+  subscribed: zasubskrybowano
+  unsubscribed: anulowano subskrypcję
+  unsubscription_skipped_not_subscribed: pominięto (nie zasubskrybowano)
   identifiers_mapping_validation: Walidacja mapowania identyfikatorów
+pim_datagrid:
+  cells:
+    type:
+      franklin_insights_fetch_products: Franklin Insights
+      franklin_insights: Franklin Insights
+Franklin subscription: Subskrypcja Franklina

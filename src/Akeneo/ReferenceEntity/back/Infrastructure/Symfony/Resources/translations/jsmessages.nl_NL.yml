@@ -156,7 +156,13 @@ pim_reference_entity:
         code: Code (verplicht)
         create_another: Een record aanmaken
       confirm: Opslaan
+    delete:
+      message: Weet u zeker dat u het record "{{ recordLabel }}" wilt verwijderen? Als het gekoppeld is aan producten of records, worden de koppelingen verwijderd.
+      title: Record
+    delete_all:
+      confirm: Weet u zeker dat u alle records van "{{ entityIdentifier }}" wilt verwijderen? Als deze gekoppeld zijn aan producten, worden de koppelingen naar de producten verwijderd.
     grid:
+      search: Zoeken op label, code en tekstattributen
       filter:
         completeness:
           label: Voltooien
@@ -165,6 +171,7 @@ pim_reference_entity:
           'no': 'Nee'
         option:
           all: Alle
+          no_value: Selecteer een optie om te filteren
           operator:
             in: In lijst
       column:
@@ -175,21 +182,34 @@ pim_reference_entity:
         action: Acties
       more_result:
         title: Dit is het niet!
+        description: U hebt zojuist door de eerste 500 resultaten van in {{ total }} records gebladerd. Gebruik meer specifieke zoektermen om meer resultaten te zien.
+      completeness:
+        title_no_required: Geen attribuut vereist
+        title_non_complete: 0 van {{ required }} attributen voltooid
+        title_ongoing: '{{ complete }} van {{ required }} attributen voltooid'
+        title_complete: Alle {{ required }} attributen zijn voltooid
     tab:
       enrich: Verrijken
       product: Producten
     notification:
       save:
+        success: Het record is bijgewerkt
         fail: Er deed zich een four voor tijdens het opslaan van het record
+        validation_error: Het record kon niet worden bijgewerkt
       create:
+        success: Het record is aangemaakt
         fail: Er deed zich een four voor tijdens het aanmaken van het record
       delete:
+        success: Record "{{ code }}" is verwijderd.
         fail: Er deed zich een fout voor tijdens het verwijderen van het record
       delete_all:
+        success: Alle records van "{{ entityIdentifier }}" zijn verwijderd.
         fail: Er is een fout opgetreden tijdens het verwijderen van alle referentiegegevens van deze entiteit
     completeness:
       label: Voltooien
   attribute:
+    validation:
+      limit_reached: 'U kunt het attribuut "%attribute_label%" niet aanmaken omdat u de limiet van %limit% attributen voor deze referentie-entiteit hebt bereikt'
     default:
       code: Code
       label: Label
@@ -212,13 +232,17 @@ pim_reference_entity:
       header:
         title: Aanmaken
       subtitle: Referentie-entiteiten
+      title: Nieuw recordattribuut toevoegen
       description: De volgende parameters, behalve het label, kunnen niet worden bijgewerkt na het aanmaken van het attribuut
       input:
         code: Code (verplicht)
         label: Label
         type: Attribuuttype
+        record_type: Referentie-entiteit voor koppeling (verplicht)
         value_per_locale: Waarde per taal
         value_per_channel: Waarde per kanaal
+      placeholder:
+        record_type: Selecteer uw gekoppelde referentie-entiteit
       confirm: Opslaan
     edit:
       delete: Verwijder het attribuut
@@ -229,6 +253,7 @@ pim_reference_entity:
         code: Code (verplicht)
         label: Label
         type: Attribuuttype
+        record_type: Gerelateerde referentie-entiteit (verplicht)
         value_per_locale: Waarde per taal
         value_per_channel: Waarde per kanaal
         is_required: Vereist voor compleetheid
@@ -275,6 +300,7 @@ pim_reference_entity:
         fail: Er deed zich een fout voor tijdens het verwijderen van het attribuut
     options:
       no_value: Klik hier om een optie te selecteren.
+      sub_title: Referentie-entiteiten
       helper:
         title: Labelvertalingen
   modal:
@@ -294,3 +320,18 @@ pim_enrich:
           akeneo_reference_entity: Referentie entiteit enkele link
         section:
           type_specific: Type specifieke parameters
+        reference_entity:
+          identifier: Gerelateerde referentie-entiteit (verplicht)
+          default_label: Selecteer een referentie-entiteit
+permission:
+  mass_action: Rechten voor {{ rightLevel }} toepassen op alle groepen
+#Analytics
+pim_catalog_volume:
+  section:
+    reference_entity:
+      title: Assen bij referentie-entiteiten
+      hint: Als u de referentie-entiteiten gebruikt, zijn dit de assen om u te helpen uw volume te monitoren.
+  axis:
+    count_reference_entity: Referentie-entiteiten
+    average_max_records_per_reference_entity: Records per referentie-entiteit
+    average_max_attributes_per_reference_entity: Attributen per referentie-entiteit

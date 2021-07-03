@@ -3,9 +3,13 @@ teamwork_assistant:
     required: Deze waarde mag niet leeg zijn.
     label_maxlength: Deze waarde is te lang. Het moet {{ max }} karakters of minder bevatten.
     project_identifier: Het project {{ project }} bestaat niet.
+    project_locale: De taal {{ locale }} wordt niet ondersteund door het kanaal {{ channel }}.
     project_due_date: Je kan geen datum in het verleden selecteren.
   notification:
     project_calculation:
+      error: De projectberekening voor <strong>%project_label%</strong> is mislukt
+      warning: De projectberekening voor <strong>%project_label%</strong> is afgerond met enkele waarschuwingen
+      success: Het project <strong>%project_label%</strong> is klaar en de medewerkers zijn op de hoogte gebracht. Laten we beginnen!
       start: Start
     message: Je hebt nieuwe producten te verrijken voor "%project_label%". Gelieve dit uit te voeren voor "%due_date%".
     project_finished:
@@ -13,6 +17,7 @@ teamwork_assistant:
       owner: 'Het project <strong>%project_label%</strong> gepland voor <strong>%due_date%</strong> is klaar.'
       show: Toon
     due_date:
+      contributor: '%percent%% van de producten is afgerond met %project_label%. Vergeet niet om de laatste producten in de vullen voor %due_date%.'
       owner: 'Het project <strong>%project_label%</strong> gepland voor <strong>%due_date%</strong> is niet 100% klaar.'
       start: Start
   datagrid:
@@ -37,3 +42,4 @@ pim_datagrid:
   cells:
     type:
       project_calculation: Projectberekening
+      refresh_project_completeness_calculation: Berekening van volledigheid project vernieuwen

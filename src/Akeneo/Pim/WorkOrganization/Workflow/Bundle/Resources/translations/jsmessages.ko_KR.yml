@@ -32,20 +32,20 @@ pimee_workflow:
     partial_accept:
       modal.title: 일부 정보 승인
       modal.label: 코멘트 남기기(옵션)
-      modal.error: 오류가 발생했습니다. 제안 일부가 승인되지 않았습니다
-      modal.success: 제안 일부가 검증되었습니다
+      modal.error: 오류가 발생했습니다. 제안 일부가 승인되지 않았습니다.
+      modal.success: 제안 일부가 검증되었습니다.
     partial_approve:
       modal:
         title: 변경 사항 일부 승인
         label: 코멘트 남기기(옵션)
-        error: 오류가 발생했습니다. 제안 일부가 승인되지 않았습니다
-        success: 변경 사항이 승인되었습니다
+        error: 오류가 발생했습니다. 제안 일부가 승인되지 않았습니다.
+        success: 변경 사항이 승인되었습니다.
     partial_reject:
       modal:
         title: 변경 사항 일부 거부
         label: 코멘트 남기기(옵션)
-        error: 오류가 발생했습니다. 제안 일부가 거부되지 않았습니다
-        success: 변경 사항이 거부되었습니다
+        error: 오류가 발생했습니다. 제안 일부가 거부되지 않았습니다.
+        success: 변경 사항이 거부되었습니다.
 batch_jobs:
   csv_published_product_export:
     label: CSV로 게시 제품 내보내기
@@ -111,8 +111,8 @@ pimee_enrich.entity.product:
       published: 게시됨
       revert: 복원
     attribute:
-      can_be_updated_by_a_rule: "이 특성은 다음 규칙에 의해 업데이트될 수 있습니다: {{ rule }}"
-      value_updated: 이 값은 현재 초안에서 업데이트되었습니다
+      can_be_updated_by_a_rule: "이 특성은 다음 규칙에 의해 업데이트될 수 있습니다.: {{ rule }}"
+      value_updated: 이 값은 현재 초안에서 업데이트되었습니다.
     meta:
       published_version: 게시된 버전
       owner_groups: 소유자 그룹
@@ -161,18 +161,18 @@ pimee_enrich.entity.product_draft:
   flash:
     approve:
       success: 제안이 적용되었습니다.
-      fail: "다음 오류로 인해 제안을 적용할 수 없습니다: {{ error }}"
+      fail: "다음 오류로 인해 제안을 적용할 수 없습니다.: {{ error }}"
     reject:
       success: 제안이 거부되었습니다.
     remove:
       success: 제안이 제거되었습니다.
     update:
-      success: 제품 초안이 저장되었습니다
-      fail: 제품 초안을 업데이트할 수 없습니다
+      success: 제품 초안이 저장되었습니다.
+      fail: 제품 초안을 업데이트할 수 없습니다.
     create:
       success: 승인용으로 제품 초안 전송됨
-      fail: 승인용으로 이 초안을 전송할 수 없습니다
-      skip: 편집된 값이 없으므로 제품 초안이 승인용으로 전송되지 않았습니다
+      fail: 승인용으로 이 초안을 전송할 수 없습니다.
+      skip: 편집된 값이 없으므로 제품 초안이 승인용으로 전송되지 않았습니다.
   module:
     proposal:
       accept: 제안 수락
@@ -191,12 +191,12 @@ pimee_enrich.mass_edit.product:
     publish:
       label: 게시
       label_count: "{1}<span class=\"AknFullPage-title--highlight\">1개 제품</span> 게시|]1, Inf[<span class=\"AknFullPage-title--highlight\">{{ itemsCount }}개 제품</span>게시"
-      description: 제품이 게시됩니다
+      description: 제품이 게시됩니다.
       warning: 선택된 {{ itemsCount }}개 제품이 게시됩니다.
     unpublish:
       label: 게시 취소
       label_count: "{1}<span class=\"AknFullPage-title--highlight\">1개 제품</span> 게시 취소|]1, Inf[<span class=\"AknFullPage-title--highlight\">{{ itemsCount }}개 제품</span>게시 취소"
-      description: 제품이 게시 취소됩니다
+      description: 제품이 게시 취소됩니다.
       warning: 선택된 {{ itemsCount }}개 제품이 게시 취소됩니다.
 pimee_enrich.entity.category:
   flash:

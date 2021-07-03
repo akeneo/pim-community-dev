@@ -1,10 +1,41 @@
 akeneo_franklin_insights:
+  acl:
+    franklin_insights:
+      index: Productaanmelding bij Franklin Insights
+    franklin:
+      title: Verbinding met Franklin Insights beheren
+    settings:
+      mapping: Instellingen voor Franklin Insights beheren
+  acl_group:
+    franklin_insights: Instellingen voor Franklin Insights
   mapping_identifier:
     success: De toewijzing is opgeslagen
     error: Er is een fout opgetreden tijdens het opslaan van de toewijzing
+  notification:
+    invalid_token: 'Uw actievatiecode voor Franklin Insights is niet geldig. Update de code of neem contact op met ons voor hulp.'
   entity:
     product_subscription:
       constraint:
+        family_required: 'Er is een productfamilie vereist om het product aan te melden bij Franklin Insights.'
+        no_identifiers_mapping: 'Wijs de ID''s van de catalogusproducten toe in Instellingen > Franklin Insights voordat u producten aanmeldt.'
+        insufficient_credits: "Kan het product niet aanmelden bij Franklin Insights.  U hebt niet genoeg credits."
+        invalid_mapped_values: 'Kan het product niet aanmelden bij Franklin Insights. Meld het product aan met een geldige combinatie ID''s.'
+        already_subscribed_product: 'Het product is al aangemeld.'
+        variant_product: 'Productvariaties kunnen niet worden aangemeld bij Franklin Insights.'
+        inactive_connection: 'Kan het product niet aanmelden bij Franklin Insights. Configureer uw verbinding met Franklin Insights.'
         product_subscription_with_same_identifier_already_exist: 'Een ander product met ten minste één identieke id is al geabonneerd.'
+    attributes_mapping:
+      notification:
+        new_attributes_to_map: 'U hebt nieuwe attributen die kunnen worden toegewezen aan de familie "%familyLabel%"'
 job_execution.summary:
+  configuration_validation: Configuratie van Franklin Insights
+  subscribed: Aangemeld
+  unsubscribed: Afgemeld
+  unsubscription_skipped_not_subscribed: overgeslagen (niet aangemeld)
   identifiers_mapping_validation: Identifiers mapping validatie
+pim_datagrid:
+  cells:
+    type:
+      franklin_insights_fetch_products: Franklin Insights
+      franklin_insights: Franklin Insights
+Franklin subscription: Abonnement op Franklin

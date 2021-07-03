@@ -9,8 +9,8 @@ akeneo_franklin_insights:
   acl_group:
     franklin_insights: Franklin Insights 설정
   mapping_identifier:
-    success: 매핑이 저장되었습니다
-    error: 매핑을 저장하는 중에 오류가 발생했습니다
+    success: 매핑이 저장되었습니다.
+    error: 매핑을 저장하는 중에 오류가 발생했습니다.
   notification:
     invalid_token: 'Franklin Insights 활성화 코드가 잘못되었습니다. 이 코드를 업데이트하거나 당사에 문의하여 지원을 받으십시오.'
   entity:
@@ -26,7 +26,7 @@ akeneo_franklin_insights:
         product_subscription_with_same_identifier_already_exist: '동일한 식별자가 하나 이상 포함된 다른 제품을 이미 구독했습니다.'
     attributes_mapping:
       notification:
-        new_attributes_to_map: '패밀리 "%familyLabel%"에 대해 매핑할 새 특성이 있습니다'
+        new_attributes_to_map: '패밀리 ''%familyLabel%''에 대해 매핑할 새 특성이 있습니다.'
 job_execution.summary:
   configuration_validation: Franklin Insights 구성
   subscribed: 구독함

@@ -7,7 +7,7 @@ pimee_catalog_rule:
       confirm_title: 실행 확인
       confirm_content: 모든 규칙을 실행하시겠습니까? (시간이 오래 걸릴 수 있음)
   notification:
-    fail: 작업을 수행할 수 없습니다
+    fail: 작업을 수행할 수 없습니다.
     launched: 규칙 실행이 시작되었습니다. 완료되면 알림이 전송됩니다.
   attribute:
     list:

@@ -29,31 +29,31 @@ pimee_workflow:
       partial_approve: 제품 %product%의 특성 %attribute%에 대한 변경 사항 승인
       partial_reject: 제품 %product%의 특성 %attribute%에 대한 변경 사항 거부
     notification:
-      partial_approve: '%owner% 님이 제품 %product%의 %attributes%에 대한 값을 수락했습니다'
-      partial_approve_number: '%owner%는 제품 %product%의 %attributes_count%의 값을 허용합니다'
-      partial_reject: '%owner% 님이 제품 %product%의 %attributes%에 대한 값을 거부했습니다'
-      partial_reject_number: '%owner% 님이 제품 %product%의 %attributes_count% 특성에 대한 값을 거부했습니다'
-      partial_remove: '%owner% 님이 제품 %product%의 %attributes%에 대한 값을 삭제했습니다'
-      partial_remove_number: '%owner% 님이 제품 %product%의 %attributes_count% 특성에 대한 값을 삭제했습니다'
-      approve: '%owner% 님이 제품 %product%에 대한 제안을 수락했습니다'
-      refuse: '%owner% 님이 제품 %product%에 대한 제안을 거부했습니다'
-      remove: '%owner% 님이 제품 %product%에 대한 제안을 삭제했습니다'
+      partial_approve: '%owner% 님이 제품 %product%의 %attributes%에 대한 값을 수락했습니다.'
+      partial_approve_number: '%owner%는 제품 %product%의 %attributes_count%의 값을 허용합니다.'
+      partial_reject: '%owner% 님이 제품 %product%의 %attributes%에 대한 값을 거부했습니다.'
+      partial_reject_number: '%owner% 님이 제품 %product%의 %attributes_count% 특성에 대한 값을 거부했습니다.'
+      partial_remove: '%owner% 님이 제품 %product%의 %attributes%에 대한 값을 삭제했습니다.'
+      partial_remove_number: '%owner% 님이 제품 %product%의 %attributes_count% 특성에 대한 값을 삭제했습니다.'
+      approve: '%owner% 님이 제품 %product%에 대한 제안을 수락했습니다.'
+      refuse: '%owner% 님이 제품 %product%에 대한 제안을 거부했습니다.'
+      remove: '%owner% 님이 제품 %product%에 대한 제안을 삭제했습니다.'
       mass_edit_sent_for_approval: '<strong>%jobLabel%</strong> 대량 편집 완료: %readProductsCount%개 제품에서 %sentForApprovalCount% 제안 생성됨 '
     mass_review_action:
       approve: 선택 항목 모두 승인
       refuse: 선택 항목 모두 거부
       error:
-        draft_not_ready: 이 제안은 승인 준비가 되지 않았습니다
-        not_product_owner: 이 제안 관련 제품을 소유하고 있지 않습니다
-        cannot_edit_attributes: 이 제안에 의해 수정된 특성을 편집할 수 없습니다
-        invalid_draft: '다음 오류로 인해 이 제안을 적용할 수 없습니다: %error%'
+        draft_not_ready: 이 제안은 승인 준비가 되지 않았습니다.
+        not_product_owner: 이 제안 관련 제품을 소유하고 있지 않습니다.
+        cannot_edit_attributes: 이 제안에 의해 수정된 특성을 편집할 수 없습니다.
+        invalid_draft: '다음 오류로 인해 이 제안을 적용할 수 없습니다.: %error%'
   proposal:
-    to_review: '%author.firstname% %author.lastname% 님이 제품 %product.label%에 대한 검토용 제안을 보냈습니다'
-    individual_import: '%author.firstname% %author.lastname% 님이 작업 가져오기에서 검토할 제안을 보냈습니다'
-    generic_import: 작업 가져오기에서 검토할 제안이 있습니다
+    to_review: '%author.firstname% %author.lastname% 님이 제품 %product.label%에 대한 검토용 제안을 보냈습니다.'
+    individual_import: '%author.firstname% %author.lastname% 님이 작업 가져오기에서 검토할 제안을 보냈습니다.'
+    generic_import: 작업 가져오기에서 검토할 제안이 있습니다.
     original_value: 원래 값
     new_value: 신규
-    no_diff: '"%value%" 값이 제안과 작업 사본 간에 동일합니다.'
+    no_diff: '''%value%'' 값이 제안과 작업 사본 간에 동일합니다.'
     draft_in_progress: 이 제품의 초안은 %author% 님이 진행 중입니다.
   published_product:
     index: 게시된 제품
@@ -92,14 +92,14 @@ btn:
   editworkingcopy: 작업 사본 편집
 flash:
   product:
-    updated: 제품 작업 사본이 업데이트되었습니다
+    updated: 제품 작업 사본이 업데이트되었습니다.
     published: 제품이 게시되었습니다.
     unpublished: 제품이 게시 취소되었습니다.
   product_draft:
-    updated: 초안이 저장되었습니다
+    updated: 초안이 저장되었습니다.
     approve:
       success: 제안이 적용되었습니다.
-      error: '다음 오류로 인해 제안을 적용할 수 없습니다: %error%'
+      error: '다음 오류로 인해 제안을 적용할 수 없습니다.: %error%'
     refuse:
       success: 제안이 거부되었습니다.
     remove:

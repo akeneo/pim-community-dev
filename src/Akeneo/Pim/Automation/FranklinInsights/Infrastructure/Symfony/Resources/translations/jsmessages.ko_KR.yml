@@ -37,20 +37,20 @@ akeneo_franklin_insights:
           inactive: 비활성
       constraint:
         duplicate_attribute_code: "카탈로그 특성별로 허용되는 매핑 하나"
-        missing_or_invalid_identifiers: "일부 식별자 매핑 키가 없거나 잘못되었습니다. 필요: \"{{ expected }}\", \"{{ given }}\" 받음."
+        missing_or_invalid_identifiers: "일부 식별자 매핑 키가 없거나 잘못되었습니다. 필요: '{{ expected }}', '{{ given }}' 받음."
         mandatory_identifier_mapping: "브랜드 & MPN 매핑 필요"
-        attribute_type: "이 특성 유형은 식별자로 설정할 수 없습니다"
-        localizable_not_allowed: "지역화 가능한 특성은 식별자로 허용되지 않습니다"
-        scopable_not_allowed: "확장 가능한 특성은 식별자로 허용되지 않습니다"
-        locale_specific_not_allowed: "로케일 관련 특성은 식별자로 허용되지 않습니다"
+        attribute_type: "이 특성 유형은 식별자로 설정할 수 없습니다."
+        localizable_not_allowed: "지역화 가능한 특성은 식별자로 허용되지 않습니다."
+        scopable_not_allowed: "확장 가능한 특성은 식별자로 허용되지 않습니다."
+        locale_specific_not_allowed: "로케일 관련 특성은 식별자로 허용되지 않습니다."
     attributes_mapping:
       label: 특성 매핑
       flash:
         do_not_map_attribute_success: '특성이 업데이트되었습니다.'
-        create_attribute_success: '{0} 죄송합니다. {{ requestCount }} 특성 중에서 생성된 것이 없습니다. |{1} 특성이 생성되고 패밀리 "{{ family }}"에 연결되었습니다. |[2,Inf[ {{ requestCount }}개 중에서 {{ successCount }}개 특성이 생성되고 패밀리 "{{ family }}"에 연결되었습니다.'
+        create_attribute_success: '{0} 죄송합니다. {{ requestCount }} 특성 중에서 생성된 것이 없습니다. |{1} 특성이 생성되고 패밀리 ''{{ family }}''에 연결되었습니다. |[2,Inf[ {{ requestCount }}개 중에서 {{ successCount }}개 특성이 생성되고 패밀리 ''{{ family }}''에 연결되었습니다.'
         create_attribute_error: '죄송합니다. 특성을 만들거나 패밀리에 연결하는 중에 오류가 발생했습니다.'
-        suggest_attribute_mapping_error: '카탈로그 특성 "[{{ catalogAttributeCode }}]"이(가) Franklin 특성 "{{ franklinAttributeLabel }}"에 이미 매핑되었습니다.'
-        add_attribute_to_family_success: '{1} 특성이 패밀리 "{{ family }}"에 연결되었습니다. |[2,Inf[ 특성이 패밀리 "{{ family }}"에 연결되었습니다.'
+        suggest_attribute_mapping_error: '카탈로그 특성 ''[{{ catalogAttributeCode }}]''이(가) Franklin 특성 ''{{ franklinAttributeLabel }}''에 이미 매핑되었습니다.'
+        add_attribute_to_family_success: '{1} 특성이 패밀리 ''{{ family }}''에 연결되었습니다. |[2,Inf[ 특성이 패밀리 ''{{ family }}''에 연결되었습니다.'
         add_attribute_to_family_error: '죄송합니다. 특성을 패밀리에 연결하는 중에 오류가 발생했습니다.'
         fail_to_retrieve_franklin_mapping: '특성 매핑은 현재 사용 가능하지 않습니다. 나중에 다시 확인하십시오.'
       fields:
@@ -83,7 +83,7 @@ akeneo_franklin_insights:
           types_mismatch_warning: '경고: 특성 유형이 불일치합니다.'
           family_progress:
             title: '매핑된 특성 수'
-            description: "이 바를 사용하여 작업 상태를 한눈에 볼 수 있습니다"
+            description: "이 바를 사용하여 작업 상태를 한눈에 볼 수 있습니다."
             mapped_attribute: '{{ mapped_count }}개 특성이 매핑되고 {{ suggested_count }}개 제안됨'
           suggested: 제안됨
         toolbar:
@@ -98,26 +98,26 @@ akeneo_franklin_insights:
         bulk_create_attribute:
           title: '{1} 1개 특성 만들기 |[2,Inf[ {{ count }}개 특성 만들기'
           subtitle: 'Franklin Insights'
-          description: '{1} 선택한 특성이 생성되고 패밀리에 추가됩니다 |[2,Inf[ 선택한 특성이 생성되고 패밀리에 추가됩니다'
+          description: '{1} 선택한 특성이 생성되고 패밀리에 추가됩니다. |[2,Inf[ 선택한 특성이 생성되고 패밀리에 추가됩니다.'
           warning: '{1} 1개의 새 특성 생성을 확인하십시오. |[2,Inf[ {{ count }}개의 새 특성 생성을 확인하십시오.'
           ok: 확인
         bulk_add_to_family:
           title: '{1} 패밀리에 1개 특성 추가|[2,Inf[ 패밀리에 {{ count }}개 특성 추가'
           subtitle: 'Franklin Insights'
-          description: '{1} 선택한 특성이 패밀리에 추가됩니다 |[2,Inf[ 선택한 특성이 패밀리에 추가됩니다'
+          description: '{1} 선택한 특성이 패밀리에 추가됩니다. |[2,Inf[ 선택한 특성이 패밀리에 추가됩니다.'
           warning: '{1} 패밀리에 1개의 새 특성 추가를 확인하십시오. |[2,Inf[ 패밀리에 {{ count }}개의 새 특성 추가를 확인하십시오.'
           ok: 확인
       constraint:
         missing_target_key: '매핑할 대상 키 없음'
-        missing_attribute_key: '대상 키 "{{ targetKey }}"과(와) 매핑할 {{ expectedKey }} 키 없음'
-        invalid_attribute_type_mapping: 'Franklin 특성을 PIM 특성 유형 "{{ pimType }}"에 매핑할 수 없습니다'
-        empty_mapping: 'Franklin 특성을 빈 매핑과 매핑할 수 없습니다'
-        localizable_not_allowed: 'Franklin 특성을 PIM 지역화 가능 특성에 매핑할 수 없습니다'
-        scopable_not_allowed: 'Franklin 특성을 PIM 확장 가능 특성에 매핑할 수 없습니다'
-        locale_specific_not_allowed: 'Franklin 특성을 PIM 로케일 관련 특성에 매핑할 수 없습니다'
-        duplicated_pim_attribute: "여러 Franklin 특성을 동일한 PIM 특성에 매핑했으므로 매핑을 저장할 수 없습니다"
+        missing_attribute_key: '대상 키 ''{{ targetKey }}''과(와) 매핑할 {{ expectedKey }} 키 없음'
+        invalid_attribute_type_mapping: 'Franklin 특성을 PIM 특성 유형 ''{{ pimType }}''에 매핑할 수 없습니다.'
+        empty_mapping: 'Franklin 특성을 빈 매핑과 매핑할 수 없습니다.'
+        localizable_not_allowed: 'Franklin 특성을 PIM 지역화 가능 특성에 매핑할 수 없습니다.'
+        scopable_not_allowed: 'Franklin 특성을 PIM 확장 가능 특성에 매핑할 수 없습니다.'
+        locale_specific_not_allowed: 'Franklin 특성을 PIM 로케일 관련 특성에 매핑할 수 없습니다.'
+        duplicated_pim_attribute: "여러 Franklin 특성을 동일한 PIM 특성에 매핑했으므로 매핑을 저장할 수 없습니다."
         attribute_not_in_family_not_allowed: 'PIM 특성은 선택한 패밀리에 있어야 합니다.'
-        only_unknown_mapped_attributes: '특성 매핑에 특성이 없습니다'
+        only_unknown_mapped_attributes: '특성 매핑에 특성이 없습니다.'
       search:
         no_result_title: 죄송합니다. 검색할 Franklin 특성이 없습니다.
         no_result_subtitle: 새 검색 조건으로 다시 시도하십시오.
@@ -134,7 +134,7 @@ akeneo_franklin_insights:
         no_identifiers_mapping: '제품 구독 전에 설정 > Franklin Insights에서 카탈로그 제품 식별자를 매핑하십시오.'
         insufficient_credits: "죄송합니다. Franklin Insights에 제품을 구독하지 못했습니다. 크레딧이 부족합니다."
         invalid_mapped_values: '죄송합니다. Franklin Insights에 제품을 구독하지 못했습니다. 올바른 식별자 조합으로 제품을 구독하십시오.'
-        data_provider_error: '제품을 구독하려는 중에 Franklin이 오류를 반환했습니다' #TODO: check with POs
+        data_provider_error: '제품을 구독하려는 중에 Franklin이 오류를 반환했습니다.' #TODO: check with POs
         not_subscribed: '제품이 구독되지 않았습니다.'
         already_subscribed_product: '제품이 이미 구독되었습니다.'
         variant_product: '죄송합니다. 변형 제품을 Franklin Insights에 구독할 수 없습니다.'
@@ -148,7 +148,7 @@ akeneo_franklin_insights:
     attribute_options_mapping:
       label: '특성 옵션 매핑'
       constraint:
-        no_attribute_options_mapped: 'Franklin 특성 옵션을 빈 매핑과 매핑할 수 없습니다'
+        no_attribute_options_mapped: 'Franklin 특성 옵션을 빈 매핑과 매핑할 수 없습니다.'
       fields:
         franklin_attribute_option: Franklin 특성 옵션
         catalog_attribute_option: 카탈로그 특성 옵션
@@ -157,7 +157,7 @@ akeneo_franklin_insights:
         edit:
           title: '{{ familyLabel }} - {{ franklinAttributeLabel }} 특성 옵션'
           sub_title: '<span class="AknDescriptionHeader-title--highlight">제품 정보 AI 어시스턴트</span>인 Franklin을 만나보십시오!'
-          description: '카탈로그 보강에 도움을 주기 위해, Franklin은 매칭되는 해당 카탈로그 특성 옵션을 알아야 합니다. <a href="https://help.akeneo.com/pim/articles/franklin-insights-mappings.html#attributes-and-options-mapping" target="_blank" class="AknDescriptionHeader-link">자세히 알아보기</a>'
+          description: '카탈로그 보강에 도움을 주기 위해, Franklin은 매칭되는 해당 카탈로그 특성 옵션을 알아야 합니다. <a href="https://help.akeneo.com/pim/articles/franklin-insights-mappings.html#attributes-and-options-mapping'' target="_blank'' class="AknDescriptionHeader-link">자세히 알아보기</a>'
       flash:
         load_failed: '업데이트 실패'
   product:
@@ -175,7 +175,7 @@ akeneo_franklin_insights:
         sub_title: '<span class="AknDescriptionHeader-title--highlight">제품 정보 AI 어시스턴트</span>입니다!'
         description:
           first_step: '어시스턴트 연결의 첫 단계로, API 토큰을 구성해야 합니다.'
-          second_step: '연결 프로세스의 다음 단계로, 해당 <a href="#" class="AknDescriptionHeader-link link">카탈로그 제품 식별자</a>를 어시스턴트의 식별자에 매칭시켜야 합니다.'
+          second_step: '연결 프로세스의 다음 단계로, 해당 <a href="#'' class="AknDescriptionHeader-link link">카탈로그 제품 식별자</a>를 어시스턴트의 식별자에 매칭시켜야 합니다.'
       activation:
         label: 'Franklin 커넥터'
         activation_code: '활성화 코드'
@@ -191,7 +191,7 @@ akeneo_franklin_insights:
         sub_title: '<span class="AknDescriptionHeader-title--highlight">제품 정보 AI 어시스턴트</span>인 Franklin을 만나보십시오!'
         description:
           first_step: '카탈로그 보강에 도움을 주기 위해, Franklin은 해당 카탈로그 식별자를 알아야 합니다.'
-          second_step: '식별자를 매핑하는 동안, 브랜드와 MPN이 함께 간다는 것을 고려해주십시오. <a href="https://help.akeneo.com/articles/franklin-insights-mappings.html" class="AknDescriptionHeader-link" target="_blank">자세히 알아보기</a>'
+          second_step: '식별자를 매핑하는 동안, 브랜드와 MPN이 함께 간다는 것을 고려해주십시오. <a href="https://help.akeneo.com/articles/franklin-insights-mappings.html'' class="AknDescriptionHeader-link'' target="_blank">자세히 알아보기</a>'
       inactive_connection:
         title: '죄송합니다. 아직 여기에 표시할 내용이 없습니다.'
         sub_title: '시스템 > Franklin 연결에서 계정을 활성화하고 다시 돌아오십시오.'
@@ -207,11 +207,11 @@ akeneo_franklin_insights:
         franklin_insights:
           label: 'Franklin Insights 구독'
           label_count: "{1}<span class=\"AknFullPage-title--highlight\">1개 제품에 대한 Franklin Insights 구독 관리</span>|]1, Inf[<span class=\"AknFullPage-title--highlight\">{{ itemsCount }}개 제품에 대해 Franklin Insights에 구독</span>"
-          description: 그리드에서 선택된 제품에 적용하려는 작업을 선택하십시오
+          description: 그리드에서 선택된 제품에 적용하려는 작업을 선택하십시오.
           subscribe_label: 구독
           unsubscribe_label: 구독 취소
           constraint:
-            franklin_activation: "제품 구독 전에 Franklin Insights를 <a href=\"#\" data-action=\"franklin-connection\" class=\"AknMessageBox-link\">활성화</a>하십시오."
+            franklin_activation: "제품 구독 전에 Franklin Insights를 <a href=\"#' data-action=\"franklin-connection' class=\"AknMessageBox-link\">활성화</a>하십시오."
             invalid_mapping: "제품 구독 전에 설정 > Franklin Insights에서 제품 식별자를 매핑하십시오."
   key_figures:
     menu: Franklin 주요 특성

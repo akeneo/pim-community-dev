@@ -7,6 +7,7 @@ Refuse selected: Geselecteerde afkeuren
 pim_datagrid:
   no_entities:
     proposal: Er is geen voorstel om na te kijken.
+    product_draft: Er is geen productconcept om te beoordelen.
   no_results:
     proposal: Er is geen voorstel om na te kijken. Probeer je zoekcriteria aan te passen.
     product_draft: Er is geen product concept om te beoordelen. Probeer te zoeken met andere criteria.
@@ -23,6 +24,8 @@ pimee_workflow:
     proposal:
       modal.title: Schrijf een reactie (optioneel - 255 tekens max.)
   proposal:
+    overview: "]-Inf, 1]{{ count }} voorstel|]1, Inf[{{ count }} voorstellen"
+    selected: geselecteerde voorstellen
     mass_action_group:
       review:
         label: Bulkactie
@@ -50,6 +53,9 @@ batch_jobs:
   csv_product_proposal_import:
     label: Productvoorstel importeren in CSV
     import.label: Productvoorstel importeren
+  csv_product_model_proposal_import:
+    label: Voorstel productmodel importeren in CSV
+    import.label: Voorstel productmodel importeren in CSV
   approve_product_draft:
     label: Keur voorstel goed
     perform.label: Keur voorstel goed
@@ -57,18 +63,39 @@ batch_jobs:
     label: Keur voorstellen af
     perform.label: Keur voorstellen af
   xlsx_published_product_export:
+    label: Gepubliceerd product exporteren in XLSX
     export.label: Gepubliceerd product exporteren
+  xlsx_product_proposal_import:
+    label: Productvoorstel importeren in XLSX
+    import.label: Productvoorstel importeren in XLSX
+  xlsx_product_model_proposal_import:
+    label: Voorstel productmodel importeren in XLSX
+    import.label: Voorstel productmodel importeren in XLSX
+  csv_published_product_quick_export:
+    export.label: Gepubliceerde producten snel exporteren in CSV
+    perform.label: Gepubliceerde producten snel exporteren in CSV
+  csv_published_product_grid_context_quick_export:
+    export.label: Gepubliceerde producten in rastercontext snel exporteren in CSV
+    perform.label: Gepubliceerde producten in rastercontext snel exporteren in CSV
+  xlsx_published_product_quick_export:
+    export.label: Gepubliceerde producten snel exporteren in xlsx
+    perform.label: Gepubliceerde producten snel exporteren in xlsx
+  xlsx_published_product_grid_context_quick_export:
+    export.label: Gepubliceerde producten in rastercontext snel exporteren in xlsx
+    perform.label: Gepubliceerde producten in rastercontext snel exporteren in xlsx
   publish_product:
     perform.label: Product publiceren
 pim_notification:
   types:
     pimee_workflow_product_draft_notification_new_proposal: Nieuw voorstel
+    pimee_workflow_import_notification_new_proposals: Nieuwe voorstellen uit import
     pimee_workflow_product_draft_notification_partial_approve: Voorstel gedeeltelijk goedgekeurd
     pimee_workflow_product_draft_notification_partial_reject: Voorstel gedeeltelijk afgekeurd
     pimee_workflow_product_draft_notification_partial_remove: Voorstel gedeeltelijk verwijderd
     pimee_workflow_product_draft_notification_approve: Voorstel goedgekeurd
     pimee_workflow_product_draft_notification_refuse: Voorstel afgekeurd
     pimee_workflow_product_draft_notification_remove: Voorstel verwijderd
+    pimee_workflow_product_draft_notification_sent: Verzonden voorstellen
 pimee_dashboard:
   widget:
     product_drafts:
@@ -83,9 +110,13 @@ pimee_enrich.entity.product:
     history:
       published: Gepubliceerd
       revert: Herstel
+    attribute:
+      can_be_updated_by_a_rule: "Dit attribuut kan worden bijgewerkt met een regel: {{ rule }}"
+      value_updated: Deze waarde wordt bijgewerkt met het huidige concept
     meta:
       published_version: Gepubliceerde versie
       owner_groups: Eigenaar groepen
+      draft_status: Conceptstatus
       draft:
         in_progress: In uitvoering
         sent_for_approval: Wachtend op goedkeuring
@@ -101,9 +132,13 @@ pimee_enrich.entity.product:
       content: Weet u zeker dat u de publicatie van dit product ongedaan wilt maken?
     copy:
       working_copy: Werkkopie
+      draft: Mijn concept
+      draft_of: "Concept van {{ author }}"
     approval:
       send: Verzenden voor goedkeuring
       sent: Verzonden voor goedkeuring
+      send_and_next: Verzenden en volgende
+      send_and_finish: Verzenden en afsluiten
 pimee_enrich.entity.published_product:
   flash:
     publish:
@@ -114,6 +149,8 @@ pimee_enrich.entity.published_product:
       fail: Ongedaan maken van publicatie mislukt
     revert:
       success: Product succesvol hersteld
+  page_title:
+    index: "]-Inf, 1]{{ count }} gepubliceerd product|]1, Inf[{{ count }} gepubliceerde producten"
   module:
     publish:
       label: Publiceren
@@ -124,10 +161,18 @@ pimee_enrich.entity.product_draft:
   flash:
     approve:
       success: Het voorstel is succesvol toegepast.
+      fail: "Het voorstel kan niet worden toegepast vanwege de volgende fout: {{ error }}"
     reject:
       success: Het voorstel is afgewezen.
     remove:
       success: Het voorstel is verwijderd.
+    update:
+      success: Het productconcept is opgeslagen
+      fail: Het productconcept kan niet worden bijgewerkt
+    create:
+      success: Het productontwerp is verzonden voor goedkeuring
+      fail: U kunt dit concept niet verzenden voor goedkeuring
+      skip: Het productontwerp is niet verzonden voor goedkeuring omdat er geen enkele waarde is gewijzigd
   module:
     proposal:
       accept: Accepteer voorstel
@@ -135,13 +180,24 @@ pimee_enrich.entity.product_draft:
       reject: Keur voorstel af
       reject_selected: Keur geselecteerde voorstel(len) af
       remove: Verwijder voorstel
+      comment_title: Opmerkingen over uw voorstel (optioneel - 255 tekens)
+      comment_chars: tekens.
       confirm: Verzenden
+    edit:
+      discard_changes: Niet-opgeslagen wijzigingen worden niet bewaard. Weet u zeker dat u het concept wilt verzenden voor goedkeuring zonder de wijzigingen op te slaan?
+      discard_changes_title: Weet u zeker dat u dit concept wilt verzenden?
 pimee_enrich.mass_edit.product:
   operation:
     publish:
       label: Publiceren
+      label_count: "{1}<span class=\"AknFullPage-title--highlight\">1 product</span> publiceren|]1, Inf[<span class=\"AknFullPage-title--highlight\">{{ itemsCount }} producten</span> publiceren"
+      description: De producten worden gepubliceerd
+      warning: De {{ itemsCount }} geselecteerde producten worden gepubliceerd.
     unpublish:
       label: Depubliceer
+      label_count: "{1}Publicatie ongedaan maken van <span class=\"AknFullPage-title--highlight\">1 product</span>|]1, Inf [Publicatie ongedaan maken van <span class=\"AknFullPage-title--highlight\">{{ itemsCount }} producten</span>"
+      description: De publicatie van de producten wordt ongedaan gemaakt
+      warning: De publicatie van {{ itemsCount }} geselecteerde producten wordt ongedaan gemaakt.
 pimee_enrich.entity.category:
   flash:
     remove:
@@ -155,3 +211,4 @@ pim_menu:
 pim_title:
   pimee_workflow_proposal_index: Voorstellen
   pimee_workflow_published_product_index: Gepubliceerde producten
+  pimee_workflow_published_product_view: Gepubliceerd product {{ product.label }} | Bekijken
