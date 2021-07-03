@@ -50,7 +50,6 @@ akeneo_data_quality_insights:
           messages:
             first_step:
               message1: Męczysz się z etykietami atrybutów i opcji? A może warto wrócić do podstaw <a href="{{ link }}" target="_blank">tutaj</a>?
-              message2: Potrzebujesz pomocy z atrybutami i opcjami atrybutów? Spójrz <a href="{{ link }}" target="_blank">tutaj<a href="{{ link }}" target="_blank">!
             second_step:
               message1: Zapoznaj się z etykietami atrybutów i opcji. Twoje produkty będą wyglądać jeszcze lepiej.
               message2: Wyglądasz na zagubioną osobę! Niektóre z Twoich etykiet nadal wymagają dopracowania.

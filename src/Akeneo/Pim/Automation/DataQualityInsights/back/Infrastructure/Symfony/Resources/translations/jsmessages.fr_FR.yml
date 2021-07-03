@@ -50,7 +50,6 @@ akeneo_data_quality_insights:
           messages:
             first_step:
               message1: Vous avez du mal à utiliser les labels des attributs et des options ? On vous explique tout <a href="{{ link }}" target="_blank"> ici</a>. 
-              message2: Vous avez besoin d'aide pour utiliser les attributs et les options d'attributs ? Consultez notre <a href="{{ link }}" target="_blank">Help Center<a href="{{ link }}" target="_blank">. 
             second_step:
               message1: Faites bien attention aux labels de vos attributs et options. Vos produits seront mieux mis en valeur. 
               message2: Peut être que vous vous êtes un peu perdu en route ? Certains de vos labels doivent être revus !
