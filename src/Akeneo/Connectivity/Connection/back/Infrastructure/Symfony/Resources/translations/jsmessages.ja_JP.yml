@@ -16,6 +16,8 @@ pim_title:
   akeneo_connectivity_connection_audit_any: 接続ダッシュボード
   akeneo_connectivity_connection_error_management_dashboard: 接続ダッシュボード
   akeneo_connectivity_connection_error_management_connection_monitoring: 接続監視
+  akeneo_connectivity_connection_webhook_edit: イベントサブスクリプション（ベータ）
+  akeneo_connectivity_connection_webhook_regenerate_secret: イベントサブスクリプション（ベータ）
 akeneo_connectivity.connection:
   connections: 接続
   secondary_actions:
@@ -190,10 +192,18 @@ akeneo_connectivity.connection:
         message: 管理者に連絡して新規作成。
         link: 接続について、こちらでさらに詳しく…
   webhook:
+    title: イベントサブスクリプション（ベータ）
+    event_subscription: イベントサブスクリプション（ベータ）
+    helper:
+      message: この接続アプリと同期された商品について PIM で発生したイベントを通知することができます。追跡する URL とイベントタイプを定義してください。
+      link: イベントサブスクリプションの構成についてさらに詳しく…
     form:
       url: URL
       secret: 非公開
+      enabled: イベントサブスクリプションの有効化
+      test: テスト
     error:
+      wrong_url: この値は有効な URL ではありません。
       required: このフィールドは必須です。
       not_found: 存在しない接続を更新しようとしています。
       limit_reached: 有効なイベントサブスクリプションの上限に達しました。
@@ -202,6 +212,7 @@ akeneo_connectivity.connection:
       error: 申し訳ございません。イベントサブスクリプションの編集中にエラーが発生しました。
     regenerate_secret:
       title: 再生成を確認
+      description: イベントサブスクリプションのシークレットを本当に再作成しますか？
       action:
         regenerate: 再生成
       link: 何が起こるかご確認ください。

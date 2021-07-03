@@ -21,6 +21,11 @@ Second: 秒
 Millisecond: ミリ秒
 Microsecond: マイクロ秒
 "Time Zone": "タイムゾーン"
+duration:
+  days: "{0}0 日|{1}1 日|]1, Inf[{{ count }} 日"
+  hours: "{0}0 時間|{1}1 時間|]1, Inf[{{ count }} 時間"
+  minutes: "{0}0 分|{1}1 分|]1, Inf[{{ count }} 分"
+  seconds: "{0}0 秒|{1}1 秒|]1, Inf[{{ count }} 秒"
 #PIM messages
 Localized value: ローカライズ値
 Columns: 列

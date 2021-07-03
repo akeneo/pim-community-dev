@@ -78,10 +78,20 @@ pim_enrich.entity.attribute_option:
     edit:
       cancel_title: Anuluj zmiany
       cancel_description: Uwaga, utracisz niezapisane dane. Czy na pewno chcesz anulować zmiany dla tego nowego ustawienia?
+      options_labels: Etykiety opcji
+      options_settings: Ustawienia opcji
+      options_codes: Kody opcji
+      option_code: Kod opcji
+      new_option_code: nowa_opcja
+      no_options_msg: Przepraszamy, nie ma żadnych opcji!
+      add_option: Kliknij tutaj, aby dodać
+      delete_confirmation_title_msg: Usunąć "{{ optionCode }}" z opcji?
+      delete_confirmation_subtitle_msg: Czy na pewno chcesz usunąć tę opcję? Tego działania nie można cofnąć.
 pim_enrich.entity.association_type:
   label: typ powiązania
   property:
     is_two_way: Powiązanie dwukierunkowe
+    is_quantified: Powiązanie z ilością
   flash:
     update:
       success: Typ powiązania został pomyślnie zaktualizowany.
@@ -98,6 +108,10 @@ pim_enrich.entity.association_type:
     create:
       title: Utwórz nowy typ powiązania
       button: Utwórz typ powiązania
+      is_two_way:
+        message_on_read_only: Typ powiązania może być ilościowy albo dwukierunkowy. Aby wybrać jeden, odznacz drugi
+      is_quantified:
+        message_on_read_only: Typ powiązania może być ilościowy albo dwukierunkowy. Aby wybrać jeden, odznacz drugi
     delete:
       confirm: Czy na pewno chcesz usunąć ten typ powiązania?
   hint: <a href="{{link}}" target="_blank">W tym artykule</a>znajdziesz wszystko, czego potrzebujesz, aby utworzyć własny typ powiązania.
@@ -187,6 +201,7 @@ pim_enrich.entity.attribute:
       regexp: Wyrażenie regularne
       url: URL
     wysiwyg_enabled: Włączony edytor tekstu rozszerzonego
+    default_value: Wartość domyślna
   module:
     add_attribute:
       no_available_attributes: Nie ma więcej atrybutów do dodania
@@ -199,6 +214,13 @@ pim_enrich.entity.attribute:
       validation: Parametry poprawności
     delete:
       confirm: Czy na pewno chcesz usunąć ten atrybut?
+      product_count: '{0}0 produktów|{1}1 produkt|]1, Inf[{{ count }} produktów'
+      product_model_count: '{0}0 modeli produktów|{1}1 model produktu|]1, Inf[{{ count }} modeli produktów'
+      used: aktualnie posiada wartości ustawione dla tego atrybutu. Zostaną one usunięte.
+      helper:
+        content: Jeśli chcesz zmienić typ atrybutu, aby był tłumaczony lub zmienny, zachowując jednocześnie dostęp do istniejących wartości atrybutu,
+        link: tutaj przechodzimy przez każdy krok.
+      type: Wprowadź "{{ attributeCode }}"
       confirm_from_family: Czy na pewno chcesz usunąć ten atrybut z rodziny?
       confirm_from_group: Czy na pewno chcesz usunąć atrybut {{ attribute }} z tej grupy atrybutów?
       confirm_from_product: Czy na pewno chcesz usunąć ten atrybut z produktu?
@@ -206,6 +228,7 @@ pim_enrich.entity.attribute_group:
   label: grupa atrybutów
   uppercase_label: Grupa atrybutów
   plural_label: Grupy Atrybutów
+  result_count: '{0}0 grup atrybutów|{1}1 grupa atrybutów|]1, Inf[{{ count }} grup atrybutów'
   show_more_attribute:
     title: Trochę tu tłoczno, pokazujemy Ci {{ attributeCount }}/{{ totalAttributeCount }} atrybutów.
     subtitle: Aby odkryć wszystkie atrybuty tej grupy, kliknij poniżej!
@@ -225,6 +248,10 @@ pim_enrich.entity.attribute_group:
       attributes_groups_selected: '{1} 1 wybrana grupa|{2,3,4} {{ itemsCount }} wybrane grupy |[5, Inf [{{ itemsCount }} wybranych grup'
     delete:
       confirm: Czy na pewno chcesz usunąć tę grupę atrybutów?
+  grid:
+    columns:
+      name: Nazwa grup atrybutów
+    no_search_result: Przepraszamy, brak wyników dla tego wyszukiwania.
 pim_enrich.mass_edit.family:
   title: Działanie zbiorcze rodzin
   confirm: "{1} Zamierzasz zaktualizować rodzinę następującymi informacjami, proszę potwierdź.|{2,3,4} Zamierzasz zaktualizować {{ itemsCount }} rodzin/y następującymi informacjami, proszę potwierdź.|] 1, Inf [Zamierzasz zaktualizować {{ itemsCount }} rodzin/y następującymi informacjami, proszę potwierdź."

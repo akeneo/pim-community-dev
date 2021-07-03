@@ -12,6 +12,11 @@ batch_jobs:
     compute_family_variant_structure_changes: 패밀리 변형 구조 변경 사항 계산
     compute_completeness_of_products_family: 제품 패밀리 완성도 계산
     delete_products_and_product_models: 제품 대량 삭제
+    clean_attribute:
+      register_clean_job: 블랙리스트에 코드 추가
+      clean_product_model: 제품 모델 정리
+      clean_product: 제품 정리
+      remove_attribute_codes_from_blacklist: 블랙리스트에서 코드 제거
   csv_product_export:
     label: CSV로 제품 내보내기
     export.label: 제품 내보내기

@@ -1,6 +1,7 @@
 #Job labels
 batch_jobs:
   default_steps:
+    export: Eksport
     validation: Sprawdzanie pliku
     import_associations: Import Powiązań
     import_root_product_model: Importowanie modelu produktu źródłowego
@@ -10,6 +11,12 @@ batch_jobs:
     compute_data_related_to_family_products: Oblicz dane produktów
     compute_family_variant_structure_changes: Oblicz zmiany w strukturze wariantu rodziny
     compute_completeness_of_products_family: Oblicz kompletność rodziny produktów
+    delete_products_and_product_models: Masowe usuwanie produktów
+    clean_attribute:
+      register_clean_job: Dodawanie kodu do czarnej listy
+      clean_product_model: Czyszczenie modeli produktów
+      clean_product: Czyszczenie produktów
+      remove_attribute_codes_from_blacklist: Usuwanie kodu z czarnej listy
   csv_product_export:
     label: Eksport produktu do CSV
     export.label: Eksport produktu

@@ -430,6 +430,8 @@ pim_datagrid:
       label: 完了
     created:
       label: 作成日
+    updated:
+      label: 更新日
     label_or_identifier:
       label: ラベルもしくは識別子
     parent:

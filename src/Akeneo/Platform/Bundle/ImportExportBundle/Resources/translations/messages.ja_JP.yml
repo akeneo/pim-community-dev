@@ -164,3 +164,4 @@ FAILED: 失敗
 ABANDONED: 破棄された
 UNKNOWN: 不明
 warning.label: 警告
+pim_datagrid.column.username: ユーザー名

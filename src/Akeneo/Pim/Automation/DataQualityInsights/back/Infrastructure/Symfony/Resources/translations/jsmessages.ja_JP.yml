@@ -35,16 +35,42 @@ akeneo_data_quality_insights:
       add_families: ファミリーを追加
       add_categories: カテゴリを追加
       title: タイトル
+      score: スコア
       no_family_helper_msg: データ品質を測定したいファミリーを選択してください
       no_category_helper_msg: データ品質を測定したいカテゴリを選択してください
       see_in_grid: 一覧表で表示
     time_axis:
       day: 日
     key_indicators:
+      title: 指標
+      products_to_work_on: '{1}作業する<button>商品が 1 個</button>あります。|]1, 200[作業する<button>商品が {{ count }} 個</button>あります。|[200, Inf[作業する<button>商品が {{ count }} 個以上</button>あります。'
       list:
-        good_enrichment:
+        has_image:
+          title: 画像付きの商品
+          no_data: 画像の属性が空のようです。この指標で商品の品質を強調するには、画像をアップロードする必要があります。
           messages:
             first_step:
+              message1: 画像がない場合、商品の見栄えが実際より劣ってしまいます。
+              message2: 最初の印象は長続きし、アセットに良い効果を与え、顧客の目に留まるようになります。
+              message3: 私たちの経験では、画像は大きく作用します。アセットにもっと時間を費やす必要があるかもしれません。
+            second_step:
+              message1: 商品の画像にもう少し力を注ぐだけで、改善が期待されます。
+              message2: 百聞は画像に如かずです。今すぐ作業すれば、後で時間を節約できます！
+              message3: もう少し画像に時間を費やす必要があるかもしれません。商品の見栄えが大幅に改善されます。
+            third_step:
+              message1: かなり良くなりましたが、画像がいくつか足りません。
+              message2: 素晴らしい出来です。後もう少しです。
+              message3: 最後の仕上げを行えば、完了です。
+            perfect_score_step:
+              message1: よくできました！準備は万端です！
+              message2: お見事！商品が輝いています！
+              message3: 完璧です。
+        good_enrichment:
+          title: 充実度が良好な商品
+          no_data: 商品が空のようです。この指標で商品の品質を強調するには、属性を追加する必要があります。
+          messages:
+            first_step:
+              message1: この比率を改善するには、一方法として、最も関連性の高い属性を慎重に定義することが挙げられます。<a href="{{ link }}" target="_blank">ヘルプセンターをご覧ください</a>。
               message2: PIM の仕組みがまだよくわかりませんか？<a href="{{ link }}" target="_blank">活用方法についてご覧ください</a>。 
               message3: この PIM を開発したのは私たちですが、それを生かすのはあなたです！
               message4: 商品情報が詳しいと、お客様への印象が大きく変わります。ゲームチェンジャーになりましょう！
@@ -98,7 +124,7 @@ akeneo_data_quality_insights:
         title: 申し訳ありません。品質スコアを計算できませんでした。
         subtitle: "品質スコアを計算できません。この商品の属性グループはどれも有効になっていません。"
         help_center_link: データ品質インサイトでデータ品質がどのように改善されるかについて、ヘルプセンターをご覧ください。
-      add_image_attribute_recommendation: 画像は百聞にしかずです。この商品のデータ品質を改善するには、画像の属性を追加してください。
+      add_image_attribute_recommendation: 百聞は画像に如かずです。この商品のデータ品質を改善するには、画像の属性を追加してください。
       fill_image_attribute_recommendation: 私たちの経験では、画像で成果が大きく変わります。この商品のデータ品質を改善するには、少なくとも画像を 1 つ追加する必要があります。
       not_applicable:
         message: この条件はあなたのコンテキストには適用されません。
