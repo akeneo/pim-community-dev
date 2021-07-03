@@ -3,7 +3,7 @@ pim_connector:
     file_reader:
       invalid_item_columns_count: 'Oczekiwano %totalColumnsCount% kolumn, aktualnie mają %itemColumnsCount% w %filePath%:%lineno%'
 job_execution.summary:
-  read: odczyt
+  read: odczytane
   write: zapisano
   skip: pominięte
   create: utworzono

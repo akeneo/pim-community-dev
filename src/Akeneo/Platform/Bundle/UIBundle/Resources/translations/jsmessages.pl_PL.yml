@@ -21,6 +21,11 @@ Second: Sekunda
 Millisecond: Milisekunda
 Microsecond: Mikrosekunda
 "Time Zone": "Strefa Czasowa"
+duration:
+  days: "{0}0 dni|{1}1 dzień|]1, Inf[{{ count }} dni"
+  hours: "{0}0 godz.|{1}1 godz.|]1, Inf[{{ count }} godz."
+  minutes: "{0}0 min{1}1 min|]1, Inf[{{ count }} min"
+  seconds: "{0}0 sekund|{1}1 sekunda|]1, Inf[{{ count }} skund\n"
 #PIM messages
 Localized value: Przetłumaczona wartość
 Columns: Kolumny
@@ -154,6 +159,7 @@ pim_common:
   before: Przed
   by: autorstwa
   cancel: Anuluj
+  clear_value: Wyczyść wartość
   close: Zamknij
   code: Pod Produktu
   completeness: Kompletność
@@ -202,6 +208,7 @@ pim_common:
   to: do
   type: Typ
   update: Aktualizuj
+  updated: Zaktualizowano
   "yes": "Tak"
   operator: Operator
   operators:
@@ -217,6 +224,7 @@ pim_common:
     DOES NOT CONTAIN: Nie zawiera
     STARTS WITH: Rozpoczyna się od
     ENDS WITH: Kończy się na
+  read_more: Dowiedz się więcej
 error:
   exception: O rany! Wystąpił błąd {{ status_code }}...
   forbidden: Nie posiadasz uprawnień do przeglądania tej strony

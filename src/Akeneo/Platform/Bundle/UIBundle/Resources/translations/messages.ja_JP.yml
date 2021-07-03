@@ -99,11 +99,13 @@ pim_enrich:
       comment: 商品へコメント
       download: 商品情報をPDFでダウンロード
       history: 商品の履歴を表示
+      convert_variant_to_simple: バリエーション商品をシンプル商品に変換
     product_model:
       create: 商品モデルを作成
       edit_attributes: 商品モデルの属性を編集
       categories_view: 商品モデルのカテゴリを相談
       history: 商品モデルの履歴を表示
+      remove: 商品モデルを削除 (下位を含む)
     category:
       list: カテゴリを一覧表示
       create: カテゴリを作成
@@ -166,6 +168,8 @@ pim_enrich:
       remove: 商品の関連性を削除
     job_tracker:
       index: プロセストラッカーを表示
+      view_all_jobs: プロセストラッカーにすべてのジョブを表示
+      stop_job: 実行中のジョブを停止
   acl_group:
     association_type: 関連タイプ
     attribute: 属性
@@ -357,6 +361,8 @@ Decimals allowed: 小数点以下の桁数を許可
 Negative allowed: 負の値を許可
 Date min: 最短日時
 Date max: 最長日時
+Metric family: 測定ファミリー
+Default metric unit: 既定の測定ユニット
 Max file size: 最大ファイルサイズ (MB)
 Allowed extensions: 利用できる拡張子
 None: なし
@@ -430,6 +436,8 @@ Disabled: 無効
 Status: ステータス
 pim_datagrid:
   filters:
+    product_typology:
+      label: 商品タイプ
     entity_type:
       label: バリエーション
     family:
@@ -540,4 +548,6 @@ job_tracker:
 pim_login:
   logo_title: Akeneo PIM
   footer:
+    powered: '提供:'
     powered_image_title: ロゴ Akeneo
+    baseline: Unlocking Growth Through Product Experiences

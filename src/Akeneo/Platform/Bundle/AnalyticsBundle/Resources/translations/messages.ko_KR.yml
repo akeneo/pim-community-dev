@@ -52,6 +52,15 @@ pim_analytics:
     php_extensions: PHP 확장
     email_domains: 연결된 이메일 도메인
     api_connection: API 연결
+    nb_media_files_in_products: 제품 내 미디어 파일의 수
+    nb_media_images_in_products: 제품 내 미디어 이미지의 수
+    is_demo_catalog: 데모 카탈로그 설치됨
+    data_source.tracked: 추적된 API 소스 연결의 수
+    data_source.untracked: 추적되지 않은 API 소스 연결의 수
+    data_destination.tracked: 추적된 API 대상 연결의 수
+    data_destination.untracked: 추적되지 않은 API 대상 연결의 수
+    other.tracked: 추적된 API 기타 연결의 수
+    other.untracked: 추적되지 않은 API 기타 연결의 수
   acl:
     system_info:
       index: 시스템 정보

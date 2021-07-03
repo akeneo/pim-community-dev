@@ -12,6 +12,11 @@ batch_jobs:
     compute_family_variant_structure_changes: ファミリーバリエーションの変更を計算
     compute_completeness_of_products_family: 商品ファミリーの完全性を検算
     delete_products_and_product_models: 製品を一括削除
+    clean_attribute:
+      register_clean_job: ブラックリストにコードを追加中
+      clean_product_model: 商品モデルを消去中
+      clean_product: 商品を消去中
+      remove_attribute_codes_from_blacklist: ブラックリストからコードを削除中
   csv_product_export:
     label: 商品をCSV形式でエクスポート
     export.label: 商品エクスポート

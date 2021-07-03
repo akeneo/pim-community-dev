@@ -1,0 +1,8 @@
+akeneo_communication_channel:
+  link:
+    title: お知らせ
+  panel:
+    title: お知らせ
+    list:
+      empty: 今のところニュースはありません。お楽しみに！
+      error: ニュースを取得できませんでした。後で再試行してください。

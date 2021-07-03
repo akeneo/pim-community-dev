@@ -16,6 +16,8 @@ pim_title:
   akeneo_connectivity_connection_audit_any: Panel połączenia
   akeneo_connectivity_connection_error_management_dashboard: Panel połączenia
   akeneo_connectivity_connection_error_management_connection_monitoring: Monitorowanie połączeń
+  akeneo_connectivity_connection_webhook_edit: Subskrypcja zdarzeń (BETA)
+  akeneo_connectivity_connection_webhook_regenerate_secret: Subskrypcja zdarzeń (BETA)
 akeneo_connectivity.connection:
   connections: Połączenia
   secondary_actions:
@@ -168,6 +170,12 @@ akeneo_connectivity.connection:
         during_the_last_seven_days: 'Łącznie w ciągu ostatnich 7 dni:'
         today: Dzisiaj
     error_management:
+      data_source_error_chart:
+        section:
+          title: Błędy w połączeniach źródłowych
+          helper: Tutaj możesz zobaczyć łączną liczbę błędów, w tym błędy biznesowe.
+        chart:
+          title: Licznik błędów dziennie
       widget:
         title: Błędy biznesowe dla połączenia źródłowego
         over_the_last_seven_days: W ciągu ostatnich 7 dni
@@ -184,13 +192,36 @@ akeneo_connectivity.connection:
         message: Poproś administratora o utworzenie.
         link: Dowiedz się więcej o połączeniach tutaj...
   webhook:
+    title: Subskrypcja zdarzeń (BETA)
+    event_subscription: Subskrypcja zdarzeń (beta)
+    helper:
+      message: Możesz otrzymywać powiadomienia o zdarzeniach w ramach PIM dla produktów zsynchronizowanych z podłączoną aplikacją. Wystarczy zdefiniować adres URL i typy zdarzeń do śledzenia.
+      link: Dowiedz się więcej o konfiguracji subskrypcji zdarzeń...
     form:
+      url: URL
       secret: Sekret
+      enabled: Aktywacja subskrypcji zdarzeń
+      test: Test
+    error:
+      wrong_url: Ta wartość nie jest prawidłowym adresem URL.
+      required: To pole jest wymagane.
+      not_found: Próbujesz zaktualizować połączenie, które nie istnieje.
+      limit_reached: Osiągnięto limit aktywnych subskrypcji zdarzeń.
+    flash:
+      success: Zaktualizowano subskrypcję zdarzeń.
+      error: Przepraszamy, wystąpił błąd podczas edycji subskrypcji zdarzeń.
     regenerate_secret:
       title: Potwierdź regenerację
+      description: Czy na pewno chcesz ponownie wygenerować sekret subskrypcji zdarzeń?
       action:
         regenerate: Wygeneruj ponownie
       link: Oto co się stanie.
+      flash:
+        success: Ponownie wygenerowano sekret webhooka.
+        error: Przepraszamy, wystąpił błąd podczas ponownej generacji sekretu webhooka.
+    active_event_subscriptions_limit_reached:
+      message: 'Możesz maksymalnie zrealizować następującą liczbę połączeń: {{ limit }} z funkcją subskrypcji zdarzeń. Osiągnięto ten limit.'
+      link: Dowiedz się więcej o konfiguracji subskrypcji zdarzeń.
   error_management:
     connection_monitoring:
       title: Monitorowanie
@@ -201,8 +232,28 @@ akeneo_connectivity.connection:
       search_filter:
         placeholder: Szukaj w komunikatach błędów
         result_count: '{0} Brak wyniku |[1,Inf] {{ count }} wyników'
+      error_list:
+        date_time_column:
+          title: Dzień i godzina
+        content_column:
+          title: Komunikat o błędzie biznesowym
+          product_name: Nazwa produktu
+          with_id: z ID
+        details_column:
+          title: Szczegóły
+          locale: Wersja językowa
+          channel: Kanał
+          family: Rodzina
       no_error:
         title: Wspaniale! Nie znaleziono błędu!
+      not_auditable:
+        title: Połączenie niemonitorowane
+        description:
+          1: Aby śledzić błędy w tym połączeniu,
+          2: aktywuj monitorowanie
+          3: w ustawieniach.
+      not_data_source:
+        title: Na razie strona monitorowania dostępna jest tylko dla połączenia źródłowego.
   runtime_error:
     error_message: Motyla noga! Mamy błąd...
     reload_helper: Proszę odświeżyć stronę i spróbować ponownie

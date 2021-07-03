@@ -22,8 +22,8 @@ pim_enrich:
     user:
       flash:
         delete:
-          fail: 사용자를 삭제할 수 없습니다
-          success: 사용자가 삭제되었습니다
+          fail: 사용자를 삭제할 수 없습니다.
+          success: 사용자가 삭제되었습니다.
       module:
         delete:
           confirm: 이 사용자를 삭제하시겠습니까?
@@ -35,7 +35,7 @@ pim_user_management:
         update:
           success: 사용자가 업데이트되었습니다.
           fail: 사용자를 업데이트할 수 없습니다.
-          fields_not_ready: "이 사용자를 현재 저장할 수 없습니다. 다음 필드가 준비되지 않았습니다: {{ fields }}"
+          fields_not_ready: "이 사용자를 현재 저장할 수 없습니다. 다음 필드가 준비되지 않았습니다.: {{ fields }}"
         create:
           success: 사용자가 생성되었습니다.
       page_title:
@@ -53,7 +53,7 @@ pim_user_management:
         catalog_locale: 카탈로그 로케일
         catalog_scope: 카탈로그 범위
         default_tree: 기본 트리
-        default_asset_tree: 기본 자산 트리
+        default_asset_tree: 기본 애셋 트리
         product_grid_filters: 제품 그리드 필터
         current_password: 현재 암호
         new_password: 새 암호

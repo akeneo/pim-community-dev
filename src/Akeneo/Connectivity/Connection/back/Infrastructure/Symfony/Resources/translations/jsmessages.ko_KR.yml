@@ -16,6 +16,8 @@ pim_title:
   akeneo_connectivity_connection_audit_any: 연결 대시보드
   akeneo_connectivity_connection_error_management_dashboard: 연결 대시보드
   akeneo_connectivity_connection_error_management_connection_monitoring: 연결 모니터링
+  akeneo_connectivity_connection_webhook_edit: 이벤트 구독(베타)
+  akeneo_connectivity_connection_webhook_regenerate_secret: 이벤트 구독(베타)
 akeneo_connectivity.connection:
   connections: 연결
   secondary_actions:
@@ -35,7 +37,7 @@ akeneo_connectivity.connection:
     constraint:
       code:
         required: 연결 코드는 필수입니다.
-        invalid: 연결 코드는 문자, 숫자 및 밑줄만 포함할 수 있습니다
+        invalid: 연결 코드는 문자, 숫자 및 밑줄만 포함할 수 있습니다.
         too_short: 연결 코드가 너무 짧습니다. 3자 이상이어야 합니다.
         too_long: 연결 코드가 너무 깁니다. 100자 이하여야 합니다.
         must_be_unique: 연결 코드는 고유해야 합니다.
@@ -54,7 +56,7 @@ akeneo_connectivity.connection:
   connection_count: '{{ count }} 연결 | {{ count }} 연결'
   no_connection:
     title: 아직 선언된 연결이 없습니다.
-    message: 첫 번째 연결을 추가하려면 위의 "만들기" 버튼을 클릭하거나
+    message: 첫 번째 연결을 추가하려면 위의 '만들기' 버튼을 클릭하거나
     message_link: 여기를 클릭하십시오.
   create_connection:
     title: 새 연결 만들기
@@ -75,7 +77,7 @@ akeneo_connectivity.connection:
         message: '해당 {{ label }} 커넥터를 사용하기 위한 자격 증명입니다.'
         link: 여기서 자세히 알아보기...
       wrong_credentials_combinations:
-        single: '이 연결에서 {{ wrong_username }} 사용자 이름을 사용하고 있는 것으로 확인되었습니다(마지막 사용: {{ date }}, {{ time }}). 대신 {{ good_username }} 사용자 이름을 사용하는 것이 좋습니다.'
+        single: '이 연결에서 {{ wrong_username }} 사용자 이름을 사용하고 있는 것으로 확인되었습니다.(마지막 사용: {{ date }}, {{ time }}). 대신 {{ good_username }} 사용자 이름을 사용하는 것이 좋습니다.'
         link: 이것을 사용해야 하는 이유 알아보기
         link_list: 이 사용자 이름 사용이 권장되는 이유를 알아보십시오.
         several: 이 연결에서 {{ good_username }} 사용자 이름을 사용하지 않고 있는 것으로 확인되었습니다.
@@ -129,13 +131,13 @@ akeneo_connectivity.connection:
       success: 연결이 삭제되었습니다.
   helper:
     title: '👋 해당 PIM을 제대로 연결하는 기능입니다!'
-    description: 타사 통합이 없는 PIM은 이용 가치가 없습니다, 그렇지 않나요? 연결 덕분에, 해당 PIM의 내부에서 밀어내고 외부에서 가져오는 모든 데이터 흐름을 선언할 수 있습니다.
+    description: 타사 통합이 없는 PIM은 이용 가치가 없습니다., 그렇지 않나요? 연결 덕분에, 해당 PIM의 내부에서 밀어내고 외부에서 가져오는 모든 데이터 흐름을 선언할 수 있습니다.
     link: 자세히 알고 싶으신가요? 바로 여기서 연결이란 무엇인지 알아보고 활용 방법을 확인하십시오!
   flow_type_helper:
     message: 흐름 유형이란 무엇인지 궁금하신가요?
     link: 바로 여기서 도움을 드릴 수 있습니다!
   auditable_helper:
-    message: '"소스" 및 "대상" 연결만 추적할 수 있습니다.'
+    message: '''소스'' 및 ''대상'' 연결만 추적할 수 있습니다.'
     link: 추가 정보...
   edit_image:
     upload_helper: 이미지를 변경하거나, 끌어다 놓거나
@@ -168,6 +170,12 @@ akeneo_connectivity.connection:
         during_the_last_seven_days: '지난 7일간 합계:'
         today: 오늘
     error_management:
+      data_source_error_chart:
+        section:
+          title: 소스 연결에서 오류 발생
+          helper: 여기에서 비즈니스 오류를 포함한 총 오류 개수를 확인할 수 있습니다.
+        chart:
+          title: 1일 오류 개수
       widget:
         title: 소스 연결별 비즈니스 오류
         over_the_last_seven_days: 지난 7일간
@@ -178,28 +186,47 @@ akeneo_connectivity.connection:
         data_source: 해당 소스 연결에 대한 유용한 차트를 보고 싶으십니까?
         data_destination: 해당 대상 연결에 대한 유용한 차트를 보고 싶으십니까?
       message_with_permission:
-        message: 첫 번째 연결을 만들어 추적을 시작하십시오
+        message: 첫 번째 연결을 만들어 추적을 시작하십시오.
         link: 바로 여기서 가능합니다.
       message_without_permission:
         message: 관리자에게 요청하여 연결을 생성하십시오.
         link: 연결에 대해 자세히 알아보기...
   webhook:
+    title: 이벤트 구독(베타)
+    event_subscription: 이벤트 구독(베타)
+    helper:
+      message: 이 연결된 앱과 동기화된 제품의 PIM에서 발생하는 이벤트를 알림으로 받을 수 있습니다. 간단히 추적하려는 URL과 이벤트 유형만 정의하면 됩니다.
+      link: 이벤트 구독 구성에 관해 자세히 알아보기...
     form:
       url: URL
       secret: 비밀번호
+      enabled: 이벤트 구독 활성화
       test: 테스트
     error:
+      wrong_url: 이 값은 유효한 URL이 아닙니다.
       required: 필수 기재 항목입니다.
+      not_found: 없는 연결을 업데이트하려 하고 있습니다.
+      limit_reached: 활성화된 이벤트 구독의 제한에 도달했습니다.
+    flash:
+      success: 이벤트 구독이 업데이트되었습니다.
+      error: 죄송합니다. 이벤트 구독을 편집하는 동안 오류가 발생했습니다.
     regenerate_secret:
       title: 다시 생성 확인
+      description: 이벤트 구독 비밀번호를 다시 생성하시겠습니까?
       action:
         regenerate: 다시 생성
       link: 다음과 같이 진행됩니다.
+      flash:
+        success: 웹훅 비밀번호가 다시 생성되었습니다.
+        error: 죄송합니다. 웹훅 비밀번호를 다시 생성하는 동안 오류가 발생했습니다. 
+    active_event_subscriptions_limit_reached:
+      message: 연결할 수 있는 이벤트 구독 기능은 최대 {{ limit }}개입니다. 현재 이 제한에 도달했습니다.
+      link: 이벤트 구독 구성에 관해 자세히 알아보십시오.
   error_management:
     connection_monitoring:
       title: 모니터링
       helper:
-        title: '{0} {{ count }}개 오류가 있습니다 |[1,Inf] {{ count }}개 오류가 있습니다'
+        title: '{0} {{ count }}개 오류가 있습니다. |[1,Inf] {{ count }}개 오류가 있습니다.'
         description: 지난 7일간 이 연결에 대한 각 오류의 세부 정보를 여기서 볼 수 있습니다. 오류 개수는 100개 오류로 제한됩니다.
         link: 이를 해결하는 방법을 알아보려면 API 헬프 센터를 방문하십시오.
       search_filter:
@@ -209,7 +236,9 @@ akeneo_connectivity.connection:
         date_time_column:
           title: 요일과 시간
         content_column:
+          title: 비즈니스 오류 메시지
           product_name: 제품명
+          with_id: ID 관련
         details_column:
           title: 세부 정보
           locale: 로케일
@@ -217,6 +246,14 @@ akeneo_connectivity.connection:
           family: 패밀리
       no_error:
         title: 대단합니다! 오류가 없습니다!
+      not_auditable:
+        title: 모니터링되지 않은 연결
+        description:
+          1: 이 연결에서 오류를 추적하려면
+          2: 설정에서
+          3: 모니터링을 활성화하십시오.
+      not_data_source:
+        title: 현재 모니터링 페이지는 소스 연결에만 사용할 수 있습니다.
   runtime_error:
     error_message: 죄송합니다! 오류가 발생했습니다...
     reload_helper: 페이지를 다시 로드하고 다시 시도하십시오.

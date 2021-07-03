@@ -9,7 +9,7 @@ pim_enrich.entity.family:
       cant_remove_attribute_as_label: 레이블로 사용되는 특성을 제거할 수 없음
       cant_remove_attribute_as_image: 기본 그림으로 사용되는 특성을 제거할 수 없음
       cant_remove_attribute_used_as_axis: 패밀리 변형에서 변형 축으로 사용되는 이 특성을 제거할 수 없음
-      fields_not_ready: "이 패밀리는 현재 저장할 수 없습니다. 다음 필드가 준비되지 않았습니다: {{ fields }}"
+      fields_not_ready: "이 패밀리는 현재 저장할 수 없습니다. 다음 필드가 준비되지 않았습니다.: {{ fields }}"
     create:
       success: 패밀리 생성됨
     delete:
@@ -35,7 +35,7 @@ pim_enrich.entity.family_variant:
   short_label: 변형
   flash:
     update:
-      success: 패밀리 변형이 업데이트되었습니다. 변형이 포함된 제품은 해당 변경 사항과 함께 업데이트됩니다
+      success: 패밀리 변형이 업데이트되었습니다. 변형이 포함된 제품은 해당 변경 사항과 함께 업데이트됩니다.
       fail: 패밀리를 업데이트할 수 없습니다.
     create:
       success: 패밀리 변형 생성됨
@@ -44,16 +44,16 @@ pim_enrich.entity.family_variant:
   module:
     edit:
       common_attributes: 공통 특성
-      no_common_attributes: 공통 특성이 없습니다
+      no_common_attributes: 공통 특성이 없습니다.
       variant_axis_label: 변형 축
       variant_attributes: 변형 특성
       level_1: 변형 특성 레벨 1
       level_2: 변형 특성 레벨 2
-      description: 선택한 변형 레벨로 특성을 끌어다 놓아 해당 특성이 변형 레벨에서 관리되도록 하십시오
+      description: 선택한 변형 레벨로 특성을 끌어다 놓아 해당 특성이 변형 레벨에서 관리되도록 하십시오.
       attribute_remove: 특성 제거
       attribute_group_remove: 특성 그룹 제거
       confirm_attribute_removal_title: 특성 제거 확인
-      confirm_attribute_removal_message: 해당 특성을 제거하면, 패밀리 변형의 공통 특성에 다시 넣은 후 변형 제품에서 해당 값을 제거하게 됩니다
+      confirm_attribute_removal_message: 해당 특성을 제거하면, 패밀리 변형의 공통 특성에 다시 넣은 후 변형 제품에서 해당 값을 제거하게 됩니다.
     create:
       label: 변형 추가
       title: 새 패밀리 변형 만들기
@@ -69,7 +69,7 @@ pim_enrich.entity.attribute_option:
   flash:
     create:
       success: 특성 옵션 생성됨
-      fail: 특성 옵션을 생성하는 중에 오류가 발생했습니다
+      fail: 특성 옵션을 생성하는 중에 오류가 발생했습니다.
     update:
       fail: 특성 옵션을 저장할 수 없음
     delete:
@@ -78,16 +78,25 @@ pim_enrich.entity.attribute_option:
     edit:
       cancel_title: 수정 취소
       cancel_description: '경고: 저장되지 않은 데이터는 손실됩니다. 이 새로운 옵션에 대한 수정을 취소하시겠습니까?'
-      add_option: 여기를 클릭하여 추가하십시오
+      options_labels: 옵션 레이블
+      options_settings: 옵션 설정
+      options_codes: 옵션 코드
+      option_code: 옵션 코드
+      new_option_code: new_option
+      no_options_msg: 죄송합니다. 옵션이 없습니다.
+      add_option: 여기를 클릭하여 추가하십시오.
+      delete_confirmation_title_msg: 옵션에서 '{{ optionCode }}'을(를) 삭제하시겠습니까?
+      delete_confirmation_subtitle_msg: 이 옵션을 삭제하시겠습니까? 이 작업은 실행 취소할 수 없습니다.
 pim_enrich.entity.association_type:
   label: 연결 유형
   property:
     is_two_way: 양방향 연결
+    is_quantified: 수량 연결
   flash:
     update:
       success: 연결 유형이 업데이트되었습니다.
       fail: 연결 유형을 업데이트할 수 없습니다.
-      fields_not_ready: "이 연결 유형은 현재 저장할 수 없습니다. 다음 필드가 준비되지 않았습니다: {{ fields }}"
+      fields_not_ready: "이 연결 유형은 현재 저장할 수 없습니다. 다음 필드가 준비되지 않았습니다.: {{ fields }}"
     create:
       success: 연결 유형 생성됨
     delete:
@@ -99,16 +108,20 @@ pim_enrich.entity.association_type:
     create:
       title: 새 연결 유형 만들기
       button: 연결 유형 만들기
+      is_two_way:
+        message_on_read_only: 연결 유형은 수량 또는 양방향일 수 있습니다. 이 유형을 선택하려면 다른 유형을 선택 해제하십시오.
+      is_quantified:
+        message_on_read_only: 연결 유형은 수량 또는 양방향일 수 있습니다. 이 유형을 선택하려면 다른 유형을 선택 해제하십시오.
     delete:
       confirm: 이 연결 유형을 삭제하시겠습니까?
-  hint: <a href="{{link}}" target="_blank">이 문서에서</a> 고유한 연결 유형을 만드는 데 필요한 모든 내용을 볼 수 있습니다.
+  hint: <a href="{{link}}' target="_blank">이 문서에서</a> 고유한 연결 유형을 만드는 데 필요한 모든 내용을 볼 수 있습니다.
 pim_enrich.entity.group_type:
   label: 그룹 유형
   flash:
     update:
       success: 그룹 유형이 업데이트되었습니다.
       fail: 그룹 유형을 업데이트할 수 없습니다.
-      fields_not_ready: "이 그룹 유형은 현재 저장할 수 없습니다. 다음 필드가 준비되지 않았습니다: {{ fields }}"
+      fields_not_ready: "이 그룹 유형은 현재 저장할 수 없습니다. 다음 필드가 준비되지 않았습니다.: {{ fields }}"
     create:
       success: 그룹 유형 생성됨
     delete:
@@ -128,7 +141,7 @@ pim_enrich.entity.attribute:
     update:
       success: 특성이 업데이트되었습니다.
       fail: 특성을 업데이트할 수 없습니다.
-      fields_not_ready: "이 특성은 현재 저장할 수 없습니다. 다음 필드가 준비되지 않았습니다: {{ fields }}"
+      fields_not_ready: "이 특성은 현재 저장할 수 없습니다. 다음 필드가 준비되지 않았습니다.: {{ fields }}"
     delete:
       success: 특성 제거됨
       fail: 이 특성을 삭제할 수 없음
@@ -191,7 +204,7 @@ pim_enrich.entity.attribute:
     default_value: 기본값
   module:
     add_attribute:
-      no_available_attributes: 추가할 특성이 더 이상 없습니다
+      no_available_attributes: 추가할 특성이 더 이상 없습니다.
       attributes_selected: "{{ itemsCount }}개 특성 선택됨"
     create:
       button: 특성 만들기
@@ -201,6 +214,13 @@ pim_enrich.entity.attribute:
       validation: 유효성 검사 매개변수
     delete:
       confirm: 이 특성을 삭제하시겠습니까?
+      product_count: '{0}0개 제품|{1}1개 제품|]1, Inf[{{ count }}개 제품'
+      product_model_count: '{0}0개 제품 모델|{1}1개 제품 모델|]1, Inf[{{ count }}개 제품 모델'
+      used: 현재 이 특성에 대해 설정된 값 세트가 있습니다. 이 값이 제거됩니다.
+      helper:
+        content: 기존 특성 값에 계속 액세스하면서 특성 유형을 변경하거나 지역화 또는 확장 가능하도록 만들어야 하는 경우
+        link: 여기에서 다양한 단계를 안내받을 수 있습니다.
+      type: '''{{ attributeCode }}''을(를) 입력하십시오.'
       confirm_from_family: 패밀리에서 이 특성을 삭제하시겠습니까?
       confirm_from_group: 이 특성 그룹에서 {{ attribute }} 특성을 제거하시겠습니까?
       confirm_from_product: 제품에서 이 특성을 삭제하시겠습니까?
@@ -208,6 +228,7 @@ pim_enrich.entity.attribute_group:
   label: 특성 그룹
   uppercase_label: 특성 그룹
   plural_label: 특성 그룹
+  result_count: '{0}0개 특성 그룹|{1}1개 특성 그룹|]1, Inf[{{ count }}개 특성 그룹'
   show_more_attribute:
     title: 여기는 약간 혼잡합니다. {{ attributeCount }}/{{ totalAttributeCount }}개 특성이 표시됩니다.
     subtitle: 이 그룹의 모든 특성을 알아보려면 아래를 클릭하면 됩니다!
@@ -215,8 +236,8 @@ pim_enrich.entity.attribute_group:
   flash:
     update:
       success: 특성 그룹 업데이트됨
-      fail: 특성 그룹을 업데이트할 수 없습니다
-      fields_not_ready: "이 특성 그룹은 현재 저장할 수 없습니다. 다음 필드가 준비되지 않았습니다: {{ fields }}"
+      fail: 특성 그룹을 업데이트할 수 없습니다.
+      fields_not_ready: "이 특성 그룹은 현재 저장할 수 없습니다. 다음 필드가 준비되지 않았습니다.: {{ fields }}"
     delete:
       success: 특성 그룹 제거됨
       fail: 이 특성 그룹을 삭제할 수 없음
@@ -227,6 +248,10 @@ pim_enrich.entity.attribute_group:
       attributes_groups_selected: '{{ itemsCount }}개 그룹 선택됨'
     delete:
       confirm: 이 특성 그룹을 삭제하시겠습니까?
+  grid:
+    columns:
+      name: 특성 그룹 이름
+    no_search_result: 죄송합니다. 검색 결과가 없습니다.
 pim_enrich.mass_edit.family:
   title: 패밀리 일괄 작업
   confirm: "{1}다음 정보로 1개 패밀리를 업데이트하려고 합니다. 확인해주십시오.|]1, Inf[다음 정보로 {{ itemsCount }}개 패밀리를 업데이트하려고 합니다. 확인해주십시오."
@@ -241,7 +266,7 @@ pim_enrich.mass_edit.family:
     confirm:
       label: 확인
     launched:
-      label: 일괄 작업 "{{ operation }}"이(가) 실행되었습니다. 완료되면 알림이 전송됩니다.
+      label: 일괄 작업 '{{ operation }}'이(가) 실행되었습니다. 완료되면 알림이 전송됩니다.
   operation:
     set_requirements:
       label: 특성 요구 사항 설정

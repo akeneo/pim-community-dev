@@ -67,11 +67,13 @@ pim_user:
       username_or_email: Login lub Email
       remember_me: Zapamiętaj mnie na tym komputerze
       password_forgotten: Zapomniałeś hasła?
+      log_in: Zaloguj się
       forgot_password: Zapomniałem hasła
       request: Żądanie
       password_reset: Resetowanie hasła
       reset: Resetuj
       password_reset_email_sent: Wiadomość email została wysłana do użytkownika. Zawiera ona link do resetowania hasła.
+      homepage: Powrót do strony głównej
   group:
     tab:
       general.title: Ogólne
