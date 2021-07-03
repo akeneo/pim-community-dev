@@ -1,0 +1,64 @@
+pimee_catalog_rule:
+  rule_definition:
+    validation:
+      locale:
+        unknown: '"{{ locale_code }}" ロケールは存在しないか、有効になっていません'
+      currency:
+        unknown: '有効な通貨が必要です。"{{ currency }}" 通貨は存在しないか、有効になっていません'
+        missing_key: '"{{ key }}" キーは欠損しているか、空になっています'
+        unexpected_key: '{{ key }} キーは無関係です'
+      measurement:
+        invalid_unit: '"{{ unitCode }}" ユニットコー​​ドは存在しないか、"{{ attributeCode }}" 属性の測定ファミリーに属していません'
+        invalid_attribute_type: '{{ key }} キーは {{ attributeCode }} 属性とは無関係です'
+      attribute:
+        unknown: '"{{ code }}" 属性は存在しません'
+        unexpected_type: '"{{ attribute_code }}" 属性に無効な "{{ invalid_type }}" 属性タイプがあります。{{ expected_types }} の属性が必要です'
+        missing_locale: '"{{ attributeCode }}" 属性にはロケールが必要です'
+        unexpected_locale: '"{{ attributeCode }}" 属性にはロケールは必要ありません。削除してください'
+        unknown_locale: '"{{ attributeCode }}" 属性には既存の有効化されたロケールが必要です。ロケールが存在し、有効になっていることを確認してください'
+        invalid_specific_locale: '"{{ attributeCode }}" 属性はロケール固有であり、次のいずれかのロケールが必要です: {{ expectedLocales }}'
+        locale_not_bound_to_channel: '"{{ channelCode }}" チャンネル に "{{ invalidLocale }}" ロケールはありません'
+        missing_scope: '"{{ attributeCode }}" 属性にはスコープが必要です'
+        unexpected_scope: '"{{ attributeCode }}" 属性にはスコープは必要ありません。削除してください'
+        unknown_scope: '"{{ attributeCode }}" 属性には既存のスコープが必要です'
+      invalid_code: 'ルールコー​​ドには、文字、数字、アンダースコアのみを使用できます'
+      conditions:
+        missing_key: '"conditions" キーは欠損しているか、空になっています'
+        missing_value_key: '"value"  キーは欠損しているか、空になっています'
+        missing_operator_key: '"operator"  キーは欠損しているか、空になっています'
+        existing_field: '"{{ field }}" フィールドをフィルタできないか、"{{ operator }}" オペレータと併用できません'
+        missing_field_key: '"field" キーは欠損しているか、空になっています'
+      actions:
+        missing_key: '"actions" キーは欠損しているか、空になっています'
+        add:
+          invalid_field: '"{{ field }}" フィールドにアイテムを追加することはできません'
+        clear:
+          invalid_field: '"{{ field }}" フィールドからデータを消去することはできません'
+        copy:
+          invalid_fields: '"{{ from_field }}" フィールドから "{{ to_field }}" フィールドにデータをコピーすることはできません'
+          missing_from_field_key: '"from_field" キーは欠損しているか、空になっています'
+          missing_to_field_key: '"to_field" キーは欠損しているか、空になっています'
+        concatenate:
+          invalid_source: '"{{ field }}" フィールドのデータを連結することはできません'
+          missing_source_key: '"field"、"text"、または "new_line" の中から 1 つのキーが必要です。1 つ選択してください'
+          only_one_source_key_expected: '"field"、"text"、または "new_line" の中から 1 つのキーが必要です。1 つのみ選択してください'
+          text_target_does_not_accept_new_line: '"{{ targetField }}" ターゲット属性は改行を受け付けません'
+          unexpected_source_option: '{{ key }} キーは {{ attribute }} 属性とは無関係です'
+          missing_from_key: '"from" キーは欠損しているか、空になっています'
+          missing_to_key: '"to" キーは欠損しているか、空になっています'
+          source_count: 'この値には少なくとも 2 つの要素を含める必要があります'
+        calculate:
+          division_by_zero: 'ゼロによる除算は不可能です'
+          missing_operand_key: '"value" または "field" のいずれかのキーが必要です。両方とも欠損しているか、空になっています'
+          only_one_key_expected: ' "value" または "field" のいずれかのキーが必要です。1 つ選択してください'
+          unexpected_key: '"{{ key }}" キーは無関係です'
+          invalid_operator: 'この値は "加算"、"減算"、"乗算"、または "除算" のいずれかである必要があります'
+        remove:
+          invalid_field: '"{{ field }}" フィールドからアイテムを削除することはできません'
+          include_children_option: '"include_children" オプションは "categories" フィールドにのみ適用できます'
+        set:
+          invalid_field: '"{{ field }}" フィールドにデータを設定することはできません'
+          missing_value_key: '"value"  キーは欠損しているか、空になっています'
+        custom:
+          unkown_type: '不明な操作タイプ'
+          missing_type_key: '"type" キーは欠損しているか、空になっています'

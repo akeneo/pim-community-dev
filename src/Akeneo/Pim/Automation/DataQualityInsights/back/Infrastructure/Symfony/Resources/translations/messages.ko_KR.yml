@@ -3,4 +3,8 @@ akeneo_data_quality_insights:
     consistency: 일관성
   attribute_grid:
     quality_column_label: 품질
+    to_improve_locale: '{{ locale }} 개선 사항'
+  product_grid:
+    filter_label:
+      spelling_quality: 철자 품질
 Consistency: 일관성

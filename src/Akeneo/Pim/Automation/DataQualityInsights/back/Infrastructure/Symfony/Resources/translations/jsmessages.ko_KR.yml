@@ -7,11 +7,17 @@ akeneo_data_quality_insights:
         recommendation: 소문자 문제가 있는 특성
       consistency_spelling:
         recommendation: 철자 문제가 있는 특성
+      consistency_attribute_spelling:
+        recommendation: 철자 실수가 있는 특성 레이블
+      consistency_attribute_option_spelling:
+        recommendation: 오타가 있는 특성 옵션
     axis:
       consistency:
         title: 일관성
         attributes_link: 개선 가능한 모든 특성 표시
         success: 제품 데이터가 완전히 일관됩니다. 축하합니다!
+    messages:
+      add_image_attribute_recommendation: 한 장의 이미지가 열 마디 말보다 강력합니다. 애셋 컬렉션이나 이미지 특성을 추가하여 이 제품의 데이터 품질을 개선하십시오.
   product_edit_form:
     attribute_filter:
       all_improvable_attributes: 개선 가능한 모든 특성
@@ -24,10 +30,58 @@ akeneo_data_quality_insights:
     quality:
       to_improve: 개선하려면
       good: 우수
+      in_progress: 처리중
+      n_a: 해당 사항 없음
+  attribute_edit_form:
+    quality_summary: 이 특성을 개선하면 {{ count }}개 제품의 전반적 품질이 개선됩니다.
+  spellcheck:
+    popover:
+      default_aria_label: 철자 제안
+      aria_label: "다음에 대한 철자 제안: {{ mistake }}"
   dqi_dashboard:
     key_indicators:
+      attributes_to_work_on: '{1}작업 중인 <button>1개의 특성</button>이 있습니다.|]1, 200[작업 중인 <button>{{ count }}개의 특성</button>이 있습니다.|[200, Inf[작업 중인 <button>{{ count }}개 초과한 특성</button>이 있습니다.'
       list:
+        has_image:
+          no_data: 애셋 컬렉션 및 이미지 특성이 비어 있는 것 같습니다. 제품의 품질을 강조하려면 이 주요 지표에 관한 이미지를 업로드해야 합니다.
         attributes_perfect_spelling:
+          title: 올바르게 레이블 지정된 특성
+          no_data: 특성 및 옵션 레이블이 비어 있는 것 같습니다. 특성의 품질을 강조하려면 이 주요 지표에 관한 특성 및 옵션 레이블을 보강해야 합니다.
           messages:
+            first_step:
+              message1: 특성 및 옵션 레이블 문제를 겪고 계십니까? <a href="{{ link }}" target="_blank">여기</a>에서 기본 사항을 다시 확인해보시겠습니까?
+              message2: 특성 및 특성 옵션과 관련하여 도움이 필요하십니까? <a href="{{ link }}" target="_blank">여기<a href="{{ link }}" target="_blank">를 확인해보십시오.
             second_step:
+              message1: 특성 및 옵션 레이블을 자세히 알아보십시오. 이후에 제품의 이미지가 훨씬 개선될 것입니다.
               message2: 문제를 겪고 계신 것 같습니다. 일부 레이블에 작업할 사항이 남아 있습니다.
+            third_step:
+              message1: 거의 끝났습니다. 몇 가지만 더 손보면 준비가 완료됩니다.
+              message2: 일부 특성 및 레이블에 여전히 약간의 작업이 필요하지만 올바른 방향으로 가고 있습니다.
+            perfect_score_step:
+              message1: 카탈로그가 훨씬 읽기 좋아졌습니다. 잘하셨습니다.
+              message2: 특성과 옵션 레이블 작업을 훌륭하게 마치셨습니다.
+        values_perfect_spelling:
+          title: 제품 값 텍스트의 철자가 완벽한 제품
+          no_data: 텍스트 영역이 비어 있는 것 같습니다. 제품의 품질을 강조하려면 이 주요 지표에 관한 텍스트를 보강해야 합니다.
+          messages:
+            first_step:
+              message1: 제품은 올바르게 설명되어야 가치를 발합니다. 철자를 확인해보십시오.
+              message2: 제품을 가장 잘 설명할 수 있는 사람은 여러분입니다. 철자를 자세히 살펴보십시오.
+              message3: 제품 설명은 회사의 이미지이므로 오타를 없애봅시다. 첫인상은 중요하니까요.
+              message4: 실수가 많을수록 나쁜 인상을 주게 됩니다. 철자에 세심하게 주의를 기울이십시오.
+            second_step:
+              message1: 좋은 제품은 이미 있으니 이제 철자만 완벽하면 됩니다.
+              message2: 철자 실수 하나로 고객이 외면할 수 있습니다. 꼼꼼히 살펴보십시오!
+              message3: 일부 제품은 완벽해지려면 조금 더 작업이 필요합니다. 오타를 살펴보십시오.
+            third_step:
+              message1: 완벽한 철자는 실질적 차이를 만듭니다. 거의 다 됐습니다!
+              message2: 철자가 거의 완벽하게 교정되고 있습니다!
+              message3: 완벽한 제품 값을 만들기까지 몇 가지 철자 실수만 남았습니다.
+              message4: 조금만 더 손을 보면 결점 없는 제품 설명을 완성할 수 있습니다!
+            perfect_score_step:
+              message1: 전체 카탈로그의 철자가 완벽합니다. 잘하셨습니다!
+              message2: "제품에 결점이 없다니 인상적입니다!"
+              message3: 철자 실수를 100% 없애셨습니다. 축하합니다!
+  product_grid:
+    filter_label:
+      spelling_quality: 철자 품질

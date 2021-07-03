@@ -119,6 +119,7 @@ pim_asset_manager:
       edit: Edytuj rodzinę
       view: Zobacz rodzinę
       execute_product_link_rules: Wykonaj reguły
+      execute_naming_convention: Wykonaj konwencję nazewnictwa
     permission:
       title: Uprawnienia rodziny zasobów
     title: Zasoby
@@ -150,6 +151,9 @@ pim_asset_manager:
         execute_rules: Wykonaj reguły
         cancel: Anuluj
       execute_naming_convention:
+        confirm_title: Potwierdź wykonanie
+        confirm_content: Czy na pewno chcesz wykonać konwencję nazewnictwa? (może to zająć dużo czasu)
+        execute_naming_convention: Wykonaj konwencję nazewnictwa
         cancel: Anuluj
     properties:
       title: Właściwości rodziny zasobów
@@ -207,6 +211,9 @@ pim_asset_manager:
       execute_product_link_rules:
         success: Reguły linkowania do produktu zostały uruchomione
         fail: Wystąpił błąd podczas próby uruchomienia reguł linkowania produktu
+      execute_naming_convention:
+        success: Uruchomiono konwencję nazewnictwa
+        fail: Wystąpił błąd podczas próby uruchomienia konwencji nazewnictwa
     helper:
       title: Witaj w Menedżerze Zasobów!
       no_asset:
@@ -250,6 +257,7 @@ pim_asset_manager:
       error:
         value: Ups, wydaje się, że wyświetlanie pola "{{ fieldName }}" nie powiodło się. Zobacz konsolę deweloperską, aby uzyskać więcej informacji.
     button:
+      save_and_execute_naming_convention: Zapisz i wykonaj konwencję nazewnictwa
       save: Zapisz
       create: Utwórz zasób
       mass_upload: Masowe przesyłanie
@@ -269,6 +277,7 @@ pim_asset_manager:
         subtitle: 'Aby rozpocząć powiązanie produktów z tą rodziną zasobów, możesz utworzyć nowy: '
         link: Utwórz nowy atrybut produktu
       not_enough_items:
+        title: Możesz zobaczyć tylko {{ productCount }}/{{ totalCount }} produktów.
         subtitle:
           usable_in_grid: Aby odkryć wszystkie powiązane produkty, kliknij poniżej!
           not_usable_in_grid: Aby odkryć wszystkie powiązane produkty, atrybut produktu musi być ustawiony jako „używalny w tabeli”.
@@ -374,6 +383,9 @@ pim_asset_manager:
       delete_all:
         success: Usunięto wszystkie zasoby "{{ entityIdentifier }}".
         fail: Wystąpił błąd podczas usuwania wszystkich zasobów tej rodziny
+      execute_naming_convention:
+        success: Uruchomiono konwencję nazewnictwa
+        fail: Wystąpił błąd podczas wykonywania konwencji nazewnictwa
     completeness:
       label: Zakończone
   attribute:
@@ -494,6 +506,9 @@ pim_asset_manager:
       button:
         cancel: Anuluj
         confirm: Usuń
+  jobs:
+    asset_manager_execute_naming_convention:
+      error: 'Wystąpił błąd konwencji nazewnictwa na zasobie "{{ asset }}"'
 pim_enrich:
   confirmation:
     discard_changes: 'Utracisz wszystkie zmiany w obiekcie "{{ entity }}", jeśli opuścisz tę stronę.'
@@ -525,6 +540,21 @@ pim_import_export:
       job_type:
         asset_manager_compute_transformations: "Wykonaj transformację zasobów"
         asset_manager_link_assets_to_products: "Połącz zasoby z produktami"
+        asset_manager_execute_naming_convention: Wykonaj konwencję nazewnictwa rodziny zasobów
+  form:
+    job_instance:
+      tab:
+        properties:
+          with_prefix_suffix:
+            title: Eksportuj prefiks i sufiks
+            help: Eksportuj prefiksy i sufiksy atrybutów zasobów linków do multimediów
+pim_datagrid:
+  cells:
+    type:
+      asset_manager_execute_naming_convention: Wykonaj konwencję nazewnictwa rodziny zasobów
+batch_jobs:
+  default_steps:
+    execute_naming_convention: Wykonaj konwencję nazewnictwa rodziny zasobów
 job_execution:
   summary:
     assets: Zasoby

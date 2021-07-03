@@ -1,0 +1,5 @@
+pimee_enrich:
+  #ACLs
+  acl:
+    product:
+      duplicate: 商品を複製

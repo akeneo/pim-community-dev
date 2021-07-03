@@ -1,2 +1,9 @@
 user:
   email_notifications: メール通知
+pimee_enrich.entity.product:
+  duplicate:
+    title: 商品 {{ product_identifier }} を複製
+    button: 複製
+    flash:
+      success: 商品 {{ product_identifier }} の複製に成功しました。
+      success_with_attribute_codes: 商品 {{ product_identifier }} の複製に成功しました。{{ unique_attribute_codes }} を一意の値で充実させる必要があります。

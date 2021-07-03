@@ -36,7 +36,7 @@ pimee_catalog_rule:
           invalid_field: 'Impossibile cancellare dati dal campo "{{ field }}"'
         copy:
           invalid_fields: 'Impossibile copiare dati dal campo "{{ from_field }}" al campo "{{ to_field }}"'
-          missing_from_field_key: 'La chiave "campo_da" è mancante o vuota'
+          missing_from_field_key: 'La chiave "from_field" è mancante o vuota'
           missing_to_field_key: 'La chiave "campo_a" è mancante o vuota'
         concatenate:
           invalid_source: 'Impossibile concatenare dati dal campo "{{ field }}"'
@@ -55,7 +55,7 @@ pimee_catalog_rule:
           invalid_operator: 'Questo valore deve essere "aggiungi", "sottrai", "moltiplica" o "dividi"'
         remove:
           invalid_field: 'Impossibile rimuovere elementi dal campo "{{ field }}"'
-          include_children_option: 'L''opzione "includi_figli" può essere applicata solo con il campo "categorie"'
+          include_children_option: 'L''opzione "include_children" può essere applicata solo con il campo "categorie"'
         set:
           invalid_field: 'Impossibile impostare dati nel campo "{{ field }}"'
           missing_value_key: 'La chiave "valore" è mancante o vuota'

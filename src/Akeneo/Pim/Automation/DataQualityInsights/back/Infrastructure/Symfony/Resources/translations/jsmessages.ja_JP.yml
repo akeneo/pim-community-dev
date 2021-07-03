@@ -7,11 +7,17 @@ akeneo_data_quality_insights:
         recommendation: 優先性の低い項目の属性
       consistency_spelling:
         recommendation: つづりが無効な属性
+      consistency_attribute_spelling:
+        recommendation: スペルミスのある属性ラベル
+      consistency_attribute_option_spelling:
+        recommendation: タイポのある属性オプション
     axis:
       consistency:
         title: 一貫性
         attributes_link: 改善できる属性を全て表示
         success: 商品データの一貫性は完璧です。おめでとうございます！
+    messages:
+      add_image_attribute_recommendation: 百聞は画像に如かずです。この商品のデータ品質を改善するには、アセットコレクションか画像の属性を追加してください。
   product_edit_form:
     attribute_filter:
       all_improvable_attributes: 改善できる属性を全て
@@ -24,3 +30,58 @@ akeneo_data_quality_insights:
     quality:
       to_improve: 改善するには
       good: 良い
+      in_progress: 処理中
+      n_a: N/A
+  attribute_edit_form:
+    quality_summary: この属性を強化することによって、{{ count }} 個の商品の全体的な品質を改善します。
+  spellcheck:
+    popover:
+      default_aria_label: スペル修正候補
+      aria_label: "次のスペル修正候補: {{ mistake }}"
+  dqi_dashboard:
+    key_indicators:
+      attributes_to_work_on: '{1}調整が必要な<button>属性が 1 個</button>あります。|]1, 200[調整が必要な<button>属性が {{ count }} 個</button>あります。|[200, Inf[調整が必要な<button>属性が {{ count }} 個以上</button>あります。'
+      list:
+        has_image:
+          no_data: アセットコレクションと画像の属性が空のようです。この指標で商品の品質を強調するには、画像をアップロードする必要があります。
+        attributes_perfect_spelling:
+          title: 適切にラベル付けされた属性
+          no_data: 属性とオプションのラベルが空のようです。この指標で属性の品質を強調するには、それらを充実させる必要があります。
+          messages:
+            first_step:
+              message1: 属性とオプションのラベルで戸惑っていますか？<a href="{{ link }}" target="_blank">こちら</a>で基本を確認してみませんか？
+              message2: 属性と属性のオプションについてヘルプが必要ですか？<a href="{{ link }}" target="_blank">こちら<a href="{{ link }}" target="_blank">をご覧ください！
+            second_step:
+              message1: 属性とオプションのラベルを詳しく見てみましょう。商品が改善されます。
+              message2: どこかでコントロールを失ったようです！一部のラベルをまだ調整する必要があります。
+            third_step:
+              message1: あともう少し！最後の仕上げを行えば、完了です。
+              message2: 一部の属性とラベルにはもう少し調整が必要ですが、正しい方向に進んでいます。
+            perfect_score_step:
+              message1: カタログは準備完了です！よく頑張りました！
+              message2: 属性とオプションラベルは完成です！
+        values_perfect_spelling:
+          title: テキスト商品値のスペルが完璧な商品
+          no_data: テキストエリアが空のようです。この指標で商品の品質を強調するには、エキスとエリアを充実させる必要があります。
+          messages:
+            first_step:
+              message1: 商品の記載は適切であることが大切です。スペルをチェックしてください！
+              message2: 商品をよく知っているのはあなた自身。スペルをよく確認しましょう。
+              message3: 商品の説明は会社のイメージです。タイポを取り除きましょう！第一印象は大事です。
+              message4: ミスが多いほど、印象も悪くなります。スペルに十分な注意を払ってください。
+            second_step:
+              message1: 商品はすでに素晴らしいですが、スペルには修正が必要です！
+              message2: スペルミスがお客様を遠ざけるかもしれません。徹底しましょう！
+              message3: 完璧にするには一部の商品にもう少し調整が必要です。タイポに気を付けましょう！
+            third_step:
+              message1: スペルが正しいだけで、大きく変わります。もう少しです！
+              message2: あともう一歩です。完璧なスペルに近づいています！
+              message3: スペルミスは残り数個。完璧な商品値までわずかです。
+              message4: 商品の説明がピカピカになるまでもう少しです。頑張って！
+            perfect_score_step:
+              message1: カタログ中、完璧なスペルでいっぱいです。よくできました！
+              message2: "商品はピカピカです！お見事！"
+              message3: スペルミスを 100% 見事に排除しました。おめでとうございます！
+  product_grid:
+    filter_label:
+      spelling_quality: スペルの品質

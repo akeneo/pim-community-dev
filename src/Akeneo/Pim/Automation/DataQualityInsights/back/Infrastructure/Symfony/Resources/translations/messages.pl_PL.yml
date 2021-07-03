@@ -1,4 +1,10 @@
 akeneo_data_quality_insights:
   axis:
     consistency: Spójność
+  attribute_grid:
+    quality_column_label: Jakość
+    to_improve_locale: 'Aby ulepszyć w wersji językowej: {{ locale }}'
+  product_grid:
+    filter_label:
+      spelling_quality: Jakość pisowni
 Consistency: Spójność
