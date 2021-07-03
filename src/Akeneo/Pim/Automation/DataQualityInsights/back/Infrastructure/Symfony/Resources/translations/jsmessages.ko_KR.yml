@@ -50,7 +50,6 @@ akeneo_data_quality_insights:
           messages:
             first_step:
               message1: 특성 및 옵션 레이블 문제를 겪고 계십니까? <a href="{{ link }}" target="_blank">여기</a>에서 기본 사항을 다시 확인해보시겠습니까?
-              message2: 특성 및 특성 옵션과 관련하여 도움이 필요하십니까? <a href="{{ link }}" target="_blank">여기<a href="{{ link }}" target="_blank">를 확인해보십시오.
             second_step:
               message1: 특성 및 옵션 레이블을 자세히 알아보십시오. 이후에 제품의 이미지가 훨씬 개선될 것입니다.
               message2: 문제를 겪고 계신 것 같습니다. 일부 레이블에 작업할 사항이 남아 있습니다.
