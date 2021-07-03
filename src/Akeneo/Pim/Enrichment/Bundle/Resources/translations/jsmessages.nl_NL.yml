@@ -313,6 +313,7 @@ pim_enrich.mass_edit.product:
       label: Verplaats tussen categorieën
       label_count: "{1}Verplaats <span class=\"AknFullPage-title--highlight\">product</span> tussen categorieën|]1, Inf[Verplaats <span class=\"AknFullPage-title--highlight\">{{ itemsCount }} producten</span> tussen categorieën"
       description: De producten zullen worden geclassificeerd in de volgende categorieën. De bestaande classificatie gaat verloren.
+      no_update: Selecteer een categorie.
     remove_from_category:
       label: Verwijder uit categorieën
       label_count: "{1}Verwijder <span class=\"AknFullPage-title--highlight\">product</span> van categorieën|]1, Inf[Verwijder <span class=\"AknFullPage-title--highlight\">{{ itemsCount }} producten</span> van categorieën"

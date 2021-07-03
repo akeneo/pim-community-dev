@@ -313,6 +313,7 @@ pim_enrich.mass_edit.product:
       label: Przenieś pomiędzy kategoriami
       label_count: "{1}Przenieś <span class=\"AknFullPage-title--highlight\">1 produkt</span> pomiędzy kategoriami|]1, Inf[Move <span class=\"AknFullPage-title--highlight\">{{ itemsCount }} produkty</span> pomiędzy kategoriami"
       description: Produkt będzie przydzielony do następujących kategorii, istniejące przydzielenie zostanie utracone.
+      no_update: Wybierz kategorię.
     remove_from_category:
       label: Usuń z kategorii
       label_count: "{1}Usuń <span class=\"AknFullPage-title--highlight\">1 produkt</span> z kategorii|]1, Inf[Usuń <span class=\"AknFullPage-title--highlight\">{{ itemsCount }} produktów</span> z kategorii"
@@ -334,6 +335,7 @@ pim_enrich.mass_edit.product:
       description: Element nadrzędny wariantu produktów lub modele produktu podrzędnego zaznaczone w siatce zostaną zmienione na wybrany model produktu.
 pim_datagrid:
   search: "Szukaj w {{label}}"
+  no_entities: "Nie znaleziono {{ entityHint }}"
   mass_action_group:
     bulk_actions:
       label: Działania zbiorcze
