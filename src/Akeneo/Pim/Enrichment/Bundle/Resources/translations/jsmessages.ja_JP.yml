@@ -314,6 +314,7 @@ pim_enrich.mass_edit.product:
       label: カテゴリ間を移動
       label_count: "{1}<span class=\"AknFullPage-title--highlight\">１商品</span>をカテゴリ内で移動|] 1、 Inf[<span class=\"AknFullPage-title--highlight\">{{ itemsCount }}商品</span>をカテゴリ内で移動"
       description: 商品は以下のカテゴリに分類され、既存の分類は削除されます。
+      no_update: カテゴリを選択してください。
     remove_from_category:
       label: カテゴリから削除
       label_count: "{1}<span class=\"AknFullPage-title--highlight\">1商品</span>をカテゴリから削除|] 1、Inf[<span class=\"AknFullPage-title--highlight\">{{ itemsCount }}商品</span>をカテゴリから削除"

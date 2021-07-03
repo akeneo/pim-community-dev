@@ -1,6 +1,7 @@
 pim_notification:
   types:
     settings: Ustawienia
+    mass_delete: Usuwanie
 flash:
   comment:
     create:
@@ -313,6 +314,7 @@ pim_enrich.mass_edit.product:
       label: Przenieś pomiędzy kategoriami
       label_count: "{1}Przenieś <span class=\"AknFullPage-title--highlight\">1 produkt</span> pomiędzy kategoriami|]1, Inf[Move <span class=\"AknFullPage-title--highlight\">{{ itemsCount }} produkty</span> pomiędzy kategoriami"
       description: Produkt będzie przydzielony do następujących kategorii, istniejące przydzielenie zostanie utracone.
+      no_update: Wybierz kategorię.
     remove_from_category:
       label: Usuń z kategorii
       label_count: "{1}Usuń <span class=\"AknFullPage-title--highlight\">1 produkt</span> z kategorii|]1, Inf[Usuń <span class=\"AknFullPage-title--highlight\">{{ itemsCount }} produktów</span> z kategorii"
@@ -333,6 +335,7 @@ pim_enrich.mass_edit.product:
       label_count: "{1}Zmień nadrzędny model produktu <span class=\"AknFullPage-title--highlight\">1 produktu</span>|]1, Inf[Zmień nadrzędny model produktu <span class=\"AknFullPage-title--highlight\">{{ itemsCount }} produktów</span>"
       description: Element nadrzędny wariantu produktów lub modele produktu podrzędnego zaznaczone w siatce zostaną zmienione na wybrany model produktu.
 pim_datagrid:
+  no_entities: "Nie znaleziono {{ entityHint }}"
   mass_action_group:
     bulk_actions:
       label: Działania zbiorcze
@@ -429,3 +432,5 @@ batch_jobs:
     quick_export.label: Szybki eksport produktu do XLSX
     quick_export_product_model.label: Szybki eksport modelu produktu do XLSX
     perform.label: Szybki eksport produktu do XLSX
+  default_steps:
+    delete_products_and_product_models: Usuń produkty i modele produktów

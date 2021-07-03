@@ -74,6 +74,7 @@ pim_enrich:
       quick_export:
         launched_flash: Der Produkt-Export wird derzeit ausgeführt
 category:
+  create: Eine Kategorie anlegen
   edit: Kategorie bearbeiten
   overview: Kategorien
 tree:

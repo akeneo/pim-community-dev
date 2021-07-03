@@ -74,6 +74,7 @@ pim_enrich:
       quick_export:
         launched_flash: Zadanie eksportu produktów jest aktualnie wykonywane
 category:
+  create: Utwórz kategorię
   edit: Edytuj kategorię
   overview: Kategorie
 tree:
