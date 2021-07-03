@@ -25,6 +25,7 @@ pimee_workflow:
       modal.title: コメントを残す (オプションとして255 文字まで)
   proposal:
     overview: "]-Inf, 1]{{ count }} 提案|]1, Inf[{{ count }} 提案"
+    selected: "]-Inf, 1]{{ count }} 個の提案を選択済み|]1, Inf[{{ count }} 個の提案を選択済み"
     mass_action_group:
       review:
         label: 一括アクション
@@ -84,6 +85,9 @@ batch_jobs:
     perform.label: XSLX公開商品の一覧表コンテキストのクイックエクスポート
   publish_product:
     perform.label: 商品を公開
+  default_steps:
+    clean_attribute:
+      clean_draft: 提案を消去中
 pim_notification:
   types:
     pimee_workflow_product_draft_notification_new_proposal: 新規提案
@@ -110,6 +114,7 @@ pimee_enrich.entity.product:
       published: 公開済
       revert: 復元
     attribute:
+      can_be_updated_by_a_rule: "]-Inf, 1]この属性は次のルールで更新できます:|]1, +Inf[この属性は次のルールで更新できます:"
       value_updated: この値は現在の下書きによって更新されています
     meta:
       published_version: 公開済バージョン

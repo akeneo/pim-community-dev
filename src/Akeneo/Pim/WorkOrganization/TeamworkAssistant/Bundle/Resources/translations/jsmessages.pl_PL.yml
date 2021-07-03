@@ -66,3 +66,4 @@ pim_notification:
     project_created: Nowy projekt dla Ciebie
     project_finished: Projekt zakończony
     project_calculation: Obliczanie projektu
+    project_due_date: Termin realizacji projektu

@@ -6,11 +6,16 @@ pimee_catalog_rule:
       title: 규칙
       column:
         label: 레이블
+        impacted_product_count:
+          label: 영향받는 제품
+          count: '{0,1}%count%개 영향받는 제품|]1,Inf[%count%개 영향받는 제품'
+          no_yet_calculated: 아직 계산되지 않았습니다.
         tags:
           label: 작업
         priority: 우선순위
         status: 상태
       mass_edit_action:
+        impacted_product_count: 영향받는 제품 계산
         execute: 실행
         delete: 삭제
   condition:
@@ -36,6 +41,8 @@ pimee_catalog_rule:
       edit_permissions: 규칙 수정
       view_permissions: 규칙 보기
       delete_permissions: 규칙 삭제
+      impacted_product_count_permissions: 규칙에 영향받는 제품의 수 계산
+      create_permissions: 규칙 만들기
       execute_permissions: 규칙 실행
   attribute:
     tab:
@@ -45,14 +52,29 @@ pimee_catalog_rule:
     acl:
       rule.view_permissions: 규칙 보기
   product:
-    history: 규칙 "%rule%" 적용됨
+    history: 규칙 '%rule%' 적용됨
   steps:
+    product_rule_definition_reader.title: 제품 규칙 가져오기 리더
+    rule_definition_processor.title: 제품 규칙 가져오기 프로세서
+    product_rule_definition_writer.title: 제품 규칙 가져오기 라이터
     rules_execution.title: 규칙 실행
   notification:
     execute_rules:
-      error: 규칙을 실행하는 중에 오류가 발생했습니다
+      success: 규칙 실행 완료
+      warning: 경고와 함께 규칙 실행 완료
+      error: 규칙을 실행하는 중에 오류가 발생했습니다.
+    mass_edit_rule:
+      success: 규칙의 영향받는 제품 계산 완료
+      error: 규칙에 영향받는 제품의 수를 계산하는 동안 오류가 발생했습니다.
   datetime:
     now: 지금
+    relative_date:
+      minute: ']-Inf, -1[%absolute_count%분 전|{-1}1분 전|{1}1분 후|]1, +Inf[%absolute_count%분 후'
+      hour: ']-Inf, -1[%absolute_count%시간 전|{-1}1시간 전|{1}1시간 후|]1, +Inf[%absolute_count%시간 후'
+      day: ']-Inf, -1[%absolute_count%일 전|{-1}1일 전|{1}1일 후|]1, +Inf[%absolute_count%일 후'
+      week: ']-Inf, -1[%absolute_count%주 전|{-1}1주 전|{1}1주 후|]1, +Inf[%absolute_count%주 후'
+      month: ']-Inf, -1[%absolute_count%개월 전|{-1}1개월 전|{1}1개월 후|]1, +Inf[%absolute_count%개월 후'
+      year: ']-Inf, -1[%absolute_count%년 전|{-1}1년 전|{1}1년 후|]1, +Inf[%absolute_count%년 후'
   status:
     enabled: 활성화됨
     disabled: 비활성화됨
@@ -61,6 +83,12 @@ btn:
 job_execution:
   summary:
     rule_calculated: 규칙 수
+    read_rules: 읽기 규칙
+    selected_entities: 선택한 제품/제품 모델
+    skipped_invalid: 건너뛴 제품/제품 모델(유효하지 않음)
+    updated_entities: 업데이트된 제품/제품 모델
+    executed_rules: 실행 완료된 규칙
+    errored_rules: 건너뛴 규칙(유효하지 않음)
 pim_datagrid:
   cells:
     type:

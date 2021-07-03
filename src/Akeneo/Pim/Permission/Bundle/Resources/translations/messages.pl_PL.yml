@@ -12,7 +12,7 @@ edit_common_attributes_with_permission: Edytuj atrybuty z uprawnieniami
 edit_common_attributes_with_permission.steps.edit_common_attributes_processor.title: Edytuj atrybuty z uprawnieniami
 pim_analytics:
   info_type:
-    nb_custom_locale_accesses: Liczba niestandardowych dostępów do ustawień katalogów
+    nb_custom_locale_accesses: Liczba dostępów do niestandardowych wersji językowych
     nb_custom_category_accesses: Liczba niestandardowych dostępów do ustawień katalogów
     nb_custom_attribute_group_accesses: Liczba niestandardowych dostępów do ustawień katalogów
 job_profile.permissions:
@@ -75,6 +75,7 @@ pim_enrich:
     edit_common_attributes:
       message:
         error: Nie jesteś właścicielem produktu, nie możesz go edytować.
+To be able to convert this variant product you need to have the 'Own' permission on its categories.: "Aby móc skonwertować ten produkt z wariantami, musisz mieć uprawnienie 'Własność' w jego kategoriach."
 pimee_enrich:
   attribute_group:
     tab:

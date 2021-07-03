@@ -1,4 +1,10 @@
 akeneo_data_quality_insights:
   axis:
     consistency: 一貫性
+  attribute_grid:
+    quality_column_label: 品質
+    to_improve_locale: '{{ locale }} の改善'
+  product_grid:
+    filter_label:
+      spelling_quality: スペルの品質
 Consistency: 一貫性

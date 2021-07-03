@@ -1,17 +1,25 @@
 pimee_catalog_rule:
   overview: "]-Inf, 1]{{ count }} reguła|]1, Inf[{{ count }} reguł"
   execution_button: Wykonywanie reguł
+  selected: "]-Inf, 1]{{ count }} wybrana reguła|]1, Inf[{{ count }} wybranych reguł"
+  dropdown:
+    title: Inne działania
   popin:
     execute_rules:
       confirm_title: Potwierdź wykonanie
+      confirm_content: Czy na pewno chcesz wykonać te reguły? (może to zająć trochę czasu)
   notification:
+    fail: Działanie nie zostało wykonane
     launched: Wykonywanie reguł zostało rozpoczęte. Zostaniesz powiadomiony, kiedy zostanie zakończone.
   attribute:
     list:
       code.label: Pod Produktu
       condition.label: Stan
       action.label: Działanie
+      no_rule_yet.label: Aktualnie brak reguł
   rule:
+    value: Wartość
+    include_children: Dołącz elementy podrzędne
     condition:
       if.label: jeżeli
     action:
@@ -30,9 +38,11 @@ pimee_catalog_rule:
           confirm_content: Czy na pewno chcesz wykonać regułę?
       mass_edit_action:
         confirm_title: Potwierdź obliczenie
+        confirm_content: Czy na pewno chcesz obliczyć liczbę produktów objętych tymi regułami?
       mass_action:
         execute:
           confirm_title: Potwierdź wykonanie
+          confirm_content: Czy na pewno chcesz wykonać te reguły? (może to zająć trochę czasu)
           success: Wykonywanie reguł zostało rozpoczęte. Zostaniesz powiadomiony, kiedy zostanie zakończone.
           error: Wystąpił błąd podczas wykonywania reguł.
           empty_selection: Nie wybrano reguł.
@@ -43,6 +53,21 @@ pimee_catalog_rule:
           error: Wystąpił błąd podczas usuwania reguł.
           empty_selection: Nie wybrano reguł.
   form:
+    category:
+      catalog: Katalog
+      select: Wybierz kategorię
+      open_tree: Otwórz drzewo kategorii
+      tree: Drzewo kategorii
+      menu: Wybierz drzewo kategorii
+      folder:
+        selected: Wybrany folder
+        not_selected: Folder
+      folders:
+        selected: Wybrane foldery
+        not_selected: Foldery
+      arrow:
+        open: Otwórz kategorię pośrednią
+        close: Zamknij kategorię pośrednią
     tab:
       list: Zakładki konstruktora reguł i właściwości
       rule_builder: Konstruktor reguł
@@ -51,28 +76,204 @@ pimee_catalog_rule:
         rules:
           title: Reguły
     creation:
+      helper: Silnik reguł może radykalnie zwiększyć wydajność PIM poprzez automatyzację działań,
       english_flag: Etykieta dla języka angielskiego
       title: Utwórz nową regułę
       notification:
         success: Reguła utworzona pomyślnie
         failed: Tworzenie reguły nie powiodło się
+      constraint:
+        code:
+          required: Wymagany jest kod reguły.
+          too_short: "Kod reguły jest zbyt krótki. Wymagana minimalna liczba znaków: {{ characterLimit }}."
+          allowed_characters: Kod reguły może zawierać wyłącznie znaki alfanumeryczne i podkreślenia.
+          unique: Ten kod jest używany.
       cross_link: Opuść formularz tworzenia reguły
     edit:
+      header:
+        welcome: Witaj w nowym obszarze silnika reguł!
+        description: Aby utworzyć regułę, zdefiniuj wybór produktów, a następnie dodaj jedno lub kilka działań.
+        documentation_link: Aby odkryć pełen zakres możliwości silnika reguł, kliknij tutaj.
       properties:
         section:
           general: Parametry ogólne
           labels: Tłumaczenia etykiety
+      character_left: "]-Inf, 1]{{ count }} znak pozostał|]1, +Inf[{{ count }} pozostałych znaków"
       priority:
         label: Priorytet
+      status:
+        label: Status
+        enabled: Włączona
+        disabled: Wyłączona
       add_to_category: Dodaj do kategorii
       add_conditions: Dodaj warunki
+      products_count:
+        products: "]-Inf, 1]{{ count }} produkt|]1, +Inf[{{ count }} produktów"
+        product_models: "]-Inf, 1]{{ count }} model produktu|]1, +Inf[{{ count }} modeli produktu"
+        products_and_product_models: "{{ products }} i {{ product_models }}"
+        pending: Obliczanie produktów i modeli produktów
+        error: Nie można obliczyć produktów ani modeli produktów
       product_selection: Wybór produktu
+      preview: Podgląd
       fields:
         family: Rodzina
+        family_variant: Wariant rodziny
+        category: Kategoria
+        identifier: Identyfikator
+        attribute: Atrybut
+        groups: Grupy
+        parent: Element nadrzędny
+        measurement_unit: Jednostka miary
+        measurement_default_unit: "Jednostka domyślna ({{ unit }})"
+        currency: Waluta
+        operator: operator
+        entity_type:
+          label: Typ obiektu
+          placeholder: Wybierz typ obiektu
+      execute:
+        button: Zapisz i wykonaj
+        title: Zapisz i wykonaj regułę
+        description: Zapisz bieżącą regułę i uruchom ją w tle. Po zakończeniu otrzymasz powiadomienie.
+      duplicate:
+        button: Zapisz i powiel
+        title: Powiel regułę "{{ originalRuleCode }}"
       actions:
+        add_action: Dodaj działanie
+        add_category:
+          title: DODAJ Kategorie
+          helper: Aby dodać wybrane produkty do jednej lub więcej kategorii, zacznij od wyboru drzew kategorii, a następnie kategorii
+        add_groups:
+          title: DODAJ Produkty do grup
+          helper: Aby dodać produkty do grup, wybierz jedną lub kilka grup
+          subtitle: Wybierz grupy
+        set_groups:
+          title: USTAW Grupy produktów
+          helper: Aby ustawić grupy produktów, wybierz jedną lub kilka grup
+          subtitle: Wybierz grupy
+        set_category:
+          title: USTAW Kategorie
+          helper: Aby ustawić wybrane produkty do jednej lub więcej kategorii, zacznij od wyboru drzew kategorii, a następnie kategorii
+        category:
+          select_category_trees: Wybierz drzewa kategorii
+          select_category_tree: Wybierz drzewo kategorii
+          select_categories: Wybierz kategorie
+          select_category: Wybierz kategorię
+          category_tree: Drzewo kategorii
+          categories_selected: "]-Inf, 1]{{ count }} wybrana kategoria|]1, Inf[{{ count }} wybranych kategorii"
+          no_category_tree: Najpierw wybierz drzewo kategorii
+          remove_unknown_category: " Aby usunąć tę kategorię, kliknij tutaj."
+        set_family:
+          title: USTAW Rodzinę
+          subtitle: Wybierz rodzinę
+        set_attribute:
+          title: USTAW wartość Atrybutu
+          helper: Aby ustawić wartości atrybutu, zacznij od wybrania atrybutu docelowego, a następnie wybierz wartości do ustawienia.
+          target_subtitle: Wybierz cel
+          value_subtitle: Zdefiniuj wartość
+          attribute_label: Atrybut
+          attribute_placeholder: Wybierz atrybut docelowy
+          select_reference_entity: Wybierz obiekty referencyjne
+          select_asset: Wybierz zasoby
+          select_measurement_unit: Wybierz jednostkę
+        set_quantified_associations:
+          title: USTAW Powiązania ilościowe
+          helper: Aby ustawić powiązania ilościowe, wybierz typy powiązań, a następnie produkty, modele produktów lub grupy, które chcesz powiązać z wyborem produktów.
+        set_associations:
+          title: USTAW Powiązania
+          helper: Aby ustawić powiązania, wybierz typy powiązań, a następnie produkty, modele produktów lub grupy, które chcesz powiązać z wyborem produktów.
+          select_association_type: Wybierz typ powiązania
+          association_types: Typy powiązań
+          add_group: Dodaj grupę
+          add_product: Dodaj produkt
+          add_product_model: Dodaj model produktu
+          add_association_type: Dodaj typ powiązania
+          select_title:
+            products: Wybierz produkty 
+            product_models: Wybierz modele produktów
+            groups: Wybierz grupy
+          select:
+            products: Produkty
+            product_models: Modele produktów
+            groups: Grupy
+          counts:
+            products: ']-Inf, 1]{{ count }} produkt|]1, +Inf[{{ count }} produktów'
+            product_models: ']-Inf, 1]{{ count }} model produktu|]1, +Inf[{{ count }} modeli produktu'
+            groups: ']-Inf, 1]{{ count }} grupa|]1, +Inf[{{ count }} grup'
+        add_associations:
+          title: DODAJ Powiązania
+          helper: Aby dodać powiązania, wybierz typy powiązań, a następnie produkty, modele produktów lub grupy, które chcesz powiązać z wyborem produktów.
+        clear_attribute:
+          title: WYCZYŚĆ wartość Atrybutu
+          subtitle: Wybierz atrybut do wyczyszczenia
+          attribute_label: Atrybut
+        clear_associations:
+          title: WYCZYŚĆ powiązania
+          helper: Wszystkie powiązania dla wybranych produktów zostaną wyczyszczone.
+        clear_quantified_associations:
+          title: WYCZYŚĆ Powiązania ilościowe
+          helper: Wszystkie powiązania ilościowe dla wybranych produktów zostaną wyczyszczone.
+        clear_categories:
+          title: WYCZYŚĆ Kategorie
+        clear_groups:
+          title: WYCZYŚĆ Grupy
+        remove_category:
+          title: USUŃ Kategorie
+          helper: Aby usunąć wybrane produkty z jednej lub więcej kategorii, zacznij od wyboru drzew kategorii, a następnie kategorii
+        remove_attribute_value:
+          title: USUŃ wartość Atrybutu
+          helper: Aby usunąć wartości z atrybutu, zacznij od wybrania atrybutu docelowego, a następnie wybierz wartości do usunięcia.
+          value_subtitle: Zdefiniuj wartości do usunięcia
+        add_attribute_value:
+          title: DODAJ wartość Atrybutu
+          helper: Aby dodać wartości do atrybutu, zacznij od wybrania atrybutu docelowego, a następnie wybierz wartości do dodania.
+          value_subtitle: Zdefiniuj wartości do dodania
+        copy:
+          title: SKOPIUJ wartość Atrybutu
+          helper: Aby skopiować wartości z jednego atrybutu do innego, zacznij od wybrania atrybutu źródłowego, a następnie wybierz atrybut docelowy.
+          select_source: Wybierz źródło
+          select_target: Wybierz cel
+          no_source: Najpierw wybierz atrybut źródłowy
         delete:
           label: Usuń akcję
           description: Czy na pewno chcesz usunąć tę akcję?
+        set_status:
+          title: USTAW Status
+          subtitle: Zdefiniuj status
+          helper: Aby ustawiać statusy dla produktów, wybieraj statusy z poniższej listy
+          placeholder: Wybierz status
+        remove_groups:
+          title: USUŃ produkty z grup
+          helper: Aby usuwać produkty z grup, wybierz jedną lub kilka grup
+          subtitle: Wybierz grupy
+        calculate:
+          title: OBLICZ wartości
+          helper: Aby obliczyć wartości atrybutów numerycznych, wybierz atrybuty i/lub wartości, a następnie wybierz atrybut docelowy, w którym chcesz umieścić wynik. W razie potrzeby wynik końcowy można również zaokrąglić.
+          add_value: Dodaj wartość
+          add_attribute: Dodaj atrybut
+          select_target: Wybierz cel
+          attribute_placeholder: Wybierz atrybut docelowy
+          round_precision: Dokładność zaokrąglania
+          operator:
+            add: Dodaj
+            subtract: Odejmij
+            multiply: Pomnóż
+            divide: Podziel
+            choose: Wybierz operatora
+        concatenate:
+          title: SKONKATENUJ wartości
+          helper: Aby skonkatenować wartości atrybutów, dodaj atrybuty, a następnie wybierz atrybut docelowy.
+          select_target: Wybierz cel
+          attribute_placeholder: Wybierz atrybut docelowy
+          add_text: Dodaj tekst
+          add_attribute: Dodaj atrybut
+          add_new_line: Dodaj podział wiersza
+          line_break: Podział wiersza
+          date_format: Wybierz format daty
+          label_locale: Wersja językowa etykiety
+          unit_label_locale: Wersja językowa jednostki
+          remove_new_line_confirm:
+            label: Usuń podział wiersza z listy operacji
+            description: Nowy atrybut docelowy nie akceptuje podziałów wierszy. Ta zmiana usunie wszystkie podziały wierszy.
       conditions:
         delete:
           label: Usuń warunek
@@ -93,6 +294,7 @@ pimee_catalog_rule:
           "BETWEEN": pomiędzy
           "NOT BETWEEN": nie pomiędzy
           "=": równa się
+          "!=": nie równa się
           ">": większy niż
           ">=": równa lub większa niż
           "<": mniej niż
@@ -100,30 +302,134 @@ pimee_catalog_rule:
       notification:
         success: Reguła została pomyślnie zaktualizowana
         failed: Aktualizacja reguły nie powiodła się
+        execute_success: Reguła została zaktualizowana i wykonana
+        execute_failed: Reguła została zapisana, ale wystąpił błąd podczas wykonywania
+      discard_changes: Jeśli opuścisz stronę, zmiany zostaną utracone.
+      please_select_attribute: Najpierw wybierz atrybut docelowy.
+      unhandled_attribute_type: Przepraszamy, ten typ atrybutu nie jest jeszcze zarządzany. Użyj importu reguł.
+      empty_section:
+        set_up_action: Dobra robota! Zdefiniowano wybór produktów. Nadszedł czas, aby skonfigurować działania.
+        set_up_condition: Jeśli nie chcesz wpływać na cały katalog, dodaj co najmniej jeden warunek.
+        add_action: Następnie dodaj jedno lub kilka działań do zastosowania na produktach/modelach produktów.
+        doc: Nie wiesz czym jest działanie?
+        doc_link: Ten artykuł może Ci pomóc.
+    delete:
+      description: Czy na pewno chcesz usunąć tą regułę? Tego działania nie można cofnąć.
+      notification:
+        failed: Usunięcie reguły nie powiodło się
+        success: Usunięto regułę
     helper:
+      add_to_category: Aby dodać wybrane produkty do jednej lub więcej kategorii, zacznij od wyboru drzew kategorii, a następnie kategorii.
+      clear_attribute: Aby wyczyścić wartość atrybutu, zacznij od wybrania atrybutu do wyczyszczenia.
+      clear_categories: Wszystkie kategorie dla wybranych produktów zostaną wyczyszczone.
+      clear_groups: Wszystkie grupy dla wybranych produktów zostaną wyczyszczone.
       product_selection: "Musisz zdefiniować wybór produktu, aby utworzyć regułę. Jeśli nie wiesz jak to zrobić, "
       product_selection_doc_link: spójrz na ten artykuł.
+      set_attribute_info_clear: Musisz zdefiniować wartość do ustawienia. Jeśli chcesz wyczyścić wartość atrybutu, użyj działania "Wyczyść wartość atrybutu".
     legend:
       add_to_category: Utwórz akcję
       product_selection: Utwórz warunek
+    tree:
+      item:
+        selected: Wybrana pozycja
+        not_selected: Wybierz pozycję
+    date:
+      operators:
+        specific_date: Określona data
+      label:
+        date_type: Wybierz typ daty
+        operator: Wybierz operatora
+        date: Wybierz datę
+        relative_date: Wybierz datę
+        locale: Wybierz wersję językową
+        scope: Wybierz zakres
+        period: Wybierz jednostkę czasu
+        open_period: Otwórz menu jednostki czasu
+        date_from: Wybierz datę początkową
+        date_to: Wybierz datę końcową
+        date_past: Data z przeszłości
+        date_future: Data z przyszłości
+        date_present: Teraz
+      day: "]-Inf, 1] dzień|]1, +Inf[ dni"
+      week: "]-Inf, 1] tydzień|]1, +Inf[ tyg."
+      month: "]-Inf, 1] miesiąc]1, +Inf[ mies."
+      year: "]-Inf, 1] rok|]1, +Inf[ lat(a)"
+      hour: "]-Inf, 1] godzina|]1, +Inf[ godz."
+      minute: "]-Inf, 1] minuta|]1, +Inf[ min"
   exceptions:
     loading: Wystąpił błąd podczas ładowania definicji reguły.
+    required: To pole jest wymagane
+    required_attribute: Atrybut jest wymagany
+    required_locale: Dla atrybutu {{ attributeLabel }} wymagana jest wersja językowa
+    required_scope: Dla atrybutu {{ attributeLabel }} wymagany jest kanał
+    required_currency: Dla atrybutu {{ attributeLabel }} wymagana jest waluta
+    required_locale_completeness: Dla kompletności wymagana jest wersja językowa
+    required_scope_completeness: Dla kompletności wymagany jest kanał
+    required_value: Dla tego działania wymagana jest wartość
+    required_categories: Dla tego działania wymagana jest co najmniej jedna kategoria
+    required_constant_for_operation: Dla tej operacji wymagana jest wartość stała.
+    required_operator_for_operation: Dla tej operacji wymagany jest operator
+    required_unit: Wymagana jest jednostka miary
+    identifier_or_quantity_missing: Dla każdego elementu wymagane są identyfikator i ilość
+    required_item: Dla tego działania wymagana jest przynajmniej jedna pozycja
+    division_by_zero: Dzielenie przez zero jest niemożliwe
+    two_operations_are_required: Lista operacji powinna zawierać co najmniej 2 operacje.
+    two_items_are_required: Lista powinna zawierać co najmniej 2 pozycje.
+    unknown_or_inactive_locale: 'Wersja językowa "{{ localeCode }}" nie istnieje lub nie jest aktywna'
+    unknown_or_inactive_currency: 'Waluta "{{ currencyCode }}" nie istnieje lub nie jest aktywna'
+    unbound_locale: 'Wersja językowa "{{ localeCode }}" nie jest aktywna w kanale "{{ channelCode }}"'
+    unbound_currency: 'Waluta "{{ currencyCode }} nie jest aktywna w kanale "{{ channelCode }}"'
+    locale_on_unlocalizable_attribute: Ten atrybut nie jest tłumaczony. Przed przejściem dalej usuń tłumaczenie.
+    unknown_scope: 'Kanał "{{ scopeCode }}" nie istnieje'
+    scope_on_unscopable_attribute: Tego atrybutu nie można zmienić. Przed przejściem dalej usuń kanał.
+    unknown_families: "{1}Rodzina {{ familyCodes }} nie istnieje|]1,+Inf[Rodziny {{ familyCodes }} nie istnieją"
+    unknown_family_variants: "{1}Wariant rodziny {{ familyVariantCodes }} nie istnieje|]1,+Inf[Warianty rodziny {{ familyVariantCodes }} nie istnieją"
+    unknown_attribute_options: "{1}Opcja {{ attributeOptionCodes }} nie istnieje|]1,+Inf[Opcje {{ attributeOptionCodes }} nie istnieją"
+    unknown_attribute_code: "Atrybut {{ attributeCode }} nie istnieje"
+    unknown_categories: "{1}Kategoria {{ categoryCodes }} nie istnieje.|]1, +Inf[Kategorie {{ categoryCodes }} nie istnieją"
+    unknown_attribute: "Ten atrybut nie istnieje."
+    unknown_groups: "{1} Grupa {{ groupCodes }} nie istnieje|]1, +Inf[Następujące grupy nie istnieją: {{ groupCodes }}"
+    select_another_attribute_or_remove_action: "Wybierz inny atrybut lub usuń to działanie."
+    select_another_attribute: "Wybierz inny atrybut"
+    or: lub
+    create_attribute_link: aby utworzyć atrybut, kliknij tutaj
+    edit_unauthorize: Nie masz uprawnień do edycji reguł
+    wrong_date_timespan: Aby zdefiniować prawidłowy przedział czasowy, upewnij się, że data końcowa nie jest ustawiona przed datą początkową.
+    measurement_family_not_found: Rodzina pomiarów "{{ measurement_code }}" nie istnieje
+    unit_not_found: Jednostka "{{ unitCode }}" nie została znaleziona w rodzinie pomiarów "{{ measurement_code }}"
+    empty_association_warning: Jeśli lista ta pozostanie pusta, ta reguła wyczyści ten typ powiązania.
 pim_enrich:
   entity:
     rule:
       module:
         delete:
           confirm: Czy na pewno chcesz usunąć tą regułę? Tej operacji nie można cofnąć
+      flash:
+        delete:
+          success: Usunięto regułę
 flash:
   rule:
+    impacted_product_count: Zbiorcze działanie obliczania liczby objętych produktów zostało uruchomione. Po zakończeniu otrzymasz powiadomienie.
     executed: Wykonywanie reguł zostało rozpoczęte. Zostaniesz powiadomiony, kiedy zostanie zakończone.
+    enabled: Włączono regułę
+    disabled: Wyłączono regułę
 pim_dashboard.widget.last_operations.job_type.mass_edit_rule: Ustawienia reguł
 batch_jobs:
   add_attribute_value:
     execute_rules.label: Wykonywanie reguł
   default_steps:
+    export_rules: Eksport reguł
+    import_rules: Import reguł
+    calculate_affected_products: Oblicz objęte produkty
     execute_rules: Wykonywanie reguł
+  yml_rule_import:
+    label: Import reguł w formacie YAML
+    import.label: Import reguł
+  yml_rule_export:
+    label: Eksport reguł w formacie YAML
+    export.label: Eksport reguł
   rule_impacted_product_count:
+    label: Liczba produktów, których to dotyczy
     perform.label: Wpływ liczby produktów
   csv_product_import_with_rules:
     label: Import produktów in csv z zasadami
@@ -145,6 +451,7 @@ pim_menu:
     rule: Reguły
 pim_title:
   pimee_catalog_rule_rule_index: Reguły
+  pimee_catalog_rule_edit: Edytuj regułę
   pimee_catalog_rule_new: Reguły
 pim_import_export:
   widget:

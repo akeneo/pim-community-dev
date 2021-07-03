@@ -335,3 +335,17 @@ pim_catalog_volume:
     count_reference_entity: 参照エンティティ
     average_max_records_per_reference_entity: 参照エンティティごとの記録
     average_max_attributes_per_reference_entity: 参照エンティティごとの属性
+batch_jobs:
+  reference_entity_label: 参照エンティティ
+  csv_reference_entity_record_export:
+    label: 参照エンティティの記録を CSV 形式でエクスポート
+    export.label: 記録のエクスポート
+  xlsx_reference_entity_record_export:
+    label: 参照エンティティの記録を XLSX 形式でエクスポート
+    export.label: 記録のエクスポート
+  csv_reference_entity_record_import:
+    label: 参照エンティティの記録を CSV 形式でインポート
+    import.label: 記録のインポート
+  xlsx_reference_entity_record_import:
+    label: 参照エンティティの記録を XLSX 形式でインポート
+    import.label: 記録のインポート

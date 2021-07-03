@@ -10,12 +10,14 @@ akeneo_assetmanager:
       manage_transformation: Zarządzaj transformacjami rodziny zasobów
       manage_product_link_rule: Zarządzaj regułami linkowania do produktu dla tej rodziny zasobów
       execute_product_link_rule: Wykonaj reguły powiązania produktu dla wszystkich aktywów rodziny zasobów
+      execute_naming_conventions: Wykonaj konwencje nazewnictwa na zasobach
     asset:
       create: Utwórz zasób
       edit: Edytuj zasoby
       delete: Usuń zasób
       delete_all: Usuń wszystkie zasoby
       list_product: Lista produktów powiązanych z zasobem
+      execute_naming_conventions: Wykonaj konwencje nazewnictwa
     attribute:
       create: Dodaj atrybut do rodziny zasobów
       edit: Edytuj atrybut rodziny zasobów
@@ -23,12 +25,34 @@ akeneo_assetmanager:
     option:
       edit: Edytuj opcje
       delete: Usuń opcję
+  jobs:
+    asset_manager_execute_naming_convention:
+      error: 'Wystąpił błąd konwencji nazewnictwa na zasobie "{{ asset }}"'
 pim_import_export:
   widget:
     last_operations:
       job_type:
         asset_manager_compute_transformations: "Wykonaj transformację zasobów"
         asset_manager_link_assets_to_products: "Połącz zasoby z produktami"
+        asset_manager_execute_naming_convention: "Wykonaj konwencję nazewnictwa rodziny zasobów"
+pim_analytics:
+  info_type:
+    api_connection: Liczba połączeń API
+    nb_asset_families: Liczba rodzin zasobów
+    max_number_of_assets_per_asset_family: Maksymalna liczba zasobów na rodzinę zasobów
+    average_number_of_values_per_assets: Średnia liczba wartości na zasoby
+    average_number_of_assets_per_asset_family: Średnia liczba zasobów na rodzinę zasobów
+    max_number_of_attributes_per_asset_family: Maksymalna liczba atrybutów na rodzinę zasobów
+    average_number_of_attributes_per_asset_family: Średnia liczba atrybutów na rodzinę zasobów
+    data_source:
+      tracked: Śledzenie celu danych
+      untracked: Brak śledzenia celu danych
+    data_destination:
+      tracked: Śledzenie źródła danych
+      untracked: Brak śledzenia źródła danych
+    other:
+      tracked: Śledzenie innych
+      untracked: Brak śledzenia innych
 #average_percentage_localizable_only_attributes: Average percentage of localizable only attributes per asset family
 #average_percentage_scopable_only_attributes: Average percentage of scopable only attributes per asset family
 #average_percentage_scopable_and_localizable_attributes: Average percentage of localizable and scopable attributes per asset family
@@ -36,7 +60,14 @@ pim_catalog_asset_collection: Kolekcja zasobów
 pim_datagrid:
   cells:
     type:
+      asset_manager_execute_naming_convention: Wykonaj konwencję nazewnictwa rodziny zasobów
       asset_manager_link_assets_to_products: Połącz zasoby z produktami
+      asset_manager_compute_transformations: Wykonaj transformacje zasobów
 batch_jobs:
   default_steps:
+    execute_naming_convention: Wykonaj konwencję nazewnictwa rodziny zasobów
     link_assets_to_products: Połącz zasoby z produktami
+    compute_transformations: Wykonaj transformacje zasobów
+job_execution:
+  summary:
+    assets: Zasoby

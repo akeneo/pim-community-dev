@@ -11,12 +11,14 @@ teamwork_assistant:
       warning: <strong>%project_label%</strong>에 대한 프로젝트 계산 완료 및 경고 발생
       success: <strong>%project_label%</strong> 프로젝트가 준비되었으며 기여자에게 알림이 전송되었습니다. 시작하십시오!
       start: 시작
-    message: '"%project_label%"용으로 보강하기 위한 새 제품이 있습니다. 마감일은 "%due_date%"입니다.'
+    message: '''%project_label%''용으로 보강하기 위한 새 제품이 있습니다. 마감일은 ''%due_date%''입니다.'
     project_finished:
       contributor: 축하합니다! %project_label%(으)로 만든 제품이 100% 완료되었습니다.
+      owner: '기한이 <strong>%due_date%</strong>인 프로젝트 <strong>%project_label%</strong>이(가) 완료되었습니다.'
       show: 표시
     due_date:
       contributor: '%project_label%(으)로 만든 제품이 %percent% 완료되었습니다. 잊지 말고, %due_date%의 마지막 제품을 기입하십시오.'
+      owner: '기한이 <strong>%due_date%</strong>인 프로젝트 <strong>%project_label%</strong>이(가) 100% 완료되지 않았습니다.'
       start: 시작
   datagrid:
     project_completeness: 프로젝트 진행률

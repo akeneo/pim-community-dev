@@ -6,22 +6,43 @@ pimee_catalog_rule:
       title: Reguły
       column:
         label: Etykieta
+        impacted_product_count:
+          label: Objęte produkty
+          count: '{0,1}%count% objęty produkt|]1,Inf[%count% objętych produktów'
+          no_yet_calculated: Jeszcze nie obliczono
         tags:
           label: Akcje
+        priority: Priorytet
+        status: Status
       mass_edit_action:
+        impacted_product_count: Oblicz objęte produkty
         execute: Wykonaj
         delete: Skasuj
   condition:
     fields:
       family: Rodzina
+      family_variant: Wariant rodziny
+      associations: Powiązania
+      groups: Grupy
+      categories: Kategorie
+      completeness: Kompletność
+      identifier: Identyfikator
+      parent: Element nadrzędny
+      enabled: Status
+      entity_type: Typ obiektu
+      created: Utworzono
+      updated: Zaktualizowano
     field_groups:
       system: System
   acl_group:
     rule: Reguły
   acl:
     rule:
+      edit_permissions: Edytuj reguły
       view_permissions: Zobacz reguły
       delete_permissions: Usuwanie reguł
+      impacted_product_count_permissions: Oblicz liczbę produktów objętych regułami
+      create_permissions: Utwórz reguły
       execute_permissions: Wykonywanie reguł
   attribute:
     tab:
@@ -33,12 +54,41 @@ pimee_catalog_rule:
   product:
     history: Zastosowano regułę "%rule%"
   steps:
+    product_rule_definition_reader.title: Czytnik importu reguł produktów
+    rule_definition_processor.title: Procesor importu reguł produktów
+    product_rule_definition_writer.title: Składnik zapisywania importu reguł produktów
     rules_execution.title: Wykonywanie reguł
+  notification:
+    execute_rules:
+      success: Wykonywanie reguł zakończone
+      warning: Wykonywanie reguł zakończone z ostrzeżeniami
+      error: Wystąpił błąd podczas wykonywania reguł
+    mass_edit_rule:
+      success: Obliczanie objętych produktów dla reguł zakończone
+      error: Wystąpił błąd podczas obliczania liczby produktów objętych regułami
+  datetime:
+    now: teraz
+    relative_date:
+      minute: ']-Inf, -1[%absolute_count% min temu|{-1}1 min temu|{1}za 1 min|]1, +Inf[za %absolute_count% min'
+      hour: ']-Inf, -1[%absolute_count% godz. temu|{-1}1 godz. temu|{1}za 1 godz.|]1, +Inf[za %absolute_count% godz.'
+      day: ']-Inf, -1[%absolute_count% dni temu|{-1}1 dzień temu|{1}za 1 dzień|]1, +Inf[za %absolute_count% dni'
+      week: ']-Inf, -1[%absolute_count% tyg. temu|{-1}1 tydzień temu|{1}za 1 tydzień|]1, +Inf[za %absolute_count% tyg.'
+      month: ']-Inf, -1[%absolute_count% mies. temu|{-1}1 mies. temu|{1}za 1 mies.|]1, +Inf[za %absolute_count% mies.'
+      year: ']-Inf, -1[%absolute_count% lat(a) temu|{-1}1 rok temu|{1}za 1 rok|]1, +Inf[za %absolute_count% lat(a)'
+  status:
+    enabled: Włączona
+    disabled: Wyłączona
 btn:
   Execute rules: Wykonywanie reguł
 job_execution:
   summary:
     rule_calculated: Liczba zasad
+    read_rules: reguły odczytu
+    selected_entities: wybrane produkty / modele produktów
+    skipped_invalid: pominięte produkty / modele produktów (nieprawidłowe)
+    updated_entities: zaktualizowane produkty / modele produktów
+    executed_rules: pomyślnie wykonane reguły
+    errored_rules: pominięte reguły (nieprawidłowe)
 pim_datagrid:
   cells:
     type:

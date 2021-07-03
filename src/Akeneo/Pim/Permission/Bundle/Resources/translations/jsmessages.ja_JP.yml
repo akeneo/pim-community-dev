@@ -3,6 +3,12 @@ pim_enrich:
     attribute:
       property:
         is_read_only: 読み取り専用
+pimee_import_export:
+  entity:
+    job_instance:
+      flash:
+        update:
+          fail_empty_permission: ジョブの編集を許可するユーザーグループを少なくとも 1 つ選択する必要があります
 pimee_enrich.entity.category:
   module:
     permissions:

@@ -4,15 +4,45 @@ pimee_catalog_rule:
       actions:
         execute: 実行
       title: ルール
+      column:
+        label: ラベル
+        impacted_product_count:
+          label: 影響のある商品
+          count: '影響のある {0,1}%count% 個の商品|]1,Inf[影響のある %count% 個の商品'
+          no_yet_calculated: 未計算
+        tags:
+          label: 操作
+        priority: 優先度
+        status: ステータス
       mass_edit_action:
+        impacted_product_count: 影響のある商品を計算する
         execute: 実行
         delete: 削除
+  condition:
+    fields:
+      family: ファミリー
+      family_variant: ファミリーバリエーション
+      associations: 関連
+      groups: グループ
+      categories: カテゴリ
+      completeness: 完全性
+      identifier: 識別子
+      parent: 上位
+      enabled: ステータス
+      entity_type: エンティティタイプ
+      created: 作成済み
+      updated: 更新済み
+    field_groups:
+      system: システム
   acl_group:
     rule: ルール
   acl:
     rule:
+      edit_permissions: ルールを編集
       view_permissions: ルールの表示
       delete_permissions: ルールを削除
+      impacted_product_count_permissions: ルールに影響される商品数を計算する
+      create_permissions: ルールを作成
       execute_permissions: ルールを実行
   attribute:
     tab:
@@ -24,12 +54,41 @@ pimee_catalog_rule:
   product:
     history: 適用されたルール 「%rule%」
   steps:
+    product_rule_definition_reader.title: 商品ルールインポートリーダー
+    rule_definition_processor.title: 商品ルールインポートプロセッサ
+    product_rule_definition_writer.title: 商品ルールインポートライター
     rules_execution.title: ルールの実行
+  notification:
+    execute_rules:
+      success: ルールの実行完了
+      warning: ルールの実行を警告付きで完了
+      error: ルールの実行中にエラーが発生しました
+    mass_edit_rule:
+      success: ルール完了の影響を受ける商品を計算する
+      error: ルールの影響を受ける商品数の計算中にエラーが発生しました
+  datetime:
+    now: 今
+    relative_date:
+      minute: ']-Inf, -1[%absolute_count% 分前|{-1}1 分前|{1}1 分以内|]1, +Inf[%absolute_count% 分以内'
+      hour: ']-Inf, -1[%absolute_count% 時間前|{-1}1 時間前|{1}1 時間以内|]1, +Inf[%absolute_count% 時間以内'
+      day: ']-Inf, -1[%absolute_count% 日前|{-1}1 日前|{1}1 日以内|]1, +Inf[%absolute_count% 日以内'
+      week: ']-Inf, -1[%absolute_count% 週間前|{-1}1 週間前|{1}1 週間以内|]1, +Inf[%absolute_count% 週間以内'
+      month: ']-Inf, -1[%absolute_count% か月前|{-1}1 か月前|{1}1 か月以内|]1, +Inf[%absolute_count% か月以内'
+      year: ']-Inf, -1[%absolute_count% 年前|{-1}1 年前|{1}1 年以内|]1, +Inf[%absolute_count% 年以内'
+  status:
+    enabled: 有効
+    disabled: 無効
 btn:
   Execute rules: ルールを実行
 job_execution:
   summary:
     rule_calculated: ルールの数
+    read_rules: 読み取りルール
+    selected_entities: 選択済の商品 / 商品モデル
+    skipped_invalid: スキップ済の商品 / 商品モデル (無効)
+    updated_entities: 更新済の商品 / 商品モデル
+    executed_rules: ルールを正常に実行しました
+    errored_rules: スキップ済のルール (無効)
 pim_datagrid:
   cells:
     type:

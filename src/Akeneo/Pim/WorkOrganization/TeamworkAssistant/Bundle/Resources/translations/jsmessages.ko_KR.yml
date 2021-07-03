@@ -27,7 +27,7 @@ teamwork_assistant:
     saved: 프로젝트가 저장되었습니다. 계산 완료 시 알림이 전송됩니다.
     title: 프로젝트
   widget:
-    no_project: 현재 프로젝트가 없습니다
+    no_project: 현재 프로젝트가 없습니다.
     no_project_create: 새 프로젝트 만들기
     description: 설명
     due_date: 마감일
@@ -63,6 +63,7 @@ batch_jobs:
     refresh_project_completeness_calculation.label: 프로젝트 완성도 새로 고침
 pim_notification:
   types:
-    project_created: 새 프로젝트가 있습니다
+    project_created: 새 프로젝트가 있습니다.
     project_finished: 프로젝트 완료
     project_calculation: 프로젝트 계산
+    project_due_date: 프로젝트 기한
