@@ -24,7 +24,7 @@ akeneo_connectivity.connection:
     constraint:
       code:
         required: 연결 코드는 필수입니다.
-        invalid: 연결 코드는 문자, 숫자 및 밑줄만 포함할 수 있습니다
+        invalid: 연결 코드는 문자, 숫자 및 밑줄만 포함할 수 있습니다.
         too_short: 연결 코드가 너무 짧습니다. 3자 이상이어야 합니다.
         too_long: 연결 코드가 너무 깁니다. 100자 이하여야 합니다.
         must_be_unique: 연결 코드는 고유해야 합니다.
@@ -43,7 +43,7 @@ akeneo_connectivity.connection:
   connection_count: '{{ count }} 연결 | {{ count }} 연결'
   no_connection:
     title: 아직 선언된 연결이 없습니다.
-    message: 첫 번째 연결을 추가하려면 위의 "만들기" 버튼을 클릭하거나
+    message: 첫 번째 연결을 추가하려면 위의 '만들기' 버튼을 클릭하거나
     message_link: 여기를 클릭하십시오.
   create_connection:
     title: 새 연결 만들기
@@ -111,7 +111,7 @@ akeneo_connectivity.connection:
       success: 연결이 삭제되었습니다.
   helper:
     title: '👋 해당 PIM을 제대로 연결하는 기능입니다!'
-    description: 타사 통합이 없는 PIM은 이용 가치가 없습니다, 그렇지 않나요? 연결 덕분에, 해당 PIM의 내부에서 밀어내고 외부에서 가져오는 모든 데이터 흐름을 선언할 수 있습니다.
+    description: 타사 통합이 없는 PIM은 이용 가치가 없습니다., 그렇지 않나요? 연결 덕분에, 해당 PIM의 내부에서 밀어내고 외부에서 가져오는 모든 데이터 흐름을 선언할 수 있습니다.
     link: 자세히 알고 싶으신가요? 바로 여기서 연결이란 무엇인지 알아보고 활용 방법을 확인하십시오!
   flow_type_helper:
     message: 흐름 유형이란 무엇인지 궁금하신가요?
@@ -143,7 +143,7 @@ akeneo_connectivity.connection:
     no_connection:
       title: 해당 연결에 대한 유용한 차트를 보고 싶으십니까?
       message_with_permission:
-        message: 첫 번째 연결을 만들어 추적을 시작하십시오
+        message: 첫 번째 연결을 만들어 추적을 시작하십시오.
         link: 바로 여기서 가능합니다.
       message_without_permission:
         message: 관리자에게 요청하여 연결을 생성하십시오.

@@ -314,6 +314,7 @@ pim_enrich.mass_edit.product:
       label: 在类别之间移动
       label_count: "{1}将 <span class=\"AknFullPage-title--highlight\">1 个产品</span>在类别之间移动|]1, Inf[将 <span class=\"AknFullPage-title--highlight\">{{ itemsCount }} 个产品</span>在类别之间移动"
       description: 产品将被放入以下类别，现存的分类会丢失。
+      no_update: 请选择类别。
     remove_from_category:
       label: 从类别中移除
       label_count: "{1}从类别中移除 <span class=\"AknFullPage-title--highlight\">1 个产品</span>|]1, Inf[从类别中移除 <span class=\"AknFullPage-title--highlight\">{{ itemsCount }} 个产品</span>"

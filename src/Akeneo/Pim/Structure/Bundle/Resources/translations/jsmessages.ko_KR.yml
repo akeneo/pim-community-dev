@@ -9,7 +9,7 @@ pim_enrich.entity.family:
       cant_remove_attribute_as_label: 레이블로 사용되는 특성을 제거할 수 없음
       cant_remove_attribute_as_image: 기본 그림으로 사용되는 특성을 제거할 수 없음
       cant_remove_attribute_used_as_axis: 패밀리 변형에서 변형 축으로 사용되는 이 특성을 제거할 수 없음
-      fields_not_ready: "이 패밀리는 현재 저장할 수 없습니다. 다음 필드가 준비되지 않았습니다: {{ fields }}"
+      fields_not_ready: "이 패밀리는 현재 저장할 수 없습니다. 다음 필드가 준비되지 않았습니다.: {{ fields }}"
     create:
       success: 패밀리 생성됨
     delete:
@@ -35,7 +35,7 @@ pim_enrich.entity.family_variant:
   short_label: 변형
   flash:
     update:
-      success: 패밀리 변형이 업데이트되었습니다. 변형이 포함된 제품은 해당 변경 사항과 함께 업데이트됩니다
+      success: 패밀리 변형이 업데이트되었습니다. 변형이 포함된 제품은 해당 변경 사항과 함께 업데이트됩니다.
       fail: 패밀리를 업데이트할 수 없습니다.
     create:
       success: 패밀리 변형 생성됨
@@ -44,16 +44,16 @@ pim_enrich.entity.family_variant:
   module:
     edit:
       common_attributes: 공통 특성
-      no_common_attributes: 공통 특성이 없습니다
+      no_common_attributes: 공통 특성이 없습니다.
       variant_axis_label: 변형 축
       variant_attributes: 변형 특성
       level_1: 변형 특성 레벨 1
       level_2: 변형 특성 레벨 2
-      description: 선택한 변형 레벨로 특성을 끌어다 놓아 해당 특성이 변형 레벨에서 관리되도록 하십시오
+      description: 선택한 변형 레벨로 특성을 끌어다 놓아 해당 특성이 변형 레벨에서 관리되도록 하십시오.
       attribute_remove: 특성 제거
       attribute_group_remove: 특성 그룹 제거
       confirm_attribute_removal_title: 특성 제거 확인
-      confirm_attribute_removal_message: 해당 특성을 제거하면, 패밀리 변형의 공통 특성에 다시 넣은 후 변형 제품에서 해당 값을 제거하게 됩니다
+      confirm_attribute_removal_message: 해당 특성을 제거하면, 패밀리 변형의 공통 특성에 다시 넣은 후 변형 제품에서 해당 값을 제거하게 됩니다.
     create:
       label: 변형 추가
       title: 새 패밀리 변형 만들기
@@ -69,7 +69,7 @@ pim_enrich.entity.attribute_option:
   flash:
     create:
       success: 특성 옵션 생성됨
-      fail: 특성 옵션을 생성하는 중에 오류가 발생했습니다
+      fail: 특성 옵션을 생성하는 중에 오류가 발생했습니다.
     update:
       fail: 특성 옵션을 저장할 수 없음
     delete:
@@ -84,7 +84,7 @@ pim_enrich.entity.association_type:
     update:
       success: 연결 유형이 업데이트되었습니다.
       fail: 연결 유형을 업데이트할 수 없습니다.
-      fields_not_ready: "이 연결 유형은 현재 저장할 수 없습니다. 다음 필드가 준비되지 않았습니다: {{ fields }}"
+      fields_not_ready: "이 연결 유형은 현재 저장할 수 없습니다. 다음 필드가 준비되지 않았습니다.: {{ fields }}"
     create:
       success: 연결 유형 생성됨
     delete:
@@ -103,7 +103,7 @@ pim_enrich.entity.group_type:
     update:
       success: 그룹 유형이 업데이트되었습니다.
       fail: 그룹 유형을 업데이트할 수 없습니다.
-      fields_not_ready: "이 그룹 유형은 현재 저장할 수 없습니다. 다음 필드가 준비되지 않았습니다: {{ fields }}"
+      fields_not_ready: "이 그룹 유형은 현재 저장할 수 없습니다. 다음 필드가 준비되지 않았습니다.: {{ fields }}"
     create:
       success: 그룹 유형 생성됨
     delete:
@@ -123,7 +123,7 @@ pim_enrich.entity.attribute:
     update:
       success: 특성이 업데이트되었습니다.
       fail: 특성을 업데이트할 수 없습니다.
-      fields_not_ready: "이 특성은 현재 저장할 수 없습니다. 다음 필드가 준비되지 않았습니다: {{ fields }}"
+      fields_not_ready: "이 특성은 현재 저장할 수 없습니다. 다음 필드가 준비되지 않았습니다.: {{ fields }}"
     delete:
       success: 특성 제거됨
       fail: 이 특성을 삭제할 수 없음
@@ -185,7 +185,7 @@ pim_enrich.entity.attribute:
     wysiwyg_enabled: 서식 있는 텍스트 편집기 활성화됨
   module:
     add_attribute:
-      no_available_attributes: 추가할 특성이 더 이상 없습니다
+      no_available_attributes: 추가할 특성이 더 이상 없습니다.
       attributes_selected: "{{ itemsCount }}개 특성 선택됨"
     create:
       button: 특성 만들기
@@ -209,8 +209,8 @@ pim_enrich.entity.attribute_group:
   flash:
     update:
       success: 특성 그룹 업데이트됨
-      fail: 특성 그룹을 업데이트할 수 없습니다
-      fields_not_ready: "이 특성 그룹은 현재 저장할 수 없습니다. 다음 필드가 준비되지 않았습니다: {{ fields }}"
+      fail: 특성 그룹을 업데이트할 수 없습니다.
+      fields_not_ready: "이 특성 그룹은 현재 저장할 수 없습니다. 다음 필드가 준비되지 않았습니다.: {{ fields }}"
     delete:
       success: 특성 그룹 제거됨
       fail: 이 특성 그룹을 삭제할 수 없음
@@ -235,7 +235,7 @@ pim_enrich.mass_edit.family:
     confirm:
       label: 확인
     launched:
-      label: 일괄 작업 "{{ operation }}"이(가) 실행되었습니다. 완료되면 알림이 전송됩니다.
+      label: 일괄 작업 '{{ operation }}'이(가) 실행되었습니다. 완료되면 알림이 전송됩니다.
   operation:
     set_requirements:
       label: 특성 요구 사항 설정

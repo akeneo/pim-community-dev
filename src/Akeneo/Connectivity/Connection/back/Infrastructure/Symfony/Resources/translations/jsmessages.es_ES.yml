@@ -43,7 +43,7 @@ akeneo_connectivity.connection:
   connection_count: 'Conexión de {{ count }} | {{ count }} conexiones'
   no_connection:
     title: No hay conexión declarada aún.
-    message: Añada su primera haciendo clic en el botón «Crear» de arriba o
+    message: Añada su primera conexión haciendo clic en el botón «Crear» de arriba o
     message_link: pulse aquí.
   create_connection:
     title: Crear una conexión nueva
@@ -143,10 +143,10 @@ akeneo_connectivity.connection:
     no_connection:
       title: '¿Desea ver algunos bonitos gráficos sobre sus conexiones?'
       message_with_permission:
-        message: Cree y empiece a hacer un seguimiento de su primera conexión justo
+        message: Cree y empiece a hacer un seguimiento de su primera conexión de forma correcta
         link: aquí. 
       message_without_permission:
-        message: Solicite a su administrador que cree uno.
+        message: Solicite a su administrador que cree una.
         link: Más información sobre conexiones aquí...
   runtime_error:
     error_message: '¡Oh! Se ha producido un error...'

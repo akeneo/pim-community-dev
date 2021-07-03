@@ -74,6 +74,7 @@ pim_enrich:
       quick_export:
         launched_flash: 导出产品的作业正在运行
 category:
+  create: 创建类别
   edit: 编辑类别
   overview: 类别
 tree:
