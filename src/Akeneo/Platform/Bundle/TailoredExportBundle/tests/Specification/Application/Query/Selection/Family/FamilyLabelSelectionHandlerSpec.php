@@ -53,7 +53,7 @@ class FamilyLabelSelectionHandlerSpec extends ObjectBehavior
             ->during('applySelection', [$notSupportedSelection, $notSupportedValue]);
     }
 
-    public function it_supports_asset_family_label_selection_with_family_value()
+    public function it_supports_family_label_selection_with_family_value()
     {
         $selection = new FamilyLabelSelection('fr_FR');
         $value = new FamilyValue('a_family_code');
