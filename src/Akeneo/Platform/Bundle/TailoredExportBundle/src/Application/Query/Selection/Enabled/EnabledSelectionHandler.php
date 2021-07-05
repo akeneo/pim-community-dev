@@ -22,7 +22,10 @@ class EnabledSelectionHandler implements SelectionHandlerInterface
 {
     public function applySelection(SelectionInterface $selection, SourceValueInterface $value): string
     {
-        if (!$selection instanceof EnabledSelection || !$value instanceof EnabledValue) {
+        if (
+            !$selection instanceof EnabledSelection
+            || !$value instanceof EnabledValue
+        ) {
             throw new \InvalidArgumentException('Cannot apply Enabled selection on this entity');
         }
 
@@ -31,6 +34,7 @@ class EnabledSelectionHandler implements SelectionHandlerInterface
 
     public function supports(SelectionInterface $selection, SourceValueInterface $value): bool
     {
-        return $selection instanceof EnabledSelection && $value instanceof EnabledValue;
+        return $selection instanceof EnabledSelection
+            && $value instanceof EnabledValue;
     }
 }

@@ -22,7 +22,10 @@ class BooleanSelectionHandler implements SelectionHandlerInterface
 {
     public function applySelection(SelectionInterface $selection, SourceValueInterface $value): string
     {
-        if (!$selection instanceof BooleanSelection || !$value instanceof BooleanValue) {
+        if (
+            !$selection instanceof BooleanSelection
+            || !$value instanceof BooleanValue
+        ) {
             throw new \InvalidArgumentException('Cannot apply Boolean selection on this entity');
         }
 
@@ -35,6 +38,7 @@ class BooleanSelectionHandler implements SelectionHandlerInterface
 
     public function supports(SelectionInterface $selection, SourceValueInterface $value): bool
     {
-        return $selection instanceof BooleanSelection && $value instanceof BooleanValue;
+        return $selection instanceof BooleanSelection
+            && $value instanceof BooleanValue;
     }
 }

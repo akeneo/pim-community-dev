@@ -31,8 +31,11 @@ class ReferenceEntityCollectionLabelSelectionHandler implements SelectionHandler
 
     public function applySelection(SelectionInterface $selection, SourceValueInterface $value): string
     {
-        if (!$value instanceof ReferenceEntityCollectionValue || !$selection instanceof ReferenceEntityCollectionLabelSelection) {
-            throw new \InvalidArgumentException('Cannot apply Record Collection selection on this entity');
+        if (
+            !$value instanceof ReferenceEntityCollectionValue
+            || !$selection instanceof ReferenceEntityCollectionLabelSelection
+        ) {
+            throw new \InvalidArgumentException('Cannot apply Reference Entity Collection selection on this entity');
         }
 
         $recordCodes = $value->getRecordCodes();
