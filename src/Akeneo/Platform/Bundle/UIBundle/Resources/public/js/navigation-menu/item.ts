@@ -6,8 +6,6 @@ const _ = require('underscore');
 const __ = require('oro/translator');
 const BaseForm = require('pim/form');
 const router = require('pim/router');
-const Routing = require('routing');
-const template = require('pim/template/menu/item');
 const mediator = require('oro/mediator');
 
 type ItemConfig = {
@@ -18,26 +16,14 @@ type ItemConfig = {
   };
 };
 
-/**
- * Base extension for menu
- *
- * @author    Julien Sanchez <julien@akeneo.com>
- * @copyright 2017 Akeneo SAS (http://www.akeneo.com)
- * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
- */
 class Item extends BaseForm {
-  template;
   active;
 
   constructor(options?: ViewOptions<any>) {
     super({
       ...options,
-      events: {
-        'click .navigation-item': 'redirect',
-      },
     });
 
-    this.template = _.template(template);
     this.active = false;
   }
 
@@ -69,23 +55,6 @@ class Item extends BaseForm {
     });
 
     return super.configure();
-  }
-
-  /**
-   * {@inheritdoc}
-   */
-  render() {
-    this.$el.empty().append(
-      this.template({
-        title: this.getLabel(),
-        url: Routing.generateHash(this.getRoute(), this.getRouteParams()),
-        active: this.active,
-      })
-    );
-
-    this.delegateEvents();
-
-    return super.render();
   }
 
   /**

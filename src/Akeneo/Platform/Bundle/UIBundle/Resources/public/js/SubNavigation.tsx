@@ -73,16 +73,18 @@ const SubNavigation: FC<Props> = ({title, sections, entries, backLink, stateCode
             />
           {isMenuOpen &&
           <Dropdown.Overlay onClose={closeMenu}>
+            {title &&
               <Dropdown.Header>
-                {title && <Dropdown.Title>{translate(title)}</Dropdown.Title>}
+                  <Dropdown.Title>{translate(title)}</Dropdown.Title>
               </Dropdown.Header>
-              <Dropdown.ItemCollection>
-                {entries.map(subEntry =>
-                  <Dropdown.Item onClick={(event: any) => handleFollowSubEntry(event, subEntry)} key={subEntry.code}>
-                    {subEntry.title}
-                  </Dropdown.Item>
-                )}
-              </Dropdown.ItemCollection>
+            }
+            <Dropdown.ItemCollection>
+              {entries.map(subEntry =>
+                <Dropdown.Item onClick={(event: any) => handleFollowSubEntry(event, subEntry)} key={subEntry.code}>
+                  {subEntry.title}
+                </Dropdown.Item>
+              )}
+            </Dropdown.ItemCollection>
           </Dropdown.Overlay>
           }
         </Dropdown>

@@ -6,14 +6,6 @@ const BaseColumn = require('pim/form/common/column');
 const router = require('pim/router');
 const mediator = require('oro/mediator');
 
-/**
- * Extension for menu columns
- * This extends the default column and adds some behaviors only used in the menu context (visibility)
- *
- * @author    Pierre Allard <pierre.allard@akeneo.com>
- * @copyright 2017 Akeneo SAS (http://www.akeneo.com)
- * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
- */
 class Column extends BaseColumn {
   active: boolean;
   isVisible: boolean;
@@ -41,17 +33,6 @@ class Column extends BaseColumn {
     this.onExtensions('pim_menu:column:register_navigation_section', this.registerNavigationSection);
 
     return super.configure();
-  }
-
-  /**
-   * {@inheritdoc}
-   */
-  render() {
-    if (this.active && this.isVisible) {
-      return super.render();
-    } else {
-      return this.$el.empty();
-    }
   }
 
   /**
@@ -87,19 +68,6 @@ class Column extends BaseColumn {
    */
   getTab() {
     return this.config.tab;
-  }
-
-  /**
-   * The DOM element contains a `data-tab` attribute for compatibility with tab Bootstram tabs.
-   *
-   * {@inheritdoc}
-   */
-  redirect(event: any) {
-    const item = this.findNavigationItemByRoute(event.currentTarget.dataset.tab);
-    if (undefined === item) {
-      throw new Error(`Navigation Item for route "${event.currentTarget.dataset.tab}" not found.`);
-    }
-    router.redirectToRoute(item.route, item.routeParams);
   }
 
   /**
