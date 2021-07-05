@@ -154,6 +154,9 @@ kubectl exec -it -n ${PFID} ${PODSQL} -- /bin/bash -c 'mysql -u root -p$(cat /my
 kubectl exec -it -n ${PFID} ${PODSQL} -- /bin/bash -c 'mysql -u root -p$(cat /mysql_temp/root_password.txt) -D akeneo_pim -e "UPDATE oro_user SET email = LOWER(CONCAT(SUBSTRING(CONCAT(\"support+clone_\", REPLACE(username,\"@\",\"_\")), 1, 64), \"@akeneo.com\"));"'
 kubectl exec -it -n ${PFID} ${PODDAEMON} -- /bin/bash -c 'bin/console pim:user:create adminakeneo adminakeneo product-team@akeneo.com admin1 admin2 en_US --admin -n || echo "WARN: User adminakeneo exists"'
 
+echo "- Check ES indexation"
+(kubectl exec -it -n ${PFID} ${PODDAEMON} -- /bin/bash -c 'bin/es_sync_checker --only-count') || true
+
 # Workarround to be sure to have a admin user
 SQLCOMMAND=$(cat ${BINDIR}/add_user_to_all_groups.sql)
 # _ "${SQLCOMMAND}" -> allow to pass parameter
