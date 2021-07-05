@@ -41,7 +41,6 @@ $rules = [
             'Akeneo\Pim\Enrichment\Component\Product\Model\ProductPriceInterface',
             'Akeneo\Pim\Enrichment\Component\Product\Query\Filter\Operators',
             'Akeneo\Pim\Permission\Bundle\User\UserContext',
-            'Akeneo\ReferenceEntity\Domain\Model\Record\RecordCode',
             'Akeneo\ReferenceEntity\Infrastructure\PublicApi\Enrich\FindRecordsLabelTranslations',
             'Akeneo\Pim\Enrichment\Component\Product\Query\GetProductModelLabelsInterface',
             'Akeneo\Pim\Enrichment\Component\Product\Model\ProductModelInterface',

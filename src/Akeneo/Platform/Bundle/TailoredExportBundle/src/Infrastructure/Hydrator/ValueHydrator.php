@@ -39,7 +39,6 @@ use Akeneo\Platform\TailoredExport\Domain\SourceValue\ReferenceEntityValue;
 use Akeneo\Platform\TailoredExport\Domain\SourceValue\SimpleSelectValue;
 use Akeneo\Platform\TailoredExport\Domain\SourceValue\StringValue;
 use Akeneo\Platform\TailoredExport\Domain\SourceValueInterface;
-use Akeneo\ReferenceEntity\Domain\Model\Record\RecordCode;
 
 class ValueHydrator
 {
@@ -96,12 +95,9 @@ class ValueHydrator
                     $data->toArray()
                 ));
             case 'akeneo_reference_entity':
-                return new ReferenceEntityValue($data->__toString());
+                return new ReferenceEntityValue((string) $data);
             case 'akeneo_reference_entity_collection':
-                return new ReferenceEntityCollectionValue(array_map(
-                    fn (RecordCode $record) => $record->__toString(),
-                    $data
-                ));
+                return new ReferenceEntityCollectionValue(array_map('strval', $data));
 
             default:
                 throw new \LogicException(sprintf('Unsupported attribute type "%s"', $attribute->type()));
