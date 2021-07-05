@@ -37,11 +37,10 @@ class GroupsLabelSelectionHandlerSpec extends ObjectBehavior
             'fr_FR'
         )->willReturn([
             'group1' => 'Group 1',
-            'group2' => 'Group 2',
         ]);
 
         $this->applySelection($selection, $value)
-            ->shouldReturn('Group 1/Group 2');
+            ->shouldReturn('Group 1/[group2]');
     }
 
     public function it_does_not_apply_selection_on_not_supported_selections_and_values()

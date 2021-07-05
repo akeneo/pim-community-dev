@@ -21,13 +21,22 @@ use PhpSpec\ObjectBehavior;
 
 class BooleanSelectionHandlerSpec extends ObjectBehavior
 {
-    public function it_applies_the_selection()
+    public function it_applies_the_selection_when_value_is_true()
     {
         $selection = new BooleanSelection();
         $value = new BooleanValue(true);
 
         $this->applySelection($selection, $value)
             ->shouldReturn('1');
+    }
+
+    public function it_applies_the_selection_when_value_is_false()
+    {
+        $selection = new BooleanSelection();
+        $value = new BooleanValue(false);
+
+        $this->applySelection($selection, $value)
+            ->shouldReturn('0');
     }
 
     public function it_does_not_apply_selection_on_not_supported_selections_and_values()

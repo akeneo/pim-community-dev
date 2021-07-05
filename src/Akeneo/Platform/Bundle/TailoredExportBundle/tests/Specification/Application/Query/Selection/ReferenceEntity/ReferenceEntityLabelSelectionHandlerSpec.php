@@ -46,6 +46,23 @@ class ReferenceEntityLabelSelectionHandlerSpec extends ObjectBehavior
         $this->applySelection($selection, $value)->shouldReturn('label1');
     }
 
+    public function it_applies_the_selection_and_fallback_when_no_translation_is_found(FindRecordsLabelTranslations $findRecordsLabelTranslations)
+    {
+        $selection = new ReferenceEntityLabelSelection(
+            'fr_FR',
+            'a_reference_entity_code'
+        );
+        $value = new ReferenceEntityValue('record_code1');
+
+        $findRecordsLabelTranslations->find(
+            'a_reference_entity_code',
+            ['record_code1'],
+            'fr_FR'
+        )->willReturn([]);
+
+        $this->applySelection($selection, $value)->shouldReturn('[record_code1]');
+    }
+
     public function it_does_not_apply_selection_on_not_supported_selections_and_values()
     {
         $notSupportedSelection = new BooleanSelection();

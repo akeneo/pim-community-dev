@@ -44,6 +44,21 @@ class ParentLabelSelectionHandlerSpec extends ObjectBehavior
             ->shouldReturn('Un tshirt sympa');
     }
 
+    public function it_applies_the_selection_and_fallback_when_no_translation_is_found(GetProductModelLabelsInterface $getProductModelLabels)
+    {
+        $selection = new ParentLabelSelection('fr_FR', 'ecommerce');
+        $value = new ParentValue('tshirt_cool');
+
+        $getProductModelLabels->byCodesAndLocaleAndScope(
+            ['tshirt_cool'],
+            'fr_FR',
+            'ecommerce'
+        )->willReturn([]);
+
+        $this->applySelection($selection, $value)
+            ->shouldReturn('[tshirt_cool]');
+    }
+
     public function it_does_not_applies_selection_on_not_supported_selections_and_values()
     {
         $notSupportedSelection = new BooleanSelection();

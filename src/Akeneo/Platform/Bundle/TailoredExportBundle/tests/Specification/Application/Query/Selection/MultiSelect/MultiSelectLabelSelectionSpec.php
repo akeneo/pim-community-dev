@@ -34,6 +34,6 @@ class MultiSelectLabelSelectionSpec extends ObjectBehavior
 
     public function it_returns_the_attribute_code()
     {
-        $this->getAttirbuteCode()->shouldReturn('an_attribute_code');
+        $this->getAttributeCode()->shouldReturn('an_attribute_code');
     }
 }

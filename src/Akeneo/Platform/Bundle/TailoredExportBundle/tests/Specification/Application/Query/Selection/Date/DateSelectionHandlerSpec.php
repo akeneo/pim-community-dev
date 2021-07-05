@@ -40,7 +40,7 @@ class DateSelectionHandlerSpec extends ObjectBehavior
             ->during('applySelection', [$notSupportedSelection, $notSupportedValue]);
     }
 
-    public function it_supports_categories_code_selection_with_categories_value()
+    public function it_supports_date_selection_with_date_value()
     {
         $selection = new DateSelection('yyyy-mm-dd');
         $value = new DateValue(new \DateTimeImmutable('2020-07-01 16:30:00', new \DateTimeZone('UTC')));

@@ -43,6 +43,20 @@ class FamilyLabelSelectionHandlerSpec extends ObjectBehavior
             ->shouldReturn('A Family Label');
     }
 
+    public function it_applies_selection_and_fallback_when_no_translation_is_found(GetFamilyTranslations $getFamilyTranslations)
+    {
+        $selection = new FamilyLabelSelection('fr_FR');
+        $value = new FamilyValue('a_family_code');
+
+        $getFamilyTranslations->byFamilyCodesAndLocale(
+            ['a_family_code'],
+            'fr_FR'
+        )->willReturn([]);
+
+        $this->applySelection($selection, $value)
+            ->shouldReturn('[a_family_code]');
+    }
+
     public function it_does_not_apply_selection_on_not_supported_selections_and_values()
     {
         $notSupportedSelection = new BooleanSelection();

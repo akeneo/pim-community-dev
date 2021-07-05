@@ -36,6 +36,21 @@ class FilePathSelectionHandlerSpec extends ObjectBehavior
             ->shouldReturn('files/identifier/an_attribute_code/original_filename');
     }
 
+    public function it_applies_the_selection_with_all_value()
+    {
+        $selection = new FilePathSelection('an_attribute_code');
+        $value = new FileValue(
+            'identifier',
+            'a_key',
+            'original_filename',
+            'ecommerce',
+            'fr_FR'
+        );
+
+        $this->applySelection($selection, $value)
+            ->shouldReturn('files/identifier/an_attribute_code/fr_FR/ecommerce/original_filename');
+    }
+
     public function it_does_not_apply_selection_on_not_supported_selections_and_values()
     {
         $notSupportedSelection = new BooleanSelection();

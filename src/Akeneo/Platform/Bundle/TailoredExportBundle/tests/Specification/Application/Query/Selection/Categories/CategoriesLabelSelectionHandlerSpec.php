@@ -36,13 +36,12 @@ class CategoriesLabelSelectionHandlerSpec extends ObjectBehavior
             ['category_code1', 'category_code2', 'category_code3'],
             'fr_FR'
         )->willReturn([
-            'category_code1' => 'Catégorie 1',
             'category_code2' => 'Catégorie 2',
             'category_code3' => 'Catégorie 3',
         ]);
 
         $this->applySelection($selection, $value)
-            ->shouldReturn('Catégorie 1-Catégorie 2-Catégorie 3');
+            ->shouldReturn('[category_code1]-Catégorie 2-Catégorie 3');
     }
 
     public function it_does_not_apply_selection_on_not_supported_selections_and_values()

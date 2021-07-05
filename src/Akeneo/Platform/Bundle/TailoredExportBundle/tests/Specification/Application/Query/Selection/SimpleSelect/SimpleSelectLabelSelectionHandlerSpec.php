@@ -44,6 +44,21 @@ class SimpleSelectLabelSelectionHandlerSpec extends ObjectBehavior
         $this->applySelection($selection, $value)->shouldReturn('rouge');
     }
 
+    public function it_applies_the_selection_and_fallback_when_no_translation_is_found(GetExistingAttributeOptionsWithValues $getExistingAttributeOptionsWithValues)
+    {
+        $selection = new SimpleSelectLabelSelection(
+            'fr_FR',
+            'color'
+        );
+        $value = new SimpleSelectValue('red');
+
+        $getExistingAttributeOptionsWithValues->fromAttributeCodeAndOptionCodes(
+            ['color.red']
+        )->willReturn([]);
+
+        $this->applySelection($selection, $value)->shouldReturn('[red]');
+    }
+
     public function it_does_not_apply_selection_on_not_supported_selections_and_values()
     {
         $notSupportedSelection = new BooleanSelection();

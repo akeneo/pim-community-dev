@@ -41,13 +41,12 @@ class ReferenceEntityCollectionLabelSelectionHandlerSpec extends ObjectBehavior
             ['record_code1', 'record_code2', 'record_code...'],
             'fr_FR'
         )->willReturn([
-            'record_code1' => 'label1',
             'record_code2' => 'label2',
             'record_code...' => 'label...',
         ]);
 
         $this->applySelection($selection, $value)
-            ->shouldReturn('label1/label2/label...');
+            ->shouldReturn('[record_code1]/label2/label...');
     }
 
     public function it_does_not_apply_selection_on_not_supported_selections_and_values()

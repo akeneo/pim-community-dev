@@ -41,6 +41,20 @@ class MeasurementUnitLabelSelectionHandlerSpec extends ObjectBehavior
             ->shouldReturn('Kilogramme');
     }
 
+    public function it_applies_the_selection_and_fallback_when_no_translation_is_found(GetUnitTranslations $getUnitTranslations)
+    {
+        $selection = new MeasurementUnitLabelSelection('weight', 'fr_FR');
+        $value = new MeasurementValue('10', 'kilogram');
+
+        $getUnitTranslations->byMeasurementFamilyCodeAndLocale(
+            'weight',
+            'fr_FR'
+        )->willReturn([]);
+
+        $this->applySelection($selection, $value)
+            ->shouldReturn('[kilogram]');
+    }
+
     public function it_does_not_apply_selection_on_not_supported_selections_and_values()
     {
         $notSupportedSelection = new BooleanSelection();

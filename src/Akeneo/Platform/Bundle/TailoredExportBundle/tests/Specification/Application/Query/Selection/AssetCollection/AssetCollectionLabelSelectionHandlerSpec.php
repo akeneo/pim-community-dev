@@ -41,13 +41,12 @@ class AssetCollectionLabelSelectionHandlerSpec extends ObjectBehavior
             ['asset_code1', 'asset_code2', 'asset_code...'],
             'fr_FR'
         )->willReturn([
-            'asset_code1' => 'label1',
             'asset_code2' => 'label2',
             'asset_code...' => 'label...',
         ]);
 
         $this->applySelection($selection, $value)
-            ->shouldReturn('label1/label2/label...');
+            ->shouldReturn('[asset_code1]/label2/label...');
     }
 
     public function it_does_not_apply_selection_on_not_supported_selections_and_values()
