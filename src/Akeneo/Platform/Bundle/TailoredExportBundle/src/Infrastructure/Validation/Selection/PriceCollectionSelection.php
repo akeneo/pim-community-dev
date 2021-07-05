@@ -17,4 +17,8 @@ use Symfony\Component\Validator\Constraint;
 
 class PriceCollectionSelection extends Constraint
 {
+    public function validatedBy()
+    {
+        return 'akeneo.tailored_export.validation.source.price_collection_selection';
+    }
 }

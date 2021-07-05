@@ -23,18 +23,18 @@ class ParentCodeSelectionHandler implements SelectionHandlerInterface
     public function applySelection(SelectionInterface $selection, SourceValueInterface $value): string
     {
         if (
-            !$selection instanceof ParentCodeSelectionHandler
+            !$selection instanceof ParentCodeSelection
             || !$value instanceof ParentValue
         ) {
             throw new \InvalidArgumentException('Cannot apply Parent selection on this entity');
         }
 
-        return $value->getData();
+        return $value->getParentCode();
     }
 
     public function supports(SelectionInterface $selection, SourceValueInterface $value): bool
     {
-        return $selection instanceof ParentCodeSelectionHandler
+        return $selection instanceof ParentCodeSelection
             && $value instanceof ParentValue;
     }
 }

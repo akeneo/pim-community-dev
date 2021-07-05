@@ -36,7 +36,7 @@ class SimpleSelectLabelSelectionHandler implements SelectionHandlerInterface
         }
 
         $attributeCode = $selection->getAttributeCode();
-        $optionCode = $value->getData();
+        $optionCode = $value->getOptionCode();
         $optionKey = sprintf('%s.%s', $attributeCode, $optionCode);
         $attributeOptionTranslations = $this->getExistingAttributeOptionsWithValues
             ->fromAttributeCodeAndOptionCodes([$optionKey]);

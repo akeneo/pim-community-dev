@@ -18,7 +18,7 @@ use Webmozart\Assert\Assert;
 class OperationCollection implements \IteratorAggregate
 {
     /** @var Operation[] */
-    private array $operations = [];
+    private array $operations;
 
     private function __construct(array $operations)
     {

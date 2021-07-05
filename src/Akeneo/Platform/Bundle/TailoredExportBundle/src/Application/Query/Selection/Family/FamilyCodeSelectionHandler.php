@@ -15,7 +15,6 @@ namespace Akeneo\Platform\TailoredExport\Application\Query\Selection\Family;
 
 use Akeneo\Platform\TailoredExport\Application\Query\Selection\SelectionHandlerInterface;
 use Akeneo\Platform\TailoredExport\Application\Query\Selection\SelectionInterface;
-use Akeneo\Platform\TailoredExport\Domain\SourceValue\AssetCollectionValue;
 use Akeneo\Platform\TailoredExport\Domain\SourceValue\FamilyValue;
 use Akeneo\Platform\TailoredExport\Domain\SourceValueInterface;
 

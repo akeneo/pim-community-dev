@@ -13,7 +13,9 @@ declare(strict_types=1);
 
 namespace Akeneo\Platform\TailoredExport\Domain\SourceValue;
 
-class NumberValue
+use Akeneo\Platform\TailoredExport\Domain\SourceValueInterface;
+
+class NumberValue implements SourceValueInterface
 {
     private string $data;
 

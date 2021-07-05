@@ -34,17 +34,17 @@ const MeasurementSelector = ({selection, validationErrors, onSelectionChange}: M
           openLabel={translate('pim_common.open')}
           value={selection.type}
           onChange={type => {
-            if ('label' === type) {
+            if ('unit_label' === type) {
               onSelectionChange({type, locale: locales[0].code});
-            } else if ('code' === type || 'amount' === type) {
+            } else if ('unit_code' === type || 'amount' === type) {
               onSelectionChange({type});
             }
           }}
         >
-          <SelectInput.Option title={translate('pim_common.label')} value="label">
+          <SelectInput.Option title={translate('pim_common.label')} value="unit_label">
             {translate('pim_common.label')}
           </SelectInput.Option>
-          <SelectInput.Option title={translate('pim_common.code')} value="code">
+          <SelectInput.Option title={translate('pim_common.code')} value="unit_code">
             {translate('pim_common.code')}
           </SelectInput.Option>
           <SelectInput.Option
@@ -60,7 +60,7 @@ const MeasurementSelector = ({selection, validationErrors, onSelectionChange}: M
           </Helper>
         ))}
       </Field>
-      {'label' === selection.type && (
+      {'unit_label' === selection.type && (
         <LocaleDropdown
           value={selection.locale}
           validationErrors={localeErrors}

@@ -24,7 +24,7 @@ class DateValue implements SourceValueInterface
         $this->data = $data;
     }
 
-    public function getData()
+    public function getData(): \DateTime
     {
         return $this->data;
     }

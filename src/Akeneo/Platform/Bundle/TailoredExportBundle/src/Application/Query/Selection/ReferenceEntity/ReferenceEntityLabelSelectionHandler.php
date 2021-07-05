@@ -35,7 +35,7 @@ class ReferenceEntityLabelSelectionHandler implements SelectionHandlerInterface
             throw new \InvalidArgumentException('Cannot apply Reference Entity selection on this entity');
         }
 
-        $recordCode = $value->getData();
+        $recordCode = $value->getRecordCode();
         $referenceEntityCode = $selection->getReferenceEntityCode();
         $recordTranslations = $this->findRecordLabelTranslations->find(
             $referenceEntityCode,

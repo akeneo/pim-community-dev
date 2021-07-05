@@ -13,8 +13,6 @@ declare(strict_types=1);
 
 namespace Akeneo\Platform\TailoredExport\Application\Query\Selection\Measurement;
 
-use Akeneo\Platform\TailoredExport\Application\Query\Selection\Measurement\MeasurementSelectionInterface;
-
 final class MeasurementUnitLabelSelection implements MeasurementSelectionInterface
 {
     public const TYPE = 'unit_label';

@@ -30,7 +30,7 @@ class PriceCollectionAmountSelectionHandler implements SelectionHandlerInterface
             throw new \InvalidArgumentException('Cannot apply Price collection selection on this entity');
         }
 
-        $priceCollection = $value->getData();
+        $priceCollection = $value->getPriceCollection();
 
         $selectedData = array_map(fn (Price $price) => $price->getAmount(), $priceCollection);
 

@@ -29,7 +29,7 @@ class FamilyVariantCodeSelectionHandler implements SelectionHandlerInterface
             throw new \InvalidArgumentException('Cannot apply FamilyVariant selection on this entity');
         }
 
-        return $value->getData();
+        return $value->getFamilyVariantCode();
     }
 
     public function supports(SelectionInterface $selection, SourceValueInterface $value): bool

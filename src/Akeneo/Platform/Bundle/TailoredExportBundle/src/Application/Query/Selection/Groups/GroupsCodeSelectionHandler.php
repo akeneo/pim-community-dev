@@ -29,7 +29,7 @@ class GroupsCodeSelectionHandler implements SelectionHandlerInterface
             throw new \InvalidArgumentException('Cannot apply Groups selection on this entity');
         }
 
-        return implode($selection->getSeparator(), $value->getData());
+        return implode($selection->getSeparator(), $value->getGroupCodes());
     }
 
     public function supports(SelectionInterface $selection, SourceValueInterface $value): bool

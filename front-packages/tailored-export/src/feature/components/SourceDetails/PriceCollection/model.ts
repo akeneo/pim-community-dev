@@ -4,10 +4,11 @@ import {Attribute, Source} from '../../../models';
 
 type PriceCollectionSelection = {
   type: 'amount' | 'currency';
+  separator: ',';
 };
 
 const isPriceCollectionSelection = (selection: any): selection is PriceCollectionSelection =>
-  'type' in selection && ('amount' === selection.type || 'currency' === selection.type);
+  'type' in selection && ('amount' === selection.type || 'currency' === selection.type) && 'separator' in selection;
 
 type PriceCollectionSource = {
   uuid: string;
@@ -30,7 +31,7 @@ const getDefaultPriceCollectionSource = (
   locale,
   channel,
   operations: {},
-  selection: {type: 'amount'},
+  selection: {type: 'amount', separator: ','},
 });
 
 const isPriceCollectionSource = (source: Source): source is PriceCollectionSource =>

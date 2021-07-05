@@ -13,8 +13,6 @@ declare(strict_types=1);
 
 namespace Akeneo\Platform\TailoredExport\Application\Query\Selection\PriceCollection;
 
-use Akeneo\Platform\TailoredExport\Application\Query\Selection\PriceCollection\PriceCollectionSelectionInterface;
-
 final class PriceCollectionCurrencySelection implements PriceCollectionSelectionInterface
 {
     public const TYPE = 'currency';

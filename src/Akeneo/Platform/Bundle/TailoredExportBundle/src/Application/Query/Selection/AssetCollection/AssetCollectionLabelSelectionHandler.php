@@ -38,7 +38,7 @@ class AssetCollectionLabelSelectionHandler implements SelectionHandlerInterface
             throw new \InvalidArgumentException('Cannot apply Asset Collection selection on this entity');
         }
 
-        $assetCodes = $value->getData();
+        $assetCodes = $value->getAssetCodes();
         $assetFamilyCode = $selection->getAssetFamilyCode();
         $assetTranslations = $this->findAssetLabelTranslations->byFamilyCodeAndAssetCodes(
             $assetFamilyCode,

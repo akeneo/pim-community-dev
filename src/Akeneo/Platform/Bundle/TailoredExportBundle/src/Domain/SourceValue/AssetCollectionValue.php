@@ -19,17 +19,17 @@ use Webmozart\Assert\Assert;
 class AssetCollectionValue implements SourceValueInterface
 {
     /** @var string[] */
-    private array $data;
+    private array $assetCodes;
 
-    public function __construct(array $data)
+    public function __construct(array $assetCodes)
     {
-        Assert::allString($data);
+        Assert::allString($assetCodes);
 
-        $this->data = $data;
+        $this->assetCodes = $assetCodes;
     }
 
-    public function getData(): array
+    public function getAssetCodes(): array
     {
-        return $this->data;
+        return $this->assetCodes;
     }
 }

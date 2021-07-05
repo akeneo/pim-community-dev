@@ -4,10 +4,10 @@ import {Attribute, Source} from '../../../models';
 
 type MeasurementSelection =
   | {
-      type: 'code';
+      type: 'unit_code';
     }
   | {
-      type: 'label';
+      type: 'unit_label';
       locale: LocaleCode;
     }
   | {
@@ -16,7 +16,7 @@ type MeasurementSelection =
 
 const isMeasurementSelection = (selection: any): selection is MeasurementSelection =>
   'type' in selection &&
-  (selection.type === 'code' || ('label' === selection.type && 'locale' in selection) || 'amount' === selection.type);
+  (selection.type === 'unit_code' || ('unit_label' === selection.type && 'locale' in selection) || 'amount' === selection.type);
 
 type MeasurementSource = {
   uuid: string;
@@ -39,7 +39,7 @@ const getDefaultMeasurementSource = (
   locale,
   channel,
   operations: {},
-  selection: {type: 'code'},
+  selection: {type: 'unit_code'},
 });
 
 const isMeasurementSource = (source: Source): source is MeasurementSource => isMeasurementSelection(source.selection);

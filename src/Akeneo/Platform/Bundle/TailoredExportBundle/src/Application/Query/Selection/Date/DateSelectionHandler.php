@@ -16,7 +16,6 @@ namespace Akeneo\Platform\TailoredExport\Application\Query\Selection\Date;
 use Akeneo\Platform\TailoredExport\Application\Query\Selection\SelectionHandlerInterface;
 use Akeneo\Platform\TailoredExport\Application\Query\Selection\SelectionInterface;
 use Akeneo\Platform\TailoredExport\Domain\DateFormat;
-use Akeneo\Platform\TailoredExport\Domain\SourceValue\Price;
 use Akeneo\Platform\TailoredExport\Domain\SourceValue\DateValue;
 use Akeneo\Platform\TailoredExport\Domain\SourceValueInterface;
 
