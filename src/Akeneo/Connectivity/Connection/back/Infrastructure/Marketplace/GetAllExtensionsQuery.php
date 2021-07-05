@@ -37,6 +37,6 @@ class GetAllExtensionsQuery implements GetAllExtensionsQueryInterface
             $extensions[] = Extension::create($item);
         }
 
-        return ExtensionList::create($result['total'], $extensions);
+        return ExtensionList::create($result['count'], $extensions);
     }
 }

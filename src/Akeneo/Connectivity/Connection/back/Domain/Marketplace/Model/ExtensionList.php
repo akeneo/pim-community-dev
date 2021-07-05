@@ -45,13 +45,19 @@ class ExtensionList
     }
 
     /**
-     * @return array{count:int, extensions:array<Extension>}
+     * @return array{count:int, extensions:array}
      */
     public function normalize(): array
     {
+        $normalizedExtensions = [];
+
+        foreach ($this->extensions as $extension) {
+            $normalizedExtensions[] = $extension->normalize();
+        }
+
         return [
             'count' => $this->count,
-            'extensions' => $this->extensions,
+            'extensions' => $normalizedExtensions,
         ];
     }
 }

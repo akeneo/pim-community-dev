@@ -50,7 +50,7 @@ class GetAllExtensionsQuerySpec extends ObjectBehavior
         ];
         $webMarketplaceApi->getExtensions('Serenity', '5.0')
             ->willreturn([
-                'total' => 12,
+                'count' => 12,
                 'items' => [$item]
             ]);
 
