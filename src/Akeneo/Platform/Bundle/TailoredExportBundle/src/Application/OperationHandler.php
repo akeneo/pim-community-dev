@@ -36,7 +36,7 @@ class OperationHandler
                     continue;
                 }
 
-                $value = $handler->applyOperation($operation, $value);
+                $value = $handler->handleOperation($operation, $value);
             }
         }
 
