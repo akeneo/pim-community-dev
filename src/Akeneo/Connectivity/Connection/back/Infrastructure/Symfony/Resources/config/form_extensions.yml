@@ -8,6 +8,7 @@ extensions:
             title: pim_menu.tab.connect
             iconModifier: iconConnect
             to: akeneo_connectivity_connection_audit_index
+            icon: ConnectIcon
 
     pim-menu-connect-column:
         module: pim/menu/column
@@ -40,8 +41,12 @@ extensions:
         parent: pim-menu
         targetZone: column
         config:
+            tab: pim-menu-connect
             stateCode: pim-menu-connection
             navigationTitle: pim_menu.navigation_block.connection
+            backLink:
+                title: pim_menu.navigation_back.connection
+                route: akeneo_connectivity_connection_settings_index
 
     pim-menu-connection-params-provider:
         module: pim/menu/connectivity/connection/connection-params-provider

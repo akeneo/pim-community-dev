@@ -1,7 +1,16 @@
 import React, {FC, useMemo} from 'react';
 import styled from 'styled-components';
 import {PimView, useRouter, useTranslate} from '@akeneo-pim-community/shared';
-import {IconProps, MainNavigationItem, SubNavigationItem, SubNavigationPanel} from 'akeneo-design-system';
+import {
+  Dropdown,
+  IconButton,
+  IconProps,
+  MainNavigationItem,
+  MoreVerticalIcon,
+  SubNavigationItem,
+  SubNavigationPanel,
+  useBooleanState,
+} from 'akeneo-design-system';
 
 type NavigationEntry = {
   code: string;
@@ -17,6 +26,7 @@ type SubNavigation = {
   title?: string;
   sections: SubNavigationSection[];
   entries: SubNavigationEntry[];
+  backLink?: BackLink;
 };
 
 type SubNavigationEntry = {
@@ -32,6 +42,11 @@ type SubNavigationSection = {
   title: string;
 };
 
+type BackLink = {
+  title: string;
+  route: string;
+};
+
 type Props = {
   entries: NavigationEntry[];
   activeEntryCode: string | null;
@@ -40,6 +55,10 @@ type Props = {
 const PimNavigation: FC<Props> = ({entries, activeEntryCode, activeSubEntryCode}) => {
   const translate = useTranslate();
   const router = useRouter();
+  // @todo read default value by main navigation entry from Session storage
+  // @example: collapsedColumn_pim-menu-settings: 1
+  const [isSubNavigationOpened, openSubNavigation, closeSubNavigation] = useBooleanState(true);
+  const [isMenuOpen, openMenu, closeMenu] = useBooleanState(false);
 
   const handleFollowEntry = (entry: NavigationEntry) => {
     router.redirect(router.generate(entry.route));
@@ -49,12 +68,9 @@ const PimNavigation: FC<Props> = ({entries, activeEntryCode, activeSubEntryCode}
   const handleFollowSubEntry = (event: any, subEntry: SubNavigationEntry) => {
     event.stopPropagation();
     event.preventDefault();
+    closeMenu();
     router.redirect(router.generate(subEntry.route, subEntry.routeParams));
   };
-
-  // @todo read default value by main navigation entry from Session storage
-  // @example: collapsedColumn_pim-menu-settings: 1
-  const isSubNavigationOpened = true;
 
   const activeNavigationEntry = useMemo((): NavigationEntry | undefined => {
     return entries.find((entry: NavigationEntry) => entry.code === activeEntryCode);
@@ -98,24 +114,62 @@ const PimNavigation: FC<Props> = ({entries, activeEntryCode, activeSubEntryCode}
       activeSubNavigation &&
       activeSubNavigation.sections.length > 0 && (
         <SubNavContainer>
-          <SubNavigationPanel isOpen={isSubNavigationOpened}>
-            {activeSubNavigation.sections.map(section => {
-              return <div key={section.code}>
-                <SubNavigationTitle>{translate(section.title)}</SubNavigationTitle>
-                {activeSubNavigation.entries.filter(subNav => subNav.sectionCode === section.code).map(subEntry => {
+          <SubNavigationPanel isOpen={isSubNavigationOpened} open={openSubNavigation} close={closeSubNavigation}>
+            {!isSubNavigationOpened &&
+              <Dropdown>
+                  <IconButton
+                    level="tertiary"
+                    title=''
+                    icon={<MoreVerticalIcon />}
+                    ghost="borderless"
+                    onClick={openMenu}
+                    className="dropdown-button"
+                  />
+                  {isMenuOpen &&
+                    <Dropdown.Overlay onClose={closeMenu}>
+                      <Dropdown.Header>
+                        {activeSubNavigation.title && <Dropdown.Title>{translate(activeSubNavigation.title)}</Dropdown.Title>}
+                      </Dropdown.Header>
+                      <Dropdown.ItemCollection>
+                        {activeSubNavigation.entries.map(subEntry =>
+                          <Dropdown.Item onClick={(event: any) => handleFollowSubEntry(event, subEntry)} key={subEntry.code}>
+                            {subEntry.title}
+                          </Dropdown.Item>
+                        )};
+                      </Dropdown.ItemCollection>
+                    </Dropdown.Overlay>
+                  }
+              </Dropdown>
+            }
+            {isSubNavigationOpened &&
+              <>
+                {activeSubNavigation.backLink &&
+                  // @ts-ignore
+                  <Backlink onClick={() => router.redirectToRoute(activeSubNavigation.backLink.route)}>
+                    {translate(activeSubNavigation.backLink.title)}
+                  </Backlink>
+                }
+                {activeSubNavigation.sections.map(section => {
                   return (
-                    <SubNavigationItem
-                      active={subEntry.code === activeSubEntryCode}
-                      key={subEntry.code}
-                      href={`#${router.generate(subEntry.route, subEntry.routeParams)}`}
-                      onClick={(event: any) => handleFollowSubEntry(event, subEntry)}
-                    >
-                      {subEntry.title}
-                    </SubNavigationItem>
+                    <Section key={section.code}>
+                      <SectionTitle>{translate(section.title)}</SectionTitle>
+                      {activeSubNavigation.entries.filter(subNav => subNav.sectionCode === section.code).map(subEntry => {
+                        return (
+                          <SubNavigationItem
+                            active={subEntry.code === activeSubEntryCode}
+                            key={subEntry.code}
+                            href={`#${router.generate(subEntry.route, subEntry.routeParams)}`}
+                            onClick={(event: any) => handleFollowSubEntry(event, subEntry)}
+                          >
+                            {subEntry.title}
+                          </SubNavigationItem>
+                        );
+                      })}
+                    </Section>
                   );
                 })}
-              </div>;
-            })}
+              </>
+            }
           </SubNavigationPanel>
         </SubNavContainer>
       )}
@@ -140,7 +194,7 @@ const MainNavContainer = styled.div`
 `;
 const SubNavContainer = styled.div``;
 
-const SubNavigationTitle = styled.div`
+const SectionTitle = styled.div`
   margin-bottom: 30px;
   color: #a1a9b7;
   text-transform: uppercase;
@@ -159,6 +213,19 @@ const HelpContainer = styled.div`
   min-height: 80px;
   position: relative;
   margin-top: auto;
+`;
+
+const Section = styled.div`
+  :not(:first-child) {
+    margin-top: 30px;
+  }
+`;
+
+const Backlink = styled.div`
+  font-size: ${({theme}) => theme.fontSize.big};
+  color: ${({theme}) => theme.color.grey140};
+  cursor: pointer;
+  padding-bottom: 10px;
 `;
 
 export type {NavigationEntry, SubNavigationSection, SubNavigation};

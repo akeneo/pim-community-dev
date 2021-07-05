@@ -4,7 +4,7 @@ import {ViewOptions} from 'backbone';
 import {NavigationEntry, PimNavigation, SubNavigation, SubNavigationSection} from '../../PimNavigation';
 import View from '../../view/base-interface';
 import React from 'react';
-import {CardIcon} from 'akeneo-design-system';
+import * as DSM from 'akeneo-design-system';
 
 const BaseForm = require('pim/form');
 const _ = require('underscore');
@@ -17,6 +17,7 @@ type EntryView = View & {
     to?: string;
     isLandingSectionPage?: boolean;
     tab?: string;
+    icon: string;
   };
   items: SubEntry[];
   sections: any[];
@@ -29,6 +30,10 @@ type EntryColumnView = View & {
     to?: string;
     tab?: string;
     navigationTitle?: string;
+    backLink: {
+      title: string;
+      route: string;
+    }
   };
   navigationItems: SubEntry[];
   sections: any[];
@@ -101,8 +106,6 @@ class Menu extends BaseForm {
   }
 
   findMainEntries(): NavigationEntry[] {
-    // console.log(this.extensions);
-
     const navigationEntriesExtensions = Object.values(this.extensions).filter((extension: View) => {
       if (extension.targetZone !== 'mainMenu') {
         return false;
@@ -116,13 +119,15 @@ class Menu extends BaseForm {
     });
 
     const entries: NavigationEntry[] = navigationEntriesExtensions.map((extension: EntryView) => {
-      const {title, isLandingSectionPage} = extension.config;
+      const {title, isLandingSectionPage, icon} = extension.config;
+
       return {
         code: extension.code,
         title: title,
         disabled: false,
         route: this.findEntryRoute(extension),
-        icon: React.createElement(CardIcon),
+        // @ts-ignore
+        icon: DSM[icon] && React.createElement(DSM[icon]),
         subNavigations: this.findMainEntrySubNavigations(extension.code),
         isLandingSectionPage: isLandingSectionPage ?? false,
       };
@@ -149,11 +154,20 @@ class Menu extends BaseForm {
         }
       });
 
+      let backLink;
+      if (column.config.backLink) {
+        backLink = {
+          title: column.config.backLink.title,
+          route: column.config.backLink.route,
+        }
+      }
+
       return {
         title: column.config.navigationTitle,
         sections: sections,
         // @fixme Handle columns without title
         entries: column.navigationItems,
+        backLink: backLink,
       };
     });
   }
