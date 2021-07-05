@@ -17,15 +17,15 @@ use Akeneo\Platform\TailoredExport\Domain\SourceValueInterface;
 
 class ReferenceEntityValue implements SourceValueInterface
 {
-    private string $data;
+    private string $recordCode;
 
-    public function __construct(string $data)
+    public function __construct(string $recordCode)
     {
-        $this->data = $data;
+        $this->recordCode = $recordCode;
     }
 
-    public function getData(): string
+    public function getRecordCode(): string
     {
-        return $this->data;
+        return $this->recordCode;
     }
 }

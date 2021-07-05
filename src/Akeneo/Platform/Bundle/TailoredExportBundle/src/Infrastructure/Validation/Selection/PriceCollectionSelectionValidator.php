@@ -23,6 +23,13 @@ use Symfony\Component\Validator\ConstraintValidator;
 
 class PriceCollectionSelectionValidator extends ConstraintValidator
 {
+    private array $availableCollectionSeparator;
+
+    public function __construct(array $availableCollectionSeparator)
+    {
+        $this->availableCollectionSeparator = $availableCollectionSeparator;
+    }
+
     public function validate($selection, Constraint $constraint)
     {
         $validator = $this->context->getValidator();
@@ -39,6 +46,14 @@ class PriceCollectionSelectionValidator extends ConstraintValidator
                                         PriceCollectionCurrencySelection::TYPE,
                                         PriceCollectionAmountSelection::TYPE,
                                     ],
+                                ]
+                            )
+                        ],
+                        'separator' => [
+                            new Choice(
+                                [
+                                    'strict' => true,
+                                    'choices' => $this->availableCollectionSeparator,
                                 ]
                             )
                         ],

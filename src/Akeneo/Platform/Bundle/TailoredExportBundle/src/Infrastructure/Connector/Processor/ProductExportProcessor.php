@@ -15,12 +15,12 @@ namespace Akeneo\Platform\TailoredExport\Infrastructure\Connector\Processor;
 
 use Akeneo\Pim\Enrichment\Component\Product\Model\ProductInterface;
 use Akeneo\Pim\Structure\Component\Query\PublicApi\AttributeType\GetAttributes;
-use Akeneo\Platform\TailoredExport\Infrastructure\Hydrator\SelectionHydrator;
 use Akeneo\Platform\TailoredExport\Application\OperationApplier;
 use Akeneo\Platform\TailoredExport\Application\Query\Selection\SelectionHandler;
 use Akeneo\Platform\TailoredExport\Domain\OperationCollection;
 use Akeneo\Platform\TailoredExport\Domain\ReplacementOperation;
 use Akeneo\Platform\TailoredExport\Domain\SourceTypes;
+use Akeneo\Platform\TailoredExport\Infrastructure\Hydrator\SelectionHydrator;
 use Akeneo\Platform\TailoredExport\Infrastructure\Hydrator\ValueHydrator;
 use Akeneo\Tool\Component\Batch\Item\ItemProcessorInterface;
 use Akeneo\Tool\Component\Batch\Model\StepExecution;

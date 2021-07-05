@@ -19,17 +19,17 @@ use Webmozart\Assert\Assert;
 class GroupsValue implements SourceValueInterface
 {
     /** @var string[] */
-    private array $data;
+    private array $groupCodes;
 
-    public function __construct(array $data)
+    public function __construct(array $groupCodes)
     {
-        Assert::allString($data);
+        Assert::allString($groupCodes);
 
-        $this->data = $data;
+        $this->groupCodes = $groupCodes;
     }
 
-    public function getData(): array
+    public function getGroupCodes(): array
     {
-        return $this->data;
+        return $this->groupCodes;
     }
 }

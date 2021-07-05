@@ -29,7 +29,7 @@ class SimpleSelectCodeSelectionHandler implements SelectionHandlerInterface
             throw new \InvalidArgumentException('Cannot apply Simple Select selection on this entity');
         }
 
-        return $value->getData();
+        return $value->getOptionCode();
     }
 
     public function supports(SelectionInterface $selection, SourceValueInterface $value): bool

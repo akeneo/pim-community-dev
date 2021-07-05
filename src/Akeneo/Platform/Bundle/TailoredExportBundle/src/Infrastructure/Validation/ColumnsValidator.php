@@ -23,7 +23,6 @@ use Symfony\Component\Validator\Constraints\NotBlank;
 use Symfony\Component\Validator\Constraints\Type;
 use Symfony\Component\Validator\Constraints\Uuid;
 use Symfony\Component\Validator\ConstraintValidator;
-use Symfony\Component\Validator\Validation;
 use Symfony\Component\Validator\Validator\ValidatorInterface;
 
 class ColumnsValidator extends ConstraintValidator
@@ -61,7 +60,7 @@ class ColumnsValidator extends ConstraintValidator
 
         $columnTargets = [];
         foreach ($columns as $column) {
-            $this->validateColumn($validator, $column, $constraint);
+            $this->validateColumn($validator, $column);
 
             if (isset($column['target'])) {
                 if (in_array($column['target'], $columnTargets)) {
@@ -76,7 +75,7 @@ class ColumnsValidator extends ConstraintValidator
         }
     }
 
-    private function validateColumn(ValidatorInterface $validator, $column, Constraint $constraint): void
+    private function validateColumn(ValidatorInterface $validator, $column): void
     {
         $violations = $validator->validate($column, [new Collection([
             'fields' => [

@@ -19,18 +19,18 @@ use Webmozart\Assert\Assert;
 class PriceCollectionValue implements SourceValueInterface
 {
     /** @var Price[] */
-    private array $data;
+    private array $priceCollection;
 
-    public function __construct(array $data)
+    public function __construct(array $priceCollection)
     {
-        Assert::allIsInstanceOf($data, Price::class);
+        Assert::allIsInstanceOf($priceCollection, Price::class);
 
-        $this->data = $data;
+        $this->priceCollection = $priceCollection;
     }
 
     /** @return Price[] */
-    public function getData(): array
+    public function getPriceCollection(): array
     {
-        return $this->data;
+        return $this->priceCollection;
     }
 }

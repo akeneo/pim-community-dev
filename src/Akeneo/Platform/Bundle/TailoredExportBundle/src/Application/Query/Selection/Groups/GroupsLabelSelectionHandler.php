@@ -38,7 +38,7 @@ class GroupsLabelSelectionHandler implements SelectionHandlerInterface
             throw new \InvalidArgumentException('Cannot apply Groups selection on this entity');
         }
 
-        $groupCodes = $value->getData();
+        $groupCodes = $value->getGroupCodes();
         $groupTranslations = $this->getGroupTranslations
             ->byGroupCodesAndLocale($groupCodes, $selection->getLocale());
 

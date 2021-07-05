@@ -24,7 +24,7 @@ const PriceCollectionSelector = ({selection, validationErrors, onSelectionChange
           value={selection.type}
           onChange={type => {
             if ('amount' === type || 'currency' === type) {
-              onSelectionChange({type});
+              onSelectionChange({...selection, type});
             }
           }}
         >

@@ -29,7 +29,7 @@ class MultiSelectCodeSelectionHandler implements SelectionHandlerInterface
             throw new \InvalidArgumentException('Cannot apply Multi Select selection on this entity');
         }
 
-        return implode($selection->getSeparator(), $value->getData());
+        return implode($selection->getSeparator(), $value->getOptionCodes());
     }
 
     public function supports(SelectionInterface $selection, SourceValueInterface $value): bool

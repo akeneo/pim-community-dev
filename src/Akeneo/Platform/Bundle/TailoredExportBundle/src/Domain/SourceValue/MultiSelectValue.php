@@ -19,17 +19,17 @@ use Webmozart\Assert\Assert;
 class MultiSelectValue implements SourceValueInterface
 {
     /** @var string[] */
-    private array $data;
+    private array $optionCodes;
 
-    public function __construct(array $data)
+    public function __construct(array $optionCodes)
     {
-        Assert::allString($data);
+        Assert::allString($optionCodes);
 
-        $this->data = $data;
+        $this->optionCodes = $optionCodes;
     }
 
-    public function getData(): array
+    public function getOptionCodes(): array
     {
-        return $this->data;
+        return $this->optionCodes;
     }
 }

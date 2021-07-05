@@ -37,7 +37,7 @@ class ParentLabelSelectionHandler implements SelectionHandlerInterface
             throw new \InvalidArgumentException('Cannot apply Parent selection on this entity');
         }
 
-        $parentCode = $value->getData();
+        $parentCode = $value->getParentCode();
         $parentTranslations = $this->getProductModelLabels->byCodesAndLocaleAndScope(
             [$parentCode],
             $selection->getLocale(),

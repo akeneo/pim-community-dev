@@ -36,7 +36,7 @@ class MultiSelectLabelSelectionHandler implements SelectionHandlerInterface
         }
 
         $attributeCode = $selection->getAttributeCode();
-        $optionsCodes = $value->getData();
+        $optionsCodes = $value->getOptionCodes();
         $optionsKeys = $this->generateOptionsKeys($optionsCodes, $attributeCode);
 
         $attributeOptionTranslations = $this->getExistingAttributeOptionsWithValues->fromAttributeCodeAndOptionCodes(
@@ -46,7 +46,7 @@ class MultiSelectLabelSelectionHandler implements SelectionHandlerInterface
         $selectedData = array_map(function ($optionCode) use ($attributeOptionTranslations, $attributeCode, $selection) {
             $optionKey = $this->generateOptionKey($attributeCode, $optionCode);
             return $attributeOptionTranslations[$optionKey][$selection->getLocale()] ?? sprintf('[%s]', $optionCode);
-        }, $value->getData());
+        }, $optionsCodes);
 
         return implode($selection->getSeparator(), $selectedData);
     }

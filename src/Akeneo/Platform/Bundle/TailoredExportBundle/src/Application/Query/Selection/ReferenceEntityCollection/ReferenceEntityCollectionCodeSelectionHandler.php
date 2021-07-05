@@ -29,7 +29,7 @@ class ReferenceEntityCollectionCodeSelectionHandler implements SelectionHandlerI
             throw new \InvalidArgumentException('Cannot apply Reference Entity Collection selection on this entity');
         }
 
-        return implode($selection->getSeparator(), $value->getData());
+        return implode($selection->getSeparator(), $value->getRecordCodes());
     }
 
     public function supports(SelectionInterface $selection, SourceValueInterface $value): bool

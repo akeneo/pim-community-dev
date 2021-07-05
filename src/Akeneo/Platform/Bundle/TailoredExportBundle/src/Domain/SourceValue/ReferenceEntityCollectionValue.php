@@ -19,17 +19,17 @@ use Webmozart\Assert\Assert;
 class ReferenceEntityCollectionValue implements SourceValueInterface
 {
     /** @var string[] */
-    private array $data;
+    private array $recordCodes;
 
-    public function __construct(array $data)
+    public function __construct(array $recordCodes)
     {
-        Assert::allString($data);
+        Assert::allString($recordCodes);
 
-        $this->data = $data;
+        $this->recordCodes = $recordCodes;
     }
 
-    public function getData(): array
+    public function getRecordCodes(): array
     {
-        return $this->data;
+        return $this->recordCodes;
     }
 }

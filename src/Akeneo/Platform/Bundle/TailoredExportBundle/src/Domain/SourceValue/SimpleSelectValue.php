@@ -17,15 +17,15 @@ use Akeneo\Platform\TailoredExport\Domain\SourceValueInterface;
 
 class SimpleSelectValue implements SourceValueInterface
 {
-    private string $data;
+    private string $optionCode;
 
-    public function __construct(string $data)
+    public function __construct(string $optionCode)
     {
-        $this->data = $data;
+        $this->optionCode = $optionCode;
     }
 
-    public function getData(): string
+    public function getOptionCode(): string
     {
-        return $this->data;
+        return $this->optionCode;
     }
 }

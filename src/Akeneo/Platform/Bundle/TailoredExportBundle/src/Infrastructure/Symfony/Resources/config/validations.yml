@@ -54,6 +54,14 @@ services:
       - { name: validator.constraint_validator, alias: 'akeneo.tailored_export.validation.source.code_label_collection_selection' }
     public: true
 
+  akeneo.tailored_export.validation.source.price_collection_selection:
+    class: 'Akeneo\Platform\TailoredExport\Infrastructure\Validation\Selection\PriceCollectionSelectionValidator'
+    arguments:
+      - [',', ';', '|']
+    tags:
+      - { name: validator.constraint_validator, alias: 'akeneo.tailored_export.validation.source.price_collection_selection' }
+    public: true
+
   akeneo.tailored_export.validation.locale_should_be_active:
     class: 'Akeneo\Platform\TailoredExport\Infrastructure\Validation\LocaleShouldBeActiveValidator'
     arguments:

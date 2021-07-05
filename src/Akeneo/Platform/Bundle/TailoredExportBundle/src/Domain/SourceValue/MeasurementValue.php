@@ -13,7 +13,9 @@ declare(strict_types=1);
 
 namespace Akeneo\Platform\TailoredExport\Domain\SourceValue;
 
-class MeasurementValue
+use Akeneo\Platform\TailoredExport\Domain\SourceValueInterface;
+
+class MeasurementValue implements SourceValueInterface
 {
     private string $amount;
     private string $unit;

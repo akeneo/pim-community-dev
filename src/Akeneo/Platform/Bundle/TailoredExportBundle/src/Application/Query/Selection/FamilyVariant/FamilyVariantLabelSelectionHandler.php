@@ -38,7 +38,7 @@ class FamilyVariantLabelSelectionHandler implements SelectionHandlerInterface
             throw new \InvalidArgumentException('Cannot apply FamilyVariant selection on this entity');
         }
 
-        $familyVariantCode = $value->getData();
+        $familyVariantCode = $value->getFamilyVariantCode();
         $familyVariantTranslations = $this->getFamilyVariantTranslations
             ->byFamilyVariantCodesAndLocale([$familyVariantCode], $selection->getLocale());
 

@@ -34,6 +34,7 @@ use Akeneo\Platform\TailoredExport\Domain\SourceValue\NumberValue;
 use Akeneo\Platform\TailoredExport\Domain\SourceValue\ParentValue;
 use Akeneo\Platform\TailoredExport\Domain\SourceValue\Price;
 use Akeneo\Platform\TailoredExport\Domain\SourceValue\PriceCollectionValue;
+use Akeneo\Platform\TailoredExport\Domain\SourceValue\ReferenceEntityCollectionValue;
 use Akeneo\Platform\TailoredExport\Domain\SourceValue\ReferenceEntityValue;
 use Akeneo\Platform\TailoredExport\Domain\SourceValue\SimpleSelectValue;
 use Akeneo\Platform\TailoredExport\Domain\SourceValue\StringValue;
@@ -91,12 +92,12 @@ class ValueHydrator
             case 'pim_catalog_price_collection':
                 return new PriceCollectionValue(array_map(
                     fn (ProductPriceInterface $price) => new Price((string) $price->getData(), $price->getCurrency()),
-                    $data
+                    $data->toArray()
                 ));
             case 'akeneo_reference_entity':
-                return new ReferenceEntityValue($data);
+                return new ReferenceEntityValue((string) $data);
             case 'akeneo_reference_entity_collection':
-                return new ReferenceEntityValue($data);
+                return new ReferenceEntityCollectionValue(array_map('strval', $data));
 
             default:
                 throw new \LogicException(sprintf('Unsupported attribute type "%s"', $attribute->type()));
