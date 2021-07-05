@@ -11,13 +11,15 @@ import {
   CloseIcon,
   LoaderIcon,
   Helper,
+  AkeneoThemedProps,
+  getColor,
 } from 'akeneo-design-system';
 import {getLabel, Locale, LocaleCode, useRouter, useTranslate, useUserContext} from '@akeneo-pim-community/shared';
 import {SelectColumnDefinition, SelectOption} from '../models/TableConfiguration';
 import {Attribute} from '../models/Attribute';
 import {TwoColumnsLayout} from './TwoColumnsLayout';
 import {FieldsList} from '../shared/FieldsList';
-import styled from 'styled-components';
+import styled, {css} from 'styled-components';
 import {fetchSelectOptions} from '../fetchers/SelectOptionsFetcher';
 import {getActivatedLocales} from '../repositories/Locale';
 
@@ -39,6 +41,16 @@ const CellFieldContainer = styled.div`
   flex-grow: 1;
 `;
 
+const ManageOptionsRow = styled(Table.Row)<{isLastRow: boolean} & AkeneoThemedProps>`
+  ${({isLastRow}) =>
+    isLastRow &&
+    css`
+      position: sticky;
+      bottom: 0;
+      background-color: ${getColor('white')};
+    `}
+`;
+
 type ManageOptionsModalProps = {
   onClose: () => void;
   attribute: Attribute;
@@ -56,6 +68,7 @@ const ManageOptionsModal: React.FC<ManageOptionsModalProps> = ({onClose, attribu
   const router = useRouter();
   const translate = useTranslate();
 
+  const tableContainerRef = React.useRef();
   const [activatedLocales, setActivatedLocales] = React.useState<Locale[]>();
   const [selectedOptionId, setSelectedOptionId] = React.useState<string | undefined>(undefined);
   const [options, setOptions] = React.useState<SelectOptionWithId[]>();
@@ -131,6 +144,13 @@ const ManageOptionsModal: React.FC<ManageOptionsModalProps> = ({onClose, attribu
           options.push({id: uuid(), code: '', labels: {}});
         }
         setOptionsWithCheck(options);
+      }
+      if (tableContainerRef.current) {
+        window.setTimeout(() => {
+          if (index === options.length - 2) {
+            tableContainerRef.current.scrollTop = tableContainerRef.current.scrollHeight;
+          }
+        }, 0);
       }
     }
   };
@@ -219,7 +239,7 @@ const ManageOptionsModal: React.FC<ManageOptionsModalProps> = ({onClose, attribu
             <SectionTitle.Title>{columnLabel}</SectionTitle.Title>
           </SectionTitle>
           {!options && <LoaderIcon />}
-          <TableContainer>
+          <TableContainer ref={tableContainerRef}>
             <Table>
               <Table.Header>
                 <Table.HeaderCell>{translate('pim_common.label')}</Table.HeaderCell>
@@ -231,10 +251,11 @@ const ManageOptionsModal: React.FC<ManageOptionsModalProps> = ({onClose, attribu
               <Table.Body>
                 {options &&
                   options.map((option, index) => (
-                    <Table.Row
+                    <ManageOptionsRow
                       key={option.id}
                       isSelected={option.id === selectedOptionId}
-                      onClick={() => setSelectedOptionId(option.id)}>
+                      onClick={() => setSelectedOptionId(option.id)}
+                      isLastRow={index === options.length - 1}>
                       <ManageOptionCell>
                         <CellFieldContainer>
                           <TextInput
@@ -278,7 +299,7 @@ const ManageOptionsModal: React.FC<ManageOptionsModalProps> = ({onClose, attribu
                           />
                         )}
                       </Table.ActionCell>
-                    </Table.Row>
+                    </ManageOptionsRow>
                   ))}
               </Table.Body>
             </Table>
