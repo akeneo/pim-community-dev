@@ -1,11 +1,11 @@
 'use strict';
 
 import {ViewOptions} from 'backbone';
-import {NavigationEntry, PimNavigation} from '../PimNavigation';
+import {NavigationEntry, PimNavigation} from '../Navigation/PimNavigation';
 import View from '../view/base-interface';
 import React from 'react';
 import * as DSM from 'akeneo-design-system';
-import {SubNavigationSection, SubNavigationType} from '../SubNavigation';
+import {SubNavigationSection, SubNavigationType} from '../Navigation/SubNavigation';
 
 const BaseForm = require('pim/form');
 const _ = require('underscore');
@@ -128,7 +128,6 @@ class Menu extends BaseForm {
 
   findMainEntrySubNavigations(entryCode: string): SubNavigationType[] {
     const columns = Object.values(this.extensions).filter((extension: EntryView) => {
-      // @todo Ensure that we should use "tab" (it's not always defined. ex: pim-menu-connection-column)
       return extension.targetZone === 'column' && extension.config.tab === entryCode;
     });
 

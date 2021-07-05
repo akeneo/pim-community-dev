@@ -1,14 +1,8 @@
 import React, {FC, useEffect} from 'react';
 import styled from 'styled-components';
-import {
-  Dropdown,
-  IconButton,
-  MoreVerticalIcon,
-  SubNavigationItem,
-  SubNavigationPanel,
-  useBooleanState
-} from 'akeneo-design-system';
+import {SubNavigationItem, SubNavigationPanel, useBooleanState} from 'akeneo-design-system';
 import {useRouter, useTranslate} from '@akeneo-pim-community/shared';
+import {SubNavigationDropdown} from "./SubNavigationDropdown";
 
 type SubNavigationType = {
   title?: string;
@@ -43,7 +37,6 @@ type Props = SubNavigationType & {
 const SubNavigation: FC<Props> = ({title, sections, entries, backLink, stateCode, activeSubEntryCode}) => {
   const translate = useTranslate();
   const router = useRouter();
-  const [isMenuOpen, openMenu, closeMenu] = useBooleanState(false);
   const subNavigationState = sessionStorage.getItem(`collapsedColumn_${stateCode}`);
   const [isSubNavigationOpened, openSubNavigation, closeSubNavigation] = useBooleanState(subNavigationState === null || subNavigationState === '1');
 
@@ -54,41 +47,14 @@ const SubNavigation: FC<Props> = ({title, sections, entries, backLink, stateCode
   const handleFollowSubEntry = (event: any, subEntry: SubNavigationEntry) => {
     event.stopPropagation();
     event.preventDefault();
-    closeMenu();
     router.redirect(router.generate(subEntry.route, subEntry.routeParams));
   };
 
   return (
     <SubNavContainer>
       <SubNavigationPanel isOpen={isSubNavigationOpened} open={openSubNavigation} close={closeSubNavigation}>
-        {!isSubNavigationOpened &&
-        <Dropdown>
-            <IconButton
-                level="tertiary"
-                title=''
-                icon={<MoreVerticalIcon />}
-                ghost="borderless"
-                onClick={openMenu}
-                className="dropdown-button"
-            />
-          {isMenuOpen &&
-          <Dropdown.Overlay onClose={closeMenu}>
-            {title &&
-              <Dropdown.Header>
-                  <Dropdown.Title>{translate(title)}</Dropdown.Title>
-              </Dropdown.Header>
-            }
-            <Dropdown.ItemCollection>
-              {entries.map(subEntry =>
-                <Dropdown.Item onClick={(event: any) => handleFollowSubEntry(event, subEntry)} key={subEntry.code}>
-                  {subEntry.title}
-                </Dropdown.Item>
-              )}
-            </Dropdown.ItemCollection>
-          </Dropdown.Overlay>
-          }
-        </Dropdown>
-        }
+        {!isSubNavigationOpened && <SubNavigationDropdown entries={entries} title={title}/>}
+
         {isSubNavigationOpened &&
         <>
           {backLink &&
