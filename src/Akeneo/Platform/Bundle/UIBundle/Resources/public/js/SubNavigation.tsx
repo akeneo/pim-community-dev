@@ -45,7 +45,7 @@ const SubNavigation: FC<Props> = ({title, sections, entries, backLink, stateCode
   const router = useRouter();
   const [isMenuOpen, openMenu, closeMenu] = useBooleanState(false);
   const subNavigationState = sessionStorage.getItem(`collapsedColumn_${stateCode}`);
-  const [isSubNavigationOpened, openSubNavigation, closeSubNavigation] = useBooleanState(subNavigationState === undefined || subNavigationState === '1');
+  const [isSubNavigationOpened, openSubNavigation, closeSubNavigation] = useBooleanState(subNavigationState === null || subNavigationState === '1');
 
   useEffect(() => {
     sessionStorage.setItem(`collapsedColumn_${stateCode}`, isSubNavigationOpened ? '1' : '0');
@@ -99,8 +99,7 @@ const SubNavigation: FC<Props> = ({title, sections, entries, backLink, stateCode
             return (
               <Section key={section.code}>
                 <SectionTitle>{translate(section.title)}</SectionTitle>
-                {entries.filter(subNav => subNav.sectionCode === section.code).map(subEntry => {
-                  return (
+                {entries.filter(subNav => subNav.sectionCode === section.code).map(subEntry =>
                     <SubNavigationItem
                       active={subEntry.code === activeSubEntryCode}
                       key={subEntry.code}
@@ -109,8 +108,7 @@ const SubNavigation: FC<Props> = ({title, sections, entries, backLink, stateCode
                     >
                       {subEntry.title}
                     </SubNavigationItem>
-                  );
-                })}
+                )}
               </Section>
             );
           })}
