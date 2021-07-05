@@ -1,19 +1,26 @@
 parameters:
-  akeneo_pim_marketplace_url: 'https://marketplace.akeneo.com'
+    akeneo_pim_marketplace_url: 'https://marketplace.akeneo.com'
 
 services:
-  akeneo_connectivity.connection.marketplace.url_generator:
-    class: Akeneo\Connectivity\Connection\Application\Marketplace\MarketplaceUrlGenerator
-    arguments:
-      - '%akeneo_pim_marketplace_url%'
-      - '@pim_catalog.version_provider'
-      - '%env(AKENEO_PIM_URL)%'
-      - '@akeneo_connectivity.connection.marketplace.query.get_user_profile'
+    akeneo_connectivity.connection.marketplace.url_generator:
+        class: Akeneo\Connectivity\Connection\Application\Marketplace\MarketplaceUrlGenerator
+        arguments:
+            - '%akeneo_pim_marketplace_url%'
+            - '@pim_catalog.version_provider'
+            - '%env(AKENEO_PIM_URL)%'
+            - '@akeneo_connectivity.connection.marketplace.query.get_user_profile'
 
     akeneo_connectivity.connection.marketplace.query.get_user_profile:
         class: Akeneo\Connectivity\Connection\Infrastructure\Persistence\Dbal\Query\DbalGetUserProfileQuery
         arguments:
             - '@database_connection'
 
+    Akeneo\Connectivity\Connection\Infrastructure\Marketplace\WebMarketplaceApi:
+        calls:
+            - setFixturePath: ['%connectivity.marketplace_fixtures_directory%']
+
     akeneo_connectivity.connection.marketplace.get_all_extensions_query:
         class: Akeneo\Connectivity\Connection\Infrastructure\Marketplace\GetAllExtensionsQuery
+        arguments:
+            - '@Akeneo\Connectivity\Connection\Infrastructure\Marketplace\WebMarketplaceApi'
+            - '@pim_catalog.version_provider'
