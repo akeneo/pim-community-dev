@@ -11,9 +11,9 @@ declare(strict_types=1);
  * file that was distributed with this source code.
  */
 
-namespace Akeneo\Platform\TailoredExport\Domain;
+namespace Akeneo\Platform\TailoredExport\Application\Query\Operation;
 
-class ReplacementOperation implements Operation
+class ReplacementOperation implements OperationInterface
 {
     private array $mapping;
 

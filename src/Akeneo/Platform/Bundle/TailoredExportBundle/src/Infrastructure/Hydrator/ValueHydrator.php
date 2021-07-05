@@ -17,7 +17,9 @@ use Akeneo\Pim\Enrichment\Component\Product\Model\ProductInterface;
 use Akeneo\Pim\Enrichment\Component\Product\Model\ProductPriceInterface;
 use Akeneo\Pim\Enrichment\Component\Product\Model\ValueInterface;
 use Akeneo\Pim\Enrichment\Component\Product\Value\MetricValue;
-use Akeneo\Pim\Structure\Component\Query\PublicApi\AttributeType\Attribute;
+use Akeneo\Platform\TailoredExport\Application\Query\Source\AttributeSource;
+use Akeneo\Platform\TailoredExport\Application\Query\Source\PropertySource;
+use Akeneo\Platform\TailoredExport\Application\Query\Source\SourceInterface;
 use Akeneo\Platform\TailoredExport\Domain\SourceValue\AssetCollectionValue;
 use Akeneo\Platform\TailoredExport\Domain\SourceValue\BooleanValue;
 use Akeneo\Platform\TailoredExport\Domain\SourceValue\CategoriesValue;
@@ -42,9 +44,23 @@ use Akeneo\Platform\TailoredExport\Domain\SourceValueInterface;
 
 class ValueHydrator
 {
-    public function hydrateFromAttribute(
+    public function hydrate(
+        ProductInterface $product,
+        SourceInterface $source
+    ): SourceValueInterface {
+        if ($source instanceof AttributeSource) {
+            $value = $product->getValue($source->getCode(), $source->getChannel(), $source->getLocale());
+            return $this->hydrateFromAttribute($value, $source->getAttributeType(), $product);
+        } elseif ($source instanceof PropertySource) {
+            return $this->hydrateFromProperty($source->getName(), $product);
+        } else {
+            throw new \InvalidArgumentException(sprintf('Unsupported source type "%s"', get_class($source)));
+        }
+    }
+
+    private function hydrateFromAttribute(
         ?ValueInterface $value,
-        Attribute $attribute,
+        string $attributeType,
         ProductInterface $product
     ): SourceValueInterface {
         if (null === $value) {
@@ -57,7 +73,7 @@ class ValueHydrator
             return new NullValue();
         }
 
-        switch ($attribute->type()) {
+        switch ($attributeType) {
             case 'pim_catalog_asset_collection':
                 return new AssetCollectionValue($data);
             case 'pim_catalog_file':
@@ -100,11 +116,11 @@ class ValueHydrator
                 return new ReferenceEntityCollectionValue(array_map('strval', $data));
 
             default:
-                throw new \LogicException(sprintf('Unsupported attribute type "%s"', $attribute->type()));
+                throw new \InvalidArgumentException(sprintf('Unsupported attribute type "%s"', $attributeType));
         }
     }
 
-    public function hydrateFromProperty(
+    private function hydrateFromProperty(
         string $propertyName,
         ProductInterface $product
     ): SourceValueInterface {

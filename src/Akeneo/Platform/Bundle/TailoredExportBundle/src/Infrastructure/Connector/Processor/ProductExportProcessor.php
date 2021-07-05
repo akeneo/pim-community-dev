@@ -14,39 +14,36 @@ declare(strict_types=1);
 namespace Akeneo\Platform\TailoredExport\Infrastructure\Connector\Processor;
 
 use Akeneo\Pim\Enrichment\Component\Product\Model\ProductInterface;
+use Akeneo\Pim\Structure\Component\Query\PublicApi\AttributeType\Attribute;
 use Akeneo\Pim\Structure\Component\Query\PublicApi\AttributeType\GetAttributes;
-use Akeneo\Platform\TailoredExport\Application\OperationApplier;
-use Akeneo\Platform\TailoredExport\Application\Query\Selection\SelectionHandler;
-use Akeneo\Platform\TailoredExport\Domain\OperationCollection;
-use Akeneo\Platform\TailoredExport\Domain\ReplacementOperation;
-use Akeneo\Platform\TailoredExport\Domain\SourceTypes;
-use Akeneo\Platform\TailoredExport\Infrastructure\Hydrator\SelectionHydrator;
-use Akeneo\Platform\TailoredExport\Infrastructure\Hydrator\ValueHydrator;
+use Akeneo\Platform\TailoredExport\Application\ProductMapper;
+use Akeneo\Platform\TailoredExport\Application\Query\Column\ColumnCollection;
+use Akeneo\Platform\TailoredExport\Application\Query\Source\AttributeSource;
+use Akeneo\Platform\TailoredExport\Infrastructure\Hydrator\ColumnCollectionHydrator;
+use Akeneo\Platform\TailoredExport\Infrastructure\Hydrator\ValueCollectionHydrator;
 use Akeneo\Tool\Component\Batch\Item\ItemProcessorInterface;
 use Akeneo\Tool\Component\Batch\Model\StepExecution;
 use Akeneo\Tool\Component\Batch\Step\StepExecutionAwareInterface;
 
 class ProductExportProcessor implements ItemProcessorInterface, StepExecutionAwareInterface
 {
-    private ?StepExecution $stepExecution = null;
-    private SelectionHydrator $selectionHydrator;
     private GetAttributes $getAttributes;
-    private ValueHydrator $valueHydrator;
-    private OperationApplier $operationApplier;
-    private SelectionHandler $selectionHandler;
+    private ValueCollectionHydrator $valueCollectionHydrator;
+    private ColumnCollectionHydrator $columnCollectionHydrator;
+    private ProductMapper $productMapper;
+    private ?StepExecution $stepExecution = null;
+    private ?ColumnCollection $columnCollection = null;
 
     public function __construct(
         GetAttributes $getAttributes,
-        SelectionHydrator $selectionHydrator,
-        ValueHydrator $valueHydrator,
-        OperationApplier $operationApplier,
-        SelectionHandler $selectionHandler
+        ValueCollectionHydrator $valueCollectionHydrator,
+        ColumnCollectionHydrator $columnCollectionHydrator,
+        ProductMapper $productMapper
     ) {
-        $this->selectionHydrator = $selectionHydrator;
         $this->getAttributes = $getAttributes;
-        $this->valueHydrator = $valueHydrator;
-        $this->operationApplier = $operationApplier;
-        $this->selectionHandler = $selectionHandler;
+        $this->valueCollectionHydrator = $valueCollectionHydrator;
+        $this->columnCollectionHydrator = $columnCollectionHydrator;
+        $this->productMapper = $productMapper;
     }
 
     /**
@@ -63,43 +60,10 @@ class ProductExportProcessor implements ItemProcessorInterface, StepExecutionAwa
         }
 
         $columns = $this->stepExecution->getJobParameters()->get('columns');
-        $productStandard = [];
+        $columnCollection = $this->getColumnCollection($columns);
+        $valueCollection = $this->valueCollectionHydrator->hydrate($product, $columnCollection);
 
-        foreach ($columns as $column) {
-            $operationSourceValues = [];
-            foreach ($column['sources'] as $source) {
-                $operations = $this->createOperations($source['operations']);
-
-                if (SourceTypes::ATTRIBUTE === $source['type']) {
-                    $attribute = $this->getAttributes->forCode($source['code']);
-                    $value = $this->valueHydrator->hydrateFromAttribute(
-                        $product->getValue($source['code'], $source['locale'], $source['channel']),
-                        $attribute,
-                        $product
-                    );
-                    $selection = $this->selectionHydrator->createAttributeSelection($source['selection'], $attribute);
-                } elseif (SourceTypes::PROPERTY === $source['type']) {
-                    $propertyName = $source['code'];
-                    $value = $this->valueHydrator->hydrateFromProperty($propertyName, $product);
-                    $selection = $this->selectionHydrator->createPropertySelection(
-                        $source['selection'],
-                        $propertyName
-                    );
-                } else {
-                    throw new \LogicException(sprintf('Source type "%s" is unsupported', $source['type']));
-                }
-
-                $value = $this->operationApplier->applyOperations($operations, $value);
-                $operationSourceValues[] = $this->selectionHandler->applySelection(
-                    $selection,
-                    $value
-                );
-            }
-
-            $productStandard[$column['target']] = implode(' ', $operationSourceValues);
-        }
-
-        return $productStandard;
+        return $this->productMapper->map($columnCollection, $valueCollection);
     }
 
     /**
@@ -110,21 +74,27 @@ class ProductExportProcessor implements ItemProcessorInterface, StepExecutionAwa
         $this->stepExecution = $stepExecution;
     }
 
-    /** Use registry or move this to OperationCollection */
-    private function createOperations($normalizedOperations): OperationCollection
+    private function getColumnCollection(array $columns): ColumnCollection
     {
-        $operations = [];
-        foreach ($normalizedOperations as $normalizedOperation) {
-            $operation = null;
-            if ($normalizedOperation['type'] === 'replacement') {
-                $operation = ReplacementOperation::createFromNormalized($normalizedOperation);
-            }
+        if (null === $this->columnCollection) {
+            $indexedAttributes = $this->getIndexedAttributes($columns);
+            $this->columnCollection = $this->columnCollectionHydrator->hydrate($columns, $indexedAttributes);
+        }
 
-            if ($operation) {
-                $operations[] = $operation;
+        return $this->columnCollection;
+    }
+
+    private function getIndexedAttributes(array $columns): array
+    {
+        $attributeCodes = [];
+        foreach ($columns as $column) {
+            foreach ($column['sources'] as $source) {
+                if (AttributeSource::TYPE === $source['type']) {
+                    $attributeCodes[] = $source['code'];
+                }
             }
         }
 
-        return OperationCollection::create($operations);
+        return array_filter($this->getAttributes->forCodes(array_unique($attributeCodes)));
     }
 }

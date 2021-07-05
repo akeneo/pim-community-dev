@@ -11,17 +11,17 @@ declare(strict_types=1);
  * file that was distributed with this source code.
  */
 
-namespace Akeneo\Platform\TailoredExport\Application\OperationApplier;
+namespace Akeneo\Platform\TailoredExport\Application\OperationHandler;
 
-use Akeneo\Platform\TailoredExport\Domain\Operation;
-use Akeneo\Platform\TailoredExport\Domain\ReplacementOperation;
+use Akeneo\Platform\TailoredExport\Application\Query\Operation\OperationInterface;
+use Akeneo\Platform\TailoredExport\Application\Query\Operation\ReplacementOperation;
 use Akeneo\Platform\TailoredExport\Domain\SourceValue\EnabledValue;
 use Akeneo\Platform\TailoredExport\Domain\SourceValue\StringValue;
 use Akeneo\Platform\TailoredExport\Domain\SourceValueInterface;
 
-class EnabledReplacementApplier implements OperationApplierInterface
+class EnabledReplacementHandler implements OperationHandlerInterface
 {
-    public function applyOperation(Operation $operation, SourceValueInterface $value): SourceValueInterface
+    public function handleOperation(OperationInterface $operation, SourceValueInterface $value): SourceValueInterface
     {
         if (
             !$operation instanceof ReplacementOperation
@@ -41,7 +41,7 @@ class EnabledReplacementApplier implements OperationApplierInterface
         return $value;
     }
 
-    public function supports(Operation $operation, SourceValueInterface $value): bool
+    public function supports(OperationInterface $operation, SourceValueInterface $value): bool
     {
         return $value instanceof EnabledValue && $operation instanceof ReplacementOperation;
     }

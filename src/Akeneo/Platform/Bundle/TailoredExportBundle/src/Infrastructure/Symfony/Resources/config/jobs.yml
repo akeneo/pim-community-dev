@@ -37,10 +37,9 @@ services:
     class: 'Akeneo\Platform\TailoredExport\Infrastructure\Connector\Processor\ProductExportProcessor'
     arguments:
       - '@akeneo.pim.structure.query.get_attributes'
-      - '@Akeneo\Platform\TailoredExport\Infrastructure\Hydrator\SelectionHydrator'
-      - '@Akeneo\Platform\TailoredExport\Infrastructure\Hydrator\ValueHydrator'
-      - '@Akeneo\Platform\TailoredExport\Application\OperationApplier'
-      - '@Akeneo\Platform\TailoredExport\Application\Query\Selection\SelectionHandler'
+      - '@Akeneo\Platform\TailoredExport\Infrastructure\Hydrator\ValueCollectionHydrator'
+      - '@Akeneo\Platform\TailoredExport\Infrastructure\Hydrator\ColumnCollectionHydrator'
+      - '@Akeneo\Platform\TailoredExport\Application\ProductMapper'
 
   akeneo.tailored_export.connector.xlsx.file_writer_factory:
     class: Akeneo\Platform\TailoredExport\Infrastructure\Connector\Writer\File\FileWriterFactory

@@ -14,7 +14,8 @@ declare(strict_types=1);
 namespace Akeneo\Platform\TailoredExport\Infrastructure\Validation;
 
 use Akeneo\Pim\Structure\Component\Query\PublicApi\AttributeType\GetAttributes;
-use Akeneo\Platform\TailoredExport\Domain\SourceTypes;
+use Akeneo\Platform\TailoredExport\Application\Query\Source\AttributeSource;
+use Akeneo\Platform\TailoredExport\Application\Query\Source\PropertySource;
 use Symfony\Component\Validator\Constraint;
 use Symfony\Component\Validator\Constraints\Choice;
 use Symfony\Component\Validator\Constraints\Collection;
@@ -112,7 +113,7 @@ class SourcesValidator extends ConstraintValidator
                         new Choice(
                             [
                                 'strict' => true,
-                                'choices' => [SourceTypes::PROPERTY, SourceTypes::ATTRIBUTE],
+                                'choices' => [AttributeSource::TYPE, PropertySource::TYPE],
                             ]
                         )
                     ],
@@ -139,7 +140,7 @@ class SourcesValidator extends ConstraintValidator
 
     private function validateSelection(ValidatorInterface $validator, array $source)
     {
-        if (SourceTypes::PROPERTY === $source['type']) {
+        if (PropertySource::TYPE === $source['type']) {
             $constraint = $this->propertySelectionConstraints[$source['code']] ?? null;
         } else {
             $attribute = $this->getAttributes->forCode($source['code']);
