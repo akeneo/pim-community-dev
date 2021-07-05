@@ -63,6 +63,8 @@ type SelectOptionWithId = SelectOption & {
   violations?: string[];
 };
 
+const BATCH_SIZE = 100;
+
 const ManageOptionsModal: React.FC<ManageOptionsModalProps> = ({onClose, attribute, columnDefinition, onChange}) => {
   const userContext = useUserContext();
   const router = useRouter();
@@ -75,6 +77,7 @@ const ManageOptionsModal: React.FC<ManageOptionsModalProps> = ({onClose, attribu
   const [autoCompleteCode, setAutoCompleteCode] = React.useState<boolean>(false);
   const [filteredOptionIds, setFilteredOptionIds] = React.useState<string[]>([]);
   const [scrollToTheEnd, setScrollToTheEnd] = React.useState<boolean>(false);
+  const [numberOfItemsToDisplay, setNumberOfItemsToDisplay] = React.useState<number>(0);
   const currentLocale = 'en_US';
   const columnLabel = getLabel(columnDefinition.labels, userContext.get('catalogLocale'), columnDefinition.code);
 
@@ -115,29 +118,59 @@ const ManageOptionsModal: React.FC<ManageOptionsModalProps> = ({onClose, attribu
     optionsWithId.push({id: lastId, code: '', labels: {}});
     setOptionsWithCheck(optionsWithId);
     setSelectedOptionId(optionsWithId[0]?.id);
-    const filteredOptionIdsTmp = optionsWithId.slice(0, 100).map(option => option.id);
-    if (!filteredOptionIdsTmp.includes(lastId)) {
-      filteredOptionIdsTmp.push(lastId);
-    }
-    setFilteredOptionIds(filteredOptionIdsTmp);
   };
 
   React.useEffect(() => {
     if (typeof columnDefinition.options === 'undefined') {
-      fetchSelectOptions(router, attribute.code, columnDefinition.code).then(options => {
-        if (typeof options === 'undefined') {
+      fetchSelectOptions(router, attribute.code, columnDefinition.code).then(fetchOptions => {
+        if (typeof fetchOptions === 'undefined') {
           initializeOptions([]);
         } else {
-          initializeOptions(options);
+          initializeOptions(fetchOptions);
         }
+        setNumberOfItemsToDisplay(BATCH_SIZE);
       });
     } else {
       initializeOptions(columnDefinition.options);
+      setNumberOfItemsToDisplay(BATCH_SIZE);
     }
   }, []);
 
   React.useEffect(() => {
-    if (scrollToTheEnd && tableContainerRef.current && filteredOptionIds) {
+    if (numberOfItemsToDisplay === 0 || !options) {
+      return;
+    }
+
+    const lastOption = options[options.length - 1];
+    const hiddenOptionIds = options
+      .filter(option => !filteredOptionIds.includes(option.id) && option.id !== lastOption?.id)
+      .map(option => option.id);
+    const filteredOptionIdsTmp = [
+      ...filteredOptionIds.filter(optionId => optionId !== lastOption?.id),
+      ...hiddenOptionIds.slice(0, BATCH_SIZE),
+    ];
+    if (lastOption && !filteredOptionIdsTmp.includes(lastOption.id)) {
+      filteredOptionIdsTmp.push(lastOption?.id);
+    }
+    setFilteredOptionIds(filteredOptionIdsTmp);
+  }, [numberOfItemsToDisplay]);
+
+  React.useEffect(() => {
+    if (tableContainerRef?.current) {
+      tableContainerRef.current.onscroll = () => {
+        if (
+          tableContainerRef.current.scrollTop + tableContainerRef.current.offsetHeight >=
+            tableContainerRef.current.scrollHeight &&
+          numberOfItemsToDisplay < options.length
+        ) {
+          setNumberOfItemsToDisplay(numberOfItemsToDisplay + BATCH_SIZE);
+        }
+      };
+    }
+  }, [tableContainerRef, numberOfItemsToDisplay]);
+
+  React.useEffect(() => {
+    if (scrollToTheEnd && tableContainerRef.current) {
       window.setTimeout(() => {
         tableContainerRef.current.scrollTop = tableContainerRef.current.scrollHeight;
       }, 0);
@@ -146,19 +179,6 @@ const ManageOptionsModal: React.FC<ManageOptionsModalProps> = ({onClose, attribu
   }, [scrollToTheEnd]);
 
   const selectedOption = options ? options.find(option => option.id === selectedOptionId) : undefined;
-
-  const addNewOption = () => {
-    if (typeof options === 'undefined') {
-      return;
-    }
-    const newId = uuid();
-    options.push({id: newId, code: '', labels: {}});
-    if (filteredOptionIds) {
-      setFilteredOptionIds([...filteredOptionIds, newId]);
-    }
-
-    setScrollToTheEnd(true);
-  };
 
   const handleLabelChange = (optionId: string, localeCode: LocaleCode, label: string) => {
     if (options) {
@@ -170,12 +190,10 @@ const ManageOptionsModal: React.FC<ManageOptionsModalProps> = ({onClose, attribu
           option.code = label.replace(/[^a-zA-Z0-9_]/gi, '_').substring(0, 100);
         }
         options[index] = option;
-        if (filteredOptionIds && filteredOptionIds[filteredOptionIds.length - 1] === optionId) {
+        if (filteredOptionIds[filteredOptionIds.length - 1] === optionId) {
           const newId = uuid();
           options.push({id: newId, code: '', labels: {}});
-          if (filteredOptionIds) {
-            setFilteredOptionIds([...filteredOptionIds, newId]);
-          }
+          setFilteredOptionIds([...filteredOptionIds, newId]);
           setScrollToTheEnd(true);
         }
         setOptionsWithCheck(options);
@@ -188,12 +206,10 @@ const ManageOptionsModal: React.FC<ManageOptionsModalProps> = ({onClose, attribu
       const index = options.findIndex(option => option.id === optionId);
       if (index >= 0) {
         options[index] = {...options[index], code};
-        if (index === options.length - 1) {
+        if (filteredOptionIds[filteredOptionIds.length - 1] === optionId) {
           const newId = uuid();
           options.push({id: newId, code: '', labels: {}});
-          if (filteredOptionIds) {
-            setFilteredOptionIds([...filteredOptionIds, newId]);
-          }
+          setFilteredOptionIds([...filteredOptionIds, newId]);
           setScrollToTheEnd(true);
         }
         setOptionsWithCheck(options);
@@ -259,7 +275,7 @@ const ManageOptionsModal: React.FC<ManageOptionsModalProps> = ({onClose, attribu
     </>
   );
 
-  const optionsToDisplay = options
+  const optionsToDisplay: SelectOptionWithId[] | null = options
     ? filteredOptionIds.map(optionId => options.find(option => optionId === option.id))
     : null;
 
@@ -288,7 +304,7 @@ const ManageOptionsModal: React.FC<ManageOptionsModalProps> = ({onClose, attribu
               <Table.Body>
                 {options &&
                   optionsToDisplay &&
-                  optionsToDisplay.map((option, index) => (
+                  optionsToDisplay.map((option: SelectOptionWithId, index) => (
                     <ManageOptionsRow
                       key={option.id}
                       isSelected={option.id === selectedOptionId}
