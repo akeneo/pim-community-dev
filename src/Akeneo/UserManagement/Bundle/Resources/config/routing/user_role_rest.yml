@@ -1,5 +1,16 @@
 pim_user_user_role_rest_index:
     path: /
     defaults: { _controller: pim_user.controller.user_role_rest:indexAction }
+    methods: [GET]
+
+pim_user_user_role_rest_get:
+    path: /{identifier}
+    defaults: { _controller: pim_user.controller.user_role_rest:getAction }
+    methods: [GET]
     requirements:
-        method: GET
+        identifier: '\d+'
+
+pim_user_user_role_rest_create:
+    path: /
+    defaults: { _controller: pim_user.controller.user_role_rest:createAction }
+    methods: [POST]
