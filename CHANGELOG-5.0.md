@@ -1,5 +1,9 @@
 # 5.0.x
 
+## Bug fixes
+
+- PIM-9951: Fix wrong locale used by spellcheck when comparing product attributes
+
 # 5.0.38 (2021-07-02)
 
 ## Bug fixes
