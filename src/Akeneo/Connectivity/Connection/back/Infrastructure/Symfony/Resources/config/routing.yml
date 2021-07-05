@@ -27,10 +27,9 @@ akeneo_connectivity_connection_events_api_debug_rest:
     name_prefix: akeneo_connectivity_connection_events_api_debug_rest_
     prefix: /rest/events-api-debug
 
-akeneo_connectivity_connection_marketplace_url_rest_get:
-    path: '/rest/marketplace-url'
-    defaults: { _controller: akeneo_connectivity.connection.internal_api.controller.marketplace_url:get }
-    methods: [GET]
+akeneo_connectivity_connection_marketplace_rest:
+    resource: ./routing/marketplace.yml
+    prefix: /rest/marketplace
 
 # Frontend
 
