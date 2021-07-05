@@ -1,0 +1,82 @@
+<?php
+
+declare(strict_types=1);
+
+/*
+ * This file is part of the Akeneo PIM Enterprise Edition.
+ *
+ * (c) 2021 Akeneo SAS (https://www.akeneo.com)
+ *
+ * For the full copyright and license information, please view the LICENSE
+ * file that was distributed with this source code.
+ */
+
+namespace Specification\Akeneo\Platform\TailoredExport\Application\Query\Selection\ReferenceEntityCollection;
+
+use Akeneo\ReferenceEntity\Infrastructure\PublicApi\Enrich\FindRecordsLabelTranslations;
+use Akeneo\Platform\TailoredExport\Application\Query\Selection\ReferenceEntityCollection\ReferenceEntityCollectionLabelSelection;
+use Akeneo\Platform\TailoredExport\Application\Query\Selection\Boolean\BooleanSelection;
+use Akeneo\Platform\TailoredExport\Domain\SourceValue\ReferenceEntityCollectionValue;
+use Akeneo\Platform\TailoredExport\Domain\SourceValue\BooleanValue;
+use PhpSpec\ObjectBehavior;
+
+class ReferenceEntityCollectionLabelSelectionHandlerSpec extends ObjectBehavior
+{
+    public function let(FindRecordsLabelTranslations $findRecordsLabelTranslations)
+    {
+        $this->beConstructedWith($findRecordsLabelTranslations);
+    }
+
+    public function it_applies_the_selection(FindRecordsLabelTranslations $findRecordsLabelTranslations)
+    {
+        $selection = new ReferenceEntityCollectionLabelSelection(
+            '/',
+            'fr_FR',
+            'a_reference_entity_code'
+        );
+        $value = new ReferenceEntityCollectionValue(['reference_entity_code1', 'reference_entity_code2', 'reference_entity_code...']);
+
+        $findRecordsLabelTranslations->find(
+            'a_reference_entity_code',
+            ['reference_entity_code1', 'reference_entity_code2', 'reference_entity_code...'],
+            'fr_FR'
+        )->willReturn([
+            'reference_entity_code1' => 'label1',
+            'reference_entity_code2' => 'label2',
+            'reference_entity_code...' => 'label...',
+        ]);
+
+        $this->applySelection($selection, $value)
+            ->shouldReturn('label1/label2/label...');
+    }
+
+    public function it_does_not_apply_selection_on_not_supported_selections_and_values()
+    {
+        $notSupportedSelection = new BooleanSelection();
+        $notSupportedValue = new BooleanValue(false);
+
+        $this
+            ->shouldThrow(new \InvalidArgumentException('Cannot apply Reference Entity Collection selection on this entity'))
+            ->during('applySelection', [$notSupportedSelection, $notSupportedValue]);
+    }
+
+    public function it_supports_reference_entity_collection_label_selection_with_reference_entity_collection_value()
+    {
+        $selection = new ReferenceEntityCollectionLabelSelection(
+            '/',
+            'fr_FR',
+            'a_reference_entity_code'
+        );
+        $value = new ReferenceEntityCollectionValue([]);
+
+        $this->supports($selection, $value)->shouldReturn(true);
+    }
+
+    public function it_does_not_support_other_selections_and_values()
+    {
+        $notSupportedSelection = new BooleanSelection();
+        $notSupportedValue = new BooleanValue(true);
+
+        $this->supports($notSupportedSelection, $notSupportedValue)->shouldReturn(false);
+    }
+}
