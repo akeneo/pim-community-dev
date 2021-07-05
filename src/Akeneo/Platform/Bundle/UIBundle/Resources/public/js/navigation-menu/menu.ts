@@ -1,15 +1,26 @@
 'use strict';
 
 import {ViewOptions} from 'backbone';
-import {NavigationEntry, PimNavigation, SubNavigation, SubNavigationSection} from '../../PimNavigation';
-import View from '../../view/base-interface';
+import {NavigationEntry, PimNavigation} from '../PimNavigation';
+import View from '../view/base-interface';
 import React from 'react';
 import * as DSM from 'akeneo-design-system';
+import {SubNavigationSection, SubNavigationType} from '../SubNavigation';
 
 const BaseForm = require('pim/form');
 const _ = require('underscore');
 const template = require('pim/template/menu/menu');
 const mediator = require('oro/mediator');
+
+type SubEntry = {
+  code: string;
+  position: number;
+  title: string;
+  route: string;
+  routeParams?: {[key: string]: any};
+  target: string;
+  sectionCode: string;
+};
 
 type EntryView = View & {
   config: {
@@ -34,6 +45,7 @@ type EntryColumnView = View & {
       title: string;
       route: string;
     }
+    stateCode?: string;
   };
   navigationItems: SubEntry[];
   sections: any[];
@@ -47,8 +59,8 @@ type EntryColumnView = View & {
  */
 class Menu extends BaseForm {
   template = _.template(template);
-  activeEntryCode;
-  activeSubEntryCode;
+  activeEntryCode: string | null;
+  activeSubEntryCode: string | null;
 
   constructor(options?: ViewOptions<any>) {
     super({
@@ -136,7 +148,7 @@ class Menu extends BaseForm {
     return entries;
   }
 
-  findMainEntrySubNavigations(entryCode: string): SubNavigation[] {
+  findMainEntrySubNavigations(entryCode: string): SubNavigationType[] {
     const columns = Object.values(this.extensions).filter((extension: EntryView) => {
       // @todo Ensure that we should use "tab" (it's not always defined. ex: pim-menu-connection-column)
       return extension.targetZone === 'column' && extension.config.tab === entryCode;
@@ -165,9 +177,9 @@ class Menu extends BaseForm {
       return {
         title: column.config.navigationTitle,
         sections: sections,
-        // @fixme Handle columns without title
         entries: column.navigationItems,
         backLink: backLink,
+        stateCode: column.config.stateCode,
       };
     });
   }
