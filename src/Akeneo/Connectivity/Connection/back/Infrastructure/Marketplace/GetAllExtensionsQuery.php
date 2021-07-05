@@ -8,8 +8,6 @@ use Akeneo\Connectivity\Connection\Domain\Marketplace\DTO\Extension;
 use Akeneo\Connectivity\Connection\Domain\Marketplace\DTO\ExtensionResult;
 use Akeneo\Connectivity\Connection\Domain\Marketplace\GetAllExtensionsQueryInterface;
 use Akeneo\Platform\VersionProviderInterface;
-use Akeneo\Connectivity\Connection\Domain\Marketplace\GetAllExtensionsQueryInterface;
-use Symfony\Component\Finder\SplFileInfo;
 
 /**
  * @copyright 2021 Akeneo SAS (http://www.akeneo.com)
