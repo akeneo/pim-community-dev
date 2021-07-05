@@ -149,6 +149,11 @@ services:
     tags:
       - { name: akeneo.tailored_export.selection_handler }
 
+  Akeneo\Platform\TailoredExport\Application\Query\Selection\Boolean\BooleanSelectionHandler:
+    public: true
+    tags:
+      - { name: akeneo.tailored_export.selection_handler }
+
   Akeneo\Platform\TailoredExport\Application\Query\Selection\AssetCollection\AssetCollectionLabelSelectionHandler:
     public: true
     arguments:

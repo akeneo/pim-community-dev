@@ -33,6 +33,6 @@ class SelectionHandler
             }
         }
 
-        throw new \LogicException(sprintf('No selection available for "%s"', get_class($value)));
+        throw new \LogicException(sprintf('No selection available for "%s" and "%s"', get_class($value), get_class($selection)));
     }
 }
