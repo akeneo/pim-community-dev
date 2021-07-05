@@ -1,5 +1,9 @@
 # 5.0.x
 
+## Bug fixes
+
+- PIM-9942: Fix parsing of locale and channel codes in asset mass upload form
+
 # 5.0.38 (2021-07-02)
 
 ## Bug fixes
