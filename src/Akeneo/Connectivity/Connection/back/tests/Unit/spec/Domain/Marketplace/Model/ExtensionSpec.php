@@ -2,9 +2,9 @@
 
 declare(strict_types=1);
 
-namespace spec\Akeneo\Connectivity\Connection\Domain\Marketplace\DTO;
+namespace spec\Akeneo\Connectivity\Connection\Domain\Marketplace\Model;
 
-use Akeneo\Connectivity\Connection\Domain\Marketplace\DTO\Extension;
+use Akeneo\Connectivity\Connection\Domain\Marketplace\Model\Extension;
 use PhpSpec\ObjectBehavior;
 use Ramsey\Uuid\Uuid;
 

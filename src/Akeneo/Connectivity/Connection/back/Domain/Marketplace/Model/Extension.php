@@ -1,7 +1,7 @@
 <?php
 declare(strict_types=1);
 
-namespace Akeneo\Connectivity\Connection\Domain\Marketplace\DTO;
+namespace Akeneo\Connectivity\Connection\Domain\Marketplace\Model;
 
 use Ramsey\Uuid\Uuid;
 use Ramsey\Uuid\UuidInterface;
@@ -37,29 +37,8 @@ class Extension
         'certified',
     ];
 
-    /**
-     * @param array<string> $categories
-     */
-    private function __construct(
-        UuidInterface $id,
-        string $name,
-        string $logo,
-        string $author,
-        string $partner,
-        string $description,
-        string $url,
-        array $categories,
-        bool $certified = false
-    ) {
-        $this->id = $id;
-        $this->name = $name;
-        $this->logo = $logo;
-        $this->author = $author;
-        $this->partner = $partner;
-        $this->description = $description;
-        $this->url = $url;
-        $this->categories = $categories;
-        $this->certified = $certified;
+    private function __construct()
+    {
     }
 
     /**
@@ -81,17 +60,19 @@ class Extension
             Assert::keyExists($values, $key);
         }
 
-        return new self(
-            Uuid::fromString($values['id']),
-            $values['name'],
-            $values['logo'],
-            $values['author'],
-            $values['partner'],
-            $values['description'],
-            $values['url'],
-            $values['categories'],
-            $values['certified']
-        );
+        $self = new self();
+
+        $self->id = Uuid::fromString($values['id']);
+        $self->name = $values['name'];
+        $self->logo = $values['logo'];
+        $self->author = $values['author'];
+        $self->partner = $values['partner'];
+        $self->description = $values['description'];
+        $self->url = $values['url'];
+        $self->categories = $values['categories'];
+        $self->certified = $values['certified'];
+
+        return $self;
     }
 
     public function id(): UuidInterface

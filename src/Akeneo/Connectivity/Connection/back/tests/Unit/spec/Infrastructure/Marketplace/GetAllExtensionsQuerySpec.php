@@ -4,8 +4,8 @@ declare(strict_types=1);
 
 namespace spec\Akeneo\Connectivity\Connection\Infrastructure\Marketplace;
 
-use Akeneo\Connectivity\Connection\Domain\Marketplace\DTO\Extension;
-use Akeneo\Connectivity\Connection\Domain\Marketplace\DTO\ExtensionResult;
+use Akeneo\Connectivity\Connection\Domain\Marketplace\Model\Extension;
+use Akeneo\Connectivity\Connection\Domain\Marketplace\Model\ExtensionList;
 use Akeneo\Connectivity\Connection\Infrastructure\Marketplace\GetAllExtensionsQuery;
 use Akeneo\Connectivity\Connection\Infrastructure\Marketplace\WebMarketplaceApi;
 use Akeneo\Platform\VersionProviderInterface;
@@ -55,6 +55,6 @@ class GetAllExtensionsQuerySpec extends ObjectBehavior
             ]);
 
         $extension = Extension::create($item);
-        $this->execute()->shouldBeLike(ExtensionResult::create(12, [$extension]));
+        $this->execute()->shouldBeLike(ExtensionList::create(12, [$extension]));
     }
 }

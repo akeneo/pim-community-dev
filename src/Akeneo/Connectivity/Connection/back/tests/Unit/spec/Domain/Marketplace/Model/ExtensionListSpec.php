@@ -2,17 +2,17 @@
 
 declare(strict_types=1);
 
-namespace spec\Akeneo\Connectivity\Connection\Domain\Marketplace\DTO;
+namespace spec\Akeneo\Connectivity\Connection\Domain\Marketplace\Model;
 
-use Akeneo\Connectivity\Connection\Domain\Marketplace\DTO\Extension;
-use Akeneo\Connectivity\Connection\Domain\Marketplace\DTO\ExtensionResult;
+use Akeneo\Connectivity\Connection\Domain\Marketplace\Model\Extension;
+use Akeneo\Connectivity\Connection\Domain\Marketplace\Model\ExtensionList;
 use PhpSpec\ObjectBehavior;
 
 /**
  * @copyright 2021 Akeneo SAS (http://www.akeneo.com)
  * @license http://opensource.org/licenses/osl-3.0.php Open Software License (OSL 3.0)
  */
-class ExtensionResultSpec extends ObjectBehavior
+class ExtensionListSpec extends ObjectBehavior
 {
     public function let(Extension $extension)
     {
@@ -21,7 +21,7 @@ class ExtensionResultSpec extends ObjectBehavior
 
     public function it_is_initializable(): void
     {
-        $this->shouldHaveType(ExtensionResult::class);
+        $this->shouldHaveType(ExtensionList::class);
     }
 
     public function it_returns_a_count()

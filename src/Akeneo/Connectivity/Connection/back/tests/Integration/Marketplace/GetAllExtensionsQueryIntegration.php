@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace Akeneo\Connectivity\Connection\Tests\Integration\Marketplace;
 
-use Akeneo\Connectivity\Connection\Domain\Marketplace\DTO\Extension;
+use Akeneo\Connectivity\Connection\Domain\Marketplace\Model\Extension;
 use Akeneo\Connectivity\Connection\Infrastructure\Marketplace\GetAllExtensionsQuery;
 use Akeneo\Test\Integration\Configuration;
 use Akeneo\Test\Integration\TestCase;
@@ -21,7 +21,7 @@ class GetAllExtensionsQueryIntegration extends TestCase
     {
         parent::setUp();
 
-        $this->getAllExtensionsQuery = self::$container->get(GetAllExtensionsQuery::class);
+        $this->getAllExtensionsQuery = $this->get('akeneo_connectivity.connection.marketplace.get_all_extensions_query');
     }
 
     public function test_to_get_all_extensions()
