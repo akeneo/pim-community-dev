@@ -104,7 +104,11 @@ const ManageOptionsModal: React.FC<ManageOptionsModalProps> = ({onClose, attribu
   React.useEffect(() => {
     if (typeof columnDefinition.options === 'undefined') {
       fetchSelectOptions(router, attribute.code, columnDefinition.code).then(options => {
-        initializeOptions(options);
+        if (typeof options === 'undefined') {
+          initializeOptions([]);
+        } else {
+          initializeOptions(options);
+        }
       });
     } else {
       initializeOptions(columnDefinition.options);

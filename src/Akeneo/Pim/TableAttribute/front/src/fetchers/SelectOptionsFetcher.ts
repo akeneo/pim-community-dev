@@ -5,7 +5,7 @@ const fetchSelectOptions = async (
   router: Router,
   attributeCode: string,
   columnCode: ColumnCode
-): Promise<SelectOption[]> => {
+): Promise<SelectOption[] | undefined> => {
   const url = router.generate('pim_table_attribute_get_select_options', {
     attributeCode,
     columnCode,
@@ -16,6 +16,10 @@ const fetchSelectOptions = async (
       'X-Requested-With': 'XMLHttpRequest',
     },
   });
+
+  if (response.status === 404) {
+    return undefined;
+  }
 
   return await response.json();
 };

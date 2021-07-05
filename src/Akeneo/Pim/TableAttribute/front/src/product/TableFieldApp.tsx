@@ -36,7 +36,7 @@ const TableFieldApp: React.FC<TableFieldAppProps> = ({
   const [tableValue, setTableValue] = React.useState<TableValueWithId>(
     (value.data || []).map(row => {
       return Object.keys(row).reduce(
-        (previousRow: (TableRow & {'unique id': string}), columnCode) => {
+        (previousRow: TableRow & {'unique id': string}, columnCode) => {
           previousRow[columnCode] = row[columnCode];
 
           return previousRow;

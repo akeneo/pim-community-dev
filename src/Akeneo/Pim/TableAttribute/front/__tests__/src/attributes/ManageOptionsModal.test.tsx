@@ -131,4 +131,17 @@ describe('ManageOptionsModal', () => {
     expect(await screen.findByTestId('label-0')).toHaveValue('Fetched');
     expect(await screen.getByLabelText('German (Germany)')).toHaveValue('Fetshed');
   });
+
+  it('should display options with new attribute', async () => {
+    renderWithProviders(
+      <ManageOptionsModal
+        attribute={getTableAttribute()}
+        onChange={jest.fn()}
+        columnDefinition={{...getSelectColumnDefinition(), code: 'new_column'}}
+        onClose={jest.fn()}
+      />
+    );
+    expect(await screen.findByTestId('code-0')).toHaveValue('');
+    expect(await screen.findByTestId('label-0')).toHaveValue('');
+  });
 });

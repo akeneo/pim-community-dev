@@ -12,9 +12,13 @@ const getSelectOptions: () => SelectOption[] = () => {
 const fetchSelectOptions = async (
   _router: Router,
   _attributeCode: string,
-  _columnCode: ColumnCode
-): Promise<SelectOption[]> => {
-  return new Promise(resolve => resolve(getSelectOptions()));
+  columnCode: ColumnCode
+): Promise<SelectOption[] | undefined> => {
+  if (columnCode === 'ingredient') {
+    return new Promise(resolve => resolve(getSelectOptions()));
+  } else {
+    return new Promise(resolve => resolve(undefined));
+  }
 };
 
 export {fetchSelectOptions, getSelectOptions};
