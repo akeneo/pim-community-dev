@@ -11,23 +11,23 @@ declare(strict_types=1);
  * file that was distributed with this source code.
  */
 
-namespace Specification\Akeneo\Platform\TailoredExport\Application\Query\Selection\ReferenceEntityCollection;
+namespace Specification\Akeneo\Platform\TailoredExport\Application\Query\Selection\ReferenceEntity;
 
-use Akeneo\Platform\TailoredExport\Application\Query\Selection\ReferenceEntityCollection\ReferenceEntityCollectionCodeSelection;
+use Akeneo\Platform\TailoredExport\Application\Query\Selection\ReferenceEntity\ReferenceEntityCodeSelection;
 use Akeneo\Platform\TailoredExport\Application\Query\Selection\Boolean\BooleanSelection;
-use Akeneo\Platform\TailoredExport\Domain\SourceValue\ReferenceEntityCollectionValue;
+use Akeneo\Platform\TailoredExport\Domain\SourceValue\ReferenceEntityValue;
 use Akeneo\Platform\TailoredExport\Domain\SourceValue\BooleanValue;
 use PhpSpec\ObjectBehavior;
 
-class ReferenceEntityCollectionCodeSelectionHandlerSpec extends ObjectBehavior
+class ReferenceEntityCodeSelectionHandlerSpec extends ObjectBehavior
 {
     public function it_applies_the_selection()
     {
-        $selection = new ReferenceEntityCollectionCodeSelection('/');
-        $value = new ReferenceEntityCollectionValue(['reference_entity_code1', 'reference_entity_code2', 'reference_entity_code...']);
+        $selection = new ReferenceEntityCodeSelection('/');
+        $value = new ReferenceEntityValue('record_code1');
 
         $this->applySelection($selection, $value)
-            ->shouldReturn('reference_entity_code1/reference_entity_code2/reference_entity_code...');
+            ->shouldReturn('record_code1');
     }
 
     public function it_does_not_apply_selection_on_not_supported_selections_and_values()
@@ -36,14 +36,14 @@ class ReferenceEntityCollectionCodeSelectionHandlerSpec extends ObjectBehavior
         $notSupportedValue = new BooleanValue(true);
 
         $this
-            ->shouldThrow(new \InvalidArgumentException('Cannot apply Reference Entity Collection selection on this entity'))
+            ->shouldThrow(new \InvalidArgumentException('Cannot apply Reference Entity selection on this entity'))
             ->during('applySelection', [$notSupportedSelection, $notSupportedValue]);
     }
 
-    public function it_supports_reference_entity_collection_code_selection_with_reference_entity_collection_value()
+    public function it_supports_reference_entity_code_selection_with_reference_entity_value()
     {
-        $selection = new ReferenceEntityCollectionCodeSelection('/');
-        $value = new ReferenceEntityCollectionValue([]);
+        $selection = new ReferenceEntityCodeSelection('/');
+        $value = new ReferenceEntityValue('nice_record');
 
         $this->supports($selection, $value)->shouldReturn(true);
     }

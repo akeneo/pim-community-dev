@@ -34,16 +34,16 @@ class ReferenceEntityCollectionLabelSelectionHandlerSpec extends ObjectBehavior
             'fr_FR',
             'a_reference_entity_code'
         );
-        $value = new ReferenceEntityCollectionValue(['reference_entity_code1', 'reference_entity_code2', 'reference_entity_code...']);
+        $value = new ReferenceEntityCollectionValue(['record_code1', 'record_code2', 'record_code...']);
 
         $findRecordsLabelTranslations->find(
             'a_reference_entity_code',
-            ['reference_entity_code1', 'reference_entity_code2', 'reference_entity_code...'],
+            ['record_code1', 'record_code2', 'record_code...'],
             'fr_FR'
         )->willReturn([
-            'reference_entity_code1' => 'label1',
-            'reference_entity_code2' => 'label2',
-            'reference_entity_code...' => 'label...',
+            'record_code1' => 'label1',
+            'record_code2' => 'label2',
+            'record_code...' => 'label...',
         ]);
 
         $this->applySelection($selection, $value)

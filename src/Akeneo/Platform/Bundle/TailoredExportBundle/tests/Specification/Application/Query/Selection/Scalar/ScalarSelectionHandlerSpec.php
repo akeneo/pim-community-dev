@@ -11,23 +11,23 @@ declare(strict_types=1);
  * file that was distributed with this source code.
  */
 
-namespace Specification\Akeneo\Platform\TailoredExport\Application\Query\Selection\Boolean;
+namespace Specification\Akeneo\Platform\TailoredExport\Application\Query\Selection\Scalar;
 
 use Akeneo\Platform\TailoredExport\Application\Query\Selection\AssetCollection\AssetCollectionCodeSelection;
-use Akeneo\Platform\TailoredExport\Application\Query\Selection\Boolean\BooleanSelection;
+use Akeneo\Platform\TailoredExport\Application\Query\Selection\Enabled\EnabledSelection;
+use Akeneo\Platform\TailoredExport\Application\Query\Selection\Scalar\ScalarSelection;
 use Akeneo\Platform\TailoredExport\Domain\SourceValue\AssetCollectionValue;
-use Akeneo\Platform\TailoredExport\Domain\SourceValue\BooleanValue;
+use Akeneo\Platform\TailoredExport\Domain\SourceValue\StringValue;
 use PhpSpec\ObjectBehavior;
 
-class BooleanSelectionHandlerSpec extends ObjectBehavior
+class ScalarSelectionHandlerSpec extends ObjectBehavior
 {
     public function it_applies_the_selection()
     {
-        $selection = new BooleanSelection();
-        $value = new BooleanValue(true);
+        $selection = new ScalarSelection();
+        $value = new StringValue('some_data');
 
-        $this->applySelection($selection, $value)
-            ->shouldReturn('1');
+        $this->applySelection($selection, $value)->shouldReturn('some_data');
     }
 
     public function it_does_not_apply_selection_on_not_supported_selections_and_values()
@@ -36,16 +36,18 @@ class BooleanSelectionHandlerSpec extends ObjectBehavior
         $notSupportedValue = new AssetCollectionValue([]);
 
         $this
-            ->shouldThrow(new \InvalidArgumentException('Cannot apply Boolean selection on this entity'))
+            ->shouldThrow(new \InvalidArgumentException('Cannot apply Scalar selection on this entity'))
             ->during('applySelection', [$notSupportedSelection, $notSupportedValue]);
     }
 
-    public function it_supports_boolean_selection_with_boolean_value()
+    public function it_supports_string_value_and_any_selection()
     {
-        $selection = new BooleanSelection();
-        $value = new BooleanValue(false);
+        $selection = new ScalarSelection();
+        $enabledSelection = new EnabledSelection();
+        $value = new StringValue('some_data');
 
         $this->supports($selection, $value)->shouldReturn(true);
+        $this->supports($enabledSelection, $value)->shouldReturn(true);
     }
 
     public function it_does_not_support_other_selections_and_values()

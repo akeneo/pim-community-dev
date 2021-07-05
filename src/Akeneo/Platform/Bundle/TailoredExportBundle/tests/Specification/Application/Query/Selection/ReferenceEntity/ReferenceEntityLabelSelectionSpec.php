@@ -11,24 +11,18 @@ declare(strict_types=1);
  * file that was distributed with this source code.
  */
 
-namespace Specification\Akeneo\Platform\TailoredExport\Application\Query\Selection\ReferenceEntityCollection;
+namespace Specification\Akeneo\Platform\TailoredExport\Application\Query\Selection\ReferenceEntity;
 
 use PhpSpec\ObjectBehavior;
 
-class ReferenceEntityCollectionLabelSelectionSpec extends ObjectBehavior
+class ReferenceEntityLabelSelectionSpec extends ObjectBehavior
 {
     public function let()
     {
         $this->beConstructedWith(
-            '-',
             'fr_FR',
             'a_reference_entity_code'
         );
-    }
-
-    public function it_returns_the_separator()
-    {
-        $this->getSeparator()->shouldReturn('-');
     }
 
     public function it_returns_the_locale()

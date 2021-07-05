@@ -24,10 +24,10 @@ class ReferenceEntityCollectionCodeSelectionHandlerSpec extends ObjectBehavior
     public function it_applies_the_selection()
     {
         $selection = new ReferenceEntityCollectionCodeSelection('/');
-        $value = new ReferenceEntityCollectionValue(['reference_entity_code1', 'reference_entity_code2', 'reference_entity_code...']);
+        $value = new ReferenceEntityCollectionValue(['record_code1', 'record_code2', 'record_code...']);
 
         $this->applySelection($selection, $value)
-            ->shouldReturn('reference_entity_code1/reference_entity_code2/reference_entity_code...');
+            ->shouldReturn('record_code1/record_code2/record_code...');
     }
 
     public function it_does_not_apply_selection_on_not_supported_selections_and_values()

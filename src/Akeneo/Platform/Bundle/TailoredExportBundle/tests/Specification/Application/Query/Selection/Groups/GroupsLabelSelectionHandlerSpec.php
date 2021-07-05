@@ -44,7 +44,7 @@ class GroupsLabelSelectionHandlerSpec extends ObjectBehavior
             ->shouldReturn('Group 1/Group 2');
     }
 
-    public function it_does_not_applies_selection_on_not_supported_selections_and_values()
+    public function it_does_not_apply_selection_on_not_supported_selections_and_values()
     {
         $notSupportedSelection = new BooleanSelection();
         $notSupportedValue = new BooleanValue(true);
@@ -62,7 +62,7 @@ class GroupsLabelSelectionHandlerSpec extends ObjectBehavior
         $this->supports($selection, $value)->shouldReturn(true);
     }
 
-    public function it_does_not_supports_other_selections_and_values()
+    public function it_does_not_support_other_selections_and_values()
     {
         $notSupportedSelection = new BooleanSelection();
         $notSupportedValue = new BooleanValue(true);

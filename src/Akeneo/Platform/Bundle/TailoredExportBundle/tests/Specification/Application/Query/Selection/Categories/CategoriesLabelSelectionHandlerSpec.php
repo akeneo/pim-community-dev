@@ -45,7 +45,7 @@ class CategoriesLabelSelectionHandlerSpec extends ObjectBehavior
             ->shouldReturn('Catégorie 1-Catégorie 2-Catégorie 3');
     }
 
-    public function it_does_not_applies_selection_on_not_supported_selections_and_values()
+    public function it_does_not_apply_selection_on_not_supported_selections_and_values()
     {
         $notSupportedSelection = new BooleanSelection();
         $notSupportedValue = new BooleanValue(true);
@@ -63,7 +63,7 @@ class CategoriesLabelSelectionHandlerSpec extends ObjectBehavior
         $this->supports($selection, $value)->shouldReturn(true);
     }
 
-    public function it_does_not_supports_other_selections_and_values()
+    public function it_does_not_support_other_selections_and_values()
     {
         $notSupportedSelection = new BooleanSelection();
         $notSupportedValue = new BooleanValue(true);

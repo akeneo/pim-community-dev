@@ -11,23 +11,22 @@ declare(strict_types=1);
  * file that was distributed with this source code.
  */
 
-namespace Specification\Akeneo\Platform\TailoredExport\Application\Query\Selection\AssetCollection;
+namespace Specification\Akeneo\Platform\TailoredExport\Application\Query\Selection\SimpleSelect;
 
-use Akeneo\Platform\TailoredExport\Application\Query\Selection\AssetCollection\AssetCollectionCodeSelection;
+use Akeneo\Platform\TailoredExport\Application\Query\Selection\SimpleSelect\SimpleSelectCodeSelection;
 use Akeneo\Platform\TailoredExport\Application\Query\Selection\Boolean\BooleanSelection;
-use Akeneo\Platform\TailoredExport\Domain\SourceValue\AssetCollectionValue;
+use Akeneo\Platform\TailoredExport\Domain\SourceValue\SimpleSelectValue;
 use Akeneo\Platform\TailoredExport\Domain\SourceValue\BooleanValue;
 use PhpSpec\ObjectBehavior;
 
-class AssetCollectionCodeSelectionHandlerSpec extends ObjectBehavior
+class SimpleSelectCodeSelectionHandlerSpec extends ObjectBehavior
 {
     public function it_applies_the_selection()
     {
-        $selection = new AssetCollectionCodeSelection('/');
-        $value = new AssetCollectionValue(['asset_family_code1', 'asset_family_code2', 'asset_family_code...']);
+        $selection = new SimpleSelectCodeSelection('/');
+        $value = new SimpleSelectValue('option1');
 
-        $this->applySelection($selection, $value)
-            ->shouldReturn('asset_family_code1/asset_family_code2/asset_family_code...');
+        $this->applySelection($selection, $value)->shouldReturn('option1');
     }
 
     public function it_does_not_apply_selection_on_not_supported_selections_and_values()
@@ -36,14 +35,14 @@ class AssetCollectionCodeSelectionHandlerSpec extends ObjectBehavior
         $notSupportedValue = new BooleanValue(true);
 
         $this
-            ->shouldThrow(new \InvalidArgumentException('Cannot apply Asset Collection selection on this entity'))
+            ->shouldThrow(new \InvalidArgumentException('Cannot apply Simple Select selection on this entity'))
             ->during('applySelection', [$notSupportedSelection, $notSupportedValue]);
     }
 
-    public function it_supports_asset_collection_code_selection_with_asset_collection_value()
+    public function it_supports_simple_select_code_selection_with_simple_select_value()
     {
-        $selection = new AssetCollectionCodeSelection('/');
-        $value = new AssetCollectionValue([]);
+        $selection = new SimpleSelectCodeSelection('/');
+        $value = new SimpleSelectValue('nice_option');
 
         $this->supports($selection, $value)->shouldReturn(true);
     }

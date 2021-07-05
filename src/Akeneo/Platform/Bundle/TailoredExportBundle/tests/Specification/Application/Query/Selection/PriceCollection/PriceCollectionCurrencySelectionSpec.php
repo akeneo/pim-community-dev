@@ -11,15 +11,17 @@ declare(strict_types=1);
  * file that was distributed with this source code.
  */
 
-namespace Specification\Akeneo\Platform\TailoredExport\Application\Query\Selection\ReferenceEntityCollection;
+namespace Specification\Akeneo\Platform\TailoredExport\Application\Query\Selection\PriceCollection;
 
 use PhpSpec\ObjectBehavior;
 
-class ReferenceEntityCollectionCodeSelectionSpec extends ObjectBehavior
+class PriceCollectionCurrencySelectionSpec extends ObjectBehavior
 {
     public function let()
     {
-        $this->beConstructedWith('-');
+        $this->beConstructedWith(
+            '-'
+        );
     }
 
     public function it_returns_the_separator()

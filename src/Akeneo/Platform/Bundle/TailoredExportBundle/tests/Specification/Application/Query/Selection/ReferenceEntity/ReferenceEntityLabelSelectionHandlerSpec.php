@@ -11,16 +11,16 @@ declare(strict_types=1);
  * file that was distributed with this source code.
  */
 
-namespace Specification\Akeneo\Platform\TailoredExport\Application\Query\Selection\ReferenceEntityCollection;
+namespace Specification\Akeneo\Platform\TailoredExport\Application\Query\Selection\ReferenceEntity;
 
 use Akeneo\ReferenceEntity\Infrastructure\PublicApi\Enrich\FindRecordsLabelTranslations;
-use Akeneo\Platform\TailoredExport\Application\Query\Selection\ReferenceEntityCollection\ReferenceEntityCollectionLabelSelection;
+use Akeneo\Platform\TailoredExport\Application\Query\Selection\ReferenceEntity\ReferenceEntityLabelSelection;
 use Akeneo\Platform\TailoredExport\Application\Query\Selection\Boolean\BooleanSelection;
-use Akeneo\Platform\TailoredExport\Domain\SourceValue\ReferenceEntityCollectionValue;
 use Akeneo\Platform\TailoredExport\Domain\SourceValue\BooleanValue;
+use Akeneo\Platform\TailoredExport\Domain\SourceValue\ReferenceEntityValue;
 use PhpSpec\ObjectBehavior;
 
-class ReferenceEntityCollectionLabelSelectionHandlerSpec extends ObjectBehavior
+class ReferenceEntityLabelSelectionHandlerSpec extends ObjectBehavior
 {
     public function let(FindRecordsLabelTranslations $findRecordsLabelTranslations)
     {
@@ -29,25 +29,21 @@ class ReferenceEntityCollectionLabelSelectionHandlerSpec extends ObjectBehavior
 
     public function it_applies_the_selection(FindRecordsLabelTranslations $findRecordsLabelTranslations)
     {
-        $selection = new ReferenceEntityCollectionLabelSelection(
-            '/',
+        $selection = new ReferenceEntityLabelSelection(
             'fr_FR',
             'a_reference_entity_code'
         );
-        $value = new ReferenceEntityCollectionValue(['reference_entity_code1', 'reference_entity_code2', 'reference_entity_code...']);
+        $value = new ReferenceEntityValue('record_code1');
 
         $findRecordsLabelTranslations->find(
             'a_reference_entity_code',
-            ['reference_entity_code1', 'reference_entity_code2', 'reference_entity_code...'],
+            ['record_code1'],
             'fr_FR'
         )->willReturn([
-            'reference_entity_code1' => 'label1',
-            'reference_entity_code2' => 'label2',
-            'reference_entity_code...' => 'label...',
+            'record_code1' => 'label1',
         ]);
 
-        $this->applySelection($selection, $value)
-            ->shouldReturn('label1/label2/label...');
+        $this->applySelection($selection, $value)->shouldReturn('label1');
     }
 
     public function it_does_not_apply_selection_on_not_supported_selections_and_values()
@@ -56,18 +52,18 @@ class ReferenceEntityCollectionLabelSelectionHandlerSpec extends ObjectBehavior
         $notSupportedValue = new BooleanValue(false);
 
         $this
-            ->shouldThrow(new \InvalidArgumentException('Cannot apply Reference Entity Collection selection on this entity'))
+            ->shouldThrow(new \InvalidArgumentException('Cannot apply Reference Entity selection on this entity'))
             ->during('applySelection', [$notSupportedSelection, $notSupportedValue]);
     }
 
-    public function it_supports_reference_entity_collection_label_selection_with_reference_entity_collection_value()
+    public function it_supports_reference_entity_label_selection_with_reference_entity_value()
     {
-        $selection = new ReferenceEntityCollectionLabelSelection(
+        $selection = new ReferenceEntityLabelSelection(
             '/',
             'fr_FR',
             'a_reference_entity_code'
         );
-        $value = new ReferenceEntityCollectionValue([]);
+        $value = new ReferenceEntityValue('nice_record');
 
         $this->supports($selection, $value)->shouldReturn(true);
     }

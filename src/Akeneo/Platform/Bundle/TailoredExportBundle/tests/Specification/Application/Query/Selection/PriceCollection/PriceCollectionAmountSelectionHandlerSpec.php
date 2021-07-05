@@ -11,23 +11,24 @@ declare(strict_types=1);
  * file that was distributed with this source code.
  */
 
-namespace Specification\Akeneo\Platform\TailoredExport\Application\Query\Selection\AssetCollection;
+namespace Specification\Akeneo\Platform\TailoredExport\Application\Query\Selection\PriceCollection;
 
-use Akeneo\Platform\TailoredExport\Application\Query\Selection\AssetCollection\AssetCollectionCodeSelection;
+use Akeneo\Platform\TailoredExport\Application\Query\Selection\PriceCollection\PriceCollectionAmountSelection;
 use Akeneo\Platform\TailoredExport\Application\Query\Selection\Boolean\BooleanSelection;
-use Akeneo\Platform\TailoredExport\Domain\SourceValue\AssetCollectionValue;
+use Akeneo\Platform\TailoredExport\Domain\SourceValue\PriceCollectionValue;
 use Akeneo\Platform\TailoredExport\Domain\SourceValue\BooleanValue;
+use Akeneo\Platform\TailoredExport\Domain\SourceValue\Price;
 use PhpSpec\ObjectBehavior;
 
-class AssetCollectionCodeSelectionHandlerSpec extends ObjectBehavior
+class PriceCollectionAmountSelectionHandlerSpec extends ObjectBehavior
 {
     public function it_applies_the_selection()
     {
-        $selection = new AssetCollectionCodeSelection('/');
-        $value = new AssetCollectionValue(['asset_family_code1', 'asset_family_code2', 'asset_family_code...']);
+        $selection = new PriceCollectionAmountSelection('/');
+        $value = new PriceCollectionValue([new Price('102', 'EUR'), new Price('103', 'USD'), new Price('104', 'DKK')]);
 
         $this->applySelection($selection, $value)
-            ->shouldReturn('asset_family_code1/asset_family_code2/asset_family_code...');
+            ->shouldReturn('102/103/104');
     }
 
     public function it_does_not_apply_selection_on_not_supported_selections_and_values()
@@ -36,14 +37,14 @@ class AssetCollectionCodeSelectionHandlerSpec extends ObjectBehavior
         $notSupportedValue = new BooleanValue(true);
 
         $this
-            ->shouldThrow(new \InvalidArgumentException('Cannot apply Asset Collection selection on this entity'))
+            ->shouldThrow(new \InvalidArgumentException('Cannot apply Price collection selection on this entity'))
             ->during('applySelection', [$notSupportedSelection, $notSupportedValue]);
     }
 
-    public function it_supports_asset_collection_code_selection_with_asset_collection_value()
+    public function it_supports_price_collection_code_selection_with_price_collection_value()
     {
-        $selection = new AssetCollectionCodeSelection('/');
-        $value = new AssetCollectionValue([]);
+        $selection = new PriceCollectionAmountSelection('/');
+        $value = new PriceCollectionValue([]);
 
         $this->supports($selection, $value)->shouldReturn(true);
     }
