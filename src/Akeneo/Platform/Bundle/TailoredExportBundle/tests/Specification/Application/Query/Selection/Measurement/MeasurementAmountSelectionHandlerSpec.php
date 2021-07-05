@@ -14,31 +14,20 @@ declare(strict_types=1);
 namespace Specification\Akeneo\Platform\TailoredExport\Application\Query\Selection\Measurement;
 
 use Akeneo\Platform\TailoredExport\Application\Query\Selection\Boolean\BooleanSelection;
-use Akeneo\Platform\TailoredExport\Application\Query\Selection\Measurement\MeasurementUnitLabelSelection;
+use Akeneo\Platform\TailoredExport\Application\Query\Selection\Measurement\MeasurementAmountSelection;
 use Akeneo\Platform\TailoredExport\Domain\SourceValue\BooleanValue;
 use Akeneo\Platform\TailoredExport\Domain\SourceValue\MeasurementValue;
-use Akeneo\Tool\Bundle\MeasureBundle\PublicApi\GetUnitTranslations;
 use PhpSpec\ObjectBehavior;
 
-class MeasurementUnitLabelSelectionHandlerSpec extends ObjectBehavior
+class MeasurementAmountSelectionHandlerSpec extends ObjectBehavior
 {
-    public function let(GetUnitTranslations $getUnitTranslations)
+    public function it_applies_the_selection()
     {
-        $this->beConstructedWith($getUnitTranslations);
-    }
-
-    public function it_applies_the_selection(GetUnitTranslations $getUnitTranslations)
-    {
-        $selection = new MeasurementUnitLabelSelection('weight', 'fr_FR');
+        $selection = new MeasurementAmountSelection();
         $value = new MeasurementValue('10', 'kilogram');
 
-        $getUnitTranslations->byMeasurementFamilyCodeAndLocale(
-            'weight',
-            'fr_FR'
-        )->willReturn(['kilogram' => 'Kilogramme']);
-
         $this->applySelection($selection, $value)
-            ->shouldReturn('Kilogramme');
+            ->shouldReturn('10');
     }
 
     public function it_does_not_applies_selection_on_not_supported_selections_and_values()
@@ -51,9 +40,9 @@ class MeasurementUnitLabelSelectionHandlerSpec extends ObjectBehavior
             ->during('applySelection', [$notSupportedSelection, $notSupportedValue]);
     }
 
-    public function it_supports_measurement_unit_label_selection_with_measurement_value()
+    public function it_supports_measurement_amount_selection_with_measurement_value()
     {
-        $selection = new MeasurementUnitLabelSelection('weight', 'fr_FR');
+        $selection = new MeasurementAmountSelection();
         $value = new MeasurementValue('10', 'kilogram');
 
         $this->supports($selection, $value)->shouldReturn(true);
