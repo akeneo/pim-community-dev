@@ -73,6 +73,8 @@ const ManageOptionsModal: React.FC<ManageOptionsModalProps> = ({onClose, attribu
   const [selectedOptionId, setSelectedOptionId] = React.useState<string | undefined>(undefined);
   const [options, setOptions] = React.useState<SelectOptionWithId[]>();
   const [autoCompleteCode, setAutoCompleteCode] = React.useState<boolean>(false);
+  const [filteredOptionIds, setFilteredOptionIds] = React.useState<string[]>([]);
+  const [scrollToTheEnd, setScrollToTheEnd] = React.useState<boolean>(false);
   const currentLocale = 'en_US';
   const columnLabel = getLabel(columnDefinition.labels, userContext.get('catalogLocale'), columnDefinition.code);
 
@@ -109,9 +111,15 @@ const ManageOptionsModal: React.FC<ManageOptionsModalProps> = ({onClose, attribu
     const optionsWithId = options.map(option => {
       return {...option, id: uuid()};
     });
-    optionsWithId.push({id: uuid(), code: '', labels: {}});
+    const lastId = uuid();
+    optionsWithId.push({id: lastId, code: '', labels: {}});
     setOptionsWithCheck(optionsWithId);
     setSelectedOptionId(optionsWithId[0]?.id);
+    const filteredOptionIdsTmp = optionsWithId.slice(0, 100).map(option => option.id);
+    if (!filteredOptionIdsTmp.includes(lastId)) {
+      filteredOptionIdsTmp.push(lastId);
+    }
+    setFilteredOptionIds(filteredOptionIdsTmp);
   };
 
   React.useEffect(() => {
@@ -128,7 +136,29 @@ const ManageOptionsModal: React.FC<ManageOptionsModalProps> = ({onClose, attribu
     }
   }, []);
 
+  React.useEffect(() => {
+    if (scrollToTheEnd && tableContainerRef.current && filteredOptionIds) {
+      window.setTimeout(() => {
+        tableContainerRef.current.scrollTop = tableContainerRef.current.scrollHeight;
+      }, 0);
+      setScrollToTheEnd(false);
+    }
+  }, [scrollToTheEnd]);
+
   const selectedOption = options ? options.find(option => option.id === selectedOptionId) : undefined;
+
+  const addNewOption = () => {
+    if (typeof options === 'undefined') {
+      return;
+    }
+    const newId = uuid();
+    options.push({id: newId, code: '', labels: {}});
+    if (filteredOptionIds) {
+      setFilteredOptionIds([...filteredOptionIds, newId]);
+    }
+
+    setScrollToTheEnd(true);
+  };
 
   const handleLabelChange = (optionId: string, localeCode: LocaleCode, label: string) => {
     if (options) {
@@ -140,17 +170,15 @@ const ManageOptionsModal: React.FC<ManageOptionsModalProps> = ({onClose, attribu
           option.code = label.replace(/[^a-zA-Z0-9_]/gi, '_').substring(0, 100);
         }
         options[index] = option;
-        if (index === options.length - 1) {
-          options.push({id: uuid(), code: '', labels: {}});
+        if (filteredOptionIds && filteredOptionIds[filteredOptionIds.length - 1] === optionId) {
+          const newId = uuid();
+          options.push({id: newId, code: '', labels: {}});
+          if (filteredOptionIds) {
+            setFilteredOptionIds([...filteredOptionIds, newId]);
+          }
+          setScrollToTheEnd(true);
         }
         setOptionsWithCheck(options);
-      }
-      if (tableContainerRef.current) {
-        window.setTimeout(() => {
-          if (index === options.length - 2) {
-            tableContainerRef.current.scrollTop = tableContainerRef.current.scrollHeight;
-          }
-        }, 0);
       }
     }
   };
@@ -161,7 +189,12 @@ const ManageOptionsModal: React.FC<ManageOptionsModalProps> = ({onClose, attribu
       if (index >= 0) {
         options[index] = {...options[index], code};
         if (index === options.length - 1) {
-          options.push({id: uuid(), code: '', labels: {}});
+          const newId = uuid();
+          options.push({id: newId, code: '', labels: {}});
+          if (filteredOptionIds) {
+            setFilteredOptionIds([...filteredOptionIds, newId]);
+          }
+          setScrollToTheEnd(true);
         }
         setOptionsWithCheck(options);
       }
@@ -226,6 +259,10 @@ const ManageOptionsModal: React.FC<ManageOptionsModalProps> = ({onClose, attribu
     </>
   );
 
+  const optionsToDisplay = options
+    ? filteredOptionIds.map(optionId => options.find(option => optionId === option.id))
+    : null;
+
   return (
     <Modal closeTitle={translate('pim_common.close')} onClose={onClose}>
       <Modal.SectionTitle color='brand'>
@@ -250,19 +287,20 @@ const ManageOptionsModal: React.FC<ManageOptionsModalProps> = ({onClose, attribu
               </Table.Header>
               <Table.Body>
                 {options &&
-                  options.map((option, index) => (
+                  optionsToDisplay &&
+                  optionsToDisplay.map((option, index) => (
                     <ManageOptionsRow
                       key={option.id}
                       isSelected={option.id === selectedOptionId}
                       onClick={() => setSelectedOptionId(option.id)}
-                      isLastRow={index === options.length - 1}>
+                      isLastRow={index === optionsToDisplay.length - 1}>
                       <ManageOptionCell>
                         <CellFieldContainer>
                           <TextInput
                             onChange={label => handleLabelChange(option.id, currentLocale, label)}
                             value={option.labels[currentLocale] || ''}
                             placeholder={
-                              index === options.length - 1
+                              index === optionsToDisplay.length - 1
                                 ? translate('pim_table_attribute.form.attribute.new_option_placeholder')
                                 : ''
                             }
@@ -289,7 +327,7 @@ const ManageOptionsModal: React.FC<ManageOptionsModalProps> = ({onClose, attribu
                         </CellFieldContainer>
                       </ManageOptionCell>
                       <Table.ActionCell>
-                        {index !== options.length - 1 && (
+                        {index !== optionsToDisplay.length - 1 && (
                           <IconButton
                             ghost='borderless'
                             level='tertiary'
