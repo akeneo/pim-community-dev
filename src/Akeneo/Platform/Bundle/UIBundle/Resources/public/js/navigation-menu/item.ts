@@ -1,12 +1,7 @@
 'use strict';
 
-import {ViewOptions} from 'backbone';
-
-const _ = require('underscore');
 const __ = require('oro/translator');
 const BaseForm = require('pim/form');
-const router = require('pim/router');
-const mediator = require('oro/mediator');
 
 type ItemConfig = {
   position: number;
@@ -17,25 +12,11 @@ type ItemConfig = {
 };
 
 class Item extends BaseForm {
-  active;
-
-  constructor(options?: ViewOptions<any>) {
-    super({
-      ...options,
-    });
-
-    this.active = false;
-  }
-
   /**
    * {@inheritdoc}
    */
   initialize(config: ItemConfig) {
     this.config = config.config;
-
-    mediator.on('pim_menu:highlight:item', this.highlight, this);
-    mediator.on('pim_menu:redirect:item', this.redirect, this);
-
     super.initialize(config);
   }
 
@@ -55,22 +36,6 @@ class Item extends BaseForm {
     });
 
     return super.configure();
-  }
-
-  /**
-   * Redirect the user to the config destination
-   *
-   * @param {Event} event
-   */
-  redirect(event: any) {
-    if (!_.has(event, 'extension')) {
-      event.stopPropagation();
-      event.preventDefault();
-    }
-
-    if (!(event.metaKey || event.ctrlKey) && (!_.has(event, 'extension') || event.extension === this.code)) {
-      router.redirectToRoute(this.getRoute(), this.getRouteParams());
-    }
   }
 
   /**
@@ -98,18 +63,6 @@ class Item extends BaseForm {
    */
   getLabel() {
     return __(this.config.title);
-  }
-
-  /**
-   * Highlight or un-highlight item
-   *
-   * @param {Event}  event
-   * @param {string} event.extension The extension code to highlight
-   */
-  highlight(event: any) {
-    this.active = event.extension === this.code;
-
-    this.render();
   }
 
   /**
