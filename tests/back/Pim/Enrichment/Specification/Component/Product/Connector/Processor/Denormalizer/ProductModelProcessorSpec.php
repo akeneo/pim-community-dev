@@ -22,6 +22,7 @@ use PhpSpec\ObjectBehavior;
 use Prophecy\Argument;
 use Symfony\Component\Validator\ConstraintViolationListInterface;
 use Symfony\Component\Validator\Validator\ValidatorInterface;
+use Symfony\Component\Security\Core\Exception\AccessDeniedException;
 
 class ProductModelProcessorSpec extends ObjectBehavior
 {
@@ -468,5 +469,60 @@ class ProductModelProcessorSpec extends ObjectBehavior
             'family_variant' => 'tshirt',
             'parent' => ''
         ])->shouldReturn(null);
+    }
+
+    function it_skips_the_product_model_if_user_have_no_permissions_to_edit_a_product_value(
+        $productModelFactory,
+        $productModelUpdater,
+        $productModelRepository,
+        $attributeFilter,
+        $mediaStorer,
+        $objectDetacher,
+        CleanLineBreaksInTextAttributes $cleanLineBreaksInTextAttributes,
+        StepExecution $stepExecution,
+        ProductModelInterface $productModel
+    ) {
+        $productModelData = [
+            'code' => 'product_model_code',
+            'family_variant' => 'pantalon',
+            'values' => [
+                'name' => [
+                    [
+                        'locale' => 'fr_FR',
+                        'scope' => 'null',
+                        'data' => 'Pantalon',
+                    ],
+                    [
+                        'locale' => 'de_DE',
+                        'scope' => 'null',
+                        'data' => 'Hose',
+                    ]
+                ],
+            ],
+            'categories' => ['pantalon'],
+        ];
+
+        $attributeFilter->filter($productModelData)->willReturn($productModelData);
+
+        $mediaStorer->store($productModelData['values'])->willReturn($productModelData['values']);
+        $cleanLineBreaksInTextAttributes->cleanStandardFormat($productModelData)
+            ->willReturn($productModelData);
+
+        $this->setStepExecution($stepExecution);
+
+        $productModelRepository->findOneByIdentifier('product_model_code')->willReturn(null);
+
+        $productModelFactory->create()->willReturn($productModel);
+        $stepExecution->incrementSummaryInfo('skip')->shouldBeCalled();
+        $stepExecution->getSummaryInfo('item_position')->shouldBeCalled();
+        $objectDetacher->detach($productModel)->shouldBeCalled();
+
+        $productModelUpdater
+            ->update($productModel, $productModelData)
+            ->willThrow(new AccessDeniedException('You only have a view permission on the locale "de_DE".'));
+
+        $this->shouldThrow(InvalidItemException::class)->during('process', [[
+            'family_variant' => 'pantalon',
+        ]]);
     }
 }
