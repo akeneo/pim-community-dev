@@ -4,7 +4,7 @@ import {LocalesSelector} from './LocalesSelector';
 import React from 'react';
 import userEvent from '@testing-library/user-event';
 
-let availableLocales = [
+const availableLocales = [
   {
     code: 'en_US',
     label: 'English (American)',
@@ -19,8 +19,8 @@ let availableLocales = [
   },
 ];
 
-test('it displays the selected locales', async () => {
-  await renderWithProviders(
+test('it displays the selected locales', () => {
+  renderWithProviders(
     <LocalesSelector value={['en_US']} locales={availableLocales} onChange={() => {}} validationErrors={[]} />
   );
 
@@ -28,9 +28,9 @@ test('it displays the selected locales', async () => {
   expect(screen.queryByText('English (American)')).toBeInTheDocument();
 });
 
-test('it notifies when a locale is added to the selection', async () => {
+test('it notifies when a locale is added to the selection', () => {
   const onLocalesSelectionChange = jest.fn();
-  await renderWithProviders(
+  renderWithProviders(
     <LocalesSelector
       value={['fr_FR']}
       locales={availableLocales}
@@ -45,10 +45,10 @@ test('it notifies when a locale is added to the selection', async () => {
   expect(onLocalesSelectionChange).toHaveBeenCalledWith(['fr_FR', 'en_US']);
 });
 
-test('it displays validations errors if any', async () => {
+test('it displays validations errors if any', () => {
   const myErrorMessage = 'My message.';
 
-  await renderWithProviders(
+  renderWithProviders(
     <LocalesSelector
       value={['fr_FR']}
       locales={availableLocales}

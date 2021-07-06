@@ -51,10 +51,7 @@ test('it displays a categories configurator', async () => {
     />
   );
 
-  const seletor = screen.getByText('Update selection');
-
-  expect(seletor).toBeInTheDocument();
-  userEvent.click(seletor);
+  userEvent.click(screen.getByText('Update selection'));
 
   expect(onSourceChange).toHaveBeenCalledWith({
     ...getDefaultCategoriesSource(),

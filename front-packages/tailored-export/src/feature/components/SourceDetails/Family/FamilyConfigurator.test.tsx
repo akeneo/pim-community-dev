@@ -5,8 +5,8 @@ import {Channel, renderWithProviders as baseRender} from '@akeneo-pim-community/
 import {FamilyConfigurator} from './FamilyConfigurator';
 import {Attribute} from '../../../models/Attribute';
 import {FetcherContext} from '../../../contexts';
-import {CodeLabelSelection} from '../../../models';
 import {getDefaultTextSource} from '../Text/model';
+import {CodeLabelSelection} from '../common/CodeLabelSelector';
 
 const attribute = {
   code: 'text',
@@ -62,10 +62,7 @@ test('it displays a family configurator', async () => {
     />
   );
 
-  const seletor = screen.getByText('Update selection');
-
-  expect(seletor).toBeInTheDocument();
-  userEvent.click(seletor);
+  userEvent.click(screen.getByText('Update selection'));
 
   expect(onSourceChange).toHaveBeenCalledWith({
     channel: null,

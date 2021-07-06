@@ -1,8 +1,8 @@
+import React from 'react';
 import {screen} from '@testing-library/react';
+import userEvent from '@testing-library/user-event';
 import {renderWithProviders} from '@akeneo-pim-community/shared';
 import {OperatorSelector} from './OperatorSelector';
-import React from 'react';
-import userEvent from '@testing-library/user-event';
 
 const availableOperators = ['ALL', 'LOWER THAN ON ALL LOCALES'];
 
