@@ -71,11 +71,13 @@ const ManageOptionsModal: React.FC<ManageOptionsModalProps> = ({onClose, attribu
   const translate = useTranslate();
 
   const tableContainerRef = React.useRef();
+  const inputCodeRef = React.useRef();
   const [activatedLocales, setActivatedLocales] = React.useState<Locale[]>();
-  const [selectedOptionId, setSelectedOptionId] = React.useState<string | undefined>(undefined);
+  const [selectedOption, setSelectedOption] = React.useState<SelectOptionWithId | undefined>(undefined);
   const [options, setOptions] = React.useState<SelectOptionWithId[]>();
+  const [optionsToDisplay, setOptionsToDisplay] = React.useState<SelectOptionWithId[]>();
   const [autoCompleteCode, setAutoCompleteCode] = React.useState<boolean>(false);
-  const [filteredOptionIds, setFilteredOptionIds] = React.useState<string[]>([]);
+  const [violations, setViolations] = React.useState<{[key: string]: string[]}>({});
   const [scrollToTheEnd, setScrollToTheEnd] = React.useState<boolean>(false);
   const [numberOfItemsToDisplay, setNumberOfItemsToDisplay] = React.useState<number>(0);
   const currentLocale = 'en_US';
@@ -85,39 +87,55 @@ const ManageOptionsModal: React.FC<ManageOptionsModalProps> = ({onClose, attribu
     getActivatedLocales(router).then((activeLocales: Locale[]) => setActivatedLocales(activeLocales));
   }, [router]);
 
-  const setOptionsWithCheck = (options: SelectOptionWithId[]) => {
+  const computeOptionsToDisplay = () => {
+    if (!options) {
+      return;
+    }
+
+    const newOptionsToDisplay = options.slice(0, numberOfItemsToDisplay);
+    newOptionsToDisplay.push({id: uuid(), code: '', labels: {}});
+    setOptionsToDisplay(newOptionsToDisplay);
+  };
+
+  const setOptionsAndValidation = (options: SelectOptionWithId[]) => {
     const optionCodes = options.map(option => option.code);
     const duplicates = optionCodes.filter(optionCode => {
       return options.filter(o => o.code === optionCode).length > 1;
     });
 
-    setOptions(
-      options.map((option, index) => {
-        const violations = [];
-        if (index !== options.length - 1) {
-          if (option.code === '') {
-            violations.push(translate('pim_table_attribute.validations.column_code_must_be_filled'));
-          }
-          if (option.code !== '' && !/^[a-zA-Z0-9_]+$/.exec(option.code)) {
-            violations.push(translate('pim_table_attribute.validations.invalid_code'));
-          }
-          if (option.code !== '' && duplicates.includes(option.code)) {
-            violations.push(translate('pim_table_attribute.validations.duplicated_select_code'));
-          }
-        }
-        return {...option, violations};
-      })
-    );
+    setOptions(options);
+    if (selectedOption) {
+      const found = options.find(option => option.id === selectedOption.id);
+      setSelectedOption(found ? {...found} : undefined);
+    }
+
+    const newViolations = {};
+    options.forEach(option => {
+      const violationsForOption = [];
+      if (option.code === '') {
+        violationsForOption.push(translate('pim_table_attribute.validations.column_code_must_be_filled'));
+      }
+      if (option.code !== '' && !/^[a-zA-Z0-9_]+$/.exec(option.code)) {
+        violationsForOption.push(translate('pim_table_attribute.validations.invalid_code'));
+      }
+      if (option.code !== '' && duplicates.includes(option.code)) {
+        violationsForOption.push(translate('pim_table_attribute.validations.duplicated_select_code'));
+      }
+      if (violationsForOption.length > 0) {
+        newViolations[option.id] = violationsForOption;
+      }
+    });
+    if (JSON.stringify(newViolations) !== JSON.stringify(violations)) {
+      setViolations(newViolations);
+    }
   };
 
   const initializeOptions = (options: SelectOption[]) => {
     const optionsWithId = options.map(option => {
       return {...option, id: uuid()};
     });
-    const lastId = uuid();
-    optionsWithId.push({id: lastId, code: '', labels: {}});
-    setOptionsWithCheck(optionsWithId);
-    setSelectedOptionId(optionsWithId[0]?.id);
+    setOptionsAndValidation(optionsWithId);
+    setSelectedOption(optionsWithId[0] ?? undefined);
   };
 
   React.useEffect(() => {
@@ -140,19 +158,7 @@ const ManageOptionsModal: React.FC<ManageOptionsModalProps> = ({onClose, attribu
     if (numberOfItemsToDisplay === 0 || !options) {
       return;
     }
-
-    const lastOption = options[options.length - 1];
-    const hiddenOptionIds = options
-      .filter(option => !filteredOptionIds.includes(option.id) && option.id !== lastOption?.id)
-      .map(option => option.id);
-    const filteredOptionIdsTmp = [
-      ...filteredOptionIds.filter(optionId => optionId !== lastOption?.id),
-      ...hiddenOptionIds.slice(0, BATCH_SIZE),
-    ];
-    if (lastOption && !filteredOptionIdsTmp.includes(lastOption.id)) {
-      filteredOptionIdsTmp.push(lastOption?.id);
-    }
-    setFilteredOptionIds(filteredOptionIdsTmp);
+    computeOptionsToDisplay();
   }, [numberOfItemsToDisplay]);
 
   React.useEffect(() => {
@@ -178,59 +184,69 @@ const ManageOptionsModal: React.FC<ManageOptionsModalProps> = ({onClose, attribu
     }
   }, [scrollToTheEnd]);
 
-  const selectedOption = options ? options.find(option => option.id === selectedOptionId) : undefined;
-
   const handleLabelChange = (optionId: string, localeCode: LocaleCode, label: string) => {
     if (options) {
       const index = options.findIndex(option => option.id === optionId);
-      if (index >= 0) {
-        const option = options[index];
-        option.labels[localeCode] = label;
-        if (autoCompleteCode) {
-          option.code = label.replace(/[^a-zA-Z0-9_]/gi, '_').substring(0, 100);
+      const option = index >= 0 ? options[index] : {id: optionId, code: '', labels: {}};
+
+      option.labels[localeCode] = label;
+      if (autoCompleteCode) {
+        option.code = label.replace(/[^a-zA-Z0-9_]/gi, '_').substring(0, 100);
+        if (inputCodeRef && inputCodeRef.current) {
+          inputCodeRef.current.value = option.code;
         }
-        options[index] = option;
-        if (filteredOptionIds[filteredOptionIds.length - 1] === optionId) {
-          const newId = uuid();
-          options.push({id: newId, code: '', labels: {}});
-          setFilteredOptionIds([...filteredOptionIds, newId]);
-          setScrollToTheEnd(true);
-        }
-        setOptionsWithCheck(options);
       }
+      if (index >= 0) {
+        options[index] = option;
+      } else {
+        options.push(option);
+        if (optionsToDisplay) {
+          optionsToDisplay.push({id: uuid(), code: '', labels: {}});
+          setOptionsToDisplay([...optionsToDisplay]);
+          setAutoCompleteCode(true);
+        }
+      }
+      setOptionsAndValidation(options);
     }
   };
 
   const handleCodeChange = (optionId: string, code: string) => {
     if (options) {
       const index = options.findIndex(option => option.id === optionId);
+      const option = index >= 0 ? options[index] : {id: optionId, code: '', labels: {}};
+      option.code = code;
+
       if (index >= 0) {
-        options[index] = {...options[index], code};
-        if (filteredOptionIds[filteredOptionIds.length - 1] === optionId) {
-          const newId = uuid();
-          options.push({id: newId, code: '', labels: {}});
-          setFilteredOptionIds([...filteredOptionIds, newId]);
-          setScrollToTheEnd(true);
+        options[index] = option;
+      } else {
+        options.push(option);
+        if (optionsToDisplay) {
+          optionsToDisplay.push({id: uuid(), code: '', labels: {}});
+          setOptionsToDisplay([...optionsToDisplay]);
         }
-        setOptionsWithCheck(options);
       }
+      setOptionsAndValidation(options);
     }
   };
 
   const handleRemove = (optionId: string) => {
     if (options) {
-      if (optionId === selectedOptionId) {
+      if (optionId === selectedOption?.id) {
         const index = options.findIndex(option => option.id === optionId);
-        setSelectedOptionId(options[index + 1].id);
+        setSelectedOption(options[index === options.length - 1 ? options.length - 2 : index + 1]);
       }
-      setOptionsWithCheck(options.filter(option => option.id !== optionId));
+      setOptionsAndValidation(options.filter(option => option.id !== optionId));
     }
   };
 
-  const handleFocus = (optionId: string) => {
-    if (options) {
-      const option = options.find(option => option.id === optionId) as SelectOptionWithId;
-      setAutoCompleteCode(typeof option.labels[currentLocale] === 'undefined' || option.labels[currentLocale] === '');
+  const handleFocus = (optionId: string, enableAutoCompleteCode: boolean) => {
+    setSelectedOption(optionsToDisplay?.find(option => option.id === optionId));
+    if (enableAutoCompleteCode && optionsToDisplay) {
+      let option = options?.find(option => option.id === optionId) as SelectOptionWithId;
+      if (option === undefined) {
+        option = optionsToDisplay?.find(option => option.id === optionId) as SelectOptionWithId;
+      }
+      setAutoCompleteCode(typeof option.code === 'undefined' || option.code === '');
     }
   };
 
@@ -242,7 +258,7 @@ const ManageOptionsModal: React.FC<ManageOptionsModalProps> = ({onClose, attribu
     if (options) {
       onChange(
         options.slice(0, -1).map(option => {
-          const {id, violations, ...rest} = option;
+          const {id, ...rest} = option;
           return rest;
         })
       );
@@ -250,21 +266,21 @@ const ManageOptionsModal: React.FC<ManageOptionsModalProps> = ({onClose, attribu
     onClose();
   };
 
-  const canSave = options && options.every(option => option.violations?.length === 0);
+  const canSave = Object.keys(violations).length === 0;
 
   const LabelTranslations = (
     <>
       <SectionTitle title={translate('pim_common.label_translations')}>
         <SectionTitle.Title>{translate('pim_common.label_translations')}</SectionTitle.Title>
       </SectionTitle>
-      {selectedOption && selectedOptionId && (
+      {selectedOption && (
         <FieldsList>
           {!activatedLocales && <LoaderIcon />}
           {activatedLocales &&
             activatedLocales.map(locale => (
               <Field label={locale.label} key={locale.code} locale={locale.code}>
                 <TextInput
-                  onChange={label => handleLabelChange(selectedOptionId, locale.code, label)}
+                  onChange={label => handleLabelChange(selectedOption.id, locale.code, label)}
                   value={selectedOption.labels[locale.code] ?? ''}
                   maxLength={255}
                 />
@@ -274,10 +290,6 @@ const ManageOptionsModal: React.FC<ManageOptionsModalProps> = ({onClose, attribu
       )}
     </>
   );
-
-  const optionsToDisplay: SelectOptionWithId[] | null = options
-    ? filteredOptionIds.map(optionId => options.find(option => optionId === option.id))
-    : null;
 
   return (
     <Modal closeTitle={translate('pim_common.close')} onClose={onClose}>
@@ -302,25 +314,23 @@ const ManageOptionsModal: React.FC<ManageOptionsModalProps> = ({onClose, attribu
                 <Table.HeaderCell />
               </Table.Header>
               <Table.Body>
-                {options &&
-                  optionsToDisplay &&
+                {optionsToDisplay &&
                   optionsToDisplay.map((option: SelectOptionWithId, index) => (
                     <ManageOptionsRow
                       key={option.id}
-                      isSelected={option.id === selectedOptionId}
-                      onClick={() => setSelectedOptionId(option.id)}
+                      isSelected={option.id === selectedOption?.id}
                       isLastRow={index === optionsToDisplay.length - 1}>
                       <ManageOptionCell>
                         <CellFieldContainer>
                           <TextInput
                             onChange={label => handleLabelChange(option.id, currentLocale, label)}
-                            value={option.labels[currentLocale] || ''}
+                            defaultValue={option.labels[currentLocale] || ''}
                             placeholder={
                               index === optionsToDisplay.length - 1
                                 ? translate('pim_table_attribute.form.attribute.new_option_placeholder')
                                 : ''
                             }
-                            onFocus={() => handleFocus(option.id)}
+                            onFocus={() => handleFocus(option.id, true)}
                             onBlur={handleBlur}
                             maxLength={255}
                             data-testid={`label-${index}`}
@@ -330,16 +340,19 @@ const ManageOptionsModal: React.FC<ManageOptionsModalProps> = ({onClose, attribu
                       <ManageOptionCell>
                         <CellFieldContainer>
                           <TextInput
+                            ref={selectedOption?.id === option.id ? inputCodeRef : null}
                             onChange={code => handleCodeChange(option.id, code)}
-                            value={option.code}
+                            defaultValue={option.code}
                             maxLength={100}
+                            onFocus={() => handleFocus(option.id, false)}
                             data-testid={`code-${index}`}
                           />
-                          {(option.violations ?? []).map((violation, i) => (
-                            <Helper key={i} level='error' inline>
-                              {violation}
-                            </Helper>
-                          ))}
+                          {violations[option.id] &&
+                            violations[option.id].map((violation, i) => (
+                              <Helper key={i} level='error' inline>
+                                {violation}
+                              </Helper>
+                            ))}
                         </CellFieldContainer>
                       </ManageOptionCell>
                       <Table.ActionCell>
