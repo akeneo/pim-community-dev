@@ -21,8 +21,14 @@ class TableValue extends AbstractValue
 {
     public function isEqual(ValueInterface $value): bool
     {
-        // TODO implement
-        return false;
+        if (!$value->getData() instanceof Table) {
+            return false;
+        }
+
+        return $this->getScopeCode() === $value->getScopeCode() &&
+            $this->getLocaleCode() === $value->getLocaleCode() &&
+            $this->data->normalize() == $value->getData()->normalize();
+        // the non-strict comparison is not an error, we want to compare the table values regardless of the cells order
     }
 
     public function getData(): Table
@@ -32,7 +38,6 @@ class TableValue extends AbstractValue
 
     public function __toString(): string
     {
-        // TODO implement
-        return 'toto';
+        return \json_encode($this->data->normalize());
     }
 }

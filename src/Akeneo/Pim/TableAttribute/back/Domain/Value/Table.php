@@ -48,9 +48,11 @@ final class Table implements \IteratorAggregate
     {
         Assert::notEmpty($data);
         Assert::allIsArray($data);
-        return new self(array_map(
-            fn (array $row): Row => Row::fromNormalized($row),
-            $data
+        return new self(\array_values(
+            \array_map(
+                fn (array $row): Row => Row::fromNormalized($row),
+                $data
+            )
         ));
     }
 

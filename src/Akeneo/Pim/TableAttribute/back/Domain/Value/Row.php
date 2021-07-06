@@ -52,7 +52,7 @@ final class Row implements \IteratorAggregate
         return new self(
             array_map(
                 fn ($data): Cell => Cell::fromNormalized($data),
-                array_filter($row, $isCellFilled)
+                \array_filter($row, $isCellFilled)
             )
         );
     }
