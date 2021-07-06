@@ -150,6 +150,8 @@ legacy:
             contexts: *context
             paths:
                 - src/Akeneo/Connectivity/Connection/tests/features/
+            filters:
+                tags: '~@optional-marketplace-activate'
     extensions:
         Behat\ChainedStepsExtension: ~
         Behat\MinkExtension:

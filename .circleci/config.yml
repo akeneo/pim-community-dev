@@ -261,6 +261,36 @@ jobs:
       - store_artifacts:
           path: var/logs
 
+  marketplace_activate_e2e:
+    machine:
+      image: ubuntu-2004:202101-01
+    steps:
+      - attach_workspace:
+          at: ~/
+      - run:
+          name: Change owner on project dir in order to archive the project into the workspace
+          command: sudo chown -R 1000:1000 ../project
+      - run:
+          name: Start containers
+          command: |
+            docker load -i php-pim-image.tar
+            APP_ENV=behat C='fpm mysql elasticsearch httpd object-storage selenium pubsub-emulator' make up
+            docker/wait_docker_up.sh
+      - run:
+          name: Install database
+          command: APP_ENV=behat make database
+      - run:
+          name: End to end Behat tests
+          command: PIM_CONTEXT=test make connectivity-connection-activate-e2e
+      - store_test_results:
+          path: var/tests/behat
+      - store_artifacts:
+          path: var/tests/behat
+      - store_artifacts:
+          path: var/logs
+      - store_artifacts:
+          path: var/tests/screenshots
+
   test_back_behat_legacy:
     machine:
         image: ubuntu-2004:202101-01
@@ -746,6 +776,14 @@ workflows:
                 name: cypress_sanity_checks_ce
                 requires:
                   - build_dev_ce
+          - marketplace_activate_e2e?:
+                type: approval
+                requires:
+                  - build_dev_ce
+          - marketplace_activate_e2e:
+                name: marketplace_activate_e2e_ce
+                requires:
+                  - marketplace_activate_e2e?
           - test_back_static_and_acceptance:
                 name: test_back_static_and_acceptance_ce
                 requires:
