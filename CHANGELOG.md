@@ -83,6 +83,7 @@
 - PIM-9933: Fix delete category menu that stays displayed on screen
 - PIM-9949: Fix category edit page to use catalog locale
 - PIM-9950: Fix import product model fail instead of warning vs permission
+- PIM-9948: Fix performance issue on product model import
 
 ## New features
 
