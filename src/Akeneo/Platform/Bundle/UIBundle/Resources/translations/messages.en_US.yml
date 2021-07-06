@@ -481,9 +481,9 @@ pim_datagrid:
         completeness:
             label: Complete
         created:
-            label: Created At
+            label: Created
         updated:
-            label: Updated At
+            label: Updated
         label_or_identifier:
             label: Label or identifier
         parent:

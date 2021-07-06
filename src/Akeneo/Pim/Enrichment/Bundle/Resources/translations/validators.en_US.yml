@@ -52,6 +52,7 @@ The %attribute% attribute requires an e-mail address.: 'The %attribute% attribut
 'The %attribute% attribute requires an equal or lesser than %max_value% value.': 'The %attribute% attribute requires an equal or lesser than %max_value% value.'
 The %attribute_code% attribute requires a value per channel. The %channel% channel (scope) must exist in your PIM: 'The %attribute_code% attribute requires a value per channel. The %channel% channel (scope) must exist in your PIM'
 The %identifier% identifier is already used for another product.: 'The %identifier% identifier is already used for another product.'
+'Please specify a valid currency for the %attribute_code% attribute, the %currency_code% code was sent.': 'Please specify a valid currency for the %attribute_code% attribute, the %currency_code% code was sent.'
 pim_catalog:
     constraint:
         can_have_family_variant_empty_axis_value: 'Attribute "%attribute%" cannot be empty, as it is defined as an axis for this entity'

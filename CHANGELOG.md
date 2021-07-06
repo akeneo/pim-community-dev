@@ -81,6 +81,7 @@
 - PIM-9886: Fix display of completeness in the PEF when the selected locale is deactivated
 - PIM-9925: Fix roles that couldn't contain dashes in their codes 
 - PIM-9933: Fix delete category menu that stays displayed on screen
+- PIM-9949: Fix category edit page to use catalog locale
 
 ## New features
 

@@ -1,5 +1,20 @@
 # 5.0.x
 
+# 5.0.37 (2021-07-01)
+
+# 5.0.36 (2021-06-25)
+
+## Bug fixes
+
+- PIM-9931: [Backport] PIM-9678: The time counter is still running despite the job failed
+- PIM-9935: [Backport] PIM-9890: Creating Channels with numeric code breaks the PIM
+
+# 5.0.35 (2021-06-22)
+
+## Bug fixes
+
+- PIM-9921: Add a translation for the title of category creation form
+
 # 5.0.34 (2021-06-22)
 
 - PIM-9916: Fix value updating for text, simple select and date attribute used as product export filter not saved
