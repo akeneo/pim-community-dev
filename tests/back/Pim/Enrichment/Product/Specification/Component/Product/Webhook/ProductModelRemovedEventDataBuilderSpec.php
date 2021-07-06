@@ -12,6 +12,7 @@ use Akeneo\Pim\Enrichment\Product\Component\Product\Webhook\NotGrantedProductMod
 use Akeneo\Pim\Enrichment\Product\Component\Product\Webhook\ProductModelRemovedEventDataBuilder;
 use Akeneo\Platform\Component\EventQueue\Author;
 use Akeneo\Platform\Component\EventQueue\BulkEvent;
+use Akeneo\Platform\Component\Webhook\Context;
 use Akeneo\Platform\Component\Webhook\EventDataBuilderInterface;
 use Akeneo\Platform\Component\Webhook\EventDataCollection;
 use Akeneo\UserManagement\Component\Model\User;
@@ -38,7 +39,8 @@ class ProductModelRemovedEventDataBuilderSpec extends ObjectBehavior
         $this->shouldImplement(EventDataBuilderInterface::class);
     }
 
-    public function it_supports_the_same_business_events_as_decorated_service($baseProductModelRemovedEventDataBuilder
+    public function it_supports_the_same_business_events_as_decorated_service(
+        $baseProductModelRemovedEventDataBuilder
     ): void {
         $eventBlueJean = new ProductModelRemoved(Author::fromNameAndType('erp', 'ui'), $this->aBlueJeanProductModel());
         $eventBlueCam = new ProductModelRemoved(Author::fromNameAndType('erp', 'ui'), $this->aBlueCamProductModel());
@@ -56,7 +58,7 @@ class ProductModelRemovedEventDataBuilderSpec extends ObjectBehavior
     ): void {
         $user = new User();
         $user->setUsername('erp_1234');
-        $user->setId(1234);
+        $user->setId(10);
 
         $eventWithGrantedProductModel = new ProductModelRemoved(
             Author::fromNameAndType('erp', 'ui'),
@@ -74,6 +76,7 @@ class ProductModelRemovedEventDataBuilderSpec extends ObjectBehavior
                 $eventWithNonGrantedProductModel,
             ]
         );
+        $context = new Context('erp_1234', 10);
 
         $baseProductModelRemovedEventDataBuilder->supports($bulkEvent)->willReturn(true);
 
@@ -94,7 +97,7 @@ class ProductModelRemovedEventDataBuilderSpec extends ObjectBehavior
             new NotGrantedProductModelException($user->getUsername(), 'blue_cam')
         );
 
-        $actualCollection = $this->build($bulkEvent, $user);
+        $actualCollection = $this->build($bulkEvent, $context);
 
         Assert::assertEquals($expectedCollection, $actualCollection->getWrappedObject());
     }
@@ -102,7 +105,6 @@ class ProductModelRemovedEventDataBuilderSpec extends ObjectBehavior
     public function it_does_not_set_data_error_when_product_model_has_no_category(
         BaseProductModelRemovedEventDataBuilder $baseProductModelRemovedEventDataBuilder
     ): void {
-        $user = new User();
         $eventWithNonCategorizedProductModel = new ProductModelRemoved(
             Author::fromNameAndType('erp', 'ui'),
             [
@@ -115,7 +117,7 @@ class ProductModelRemovedEventDataBuilderSpec extends ObjectBehavior
         $bulkEvent = new BulkEvent([$eventWithNonCategorizedProductModel]);
         $baseProductModelRemovedEventDataBuilder->supports($bulkEvent)->willReturn(true);
 
-        $actualCollection = $this->build($bulkEvent, $user);
+        $actualCollection = $this->build($bulkEvent, new Context('erp_1234', 10));
         $actualCollection->getEventData($eventWithNonCategorizedProductModel)->shouldBe([
             'resource' => ['code' => $eventWithNonCategorizedProductModel->getCode()],
         ]);
@@ -123,9 +125,6 @@ class ProductModelRemovedEventDataBuilderSpec extends ObjectBehavior
 
     public function it_throws_an_error_if_an_event_is_not_supported($baseProductModelRemovedEventDataBuilder): void
     {
-        $user = new User();
-        $user->setUsername('erp_1234');
-
         $supportedEvent = new ProductRemoved(
             Author::fromNameAndType('erp', 'ui'),
             $this->aBlueJeanProductModel()
@@ -147,7 +146,7 @@ class ProductModelRemovedEventDataBuilderSpec extends ObjectBehavior
 
         $this
             ->shouldThrow(\InvalidArgumentException::class)
-            ->during('build', [$bulkEvent, $user]);
+            ->during('build', [$bulkEvent, new Context('erp_1234', 10)]);
     }
 
     private function aBlueJeanProductModel(): array
