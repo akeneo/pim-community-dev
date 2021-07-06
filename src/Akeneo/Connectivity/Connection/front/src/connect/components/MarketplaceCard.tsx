@@ -18,6 +18,7 @@ const CardContainer = styled.div`
     display: grid;
     gap: 20px 20px;
     grid-template-columns: 100px 1fr 50px;
+    grid-template-rows: 1fr 50px;
     grid-template-areas:
         'logo text text'
         'actions actions certified';
