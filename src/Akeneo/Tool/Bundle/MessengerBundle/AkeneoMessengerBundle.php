@@ -2,6 +2,8 @@
 
 namespace Akeneo\Tool\Bundle\MessengerBundle;
 
+use Akeneo\Tool\Bundle\MessengerBundle\DependencyInjection\Compiler\QueryBusPass;
+use Symfony\Component\DependencyInjection\ContainerBuilder;
 use Symfony\Component\HttpKernel\Bundle\Bundle;
 
 /**
@@ -10,4 +12,8 @@ use Symfony\Component\HttpKernel\Bundle\Bundle;
  */
 class AkeneoMessengerBundle extends Bundle
 {
+    public function build(ContainerBuilder $container)
+    {
+        $container->addCompilerPass(new QueryBusPass());
+    }
 }

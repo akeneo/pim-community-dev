@@ -12,6 +12,7 @@ use Akeneo\Connectivity\Connection\Domain\Webhook\Client\WebhookRequest;
 use Akeneo\Connectivity\Connection\Domain\Webhook\Exception\WebhookEventDataBuilderNotFoundException;
 use Akeneo\Connectivity\Connection\Domain\Webhook\Model\Read\ActiveWebhook;
 use Akeneo\Connectivity\Connection\Domain\Webhook\Persistence\Query\SelectActiveWebhooksQuery;
+use Akeneo\UserManagement\Bundle\PublicApi\Query\GetUserById\GetUserByIdQueryTrait;
 use Akeneo\Platform\Component\EventQueue\BulkEvent;
 use Akeneo\Platform\Component\EventQueue\BulkEventInterface;
 use Akeneo\Platform\Component\EventQueue\EventInterface;
@@ -24,6 +25,8 @@ use Psr\Log\LoggerInterface;
  */
 class SendBusinessEventToWebhooksHandler
 {
+    use GetUserByIdQueryTrait;
+
     private SelectActiveWebhooksQuery $selectActiveWebhooksQuery;
     private WebhookUserAuthenticator $webhookUserAuthenticator;
     private WebhookClient $client;
@@ -62,7 +65,9 @@ class SendBusinessEventToWebhooksHandler
 
         $requests = function () use ($pimEventBulk, $webhooks) {
             foreach ($webhooks as $webhook) {
-                $user = $this->webhookUserAuthenticator->authenticate($webhook->userId());
+                $this->webhookUserAuthenticator->authenticate($webhook->userId());
+
+                $user = $this->getUserById($webhook->userId());
 
                 $filteredPimEventBulk = $this->filterConnectionOwnEvents($webhook, $user->getUsername(), $pimEventBulk);
                 if (null === $filteredPimEventBulk) {
