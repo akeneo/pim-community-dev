@@ -14,6 +14,9 @@ use Psr\Http\Message\ResponseInterface;
  */
 class APIClient
 {
+    public const URI_CONNECT = '/auth/realms/connect/protocol/openid-connect/token';
+    public const URI_INVITE_USER = '/api/v1/console/trial/invite';
+
     private string $clientId;
 
     private string $clientSecret;
@@ -21,8 +24,6 @@ class APIClient
     private string $userName;
 
     private string $password;
-
-    private string $token;
 
     private ClientInterface $httpClient;
 
@@ -48,7 +49,7 @@ class APIClient
     {
         $token = $this->connect();
 
-        return $this->httpClient->request('POST', '/api/v1/console/trial/invite', [
+        return $this->httpClient->request('POST', self::URI_INVITE_USER, [
             'headers' => [
                 'Content-type' => 'application/json',
                 'Authorization' => sprintf('Bearer %s', $token),
@@ -71,7 +72,7 @@ class APIClient
             'client_id' => $this->clientId,
         ];
 
-        $response = $this->httpClient->request('POST', '/auth/realms/connect/protocol/openid-connect/token', [
+        $response = $this->httpClient->request('POST', self::URI_CONNECT, [
             'headers' => [
                 'Content-type' => 'application/x-www-form-urlencoded',
             ],
