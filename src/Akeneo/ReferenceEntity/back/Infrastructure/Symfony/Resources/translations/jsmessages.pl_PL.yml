@@ -42,7 +42,7 @@ pim_reference_entity:
       permission: Uprawnienia
     properties:
       title: Właściwości obiektu
-      identifier: Pod Produktu
+      identifier: Kod
       label: Etykieta
       image: Zdjęcie
     attribute:
@@ -150,7 +150,7 @@ pim_reference_entity:
         subtitle: "Aby zobaczyć produkty tutaj, zacznij łączyć je z tym atrybutem"
     enrich:
       title: Atrybuty rekordu
-      code: Pod Produktu
+      code: Kod
       label: Etykieta
     title: Rekordy
     create:
@@ -180,7 +180,7 @@ pim_reference_entity:
           operator:
             in: Na liście
       column:
-        code: Pod Produktu
+        code: Kod
         image: Zdjęcie
         label: Etykieta
         complete: Kompletny
@@ -216,7 +216,7 @@ pim_reference_entity:
     validation:
       limit_reached: 'Nie można utworzyć atrybutu "{{ %attribute_label% }}", ponieważ osiągnięto limit {{ %limit% }} atrybutów dla tego obiektu referencyjnego'
     default:
-      code: Pod Produktu
+      code: Kod
       label: Etykieta
       image: Zdjęcie
     type:
