@@ -132,18 +132,18 @@ pim_import_export:
             help: 제품 기록이 자동으로 업데이트됩니다. 자동 업데이트를 해제하면 성능이 향상됩니다.
           convert_variant_to_simple:
             title: 변형 제품을 단일 제품으로 변환
-            help: '''상위'' 열이 비어 있을 경우 변형 제품을 단일 제품으로 변환합니다. ''아니요''로 설정하면 빈 ''상위'' 열이 무시됩니다'
+            help: '''상위'' 열이 비어 있을 경우 변형 제품을 단일 제품으로 변환합니다. ''아니요''로 설정하면 빈 ''상위'' 열이 무시됩니다.'
           family_variant_column:
             title: 패밀리 변형 열
           with_label:
             title: 라벨 부착
-            help: 내보낸 파일에서 값의 코드 대신 레이블을 표시할지 정의합니다
+            help: 내보낸 파일에서 값의 코드 대신 레이블을 표시할지 여부를 정의합니다.
           header_with_label:
             title: 레이블이 있는 헤더
-            help: 내보낸 파일에서 헤더의 코드 대신 레이블을 표시할지 정의합니다
+            help: 내보낸 파일에서 헤더의 코드 대신 레이블을 표시할지 여부를 정의합니다.
           file_locale:
             title: 파일 로케일
-            help: 레이블이 표시될 로케일을 정의합니다
+            help: 레이블을 표시할 로케일을 정의합니다.
       file_path: 파일 경로
   widget:
     last_operations:
@@ -183,7 +183,7 @@ pim_import_export:
     ABANDONED: 중단됨
     UNKNOWN: 알 수 없음
   tracking:
-    completed: "소요된 시간: {{ duration }}"
+    completed: "경과 시간: {{ duration }}"
     in_progress: "남은 예상 시간: {{ duration }}"
     not_started: "보류 중"
     untrackable: 추적 불가능한 단계

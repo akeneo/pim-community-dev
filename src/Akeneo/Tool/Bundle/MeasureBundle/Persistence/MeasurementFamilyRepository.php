@@ -84,7 +84,7 @@ SQL;
             );
         }
 
-        $this->allMeasurementFamiliesCache = $this->all();
+        $this->all();
         $this->allMeasurementFamiliesCache[$normalizedMeasurementFamily['code']] = $measurementFamily;
         $this->measurementFamilyCache[$normalizedMeasurementFamily['code']] = $measurementFamily;
     }

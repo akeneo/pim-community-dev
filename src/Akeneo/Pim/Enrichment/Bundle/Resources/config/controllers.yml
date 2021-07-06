@@ -370,4 +370,5 @@ services:
         - '@pim_catalog.repository.product_model'
         - '@pim_api.updater.product_model'
         - '@pim_catalog.saver.product_model'
+        - '@event_dispatcher'
         - '%pim_api.configuration%'

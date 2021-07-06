@@ -29,17 +29,28 @@ class CategoryTreeController
     public function __invoke(Request $request): JsonResponse
     {
         $selectedCategoryCodes = $this->categoryCodes($request);
-        $normalizedCategoryTrees = $this->normalizedCategoryTreesWithSelectedCount($selectedCategoryCodes);
+        $shouldIncludeChildren = $this->shouldIncludeChildren($request);
+        $normalizedCategoryTrees = $this->normalizedCategoryTreesWithSelectedCount($selectedCategoryCodes, $shouldIncludeChildren);
 
         return new JsonResponse($normalizedCategoryTrees);
+    }
+
+    private function categoryCodes(Request $request): array
+    {
+        return json_decode($request->getContent(), true)['selectedCategoryCodes'] ?? [];
+    }
+
+    private function shouldIncludeChildren(Request $request): bool
+    {
+        return json_decode($request->getContent(), true)['shouldIncludeChildren'] ?? [];
     }
 
     /**
      * @param string[] $selectedCategoryCodes
      */
-    private function normalizedCategoryTreesWithSelectedCount(array $selectedCategoryCodes): array
+    private function normalizedCategoryTreesWithSelectedCount(array $selectedCategoryCodes, bool $shouldIncludeChildren): array
     {
-        $selectedCategoryCountPerTree = $this->countCategoriesPerTree->executeWithoutChildren($selectedCategoryCodes);
+        $selectedCategoryCountPerTree = $this->findCategoryCountPerTree($selectedCategoryCodes, $shouldIncludeChildren);
         return array_map(
             static function (CategoryTree $categoryTree) use ($selectedCategoryCountPerTree) {
                 $result = $categoryTree->normalize();
@@ -51,8 +62,10 @@ class CategoryTreeController
         );
     }
 
-    private function categoryCodes(Request $request): array
+    private function findCategoryCountPerTree(array $selectedCategoryCodes, bool $shouldIncludeChildren): array
     {
-        return json_decode($request->getContent(), true) ?? [];
+        return $shouldIncludeChildren ?
+            $this->countCategoriesPerTree->executeWithChildren($selectedCategoryCodes)
+            : $this->countCategoriesPerTree->executeWithoutChildren($selectedCategoryCodes);
     }
 }

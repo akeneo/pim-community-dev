@@ -80,7 +80,7 @@ Feature: Import media with products
     And I wait for the "csv_footwear_product_import" job to finish
     Then there should be 0 products
     And I should see the text "skipped 2"
-    And I should see the text "values[frontView].data: The file extension is not allowed (allowed extensions: gif, jpg)"
+    And I should see the text "values[frontView].data: The txt file extension is not allowed for the frontView attribute. Allowed extensions are gif, jpg."
     And I should see the text "values[userManual].data: The file sneakers-manual.txt is too large (3.15 MB). The userManual attribute can not exceed 1 MB."
 
   Scenario: Import several times the same media

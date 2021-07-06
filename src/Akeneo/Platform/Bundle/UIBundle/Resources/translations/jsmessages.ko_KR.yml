@@ -1,10 +1,10 @@
 #ORO messages
-"Yes, I Agree": "예, 동의합니다"
-"Yes, do it": "예, 수행합니다"
-"Ok, got it.": "예, 알겠습니다"
+"Yes, I Agree": "예, 동의합니다."
+"Yes, do it": "예, 수행합니다."
+"Ok, got it.": "예, 알겠습니다."
 "Edit": "편집"
 "Unexpected error occurred. Please contact system administrator.": "예기치 않은 오류가 발생했습니다. 시스템 관리자에게 문의하십시오."
-"Yes, revoke": "예, 취소합니다"
+"Yes, revoke": "예, 취소합니다."
 "Revoke Confirmation": "취소 확인"
 Prev: 이전
 Today: 오늘
@@ -119,7 +119,7 @@ pim_ui:
     unsaved_changes: '저장되지 않은 변경 사항이 있습니다. 그래도 나가시겠습니까?'
 "Sorry, page was not loaded correctly": "죄송합니다. 페이지가 제대로 로드되지 않았습니다."
 "Your local changes will be lost. Are you sure you want to refresh the page?": "로컬 변경 사항이 손실됩니다. 페이지를 새로 고치시겠습니까?"
-"navigation.message.content.outdated": "{{ title }} 페이지의 콘텐츠가 오래되었습니다. <a href='#' data-action='page-refresh'>페이지를 새로 고치십시오</a>"
+"navigation.message.content.outdated": "{{ title }} 페이지의 콘텐츠가 오래되었습니다. <a href=\"#' data-action=\"page-refresh\">페이지를 새로 고치십시오.</a>"
 "Content of pinned page is outdated": "고정된 페이지의 콘텐츠가 오래되었습니다."
 #Global structure of translation files
 #pim_bundle_name:
@@ -194,7 +194,7 @@ pim_common:
   now: 지금
   ok: 확인
   open: 열기
-  no_result: 결과가 없습니다
+  no_result: 결과를 찾을 수 없습니다.
   other_actions: 기타 작업
   permissions: 권한
   previous: 이전
@@ -243,13 +243,13 @@ error:
   forbidden: 금지되었습니다. 이 페이지에 액세스할 권한이 없습니다.
 alert:
   attribute_option:
-    error_occurred_during_submission: 서버에서 양식 제출 중에 오류가 발생했습니다
-    save_before_edit_other: 이 내용을 편집하기 전에 다른 행의 수정 사항을 등록하십시오
+    error_occurred_during_submission: 서버에서 양식 제출 중에 오류가 발생했습니다.
+    save_before_edit_other: 이 내용을 편집하기 전에 다른 행의 수정 사항을 등록하십시오.
   session_storage:
     not_available: 해당 웹 브라우저는 sessionStorage와 호환되지 않는 것 같습니다. 관리자에게 문의하십시오.
 pim_enrich.entity.fallback:
   flash:
-    generic_error: 오류가 발생했습니다
+    generic_error: 오류가 발생했습니다.
     update:
       fail: 업데이트 실패
       success: 업데이트 성공
@@ -372,15 +372,15 @@ pim_settings:
   catalog_settings: 카탈로그 설정
   product_settings: 제품 설정
   count:
-    categories: '{{ countTrees }}개의 트리와 {{ countCategories }}개의 카테고리가 있습니다'
-    channels: '{{ count }}개의 채널이 있습니다'
-    locales: '{{ count }}개의 활성화된 로케일이 있습니다'
-    currencies: '{{ count }}개의 활성화된 통화가 있습니다'
-    attribute_groups: '{{ count }}개의 특성 그룹이 있습니다'
-    attributes: '{{ count }}개의 특성이 있습니다'
-    families: '{{ count }}개의 패밀리가 있습니다'
-    measurements: '{{ count }}개의 측정이 있습니다'
-    association_types: '{{ count }}개의 연결 유형이 있습니다'
-    group_types: '{{ count }}개의 그룹 유형이 있습니다'
-    groups: '{{ count }}개의 그룹이 있습니다'
-    rules: '{{ count }}개의 활성화된 규칙이 있습니다'
+    categories: '{{ countTrees }}개의 트리와 {{ countCategories }}개의 카테고리가 있습니다.'
+    channels: '{{ count }}개의 채널이 있습니다.'
+    locales: '{{ count }}개의 활성화된 로케일이 있습니다.'
+    currencies: '{{ count }}개의 활성화된 통화가 있습니다.'
+    attribute_groups: '{{ count }}개의 특성 그룹이 있습니다.'
+    attributes: '{{ count }}개의 특성이 있습니다.'
+    families: '{{ count }}개의 패밀리가 있습니다.'
+    measurements: '{{ count }}개의 측정이 있습니다.'
+    association_types: '{{ count }}개의 연결 유형이 있습니다.'
+    group_types: '{{ count }}개의 그룹 유형이 있습니다.'
+    groups: '{{ count }}개의 그룹이 있습니다.'
+    rules: '{{ count }}개의 활성화된 규칙이 있습니다.'
