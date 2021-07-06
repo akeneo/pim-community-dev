@@ -452,9 +452,9 @@ pim_datagrid:
     completeness:
       label: 완료
     created:
-      label: 생성 일자
+      label: 생성됨
     updated:
-      label: 업데이트
+      label: 업데이트됨
     label_or_identifier:
       label: 레이블 또는 식별자
     parent:
