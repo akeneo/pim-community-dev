@@ -41,6 +41,9 @@ const PriceCollectionSelector = ({selection, validationErrors, onSelectionChange
             {translate('akeneo.tailored_export.column_details.sources.selection.type.currency')}
           </SelectInput.Option>
         </SelectInput>
+        <Helper inline={true} level="info">
+          {translate('akeneo.tailored_export.column_details.sources.selection.price.information')}
+        </Helper>
         {typeErrors.map((error, index) => (
           <Helper key={index} inline={true} level="error">
             {translate(error.messageTemplate, error.parameters)}

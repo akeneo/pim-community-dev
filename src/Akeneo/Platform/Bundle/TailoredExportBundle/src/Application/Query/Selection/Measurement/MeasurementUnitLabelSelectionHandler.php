@@ -44,7 +44,7 @@ class MeasurementUnitLabelSelectionHandler implements SelectionHandlerInterface
         }
 
         $unitTranslations = $this->getUnitTranslations->byMeasurementFamilyCodeAndLocale(
-            $selection->getMetricFamily(),
+            $selection->getMeasurementFamily(),
             $selection->getLocale()
         );
 

@@ -361,11 +361,8 @@ test('We can delete a source', async () => {
     );
   });
 
-  const removeButton = screen.getByText('akeneo.tailored_export.column_details.sources.remove.button');
-  userEvent.click(removeButton);
-
-  const confirmButton = screen.getByText('pim_common.delete');
-  userEvent.click(confirmButton);
+  userEvent.click(screen.getByText('akeneo.tailored_export.column_details.sources.remove.button'));
+  userEvent.click(screen.getByText('pim_common.remove'));
 
   expect(handleColumnsConfigurationChange).toHaveBeenCalledWith({
     uuid: '3a6645e0-0d70-411d-84ee-79833144544a',

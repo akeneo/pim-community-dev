@@ -47,6 +47,9 @@ const FileSelector = ({selection, validationErrors, onSelectionChange}: FileSele
             {translate('akeneo.tailored_export.column_details.sources.selection.type.name')}
           </SelectInput.Option>
         </SelectInput>
+        <Helper inline={true} level="info">
+          {translate('akeneo.tailored_export.column_details.sources.selection.file.information')}
+        </Helper>
         {typeErrors.map((error, index) => (
           <Helper key={index} inline={true} level="error">
             {translate(error.messageTemplate, error.parameters)}

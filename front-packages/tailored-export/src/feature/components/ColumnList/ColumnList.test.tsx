@@ -110,11 +110,8 @@ test('it can remove a column', async () => {
     />
   );
 
-  const removeButton = screen.getByTitle('akeneo.tailored_export.column_list.column_row.remove');
-  fireEvent.click(removeButton);
-
-  const confirmButton = screen.getByText('pim_common.delete');
-  fireEvent.click(confirmButton);
+  fireEvent.click(screen.getByTitle('akeneo.tailored_export.column_list.column_row.remove'));
+  fireEvent.click(screen.getByText('pim_common.confirm'));
 
   expect(handleRemove).toBeCalled();
 });

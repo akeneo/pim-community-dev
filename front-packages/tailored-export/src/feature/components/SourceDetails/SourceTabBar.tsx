@@ -12,7 +12,7 @@ type SourceTabBarProps = {
 
 const SourceTabBar = ({sources, currentTab, onTabChange}: SourceTabBarProps) => {
   const translate = useTranslate();
-  const userContext = useUserContext();
+  const catalogLocale = useUserContext().get('catalogLocale');
   const attributeCodes = useMemo(() => sources.map(source => source.code), [sources]);
   const attributes = useAttributes(attributeCodes);
 
@@ -20,10 +20,10 @@ const SourceTabBar = ({sources, currentTab, onTabChange}: SourceTabBarProps) => 
     <TabBar moreButtonTitle={translate('pim_common.more')} sticky={44}>
       {sources.map(source => (
         <TabBar.Tab key={source.uuid} isActive={currentTab === source.uuid} onClick={() => onTabChange(source.uuid)}>
-          {source.type === 'attribute'
+          {'attribute' === source.type
             ? getLabel(
                 attributes.find(attribute => attribute.code === source.code)?.labels ?? {},
-                userContext.get('catalogLocale'),
+                catalogLocale,
                 source.code
               )
             : translate(`pim_common.${source.code}`)}

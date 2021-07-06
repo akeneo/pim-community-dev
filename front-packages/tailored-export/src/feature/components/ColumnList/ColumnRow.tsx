@@ -129,6 +129,7 @@ const ColumnRow = forwardRef<HTMLInputElement, ColumnRowProps>(
         {isDeleteModalOpen && (
           <DeleteModal
             title={translate('akeneo.tailored_export.column_list.title')}
+            confirmButtonLabel={translate('pim_common.confirm')}
             onConfirm={handleConfirmColumnRemove}
             onCancel={closeDeleteModal}
           >

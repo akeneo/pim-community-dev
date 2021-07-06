@@ -22,9 +22,9 @@ class MeasurementUnitLabelSelectionSpec extends ObjectBehavior
         $this->beConstructedWith('weight', 'en_US');
     }
 
-    public function it_returns_the_metric_family()
+    public function it_returns_the_measurement_family()
     {
-        $this->getSeparator()->shouldReturn('weight');
+        $this->getMeasurementFamily()->shouldReturn('weight');
     }
 
     public function it_returns_the_locale()

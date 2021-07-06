@@ -222,11 +222,8 @@ test('It delete column when user click on delete button', async () => {
     />
   );
 
-  const removeButton = screen.getByTitle('akeneo.tailored_export.column_list.column_row.remove');
-  userEvent.click(removeButton);
-
-  const confirmButton = screen.getByText('pim_common.delete');
-  userEvent.click(confirmButton);
+  userEvent.click(screen.getByTitle('akeneo.tailored_export.column_list.column_row.remove'));
+  userEvent.click(screen.getByText('pim_common.confirm'));
 
   expect(handleColumnsConfigurationChange).toHaveBeenCalledWith([]);
 });

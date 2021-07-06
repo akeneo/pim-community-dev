@@ -154,6 +154,7 @@ extensions:
         parent: pim-job-instance-xlsx-tailored-product-export-edit-filter-the-data
         targetZone: data-filters
         config:
+            sectionTitle: akeneo.tailored_export.form.job_instance.tab.filters.title
             filters:
                 -
                     field: family

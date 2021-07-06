@@ -14,11 +14,14 @@ declare(strict_types=1);
 namespace Specification\Akeneo\Platform\TailoredExport\Infrastructure\Connector\Processor;
 
 use Akeneo\Pim\Enrichment\Component\Product\Model\ProductInterface;
-use Akeneo\Pim\Enrichment\Component\Product\Model\ValueInterface;
 use Akeneo\Pim\Structure\Component\Query\PublicApi\AttributeType\Attribute;
 use Akeneo\Pim\Structure\Component\Query\PublicApi\AttributeType\GetAttributes;
-use Akeneo\Platform\TailoredExport\Infrastructure\Connector\Processor\AttributeSelector\AttributeSelectorRegistry;
-use Akeneo\Platform\TailoredExport\Infrastructure\Connector\Processor\PropertySelector\PropertySelectorRegistry;
+use Akeneo\Platform\TailoredExport\Application\ProductMapper;
+use Akeneo\Platform\TailoredExport\Application\Query\Column\ColumnCollection;
+use Akeneo\Platform\TailoredExport\Domain\SourceValue\StringValue;
+use Akeneo\Platform\TailoredExport\Domain\ValueCollection;
+use Akeneo\Platform\TailoredExport\Infrastructure\Hydrator\ColumnCollectionHydrator;
+use Akeneo\Platform\TailoredExport\Infrastructure\Hydrator\ValueCollectionHydrator;
 use Akeneo\Tool\Component\Batch\Job\JobParameters;
 use Akeneo\Tool\Component\Batch\Model\StepExecution;
 use PhpSpec\ObjectBehavior;
@@ -28,14 +31,16 @@ class ProductExportProcessorSpec extends ObjectBehavior
     function let(
         StepExecution $stepExecution,
         JobParameters $jobParameters,
-        AttributeSelectorRegistry $attributeSelectorRegistry,
-        PropertySelectorRegistry $propertySelectorRegistry,
-        GetAttributes $getAttributes
+        GetAttributes $getAttributes,
+        ValueCollectionHydrator $valueCollectionHydrator,
+        ColumnCollectionHydrator $columnCollectionHydrator,
+        ProductMapper $productMapper
     ) {
         $this->beConstructedWith(
-            $attributeSelectorRegistry,
-            $propertySelectorRegistry,
-            $getAttributes
+            $getAttributes,
+            $valueCollectionHydrator,
+            $columnCollectionHydrator,
+            $productMapper
         );
         $this->setStepExecution($stepExecution);
 
@@ -45,13 +50,13 @@ class ProductExportProcessorSpec extends ObjectBehavior
     public function it_processes_product(
         ProductInterface $product,
         JobParameters $jobParameters,
-        ValueInterface $nameValue,
         GetAttributes $getAttributes,
-        AttributeSelectorRegistry $attributeSelectorRegistry,
-        PropertySelectorRegistry $propertySelectorRegistry
+        ValueCollectionHydrator $valueCollectionHydrator,
+        ColumnCollectionHydrator $columnCollectionHydrator,
+        ColumnCollection $columnCollection,
+        ProductMapper $productMapper
     ) {
-        $name = $this->createAttribute('name');
-        $jobParameters->get('columns')->willReturn([
+        $columns = [
             [
                 'target' => 'categories-export',
                 'sources' => [
@@ -80,24 +85,23 @@ class ProductExportProcessorSpec extends ObjectBehavior
                     ],
                 ],
             ],
-        ]);
+        ];
 
-        $product->getValue('name', null, null)->willReturn($nameValue);
-        $getAttributes->forCode('name')->willReturn($name);
-        $attributeSelectorRegistry
-            ->applyAttributeSelection(['type' => 'code'], $product, $name, $nameValue)
-            ->willReturn('name value');
+        $name = $this->createAttribute('name');
+        $valueCollection = new ValueCollection();
+        $valueCollection->add(new StringValue('some_data'), 'name', null, null);
+        $mappedProduct = [
+            'categories-export' => 'my category',
+            'name-export' => 'name value',
+        ];
 
-        $propertySelectorRegistry
-            ->applyPropertySelection(['type' => 'code'], $product, 'categories')
-            ->willReturn('my category');
+        $jobParameters->get('columns')->willReturn($columns);
+        $getAttributes->forCodes(['name'])->willReturn(['name' => $name]);
+        $columnCollectionHydrator->hydrate($columns, ['name' => $name])->willReturn($columnCollection);
+        $valueCollectionHydrator->hydrate($product, $columnCollection)->willReturn($valueCollection);
+        $productMapper->map($columnCollection, $valueCollection)->willReturn($mappedProduct);
 
-        $this->process($product)->shouldReturn(
-            [
-                'categories-export' => 'my category',
-                'name-export' => 'name value',
-            ]
-        );
+        $this->process($product)->shouldReturn($mappedProduct);
     }
 
     private function createAttribute(string $code): Attribute

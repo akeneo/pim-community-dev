@@ -77,6 +77,9 @@ const CodeLabelCollectionSelector = ({
             {translate('pim_common.code')}
           </SelectInput.Option>
         </SelectInput>
+        <Helper inline={true} level="info">
+          {translate('akeneo.tailored_export.column_details.sources.selection.code_label.information')}
+        </Helper>
         {typeErrors.map((error, index) => (
           <Helper key={index} inline={true} level="error">
             {translate(error.messageTemplate, error.parameters)}

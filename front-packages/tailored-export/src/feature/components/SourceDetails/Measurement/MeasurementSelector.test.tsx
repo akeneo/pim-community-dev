@@ -54,55 +54,52 @@ const fetchers = {
 const renderWithProviders = async (node: ReactNode) =>
   await act(async () => void baseRender(<FetcherContext.Provider value={fetchers}>{node}</FetcherContext.Provider>));
 
-test('it displays a type dropdown when the selection type is code', async () => {
+test('it displays a type dropdown when the selection type is unit_code', async () => {
   const onSelectionChange = jest.fn();
 
   await renderWithProviders(
-    <MeasurementSelector selection={{type: 'code'}} validationErrors={[]} onSelectionChange={onSelectionChange} />
+    <MeasurementSelector selection={{type: 'unit_code'}} validationErrors={[]} onSelectionChange={onSelectionChange} />
   );
 
   expect(screen.getByText('pim_common.type')).toBeInTheDocument();
   expect(screen.getByText('pim_common.code')).toBeInTheDocument();
 });
 
-test('it displays a locale dropdown when the selection type is label', async () => {
+test('it displays a locale dropdown when the selection type is unit_label', async () => {
   const onSelectionChange = jest.fn();
 
   await renderWithProviders(
     <MeasurementSelector
-      selection={{type: 'label', locale: 'en_US'}}
+      selection={{type: 'unit_label', locale: 'en_US'}}
       validationErrors={[]}
       onSelectionChange={onSelectionChange}
     />
   );
 
-  expect(screen.getByText('pim_common.type')).toBeInTheDocument();
-  expect(screen.getByText('pim_common.locale')).toBeInTheDocument();
-
-  userEvent.click(screen.getByLabelText('pim_common.locale'));
+  userEvent.click(screen.getByLabelText('akeneo.tailored_export.column_details.sources.selection.type.unit_locale'));
   userEvent.click(screen.getByText('fr_FR'));
 
-  expect(onSelectionChange).toHaveBeenCalledWith({type: 'label', locale: 'fr_FR'});
+  expect(onSelectionChange).toHaveBeenCalledWith({type: 'unit_label', locale: 'fr_FR'});
 });
 
-test('it can select a label selection type', async () => {
+test('it can select a unit_label selection type', async () => {
   const onSelectionChange = jest.fn();
 
   await renderWithProviders(
-    <MeasurementSelector selection={{type: 'code'}} validationErrors={[]} onSelectionChange={onSelectionChange} />
+    <MeasurementSelector selection={{type: 'unit_code'}} validationErrors={[]} onSelectionChange={onSelectionChange} />
   );
 
   userEvent.click(screen.getByText('pim_common.type'));
   userEvent.click(screen.getByTitle('pim_common.label'));
 
-  expect(onSelectionChange).toHaveBeenCalledWith({type: 'label', locale: 'en_US'});
+  expect(onSelectionChange).toHaveBeenCalledWith({type: 'unit_label', locale: 'en_US'});
 });
 
 test('it can select an amount selection type', async () => {
   const onSelectionChange = jest.fn();
 
   await renderWithProviders(
-    <MeasurementSelector selection={{type: 'code'}} validationErrors={[]} onSelectionChange={onSelectionChange} />
+    <MeasurementSelector selection={{type: 'unit_code'}} validationErrors={[]} onSelectionChange={onSelectionChange} />
   );
 
   userEvent.click(screen.getByText('pim_common.type'));
@@ -116,7 +113,7 @@ test('it can select a code selection type', async () => {
 
   await renderWithProviders(
     <MeasurementSelector
-      selection={{type: 'label', locale: 'en_US'}}
+      selection={{type: 'unit_label', locale: 'en_US'}}
       validationErrors={[]}
       onSelectionChange={onSelectionChange}
     />
@@ -125,7 +122,7 @@ test('it can select a code selection type', async () => {
   userEvent.click(screen.getByText('pim_common.type'));
   userEvent.click(screen.getByTitle('pim_common.code'));
 
-  expect(onSelectionChange).toHaveBeenCalledWith({type: 'code'});
+  expect(onSelectionChange).toHaveBeenCalledWith({type: 'unit_code'});
 });
 
 test('it displays validation errors', async () => {
@@ -150,7 +147,7 @@ test('it displays validation errors', async () => {
   await renderWithProviders(
     <MeasurementSelector
       validationErrors={validationErrors}
-      selection={{type: 'label', locale: 'en_US'}}
+      selection={{type: 'unit_label', locale: 'en_US'}}
       onSelectionChange={onSelectionChange}
     />
   );

@@ -36,6 +36,7 @@ const SourceFooter = ({source, onSourceRemove}: SourceFooterProps) => {
       {isOpen && (
         <DeleteModal
           title={translate('akeneo.tailored_export.column_details.sources.remove.title')}
+          confirmButtonLabel={translate('pim_common.remove')}
           onConfirm={handleConfirm}
           onCancel={close}
         >

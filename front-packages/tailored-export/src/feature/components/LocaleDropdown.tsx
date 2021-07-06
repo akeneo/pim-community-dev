@@ -9,6 +9,7 @@ import {
 } from '@akeneo-pim-community/shared';
 
 type LocaleDropdownProps = {
+  label?: string;
   value: LocaleCode;
   locales: LocaleModel[];
   validationErrors: ValidationError[];
@@ -17,11 +18,11 @@ type LocaleDropdownProps = {
   children?: ReactElement<HelperProps> | null | false;
 };
 
-const LocaleDropdown = ({value, locales, onChange, validationErrors, children = null}: LocaleDropdownProps) => {
+const LocaleDropdown = ({label, value, locales, onChange, validationErrors, children = null}: LocaleDropdownProps) => {
   const translate = useTranslate();
 
   return (
-    <Field label={translate('pim_common.locale')}>
+    <Field label={label ?? translate('pim_common.locale')}>
       <SelectInput
         clearable={false}
         emptyResultLabel={translate('pim_common.no_result')}
