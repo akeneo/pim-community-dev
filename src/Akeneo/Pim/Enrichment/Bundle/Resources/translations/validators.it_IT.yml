@@ -52,7 +52,6 @@ pim_catalog:
     attribute_does_not_belong_to_family: 'L''attributo "%attribute%" non appartiene alla famiglia "%family%"'
     variant_product_invalid_family: 'La famiglia variante del prodotto deve essere la stessa del proprio genitore'
     php_int_max_reached: 'Il numero massimo deve essere inferiore a %php_int_max%.'
-    not_null_family: La famiglia non può essere "null" perché il prodotto con identificativo "%sku%" è un prodotto variante.
     variant_product_has_parent: 'Il prodotto variante "%variant_product%" deve avere un genitore'
     invalid_variant_product_parent: 'Il prodotto variante "%variant_product%" non può avere come genitore il modello di prodotto "%product_model%", (questo modello di prodotto può avere solo altri modelli di prodotto come figli)'
     modified_variant_axis_value: 'L''asse variante "%variant_axis%" non può essere modificato, dato "%provided_value%"'
@@ -93,7 +92,6 @@ pim_catalog:
     301: In questo campo sono previsti uno "scope" valido e una lingua.
     302: In questo campo è previsto uno "scope" valido.
     303: In questo campo è previsto un formato di associazione valido.
-    pim_immutable_product_validator: Lo stesso identificatore è già impostato su un altro prodotto
     pim_immutable_product_model_validator: Lo stesso codice è già usato in un altro modello di prodotto.
     quantified_associations:
       unexpected_link_type: Il tipo di link "{{ value }}" non esiste. Puoi solo associare prodotti o modelli prodotto.
@@ -103,7 +101,7 @@ pim_catalog:
       product_models_do_not_exist: "I modelli prodotto seguenti non esistono: {{ values }}. Assicurati che i modelli prodotto non siano stati eliminati nel frattempo."
       association_type_does_not_exist: Questo tipo di associazione non esiste. Assicurati che non sia stato eliminato nel frattempo.
       association_type_is_not_quantified: '"{{ association_type }}" non può essere utilizzato per le associazioni con quantità. Scegli un tipo di associazione differente con quantità o utilizza la proprietà "associazioni".'
-      association_type_should_not_be_quantified: '"{{ association_type }}" può essere utilizzato solo per le associazioni con quantità. Scegli un tipo di associazione differente o utilizza la proprietà "associazioni_quantificate".'
+      association_type_should_not_be_quantified: '"{{ association_type }}" può essere utilizzato solo per le associazioni con quantità. Scegli un tipo di associazione differente o utilizza la proprietà "quantified_associations".'
 mass_edit:
   edit_common_attributes:
     invalid_values: Ci sono errori nel modulo attributi

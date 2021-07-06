@@ -10,6 +10,9 @@ services:
     Akeneo\Pim\Enrichment\Component\Error\DocumentationBuilder\DefaultAttributeValidation:
         tags: [pim_enrich.error.documentation_builder]
 
+    Akeneo\Pim\Enrichment\Component\Error\DocumentationBuilder\UniqueProductIdentifier:
+        tags: [ pim_enrich.error.documentation_builder ]
+
     Akeneo\Pim\Enrichment\Component\Error\DocumentationBuilder\UnknownAttribute:
         tags: [pim_enrich.error.documentation_builder]
 
@@ -19,6 +22,9 @@ services:
     Akeneo\Pim\Enrichment\Component\Error\DocumentationBuilder\UnknownChannel:
         tags: [pim_enrich.error.documentation_builder]
 
+    Akeneo\Pim\Enrichment\Component\Error\DocumentationBuilder\UnknownCurrency:
+        tags: [pim_enrich.error.documentation_builder]
+
     Akeneo\Pim\Enrichment\Component\Error\DocumentationBuilder\UnknownFamily:
         tags: [pim_enrich.error.documentation_builder]
 
@@ -26,4 +32,7 @@ services:
         tags: [pim_enrich.error.documentation_builder]
 
     Akeneo\Pim\Enrichment\Component\Error\DocumentationBuilder\LocalizableScopableAttribute:
+        tags: [pim_enrich.error.documentation_builder]
+
+    Akeneo\Pim\Enrichment\Component\Error\DocumentationBuilder\NotEmptyFamily:
         tags: [pim_enrich.error.documentation_builder]

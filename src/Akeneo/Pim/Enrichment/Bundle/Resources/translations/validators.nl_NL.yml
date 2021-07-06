@@ -60,7 +60,6 @@ pim_catalog:
     attribute_does_not_belong_to_family: 'Attribuut "%attribute%" behoort niet tot de familie "%family%"'
     variant_product_invalid_family: 'De familie van het variantproduct moet hetzelfde zijn als zijn ouder'
     php_int_max_reached: 'Het maximale aantal moet lager zijn dan %php_int_max%.'
-    not_null_family: De familie mag niet "null" zijn, omdat uw product met id "%sku%" een variantproduct is.
     variant_product_has_parent: 'Het variantproduct "%variant_product%" moet een ouder hebben'
     invalid_variant_product_parent: 'Het variantproduct "%variant_product%" kan productmodel "%product_model%" niet als ouder hebben, (dit productmodel kan alleen andere productmodellen als kinderen hebben)'
     modified_variant_axis_value: 'Variant-as "%variant_axis%" kan niet worden gewijzigd, ''%provided_value%'' gegeven'
@@ -101,7 +100,6 @@ pim_catalog:
     301: Dit veld verwacht een geldige scope en regio-instelling.
     302: Dit veld verwacht een geldige scope.
     303: Dit veld verwacht een geldig formaat voor associaties.
-    pim_immutable_product_validator: Dit id-attribuut is al in gebruik bij een ander product
     pim_immutable_product_model_validator: Dezelfde code is al ingesteld op een ander productmodel.
     quantified_associations:
       unexpected_link_type: Link type "{{ value }}" bestaat niet. U kunt alleen producten of productmodellen koppelen.

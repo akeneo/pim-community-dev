@@ -63,9 +63,11 @@ class UniqueProductEntityValidatorSpec extends ObjectBehavior
         $productInDatabase->getId()->willReturn(40);
         $product->getId()->willReturn(64);
 
-        $context->buildViolation('The same identifier is already set on another product')
+        $context->buildViolation(Argument::type('string'), Argument::type('array'))
             ->willReturn($constraintViolationBuilder);
         $constraintViolationBuilder->atPath('identifier')->willReturn($constraintViolationBuilder);
+        $constraintViolationBuilder->setCode(UniqueProductEntity::UNIQUE_PRODUCT_ENTITY)
+            ->willReturn($constraintViolationBuilder);
         $constraintViolationBuilder->addViolation()->shouldBeCalled();
 
         $this->validate($product, $constraint)->shouldReturn(null);
@@ -93,9 +95,13 @@ class UniqueProductEntityValidatorSpec extends ObjectBehavior
         $product->getIdentifier()->willReturn('identifier');
         $objectRepository->findOneByIdentifier('identifier')->willReturn(null);
 
-        $context->buildViolation('The same identifier is already set on another product')
+        $context->buildViolation(Argument::type('string'), Argument::type('array'))
             ->willReturn($constraintViolationBuilder);
         $constraintViolationBuilder->atPath('identifier')->willReturn($constraintViolationBuilder);
+        $constraintViolationBuilder->setCode(
+            UniqueProductEntity::UNIQUE_PRODUCT_ENTITY)
+            ->willReturn($constraintViolationBuilder);
+
         $constraintViolationBuilder->addViolation()->shouldBeCalled();
 
         $this->validate($product, $constraint)->shouldReturn(null);
@@ -120,7 +126,7 @@ class UniqueProductEntityValidatorSpec extends ObjectBehavior
         $product->getIdentifier()->willReturn('identifier');
         $objectRepository->findOneByIdentifier('identifier')->willReturn(null);
 
-        $context->buildViolation('The same identifier is already set on another product')->shouldNotBeCalled();
+        $context->buildViolation(Argument::type('string'))->shouldNotBeCalled();
 
         $this->validate($product, $constraint)->shouldReturn(null);
     }

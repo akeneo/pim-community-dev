@@ -1,7 +1,7 @@
 swagger: "2.0"
 info:
     description: ""
-    version: "1.0.1"
+    version: "1.0.2"
     title: "Marketplace"
 host: "marketplace.akeneo.com"
 basePath: "/api/1.0"
@@ -70,7 +70,8 @@ paths:
                             offset: 0
                             limit: 10
                             items:
-                                - name: "Akeneo PIM Connector for Shopify"
+                                - id: "2db5207b-a1fc-4ff0-81f0-43443004d112"
+                                  name: "Akeneo PIM Connector for Shopify"
                                   logo: "https://marketplace.akeneo.com/sites/default/files/styles/extension_logo_large/public/extension-logos/shopify-connector-logo-1200x.png?itok=mASOVlwC"
                                   author: "StrikeTru"
                                   partner: "Akeneo Partner"
@@ -84,6 +85,9 @@ definitions:
     Extension:
         type: "object"
         properties:
+            id:
+                type: "string"
+                description: "UUID v4"
             name:
                 type: "string"
             logo:

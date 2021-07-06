@@ -48,6 +48,7 @@ pim_import_export:
   form:
     job_execution:
       title.details: 実行の詳細
+      refreshing: 実行の詳細を更新中
       refreshBtn.title: 更新
       button:
         show_profile.title: プロファイルを表示
@@ -99,6 +100,9 @@ pim_import_export:
           with_header:
             title: ヘッダーあり
             help: 列名を出力するかどうか
+          with_media:
+            title: メディアをエクスポート
+            help: メディアをエクスポートするかどうか
           lines_per_file:
             title: ファイルごとの行数
             help: 1ファイルあたりの行数を定義
@@ -126,14 +130,24 @@ pim_import_export:
           real_time_versioning:
             title: リアルタイムの更新履歴
             help: 商品履歴が自動的にアップデートされます。自動アップデートをオフにするとパフォーマンスが向上します。
+          convert_variant_to_simple:
+            title: バリエーション商品をシンプル商品に変換
+            help: '「上位」列が空である場合、バリエーション商品をシンプル商品に変換しようとします。「いいえ」に設定すると、空の「上位」列は無視されます。'
           family_variant_column:
             title: ファミリーバリエーションの列
           with_label:
             title: ラベル付き
+            help: エクスポートファイルに値のコードの代わりに値のラベルを表示するかどうかを定義します
+          header_with_label:
+            title: ラベル付きのヘッダ
+            help: エクスポートファイルにヘッダのコードの代わりにヘッダのラベルを表示するかどうかを定義します
+          file_locale:
+            title: ファイルのロケール
+            help: ラベル表示のロケールを定義します
       file_path: ファイルのパス
   widget:
     last_operations:
-      empty: 操作が見つかりません
+      empty: 現在表示する操作はありません。
       date: 日付
       profile_name: プロファイル名
       details: 詳細
@@ -148,6 +162,7 @@ pim_import_export:
         compute_family_variant_structure_changes: ファミリーバリエーションの変更を計算
         compute_completeness_of_products_family: 商品ファミリーの完全性を検算
         mass_delete: 商品を一括削除
+        clean_removed_attribute_job: 削除された属性値を消去中
       header.view_all: 全て表示
   batch_status:
     1: 完了
@@ -167,6 +182,12 @@ pim_import_export:
     FAILED: 失敗
     ABANDONED: 破棄済
     UNKNOWN: 不明
+  tracking:
+    completed: "経過時間: {{ duration }}"
+    in_progress: "推定残り時間: {{ duration }}"
+    not_started: "保留中"
+    untrackable: 追跡不可能なステップ
+    estimating: "残り時間を推定中…"
 confirmation:
   remove:
     import_profile: このインポートプロファイルを削除してもよろしいですか。

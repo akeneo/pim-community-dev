@@ -36,7 +36,7 @@ pim_api:
     family: 品类
     family_variant: 品类变型
     channel: 渠道
-    locale: 区域设置
+    locale: 区域
     currency: 货币
     association_type: 关联类型
 pim_user:
