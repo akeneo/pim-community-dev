@@ -75,12 +75,15 @@ class BaseRemover implements RemoverInterface, BulkRemoverInterface
 
         $this->eventDispatcher->dispatch(StorageEvents::PRE_REMOVE_ALL, new RemoveEvent($objects, null));
 
-        $removedObjects = [];
         foreach ($objects as $object) {
             $this->validateObject($object);
-            $removedObjects[$object->getId()] = $object;
 
             $this->eventDispatcher->dispatch(StorageEvents::PRE_REMOVE, new RemoveEvent($object, $object->getId(), $options));
+        }
+
+        $removedObjects = [];
+        foreach ($objects as $object) {
+            $removedObjects[$object->getId()] = $object;
 
             $this->objectManager->remove($object);
         }
