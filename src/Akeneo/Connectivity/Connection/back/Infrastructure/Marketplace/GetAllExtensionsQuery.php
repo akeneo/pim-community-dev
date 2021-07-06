@@ -34,7 +34,7 @@ class GetAllExtensionsQuery implements GetAllExtensionsQueryInterface
         $extensions = [];
 
         foreach ($result['items'] as $item) {
-            $extensions[] = Extension::create($item);
+            $extensions[] = Extension::fromWebMarketplaceValues($item);
         }
 
         return GetAllExtensionsResult::create($result['total'], $extensions);
