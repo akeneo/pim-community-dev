@@ -18,8 +18,8 @@ const EmptyContainer = styled.section`
 `;
 
 const EmptyMessage = styled.p`
-color: ${getColor('grey', 140)};
-font-size: ${getFontSize('big')};
+    color: ${getColor('grey', 140)};
+    font-size: ${getFontSize('big')};
 `;
 
 export const Marketplace: FC = () => {
@@ -45,12 +45,12 @@ export const Marketplace: FC = () => {
     }
 
     if (undefined === extensions) {
-        return  null;
+        return null;
     }
 
-    const extensionList = extensions.extensions.map(
-        (extension:Extension) => <MarketplaceCard key={extension.id} extension={extension} />
-    );
+    const extensionList = extensions.extensions.map((extension: Extension) => (
+        <MarketplaceCard key={extension.id} extension={extension} />
+    ));
 
     const breadcrumb = (
         <Breadcrumb>
@@ -73,21 +73,25 @@ export const Marketplace: FC = () => {
                     </SectionTitle.Title>
                     <SectionTitle.Spacer />
                     <SectionTitle.Information>
-                        {translate('akeneo_connectivity.connection.connect.marketplace.extensions.total', {
-                            total: extensions.total.toString()
-                        }, extensions.total)}
+                        {translate(
+                            'akeneo_connectivity.connection.connect.marketplace.extensions.total',
+                            {
+                                total: extensions.total.toString(),
+                            },
+                            extensions.total
+                        )}
                     </SectionTitle.Information>
                 </SectionTitle>
                 {extensions.total === 0 ? (
-                        <EmptyContainer>
-                            <AppIllustration size={128}/>
-                            <EmptyMessage>
-                                {translate('akeneo_connectivity.connection.connect.marketplace.extensions.empty')}
-                            </EmptyMessage>
-                        </EmptyContainer>
-                    )
-                    : <CardGrid> {extensionList} </CardGrid>
-                }
+                    <EmptyContainer>
+                        <AppIllustration size={128} />
+                        <EmptyMessage>
+                            {translate('akeneo_connectivity.connection.connect.marketplace.extensions.empty')}
+                        </EmptyMessage>
+                    </EmptyContainer>
+                ) : (
+                    <CardGrid> {extensionList} </CardGrid>
+                )}
             </PageContent>
         </>
     );

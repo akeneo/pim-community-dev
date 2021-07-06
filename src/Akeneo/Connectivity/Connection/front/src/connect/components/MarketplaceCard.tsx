@@ -19,8 +19,8 @@ const CardContainer = styled.div`
     gap: 20px 20px;
     grid-template-columns: 100px 1fr 50px;
     grid-template-areas:
-        "logo text text"
-        "actions actions certified"
+        'logo text text'
+        'actions actions certified';
 `;
 
 const Logo = styled.img`
@@ -49,7 +49,7 @@ const Author = styled.h3`
     color: ${getColor('grey', 120)};
     font-size: ${getFontSize('big')};
     font-weight: normal;
-    margin:0;
+    margin: 0;
     margin-bottom: 5px;
 
     white-space: nowrap;
@@ -120,16 +120,21 @@ type Props = {
 const MarketplaceCard: FC<Props> = ({extension}) => {
     const translate = useTranslate();
 
-    const normalizedDescription = extension.description.length > 150
-        ? <>{extension.description.substring(0, 139)}&hellip;&nbsp;
-            <Link decorated href={extension.url} target="_blank">
-                {translate('akeneo_connectivity.connection.connect.marketplace.card.read_more')}
-            </Link></>
-        : extension.description;
+    const normalizedDescription =
+        extension.description.length > 150 ? (
+            <>
+                {extension.description.substring(0, 139)}&hellip;&nbsp;
+                <Link decorated href={extension.url} target='_blank'>
+                    {translate('akeneo_connectivity.connection.connect.marketplace.card.read_more')}
+                </Link>
+            </>
+        ) : (
+            extension.description
+        );
 
     return (
         <CardContainer>
-            <Logo src={extension.logo} alt={extension.name}/>
+            <Logo src={extension.logo} alt={extension.name} />
             <TextInformation>
                 <Name>{extension.name}</Name>
                 <Author>
@@ -141,9 +146,9 @@ const MarketplaceCard: FC<Props> = ({extension}) => {
                 {extension.categories.length > 0 && <Tag>{extension.categories[0]}</Tag>}
                 <Description>{normalizedDescription}</Description>
             </TextInformation>
-            {extension.certified && <CertifiedIcon/>}
+            {extension.certified && <CertifiedIcon />}
             <Actions>
-                <Button ghost level="tertiary" href={extension.url} target="_blank">
+                <Button ghost level='tertiary' href={extension.url} target='_blank'>
                     {translate('akeneo_connectivity.connection.connect.marketplace.card.more_info')}
                 </Button>
             </Actions>
