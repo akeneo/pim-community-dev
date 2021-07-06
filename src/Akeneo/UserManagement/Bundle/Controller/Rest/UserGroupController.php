@@ -64,7 +64,6 @@ class UserGroupController
     public function __construct(
         GroupRepository $groupRepository,
         NormalizerInterface $normalizer,
-        AbstractProcessor $denormalizer,
         UserContext $userContext,
         SimpleFactoryInterface $factory,
         ObjectUpdaterInterface $updater,
@@ -75,7 +74,6 @@ class UserGroupController
     {
         $this->groupRepository = $groupRepository;
         $this->normalizer = $normalizer;
-        $this->denormalizer = $denormalizer;
         $this->userContext = $userContext;
         $this->factory = $factory;
         $this->updater = $updater;
