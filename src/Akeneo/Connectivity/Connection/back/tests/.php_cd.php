@@ -241,7 +241,9 @@ $rules = [
     )->in('Akeneo\Connectivity\Connection\Infrastructure\Symfony'),
 
     $builder->only(
-        []
+        [
+            'Akeneo\Connectivity\Connection\Domain\Marketplace',
+        ]
     )->in('Akeneo\Connectivity\Connection\Domain\Marketplace'),
 ];
 

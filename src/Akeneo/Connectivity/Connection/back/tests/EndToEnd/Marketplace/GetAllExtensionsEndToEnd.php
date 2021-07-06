@@ -62,9 +62,9 @@ class GetAllExtensionsEndToEnd extends WebTestCase
         $result = json_decode($this->client->getResponse()->getContent(), true);
 
         Assert::assertEquals(Response::HTTP_OK, $this->client->getResponse()->getStatusCode());
-        Assert::assertArrayHasKey('count', $result);
+        Assert::assertArrayHasKey('total', $result);
         Assert::assertArrayHasKey('extensions', $result);
-        Assert::assertEquals(120, $result['count']);
+        Assert::assertEquals(120, $result['total']);
         Assert::assertEquals($expectedExtensions[0], $result['extensions'][0]);
         Assert::assertEquals($expectedExtensions[1], $result['extensions'][1]);
     }
