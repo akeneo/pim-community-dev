@@ -1,5 +1,5 @@
 import React, {FC, useEffect, useState} from 'react';
-import {ChannelsIllustration, HighlightTitle, Information, Link} from 'akeneo-design-system';
+import {ChannelsIllustration, Information, Link} from 'akeneo-design-system';
 import {useFetchMarketplaceUrl} from '../hooks/use-fetch-marketplace-url';
 import {useTranslate} from '../../shared/translate';
 

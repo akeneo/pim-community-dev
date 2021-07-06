@@ -3,7 +3,6 @@ import {Breadcrumb} from 'akeneo-design-system';
 import {useTranslate} from '../../shared/translate';
 import {PageHeader, PageContent} from '../../common';
 import {UserButtons} from '../../shared/user';
-import styled from 'styled-components';
 import {useRouter} from '../../shared/router/use-router';
 import {UserContext} from '../../shared/user';
 import {useHistory} from 'react-router';
@@ -37,7 +36,7 @@ export const Marketplace: FC = () => {
         </Breadcrumb>
     );
 
-    const listCount = 34;
+    const listCount = 34; //TODO Add real counter value
 
     return (
         <>
