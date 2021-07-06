@@ -808,7 +808,7 @@ JSON;
             'errors'  => [
                 [
                     'property' => 'identifier',
-                    'message'  => 'The same identifier is already set on another product',
+                    'message'  => 'The simple identifier is already used for another product.',
                 ],
             ],
         ];

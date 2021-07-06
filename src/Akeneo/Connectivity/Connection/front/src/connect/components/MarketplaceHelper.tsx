@@ -1,5 +1,5 @@
 import React, {FC, useEffect, useState} from 'react';
-import {ChannelsIllustration, HighlightTitle, Information, Link} from 'akeneo-design-system';
+import {ChannelsIllustration, Information, Link} from 'akeneo-design-system';
 import {useFetchMarketplaceUrl} from '../hooks/use-fetch-marketplace-url';
 import {useTranslate} from '../../shared/translate';
 
@@ -17,11 +17,15 @@ const MarketplaceHelper: FC<Props> = ({count}) => {
     }, [fetchMarketplaceUrl]);
 
     const title = (
-        <>
-            {translate('akeneo_connectivity.connection.connect.marketplace.helper.title.1')}
-            <HighlightTitle>{count}</HighlightTitle>
-            {translate('akeneo_connectivity.connection.connect.marketplace.helper.title.2')}
-        </>
+        <div
+            dangerouslySetInnerHTML={{
+                __html: translate(
+                    'akeneo_connectivity.connection.connect.marketplace.helper.title',
+                    {count: `<span class='AknConnectivityConnection-helper--highlight'>${count}</span>`},
+                    count
+                ),
+            }}
+        />
     );
 
     return (

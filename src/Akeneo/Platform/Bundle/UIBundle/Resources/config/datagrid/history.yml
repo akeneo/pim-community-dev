@@ -18,7 +18,7 @@ datagrid:
                 type: field
                 frontend_type: string
             loggedAt:
-                label: Logged at
+                label: Date/Time
                 type: property_date
                 frontend_type: datetime
             changes:

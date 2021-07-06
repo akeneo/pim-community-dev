@@ -38,6 +38,8 @@ product_model.family_variant.not_blank.message: Die Produktfamilie des Produktmo
 "The {{ attribute_code }} attribute requires a date that should be {{ limit }} or before.": Das {{ attribute_code }} -Attribut erfordert ein Datum, das {{ limit }} oder früher sein soll.
 "The {{ attribute }} attribute requires a number, and the submitted {{ value }} value is not.": Das {{ attribute }} -Attribut erfordert eine Zahl, und der angegebene {{ value }} Wert ist dies nicht.
 "The %attribute% attribute must not contain more than %limit% characters. The submitted value is too long.": Das %attribute% -Attribut darf nicht mehr als %limit% Zeichen enthalten. Der angegebene Wert ist zu lang.
+"The %type% file extension is not allowed for the %attribute% attribute. Allowed extensions are %extensions%.": Die %type% -Dateiendung ist für das %attribute% -Attribut nicht erlaubt. Erlaubte Endungen sind %extensions%.
+"The %attribute% attribute requires a url link.": Das %attribute% -Attribut benötigt einen URL-Link.
 "The %attribute% attribute requires a valid date. Please use the following format %date_format% for dates.": Das %attribute% -Attribut benötigt ein gültiges Datum. Bitte verwenden Sie das folgende Format %date_format% für Datum.
 "The %locale% locale is not available on the %attribute% attribute.": Das Gebietsschema %locale% ist für das Attribut %attribute% nicht verfügbar.
 'The {{ attribute_code }} attribute must match the following regular expression: {{ pattern }}.': 'Das Attribut {{ attribute_code }} muss mit dem folgenden regulären Ausdruck übereinstimmen: {{ pattern }}.'
@@ -60,7 +62,6 @@ pim_catalog:
     attribute_does_not_belong_to_family: 'Attribut "%attribute%" gehört nicht zu der Familie "%family%"'
     variant_product_invalid_family: 'Die Variantenproduktfamilie muss mit der übergeordneten Produktfamilie übereinstimmen'
     php_int_max_reached: 'Die maximale Zahl muss kleiner als %php_int_max% sein.'
-    not_null_family: Die Familie kann nicht "null" sein, da Ihr Produkt mit der Kennung "%sku%" ein Variantenprodukt ist.
     variant_product_has_parent: 'Das Variantenprodukt "%variant_product%" muss ein übergeordnetes Produkt haben'
     invalid_variant_product_parent: 'Die Produktvariante "%variant_product%" kann nicht dem Produktmodell "%product_model%" untergeordnet werden (dem Produktmodell können nur andere Produktmodelle untergeordnet werden)'
     modified_variant_axis_value: 'Variantenachse "%variant_axis%" kann nicht verändert werden, "%provided_value%" wird angegeben'
@@ -101,7 +102,6 @@ pim_catalog:
     301: Dieses Feld erwartet einen validen Gültigkeitsbereich und Gebietsschema.
     302: Dieses Feld erwartet einen validen Gültigkeitsbereich.
     303: Dieses Feld erwartet ein valides Format für Verbindungen.
-    pim_immutable_product_validator: Diese Kennung ist bereits für ein anderes Produkt in Verwendung
     pim_immutable_product_model_validator: Diese Kennung ist bereits für ein anderes Produktmodell in Verwendung.
     quantified_associations:
       unexpected_link_type: Der Linktyp "{{ value }}" existiert nicht. Sie können nur Produkte oder Produktmodelle verknüpfen.

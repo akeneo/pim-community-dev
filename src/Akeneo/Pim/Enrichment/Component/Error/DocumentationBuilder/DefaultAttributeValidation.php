@@ -21,6 +21,7 @@ use Akeneo\Pim\Enrichment\Component\Product\Validator\Constraints\NotDecimal;
 use Akeneo\Pim\Enrichment\Component\Product\Validator\Constraints\Range;
 use Akeneo\Pim\Enrichment\Component\Product\Validator\Constraints\Regex;
 use Akeneo\Pim\Enrichment\Component\Product\Validator\Constraints\UniqueValue;
+use Akeneo\Pim\Enrichment\Component\Product\Validator\Constraints\Url;
 use Symfony\Component\Validator\Constraints\Email;
 use Symfony\Component\Validator\ConstraintViolationInterface;
 
@@ -32,6 +33,7 @@ final class DefaultAttributeValidation implements DocumentationBuilderInterface
 {
     const SUPPORTED_CONSTRAINTS_CODES = [
         Boolean::NOT_BOOLEAN_ERROR,
+        File::EXTENSION_NOT_ALLOWED_ERROR,
         Date::INVALID_FORMAT_ERROR,
         Date::INVALID_DATE_ERROR,
         IsNumeric::IS_NUMERIC,
@@ -46,6 +48,7 @@ final class DefaultAttributeValidation implements DocumentationBuilderInterface
         Range::TOO_LOW_ERROR,
         Regex::REGEX_FAILED_ERROR,
         UniqueValue::UNIQUE_VALUE,
+        Url::INVALID_URL_ERROR,
         File::TOO_LARGE_ERROR,
         Email::INVALID_FORMAT_ERROR
     ];
