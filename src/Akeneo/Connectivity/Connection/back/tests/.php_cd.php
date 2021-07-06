@@ -240,6 +240,12 @@ $rules = [
         ]
     )->in('Akeneo\Connectivity\Connection\Infrastructure\Symfony'),
 
+    $builder->only(
+        [
+            'Ramsey\Uuid',
+            'Webmozart\Assert\Assert',
+        ]
+    )->in('Akeneo\Connectivity\Connection\Domain\Marketplace'),
 ];
 
 $config = new Configuration($rules, $finder);
