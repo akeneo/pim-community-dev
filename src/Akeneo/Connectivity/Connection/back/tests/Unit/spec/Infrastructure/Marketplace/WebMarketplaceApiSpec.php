@@ -4,6 +4,7 @@ declare(strict_types=1);
 namespace spec\Akeneo\Connectivity\Connection\Infrastructure\Marketplace;
 
 use Akeneo\Connectivity\Connection\Infrastructure\Marketplace\WebMarketplaceApi;
+use Akeneo\Connectivity\Connection\Infrastructure\Marketplace\WebMarketplaceApiInterface;
 use PhpSpec\ObjectBehavior;
 use PHPUnit\Framework\Assert;
 
@@ -22,6 +23,7 @@ class WebMarketplaceApiSpec extends ObjectBehavior
     public function it_is_initializable(): void
     {
         $this->shouldBeAnInstanceOf(WebMarketplaceApi::class);
+        $this->shouldImplement(WebMarketplaceApiInterface::class);
     }
 
     public function it_returns_extensions(): void

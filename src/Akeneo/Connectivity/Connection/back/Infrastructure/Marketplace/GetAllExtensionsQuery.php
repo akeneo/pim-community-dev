@@ -15,10 +15,10 @@ use Akeneo\Platform\VersionProviderInterface;
  */
 class GetAllExtensionsQuery implements GetAllExtensionsQueryInterface
 {
-    private WebMarketplaceApi $webMarketplaceApi;
+    private WebMarketplaceApiInterface $webMarketplaceApi;
     private VersionProviderInterface $versionProvider;
 
-    public function __construct(WebMarketplaceApi $webMarketplaceApi, VersionProviderInterface $versionProvider)
+    public function __construct(WebMarketplaceApiInterface $webMarketplaceApi, VersionProviderInterface $versionProvider)
     {
         $this->webMarketplaceApi = $webMarketplaceApi;
         $this->versionProvider = $versionProvider;

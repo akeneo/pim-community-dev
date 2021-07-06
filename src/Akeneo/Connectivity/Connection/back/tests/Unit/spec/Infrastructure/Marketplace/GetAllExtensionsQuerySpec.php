@@ -8,6 +8,7 @@ use Akeneo\Connectivity\Connection\Domain\Marketplace\DTO\GetAllExtensionsResult
 use Akeneo\Connectivity\Connection\Domain\Marketplace\Model\Extension;
 use Akeneo\Connectivity\Connection\Infrastructure\Marketplace\GetAllExtensionsQuery;
 use Akeneo\Connectivity\Connection\Infrastructure\Marketplace\WebMarketplaceApi;
+use Akeneo\Connectivity\Connection\Infrastructure\Marketplace\WebMarketplaceApiInterface;
 use Akeneo\Platform\VersionProviderInterface;
 use PhpSpec\ObjectBehavior;
 
@@ -18,7 +19,7 @@ use PhpSpec\ObjectBehavior;
 class GetAllExtensionsQuerySpec extends ObjectBehavior
 {
     public function let(
-        WebMarketplaceApi $webMarketplaceApi,
+        WebMarketplaceApiInterface $webMarketplaceApi,
         VersionProviderInterface $versionProvider
     )
     {
@@ -31,7 +32,7 @@ class GetAllExtensionsQuerySpec extends ObjectBehavior
     }
 
     public function it_execute_and_returns_extension_result(
-        WebMarketplaceApi $webMarketplaceApi,
+        WebMarketplaceApiInterface $webMarketplaceApi,
         VersionProviderInterface $versionProvider
     )
     {

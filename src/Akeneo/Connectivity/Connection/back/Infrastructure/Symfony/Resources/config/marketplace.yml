@@ -15,12 +15,13 @@ services:
         arguments:
             - '@database_connection'
 
-    Akeneo\Connectivity\Connection\Infrastructure\Marketplace\WebMarketplaceApi:
+    akeneo_connectivity.connection.marketplace.web_marketplace_api:
+        class: Akeneo\Connectivity\Connection\Infrastructure\Marketplace\WebMarketplaceApi
         calls:
             - setFixturePath: ['%connectivity.marketplace_fixtures_directory%']
 
     akeneo_connectivity.connection.marketplace.get_all_extensions_query:
         class: Akeneo\Connectivity\Connection\Infrastructure\Marketplace\GetAllExtensionsQuery
         arguments:
-            - '@Akeneo\Connectivity\Connection\Infrastructure\Marketplace\WebMarketplaceApi'
+            - '@akeneo_connectivity.connection.marketplace.web_marketplace_api'
             - '@pim_catalog.version_provider'
