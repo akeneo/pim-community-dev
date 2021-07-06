@@ -13,37 +13,35 @@ declare(strict_types=1);
 
 namespace Specification\Akeneo\Platform\TailoredExport\Application\Query\Selection\MultiSelect;
 
-use Akeneo\Pim\Structure\Component\Query\PublicApi\AttributeOption\GetExistingAttributeOptionsWithValues;
 use Akeneo\Platform\TailoredExport\Application\Query\Selection\Boolean\BooleanSelection;
 use Akeneo\Platform\TailoredExport\Application\Query\Selection\MultiSelect\MultiSelectLabelSelection;
+use Akeneo\Platform\TailoredExport\Domain\Query\FindAttributeOptionLabelsInterface;
 use Akeneo\Platform\TailoredExport\Domain\SourceValue\BooleanValue;
 use Akeneo\Platform\TailoredExport\Domain\SourceValue\MultiSelectValue;
 use PhpSpec\ObjectBehavior;
 
 class MultiSelectLabelSelectionHandlerSpec extends ObjectBehavior
 {
-    public function let(GetExistingAttributeOptionsWithValues $getExistingAttributeOptionsWithValues)
+    public function let(FindAttributeOptionLabelsInterface $findAttributeOptionLabels)
     {
-        $this->beConstructedWith($getExistingAttributeOptionsWithValues);
+        $this->beConstructedWith($findAttributeOptionLabels);
     }
 
-    public function it_applies_the_selection(GetExistingAttributeOptionsWithValues $getExistingAttributeOptionsWithValues)
+    public function it_applies_the_selection(FindAttributeOptionLabelsInterface $findAttributeOptionLabels)
     {
         $selection = new MultiSelectLabelSelection('/', 'fr_FR', 'an_attribute_code');
         $value = new MultiSelectValue(['option_code1', 'option_code2']);
 
-        $getExistingAttributeOptionsWithValues->fromAttributeCodeAndOptionCodes(
-            [
-                'an_attribute_code.option_code1',
-                'an_attribute_code.option_code2',
-            ],
+        $findAttributeOptionLabels->byAttributeCodeAndOptionCodes(
+            'an_attribute_code',
+            ['option_code1', 'option_code2'],
+            'fr_FR'
         )->willReturn([
-            'an_attribute_code.option_code1' => ['fr_FR' => 'Le labele en FR', 'en_US' => 'The label in US'],
-            'an_attribute_code.option_code2' => [],
+            'option_code1' => 'Le label en FR',
         ]);
 
         $this->applySelection($selection, $value)
-            ->shouldReturn('Le labele en FR/[option_code2]');
+            ->shouldReturn('Le label en FR/[option_code2]');
     }
 
     public function it_does_not_applies_selection_on_not_supported_selections_and_values()

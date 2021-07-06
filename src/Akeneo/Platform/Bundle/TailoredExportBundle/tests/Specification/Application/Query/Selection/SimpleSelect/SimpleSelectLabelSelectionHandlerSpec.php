@@ -13,21 +13,21 @@ declare(strict_types=1);
 
 namespace Specification\Akeneo\Platform\TailoredExport\Application\Query\Selection\SimpleSelect;
 
-use Akeneo\Pim\Structure\Component\Query\PublicApi\AttributeOption\GetExistingAttributeOptionsWithValues;
 use Akeneo\Platform\TailoredExport\Application\Query\Selection\SimpleSelect\SimpleSelectLabelSelection;
 use Akeneo\Platform\TailoredExport\Application\Query\Selection\Boolean\BooleanSelection;
+use Akeneo\Platform\TailoredExport\Domain\Query\FindAttributeOptionLabelsInterface;
 use Akeneo\Platform\TailoredExport\Domain\SourceValue\BooleanValue;
 use Akeneo\Platform\TailoredExport\Domain\SourceValue\SimpleSelectValue;
 use PhpSpec\ObjectBehavior;
 
 class SimpleSelectLabelSelectionHandlerSpec extends ObjectBehavior
 {
-    public function let(GetExistingAttributeOptionsWithValues $getExistingAttributeOptionsWithValues)
+    public function let(FindAttributeOptionLabelsInterface $findAttributeOptionLabels)
     {
-        $this->beConstructedWith($getExistingAttributeOptionsWithValues);
+        $this->beConstructedWith($findAttributeOptionLabels);
     }
 
-    public function it_applies_the_selection(GetExistingAttributeOptionsWithValues $getExistingAttributeOptionsWithValues)
+    public function it_applies_the_selection(FindAttributeOptionLabelsInterface $findAttributeOptionLabels)
     {
         $selection = new SimpleSelectLabelSelection(
             'fr_FR',
@@ -35,25 +35,30 @@ class SimpleSelectLabelSelectionHandlerSpec extends ObjectBehavior
         );
         $value = new SimpleSelectValue('red');
 
-        $getExistingAttributeOptionsWithValues->fromAttributeCodeAndOptionCodes(
-            ['color.red']
+        $findAttributeOptionLabels->byAttributeCodeAndOptionCodes(
+            'color',
+            ['red'],
+            'fr_FR'
         )->willReturn([
-            'color.red' => ['fr_FR' => 'rouge'],
+            'red' => 'rouge',
         ]);
 
         $this->applySelection($selection, $value)->shouldReturn('rouge');
     }
 
-    public function it_applies_the_selection_and_fallback_when_no_translation_is_found(GetExistingAttributeOptionsWithValues $getExistingAttributeOptionsWithValues)
-    {
+    public function it_applies_the_selection_and_fallback_when_no_translation_is_found(
+        FindAttributeOptionLabelsInterface $findAttributeOptionLabels
+    ) {
         $selection = new SimpleSelectLabelSelection(
             'fr_FR',
             'color'
         );
         $value = new SimpleSelectValue('red');
 
-        $getExistingAttributeOptionsWithValues->fromAttributeCodeAndOptionCodes(
-            ['color.red']
+        $findAttributeOptionLabels->byAttributeCodeAndOptionCodes(
+            'color',
+            ['red'],
+            'fr_FR'
         )->willReturn([]);
 
         $this->applySelection($selection, $value)->shouldReturn('[red]');
