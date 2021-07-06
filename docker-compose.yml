@@ -7,7 +7,7 @@ services:
       APP_ENV: '${APP_ENV:-prod}'
       COMPOSER_HOME: '/var/www/.composer'
       PHP_IDE_CONFIG: 'serverName=pim-docker-cli'
-      XDEBUG_MODE: '${XDEBUG_MODE:-debug}'
+      XDEBUG_MODE: '${XDEBUG_MODE:-off}'
       XDEBUG_CONFIG: 'client_host=172.17.0.1'
       BLACKFIRE_CLIENT_ID: '${BLACKFIRE_CLIENT_ID:-client_id}'
       BLACKFIRE_CLIENT_TOKEN: '${BLACKFIRE_CLIENT_TOKEN:-client_token}'
@@ -27,12 +27,12 @@ services:
       BEHAT_TMPDIR: '/srv/pim/var/cache/tmp'
       BEHAT_SCREENSHOT_PATH: '/srv/pim/var/tests/screenshots'
       PHP_IDE_CONFIG: 'serverName=pim-docker-web'
-      XDEBUG_MODE: '${XDEBUG_MODE:-debug}'
-      XDEBUG_CONFIG: 'client_host=172.17.0.1 client_port=9003'
+      XDEBUG_MODE: '${XDEBUG_MODE:-off}'
+      XDEBUG_CONFIG: 'client_host=172.17.0.1'
       BLACKFIRE_CLIENT_ID: '${BLACKFIRE_CLIENT_ID:-client_id}'
       BLACKFIRE_CLIENT_TOKEN: '${BLACKFIRE_CLIENT_TOKEN:-client_token}'
     volumes:
-      - 'nfsmount_pim:/srv/pim'
+      - './:/srv/pim'
     working_dir: '/srv/pim'
     command: 'php-fpm -F'
     networks:
@@ -68,7 +68,7 @@ services:
     ports:
       - '${DOCKER_PORT_HTTP:-8080}:80'
     volumes:
-      - 'nfsmount_pim:/srv/pim:ro'
+      - './:/srv/pim:ro'
       - './docker/httpd.conf:/usr/local/apache2/conf/httpd.conf:ro'
       - './docker/akeneo.conf:/usr/local/apache2/conf/vhost.conf:ro'
     networks:
@@ -123,13 +123,6 @@ services:
     command: 'gcloud --user-output-enabled --log-http beta emulators pubsub start --host-port=0.0.0.0:8085'
     networks:
       - 'pim'
-volumes:
-  nfsmount_pim:
-    driver: local
-    driver_opts:
-      type: nfs
-      o: addr=host.docker.internal,rw,nolock,hard,nointr,nfsvers=3
-      device: ":/System/Volumes/Data/${PWD}"
 
 networks:
   pim:
