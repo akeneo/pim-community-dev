@@ -61,8 +61,8 @@ class WebMarketplaceApiSpec extends ObjectBehavior
 
         Assert::assertCount(4, $extensions);
 
-        Assert::assertArrayHasKey('count', $extensions);
-        Assert::assertEquals(2, $extensions['count']);
+        Assert::assertArrayHasKey('total', $extensions);
+        Assert::assertEquals(2, $extensions['total']);
 
         Assert::assertArrayHasKey('offset', $extensions);
         Assert::assertEquals(0, $extensions['offset']);
