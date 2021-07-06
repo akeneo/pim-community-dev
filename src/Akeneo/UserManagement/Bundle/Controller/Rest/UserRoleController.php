@@ -51,9 +51,14 @@ class UserRoleController
 
     /** @var NormalizerInterface */
     private NormalizerInterface $constraintViolationNormalizer;
+
+    /**  @var NormalizerInterface */
     private NormalizerInterface $basicNormalizer;
-    private ArrayConverterInterface $arrayConverter;
+
+    /** @var ArrayConverterInterface */
     private ArrayConverterInterface $standardToFlatArrayConverter;
+
+    /** @var ArrayConverterInterface */
     private ArrayConverterInterface $flatToStandardArrayConverter;
 
     /**
