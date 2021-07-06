@@ -1,6 +1,12 @@
 import {AttributesIllustration, Button, Field, Modal, SelectInput, TextInput, Helper} from 'akeneo-design-system';
 import React from 'react';
-import {ColumnCode, ColumnDefinition, ColumnType, DATA_TYPES} from '../models/TableConfiguration';
+import {
+  ColumnCode,
+  ColumnDefinition,
+  ColumnType,
+  DATA_TYPES,
+  FIRST_COLUMN_DATA_TYPES,
+} from '../models/TableConfiguration';
 import {useUserContext, useTranslate, LabelCollection} from '@akeneo-pim-community/shared';
 import {LocaleLabel} from './LocaleLabel';
 import {FieldsList} from '../shared/FieldsList';
@@ -112,6 +118,8 @@ const AddColumnModal: React.FC<AddColumnModalProps> = ({close, onCreate, existin
     } as ColumnDefinition);
   };
 
+  const dataTypes = existingColumnCodes.length ? DATA_TYPES : FIRST_COLUMN_DATA_TYPES;
+
   return (
     <Modal closeTitle={translate('pim_common.close')} onClose={close} illustration={<AttributesIllustration />}>
       <Modal.SectionTitle color='brand'>
@@ -156,7 +164,7 @@ const AddColumnModal: React.FC<AddColumnModalProps> = ({close, onCreate, existin
             placeholder={translate('pim_table_attribute.form.attribute.select_type')}
             value={columnDefinition.data_type as string}
             clearable={false}>
-            {DATA_TYPES.map(dataType => (
+            {dataTypes.map(dataType => (
               <SelectInput.Option
                 key={dataType}
                 title={translate(`pim_table_attribute.properties.data_type.${dataType}`)}

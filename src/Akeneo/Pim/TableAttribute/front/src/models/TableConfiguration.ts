@@ -4,6 +4,7 @@ export type ColumnType = 'text' | 'number' | 'boolean' | 'select';
 export type ColumnCode = string;
 
 const DATA_TYPES: ColumnType[] = ['text', 'number', 'boolean', 'select'];
+const FIRST_COLUMN_DATA_TYPES: ColumnType[] = ['select'];
 
 type TextColumnValidation = {
   max_length?: number;
@@ -65,4 +66,4 @@ export type ColumnDefinition =
 
 export type TableConfiguration = ColumnDefinition[];
 
-export {DATA_TYPES};
+export {DATA_TYPES, FIRST_COLUMN_DATA_TYPES};
