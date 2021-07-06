@@ -3,7 +3,6 @@
 namespace Akeneo\Pim\Structure\Bundle\Controller\ExternalApi;
 
 use Akeneo\Pim\Structure\Bundle\EventSubscriber\ApiAggregatorForAttributePostSaveEventSubscriber;
-use Akeneo\Pim\Structure\Bundle\EventSubscriber\ApiBatchAttributePostSaveEventSubscriber;
 use Akeneo\Pim\Structure\Component\Model\AttributeInterface;
 use Akeneo\Pim\Structure\Component\Repository\ExternalApi\AttributeRepositoryInterface;
 use Akeneo\Tool\Bundle\ApiBundle\Documentation;
@@ -367,6 +366,8 @@ class AttributeController
 
     protected function getNormalizationContext(Request $request): array
     {
-        return [];
+        return [
+            'with_table_select_options' => (bool) $request->query->get('with_table_select_options', false),
+        ];
     }
 }
