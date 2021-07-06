@@ -9,6 +9,7 @@ use Akeneo\Pim\Enrichment\Component\Product\Webhook\Exception\ProductNotFoundExc
 use Akeneo\Pim\Enrichment\Component\Product\Webhook\ProductCreatedAndUpdatedEventDataBuilder;
 use Akeneo\Platform\Component\EventQueue\Author;
 use Akeneo\Platform\Component\EventQueue\BulkEvent;
+use Akeneo\Platform\Component\Webhook\Context;
 use Akeneo\Test\Integration\Configuration;
 use Akeneo\Test\Integration\TestCase;
 use AkeneoTestEnterprise\Pim\Permission\EndToEnd\API\PermissionFixturesLoader;
@@ -54,7 +55,7 @@ class ProductCreatedAndUpdatedEventDataBuilderIntegration extends TestCase
 
         $collection = $this->productCreatedAndUpdatedEventDataBuilder->build(
             new BulkEvent([$productNotViewableUpdatedEvent, $productViewableUpdatedEvent]),
-            $user,
+            new Context($user->getUsername(), $user->getId()),
         );
 
         $error = $collection->getEventData($productNotViewableUpdatedEvent);

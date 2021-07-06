@@ -8,9 +8,9 @@ use Akeneo\Pim\Enrichment\Component\Product\Message\ProductModelRemoved;
 use Akeneo\Pim\Enrichment\Component\Product\Webhook\ProductModelRemovedEventDataBuilder as BaseProductModelRemovedEventDataBuilder;
 use Akeneo\Pim\Enrichment\Product\Component\Product\Query\GetViewableCategoryCodes;
 use Akeneo\Platform\Component\EventQueue\BulkEventInterface;
+use Akeneo\Platform\Component\Webhook\Context;
 use Akeneo\Platform\Component\Webhook\EventDataBuilderInterface;
 use Akeneo\Platform\Component\Webhook\EventDataCollection;
-use Akeneo\UserManagement\Component\Model\UserInterface;
 
 /**
  * @author    Thomas Galvaing <thomas.galvaing@akeneo.com>
@@ -35,7 +35,7 @@ class ProductModelRemovedEventDataBuilder implements EventDataBuilderInterface
         return $this->baseProductModelRemovedEventDataBuilder->supports($event);
     }
 
-    public function build(BulkEventInterface $event, UserInterface $user): EventDataCollection
+    public function build(BulkEventInterface $event, Context $context): EventDataCollection
     {
         if (false === $this->supports($event)) {
             throw new \InvalidArgumentException();
@@ -48,7 +48,7 @@ class ProductModelRemovedEventDataBuilder implements EventDataBuilderInterface
             $productModelCategoryCodes = $productModelRemovedEvent->getCategoryCodes();
             if (0 < count($productModelCategoryCodes)) {
                 $grantedCategoryCodes = $this->getViewableCategoryCodes->forCategoryCodes(
-                    $user->getId(),
+                    $context->getUserId(),
                     $productModelCategoryCodes
                 );
 
@@ -56,7 +56,7 @@ class ProductModelRemovedEventDataBuilder implements EventDataBuilderInterface
                     $collection->setEventDataError(
                         $productModelRemovedEvent,
                         new NotGrantedProductModelException(
-                            $user->getUsername(),
+                            $context->getUsername(),
                             $productModelRemovedEvent->getCode()
                         )
                     );

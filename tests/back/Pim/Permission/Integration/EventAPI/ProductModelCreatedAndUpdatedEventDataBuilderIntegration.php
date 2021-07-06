@@ -9,6 +9,7 @@ use Akeneo\Pim\Enrichment\Component\Product\Webhook\Exception\ProductModelNotFou
 use Akeneo\Pim\Enrichment\Component\Product\Webhook\ProductModelCreatedAndUpdatedEventDataBuilder;
 use Akeneo\Platform\Component\EventQueue\Author;
 use Akeneo\Platform\Component\EventQueue\BulkEvent;
+use Akeneo\Platform\Component\Webhook\Context;
 use Akeneo\Test\Integration\Configuration;
 use Akeneo\Test\Integration\TestCase;
 use AkeneoTestEnterprise\Pim\Permission\EndToEnd\API\PermissionFixturesLoader;
@@ -52,7 +53,7 @@ class ProductModelCreatedAndUpdatedEventDataBuilderIntegration extends TestCase
 
         $collection = $this->productModelCreatedAndUpdatedEventDataBuilder->build(
             new BulkEvent([$productModelNotViewableUpdatedEvent, $productModelViewableUpdatedEvent]),
-            $user,
+            new Context($user->getUsername(), $user->getId()),
         );
 
         $error = $collection->getEventData($productModelNotViewableUpdatedEvent);
