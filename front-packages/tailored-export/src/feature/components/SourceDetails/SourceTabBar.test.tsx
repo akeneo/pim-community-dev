@@ -85,7 +85,7 @@ test('it renders the source tab bar', async () => {
 
   expect(screen.getByText(/English description/i)).toBeInTheDocument();
   expect(screen.getByText(/English name/i)).toBeInTheDocument();
-  expect(screen.getByText(/pim_common.category/i)).toBeInTheDocument();
+  expect(screen.getByText(/pim_common.categories/i)).toBeInTheDocument();
 
   fireEvent.click(screen.getByText(/Name/i));
   expect(handleTabChange).toHaveBeenCalledWith('cffd540e-1e40-4c55-a415-89c7958b270d');
