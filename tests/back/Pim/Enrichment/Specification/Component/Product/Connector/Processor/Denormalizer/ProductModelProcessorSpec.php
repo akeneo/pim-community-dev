@@ -478,6 +478,7 @@ class ProductModelProcessorSpec extends ObjectBehavior
         $attributeFilter,
         $mediaStorer,
         $objectDetacher,
+        JobParameters $jobParameters,
         CleanLineBreaksInTextAttributes $cleanLineBreaksInTextAttributes,
         StepExecution $stepExecution,
         ProductModelInterface $productModel
@@ -513,6 +514,8 @@ class ProductModelProcessorSpec extends ObjectBehavior
         $productModelRepository->findOneByIdentifier('product_model_code')->willReturn(null);
 
         $productModelFactory->create()->willReturn($productModel);
+        $stepExecution->getJobParameters()->willReturn($jobParameters);
+        $jobParameters->get('enabledComparison')->willReturn(false);
         $stepExecution->incrementSummaryInfo('skip')->shouldBeCalled();
         $stepExecution->getSummaryInfo('item_position')->shouldBeCalled();
         $objectDetacher->detach($productModel)->shouldBeCalled();
@@ -521,8 +524,6 @@ class ProductModelProcessorSpec extends ObjectBehavior
             ->update($productModel, $productModelData)
             ->willThrow(new AccessDeniedException('You only have a view permission on the locale "de_DE".'));
 
-        $this->shouldThrow(InvalidItemException::class)->during('process', [[
-            'family_variant' => 'pantalon',
-        ]]);
+        $this->shouldThrow(InvalidItemException::class)->during('process', [$productModelData]);
     }
 }
