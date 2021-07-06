@@ -54,7 +54,8 @@
             "Akeneo\\Test\\Pim\\Automation\\RuleEngine\\": "src/Akeneo/Pim/Automation/RuleEngine/tests/back",
             "Akeneo\\Onboarder\\Test\\": "vendor/akeneo/pim-onboarder/tests/",
             "AkeneoEnterprise\\Connectivity\\Connection\\": "src/Akeneo/Connectivity/Connection/back",
-            "spec\\Akeneo\\AssetManager\\": "src/Akeneo/AssetManager/tests/back/spec"
+            "spec\\Akeneo\\AssetManager\\": "src/Akeneo/AssetManager/tests/back/spec",
+            "Akeneo\\Platform\\TailoredExport\\Test\\": "src/Akeneo/Platform/Bundle/TailoredExportBundle/tests"
         }
     },
     "require": {

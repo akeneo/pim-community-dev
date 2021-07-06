@@ -17,15 +17,14 @@ use Akeneo\Platform\TailoredExport\Application\Query\Selection\SelectionHandlerI
 use Akeneo\Platform\TailoredExport\Application\Query\Selection\SelectionInterface;
 use Akeneo\Platform\TailoredExport\Domain\SourceValue\ReferenceEntityCollectionValue;
 use Akeneo\Platform\TailoredExport\Domain\SourceValueInterface;
-use Akeneo\ReferenceEntity\Infrastructure\PublicApi\Enrich\FindRecordsLabelTranslations;
+use Akeneo\ReferenceEntity\Infrastructure\PublicApi\Enrich\FindRecordsLabelTranslationsInterface;
 
 class ReferenceEntityCollectionLabelSelectionHandler implements SelectionHandlerInterface
 {
-    private FindRecordsLabelTranslations $findRecordLabelTranslations;
+    private FindRecordsLabelTranslationsInterface $findRecordLabelTranslations;
 
-    public function __construct(
-        FindRecordsLabelTranslations $findRecordLabelTranslations
-    ) {
+    public function __construct(FindRecordsLabelTranslationsInterface $findRecordLabelTranslations)
+    {
         $this->findRecordLabelTranslations = $findRecordLabelTranslations;
     }
 

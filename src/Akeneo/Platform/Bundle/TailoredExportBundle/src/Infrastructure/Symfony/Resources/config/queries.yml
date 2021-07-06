@@ -3,3 +3,8 @@ services:
         class: Akeneo\Platform\TailoredExport\Infrastructure\Query\SqlGetGroupedAttributes
         arguments:
             - '@database_connection'
+
+    Akeneo\Platform\TailoredExport\Domain\Query\FindAttributeOptionLabelsInterface:
+        class: Akeneo\Platform\TailoredExport\Infrastructure\Query\FindAttributeOptionLabels
+        arguments:
+            - '@akeneo.pim.structure.query.lru_cached_get_existing_attribute_options_with_values'

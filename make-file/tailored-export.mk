@@ -17,3 +17,11 @@ ifeq ($(CI),true)
 else
 	APP_ENV=test ${PHP_RUN} vendor/bin/phpunit -c . --testsuite TailoredExport_Integration_Test $(O)
 endif
+
+.PHONY: acceptance-back
+acceptance-back: #Doc: launch PHPUnit acceptance test for the tailored-exports
+ifeq ($(CI),true)
+	APP_ENV=test_fake ${PHP_RUN} vendor/bin/phpunit -c src/Akeneo/Platform/Bundle/TailoredExportBundle/tests --log-junit var/tests/phpunit/phpunit_$$(uuidgen).xml --testsuite TailoredExport_Acceptance_Test
+else
+	APP_ENV=test_fake ${PHP_RUN} vendor/bin/phpunit -c src/Akeneo/Platform/Bundle/TailoredExportBundle/tests --testsuite TailoredExport_Acceptance_Test $(O)
+endif

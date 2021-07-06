@@ -13,20 +13,20 @@ declare(strict_types=1);
 
 namespace Akeneo\Platform\TailoredExport\Application\Query\Selection\MultiSelect;
 
-use Akeneo\Pim\Structure\Component\Query\PublicApi\AttributeOption\GetExistingAttributeOptionsWithValues;
 use Akeneo\Platform\TailoredExport\Application\Query\Selection\SelectionHandlerInterface;
 use Akeneo\Platform\TailoredExport\Application\Query\Selection\SelectionInterface;
+use Akeneo\Platform\TailoredExport\Domain\Query\FindAttributeOptionLabelsInterface;
 use Akeneo\Platform\TailoredExport\Domain\SourceValue\MultiSelectValue;
 use Akeneo\Platform\TailoredExport\Domain\SourceValueInterface;
 
 class MultiSelectLabelSelectionHandler implements SelectionHandlerInterface
 {
-    private GetExistingAttributeOptionsWithValues $getExistingAttributeOptionsWithValues;
+    private FindAttributeOptionLabelsInterface $getAttributeOptionLabels;
 
     public function __construct(
-        GetExistingAttributeOptionsWithValues $getExistingAttributeOptionsWithValues
+        FindAttributeOptionLabelsInterface $getAttributeOptionLabels
     ) {
-        $this->getExistingAttributeOptionsWithValues = $getExistingAttributeOptionsWithValues;
+        $this->getAttributeOptionLabels = $getAttributeOptionLabels;
     }
 
     public function applySelection(SelectionInterface $selection, SourceValueInterface $value): string
@@ -37,15 +37,14 @@ class MultiSelectLabelSelectionHandler implements SelectionHandlerInterface
 
         $attributeCode = $selection->getAttributeCode();
         $optionsCodes = $value->getOptionCodes();
-        $optionsKeys = $this->generateOptionsKeys($optionsCodes, $attributeCode);
+        $locale = $selection->getLocale();
 
-        $attributeOptionTranslations = $this->getExistingAttributeOptionsWithValues->fromAttributeCodeAndOptionCodes(
-            $optionsKeys
+        $attributeOptionTranslations = $this->getAttributeOptionLabels->byAttributeCodeAndOptionCodes(
+            $attributeCode, $optionsCodes, $locale
         );
 
         $selectedData = array_map(function ($optionCode) use ($attributeOptionTranslations, $attributeCode, $selection) {
-            $optionKey = $this->generateOptionKey($attributeCode, $optionCode);
-            return $attributeOptionTranslations[$optionKey][$selection->getLocale()] ?? sprintf('[%s]', $optionCode);
+            return $attributeOptionTranslations[$optionCode] ?? sprintf('[%s]', $optionCode);
         }, $optionsCodes);
 
         return implode($selection->getSeparator(), $selectedData);
@@ -55,20 +54,5 @@ class MultiSelectLabelSelectionHandler implements SelectionHandlerInterface
     {
         return $selection instanceof MultiSelectLabelSelection
             && $value instanceof MultiSelectValue;
-    }
-
-    private function generateOptionsKeys(array $optionsCodes, string $attributeCode): array
-    {
-        return array_map(
-            function ($optionCode) use ($attributeCode) {
-                return $this->generateOptionKey($attributeCode, $optionCode);
-            },
-            $optionsCodes
-        );
-    }
-
-    private function generateOptionKey(string $attributeCode, string $optionCode): string
-    {
-        return sprintf('%s.%s', $attributeCode, $optionCode);
     }
 }

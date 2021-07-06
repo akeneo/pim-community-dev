@@ -24,3 +24,5 @@ imports:
     - { resource: ../../../tests/back/AssetManager/Acceptance/Resources/config/pim/queries.yml }
     # Rule Engine
     - { resource: ../../../src/Akeneo/Pim/Automation/RuleEngine/tests/back/Acceptance/Resources/config/services.yml }
+    # Tailored Exports
+    - { resource: ../../../src/Akeneo/Platform/Bundle/TailoredExportBundle/tests/Acceptance/Resources/config/services.yml }

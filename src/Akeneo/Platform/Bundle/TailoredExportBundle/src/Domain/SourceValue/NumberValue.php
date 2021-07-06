@@ -14,6 +14,7 @@ declare(strict_types=1);
 namespace Akeneo\Platform\TailoredExport\Domain\SourceValue;
 
 use Akeneo\Platform\TailoredExport\Domain\SourceValueInterface;
+use Webmozart\Assert\Assert;
 
 class NumberValue implements SourceValueInterface
 {
@@ -21,6 +22,7 @@ class NumberValue implements SourceValueInterface
 
     public function __construct(string $data)
     {
+        Assert::numeric($data);
         $this->data = $data;
     }
 

@@ -30,7 +30,7 @@ function writeln($text, $type = 'normal'): void
 
 function openFileFromRoot($fileName): string
 {
-    $ROOT = __DIR__.'/../../../../';
+    $ROOT = __DIR__ . '/../../../../';
 
     return file_get_contents($ROOT . $fileName);
 }

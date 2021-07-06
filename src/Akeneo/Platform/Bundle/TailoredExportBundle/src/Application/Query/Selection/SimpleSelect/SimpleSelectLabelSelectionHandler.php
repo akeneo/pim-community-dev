@@ -16,17 +16,18 @@ namespace Akeneo\Platform\TailoredExport\Application\Query\Selection\SimpleSelec
 use Akeneo\Pim\Structure\Component\Query\PublicApi\AttributeOption\GetExistingAttributeOptionsWithValues;
 use Akeneo\Platform\TailoredExport\Application\Query\Selection\SelectionHandlerInterface;
 use Akeneo\Platform\TailoredExport\Application\Query\Selection\SelectionInterface;
+use Akeneo\Platform\TailoredExport\Domain\Query\FindAttributeOptionLabelsInterface;
 use Akeneo\Platform\TailoredExport\Domain\SourceValue\SimpleSelectValue;
 use Akeneo\Platform\TailoredExport\Domain\SourceValueInterface;
 
 class SimpleSelectLabelSelectionHandler implements SelectionHandlerInterface
 {
-    private GetExistingAttributeOptionsWithValues $getExistingAttributeOptionsWithValues;
+    private FindAttributeOptionLabelsInterface $getAttributeOptionLabels;
 
     public function __construct(
-        GetExistingAttributeOptionsWithValues $getExistingAttributeOptionsWithValues
+        FindAttributeOptionLabelsInterface $getAttributeOptionLabels
     ) {
-        $this->getExistingAttributeOptionsWithValues = $getExistingAttributeOptionsWithValues;
+        $this->getAttributeOptionLabels = $getAttributeOptionLabels;
     }
 
     public function applySelection(SelectionInterface $selection, SourceValueInterface $value): string
@@ -37,11 +38,10 @@ class SimpleSelectLabelSelectionHandler implements SelectionHandlerInterface
 
         $attributeCode = $selection->getAttributeCode();
         $optionCode = $value->getOptionCode();
-        $optionKey = sprintf('%s.%s', $attributeCode, $optionCode);
-        $attributeOptionTranslations = $this->getExistingAttributeOptionsWithValues
-            ->fromAttributeCodeAndOptionCodes([$optionKey]);
+        $attributeOptionTranslations = $this->getAttributeOptionLabels
+            ->byAttributeCodeAndOptionCodes($attributeCode, [$optionCode], $selection->getLocale());
 
-        return $attributeOptionTranslations[$optionKey][$selection->getLocale()] ?? sprintf('[%s]', $optionCode);
+        return $attributeOptionTranslations[$optionCode] ?? sprintf('[%s]', $optionCode);
     }
 
     public function supports(SelectionInterface $selection, SourceValueInterface $value): bool

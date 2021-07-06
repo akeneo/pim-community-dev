@@ -13,7 +13,7 @@ declare(strict_types=1);
 
 namespace Akeneo\Platform\TailoredExport\Application\Query\Selection\AssetCollection;
 
-use Akeneo\AssetManager\Infrastructure\PublicApi\Enrich\FindAssetLabelTranslation;
+use Akeneo\AssetManager\Infrastructure\PublicApi\Enrich\FindAssetLabelTranslationInterface;
 use Akeneo\Platform\TailoredExport\Application\Query\Selection\SelectionHandlerInterface;
 use Akeneo\Platform\TailoredExport\Application\Query\Selection\SelectionInterface;
 use Akeneo\Platform\TailoredExport\Domain\SourceValue\AssetCollectionValue;
@@ -21,10 +21,10 @@ use Akeneo\Platform\TailoredExport\Domain\SourceValueInterface;
 
 class AssetCollectionLabelSelectionHandler implements SelectionHandlerInterface
 {
-    private FindAssetLabelTranslation $findAssetLabelTranslations;
+    private FindAssetLabelTranslationInterface $findAssetLabelTranslations;
 
     public function __construct(
-        FindAssetLabelTranslation $findAssetLabelTranslations
+        FindAssetLabelTranslationInterface $findAssetLabelTranslations
     ) {
         $this->findAssetLabelTranslations = $findAssetLabelTranslations;
     }
