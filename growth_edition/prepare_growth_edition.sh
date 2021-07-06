@@ -13,6 +13,7 @@ cp $EE_DIR/Dockerfile $TARGET_DIR/
 cp -r $EE_DIR/docker/*.conf $EE_DIR/docker/*.ini $TARGET_DIR/docker/
 cp -r $EE_DIR/deployments $TARGET_DIR/
 cp -r $EE_DIR/bin/wait-for-dependencies $TARGET_DIR/bin/wait-for-dependencies
+cp -r $EE_DIR/bin/es_sync_checker $TARGET_DIR/bin/es_sync_checker
 cp -r $EE_DIR/public/api.php $TARGET_DIR/public/
 
 cp $EE_DIR/growth_edition/oneup_flysystem.yml $TARGET_DIR/config/packages/prod/

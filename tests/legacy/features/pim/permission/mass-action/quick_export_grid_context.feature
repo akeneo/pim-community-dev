@@ -31,7 +31,7 @@ Feature: Quick export products according to the product grid context
 
   Scenario: Successfully quick export published products from grid context as a CSV file
     Given I am on the published products grid
-    And I display in the published products grid the columns SKU, Name, Label, Family, Color, Complete, Groups, Price, Size, Created at, Updated at, Description and Weight
+    And I display in the published products grid the columns SKU, Name, Label, Family, Color, Complete, Groups, Price, Size, Created, Updated, Description and Weight
     And I select rows boots, sneakers, pump
     When I press the "Quick Export" button
     And I press the "CSV" button
@@ -56,7 +56,7 @@ Feature: Quick export products according to the product grid context
 
   Scenario: Successfully quick export products from grid context as a XLSX file
     Given I am on the published products grid
-    And I display in the published products grid the columns SKU, Name, Label, Family, Color, Complete, Groups, Price, Size, Created at, Updated at, Description and Weight
+    And I display in the published products grid the columns SKU, Name, Label, Family, Color, Complete, Groups, Price, Size, Created, Updated, Description and Weight
     And I select rows boots, sneakers, pump
     When I press the "Quick Export" button
     And I press the "XLSX" button

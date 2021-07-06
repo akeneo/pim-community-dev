@@ -50,7 +50,6 @@ akeneo_data_quality_insights:
           messages:
             first_step:
               message1: Sie haben Schwierigkeiten mit Attribut- und Optionen-Labels? Wie wäre es mit den Grundlagen <a href="{{ link }}" target="_blank">hier</a> zurückzukehren?
-              message2: Benötigen Sie Hilfe bei Ihren Attributen und Attributoptionen? Schaue <a href="{{ link }}" target="_blank">hier<a href="{{ link }}" target="_blank"> vorbei!
             second_step:
               message1: Werfen Sie einen Blick auf Ihre Attribute und Optionsbeschriftungen. Ihre Produkte werden danach noch besser aussehen.
               message2: Es sieht so aus, als wären Sie irgendwo auf dem Weg verloren gegangen! Einige Ihrer Etiketten benötigen noch Arbeit.
