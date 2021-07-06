@@ -21,8 +21,7 @@ class GetAllExtensionsQuerySpec extends ObjectBehavior
     public function let(
         WebMarketplaceApiInterface $webMarketplaceApi,
         VersionProviderInterface $versionProvider
-    )
-    {
+    ) {
         $this->beConstructedWith($webMarketplaceApi, $versionProvider);
     }
 
@@ -34,8 +33,7 @@ class GetAllExtensionsQuerySpec extends ObjectBehavior
     public function it_execute_and_returns_extension_result(
         WebMarketplaceApiInterface $webMarketplaceApi,
         VersionProviderInterface $versionProvider
-    )
-    {
+    ) {
         $versionProvider->getVersion()->willReturn('5.0');
         $versionProvider->getEdition()->willreturn('Serenity');
         $item = [
