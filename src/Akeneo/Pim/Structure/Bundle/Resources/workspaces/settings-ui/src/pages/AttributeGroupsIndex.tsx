@@ -1,4 +1,4 @@
-import React, {FC, useEffect} from 'react';
+import React, {FC, useEffect, useState} from 'react';
 import {PageContent, PageHeader, useRoute, useTranslate, PimView} from '@akeneo-pim-community/shared';
 import {AttributeGroupsCreateButton, AttributeGroupsDataGrid} from '../components';
 import {useAttributeGroupsIndexState} from '../hooks';
@@ -8,6 +8,8 @@ const AttributeGroupsIndex: FC = () => {
   const {groups, load, isPending} = useAttributeGroupsIndexState();
   const translate = useTranslate();
   const settingsHomePageRoute = `#${useRoute('pim_settings_index')}`;
+
+  const [groupCount, setGroupCount] = useState<number>(groups.length);
 
   useEffect(() => {
     (async () => {
@@ -34,15 +36,11 @@ const AttributeGroupsIndex: FC = () => {
           <AttributeGroupsCreateButton />
         </PageHeader.Actions>
         <PageHeader.Title>
-          {translate(
-            'pim_enrich.entity.attribute_group.result_count',
-            {count: groups.length.toString()},
-            groups.length
-          )}
+          {translate('pim_enrich.entity.attribute_group.result_count', {count: groupCount.toString()}, groupCount)}
         </PageHeader.Title>
       </PageHeader>
       <PageContent>
-        <AttributeGroupsDataGrid groups={groups} />
+        <AttributeGroupsDataGrid groups={groups} onGroupCountChange={setGroupCount} />
       </PageContent>
     </>
   );
