@@ -1,8 +1,8 @@
 import React, {FC, useEffect} from 'react';
 import styled from 'styled-components';
 import {SubNavigationItem, SubNavigationPanel, useBooleanState} from 'akeneo-design-system';
-import {useRouter, useTranslate} from '@akeneo-pim-community/shared';
-import {SubNavigationDropdown} from "./SubNavigationDropdown";
+import {useRouter, useTranslate} from '../../hooks';
+import {SubNavigationDropdown} from './SubNavigationDropdown';
 
 type SubNavigationType = {
   title?: string;
@@ -110,5 +110,5 @@ const Backlink = styled.div`
   padding-bottom: 10px;
 `;
 
-export {SubNavigation, SubNavigationSection, SubNavigationEntry};
-export type {SubNavigationType};
+export {SubNavigation};
+export type {SubNavigationType, SubNavigationSection, SubNavigationEntry};

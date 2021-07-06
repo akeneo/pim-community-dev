@@ -1,11 +1,10 @@
 'use strict';
 
 import {ViewOptions} from 'backbone';
-import {NavigationEntry, PimNavigation} from '../Navigation/PimNavigation';
+import {NavigationEntry, PimNavigation, SubNavigationSection, SubNavigationType} from '@akeneo-pim-community/shared';
 import View from '../view/base-interface';
 import React from 'react';
 import * as DSM from 'akeneo-design-system';
-import {SubNavigationSection, SubNavigationType} from '../Navigation/SubNavigation';
 
 const BaseForm = require('pim/form');
 const _ = require('underscore');

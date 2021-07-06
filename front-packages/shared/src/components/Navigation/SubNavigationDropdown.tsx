@@ -1,6 +1,6 @@
 import {Dropdown, IconButton, MoreVerticalIcon, useBooleanState} from 'akeneo-design-system';
 import React, {FC} from 'react';
-import {useRouter, useTranslate} from '@akeneo-pim-community/shared';
+import {useRouter, useTranslate} from '../../hooks';
 import {SubNavigationEntry} from './SubNavigation';
 
 type Props = {

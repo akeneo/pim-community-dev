@@ -3,6 +3,7 @@ export * from './DeleteModal';
 export * from './FullScreenError';
 export * from './LoadingPlaceholder';
 export * from './LocaleSelector';
+export * from './Navigation';
 export * from './NoData';
 export * from './Notifications';
 export * from './page';

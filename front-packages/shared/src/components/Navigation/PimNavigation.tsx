@@ -1,6 +1,7 @@
 import React, {FC, useMemo} from 'react';
 import styled from 'styled-components';
-import {PimView, useRouter, useTranslate} from '@akeneo-pim-community/shared';
+import {PimView} from '../PimView';
+import {useRouter, useTranslate} from '../../hooks';
 import {IconProps, MainNavigationItem} from 'akeneo-design-system';
 import {SubNavigation, SubNavigationEntry, SubNavigationType} from './SubNavigation';
 
