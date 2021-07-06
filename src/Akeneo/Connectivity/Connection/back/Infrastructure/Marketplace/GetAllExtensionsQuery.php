@@ -4,9 +4,9 @@ declare(strict_types=1);
 
 namespace Akeneo\Connectivity\Connection\Infrastructure\Marketplace;
 
+use Akeneo\Connectivity\Connection\Domain\Marketplace\DTO\GetAllExtensionsResult;
 use Akeneo\Connectivity\Connection\Domain\Marketplace\GetAllExtensionsQueryInterface;
 use Akeneo\Connectivity\Connection\Domain\Marketplace\Model\Extension;
-use Akeneo\Connectivity\Connection\Domain\Marketplace\Model\ExtensionList;
 use Akeneo\Platform\VersionProviderInterface;
 
 /**
@@ -24,7 +24,7 @@ class GetAllExtensionsQuery implements GetAllExtensionsQueryInterface
         $this->versionProvider = $versionProvider;
     }
 
-    public function execute(): ExtensionList
+    public function execute(): GetAllExtensionsResult
     {
         $version = $this->versionProvider->getVersion();
         $edition = $this->versionProvider->getEdition();
@@ -37,6 +37,6 @@ class GetAllExtensionsQuery implements GetAllExtensionsQueryInterface
             $extensions[] = Extension::create($item);
         }
 
-        return ExtensionList::create($result['count'], $extensions);
+        return GetAllExtensionsResult::create($result['total'], $extensions);
     }
 }

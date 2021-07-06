@@ -4,8 +4,8 @@ declare(strict_types=1);
 
 namespace spec\Akeneo\Connectivity\Connection\Infrastructure\Marketplace;
 
+use Akeneo\Connectivity\Connection\Domain\Marketplace\DTO\GetAllExtensionsResult;
 use Akeneo\Connectivity\Connection\Domain\Marketplace\Model\Extension;
-use Akeneo\Connectivity\Connection\Domain\Marketplace\Model\ExtensionList;
 use Akeneo\Connectivity\Connection\Infrastructure\Marketplace\GetAllExtensionsQuery;
 use Akeneo\Connectivity\Connection\Infrastructure\Marketplace\WebMarketplaceApi;
 use Akeneo\Platform\VersionProviderInterface;
@@ -46,15 +46,14 @@ class GetAllExtensionsQuerySpec extends ObjectBehavior
             'description' => 'Our Shopify Akeneo Connector eases your business by refining, transforming, and publishing relevant products, images, videos, and attributes between Akeneo and Shopify.Ideatarmac\u2019s Shopify connector is a cloud based technology and has compatibility to the widest and latest range of Akeneo editions from Community to Enterprise to Growth Edition. Our aim is to make your integration the simplest possible and reduce the routine data management effort up to 70%.',
             'url' => 'https:\/\/marketplace.akeneo.com\/extension\/shopify-connector',
             'categories' => ['E-commerce'],
-            'certified' => false
+            'certified' => false,
         ];
-        $webMarketplaceApi->getExtensions('Serenity', '5.0')
-            ->willreturn([
-                'count' => 12,
-                'items' => [$item]
-            ]);
+        $webMarketplaceApi->getExtensions('Serenity', '5.0')->willreturn([
+            'total' => 12,
+            'items' => [$item],
+        ]);
 
-        $extension = Extension::create($item);
-        $this->execute()->shouldBeLike(ExtensionList::create(12, [$extension]));
+        $extension = Extension::fromWebMarketplaceValues($item);
+        $this->execute()->shouldBeLike(GetAllExtensionsResult::create(12, [$extension]));
     }
 }

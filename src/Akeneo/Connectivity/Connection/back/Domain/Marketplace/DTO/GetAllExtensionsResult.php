@@ -1,15 +1,17 @@
 <?php
 declare(strict_types=1);
 
-namespace Akeneo\Connectivity\Connection\Domain\Marketplace\Model;
+namespace Akeneo\Connectivity\Connection\Domain\Marketplace\DTO;
+
+use Akeneo\Connectivity\Connection\Domain\Marketplace\Model\Extension;
 
 /**
  * @copyright 2021 Akeneo SAS (http://www.akeneo.com)
  * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
  */
-class ExtensionList
+final class GetAllExtensionsResult
 {
-    private int $count;
+    private int $total;
 
     /** @var array<Extension> */
     private array $extensions;
@@ -17,35 +19,22 @@ class ExtensionList
     /**
      * @param array<Extension> $extensions
      */
-    private function __construct(int $count, array $extensions)
+    private function __construct(int $total, array $extensions)
     {
-        $this->count = $count;
+        $this->total = $total;
         $this->extensions = $extensions;
     }
 
     /**
      * @param array<Extension> $extensions
      */
-    public static function create(int $count, array $extensions): self
+    public static function create(int $total, array $extensions): self
     {
-        return new self($count, $extensions);
-    }
-
-    public function count(): int
-    {
-        return $this->count;
+        return new self($total, $extensions);
     }
 
     /**
-     * @return array<Extension>
-     */
-    public function extensions(): array
-    {
-        return $this->extensions;
-    }
-
-    /**
-     * @return array{count:int, extensions:array}
+     * @return array{total:int, extensions:array}
      */
     public function normalize(): array
     {
@@ -56,7 +45,7 @@ class ExtensionList
         }
 
         return [
-            'count' => $this->count,
+            'total' => $this->total,
             'extensions' => $normalizedExtensions,
         ];
     }

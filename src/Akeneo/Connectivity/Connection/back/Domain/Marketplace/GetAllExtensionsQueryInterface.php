@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace Akeneo\Connectivity\Connection\Domain\Marketplace;
 
-use Akeneo\Connectivity\Connection\Domain\Marketplace\Model\ExtensionList;
+use Akeneo\Connectivity\Connection\Domain\Marketplace\DTO\GetAllExtensionsResult;
 
 /**
  * @copyright 2021 Akeneo SAS (http://www.akeneo.com)
@@ -12,5 +12,5 @@ use Akeneo\Connectivity\Connection\Domain\Marketplace\Model\ExtensionList;
  */
 interface GetAllExtensionsQueryInterface
 {
-    public function execute(): ExtensionList;
+    public function execute(): GetAllExtensionsResult;
 }
