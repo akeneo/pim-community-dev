@@ -1,7 +1,7 @@
 import React from 'react';
 import {Field, Helper, SelectInput} from 'akeneo-design-system';
 import {Section, filterErrors, useTranslate, ValidationError} from '@akeneo-pim-community/shared';
-import {PriceCollectionSelection} from './model';
+import {PriceCollectionSelection, availableSeparators, isPriceCollectionSeparator} from './model';
 
 type PriceCollectionSelectorProps = {
   selection: PriceCollectionSelection;
@@ -12,6 +12,7 @@ type PriceCollectionSelectorProps = {
 const PriceCollectionSelector = ({selection, validationErrors, onSelectionChange}: PriceCollectionSelectorProps) => {
   const translate = useTranslate();
   const typeErrors = filterErrors(validationErrors, '[type]');
+  const separatorErrors = filterErrors(validationErrors, '[separator]');
 
   return (
     <Section>
@@ -45,6 +46,31 @@ const PriceCollectionSelector = ({selection, validationErrors, onSelectionChange
           {translate('akeneo.tailored_export.column_details.sources.selection.price.information')}
         </Helper>
         {typeErrors.map((error, index) => (
+          <Helper key={index} inline={true} level="error">
+            {translate(error.messageTemplate, error.parameters)}
+          </Helper>
+        ))}
+      </Field>
+      <Field label={translate('akeneo.tailored_export.column_details.sources.selection.collection_separator')}>
+        <SelectInput
+          invalid={0 < separatorErrors.length}
+          clearable={false}
+          emptyResultLabel={translate('pim_common.no_result')}
+          openLabel={translate('pim_common.open')}
+          value={selection.separator}
+          onChange={separator => {
+            if (isPriceCollectionSeparator(separator)) {
+              onSelectionChange({...selection, separator});
+            }
+          }}
+        >
+          {availableSeparators.map(availableSeparator => (
+            <SelectInput.Option key={availableSeparator} title={availableSeparator} value={availableSeparator}>
+              {availableSeparator}
+            </SelectInput.Option>
+          ))}
+        </SelectInput>
+        {separatorErrors.map((error, index) => (
           <Helper key={index} inline={true} level="error">
             {translate(error.messageTemplate, error.parameters)}
           </Helper>

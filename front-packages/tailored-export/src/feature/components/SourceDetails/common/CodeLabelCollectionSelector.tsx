@@ -94,7 +94,7 @@ const CodeLabelCollectionSelector = ({
           onChange={updatedValue => onSelectionChange({...selection, locale: updatedValue})}
         />
       )}
-      <Field label={translate('akeneo.tailored_export.column_details.sources.selection.separator')}>
+      <Field label={translate('akeneo.tailored_export.column_details.sources.selection.collection_separator')}>
         <SelectInput
           invalid={0 < separatorErrors.length}
           clearable={false}

@@ -58,7 +58,11 @@ test('it displays a type dropdown when the selection type is amount', async () =
   const onSelectionChange = jest.fn();
 
   await renderWithProviders(
-    <PriceCollectionSelector selection={{type: 'amount'}} validationErrors={[]} onSelectionChange={onSelectionChange} />
+    <PriceCollectionSelector
+      selection={{type: 'amount', separator: ','}}
+      validationErrors={[]}
+      onSelectionChange={onSelectionChange}
+    />
   );
 
   expect(screen.getByText('pim_common.type')).toBeInTheDocument();
@@ -69,13 +73,34 @@ test('it can select a currency selection type', async () => {
   const onSelectionChange = jest.fn();
 
   await renderWithProviders(
-    <PriceCollectionSelector selection={{type: 'amount'}} validationErrors={[]} onSelectionChange={onSelectionChange} />
+    <PriceCollectionSelector
+      selection={{type: 'amount', separator: ','}}
+      validationErrors={[]}
+      onSelectionChange={onSelectionChange}
+    />
   );
 
   userEvent.click(screen.getByText('pim_common.type'));
   userEvent.click(screen.getByTitle('akeneo.tailored_export.column_details.sources.selection.type.currency'));
 
-  expect(onSelectionChange).toHaveBeenCalledWith({type: 'currency'});
+  expect(onSelectionChange).toHaveBeenCalledWith({type: 'currency', separator: ','});
+});
+
+test('it can select a price collection separator', async () => {
+  const onSelectionChange = jest.fn();
+
+  await renderWithProviders(
+    <PriceCollectionSelector
+      validationErrors={[]}
+      selection={{type: 'amount', separator: ','}}
+      onSelectionChange={onSelectionChange}
+    />
+  );
+
+  userEvent.click(screen.getByText('akeneo.tailored_export.column_details.sources.selection.collection_separator'));
+  userEvent.click(screen.getByTitle(';'));
+
+  expect(onSelectionChange).toHaveBeenCalledWith({type: 'amount', separator: ';'});
 });
 
 test('it displays validation errors', async () => {
@@ -88,15 +113,23 @@ test('it displays validation errors', async () => {
       parameters: {},
       propertyPath: '[type]',
     },
+    {
+      messageTemplate: 'error.key.separator',
+      invalidValue: '',
+      message: 'this is a separator error',
+      parameters: {},
+      propertyPath: '[separator]',
+    },
   ];
 
   await renderWithProviders(
     <PriceCollectionSelector
-      selection={{type: 'amount'}}
+      selection={{type: 'amount', separator: ','}}
       validationErrors={validationErrors}
       onSelectionChange={onSelectionChange}
     />
   );
 
   expect(screen.getByText('error.key.type')).toBeInTheDocument();
+  expect(screen.getByText('error.key.separator')).toBeInTheDocument();
 });

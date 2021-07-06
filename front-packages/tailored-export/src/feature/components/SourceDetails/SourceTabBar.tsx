@@ -1,16 +1,17 @@
 import React, {useMemo} from 'react';
-import {TabBar} from 'akeneo-design-system';
-import {getLabel, useTranslate, useUserContext} from '@akeneo-pim-community/shared';
+import {Pill, TabBar} from 'akeneo-design-system';
+import {filterErrors, getLabel, useTranslate, useUserContext, ValidationError} from '@akeneo-pim-community/shared';
 import {useAttributes} from '../../hooks';
 import {Source} from '../../models';
 
 type SourceTabBarProps = {
   sources: Source[];
   currentTab: string;
+  validationErrors: ValidationError[];
   onTabChange: (newTab: string) => void;
 };
 
-const SourceTabBar = ({sources, currentTab, onTabChange}: SourceTabBarProps) => {
+const SourceTabBar = ({sources, currentTab, validationErrors, onTabChange}: SourceTabBarProps) => {
   const translate = useTranslate();
   const catalogLocale = useUserContext().get('catalogLocale');
   const attributeCodes = useMemo(() => sources.map(source => source.code), [sources]);
@@ -27,6 +28,7 @@ const SourceTabBar = ({sources, currentTab, onTabChange}: SourceTabBarProps) => 
                 source.code
               )
             : translate(`pim_common.${source.code}`)}
+          {0 < filterErrors(validationErrors, `[${source.uuid}]`).length && <Pill level="danger" />}
         </TabBar.Tab>
       ))}
     </TabBar>

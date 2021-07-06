@@ -90,7 +90,12 @@ const ColumnDetails = ({columnConfiguration, onColumnChange}: ColumnDetailsProps
       </SourcesSectionTitle>
       <Content>
         {columnConfiguration.sources.length !== 0 && (
-          <SourceTabBar sources={columnConfiguration.sources} currentTab={currentSourceUuid} onTabChange={switchTo} />
+          <SourceTabBar
+            validationErrors={validationErrors}
+            sources={columnConfiguration.sources}
+            currentTab={currentSourceUuid}
+            onTabChange={switchTo}
+          />
         )}
         {sourcesErrors.map((error, index) => (
           <Helper key={index} level="error">

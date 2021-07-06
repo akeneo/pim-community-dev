@@ -66,7 +66,9 @@ test('it displays a type dropdown and a separator dropdown when the selection ty
   );
 
   expect(screen.getByText('pim_common.type')).toBeInTheDocument();
-  expect(screen.getByText('akeneo.tailored_export.column_details.sources.selection.separator')).toBeInTheDocument();
+  expect(
+    screen.getByText('akeneo.tailored_export.column_details.sources.selection.collection_separator')
+  ).toBeInTheDocument();
   expect(screen.getByText('pim_common.code')).toBeInTheDocument();
   expect(screen.queryByText('pim_common.locale')).not.toBeInTheDocument();
 });
@@ -136,7 +138,7 @@ test('it can select a collection separator', async () => {
     />
   );
 
-  userEvent.click(screen.getByText('akeneo.tailored_export.column_details.sources.selection.separator'));
+  userEvent.click(screen.getByText('akeneo.tailored_export.column_details.sources.selection.collection_separator'));
   userEvent.click(screen.getByTitle(';'));
 
   expect(onSelectionChange).toHaveBeenCalledWith({type: 'label', locale: 'en_US', separator: ';'});

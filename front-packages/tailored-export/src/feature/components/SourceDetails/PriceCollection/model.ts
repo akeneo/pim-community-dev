@@ -2,9 +2,16 @@ import {uuid} from 'akeneo-design-system';
 import {ChannelReference, LocaleReference} from '@akeneo-pim-community/shared';
 import {Attribute, Source} from '../../../models';
 
+const availableSeparators = [',', ';', '|'];
+
+type PriceCollectionSeparator = typeof availableSeparators[number];
+
+const isPriceCollectionSeparator = (separator: unknown): separator is PriceCollectionSeparator =>
+  typeof separator === 'string' && availableSeparators.includes(separator);
+
 type PriceCollectionSelection = {
   type: 'amount' | 'currency';
-  separator: ',';
+  separator: PriceCollectionSeparator;
 };
 
 const isPriceCollectionSelection = (selection: any): selection is PriceCollectionSelection =>
@@ -37,5 +44,11 @@ const getDefaultPriceCollectionSource = (
 const isPriceCollectionSource = (source: Source): source is PriceCollectionSource =>
   isPriceCollectionSelection(source.selection);
 
-export {getDefaultPriceCollectionSource, isPriceCollectionSource, isPriceCollectionSelection};
+export {
+  availableSeparators,
+  getDefaultPriceCollectionSource,
+  isPriceCollectionSource,
+  isPriceCollectionSelection,
+  isPriceCollectionSeparator,
+};
 export type {PriceCollectionSource, PriceCollectionSelection};
