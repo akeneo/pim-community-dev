@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace Akeneo\Connectivity\Connection\back\tests\EndToEnd\Marketplace;
 
 use Akeneo\Connectivity\Connection\back\tests\EndToEnd\WebTestCase;
+use Akeneo\Connectivity\Connection\Tests\Integration\Mock\FakeWebMarketplaceApi;
 use Akeneo\Test\Integration\Configuration;
 use PHPUnit\Framework\Assert;
 use Symfony\Component\HttpFoundation\Response;
@@ -56,7 +57,7 @@ class GetAllExtensionsEndToEnd extends WebTestCase
             ],
         ];
 
-        // TODO: Persist extensions.
+        $this->getWebMarketplaceApi()->setExtensions($expectedExtensions);
 
         $this->client->request('GET', '/rest/marketplace/extensions');
         $result = json_decode($this->client->getResponse()->getContent(), true);
@@ -64,8 +65,13 @@ class GetAllExtensionsEndToEnd extends WebTestCase
         Assert::assertEquals(Response::HTTP_OK, $this->client->getResponse()->getStatusCode());
         Assert::assertArrayHasKey('total', $result);
         Assert::assertArrayHasKey('extensions', $result);
-        Assert::assertEquals(120, $result['total']);
+        Assert::assertEquals(2, $result['total']);
         Assert::assertEquals($expectedExtensions[0], $result['extensions'][0]);
         Assert::assertEquals($expectedExtensions[1], $result['extensions'][1]);
+    }
+
+    private function getWebMarketplaceApi(): FakeWebMarketplaceApi
+    {
+        return $this->get('akeneo_connectivity.connection.marketplace.web_marketplace_api');
     }
 }

@@ -12,8 +12,33 @@ use Akeneo\Connectivity\Connection\Infrastructure\Marketplace\WebMarketplaceApiI
  */
 class FakeWebMarketplaceApi implements WebMarketplaceApiInterface
 {
+    private array $extensions = [];
+
+    /**
+     * @param array<array{
+     *      id: string,
+     *      name: string,
+     *      logo: string,
+     *      author: string,
+     *      partner?: string,
+     *      description: string,
+     *      url: string,
+     *      categories: array<string>,
+     *      certified?: bool,
+     * }> $extensions
+     */
+    public function setExtensions(array $extensions): void
+    {
+        $this->extensions = $extensions;
+    }
+
     public function getExtensions(string $edition, string $version, $offset = 0, $limit = 10): array
     {
-        throw new \LogicException('should not be called in an integration test');
+        return [
+            'total' => count($this->extensions),
+            'offset' => $offset,
+            'limit' => $limit,
+            'items' => array_slice($this->extensions, $offset, $limit),
+        ];
     }
 }
