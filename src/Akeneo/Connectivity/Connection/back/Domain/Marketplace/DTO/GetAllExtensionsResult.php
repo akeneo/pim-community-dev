@@ -21,6 +21,15 @@ final class GetAllExtensionsResult
      */
     private function __construct(int $total, array $extensions)
     {
+        foreach ($extensions as $extension) {
+            if (!$extension instanceof Extension) {
+                throw new \InvalidArgumentException(sprintf(
+                    'Expected an array of "%s", got "%s".',
+                    Extension::class,
+                    is_object($extension) ? get_class($extension) : gettype($extension)
+                ));
+            }
+        }
         $this->total = $total;
         $this->extensions = $extensions;
     }
