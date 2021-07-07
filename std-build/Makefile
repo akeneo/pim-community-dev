@@ -53,7 +53,12 @@ front: assets css front-packages javascript-dev
 
 .PHONY: database
 database:
+ifeq (${DROP_DATABASE},1)
 	$(PHP_RUN) bin/console pim:installer:db ${O}
+else
+	@echo "Beware: this action will reset your current database and replace it with a freshly installed (empty) one."
+	@echo "Please run \x1b[32mDROP_DATABASE=1 make database O=\"${O}\"\x1b[0m if it is your intention to install a fresh database."
+endif
 
 .PHONY: cache
 cache:
