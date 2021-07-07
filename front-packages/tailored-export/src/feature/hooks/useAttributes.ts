@@ -16,7 +16,7 @@ const useAttributes = (attributeCodes: string[]): Attribute[] => {
     });
   }, [attributeCodes, attributeFetcher, isMounted]);
 
-  return attributes;
+  return attributes.filter(({code}) => attributeCodes.includes(code));
 };
 
 const useAttribute = (attributeCode: string): Attribute | null => {
@@ -32,7 +32,7 @@ const useAttribute = (attributeCode: string): Attribute | null => {
     });
   }, [attributeCode, attributeFetcher, isMounted]);
 
-  return attribute;
+  return null !== attribute && attribute.code === attributeCode ? attribute : null;
 };
 
 export {useAttribute, useAttributes};

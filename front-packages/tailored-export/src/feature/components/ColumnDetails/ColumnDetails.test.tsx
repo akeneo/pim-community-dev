@@ -269,7 +269,7 @@ test('We can update a source', async () => {
     sources: [
       {
         channel: null,
-        code: 'name',
+        code: 'description',
         locale: 'en_US',
         operations: {},
         selection: {
@@ -310,7 +310,7 @@ test('We can update a source', async () => {
     sources: [
       {
         channel: null,
-        code: 'name',
+        code: 'description',
         locale: 'br_FR',
         operations: {},
         selection: {

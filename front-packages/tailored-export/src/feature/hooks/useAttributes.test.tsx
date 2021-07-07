@@ -1,6 +1,7 @@
 import {Channel} from '@akeneo-pim-community/shared';
 import {act} from 'react-dom/test-utils';
-import {Attribute, FetcherContext} from '../contexts';
+import {Attribute} from '../models';
+import {FetcherContext} from '../contexts';
 import {useAttribute, useAttributes} from './useAttributes';
 import React, {ReactNode} from 'react';
 import {renderHook} from '@testing-library/react-hooks';
@@ -43,7 +44,7 @@ test('It fetch the attributes', async () => {
 });
 
 test('It fetch an attribute', async () => {
-  const {result, waitForNextUpdate} = renderHook(() => useAttribute('release_date'), {
+  const {result, waitForNextUpdate} = renderHook(() => useAttribute('description'), {
     wrapper: Wrapper,
     initialProps: {response: [{code: 'description', labels: {}, scopable: true, localizable: true}]},
   });
@@ -52,8 +53,8 @@ test('It fetch an attribute', async () => {
     await waitForNextUpdate();
   });
 
-  const attribute = result.current;
-  expect(attribute).toEqual({code: 'description', labels: {}, scopable: true, localizable: true});
+  const attributeAfterFetch = result.current;
+  expect(attributeAfterFetch).toEqual({code: 'description', labels: {}, scopable: true, localizable: true});
 });
 
 test('It return null if no attribute', async () => {
