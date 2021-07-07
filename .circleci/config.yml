@@ -586,6 +586,9 @@ jobs:
                 name: Load make commands
                 command: cp vendor/akeneo/pim-onboarder/onboarder.mk make-file/onboarder.mk
           - run:
+                name: Require onboarder tests dependencies
+                command: PIM_CONTEXT=onboarder make add-bundle-specific-dev-dependencies
+          - run:
                 name: Add configuration files to run the bundle tests from the PIM
                 command: |
                     rm -f docker-compose.override.yml
