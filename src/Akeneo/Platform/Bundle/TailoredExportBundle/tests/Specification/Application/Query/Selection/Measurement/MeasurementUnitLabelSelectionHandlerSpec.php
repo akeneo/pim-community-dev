@@ -15,6 +15,7 @@ namespace Specification\Akeneo\Platform\TailoredExport\Application\Query\Selecti
 
 use Akeneo\Platform\TailoredExport\Application\Query\Selection\Boolean\BooleanSelection;
 use Akeneo\Platform\TailoredExport\Application\Query\Selection\Measurement\MeasurementUnitLabelSelection;
+use Akeneo\Platform\TailoredExport\Domain\Query\FindUnitLabelInterface;
 use Akeneo\Platform\TailoredExport\Domain\SourceValue\BooleanValue;
 use Akeneo\Platform\TailoredExport\Domain\SourceValue\MeasurementValue;
 use Akeneo\Tool\Bundle\MeasureBundle\PublicApi\GetUnitTranslations;
@@ -22,34 +23,36 @@ use PhpSpec\ObjectBehavior;
 
 class MeasurementUnitLabelSelectionHandlerSpec extends ObjectBehavior
 {
-    public function let(GetUnitTranslations $getUnitTranslations)
+    public function let(FindUnitLabelInterface $findUnitLabel)
     {
-        $this->beConstructedWith($getUnitTranslations);
+        $this->beConstructedWith($findUnitLabel);
     }
 
-    public function it_applies_the_selection(GetUnitTranslations $getUnitTranslations)
+    public function it_applies_the_selection(FindUnitLabelInterface $findUnitLabel)
     {
         $selection = new MeasurementUnitLabelSelection('weight', 'fr_FR');
         $value = new MeasurementValue('10', 'kilogram');
 
-        $getUnitTranslations->byMeasurementFamilyCodeAndLocale(
+        $findUnitLabel->byFamilyCodeAndUnitCode(
             'weight',
+            'kilogram',
             'fr_FR'
-        )->willReturn(['kilogram' => 'Kilogramme']);
+        )->willReturn('Kilogramme');
 
         $this->applySelection($selection, $value)
             ->shouldReturn('Kilogramme');
     }
 
-    public function it_applies_the_selection_and_fallback_when_no_translation_is_found(GetUnitTranslations $getUnitTranslations)
+    public function it_applies_the_selection_and_fallback_when_no_translation_is_found(FindUnitLabelInterface $findUnitLabel)
     {
         $selection = new MeasurementUnitLabelSelection('weight', 'fr_FR');
         $value = new MeasurementValue('10', 'kilogram');
 
-        $getUnitTranslations->byMeasurementFamilyCodeAndLocale(
+        $findUnitLabel->byFamilyCodeAndUnitCode(
             'weight',
+            'kilogram',
             'fr_FR'
-        )->willReturn([]);
+        )->willReturn(null);
 
         $this->applySelection($selection, $value)
             ->shouldReturn('[kilogram]');
