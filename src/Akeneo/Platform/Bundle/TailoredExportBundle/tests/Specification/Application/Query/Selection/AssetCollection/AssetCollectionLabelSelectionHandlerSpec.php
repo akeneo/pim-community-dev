@@ -13,7 +13,7 @@ declare(strict_types=1);
 
 namespace Specification\Akeneo\Platform\TailoredExport\Application\Query\Selection\AssetCollection;
 
-use Akeneo\AssetManager\Infrastructure\PublicApi\Enrich\FindAssetLabelTranslation;
+use Akeneo\AssetManager\Infrastructure\PublicApi\Enrich\FindAssetLabelTranslationInterface;
 use Akeneo\Platform\TailoredExport\Application\Query\Selection\AssetCollection\AssetCollectionLabelSelection;
 use Akeneo\Platform\TailoredExport\Application\Query\Selection\Boolean\BooleanSelection;
 use Akeneo\Platform\TailoredExport\Domain\SourceValue\AssetCollectionValue;
@@ -22,12 +22,12 @@ use PhpSpec\ObjectBehavior;
 
 class AssetCollectionLabelSelectionHandlerSpec extends ObjectBehavior
 {
-    public function let(FindAssetLabelTranslation $findAssetLabelTranslations)
+    public function let(FindAssetLabelTranslationInterface $findAssetLabelTranslations)
     {
         $this->beConstructedWith($findAssetLabelTranslations);
     }
 
-    public function it_applies_the_selection(FindAssetLabelTranslation $findAssetLabelTranslations)
+    public function it_applies_the_selection(FindAssetLabelTranslationInterface $findAssetLabelTranslations)
     {
         $selection = new AssetCollectionLabelSelection(
             '/',

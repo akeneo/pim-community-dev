@@ -13,7 +13,7 @@ declare(strict_types=1);
 
 namespace Akeneo\AssetManager\Integration\PublicApi\Enrich;
 
-use Akeneo\AssetManager\Infrastructure\PublicApi\Enrich\FindAssetLabelTranslation;
+use Akeneo\AssetManager\Infrastructure\PublicApi\Enrich\FindAssetLabelTranslationInterface;
 use Akeneo\AssetManager\Integration\SqlIntegrationTestCase;
 use PHPUnit\Framework\Assert;
 
@@ -23,7 +23,7 @@ use PHPUnit\Framework\Assert;
  */
 final class FindAssetLabelTranslationTest extends SqlIntegrationTestCase
 {
-    private FindAssetLabelTranslation $findAssetLabelTranslation;
+    private FindAssetLabelTranslationInterface $findAssetLabelTranslation;
 
     public function setUp(): void
     {

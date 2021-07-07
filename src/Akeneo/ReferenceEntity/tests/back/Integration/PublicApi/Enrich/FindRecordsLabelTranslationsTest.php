@@ -15,7 +15,7 @@ use Akeneo\ReferenceEntity\Domain\Model\Record\Value\Value;
 use Akeneo\ReferenceEntity\Domain\Model\Record\Value\ValueCollection;
 use Akeneo\ReferenceEntity\Domain\Model\ReferenceEntity\ReferenceEntity;
 use Akeneo\ReferenceEntity\Domain\Model\ReferenceEntity\ReferenceEntityIdentifier;
-use Akeneo\ReferenceEntity\Infrastructure\PublicApi\Enrich\FindRecordsLabelTranslations;
+use Akeneo\ReferenceEntity\Infrastructure\PublicApi\Enrich\FindRecordsLabelTranslationsInterface;
 use Akeneo\ReferenceEntity\Integration\SqlIntegrationTestCase;
 use PHPUnit\Framework\Assert;
 
@@ -26,8 +26,7 @@ use PHPUnit\Framework\Assert;
  */
 class FindRecordsLabelTranslationsTest extends SqlIntegrationTestCase
 {
-    /** @var FindRecordsLabelTranslations */
-    private $findRecordsLabelTranslations;
+    private FindRecordsLabelTranslationsInterface $findRecordsLabelTranslations;
 
     public function setUp(): void
     {

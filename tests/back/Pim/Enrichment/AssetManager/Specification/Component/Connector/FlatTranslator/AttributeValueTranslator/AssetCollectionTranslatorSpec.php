@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace Specification\Akeneo\Pim\Enrichment\AssetManager\Component\Connector\FlatTranslator\AttributeValueTranslator;
 
-use Akeneo\AssetManager\Infrastructure\PublicApi\Enrich\FindAssetLabelTranslation;
+use Akeneo\AssetManager\Infrastructure\PublicApi\Enrich\FindAssetLabelTranslationInterface;
 use Akeneo\Pim\Enrichment\AssetManager\Component\Connector\FlatTranslator\AttributeValueTranslator\AssetCollectionTranslator;
 use PhpSpec\ObjectBehavior;
 
@@ -15,12 +15,13 @@ use PhpSpec\ObjectBehavior;
  */
 class AssetCollectionTranslatorSpec extends ObjectBehavior
 {
-    function let(findAssetLabelTranslation $findAssetLabelTranslation)
+    function let(FindAssetLabelTranslationInterface $findAssetLabelTranslation)
     {
         $this->beConstructedWith($findAssetLabelTranslation);
     }
 
-    function it_is_initializable() {
+    function it_is_initializable()
+    {
         $this->shouldHaveType(AssetCollectionTranslator::class);
     }
 
@@ -31,7 +32,7 @@ class AssetCollectionTranslatorSpec extends ObjectBehavior
     }
 
     function it_translates_assets_of_asset_collections_with_their_label(
-        FindAssetLabelTranslation $findAssetLabelTranslation
+        FindAssetLabelTranslationInterface $findAssetLabelTranslation
     ) {
         $findAssetLabelTranslation
             ->byFamilyCodeAndAssetCodes(
@@ -52,7 +53,7 @@ class AssetCollectionTranslatorSpec extends ObjectBehavior
     }
 
     function it_returns_the_asset_code_between_brackets_if_the_asset_does_have_a_label(
-        FindAssetLabelTranslation $findAssetLabelTranslation
+        FindAssetLabelTranslationInterface $findAssetLabelTranslation
     ) {
         $findAssetLabelTranslation
             ->byFamilyCodeAndAssetCodes('video', ['anniversaire', 'party', 'cake'], 'fr_FR')
@@ -62,14 +63,16 @@ class AssetCollectionTranslatorSpec extends ObjectBehavior
             ->shouldReturn(['[anniversaire],[party]', '[cake]']);
     }
 
-    function it_does_not_translate_if_the_reference_data_name_is_null(FindAssetLabelTranslation $findAssetLabelTranslation)
+    function it_does_not_translate_if_the_reference_data_name_is_null(FindAssetLabelTranslationInterface $findAssetLabelTranslation)
     {
         $findAssetLabelTranslation->byFamilyCodeAndAssetCodes()->shouldNotBeCalled();
 
         $this->shouldThrow(\LogicException::class)
-            ->during('translate', ['color',
+            ->during('translate', [
+                'color',
                 [], // <= No reference data code
                 ['anniversaire,party', 'cake'],
-                'fr_FR']);
+                'fr_FR'
+            ]);
     }
 }

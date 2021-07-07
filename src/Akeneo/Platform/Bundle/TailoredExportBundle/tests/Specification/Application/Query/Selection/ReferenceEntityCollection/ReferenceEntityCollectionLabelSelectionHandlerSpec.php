@@ -13,7 +13,7 @@ declare(strict_types=1);
 
 namespace Specification\Akeneo\Platform\TailoredExport\Application\Query\Selection\ReferenceEntityCollection;
 
-use Akeneo\ReferenceEntity\Infrastructure\PublicApi\Enrich\FindRecordsLabelTranslations;
+use Akeneo\ReferenceEntity\Infrastructure\PublicApi\Enrich\FindRecordsLabelTranslationsInterface;
 use Akeneo\Platform\TailoredExport\Application\Query\Selection\ReferenceEntityCollection\ReferenceEntityCollectionLabelSelection;
 use Akeneo\Platform\TailoredExport\Application\Query\Selection\Boolean\BooleanSelection;
 use Akeneo\Platform\TailoredExport\Domain\SourceValue\ReferenceEntityCollectionValue;
@@ -22,12 +22,12 @@ use PhpSpec\ObjectBehavior;
 
 class ReferenceEntityCollectionLabelSelectionHandlerSpec extends ObjectBehavior
 {
-    public function let(FindRecordsLabelTranslations $findRecordsLabelTranslations)
+    public function let(FindRecordsLabelTranslationsInterface $findRecordsLabelTranslations)
     {
         $this->beConstructedWith($findRecordsLabelTranslations);
     }
 
-    public function it_applies_the_selection(FindRecordsLabelTranslations $findRecordsLabelTranslations)
+    public function it_applies_the_selection(FindRecordsLabelTranslationsInterface $findRecordsLabelTranslations)
     {
         $selection = new ReferenceEntityCollectionLabelSelection(
             '/',
