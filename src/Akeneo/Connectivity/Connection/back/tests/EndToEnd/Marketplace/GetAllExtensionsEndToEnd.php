@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace Akeneo\Connectivity\Connection\back\tests\EndToEnd\Marketplace;
 
 use Akeneo\Connectivity\Connection\back\tests\EndToEnd\WebTestCase;
+use Akeneo\Connectivity\Connection\Tests\Integration\Mock\FakeWebMarketplaceApi;
 use Akeneo\Test\Integration\Configuration;
 use PHPUnit\Framework\Assert;
 use Symfony\Component\HttpFoundation\Response;
@@ -27,43 +28,51 @@ class GetAllExtensionsEndToEnd extends WebTestCase
 
     public function test_it_gets_all_the_extensions(): void
     {
-        $extensions = [
+        $expectedExtensions = [
             [
-                'id' => '6fec7055-36ad-4301-9889-46c46ddd446a',
-                'name' => 'Extension 1',
-                'logo' => 'https://marketplace.test/logo/extension_1.png',
-                'author' => 'Partner 1',
-                'partner' => 'Akeneo Partner',
-                'description' => 'Our Akeneo Connector',
-                'url' => 'https://marketplace.test/extension/extension_1',
-                'categories' => ['E-commerce'],
-                'certified' => false
+                "id" => "90741597-54c5-48a1-98da-a68e7ee0a715",
+                "name" => "Akeneo Shopware 6 Connector by EIKONA Media",
+                "logo" => "https://marketplace.akeneo.com/sites/default/files/styles/extension_logo_large/public/extension-logos/akeneo-to-shopware6-eimed_0.jpg?itok=InguS-1N",
+                "author" => "EIKONA Media GmbH",
+                "partner" => "Akeneo Preferred Partner",
+                "description" => "With the new \"Akeneo-Shopware-6-Connector\" from EIKONA Media, you can smoothly export all your product data from Akeneo to Shopware. The connector uses the standard interfaces provided for data exchange. Benefit from up-to-date product data in all your e-commerce channels and be faster on the market.",
+                "url" => "https://marketplace.akeneo.com/extension/akeneo-shopware-6-connector-eikona-media",
+                "categories" => [
+                    "E-commerce",
+                ],
+                "certified" => false,
             ],
             [
-                'id' => '896ae911-e877-46a0-b7c3-d7c572fe39ed',
-                'name' => 'Extension 2',
-                'logo' => 'https://marketplace.test/logo/extension_2.png',
-                'author' => 'Partner 2',
-                'partner' => 'Akeneo Preferred Partner',
-                'description' => 'Our Akeneo Connector',
-                'url' => 'https://marketplace.test/extension/extension_2',
-                'categories' => ['E-commerce', 'Print'],
-                'certified' => true
-            ]
+                "id" => "b18561ff-378e-41a5-babb-ca0ec0af569a",
+                "name" => "Akeneo PIM Connector for Shopify",
+                "logo" => "https://marketplace.akeneo.com/sites/default/files/styles/extension_logo_large/public/extension-logos/shopify-connector-logo-1200x.png?itok=mASOVlwC",
+                "author" => "StrikeTru",
+                "partner" => "Akeneo Partner",
+                "description" => "SaaS software from StrikeTru that seamlessly connects Akeneo PIM to the Shopify platform. It allows Shopify users to quickly setup a link to Akeneo PIM and sync all product catalog data to Shopify within minutes. It eliminates a lot of manual and repetitive work involved in updating the product catalog of a Shopify store. You can send and receive products, variations, modifiers, categories, standard and custom attributes, images and more from Akeneo PIM into your Shopify store. Compatible with all Akeneo PIM editions – Community, Growth, Enterprise (On-Premise, Cloud Flexibility, and Cloud Serenity) and StrikeTru's smallPIM.",
+                "url" => "https://marketplace.akeneo.com/extension/akeneo-pim-connector-shopify",
+                "categories" => [
+                    "E-commerce",
+                ],
+                "certified" => false,
+            ],
         ];
 
-        // TODO: Persist extensions.
+        $this->getWebMarketplaceApi()->setExtensions($expectedExtensions);
 
+        $this->authenticateAsAdmin();
         $this->client->request('GET', '/rest/marketplace/extensions');
         $result = json_decode($this->client->getResponse()->getContent(), true);
 
         Assert::assertEquals(Response::HTTP_OK, $this->client->getResponse()->getStatusCode());
-        Assert::assertEquals(
-            [
-                'total' => 2,
-                'extensions' => $extensions
-            ],
-            $result,
-        );
+        Assert::assertArrayHasKey('total', $result);
+        Assert::assertArrayHasKey('extensions', $result);
+        Assert::assertEquals(2, $result['total']);
+        Assert::assertEquals($expectedExtensions[0], $result['extensions'][0]);
+        Assert::assertEquals($expectedExtensions[1], $result['extensions'][1]);
+    }
+
+    private function getWebMarketplaceApi(): FakeWebMarketplaceApi
+    {
+        return $this->get('akeneo_connectivity.connection.marketplace.web_marketplace_api');
     }
 }

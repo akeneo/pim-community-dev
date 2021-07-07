@@ -6,25 +6,22 @@ namespace Specification\Akeneo\Pim\Enrichment\Component\Product\Webhook;
 
 use Akeneo\Pim\Enrichment\Component\Product\Connector\ReadModel\ConnectorProduct;
 use Akeneo\Pim\Enrichment\Component\Product\Connector\ReadModel\ConnectorProductList;
+use Akeneo\Pim\Enrichment\Component\Product\Message\ProductCreated;
+use Akeneo\Pim\Enrichment\Component\Product\Message\ProductRemoved;
+use Akeneo\Pim\Enrichment\Component\Product\Message\ProductUpdated;
 use Akeneo\Pim\Enrichment\Component\Product\Model\ReadValueCollection;
 use Akeneo\Pim\Enrichment\Component\Product\Normalizer\ExternalApi\ConnectorProductNormalizer;
 use Akeneo\Pim\Enrichment\Component\Product\Normalizer\ExternalApi\ValuesNormalizer;
 use Akeneo\Pim\Enrichment\Component\Product\Normalizer\Standard\DateTimeNormalizer;
 use Akeneo\Pim\Enrichment\Component\Product\Normalizer\Standard\Product\ProductValueNormalizer;
-use Akeneo\Pim\Enrichment\Component\Product\Query\Filter\Operators;
 use Akeneo\Pim\Enrichment\Component\Product\Query\GetConnectorProducts;
-use Akeneo\Pim\Enrichment\Component\Product\Query\ProductQueryBuilderFactoryInterface;
-use Akeneo\Pim\Enrichment\Component\Product\Message\ProductCreated;
-use Akeneo\Pim\Enrichment\Component\Product\Message\ProductRemoved;
-use Akeneo\Pim\Enrichment\Component\Product\Message\ProductUpdated;
-use Akeneo\Pim\Enrichment\Component\Product\Query\ProductQueryBuilderInterface;
 use Akeneo\Pim\Enrichment\Component\Product\Webhook\Exception\ProductNotFoundException;
 use Akeneo\Pim\Enrichment\Component\Product\Webhook\ProductCreatedAndUpdatedEventDataBuilder;
 use Akeneo\Platform\Component\EventQueue\Author;
 use Akeneo\Platform\Component\EventQueue\BulkEvent;
+use Akeneo\Platform\Component\Webhook\Context;
 use Akeneo\Platform\Component\Webhook\EventDataBuilderInterface;
 use Akeneo\Platform\Component\Webhook\EventDataCollection;
-use Akeneo\UserManagement\Component\Model\User;
 use PhpSpec\ObjectBehavior;
 use PHPUnit\Framework\Assert;
 use Prophecy\Argument;
@@ -78,8 +75,7 @@ class ProductCreatedAndUpdatedEventDataBuilderSpec extends ObjectBehavior
     public function it_builds_a_bulk_event_of_product_created_and_updated_event(
         GetConnectorProducts $getConnectorProductsQuery
     ): void {
-        $user = new User();
-        $user->setId(10);
+        $context = new Context('ecommerce_0000', 10);
 
         $blueJeanEvent = new ProductCreated(Author::fromNameAndType('julia', Author::TYPE_UI), [
             'identifier' => 'blue_jean',
@@ -128,7 +124,7 @@ class ProductCreatedAndUpdatedEventDataBuilderSpec extends ObjectBehavior
             ],
         ]);
 
-        $collection = $this->build($bulkEvent, $user)->getWrappedObject();
+        $collection = $this->build($bulkEvent, $context)->getWrappedObject();
 
         Assert::assertEquals($expectedCollection, $collection);
     }
@@ -136,8 +132,7 @@ class ProductCreatedAndUpdatedEventDataBuilderSpec extends ObjectBehavior
     public function it_builds_a_bulk_event_of_product_created_and_updated_event_if_a_product_as_been_removed(
         GetConnectorProducts $getConnectorProductsQuery
     ): void {
-        $user = new User();
-        $user->setId(10);
+        $context = new Context('ecommerce_0000', 10);
 
         $productList = new ConnectorProductList(1, [$this->buildConnectorProduct(1, 'blue_jean')]);
 
@@ -169,7 +164,7 @@ class ProductCreatedAndUpdatedEventDataBuilderSpec extends ObjectBehavior
         ]);
         $expectedCollection->setEventDataError($redJeanEvent, new ProductNotFoundException('red_jean'));
 
-        $collection = $this->build($bulkEvent, $user)->getWrappedObject();
+        $collection = $this->build($bulkEvent, $context)->getWrappedObject();
 
         Assert::assertEquals($expectedCollection, $collection);
     }
