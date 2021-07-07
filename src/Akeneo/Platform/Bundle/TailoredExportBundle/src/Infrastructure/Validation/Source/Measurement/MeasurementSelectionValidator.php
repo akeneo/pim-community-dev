@@ -11,25 +11,22 @@ declare(strict_types=1);
  * file that was distributed with this source code.
  */
 
-namespace Akeneo\Platform\TailoredExport\Infrastructure\Validation\Selection;
+namespace Akeneo\Platform\TailoredExport\Infrastructure\Validation\Source\Measurement;
 
-use Akeneo\Platform\TailoredExport\Application\Query\Selection\PriceCollection\PriceCollectionAmountSelection;
-use Akeneo\Platform\TailoredExport\Application\Query\Selection\PriceCollection\PriceCollectionCurrencySelection;
+use Akeneo\Platform\TailoredExport\Application\Query\Selection\Measurement\MeasurementAmountSelection;
+use Akeneo\Platform\TailoredExport\Application\Query\Selection\Measurement\MeasurementUnitCodeSelection;
+use Akeneo\Platform\TailoredExport\Application\Query\Selection\Measurement\MeasurementUnitLabelSelection;
+use Akeneo\Platform\TailoredExport\Infrastructure\Validation\LocaleShouldBeActive;
 use Symfony\Component\Validator\Constraint;
 use Symfony\Component\Validator\Constraints\Choice;
 use Symfony\Component\Validator\Constraints\Collection;
 use Symfony\Component\Validator\Constraints\NotBlank;
+use Symfony\Component\Validator\Constraints\Optional;
+use Symfony\Component\Validator\Constraints\Type;
 use Symfony\Component\Validator\ConstraintValidator;
 
-class PriceCollectionSelectionValidator extends ConstraintValidator
+class MeasurementSelectionValidator extends ConstraintValidator
 {
-    private array $availableCollectionSeparator;
-
-    public function __construct(array $availableCollectionSeparator)
-    {
-        $this->availableCollectionSeparator = $availableCollectionSeparator;
-    }
-
     public function validate($selection, Constraint $constraint)
     {
         $validator = $this->context->getValidator();
@@ -43,20 +40,14 @@ class PriceCollectionSelectionValidator extends ConstraintValidator
                                 [
                                     'strict' => true,
                                     'choices' => [
-                                        PriceCollectionCurrencySelection::TYPE,
-                                        PriceCollectionAmountSelection::TYPE,
+                                        MeasurementUnitCodeSelection::TYPE,
+                                        MeasurementUnitLabelSelection::TYPE,
+                                        MeasurementAmountSelection::TYPE,
                                     ],
                                 ]
                             )
                         ],
-                        'separator' => [
-                            new Choice(
-                                [
-                                    'strict' => true,
-                                    'choices' => $this->availableCollectionSeparator,
-                                ]
-                            )
-                        ],
+                        'locale' => new Optional([new Type(['type' => 'string'])]),
                     ],
                 ]
             ),
@@ -68,7 +59,24 @@ class PriceCollectionSelectionValidator extends ConstraintValidator
                     $violation->getMessage(),
                     $violation->getParameters()
                 )
-                    ->atPath($violation->getPropertyPath())
+                    ->addViolation();
+            }
+
+            return;
+        }
+
+        if (MeasurementUnitLabelSelection::TYPE === $selection['type']) {
+            $violations = $validator->validate($selection['locale'], [
+                new NotBlank(),
+                new LocaleShouldBeActive()
+            ]);
+
+            foreach ($violations as $violation) {
+                $this->context->buildViolation(
+                    $violation->getMessage(),
+                    $violation->getParameters()
+                )
+                    ->atPath('[locale]')
                     ->addViolation();
             }
         }

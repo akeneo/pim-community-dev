@@ -15,6 +15,10 @@ namespace Akeneo\Platform\TailoredExport\Infrastructure\Validation\Selection;
 
 use Symfony\Component\Validator\Constraint;
 
-class MeasurementSelection extends Constraint
+class CodeLabelCollectionSelectionConstraint extends Constraint
 {
+    public function validatedBy(): string
+    {
+        return CodeLabelCollectionSelectionValidator::class;
+    }
 }

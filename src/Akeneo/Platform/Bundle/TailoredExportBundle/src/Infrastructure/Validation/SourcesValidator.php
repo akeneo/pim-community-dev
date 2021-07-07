@@ -22,7 +22,6 @@ use Symfony\Component\Validator\Constraints\Collection;
 use Symfony\Component\Validator\Constraints\Count;
 use Symfony\Component\Validator\Constraints\NotBlank;
 use Symfony\Component\Validator\Constraints\Type;
-use Symfony\Component\Validator\Constraints\Uuid;
 use Symfony\Component\Validator\ConstraintValidator;
 use Symfony\Component\Validator\Validator\ValidatorInterface;
 
@@ -32,16 +31,16 @@ class SourcesValidator extends ConstraintValidator
     private GetAttributes $getAttributes;
 
     /** @var Constraint[] */
-    private array $attributeSelectionConstraints;
+    private array $attributeConstraints;
 
     /** @var Constraint[] */
-    private array $propertySelectionConstraints;
+    private array $propertyConstraints;
 
-    public function __construct(GetAttributes $getAttributes, array $attributeSelectionConstraints, array $propertySelectionConstraints)
+    public function __construct(GetAttributes $getAttributes, array $attributeConstraints, array $propertyConstraints)
     {
         $this->getAttributes = $getAttributes;
-        $this->attributeSelectionConstraints = $attributeSelectionConstraints;
-        $this->propertySelectionConstraints = $propertySelectionConstraints;
+        $this->attributeConstraints = $attributeConstraints;
+        $this->propertyConstraints = $propertyConstraints;
     }
 
     public function validate($sources, Constraint $constraint)
@@ -82,32 +81,11 @@ class SourcesValidator extends ConstraintValidator
             $source,
             new Collection([
                 'fields' => [
-                    'uuid' => [
-                        new NotBlank(),
-                        new Uuid()
-                    ],
                     'code' => [
                         new Type([
                             'type' => 'string',
                         ]),
                         new NotBlank(),
-                    ],
-                    'channel' => [
-                        new Type([
-                            'type' => 'string',
-                        ]),
-                        new ChannelShouldExist(),
-                    ],
-                    'locale' => [
-                        new Type([
-                            'type' => 'string',
-                        ]),
-                        new LocaleShouldBeActive()
-                    ],
-                    'operations' => [
-                        new Type([
-                            'type' => 'array',
-                        ]),
                     ],
                     'type' => [
                         new Choice(
@@ -117,8 +95,9 @@ class SourcesValidator extends ConstraintValidator
                             ]
                         )
                     ],
-                    'selection' => new NotBlank(),
+
                 ],
+                'allowExtraFields' => true
             ]),
         );
 
@@ -135,32 +114,32 @@ class SourcesValidator extends ConstraintValidator
             return;
         }
 
-        $this->validateSelection($validator, $source);
-    }
-
-    private function validateSelection(ValidatorInterface $validator, array $source)
-    {
         if (PropertySource::TYPE === $source['type']) {
-            $constraint = $this->propertySelectionConstraints[$source['code']] ?? null;
+            $constraint = $this->propertyConstraints[$source['code']] ?? null;
         } else {
             $attribute = $this->getAttributes->forCode($source['code']);
-            $constraint = $this->attributeSelectionConstraints[$attribute->type()] ?? null;
+
+            if (null === $attribute) {
+                //TODO handle attribute not found RAC-720
+                return;
+            }
+
+            $constraint = $this->attributeConstraints[$attribute->type()] ?? null;
         }
 
         if (null === $constraint) {
             return;
         }
 
-        $violations = $validator->validate($source['selection'], $constraint);
-        if (0 < $violations->count()) {
-            foreach ($violations as $violation) {
-                $this->context->buildViolation(
-                    $violation->getMessage(),
-                    $violation->getParameters()
-                )
-                    ->atPath(sprintf('[%s][selection]%s', $source['uuid'], $violation->getPropertyPath()))
-                    ->addViolation();
-            }
+        $violations = $validator->validate($source, $constraint);
+
+        foreach ($violations as $violation) {
+            $this->context->buildViolation(
+                $violation->getMessage(),
+                $violation->getParameters()
+            )
+                ->atPath(sprintf('[%s]%s', $source['uuid'], $violation->getPropertyPath()))
+                ->addViolation();
         }
     }
 }

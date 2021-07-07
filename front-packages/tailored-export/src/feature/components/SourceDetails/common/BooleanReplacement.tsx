@@ -23,7 +23,7 @@ const BooleanReplacement = ({operation, validationErrors, onOperationChange}: Bo
       <TextField
         value={operation.mapping.true}
         label={translate('akeneo.tailored_export.column_details.sources.operation.replacement.enabled')}
-        errors={filterErrors(validationErrors, '[true]')}
+        errors={filterErrors(validationErrors, '[mapping][true]')}
         onChange={enabledValue =>
           onOperationChange({...operation, mapping: {...operation.mapping, true: enabledValue}})
         }
@@ -31,7 +31,7 @@ const BooleanReplacement = ({operation, validationErrors, onOperationChange}: Bo
       <TextField
         value={operation.mapping.false}
         label={translate('akeneo.tailored_export.column_details.sources.operation.replacement.disabled')}
-        errors={filterErrors(validationErrors, '[false]')}
+        errors={filterErrors(validationErrors, '[mapping][false]')}
         onChange={disabledValue =>
           onOperationChange({...operation, mapping: {...operation.mapping, false: disabledValue}})
         }

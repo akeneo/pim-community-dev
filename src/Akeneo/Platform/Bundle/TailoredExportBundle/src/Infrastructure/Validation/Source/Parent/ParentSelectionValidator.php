@@ -11,7 +11,7 @@ declare(strict_types=1);
  * file that was distributed with this source code.
  */
 
-namespace Akeneo\Platform\TailoredExport\Infrastructure\Validation\Selection;
+namespace Akeneo\Platform\TailoredExport\Infrastructure\Validation\Source\Parent;
 
 use Akeneo\Platform\TailoredExport\Application\Query\Selection\Parent\ParentCodeSelection;
 use Akeneo\Platform\TailoredExport\Application\Query\Selection\Parent\ParentLabelSelection;

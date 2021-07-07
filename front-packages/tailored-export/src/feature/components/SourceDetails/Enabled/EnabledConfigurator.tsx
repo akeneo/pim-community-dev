@@ -24,7 +24,7 @@ const EnabledConfigurator = ({source, validationErrors, onSourceChange}: Propert
     >
       <BooleanReplacement
         operation={source.operations.replacement}
-        validationErrors={filterErrors(validationErrors, '[replacement]')}
+        validationErrors={filterErrors(validationErrors, '[operations][replacement]')}
         onOperationChange={updatedOperation =>
           onSourceChange({...source, operations: {...source.operations, replacement: updatedOperation}})
         }

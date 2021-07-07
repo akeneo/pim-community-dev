@@ -38,14 +38,14 @@ test('it displays validation errors', () => {
       invalidValue: '',
       message: 'this is a true error',
       parameters: {},
-      propertyPath: '[true]',
+      propertyPath: '[mapping][true]',
     },
     {
       messageTemplate: 'error.key.false',
       invalidValue: '',
       message: 'this is a false error',
       parameters: {},
-      propertyPath: '[false]',
+      propertyPath: '[mapping][false]',
     },
   ];
 

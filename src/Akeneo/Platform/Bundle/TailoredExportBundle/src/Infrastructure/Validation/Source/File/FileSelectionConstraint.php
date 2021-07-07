@@ -11,14 +11,14 @@ declare(strict_types=1);
  * file that was distributed with this source code.
  */
 
-namespace Akeneo\Platform\TailoredExport\Infrastructure\Validation\Selection;
+namespace Akeneo\Platform\TailoredExport\Infrastructure\Validation\Source\File;
 
 use Symfony\Component\Validator\Constraint;
 
-class CodeLabelCollectionSelection extends Constraint
+class FileSelectionConstraint extends Constraint
 {
-    public function validatedBy()
+    public function validatedBy(): string
     {
-        return 'akeneo.tailored_export.validation.source.code_label_collection_selection';
+        return FileSelectionValidator::class;
     }
 }
