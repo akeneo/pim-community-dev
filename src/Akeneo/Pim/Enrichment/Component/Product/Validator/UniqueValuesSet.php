@@ -42,18 +42,18 @@ class UniqueValuesSet
     public function addValue(ValueInterface $value, EntityWithValuesInterface $entity): bool
     {
         $identifier = $this->getEntityId($entity);
-        $data = $value->__toString();
+        $data = strtolower($value->__toString());
         $attributeCode = $value->getAttributeCode();
+
+        if (isset($this->uniqueValues[$attributeCode][$data])) {
+            $storedIdentifier = $this->uniqueValues[$attributeCode][$data];
+            if ($storedIdentifier !== $identifier) {
+                return false;
+            }
+        }
 
         if (!isset($this->uniqueValues[$attributeCode])) {
             $this->uniqueValues[$attributeCode] = [];
-        }
-
-        foreach ($this->uniqueValues[$attributeCode] as $keyData => $storedIdentifier) {
-            if ((strcasecmp($keyData, $data) == 0)
-            && ($storedIdentifier !== $identifier)) {
-                return false;
-            }
         }
 
         if (!isset($this->uniqueValues[$attributeCode][$data])) {
