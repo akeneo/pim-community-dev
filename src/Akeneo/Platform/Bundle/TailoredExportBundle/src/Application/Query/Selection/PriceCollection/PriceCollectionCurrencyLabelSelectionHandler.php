@@ -18,28 +18,39 @@ use Akeneo\Platform\TailoredExport\Application\Query\Selection\SelectionInterfac
 use Akeneo\Platform\TailoredExport\Domain\SourceValue\Price;
 use Akeneo\Platform\TailoredExport\Domain\SourceValue\PriceCollectionValue;
 use Akeneo\Platform\TailoredExport\Domain\SourceValueInterface;
+use Akeneo\Tool\Component\Localization\CurrencyTranslatorInterface;
 
-class PriceCollectionCurrencySelectionHandler implements SelectionHandlerInterface
+class PriceCollectionCurrencyLabelSelectionHandler implements SelectionHandlerInterface
 {
+    private const FALLBACK = '';
+    private CurrencyTranslatorInterface $currencyTranslator;
+
+    public function __construct(CurrencyTranslatorInterface $currencyTranslator)
+    {
+        $this->currencyTranslator = $currencyTranslator;
+    }
     public function applySelection(SelectionInterface $selection, SourceValueInterface $value): string
     {
-        if (
-            !$selection instanceof PriceCollectionCurrencySelection
-            || !$value instanceof PriceCollectionValue
-        ) {
+        if (!$this->supports($selection, $value)) {
             throw new \InvalidArgumentException('Cannot apply Price collection selection on this entity');
         }
 
         $priceCollection = $value->getPriceCollection();
-
-        $selectedData = array_map(fn (Price $price) => $price->getCurrency(), $priceCollection);
+        $selectedData = array_map(
+            fn(Price $price) => $this->currencyTranslator->translate(
+                $price->getCurrency(),
+                $selection->getLocaleCode(),
+                self::FALLBACK
+            ),
+            $priceCollection
+        );
 
         return implode($selection->getSeparator(), $selectedData);
     }
 
     public function supports(SelectionInterface $selection, SourceValueInterface $value): bool
     {
-        return $selection instanceof PriceCollectionCurrencySelection
+        return $selection instanceof PriceCollectionCurrencyLabelSelection
             && $value instanceof PriceCollectionValue;
     }
 }

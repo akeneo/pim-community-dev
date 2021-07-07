@@ -13,18 +13,18 @@ declare(strict_types=1);
 
 namespace Specification\Akeneo\Platform\TailoredExport\Application\Query\Selection\PriceCollection;
 
-use Akeneo\Platform\TailoredExport\Application\Query\Selection\PriceCollection\PriceCollectionCurrencySelection;
+use Akeneo\Platform\TailoredExport\Application\Query\Selection\PriceCollection\PriceCollectionCurrencyCodeSelection;
 use Akeneo\Platform\TailoredExport\Application\Query\Selection\Boolean\BooleanSelection;
 use Akeneo\Platform\TailoredExport\Domain\SourceValue\PriceCollectionValue;
 use Akeneo\Platform\TailoredExport\Domain\SourceValue\BooleanValue;
 use Akeneo\Platform\TailoredExport\Domain\SourceValue\Price;
 use PhpSpec\ObjectBehavior;
 
-class PriceCollectionCurrencySelectionHandlerSpec extends ObjectBehavior
+class PriceCollectionCurrencyCodeSelectionHandlerSpec extends ObjectBehavior
 {
     public function it_applies_the_selection()
     {
-        $selection = new PriceCollectionCurrencySelection('|');
+        $selection = new PriceCollectionCurrencyCodeSelection('|');
         $value = new PriceCollectionValue([new Price('102', 'EUR'), new Price('103', 'USD'), new Price('104', 'DKK')]);
 
         $this->applySelection($selection, $value)
@@ -43,7 +43,7 @@ class PriceCollectionCurrencySelectionHandlerSpec extends ObjectBehavior
 
     public function it_supports_price_collection_code_selection_with_price_collection_value()
     {
-        $selection = new PriceCollectionCurrencySelection('/');
+        $selection = new PriceCollectionCurrencyCodeSelection('/');
         $value = new PriceCollectionValue([]);
 
         $this->supports($selection, $value)->shouldReturn(true);

@@ -14,10 +14,13 @@ declare(strict_types=1);
 namespace Akeneo\Platform\TailoredExport\Infrastructure\Validation\Source\PriceCollection;
 
 use Akeneo\Platform\TailoredExport\Application\Query\Selection\PriceCollection\PriceCollectionAmountSelection;
-use Akeneo\Platform\TailoredExport\Application\Query\Selection\PriceCollection\PriceCollectionCurrencySelection;
+use Akeneo\Platform\TailoredExport\Application\Query\Selection\PriceCollection\PriceCollectionCurrencyCodeSelection;
+use Akeneo\Platform\TailoredExport\Application\Query\Selection\PriceCollection\PriceCollectionCurrencyLabelSelection;
 use Symfony\Component\Validator\Constraint;
 use Symfony\Component\Validator\Constraints\Choice;
 use Symfony\Component\Validator\Constraints\Collection;
+use Symfony\Component\Validator\Constraints\Optional;
+use Symfony\Component\Validator\Constraints\Type;
 use Symfony\Component\Validator\ConstraintValidator;
 
 class PriceCollectionSelectionValidator extends ConstraintValidator
@@ -38,11 +41,13 @@ class PriceCollectionSelectionValidator extends ConstraintValidator
                     'type' => new Choice(
                         [
                             'choices' => [
-                                PriceCollectionCurrencySelection::TYPE,
+                                PriceCollectionCurrencyCodeSelection::TYPE,
+                                PriceCollectionCurrencyLabelSelection::TYPE,
                                 PriceCollectionAmountSelection::TYPE,
                             ],
                         ]
                     ),
+                    'locale' => new Optional([new Type(['type' => 'string'])]),
                     'separator' => new Choice(
                         [
                             'choices' => $this->availableCollectionSeparator,

@@ -193,7 +193,14 @@ services:
     tags:
       - { name: akeneo.tailored_export.selection_handler }
 
-  Akeneo\Platform\TailoredExport\Application\Query\Selection\PriceCollection\PriceCollectionCurrencySelectionHandler:
+  Akeneo\Platform\TailoredExport\Application\Query\Selection\PriceCollection\PriceCollectionCurrencyCodeSelectionHandler:
+    public: true
+    tags:
+      - { name: akeneo.tailored_export.selection_handler }
+
+  Akeneo\Platform\TailoredExport\Application\Query\Selection\PriceCollection\PriceCollectionCurrencyLabelSelectionHandler:
+    arguments:
+      - '@pim_catalog.localization.translator.currency'
     public: true
     tags:
       - { name: akeneo.tailored_export.selection_handler }

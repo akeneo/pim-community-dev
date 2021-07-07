@@ -49,16 +49,16 @@ const PriceCollectionSelector = ({selection, validationErrors, onSelectionChange
             {translate('akeneo.tailored_export.column_details.sources.selection.type.amount')}
           </SelectInput.Option>
           <SelectInput.Option
-            title={translate('akeneo.tailored_export.column_details.sources.selection.type.currency_code')}
+            title={translate('akeneo.tailored_export.column_details.sources.selection.price.currency_code')}
             value="currency_code"
           >
-            {translate('akeneo.tailored_export.column_details.sources.selection.type.currency_code')}
+            {translate('akeneo.tailored_export.column_details.sources.selection.price.currency_code')}
           </SelectInput.Option>
           <SelectInput.Option
-            title={translate('akeneo.tailored_export.column_details.sources.selection.type.currency_label')}
+            title={translate('akeneo.tailored_export.column_details.sources.selection.price.currency_label')}
             value="currency_label"
           >
-            {translate('akeneo.tailored_export.column_details.sources.selection.type.currency_label')}
+            {translate('akeneo.tailored_export.column_details.sources.selection.price.currency_label')}
           </SelectInput.Option>
         </SelectInput>
         <Helper inline={true} level="info">
@@ -72,7 +72,7 @@ const PriceCollectionSelector = ({selection, validationErrors, onSelectionChange
       </Field>
       {'currency_label' === selection.type && (
         <LocaleDropdown
-          label={translate('akeneo.tailored_export.column_details.sources.selection.type.currency_locale')}
+          label={translate('akeneo.tailored_export.column_details.sources.selection.price.currency_locale')}
           value={selection.locale}
           validationErrors={localeErrors}
           locales={locales}
