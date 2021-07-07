@@ -1,0 +1,2 @@
+services:
+    Akeneo\UserManagement\Bundle\QueryHandler\GetUserByIdHandler: ~
