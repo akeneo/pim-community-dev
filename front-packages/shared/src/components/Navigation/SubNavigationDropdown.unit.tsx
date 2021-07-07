@@ -25,7 +25,6 @@ test('It opens the dropdown when clicking on the button', () => {
   expect(screen.getByText('Sub entry 1')).toBeInTheDocument();
   expect(screen.getByText('Sub entry 2')).toBeInTheDocument();
   expect(screen.getByText('Sub entry 3')).toBeInTheDocument();
-  expect(screen.getByText('Sub entry 3')).toBeInTheDocument();
 });
 
 test('It redirects the user to the entry route and closes the menu when clicking on it', () => {
