@@ -58,6 +58,7 @@ const PimNavigation: FC<Props> = ({entries, activeEntryCode, activeSubEntryCode}
               onClick={() => handleFollowEntry(entry)}
               role='menuitem'
               data-testid='pim-main-menu-item'
+              className={entry.code === activeEntryCode ? 'active' : undefined}
             >
               {translate(entry.title)}
             </MainNavigationItem>
