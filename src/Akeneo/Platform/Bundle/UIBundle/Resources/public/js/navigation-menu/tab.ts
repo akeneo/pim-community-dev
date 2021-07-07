@@ -115,6 +115,15 @@ class Tab extends BaseForm {
       this.items.push(event);
     }
   }
+
+  /**
+   * Does this tab have children elements
+   *
+   * @return {Boolean}
+   */
+  hasChildren() {
+    return 0 < this.items.length;
+  }
 }
 
 export = Tab;

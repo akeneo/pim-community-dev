@@ -31,6 +31,7 @@ type EntryView = View & {
   };
   items: SubEntry[];
   sections: any[];
+  hasChildren?: () => boolean;
 };
 
 // @fixme Define what is an entry column
@@ -107,7 +108,15 @@ class Menu extends BaseForm {
       return entryA.position - entryB.position;
     });
 
-    const entries: NavigationEntry[] = navigationEntriesExtensions.map((extension: EntryView) => {
+    const entries: NavigationEntry[] = navigationEntriesExtensions
+      .filter((extension: EntryView) => {
+        return !(
+          typeof extension.config === 'object' &&
+          (!extension.config.to || extension.config.isLandingSectionPage) &&
+          typeof extension.hasChildren === 'function' && !extension.hasChildren()
+        );
+      })
+      .map((extension: EntryView) => {
       const {title, isLandingSectionPage, icon} = extension.config;
 
       return {
