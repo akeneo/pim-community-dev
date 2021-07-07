@@ -59,6 +59,7 @@ class GetAllExtensionsEndToEnd extends WebTestCase
 
         $this->getWebMarketplaceApi()->setExtensions($expectedExtensions);
 
+        $this->authenticateAsAdmin();
         $this->client->request('GET', '/rest/marketplace/extensions');
         $result = json_decode($this->client->getResponse()->getContent(), true);
 
