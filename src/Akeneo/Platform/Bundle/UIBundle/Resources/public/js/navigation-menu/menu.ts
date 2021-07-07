@@ -43,7 +43,7 @@ type EntryColumnView = View & {
     backLink: {
       title: string;
       route: string;
-    }
+    };
     stateCode?: string;
   };
   navigationItems: SubEntry[];
@@ -86,7 +86,7 @@ class Menu extends BaseForm {
       {
         entries: this.findMainEntries(),
         activeEntryCode: this.activeEntryCode,
-        activeSubEntryCode: this.activeSubEntryCode
+        activeSubEntryCode: this.activeSubEntryCode,
       },
       this.el
     );
@@ -139,7 +139,7 @@ class Menu extends BaseForm {
         return {
           code: section.code,
           title: section.title,
-        }
+        };
       });
 
       let backLink;
@@ -147,7 +147,7 @@ class Menu extends BaseForm {
         backLink = {
           title: column.config.backLink.title,
           route: column.config.backLink.route,
-        }
+        };
       }
 
       return {

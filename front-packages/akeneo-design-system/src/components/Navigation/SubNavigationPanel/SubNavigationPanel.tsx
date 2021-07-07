@@ -32,7 +32,7 @@ const ToggleButton = styled.button<{isOpen: boolean} & AkeneoThemedProps>`
   text-align: left;
   position: absolute;
   bottom: 0;
-  width: ${({isOpen}) => (isOpen ? '240px' : '40px')};;
+  width: ${({isOpen}) => (isOpen ? '240px' : '40px')};
 
   svg {
     color: ${getColor('grey', 100)};
@@ -83,7 +83,6 @@ const SubNavigationPanel = React.forwardRef<HTMLDivElement, SubNavigationPanelPr
     {children, isOpen: isOpen = true, open, close, ...rest}: SubNavigationPanelProps,
     forwardedRef: React.Ref<HTMLDivElement>
   ) => {
-
     return (
       <Container isOpen={isOpen}>
         <Panel ref={forwardedRef} isOpen={isOpen} {...rest}>
@@ -93,7 +92,7 @@ const SubNavigationPanel = React.forwardRef<HTMLDivElement, SubNavigationPanelPr
           isOpen={isOpen}
           onClick={() => (isOpen ? close() : open())}
           title={isOpen ? 'Close' : 'Open'}
-          data-testid='open-subnavigation-button'
+          data-testid="open-subnavigation-button"
         >
           {isOpen ? <PanelCloseIcon /> : <PanelOpenIcon />}
         </ToggleButton>
