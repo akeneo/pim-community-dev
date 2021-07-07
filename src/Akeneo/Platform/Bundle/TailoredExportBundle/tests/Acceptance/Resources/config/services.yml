@@ -23,5 +23,5 @@ services:
     akeneo.pim.structure.query.get_group_translations:
         class: Akeneo\Platform\TailoredExport\Test\Acceptance\FakeServices\Group\InMemoryGetGroupTranslations
 
-    akeneo_measurement.public_api.get_unit_translations:
-        class: Akeneo\Platform\TailoredExport\Test\Acceptance\FakeServices\Measurement\InMemoryGetUnitTranslations
+    Akeneo\Platform\TailoredExport\Domain\Query\FindUnitLabelInterface:
+        class: Akeneo\Platform\TailoredExport\Test\Acceptance\FakeServices\Measurement\InMemoryFindUnitLabel

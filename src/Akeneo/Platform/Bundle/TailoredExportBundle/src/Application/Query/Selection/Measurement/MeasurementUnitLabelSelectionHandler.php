@@ -15,17 +15,17 @@ namespace Akeneo\Platform\TailoredExport\Application\Query\Selection\Measurement
 
 use Akeneo\Platform\TailoredExport\Application\Query\Selection\SelectionHandlerInterface;
 use Akeneo\Platform\TailoredExport\Application\Query\Selection\SelectionInterface;
+use Akeneo\Platform\TailoredExport\Domain\Query\FindUnitLabelInterface;
 use Akeneo\Platform\TailoredExport\Domain\SourceValue\MeasurementValue;
 use Akeneo\Platform\TailoredExport\Domain\SourceValueInterface;
-use Akeneo\Tool\Bundle\MeasureBundle\PublicApi\GetUnitTranslations;
 
 class MeasurementUnitLabelSelectionHandler implements SelectionHandlerInterface
 {
-    private GetUnitTranslations $getUnitTranslations;
+    private FindUnitLabelInterface $findUnitLabels;
 
-    public function __construct(GetUnitTranslations $getUnitTranslations)
+    public function __construct(FindUnitLabelInterface $findUnitLabels)
     {
-        $this->getUnitTranslations = $getUnitTranslations;
+        $this->findUnitLabels = $findUnitLabels;
     }
 
     public function applySelection(SelectionInterface $selection, SourceValueInterface $value): string
@@ -43,12 +43,13 @@ class MeasurementUnitLabelSelectionHandler implements SelectionHandlerInterface
             return '';
         }
 
-        $unitTranslations = $this->getUnitTranslations->byMeasurementFamilyCodeAndLocale(
+        $unitTranslation = $this->findUnitLabels->byFamilyCodeAndUnitCode(
             $selection->getMeasurementFamily(),
+            $unit,
             $selection->getLocale()
         );
 
-        return $unitTranslations[$unit] ?? sprintf('[%s]', $unit);
+        return $unitTranslation ?? sprintf('[%s]', $unit);
     }
 
     public function supports(SelectionInterface $selection, SourceValueInterface $value): bool

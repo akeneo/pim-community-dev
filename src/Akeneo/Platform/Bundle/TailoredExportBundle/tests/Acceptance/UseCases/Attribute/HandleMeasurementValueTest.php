@@ -19,6 +19,7 @@ use Akeneo\Platform\TailoredExport\Application\Query\Selection\Measurement\Measu
 use Akeneo\Platform\TailoredExport\Application\Query\Selection\SelectionInterface;
 use Akeneo\Platform\TailoredExport\Domain\SourceValue\MeasurementValue;
 use Akeneo\Platform\TailoredExport\Domain\SourceValueInterface;
+use Akeneo\Platform\TailoredExport\Test\Acceptance\FakeServices\Measurement\InMemoryFindUnitLabel;
 use Akeneo\Platform\TailoredExport\Test\Acceptance\FakeServices\Measurement\InMemoryGetUnitTranslations;
 use PHPUnit\Framework\Assert;
 
@@ -76,8 +77,8 @@ final class HandleMeasurementValueTest extends AttributeTestCase
 
     private function loadOptions()
     {
-        /** @var InMemoryGetUnitTranslations $unitLabels */
-        $unitLabels = self::$container->get('akeneo_measurement.public_api.get_unit_translations');
+        /** @var InMemoryFindUnitLabel $unitLabels */
+        $unitLabels = self::$container->get('Akeneo\Platform\TailoredExport\Domain\Query\FindUnitLabelInterface');
         $unitLabels->addUnitLabel('weight', 'KILOGRAM', 'fr_FR', 'Kilogramme');
         $unitLabels->addUnitLabel('weight', 'KILOGRAM', 'en_US', 'Kilogram');
     }

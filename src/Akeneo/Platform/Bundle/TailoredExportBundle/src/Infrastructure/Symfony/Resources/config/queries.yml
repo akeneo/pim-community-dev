@@ -8,3 +8,8 @@ services:
         class: Akeneo\Platform\TailoredExport\Infrastructure\Query\FindAttributeOptionLabels
         arguments:
             - '@akeneo.pim.structure.query.lru_cached_get_existing_attribute_options_with_values'
+
+    Akeneo\Platform\TailoredExport\Domain\Query\FindUnitLabelInterface:
+        class: Akeneo\Platform\TailoredExport\Infrastructure\Query\FindUnitLabel
+        arguments:
+            - '@akeneo_measurement.public_api.get_unit_translations'
