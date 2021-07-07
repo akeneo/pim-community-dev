@@ -452,9 +452,9 @@ pim_datagrid:
     completeness:
       label: 完了
     created:
-      label: 作成日
+      label: '作成:'
     updated:
-      label: 更新日
+      label: '更新:'
     label_or_identifier:
       label: ラベルもしくは識別子
     parent:
