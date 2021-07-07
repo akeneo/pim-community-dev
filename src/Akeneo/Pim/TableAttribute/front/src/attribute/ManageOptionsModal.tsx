@@ -2,29 +2,27 @@ import React from 'react';
 import {
   Button,
   Field,
-  IconButton,
   Modal,
   SectionTitle,
   Table,
   TextInput,
   uuid,
-  CloseIcon,
   LoaderIcon,
-  Helper,
-  AkeneoThemedProps,
   getColor,
+  Pagination,
 } from 'akeneo-design-system';
 import {getLabel, Locale, LocaleCode, useRouter, useTranslate, useUserContext} from '@akeneo-pim-community/shared';
 import {SelectColumnDefinition, SelectOption} from '../models/TableConfiguration';
 import {Attribute} from '../models/Attribute';
 import {TwoColumnsLayout} from './TwoColumnsLayout';
 import {FieldsList} from '../shared/FieldsList';
-import styled, {css} from 'styled-components';
+import styled from 'styled-components';
 import {fetchSelectOptions} from '../fetchers/SelectOptionsFetcher';
 import {getActivatedLocales} from '../repositories/Locale';
+import {Child} from './Child';
 
 const TableContainer = styled.div`
-  height: calc(100vh - 200px);
+  height: calc(100vh - 300px);
   overflow: auto;
 `;
 
@@ -33,22 +31,13 @@ const OptionsTwoColumnsLayout = styled(TwoColumnsLayout)`
   height: calc(100vh - 150px);
 `;
 
-const ManageOptionCell = styled(Table.Cell)`
-  vertical-align: top;
-`;
-
-const CellFieldContainer = styled.div`
-  flex-grow: 1;
-`;
-
-const ManageOptionsRow = styled(Table.Row)<{isLastRow: boolean} & AkeneoThemedProps>`
-  ${({isLastRow}) =>
-    isLastRow &&
-    css`
-      position: sticky;
-      bottom: 0;
-      background-color: ${getColor('white')};
-    `}
+const ManageOptionsBody = styled(Table.Body)`
+  & > tr:last-child {
+    position: sticky;
+    bottom: 0;
+    background-color: ${getColor('white')};
+    z-index: 1;
+  }
 `;
 
 type ManageOptionsModalProps = {
@@ -58,87 +47,46 @@ type ManageOptionsModalProps = {
   onChange: (options: SelectOption[]) => void;
 };
 
-type SelectOptionWithId = SelectOption & {
+export type SelectOptionWithId = SelectOption & {
   id: string;
   isNew: boolean;
 };
 
-const BATCH_SIZE = 100;
+const emptySelectOption: SelectOptionWithId = {id: uuid(), code: '', labels: {}, isNew: true};
+
+const OPTIONS_PER_PAGE = 20;
 
 const ManageOptionsModal: React.FC<ManageOptionsModalProps> = ({onClose, attribute, columnDefinition, onChange}) => {
   const userContext = useUserContext();
   const router = useRouter();
   const translate = useTranslate();
 
-  const tableContainerRef = React.useRef();
-  const inputCodeRef = React.useRef();
+  const [page, setPage] = React.useState<number>(1);
+  const [violations, setViolations] = React.useState<{[optionId: string]: string[]}>({});
   const [activatedLocales, setActivatedLocales] = React.useState<Locale[]>();
-  const [selectedOption, setSelectedOption] = React.useState<SelectOptionWithId | undefined>(undefined);
   const [options, setOptions] = React.useState<SelectOptionWithId[]>();
-  const [optionsToDisplay, setOptionsToDisplay] = React.useState<SelectOptionWithId[]>();
-  const [autoCompleteCode, setAutoCompleteCode] = React.useState<boolean>(false);
-  const [violations, setViolations] = React.useState<{[key: string]: string[]}>({});
-  const [scrollToTheEnd, setScrollToTheEnd] = React.useState<boolean>(false);
-  const [numberOfItemsToDisplay, setNumberOfItemsToDisplay] = React.useState<number>(0);
-  const currentLocale = 'en_US';
+  const [selectedOptionIndex, setSelectedOptionIndex] = React.useState<number | undefined>(undefined);
+
+  const lastCodeInputRef = React.useRef<HTMLInputElement>();
+  const lastLabelInputRef = React.useRef<HTMLInputElement>();
+  const newCodeInputRef = React.useRef<HTMLInputElement>();
+  const newLabelInputRef = React.useRef<HTMLInputElement>();
+  const tableContainerRef = React.useRef();
+
+  const currentLocaleCode = 'en_US';
   const columnLabel = getLabel(columnDefinition.labels, userContext.get('catalogLocale'), columnDefinition.code);
+  const canSave = Object.keys(violations).length === 0;
+  const currentOption =
+    typeof selectedOptionIndex === 'undefined' || !options ? undefined : options[selectedOptionIndex];
 
   React.useEffect(() => {
-    getActivatedLocales(router).then((activeLocales: Locale[]) => setActivatedLocales(activeLocales));
-  }, [router]);
+    const initializeOptions = (newOptions: SelectOption[]) => {
+      const optionsWithId = newOptions.map(option => {
+        return {...option, id: uuid(), isNew: false};
+      });
+      setOptions(optionsWithId);
+    };
 
-  const computeOptionsToDisplay = () => {
-    if (!options) {
-      return;
-    }
-
-    const newOptionsToDisplay = options.slice(0, numberOfItemsToDisplay);
-    newOptionsToDisplay.push({id: uuid(), code: '', labels: {}, isNew: true});
-    setOptionsToDisplay(newOptionsToDisplay);
-  };
-
-  const setOptionsAndValidation = (options: SelectOptionWithId[]) => {
-    const optionCodes = options.map(option => option.code);
-    const duplicates = optionCodes.filter(optionCode => {
-      return options.filter(o => o.code === optionCode).length > 1;
-    });
-
-    setOptions(options);
-    if (selectedOption) {
-      const found = options.find(option => option.id === selectedOption.id);
-      setSelectedOption(found ? {...found} : undefined);
-    }
-
-    const newViolations = {};
-    options.forEach(option => {
-      const violationsForOption = [];
-      if (option.code === '') {
-        violationsForOption.push(translate('pim_table_attribute.validations.column_code_must_be_filled'));
-      }
-      if (option.code !== '' && !/^[a-zA-Z0-9_]+$/.exec(option.code)) {
-        violationsForOption.push(translate('pim_table_attribute.validations.invalid_code'));
-      }
-      if (option.code !== '' && duplicates.includes(option.code)) {
-        violationsForOption.push(translate('pim_table_attribute.validations.duplicated_select_code'));
-      }
-      if (violationsForOption.length > 0) {
-        newViolations[option.id] = violationsForOption;
-      }
-    });
-    if (JSON.stringify(newViolations) !== JSON.stringify(violations)) {
-      setViolations(newViolations);
-    }
-  };
-
-  const initializeOptions = (options: SelectOption[]) => {
-    const optionsWithId = options.map(option => {
-      return {...option, id: uuid(), isNew: false};
-    });
-    setOptionsAndValidation(optionsWithId);
-    setSelectedOption(optionsWithId[0] ?? undefined);
-  };
-
-  React.useEffect(() => {
     if (typeof columnDefinition.options === 'undefined') {
       fetchSelectOptions(router, attribute.code, columnDefinition.code).then(fetchOptions => {
         if (typeof fetchOptions === 'undefined') {
@@ -146,122 +94,72 @@ const ManageOptionsModal: React.FC<ManageOptionsModalProps> = ({onClose, attribu
         } else {
           initializeOptions(fetchOptions);
         }
-        setNumberOfItemsToDisplay(BATCH_SIZE);
       });
     } else {
       initializeOptions(columnDefinition.options);
-      setNumberOfItemsToDisplay(BATCH_SIZE);
     }
   }, []);
 
   React.useEffect(() => {
-    if (numberOfItemsToDisplay === 0 || !options) {
-      return;
+    if (options && options.length > 0) {
+      const option = options[options.length - 1];
+      if (typeof option.labels[currentLocaleCode] !== 'undefined') {
+        lastLabelInputRef.current?.focus();
+      } else {
+        lastCodeInputRef.current?.focus();
+      }
     }
-    computeOptionsToDisplay();
-  }, [numberOfItemsToDisplay]);
+    if (tableContainerRef.current) {
+      tableContainerRef.current.scrollTop = tableContainerRef.current.scrollHeight;
+    }
+  }, [options?.length]);
 
   React.useEffect(() => {
-    if (tableContainerRef?.current) {
-      tableContainerRef.current.onscroll = () => {
-        if (
-          tableContainerRef.current.scrollTop + tableContainerRef.current.offsetHeight >=
-            tableContainerRef.current.scrollHeight &&
-          numberOfItemsToDisplay < options.length
-        ) {
-          setNumberOfItemsToDisplay(numberOfItemsToDisplay + BATCH_SIZE);
+    getActivatedLocales(router).then((activeLocales: Locale[]) => setActivatedLocales(activeLocales));
+  }, [router]);
+
+  const setOptionsAndValidate = (newOptions: SelectOptionWithId[]) => {
+    setOptions([...newOptions]);
+
+    const duplicates = newOptions
+      .map(optionA => optionA.code)
+      .filter(optionCode => {
+        return newOptions.filter(optionB => optionB.code === optionCode).length > 1;
+      });
+
+    const newViolations: {[optionId: string]: string[]} = {};
+    newOptions
+      .filter(option => option.isNew)
+      .forEach(option => {
+        const violationsForOption = [];
+        if (option.code === '') {
+          violationsForOption.push(translate('pim_table_attribute.validations.column_code_must_be_filled'));
         }
-      };
-    }
-  }, [tableContainerRef, numberOfItemsToDisplay]);
-
-  React.useEffect(() => {
-    if (scrollToTheEnd && tableContainerRef.current) {
-      window.setTimeout(() => {
-        tableContainerRef.current.scrollTop = tableContainerRef.current.scrollHeight;
-      }, 0);
-      setScrollToTheEnd(false);
-    }
-  }, [scrollToTheEnd]);
-
-  const handleLabelChange = (optionId: string, localeCode: LocaleCode, label: string) => {
-    if (options) {
-      const index = options.findIndex(option => option.id === optionId);
-      const option = index >= 0 ? options[index] : {id: optionId, code: '', labels: {}, isNew: true};
-
-      option.labels[localeCode] = label;
-      if (autoCompleteCode) {
-        option.code = label.replace(/[^a-zA-Z0-9_]/gi, '_').substring(0, 100);
-        if (inputCodeRef && inputCodeRef.current) {
-          inputCodeRef.current.value = option.code;
+        if (option.code !== '' && !/^[a-zA-Z0-9_]+$/.exec(option.code)) {
+          violationsForOption.push(translate('pim_table_attribute.validations.invalid_code'));
         }
-      }
-      if (index >= 0) {
-        options[index] = option;
-      } else {
-        options.push(option);
-        if (optionsToDisplay) {
-          optionsToDisplay.push({id: uuid(), code: '', labels: {}, isNew: true});
-          setOptionsToDisplay([...optionsToDisplay]);
-          setAutoCompleteCode(true);
+        if (option.code !== '' && duplicates.includes(option.code)) {
+          violationsForOption.push(translate('pim_table_attribute.validations.duplicated_select_code'));
         }
-      }
-      setOptionsAndValidation(options);
-    }
-  };
-
-  const handleCodeChange = (optionId: string, code: string) => {
-    if (options) {
-      const index = options.findIndex(option => option.id === optionId);
-      const option = index >= 0 ? options[index] : {id: optionId, code: '', labels: {}, isNew: true};
-      if (!option.isNew) {
-        // We cannot change the code of an existing option.
-        return;
-      }
-
-      option.code = code;
-      if (index >= 0) {
-        options[index] = option;
-      } else {
-        options.push(option);
-        if (optionsToDisplay) {
-          optionsToDisplay.push({id: uuid(), code: '', labels: {}, isNew: true});
-          setOptionsToDisplay([...optionsToDisplay]);
+        if (violationsForOption.length > 0) {
+          newViolations[option.id] = violationsForOption;
         }
-      }
-      setOptionsAndValidation(options);
-    }
+      });
+    setViolations(newViolations);
   };
 
-  const handleRemove = (optionId: string) => {
+  const handleOptionChange = (index: number, option: SelectOptionWithId) => {
     if (options) {
-      if (optionId === selectedOption?.id) {
-        const index = options.findIndex(option => option.id === optionId);
-        setSelectedOption(options[index === options.length - 1 ? options.length - 2 : index + 1]);
-      }
-      setOptionsAndValidation(options.filter(option => option.id !== optionId));
+      (options || [])[index] = option;
+      setOptionsAndValidate(options);
     }
   };
 
-  const handleFocus = (optionId: string, enableAutoCompleteCode: boolean) => {
-    setSelectedOption(optionsToDisplay?.find(option => option.id === optionId));
-    if (enableAutoCompleteCode && optionsToDisplay) {
-      let option = options?.find(option => option.id === optionId) as SelectOptionWithId;
-      if (option === undefined) {
-        option = optionsToDisplay?.find(option => option.id === optionId) as SelectOptionWithId;
-      }
-      setAutoCompleteCode(typeof option.code === 'undefined' || option.code === '');
-    }
-  };
-
-  const handleBlur = () => {
-    setAutoCompleteCode(false);
-  };
-
-  const handleSave = () => {
-    if (options) {
+  const handleConfirm = () => {
+    if (canSave && options) {
       onChange(
-        options.slice(0, -1).map(option => {
+        options.map(option => {
+          // eslint-disable-next-line @typescript-eslint/no-unused-vars
           const {id, isNew, ...rest} = option;
           return rest;
         })
@@ -270,26 +168,55 @@ const ManageOptionsModal: React.FC<ManageOptionsModalProps> = ({onClose, attribu
     onClose();
   };
 
-  const canSave = Object.keys(violations).length === 0;
+  const handleAddOption = (option: SelectOptionWithId) => {
+    const newOptions = [...(options || []), {...option, id: uuid()}];
+    setOptionsAndValidate(newOptions);
+    setPage(Math.floor((newOptions.length - 1) / OPTIONS_PER_PAGE) + 1);
+    option.code = '';
+    option.labels = {};
+    if (newCodeInputRef.current) newCodeInputRef.current.value = '';
+    if (newLabelInputRef.current) newLabelInputRef.current.value = '';
+  };
+
+  const handleDelete = (index: number) => {
+    const tempValue = [...(options || [])];
+    tempValue.splice(index, 1);
+    setOptionsAndValidate(tempValue);
+  };
+
+  const getRealIndex = React.useCallback((index: number) => index + (page - 1) * OPTIONS_PER_PAGE, [page]);
+  const isLastOption = React.useCallback((index: number) => options && getRealIndex(index) === options?.length - 1, [
+    options?.length,
+  ]);
+
+  const handleLabelChange = (index: number, localeCode: LocaleCode, label: string) => {
+    if (options && typeof options[index] !== 'undefined') {
+      options[index].labels[localeCode] = label;
+      handleOptionChange(index, options[index]);
+    }
+  };
 
   const LabelTranslations = (
     <>
       <SectionTitle title={translate('pim_common.label_translations')}>
         <SectionTitle.Title>{translate('pim_common.label_translations')}</SectionTitle.Title>
       </SectionTitle>
-      {selectedOption && (
+      {typeof selectedOptionIndex !== 'undefined' && currentOption && (
         <FieldsList>
           {!activatedLocales && <LoaderIcon />}
           {activatedLocales &&
-            activatedLocales.map(locale => (
-              <Field label={locale.label} key={locale.code} locale={locale.code}>
-                <TextInput
-                  onChange={label => handleLabelChange(selectedOption.id, locale.code, label)}
-                  value={selectedOption.labels[locale.code] ?? ''}
-                  maxLength={255}
-                />
-              </Field>
-            ))}
+            activatedLocales
+              .filter(locale => locale.code !== currentLocaleCode)
+              .map(locale => (
+                <Field label={locale.label} key={locale.code} locale={locale.code}>
+                  <TextInput
+                    key={selectedOptionIndex}
+                    onChange={label => handleLabelChange(selectedOptionIndex, locale.code, label)}
+                    value={currentOption.labels[locale.code] ?? ''}
+                    maxLength={255}
+                  />
+                </Field>
+              ))}
         </FieldsList>
       )}
     </>
@@ -307,83 +234,62 @@ const ManageOptionsModal: React.FC<ManageOptionsModalProps> = ({onClose, attribu
           <SectionTitle title={columnLabel}>
             <SectionTitle.Title>{columnLabel}</SectionTitle.Title>
           </SectionTitle>
+          {options && (
+            <Pagination
+              currentPage={page}
+              totalItems={options?.length ?? 0}
+              itemsPerPage={OPTIONS_PER_PAGE}
+              followPage={setPage}
+            />
+          )}
           {!options && <LoaderIcon />}
-          <TableContainer ref={tableContainerRef}>
-            <Table>
-              <Table.Header>
-                <Table.HeaderCell>{translate('pim_common.label')}</Table.HeaderCell>
-                <Table.HeaderCell>
-                  {translate('pim_common.code')} {translate('pim_common.required_label')}
-                </Table.HeaderCell>
-                <Table.HeaderCell />
-              </Table.Header>
-              <Table.Body>
-                {optionsToDisplay &&
-                  optionsToDisplay.map((option: SelectOptionWithId, index) => (
-                    <ManageOptionsRow
+          {options && (
+            <TableContainer ref={tableContainerRef}>
+              <Table>
+                <Table.Header>
+                  <Table.HeaderCell>{translate('pim_common.label')}</Table.HeaderCell>
+                  <Table.HeaderCell>
+                    {translate('pim_common.code')} {translate('pim_common.required_label')}
+                  </Table.HeaderCell>
+                  <Table.HeaderCell />
+                </Table.Header>
+                <ManageOptionsBody>
+                  {options.slice((page - 1) * OPTIONS_PER_PAGE, page * OPTIONS_PER_PAGE).map((option, index) => (
+                    <Child
+                      codeInputRef={isLastOption(index) ? lastCodeInputRef : undefined}
+                      labelInputRef={isLastOption(index) ? lastLabelInputRef : undefined}
+                      isSelected={selectedOptionIndex === getRealIndex(index)}
+                      onSelect={() => setSelectedOptionIndex(getRealIndex(index))}
+                      data-testid={`row-${getRealIndex(index)}`}
+                      onChange={(option: SelectOptionWithId) => handleOptionChange(getRealIndex(index), option)}
                       key={option.id}
-                      isSelected={option.id === selectedOption?.id}
-                      isLastRow={index === optionsToDisplay.length - 1}>
-                      <ManageOptionCell>
-                        <CellFieldContainer>
-                          <TextInput
-                            onChange={label => handleLabelChange(option.id, currentLocale, label)}
-                            defaultValue={option.labels[currentLocale] || ''}
-                            placeholder={
-                              index === optionsToDisplay.length - 1
-                                ? translate('pim_table_attribute.form.attribute.new_option_placeholder')
-                                : ''
-                            }
-                            onFocus={() => handleFocus(option.id, true)}
-                            onBlur={handleBlur}
-                            maxLength={255}
-                            data-testid={`label-${index}`}
-                          />
-                        </CellFieldContainer>
-                      </ManageOptionCell>
-                      <ManageOptionCell>
-                        <CellFieldContainer>
-                          <TextInput
-                            ref={selectedOption?.id === option.id ? inputCodeRef : null}
-                            onChange={code => handleCodeChange(option.id, code)}
-                            defaultValue={option.code}
-                            maxLength={100}
-                            onFocus={() => handleFocus(option.id, false)}
-                            data-testid={`code-${index}`}
-                            disabled={!option.isNew}
-                            readOnly={!option.isNew}
-                          />
-                          {violations[option.id] &&
-                            violations[option.id].map((violation, i) => (
-                              <Helper key={i} level='error' inline>
-                                {violation}
-                              </Helper>
-                            ))}
-                        </CellFieldContainer>
-                      </ManageOptionCell>
-                      <Table.ActionCell>
-                        {index !== optionsToDisplay.length - 1 && (
-                          <IconButton
-                            ghost='borderless'
-                            level='tertiary'
-                            icon={<CloseIcon />}
-                            title={translate('pim_common.remove')}
-                            onClick={() => handleRemove(option.id)}
-                          />
-                        )}
-                      </Table.ActionCell>
-                    </ManageOptionsRow>
+                      option={option}
+                      onDelete={() => handleDelete(getRealIndex(index))}
+                      violations={violations[option.id]}
+                    />
                   ))}
-              </Table.Body>
-            </Table>
-          </TableContainer>
+                  <Child
+                    codeInputRef={newCodeInputRef}
+                    labelInputRef={newLabelInputRef}
+                    isSelected={selectedOptionIndex === -1}
+                    onSelect={() => setSelectedOptionIndex(-1)}
+                    data-testid={`row-new`}
+                    onChange={(option: SelectOptionWithId) => handleAddOption(option)}
+                    option={emptySelectOption}
+                    violations={[]}
+                    labelPlaceholder={translate('pim_table_attribute.form.attribute.new_option_placeholder')}
+                  />
+                </ManageOptionsBody>
+              </Table>
+            </TableContainer>
+          )}
         </div>
+        <Modal.TopRightButtons>
+          <Button level='primary' onClick={handleConfirm} disabled={!canSave}>
+            {translate('pim_common.confirm')}
+          </Button>
+        </Modal.TopRightButtons>
       </OptionsTwoColumnsLayout>
-      <Modal.TopRightButtons>
-        <Button level='primary' onClick={handleSave} disabled={!canSave}>
-          {translate('pim_common.confirm')}
-        </Button>
-      </Modal.TopRightButtons>
     </Modal>
   );
 };
