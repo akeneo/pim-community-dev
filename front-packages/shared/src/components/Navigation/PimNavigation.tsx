@@ -43,7 +43,7 @@ const PimNavigation: FC<Props> = ({entries, activeEntryCode, activeSubEntryCode}
   }, [activeNavigationEntry, activeSubEntryCode]);
 
   return (
-    <NavContainer aria-label="Main Navigation">
+    <NavContainer aria-label="Main navigation">
       <MainNavContainer>
         <LogoContainer>
           <PimView viewName="pim-menu-logo" />
@@ -56,6 +56,8 @@ const PimNavigation: FC<Props> = ({entries, activeEntryCode, activeSubEntryCode}
               disabled={entry.disabled}
               icon={entry.icon}
               onClick={() => handleFollowEntry(entry)}
+              role='menuitem'
+              data-testid='pim-main-menu-item'
             >
               {translate(entry.title)}
             </MainNavigationItem>

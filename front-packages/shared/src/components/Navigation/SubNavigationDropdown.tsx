@@ -27,22 +27,23 @@ const SubNavigationDropdown: FC<Props> = ({entries, title}) => {
         ghost="borderless"
         onClick={openMenu}
         className="dropdown-button"
+        data-testid={'openSubNavigationDropdownButton'}
       />
       {isMenuOpen &&
-      <Dropdown.Overlay onClose={closeMenu}>
-        {title &&
-        <Dropdown.Header>
-            <Dropdown.Title>{translate(title)}</Dropdown.Title>
-        </Dropdown.Header>
-        }
-          <Dropdown.ItemCollection>
-            {entries.map(subEntry =>
-              <Dropdown.Item onClick={() => handleFollowSubEntry(subEntry)} key={subEntry.code}>
-                {subEntry.title}
-              </Dropdown.Item>
-            )}
-          </Dropdown.ItemCollection>
-      </Dropdown.Overlay>
+        <Dropdown.Overlay onClose={closeMenu}>
+          {title &&
+          <Dropdown.Header>
+              <Dropdown.Title>{translate(title)}</Dropdown.Title>
+          </Dropdown.Header>
+          }
+            <Dropdown.ItemCollection>
+              {entries.map(subEntry =>
+                <Dropdown.Item onClick={() => handleFollowSubEntry(subEntry)} key={subEntry.code}>
+                  {subEntry.title}
+                </Dropdown.Item>
+              )}
+            </Dropdown.ItemCollection>
+        </Dropdown.Overlay>
       }
     </Dropdown>
   );

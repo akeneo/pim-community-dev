@@ -90,7 +90,12 @@ const SubNavigationPanel = React.forwardRef<HTMLDivElement, SubNavigationPanelPr
         <Panel ref={forwardedRef} isOpen={isOpen} {...rest}>
           <PanelContent isOpen={isOpen}>{children}</PanelContent>
         </Panel>
-        <ToggleButton isOpen={isOpen} onClick={() => (isOpen ? close() : open())} title={isOpen ? 'Close' : 'Open'}>
+        <ToggleButton
+          isOpen={isOpen}
+          onClick={() => (isOpen ? close() : open())}
+          title={isOpen ? 'Close' : 'Open'}
+          data-testid='open-subnavigation-button'
+        >
           {isOpen ? <PanelCloseIcon /> : <PanelOpenIcon />}
         </ToggleButton>
       </Container>

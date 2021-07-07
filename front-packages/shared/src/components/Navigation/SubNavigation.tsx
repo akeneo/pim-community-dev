@@ -51,7 +51,7 @@ const SubNavigation: FC<Props> = ({title, sections, entries, backLink, stateCode
   };
 
   return (
-    <SubNavContainer>
+    <SubNavContainer role='menu' data-testid='pim-sub-menu'>
       <SubNavigationPanel isOpen={isSubNavigationOpened} open={openSubNavigation} close={closeSubNavigation}>
         {!isSubNavigationOpened && <SubNavigationDropdown entries={entries} title={title}/>}
 
@@ -68,14 +68,15 @@ const SubNavigation: FC<Props> = ({title, sections, entries, backLink, stateCode
               <Section key={section.code}>
                 <SectionTitle>{translate(section.title)}</SectionTitle>
                 {entries.filter(subNav => subNav.sectionCode === section.code).map(subEntry =>
-                    <SubNavigationItem
-                      active={subEntry.code === activeSubEntryCode}
-                      key={subEntry.code}
-                      href={`#${router.generate(subEntry.route, subEntry.routeParams)}`}
-                      onClick={(event: any) => handleFollowSubEntry(event, subEntry)}
-                    >
-                      {subEntry.title}
-                    </SubNavigationItem>
+                  <SubNavigationItem
+                    active={subEntry.code === activeSubEntryCode}
+                    key={subEntry.code}
+                    href={`#${router.generate(subEntry.route, subEntry.routeParams)}`}
+                    onClick={(event: any) => handleFollowSubEntry(event, subEntry)}
+                    role='menuitem'
+                  >
+                    {subEntry.title}
+                  </SubNavigationItem>
                 )}
               </Section>
             );
