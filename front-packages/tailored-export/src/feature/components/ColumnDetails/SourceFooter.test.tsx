@@ -22,7 +22,7 @@ test('It handles source removal', () => {
   renderWithProviders(<SourceFooter source={source} onSourceRemove={handleRemove} />);
 
   userEvent.click(screen.getByText('akeneo.tailored_export.column_details.sources.remove.button'));
-  userEvent.click(screen.getByText('pim_common.remove'));
+  userEvent.click(screen.getByText('pim_common.confirm'));
 
   expect(handleRemove).toHaveBeenCalledTimes(1);
   expect(handleRemove).toHaveBeenCalledWith(source);
