@@ -1,5 +1,6 @@
 parameters:
     akeneo_pim_marketplace_url: 'https://marketplace.akeneo.com'
+    akeneo_pim_marketplace_pagination_size: 100
 
 services:
     akeneo_connectivity.connection.marketplace.url_generator:
@@ -22,13 +23,19 @@ services:
         arguments:
             - '@database_connection'
 
+    akeneo_connectivity.connection.marketplace.guzzle_client:
+        class: GuzzleHttp\Client
+        arguments:
+            - base_uri: '%akeneo_pim_marketplace_url%'
+
     akeneo_connectivity.connection.marketplace.web_marketplace_api:
         class: Akeneo\Connectivity\Connection\Infrastructure\Marketplace\WebMarketplaceApi
-        calls:
-            - setFixturePath: ['%connectivity.marketplace_fixtures_directory%']
+        arguments:
+            - '@akeneo_connectivity.connection.marketplace.guzzle_client'
 
     akeneo_connectivity.connection.marketplace.get_all_extensions_query:
         class: Akeneo\Connectivity\Connection\Infrastructure\Marketplace\GetAllExtensionsQuery
         arguments:
             - '@akeneo_connectivity.connection.marketplace.web_marketplace_api'
             - '@pim_catalog.version_provider'
+            - '%akeneo_pim_marketplace_pagination_size%'

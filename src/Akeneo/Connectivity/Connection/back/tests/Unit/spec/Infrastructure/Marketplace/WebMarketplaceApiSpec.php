@@ -5,8 +5,11 @@ namespace spec\Akeneo\Connectivity\Connection\Infrastructure\Marketplace;
 
 use Akeneo\Connectivity\Connection\Infrastructure\Marketplace\WebMarketplaceApi;
 use Akeneo\Connectivity\Connection\Infrastructure\Marketplace\WebMarketplaceApiInterface;
+use GuzzleHttp\Client;
+use GuzzleHttp\Psr7\Response;
 use PhpSpec\ObjectBehavior;
 use PHPUnit\Framework\Assert;
+use Psr\Http\Message\StreamInterface;
 
 /**
  * @copyright 2021 Akeneo SAS (http://www.akeneo.com)
@@ -14,10 +17,9 @@ use PHPUnit\Framework\Assert;
  */
 class WebMarketplaceApiSpec extends ObjectBehavior
 {
-    public function let(): void
+    public function let(Client $client): void
     {
-        $this->beConstructedWith();
-        $this->setFixturePath(__DIR__.'/fixtures/');
+        $this->beConstructedWith($client);
     }
 
     public function it_is_initializable(): void
@@ -26,40 +28,152 @@ class WebMarketplaceApiSpec extends ObjectBehavior
         $this->shouldImplement(WebMarketplaceApiInterface::class);
     }
 
-    public function it_returns_extensions(): void
-    {
-        $expectedItems = [
-            [
-                "id" => "90741597-54c5-48a1-98da-a68e7ee0a715",
-                "name" => "Akeneo Shopware 6 Connector by EIKONA Media",
-                "logo" => "https://marketplace.akeneo.com/sites/default/files/styles/extension_logo_large/public/extension-logos/akeneo-to-shopware6-eimed_0.jpg?itok=InguS-1N",
-                "author" => "EIKONA Media GmbH",
-                "partner" => "Akeneo Preferred Partner",
-                "description" => "description_1",
-                "url" => "url_1",
-                "categories" => [
-                    "E-commerce",
-                ],
-                "certified" => false,
+    public function it_sanitize_ce_master_version(
+        Client $client,
+        Response $response,
+        StreamInterface $stream
+    ): void {
+        $stream->getContents()->willReturn('{}');
+        $response->getBody()->willReturn($stream);
+        $client->request('GET', '/api/1.0/extensions', [
+            'query' => [
+                'edition' => 'community-edition',
+                'version' => null,
+                'offset' => 0,
+                'limit' => 10,
             ],
-            [
-                "id" => "b18561ff-378e-41a5-babb-ca0ec0af569a",
-                "name" => "Akeneo PIM Connector for Shopify",
-                "logo" => "https://marketplace.akeneo.com/sites/default/files/styles/extension_logo_large/public/extension-logos/shopify-connector-logo-1200x.png?itok=mASOVlwC",
-                "author" => "StrikeTru",
-                "partner" => "Akeneo Partner",
-                "description" => "description_2",
-                "url" => "url_2",
-                "categories" => [
-                    "E-commerce",
+        ])->shouldBeCalled()->willReturn($response);
+
+        $this->getExtensions('CE', 'master');
+    }
+
+    public function it_sanitize_ce_release_version(
+        Client $client,
+        Response $response,
+        StreamInterface $stream
+    ): void {
+        $stream->getContents()->willReturn('{}');
+        $response->getBody()->willReturn($stream);
+        $client->request('GET', '/api/1.0/extensions', [
+            'query' => [
+                'edition' => 'community-edition',
+                'version' => '5.0',
+                'offset' => 0,
+                'limit' => 10,
+            ],
+        ])->shouldBeCalled()->willReturn($response);
+
+        $this->getExtensions('CE', '5.0.1');
+    }
+
+    public function it_sanitize_ge_master_version(
+        Client $client,
+        Response $response,
+        StreamInterface $stream
+    ): void {
+        $stream->getContents()->willReturn('{}');
+        $response->getBody()->willReturn($stream);
+        $client->request('GET', '/api/1.0/extensions', [
+            'query' => [
+                'edition' => 'growth-edition',
+                'version' => null,
+                'offset' => 0,
+                'limit' => 10,
+            ],
+        ])->shouldBeCalled()->willReturn($response);
+
+        $this->getExtensions('GE', 'master');
+    }
+
+    public function it_sanitize_ee_master_version(
+        Client $client,
+        Response $response,
+        StreamInterface $stream
+    ): void {
+        $stream->getContents()->willReturn('{}');
+        $response->getBody()->willReturn($stream);
+        $client->request('GET', '/api/1.0/extensions', [
+            'query' => [
+                'edition' => 'serenity',
+                'version' => null,
+                'offset' => 0,
+                'limit' => 10,
+            ],
+        ])->shouldBeCalled()->willReturn($response);
+
+        $this->getExtensions('Serenity', 'master');
+    }
+
+    public function it_sanitize_ee_release_version(
+        Client $client,
+        Response $response,
+        StreamInterface $stream
+    ): void {
+        $stream->getContents()->willReturn('{}');
+        $response->getBody()->willReturn($stream);
+        $client->request('GET', '/api/1.0/extensions', [
+            'query' => [
+                'edition' => 'enterprise-edition',
+                'version' => '5.0',
+                'offset' => 0,
+                'limit' => 10,
+            ],
+        ])->shouldBeCalled()->willReturn($response);
+
+        $this->getExtensions('EE', '5.0.1');
+    }
+
+    public function it_returns_extensions(
+        Client $client,
+        Response $response,
+        StreamInterface $stream
+    ): void {
+        $expectedResponse = [
+            'total' => 2,
+            'limit' => 10,
+            'offset' => 0,
+            'items' => [
+                [
+                    "id" => "90741597-54c5-48a1-98da-a68e7ee0a715",
+                    "name" => "Akeneo Shopware 6 Connector by EIKONA Media",
+                    "logo" => "https://marketplace.akeneo.com/sites/default/files/styles/extension_logo_large/public/extension-logos/akeneo-to-shopware6-eimed_0.jpg?itok=InguS-1N",
+                    "author" => "EIKONA Media GmbH",
+                    "partner" => "Akeneo Preferred Partner",
+                    "description" => "description_1",
+                    "url" => "url_1",
+                    "categories" => [
+                        "E-commerce",
+                    ],
+                    "certified" => false,
                 ],
-                "certified" => false,
+                [
+                    "id" => "b18561ff-378e-41a5-babb-ca0ec0af569a",
+                    "name" => "Akeneo PIM Connector for Shopify",
+                    "logo" => "https://marketplace.akeneo.com/sites/default/files/styles/extension_logo_large/public/extension-logos/shopify-connector-logo-1200x.png?itok=mASOVlwC",
+                    "author" => "StrikeTru",
+                    "partner" => "Akeneo Partner",
+                    "description" => "description_2",
+                    "url" => "url_2",
+                    "categories" => [
+                        "E-commerce",
+                    ],
+                    "certified" => false,
+                ],
             ],
         ];
 
-        $extensions = ($this->getExtensions('CE', '5.0'))->getWrappedObject();
+        $stream->getContents()->willReturn(json_encode($expectedResponse));
+        $response->getBody()->willReturn($stream);
+        $client->request('GET', '/api/1.0/extensions', [
+            'query' => [
+                'edition' => 'community-edition',
+                'version' => '5.0',
+                'offset' => 0,
+                'limit' => 10,
+            ],
+        ])->willReturn($response);
 
-        Assert::assertCount(4, $extensions);
+        $extensions = ($this->getExtensions('CE', '5.0.1'))->getWrappedObject();
 
         Assert::assertArrayHasKey('total', $extensions);
         Assert::assertEquals(2, $extensions['total']);
@@ -68,11 +182,11 @@ class WebMarketplaceApiSpec extends ObjectBehavior
         Assert::assertEquals(0, $extensions['offset']);
 
         Assert::assertArrayHasKey('limit', $extensions);
-        Assert::assertEquals(100, $extensions['limit']);
+        Assert::assertEquals(10, $extensions['limit']);
 
         Assert::assertArrayHasKey('items', $extensions);
         Assert::assertCount(2, $extensions['items']);
-        Assert::assertEquals($expectedItems[0], $extensions['items'][0]);
-        Assert::assertEquals($expectedItems[1], $extensions['items'][1]);
+        Assert::assertEquals($expectedResponse['items'][0], $extensions['items'][0]);
+        Assert::assertEquals($expectedResponse['items'][1], $extensions['items'][1]);
     }
 }
