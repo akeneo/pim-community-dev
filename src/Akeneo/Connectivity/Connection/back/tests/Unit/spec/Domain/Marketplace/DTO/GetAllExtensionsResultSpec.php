@@ -39,4 +39,33 @@ class GetAllExtensionsResultSpec extends ObjectBehavior
             ],
         ]);
     }
+
+    public function it_adds_analytics(
+        Extension $extension,
+        Extension $extensionWithAnalytics
+    ) {
+        $queryParameters = [
+            'utm_campaign' => 'foobar',
+        ];
+
+        $extension->normalize()->willReturn([
+            'id' => 'cdbb6108-1914-4262-b728-aa4c679e33a8',
+            'url' => 'https://marketplace.akeneo.com/extension/shopify-connector',
+        ]);
+        $extensionWithAnalytics->normalize()->willReturn([
+            'id' => 'cdbb6108-1914-4262-b728-aa4c679e33a8',
+            'url' => 'https://marketplace.akeneo.com/extension/shopify-connector?utm_campaign=foobar',
+        ]);
+        $extension->withAnalytics($queryParameters)->willReturn($extensionWithAnalytics);
+
+        $this->withAnalytics($queryParameters)->normalize()->shouldEqual([
+            'total' => 12,
+            'extensions' => [
+                [
+                    'id' => 'cdbb6108-1914-4262-b728-aa4c679e33a8',
+                    'url' => 'https://marketplace.akeneo.com/extension/shopify-connector?utm_campaign=foobar',
+                ],
+            ],
+        ]);
+    }
 }

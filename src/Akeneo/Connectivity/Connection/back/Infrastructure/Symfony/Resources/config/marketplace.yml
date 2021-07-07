@@ -10,6 +10,13 @@ services:
             - '%env(AKENEO_PIM_URL)%'
             - '@akeneo_connectivity.connection.marketplace.query.get_user_profile'
 
+    akeneo_connectivity.connection.marketplace.analytics_generator:
+        class: Akeneo\Connectivity\Connection\Application\Marketplace\MarketplaceAnalyticsGenerator
+        arguments:
+            - '@akeneo_connectivity.connection.marketplace.query.get_user_profile'
+            - '@pim_catalog.version_provider'
+            - '@pim_framework.service.pim_url'
+
     akeneo_connectivity.connection.marketplace.query.get_user_profile:
         class: Akeneo\Connectivity\Connection\Infrastructure\Persistence\Dbal\Query\DbalGetUserProfileQuery
         arguments:

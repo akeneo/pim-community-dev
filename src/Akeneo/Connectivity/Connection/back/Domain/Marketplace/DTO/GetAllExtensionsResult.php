@@ -26,7 +26,7 @@ final class GetAllExtensionsResult
                 throw new \InvalidArgumentException(sprintf(
                     'Expected an array of "%s", got "%s".',
                     Extension::class,
-                    is_object($extension) ? get_class($extension) : gettype($extension)
+                    gettype($extension)
                 ));
             }
         }
@@ -40,6 +40,19 @@ final class GetAllExtensionsResult
     public static function create(int $total, array $extensions): self
     {
         return new self($total, $extensions);
+    }
+
+    /**
+     * @param array<string> $queryParameters
+     */
+    public function withAnalytics(array $queryParameters): self
+    {
+        return self::create(
+            $this->total,
+            array_map(function (Extension $extension) use ($queryParameters) {
+                return $extension->withAnalytics($queryParameters);
+            }, $this->extensions),
+        );
     }
 
     /**

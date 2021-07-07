@@ -15,7 +15,7 @@ class Extension
     private string $logo;
     private string $author;
     private ?string $partner;
-    private string $description;
+    private ?string $description;
     private string $url;
     private bool $certified;
     /** @var array<string> */
@@ -43,7 +43,7 @@ class Extension
      *     logo: string,
      *     author: string,
      *     partner?: string,
-     *     description: string,
+     *     description?: string,
      *     url: string,
      *     categories: array<string>,
      *     certified?: bool,
@@ -64,7 +64,7 @@ class Extension
         $self->logo = $values['logo'];
         $self->author = $values['author'];
         $self->partner = $values['partner'] ?? null;
-        $self->description = $values['description'];
+        $self->description = $values['description'] ?? null;
         $self->url = $values['url'];
         $self->categories = $values['categories'];
         $self->certified = $values['certified'] ?? false;
@@ -73,13 +73,35 @@ class Extension
     }
 
     /**
+     * @param array<string> $queryParameters
+     */
+    public function withAnalytics(array $queryParameters): self
+    {
+        $query = http_build_query($queryParameters);
+
+        $values = $this->normalize();
+
+        $url = $values['url'];
+        if (parse_url($url, PHP_URL_QUERY)) {
+            $url = sprintf('%s&%s', $url, $query);
+        } else {
+            $url = sprintf('%s?%s', $url, $query);
+        }
+
+        $values['url'] = $url;
+
+        /* @phpstan-ignore-next-line */
+        return self::fromWebMarketplaceValues($values);
+    }
+
+    /**
      * @return array{
      *  id: string,
      *  name: string,
      *  logo: string,
      *  author: string,
-     *  partner: ?string,
-     *  description: string,
+     *  partner: string|null,
+     *  description: string|null,
      *  url: string,
      *  categories: array<string>,
      *  certified: bool,
