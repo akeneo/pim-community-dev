@@ -116,23 +116,17 @@ class AttributeController
             throw new NotFoundHttpException(sprintf('Attribute "%s" does not exist.', $code));
         }
 
-        $attributeApi = $this->normalizer->normalize(
-            $attribute,
-            'external_api',
-            $this->getNormalizationContext($request)
-        );
+        $attributeApi = $this->normalizer->normalize($attribute, 'external_api', [
+            'with_table_select_options' => (bool) $request->query->get('with_table_select_options', false),
+        ]);
 
         return new JsonResponse($attributeApi);
     }
 
     /**
-     * @param Request $request
-     *
-     * @return JsonResponse
-     *
      * @AclAncestor("pim_api_attribute_list")
      */
-    public function listAction(Request $request)
+    public function listAction(Request $request): JsonResponse
     {
         try {
             $this->parameterValidator->validate($request->query->all());
@@ -167,7 +161,9 @@ class AttributeController
 
         $count = true === $request->query->getBoolean('with_count') ? $this->repository->count($searchFilters) : null;
         $paginatedAttributes = $this->paginator->paginate(
-            $this->normalizer->normalize($attributes, 'external_api', $this->getNormalizationContext($request)),
+            $this->normalizer->normalize($attributes, 'external_api', [
+                'with_table_select_options' => (bool) $request->query->get('with_table_select_options', false),
+            ]),
             $parameters,
             $count
         );
@@ -362,12 +358,5 @@ class AttributeController
         $response->headers->set('Location', $url);
 
         return $response;
-    }
-
-    protected function getNormalizationContext(Request $request): array
-    {
-        return [
-            'with_table_select_options' => (bool) $request->query->get('with_table_select_options', false),
-        ];
     }
 }
