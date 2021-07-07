@@ -9,12 +9,11 @@ const Panel = styled.div<{isOpen: boolean} & AkeneoThemedProps>`
   height: calc(100% - 54px);
   width: 100%;
   position: absolute;
-  overflow-x: ${({isOpen}) => (isOpen ? 'auto' : 'none')};
+  overflow: ${({isOpen}) => (isOpen ? 'auto' : 'none')};
 `;
 
 const PanelContent = styled.div<{isOpen: boolean} & AkeneoThemedProps>`
   flex-grow: 1;
-  //opacity: ${({isOpen}) => (isOpen ? 1 : 0)};
   padding: ${({isOpen}) => (isOpen ? '30px' : '10px 5px')};
   transition: opacity 0.3s;
   transition-delay: 0.3s;
