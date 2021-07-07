@@ -60,7 +60,7 @@ type ManageOptionsModalProps = {
 
 type SelectOptionWithId = SelectOption & {
   id: string;
-  violations?: string[];
+  isNew: boolean;
 };
 
 const BATCH_SIZE = 100;
@@ -93,7 +93,7 @@ const ManageOptionsModal: React.FC<ManageOptionsModalProps> = ({onClose, attribu
     }
 
     const newOptionsToDisplay = options.slice(0, numberOfItemsToDisplay);
-    newOptionsToDisplay.push({id: uuid(), code: '', labels: {}});
+    newOptionsToDisplay.push({id: uuid(), code: '', labels: {}, isNew: true});
     setOptionsToDisplay(newOptionsToDisplay);
   };
 
@@ -132,7 +132,7 @@ const ManageOptionsModal: React.FC<ManageOptionsModalProps> = ({onClose, attribu
 
   const initializeOptions = (options: SelectOption[]) => {
     const optionsWithId = options.map(option => {
-      return {...option, id: uuid()};
+      return {...option, id: uuid(), isNew: false};
     });
     setOptionsAndValidation(optionsWithId);
     setSelectedOption(optionsWithId[0] ?? undefined);
@@ -187,7 +187,7 @@ const ManageOptionsModal: React.FC<ManageOptionsModalProps> = ({onClose, attribu
   const handleLabelChange = (optionId: string, localeCode: LocaleCode, label: string) => {
     if (options) {
       const index = options.findIndex(option => option.id === optionId);
-      const option = index >= 0 ? options[index] : {id: optionId, code: '', labels: {}};
+      const option = index >= 0 ? options[index] : {id: optionId, code: '', labels: {}, isNew: true};
 
       option.labels[localeCode] = label;
       if (autoCompleteCode) {
@@ -201,7 +201,7 @@ const ManageOptionsModal: React.FC<ManageOptionsModalProps> = ({onClose, attribu
       } else {
         options.push(option);
         if (optionsToDisplay) {
-          optionsToDisplay.push({id: uuid(), code: '', labels: {}});
+          optionsToDisplay.push({id: uuid(), code: '', labels: {}, isNew: true});
           setOptionsToDisplay([...optionsToDisplay]);
           setAutoCompleteCode(true);
         }
@@ -213,15 +213,19 @@ const ManageOptionsModal: React.FC<ManageOptionsModalProps> = ({onClose, attribu
   const handleCodeChange = (optionId: string, code: string) => {
     if (options) {
       const index = options.findIndex(option => option.id === optionId);
-      const option = index >= 0 ? options[index] : {id: optionId, code: '', labels: {}};
-      option.code = code;
+      const option = index >= 0 ? options[index] : {id: optionId, code: '', labels: {}, isNew: true};
+      if (!option.isNew) {
+        // We cannot change the code of an existing option.
+        return;
+      }
 
+      option.code = code;
       if (index >= 0) {
         options[index] = option;
       } else {
         options.push(option);
         if (optionsToDisplay) {
-          optionsToDisplay.push({id: uuid(), code: '', labels: {}});
+          optionsToDisplay.push({id: uuid(), code: '', labels: {}, isNew: true});
           setOptionsToDisplay([...optionsToDisplay]);
         }
       }
@@ -258,7 +262,7 @@ const ManageOptionsModal: React.FC<ManageOptionsModalProps> = ({onClose, attribu
     if (options) {
       onChange(
         options.slice(0, -1).map(option => {
-          const {id, ...rest} = option;
+          const {id, isNew, ...rest} = option;
           return rest;
         })
       );
@@ -346,6 +350,8 @@ const ManageOptionsModal: React.FC<ManageOptionsModalProps> = ({onClose, attribu
                             maxLength={100}
                             onFocus={() => handleFocus(option.id, false)}
                             data-testid={`code-${index}`}
+                            disabled={!option.isNew}
+                            readOnly={!option.isNew}
                           />
                           {violations[option.id] &&
                             violations[option.id].map((violation, i) => (
