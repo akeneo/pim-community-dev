@@ -5,7 +5,8 @@ Feature: Activate an OAuth2 client application in the PIM
   I need to be able to go through the Authorization tunnel
 
   Scenario: julia is authorized to activate an App
-    Given I am logged in as "julia"
+    Given a "default" catalog configuration
+    And I am logged in as "Julia"
     And I have the “Manage Apps” ACL
     And I am on the marketplace page
     When I click on “yell” activate button

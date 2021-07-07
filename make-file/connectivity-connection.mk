@@ -72,7 +72,7 @@ connectivity-connection-acceptance-back: var/tests/behat/connectivity/connection
 	$(PHP_RUN) vendor/bin/behat --config src/Akeneo/Connectivity/Connection/back/tests/Acceptance/behat.yml --format pim --out var/tests/behat/connectivity/connection --format progress --out std --colors
 
 connectivity-connection-activate-e2e: var/tests/behat/connectivity/connection
-	APP_ENV=behat $(PHP_RUN) vendor/bin/behat --config behat.yml -p legacy src/Akeneo/Connectivity/Connection/tests/features/activate_an_app.feature
+	APP_ENV=behat $(PHP_RUN) vendor/bin/behat --config behat.yml -p legacy -s connectivity src/Akeneo/Connectivity/Connection/tests/features/activate_an_app.feature
 
 connectivity-connection-integration-back:
 ifeq ($(CI),true)
