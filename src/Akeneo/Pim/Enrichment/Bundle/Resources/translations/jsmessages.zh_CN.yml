@@ -61,7 +61,6 @@ pim_enrich.entity.product:
     history:
       version: 版本
       author: 作者
-      logged_at: 登录时间
       from: 从
       modified: 已修改
       old_value: 旧值
