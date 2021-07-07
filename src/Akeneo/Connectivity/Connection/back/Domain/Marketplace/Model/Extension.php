@@ -26,8 +26,6 @@ class Extension
         'name',
         'logo',
         'author',
-        'partner',
-        'description',
         'url',
         'categories',
     ];
