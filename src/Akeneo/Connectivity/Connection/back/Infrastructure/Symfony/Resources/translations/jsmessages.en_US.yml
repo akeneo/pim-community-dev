@@ -52,6 +52,7 @@ akeneo_connectivity.connection:
                 title: Extensions
                 total: '{0} No extensions|{1} 1 extension|[2,Inf] {{ total }} extensions'
                 empty: No extensions compatible with your version
+            unreachable: We can't reach the marketplace, please come back later.
     connections: Connections
     secondary_actions:
         title: Other actions

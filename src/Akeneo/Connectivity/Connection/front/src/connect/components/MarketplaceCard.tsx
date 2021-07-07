@@ -107,7 +107,7 @@ const CertifiedIcon = styled.div`
 const Actions = styled.div`
     grid-area: actions;
     justify-self: start;
-    align-self: center;
+    align-self: end;
 
     & > * {
         margin-right: 10px;

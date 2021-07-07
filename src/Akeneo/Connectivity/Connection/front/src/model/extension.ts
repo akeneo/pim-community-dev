@@ -9,3 +9,8 @@ export type Extension = {
     categories: string[];
     certified: boolean;
 };
+
+export type Extensions = {
+    total: number;
+    extensions: Extension[];
+};
