@@ -1,0 +1,44 @@
+<?php
+
+declare(strict_types=1);
+
+namespace Akeneo\Connectivity\Connection\Tests\Integration\Mock;
+
+use Akeneo\Connectivity\Connection\Infrastructure\Marketplace\WebMarketplaceApiInterface;
+
+/**
+ * @copyright 2021 Akeneo SAS (http://www.akeneo.com)
+ * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
+ */
+class FakeWebMarketplaceApi implements WebMarketplaceApiInterface
+{
+    private array $extensions = [];
+
+    /**
+     * @param array<array{
+     *      id: string,
+     *      name: string,
+     *      logo: string,
+     *      author: string,
+     *      partner?: string,
+     *      description: string,
+     *      url: string,
+     *      categories: array<string>,
+     *      certified?: bool,
+     * }> $extensions
+     */
+    public function setExtensions(array $extensions): void
+    {
+        $this->extensions = $extensions;
+    }
+
+    public function getExtensions(string $edition, string $version, $offset = 0, $limit = 10): array
+    {
+        return [
+            'total' => count($this->extensions),
+            'offset' => $offset,
+            'limit' => $limit,
+            'items' => array_slice($this->extensions, $offset, $limit),
+        ];
+    }
+}

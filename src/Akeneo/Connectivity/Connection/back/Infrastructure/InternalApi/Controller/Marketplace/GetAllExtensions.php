@@ -25,6 +25,6 @@ class GetAllExtensions
     {
         $result = $this->getAllExtensionsQuery->execute();
 
-        return new JsonResponse($result);
+        return new JsonResponse($result->normalize());
     }
 }

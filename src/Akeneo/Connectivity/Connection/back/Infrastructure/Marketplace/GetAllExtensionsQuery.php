@@ -4,8 +4,10 @@ declare(strict_types=1);
 
 namespace Akeneo\Connectivity\Connection\Infrastructure\Marketplace;
 
+use Akeneo\Connectivity\Connection\Domain\Marketplace\DTO\GetAllExtensionsResult;
 use Akeneo\Connectivity\Connection\Domain\Marketplace\GetAllExtensionsQueryInterface;
-use Symfony\Component\Finder\SplFileInfo;
+use Akeneo\Connectivity\Connection\Domain\Marketplace\Model\Extension;
+use Akeneo\Platform\VersionProviderInterface;
 
 /**
  * @copyright 2021 Akeneo SAS (http://www.akeneo.com)
@@ -13,34 +15,28 @@ use Symfony\Component\Finder\SplFileInfo;
  */
 class GetAllExtensionsQuery implements GetAllExtensionsQueryInterface
 {
-    public function execute(): array
+    private WebMarketplaceApiInterface $webMarketplaceApi;
+    private VersionProviderInterface $versionProvider;
+
+    public function __construct(WebMarketplaceApiInterface $webMarketplaceApi, VersionProviderInterface $versionProvider)
     {
-        return [
-            'total' => 2,
-            'extensions' => [
-                [
-                    'id' => '6fec7055-36ad-4301-9889-46c46ddd446a',
-                    'name' => 'Extension 1',
-                    'logo' => 'https://marketplace.test/logo/extension_1.png',
-                    'author' => 'Partner 1',
-                    'partner' => 'Akeneo Partner',
-                    'description' => 'Our Akeneo Connector',
-                    'url' => 'https://marketplace.test/extension/extension_1',
-                    'categories' => ['E-commerce'],
-                    'certified' => false
-                ],
-                [
-                    'id' => '896ae911-e877-46a0-b7c3-d7c572fe39ed',
-                    'name' => 'Extension 2',
-                    'logo' => 'https://marketplace.test/logo/extension_2.png',
-                    'author' => 'Partner 2',
-                    'partner' => 'Akeneo Preferred Partner',
-                    'description' => 'Our Akeneo Connector',
-                    'url' => 'https://marketplace.test/extension/extension_2',
-                    'categories' => ['E-commerce', 'Print'],
-                    'certified' => true
-                ]
-            ],
-        ];
+        $this->webMarketplaceApi = $webMarketplaceApi;
+        $this->versionProvider = $versionProvider;
+    }
+
+    public function execute(): GetAllExtensionsResult
+    {
+        $version = $this->versionProvider->getVersion();
+        $edition = $this->versionProvider->getEdition();
+
+        $result = $this->webMarketplaceApi->getExtensions($edition, $version);
+
+        $extensions = [];
+
+        foreach ($result['items'] as $item) {
+            $extensions[] = Extension::fromWebMarketplaceValues($item);
+        }
+
+        return GetAllExtensionsResult::create($result['total'], $extensions);
     }
 }
