@@ -19,6 +19,7 @@ use Akeneo\Pim\TableAttribute\Domain\TableConfiguration\SelectOptionCollection;
 use Akeneo\Pim\TableAttribute\Domain\TableConfiguration\ValueObject\ColumnCode;
 use Akeneo\Pim\TableAttribute\Infrastructure\Normalizer\ExternalApi\TableAttributeNormalizer;
 use PhpSpec\ObjectBehavior;
+use Prophecy\Argument;
 use Symfony\Component\Serializer\Normalizer\NormalizerInterface;
 
 class TableAttributeNormalizerSpec extends ObjectBehavior
@@ -53,7 +54,49 @@ class TableAttributeNormalizerSpec extends ObjectBehavior
         $this->normalize($attribute, 'format', ['option'])->shouldReturn(['a_result']);
     }
 
-    function it_normalizes_a_table_attribute(
+    function it_normalizes_a_table_attribute_with_table_select_options(
+        NormalizerInterface $normalizer,
+        SelectOptionCollectionRepository $optionCollectionRepository
+    ) {
+        $attribute = new Attribute();
+        $attribute->setCode('nutrition');
+        $attribute->setType(AttributeTypes::TABLE);
+        $attribute->setRawTableConfiguration([
+            ['code' => 'ingredients', 'data_type' => 'select', 'labels' => (object) [], 'validations' => (object) [], 'options' => [
+                ['code' => 'salt', 'labels' => ['en_US' => 'Salt']],
+                ['code' => 'pepper'],
+            ]],
+            ['code' => 'quantity', 'data_type' => 'text', 'labels' => (object) [], 'validations' => (object) []],
+        ]);
+
+        $normalizer->normalize($attribute, 'format', ['with_table_select_options' => true])->willReturn([
+            'key' => 'a_result',
+            'table_configuration' => [
+                ['code' => 'ingredients', 'data_type' => 'select', 'labels' => (object) [], 'validations' => (object) []],
+                ['code' => 'quantity', 'data_type' => 'text', 'labels' => (object) [], 'validations' => (object) []],
+            ],
+        ]);
+
+        $optionCollectionRepository->getByColumn('nutrition', ColumnCode::fromString('ingredients'))
+            ->shouldBeCalledOnce()
+            ->willReturn(SelectOptionCollection::fromNormalized([
+                ['code' => 'salt', 'labels' => ['en_US' => 'Salt']],
+                ['code' => 'pepper'],
+            ]));
+
+        $this->normalize($attribute, 'format', ['with_table_select_options' => true])->shouldBeLike([
+            'key' => 'a_result',
+            'table_configuration' => [
+                ['code' => 'ingredients', 'data_type' => 'select', 'labels' => (object) [], 'validations' => (object) [], 'options' => [
+                    ['code' => 'salt', 'labels' => ['en_US' => 'Salt']],
+                    ['code' => 'pepper', 'labels' => (object) []],
+                ]],
+                ['code' => 'quantity', 'data_type' => 'text', 'labels' => (object) [], 'validations' => (object) []],
+            ],
+        ]);
+    }
+
+    function it_normalizes_a_table_attribute_without_table_select_options(
         NormalizerInterface $normalizer,
         SelectOptionCollectionRepository $optionCollectionRepository
     ) {
@@ -76,20 +119,12 @@ class TableAttributeNormalizerSpec extends ObjectBehavior
             ],
         ]);
 
-        $optionCollectionRepository->getByColumn('nutrition', ColumnCode::fromString('ingredients'))
-            ->shouldBeCalledOnce()
-            ->willReturn(SelectOptionCollection::fromNormalized([
-                ['code' => 'salt', 'labels' => ['en_US' => 'Salt']],
-                ['code' => 'pepper'],
-            ]));
+        $optionCollectionRepository->getByColumn(Argument::cetera())->shouldNotBeCalled();
 
         $this->normalize($attribute, 'format', ['option'])->shouldBeLike([
             'key' => 'a_result',
             'table_configuration' => [
-                ['code' => 'ingredients', 'data_type' => 'select', 'labels' => (object) [], 'validations' => (object) [], 'options' => [
-                    ['code' => 'salt', 'labels' => ['en_US' => 'Salt']],
-                    ['code' => 'pepper', 'labels' => (object) []],
-                ]],
+                ['code' => 'ingredients', 'data_type' => 'select', 'labels' => (object) [], 'validations' => (object) []],
                 ['code' => 'quantity', 'data_type' => 'text', 'labels' => (object) [], 'validations' => (object) []],
             ],
         ]);

@@ -41,9 +41,13 @@ final class TableAttributeNormalizer implements NormalizerInterface, CacheableSu
     public function normalize($object, string $format = null, array $context = []): array
     {
         Assert::isInstanceOf($object, AttributeInterface::class);
+        $withTableSelectOptions = $context['with_table_select_options'] ?? false;
 
         $normalized = $this->normalizer->normalize($object, $format, $context);
-        if ($object->getType() !== AttributeTypes::TABLE || !is_array($normalized['table_configuration'] ?? null)) {
+        if (!$withTableSelectOptions
+            || $object->getType() !== AttributeTypes::TABLE
+            || !is_array($normalized['table_configuration'] ?? null)
+        ) {
             return $normalized;
         }
 
