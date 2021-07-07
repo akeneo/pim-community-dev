@@ -3,7 +3,6 @@
 namespace Akeneo\Pim\Structure\Bundle\Controller\ExternalApi;
 
 use Akeneo\Pim\Structure\Bundle\EventSubscriber\ApiAggregatorForAttributePostSaveEventSubscriber;
-use Akeneo\Pim\Structure\Bundle\EventSubscriber\ApiBatchAttributePostSaveEventSubscriber;
 use Akeneo\Pim\Structure\Component\Model\AttributeInterface;
 use Akeneo\Pim\Structure\Component\Repository\ExternalApi\AttributeRepositoryInterface;
 use Akeneo\Tool\Bundle\ApiBundle\Documentation;
@@ -106,35 +105,28 @@ class AttributeController
     }
 
     /**
-     * @param Request $request
-     * @param string  $code
-     *
      * @throws NotFoundHttpException
-     *
-     * @return JsonResponse
      *
      * @AclAncestor("pim_api_attribute_list")
      */
-    public function getAction(Request $request, $code)
+    public function getAction(Request $request, string $code): JsonResponse
     {
         $attribute = $this->repository->findOneByIdentifier($code);
         if (null === $attribute) {
             throw new NotFoundHttpException(sprintf('Attribute "%s" does not exist.', $code));
         }
 
-        $attributeApi = $this->normalizer->normalize($attribute, 'external_api');
+        $attributeApi = $this->normalizer->normalize($attribute, 'external_api', [
+            'with_table_select_options' => (bool) $request->query->get('with_table_select_options', false),
+        ]);
 
         return new JsonResponse($attributeApi);
     }
 
     /**
-     * @param Request $request
-     *
-     * @return JsonResponse
-     *
      * @AclAncestor("pim_api_attribute_list")
      */
-    public function listAction(Request $request)
+    public function listAction(Request $request): JsonResponse
     {
         try {
             $this->parameterValidator->validate($request->query->all());
@@ -169,7 +161,9 @@ class AttributeController
 
         $count = true === $request->query->getBoolean('with_count') ? $this->repository->count($searchFilters) : null;
         $paginatedAttributes = $this->paginator->paginate(
-            $this->normalizer->normalize($attributes, 'external_api'),
+            $this->normalizer->normalize($attributes, 'external_api', [
+                'with_table_select_options' => (bool) $request->query->get('with_table_select_options', false),
+            ]),
             $parameters,
             $count
         );
