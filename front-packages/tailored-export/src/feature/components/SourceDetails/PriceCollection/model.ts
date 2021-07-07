@@ -1,5 +1,5 @@
 import {uuid} from 'akeneo-design-system';
-import {ChannelReference, LocaleReference} from '@akeneo-pim-community/shared';
+import {ChannelReference, LocaleCode, LocaleReference} from '@akeneo-pim-community/shared';
 import {Attribute, Source} from '../../../models';
 
 const availableSeparators = [',', ';', '|'];
@@ -10,12 +10,25 @@ const isPriceCollectionSeparator = (separator: unknown): separator is PriceColle
   typeof separator === 'string' && availableSeparators.includes(separator);
 
 type PriceCollectionSelection = {
-  type: 'amount' | 'currency';
   separator: PriceCollectionSeparator;
-};
+} & (
+  | {
+      type: 'currency_code';
+    }
+  | {
+      type: 'currency_label';
+      locale: LocaleCode;
+    }
+  | {
+      type: 'amount';
+    }
+);
 
 const isPriceCollectionSelection = (selection: any): selection is PriceCollectionSelection =>
-  'type' in selection && ('amount' === selection.type || 'currency' === selection.type) && 'separator' in selection;
+  (availableSeparators.includes(selection.separator) &&
+    'type' in selection &&
+    ('currency_code' === selection.type || 'amount' === selection.type)) ||
+  ('currency_label' === selection.type && 'locale' in selection);
 
 type PriceCollectionSource = {
   uuid: string;

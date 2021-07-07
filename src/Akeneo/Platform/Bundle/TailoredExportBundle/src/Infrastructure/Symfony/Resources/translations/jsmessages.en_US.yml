@@ -74,6 +74,9 @@ akeneo.tailored_export:
           unit_code: Unit code
           unit_label: Unit label
         price:
+          currency_code: Currency code
+          currency_label: Currency label
+          currency_locale: Currency locale
           information: For this attribute, you can export either the amount or the currency.
         file:
           information: For this attribute, you can export either the path, the filekey or the name.
