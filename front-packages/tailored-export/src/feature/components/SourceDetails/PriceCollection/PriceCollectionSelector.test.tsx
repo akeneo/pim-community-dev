@@ -81,7 +81,7 @@ test('it can select a currency selection type', async () => {
   );
 
   userEvent.click(screen.getByText('pim_common.type'));
-  userEvent.click(screen.getByTitle('akeneo.tailored_export.column_details.sources.selection.type.currency_code'));
+  userEvent.click(screen.getByTitle('akeneo.tailored_export.column_details.sources.selection.price.currency_code'));
 
   expect(onSelectionChange).toHaveBeenCalledWith({type: 'currency_code', separator: ','});
 });
@@ -98,7 +98,7 @@ test('it can select a currency label along with a default selected locale', asyn
   );
 
   userEvent.click(screen.getByText('pim_common.type'));
-  userEvent.click(screen.getByTitle('akeneo.tailored_export.column_details.sources.selection.type.currency_label'));
+  userEvent.click(screen.getByTitle('akeneo.tailored_export.column_details.sources.selection.price.currency_label'));
 
   expect(onSelectionChange).toHaveBeenCalledWith({type: 'currency_label', locale: 'en_US', separator: ','});
 });
