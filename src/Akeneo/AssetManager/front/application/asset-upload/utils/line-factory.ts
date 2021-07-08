@@ -52,27 +52,31 @@ const extractInfoFromFilename = (filename: string, assetFamily: AssetFamily): Fi
   const valuePerChannel = attribute.value_per_channel;
   let matches;
 
-  if (valuePerLocale && valuePerChannel && (matches = filename.match(/^(\w+)-(\w*)-(\w*)/))) {
+  if (
+    valuePerLocale &&
+    valuePerChannel &&
+    (matches = filename.match(/^(?<code>.+)-(?<locale>\w*)-(?<channel>\w*)(\.\w*)?$/))
+  ) {
     return {
-      code: sanitizeAssetCode(matches[1]),
-      locale: matches[2] ? matches[2] : null,
-      channel: matches[3] ? matches[3] : null,
+      code: sanitizeAssetCode(matches.groups?.code ?? ''),
+      locale: matches.groups?.locale || null,
+      channel: matches.groups?.channel || null,
     };
   }
 
-  if (valuePerLocale && !valuePerChannel && (matches = filename.match(/^(\w+)-(\w+)/))) {
+  if (valuePerLocale && !valuePerChannel && (matches = filename.match(/^(?<code>.+)-(?<locale>\w*)(\.\w*)?$/))) {
     return {
-      code: sanitizeAssetCode(matches[1]),
-      locale: matches[2],
+      code: sanitizeAssetCode(matches.groups?.code ?? ''),
+      locale: matches.groups?.locale || null,
       channel: null,
     };
   }
 
-  if (!valuePerLocale && valuePerChannel && (matches = filename.match(/^(\w+)-(\w+)/))) {
+  if (!valuePerLocale && valuePerChannel && (matches = filename.match(/^(?<code>.+)-(?<channel>\w*)(\.\w*)?$/))) {
     return {
-      code: sanitizeAssetCode(matches[1]),
+      code: sanitizeAssetCode(matches.groups?.code ?? ''),
       locale: null,
-      channel: matches[2],
+      channel: matches.groups?.channel || null,
     };
   }
 
