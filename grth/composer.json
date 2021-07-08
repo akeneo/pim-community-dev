@@ -1,0 +1,75 @@
+{
+    "name": "akeneo/pim-growth-edition",
+    "description": "Akeneo PIM Growth Edition",
+    "license": "proprietary",
+    "type": "project",
+    "authors": [
+        {
+            "name": "Akeneo",
+            "homepage": "http://www.akeneo.com"
+        }
+    ],
+    "autoload": {
+        "psr-0": {
+            "": "src/"
+        },
+        "exclude-from-classmap": [
+            "vendor/akeneo/pim-community-dev/src/Kernel.php"
+        ]
+    },
+    "autoload-dev": {
+        "psr-0": {
+            "Context": "vendor/akeneo/pim-community-dev/tests/legacy/features/",
+            "": "tests/legacy/features/"
+        },
+        "psr-4": {
+            "Pim\\Behat\\": "vendor/akeneo/pim-community-dev/tests/legacy/features/Behat",
+            "AkeneoTest\\": "vendor/akeneo/pim-community-dev/tests/back",
+            "Akeneo\\Test\\IntegrationTestsBundle\\": "vendor/akeneo/pim-community-dev/tests/back/Integration/IntegrationTestsBundle/",
+            "Akeneo\\Test\\": "vendor/akeneo/pim-community-dev/tests/back/",
+            "Specification\\Akeneo\\Platform\\": "tests/back/Platform/Specification/",
+            "Akeneo\\Test\\Pim\\Automation\\DataQualityInsights\\": ["src/Akeneo/Pim/Automation/DataQualityInsights/tests/back", "vendor/akeneo/pim-community-dev/src/Akeneo/Pim/Automation/DataQualityInsights/tests/back"],
+            "Akeneo\\Connectivity\\Connection\\Tests\\": "vendor/akeneo/pim-community-dev/src/Akeneo/Connectivity/Connection/back/tests",
+            "Akeneo\\Connectivity\\Connection\\Tests\\EndToEnd\\": "vendor/akeneo/pim-community-dev/src/Akeneo/Connectivity/Connection/tests/",
+            "Pim\\Upgrade\\Schema\\Tests\\": "vendor/akeneo/pim-community-dev/upgrades/test_schema/",
+            "Akeneo\\Platform\\CommunicationChannel\\Test\\": "vendor/akeneo/pim-community-dev/src/Akeneo/Platform/Bundle/CommunicationChannelBundle/back/tests"
+        }
+    },
+    "require": {
+        "ext-json": "*",
+        "akeneo/pim-community-dev": "dev-master",
+        "justinrainbow/json-schema": "^5.2",
+        "superbalist/flysystem-google-storage": "7.2.2",
+        "grpc/grpc": "1.30.0"
+    },
+    "require-dev": {
+        "akeneo/php-coupling-detector": "0.3.*",
+        "symfony/debug-bundle": "4.4.7",
+        "symfony/web-profiler-bundle": "4.4.7",
+        "symfony/web-server-bundle": "4.4.7",
+        "behat/behat": "3.8.1",
+        "behat/gherkin": "4.6.2",
+        "behat/mink": "1.7.1",
+        "behat/mink-browserkit-driver": "1.3.3",
+        "behat/mink-extension": "2.3.1",
+        "behat/mink-selenium2-driver": "^1.3.1",
+        "behat/symfony2-extension": "2.1.5",
+        "behat/transliterator": "1.3.0",
+        "blackfire/php-sdk": "^1.18",
+        "league/flysystem-memory": "^1.0",
+        "league/flysystem-aws-s3-v3": "^1.0",
+        "phpspec/phpspec": "~7.0.0",
+        "phpspec/prophecy": "v1.12.1",
+        "phpunit/phpunit": "^9.5",
+        "sebastian/exporter": "^4.0.0",
+        "sensiolabs/behat-page-object-extension": "2.1.0",
+        "friends-of-behat/symfony-extension": "^2.0",
+        "liuggio/fastest": "1.8.*",
+        "phpstan/phpstan": "^0.12.25",
+        "phpstan/phpstan-symfony": "^0.12.6",
+        "mcustiel/phiremock": "2.1.1",
+        "phpstan/phpstan-webmozart-assert": "^0.12.7",
+        "jfcherng/php-diff": "^6.10"
+    },
+    "minimum-stability": "stable"
+}

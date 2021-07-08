@@ -60,6 +60,7 @@
     },
     "require": {
         "ext-json": "*",
+        "akeneo/pim-growth-edition": "*@dev",
         "akeneo/pim-community-dev": "dev-master",
         "akeneo/pim-onboarder": "^4.3.8",
         "hslavich/oneloginsaml-bundle": "1.5.1",
@@ -98,13 +99,17 @@
         "phpstan/phpstan-webmozart-assert": "^0.12.7",
         "jfcherng/php-diff": "^6.10"
     },
-    "repositories": [
-        {
+    "repositories": {
+        "onboarder-extension": {
             "type": "vcs",
             "url": "https://github.com/akeneo/pim-onboarder.git",
             "branch": "master"
+        },
+        "grth": {
+            "type": "path",
+            "url": "grth/"
         }
-    ],
+    },
     "suggest": {
         "akeneo/catalogs": "In order to install one of the Akeneo catalogs"
     },

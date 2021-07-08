@@ -1,0 +1,75 @@
+{{ if .Values.pim.hook.addAdmin.enabled -}}
+apiVersion: batch/v1
+kind: Job
+metadata:
+  name: pim-add-admin
+  labels:
+    component: "hook-pim-add-admin" # Deprecated. Cf https://www.notion.so/akeneo/Tagging-strategy-782b4ae037c44d4884b02c8c62e81117
+    app.kubernetes.io/component: "hook-pim-add-admin"
+    {{- include "pim.standardLabels" . | indent 4 }}
+    {{- include "pim.extraLabels" . | indent 4 }}
+  annotations:
+    # This is what defines this resource as a hook. Without this line, the
+    # job is considered part of the release.
+    "helm.sh/hook": post-install
+    "helm.sh/hook-weight": "1"
+    "helm.sh/hook-delete-policy": hook-succeeded
+spec:
+  template:
+    metadata:
+      labels:
+        component: "hook-pim-add-admin" # Deprecated. Cf https://www.notion.so/akeneo/Tagging-strategy-782b4ae037c44d4884b02c8c62e81117
+        app.kubernetes.io/component: "hook-pim-add-admin"
+        role: pim-add-admin # Deprecated
+        {{- include "pim.standardLabels" . | indent 8 }}
+        {{- include "pim.extraLabels" . | indent 8 }}
+    spec:
+      restartPolicy: Never
+      containers:
+        - name: pim-add-admin
+          image:  {{ template "pim.imageNameAndTag" . }}
+          imagePullPolicy: {{ .Values.image.pim.pullPolicy | quote }}
+          command: ['sh', '-c', 'su www-data -s /bin/bash -c "cd /srv/pim && php bin/console --quiet pim:user:create ${PIM_ADMIN_LOGIN} \"${PIM_ADMIN_PASSWORD}\" ${PIM_ADMIN_EMAIL} \"${PIM_ADMIN_FIRSTNAME}\" \"${PIM_ADMIN_LASTNAME}\" ${PIM_ADMIN_UI_LOCALE} --admin -n"']
+          envFrom: [ configMapRef: { name: {{ template "pim.fullName" . }}-env } ]
+          env:
+            - { name: MAILER_USER, valueFrom: { secretKeyRef: { name: pim-secrets, key: mailerLogin } } }
+            - { name: MAILER_PASSWORD, valueFrom: { secretKeyRef: { name: pim-secrets, key: mailerPassword } } }
+            - { name: APP_DATABASE_PASSWORD, valueFrom: { secretKeyRef: { name: pim-secrets, key: mysqlPimUserPassword } } }
+            - { name: GOOGLE_NAMESPACE, valueFrom: { fieldRef: { fieldPath: metadata.namespace } } }
+            - { name: GOOGLE_POD_NAME, valueFrom: { fieldRef: { fieldPath: metadata.name } } }
+            - { name: PIM_ADMIN_LOGIN, value: {{ .Values.pim.defaultAdminUser.login | quote }} }
+            - { name: PIM_ADMIN_FIRSTNAME, value: {{ .Values.pim.defaultAdminUser.firstName | quote }} }
+            - { name: PIM_ADMIN_LASTNAME, value: {{ .Values.pim.defaultAdminUser.lastName | quote }} }
+            - { name: PIM_ADMIN_EMAIL, value: {{ .Values.pim.defaultAdminUser.email | quote }} }
+            - { name: PIM_ADMIN_PASSWORD, value: {{ .Values.pim.defaultAdminUser.password | quote }} }
+            - { name: PIM_ADMIN_UI_LOCALE, value: {{ .Values.pim.defaultAdminUser.uiLocale | quote }} }
+{{- if .Values.common.phpConfCLI }}
+{{ toYaml .Values.common.phpConfCLI | indent 12 }}
+{{- end }}
+          volumeMounts:
+            - name: google-cloud-pim-storage-key
+              mountPath: /var/secrets/google/srnt.json
+              subPath: srnt.json
+              readOnly: true
+            {{- if .Values.onboarder.enabled }}
+            - name: google-cloud-onboarder-key
+              mountPath: /var/secrets/google/key.json
+              subPath: key.json
+              readOnly: true
+            {{- end }}
+      volumes:
+        - name: google-cloud-pim-storage-key
+          secret:
+            secretName: pim-secrets
+            items:
+            - key: srntPimStorageKey
+              path: srnt.json
+        {{- if .Values.onboarder.enabled }}
+        - name: google-cloud-onboarder-key
+          secret:
+            secretName: pim-secrets
+            items:
+            - key: akobOnboarderKey
+              path: key.json
+        {{- end }}
+{{- end }}

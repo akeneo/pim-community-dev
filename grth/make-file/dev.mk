@@ -1,0 +1,29 @@
+# @deprecated Those target are deprecated we keep them because the public api of the makefile is not quite stable
+
+# Please
+# - add a new target `bounded-context-unit-back` in `make-file/bounded-context.mk`
+# - add it as `unit-back` dependency
+# - make sure `unit-back` does not run your tests
+#
+# Example:
+# .PHONY: unit-back
+# unit-back: var/tests/phpspec bounded-context-unit-back
+.PHONY: phpspec
+phpspec:
+	${PHP_RUN} vendor/bin/phpspec run ${F}
+
+# Please
+# - add a new target `bounded-context-integration-back` in `make-file/bounded-context.mk`
+# - add it as `integration-back` dependency
+# - make sure `integration-back` does not run your tests
+#
+# Example:
+# .PHONY: unit-back
+# integration-back: var/tests/phpspec bounded-context-integration-back
+.PHONY: phpunit
+phpunit:
+	APP_ENV=test ${PHP_RUN} vendor/bin/phpunit -c phpunit.xml.dist ${F}
+
+.PHONY: xdebug-on
+xdebug-on:
+	XDEBUG_MODE=debug APP_ENV=dev $(MAKE) up

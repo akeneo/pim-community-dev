@@ -1,0 +1,57 @@
+#!/usr/bin/env php
+<?php
+
+require dirname(__DIR__).'/config/bootstrap.php';
+
+const MAX_ATTEMPTS = 30;
+
+function wait_for(string $name, callable $check, int $attempts = MAX_ATTEMPTS): void
+{
+    $attempt = 0;
+
+    while (true !== $check()) {
+        if ($attempt >= $attempts) {
+            echo sprintf('Wait for "%s" did not succeed.', $name);
+            exit(1);
+        }
+
+        $attempt++;
+        sleep(1);
+    }
+}
+
+wait_for('mysql', function (): bool {
+    try {
+        $connection = \Doctrine\DBAL\DriverManager::getConnection([
+            'driver' => 'pdo_mysql',
+            'host' => getenv('APP_DATABASE_HOST'),
+            'user' => getenv('APP_DATABASE_USER'),
+            'password' => getenv('APP_DATABASE_PASSWORD'),
+            'dbname' => getenv('APP_DATABASE_NAME'),
+        ]);
+        $query = $connection->getDriver()->getDatabasePlatform()->getDummySelectSQL();
+        $connection->fetchColumn($query);
+
+        return true;
+    } catch (\Exception $e) {
+        return false;
+    }
+});
+
+wait_for('elasticsearch', function (): bool {
+    try {
+        $url = sprintf('http://%s/_cluster/health?wait_for_status=yellow&timeout=1s', getenv('APP_INDEX_HOSTS'));
+
+        $ch = curl_init();
+        curl_setopt($ch, CURLOPT_URL, $url);
+        curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
+        curl_setopt($ch, CURLOPT_TIMEOUT, 2);
+        curl_exec($ch);
+        $http_code = curl_getinfo($ch, CURLINFO_HTTP_CODE);
+        curl_close($ch);
+
+        return 200 === $http_code;
+    } catch (\Exception $e) {
+        return false;
+    }
+});

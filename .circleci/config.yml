@@ -210,6 +210,7 @@ jobs:
       <<: *envVarsDeployDev
     machine:
       image: ubuntu-2004:202010-01
+    working_directory: ~/project/grth
     steps:
     - attach_workspace:
         at: ~/
@@ -241,9 +242,9 @@ jobs:
           - run:
               name: Get last good CE build revision on master
               command: |
-                docker run --rm -v $PWD/growth_edition/last_good_ce:/app composer composer install
+                docker run --rm -v $PWD/last_good_ce:/app composer composer install
                 CE_BRANCH=master
-                CE_COMMIT_HASH=$(docker run --rm -v ${PWD}/growth_edition/last_good_ce:/app composer php get_last_good_ce_revision.php)
+                CE_COMMIT_HASH=$(docker run --rm -v $PWD/last_good_ce:/app composer php get_last_good_ce_revision.php)
 
                 echo export CE_BRANCH=${CE_BRANCH} >> $BASH_ENV
                 echo export CE_COMMIT_HASH=${CE_COMMIT_HASH} >> $BASH_ENV
@@ -273,13 +274,8 @@ jobs:
           echo "Image tag: ${IMAGE_TAG}"
           echo "Growth Release name: ${GROWTH_RELEASE_NAME}"
     - run:
-        name: Prepare the Growth Edition
-        command: |
-          mv /home/circleci/project /home/circleci/ee_project
-          git clone --branch $CE_BRANCH git@github.com:akeneo/pim-community-dev.git /home/circleci/project
-          cd /home/circleci/project
-          git checkout $CE_COMMIT_HASH
-          /home/circleci/ee_project/growth_edition/prepare_growth_edition.sh /home/circleci/project
+        name: Set the right CE branch
+        command: docker run --rm -v $PWD:/app composer composer require "akeneo/pim-community-dev:dev-master#${CE_COMMIT_HASH}" --no-update --ignore-platform-reqs
     - run:
         name: Build the Growth Edition prod image
         command: TYPE=${TYPE} IMAGE_TAG_DATE=${IMAGE_TAG_DATE} make php-image-prod
@@ -289,16 +285,16 @@ jobs:
     - run:
         name: Prepare the Terraform module with the upgrade script
         command: |
-          mkdir -p /home/circleci/project/deployments/terraform/deployments
-          cp -r /home/circleci/project/deployments/automation /home/circleci/project/deployments/terraform/deployments
-          cp -r /home/circleci/project/deployments/bin /home/circleci/project/deployments/terraform/deployments
-          cp -r /home/circleci/project/deployments/config /home/circleci/project/deployments/terraform/deployments
-          cp -r /home/circleci/project/deployments/share /home/circleci/project/deployments/terraform/deployments
+          mkdir -p deployments/terraform/deployments
+          cp -r deployments/automation deployments/terraform/deployments
+          cp -r deployments/bin deployments/terraform/deployments
+          cp -r deployments/config deployments/terraform/deployments
+          cp -r deployments/share deployments/terraform/deployments
     - run:
         name: Push Terraform modules to GCS
         command: |
-          BOTO_CONFIG=/dev/null gsutil -m cp -r /home/circleci/project/deployments/terraform gs://akecld-terraform-modules/growth-edition-dev/${IMAGE_TAG}/
-          BOTO_CONFIG=/dev/null gsutil -m cp -r /home/circleci/project/deployments/terraform gs://akecld-terraform-modules/growth-edition-dev/${IMAGE_TAG}/terraform/deployments/terraform
+          BOTO_CONFIG=/dev/null gsutil -m cp -r deployments/terraform gs://akecld-terraform-modules/growth-edition-dev/${IMAGE_TAG}/
+          BOTO_CONFIG=/dev/null gsutil -m cp -r deployments/terraform gs://akecld-terraform-modules/growth-edition-dev/${IMAGE_TAG}/terraform/deployments/terraform
     - run:
         name: Persist env vars for next jobs
         command: |
@@ -752,6 +748,50 @@ jobs:
           - store_artifacts:
                 path: ~/project/pim/var/logs
 
+  test_grth:
+      machine:
+          image: ubuntu-2004:202010-01
+      working_directory: ~/project/grth
+      steps:
+          - attach_workspace:
+              at: ~/
+          - run:
+              name: Setup tests results folder and log folder
+              command: mkdir -p var/tests/phpspec var/tests/csfixer var/logs var/tests/screenshots ~/.cache/yarn ~/.composer
+          - run:
+              name: Change owner on project dir (default user = circleci (1001) and docker needs uid 1000)
+              command: sudo chown -R 1000:1000 ~/project ~/.cache/yarn ~/.composer
+          - run:
+              name: Load php image
+              command: docker load -i ../php-pim-image.tar
+          - run:
+              name: Install dependencies
+              command: make dependencies
+          - run:
+              name: Build the DSM
+              command: make dsm
+          - run:
+              name: Launch Grth in test mode
+              command: make pim-test
+          - run:
+              name: Lint Back
+              command: PIM_CONTEXT=test make lint-back
+          - run:
+              name: Unit Back
+              command: PIM_CONTEXT=test make unit-back
+          - run:
+              name: Integration Back
+              command: PIM_CONTEXT=test make pim-integration-back
+          - run:
+              name: End to End Back
+              command: PIM_CONTEXT=test make end-to-end-back
+          - store_test_results:
+                path: var/tests
+          - store_artifacts:
+                path: var/tests
+          - store_artifacts:
+                path: var/logs
+
   pull_request_success:
       docker:
           - image: alpine/git
@@ -793,7 +833,7 @@ jobs:
   ##################
   # Helm tests     #
   ##################
-  test_helm_generated_k8s_files:
+  test_helm_generated_k8s_files_srnt:
       environment:
         <<: *envVarsDeployDev
       <<: *dockerCloudDeployerNext
@@ -819,6 +859,27 @@ jobs:
               name: Test Serenity with Onboarder bundle Helm generated yaml files compliance with latest kubernetes Version
               command: WITH_ONBOARDER=1 make test_helm_generated_k8s_files
 
+  test_helm_generated_k8s_files_grth:
+      environment:
+        <<: *envVarsDeployDev
+      <<: *dockerCloudDeployerNext
+      working_directory: ~/project/grth
+      steps:
+          - attach_workspace:
+                at: ~/
+          - set_gcloud_config_dev
+          - run:
+              name: Define value for next steps
+              command: |
+                PIM_CONTEXT=deployment
+                echo export PIM_CONTEXT=${PIM_CONTEXT} >> $BASH_ENV
+          - run:
+              name: Test Growth Edition Helm generated yaml files compliance with current kubernetes Version
+              command: K8S_CLUSTER_VERSION_ENABLED=1 make test_helm_generated_k8s_files
+          - run:
+              name: Test Growth Edition Helm generated yaml files compliance with latest kubernetes Version
+              command: make test_helm_generated_k8s_files
+
   test_cronjobs_existence_srnt:
       environment:
         <<: *envVarsDeployDev
@@ -839,6 +900,7 @@ jobs:
         <<: *envVarsDeployDev
       machine:
           image: ubuntu-2004:202010-01
+      working_directory: ~/project/grth
       steps:
           - attach_workspace:
                 at: ~/
@@ -897,6 +959,7 @@ jobs:
       environment:
         <<: *envVarsDeployDev
       <<: *dockerCloudDeployerNext
+      working_directory: ~/project/grth
       steps:
           - attach_workspace:
                 at: ~/
@@ -1042,6 +1105,7 @@ jobs:
       environment:
           <<: *envVarsDeployDev
       <<: *dockerCloudDeployerCurrent
+      working_directory: ~/project/grth
       steps:
           - attach_workspace:
                 at: ~/
@@ -1079,8 +1143,8 @@ jobs:
           - run:
               name: Pull Terraform modules from last release
               command: |
-                  rm -r ~/project/deployments
-                  BOTO_CONFIG=/dev/null gsutil -m cp -r gs://akecld-terraform-modules/growth-edition/${LATEST_RELEASE}/terraform/deployments/ ~/project/
+                  rm -r ./deployments
+                  BOTO_CONFIG=/dev/null gsutil -m cp -r gs://akecld-terraform-modules/growth-edition/${LATEST_RELEASE}/terraform/deployments/ .
           - run:
                 name: Deploy instance with latest release
                 command: |
@@ -1095,7 +1159,7 @@ jobs:
           - persist_to_workspace:
               root: ~/
               paths:
-                - project/persisted_env_vars
+                - project/grth/persisted_env_vars
           - run:
               name: Remove env on kubernetes
               command: IMAGE_TAG=${LATEST_RELEASE} make uncommit-instance
@@ -1105,6 +1169,7 @@ jobs:
       environment:
           <<: *envVarsDeployDev
       <<: *dockerJenkinsCloudDeployer
+      working_directory: ~/project/grth
       steps:
           - attach_workspace:
                 at: ~/
@@ -1224,6 +1289,7 @@ jobs:
           <<: *envVarsDeployDev
       machine:
           image: ubuntu-2004:202010-01
+      working_directory: ~/project/grth
       steps:
           - attach_workspace:
                 at: ~/
@@ -1439,6 +1505,7 @@ jobs:
       environment:
           <<: *envVarsDeployDev
       <<: *dockerCloudDeployerNext
+      working_directory: ~/project/grth
       steps:
           - attach_workspace:
               at: ~/
@@ -1519,12 +1586,15 @@ workflows:
           - build_srnt_dev:
                 requires:
                     - checkout
-          - test_helm_generated_k8s_files:
+          - test_helm_generated_k8s_files_srnt:
+                requires:
+                    - checkout
+          - test_helm_generated_k8s_files_grth:
                 requires:
                     - checkout
           - build_srnt_prod:
                 requires:
-                    - test_helm_generated_k8s_files
+                    - test_helm_generated_k8s_files_srnt
           - test_cronjobs_existence_srnt:
                 requires:
                     - build_srnt_prod
@@ -1550,7 +1620,7 @@ workflows:
                     - test_cronjobs_existence_grth
           - build_grth:
                 requires:
-                    - test_helm_generated_k8s_files
+                    - test_helm_generated_k8s_files_grth
           - test_cronjobs_existence_grth:
                 requires:
                     - build_grth
@@ -1596,6 +1666,9 @@ workflows:
           - test_onboarder_bundle:
                 requires:
                     - build_srnt_dev
+          - test_grth:
+                requires:
+                    - build_srnt_dev
           - test_back_data_migrations:
                 requires:
                     - build_srnt_dev
@@ -1614,6 +1687,7 @@ workflows:
                     - test_onboarder_bundle
                     - test_database
                     - test_back_data_migrations
+                    - test_grth
 
   on_demand_srnt_release:
       jobs:
