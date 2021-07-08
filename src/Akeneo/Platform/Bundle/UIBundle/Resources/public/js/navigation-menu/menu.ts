@@ -113,23 +113,24 @@ class Menu extends BaseForm {
         return !(
           typeof extension.config === 'object' &&
           (!extension.config.to || extension.config.isLandingSectionPage) &&
-          typeof extension.hasChildren === 'function' && !extension.hasChildren()
+          typeof extension.hasChildren === 'function' &&
+          !extension.hasChildren()
         );
       })
       .map((extension: EntryView) => {
-      const {title, isLandingSectionPage, icon} = extension.config;
+        const {title, isLandingSectionPage, icon} = extension.config;
 
-      return {
-        code: extension.code,
-        title: title,
-        disabled: false,
-        route: this.findEntryRoute(extension),
-        // @ts-ignore
-        icon: DSM[icon] && React.createElement(DSM[icon]),
-        subNavigations: this.findMainEntrySubNavigations(extension.code),
-        isLandingSectionPage: isLandingSectionPage ?? false,
-      };
-    });
+        return {
+          code: extension.code,
+          title: title,
+          disabled: false,
+          route: this.findEntryRoute(extension),
+          // @ts-ignore
+          icon: DSM[icon] && React.createElement(DSM[icon]),
+          subNavigations: this.findMainEntrySubNavigations(extension.code),
+          isLandingSectionPage: isLandingSectionPage ?? false,
+        };
+      });
 
     return entries;
   }
