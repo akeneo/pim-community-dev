@@ -1,35 +1,35 @@
 import React from 'react';
 import {screen} from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
-import {renderWithProviders as baseRender, ValidationError} from '@akeneo-pim-community/shared';
+import {renderWithProviders, ValidationError} from '@akeneo-pim-community/shared';
 import {NumberSelector} from './NumberSelector';
 
-test('it displays a separator dropdown', async () => {
+test('it displays a separator dropdown', () => {
   const onSelectionChange = jest.fn();
 
-  await baseRender(
+  renderWithProviders(
     <NumberSelector validationErrors={[]} selection={{decimal_separator: ','}} onSelectionChange={onSelectionChange} />
   );
 
   expect(
-    screen.getByText('akeneo.tailored_export.column_details.sources.selection.collection_separator')
+    screen.getByText('akeneo.tailored_export.column_details.sources.selection.decimal_separator.title')
   ).toBeInTheDocument();
 });
 
-test('it can change the separator type', async () => {
+test('it can change the separator type', () => {
   const onSelectionChange = jest.fn();
 
-  await baseRender(
+  renderWithProviders(
     <NumberSelector validationErrors={[]} selection={{decimal_separator: ','}} onSelectionChange={onSelectionChange} />
   );
 
-  userEvent.click(screen.getByText('akeneo.tailored_export.column_details.sources.selection.collection_separator'));
-  userEvent.click(screen.getByTitle('.'));
+  userEvent.click(screen.getByText('akeneo.tailored_export.column_details.sources.selection.decimal_separator.title'));
+  userEvent.click(screen.getByTitle('akeneo.tailored_export.column_details.sources.selection.decimal_separator.dot'));
 
-  expect(onSelectionChange).toHaveBeenCalledWith({separator: '.'});
+  expect(onSelectionChange).toHaveBeenCalledWith({decimal_separator: '.'});
 });
 
-test('it displays validation errors', async () => {
+test('it displays validation errors', () => {
   const onSelectionChange = jest.fn();
   const validationErrors: ValidationError[] = [
     {
@@ -41,7 +41,7 @@ test('it displays validation errors', async () => {
     },
   ];
 
-  await baseRender(
+  renderWithProviders(
     <NumberSelector
       validationErrors={validationErrors}
       selection={{decimal_separator: ','}}

@@ -49,7 +49,11 @@ akeneo.tailored_export:
         title: Once your first column is defined, you can select your first source.
       selection:
         title: Selection
-        collection_separator: Separator
+        collection_separator:
+          title: Separator
+          comma: Comma (,)
+          semicolon: Semicolon (;)
+          pipe: Pipe (|)
         type:
           amount: Amount
           currency: Currency
