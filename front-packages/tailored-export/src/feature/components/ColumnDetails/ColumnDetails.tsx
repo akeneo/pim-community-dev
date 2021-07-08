@@ -3,7 +3,7 @@ import styled from 'styled-components';
 import {Helper, SectionTitle, useTabBar} from 'akeneo-design-system';
 import {filterErrors, useTranslate} from '@akeneo-pim-community/shared';
 import {
-  addAssociationSource,
+  addAssociationTypeSource,
   addAttributeSource,
   addPropertySource,
   ColumnConfiguration,
@@ -14,7 +14,7 @@ import {
 import {AddSourceDropdown} from './AddSourceDropdown/AddSourceDropdown';
 import {AttributeSourceConfigurator} from '../SourceDetails/AttributeSourceConfigurator';
 import {PropertySourceConfigurator} from '../SourceDetails/PropertySourceConfigurator';
-import {AssociationSourceConfigurator} from '../SourceDetails/AssociationSourceConfigurator';
+import {AssociationTypeSourceConfigurator} from '../SourceDetails/AssociationTypeSourceConfigurator';
 import {SourceTabBar} from '../SourceDetails/SourceTabBar';
 import {useFetchers, useValidationErrors} from '../../contexts';
 import {useChannels} from '../../hooks';
@@ -73,9 +73,9 @@ const ColumnDetails = ({columnConfiguration, onColumnChange}: ColumnDetailsProps
       const updatedColumnConfiguration = addPropertySource(columnConfiguration, addedSourceCode);
       onColumnChange(updatedColumnConfiguration);
       switchTo(updatedColumnConfiguration.sources[updatedColumnConfiguration.sources.length - 1]?.uuid ?? '');
-    } else if (sourceType === 'association') {
+    } else if (sourceType === 'association_type') {
       const [associationType] = await associationTypeFetcher.fetchByCodes([addedSourceCode]);
-      const updatedColumnConfiguration = addAssociationSource(columnConfiguration, associationType);
+      const updatedColumnConfiguration = addAssociationTypeSource(columnConfiguration, associationType);
       onColumnChange(updatedColumnConfiguration);
       switchTo(updatedColumnConfiguration.sources[updatedColumnConfiguration.sources.length - 1]?.uuid ?? '');
     } else {
@@ -124,8 +124,8 @@ const ColumnDetails = ({columnConfiguration, onColumnChange}: ColumnDetailsProps
             onSourceChange={handleSourceChange}
           />
         )}
-        {'association' === currentSource?.type && (
-          <AssociationSourceConfigurator
+        {'association_type' === currentSource?.type && (
+          <AssociationTypeSourceConfigurator
             source={currentSource}
             validationErrors={filterErrors(validationErrors, `[${currentSource.uuid}]`)}
             onSourceChange={handleSourceChange}

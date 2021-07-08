@@ -14,10 +14,11 @@ declare(strict_types=1);
 namespace Akeneo\Platform\TailoredExport\Infrastructure\Controller;
 
 use Akeneo\Pim\Structure\Component\Query\PublicApi\Association\AssociationType;
-use Akeneo\Pim\Structure\Component\Query\PublicApi\Association\GetAssociationTypesInterface;
+use Akeneo\Pim\Structure\Component\Query\PublicApi\Association\FindAssociationTypesInterface;
+use Akeneo\Pim\Structure\Component\Query\PublicApi\Attribute\FindFlattenAttributesInterface;
 use Akeneo\Pim\Structure\Component\Query\PublicApi\Attribute\FlattenAttribute;
 use Akeneo\Pim\Structure\Component\Query\PublicApi\Attribute\SearchFlattenAttributesInterface;
-use Akeneo\Platform\TailoredExport\Domain\Query\GetSystemSources;
+use Akeneo\Platform\TailoredExport\Domain\Query\FindSystemSourcesInterface;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
@@ -30,20 +31,20 @@ final class GetGroupedSourcesAction
     private const DEFAULT_LOCALE = 'en_US';
 
     private TranslatorInterface $translator;
-    private GetSystemSources $getSystemSources;
-    private GetAssociationTypesInterface $getAssociationTypes;
-    private SearchFlattenAttributesInterface $searchFlattenAttributes;
+    private FindSystemSourcesInterface $getSystemSources;
+    private FindAssociationTypesInterface $findAssociationTypes;
+    private FindFlattenAttributesInterface $findFlattenAttributes;
 
     public function __construct(
         TranslatorInterface $translator,
-        GetSystemSources $getSystemSources,
-        GetAssociationTypesInterface $getAssociationTypes,
-        SearchFlattenAttributesInterface $searchFlattenAttributes
+        FindSystemSourcesInterface $getSystemSources,
+        FindAssociationTypesInterface $findAssociationTypes,
+        FindFlattenAttributesInterface $findFlattenAttributes
     ) {
         $this->translator = $translator;
         $this->getSystemSources = $getSystemSources;
-        $this->getAssociationTypes = $getAssociationTypes;
-        $this->searchFlattenAttributes = $searchFlattenAttributes;
+        $this->findAssociationTypes = $findAssociationTypes;
+        $this->findFlattenAttributes = $findFlattenAttributes;
     }
 
     public function __invoke(Request $request): Response
@@ -65,11 +66,11 @@ final class GetGroupedSourcesAction
         $offset -= count($paginatedFields);
         $limit -= count($paginatedFields);
 
-        $paginatedAssociations = $this->getAssociationTypes->execute($localeCode, $limit, $offset, $search);
+        $paginatedAssociations = $this->findAssociationTypes->execute($localeCode, $limit, $offset, $search);
         $offset -= count($paginatedAssociations);
         $limit -= count($paginatedAssociations);
 
-        $paginatedAttributes = $this->searchFlattenAttributes->findAttributes(
+        $paginatedAttributes = $this->findFlattenAttributes->execute(
             $localeCode,
             $limit,
             $attributeTypes,
@@ -79,7 +80,7 @@ final class GetGroupedSourcesAction
 
         return new JsonResponse(array_merge(
             $this->formatSystemFields($paginatedFields, $localeCode),
-            $this->formatAssociationFields($paginatedAssociations),
+            $this->formatAssociationFields($paginatedAssociations, $localeCode),
             $this->formatAttributes($paginatedAttributes)
         ));
     }
@@ -105,17 +106,17 @@ final class GetGroupedSourcesAction
         ]];
     }
 
-    private function formatAssociationFields(array $fields): array
+    private function formatAssociationFields(array $fields, string $localeCode): array
     {
         if (empty($fields)) {
             return [];
         }
 
-        $associationFields = array_map(function (AssociationType $field): array {
+        $associationFields = array_map(function (AssociationType $field) use ($localeCode): array {
             return [
-                'code' => $field->code,
-                'type' => 'association',
-                'label' => $field->label,
+                'code' => $field->getCode(),
+                'type' => 'association_type',
+                'label' => $field->getLabel($localeCode),
             ];
         }, $fields);
 
@@ -133,18 +134,18 @@ final class GetGroupedSourcesAction
     {
         $results = [];
         foreach ($groupedAttributes as $attribute) {
-            $groupCode = $attribute->attributeGroupCode;
+            $groupCode = $attribute->getAttributeGroupCode();
             if (!array_key_exists($groupCode, $results)) {
                 $results[$groupCode] = [
                     'code' => $groupCode,
-                    'label' => $attribute->attributeGroupLabel,
+                    'label' => $attribute->getAttributeGroupLabel(),
                     'children' => [],
                 ];
             }
 
             $results[$groupCode]['children'][] = [
-                'code' => $attribute->code,
-                'label' => $attribute->label,
+                'code' => $attribute->getCode(),
+                'label' => $attribute->getLabel(),
                 'type' => 'attribute',
             ];
         }

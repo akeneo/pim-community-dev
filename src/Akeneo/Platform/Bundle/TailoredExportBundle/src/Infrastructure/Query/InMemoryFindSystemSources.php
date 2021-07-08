@@ -2,10 +2,10 @@
 
 namespace Akeneo\Platform\TailoredExport\Infrastructure\Query;
 
-use Akeneo\Platform\TailoredExport\Domain\Query\GetSystemSources;
+use Akeneo\Platform\TailoredExport\Domain\Query\FindSystemSourcesInterface;
 use Symfony\Contracts\Translation\TranslatorInterface;
 
-class InMemoryGetSystemSources implements GetSystemSources
+class InMemoryFindSystemSources implements FindSystemSourcesInterface
 {
     private TranslatorInterface $translator;
 

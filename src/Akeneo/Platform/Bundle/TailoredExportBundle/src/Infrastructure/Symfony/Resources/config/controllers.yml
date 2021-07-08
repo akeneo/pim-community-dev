@@ -3,6 +3,6 @@ services:
         public: true
         arguments:
             - '@translator'
-            - '@Akeneo\Platform\TailoredExport\Domain\Query\GetSystemSources'
-            - '@akeneo.pim.structure.query.get_association_types'
-            - '@akeneo.pim.structure.query.search_flatten_attributes'
+            - '@Akeneo\Platform\TailoredExport\Domain\Query\FindSystemSourcesInterface'
+            - '@akeneo.pim.structure.query.find_association_types'
+            - '@akeneo.pim.structure.query.find_flatten_attributes'

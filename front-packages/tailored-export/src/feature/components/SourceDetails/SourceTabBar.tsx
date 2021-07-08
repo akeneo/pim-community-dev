@@ -20,7 +20,7 @@ const SourceTabBar = ({sources, currentTab, validationErrors, onTabChange}: Sour
   );
 
   const associationTypeCodes = useMemo(
-    () => sources.filter(({type}) => 'association' === type).map(({code}) => code),
+    () => sources.filter(({type}) => 'association_type' === type).map(({code}) => code),
     [sources]
   );
 
@@ -37,7 +37,7 @@ const SourceTabBar = ({sources, currentTab, validationErrors, onTabChange}: Sour
                 catalogLocale,
                 source.code
               )
-            : 'association' === source.type ?
+            : 'association_type' === source.type ?
               getLabel(
                 associationTypes.find(associationType => associationType.code === source.code)?.labels ?? {},
                 catalogLocale,

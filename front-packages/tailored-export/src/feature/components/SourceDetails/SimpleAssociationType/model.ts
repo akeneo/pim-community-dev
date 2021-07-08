@@ -37,7 +37,7 @@ const isSimpleAssociationSelection = (selection: any): selection is SimpleAssoci
 type SimpleAssociationSource = {
   uuid: string;
   code: string;
-  type: 'association';
+  type: 'association_type';
   locale: null;
   channel: null;
   operations: {};
@@ -47,7 +47,7 @@ type SimpleAssociationSource = {
 const getDefaultSimpleAssociationTypeSource = (associationType: AssociationType): SimpleAssociationSource => ({
   uuid: uuid(),
   code: associationType.code,
-  type: 'association',
+  type: 'association_type',
   locale: null,
   channel: null,
   operations: {},
@@ -55,7 +55,7 @@ const getDefaultSimpleAssociationTypeSource = (associationType: AssociationType)
 });
 
 const isSimpleAssociationSource = (source: Source): source is SimpleAssociationSource =>
-  source.type === 'association' && isSimpleAssociationSelection(source.selection);
+  source.type === 'association_type' && isSimpleAssociationSelection(source.selection);
 
 export type {SimpleAssociationSource, SimpleAssociationSelection};
 export {availableSeparators, getDefaultSimpleAssociationTypeSource, isSimpleAssociationSource, isCollectionSeparator, isEntityType};

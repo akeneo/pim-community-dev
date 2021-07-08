@@ -2,7 +2,7 @@ import React from "react";
 import {ValidationError} from '@akeneo-pim-community/shared';
 import {Source} from "../../models";
 import styled from "styled-components";
-import {SimpleAssociationConfigurator} from "./SimpleAssociation/SimpleAssociationConfigurator";
+import {SimpleAssociationTypeConfigurator} from "./SimpleAssociationType/SimpleAssociationTypeConfigurator";
 import {useAssociationType} from "../../hooks";
 
 const Container = styled.div`
@@ -19,7 +19,7 @@ type AssociationConfiguratorProps = {
   onSourceChange: (updatedSource: Source) => void;
 };
 
-const AssociationSourceConfigurator = ({source, validationErrors, onSourceChange}: AssociationConfiguratorProps) => {
+const AssociationTypeSourceConfigurator = ({source, validationErrors, onSourceChange}: AssociationConfiguratorProps) => {
   const associationType = useAssociationType(source.code);
   if (null === associationType) {
     return null;
@@ -27,9 +27,9 @@ const AssociationSourceConfigurator = ({source, validationErrors, onSourceChange
 
   return (
     <Container>
-      <SimpleAssociationConfigurator source={source} validationErrors={validationErrors} onSourceChange={onSourceChange} />
+      <SimpleAssociationTypeConfigurator source={source} validationErrors={validationErrors} onSourceChange={onSourceChange} />
     </Container>
   );
 };
 
-export {AssociationSourceConfigurator};
+export {AssociationTypeSourceConfigurator};

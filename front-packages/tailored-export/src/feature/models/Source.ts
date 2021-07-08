@@ -34,7 +34,7 @@ import {CategoriesSource, getDefaultCategoriesSource} from '../components/Source
 import {
   getDefaultSimpleAssociationTypeSource,
   SimpleAssociationSource
-} from "../components/SourceDetails/SimpleAssociation/model";
+} from "../components/SourceDetails/SimpleAssociationType/model";
 import {AssociationType} from "./AssociationType";
 
 type Source =

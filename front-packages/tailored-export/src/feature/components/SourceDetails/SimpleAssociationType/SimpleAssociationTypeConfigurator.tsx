@@ -3,9 +3,9 @@ import {Collapse} from 'akeneo-design-system';
 import {filterErrors, useTranslate} from '@akeneo-pim-community/shared';
 import {AssociationConfiguratorProps} from '../../../models';
 import {isSimpleAssociationSource} from './model';
-import {SimpleAssociationSelector} from "./SimpleAssociationSelector";
+import {SimpleAssociationTypeSelector} from "./SimpleAssociationTypeSelector";
 
-const SimpleAssociationConfigurator = ({source, validationErrors, onSourceChange}: AssociationConfiguratorProps) => {
+const SimpleAssociationTypeConfigurator = ({source, validationErrors, onSourceChange}: AssociationConfiguratorProps) => {
   const translate = useTranslate();
   const [isSelectorCollapsed, toggleSelectorCollapse] = useState<boolean>(true);
 
@@ -22,7 +22,7 @@ const SimpleAssociationConfigurator = ({source, validationErrors, onSourceChange
       isOpen={isSelectorCollapsed}
       onCollapse={toggleSelectorCollapse}
     >
-      <SimpleAssociationSelector
+      <SimpleAssociationTypeSelector
         selection={source.selection}
         validationErrors={filterErrors(validationErrors, '[selection]')}
         onSelectionChange={updatedSelection => onSourceChange({...source, selection: updatedSelection})}
@@ -31,4 +31,4 @@ const SimpleAssociationConfigurator = ({source, validationErrors, onSourceChange
   );
 };
 
-export {SimpleAssociationConfigurator};
+export {SimpleAssociationTypeConfigurator};

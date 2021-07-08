@@ -78,7 +78,7 @@ const addAttributeSource = (
   };
 };
 
-const addAssociationSource = (columnConfiguration: ColumnConfiguration, associationType: AssociationType): ColumnConfiguration => {
+const addAssociationTypeSource = (columnConfiguration: ColumnConfiguration, associationType: AssociationType): ColumnConfiguration => {
   return {
     ...columnConfiguration,
     sources: [...columnConfiguration.sources, getDefaultAssociationTypeSource(associationType)],
@@ -112,7 +112,7 @@ export {
   updateColumn,
   removeSource,
   addAttributeSource,
-  addAssociationSource,
+  addAssociationTypeSource,
   addPropertySource,
   updateSource,
   MAX_COLUMN_COUNT,

@@ -77,7 +77,7 @@ const ColumnRow = forwardRef<HTMLInputElement, ColumnRowProps>(
     );
 
     const associationTypeCodes = useMemo(
-      () => column.sources.filter(({type}) => 'association' === type).map(({code}) => code),
+      () => column.sources.filter(({type}) => 'association_type' === type).map(({code}) => code),
       [column.sources]
     );
 
@@ -119,7 +119,7 @@ const ColumnRow = forwardRef<HTMLInputElement, ColumnRowProps>(
                         catalogLocale,
                         source.code
                       )
-                      : 'association' === source.type ?
+                      : 'association_type' === source.type ?
                         getLabel(
                           associationTypes.find(associationType => associationType.code === source.code)?.labels ?? {},
                           catalogLocale,

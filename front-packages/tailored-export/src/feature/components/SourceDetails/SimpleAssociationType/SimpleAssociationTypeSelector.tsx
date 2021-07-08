@@ -17,7 +17,7 @@ type SimpleAssociationSelectorProps = {
   onSelectionChange: (updatedSelection: SimpleAssociationSelection) => void;
 };
 
-const SimpleAssociationSelector = ({selection, validationErrors, onSelectionChange, }: SimpleAssociationSelectorProps) => {
+const SimpleAssociationTypeSelector = ({selection, validationErrors, onSelectionChange, }: SimpleAssociationSelectorProps) => {
   const translate = useTranslate();
   const channels = useChannels();
   const locales = getAllLocalesFromChannels(channels);
@@ -132,4 +132,4 @@ const SimpleAssociationSelector = ({selection, validationErrors, onSelectionChan
   );
 };
 
-export {SimpleAssociationSelector};
+export {SimpleAssociationTypeSelector};

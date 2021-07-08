@@ -9,7 +9,7 @@ services:
         arguments:
             - '@akeneo_measurement.public_api.get_unit_translations'
 
-    Akeneo\Platform\TailoredExport\Domain\Query\GetSystemSources:
-        class: Akeneo\Platform\TailoredExport\Infrastructure\Query\InMemoryGetSystemSources
+    Akeneo\Platform\TailoredExport\Domain\Query\FindSystemSourcesInterface:
+        class: Akeneo\Platform\TailoredExport\Infrastructure\Query\InMemoryFindSystemSources
         arguments:
             - '@translator'
