@@ -11,10 +11,10 @@ type NumberSelectorProps = {
 
 const NumberSelector = ({selection, validationErrors, onSelectionChange}: NumberSelectorProps) => {
   const translate = useTranslate();
-  const separatorErrors = filterErrors(validationErrors, '[separator]');
+  const separatorErrors = filterErrors(validationErrors, '[decimal_separator]');
 
   return (
-    <Field label={translate('akeneo.tailored_export.column_details.sources.selection.decimal_separator')}>
+    <Field label={translate('akeneo.tailored_export.column_details.sources.selection.decimal_separator.title')}>
       <SelectInput
         invalid={0 < separatorErrors.length}
         clearable={false}
@@ -30,12 +30,10 @@ const NumberSelector = ({selection, validationErrors, onSelectionChange}: Number
         {Object.entries(availableSeparators).map(([separator, name]) => (
           <SelectInput.Option
             key={separator}
-            title={translate(
-              `akeneo.tailored_export.column_details.sources.selection.number.decimal_separator.${name}`
-            )}
+            title={translate(`akeneo.tailored_export.column_details.sources.selection.decimal_separator.${name}`)}
             value={separator}
           >
-            {translate(`akeneo.tailored_export.column_details.sources.selection.number.decimal_separator.${name}`)}
+            {translate(`akeneo.tailored_export.column_details.sources.selection.decimal_separator.${name}`)}
           </SelectInput.Option>
         ))}
       </SelectInput>

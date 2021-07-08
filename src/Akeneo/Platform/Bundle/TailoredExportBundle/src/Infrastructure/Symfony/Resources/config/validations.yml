@@ -15,6 +15,7 @@ services:
   Akeneo\Platform\TailoredExport\Infrastructure\Validation\Source\Measurement\MeasurementSelectionConstraint: ~
   Akeneo\Platform\TailoredExport\Infrastructure\Validation\Source\Measurement\MeasurementSourceConstraint: ~
   Akeneo\Platform\TailoredExport\Infrastructure\Validation\Source\MultiSelect\MultiSelectSourceConstraint: ~
+  Akeneo\Platform\TailoredExport\Infrastructure\Validation\Source\Number\NumberSourceConstraint: ~
   Akeneo\Platform\TailoredExport\Infrastructure\Validation\Source\Parent\ParentSelectionConstraint: ~
   Akeneo\Platform\TailoredExport\Infrastructure\Validation\Source\Parent\ParentSourceConstraint: ~
   Akeneo\Platform\TailoredExport\Infrastructure\Validation\Source\PriceCollection\PriceCollectionSelectionConstraint: ~
@@ -39,7 +40,7 @@ services:
         pim_catalog_image: '@Akeneo\Platform\TailoredExport\Infrastructure\Validation\Source\File\FileSourceConstraint'
         pim_catalog_metric: '@Akeneo\Platform\TailoredExport\Infrastructure\Validation\Source\Measurement\MeasurementSourceConstraint'
         pim_catalog_multiselect: '@Akeneo\Platform\TailoredExport\Infrastructure\Validation\Source\MultiSelect\MultiSelectSourceConstraint'
-        pim_catalog_number: '@Akeneo\Platform\TailoredExport\Infrastructure\Validation\Source\Scalar\ScalarSourceConstraint'
+        pim_catalog_number: '@Akeneo\Platform\TailoredExport\Infrastructure\Validation\Source\Number\NumberSourceConstraint'
         pim_catalog_price_collection: '@Akeneo\Platform\TailoredExport\Infrastructure\Validation\Source\PriceCollection\PriceCollectionSourceConstraint'
         pim_catalog_simpleselect: '@Akeneo\Platform\TailoredExport\Infrastructure\Validation\Source\SimpleSelect\SimpleSelectSourceConstraint'
         pim_catalog_text: '@Akeneo\Platform\TailoredExport\Infrastructure\Validation\Source\Scalar\ScalarSourceConstraint'
@@ -65,6 +66,13 @@ services:
   Akeneo\Platform\TailoredExport\Infrastructure\Validation\Selection\CodeLabelCollectionSelectionValidator:
     arguments:
       - [',', ';', '|']
+    tags:
+      - { name: validator.constraint_validator }
+    public: true
+
+  Akeneo\Platform\TailoredExport\Infrastructure\Validation\Source\Number\NumberSourceValidator:
+    arguments:
+      - [',', '.', '٫‎']
     tags:
       - { name: validator.constraint_validator }
     public: true

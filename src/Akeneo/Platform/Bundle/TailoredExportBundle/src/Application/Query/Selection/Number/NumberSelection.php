@@ -18,4 +18,15 @@ use Akeneo\Platform\TailoredExport\Application\Query\Selection\SelectionInterfac
 
 class NumberSelection implements SelectionInterface
 {
+    private string $separator;
+
+    public function __construct(string $separator)
+    {
+        $this->separator = $separator;
+    }
+
+    public function getSeparator(): string
+    {
+        return $this->separator;
+    }
 }
