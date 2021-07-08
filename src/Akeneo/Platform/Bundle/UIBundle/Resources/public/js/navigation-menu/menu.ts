@@ -28,6 +28,7 @@ type EntryView = View & {
     isLandingSectionPage?: boolean;
     tab?: string;
     icon: string;
+    disabled?: boolean;
   };
   items: SubEntry[];
   sections: any[];
@@ -114,7 +115,7 @@ class Menu extends BaseForm {
   buildMainMenuEntries(navigationEntriesExtensions: EntryView[]): NavigationEntry[] {
     return navigationEntriesExtensions
       .filter((extension: EntryView) => {
-        return !(
+        return extension.config.disabled || !(
           typeof extension.config === 'object' &&
           (!extension.config.to || extension.config.isLandingSectionPage) &&
           typeof extension.hasChildren === 'function' &&
@@ -127,7 +128,7 @@ class Menu extends BaseForm {
         return {
           code: extension.code,
           title: title,
-          disabled: false,
+          disabled: extension.config.disabled || false,
           route: this.findEntryRoute(extension),
           // @ts-ignore
           icon: DSM[icon] && React.createElement(DSM[icon]),

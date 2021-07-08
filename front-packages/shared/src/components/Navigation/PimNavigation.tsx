@@ -2,8 +2,10 @@ import React, {FC, useMemo} from 'react';
 import styled from 'styled-components';
 import {PimView} from '../PimView';
 import {useRouter, useTranslate} from '../../hooks';
-import {IconProps, MainNavigationItem} from 'akeneo-design-system';
+import {IconProps, LockIcon, MainNavigationItem, Tag} from 'akeneo-design-system';
 import {SubNavigation, SubNavigationEntry, SubNavigationType} from './SubNavigation';
+
+const FeatureFlags = require('pim/feature-flags');
 
 type NavigationEntry = {
   code: string;
@@ -61,6 +63,13 @@ const PimNavigation: FC<Props> = ({entries, activeEntryCode, activeSubEntryCode}
               className={entry.code === activeEntryCode ? 'active' : undefined}
             >
               {translate(entry.title)}
+              {entry.disabled && FeatureFlags.isEnabled('free_trial') &&
+                <LockIconContainer>
+                  <StyledTag tint="blue">
+                    <StyledLockIcon size={16} color={'#5992c7'}/>
+                  </StyledTag>
+                </LockIconContainer>
+              }
             </MainNavigationItem>
           ))}
         </MenuContainer>
@@ -86,6 +95,27 @@ const PimNavigation: FC<Props> = ({entries, activeEntryCode, activeSubEntryCode}
   );
 };
 
+const StyledTag = styled(Tag)`
+  padding: 0;
+  height: 24px;
+  width: 24px;
+`;
+
+const StyledLockIcon = styled(LockIcon)`
+  margin: 3px;
+`;
+
+const LockIconContainer = styled.div`
+  position: absolute;
+  top: 0;
+  right: 12px;
+  width: 24px;
+  height: 24px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+`;
+
 const NavContainer = styled.nav`
   display: flex;
   height: 100%;
@@ -107,7 +137,12 @@ const LogoContainer = styled.div`
   min-height: 80px;
   position: relative;
 `;
-const MenuContainer = styled.div``;
+
+const MenuContainer = styled.div`
+  position: relative;
+  height: 100%;
+`;
+
 const HelpContainer = styled.div`
   height: 80px;
   min-height: 80px;

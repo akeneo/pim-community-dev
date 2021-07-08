@@ -1,0 +1,22 @@
+extensions:
+  pim-free-trial-menu-entities:
+    module: pim/menu/tab
+    parent: pim-menu
+    position: 31
+    targetZone: mainMenu
+    feature: free_trial
+    config:
+      title: free_trial.menu.entities
+      icon: EntityIcon
+      disabled: true
+
+  pim-free-trial-menu-assets:
+    module: pim/menu/tab
+    parent: pim-menu
+    position: 32
+    targetZone: mainMenu
+    feature: free_trial
+    config:
+      title: free_trial.menu.assets
+      icon: AssetsIcon
+      disabled: true
