@@ -8,7 +8,7 @@ import {getDefaultDateSource} from '../Date/model';
 
 const attribute = {
   code: 'number',
-  type: 'pim_catalog_metric',
+  type: 'pim_catalog_number',
   labels: {},
   scopable: false,
   localizable: false,
@@ -21,7 +21,7 @@ jest.mock('./NumberSelector', () => ({
     <button
       onClick={() =>
         onSelectionChange({
-          separator: '.',
+          decimal_separator: '.',
         })
       }
     >
@@ -50,7 +50,7 @@ test('it displays a number configurator', () => {
   expect(onSourceChange).toHaveBeenCalledWith({
     ...getDefaultNumberSource(attribute, null, null),
     selection: {
-      separator: '.',
+      decimal_separator: '.',
     },
     uuid: 'e612bc67-9c30-4121-8b8d-e08b8c4a0640',
   });

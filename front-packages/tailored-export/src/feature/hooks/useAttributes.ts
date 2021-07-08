@@ -32,7 +32,7 @@ const useAttribute = (attributeCode: string): Attribute | null => {
     });
   }, [attributeCode, attributeFetcher, isMounted]);
 
-  return null !== attribute && attribute.code === attributeCode ? attribute : null;
+  return attribute?.code === attributeCode ? attribute : null;
 };
 
 export {useAttribute, useAttributes};

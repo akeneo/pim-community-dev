@@ -8,7 +8,7 @@ test('it displays a separator dropdown', async () => {
   const onSelectionChange = jest.fn();
 
   await baseRender(
-    <NumberSelector validationErrors={[]} selection={{separator: ','}} onSelectionChange={onSelectionChange} />
+    <NumberSelector validationErrors={[]} selection={{decimal_separator: ','}} onSelectionChange={onSelectionChange} />
   );
 
   expect(
@@ -20,7 +20,7 @@ test('it can change the separator type', async () => {
   const onSelectionChange = jest.fn();
 
   await baseRender(
-    <NumberSelector validationErrors={[]} selection={{separator: ','}} onSelectionChange={onSelectionChange} />
+    <NumberSelector validationErrors={[]} selection={{decimal_separator: ','}} onSelectionChange={onSelectionChange} />
   );
 
   userEvent.click(screen.getByText('akeneo.tailored_export.column_details.sources.selection.collection_separator'));
@@ -37,14 +37,14 @@ test('it displays validation errors', async () => {
       invalidValue: '',
       message: 'this is a separator error',
       parameters: {},
-      propertyPath: '[separator]',
+      propertyPath: '[decimal_separator]',
     },
   ];
 
   await baseRender(
     <NumberSelector
       validationErrors={validationErrors}
-      selection={{separator: ','}}
+      selection={{decimal_separator: ','}}
       onSelectionChange={onSelectionChange}
     />
   );

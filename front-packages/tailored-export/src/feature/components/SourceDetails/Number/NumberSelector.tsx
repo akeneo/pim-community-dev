@@ -14,22 +14,28 @@ const NumberSelector = ({selection, validationErrors, onSelectionChange}: Number
   const separatorErrors = filterErrors(validationErrors, '[separator]');
 
   return (
-    <Field label={translate('akeneo.tailored_export.column_details.sources.selection.collection_separator')}>
+    <Field label={translate('akeneo.tailored_export.column_details.sources.selection.decimal_separator')}>
       <SelectInput
         invalid={0 < separatorErrors.length}
         clearable={false}
         emptyResultLabel={translate('pim_common.no_result')}
         openLabel={translate('pim_common.open')}
-        value={selection.separator}
-        onChange={separator => {
-          if (isNumberSeparator(separator)) {
-            onSelectionChange({...selection, separator});
+        value={selection.decimal_separator}
+        onChange={decimal_separator => {
+          if (isNumberSeparator(decimal_separator)) {
+            onSelectionChange({...selection, decimal_separator});
           }
         }}
       >
-        {availableSeparators.map(availableSeparator => (
-          <SelectInput.Option key={availableSeparator} title={availableSeparator} value={availableSeparator}>
-            {availableSeparator}
+        {Object.entries(availableSeparators).map(([separator, name]) => (
+          <SelectInput.Option
+            key={separator}
+            title={translate(
+              `akeneo.tailored_export.column_details.sources.selection.number.decimal_separator.${name}`
+            )}
+            value={separator}
+          >
+            {translate(`akeneo.tailored_export.column_details.sources.selection.number.decimal_separator.${name}`)}
           </SelectInput.Option>
         ))}
       </SelectInput>

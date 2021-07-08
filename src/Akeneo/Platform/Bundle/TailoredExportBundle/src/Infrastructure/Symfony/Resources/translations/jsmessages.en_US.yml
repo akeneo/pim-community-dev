@@ -70,6 +70,12 @@ akeneo.tailored_export:
           information: For this attribute, you can export either the amount or the currency.
         file:
           information: For this attribute, you can export either the path, the filekey or the name.
+        number:
+          decimal_separator:
+            title: 'Decimal separator'
+            comma: Comma (,)
+            dot: Dot (.)
+            arabic_comma: Arabic decimal separator (٫)
       operation:
         replacement:
           title: Replace value

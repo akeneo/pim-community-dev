@@ -2,10 +2,10 @@ import {uuid} from 'akeneo-design-system';
 import {ChannelReference, LocaleReference} from '@akeneo-pim-community/shared';
 import {Attribute, Source} from '../../../models';
 
-const availableSeparators = ['.', ',', '٫‎'];
+const availableSeparators = {'.': 'dot', ',': 'comma', '٫‎': 'arabic_comma'} as const;
 
-type NumberSeparator = typeof availableSeparators[number];
-type NumberSelection = {separator: NumberSeparator};
+type NumberSeparator = keyof typeof availableSeparators;
+type NumberSelection = {decimal_separator: NumberSeparator};
 
 type NumberSource = {
   uuid: string;
@@ -28,12 +28,13 @@ const getDefaultNumberSource = (
   locale,
   channel,
   operations: {},
-  selection: {separator: availableSeparators[0]},
+  selection: {decimal_separator: '.'},
 });
 
-const isNumberSelection = (selection: any): selection is NumberSelection => 'separator' in selection;
+const isNumberSelection = (selection: any): selection is NumberSelection => 'decimal_separator' in selection;
 const isNumberSource = (source: Source): source is NumberSource => isNumberSelection(source.selection);
-const isNumberSeparator = (separator: any): separator is NumberSeparator => availableSeparators.includes(separator);
+const isNumberSeparator = (separator: any): separator is NumberSeparator =>
+  Object.keys(availableSeparators).includes(separator);
 
 export type {NumberSource, NumberSelection};
 export {getDefaultNumberSource, isNumberSource, isNumberSeparator, availableSeparators};
