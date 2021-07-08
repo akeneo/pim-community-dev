@@ -96,7 +96,7 @@ class Menu extends BaseForm {
   }
 
   findMainEntries(): NavigationEntry[] {
-    const navigationEntriesExtensions = Object.values(this.extensions).filter((extension: View) => {
+    const navigationEntriesExtensions: any = Object.values(this.extensions).filter((extension: View) => {
       if (extension.targetZone !== 'mainMenu') {
         return false;
       }
@@ -108,7 +108,11 @@ class Menu extends BaseForm {
       return entryA.position - entryB.position;
     });
 
-    const entries: NavigationEntry[] = navigationEntriesExtensions
+    return this.buildMainMenuEntries(navigationEntriesExtensions);
+  }
+
+  buildMainMenuEntries(navigationEntriesExtensions: EntryView[]): NavigationEntry[] {
+    return navigationEntriesExtensions
       .filter((extension: EntryView) => {
         return !(
           typeof extension.config === 'object' &&
@@ -131,8 +135,6 @@ class Menu extends BaseForm {
           isLandingSectionPage: isLandingSectionPage ?? false,
         };
       });
-
-    return entries;
   }
 
   findMainEntrySubNavigations(entryCode: string): SubNavigationType[] {
