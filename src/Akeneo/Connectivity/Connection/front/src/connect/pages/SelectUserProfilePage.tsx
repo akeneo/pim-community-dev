@@ -28,7 +28,7 @@ const Heading = styled.h1`
     line-height: 1.2em;
 `;
 
-export const MarketplaceWithoutUserProfile: FC = () => {
+export const SelectUserProfilePage: FC = () => {
     const translate = useTranslate();
     const user = useContext(UserContext);
     const saveUser = useSaveUserProfile(user.get<{id: string}>('meta').id);

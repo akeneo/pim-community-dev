@@ -6,6 +6,8 @@ namespace Akeneo\Connectivity\Connection\Infrastructure\InternalApi\Controller\M
 
 use Akeneo\Connectivity\Connection\Domain\Marketplace\GetAllExtensionsQueryInterface;
 use Symfony\Component\HttpFoundation\JsonResponse;
+use Symfony\Component\HttpFoundation\RedirectResponse;
+use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 
 /**
@@ -21,8 +23,11 @@ class GetAllExtensions
         $this->getAllExtensionsQuery = $getAllExtensionsQuery;
     }
 
-    public function __invoke(): Response
+    public function __invoke(Request $request): Response
     {
+        if (!$request->isXmlHttpRequest()) {
+            return new RedirectResponse('/');
+        }
         $result = $this->getAllExtensionsQuery->execute();
 
         return new JsonResponse($result->normalize());

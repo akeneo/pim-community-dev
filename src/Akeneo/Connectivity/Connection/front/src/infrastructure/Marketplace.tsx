@@ -2,8 +2,8 @@ import React, {StrictMode} from 'react';
 import {HashRouter as Router, Route, Switch} from 'react-router-dom';
 import {AkeneoThemeProvider} from './akeneo-theme-provider';
 import {withDependencies} from './dependencies-provider';
-import {MarketplaceWithoutUserProfile} from '../connect/pages/MarketplaceWithoutUserProfile';
-import {Marketplace as MarketplacePage} from '../connect/pages/Marketplace';
+import {SelectUserProfilePage} from '../connect/pages/SelectUserProfilePage';
+import {MarketplacePage} from '../connect/pages/MarketplacePage';
 
 export const Marketplace = withDependencies(() => (
     <StrictMode>
@@ -11,7 +11,7 @@ export const Marketplace = withDependencies(() => (
             <Router>
                 <Switch>
                     <Route path='/connect/marketplace/profile'>
-                        <MarketplaceWithoutUserProfile />
+                        <SelectUserProfilePage />
                     </Route>
                     <Route path='/connect/marketplace'>
                         <MarketplacePage />

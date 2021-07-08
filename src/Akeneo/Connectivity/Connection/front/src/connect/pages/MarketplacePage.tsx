@@ -6,15 +6,20 @@ import {UserButtons} from '../../shared/user';
 import {useRouter} from '../../shared/router/use-router';
 import {UserContext} from '../../shared/user';
 import {useHistory} from 'react-router';
-import MarketplaceHelper from '../components/MarketplaceHelper';
+import {useFetchExtensions} from '../hooks/use-fetch-extensions';
+import {Extensions} from '../../model/extension';
+import {UnreachableMarketplace} from '../components/UnreachableMarketplace';
+import {Marketplace} from '../components/Marketplace';
 
-export const Marketplace: FC = () => {
+export const MarketplacePage: FC = () => {
     const translate = useTranslate();
     const user = useContext(UserContext);
     const history = useHistory();
     const generateUrl = useRouter();
+    const fetchExtensions = useFetchExtensions();
     const dashboardHref = `#${generateUrl('akeneo_connectivity_connection_audit_index')}`;
     const [userProfile, setUserProfile] = useState<string | null>(null);
+    const [extensions, setExtensions] = useState<Extensions | null | false>(null);
 
     useEffect(() => {
         const profile = user.get<string | null>('profile');
@@ -24,8 +29,13 @@ export const Marketplace: FC = () => {
             setUserProfile(profile);
         }
     }, [user]);
+    useEffect(() => {
+        fetchExtensions()
+            .then(setExtensions)
+            .catch(() => setExtensions(false));
+    }, [fetchExtensions]);
 
-    if (null === userProfile) {
+    if (null === userProfile || null === extensions) {
         return null;
     }
 
@@ -36,8 +46,6 @@ export const Marketplace: FC = () => {
         </Breadcrumb>
     );
 
-    const listCount = 34; //TODO Add real counter value
-
     return (
         <>
             <PageHeader breadcrumb={breadcrumb} userButtons={<UserButtons />}>
@@ -45,7 +53,7 @@ export const Marketplace: FC = () => {
             </PageHeader>
 
             <PageContent>
-                <MarketplaceHelper count={listCount} />
+                {false === extensions ? <UnreachableMarketplace /> : <Marketplace extensions={extensions} />}
             </PageContent>
         </>
     );
