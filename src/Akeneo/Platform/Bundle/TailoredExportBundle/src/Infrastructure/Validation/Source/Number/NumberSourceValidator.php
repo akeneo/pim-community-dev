@@ -36,43 +36,31 @@ class NumberSourceValidator extends ConstraintValidator
         $validator = $this->context->getValidator();
 
         $sourceConstraintFields = SourceConstraintProvider::getConstraintCollection()->fields;
-        $sourceConstraintFields['selection'] = [
-            new NotBlank(),
-            new Collection(
-                [
-                    'fields' => [
-                        'decimal_separator' => [
-                            new Choice(
-                                [
-                                    'strict' => true,
-                                    'choices' => $this->availableDecimalSeparator,
-                                ]
-                            )
-                        ],
-                    ],
-                ]
-            ),
-        ];
+        $sourceConstraintFields['selection'] = new Collection(
+            [
+                'fields' => [
+                    'decimal_separator' => new Choice(
+                        [
+                            'choices' => $this->availableDecimalSeparator,
+                        ]
+                    )
+                ],
+            ]
+        );
 
-        $sourceConstraintFields['operations'] = [
-            new Type([
-                'type' => 'array',
-            ]),
-        ];
+        $sourceConstraintFields['operations'] = new Type([
+            'type' => 'array',
+        ]);
 
         $violations = $validator->validate($source, new Collection(['fields' => $sourceConstraintFields]));
 
-        if (0 < $violations->count()) {
-            foreach ($violations as $violation) {
-                $this->context->buildViolation(
-                    $violation->getMessage(),
-                    $violation->getParameters()
-                )
-                    ->atPath($violation->getPropertyPath())
-                    ->addViolation();
-            }
-
-            return;
+        foreach ($violations as $violation) {
+            $this->context->buildViolation(
+                $violation->getMessage(),
+                $violation->getParameters()
+            )
+                ->atPath($violation->getPropertyPath())
+                ->addViolation();
         }
     }
 }

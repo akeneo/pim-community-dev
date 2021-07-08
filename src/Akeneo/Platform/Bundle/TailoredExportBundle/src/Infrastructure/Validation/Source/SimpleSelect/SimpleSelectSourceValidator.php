@@ -13,12 +13,10 @@ declare(strict_types=1);
 
 namespace Akeneo\Platform\TailoredExport\Infrastructure\Validation\Source\SimpleSelect;
 
-use Akeneo\Platform\TailoredExport\Infrastructure\Validation\Selection\CodeLabelCollectionSelectionConstraint;
 use Akeneo\Platform\TailoredExport\Infrastructure\Validation\Selection\CodeLabelSelectionConstraint;
 use Akeneo\Platform\TailoredExport\Infrastructure\Validation\Source\SourceConstraintProvider;
 use Symfony\Component\Validator\Constraint;
 use Symfony\Component\Validator\Constraints\Collection;
-use Symfony\Component\Validator\Constraints\NotBlank;
 use Symfony\Component\Validator\Constraints\Type;
 use Symfony\Component\Validator\ConstraintValidator;
 
@@ -28,16 +26,11 @@ class SimpleSelectSourceValidator extends ConstraintValidator
     {
         $validator = $this->context->getValidator();
         $sourceConstraintFields = SourceConstraintProvider::getConstraintCollection()->fields;
-        $sourceConstraintFields['selection'] = [
-            new NotBlank(),
-            new CodeLabelSelectionConstraint()
-        ];
+        $sourceConstraintFields['selection'] = new CodeLabelSelectionConstraint();
 
-        $sourceConstraintFields['operations'] = [
-            new Type([
-                'type' => 'array',
-            ]),
-        ];
+        $sourceConstraintFields['operations'] = new Type([
+            'type' => 'array',
+        ]);
 
         $violations = $validator->validate($source, new Collection(['fields' => $sourceConstraintFields]));
 

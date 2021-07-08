@@ -4,12 +4,10 @@ services:
   Akeneo\Platform\TailoredExport\Infrastructure\Validation\Source\AssetCollection\AssetCollectionSourceConstraint: ~
   Akeneo\Platform\TailoredExport\Infrastructure\Validation\Source\Boolean\BooleanSourceConstraint: ~
   Akeneo\Platform\TailoredExport\Infrastructure\Validation\Source\Categories\CategoriesSourceConstraint: ~
-  Akeneo\Platform\TailoredExport\Infrastructure\Validation\Source\Date\DateSelectionConstraint: ~
   Akeneo\Platform\TailoredExport\Infrastructure\Validation\Source\Date\DateSourceConstraint: ~
   Akeneo\Platform\TailoredExport\Infrastructure\Validation\Source\Enabled\EnabledSourceConstraint: ~
   Akeneo\Platform\TailoredExport\Infrastructure\Validation\Source\Family\FamilySourceConstraint: ~
   Akeneo\Platform\TailoredExport\Infrastructure\Validation\Source\FamilyVariant\FamilyVariantSourceConstraint: ~
-  Akeneo\Platform\TailoredExport\Infrastructure\Validation\Source\File\FileSelectionConstraint: ~
   Akeneo\Platform\TailoredExport\Infrastructure\Validation\Source\File\FileSourceConstraint: ~
   Akeneo\Platform\TailoredExport\Infrastructure\Validation\Source\Groups\GroupsSourceConstraint: ~
   Akeneo\Platform\TailoredExport\Infrastructure\Validation\Source\Measurement\MeasurementSelectionConstraint: ~

@@ -87,14 +87,11 @@ class SourcesValidator extends ConstraintValidator
                         ]),
                         new NotBlank(),
                     ],
-                    'type' => [
-                        new Choice(
-                            [
-                                'strict' => true,
-                                'choices' => [AttributeSource::TYPE, PropertySource::TYPE],
-                            ]
-                        )
-                    ],
+                    'type' => new Choice(
+                        [
+                            'choices' => [AttributeSource::TYPE, PropertySource::TYPE],
+                        ]
+                    ),
 
                 ],
                 'allowExtraFields' => true

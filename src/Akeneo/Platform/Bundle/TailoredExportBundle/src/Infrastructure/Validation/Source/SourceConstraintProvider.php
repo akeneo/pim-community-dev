@@ -51,14 +51,9 @@ class SourceConstraintProvider
                     ]),
                     new LocaleShouldBeActive()
                 ],
-                'type' => [
-                    new Choice(
-                        [
-                            'strict' => true,
-                            'choices' => [AttributeSource::TYPE, PropertySource::TYPE],
-                        ]
-                    )
-                ],
+                'type' =>  new Choice([
+                    'choices' => [AttributeSource::TYPE, PropertySource::TYPE],
+                ]),
             ],
         ]);
     }
