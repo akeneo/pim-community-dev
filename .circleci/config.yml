@@ -1615,7 +1615,7 @@ workflows:
                     - test_database
                     - test_back_data_migrations
 
-  on_demand:
+  on_demand_srnt_release:
       jobs:
           - ready_to_build?:
                 type: approval
@@ -1625,100 +1625,11 @@ workflows:
           - checkout:
                 requires:
                     - ready_to_build?
-          - build_srnt_dev:
-                is_pull_request: false
-                requires:
-                    - checkout
           - build_srnt_prod:
                 is_pull_request: false
                 requires:
                     - checkout
-          - test_cronjobs_existence_srnt:
-                requires:
-                    - build_srnt_prod
-          - test_deploy_srnt:
-                requires:
-                    - test_cronjobs_existence_srnt
-          - test_back_static_and_acceptance:
-                requires:
-                    - build_srnt_dev
-          - test_front_static_acceptance_and_integration:
-                requires:
-                    - build_srnt_dev
-          - test_back_integration_bounded_contexts:
-                requires:
-                    - build_srnt_dev
-          - test_back_integration_reference_entities:
-                requires:
-                    - build_srnt_dev
-          - test_back_phpunit:
-                requires:
-                    - build_srnt_dev
-          - test_onboarder_bundle:
-                requires:
-                    - build_srnt_dev
-          - test_back_behat_legacy:
-                requires:
-                    - build_srnt_dev
-          - test_back_data_migrations:
-                requires:
-                    - build_srnt_dev
-          - test_back_performance:
-                requires:
-                    - build_srnt_dev
-          - release_srnt:
-                requires:
-                    - test_back_static_and_acceptance
-                    - test_front_static_acceptance_and_integration
-                    - test_back_integration_bounded_contexts
-                    - test_back_integration_reference_entities
-                    - test_back_phpunit
-                    - test_back_integration_bounded_contexts
-                    - test_onboarder_bundle
-                    - test_back_performance
-                    - test_back_behat_legacy
-                    - test_back_data_migrations
-                    - test_deploy_srnt
-
-  on_demand_growth_edition_release:
-      jobs:
-          - ready_to_build?:
-              type: approval
-              filters:
-                  branches:
-                      only: master
-          - checkout:
-              requires:
-                  - ready_to_build?
-          - build_grth:
-              is_pull_request: false
-              requires:
-                  - checkout
-          - test_cronjobs_existence_grth:
-              requires:
-                  - build_grth
-          - test_deploy_grth:
-              requires:
-                  - test_cronjobs_existence_grth
-          - release_grth:
-              requires:
-                  - test_deploy_grth
-
-  nightly:
-      triggers:
-          - schedule:
-                cron: "0 2 * * *"
-                filters:
-                    branches:
-                        only:
-                            - master
-      jobs:
-          - checkout
           - build_srnt_dev:
-                is_pull_request: false
-                requires:
-                    - checkout
-          - build_srnt_prod:
                 is_pull_request: false
                 requires:
                     - checkout
@@ -1776,9 +1687,114 @@ workflows:
                     - test_back_behat_legacy
                     - test_back_data_migrations
                     - test_deploy_srnt
-#                    - test_upgrade_srnt_from_last_release
+                    - test_upgrade_srnt_from_last_release
 
-  growth_edition_release:
+  on_demand_grth_release:
+      jobs:
+          - ready_to_build?:
+              type: approval
+              filters:
+                  branches:
+                      only: master
+          - checkout:
+              requires:
+                  - ready_to_build?
+          - build_grth:
+              is_pull_request: false
+              requires:
+                  - checkout
+          - test_cronjobs_existence_grth:
+              requires:
+                  - build_grth
+          - test_deploy_grth:
+              requires:
+                  - test_cronjobs_existence_grth
+          - test_deploy_grth_last_release:
+              requires:
+                  - test_cronjobs_existence_grth
+          - test_upgrade_grth_from_last_release:
+              requires:
+                  - test_deploy_grth_last_release
+          - release_grth:
+              requires:
+                  - test_deploy_grth
+                  - test_upgrade_grth_from_last_release
+
+  nightly_srnt_release:
+      triggers:
+          - schedule:
+                cron: "0 2 * * *"
+                filters:
+                    branches:
+                        only:
+                            - master
+      jobs:
+          - checkout
+          - build_srnt_prod:
+                is_pull_request: false
+                requires:
+                    - checkout
+          - build_srnt_dev:
+                is_pull_request: false
+                requires:
+                    - checkout
+          - test_cronjobs_existence_srnt:
+                requires:
+                    - build_srnt_prod
+          - test_deploy_srnt:
+                requires:
+                    - test_cronjobs_existence_srnt
+          - test_deploy_srnt_last_release:
+                requires:
+                    - test_cronjobs_existence_srnt
+          - test_upgrade_srnt_from_last_release:
+                requires:
+                    - test_deploy_srnt_last_release
+          - test_front_code_style:
+                requires:
+                    - build_srnt_dev
+          - test_back_static_and_acceptance:
+                requires:
+                    - build_srnt_dev
+          - test_front_static_acceptance_and_integration:
+                requires:
+                    - build_srnt_dev
+          - test_back_phpunit:
+                requires:
+                    - build_srnt_dev
+          - test_back_integration_bounded_contexts:
+                requires:
+                    - build_srnt_dev
+          - test_back_integration_reference_entities:
+                requires:
+                    - build_srnt_dev
+          - test_back_performance:
+                requires:
+                    - build_srnt_dev
+          - test_onboarder_bundle:
+                requires:
+                    - build_srnt_dev
+          - test_back_behat_legacy:
+                requires:
+                    - build_srnt_dev
+          - test_back_data_migrations:
+                requires:
+                    - build_srnt_dev
+          - release_srnt:
+                requires:
+                    - test_back_static_and_acceptance
+                    - test_front_static_acceptance_and_integration
+                    - test_back_phpunit
+                    - test_back_integration_bounded_contexts
+                    - test_back_integration_reference_entities
+                    - test_onboarder_bundle
+                    - test_back_performance
+                    - test_back_behat_legacy
+                    - test_back_data_migrations
+                    - test_deploy_srnt
+                    - test_upgrade_srnt_from_last_release
+
+  nightly_grth_release:
       triggers:
           - schedule:
                 cron: "0 3 * * *"
