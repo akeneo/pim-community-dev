@@ -1,8 +1,9 @@
 import React, {useState} from 'react';
 import styled from 'styled-components';
-import {Button, Modal, ProductCategoryIllustration, useBooleanState} from 'akeneo-design-system';
+import {BooleanInput, Button, Field, Modal, ProductCategoryIllustration, useBooleanState} from 'akeneo-design-system';
 import {useTranslate} from '@akeneo-pim-community/shared';
 import {MultiCategoryTreeSelector} from './MultiCategoryTreeSelector';
+import {useCategoryTrees} from '../../hooks';
 
 const Container = styled.div`
   display: flex;
@@ -10,25 +11,43 @@ const Container = styled.div`
   justify-content: space-between;
   width: 100%;
 `;
-
+type Operator = 'IN CHILDREN' | 'IN' | 'NOT IN';
+type CategoryFilterType = {
+  field: 'categories';
+  operator: Operator;
+  value: string[];
+};
 type CategoryFilterProps = {
-  initialCategorySelection: string[];
-  onCategorySelection: (updatedCategorySelection: string[]) => void;
+  filter: CategoryFilterType;
+  onChange: (updatedFilter: CategoryFilterType) => void;
 };
 
-const CategoryFilter = ({initialCategorySelection, onCategorySelection}: CategoryFilterProps) => {
+const CategoryFilter = ({filter, onChange}: CategoryFilterProps) => {
   const translate = useTranslate();
   const [isCategoriesModalOpen, openCategoriesModal, closeCategoriesModal] = useBooleanState();
-  const [selectedCategories, setSelectedCategories] = useState(initialCategorySelection);
+  const [categorySelection, setSelectedCategories] = useState<string[]>(filter.value);
+  const [operator, setOperator] = useState<Operator>(filter.operator);
+  const shouldIncludeSubCategories = operator === 'IN CHILDREN';
+
+  const categoryTrees = useCategoryTrees(categorySelection, shouldIncludeSubCategories);
+  const totalCategorySelected = categoryTrees.reduce((carry, categoryTree) => {
+    return carry + Number(categoryTree.selectedCategoryCount);
+  }, 0);
+
+  const handleShouldIncludeSubCategoryChange = (shouldIncludeSubCategory: boolean) => {
+    setOperator(shouldIncludeSubCategory ? 'IN CHILDREN' : 'IN');
+  };
   const handleConfirm = () => {
-    onCategorySelection(selectedCategories);
+    const newOperator = filter.value.length === 0 ? 'NOT IN' : operator;
+
+    onChange({...filter, operator: newOperator, value: categorySelection});
     closeCategoriesModal();
   };
   const handleClose = () => {
-    setSelectedCategories(initialCategorySelection);
+    setSelectedCategories(filter.value);
+    setOperator(filter.operator);
     closeCategoriesModal();
   };
-
   return (
     <Container>
       {isCategoriesModalOpen && (
@@ -38,9 +57,19 @@ const CategoryFilter = ({initialCategorySelection, onCategorySelection}: Categor
           illustration={<ProductCategoryIllustration />}
         >
           <Modal.Title>{translate('pim_connector.export.categories.selector.modal.title')}</Modal.Title>
+          <Field label={translate('jstree.include_sub')}>
+            <BooleanInput
+              noLabel={translate('pim_common.no')}
+              yesLabel={translate('pim_common.yes')}
+              value={shouldIncludeSubCategories}
+              readOnly={false}
+              onChange={handleShouldIncludeSubCategoryChange}
+            />
+          </Field>
           <MultiCategoryTreeSelector
-            categorySelection={selectedCategories}
+            categorySelection={categorySelection}
             onCategorySelection={setSelectedCategories}
+            shouldIncludeSubCategories={shouldIncludeSubCategories}
           />
           <Modal.BottomButtons>
             <Button level="tertiary" onClick={handleClose}>
@@ -55,8 +84,8 @@ const CategoryFilter = ({initialCategorySelection, onCategorySelection}: Categor
       <span>
         {translate(
           'pim_connector.export.categories.selector.label',
-          {count: initialCategorySelection.length},
-          initialCategorySelection.length
+          {count: totalCategorySelected},
+          totalCategorySelected
         )}
       </span>
       <Button level="secondary" onClick={openCategoriesModal}>
@@ -67,3 +96,4 @@ const CategoryFilter = ({initialCategorySelection, onCategorySelection}: Categor
 };
 
 export {CategoryFilter};
+export type {CategoryFilterType};

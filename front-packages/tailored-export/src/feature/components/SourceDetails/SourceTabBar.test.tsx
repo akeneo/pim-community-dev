@@ -7,16 +7,22 @@ import {FetcherContext} from '../../contexts';
 
 const attributes: Attribute[] = [
   {
+    type: 'pim_catalog_text',
     code: 'name',
     labels: {fr_FR: 'French name', en_US: 'English name'},
     scopable: false,
     localizable: false,
+    is_locale_specific: false,
+    available_locales: [],
   },
   {
+    type: 'pim_catalog_textarea',
     code: 'description',
     labels: {fr_FR: 'French description', en_US: 'English description'},
     scopable: false,
     localizable: false,
+    is_locale_specific: false,
+    available_locales: [],
   },
 ];
 
@@ -52,13 +58,14 @@ test('it renders the source tab bar', async () => {
     },
     {
       uuid: 'cffd540e-1e40-4c55-a415-89c7958b280d',
-      code: 'category',
+      code: 'categories',
       type: 'property',
       locale: null,
       channel: null,
       operations: [],
       selection: {
         type: 'code',
+        separator: ',',
       },
     },
   ];
@@ -67,6 +74,7 @@ test('it renders the source tab bar', async () => {
     renderWithProviders(
       <FetcherContext.Provider value={fetchers}>
         <SourceTabBar
+          validationErrors={[]}
           sources={sources}
           currentTab="cffd560e-1e40-4c55-a415-89c7958b270d"
           onTabChange={handleTabChange}
@@ -77,7 +85,7 @@ test('it renders the source tab bar', async () => {
 
   expect(screen.getByText(/English description/i)).toBeInTheDocument();
   expect(screen.getByText(/English name/i)).toBeInTheDocument();
-  expect(screen.getByText(/pim_common.category/i)).toBeInTheDocument();
+  expect(screen.getByText(/pim_common.categories/i)).toBeInTheDocument();
 
   fireEvent.click(screen.getByText(/Name/i));
   expect(handleTabChange).toHaveBeenCalledWith('cffd540e-1e40-4c55-a415-89c7958b270d');

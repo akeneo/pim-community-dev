@@ -1,8 +1,8 @@
-import {DeleteModal, useTranslate} from '@akeneo-pim-community/shared';
-import {Button, getColor, useBooleanState} from 'akeneo-design-system';
-import {Source} from '../../models';
 import React from 'react';
 import styled from 'styled-components';
+import {Button, getColor, useBooleanState} from 'akeneo-design-system';
+import {DeleteModal, useTranslate} from '@akeneo-pim-community/shared';
+import {Source} from '../../models';
 
 const Container = styled.div`
   position: sticky;
@@ -36,6 +36,7 @@ const SourceFooter = ({source, onSourceRemove}: SourceFooterProps) => {
       {isOpen && (
         <DeleteModal
           title={translate('akeneo.tailored_export.column_details.sources.remove.title')}
+          confirmButtonLabel={translate('pim_common.confirm')}
           onConfirm={handleConfirm}
           onCancel={close}
         >

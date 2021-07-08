@@ -5,6 +5,7 @@ import {
   CategoryTree,
   CategoryTreeModel,
   CategoryValue,
+  ParentCategoryTree,
   getLabel,
   useRouter,
   useUserContext,
@@ -18,17 +19,49 @@ const CategoryTreeContainer = styled.div`
 
 type CategorySelectorProps = {
   categoryTreeCode: string;
-  onChange: (value: string[]) => void;
   initialCategoryCodes: string[];
+  shouldIncludeSubCategories: boolean;
+  onChange: (value: string[]) => void;
 };
 
-const CategorySelector = ({categoryTreeCode, onChange, initialCategoryCodes}: CategorySelectorProps) => {
+const CategorySelector = ({
+  categoryTreeCode,
+  onChange,
+  initialCategoryCodes,
+  shouldIncludeSubCategories,
+}: CategorySelectorProps) => {
   const [selectedCategoryCodes, setSelectedCategoryCodes] = useState<string[]>(initialCategoryCodes);
   const catalogLocale = useUserContext().get('catalogLocale');
   const router = useRouter();
 
-  const isCategorySelected: (category: CategoryValue) => boolean = category => {
-    return selectedCategoryCodes.includes(category.code);
+  const isParentCategoryIsSelected = (parentCategory: ParentCategoryTree): boolean => {
+    if (parentCategory === null) {
+      return false;
+    }
+
+    if (selectedCategoryCodes.includes(parentCategory.code)) {
+      return true;
+    }
+
+    return isParentCategoryIsSelected(parentCategory.parent);
+  };
+
+  const isCategorySelected = (category: CategoryValue, parentCategory: ParentCategoryTree): boolean => {
+    if (selectedCategoryCodes.includes(category.code)) {
+      return true;
+    }
+
+    if (!shouldIncludeSubCategories) {
+      return false;
+    }
+
+    return isParentCategoryIsSelected(parentCategory);
+  };
+
+  const isCategoryReadOnly = (category: CategoryTreeModel, parentCategory: ParentCategoryTree): boolean => {
+    if (!shouldIncludeSubCategories || selectedCategoryCodes.includes(category.code)) return false;
+
+    return isParentCategoryIsSelected(parentCategory);
   };
 
   const handleCheckCategory = (value: string) => {
@@ -57,7 +90,7 @@ const CategorySelector = ({categoryTreeCode, onChange, initialCategoryCodes}: Ca
     }
   };
 
-  const childrenCallback: (id: number) => Promise<CategoryTreeModel[]> = async id => {
+  const childrenCallback = async (id: number): Promise<CategoryTreeModel[]> => {
     const childrenUrl = router.generate('pim_enrich_categorytree_children', {_format: 'json', id});
     const response = await fetch(childrenUrl);
     const json: CategoryResponse[] = await response.json();
@@ -102,6 +135,7 @@ const CategorySelector = ({categoryTreeCode, onChange, initialCategoryCodes}: Ca
         categoryTreeCode={categoryTreeCode}
         init={init}
         isCategorySelected={isCategorySelected}
+        isCategoryReadOnly={isCategoryReadOnly}
       />
     </CategoryTreeContainer>
   );

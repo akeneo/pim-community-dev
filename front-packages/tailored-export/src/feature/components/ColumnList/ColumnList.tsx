@@ -1,12 +1,11 @@
 import React, {ClipboardEvent, useEffect, useRef} from 'react';
 import {getColor, Helper, SectionTitle, Table, TextInput, useAutoFocus, useBooleanState} from 'akeneo-design-system';
-import {ColumnConfiguration} from '../../models/ColumnConfiguration';
 import styled from 'styled-components';
 import {useTranslate} from '@akeneo-pim-community/shared';
+import {ColumnConfiguration, MAX_COLUMN_COUNT} from '../../models/ColumnConfiguration';
 import {ColumnListPlaceholder} from './ColumnListPlaceholder';
 import {ColumnRow, TargetCell} from './ColumnRow';
 import {useValidationErrors} from '../../contexts';
-import {MAX_COLUMN_COUNT} from '../../ColumnsTab';
 
 const Container = styled.div`
   flex: 1;
@@ -52,7 +51,7 @@ const ColumnList = ({
 
   useEffect(() => {
     focus();
-  }, [selectedColumn, focus, placeholderDisplayed]);
+  }, [selectedColumn?.uuid, focus, placeholderDisplayed]);
 
   const handleFocusNextColumn = (columnUuid: string) => {
     const currentColumnIndex = columnsConfiguration.findIndex(({uuid}) => columnUuid === uuid);

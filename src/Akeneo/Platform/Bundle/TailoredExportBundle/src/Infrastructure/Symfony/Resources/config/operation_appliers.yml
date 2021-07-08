@@ -1,0 +1,10 @@
+services:
+  Akeneo\Platform\TailoredExport\Application\PropertyValueGetter:
+
+  Akeneo\Platform\TailoredExport\Application\OperationHandler:
+    arguments:
+      - !tagged_iterator akeneo.tailored_export.operation_applier
+
+  Akeneo\Platform\TailoredExport\Application\OperationHandler\EnabledReplacementHandler:
+    tags:
+      - { name: akeneo.tailored_export.operation_applier }

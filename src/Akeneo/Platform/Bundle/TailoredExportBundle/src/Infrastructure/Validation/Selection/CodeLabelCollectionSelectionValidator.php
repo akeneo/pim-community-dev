@@ -2,9 +2,17 @@
 
 declare(strict_types=1);
 
+/*
+ * This file is part of the Akeneo PIM Enterprise Edition.
+ *
+ * (c) 2021 Akeneo SAS (https://www.akeneo.com)
+ *
+ * For the full copyright and license information, please view the LICENSE
+ * file that was distributed with this source code.
+ */
+
 namespace Akeneo\Platform\TailoredExport\Infrastructure\Validation\Selection;
 
-use Akeneo\Platform\TailoredExport\Domain\SelectionTypes;
 use Akeneo\Platform\TailoredExport\Infrastructure\Validation\LocaleShouldBeActive;
 use Symfony\Component\Validator\Constraint;
 use Symfony\Component\Validator\Constraints\Choice;
@@ -37,8 +45,8 @@ class CodeLabelCollectionSelectionValidator extends ConstraintValidator
                                 [
                                     'strict' => true,
                                     'choices' => [
-                                        SelectionTypes::CODE,
-                                        SelectionTypes::LABEL,
+                                        'code',
+                                        'label',
                                     ],
                                 ]
                             )
@@ -70,7 +78,7 @@ class CodeLabelCollectionSelectionValidator extends ConstraintValidator
             return;
         }
 
-        if (SelectionTypes::LABEL === $selection['type']) {
+        if ('label' === $selection['type']) {
             $violations = $validator->validate($selection['locale'] ?? null, [
                 new NotBlank(),
                 new LocaleShouldBeActive()

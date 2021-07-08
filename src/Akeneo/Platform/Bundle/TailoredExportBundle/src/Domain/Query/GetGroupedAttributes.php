@@ -5,7 +5,7 @@ declare(strict_types=1);
 /*
  * This file is part of the Akeneo PIM Enterprise Edition.
  *
- * (c) 2021 Akeneo SAS (http://www.akeneo.com)
+ * (c) 2021 Akeneo SAS (https://www.akeneo.com)
  *
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
@@ -29,12 +29,11 @@ interface GetGroupedAttributes
      *      {
      *          "code": "description",
      *          "label": "[description]", // Fallback if label does not exist is "[code]"
-     *          "group_code": "marketting",
-     *          "group_label": "Marketting",
+     *          "group_code": "marketing",
+     *          "group_label": "Marketing",
      *      },
      *      ...
      *  ]
-     *
      *
      * @param string $localeCode
      * @param string $search

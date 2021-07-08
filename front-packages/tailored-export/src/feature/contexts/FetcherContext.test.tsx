@@ -1,5 +1,5 @@
 import {renderHookWithProviders} from '@akeneo-pim-community/shared';
-import {useFetchers} from 'feature/contexts/FetcherContext';
+import {useFetchers} from '../contexts/FetcherContext';
 
 test('Fetch attributes by identifiers needs to be implemented', async () => {
   const {result} = renderHookWithProviders(() => useFetchers());

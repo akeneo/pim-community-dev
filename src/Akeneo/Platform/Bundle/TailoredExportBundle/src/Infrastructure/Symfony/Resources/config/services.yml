@@ -13,3 +13,9 @@ services:
                 xlsx_tailored_product_export: pim-job-instance-xlsx-tailored-product-export
         tags:
             - { name: pim_enrich.provider.form }
+
+    Akeneo\Platform\TailoredExport\Application\ProductMapper:
+        public: true
+        arguments:
+            - '@Akeneo\Platform\TailoredExport\Application\OperationHandler'
+            - '@Akeneo\Platform\TailoredExport\Application\Query\Selection\SelectionHandler'

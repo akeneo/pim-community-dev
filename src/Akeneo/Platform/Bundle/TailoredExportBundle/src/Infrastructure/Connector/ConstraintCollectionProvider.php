@@ -13,7 +13,9 @@ declare(strict_types=1);
 
 namespace Akeneo\Platform\TailoredExport\Infrastructure\Connector;
 
+use Akeneo\Platform\TailoredExport\Infrastructure\Validation\ChannelShouldExist;
 use Akeneo\Platform\TailoredExport\Infrastructure\Validation\Columns;
+use Akeneo\Platform\TailoredExport\Infrastructure\Validation\LocaleShouldBeActive;
 use Akeneo\Tool\Component\Batch\Job\JobInterface;
 use Akeneo\Tool\Component\Batch\Job\JobParameters\ConstraintCollectionProviderInterface;
 use Symfony\Component\Validator\Constraints as Assert;
@@ -58,6 +60,13 @@ class ConstraintCollectionProvider implements ConstraintCollectionProviderInterf
                                         'fields' => [
                                             'scope' => new Assert\Optional(),
                                             'locale' => new Assert\Optional(),
+                                            'locales' => new Assert\Optional(
+                                                [
+                                                    new Assert\All(new LocaleShouldBeActive()),
+                                                    new Assert\NotBlank(),
+                                                ]
+                                            ),
+                                            'channel' => new Assert\Optional(new ChannelShouldExist())
                                         ],
                                     ]),
                                 ]),

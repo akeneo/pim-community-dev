@@ -14,24 +14,36 @@ declare(strict_types=1);
 namespace Akeneo\Platform\TailoredExport\Infrastructure\Connector\Processor;
 
 use Akeneo\Pim\Enrichment\Component\Product\Model\ProductInterface;
+use Akeneo\Pim\Structure\Component\Query\PublicApi\AttributeType\Attribute;
 use Akeneo\Pim\Structure\Component\Query\PublicApi\AttributeType\GetAttributes;
-use Akeneo\Platform\TailoredExport\Infrastructure\Connector\Processor\AttributeSelector\AttributeSelectorRegistry;
+use Akeneo\Platform\TailoredExport\Application\ProductMapper;
+use Akeneo\Platform\TailoredExport\Application\Query\Column\ColumnCollection;
+use Akeneo\Platform\TailoredExport\Application\Query\Source\AttributeSource;
+use Akeneo\Platform\TailoredExport\Infrastructure\Hydrator\ColumnCollectionHydrator;
+use Akeneo\Platform\TailoredExport\Infrastructure\Hydrator\ValueCollectionHydrator;
 use Akeneo\Tool\Component\Batch\Item\ItemProcessorInterface;
 use Akeneo\Tool\Component\Batch\Model\StepExecution;
 use Akeneo\Tool\Component\Batch\Step\StepExecutionAwareInterface;
 
 class ProductExportProcessor implements ItemProcessorInterface, StepExecutionAwareInterface
 {
-    private ?StepExecution $stepExecution = null;
-    private AttributeSelectorRegistry $attributeSelectorRegistry;
     private GetAttributes $getAttributes;
+    private ValueCollectionHydrator $valueCollectionHydrator;
+    private ColumnCollectionHydrator $columnCollectionHydrator;
+    private ProductMapper $productMapper;
+    private ?StepExecution $stepExecution = null;
+    private ?ColumnCollection $columnCollection = null;
 
     public function __construct(
-        AttributeSelectorRegistry $attributeSelectorRegistry,
-        GetAttributes $getAttributes
+        GetAttributes $getAttributes,
+        ValueCollectionHydrator $valueCollectionHydrator,
+        ColumnCollectionHydrator $columnCollectionHydrator,
+        ProductMapper $productMapper
     ) {
-        $this->attributeSelectorRegistry = $attributeSelectorRegistry;
         $this->getAttributes = $getAttributes;
+        $this->valueCollectionHydrator = $valueCollectionHydrator;
+        $this->columnCollectionHydrator = $columnCollectionHydrator;
+        $this->productMapper = $productMapper;
     }
 
     /**
@@ -40,38 +52,18 @@ class ProductExportProcessor implements ItemProcessorInterface, StepExecutionAwa
     public function process($product)
     {
         if (!$product instanceof ProductInterface) {
-            throw new \Exception('Invalid argument');
+            throw new \InvalidArgumentException();
         }
 
         if (!$this->stepExecution instanceof StepExecution) {
-            throw new \Exception('Processor have not been properly initialized');
+            throw new \LogicException('Processor has not been properly initialized');
         }
 
         $columns = $this->stepExecution->getJobParameters()->get('columns');
+        $columnCollection = $this->getColumnCollection($columns);
+        $valueCollection = $this->valueCollectionHydrator->hydrate($product, $columnCollection);
 
-        $productStandard = [];
-
-        foreach ($columns as $column) {
-            $operationSourceValues = [];
-
-            foreach ($column['sources'] as $source) {
-                if ('attribute' === $source['type']) {
-                    $value = $product->getValue($source['code'], $source['locale'], $source['channel']);
-                    $attribute = $this->getAttributes->forCode($source['code']);
-                    $operationSourceValues[] = $this->attributeSelectorRegistry->applyAttributeSelection(
-                        $source['selection'],
-                        $attribute,
-                        $value
-                    );
-                } else {
-                    throw new \Exception('Source type is unsupported');
-                }
-            }
-
-            $productStandard[$column['target']] = implode(' ', $operationSourceValues);
-        }
-
-        return $productStandard;
+        return $this->productMapper->map($columnCollection, $valueCollection);
     }
 
     /**
@@ -80,5 +72,29 @@ class ProductExportProcessor implements ItemProcessorInterface, StepExecutionAwa
     public function setStepExecution(StepExecution $stepExecution): void
     {
         $this->stepExecution = $stepExecution;
+    }
+
+    private function getColumnCollection(array $columns): ColumnCollection
+    {
+        if (null === $this->columnCollection) {
+            $indexedAttributes = $this->getIndexedAttributes($columns);
+            $this->columnCollection = $this->columnCollectionHydrator->hydrate($columns, $indexedAttributes);
+        }
+
+        return $this->columnCollection;
+    }
+
+    private function getIndexedAttributes(array $columns): array
+    {
+        $attributeCodes = [];
+        foreach ($columns as $column) {
+            foreach ($column['sources'] as $source) {
+                if (AttributeSource::TYPE === $source['type']) {
+                    $attributeCodes[] = $source['code'];
+                }
+            }
+        }
+
+        return array_filter($this->getAttributes->forCodes(array_unique($attributeCodes)));
     }
 }

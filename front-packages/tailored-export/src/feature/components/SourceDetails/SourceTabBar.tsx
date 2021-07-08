@@ -1,18 +1,19 @@
 import React, {useMemo} from 'react';
-import {getLabel, useTranslate, useUserContext} from '@akeneo-pim-community/shared';
-import {TabBar} from 'akeneo-design-system';
-import {Source} from '../../models';
+import {Pill, TabBar} from 'akeneo-design-system';
+import {filterErrors, getLabel, useTranslate, useUserContext, ValidationError} from '@akeneo-pim-community/shared';
 import {useAttributes} from '../../hooks';
+import {Source} from '../../models';
 
 type SourceTabBarProps = {
   sources: Source[];
   currentTab: string;
+  validationErrors: ValidationError[];
   onTabChange: (newTab: string) => void;
 };
 
-const SourceTabBar = ({sources, currentTab, onTabChange}: SourceTabBarProps) => {
+const SourceTabBar = ({sources, currentTab, validationErrors, onTabChange}: SourceTabBarProps) => {
   const translate = useTranslate();
-  const userContext = useUserContext();
+  const catalogLocale = useUserContext().get('catalogLocale');
   const attributeCodes = useMemo(() => sources.map(source => source.code), [sources]);
   const attributes = useAttributes(attributeCodes);
 
@@ -20,13 +21,14 @@ const SourceTabBar = ({sources, currentTab, onTabChange}: SourceTabBarProps) => 
     <TabBar moreButtonTitle={translate('pim_common.more')} sticky={44}>
       {sources.map(source => (
         <TabBar.Tab key={source.uuid} isActive={currentTab === source.uuid} onClick={() => onTabChange(source.uuid)}>
-          {source.type === 'attribute'
+          {'attribute' === source.type
             ? getLabel(
                 attributes.find(attribute => attribute.code === source.code)?.labels ?? {},
-                userContext.get('catalogLocale'),
+                catalogLocale,
                 source.code
               )
             : translate(`pim_common.${source.code}`)}
+          {0 < filterErrors(validationErrors, `[${source.uuid}]`).length && <Pill level="danger" />}
         </TabBar.Tab>
       ))}
     </TabBar>

@@ -1,43 +1,72 @@
 services:
-  akeneo.tailored_export.validation.source.code_label_selection.constraint:
-    class: 'Akeneo\Platform\TailoredExport\Infrastructure\Validation\Selection\CodeLabelSelection'
-
-  akeneo.tailored_export.validation.source.code_label_collection_selection.constraint:
-    class: 'Akeneo\Platform\TailoredExport\Infrastructure\Validation\Selection\CodeLabelCollectionSelection'
-
-  akeneo.tailored_export.validation.source.price_collection_selection.constraint:
-    class: 'Akeneo\Platform\TailoredExport\Infrastructure\Validation\Selection\PriceCollectionSelection'
-
-  akeneo.tailored_export.validation.source.measurement_selection.constraint:
-    class: 'Akeneo\Platform\TailoredExport\Infrastructure\Validation\Selection\MeasurementSelection'
+  Akeneo\Platform\TailoredExport\Infrastructure\Validation\Selection\CodeLabelCollectionSelectionConstraint: ~
+  Akeneo\Platform\TailoredExport\Infrastructure\Validation\Selection\CodeLabelSelectionConstraint: ~
+  Akeneo\Platform\TailoredExport\Infrastructure\Validation\Source\AssetCollection\AssetCollectionSourceConstraint: ~
+  Akeneo\Platform\TailoredExport\Infrastructure\Validation\Source\Boolean\BooleanSourceConstraint: ~
+  Akeneo\Platform\TailoredExport\Infrastructure\Validation\Source\Categories\CategoriesSourceConstraint: ~
+  Akeneo\Platform\TailoredExport\Infrastructure\Validation\Source\Date\DateSelectionConstraint: ~
+  Akeneo\Platform\TailoredExport\Infrastructure\Validation\Source\Date\DateSourceConstraint: ~
+  Akeneo\Platform\TailoredExport\Infrastructure\Validation\Source\Enabled\EnabledSourceConstraint: ~
+  Akeneo\Platform\TailoredExport\Infrastructure\Validation\Source\Family\FamilySourceConstraint: ~
+  Akeneo\Platform\TailoredExport\Infrastructure\Validation\Source\FamilyVariant\FamilyVariantSourceConstraint: ~
+  Akeneo\Platform\TailoredExport\Infrastructure\Validation\Source\File\FileSelectionConstraint: ~
+  Akeneo\Platform\TailoredExport\Infrastructure\Validation\Source\File\FileSourceConstraint: ~
+  Akeneo\Platform\TailoredExport\Infrastructure\Validation\Source\Groups\GroupsSourceConstraint: ~
+  Akeneo\Platform\TailoredExport\Infrastructure\Validation\Source\Measurement\MeasurementSelectionConstraint: ~
+  Akeneo\Platform\TailoredExport\Infrastructure\Validation\Source\Measurement\MeasurementSourceConstraint: ~
+  Akeneo\Platform\TailoredExport\Infrastructure\Validation\Source\MultiSelect\MultiSelectSourceConstraint: ~
+  Akeneo\Platform\TailoredExport\Infrastructure\Validation\Source\Parent\ParentSelectionConstraint: ~
+  Akeneo\Platform\TailoredExport\Infrastructure\Validation\Source\Parent\ParentSourceConstraint: ~
+  Akeneo\Platform\TailoredExport\Infrastructure\Validation\Source\PriceCollection\PriceCollectionSelectionConstraint: ~
+  Akeneo\Platform\TailoredExport\Infrastructure\Validation\Source\PriceCollection\PriceCollectionSourceConstraint: ~
+  Akeneo\Platform\TailoredExport\Infrastructure\Validation\Source\ReferenceEntity\ReferenceEntitySourceConstraint: ~
+  Akeneo\Platform\TailoredExport\Infrastructure\Validation\Source\ReferenceEntityCollection\ReferenceEntityCollectionSourceConstraint: ~
+  Akeneo\Platform\TailoredExport\Infrastructure\Validation\Source\Scalar\ScalarSourceConstraint: ~
+  Akeneo\Platform\TailoredExport\Infrastructure\Validation\Source\SimpleSelect\SimpleSelectSourceConstraint: ~
 
   akeneo.tailored_export.validation.source:
     class: 'Akeneo\Platform\TailoredExport\Infrastructure\Validation\SourcesValidator'
     arguments:
       - '@akeneo.pim.structure.query.get_attributes'
       -
-#        - 'pim_catalog_date':
-#        - 'pim_catalog_file':
-#        - 'pim_catalog_image':
-#        - 'pim_catalog_number':
-        pim_catalog_metric: '@akeneo.tailored_export.validation.source.measurement_selection.constraint'
-        pim_catalog_multiselect: '@akeneo.tailored_export.validation.source.code_label_collection_selection.constraint'
-        pim_catalog_simpleselect: '@akeneo.tailored_export.validation.source.code_label_selection.constraint'
-        pim_catalog_price_collection: '@akeneo.tailored_export.validation.source.price_collection_selection.constraint'
-        akeneo_reference_entity: '@akeneo.tailored_export.validation.source.code_label_selection.constraint'
-        akeneo_reference_entity_collection: '@akeneo.tailored_export.validation.source.code_label_collection_selection.constraint'
-        pim_catalog_asset_collection: '@akeneo.tailored_export.validation.source.code_label_collection_selection.constraint'
-      - []
+        akeneo_reference_entity: '@Akeneo\Platform\TailoredExport\Infrastructure\Validation\Source\ReferenceEntity\ReferenceEntitySourceConstraint'
+        akeneo_reference_entity_collection: '@Akeneo\Platform\TailoredExport\Infrastructure\Validation\Source\ReferenceEntityCollection\ReferenceEntityCollectionSourceConstraint'
+        pim_catalog_asset_collection: '@Akeneo\Platform\TailoredExport\Infrastructure\Validation\Source\AssetCollection\AssetCollectionSourceConstraint'
+        pim_catalog_boolean: '@Akeneo\Platform\TailoredExport\Infrastructure\Validation\Source\Boolean\BooleanSourceConstraint'
+        pim_catalog_date: '@Akeneo\Platform\TailoredExport\Infrastructure\Validation\Source\Date\DateSourceConstraint'
+        pim_catalog_file: '@Akeneo\Platform\TailoredExport\Infrastructure\Validation\Source\File\FileSourceConstraint'
+        pim_catalog_identifier: '@Akeneo\Platform\TailoredExport\Infrastructure\Validation\Source\Scalar\ScalarSourceConstraint'
+        pim_catalog_image: '@Akeneo\Platform\TailoredExport\Infrastructure\Validation\Source\File\FileSourceConstraint'
+        pim_catalog_metric: '@Akeneo\Platform\TailoredExport\Infrastructure\Validation\Source\Measurement\MeasurementSourceConstraint'
+        pim_catalog_multiselect: '@Akeneo\Platform\TailoredExport\Infrastructure\Validation\Source\MultiSelect\MultiSelectSourceConstraint'
+        pim_catalog_number: '@Akeneo\Platform\TailoredExport\Infrastructure\Validation\Source\Scalar\ScalarSourceConstraint'
+        pim_catalog_price_collection: '@Akeneo\Platform\TailoredExport\Infrastructure\Validation\Source\PriceCollection\PriceCollectionSourceConstraint'
+        pim_catalog_simpleselect: '@Akeneo\Platform\TailoredExport\Infrastructure\Validation\Source\SimpleSelect\SimpleSelectSourceConstraint'
+        pim_catalog_text: '@Akeneo\Platform\TailoredExport\Infrastructure\Validation\Source\Scalar\ScalarSourceConstraint'
+        pim_catalog_textarea: '@Akeneo\Platform\TailoredExport\Infrastructure\Validation\Source\Scalar\ScalarSourceConstraint'
+      -
+        categories: '@Akeneo\Platform\TailoredExport\Infrastructure\Validation\Source\Categories\CategoriesSourceConstraint'
+        enabled: '@Akeneo\Platform\TailoredExport\Infrastructure\Validation\Source\Enabled\EnabledSourceConstraint'
+        family: '@Akeneo\Platform\TailoredExport\Infrastructure\Validation\Source\Family\FamilySourceConstraint'
+        family_variant: '@Akeneo\Platform\TailoredExport\Infrastructure\Validation\Source\FamilyVariant\FamilyVariantSourceConstraint'
+        groups: '@Akeneo\Platform\TailoredExport\Infrastructure\Validation\Source\Groups\GroupsSourceConstraint'
+        parent: '@Akeneo\Platform\TailoredExport\Infrastructure\Validation\Source\Parent\ParentSourceConstraint'
     tags:
       - { name: validator.constraint_validator, alias: akeneo.tailored_export.validation.source }
     public: true
 
-  akeneo.tailored_export.validation.source.code_label_collection_selection:
-    class: 'Akeneo\Platform\TailoredExport\Infrastructure\Validation\Selection\CodeLabelCollectionSelectionValidator'
+  Akeneo\Platform\TailoredExport\Infrastructure\Validation\Source\PriceCollection\PriceCollectionSelectionValidator:
     arguments:
       - [',', ';', '|']
     tags:
-      - { name: validator.constraint_validator, alias: 'akeneo.tailored_export.validation.source.code_label_collection_selection' }
+      - { name: validator.constraint_validator }
+    public: true
+
+  Akeneo\Platform\TailoredExport\Infrastructure\Validation\Selection\CodeLabelCollectionSelectionValidator:
+    arguments:
+      - [',', ';', '|']
+    tags:
+      - { name: validator.constraint_validator }
     public: true
 
   akeneo.tailored_export.validation.locale_should_be_active:

@@ -29,7 +29,11 @@ test('it displays a Tab bar with the provided categories labelled & ordered and 
   const categorySelection = ['webcam', 'scanners'];
 
   renderWithProviders(
-    <MultiCategoryTreeSelector categorySelection={categorySelection} onCategorySelection={onCategorySelection} />
+    <MultiCategoryTreeSelector
+      categorySelection={categorySelection}
+      onCategorySelection={onCategorySelection}
+      shouldIncludeSubCategories={false}
+    />
   );
 
   const tabs = screen.getAllByRole('tab');
@@ -46,7 +50,11 @@ test('it selects a Tab when clicking on it', () => {
   const categorySelection = ['webcam', 'scanners'];
 
   renderWithProviders(
-    <MultiCategoryTreeSelector categorySelection={categorySelection} onCategorySelection={onCategorySelection} />
+    <MultiCategoryTreeSelector
+      categorySelection={categorySelection}
+      onCategorySelection={onCategorySelection}
+      shouldIncludeSubCategories={false}
+    />
   );
 
   const scannersTab = screen.getByText('Scanners');

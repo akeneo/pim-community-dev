@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace Akeneo\Pim\Enrichment\AssetManager\Component\Connector\FlatTranslator\AttributeValueTranslator;
 
-use Akeneo\AssetManager\Infrastructure\PublicApi\Enrich\FindAssetLabelTranslation;
+use Akeneo\AssetManager\Infrastructure\PublicApi\Enrich\FindAssetLabelTranslationInterface;
 use Akeneo\Pim\Enrichment\Component\Product\Connector\FlatTranslator\AttributeValue\FlatAttributeValueTranslatorInterface;
 use Akeneo\Pim\Enrichment\Component\Product\Connector\FlatTranslator\FlatTranslatorInterface;
 use Akeneo\Pim\Structure\Component\AttributeTypes;
@@ -16,10 +16,9 @@ use Akeneo\Pim\Structure\Component\AttributeTypes;
  */
 class AssetCollectionTranslator implements FlatAttributeValueTranslatorInterface
 {
-    /** @var FindAssetLabelTranslation */
-    private $findAssetLabelTranslation;
+    private FindAssetLabelTranslationInterface $findAssetLabelTranslation;
 
-    public function __construct(FindAssetLabelTranslation $findAssetLabelTranslation)
+    public function __construct(FindAssetLabelTranslationInterface $findAssetLabelTranslation)
     {
         $this->findAssetLabelTranslation = $findAssetLabelTranslation;
     }
@@ -32,7 +31,7 @@ class AssetCollectionTranslator implements FlatAttributeValueTranslatorInterface
     public function translate(string $attributeCode, array $properties, array $values, string $locale): array
     {
         if (!isset($properties['reference_data_name'])) {
-            throw new \LogicException(sprintf('Expected properties to have a reference data name to translate asset collection values to flat'));
+            throw new \LogicException('Expected properties to have a reference data name to translate asset collection values to flat');
         }
 
         $assetCodes = $this->extractAssetCodes($values);

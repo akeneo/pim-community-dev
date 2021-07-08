@@ -1,0 +1,27 @@
+services:
+    akeneo_assetmanager.infrastructure.persistence.query.enrich.find_asset_label_translation_public_api:
+            class: Akeneo\Platform\TailoredExport\Test\Acceptance\FakeServices\Asset\InMemoryFindAssetLabelTranslation
+
+    akeneo.pim.structure.query.get_category_translations:
+        class: Akeneo\Platform\TailoredExport\Test\Acceptance\FakeServices\Category\InMemoryGetCategoryTranslations
+
+    akeneo.pim.structure.query.get_family_translations:
+        class: Akeneo\Platform\TailoredExport\Test\Acceptance\FakeServices\Family\InMemoryGetFamilyTranslations
+
+    akeneo.pim.structure.query.get_family_variant_translations:
+        class: Akeneo\Platform\TailoredExport\Test\Acceptance\FakeServices\FamilyVariant\InMemoryGetFamilyVariantTranslations
+
+    Akeneo\Platform\TailoredExport\Domain\Query\FindAttributeOptionLabelsInterface:
+        class: Akeneo\Platform\TailoredExport\Test\Acceptance\FakeServices\AttributeOption\InMemoryFindAttributeOptionLabels
+
+    akeneo_referenceentity.infrastructure.persistence.query.enrich.find_records_labels_public_api:
+        class: Akeneo\Platform\TailoredExport\Test\Acceptance\FakeServices\ReferenceEntity\InMemoryFindRecordsLabelTranslations
+
+    akeneo.pim.enrichment.product.query.get_product_model_labels:
+        class: Akeneo\Platform\TailoredExport\Test\Acceptance\FakeServices\ProductModel\InMemoryGetProductModelLabels
+
+    akeneo.pim.structure.query.get_group_translations:
+        class: Akeneo\Platform\TailoredExport\Test\Acceptance\FakeServices\Group\InMemoryGetGroupTranslations
+
+    Akeneo\Platform\TailoredExport\Domain\Query\FindUnitLabelInterface:
+        class: Akeneo\Platform\TailoredExport\Test\Acceptance\FakeServices\Measurement\InMemoryFindUnitLabel

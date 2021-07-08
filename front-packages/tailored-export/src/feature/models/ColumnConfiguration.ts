@@ -1,24 +1,8 @@
-import {Channel, ChannelReference, getLocalesFromChannel, LocaleReference} from '@akeneo-pim-community/shared';
-import {uuid} from 'akeneo-design-system';
+import {Channel, getLocalesFromChannel} from '@akeneo-pim-community/shared';
 import {Attribute} from './Attribute';
-import {Selection, getDefaultSelectionByAttribute} from './Selection';
+import {getDefaultAttributeSource, getDefaultPropertySource, Source} from './Source';
 
-type Operation = {
-  type: string;
-  value?: any;
-  mapping?: any;
-  unit?: any;
-};
-
-type Source = {
-  uuid: string;
-  code: string;
-  type: 'attribute' | 'property';
-  locale: LocaleReference;
-  channel: ChannelReference;
-  operations: Operation[];
-  selection: Selection;
-};
+const MAX_COLUMN_COUNT = 1000;
 
 type ConcatElement = {
   type: 'string' | 'source';
@@ -77,7 +61,6 @@ const isNonEmptyColumn = (columnConfiguration: ColumnConfiguration): boolean =>
 
 const addAttributeSource = (
   columnConfiguration: ColumnConfiguration,
-  sourceCode: string,
   attribute: Attribute,
   channels: Channel[]
 ): ColumnConfiguration => {
@@ -87,40 +70,17 @@ const addAttributeSource = (
     ? locales.filter(({code}) => attribute.available_locales.includes(code))
     : locales;
   const locale = attribute.localizable ? filteredLocaleSpecificLocales[0].code : null;
-  const selection = getDefaultSelectionByAttribute(attribute);
 
   return {
     ...columnConfiguration,
-    sources: [
-      ...columnConfiguration.sources,
-      {
-        uuid: uuid(),
-        code: sourceCode,
-        type: 'attribute',
-        locale,
-        channel: channelCode,
-        operations: [],
-        selection,
-      },
-    ],
+    sources: [...columnConfiguration.sources, getDefaultAttributeSource(attribute, channelCode, locale)],
   };
 };
 
 const addPropertySource = (columnConfiguration: ColumnConfiguration, sourceCode: string): ColumnConfiguration => {
   return {
     ...columnConfiguration,
-    sources: [
-      ...columnConfiguration.sources,
-      {
-        uuid: uuid(),
-        code: sourceCode,
-        type: 'property',
-        locale: null,
-        channel: null,
-        operations: [],
-        selection: {type: 'code'},
-      },
-    ],
+    sources: [...columnConfiguration.sources, getDefaultPropertySource(sourceCode)],
   };
 };
 
@@ -136,14 +96,15 @@ const removeSource = (columnConfiguration: ColumnConfiguration, removedSource: S
   sources: columnConfiguration.sources.filter(source => source.uuid !== removedSource.uuid),
 });
 
-export type {ColumnConfiguration, Source};
+export type {ColumnConfiguration};
 export {
-  createColumn,
   addColumn,
+  createColumn,
   removeColumn,
   updateColumn,
   removeSource,
   addAttributeSource,
   addPropertySource,
   updateSource,
+  MAX_COLUMN_COUNT,
 };

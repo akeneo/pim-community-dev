@@ -33,9 +33,9 @@ const ColumnListPlaceholder = ({onColumnCreated}: ColumnListPlaceholderProps) =>
       <Title>{translate('akeneo.tailored_export.column_list.no_column_selection.title')}</Title>
       <Subtitle>
         {translate('akeneo.tailored_export.column_list.no_column_selection.subtitle')}{' '}
-        <Link href={'#'}>{translate('akeneo.tailored_export.column_list.no_column_selection.link')}</Link>
+        <Link href={'#TODO'}>{translate('akeneo.tailored_export.column_list.no_column_selection.link')}</Link>
       </Subtitle>
-      <Button onClick={() => onColumnCreated('')}>
+      <Button level="secondary" ghost={true} onClick={() => onColumnCreated('')}>
         {translate('akeneo.tailored_export.column_list.no_column_selection.add_column')}
       </Button>
     </Container>

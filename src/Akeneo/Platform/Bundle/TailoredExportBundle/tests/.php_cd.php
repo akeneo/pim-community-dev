@@ -42,7 +42,9 @@ $rules = [
             'Akeneo\Pim\Enrichment\Component\Product\Query\Filter\Operators',
             'Akeneo\Pim\Permission\Bundle\User\UserContext',
             'Akeneo\ReferenceEntity\Infrastructure\PublicApi\Enrich\FindRecordsLabelTranslations',
-            'Akeneo\Tool\Bundle\MeasureBundle\PublicApi\GetUnitTranslations',
+            'Akeneo\Pim\Enrichment\Component\Product\Query\GetProductModelLabelsInterface',
+            'Akeneo\Pim\Enrichment\Component\Product\Model\ProductModelInterface',
+            'Akeneo\Pim\Enrichment\Component\Product\Value\MetricValue',
         ]
     )->in('Akeneo\Platform\TailoredExport'),
 ];

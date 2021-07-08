@@ -7,11 +7,12 @@ import {
   addPropertySource,
   ColumnConfiguration,
   removeSource,
-  Source,
   updateSource,
-} from '../../models/ColumnConfiguration';
+  Source,
+} from '../../models';
 import {AddSourceDropdown} from './AddSourceDropdown/AddSourceDropdown';
-import {SourceConfigurator} from '../SourceDetails/SourceConfigurator';
+import {AttributeSourceConfigurator} from '../SourceDetails/AttributeSourceConfigurator';
+import {PropertySourceConfigurator} from '../SourceDetails/PropertySourceConfigurator';
 import {SourceTabBar} from '../SourceDetails/SourceTabBar';
 import {useFetchers, useValidationErrors} from '../../contexts';
 import {useChannels} from '../../hooks';
@@ -71,7 +72,7 @@ const ColumnDetails = ({columnConfiguration, onColumnChange}: ColumnDetailsProps
       switchTo(updatedColumnConfiguration.sources[updatedColumnConfiguration.sources.length - 1]?.uuid ?? '');
     } else {
       const [attribute] = await attributeFetcher.fetchByIdentifiers([addedSourceCode]);
-      const updatedColumnConfiguration = addAttributeSource(columnConfiguration, addedSourceCode, attribute, channels);
+      const updatedColumnConfiguration = addAttributeSource(columnConfiguration, attribute, channels);
       onColumnChange(updatedColumnConfiguration);
       switchTo(updatedColumnConfiguration.sources[updatedColumnConfiguration.sources.length - 1]?.uuid ?? '');
     }
@@ -89,15 +90,27 @@ const ColumnDetails = ({columnConfiguration, onColumnChange}: ColumnDetailsProps
       </SourcesSectionTitle>
       <Content>
         {columnConfiguration.sources.length !== 0 && (
-          <SourceTabBar sources={columnConfiguration.sources} currentTab={currentSourceUuid} onTabChange={switchTo} />
+          <SourceTabBar
+            validationErrors={validationErrors}
+            sources={columnConfiguration.sources}
+            currentTab={currentSourceUuid}
+            onTabChange={switchTo}
+          />
         )}
         {sourcesErrors.map((error, index) => (
           <Helper key={index} level="error">
             {translate(error.messageTemplate, error.parameters)}
           </Helper>
         ))}
-        {currentSource && (
-          <SourceConfigurator
+        {'attribute' === currentSource?.type && (
+          <AttributeSourceConfigurator
+            source={currentSource}
+            validationErrors={filterErrors(validationErrors, `[${currentSource.uuid}]`)}
+            onSourceChange={handleSourceChange}
+          />
+        )}
+        {'property' === currentSource?.type && (
+          <PropertySourceConfigurator
             source={currentSource}
             validationErrors={filterErrors(validationErrors, `[${currentSource.uuid}]`)}
             onSourceChange={handleSourceChange}

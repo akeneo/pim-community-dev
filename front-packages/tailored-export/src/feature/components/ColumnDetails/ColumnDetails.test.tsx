@@ -1,48 +1,60 @@
-import React from 'react';
+import React, {ReactNode} from 'react';
 import {act, screen} from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
-import {renderWithProviders, Channel} from '@akeneo-pim-community/shared';
+import {renderWithProviders as baseRender, Channel} from '@akeneo-pim-community/shared';
 import {ColumnDetails} from './ColumnDetails';
 import {Attribute, AvailableSourceGroup, ColumnConfiguration} from '../../models';
 import {FetcherContext, ValidationErrorsContext} from '../../contexts';
 
+const attributes: Attribute[] = [
+  {
+    code: 'description',
+    type: 'pim_catalog_text',
+    labels: {},
+    scopable: false,
+    localizable: false,
+    is_locale_specific: false,
+    available_locales: [],
+  },
+];
+
+const channels: Channel[] = [
+  {
+    code: 'ecommerce',
+    labels: {},
+    locales: [
+      {
+        code: 'en_US',
+        label: 'en_US',
+        region: 'US',
+        language: 'en',
+      },
+      {
+        code: 'br_FR',
+        label: 'Breton',
+        region: 'bzh',
+        language: 'br',
+      },
+    ],
+    category_tree: '',
+    conversion_units: [],
+    currencies: [],
+    meta: {
+      created: '',
+      form: '',
+      id: 1,
+      updated: '',
+    },
+  },
+];
+
 const fetchers = {
-  attribute: {
-    fetchByIdentifiers: (): Promise<Attribute[]> =>
-      new Promise(resolve => {
-        act(() => {
-          resolve([{code: 'description', labels: {}, scopable: false, localizable: false}]);
-        });
-      }),
-  },
-  channel: {
-    fetchAll: (): Promise<Channel[]> =>
-      new Promise(resolve => {
-        act(() => {
-          resolve([
-            {
-              code: 'Ecommerce',
-              labels: {},
-              locales: [
-                {
-                  code: 'en_US',
-                  label: 'English',
-                  region: '',
-                  language: '',
-                },
-                {
-                  code: 'br_FR',
-                  label: 'Breton',
-                  region: '',
-                  language: '',
-                },
-              ],
-            },
-          ]);
-        });
-      }),
-  },
+  attribute: {fetchByIdentifiers: (): Promise<Attribute[]> => Promise.resolve<Attribute[]>(attributes)},
+  channel: {fetchAll: (): Promise<Channel[]> => Promise.resolve(channels)},
 };
+
+const renderWithProviders = async (node: ReactNode) =>
+  await act(async () => void baseRender(<FetcherContext.Provider value={fetchers}>{node}</FetcherContext.Provider>));
 
 jest.mock('akeneo-design-system/lib/shared/uuid', () => ({
   uuid: () => '276b6361-badb-48a1-98ef-d75baa235148',
@@ -56,7 +68,7 @@ jest.mock('../../hooks/useAvailableSourcesFetcher', () => ({
         label: 'System',
         children: [
           {
-            code: 'category',
+            code: 'categories',
             label: 'Categories',
             type: 'property',
           },
@@ -96,7 +108,7 @@ test('it renders column details', async () => {
         type: 'attribute',
         locale: null,
         channel: null,
-        operations: [],
+        operations: {},
         selection: {
           type: 'code',
         },
@@ -167,11 +179,11 @@ test('We can add an attribute source', async () => {
 
   const addSourceButton = screen.getByText('akeneo.tailored_export.column_details.sources.add');
   await act(async () => {
-    await userEvent.click(addSourceButton);
+    userEvent.click(addSourceButton);
   });
 
   await act(async () => {
-    await userEvent.click(screen.getByText('Description'));
+    userEvent.click(screen.getByText('Description'));
   });
 
   expect(handleColumnsConfigurationChange).toHaveBeenCalledWith({
@@ -182,7 +194,7 @@ test('We can add an attribute source', async () => {
         channel: null,
         code: 'description',
         locale: null,
-        operations: [],
+        operations: {},
         selection: {
           type: 'code',
         },
@@ -220,11 +232,11 @@ test('We can add a property source', async () => {
 
   const addSourceButton = screen.getByText('akeneo.tailored_export.column_details.sources.add');
   await act(async () => {
-    await userEvent.click(addSourceButton);
+    userEvent.click(addSourceButton);
   });
 
   await act(async () => {
-    await userEvent.click(screen.getByText('Categories'));
+    userEvent.click(screen.getByText('Categories'));
   });
 
   expect(handleColumnsConfigurationChange).toHaveBeenCalledWith({
@@ -233,11 +245,12 @@ test('We can add a property source', async () => {
     sources: [
       {
         channel: null,
-        code: 'category',
+        code: 'categories',
         locale: null,
-        operations: [],
+        operations: {},
         selection: {
           type: 'code',
+          separator: ',',
         },
         type: 'property',
         uuid: '276b6361-badb-48a1-98ef-d75baa235148',
@@ -250,19 +263,19 @@ test('We can add a property source', async () => {
   });
 });
 
-test('We can udpate a source', async () => {
+test('We can update a source', async () => {
   const columnConfiguration: ColumnConfiguration = {
     uuid: '3a6645e0-0d70-411d-84ee-79833144544a',
     sources: [
       {
         channel: null,
-        code: 'category',
+        code: 'name',
         locale: 'en_US',
-        operations: [],
+        operations: {},
         selection: {
           type: 'code',
         },
-        type: 'property',
+        type: 'attribute',
         uuid: '266b6361-badb-48a1-98ef-d75baa235148',
       },
     ],
@@ -285,11 +298,11 @@ test('We can udpate a source', async () => {
 
   const openLocaleDropdownButton = screen.getByLabelText('pim_common.locale');
   await act(async () => {
-    await userEvent.click(openLocaleDropdownButton);
+    userEvent.click(openLocaleDropdownButton);
   });
 
   await act(async () => {
-    await userEvent.click(screen.getByText('Breton'));
+    userEvent.click(screen.getByText('Breton'));
   });
 
   expect(handleColumnsConfigurationChange).toHaveBeenCalledWith({
@@ -297,13 +310,13 @@ test('We can udpate a source', async () => {
     sources: [
       {
         channel: null,
-        code: 'category',
+        code: 'name',
         locale: 'br_FR',
-        operations: [],
+        operations: {},
         selection: {
           type: 'code',
         },
-        type: 'property',
+        type: 'attribute',
         uuid: '266b6361-badb-48a1-98ef-d75baa235148',
       },
     ],
@@ -321,13 +334,13 @@ test('We can delete a source', async () => {
     sources: [
       {
         channel: null,
-        code: 'category',
+        code: 'description',
         locale: 'en_US',
-        operations: [],
+        operations: {},
         selection: {
           type: 'code',
         },
-        type: 'property',
+        type: 'attribute',
         uuid: '266b6361-badb-48a1-98ef-d75baa235148',
       },
     ],
@@ -348,11 +361,8 @@ test('We can delete a source', async () => {
     );
   });
 
-  const removeButton = screen.getByText('akeneo.tailored_export.column_details.sources.remove.button');
-  userEvent.click(removeButton);
-
-  const confirmButton = screen.getByText('pim_common.delete');
-  userEvent.click(confirmButton);
+  userEvent.click(screen.getByText('akeneo.tailored_export.column_details.sources.remove.button'));
+  userEvent.click(screen.getByText('pim_common.confirm'));
 
   expect(handleColumnsConfigurationChange).toHaveBeenCalledWith({
     uuid: '3a6645e0-0d70-411d-84ee-79833144544a',
@@ -375,7 +385,7 @@ test('it renders column details with errors', async () => {
         type: 'attribute',
         locale: null,
         channel: null,
-        operations: [],
+        operations: {},
         selection: {
           type: 'code',
         },
