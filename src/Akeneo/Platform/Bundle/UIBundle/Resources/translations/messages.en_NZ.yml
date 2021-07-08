@@ -437,6 +437,10 @@ pim_datagrid:
       label: Status
     completeness:
       label: Complete
+    created:
+      label: Created
+    updated:
+      label: Updated
     identifier:
       label: Identifier
 #Versioning / history
