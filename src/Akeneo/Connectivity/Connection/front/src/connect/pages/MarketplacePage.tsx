@@ -10,6 +10,7 @@ import {useFetchExtensions} from '../hooks/use-fetch-extensions';
 import {Extensions} from '../../model/extension';
 import {UnreachableMarketplace} from '../components/UnreachableMarketplace';
 import {Marketplace} from '../components/Marketplace';
+import {MarketplaceIsLoading} from '../components/MarketplaceIsLoading';
 
 export const MarketplacePage: FC = () => {
     const translate = useTranslate();
@@ -35,7 +36,7 @@ export const MarketplacePage: FC = () => {
             .catch(() => setExtensions(false));
     }, [fetchExtensions]);
 
-    if (null === userProfile || null === extensions) {
+    if (null === userProfile) {
         return null;
     }
 
@@ -53,7 +54,9 @@ export const MarketplacePage: FC = () => {
             </PageHeader>
 
             <PageContent>
-                {false === extensions ? <UnreachableMarketplace /> : <Marketplace extensions={extensions} />}
+                {null === extensions && <MarketplaceIsLoading />}
+                {false === extensions && <UnreachableMarketplace />}
+                {false !== extensions && null !== extensions && <Marketplace extensions={extensions} />}
             </PageContent>
         </>
     );
