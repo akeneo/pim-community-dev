@@ -122,7 +122,7 @@ test('it can select a price collection separator', async () => {
   expect(onSelectionChange).toHaveBeenCalledWith({type: 'amount', separator: ';'});
 });
 
-test('it displays validation type errors', async () => {
+test('it displays validation errors', async () => {
   const onSelectionChange = jest.fn();
   const validationErrors: ValidationError[] = [
     {

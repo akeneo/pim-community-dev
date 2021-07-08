@@ -38,9 +38,9 @@ class PriceCollectionCurrencyLabelSelectionHandlerSpec extends ObjectBehavior
     {
         $selection = new PriceCollectionCurrencyLabelSelection('|', 'fr_FR');
         $value = new PriceCollectionValue([new Price('102', 'EUR'), new Price('103', 'USD'), new Price('104', 'DKK')]);
-        $currencyTranslator->translate('EUR', 'fr_FR', '')->willReturn('Euros €');
-        $currencyTranslator->translate('USD', 'fr_FR', '')->willReturn('Dollars $');
-        $currencyTranslator->translate('DKK', 'fr_FR', '')->willReturn('Donkey kong 🐒');
+        $currencyTranslator->translate('EUR', 'fr_FR', '[EUR]')->willReturn('Euros €');
+        $currencyTranslator->translate('USD', 'fr_FR', '[USD]')->willReturn('Dollars $');
+        $currencyTranslator->translate('DKK', 'fr_FR', '[DKK]')->willReturn('Donkey kong 🐒');
 
         $this->applySelection($selection, $value)
             ->shouldReturn('Euros €|Dollars $|Donkey kong 🐒');

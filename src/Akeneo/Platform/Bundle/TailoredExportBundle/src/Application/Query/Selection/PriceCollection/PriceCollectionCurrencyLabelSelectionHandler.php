@@ -22,7 +22,6 @@ use Akeneo\Tool\Component\Localization\CurrencyTranslatorInterface;
 
 class PriceCollectionCurrencyLabelSelectionHandler implements SelectionHandlerInterface
 {
-    private const FALLBACK = '';
     private CurrencyTranslatorInterface $currencyTranslator;
 
     public function __construct(CurrencyTranslatorInterface $currencyTranslator)
@@ -40,7 +39,7 @@ class PriceCollectionCurrencyLabelSelectionHandler implements SelectionHandlerIn
             fn(Price $price) => $this->currencyTranslator->translate(
                 $price->getCurrency(),
                 $selection->getLocaleCode(),
-                self::FALLBACK
+                sprintf('[%s]', $price->getCurrency())
             ),
             $priceCollection
         );
