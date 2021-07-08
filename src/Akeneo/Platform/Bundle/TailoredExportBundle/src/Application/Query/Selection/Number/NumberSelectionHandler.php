@@ -29,7 +29,7 @@ class NumberSelectionHandler implements SelectionHandlerInterface
         }
 
         // Doing an str_replace on a number will cast it to a string and then replace the default decimal separator (a dot)
-        return str_replace(static::DEFAULT_DECIMAL_SEPARATOR, $selection->getSeparator(), $value->getData());
+        return str_replace(static::DEFAULT_DECIMAL_SEPARATOR, $selection->getDecimalSeparator(), $value->getData());
     }
 
     public function supports(SelectionInterface $selection, SourceValueInterface $value): bool

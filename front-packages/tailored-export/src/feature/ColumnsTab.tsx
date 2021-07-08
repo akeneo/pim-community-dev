@@ -32,6 +32,7 @@ const ColumnsTab = ({columnsConfiguration, validationErrors, onColumnsConfigurat
   const [selectedColumn, setSelectedColumn] = useState<string | null>(
     columnsConfiguration.length === 0 ? null : columnsConfiguration[0].uuid
   );
+
   const handleCreateColumn = (newColumnName: string) => {
     const column = createColumn(newColumnName, uuid());
     onColumnsConfigurationChange(addColumn(columnsConfiguration, column));

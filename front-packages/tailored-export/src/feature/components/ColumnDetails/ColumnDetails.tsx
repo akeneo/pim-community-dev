@@ -45,6 +45,7 @@ type ColumnDetailsProps = {
 
 const ColumnDetails = ({columnConfiguration, onColumnChange}: ColumnDetailsProps) => {
   const translate = useTranslate();
+  const channels = useChannels();
   const firstSource = columnConfiguration.sources[0]?.uuid ?? null;
   const [isCurrent, switchTo, currentSourceUuid] = useTabBar(firstSource);
 
@@ -63,7 +64,6 @@ const ColumnDetails = ({columnConfiguration, onColumnChange}: ColumnDetailsProps
   }, [switchTo, firstSource]);
 
   const attributeFetcher = useFetchers().attribute;
-  const channels = useChannels();
 
   const handleSourceAdd = async (addedSourceCode: string, sourceType: string) => {
     if (sourceType === 'property') {

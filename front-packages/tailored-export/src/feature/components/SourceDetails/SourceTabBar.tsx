@@ -14,7 +14,10 @@ type SourceTabBarProps = {
 const SourceTabBar = ({sources, currentTab, validationErrors, onTabChange}: SourceTabBarProps) => {
   const translate = useTranslate();
   const catalogLocale = useUserContext().get('catalogLocale');
-  const attributeCodes = useMemo(() => sources.map(source => source.code), [sources]);
+  const attributeCodes = useMemo(
+    () => sources.filter(({type}) => 'attribute' === type).map(({code}) => code),
+    [sources]
+  );
   const attributes = useAttributes(attributeCodes);
 
   return (

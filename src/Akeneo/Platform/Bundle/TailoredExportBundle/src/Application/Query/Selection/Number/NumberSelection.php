@@ -18,15 +18,15 @@ use Akeneo\Platform\TailoredExport\Application\Query\Selection\SelectionInterfac
 
 class NumberSelection implements SelectionInterface
 {
-    private string $separator;
+    private string $decimalSeparator;
 
-    public function __construct(string $separator)
+    public function __construct(string $decimalSeparator)
     {
-        $this->separator = $separator;
+        $this->decimalSeparator = $decimalSeparator;
     }
 
-    public function getSeparator(): string
+    public function getDecimalSeparator(): string
     {
-        return $this->separator;
+        return $this->decimalSeparator;
     }
 }

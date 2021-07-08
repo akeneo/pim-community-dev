@@ -9,6 +9,12 @@ const useAttributes = (attributeCodes: string[]): Attribute[] => {
   const isMounted = useIsMounted();
 
   useEffect(() => {
+    if (0 === attributeCodes.length) {
+      setAttributes([]);
+
+      return;
+    }
+
     attributeFetcher.fetchByIdentifiers(attributeCodes).then((attributes: Attribute[]) => {
       if (!isMounted()) return;
 

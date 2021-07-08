@@ -70,7 +70,10 @@ const ColumnRow = forwardRef<HTMLInputElement, ColumnRowProps>(
     const targetErrors = useValidationErrors(`[columns][${column.uuid}][target]`, true);
     const hasError = useValidationErrors(`[columns][${column.uuid}]`).length > 0 && 0 === targetErrors.length;
     const userContext = useUserContext();
-    const attributeCodes = useMemo(() => column.sources.map(source => source.code), [column.sources]);
+    const attributeCodes = useMemo(
+      () => column.sources.filter(({type}) => 'attribute' === type).map(({code}) => code),
+      [column.sources]
+    );
     const attributes = useAttributes(attributeCodes);
 
     return (
