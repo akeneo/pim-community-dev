@@ -5,10 +5,11 @@ declare(strict_types=1);
 namespace Akeneo\Pim\Structure\Bundle\Query\PublicApi\Association\Sql;
 
 use Akeneo\Pim\Structure\Component\Query\PublicApi\Association\AssociationType;
-use Akeneo\Pim\Structure\Component\Query\PublicApi\Association\GetAssociationTypesInterface;
+use Akeneo\Pim\Structure\Component\Query\PublicApi\Association\FindAssociationTypesInterface;
+use Akeneo\Pim\Structure\Component\Query\PublicApi\Association\LabelCollection;
 use Doctrine\DBAL\Connection;
 
-final class SqlGetAssociationTypes implements GetAssociationTypesInterface
+final class SqlFindAssociationTypes implements FindAssociationTypesInterface
 {
     private Connection $connection;
 
@@ -25,7 +26,7 @@ final class SqlGetAssociationTypes implements GetAssociationTypesInterface
         }
 
         $query = <<<SQL
-SELECT association_type.code AS code, COALESCE(translation.label, CONCAT('[', association_type.code, ']')) AS label
+SELECT association_type.code AS code, is_quantified, is_two_way, COALESCE(translation.label, CONCAT('[', association_type.code, ']')) AS label
 FROM pim_catalog_association_type association_type
 LEFT JOIN pim_catalog_association_type_translation translation
   ON association_type.id = translation.foreign_key
@@ -63,11 +64,12 @@ SQL;
 
         $associationTypes = [];
         foreach ($rawResults as $rawResult) {
-            $associationType = new AssociationType();
-            $associationType->code = $rawResult['code'];
-            $associationType->label = $rawResult['label'];
-
-            $associationTypes[] = $associationType;
+            $associationTypes[] = new AssociationType(
+                $rawResult['code'],
+                LabelCollection::fromArray([$localeCode => $rawResult['label']]),
+                boolval($rawResult['is_quantified']),
+                boolval($rawResult['is_two_way'])
+            );
         }
 
         return $associationTypes;

@@ -5,10 +5,10 @@ declare(strict_types=1);
 namespace Akeneo\Pim\Structure\Bundle\Query\PublicApi\Attribute\Sql;
 
 use Akeneo\Pim\Structure\Component\Query\PublicApi\Attribute\FlattenAttribute;
-use Akeneo\Pim\Structure\Component\Query\PublicApi\Attribute\SearchFlattenAttributesInterface;
+use Akeneo\Pim\Structure\Component\Query\PublicApi\Attribute\FindFlattenAttributesInterface;
 use Doctrine\DBAL\Connection;
 
-final class SqlSearchFlattenAttributes implements SearchFlattenAttributesInterface
+final class SqlFindFlattenAttributes implements FindFlattenAttributesInterface
 {
     private Connection $connection;
 
@@ -17,7 +17,7 @@ final class SqlSearchFlattenAttributes implements SearchFlattenAttributesInterfa
         $this->connection = $connection;
     }
 
-    public function findAttributes(
+    public function execute(
         string $localeCode,
         int $limit,
         array $attributeTypes = null,
@@ -93,13 +93,12 @@ SQL;
 
         $groupedAttributes = [];
         foreach ($rawResults as $rawResult) {
-            $groupedAttribute = new FlattenAttribute();
-            $groupedAttribute->code = $rawResult['code'];
-            $groupedAttribute->label = $rawResult['label'];
-            $groupedAttribute->attributeGroupCode = $rawResult['group_code'];
-            $groupedAttribute->attributeGroupLabel = $rawResult['group_label'];
-
-            $groupedAttributes[] = $groupedAttribute;
+            $groupedAttributes[] = new FlattenAttribute(
+                $rawResult['code'],
+                $rawResult['label'],
+                $rawResult['group_code'],
+                $rawResult['group_label']
+            );
         }
 
         return $groupedAttributes;

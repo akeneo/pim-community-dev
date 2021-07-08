@@ -4,17 +4,16 @@ declare(strict_types=1);
 
 namespace AkeneoTest\Pim\Structure\Integration\Query\PublicApi\Attribute;
 
-use Akeneo\Pim\Structure\Bundle\Query\PublicApi\Attribute\Sql\SqlSearchFlattenAttributes;
 use Akeneo\Pim\Structure\Component\Query\PublicApi\Attribute\FlattenAttribute;
-use Akeneo\Pim\Structure\Component\Query\PublicApi\Attribute\SearchFlattenAttributesInterface;
+use Akeneo\Pim\Structure\Component\Query\PublicApi\Attribute\FindFlattenAttributesInterface;
 use Akeneo\Test\Integration\Configuration;
 use Akeneo\Test\Integration\TestCase;
 
-final class SqlGetGroupedAttributesIntegration extends TestCase
+final class SqlFindFlattenAttributesInterfaceIntegration extends TestCase
 {
     public function test_it_returns_only_given_attribute_types(): void
     {
-        $results = $this->searchFlattenAttributes()->findAttributes(
+        $results = $this->searchFlattenAttributes()->execute(
             'en_US',
             100,
             ['pim_catalog_text'],
@@ -23,7 +22,7 @@ final class SqlGetGroupedAttributesIntegration extends TestCase
         $this->assertNotNull($this->findAttributeInResults('marketing', 'name', $results));
         $this->assertNull($this->findAttributeInResults('marketing', 'description', $results));
 
-        $results = $this->searchFlattenAttributes()->findAttributes(
+        $results = $this->searchFlattenAttributes()->execute(
             'en_US',
             100,
             ['pim_catalog_number', 'pim_catalog_textarea']
@@ -35,13 +34,13 @@ final class SqlGetGroupedAttributesIntegration extends TestCase
 
     public function test_it_returns_attribute_depending_on_search(): void
     {
-        $results = $this->searchFlattenAttributes()->findAttributes('en_US', 100);
+        $results = $this->searchFlattenAttributes()->execute('en_US', 100);
 
         $this->assertNotNull($this->findAttributeInResults('erp', 'erp_name', $results));
         $this->assertNotNull($this->findAttributeInResults('marketing', 'name', $results));
         $this->assertNotNull($this->findAttributeInResults('marketing', 'description', $results));
 
-        $results = $this->searchFlattenAttributes()->findAttributes('en_US', 100, null, 0, 'descr');
+        $results = $this->searchFlattenAttributes()->execute('en_US', 100, null, 0, 'descr');
 
         $this->assertNull($this->findAttributeInResults('erp', 'erp_name', $results));
         $this->assertNull($this->findAttributeInResults('marketing', 'name', $results));
@@ -50,36 +49,36 @@ final class SqlGetGroupedAttributesIntegration extends TestCase
 
     public function test_it_returns_paginate_results(): void
     {
-        $results = $this->searchFlattenAttributes()->findAttributes('en_US', 4, null, 1);
+        $results = $this->searchFlattenAttributes()->execute('en_US', 4, null, 1);
         $this->assertCount(4, $results);
-        $codeForFirstResult = $results[0]->code;
+        $codeForFirstResult = $results[0]->getCode();
 
-        $results = $this->searchFlattenAttributes()->findAttributes('en_US', 4, null, 2);
+        $results = $this->searchFlattenAttributes()->execute('en_US', 4, null, 2);
         $this->assertCount(4, $results);
-        $this->assertNotEquals($codeForFirstResult, $results[0]->code);
+        $this->assertNotEquals($codeForFirstResult, $results[0]->getCode());
 
-        $results = $this->searchFlattenAttributes()->findAttributes('en_US', 4, null, 200);
+        $results = $this->searchFlattenAttributes()->execute('en_US', 4, null, 200);
         $this->assertCount(0, $results);
     }
 
     public function test_it_uses_the_locale_code_for_labels(): void
     {
-        $results = $this->searchFlattenAttributes()->findAttributes('fr_FR', 100);
+        $results = $this->searchFlattenAttributes()->execute('fr_FR', 100);
         $this->assertNotEmpty($results);
         $erpNameAttribute = $this->findAttributeInResults('erp', 'erp_name', $results);
         $this->assertNotNull($erpNameAttribute);
-        $this->assertSame('Nom ERP', $erpNameAttribute->label);
+        $this->assertSame('Nom ERP', $erpNameAttribute->getLabel());
         $topCompositionAttribute = $this->findAttributeInResults('product', 'top_composition', $results);
         $this->assertNotNull($topCompositionAttribute);
-        $this->assertSame('Composition dessus', $topCompositionAttribute->label);
-        $this->assertSame('Produit', $topCompositionAttribute->attributeGroupLabel);
+        $this->assertSame('Composition dessus', $topCompositionAttribute->getLabel());
+        $this->assertSame('Produit', $topCompositionAttribute->getAttributeGroupLabel());
 
-        $results = $this->searchFlattenAttributes()->findAttributes('unnown', 100);
+        $results = $this->searchFlattenAttributes()->execute('unnown', 100);
         $this->assertNotEmpty($results);
         $erpNameAttribute = $this->findAttributeInResults('erp', 'erp_name', $results);
         $this->assertNotNull($erpNameAttribute);
-        $this->assertSame('[erp_name]', $erpNameAttribute->label);
-        $this->assertSame('[erp]', $erpNameAttribute->attributeGroupLabel);
+        $this->assertSame('[erp_name]', $erpNameAttribute->getLabel());
+        $this->assertSame('[erp]', $erpNameAttribute->getAttributeGroupLabel());
     }
 
     /**
@@ -88,7 +87,7 @@ final class SqlGetGroupedAttributesIntegration extends TestCase
     private function findAttributeInResults(string $attributeGroupCode, string $attributeCode, array $results): ?FlattenAttribute
     {
         foreach ($results as $result) {
-            if ($attributeGroupCode === $result->attributeGroupCode && $attributeCode === $result->code) {
+            if ($attributeGroupCode === $result->getAttributeGroupCode() && $attributeCode === $result->getCode()) {
                 return $result;
             }
         }
@@ -96,9 +95,9 @@ final class SqlGetGroupedAttributesIntegration extends TestCase
         return null;
     }
 
-    private function searchFlattenAttributes(): SearchFlattenAttributesInterface
+    private function searchFlattenAttributes(): FindFlattenAttributesInterface
     {
-        return $this->get('akeneo.pim.structure.query.search_flatten_attributes');
+        return $this->get('akeneo.pim.structure.query.find_flatten_attributes');
     }
 
     /**

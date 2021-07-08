@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace AkeneoTest\Pim\Structure\Integration\Query\PublicApi\AssociationType;
 
-use Akeneo\Pim\Structure\Bundle\Query\PublicApi\Association\Sql\SqlGetAssociationTypes;
+use Akeneo\Pim\Structure\Bundle\Query\PublicApi\Association\Sql\SqlFindAssociationTypes;
 use Akeneo\Pim\Structure\Component\Query\PublicApi\Association\AssociationType;
 use Akeneo\Test\Integration\Configuration;
 use Akeneo\Test\Integration\TestCase;
@@ -83,9 +83,9 @@ final class SqlGetAssociationTypesIntegration extends TestCase
         return null;
     }
 
-    private function getSqlGetAssociationTypes(): SqlGetAssociationTypes
+    private function getSqlGetAssociationTypes(): SqlFindAssociationTypes
     {
-        return $this->get('akeneo.pim.structure.query.get_association_types');
+        return $this->get('akeneo.pim.structure.query.find_association_types');
     }
 
     /**

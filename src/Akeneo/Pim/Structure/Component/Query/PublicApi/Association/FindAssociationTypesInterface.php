@@ -2,7 +2,7 @@
 
 namespace Akeneo\Pim\Structure\Component\Query\PublicApi\Association;
 
-interface GetAssociationTypesInterface
+interface FindAssociationTypesInterface
 {
     /**
      * @return AssociationType[]

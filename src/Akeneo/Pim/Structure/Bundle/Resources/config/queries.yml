@@ -72,13 +72,14 @@ services:
         arguments:
             - '@database_connection'
 
-    akeneo.pim.structure.query.get_association_types:
-        class: Akeneo\Pim\Structure\Bundle\Query\PublicApi\Association\Sql\SqlGetAssociationTypes
+    akeneo.pim.structure.query.find_association_types:
+        class: Akeneo\Pim\Structure\Bundle\Query\PublicApi\Association\Sql\SqlFindAssociationTypes
         arguments:
             - '@database_connection'
 
-    akeneo.pim.structure.query.search_flatten_attributes:
-        class: Akeneo\Pim\Structure\Bundle\Query\PublicApi\Attribute\Sql\SqlSearchFlattenAttributes
+
+    akeneo.pim.structure.query.find_flatten_attributes:
+        class: Akeneo\Pim\Structure\Bundle\Query\PublicApi\Attribute\Sql\SqlFindFlattenAttributes
         arguments:
             - '@database_connection'
 

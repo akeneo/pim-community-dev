@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace Akeneo\Pim\Structure\Component\Query\PublicApi\Attribute;
 
-interface SearchFlattenAttributesInterface
+interface FindFlattenAttributesInterface
 {
     /**
      * Returns the attributes for the given attribute types.
@@ -12,7 +12,7 @@ interface SearchFlattenAttributesInterface
      *
      * @return FlattenAttribute[]
      */
-    public function findAttributes(
+    public function execute(
         string $localeCode,
         int $limit,
         array $attributeTypes = null,
