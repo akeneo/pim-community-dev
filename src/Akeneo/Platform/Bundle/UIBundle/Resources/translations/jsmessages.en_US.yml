@@ -248,6 +248,8 @@ pim_common:
     family: Family
     parent: Parent
     groups: Groups
+    association_types: Association types
+    system: System
     more: More
 
 error:

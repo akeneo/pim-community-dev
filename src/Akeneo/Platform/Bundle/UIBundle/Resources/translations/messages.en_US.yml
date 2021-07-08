@@ -78,6 +78,7 @@ pim_common:
     unit: Unit
     yes: "Yes"
     no: "No"
+    associations: Associations
 
 pim_enrich:
     # ACLs
