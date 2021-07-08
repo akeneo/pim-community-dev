@@ -30,7 +30,9 @@ export const MarketplacePage: FC = () => {
         }
     }, [user]);
     useEffect(() => {
-        fetchExtensions().then(setExtensions).catch(() => setExtensions(false));
+        fetchExtensions()
+            .then(setExtensions)
+            .catch(() => setExtensions(false));
     }, [fetchExtensions]);
 
     if (null === userProfile || null === extensions) {
@@ -51,11 +53,7 @@ export const MarketplacePage: FC = () => {
             </PageHeader>
 
             <PageContent>
-                {false === extensions ?
-                    <UnreachableMarketplace />
-                :
-                    <Marketplace extensions={extensions} />
-                }
+                {false === extensions ? <UnreachableMarketplace /> : <Marketplace extensions={extensions} />}
             </PageContent>
         </>
     );

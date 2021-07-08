@@ -10,7 +10,7 @@ const UserProvider: FC = ({children}) => {
     const data: {[key: string]: string} = {uiLocale: 'en_US', timezone: 'UTC'};
     const user = {
         // eslint-disable-next-line
-        get: <T,>(key: string) => data[key] as unknown as T,
+        get: <T,>(key: string) => (data[key] as unknown) as T,
         set: () => undefined,
         refresh: () => Promise.resolve(),
     };

@@ -18,7 +18,7 @@ const EmptyMessage = styled.p`
 
 type Props = {
     extensions: Extensions;
-}
+};
 
 export const Marketplace: FC<Props> = ({extensions}) => {
     const translate = useTranslate();
@@ -26,32 +26,34 @@ export const Marketplace: FC<Props> = ({extensions}) => {
         <MarketplaceCard key={extension.id} extension={extension} />
     ));
 
-    return <>
-        <MarketplaceHelper count={extensions.total} />
-        <SectionTitle>
-            <SectionTitle.Title>
-                {translate('akeneo_connectivity.connection.connect.marketplace.extensions.title')}
-            </SectionTitle.Title>
-            <SectionTitle.Spacer />
-            <SectionTitle.Information>
-                {translate(
-                    'akeneo_connectivity.connection.connect.marketplace.extensions.total',
-                    {
-                        total: extensions.total.toString(),
-                    },
-                    extensions.total
-                )}
-            </SectionTitle.Information>
-        </SectionTitle>
-        {extensions.total === 0 ? (
-            <EmptyContainer>
-                <AppIllustration size={128} />
-                <EmptyMessage>
-                    {translate('akeneo_connectivity.connection.connect.marketplace.extensions.empty')}
-                </EmptyMessage>
-            </EmptyContainer>
-        ) : (
-            <CardGrid> {extensionList} </CardGrid>
-        )}
-    </>;
-}
+    return (
+        <>
+            <MarketplaceHelper count={extensions.total} />
+            <SectionTitle>
+                <SectionTitle.Title>
+                    {translate('akeneo_connectivity.connection.connect.marketplace.extensions.title')}
+                </SectionTitle.Title>
+                <SectionTitle.Spacer />
+                <SectionTitle.Information>
+                    {translate(
+                        'akeneo_connectivity.connection.connect.marketplace.extensions.total',
+                        {
+                            total: extensions.total.toString(),
+                        },
+                        extensions.total
+                    )}
+                </SectionTitle.Information>
+            </SectionTitle>
+            {extensions.total === 0 ? (
+                <EmptyContainer>
+                    <AppIllustration size={128} />
+                    <EmptyMessage>
+                        {translate('akeneo_connectivity.connection.connect.marketplace.extensions.empty')}
+                    </EmptyMessage>
+                </EmptyContainer>
+            ) : (
+                <CardGrid> {extensionList} </CardGrid>
+            )}
+        </>
+    );
+};

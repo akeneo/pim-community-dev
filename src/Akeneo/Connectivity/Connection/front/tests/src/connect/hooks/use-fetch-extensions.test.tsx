@@ -15,7 +15,7 @@ test('it fetches the extensions', async () => {
                 description: 'Our Akeneo Connector',
                 url: 'https://marketplace.test/extension/extension_1',
                 categories: ['E-commerce'],
-                certified: false
+                certified: false,
             },
             {
                 id: '896ae911-e877-46a0-b7c3-d7c572fe39ed',
@@ -26,13 +26,13 @@ test('it fetches the extensions', async () => {
                 description: 'Our Akeneo Connector',
                 url: 'https://marketplace.test/extension/extension_2',
                 categories: ['E-commerce', 'Print'],
-                certified: true
+                certified: true,
             },
-        ]
+        ],
     };
     mockFetchResponses({
         akeneo_connectivity_connection_marketplace_rest_get_all_extensions: {
-            json: expectedExtensions
+            json: expectedExtensions,
         },
     });
     const {result} = renderHook(() => useFetchExtensions());
@@ -45,7 +45,7 @@ test('it throws an error if the marketplace is unreachable', () => {
     mockFetchResponses({
         akeneo_connectivity_connection_marketplace_rest_get_all_extensions: {
             status: 400,
-            json: ''
+            json: '',
         },
     });
 

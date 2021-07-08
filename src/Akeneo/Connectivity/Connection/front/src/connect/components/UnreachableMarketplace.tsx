@@ -17,12 +17,14 @@ const Illustration = styled.div`
 `;
 
 export const UnreachableMarketplace: FC = () => {
-    return <>
-        <Illustration>
-            <ClientErrorIllustration size={525} height={255}/>
-        </Illustration>
-        <Message>
-            <Translate id='akeneo_connectivity.connection.connect.marketplace.unreachable' />
-        </Message>
-    </>;
+    return (
+        <>
+            <Illustration>
+                <ClientErrorIllustration size={525} height={255} />
+            </Illustration>
+            <Message>
+                <Translate id='akeneo_connectivity.connection.connect.marketplace.unreachable' />
+            </Message>
+        </>
+    );
 };
