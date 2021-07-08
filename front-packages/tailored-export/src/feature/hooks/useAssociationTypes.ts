@@ -24,4 +24,20 @@ const useAssociationTypes = (associationTypeCodes: string[]): AssociationType[] 
   return associationTypes;
 };
 
-export {useAssociationTypes};
+const useAssociationType = (associationTypeCode: string): AssociationType | null => {
+  const associationTypeFetcher = useFetchers().associationType;
+  const [associationType, setAssociationType] = useState<AssociationType | null>(null);
+  const isMounted = useIsMounted();
+
+  useEffect(() => {
+    associationTypeFetcher.fetchByCodes([associationTypeCode]).then((associationTypes: AssociationType[]) => {
+      if (!isMounted()) return;
+
+      setAssociationType(associationTypes[0] ?? null);
+    });
+  }, [associationTypeCode, associationTypeFetcher, isMounted]);
+
+  return associationType;
+};
+
+export {useAssociationTypes, useAssociationType};

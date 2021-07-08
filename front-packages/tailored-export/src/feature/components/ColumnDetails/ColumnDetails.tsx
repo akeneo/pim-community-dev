@@ -14,12 +14,12 @@ import {
 import {AddSourceDropdown} from './AddSourceDropdown/AddSourceDropdown';
 import {AttributeSourceConfigurator} from '../SourceDetails/AttributeSourceConfigurator';
 import {PropertySourceConfigurator} from '../SourceDetails/PropertySourceConfigurator';
+import {AssociationSourceConfigurator} from '../SourceDetails/AssociationSourceConfigurator';
 import {SourceTabBar} from '../SourceDetails/SourceTabBar';
 import {useFetchers, useValidationErrors} from '../../contexts';
 import {useChannels} from '../../hooks';
 import {NoSourcePlaceholder} from './ColumnDetailsPlaceholder';
 import {SourceFooter} from './SourceFooter';
-import {AssociationConfigurator} from "../SourceDetails/Association/AssociationConfigurator";
 
 const Container = styled.div`
   height: 100%;
@@ -66,6 +66,7 @@ const ColumnDetails = ({columnConfiguration, onColumnChange}: ColumnDetailsProps
   }, [switchTo, firstSource]);
 
   const attributeFetcher = useFetchers().attribute;
+  const associationTypeFetcher = useFetchers().associationType;
 
   const handleSourceAdd = async (addedSourceCode: string, sourceType: string) => {
     if (sourceType === 'property') {
@@ -73,7 +74,8 @@ const ColumnDetails = ({columnConfiguration, onColumnChange}: ColumnDetailsProps
       onColumnChange(updatedColumnConfiguration);
       switchTo(updatedColumnConfiguration.sources[updatedColumnConfiguration.sources.length - 1]?.uuid ?? '');
     } else if (sourceType === 'association') {
-      const updatedColumnConfiguration = addAssociationSource(columnConfiguration, addedSourceCode);
+      const [associationType] = await associationTypeFetcher.fetchByCodes([addedSourceCode]);
+      const updatedColumnConfiguration = addAssociationSource(columnConfiguration, associationType);
       onColumnChange(updatedColumnConfiguration);
       switchTo(updatedColumnConfiguration.sources[updatedColumnConfiguration.sources.length - 1]?.uuid ?? '');
     } else {
@@ -123,7 +125,7 @@ const ColumnDetails = ({columnConfiguration, onColumnChange}: ColumnDetailsProps
           />
         )}
         {'association' === currentSource?.type && (
-          <AssociationConfigurator
+          <AssociationSourceConfigurator
             source={currentSource}
             validationErrors={filterErrors(validationErrors, `[${currentSource.uuid}]`)}
             onSourceChange={handleSourceChange}

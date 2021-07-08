@@ -1,7 +1,7 @@
-import {uuid} from 'akeneo-design-system';
 import {Channel, getLocalesFromChannel} from '@akeneo-pim-community/shared';
 import {Attribute} from './Attribute';
-import {getDefaultAttributeSource, getDefaultPropertySource, Source} from './Source';
+import {getDefaultAssociationTypeSource, getDefaultAttributeSource, getDefaultPropertySource, Source} from './Source';
+import {AssociationType} from "./AssociationType";
 
 const MAX_COLUMN_COUNT = 1000;
 
@@ -78,21 +78,10 @@ const addAttributeSource = (
   };
 };
 
-const addAssociationSource = (columnConfiguration: ColumnConfiguration, associationTypeCode: string): ColumnConfiguration => {
+const addAssociationSource = (columnConfiguration: ColumnConfiguration, associationType: AssociationType): ColumnConfiguration => {
   return {
     ...columnConfiguration,
-    sources: [
-      ...columnConfiguration.sources,
-      {
-        uuid: uuid(),
-        code: associationTypeCode,
-        type: 'association',
-        locale: null,
-        channel: null,
-        operations: [],
-        selection: {type: 'code', separator: ','},
-      },
-    ],
+    sources: [...columnConfiguration.sources, getDefaultAssociationTypeSource(associationType)],
   };
 };
 

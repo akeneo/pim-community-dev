@@ -121,7 +121,7 @@ final class GetGroupedSourcesAction
 
         return [[
             'code' => 'associations',
-            'label' => $this->translator->trans('pim_common.associations'),
+            'label' => $this->translator->trans('pim_common.association_types'),
             'children' => $associationFields,
         ]];
     }

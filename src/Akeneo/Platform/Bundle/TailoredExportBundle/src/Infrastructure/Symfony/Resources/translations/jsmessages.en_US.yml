@@ -82,6 +82,10 @@ akeneo.tailored_export:
           comma: Comma (,)
           dot: Dot (.)
           arabic_comma: Arabic decimal separator (٫)
+        simple_association:
+          information: For this attribute, you can export either products, product models or groups.
+        association:
+          entity_type: Entity type
       operation:
         replacement:
           title: Replace value
