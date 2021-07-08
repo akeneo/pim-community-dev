@@ -45,15 +45,21 @@ final class HandleNumberValueTest extends AttributeTestCase
         return [
             'it_handle_number_selection' => [
                 'operations' => [],
-                'selection' => new NumberSelection(),
+                'selection' => new NumberSelection(','),
                 'value' => new NumberValue('10'),
                 'expected' => [self::TARGET_NAME => '10']
             ],
-            'it_handle_number_with_decimal_selection' => [
+            'it_handle_number_with_default_decimal_selection' => [
                 'operations' => [],
-                'selection' => new NumberSelection(),
+                'selection' => new NumberSelection('.'),
                 'value' => new NumberValue('10.73737443838'),
                 'expected' => [self::TARGET_NAME => '10.73737443838']
+            ],
+            'it_handle_number_with_decimal_selection' => [
+                'operations' => [],
+                'selection' => new NumberSelection(','),
+                'value' => new NumberValue('10.73737443838'),
+                'expected' => [self::TARGET_NAME => '10,73737443838']
             ]
         ];
     }

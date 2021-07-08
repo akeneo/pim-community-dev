@@ -17,7 +17,6 @@ use Akeneo\Platform\TailoredExport\Infrastructure\Validation\Source\SourceConstr
 use Symfony\Component\Validator\Constraint;
 use Symfony\Component\Validator\Constraints\Collection;
 use Symfony\Component\Validator\Constraints\EqualTo;
-use Symfony\Component\Validator\Constraints\NotBlank;
 use Symfony\Component\Validator\ConstraintValidator;
 
 class EnabledSourceValidator extends ConstraintValidator
@@ -26,17 +25,12 @@ class EnabledSourceValidator extends ConstraintValidator
     {
         $validator = $this->context->getValidator();
         $sourceConstraintFields = SourceConstraintProvider::getConstraintCollection()->fields;
-        $sourceConstraintFields['selection'] = [
-            new NotBlank(),
-            new Collection(['fields' => [
-                'type' => new EqualTo(['value' => 'code'])
-            ]])
-        ];
-        $sourceConstraintFields['operations'] = [
-            new Collection(['fields' => [
-                'replacement' => new EnabledReplacementOperationConstraint()
-            ]])
-        ];
+        $sourceConstraintFields['selection'] = new Collection(['fields' => [
+            'type' => new EqualTo(['value' => 'code'])
+        ]]);
+        $sourceConstraintFields['operations'] = new Collection(['fields' => [
+            'replacement' => new EnabledReplacementOperationConstraint()
+        ]]);
 
         $violations = $validator->validate($source, new Collection(['fields' => $sourceConstraintFields]));
 

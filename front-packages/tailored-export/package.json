@@ -73,7 +73,8 @@
       "<rootDir>/src/index.tsx",
       "<rootDir>/src/FakePIM.tsx",
       "<rootDir>/src/feature/ColumnsTab.tsx",
-      "<rootDir>/src/feature/components/SourceDetails"
+      "<rootDir>/src/feature/components/SourceDetails/PropertySourceConfigurator.tsx",
+      "<rootDir>/src/feature/components/SourceDetails/AttributeSourceConfigurator.tsx"
     ],
     "coverageThreshold": {
       "global": {

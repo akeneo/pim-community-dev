@@ -11,14 +11,14 @@ declare(strict_types=1);
  * file that was distributed with this source code.
  */
 
-namespace Akeneo\Platform\TailoredExport\Infrastructure\Validation\Source\File;
+namespace Akeneo\Platform\TailoredExport\Infrastructure\Validation\Source\Number;
 
 use Symfony\Component\Validator\Constraint;
 
-class FileSelectionConstraint extends Constraint
+class NumberSourceConstraint extends Constraint
 {
     public function validatedBy(): string
     {
-        return FileSelectionValidator::class;
+        return NumberSourceValidator::class;
     }
 }

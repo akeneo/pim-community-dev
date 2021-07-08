@@ -51,7 +51,7 @@ const PriceCollectionSelector = ({selection, validationErrors, onSelectionChange
           </Helper>
         ))}
       </Field>
-      <Field label={translate('akeneo.tailored_export.column_details.sources.selection.collection_separator')}>
+      <Field label={translate('akeneo.tailored_export.column_details.sources.selection.collection_separator.title')}>
         <SelectInput
           invalid={0 < separatorErrors.length}
           clearable={false}

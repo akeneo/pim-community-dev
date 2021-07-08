@@ -11,22 +11,42 @@ declare(strict_types=1);
  * file that was distributed with this source code.
  */
 
-namespace Akeneo\Platform\TailoredExport\Infrastructure\Validation\Source\SimpleSelect;
+namespace Akeneo\Platform\TailoredExport\Infrastructure\Validation\Source\Number;
 
-use Akeneo\Platform\TailoredExport\Infrastructure\Validation\Selection\CodeLabelSelectionConstraint;
 use Akeneo\Platform\TailoredExport\Infrastructure\Validation\Source\SourceConstraintProvider;
 use Symfony\Component\Validator\Constraint;
+use Symfony\Component\Validator\Constraints\Choice;
 use Symfony\Component\Validator\Constraints\Collection;
+use Symfony\Component\Validator\Constraints\NotBlank;
 use Symfony\Component\Validator\Constraints\Type;
 use Symfony\Component\Validator\ConstraintValidator;
 
-class SimpleSelectSourceValidator extends ConstraintValidator
+class NumberSourceValidator extends ConstraintValidator
 {
+    /** @var string[] */
+    private array $availableDecimalSeparator;
+
+    public function __construct(array $availableDecimalSeparator)
+    {
+        $this->availableDecimalSeparator = $availableDecimalSeparator;
+    }
+
     public function validate($source, Constraint $constraint)
     {
         $validator = $this->context->getValidator();
+
         $sourceConstraintFields = SourceConstraintProvider::getConstraintCollection()->fields;
-        $sourceConstraintFields['selection'] = new CodeLabelSelectionConstraint();
+        $sourceConstraintFields['selection'] = new Collection(
+            [
+                'fields' => [
+                    'decimal_separator' => new Choice(
+                        [
+                            'choices' => $this->availableDecimalSeparator,
+                        ]
+                    )
+                ],
+            ]
+        );
 
         $sourceConstraintFields['operations'] = new Type([
             'type' => 'array',

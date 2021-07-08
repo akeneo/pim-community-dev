@@ -97,7 +97,9 @@ test('it can select a price collection separator', async () => {
     />
   );
 
-  userEvent.click(screen.getByText('akeneo.tailored_export.column_details.sources.selection.collection_separator'));
+  userEvent.click(
+    screen.getByText('akeneo.tailored_export.column_details.sources.selection.collection_separator.title')
+  );
   userEvent.click(screen.getByTitle(';'));
 
   expect(onSelectionChange).toHaveBeenCalledWith({type: 'amount', separator: ';'});

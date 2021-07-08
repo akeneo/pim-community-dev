@@ -83,7 +83,7 @@ class SelectionHydrator
             case 'pim_catalog_metric':
                 return $this->createMeasurementSelection($selectionConfiguration, $attribute);
             case 'pim_catalog_number':
-                return new NumberSelection();
+                return new NumberSelection($selectionConfiguration['decimal_separator']);
             case 'pim_catalog_multiselect':
                 return $this->createMultiselectSelection($selectionConfiguration, $attribute);
             case 'pim_catalog_simpleselect':

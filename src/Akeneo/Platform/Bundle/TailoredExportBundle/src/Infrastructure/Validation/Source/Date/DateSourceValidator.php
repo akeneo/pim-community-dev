@@ -13,11 +13,11 @@ declare(strict_types=1);
 
 namespace Akeneo\Platform\TailoredExport\Infrastructure\Validation\Source\Date;
 
-use Akeneo\Platform\TailoredExport\Infrastructure\Validation\Selection\CodeLabelCollectionSelectionConstraint;
+use Akeneo\Platform\TailoredExport\Domain\DateFormat;
 use Akeneo\Platform\TailoredExport\Infrastructure\Validation\Source\SourceConstraintProvider;
 use Symfony\Component\Validator\Constraint;
+use Symfony\Component\Validator\Constraints\Choice;
 use Symfony\Component\Validator\Constraints\Collection;
-use Symfony\Component\Validator\Constraints\NotBlank;
 use Symfony\Component\Validator\Constraints\Type;
 use Symfony\Component\Validator\ConstraintValidator;
 
@@ -27,16 +27,17 @@ class DateSourceValidator extends ConstraintValidator
     {
         $validator = $this->context->getValidator();
         $sourceConstraintFields = SourceConstraintProvider::getConstraintCollection()->fields;
-        $sourceConstraintFields['selection'] = [
-            new NotBlank(),
-            new DateSelectionConstraint()
-        ];
+        $sourceConstraintFields['selection'] = new Collection(
+            [
+                'fields' => [
+                    'format' => new Choice(['choices' => DateFormat::getAvailableFormats()])
+                ],
+            ]
+        );
 
-        $sourceConstraintFields['operations'] = [
-            new Type([
-                'type' => 'array',
-            ]),
-        ];
+        $sourceConstraintFields['operations'] = new Type([
+            'type' => 'array',
+        ]);
 
         $violations = $validator->validate($source, new Collection(['fields' => $sourceConstraintFields]));
 
