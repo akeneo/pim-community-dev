@@ -36,22 +36,28 @@ const MeasurementSelector = ({selection, validationErrors, onSelectionChange}: M
           onChange={type => {
             if ('unit_label' === type) {
               onSelectionChange({type, locale: locales[0].code});
-            } else if ('unit_code' === type || 'amount' === type) {
+            } else if ('unit_code' === type || 'value' === type) {
               onSelectionChange({type});
             }
           }}
         >
-          <SelectInput.Option title={translate('pim_common.label')} value="unit_label">
-            {translate('pim_common.label')}
-          </SelectInput.Option>
-          <SelectInput.Option title={translate('pim_common.code')} value="unit_code">
-            {translate('pim_common.code')}
+          <SelectInput.Option
+            title={translate('akeneo.tailored_export.column_details.sources.selection.measurement.unit_label')}
+            value="unit_label"
+          >
+            {translate('akeneo.tailored_export.column_details.sources.selection.measurement.unit_label')}
           </SelectInput.Option>
           <SelectInput.Option
-            title={translate('akeneo.tailored_export.column_details.sources.selection.type.amount')}
-            value="amount"
+            title={translate('akeneo.tailored_export.column_details.sources.selection.measurement.unit_code')}
+            value="unit_code"
           >
-            {translate('akeneo.tailored_export.column_details.sources.selection.type.amount')}
+            {translate('akeneo.tailored_export.column_details.sources.selection.measurement.unit_code')}
+          </SelectInput.Option>
+          <SelectInput.Option
+            title={translate('akeneo.tailored_export.column_details.sources.selection.measurement.value')}
+            value="value"
+          >
+            {translate('akeneo.tailored_export.column_details.sources.selection.measurement.value')}
           </SelectInput.Option>
         </SelectInput>
         <Helper inline={true} level="info">
@@ -65,7 +71,7 @@ const MeasurementSelector = ({selection, validationErrors, onSelectionChange}: M
       </Field>
       {'unit_label' === selection.type && (
         <LocaleDropdown
-          label={translate('akeneo.tailored_export.column_details.sources.selection.type.unit_locale')}
+          label={translate('akeneo.tailored_export.column_details.sources.selection.measurement.unit_locale')}
           value={selection.locale}
           validationErrors={localeErrors}
           locales={locales}

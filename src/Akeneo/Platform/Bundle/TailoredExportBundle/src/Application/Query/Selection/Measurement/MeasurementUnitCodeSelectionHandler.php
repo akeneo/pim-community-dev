@@ -26,7 +26,7 @@ class MeasurementUnitCodeSelectionHandler implements SelectionHandlerInterface
             !$selection instanceof MeasurementUnitCodeSelection
             || !$value instanceof MeasurementValue
         ) {
-            throw new \InvalidArgumentException('Cannot apply Measurement selection on this entity');
+            throw new \InvalidArgumentException('Cannot apply Measurement unit code selection on this entity');
         }
 
         return $value->getUnit() ?? '';

@@ -62,7 +62,9 @@ test('it displays a type dropdown when the selection type is unit_code', async (
   );
 
   expect(screen.getByText('pim_common.type')).toBeInTheDocument();
-  expect(screen.getByText('pim_common.code')).toBeInTheDocument();
+  expect(
+    screen.getByText('akeneo.tailored_export.column_details.sources.selection.measurement.unit_code')
+  ).toBeInTheDocument();
 });
 
 test('it displays a locale dropdown when the selection type is unit_label', async () => {
@@ -76,7 +78,9 @@ test('it displays a locale dropdown when the selection type is unit_label', asyn
     />
   );
 
-  userEvent.click(screen.getByLabelText('akeneo.tailored_export.column_details.sources.selection.type.unit_locale'));
+  userEvent.click(
+    screen.getByLabelText('akeneo.tailored_export.column_details.sources.selection.measurement.unit_locale')
+  );
   userEvent.click(screen.getByText('fr_FR'));
 
   expect(onSelectionChange).toHaveBeenCalledWith({type: 'unit_label', locale: 'fr_FR'});
@@ -90,12 +94,12 @@ test('it can select a unit_label selection type', async () => {
   );
 
   userEvent.click(screen.getByText('pim_common.type'));
-  userEvent.click(screen.getByTitle('pim_common.label'));
+  userEvent.click(screen.getByTitle('akeneo.tailored_export.column_details.sources.selection.measurement.unit_label'));
 
   expect(onSelectionChange).toHaveBeenCalledWith({type: 'unit_label', locale: 'en_US'});
 });
 
-test('it can select an amount selection type', async () => {
+test('it can select a value selection type', async () => {
   const onSelectionChange = jest.fn();
 
   await renderWithProviders(
@@ -103,12 +107,12 @@ test('it can select an amount selection type', async () => {
   );
 
   userEvent.click(screen.getByText('pim_common.type'));
-  userEvent.click(screen.getByTitle('akeneo.tailored_export.column_details.sources.selection.type.amount'));
+  userEvent.click(screen.getByTitle('akeneo.tailored_export.column_details.sources.selection.measurement.value'));
 
-  expect(onSelectionChange).toHaveBeenCalledWith({type: 'amount'});
+  expect(onSelectionChange).toHaveBeenCalledWith({type: 'value'});
 });
 
-test('it can select a code selection type', async () => {
+test('it can select a unit_code selection type', async () => {
   const onSelectionChange = jest.fn();
 
   await renderWithProviders(
@@ -120,7 +124,7 @@ test('it can select a code selection type', async () => {
   );
 
   userEvent.click(screen.getByText('pim_common.type'));
-  userEvent.click(screen.getByTitle('pim_common.code'));
+  userEvent.click(screen.getByTitle('akeneo.tailored_export.column_details.sources.selection.measurement.unit_code'));
 
   expect(onSelectionChange).toHaveBeenCalledWith({type: 'unit_code'});
 });

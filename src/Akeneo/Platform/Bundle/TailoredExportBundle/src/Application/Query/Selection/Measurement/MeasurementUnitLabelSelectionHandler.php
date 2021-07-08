@@ -34,7 +34,7 @@ class MeasurementUnitLabelSelectionHandler implements SelectionHandlerInterface
             !$selection instanceof MeasurementUnitLabelSelection
             || !$value instanceof MeasurementValue
         ) {
-            throw new \InvalidArgumentException('Cannot apply Measurement selection on this entity');
+            throw new \InvalidArgumentException('Cannot apply Measurement unit label selection on this entity');
         }
 
         $unit = $value->getUnit();

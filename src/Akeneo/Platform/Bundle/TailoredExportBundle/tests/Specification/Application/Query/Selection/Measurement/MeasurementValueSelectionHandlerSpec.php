@@ -14,16 +14,16 @@ declare(strict_types=1);
 namespace Specification\Akeneo\Platform\TailoredExport\Application\Query\Selection\Measurement;
 
 use Akeneo\Platform\TailoredExport\Application\Query\Selection\Boolean\BooleanSelection;
-use Akeneo\Platform\TailoredExport\Application\Query\Selection\Measurement\MeasurementAmountSelection;
+use Akeneo\Platform\TailoredExport\Application\Query\Selection\Measurement\MeasurementValueSelection;
 use Akeneo\Platform\TailoredExport\Domain\SourceValue\BooleanValue;
 use Akeneo\Platform\TailoredExport\Domain\SourceValue\MeasurementValue;
 use PhpSpec\ObjectBehavior;
 
-class MeasurementAmountSelectionHandlerSpec extends ObjectBehavior
+class MeasurementValueSelectionHandlerSpec extends ObjectBehavior
 {
     public function it_applies_the_selection()
     {
-        $selection = new MeasurementAmountSelection();
+        $selection = new MeasurementValueSelection();
         $value = new MeasurementValue('10', 'kilogram');
 
         $this->applySelection($selection, $value)
@@ -36,13 +36,13 @@ class MeasurementAmountSelectionHandlerSpec extends ObjectBehavior
         $notSupportedValue = new BooleanValue(true);
 
         $this
-            ->shouldThrow(new \InvalidArgumentException('Cannot apply Measurement selection on this entity'))
+            ->shouldThrow(new \InvalidArgumentException('Cannot apply Measurement value selection on this entity'))
             ->during('applySelection', [$notSupportedSelection, $notSupportedValue]);
     }
 
-    public function it_supports_measurement_amount_selection_with_measurement_value()
+    public function it_supports_measurement_value_selection_with_measurement_value()
     {
-        $selection = new MeasurementAmountSelection();
+        $selection = new MeasurementValueSelection();
         $value = new MeasurementValue('10', 'kilogram');
 
         $this->supports($selection, $value)->shouldReturn(true);
