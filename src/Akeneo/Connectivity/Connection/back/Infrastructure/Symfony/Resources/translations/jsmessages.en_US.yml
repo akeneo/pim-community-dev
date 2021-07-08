@@ -21,6 +21,7 @@ pim_menu:
 
 pim_title:
     akeneo_connectivity_connection_connect_marketplace: Marketplace
+    akeneo_connectivity_connection_connect_marketplace_profile: Marketplace
     akeneo_connectivity_connection_settings_index: Connections settings
     akeneo_connectivity_connection_settings_edit: Connection settings
     akeneo_connectivity_connection_settings_any: Connection settings
@@ -39,6 +40,10 @@ akeneo_connectivity.connection:
             title: Want to connect your PIM with another application? 🤟
             sub_title: Check our marketplace to see which application can be connected with Akeneo PIM.
             link: Access the marketplace
+            helper:
+                title: '{0} There is {{ count }} app and extension compatible with your PIM version.|{1} There is {{ count }} app or extension compatible with your PIM version.|[2,Inf] There are {{ count }} apps and extensions compatible with your PIM version.'
+                description: This is just an overview for more details, take a look at our web marketplace.
+                link: Go to web marketplace
     connections: Connections
     secondary_actions:
         title: Other actions
