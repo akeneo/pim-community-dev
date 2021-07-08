@@ -18,23 +18,23 @@ use Akeneo\Platform\TailoredExport\Application\Query\Selection\SelectionInterfac
 use Akeneo\Platform\TailoredExport\Domain\SourceValue\MeasurementValue;
 use Akeneo\Platform\TailoredExport\Domain\SourceValueInterface;
 
-class MeasurementAmountSelectionHandler implements SelectionHandlerInterface
+class MeasurementValueSelectionHandler implements SelectionHandlerInterface
 {
     public function applySelection(SelectionInterface $selection, SourceValueInterface $value): string
     {
         if (
-            !$selection instanceof MeasurementAmountSelection
+            !$selection instanceof MeasurementValueSelection
             || !$value instanceof MeasurementValue
         ) {
-            throw new \InvalidArgumentException('Cannot apply Measurement selection on this entity');
+            throw new \InvalidArgumentException('Cannot apply Measurement value selection on this entity');
         }
 
-        return (string) ($value->getAmount() ?? '');
+        return $value->getValue();
     }
 
     public function supports(SelectionInterface $selection, SourceValueInterface $value): bool
     {
-        return $selection instanceof MeasurementAmountSelection
+        return $selection instanceof MeasurementValueSelection
             && $value instanceof MeasurementValue;
     }
 }

@@ -21,7 +21,7 @@ jest.mock('./MeasurementSelector', () => ({
     <button
       onClick={() =>
         onSelectionChange({
-          type: 'amount',
+          type: 'value',
         })
       }
     >
@@ -50,7 +50,7 @@ test('it displays a measurement configurator', () => {
   expect(onSourceChange).toHaveBeenCalledWith({
     ...getDefaultMeasurementSource(attribute, null, null),
     selection: {
-      type: 'amount',
+      type: 'value',
     },
     uuid: 'e612bc67-9c30-4121-8b8d-e08b8c4a0640',
   });

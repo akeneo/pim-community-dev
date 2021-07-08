@@ -17,18 +17,18 @@ use Akeneo\Platform\TailoredExport\Domain\SourceValueInterface;
 
 class MeasurementValue implements SourceValueInterface
 {
-    private string $amount;
+    private string $value;
     private string $unit;
 
-    public function __construct(string $amount, string $unit)
+    public function __construct(string $value, string $unit)
     {
-        $this->amount = $amount;
+        $this->value = $value;
         $this->unit = $unit;
     }
 
-    public function getAmount(): string
+    public function getValue(): string
     {
-        return $this->amount;
+        return $this->value;
     }
 
     public function getUnit(): string

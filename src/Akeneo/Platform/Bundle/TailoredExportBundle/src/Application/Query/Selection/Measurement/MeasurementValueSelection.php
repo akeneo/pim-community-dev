@@ -13,7 +13,7 @@ declare(strict_types=1);
 
 namespace Akeneo\Platform\TailoredExport\Application\Query\Selection\Measurement;
 
-final class MeasurementAmountSelection implements MeasurementSelectionInterface
+final class MeasurementValueSelection implements MeasurementSelectionInterface
 {
-    public const TYPE = 'amount';
+    public const TYPE = 'value';
 }

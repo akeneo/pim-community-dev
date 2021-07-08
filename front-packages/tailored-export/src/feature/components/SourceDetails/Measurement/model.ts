@@ -11,14 +11,14 @@ type MeasurementSelection =
       locale: LocaleCode;
     }
   | {
-      type: 'amount';
+      type: 'value';
     };
 
 const isMeasurementSelection = (selection: any): selection is MeasurementSelection =>
   'type' in selection &&
   (selection.type === 'unit_code' ||
     ('unit_label' === selection.type && 'locale' in selection) ||
-    'amount' === selection.type);
+    'value' === selection.type);
 
 type MeasurementSource = {
   uuid: string;

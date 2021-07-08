@@ -36,7 +36,7 @@ class MeasurementUnitCodeSelectionHandlerSpec extends ObjectBehavior
         $notSupportedValue = new BooleanValue(true);
 
         $this
-            ->shouldThrow(new \InvalidArgumentException('Cannot apply Measurement selection on this entity'))
+            ->shouldThrow(new \InvalidArgumentException('Cannot apply Measurement unit code selection on this entity'))
             ->during('applySelection', [$notSupportedSelection, $notSupportedValue]);
     }
 

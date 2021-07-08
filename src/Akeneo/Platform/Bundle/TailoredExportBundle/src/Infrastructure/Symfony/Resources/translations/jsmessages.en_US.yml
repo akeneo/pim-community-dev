@@ -56,7 +56,6 @@ akeneo.tailored_export:
           key: Filekey
           path: Path
           name: Filename
-          unit_locale: Unit locale
         format: Format
         parent:
           information:
@@ -65,7 +64,11 @@ akeneo.tailored_export:
         code_label:
           information: For this attribute, you can export either the code or the label.
         measurement:
-          information: For this attribute, you can export either the value or the unit.
+          information: For this attribute, you can export either the value, the unit code or the unit label.
+          value: Value
+          unit_locale: Unit locale
+          unit_code: Unit code
+          unit_label: Unit label
         price:
           information: For this attribute, you can export either the amount or the currency.
         file:

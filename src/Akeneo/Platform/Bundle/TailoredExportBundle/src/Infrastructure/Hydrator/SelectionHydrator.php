@@ -23,9 +23,9 @@ use Akeneo\Platform\TailoredExport\Application\Query\Selection\File\FilePathSele
 use Akeneo\Platform\TailoredExport\Application\Query\Selection\File\FileSelectionInterface;
 use Akeneo\Platform\TailoredExport\Application\Query\Selection\Groups\GroupsCodeSelection;
 use Akeneo\Platform\TailoredExport\Application\Query\Selection\Groups\GroupsLabelSelection;
-use Akeneo\Platform\TailoredExport\Application\Query\Selection\Measurement\MeasurementAmountSelection;
 use Akeneo\Platform\TailoredExport\Application\Query\Selection\Measurement\MeasurementUnitCodeSelection;
 use Akeneo\Platform\TailoredExport\Application\Query\Selection\Measurement\MeasurementUnitLabelSelection;
+use Akeneo\Platform\TailoredExport\Application\Query\Selection\Measurement\MeasurementValueSelection;
 use Akeneo\Platform\TailoredExport\Application\Query\Selection\MultiSelect\MultiSelectCodeSelection;
 use Akeneo\Platform\TailoredExport\Application\Query\Selection\MultiSelect\MultiSelectLabelSelection;
 use Akeneo\Platform\TailoredExport\Application\Query\Selection\Number\NumberSelection;
@@ -138,8 +138,8 @@ class SelectionHydrator
     private function createMeasurementSelection(array $selectionConfiguration, Attribute $attribute)
     {
         switch ($selectionConfiguration['type']) {
-            case MeasurementAmountSelection::TYPE:
-                return new MeasurementAmountSelection();
+            case MeasurementValueSelection::TYPE:
+                return new MeasurementValueSelection();
             case MeasurementUnitCodeSelection::TYPE:
                 return new MeasurementUnitCodeSelection();
             case MeasurementUnitLabelSelection::TYPE:

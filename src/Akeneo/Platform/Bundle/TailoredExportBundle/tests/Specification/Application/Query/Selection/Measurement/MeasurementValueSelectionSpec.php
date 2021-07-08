@@ -13,13 +13,13 @@ declare(strict_types=1);
 
 namespace Specification\Akeneo\Platform\TailoredExport\Application\Query\Selection\Measurement;
 
-use Akeneo\Platform\TailoredExport\Application\Query\Selection\Measurement\MeasurementAmountSelection;
+use Akeneo\Platform\TailoredExport\Application\Query\Selection\Measurement\MeasurementValueSelection;
 use PhpSpec\ObjectBehavior;
 
-class MeasurementAmountSelectionSpec extends ObjectBehavior
+class MeasurementValueSelectionSpec extends ObjectBehavior
 {
     public function it_is_initializable(): void
     {
-        $this->shouldBeAnInstanceOf(MeasurementAmountSelection::class);
+        $this->shouldBeAnInstanceOf(MeasurementValueSelection::class);
     }
 }

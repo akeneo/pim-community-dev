@@ -13,14 +13,13 @@ declare(strict_types=1);
 
 namespace Akeneo\Platform\TailoredExport\Test\Acceptance\UseCases\Attribute;
 
-use Akeneo\Platform\TailoredExport\Application\Query\Selection\Measurement\MeasurementAmountSelection;
 use Akeneo\Platform\TailoredExport\Application\Query\Selection\Measurement\MeasurementUnitCodeSelection;
 use Akeneo\Platform\TailoredExport\Application\Query\Selection\Measurement\MeasurementUnitLabelSelection;
+use Akeneo\Platform\TailoredExport\Application\Query\Selection\Measurement\MeasurementValueSelection;
 use Akeneo\Platform\TailoredExport\Application\Query\Selection\SelectionInterface;
 use Akeneo\Platform\TailoredExport\Domain\SourceValue\MeasurementValue;
 use Akeneo\Platform\TailoredExport\Domain\SourceValueInterface;
 use Akeneo\Platform\TailoredExport\Test\Acceptance\FakeServices\Measurement\InMemoryFindUnitLabel;
-use Akeneo\Platform\TailoredExport\Test\Acceptance\FakeServices\Measurement\InMemoryGetUnitTranslations;
 use PHPUnit\Framework\Assert;
 
 final class HandleMeasurementValueTest extends AttributeTestCase
@@ -50,7 +49,7 @@ final class HandleMeasurementValueTest extends AttributeTestCase
         return [
             [
                 'operations' => [],
-                'selection' => new MeasurementAmountSelection(),
+                'selection' => new MeasurementValueSelection(),
                 'value' => new MeasurementValue('10', 'KILOGRAM'),
                 'expected' => [self::TARGET_NAME => '10']
             ],
