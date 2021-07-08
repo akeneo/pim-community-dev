@@ -11,7 +11,7 @@ unit-back: #Doc: launch PHPSpec for tailored export
 	$(PHP_RUN) vendor/bin/phpspec run src/Akeneo/Platform/Bundle/TailoredExportBundle/tests/Specification
 
 .PHONY: integration-back
-integration-back: var/tests/phpunit #Doc: launch PHPUnit integration tests for tailored export
+integration-back: # Disabled dependency becaused failed on custom workflow var/tests/phpunit #Doc: launch PHPUnit integration tests for tailored export
 ifeq ($(CI),true)
 	vendor/akeneo/pim-community-dev/.circleci/run_phpunit.sh . vendor/akeneo/pim-community-dev/.circleci/find_phpunit.php TailoredExport_Integration_Test
 else
