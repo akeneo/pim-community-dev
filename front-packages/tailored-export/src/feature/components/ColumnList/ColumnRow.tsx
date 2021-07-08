@@ -4,7 +4,7 @@ import {CloseIcon, getColor, Helper, IconButton, Pill, Table, TextInput, useBool
 import {DeleteModal, getLabel, useTranslate, useUserContext} from '@akeneo-pim-community/shared';
 import {ColumnConfiguration} from '../../models/ColumnConfiguration';
 import {useValidationErrors} from '../../contexts';
-import {useAttributes} from '../../hooks';
+import {useAssociationTypes, useAttributes} from '../../hooks';
 
 const Field = styled.div`
   width: 100%;
@@ -70,11 +70,19 @@ const ColumnRow = forwardRef<HTMLInputElement, ColumnRowProps>(
     const targetErrors = useValidationErrors(`[columns][${column.uuid}][target]`, true);
     const hasError = useValidationErrors(`[columns][${column.uuid}]`).length > 0 && 0 === targetErrors.length;
     const userContext = useUserContext();
+    const catalogLocale = userContext.get('catalogLocale');
     const attributeCodes = useMemo(
       () => column.sources.filter(({type}) => 'attribute' === type).map(({code}) => code),
       [column.sources]
     );
+
+    const associationTypeCodes = useMemo(
+      () => column.sources.filter(({type}) => 'association' === type).map(({code}) => code),
+      [column.sources]
+    );
+
     const attributes = useAttributes(attributeCodes);
+    const associationTypes = useAssociationTypes(associationTypeCodes);
 
     return (
       <>
@@ -105,10 +113,16 @@ const ColumnRow = forwardRef<HTMLInputElement, ColumnRowProps>(
               ) : (
                 column.sources
                   .map(source =>
-                    source.type === 'attribute'
+                    'attribute' === source.type
                       ? getLabel(
-                          attributes.find(attribute => attribute.code === source.code)?.labels ?? {},
-                          userContext.get('catalogLocale'),
+                        attributes.find(attribute => attribute.code === source.code)?.labels ?? {},
+                        catalogLocale,
+                        source.code
+                      )
+                      : 'association' === source.type ?
+                        getLabel(
+                          associationTypes.find(associationType => associationType.code === source.code)?.labels ?? {},
+                          catalogLocale,
                           source.code
                         )
                       : translate(`pim_common.${source.code}`)

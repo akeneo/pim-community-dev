@@ -1,3 +1,4 @@
+import {uuid} from 'akeneo-design-system';
 import {Channel, getLocalesFromChannel} from '@akeneo-pim-community/shared';
 import {Attribute} from './Attribute';
 import {getDefaultAttributeSource, getDefaultPropertySource, Source} from './Source';
@@ -77,6 +78,24 @@ const addAttributeSource = (
   };
 };
 
+const addAssociationSource = (columnConfiguration: ColumnConfiguration, associationTypeCode: string): ColumnConfiguration => {
+  return {
+    ...columnConfiguration,
+    sources: [
+      ...columnConfiguration.sources,
+      {
+        uuid: uuid(),
+        code: associationTypeCode,
+        type: 'association',
+        locale: null,
+        channel: null,
+        operations: [],
+        selection: {type: 'code', separator: ','},
+      },
+    ],
+  };
+};
+
 const addPropertySource = (columnConfiguration: ColumnConfiguration, sourceCode: string): ColumnConfiguration => {
   return {
     ...columnConfiguration,
@@ -104,6 +123,7 @@ export {
   updateColumn,
   removeSource,
   addAttributeSource,
+  addAssociationSource,
   addPropertySource,
   updateSource,
   MAX_COLUMN_COUNT,

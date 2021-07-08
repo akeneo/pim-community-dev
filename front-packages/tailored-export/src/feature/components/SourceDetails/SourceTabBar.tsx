@@ -1,8 +1,8 @@
 import React, {useMemo} from 'react';
 import {Pill, TabBar} from 'akeneo-design-system';
 import {filterErrors, getLabel, useTranslate, useUserContext, ValidationError} from '@akeneo-pim-community/shared';
-import {useAttributes} from '../../hooks';
 import {Source} from '../../models';
+import {useAssociationTypes, useAttributes} from '../../hooks';
 
 type SourceTabBarProps = {
   sources: Source[];
@@ -18,7 +18,14 @@ const SourceTabBar = ({sources, currentTab, validationErrors, onTabChange}: Sour
     () => sources.filter(({type}) => 'attribute' === type).map(({code}) => code),
     [sources]
   );
+
+  const associationTypeCodes = useMemo(
+    () => sources.filter(({type}) => 'association' === type).map(({code}) => code),
+    [sources]
+  );
+
   const attributes = useAttributes(attributeCodes);
+  const associationTypes = useAssociationTypes(associationTypeCodes);
 
   return (
     <TabBar moreButtonTitle={translate('pim_common.more')} sticky={44}>
@@ -27,6 +34,12 @@ const SourceTabBar = ({sources, currentTab, validationErrors, onTabChange}: Sour
           {'attribute' === source.type
             ? getLabel(
                 attributes.find(attribute => attribute.code === source.code)?.labels ?? {},
+                catalogLocale,
+                source.code
+              )
+            : 'association' === source.type ?
+              getLabel(
+                associationTypes.find(associationType => associationType.code === source.code)?.labels ?? {},
                 catalogLocale,
                 source.code
               )

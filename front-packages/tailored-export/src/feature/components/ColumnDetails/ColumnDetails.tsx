@@ -3,6 +3,7 @@ import styled from 'styled-components';
 import {Helper, SectionTitle, useTabBar} from 'akeneo-design-system';
 import {filterErrors, useTranslate} from '@akeneo-pim-community/shared';
 import {
+  addAssociationSource,
   addAttributeSource,
   addPropertySource,
   ColumnConfiguration,
@@ -18,6 +19,7 @@ import {useFetchers, useValidationErrors} from '../../contexts';
 import {useChannels} from '../../hooks';
 import {NoSourcePlaceholder} from './ColumnDetailsPlaceholder';
 import {SourceFooter} from './SourceFooter';
+import {AssociationConfigurator} from "../SourceDetails/Association/AssociationConfigurator";
 
 const Container = styled.div`
   height: 100%;
@@ -70,6 +72,10 @@ const ColumnDetails = ({columnConfiguration, onColumnChange}: ColumnDetailsProps
       const updatedColumnConfiguration = addPropertySource(columnConfiguration, addedSourceCode);
       onColumnChange(updatedColumnConfiguration);
       switchTo(updatedColumnConfiguration.sources[updatedColumnConfiguration.sources.length - 1]?.uuid ?? '');
+    } else if (sourceType === 'association') {
+      const updatedColumnConfiguration = addAssociationSource(columnConfiguration, addedSourceCode);
+      onColumnChange(updatedColumnConfiguration);
+      switchTo(updatedColumnConfiguration.sources[updatedColumnConfiguration.sources.length - 1]?.uuid ?? '');
     } else {
       const [attribute] = await attributeFetcher.fetchByIdentifiers([addedSourceCode]);
       const updatedColumnConfiguration = addAttributeSource(columnConfiguration, attribute, channels);
@@ -111,6 +117,13 @@ const ColumnDetails = ({columnConfiguration, onColumnChange}: ColumnDetailsProps
         )}
         {'property' === currentSource?.type && (
           <PropertySourceConfigurator
+            source={currentSource}
+            validationErrors={filterErrors(validationErrors, `[${currentSource.uuid}]`)}
+            onSourceChange={handleSourceChange}
+          />
+        )}
+        {'association' === currentSource?.type && (
+          <AssociationConfigurator
             source={currentSource}
             validationErrors={filterErrors(validationErrors, `[${currentSource.uuid}]`)}
             onSourceChange={handleSourceChange}
