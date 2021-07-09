@@ -1,7 +1,7 @@
 import {Channel, getLocalesFromChannel} from '@akeneo-pim-community/shared';
 import {Attribute} from './Attribute';
 import {getDefaultAssociationTypeSource, getDefaultAttributeSource, getDefaultPropertySource, Source} from './Source';
-import {AssociationType} from "./AssociationType";
+import {AssociationType} from './AssociationType';
 
 const MAX_COLUMN_COUNT = 1000;
 
@@ -78,7 +78,10 @@ const addAttributeSource = (
   };
 };
 
-const addAssociationTypeSource = (columnConfiguration: ColumnConfiguration, associationType: AssociationType): ColumnConfiguration => {
+const addAssociationTypeSource = (
+  columnConfiguration: ColumnConfiguration,
+  associationType: AssociationType
+): ColumnConfiguration => {
   return {
     ...columnConfiguration,
     sources: [...columnConfiguration.sources, getDefaultAssociationTypeSource(associationType)],

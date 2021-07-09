@@ -1,7 +1,7 @@
 import {useIsMounted} from 'akeneo-design-system';
 import {useEffect, useState} from 'react';
 import {useFetchers} from '../contexts';
-import {AssociationType} from "../models/AssociationType";
+import {AssociationType} from '../models/AssociationType';
 
 const useAssociationTypes = (associationTypeCodes: string[]): AssociationType[] => {
   const associationTypeFetcher = useFetchers().associationType;
@@ -10,7 +10,6 @@ const useAssociationTypes = (associationTypeCodes: string[]): AssociationType[] 
 
   useEffect(() => {
     if (associationTypeCodes.length === 0) {
-      setAssociationTypes([]);
       return;
     }
 
@@ -37,7 +36,7 @@ const useAssociationType = (associationTypeCode: string): AssociationType | null
     });
   }, [associationTypeCode, associationTypeFetcher, isMounted]);
 
-  return associationType;
+  return associationType?.code === associationTypeCode ? associationType : null;
 };
 
 export {useAssociationTypes, useAssociationType};

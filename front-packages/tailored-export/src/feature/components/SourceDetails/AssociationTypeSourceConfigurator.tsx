@@ -1,9 +1,9 @@
-import React from "react";
+import React from 'react';
 import {ValidationError} from '@akeneo-pim-community/shared';
-import {Source} from "../../models";
-import styled from "styled-components";
-import {SimpleAssociationTypeConfigurator} from "./SimpleAssociationType/SimpleAssociationTypeConfigurator";
-import {useAssociationType} from "../../hooks";
+import {Source} from '../../models';
+import styled from 'styled-components';
+import {SimpleAssociationTypeConfigurator} from './SimpleAssociationType/SimpleAssociationTypeConfigurator';
+import {useAssociationType} from '../../hooks';
 
 const Container = styled.div`
   display: flex;
@@ -13,13 +13,17 @@ const Container = styled.div`
   flex: 1;
 `;
 
-type AssociationConfiguratorProps = {
+type AssociationTypeConfiguratorProps = {
   source: Source;
   validationErrors: ValidationError[];
   onSourceChange: (updatedSource: Source) => void;
 };
 
-const AssociationTypeSourceConfigurator = ({source, validationErrors, onSourceChange}: AssociationConfiguratorProps) => {
+const AssociationTypeSourceConfigurator = ({
+  source,
+  validationErrors,
+  onSourceChange,
+}: AssociationTypeConfiguratorProps) => {
   const associationType = useAssociationType(source.code);
   if (null === associationType) {
     return null;
@@ -27,7 +31,11 @@ const AssociationTypeSourceConfigurator = ({source, validationErrors, onSourceCh
 
   return (
     <Container>
-      <SimpleAssociationTypeConfigurator source={source} validationErrors={validationErrors} onSourceChange={onSourceChange} />
+      <SimpleAssociationTypeConfigurator
+        source={source}
+        validationErrors={validationErrors}
+        onSourceChange={onSourceChange}
+      />
     </Container>
   );
 };

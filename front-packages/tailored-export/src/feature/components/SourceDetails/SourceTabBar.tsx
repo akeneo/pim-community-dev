@@ -37,8 +37,8 @@ const SourceTabBar = ({sources, currentTab, validationErrors, onTabChange}: Sour
                 catalogLocale,
                 source.code
               )
-            : 'association_type' === source.type ?
-              getLabel(
+            : 'association_type' === source.type
+            ? getLabel(
                 associationTypes.find(associationType => associationType.code === source.code)?.labels ?? {},
                 catalogLocale,
                 source.code

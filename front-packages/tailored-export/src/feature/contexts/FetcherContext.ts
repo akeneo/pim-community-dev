@@ -11,7 +11,7 @@ type FetcherValue = {
   };
   associationType: {
     fetchByCodes: (codes: string[]) => Promise<AssociationType[]>;
-  }
+  };
 };
 
 const FetcherContext = createContext<FetcherValue>({
@@ -27,9 +27,9 @@ const FetcherContext = createContext<FetcherValue>({
   },
   associationType: {
     fetchByCodes: () => {
-      throw new Error('Fetch association by codes needs to be implemented');
+      throw new Error('Fetch association types by codes needs to be implemented');
     },
-  }
+  },
 });
 
 const useFetchers = (): FetcherValue => {

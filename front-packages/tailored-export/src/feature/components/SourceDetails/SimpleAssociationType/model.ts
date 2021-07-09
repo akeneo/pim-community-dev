@@ -4,47 +4,46 @@ import {AssociationType, Source} from '../../../models';
 
 const availableSeparators = {',': 'comma', ';': 'semicolon', '|': 'pipe'};
 type CollectionSeparator = keyof typeof availableSeparators;
-type AssociationEntityType = 'products' | 'product_models' | 'groups';
+type AssociatedEntityType = 'products' | 'product_models' | 'groups';
 
-type SimpleAssociationSelection =
+type SimpleAssociationTypeSelection =
   | {
-  type: 'code';
-  entity_type: AssociationEntityType;
-  separator: CollectionSeparator;
-}
+      type: 'code';
+      entity_type: AssociatedEntityType;
+      separator: CollectionSeparator;
+    }
   | {
-  type: 'label';
-  entity_type: AssociationEntityType;
-  separator: CollectionSeparator;
-  locale: LocaleCode;
-};
+      type: 'label';
+      entity_type: AssociatedEntityType;
+      separator: CollectionSeparator;
+      locale: LocaleCode;
+    };
 
 const isCollectionSeparator = (separator: unknown): separator is CollectionSeparator =>
   typeof separator === 'string' && separator in availableSeparators;
 
-const isEntityType = (entityType: unknown): entityType is AssociationEntityType =>
-  typeof entityType === 'string' && (entityType === 'products' || entityType === 'product_models' || entityType === 'groups');
+const isEntityType = (entityType: unknown): entityType is AssociatedEntityType =>
+  typeof entityType === 'string' &&
+  (entityType === 'products' || entityType === 'product_models' || entityType === 'groups');
 
-const isSimpleAssociationSelection = (selection: any): selection is SimpleAssociationSelection =>
+const isSimpleAssociationTypeSelection = (selection: any): selection is SimpleAssociationTypeSource =>
   'type' in selection &&
   (selection.type === 'code' || (selection.type === 'label' && 'locale' in selection)) &&
   'separator' in selection &&
   isCollectionSeparator(selection.separator) &&
   'entity_type' in selection &&
-  isEntityType(selection.entity_type)
-;
-
-type SimpleAssociationSource = {
+  isEntityType(selection.entity_type);
+type SimpleAssociationTypeSource = {
   uuid: string;
   code: string;
   type: 'association_type';
   locale: null;
   channel: null;
   operations: {};
-  selection: SimpleAssociationSelection;
+  selection: SimpleAssociationTypeSelection;
 };
 
-const getDefaultSimpleAssociationTypeSource = (associationType: AssociationType): SimpleAssociationSource => ({
+const getDefaultSimpleAssociationTypeSource = (associationType: AssociationType): SimpleAssociationTypeSource => ({
   uuid: uuid(),
   code: associationType.code,
   type: 'association_type',
@@ -54,8 +53,14 @@ const getDefaultSimpleAssociationTypeSource = (associationType: AssociationType)
   selection: {type: 'code', separator: ',', entity_type: 'products'},
 });
 
-const isSimpleAssociationSource = (source: Source): source is SimpleAssociationSource =>
-  source.type === 'association_type' && isSimpleAssociationSelection(source.selection);
+const isSimpleAssociationTypeSource = (source: Source): source is SimpleAssociationTypeSource =>
+  source.type === 'association_type' && isSimpleAssociationTypeSelection(source.selection);
 
-export type {SimpleAssociationSource, SimpleAssociationSelection};
-export {availableSeparators, getDefaultSimpleAssociationTypeSource, isSimpleAssociationSource, isCollectionSeparator, isEntityType};
+export type {SimpleAssociationTypeSource, SimpleAssociationTypeSelection};
+export {
+  availableSeparators,
+  getDefaultSimpleAssociationTypeSource,
+  isSimpleAssociationTypeSource,
+  isCollectionSeparator,
+  isEntityType,
+};

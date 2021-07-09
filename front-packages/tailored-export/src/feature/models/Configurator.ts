@@ -15,10 +15,10 @@ type AttributeConfiguratorProps = {
   onSourceChange: (updatedSource: Source) => void;
 };
 
-type AssociationConfiguratorProps = {
+type AssociationTypeConfiguratorProps = {
   source: Source;
   validationErrors: ValidationError[];
   onSourceChange: (updatedSource: Source) => void;
 };
 
-export type {PropertyConfiguratorProps, AssociationConfiguratorProps, AttributeConfiguratorProps};
+export type {PropertyConfiguratorProps, AssociationTypeConfiguratorProps, AttributeConfiguratorProps};

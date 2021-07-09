@@ -3,8 +3,21 @@ import {act, screen} from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
 import {renderWithProviders as baseRender, Channel} from '@akeneo-pim-community/shared';
 import {ColumnDetails} from './ColumnDetails';
-import {Attribute, AvailableSourceGroup, ColumnConfiguration} from '../../models';
+import {AssociationType, Attribute, AvailableSourceGroup, ColumnConfiguration} from '../../models';
 import {FetcherContext, ValidationErrorsContext} from '../../contexts';
+
+const associationTypes: AssociationType[] = [
+  {
+    code: 'XSELL',
+    labels: {en_US: 'Cross sell'},
+    is_quantified: false,
+  },
+  {
+    code: 'UPSELL',
+    labels: {},
+    is_quantified: false,
+  },
+];
 
 const attributes: Attribute[] = [
   {
@@ -51,6 +64,7 @@ const channels: Channel[] = [
 const fetchers = {
   attribute: {fetchByIdentifiers: (): Promise<Attribute[]> => Promise.resolve<Attribute[]>(attributes)},
   channel: {fetchAll: (): Promise<Channel[]> => Promise.resolve(channels)},
+  associationType: {fetchByCodes: (): Promise<AssociationType[]> => Promise.resolve(associationTypes)},
 };
 
 const renderWithProviders = async (node: ReactNode) =>
@@ -76,6 +90,22 @@ jest.mock('../../hooks/useAvailableSourcesFetcher', () => ({
             code: 'enabled',
             label: 'Activé',
             type: 'property',
+          },
+        ],
+      },
+      {
+        code: 'association_types',
+        label: 'Association types',
+        children: [
+          {
+            code: 'XSELL',
+            label: 'Cross sell',
+            type: 'association_type',
+          },
+          {
+            code: 'UPSELL',
+            label: '[UPSELL]',
+            type: 'association_type',
           },
         ],
       },
@@ -239,6 +269,57 @@ test('We can add a property source', async () => {
     format: {
       elements: [],
       type: 'concat',
+    },
+  });
+});
+
+test('We can add an association type as source', async () => {
+  const columnConfiguration: ColumnConfiguration = {
+    uuid: '3a6645e0-0d70-411d-84ee-79833144544a',
+    sources: [],
+    target: 'My column name',
+    format: {
+      type: 'concat',
+      elements: [],
+    },
+  };
+
+  const handleColumnsConfigurationChange = jest.fn();
+
+  await renderWithProviders(
+    <ColumnDetails columnConfiguration={columnConfiguration} onColumnChange={handleColumnsConfigurationChange} />
+  );
+
+  const addSourceButton = screen.getByText('akeneo.tailored_export.column_details.sources.add');
+  await act(async () => {
+    userEvent.click(addSourceButton);
+  });
+
+  await act(async () => {
+    userEvent.click(screen.getByText('Cross sell'));
+  });
+
+  expect(handleColumnsConfigurationChange).toHaveBeenCalledWith({
+    target: 'My column name',
+    uuid: '3a6645e0-0d70-411d-84ee-79833144544a',
+    sources: [
+      {
+        uuid: '276b6361-badb-48a1-98ef-d75baa235148',
+        type: 'association_type',
+        code: 'XSELL',
+        channel: null,
+        locale: null,
+        operations: {},
+        selection: {
+          type: 'code',
+          separator: ',',
+          entity_type: 'products',
+        },
+      },
+    ],
+    format: {
+      type: 'concat',
+      elements: [],
     },
   });
 });

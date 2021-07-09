@@ -2,8 +2,21 @@ import React from 'react';
 import {screen, act, fireEvent} from '@testing-library/react';
 import {renderWithProviders, Channel} from '@akeneo-pim-community/shared';
 import {SourceTabBar} from './SourceTabBar';
-import {Attribute, Source} from '../../models';
+import {AssociationType, Attribute, Source} from '../../models';
 import {FetcherContext} from '../../contexts';
+
+const associationTypes: AssociationType[] = [
+  {
+    code: 'XSELL',
+    labels: {en_US: 'Cross sell'},
+    is_quantified: false,
+  },
+  {
+    code: 'UPSELL',
+    labels: {},
+    is_quantified: false,
+  },
+];
 
 const attributes: Attribute[] = [
   {
@@ -29,6 +42,7 @@ const attributes: Attribute[] = [
 const fetchers = {
   attribute: {fetchByIdentifiers: (): Promise<Attribute[]> => Promise.resolve<Attribute[]>(attributes)},
   channel: {fetchAll: (): Promise<Channel[]> => Promise.resolve([])},
+  associationType: {fetchByCodes: (): Promise<AssociationType[]> => Promise.resolve(associationTypes)},
 };
 
 test('it renders the source tab bar', async () => {
@@ -68,6 +82,32 @@ test('it renders the source tab bar', async () => {
         separator: ',',
       },
     },
+    {
+      uuid: '4a871382-9ccb-49e4-958e-0e59c9fdd672',
+      code: 'XSELL',
+      type: 'association_type',
+      locale: null,
+      channel: null,
+      operations: [],
+      selection: {
+        type: 'code',
+        separator: ',',
+        entity_type: 'products',
+      },
+    },
+    {
+      uuid: 'a00fcf91-bdb8-48e2-84c3-39f4f66ecb5d',
+      code: 'UPSELL',
+      type: 'association_type',
+      locale: null,
+      channel: null,
+      operations: [],
+      selection: {
+        type: 'code',
+        separator: ',',
+        entity_type: 'products',
+      },
+    },
   ];
 
   await act(async () => {
@@ -86,6 +126,8 @@ test('it renders the source tab bar', async () => {
   expect(screen.getByText(/English description/i)).toBeInTheDocument();
   expect(screen.getByText(/English name/i)).toBeInTheDocument();
   expect(screen.getByText(/pim_common.categories/i)).toBeInTheDocument();
+  expect(screen.getByText(/Cross sell/i)).toBeInTheDocument();
+  expect(screen.getByText('[UPSELL]')).toBeInTheDocument();
 
   fireEvent.click(screen.getByText(/Name/i));
   expect(handleTabChange).toHaveBeenCalledWith('cffd540e-1e40-4c55-a415-89c7958b270d');

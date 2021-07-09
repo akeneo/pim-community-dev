@@ -115,12 +115,12 @@ const ColumnRow = forwardRef<HTMLInputElement, ColumnRowProps>(
                   .map(source =>
                     'attribute' === source.type
                       ? getLabel(
-                        attributes.find(attribute => attribute.code === source.code)?.labels ?? {},
-                        catalogLocale,
-                        source.code
-                      )
-                      : 'association_type' === source.type ?
-                        getLabel(
+                          attributes.find(attribute => attribute.code === source.code)?.labels ?? {},
+                          catalogLocale,
+                          source.code
+                        )
+                      : 'association_type' === source.type
+                      ? getLabel(
                           associationTypes.find(associationType => associationType.code === source.code)?.labels ?? {},
                           catalogLocale,
                           source.code

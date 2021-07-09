@@ -7,6 +7,7 @@ import {Attribute} from '../../../models/Attribute';
 import {FetcherContext} from '../../../contexts';
 import {FileSelection, getDefaultFileSource} from './model';
 import {getDefaultTextSource} from '../Text/model';
+import {AssociationType} from '../../../models';
 
 const attribute = {
   code: 'file',
@@ -21,6 +22,7 @@ const attribute = {
 const fetchers = {
   attribute: {fetchByIdentifiers: (): Promise<Attribute[]> => Promise.resolve<Attribute[]>([])},
   channel: {fetchAll: (): Promise<Channel[]> => Promise.resolve([])},
+  associationType: {fetchByCodes: (): Promise<AssociationType[]> => Promise.resolve([])},
 };
 
 const renderWithProviders = async (node: ReactNode) =>

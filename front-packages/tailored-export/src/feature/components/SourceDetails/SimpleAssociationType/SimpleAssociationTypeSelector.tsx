@@ -9,15 +9,19 @@ import {
 } from '@akeneo-pim-community/shared';
 import {useChannels} from '../../../hooks';
 import {LocaleDropdown} from '../../LocaleDropdown';
-import {availableSeparators, isCollectionSeparator, isEntityType, SimpleAssociationSelection} from './model';
+import {availableSeparators, isCollectionSeparator, isEntityType, SimpleAssociationTypeSelection} from './model';
 
-type SimpleAssociationSelectorProps = {
-  selection: SimpleAssociationSelection;
+type SimpleAssociationTypeSelectorProps = {
+  selection: SimpleAssociationTypeSelection;
   validationErrors: ValidationError[];
-  onSelectionChange: (updatedSelection: SimpleAssociationSelection) => void;
+  onSelectionChange: (updatedSelection: SimpleAssociationTypeSelection) => void;
 };
 
-const SimpleAssociationTypeSelector = ({selection, validationErrors, onSelectionChange, }: SimpleAssociationSelectorProps) => {
+const SimpleAssociationTypeSelector = ({
+  selection,
+  validationErrors,
+  onSelectionChange,
+}: SimpleAssociationTypeSelectorProps) => {
   const translate = useTranslate();
   const channels = useChannels();
   const locales = getAllLocalesFromChannels(channels);

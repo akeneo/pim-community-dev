@@ -4,6 +4,7 @@ import {Channel} from '@akeneo-pim-community/shared';
 import {FetcherContext} from '../contexts';
 import {useAttribute, useAttributes} from './useAttributes';
 import {Attribute} from '../models/Attribute';
+import {AssociationType} from '../models';
 
 type WrapperProps = {
   children?: ReactNode;
@@ -16,6 +17,7 @@ const Wrapper = ({children, response}: WrapperProps) => {
       value={{
         attribute: {fetchByIdentifiers: (): Promise<Attribute[]> => Promise.resolve<Attribute[]>(response)},
         channel: {fetchAll: (): Promise<Channel[]> => new Promise(resolve => resolve([]))},
+        associationType: {fetchByCodes: (): Promise<AssociationType[]> => Promise.resolve([])},
       }}
     >
       {children}

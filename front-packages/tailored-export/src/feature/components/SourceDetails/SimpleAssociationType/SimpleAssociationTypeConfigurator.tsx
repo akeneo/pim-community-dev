@@ -1,15 +1,19 @@
-import React, {useState} from "react";
+import React, {useState} from 'react';
 import {Collapse} from 'akeneo-design-system';
 import {filterErrors, useTranslate} from '@akeneo-pim-community/shared';
-import {AssociationConfiguratorProps} from '../../../models';
-import {isSimpleAssociationSource} from './model';
-import {SimpleAssociationTypeSelector} from "./SimpleAssociationTypeSelector";
+import {AssociationTypeConfiguratorProps} from '../../../models';
+import {isSimpleAssociationTypeSource} from './model';
+import {SimpleAssociationTypeSelector} from './SimpleAssociationTypeSelector';
 
-const SimpleAssociationTypeConfigurator = ({source, validationErrors, onSourceChange}: AssociationConfiguratorProps) => {
+const SimpleAssociationTypeConfigurator = ({
+  source,
+  validationErrors,
+  onSourceChange,
+}: AssociationTypeConfiguratorProps) => {
   const translate = useTranslate();
   const [isSelectorCollapsed, toggleSelectorCollapse] = useState<boolean>(true);
 
-  if (!isSimpleAssociationSource(source)) {
+  if (!isSimpleAssociationTypeSource(source)) {
     console.error(`Invalid source data "${source.code}" for association configurator`);
 
     return null;
