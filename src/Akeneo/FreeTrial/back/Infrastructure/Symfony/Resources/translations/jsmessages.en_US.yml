@@ -2,3 +2,5 @@ free_trial:
   menu:
     assets: Assets
     entities: Entities
+    proposals: Proposals
+    sso: SAML-based Single Sign-On

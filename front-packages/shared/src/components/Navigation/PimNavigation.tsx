@@ -89,6 +89,7 @@ const PimNavigation: FC<Props> = ({entries, activeEntryCode, activeSubEntryCode,
             stateCode={activeSubNavigation.stateCode}
             title={activeSubNavigation.title}
             activeSubEntryCode={activeSubEntryCode}
+            freeTrialEnabled={freeTrialEnabled}
           />
       }
     </NavContainer>

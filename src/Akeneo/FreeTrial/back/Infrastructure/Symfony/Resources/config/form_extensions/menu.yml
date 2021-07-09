@@ -1,4 +1,6 @@
 extensions:
+
+  #main menu items
   pim-free-trial-menu-entities:
     module: pim/menu/tab
     parent: pim-menu
@@ -19,4 +21,22 @@ extensions:
     config:
       title: free_trial.menu.assets
       icon: AssetsIcon
+      disabled: true
+
+  #activity sub menu > proposals
+  pim-free-trial-activity-submenu-proposals:
+    module: pim/menu/item
+    parent: pim-menu-activity-navigation-block
+    position: 104
+    config:
+      title: free_trial.menu.proposals
+      disabled: true
+
+  #System sub menu > SSO
+  pim-free-trial-system-submenu-sso:
+    module: pim/menu/item
+    parent: pim-menu-system-navigation-block
+    position: 125
+    config:
+      title: free_trial.menu.sso
       disabled: true
