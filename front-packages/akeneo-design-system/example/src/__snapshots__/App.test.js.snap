@@ -22,6 +22,7 @@ exports[`renders the expected elements 1`] = `
           stroke-linejoin="round"
           stroke-miterlimit="10"
           stroke-width="1.5"
+          vector-effect="non-scaling-stroke"
         />
       </svg>
     </div>
