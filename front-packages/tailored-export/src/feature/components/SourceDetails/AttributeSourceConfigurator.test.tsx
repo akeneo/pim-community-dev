@@ -25,6 +25,13 @@ const attributes = [
     is_locale_specific: true,
     available_locales: ['de_DE'],
   },
+  {
+    code: 'nothing',
+    type: 'pim_catalog_nothing',
+    labels: {},
+    scopable: false,
+    localizable: false,
+  },
 ];
 
 const channels = [
@@ -247,4 +254,24 @@ test('it calls handler when locale is changed', async () => {
   userEvent.click(screen.getByText('English (United States)'));
 
   expect(handleSourceChange).toHaveBeenCalledWith({...source, locale: 'en_US'});
+});
+
+test('it renders nothing if the configurator is unknown', async () => {
+  const mockedConsole = jest.spyOn(console, 'error').mockImplementation();
+  const handleSourceChange = jest.fn();
+
+  await renderWithProviders(
+    <AttributeSourceConfigurator
+      source={{
+        code: 'nothing',
+        uuid: 'unique_id',
+        type: 'attribute',
+      }}
+      validationErrors={[]}
+      onSourceChange={handleSourceChange}
+    />
+  );
+
+  expect(mockedConsole).toHaveBeenCalledWith('No configurator found for "pim_catalog_nothing" attribute type');
+  mockedConsole.mockRestore();
 });
