@@ -11,7 +11,7 @@ services:
     akeneo_enterprise_connectivity.connection.marketplace.web_marketplace_aliases:
         class: AkeneoEnterprise\Connectivity\Connection\Infrastructure\Marketplace\WebMarketplaceAliases
         decorates: akeneo_connectivity.connection.marketplace.web_marketplace_aliases
-        decoration_inner_name: akeneo_connectivity.connection.marketplace.web_marketplace_aliases
+        decoration_inner_name: akeneo_connectivity.connection.marketplace.web_marketplace_aliases.inner
         arguments:
-            - '@akeneo_connectivity.connection.marketplace.web_marketplace_aliases'
+            - '@akeneo_connectivity.connection.marketplace.web_marketplace_aliases.inner'
             - '@pim_catalog.version_provider'
