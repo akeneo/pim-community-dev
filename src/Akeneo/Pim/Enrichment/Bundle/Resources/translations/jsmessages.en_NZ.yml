@@ -53,7 +53,6 @@ pim_enrich.entity.product:
     history:
       version: Version
       author: Author
-      logged_at: Logged at
       from: From
       modified: Modified
       old_value: Old value
