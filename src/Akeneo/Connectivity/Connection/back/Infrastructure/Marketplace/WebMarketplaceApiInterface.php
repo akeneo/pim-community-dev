@@ -28,5 +28,5 @@ interface WebMarketplaceApiInterface
      *     }>
      * }
      */
-    public function getExtensions(string $edition, string $version, int $offset = 0, int $limit = 10): array;
+    public function getExtensions(int $offset = 0, int $limit = 10): array;
 }

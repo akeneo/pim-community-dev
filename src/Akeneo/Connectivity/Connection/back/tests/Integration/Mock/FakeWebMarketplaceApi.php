@@ -32,7 +32,7 @@ class FakeWebMarketplaceApi implements WebMarketplaceApiInterface
         $this->extensions = $extensions;
     }
 
-    public function getExtensions(string $edition, string $version, $offset = 0, $limit = 10): array
+    public function getExtensions(int $offset = 0, int $limit = 10): array
     {
         return [
             'total' => count($this->extensions),

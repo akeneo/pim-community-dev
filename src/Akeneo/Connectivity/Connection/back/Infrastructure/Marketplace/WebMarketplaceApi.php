@@ -13,43 +13,25 @@ use GuzzleHttp\ClientInterface;
 class WebMarketplaceApi implements WebMarketplaceApiInterface
 {
     private ClientInterface $client;
+    private WebMarketplaceAliasesInterface $webMarketplaceAliases;
 
     public function __construct(
-        ClientInterface $client
+        ClientInterface $client,
+        WebMarketplaceAliasesInterface $webMarketplaceAliases
     ) {
         $this->client = $client;
+        $this->webMarketplaceAliases = $webMarketplaceAliases;
     }
 
-    private function sanitizeEdition(string $edition): string
+    public function getExtensions(int $offset = 0, int $limit = 10): array
     {
-        switch ($edition) {
-            case 'GE':
-                return 'growth-edition';
-            case 'EE':
-                return 'enterprise-edition';
-            case 'Serenity':
-                return 'serenity';
-            case 'CE':
-            default:
-                return 'community-edition';
-        }
-    }
+        $edition = $this->webMarketplaceAliases->getEdition();
+        $version = $this->webMarketplaceAliases->getVersion();
 
-    private function sanitizeVersion(string $version): ?string
-    {
-        if (preg_match('|(\d.\d).\d|', $version, $matches)) {
-            return $matches[1];
-        }
-
-        return null;
-    }
-
-    public function getExtensions(string $edition, string $version, int $offset = 0, int $limit = 10): array
-    {
         $response = $this->client->request('GET', '/api/1.0/extensions', [
             'query' => [
-                'edition' => $this->sanitizeEdition($edition),
-                'version' => $this->sanitizeVersion($version),
+                'edition' => $edition,
+                'version' => $version,
                 'offset' => $offset,
                 'limit' => $limit,
             ],

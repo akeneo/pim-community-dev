@@ -38,7 +38,7 @@ class GetAllExtensionsEndToEnd extends WebTestCase
                 'author' => 'EIKONA Media GmbH',
                 'partner' => 'Akeneo Preferred Partner',
                 'description' => 'With the new "Akeneo-Shopware-6-Connector" from EIKONA Media, you can smoothly export all your product data from Akeneo to Shopware. The connector uses the standard interfaces provided for data exchange. Benefit from up-to-date product data in all your e-commerce channels and be faster on the market.',
-                'url' => 'https://marketplace.akeneo.com/extension/akeneo-shopware-6-connector-eikona-media',
+                'url' => 'https://marketplace.akeneo.com/extension/akeneo-shopware-6-connector-eikona-media?utm_medium=pim&utm_content=extension_link&utm_source=http%3A%2F%2Flocalhost%3A8080',
                 'categories' => [
                     'E-commerce',
                 ],
@@ -51,7 +51,7 @@ class GetAllExtensionsEndToEnd extends WebTestCase
                 'author' => 'StrikeTru',
                 'partner' => 'Akeneo Partner',
                 'description' => 'SaaS software from StrikeTru that seamlessly connects Akeneo PIM to the Shopify platform. It allows Shopify users to quickly setup a link to Akeneo PIM and sync all product catalog data to Shopify within minutes. It eliminates a lot of manual and repetitive work involved in updating the product catalog of a Shopify store. You can send and receive products, variations, modifiers, categories, standard and custom attributes, images and more from Akeneo PIM into your Shopify store. Compatible with all Akeneo PIM editions – Community, Growth, Enterprise (On-Premise, Cloud Flexibility, and Cloud Serenity) and StrikeTru\'s smallPIM.',
-                'url' => 'https://marketplace.akeneo.com/extension/akeneo-pim-connector-shopify',
+                'url' => 'https://marketplace.akeneo.com/extension/akeneo-pim-connector-shopify?utm_medium=pim&utm_content=extension_link&utm_source=http%3A%2F%2Flocalhost%3A8080',
                 'categories' => [
                     'E-commerce',
                 ],
@@ -88,7 +88,7 @@ class GetAllExtensionsEndToEnd extends WebTestCase
                 'logo' => 'https://marketplace.akeneo.com/sites/default/files/styles/extension_logo_large/public/extension-logos/akeneo-to-shopware6-eimed_0.jpg?itok=InguS-1N',
                 'author' => 'EIKONA Media GmbH',
                 'partner' => 'Akeneo Preferred Partner',
-                'description' => 'With the new \'Akeneo-Shopware-6-Connector\' from EIKONA Media, you can smoothly export all your product data from Akeneo to Shopware. The connector uses the standard interfaces provided for data exchange. Benefit from up-to-date product data in all your e-commerce channels and be faster on the market.',
+                'description' => 'With the new "Akeneo-Shopware-6-Connector" from EIKONA Media, you can smoothly export all your product data from Akeneo to Shopware. The connector uses the standard interfaces provided for data exchange. Benefit from up-to-date product data in all your e-commerce channels and be faster on the market.',
                 'url' => 'https://marketplace.akeneo.com/extension/akeneo-shopware-6-connector-eikona-media',
                 'categories' => [
                     'E-commerce',

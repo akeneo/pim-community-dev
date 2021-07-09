@@ -20,10 +20,9 @@ class GetAllExtensionsQuerySpec extends ObjectBehavior
     private const PAGINATION = 2;
 
     public function let(
-        WebMarketplaceApiInterface $webMarketplaceApi,
-        VersionProviderInterface $versionProvider
+        WebMarketplaceApiInterface $webMarketplaceApi
     ) {
-        $this->beConstructedWith($webMarketplaceApi, $versionProvider, self::PAGINATION);
+        $this->beConstructedWith($webMarketplaceApi, self::PAGINATION);
     }
 
     public function it_is_initializable(): void
@@ -32,11 +31,8 @@ class GetAllExtensionsQuerySpec extends ObjectBehavior
     }
 
     public function it_execute_and_returns_extension_result(
-        WebMarketplaceApiInterface $webMarketplaceApi,
-        VersionProviderInterface $versionProvider
+        WebMarketplaceApiInterface $webMarketplaceApi
     ) {
-        $versionProvider->getVersion()->willReturn('5.0');
-        $versionProvider->getEdition()->willreturn('Serenity');
         $items = [
             [
                 'id' => '3881aefa-16a3-4b4f-94c3-0d6e858b60b8',
@@ -76,7 +72,7 @@ class GetAllExtensionsQuerySpec extends ObjectBehavior
                 'certified' => false,
             ],
         ];
-        $webMarketplaceApi->getExtensions('Serenity', '5.0', 0, 2)->willreturn([
+        $webMarketplaceApi->getExtensions(0, 2)->willreturn([
             'total' => 3,
             'offset' => 0,
             'limit' => 2,
@@ -85,7 +81,7 @@ class GetAllExtensionsQuerySpec extends ObjectBehavior
                 $items[1],
             ],
         ]);
-        $webMarketplaceApi->getExtensions('Serenity', '5.0', 2, 2)->willreturn([
+        $webMarketplaceApi->getExtensions(2, 2)->willreturn([
             'total' => 3,
             'offset' => 2,
             'limit' => 2,

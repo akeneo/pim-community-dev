@@ -18,30 +18,24 @@ class GetAllExtensionsQuery implements GetAllExtensionsQueryInterface
     private const MAX_REQUESTS = 10;
 
     private WebMarketplaceApiInterface $webMarketplaceApi;
-    private VersionProviderInterface $versionProvider;
     private int $pagination;
 
     public function __construct(
         WebMarketplaceApiInterface $webMarketplaceApi,
-        VersionProviderInterface $versionProvider,
         int $pagination
     ) {
         $this->webMarketplaceApi = $webMarketplaceApi;
-        $this->versionProvider = $versionProvider;
         $this->pagination = $pagination;
     }
 
     public function execute(): GetAllExtensionsResult
     {
-        $version = $this->versionProvider->getVersion();
-        $edition = $this->versionProvider->getEdition();
-
         $extensions = [];
         $requests = 0;
         $offset = 0;
 
         do {
-            $result = $this->webMarketplaceApi->getExtensions($edition, $version, $offset, $this->pagination);
+            $result = $this->webMarketplaceApi->getExtensions($offset, $this->pagination);
             $requests++;
             $offset += $result['limit'];
 

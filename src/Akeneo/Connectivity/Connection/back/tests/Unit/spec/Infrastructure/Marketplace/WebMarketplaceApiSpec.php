@@ -3,6 +3,7 @@ declare(strict_types=1);
 
 namespace spec\Akeneo\Connectivity\Connection\Infrastructure\Marketplace;
 
+use Akeneo\Connectivity\Connection\Infrastructure\Marketplace\WebMarketplaceAliasesInterface;
 use Akeneo\Connectivity\Connection\Infrastructure\Marketplace\WebMarketplaceApi;
 use Akeneo\Connectivity\Connection\Infrastructure\Marketplace\WebMarketplaceApiInterface;
 use GuzzleHttp\Client;
@@ -17,9 +18,11 @@ use Psr\Http\Message\StreamInterface;
  */
 class WebMarketplaceApiSpec extends ObjectBehavior
 {
-    public function let(Client $client): void
-    {
-        $this->beConstructedWith($client);
+    public function let(
+        Client $client,
+        WebMarketplaceAliasesInterface $webMarketplaceAliases
+    ): void {
+        $this->beConstructedWith($client, $webMarketplaceAliases);
     }
 
     public function it_is_initializable(): void
@@ -28,103 +31,9 @@ class WebMarketplaceApiSpec extends ObjectBehavior
         $this->shouldImplement(WebMarketplaceApiInterface::class);
     }
 
-    public function it_sanitize_ce_master_version(
-        Client $client,
-        Response $response,
-        StreamInterface $stream
-    ): void {
-        $stream->getContents()->willReturn('{}');
-        $response->getBody()->willReturn($stream);
-        $client->request('GET', '/api/1.0/extensions', [
-            'query' => [
-                'edition' => 'community-edition',
-                'version' => null,
-                'offset' => 0,
-                'limit' => 10,
-            ],
-        ])->shouldBeCalled()->willReturn($response);
-
-        $this->getExtensions('CE', 'master');
-    }
-
-    public function it_sanitize_ce_release_version(
-        Client $client,
-        Response $response,
-        StreamInterface $stream
-    ): void {
-        $stream->getContents()->willReturn('{}');
-        $response->getBody()->willReturn($stream);
-        $client->request('GET', '/api/1.0/extensions', [
-            'query' => [
-                'edition' => 'community-edition',
-                'version' => '5.0',
-                'offset' => 0,
-                'limit' => 10,
-            ],
-        ])->shouldBeCalled()->willReturn($response);
-
-        $this->getExtensions('CE', '5.0.1');
-    }
-
-    public function it_sanitize_ge_master_version(
-        Client $client,
-        Response $response,
-        StreamInterface $stream
-    ): void {
-        $stream->getContents()->willReturn('{}');
-        $response->getBody()->willReturn($stream);
-        $client->request('GET', '/api/1.0/extensions', [
-            'query' => [
-                'edition' => 'growth-edition',
-                'version' => null,
-                'offset' => 0,
-                'limit' => 10,
-            ],
-        ])->shouldBeCalled()->willReturn($response);
-
-        $this->getExtensions('GE', 'master');
-    }
-
-    public function it_sanitize_ee_master_version(
-        Client $client,
-        Response $response,
-        StreamInterface $stream
-    ): void {
-        $stream->getContents()->willReturn('{}');
-        $response->getBody()->willReturn($stream);
-        $client->request('GET', '/api/1.0/extensions', [
-            'query' => [
-                'edition' => 'serenity',
-                'version' => null,
-                'offset' => 0,
-                'limit' => 10,
-            ],
-        ])->shouldBeCalled()->willReturn($response);
-
-        $this->getExtensions('Serenity', 'master');
-    }
-
-    public function it_sanitize_ee_release_version(
-        Client $client,
-        Response $response,
-        StreamInterface $stream
-    ): void {
-        $stream->getContents()->willReturn('{}');
-        $response->getBody()->willReturn($stream);
-        $client->request('GET', '/api/1.0/extensions', [
-            'query' => [
-                'edition' => 'enterprise-edition',
-                'version' => '5.0',
-                'offset' => 0,
-                'limit' => 10,
-            ],
-        ])->shouldBeCalled()->willReturn($response);
-
-        $this->getExtensions('EE', '5.0.1');
-    }
-
     public function it_returns_extensions(
         Client $client,
+        WebMarketplaceAliasesInterface $webMarketplaceAliases,
         Response $response,
         StreamInterface $stream
     ): void {
@@ -162,6 +71,8 @@ class WebMarketplaceApiSpec extends ObjectBehavior
             ],
         ];
 
+        $webMarketplaceAliases->getEdition()->willReturn('community-edition');
+        $webMarketplaceAliases->getVersion()->willReturn('5.0');
         $stream->getContents()->willReturn(json_encode($expectedResponse));
         $response->getBody()->willReturn($stream);
         $client->request('GET', '/api/1.0/extensions', [
@@ -173,7 +84,7 @@ class WebMarketplaceApiSpec extends ObjectBehavior
             ],
         ])->willReturn($response);
 
-        $extensions = ($this->getExtensions('CE', '5.0.1'))->getWrappedObject();
+        $extensions = ($this->getExtensions())->getWrappedObject();
 
         Assert::assertArrayHasKey('total', $extensions);
         Assert::assertEquals(2, $extensions['total']);
