@@ -25,7 +25,7 @@ type PriceCollectionSelection = {
 );
 
 const isPriceCollectionSelection = (selection: any): selection is PriceCollectionSelection =>
-  (availableSeparators.includes(selection.separator) &&
+  (selection.separator in availableSeparators &&
     'type' in selection &&
     ('currency_code' === selection.type || 'amount' === selection.type)) ||
   ('currency_label' === selection.type && 'locale' in selection);
