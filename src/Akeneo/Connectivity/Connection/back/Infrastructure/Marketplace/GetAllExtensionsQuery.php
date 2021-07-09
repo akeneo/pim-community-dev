@@ -15,7 +15,7 @@ use Akeneo\Platform\VersionProviderInterface;
  */
 class GetAllExtensionsQuery implements GetAllExtensionsQueryInterface
 {
-    const MAX_REQUESTS = 10;
+    private const MAX_REQUESTS = 10;
 
     private WebMarketplaceApiInterface $webMarketplaceApi;
     private VersionProviderInterface $versionProvider;
