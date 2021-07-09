@@ -1,5 +1,6 @@
 ## Bug fixes
 
+- PIM-9955: Handle duplicated code asset in the import batch. 
 - AOB-1277: Fix issue when helm remove disk too fast on delete instance
 - PIM-9742: Asset. Product link rules "Failed" without informations instead of sending Warning.
 - PIM-9675: Api search_after on asset issue for Serenity clients

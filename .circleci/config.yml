@@ -85,7 +85,10 @@ jobs:
                           https://github.com/akeneo/pim-community-dev/tree/${CIRCLE_BRANCH} &&
                           docker-compose run --rm -u www-data:www-data php php
                           /usr/local/bin/composer require "akeneo/pim-community-dev:dev-${CIRCLE_BRANCH}" --no-update ||
-                          echo "No CE branch $CIRCLE_BRANCH found. I don't touch the composer.json file."
+                          echo "No CE branch $CIRCLE_BRANCH found. I don't touch the composer.json file." &&
+                          docker-compose run --rm -u www-data:www-data -e COMPOSER=grth/composer.json php php
+                          /usr/local/bin/composer require "akeneo/pim-community-dev:dev-${CIRCLE_BRANCH}" --no-update ||
+                          echo "No CE branch $CIRCLE_BRANCH found. I don't touch the GRTH composer.json file."
       - run:
           name: Install back and front dependencies
           command: make dependencies
@@ -155,7 +158,9 @@ jobs:
                               curl --output /dev/null --silent --head --fail
                               https://github.com/akeneo/pim-community-dev/tree/${CIRCLE_BRANCH} &&
                               sed -i "s|\"akeneo/pim-community-dev\": \"dev-master|\"akeneo/pim-community-dev\": \"dev-${CIRCLE_BRANCH}|" composer.json ||
-                              echo "No CE branch ${CIRCLE_BRANCH} found. I don't touch the composer.json file."
+                              echo "No CE branch ${CIRCLE_BRANCH} found. I don't touch the composer.json file." &&
+                              sed -i "s|\"akeneo/pim-community-dev\": \"dev-master|\"akeneo/pim-community-dev\": \"dev-${CIRCLE_BRANCH}|" grth/composer.json ||
+                              echo "No CE branch ${CIRCLE_BRANCH} found. I don't touch the GRTH composer.json file."
           - run:
               name: Define value for next steps
               command: |
