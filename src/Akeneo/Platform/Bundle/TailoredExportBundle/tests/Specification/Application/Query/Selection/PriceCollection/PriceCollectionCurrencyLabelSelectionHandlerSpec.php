@@ -13,22 +13,37 @@ declare(strict_types=1);
 
 namespace Specification\Akeneo\Platform\TailoredExport\Application\Query\Selection\PriceCollection;
 
-use Akeneo\Platform\TailoredExport\Application\Query\Selection\PriceCollection\PriceCollectionCurrencySelection;
 use Akeneo\Platform\TailoredExport\Application\Query\Selection\Boolean\BooleanSelection;
-use Akeneo\Platform\TailoredExport\Domain\SourceValue\PriceCollectionValue;
+use Akeneo\Platform\TailoredExport\Application\Query\Selection\PriceCollection\PriceCollectionCurrencyLabelSelection;
+use Akeneo\Platform\TailoredExport\Application\Query\Selection\PriceCollection\PriceCollectionCurrencyLabelSelectionHandler;
 use Akeneo\Platform\TailoredExport\Domain\SourceValue\BooleanValue;
 use Akeneo\Platform\TailoredExport\Domain\SourceValue\Price;
+use Akeneo\Platform\TailoredExport\Domain\SourceValue\PriceCollectionValue;
+use Akeneo\Tool\Component\Localization\CurrencyTranslatorInterface;
 use PhpSpec\ObjectBehavior;
 
-class PriceCollectionCurrencySelectionHandlerSpec extends ObjectBehavior
+class PriceCollectionCurrencyLabelSelectionHandlerSpec extends ObjectBehavior
 {
-    public function it_applies_the_selection()
+    public function let(CurrencyTranslatorInterface $currencyTranslator)
     {
-        $selection = new PriceCollectionCurrencySelection('|');
+        $this->beConstructedWith($currencyTranslator);
+    }
+
+    public function it_is_initializable()
+    {
+        $this->shouldHaveType(PriceCollectionCurrencyLabelSelectionHandler::class);
+    }
+
+    public function it_applies_the_selection($currencyTranslator)
+    {
+        $selection = new PriceCollectionCurrencyLabelSelection('|', 'fr_FR');
         $value = new PriceCollectionValue([new Price('102', 'EUR'), new Price('103', 'USD'), new Price('104', 'DKK')]);
+        $currencyTranslator->translate('EUR', 'fr_FR', '[EUR]')->willReturn('Euros €');
+        $currencyTranslator->translate('USD', 'fr_FR', '[USD]')->willReturn('Dollars $');
+        $currencyTranslator->translate('DKK', 'fr_FR', '[DKK]')->willReturn('Donkey kong 🐒');
 
         $this->applySelection($selection, $value)
-            ->shouldReturn('EUR|USD|DKK');
+            ->shouldReturn('Euros €|Dollars $|Donkey kong 🐒');
     }
 
     public function it_does_not_apply_selection_on_not_supported_selections_and_values()
@@ -43,7 +58,7 @@ class PriceCollectionCurrencySelectionHandlerSpec extends ObjectBehavior
 
     public function it_supports_price_collection_code_selection_with_price_collection_value()
     {
-        $selection = new PriceCollectionCurrencySelection('/');
+        $selection = new PriceCollectionCurrencyLabelSelection('/', 'fr_FR');
         $value = new PriceCollectionValue([]);
 
         $this->supports($selection, $value)->shouldReturn(true);

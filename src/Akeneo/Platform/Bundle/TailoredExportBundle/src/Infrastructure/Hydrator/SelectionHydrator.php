@@ -32,7 +32,8 @@ use Akeneo\Platform\TailoredExport\Application\Query\Selection\Number\NumberSele
 use Akeneo\Platform\TailoredExport\Application\Query\Selection\Parent\ParentCodeSelection;
 use Akeneo\Platform\TailoredExport\Application\Query\Selection\Parent\ParentLabelSelection;
 use Akeneo\Platform\TailoredExport\Application\Query\Selection\PriceCollection\PriceCollectionAmountSelection;
-use Akeneo\Platform\TailoredExport\Application\Query\Selection\PriceCollection\PriceCollectionCurrencySelection;
+use Akeneo\Platform\TailoredExport\Application\Query\Selection\PriceCollection\PriceCollectionCurrencyCodeSelection;
+use Akeneo\Platform\TailoredExport\Application\Query\Selection\PriceCollection\PriceCollectionCurrencyLabelSelection;
 use Akeneo\Platform\TailoredExport\Application\Query\Selection\ReferenceEntity\ReferenceEntityCodeSelection;
 use Akeneo\Platform\TailoredExport\Application\Query\Selection\ReferenceEntity\ReferenceEntityLabelSelection;
 use Akeneo\Platform\TailoredExport\Application\Query\Selection\ReferenceEntityCollection\ReferenceEntityCollectionCodeSelection;
@@ -194,8 +195,10 @@ class SelectionHydrator
     private function createPriceCollectionSelection(array $selectionConfiguration, Attribute $attribute)
     {
         switch ($selectionConfiguration['type']) {
-            case PriceCollectionCurrencySelection::TYPE:
-                return new PriceCollectionCurrencySelection($selectionConfiguration['separator']);
+            case PriceCollectionCurrencyCodeSelection::TYPE:
+                return new PriceCollectionCurrencyCodeSelection($selectionConfiguration['separator']);
+            case PriceCollectionCurrencyLabelSelection::TYPE:
+                return new PriceCollectionCurrencyLabelSelection($selectionConfiguration['separator'], $selectionConfiguration['locale']);
             case PriceCollectionAmountSelection::TYPE:
                 return new PriceCollectionAmountSelection($selectionConfiguration['separator']);
             default:

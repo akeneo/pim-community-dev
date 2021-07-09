@@ -21,6 +21,9 @@
     </php>
 
     <testsuites>
+        <testsuite name="TailoredExport_Integration_Test">
+            <directory>Integration</directory>
+        </testsuite>
         <testsuite name="TailoredExport_Acceptance_Test">
             <directory>Acceptance/UseCases</directory>
         </testsuite>

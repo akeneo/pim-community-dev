@@ -13,9 +13,9 @@ declare(strict_types=1);
 
 namespace Akeneo\Platform\TailoredExport\Application\Query\Selection\PriceCollection;
 
-final class PriceCollectionCurrencySelection implements PriceCollectionSelectionInterface
+final class PriceCollectionCurrencyCodeSelection implements PriceCollectionSelectionInterface
 {
-    public const TYPE = 'currency';
+    public const TYPE = 'currency_code';
 
     private string $separator;
 

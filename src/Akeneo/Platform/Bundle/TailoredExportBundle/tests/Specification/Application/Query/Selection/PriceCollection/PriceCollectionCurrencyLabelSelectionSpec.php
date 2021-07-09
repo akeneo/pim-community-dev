@@ -13,19 +13,28 @@ declare(strict_types=1);
 
 namespace Specification\Akeneo\Platform\TailoredExport\Application\Query\Selection\PriceCollection;
 
+use Akeneo\Platform\TailoredExport\Application\Query\Selection\PriceCollection\PriceCollectionCurrencyLabelSelection;
 use PhpSpec\ObjectBehavior;
 
-class PriceCollectionCurrencySelectionSpec extends ObjectBehavior
+class PriceCollectionCurrencyLabelSelectionSpec extends ObjectBehavior
 {
     public function let()
     {
-        $this->beConstructedWith(
-            '-'
-        );
+        $this->beConstructedWith('-', 'fr_FR');
+    }
+
+    function it_is_initializable()
+    {
+        $this->shouldHaveType(PriceCollectionCurrencyLabelSelection::class);
     }
 
     public function it_returns_the_separator()
     {
         $this->getSeparator()->shouldReturn('-');
+    }
+
+    public function it_returns_the_locale_code()
+    {
+        $this->getLocaleCode()->shouldReturn('fr_FR');
     }
 }

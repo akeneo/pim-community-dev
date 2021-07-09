@@ -107,7 +107,7 @@ class ValueHydrator
                 return new SimpleSelectValue($data);
             case 'pim_catalog_price_collection':
                 return new PriceCollectionValue(array_map(
-                    fn (ProductPriceInterface $price) => new Price((string) $price->getData(), $price->getCurrency()),
+                    static fn (ProductPriceInterface $price) => new Price((string) $price->getData(), $price->getCurrency()),
                     $data->toArray()
                 ));
             case 'akeneo_reference_entity':

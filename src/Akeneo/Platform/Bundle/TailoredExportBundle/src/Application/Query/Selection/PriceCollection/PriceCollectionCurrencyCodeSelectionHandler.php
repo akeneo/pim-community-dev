@@ -19,12 +19,12 @@ use Akeneo\Platform\TailoredExport\Domain\SourceValue\Price;
 use Akeneo\Platform\TailoredExport\Domain\SourceValue\PriceCollectionValue;
 use Akeneo\Platform\TailoredExport\Domain\SourceValueInterface;
 
-class PriceCollectionCurrencySelectionHandler implements SelectionHandlerInterface
+class PriceCollectionCurrencyCodeSelectionHandler implements SelectionHandlerInterface
 {
     public function applySelection(SelectionInterface $selection, SourceValueInterface $value): string
     {
         if (
-            !$selection instanceof PriceCollectionCurrencySelection
+            !$selection instanceof PriceCollectionCurrencyCodeSelection
             || !$value instanceof PriceCollectionValue
         ) {
             throw new \InvalidArgumentException('Cannot apply Price collection selection on this entity');
@@ -39,7 +39,7 @@ class PriceCollectionCurrencySelectionHandler implements SelectionHandlerInterfa
 
     public function supports(SelectionInterface $selection, SourceValueInterface $value): bool
     {
-        return $selection instanceof PriceCollectionCurrencySelection
+        return $selection instanceof PriceCollectionCurrencyCodeSelection
             && $value instanceof PriceCollectionValue;
     }
 }
