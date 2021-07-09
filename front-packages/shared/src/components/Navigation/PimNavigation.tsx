@@ -5,8 +5,6 @@ import {useRouter, useTranslate} from '../../hooks';
 import {IconProps, LockIcon, MainNavigationItem, Tag} from 'akeneo-design-system';
 import {SubNavigation, SubNavigationEntry, SubNavigationType} from './SubNavigation';
 
-const FeatureFlags = require('pim/feature-flags');
-
 type NavigationEntry = {
   code: string;
   title: string;
@@ -21,8 +19,9 @@ type Props = {
   entries: NavigationEntry[];
   activeEntryCode: string | null;
   activeSubEntryCode: string | null;
+  freeTrialEnabled: boolean;
 };
-const PimNavigation: FC<Props> = ({entries, activeEntryCode, activeSubEntryCode}) => {
+const PimNavigation: FC<Props> = ({entries, activeEntryCode, activeSubEntryCode, freeTrialEnabled}) => {
   const translate = useTranslate();
   const router = useRouter();
 
@@ -61,9 +60,10 @@ const PimNavigation: FC<Props> = ({entries, activeEntryCode, activeSubEntryCode}
               role='menuitem'
               data-testid='pim-main-menu-item'
               className={entry.code === activeEntryCode ? 'active' : undefined}
+              style={entry.disabled && freeTrialEnabled ? {cursor: 'pointer'} : {}}
             >
               {translate(entry.title)}
-              {entry.disabled && FeatureFlags.isEnabled('free_trial') &&
+              {entry.disabled && freeTrialEnabled &&
                 <LockIconContainer>
                   <StyledTag tint="blue">
                     <StyledLockIcon size={16} color={'#5992c7'}/>

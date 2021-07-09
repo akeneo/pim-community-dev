@@ -10,6 +10,7 @@ const BaseForm = require('pim/form');
 const _ = require('underscore');
 const template = require('pim/template/menu/menu');
 const mediator = require('oro/mediator');
+const featureFlags = require('pim/feature-flags');
 
 type SubEntry = {
   code: string;
@@ -89,6 +90,7 @@ class Menu extends BaseForm {
         entries: this.findMainEntries(),
         activeEntryCode: this.activeEntryCode,
         activeSubEntryCode: this.activeSubEntryCode,
+        freeTrialEnabled: featureFlags.isEnabled('free_trial'),
       },
       this.el
     );
