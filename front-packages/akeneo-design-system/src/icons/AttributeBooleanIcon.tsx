@@ -5,6 +5,7 @@ const AttributeBooleanIcon = ({title, size = 24, color = 'currentColor', ...prop
   <svg viewBox="0 0 24 24" width={size} height={size} {...props}>
     {title && <title>{title}</title>}
     <path
+      vectorEffect="non-scaling-stroke"
       d="M7.5 6h9a6.5 6.5 0 110 13h-9a6.5 6.5 0 110-13zm0 10a3.5 3.5 0 100-7 3.5 3.5 0 000 7z"
       stroke={color}
       fill="none"

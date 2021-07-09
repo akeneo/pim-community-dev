@@ -30,7 +30,7 @@ const DownloadIcon = ({title, size = 24, color = 'currentColor', animateOnHover 
   <Container viewBox="0 0 24 24" width={size} height={size} animateOnHover={animateOnHover} {...props}>
     {title && <title>{title}</title>}
     <g stroke={color} fill="none" fillRule="evenodd" strokeLinecap="round" strokeLinejoin="round">
-      <path d="M17.11 17H20v5H4v-5h3" />
+      <path vectorEffect="non-scaling-stroke" d="M17.11 17H20v5H4v-5h3" />
       <Arrow d="M12 2v16V2zM17 13l-5 5.5L7 13h0" />
     </g>
   </Container>

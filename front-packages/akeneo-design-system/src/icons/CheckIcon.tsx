@@ -5,6 +5,7 @@ const CheckIcon = ({title, size = 18, color = 'currentColor', className, ...prop
   <svg viewBox="0 0 24 24" width={size} height={size} {...props}>
     {title && <title>{title}</title>}
     <path
+      vectorEffect="non-scaling-stroke"
       className={className}
       stroke={color}
       d="M2.5 12l7.5 6.5L21.5 6"

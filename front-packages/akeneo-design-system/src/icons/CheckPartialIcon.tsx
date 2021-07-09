@@ -5,6 +5,7 @@ const CheckPartialIcon = ({title, size = 24, color = 'currentColor', className, 
   <svg viewBox="0 0 24 24" width={size} height={size} {...props}>
     {title && <title>{title}</title>}
     <path
+      vectorEffect="non-scaling-stroke"
       className={className}
       d="M2 12.5h20"
       stroke={color}
