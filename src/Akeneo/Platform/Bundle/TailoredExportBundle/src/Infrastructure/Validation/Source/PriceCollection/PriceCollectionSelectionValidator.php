@@ -16,9 +16,11 @@ namespace Akeneo\Platform\TailoredExport\Infrastructure\Validation\Source\PriceC
 use Akeneo\Platform\TailoredExport\Application\Query\Selection\PriceCollection\PriceCollectionAmountSelection;
 use Akeneo\Platform\TailoredExport\Application\Query\Selection\PriceCollection\PriceCollectionCurrencyCodeSelection;
 use Akeneo\Platform\TailoredExport\Application\Query\Selection\PriceCollection\PriceCollectionCurrencyLabelSelection;
+use Akeneo\Platform\TailoredExport\Infrastructure\Validation\LocaleShouldBeActive;
 use Symfony\Component\Validator\Constraint;
 use Symfony\Component\Validator\Constraints\Choice;
 use Symfony\Component\Validator\Constraints\Collection;
+use Symfony\Component\Validator\Constraints\NotBlank;
 use Symfony\Component\Validator\Constraints\Optional;
 use Symfony\Component\Validator\Constraints\Type;
 use Symfony\Component\Validator\ConstraintValidator;
@@ -56,7 +58,6 @@ class PriceCollectionSelectionValidator extends ConstraintValidator
                 ],
             ]
         ));
-
         foreach ($violations as $violation) {
             $this->context->buildViolation(
                 $violation->getMessage(),
@@ -64,6 +65,22 @@ class PriceCollectionSelectionValidator extends ConstraintValidator
             )
                 ->atPath($violation->getPropertyPath())
                 ->addViolation();
+        }
+
+        if (PriceCollectionCurrencyLabelSelection::TYPE === $selection['type']) {
+            $violations = $validator->validate($selection['locale'], [
+                new NotBlank(),
+                new LocaleShouldBeActive()
+            ]);
+
+            foreach ($violations as $violation) {
+                $this->context->buildViolation(
+                    $violation->getMessage(),
+                    $violation->getParameters()
+                )
+                    ->atPath('[locale]')
+                    ->addViolation();
+            }
         }
     }
 }
