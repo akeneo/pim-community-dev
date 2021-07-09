@@ -133,7 +133,7 @@ class Menu extends BaseForm {
           disabled: extension.config.disabled || false,
           route: this.findEntryRoute(extension),
           // @ts-ignore
-          icon: DSM[icon] && React.createElement(DSM[icon]),
+          icon: React.createElement(DSM[icon] ? DSM[icon] : 'span'),
           subNavigations: this.findMainEntrySubNavigations(extension.code),
           isLandingSectionPage: isLandingSectionPage ?? false,
         };
