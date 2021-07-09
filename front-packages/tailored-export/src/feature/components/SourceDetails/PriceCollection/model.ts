@@ -2,12 +2,12 @@ import {uuid} from 'akeneo-design-system';
 import {ChannelReference, LocaleCode, LocaleReference} from '@akeneo-pim-community/shared';
 import {Attribute, Source} from '../../../models';
 
-const availableSeparators = [',', ';', '|'];
+const availableSeparators = {',': 'comma', ';': 'semicolon', '|': 'pipe'};
 
-type PriceCollectionSeparator = typeof availableSeparators[number];
+type PriceCollectionSeparator = keyof typeof availableSeparators;
 
 const isPriceCollectionSeparator = (separator: unknown): separator is PriceCollectionSeparator =>
-  typeof separator === 'string' && availableSeparators.includes(separator);
+  typeof separator === 'string' && separator in availableSeparators;
 
 type PriceCollectionSelection = {
   separator: PriceCollectionSeparator;

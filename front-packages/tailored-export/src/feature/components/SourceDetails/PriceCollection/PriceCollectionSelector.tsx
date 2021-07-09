@@ -92,9 +92,13 @@ const PriceCollectionSelector = ({selection, validationErrors, onSelectionChange
             }
           }}
         >
-          {availableSeparators.map(availableSeparator => (
-            <SelectInput.Option key={availableSeparator} title={availableSeparator} value={availableSeparator}>
-              {availableSeparator}
+          {Object.entries(availableSeparators).map(([separator, name]) => (
+            <SelectInput.Option
+              key={separator}
+              title={translate(`akeneo.tailored_export.column_details.sources.selection.collection_separator.${name}`)}
+              value={separator}
+            >
+              {translate(`akeneo.tailored_export.column_details.sources.selection.collection_separator.${name}`)}
             </SelectInput.Option>
           ))}
         </SelectInput>
