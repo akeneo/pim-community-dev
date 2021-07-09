@@ -4,8 +4,6 @@ import {VerticalPosition, useVerticalPosition, useWindowResize} from '../../../.
 import {AkeneoThemedProps, CommonStyle, getColor} from '../../../../theme';
 import {createPortal} from 'react-dom';
 
-const BORDER_SHADOW_OFFSET = 2;
-
 const OverlayContent = styled.div<{top: number; width: number; left: number} & AkeneoThemedProps>`
   ${CommonStyle}
   background: ${getColor('white')};
@@ -55,10 +53,7 @@ const getOverlayPosition = (
   const parentRect = parentRef.current.getBoundingClientRect();
   const elementRect = elementRef.current.getBoundingClientRect();
 
-  const top =
-    'up' === verticalPosition
-      ? parentRect.top - elementRect.height + BORDER_SHADOW_OFFSET - 2
-      : parentRect.bottom - BORDER_SHADOW_OFFSET + 2;
+  const top = 'up' === verticalPosition ? parentRect.top - elementRect.height : parentRect.bottom;
 
   const left = parentRect.left;
   const width = parentRect.width;
