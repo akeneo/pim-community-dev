@@ -30,7 +30,7 @@ class WebMarketplaceAliases implements WebMarketplaceAliasesInterface
         }
     }
 
-    public function getEdition(): ?string
+    public function getEdition(): string
     {
         switch ($this->versionProvider->getEdition()) {
             case 'GE':

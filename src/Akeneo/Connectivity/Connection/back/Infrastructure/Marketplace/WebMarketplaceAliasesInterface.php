@@ -12,7 +12,7 @@ interface WebMarketplaceAliasesInterface
 {
     public function getUtmCampaign(): ?string;
 
-    public function getEdition(): ?string;
+    public function getEdition(): string;
 
     public function getVersion(): ?string;
 }
