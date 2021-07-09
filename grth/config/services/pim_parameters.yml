@@ -1,0 +1,6 @@
+parameters:
+    elasticsearch_index_configuration_files:
+        - '%pim_ce_dev_src_folder_location%/src/Akeneo/Pim/Enrichment/Bundle/Resources/elasticsearch/settings.yml'
+        - '%pim_ce_dev_src_folder_location%/src/Akeneo/Pim/Enrichment/Bundle/Resources/elasticsearch/product_mapping.yml'
+    
+    monitoring_authentication_token: '%env(MONITORING_AUTHENTICATION_TOKEN)%'

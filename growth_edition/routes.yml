@@ -1,4 +1,0 @@
-
-akeneo_monitoring:
-    resource: "@AkeneoMonitoringBundle/Resources/config/routing.yml"
-

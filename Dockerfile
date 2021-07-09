@@ -135,6 +135,7 @@ COPY config config
 COPY public public
 COPY frontend frontend
 COPY src src
+COPY grth grth
 COPY upgrades upgrades
 COPY front-packages front-packages
 COPY composer.json package.json yarn.lock .env tsconfig.json *.js .
@@ -146,6 +147,7 @@ ENV SRNT_GOOGLE_APPLICATION_CREDENTIALS="/srv/pim/config/fake_credentials_gcp.js
 ENV SRNT_GOOGLE_BUCKET_NAME="srnt_google_bucket_dummy"
 
 RUN mkdir var && \
+    composer config repositories.grth '{"type": "path", "url": "grth/", "options": {"symlink": false }}' && \
     php -d 'memory_limit=4G' /usr/local/bin/composer install \
         --no-scripts \
         --no-interaction \
