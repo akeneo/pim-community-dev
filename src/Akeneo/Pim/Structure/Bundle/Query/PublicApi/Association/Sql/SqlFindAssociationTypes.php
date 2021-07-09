@@ -18,6 +18,9 @@ final class SqlFindAssociationTypes implements FindAssociationTypesInterface
         $this->connection = $connection;
     }
 
+    /**
+     * @inheritDoc
+     */
     public function execute(string $localeCode, int $limit, int $offset = 0, string $search = null): array
     {
         if ($limit === 0) return [];

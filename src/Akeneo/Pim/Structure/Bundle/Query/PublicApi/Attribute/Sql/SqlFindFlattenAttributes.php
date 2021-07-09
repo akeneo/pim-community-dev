@@ -91,9 +91,9 @@ SQL;
             ]
         )->fetchAll();
 
-        $groupedAttributes = [];
+        $flattenAttributes = [];
         foreach ($rawResults as $rawResult) {
-            $groupedAttributes[] = new FlattenAttribute(
+            $flattenAttributes[] = new FlattenAttribute(
                 $rawResult['code'],
                 $rawResult['label'],
                 $rawResult['group_code'],
@@ -101,6 +101,6 @@ SQL;
             );
         }
 
-        return $groupedAttributes;
+        return $flattenAttributes;
     }
 }

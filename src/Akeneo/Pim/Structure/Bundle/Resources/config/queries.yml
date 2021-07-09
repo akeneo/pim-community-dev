@@ -77,7 +77,6 @@ services:
         arguments:
             - '@database_connection'
 
-
     akeneo.pim.structure.query.find_flatten_attributes:
         class: Akeneo\Pim\Structure\Bundle\Query\PublicApi\Attribute\Sql\SqlFindFlattenAttributes
         arguments:
