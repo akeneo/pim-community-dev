@@ -27,6 +27,7 @@ services:
     class: 'Akeneo\Platform\TailoredExport\Infrastructure\Validation\SourcesValidator'
     arguments:
       - '@akeneo.pim.structure.query.get_attributes'
+      - '@akeneo.pim.structure.query.get_association_type'
       -
         akeneo_reference_entity: '@Akeneo\Platform\TailoredExport\Infrastructure\Validation\Source\ReferenceEntity\ReferenceEntitySourceConstraint'
         akeneo_reference_entity_collection: '@Akeneo\Platform\TailoredExport\Infrastructure\Validation\Source\ReferenceEntityCollection\ReferenceEntityCollectionSourceConstraint'
