@@ -103,6 +103,24 @@ test('it can select a currency label along with a default selected locale', asyn
   expect(onSelectionChange).toHaveBeenCalledWith({type: 'currency_label', locale: 'en_US', separator: ','});
 });
 
+test('it can select a currency label locale', async () => {
+  const onSelectionChange = jest.fn();
+
+  await renderWithProviders(
+    <PriceCollectionSelector
+      selection={{type: 'currency_label', locale: 'en_US', separator: ','}}
+      validationErrors={[]}
+      onSelectionChange={onSelectionChange}
+    />
+  );
+
+  userEvent.click(screen.getByText('pim_common.type'));
+  userEvent.click(screen.getByText('akeneo.tailored_export.column_details.sources.selection.price.currency_locale'));
+  userEvent.click(screen.getByText('fr_FR'));
+
+  expect(onSelectionChange).toHaveBeenCalledWith({type: 'currency_label', locale: 'fr_FR', separator: ','});
+});
+
 test('it can select a price collection separator', async () => {
   const onSelectionChange = jest.fn();
 
@@ -117,7 +135,9 @@ test('it can select a price collection separator', async () => {
   userEvent.click(
     screen.getByText('akeneo.tailored_export.column_details.sources.selection.collection_separator.title')
   );
-  userEvent.click(screen.getByTitle(';'));
+  userEvent.click(
+    screen.getByText('akeneo.tailored_export.column_details.sources.selection.collection_separator.semicolon')
+  );
 
   expect(onSelectionChange).toHaveBeenCalledWith({type: 'amount', separator: ';'});
 });

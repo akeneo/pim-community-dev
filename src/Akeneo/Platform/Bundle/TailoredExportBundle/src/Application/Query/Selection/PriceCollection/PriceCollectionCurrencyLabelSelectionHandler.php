@@ -28,9 +28,11 @@ class PriceCollectionCurrencyLabelSelectionHandler implements SelectionHandlerIn
     {
         $this->currencyTranslator = $currencyTranslator;
     }
+
     public function applySelection(SelectionInterface $selection, SourceValueInterface $value): string
     {
-        if (!$this->supports($selection, $value)) {
+        if (!($selection instanceof PriceCollectionCurrencyLabelSelection
+            && $value instanceof PriceCollectionValue)) {
             throw new \InvalidArgumentException('Cannot apply Price collection selection on this entity');
         }
 

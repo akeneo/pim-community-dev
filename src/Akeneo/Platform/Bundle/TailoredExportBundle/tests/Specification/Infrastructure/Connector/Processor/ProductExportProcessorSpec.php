@@ -28,7 +28,7 @@ use PhpSpec\ObjectBehavior;
 
 class ProductExportProcessorSpec extends ObjectBehavior
 {
-    function let(
+    public function let(
         StepExecution $stepExecution,
         JobParameters $jobParameters,
         GetAttributes $getAttributes,

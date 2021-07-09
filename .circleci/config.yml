@@ -44,6 +44,15 @@ jobs:
           root: ~/
           paths:
             - project
+  checkout_tailored_export:
+    docker:
+      - image: alpine/git
+    steps:
+      - checkout
+      - persist_to_workspace:
+          root: ~/
+          paths:
+            - project
 
   ##################
   # Build          #
@@ -135,6 +144,122 @@ jobs:
           root: ~/
           paths:
             - project
+
+  ##################
+  # Build          #
+  ##################
+  test_tailored_export:
+    parameters:
+        is_pull_request:
+            type: boolean
+            default: true
+    machine:
+      image: ubuntu-2004:202010-01
+    steps:
+      - attach_workspace:
+          at: ~/
+      - run:
+          name: Copy docker-compose.override.yml.dist
+          command: cp .circleci/docker-compose.override.yml.dist docker-compose.override.yml
+      - run:
+          name: Build the latest Docker images
+          command: |
+            make php-image-dev
+            docker save -o php-pim-image.tar akeneo/pim-dev/php:7.4
+      - run:
+          name: Setup tests results folder and log folder
+          command: mkdir -p var/tests/phpspec var/tests/csfixer var/logs var/tests/screenshots ~/.cache/yarn ~/.composer
+      - run:
+          name: Change owner on project dir (default user = circleci (1001) and docker needs uid 1000)
+          command: |
+            sudo chown -R 1000:1000 ../project
+            sudo chown -R 1000:1000 ~/.composer
+            sudo chown -R 1000:1000 ~/.cache/yarn
+      - when:
+          condition: << parameters.is_pull_request >>
+          steps:
+            - run:
+                name: Update composer.json if same branch exists in CE
+                command: >
+                  curl --output /dev/null --silent --head --fail
+                  https://github.com/akeneo/pim-community-dev/tree/${CIRCLE_BRANCH} &&
+                  docker-compose run --rm -u www-data:www-data php php
+                  /usr/local/bin/composer require "akeneo/pim-community-dev:dev-${CIRCLE_BRANCH}" --no-update ||
+                  echo "No CE branch $CIRCLE_BRANCH found. I don't touch the composer.json file." &&
+                  docker-compose run --rm -u www-data:www-data -e COMPOSER=grth/composer.json php php
+                  /usr/local/bin/composer require "akeneo/pim-community-dev:dev-${CIRCLE_BRANCH}" --no-update ||
+                  echo "No CE branch $CIRCLE_BRANCH found. I don't touch the GRTH composer.json file."
+      - run:
+          name: Install back and front dependencies
+          command: make dependencies
+          environment:
+            YARN_REGISTRY: "http://registry.yarnpkg.com"
+      # - run:
+      #     name: Install assets
+      #     command: make assets
+      # - run:
+      #     name: Build css
+      #     command: make css
+      - run:
+          name: Create hash for front packages
+          command: |
+            find vendor/akeneo/pim-community-dev/front-packages/akeneo-design-system -type f -print0 | sort -z | xargs -0 sha1sum | sha1sum > ~/akeneo-design-system.hash
+            date +%F >> ~/akeneo-design-system.hash
+      - run:
+          name: Set DSM directory owner to circleci
+          command: sudo chown -R 1001:1001 vendor/akeneo/pim-community-dev/front-packages/akeneo-design-system
+      - restore_cache:
+          name: Restore DSM cache
+          key: dsm-lib-{{ checksum "~/akeneo-design-system.hash" }}
+      - run:
+          name: Set DSM directory owner to docker
+          command: sudo chown -R 1000:1000 vendor/akeneo/pim-community-dev/front-packages/akeneo-design-system
+      - run:
+          name: Build DSM
+          command: ls vendor/akeneo/pim-community-dev/front-packages/akeneo-design-system/lib 1> /dev/null 2>&1 || make dsm
+      - save_cache:
+          name: Save DSM cache
+          key: dsm-lib-{{ checksum "~/akeneo-design-system.hash" }}
+          paths:
+            - vendor/akeneo/pim-community-dev/front-packages/akeneo-design-system/lib
+      - run:
+          name: Build front-packages
+          command: make front-packages
+      # - run:
+      #     name: Build Javascript
+      #     command: make javascript-dev
+      - run:
+          name: Change owner on project dir after installing when there is no cache
+          command: sudo chmod -R 777 ../project
+      ### TAILORED EXPORT TESTS START HERE ##
+      ### Skip build javascript, install assets, build css
+      - run:
+          name: Change owner on project dir in order to archive the project into the workspace
+          command: sudo chown -R 1000:1000 ../project
+      - run:
+          name: Start containers
+          command: |
+            docker load -i php-pim-image.tar
+            APP_ENV=test C='fpm mysql elasticsearch object-storage pubsub-emulator' make up
+            docker/wait_docker_up.sh
+      - run:
+          name: Install database
+          command: APP_ENV=test make database
+      - run:
+          name: Install database
+          command: APP_ENV=test make database
+      - run:
+          name: CI back
+          command: PIM_CONTEXT=tailored-export make ci-back
+      - run:
+          name: CI front
+          command: PIM_CONTEXT=tailored-export make ci-front
+      - store_test_results:
+          path: var/tests/phpunit
+      - store_artifacts:
+          path: var/tests/phpunit
+      - store_artifacts:
+          path: var/logs
 
   build_srnt_prod:
       parameters:
@@ -1579,6 +1704,18 @@ workflows:
   version: 2
   pull_request:
       jobs:
+          - ready_to_build_tailored_export?:
+              type: approval
+              filters:
+                branches:
+                  ignore:
+                    - "master"
+          - checkout_tailored_export:
+              requires:
+                - ready_to_build_tailored_export?
+          - test_tailored_export:
+              requires:
+                - checkout_tailored_export
           - ready_to_build?:
                 type: approval
                 filters:

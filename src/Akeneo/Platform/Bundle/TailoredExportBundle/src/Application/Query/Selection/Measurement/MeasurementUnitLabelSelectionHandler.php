@@ -39,10 +39,6 @@ class MeasurementUnitLabelSelectionHandler implements SelectionHandlerInterface
 
         $unit = $value->getUnit();
 
-        if (null === $unit) {
-            return '';
-        }
-
         $unitTranslation = $this->findUnitLabels->byFamilyCodeAndUnitCode(
             $selection->getMeasurementFamily(),
             $unit,

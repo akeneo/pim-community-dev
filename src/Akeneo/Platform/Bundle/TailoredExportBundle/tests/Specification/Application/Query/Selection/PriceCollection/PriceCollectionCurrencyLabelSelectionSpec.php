@@ -23,7 +23,7 @@ class PriceCollectionCurrencyLabelSelectionSpec extends ObjectBehavior
         $this->beConstructedWith('-', 'fr_FR');
     }
 
-    function it_is_initializable()
+    public function it_is_initializable()
     {
         $this->shouldHaveType(PriceCollectionCurrencyLabelSelection::class);
     }

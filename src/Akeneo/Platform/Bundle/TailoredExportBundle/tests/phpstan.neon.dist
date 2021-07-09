@@ -1,0 +1,6 @@
+parameters:
+  level: 5
+  paths:
+    - %rootDir%/../../../src/Akeneo/Platform/Bundle/TailoredExportBundle
+  excludes_analyse:
+    - %rootDir%/../../../src/Akeneo/Platform/Bundle/TailoredExportBundle\tests\Specification
