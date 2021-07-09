@@ -32,7 +32,6 @@ class GetAllExtensionsEndToEnd extends WebTestCase
     {
         $expectedExtensions = [
             [
-
                 'id' => '90741597-54c5-48a1-98da-a68e7ee0a715',
                 'name' => 'Akeneo Shopware 6 Connector by EIKONA Media',
                 'logo' => 'https://marketplace.akeneo.com/sites/default/files/styles/extension_logo_large/public/extension-logos/akeneo-to-shopware6-eimed_0.jpg?itok=InguS-1N',
