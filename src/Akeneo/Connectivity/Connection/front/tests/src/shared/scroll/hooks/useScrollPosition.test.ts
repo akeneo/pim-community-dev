@@ -1,6 +1,6 @@
 import {renderHook} from '@testing-library/react-hooks';
 import {fireEvent} from '@testing-library/dom';
-import useScrollPosition, {ScrollPosition} from '@src/webhook/scroll/hooks/useScrollPosition';
+import useScrollPosition, {ScrollPosition} from '@src/shared/scroll/hooks/useScrollPosition';
 
 beforeEach(() => {
     document.body.innerHTML = `
