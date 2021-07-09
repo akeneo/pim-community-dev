@@ -5,7 +5,6 @@ const ArrowRightIcon = ({title, size = 24, color = 'currentColor', ...props}: Ic
   <svg viewBox="0 0 24 24" width={size} height={size} {...props}>
     {title && <title>{title}</title>}
     <path
-      vectorEffect="non-scaling-stroke"
       stroke={color}
       vectorEffect="non-scaling-stroke"
       d="M7 2l10 10L7 22"
