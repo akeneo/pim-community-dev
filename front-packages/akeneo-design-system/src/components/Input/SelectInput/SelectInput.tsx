@@ -178,7 +178,6 @@ const SelectInput = ({
   'aria-labelledby': ariaLabelledby,
   ...rest
 }: SelectInputProps) => {
-  //const selectInputContainerRef = useRef<HTMLDivElement>(null);
   const [searchValue, setSearchValue] = useState<string>('');
   const [dropdownIsOpen, openOverlay, closeOverlay] = useBooleanState();
   const inputRef = useRef<HTMLInputElement>(null);
