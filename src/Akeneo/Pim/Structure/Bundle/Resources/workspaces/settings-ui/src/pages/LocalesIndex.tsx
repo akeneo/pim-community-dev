@@ -1,4 +1,4 @@
-import React, {FC, useEffect} from 'react';
+import React, {FC, useEffect, useState} from 'react';
 import {Breadcrumb, getColor, Helper as BaseHelper} from 'akeneo-design-system';
 import {PageContent, PageHeader, useRoute, useTranslate, PimView} from '@akeneo-pim-community/shared';
 import {LocalesDataGrid} from '../components';
@@ -31,6 +31,8 @@ const LocalesIndex: FC = () => {
     })();
   }, []);
 
+  const [localeCount, setLocaleCount] = useState<number>(locales.length);
+
   return (
     <>
       <PageHeader showPlaceholder={isPending}>
@@ -47,7 +49,7 @@ const LocalesIndex: FC = () => {
           />
         </PageHeader.UserActions>
         <PageHeader.Title>
-          {translate('pim_enrich.entity.locale.page_title.index', {count: locales.length.toString()}, locales.length)}
+          {translate('pim_enrich.entity.locale.page_title.index', {count: localeCount.toString()}, localeCount)}
         </PageHeader.Title>
       </PageHeader>
       <PageContent>
@@ -58,7 +60,7 @@ const LocalesIndex: FC = () => {
             }}
           />
         </Helper>
-        <LocalesDataGrid locales={locales} />
+        <LocalesDataGrid locales={locales} onLocaleCountChange={setLocaleCount} />
       </PageContent>
     </>
   );

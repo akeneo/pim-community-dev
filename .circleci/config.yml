@@ -586,6 +586,12 @@ jobs:
                 name: Load make commands
                 command: cp vendor/akeneo/pim-onboarder/onboarder.mk make-file/onboarder.mk
           - run:
+                name: Require onboarder tests dependencies
+                command: PIM_CONTEXT=onboarder make add-bundle-specific-dev-dependencies
+          - run:
+                name: Composer update for tests dependencies
+                command: docker-compose run -u www-data --rm php php -d memory_limit=4G /usr/local/bin/composer update --no-interaction
+          - run:
                 name: Add configuration files to run the bundle tests from the PIM
                 command: |
                     rm -f docker-compose.override.yml
