@@ -4,3 +4,5 @@ free_trial:
     entities: Entities
     proposals: Proposals
     sso: SAML-based Single Sign-On
+    rules: Rules
+    feature_ee_only: This feature is for Enterprise Edition only

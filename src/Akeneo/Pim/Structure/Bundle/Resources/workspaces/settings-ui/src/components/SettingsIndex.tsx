@@ -15,11 +15,12 @@ import {
   Breadcrumb,
   CategoryIcon,
   ComponentIcon,
-  CreditsIcon,
+  CreditsIcon, getColor,
   GroupsIcon,
   IconCard,
   IconCardGrid,
   LocaleIcon,
+  LockIcon,
   MetricIcon,
   SectionTitle,
   ShopIcon,
@@ -28,6 +29,8 @@ import {
 } from 'akeneo-design-system';
 import styled from 'styled-components';
 import {useCountEntities} from '../hooks/settings';
+
+const featureFlags = require('pim/feature-flags');
 
 const SectionContent = styled.div`
   margin-top: 20px;
@@ -268,6 +271,13 @@ const SettingsIndex = () => {
                     }
                   />
                 )}
+                {featureFlags.isEnabled('free_trial') &&
+                  <DisableIconCard
+                    icon={<LockIconContainer><LockIcon size={16} color={'#5992c7'}/></LockIconContainer>}
+                    label={translate('free_trial.menu.rules')}
+                    content={translate('free_trial.menu.feature_ee_only')}
+                  />
+                }
               </IconCardGrid>
             </SectionContent>
           </>
@@ -276,5 +286,30 @@ const SettingsIndex = () => {
     </>
   );
 };
+
+const DisableIconCard = styled(IconCard)`
+  cursor: pointer;
+  border: 1px rgba(240, 241, 243, 0.5) solid;
+
+  :hover {
+    background: #FFF;
+    border: 1px rgba(240, 241, 243, 0.5) solid;
+  }
+  
+  >*:not(:first-child) {
+    opacity: 0.5;
+  }
+`;
+
+const LockIconContainer = styled.div`
+  border: 1px solid rgb(76, 168, 224);
+  border-radius: 4px;
+  background: rgb(240, 247, 252);
+  height: 24px;
+  width: 24px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+`;
 
 export {SettingsIndex};
