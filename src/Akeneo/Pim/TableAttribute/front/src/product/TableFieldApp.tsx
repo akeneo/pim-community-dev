@@ -1,11 +1,13 @@
 import React from 'react';
 import {DependenciesProvider} from '@akeneo-pim-community/legacy-bridge';
 import styled, {ThemeProvider} from 'styled-components';
-import {Button, Locale, pimTheme, uuid, Search} from 'akeneo-design-system';
+import {Locale, pimTheme, uuid, Search} from 'akeneo-design-system';
 import {TableInputValue} from './TableInputValue';
 import {TableRow, TableValue} from '../models/TableValue';
 import {TemplateContext} from '../legacy/table-field';
 import {useTranslate} from '@akeneo-pim-community/shared';
+import {AddRowsButton} from './AddRowsButton';
+import {ColumnCode, SelectOptionCode} from '../models/TableConfiguration';
 
 const TableInputContainer = styled.div`
   flex-basis: 100% !important;
@@ -16,8 +18,9 @@ type TableFieldAppProps = TemplateContext & {
   elements: {[position: string]: {[elementKey: string]: any}};
 };
 
+type TableRowWithId = TableRow & {'unique id': string};
 // As we can't have space, the 'unique id' can not be used as column
-export type TableValueWithId = (TableRow & {'unique id': string})[];
+export type TableValueWithId = TableRowWithId[];
 
 const TableFieldApp: React.FC<TableFieldAppProps> = ({
   type,
@@ -45,7 +48,9 @@ const TableFieldApp: React.FC<TableFieldAppProps> = ({
       );
     })
   );
+  const [removedRows, setRemovedRows] = React.useState<{[key: string]: TableRowWithId}>({});
   const [searchText, setSearchText] = React.useState<string>('');
+  const firstColumnCode: ColumnCode = attribute.table_configuration[0].code;
 
   const renderElements: (position: string) => React.ReactNode = position => {
     return (
@@ -78,10 +83,24 @@ const TableFieldApp: React.FC<TableFieldAppProps> = ({
     );
   };
 
-  const addFakeRow = () => {
-    const newValue = [...tableValue];
-    newValue.push({'unique id': uuid()});
-    handleChange([...newValue]);
+  const handleToggleRow = (optionCode: SelectOptionCode) => {
+    const index = tableValue.findIndex(row => row[firstColumnCode] === optionCode);
+    if (index >= 0) {
+      const removed = tableValue.splice(index, 1);
+      if (removed.length === 1) {
+        removedRows[optionCode] = removed[0];
+        setRemovedRows({...removedRows});
+      }
+    } else {
+      if (typeof removedRows[optionCode] !== 'undefined') {
+        tableValue.push(removedRows[optionCode]);
+      } else {
+        const newRow: TableRowWithId = {'unique id': uuid()};
+        newRow[firstColumnCode] = optionCode;
+        tableValue.push(newRow);
+      }
+    }
+    handleChange([...tableValue]);
   };
 
   return (
@@ -113,13 +132,12 @@ const TableFieldApp: React.FC<TableFieldAppProps> = ({
               searchValue={searchText}
               title={translate('pim_common.search')}
             />
-            <Button
-              size='small'
-              onClick={() => {
-                addFakeRow();
-              }}>
-              Add row
-            </Button>
+            <AddRowsButton
+              attributeCode={attribute.code}
+              columnCode={firstColumnCode}
+              checkedOptionCodes={tableValue.map(row => (row[firstColumnCode] ?? '') as string)}
+              toggleChange={handleToggleRow}
+            />
             {context.optional && context.removable && 'edit' === editMode && (
               <i
                 className='AknIconButton AknIconButton--small icon-remove remove-attribute'
@@ -131,6 +149,7 @@ const TableFieldApp: React.FC<TableFieldAppProps> = ({
           </div>
           <div className='AknFieldContainer-inputContainer field-input'>
             <TableInputValue
+              attributeCode={attribute.code}
               valueData={tableValue}
               tableConfiguration={attribute.table_configuration}
               onChange={handleChange}

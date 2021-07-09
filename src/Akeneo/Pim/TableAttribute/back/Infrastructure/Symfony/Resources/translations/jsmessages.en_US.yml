@@ -43,6 +43,9 @@ pim_table_attribute:
     templates:
         choose_template: Choose your template
         empty_table: Empty table
+    product_edit_form:
+        add_rows: Add rows
+        search: Search
 pim_enrich:
     entity:
         attribute:

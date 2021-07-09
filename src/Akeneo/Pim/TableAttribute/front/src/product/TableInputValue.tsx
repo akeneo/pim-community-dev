@@ -1,10 +1,11 @@
 import React from 'react';
 import {AddingValueIllustration, TableInput} from 'akeneo-design-system';
 import {ColumnCode, TableConfiguration} from '../models/TableConfiguration';
-import {getLabel, useTranslate, useUserContext} from '@akeneo-pim-community/shared';
+import {getLabel, useTranslate, useUserContext, useRouter} from '@akeneo-pim-community/shared';
 import {TableFooter} from './TableFooter';
 import styled from 'styled-components';
 import {TableValueWithId} from './TableFieldApp';
+import {getSelectOption} from '../repositories/SelectOption';
 
 const TABLE_VALUE_ITEMS_PER_PAGE = [10, 20, 50, 100];
 
@@ -17,6 +18,7 @@ const CenteredHelper = styled.div`
 `;
 
 type TableInputValueProps = {
+  attributeCode: string;
   valueData: TableValueWithId;
   tableConfiguration: TableConfiguration;
   onChange: (tableValue: TableValueWithId) => void;
@@ -24,6 +26,7 @@ type TableInputValueProps = {
 };
 
 const TableInputValue: React.FC<TableInputValueProps> = ({
+  attributeCode,
   valueData,
   tableConfiguration,
   onChange,
@@ -42,8 +45,10 @@ const TableInputValue: React.FC<TableInputValueProps> = ({
 
   const translate = useTranslate();
   const userContext = useUserContext();
+  const router = useRouter();
   const [itemsPerPage, setItemsPerPage] = React.useState<number>(TABLE_VALUE_ITEMS_PER_PAGE[0]);
   const [currentPage, setCurrentPage] = React.useState<number>(0);
+  const [selectOptionLabels, setSelectOptionLabels] = React.useState<{[key: string]: string}>({});
   const isSearching = searchText.trim() !== '';
 
   let filteredData = valueData;
@@ -66,6 +71,25 @@ const TableInputValue: React.FC<TableInputValueProps> = ({
 
   const [firstColumn, ...otherColumns] = tableConfiguration;
 
+  const getOptionLabel = async (columnCode: ColumnCode, value: string) => {
+    const selectOption = await getSelectOption(router, attributeCode, columnCode, value);
+
+    return selectOption ? getLabel(selectOption.labels, userContext.get('catalogLocale'), selectOption.code) : value;
+  };
+
+  React.useEffect(() => {
+    const f = async () => {
+      for await (const row of valueDataPage) {
+        selectOptionLabels[`${firstColumn.code}-${row[firstColumn.code]}`] = await getOptionLabel(
+          firstColumn.code,
+          row[firstColumn.code] as string
+        );
+      }
+      setSelectOptionLabels({...selectOptionLabels});
+    };
+    f();
+  }, [valueDataPage.length]);
+
   return (
     <TableInputContainer>
       <TableInput>
@@ -80,7 +104,9 @@ const TableInputValue: React.FC<TableInputValueProps> = ({
           {valueDataPage.map(row => {
             return (
               <TableInput.Row key={row['unique id']}>
-                <TableInput.Cell rowTitle={true}>{row[firstColumn.code]}</TableInput.Cell>
+                <TableInput.Cell rowTitle={true}>
+                  {selectOptionLabels[`${firstColumn.code}-${row[firstColumn.code]}`] ?? ''}
+                </TableInput.Cell>
                 {otherColumns.map(columnDefinition => {
                   const columnCode = columnDefinition.code;
                   const columnType = columnDefinition.data_type;

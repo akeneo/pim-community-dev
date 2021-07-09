@@ -60,7 +60,7 @@ describe('AddColumnModal', () => {
     const createButton = screen.getByText('pim_common.create') as HTMLButtonElement;
 
     fireEvent.change(labelInput, {target: {value: 'Ingredients'}});
-    fireEvent.change(codeInput, {target: {value: 'ingredients'}});
+    fireEvent.change(codeInput, {target: {value: 'ingredient'}});
     fireEvent.focus(dataTypeInput);
     expect(screen.getByText('pim_table_attribute.properties.data_type.text')).toBeInTheDocument();
     fireEvent.click(screen.getByText('pim_table_attribute.properties.data_type.text'));
@@ -72,7 +72,7 @@ describe('AddColumnModal', () => {
     });
 
     expect(handleCreate).toHaveBeenCalledWith({
-      code: 'ingredients',
+      code: 'ingredient',
       data_type: 'text',
       labels: {
         en_US: 'Ingredients',

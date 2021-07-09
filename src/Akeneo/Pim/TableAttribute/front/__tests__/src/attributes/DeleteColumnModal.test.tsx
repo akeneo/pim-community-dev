@@ -8,7 +8,7 @@ describe('DeleteColumnModal', () => {
     const handleClose = jest.fn();
     const handleDelete = jest.fn();
     renderWithProviders(
-      <DeleteColumnModal close={handleClose} columnDefinitionCode={'ingredients'} onDelete={handleDelete} />
+      <DeleteColumnModal close={handleClose} columnDefinitionCode={'ingredient'} onDelete={handleDelete} />
     );
     const deleteButton = await screen.findByText('pim_common.delete');
     expect(deleteButton).toHaveAttribute('disabled');
@@ -16,7 +16,7 @@ describe('DeleteColumnModal', () => {
     const codeInput = screen.getByLabelText('pim_table_attribute.form.attribute.please_type') as HTMLInputElement;
 
     act(() => {
-      fireEvent.change(codeInput, {target: {value: 'ingredients'}});
+      fireEvent.change(codeInput, {target: {value: 'ingredient'}});
     });
     expect(deleteButton).not.toHaveAttribute('disabled');
 
@@ -31,7 +31,7 @@ describe('DeleteColumnModal', () => {
     const handleClose = jest.fn();
     const handleDelete = jest.fn();
     renderWithProviders(
-      <DeleteColumnModal close={handleClose} columnDefinitionCode={'ingredients'} onDelete={handleDelete} />
+      <DeleteColumnModal close={handleClose} columnDefinitionCode={'ingredient'} onDelete={handleDelete} />
     );
     const cancelButton = await screen.findByText('pim_common.cancel');
 

@@ -5,18 +5,22 @@ import {TableInputValue} from '../../../src/product/TableInputValue';
 import {getTableValueWithId} from '../factories/TableValue';
 import {getComplexTableConfiguration} from '../factories/TableConfiguration';
 jest.mock('../../../src/attribute/LocaleLabel');
+jest.mock('../../../src/fetchers/SelectOptionsFetcher');
 
 describe('TableInputValue', () => {
-  it('should render the component', () => {
+  it('should render the component', async () => {
     const handleChange = jest.fn();
     renderWithProviders(
       <TableInputValue
+        attributeCode={'nutrition'}
         valueData={getTableValueWithId()}
         tableConfiguration={getComplexTableConfiguration()}
         searchText={''}
         onChange={handleChange}
       />
     );
+
+    expect(await screen.findByText('Sugar')).toBeInTheDocument();
 
     expect(screen.getByText('Ingredients')).toBeInTheDocument();
     expect(screen.getByText('Quantity')).toBeInTheDocument();
@@ -29,16 +33,18 @@ describe('TableInputValue', () => {
     });
   });
 
-  it('should callback changes', () => {
+  it('should callback changes', async () => {
     const handleChange = jest.fn();
     renderWithProviders(
       <TableInputValue
+        attributeCode={'nutrition'}
         valueData={getTableValueWithId()}
         tableConfiguration={getComplexTableConfiguration()}
         searchText={''}
         onChange={handleChange}
       />
     );
+    expect(await screen.findByText('Sugar')).toBeInTheDocument();
 
     expect(screen.getAllByText('pim_common.yes')).toHaveLength(1);
     expect(screen.getAllByText('pim_common.no')).toHaveLength(1);
@@ -59,16 +65,18 @@ describe('TableInputValue', () => {
     ]);
   });
 
-  it('should search', () => {
+  it('should search', async () => {
     const handleChange = jest.fn();
     renderWithProviders(
       <TableInputValue
+        attributeCode={'nutrition'}
         valueData={getTableValueWithId()}
         tableConfiguration={getComplexTableConfiguration()}
         searchText={'r'}
         onChange={handleChange}
       />
     );
+    expect(await screen.findByText('Sugar')).toBeInTheDocument();
 
     ['quantity', 'part', 'is_allergenic'].forEach(columnCode => {
       expect(screen.queryByTestId(`input-uniquesalt-${columnCode}`)).not.toBeInTheDocument();

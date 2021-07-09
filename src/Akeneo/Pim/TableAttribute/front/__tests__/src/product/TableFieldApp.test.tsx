@@ -6,6 +6,14 @@ import {TemplateContext} from '../../../src/legacy/table-field';
 import {getComplexTableConfiguration} from '../factories/TableConfiguration';
 import {getTableValueSelectRow} from '../factories/TableValue';
 jest.mock('../../../src/attribute/LocaleLabel');
+jest.mock('../../../src/fetchers/SelectOptionsFetcher');
+jest.mock('../../../src/product/AddRowsButton');
+
+const intersectionObserverMock = () => ({
+  observe: jest.fn(),
+  unobserve: jest.fn(),
+});
+window.IntersectionObserver = jest.fn().mockImplementation(intersectionObserverMock);
 
 const getTemplateContext: () => TemplateContext = () => {
   return {
@@ -29,10 +37,11 @@ const getTemplateContext: () => TemplateContext = () => {
 };
 
 describe('TableFieldApp', () => {
-  it('should render the component', () => {
+  it('should render the component', async () => {
     const handleChange = jest.fn();
     renderWithProviders(<TableFieldApp {...getTemplateContext()} onChange={handleChange} elements={{}} />);
 
+    expect(await screen.findByText('Sugar')).toBeInTheDocument();
     expect(screen.getByText('Nutrition')).toBeInTheDocument();
     expect(screen.getByText('en')).toBeInTheDocument();
     expect(screen.getByText('Ecommerce')).toBeInTheDocument();
@@ -40,7 +49,7 @@ describe('TableFieldApp', () => {
     expect(screen.getByTitle('pim_enrich.entity.product.module.attribute.remove_optional')).toBeInTheDocument();
   });
 
-  it('should render elements', () => {
+  it('should render elements', async () => {
     const handleChange = jest.fn();
 
     const elementAsHtml = [
@@ -65,18 +74,36 @@ describe('TableFieldApp', () => {
       />
     );
 
+    expect(await screen.findByText('Sugar')).toBeInTheDocument();
     expect(screen.getByText('Guidelines')).toBeInTheDocument();
     expect(screen.getByText('Completeness')).toBeInTheDocument();
   });
 
-  it('should add a row', () => {
+  it('should add and remove a row', async () => {
     const handleChange = jest.fn();
     renderWithProviders(<TableFieldApp {...getTemplateContext()} onChange={handleChange} elements={{}} />);
 
-    const addRowButton = screen.getByText('Add row');
+    expect(await screen.findByText('Sugar')).toBeInTheDocument();
+    const addRowButton = screen.getByText('pim_table_attribute.product_edit_form.add_rows');
+    // Add pepper
     act(() => {
       fireEvent.click(addRowButton);
     });
-    expect(handleChange).toBeCalledWith([getTableValueSelectRow(), {}]);
+    expect(await screen.findByText('Pepper')).toBeInTheDocument();
+    expect(handleChange).toBeCalledWith([getTableValueSelectRow(), {ingredient: 'pepper'}]);
+
+    // Remove pepper
+    await act(async () => {
+      fireEvent.click(addRowButton);
+      expect(await screen.findByText('Pepper')).not.toBeInTheDocument();
+    });
+    expect(handleChange).toBeCalledWith([getTableValueSelectRow()]);
+
+    // Add again pepper
+    act(() => {
+      fireEvent.click(addRowButton);
+    });
+    expect(await screen.findByText('Pepper')).toBeInTheDocument();
+    expect(handleChange).toBeCalledWith([getTableValueSelectRow(), {ingredient: 'pepper'}]);
   });
 });

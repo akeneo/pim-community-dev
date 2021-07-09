@@ -28,7 +28,7 @@ describe('TableStructureApp', () => {
     const dataTypeInput = screen.getByLabelText('pim_table_attribute.form.attribute.data_type') as HTMLInputElement;
     const english = screen.getByLabelText('English (United States)') as HTMLInputElement;
     const german = screen.getByLabelText('German (Germany)') as HTMLInputElement;
-    expect(codeInput.value).toEqual('ingredients');
+    expect(codeInput.value).toEqual('ingredient');
     expect(dataTypeInput.value).toEqual('pim_table_attribute.properties.data_type.select');
     expect(english.value).toEqual('Ingredients');
     expect(german.value).toEqual('');
@@ -60,7 +60,7 @@ describe('TableStructureApp', () => {
       await fireEvent.click(screen.getAllByRole('row')[0]);
     });
 
-    expect(codeInput.value).toEqual('ingredients');
+    expect(codeInput.value).toEqual('ingredient');
   });
 
   it('should update labels', async () => {
@@ -69,7 +69,7 @@ describe('TableStructureApp', () => {
       <TableStructureApp
         onChange={handleChange}
         initialTableConfiguration={getSimpleTableConfiguration()}
-        savedColumnCodes={['ingredients']}
+        savedColumnCodes={['ingredient']}
         attribute={getTableAttribute()}
       />
     );
@@ -83,7 +83,7 @@ describe('TableStructureApp', () => {
     expect(handleChange).toBeCalledWith([
       {
         data_type: 'select',
-        code: 'ingredients',
+        code: 'ingredient',
         labels: {en_US: 'Ingredients', fr_FR: 'French label'},
         validations: {},
       },
@@ -170,7 +170,7 @@ describe('TableStructureApp', () => {
     act(() => {
       fireEvent.click(deleteButton);
     });
-    expect(codeInput.value).toEqual('ingredients');
+    expect(codeInput.value).toEqual('ingredient');
   });
 
   it('should set the code field as readonly if the column is saved', async () => {
@@ -179,7 +179,7 @@ describe('TableStructureApp', () => {
       <TableStructureApp
         onChange={handleChange}
         initialTableConfiguration={getSimpleTableConfiguration()}
-        savedColumnCodes={['ingredients']}
+        savedColumnCodes={['ingredient']}
         attribute={getTableAttribute()}
       />
     );
@@ -263,7 +263,7 @@ describe('TableStructureApp', () => {
       fireEvent.click(screen.getByText('Mock create'));
     });
     expect(handleChange).toBeCalledWith([
-      {data_type: 'select', code: 'ingredients', labels: {en_US: 'Ingredients'}, validations: {}},
+      {data_type: 'select', code: 'ingredient', labels: {en_US: 'Ingredients'}, validations: {}},
       {data_type: 'text', code: 'new_column', labels: {en_US: 'New column'}, validations: {}},
     ]);
   });
