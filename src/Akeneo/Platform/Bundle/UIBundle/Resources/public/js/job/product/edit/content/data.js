@@ -179,7 +179,11 @@ define([
         return this;
       }
 
-      this.$el.html(this.template({__: __}));
+      this.$el.html(
+        this.template({
+          sectionTitle: __(this.config.sectionTitle ?? 'pim_enrich.export.product.data.title'),
+        })
+      );
 
       $.when(fetcherRegistry.getFetcher('attribute').getIdentifierAttribute(), this.addExistingFilters()).always(
         function (identifier) {
