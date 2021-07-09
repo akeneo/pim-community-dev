@@ -448,7 +448,7 @@ pim_datagrid:
     enabled:
       label: 상태
     scope:
-      label: 범위
+      label: 채널
     completeness:
       label: 완료
     created:
