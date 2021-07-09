@@ -1,12 +1,23 @@
 <?php
 
-namespace Akeneo\Pim\TailoredExport\Test\Integration\Infrastructure\Query;
+declare(strict_types=1);
 
-use Akeneo\Pim\TailoredExport\Infrastructure\Query\InMemoryGetSystemSources;
-use Akeneo\Pim\TailoredExport\Test\Integration\ControllerIntegrationTestCase;
+/*
+ * This file is part of the Akeneo PIM Enterprise Edition.
+ *
+ * (c) 2021 Akeneo SAS (https://www.akeneo.com)
+ *
+ * For the full copyright and license information, please view the LICENSE
+ * file that was distributed with this source code.
+ */
+
+namespace Akeneo\Platform\TailoredExport\Test\Integration\Infrastructure\Query;
+
+use Akeneo\Platform\TailoredExport\Infrastructure\Query\InMemoryFindSystemSources;
+use Akeneo\Platform\TailoredExport\Test\Integration\ControllerIntegrationTestCase;
 use Akeneo\Test\Integration\Configuration;
 
-class InMemoryGetSystemSourcesIntegration extends ControllerIntegrationTestCase
+class InMemoryFindSystemSourcesIntegrationTest extends ControllerIntegrationTestCase
 {
     public function test_it_returns_association_types_depending_on_search(): void
     {
@@ -72,9 +83,9 @@ class InMemoryGetSystemSourcesIntegration extends ControllerIntegrationTestCase
         return null;
     }
 
-    private function getSqlGetSystemSources(): InMemoryGetSystemSources
+    private function getSqlGetSystemSources(): InMemoryFindSystemSources
     {
-        return $this->get('pimee_tailored_export.query.sql.get_system_sources');
+        return $this->get('Akeneo\Platform\TailoredExport\Domain\Query\FindSystemSourcesInterface');
     }
 
     protected function getConfiguration(): Configuration

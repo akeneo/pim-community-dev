@@ -17,7 +17,6 @@ use Akeneo\Pim\Structure\Component\Query\PublicApi\Association\AssociationType;
 use Akeneo\Pim\Structure\Component\Query\PublicApi\Association\FindAssociationTypesInterface;
 use Akeneo\Pim\Structure\Component\Query\PublicApi\Attribute\FindFlattenAttributesInterface;
 use Akeneo\Pim\Structure\Component\Query\PublicApi\Attribute\FlattenAttribute;
-use Akeneo\Pim\Structure\Component\Query\PublicApi\Attribute\SearchFlattenAttributesInterface;
 use Akeneo\Platform\TailoredExport\Domain\Query\FindSystemSourcesInterface;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\RedirectResponse;
@@ -28,6 +27,8 @@ use Symfony\Contracts\Translation\TranslatorInterface;
 final class GetGroupedSourcesAction
 {
     private const LIMIT_DEFAULT = 20;
+    private const FIELD_TRANSLATION_BASE = 'pim_common.';
+    private const SYSTEM_GROUP_TRANSLATION_KEY = 'System';
     private const DEFAULT_LOCALE = 'en_US';
 
     private TranslatorInterface $translator;
@@ -95,13 +96,18 @@ final class GetGroupedSourcesAction
             return [
                 'code' => $field,
                 'type' => 'property',
-                'label' => $this->translator->trans(sprintf('pim_common.%s', $field), [], null, $localeCode),
+                'label' => $this->translator->trans(
+                    sprintf('%s%s', self::FIELD_TRANSLATION_BASE, $field),
+                    [],
+                    null,
+                    $localeCode
+                ),
             ];
         }, $fields);
 
         return [[
             'code' => 'system',
-            'label' => $this->translator->trans('System', [], null, $localeCode),
+            'label' => $this->translator->trans(self::SYSTEM_GROUP_TRANSLATION_KEY, [], null, $localeCode),
             'children' => $children,
         ]];
     }
@@ -121,31 +127,31 @@ final class GetGroupedSourcesAction
         }, $fields);
 
         return [[
-            'code' => 'associations',
+            'code' => 'association_types',
             'label' => $this->translator->trans('pim_common.association_types'),
             'children' => $associationFields,
         ]];
     }
 
     /**
-     * @param FlattenAttribute[] $groupedAttributes
+     * @param FlattenAttribute[] $flattenAttributes
      */
-    private function formatAttributes(array $groupedAttributes): array
+    private function formatAttributes(array $flattenAttributes): array
     {
         $results = [];
-        foreach ($groupedAttributes as $attribute) {
-            $groupCode = $attribute->getAttributeGroupCode();
+        foreach ($flattenAttributes as $flattenAttribute) {
+            $groupCode = $flattenAttribute->getAttributeGroupCode();
             if (!array_key_exists($groupCode, $results)) {
                 $results[$groupCode] = [
                     'code' => $groupCode,
-                    'label' => $attribute->getAttributeGroupLabel(),
+                    'label' => $flattenAttribute->getAttributeGroupLabel(),
                     'children' => [],
                 ];
             }
 
             $results[$groupCode]['children'][] = [
-                'code' => $attribute->getCode(),
-                'label' => $attribute->getLabel(),
+                'code' => $flattenAttribute->getCode(),
+                'label' => $flattenAttribute->getLabel(),
                 'type' => 'attribute',
             ];
         }

@@ -11,14 +11,10 @@ declare(strict_types=1);
  * file that was distributed with this source code.
  */
 
-namespace Akeneo\Pim\TailoredExport\Test\Integration;
+namespace Akeneo\Platform\TailoredExport\Test\Integration;
 
 use Akeneo\Test\Integration\Configuration;
 use Akeneo\Test\IntegrationTestsBundle\Configuration\CatalogInterface;
-use Doctrine\Common\Collections\ArrayCollection;
-use Oro\Bundle\SecurityBundle\Model\AclPermission;
-use Oro\Bundle\SecurityBundle\Model\AclPrivilege;
-use Oro\Bundle\SecurityBundle\Model\AclPrivilegeIdentity;
 use Symfony\Bundle\FrameworkBundle\KernelBrowser;
 use Symfony\Bundle\FrameworkBundle\Test\WebTestCase;
 
@@ -35,10 +31,8 @@ abstract class ControllerIntegrationTestCase extends WebTestCase
         $this->client->disableReboot();
 
         $this->catalog = $this->get('akeneo_integration_tests.catalogs');
-        if (null !== $this->getConfiguration()) {
-            $fixturesLoader = $this->get('akeneo_integration_tests.loader.fixtures_loader');
-            $fixturesLoader->load($this->getConfiguration());
-        }
+        $fixturesLoader = $this->get('akeneo_integration_tests.loader.fixtures_loader');
+        $fixturesLoader->load($this->getConfiguration());
 
         $authenticator = $this->get('akeneo_integration_tests.security.system_user_authenticator');
         $authenticator->createSystemUser();
