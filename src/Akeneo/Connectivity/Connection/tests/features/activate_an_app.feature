@@ -1,4 +1,4 @@
-@ce @optional-marketplace-activate @javascript
+@ce @optional @javascript
 Feature: Activate an OAuth2 client application in the PIM
   In order to activate an App
   As Julia
