@@ -19,6 +19,7 @@ use Akeneo\Platform\TailoredExport\Infrastructure\Validation\LocaleShouldBeActiv
 use Akeneo\Tool\Component\Batch\Job\JobInterface;
 use Akeneo\Tool\Component\Batch\Job\JobParameters\ConstraintCollectionProviderInterface;
 use Symfony\Component\Validator\Constraints as Assert;
+use Symfony\Component\Validator\Constraints\Type;
 
 class ConstraintCollectionProvider implements ConstraintCollectionProviderInterface
 {
@@ -46,6 +47,13 @@ class ConstraintCollectionProvider implements ConstraintCollectionProviderInterf
         $baseConstraint = $this->simpleProvider->getConstraintCollection();
         $constraintFields = $baseConstraint->fields;
         $constraintFields['columns'] = new Columns();
+        $constraintFields['with_media'] = new Type(
+            [
+                'type'   => 'bool',
+                'groups' => ['Default', 'FileConfiguration'],
+            ]
+        );
+
         $constraintFields['filters'] = new Assert\Collection([
             'fields' => [
                 'data' => [
