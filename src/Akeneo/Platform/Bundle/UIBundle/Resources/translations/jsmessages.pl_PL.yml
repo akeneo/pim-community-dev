@@ -154,7 +154,7 @@ pim_common:
   before: Przed
   by: autorstwa
   cancel: Anuluj
-  code: Pod Produktu
+  code: Kod
   confirm: Potwierdź
   confirm_deletion: Potwierdź usunięcie
   confirm_revocation: Potwierdź wykonanie
