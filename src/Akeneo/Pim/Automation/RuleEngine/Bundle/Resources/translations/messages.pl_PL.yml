@@ -6,7 +6,7 @@ pimee_catalog_rule:
         execute: Wykonaj
       title: Reguły
       column:
-        code: Pod Produktu
+        code: Kod
         conditions: Stan
         actions: Działanie
         impacted_product_count:
