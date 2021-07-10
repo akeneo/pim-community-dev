@@ -27,7 +27,7 @@ pim_enrich:
         third: Konfiguruj
         fourth: Potwierdź
 pim_enrich_attribute_form:
-  code: Pod Produktu
+  code: Kod
   type: Typ atrybutu
   reference_data_name: Nazwa danych referencyjnych
   scopable: Wartość dla kanału
