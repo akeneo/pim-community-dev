@@ -78,8 +78,8 @@ jobs:
             delimiter:  ;
             enclosure:  '"'
             withHeader: true
-            filePathProduct:      /tmp/1_products_export_%locale%_%scope%_%datetime%.csv
-            filePathProductModel: /tmp/2_product_models_export_%locale%_%scope%_%datetime%.csv
+            filePathProduct:      /%temp_dir%/1_products_export_%locale%_%scope%_%datetime%.csv
+            filePathProductModel: /%temp_dir%/2_product_models_export_%locale%_%scope%_%datetime%.csv
             with_media: true
     csv_product_grid_context_quick_export:
         connector: Akeneo CSV Connector
@@ -90,8 +90,8 @@ jobs:
             delimiter:  ;
             enclosure:  '"'
             withHeader: true
-            filePathProduct:      /tmp/1_products_export_grid_context_%locale%_%scope%_%datetime%.csv
-            filePathProductModel: /tmp/2_product_models_export_grid_context_%locale%_%scope%_%datetime%.csv
+            filePathProduct:      /%temp_dir%/1_products_export_grid_context_%locale%_%scope%_%datetime%.csv
+            filePathProductModel: /%temp_dir%/2_product_models_export_grid_context_%locale%_%scope%_%datetime%.csv
             with_media: true
     xlsx_product_quick_export:
         connector: Akeneo XLSX Connector
@@ -101,8 +101,8 @@ jobs:
         configuration:
             withHeader: true
             linesPerFile: 10000
-            filePathProduct:      /tmp/1_products_export_%locale%_%scope%_%datetime%.xlsx
-            filePathProductModel: /tmp/2_product_models_export_%locale%_%scope%_%datetime%.xlsx
+            filePathProduct:      /%temp_dir%/1_products_export_%locale%_%scope%_%datetime%.xlsx
+            filePathProductModel: /%temp_dir%/2_product_models_export_%locale%_%scope%_%datetime%.xlsx
             with_media: true
     xlsx_product_grid_context_quick_export:
         connector: Akeneo XLSX Connector
@@ -111,8 +111,8 @@ jobs:
         type: quick_export
         configuration:
             withHeader:   true
-            filePathProduct:      /tmp/1_products_export_grid_context_%locale%_%scope%_%datetime%.xlsx
-            filePathProductModel: /tmp/2_product_models_export_grid_context_%locale%_%scope%_%datetime%.xlsx
+            filePathProduct:      /%temp_dir%/1_products_export_grid_context_%locale%_%scope%_%datetime%.xlsx
+            filePathProductModel: /%temp_dir%/2_product_models_export_grid_context_%locale%_%scope%_%datetime%.xlsx
             linesPerFile: 10000
             with_media:   true
     compute_completeness_of_products_family:
