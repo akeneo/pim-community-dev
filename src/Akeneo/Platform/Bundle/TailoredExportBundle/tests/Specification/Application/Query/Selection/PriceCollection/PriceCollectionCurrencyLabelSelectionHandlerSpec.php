@@ -42,8 +42,7 @@ class PriceCollectionCurrencyLabelSelectionHandlerSpec extends ObjectBehavior
         $currencyTranslator->translate('USD', 'fr_FR', '[USD]')->willReturn('Dollars $');
         $currencyTranslator->translate('DKK', 'fr_FR', '[DKK]')->willReturn('Donkey kong 🐒');
 
-        $this->applySelection($selection, $value)
-            ->shouldReturn('Euros €|Dollars $|Donkey kong 🐒');
+        $this->applySelection($selection, $value)->shouldReturn('Euros €|Dollars $|Donkey kong 🐒');
     }
 
     public function it_does_not_apply_selection_on_not_supported_selections_and_values()
