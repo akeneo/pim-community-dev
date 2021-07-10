@@ -1,47 +1,22 @@
 batch_jobs.xlsx_tailored_product_export.label: Exportación de productos a medida en XLSX
 akeneo.tailored_export:
-  form:
-    job_instance:
-      tab:
-        content:
-          title: Filtrar los datos
-        column:
-          title: Seleccione las columnas
   column_list:
     title: Columnas
-    header:
-      column_name: Nombre de la columna
-      source_data: Datos de origen
     column_row:
-      target_placeholder: Defina el nombre de su nueva columna aquí
       remove: Eliminar columna
-      no_source: Sin fuente
     no_column_selection:
-      title: No hay ninguna selección de columnas para exportar
-      subtitle: Para saber más sobre asignación y operaciones,
-      link: este artículo puede ayudarle
       add_column: Añadir primera columna
   column_details:
     sources:
       title: Fuentes
       add: Añadir fuente
       no_result: Lo sentimos, no hay resultados.
-      locale_specific.info: Este atributo es específico de la configuración regional
       remove:
         title: fuente
         text: '¿Está seguro de que quiere eliminar esta fuente?'
         button: Eliminar esta fuente
-      no_source_configuration:
-        title: No hay operaciones disponibles para esta fuente. Solo se exportará su valor.
-      no_source_selected:
-        title: No se ha seleccionado ninguna fuente por el momento.
-        subtitle: Para saber más sobre asignación y operaciones,
-        link: este artículo puede ayudarle
-      no_column_selected:
-        title: No se ha seleccionado ninguna columna por el momento.
       selection:
         title: Selección
-        separator: Separador
         type:
           amount: Cantidad
           currency: Moneda
@@ -49,14 +24,5 @@ akeneo.tailored_export:
     delete_message: '¿Está seguro de que quiere eliminar esta columna?'
   validation:
     columns:
-      max_column_count_reached: Has alcanzado el número máximo de {{ limit }} columnas
       target:
-        should_not_be_blank: El nombre de la columna no debe estar en blanco
         max_length_reached: El nombre de la columna es demasiado largo. Debería tener {{ limit }} caracteres o menos.
-        should_be_unique: El nombre de la columna debe ser único
-    sources:
-      max_source_count_reached: Has alcanzado el número máximo de fuentes de {{ limit }}
-    locale:
-      should_be_active: La configuración regional {{ locale_code }} debe estar activa
-    channel:
-      should_exist: El canal {{ channel_code }} debe existir

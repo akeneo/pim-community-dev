@@ -1,47 +1,22 @@
 batch_jobs.xlsx_tailored_product_export.label: 以 XLSX 格式定制导出产品
 akeneo.tailored_export:
-  form:
-    job_instance:
-      tab:
-        content:
-          title: 筛选数据
-        column:
-          title: 选择列
   column_list:
     title: 列
-    header:
-      column_name: 列名称
-      source_data: 源数据
     column_row:
-      target_placeholder: 在此定义您的新列名称
       remove: 删除列
-      no_source: 没有源
     no_column_selection:
-      title: 没有要导出的列选择
-      subtitle: 要了解更多有关映射和运算的信息，
-      link: 这篇文章可以帮助您
       add_column: 添加第一列
   column_details:
     sources:
       title: 源
       add: 添加源
       no_result: 抱歉，找不到结果 
-      locale_specific.info: 此属性为区域特定
       remove:
         title: 源
         text: 确定要删除该源吗？
         button: 删除该源
-      no_source_configuration:
-        title: 此源没有可用的运算。将仅导出其值。
-      no_source_selected:
-        title: 目前没有选定的源。
-        subtitle: 要了解更多有关映射和运算的信息，
-        link: 这篇文章可以帮助您
-      no_column_selected:
-        title: 目前没有选中的列。
       selection:
         title: 选择
-        separator: 分隔符
         type:
           amount: 金额
           currency: 货币
@@ -49,14 +24,5 @@ akeneo.tailored_export:
     delete_message: 确实要删除此列吗?
   validation:
     columns:
-      max_column_count_reached: 您的列数目达到 {{ limit }} 个的上限
       target:
-        should_not_be_blank: 列名称不应为空
         max_length_reached: 列名称太长。其不应超过 {{ limit }} 个字符。
-        should_be_unique: 列名称应当唯一
-    sources:
-      max_source_count_reached: 您的源数目达到 {{ limit }} 个的上限
-    locale:
-      should_be_active: 区域 {{ locale_code }} 应为活动状态
-    channel:
-      should_exist: 渠道 {{ channel_code }} 应存在
