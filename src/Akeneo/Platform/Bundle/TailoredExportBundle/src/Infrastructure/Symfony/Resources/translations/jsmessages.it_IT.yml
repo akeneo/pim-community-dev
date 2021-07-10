@@ -1,47 +1,22 @@
 batch_jobs.xlsx_tailored_product_export.label: Esportazione prodotti su misura in XLSX
 akeneo.tailored_export:
-  form:
-    job_instance:
-      tab:
-        content:
-          title: Filtra i dati
-        column:
-          title: Seleziona le colonne
   column_list:
     title: Colonne
-    header:
-      column_name: Nome colonna
-      source_data: Dati di origine
     column_row:
-      target_placeholder: Definisci qui il nome della tua nuova colonna
       remove: Rimuovi colonna
-      no_source: Nessuna origine
     no_column_selection:
-      title: Nessuna selezione di colonne da esportare
-      subtitle: Per scoprire di più su mappatura e operazioni,
-      link: consulta questo articolo
       add_column: Aggiungi prima colonna
   column_details:
     sources:
       title: Origini
       add: Aggiungi origine
       no_result: Spiacenti, nessun risultato presente.
-      locale_specific.info: Questo attributo è specifico per impostazioni locali
       remove:
         title: origine
         text: Sei sicuro di voler rimuovere questa origine?
         button: Rimuovi questa origine
-      no_source_configuration:
-        title: Non sono presenti operazioni disponibili per questa origine. Solo il suo valore verrà esportato.
-      no_source_selected:
-        title: Nessuna origine selezionata al momento.
-        subtitle: Per scoprire di più su mappatura e operazioni,
-        link: consulta questo articolo
-      no_column_selected:
-        title: Nessuna colonna selezionata al momento.
       selection:
         title: Selezione
-        separator: Separatore
         type:
           amount: Importo
           currency: Valuta
@@ -49,14 +24,5 @@ akeneo.tailored_export:
     delete_message: Sei sicuro di voler rimuovere questa colonna?
   validation:
     columns:
-      max_column_count_reached: Hai raggiunto il numero massimo di colonne di {{ limit }}
       target:
-        should_not_be_blank: Il nome della colonna non deve essere vuoto
         max_length_reached: Nome della colonna troppo lungo. Deve avere {{ limit }} caratteri o meno.
-        should_be_unique: Il nome della colonna deve essere univoco
-    sources:
-      max_source_count_reached: Hai raggiunto il numero massimo di origini di {{ limit }}
-    locale:
-      should_be_active: L'impostazione locale {{ locale_code }} deve essere attiva
-    channel:
-      should_exist: Il canale {{ channel_code }} deve esistere

@@ -1,47 +1,22 @@
 batch_jobs.xlsx_tailored_product_export.label: Dostosowany eksport produktów w formacie XLSX
 akeneo.tailored_export:
-  form:
-    job_instance:
-      tab:
-        content:
-          title: Filtruj dane
-        column:
-          title: Wybierz kolumny
   column_list:
     title: Kolumny
-    header:
-      column_name: Nazwa kolumny
-      source_data: Źródło danych
     column_row:
-      target_placeholder: Zdefiniuj nową nazwę kolumny tutaj
       remove: Usuń kolumnę
-      no_source: Brak źródła
     no_column_selection:
-      title: Brak wyboru kolumn do eksportu
-      subtitle: Jeśli chcesz dowiedzieć się więcej na temat mapowania i operacji,
-      link: ten artykuł może Ci pomóc
       add_column: Dodaj pierwszą kolumnę
   column_details:
     sources:
       title: Źródła
       add: Dodaj źródło
       no_result: Przepraszamy, nie ma żadnych wyników.
-      locale_specific.info: Ten atrybut jest specyficzny dla wersji językowej
       remove:
         title: źródło
         text: Czy na pewno chcesz usunąć to źródło?
         button: Usuń to źródło
-      no_source_configuration:
-        title: Dla tego źródła nie ma dostępnych operacji. Wyeksportowana zostanie wyłącznie jego wartość.
-      no_source_selected:
-        title: Obecnie nie ma wybranego źródła.
-        subtitle: Jeśli chcesz dowiedzieć się więcej na temat mapowania i operacji,
-        link: ten artykuł może Ci pomóc
-      no_column_selected:
-        title: Obecnie nie ma wybranej kolumny.
       selection:
         title: Wybór
-        separator: Separator
         type:
           amount: Kwota
           currency: Waluta
@@ -49,14 +24,5 @@ akeneo.tailored_export:
     delete_message: Czy na pewno chcesz usunąć tę kolumnę?
   validation:
     columns:
-      max_column_count_reached: 'Osiągnięto maksymalną liczbę kolumn: {{ limit }}'
       target:
-        should_not_be_blank: Nazwa kolumny nie powinna być pusta
         max_length_reached: 'Nazwa kolumny jest zbyt długa. Powinna mieć nie więcej niż następującą liczbę znaków: {{ limit }}.'
-        should_be_unique: Nazwa kolumny powinna być unikalna
-    sources:
-      max_source_count_reached: 'Osiągnięto maksymalną liczbę źródeł: {{ limit }}'
-    locale:
-      should_be_active: Wersja językowa {{ locale_code }} powinna być aktywna
-    channel:
-      should_exist: Kanał {{ channel_code }} powinien istnieć
