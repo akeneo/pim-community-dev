@@ -61,7 +61,7 @@ pim_common:
   properties: Ustawienia
   name: Nazwa
   remove: Usuń
-  code: Pod Produktu
+  code: Kod
   quantity: Ilość
   products: Produkty
   product_models: Model produktu
@@ -276,7 +276,7 @@ by: Przez
 N/A: ND.
 Manage products: Zarządzaj produktami
 Manage groups: Zarządzaj grupami
-Code: Pod Produktu
+Code: Kod
 Name: Nazwa
 Type: Typ
 Scope: Kanał
