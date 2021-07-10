@@ -54,6 +54,7 @@ pim_enrich.entity.attribute_option:
   flash:
     create:
       success: Опція атрибутів успішно створена
+      fail: Під час спроби створити опції атрибуту сталася помилка
     update:
       fail: Не вдається зберегти елемент списку атрибуту
     delete:
