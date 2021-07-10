@@ -13,7 +13,7 @@ pimee_catalog_rule:
     launched: Wykonywanie reguł zostało rozpoczęte. Zostaniesz powiadomiony, kiedy zostanie zakończone.
   attribute:
     list:
-      code.label: Pod Produktu
+      code.label: Kod
       condition.label: Stan
       action.label: Działanie
       no_rule_yet.label: Aktualnie brak reguł
