@@ -79,13 +79,13 @@ class MigrateAssetCategoryLabelsCommand extends Command
         } catch (AttributeNotFoundException $e) {
             $io->warning(sprintf('There is no attribute "%s" for the family "%s".', $categoriesAttributeCode, $familyCode));
 
-            return;
+            return -1;
         }
 
         if (!($attribute instanceof OptionCollectionAttribute)) {
             $io->writeln(sprintf('The field "%s" is not a multiple_option. No migration needed.', $categoriesAttributeCode));
 
-            return;
+            return 0;
         }
 
         $PAMCategoryCodes = [];
@@ -95,7 +95,7 @@ class MigrateAssetCategoryLabelsCommand extends Command
         if (empty($PAMCategoryCodes)) {
             $io->writeln(sprintf('The field "%s" does not contain any option. No migration needed.', $categoriesAttributeCode));
 
-            return;
+            return 0;
         }
 
         $io->writeln(sprintf('%d category found.', count($PAMCategoryCodes)));
@@ -104,7 +104,7 @@ class MigrateAssetCategoryLabelsCommand extends Command
         if (empty($categoryLabels)) {
             $io->writeln('There is no translation for these PAM categories. No migration needed.');
 
-            return;
+            return 0;
         }
 
         $io->writeln(sprintf('%d translations found.', count($categoryLabels)));
@@ -142,6 +142,8 @@ class MigrateAssetCategoryLabelsCommand extends Command
         ($this->editAttributeHandler)($editAttributeCommand);
 
         $io->success(sprintf('%d translations updated, %d translations skipped!', $count, $skip));
+
+        return 0;
     }
 
     private function getPAMCategoryLabelsFromCategoryCodes(array $attributeOptionCodes): array
