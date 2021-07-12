@@ -111,7 +111,7 @@ final class GetGroupedSourcesControllerIntegrationTest extends ControllerIntegra
         $this->assertSourceGroupDoNotContainSource('association_types', 'UPSELL', $sourceGroups);
         $this->assertSourceGroupDoNotContainSource('marketing', 'name', $sourceGroups);
 
-        $response = $this->assertCallSuccess(4, 0, null,'erp name');
+        $response = $this->assertCallSuccess(4, 0, null, 'erp name');
         $sourceGroups = \json_decode($response->getContent(), true);
         $this->assertNotEmpty($sourceGroups);
 
@@ -146,7 +146,7 @@ final class GetGroupedSourcesControllerIntegrationTest extends ControllerIntegra
         $this->assertNotEmpty($sourceGroups);
 
         foreach ($sourceGroups as $group) {
-            foreach($group['children'] as $filter) {
+            foreach ($group['children'] as $filter) {
                 if ($filter['type'] !== 'attribute') {
                     continue;
                 }
