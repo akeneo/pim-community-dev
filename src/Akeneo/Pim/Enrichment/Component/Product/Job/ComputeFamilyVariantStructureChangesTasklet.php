@@ -26,7 +26,7 @@ use Symfony\Component\Validator\Validator\ValidatorInterface;
  */
 class ComputeFamilyVariantStructureChangesTasklet implements TaskletInterface
 {
-    private StepExecution $stepExecution;
+    private ?StepExecution $stepExecution = null;
     private IdentifiableObjectRepositoryInterface $familyVariantRepository;
     private ProductQueryBuilderFactoryInterface $productQueryBuilderFactory;
     private BulkSaverInterface $productSaver;
@@ -182,7 +182,7 @@ class ComputeFamilyVariantStructureChangesTasklet implements TaskletInterface
 
             if ($violations->count() !== 0) {
                 throw new \LogicException(
-                    $this->buildViolationsMessage(
+                    $this->buildErrorMessage(
                         sprintf(
                             'One or more validation errors occured for ProductModel with code "%s" during family variant structure change:',
                             $productModel->getCode()
@@ -206,7 +206,7 @@ class ComputeFamilyVariantStructureChangesTasklet implements TaskletInterface
 
             if ($violations->count() !== 0) {
                 throw new \LogicException(
-                    $this->buildViolationsMessage(
+                    $this->buildErrorMessage(
                         sprintf(
                             'One or more validation errors occured for Product with identifier "%s" during family variant structure change:',
                             $product->getIdentifier()
@@ -218,7 +218,7 @@ class ComputeFamilyVariantStructureChangesTasklet implements TaskletInterface
         }
     }
 
-    private function buildViolationsMessage(
+    private function buildErrorMessage(
         string $baseMessage,
         ConstraintViolationListInterface $constraintViolationList
     ): string {
