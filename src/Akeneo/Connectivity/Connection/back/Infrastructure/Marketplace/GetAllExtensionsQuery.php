@@ -15,27 +15,34 @@ use Akeneo\Platform\VersionProviderInterface;
  */
 class GetAllExtensionsQuery implements GetAllExtensionsQueryInterface
 {
-    private WebMarketplaceApiInterface $webMarketplaceApi;
-    private VersionProviderInterface $versionProvider;
+    private const MAX_REQUESTS = 10;
 
-    public function __construct(WebMarketplaceApiInterface $webMarketplaceApi, VersionProviderInterface $versionProvider)
-    {
+    private WebMarketplaceApiInterface $webMarketplaceApi;
+    private int $pagination;
+
+    public function __construct(
+        WebMarketplaceApiInterface $webMarketplaceApi,
+        int $pagination
+    ) {
         $this->webMarketplaceApi = $webMarketplaceApi;
-        $this->versionProvider = $versionProvider;
+        $this->pagination = $pagination;
     }
 
     public function execute(): GetAllExtensionsResult
     {
-        $version = $this->versionProvider->getVersion();
-        $edition = $this->versionProvider->getEdition();
-
-        $result = $this->webMarketplaceApi->getExtensions($edition, $version);
-
         $extensions = [];
+        $requests = 0;
+        $offset = 0;
 
-        foreach ($result['items'] as $item) {
-            $extensions[] = Extension::fromWebMarketplaceValues($item);
-        }
+        do {
+            $result = $this->webMarketplaceApi->getExtensions($offset, $this->pagination);
+            $requests++;
+            $offset += $result['limit'];
+
+            foreach ($result['items'] as $item) {
+                $extensions[] = Extension::fromWebMarketplaceValues($item);
+            }
+        } while (count($result['items']) > 0 && count($extensions) < $result['total'] && $requests < self::MAX_REQUESTS);
 
         return GetAllExtensionsResult::create($result['total'], $extensions);
     }

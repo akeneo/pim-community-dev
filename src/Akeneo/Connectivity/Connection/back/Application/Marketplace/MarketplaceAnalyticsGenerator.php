@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace Akeneo\Connectivity\Connection\Application\Marketplace;
 
 use Akeneo\Connectivity\Connection\Domain\Marketplace\GetUserProfileQueryInterface;
+use Akeneo\Connectivity\Connection\Infrastructure\Marketplace\WebMarketplaceAliasesInterface;
 use Akeneo\Platform\Bundle\FrameworkBundle\Service\PimUrl;
 use Akeneo\Platform\VersionProviderInterface;
 
@@ -15,16 +16,16 @@ use Akeneo\Platform\VersionProviderInterface;
 class MarketplaceAnalyticsGenerator
 {
     private GetUserProfileQueryInterface $getUserProfileQuery;
-    private VersionProviderInterface $versionProvider;
+    private WebMarketplaceAliasesInterface $webMarketplaceAliases;
     private PimUrl $pimUrl;
 
     public function __construct(
         GetUserProfileQueryInterface $getUserProfileQuery,
-        VersionProviderInterface $versionProvider,
+        WebMarketplaceAliasesInterface $webMarketplaceAliases,
         PimUrl $pimUrl
     ) {
         $this->getUserProfileQuery = $getUserProfileQuery;
-        $this->versionProvider = $versionProvider;
+        $this->webMarketplaceAliases = $webMarketplaceAliases;
         $this->pimUrl = $pimUrl;
     }
 
@@ -44,14 +45,9 @@ class MarketplaceAnalyticsGenerator
             $queryParameters['utm_term'] = $profile;
         }
 
-        switch ($this->versionProvider->getEdition()) {
-            case 'Serenity':
-                $queryParameters['utm_campaign'] = 'connect_serenity';
-                break;
-
-            case 'GE':
-                $queryParameters['utm_campaign'] = 'connect_ge';
-                break;
+        $campaign = $this->webMarketplaceAliases->getUtmCampaign();
+        if (null !== $campaign) {
+            $queryParameters['utm_campaign'] = $campaign;
         }
 
         return $queryParameters;

@@ -6,6 +6,7 @@ namespace spec\Akeneo\Connectivity\Connection\Application\Marketplace;
 
 use Akeneo\Connectivity\Connection\Application\Marketplace\MarketplaceAnalyticsGenerator;
 use Akeneo\Connectivity\Connection\Domain\Marketplace\GetUserProfileQueryInterface;
+use Akeneo\Connectivity\Connection\Infrastructure\Marketplace\WebMarketplaceAliasesInterface;
 use Akeneo\Platform\Bundle\FrameworkBundle\Service\PimUrl;
 use Akeneo\Platform\VersionProviderInterface;
 use PhpSpec\ObjectBehavior;
@@ -17,13 +18,13 @@ use PhpSpec\ObjectBehavior;
 class MarketplaceAnalyticsGeneratorSpec extends ObjectBehavior
 {
     public function let(
-        VersionProviderInterface $versionProvider,
-        PimUrl $pimUrl,
-        GetUserProfileQueryInterface $getUserProfileQuery
+        GetUserProfileQueryInterface $getUserProfileQuery,
+        WebMarketplaceAliasesInterface $webMarketplaceAliases,
+        PimUrl $pimUrl
     ): void {
         $this->beConstructedWith(
             $getUserProfileQuery,
-            $versionProvider,
+            $webMarketplaceAliases,
             $pimUrl
         );
     }
@@ -33,12 +34,12 @@ class MarketplaceAnalyticsGeneratorSpec extends ObjectBehavior
         $this->shouldHaveType(MarketplaceAnalyticsGenerator::class);
     }
 
-    function it_generates_extension_query_parameters_for_the_serenity_environment(
-        VersionProviderInterface $versionProvider,
-        PimUrl $pimUrl,
-        GetUserProfileQueryInterface $getUserProfileQuery
+    function it_generates_extension_query_parameters_without_campaign_when_undefined(
+        GetUserProfileQueryInterface $getUserProfileQuery,
+        WebMarketplaceAliasesInterface $webMarketplaceAliases,
+        PimUrl $pimUrl
     ): void {
-        $versionProvider->getEdition()->willReturn('Serenity');
+        $webMarketplaceAliases->getUtmCampaign()->willReturn(null);
         $pimUrl->getPimUrl()->willReturn('http://my-akeneo.test');
         $getUserProfileQuery->execute('julia')->willReturn('manager');
 
@@ -50,17 +51,16 @@ class MarketplaceAnalyticsGeneratorSpec extends ObjectBehavior
                     'utm_content' => 'extension_link',
                     'utm_source' => 'http://my-akeneo.test',
                     'utm_term' => 'manager',
-                    'utm_campaign' => 'connect_serenity',
                 ]
             );
     }
 
     function it_generates_extension_query_parameters_for_the_growth_edition_environment(
-        VersionProviderInterface $versionProvider,
-        PimUrl $pimUrl,
-        GetUserProfileQueryInterface $getUserProfileQuery
+        GetUserProfileQueryInterface $getUserProfileQuery,
+        WebMarketplaceAliasesInterface $webMarketplaceAliases,
+        PimUrl $pimUrl
     ): void {
-        $versionProvider->getEdition()->willReturn('GE');
+        $webMarketplaceAliases->getUtmCampaign()->willReturn('connect_ge');
         $pimUrl->getPimUrl()->willReturn('http://my-akeneo.test');
         $getUserProfileQuery->execute('julia')->willReturn('manager');
 
@@ -78,11 +78,11 @@ class MarketplaceAnalyticsGeneratorSpec extends ObjectBehavior
     }
 
     function it_generates_extension_query_parameters_without_profile_when_missing(
-        VersionProviderInterface $versionProvider,
-        PimUrl $pimUrl,
-        GetUserProfileQueryInterface $getUserProfileQuery
+        GetUserProfileQueryInterface $getUserProfileQuery,
+        WebMarketplaceAliasesInterface $webMarketplaceAliases,
+        PimUrl $pimUrl
     ): void {
-        $versionProvider->getEdition()->willReturn('GE');
+        $webMarketplaceAliases->getUtmCampaign()->willReturn('connect_ge');
         $pimUrl->getPimUrl()->willReturn('http://my-akeneo.test');
         $getUserProfileQuery->execute('julia')->willReturn(null);
 
