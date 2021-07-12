@@ -1,6 +1,7 @@
 import {CompareApp} from './compare/App';
 
 const BaseForm = require('pim/form');
+const AttributeGroupManager = require('pim/attribute-group-manager');
 
 class CompareView extends BaseForm {
   render() {
@@ -68,9 +69,15 @@ class CompareView extends BaseForm {
       });
     });*/
 
-    this.renderReact(CompareApp, {
-      product: this.getFormData(),
-    }, this.el);
+    const product = this.getFormData();
+
+    AttributeGroupManager.getAttributeGroupsForObject(product)
+      .then(attributeGroups => {
+          this.renderReact(CompareApp, {
+            product,
+            attributeGroups
+          }, this.el);
+      });
 
     return this;
   }
