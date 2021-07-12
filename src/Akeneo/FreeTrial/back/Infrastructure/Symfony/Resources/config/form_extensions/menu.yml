@@ -28,6 +28,7 @@ extensions:
     module: pim/menu/item
     parent: pim-menu-activity-navigation-block
     position: 104
+    feature: free_trial
     config:
       title: free_trial.menu.proposals
       disabled: true
@@ -37,6 +38,7 @@ extensions:
     module: pim/menu/item
     parent: pim-menu-system-navigation-block
     position: 125
+    feature: free_trial
     config:
       title: free_trial.menu.sso
       disabled: true
