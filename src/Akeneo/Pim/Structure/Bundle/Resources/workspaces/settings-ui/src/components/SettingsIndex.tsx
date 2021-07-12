@@ -302,9 +302,9 @@ const DisableIconCard = styled(IconCard)`
 `;
 
 const LockIconContainer = styled.div`
-  border: 1px solid rgb(76, 168, 224);
+  border: 1px solid #4ca8e0;
   border-radius: 4px;
-  background: rgb(240, 247, 252);
+  background: #f0f7fc;
   height: 24px;
   width: 24px;
   display: flex;
