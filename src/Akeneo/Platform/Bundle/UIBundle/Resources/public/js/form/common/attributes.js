@@ -187,12 +187,14 @@ define([
       var data = this.getFormData();
       AttributeGroupManager.getAttributeGroupsForObject(data)
         .then(attributeGroups => {
+          console.log('attributes::attributeGroupManager', attributeGroups, data);
           this.getExtension('attribute-group-selector').setElements(_.indexBy(attributeGroups, 'code'));
           FieldManager.clearVisibleFields();
         })
         .then(() => this.filterValues(data.values))
         .then(values => this.createFields(data, values))
         .then(fields => {
+          console.log('attribute:fields', fields)
           this.rendering = false;
           $.when(AttributeGroupManager.getAttributeGroupsForObject(data))
             .then(attributeGroups => {
@@ -515,6 +517,7 @@ define([
      * @return {Promise}
      */
     createFields: function (data, values) {
+      console.log('createFields', data, values);
       return FetcherRegistry.getFetcher('attribute')
         .fetchByIdentifiers(Object.keys(values))
         .then(attributes => {
