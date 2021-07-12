@@ -11,16 +11,14 @@ declare(strict_types=1);
  * file that was distributed with this source code.
  */
 
-namespace Akeneo\Platform\TailoredExport\Infrastructure\Validation;
+namespace Akeneo\Platform\TailoredExport\Infrastructure\Validation\Source\SimpleAssociationType;
 
 use Symfony\Component\Validator\Constraint;
 
-class Sources extends Constraint
+class SimpleAssociationSelectionConstraint extends Constraint
 {
-    public const ASSOCIATION_TYPE_DOES_NOT_EXIST = 'akeneo.tailored_export.validation.sources.association_type_should_exist';
-
-    public function validatedBy()
+    public function validatedBy(): string
     {
-        return 'akeneo.tailored_export.validation.source';
+        return SimpleAssociationSelectionValidator::class;
     }
 }

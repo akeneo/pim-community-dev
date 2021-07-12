@@ -13,7 +13,6 @@ declare(strict_types=1);
 
 namespace Akeneo\Platform\TailoredExport\Infrastructure\Validation\Source\SimpleAssociationType;
 
-use Akeneo\Platform\Bundle\TailoredExportBundle\src\Infrastructure\Validation\Source\SimpleAssociationType\SimpleAssociationTypeSourceValidator;
 use Symfony\Component\Validator\Constraint;
 
 class SimpleAssociationTypeSourceConstraint extends Constraint

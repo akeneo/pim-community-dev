@@ -9,7 +9,14 @@ import {
 } from '@akeneo-pim-community/shared';
 import {useChannels} from '../../../hooks';
 import {LocaleDropdown} from '../../LocaleDropdown';
-import {availableSeparators, isCollectionSeparator, isEntityType, SimpleAssociationTypeSelection} from './model';
+import {
+  availableSeparators,
+  isCollectionSeparator,
+  isEntityType,
+  isProductOrProductModelSelection,
+  SimpleAssociationTypeSelection
+} from './model';
+import {ChannelDropdown} from "../../ChannelDropdown";
 
 type SimpleAssociationTypeSelectorProps = {
   selection: SimpleAssociationTypeSelection;
@@ -27,6 +34,7 @@ const SimpleAssociationTypeSelector = ({
   const locales = getAllLocalesFromChannels(channels);
   const separatorErrors = filterErrors(validationErrors, '[separator]');
   const localeErrors = filterErrors(validationErrors, '[locale]');
+  const channelErrors = filterErrors(validationErrors, '[channel]');
   const typeErrors = filterErrors(validationErrors, '[type]');
   const entityTypeErrors = filterErrors(validationErrors, '[entity_type]');
 
@@ -41,7 +49,14 @@ const SimpleAssociationTypeSelector = ({
           invalid={0 < entityTypeErrors.length}
           onChange={entityType => {
             if (isEntityType(entityType)) {
-              onSelectionChange({...selection, entity_type: entityType});
+              if (selection.type === 'code') {
+                onSelectionChange({type: selection.type, entity_type: entityType, separator: selection.separator});
+              } else if (entityType === 'groups') {
+                  onSelectionChange({type: selection.type, entity_type: entityType, separator: selection.separator, locale: selection.locale});
+              } else {
+                const channel = isProductOrProductModelSelection(selection) ? selection.channel : channels[0].code;
+                onSelectionChange({type: selection.type, entity_type: entityType, separator: selection.separator, locale: selection.locale, channel});
+              }
             }
           }}
         >
@@ -73,7 +88,18 @@ const SimpleAssociationTypeSelector = ({
           invalid={0 < typeErrors.length}
           onChange={type => {
             if ('label' === type) {
-              onSelectionChange({...selection, type, locale: locales[0].code});
+              if (isProductOrProductModelSelection(selection)) {
+                onSelectionChange({...selection, type, locale: locales[0].code, channel: channels[0].code});
+
+                return;
+              }
+
+              onSelectionChange({
+                entity_type: 'groups',
+                separator: selection.separator,
+                type,
+                locale: locales[0].code
+              });
             } else if ('code' === type) {
               onSelectionChange({type, separator: selection.separator, entity_type: selection.entity_type});
             }
@@ -95,13 +121,29 @@ const SimpleAssociationTypeSelector = ({
           </Helper>
         ))}
       </Field>
+      {'label' === selection.type && isProductOrProductModelSelection(selection) && (
+        <ChannelDropdown
+          channels={channels}
+          value={selection.channel}
+          validationErrors={channelErrors}
+          onChange={updatedValue => onSelectionChange({...selection, channel: updatedValue})}
+        >
+          <Helper inline={true} level="info">
+            {translate('akeneo.tailored_export.column_details.sources.selection.association.information.channel')}
+          </Helper>
+        </ChannelDropdown>
+      )}
       {'label' === selection.type && (
         <LocaleDropdown
           locales={locales}
           value={selection.locale}
           validationErrors={localeErrors}
           onChange={updatedValue => onSelectionChange({...selection, locale: updatedValue})}
-        />
+        >
+          <Helper inline={true} level="info">
+            {translate('akeneo.tailored_export.column_details.sources.selection.association.information.locale')}
+          </Helper>
+        </LocaleDropdown>
       )}
       <Field label={translate('akeneo.tailored_export.column_details.sources.selection.collection_separator.title')}>
         <SelectInput

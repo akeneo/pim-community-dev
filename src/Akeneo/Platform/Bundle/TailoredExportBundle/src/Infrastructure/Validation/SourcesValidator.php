@@ -18,6 +18,7 @@ use Akeneo\Pim\Structure\Component\Query\PublicApi\AttributeType\GetAttributes;
 use Akeneo\Platform\TailoredExport\Application\Query\Source\AssociationTypeSource;
 use Akeneo\Platform\TailoredExport\Application\Query\Source\AttributeSource;
 use Akeneo\Platform\TailoredExport\Application\Query\Source\PropertySource;
+use Akeneo\Platform\TailoredExport\Infrastructure\Validation\Source\SimpleAssociationType\SimpleAssociationTypeSourceConstraint;
 use Symfony\Component\Validator\Constraint;
 use Symfony\Component\Validator\Constraints\Choice;
 use Symfony\Component\Validator\Constraints\Collection;
@@ -125,13 +126,14 @@ class SourcesValidator extends ConstraintValidator
             if (null === $associationType) {
                 $this->context->buildViolation(Sources::ASSOCIATION_TYPE_DOES_NOT_EXIST)
                     ->atPath(sprintf('[%s]', $source['uuid']))
+                    ->setParameter('association_type_code', $source['code'])
                     ->addViolation();
 
                 return;
             }
 
-            if ($associationType->isTwoWay()) {
-                // @TODO Add two way validation
+            if ($associationType->isQuantified()) {
+                // @TODO Add two way validation (RAC-683)
                 $constraint = null;
             } else {
                 $constraint = new SimpleAssociationTypeSourceConstraint();

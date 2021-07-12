@@ -69,6 +69,13 @@ services:
       - { name: validator.constraint_validator }
     public: true
 
+  Akeneo\Platform\TailoredExport\Infrastructure\Validation\Source\SimpleAssociationType\SimpleAssociationSelectionValidator:
+    arguments:
+      - [',', ';', '|']
+    tags:
+      - { name: validator.constraint_validator }
+    public: true
+
   Akeneo\Platform\TailoredExport\Infrastructure\Validation\Source\Number\NumberSourceValidator:
     arguments:
       - [',', '.', '٫‎']

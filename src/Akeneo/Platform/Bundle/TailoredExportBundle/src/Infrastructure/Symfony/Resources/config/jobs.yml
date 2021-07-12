@@ -37,6 +37,7 @@ services:
     class: 'Akeneo\Platform\TailoredExport\Infrastructure\Connector\Processor\ProductExportProcessor'
     arguments:
       - '@akeneo.pim.structure.query.get_attributes'
+      - '@akeneo.pim.structure.query.get_association_type'
       - '@Akeneo\Platform\TailoredExport\Infrastructure\Hydrator\ValueCollectionHydrator'
       - '@Akeneo\Platform\TailoredExport\Infrastructure\Hydrator\ColumnCollectionHydrator'
       - '@Akeneo\Platform\TailoredExport\Application\ProductMapper'

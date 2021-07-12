@@ -18,7 +18,7 @@ use Akeneo\Platform\TailoredExport\Application\Query\Selection\Parent\ParentLabe
 use Akeneo\Platform\TailoredExport\Application\Query\Selection\SelectionInterface;
 use Akeneo\Platform\TailoredExport\Domain\SourceValue\ParentValue;
 use Akeneo\Platform\TailoredExport\Domain\SourceValueInterface;
-use Akeneo\Platform\TailoredExport\Test\Acceptance\FakeServices\ProductModel\InMemoryGetProductModelLabels;
+use Akeneo\Platform\TailoredExport\Test\Acceptance\FakeServices\ProductModel\InMemoryFindProductModelLabels;
 use PHPUnit\Framework\Assert;
 
 final class HandleParentValueTest extends PropertyTestCase
@@ -71,8 +71,8 @@ final class HandleParentValueTest extends PropertyTestCase
 
     private function loadParent()
     {
-        /** @var InMemoryGetProductModelLabels $findProductModelLabelsRepository */
-        $findProductModelLabelsRepository = self::$container->get('akeneo.pim.enrichment.product.query.get_product_model_labels');
+        /** @var InMemoryFindProductModelLabels $findProductModelLabelsRepository */
+        $findProductModelLabelsRepository = self::$container->get('Akeneo\Platform\TailoredExport\Domain\Query\FindProductModelLabelsInterface');
         $findProductModelLabelsRepository->addProductModelLabel('a_product_model_code', 'ecommerce', 'en_US', 'A product model');
     }
 }

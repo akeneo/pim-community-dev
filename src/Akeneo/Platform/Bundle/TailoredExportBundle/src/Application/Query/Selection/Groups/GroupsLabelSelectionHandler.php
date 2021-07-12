@@ -13,20 +13,19 @@ declare(strict_types=1);
 
 namespace Akeneo\Platform\TailoredExport\Application\Query\Selection\Groups;
 
-use Akeneo\Pim\Structure\Component\Query\PublicApi\Group\GetGroupTranslations;
 use Akeneo\Platform\TailoredExport\Application\Query\Selection\SelectionHandlerInterface;
 use Akeneo\Platform\TailoredExport\Application\Query\Selection\SelectionInterface;
+use Akeneo\Platform\TailoredExport\Domain\Query\FindGroupLabelsInterface;
 use Akeneo\Platform\TailoredExport\Domain\SourceValue\GroupsValue;
 use Akeneo\Platform\TailoredExport\Domain\SourceValueInterface;
 
 class GroupsLabelSelectionHandler implements SelectionHandlerInterface
 {
-    private GetGroupTranslations $getGroupTranslations;
+    private FindGroupLabelsInterface $findGroupLabels;
 
-    public function __construct(
-        GetGroupTranslations $getGroupTranslations
-    ) {
-        $this->getGroupTranslations = $getGroupTranslations;
+    public function __construct(FindGroupLabelsInterface $findGroupLabels)
+    {
+        $this->findGroupLabels = $findGroupLabels;
     }
 
     public function applySelection(SelectionInterface $selection, SourceValueInterface $value): string
@@ -39,8 +38,7 @@ class GroupsLabelSelectionHandler implements SelectionHandlerInterface
         }
 
         $groupCodes = $value->getGroupCodes();
-        $groupTranslations = $this->getGroupTranslations
-            ->byGroupCodesAndLocale($groupCodes, $selection->getLocale());
+        $groupTranslations = $this->findGroupLabels->byCodes($groupCodes, $selection->getLocale());
 
         $selectedData = array_map(fn ($groupCode) => $groupTranslations[$groupCode] ??
             sprintf('[%s]', $groupCode), $groupCodes);

@@ -13,19 +13,19 @@ declare(strict_types=1);
 
 namespace Akeneo\Platform\TailoredExport\Application\Query\Selection\Parent;
 
-use Akeneo\Pim\Enrichment\Component\Product\Query\GetProductModelLabelsInterface;
 use Akeneo\Platform\TailoredExport\Application\Query\Selection\SelectionHandlerInterface;
 use Akeneo\Platform\TailoredExport\Application\Query\Selection\SelectionInterface;
+use Akeneo\Platform\TailoredExport\Domain\Query\FindProductModelLabelsInterface;
 use Akeneo\Platform\TailoredExport\Domain\SourceValue\ParentValue;
 use Akeneo\Platform\TailoredExport\Domain\SourceValueInterface;
 
 class ParentLabelSelectionHandler implements SelectionHandlerInterface
 {
-    private GetProductModelLabelsInterface $getProductModelLabels;
+    private FindProductModelLabelsInterface $findProductModelLabels;
 
-    public function __construct(GetProductModelLabelsInterface $getProductModelLabels)
+    public function __construct(FindProductModelLabelsInterface $findProductModelLabels)
     {
-        $this->getProductModelLabels = $getProductModelLabels;
+        $this->findProductModelLabels = $findProductModelLabels;
     }
 
     public function applySelection(SelectionInterface $selection, SourceValueInterface $value): string
@@ -38,10 +38,10 @@ class ParentLabelSelectionHandler implements SelectionHandlerInterface
         }
 
         $parentCode = $value->getParentCode();
-        $parentTranslations = $this->getProductModelLabels->byCodesAndLocaleAndScope(
+        $parentTranslations = $this->findProductModelLabels->byCodes(
             [$parentCode],
-            $selection->getLocale(),
-            $selection->getChannel()
+            $selection->getChannel(),
+            $selection->getLocale()
         );
 
         return $parentTranslations[$parentCode] ?? sprintf('[%s]', $parentCode);

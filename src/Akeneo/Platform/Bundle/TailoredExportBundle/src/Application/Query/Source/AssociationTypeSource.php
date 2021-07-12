@@ -21,13 +21,19 @@ class AssociationTypeSource implements SourceInterface
     public const TYPE = 'association_type';
 
     private string $code;
+    private bool $isQuantified;
+    private OperationCollection $operations;
     private SelectionInterface $selection;
 
     public function __construct(
         string $code,
+        bool $isQuantified,
+        OperationCollection $operations,
         SelectionInterface $selection
     ) {
         $this->code = $code;
+        $this->isQuantified = $isQuantified;
+        $this->operations = $operations;
         $this->selection = $selection;
     }
 
@@ -36,9 +42,14 @@ class AssociationTypeSource implements SourceInterface
         return $this->code;
     }
 
+    public function isQuantified(): bool
+    {
+        return $this->isQuantified;
+    }
+
     public function getOperationCollection(): OperationCollection
     {
-        return OperationCollection::create([]);
+        return $this->operations;
     }
 
     public function getSelection(): SelectionInterface

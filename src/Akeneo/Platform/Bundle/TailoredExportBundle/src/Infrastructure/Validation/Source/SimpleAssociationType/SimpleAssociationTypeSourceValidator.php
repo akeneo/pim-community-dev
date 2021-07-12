@@ -16,6 +16,7 @@ namespace Akeneo\Platform\TailoredExport\Infrastructure\Validation\Source\Simple
 use Akeneo\Platform\TailoredExport\Infrastructure\Validation\Source\SourceConstraintProvider;
 use Symfony\Component\Validator\Constraint;
 use Symfony\Component\Validator\Constraints\Collection;
+use Symfony\Component\Validator\Constraints\Type;
 use Symfony\Component\Validator\ConstraintValidator;
 
 class SimpleAssociationTypeSourceValidator extends ConstraintValidator
@@ -24,11 +25,8 @@ class SimpleAssociationTypeSourceValidator extends ConstraintValidator
     {
         $validator = $this->context->getValidator();
         $sourceConstraintFields = SourceConstraintProvider::getConstraintCollection()->fields;
-        $sourceConstraintFields['selection'] = new Collection(['fields' => ['type' => new EqualTo(['value' => 'code'])]]);
-
-        $sourceConstraintFields['operations'] = new Type([
-            'type' => 'array',
-        ]);
+        $sourceConstraintFields['selection'] = new SimpleAssociationSelectionConstraint();
+        $sourceConstraintFields['operations'] = new Type(['type' => 'array']);
 
         $violations = $validator->validate($source, new Collection(['fields' => $sourceConstraintFields]));
 
