@@ -92,6 +92,7 @@ class ValueHydrator
             case 'pim_catalog_image':
                 return new FileValue(
                     $product->getIdentifier(),
+                    $data->getStorage(),
                     $data->getKey(),
                     $data->getOriginalFilename(),
                     $value->getScopeCode(),

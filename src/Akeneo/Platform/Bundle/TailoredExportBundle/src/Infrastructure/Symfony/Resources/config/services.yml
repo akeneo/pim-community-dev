@@ -19,3 +19,6 @@ services:
         arguments:
             - '@Akeneo\Platform\TailoredExport\Application\OperationHandler'
             - '@Akeneo\Platform\TailoredExport\Application\Query\Selection\SelectionHandler'
+
+    Akeneo\Platform\TailoredExport\Application\FilePathGenerator:
+        public: true

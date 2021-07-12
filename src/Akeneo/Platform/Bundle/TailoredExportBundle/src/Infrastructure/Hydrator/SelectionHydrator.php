@@ -140,9 +140,9 @@ class SelectionHydrator
             case FilePathSelection::TYPE:
                 return new FilePathSelection($attribute->code());
             case FileKeySelection::TYPE:
-                return new FileKeySelection();
+                return new FileKeySelection($attribute->code());
             case FileNameSelection::TYPE:
-                return new FileNameSelection();
+                return new FileNameSelection($attribute->code());
             default:
                 throw new \LogicException(
                     sprintf('Selection type "%s" is not supported for attribute type "%s"', $selectionConfiguration['type'], $attribute->type())
