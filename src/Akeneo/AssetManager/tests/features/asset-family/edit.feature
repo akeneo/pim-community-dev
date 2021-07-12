@@ -61,6 +61,12 @@ Feature: Edit an asset family
     When the user updates the attribute as main media to be "label"
     Then there should be a validation error with message 'The attribute set as main media for the asset family should be of type: media_link, media_file'
 
+  @acceptance-back @error
+  Scenario: Cannot update an asset family if the provided attribute as main media does not match with the naming convention property
+    Given an asset family with a naming convention and a media file attribute "toto_picture"
+    When the user updates the attribute as main media to be "toto_picture" without updating the naming convention
+    Then there should be a validation error with message 'Property must match the code of the attribute defined as main media'
+
   # Product link rules
   @acceptance-back
   Scenario: Updating an asset family to set a collection of static rule templates

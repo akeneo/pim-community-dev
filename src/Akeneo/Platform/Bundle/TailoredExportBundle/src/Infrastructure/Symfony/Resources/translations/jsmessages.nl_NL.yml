@@ -1,47 +1,22 @@
 batch_jobs.xlsx_tailored_product_export.label: Op maat gemaakte export van producten in XLSX
 akeneo.tailored_export:
-  form:
-    job_instance:
-      tab:
-        content:
-          title: Data filteren
-        column:
-          title: Kolommen selecteren
   column_list:
     title: Kolommen
-    header:
-      column_name: Kolomnaam
-      source_data: Brongegevens
     column_row:
-      target_placeholder: Geef hier uw nieuwe kolomnaam op
       remove: Kolom verwijderen
-      no_source: Geen bron
     no_column_selection:
-      title: Geen kolommen geselecteerd om te exporteren
-      subtitle: Voor meer informatie over toewijzingen en bewerkingen,
-      link: kan dit artikel u helpen
       add_column: Eerste kolom toevoegen
   column_details:
     sources:
       title: Bronnen
       add: Bron toevoegen
       no_result: Er zijn geen resultaten.
-      locale_specific.info: Dit attribuut is taalspecifiek
       remove:
         title: bron
         text: Weet u zeker dat u deze bron wilt verwijderen?
         button: Deze bron verwijderen
-      no_source_configuration:
-        title: Er zijn geen bewerkingen beschikbaar voor deze bron. Alleen de waarde wordt geëxporteerd.
-      no_source_selected:
-        title: Momenteel geen bron geselecteerd.
-        subtitle: Voor meer informatie over toewijzingen en bewerkingen,
-        link: kan dit artikel u helpen
-      no_column_selected:
-        title: Momenteel geen kolom geselecteerd.
       selection:
         title: Selectie
-        separator: Scheidingsteken
         type:
           amount: Bedrag
           currency: Valuta
@@ -49,14 +24,5 @@ akeneo.tailored_export:
     delete_message: Weet u zeker dat u deze kolom wilt verwijderen?
   validation:
     columns:
-      max_column_count_reached: U hebt het maximum aantal kolommen van {{ limit }} bereikt
       target:
-        should_not_be_blank: Kolomnaam mag niet leeg zijn
         max_length_reached: Kolomnaam is te lang. Hij moet {{ limit }} tekens of minder bevatten.
-        should_be_unique: Kolomnaam moet uniek zijn
-    sources:
-      max_source_count_reached: U hebt het maximum aantal bronnen van {{ limit }} bereikt
-    locale:
-      should_be_active: Taal {{ locale_code }} moet actief zijn
-    channel:
-      should_exist: Kanaal {{ channel_code }} moet bestaan

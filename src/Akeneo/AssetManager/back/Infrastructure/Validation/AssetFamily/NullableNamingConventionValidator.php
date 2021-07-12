@@ -16,6 +16,7 @@ namespace Akeneo\AssetManager\Infrastructure\Validation\AssetFamily;
 use Akeneo\AssetManager\Application\AssetFamily\CreateAssetFamily\CreateAssetFamilyCommand;
 use Akeneo\AssetManager\Application\AssetFamily\EditAssetFamily\EditAssetFamilyCommand;
 use Akeneo\AssetManager\Domain\Model\AssetFamily\AssetFamilyIdentifier;
+use Akeneo\AssetManager\Domain\Model\Attribute\AttributeCode;
 use Symfony\Component\Validator\Constraint;
 use Symfony\Component\Validator\Constraints as Assert;
 use Symfony\Component\Validator\ConstraintValidator;
@@ -40,9 +41,17 @@ class NullableNamingConventionValidator extends ConstraintValidator
         }
 
         $assetFamilyIdentifier = AssetFamilyIdentifier::fromString($command->identifier);
+        $commandAttributeAsMainMedia = null;
+        if ($command instanceof EditAssetFamilyCommand && isset($command->attributeAsMainMedia)) {
+            try {
+                $commandAttributeAsMainMedia = AttributeCode::fromString($command->attributeAsMainMedia);
+            } catch (\InvalidArgumentException $e) {
+                // do nothing, this error is handled elsewhere.
+            }
+        }
         $nestedConstraints = [
             new Assert\Type('array'),
-            new NamingConvention($assetFamilyIdentifier),
+            new NamingConvention($assetFamilyIdentifier, $commandAttributeAsMainMedia),
         ];
 
         $context = $this->context;
