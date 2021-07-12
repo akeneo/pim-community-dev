@@ -3,10 +3,10 @@ import {
   FullScreenError,
   PageContent,
   PageHeader,
+  PimView,
   useRouter,
   useSecurity,
   useTranslate,
-  PimView,
 } from '@akeneo-pim-community/shared';
 import {
   AssociateIcon,
@@ -15,7 +15,7 @@ import {
   Breadcrumb,
   CategoryIcon,
   ComponentIcon,
-  CreditsIcon, getColor,
+  CreditsIcon,
   GroupsIcon,
   IconCard,
   IconCardGrid,
@@ -25,6 +25,7 @@ import {
   SectionTitle,
   ShopIcon,
   TagIcon,
+  useTheme,
   ValueIcon,
 } from 'akeneo-design-system';
 import styled from 'styled-components';
@@ -41,6 +42,7 @@ const SettingsIndex = () => {
   const translate = useTranslate();
   const {isGranted} = useSecurity();
   const router = useRouter();
+  const theme = useTheme();
 
   const canAccessCategories = isGranted('pim_enrich_product_category_list');
   const canAccessChannels = isGranted('pim_enrich_channel_index');
@@ -273,7 +275,7 @@ const SettingsIndex = () => {
                 )}
                 {featureFlags.isEnabled('free_trial') &&
                   <DisableIconCard
-                    icon={<LockIconContainer><LockIcon size={16} color={'#5992c7'}/></LockIconContainer>}
+                    icon={<LockIconContainer><LockIcon size={16} color={theme.color.blue100}/></LockIconContainer>}
                     label={translate('free_trial.menu.rules')}
                     content={translate('free_trial.menu.feature_ee_only')}
                   />
