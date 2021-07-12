@@ -477,7 +477,7 @@ pim_datagrid:
         enabled:
             label: Status
         scope:
-            label: Scope
+            label: Channel
         completeness:
             label: Complete
         created:
