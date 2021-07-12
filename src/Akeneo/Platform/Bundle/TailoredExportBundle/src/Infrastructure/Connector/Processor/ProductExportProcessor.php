@@ -16,6 +16,7 @@ namespace Akeneo\Platform\TailoredExport\Infrastructure\Connector\Processor;
 use Akeneo\Pim\Enrichment\Component\Product\Model\ProductInterface;
 use Akeneo\Pim\Structure\Component\Query\PublicApi\Association\GetAssociationTypesInterface;
 use Akeneo\Pim\Structure\Component\Query\PublicApi\AttributeType\GetAttributes;
+use Akeneo\Platform\TailoredExport\Application\FilePathGenerator;
 use Akeneo\Platform\TailoredExport\Application\ProductMapper;
 use Akeneo\Platform\TailoredExport\Application\Query\Column\ColumnCollection;
 use Akeneo\Platform\TailoredExport\Application\Query\Source\AssociationTypeSource;
@@ -33,6 +34,7 @@ class ProductExportProcessor implements ItemProcessorInterface, StepExecutionAwa
     private ValueCollectionHydrator $valueCollectionHydrator;
     private ColumnCollectionHydrator $columnCollectionHydrator;
     private ProductMapper $productMapper;
+    private FilePathGenerator $filePathGenerator;
     private ?StepExecution $stepExecution = null;
     private ?ColumnCollection $columnCollection = null;
 
@@ -41,13 +43,15 @@ class ProductExportProcessor implements ItemProcessorInterface, StepExecutionAwa
         GetAssociationTypesInterface $getAssociationTypes,
         ValueCollectionHydrator $valueCollectionHydrator,
         ColumnCollectionHydrator $columnCollectionHydrator,
-        ProductMapper $productMapper
+        ProductMapper $productMapper,
+        FilePathGenerator $filePathGenerator
     ) {
         $this->getAttributes = $getAttributes;
         $this->getAssociationTypes = $getAssociationTypes;
         $this->valueCollectionHydrator = $valueCollectionHydrator;
         $this->columnCollectionHydrator = $columnCollectionHydrator;
         $this->productMapper = $productMapper;
+        $this->filePathGenerator = $filePathGenerator;
     }
 
     /**
@@ -67,7 +71,13 @@ class ProductExportProcessor implements ItemProcessorInterface, StepExecutionAwa
         $columnCollection = $this->getColumnCollection($columns);
         $valueCollection = $this->valueCollectionHydrator->hydrate($product, $columnCollection);
 
-        return $this->productMapper->map($columnCollection, $valueCollection);
+        $mappedProduct = $this->productMapper->map($columnCollection, $valueCollection);
+        $filesToWrite = $this->filePathGenerator->generate($columnCollection, $valueCollection);
+
+        return [
+            'mapped_product' => $mappedProduct,
+            'files_to_write' => $filesToWrite
+        ];
     }
 
     /**

@@ -13,6 +13,7 @@ declare(strict_types=1);
 
 namespace Akeneo\Platform\TailoredExport\Infrastructure\Connector\Writer\File;
 
+use Akeneo\Platform\TailoredExport\Domain\FileToExport;
 use Akeneo\Tool\Component\Batch\Item\FlushableInterface;
 use Akeneo\Tool\Component\Batch\Item\InitializableInterface;
 use Akeneo\Tool\Component\Batch\Item\ItemWriterInterface;
@@ -85,11 +86,11 @@ abstract class AbstractItemMediaWriter implements
                 $this->writer = $this->fileWriterFactory->build();
                 $this->openedPath = $this->getPath();
                 $this->writer->openToFile($this->openedPath);
-                $this->addHeadersIfNeeded($item);
+                $this->addHeadersIfNeeded($item['mapped_product']);
             }
 
-
-            $this->writer->addRow($item);
+            $this->writer->addRow($item['mapped_product']);
+            $this->writeMedia($item['files_to_write']);
             $this->numberOfWrittenLines++;
         }
 
@@ -210,5 +211,24 @@ abstract class AbstractItemMediaWriter implements
         }
 
         return $this->numberOfWrittenLines > 0 && $this->numberOfWrittenLines % $this->getMaxLinesPerFile() === 0;
+    }
+
+    /**
+     * @var FileToExport[] $filesToWrite
+     */
+    private function writeMedia(array $filesToWrite): void
+    {
+        if (empty($filesToWrite)) {
+            return;
+        }
+
+        $parameters = $this->getStepExecution()->getJobParameters();
+        if (!$parameters->has('with_media') || !$parameters->get('with_media')) {
+            return;
+        }
+
+        foreach ($filesToWrite as $fileToWrite) {
+            $this->writtenFiles[] = WrittenFileInfo::fromFileStorage($fileToWrite->getKey(), $fileToWrite->getStorage(), $fileToWrite->getPath());
+        }
     }
 }
