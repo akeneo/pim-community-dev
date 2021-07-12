@@ -118,7 +118,7 @@ final class GetGroupedSourcesAction
             return [];
         }
 
-        $associationFields = array_map(function (AssociationType $field) use ($localeCode): array {
+        $associationFields = array_map(static function (AssociationType $field) use ($localeCode): array {
             return [
                 'code' => $field->getCode(),
                 'type' => 'association_type',
