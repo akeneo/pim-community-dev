@@ -4,8 +4,8 @@ declare(strict_types=1);
 
 namespace Akeneo\Pim\Structure\Bundle\Query\PublicApi\Attribute\Sql;
 
-use Akeneo\Pim\Structure\Component\Query\PublicApi\Attribute\FlattenAttribute;
 use Akeneo\Pim\Structure\Component\Query\PublicApi\Attribute\FindFlattenAttributesInterface;
+use Akeneo\Pim\Structure\Component\Query\PublicApi\Attribute\FlattenAttribute;
 use Doctrine\DBAL\Connection;
 
 final class SqlFindFlattenAttributes implements FindFlattenAttributesInterface

@@ -23,7 +23,9 @@ final class SqlFindAssociationTypes implements FindAssociationTypesInterface
      */
     public function execute(string $localeCode, int $limit, int $offset = 0, string $search = null): array
     {
-        if ($limit === 0) return [];
+        if ($limit === 0) {
+            return [];
+        }
         if ($offset < 0) {
             $offset = 0;
         }
