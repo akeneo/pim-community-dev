@@ -1,3 +1,4 @@
 config:
   paths:
     pim/onboarding: akeneofreetrial/js/onboarding/appcues-onboarding.ts
+    pim/free-trial/menu/usergroups: akeneofreetrial/js/user-groups-menu-item.ts

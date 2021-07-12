@@ -40,3 +40,13 @@ extensions:
     config:
       title: free_trial.menu.sso
       disabled: true
+
+  #System sub menu > user groups
+  pim-menu-system-user-group:
+    module: pim/free-trial/menu/usergroups
+    parent: pim-menu-user-navigation-block
+    aclResourceId: pim_user_group_index
+    position: 140
+    config:
+      title: pim_menu.item.user_group
+      to: pim_user_group_index
