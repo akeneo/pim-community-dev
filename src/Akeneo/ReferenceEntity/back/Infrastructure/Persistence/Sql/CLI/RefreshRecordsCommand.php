@@ -83,6 +83,8 @@ class RefreshRecordsCommand extends Command
             $i++;
         }
         $progressBar->finish();
+
+        return 0;
     }
 
     private function getTotalRecords(): int

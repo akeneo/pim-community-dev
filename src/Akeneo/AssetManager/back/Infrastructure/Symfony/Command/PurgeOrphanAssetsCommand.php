@@ -71,7 +71,7 @@ class PurgeOrphanAssetsCommand extends Command
         if ($filesToPurge > 0) {
             $io = new SymfonyStyle($input, $output);
             if (!$io->confirm(sprintf('We found %s asset to purge. Do you want to continue and remove the files from storage?', $filesToPurge))) {
-                return;
+                return 0;
             }
             $this->removeFileFromStorage($output);
             $this->removeFilesFromFileInfo();
@@ -80,6 +80,8 @@ class PurgeOrphanAssetsCommand extends Command
         }
 
         $this->removePurgeTable();
+
+        return 0;
     }
 
     private function preparePurgeTable()

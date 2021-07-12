@@ -94,6 +94,8 @@ class RefreshAssetsCommand extends Command
             $i++;
         }
         $progressBar->finish();
+
+        return 0;
     }
 
     /** @TODO pull up remove this function */

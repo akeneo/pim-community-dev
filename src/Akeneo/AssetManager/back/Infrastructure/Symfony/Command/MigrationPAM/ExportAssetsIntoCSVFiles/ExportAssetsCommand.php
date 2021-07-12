@@ -89,6 +89,8 @@ class ExportAssetsCommand extends Command
             sprintf('- %s', $assetsFilePath),
             sprintf('- %s', $variationFilePath),
         ]);
+
+        return 0;
     }
 
     private function hasValidFilePaths(string $assetsFilePath, string $variationFilePath): bool

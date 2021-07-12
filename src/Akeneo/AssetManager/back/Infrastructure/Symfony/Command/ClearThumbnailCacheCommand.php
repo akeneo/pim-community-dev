@@ -79,6 +79,8 @@ class ClearThumbnailCacheCommand extends Command
         $output->writeln(sprintf('<info>Clear thumbnail cache for "%s".</info>', $previewType));
 
         $this->cacheManager->remove(null, [$previewType]);
+
+        return 0;
     }
 
     private function getSupportedPreviewTypes(): array

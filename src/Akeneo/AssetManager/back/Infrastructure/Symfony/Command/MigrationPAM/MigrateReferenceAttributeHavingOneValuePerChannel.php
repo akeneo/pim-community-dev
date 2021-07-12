@@ -89,12 +89,14 @@ class MigrateReferenceAttributeHavingOneValuePerChannel extends Command
         if (!$this->isAssetFamilyImpacted($familyCode, $referenceCode, $referenceLocalizableCode)) {
             $this->io->error(sprintf('The family %s doesn\'t seems to be impacted by the problem', $familyCode));
 
-            return;
+            return -1;
         }
 
         $this->fixAllAssetsInFamily($familyCode, $referenceCode, $referenceLocalizableCode);
         $this->convertReferenceAttributesToNonScopable($familyCode, $referenceCode, $referenceLocalizableCode);
         $this->reIndexAssets($familyCode, $output);
+
+        return 0;
     }
 
     private function fixAllAssetsInFamily(

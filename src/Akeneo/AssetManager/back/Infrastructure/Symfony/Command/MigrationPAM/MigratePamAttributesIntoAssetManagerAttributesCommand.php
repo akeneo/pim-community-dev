@@ -68,6 +68,8 @@ class MigratePamAttributesIntoAssetManagerAttributesCommand extends Command
         }
 
         $this->io->success(sprintf('Success! %d former attribute(s) updated.', $count));
+
+        return 0;
     }
 
     private function updateAll(): int
