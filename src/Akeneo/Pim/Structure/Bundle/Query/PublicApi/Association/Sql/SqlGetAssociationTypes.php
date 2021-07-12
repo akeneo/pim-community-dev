@@ -5,11 +5,11 @@ declare(strict_types=1);
 namespace Akeneo\Pim\Structure\Bundle\Query\PublicApi\Association\Sql;
 
 use Akeneo\Pim\Structure\Component\Query\PublicApi\Association\AssociationType;
-use Akeneo\Pim\Structure\Component\Query\PublicApi\Association\GetAssociationTypeInterface;
+use Akeneo\Pim\Structure\Component\Query\PublicApi\Association\GetAssociationTypesInterface;
 use Akeneo\Pim\Structure\Component\Query\PublicApi\Association\LabelCollection;
 use Doctrine\DBAL\Connection;
 
-final class SqlGetAssociationType implements GetAssociationTypeInterface
+final class SqlGetAssociationTypes implements GetAssociationTypesInterface
 {
     private Connection $connection;
 
@@ -18,7 +18,10 @@ final class SqlGetAssociationType implements GetAssociationTypeInterface
         $this->connection = $connection;
     }
 
-    public function execute(string $associationTypeCode): ?AssociationType
+    /**
+     * @inheritDoc
+     */
+    public function forCodes(array $associationTypeCodes): array
     {
         $query = <<<SQL
 SELECT
@@ -30,30 +33,31 @@ FROM
     pim_catalog_association_type association_type
 LEFT JOIN pim_catalog_association_type_translation translation
           ON association_type.id = translation.foreign_key
-WHERE association_type.code = :association_type_code
+WHERE association_type.code IN (:association_type_code)
 GROUP BY
     association_type.code;
 SQL;
 
-        $rawResult = $this->connection->executeQuery(
+        $rows = $this->connection->executeQuery(
             $query,
             [
-                'association_type_code' => $associationTypeCode,
+                'association_type_code' => $associationTypeCodes,
             ],
             [
-                'association_type_code' => \PDO::PARAM_STR,
+                'association_type_code' => Connection::PARAM_STR_ARRAY
             ]
-        )->fetch();
+        )->fetchAll();
 
-        if (!$rawResult) {
-            return null;
+        $associationTypes = [];
+        foreach ($rows as $row) {
+            $associationTypes[$row['code']] = new AssociationType(
+                $row['code'],
+                LabelCollection::fromArray(\json_decode($row['labels'], true)),
+                \boolval($row['is_two_way']),
+                \boolval($row['is_quantified'])
+            );
         }
 
-        return new AssociationType(
-            $rawResult['code'],
-            LabelCollection::fromArray(\json_decode($rawResult['labels'], true)),
-            \boolval($rawResult['is_quantified']),
-            \boolval($rawResult['is_two_way'])
-        );
+        return $associationTypes;
     }
 }
