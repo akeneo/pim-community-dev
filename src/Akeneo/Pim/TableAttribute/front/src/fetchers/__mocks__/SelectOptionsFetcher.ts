@@ -17,6 +17,14 @@ const getSelectOptions: (_router: Router, attributeCode: string) => SelectOption
     return selectOptions;
   }
 
+  if (attributeCode === 'test_pagination') {
+    const selectOptions = [];
+    for (let i = 0; i < 21; i++) {
+      selectOptions.push({code: `code${i}`, labels: {en_US: `label${i}`}});
+    }
+    return selectOptions;
+  }
+
   return defaultSelectOptions;
 };
 

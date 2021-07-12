@@ -8,11 +8,15 @@ type LocaleSwitcherProps = {
 };
 
 const LocaleSwitcher: React.FC<LocaleSwitcherProps> = ({locales, onChange}) => {
-  return <>
-    {locales.map(locale => <button key={locale.code} onClick={() => onChange(locale.code)}>
-      Fake LocaleSwitcher {locale.code}
-    </button>)}
-  </>
+  return (
+    <>
+      {locales.map(locale => (
+        <button key={locale.code} onClick={() => onChange(locale.code)}>
+          Fake LocaleSwitcher {locale.code}
+        </button>
+      ))}
+    </>
+  );
 };
 
 export {LocaleSwitcher};

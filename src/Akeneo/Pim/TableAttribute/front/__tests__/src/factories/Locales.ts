@@ -29,6 +29,6 @@ const getDeDeLocale: () => Locale = () => {
 
 const getLocales: () => Locale[] = () => {
   return [getEnUsLocale(), getFrFrLocale(), getDeDeLocale()];
-}
+};
 
-export { getEnUsLocale, getFrFrLocale, getDeDeLocale, getLocales }
+export {getEnUsLocale, getFrFrLocale, getDeDeLocale, getLocales};

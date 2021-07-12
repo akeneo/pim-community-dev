@@ -90,7 +90,7 @@ const ManageOptionsModal: React.FC<ManageOptionsModalProps> = ({onClose, attribu
   const lastLabelInputRef = React.useRef<HTMLInputElement>();
   const newCodeInputRef = React.useRef<HTMLInputElement>();
   const newLabelInputRef = React.useRef<HTMLInputElement>();
-  const tableContainerRef = React.useRef();
+  const tableContainerRef = React.useRef<HTMLDivElement>(null);
 
   const columnLabel = getLabel(columnDefinition.labels, userContext.get('catalogLocale'), columnDefinition.code);
   const canSave = Object.keys(violations).length === 0;
@@ -135,7 +135,7 @@ const ManageOptionsModal: React.FC<ManageOptionsModalProps> = ({onClose, attribu
         lastCodeInputRef.current?.focus();
       }
     }
-    if (tableContainerRef.current) {
+    if (typeof tableContainerRef?.current !== 'undefined' && tableContainerRef.current) {
       tableContainerRef.current.scrollTop = tableContainerRef.current.scrollHeight;
     }
   }, [options?.length]);
@@ -292,7 +292,7 @@ const ManageOptionsModal: React.FC<ManageOptionsModalProps> = ({onClose, attribu
             <Search
               searchValue={searchValue}
               onSearchChange={handleSearchChange}
-              placeholder={'TODO Search placeholder'}
+              placeholder={translate('pim_table_attribute.form.attribute.search_placeholder')}
             />
             <LocaleSwitcher
               localeCode={currentLocaleCode}
@@ -341,7 +341,7 @@ const ManageOptionsModal: React.FC<ManageOptionsModalProps> = ({onClose, attribu
                       labelInputRef={newLabelInputRef}
                       isSelected={selectedOptionIndex === -1}
                       onSelect={() => setSelectedOptionIndex(-1)}
-                      data-testid={`row-new`}
+                      data-testid={'row-new'}
                       onChange={(option: SelectOptionWithId) => handleAddOption(option)}
                       option={emptySelectOption}
                       labelPlaceholder={translate('pim_table_attribute.form.attribute.new_option_placeholder')}
