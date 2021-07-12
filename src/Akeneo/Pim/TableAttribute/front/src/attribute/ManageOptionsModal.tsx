@@ -141,11 +141,15 @@ const ManageOptionsModal: React.FC<ManageOptionsModalProps> = ({onClose, attribu
   const setOptionsAndValidate = (newOptions: SelectOptionWithId[]) => {
     setOptions([...newOptions]);
 
-    const duplicates = newOptions
-      .map(optionA => optionA.code)
-      .filter(optionCode => {
-        return newOptions.filter(optionB => optionB.code === optionCode).length > 1;
-      });
+    const duplicates: {[code: string]: boolean} = {};
+    const codes: {[code: string]: boolean} = {};
+    newOptions.map(option => option.code).forEach(optionCode => {
+      if (optionCode in codes) {
+        duplicates[optionCode] = true;
+      } else {
+        codes[optionCode] = true;
+      }
+    });
 
     const newViolations: {[optionId: string]: string[]} = {};
     newOptions
@@ -158,7 +162,7 @@ const ManageOptionsModal: React.FC<ManageOptionsModalProps> = ({onClose, attribu
         if (option.code !== '' && !/^[a-zA-Z0-9_]+$/.exec(option.code)) {
           violationsForOption.push(translate('pim_table_attribute.validations.invalid_code'));
         }
-        if (option.code !== '' && duplicates.includes(option.code)) {
+        if (option.code !== '' && duplicates[option.code]) {
           violationsForOption.push(translate('pim_table_attribute.validations.duplicated_select_code'));
         }
         if (violationsForOption.length > 0) {
