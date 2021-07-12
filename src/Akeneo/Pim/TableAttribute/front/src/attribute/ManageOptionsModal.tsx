@@ -84,7 +84,7 @@ const ManageOptionsModal: React.FC<ManageOptionsModalProps> = ({onClose, attribu
   const [selectedOptionIndex, setSelectedOptionIndex] = React.useState<number | undefined>(undefined);
   const [currentLocaleCode, setCurrentLocaleCode] = React.useState<LocaleCode>(userContext.get('catalogLocale'));
   const [searchValue, setSearchValue] = React.useState<string>('');
-  const [filteredOptionsIds, setFilteredOptionsIds] = React.useState<string[]>([]);
+  const [filteredOptionsIds, setFilteredOptionsIds] = React.useState<{[optionId: string]: boolean}>({});
 
   const lastCodeInputRef = React.useRef<HTMLInputElement>();
   const lastLabelInputRef = React.useRef<HTMLInputElement>();
@@ -96,7 +96,7 @@ const ManageOptionsModal: React.FC<ManageOptionsModalProps> = ({onClose, attribu
   const canSave = Object.keys(violations).length === 0;
   const currentOption =
     typeof selectedOptionIndex === 'undefined' || !options ? undefined : options[selectedOptionIndex];
-  const filteredOptions = (options || []).filter(option => filteredOptionsIds.includes(option.id));
+  const filteredOptions = (options || []).filter(option => !!filteredOptionsIds[option.id]);
 
   React.useEffect(() => {
     const initializeOptions = (newOptions: SelectOption[]) => {
@@ -104,7 +104,13 @@ const ManageOptionsModal: React.FC<ManageOptionsModalProps> = ({onClose, attribu
         return {...option, id: uuid(), isNew: false};
       });
       setOptions(optionsWithId);
-      setFilteredOptionsIds(optionsWithId.map(option => option.id));
+      setFilteredOptionsIds(
+        optionsWithId.reduce((newFilteredOptionIds, option) => {
+          newFilteredOptionIds[option.id] = true;
+
+          return newFilteredOptionIds;
+        }, {} as {[optionId: string]: boolean})
+      );
     };
 
     if (typeof columnDefinition.options === 'undefined') {
@@ -143,13 +149,15 @@ const ManageOptionsModal: React.FC<ManageOptionsModalProps> = ({onClose, attribu
 
     const duplicates: {[code: string]: boolean} = {};
     const codes: {[code: string]: boolean} = {};
-    newOptions.map(option => option.code).forEach(optionCode => {
-      if (optionCode in codes) {
-        duplicates[optionCode] = true;
-      } else {
-        codes[optionCode] = true;
-      }
-    });
+    newOptions
+      .map(option => option.code)
+      .forEach(optionCode => {
+        if (optionCode in codes) {
+          duplicates[optionCode] = true;
+        } else {
+          codes[optionCode] = true;
+        }
+      });
 
     const newViolations: {[optionId: string]: string[]} = {};
     newOptions
@@ -196,9 +204,9 @@ const ManageOptionsModal: React.FC<ManageOptionsModalProps> = ({onClose, attribu
     const newOption = {...option, id: uuid()};
     const newOptions = [...(options || []), newOption];
     setOptionsAndValidate(newOptions);
-    const newFilteredOptionIds = [...filteredOptionsIds, newOption.id];
+    const newFilteredOptionIds = {...filteredOptionsIds, [newOption.id]: true};
     setFilteredOptionsIds(newFilteredOptionIds);
-    setPage(Math.ceil(newFilteredOptionIds.length / OPTIONS_PER_PAGE));
+    setPage(Math.ceil(Object.keys(newFilteredOptionIds).length / OPTIONS_PER_PAGE));
     option.code = '';
     option.labels = {};
     if (newCodeInputRef.current) newCodeInputRef.current.value = '';
@@ -219,7 +227,7 @@ const ManageOptionsModal: React.FC<ManageOptionsModalProps> = ({onClose, attribu
      *
      */
 
-    const filteredOptions = (tempValue || []).filter(option => filteredOptionsIds.includes(option.id));
+    const filteredOptions = (tempValue || []).filter(option => !!filteredOptionsIds[option.id]);
     const pageCount = Math.ceil(filteredOptions.length / OPTIONS_PER_PAGE);
     if (page > pageCount) {
       setPage(page - 1);
@@ -229,11 +237,13 @@ const ManageOptionsModal: React.FC<ManageOptionsModalProps> = ({onClose, attribu
   const handleSearchChange = (searchValue: string) => {
     setSearchValue(searchValue);
     setFilteredOptionsIds(
-      (options || [])
-        .filter(option => {
-          return [option.code].concat(Object.values(option.labels)).some(str => str.includes(searchValue));
-        })
-        .map(option => option.id)
+      (options || []).reduce((newFilteredOptionIds, option) => {
+        if ([option.code].concat(Object.values(option.labels)).some(str => str.includes(searchValue))) {
+          newFilteredOptionIds[option.id] = true;
+        }
+
+        return newFilteredOptionIds;
+      }, {} as {[optionId: string]: boolean})
     );
     setPage(1);
   };
