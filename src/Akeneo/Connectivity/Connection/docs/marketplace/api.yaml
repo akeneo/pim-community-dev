@@ -155,6 +155,41 @@ paths:
                                   callback_url: "https://fake.shopify.akeneo.com/oauth2/callback"
                 "400":
                     description: "Invalid parameters"
+    /apps/{id}/challenge:
+        post:
+            tags:
+                - "apps"
+            summary: "Challenge an app identity"
+            description: >
+                During the OAuth process, the App will give to the Authorization Server an additionnal pair of identifiers validated by the marketplace.
+            produces:
+                - "application/json"
+            parameters:
+                - name: id
+                  in: path
+                  type: string
+                  required: true
+                - name: code_identifier
+                  in: query
+                  type: string
+                  required: true
+                - name: code_challenge
+                  in: query
+                  type: string
+                  required: true
+            responses:
+                "200":
+                    description: "OK"
+                    schema:
+                        type: "object"
+                        properties:
+                            valid:
+                                type: "boolean"
+                    examples:
+                        application/json:
+                            valid: true
+                "404":
+                    description: "Invalid app id"
 definitions:
     Extension:
         type: "object"
