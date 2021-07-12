@@ -12,7 +12,7 @@ const CellFieldContainer = styled.div`
   flex-grow: 1;
 `;
 
-type ChildProps = {
+type ManageOptionsRowProps = {
   option: SelectOptionWithId;
   onChange: (option: SelectOptionWithId) => void;
   onDelete?: () => void;
@@ -23,9 +23,10 @@ type ChildProps = {
   codeInputRef?: MutableRefObject<any>;
   labelInputRef?: MutableRefObject<any>;
   localeCode: LocaleCode;
+  forceAutocomplete?: boolean;
 };
 
-const Child: React.FC<ChildProps> = ({
+const ManageOptionsRow: React.FC<ManageOptionsRowProps> = ({
   option,
   onChange,
   onDelete,
@@ -36,15 +37,16 @@ const Child: React.FC<ChildProps> = ({
   codeInputRef,
   labelInputRef,
   localeCode,
+  forceAutocomplete = false,
   ...rest
 }) => {
   const translate = useTranslate();
-  const [autocompleteMode, setAutocompleteMode] = React.useState<boolean>(option.isNew);
+  const [autocompleteMode, setAutocompleteMode] = React.useState<boolean>(option.isNew || forceAutocomplete);
 
   const formatCode = (label: string) => label.replace(/[^a-zA-Z0-9_]/gi, '_').substring(0, 100);
   const handleLabelChange = (label: string) => {
     option.labels[localeCode] = label;
-    if (autocompleteMode) {
+    if (autocompleteMode || forceAutocomplete) {
       option.code = formatCode(label);
     }
     onChange(option);
@@ -109,4 +111,4 @@ const Child: React.FC<ChildProps> = ({
   );
 };
 
-export {Child};
+export {ManageOptionsRow};

@@ -21,7 +21,7 @@ import {FieldsList} from '../shared/FieldsList';
 import styled from 'styled-components';
 import {fetchSelectOptions} from '../fetchers/SelectOptionsFetcher';
 import {getActivatedLocales} from '../repositories/Locale';
-import {Child} from './Child';
+import {ManageOptionsRow} from './ManageOptionsRow';
 import {LocaleSwitcher} from './LocaleSwitcher';
 
 const TableContainer = styled.div`
@@ -218,15 +218,6 @@ const ManageOptionsModal: React.FC<ManageOptionsModalProps> = ({onClose, attribu
     tempValue.splice(index, 1);
     setOptionsAndValidate(tempValue);
 
-    /**
-     * options par page = 20;
-     * filteredoptions.length = 20;
-     * page = 2
-     * page - 1 = 1
-     * elements affichés : 20...39
-     *
-     */
-
     const filteredOptions = (tempValue || []).filter(option => !!filteredOptionsIds[option.id]);
     const pageCount = Math.ceil(filteredOptions.length / OPTIONS_PER_PAGE);
     if (page > pageCount) {
@@ -246,6 +237,7 @@ const ManageOptionsModal: React.FC<ManageOptionsModalProps> = ({onClose, attribu
       }, {} as {[optionId: string]: boolean})
     );
     setPage(1);
+    setSelectedOptionIndex(undefined);
   };
 
   const getRealIndex = (option: SelectOptionWithId) => {
@@ -329,24 +321,22 @@ const ManageOptionsModal: React.FC<ManageOptionsModalProps> = ({onClose, attribu
                     <Table.HeaderCell />
                   </Table.Header>
                   <ManageOptionsBody>
-                    {filteredOptions
-                      .slice((page - 1) * OPTIONS_PER_PAGE, page * OPTIONS_PER_PAGE)
-                      .map((option, index) => (
-                        <Child
-                          codeInputRef={isLastOption(option) ? lastCodeInputRef : undefined}
-                          labelInputRef={isLastOption(option) ? lastLabelInputRef : undefined}
-                          isSelected={selectedOptionIndex === getRealIndex(option)}
-                          onSelect={() => setSelectedOptionIndex(getRealIndex(option))}
-                          data-testid={`row-${getRealIndex(option)}`}
-                          onChange={(option: SelectOptionWithId) => handleOptionChange(getRealIndex(option), option)}
-                          key={option.id}
-                          option={option}
-                          onDelete={() => handleDelete(getRealIndex(option))}
-                          violations={violations[option.id]}
-                          localeCode={currentLocaleCode}
-                        />
-                      ))}
-                    <Child
+                    {filteredOptions.slice((page - 1) * OPTIONS_PER_PAGE, page * OPTIONS_PER_PAGE).map(option => (
+                      <ManageOptionsRow
+                        codeInputRef={isLastOption(option) ? lastCodeInputRef : undefined}
+                        labelInputRef={isLastOption(option) ? lastLabelInputRef : undefined}
+                        isSelected={selectedOptionIndex === getRealIndex(option)}
+                        onSelect={() => setSelectedOptionIndex(getRealIndex(option))}
+                        data-testid={`row-${getRealIndex(option)}`}
+                        onChange={(option: SelectOptionWithId) => handleOptionChange(getRealIndex(option), option)}
+                        key={option.id}
+                        option={option}
+                        onDelete={() => handleDelete(getRealIndex(option))}
+                        violations={violations[option.id]}
+                        localeCode={currentLocaleCode}
+                      />
+                    ))}
+                    <ManageOptionsRow
                       codeInputRef={newCodeInputRef}
                       labelInputRef={newLabelInputRef}
                       isSelected={selectedOptionIndex === -1}
@@ -354,9 +344,9 @@ const ManageOptionsModal: React.FC<ManageOptionsModalProps> = ({onClose, attribu
                       data-testid={`row-new`}
                       onChange={(option: SelectOptionWithId) => handleAddOption(option)}
                       option={emptySelectOption}
-                      violations={[]}
                       labelPlaceholder={translate('pim_table_attribute.form.attribute.new_option_placeholder')}
                       localeCode={currentLocaleCode}
+                      forceAutocomplete={true}
                     />
                   </ManageOptionsBody>
                 </Table>
