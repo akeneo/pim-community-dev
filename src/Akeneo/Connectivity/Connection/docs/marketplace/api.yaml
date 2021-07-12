@@ -152,6 +152,7 @@ paths:
                                   categories: ["E-commerce"]
                                   certified: false
                                   activate_url: "https://fake.shopify.akeneo.com/activate"
+                                  callback_url: "https://fake.shopify.akeneo.com/oauth2/callback"
                 "400":
                     description: "Invalid parameters"
 definitions:
@@ -206,4 +207,6 @@ definitions:
             certified:
                 type: "boolean"
             activate_url:
+                type: "string"
+            callback_url:
                 type: "string"
