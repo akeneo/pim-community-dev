@@ -23,6 +23,7 @@ use Akeneo\AssetManager\Common\Fake\InMemoryFindActivatedLocalesByIdentifiers;
 use Akeneo\AssetManager\Common\Fake\InMemoryGetAssetCollectionTypeAdapter;
 use Akeneo\AssetManager\Domain\Model\AssetFamily\AssetFamily;
 use Akeneo\AssetManager\Domain\Model\AssetFamily\AssetFamilyIdentifier;
+use Akeneo\AssetManager\Domain\Model\AssetFamily\NamingConvention\NamingConvention;
 use Akeneo\AssetManager\Domain\Model\AssetFamily\RuleTemplateCollection;
 use Akeneo\AssetManager\Domain\Model\Attribute\AttributeCode;
 use Akeneo\AssetManager\Domain\Model\Attribute\AttributeIdentifier;
@@ -1710,5 +1711,43 @@ final class EditAssetFamilyContext implements Context
                 self::ATTRIBUTE_CODE
             )
         );
+    }
+
+    /**
+     * @Given /^an asset family with a naming convention and a media file attribute "([^"]*)"$/
+     */
+    public function anAssetFamilyWithANamingConventionAndAMediaFileAttribute($attributeCode)
+    {
+        $this->fixturesLoader
+            ->assetFamily(self::ASSET_FAMILY_IDENTIFIER)
+            ->withAttributeOfTypeMediaFile(self::ASSET_FAMILY_IDENTIFIER, $attributeCode)
+            ->withNamingConvention(NamingConvention::createFromNormalized([
+                'source' => ['property' => 'media', 'channel' => null, 'locale' => null],
+                'pattern' => '/a_pattern/',
+                'abort_asset_creation_on_error' => true,
+            ]))
+            ->load();
+    }
+
+    /**
+     * @When /^the user updates the attribute as main media to be "([^"]*)" without updating the naming convention$/
+     */
+    public function theUserUpdatesTheAttributeAsMainMediaToBeWithoutUpdatingTheNamingConvention($attributeCode)
+    {
+        $editCommand = new EditAssetFamilyCommand(
+            self::ASSET_FAMILY_IDENTIFIER,
+            [],
+            null,
+            $attributeCode,
+            [],
+            [],
+            [
+                'source' => ['property' => 'media', 'channel' => null, 'locale' => null],
+                'pattern' => '/a_pattern/',
+                'abort_asset_creation_on_error' => true,
+            ]
+        );
+
+        $this->editAssetFamily($editCommand);
     }
 }

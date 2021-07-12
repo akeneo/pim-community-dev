@@ -14,6 +14,7 @@ declare(strict_types=1);
 namespace Akeneo\AssetManager\Infrastructure\Validation\AssetFamily;
 
 use Akeneo\AssetManager\Domain\Model\AssetFamily\AssetFamilyIdentifier;
+use Akeneo\AssetManager\Domain\Model\Attribute\AttributeCode;
 use Symfony\Component\Validator\Constraint;
 
 /**
@@ -23,17 +24,24 @@ use Symfony\Component\Validator\Constraint;
 class NamingConvention extends Constraint
 {
     private AssetFamilyIdentifier $assetFamilyIdentifier;
+    private ?AttributeCode $attributeAsMainMedia;
 
-    public function __construct(AssetFamilyIdentifier $assetFamilyIdentifier)
+    public function __construct(AssetFamilyIdentifier $assetFamilyIdentifier, ?AttributeCode $attributeAsMainMedia = null)
     {
         parent::__construct();
 
         $this->assetFamilyIdentifier = $assetFamilyIdentifier;
+        $this->attributeAsMainMedia = $attributeAsMainMedia;
     }
 
     public function getAssetFamilyIdentifier(): AssetFamilyIdentifier
     {
         return $this->assetFamilyIdentifier;
+    }
+
+    public function getAttributeAsMainMedia(): ?AttributeCode
+    {
+        return $this->attributeAsMainMedia;
     }
 
     public function getTargets()
