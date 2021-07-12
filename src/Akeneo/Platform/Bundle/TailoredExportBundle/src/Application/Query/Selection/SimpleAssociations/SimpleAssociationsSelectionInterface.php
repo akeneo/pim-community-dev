@@ -21,5 +21,5 @@ interface SimpleAssociationsSelectionInterface extends SelectionInterface
     public const ENTITY_TYPE_PRODUCT_MODELS = 'product_models';
     public const ENTITY_TYPE_GROUPS = 'groups';
 
-    public function getSeparator();
+    public function getSeparator(): string;
 }

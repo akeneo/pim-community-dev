@@ -21,7 +21,7 @@ use Symfony\Component\Validator\ConstraintValidator;
 
 class SimpleAssociationTypeSourceValidator extends ConstraintValidator
 {
-    public function validate($source, Constraint $constraint)
+    public function validate($source, Constraint $constraint): void
     {
         $validator = $this->context->getValidator();
         $sourceConstraintFields = SourceConstraintProvider::getConstraintCollection()->fields;

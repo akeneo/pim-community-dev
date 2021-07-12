@@ -16,26 +16,27 @@ namespace Specification\Akeneo\Platform\TailoredExport\Application\Query\Selecti
 use Akeneo\Pim\Enrichment\Component\Product\Query\GetProductModelLabelsInterface;
 use Akeneo\Platform\TailoredExport\Application\Query\Selection\Boolean\BooleanSelection;
 use Akeneo\Platform\TailoredExport\Application\Query\Selection\Parent\ParentLabelSelection;
+use Akeneo\Platform\TailoredExport\Domain\Query\FindProductModelLabelsInterface;
 use Akeneo\Platform\TailoredExport\Domain\SourceValue\BooleanValue;
 use Akeneo\Platform\TailoredExport\Domain\SourceValue\ParentValue;
 use PhpSpec\ObjectBehavior;
 
 class ParentLabelSelectionHandlerSpec extends ObjectBehavior
 {
-    public function let(GetProductModelLabelsInterface $getProductModelLabels)
+    public function let(FindProductModelLabelsInterface $findProductModelLabels)
     {
-        $this->beConstructedWith($getProductModelLabels);
+        $this->beConstructedWith($findProductModelLabels);
     }
 
-    public function it_applies_the_selection(GetProductModelLabelsInterface $getProductModelLabels)
+    public function it_applies_the_selection(FindProductModelLabelsInterface $findProductModelLabels)
     {
         $selection = new ParentLabelSelection('fr_FR', 'ecommerce');
         $value = new ParentValue('tshirt_cool');
 
-        $getProductModelLabels->byCodesAndLocaleAndScope(
+        $findProductModelLabels->byCodes(
             ['tshirt_cool'],
-            'fr_FR',
-            'ecommerce'
+            'ecommerce',
+            'fr_FR'
         )->willReturn([
             'tshirt_cool' => 'Un tshirt sympa'
         ]);
@@ -44,15 +45,15 @@ class ParentLabelSelectionHandlerSpec extends ObjectBehavior
             ->shouldReturn('Un tshirt sympa');
     }
 
-    public function it_applies_the_selection_and_fallback_when_no_translation_is_found(GetProductModelLabelsInterface $getProductModelLabels)
+    public function it_applies_the_selection_and_fallback_when_no_translation_is_found(FindProductModelLabelsInterface $findProductModelLabels)
     {
         $selection = new ParentLabelSelection('fr_FR', 'ecommerce');
         $value = new ParentValue('tshirt_cool');
 
-        $getProductModelLabels->byCodesAndLocaleAndScope(
+        $findProductModelLabels->byCodes(
             ['tshirt_cool'],
-            'fr_FR',
-            'ecommerce'
+            'ecommerce',
+            'fr_FR'
         )->willReturn([]);
 
         $this->applySelection($selection, $value)

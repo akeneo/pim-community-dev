@@ -14,6 +14,10 @@ declare(strict_types=1);
 namespace Specification\Akeneo\Platform\TailoredExport\Infrastructure\Connector\Processor;
 
 use Akeneo\Pim\Enrichment\Component\Product\Model\ProductInterface;
+use Akeneo\Pim\Structure\Component\Query\PublicApi\Association\AssociationType;
+use Akeneo\Pim\Structure\Component\Query\PublicApi\Association\FindAssociationTypesInterface;
+use Akeneo\Pim\Structure\Component\Query\PublicApi\Association\GetAssociationTypeInterface;
+use Akeneo\Pim\Structure\Component\Query\PublicApi\Association\LabelCollection;
 use Akeneo\Pim\Structure\Component\Query\PublicApi\AttributeType\Attribute;
 use Akeneo\Pim\Structure\Component\Query\PublicApi\AttributeType\GetAttributes;
 use Akeneo\Platform\TailoredExport\Application\ProductMapper;
@@ -32,12 +36,14 @@ class ProductExportProcessorSpec extends ObjectBehavior
         StepExecution $stepExecution,
         JobParameters $jobParameters,
         GetAttributes $getAttributes,
+        GetAssociationTypeInterface $getAssociationType,
         ValueCollectionHydrator $valueCollectionHydrator,
         ColumnCollectionHydrator $columnCollectionHydrator,
         ProductMapper $productMapper
     ) {
         $this->beConstructedWith(
             $getAttributes,
+            $getAssociationType,
             $valueCollectionHydrator,
             $columnCollectionHydrator,
             $productMapper
@@ -51,6 +57,7 @@ class ProductExportProcessorSpec extends ObjectBehavior
         ProductInterface $product,
         JobParameters $jobParameters,
         GetAttributes $getAttributes,
+        GetAssociationTypeInterface $getAssociationType,
         ValueCollectionHydrator $valueCollectionHydrator,
         ColumnCollectionHydrator $columnCollectionHydrator,
         ColumnCollection $columnCollection,
@@ -85,9 +92,26 @@ class ProductExportProcessorSpec extends ObjectBehavior
                     ],
                 ],
             ],
+            [
+                'target' => 'association-export',
+                'sources' => [
+                    [
+                        'type' => 'association_type',
+                        'code' => 'X_SELL',
+                        'locale' => null,
+                        'channel' => null,
+                        'selection' => [
+                            'type' => 'code',
+                            'entity_type' => 'products',
+                            'separator' => ',',
+                        ],
+                    ],
+                ],
+            ],
         ];
 
         $name = $this->createAttribute('name');
+        $crossSellAssociation = $this->createAssociationType('X_SELL');
         $valueCollection = new ValueCollection();
         $valueCollection->add(new StringValue('some_data'), 'name', null, null);
         $mappedProduct = [
@@ -97,7 +121,8 @@ class ProductExportProcessorSpec extends ObjectBehavior
 
         $jobParameters->get('columns')->willReturn($columns);
         $getAttributes->forCodes(['name'])->willReturn(['name' => $name]);
-        $columnCollectionHydrator->hydrate($columns, ['name' => $name])->willReturn($columnCollection);
+        $getAssociationType->execute('X_SELL')->willReturn($crossSellAssociation);
+        $columnCollectionHydrator->hydrate($columns, ['name' => $name], ['X_SELL' => $crossSellAssociation])->willReturn($columnCollection);
         $valueCollectionHydrator->hydrate($product, $columnCollection)->willReturn($valueCollection);
         $productMapper->map($columnCollection, $valueCollection)->willReturn($mappedProduct);
 
@@ -117,6 +142,16 @@ class ProductExportProcessorSpec extends ObjectBehavior
             null,
             'text',
             []
+        );
+    }
+
+    private function createAssociationType(string $code): AssociationType
+    {
+        return new AssociationType(
+            $code,
+            LabelCollection::fromArray([]),
+            false,
+            false,
         );
     }
 }

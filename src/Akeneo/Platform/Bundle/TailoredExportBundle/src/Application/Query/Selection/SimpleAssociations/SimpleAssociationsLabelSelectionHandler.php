@@ -15,9 +15,9 @@ namespace Akeneo\Platform\TailoredExport\Application\Query\Selection\SimpleAssoc
 
 use Akeneo\Platform\TailoredExport\Application\Query\Selection\SelectionHandlerInterface;
 use Akeneo\Platform\TailoredExport\Application\Query\Selection\SelectionInterface;
+use Akeneo\Platform\TailoredExport\Domain\Query\FindGroupLabelsInterface;
 use Akeneo\Platform\TailoredExport\Domain\Query\FindProductLabelsInterface;
 use Akeneo\Platform\TailoredExport\Domain\Query\FindProductModelLabelsInterface;
-use Akeneo\Platform\TailoredExport\Domain\Query\FindGroupLabelsInterface;
 use Akeneo\Platform\TailoredExport\Domain\SourceValue\SimpleAssociationsValue;
 use Akeneo\Platform\TailoredExport\Domain\SourceValueInterface;
 
@@ -79,6 +79,9 @@ class SimpleAssociationsLabelSelectionHandler implements SelectionHandlerInterfa
         throw new \InvalidArgumentException('Entity type is not supported in this selection');
     }
 
+    /**
+     * @return string[]
+     */
     private function getAssociatedEntityCodes(SimpleAssociationsLabelSelection $selection, SimpleAssociationsValue $value): array
     {
         if ($selection->isProductsSelection()) {

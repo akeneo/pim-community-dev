@@ -40,6 +40,9 @@ class SimpleAssociationsCodeSelectionHandler implements SelectionHandlerInterfac
             && $value instanceof SimpleAssociationsValue;
     }
 
+    /**
+     * @return string[]
+     */
     private function getAssociatedEntityCodes(SimpleAssociationsCodeSelection $selection, SimpleAssociationsValue $value): array
     {
         if ($selection->isProductsSelection()) {

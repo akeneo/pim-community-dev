@@ -16,23 +16,24 @@ namespace Specification\Akeneo\Platform\TailoredExport\Application\Query\Selecti
 use Akeneo\Pim\Structure\Component\Query\PublicApi\Group\GetGroupTranslations;
 use Akeneo\Platform\TailoredExport\Application\Query\Selection\Boolean\BooleanSelection;
 use Akeneo\Platform\TailoredExport\Application\Query\Selection\Groups\GroupsLabelSelection;
+use Akeneo\Platform\TailoredExport\Domain\Query\FindGroupLabelsInterface;
 use Akeneo\Platform\TailoredExport\Domain\SourceValue\BooleanValue;
 use Akeneo\Platform\TailoredExport\Domain\SourceValue\GroupsValue;
 use PhpSpec\ObjectBehavior;
 
 class GroupsLabelSelectionHandlerSpec extends ObjectBehavior
 {
-    public function let(GetGroupTranslations $getGroupTranslations)
+    public function let(FindGroupLabelsInterface $findGroupLabels)
     {
-        $this->beConstructedWith($getGroupTranslations);
+        $this->beConstructedWith($findGroupLabels);
     }
 
-    public function it_applies_the_selection(GetGroupTranslations $getGroupTranslations)
+    public function it_applies_the_selection(FindGroupLabelsInterface $findGroupLabels)
     {
         $selection = new GroupsLabelSelection('/', 'fr_FR');
         $value = new GroupsValue(['group1', 'group2']);
 
-        $getGroupTranslations->byGroupCodesAndLocale(
+        $findGroupLabels->byCodes(
             ['group1', 'group2'],
             'fr_FR'
         )->willReturn([

@@ -34,12 +34,13 @@ class SimpleAssociationSelectionValidator extends ConstraintValidator
     /** @var string[] */
     private array $availableCollectionSeparator;
 
+    /** @var string[] $availableCollectionSeparator */
     public function __construct(array $availableCollectionSeparator)
     {
         $this->availableCollectionSeparator = $availableCollectionSeparator;
     }
 
-    public function validate($selection, Constraint $constraint)
+    public function validate($selection, Constraint $constraint): void
     {
         $this->context->getValidator()
             ->inContext($this->context)
