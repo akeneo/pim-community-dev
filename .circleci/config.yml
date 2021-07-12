@@ -37,6 +37,7 @@ jobs:
           name: Require proper dev CE branch
           command: |
             sed -i "s|\"akeneo/pim-community-dev\": \"dev-master|\"akeneo/pim-community-dev\": \"dev-${CIRCLE_BRANCH}|" composer.json
+            sed -i "s|\"akeneo/pim-community-dev\": \"dev-master|\"akeneo/pim-community-dev\": \"dev-${CIRCLE_BRANCH}|" grth/composer.json
       - run:
           name: Persist default IMAGE_TAG to be the repo last commit SHA1
           command: |
