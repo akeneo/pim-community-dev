@@ -1,6 +1,13 @@
-import React, {FC, useMemo, useRef} from 'react';
+import React, {FC, useRef} from 'react';
 import MarketplaceHelper from './MarketplaceHelper';
-import {AppIllustration, ArrowUpIcon, getColor, getFontSize, IconButton, SectionTitle} from 'akeneo-design-system';
+import {
+    AppIllustration,
+    ArrowSimpleUpIcon,
+    getColor,
+    getFontSize,
+    IconButton,
+    SectionTitle,
+} from 'akeneo-design-system';
 import {Grid as CardGrid, MarketplaceCard} from './MarketplaceCard';
 import {Extension, Extensions} from '../../model/extension';
 import {useTranslate} from '../../shared/translate';
@@ -18,6 +25,19 @@ const EmptyMessage = styled.p`
     font-size: ${getFontSize('big')};
 `;
 
+const ScrollToTop = styled(IconButton)`
+    position: fixed;
+    bottom: 40px;
+    right: 40px;
+
+    background-color: ${getColor('brand', 100)};
+    color: ${getColor('white')};
+
+    &:hover:not([disabled]) {
+        background-color: ${getColor('brand', 120)};
+    }
+`;
+
 type Props = {
     extensions: Extensions;
 };
@@ -25,7 +45,7 @@ type Props = {
 export const Marketplace: FC<Props> = ({extensions}) => {
     const translate = useTranslate();
     const ref = useRef(null);
-    const scrollContainer = useMemo(() => findScrollParent(ref.current), [ref]);
+    const scrollContainer = findScrollParent(ref.current);
     const displayScrollButton = useDisplayScrollTopButton(ref);
     const extensionList = extensions.extensions.map((extension: Extension) => (
         <MarketplaceCard key={extension.id} extension={extension} />
@@ -55,12 +75,10 @@ export const Marketplace: FC<Props> = ({extensions}) => {
                 </SectionTitle.Information>
             </SectionTitle>
             {displayScrollButton && (
-                <IconButton
-                    level='primary'
-                    ghost='borderless'
+                <ScrollToTop
                     onClick={handleScrollTop}
-                    title={'scroll top'}
-                    icon={<ArrowUpIcon />}
+                    title={translate('akeneo_connectivity.connection.connect.marketplace.scroll_to_top')}
+                    icon={<ArrowSimpleUpIcon />}
                 />
             )}
 
@@ -74,13 +92,6 @@ export const Marketplace: FC<Props> = ({extensions}) => {
             ) : (
                 <CardGrid> {extensionList} </CardGrid>
             )}
-            <IconButton
-                level='primary'
-                ghost='borderless'
-                onClick={handleScrollTop}
-                title={'scroll top'}
-                icon={<ArrowUpIcon />}
-            />
         </>
     );
 };
