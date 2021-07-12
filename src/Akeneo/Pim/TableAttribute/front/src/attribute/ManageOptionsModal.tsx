@@ -20,6 +20,7 @@ import styled from 'styled-components';
 import {fetchSelectOptions} from '../fetchers/SelectOptionsFetcher';
 import {getActivatedLocales} from '../repositories/Locale';
 import {Child} from './Child';
+import {LocaleSwitcher} from "./LocaleSwitcher";
 
 const TableContainer = styled.div`
   height: calc(100vh - 300px);
@@ -66,6 +67,7 @@ const ManageOptionsModal: React.FC<ManageOptionsModalProps> = ({onClose, attribu
   const [activatedLocales, setActivatedLocales] = React.useState<Locale[]>();
   const [options, setOptions] = React.useState<SelectOptionWithId[]>();
   const [selectedOptionIndex, setSelectedOptionIndex] = React.useState<number | undefined>(undefined);
+  const [currentLocaleCode, setCurrentLocaleCode] = React.useState<LocaleCode>(userContext.get('catalogLocale'));
 
   const lastCodeInputRef = React.useRef<HTMLInputElement>();
   const lastLabelInputRef = React.useRef<HTMLInputElement>();
@@ -73,7 +75,6 @@ const ManageOptionsModal: React.FC<ManageOptionsModalProps> = ({onClose, attribu
   const newLabelInputRef = React.useRef<HTMLInputElement>();
   const tableContainerRef = React.useRef();
 
-  const currentLocaleCode = 'en_US';
   const columnLabel = getLabel(columnDefinition.labels, userContext.get('catalogLocale'), columnDefinition.code);
   const canSave = Object.keys(violations).length === 0;
   const currentOption =
@@ -233,6 +234,11 @@ const ManageOptionsModal: React.FC<ManageOptionsModalProps> = ({onClose, attribu
         <div>
           <SectionTitle title={columnLabel}>
             <SectionTitle.Title>{columnLabel}</SectionTitle.Title>
+            <LocaleSwitcher
+              localeCode={currentLocaleCode}
+              onChange={setCurrentLocaleCode}
+              locales={activatedLocales || []}
+            />
           </SectionTitle>
           {options && (
             <Pagination
@@ -266,6 +272,7 @@ const ManageOptionsModal: React.FC<ManageOptionsModalProps> = ({onClose, attribu
                       option={option}
                       onDelete={() => handleDelete(getRealIndex(index))}
                       violations={violations[option.id]}
+                      localeCode={currentLocaleCode}
                     />
                   ))}
                   <Child
@@ -278,6 +285,7 @@ const ManageOptionsModal: React.FC<ManageOptionsModalProps> = ({onClose, attribu
                     option={emptySelectOption}
                     violations={[]}
                     labelPlaceholder={translate('pim_table_attribute.form.attribute.new_option_placeholder')}
+                    localeCode={currentLocaleCode}
                   />
                 </ManageOptionsBody>
               </Table>

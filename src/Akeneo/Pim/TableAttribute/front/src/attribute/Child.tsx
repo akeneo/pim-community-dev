@@ -2,7 +2,7 @@ import React, {MutableRefObject} from 'react';
 import {SelectOptionWithId} from './ManageOptionsModal';
 import {Helper, IconButton, Table, TextInput, CloseIcon} from 'akeneo-design-system';
 import styled from 'styled-components';
-import {useTranslate} from '@akeneo-pim-community/shared';
+import {LocaleCode, useTranslate} from '@akeneo-pim-community/shared';
 
 const ManageOptionCell = styled(Table.Cell)`
   vertical-align: top;
@@ -22,6 +22,7 @@ type ChildProps = {
   labelPlaceholder?: string;
   codeInputRef?: MutableRefObject<any>;
   labelInputRef?: MutableRefObject<any>;
+  localeCode: LocaleCode;
 };
 
 const Child: React.FC<ChildProps> = ({
@@ -34,6 +35,7 @@ const Child: React.FC<ChildProps> = ({
   labelPlaceholder,
   codeInputRef,
   labelInputRef,
+  localeCode,
   ...rest
 }) => {
   const translate = useTranslate();
@@ -41,7 +43,7 @@ const Child: React.FC<ChildProps> = ({
 
   const formatCode = (label: string) => label.replace(/[^a-zA-Z0-9_]/gi, '_').substring(0, 100);
   const handleLabelChange = (label: string) => {
-    option.labels['en_US'] = label;
+    option.labels[localeCode] = label;
     if (autocompleteMode) {
       option.code = formatCode(label);
     }
@@ -64,7 +66,7 @@ const Child: React.FC<ChildProps> = ({
         <CellFieldContainer>
           <TextInput
             ref={labelInputRef}
-            value={option.labels['en_US'] || ''}
+            value={option.labels[localeCode] || ''}
             onChange={handleLabelChange}
             maxLength={255}
             placeholder={labelPlaceholder}
