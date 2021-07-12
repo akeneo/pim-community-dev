@@ -32,9 +32,7 @@ final class SqlGetAssociationTypesIntegrationTest extends TestCase
             ],
             [
                 'code' => 'MY_PACK',
-                'labels' => [
-                    'en_US' => 'Pack'
-                ],
+                'labels' => [],
                 'is_quantified' => true,
             ],
             [
@@ -55,7 +53,7 @@ final class SqlGetAssociationTypesIntegrationTest extends TestCase
             ),
             'MY_PACK' => new AssociationType(
                 'MY_PACK',
-                LabelCollection::fromArray(['en_US' => 'Pack']),
+                LabelCollection::fromArray([]),
                 false,
                 true
             ),

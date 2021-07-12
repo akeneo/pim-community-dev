@@ -52,7 +52,7 @@ SQL;
         foreach ($rows as $row) {
             $associationTypes[$row['code']] = new AssociationType(
                 $row['code'],
-                LabelCollection::fromArray(\json_decode($row['labels'], true)),
+                LabelCollection::fromArray(\json_decode($row['labels'] ?? '{}', true)),
                 \boolval($row['is_two_way']),
                 \boolval($row['is_quantified'])
             );
