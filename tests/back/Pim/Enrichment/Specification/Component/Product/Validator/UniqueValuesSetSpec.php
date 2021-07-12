@@ -44,4 +44,22 @@ class UniqueValuesSetSpec extends ObjectBehavior
         $this->addValue($value1, $product1)->shouldReturn(true);
         $this->addValue($value2, $product2)->shouldReturn(false);
     }
+
+    function it_cannot_add_two_times_similar_value_with_different_case_if_the_products_do_not_exist(
+        ValueInterface $value1,
+        ProductInterface $product1,
+        ValueInterface $value2,
+        ProductInterface $product2
+    ) {
+        $product1->getId()->willReturn(null);
+        $product2->getId()->willReturn(null);
+        $value1->__toString()->willReturn('Jean');
+        $value2->__toString()->willReturn('jean');
+        $value1->getAttributeCode()->willReturn('identifier');
+        $value2->getAttributeCode()->willReturn('identifier');
+
+        $this->addValue($value1, $product1)->shouldReturn(true);
+        $this->addValue($value2, $product2)->shouldReturn(false);
+    }
+
 }

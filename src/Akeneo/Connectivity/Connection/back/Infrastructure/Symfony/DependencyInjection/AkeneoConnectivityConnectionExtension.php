@@ -24,6 +24,7 @@ class AkeneoConnectivityConnectionExtension extends Extension
         $loader->load('controllers.yml');
         $loader->load('event_normalizers.yml');
         $loader->load('event_subscribers.yml');
+        $loader->load('feature_flag.yml');
         $loader->load('handlers.yml');
         $loader->load('install.yml');
         $loader->load('marketplace.yml');
