@@ -14,8 +14,7 @@ declare(strict_types=1);
 namespace Akeneo\Platform\TailoredExport\Infrastructure\Connector\Processor;
 
 use Akeneo\Pim\Enrichment\Component\Product\Model\ProductInterface;
-use Akeneo\Pim\Structure\Component\Query\PublicApi\Association\GetAssociationTypeInterface;
-use Akeneo\Pim\Structure\Component\Query\PublicApi\AttributeType\Attribute;
+use Akeneo\Pim\Structure\Component\Query\PublicApi\Association\GetAssociationTypesInterface;
 use Akeneo\Pim\Structure\Component\Query\PublicApi\AttributeType\GetAttributes;
 use Akeneo\Platform\TailoredExport\Application\ProductMapper;
 use Akeneo\Platform\TailoredExport\Application\Query\Column\ColumnCollection;
@@ -30,7 +29,7 @@ use Akeneo\Tool\Component\Batch\Step\StepExecutionAwareInterface;
 class ProductExportProcessor implements ItemProcessorInterface, StepExecutionAwareInterface
 {
     private GetAttributes $getAttributes;
-    private GetAssociationTypeInterface $getAssociationTypes;
+    private GetAssociationTypesInterface $getAssociationTypes;
     private ValueCollectionHydrator $valueCollectionHydrator;
     private ColumnCollectionHydrator $columnCollectionHydrator;
     private ProductMapper $productMapper;
@@ -39,7 +38,7 @@ class ProductExportProcessor implements ItemProcessorInterface, StepExecutionAwa
 
     public function __construct(
         GetAttributes $getAttributes,
-        GetAssociationTypeInterface $getAssociationTypes,
+        GetAssociationTypesInterface $getAssociationTypes,
         ValueCollectionHydrator $valueCollectionHydrator,
         ColumnCollectionHydrator $columnCollectionHydrator,
         ProductMapper $productMapper
@@ -115,13 +114,7 @@ class ProductExportProcessor implements ItemProcessorInterface, StepExecutionAwa
             }
         }
 
-        $associationTypeCodes = array_unique($associationTypeCodes);
-        $indexedAssociationTypes = array_reduce($associationTypeCodes, function (&$carry, $associationTypeCode) {
-            /** @TODO: Create another query to fetch only one time */
-            $carry[$associationTypeCode] = $this->getAssociationTypes->execute($associationTypeCode);
-
-            return $carry;
-        }, []);
+        $indexedAssociationTypes = $this->getAssociationTypes->forCodes(array_unique($associationTypeCodes));
 
         return array_filter($indexedAssociationTypes);
     }

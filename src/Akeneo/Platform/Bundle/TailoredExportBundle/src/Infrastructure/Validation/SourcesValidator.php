@@ -13,7 +13,7 @@ declare(strict_types=1);
 
 namespace Akeneo\Platform\TailoredExport\Infrastructure\Validation;
 
-use Akeneo\Pim\Structure\Component\Query\PublicApi\Association\GetAssociationTypeInterface;
+use Akeneo\Pim\Structure\Component\Query\PublicApi\Association\GetAssociationTypesInterface;
 use Akeneo\Pim\Structure\Component\Query\PublicApi\AttributeType\GetAttributes;
 use Akeneo\Platform\TailoredExport\Application\Query\Source\AssociationTypeSource;
 use Akeneo\Platform\TailoredExport\Application\Query\Source\AttributeSource;
@@ -32,7 +32,7 @@ class SourcesValidator extends ConstraintValidator
 {
     private const MAX_SOURCE_COUNT = 4;
     private GetAttributes $getAttributes;
-    private GetAssociationTypeInterface $getAssociationType;
+    private GetAssociationTypesInterface $getAssociationTypes;
 
     /** @var Constraint[] */
     private array $attributeConstraints;
@@ -41,12 +41,12 @@ class SourcesValidator extends ConstraintValidator
 
     public function __construct(
         GetAttributes $getAttributes,
-        GetAssociationTypeInterface $getAssociationType,
+        GetAssociationTypesInterface $getAssociationTypes,
         array $attributeConstraints,
         array $propertyConstraints
     ) {
         $this->getAttributes = $getAttributes;
-        $this->getAssociationType = $getAssociationType;
+        $this->getAssociationTypes = $getAssociationTypes;
         $this->attributeConstraints = $attributeConstraints;
         $this->propertyConstraints = $propertyConstraints;
     }
@@ -122,7 +122,8 @@ class SourcesValidator extends ConstraintValidator
         if (PropertySource::TYPE === $source['type']) {
             $constraint = $this->propertyConstraints[$source['code']] ?? null;
         } elseif (AssociationTypeSource::TYPE === $source['type']) {
-            $associationType = $this->getAssociationType->execute($source['code']);
+            $associationTypes = $this->getAssociationTypes->forCodes([$source['code']]);
+            $associationType = $associationTypes[$source['code']];
             if (null === $associationType) {
                 $this->context->buildViolation(Sources::ASSOCIATION_TYPE_DOES_NOT_EXIST)
                     ->atPath(sprintf('[%s]', $source['uuid']))
