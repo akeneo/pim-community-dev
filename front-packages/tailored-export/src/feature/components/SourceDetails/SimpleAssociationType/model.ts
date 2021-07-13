@@ -47,6 +47,7 @@ const isSimpleAssociationTypeSelection = (selection: any): selection is SimpleAs
   isCollectionSeparator(selection.separator) &&
   'entity_type' in selection &&
   isEntityType(selection.entity_type);
+
 type SimpleAssociationTypeSource = {
   uuid: string;
   code: string;
