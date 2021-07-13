@@ -14,7 +14,7 @@ const QuantifiedAssociationTypeConfigurator = ({
   const [isSelectorCollapsed, toggleSelectorCollapse] = useState<boolean>(true);
 
   if (!isQuantifiedAssociationTypeSource(source)) {
-    console.error(`Invalid source data "${source.code}" for association configurator`);
+    console.error(`Invalid source data "${source.code}" for quantified association configurator`);
 
     return null;
   }

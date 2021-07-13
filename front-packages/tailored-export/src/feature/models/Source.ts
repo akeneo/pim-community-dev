@@ -38,8 +38,8 @@ import {
 import {AssociationType} from './AssociationType';
 import {
   getDefaultQuantifiedAssociationTypeSource,
-  QuantifiedAssociationTypeSource
-} from "../components/SourceDetails/QuantifiedAssociationType/model";
+  QuantifiedAssociationTypeSource,
+} from '../components/SourceDetails/QuantifiedAssociationType/model';
 
 type Source =
   | AssetCollectionSource

@@ -44,7 +44,7 @@ final class QuantifiedAssociationsValue implements SourceValueInterface
      */
     public function getAssociatedProductIdentifiers(): array
     {
-        return array_map(static fn (QuantifiedAssociation $productAssociation) => $productAssociation->getIdentifier(),$this->productAssociations);
+        return array_map(static fn (QuantifiedAssociation $productAssociation) => $productAssociation->getIdentifier(), $this->productAssociations);
     }
 
     /**
@@ -52,7 +52,7 @@ final class QuantifiedAssociationsValue implements SourceValueInterface
      */
     public function getAssociatedProductModelCodes(): array
     {
-        return array_map(static fn (QuantifiedAssociation $productModelAssociation) => $productModelAssociation->getIdentifier(),$this->productModelAssociations);
+        return array_map(static fn (QuantifiedAssociation $productModelAssociation) => $productModelAssociation->getIdentifier(), $this->productModelAssociations);
     }
 
     /**
@@ -60,7 +60,7 @@ final class QuantifiedAssociationsValue implements SourceValueInterface
      */
     public function getAssociatedProductQuantities(): array
     {
-        return array_map(static fn (QuantifiedAssociation $productAssociation) => $productAssociation->getQuantity(),$this->productAssociations);
+        return array_map(static fn (QuantifiedAssociation $productAssociation) => $productAssociation->getQuantity(), $this->productAssociations);
     }
 
     /**
@@ -68,6 +68,6 @@ final class QuantifiedAssociationsValue implements SourceValueInterface
      */
     public function getAssociatedProductModelQuantities(): array
     {
-        return array_map(static fn (QuantifiedAssociation $productModelAssociation) => $productModelAssociation->getQuantity(),$this->productModelAssociations);
+        return array_map(static fn (QuantifiedAssociation $productModelAssociation) => $productModelAssociation->getQuantity(), $this->productModelAssociations);
     }
 }

@@ -89,10 +89,10 @@ final class AssociationTypeValueHydrator
     }
 
     /**
-     * @param array{
-     *     'products': array{identifier': string, "quantity": int},
-     *     'product_models': array{identifier': string, "quantity": int}
-     * } $normalizedQuantifiedAssociations
+     * @param array $normalizedQuantifiedAssociations = [
+     *     'products' => array<{identifier': string, "quantity": int}>,
+     *     'product_models' => array<{identifier': string, "quantity": int}>
+     * ]
      *
      * @return QuantifiedAssociation[]
      */
@@ -101,7 +101,7 @@ final class AssociationTypeValueHydrator
         $normalizedProductQuantifiedAssociations = $normalizedQuantifiedAssociations['products']  ?? [];
 
         return array_map(
-            static fn($productQuantifiedAssociation) => new QuantifiedAssociation(
+            static fn ($productQuantifiedAssociation) => new QuantifiedAssociation(
                 $productQuantifiedAssociation['identifier'],
                 $productQuantifiedAssociation['quantity']
             ),
@@ -110,11 +110,11 @@ final class AssociationTypeValueHydrator
     }
 
     /**
-     * @param array{
-     *     'products': array{identifier': string, "quantity": int},
-     *     'product_models': array{identifier': string, "quantity": int}
-     * } $normalizedQuantifiedAssociations
-     * 
+     * @param array $normalizedQuantifiedAssociations = [
+     *     'products' => array<{identifier': string, "quantity": int}>,
+     *     'product_models' => array<{identifier': string, "quantity": int}>
+     * ]
+     *
      * @return QuantifiedAssociation[]
      */
     private function getProductModelQuantifiedAssociations(array $normalizedQuantifiedAssociations): array
@@ -122,7 +122,7 @@ final class AssociationTypeValueHydrator
         $normalizedProductModelQuantifiedAssociations = $normalizedQuantifiedAssociations['product_models']  ?? [];
 
         return array_map(
-            static fn($productQuantifiedAssociation) => new QuantifiedAssociation(
+            static fn ($productQuantifiedAssociation) => new QuantifiedAssociation(
                 $productQuantifiedAssociation['identifier'],
                 $productQuantifiedAssociation['quantity']
             ),

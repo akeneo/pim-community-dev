@@ -13,13 +13,13 @@ declare(strict_types=1);
 
 namespace Specification\Akeneo\Platform\TailoredExport\Application\Query\Selection\QuantifiedAssociations;
 
+use Akeneo\Platform\TailoredExport\Application\Query\Selection\Boolean\BooleanSelection;
+use Akeneo\Platform\TailoredExport\Application\Query\Selection\QuantifiedAssociations\QuantifiedAssociationsLabelSelection;
 use Akeneo\Platform\TailoredExport\Domain\Query\FindProductLabelsInterface;
 use Akeneo\Platform\TailoredExport\Domain\Query\FindProductModelLabelsInterface;
-use Akeneo\Platform\TailoredExport\Domain\SourceValue\QuantifiedAssociation;
-use Akeneo\Platform\TailoredExport\Application\Query\Selection\QuantifiedAssociations\QuantifiedAssociationsLabelSelection;
-use Akeneo\Platform\TailoredExport\Application\Query\Selection\Boolean\BooleanSelection;
-use Akeneo\Platform\TailoredExport\Domain\SourceValue\QuantifiedAssociationsValue;
 use Akeneo\Platform\TailoredExport\Domain\SourceValue\BooleanValue;
+use Akeneo\Platform\TailoredExport\Domain\SourceValue\QuantifiedAssociation;
+use Akeneo\Platform\TailoredExport\Domain\SourceValue\QuantifiedAssociationsValue;
 use PhpSpec\ObjectBehavior;
 
 class QuantifiedAssociationsLabelSelectionHandlerSpec extends ObjectBehavior

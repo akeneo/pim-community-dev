@@ -366,6 +366,13 @@ test('it displays validation errors', async () => {
       propertyPath: '[type]',
     },
     {
+      messageTemplate: 'error.key.channel',
+      invalidValue: '',
+      message: 'this is a channel error',
+      parameters: {},
+      propertyPath: '[channel]',
+    },
+    {
       messageTemplate: 'error.key.entity_type',
       invalidValue: '',
       message: 'this is an entity type error',

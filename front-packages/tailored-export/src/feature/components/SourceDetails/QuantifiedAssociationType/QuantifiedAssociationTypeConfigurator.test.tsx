@@ -33,7 +33,7 @@ jest.mock('./QuantifiedAssociationTypeSelector', () => ({
   ),
 }));
 
-test('it displays a simple association type configurator', () => {
+test('it displays a quantified association type configurator', () => {
   const onSourceChange = jest.fn();
   const source = getDefaultQuantifiedAssociationTypeSource(associationType);
 
@@ -65,7 +65,7 @@ test('it does not render if the source is not valid', () => {
     />
   );
 
-  expect(mockedConsole).toHaveBeenCalledWith('Invalid source data "enabled" for association configurator');
+  expect(mockedConsole).toHaveBeenCalledWith('Invalid source data "enabled" for quantified association configurator');
   expect(screen.queryByText('Update selection')).not.toBeInTheDocument();
   mockedConsole.mockRestore();
 });

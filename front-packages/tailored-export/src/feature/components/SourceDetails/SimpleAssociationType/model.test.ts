@@ -1,6 +1,7 @@
 import {
   getDefaultSimpleAssociationTypeSource,
   isCollectionSeparator,
+  isEntityType,
   isProductOrProductModelSelection,
   isSimpleAssociationTypeSource,
   SimpleAssociationTypeSource,
@@ -144,4 +145,12 @@ test('it returns if the entity type selection a product or a product model', () 
       entity_type: 'groups',
     })
   ).toBe(false);
+});
+
+test('it returns if entity type is valid', () => {
+  expect(isEntityType('products')).toBe(true);
+  expect(isEntityType('product_models')).toBe(true);
+  expect(isEntityType('groups')).toBe(true);
+
+  expect(isEntityType('association')).toBe(false);
 });

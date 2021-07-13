@@ -19,7 +19,10 @@ interface QuantifiedAssociationsSelectionInterface extends SelectionInterface
 {
     public const ENTITY_TYPE_PRODUCTS = 'products';
     public const ENTITY_TYPE_PRODUCT_MODELS = 'product_models';
-    public const ENTITY_TYPE_GROUPS = 'groups';
+
+    public function isProductsSelection(): bool;
+
+    public function isProductModelsSelection(): bool;
 
     public function getSeparator(): string;
 }

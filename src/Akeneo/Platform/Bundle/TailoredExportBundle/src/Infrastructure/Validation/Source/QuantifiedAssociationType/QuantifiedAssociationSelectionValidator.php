@@ -13,6 +13,10 @@ declare(strict_types=1);
 
 namespace Akeneo\Platform\TailoredExport\Infrastructure\Validation\Source\QuantifiedAssociationType;
 
+use Akeneo\Platform\TailoredExport\Application\Query\Selection\QuantifiedAssociations\QuantifiedAssociationsCodeSelection;
+use Akeneo\Platform\TailoredExport\Application\Query\Selection\QuantifiedAssociations\QuantifiedAssociationsCodeSelectionHandler;
+use Akeneo\Platform\TailoredExport\Application\Query\Selection\QuantifiedAssociations\QuantifiedAssociationsLabelSelection;
+use Akeneo\Platform\TailoredExport\Application\Query\Selection\QuantifiedAssociations\QuantifiedAssociationsQuantitySelection;
 use Akeneo\Platform\TailoredExport\Application\Query\Selection\QuantifiedAssociations\QuantifiedAssociationsSelectionInterface;
 use Akeneo\Platform\TailoredExport\Infrastructure\Validation\ChannelShouldExist;
 use Akeneo\Platform\TailoredExport\Infrastructure\Validation\LocaleShouldBeActive;
@@ -54,9 +58,9 @@ class QuantifiedAssociationSelectionValidator extends ConstraintValidator
                             'type' => new Choice(
                                 [
                                     'choices' => [
-                                        'code',
-                                        'label',
-                                        'quantity',
+                                        QuantifiedAssociationsCodeSelection::TYPE,
+                                        QuantifiedAssociationsLabelSelection::TYPE,
+                                        QuantifiedAssociationsQuantitySelection::TYPE,
                                     ],
                                 ]
                             ),

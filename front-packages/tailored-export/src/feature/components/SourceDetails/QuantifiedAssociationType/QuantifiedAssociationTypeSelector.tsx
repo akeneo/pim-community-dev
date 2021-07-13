@@ -9,13 +9,8 @@ import {
 } from '@akeneo-pim-community/shared';
 import {useChannels} from '../../../hooks';
 import {LocaleDropdown} from '../../LocaleDropdown';
-import {
-  availableSeparators,
-  isCollectionSeparator,
-  isEntityType,
-  QuantifiedAssociationTypeSelection
-} from './model';
-import {ChannelDropdown} from "../../ChannelDropdown";
+import {availableSeparators, isCollectionSeparator, isEntityType, QuantifiedAssociationTypeSelection} from './model';
+import {ChannelDropdown} from '../../ChannelDropdown';
 
 type QuantifiedAssociationTypeSelectorProps = {
   selection: QuantifiedAssociationTypeSelection;
@@ -59,9 +54,6 @@ const QuantifiedAssociationTypeSelector = ({
             {translate('pim_common.product_models')}
           </SelectInput.Option>
         </SelectInput>
-        <Helper inline={true} level="info">
-          {translate('akeneo.tailored_export.column_details.sources.selection.quantified_association.information.entity_type')}
-        </Helper>
         {entityTypeErrors.map((error, index) => (
           <Helper key={index} inline={true} level="error">
             {translate(error.messageTemplate, error.parameters)}
@@ -89,13 +81,13 @@ const QuantifiedAssociationTypeSelector = ({
           <SelectInput.Option title={translate('pim_common.code')} value="code">
             {translate('pim_common.code')}
           </SelectInput.Option>
-          <SelectInput.Option title={translate('akeneo.tailored_export.column_details.sources.selection.quantified_association.quantity')} value="quantity">
+          <SelectInput.Option
+            title={translate('akeneo.tailored_export.column_details.sources.selection.quantified_association.quantity')}
+            value="quantity"
+          >
             {translate('akeneo.tailored_export.column_details.sources.selection.quantified_association.quantity')}
           </SelectInput.Option>
         </SelectInput>
-        <Helper inline={true} level="info">
-          {translate('akeneo.tailored_export.column_details.sources.selection.quantified_association.information.type')}
-        </Helper>
         {typeErrors.map((error, index) => (
           <Helper key={index} inline={true} level="error">
             {translate(error.messageTemplate, error.parameters)}

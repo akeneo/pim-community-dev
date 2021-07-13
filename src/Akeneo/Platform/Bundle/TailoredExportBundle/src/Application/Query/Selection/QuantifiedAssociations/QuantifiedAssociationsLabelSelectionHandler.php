@@ -45,8 +45,7 @@ class QuantifiedAssociationsLabelSelectionHandler implements SelectionHandlerInt
         $associatedEntityCodes = $this->getAssociatedEntityCodes($selection, $value);
         $associatedEntityLabels = $this->getAssociatedEntityLabels($selection, $associatedEntityCodes);
 
-        $selectedData = \array_map(static fn ($associatedEntityCode) => $associatedEntityLabels[$associatedEntityCode] ??
-            \sprintf('[%s]', $associatedEntityCode), $associatedEntityCodes);
+        $selectedData = $this->formatLabels($associatedEntityLabels, $associatedEntityCodes);
 
         return \implode($selection->getSeparator(), $selectedData);
     }
@@ -90,5 +89,19 @@ class QuantifiedAssociationsLabelSelectionHandler implements SelectionHandlerInt
         }
 
         throw new \InvalidArgumentException('Entity type is not supported in this selection');
+    }
+
+    /**
+     * @param string[] $associatedEntityLabels
+     * @param array<string, string> $associatedEntityCodes
+     * @return string[]
+     */
+    private function formatLabels(array $associatedEntityLabels, array $associatedEntityCodes): array
+    {
+        return \array_map(
+            static fn ($associatedEntityCode) =>
+                $associatedEntityLabels[$associatedEntityCode] ?? \sprintf('[%s]', $associatedEntityCode),
+            $associatedEntityCodes
+        );
     }
 }

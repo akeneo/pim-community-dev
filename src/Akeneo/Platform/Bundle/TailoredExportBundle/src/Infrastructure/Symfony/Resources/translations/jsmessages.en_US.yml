@@ -87,7 +87,7 @@ akeneo.tailored_export:
           arabic_comma: Arabic decimal separator (٫)
         quantified_association:
           quantity: Quantity
-       association:
+        association:
           entity_type: Entity type
           information:
             locale: If the attribute used as label has a value per locale, you may select a specific locale.

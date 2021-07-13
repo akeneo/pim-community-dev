@@ -41,7 +41,7 @@ class QuantifiedAssociationsQuantitySelectionHandler implements SelectionHandler
     }
 
     /**
-     * @return string[]
+     * @return int[]
      */
     private function getAssociatedEntityQuantities(QuantifiedAssociationsQuantitySelection $selection, QuantifiedAssociationsValue $value): array
     {

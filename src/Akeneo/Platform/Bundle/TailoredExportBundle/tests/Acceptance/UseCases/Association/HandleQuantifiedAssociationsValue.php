@@ -13,10 +13,10 @@ declare(strict_types=1);
 
 namespace Akeneo\Platform\TailoredExport\Test\Acceptance\UseCases\Association;
 
-use Akeneo\Platform\TailoredExport\Application\Query\Selection\SelectionInterface;
 use Akeneo\Platform\TailoredExport\Application\Query\Selection\QuantifiedAssociations\QuantifiedAssociationsCodeSelection;
-use Akeneo\Platform\TailoredExport\Application\Query\Selection\QuantifiedAssociations\QuantifiedAssociationsQuantitySelection;
 use Akeneo\Platform\TailoredExport\Application\Query\Selection\QuantifiedAssociations\QuantifiedAssociationsLabelSelection;
+use Akeneo\Platform\TailoredExport\Application\Query\Selection\QuantifiedAssociations\QuantifiedAssociationsQuantitySelection;
+use Akeneo\Platform\TailoredExport\Application\Query\Selection\SelectionInterface;
 use Akeneo\Platform\TailoredExport\Domain\SourceValue\QuantifiedAssociation;
 use Akeneo\Platform\TailoredExport\Domain\SourceValue\QuantifiedAssociationsValue;
 use Akeneo\Platform\TailoredExport\Domain\SourceValueInterface;
@@ -32,7 +32,7 @@ final class HandleQuantifiedAssociationsValue extends AssociationTestCase
     /**
      * @dataProvider provider
      */
-    public function test_it_can_transform_a_associations_value(
+    public function test_it_can_transform_a_quantified_associations_value(
         array $operations,
         SelectionInterface $selection,
         SourceValueInterface $value,
@@ -55,49 +55,49 @@ final class HandleQuantifiedAssociationsValue extends AssociationTestCase
         $productModelAssociations = [new QuantifiedAssociation('athena', 1), new QuantifiedAssociation('hat', 2)];
 
         return [
-            [
+            'Select associated product codes with ";" as separator' => [
                 'operations' => [],
                 'selection' => new QuantifiedAssociationsCodeSelection('products', ';'),
                 'value' => new QuantifiedAssociationsValue($productAssociations, $productModelAssociations),
                 'expected' => [self::TARGET_NAME => '1111111171;13620748']
             ],
-            [
+            'Select associated product codes with "," as separator' => [
                 'operations' => [],
                 'selection' => new QuantifiedAssociationsCodeSelection('products', ','),
                 'value' => new QuantifiedAssociationsValue($productAssociations, $productModelAssociations),
                 'expected' => [self::TARGET_NAME => '1111111171,13620748']
             ],
-            [
+            'Select associated product model codes' => [
                 'operations' => [],
                 'selection' => new QuantifiedAssociationsCodeSelection('product_models', ','),
                 'value' => new QuantifiedAssociationsValue($productAssociations, $productModelAssociations),
                 'expected' => [self::TARGET_NAME => 'diana,stilleto']
             ],
-            [
+            'Select associated product labels with a product without translation' => [
                 'operations' => [],
                 'selection' => new QuantifiedAssociationsLabelSelection('products', 'ecommerce', 'en_US', ';'),
                 'value' => new QuantifiedAssociationsValue($productAssociations, $productModelAssociations),
                 'expected' => [self::TARGET_NAME => 'Bag;[13620748]']
             ],
-            [
+            'Select associated product labels with a product with "," as separator' => [
                 'operations' => [],
                 'selection' => new QuantifiedAssociationsLabelSelection('products', 'ecommerce', 'en_US', ','),
                 'value' => new QuantifiedAssociationsValue($productAssociations, $productModelAssociations),
                 'expected' => [self::TARGET_NAME => 'Bag,[13620748]']
             ],
-            [
+            'Select associated product models label with a product model without translation' => [
                 'operations' => [],
                 'selection' => new QuantifiedAssociationsLabelSelection('product_models', 'ecommerce', 'en_US', ','),
                 'value' => new QuantifiedAssociationsValue($productAssociations, $productModelAssociations),
                 'expected' => [self::TARGET_NAME => 'Diana,[stilleto]']
             ],
-            [
+            'Select associated product quantities' => [
                 'operations' => [],
                 'selection' => new QuantifiedAssociationsQuantitySelection('products', ','),
                 'value' => new QuantifiedAssociationsValue($productAssociations, $productModelAssociations),
                 'expected' => [self::TARGET_NAME => '3,2']
             ],
-            [
+            'Select associated product model quantities' => [
                 'operations' => [],
                 'selection' => new QuantifiedAssociationsQuantitySelection('product_models', ','),
                 'value' => new QuantifiedAssociationsValue($productAssociations, $productModelAssociations),

@@ -4,7 +4,7 @@ import {AssociationType, AssociationTypeConfiguratorProps, Source} from '../../m
 import styled from 'styled-components';
 import {useAssociationType} from '../../hooks';
 import {SimpleAssociationTypeConfigurator} from './SimpleAssociationType/SimpleAssociationTypeConfigurator';
-import {QuantifiedAssociationTypeConfigurator} from "./QuantifiedAssociationType/QuantifiedAssociationTypeConfigurator";
+import {QuantifiedAssociationTypeConfigurator} from './QuantifiedAssociationType/QuantifiedAssociationTypeConfigurator';
 
 const Container = styled.div`
   display: flex;
@@ -15,7 +15,6 @@ const Container = styled.div`
 `;
 
 const getConfigurator = (associationType: AssociationType): FunctionComponent<AssociationTypeConfiguratorProps> => {
-  console.log(associationType);
   if (associationType.is_quantified) {
     return QuantifiedAssociationTypeConfigurator;
   }
@@ -43,11 +42,7 @@ const AssociationTypeSourceConfigurator = ({
 
   return (
     <Container>
-      <Configurator
-        source={source}
-        validationErrors={validationErrors}
-        onSourceChange={onSourceChange}
-      />
+      <Configurator source={source} validationErrors={validationErrors} onSourceChange={onSourceChange} />
     </Container>
   );
 };

@@ -29,12 +29,13 @@ const isCollectionSeparator = (separator: unknown): separator is CollectionSepar
   typeof separator === 'string' && separator in availableSeparators;
 
 const isEntityType = (entityType: unknown): entityType is AssociatedEntityType =>
-  typeof entityType === 'string' &&
-  (entityType === 'products' || entityType === 'product_models');
+  typeof entityType === 'string' && (entityType === 'products' || entityType === 'product_models');
 
 const isQuantifiedAssociationTypeSelection = (selection: any): selection is QuantifiedAssociationTypeSource =>
   'type' in selection &&
-  (selection.type === 'code' || selection.type === 'quantity' || (selection.type === 'label' && 'locale' in selection)) &&
+  (selection.type === 'code' ||
+    selection.type === 'quantity' ||
+    (selection.type === 'label' && 'locale' in selection)) &&
   'separator' in selection &&
   isCollectionSeparator(selection.separator) &&
   'entity_type' in selection &&
@@ -50,7 +51,9 @@ type QuantifiedAssociationTypeSource = {
   selection: QuantifiedAssociationTypeSelection;
 };
 
-const getDefaultQuantifiedAssociationTypeSource = (associationType: AssociationType): QuantifiedAssociationTypeSource => ({
+const getDefaultQuantifiedAssociationTypeSource = (
+  associationType: AssociationType
+): QuantifiedAssociationTypeSource => ({
   uuid: uuid(),
   code: associationType.code,
   type: 'association_type',
