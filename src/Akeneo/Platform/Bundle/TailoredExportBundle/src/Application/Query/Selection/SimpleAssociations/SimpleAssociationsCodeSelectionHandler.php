@@ -26,7 +26,7 @@ class SimpleAssociationsCodeSelectionHandler implements SelectionHandlerInterfac
             !$selection instanceof SimpleAssociationsCodeSelection
             || !$value instanceof SimpleAssociationsValue
         ) {
-            throw new \InvalidArgumentException('Cannot apply Simple Select selection on this entity');
+            throw new \InvalidArgumentException('Cannot apply simple associations code selection on this entity');
         }
 
         $associatedEntityCodes = $this->getAssociatedEntityCodes($selection, $value);

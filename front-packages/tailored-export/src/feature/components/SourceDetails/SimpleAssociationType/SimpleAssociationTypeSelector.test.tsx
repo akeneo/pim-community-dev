@@ -123,7 +123,7 @@ test('it displays a locale and channel dropdown when the selection type is label
     locale: 'fr_FR',
     separator: ',',
     entity_type: 'products',
-    channel: 'ecommerce'
+    channel: 'ecommerce',
   });
 });
 
@@ -153,7 +153,7 @@ test('it can select group label selection', async () => {
     type: 'label',
     locale: 'en_US',
     separator: ',',
-    entity_type: 'groups'
+    entity_type: 'groups',
   });
 });
 
@@ -184,7 +184,7 @@ test('it can select group code selection', async () => {
   expect(onSelectionChange).toHaveBeenCalledWith({
     type: 'code',
     separator: ',',
-    entity_type: 'groups'
+    entity_type: 'groups',
   });
 });
 
@@ -210,7 +210,6 @@ test('it can select a label selection type', async () => {
     channel: 'ecommerce',
   });
 });
-
 
 test('it can select a channel when user select the label', async () => {
   const onSelectionChange = jest.fn();
@@ -311,7 +310,12 @@ test('it can select an entity type when type is label', async () => {
   userEvent.click(screen.getByText('akeneo.tailored_export.column_details.sources.selection.association.entity_type'));
   userEvent.click(screen.getByTitle('pim_common.groups'));
 
-  expect(onSelectionChange).toHaveBeenCalledWith({type: 'label', separator: ',', entity_type: 'groups', locale: 'en_US'});
+  expect(onSelectionChange).toHaveBeenCalledWith({
+    type: 'label',
+    separator: ',',
+    entity_type: 'groups',
+    locale: 'en_US',
+  });
 });
 
 test('it can select the first channel when user switch from group to product label', async () => {
@@ -328,7 +332,13 @@ test('it can select the first channel when user switch from group to product lab
   userEvent.click(screen.getByText('akeneo.tailored_export.column_details.sources.selection.association.entity_type'));
   userEvent.click(screen.getByTitle('pim_common.products'));
 
-  expect(onSelectionChange).toHaveBeenCalledWith({type: 'label', separator: ',', entity_type: 'products', channel: 'ecommerce', locale: 'en_US'});
+  expect(onSelectionChange).toHaveBeenCalledWith({
+    type: 'label',
+    separator: ',',
+    entity_type: 'products',
+    channel: 'ecommerce',
+    locale: 'en_US',
+  });
 });
 
 test('it displays validation errors', async () => {

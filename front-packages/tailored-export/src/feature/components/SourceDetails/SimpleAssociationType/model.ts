@@ -26,7 +26,7 @@ type SimpleAssociationTypeSelection =
       entity_type: 'groups';
       separator: CollectionSeparator;
       locale: LocaleCode;
-  };
+    };
 
 const isCollectionSeparator = (separator: unknown): separator is CollectionSeparator =>
   typeof separator === 'string' && separator in availableSeparators;
@@ -35,7 +35,9 @@ const isEntityType = (entityType: unknown): entityType is AssociatedEntityType =
   typeof entityType === 'string' &&
   (entityType === 'products' || entityType === 'product_models' || entityType === 'groups');
 
-const isProductOrProductModelSelection = (selection: SimpleAssociationTypeSelection): selection is ProductsOrProductModelsSelection =>
+const isProductOrProductModelSelection = (
+  selection: SimpleAssociationTypeSelection
+): selection is ProductsOrProductModelsSelection =>
   selection.entity_type === 'products' || selection.entity_type === 'product_models';
 
 const isSimpleAssociationTypeSelection = (selection: any): selection is SimpleAssociationTypeSource =>
@@ -75,5 +77,5 @@ export {
   isSimpleAssociationTypeSource,
   isCollectionSeparator,
   isEntityType,
-  isProductOrProductModelSelection
+  isProductOrProductModelSelection,
 };

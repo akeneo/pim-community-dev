@@ -34,7 +34,7 @@ class SimpleAssociationsGroupLabelSelectionHandler implements SelectionHandlerIn
             !$selection instanceof SimpleAssociationsGroupLabelSelection
             || !$value instanceof SimpleAssociationsValue
         ) {
-            throw new \InvalidArgumentException('Cannot apply Simple Select selection on this entity');
+            throw new \InvalidArgumentException('Cannot apply simple associations group label selection on this entity');
         }
 
         $associatedGroupCodes = $value->getAssociatedGroupCodes();

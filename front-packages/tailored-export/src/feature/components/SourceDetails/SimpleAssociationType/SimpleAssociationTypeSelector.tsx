@@ -14,9 +14,9 @@ import {
   isCollectionSeparator,
   isEntityType,
   isProductOrProductModelSelection,
-  SimpleAssociationTypeSelection
+  SimpleAssociationTypeSelection,
 } from './model';
-import {ChannelDropdown} from "../../ChannelDropdown";
+import {ChannelDropdown} from '../../ChannelDropdown';
 
 type SimpleAssociationTypeSelectorProps = {
   selection: SimpleAssociationTypeSelection;
@@ -52,10 +52,21 @@ const SimpleAssociationTypeSelector = ({
               if (selection.type === 'code') {
                 onSelectionChange({type: selection.type, entity_type: entityType, separator: selection.separator});
               } else if (entityType === 'groups') {
-                  onSelectionChange({type: selection.type, entity_type: entityType, separator: selection.separator, locale: selection.locale});
+                onSelectionChange({
+                  type: selection.type,
+                  entity_type: entityType,
+                  separator: selection.separator,
+                  locale: selection.locale,
+                });
               } else {
                 const channel = isProductOrProductModelSelection(selection) ? selection.channel : channels[0].code;
-                onSelectionChange({type: selection.type, entity_type: entityType, separator: selection.separator, locale: selection.locale, channel});
+                onSelectionChange({
+                  type: selection.type,
+                  entity_type: entityType,
+                  separator: selection.separator,
+                  locale: selection.locale,
+                  channel,
+                });
               }
             }
           }}
@@ -70,9 +81,6 @@ const SimpleAssociationTypeSelector = ({
             {translate('pim_common.groups')}
           </SelectInput.Option>
         </SelectInput>
-        <Helper inline={true} level="info">
-          {translate('akeneo.tailored_export.column_details.sources.selection.simple_association.information')}
-        </Helper>
         {entityTypeErrors.map((error, index) => (
           <Helper key={index} inline={true} level="error">
             {translate(error.messageTemplate, error.parameters)}
@@ -98,7 +106,7 @@ const SimpleAssociationTypeSelector = ({
                 entity_type: 'groups',
                 separator: selection.separator,
                 type,
-                locale: locales[0].code
+                locale: locales[0].code,
               });
             } else if ('code' === type) {
               onSelectionChange({type, separator: selection.separator, entity_type: selection.entity_type});
@@ -112,9 +120,6 @@ const SimpleAssociationTypeSelector = ({
             {translate('pim_common.code')}
           </SelectInput.Option>
         </SelectInput>
-        <Helper inline={true} level="info">
-          {translate('akeneo.tailored_export.column_details.sources.selection.code_label.information')}
-        </Helper>
         {typeErrors.map((error, index) => (
           <Helper key={index} inline={true} level="error">
             {translate(error.messageTemplate, error.parameters)}

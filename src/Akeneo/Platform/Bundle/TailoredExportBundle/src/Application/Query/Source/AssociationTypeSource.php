@@ -22,18 +22,18 @@ class AssociationTypeSource implements SourceInterface
 
     private string $code;
     private bool $isQuantified;
-    private OperationCollection $operations;
+    private OperationCollection $operationCollection;
     private SelectionInterface $selection;
 
     public function __construct(
         string $code,
         bool $isQuantified,
-        OperationCollection $operations,
+        OperationCollection $operationCollection,
         SelectionInterface $selection
     ) {
         $this->code = $code;
         $this->isQuantified = $isQuantified;
-        $this->operations = $operations;
+        $this->operationCollection = $operationCollection;
         $this->selection = $selection;
     }
 
@@ -49,7 +49,7 @@ class AssociationTypeSource implements SourceInterface
 
     public function getOperationCollection(): OperationCollection
     {
-        return $this->operations;
+        return $this->operationCollection;
     }
 
     public function getSelection(): SelectionInterface

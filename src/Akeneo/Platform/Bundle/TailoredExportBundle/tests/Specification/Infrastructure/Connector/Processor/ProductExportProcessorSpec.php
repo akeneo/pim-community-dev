@@ -15,8 +15,7 @@ namespace Specification\Akeneo\Platform\TailoredExport\Infrastructure\Connector\
 
 use Akeneo\Pim\Enrichment\Component\Product\Model\ProductInterface;
 use Akeneo\Pim\Structure\Component\Query\PublicApi\Association\AssociationType;
-use Akeneo\Pim\Structure\Component\Query\PublicApi\Association\FindAssociationTypesInterface;
-use Akeneo\Pim\Structure\Component\Query\PublicApi\Association\GetAssociationTypeInterface;
+use Akeneo\Pim\Structure\Component\Query\PublicApi\Association\GetAssociationTypesInterface;
 use Akeneo\Pim\Structure\Component\Query\PublicApi\Association\LabelCollection;
 use Akeneo\Pim\Structure\Component\Query\PublicApi\AttributeType\Attribute;
 use Akeneo\Pim\Structure\Component\Query\PublicApi\AttributeType\GetAttributes;
@@ -36,14 +35,14 @@ class ProductExportProcessorSpec extends ObjectBehavior
         StepExecution $stepExecution,
         JobParameters $jobParameters,
         GetAttributes $getAttributes,
-        GetAssociationTypeInterface $getAssociationType,
+        GetAssociationTypesInterface $getAssociationTypes,
         ValueCollectionHydrator $valueCollectionHydrator,
         ColumnCollectionHydrator $columnCollectionHydrator,
         ProductMapper $productMapper
     ) {
         $this->beConstructedWith(
             $getAttributes,
-            $getAssociationType,
+            $getAssociationTypes,
             $valueCollectionHydrator,
             $columnCollectionHydrator,
             $productMapper
@@ -57,7 +56,7 @@ class ProductExportProcessorSpec extends ObjectBehavior
         ProductInterface $product,
         JobParameters $jobParameters,
         GetAttributes $getAttributes,
-        GetAssociationTypeInterface $getAssociationType,
+        GetAssociationTypesInterface $getAssociationTypes,
         ValueCollectionHydrator $valueCollectionHydrator,
         ColumnCollectionHydrator $columnCollectionHydrator,
         ColumnCollection $columnCollection,
@@ -121,7 +120,7 @@ class ProductExportProcessorSpec extends ObjectBehavior
 
         $jobParameters->get('columns')->willReturn($columns);
         $getAttributes->forCodes(['name'])->willReturn(['name' => $name]);
-        $getAssociationType->execute('X_SELL')->willReturn($crossSellAssociation);
+        $getAssociationTypes->forCodes(['X_SELL'])->willReturn(['X_SELL' => $crossSellAssociation]);
         $columnCollectionHydrator->hydrate($columns, ['name' => $name], ['X_SELL' => $crossSellAssociation])->willReturn($columnCollection);
         $valueCollectionHydrator->hydrate($product, $columnCollection)->willReturn($valueCollection);
         $productMapper->map($columnCollection, $valueCollection)->willReturn($mappedProduct);
