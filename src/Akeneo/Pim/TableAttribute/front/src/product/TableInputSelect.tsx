@@ -1,7 +1,8 @@
 import React, {useState} from 'react';
-import {Dropdown, TableInput} from 'akeneo-design-system';
+import {Dropdown, TableInput, AddingValueIllustration} from 'akeneo-design-system';
 import {SelectOption, SelectOptionCode} from '../models/TableConfiguration';
 import {getLabel, useTranslate, useUserContext} from '@akeneo-pim-community/shared';
+import styled from "styled-components";
 
 const BATCH_SIZE = 20;
 
@@ -10,6 +11,14 @@ type TableInputSelectProps = {
   onChange: (value: SelectOptionCode | undefined) => void;
   options?: SelectOption[];
 };
+
+const CenteredHelper = styled.div`
+  text-align: center;
+  & > * {
+    display: block;
+    margin: auto;
+  } 
+`;
 
 const TableInputSelect: React.FC<TableInputSelectProps> = ({value, onChange, options, ...rest}) => {
   const translate = useTranslate();
@@ -29,7 +38,7 @@ const TableInputSelect: React.FC<TableInputSelectProps> = ({value, onChange, opt
   let label = '';
   if (value) {
     const option = options.find(option => option.code === value);
-    label = option ? getLabel(option.labels, userContext.get('catalogLocale'), option.code) : 'NOT FOUND TODO';
+    label = option ? getLabel(option.labels, userContext.get('catalogLocale'), option.code) : `[${value}]`;
   }
 
   const handleNextPage = () => {
@@ -69,6 +78,18 @@ const TableInputSelect: React.FC<TableInputSelectProps> = ({value, onChange, opt
           </Dropdown.Item>
         );
       })}
+      {searchValue === '' && itemsToDisplay.length === 0 &&
+      <CenteredHelper>
+        <AddingValueIllustration size={100}/>
+        No options. Add options ! TODO
+      </CenteredHelper>
+      }
+      {searchValue !== '' && itemsToDisplay.length === 0 &&
+        <CenteredHelper>
+          <AddingValueIllustration size={100}/>
+          No options. Change search TODO
+        </CenteredHelper>
+      }
     </TableInput.Select>
   );
 };

@@ -1,8 +1,17 @@
 import React, {useState} from 'react';
-import {useBooleanState, Dropdown, ArrowDownIcon, Search, Button, Checkbox} from 'akeneo-design-system';
+import {
+  useBooleanState,
+  Dropdown,
+  ArrowDownIcon,
+  Search,
+  Button,
+  Checkbox,
+  AddingValueIllustration
+} from 'akeneo-design-system';
 import {useRouter, getLabel, useUserContext, useTranslate} from '@akeneo-pim-community/shared';
 import {ColumnCode, SelectOption, SelectOptionCode} from '../models/TableConfiguration';
 import {getSelectOptions} from '../repositories/SelectOption';
+import styled from "styled-components";
 
 const BATCH_SIZE = 20;
 
@@ -12,6 +21,14 @@ type AddRowsButtonProps = {
   checkedOptionCodes: SelectOptionCode[];
   toggleChange: (optionCode: SelectOptionCode) => void;
 };
+
+const CenteredHelper = styled.div`
+  text-align: center;
+  & > * {
+    display: block;
+    margin: auto;
+  } 
+`;
 
 type Option = {
   code: string;
@@ -70,12 +87,12 @@ const AddRowsButton: React.FC<AddRowsButtonProps> = ({attributeCode, columnCode,
       {isOpen && (
         <Dropdown.Overlay verticalPosition='down' onClose={close}>
           <Dropdown.Header>
-            <Search
+            {items && items.length > 0 && <Search
               onSearchChange={handleSearchValue}
               placeholder={translate('pim_table_attribute.product_edit_form.search')}
               searchValue={searchValue}
               title={translate('pim_table_attribute.product_edit_form.search')}
-            />
+            />}
           </Dropdown.Header>
           <Dropdown.ItemCollection onNextPage={handleNextPage} data-testid={'item_collection'}>
             {itemsToDisplay.map((item, index) => (
@@ -88,6 +105,18 @@ const AddRowsButton: React.FC<AddRowsButtonProps> = ({attributeCode, columnCode,
                 </Checkbox>
               </Dropdown.Item>
             ))}
+            {searchValue === '' && itemsToDisplay.length === 0 &&
+            <CenteredHelper>
+              <AddingValueIllustration size={100}/>
+              No options. Add options ! TODO
+            </CenteredHelper>
+            }
+            {searchValue !== '' && itemsToDisplay.length === 0 &&
+            <CenteredHelper>
+              <AddingValueIllustration size={100}/>
+              No options. Change search TODO
+            </CenteredHelper>
+            }
           </Dropdown.ItemCollection>
         </Dropdown.Overlay>
       )}
