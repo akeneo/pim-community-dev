@@ -866,6 +866,10 @@ jobs:
   # Helm tests     #
   ##################
   test_helm_generated_k8s_files_srnt:
+      parameters:
+          VERSION:
+              type: string
+              default: ""
       environment:
         <<: *envVarsDeployDev
       <<: *dockerCloudDeployerNext
@@ -877,18 +881,17 @@ jobs:
               name: Define value for next steps
               command: |
                 PIM_CONTEXT=deployment
+                K8S_CLUSTER_VERSION=<< parameters.VERSION >>
+
                 echo export PIM_CONTEXT=${PIM_CONTEXT} >> $BASH_ENV
+                echo export K8S_CLUSTER_VERSION=${K8S_CLUSTER_VERSION} >> $BASH_ENV
+
+                echo "K8s version tested (empty=current): ${K8S_CLUSTER_VERSION}"
           - run:
-              name: Test Serenity Helm generated yaml files compliance with current kubernetes Version
-              command: K8S_CLUSTER_VERSION_ENABLED=1 make test_helm_generated_k8s_files
-          - run:
-              name: Test Serenity with Onboarder bundle Helm generated yaml files compliance with current kubernetes Version
-              command: WITH_ONBOARDER=1 K8S_CLUSTER_VERSION_ENABLED=1 make test_helm_generated_k8s_files
-          - run:
-              name: Test Serenity Helm generated yaml files compliance with latest kubernetes Version
+              name: Test Serenity without Onboarder bundle Helm generated yaml files
               command: make test_helm_generated_k8s_files
           - run:
-              name: Test Serenity with Onboarder bundle Helm generated yaml files compliance with latest kubernetes Version
+              name: Test Serenity with Onboarder bundle Helm generated yaml files
               command: WITH_ONBOARDER=1 make test_helm_generated_k8s_files
 
   test_helm_generated_k8s_files_grth:
@@ -1967,6 +1970,13 @@ workflows:
           - test_upgrade_from_srnt_customer_db:
                 requires:
                     - build_srnt_prod
+          - test_helm_generated_k8s_files_srnt:
+                name: test_helm_generated_k8s_files_srnt-<< matrix.VERSION >>
+                matrix:
+                    parameters:
+                        VERSION: ["1.17.0", "1.18.0", "1.19.0", "1.20.0", "1.21.0"]
+                requires:
+                    - checkout
 
   hourly_cleanup:
      triggers:

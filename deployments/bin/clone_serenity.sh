@@ -39,7 +39,6 @@ fi
 SELF_LINK_ES_DATA_0=$(gcloud --project=${SOURCE_GOOGLE_PROJECT_ID} compute snapshots list --filter="labels.backup-ns=${SOURCE_PFID} AND labels.pvc_name=data-elasticsearch-data-0" --limit=1 --sort-by="~creationTimestamp" --uri)
 SELF_LINK_ES_DATA_1=$(gcloud --project=${SOURCE_GOOGLE_PROJECT_ID} compute snapshots list --filter="labels.backup-ns=${SOURCE_PFID} AND labels.pvc_name=data-elasticsearch-data-1" --limit=1 --sort-by="~creationTimestamp" --uri)
 ES_DATA_SIZE=$(gcloud --project=${SOURCE_GOOGLE_PROJECT_ID} compute snapshots describe ${SELF_LINK_ES_DATA_0} --format=json | jq -r '.diskSizeGb')
-ES_DATA_SIZE=$(gcloud --project=${SOURCE_GOOGLE_PROJECT_ID} compute snapshots describe ${SELF_LINK_ES_MASTER_0} --format=json | jq -r '.diskSizeGb')
 if (($ES_DATA_SIZE < 10)); then
     ES_DATA_SIZE=10
 fi
@@ -149,13 +148,13 @@ kubectl scale -n ${PFID} statefulsets elasticsearch-master --replicas=2 --timeou
 
 echo "- Anonymize"
 PODSQL=$(kubectl get pods --namespace=${PFID} -l component=mysql | awk '/mysql/ {print $1}')
-PODDAEMON=$(kubectl get pods --namespace=${PFID} -l component=pim-daemon-default | awk '/pim-daemon-default/ {print $1}')
+PODPIMWEB=$(kubectl get pods --no-headers --namespace=${PFID} -l component=pim-web | awk 'NR==1{print $1}')
 kubectl exec -it -n ${PFID} ${PODSQL} -- /bin/bash -c 'mysql -u root -p$(cat /mysql_temp/root_password.txt) -D akeneo_pim -e "UPDATE akeneo_connectivity_connection SET webhook_url = NULL, webhook_enabled = 0;"'
 kubectl exec -it -n ${PFID} ${PODSQL} -- /bin/bash -c 'mysql -u root -p$(cat /mysql_temp/root_password.txt) -D akeneo_pim -e "UPDATE oro_user SET email = LOWER(CONCAT(SUBSTRING(CONCAT(\"support+clone_\", REPLACE(username,\"@\",\"_\")), 1, 64), \"@akeneo.com\"));"'
-kubectl exec -it -n ${PFID} ${PODDAEMON} -- /bin/bash -c 'bin/console pim:user:create adminakeneo adminakeneo product-team@akeneo.com admin1 admin2 en_US --admin -n || echo "WARN: User adminakeneo exists"'
+kubectl exec -it -n ${PFID} ${PODPIMWEB} -- /bin/bash -c 'bin/console pim:user:create adminakeneo adminakeneo product-team@akeneo.com admin1 admin2 en_US --admin -n || echo "WARN: User adminakeneo exists"'
 
 echo "- Check ES indexation"
-(kubectl exec -it -n ${PFID} ${PODDAEMON} -- /bin/bash -c 'bin/es_sync_checker --only-count') || true
+(kubectl exec -it -n ${PFID} ${PODPIMWEB} -- /bin/bash -c 'bin/es_sync_checker --only-count') || true
 
 # Workarround to be sure to have a admin user
 SQLCOMMAND=$(cat ${BINDIR}/add_user_to_all_groups.sql)
