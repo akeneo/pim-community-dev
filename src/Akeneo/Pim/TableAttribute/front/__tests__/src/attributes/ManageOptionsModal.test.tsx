@@ -98,7 +98,7 @@ describe('ManageOptionsModal', () => {
 
     fireEvent.change(getCodeInput('new'), {target: {value: 's a l t'}});
     expect(await screen.findByText('pim_table_attribute.validations.invalid_code')).toBeInTheDocument();
-    fireEvent.change(getCodeInput(defaultSelectOptions.length), {target: {value: ''}});
+    fireEvent.change(getCodeInput(ingredientsSelectOptions.length), {target: {value: ''}});
     expect(screen.getByText('pim_table_attribute.validations.column_code_must_be_filled')).toBeInTheDocument();
     fireEvent.change(getCodeInput('new'), {target: {value: 'pepper'}});
     expect(screen.getByText('pim_table_attribute.validations.duplicated_select_code')).toBeInTheDocument();
@@ -117,7 +117,7 @@ describe('ManageOptionsModal', () => {
 
     fireEvent.focus(getLabelInput('new'));
     fireEvent.change(getLabelInput('new'), {target: {value: 'This is the label!'}});
-    expect(getCodeInput(defaultSelectOptions.length)).toHaveValue('This_is_the_label_');
+    expect(getCodeInput(ingredientsSelectOptions.length)).toHaveValue('This_is_the_label_');
   });
 
   it('should add a new option and confirm', async () => {
@@ -134,8 +134,8 @@ describe('ManageOptionsModal', () => {
     expect(await findCodeInput(0)).toHaveValue('salt');
 
     fireEvent.change(getCodeInput('new'), {target: {value: 'code'}});
-    fireEvent.change(getLabelInput(defaultSelectOptions.length), {target: {value: 'label'}});
-    fireEvent.click(getLabelInput(defaultSelectOptions.length));
+    fireEvent.change(getLabelInput(ingredientsSelectOptions.length), {target: {value: 'label'}});
+    fireEvent.click(getLabelInput(ingredientsSelectOptions.length));
     fireEvent.change(screen.getByLabelText('German (Germany)'), {target: {value: 'german'}});
     fireEvent.click(screen.getByText('pim_common.confirm'));
     expect(handleChange).toBeCalledWith([
