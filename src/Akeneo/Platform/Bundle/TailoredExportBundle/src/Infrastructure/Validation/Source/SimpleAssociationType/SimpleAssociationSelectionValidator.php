@@ -26,7 +26,7 @@ use Symfony\Component\Validator\ConstraintValidator;
 
 class SimpleAssociationSelectionValidator extends ConstraintValidator
 {
-    private const ENTITY_TYPE_WITH_CHANNEL = [
+    private const ENTITY_TYPES_WITH_CHANNEL = [
         SimpleAssociationsSelectionInterface::ENTITY_TYPE_PRODUCTS,
         SimpleAssociationsSelectionInterface::ENTITY_TYPE_PRODUCT_MODELS
     ];
@@ -78,7 +78,7 @@ class SimpleAssociationSelectionValidator extends ConstraintValidator
             ]);
 
         if ('label' === $selection['type']) {
-            if (in_array($selection['entity_type'], self::ENTITY_TYPE_WITH_CHANNEL)) {
+            if (in_array($selection['entity_type'], self::ENTITY_TYPES_WITH_CHANNEL)) {
                 $this->context->getValidator()
                     ->inContext($this->context)
                     ->atPath('[channel]')

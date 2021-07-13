@@ -51,49 +51,49 @@ final class HandleSimpleAssociationsValue extends AssociationTestCase
     public function provider(): array
     {
         return [
-            [
+            'Associated products code selection with ";" separator' => [
                 'operations' => [],
                 'selection' => new SimpleAssociationsCodeSelection('products', ';'),
                 'value' => new SimpleAssociationsValue(['1111111171', '13620748'], ['diana', 'stilleto'], ['summerSale2020', 'summerSale2021']),
                 'expected' => [self::TARGET_NAME => '1111111171;13620748']
             ],
-            [
+            'Associated products code selection with "," separator' => [
                 'operations' => [],
                 'selection' => new SimpleAssociationsCodeSelection('products', ','),
                 'value' => new SimpleAssociationsValue(['1111111171', '13620748'], ['diana', 'stilleto'], ['summerSale2020', 'summerSale2021']),
                 'expected' => [self::TARGET_NAME => '1111111171,13620748']
             ],
-            [
+            'Associated product models code selection' => [
                 'operations' => [],
                 'selection' => new SimpleAssociationsCodeSelection('product_models', ','),
                 'value' => new SimpleAssociationsValue(['1111111171', '13620748'], ['diana', 'stilleto'], ['summerSale2020', 'summerSale2021']),
                 'expected' => [self::TARGET_NAME => 'diana,stilleto']
             ],
-            [
+            'Associated groups code selection' => [
                 'operations' => [],
                 'selection' => new SimpleAssociationsCodeSelection('groups', ','),
                 'value' => new SimpleAssociationsValue(['1111111171', '13620748'], ['diana', 'stilleto'], ['summerSale2020', 'summerSale2021']),
                 'expected' => [self::TARGET_NAME => 'summerSale2020,summerSale2021']
             ],
-            [
+            'Associated products label selection with ";" as separator' => [
                 'operations' => [],
                 'selection' => new SimpleAssociationsLabelSelection('products', 'ecommerce', 'en_US', ';'),
-                'value' => new SimpleAssociationsValue(['1111111171', '13620748'], ['diana', 'stilleto'], ['summerSale2020', 'summerSale2021']),
-                'expected' => [self::TARGET_NAME => 'Bag;[13620748]']
+                'value' => new SimpleAssociationsValue(['1111111171', '122334620748'], ['diana', 'stilleto'], ['summerSale2020', 'summerSale2021']),
+                'expected' => [self::TARGET_NAME => 'Bag;Sunglasses']
             ],
-            [
+            'Associated products label selection with a product without translation' => [
                 'operations' => [],
                 'selection' => new SimpleAssociationsLabelSelection('products', 'ecommerce', 'en_US', ','),
                 'value' => new SimpleAssociationsValue(['1111111171', '13620748'], ['diana', 'stilleto'], ['summerSale2020', 'summerSale2021']),
                 'expected' => [self::TARGET_NAME => 'Bag,[13620748]']
             ],
-            [
+            'Associated product models label selection with a product model without translation' => [
                 'operations' => [],
                 'selection' => new SimpleAssociationsLabelSelection('product_models', 'ecommerce', 'en_US', ','),
                 'value' => new SimpleAssociationsValue(['1111111171', '13620748'], ['diana', 'stilleto'], ['summerSale2020', 'summerSale2021']),
                 'expected' => [self::TARGET_NAME => 'Diana,[stilleto]']
             ],
-            [
+            'Associated groups label selection with a group without translation' => [
                 'operations' => [],
                 'selection' => new SimpleAssociationsGroupsLabelSelection('en_US', ','),
                 'value' => new SimpleAssociationsValue(['1111111171', '13620748'], ['diana', 'stilleto'], ['summerSale2020', 'summerSale2021']),
@@ -107,6 +107,7 @@ final class HandleSimpleAssociationsValue extends AssociationTestCase
         /** @var InMemoryFindProductLabels $productLabelRepository */
         $productLabelRepository = self::$container->get('akeneo.pim.structure.query.get_category_translations');
         $productLabelRepository->addProductLabel('1111111171', 'ecommerce', 'fr_FR', 'Bag');
+        $productLabelRepository->addProductLabel('122334620748', 'ecommerce', 'fr_FR', 'Sunglasses');
 
         /** @var InMemoryFindProductModelLabels $productLabelRepository */
         $productLabelRepository = self::$container->get('akeneo.pim.structure.query.get_category_translations');

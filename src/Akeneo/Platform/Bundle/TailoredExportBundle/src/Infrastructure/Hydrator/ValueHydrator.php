@@ -13,9 +13,7 @@ declare(strict_types=1);
 
 namespace Akeneo\Platform\TailoredExport\Infrastructure\Hydrator;
 
-use Akeneo\Pim\Enrichment\Component\Product\Model\GroupInterface;
 use Akeneo\Pim\Enrichment\Component\Product\Model\ProductInterface;
-use Akeneo\Pim\Enrichment\Component\Product\Model\ProductModelInterface;
 use Akeneo\Pim\Enrichment\Component\Product\Model\ProductPriceInterface;
 use Akeneo\Pim\Enrichment\Component\Product\Model\ValueInterface;
 use Akeneo\Pim\Enrichment\Component\Product\Value\MetricValue;
@@ -41,13 +39,20 @@ use Akeneo\Platform\TailoredExport\Domain\SourceValue\Price;
 use Akeneo\Platform\TailoredExport\Domain\SourceValue\PriceCollectionValue;
 use Akeneo\Platform\TailoredExport\Domain\SourceValue\ReferenceEntityCollectionValue;
 use Akeneo\Platform\TailoredExport\Domain\SourceValue\ReferenceEntityValue;
-use Akeneo\Platform\TailoredExport\Domain\SourceValue\SimpleAssociationsValue;
 use Akeneo\Platform\TailoredExport\Domain\SourceValue\SimpleSelectValue;
 use Akeneo\Platform\TailoredExport\Domain\SourceValue\StringValue;
 use Akeneo\Platform\TailoredExport\Domain\SourceValueInterface;
+use Akeneo\Platform\TailoredExport\Infrastructure\Hydrator\Value\AssociationTypeValueHydrator;
 
 class ValueHydrator
 {
+    private AssociationTypeValueHydrator $associationTypeValueHydrator;
+
+    public function __construct(AssociationTypeValueHydrator $associationTypeValueHydrator)
+    {
+        $this->associationTypeValueHydrator = $associationTypeValueHydrator;
+    }
+
     public function hydrate(
         ProductInterface $product,
         SourceInterface $source
@@ -58,7 +63,7 @@ class ValueHydrator
         } elseif ($source instanceof PropertySource) {
             return $this->hydrateFromProperty($source->getName(), $product);
         } elseif ($source instanceof AssociationTypeSource) {
-            return $this->hydrateFromAssociationType($source->getCode(), $source, $product);
+            return $this->associationTypeValueHydrator->hydrateFromSource($product, $source);
         } else {
             throw new \InvalidArgumentException(sprintf('Unsupported source type "%s"', get_class($source)));
         }
@@ -164,46 +169,5 @@ class ValueHydrator
             default:
                 throw new \LogicException(sprintf('Unsupported property name "%s"', $propertyName));
         }
-    }
-
-    private function hydrateFromAssociationType(
-        string $associationTypeCode,
-        AssociationTypeSource $source,
-        ProductInterface $product
-    ): SimpleAssociationsValue {
-        if ($source->isQuantified()) {
-            throw new \LogicException('Unsupported quantified association type');
-        }
-
-        /* TODO: In another PR: add getAssociatedProductIdentifiers && getAssociatedProductModelCodes && getAssociatedGroupCodes in Product/ProductModel/PublishedProduct to avoid importing Doctrine collection here */
-        $associatedProducts = $product->getAssociatedProducts($associationTypeCode);
-        $associatedProductIdentifiers = [];
-        if ($associatedProducts) {
-            $associatedProductIdentifiers = $associatedProducts->map(
-                static fn (ProductInterface $associatedProduct): string => $associatedProduct->getIdentifier()
-            )->getValues();
-        }
-
-        $associatedProductModels = $product->getAssociatedProductModels($associationTypeCode);
-        $associatedProductModelCodes = [];
-        if ($associatedProductModels) {
-            $associatedProductModelCodes = $associatedProductModels->map(
-                static fn (ProductModelInterface $associatedProductModel): string => $associatedProductModel->getCode()
-            )->getValues();
-        }
-
-        $associatedGroups = $product->getAssociatedGroups($associationTypeCode);
-        $associatedGroupCodes = [];
-        if ($associatedGroups) {
-            $associatedGroupCodes = $associatedGroups->map(
-                static fn (GroupInterface $associationGroup): string => $associationGroup->getCode()
-            )->getValues();
-        }
-
-        return new SimpleAssociationsValue(
-            $associatedProductIdentifiers,
-            $associatedProductModelCodes,
-            $associatedGroupCodes
-        );
     }
 }

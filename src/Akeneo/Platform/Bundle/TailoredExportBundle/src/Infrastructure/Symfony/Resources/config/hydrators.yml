@@ -4,6 +4,11 @@ services:
 
   Akeneo\Platform\TailoredExport\Infrastructure\Hydrator\ValueHydrator:
     public: true
+    arguments:
+      - '@Akeneo\Platform\TailoredExport\Infrastructure\Hydrator\Value\AssociationTypeValueHydrator'
+
+  Akeneo\Platform\TailoredExport\Infrastructure\Hydrator\Value\AssociationTypeValueHydrator:
+    public: false
 
   Akeneo\Platform\TailoredExport\Infrastructure\Hydrator\ColumnCollectionHydrator:
     public: true

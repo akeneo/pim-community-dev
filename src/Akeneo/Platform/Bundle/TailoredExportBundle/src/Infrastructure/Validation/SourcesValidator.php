@@ -123,9 +123,9 @@ class SourcesValidator extends ConstraintValidator
             $constraint = $this->propertyConstraints[$source['code']] ?? null;
         } elseif (AssociationTypeSource::TYPE === $source['type']) {
             $associationTypes = $this->getAssociationTypes->forCodes([$source['code']]);
-            $associationType = $associationTypes[$source['code']];
+            $associationType = $associationTypes[$source['code']] ?? null;
             if (null === $associationType) {
-                $this->context->buildViolation(Sources::ASSOCIATION_TYPE_DOES_NOT_EXIST)
+                $this->context->buildViolation(Sources::ASSOCIATION_TYPE_SHOULD_EXIST)
                     ->atPath(sprintf('[%s]', $source['uuid']))
                     ->setParameter('association_type_code', $source['code'])
                     ->addViolation();

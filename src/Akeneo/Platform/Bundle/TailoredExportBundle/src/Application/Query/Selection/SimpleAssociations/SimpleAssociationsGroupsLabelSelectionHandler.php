@@ -43,8 +43,7 @@ class SimpleAssociationsGroupsLabelSelectionHandler implements SelectionHandlerI
             $selection->getLocale()
         );
 
-        $selectedData = \array_map(static fn ($associatedEntityCode) => $associatedGroupsLabel[$associatedEntityCode] ??
-            \sprintf('[%s]', $associatedEntityCode), $associatedGroupCodes);
+        $selectedData = $this->formatLabels($associatedGroupsLabel, $associatedGroupCodes);
 
         return \implode($selection->getSeparator(), $selectedData);
     }
@@ -53,5 +52,13 @@ class SimpleAssociationsGroupsLabelSelectionHandler implements SelectionHandlerI
     {
         return $selection instanceof SimpleAssociationsGroupsLabelSelection
             && $value instanceof SimpleAssociationsValue;
+    }
+
+    private function formatLabels(array $associatedGroupsLabel, array $associatedGroupCodes): array
+    {
+        return \array_map(
+            static fn($associatedEntityCode) => $associatedGroupsLabel[$associatedEntityCode] ?? \sprintf('[%s]', $associatedEntityCode),
+            $associatedGroupCodes
+        );
     }
 }
