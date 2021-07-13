@@ -26,7 +26,8 @@ class FilePathSelectionHandlerSpec extends ObjectBehavior
         $selection = new FilePathSelection('an_attribute_code');
         $value = new FileValue(
             'identifier',
-            'a_key',
+            'catalog',
+            'a_filekey',
             'original_filename',
             null,
             null
@@ -41,7 +42,8 @@ class FilePathSelectionHandlerSpec extends ObjectBehavior
         $selection = new FilePathSelection('an_attribute_code');
         $value = new FileValue(
             'identifier',
-            'a_key',
+            'catalog',
+            'a_filekey',
             'original_filename',
             'ecommerce',
             'fr_FR'
@@ -66,7 +68,8 @@ class FilePathSelectionHandlerSpec extends ObjectBehavior
         $selection = new FilePathSelection('an_attribute_code');
         $value = new FileValue(
             'identifier',
-            'a_key',
+            'catalog',
+            'a_filekey',
             'original_filename',
             null,
             null

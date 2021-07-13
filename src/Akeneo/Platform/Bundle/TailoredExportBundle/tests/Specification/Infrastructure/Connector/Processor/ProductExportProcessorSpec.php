@@ -19,15 +19,18 @@ use Akeneo\Pim\Structure\Component\Query\PublicApi\Association\GetAssociationTyp
 use Akeneo\Pim\Structure\Component\Query\PublicApi\Association\LabelCollection;
 use Akeneo\Pim\Structure\Component\Query\PublicApi\AttributeType\Attribute;
 use Akeneo\Pim\Structure\Component\Query\PublicApi\AttributeType\GetAttributes;
+use Akeneo\Platform\TailoredExport\Application\FilePathGenerator;
 use Akeneo\Platform\TailoredExport\Application\ProductMapper;
 use Akeneo\Platform\TailoredExport\Application\Query\Column\ColumnCollection;
 use Akeneo\Platform\TailoredExport\Domain\SourceValue\StringValue;
 use Akeneo\Platform\TailoredExport\Domain\ValueCollection;
+use Akeneo\Platform\TailoredExport\Infrastructure\Connector\Processor\MappedProductsWithFiles;
 use Akeneo\Platform\TailoredExport\Infrastructure\Hydrator\ColumnCollectionHydrator;
 use Akeneo\Platform\TailoredExport\Infrastructure\Hydrator\ValueCollectionHydrator;
 use Akeneo\Tool\Component\Batch\Job\JobParameters;
 use Akeneo\Tool\Component\Batch\Model\StepExecution;
 use PhpSpec\ObjectBehavior;
+use Prophecy\Argument;
 
 class ProductExportProcessorSpec extends ObjectBehavior
 {
@@ -38,14 +41,16 @@ class ProductExportProcessorSpec extends ObjectBehavior
         GetAssociationTypesInterface $getAssociationTypes,
         ValueCollectionHydrator $valueCollectionHydrator,
         ColumnCollectionHydrator $columnCollectionHydrator,
-        ProductMapper $productMapper
+        ProductMapper $productMapper,
+        FilePathGenerator $filePathGenerator
     ) {
         $this->beConstructedWith(
             $getAttributes,
             $getAssociationTypes,
             $valueCollectionHydrator,
             $columnCollectionHydrator,
-            $productMapper
+            $productMapper,
+            $filePathGenerator
         );
         $this->setStepExecution($stepExecution);
 
@@ -60,7 +65,8 @@ class ProductExportProcessorSpec extends ObjectBehavior
         ValueCollectionHydrator $valueCollectionHydrator,
         ColumnCollectionHydrator $columnCollectionHydrator,
         ColumnCollection $columnCollection,
-        ProductMapper $productMapper
+        ProductMapper $productMapper,
+        FilePathGenerator $filePathGenerator
     ) {
         $columns = [
             [
@@ -113,7 +119,7 @@ class ProductExportProcessorSpec extends ObjectBehavior
         $crossSellAssociation = $this->createAssociationType('X_SELL');
         $valueCollection = new ValueCollection();
         $valueCollection->add(new StringValue('some_data'), 'name', null, null);
-        $mappedProduct = [
+        $mappedProducts = [
             'categories-export' => 'my category',
             'name-export' => 'name value',
         ];
@@ -123,9 +129,13 @@ class ProductExportProcessorSpec extends ObjectBehavior
         $getAssociationTypes->forCodes(['X_SELL'])->willReturn(['X_SELL' => $crossSellAssociation]);
         $columnCollectionHydrator->hydrate($columns, ['name' => $name], ['X_SELL' => $crossSellAssociation])->willReturn($columnCollection);
         $valueCollectionHydrator->hydrate($product, $columnCollection)->willReturn($valueCollection);
-        $productMapper->map($columnCollection, $valueCollection)->willReturn($mappedProduct);
 
-        $this->process($product)->shouldReturn($mappedProduct);
+        $productMapper->map($columnCollection, $valueCollection)->willReturn($mappedProducts);
+        $filePathGenerator->extract($columnCollection, $valueCollection)->willReturn([]);
+
+        $mappedProductsWithFiles = new MappedProductsWithFiles($mappedProducts, []);
+
+        $this->process($product)->shouldBeLike($mappedProductsWithFiles);
     }
 
     private function createAttribute(string $code): Attribute
