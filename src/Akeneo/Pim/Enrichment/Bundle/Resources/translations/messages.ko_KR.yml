@@ -77,6 +77,7 @@ pim_enrich:
       quick_export:
         launched_flash: 제품을 내보내는 작업이 현재 실행되고 있습니다.
 category:
+  create: 카테고리 만들기
   edit: 카테고리 편집
   overview: 카테고리
 tree:

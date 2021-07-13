@@ -448,13 +448,13 @@ pim_datagrid:
     enabled:
       label: Status
     scope:
-      label: Bereik
+      label: Kanaal
     completeness:
       label: Voltooien
     created:
-      label: Aangemaakt op
+      label: Aangemaakt
     updated:
-      label: Bijgewerkt op
+      label: Bijgewerkt
     label_or_identifier:
       label: Label of identifier
     parent:

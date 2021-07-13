@@ -51,6 +51,8 @@ product_model.family_variant.not_blank.message: Die Produktfamilie des Produktmo
 'The %attribute% attribute requires an equal or greater than %min_value% value.': 'Das %attribute% -Attribut erfordert einen gleichen oder größeren Wert als %min_value% Wert.'
 'The %attribute% attribute requires an equal or lesser than %max_value% value.': 'Das %attribute% -Attribut benötigt einen gleichen oder weniger als %max_value% Wert.'
 "The %attribute_code% attribute requires a value per channel. The %channel% channel (scope) must exist in your PIM": 'Das %attribute_code% -Attribut benötigt einen Wert pro Kanal. Der %channel% Kanal (Bereich) muss in deinem PIM vorhanden sein'
+"The %identifier% identifier is already used for another product.": 'Die %identifier% -Kennung wird bereits für ein anderes Produkt verwendet.'
+'Please specify a valid currency for the %attribute_code% attribute, the %currency_code% code was sent.': 'Bitte geben Sie eine gültige Währung für das %attribute_code% -Attribut an, der %currency_code% Code wurde gesendet.'
 pim_catalog:
   constraint:
     can_have_family_variant_empty_axis_value: 'Attribut "%attribute%" darf nicht leer sein, da es als Achse für dieses Objekt definiert ist'
@@ -62,7 +64,7 @@ pim_catalog:
     attribute_does_not_belong_to_family: 'Attribut "%attribute%" gehört nicht zu der Familie "%family%"'
     variant_product_invalid_family: 'Die Variantenproduktfamilie muss mit der übergeordneten Produktfamilie übereinstimmen'
     php_int_max_reached: 'Die maximale Zahl muss kleiner als %php_int_max% sein.'
-    not_null_family: Die Familie kann nicht "null" sein, da Ihr Produkt mit der Kennung "%sku%" ein Variantenprodukt ist.
+    not_null_family: Die Familie kann nicht "null" sein, da Ihr Produkt mit dem Bezeichner %sku% ein Variantenprodukt ist.
     variant_product_has_parent: 'Das Variantenprodukt "%variant_product%" muss ein übergeordnetes Produkt haben'
     invalid_variant_product_parent: 'Die Produktvariante "%variant_product%" kann nicht dem Produktmodell "%product_model%" untergeordnet werden (dem Produktmodell können nur andere Produktmodelle untergeordnet werden)'
     modified_variant_axis_value: 'Variantenachse "%variant_axis%" kann nicht verändert werden, "%provided_value%" wird angegeben'
@@ -103,7 +105,6 @@ pim_catalog:
     301: Dieses Feld erwartet einen validen Gültigkeitsbereich und Gebietsschema.
     302: Dieses Feld erwartet einen validen Gültigkeitsbereich.
     303: Dieses Feld erwartet ein valides Format für Verbindungen.
-    pim_immutable_product_validator: Diese Kennung ist bereits für ein anderes Produkt in Verwendung
     pim_immutable_product_model_validator: Diese Kennung ist bereits für ein anderes Produktmodell in Verwendung.
     quantified_associations:
       unexpected_link_type: Der Linktyp "{{ value }}" existiert nicht. Sie können nur Produkte oder Produktmodelle verknüpfen.

@@ -435,8 +435,14 @@ pim_datagrid:
       label: Groups
     enabled:
       label: Status
+    scope:
+      label: Channel
     completeness:
       label: Complete
+    created:
+      label: Created
+    updated:
+      label: Updated
     identifier:
       label: Identifier
 #Versioning / history

@@ -448,13 +448,13 @@ pim_datagrid:
     enabled:
       label: ステータス
     scope:
-      label: スコープ
+      label: チャンネル
     completeness:
       label: 完了
     created:
-      label: 作成日
+      label: '作成:'
     updated:
-      label: 更新日
+      label: '更新:'
     label_or_identifier:
       label: ラベルもしくは識別子
     parent:

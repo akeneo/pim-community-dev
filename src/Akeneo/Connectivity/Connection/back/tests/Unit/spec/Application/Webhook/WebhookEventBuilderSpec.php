@@ -12,6 +12,7 @@ use Akeneo\Connectivity\Connection\Domain\Webhook\Model\WebhookEvent;
 use Akeneo\Platform\Component\EventQueue\BulkEvent;
 use Akeneo\Platform\Component\EventQueue\Event;
 use Akeneo\Platform\Component\EventQueue\EventInterface;
+use Akeneo\Platform\Component\Webhook\Context;
 use Akeneo\Platform\Component\Webhook\EventDataBuilderInterface;
 use Akeneo\Platform\Component\Webhook\EventDataCollection;
 use Akeneo\UserManagement\Component\Model\UserInterface;
@@ -49,13 +50,16 @@ class WebhookEventBuilderSpec extends ObjectBehavior
         $pimEvent = $this->createEvent($author, ['data'], 1599814161, 'a20832d1-a1e6-4f39-99ea-a1dd859faddb');
         $pimEventBulk = new BulkEvent([$pimEvent]);
 
+        $user->getId()->willReturn(10);
+        $user->getUsername()->willReturn('ecommerce_0000');
+
         $collection = new EventDataCollection();
         $collection->setEventData($pimEvent, ['data']);
 
         $notSupportedEventDataBuilder->supports($pimEventBulk)->willReturn(false);
         $supportedEventDataBuilder->supports($pimEventBulk)->willReturn(true);
 
-        $supportedEventDataBuilder->build($pimEventBulk, $user)->willReturn($collection);
+        $supportedEventDataBuilder->build($pimEventBulk, new Context('ecommerce_0000', 10))->willReturn($collection);
 
         $this->build(
             $pimEventBulk,
@@ -89,13 +93,16 @@ class WebhookEventBuilderSpec extends ObjectBehavior
         $pimEvent = $this->createEvent($author, ['data'], 1599814161, 'a20832d1-a1e6-4f39-99ea-a1dd859faddb');
         $pimEventBulk = new BulkEvent([$pimEvent]);
 
+        $user->getId()->willReturn(10);
+        $user->getUsername()->willReturn('ecommerce_0000');
+
         $collection = new EventDataCollection();
         $collection->setEventDataError($pimEvent, new \Exception());
 
         $notSupportedEventDataBuilder->supports($pimEventBulk)->willReturn(false);
         $supportedEventDataBuilder->supports($pimEventBulk)->willReturn(true);
 
-        $supportedEventDataBuilder->build($pimEventBulk, $user)->willReturn($collection);
+        $supportedEventDataBuilder->build($pimEventBulk, new Context('ecommerce_0000', 10))->willReturn($collection);
 
         $this->build(
             $pimEventBulk,
@@ -120,13 +127,16 @@ class WebhookEventBuilderSpec extends ObjectBehavior
         $pimEvent = $this->createEvent($author, ['data'], 1599814161, 'a20832d1-a1e6-4f39-99ea-a1dd859faddb');
         $pimEventBulk = new BulkEvent([$pimEvent]);
 
+        $user->getId()->willReturn(10);
+        $user->getUsername()->willReturn('ecommerce_0000');
+
         $collection = new EventDataCollection();
         $collection->setEventDataError($pimEvent, new \Exception());
 
         $notSupportedEventDataBuilder->supports($pimEventBulk)->willReturn(false);
         $supportedEventDataBuilder->supports($pimEventBulk)->willReturn(true);
 
-        $supportedEventDataBuilder->build($pimEventBulk, $user)->willReturn($collection);
+        $supportedEventDataBuilder->build($pimEventBulk, new Context('ecommerce_0000', 10))->willReturn($collection);
 
         $apiEventBuildErrorLogger->logResourceNotFoundOrAccessDenied(
             'ecommerce',

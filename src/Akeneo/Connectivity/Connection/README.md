@@ -20,6 +20,8 @@ To give insights to our users about how they use the REST API, they can access t
 The connection monitoring also gives information on business errors that happened during product synchronization with source connections.
 
 **Features:** Audit, ErrorManagement
+
+- [Error management](./docs/error_management/introduction.md)
 ## Events API
 
 Public API that defines the API Event requests sent to an external application in reaction to PIM Events.

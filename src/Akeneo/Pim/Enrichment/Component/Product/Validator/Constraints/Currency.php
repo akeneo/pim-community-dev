@@ -13,12 +13,9 @@ use Symfony\Component\Validator\Constraint;
  */
 class Currency extends Constraint
 {
-    /**
-     * Violation message for invalid currency
-     *
-     * @var string
-     */
-    public $unitMessage = 'Please specify a valid currency';
+    const CURRENCY = '9b385d80-5d67-494b-b824-0b59b84d609a';
+
+    public string $message = 'Please specify a valid currency for the %attribute_code% attribute, the %currency_code% code was sent.';
 
     /**
      * {@inheritdoc}

@@ -448,13 +448,13 @@ pim_datagrid:
     enabled:
       label: Estado
     scope:
-      label: Ámbito
+      label: Canal
     completeness:
       label: Completo
     created:
-      label: Creado el
+      label: creado
     updated:
-      label: Actualizado el
+      label: actualizado
     label_or_identifier:
       label: Etiqueta o identificador
     parent:

@@ -16,7 +16,7 @@ Feature: Quick export products according to the product grid context
 
   Scenario: Successfully quick export products from grid context as a XLSX file
     Given I am on the products grid
-    And I display the columns SKU, Name, Label, Family, Color, Complete, Groups, Price, Size, Created at, Updated at, Description and Weight
+    And I display the columns SKU, Name, Label, Family, Color, Complete, Groups, Price, Size, Created, Updated, Description and Weight
     And I select rows boots, sneakers, pump
     When I press the "Quick Export" button
     And I press the "XLSX" button

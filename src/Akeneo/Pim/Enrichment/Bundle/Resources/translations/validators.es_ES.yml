@@ -60,7 +60,6 @@ pim_catalog:
     attribute_does_not_belong_to_family: 'El atributo "%attribute%" no pertenece a la familia "%family%"'
     variant_product_invalid_family: 'La variante de la familia del productos debe ser la misma que la de su padre'
     php_int_max_reached: 'El número máximo debe ser inferior a %php_int_max%.'
-    not_null_family: La familia no puede ser "nula" porque su producto con la identificación "%sku%" es un producto variante.
     variant_product_has_parent: 'El producto variante "%variant_product%" debe tener un padre'
     invalid_variant_product_parent: 'El producto variante "%variant_product%" no puede tener el modelo de producto "%product_model%" como padre, (este modelo de producto sólo puede tener otro modelo de producto como niño)'
     modified_variant_axis_value: 'Dado "%provided_value%", el eje variante "%variant_axis%" no puede ser modificado'
@@ -101,7 +100,6 @@ pim_catalog:
     301: Este campo debe contener un objetivo y local válidos.
     302: Este campo debe contener un objetivo válido.
     303: Este campo debe contener un formato de asociación válido.
-    pim_immutable_product_validator: El mismo identificador se encuentra ya en otro producto
     pim_immutable_product_model_validator: El mismo código se encuentra ya en otro modelo de producto.
     quantified_associations:
       unexpected_link_type: El tipo de enlace "{{ value }}" no existe. Solo puede asociar productos o modelos de productos.
