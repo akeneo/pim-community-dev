@@ -41,9 +41,15 @@ services:
             - '@akeneo_connectivity.connection.webhook.cache_clearer'
         tags:
             - { name: kernel.event_subscriber }
-    
+
     Akeneo\Connectivity\Connection\Infrastructure\EventSubscriber\EventsApiLoggingSubscriber:
         arguments:
             - '@akeneo_connectivity.connection.persistence.repository.events_api_debug'
+        tags:
+            - { name: kernel.event_subscriber }
+
+    Akeneo\Connectivity\Connection\Infrastructure\EventSubscriber\AclPrivilegesEventSubscriber:
+        arguments:
+            - '@akeneo_connectivity.connection.marketplace_activate.feature'
         tags:
             - { name: kernel.event_subscriber }
