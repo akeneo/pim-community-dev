@@ -1,12 +1,20 @@
 import {Router} from '@akeneo-pim-community/shared';
 import {ColumnCode, SelectOption} from '../../models/TableConfiguration';
 
-const defaultSelectOptions = [
+const ingredientsSelectOptions = [
   {code: 'salt', labels: {en_US: 'Salt', de_DE: 'Achtzergüntlich'}},
   {code: 'pepper', labels: {en_US: 'Pepper'}},
   {code: 'eggs', labels: {}},
   {code: 'sugar', labels: {en_US: 'Sugar'}},
 ] as SelectOption[];
+
+const nutritionScoreSelectOptions = [
+  {code: 'A', labels: {}},
+  {code: 'B', labels: {}},
+  {code: 'C', labels: {}},
+  {code: 'D', labels: {}},
+  {code: 'E', labels: {}},
+];
 
 const getSelectOptions: (_router: Router, attributeCode: string) => SelectOption[] = (_router, attributeCode) => {
   if (attributeCode === 'attribute_with_a_lot_of_options') {
@@ -25,7 +33,7 @@ const getSelectOptions: (_router: Router, attributeCode: string) => SelectOption
     return selectOptions;
   }
 
-  return defaultSelectOptions;
+  return ingredientsSelectOptions;
 };
 
 const fetchSelectOptions = async (
@@ -35,9 +43,11 @@ const fetchSelectOptions = async (
 ): Promise<SelectOption[] | undefined> => {
   if (columnCode === 'ingredient') {
     return new Promise(resolve => resolve(getSelectOptions(router, attributeCode)));
+  } else if (columnCode === 'nutrition_score') {
+    return new Promise(resolve => resolve(nutritionScoreSelectOptions));
   } else {
     return new Promise(resolve => resolve(undefined));
   }
 };
 
-export {fetchSelectOptions, getSelectOptions, defaultSelectOptions};
+export {fetchSelectOptions, getSelectOptions, ingredientsSelectOptions};

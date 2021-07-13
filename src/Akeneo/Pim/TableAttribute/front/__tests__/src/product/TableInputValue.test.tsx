@@ -59,7 +59,7 @@ describe('TableInputValue', () => {
     fireEvent.click(screen.getAllByText('pim_common.yes')[1]);
 
     expect(handleChange).toBeCalledWith([
-      {...getTableValueWithId()[0], quantity: '200', nutrition_score: null},
+      {...getTableValueWithId()[0], quantity: '200', nutrition_score: undefined},
       {...getTableValueWithId()[1], part: '42kg'},
       {...getTableValueWithId()[2], is_allergenic: true},
     ]);

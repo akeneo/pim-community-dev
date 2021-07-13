@@ -47,7 +47,7 @@ describe('AddColumnModal', () => {
     expect(codeInput.value).toEqual('the_code');
   });
 
-  it('should add column', () => {
+  it('should add column', async () => {
     const handleClose = jest.fn();
     const handleCreate = jest.fn();
     renderWithProviders(
@@ -62,7 +62,7 @@ describe('AddColumnModal', () => {
     fireEvent.change(labelInput, {target: {value: 'Ingredients'}});
     fireEvent.change(codeInput, {target: {value: 'ingredient'}});
     fireEvent.focus(dataTypeInput);
-    expect(screen.getByText('pim_table_attribute.properties.data_type.text')).toBeInTheDocument();
+    expect(await screen.findByText('pim_table_attribute.properties.data_type.text')).toBeInTheDocument();
     fireEvent.click(screen.getByText('pim_table_attribute.properties.data_type.text'));
 
     expect(createButton.disabled).toEqual(false);
@@ -82,20 +82,20 @@ describe('AddColumnModal', () => {
     expect(handleClose).toHaveBeenCalled();
   });
 
-  it('should restrict the data types for the first column', () => {
+  it('should restrict the data types for the first column', async () => {
     const handleClose = jest.fn();
     const handleCreate = jest.fn();
     renderWithProviders(<AddColumnModal close={handleClose} onCreate={handleCreate} existingColumnCodes={[]} />);
     const dataTypeInput = screen.getByLabelText('pim_table_attribute.form.attribute.data_type') as HTMLInputElement;
     fireEvent.focus(dataTypeInput);
 
-    expect(screen.queryByText('pim_table_attribute.properties.data_type.select')).toBeInTheDocument();
+    expect(await screen.findByText('pim_table_attribute.properties.data_type.select')).toBeInTheDocument();
     expect(screen.queryByText('pim_table_attribute.properties.data_type.text')).toBeNull();
     expect(screen.queryByText('pim_table_attribute.properties.data_type.number')).toBeNull();
     expect(screen.queryByText('pim_table_attribute.properties.data_type.boolean')).toBeNull();
   });
 
-  it('should display validation errors', () => {
+  it('should display validation errors', async () => {
     const handleClose = jest.fn();
     const handleCreate = jest.fn();
     renderWithProviders(
@@ -106,7 +106,7 @@ describe('AddColumnModal', () => {
     const createButton = screen.getByText('pim_common.create') as HTMLButtonElement;
 
     fireEvent.focus(dataTypeInput);
-    expect(screen.getByText('pim_table_attribute.properties.data_type.text')).toBeInTheDocument();
+    expect(await screen.findByText('pim_table_attribute.properties.data_type.text')).toBeInTheDocument();
     fireEvent.click(screen.getByText('pim_table_attribute.properties.data_type.text'));
 
     fireEvent.change(codeInput, {target: {value: 'a wrong code'}});

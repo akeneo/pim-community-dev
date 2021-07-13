@@ -8,7 +8,6 @@ import {TableValueWithId} from './TableFieldApp';
 import {getSelectOption, getSelectOptions} from '../repositories/SelectOption';
 import {TableInputSelect} from './TableInputSelect';
 import {TableCell} from '../models/TableValue';
-import {getSelectColumnDefinition} from '../../__tests__/src/factories/ColumnDefinition';
 
 const TABLE_VALUE_ITEMS_PER_PAGE = [10, 20, 50, 100];
 
@@ -158,7 +157,9 @@ const TableInputValue: React.FC<TableInputValueProps> = ({
                       {'boolean' === columnType && (
                         <TableInput.Boolean
                           value={typeof row[columnCode] === 'undefined' ? null : (row[columnCode] as boolean | null)}
-                          onChange={(value: boolean | null) => handleChange(row['unique id'], columnCode, value)}
+                          onChange={(value: boolean | null) =>
+                            handleChange(row['unique id'], columnCode, null === value ? undefined : value)
+                          }
                           yesLabel={translate('pim_common.yes')}
                           noLabel={translate('pim_common.no')}
                           clearLabel={translate('pim_common.clear')}

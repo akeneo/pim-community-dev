@@ -2,7 +2,7 @@ import React, {useState} from 'react';
 import {Dropdown, TableInput, AddingValueIllustration} from 'akeneo-design-system';
 import {SelectOption, SelectOptionCode} from '../models/TableConfiguration';
 import {getLabel, useTranslate, useUserContext} from '@akeneo-pim-community/shared';
-import styled from "styled-components";
+import styled from 'styled-components';
 
 const BATCH_SIZE = 20;
 
@@ -17,7 +17,7 @@ const CenteredHelper = styled.div`
   & > * {
     display: block;
     margin: auto;
-  } 
+  }
 `;
 
 const TableInputSelect: React.FC<TableInputSelectProps> = ({value, onChange, options, ...rest}) => {
@@ -78,18 +78,18 @@ const TableInputSelect: React.FC<TableInputSelectProps> = ({value, onChange, opt
           </Dropdown.Item>
         );
       })}
-      {searchValue === '' && itemsToDisplay.length === 0 &&
-      <CenteredHelper>
-        <AddingValueIllustration size={100}/>
-        No options. Add options ! TODO
-      </CenteredHelper>
-      }
-      {searchValue !== '' && itemsToDisplay.length === 0 &&
+      {searchValue === '' && itemsToDisplay.length === 0 && (
         <CenteredHelper>
-          <AddingValueIllustration size={100}/>
+          <AddingValueIllustration size={100} />
+          No options. Add options ! TODO
+        </CenteredHelper>
+      )}
+      {searchValue !== '' && itemsToDisplay.length === 0 && (
+        <CenteredHelper>
+          <AddingValueIllustration size={100} />
           No options. Change search TODO
         </CenteredHelper>
-      }
+      )}
     </TableInput.Select>
   );
 };

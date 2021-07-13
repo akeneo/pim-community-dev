@@ -4,7 +4,7 @@ import {fireEvent, screen} from '@testing-library/react';
 import {ManageOptionsModal} from '../../../src/attribute/ManageOptionsModal';
 import {getTableAttribute} from '../factories/Attributes';
 import {getSelectColumnDefinition} from '../factories/ColumnDefinition';
-import {defaultSelectOptions} from '../../../src/fetchers/__mocks__/SelectOptionsFetcher';
+import {ingredientsSelectOptions} from '../../../src/fetchers/__mocks__/SelectOptionsFetcher';
 jest.mock('../../../src/fetchers/SelectOptionsFetcher');
 jest.mock('../../../src/fetchers/LocaleFetcher');
 jest.mock('../../../src/attribute/LocaleSwitcher');
@@ -139,10 +139,10 @@ describe('ManageOptionsModal', () => {
     fireEvent.change(screen.getByLabelText('German (Germany)'), {target: {value: 'german'}});
     fireEvent.click(screen.getByText('pim_common.confirm'));
     expect(handleChange).toBeCalledWith([
-      defaultSelectOptions[0],
-      defaultSelectOptions[1],
-      defaultSelectOptions[2],
-      defaultSelectOptions[3],
+      ingredientsSelectOptions[0],
+      ingredientsSelectOptions[1],
+      ingredientsSelectOptions[2],
+      ingredientsSelectOptions[3],
       {code: 'code', labels: {en_US: 'label', de_DE: 'german'}},
     ]);
     expect(handleClose).toBeCalledTimes(1);
@@ -163,7 +163,11 @@ describe('ManageOptionsModal', () => {
     fireEvent.click(screen.getAllByTitle('pim_common.remove')[0]);
     fireEvent.click(screen.getByText('pim_common.confirm'));
 
-    expect(handleChange).toBeCalledWith([defaultSelectOptions[1], defaultSelectOptions[2], defaultSelectOptions[3]]);
+    expect(handleChange).toBeCalledWith([
+      ingredientsSelectOptions[1],
+      ingredientsSelectOptions[2],
+      ingredientsSelectOptions[3],
+    ]);
   });
 
   it('should display already fetched options', async () => {
