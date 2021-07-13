@@ -76,7 +76,7 @@ abstract class AbstractItemMediaWriter implements
         if (!empty($items) && $this->numberOfWrittenLines === 0) {
             $this->writer = $this->fileWriterFactory->build();
             $this->writer->openToFile($this->openedPath);
-            $this->addHeadersIfNeeded(current($items));
+            $this->addHeadersIfNeeded(current($items)->getMappedProducts());
         }
 
         /** @var $mappedProductsWithFiles MappedProductsWithFiles */
@@ -196,14 +196,14 @@ abstract class AbstractItemMediaWriter implements
         return $this->stepExecution;
     }
 
-    private function addHeadersIfNeeded(MappedProductsWithFiles $item): void
+    private function addHeadersIfNeeded(array $item): void
     {
         $parameters = $this->getStepExecution()->getJobParameters();
         if (!$parameters->has('withHeader') || $parameters->get('withHeader') === false) {
             return;
         }
 
-        $this->writer->addRow(array_keys($item->getMappedProducts()));
+        $this->writer->addRow(array_keys($item));
     }
 
     private function isMaxLinesPerFileReached(): bool
