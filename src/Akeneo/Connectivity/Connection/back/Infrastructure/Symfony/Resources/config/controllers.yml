@@ -59,3 +59,4 @@ services:
             - '@akeneo_connectivity.connection.marketplace.get_all_extensions_query'
             - '@akeneo_connectivity.connection.marketplace.analytics_generator'
             - '@pim_user.context.user'
+            - '@logger'

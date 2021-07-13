@@ -7,6 +7,7 @@ namespace Akeneo\Connectivity\Connection\Infrastructure\InternalApi\Controller\M
 use Akeneo\Connectivity\Connection\Application\Marketplace\MarketplaceAnalyticsGenerator;
 use Akeneo\Connectivity\Connection\Domain\Marketplace\GetAllExtensionsQueryInterface;
 use Akeneo\UserManagement\Bundle\Context\UserContext;
+use Psr\Log\LoggerInterface;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
@@ -21,15 +22,18 @@ class GetAllExtensions
     private GetAllExtensionsQueryInterface $getAllExtensionsQuery;
     private MarketplaceAnalyticsGenerator $marketplaceAnalyticsGenerator;
     private UserContext $userContext;
+    private LoggerInterface $logger;
 
     public function __construct(
         GetAllExtensionsQueryInterface $getAllExtensionsQuery,
         MarketplaceAnalyticsGenerator $marketplaceAnalyticsGenerator,
-        UserContext $userContext
+        UserContext $userContext,
+        LoggerInterface $logger
     ) {
         $this->getAllExtensionsQuery = $getAllExtensionsQuery;
         $this->marketplaceAnalyticsGenerator = $marketplaceAnalyticsGenerator;
         $this->userContext = $userContext;
+        $this->logger = $logger;
     }
 
     public function __invoke(Request $request): Response
@@ -37,7 +41,14 @@ class GetAllExtensions
         if (!$request->isXmlHttpRequest()) {
             return new RedirectResponse('/');
         }
-        $result = $this->getAllExtensionsQuery->execute();
+
+        try {
+            $result = $this->getAllExtensionsQuery->execute();
+        } catch (\Exception $e) {
+            $this->logger->error(sprintf('unable to retrieve the list of extensions, got error "%s"', $e->getMessage()));
+
+            return new JsonResponse(null, 500);
+        }
 
         $username = $this->userContext->getUser()->getUsername();
         $analyticsQueryParameters = $this->marketplaceAnalyticsGenerator->getExtensionQueryParameters($username);
