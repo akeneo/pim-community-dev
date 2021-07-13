@@ -13,6 +13,7 @@ declare(strict_types=1);
 
 namespace Specification\Akeneo\Platform\TailoredExport\Infrastructure\Connector\Writer\File\Xlsx;
 
+use Akeneo\Platform\TailoredExport\Infrastructure\Connector\Processor\MappedProductsWithFiles;
 use Akeneo\Platform\TailoredExport\Infrastructure\Connector\Writer\File\FileWriterFactory;
 use Akeneo\Platform\TailoredExport\Infrastructure\Connector\Writer\File\Xlsx\ProductWriter;
 use Akeneo\Tool\Component\Batch\Item\FlushableInterface;
@@ -23,10 +24,7 @@ use Akeneo\Tool\Component\Batch\Model\JobExecution;
 use Akeneo\Tool\Component\Batch\Model\JobInstance;
 use Akeneo\Tool\Component\Batch\Model\StepExecution;
 use Akeneo\Tool\Component\Batch\Step\StepExecutionAwareInterface;
-use Akeneo\Tool\Component\Buffer\BufferFactory;
 use Akeneo\Tool\Component\Connector\Writer\File\ArchivableWriterInterface;
-use Akeneo\Tool\Component\Connector\Writer\File\FlatItemBuffer;
-use Akeneo\Tool\Component\Connector\Writer\File\FlatItemBufferFlusher;
 use Akeneo\Tool\Component\Connector\Writer\File\WrittenFileInfo;
 use Box\Spout\Writer\WriterInterface;
 use PhpSpec\ObjectBehavior;
@@ -115,7 +113,7 @@ class ProductWriterSpec extends ObjectBehavior
         ]);
 
         $stepExecution->getJobParameters()->willReturn($jobParameters);
-        $stepExecution->incrementSummaryInfo("write", 5)->shouldBeCalled();
+        $stepExecution->incrementSummaryInfo('write', 5)->shouldBeCalled();
         $fileWriterFactory->build()->willReturn($writer);
         $writer->openToFile('/tmp/XLSX_Product_export_product.xlsx')->shouldBeCalled();
         $writer->addRow(['sku' => 42, 'name' => 'bag'])->shouldBeCalled();
@@ -127,11 +125,11 @@ class ProductWriterSpec extends ObjectBehavior
 
         $this->initialize();
         $this->write([
-            ['sku' => 42, 'name' => 'bag'],
-            ['sku' => 52, 'name' => 'sunglasses'],
-            ['sku' => 62, 'name' => 'cap'],
-            ['sku' => 72, 'name' => 'bob'],
-            ['sku' => 82, 'name' => 'hat']
+            new MappedProductsWithFiles(['sku' => 42, 'name' => 'bag'], []),
+            new MappedProductsWithFiles(['sku' => 52, 'name' => 'sunglasses'], []),
+            new MappedProductsWithFiles(['sku' => 62, 'name' => 'cap'], []),
+            new MappedProductsWithFiles(['sku' => 72, 'name' => 'bob'], []),
+            new MappedProductsWithFiles(['sku' => 82, 'name' => 'hat'], [])
         ]);
 
         $this->flush();
@@ -157,7 +155,7 @@ class ProductWriterSpec extends ObjectBehavior
         ]);
 
         $stepExecution->getJobParameters()->willReturn($jobParameters);
-        $stepExecution->incrementSummaryInfo("write", 5)->shouldBeCalled();
+        $stepExecution->incrementSummaryInfo('write', 5)->shouldBeCalled();
 
         $fileWriterFactory->build()->willReturn($writer);
         $writer->openToFile('/tmp/XLSX_Product_export_product.xlsx')->shouldBeCalled();
@@ -171,11 +169,11 @@ class ProductWriterSpec extends ObjectBehavior
 
         $this->initialize();
         $this->write([
-            ['sku' => 42, 'name' => 'bag'],
-            ['sku' => 52, 'name' => 'sunglasses'],
-            ['sku' => 62, 'name' => 'cap'],
-            ['sku' => 72, 'name' => 'bob'],
-            ['sku' => 82, 'name' => 'hat']
+            new MappedProductsWithFiles(['sku' => 42, 'name' => 'bag'], []),
+            new MappedProductsWithFiles(['sku' => 52, 'name' => 'sunglasses'], []),
+            new MappedProductsWithFiles(['sku' => 62, 'name' => 'cap'], []),
+            new MappedProductsWithFiles(['sku' => 72, 'name' => 'bob'], []),
+            new MappedProductsWithFiles(['sku' => 82, 'name' => 'hat'], [])
         ]);
 
         $this->flush();
@@ -203,8 +201,8 @@ class ProductWriterSpec extends ObjectBehavior
         ]);
 
         $stepExecution->getJobParameters()->willReturn($jobParameters);
-        $stepExecution->incrementSummaryInfo("write", 3)->shouldBeCalled();
-        $stepExecution->incrementSummaryInfo("write", 2)->shouldBeCalled();
+        $stepExecution->incrementSummaryInfo('write', 3)->shouldBeCalled();
+        $stepExecution->incrementSummaryInfo('write', 2)->shouldBeCalled();
         $fileWriterFactory->build()->willReturn($firstWriter, $secondWriter, $thirdWriter);
         $firstWriter->openToFile('/tmp/XLSX_Product_export_product_1.xlsx')->shouldBeCalled();
         $firstWriter->addRow(['sku' => 42, 'name' => 'bag'])->shouldBeCalled();
@@ -220,13 +218,13 @@ class ProductWriterSpec extends ObjectBehavior
 
         $this->initialize();
         $this->write([
-            ['sku' => 42, 'name' => 'bag'],
-            ['sku' => 52, 'name' => 'sunglasses'],
-            ['sku' => 62, 'name' => 'cap'],
+            new MappedProductsWithFiles(['sku' => 42, 'name' => 'bag'], []),
+            new MappedProductsWithFiles(['sku' => 52, 'name' => 'sunglasses'], []),
+            new MappedProductsWithFiles(['sku' => 62, 'name' => 'cap'], [])
         ]);
         $this->write([
-            ['sku' => 72, 'name' => 'bob'],
-            ['sku' => 82, 'name' => 'hat']
+            new MappedProductsWithFiles(['sku' => 72, 'name' => 'bob'], []),
+            new MappedProductsWithFiles(['sku' => 82, 'name' => 'hat'], [])
         ]);
         $this->flush();
 
@@ -260,7 +258,7 @@ class ProductWriterSpec extends ObjectBehavior
         ]);
 
         $stepExecution->getJobParameters()->willReturn($jobParameters);
-        $stepExecution->incrementSummaryInfo("write", 4)->shouldBeCalled();
+        $stepExecution->incrementSummaryInfo('write', 4)->shouldBeCalled();
         $fileWriterFactory->build()->willReturn($firstWriter, $secondWriter);
 
         $firstWriter->openToFile('/tmp/XLSX_Product_export_product_1.xlsx')->shouldBeCalled();
@@ -275,10 +273,10 @@ class ProductWriterSpec extends ObjectBehavior
 
         $this->initialize();
         $this->write([
-            ['sku' => 42, 'name' => 'bag'],
-            ['sku' => 52, 'name' => 'sunglasses'],
-            ['sku' => 62, 'name' => 'bob'],
-            ['sku' => 72, 'name' => 'hat']
+            new MappedProductsWithFiles(['sku' => 42, 'name' => 'bag'], []),
+            new MappedProductsWithFiles(['sku' => 52, 'name' => 'sunglasses'], []),
+            new MappedProductsWithFiles(['sku' => 62, 'name' => 'bob'], []),
+            new MappedProductsWithFiles(['sku' => 72, 'name' => 'hat'], [])
         ]);
         $this->flush();
 

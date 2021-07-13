@@ -71,13 +71,10 @@ class ProductExportProcessor implements ItemProcessorInterface, StepExecutionAwa
         $columnCollection = $this->getColumnCollection($columns);
         $valueCollection = $this->valueCollectionHydrator->hydrate($product, $columnCollection);
 
-        $mappedProduct = $this->productMapper->map($columnCollection, $valueCollection);
-        $filesToWrite = $this->filePathGenerator->generate($columnCollection, $valueCollection);
+        $mappedProducts = $this->productMapper->map($columnCollection, $valueCollection);
+        $filesToExport = $this->filePathGenerator->extract($columnCollection, $valueCollection);
 
-        return [
-            'mapped_product' => $mappedProduct,
-            'files_to_write' => $filesToWrite
-        ];
+        return new MappedProductsWithFiles($mappedProducts, $filesToExport);
     }
 
     /**

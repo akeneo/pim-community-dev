@@ -22,9 +22,12 @@ use Akeneo\Platform\TailoredExport\Domain\ValueCollection;
 
 class FilePathGenerator
 {
-    public function generate(ColumnCollection $columnCollection, ValueCollection $valueCollection): array
+    /**
+     * @return FileToExport[]
+     */
+    public function extract(ColumnCollection $columnCollection, ValueCollection $valueCollection): array
     {
-        $filePaths = [];
+        $fileToExports = [];
 
         /** @var Column $column */
         foreach ($columnCollection as $column) {
@@ -40,7 +43,7 @@ class FilePathGenerator
                     continue;
                 }
 
-                $filePaths[$value->getKey()] = new FileToExport(
+                $fileToExports[$value->getKey()] = new FileToExport(
                     $value->getKey(),
                     $value->getStorage(),
                     $this->generateFilePath(
@@ -51,7 +54,7 @@ class FilePathGenerator
             }
         }
 
-        return $filePaths;
+        return $fileToExports;
     }
 
     private function generateFilePath(FileSelectionInterface $selection, FileValue $value): string

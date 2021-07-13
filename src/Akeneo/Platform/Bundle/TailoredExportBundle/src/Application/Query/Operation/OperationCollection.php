@@ -13,7 +13,6 @@ declare(strict_types=1);
 
 namespace Akeneo\Platform\TailoredExport\Application\Query\Operation;
 
-use Akeneo\Platform\TailoredExport\Application\Query\Operation\ReplacementOperation;
 use Webmozart\Assert\Assert;
 
 class OperationCollection implements \IteratorAggregate

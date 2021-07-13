@@ -14,6 +14,7 @@ declare(strict_types=1);
 namespace Akeneo\Platform\TailoredExport\Infrastructure\Connector\Writer\File;
 
 use Akeneo\Platform\TailoredExport\Domain\FileToExport;
+use Akeneo\Platform\TailoredExport\Infrastructure\Connector\Processor\MappedProductsWithFiles;
 use Akeneo\Tool\Component\Batch\Item\FlushableInterface;
 use Akeneo\Tool\Component\Batch\Item\InitializableInterface;
 use Akeneo\Tool\Component\Batch\Item\ItemWriterInterface;
@@ -67,7 +68,7 @@ abstract class AbstractItemMediaWriter implements
 
     /**
      * {@inheritdoc}
-     * @param array<array> $items
+     * @param array<MappedProductsWithFiles> $items
      */
     public function write(array $items): void
     {
@@ -78,7 +79,8 @@ abstract class AbstractItemMediaWriter implements
             $this->addHeadersIfNeeded(current($items));
         }
 
-        foreach ($items as $item) {
+        /** @var $mappedProductsWithFiles MappedProductsWithFiles */
+        foreach ($items as $mappedProductsWithFiles) {
             if ($this->isMaxLinesPerFileReached()) {
                 $this->writer->close();
                 $this->writtenFiles[] = WrittenFileInfo::fromLocalFile($this->openedPath, basename($this->openedPath));
@@ -86,11 +88,11 @@ abstract class AbstractItemMediaWriter implements
                 $this->writer = $this->fileWriterFactory->build();
                 $this->openedPath = $this->getPath();
                 $this->writer->openToFile($this->openedPath);
-                $this->addHeadersIfNeeded($item['mapped_product']);
+                $this->addHeadersIfNeeded($mappedProductsWithFiles->getMappedProducts());
             }
 
-            $this->writer->addRow($item['mapped_product']);
-            $this->writeMedia($item['files_to_write']);
+            $this->writer->addRow($mappedProductsWithFiles->getMappedProducts());
+            $this->writeMedia($mappedProductsWithFiles->getFilesToExport());
             $this->numberOfWrittenLines++;
         }
 
@@ -194,14 +196,14 @@ abstract class AbstractItemMediaWriter implements
         return $this->stepExecution;
     }
 
-    private function addHeadersIfNeeded(array $item): void
+    private function addHeadersIfNeeded(MappedProductsWithFiles $item): void
     {
         $parameters = $this->getStepExecution()->getJobParameters();
         if (!$parameters->has('withHeader') || $parameters->get('withHeader') === false) {
             return;
         }
 
-        $this->writer->addRow(array_keys($item));
+        $this->writer->addRow(array_keys($item->getMappedProducts()));
     }
 
     private function isMaxLinesPerFileReached(): bool
