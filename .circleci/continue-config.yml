@@ -47,6 +47,19 @@ jobs:
       - image: alpine/git
     steps:
       - checkout
+      - run:
+          name: Install yq
+          command: |
+            wget https://github.com/mikefarah/yq/releases/download/3.3.1/yq_linux_386
+            mv yq_linux_386 /usr/local/bin/yq
+            chmod +x /usr/local/bin/yq
+      - run:
+          name: Remove MySQL port translation for EE (see BH-664)
+          command: yq delete --inplace docker-compose.yml services.mysql.ports
+      - run:
+          name: Remove MySQL port translation for GRTH (see BH-664)
+          command: yq delete --inplace grth/docker-compose.yml services.mysql.ports
+
       - persist_to_workspace:
           root: ~/
           paths:
