@@ -1,8 +1,8 @@
 import React, {useState} from 'react';
 import {useBooleanState, Dropdown, ArrowDownIcon, Search, Button, Checkbox} from 'akeneo-design-system';
-import {fetchSelectOptions} from '../fetchers/SelectOptionsFetcher';
 import {useRouter, getLabel, useUserContext, useTranslate} from '@akeneo-pim-community/shared';
 import {ColumnCode, SelectOption, SelectOptionCode} from '../models/TableConfiguration';
+import {getSelectOptions} from '../repositories/SelectOption';
 
 const BATCH_SIZE = 20;
 
@@ -29,7 +29,7 @@ const AddRowsButton: React.FC<AddRowsButtonProps> = ({attributeCode, columnCode,
 
   React.useEffect(() => {
     if (isOpen && typeof items === 'undefined') {
-      fetchSelectOptions(router, attributeCode, columnCode).then(selectOptions => {
+      getSelectOptions(router, attributeCode, columnCode).then(selectOptions => {
         setItems(
           (selectOptions ?? []).map((option: SelectOption) => {
             return {

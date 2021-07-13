@@ -1,11 +1,14 @@
 import React from 'react';
 import {AddingValueIllustration, TableInput} from 'akeneo-design-system';
-import {ColumnCode, TableConfiguration} from '../models/TableConfiguration';
+import {ColumnCode, SelectOption, SelectOptionCode, TableConfiguration} from '../models/TableConfiguration';
 import {getLabel, useTranslate, useUserContext, useRouter} from '@akeneo-pim-community/shared';
 import {TableFooter} from './TableFooter';
 import styled from 'styled-components';
 import {TableValueWithId} from './TableFieldApp';
-import {getSelectOption} from '../repositories/SelectOption';
+import {getSelectOption, getSelectOptions} from '../repositories/SelectOption';
+import {TableInputSelect} from './TableInputSelect';
+import {TableCell} from '../models/TableValue';
+import {getSelectColumnDefinition} from '../../__tests__/src/factories/ColumnDefinition';
 
 const TABLE_VALUE_ITEMS_PER_PAGE = [10, 20, 50, 100];
 
@@ -32,24 +35,30 @@ const TableInputValue: React.FC<TableInputValueProps> = ({
   onChange,
   searchText = '',
 }) => {
-  const handleChange = (uniqueId: string, columnCode: ColumnCode, cellValue: any) => {
-    const rowIndex = valueData.findIndex(row => row['unique id'] === uniqueId);
-    if (rowIndex >= 0) {
-      const row = valueData[rowIndex];
-      row[columnCode] = cellValue;
-      valueData[rowIndex] = row;
-      const newTableValue = [...valueData];
-      onChange(newTableValue);
-    }
-  };
-
   const translate = useTranslate();
   const userContext = useUserContext();
   const router = useRouter();
   const [itemsPerPage, setItemsPerPage] = React.useState<number>(TABLE_VALUE_ITEMS_PER_PAGE[0]);
   const [currentPage, setCurrentPage] = React.useState<number>(0);
   const [selectOptionLabels, setSelectOptionLabels] = React.useState<{[key: string]: string}>({});
+  const [options, setOptions] = React.useState<{[columnCode: string]: SelectOption[]}>({});
   const isSearching = searchText.trim() !== '';
+
+  const handleChange = (uniqueId: string, columnCode: ColumnCode, cellValue: TableCell | undefined) => {
+    const rowIndex = valueData.findIndex(row => row['unique id'] === uniqueId);
+    if (rowIndex >= 0) {
+      const row = valueData[rowIndex];
+      if (typeof cellValue === 'undefined') {
+        delete row[columnCode];
+      } else {
+        row[columnCode] = cellValue;
+      }
+      valueData[rowIndex] = row;
+      const newTableValue = [...valueData];
+
+      onChange(newTableValue);
+    }
+  };
 
   let filteredData = valueData;
   let valueDataPage = valueData.slice(currentPage * itemsPerPage, (currentPage + 1) * itemsPerPage);
@@ -79,6 +88,13 @@ const TableInputValue: React.FC<TableInputValueProps> = ({
 
   React.useEffect(() => {
     const f = async () => {
+      for await (const column of tableConfiguration.filter(
+        columnDefinition => columnDefinition.data_type === 'select'
+      )) {
+        options[column.code] = (await getSelectOptions(router, attributeCode, column.code)) || [];
+      }
+      setOptions({...options});
+
       for await (const row of valueDataPage) {
         selectOptionLabels[`${firstColumn.code}-${row[firstColumn.code]}`] = await getOptionLabel(
           firstColumn.code,
@@ -130,14 +146,13 @@ const TableInputValue: React.FC<TableInputValueProps> = ({
                         />
                       )}
                       {'select' === columnType && (
-                        <TableInput.Select
-                          value={row[columnCode]}
-                          onClear={() => handleChange(row['unique id'], columnCode, null)}
-                          clearLabel={translate('pim_common.clear')}
-                          openDropdownLabel={translate('pim_common.open')}
-                          searchPlaceholder={translate('pim_common.search')}
-                          searchTitle={translate('pim_common.search')}
+                        <TableInputSelect
+                          value={row[columnCode] as SelectOptionCode | undefined}
+                          onChange={(value: SelectOptionCode | undefined) =>
+                            handleChange(row['unique id'], columnCode, value)
+                          }
                           data-testid={`input-${row['unique id']}-${columnCode}`}
+                          options={options[columnCode]}
                         />
                       )}
                       {'boolean' === columnType && (

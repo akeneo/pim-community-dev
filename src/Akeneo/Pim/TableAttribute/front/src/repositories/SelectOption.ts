@@ -2,6 +2,7 @@ import {Router} from '@akeneo-pim-community/shared';
 import {ColumnCode, SelectOption} from '../models/TableConfiguration';
 import {fetchSelectOptions} from '../fetchers/SelectOptionsFetcher';
 
+// TODO Index options here
 const selectOptionsCache: {[key: string]: SelectOption[] | null} = {};
 
 const getSelectOptions = async (
