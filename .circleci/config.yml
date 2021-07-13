@@ -76,6 +76,9 @@ jobs:
             default: front-packages/akeneo-design-system
     machine:
       image: ubuntu-2004:202101-01
+    environment:
+        COMPOSE_DOCKER_CLI_BUILD: 1
+        DOCKER_BUILDKIT: 1
     steps:
       - attach_workspace:
             at: ~/
