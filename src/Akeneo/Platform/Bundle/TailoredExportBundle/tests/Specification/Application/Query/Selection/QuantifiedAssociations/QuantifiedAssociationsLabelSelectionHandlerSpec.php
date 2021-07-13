@@ -88,7 +88,7 @@ class QuantifiedAssociationsLabelSelectionHandlerSpec extends ObjectBehavior
         $notSupportedValue = new BooleanValue(false);
 
         $this
-            ->shouldThrow(new \InvalidArgumentException('Cannot apply quantified associations selection on this entity'))
+            ->shouldThrow(new \InvalidArgumentException('Cannot apply quantified associations label selection on this entity'))
             ->during('applySelection', [$notSupportedSelection, $notSupportedValue]);
     }
 

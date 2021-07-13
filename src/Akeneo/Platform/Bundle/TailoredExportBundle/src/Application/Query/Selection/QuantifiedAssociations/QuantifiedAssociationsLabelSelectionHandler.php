@@ -39,7 +39,7 @@ class QuantifiedAssociationsLabelSelectionHandler implements SelectionHandlerInt
             !$selection instanceof QuantifiedAssociationsLabelSelection
             || !$value instanceof QuantifiedAssociationsValue
         ) {
-            throw new \InvalidArgumentException('Cannot apply quantified associations selection on this entity');
+            throw new \InvalidArgumentException('Cannot apply quantified associations label selection on this entity');
         }
 
         $associatedEntityCodes = $this->getAssociatedEntityCodes($selection, $value);

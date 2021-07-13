@@ -26,7 +26,7 @@ class QuantifiedAssociationsCodeSelectionHandler implements SelectionHandlerInte
             !$selection instanceof QuantifiedAssociationsCodeSelection
             || !$value instanceof QuantifiedAssociationsValue
         ) {
-            throw new \InvalidArgumentException('Cannot apply quantified associations selection on this entity');
+            throw new \InvalidArgumentException('Cannot apply quantified associations code selection on this entity');
         }
 
         $associatedEntityCodes = $this->getAssociatedEntityCodes($selection, $value);
