@@ -1,0 +1,10 @@
+services:
+    Akeneo\Tool\Bundle\RuleEngineBundle\Doctrine\Upgrades\AddIndexOnRuleDefinitionCodeQuery:
+        arguments:
+            - '@database_connection'
+
+    Akeneo\Tool\Bundle\RuleEngineBundle\Command\AddIndexOnRuleDefinitionCodeCommand:
+        arguments:
+            - '@Akeneo\Tool\Bundle\RuleEngineBundle\Doctrine\Upgrades\AddIndexOnRuleDefinitionCodeQuery'
+        tags:
+            - { name: console.command }
