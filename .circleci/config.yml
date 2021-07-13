@@ -37,6 +37,11 @@ jobs:
           name: Require proper dev CE branch
           command: |
             sed -i "s|\"akeneo/pim-community-dev\": \"dev-master|\"akeneo/pim-community-dev\": \"dev-${CIRCLE_BRANCH}|" composer.json
+            sed -i "s|\"akeneo/pim-community-dev\": \"dev-master|\"akeneo/pim-community-dev\": \"dev-${CIRCLE_BRANCH}|" grth/composer.json
+      - install_yq
+      - run:
+          name: Remove MySQL port translation (see BH-664)
+          command: yq delete --inplace docker-compose.yml services.mysql.ports
       - run:
           name: Persist default IMAGE_TAG to be the repo last commit SHA1
           command: |
@@ -52,6 +57,10 @@ jobs:
       image: ubuntu-2004:202101-01
     steps:
       - checkout
+      - install_yq
+      - run:
+          name: Remove MySQL port translation (see BH-664)
+          command: yq delete --inplace docker-compose.yml services.mysql.ports
       - persist_to_workspace:
           root: ~/
           paths:
@@ -570,7 +579,11 @@ jobs:
                 at: ~/
           - run:
                 name: Change owner on project dir in order to archive the project into the workspace
-                command: sudo chown -R 1000:1000 ../project
+                command: |
+                  mkdir -p ~/.cache/yarn ~/.composer
+                  sudo chown -R 1000:1000 ../project
+                  sudo chown -R 1000:1000 ~/.composer
+                  sudo chown -R 1000:1000 ~/.cache/yarn
           - run:
                 name: Create an empty service account
                 command: |
@@ -871,3 +884,13 @@ commands:
             echo "Persisted env vars:"
             cat persisted_env_vars
             cat persisted_env_vars >> $BASH_ENV
+
+  install_yq:
+    description: "Install yq"
+    steps:
+      - run:
+          name: Install yq
+          command: |
+            wget https://github.com/mikefarah/yq/releases/download/3.3.1/yq_linux_386
+            sudo mv yq_linux_386 /usr/local/bin/yq
+            sudo chmod +x /usr/local/bin/yq
