@@ -1,6 +1,6 @@
 import React from 'react';
 import * as ReactDOM from 'react-dom';
-import {TableConfiguration} from '../models/TableConfiguration';
+import {ColumnCode, TableConfiguration} from '../models/TableConfiguration';
 import {DependenciesProvider} from '@akeneo-pim-community/legacy-bridge';
 import {ThemeProvider} from 'styled-components';
 import {pimTheme} from 'akeneo-design-system';
@@ -11,6 +11,11 @@ import {ChannelCode, LocaleCode} from '@akeneo-pim-community/shared';
 const Field = require('pim/field');
 // eslint-disable-next-line @typescript-eslint/no-var-requires
 const mediator = require('oro/mediator');
+
+export type TableValueViolatedCell = {
+  rowIndex: number;
+  columnCode: ColumnCode;
+}
 
 export type TemplateContext = {
   type: 'akeneo-table-field';
@@ -35,30 +40,35 @@ export type TemplateContext = {
 };
 
 class TableField extends (Field as {new (config: any): any}) {
+  private violatedCells: TableValueViolatedCell[] = [];
+
   constructor(config: any) {
     super(config);
 
     this.fieldType = 'akeneo-table-field';
   }
 
-  computeToto(event: any, attribute: {
+  computeViolatedCells(event: any, attribute: {
     code: string;
     table_configuration: TableConfiguration;
   }, locale: LocaleCode | null, scope: ChannelCode | null) {
     const violations = event.response.values;
-    this.toto = [];
+    this.violatedCells = [];
 
     violations.map((violation: any) => {
       if (violation.attribute === attribute.code && locale === violation.locale && scope === violation.scope) {
+        // Complete path looks like values[attributeCode-<all_channels>-en_US][3].ingredient
         const completePath = violation.path;
         const index = completePath.indexOf(']');
-        const realPath = completePath.substr(index + 1);
-        const results = realPath.match(/^\[(\d)\]\.(.+)$/);
-        if (results) {
-          this.toto.push({
-            rowIndex: parseInt(results[1]),
-            columnCode: results[2],
-          })
+        if (index >= 0) {
+          const realPath = completePath.substr(index + 1);
+          const results = realPath.match(/^\[(\d)\]\.(.+)$/);
+          if (results) {
+            this.violatedCells.push({
+              rowIndex: parseInt(results[1]),
+              columnCode: results[2],
+            })
+          }
         }
       }
     })
@@ -84,7 +94,7 @@ class TableField extends (Field as {new (config: any): any}) {
     Promise.all(promises).then(() => {
       this.getTemplateContext().then((templateContext: TemplateContext) => {
         this.listenTo(templateContext.context.root, 'pim_enrich:form:entity:bad_request', (event: any) => {
-          this.computeToto(event, templateContext.attribute, templateContext.locale, templateContext.scope)
+          this.computeViolatedCells(event, templateContext.attribute, templateContext.locale, templateContext.scope)
         });
 
         const handleChange = (value: TableValue) => {
@@ -98,7 +108,7 @@ class TableField extends (Field as {new (config: any): any}) {
                 {...templateContext}
                 onChange={handleChange}
                 elements={this.elements}
-                toto={this.toto || []}
+                violatedCells={this.violatedCells}
               />
             </ThemeProvider>
           </DependenciesProvider>,

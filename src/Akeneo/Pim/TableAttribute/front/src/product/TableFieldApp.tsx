@@ -4,7 +4,7 @@ import styled, {ThemeProvider} from 'styled-components';
 import {Locale, pimTheme, uuid, Search} from 'akeneo-design-system';
 import {TableInputValue} from './TableInputValue';
 import {TableRow, TableValue} from '../models/TableValue';
-import {TemplateContext} from '../legacy/table-field';
+import {TableValueViolatedCell, TemplateContext} from '../legacy/table-field';
 import {useTranslate} from '@akeneo-pim-community/shared';
 import {AddRowsButton} from './AddRowsButton';
 import {ColumnCode, SelectOptionCode} from '../models/TableConfiguration';
@@ -16,7 +16,7 @@ const TableInputContainer = styled.div`
 type TableFieldAppProps = TemplateContext & {
   onChange: (tableValue: TableValue) => void;
   elements: {[position: string]: {[elementKey: string]: any}};
-  toto: any;
+  violatedCells: TableValueViolatedCell[];
 };
 
 type TableRowWithId = TableRow & {'unique id': string};
@@ -35,9 +35,10 @@ const TableFieldApp: React.FC<TableFieldAppProps> = ({
   value,
   onChange,
   elements,
-  toto,
+  violatedCells = [],
 }) => {
   const translate = useTranslate();
+
   const [tableValue, setTableValue] = React.useState<TableValueWithId>(
     (value.data || []).map(row => {
       return Object.keys(row).reduce(
@@ -156,7 +157,7 @@ const TableFieldApp: React.FC<TableFieldAppProps> = ({
               tableConfiguration={attribute.table_configuration}
               onChange={handleChange}
               searchText={searchText}
-              toto={toto}
+              violatedCells={violatedCells}
             />
             {renderElements('field-input')}
           </div>

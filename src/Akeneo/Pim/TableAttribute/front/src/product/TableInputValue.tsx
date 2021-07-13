@@ -8,6 +8,7 @@ import {TableValueWithId} from './TableFieldApp';
 import {getSelectOption, getSelectOptions} from '../repositories/SelectOption';
 import {TableInputSelect} from './TableInputSelect';
 import {TableCell} from '../models/TableValue';
+import {TableValueViolatedCell} from "../legacy/table-field";
 
 const TABLE_VALUE_ITEMS_PER_PAGE = [10, 20, 50, 100];
 
@@ -25,7 +26,7 @@ type TableInputValueProps = {
   tableConfiguration: TableConfiguration;
   onChange: (tableValue: TableValueWithId) => void;
   searchText: string;
-  toto: any;
+  violatedCells: TableValueViolatedCell[];
 };
 
 const TableInputValue: React.FC<TableInputValueProps> = ({
@@ -34,7 +35,7 @@ const TableInputValue: React.FC<TableInputValueProps> = ({
   tableConfiguration,
   onChange,
   searchText = '',
-  toto,
+  violatedCells = [],
 }) => {
   const translate = useTranslate();
   const userContext = useUserContext();
@@ -108,7 +109,7 @@ const TableInputValue: React.FC<TableInputValueProps> = ({
   }, [valueDataPage.length]);
 
   const isInError = (rowIndex: number, columnCode: ColumnCode) => {
-    return toto.some((tot: any) => tot.rowIndex === rowIndex && tot.columnCode === columnCode);
+    return violatedCells.some(violatedCell => violatedCell.rowIndex === rowIndex && violatedCell.columnCode === columnCode);
   }
 
   return (
