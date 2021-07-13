@@ -45,8 +45,9 @@ const FetcherProvider: FC = ({children}) => {
               identifiers: codes.join(','),
             });
 
-            return baseFetcher(route)
-              .then((associationTypes: AssociationType[]) => associationTypes.filter(associationType => codes.includes(associationType.code)));
+            return baseFetcher(route).then((associationTypes: AssociationType[]) =>
+              associationTypes.filter(associationType => codes.includes(associationType.code))
+            );
           },
         },
       }}
