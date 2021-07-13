@@ -99,7 +99,7 @@ test('it returns if source is simple association source', () => {
         separator: ',',
         entity_type: 'products',
       },
-    })
+    } as any)
   ).toBe(false);
   expect(isSimpleAssociationTypeSource(getDefaultEnabledSource())).toBe(false);
 });

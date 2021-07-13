@@ -35,6 +35,10 @@ use Akeneo\Platform\TailoredExport\Application\Query\Selection\Parent\ParentLabe
 use Akeneo\Platform\TailoredExport\Application\Query\Selection\PriceCollection\PriceCollectionAmountSelection;
 use Akeneo\Platform\TailoredExport\Application\Query\Selection\PriceCollection\PriceCollectionCurrencyCodeSelection;
 use Akeneo\Platform\TailoredExport\Application\Query\Selection\PriceCollection\PriceCollectionCurrencyLabelSelection;
+use Akeneo\Platform\TailoredExport\Application\Query\Selection\QuantifiedAssociations\QuantifiedAssociationsCodeSelection;
+use Akeneo\Platform\TailoredExport\Application\Query\Selection\QuantifiedAssociations\QuantifiedAssociationsLabelSelection;
+use Akeneo\Platform\TailoredExport\Application\Query\Selection\QuantifiedAssociations\QuantifiedAssociationsQuantitySelection;
+use Akeneo\Platform\TailoredExport\Application\Query\Selection\QuantifiedAssociations\QuantifiedAssociationsSelectionInterface;
 use Akeneo\Platform\TailoredExport\Application\Query\Selection\ReferenceEntity\ReferenceEntityCodeSelection;
 use Akeneo\Platform\TailoredExport\Application\Query\Selection\ReferenceEntity\ReferenceEntityLabelSelection;
 use Akeneo\Platform\TailoredExport\Application\Query\Selection\ReferenceEntityCollection\ReferenceEntityCollectionCodeSelection;
@@ -105,10 +109,10 @@ class SelectionHydrator
         }
     }
 
-    public function createAssociationSelection(array $selectionConfiguration, AssociationType $associationType)
+    public function createAssociationSelection(array $selectionConfiguration, AssociationType $associationType): SelectionInterface
     {
         if ($associationType->isQuantified()) {
-            throw new \LogicException('Quantified association type is unsupported');
+            return $this->createQuantifiedAssociationsSelection($selectionConfiguration);
         }
 
         return $this->createSimpleAssociationsSelection($selectionConfiguration);
@@ -365,6 +369,33 @@ class SelectionHydrator
             default:
                 throw new \LogicException(
                     sprintf('Selection type "%s" is not supported for SimpleAssociation', $selectionConfiguration['type'])
+                );
+        }
+    }
+
+    private function createQuantifiedAssociationsSelection(array $selectionConfiguration): QuantifiedAssociationsSelectionInterface
+    {
+        switch ($selectionConfiguration['type']) {
+            case QuantifiedAssociationsCodeSelection::TYPE:
+                return new QuantifiedAssociationsCodeSelection(
+                    $selectionConfiguration['entity_type'],
+                    $selectionConfiguration['separator']
+                );
+            case QuantifiedAssociationsLabelSelection::TYPE:
+                return new QuantifiedAssociationsLabelSelection(
+                    $selectionConfiguration['entity_type'],
+                    $selectionConfiguration['channel'],
+                    $selectionConfiguration['locale'],
+                    $selectionConfiguration['separator']
+                );
+            case QuantifiedAssociationsQuantitySelection::TYPE:
+                return new QuantifiedAssociationsQuantitySelection(
+                    $selectionConfiguration['entity_type'],
+                    $selectionConfiguration['separator']
+                );
+            default:
+                throw new \LogicException(
+                    sprintf('Selection type "%s" is not supported for QuantifiedAssociation', $selectionConfiguration['type'])
                 );
         }
     }

@@ -224,3 +224,21 @@ services:
       - '@Akeneo\Platform\TailoredExport\Domain\Query\FindGroupLabelsInterface'
     tags:
       - { name: akeneo.tailored_export.selection_handler }
+
+  Akeneo\Platform\TailoredExport\Application\Query\Selection\QuantifiedAssociations\QuantifiedAssociationsCodeSelectionHandler:
+    public: true
+    tags:
+      - { name: akeneo.tailored_export.selection_handler }
+
+  Akeneo\Platform\TailoredExport\Application\Query\Selection\QuantifiedAssociations\QuantifiedAssociationsLabelSelectionHandler:
+    public: true
+    arguments:
+      - '@Akeneo\Platform\TailoredExport\Domain\Query\FindProductLabelsInterface'
+      - '@Akeneo\Platform\TailoredExport\Domain\Query\FindProductModelLabelsInterface'
+    tags:
+      - { name: akeneo.tailored_export.selection_handler }
+
+  Akeneo\Platform\TailoredExport\Application\Query\Selection\QuantifiedAssociations\QuantifiedAssociationsQuantitySelectionHandler:
+    public: true
+    tags:
+      - { name: akeneo.tailored_export.selection_handler }
