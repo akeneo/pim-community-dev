@@ -12,7 +12,7 @@ const SelectButtonDropdown = styled(Dropdown)`
   cursor: pointer;
 `;
 
-const SelectButton = styled.button<{highlighted: boolean} & AkeneoThemedProps>`
+const SelectButton = styled.button<{highlighted: boolean; inError: boolean} & AkeneoThemedProps>`
   color: ${getColor('grey', 140)};
   width: 100%;
   background: none;
@@ -26,11 +26,21 @@ const SelectButton = styled.button<{highlighted: boolean} & AkeneoThemedProps>`
   align-items: center;
   cursor: pointer;
 
-  ${({highlighted}) =>
-    highlighted
+  ${({highlighted, inError}) =>
+    highlighted && !inError
       ? css`
           background: ${getColor('green', 10)};
           box-shadow: 0 0 0 1px ${getColor('green', 80)};
+        `
+      : css`
+          background: none;
+        `};
+
+  ${({inError}) =>
+    inError
+      ? css`
+          background: ${getColor('red', 10)};
+          box-shadow: 0 0 0 1px ${getColor('red', 80)};
         `
       : css`
           background: none;
@@ -57,6 +67,7 @@ type TableInputSelectProps = {
   onSearchChange?: (search: string) => void;
   searchPlaceholder: string;
   searchTitle: string;
+  inError?: boolean;
 };
 
 const TableInputSelect: React.FC<TableInputSelectProps> = ({
@@ -71,6 +82,7 @@ const TableInputSelect: React.FC<TableInputSelectProps> = ({
   searchTitle,
   onNextPage,
   children,
+  inError,
   ...rest
 }) => {
   const [isOpen, open, close] = useBooleanState(false);
@@ -86,7 +98,7 @@ const TableInputSelect: React.FC<TableInputSelectProps> = ({
 
   return (
     <SelectButtonDropdown {...rest}>
-      <SelectButton onClick={open} tabIndex={-1} highlighted={highlighted}>
+      <SelectButton onClick={open} tabIndex={-1} highlighted={highlighted} inError={inError}>
         {value}&nbsp;
       </SelectButton>
       <IconsPart>
