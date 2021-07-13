@@ -1,6 +1,7 @@
 import {RefObject, useCallback, useState} from 'react';
 import useIsMounted from './useIsMounted';
-import useScrollPosition, {ScrollPosition} from './useScrollPosition';
+import useScrollPosition from './useScrollPosition';
+import {ScrollPosition} from '../utils/getScrollPosition';
 
 export const useDisplayScrollTopButton = (element: RefObject<HTMLElement>) => {
     const isMounted = useIsMounted();
