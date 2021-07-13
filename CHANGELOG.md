@@ -94,6 +94,8 @@
 
 ## Improvements
 
+- PIM-9716: Autoselect last element of pasted list in choice filter
+
 # Technical Improvements
 
 - PIM-9648: Mitigate DDoS risk on API auth endpoint by rejecting too large content
