@@ -291,7 +291,7 @@ const SelectInput = ({
         )}
       </InputContainer>
       {dropdownIsOpen && !readOnly && (
-        <Overlay verticalPosition={verticalPosition} onClose={handleBlur}>
+        <Overlay parentRef={inputRef} verticalPosition={verticalPosition} onClose={handleBlur}>
           <OptionCollection>
             {filteredChildren.length === 0 ? (
               <EmptyResultContainer>{emptyResultLabel}</EmptyResultContainer>
