@@ -29,6 +29,9 @@ const ScrollToTop = styled(IconButton)`
     position: fixed;
     bottom: 40px;
     right: 40px;
+    width: 38px;
+    height: 38px;
+    border-radius: 50%;
 
     background-color: ${getColor('brand', 100)};
     color: ${getColor('white')};
