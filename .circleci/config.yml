@@ -1598,7 +1598,7 @@ jobs:
           - run:
               name: Define value for next steps
               command: |
-                INSTANCE_NAME_PREFIX=pimci-pr
+                INSTANCE_NAME_PREFIX=pim-tailored-export
                 INSTANCE_NAME=${INSTANCE_NAME_PREFIX}-${CIRCLE_PULL_REQUEST##*/}
                 ACTIVATE_MONITORING=true
 
