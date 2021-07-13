@@ -111,11 +111,43 @@ Table input allows the user to input content in a table.
           <TableInput.Body>
             {[...Array(linesCount).keys()].map((_,r) => {
               return <TableInput.Row key={r}>
-                <TableInput.Cell rowTitle={true}>Value</TableInput.Cell>
+                <TableInput.Cell highlighted={r >= 0} rowTitle={true}>Value</TableInput.Cell>
                 <TableInput.Cell><TableInput.Select onSearchChange={() => {}} value={'Select value'} highlighted={r >= 1}/></TableInput.Cell>
                 <TableInput.Cell><TableInput.Text value={'Text value'} highlighted={r >= 2}/></TableInput.Cell>
                 <TableInput.Cell><TableInput.Number value={42} highlighted={r >= 3}/></TableInput.Cell>
                 <TableInput.Cell><TableInput.Boolean value={true} yesLabel={"Yes"} noLabel={"No"} highlighted={r >= 4}/></TableInput.Cell>
+              </TableInput.Row>
+            })}
+          </TableInput.Body>
+        </TableInput>
+      );
+    }}
+  </Story>
+</Canvas>
+
+## With errors
+
+<Canvas>
+  <Story name="With errors">
+    {args => {
+      const linesCount = 5;
+      return (
+        <TableInput {...args}>
+          <TableInput.Header>
+            <TableInput.HeaderCell rowTitle={true}>Title cell</TableInput.HeaderCell>
+            <TableInput.HeaderCell rowTitle={true}>Select cell</TableInput.HeaderCell>
+            <TableInput.HeaderCell rowTitle={true}>Text cell</TableInput.HeaderCell>
+            <TableInput.HeaderCell rowTitle={true}>Number cell</TableInput.HeaderCell>
+            <TableInput.HeaderCell rowTitle={true}>Boolean cell</TableInput.HeaderCell>
+          </TableInput.Header>
+          <TableInput.Body>
+            {[...Array(linesCount).keys()].map((_,r) => {
+              return <TableInput.Row key={r}>
+                <TableInput.Cell inError={r >= 0} rowTitle={true}>Value</TableInput.Cell>
+                <TableInput.Cell><TableInput.Select onSearchChange={() => {}} value={'Select value'} inError={r >= 1}/></TableInput.Cell>
+                <TableInput.Cell><TableInput.Text value={'Text value'} inError={r >= 2}/></TableInput.Cell>
+                <TableInput.Cell><TableInput.Number value={42} inError={r >= 3}/></TableInput.Cell>
+                <TableInput.Cell><TableInput.Boolean value={true} yesLabel={"Yes"} noLabel={"No"} inError={r >= 4}/></TableInput.Cell>
               </TableInput.Row>
             })}
           </TableInput.Body>
