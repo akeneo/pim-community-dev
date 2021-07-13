@@ -59,6 +59,7 @@
 - PIM-9937: Rule engine - Fix remove action for reference entity collection and asset collection attributes
 - PIM-9898: Assets: Fix "attribute as main media" and naming convention inconsistency
 - PIM-9965: Fix Asset Family attribute saving notification displaying twice
+- PIM-9963: Fix number of lines field missing on XLSX product export job
 
 ## Improvements
 
@@ -90,4 +91,4 @@ bin/console messenger:consume ui_job import_export_job data_maintenance_job
 - Change constructor of `Akeneo\Pim\Automation\RuleEngine\Component\Engine\ProductRuleSelector` to remove `ProductRepositoryInterface $repo`
 - Remove class `Akeneo/AssetManager/back/Domain/Event/AssetFamilyAssetsDeletedEvent`
 - Update `Akeneo/AssetManager/back/Domain/Repository/AssetIndexerInterface.php` to:
-    - remove the `removeByAssetFamilyIdentifier` method
+  - remove the `removeByAssetFamilyIdentifier` method
