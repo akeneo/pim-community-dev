@@ -16,6 +16,9 @@ class FindUnitLabel implements FindUnitLabelInterface
         $this->getUnitTranslations = $getUnitTranslations;
     }
 
+    /**
+     * @inheritDoc
+     */
     public function byFamilyCodeAndUnitCode(string $familyCode, string $unitCode, string $locale): ?string
     {
         $unitTranslations = $this->getUnitTranslations->byMeasurementFamilyCodeAndLocale(

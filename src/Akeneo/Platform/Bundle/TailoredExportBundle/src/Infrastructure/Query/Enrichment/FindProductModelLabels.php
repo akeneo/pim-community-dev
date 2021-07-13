@@ -16,8 +16,11 @@ class FindProductModelLabels implements FindProductModelLabelsInterface
         $this->getProductModelLabels = $getProductModelLabels;
     }
 
-    public function byCodes(array $productModelCode, string $channel, string $locale): array
+    /**
+     * @inheritDoc
+     */
+    public function byCodes(array $productModelCodes, string $channel, string $locale): array
     {
-        return $this->getProductModelLabels->byCodesAndLocaleAndScope($productModelCode, $locale, $channel);
+        return $this->getProductModelLabels->byCodesAndLocaleAndScope($productModelCodes, $locale, $channel);
     }
 }

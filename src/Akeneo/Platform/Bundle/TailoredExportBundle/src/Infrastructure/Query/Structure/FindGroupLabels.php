@@ -18,6 +18,9 @@ class FindGroupLabels implements FindGroupLabelsInterface
         $this->getGroupTranslations = $getGroupTranslations;
     }
 
+    /**
+     * @inheritDoc
+     */
     public function byCodes(array $groupCodes, string $locale): array
     {
         return $this->getGroupTranslations->byGroupCodesAndLocale($groupCodes, $locale);

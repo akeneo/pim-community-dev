@@ -6,5 +6,8 @@ namespace Akeneo\Platform\TailoredExport\Domain\Query;
 
 interface FindAttributeOptionLabelsInterface
 {
+    /**
+     * @return array<string, string>
+     */
     public function byAttributeCodeAndOptionCodes(string $attributeCode, array $optionCodes, string $locale): array;
 }

@@ -14,6 +14,9 @@ class InMemoryFindSystemSources implements FindSystemSourcesInterface
         $this->translator = $translator;
     }
 
+    /**
+     * @inheritDoc
+     */
     public function execute(string $localeCode, int $limit, int $offset = 0, string $search = null): array
     {
         $fields = [

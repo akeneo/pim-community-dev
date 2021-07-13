@@ -16,6 +16,9 @@ class FindProductLabels implements FindProductLabelsInterface
         $this->getProductLabels = $getProductLabels;
     }
 
+    /**
+     * @inheritDoc
+     */
     public function byIdentifiers(array $productIdentifiers, string $channel, string $locale): array
     {
         return $this->getProductLabels->byIdentifiersAndLocaleAndScope($productIdentifiers, $locale, $channel);

@@ -16,6 +16,9 @@ class FindAttributeOptionLabels implements FindAttributeOptionLabelsInterface
         $this->getExistingAttributeOptionsWithValues = $getExistingAttributeOptionsWithValues;
     }
 
+    /**
+     * @inheritDoc
+     */
     public function byAttributeCodeAndOptionCodes(string $attributeCode, array $optionCodes, string $locale): array
     {
         $optionKeys = array_map(function ($optionCode) use ($attributeCode) {
