@@ -18,7 +18,7 @@ use Akeneo\Platform\TailoredExport\Application\Query\Selection\Groups\GroupsLabe
 use Akeneo\Platform\TailoredExport\Application\Query\Selection\SelectionInterface;
 use Akeneo\Platform\TailoredExport\Domain\SourceValue\GroupsValue;
 use Akeneo\Platform\TailoredExport\Domain\SourceValueInterface;
-use Akeneo\Platform\TailoredExport\Test\Acceptance\FakeServices\Group\InMemoryGetGroupTranslations;
+use Akeneo\Platform\TailoredExport\Test\Acceptance\FakeServices\Group\InMemoryFindGroupLabels;
 use PHPUnit\Framework\Assert;
 
 final class HandleGroupsValueTest extends PropertyTestCase
@@ -71,9 +71,9 @@ final class HandleGroupsValueTest extends PropertyTestCase
 
     private function loadGroupLabels()
     {
-        /** @var InMemoryGetGroupTranslations $groupLabelsRepository */
-        $groupLabelsRepository = self::$container->get('akeneo.pim.structure.query.get_group_translations');
-        $groupLabelsRepository->addGroupTranslation('tshirt', 'en_US', 'Tshirt');
-        $groupLabelsRepository->addGroupTranslation('summerSale2021', 'en_US', 'Summer sale 2021');
+        /** @var InMemoryFindGroupLabels $groupLabelsRepository */
+        $groupLabelsRepository = self::$container->get('Akeneo\Platform\TailoredExport\Domain\Query\FindGroupLabelsInterface');
+        $groupLabelsRepository->addGroupLabel('tshirt', 'en_US', 'Tshirt');
+        $groupLabelsRepository->addGroupLabel('summerSale2021', 'en_US', 'Summer sale 2021');
     }
 }

@@ -17,6 +17,8 @@ use Symfony\Component\Validator\Constraint;
 
 class Sources extends Constraint
 {
+    public const ASSOCIATION_TYPE_SHOULD_EXIST = 'akeneo.tailored_export.validation.sources.association_type_should_exist';
+
     public function validatedBy()
     {
         return 'akeneo.tailored_export.validation.source';

@@ -53,7 +53,7 @@ services:
   Akeneo\Platform\TailoredExport\Application\Query\Selection\Parent\ParentLabelSelectionHandler:
     public: true
     arguments:
-      - '@akeneo.pim.enrichment.product.query.get_product_model_labels'
+      - '@Akeneo\Platform\TailoredExport\Domain\Query\FindProductModelLabelsInterface'
     tags:
       - { name: akeneo.tailored_export.selection_handler }
 
@@ -65,7 +65,7 @@ services:
   Akeneo\Platform\TailoredExport\Application\Query\Selection\Groups\GroupsLabelSelectionHandler:
     public: true
     arguments:
-      - '@akeneo.pim.structure.query.get_group_translations'
+      - '@Akeneo\Platform\TailoredExport\Domain\Query\FindGroupLabelsInterface'
     tags:
       - { name: akeneo.tailored_export.selection_handler }
 
@@ -205,3 +205,22 @@ services:
     tags:
       - { name: akeneo.tailored_export.selection_handler }
 
+  Akeneo\Platform\TailoredExport\Application\Query\Selection\SimpleAssociations\SimpleAssociationsCodeSelectionHandler:
+    public: true
+    tags:
+      - { name: akeneo.tailored_export.selection_handler }
+
+  Akeneo\Platform\TailoredExport\Application\Query\Selection\SimpleAssociations\SimpleAssociationsLabelSelectionHandler:
+    public: true
+    arguments:
+      - '@Akeneo\Platform\TailoredExport\Domain\Query\FindProductLabelsInterface'
+      - '@Akeneo\Platform\TailoredExport\Domain\Query\FindProductModelLabelsInterface'
+    tags:
+      - { name: akeneo.tailored_export.selection_handler }
+
+  Akeneo\Platform\TailoredExport\Application\Query\Selection\SimpleAssociations\SimpleAssociationsGroupsLabelSelectionHandler:
+    public: true
+    arguments:
+      - '@Akeneo\Platform\TailoredExport\Domain\Query\FindGroupLabelsInterface'
+    tags:
+      - { name: akeneo.tailored_export.selection_handler }

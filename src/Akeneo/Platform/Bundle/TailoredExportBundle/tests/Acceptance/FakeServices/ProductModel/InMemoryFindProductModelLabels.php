@@ -4,9 +4,9 @@ declare(strict_types=1);
 
 namespace Akeneo\Platform\TailoredExport\Test\Acceptance\FakeServices\ProductModel;
 
-use Akeneo\Pim\Enrichment\Component\Product\Query\GetProductModelLabelsInterface;
+use Akeneo\Platform\TailoredExport\Domain\Query\FindProductModelLabelsInterface;
 
-final class InMemoryGetProductModelLabels implements GetProductModelLabelsInterface
+final class InMemoryFindProductModelLabels implements FindProductModelLabelsInterface
 {
     private array $productModelLabels = [];
 
@@ -19,10 +19,10 @@ final class InMemoryGetProductModelLabels implements GetProductModelLabelsInterf
         $this->productModelLabels[$productModelCode][$channel][$locale] = $productModelTranslation;
     }
 
-    public function byCodesAndLocaleAndScope(array $codes, string $locale, string $scope): array
+    public function byCodes(array $productModelCodes, string $channel, string $locale): array
     {
-        return array_reduce($codes, function ($carry, $productModelCode) use ($locale, $scope) {
-            $carry[$productModelCode] = $this->productModelLabels[$productModelCode][$scope][$locale] ?? null;
+        return array_reduce($productModelCodes, function ($carry, $productModelCode) use ($locale, $channel) {
+            $carry[$productModelCode] = $this->productModelLabels[$productModelCode][$channel][$locale] ?? null;
 
             return $carry;
         }, []);

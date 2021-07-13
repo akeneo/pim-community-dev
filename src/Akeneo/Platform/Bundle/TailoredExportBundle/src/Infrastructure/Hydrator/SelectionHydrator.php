@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Akeneo\Platform\TailoredExport\Infrastructure\Hydrator;
 
+use Akeneo\Pim\Structure\Component\Query\PublicApi\Association\AssociationType;
 use Akeneo\Pim\Structure\Component\Query\PublicApi\AttributeType\Attribute;
 use Akeneo\Platform\TailoredExport\Application\Query\Selection\AssetCollection\AssetCollectionCodeSelection;
 use Akeneo\Platform\TailoredExport\Application\Query\Selection\AssetCollection\AssetCollectionLabelSelection;
@@ -40,6 +41,10 @@ use Akeneo\Platform\TailoredExport\Application\Query\Selection\ReferenceEntityCo
 use Akeneo\Platform\TailoredExport\Application\Query\Selection\ReferenceEntityCollection\ReferenceEntityCollectionLabelSelection;
 use Akeneo\Platform\TailoredExport\Application\Query\Selection\Scalar\ScalarSelection;
 use Akeneo\Platform\TailoredExport\Application\Query\Selection\SelectionInterface;
+use Akeneo\Platform\TailoredExport\Application\Query\Selection\SimpleAssociations\SimpleAssociationsCodeSelection;
+use Akeneo\Platform\TailoredExport\Application\Query\Selection\SimpleAssociations\SimpleAssociationsGroupsLabelSelection;
+use Akeneo\Platform\TailoredExport\Application\Query\Selection\SimpleAssociations\SimpleAssociationsLabelSelection;
+use Akeneo\Platform\TailoredExport\Application\Query\Selection\SimpleAssociations\SimpleAssociationsSelectionInterface;
 use Akeneo\Platform\TailoredExport\Application\Query\Selection\SimpleSelect\SimpleSelectCodeSelection;
 use Akeneo\Platform\TailoredExport\Application\Query\Selection\SimpleSelect\SimpleSelectLabelSelection;
 
@@ -98,6 +103,15 @@ class SelectionHydrator
             default:
                 throw new \LogicException(sprintf('Unsupported attribute type "%s"', $attribute->type()));
         }
+    }
+
+    public function createAssociationSelection(array $selectionConfiguration, AssociationType $associationType)
+    {
+        if ($associationType->isQuantified()) {
+            throw new \LogicException('Quantified association type is unsupported');
+        }
+
+        return $this->createSimpleAssociationsSelection($selectionConfiguration);
     }
 
     private function createAssetCollectionSelection(array $selectionConfiguration, Attribute $attribute): AssetCollectionSelectionInterface
@@ -324,6 +338,33 @@ class SelectionHydrator
             default:
                 throw new \LogicException(
                     sprintf('Selection type "%s" is not supported for Parent property', $selectionConfiguration['type'])
+                );
+        }
+    }
+
+    private function createSimpleAssociationsSelection(array $selectionConfiguration)
+    {
+        $entityType = $selectionConfiguration['entity_type'];
+        switch ($selectionConfiguration['type']) {
+            case SimpleAssociationsCodeSelection::TYPE:
+                return new SimpleAssociationsCodeSelection($entityType, $selectionConfiguration['separator']);
+            case SimpleAssociationsLabelSelection::TYPE:
+                if (SimpleAssociationsSelectionInterface::ENTITY_TYPE_GROUPS === $entityType) {
+                    return new SimpleAssociationsGroupsLabelSelection(
+                        $selectionConfiguration['locale'],
+                        $selectionConfiguration['separator']
+                    );
+                }
+
+                return new SimpleAssociationsLabelSelection(
+                    $entityType,
+                    $selectionConfiguration['channel'],
+                    $selectionConfiguration['locale'],
+                    $selectionConfiguration['separator']
+                );
+            default:
+                throw new \LogicException(
+                    sprintf('Selection type "%s" is not supported for SimpleAssociation', $selectionConfiguration['type'])
                 );
         }
     }

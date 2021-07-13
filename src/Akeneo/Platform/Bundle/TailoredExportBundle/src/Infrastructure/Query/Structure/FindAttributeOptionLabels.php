@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace Akeneo\Platform\TailoredExport\Infrastructure\Query;
+namespace Akeneo\Platform\TailoredExport\Infrastructure\Query\Structure;
 
 use Akeneo\Pim\Structure\Component\Query\PublicApi\AttributeOption\GetExistingAttributeOptionsWithValues;
 use Akeneo\Platform\TailoredExport\Domain\Query\FindAttributeOptionLabelsInterface;
@@ -16,6 +16,9 @@ class FindAttributeOptionLabels implements FindAttributeOptionLabelsInterface
         $this->getExistingAttributeOptionsWithValues = $getExistingAttributeOptionsWithValues;
     }
 
+    /**
+     * @inheritDoc
+     */
     public function byAttributeCodeAndOptionCodes(string $attributeCode, array $optionCodes, string $locale): array
     {
         $optionKeys = array_map(function ($optionCode) use ($attributeCode) {

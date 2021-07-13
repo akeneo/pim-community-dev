@@ -1,10 +1,18 @@
 import {uuid} from 'akeneo-design-system';
-import {LocaleCode} from '@akeneo-pim-community/shared';
+import {ChannelCode, LocaleCode} from '@akeneo-pim-community/shared';
 import {AssociationType, Source} from '../../../models';
 
 const availableSeparators = {',': 'comma', ';': 'semicolon', '|': 'pipe'};
 type CollectionSeparator = keyof typeof availableSeparators;
 type AssociatedEntityType = 'products' | 'product_models' | 'groups';
+
+type ProductsOrProductModelsSelection = {
+  type: 'label';
+  entity_type: 'products' | 'product_models';
+  separator: CollectionSeparator;
+  locale: LocaleCode;
+  channel: ChannelCode;
+};
 
 type SimpleAssociationTypeSelection =
   | {
@@ -12,9 +20,10 @@ type SimpleAssociationTypeSelection =
       entity_type: AssociatedEntityType;
       separator: CollectionSeparator;
     }
+  | ProductsOrProductModelsSelection
   | {
       type: 'label';
-      entity_type: AssociatedEntityType;
+      entity_type: 'groups';
       separator: CollectionSeparator;
       locale: LocaleCode;
     };
@@ -26,6 +35,11 @@ const isEntityType = (entityType: unknown): entityType is AssociatedEntityType =
   typeof entityType === 'string' &&
   (entityType === 'products' || entityType === 'product_models' || entityType === 'groups');
 
+const isProductOrProductModelSelection = (
+  selection: SimpleAssociationTypeSelection
+): selection is ProductsOrProductModelsSelection =>
+  selection.entity_type === 'products' || selection.entity_type === 'product_models';
+
 const isSimpleAssociationTypeSelection = (selection: any): selection is SimpleAssociationTypeSource =>
   'type' in selection &&
   (selection.type === 'code' || (selection.type === 'label' && 'locale' in selection)) &&
@@ -33,6 +47,7 @@ const isSimpleAssociationTypeSelection = (selection: any): selection is SimpleAs
   isCollectionSeparator(selection.separator) &&
   'entity_type' in selection &&
   isEntityType(selection.entity_type);
+
 type SimpleAssociationTypeSource = {
   uuid: string;
   code: string;
@@ -63,4 +78,5 @@ export {
   isSimpleAssociationTypeSource,
   isCollectionSeparator,
   isEntityType,
+  isProductOrProductModelSelection,
 };

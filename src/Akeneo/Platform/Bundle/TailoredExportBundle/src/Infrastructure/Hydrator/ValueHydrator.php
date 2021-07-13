@@ -17,6 +17,7 @@ use Akeneo\Pim\Enrichment\Component\Product\Model\ProductInterface;
 use Akeneo\Pim\Enrichment\Component\Product\Model\ProductPriceInterface;
 use Akeneo\Pim\Enrichment\Component\Product\Model\ValueInterface;
 use Akeneo\Pim\Enrichment\Component\Product\Value\MetricValue;
+use Akeneo\Platform\TailoredExport\Application\Query\Source\AssociationTypeSource;
 use Akeneo\Platform\TailoredExport\Application\Query\Source\AttributeSource;
 use Akeneo\Platform\TailoredExport\Application\Query\Source\PropertySource;
 use Akeneo\Platform\TailoredExport\Application\Query\Source\SourceInterface;
@@ -41,9 +42,17 @@ use Akeneo\Platform\TailoredExport\Domain\SourceValue\ReferenceEntityValue;
 use Akeneo\Platform\TailoredExport\Domain\SourceValue\SimpleSelectValue;
 use Akeneo\Platform\TailoredExport\Domain\SourceValue\StringValue;
 use Akeneo\Platform\TailoredExport\Domain\SourceValueInterface;
+use Akeneo\Platform\TailoredExport\Infrastructure\Hydrator\Value\AssociationTypeValueHydrator;
 
 class ValueHydrator
 {
+    private AssociationTypeValueHydrator $associationTypeValueHydrator;
+
+    public function __construct(AssociationTypeValueHydrator $associationTypeValueHydrator)
+    {
+        $this->associationTypeValueHydrator = $associationTypeValueHydrator;
+    }
+
     public function hydrate(
         ProductInterface $product,
         SourceInterface $source
@@ -53,6 +62,8 @@ class ValueHydrator
             return $this->hydrateFromAttribute($value, $source->getAttributeType(), $product);
         } elseif ($source instanceof PropertySource) {
             return $this->hydrateFromProperty($source->getName(), $product);
+        } elseif ($source instanceof AssociationTypeSource) {
+            return $this->associationTypeValueHydrator->hydrateFromSource($product, $source);
         } else {
             throw new \InvalidArgumentException(sprintf('Unsupported source type "%s"', get_class($source)));
         }

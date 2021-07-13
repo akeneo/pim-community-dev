@@ -88,7 +88,7 @@ class ColumnView extends BaseView {
                         .getFetcher('channel')
                         .fetchAll()
                         .then(resolve)
-                    )
+                    );
                   },
                 },
                 associationType: {

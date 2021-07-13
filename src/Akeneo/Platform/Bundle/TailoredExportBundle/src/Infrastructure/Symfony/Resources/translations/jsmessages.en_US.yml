@@ -85,10 +85,11 @@ akeneo.tailored_export:
           comma: Comma (,)
           dot: Dot (.)
           arabic_comma: Arabic decimal separator (٫)
-        simple_association:
-          information: For this attribute, you can export either products, product models or groups.
         association:
           entity_type: Entity type
+          information:
+            locale: If the attribute used as label has a value per locale, you may select a specific locale.
+            channel: If the attribute used as label has a value per channel, you may select a specific channel.
       operation:
         replacement:
           title: Replace value
@@ -106,6 +107,7 @@ akeneo.tailored_export:
         should_be_unique: This column name already exists, please enter a new one.
     sources:
       max_source_count_reached: You have reached the limit of {{ limit }} sources, you can no longer add sources to your export.
+      association_type_should_exist: The association type {{ association_type_code }} does not exist
     locale:
       should_be_active: The {{ locale_code }} locale should be active.
     channel:

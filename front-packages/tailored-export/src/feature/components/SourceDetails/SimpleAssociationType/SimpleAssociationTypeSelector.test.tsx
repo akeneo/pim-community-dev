@@ -34,6 +34,33 @@ const channels: Channel[] = [
       updated: '',
     },
   },
+  {
+    code: 'print',
+    labels: {},
+    locales: [
+      {
+        code: 'en_US',
+        label: 'en_US',
+        region: 'US',
+        language: 'en',
+      },
+      {
+        code: 'fr_FR',
+        label: 'fr_FR',
+        region: 'FR',
+        language: 'fr',
+      },
+    ],
+    category_tree: '',
+    conversion_units: [],
+    currencies: [],
+    meta: {
+      created: '',
+      form: '',
+      id: 1,
+      updated: '',
+    },
+  },
 ];
 
 const fetchers = {
@@ -67,13 +94,13 @@ test('it displays a type dropdown, entity type dropdown and a separator dropdown
   expect(screen.queryByText('pim_common.locale')).not.toBeInTheDocument();
 });
 
-test('it displays a locale dropdown when the selection type is label', async () => {
+test('it displays a locale and channel dropdown when the selection type is label', async () => {
   const onSelectionChange = jest.fn();
 
   await renderWithProviders(
     <SimpleAssociationTypeSelector
       validationErrors={[]}
-      selection={{type: 'label', locale: 'en_US', separator: ',', entity_type: 'products'}}
+      selection={{type: 'label', locale: 'en_US', separator: ',', entity_type: 'products', channel: 'ecommerce'}}
       onSelectionChange={onSelectionChange}
     />
   );
@@ -86,6 +113,7 @@ test('it displays a locale dropdown when the selection type is label', async () 
     screen.getByText('akeneo.tailored_export.column_details.sources.selection.collection_separator.title')
   ).toBeInTheDocument();
   expect(screen.getByText('pim_common.locale')).toBeInTheDocument();
+  expect(screen.getByText('pim_common.channel')).toBeInTheDocument();
 
   userEvent.click(screen.getByLabelText('pim_common.locale'));
   userEvent.click(screen.getByText('fr_FR'));
@@ -95,6 +123,68 @@ test('it displays a locale dropdown when the selection type is label', async () 
     locale: 'fr_FR',
     separator: ',',
     entity_type: 'products',
+    channel: 'ecommerce',
+  });
+});
+
+test('it can select group label selection', async () => {
+  const onSelectionChange = jest.fn();
+
+  await renderWithProviders(
+    <SimpleAssociationTypeSelector
+      validationErrors={[]}
+      selection={{type: 'code', separator: ',', entity_type: 'groups'}}
+      onSelectionChange={onSelectionChange}
+    />
+  );
+
+  expect(screen.getByText('pim_common.type')).toBeInTheDocument();
+  expect(
+    screen.getByText('akeneo.tailored_export.column_details.sources.selection.association.entity_type')
+  ).toBeInTheDocument();
+  expect(
+    screen.getByText('akeneo.tailored_export.column_details.sources.selection.collection_separator.title')
+  ).toBeInTheDocument();
+
+  userEvent.click(screen.getByLabelText('pim_common.type'));
+  userEvent.click(screen.getByText('pim_common.label'));
+
+  expect(onSelectionChange).toHaveBeenCalledWith({
+    type: 'label',
+    locale: 'en_US',
+    separator: ',',
+    entity_type: 'groups',
+  });
+});
+
+test('it can select group code selection', async () => {
+  const onSelectionChange = jest.fn();
+
+  await renderWithProviders(
+    <SimpleAssociationTypeSelector
+      validationErrors={[]}
+      selection={{type: 'label', locale: 'en_US', separator: ',', entity_type: 'groups'}}
+      onSelectionChange={onSelectionChange}
+    />
+  );
+
+  expect(screen.getByText('pim_common.type')).toBeInTheDocument();
+  expect(
+    screen.getByText('akeneo.tailored_export.column_details.sources.selection.association.entity_type')
+  ).toBeInTheDocument();
+  expect(
+    screen.getByText('akeneo.tailored_export.column_details.sources.selection.collection_separator.title')
+  ).toBeInTheDocument();
+  expect(screen.getByText('pim_common.locale')).toBeInTheDocument();
+  expect(screen.queryByText('pim_common.channel')).not.toBeInTheDocument();
+
+  userEvent.click(screen.getByLabelText('pim_common.type'));
+  userEvent.click(screen.getByText('pim_common.code'));
+
+  expect(onSelectionChange).toHaveBeenCalledWith({
+    type: 'code',
+    separator: ',',
+    entity_type: 'groups',
   });
 });
 
@@ -117,6 +207,30 @@ test('it can select a label selection type', async () => {
     locale: 'en_US',
     separator: ',',
     entity_type: 'products',
+    channel: 'ecommerce',
+  });
+});
+
+test('it can select a channel when user select the label', async () => {
+  const onSelectionChange = jest.fn();
+
+  await renderWithProviders(
+    <SimpleAssociationTypeSelector
+      validationErrors={[]}
+      selection={{type: 'label', separator: ',', entity_type: 'products', channel: 'ecommerce', locale: 'en_US'}}
+      onSelectionChange={onSelectionChange}
+    />
+  );
+
+  userEvent.click(screen.getByText('pim_common.channel'));
+  userEvent.click(screen.getByTitle('[print]'));
+
+  expect(onSelectionChange).toHaveBeenCalledWith({
+    type: 'label',
+    locale: 'en_US',
+    separator: ',',
+    entity_type: 'products',
+    channel: 'print',
   });
 });
 
@@ -126,7 +240,7 @@ test('it can select a code selection type', async () => {
   await renderWithProviders(
     <SimpleAssociationTypeSelector
       validationErrors={[]}
-      selection={{type: 'label', locale: 'en_US', separator: ',', entity_type: 'products'}}
+      selection={{type: 'label', locale: 'en_US', separator: ',', entity_type: 'products', channel: 'ecommerce'}}
       onSelectionChange={onSelectionChange}
     />
   );
@@ -143,7 +257,7 @@ test('it can select a collection separator', async () => {
   await renderWithProviders(
     <SimpleAssociationTypeSelector
       validationErrors={[]}
-      selection={{type: 'label', locale: 'en_US', separator: ',', entity_type: 'products'}}
+      selection={{type: 'label', locale: 'en_US', separator: ',', entity_type: 'products', channel: 'ecommerce'}}
       onSelectionChange={onSelectionChange}
     />
   );
@@ -160,10 +274,11 @@ test('it can select a collection separator', async () => {
     locale: 'en_US',
     separator: ';',
     entity_type: 'products',
+    channel: 'ecommerce',
   });
 });
 
-test('it can select an entity type', async () => {
+test('it can select an entity type when type is code', async () => {
   const onSelectionChange = jest.fn();
 
   await renderWithProviders(
@@ -179,6 +294,51 @@ test('it can select an entity type', async () => {
   userEvent.click(screen.getByTitle('pim_common.product_models'));
 
   expect(onSelectionChange).toHaveBeenCalledWith({type: 'code', separator: ',', entity_type: 'product_models'});
+});
+
+test('it can select an entity type when type is label', async () => {
+  const onSelectionChange = jest.fn();
+
+  await renderWithProviders(
+    <SimpleAssociationTypeSelector
+      validationErrors={[]}
+      selection={{type: 'label', separator: ',', entity_type: 'products', channel: 'ecommerce', locale: 'en_US'}}
+      onSelectionChange={onSelectionChange}
+    />
+  );
+
+  userEvent.click(screen.getByText('akeneo.tailored_export.column_details.sources.selection.association.entity_type'));
+  userEvent.click(screen.getByTitle('pim_common.groups'));
+
+  expect(onSelectionChange).toHaveBeenCalledWith({
+    type: 'label',
+    separator: ',',
+    entity_type: 'groups',
+    locale: 'en_US',
+  });
+});
+
+test('it can select the first channel when user switch from group to product label', async () => {
+  const onSelectionChange = jest.fn();
+
+  await renderWithProviders(
+    <SimpleAssociationTypeSelector
+      validationErrors={[]}
+      selection={{type: 'label', separator: ',', entity_type: 'groups', locale: 'en_US'}}
+      onSelectionChange={onSelectionChange}
+    />
+  );
+
+  userEvent.click(screen.getByText('akeneo.tailored_export.column_details.sources.selection.association.entity_type'));
+  userEvent.click(screen.getByTitle('pim_common.products'));
+
+  expect(onSelectionChange).toHaveBeenCalledWith({
+    type: 'label',
+    separator: ',',
+    entity_type: 'products',
+    channel: 'ecommerce',
+    locale: 'en_US',
+  });
 });
 
 test('it displays validation errors', async () => {
@@ -217,7 +377,7 @@ test('it displays validation errors', async () => {
   await renderWithProviders(
     <SimpleAssociationTypeSelector
       validationErrors={validationErrors}
-      selection={{type: 'label', locale: 'en_US', separator: ',', entity_type: 'products'}}
+      selection={{type: 'label', locale: 'en_US', separator: ',', entity_type: 'products', channel: 'ecommerce'}}
       onSelectionChange={onSelectionChange}
     />
   );

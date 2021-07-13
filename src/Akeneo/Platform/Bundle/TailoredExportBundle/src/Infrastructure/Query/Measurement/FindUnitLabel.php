@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace Akeneo\Platform\TailoredExport\Infrastructure\Query;
+namespace Akeneo\Platform\TailoredExport\Infrastructure\Query\Measurement;
 
 use Akeneo\Platform\TailoredExport\Domain\Query\FindUnitLabelInterface;
 use Akeneo\Tool\Bundle\MeasureBundle\PublicApi\GetUnitTranslations;
@@ -16,6 +16,9 @@ class FindUnitLabel implements FindUnitLabelInterface
         $this->getUnitTranslations = $getUnitTranslations;
     }
 
+    /**
+     * @inheritDoc
+     */
     public function byFamilyCodeAndUnitCode(string $familyCode, string $unitCode, string $locale): ?string
     {
         $unitTranslations = $this->getUnitTranslations->byMeasurementFamilyCodeAndLocale(

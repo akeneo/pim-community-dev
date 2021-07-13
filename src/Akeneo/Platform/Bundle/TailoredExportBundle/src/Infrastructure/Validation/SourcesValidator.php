@@ -13,9 +13,12 @@ declare(strict_types=1);
 
 namespace Akeneo\Platform\TailoredExport\Infrastructure\Validation;
 
+use Akeneo\Pim\Structure\Component\Query\PublicApi\Association\GetAssociationTypesInterface;
 use Akeneo\Pim\Structure\Component\Query\PublicApi\AttributeType\GetAttributes;
+use Akeneo\Platform\TailoredExport\Application\Query\Source\AssociationTypeSource;
 use Akeneo\Platform\TailoredExport\Application\Query\Source\AttributeSource;
 use Akeneo\Platform\TailoredExport\Application\Query\Source\PropertySource;
+use Akeneo\Platform\TailoredExport\Infrastructure\Validation\Source\SimpleAssociationType\SimpleAssociationTypeSourceConstraint;
 use Symfony\Component\Validator\Constraint;
 use Symfony\Component\Validator\Constraints\Choice;
 use Symfony\Component\Validator\Constraints\Collection;
@@ -29,16 +32,21 @@ class SourcesValidator extends ConstraintValidator
 {
     private const MAX_SOURCE_COUNT = 4;
     private GetAttributes $getAttributes;
+    private GetAssociationTypesInterface $getAssociationTypes;
 
     /** @var Constraint[] */
     private array $attributeConstraints;
-
     /** @var Constraint[] */
     private array $propertyConstraints;
 
-    public function __construct(GetAttributes $getAttributes, array $attributeConstraints, array $propertyConstraints)
-    {
+    public function __construct(
+        GetAttributes $getAttributes,
+        GetAssociationTypesInterface $getAssociationTypes,
+        array $attributeConstraints,
+        array $propertyConstraints
+    ) {
         $this->getAttributes = $getAttributes;
+        $this->getAssociationTypes = $getAssociationTypes;
         $this->attributeConstraints = $attributeConstraints;
         $this->propertyConstraints = $propertyConstraints;
     }
@@ -89,7 +97,7 @@ class SourcesValidator extends ConstraintValidator
                     ],
                     'type' => new Choice(
                         [
-                            'choices' => [AttributeSource::TYPE, PropertySource::TYPE],
+                            'choices' => [AttributeSource::TYPE, PropertySource::TYPE, AssociationTypeSource::TYPE],
                         ]
                     ),
 
@@ -113,7 +121,25 @@ class SourcesValidator extends ConstraintValidator
 
         if (PropertySource::TYPE === $source['type']) {
             $constraint = $this->propertyConstraints[$source['code']] ?? null;
-        } else {
+        } elseif (AssociationTypeSource::TYPE === $source['type']) {
+            $associationTypes = $this->getAssociationTypes->forCodes([$source['code']]);
+            $associationType = $associationTypes[$source['code']] ?? null;
+            if (null === $associationType) {
+                $this->context->buildViolation(Sources::ASSOCIATION_TYPE_SHOULD_EXIST)
+                    ->atPath(sprintf('[%s]', $source['uuid']))
+                    ->setParameter('association_type_code', $source['code'])
+                    ->addViolation();
+
+                return;
+            }
+
+            if ($associationType->isQuantified()) {
+                // @TODO Add two way validation (RAC-683)
+                $constraint = null;
+            } else {
+                $constraint = new SimpleAssociationTypeSourceConstraint();
+            }
+        } elseif (AttributeSource::TYPE === $source['type']) {
             $attribute = $this->getAttributes->forCode($source['code']);
 
             if (null === $attribute) {
@@ -122,6 +148,8 @@ class SourcesValidator extends ConstraintValidator
             }
 
             $constraint = $this->attributeConstraints[$attribute->type()] ?? null;
+        } else {
+            throw new \InvalidArgumentException(sprintf('Unsupported source type "%s"', $source['type']));
         }
 
         if (null === $constraint) {
