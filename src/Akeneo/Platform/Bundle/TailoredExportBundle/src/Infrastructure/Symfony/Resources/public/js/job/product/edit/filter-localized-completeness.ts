@@ -4,7 +4,7 @@ import {ThemeProvider} from 'styled-components';
 import {Channel, ValidationError, filterErrors} from '@akeneo-pim-community/shared';
 import {pimTheme} from 'akeneo-design-system';
 import {DependenciesProvider} from '@akeneo-pim-community/legacy-bridge';
-import {Attribute, CompletenessFilter, FetcherContext} from '@akeneo-pim-enterprise/tailored-export';
+import {AssociationType, Attribute, CompletenessFilter, FetcherContext} from '@akeneo-pim-enterprise/tailored-export';
 const __ = require('oro/translator');
 const BaseFilter = require('pim/filter/filter');
 const BaseCompletenessFilter = require('pim/filter/product/completeness');
@@ -99,6 +99,16 @@ class FilterLocalizedCompleteness extends BaseCompletenessFilter {
                       fetcherRegistry
                         .getFetcher('channel')
                         .fetchAll()
+                        .then(resolve)
+                    );
+                  },
+                },
+                associationType: {
+                  fetchByCodes: (codes: string[]): Promise<AssociationType[]> => {
+                    return new Promise(resolve =>
+                      fetcherRegistry
+                        .getFetcher('association-type')
+                        .fetchByIdentifiers(codes)
                         .then(resolve)
                     );
                   },

@@ -1,5 +1,5 @@
 import {Attribute} from './Attribute';
-import {getDefaultPropertySource, getDefaultAttributeSource} from './Source';
+import {getDefaultAssociationTypeSource, getDefaultPropertySource, getDefaultAttributeSource} from './Source';
 import {getDefaultAssetCollectionSource} from '../components/SourceDetails/AssetCollection/model';
 import {getDefaultBooleanSource} from '../components/SourceDetails/Boolean/model';
 import {getDefaultCategoriesSource} from '../components/SourceDetails/Categories/model';
@@ -19,6 +19,7 @@ import {getDefaultReferenceEntityCollectionSource} from '../components/SourceDet
 import {getDefaultReferenceEntitySource} from '../components/SourceDetails/ReferenceEntity/model';
 import {getDefaultSimpleSelectSource} from '../components/SourceDetails/SimpleSelect/model';
 import {getDefaultTextSource} from '../components/SourceDetails/Text/model';
+import {getDefaultSimpleAssociationTypeSource} from '../components/SourceDetails/SimpleAssociationType/model';
 
 const getAttribute = (type: string): Attribute => ({
   code: 'nice_attribute',
@@ -91,4 +92,10 @@ test('it can get the default attribute source by attribute type', () => {
     getDefaultReferenceEntitySource(getAttribute('akeneo_reference_entity'), 'ecommerce', 'br_FR')
   );
   expect(() => getDefaultAttributeSource(getAttribute('unknown_type'), 'ecommerce', 'br_FR')).toThrowError();
+});
+
+test('it can get the default association type source by type', () => {
+  expect(getDefaultAssociationTypeSource({code: 'UPSELL', labels: {}, is_quantified: false})).toEqual(
+    getDefaultSimpleAssociationTypeSource({code: 'UPSELL', labels: {}, is_quantified: false})
+  );
 });

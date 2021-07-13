@@ -5,7 +5,20 @@ import {Channel, renderWithProviders as baseRender} from '@akeneo-pim-community/
 import {ColumnList} from './ColumnList';
 import {FetcherContext, ValidationErrorsContext} from '../../contexts';
 import {ColumnConfiguration} from '../../models/ColumnConfiguration';
-import {Attribute} from '../../models';
+import {AssociationType, Attribute} from '../../models';
+
+const associationTypes: AssociationType[] = [
+  {
+    code: 'XSELL',
+    labels: {en_US: 'Cross sell'},
+    is_quantified: false,
+  },
+  {
+    code: 'UPSELL',
+    labels: {},
+    is_quantified: false,
+  },
+];
 
 const attributes: Attribute[] = [
   {
@@ -31,6 +44,7 @@ const attributes: Attribute[] = [
 const fetchers = {
   attribute: {fetchByIdentifiers: (): Promise<Attribute[]> => Promise.resolve<Attribute[]>(attributes)},
   channel: {fetchAll: (): Promise<Channel[]> => Promise.resolve([])},
+  associationType: {fetchByCodes: (): Promise<AssociationType[]> => Promise.resolve(associationTypes)},
 };
 
 const renderWithProviders = async (node: ReactNode) =>
@@ -406,6 +420,24 @@ test('it displays the sources labels on the row', async () => {
           operations: {},
           selection: {type: 'code'},
         },
+        {
+          uuid: '31d80b71-b169-4275-81a3-c788690a5470',
+          code: 'XSELL',
+          type: 'association_type',
+          locale: null,
+          channel: null,
+          operations: {},
+          selection: {type: 'code', separator: ',', entity_type: 'products'},
+        },
+        {
+          uuid: '296d487e-294b-4e42-a8d0-08e66f78a84d',
+          code: 'UPSELL',
+          type: 'association_type',
+          locale: null,
+          channel: null,
+          operations: {},
+          selection: {type: 'code', separator: ',', entity_type: 'products'},
+        },
       ],
       format: {
         type: 'concat',
@@ -438,6 +470,6 @@ test('it displays the sources labels on the row', async () => {
 
   const [_headerRow, firstRow, secondRow] = screen.getAllByRole('row');
 
-  expect(within(firstRow).getByText('English name, pim_common.parent')).toBeInTheDocument();
+  expect(within(firstRow).getByText('English name, pim_common.parent, Cross sell, [UPSELL]')).toBeInTheDocument();
   expect(within(secondRow).getByText('akeneo.tailored_export.column_list.column_row.no_source')).toBeInTheDocument();
 });
