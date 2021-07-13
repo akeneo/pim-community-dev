@@ -65,8 +65,7 @@ export const MarketplaceIsLoading: FC = () => {
                     {translate('akeneo_connectivity.connection.connect.marketplace.extensions.title')}
                 </SectionTitle.Title>
                 <SectionTitle.Spacer />
-                <SectionTitle.Information>
-                </SectionTitle.Information>
+                <SectionTitle.Information></SectionTitle.Information>
             </SectionTitle>
             <SkeletonContainer>
                 <SkeletonLeftColumnContainer>
