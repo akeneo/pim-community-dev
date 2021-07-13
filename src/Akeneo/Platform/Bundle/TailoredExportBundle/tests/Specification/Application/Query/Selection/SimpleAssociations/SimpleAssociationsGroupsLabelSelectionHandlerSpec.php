@@ -16,8 +16,8 @@ namespace Specification\Akeneo\Platform\TailoredExport\Application\Query\Selecti
 use Akeneo\Platform\TailoredExport\Application\Query\Selection\Boolean\BooleanSelection;
 use Akeneo\Platform\TailoredExport\Application\Query\Selection\SimpleAssociations\SimpleAssociationsGroupsLabelSelection;
 use Akeneo\Platform\TailoredExport\Domain\Query\FindGroupLabelsInterface;
-use Akeneo\Platform\TailoredExport\Domain\SourceValue\SimpleAssociationsValue;
 use Akeneo\Platform\TailoredExport\Domain\SourceValue\BooleanValue;
+use Akeneo\Platform\TailoredExport\Domain\SourceValue\SimpleAssociationsValue;
 use PhpSpec\ObjectBehavior;
 
 class SimpleAssociationsGroupsLabelSelectionHandlerSpec extends ObjectBehavior

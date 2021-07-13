@@ -57,7 +57,7 @@ class SimpleAssociationsGroupsLabelSelectionHandler implements SelectionHandlerI
     private function formatLabels(array $associatedGroupsLabel, array $associatedGroupCodes): array
     {
         return \array_map(
-            static fn($associatedEntityCode) => $associatedGroupsLabel[$associatedEntityCode] ?? \sprintf('[%s]', $associatedEntityCode),
+            static fn ($associatedEntityCode) => $associatedGroupsLabel[$associatedEntityCode] ?? \sprintf('[%s]', $associatedEntityCode),
             $associatedGroupCodes
         );
     }

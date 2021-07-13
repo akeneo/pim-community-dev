@@ -13,10 +13,10 @@ declare(strict_types=1);
 
 namespace Specification\Akeneo\Platform\TailoredExport\Application\Query\Selection\SimpleAssociations;
 
-use Akeneo\Platform\TailoredExport\Application\Query\Selection\SimpleAssociations\SimpleAssociationsCodeSelection;
 use Akeneo\Platform\TailoredExport\Application\Query\Selection\Boolean\BooleanSelection;
-use Akeneo\Platform\TailoredExport\Domain\SourceValue\SimpleAssociationsValue;
+use Akeneo\Platform\TailoredExport\Application\Query\Selection\SimpleAssociations\SimpleAssociationsCodeSelection;
 use Akeneo\Platform\TailoredExport\Domain\SourceValue\BooleanValue;
+use Akeneo\Platform\TailoredExport\Domain\SourceValue\SimpleAssociationsValue;
 use PhpSpec\ObjectBehavior;
 
 class SimpleAssociationsCodeSelectionHandlerSpec extends ObjectBehavior

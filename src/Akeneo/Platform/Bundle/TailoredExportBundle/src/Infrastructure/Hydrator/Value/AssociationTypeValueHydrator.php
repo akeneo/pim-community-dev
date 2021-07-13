@@ -34,7 +34,6 @@ final class AssociationTypeValueHydrator
             $this->getAssociatedProductModelCodes($product, $associationTypeCode),
             $this->getAssociatedGroupCodes($product, $associationTypeCode)
         );
-
     }
 
     private function getAssociatedProductIdentifiers(ProductInterface $product, string $associationTypeCode): array
@@ -45,7 +44,7 @@ final class AssociationTypeValueHydrator
 
         if ($associatedProducts) {
             $associatedProductIdentifiers = $associatedProducts->map(
-                static fn(ProductInterface $associatedProduct): string => $associatedProduct->getIdentifier()
+                static fn (ProductInterface $associatedProduct): string => $associatedProduct->getIdentifier()
             )->getValues();
         }
 
@@ -60,7 +59,7 @@ final class AssociationTypeValueHydrator
 
         if ($associatedProductModels) {
             $associatedProductModelCodes = $associatedProductModels->map(
-                static fn(ProductModelInterface $associatedProductModel): string => $associatedProductModel->getCode()
+                static fn (ProductModelInterface $associatedProductModel): string => $associatedProductModel->getCode()
             )->getValues();
         }
 
@@ -75,7 +74,7 @@ final class AssociationTypeValueHydrator
 
         if ($associatedGroups) {
             $associatedGroupCodes = $associatedGroups->map(
-                static fn(GroupInterface $associationGroup): string => $associationGroup->getCode()
+                static fn (GroupInterface $associationGroup): string => $associationGroup->getCode()
             )->getValues();
         }
 
