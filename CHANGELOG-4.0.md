@@ -1,5 +1,20 @@
 # 4.0.x
 
+# 4.0.117 (2021-07-01)
+
+## Bug fixes
+
+PIM-9941: Metrics: Change Bar symbol for bar
+
+# 4.0.116 (2021-06-24)
+
+# 4.0.115 (2021-06-22)
+
+## Bug fixes
+
+- PIM-9921: Add a translation for the title of category creation form
+- PIM-9914: Fix backslash incorrectly considered as an escape character in exports
+
 # 4.0.114 (2021-06-14)
 
 ## Bug fixes

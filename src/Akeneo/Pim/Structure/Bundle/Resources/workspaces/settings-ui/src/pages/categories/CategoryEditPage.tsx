@@ -97,13 +97,13 @@ const CategoryEditPage: FC = () => {
       return;
     }
 
-    const uiLocale = userContext.get('uiLocale');
+    const catalogLocale = userContext.get('catalogLocale');
     const rootCategory = category.root ? category.root : category;
 
-    setCategoryLabel(getLabel(category.labels, uiLocale, category.code));
-    setTreeLabel(getLabel(rootCategory.labels, uiLocale, rootCategory.code));
+    setCategoryLabel(getLabel(category.labels, catalogLocale, category.code));
+    setTreeLabel(getLabel(rootCategory.labels, catalogLocale, rootCategory.code));
     setTree(rootCategory);
-  }, [category]);
+  }, [category, userContext]);
 
   if (categoryLoadingStatus === 'error') {
     return (
@@ -164,6 +164,7 @@ const CategoryEditPage: FC = () => {
                             openDeleteCategoryModal();
                           }
                         });
+                        closeSecondaryAction();
                       }}
                       className="AknDropdown-menuLink"
                     >

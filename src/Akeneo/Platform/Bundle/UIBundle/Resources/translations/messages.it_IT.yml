@@ -62,6 +62,7 @@ pim_common:
   name: Nome
   remove: Rimuovere
   code: Codice
+  label: Etichetta
   quantity: Quantità
   products: Prodotti
   product_models: Modelli di prodotto
@@ -99,11 +100,13 @@ pim_enrich:
       comment: Commenta i prodotti
       download: Scarica il prodotto in formato PDF
       history: Visualizza la storia del prodotto
+      convert_variant_to_simple: Converti un prodotto variante in un prodotto semplice
     product_model:
       create: Crea un modello di prodotto
       edit_attributes: Modifica gli attributi di modello di prodotto
       categories_view: Consulta le categorie di un modello di prodotto
       history: Visualizza la cronologia del modello di prodotto
+      remove: Rimuovi un modello prodotto (compresi figli)
     category:
       list: Elenco categorie
       create: Creare una categoria
@@ -166,6 +169,8 @@ pim_enrich:
       remove: Rimuovi associazioni da un prodotto
     job_tracker:
       index: Visualizza il tracker di processo
+      view_all_jobs: Visualizza tutti i job nel tracker di processo
+      stop_job: Arresta un job in corso
   acl_group:
     association_type: Tipi di associazione
     attribute: Atributi
@@ -357,6 +362,8 @@ Decimals allowed: Consentire i decimali
 Negative allowed: Consentire valori negativi
 Date min: Data minima
 Date max: Data massima
+Metric family: Famiglia di unità di misura
+Default metric unit: Unità di misura predefinita
 Max file size: Dimensione massima del file (MB)
 Allowed extensions: Estensioni consentite
 None: Nessuno
@@ -430,6 +437,8 @@ Disabled: Disattivato
 Status: Stato
 pim_datagrid:
   filters:
+    product_typology:
+      label: Tipologia prodotto
     entity_type:
       label: Variante
     family:
@@ -439,13 +448,13 @@ pim_datagrid:
     enabled:
       label: Stato
     scope:
-      label: Ambito
+      label: Canale
     completeness:
       label: Completo
     created:
-      label: Creato A
+      label: Creato
     updated:
-      label: Aggiornato al
+      label: Caricato
     label_or_identifier:
       label: Etichetta o identificatore
     parent:
@@ -516,7 +525,6 @@ pim_mass_edit:
       success: Eliminazione di massa di <strong>%label%</strong> completata
 job_execution.summary:
   mass_edited: Azione di massa modificata
-  skip: Saltato
   skipped_products: Prodotti saltati
   skipped_attributes: Attributi saltati
   skipped_families: Famiglie saltate
@@ -540,5 +548,5 @@ job_tracker:
 pim_login:
   logo_title: Akeneo PIM
   footer:
+    powered: Con tecnologia
     powered_image_title: logo Akeneo
-    baseline: Unlocking Growth Through Product Experiences

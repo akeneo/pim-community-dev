@@ -106,6 +106,27 @@ test('it handles empty cases', () => {
   expect(onChange).not.toHaveBeenCalled();
 });
 
+test('it handles codes that do not have a label', () => {
+  const onChange = jest.fn();
+  render(
+    <MultiSelectInput
+      value={['fr_FR', 'unknown']}
+      onChange={onChange}
+      placeholder="Placeholder"
+      removeLabel="Remove"
+      emptyResultLabel="Empty result"
+    >
+      <MultiSelectInput.Option value="fr_FR">French</MultiSelectInput.Option>
+    </MultiSelectInput>
+  );
+
+  const codeWithOption = screen.queryByText('French');
+  expect(codeWithOption).toBeInTheDocument();
+
+  const codeWithoutOption = screen.queryByText('unknown');
+  expect(codeWithoutOption).toBeInTheDocument();
+});
+
 test('it handles removing a Chip', () => {
   const onChange = jest.fn();
   render(

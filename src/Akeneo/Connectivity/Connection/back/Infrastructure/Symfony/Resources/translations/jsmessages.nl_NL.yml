@@ -1,4 +1,10 @@
 pim_menu:
+  tab:
+    connect: Verbinden
+  navigation:
+    connect: Navigeren door Verbinden
+  navigation_back:
+    connection: Terug naar Verbinden
   navigation_block:
     connection: Verbindingen navigatie
   item:
@@ -7,8 +13,13 @@ pim_menu:
     connection_settings_edit: Verbindingen instellingen
     connection_monitoring: Monitoring
     connection_webhook_edit: Abonnement voor gebeurtenissen
+    connection_webhook_event_logs: Gebeurtenislogboeken
+    data_flows: Gegevensstromen
     connect_connection_settings: Verbindingen instellingen
+    marketplace: Marktplaats
 pim_title:
+  akeneo_connectivity_connection_connect_marketplace: Marktplaats
+  akeneo_connectivity_connection_settings_index: Verbindingsinstellingen
   akeneo_connectivity_connection_settings_edit: Verbindingen instellingen
   akeneo_connectivity_connection_settings_any: Verbindingen instellingen
   akeneo_connectivity_connection_audit_index: Connectie dashboard
@@ -17,9 +28,14 @@ pim_title:
   akeneo_connectivity_connection_error_management_connection_monitoring: Verbindingen monitoren
   akeneo_connectivity_connection_webhook_edit: Abonnement voor gebeurtenissen
   akeneo_connectivity_connection_webhook_regenerate_secret: Abonnement voor gebeurtenissen
-  akeneo_connectivity_connection_redirect_audit: Connectie dashboard
+  akeneo_connectivity_connection_webhook_event_logs: Gebeurtenislogboeken
   akeneo_connectivity_connection_settings_redirect: Verbindingen
 akeneo_connectivity.connection:
+  connect:
+    marketplace:
+      title: Wilt u uw PIM verbinden met een andere applicatie? 🤟
+      sub_title: Bekijk onze marktplaats om te zien welke applicatie kan worden verbonden met Akeneo PIM.
+      link: Naar de marktplaats
   connections: Verbindingen
   secondary_actions:
     title: Overige acties
@@ -131,7 +147,9 @@ akeneo_connectivity.connection:
     flash:
       success: Verbinding succesvol verwijderd.
   helper:
+    title: '{0} Op dit moment hebt u geen verbinding om uw PIM te koppelen aan applicaties van derden.|{1} U hebt 1 verbinding die uw PIM koppelt aan applicaties van derden. Goed gedaan, uw PIM is zo goed geïntegreerd in het ecosysteem.|]1,Inf] U hebt {{ count }} verbindingen die uw PIM koppelen aan applicaties van derden. Goed gedaan, uw PIM is zo goed geïntegreerd in het ecosysteem.'
     description: Een PIM zonder integraties van derden is een soort van nutteloos, nietwaar? Dankzij de verbindingen, kunt u alle gegevensstromen inrichten die data met PIM moeten uitwisselen.
+    link: Bekijk deze pagina om meer te weten te komen over Verbindingen.
   flow_type_helper:
     message: Vraag je je af wat een flowtype is?
     link: We kunnen je hier helpen!
@@ -146,6 +164,10 @@ akeneo_connectivity.connection:
       extension_not_allowed: Sorry, het bestand dat u probeert te uploaden heeft een extensie die niet is toegestaan.
   grid.wrong_credentials_combination_helper: Sommige van de onderstaande verbindingen gebruiken niet hun verbindingsgebruikersnamen. Ze worden geïdentificeerd door een gele waarschuwingsteken.
   dashboard:
+    helper:
+      title: '👋 Welkom bij gegevensstromen!'
+      description: Hier kunt u de gegevensstroom tussen uw PIM en derden bijhouden.
+      link: Wilt u meer weten over het menu Verbindingen en de gegevensstromen? Lees verder!
     user_survey:
       title: Wilt u meer gegevens op dit dashboard?
       content: Jouw feedback is erg waardevol voor ons. Help ons met het kiezen van de volgende widget door het beantwoorden van deze één-vraag enquête!
@@ -189,6 +211,7 @@ akeneo_connectivity.connection:
   webhook:
     title: Abonnement voor gebeurtenissen
     event_subscription: Abonnement voor gebeurtenissen
+    download_logs: Logboeken downloaden
     helper:
       message: Je kunt op de hoogte worden gebracht van events die gebeuren in de PIM voor producten die gesynchroniseerd zijn met deze app in de app. Je hoeft alleen maar een URL te definiëren.
       link: Lees meer over de configuratie van activiteiten abonnementen...
@@ -203,6 +226,7 @@ akeneo_connectivity.connection:
       required: Dit veld is verplicht.
       not_found: U probeert een verbinding bij te werken die niet bestaat.
       limit_reached: Je hebt het limiet van actieve event abonnementen bereikt.
+      not_allowed_url: Deze URL is niet toegestaan.
     flash:
       success: Inschrijving aanpassen geslaagd.
       error: Sorry, er is een fout opgetreden tijdens het bewerken van het abonnement voor gebeurtenissen.
@@ -219,11 +243,41 @@ akeneo_connectivity.connection:
       message: U kunt maximaal {{ limit }} connecties maken met de functie event abonnementen. U heeft deze limiet bereikt.
       link: Meer informatie over de configuratie van event abonnement.
     event_logs:
+      title: Gebeurtenislogboeken
+      event_subscription_disabled:
+        title: Het abonnement voor gebeurtenissen is niet ingeschakeld voor deze verbinding.
+        link: Activeer het abonnement voor gebeurtenissen
+      no_event_logs:
+        title: Er is momenteel geen logboek.
+      no_event_logs_with_those_filters:
+        title: Uw zoekopdracht heeft geen logboeken opgeleverd.
+        caption: Probeer opnieuw met andere zoektermen.
+      level:
+        info: Info
+        notice: Melding
+        warning: Waarschuwing
+        error: Fout
       list:
         search:
+          placeholder: Zoeken in berichten
+          total: '{0} Geen resultaten|{1} 1 resultaat|[2,Inf] {{ total }} resultaten'
+          level: Niveau
           all: Alles
+          none: Geen
         date_range_filter:
+          label: Datum tijd
+          reset: Opnieuw instellen
+          from: van
+          to: tot
           all: Alles
+        info:
+          title: Hier zijn de logboeken voor alle verzoeken voor gebeurtenissen die naar deze verbinding zijn verzonden.
+          content: Op deze pagina staan de logboeken voor fouten en waarschuwingen van de afgelopen 72 uur, en de laatste 100 met informatie en meldingen.
+          link: Meer informatie over gebeurtenislogboeken
+        headers:
+          datetime: Datum/tijd
+          level: Niveau
+          message: Bericht
   error_management:
     connection_monitoring:
       title: Verbindingsmonitor
@@ -233,6 +287,7 @@ akeneo_connectivity.connection:
         link: Wil je leren hoe je dit kunt oplossen, bezoek dan het API-hulpcentrum.
       search_filter:
         placeholder: Zoeken in foutmeldingen
+        result_count: '{0} Geen resultaten|{1} 1 resultaat|[2,Inf] {{ count }} resultaten'
       error_list:
         date_time_column:
           title: Dag en tijd

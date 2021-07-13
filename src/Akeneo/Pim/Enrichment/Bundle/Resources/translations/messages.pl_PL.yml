@@ -70,10 +70,14 @@ pim_enrich:
       description: Następujące wymagania atrybutów zostaną zastosowane do wybranych rodzin
       success_flash: Wymagania atrybutów zostały zastosowane do wybranych rodzin
       launched_flash: Działanie zbiorcze "określ wymagania atrybutów" zostało uruchomione. Zostaniesz powiadomiony o jego zakończeniu.
+    convert_to_simple_products:
+      warning:
+        non_variant_product: Produkt "{{ identifier }}" jest już produktem prostym, nie trzeba go konwertować.
     mass_action:
       quick_export:
         launched_flash: Zadanie eksportu produktów jest aktualnie wykonywane
 category:
+  create: Utwórz kategorię
   edit: Edytuj kategorię
   overview: Kategorie
 tree:

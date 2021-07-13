@@ -61,7 +61,7 @@ pim_enrich.entity.product:
     history:
       version: Version
       author: Author
-      logged_at: Logged at
+      logged_at: Date/Time
       from: From
       modified: Modified
       old_value: Old value
@@ -209,6 +209,45 @@ pim_enrich.entity.category:
   label: category
   uppercase_label: Category
   plural_label: Categories
+  page_title:
+    index: "]-Inf, 1]{{ count }} tree|]1, Inf[{{ count }} trees"
+  content:
+    empty_tree_list:
+      title: You don’t have any tree
+      hint: Create your first one.
+    tree_list:
+      columns:
+        label: Tree label
+        number_of_categories: Number of categories
+        count_categories: ']-Inf, 1]{{ count }} category|]1, Inf[{{ count }} categories'
+    tree:
+      not_found: Category tree not found
+    edit:
+      not_found: Category not found
+      default_tree_label: Tree
+      success: Category successfully updated
+      fail: Category tree not found
+  new_category: New category
+  new_category_tree: New category tree
+  category_created: The category "{{ code }}" was successfully created
+  category_creation_error: The category "{{ code }}" was successfully created
+  category_tree_creation:
+    success: The tree "{{ code }}" was successfully created
+    error: The tree "{{ code }}" could not be created
+  category_tree_deletion:
+    success: The tree "{{ tree }}" was successfully deleted
+    error: The tree "{{ tree }}" could not be deleted
+    confirmation: Are you sure want to delete the {{ name }} tree? All the categories in that tree will be deleted, and the products will be removed from all those categories.
+    products_limit_exceeded:
+      title: This tree cannot be deleted
+      message: The tree "{{ tree }}" contains more than {{ limit }} products and therefore cannot be deleted.
+  category_deletion:
+    success: The category "{{ name }}" was successfully deleted
+    error: The category "{{ name }}" could not be deleted
+    confirmation: Are you sure you want to delete the category {{ name }}? Products in this category will not be deleted.
+    products_limit_exceeded:
+      title: This category cannot be deleted
+      message: The "{{ name }}" category contains more than {{ limit }} products and therefore cannot be deleted.
 pim_enrich.export.product:
   data:
     title: Filter the products

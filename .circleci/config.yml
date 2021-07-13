@@ -37,6 +37,7 @@ jobs:
           name: Require proper dev CE branch
           command: |
             sed -i "s|\"akeneo/pim-community-dev\": \"dev-master|\"akeneo/pim-community-dev\": \"dev-${CIRCLE_BRANCH}|" composer.json
+            sed -i "s|\"akeneo/pim-community-dev\": \"dev-master|\"akeneo/pim-community-dev\": \"dev-${CIRCLE_BRANCH}|" grth/composer.json
       - run:
           name: Persist default IMAGE_TAG to be the repo last commit SHA1
           command: |
@@ -248,6 +249,9 @@ jobs:
       - run:
           name: Install database
           command: APP_ENV=dev O="--catalog src/Akeneo/Platform/Bundle/InstallerBundle/Resources/fixtures/icecat_demo_dev" make database
+      - run:
+          name: Add "adminakeneo" user
+          command: APP_ENV=dev docker-compose exec -u www-data fpm bin/console pim:user:create adminakeneo adminakeneo product-team@akeneo.com admin1 admin2 en_US --admin -n
       - run:
           name: Launch Cypress
           command: CYPRESS_defaultCommandTimeout=8000 CYPRESS_requestTimeout=10000 make end-to-end-front
@@ -583,6 +587,12 @@ jobs:
                 name: Load make commands
                 command: cp vendor/akeneo/pim-onboarder/onboarder.mk make-file/onboarder.mk
           - run:
+                name: Require onboarder tests dependencies
+                command: PIM_CONTEXT=onboarder make add-bundle-specific-dev-dependencies
+          - run:
+                name: Composer update for tests dependencies
+                command: docker-compose run -u www-data --rm php php -d memory_limit=4G /usr/local/bin/composer update --no-interaction
+          - run:
                 name: Add configuration files to run the bundle tests from the PIM
                 command: |
                     rm -f docker-compose.override.yml
@@ -772,6 +782,7 @@ workflows:
                     - test_back_performance
                     - test_back_data_migrations
                     - test_onboarder_bundle
+                    - test_database
                     - test_back_behat_legacy_ce
 
   nightly:

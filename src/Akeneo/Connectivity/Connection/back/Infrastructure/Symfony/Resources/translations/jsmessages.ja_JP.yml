@@ -1,6 +1,10 @@
 pim_menu:
+  tab:
+    connect: 接続
+  navigation:
+    connect: 接続ナビゲーション
   navigation_back:
-    connection: コネクションに戻る
+    connection: 接続に戻る
   navigation_block:
     connection: 接続ナビゲーション
   item:
@@ -8,15 +12,30 @@ pim_menu:
     connection_settings: 接続
     connection_settings_edit: 接続設定
     connection_monitoring: モニタリング
+    connection_webhook_edit: イベントサブスクリプション
+    connection_webhook_event_logs: イベントログ
+    data_flows: データフロー
+    connect_connection_settings: 接続設定
+    marketplace: マーケットプレイス
 pim_title:
-  akeneo_connectivity_connection_settings_index: 接続
+  akeneo_connectivity_connection_connect_marketplace: マーケットプレイス
+  akeneo_connectivity_connection_settings_index: 接続設定
   akeneo_connectivity_connection_settings_edit: 接続設定
   akeneo_connectivity_connection_settings_any: 接続設定
   akeneo_connectivity_connection_audit_index: 接続ダッシュボード
   akeneo_connectivity_connection_audit_any: 接続ダッシュボード
   akeneo_connectivity_connection_error_management_dashboard: 接続ダッシュボード
   akeneo_connectivity_connection_error_management_connection_monitoring: 接続監視
+  akeneo_connectivity_connection_webhook_edit: イベントサブスクリプション
+  akeneo_connectivity_connection_webhook_regenerate_secret: イベントサブスクリプション
+  akeneo_connectivity_connection_webhook_event_logs: イベントログ
+  akeneo_connectivity_connection_settings_redirect: 接続
 akeneo_connectivity.connection:
+  connect:
+    marketplace:
+      title: PIM を別のアプリケーションに接続しますか？🤟
+      sub_title: どのアプリケーションを Akeneo PIM に接続できるのか、マーケットプレイスでご覧ください。
+      link: マーケットプレイスにアクセス
   connections: 接続
   secondary_actions:
     title: その他の操作
@@ -128,9 +147,9 @@ akeneo_connectivity.connection:
     flash:
       success: 接続は正常に削除されました。
   helper:
-    title: '👋 ようこそ、PIMの適切な接続を行う機能紹介です！'
+    title: '{0} 現在のところ、PIM をサードパーティーアプリケーションにリンクするための接続がありません|{1} PIM をサードパーティーアプリケーションにリンクしている接続が 1 個あります。よくできました。PIM はエコシステムに十分に組み込まれていることになります。|]1,Inf] PIM をサードパーティーアプリケーションにリンクしている接続が {{ count }} 個あります。よくできました。PIM はエコシステムに十分に組み込まれていることになります。'
     description: サードパーティーを一切利用しないPIMは利用価値がないとお考えですか？接続があれば、PIMの内部ではプッシュされ外部ではプルされるすべてのデータフローを宣言することが可能です。
-    link: さらに詳しく知りたいですか？今すぐここで、接続について、そして接続の行い方を説明しましょう！
+    link: 接続の詳細については、このページをご覧ください
   flow_type_helper:
     message: フロータイプについてお困りですか？
     link: 今すぐここで説明しましょう！
@@ -146,9 +165,9 @@ akeneo_connectivity.connection:
   grid.wrong_credentials_combination_helper: 以下の接続には、接続用ユーザーネームを使用していないものがあります。該当するものを黄色の警告サインで示しています。
   dashboard:
     helper:
-      title: '👋 接続ダッシュボードへようこそ！'
-      description: ここで追跡できるようになるのは、接続によりPIMに集積されたデータフロー全て、ならびに接続によってチャンネルに分配されたデータフロー全てです。
-      link: さらに詳しく説明していきましょう！
+      title: '👋 データフローへようこそ！'
+      description: ここでは、PIM とサードパーティーの間のデータフローを追跡できます。
+      link: 接続メニューとデータフローについてもっと知りたいですか？こちらをどうぞ！
     user_survey:
       title: ダッシュボードにあるそのほかのデータとは？
       content: フィードバックは私たちにとってとても貴重です。このアンケート調査に回答して、次のウィジェットを選択する参考にさせてください。
@@ -190,14 +209,75 @@ akeneo_connectivity.connection:
         message: 管理者に連絡して新規作成。
         link: 接続について、こちらでさらに詳しく…
   webhook:
+    title: イベントサブスクリプション
+    event_subscription: イベントサブスクリプション
+    download_logs: ログをダウンロード
+    helper:
+      message: この接続アプリと同期された商品について PIM で発生したイベントを通知することができます。URL を定義してください。
+      link: イベントサブスクリプションの構成についてさらに詳しく…
+      url.test_disabled: URL をテストするには、保存ボタンをクリックしてください。
     form:
       url: URL
       secret: 非公開
+      enabled: イベントサブスクリプションの有効化
+      test: テスト
+    error:
+      wrong_url: この値は有効な URL ではありません。
+      required: このフィールドは必須です。
+      not_found: 存在しない接続を更新しようとしています。
+      limit_reached: 有効なイベントサブスクリプションの上限に達しました。
+      not_allowed_url: この URL は許可されていません。
+    flash:
+      success: イベントサブスクリプションは正常に更新されました。
+      error: 申し訳ございません。イベントサブスクリプションの編集中にエラーが発生しました。
     regenerate_secret:
       title: 再生成を確認
+      description: イベントサブスクリプションのシークレットを本当に再作成しますか？
       action:
         regenerate: 再生成
       link: 何が起こるかご確認ください。
+      flash:
+        success: Webhook シークレットは正常に再作成されました。
+        error: 申し訳ございません。Webhook シークレットを再作成中にエラーが発生しました。
+    active_event_subscriptions_limit_reached:
+      message: イベントサブスクリプション機能には {{ limit }} 個まで接続できます。 この上限に達しました。
+      link: イベントサブスクリプションの構成についてさらに詳しく。
+    event_logs:
+      title: イベントログ
+      event_subscription_disabled:
+        title: この接続のイベントサブスクリプションは有効になっていません。
+        link: イベントサブスクリプションを有効化
+      no_event_logs:
+        title: 現在、ログはありません。
+      no_event_logs_with_those_filters:
+        title: 検索したログはありません。
+        caption: 新しい検索条件で再試行してください。
+      level:
+        info: 情報
+        notice: 通知
+        warning: 警告
+        error: エラー
+      list:
+        search:
+          placeholder: メッセージ内を検索
+          total: '{0} 結果がありません|{1} 1 件の結果|[2,Inf] {{ total }} 件の結果'
+          level: レベル
+          all: すべて
+          none: なし
+        date_range_filter:
+          label: 日付と時間
+          reset: リセット
+          from: 開始
+          to: 終了
+          all: すべて
+        info:
+          title: この接続に送信されたすべてのイベントリクエストに関連するログです。
+          content: このページは、過去 72 時間のエラーと警告のログと、直近の 100 件の情報と通知のログを表示します。
+          link: イベントログの詳細について
+        headers:
+          datetime: 日時
+          level: レベル
+          message: メッセージ
   error_management:
     connection_monitoring:
       title: モニタリング
@@ -207,7 +287,7 @@ akeneo_connectivity.connection:
         link: 解決方法については、APIヘルプセンターを参照してください。
       search_filter:
         placeholder: エラーメッセージを検索
-        result_count: '{0} 結果なし |[1,Inf] {{ count }} 結果'
+        result_count: '{0} 結果がありません|{1} 1 件の結果|[2,Inf] {{ count }} 件の結果'
       error_list:
         date_time_column:
           title: 日にちと時間

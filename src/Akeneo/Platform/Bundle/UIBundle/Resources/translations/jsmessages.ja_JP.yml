@@ -21,6 +21,11 @@ Second: 秒
 Millisecond: ミリ秒
 Microsecond: マイクロ秒
 "Time Zone": "タイムゾーン"
+duration:
+  days: "{0}0 日|{1}1 日|]1, Inf[{{ count }} 日"
+  hours: "{0}0 時間|{1}1 時間|]1, Inf[{{ count }} 時間"
+  minutes: "{0}0 分|{1}1 分|]1, Inf[{{ count }} 分"
+  seconds: "{0}0 秒|{1}1 秒|]1, Inf[{{ count }} 秒"
 #PIM messages
 Localized value: ローカライズ値
 Columns: 列
@@ -165,6 +170,7 @@ pim_common:
   created: '作成:'
   delete: 削除
   done: 完了
+  duplicate: 複製
   edit: 編集
   entity_updated: 保存されていない変更があります。
   export: エクスポート
@@ -179,6 +185,7 @@ pim_common:
   less_than: <
   loading: 読み込み中…
   media_upload: ドラッグ＆ドロップでアップロードするか、こちらをクリック
+  more_actions: その他の操作
   more_than: '>'
   next: 次
   "no": "いいえ"
@@ -186,6 +193,8 @@ pim_common:
   not_available: N/A
   now: 今
   ok: OK
+  open: 開く
+  no_result: 結果はありません
   other_actions: その他の操作
   permissions: 許可
   previous: 前
@@ -220,6 +229,15 @@ pim_common:
     STARTS WITH: で始まる
     ENDS WITH: 終了部分：
   read_more: 続きを読む
+  channel: チャンネル
+  locale: ロケール
+  categories: カテゴリ
+  family_variant: ファミリーバリエーション
+  enabled: 有効
+  family: ファミリー
+  parent: 上位
+  groups: グループ
+  more: 詳細
 error:
   exception: 申し訳ありません！ エラー{{ status_code }} が発生しました
   forbidden: このページにアクセスすることはできません
@@ -268,8 +286,9 @@ pim_title:
   pim_enrich_catalog_volume_index: カタログボリュームのモニタリング
   pim_enrich_categorytree_index: カテゴリツリー
   pim_enrich_categorytree_create: カテゴリ ツリー |作成
-  pim_enrich_categorytree_edit: カテゴリツリー {{ category.label }} |編集
+  pim_enrich_categorytree_edit: カテゴリ {{ category.label }} |編集
   pim_enrich_categorytree_create_tree: カテゴリ ツリー |作成
+  pim_enrich_categorytree_tree: カテゴリツリー {{ category.label }} |編集
   pim_enrich_attribute_index: 属性
   pim_enrich_attribute_create: 属性 |作成
   pim_enrich_attribute_edit: 属性 {{ attribute.label }} |編集
@@ -296,6 +315,7 @@ pim_title:
   pim_enrich_job_tracker_show: プロセストラッカー |ジョブの表示
   pim_enrich_mass_edit_action: 一括編集
   pim_analytics_system_info_index: システム情報
+  pim_settings_index: 設定
 pim_menu:
   tab:
     activity: アクティビティ
@@ -311,7 +331,7 @@ pim_menu:
     attribute_group: 属性グループ
     channel: チャンネル
     currency: 通貨
-    dashboard: ダッシュボード
+    dashboard: アクティビティダッシュボード
     family: ファミリー
     group: グループ
     group_type: グループタイプ
@@ -332,7 +352,10 @@ pim_menu:
     activity: アクティビティナビゲーション
     system: システムナビゲーション
     user: ユーザー管理ナビゲーション
-    settings: 設定ナビゲーション
+    settings:
+      product: 商品設定
+      catalog: カタログ設定
+      collapsed_label: 設定ナビゲーション
     product: 商品ナビゲーション
     product_infos: 商品情報
   user:
@@ -344,3 +367,20 @@ pim_notification:
     export: エクスポート
     quick_export: クイック エクスポート
     mass_edit: 一括編集
+pim_settings:
+  settings_menu: 設定メニュー
+  catalog_settings: カタログ設定
+  product_settings: 商品設定
+  count:
+    categories: '{{ countTrees }} 個のツリーと {{ countCategories }} 個のカテゴリがあります'
+    channels: '{{ count }} 個のチャンネルがあります'
+    locales: '{{ count }} 個の有効なロケールがあります'
+    currencies: '{{ count }} 個の有効な通貨があります'
+    attribute_groups: '{{ count }} 個の属性グループがあります'
+    attributes: '{{ count }} 個の属性があります'
+    families: '{{ count }} 個のファミリーがあります'
+    measurements: '{{ count }} 個の測定があります'
+    association_types: '{{ count }} 個の関連タイプがあります'
+    group_types: '{{ count }} 個のグループタイプがあります'
+    groups: '{{ count }} 個のグループがあります'
+    rules: '{{ count }} 個の有効なルールがあります'

@@ -214,7 +214,7 @@ class AttributeController
             try {
                 $this->apiAggregatorForAttributePostSave->dispatchAllEvents();
             } catch (\Throwable $exception) {
-                $this->logger->critical('An exception has been thrown in the post-save events', [
+                $this->logger->warning('An exception has been thrown in the post-save events', [
                     'exception' => $exception,
                 ]);
             }

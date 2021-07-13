@@ -69,7 +69,7 @@ Feature: Validate editing common file attributes of multiple products
     And I display the File attribute
     And I attach file "bic-core-148.gif" to "File"
     And I move on to the next step
-    Then I should see validation tooltip "The file extension is not allowed (allowed extensions: txt)."
+    Then I should see validation tooltip "The gif file extension is not allowed for the file attribute. Allowed extensions are txt."
     And the product "boots" should not have the following values:
       | file |
     And the product "sandals" should not have the following values:

@@ -38,8 +38,17 @@ product_model.family_variant.not_blank.message: La variante de familia del model
 "The {{ attribute_code }} attribute requires a date that should be {{ limit }} or before.": El atributo {{ attribute_code }} requiere una fecha que debe ser {{ limit }} o anterior.
 "The {{ attribute }} attribute requires a number, and the submitted {{ value }} value is not.": El atributo {{ attribute }} requiere un número, y el valor {{ value }} enviado no lo es.
 "The %attribute% attribute must not contain more than %limit% characters. The submitted value is too long.": El atributo %attribute% no debe contener más de %limit% caracteres. El valor enviado es demasiado largo.
+"The %attribute% attribute requires a valid date. Please use the following format %date_format% for dates.": El atributo %attribute% requiere una fecha válida. Utilice el siguiente formato %date_format% para las fechas.
+"The %locale% locale is not available on the %attribute% attribute.": La configuración regional %locale% no está disponible en el atributo %attribute%.
 'The {{ attribute_code }} attribute must match the following regular expression: {{ pattern }}.': 'El atributo {{ attribute_code }} debe coincidir con la siguiente expresión regular: {{ pattern }}.'
 'The {{ attribute_code }} attribute cannot be empty.': 'El atributo {{ attribute_code }} no puede estar vacío.'
+'The file %file_name% is too large (%file_size% %suffix%). The %attribute% attribute can not exceed %max_file_size% %suffix%.': El archivo %file_name% es demasiado grande (%file_size% %suffix%). El atributo %attribute% no puede ser mayor de %max_file_size% %suffix%.
+'The %attribute_code% attribute requires a valid locale. The %invalid_locale% locale does not exist.': 'El atributo %attribute_code% requiere una configuración regional válida. La configuración regional %invalid_locale% no existe.'
+'The %attribute_code% attribute requires a valid locale. The %invalid_locale% locale is not bound to the %channel_code% channel.': 'El atributo %attribute_code% requiere una configuración regional válida. La configuración regional %invalid_locale% no está vinculada al canal %channel_code%.'
+"The %attribute% attribute requires an e-mail address.": 'El atributo %attribute% requiere una dirección de correo electrónico.'
+'The %attribute% attribute requires an equal or greater than %min_value% value.': 'El atributo %attribute% requiere un valor igual o superior a %min_value%.'
+'The %attribute% attribute requires an equal or lesser than %max_value% value.': 'El atributo %attribute% requiere un valor igual o menor que %max_value%.'
+"The %attribute_code% attribute requires a value per channel. The %channel% channel (scope) must exist in your PIM": 'El atributo %attribute_code% requiere un valor por canal. El canal %channel% (objetivo) debe existir en su PIM'
 pim_catalog:
   constraint:
     can_have_family_variant_empty_axis_value: 'El atributo "%attribute%" no debe estar vacío, debido a que se define como eje para esta entidad'
@@ -51,7 +60,6 @@ pim_catalog:
     attribute_does_not_belong_to_family: 'El atributo "%attribute%" no pertenece a la familia "%family%"'
     variant_product_invalid_family: 'La variante de la familia del productos debe ser la misma que la de su padre'
     php_int_max_reached: 'El número máximo debe ser inferior a %php_int_max%.'
-    not_null_family: La familia no puede ser "nula" porque su producto con la identificación "%sku%" es un producto variante.
     variant_product_has_parent: 'El producto variante "%variant_product%" debe tener un padre'
     invalid_variant_product_parent: 'El producto variante "%variant_product%" no puede tener el modelo de producto "%product_model%" como padre, (este modelo de producto sólo puede tener otro modelo de producto como niño)'
     modified_variant_axis_value: 'Dado "%provided_value%", el eje variante "%variant_axis%" no puede ser modificado'
@@ -92,7 +100,6 @@ pim_catalog:
     301: Este campo debe contener un objetivo y local válidos.
     302: Este campo debe contener un objetivo válido.
     303: Este campo debe contener un formato de asociación válido.
-    pim_immutable_product_validator: El mismo identificador se encuentra ya en otro producto
     pim_immutable_product_model_validator: El mismo código se encuentra ya en otro modelo de producto.
     quantified_associations:
       unexpected_link_type: El tipo de enlace "{{ value }}" no existe. Solo puede asociar productos o modelos de productos.
