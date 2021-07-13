@@ -312,7 +312,7 @@ jobs:
           echo "Growth Release name: ${GROWTH_RELEASE_NAME}"
     - run:
         name: Set the right CE branch
-        command: docker run --rm -v $PWD:/app composer composer require "akeneo/pim-community-dev:dev-master#${CE_COMMIT_HASH}" --no-update --ignore-platform-reqs
+        command: docker run --rm -v $PWD:/app composer composer require "akeneo/pim-community-dev:dev-${CE_BRANCH}#${CE_COMMIT_HASH}" --no-update --ignore-platform-reqs
     - run:
         name: Build the Growth Edition prod image
         command: TYPE=${TYPE} IMAGE_TAG_DATE=${IMAGE_TAG_DATE} make php-image-prod
