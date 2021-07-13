@@ -23,6 +23,7 @@ export type TemplateContext = {
     scopeLabel: string;
     optional: boolean;
     removable: boolean;
+    root: any;
   };
   attribute: {
     code: string;
@@ -38,6 +39,29 @@ class TableField extends (Field as {new (config: any): any}) {
     super(config);
 
     this.fieldType = 'akeneo-table-field';
+  }
+
+  computeToto(event: any, attribute: {
+    code: string;
+    table_configuration: TableConfiguration;
+  }, locale: LocaleCode | null, scope: ChannelCode | null) {
+    const violations = event.response.values;
+    this.toto = [];
+
+    violations.map((violation: any) => {
+      if (violation.attribute === attribute.code && locale === violation.locale && scope === violation.scope) {
+        const completePath = violation.path;
+        const index = completePath.indexOf(']');
+        const realPath = completePath.substr(index + 1);
+        const results = realPath.match(/^\[(\d)\]\.(.+)$/);
+        if (results) {
+          this.toto.push({
+            rowIndex: parseInt(results[1]),
+            columnCode: results[2],
+          })
+        }
+      }
+    })
   }
 
   render() {
@@ -59,6 +83,10 @@ class TableField extends (Field as {new (config: any): any}) {
 
     Promise.all(promises).then(() => {
       this.getTemplateContext().then((templateContext: TemplateContext) => {
+        this.listenTo(templateContext.context.root, 'pim_enrich:form:entity:bad_request', (event: any) => {
+          this.computeToto(event, templateContext.attribute, templateContext.locale, templateContext.scope)
+        });
+
         const handleChange = (value: TableValue) => {
           this.setCurrentValue(value);
         };
@@ -66,7 +94,12 @@ class TableField extends (Field as {new (config: any): any}) {
         ReactDOM.render(
           <DependenciesProvider>
             <ThemeProvider theme={pimTheme}>
-              <TableFieldApp {...templateContext} onChange={handleChange} elements={this.elements} />
+              <TableFieldApp
+                {...templateContext}
+                onChange={handleChange}
+                elements={this.elements}
+                toto={this.toto || []}
+              />
             </ThemeProvider>
           </DependenciesProvider>,
           this.el

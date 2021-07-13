@@ -16,6 +16,7 @@ const TableInputContainer = styled.div`
 type TableFieldAppProps = TemplateContext & {
   onChange: (tableValue: TableValue) => void;
   elements: {[position: string]: {[elementKey: string]: any}};
+  toto: any;
 };
 
 type TableRowWithId = TableRow & {'unique id': string};
@@ -34,6 +35,7 @@ const TableFieldApp: React.FC<TableFieldAppProps> = ({
   value,
   onChange,
   elements,
+  toto,
 }) => {
   const translate = useTranslate();
   const [tableValue, setTableValue] = React.useState<TableValueWithId>(
@@ -154,6 +156,7 @@ const TableFieldApp: React.FC<TableFieldAppProps> = ({
               tableConfiguration={attribute.table_configuration}
               onChange={handleChange}
               searchText={searchText}
+              toto={toto}
             />
             {renderElements('field-input')}
           </div>

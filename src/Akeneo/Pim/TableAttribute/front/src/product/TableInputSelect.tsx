@@ -10,6 +10,7 @@ type TableInputSelectProps = {
   value?: SelectOptionCode;
   onChange: (value: SelectOptionCode | undefined) => void;
   options?: SelectOption[];
+  inError?: boolean;
 };
 
 const CenteredHelper = styled.div`

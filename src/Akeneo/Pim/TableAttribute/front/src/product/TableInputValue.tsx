@@ -25,6 +25,7 @@ type TableInputValueProps = {
   tableConfiguration: TableConfiguration;
   onChange: (tableValue: TableValueWithId) => void;
   searchText: string;
+  toto: any;
 };
 
 const TableInputValue: React.FC<TableInputValueProps> = ({
@@ -33,6 +34,7 @@ const TableInputValue: React.FC<TableInputValueProps> = ({
   tableConfiguration,
   onChange,
   searchText = '',
+  toto,
 }) => {
   const translate = useTranslate();
   const userContext = useUserContext();
@@ -105,6 +107,10 @@ const TableInputValue: React.FC<TableInputValueProps> = ({
     f();
   }, [valueDataPage.length]);
 
+  const isInError = (rowIndex: number, columnCode: ColumnCode) => {
+    return toto.some((tot: any) => tot.rowIndex === rowIndex && tot.columnCode === columnCode);
+  }
+
   return (
     <TableInputContainer>
       <TableInput>
@@ -116,10 +122,11 @@ const TableInputValue: React.FC<TableInputValueProps> = ({
           ))}
         </TableInput.Header>
         <TableInput.Body>
-          {valueDataPage.map(row => {
+          {/* TODO ça marchera pas avec la pagination */}
+          {valueDataPage.map((row, index) => {
             return (
               <TableInput.Row key={row['unique id']}>
-                <TableInput.Cell rowTitle={true}>
+                <TableInput.Cell rowTitle={true} inError={isInError(index, firstColumn.code)}>
                   {selectOptionLabels[`${firstColumn.code}-${row[firstColumn.code]}`] ?? ''}
                 </TableInput.Cell>
                 {otherColumns.map(columnDefinition => {
@@ -134,6 +141,7 @@ const TableInputValue: React.FC<TableInputValueProps> = ({
                           onChange={(value: string) => handleChange(row['unique id'], columnCode, value)}
                           highlighted={cellMatchSearch(`${row[columnCode]}`)}
                           data-testid={`input-${row['unique id']}-${columnCode}`}
+                          inError={isInError(index, columnCode)}
                         />
                       )}
                       {'text' === columnType && (
@@ -142,6 +150,7 @@ const TableInputValue: React.FC<TableInputValueProps> = ({
                           onChange={(value: string) => handleChange(row['unique id'], columnCode, value)}
                           highlighted={cellMatchSearch(`${row[columnCode]}`)}
                           data-testid={`input-${row['unique id']}-${columnCode}`}
+                          inError={isInError(index, columnCode)}
                         />
                       )}
                       {'select' === columnType && (
@@ -152,6 +161,7 @@ const TableInputValue: React.FC<TableInputValueProps> = ({
                           }
                           data-testid={`input-${row['unique id']}-${columnCode}`}
                           options={options[columnCode]}
+                          inError={isInError(index, columnCode)}
                         />
                       )}
                       {'boolean' === columnType && (
@@ -165,6 +175,7 @@ const TableInputValue: React.FC<TableInputValueProps> = ({
                           clearLabel={translate('pim_common.clear')}
                           openDropdownLabel={translate('pim_common.open')}
                           data-testid={`input-${row['unique id']}-${columnCode}`}
+                          inError={isInError(index, columnCode)}
                         />
                       )}
                     </TableInput.Cell>
