@@ -14,7 +14,7 @@ declare(strict_types=1);
 namespace Specification\Akeneo\Platform\TailoredExport\Application\Query\Selection\SimpleAssociations;
 
 use Akeneo\Platform\TailoredExport\Application\Query\Selection\Boolean\BooleanSelection;
-use Akeneo\Platform\TailoredExport\Application\Query\Selection\SimpleAssociations\SimpleAssociationsGroupLabelSelection;
+use Akeneo\Platform\TailoredExport\Application\Query\Selection\SimpleAssociations\SimpleAssociationsGroupsLabelSelection;
 use Akeneo\Platform\TailoredExport\Domain\Query\FindGroupLabelsInterface;
 use Akeneo\Platform\TailoredExport\Domain\SourceValue\SimpleAssociationsValue;
 use Akeneo\Platform\TailoredExport\Domain\SourceValue\BooleanValue;
@@ -29,7 +29,7 @@ class SimpleAssociationsGroupLabelSelectionHandlerSpec extends ObjectBehavior
 
     public function it_applies_the_selection_on_groups(FindGroupLabelsInterface $findGroupLabelsInterface)
     {
-        $selection = new SimpleAssociationsGroupLabelSelection('en_US', ',');
+        $selection = new SimpleAssociationsGroupsLabelSelection('en_US', ',');
         $value = new SimpleAssociationsValue(
             ['1111111171', '13620748'],
             ['athena', 'hat'],
@@ -50,13 +50,13 @@ class SimpleAssociationsGroupLabelSelectionHandlerSpec extends ObjectBehavior
         $notSupportedValue = new BooleanValue(true);
 
         $this
-            ->shouldThrow(new \InvalidArgumentException('Cannot apply simple associations group label selection on this entity'))
+            ->shouldThrow(new \InvalidArgumentException('Cannot apply simple associations groups label selection on this entity'))
             ->during('applySelection', [$notSupportedSelection, $notSupportedValue]);
     }
 
-    public function it_supports_simple_association_group_label_selection_with_simple_association_value()
+    public function it_supports_simple_association_groups_label_selection_with_simple_association_value()
     {
-        $selection = new SimpleAssociationsGroupLabelSelection('en_US', '/');
+        $selection = new SimpleAssociationsGroupsLabelSelection('en_US', '/');
         $value = new SimpleAssociationsValue([], [], []);
 
         $this->supports($selection, $value)->shouldReturn(true);

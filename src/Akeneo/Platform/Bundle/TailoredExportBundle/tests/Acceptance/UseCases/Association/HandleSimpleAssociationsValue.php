@@ -15,7 +15,7 @@ namespace Akeneo\Platform\TailoredExport\Test\Acceptance\UseCases\Association;
 
 use Akeneo\Platform\TailoredExport\Application\Query\Selection\SelectionInterface;
 use Akeneo\Platform\TailoredExport\Application\Query\Selection\SimpleAssociations\SimpleAssociationsCodeSelection;
-use Akeneo\Platform\TailoredExport\Application\Query\Selection\SimpleAssociations\SimpleAssociationsGroupLabelSelection;
+use Akeneo\Platform\TailoredExport\Application\Query\Selection\SimpleAssociations\SimpleAssociationsGroupsLabelSelection;
 use Akeneo\Platform\TailoredExport\Application\Query\Selection\SimpleAssociations\SimpleAssociationsLabelSelection;
 use Akeneo\Platform\TailoredExport\Domain\SourceValue\SimpleAssociationsValue;
 use Akeneo\Platform\TailoredExport\Domain\SourceValueInterface;
@@ -95,7 +95,7 @@ final class HandleSimpleAssociationsValue extends AssociationTestCase
             ],
             [
                 'operations' => [],
-                'selection' => new SimpleAssociationsGroupLabelSelection('en_US', ','),
+                'selection' => new SimpleAssociationsGroupsLabelSelection('en_US', ','),
                 'value' => new SimpleAssociationsValue(['1111111171', '13620748'], ['diana', 'stilleto'], ['summerSale2020', 'summerSale2021']),
                 'expected' => [self::TARGET_NAME => '[summerSale2020],Summer sale 2021']
             ],

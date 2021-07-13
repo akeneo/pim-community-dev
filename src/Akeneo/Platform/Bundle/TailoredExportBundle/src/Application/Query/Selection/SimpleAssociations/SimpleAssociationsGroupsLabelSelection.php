@@ -13,7 +13,7 @@ declare(strict_types=1);
 
 namespace Akeneo\Platform\TailoredExport\Application\Query\Selection\SimpleAssociations;
 
-final class SimpleAssociationsGroupLabelSelection implements SimpleAssociationsSelectionInterface
+final class SimpleAssociationsGroupsLabelSelection implements SimpleAssociationsSelectionInterface
 {
     public const TYPE = 'label';
 

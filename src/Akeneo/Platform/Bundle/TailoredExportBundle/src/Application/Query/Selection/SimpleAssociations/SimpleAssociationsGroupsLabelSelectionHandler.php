@@ -19,7 +19,7 @@ use Akeneo\Platform\TailoredExport\Domain\Query\FindGroupLabelsInterface;
 use Akeneo\Platform\TailoredExport\Domain\SourceValue\SimpleAssociationsValue;
 use Akeneo\Platform\TailoredExport\Domain\SourceValueInterface;
 
-class SimpleAssociationsGroupLabelSelectionHandler implements SelectionHandlerInterface
+class SimpleAssociationsGroupsLabelSelectionHandler implements SelectionHandlerInterface
 {
     private FindGroupLabelsInterface $findGroupLabels;
 
@@ -31,10 +31,10 @@ class SimpleAssociationsGroupLabelSelectionHandler implements SelectionHandlerIn
     public function applySelection(SelectionInterface $selection, SourceValueInterface $value): string
     {
         if (
-            !$selection instanceof SimpleAssociationsGroupLabelSelection
+            !$selection instanceof SimpleAssociationsGroupsLabelSelection
             || !$value instanceof SimpleAssociationsValue
         ) {
-            throw new \InvalidArgumentException('Cannot apply simple associations group label selection on this entity');
+            throw new \InvalidArgumentException('Cannot apply simple associations groups label selection on this entity');
         }
 
         $associatedGroupCodes = $value->getAssociatedGroupCodes();
@@ -51,7 +51,7 @@ class SimpleAssociationsGroupLabelSelectionHandler implements SelectionHandlerIn
 
     public function supports(SelectionInterface $selection, SourceValueInterface $value): bool
     {
-        return $selection instanceof SimpleAssociationsGroupLabelSelection
+        return $selection instanceof SimpleAssociationsGroupsLabelSelection
             && $value instanceof SimpleAssociationsValue;
     }
 }

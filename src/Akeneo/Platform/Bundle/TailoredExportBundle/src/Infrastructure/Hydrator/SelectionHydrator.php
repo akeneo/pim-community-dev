@@ -41,7 +41,7 @@ use Akeneo\Platform\TailoredExport\Application\Query\Selection\ReferenceEntityCo
 use Akeneo\Platform\TailoredExport\Application\Query\Selection\Scalar\ScalarSelection;
 use Akeneo\Platform\TailoredExport\Application\Query\Selection\SelectionInterface;
 use Akeneo\Platform\TailoredExport\Application\Query\Selection\SimpleAssociations\SimpleAssociationsCodeSelection;
-use Akeneo\Platform\TailoredExport\Application\Query\Selection\SimpleAssociations\SimpleAssociationsGroupLabelSelection;
+use Akeneo\Platform\TailoredExport\Application\Query\Selection\SimpleAssociations\SimpleAssociationsGroupsLabelSelection;
 use Akeneo\Platform\TailoredExport\Application\Query\Selection\SimpleAssociations\SimpleAssociationsLabelSelection;
 use Akeneo\Platform\TailoredExport\Application\Query\Selection\SimpleAssociations\SimpleAssociationsSelectionInterface;
 use Akeneo\Platform\TailoredExport\Application\Query\Selection\SimpleSelect\SimpleSelectCodeSelection;
@@ -347,7 +347,7 @@ class SelectionHydrator
                 return new SimpleAssociationsCodeSelection($entityType, $selectionConfiguration['separator']);
             case SimpleAssociationsLabelSelection::TYPE:
                 if (SimpleAssociationsSelectionInterface::ENTITY_TYPE_GROUPS === $entityType) {
-                    return new SimpleAssociationsGroupLabelSelection(
+                    return new SimpleAssociationsGroupsLabelSelection(
                         $selectionConfiguration['locale'],
                         $selectionConfiguration['separator']
                     );
