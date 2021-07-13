@@ -1,6 +1,13 @@
 import React, {FC, useEffect} from 'react';
-import styled from 'styled-components';
-import {SubNavigationItem, SubNavigationPanel, useBooleanState} from 'akeneo-design-system';
+import styled, {css} from 'styled-components';
+import {
+  AkeneoThemedProps,
+  LockIcon,
+  SubNavigationItem,
+  SubNavigationPanel,
+  Tag,
+  useBooleanState
+} from 'akeneo-design-system';
 import {useRouter, useTranslate} from '../../hooks';
 import {SubNavigationDropdown} from './SubNavigationDropdown';
 
@@ -18,6 +25,7 @@ type SubNavigationEntry = {
   routeParams?: {[key: string]: any};
   title: string;
   sectionCode: string;
+  disabled?: boolean;
 };
 
 type SubNavigationSection = {
@@ -32,9 +40,10 @@ type BackLink = {
 
 type Props = SubNavigationType & {
   activeSubEntryCode: string | null;
+  freeTrialEnabled: boolean;
 };
 
-const SubNavigation: FC<Props> = ({title, sections, entries, backLink, stateCode, activeSubEntryCode}) => {
+const SubNavigation: FC<Props> = ({title, sections, entries, backLink, stateCode, activeSubEntryCode, freeTrialEnabled}) => {
   const translate = useTranslate();
   const router = useRouter();
   const subNavigationState = sessionStorage.getItem(`collapsedColumn_${stateCode}`);
@@ -68,15 +77,21 @@ const SubNavigation: FC<Props> = ({title, sections, entries, backLink, stateCode
               <Section key={section.code}>
                 <SectionTitle>{translate(section.title)}</SectionTitle>
                 {entries.filter(subNav => subNav.sectionCode === section.code).map(subEntry =>
-                  <SubNavigationItem
+                  <StyledSubNavigationItem
                     active={subEntry.code === activeSubEntryCode}
                     key={subEntry.code}
-                    href={`#${router.generate(subEntry.route, subEntry.routeParams)}`}
+                    href={subEntry.disabled ? undefined : `#${router.generate(subEntry.route, subEntry.routeParams)}`}
                     onClick={(event: any) => handleFollowSubEntry(event, subEntry)}
                     role='menuitem'
+                    disabled={subEntry.disabled}
                   >
                     {subEntry.title}
-                  </SubNavigationItem>
+                    {subEntry.disabled && freeTrialEnabled &&
+                      <Tag tint="blue">
+                        <StyledLockIcon size={16} color={'#5992c7'}/>
+                      </Tag>
+                    }
+                  </StyledSubNavigationItem>
                 )}
               </Section>
             );
@@ -109,6 +124,22 @@ const Backlink = styled.div`
   color: ${({theme}) => theme.color.grey140};
   cursor: pointer;
   padding-bottom: 10px;
+`;
+
+const StyledSubNavigationItem = styled(SubNavigationItem)<{disabled: boolean} & AkeneoThemedProps>`
+  ${Tag} {
+    height: 24px;
+    align-self: center;
+    padding: 0;
+  }
+  
+  ${({disabled}) => disabled && css`
+    cursor: pointer;
+  `}
+`;
+
+const StyledLockIcon = styled(LockIcon)`
+  margin: 3px;
 `;
 
 export {SubNavigation};

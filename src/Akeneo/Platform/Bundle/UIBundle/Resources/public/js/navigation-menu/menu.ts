@@ -10,6 +10,7 @@ const BaseForm = require('pim/form');
 const _ = require('underscore');
 const template = require('pim/template/menu/menu');
 const mediator = require('oro/mediator');
+const featureFlags = require('pim/feature-flags');
 
 type SubEntry = {
   code: string;
@@ -28,6 +29,7 @@ type EntryView = View & {
     isLandingSectionPage?: boolean;
     tab?: string;
     icon: string;
+    disabled?: boolean;
   };
   items: SubEntry[];
   sections: any[];
@@ -88,6 +90,7 @@ class Menu extends BaseForm {
         entries: this.findMainEntries(),
         activeEntryCode: this.activeEntryCode,
         activeSubEntryCode: this.activeSubEntryCode,
+        freeTrialEnabled: featureFlags.isEnabled('free_trial'),
       },
       this.el
     );
@@ -114,7 +117,7 @@ class Menu extends BaseForm {
   buildMainMenuEntries(navigationEntriesExtensions: EntryView[]): NavigationEntry[] {
     return navigationEntriesExtensions
       .filter((extension: EntryView) => {
-        return !(
+        return extension.config.disabled || !(
           typeof extension.config === 'object' &&
           (!extension.config.to || extension.config.isLandingSectionPage) &&
           typeof extension.hasChildren === 'function' &&
@@ -127,10 +130,10 @@ class Menu extends BaseForm {
         return {
           code: extension.code,
           title: title,
-          disabled: false,
+          disabled: extension.config.disabled || false,
           route: this.findEntryRoute(extension),
           // @ts-ignore
-          icon: DSM[icon] && React.createElement(DSM[icon]),
+          icon: React.createElement(DSM[icon] ? DSM[icon] : 'span'),
           subNavigations: this.findMainEntrySubNavigations(extension.code),
           isLandingSectionPage: isLandingSectionPage ?? false,
         };

@@ -13,7 +13,6 @@ const Container = styled.a<{active: boolean; disabled: boolean} & AkeneoThemedPr
   height: 38px;
   margin: 0;
   outline: none;
-  padding: 0 30px 0 0;
   text-decoration: none;
   overflow: hidden;
   line-height: 38px;
@@ -29,7 +28,7 @@ const Container = styled.a<{active: boolean; disabled: boolean} & AkeneoThemedPr
 const Label = styled.div<{hasTag: boolean} & AkeneoThemedProps>`
   flex-shrink: 0;
   margin-right: ${({hasTag}) => (hasTag ? '10px' : '0px')};
-  max-width: ${({hasTag}) => (hasTag ? '75%' : '100%')};
+  max-width: ${({hasTag}) => (hasTag ? '84%' : '100%')};
   overflow: hidden;
   text-overflow: ellipsis;
   white-space: nowrap;
