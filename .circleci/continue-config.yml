@@ -715,7 +715,11 @@ jobs:
                 at: ~/
           - run:
                 name: Change owner on project dir in order to archive the project into the workspace
-                command: sudo chown -R 1000:1000 ../project
+                command: |
+                  mkdir -p ~/.cache/yarn ~/.composer
+                  sudo chown -R 1000:1000 ../project
+                  sudo chown -R 1000:1000 ~/.composer
+                  sudo chown -R 1000:1000 ~/.cache/yarn
           - run:
                 name: Create an empty service account
                 command: |
