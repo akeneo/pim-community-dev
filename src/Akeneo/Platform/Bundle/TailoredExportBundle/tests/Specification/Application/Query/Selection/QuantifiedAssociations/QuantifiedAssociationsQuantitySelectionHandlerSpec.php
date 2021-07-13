@@ -56,7 +56,7 @@ class QuantifiedAssociationsQuantitySelectionHandlerSpec extends ObjectBehavior
             ->during('applySelection', [$notSupportedSelection, $notSupportedValue]);
     }
 
-    public function it_supports_price_collection_code_selection_with_price_collection_value()
+    public function it_supports_quantified_association_quantity_selection_with_quantified_association_value()
     {
         $selection = new QuantifiedAssociationsQuantitySelection('products', '/');
         $value = new QuantifiedAssociationsValue([], []);

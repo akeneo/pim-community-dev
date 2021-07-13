@@ -1,6 +1,6 @@
-import React, {FunctionComponent} from 'react';
+import React from 'react';
 import {ValidationError} from '@akeneo-pim-community/shared';
-import {AssociationType, AssociationTypeConfiguratorProps, Source} from '../../models';
+import {Source} from '../../models';
 import styled from 'styled-components';
 import {useAssociationType} from '../../hooks';
 import {SimpleAssociationTypeConfigurator} from './SimpleAssociationType/SimpleAssociationTypeConfigurator';
@@ -13,14 +13,6 @@ const Container = styled.div`
   padding: 20px 0;
   flex: 1;
 `;
-
-const getConfigurator = (associationType: AssociationType): FunctionComponent<AssociationTypeConfiguratorProps> => {
-  if (associationType.is_quantified) {
-    return QuantifiedAssociationTypeConfigurator;
-  }
-
-  return SimpleAssociationTypeConfigurator;
-};
 
 type AssociationTypeSourceConfiguratorProps = {
   source: Source;
@@ -38,7 +30,9 @@ const AssociationTypeSourceConfigurator = ({
     return null;
   }
 
-  const Configurator = getConfigurator(associationType);
+  const Configurator = associationType.is_quantified
+    ? QuantifiedAssociationTypeConfigurator
+    : SimpleAssociationTypeConfigurator;
 
   return (
     <Container>

@@ -35,7 +35,7 @@ const isQuantifiedAssociationTypeSelection = (selection: any): selection is Quan
   'type' in selection &&
   (selection.type === 'code' ||
     selection.type === 'quantity' ||
-    (selection.type === 'label' && 'locale' in selection)) &&
+    (selection.type === 'label' && 'locale' in selection && 'channel' in selection)) &&
   'separator' in selection &&
   isCollectionSeparator(selection.separator) &&
   'entity_type' in selection &&

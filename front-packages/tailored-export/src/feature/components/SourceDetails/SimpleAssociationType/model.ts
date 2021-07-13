@@ -42,11 +42,16 @@ const isProductOrProductModelSelection = (
 
 const isSimpleAssociationTypeSelection = (selection: any): selection is SimpleAssociationTypeSource =>
   'type' in selection &&
-  (selection.type === 'code' || (selection.type === 'label' && 'locale' in selection)) &&
-  'separator' in selection &&
-  isCollectionSeparator(selection.separator) &&
   'entity_type' in selection &&
-  isEntityType(selection.entity_type);
+  isEntityType(selection.entity_type) &&
+  (selection.type === 'code' ||
+    (isProductOrProductModelSelection(selection) &&
+      selection.type === 'label' &&
+      'locale' in selection &&
+      'channel' in selection) ||
+    (selection.entity_type === 'groups' && selection.type === 'label' && 'locale' in selection)) &&
+  'separator' in selection &&
+  isCollectionSeparator(selection.separator);
 
 type SimpleAssociationTypeSource = {
   uuid: string;

@@ -274,7 +274,6 @@ test('it can select an entity type when type is code', async () => {
   );
 
   userEvent.click(screen.getByText('akeneo.tailored_export.column_details.sources.selection.association.entity_type'));
-
   userEvent.click(screen.getByTitle('pim_common.product_models'));
 
   expect(onSelectionChange).toHaveBeenCalledWith({type: 'code', separator: ',', entity_type: 'product_models'});

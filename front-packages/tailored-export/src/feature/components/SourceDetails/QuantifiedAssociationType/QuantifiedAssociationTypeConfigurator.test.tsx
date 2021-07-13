@@ -33,7 +33,7 @@ jest.mock('./QuantifiedAssociationTypeSelector', () => ({
   ),
 }));
 
-test('it displays a quantified association type configurator', () => {
+test('it displays a quantified association type configurator and call handler when the type changes', () => {
   const onSourceChange = jest.fn();
   const source = getDefaultQuantifiedAssociationTypeSource(associationType);
 

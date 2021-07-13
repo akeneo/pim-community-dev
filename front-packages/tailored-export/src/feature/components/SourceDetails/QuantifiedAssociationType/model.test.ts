@@ -34,7 +34,7 @@ test('it can get the default quantified association source', () => {
   } as QuantifiedAssociationTypeSource);
 });
 
-test('it returns if source is quantified association source', () => {
+test('it tells if source is quantified association source', () => {
   expect(
     isQuantifiedAssociationTypeSource({
       uuid: '276b6361-badb-48a1-98ef-d75baa235148',
@@ -69,32 +69,17 @@ test('it returns if source is quantified association source', () => {
     })
   ).toBe(true);
 
-  expect(
-    isQuantifiedAssociationTypeSource({
-      uuid: '276b6361-badb-48a1-98ef-d75baa235148',
-      type: 'association_type',
-      code: 'PACK',
-      locale: null,
-      channel: null,
-      operations: {},
-      selection: {
-        type: 'label',
-        separator: ',',
-        entity_type: 'products',
-      },
-    } as any)
-  ).toBe(false);
   expect(isQuantifiedAssociationTypeSource(getDefaultEnabledSource())).toBe(false);
 });
 
-test('it returns if collection separator is valid', () => {
+test('it tells if collection separator is valid', () => {
   expect(isCollectionSeparator(',')).toBe(true);
   expect(isCollectionSeparator(';')).toBe(true);
   expect(isCollectionSeparator('|')).toBe(true);
   expect(isCollectionSeparator('٫')).toBe(false);
 });
 
-test('it returns if entity type is valid', () => {
+test('it tells if entity type is valid', () => {
   expect(isEntityType('products')).toBe(true);
   expect(isEntityType('product_models')).toBe(true);
 
