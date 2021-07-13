@@ -77,6 +77,11 @@ services:
         arguments:
             - '@database_connection'
 
+    akeneo.pim.structure.query.get_association_types:
+        class: Akeneo\Pim\Structure\Bundle\Query\PublicApi\Association\Sql\SqlGetAssociationTypes
+        arguments:
+            - '@database_connection'
+
     akeneo.pim.structure.query.find_flatten_attributes:
         class: Akeneo\Pim\Structure\Bundle\Query\PublicApi\Attribute\Sql\SqlFindFlattenAttributes
         arguments:
