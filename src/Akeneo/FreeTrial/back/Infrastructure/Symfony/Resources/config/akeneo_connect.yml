@@ -1,3 +1,9 @@
+parameters:
+  env(AKENEO_CONNECT_API_CLIENT_ID): ''
+  env(AKENEO_CONNECT_API_CLIENT_SECRET): ''
+  env(AKENEO_CONNECT_API_CLIENT_USERNAME): ''
+  env(AKENEO_CONNECT_API_CLIENT_PASSWORD): ''
+
 services:
   Akeneo\FreeTrial\Domain\API\InviteUserAPI:
     class: Akeneo\FreeTrial\Infrastructure\AkeneoConnect\AkeneoConnectInviteUserAPI
