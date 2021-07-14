@@ -1,7 +1,13 @@
 import React from 'react';
 import {AddingValueIllustration, TableInput} from 'akeneo-design-system';
 import {ColumnCode, SelectOption, SelectOptionCode, TableConfiguration} from '../models/TableConfiguration';
-import {getLabel, useTranslate, useUserContext, useRouter} from '@akeneo-pim-community/shared';
+import {
+  getLabel,
+  useTranslate,
+  useUserContext,
+  useRouter,
+  LoadingPlaceholderContainer
+} from '@akeneo-pim-community/shared';
 import {TableFooter} from './TableFooter';
 import styled from 'styled-components';
 import {TableValueWithId} from './TableFieldApp';
@@ -42,7 +48,7 @@ const TableInputValue: React.FC<TableInputValueProps> = ({
   const router = useRouter();
   const [itemsPerPage, setItemsPerPage] = React.useState<number>(TABLE_VALUE_ITEMS_PER_PAGE[0]);
   const [currentPage, setCurrentPage] = React.useState<number>(0);
-  const [selectOptionLabels, setSelectOptionLabels] = React.useState<{[key: string]: string}>({});
+  const [selectOptionLabels, setSelectOptionLabels] = React.useState<{[key: string]: string | null}>({});
   const [options, setOptions] = React.useState<{[columnCode: string]: SelectOption[]}>({});
   const isSearching = searchText.trim() !== '';
 
@@ -85,7 +91,7 @@ const TableInputValue: React.FC<TableInputValueProps> = ({
   const getOptionLabel = async (columnCode: ColumnCode, value: string) => {
     const selectOption = await getSelectOption(router, attributeCode, columnCode, value);
 
-    return selectOption ? getLabel(selectOption.labels, userContext.get('catalogLocale'), selectOption.code) : value;
+    return selectOption ? getLabel(selectOption.labels, userContext.get('catalogLocale'), selectOption.code) : null;
   };
 
   React.useEffect(() => {
@@ -127,8 +133,13 @@ const TableInputValue: React.FC<TableInputValueProps> = ({
           {valueDataPage.map((row, index) => {
             return (
               <TableInput.Row key={row['unique id']}>
-                <TableInput.Cell rowTitle={true} inError={isInError(index, firstColumn.code)}>
-                  {selectOptionLabels[`${firstColumn.code}-${row[firstColumn.code]}`] ?? ''}
+                <TableInput.Cell rowTitle={true} inError={selectOptionLabels[`${firstColumn.code}-${row[firstColumn.code]}`] === null}>
+                  {typeof(selectOptionLabels[`${firstColumn.code}-${row[firstColumn.code]}`]) === 'undefined' ?
+                    <LoadingPlaceholderContainer>
+                      <div>{translate('pim_common.loading')}</div>
+                    </LoadingPlaceholderContainer>
+                  : (selectOptionLabels[`${firstColumn.code}-${row[firstColumn.code]}`] || `[${row[firstColumn.code]}]`)
+                  }
                 </TableInput.Cell>
                 {otherColumns.map(columnDefinition => {
                   const columnCode = columnDefinition.code;
@@ -162,7 +173,6 @@ const TableInputValue: React.FC<TableInputValueProps> = ({
                           }
                           data-testid={`input-${row['unique id']}-${columnCode}`}
                           options={options[columnCode]}
-                          inError={isInError(index, columnCode)}
                         />
                       )}
                       {'boolean' === columnType && (

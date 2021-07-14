@@ -1,7 +1,7 @@
 import React, {useState} from 'react';
 import {Dropdown, TableInput, AddingValueIllustration} from 'akeneo-design-system';
 import {SelectOption, SelectOptionCode} from '../models/TableConfiguration';
-import {getLabel, useTranslate, useUserContext} from '@akeneo-pim-community/shared';
+import {getLabel, LoadingPlaceholderContainer, useTranslate, useUserContext} from '@akeneo-pim-community/shared';
 import styled from 'styled-components';
 
 const BATCH_SIZE = 20;
@@ -10,8 +10,11 @@ type TableInputSelectProps = {
   value?: SelectOptionCode;
   onChange: (value: SelectOptionCode | undefined) => void;
   options?: SelectOption[];
-  inError?: boolean;
 };
+
+const FakeInput = styled.div`
+  margin: 0 10px;
+`
 
 const CenteredHelper = styled.div`
   text-align: center;
@@ -28,19 +31,22 @@ const TableInputSelect: React.FC<TableInputSelectProps> = ({value, onChange, opt
   const [searchValue, setSearchValue] = React.useState<string>('');
   const [numberOfDisplayedItems, setNumberOfDisplayedItems] = useState<number>(BATCH_SIZE);
 
+  const isLoading = typeof options === 'undefined';
+  let option = null;
+  if (value && typeof options !== 'undefined') {
+    option = options.find(option => option.code === value) ;
+  }
+  let label = '';
+  if (value && option) {
+    label = getLabel(option.labels, userContext.get('catalogLocale'), option.code);
+  } else if (value) {
+    label = `[${value}]`;
+  }
+  const notFoundOption = typeof option === 'undefined';
+
   const handleClear = () => {
     onChange(undefined);
   };
-
-  if (!options) {
-    return <div>Loading... TODO</div>;
-  }
-
-  let label = '';
-  if (value) {
-    const option = options.find(option => option.code === value);
-    label = option ? getLabel(option.labels, userContext.get('catalogLocale'), option.code) : `[${value}]`;
-  }
 
   const handleNextPage = () => {
     setNumberOfDisplayedItems(numberOfDisplayedItems + BATCH_SIZE);
@@ -60,6 +66,12 @@ const TableInputSelect: React.FC<TableInputSelectProps> = ({value, onChange, opt
     })
     .slice(0, numberOfDisplayedItems);
 
+  if (isLoading) {
+    return <LoadingPlaceholderContainer>
+      <FakeInput>{translate('pim_common.loading')}</FakeInput>
+    </LoadingPlaceholderContainer>
+  };
+
   return (
     <TableInput.Select
       value={label}
@@ -71,6 +83,7 @@ const TableInputSelect: React.FC<TableInputSelectProps> = ({value, onChange, opt
       onNextPage={handleNextPage}
       searchValue={searchValue}
       onSearchChange={handleSearchValue}
+      inError={notFoundOption}
       {...rest}>
       {itemsToDisplay.map(option => {
         return (
