@@ -6,7 +6,7 @@ import {
   useTranslate,
   useUserContext,
   useRouter,
-  LoadingPlaceholderContainer
+  LoadingPlaceholderContainer,
 } from '@akeneo-pim-community/shared';
 import {TableFooter} from './TableFooter';
 import styled from 'styled-components';
@@ -14,7 +14,7 @@ import {TableValueWithId} from './TableFieldApp';
 import {getSelectOption, getSelectOptions} from '../repositories/SelectOption';
 import {TableInputSelect} from './TableInputSelect';
 import {TableCell} from '../models/TableValue';
-import {TableValueViolatedCell} from "../legacy/table-field";
+import {TableValueViolatedCell} from '../legacy/table-field';
 
 const TABLE_VALUE_ITEMS_PER_PAGE = [10, 20, 50, 100];
 
@@ -115,8 +115,10 @@ const TableInputValue: React.FC<TableInputValueProps> = ({
   }, [valueDataPage.length]);
 
   const isInError = (rowIndex: number, columnCode: ColumnCode) => {
-    return violatedCells.some(violatedCell => violatedCell.rowIndex === rowIndex && violatedCell.columnCode === columnCode);
-  }
+    return violatedCells.some(
+      violatedCell => violatedCell.rowIndex === rowIndex && violatedCell.columnCode === columnCode
+    );
+  };
 
   return (
     <TableInputContainer>
@@ -133,13 +135,16 @@ const TableInputValue: React.FC<TableInputValueProps> = ({
           {valueDataPage.map((row, index) => {
             return (
               <TableInput.Row key={row['unique id']}>
-                <TableInput.Cell rowTitle={true} inError={selectOptionLabels[`${firstColumn.code}-${row[firstColumn.code]}`] === null}>
-                  {typeof(selectOptionLabels[`${firstColumn.code}-${row[firstColumn.code]}`]) === 'undefined' ?
+                <TableInput.Cell
+                  rowTitle={true}
+                  inError={selectOptionLabels[`${firstColumn.code}-${row[firstColumn.code]}`] === null}>
+                  {typeof selectOptionLabels[`${firstColumn.code}-${row[firstColumn.code]}`] === 'undefined' ? (
                     <LoadingPlaceholderContainer>
                       <div>{translate('pim_common.loading')}</div>
                     </LoadingPlaceholderContainer>
-                  : (selectOptionLabels[`${firstColumn.code}-${row[firstColumn.code]}`] || `[${row[firstColumn.code]}]`)
-                  }
+                  ) : (
+                    selectOptionLabels[`${firstColumn.code}-${row[firstColumn.code]}`] || `[${row[firstColumn.code]}]`
+                  )}
                 </TableInput.Cell>
                 {otherColumns.map(columnDefinition => {
                   const columnCode = columnDefinition.code;
@@ -149,20 +154,34 @@ const TableInputValue: React.FC<TableInputValueProps> = ({
                     <TableInput.Cell key={`${row['unique id']}-${columnCode}`}>
                       {'number' === columnType && (
                         <TableInput.Number
-                          value={`${row[columnCode] as number}`}
+                          value={row[columnCode]}
                           onChange={(value: string) => handleChange(row['unique id'], columnCode, value)}
                           highlighted={cellMatchSearch(`${row[columnCode]}`)}
                           data-testid={`input-${row['unique id']}-${columnCode}`}
-                          inError={isInError(index, columnCode)}
+                          min={columnDefinition.validations.min}
+                          max={columnDefinition.validations.max}
+                          inError={
+                            typeof row[columnCode] !== 'undefined' &&
+                            ((typeof columnDefinition.validations.min !== 'undefined' &&
+                              parseFloat(row[columnCode]) < columnDefinition.validations.min) ||
+                              (typeof columnDefinition.validations.max !== 'undefined' &&
+                                parseFloat(row[columnCode]) > columnDefinition.validations.max) ||
+                              (!!columnDefinition.validations.decimals_allowed === parseFloat(row[columnCode]) % 1) ===
+                                0)
+                          }
                         />
                       )}
                       {'text' === columnType && (
                         <TableInput.Text
-                          value={`${row[columnCode]}`}
+                          value={row[columnCode] || ''}
                           onChange={(value: string) => handleChange(row['unique id'], columnCode, value)}
                           highlighted={cellMatchSearch(`${row[columnCode]}`)}
                           data-testid={`input-${row['unique id']}-${columnCode}`}
-                          inError={isInError(index, columnCode)}
+                          maxLength={columnDefinition.validations.max_length}
+                          inError={
+                            typeof columnDefinition.validations.max_length !== 'undefined' &&
+                            ((row[columnCode] as string) || '').length > columnDefinition.validations.max_length
+                          }
                         />
                       )}
                       {'select' === columnType && (

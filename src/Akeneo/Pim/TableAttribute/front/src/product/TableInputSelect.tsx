@@ -14,7 +14,7 @@ type TableInputSelectProps = {
 
 const FakeInput = styled.div`
   margin: 0 10px;
-`
+`;
 
 const CenteredHelper = styled.div`
   text-align: center;
@@ -34,7 +34,7 @@ const TableInputSelect: React.FC<TableInputSelectProps> = ({value, onChange, opt
   const isLoading = typeof options === 'undefined';
   let option = null;
   if (value && typeof options !== 'undefined') {
-    option = options.find(option => option.code === value) ;
+    option = options.find(option => option.code === value);
   }
   let label = '';
   if (value && option) {
@@ -67,10 +67,12 @@ const TableInputSelect: React.FC<TableInputSelectProps> = ({value, onChange, opt
     .slice(0, numberOfDisplayedItems);
 
   if (isLoading) {
-    return <LoadingPlaceholderContainer>
-      <FakeInput>{translate('pim_common.loading')}</FakeInput>
-    </LoadingPlaceholderContainer>
-  };
+    return (
+      <LoadingPlaceholderContainer>
+        <FakeInput>{translate('pim_common.loading')}</FakeInput>
+      </LoadingPlaceholderContainer>
+    );
+  }
 
   return (
     <TableInput.Select

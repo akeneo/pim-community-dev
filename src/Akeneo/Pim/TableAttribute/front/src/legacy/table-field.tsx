@@ -15,7 +15,7 @@ const mediator = require('oro/mediator');
 export type TableValueViolatedCell = {
   rowIndex: number;
   columnCode: ColumnCode;
-}
+};
 
 export type TemplateContext = {
   type: 'akeneo-table-field';
@@ -48,10 +48,15 @@ class TableField extends (Field as {new (config: any): any}) {
     this.fieldType = 'akeneo-table-field';
   }
 
-  computeViolatedCells(event: any, attribute: {
-    code: string;
-    table_configuration: TableConfiguration;
-  }, locale: LocaleCode | null, scope: ChannelCode | null) {
+  computeViolatedCells(
+    event: any,
+    attribute: {
+      code: string;
+      table_configuration: TableConfiguration;
+    },
+    locale: LocaleCode | null,
+    scope: ChannelCode | null
+  ) {
     const violations = event.response.values;
     this.violatedCells = [];
 
@@ -67,11 +72,11 @@ class TableField extends (Field as {new (config: any): any}) {
             this.violatedCells.push({
               rowIndex: parseInt(results[1]),
               columnCode: results[2],
-            })
+            });
           }
         }
       }
-    })
+    });
   }
 
   render() {
@@ -94,7 +99,7 @@ class TableField extends (Field as {new (config: any): any}) {
     Promise.all(promises).then(() => {
       this.getTemplateContext().then((templateContext: TemplateContext) => {
         this.listenTo(templateContext.context.root, 'pim_enrich:form:entity:bad_request', (event: any) => {
-          this.computeViolatedCells(event, templateContext.attribute, templateContext.locale, templateContext.scope)
+          this.computeViolatedCells(event, templateContext.attribute, templateContext.locale, templateContext.scope);
         });
 
         const handleChange = (value: TableValue) => {
