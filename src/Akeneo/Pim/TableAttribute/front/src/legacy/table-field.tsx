@@ -43,6 +43,7 @@ class TableField extends (Field as {new (config: any): any}) {
     super(config);
 
     this.violations = [];
+    this.copyContext = undefined;
     this.fieldType = 'akeneo-table-field';
   }
 
@@ -75,27 +76,43 @@ class TableField extends (Field as {new (config: any): any}) {
           this.setFilteredViolations(event, templateContext.attribute.code);
         });
 
-        const handleChange = (value: TableValue) => {
-          this.setCurrentValue(value);
-        };
-
-        ReactDOM.render(
-          <DependenciesProvider>
-            <ThemeProvider theme={pimTheme}>
-              <TableFieldApp
-                {...templateContext}
-                onChange={handleChange}
-                elements={this.elements}
-                violations={this.violations}
-              />
-            </ThemeProvider>
-          </DependenciesProvider>,
-          this.el
-        );
+        this.renderInput(templateContext, false, undefined);
       });
     });
 
     return this;
+  }
+
+  renderCopyInput(value: TemplateContext) {
+    const copyContext = {...value};
+    copyContext.editMode = 'view';
+    return new Promise(resolve => {
+      this.getTemplateContext().then((templateContext: TemplateContext) => {
+        this.renderInput(templateContext, false, copyContext);
+        resolve('');
+      });
+    });
+  }
+
+  renderInput(templateContext: TemplateContext, isCopying: boolean, copyContext) {
+    const handleChange = (value: TableValue) => {
+      this.setCurrentValue(value);
+    };
+
+    ReactDOM.render(
+      <DependenciesProvider>
+        <ThemeProvider theme={pimTheme}>
+          <TableFieldApp
+            {...templateContext}
+            onChange={handleChange}
+            elements={isCopying ? [] : this.elements}
+            copyContext={copyContext}
+            violations={this.violations}
+          />
+        </ThemeProvider>
+      </DependenciesProvider>,
+      this.el
+    );
   }
 }
 

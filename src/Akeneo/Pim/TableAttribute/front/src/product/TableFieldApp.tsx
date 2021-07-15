@@ -1,7 +1,6 @@
 import React from 'react';
-import {DependenciesProvider} from '@akeneo-pim-community/legacy-bridge';
-import styled, {ThemeProvider} from 'styled-components';
-import {Locale, pimTheme, uuid, Search} from 'akeneo-design-system';
+import styled from 'styled-components';
+import {Locale, uuid, Search, AkeneoThemedProps, getColor} from 'akeneo-design-system';
 import {TableInputValue} from './TableInputValue';
 import {TableRow, TableValue} from '../models/TableValue';
 import {TemplateContext, Violations} from '../legacy/table-field';
@@ -9,14 +8,51 @@ import {useTranslate} from '@akeneo-pim-community/shared';
 import {AddRowsButton} from './AddRowsButton';
 import {ColumnCode, SelectOptionCode} from '../models/TableConfiguration';
 
-const TableInputContainer = styled.div`
-  flex-basis: 100% !important;
+const TableInputContainer = styled.div<{isCompareTranslate: boolean} & AkeneoThemedProps>`
+  ${({isCompareTranslate}) => !isCompareTranslate && 'flex-basis: 100% !important'}
+`;
+
+const FieldInfo = styled.div`
+  display: flex;
+  height: 24px;
+  line-height: 24px;
+  & > *:not(:last-child) {
+    border-right: 1px solid ${getColor('grey', 100)};
+    padding-right: 20px;
+  }
+  & > * {
+    padding-left: 20px;
+  }
+`;
+
+const TableFieldSearch = styled(Search)`
+  height: 24px;
+  border-bottom: none;
+`;
+
+const TableFieldHeader = styled.div<{isCompareTranslate: boolean} & AkeneoThemedProps>`
+  ${({isCompareTranslate}) => isCompareTranslate && 'width: 460px;'}
+`;
+
+const TableFieldLabel = styled.label`
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  display: inline-block;
+`;
+
+const LocaleScopeInfo = styled.span`
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  display: inline-block;
 `;
 
 type TableFieldAppProps = TemplateContext & {
   onChange: (tableValue: TableValue) => void;
   elements: {[position: string]: {[elementKey: string]: any}};
   violations?: Violations[];
+  copyContext?: TemplateContext;
 };
 
 type TableRowWithId = TableRow & {'unique id': string};
@@ -39,6 +75,7 @@ const TableFieldApp: React.FC<TableFieldAppProps> = ({
   attribute,
   value,
   onChange,
+  copyContext,
   elements,
   violations = [],
 }) => {
@@ -132,57 +169,65 @@ const TableFieldApp: React.FC<TableFieldAppProps> = ({
     handleChange([...tableValue]);
   };
 
+  const isCompareTranslate = typeof elements['comparison'] !== 'undefined';
+
   return (
-    <DependenciesProvider>
-      <ThemeProvider theme={pimTheme}>
-        <TableInputContainer
-          className={`${type} AknComparableFields-item AknFieldContainer original-field ${editMode}`}>
-          <div className='AknFieldContainer-header'>
-            <label className='AknFieldContainer-label' htmlFor={fieldId}>
-              <span className='AknFieldContainer-labelAnnotation badge-elements-container'>
-                {renderElements('badge')}
-              </span>
-              {label}
-              <span className='AknFieldContainer-labelAnnotation label-elements-container'>
-                {renderElements('label')}
-              </span>
-            </label>
-            <span className='AknFieldContainer-fieldInfo field-info'>
+    <>
+      <TableInputContainer
+        isCompareTranslate={isCompareTranslate}
+        className={`${type} AknComparableFields-item AknFieldContainer original-field ${editMode}`}>
+        <TableFieldHeader className='AknFieldContainer-header' isCompareTranslate={isCompareTranslate}>
+          <TableFieldLabel className='AknFieldContainer-label' htmlFor={fieldId}>
+            <span className='AknFieldContainer-labelAnnotation badge-elements-container'>
+              {renderElements('badge')}
+            </span>
+            {label}
+            <span className='AknFieldContainer-labelAnnotation label-elements-container'>
+              {renderElements('label')}
+            </span>
+          </TableFieldLabel>
+          <FieldInfo>
+            {!copyContext && (
+              <div>
+                <TableFieldSearch
+                  onSearchChange={setSearchText}
+                  placeholder={translate('pim_common.search')}
+                  searchValue={searchText}
+                  title={translate('pim_common.search')}
+                />
+              </div>
+            )}
+            <LocaleScopeInfo className='AknFieldContainer-fieldInfo field-info'>
               {(locale || scope) && (
                 <span className='field-context'>
                   {scope && <span className='field-scope'>{context.scopeLabel}&nbsp;</span>}
                   {locale && <Locale code={locale} />}
                 </span>
               )}
-            </span>
-            <Search
-              onSearchChange={setSearchText}
-              placeholder={translate('pim_common.search')}
-              searchValue={searchText}
-              title={translate('pim_common.search')}
-            />
+            </LocaleScopeInfo>
             <AddRowsButton
               attributeCode={attribute.code}
               columnCode={firstColumnCode}
               checkedOptionCodes={tableValue.map(row => (row[firstColumnCode] ?? '') as string)}
               toggleChange={handleToggleRow}
             />
-            {context.optional && context.removable && 'edit' === editMode && (
-              <i
-                className='AknIconButton AknIconButton--small icon-remove remove-attribute'
-                data-attribute={attribute.code}
-                data-toggle='tooltip'
-                title={'pim_enrich.entity.product.module.attribute.remove_optional'}
-              />
-            )}
-          </div>
+          </FieldInfo>
+          {context.optional && context.removable && 'edit' === editMode && (
+            <i
+              className='AknIconButton AknIconButton--small icon-remove remove-attribute'
+              data-attribute={attribute.code}
+              data-toggle='tooltip'
+              title={'pim_enrich.entity.product.module.attribute.remove_optional'}
+            />
+          )}
+          </TableFieldHeader>
           <div className='AknFieldContainer-inputContainer field-input'>
             <TableInputValue
               attributeCode={attribute.code}
               valueData={tableValue}
               tableConfiguration={attribute.table_configuration}
               onChange={handleChange}
-              searchText={searchText}
+              searchText={copyContext ? '' : searchText}
               violatedCells={violatedCellsById}
             />
             {renderElements('field-input')}
@@ -192,10 +237,18 @@ const TableFieldApp: React.FC<TableFieldAppProps> = ({
           </footer>
         </TableInputContainer>
         <div className='AknComparableFields-item AknComparableFields-item--comparisonContainer AknFieldContainer comparison-elements-container'>
-          {renderElements('comparison')}
+          {copyContext && (
+            <TableInputValue
+              attributeCode={attribute.code}
+              valueData={tableValue}
+              tableConfiguration={attribute.table_configuration}
+              onChange={handleChange}
+              searchText={copyContext ? '' : searchText}
+            />
+          )}
+          {!copyContext && renderElements('comparison')}
         </div>
-      </ThemeProvider>
-    </DependenciesProvider>
+      </>
   );
 };
 

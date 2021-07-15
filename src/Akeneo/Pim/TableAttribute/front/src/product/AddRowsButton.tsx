@@ -80,7 +80,7 @@ const AddRowsButton: React.FC<AddRowsButtonProps> = ({attributeCode, columnCode,
 
   return (
     <Dropdown>
-      <Button onClick={open}>
+      <Button onClick={open} level='secondary' size='small' ghost>
         {translate('pim_table_attribute.product_edit_form.add_rows')}
         <ArrowDownIcon />
       </Button>

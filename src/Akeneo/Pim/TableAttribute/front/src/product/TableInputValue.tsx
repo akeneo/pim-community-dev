@@ -1,5 +1,5 @@
 import React from 'react';
-import {AddingValueIllustration, TableInput} from 'akeneo-design-system';
+import {AddingValueIllustration, getColor, getFontSize, TableInput} from 'akeneo-design-system';
 import {
   ColumnCode,
   NumberColumnValidation,
@@ -31,7 +31,19 @@ const TableInputContainer = styled.div`
 `;
 
 const CenteredHelper = styled.div`
+  border: 1px solid ${getColor('grey', 80)};
+  padding-bottom: 20px;
   text-align: center;
+  color: ${getColor('grey', 100)};
+  & > * {
+    display: block;
+    margin: auto;
+  }
+`;
+
+const CenteredHelperTitle = styled.div`
+  color: ${getColor('grey', 140)};
+  font-size: ${getFontSize('big')};
 `;
 
 type TableInputValueProps = {
@@ -219,13 +231,22 @@ const TableInputValue: React.FC<TableInputValueProps> = ({
           {translate('pim_table_attribute.form.product.no_search_result')}
         </CenteredHelper>
       )}
-      <TableFooter
-        itemsPerPage={itemsPerPage}
-        currentPage={currentPage}
-        rowsCount={filteredData.length}
-        setCurrentPage={setCurrentPage}
-        setItemsPerPage={setItemsPerPage}
-      />
+      {!isSearching && valueDataPage.length === 0 && (
+        <CenteredHelper>
+          <AddingValueIllustration size={120} />
+          <CenteredHelperTitle>{translate('pim_table_attribute.form.product.no_rows_title')}</CenteredHelperTitle>
+          {translate('pim_table_attribute.form.product.no_rows_subtitle')}
+        </CenteredHelper>
+      )}
+      {valueData.length > TABLE_VALUE_ITEMS_PER_PAGE[0] && (
+        <TableFooter
+          itemsPerPage={itemsPerPage}
+          currentPage={currentPage}
+          rowsCount={filteredData.length}
+          setCurrentPage={setCurrentPage}
+          setItemsPerPage={setItemsPerPage}
+        />
+      )}
     </TableInputContainer>
   );
 };

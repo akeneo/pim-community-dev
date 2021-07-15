@@ -25,6 +25,8 @@ pim_table_attribute:
             current_items: "{{ minItem }}-{{ maxItem }} of {{ itemCount }}"
             current_page: "Page {{ currentPage }} / {{ pageCount }}"
             no_search_result: "Sorry, there are no lines for your search!"
+            no_rows_title: "Your {{ attributeLabel }} is empty"
+            no_rows_subtitle: "TODO To add lines, define new properties"
     properties:
         data_type:
             text: Text
