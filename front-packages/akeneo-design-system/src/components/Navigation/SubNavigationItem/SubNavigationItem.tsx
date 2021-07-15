@@ -1,7 +1,7 @@
 import React from 'react';
 import styled from 'styled-components';
 import {Override} from '../../../shared';
-import {AkeneoThemedProps, getColor} from '../../../theme';
+import {AkeneoThemedProps, getColor, getFontSize} from '../../../theme';
 import {Tag} from '../../Tags/Tags';
 
 const Container = styled.a<{active: boolean; disabled: boolean} & AkeneoThemedProps>`
@@ -13,9 +13,10 @@ const Container = styled.a<{active: boolean; disabled: boolean} & AkeneoThemedPr
   height: 38px;
   margin: 0;
   outline: none;
-  padding: 10px 30px;
+  padding: 0 30px 0 0;
   text-decoration: none;
   overflow: hidden;
+  line-height: 38px;
 
   :hover {
     color: ${({disabled}) => !disabled && getColor('brand', 100)};
@@ -32,6 +33,7 @@ const Label = styled.div<{hasTag: boolean} & AkeneoThemedProps>`
   overflow: hidden;
   text-overflow: ellipsis;
   white-space: nowrap;
+  font-size: ${getFontSize('big')};
 `;
 
 type Props = Override<
