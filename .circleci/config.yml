@@ -35,10 +35,17 @@ aliases:
 
 jobs:
   checkout:
+    parameters:
+        is_pull_request:
+            type: boolean
+            default: false
     docker:
       - image: alpine/git
     steps:
       - checkout
+      - run:
+         name: Install cUrl
+         command: apk --no-cache add curl
       - run:
           name: Install yq
           command: |
@@ -51,19 +58,42 @@ jobs:
       - run:
           name: Remove MySQL port translation for GRTH (see BH-664)
           command: yq delete --inplace grth/docker-compose.yml services.mysql.ports
+      - when:
+            condition: << parameters.is_pull_request >>
+            steps:
+                - run:
+                      name: Update composer.json if same branch exists in CE for EE
+                      command: |
+                          curl --output /dev/null --silent --head --fail https://github.com/akeneo/pim-community-dev/tree/${CIRCLE_BRANCH} && \
+                              sed -i "s#akeneo/pim-community-dev\": \"dev-master#akeneo/pim-community-dev\": \"dev-${CIRCLE_BRANCH}#" composer.json || \
+                              echo "No CE branch $CIRCLE_BRANCH found. I don't touch the EE dependencies."
+                - run:
+                      name: Update composer.json if same branch exists in CE for GRTH
+                      command: |
+                          curl --output /dev/null --silent --head --fail https://github.com/akeneo/pim-community-dev/tree/${CIRCLE_BRANCH} && \
+                              sed -i "s#akeneo/pim-community-dev\": \"dev-master#akeneo/pim-community-dev\": \"dev-${CIRCLE_BRANCH}#" grth/composer.json || \
+                              echo "No CE branch $CIRCLE_BRANCH found. I don't touch the Growth Edition file."
       - persist_to_workspace:
           root: ~/
           paths:
             - project
+      - store_artifacts:
+          path: composer.json
+          destination: ee-composer.json
+      - store_artifacts:
+          path: grth/composer.json
+          destination: grth-composer.json
+      - store_artifacts:
+          path: docker-compose.yml
+          destination: ee-docker-compose.yml
+      - store_artifacts:
+          path: grth/docker-compose.yml
+          destination: grth-docker-compose.yml
 
   ##################
   # Build          #
   ##################
   build_srnt_dev:
-    parameters:
-        is_pull_request:
-            type: boolean
-            default: true
     machine:
       image: ubuntu-2004:202010-01
     steps:
@@ -86,24 +116,6 @@ jobs:
               sudo chown -R 1000:1000 ../project
               sudo chown -R 1000:1000 ~/.composer
               sudo chown -R 1000:1000 ~/.cache/yarn
-      - when:
-            condition: << parameters.is_pull_request >>
-            steps:
-                - run:
-                      name: Update composer.json if same branch exists in CE for EE
-                      command: |
-                          curl --output /dev/null --silent --head --fail https://github.com/akeneo/pim-community-dev/tree/${CIRCLE_BRANCH} && \
-                            docker-compose run --rm -u www-data:www-data php php /usr/local/bin/composer require "akeneo/pim-community-dev:dev-${CIRCLE_BRANCH}" --no-update || \
-                            echo "No CE branch $CIRCLE_BRANCH found. I don't touch the EE dependencies."
-      - when:
-            condition: << parameters.is_pull_request >>
-            steps:
-                - run:
-                      name: Update composer.json if same branch exists in CE for GRTH
-                      command: |
-                          curl --output /dev/null --silent --head --fail https://github.com/akeneo/pim-community-dev/tree/${CIRCLE_BRANCH} && \
-                              docker-compose run --rm -u www-data:www-data -w /srv/pim/grth php /usr/local/bin/composer require "akeneo/pim-community-dev:dev-${CIRCLE_BRANCH}" --no-update || \
-                              echo "No CE branch $CIRCLE_BRANCH found. I don't touch the Growth Edition file."
       - run:
           name: Install back and front dependencies
           command: make dependencies
@@ -152,10 +164,6 @@ jobs:
             - project
 
   build_srnt_prod:
-      parameters:
-          is_pull_request:
-              type: boolean
-              default: true
       environment:
         <<: *envVarsDeployDev
       machine:
@@ -164,26 +172,6 @@ jobs:
           - attach_workspace:
                 at: ~/
           - set_gcloud_config_dev
-          - when:
-                condition: << parameters.is_pull_request >>
-                steps:
-                    - run:
-                          name: Update composer.json if same branch exists in CE for EE
-                          command: >
-                              curl --output /dev/null --silent --head --fail
-                              https://github.com/akeneo/pim-community-dev/tree/${CIRCLE_BRANCH} &&
-                              sed -i "s|\"akeneo/pim-community-dev\": \"dev-master|\"akeneo/pim-community-dev\": \"dev-${CIRCLE_BRANCH}|" composer.json ||
-                              echo "No CE branch ${CIRCLE_BRANCH} found. I don't touch the composer.json file."
-          - when:
-                condition: << parameters.is_pull_request >>
-                steps:
-                    - run:
-                          name: Update composer.json if same branch exists in CE for GRTH
-                          command: >
-                              curl --output /dev/null --silent --head --fail
-                              https://github.com/akeneo/pim-community-dev/tree/${CIRCLE_BRANCH} &&
-                              sed -i "s|\"akeneo/pim-community-dev\": \"dev-master|\"akeneo/pim-community-dev\": \"dev-${CIRCLE_BRANCH}|" grth/composer.json ||
-                              echo "No CE branch ${CIRCLE_BRANCH} found. I don't touch the composer.json file."
           - run:
               name: Define value for next steps
               command: |
@@ -233,7 +221,7 @@ jobs:
     parameters:
       is_pull_request:
         type: boolean
-        default: true
+        default: false
     environment:
       <<: *envVarsDeployDev
     machine:
@@ -1615,6 +1603,7 @@ workflows:
                         ignore:
                             - "master"
           - checkout:
+                is_pull_request: true
                 requires:
                     - ready_to_build?
           - build_srnt_dev:
@@ -1653,6 +1642,7 @@ workflows:
                 requires:
                     - test_cronjobs_existence_grth
           - build_grth:
+                is_pull_request: true
                 requires:
                     - test_helm_generated_k8s_files_grth
           - test_cronjobs_existence_grth:
@@ -1734,11 +1724,9 @@ workflows:
                 requires:
                     - ready_to_build?
           - build_srnt_prod:
-                is_pull_request: false
                 requires:
                     - checkout
           - build_srnt_dev:
-                is_pull_request: false
                 requires:
                     - checkout
           - test_cronjobs_existence_srnt:
@@ -1808,7 +1796,6 @@ workflows:
               requires:
                   - ready_to_build?
           - build_grth:
-              is_pull_request: false
               requires:
                   - checkout
           - test_cronjobs_existence_grth:
@@ -1839,11 +1826,9 @@ workflows:
       jobs:
           - checkout
           - build_srnt_prod:
-                is_pull_request: false
                 requires:
                     - checkout
           - build_srnt_dev:
-                is_pull_request: false
                 requires:
                     - checkout
           - test_cronjobs_existence_srnt:
@@ -1913,7 +1898,6 @@ workflows:
       jobs:
           - checkout
           - build_grth:
-                is_pull_request: false
                 requires:
                     - checkout
           - test_cronjobs_existence_grth:
