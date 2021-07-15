@@ -12,7 +12,6 @@ import {useHistory} from 'react-router';
 
 const PageContent = styled.div`
     text-align: center;
-    margin-top: 196px;
 
     & > * {
         margin-bottom: 20px;

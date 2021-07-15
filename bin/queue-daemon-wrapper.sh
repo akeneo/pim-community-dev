@@ -13,6 +13,7 @@ catch() {
     log_as_monolog 'Waiting with grace for wrapped process to finish.'
     wait $pid
     log_as_monolog 'Wrapped process finished. Ended with grace.'
+    exit 0
 }
 
 trap 'catch' SIGTERM

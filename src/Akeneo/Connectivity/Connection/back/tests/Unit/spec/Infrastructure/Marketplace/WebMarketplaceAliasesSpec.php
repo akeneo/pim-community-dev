@@ -78,7 +78,7 @@ class WebMarketplaceAliasesSpec extends ObjectBehavior
     public function it_returns_null_when_unsupported_version(
         VersionProviderInterface $versionProvider
     ) {
-        $versionProvider->getVersion()->willReturn('master');
+        $versionProvider->getVersion()->willReturn('20210713150654');
 
         $this->getVersion()->shouldReturn(null);
     }

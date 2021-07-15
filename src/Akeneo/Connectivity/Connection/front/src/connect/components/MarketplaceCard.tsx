@@ -27,13 +27,15 @@ const CardContainer = styled.div`
 const Logo = styled.img`
     display: inline-block;
     width: 100px;
-    height: 100px;
+    height: auto;
+    max-height: 100px;
     border: 1px ${getColor('grey', 40)} solid;
     grid-area: logo;
 `;
 
 const TextInformation = styled.div`
     grid-area: text;
+    max-width: 100%;
 `;
 
 const Name = styled.h1`
