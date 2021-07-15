@@ -4,8 +4,9 @@ namespace Akeneo\Tool\Component\Connector\Writer\File;
 
 use Akeneo\Tool\Component\Batch\Model\StepExecution;
 use Akeneo\Tool\Component\Batch\Step\StepExecutionAwareInterface;
-use Akeneo\Tool\Component\Connector\Writer\WriterFactory;
 use Box\Spout\Common\Exception\UnsupportedTypeException;
+use Box\Spout\Writer\Common\Creator\WriterEntityFactory;
+use Box\Spout\Writer\Common\Creator\WriterFactory;
 use Box\Spout\Writer\WriterInterface;
 
 /**
@@ -83,7 +84,9 @@ class FlatItemBufferFlusher implements StepExecutionAwareInterface
         $hollowItem = array_fill_keys($headers, '');
 
         $writer = $this->getWriter($filePath, $writerOptions);
-        $writer->addRow($headers);
+        if ([] !== $headers) {
+            $writer->addRow(WriterEntityFactory::createRowFromArray($headers));
+        }
 
         foreach ($buffer as $incompleteItem) {
             $incompleteKeys = $this->columnPresenter->present(
@@ -94,7 +97,7 @@ class FlatItemBufferFlusher implements StepExecutionAwareInterface
             $incompleteItem = array_combine($incompleteKeys, $incompleteItem);
 
             $item = array_replace($hollowItem, $incompleteItem);
-            $writer->addRow($item);
+            $writer->addRow(WriterEntityFactory::createRowFromArray($item));
 
             if (null !== $this->stepExecution) {
                 $this->stepExecution->incrementSummaryInfo('write');
@@ -141,7 +144,9 @@ class FlatItemBufferFlusher implements StepExecutionAwareInterface
                 );
                 $writtenLinesCount = 0;
                 $writer = $this->getWriter($filePath, $writerOptions);
-                $writer->addRow($headers);
+                if ([] !== $headers) {
+                    $writer->addRow(WriterEntityFactory::createRowFromArray($headers));
+                }
             }
 
             $incompleteKeys = $this->columnPresenter->present(
@@ -152,7 +157,7 @@ class FlatItemBufferFlusher implements StepExecutionAwareInterface
             $incompleteItem = array_combine($incompleteKeys, $incompleteItem);
 
             $item = array_replace($hollowItem, $incompleteItem);
-            $writer->addRow($item);
+            $writer->addRow(WriterEntityFactory::createRowFromArray($item));
             $writtenLinesCount++;
 
             if (null !== $this->stepExecution) {
@@ -268,7 +273,7 @@ class FlatItemBufferFlusher implements StepExecutionAwareInterface
             throw new \InvalidArgumentException('Option "type" have to be defined');
         }
 
-        $writer = WriterFactory::create($options['type']);
+        $writer = WriterFactory::createFromType($options['type']);
         unset($options['type']);
 
         foreach ($options as $name => $option) {

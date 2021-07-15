@@ -5,8 +5,9 @@ namespace Akeneo\Tool\Component\Connector\Reader\File;
 use Akeneo\Tool\Component\Batch\Item\InvalidItemException;
 use Box\Spout\Common\Exception\UnsupportedTypeException;
 use Box\Spout\Common\Type;
+use Box\Spout\Reader\Common\Creator\ReaderFactory;
 use Box\Spout\Reader\IteratorInterface;
-use Box\Spout\Reader\ReaderFactory;
+use Box\Spout\Reader\ReaderInterface;
 use Symfony\Component\Filesystem\Exception\FileNotFoundException;
 use Symfony\Component\Filesystem\Filesystem;
 use Symfony\Component\Finder\Finder;
@@ -22,26 +23,13 @@ use Symfony\Component\Finder\Finder;
  */
 class FlatFileIterator implements FileIteratorInterface
 {
-    /** @var string */
-    protected $type;
-
-    /** @var string */
-    protected $filePath;
-
-    /** @var FileReaderInterface */
-    protected $reader;
-
-    /** @var \SplFileInfo */
-    protected $fileInfo;
-
-    /** @var string */
-    protected $archivePath;
-
-    /** @var IteratorInterface */
-    protected $rows;
-
-    /** @var array */
-    protected $headers;
+    protected string $type;
+    protected string $filePath;
+    protected ?ReaderInterface $reader = null;
+    protected \SplFileInfo $fileInfo;
+    protected ?string $archivePath = null;
+    protected IteratorInterface $rows;
+    protected array $headers;
 
     /**
      * @param string $type
@@ -66,7 +54,7 @@ class FlatFileIterator implements FileIteratorInterface
             $this->extractZipArchive();
         }
 
-        $this->reader = ReaderFactory::create($type);
+        $this->reader = ReaderFactory::createFromType($type);
         if (isset($options['reader_options'])) {
             $this->setReaderOptions($options['reader_options']);
         }
@@ -76,7 +64,8 @@ class FlatFileIterator implements FileIteratorInterface
         $sheet = $this->reader->getSheetIterator()->current();
         $sheet->getRowIterator()->rewind();
 
-        $this->headers = $sheet->getRowIterator()->current();
+        $headers = $sheet->getRowIterator()->current();
+        $this->headers = $headers ? $headers->toArray() : [];
         $this->rows = $sheet->getRowIterator();
     }
 
@@ -103,7 +92,7 @@ class FlatFileIterator implements FileIteratorInterface
             return null;
         }
 
-        return $data;
+        return $data->toArray();
     }
 
     /**

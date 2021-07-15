@@ -8,7 +8,9 @@ use Akeneo\Test\IntegrationTestsBundle\Launcher\JobLauncher;
 use Akeneo\Tool\Bundle\BatchBundle\Persistence\Sql\SqlCreateJobInstance;
 use Akeneo\UserManagement\Component\Model\UserInterface;
 use Akeneo\UserManagement\Component\Repository\UserRepositoryInterface;
-use Akeneo\Tool\Component\Connector\Writer\WriterFactory;
+use Box\Spout\Common\Entity\Row;
+use Box\Spout\Writer\Common\Creator\WriterEntityFactory;
+use Box\Spout\Writer\Common\Creator\WriterFactory;
 use PHPUnit\Framework\Assert;
 
 final class ImportUserIntegration extends TestCase
@@ -73,12 +75,17 @@ CSV;
     public function it_imports_user_groups_in_xlsx(): void
     {
         $temporaryFile = tempnam(sys_get_temp_dir(), 'test_user_import');
-        $writer = WriterFactory::create('xlsx');
+        $writer = WriterFactory::createFromType('xlsx');
         $writer->openToFile($temporaryFile);
-        $writer->addRows([
-            ['username', 'email', 'enabled', 'first_name', 'last_name', 'groups', 'roles'],
-            ['new_user', 'new_user@example.com', '1', 'James', 'Smith', 'All', 'ROLE_USER'],
-        ]);
+        $writer->addRows(
+            \array_map(
+                fn (array $data): Row => WriterEntityFactory::createRowFromArray($data),
+                [
+                    ['username', 'email', 'enabled', 'first_name', 'last_name', 'groups', 'roles'],
+                    ['new_user', 'new_user@example.com', '1', 'James', 'Smith', 'All', 'ROLE_USER'],
+                ]
+            )
+        );
         $writer->close();
 
         $this->jobLauncher->launchImport(self::XLSX_IMPORT_JOB_CODE, file_get_contents($temporaryFile), null, [], [], 'xlsx');

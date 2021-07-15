@@ -132,9 +132,7 @@ CSV;
 
     public function testProductExportByFilteringWithAnEmptyList()
     {
-        $expectedCsv = <<<CSV
-
-CSV;
+        $expectedCsv = '';
 
         $config = [
             'filters' => [

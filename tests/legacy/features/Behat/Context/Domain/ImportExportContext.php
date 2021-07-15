@@ -3,9 +3,10 @@
 namespace Pim\Behat\Context\Domain;
 
 use Behat\Gherkin\Node\PyStringNode;
+use Box\Spout\Common\Entity\Row;
 use Box\Spout\Common\Type;
+use Box\Spout\Reader\Common\Creator\ReaderFactory;
 use Box\Spout\Reader\CSV\Reader as CsvReader;
-use Box\Spout\Reader\ReaderFactory;
 use PHPUnit\Framework\Assert;
 use Pim\Behat\Context\PimContext;
 
@@ -183,7 +184,7 @@ class ImportExportContext extends PimContext
     {
         $jobContext = $this->getMainContext()->getSubcontext('job');
 
-        $reader = ReaderFactory::create($fileType);
+        $reader = ReaderFactory::createFromType($fileType);
 
         if (Type::CSV === $fileType && $reader instanceof CsvReader) {
             $reader
@@ -197,7 +198,10 @@ class ImportExportContext extends PimContext
         $lines = iterator_to_array($sheet->getRowIterator());
         $reader->close();
 
-        return $lines;
+        return \array_map(
+            fn (Row $row): array => $row->toArray(),
+            $lines
+        );
     }
 
     /**
