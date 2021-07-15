@@ -11,7 +11,7 @@ declare(strict_types=1);
  * file that was distributed with this source code.
  */
 
-namespace Akeneo\Pim\TableAttribute\Infrastructure\ArrayConverter\StandardToFlat;
+namespace Akeneo\Pim\TableAttribute\Infrastructure\Connector\ArrayConverter\StandardToFlat;
 
 use Akeneo\Pim\Structure\Component\AttributeTypes;
 use Akeneo\Pim\TableAttribute\Domain\TableConfiguration\Repository\SelectOptionCollectionRepository;

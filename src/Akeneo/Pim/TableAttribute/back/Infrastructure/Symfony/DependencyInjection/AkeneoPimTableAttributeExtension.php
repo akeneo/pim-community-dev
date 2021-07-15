@@ -34,6 +34,7 @@ class AkeneoPimTableAttributeExtension extends Extension
         $loader->load('enrichment.yml');
         $loader->load('event_subscribers.yml');
         $loader->load('factories.yml');
+        $loader->load('jobs.yml');
         $loader->load('normalizers.yml');
         $loader->load('persistence.yml');
         $loader->load('providers.yml');

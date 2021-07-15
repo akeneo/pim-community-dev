@@ -19,7 +19,7 @@ use Webmozart\Assert\Assert;
 
 class NumberColumn extends AbstractColumnDefinition
 {
-    private const DATATYPE = 'number';
+    public const DATATYPE = 'number';
 
     /**
      * @param array<string, mixed> $normalized

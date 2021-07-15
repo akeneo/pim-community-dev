@@ -58,6 +58,12 @@ $rules = [
             'Akeneo\Pim\Enrichment\Component\Product\Connector\ArrayConverter\StandardToFlat\Product\ValueConverter\AbstractValueConverter',
             'Akeneo\Pim\Enrichment\Component\Product\Connector\ArrayConverter\FlatToStandard\ValueConverter\ValueConverterInterface',
             'Oro\Bundle\SecurityBundle\SecurityFacade',
+            'Akeneo\Tool\Component\Batch\Item\InitializableInterface',
+            'Akeneo\Tool\Component\Batch\Item\ItemProcessorInterface',
+            'Akeneo\Tool\Component\Batch\Item\ItemReaderInterface',
+            'Akeneo\Tool\Component\Batch\Item\TrackableItemReaderInterface',
+            'Akeneo\Tool\Component\Batch\Model\StepExecution',
+            'Akeneo\Tool\Component\Batch\Step\StepExecutionAwareInterface',
         ]
     )->in('Akeneo\Pim\TableAttribute\Infrastructure'),
 ];

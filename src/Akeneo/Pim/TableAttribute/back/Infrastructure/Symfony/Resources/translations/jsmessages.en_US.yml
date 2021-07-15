@@ -53,3 +53,6 @@ pim_enrich:
             property:
                 type:
                     pim_catalog_table: Table
+batch_jobs:
+    csv_table_attribute_options_export.label: Table attribute select options export in CSV
+    xlsx_table_attribute_options_export.label: Table attribute select options export in XLSX
