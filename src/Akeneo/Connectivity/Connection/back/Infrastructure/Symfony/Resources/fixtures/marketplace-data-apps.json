@@ -15,8 +15,8 @@
                 "E-commerce"
             ],
             "certified": false,
-            "activate_url": "https://fake.shopify.akeneo.com/activate",
-            "callback_url": "https://fake.shopify.akeneo.com/oauth2/callback"
+            "activate_url": "https://yell-extension-t2omu7tdaq-uc.a.run.app/activate",
+            "callback_url": "https://yell-extension-t2omu7tdaq-uc.a.run.app/oauth2"
         }
     ]
 }
