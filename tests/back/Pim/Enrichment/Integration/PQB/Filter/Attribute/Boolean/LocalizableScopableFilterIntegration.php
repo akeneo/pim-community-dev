@@ -79,14 +79,14 @@ class LocalizableScopableFilterIntegration extends AbstractProductQueryBuilderTe
     public function testErrorLocalizable()
     {
         $this->expectException(InvalidPropertyException::class);
-        $this->expectExceptionMessage('Attribute "a_localizable_scopable_yes_no" expects a locale, none given.');
+        $this->expectExceptionMessage('The a_localizable_scopable_yes_no attribute requires a locale.');
         $this->executeFilter([['a_localizable_scopable_yes_no', Operators::NOT_EQUAL, true]]);
     }
 
     public function testErrorScopable()
     {
         $this->expectException(InvalidPropertyException::class);
-        $this->expectExceptionMessage('Attribute "a_localizable_scopable_yes_no" expects a scope, none given.');
+        $this->expectExceptionMessage('The a_localizable_scopable_yes_no attribute requires a value per channel.');
         $this->executeFilter([['a_localizable_scopable_yes_no', Operators::NOT_EQUAL, true, ['locale' => 'en_US']]]);
     }
 

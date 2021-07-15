@@ -333,7 +333,7 @@ class LocalizableFilterIntegration extends AbstractProductQueryBuilderTestCase
     public function testErrorPriceLocalizable()
     {
         $this->expectException(InvalidPropertyException::class);
-        $this->expectExceptionMessage('Attribute "a_localizable_price" expects a locale, none given.');
+        $this->expectExceptionMessage('The a_localizable_price attribute requires a locale.');
 
         $this->executeFilter([['a_localizable_price', Operators::NOT_EQUAL, ['amount' => 250, 'currency' => 'USD']]]);
     }

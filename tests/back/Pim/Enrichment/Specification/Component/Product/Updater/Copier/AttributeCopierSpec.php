@@ -362,7 +362,7 @@ class AttributeCopierSpec extends ObjectBehavior
         AttributeInterface $toAttribute,
         ProductInterface $product
     ) {
-        $e = new \LogicException('Attribute "attributeCode" expects a scope, none given.');
+        $e = new \LogicException('The attributeCode attribute requires a value per channel.');
         $fromAttribute->getCode()->willReturn('attributeCode');
         $fromAttribute->isLocalizable()->willReturn(false);
         $fromAttribute->isScopable()->willReturn(true);

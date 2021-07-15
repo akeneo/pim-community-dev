@@ -202,7 +202,7 @@ class LocalizableScopableFilterIntegration extends AbstractProductQueryBuilderTe
     public function testErrorMetricLocalizable()
     {
         $this->expectException(InvalidPropertyException::class);
-        $this->expectExceptionMessage('Attribute "a_scopable_localizable_metric" expects a locale, none given.');
+        $this->expectExceptionMessage('The a_scopable_localizable_metric attribute requires a locale.');
 
         $this->executeFilter([['a_scopable_localizable_metric', Operators::NOT_EQUAL, ['amount' => 250, 'unit' => 'KILOWATT']]]);
     }
@@ -210,7 +210,7 @@ class LocalizableScopableFilterIntegration extends AbstractProductQueryBuilderTe
     public function testErrorMetricScopable()
     {
         $this->expectException(InvalidPropertyException::class);
-        $this->expectExceptionMessage('Attribute "a_scopable_localizable_metric" expects a scope, none given.');
+        $this->expectExceptionMessage('The a_scopable_localizable_metric attribute requires a value per channel.');
 
         $this->executeFilter([['a_scopable_localizable_metric', Operators::NOT_EQUAL, ['amount' => 250, 'unit' => 'KILOWATT'], ['locale' => 'fr_FR']]]);
     }

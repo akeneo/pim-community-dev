@@ -2,6 +2,8 @@
 
 namespace Specification\Akeneo\Pim\Enrichment\Component\Product\Validator;
 
+use Akeneo\Pim\Enrichment\Component\Product\Exception\NotScopableAttributeException;
+use Akeneo\Pim\Enrichment\Component\Product\Exception\ScopableAttributeException;
 use PhpSpec\ObjectBehavior;
 use Akeneo\Pim\Structure\Component\Model\AttributeInterface;
 use Akeneo\Channel\Component\Repository\ChannelRepositoryInterface;
@@ -45,10 +47,10 @@ class AttributeValidatorHelperSpec extends ObjectBehavior
         $name->isLocalizable()->willReturn(false);
         $name->getCode()->willReturn('name');
 
-        $this->shouldThrow(new \LogicException('Attribute "description" expects a locale, none given.'))
+        $this->shouldThrow(new \LogicException('The description attribute requires a locale.'))
             ->during('validateLocale', [$description, null]);
 
-        $this->shouldThrow(new \LogicException('Attribute "name" does not expect a locale, "en_US" given.'))
+        $this->shouldThrow(new \LogicException('The name attribute is not localisable.'))
             ->during('validateLocale', [$name, 'en_US']);
     }
 
@@ -91,10 +93,10 @@ class AttributeValidatorHelperSpec extends ObjectBehavior
         $name->isScopable()->willReturn(false);
         $name->getCode()->willReturn('name');
 
-        $this->shouldThrow(new \LogicException('Attribute "description" expects a scope, none given.'))
+        $this->shouldThrow(ScopableAttributeException::class)
             ->during('validateScope', [$description, null]);
 
-        $this->shouldThrow(new \LogicException('Attribute "name" does not expect a scope, "ecommerce" given.'))
+        $this->shouldThrow(NotScopableAttributeException::class)
             ->during('validateScope', [$name, 'ecommerce']);
     }
 
@@ -129,9 +131,7 @@ class AttributeValidatorHelperSpec extends ObjectBehavior
 
 class InitializedAttributeValidatorHelper extends AttributeValidatorHelper
 {
-    /** @var array */
-    protected $localeCodes = ['en_US', 'fr_FR'];
+    protected ?array $localeCodes = ['en_US', 'fr_FR'];
 
-    /** @var array */
-    protected $scopeCodes = ['ecommerce', 'tablet'];
+    protected ?array $scopeCodes = ['ecommerce', 'tablet'];
 }

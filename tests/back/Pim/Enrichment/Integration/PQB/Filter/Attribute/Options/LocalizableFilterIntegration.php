@@ -104,7 +104,7 @@ class LocalizableFilterIntegration extends AbstractProductQueryBuilderTestCase
     public function testErrorOptionLocalizable()
     {
         $this->expectException(InvalidPropertyException::class);
-        $this->expectExceptionMessage('Attribute "a_localizable_multi_select" expects a locale, none given.');
+        $this->expectExceptionMessage('The a_localizable_multi_select attribute requires a locale.');
 
         $this->executeFilter([['a_localizable_multi_select', Operators::IN_LIST, ['orange']]]);
     }

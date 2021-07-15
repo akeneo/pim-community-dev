@@ -9,7 +9,7 @@ namespace Akeneo\Pim\Enrichment\Component\Product\Exception;
  * @copyright 2021 Akeneo SAS (http://www.akeneo.com)
  * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
  */
-final class NotLocalizableAttributeException extends \LogicException
+class NotScopableAttributeException extends \LogicException
 {
     private function __construct(string $message)
     {
@@ -18,6 +18,6 @@ final class NotLocalizableAttributeException extends \LogicException
 
     public static function withCode(string $attributeCode): self
     {
-        return new self(sprintf('The %s attribute is not localisable.', $attributeCode));
+        return new self(sprintf('The %s attribute does not require a value per channel.', $attributeCode));
     }
 }
