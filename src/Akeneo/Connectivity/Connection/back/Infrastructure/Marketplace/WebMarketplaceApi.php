@@ -14,6 +14,7 @@ class WebMarketplaceApi implements WebMarketplaceApiInterface
 {
     private ClientInterface $client;
     private WebMarketplaceAliasesInterface $webMarketplaceAliases;
+    private string $fixturePath;
 
     public function __construct(
         ClientInterface $client,
@@ -38,5 +39,15 @@ class WebMarketplaceApi implements WebMarketplaceApiInterface
         ]);
 
         return json_decode($response->getBody()->getContents(), true);
+    }
+
+    public function getApps(int $offset = 0, int $limit = 10): array
+    {
+        return json_decode(file_get_contents($this->fixturePath . 'marketplace-data-apps.json'), true);
+    }
+
+    public function setFixturePath(string $fixturePath)
+    {
+        $this->fixturePath = $fixturePath;
     }
 }

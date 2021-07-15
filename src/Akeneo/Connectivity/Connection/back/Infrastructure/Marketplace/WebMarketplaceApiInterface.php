@@ -29,4 +29,26 @@ interface WebMarketplaceApiInterface
      * }
      */
     public function getExtensions(int $offset = 0, int $limit = 10): array;
+
+    /**
+     * @return array{
+     *     total: int,
+     *     offset: int,
+     *     limit: int,
+     *     items: array<array{
+     *          id: string,
+     *          name: string,
+     *          logo: string,
+     *          author: string,
+     *          partner?: string,
+     *          description: string,
+     *          url: string,
+     *          categories: array<string>,
+     *          certified?: bool,
+     *          activate_url: string,
+     *          callback_url: string,
+     *     }>
+     * }
+     */
+    public function getApps(int $offset = 0, int $limit = 10): array;
 }
