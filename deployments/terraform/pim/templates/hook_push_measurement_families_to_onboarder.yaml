@@ -4,7 +4,9 @@ kind: Job
 metadata:
   name: push-measurement-families-to-onboarder
   labels:
-    app.kubernetes.io/component: "hook-push-measurement-families-to-onboarder"
+    component: "hook-measurement-families-to-onboarder" # Deprecated. Cf https://www.notion.so/akeneo/Tagging-strategy-782b4ae037c44d4884b02c8c62e81117
+    app.kubernetes.io/component: "hook-measurement-families-to-onboarder"
+    role: "measurement-families-to-onboarder" # Deprecated
     {{- include "onboarder.standardLabels" . | indent 4 }}
     {{- include "pim.extraLabels" . | indent 4 }}
   annotations:
@@ -17,13 +19,15 @@ spec:
   template:
     metadata:
       labels:
-        app.kubernetes.io/component: "hook-push-measurement-families-to-onboarder"
+        component: "hook-measurement-families-to-onboarder" # Deprecated. Cf https://www.notion.so/akeneo/Tagging-strategy-782b4ae037c44d4884b02c8c62e81117
+        app.kubernetes.io/component: "hook-measurement-families-to-onboarder"
+        role: "measurement-families-to-onboarder" # Deprecated
         {{- include "onboarder.standardLabels" . | indent 8 }}
         {{- include "pim.extraLabels" . | indent 8 }}
     spec:
       restartPolicy: Never
       containers:
-        - name: push-measurement-families-to-onboarder
+        - name: measurement-families-to-onboarder
           image:  {{ template "pim.imageNameAndTag" . }}
           imagePullPolicy: {{ .Values.image.pim.pullPolicy | quote }}
           command: ['sh', '-c', 'export HOME=/var/www && su www-data -s /bin/bash -c "bin/console akeneo:synchronization:push-catalog-to-onboarder -vvv --only-measurement-families"']
@@ -51,12 +55,12 @@ spec:
           secret:
             secretName: pim-secrets
             items:
-              - key: srntPimStorageKey
-                path: srnt.json
+            - key: srntPimStorageKey
+              path: srnt.json
         - name: google-cloud-onboarder-key
           secret:
             secretName: pim-secrets
             items:
-              - key: akobOnboarderKey
-                path: key.json
+            - key: akobOnboarderKey
+              path: key.json
 {{- end }}
