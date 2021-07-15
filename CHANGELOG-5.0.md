@@ -3,6 +3,7 @@
 ## Bug fixes
 
 - PIM-9956: [Backport] PIM-9852: Fix exception during PRE_REMOVE on removeAll cause ES desynchronisation
+- PIM-9943: Fix product-grid quality score filter all
 
 # 5.0.39 (2021-07-06)
 
