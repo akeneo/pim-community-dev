@@ -13,6 +13,7 @@ type NavigationEntry = {
   icon: React.ReactElement<IconProps>;
   subNavigations: SubNavigationType[];
   isLandingSectionPage: boolean;
+  align?: string;
 };
 
 type Props = {
@@ -59,6 +60,7 @@ const PimNavigation: FC<Props> = ({entries, activeEntryCode, activeSubEntryCode}
               role='menuitem'
               data-testid='pim-main-menu-item'
               className={entry.code === activeEntryCode ? 'active' : undefined}
+              style={entry.align === 'bottom' ? {position: 'absolute', bottom: '0'} : {}}
             >
               {translate(entry.title)}
             </MainNavigationItem>
@@ -107,7 +109,10 @@ const LogoContainer = styled.div`
   min-height: 80px;
   position: relative;
 `;
-const MenuContainer = styled.div``;
+const MenuContainer = styled.div`
+  position: relative;
+  height: 100%;
+`;
 const HelpContainer = styled.div`
   height: 80px;
   min-height: 80px;
