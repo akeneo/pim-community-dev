@@ -1,5 +1,7 @@
 # 5.0.x
 
+# 5.0.31 (2021-06-10)
+
 ## Bug fixes
 
 - PIM-9956: [Backport] PIM-9852: Fix exception during PRE_REMOVE on removeAll cause ES desynchronisation
