@@ -1,7 +1,6 @@
 import React, {FC, useRef, useState} from 'react';
 import {Button, Field, Helper, Modal, ProductCategoryIllustration, TextInput, useAutoFocus} from 'akeneo-design-system';
 import {
-  getErrorsForPath,
   NotificationLevel, TextField,
   useNotify,
   useTranslate,
