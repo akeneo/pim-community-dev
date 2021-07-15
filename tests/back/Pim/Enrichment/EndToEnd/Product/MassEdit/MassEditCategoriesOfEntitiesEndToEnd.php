@@ -6,7 +6,6 @@ namespace AkeneoTest\Pim\Enrichment\EndToEnd\Product\MassEdit;
 use Akeneo\Pim\Enrichment\Component\Product\Message\ProductModelUpdated;
 use Akeneo\Pim\Enrichment\Component\Product\Message\ProductUpdated;
 use Akeneo\Pim\Enrichment\Component\Product\Query\Filter\Operators;
-use Symfony\Component\HttpFoundation\Response;
 
 class MassEditCategoriesOfEntitiesEndToEnd extends AbstractMassEditEndToEnd
 {
@@ -42,6 +41,22 @@ class MassEditCategoriesOfEntitiesEndToEnd extends AbstractMassEditEndToEnd
 
         $this->assertEventCount(2, ProductUpdated::class);
         $this->assertEventCount(1, ProductModelUpdated::class);
+
+        $product = $this->getProductWithInternalApi('watch');
+        $this->assertCategories(
+            ['supplier_zaro', 'master_men_pants_jeans'],
+            $product['categories']
+        );
+        $variantProduct = $this->getProductWithInternalApi('1111111111');
+        $this->assertCategories(
+            ['master_men_blazers', 'supplier_zaro', 'master_men_pants_jeans'],
+            $variantProduct['categories']
+        );
+        $productModel = $this->getProductModelWithInternalApi('apollon_yellow');
+        $this->assertCategories(
+            ['master_men_blazers_deals', 'supplier_zaro', 'master_men_pants_jeans'],
+            $productModel['categories']
+        );
     }
 
     public function test_moving_to_a_category_to_entities_produces_event(): void
@@ -76,6 +91,24 @@ class MassEditCategoriesOfEntitiesEndToEnd extends AbstractMassEditEndToEnd
 
         $this->assertEventCount(2, ProductUpdated::class);
         $this->assertEventCount(1, ProductModelUpdated::class);
+
+        $product = $this->getProductWithInternalApi('watch');
+        $this->assertCategories(
+            ['supplier_the_tootles'],
+            $product['categories']
+        );
+        $variantProduct = $this->getProductWithInternalApi('1111111111');
+        $this->assertCategories(
+            /** 'master_men_blazers' and 'supplier_zaro' are coming from 'amor' parent */
+            ['master_men_blazers', 'supplier_zaro', 'supplier_the_tootles'],
+            $variantProduct['categories']
+        );
+        $productModel = $this->getProductModelWithInternalApi('apollon_yellow');
+        $this->assertCategories(
+            /** 'master_men_blazers_deals' and 'supplier_zaro' are coming from 'apollon' parent */
+            ['master_men_blazers_deals', 'supplier_zaro', 'supplier_the_tootles'],
+            $productModel['categories']
+        );
     }
 
     public function test_removing_a_category_to_entities_produces_event(): void
@@ -117,5 +150,29 @@ class MassEditCategoriesOfEntitiesEndToEnd extends AbstractMassEditEndToEnd
 
         $this->assertEventCount(2, ProductUpdated::class);
         $this->assertEventCount(1, ProductModelUpdated::class);
+
+        $product = $this->getProductWithInternalApi('1111111171');
+        $this->assertCategories(
+            ['master_accessories_bags', 'supplier_zaro'],
+            $product['categories']
+        );
+        $variantProduct = $this->getProductWithInternalApi('1111111119');
+        $this->assertCategories(
+            ['master_men_blazers_deals', 'supplier_zaro'],
+            $variantProduct['categories']
+        );
+        $productModel = $this->getProductModelWithInternalApi('amor');
+        $this->assertCategories(
+            ['supplier_zaro'],
+            $productModel['categories']
+        );
+    }
+
+    private function assertCategories(array $expected, array $actual): void
+    {
+        $this->assertCount(count($expected), $actual);
+        foreach ($expected as $category) {
+            $this->assertContains($category, $actual);
+        }
     }
 }
