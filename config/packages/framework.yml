@@ -27,3 +27,6 @@ framework:
         pools:
             name:
                 adapter: cache.adapter.apcu
+            cache.data:
+                adapter: cache.adapter.pdo
+                public: true

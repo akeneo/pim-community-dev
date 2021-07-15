@@ -91,6 +91,7 @@
         "superbalist/flysystem-google-storage": "7.2.2",
         "symfony/acl-bundle": " 1.0.1",
         "symfony/asset": "4.4.25",
+        "symfony/cache": "4.4.25",
         "symfony/config": "4.4.25",
         "symfony/dependency-injection": "4.4.25",
         "symfony/dotenv": "4.4.25",
