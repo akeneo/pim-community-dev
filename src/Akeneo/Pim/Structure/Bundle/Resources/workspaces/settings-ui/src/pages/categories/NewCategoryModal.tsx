@@ -1,11 +1,6 @@
 import React, {FC, useRef, useState} from 'react';
 import {Button, Field, Helper, Modal, ProductCategoryIllustration, TextInput, useAutoFocus} from 'akeneo-design-system';
-import {
-  NotificationLevel, TextField,
-  useNotify,
-  useTranslate,
-  useUserContext
-} from '@akeneo-pim-community/shared';
+import {NotificationLevel, TextField, useNotify, useTranslate, useUserContext} from '@akeneo-pim-community/shared';
 import styled from 'styled-components';
 import {createCategory, ValidationErrors} from '../../infrastructure/savers';
 
@@ -74,7 +69,7 @@ const NewCategoryModal: FC<NewCategoryModalProps> = ({closeModal, onCreate, pare
         )}
       </Modal.Title>
 
-      <StyledField label={translate('pim_common.code')}>
+      <StyledField label={translate('pim_common.code')} requiredLabel={translate('pim_common.required_label')}>
         <TextInput
           ref={codeFieldRef}
           value={newCategoryCode}
