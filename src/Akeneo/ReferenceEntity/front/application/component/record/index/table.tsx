@@ -211,6 +211,13 @@ const Table = ({
     }
   }, [needResize, grid.page, grid.filters]);
 
+  useEffect(() => {
+    // This will clear the image loading queue when leaving the Records table
+    return () => {
+      clearImageLoadingQueue();
+    };
+  }, []);
+
   return (
     <>
       <div className="AknFilterBox AknFilterBox--search">

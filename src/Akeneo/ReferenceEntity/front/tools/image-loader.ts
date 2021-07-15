@@ -19,6 +19,7 @@ const loadInQueue = async (imagePath: string): Promise<void> => {
 };
 
 const clearImageLoadingQueue = () => {
+  console.log('Clearing image loading queue');
   queue.clear();
 };
 
