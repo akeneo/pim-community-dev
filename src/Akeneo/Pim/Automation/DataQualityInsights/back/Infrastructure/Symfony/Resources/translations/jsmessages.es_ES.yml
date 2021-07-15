@@ -50,6 +50,7 @@ akeneo_data_quality_insights:
           messages:
             first_step:
               message1: '¿Tiene problemas con las etiquetas de atributos y opciones? ¿Qué tal volver a lo básico <a href="{{ link }}" target="_blank">aquí</a>?'
+              message2: '¿Necesita ayuda con sus atributos y opciones de atributos? ¡Eche un vistazo <a href="{{ link }}" target="_blank">aquí</a>!'
             second_step:
               message1: Observe detenidamente las etiquetas de sus atributos y opciones. Sus productos tendrán un aspecto aún mejor después.
               message2: Parece que se ha perdido en algún punto del camino. Algunas de sus etiquetas aún necesitan mejoras.
