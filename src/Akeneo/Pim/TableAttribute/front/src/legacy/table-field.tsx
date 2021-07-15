@@ -12,6 +12,8 @@ const Field = require('pim/field');
 // eslint-disable-next-line @typescript-eslint/no-var-requires
 const mediator = require('oro/mediator');
 
+export type CopyContext = {scope: ChannelCode | null; locale: LocaleCode | null; data: TableValue};
+
 export type TemplateContext = {
   type: 'akeneo-table-field';
   editMode: 'view' | 'edit';
@@ -38,12 +40,14 @@ export type Violations = {path: string; attribute: string; locale: LocaleCode | 
 
 class TableField extends (Field as {new (config: any): any}) {
   private violations: Violations[] = [];
+  private selected: boolean;
 
   constructor(config: any) {
     super(config);
 
     this.violations = [];
     this.copyContext = undefined;
+    this.selected = false;
     this.fieldType = 'akeneo-table-field';
   }
 
@@ -85,9 +89,8 @@ class TableField extends (Field as {new (config: any): any}) {
     return this;
   }
 
-  renderCopyInput(value: TemplateContext) {
+  renderCopyInput(value: CopyContext) {
     const copyContext = {...value};
-    copyContext.editMode = 'view';
     return new Promise(resolve => {
       this.getTemplateContext().then((templateContext: TemplateContext) => {
         this.renderInput(templateContext, false, copyContext);
@@ -96,9 +99,13 @@ class TableField extends (Field as {new (config: any): any}) {
     });
   }
 
-  renderInput(templateContext: TemplateContext, isCopying: boolean, copyContext) {
+  renderInput(templateContext: TemplateContext, isCopying: boolean, copyContext?: CopyContext) {
     const handleChange = (value: TableValue) => {
       this.setCurrentValue(value);
+    };
+
+    const handleCopyCheckboxChange = (checked: boolean) => {
+      this.selected = checked;
     };
 
     ReactDOM.render(
@@ -110,6 +117,7 @@ class TableField extends (Field as {new (config: any): any}) {
             elements={isCopying ? [] : this.elements}
             copyContext={copyContext}
             violations={this.violations}
+            onCopyCheckboxChange={handleCopyCheckboxChange}
           />
         </ThemeProvider>
       </DependenciesProvider>,

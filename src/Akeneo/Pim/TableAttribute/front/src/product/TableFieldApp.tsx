@@ -1,9 +1,9 @@
 import React from 'react';
 import styled from 'styled-components';
-import {Locale, uuid, Search, AkeneoThemedProps, getColor} from 'akeneo-design-system';
+import {Locale, uuid, Search, AkeneoThemedProps, getColor, Checkbox} from 'akeneo-design-system';
 import {TableInputValue} from './TableInputValue';
 import {TableRow, TableValue} from '../models/TableValue';
-import {TemplateContext, Violations} from '../legacy/table-field';
+import {CopyContext, TemplateContext, Violations} from '../legacy/table-field';
 import {ChannelCode, LocaleCode, useTranslate} from '@akeneo-pim-community/shared';
 import {AddRowsButton} from './AddRowsButton';
 import {ColumnCode, SelectOptionCode} from '../models/TableConfiguration';
@@ -48,11 +48,16 @@ const LocaleScopeInfo = styled.span`
   display: inline-block;
 `;
 
+const CopyCheckbox = styled(Checkbox)`
+  margin-right: 5px;
+`;
+
 type TableFieldAppProps = TemplateContext & {
   onChange: (tableValue: TableValue) => void;
   elements: {[position: string]: {[elementKey: string]: any}};
   violations?: Violations[];
-  copyContext?: {scope: ChannelCode | null; locale: LocaleCode | null; data: TableValue};
+  copyContext?: CopyContext;
+  onCopyCheckboxChange: any;
 };
 
 type TableRowWithId = TableRow & {'unique id': string};
@@ -77,6 +82,7 @@ const TableFieldApp: React.FC<TableFieldAppProps> = ({
   onChange,
   copyContext,
   elements,
+  onCopyCheckboxChange,
   violations = [],
 }) => {
   const translate = useTranslate();
@@ -96,6 +102,7 @@ const TableFieldApp: React.FC<TableFieldAppProps> = ({
   const [tableValue, setTableValue] = React.useState<TableValueWithId>(addUniqueId(value.data || []));
   const [removedRows, setRemovedRows] = React.useState<{[key: string]: TableRowWithId}>({});
   const [searchText, setSearchText] = React.useState<string>('');
+  const [copyChecked, setCopyChecked] = React.useState<boolean>(false);
   const firstColumnCode: ColumnCode = attribute.table_configuration[0].code;
   const [violatedCellsById] = React.useState<ViolatedCell[]>(
     (violations || []).reduce((old, violation) => {
@@ -170,6 +177,11 @@ const TableFieldApp: React.FC<TableFieldAppProps> = ({
     handleChange([...tableValue]);
   };
 
+  const handleCopyCheckedChange = (value: boolean) => {
+    setCopyChecked(value);
+    onCopyCheckboxChange(value);
+  };
+
   const isCompareTranslate = typeof elements['comparison'] !== 'undefined';
 
   const getLocaleScopeInfo = (locale: LocaleCode | null, scope: ChannelCode | null) => (
@@ -182,6 +194,11 @@ const TableFieldApp: React.FC<TableFieldAppProps> = ({
       )}
     </LocaleScopeInfo>
   );
+
+  if (!copyContext && elements['comparison']) {
+    renderElements('comparison');
+    return null;
+  }
 
   return (
     <>
@@ -244,9 +261,9 @@ const TableFieldApp: React.FC<TableFieldAppProps> = ({
       </TableInputContainer>
       <div className='AknComparableFields-item AknComparableFields-item--comparisonContainer AknFieldContainer comparison-elements-container'>
         {copyContext && (
-          <div data-attribute='description' className='AknComparableFields field-container'>
+          <div data-attribute={attribute.code} className='AknComparableFields field-container'>
             <div className='AknComparableFields-copyContainer copy-container'>
-              <input type='checkbox' className='AknComparableFields-checkbox copy-field-selector' />
+              <CopyCheckbox checked={copyChecked} onChange={handleCopyCheckedChange} />
               <div className='AknFieldContainer AknComparableFields-item'>
                 <TableFieldHeader className='AknFieldContainer-header' isCompareTranslate={true}>
                   <TableFieldLabel className='AknFieldContainer-label'>{label}</TableFieldLabel>
