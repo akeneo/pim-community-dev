@@ -118,6 +118,7 @@ define([
 
       this.$el.html(this.template({copying: this.copying}));
       if (this.copying) {
+        console.log('render extensions Copy', this.extensions)
         this.renderExtensions();
       }
 
@@ -134,6 +135,7 @@ define([
     addFieldExtension: function (event) {
       var field = event.field;
       if (this.copying && this.canBeCopied(field)) {
+        console.log('element added', field.attribute.code)
         field.addElement('comparison', this.code, this.getCopyField(field));
       }
     },

@@ -320,3 +320,9 @@ extensions:
         parent: pim-product-model-edit-form
         position: 10
         targetZone: content
+
+
+    pim-product-edit-form-compare:
+        module: pim/product-edit-form/compare
+        parent: pim-product-model-edit-form
+        targetZone: buttons

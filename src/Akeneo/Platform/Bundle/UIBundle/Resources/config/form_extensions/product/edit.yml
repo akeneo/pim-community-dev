@@ -358,6 +358,14 @@ extensions:
         config:
             context: copy_product
 
+
+
+    pim-product-edit-form-compare:
+        module: pim/product-edit-form/compare
+        parent: pim-product-edit-form
+        targetZone: buttons
+
+
 attribute_fields:
     akeneo-switch-field:           pim/boolean-field
     akeneo-datepicker-field:       pim/date-field
