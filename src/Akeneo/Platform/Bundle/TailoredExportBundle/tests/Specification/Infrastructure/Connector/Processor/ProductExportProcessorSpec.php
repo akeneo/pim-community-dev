@@ -19,18 +19,17 @@ use Akeneo\Pim\Structure\Component\Query\PublicApi\Association\GetAssociationTyp
 use Akeneo\Pim\Structure\Component\Query\PublicApi\Association\LabelCollection;
 use Akeneo\Pim\Structure\Component\Query\PublicApi\AttributeType\Attribute;
 use Akeneo\Pim\Structure\Component\Query\PublicApi\AttributeType\GetAttributes;
-use Akeneo\Platform\TailoredExport\Application\FilePathGenerator;
 use Akeneo\Platform\TailoredExport\Application\ProductMapper;
 use Akeneo\Platform\TailoredExport\Application\Query\Column\ColumnCollection;
+use Akeneo\Platform\TailoredExport\Domain\MediaToExportExtractorInterface;
 use Akeneo\Platform\TailoredExport\Domain\SourceValue\StringValue;
 use Akeneo\Platform\TailoredExport\Domain\ValueCollection;
-use Akeneo\Platform\TailoredExport\Infrastructure\Connector\Processor\MappedProductsWithFiles;
+use Akeneo\Platform\TailoredExport\Infrastructure\Connector\Processor\ProcessedTailoredExport;
 use Akeneo\Platform\TailoredExport\Infrastructure\Hydrator\ColumnCollectionHydrator;
 use Akeneo\Platform\TailoredExport\Infrastructure\Hydrator\ValueCollectionHydrator;
 use Akeneo\Tool\Component\Batch\Job\JobParameters;
 use Akeneo\Tool\Component\Batch\Model\StepExecution;
 use PhpSpec\ObjectBehavior;
-use Prophecy\Argument;
 
 class ProductExportProcessorSpec extends ObjectBehavior
 {
@@ -42,7 +41,7 @@ class ProductExportProcessorSpec extends ObjectBehavior
         ValueCollectionHydrator $valueCollectionHydrator,
         ColumnCollectionHydrator $columnCollectionHydrator,
         ProductMapper $productMapper,
-        FilePathGenerator $filePathGenerator
+        MediaToExportExtractorInterface $mediaToExportExtractor
     ) {
         $this->beConstructedWith(
             $getAttributes,
@@ -50,7 +49,7 @@ class ProductExportProcessorSpec extends ObjectBehavior
             $valueCollectionHydrator,
             $columnCollectionHydrator,
             $productMapper,
-            $filePathGenerator
+            $mediaToExportExtractor
         );
         $this->setStepExecution($stepExecution);
 
@@ -66,7 +65,7 @@ class ProductExportProcessorSpec extends ObjectBehavior
         ColumnCollectionHydrator $columnCollectionHydrator,
         ColumnCollection $columnCollection,
         ProductMapper $productMapper,
-        FilePathGenerator $filePathGenerator
+        MediaToExportExtractorInterface $mediaToExportExtractor
     ) {
         $columns = [
             [
@@ -131,11 +130,11 @@ class ProductExportProcessorSpec extends ObjectBehavior
         $valueCollectionHydrator->hydrate($product, $columnCollection)->willReturn($valueCollection);
 
         $productMapper->map($columnCollection, $valueCollection)->willReturn($mappedProducts);
-        $filePathGenerator->extract($columnCollection, $valueCollection)->willReturn([]);
+        $mediaToExportExtractor->extract($columnCollection, $valueCollection)->willReturn([]);
 
-        $mappedProductsWithFiles = new MappedProductsWithFiles($mappedProducts, []);
+        $processedTailoredExport = new ProcessedTailoredExport($mappedProducts, []);
 
-        $this->process($product)->shouldBeLike($mappedProductsWithFiles);
+        $this->process($product)->shouldBeLike($processedTailoredExport);
     }
 
     private function createAttribute(string $code): Attribute

@@ -13,10 +13,10 @@ declare(strict_types=1);
 
 namespace Specification\Akeneo\Platform\TailoredExport\Domain;
 
-use Akeneo\Platform\TailoredExport\Domain\FileToExport;
+use Akeneo\Platform\TailoredExport\Domain\MediaToExport;
 use PhpSpec\ObjectBehavior;
 
-class FileToExportSpec extends ObjectBehavior
+class MediaToExportSpec extends ObjectBehavior
 {
     public function let()
     {
@@ -25,7 +25,7 @@ class FileToExportSpec extends ObjectBehavior
 
     public function it_is_initializable(): void
     {
-        $this->shouldBeAnInstanceOf(FileToExport::class);
+        $this->shouldBeAnInstanceOf(MediaToExport::class);
     }
 
     public function it_returns_the_key()
