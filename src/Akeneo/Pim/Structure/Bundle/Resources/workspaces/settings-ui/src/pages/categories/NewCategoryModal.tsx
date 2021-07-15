@@ -1,6 +1,12 @@
 import React, {FC, useRef, useState} from 'react';
 import {Button, Field, Helper, Modal, ProductCategoryIllustration, TextInput, useAutoFocus} from 'akeneo-design-system';
-import {NotificationLevel, useNotify, useTranslate} from '@akeneo-pim-community/shared';
+import {
+  getErrorsForPath,
+  NotificationLevel, TextField,
+  useNotify,
+  useTranslate,
+  useUserContext
+} from '@akeneo-pim-community/shared';
 import styled from 'styled-components';
 import {createCategory, ValidationErrors} from '../../infrastructure/savers';
 
@@ -13,15 +19,17 @@ type NewCategoryModalProps = {
 const NewCategoryModal: FC<NewCategoryModalProps> = ({closeModal, onCreate, parentCode}) => {
   const translate = useTranslate();
   const [newCategoryCode, setNewCategoryCode] = useState('');
+  const [newCategoryLabel, setNewCategoryLabel] = useState('');
   const notify = useNotify();
   const [validationErrors, setValidationErrors] = useState<ValidationErrors>({});
+  const locale = useUserContext().get('uiLocale');
 
   const codeFieldRef = useRef<HTMLInputElement | null>(null);
   useAutoFocus(codeFieldRef);
 
   const createNewCategoryTree = async () => {
     if (newCategoryCode.trim() !== '') {
-      const errors = await createCategory(newCategoryCode, parentCode);
+      const errors = await createCategory(newCategoryCode, parentCode, locale, newCategoryLabel);
       if (Object.keys(errors).length > 0) {
         setValidationErrors(errors);
         notify(
@@ -81,11 +89,24 @@ const NewCategoryModal: FC<NewCategoryModalProps> = ({closeModal, onCreate, pare
           </Helper>
         )}
       </StyledField>
+      <TextFieldContainer>
+        <TextField
+            label={translate('pim_common.label')}
+            value={newCategoryLabel}
+            onChange={setNewCategoryLabel}
+            locale={locale}
+            maxLength={100}
+        />
+      </TextFieldContainer>
     </Modal>
   );
 };
 
 const StyledField = styled(Field)`
+  margin-top: 15px;
+`;
+
+const TextFieldContainer = styled.div`
   margin-top: 15px;
 `;
 
