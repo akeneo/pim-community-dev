@@ -269,16 +269,6 @@ jobs:
       - store_artifacts:
           path: var/logs
 
-  release:
-      machine:
-          image: ubuntu-1604:201903-01
-      steps:
-          -   attach_workspace:
-                  at: ~/
-          - run:
-              name: make release
-              command: make release
-
   test_back_missing_structure_migrations:
       machine:
         image: ubuntu-1604:201903-01
@@ -402,14 +392,6 @@ workflows:
           - test_back_data_migrations:
                 requires:
                     - build_dev
-          - release:
-                requires:
-                    - test_back_static_and_acceptance
-                    - test_front_static_acceptance_and_integration
-                    - test_back_phpunit
-                    - back_behat_legacy
-                    - test_back_performance
-                    - test_back_data_migrations
 
   on_demand:
       jobs:
@@ -440,14 +422,6 @@ workflows:
           - test_back_data_migrations:
                 requires:
                     - build_dev
-          - release:
-                requires:
-                    - test_back_static_and_acceptance
-                    - test_front_static_acceptance_and_integration
-                    - test_back_phpunit
-                    - back_behat_legacy
-                    - test_back_performance
-                    - test_back_data_migrations
 
   pull_up:
     jobs:

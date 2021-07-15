@@ -121,7 +121,3 @@ endif
 .PHONY: test-prod
 test-prod:
 	helm test ${PFID}
-
-.PHONY: release
-release:
-	echo "Release done! Well, almost..."
