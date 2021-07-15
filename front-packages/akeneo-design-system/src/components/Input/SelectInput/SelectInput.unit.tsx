@@ -248,7 +248,6 @@ test('it handles keyboard navigation', () => {
   expect(englishOption).toHaveFocus();
 
   const spanishOption = screen.queryByTestId('es_ES');
-  //fireEvent.focus(input);
   fireEvent.keyDown(englishOption as Element, {key: 'ArrowUp', code: 'ArrowUp'});
   expect(input).toHaveFocus();
 
