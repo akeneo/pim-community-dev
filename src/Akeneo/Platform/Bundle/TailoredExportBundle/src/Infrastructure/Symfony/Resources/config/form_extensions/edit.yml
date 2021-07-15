@@ -169,6 +169,9 @@ extensions:
                     field: completeness
                     view: akeneo-product-localized-completeness-filter
                 -
+                    field: quality-score
+                    view: akeneo-product-quality-score-filter
+                -
                     field: updated
                     view: akeneo-product-updated-filter
 
@@ -183,6 +186,9 @@ extensions:
                 - GREATER OR EQUALS THAN ON AT LEAST ONE LOCALE
                 - GREATER OR EQUALS THAN ON ALL LOCALES
                 - LOWER THAN ON ALL LOCALES
+
+    akeneo-product-quality-score-filter:
+        module: akeneotailoredexport/js/job/product/edit/filter-quality-score
 
     pim-job-instance-xlsx-tailored-product-export-edit-filter-the-data-default-attribute-filters:
         module: pim/job/product/edit/content/data/default-attribute-filters
