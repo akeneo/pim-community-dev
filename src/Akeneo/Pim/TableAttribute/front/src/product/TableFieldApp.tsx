@@ -4,7 +4,7 @@ import {Locale, uuid, Search, AkeneoThemedProps, getColor} from 'akeneo-design-s
 import {TableInputValue} from './TableInputValue';
 import {TableRow, TableValue} from '../models/TableValue';
 import {TemplateContext, Violations} from '../legacy/table-field';
-import {useTranslate} from '@akeneo-pim-community/shared';
+import {ChannelCode, LocaleCode, useTranslate} from '@akeneo-pim-community/shared';
 import {AddRowsButton} from './AddRowsButton';
 import {ColumnCode, SelectOptionCode} from '../models/TableConfiguration';
 
@@ -52,7 +52,7 @@ type TableFieldAppProps = TemplateContext & {
   onChange: (tableValue: TableValue) => void;
   elements: {[position: string]: {[elementKey: string]: any}};
   violations?: Violations[];
-  copyContext?: TemplateContext;
+  copyContext?: {scope: ChannelCode | null; locale: LocaleCode | null; data: TableValue};
 };
 
 type TableRowWithId = TableRow & {'unique id': string};
@@ -80,9 +80,8 @@ const TableFieldApp: React.FC<TableFieldAppProps> = ({
   violations = [],
 }) => {
   const translate = useTranslate();
-
-  const [tableValue, setTableValue] = React.useState<TableValueWithId>(
-    (value.data || []).map(row => {
+  const addUniqueId = (value: TableValue) => {
+    return value.map(row => {
       return Object.keys(row).reduce(
         (previousRow: TableRow & {'unique id': string}, columnCode) => {
           previousRow[columnCode] = row[columnCode];
@@ -91,8 +90,10 @@ const TableFieldApp: React.FC<TableFieldAppProps> = ({
         },
         {'unique id': uuid()}
       );
-    })
-  );
+    });
+  };
+
+  const [tableValue, setTableValue] = React.useState<TableValueWithId>(addUniqueId(value.data || []));
   const [removedRows, setRemovedRows] = React.useState<{[key: string]: TableRowWithId}>({});
   const [searchText, setSearchText] = React.useState<string>('');
   const firstColumnCode: ColumnCode = attribute.table_configuration[0].code;
@@ -171,6 +172,17 @@ const TableFieldApp: React.FC<TableFieldAppProps> = ({
 
   const isCompareTranslate = typeof elements['comparison'] !== 'undefined';
 
+  const getLocaleScopeInfo = (locale: LocaleCode | null, scope: ChannelCode | null) => (
+    <LocaleScopeInfo className='AknFieldContainer-fieldInfo field-info'>
+      {(locale || scope) && (
+        <span className='field-context'>
+          {scope && <span className='field-scope'>{context.scopeLabel}&nbsp;</span>}
+          {locale && <Locale code={locale} />}
+        </span>
+      )}
+    </LocaleScopeInfo>
+  );
+
   return (
     <>
       <TableInputContainer
@@ -197,14 +209,7 @@ const TableFieldApp: React.FC<TableFieldAppProps> = ({
                 />
               </div>
             )}
-            <LocaleScopeInfo className='AknFieldContainer-fieldInfo field-info'>
-              {(locale || scope) && (
-                <span className='field-context'>
-                  {scope && <span className='field-scope'>{context.scopeLabel}&nbsp;</span>}
-                  {locale && <Locale code={locale} />}
-                </span>
-              )}
-            </LocaleScopeInfo>
+            {getLocaleScopeInfo(locale, scope)}
             <AddRowsButton
               attributeCode={attribute.code}
               columnCode={firstColumnCode}
@@ -220,35 +225,48 @@ const TableFieldApp: React.FC<TableFieldAppProps> = ({
               title={'pim_enrich.entity.product.module.attribute.remove_optional'}
             />
           )}
-          </TableFieldHeader>
-          <div className='AknFieldContainer-inputContainer field-input'>
-            <TableInputValue
-              attributeCode={attribute.code}
-              valueData={tableValue}
-              tableConfiguration={attribute.table_configuration}
-              onChange={handleChange}
-              searchText={copyContext ? '' : searchText}
-              violatedCells={violatedCellsById}
-            />
-            {renderElements('field-input')}
-          </div>
-          <footer>
-            <div className='AknFieldContainer-footer footer-elements-container'>{renderElements('footer')}</div>
-          </footer>
-        </TableInputContainer>
-        <div className='AknComparableFields-item AknComparableFields-item--comparisonContainer AknFieldContainer comparison-elements-container'>
-          {copyContext && (
-            <TableInputValue
-              attributeCode={attribute.code}
-              valueData={tableValue}
-              tableConfiguration={attribute.table_configuration}
-              onChange={handleChange}
-              searchText={copyContext ? '' : searchText}
-            />
-          )}
-          {!copyContext && renderElements('comparison')}
+        </TableFieldHeader>
+        <div className='AknFieldContainer-inputContainer field-input'>
+          <TableInputValue
+            attributeCode={attribute.code}
+            valueData={tableValue}
+            tableConfiguration={attribute.table_configuration}
+            onChange={handleChange}
+            searchText={copyContext ? '' : searchText}
+            readOnly={editMode === 'view'}
+            violatedCells={violatedCellsById}
+          />
+          {renderElements('field-input')}
         </div>
-      </>
+        <footer>
+          <div className='AknFieldContainer-footer footer-elements-container'>{renderElements('footer')}</div>
+        </footer>
+      </TableInputContainer>
+      <div className='AknComparableFields-item AknComparableFields-item--comparisonContainer AknFieldContainer comparison-elements-container'>
+        {copyContext && (
+          <div data-attribute='description' className='AknComparableFields field-container'>
+            <div className='AknComparableFields-copyContainer copy-container'>
+              <input type='checkbox' className='AknComparableFields-checkbox copy-field-selector' />
+              <div className='AknFieldContainer AknComparableFields-item'>
+                <TableFieldHeader className='AknFieldContainer-header' isCompareTranslate={true}>
+                  <TableFieldLabel className='AknFieldContainer-label'>{label}</TableFieldLabel>
+                  {getLocaleScopeInfo(copyContext.locale, copyContext.scope)}
+                </TableFieldHeader>
+                <div className='AknFieldContainer-inputContainer field-input'>
+                  <TableInputValue
+                    attributeCode={attribute.code}
+                    valueData={addUniqueId(copyContext.data || [])}
+                    tableConfiguration={attribute.table_configuration}
+                    readOnly={true}
+                  />
+                </div>
+              </div>
+            </div>
+          </div>
+        )}
+        {!copyContext && renderElements('comparison')}
+      </div>
+    </>
   );
 };
 

@@ -11,6 +11,7 @@ type TableInputSelectProps = {
   onChange: (value: SelectOptionCode | undefined) => void;
   options?: SelectOption[];
   inError?: boolean;
+  readOnly?: boolean;
 };
 
 const FakeInput = styled.div`
@@ -25,7 +26,7 @@ const CenteredHelper = styled.div`
   }
 `;
 
-const TableInputSelect: React.FC<TableInputSelectProps> = ({value, onChange, options, inError = false, ...rest}) => {
+const TableInputSelect: React.FC<TableInputSelectProps> = ({value, onChange, options, readOnly = false, inError = false, ...rest}) => {
   const translate = useTranslate();
   const userContext = useUserContext();
 
@@ -77,7 +78,7 @@ const TableInputSelect: React.FC<TableInputSelectProps> = ({value, onChange, opt
 
   return (
     <TableInput.Select
-      value={label}
+      value={`${label}${readOnly ? ' [read only]' : ''}`}
       onClear={handleClear}
       clearLabel={translate('pim_common.clear')}
       openDropdownLabel={translate('pim_common.open')}
@@ -87,6 +88,8 @@ const TableInputSelect: React.FC<TableInputSelectProps> = ({value, onChange, opt
       searchValue={searchValue}
       onSearchChange={handleSearchValue}
       inError={inError || notFoundOption}
+      /** TODO Implement this **/
+      //readOnly={readOnly}
       {...rest}>
       {itemsToDisplay.map(option => {
         return (

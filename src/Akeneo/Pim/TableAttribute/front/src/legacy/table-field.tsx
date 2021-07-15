@@ -54,6 +54,8 @@ class TableField extends (Field as {new (config: any): any}) {
   }
 
   render() {
+    ReactDOM.unmountComponentAtNode(this.el);
+
     this.setEditable(!this.locked);
     this.setValid(true);
     this.elements = {};

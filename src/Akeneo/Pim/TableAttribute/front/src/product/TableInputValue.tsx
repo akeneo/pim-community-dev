@@ -50,9 +50,10 @@ type TableInputValueProps = {
   attributeCode: string;
   valueData: TableValueWithId;
   tableConfiguration: TableConfiguration;
-  onChange: (tableValue: TableValueWithId) => void;
-  searchText: string;
+  onChange?: (tableValue: TableValueWithId) => void;
+  searchText?: string;
   violatedCells?: ViolatedCell[];
+  readOnly?: boolean;
 };
 
 const TableInputValue: React.FC<TableInputValueProps> = ({
@@ -60,6 +61,7 @@ const TableInputValue: React.FC<TableInputValueProps> = ({
   valueData,
   tableConfiguration,
   onChange,
+  readOnly = false,
   searchText = '',
   violatedCells = [],
 }) => {
@@ -73,6 +75,10 @@ const TableInputValue: React.FC<TableInputValueProps> = ({
   const isSearching = searchText.trim() !== '';
 
   const handleChange = (uniqueId: string, columnCode: ColumnCode, cellValue: TableCell | undefined) => {
+    if (!onChange) {
+      return;
+    }
+
     const rowIndex = valueData.findIndex(row => row['unique id'] === uniqueId);
     if (rowIndex >= 0) {
       const row = valueData[rowIndex];
@@ -180,6 +186,7 @@ const TableInputValue: React.FC<TableInputValueProps> = ({
                           data-testid={`input-${row['unique id']}-${columnCode}`}
                           validations={columnDefinition.validations as NumberColumnValidation}
                           inError={isInErrorFromBackend(row['unique id'], columnCode)}
+                          readOnly={readOnly}
                         />
                       )}
                       {'text' === columnType && (
@@ -190,6 +197,7 @@ const TableInputValue: React.FC<TableInputValueProps> = ({
                           data-testid={`input-${row['unique id']}-${columnCode}`}
                           validations={columnDefinition.validations as TextColumnValidation}
                           inError={isInErrorFromBackend(row['unique id'], columnCode)}
+                          readOnly={readOnly}
                         />
                       )}
                       {'select' === columnType && (
@@ -201,6 +209,7 @@ const TableInputValue: React.FC<TableInputValueProps> = ({
                           data-testid={`input-${row['unique id']}-${columnCode}`}
                           options={options[columnCode]}
                           inError={isInErrorFromBackend(row['unique id'], columnCode)}
+                          readOnly={readOnly}
                         />
                       )}
                       {'boolean' === columnType && (
@@ -215,6 +224,7 @@ const TableInputValue: React.FC<TableInputValueProps> = ({
                           openDropdownLabel={translate('pim_common.open')}
                           data-testid={`input-${row['unique id']}-${columnCode}`}
                           inError={isInErrorFromBackend(row['unique id'], columnCode)}
+                          readOnly={readOnly}
                         />
                       )}
                     </TableInput.Cell>
