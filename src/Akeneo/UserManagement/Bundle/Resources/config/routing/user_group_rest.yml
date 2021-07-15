@@ -1,5 +1,17 @@
+
 pim_user_user_group_rest_index:
     path: /
     defaults: { _controller: pim_user.controller.user_group_rest:indexAction }
+    methods: [GET]
+
+pim_user_user_group_rest_get:
+    path: /{identifier}
+    defaults: { _controller: pim_user.controller.user_group_rest:getAction }
+    methods: [GET]
     requirements:
-        method: GET
+        identifier: '\d+'
+
+pim_user_user_group_rest_create:
+    path: /
+    defaults: { _controller: pim_user.controller.user_group_rest:createAction }
+    methods: [POST]

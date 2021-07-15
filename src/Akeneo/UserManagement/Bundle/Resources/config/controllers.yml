@@ -37,14 +37,29 @@ services:
         class: '%pim_user.controller.user_group_rest.class%'
         arguments:
             - '@pim_user.repository.group'
+            - '@pim_user.normalizer.user_group'
+            - '@pim_user.context.user'
+            - '@pim_user.factory.group'
+            - '@pim_user.updater.group'
+            - '@pim_user.saver.group'
+            - '@validator'
+            - '@pim_enrich.normalizer.violation'
 
     pim_user.controller.user_role_rest:
         public: true
         class: 'Akeneo\UserManagement\Bundle\Controller\Rest\UserRoleController'
         arguments:
             - '@pim_user.repository.role'
+            - '@pim_connector.processor.normalization.user_role'
+            - '@pim_connector.array_converter.standard_to_flat.user_role'
+            - '@pim_connector.array_converter.flat_to_standard.import.user_role'
             - '@serializer'
             - '@pim_user.context.user'
+            - '@pim_user.factory.role_with_permissions'
+            - '@pim_user.updater.role_with_permissions'
+            - '@pim_user.saver.role_with_permissions'
+            - '@validator'
+            - '@pim_enrich.normalizer.violation'
 
     pim_user.controller.user_group:
         public: true
