@@ -1,5 +1,7 @@
 # 4.0.x
 
+# 4.0.119 (2021-07-15)
+
 - PIM-9964: Fix buffer size error on get rules by adding an index on code.
 
 # 4.0.118 (2021-07-07)
