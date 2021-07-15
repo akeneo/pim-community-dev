@@ -66,7 +66,7 @@ class TableField extends (Field as {new (config: any): any}) {
         const completePath = violation.path;
         const index = completePath.indexOf(']');
         if (index >= 0) {
-          const realPath = completePath.substr(index + 1);
+          const realPath = completePath.substr(+index + 1);
           const results = realPath.match(/^\[(\d)\]\.(.+)$/);
           if (results) {
             this.violatedCells.push({

@@ -16,7 +16,7 @@ const TableInputContainer = styled.div`
 type TableFieldAppProps = TemplateContext & {
   onChange: (tableValue: TableValue) => void;
   elements: {[position: string]: {[elementKey: string]: any}};
-  violatedCells: ViolatedCellByRowIndex[];
+  violatedCells?: ViolatedCellByRowIndex[];
 };
 
 type TableRowWithId = TableRow & {'unique id': string};
@@ -26,7 +26,7 @@ export type TableValueWithId = TableRowWithId[];
 export type ViolatedCellsById = {
   id: string;
   columnCode: ColumnCode;
-}
+};
 
 const TableFieldApp: React.FC<TableFieldAppProps> = ({
   type,
@@ -59,16 +59,14 @@ const TableFieldApp: React.FC<TableFieldAppProps> = ({
   const [removedRows, setRemovedRows] = React.useState<{[key: string]: TableRowWithId}>({});
   const [searchText, setSearchText] = React.useState<string>('');
   const firstColumnCode: ColumnCode = attribute.table_configuration[0].code;
-  const [violatedCellsById, setViolatedCellsById] = React.useState<ViolatedCellsById[]>([]);
-
-  React.useEffect(() => {
-    setViolatedCellsById(violatedCells.map(violatedCell => {
+  const [violatedCellsById] = React.useState<ViolatedCellsById[]>(
+    violatedCells.map(violatedCell => {
       return {
         id: tableValue[violatedCell.rowIndex]['unique id'],
         columnCode: violatedCell.columnCode,
-      }
-    }));
-  }, [violatedCells]);
+      };
+    })
+  );
 
   const renderElements: (position: string) => React.ReactNode = position => {
     return (

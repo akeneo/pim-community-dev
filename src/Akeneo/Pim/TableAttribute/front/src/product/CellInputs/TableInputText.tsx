@@ -1,6 +1,6 @@
-import {TableInput} from "akeneo-design-system";
-import React from "react";
-import {TextColumnValidation} from "../../models/TableConfiguration";
+import {TableInput} from 'akeneo-design-system';
+import React from 'react';
+import {TextColumnValidation} from '../../models/TableConfiguration';
 
 type TableInputTextProps = {
   value?: string;
@@ -16,17 +16,21 @@ const TableInputText: React.FC<TableInputTextProps> = ({
   searchValue = '',
   validations,
   inError = false,
+  ...rest
 }) => {
   const highlighted = searchValue.indexOf(`${value}`) >= 0;
   const isTooLong = typeof validations.max_length !== 'undefined' && (value || '').length > validations.max_length;
 
-  return <TableInput.Text
-    value={value || ''}
-    onChange={onChange}
-    highlighted={highlighted}
-    maxLength={validations.max_length}
-    inError={inError || isTooLong}
-  />
-}
+  return (
+    <TableInput.Text
+      value={value || ''}
+      onChange={onChange}
+      highlighted={highlighted}
+      maxLength={validations.max_length}
+      inError={inError || isTooLong}
+      {...rest}
+    />
+  );
+};
 
 export {TableInputText};

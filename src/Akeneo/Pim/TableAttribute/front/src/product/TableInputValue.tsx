@@ -5,14 +5,15 @@ import {
   NumberColumnValidation,
   SelectOption,
   SelectOptionCode,
-  TableConfiguration, TextColumnValidation
+  TableConfiguration,
+  TextColumnValidation,
 } from '../models/TableConfiguration';
 import {
   getLabel,
+  LoadingPlaceholderContainer,
+  useRouter,
   useTranslate,
   useUserContext,
-  useRouter,
-  LoadingPlaceholderContainer,
 } from '@akeneo-pim-community/shared';
 import {TableFooter} from './TableFooter';
 import styled from 'styled-components';
@@ -20,9 +21,8 @@ import {TableValueWithId, ViolatedCellsById} from './TableFieldApp';
 import {getSelectOption, getSelectOptions} from '../repositories/SelectOption';
 import {TableInputSelect} from './CellInputs/TableInputSelect';
 import {TableCell} from '../models/TableValue';
-import {ViolatedCellByRowIndex} from '../legacy/table-field';
-import {TableInputNumber} from "./CellInputs/TableInputNumber";
-import {TableInputText} from "./CellInputs/TableInputText";
+import {TableInputNumber} from './CellInputs/TableInputNumber';
+import {TableInputText} from './CellInputs/TableInputText';
 
 const TABLE_VALUE_ITEMS_PER_PAGE = [10, 20, 50, 100];
 
@@ -40,7 +40,7 @@ type TableInputValueProps = {
   tableConfiguration: TableConfiguration;
   onChange: (tableValue: TableValueWithId) => void;
   searchText: string;
-  violatedCells: ViolatedCellsById[];
+  violatedCells?: ViolatedCellsById[];
 };
 
 const TableInputValue: React.FC<TableInputValueProps> = ({
@@ -123,9 +123,7 @@ const TableInputValue: React.FC<TableInputValueProps> = ({
   }, [valueDataPage.length]);
 
   const isInErrorFromBackend = (id: string, columnCode: ColumnCode) => {
-    return violatedCells.some(
-      violatedCell => violatedCell.id === id && violatedCell.columnCode === columnCode
-    );
+    return violatedCells.some(violatedCell => violatedCell.id === id && violatedCell.columnCode === columnCode);
   };
 
   return (
@@ -139,13 +137,15 @@ const TableInputValue: React.FC<TableInputValueProps> = ({
           ))}
         </TableInput.Header>
         <TableInput.Body>
-          {/* TODO ça marchera pas avec la pagination */}
-          {valueDataPage.map((row, index) => {
+          {valueDataPage.map(row => {
             return (
               <TableInput.Row key={row['unique id']}>
                 <TableInput.Cell
                   rowTitle={true}
-                  inError={isInErrorFromBackend(row['unique id'], firstColumn.code) || selectOptionLabels[`${firstColumn.code}-${row[firstColumn.code]}`] === null}>
+                  inError={
+                    isInErrorFromBackend(row['unique id'], firstColumn.code) ||
+                    selectOptionLabels[`${firstColumn.code}-${row[firstColumn.code]}`] === null
+                  }>
                   {typeof selectOptionLabels[`${firstColumn.code}-${row[firstColumn.code]}`] === 'undefined' ? (
                     <LoadingPlaceholderContainer>
                       <div>{translate('pim_common.loading')}</div>

@@ -98,6 +98,7 @@ const TableStructureApp: React.FC<TableStructureAppProps> = ({
   const handleChange = (tableConfigurationWithId: TableConfigurationWithId) => {
     onChange(
       tableConfigurationWithId.map(columnDefinition => {
+        // eslint-disable-next-line @typescript-eslint/no-unused-vars
         const {id, ...rest} = columnDefinition;
         return rest;
       })

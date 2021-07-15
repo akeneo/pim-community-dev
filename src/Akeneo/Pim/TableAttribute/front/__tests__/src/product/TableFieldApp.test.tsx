@@ -22,6 +22,7 @@ const getTemplateContext: () => TemplateContext = () => {
       optional: true,
       removable: true,
       scopeLabel: 'Ecommerce',
+      root: null,
     },
     label: 'Nutrition',
     locale: 'en_US',
@@ -38,8 +39,14 @@ const getTemplateContext: () => TemplateContext = () => {
 
 describe('TableFieldApp', () => {
   it('should render the component', async () => {
-    const handleChange = jest.fn();
-    renderWithProviders(<TableFieldApp {...getTemplateContext()} onChange={handleChange} elements={{}} />);
+    renderWithProviders(
+      <TableFieldApp
+        {...getTemplateContext()}
+        onChange={jest.fn()}
+        elements={{}}
+        violatedCells={[{columnCode: 'ingredient', rowIndex: 0}]}
+      />
+    );
 
     expect(await screen.findByText('Sugar')).toBeInTheDocument();
     expect(screen.getByText('Nutrition')).toBeInTheDocument();
