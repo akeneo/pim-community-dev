@@ -1,0 +1,18 @@
+services:
+    _instanceof:
+        Akeneo\Tool\Component\Messenger\QueryHandlerInterface:
+            tags:
+                - { name: messenger.message_handler, bus: messenger.bus.query }
+        Akeneo\Tool\Component\Messenger\CommandHandlerInterface:
+            tags:
+                - { name: messenger.message_handler, bus: messenger.bus.command }
+
+    query_bus:
+        class: Akeneo\Tool\Component\Messenger\QueryBus
+        arguments:
+          - '@messenger.bus.query'
+
+    command_bus:
+        class: Akeneo\Tool\Component\Messenger\CommandBus
+        arguments:
+          - '@messenger.bus.command'
