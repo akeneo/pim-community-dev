@@ -1,0 +1,126 @@
+import {Meta, Story, ArgsTable, Canvas} from '@storybook/addon-docs/blocks';
+import {TableInput} from './TableInput.tsx';
+import {Dropdown} from '../../Dropdown/Dropdown.tsx';
+import {useFakeTableInput} from '../../../storybook/hooks/useFakeTableInput'
+
+<Meta
+  title="Components/Inputs/Table input"
+  component={TableInput}
+  argTypes={{}}
+  args={{children: []}}
+/>
+
+# TableInput
+
+## Usage
+
+Table input allows the user to input content in a table.
+
+## Playground
+
+<Canvas>
+  <Story name="Standard">
+    {args => {
+      const {getValue, setValue, searchValue, setSearchValue} = useFakeTableInput(6);
+      return <TableInput {...args}>
+        <TableInput.Header>
+          <TableInput.HeaderCell rowTitle={true}>Ingredient</TableInput.HeaderCell>
+          <TableInput.HeaderCell>Nutrition Score</TableInput.HeaderCell>
+          <TableInput.HeaderCell>For 1 part</TableInput.HeaderCell>
+          <TableInput.HeaderCell>Quantity</TableInput.HeaderCell>
+          <TableInput.HeaderCell>Is allergenic</TableInput.HeaderCell>
+        </TableInput.Header>
+        <TableInput.Body>
+          {['Sugar', 'Salt', 'Pepper', 'Eggs', 'Flour', 'Yeast'].map((row, index) => <TableInput.Row key={row}>
+            <TableInput.Cell rowTitle={true}>{row}</TableInput.Cell>
+            <TableInput.Cell>
+              <TableInput.Select
+                clearLabel="Remove"
+                openDropdownLabel="Open"
+                value={{'1': 'A', '2': 'B', '3': 'C'}[getValue(index, 'nutritionScore')]}
+                onClear={() => setValue(index, 'nutritionScore', null)}
+                searchPlaceholder={'Search on Nutrition'}
+                searchValue={searchValue}
+                onSearchChange={setSearchValue}
+                searchTitle={'Search'}
+              >
+                <Dropdown.Item onClick={() => setValue(index, 'nutritionScore', '1')}>A</Dropdown.Item>
+                <Dropdown.Item onClick={() => setValue(index, 'nutritionScore', '2')}>B</Dropdown.Item>
+                <Dropdown.Item onClick={() => setValue(index, 'nutritionScore', '3')}>C</Dropdown.Item>
+              </TableInput.Select>
+            </TableInput.Cell>
+            <TableInput.Cell><TableInput.Text value={getValue(index, 'part')} onChange={(value) => setValue(index, 'part', value)}/></TableInput.Cell>
+            <TableInput.Cell><TableInput.Number value={getValue(index, 'quantity')} onChange={(value) => setValue(index, 'quantity', value)}/></TableInput.Cell>
+            <TableInput.Cell><TableInput.Boolean yesLabel="Yes" noLabel="No" value={getValue(index, 'is_allergenic')} onChange={(value) => setValue(index, 'is_allergenic', value)}/></TableInput.Cell>
+          </TableInput.Row>
+        )}
+        </TableInput.Body>
+      </TableInput>;
+    }}
+  </Story>
+</Canvas>
+
+<ArgsTable story="Standard" />
+
+## With a high number of columns
+
+<Canvas>
+  <Story name="With a high number of tags">
+    {args => {
+      const columnsCount = 10;
+      const linesCount = 6;
+      return (
+        <TableInput {...args}>
+          <TableInput.Header>
+            {[...Array(columnsCount).keys()].map((_, i) => {
+              return <TableInput.HeaderCell rowTitle={true} key={i}>Column label</TableInput.HeaderCell>
+            })}
+          </TableInput.Header>
+          <TableInput.Body>
+            {[...Array(linesCount).keys()].map((_,r) => {
+              return <TableInput.Row key={r}>
+                <TableInput.Cell rowTitle={true}>Value</TableInput.Cell>
+                {[...Array(columnsCount - 1).keys()].map((_, i) => {
+                  return <TableInput.Cell key={i}><TableInput.Text value={'Value'} onChange={() => {}}/></TableInput.Cell>
+                })}
+              </TableInput.Row>
+              })
+            }
+          </TableInput.Body>
+        </TableInput>
+      );
+    }}
+  </Story>
+</Canvas>
+
+## With highlights
+
+<Canvas>
+  <Story name="With highlights">
+    {args => {
+      const linesCount = 5;
+      return (
+        <TableInput {...args}>
+          <TableInput.Header>
+            <TableInput.HeaderCell rowTitle={true}>Title cell</TableInput.HeaderCell>
+            <TableInput.HeaderCell rowTitle={true}>Select cell</TableInput.HeaderCell>
+            <TableInput.HeaderCell rowTitle={true}>Text cell</TableInput.HeaderCell>
+            <TableInput.HeaderCell rowTitle={true}>Number cell</TableInput.HeaderCell>
+            <TableInput.HeaderCell rowTitle={true}>Boolean cell</TableInput.HeaderCell>
+          </TableInput.Header>
+          <TableInput.Body>
+            {[...Array(linesCount).keys()].map((_,r) => {
+              return <TableInput.Row key={r}>
+                <TableInput.Cell rowTitle={true}>Value</TableInput.Cell>
+                <TableInput.Cell><TableInput.Select onSearchChange={() => {}} value={'Select value'} highlighted={r >= 1}/></TableInput.Cell>
+                <TableInput.Cell><TableInput.Text value={'Text value'} highlighted={r >= 2}/></TableInput.Cell>
+                <TableInput.Cell><TableInput.Number value={42} highlighted={r >= 3}/></TableInput.Cell>
+                <TableInput.Cell><TableInput.Boolean value={true} yesLabel={"Yes"} noLabel={"No"} highlighted={r >= 4}/></TableInput.Cell>
+              </TableInput.Row>
+            })}
+          </TableInput.Body>
+        </TableInput>
+      );
+    }}
+  </Story>
+</Canvas>

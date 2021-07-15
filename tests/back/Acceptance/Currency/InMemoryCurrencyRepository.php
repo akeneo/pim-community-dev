@@ -88,7 +88,7 @@ final class InMemoryCurrencyRepository implements
      */
     public function findAll()
     {
-        throw new NotImplementedException(__METHOD__);
+        return array_values($this->currencies->toArray());
     }
 
     /**

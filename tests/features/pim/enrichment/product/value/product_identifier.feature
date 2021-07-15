@@ -5,7 +5,7 @@ Feature: Validate identifier attribute of a product
   I need to be able to see validation errors for identifier attribute
 
   Background:
-    Given an authentified user
+    Given an authenticated user
     And a catalog with the attribute "sku" as product identifier
     And the following locales "en_US"
     And the following "ecommerce" channel with locales "en_US"

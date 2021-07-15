@@ -44,6 +44,11 @@ type OverlayProps = Override<
     verticalPosition?: VerticalPosition;
 
     /**
+     * When dropdown is open, it will keep the opener element displayed.
+     */
+    dropdownOpenerVisible?: boolean;
+
+    /**
      * What to do on overlay closing.
      */
     onClose: () => void;
@@ -67,6 +72,7 @@ const Backdrop = styled.div<{isOpen: boolean} & AkeneoThemedProps>`
 const getOverlayPosition = (
   verticalPosition?: VerticalPosition,
   horizontalPosition?: HorizontalPosition,
+  dropdownOpenerVisible?: boolean,
   parentRef?: RefObject<HTMLDivElement>,
   elementRef?: RefObject<HTMLDivElement>
 ) => {
@@ -82,20 +88,31 @@ const getOverlayPosition = (
   const parentRect = parentRef.current.getBoundingClientRect();
   const elementRect = elementRef.current.getBoundingClientRect();
 
-  const top =
+  let top =
     'up' === verticalPosition
       ? parentRect.bottom - elementRect.height + BORDER_SHADOW_OFFSET
       : parentRect.top - BORDER_SHADOW_OFFSET;
 
+  if (dropdownOpenerVisible) {
+    top = 'up' === verticalPosition ? parentRect.top - elementRect.height : parentRect.bottom + 1;
+  }
+
   const left =
     'left' === horizontalPosition
       ? parentRect.right - elementRect.width + BORDER_SHADOW_OFFSET
-      : parentRect.left - BORDER_SHADOW_OFFSET;
+      : parentRect.left - BORDER_SHADOW_OFFSET + 2;
 
   return [top, left];
 };
 
-const Overlay = ({verticalPosition, parentRef, onClose, children, ...rest}: OverlayProps) => {
+const Overlay = ({
+  verticalPosition,
+  dropdownOpenerVisible = false,
+  parentRef,
+  onClose,
+  children,
+  ...rest
+}: OverlayProps) => {
   const portalNode = document.createElement('div');
   portalNode.setAttribute('id', 'dropdown-root');
   const portalRef = useRef<HTMLDivElement>(portalNode);
@@ -116,7 +133,13 @@ const Overlay = ({verticalPosition, parentRef, onClose, children, ...rest}: Over
     };
   }, []);
 
-  const [top, left] = getOverlayPosition(verticalPosition, horizontalPosition, parentRef, overlayRef);
+  const [top, left] = getOverlayPosition(
+    verticalPosition,
+    horizontalPosition,
+    dropdownOpenerVisible,
+    parentRef,
+    overlayRef
+  );
 
   return createPortal(
     <>

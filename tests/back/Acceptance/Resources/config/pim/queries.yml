@@ -46,3 +46,6 @@ services:
 
     akeneo.pim.enrichment.product.query.get_existing_reference_data_codes:
         class: Akeneo\Test\Acceptance\Attribute\InMemoryGetExistingReferenceDataCodes
+
+    akeneo.pim.structure.query.is_attribute_code_blacklisted:
+        class: AkeneoTest\Acceptance\Attribute\InMemoryIsAttributeCodeBlacklisted

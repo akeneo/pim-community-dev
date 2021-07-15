@@ -40,9 +40,9 @@ class UserContext implements Context
     }
 
     /**
-     * @Given /^an authentified user$/
+     * @Given /^an authenticated user$/
      */
-    public function anAuthenifiedUser()
+    public function anAuthenticatedUser()
     {
         /** @var UserInterface $user */
         $user = $this->userFactory->create();

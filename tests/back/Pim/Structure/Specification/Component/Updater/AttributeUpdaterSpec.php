@@ -86,6 +86,7 @@ class AttributeUpdaterSpec extends ObjectBehavior
                 'en_US' => 'new guidelines',
                 'fr_FR' => 'nouvelles indications',
             ],
+            'table_configuration' => ['config'],
         ];
 
         $translatableUpdater->update($attribute, ['en_US' => 'Test1', 'fr_FR' => 'Test2']);
@@ -98,6 +99,7 @@ class AttributeUpdaterSpec extends ObjectBehavior
         $attribute->setDateMin(new \DateTime('2016-12-12T00:00:00+01:00'))->shouldBeCalled();
         $attribute->addGuidelines('en_US', 'new guidelines')->shouldBeCalled();
         $attribute->addGuidelines('fr_FR', 'nouvelles indications')->shouldBeCalled();
+        $attribute->setRawTableConfiguration(['config'])->shouldBeCalled();
 
         $registry->get('pim_catalog_text')->willReturn($attributeType);
         $attributeType->getName()->willReturn('pim_catalog_text');
@@ -304,6 +306,19 @@ class AttributeUpdaterSpec extends ObjectBehavior
                     AttributeUpdater::class, 'not_an_array')
             )
             ->during('update', [$attribute, $values, []]);
+    }
+
+    function it_throws_an_exception_when_table_configuration_is_not_an_array(AttributeInterface $attribute)
+    {
+        $data = [
+            'table_configuration' => 'config',
+        ];
+
+        $this
+            ->shouldThrow(
+                InvalidPropertyTypeException::arrayExpected('table_configuration', AttributeUpdater::class, 'config')
+            )
+            ->during('update', [$attribute, $data, []]);
     }
 
     function it_sets_the_default_unique_property_when_setting_an_attribute_type(

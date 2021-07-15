@@ -99,6 +99,7 @@ const OptionCollection = styled.div`
 const Option = styled.span<{value: string}>`
   display: flex;
   align-items: center;
+  min-height: 34px;
 `;
 
 type SelectInputProps = Override<
