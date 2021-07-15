@@ -34,10 +34,9 @@ class GetAllApps
 
     public function __invoke(Request $request): Response
     {
-        /*
         if (!$request->isXmlHttpRequest()) {
             return new RedirectResponse('/');
-        }*/
+        }
         $result = $this->getAllAppsQuery->execute();
 
         $username = $this->userContext->getUser()->getUsername();
