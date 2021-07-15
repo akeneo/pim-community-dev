@@ -1,28 +1,95 @@
 batch_jobs.xlsx_tailored_product_export.label: Dostosowany eksport produktów w formacie XLSX
 akeneo.tailored_export:
+  filters:
+    completeness:
+      locales:
+        label: Zdefiniuj wersje językowe dla kompletności
+        placeholder: Wybierz wersje językowe
+        remove: Usuń wersję językową
+  form:
+    job_instance:
+      tab:
+        content:
+          title: Wybór produktów
+        column:
+          title: Eksportuj strukturę
+        filters:
+          title: Zdefiniuj wybór produktów
   column_list:
     title: Kolumny
+    header:
+      column_name: Nagłówek kolumny
+      source_data: Zawartość kolumny
     column_row:
+      target_placeholder: Zdefiniuj nazwę kolumny
       remove: Usuń kolumnę
+      no_source: Zdefiniuj źródło zawartości
     no_column_selection:
+      title: Profil eksportu jest pusty. Dodaj pierwszą kolumnę.
+      subtitle: Aby rozpocząć tworzenie tabeli eksportu, kliknij 'Dodaj pierwszą kolumnę'.
+      link: Aby uzyskać więcej informacji, sprawdź nasze Centrum Pomocy.
       add_column: Dodaj pierwszą kolumnę
   column_details:
     sources:
       title: Źródła
       add: Dodaj źródło
       no_result: Przepraszamy, nie ma żadnych wyników.
+      locale_specific.info: Ten atrybut ma wartość na wersję językową.
       remove:
         title: źródło
         text: Czy na pewno chcesz usunąć to źródło?
         button: Usuń to źródło
+      no_source_configuration:
+        title: Dla tego źródła nie ma dostępnych operacji. Jego wartość zostanie wyeksportowana bez zmian.
+      no_source_selected:
+        title: Aby zacząć definiować zawartość kolumny, kliknij 'Dodaj źródło'.
+        link: Aby uzyskać więcej informacji, sprawdź nasze Centrum Pomocy.
+      no_column_selected:
+        title: Po zdefiniowaniu pierwszej kolumny możesz wybrać pierwsze źródło.
       selection:
         title: Wybór
+        collection_separator: Separator
         type:
           amount: Kwota
           currency: Waluta
+          key: Klucz pliku
+          path: Ścieżka
+          name: Nazwa pliku
+        format: Format
+        parent:
+          information:
+            locale: Jeśli atrybut używany jako etykieta ma wartość na wersję językową, możesz wybrać określoną wersję językową.
+            channel: Jeśli atrybut używany jako etykieta ma wartość na kanał, możesz wybrać określony kanał.
+        code_label:
+          information: Dla tego atrybutu możesz wyeksportować kod lub etykietę.
+        measurement:
+          information: Dla tego atrybutu możesz wyeksportować wartość, kod jednostki lub etykietę jednostkową.
+          value: Wartość
+          unit_locale: Wersja językowa jednostki
+          unit_code: Kod jednostki
+          unit_label: Etykieta jednostki
+        price:
+          information: Dla tego atrybutu możesz wyeksportować kwotę lub walutę.
+        file:
+          information: Dla tego atrybutu możesz wyeksportować ścieżkę, klucz pliku lub nazwę.
+      operation:
+        replacement:
+          title: Zastąp wartość
+          placeholder: Zdefiniuj wartość zastępczą
+          enabled: Włączona wartość zastępcza
+          disabled: Wyłączona wartość zastępcza
   column:
     delete_message: Czy na pewno chcesz usunąć tę kolumnę?
   validation:
     columns:
+      max_column_count_reached: Osiągnięto limit {{ limit }} kolumn. Nie możesz już dodawać kolumn do eksportu.
       target:
+        should_not_be_blank: Zdefiniuj nazwę kolumny.
         max_length_reached: 'Nazwa kolumny jest zbyt długa. Powinna mieć nie więcej niż następującą liczbę znaków: {{ limit }}.'
+        should_be_unique: Nazwa kolumny już istnieje. Wprowadź nową.
+    sources:
+      max_source_count_reached: Osiągnięto limit {{ limit }} źródeł. Nie możesz już dodawać źródeł do eksportu.
+    locale:
+      should_be_active: Wersja językowa {{ locale_code }} powinna być aktywna.
+    channel:
+      should_exist: Kanał {{ channel_code }} powinien być aktywny.
