@@ -16,11 +16,11 @@ namespace Akeneo\Platform\TailoredExport\Infrastructure\Connector\Processor;
 use Akeneo\Pim\Enrichment\Component\Product\Model\ProductInterface;
 use Akeneo\Pim\Structure\Component\Query\PublicApi\Association\GetAssociationTypesInterface;
 use Akeneo\Pim\Structure\Component\Query\PublicApi\AttributeType\GetAttributes;
-use Akeneo\Platform\TailoredExport\Application\FilePathGenerator;
 use Akeneo\Platform\TailoredExport\Application\ProductMapper;
 use Akeneo\Platform\TailoredExport\Application\Query\Column\ColumnCollection;
 use Akeneo\Platform\TailoredExport\Application\Query\Source\AssociationTypeSource;
 use Akeneo\Platform\TailoredExport\Application\Query\Source\AttributeSource;
+use Akeneo\Platform\TailoredExport\Domain\MediaToExportExtractorInterface;
 use Akeneo\Platform\TailoredExport\Infrastructure\Hydrator\ColumnCollectionHydrator;
 use Akeneo\Platform\TailoredExport\Infrastructure\Hydrator\ValueCollectionHydrator;
 use Akeneo\Tool\Component\Batch\Item\ItemProcessorInterface;
@@ -34,7 +34,7 @@ class ProductExportProcessor implements ItemProcessorInterface, StepExecutionAwa
     private ValueCollectionHydrator $valueCollectionHydrator;
     private ColumnCollectionHydrator $columnCollectionHydrator;
     private ProductMapper $productMapper;
-    private FilePathGenerator $filePathGenerator;
+    private MediaToExportExtractorInterface $filePathGenerator;
     private ?StepExecution $stepExecution = null;
     private ?ColumnCollection $columnCollection = null;
 
@@ -44,7 +44,7 @@ class ProductExportProcessor implements ItemProcessorInterface, StepExecutionAwa
         ValueCollectionHydrator $valueCollectionHydrator,
         ColumnCollectionHydrator $columnCollectionHydrator,
         ProductMapper $productMapper,
-        FilePathGenerator $filePathGenerator
+        MediaToExportExtractorInterface $filePathGenerator
     ) {
         $this->getAttributes = $getAttributes;
         $this->getAssociationTypes = $getAssociationTypes;
@@ -74,7 +74,7 @@ class ProductExportProcessor implements ItemProcessorInterface, StepExecutionAwa
         $mappedProducts = $this->productMapper->map($columnCollection, $valueCollection);
         $filesToExport = $this->filePathGenerator->extract($columnCollection, $valueCollection);
 
-        return new MappedProductsWithFiles($mappedProducts, $filesToExport);
+        return new ProcessedTailoredExport($mappedProducts, $filesToExport);
     }
 
     /**

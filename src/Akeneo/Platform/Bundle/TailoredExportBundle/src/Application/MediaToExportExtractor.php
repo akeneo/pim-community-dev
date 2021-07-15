@@ -15,19 +15,20 @@ namespace Akeneo\Platform\TailoredExport\Application;
 
 use Akeneo\Platform\TailoredExport\Application\Query\Column\ColumnCollection;
 use Akeneo\Platform\TailoredExport\Application\Query\Selection\File\FileSelectionInterface;
-use Akeneo\Platform\TailoredExport\Domain\FileToExport;
+use Akeneo\Platform\TailoredExport\Domain\MediaToExport;
+use Akeneo\Platform\TailoredExport\Domain\MediaToExportExtractorInterface;
 use Akeneo\Platform\TailoredExport\Domain\SourceValue\FileValue;
 use Akeneo\Platform\TailoredExport\Infrastructure\Connector\MediaExporterPathGenerator;
 use Akeneo\Platform\TailoredExport\Domain\ValueCollection;
 
-class FilePathGenerator
+final class MediaToExportExtractor implements MediaToExportExtractorInterface
 {
     /**
-     * @return FileToExport[]
+     * @return MediaToExport[]
      */
     public function extract(ColumnCollection $columnCollection, ValueCollection $valueCollection): array
     {
-        $fileToExports = [];
+        $mediaToExports = [];
 
         /** @var Column $column */
         foreach ($columnCollection as $column) {
@@ -43,7 +44,7 @@ class FilePathGenerator
                     continue;
                 }
 
-                $fileToExports[$value->getKey()] = new FileToExport(
+                $mediaToExports[$value->getKey()] = new MediaToExport(
                     $value->getKey(),
                     $value->getStorage(),
                     $this->generateFilePath(
@@ -54,7 +55,7 @@ class FilePathGenerator
             }
         }
 
-        return $fileToExports;
+        return $mediaToExports;
     }
 
     private function generateFilePath(FileSelectionInterface $selection, FileValue $value): string

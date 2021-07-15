@@ -13,11 +13,11 @@ declare(strict_types=1);
 
 namespace Specification\Akeneo\Platform\TailoredExport\Infrastructure\Connector\Processor;
 
-use Akeneo\Platform\TailoredExport\Domain\FileToExport;
-use Akeneo\Platform\TailoredExport\Infrastructure\Connector\Processor\MappedProductsWithFiles;
+use Akeneo\Platform\TailoredExport\Domain\MediaToExport;
+use Akeneo\Platform\TailoredExport\Infrastructure\Connector\Processor\ProcessedTailoredExport;
 use PhpSpec\ObjectBehavior;
 
-class MappedProductsWithFilesSpec extends ObjectBehavior
+class ProcessedTailoredExportSpec extends ObjectBehavior
 {
     public function it_is_initializable(): void
     {
@@ -26,7 +26,7 @@ class MappedProductsWithFilesSpec extends ObjectBehavior
 
         $this->beConstructedWith($mappedProducts, $filesToExport);
 
-        $this->shouldBeAnInstanceOf(MappedProductsWithFiles::class);
+        $this->shouldBeAnInstanceOf(ProcessedTailoredExport::class);
     }
 
     public function it_returns_the_mapped_products()
@@ -61,8 +61,8 @@ class MappedProductsWithFilesSpec extends ObjectBehavior
     private function getFakeFilesToExport(): array
     {
         $filesToExport = [];
-        $filesToExport[] = new FileToExport('a_key', 'catalog', 'a_path_to_file');
-        $filesToExport[] = new FileToExport('another_key', 'catalog', 'another_path_to_file');
+        $filesToExport[] = new MediaToExport('a_key', 'catalog', 'a_path_to_file');
+        $filesToExport[] = new MediaToExport('another_key', 'catalog', 'another_path_to_file');
 
         return $filesToExport;
     }

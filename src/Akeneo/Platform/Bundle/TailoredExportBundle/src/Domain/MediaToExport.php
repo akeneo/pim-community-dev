@@ -13,7 +13,7 @@ declare(strict_types=1);
 
 namespace Akeneo\Platform\TailoredExport\Domain;
 
-final class FileToExport
+final class MediaToExport
 {
     private string $key;
     private string $storage;

@@ -13,26 +13,26 @@ declare(strict_types=1);
 
 namespace Specification\Akeneo\Platform\TailoredExport\Application;
 
-use Akeneo\Platform\TailoredExport\Application\FilePathGenerator;
+use Akeneo\Platform\TailoredExport\Application\MediaToExportExtractor;
 use Akeneo\Platform\TailoredExport\Application\Query\Column\Column;
 use Akeneo\Platform\TailoredExport\Application\Query\Column\ColumnCollection;
 use Akeneo\Platform\TailoredExport\Application\Query\Operation\OperationCollection;
 use Akeneo\Platform\TailoredExport\Application\Query\Selection\File\FilePathSelection;
 use Akeneo\Platform\TailoredExport\Application\Query\Source\AttributeSource;
 use Akeneo\Platform\TailoredExport\Application\Query\Source\SourceCollection;
-use Akeneo\Platform\TailoredExport\Domain\FileToExport;
+use Akeneo\Platform\TailoredExport\Domain\MediaToExport;
 use Akeneo\Platform\TailoredExport\Domain\SourceValue\FileValue;
 use Akeneo\Platform\TailoredExport\Domain\ValueCollection;
 use PhpSpec\ObjectBehavior;
 
-class FilePathGeneratorSpec extends ObjectBehavior
+class MediaToExportExtractorSpec extends ObjectBehavior
 {
     public function it_is_initializable(): void
     {
-        $this->shouldBeAnInstanceOf(FilePathGenerator::class);
+        $this->shouldBeAnInstanceOf(MediaToExportExtractor::class);
     }
 
-    public function it_extracts_file_to_exports(): void
+    public function it_extracts_media_to_exports(): void
     {
         $operationCollection = OperationCollection::create([]);
         $source = new AttributeSource(
@@ -65,15 +65,15 @@ class FilePathGeneratorSpec extends ObjectBehavior
             null
         );
 
-        $expectedFilesToExport = [];
-        $expectedFilesToExport['a_filekey'] = new FileToExport(
+        $expectedMediaToExport = [];
+        $expectedMediaToExport['a_filekey'] = new MediaToExport(
             'a_filekey',
             'catalog',
             'files/an_id/an_attribute_code/an_original_filename'
         );
 
-        $filesToExport = $this->extract($columnCollection, $valueCollection);
-        $filesToExport->shouldHaveCount(1);
-        $filesToExport->shouldBeLike($expectedFilesToExport);
+        $mediaToExport = $this->extract($columnCollection, $valueCollection);
+        $mediaToExport->shouldHaveCount(1);
+        $mediaToExport->shouldBeLike($expectedMediaToExport);
     }
 }

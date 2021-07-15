@@ -13,19 +13,19 @@ declare(strict_types=1);
 
 namespace Akeneo\Platform\TailoredExport\Infrastructure\Connector\Processor;
 
-use Akeneo\Platform\TailoredExport\Domain\FileToExport;
+use Akeneo\Platform\TailoredExport\Domain\MediaToExport;
 
-class MappedProductsWithFiles
+class ProcessedTailoredExport
 {
     private array $mappedProducts;
 
-    /** @var FileToExport[] */
-    private array $filesToExport;
+    /** @var MediaToExport[] */
+    private array $mediaToExport;
 
-    public function __construct(array $mappedProducts, array $filesToExport)
+    public function __construct(array $mappedProducts, array $mediaToExport)
     {
         $this->mappedProducts = $mappedProducts;
-        $this->filesToExport = $filesToExport;
+        $this->mediaToExport = $mediaToExport;
     }
 
     public function getMappedProducts(): array
@@ -33,8 +33,8 @@ class MappedProductsWithFiles
         return $this->mappedProducts;
     }
 
-    public function getFilesToExport(): array
+    public function getMediaToExport(): array
     {
-        return $this->filesToExport;
+        return $this->mediaToExport;
     }
 }

@@ -13,7 +13,7 @@ declare(strict_types=1);
 
 namespace Specification\Akeneo\Platform\TailoredExport\Infrastructure\Connector\Writer\File\Xlsx;
 
-use Akeneo\Platform\TailoredExport\Infrastructure\Connector\Processor\MappedProductsWithFiles;
+use Akeneo\Platform\TailoredExport\Infrastructure\Connector\Processor\ProcessedTailoredExport;
 use Akeneo\Platform\TailoredExport\Infrastructure\Connector\Writer\File\FileWriterFactory;
 use Akeneo\Platform\TailoredExport\Infrastructure\Connector\Writer\File\Xlsx\ProductWriter;
 use Akeneo\Tool\Component\Batch\Item\FlushableInterface;
@@ -125,11 +125,11 @@ class ProductWriterSpec extends ObjectBehavior
 
         $this->initialize();
         $this->write([
-            new MappedProductsWithFiles(['sku' => 42, 'name' => 'bag'], []),
-            new MappedProductsWithFiles(['sku' => 52, 'name' => 'sunglasses'], []),
-            new MappedProductsWithFiles(['sku' => 62, 'name' => 'cap'], []),
-            new MappedProductsWithFiles(['sku' => 72, 'name' => 'bob'], []),
-            new MappedProductsWithFiles(['sku' => 82, 'name' => 'hat'], [])
+            new ProcessedTailoredExport(['sku' => 42, 'name' => 'bag'], []),
+            new ProcessedTailoredExport(['sku' => 52, 'name' => 'sunglasses'], []),
+            new ProcessedTailoredExport(['sku' => 62, 'name' => 'cap'], []),
+            new ProcessedTailoredExport(['sku' => 72, 'name' => 'bob'], []),
+            new ProcessedTailoredExport(['sku' => 82, 'name' => 'hat'], [])
         ]);
 
         $this->flush();
@@ -169,11 +169,11 @@ class ProductWriterSpec extends ObjectBehavior
 
         $this->initialize();
         $this->write([
-            new MappedProductsWithFiles(['sku' => 42, 'name' => 'bag'], []),
-            new MappedProductsWithFiles(['sku' => 52, 'name' => 'sunglasses'], []),
-            new MappedProductsWithFiles(['sku' => 62, 'name' => 'cap'], []),
-            new MappedProductsWithFiles(['sku' => 72, 'name' => 'bob'], []),
-            new MappedProductsWithFiles(['sku' => 82, 'name' => 'hat'], [])
+            new ProcessedTailoredExport(['sku' => 42, 'name' => 'bag'], []),
+            new ProcessedTailoredExport(['sku' => 52, 'name' => 'sunglasses'], []),
+            new ProcessedTailoredExport(['sku' => 62, 'name' => 'cap'], []),
+            new ProcessedTailoredExport(['sku' => 72, 'name' => 'bob'], []),
+            new ProcessedTailoredExport(['sku' => 82, 'name' => 'hat'], [])
         ]);
 
         $this->flush();
@@ -218,13 +218,13 @@ class ProductWriterSpec extends ObjectBehavior
 
         $this->initialize();
         $this->write([
-            new MappedProductsWithFiles(['sku' => 42, 'name' => 'bag'], []),
-            new MappedProductsWithFiles(['sku' => 52, 'name' => 'sunglasses'], []),
-            new MappedProductsWithFiles(['sku' => 62, 'name' => 'cap'], [])
+            new ProcessedTailoredExport(['sku' => 42, 'name' => 'bag'], []),
+            new ProcessedTailoredExport(['sku' => 52, 'name' => 'sunglasses'], []),
+            new ProcessedTailoredExport(['sku' => 62, 'name' => 'cap'], [])
         ]);
         $this->write([
-            new MappedProductsWithFiles(['sku' => 72, 'name' => 'bob'], []),
-            new MappedProductsWithFiles(['sku' => 82, 'name' => 'hat'], [])
+            new ProcessedTailoredExport(['sku' => 72, 'name' => 'bob'], []),
+            new ProcessedTailoredExport(['sku' => 82, 'name' => 'hat'], [])
         ]);
         $this->flush();
 
@@ -273,10 +273,10 @@ class ProductWriterSpec extends ObjectBehavior
 
         $this->initialize();
         $this->write([
-            new MappedProductsWithFiles(['sku' => 42, 'name' => 'bag'], []),
-            new MappedProductsWithFiles(['sku' => 52, 'name' => 'sunglasses'], []),
-            new MappedProductsWithFiles(['sku' => 62, 'name' => 'bob'], []),
-            new MappedProductsWithFiles(['sku' => 72, 'name' => 'hat'], [])
+            new ProcessedTailoredExport(['sku' => 42, 'name' => 'bag'], []),
+            new ProcessedTailoredExport(['sku' => 52, 'name' => 'sunglasses'], []),
+            new ProcessedTailoredExport(['sku' => 62, 'name' => 'bob'], []),
+            new ProcessedTailoredExport(['sku' => 72, 'name' => 'hat'], [])
         ]);
         $this->flush();
 
