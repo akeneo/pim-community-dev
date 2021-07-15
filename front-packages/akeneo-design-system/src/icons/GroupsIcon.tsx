@@ -5,6 +5,7 @@ const GroupsIcon = ({title, size = 24, color = 'currentColor', ...props}: IconPr
   <svg viewBox="0 0 24 24" width={size} height={size} {...props}>
     {title && <title>{title}</title>}
     <path
+      vectorEffect="non-scaling-stroke"
       stroke={color}
       d="M19 7h3v15H7v-2M17 5h2v15H4v-3M2 2h15v15H2V2z"
       fill="none"

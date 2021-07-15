@@ -5,6 +5,7 @@ const FolderIcon = ({title, size = 24, color = 'currentColor', ...props}: IconPr
   <svg viewBox="0 0 24 24" width={size} height={size} {...props}>
     {title && <title>{title}</title>}
     <path
+      vectorEffect="non-scaling-stroke"
       stroke={color}
       d="M2 4h6.5L12 6.55h10V21H2z"
       fill="none"
