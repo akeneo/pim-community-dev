@@ -37,5 +37,6 @@ class AkeneoRuleEngineExtension extends Extension
         $loader->load('repositories.yml');
         $loader->load('runners.yml');
         $loader->load('commands.yml');
+        $loader->load('upgrades.yml');
     }
 }
