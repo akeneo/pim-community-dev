@@ -16,6 +16,7 @@ use Akeneo\Tool\Component\StorageUtils\Cache\EntityManagerClearerInterface;
 use Akeneo\Tool\Component\StorageUtils\Cursor\CursorInterface;
 use Akeneo\Tool\Component\StorageUtils\Repository\IdentifiableObjectRepositoryInterface;
 use Akeneo\Tool\Component\StorageUtils\Saver\BulkSaverInterface;
+use Symfony\Component\Validator\ConstraintViolationListInterface;
 use Symfony\Component\Validator\Validator\ValidatorInterface;
 
 /**
@@ -25,43 +26,16 @@ use Symfony\Component\Validator\Validator\ValidatorInterface;
  */
 class ComputeFamilyVariantStructureChangesTasklet implements TaskletInterface
 {
-    /** @var StepExecution */
-    private $stepExecution;
+    private ?StepExecution $stepExecution = null;
+    private IdentifiableObjectRepositoryInterface $familyVariantRepository;
+    private ProductQueryBuilderFactoryInterface $productQueryBuilderFactory;
+    private BulkSaverInterface $productSaver;
+    private BulkSaverInterface $productModelSaver;
+    private KeepOnlyValuesForVariation $keepOnlyValuesForVariation;
+    private ValidatorInterface $validator;
+    private EntityManagerClearerInterface $cacheClearer;
+    private int $batchSize;
 
-    /** @var IdentifiableObjectRepositoryInterface */
-    private $familyVariantRepository;
-
-    /** @var ProductQueryBuilderFactoryInterface */
-    private $productQueryBuilderFactory;
-
-    /** @var BulkSaverInterface */
-    private $productSaver;
-
-    /** @var BulkSaverInterface */
-    private $productModelSaver;
-
-    /** @var KeepOnlyValuesForVariation */
-    private $keepOnlyValuesForVariation;
-
-    /** @var ValidatorInterface */
-    private $validator;
-
-    /** @var int */
-    private $batchSize;
-
-    /** @var EntityManagerClearerInterface */
-    private $cacheClearer;
-
-    /**
-     * @param IdentifiableObjectRepositoryInterface $familyVariantRepository
-     * @param ProductQueryBuilderFactoryInterface   $productQueryBuilderFactory
-     * @param BulkSaverInterface                    $productSaver
-     * @param BulkSaverInterface                    $productModelSaver
-     * @param KeepOnlyValuesForVariation            $keepOnlyValuesForVariation
-     * @param ValidatorInterface                    $validator
-     * @param EntityManagerClearerInterface         $cacheClearer
-     * @param int                                   $batchSize
-     */
     public function __construct(
         IdentifiableObjectRepositoryInterface $familyVariantRepository,
         ProductQueryBuilderFactoryInterface $productQueryBuilderFactory,
@@ -208,9 +182,12 @@ class ComputeFamilyVariantStructureChangesTasklet implements TaskletInterface
 
             if ($violations->count() !== 0) {
                 throw new \LogicException(
-                    sprintf(
-                        'Validation error for ProductModel with code "%s" during family variant structure change',
-                        $productModel->getCode()
+                    $this->buildErrorMessage(
+                        sprintf(
+                            'One or more validation errors occured for ProductModel with code "%s" during family variant structure change:',
+                            $productModel->getCode()
+                        ),
+                        $violations
                     )
                 );
             }
@@ -229,12 +206,27 @@ class ComputeFamilyVariantStructureChangesTasklet implements TaskletInterface
 
             if ($violations->count() !== 0) {
                 throw new \LogicException(
-                    sprintf(
-                        'Validation error for Product with identifier "%s" during family variant structure change',
-                        $product->getIdentifier()
+                    $this->buildErrorMessage(
+                        sprintf(
+                            'One or more validation errors occured for Product with identifier "%s" during family variant structure change:',
+                            $product->getIdentifier()
+                        ),
+                        $violations
                     )
                 );
             }
         }
+    }
+
+    private function buildErrorMessage(
+        string $baseMessage,
+        ConstraintViolationListInterface $constraintViolationList
+    ): string {
+        $errorMessage = $baseMessage;
+        foreach ($constraintViolationList as $violation) {
+            $errorMessage .= sprintf("\n  - %s", $violation->getMessage());
+        }
+
+        return $errorMessage;
     }
 }
