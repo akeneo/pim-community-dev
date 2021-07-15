@@ -264,6 +264,7 @@ define([
      * @return {Promise}
      */
     createAttributeField: function (object, attributeCode, values) {
+      const root = this.getRoot();
       return FieldManager.getField(attributeCode)
         .then(function (field) {
           return $.when(
@@ -286,6 +287,7 @@ define([
               guidelinesLocale: UserContext.get('uiLocale'),
               optional: isOptional,
               removable: SecurityContext.isGranted(this.config.removeAttributeACL),
+              root: root,
             });
 
             field.setValues(values);

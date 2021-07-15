@@ -13,7 +13,7 @@ const BooleanButtonDropdown = styled(Dropdown)`
   cursor: pointer;
 `;
 
-const BooleanButton = styled.button<{highlighted: boolean} & AkeneoThemedProps>`
+const BooleanButton = styled.button<{highlighted: boolean; inError: boolean} & AkeneoThemedProps>`
   color: ${getColor('grey', 140)};
   width: 100%;
   background: none;
@@ -27,11 +27,21 @@ const BooleanButton = styled.button<{highlighted: boolean} & AkeneoThemedProps>`
   align-items: center;
   cursor: pointer;
 
-  ${({highlighted}) =>
-    highlighted
+  ${({highlighted, inError}) =>
+    highlighted && !inError
       ? css`
           background: ${getColor('green', 10)};
           box-shadow: 0 0 0 1px ${getColor('green', 80)};
+        `
+      : css`
+          background: none;
+        `};
+
+  ${({inError}) =>
+    inError
+      ? css`
+          background: ${getColor('red', 10)};
+          box-shadow: 0 0 0 1px ${getColor('red', 80)};
         `
       : css`
           background: none;
@@ -57,6 +67,7 @@ type TableInputBooleanProps = Override<
     highlighted?: boolean;
     clearLabel: string;
     openDropdownLabel: string;
+    inError?: boolean;
   }
 >;
 
@@ -68,6 +79,7 @@ const TableInputBoolean: React.FC<TableInputBooleanProps> = ({
   highlighted = false,
   clearLabel,
   openDropdownLabel,
+  inError = false,
   ...rest
 }) => {
   const [isOpen, open, close] = useBooleanState(false);
@@ -79,7 +91,7 @@ const TableInputBoolean: React.FC<TableInputBooleanProps> = ({
 
   return (
     <BooleanButtonDropdown {...rest}>
-      <BooleanButton tabIndex={-1} highlighted={highlighted} onClick={open}>
+      <BooleanButton tabIndex={-1} highlighted={highlighted} inError={inError} onClick={open}>
         {value !== null &&
           (value ? <Badge level="primary">{yesLabel}</Badge> : <Badge level="tertiary">{noLabel}</Badge>)}
         &nbsp;
