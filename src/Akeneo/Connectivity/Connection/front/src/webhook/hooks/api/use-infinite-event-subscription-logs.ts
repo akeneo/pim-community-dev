@@ -1,10 +1,10 @@
 import {EventSubscriptionLog} from '../../model/EventSubscriptionLog';
 import {RefObject, useCallback, useState} from 'react';
 import {useRoute} from '../../../shared/router';
-import {useInfiniteScroll} from '../../scroll';
 import {useEffectAfterFirstRender} from '../../../shared/hooks/useEffectAfterFirstRender';
 import {useDebounceCallback} from '../../../shared/utils/use-debounce-callback';
 import {EventSubscriptionLogFilters, isSameAsDefaultFiltersValues} from '../../model/EventSubscriptionLogFilters';
+import {useInfiniteScroll} from '../../../shared/scroll';
 
 const MAX_PAGES = 20;
 

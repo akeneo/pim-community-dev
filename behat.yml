@@ -124,7 +124,7 @@ legacy:
                 - tests/legacy/features
                 - src/Akeneo/Connectivity/Connection/tests/features/
             filters:
-                tags: '~@skip&&~@skip-pef&&~@skip-nav&&~@doc&&~@unstable&&~@unstable-app&&~@deprecated&&~@critical'
+                tags: '~@skip&&~@skip-pef&&~@skip-nav&&~@doc&&~@unstable&&~@unstable-app&&~@deprecated&&~@critical&&~@optional'
         chipmunk:
             contexts: *context
             paths:

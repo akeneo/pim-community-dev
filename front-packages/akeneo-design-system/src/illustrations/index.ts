@@ -1,6 +1,7 @@
 export * from './AddingValueIllustration';
 export * from './AkeneoCloudEditionIllustration';
 export * from './ApiIllustration';
+export * from './AppIllustration';
 export * from './AssetCategoriesIllustration';
 export * from './AssetsIllustration';
 export * from './AssociationTypesIllustration';

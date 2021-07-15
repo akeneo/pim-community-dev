@@ -5,6 +5,7 @@ export * from './ArrowIcon';
 export * from './ArrowDownIcon';
 export * from './ArrowLeftIcon';
 export * from './ArrowRightIcon';
+export * from './ArrowSimpleUpIcon';
 export * from './ArrowUpIcon';
 export * from './AssetsIcon';
 export * from './AssetCollectionIcon';

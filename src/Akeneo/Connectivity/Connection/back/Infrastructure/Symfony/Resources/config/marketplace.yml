@@ -1,16 +1,46 @@
 parameters:
     akeneo_pim_marketplace_url: 'https://marketplace.akeneo.com'
+    akeneo_pim_marketplace_api_pagination_size: 100
 
 services:
     akeneo_connectivity.connection.marketplace.url_generator:
         class: Akeneo\Connectivity\Connection\Application\Marketplace\MarketplaceUrlGenerator
         arguments:
-          - '%akeneo_pim_marketplace_url%'
-          - '@pim_catalog.version_provider'
-          - '%env(AKENEO_PIM_URL)%'
-          - '@akeneo_connectivity.connection.marketplace.query.get_user_profile'
+            - '%akeneo_pim_marketplace_url%'
+            - '@pim_catalog.version_provider'
+            - '%env(AKENEO_PIM_URL)%'
+            - '@akeneo_connectivity.connection.marketplace.query.get_user_profile'
+
+    akeneo_connectivity.connection.marketplace.analytics_generator:
+        class: Akeneo\Connectivity\Connection\Application\Marketplace\MarketplaceAnalyticsGenerator
+        arguments:
+            - '@akeneo_connectivity.connection.marketplace.query.get_user_profile'
+            - '@akeneo_connectivity.connection.marketplace.web_marketplace_aliases'
+            - '@pim_framework.service.pim_url'
 
     akeneo_connectivity.connection.marketplace.query.get_user_profile:
         class: Akeneo\Connectivity\Connection\Infrastructure\Persistence\Dbal\Query\DbalGetUserProfileQuery
         arguments:
             - '@database_connection'
+
+    akeneo_connectivity.connection.marketplace.guzzle_client:
+        class: GuzzleHttp\Client
+        arguments:
+            - base_uri: '%akeneo_pim_marketplace_url%'
+
+    akeneo_connectivity.connection.marketplace.web_marketplace_api:
+        class: Akeneo\Connectivity\Connection\Infrastructure\Marketplace\WebMarketplaceApi
+        arguments:
+            - '@akeneo_connectivity.connection.marketplace.guzzle_client'
+            - '@akeneo_connectivity.connection.marketplace.web_marketplace_aliases'
+
+    akeneo_connectivity.connection.marketplace.web_marketplace_aliases:
+        class: Akeneo\Connectivity\Connection\Infrastructure\Marketplace\WebMarketplaceAliases
+        arguments:
+            - '@pim_catalog.version_provider'
+
+    akeneo_connectivity.connection.marketplace.get_all_extensions_query:
+        class: Akeneo\Connectivity\Connection\Infrastructure\Marketplace\GetAllExtensionsQuery
+        arguments:
+            - '@akeneo_connectivity.connection.marketplace.web_marketplace_api'
+            - '%akeneo_pim_marketplace_api_pagination_size%'

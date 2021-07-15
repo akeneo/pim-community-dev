@@ -1,12 +1,7 @@
 import {DependencyList, RefObject, useCallback, useEffect, useLayoutEffect} from 'react';
 import debounce from '../../../shared/utils/debounce';
 import findScrollParent from '../utils/findScrollParent';
-
-export type ScrollPosition = {
-    scrollTop: number;
-    clientHeight: number;
-    scrollHeight: number;
-};
+import {ScrollPosition, getScrollPosition} from '../utils/getScrollPosition';
 
 const useScrollPosition = (
     ref: RefObject<HTMLElement>,
@@ -20,13 +15,8 @@ const useScrollPosition = (
         }
 
         const scrollParent = findScrollParent(ref.current);
-        const {scrollTop, clientHeight, scrollHeight} = scrollParent;
 
-        callback({
-            scrollTop,
-            clientHeight,
-            scrollHeight,
-        });
+        callback(getScrollPosition(scrollParent));
     }, [...deps, ref, callback]);
 
     const debounceHandleScroll = debounce(handleScroll, delay);
