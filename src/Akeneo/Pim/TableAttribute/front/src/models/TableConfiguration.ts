@@ -6,11 +6,11 @@ export type ColumnCode = string;
 const DATA_TYPES: ColumnType[] = ['text', 'number', 'boolean', 'select'];
 const FIRST_COLUMN_DATA_TYPES: ColumnType[] = ['select'];
 
-type TextColumnValidation = {
+export type TextColumnValidation = {
   max_length?: number;
 };
 
-type NumberColumnValidation = {
+export type NumberColumnValidation = {
   min?: number;
   max?: number;
   decimals_allowed?: boolean;

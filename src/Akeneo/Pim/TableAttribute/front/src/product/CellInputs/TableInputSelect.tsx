@@ -1,6 +1,6 @@
 import React, {useState} from 'react';
 import {Dropdown, TableInput, AddingValueIllustration} from 'akeneo-design-system';
-import {SelectOption, SelectOptionCode} from '../models/TableConfiguration';
+import {SelectOption, SelectOptionCode} from '../../models/TableConfiguration';
 import {getLabel, LoadingPlaceholderContainer, useTranslate, useUserContext} from '@akeneo-pim-community/shared';
 import styled from 'styled-components';
 
@@ -10,6 +10,7 @@ type TableInputSelectProps = {
   value?: SelectOptionCode;
   onChange: (value: SelectOptionCode | undefined) => void;
   options?: SelectOption[];
+  inError?: boolean;
 };
 
 const FakeInput = styled.div`
@@ -24,7 +25,7 @@ const CenteredHelper = styled.div`
   }
 `;
 
-const TableInputSelect: React.FC<TableInputSelectProps> = ({value, onChange, options, ...rest}) => {
+const TableInputSelect: React.FC<TableInputSelectProps> = ({value, onChange, options, inError = false, ...rest}) => {
   const translate = useTranslate();
   const userContext = useUserContext();
 
@@ -85,7 +86,7 @@ const TableInputSelect: React.FC<TableInputSelectProps> = ({value, onChange, opt
       onNextPage={handleNextPage}
       searchValue={searchValue}
       onSearchChange={handleSearchValue}
-      inError={notFoundOption}
+      inError={inError || notFoundOption}
       {...rest}>
       {itemsToDisplay.map(option => {
         return (

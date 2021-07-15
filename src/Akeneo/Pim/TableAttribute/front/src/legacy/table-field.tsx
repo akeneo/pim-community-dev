@@ -12,7 +12,7 @@ const Field = require('pim/field');
 // eslint-disable-next-line @typescript-eslint/no-var-requires
 const mediator = require('oro/mediator');
 
-export type TableValueViolatedCell = {
+export type ViolatedCellByRowIndex = {
   rowIndex: number;
   columnCode: ColumnCode;
 };
@@ -40,7 +40,7 @@ export type TemplateContext = {
 };
 
 class TableField extends (Field as {new (config: any): any}) {
-  private violatedCells: TableValueViolatedCell[] = [];
+  private violatedCells: ViolatedCellByRowIndex[] = [];
 
   constructor(config: any) {
     super(config);

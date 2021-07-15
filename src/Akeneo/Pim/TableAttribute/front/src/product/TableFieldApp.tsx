@@ -4,7 +4,7 @@ import styled, {ThemeProvider} from 'styled-components';
 import {Locale, pimTheme, uuid, Search} from 'akeneo-design-system';
 import {TableInputValue} from './TableInputValue';
 import {TableRow, TableValue} from '../models/TableValue';
-import {TableValueViolatedCell, TemplateContext} from '../legacy/table-field';
+import {ViolatedCellByRowIndex, TemplateContext} from '../legacy/table-field';
 import {useTranslate} from '@akeneo-pim-community/shared';
 import {AddRowsButton} from './AddRowsButton';
 import {ColumnCode, SelectOptionCode} from '../models/TableConfiguration';
@@ -16,12 +16,17 @@ const TableInputContainer = styled.div`
 type TableFieldAppProps = TemplateContext & {
   onChange: (tableValue: TableValue) => void;
   elements: {[position: string]: {[elementKey: string]: any}};
-  violatedCells: TableValueViolatedCell[];
+  violatedCells: ViolatedCellByRowIndex[];
 };
 
 type TableRowWithId = TableRow & {'unique id': string};
 // As we can't have space, the 'unique id' can not be used as column
 export type TableValueWithId = TableRowWithId[];
+
+export type ViolatedCellsById = {
+  id: string;
+  columnCode: ColumnCode;
+}
 
 const TableFieldApp: React.FC<TableFieldAppProps> = ({
   type,
@@ -54,6 +59,16 @@ const TableFieldApp: React.FC<TableFieldAppProps> = ({
   const [removedRows, setRemovedRows] = React.useState<{[key: string]: TableRowWithId}>({});
   const [searchText, setSearchText] = React.useState<string>('');
   const firstColumnCode: ColumnCode = attribute.table_configuration[0].code;
+  const [violatedCellsById, setViolatedCellsById] = React.useState<ViolatedCellsById[]>([]);
+
+  React.useEffect(() => {
+    setViolatedCellsById(violatedCells.map(violatedCell => {
+      return {
+        id: tableValue[violatedCell.rowIndex]['unique id'],
+        columnCode: violatedCell.columnCode,
+      }
+    }));
+  }, [violatedCells]);
 
   const renderElements: (position: string) => React.ReactNode = position => {
     return (
@@ -157,7 +172,7 @@ const TableFieldApp: React.FC<TableFieldAppProps> = ({
               tableConfiguration={attribute.table_configuration}
               onChange={handleChange}
               searchText={searchText}
-              violatedCells={violatedCells}
+              violatedCells={violatedCellsById}
             />
             {renderElements('field-input')}
           </div>
