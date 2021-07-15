@@ -1,11 +1,14 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Akeneo\Channel\Bundle\EventListener;
 
 use Akeneo\Channel\Component\Model\ChannelInterface;
 use Akeneo\Channel\Component\Model\LocaleInterface;
 use Akeneo\Channel\Component\Repository\LocaleRepositoryInterface;
-use Akeneo\Tool\Component\Console\CommandLauncher;
+use Akeneo\Tool\Bundle\BatchBundle\Launcher\JobLauncherInterface;
+use Akeneo\Tool\Component\StorageUtils\Repository\IdentifiableObjectRepositoryInterface;
 use Akeneo\Tool\Component\StorageUtils\Saver\BulkSaverInterface;
 use Akeneo\Tool\Component\StorageUtils\StorageEvents;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
@@ -27,28 +30,32 @@ class ChannelLocaleSubscriber implements EventSubscriberInterface
     /** @var BulkSaverInterface */
     protected $saver;
 
-    /** @var CommandLauncher */
-    protected $commandLauncher;
+    /** @var JobLauncherInterface */
+    private $jobLauncher;
 
     /** @var TokenStorageInterface */
     protected $tokenStorage;
 
-    /**
-     * @param LocaleRepositoryInterface $repository
-     * @param BulkSaverInterface        $saver
-     * @param CommandLauncher           $commandLauncher
-     * @param TokenStorageInterface     $tokenStorage
-     */
+    /** @var string */
+    private $jobName;
+
+    /** @var IdentifiableObjectRepositoryInterface */
+    private $jobInstanceRepository;
+
     public function __construct(
         LocaleRepositoryInterface $repository,
         BulkSaverInterface $saver,
-        CommandLauncher $commandLauncher,
-        TokenStorageInterface $tokenStorage
+        JobLauncherInterface $jobLauncher,
+        TokenStorageInterface $tokenStorage,
+        IdentifiableObjectRepositoryInterface $jobInstanceRepository,
+        string $jobName
     ) {
         $this->repository = $repository;
         $this->saver = $saver;
-        $this->commandLauncher = $commandLauncher;
+        $this->jobLauncher = $jobLauncher;
         $this->tokenStorage = $tokenStorage;
+        $this->jobInstanceRepository = $jobInstanceRepository;
+        $this->jobName = $jobName;
     }
 
     /**
@@ -62,9 +69,6 @@ class ChannelLocaleSubscriber implements EventSubscriberInterface
         ];
     }
 
-    /**
-     * @param GenericEvent $event
-     */
     public function removeChannel(GenericEvent $event)
     {
         $channel = $event->getSubject();
@@ -86,9 +90,6 @@ class ChannelLocaleSubscriber implements EventSubscriberInterface
         }
     }
 
-    /**
-     * @param GenericEvent $event
-     */
     public function updateChannel(GenericEvent $event)
     {
         $channel = $event->getSubject();
@@ -103,8 +104,6 @@ class ChannelLocaleSubscriber implements EventSubscriberInterface
     /**
      * Update the channel and if at least a locale is removed, it launches the completeness cleaning with a command.
      * @see https://akeneo.atlassian.net/browse/PIM-7155
-     *
-     * @param ChannelInterface $channel
      */
     private function updateChannelInBackend(ChannelInterface $channel): void
     {
@@ -138,19 +137,19 @@ class ChannelLocaleSubscriber implements EventSubscriberInterface
         }
     }
 
-    /**
-     * @param array  $localesCodes
-     * @param string $channelCode
-     */
     private function removeCompletenessForChannelAndLocales(array $localesCodes, string $channelCode): void
     {
-        $cmd = sprintf(
-            'pim:catalog:remove-completeness-for-channel-and-locale %s %s %s',
-            $channelCode,
-            implode(',', $localesCodes),
-            $this->tokenStorage->getToken()->getUsername()
-        );
+        $user = $this->tokenStorage->getToken()->getUser();
+        $jobInstance = $this->jobInstanceRepository->findOneByIdentifier($this->jobName);
 
-        $this->commandLauncher->executeBackground($cmd);
+        $this->jobLauncher->launch(
+            $jobInstance,
+            $user,
+            [
+                'locales_identifier' => $localesCodes,
+                'channel_code' => $channelCode,
+                'username' => $user->getUsername(),
+            ]
+        );
     }
 }

@@ -15,6 +15,14 @@ services:
         tags:
             - { name: akeneo_batch.job.job_parameters.default_values_provider }
 
+    pim_catalog.job.job_parameters.default_values_provider.remove_completeness_for_channel_and_locale:
+        class: '%akeneo_batch.job.job_parameters.empty_values_provider.class%'
+        arguments:
+            -
+                - '%pim_catalog.remove_completeness_for_channel_and_locale.job_name%'
+        tags:
+            - { name: akeneo_batch.job.job_parameters.default_values_provider }
+
     pim_catalog.job.job_parameters.default_values_provider.remove_non_existing_product_values:
         class: '%akeneo_batch.job.job_parameters.empty_values_provider.class%'
         arguments:
