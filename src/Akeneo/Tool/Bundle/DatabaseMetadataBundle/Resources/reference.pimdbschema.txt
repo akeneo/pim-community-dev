@@ -284,7 +284,7 @@ akeneo_reference_entity_reference_entity_permissions | reference_entity_identifi
 akeneo_reference_entity_reference_entity_permissions | user_group_identifier | NO | smallint(6) | PRI
 akeneo_reference_entity_reference_entity_permissions | right_level | NO | varchar(255) | 
 akeneo_rule_engine_rule_definition | id | NO | int(11) | PRI
-akeneo_rule_engine_rule_definition | code | NO | varchar(100) | 
+akeneo_rule_engine_rule_definition | code | NO | varchar(100) | MUL 
 akeneo_rule_engine_rule_definition | type | NO | varchar(100) | 
 akeneo_rule_engine_rule_definition | content | YES | json | 
 akeneo_rule_engine_rule_definition | priority | NO | int(11) | 
