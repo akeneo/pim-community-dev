@@ -142,7 +142,7 @@
     "style-loader": "^1.0.1",
     "styled-components": "^5.1.1",
     "summernote": "0.6.16",
-    "underscore": "1.8.3",
+    "underscore": "1.12.1",
     "victory": "^33.1.6"
   },
   "private": true,
