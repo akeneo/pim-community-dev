@@ -58,7 +58,8 @@ class ValueHydrator
         SourceInterface $source
     ): SourceValueInterface {
         if ($source instanceof AttributeSource) {
-            $value = $product->getValue($source->getCode(), $source->getChannel(), $source->getLocale());
+            $value = $product->getValue($source->getCode(), $source->getLocale(), $source->getChannel());
+
             return $this->hydrateFromAttribute($value, $source->getAttributeType(), $product);
         } elseif ($source instanceof PropertySource) {
             return $this->hydrateFromProperty($source->getName(), $product);
@@ -111,7 +112,7 @@ class ValueHydrator
 
                 return new MeasurementValue($value->getAmount(), $value->getUnit());
             case 'pim_catalog_number':
-                return new NumberValue($data);
+                return new NumberValue((string) $data);
             case 'pim_catalog_multiselect':
                 return new MultiSelectValue($data);
             case 'pim_catalog_simpleselect':
