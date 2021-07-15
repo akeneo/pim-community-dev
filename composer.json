@@ -34,7 +34,8 @@
             "Akeneo\\Test\\": "tests/back/",
             "Pim\\Upgrade\\Schema\\Tests\\": "upgrades/test_schema/",
             "Akeneo\\Platform\\CommunicationChannel\\Test\\": "src/Akeneo/Platform/Bundle/CommunicationChannelBundle/back/tests",
-            "Akeneo\\Test\\Pim\\Automation\\DataQualityInsights\\": "src/Akeneo/Pim/Automation/DataQualityInsights/tests/back"
+            "Akeneo\\Test\\Pim\\Automation\\DataQualityInsights\\": "src/Akeneo/Pim/Automation/DataQualityInsights/tests/back",
+            "Akeneo\\Test\\FreeTrial\\": "src/Akeneo/FreeTrial/tests/back"
         }
     },
     "require": {

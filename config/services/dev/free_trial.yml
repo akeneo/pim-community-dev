@@ -1,0 +1,5 @@
+services:
+    akeneo.free_trial.akeneo_connect.guzzle_client:
+        class: Akeneo\FreeTrial\Infrastructure\AkeneoConnect\MockGuzzleHttpClient
+        arguments:
+            - '@Akeneo\FreeTrial\Domain\Query\GetInvitedUsersQuery'
