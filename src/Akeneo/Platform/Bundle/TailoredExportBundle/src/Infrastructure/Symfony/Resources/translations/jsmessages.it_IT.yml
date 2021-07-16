@@ -1,62 +1,95 @@
 batch_jobs.xlsx_tailored_product_export.label: Esportazione prodotti su misura in XLSX
 akeneo.tailored_export:
+  filters:
+    completeness:
+      locales:
+        label: Definisci le impostazioni locali per il completamento
+        placeholder: Seleziona alcune impostazioni locali
+        remove: Rimuovi l'impostazione locale
   form:
     job_instance:
       tab:
         content:
-          title: Filtra i dati
+          title: Selezione prodotto
         column:
-          title: Seleziona le colonne
+          title: Esporta struttura
+        filters:
+          title: Definisci la tua selezione prodotto
   column_list:
     title: Colonne
     header:
-      column_name: Nome colonna
-      source_data: Dati di origine
+      column_name: Intestazione colonna
+      source_data: Contenuto colonna
     column_row:
-      target_placeholder: Definisci qui il nome della tua nuova colonna
+      target_placeholder: Definisci qui il nome della tua colonna
       remove: Rimuovi colonna
-      no_source: Nessuna origine
+      no_source: Definisci origine contenuto
     no_column_selection:
-      title: Nessuna selezione di colonne da esportare
-      subtitle: Per scoprire di più su mappatura e operazioni,
-      link: consulta questo articolo
+      title: Il tuo profilo di esportazione è vuoto. Aggiungi la tua prima colonna.
+      subtitle: Fai clic su 'Aggiungi prima colonna' per iniziare a creare la tua tabella di esportazione.
+      link: Consulta il nostro Help Center per ulteriori informazioni.
       add_column: Aggiungi prima colonna
   column_details:
     sources:
       title: Origini
       add: Aggiungi origine
       no_result: Spiacenti, nessun risultato presente.
-      locale_specific.info: Questo attributo è specifico per impostazioni locali
+      locale_specific.info: Questo attributo ha un valore per impostazione locale.
       remove:
         title: origine
         text: Sei sicuro di voler rimuovere questa origine?
         button: Rimuovi questa origine
       no_source_configuration:
-        title: Non sono presenti operazioni disponibili per questa origine. Solo il suo valore verrà esportato.
+        title: Non sono presenti operazioni disponibili per questa origine. Il suo valore verrà esportato così com'è.
       no_source_selected:
-        title: Nessuna origine selezionata al momento.
-        subtitle: Per scoprire di più su mappatura e operazioni,
-        link: consulta questo articolo
+        title: Fai clic su 'Aggiungi origine' per iniziare a definire il contenuto della colonna.
+        link: Consulta il nostro Help Center per ulteriori informazioni.
       no_column_selected:
-        title: Nessuna colonna selezionata al momento.
+        title: Una volta che la prima colonna è definita, puoi selezionare la tua prima origine.
       selection:
         title: Selezione
-        separator: Separatore
+        collection_separator: Separatore
         type:
           amount: Importo
           currency: Valuta
+          key: Chiave di file
+          path: Percorso
+          name: Nome file
+        format: Formato
+        parent:
+          information:
+            locale: Se l'attributo usato come etichetta ha un valore per impostazione locale, puoi selezionare un'impostazione locale specifica.
+            channel: Se l'attributo usato come etichetta ha un valore per canale, puoi selezionare un canale specifico.
+        code_label:
+          information: Per questo attributo, puoi esportare il codice o l'etichetta.
+        measurement:
+          information: Per questo attributo, puoi esportare il valore, il codice unità o l'etichetta unità.
+          value: Valore
+          unit_locale: Impostazione locale unità
+          unit_code: Codice unità
+          unit_label: Etichetta unità
+        price:
+          information: Per questo attributo, puoi esportare sia l'importo che la valuta.
+        file:
+          information: Per questo attributo, puoi esportare il percorso, la chiave di file o il nome.
+      operation:
+        replacement:
+          title: Sostituisci valore
+          placeholder: Definisci il valore di sostituzione
+          enabled: Valore di sostituzione abilitato
+          disabled: Valore di sostituzione disabilitato
   column:
     delete_message: Sei sicuro di voler rimuovere questa colonna?
   validation:
     columns:
-      max_column_count_reached: Hai raggiunto il numero massimo di colonne di {{ limit }}
+      max_column_count_reached: Hai raggiunto il limite di {{ limit }} colonne, non puoi più aggiungere colonne alla tua esportazione.
       target:
-        should_not_be_blank: Il nome della colonna non deve essere vuoto
+        should_not_be_blank: Definisci un nome di colonna.
         max_length_reached: Nome della colonna troppo lungo. Deve avere {{ limit }} caratteri o meno.
-        should_be_unique: Il nome della colonna deve essere univoco
+        should_be_unique: Questo nome di colonna esiste già, inseriscine uno nuovo.
     sources:
-      max_source_count_reached: Hai raggiunto il numero massimo di origini di {{ limit }}
+      max_source_count_reached: Hai raggiunto il limite di {{ limit }} origini, non puoi più aggiungere origini alla tua esportazione.
     locale:
-      should_be_active: L'impostazione locale {{ locale_code }} deve essere attiva
+      should_be_active: L'impostazione locale {{ locale_code }} deve essere attiva.
     channel:
-      should_exist: Il canale {{ channel_code }} deve esistere
+      should_exist: Il canale {{ channel_code }} deve essere attivo.

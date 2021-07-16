@@ -50,7 +50,7 @@ class NamingConventionValidator extends ConstraintValidator
                     'locale' => new RawLocaleShouldBeActivated(),
                     'channel' => new RawChannelShouldExist(),
                 ]),
-                new RawSource($assetFamilyIdentifier),
+                new RawSource($assetFamilyIdentifier, $constraint->getAttributeAsMainMedia()),
             ],
             'pattern' => new Pattern(),
             'abort_asset_creation_on_error' => new Assert\Type('bool'),

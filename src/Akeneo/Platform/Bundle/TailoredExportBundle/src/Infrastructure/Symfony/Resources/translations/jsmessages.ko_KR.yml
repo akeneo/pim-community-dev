@@ -1,47 +1,22 @@
 batch_jobs.xlsx_tailored_product_export.label: XSLX로 맞춤화된 제품 내보내기
 akeneo.tailored_export:
-  form:
-    job_instance:
-      tab:
-        content:
-          title: 데이터 필터링
-        column:
-          title: 열 선택
   column_list:
     title: 열
-    header:
-      column_name: 열 이름
-      source_data: 소스 데이터
     column_row:
-      target_placeholder: 여기에서 새 열 이름 정의
       remove: 열 제거
-      no_source: 소스 없음
     no_column_selection:
-      title: 내보낼 열 선택 없음
-      subtitle: 매핑 및 작업에 관해 자세히 알아보려면
-      link: 이 문서가 도움이 될 수 있습니다.
       add_column: 첫 번째 열 추가
   column_details:
     sources:
       title: 소스
       add: 소스 추가
       no_result: 죄송합니다. 결과가 없습니다.
-      locale_specific.info: 이 특성은 특정 로케일에 한정됩니다.
       remove:
         title: 소스
         text: 이 소스를 제거하시겠습니까?
         button: 이 소스 제거
-      no_source_configuration:
-        title: 이 소스에 사용 가능한 작업이 없습니다. 해당 값만 내보내집니다.
-      no_source_selected:
-        title: 현재 선택된 소스가 없습니다.
-        subtitle: 매핑 및 작업에 관해 자세히 알아보려면
-        link: 이 문서가 도움이 될 수 있습니다.
-      no_column_selected:
-        title: 현재 선택된 열이 없습니다.
       selection:
         title: 선택
-        separator: 구분 기호
         type:
           amount: 총계
           currency: 통화
@@ -49,14 +24,5 @@ akeneo.tailored_export:
     delete_message: 이 열을 삭제하시겠습니까?
   validation:
     columns:
-      max_column_count_reached: 최대 열 개수인 {{ limit }}개에 도달했습니다.
       target:
-        should_not_be_blank: 열 이름은 비워둘 수 없습니다.
         max_length_reached: 열 이름이 너무 깁니다. {{ limit }}자 이하여야 합니다.
-        should_be_unique: 열 이름은 고유해야 합니다.
-    sources:
-      max_source_count_reached: 최대 소스 개수인 {{ limit }}개에 도달했습니다.
-    locale:
-      should_be_active: 로케일 {{ locale_code }}을(를) 활성화해야 합니다.
-    channel:
-      should_exist: 채널 {{ channel_code }}이(가) 있어야 합니다.

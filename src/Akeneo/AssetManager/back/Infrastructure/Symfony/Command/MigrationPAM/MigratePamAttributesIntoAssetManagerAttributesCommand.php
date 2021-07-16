@@ -62,6 +62,8 @@ class MigratePamAttributesIntoAssetManagerAttributesCommand extends Command
         $count = count($attributeCodes) === 0 ? $this->updateAll() : $this->updateFromAttributeCodes($attributeCodes);
 
         $this->io->success(sprintf('Success! %d former attribute(s) updated.', $count));
+
+        return 0;
     }
 
     private function updateAll(): int

@@ -31,6 +31,11 @@ class NullJobRepository implements JobRepositoryInterface
      */
     public function createJobExecution(JobInstance $jobInstance, JobParameters $jobParameters)
     {
+        $jobExecution = new JobExecution();
+        $jobExecution->setJobInstance($jobInstance);
+        $jobExecution->setJobParameters($jobParameters);
+
+        return $jobExecution;
     }
 
     /**
@@ -38,6 +43,7 @@ class NullJobRepository implements JobRepositoryInterface
      */
     public function updateJobExecution(JobExecution $jobExecution)
     {
+        return $jobExecution;
     }
 
     /**
@@ -45,6 +51,7 @@ class NullJobRepository implements JobRepositoryInterface
      */
     public function updateStepExecution(StepExecution $stepExecution)
     {
+        return $stepExecution;
     }
 
     /**
@@ -52,6 +59,7 @@ class NullJobRepository implements JobRepositoryInterface
      */
     public function getLastJobExecution(JobInstance $jobInstance, $status)
     {
+        return null;
     }
 
     /**
@@ -59,6 +67,7 @@ class NullJobRepository implements JobRepositoryInterface
      */
     public function findPurgeables($days)
     {
+        return [];
     }
 
     /**

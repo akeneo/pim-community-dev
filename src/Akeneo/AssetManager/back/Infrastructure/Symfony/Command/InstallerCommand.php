@@ -107,5 +107,7 @@ class InstallerCommand extends Command implements EventSubscriberInterface
     {
         $this->fixturesInstaller->createSchema();
         $this->fixturesInstaller->loadCatalog();
+
+        return 0;
     }
 }
