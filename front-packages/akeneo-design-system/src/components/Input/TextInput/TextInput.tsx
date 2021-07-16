@@ -1,5 +1,5 @@
 import React, {ChangeEvent, Ref, useCallback, useRef} from 'react';
-import styled from 'styled-components';
+import styled, {css} from 'styled-components';
 import {InputProps} from '../InputProps';
 import {LockIcon} from '../../../icons';
 import {Key, Override} from '../../../shared';
@@ -23,9 +23,15 @@ const Input = styled.input<{readOnly: boolean; invalid: boolean} & AkeneoThemedP
   color: ${({readOnly}) => (readOnly ? getColor('grey', 100) : getColor('grey', 140))};
   font-size: ${getFontSize('default')};
   line-height: 40px;
-  padding: 0 15px;
+  padding: 0 ${({readOnly}) => (readOnly ? '35px' : '15px')} 0 15px;
   outline-style: none;
   cursor: ${({readOnly}) => (readOnly ? 'not-allowed' : 'auto')};
+  ${({readOnly}) =>
+    readOnly &&
+    css`
+      overflow: hidden;
+      text-overflow: ellipsis;
+    `}
   &:focus {
     box-shadow: 0 0 0 2px ${getColor('blue', 40)};
   }
@@ -120,6 +126,7 @@ const TextInput = React.forwardRef<HTMLInputElement, TextInputProps>(
           disabled={readOnly}
           aria-invalid={invalid}
           invalid={invalid}
+          title={rest.value}
           {...rest}
         />
         {readOnly && <ReadOnlyIcon size={16} />}
