@@ -50,6 +50,7 @@ akeneo_data_quality_insights:
           messages:
             first_step:
               message1: Je hebt het moeilijk met attribuut- en optielabels? Ga  <a href="{{ link }}" target="_blank">hier</a> terug naar de basis?
+              message2: Heeft u hulp nodig met de attributen en de opties voor attributen? Kijk dan eens <a href="{{ link }}" target="_blank">hier</a>!
             second_step:
               message1: Neem een kijkje bij uw attributen en optielabels. Uw producten zullen er nadien nog beter uitzien.
               message2: Het lijkt erop dat je onderweg ergens bent verdwaald! Sommige van je labels hebben nog aandacht nodig.
