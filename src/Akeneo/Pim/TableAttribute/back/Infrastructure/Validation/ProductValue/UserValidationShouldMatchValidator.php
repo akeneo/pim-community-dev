@@ -64,6 +64,9 @@ final class UserValidationShouldMatchValidator extends ConstraintValidator
     private function BuildConstraints(TableConfiguration $tableConfiguration, string $stringColumnCode): array
     {
         $validations = $tableConfiguration->getValidations(ColumnCode::fromString($stringColumnCode));
+        if (null === $validations) {
+            return [];
+        }
 
         $constraints = [];
         foreach ($validations->normalize() as $key => $validationValue) {

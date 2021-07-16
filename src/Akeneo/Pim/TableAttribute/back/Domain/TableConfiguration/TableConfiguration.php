@@ -95,7 +95,7 @@ final class TableConfiguration
         ));
     }
 
-    public function getValidations(ColumnCode $columnCode): ValidationCollection
+    public function getValidations(ColumnCode $columnCode): ?ValidationCollection
     {
         foreach ($this->columnDefinitions as $columnDefinition) {
             if ($columnDefinition->code()->equals($columnCode)) {
@@ -103,6 +103,6 @@ final class TableConfiguration
             }
         }
 
-        return ValidationCollection::fromNormalized([]);
+        return null;
     }
 }

@@ -14,6 +14,12 @@ services:
 
     Akeneo\Pim\TableAttribute\tests\back\Acceptance\Context\ConstraintViolationsContext: ~
 
+    Akeneo\Pim\TableAttribute\tests\back\Acceptance\Context\ProductValidationContext:
+        arguments:
+            - '@test.catalog.product.builder'
+            - '@pim_catalog.validator.product'
+            - '@pim_catalog.repository.product'
+
     Akeneo\Pim\TableAttribute\Domain\TableConfiguration\Query\GetNonExistingSelectOptionCodes:
         class: Akeneo\Pim\TableAttribute\tests\back\Acceptance\InMemory\InMemoryGetNonExistingSelectOptionCodes
         arguments:

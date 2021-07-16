@@ -93,7 +93,7 @@ class TableConfigurationSpec extends ObjectBehavior
         $this->getValidations(ColumnCode::fromString('description'))
             ->shouldBeLike(ValidationCollection::fromNormalized(['max_length' => 50]));
         $this->getValidations(ColumnCode::fromString('unknown'))
-            ->shouldBeLike(ValidationCollection::fromNormalized([]));
+            ->shouldBe(null);
     }
 
 //    TODO: implement when select columns are implemented

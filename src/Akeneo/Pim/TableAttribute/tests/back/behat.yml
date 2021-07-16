@@ -7,11 +7,11 @@ default:
                 - Akeneo\Pim\TableAttribute\tests\back\Acceptance\Context\CreateAttributeContext
                 - Akeneo\Pim\TableAttribute\tests\back\Acceptance\Context\UpdateAttributeContext
                 - Akeneo\Pim\TableAttribute\tests\back\Acceptance\Context\ConstraintViolationsContext
+                - Akeneo\Pim\TableAttribute\tests\back\Acceptance\Context\ProductValidationContext
                 - test.channel.context
                 - test.locale.context
                 - test.user.context
                 - test.attribute.context
-                - test.catalog.product_validation.context
             filters:
                 tags: '@acceptance-back'
     extensions:
