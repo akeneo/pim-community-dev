@@ -435,6 +435,8 @@ pim_datagrid:
       label: Groups
     enabled:
       label: Status
+    scope:
+      label: Channel
     completeness:
       label: Complete
     created:

@@ -448,7 +448,7 @@ pim_datagrid:
     enabled:
       label: 状态
     scope:
-      label: 范围
+      label: 渠道
     completeness:
       label: 完成
     created:

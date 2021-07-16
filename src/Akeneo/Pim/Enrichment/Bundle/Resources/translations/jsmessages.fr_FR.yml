@@ -61,6 +61,7 @@ pim_enrich.entity.product:
     history:
       version: Version
       author: Auteur
+      logged_at: Date/Heure
       from: De
       modified: Modifié
       old_value: Ancienne valeur

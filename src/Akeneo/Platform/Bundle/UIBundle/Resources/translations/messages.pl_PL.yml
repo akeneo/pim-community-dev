@@ -448,7 +448,7 @@ pim_datagrid:
     enabled:
       label: Status
     scope:
-      label: Zakres
+      label: Kanał
     completeness:
       label: Kompletny
     created:
