@@ -49,9 +49,27 @@ test('it calls Callbacks on Yes change', () => {
     />
   );
 
-  fireEvent.click(screen.getByTitle('Open'));
+  fireEvent.click(screen.getByText('No'));
   fireEvent.click(screen.getByText('Yes'));
   expect(handleChange).toHaveBeenCalledWith(true);
+});
+
+test('it does not open options on readonly mode', () => {
+  const handleChange = jest.fn();
+  render(
+    <TableInputBoolean
+      value={true}
+      onChange={handleChange}
+      yesLabel="Yes"
+      noLabel="No"
+      clearLabel={'Clear'}
+      openDropdownLabel={'Open'}
+      readOnly={true}
+    />
+  );
+
+  fireEvent.click(screen.getByText('Yes'));
+  expect(screen.queryByText('No')).not.toBeInTheDocument();
 });
 
 test('it clears the field', () => {
