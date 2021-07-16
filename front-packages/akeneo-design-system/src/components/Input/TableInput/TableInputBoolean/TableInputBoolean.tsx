@@ -4,16 +4,16 @@ import styled, {css} from 'styled-components';
 import {AkeneoThemedProps, getColor} from '../../../../theme';
 import {Override} from '../../../../shared';
 import {Dropdown} from '../../../Dropdown/Dropdown';
-import {ArrowDownIcon, CloseIcon} from '../../../../icons';
+import {ArrowDownIcon, CloseIcon, LockIcon} from '../../../../icons';
 import {useBooleanState} from '../../../../hooks';
 import {IconButton} from '../../../IconButton/IconButton';
 
-const BooleanButtonDropdown = styled(Dropdown)`
+const BooleanButtonDropdown = styled(Dropdown)<{readOnly: boolean} & AkeneoThemedProps>`
   width: 100%;
-  cursor: pointer;
+  color: ${({readOnly}) => (readOnly ? getColor('grey', 100) : getColor('grey', 140))};
 `;
 
-const BooleanButton = styled.button<{highlighted: boolean; inError: boolean} & AkeneoThemedProps>`
+const BooleanButton = styled.button<{highlighted: boolean; inError: boolean; readOnly: boolean} & AkeneoThemedProps>`
   color: ${getColor('grey', 140)};
   width: 100%;
   background: none;
@@ -25,7 +25,7 @@ const BooleanButton = styled.button<{highlighted: boolean; inError: boolean} & A
   height: 39px;
   line-height: 39px;
   align-items: center;
-  cursor: pointer;
+  cursor: ${({readOnly}) => (readOnly ? 'not-allowed' : 'pointer')};
 
   ${({highlighted, inError}) =>
     highlighted && !inError
@@ -68,6 +68,7 @@ type TableInputBooleanProps = Override<
     clearLabel: string;
     openDropdownLabel: string;
     inError?: boolean;
+    readOnly?: boolean;
   }
 >;
 
@@ -79,6 +80,7 @@ const TableInputBoolean: React.FC<TableInputBooleanProps> = ({
   highlighted = false,
   clearLabel,
   openDropdownLabel,
+  readOnly = false,
   inError = false,
   ...rest
 }) => {
@@ -90,14 +92,22 @@ const TableInputBoolean: React.FC<TableInputBooleanProps> = ({
   };
 
   return (
-    <BooleanButtonDropdown {...rest}>
-      <BooleanButton tabIndex={-1} highlighted={highlighted} inError={inError} onClick={open}>
+    <BooleanButtonDropdown readOnly={readOnly} {...rest}>
+      <BooleanButton
+        readOnly={readOnly}
+        tabIndex={-1}
+        highlighted={highlighted}
+        onClick={() => {
+          if (!readOnly) open();
+        }}
+        inError={inError}
+      >
         {value !== null &&
           (value ? <Badge level="primary">{yesLabel}</Badge> : <Badge level="tertiary">{noLabel}</Badge>)}
         &nbsp;
       </BooleanButton>
       <IconsPart>
-        {value !== null && !isOpen && (
+        {value !== null && !readOnly && !isOpen && (
           <IconButton
             icon={<CloseIcon />}
             size="small"
@@ -107,14 +117,17 @@ const TableInputBoolean: React.FC<TableInputBooleanProps> = ({
             onClick={() => handleChange(null)}
           />
         )}
-        <IconButton
-          icon={<ArrowDownIcon />}
-          size="small"
-          title={openDropdownLabel}
-          ghost="borderless"
-          level="tertiary"
-          onClick={open}
-        />
+        {!readOnly && (
+          <IconButton
+            icon={<ArrowDownIcon />}
+            size="small"
+            title={openDropdownLabel}
+            ghost="borderless"
+            level="tertiary"
+            onClick={open}
+          />
+        )}
+        {readOnly && <LockIcon size={16} />}
       </IconsPart>
       {isOpen && (
         <Dropdown.Overlay onClose={close} dropdownOpenerVisible={true}>
