@@ -1,6 +1,6 @@
 import React from 'react';
 import * as ReactDOM from 'react-dom';
-import {ColumnCode, TableConfiguration} from '../models/TableConfiguration';
+import {TableConfiguration} from '../models/TableConfiguration';
 import {DependenciesProvider} from '@akeneo-pim-community/legacy-bridge';
 import {ThemeProvider} from 'styled-components';
 import {pimTheme} from 'akeneo-design-system';
@@ -11,11 +11,6 @@ import {ChannelCode, LocaleCode} from '@akeneo-pim-community/shared';
 const Field = require('pim/field');
 // eslint-disable-next-line @typescript-eslint/no-var-requires
 const mediator = require('oro/mediator');
-
-export type ViolatedCellByRowIndex = {
-  rowIndex: number;
-  columnCode: ColumnCode;
-};
 
 export type TemplateContext = {
   type: 'akeneo-table-field';
@@ -39,43 +34,21 @@ export type TemplateContext = {
   };
 };
 
+export type Violations = {path: string; attribute: string; locale: LocaleCode | null; scope: ChannelCode | null};
+
 class TableField extends (Field as {new (config: any): any}) {
-  private violatedCells: ViolatedCellByRowIndex[] = [];
+  private violations: Violations[] = [];
 
   constructor(config: any) {
     super(config);
 
+    this.violations = [];
     this.fieldType = 'akeneo-table-field';
   }
 
-  computeViolatedCells(
-    event: any,
-    attribute: {
-      code: string;
-      table_configuration: TableConfiguration;
-    },
-    locale: LocaleCode | null,
-    scope: ChannelCode | null
-  ) {
-    const violations = event.response.values;
-    this.violatedCells = [];
-
-    violations.map((violation: any) => {
-      if (violation.attribute === attribute.code && locale === violation.locale && scope === violation.scope) {
-        // Complete path looks like values[attributeCode-<all_channels>-en_US][3].ingredient
-        const completePath = violation.path;
-        const index = completePath.indexOf(']');
-        if (index >= 0) {
-          const realPath = completePath.substr(+index + 1);
-          const results = realPath.match(/^\[(\d)\]\.(.+)$/);
-          if (results) {
-            this.violatedCells.push({
-              rowIndex: parseInt(results[1]),
-              columnCode: results[2],
-            });
-          }
-        }
-      }
+  setFilteredViolations(event: {response: {values: Violations[]}}, attributeCode: string) {
+    this.violations = event.response.values.filter(violation => {
+      return violation.attribute === attributeCode;
     });
   }
 
@@ -99,7 +72,7 @@ class TableField extends (Field as {new (config: any): any}) {
     Promise.all(promises).then(() => {
       this.getTemplateContext().then((templateContext: TemplateContext) => {
         this.listenTo(templateContext.context.root, 'pim_enrich:form:entity:bad_request', (event: any) => {
-          this.computeViolatedCells(event, templateContext.attribute, templateContext.locale, templateContext.scope);
+          this.setFilteredViolations(event, templateContext.attribute.code);
         });
 
         const handleChange = (value: TableValue) => {
@@ -113,7 +86,7 @@ class TableField extends (Field as {new (config: any): any}) {
                 {...templateContext}
                 onChange={handleChange}
                 elements={this.elements}
-                violatedCells={this.violatedCells}
+                violations={this.violations}
               />
             </ThemeProvider>
           </DependenciesProvider>,

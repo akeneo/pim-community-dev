@@ -17,7 +17,7 @@ import {
 } from '@akeneo-pim-community/shared';
 import {TableFooter} from './TableFooter';
 import styled from 'styled-components';
-import {TableValueWithId, ViolatedCellsById} from './TableFieldApp';
+import {TableValueWithId, ViolatedCell} from './TableFieldApp';
 import {getSelectOption, getSelectOptions} from '../repositories/SelectOption';
 import {TableInputSelect} from './CellInputs/TableInputSelect';
 import {TableCell} from '../models/TableValue';
@@ -40,7 +40,7 @@ type TableInputValueProps = {
   tableConfiguration: TableConfiguration;
   onChange: (tableValue: TableValueWithId) => void;
   searchText: string;
-  violatedCells?: ViolatedCellsById[];
+  violatedCells?: ViolatedCell[];
 };
 
 const TableInputValue: React.FC<TableInputValueProps> = ({

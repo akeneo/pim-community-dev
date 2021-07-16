@@ -44,7 +44,14 @@ describe('TableFieldApp', () => {
         {...getTemplateContext()}
         onChange={jest.fn()}
         elements={{}}
-        violatedCells={[{columnCode: 'ingredient', rowIndex: 0}]}
+        violations={[
+          {
+            locale: 'en_US',
+            scope: 'ecommerce',
+            attribute: 'nutrition',
+            path: 'values[nutrition-ecommerce-en_US][0].ingredient',
+          },
+        ]}
       />
     );
 
