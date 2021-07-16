@@ -8,6 +8,7 @@ type TableInputTextProps = {
   searchValue: string;
   validations: TextColumnValidation;
   inError?: boolean;
+  readOnly?: boolean;
 };
 
 const TableInputText: React.FC<TableInputTextProps> = ({
@@ -16,6 +17,7 @@ const TableInputText: React.FC<TableInputTextProps> = ({
   searchValue = '',
   validations,
   inError = false,
+  readOnly = false,
   ...rest
 }) => {
   const highlighted = searchValue.indexOf(`${value}`) >= 0;
@@ -28,6 +30,7 @@ const TableInputText: React.FC<TableInputTextProps> = ({
       highlighted={highlighted}
       maxLength={validations.max_length}
       inError={inError || isTooLong}
+      readOnly={readOnly}
       {...rest}
     />
   );

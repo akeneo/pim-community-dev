@@ -1,5 +1,5 @@
 import React from 'react';
-import {AddingValueIllustration, getColor, getFontSize, TableInput} from 'akeneo-design-system';
+import {AddingValueIllustration, AkeneoThemedProps, getColor, getFontSize, TableInput} from 'akeneo-design-system';
 import {
   ColumnCode,
   NumberColumnValidation,
@@ -27,7 +27,7 @@ import {TableInputText} from './CellInputs/TableInputText';
 const TABLE_VALUE_ITEMS_PER_PAGE = [10, 20, 50, 100];
 
 const TableInputContainer = styled.div<{isCopying: boolean} & AkeneoThemedProps>`
-  width: ${({isCopying}) => isCopying ? '460px' : '100%'};
+  width: ${({isCopying}) => (isCopying ? '460px' : '100%')};
 `;
 
 const CenteredHelper = styled.div`
@@ -77,10 +77,6 @@ const TableInputValue: React.FC<TableInputValueProps> = ({
   const isSearching = searchText.trim() !== '';
 
   const handleChange = (uniqueId: string, columnCode: ColumnCode, cellValue: TableCell | undefined) => {
-    if (!onChange) {
-      return;
-    }
-
     const rowIndex = valueData.findIndex(row => row['unique id'] === uniqueId);
     if (rowIndex >= 0) {
       const row = valueData[rowIndex];
@@ -92,7 +88,7 @@ const TableInputValue: React.FC<TableInputValueProps> = ({
       valueData[rowIndex] = row;
       const newTableValue = [...valueData];
 
-      onChange(newTableValue);
+      onChange?.(newTableValue);
     }
   };
 
@@ -204,6 +200,7 @@ const TableInputValue: React.FC<TableInputValueProps> = ({
                       )}
                       {'select' === columnType && (
                         <TableInputSelect
+                          // TODO Highlight
                           value={row[columnCode] as SelectOptionCode | undefined}
                           onChange={(value: SelectOptionCode | undefined) =>
                             handleChange(row['unique id'], columnCode, value)
@@ -216,6 +213,7 @@ const TableInputValue: React.FC<TableInputValueProps> = ({
                       )}
                       {'boolean' === columnType && (
                         <TableInput.Boolean
+                          // TODO Highlight
                           value={typeof row[columnCode] === 'undefined' ? null : (row[columnCode] as boolean | null)}
                           onChange={(value: boolean | null) =>
                             handleChange(row['unique id'], columnCode, null === value ? undefined : value)

@@ -264,7 +264,7 @@ const TableFieldApp: React.FC<TableFieldAppProps> = ({
         {copyContext && (
           <div data-attribute={attribute.code} className='AknComparableFields field-container'>
             <div className='AknComparableFields-copyContainer copy-container'>
-              <CopyCheckbox checked={copyChecked} onChange={handleCopyCheckedChange} />
+              <CopyCheckbox checked={copyChecked} onChange={handleCopyCheckedChange} data-testid='copyCheckbox' />
               <div className='AknFieldContainer AknComparableFields-item'>
                 <TableFieldHeader className='AknFieldContainer-header' isCompareTranslate={true}>
                   <TableFieldLabel className='AknFieldContainer-label'>{label}</TableFieldLabel>
@@ -283,7 +283,6 @@ const TableFieldApp: React.FC<TableFieldAppProps> = ({
             </div>
           </div>
         )}
-        {!copyContext && renderElements('comparison')}
       </div>
     </>
   );

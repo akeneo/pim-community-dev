@@ -52,6 +52,7 @@ describe('TableFieldApp', () => {
             path: 'values[nutrition-ecommerce-en_US][0].ingredient',
           },
         ]}
+        onCopyCheckboxChange={jest.fn()}
       />
     );
 
@@ -85,6 +86,7 @@ describe('TableFieldApp', () => {
           footer: {guidelines: elementAsHtml},
           badge: {completeness: elementAsBackbone},
         }}
+        onCopyCheckboxChange={jest.fn()}
       />
     );
 
@@ -95,7 +97,9 @@ describe('TableFieldApp', () => {
 
   it('should add and remove a row', async () => {
     const handleChange = jest.fn();
-    renderWithProviders(<TableFieldApp {...getTemplateContext()} onChange={handleChange} elements={{}} />);
+    renderWithProviders(
+      <TableFieldApp {...getTemplateContext()} onChange={handleChange} elements={{}} onCopyCheckboxChange={jest.fn()} />
+    );
 
     expect(await screen.findByText('Sugar')).toBeInTheDocument();
     const addRowButton = screen.getByText('pim_table_attribute.product_edit_form.add_rows');
@@ -119,5 +123,43 @@ describe('TableFieldApp', () => {
     });
     expect(await screen.findByText('Pepper')).toBeInTheDocument();
     expect(handleChange).toBeCalledWith([getTableValueSelectRow(), {ingredient: 'pepper'}]);
+  });
+
+  it('should call comparison render without rendering anything', () => {
+    const elementAsHtml = [{outerHTML: '<div></div>'}];
+
+    const {container} = renderWithProviders(
+      <TableFieldApp
+        {...getTemplateContext()}
+        onChange={jest.fn()}
+        elements={{
+          comparison: {nutrition: elementAsHtml},
+        }}
+        onCopyCheckboxChange={jest.fn()}
+      />
+    );
+
+    expect(container.innerHTML).toEqual('');
+  });
+
+  it('should render comparison and callback checkbox change', async () => {
+    const handleCopyCheckboxChange = jest.fn();
+    const copyContext = {scope: 'mobile', locale: 'fr_FR', data: [{ingredient: 'salt'}]};
+    renderWithProviders(
+      <TableFieldApp
+        {...getTemplateContext()}
+        onChange={jest.fn()}
+        copyContext={copyContext}
+        onCopyCheckboxChange={handleCopyCheckboxChange}
+        elements={{}}
+      />
+    );
+
+    expect(await screen.findByText('Sugar')).toBeInTheDocument();
+    expect(screen.getByText('Salt')).toBeInTheDocument();
+    act(() => {
+      fireEvent.click(screen.getByTestId('copyCheckbox').children[0]);
+    });
+    expect(handleCopyCheckboxChange).toBeCalledWith(true);
   });
 });

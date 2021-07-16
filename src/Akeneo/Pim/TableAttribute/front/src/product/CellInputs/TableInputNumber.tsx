@@ -8,6 +8,7 @@ type TableInputNumberProps = {
   searchValue?: string;
   validations: NumberColumnValidation;
   inError?: boolean;
+  readOnly?: boolean;
 };
 
 const TableInputNumber: React.FC<TableInputNumberProps> = ({
@@ -16,6 +17,7 @@ const TableInputNumber: React.FC<TableInputNumberProps> = ({
   searchValue = '',
   validations,
   inError = false,
+  readOnly = false,
   ...rest
 }) => {
   const highlighted = typeof value !== 'undefined' && searchValue.indexOf(value) >= 0;
@@ -34,6 +36,7 @@ const TableInputNumber: React.FC<TableInputNumberProps> = ({
       min={validations.min}
       max={validations.max}
       inError={inError || isLessThanMin || isGreaterThanMax || isFloatButNoDecimalsAllowed}
+      readOnly={readOnly}
       {...rest}
     />
   );

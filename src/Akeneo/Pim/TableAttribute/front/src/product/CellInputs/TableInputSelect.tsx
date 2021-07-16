@@ -26,7 +26,14 @@ const CenteredHelper = styled.div`
   }
 `;
 
-const TableInputSelect: React.FC<TableInputSelectProps> = ({value, onChange, options, readOnly = false, inError = false, ...rest}) => {
+const TableInputSelect: React.FC<TableInputSelectProps> = ({
+  value,
+  onChange,
+  options,
+  readOnly = false,
+  inError = false,
+  ...rest
+}) => {
   const translate = useTranslate();
   const userContext = useUserContext();
 
