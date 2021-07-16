@@ -157,7 +157,7 @@ define([
           copyContext.context.scope = value.scope;
           copyContext.editMode = 'view';
 
-          return this.renderInput(copyContext);
+          return this.renderInput(copyContext, true);
         }.bind(this)
       );
     },
