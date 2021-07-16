@@ -62,9 +62,9 @@ class DefaultValueProvider implements DefaultValuesProviderInterface
                 ],
                 [
                     'field' => 'quality_score_multi_locales',
-                    'operator' => QualityScoreMultiLocalesFilter::OPERATOR_IN_AT_LEAST_ONE_LOCALE,
+                    'operator' => 'ALL',
                     'value' => null,
-                ]
+                ],
             ],
         ];
 

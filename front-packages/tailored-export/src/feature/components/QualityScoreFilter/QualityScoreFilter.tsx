@@ -5,11 +5,12 @@ import {
   filterErrors,
   formatParameters,
   getLocalesFromChannel,
+  Locale,
   LocaleCode,
   ValidationError,
-  Locale,
 } from '@akeneo-pim-community/shared';
 import {Operator, OperatorSelector} from './OperatorSelector';
+import {QualityScore, QualityScoreSelector} from './QualityScoreSelector';
 import {ChannelDropdown} from '../ChannelDropdown';
 import {useChannels} from '../../hooks';
 import {LocalesSelector} from './LocalesSelector';
@@ -24,8 +25,8 @@ const Container = styled.div`
 
 type Filter = {
   field: 'quality_score_multi_locales';
-  operator: Operator;
-  value: number;
+  operator: Operator | null;
+  value: number | null;
   context?: {
     locales: LocaleCode[];
     scope: ChannelCode;
@@ -38,22 +39,19 @@ type QualityScoreFilterProps = {
   validationErrors: ValidationError[];
 };
 
+const AVAILABLE_QUALITY_SCORES = ['NO_CONDITION_ON_QUALITY_SCORE', 'A', 'B', 'C', 'D', 'E'];
+
 const QualityScoreFilter = ({availableOperators, filter, onChange, validationErrors}: QualityScoreFilterProps) => {
   const availableChannels = useChannels();
   const availableLocales = getLocalesFromChannel(availableChannels, filter.context?.scope ?? null);
   const formattedValidationErrors = formatParameters(validationErrors);
+  const valueErrors = filterErrors(formattedValidationErrors, '[value]');
   const operatorErrors = filterErrors(formattedValidationErrors, '[operator]');
   const scopeErrors = filterErrors(formattedValidationErrors, '[context][scope]');
   const localesErrors = filterErrors(formattedValidationErrors, '[context][locales]');
 
   const handleOperatorChange = (newOperator: Operator) => {
-    if (newOperator !== 'ALL') {
-      const newLocales = filter.context?.locales ?? [];
-      const newScope = filter.context?.scope ?? availableChannels[0].code;
-      onChange({...filter, operator: newOperator, context: {locales: newLocales, scope: newScope}});
-    } else {
-      onChange({field: filter.field, value: filter.value, operator: newOperator});
-    }
+    onChange({field: filter.field, value: filter.value, operator: newOperator});
   };
   const handleLocalesChange = (newLocales: LocaleCode[]) => {
     const newFilter = {...filter, context: {scope: filter.context?.scope ?? '', locales: newLocales}};
@@ -64,22 +62,46 @@ const QualityScoreFilter = ({availableOperators, filter, onChange, validationErr
     const newAvailableLocaleCodes = getLocalesFromChannel(availableChannels, newScope).map(
       (locale: Locale) => locale.code
     );
-    const newLocales =
-      filter.context?.locales.filter((localeCode: LocaleCode) => newAvailableLocaleCodes.includes(localeCode)) ?? [];
-    const newFilter = {...filter, context: {scope: newScope, locales: newLocales}};
+    const newFilter = {...filter, context: {scope: newScope, locales: newAvailableLocaleCodes}};
     onChange(newFilter);
+  };
+  const handleQualityScoreChange = (newQualityScore: QualityScore) => {
+    if ('NO_CONDITION_ON_QUALITY_SCORE' === newQualityScore) {
+      const resetFilter = {...filter, operator: null, value: null};
+      onChange(resetFilter);
+    } else {
+      const newScope = filter.context?.scope ?? availableChannels[0].code;
+      const newLocales = getLocalesFromChannel(availableChannels, newScope).map((locale: Locale) => locale.code);
+
+      const newFilter = {
+        ...filter,
+        operator: 'IN AT LEAST ONE LOCALE',
+        value: AVAILABLE_QUALITY_SCORES.indexOf(newQualityScore),
+        context: {
+          locales: newLocales,
+          scope: newScope,
+        },
+      };
+      onChange(newFilter);
+    }
   };
 
   return (
     <Container>
-      <OperatorSelector
-        availableOperators={availableOperators}
-        operator={filter.operator}
-        onChange={handleOperatorChange}
-        validationErrors={operatorErrors}
+      <QualityScoreSelector
+        availableQualityScores={AVAILABLE_QUALITY_SCORES}
+        qualityScore={filter.value ? AVAILABLE_QUALITY_SCORES[filter.value] : AVAILABLE_QUALITY_SCORES[0]}
+        onChange={handleQualityScoreChange}
+        validationErrors={valueErrors}
       />
-      {filter.operator !== 'ALL' && (
+      {null !== filter.value && null !== filter.operator && (
         <>
+          <OperatorSelector
+            availableOperators={availableOperators}
+            operator={filter.operator}
+            onChange={handleOperatorChange}
+            validationErrors={operatorErrors}
+          />
           <ChannelDropdown
             value={filter.context?.scope ?? ''}
             channels={availableChannels ?? []}
@@ -99,4 +121,3 @@ const QualityScoreFilter = ({availableOperators, filter, onChange, validationErr
 };
 
 export {QualityScoreFilter};
-export type {Operator};

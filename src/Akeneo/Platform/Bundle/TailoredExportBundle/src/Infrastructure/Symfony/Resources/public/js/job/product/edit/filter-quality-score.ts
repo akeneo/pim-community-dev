@@ -3,12 +3,15 @@ import ReactDOM from 'react-dom';
 import {ThemeProvider} from 'styled-components';
 import {pimTheme} from 'akeneo-design-system';
 import {DependenciesProvider} from '@akeneo-pim-community/legacy-bridge';
-// import {QualityScoreFilter} from '@akeneo-pim-enterprise/tailored-export';
-import {ValidationError} from '@akeneo-pim-community/shared';
+import {AssociationType, Attribute, FetcherContext, QualityScoreFilter} from '@akeneo-pim-enterprise/tailored-export';
+import {Channel, filterErrors, ValidationError} from '@akeneo-pim-community/shared';
 const BaseQualityScoreFilter = require('pim/filter/product/quality-score');
-const __ = require('oro/translator');
+const mediator = require('oro/mediator');
+const fetcherRegistry = require('pim/fetcher-registry');
 
-class QualityScoreFilter extends BaseQualityScoreFilter {
+class FilterQualityScore extends BaseQualityScoreFilter {
+  private validationErrors: ValidationError[] = [];
+
   /**
    * {@inheritdoc}
    */
@@ -17,24 +20,12 @@ class QualityScoreFilter extends BaseQualityScoreFilter {
   }
 
   /**
-   * {@inheritdoc}
-   */
-  getTemplateContext() {
-    return {
-      label: __('pim_enrich.export.product.filter.' + this.shortname + '.title'),
-      label_operator: __('pim_enrich.export.product.filter.' + this.shortname + '.operator_choice_title'),
-      removable: false,
-      editable: this.isEditable(),
-    };
-  }
-
-  /**
    * Returns rendered input.
    *
    * @return {String}
    */
   renderInput() {
-    return '<div class="quality-score-filter-container" style="width: 100%"></div>';
+    return '<div class="quality-score-filter-container" style="width: 100%;"></div>';
   }
 
   /**
@@ -55,20 +46,78 @@ class QualityScoreFilter extends BaseQualityScoreFilter {
       this.postRender();
     }
   }
-
   /**
    * {@inheritdoc}
    */
   render() {
+    const promises: any[] = [];
+    this.elements = {};
+    this.setEditable(true);
+
+    mediator.trigger('pim_enrich:form:filter:extension:add', {filter: this, promises: promises});
+
+    $.when.apply($, promises).then(() => {
+      this.$el.html(this.renderInput());
+      this.renderElements();
+      this.postRender();
+      this.delegateEvents();
+    });
+
+    return this;
+  }
+
+  /**
+   * {@inheritdoc}
+   */
+  postRender() {
     ReactDOM.render(
       React.createElement(
         ThemeProvider,
         {theme: pimTheme},
-        React.createElement(DependenciesProvider, null, React.createElement('div', {}, 'coucou'))
+        React.createElement(
+          DependenciesProvider,
+          null,
+          React.createElement(
+            FetcherContext.Provider,
+            {
+              value: {
+                attribute: {
+                  fetchByIdentifiers: (identifiers: string[]): Promise<Attribute[]> => {
+                    return new Promise(resolve =>
+                      fetcherRegistry.getFetcher('attribute').fetchByIdentifiers(identifiers).then(resolve)
+                    );
+                  },
+                },
+                channel: {
+                  fetchAll: (): Promise<Channel[]> => {
+                    return new Promise(resolve => fetcherRegistry.getFetcher('channel').fetchAll().then(resolve));
+                  },
+                },
+                associationType: {
+                  fetchByCodes: (codes: string[]): Promise<AssociationType[]> => {
+                    return new Promise(resolve =>
+                      fetcherRegistry.getFetcher('association-type').fetchByIdentifiers(codes).then(resolve)
+                    );
+                  },
+                },
+              },
+            },
+            React.createElement(QualityScoreFilter, {
+              availableOperators: this.config.operators,
+              filter: this.getFormData(),
+              onChange: newFilter => {
+                this.setData(newFilter);
+                this.render();
+              },
+              // TODO: Find a way to get rid of the [3] part below
+              validationErrors: filterErrors(this.validationErrors, '[filters][data][3]'),
+            })
+          )
+        )
       ),
-      this.$('.AknTextField')[0]
+      this.$('.quality-score-filter-container')[0]
     );
   }
 }
 
-export = QualityScoreFilter;
+export = FilterQualityScore;

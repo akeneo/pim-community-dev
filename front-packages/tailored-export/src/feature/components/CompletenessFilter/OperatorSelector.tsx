@@ -24,10 +24,10 @@ const OperatorSelector = ({availableOperators, operator, onChange, validationErr
         {availableOperators.map((operator: Operator) => (
           <SelectInput.Option
             key={operator}
-            title={translate(`pim_enrich.export.product.filter.quality-score.operators.${operator}`)}
+            title={translate(`pim_enrich.export.product.filter.completeness.operators.${operator}`)}
             value={operator}
           >
-            {translate(`pim_enrich.export.product.filter.quality-score.operators.${operator}`)}
+            {translate(`pim_enrich.export.product.filter.completeness.operators.${operator}`)}
           </SelectInput.Option>
         ))}
       </SelectInput>
