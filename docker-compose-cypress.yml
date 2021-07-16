@@ -9,6 +9,7 @@ services:
       CYPRESS_baseUrl: '${CYPRESS_baseUrl:-http://httpd}'
       CYPRESS_defaultCommandTimeout: '${CYPRESS_defaultCommandTimeout:-4000}'
       CYPRESS_requestTimeout: '${CYPRESS_requestTimeout:-5000}'
+      CYPRESS_responseTimeout: '${CYPRESS_responseTimeout:-40000}'
     volumes:
       - ./:/srv/cypress
     working_dir: /srv/cypress

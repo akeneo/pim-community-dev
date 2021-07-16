@@ -593,6 +593,10 @@ jobs:
                 name: Install database
                 command: APP_ENV=behat O="--catalog src/Akeneo/Platform/Bundle/InstallerBundle/Resources/fixtures/icecat_demo_dev" make database
           - run:
+                name: Create adminakeneo user
+                command: |
+                    APP_ENV=behat docker-compose run --rm -u www-data:www-data php bin/console pim:user:create adminakeneo adminakeneo product-team@akeneo.com admin1 admin2 en_US --admin -n
+          - run:
                 name: Launch Cypress
                 command: PIM_CONTEXT=test CYPRESS_defaultCommandTimeout=8000 CYPRESS_requestTimeout=10000 make end-to-end-front
           - store_artifacts:
@@ -824,25 +828,54 @@ jobs:
   # Sanity checks  #
   ##################
   ui_sanity_checks:
+      parameters:
+          is_pull_request:
+              type: boolean
+              default: false
+          SOURCE_PFID:
+                type: string
+                default: ""
       machine:
-          image: ubuntu-1604:201903-01
+          image: ubuntu-2004:202010-01
       resource_class: large
       steps:
           - attach_workspace:
                 at: ~/
           - restore_persisted_env_vars
           - run:
-                name: Change owner on project dir in order to archive the project into the workspace
-                command: sudo chown -R 1000:1000 ../project
+                name: Copy docker-compose.override.yml.dist
+                command: cp .circleci/docker-compose.override.yml.dist docker-compose.override.yml
           - run:
-                name: Create yarn cache folder
-                command: mkdir -p  ~/.cache/yarn
+                name: Setup tests results folder and log folder
+                command: mkdir -p var/tests/phpspec var/tests/csfixer var/logs var/tests/screenshots ~/.cache/yarn ~/.composer
           - run:
                 name: Change owner on project dir (default user = circleci (1001) and docker needs uid 1000)
-                command: sudo chown -R 1000:1000 ../project ~/.cache/yarn
+                command: |
+                    sudo chown -R 1000:1000 ../project
+                    sudo chown -R 1000:1000 ~/.composer
+                    sudo chown -R 1000:1000 ~/.cache/yarn
+          - run:
+                name: Build the latest Docker images
+                command: |
+                    make php-image-dev
+          - when:
+                condition: << parameters.is_pull_request >>
+                steps:
+                    - run:
+                          name: Update composer.json if same branch exists in CE
+                          command: >
+                              curl --output /dev/null --silent --head --fail
+                              https://github.com/akeneo/pim-community-dev/tree/${CIRCLE_BRANCH} &&
+                              docker-compose run --rm -u www-data:www-data php php
+                              /usr/local/bin/composer require "akeneo/pim-community-dev:dev-${CIRCLE_BRANCH}" --no-update ||
+                              echo "No CE branch $CIRCLE_BRANCH found. I don't touch the composer.json file."
+          - run:
+                name: Install back dependencies
+                command: make dependencies
           - run:
                 name: Launch Cypress
-                command: IMAGE_TAG_SHORTED=$(echo $CIRCLE_SHA1 | cut -c -7) PIM_CONTEXT=deployment CYPRESS_defaultCommandTimeout=8000 CYPRESS_requestTimeout=10000  make smoke-tests
+                command: |
+                    CYPRESS_defaultCommandTimeout=10000 CYPRESS_requestTimeout=10000 CYPRESS_responseTimeout=50000 make smoke-tests
           - store_artifacts:
                 path: cypress/screenshots
           - store_artifacts:
@@ -1231,6 +1264,10 @@ jobs:
                 when: always
 
   test_upgrade_from_srnt_customer_db:
+      parameters:
+          SOURCE_PFID:
+                type: string
+                default: ""
       environment:
           <<: *envVarsDeployDev
       <<: *dockerCloudDeployerNext
@@ -1244,11 +1281,9 @@ jobs:
               name: Define value for next steps
               command: |
                 ssh-keyscan github.com >> ~/.ssh/known_hosts
-                LIST_SOURCE_PFID=( srnt-nature-et-decouvertes srnt-invivo srnt-franklin-electric )
-                RANDOM_SOURCE_PFID=$(( $RANDOM % 3 ))
-                SOURCE_PFID=${LIST_SOURCE_PFID[${RANDOM_SOURCE_PFID}]}
+                SOURCE_PFID=<< parameters.SOURCE_PFID >>
                 INSTANCE_NAME_PREFIX=pimci-duplic
-                INSTANCE_NAME=${INSTANCE_NAME_PREFIX}-${IMAGE_TAG_SHORTED}-${CIRCLE_BUILD_NUM}
+                INSTANCE_NAME=${INSTANCE_NAME_PREFIX}-$(echo "${SOURCE_PFID}" | cut -c1-20)-${CIRCLE_BUILD_NUM}
 
                 echo export SOURCE_PFID=${SOURCE_PFID} >> $BASH_ENV
                 echo export INSTANCE_NAME_PREFIX=${INSTANCE_NAME_PREFIX} >> $BASH_ENV
@@ -1262,27 +1297,38 @@ jobs:
               name: DATADOG deployment Livetail logs page
               command: echo "https://app.datadoghq.eu/logs/livetail?query=kube_namespace%3A${TYPE}-${INSTANCE_NAME}"
           - run:
-                name: Duplicate PROD environment
-                command: make clone_serenity
+              name: Duplicate PROD environment
+              command: make clone_serenity
           - run:
-                name: Upgrade the duplicate environment
-                command: |
-                    UPGRADE_STEP_2=true make create-ci-release-files
-                    UPGRADE_STEP_2=true make get_mysql_parameters_disk
-                    UPGRADE_STEP_2=true make deploy
+              name: Upgrade the duplicate environment
+              command: |
+                  UPGRADE_STEP_2=true make create-ci-release-files
+                  UPGRADE_STEP_2=true make get_mysql_parameters_disk
+                  UPGRADE_STEP_2=true make deploy
           - run:
-                name: Production tests on upgraded env
-                command: make test-prod
+              name: Production tests on upgraded env
+              command: make test-prod
+          - run:
+              name: Persist env vars for next jobs
+              command: |
+                echo export SOURCE_PFID=${SOURCE_PFID} >> persisted_env_vars
+                echo export INSTANCE_NAME_PREFIX=${INSTANCE_NAME_PREFIX} >> persisted_env_vars
+                echo export INSTANCE_NAME=${INSTANCE_NAME} >> persisted_env_vars
           - run:
               name: Prepare infrastructure artifacts
               command: make prepare-infrastructure-artifacts
               when: on_fail
           - store_artifacts:
               path: ~/artifacts/infra
+          - persist_to_workspace:
+              root: ~/
+              paths:
+                - project/persisted_env_vars
           - run:
-                name: Remove upgraded env
-                command: make delete
-                when: always
+              name: Remove env on kubernetes
+              command: make delete
+              when: on_fail
+
 
   ##################
   # Releases       #
@@ -1591,7 +1637,6 @@ jobs:
                 name: Delete environments
                 command: |
                     make delete_environments_hourly
-
 
 workflows:
   pull_request:
@@ -1948,12 +1993,6 @@ workflows:
                             - master
       jobs:
           - checkout
-          - build_srnt_prod:
-                requires:
-                    - checkout
-          - test_upgrade_from_srnt_customer_db:
-                requires:
-                    - build_srnt_prod
           - test_helm_generated_k8s_files_srnt:
                 name: test_helm_generated_k8s_files_srnt-<< matrix.VERSION >>
                 matrix:
@@ -1961,6 +2000,24 @@ workflows:
                         VERSION: ["1.17.0", "1.18.0", "1.19.0", "1.20.0", "1.21.0"]
                 requires:
                     - checkout
+          - build_srnt_prod:
+                requires:
+                    - checkout
+          - test_upgrade_from_srnt_customer_db:
+                name: test_upgrade_from-<< matrix.SOURCE_PFID >>
+                matrix:
+                    parameters:
+                        SOURCE_PFID: ["srnt-madeira-production", "srnt-petra", "srnt-rdoequipment-prod", "srnt-electrodepot", "srnt-distributionnow-prod"]
+                requires:
+                    - build_srnt_prod
+          - ui_sanity_checks:
+                name: sanity_checks-<< matrix.SOURCE_PFID >>
+                is_pull_request: true
+                matrix:
+                    parameters:
+                        SOURCE_PFID: ["srnt-madeira-production", "srnt-petra", "srnt-rdoequipment-prod", "srnt-electrodepot", "srnt-distributionnow-prod"]
+                requires:
+                    - test_upgrade_from-<< matrix.SOURCE_PFID >>
 
   hourly_cleanup:
      triggers:
