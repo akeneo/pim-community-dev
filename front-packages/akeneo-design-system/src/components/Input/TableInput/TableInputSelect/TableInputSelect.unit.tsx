@@ -16,6 +16,8 @@ test('it renders a Select input', () => {
   );
 
   expect(screen.getByText('Option1')).toBeInTheDocument();
+  fireEvent.click(screen.getByText('Option1'));
+  expect(screen.getByTitle('Search')).toBeInTheDocument();
 });
 
 test('it clears the field', () => {
@@ -55,6 +57,24 @@ test('it callbacks search', () => {
   fireEvent.click(screen.getByTitle('Open'));
   fireEvent.change(screen.getByTitle('Search'), {target: {value: 'The search'}});
   expect(handleSearch).toBeCalledWith('The search');
+});
+
+test('it does not open dropdown on readonly', () => {
+  render(
+    <TableInputSelect
+      value={'Option1'}
+      openDropdownLabel={'Open'}
+      clearLabel={'Clear'}
+      onClear={jest.fn()}
+      searchPlaceholder={'Search'}
+      searchTitle={'Search'}
+      onSearchChange={jest.fn()}
+      readOnly={true}
+    />
+  );
+
+  fireEvent.click(screen.getByTitle('Option1'));
+  expect(screen.queryByTitle('Search')).not.toBeInTheDocument();
 });
 
 test('TableInputSelect supports ...rest props', () => {
