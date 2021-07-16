@@ -20,13 +20,16 @@ use Akeneo\Platform\TailoredExport\Domain\SourceValueInterface;
 
 class NumberSelectionHandler implements SelectionHandlerInterface
 {
+    const DEFAULT_DECIMAL_SEPARATOR = '.';
+
     public function applySelection(SelectionInterface $selection, SourceValueInterface $value): string
     {
         if (!$selection instanceof NumberSelection || !$value instanceof NumberValue) {
             throw new \InvalidArgumentException('Cannot apply Number selection on this entity');
         }
 
-        return $value->getData();
+        // Doing an str_replace on a number will cast it to a string and then replace the default decimal separator (a dot)
+        return str_replace(static::DEFAULT_DECIMAL_SEPARATOR, $selection->getDecimalSeparator(), $value->getData());
     }
 
     public function supports(SelectionInterface $selection, SourceValueInterface $value): bool

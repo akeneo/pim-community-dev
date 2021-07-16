@@ -43,7 +43,7 @@ class MultiSelectLabelSelectionHandler implements SelectionHandlerInterface
             $attributeCode, $optionsCodes, $locale
         );
 
-        $selectedData = array_map(function ($optionCode) use ($attributeOptionTranslations, $attributeCode, $selection) {
+        $selectedData = array_map(static function ($optionCode) use ($attributeOptionTranslations) {
             return $attributeOptionTranslations[$optionCode] ?? sprintf('[%s]', $optionCode);
         }, $optionsCodes);
 

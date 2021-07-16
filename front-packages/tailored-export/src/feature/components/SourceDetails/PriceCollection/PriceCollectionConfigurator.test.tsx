@@ -25,7 +25,8 @@ jest.mock('./PriceCollectionSelector', () => ({
     <button
       onClick={() =>
         onSelectionChange({
-          type: 'currency',
+          type: 'currency_code',
+          separator: ';',
         })
       }
     >
@@ -54,7 +55,8 @@ test('it displays a price collection configurator', () => {
   expect(onSourceChange).toHaveBeenCalledWith({
     ...getDefaultPriceCollectionSource(attribute, null, null),
     selection: {
-      type: 'currency',
+      type: 'currency_code',
+      separator: ';',
     },
     uuid: 'e612bc67-9c30-4121-8b8d-e08b8c4a0640',
   });

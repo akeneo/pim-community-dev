@@ -13,13 +13,17 @@ declare(strict_types=1);
 
 namespace Specification\Akeneo\Platform\TailoredExport\Application\Query\Selection\Number;
 
-use Akeneo\Platform\TailoredExport\Application\Query\Selection\Number\NumberSelection;
 use PhpSpec\ObjectBehavior;
 
 class NumberSelectionSpec extends ObjectBehavior
 {
-    public function it_is_initializable(): void
+    public function let()
     {
-        $this->shouldBeAnInstanceOf(NumberSelection::class);
+        $this->beConstructedWith('|');
+    }
+
+    public function it_returns_the_decimal_separator()
+    {
+        $this->getDecimalSeparator()->shouldReturn('|');
     }
 }

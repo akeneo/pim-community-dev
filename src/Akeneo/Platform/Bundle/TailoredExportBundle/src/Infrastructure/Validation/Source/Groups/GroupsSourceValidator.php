@@ -32,11 +32,9 @@ class GroupsSourceValidator extends ConstraintValidator
             new CodeLabelCollectionSelectionConstraint()
         ];
 
-        $sourceConstraintFields['operations'] = [
-            new Type([
-                'type' => 'array',
-            ]),
-        ];
+        $sourceConstraintFields['operations'] = new Type([
+            'type' => 'array',
+        ]);
 
         $violations = $validator->validate($source, new Collection(['fields' => $sourceConstraintFields]));
 

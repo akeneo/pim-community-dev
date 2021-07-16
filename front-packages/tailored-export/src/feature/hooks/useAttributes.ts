@@ -9,6 +9,12 @@ const useAttributes = (attributeCodes: string[]): Attribute[] => {
   const isMounted = useIsMounted();
 
   useEffect(() => {
+    if (0 === attributeCodes.length) {
+      setAttributes([]);
+
+      return;
+    }
+
     attributeFetcher.fetchByIdentifiers(attributeCodes).then((attributes: Attribute[]) => {
       if (!isMounted()) return;
 
@@ -16,7 +22,7 @@ const useAttributes = (attributeCodes: string[]): Attribute[] => {
     });
   }, [attributeCodes, attributeFetcher, isMounted]);
 
-  return attributes;
+  return attributes.filter(({code}) => attributeCodes.includes(code));
 };
 
 const useAttribute = (attributeCode: string): Attribute | null => {
@@ -32,7 +38,7 @@ const useAttribute = (attributeCode: string): Attribute | null => {
     });
   }, [attributeCode, attributeFetcher, isMounted]);
 
-  return attribute;
+  return attribute?.code === attributeCode ? attribute : null;
 };
 
 export {useAttribute, useAttributes};

@@ -18,23 +18,17 @@ const Container = styled.div`
   flex: 1;
 `;
 
+const configurators = {
+  enabled: EnabledConfigurator,
+  parent: ParentConfigurator,
+  groups: GroupsConfigurator,
+  categories: CategoriesConfigurator,
+  family: FamilyConfigurator,
+  family_variant: FamilyVariantConfigurator,
+} as const;
+
 const getConfigurator = (sourceCode: string): FunctionComponent<PropertyConfiguratorProps> | null => {
-  switch (sourceCode) {
-    case 'enabled':
-      return EnabledConfigurator;
-    case 'parent':
-      return ParentConfigurator;
-    case 'groups':
-      return GroupsConfigurator;
-    case 'categories':
-      return CategoriesConfigurator;
-    case 'family':
-      return FamilyConfigurator;
-    case 'family_variant':
-      return FamilyVariantConfigurator;
-    default:
-      return null;
-  }
+  return configurators[sourceCode] ?? null;
 };
 
 type PropertySourceConfiguratorProps = {

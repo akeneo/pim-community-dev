@@ -37,39 +37,26 @@ const Container = styled.div`
   flex: 1;
 `;
 
+const configurators = {
+  pim_catalog_text: TextConfigurator,
+  pim_catalog_textarea: TextConfigurator,
+  pim_catalog_metric: MeasurementConfigurator,
+  akeneo_reference_entity_collection: ReferenceEntityCollectionConfigurator,
+  pim_catalog_file: FileConfigurator,
+  pim_catalog_image: FileConfigurator,
+  pim_catalog_boolean: BooleanConfigurator,
+  pim_catalog_number: NumberConfigurator,
+  pim_catalog_identifier: IdentifierConfigurator,
+  pim_catalog_date: DateConfigurator,
+  pim_catalog_price_collection: PriceCollectionConfigurator,
+  pim_catalog_simpleselect: SimpleSelectConfigurator,
+  pim_catalog_multiselect: MultiSelectConfigurator,
+  akeneo_reference_entity: ReferenceEntityConfigurator,
+  pim_catalog_asset_collection: AssetCollectionConfigurator,
+} as const;
+
 const getConfigurator = (attributeType: string): FunctionComponent<AttributeConfiguratorProps> | null => {
-  switch (attributeType) {
-    case 'pim_catalog_text':
-    case 'pim_catalog_textarea':
-      return TextConfigurator;
-    case 'pim_catalog_metric':
-      return MeasurementConfigurator;
-    case 'akeneo_reference_entity_collection':
-      return ReferenceEntityCollectionConfigurator;
-    case 'pim_catalog_file':
-    case 'pim_catalog_image':
-      return FileConfigurator;
-    case 'pim_catalog_boolean':
-      return BooleanConfigurator;
-    case 'pim_catalog_number':
-      return NumberConfigurator;
-    case 'pim_catalog_identifier':
-      return IdentifierConfigurator;
-    case 'pim_catalog_date':
-      return DateConfigurator;
-    case 'pim_catalog_price_collection':
-      return PriceCollectionConfigurator;
-    case 'pim_catalog_simpleselect':
-      return SimpleSelectConfigurator;
-    case 'pim_catalog_multiselect':
-      return MultiSelectConfigurator;
-    case 'akeneo_reference_entity':
-      return ReferenceEntityConfigurator;
-    case 'pim_catalog_asset_collection':
-      return AssetCollectionConfigurator;
-    default:
-      return null;
-  }
+  return configurators[attributeType] ?? null;
 };
 
 type AttributeSourceConfiguratorProps = {
@@ -122,7 +109,7 @@ const AttributeSourceConfigurator = ({source, validationErrors, onSourceChange}:
             onSourceChange({...source, locale: localeCode});
           }}
         >
-          {attribute && attribute.is_locale_specific && (
+          {attribute.is_locale_specific && (
             <Helper inline>{translate('akeneo.tailored_export.column_details.sources.locale_specific.info')}</Helper>
           )}
         </LocaleDropdown>

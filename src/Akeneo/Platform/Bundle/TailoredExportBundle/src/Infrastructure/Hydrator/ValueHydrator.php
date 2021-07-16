@@ -17,6 +17,7 @@ use Akeneo\Pim\Enrichment\Component\Product\Model\ProductInterface;
 use Akeneo\Pim\Enrichment\Component\Product\Model\ProductPriceInterface;
 use Akeneo\Pim\Enrichment\Component\Product\Model\ValueInterface;
 use Akeneo\Pim\Enrichment\Component\Product\Value\MetricValue;
+use Akeneo\Platform\TailoredExport\Application\Query\Source\AssociationTypeSource;
 use Akeneo\Platform\TailoredExport\Application\Query\Source\AttributeSource;
 use Akeneo\Platform\TailoredExport\Application\Query\Source\PropertySource;
 use Akeneo\Platform\TailoredExport\Application\Query\Source\SourceInterface;
@@ -41,18 +42,29 @@ use Akeneo\Platform\TailoredExport\Domain\SourceValue\ReferenceEntityValue;
 use Akeneo\Platform\TailoredExport\Domain\SourceValue\SimpleSelectValue;
 use Akeneo\Platform\TailoredExport\Domain\SourceValue\StringValue;
 use Akeneo\Platform\TailoredExport\Domain\SourceValueInterface;
+use Akeneo\Platform\TailoredExport\Infrastructure\Hydrator\Value\AssociationTypeValueHydrator;
 
 class ValueHydrator
 {
+    private AssociationTypeValueHydrator $associationTypeValueHydrator;
+
+    public function __construct(AssociationTypeValueHydrator $associationTypeValueHydrator)
+    {
+        $this->associationTypeValueHydrator = $associationTypeValueHydrator;
+    }
+
     public function hydrate(
         ProductInterface $product,
         SourceInterface $source
     ): SourceValueInterface {
         if ($source instanceof AttributeSource) {
-            $value = $product->getValue($source->getCode(), $source->getChannel(), $source->getLocale());
+            $value = $product->getValue($source->getCode(), $source->getLocale(), $source->getChannel());
+
             return $this->hydrateFromAttribute($value, $source->getAttributeType(), $product);
         } elseif ($source instanceof PropertySource) {
             return $this->hydrateFromProperty($source->getName(), $product);
+        } elseif ($source instanceof AssociationTypeSource) {
+            return $this->associationTypeValueHydrator->hydrateFromSource($product, $source);
         } else {
             throw new \InvalidArgumentException(sprintf('Unsupported source type "%s"', get_class($source)));
         }
@@ -100,14 +112,14 @@ class ValueHydrator
 
                 return new MeasurementValue($value->getAmount(), $value->getUnit());
             case 'pim_catalog_number':
-                return new NumberValue($data);
+                return new NumberValue((string) $data);
             case 'pim_catalog_multiselect':
                 return new MultiSelectValue($data);
             case 'pim_catalog_simpleselect':
                 return new SimpleSelectValue($data);
             case 'pim_catalog_price_collection':
                 return new PriceCollectionValue(array_map(
-                    fn (ProductPriceInterface $price) => new Price((string) $price->getData(), $price->getCurrency()),
+                    static fn (ProductPriceInterface $price) => new Price((string) $price->getData(), $price->getCurrency()),
                     $data->toArray()
                 ));
             case 'akeneo_reference_entity':

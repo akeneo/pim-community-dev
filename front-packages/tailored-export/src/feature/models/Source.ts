@@ -31,6 +31,15 @@ import {EnabledSource, getDefaultEnabledSource} from '../components/SourceDetail
 import {FamilySource, getDefaultFamilySource} from '../components/SourceDetails/Family/model';
 import {getDefaultGroupsSource, GroupsSource} from '../components/SourceDetails/Groups/model';
 import {CategoriesSource, getDefaultCategoriesSource} from '../components/SourceDetails/Categories/model';
+import {
+  getDefaultSimpleAssociationTypeSource,
+  SimpleAssociationTypeSource,
+} from '../components/SourceDetails/SimpleAssociationType/model';
+import {AssociationType} from './AssociationType';
+import {
+  getDefaultQuantifiedAssociationTypeSource,
+  QuantifiedAssociationTypeSource,
+} from '../components/SourceDetails/QuantifiedAssociationType/model';
 
 type Source =
   | AssetCollectionSource
@@ -51,7 +60,9 @@ type Source =
   | ReferenceEntitySource
   | ReferenceEntityCollectionSource
   | SimpleSelectSource
-  | TextSource;
+  | TextSource
+  | SimpleAssociationTypeSource
+  | QuantifiedAssociationTypeSource;
 
 const getDefaultPropertySource = (sourceCode: string): Source => {
   switch (sourceCode) {
@@ -111,5 +122,13 @@ const getDefaultAttributeSource = (
   }
 };
 
-export {getDefaultPropertySource, getDefaultAttributeSource};
+const getDefaultAssociationTypeSource = (associationType: AssociationType): Source => {
+  if (associationType.is_quantified) {
+    return getDefaultQuantifiedAssociationTypeSource(associationType);
+  }
+
+  return getDefaultSimpleAssociationTypeSource(associationType);
+};
+
+export {getDefaultPropertySource, getDefaultAttributeSource, getDefaultAssociationTypeSource};
 export type {Source};

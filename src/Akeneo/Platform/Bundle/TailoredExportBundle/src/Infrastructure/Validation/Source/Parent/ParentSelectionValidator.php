@@ -31,28 +31,22 @@ class ParentSelectionValidator extends ConstraintValidator
     public function validate($selection, Constraint $constraint)
     {
         $validator = $this->context->getValidator();
-        $violations = $validator->validate($selection, [
-            new Collection(
-                [
-                    'fields' => [
-                        'type' => [
-                            new NotBlank(),
-                            new Choice(
-                                [
-                                    'strict' => true,
-                                    'choices' => [
-                                        ParentCodeSelection::TYPE,
-                                        ParentLabelSelection::TYPE,
-                                    ],
-                                ]
-                            )
-                        ],
-                        'channel' => new Optional([new Type(['type' => 'string'])]),
-                        'locale' => new Optional([new Type(['type' => 'string'])]),
-                    ],
-                ]
-            ),
-        ]);
+        $violations = $validator->validate($selection, new Collection(
+            [
+                'fields' => [
+                    'type' => new Choice(
+                        [
+                            'choices' => [
+                                ParentCodeSelection::TYPE,
+                                ParentLabelSelection::TYPE,
+                            ],
+                        ]
+                    ),
+                    'channel' => new Optional([new Type(['type' => 'string'])]),
+                    'locale' => new Optional([new Type(['type' => 'string'])]),
+                ],
+            ]
+        ));
 
         if (0 < $violations->count()) {
             /** @var ConstraintViolationInterface $violation */

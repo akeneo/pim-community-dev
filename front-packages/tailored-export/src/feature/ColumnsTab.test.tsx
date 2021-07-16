@@ -4,7 +4,7 @@ import userEvent from '@testing-library/user-event';
 import {renderWithProviders as baseRender, Channel} from '@akeneo-pim-community/shared';
 import {ColumnsTab} from './ColumnsTab';
 import {ColumnConfiguration} from './models/ColumnConfiguration';
-import {Attribute, AvailableSourceGroup} from './models';
+import {AssociationType, Attribute, AvailableSourceGroup} from './models';
 import {FetcherContext} from './contexts';
 
 const attributes: Attribute[] = [
@@ -22,6 +22,7 @@ const attributes: Attribute[] = [
 const fetchers = {
   attribute: {fetchByIdentifiers: (): Promise<Attribute[]> => Promise.resolve<Attribute[]>(attributes)},
   channel: {fetchAll: (): Promise<Channel[]> => Promise.resolve([])},
+  associationType: {fetchByCodes: (): Promise<AssociationType[]> => Promise.resolve([])},
 };
 
 const renderWithProviders = async (node: ReactNode) =>

@@ -72,8 +72,7 @@
     "coveragePathIgnorePatterns": [
       "<rootDir>/src/index.tsx",
       "<rootDir>/src/FakePIM.tsx",
-      "<rootDir>/src/feature/ColumnsTab.tsx",
-      "<rootDir>/src/feature/components/SourceDetails"
+      "<rootDir>/src/feature/ColumnsTab.tsx"
     ],
     "coverageThreshold": {
       "global": {

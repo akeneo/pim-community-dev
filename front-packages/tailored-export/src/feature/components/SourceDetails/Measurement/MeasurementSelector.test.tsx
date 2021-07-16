@@ -5,6 +5,7 @@ import {Channel, renderWithProviders as baseRender, ValidationError} from '@aken
 import {MeasurementSelector} from './MeasurementSelector';
 import {Attribute} from '../../../models/Attribute';
 import {FetcherContext} from '../../../contexts';
+import {AssociationType} from '../../../models';
 
 const attributes = [
   {
@@ -49,6 +50,7 @@ const channels: Channel[] = [
 const fetchers = {
   attribute: {fetchByIdentifiers: (): Promise<Attribute[]> => Promise.resolve<Attribute[]>(attributes)},
   channel: {fetchAll: (): Promise<Channel[]> => Promise.resolve(channels)},
+  associationType: {fetchByCodes: (): Promise<AssociationType[]> => Promise.resolve([])},
 };
 
 const renderWithProviders = async (node: ReactNode) =>

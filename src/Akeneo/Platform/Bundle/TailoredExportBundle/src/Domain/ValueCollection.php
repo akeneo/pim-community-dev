@@ -13,6 +13,7 @@ declare(strict_types=1);
 
 namespace Akeneo\Platform\TailoredExport\Domain;
 
+use Akeneo\Platform\TailoredExport\Application\Query\Source\AssociationTypeSource;
 use Akeneo\Platform\TailoredExport\Application\Query\Source\AttributeSource;
 use Akeneo\Platform\TailoredExport\Application\Query\Source\PropertySource;
 use Akeneo\Platform\TailoredExport\Application\Query\Source\SourceInterface;
@@ -47,6 +48,8 @@ final class ValueCollection
             return $this->get($source->getCode(), $source->getChannel(), $source->getLocale());
         } elseif ($source instanceof PropertySource) {
             return $this->get($source->getName(), null, null);
+        } elseif ($source instanceof AssociationTypeSource) {
+            return $this->get($source->getCode(), null, null);
         } else {
             throw new \InvalidArgumentException('Unsupported source');
         }

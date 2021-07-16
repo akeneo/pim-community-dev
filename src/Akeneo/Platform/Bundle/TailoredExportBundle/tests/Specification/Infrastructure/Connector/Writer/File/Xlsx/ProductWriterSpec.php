@@ -34,7 +34,7 @@ use Symfony\Component\Filesystem\Filesystem;
 
 class ProductWriterSpec extends ObjectBehavior
 {
-    function let(
+    public function let(
         Filesystem $filesystem,
         StepExecution $stepExecution,
         JobExecution $jobExecution,
@@ -50,7 +50,7 @@ class ProductWriterSpec extends ObjectBehavior
         $this->setStepExecution($stepExecution);
     }
 
-    function it_is_a_file_writer()
+    public function it_is_a_file_writer()
     {
         $this->shouldImplement(ItemWriterInterface::class);
         $this->shouldImplement(StepExecutionAwareInterface::class);
@@ -59,12 +59,12 @@ class ProductWriterSpec extends ObjectBehavior
         $this->shouldImplement(ArchivableWriterInterface::class);
     }
 
-    function it_is_initializable()
+    public function it_is_initializable()
     {
         $this->shouldHaveType(ProductWriter::class);
     }
 
-    function it_generates_file_path_depending_on_step_execution_parameters_and_line_per_files(
+    public function it_generates_file_path_depending_on_step_execution_parameters_and_line_per_files(
         StepExecution $stepExecution
     ) {
         $stepExecution->getTotalItems()->willReturn(10);
@@ -102,7 +102,7 @@ class ProductWriterSpec extends ObjectBehavior
         $this->getPath()->shouldReturn('/tmp/XLSX_Product_export2021-03-24_16-00-00_product_1.xlsx');
     }
 
-    function it_writes_file_without_header(
+    public function it_writes_file_without_header(
         StepExecution $stepExecution,
         FileWriterFactory $fileWriterFactory,
         WriterInterface $writer
@@ -144,7 +144,7 @@ class ProductWriterSpec extends ObjectBehavior
         ]);
     }
 
-    function it_writes_file_with_header(
+    public function it_writes_file_with_header(
         StepExecution $stepExecution,
         FileWriterFactory $fileWriterFactory,
         WriterInterface $writer
@@ -188,7 +188,7 @@ class ProductWriterSpec extends ObjectBehavior
         ]);
     }
 
-    function it_writes_several_files_when_lines_per_file_of_file_is_less_than_total_item(
+    public function it_writes_several_files_when_lines_per_file_of_file_is_less_than_total_item(
         StepExecution $stepExecution,
         FileWriterFactory $fileWriterFactory,
         WriterInterface $firstWriter,
@@ -246,7 +246,7 @@ class ProductWriterSpec extends ObjectBehavior
         ]);
     }
 
-    function it_writes_several_files_with_headers(
+    public function it_writes_several_files_with_headers(
         StepExecution $stepExecution,
         FileWriterFactory $fileWriterFactory,
         WriterInterface $firstWriter,

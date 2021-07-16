@@ -8,6 +8,7 @@ import {FetcherContext} from '../../../contexts';
 import {getDefaultEnabledSource} from './model';
 import {getDefaultTextSource} from '../Text/model';
 import {BooleanReplacementOperation} from '../common/BooleanReplacement';
+import {AssociationType} from '../../../models';
 
 const attribute = {
   code: 'date',
@@ -22,6 +23,7 @@ const attribute = {
 const fetchers = {
   attribute: {fetchByIdentifiers: (): Promise<Attribute[]> => Promise.resolve<Attribute[]>([])},
   channel: {fetchAll: (): Promise<Channel[]> => Promise.resolve([])},
+  associationType: {fetchByCodes: (): Promise<AssociationType[]> => Promise.resolve([])},
 };
 
 const renderWithProviders = async (node: ReactNode) =>

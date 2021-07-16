@@ -29,10 +29,6 @@ class BooleanSelectionHandler implements SelectionHandlerInterface
             throw new \InvalidArgumentException('Cannot apply Boolean selection on this entity');
         }
 
-        if (null === $value->getData()) {
-            return '';
-        }
-
         return $value->getData() ? '1' : '0';
     }
 

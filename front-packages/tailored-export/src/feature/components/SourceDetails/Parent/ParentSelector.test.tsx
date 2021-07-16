@@ -3,7 +3,7 @@ import {act, screen} from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
 import {Channel, renderWithProviders as baseRender, ValidationError} from '@akeneo-pim-community/shared';
 import {ParentSelector} from './ParentSelector';
-import {Attribute} from '../../../models';
+import {AssociationType, Attribute} from '../../../models';
 import {FetcherContext} from '../../../contexts';
 
 const channels: Channel[] = [
@@ -66,6 +66,7 @@ const channels: Channel[] = [
 const fetchers = {
   attribute: {fetchByIdentifiers: (): Promise<Attribute[]> => Promise.resolve<Attribute[]>([])},
   channel: {fetchAll: (): Promise<Channel[]> => Promise.resolve(channels)},
+  associationType: {fetchByCodes: (): Promise<AssociationType[]> => Promise.resolve([])},
 };
 
 const renderWithProviders = async (node: ReactNode) =>

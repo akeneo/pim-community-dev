@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Akeneo\Platform\TailoredExport\Infrastructure\Hydrator;
 
+use Akeneo\Pim\Structure\Component\Query\PublicApi\Association\AssociationType;
 use Akeneo\Pim\Structure\Component\Query\PublicApi\AttributeType\Attribute;
 use Akeneo\Platform\TailoredExport\Application\Query\Selection\AssetCollection\AssetCollectionCodeSelection;
 use Akeneo\Platform\TailoredExport\Application\Query\Selection\AssetCollection\AssetCollectionLabelSelection;
@@ -32,13 +33,22 @@ use Akeneo\Platform\TailoredExport\Application\Query\Selection\Number\NumberSele
 use Akeneo\Platform\TailoredExport\Application\Query\Selection\Parent\ParentCodeSelection;
 use Akeneo\Platform\TailoredExport\Application\Query\Selection\Parent\ParentLabelSelection;
 use Akeneo\Platform\TailoredExport\Application\Query\Selection\PriceCollection\PriceCollectionAmountSelection;
-use Akeneo\Platform\TailoredExport\Application\Query\Selection\PriceCollection\PriceCollectionCurrencySelection;
+use Akeneo\Platform\TailoredExport\Application\Query\Selection\PriceCollection\PriceCollectionCurrencyCodeSelection;
+use Akeneo\Platform\TailoredExport\Application\Query\Selection\PriceCollection\PriceCollectionCurrencyLabelSelection;
+use Akeneo\Platform\TailoredExport\Application\Query\Selection\QuantifiedAssociations\QuantifiedAssociationsCodeSelection;
+use Akeneo\Platform\TailoredExport\Application\Query\Selection\QuantifiedAssociations\QuantifiedAssociationsLabelSelection;
+use Akeneo\Platform\TailoredExport\Application\Query\Selection\QuantifiedAssociations\QuantifiedAssociationsQuantitySelection;
+use Akeneo\Platform\TailoredExport\Application\Query\Selection\QuantifiedAssociations\QuantifiedAssociationsSelectionInterface;
 use Akeneo\Platform\TailoredExport\Application\Query\Selection\ReferenceEntity\ReferenceEntityCodeSelection;
 use Akeneo\Platform\TailoredExport\Application\Query\Selection\ReferenceEntity\ReferenceEntityLabelSelection;
 use Akeneo\Platform\TailoredExport\Application\Query\Selection\ReferenceEntityCollection\ReferenceEntityCollectionCodeSelection;
 use Akeneo\Platform\TailoredExport\Application\Query\Selection\ReferenceEntityCollection\ReferenceEntityCollectionLabelSelection;
 use Akeneo\Platform\TailoredExport\Application\Query\Selection\Scalar\ScalarSelection;
 use Akeneo\Platform\TailoredExport\Application\Query\Selection\SelectionInterface;
+use Akeneo\Platform\TailoredExport\Application\Query\Selection\SimpleAssociations\SimpleAssociationsCodeSelection;
+use Akeneo\Platform\TailoredExport\Application\Query\Selection\SimpleAssociations\SimpleAssociationsGroupsLabelSelection;
+use Akeneo\Platform\TailoredExport\Application\Query\Selection\SimpleAssociations\SimpleAssociationsLabelSelection;
+use Akeneo\Platform\TailoredExport\Application\Query\Selection\SimpleAssociations\SimpleAssociationsSelectionInterface;
 use Akeneo\Platform\TailoredExport\Application\Query\Selection\SimpleSelect\SimpleSelectCodeSelection;
 use Akeneo\Platform\TailoredExport\Application\Query\Selection\SimpleSelect\SimpleSelectLabelSelection;
 
@@ -83,7 +93,7 @@ class SelectionHydrator
             case 'pim_catalog_metric':
                 return $this->createMeasurementSelection($selectionConfiguration, $attribute);
             case 'pim_catalog_number':
-                return new NumberSelection();
+                return new NumberSelection($selectionConfiguration['decimal_separator']);
             case 'pim_catalog_multiselect':
                 return $this->createMultiselectSelection($selectionConfiguration, $attribute);
             case 'pim_catalog_simpleselect':
@@ -97,6 +107,15 @@ class SelectionHydrator
             default:
                 throw new \LogicException(sprintf('Unsupported attribute type "%s"', $attribute->type()));
         }
+    }
+
+    public function createAssociationSelection(array $selectionConfiguration, AssociationType $associationType): SelectionInterface
+    {
+        if ($associationType->isQuantified()) {
+            return $this->createQuantifiedAssociationsSelection($selectionConfiguration);
+        }
+
+        return $this->createSimpleAssociationsSelection($selectionConfiguration);
     }
 
     private function createAssetCollectionSelection(array $selectionConfiguration, Attribute $attribute): AssetCollectionSelectionInterface
@@ -194,8 +213,10 @@ class SelectionHydrator
     private function createPriceCollectionSelection(array $selectionConfiguration, Attribute $attribute)
     {
         switch ($selectionConfiguration['type']) {
-            case PriceCollectionCurrencySelection::TYPE:
-                return new PriceCollectionCurrencySelection($selectionConfiguration['separator']);
+            case PriceCollectionCurrencyCodeSelection::TYPE:
+                return new PriceCollectionCurrencyCodeSelection($selectionConfiguration['separator']);
+            case PriceCollectionCurrencyLabelSelection::TYPE:
+                return new PriceCollectionCurrencyLabelSelection($selectionConfiguration['separator'], $selectionConfiguration['locale']);
             case PriceCollectionAmountSelection::TYPE:
                 return new PriceCollectionAmountSelection($selectionConfiguration['separator']);
             default:
@@ -321,6 +342,60 @@ class SelectionHydrator
             default:
                 throw new \LogicException(
                     sprintf('Selection type "%s" is not supported for Parent property', $selectionConfiguration['type'])
+                );
+        }
+    }
+
+    private function createSimpleAssociationsSelection(array $selectionConfiguration)
+    {
+        $entityType = $selectionConfiguration['entity_type'];
+        switch ($selectionConfiguration['type']) {
+            case SimpleAssociationsCodeSelection::TYPE:
+                return new SimpleAssociationsCodeSelection($entityType, $selectionConfiguration['separator']);
+            case SimpleAssociationsLabelSelection::TYPE:
+                if (SimpleAssociationsSelectionInterface::ENTITY_TYPE_GROUPS === $entityType) {
+                    return new SimpleAssociationsGroupsLabelSelection(
+                        $selectionConfiguration['locale'],
+                        $selectionConfiguration['separator']
+                    );
+                }
+
+                return new SimpleAssociationsLabelSelection(
+                    $entityType,
+                    $selectionConfiguration['channel'],
+                    $selectionConfiguration['locale'],
+                    $selectionConfiguration['separator']
+                );
+            default:
+                throw new \LogicException(
+                    sprintf('Selection type "%s" is not supported for SimpleAssociation', $selectionConfiguration['type'])
+                );
+        }
+    }
+
+    private function createQuantifiedAssociationsSelection(array $selectionConfiguration): QuantifiedAssociationsSelectionInterface
+    {
+        switch ($selectionConfiguration['type']) {
+            case QuantifiedAssociationsCodeSelection::TYPE:
+                return new QuantifiedAssociationsCodeSelection(
+                    $selectionConfiguration['entity_type'],
+                    $selectionConfiguration['separator']
+                );
+            case QuantifiedAssociationsLabelSelection::TYPE:
+                return new QuantifiedAssociationsLabelSelection(
+                    $selectionConfiguration['entity_type'],
+                    $selectionConfiguration['channel'],
+                    $selectionConfiguration['locale'],
+                    $selectionConfiguration['separator']
+                );
+            case QuantifiedAssociationsQuantitySelection::TYPE:
+                return new QuantifiedAssociationsQuantitySelection(
+                    $selectionConfiguration['entity_type'],
+                    $selectionConfiguration['separator']
+                );
+            default:
+                throw new \LogicException(
+                    sprintf('Selection type "%s" is not supported for QuantifiedAssociation', $selectionConfiguration['type'])
                 );
         }
     }

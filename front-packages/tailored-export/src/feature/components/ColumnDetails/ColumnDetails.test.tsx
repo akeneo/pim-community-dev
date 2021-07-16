@@ -3,8 +3,21 @@ import {act, screen} from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
 import {renderWithProviders as baseRender, Channel} from '@akeneo-pim-community/shared';
 import {ColumnDetails} from './ColumnDetails';
-import {Attribute, AvailableSourceGroup, ColumnConfiguration} from '../../models';
+import {AssociationType, Attribute, AvailableSourceGroup, ColumnConfiguration} from '../../models';
 import {FetcherContext, ValidationErrorsContext} from '../../contexts';
+
+const associationTypes: AssociationType[] = [
+  {
+    code: 'XSELL',
+    labels: {en_US: 'Cross sell'},
+    is_quantified: false,
+  },
+  {
+    code: 'UPSELL',
+    labels: {},
+    is_quantified: false,
+  },
+];
 
 const attributes: Attribute[] = [
   {
@@ -51,6 +64,7 @@ const channels: Channel[] = [
 const fetchers = {
   attribute: {fetchByIdentifiers: (): Promise<Attribute[]> => Promise.resolve<Attribute[]>(attributes)},
   channel: {fetchAll: (): Promise<Channel[]> => Promise.resolve(channels)},
+  associationType: {fetchByCodes: (): Promise<AssociationType[]> => Promise.resolve(associationTypes)},
 };
 
 const renderWithProviders = async (node: ReactNode) =>
@@ -76,6 +90,22 @@ jest.mock('../../hooks/useAvailableSourcesFetcher', () => ({
             code: 'enabled',
             label: 'Activé',
             type: 'property',
+          },
+        ],
+      },
+      {
+        code: 'association_types',
+        label: 'Association types',
+        children: [
+          {
+            code: 'XSELL',
+            label: 'Cross sell',
+            type: 'association_type',
+          },
+          {
+            code: 'UPSELL',
+            label: '[UPSELL]',
+            type: 'association_type',
           },
         ],
       },
@@ -121,13 +151,7 @@ test('it renders column details', async () => {
     },
   };
 
-  await act(async () => {
-    renderWithProviders(
-      <FetcherContext.Provider value={fetchers}>
-        <ColumnDetails columnConfiguration={columnConfiguration} onColumnChange={jest.fn} />
-      </FetcherContext.Provider>
-    );
-  });
+  await renderWithProviders(<ColumnDetails columnConfiguration={columnConfiguration} onColumnChange={jest.fn} />);
 
   expect(screen.getByText(/akeneo.tailored_export.column_details.sources.title/i)).toBeInTheDocument();
 });
@@ -143,13 +167,7 @@ test('it renders placeholder when there is no source selected', async () => {
     },
   };
 
-  await act(async () => {
-    renderWithProviders(
-      <FetcherContext.Provider value={fetchers}>
-        <ColumnDetails columnConfiguration={columnConfiguration} onColumnChange={jest.fn} />
-      </FetcherContext.Provider>
-    );
-  });
+  await renderWithProviders(<ColumnDetails columnConfiguration={columnConfiguration} onColumnChange={jest.fn} />);
 
   expect(
     screen.getByText(/akeneo.tailored_export.column_details.sources.no_source_selected.title/i)
@@ -169,13 +187,9 @@ test('We can add an attribute source', async () => {
 
   const handleColumnsConfigurationChange = jest.fn();
 
-  await act(async () => {
-    renderWithProviders(
-      <FetcherContext.Provider value={fetchers}>
-        <ColumnDetails columnConfiguration={columnConfiguration} onColumnChange={handleColumnsConfigurationChange} />
-      </FetcherContext.Provider>
-    );
-  });
+  await renderWithProviders(
+    <ColumnDetails columnConfiguration={columnConfiguration} onColumnChange={handleColumnsConfigurationChange} />
+  );
 
   const addSourceButton = screen.getByText('akeneo.tailored_export.column_details.sources.add');
   await act(async () => {
@@ -222,13 +236,9 @@ test('We can add a property source', async () => {
 
   const handleColumnsConfigurationChange = jest.fn();
 
-  await act(async () => {
-    renderWithProviders(
-      <FetcherContext.Provider value={fetchers}>
-        <ColumnDetails columnConfiguration={columnConfiguration} onColumnChange={handleColumnsConfigurationChange} />
-      </FetcherContext.Provider>
-    );
-  });
+  await renderWithProviders(
+    <ColumnDetails columnConfiguration={columnConfiguration} onColumnChange={handleColumnsConfigurationChange} />
+  );
 
   const addSourceButton = screen.getByText('akeneo.tailored_export.column_details.sources.add');
   await act(async () => {
@@ -263,13 +273,64 @@ test('We can add a property source', async () => {
   });
 });
 
+test('We can add an association type as source', async () => {
+  const columnConfiguration: ColumnConfiguration = {
+    uuid: '3a6645e0-0d70-411d-84ee-79833144544a',
+    sources: [],
+    target: 'My column name',
+    format: {
+      type: 'concat',
+      elements: [],
+    },
+  };
+
+  const handleColumnsConfigurationChange = jest.fn();
+
+  await renderWithProviders(
+    <ColumnDetails columnConfiguration={columnConfiguration} onColumnChange={handleColumnsConfigurationChange} />
+  );
+
+  const addSourceButton = screen.getByText('akeneo.tailored_export.column_details.sources.add');
+  await act(async () => {
+    userEvent.click(addSourceButton);
+  });
+
+  await act(async () => {
+    userEvent.click(screen.getByText('Cross sell'));
+  });
+
+  expect(handleColumnsConfigurationChange).toHaveBeenCalledWith({
+    target: 'My column name',
+    uuid: '3a6645e0-0d70-411d-84ee-79833144544a',
+    sources: [
+      {
+        uuid: '276b6361-badb-48a1-98ef-d75baa235148',
+        type: 'association_type',
+        code: 'XSELL',
+        channel: null,
+        locale: null,
+        operations: {},
+        selection: {
+          type: 'code',
+          separator: ',',
+          entity_type: 'products',
+        },
+      },
+    ],
+    format: {
+      type: 'concat',
+      elements: [],
+    },
+  });
+});
+
 test('We can update a source', async () => {
   const columnConfiguration: ColumnConfiguration = {
     uuid: '3a6645e0-0d70-411d-84ee-79833144544a',
     sources: [
       {
         channel: null,
-        code: 'name',
+        code: 'description',
         locale: 'en_US',
         operations: {},
         selection: {
@@ -288,13 +349,9 @@ test('We can update a source', async () => {
 
   const handleColumnsConfigurationChange = jest.fn();
 
-  await act(async () => {
-    renderWithProviders(
-      <FetcherContext.Provider value={fetchers}>
-        <ColumnDetails columnConfiguration={columnConfiguration} onColumnChange={handleColumnsConfigurationChange} />
-      </FetcherContext.Provider>
-    );
-  });
+  await renderWithProviders(
+    <ColumnDetails columnConfiguration={columnConfiguration} onColumnChange={handleColumnsConfigurationChange} />
+  );
 
   const openLocaleDropdownButton = screen.getByLabelText('pim_common.locale');
   await act(async () => {
@@ -310,7 +367,7 @@ test('We can update a source', async () => {
     sources: [
       {
         channel: null,
-        code: 'name',
+        code: 'description',
         locale: 'br_FR',
         operations: {},
         selection: {
@@ -353,13 +410,9 @@ test('We can delete a source', async () => {
 
   const handleColumnsConfigurationChange = jest.fn();
 
-  await act(async () => {
-    renderWithProviders(
-      <FetcherContext.Provider value={fetchers}>
-        <ColumnDetails columnConfiguration={columnConfiguration} onColumnChange={handleColumnsConfigurationChange} />
-      </FetcherContext.Provider>
-    );
-  });
+  await renderWithProviders(
+    <ColumnDetails columnConfiguration={columnConfiguration} onColumnChange={handleColumnsConfigurationChange} />
+  );
 
   userEvent.click(screen.getByText('akeneo.tailored_export.column_details.sources.remove.button'));
   userEvent.click(screen.getByText('pim_common.confirm'));
@@ -398,25 +451,21 @@ test('it renders column details with errors', async () => {
     },
   };
 
-  await act(async () => {
-    renderWithProviders(
-      <FetcherContext.Provider value={fetchers}>
-        <ValidationErrorsContext.Provider
-          value={[
-            {
-              messageTemplate: 'akeneo.tailored_export.validation.sources.max_source_count_reached',
-              parameters: {'{{ count }}': 5, '{{ limit }}': 4},
-              message: 'akeneo.tailored_export.validation.sources.max_source_count_reached',
-              propertyPath: '[columns][3a6645e0-0d70-411d-84ee-79833144544a][sources]',
-              invalidValue: [],
-            },
-          ]}
-        >
-          <ColumnDetails columnConfiguration={columnConfiguration} onColumnChange={jest.fn} />
-        </ValidationErrorsContext.Provider>
-      </FetcherContext.Provider>
-    );
-  });
+  await renderWithProviders(
+    <ValidationErrorsContext.Provider
+      value={[
+        {
+          messageTemplate: 'akeneo.tailored_export.validation.sources.max_source_count_reached',
+          parameters: {'{{ count }}': 5, '{{ limit }}': 4},
+          message: 'akeneo.tailored_export.validation.sources.max_source_count_reached',
+          propertyPath: '[columns][3a6645e0-0d70-411d-84ee-79833144544a][sources]',
+          invalidValue: [],
+        },
+      ]}
+    >
+      <ColumnDetails columnConfiguration={columnConfiguration} onColumnChange={jest.fn} />
+    </ValidationErrorsContext.Provider>
+  );
 
   expect(screen.getByText(/akeneo.tailored_export.validation.sources.max_source_count_reached/i)).toBeInTheDocument();
 });
