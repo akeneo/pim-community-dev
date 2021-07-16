@@ -7,6 +7,7 @@ use Akeneo\Pim\TableAttribute\Domain\TableConfiguration\NumberColumn;
 use Akeneo\Pim\TableAttribute\Domain\TableConfiguration\SelectColumn;
 use Akeneo\Pim\TableAttribute\Domain\TableConfiguration\TableConfiguration;
 use Akeneo\Pim\TableAttribute\Domain\TableConfiguration\TextColumn;
+use Akeneo\Pim\TableAttribute\Domain\TableConfiguration\ValidationCollection;
 use Akeneo\Pim\TableAttribute\Domain\TableConfiguration\ValueObject\ColumnCode;
 use Akeneo\Pim\TableAttribute\Domain\TableConfiguration\ValueObject\ColumnDataType;
 use PhpSpec\ObjectBehavior;
@@ -76,6 +77,25 @@ class TableConfigurationSpec extends ObjectBehavior
                 SelectColumn::fromNormalized(['code' => 'isAllergenic']),
             ]);
     }
+
+    function it_returns_validations_given_a_column_code()
+    {
+        $this->beConstructedThrough('fromColumnDefinitions', [[
+            SelectColumn::fromNormalized(['code' => 'ingredient']),
+            NumberColumn::fromNormalized(['code' => 'quantity', 'validations' => ['min' => 5, 'max' => 20]]),
+            TextColumn::fromNormalized(['code' => 'description', 'validations' => ['max_length' => 50]]),
+        ]]);
+
+        $this->getValidations(ColumnCode::fromString('ingredient'))
+            ->shouldBeLike(ValidationCollection::fromNormalized([]));
+        $this->getValidations(ColumnCode::fromString('quantity'))
+            ->shouldBeLike(ValidationCollection::fromNormalized(['min' => 5, 'max' => 20]));
+        $this->getValidations(ColumnCode::fromString('description'))
+            ->shouldBeLike(ValidationCollection::fromNormalized(['max_length' => 50]));
+        $this->getValidations(ColumnCode::fromString('unknown'))
+            ->shouldBeLike(ValidationCollection::fromNormalized([]));
+    }
+
 //    TODO: implement when select columns are implemented
 //    function it_must_have_a_select_column_as_first_column()
 //    {

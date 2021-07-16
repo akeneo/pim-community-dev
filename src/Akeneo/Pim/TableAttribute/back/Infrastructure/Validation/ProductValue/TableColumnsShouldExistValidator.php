@@ -15,7 +15,6 @@ namespace Akeneo\Pim\TableAttribute\Infrastructure\Validation\ProductValue;
 
 use Akeneo\Pim\TableAttribute\Domain\TableConfiguration\Repository\TableConfigurationRepository;
 use Akeneo\Pim\TableAttribute\Domain\TableConfiguration\ValueObject\ColumnCode;
-use Akeneo\Pim\TableAttribute\Domain\Value\Table;
 use Akeneo\Pim\TableAttribute\Infrastructure\Value\TableValue;
 use Symfony\Component\Validator\Constraint;
 use Symfony\Component\Validator\ConstraintValidator;

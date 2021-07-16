@@ -4,6 +4,7 @@ namespace Specification\Akeneo\Pim\TableAttribute\Domain\TableConfiguration;
 
 use Akeneo\Pim\TableAttribute\Domain\TableConfiguration\LabelCollection;
 use Akeneo\Pim\TableAttribute\Domain\TableConfiguration\TextColumn;
+use Akeneo\Pim\TableAttribute\Domain\TableConfiguration\ValidationCollection;
 use Akeneo\Pim\TableAttribute\Domain\TableConfiguration\ValueObject\ColumnCode;
 use Akeneo\Pim\TableAttribute\Domain\TableConfiguration\ValueObject\ColumnDataType;
 use PhpSpec\ObjectBehavior;
@@ -39,6 +40,21 @@ class TextColumnSpec extends ObjectBehavior
     {
         $this->labels()->shouldHaveType(LabelCollection::class);
         $this->labels()->normalize()->shouldReturn(['en_US' => 'Ingredients', 'fr_FR' => 'Ingrédients']);
+    }
+
+    function it_returns_the_validations()
+    {
+        $this->beConstructedThrough(
+            'fromNormalized',
+            [
+                [
+                    'code' => 'a_text',
+                    'validations' => ['foo' => 'bar'],
+                ],
+            ]
+        );
+
+        $this->validations()->shouldBeLike(ValidationCollection::fromNormalized(['foo' => 'bar']));
     }
 
     function it_can_be_normalized()

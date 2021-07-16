@@ -15,6 +15,7 @@ namespace Specification\Akeneo\Pim\TableAttribute\Domain\TableConfiguration;
 
 use Akeneo\Pim\TableAttribute\Domain\TableConfiguration\BooleanColumn;
 use Akeneo\Pim\TableAttribute\Domain\TableConfiguration\LabelCollection;
+use Akeneo\Pim\TableAttribute\Domain\TableConfiguration\ValidationCollection;
 use Akeneo\Pim\TableAttribute\Domain\TableConfiguration\ValueObject\ColumnCode;
 use Akeneo\Pim\TableAttribute\Domain\TableConfiguration\ValueObject\ColumnDataType;
 use PhpSpec\ObjectBehavior;
@@ -55,6 +56,22 @@ class BooleanColumnSpec extends ObjectBehavior
     {
         $this->labels()->shouldHaveType(LabelCollection::class);
         $this->labels()->normalize()->shouldReturn(['en_US' => 'Is allergenic', 'fr_FR' => 'Allergène']);
+    }
+
+    function it_returns_the_validations()
+    {
+        $this->beConstructedThrough(
+            'fromNormalized',
+            [
+                [
+                    'code' => 'is_allergenic',
+                    'labels' => ['en_US' => 'Is allergenic', 'fr_FR' => 'Allergène'],
+                    'validations' => ['foo' => 'bar'],
+                ],
+            ]
+        );
+
+        $this->validations()->shouldBeLike(ValidationCollection::fromNormalized(['foo' => 'bar']));
     }
 
     function it_can_be_normalized()

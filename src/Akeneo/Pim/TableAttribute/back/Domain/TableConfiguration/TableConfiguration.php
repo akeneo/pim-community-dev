@@ -94,4 +94,15 @@ final class TableConfiguration
             fn (ColumnDefinition $columnDefinition): bool => $columnDefinition instanceof SelectColumn
         ));
     }
+
+    public function getValidations(ColumnCode $columnCode): ValidationCollection
+    {
+        foreach ($this->columnDefinitions as $columnDefinition) {
+            if ($columnDefinition->code()->equals($columnCode)) {
+                return $columnDefinition->validations();
+            }
+        }
+
+        return ValidationCollection::fromNormalized([]);
+    }
 }

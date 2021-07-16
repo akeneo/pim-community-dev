@@ -41,8 +41,6 @@ final class Table implements \IteratorAggregate
 
     /**
      * @param array<int,array> $data
-     *
-     * @return static
      */
     public static function fromNormalized(array $data): self
     {

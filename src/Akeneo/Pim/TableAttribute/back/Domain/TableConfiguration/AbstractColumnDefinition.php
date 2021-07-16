@@ -50,6 +50,11 @@ abstract class AbstractColumnDefinition implements ColumnDefinition
         return $this->labels;
     }
 
+    public function validations(): ValidationCollection
+    {
+        return $this->validations;
+    }
+
     public function normalize(): array
     {
         return [

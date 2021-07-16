@@ -20,6 +20,7 @@ use Akeneo\Pim\TableAttribute\Infrastructure\Validation\ProductValue\CellDataTyp
 use Akeneo\Pim\TableAttribute\Infrastructure\Validation\ProductValue\FirstColumnShouldBeFilled;
 use Akeneo\Pim\TableAttribute\Infrastructure\Validation\ProductValue\SelectOptionsShouldExist;
 use Akeneo\Pim\TableAttribute\Infrastructure\Validation\ProductValue\TableColumnsShouldExist;
+use Akeneo\Pim\TableAttribute\Infrastructure\Validation\ProductValue\UserValidationShouldMatch;
 
 final class TableGuesser implements ConstraintGuesserInterface
 {
@@ -35,6 +36,7 @@ final class TableGuesser implements ConstraintGuesserInterface
             new FirstColumnShouldBeFilled(),
             new TableColumnsShouldExist(),
             new SelectOptionsShouldExist(),
+            new UserValidationShouldMatch(),
         ];
     }
 }
