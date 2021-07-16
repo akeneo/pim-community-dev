@@ -8,5 +8,7 @@ services:
                 select: Akeneo\Pim\TableAttribute\Domain\TableConfiguration\SelectColumn
 
     Akeneo\Pim\TableAttribute\Infrastructure\Value\Factory\TableValueFactory:
+        arguments:
+            - '@Akeneo\Pim\TableAttribute\Domain\TableConfiguration\Repository\TableConfigurationRepository'
         tags:
             - { name: 'akeneo.pim.enrichment.factory.product_value' }

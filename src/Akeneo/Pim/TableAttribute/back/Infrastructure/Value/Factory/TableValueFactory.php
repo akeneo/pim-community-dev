@@ -17,12 +17,20 @@ use Akeneo\Pim\Enrichment\Component\Product\Factory\Value\ValueFactory;
 use Akeneo\Pim\Enrichment\Component\Product\Model\ValueInterface;
 use Akeneo\Pim\Structure\Component\AttributeTypes;
 use Akeneo\Pim\Structure\Component\Query\PublicApi\AttributeType\Attribute;
+use Akeneo\Pim\TableAttribute\Domain\TableConfiguration\Repository\TableConfigurationRepository;
 use Akeneo\Pim\TableAttribute\Domain\Value\Table;
 use Akeneo\Pim\TableAttribute\Infrastructure\Value\TableValue;
 use Akeneo\Tool\Component\StorageUtils\Exception\InvalidPropertyTypeException;
 
 class TableValueFactory implements ValueFactory
 {
+    private TableConfigurationRepository $tableConfigurationRepository;
+
+    public function __construct(TableConfigurationRepository $tableConfigurationRepository)
+    {
+        $this->tableConfigurationRepository = $tableConfigurationRepository;
+    }
+
     public function createByCheckingData(
         Attribute $attribute,
         ?string $channelCode,
@@ -62,6 +70,7 @@ class TableValueFactory implements ValueFactory
         ?string $localeCode,
         $data
     ): ValueInterface {
+        $data = $this->removeDuplicateOnFirstColumn($attribute, $data);
         $table = Table::fromNormalized($data);
         if ($attribute->isLocalizableAndScopable()) {
             return TableValue::scopableLocalizableValue($attribute->code(), $table, $channelCode, $localeCode);
@@ -74,6 +83,25 @@ class TableValueFactory implements ValueFactory
         }
 
         return TableValue::value($attribute->code(), $table);
+    }
+
+    private function removeDuplicateOnFirstColumn(Attribute $attribute, array $data): array
+    {
+        $tableConfiguration = $this->tableConfigurationRepository->getByAttributeCode($attribute->code());
+        $firstColumnCode = $tableConfiguration->getFirstColumnCode()->asString();
+
+        $foundOptionCodes = [];
+        foreach ($data as $rowIndex => $row) {
+            if (array_key_exists($firstColumnCode, $row)) {
+                $firstColumnValue = $row[$firstColumnCode];
+                if (array_key_exists($firstColumnValue, $foundOptionCodes)) {
+                    unset($data[$foundOptionCodes[$firstColumnValue]]);
+                }
+                $foundOptionCodes[$firstColumnValue] = $rowIndex;
+            }
+        }
+
+        return $data;
     }
 
     public function supportedAttributeType(): string

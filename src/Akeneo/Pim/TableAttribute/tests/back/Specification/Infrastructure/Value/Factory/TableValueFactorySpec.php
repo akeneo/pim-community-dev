@@ -4,6 +4,10 @@ namespace Specification\Akeneo\Pim\TableAttribute\Infrastructure\Value\Factory;
 
 use Akeneo\Pim\Structure\Component\AttributeTypes;
 use Akeneo\Pim\Structure\Component\Query\PublicApi\AttributeType\Attribute;
+use Akeneo\Pim\TableAttribute\Domain\TableConfiguration\NumberColumn;
+use Akeneo\Pim\TableAttribute\Domain\TableConfiguration\Repository\TableConfigurationRepository;
+use Akeneo\Pim\TableAttribute\Domain\TableConfiguration\SelectColumn;
+use Akeneo\Pim\TableAttribute\Domain\TableConfiguration\TableConfiguration;
 use Akeneo\Pim\TableAttribute\Domain\Value\Table;
 use Akeneo\Pim\TableAttribute\Infrastructure\Value\Factory\TableValueFactory;
 use Akeneo\Pim\TableAttribute\Infrastructure\Value\TableValue;
@@ -12,6 +16,16 @@ use PhpSpec\ObjectBehavior;
 
 class TableValueFactorySpec extends ObjectBehavior
 {
+    function let(TableConfigurationRepository $tableConfigurationRepository)
+    {
+        $this->beConstructedWith($tableConfigurationRepository);
+
+        $tableConfigurationRepository->getByAttributeCode('nutrition')->willReturn(TableConfiguration::fromColumnDefinitions([
+            SelectColumn::fromNormalized(['code' => 'ingredient']),
+            NumberColumn::fromNormalized(['code' => 'quantity']),
+        ]));
+    }
+
     function it_is_initializable()
     {
         $this->shouldHaveType(TableValueFactory::class);
@@ -29,6 +43,28 @@ class TableValueFactorySpec extends ObjectBehavior
         );
         $value->shouldBeAnInstanceOf(TableValue::class);
         $value->getData()->shouldBeLike(Table::fromNormalized([['foo' => 'bar']]));
+    }
+
+    function it_removes_duplicate_on_first_column()
+    {
+        $attribute = $this->buildTableAttribute(false, false);
+
+        $value = $this->createWithoutCheckingData(
+            $attribute,
+            null,
+            null,
+            [
+                ['quantity' => 5, 'ingredient' => 'salt'],
+                ['quantity' => 10, 'ingredient' => 'sugar'],
+                ['quantity' => 20, 'ingredient' => 'salt'],
+                ['quantity' => 30, 'ingredient' => 'salt'],
+            ]
+        );
+        $value->shouldBeAnInstanceOf(TableValue::class);
+        $value->getData()->shouldBeLike(Table::fromNormalized([
+            ['quantity' => 10, 'ingredient' => 'sugar'],
+            ['quantity' => 30, 'ingredient' => 'salt'],
+        ]));
     }
 
     function it_throws_an_exception_if_data_is_not_an_array()
