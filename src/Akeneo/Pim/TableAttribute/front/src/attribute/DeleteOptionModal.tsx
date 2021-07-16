@@ -1,18 +1,18 @@
 import {DeleteIllustration, Button, Field, Modal, TextInput, Helper} from 'akeneo-design-system';
 import React from 'react';
 import {useTranslate} from '@akeneo-pim-community/shared';
-import {ColumnCode} from '../models/TableConfiguration';
+import {SelectOptionCode} from '../models/TableConfiguration';
 import {FieldsList} from '../shared/FieldsList';
 
-type DeleteColumnModalProps = {
+type DeleteOptionModalProps = {
   close: () => void;
   onDelete: () => void;
-  columnDefinitionCode: ColumnCode;
+  optionCode: SelectOptionCode;
 };
 
-const DeleteColumnModal: React.FC<DeleteColumnModalProps> = ({close, onDelete, columnDefinitionCode}) => {
+const DeleteOptionModal: React.FC<DeleteOptionModalProps> = ({close, onDelete, optionCode}) => {
   const translate = useTranslate();
-  const [typedColumnCode, setTypedColumnCode] = React.useState<ColumnCode>('');
+  const [typedText, setTypedText] = React.useState<string>('');
 
   const handleDelete = () => {
     close();
@@ -26,23 +26,20 @@ const DeleteColumnModal: React.FC<DeleteColumnModalProps> = ({close, onDelete, c
       </Modal.SectionTitle>
       <Modal.Title>{translate('pim_common.confirm_deletion')}</Modal.Title>
       <FieldsList>
-        <div>{translate('pim_table_attribute.form.attribute.confirm_column_delete')}</div>
+        <div>{translate('pim_table_attribute.form.attribute.confirm_option_delete')}</div>
         <Helper level='info'>
           Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore
           magna aliqua.
         </Helper>
-        <Field
-          label={translate('pim_table_attribute.form.attribute.please_type', {
-            text: columnDefinitionCode,
-          })}>
-          <TextInput onChange={setTypedColumnCode} value={typedColumnCode} />
+        <Field label={translate('pim_table_attribute.form.attribute.please_type', {text: optionCode})}>
+          <TextInput onChange={setTypedText} value={typedText} />
         </Field>
       </FieldsList>
       <Modal.BottomButtons>
         <Button level='tertiary' onClick={close}>
           {translate('pim_common.cancel')}
         </Button>
-        <Button level='danger' onClick={handleDelete} disabled={typedColumnCode !== columnDefinitionCode}>
+        <Button level='danger' onClick={handleDelete} disabled={typedText !== optionCode}>
           {translate('pim_common.delete')}
         </Button>
       </Modal.BottomButtons>
@@ -50,4 +47,4 @@ const DeleteColumnModal: React.FC<DeleteColumnModalProps> = ({close, onDelete, c
   );
 };
 
-export {DeleteColumnModal};
+export {DeleteOptionModal};

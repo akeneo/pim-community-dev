@@ -157,7 +157,7 @@ describe('TableStructureApp', () => {
       const deleteButtons = await screen.findAllByTitle('pim_common.delete');
       fireEvent.click(deleteButtons[0]);
     });
-    expect(await screen.findByText('pim_table_attribute.form.attribute.confirm_delete')).toBeInTheDocument();
+    expect(await screen.findByText('pim_table_attribute.form.attribute.confirm_column_delete')).toBeInTheDocument();
 
     const deleteButton = await screen.findByText('pim_common.delete');
 

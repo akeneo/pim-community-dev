@@ -161,7 +161,13 @@ describe('ManageOptionsModal', () => {
     expect(await findCodeInput(0)).toHaveValue('salt');
 
     fireEvent.click(screen.getAllByTitle('pim_common.remove')[0]);
-    fireEvent.click(screen.getByText('pim_common.confirm'));
+    const confirmationInput = await screen.findByLabelText('pim_table_attribute.form.attribute.please_type');
+    expect(confirmationInput).toBeInTheDocument();
+    fireEvent.change(confirmationInput, {target: {value: 'salt'}});
+    fireEvent.click(screen.getByText('pim_common.delete'));
+
+    expect(await findCodeInput(0)).toHaveValue('pepper');
+    fireEvent.click(await screen.findByText('pim_common.confirm'));
 
     expect(handleChange).toBeCalledWith([
       ingredientsSelectOptions[1],
@@ -183,8 +189,10 @@ describe('ManageOptionsModal', () => {
       />
     );
     expect(await findCodeInput(0)).toHaveValue('fetched_code');
-    expect(await findLabelInput(0)).toHaveValue('Fetched');
-    expect(screen.getByLabelText('German (Germany)')).toHaveValue('Fetshed');
+    const labelInput = await findLabelInput(0);
+    expect(labelInput).toHaveValue('Fetched');
+    fireEvent.click(labelInput);
+    expect(await screen.findByLabelText('German (Germany)')).toHaveValue('Fetshed');
   });
 
   it('should display empty option for a new column', async () => {
@@ -238,8 +246,13 @@ describe('ManageOptionsModal', () => {
     expect(queryLabelInput(19)).not.toBeInTheDocument();
     expect(queryLabelInput(21)).not.toBeInTheDocument(); // there is no 21st element
 
-    // We remove the last element of page 2 -> we should go bavk to the first page
+    // We remove the last element of page 2 -> we should go back to the first page
     fireEvent.click(screen.getAllByTitle('pim_common.remove')[0]);
+    const confirmationInput = await screen.findByLabelText('pim_table_attribute.form.attribute.please_type');
+    expect(confirmationInput).toBeInTheDocument();
+    fireEvent.change(confirmationInput, {target: {value: 'code20'}});
+    fireEvent.click(screen.getByText('pim_common.delete'));
+
     expect(await findCodeInput(19)).toBeInTheDocument();
   });
 

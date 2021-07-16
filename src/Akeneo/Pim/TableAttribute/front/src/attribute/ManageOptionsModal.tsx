@@ -12,6 +12,7 @@ import {
   Pagination,
   Search,
   AddingValueIllustration,
+  useBooleanState,
 } from 'akeneo-design-system';
 import {getLabel, Locale, LocaleCode, useRouter, useTranslate, useUserContext} from '@akeneo-pim-community/shared';
 import {SelectColumnDefinition, SelectOption} from '../models/TableConfiguration';
@@ -23,6 +24,7 @@ import {fetchSelectOptions} from '../fetchers/SelectOptionsFetcher';
 import {getActivatedLocales} from '../repositories/Locale';
 import {ManageOptionsRow} from './ManageOptionsRow';
 import {LocaleSwitcher} from './LocaleSwitcher';
+import {DeleteOptionModal} from './DeleteOptionModal';
 
 const TableContainer = styled.div`
   height: calc(100vh - 270px);
@@ -85,6 +87,9 @@ const ManageOptionsModal: React.FC<ManageOptionsModalProps> = ({onClose, attribu
   const [currentLocaleCode, setCurrentLocaleCode] = React.useState<LocaleCode>(userContext.get('catalogLocale'));
   const [searchValue, setSearchValue] = React.useState<string>('');
   const [filteredOptionsIds, setFilteredOptionsIds] = React.useState<{[optionId: string]: boolean}>({});
+  const [isDeleteOptionModalOpen, openDeleteOptionModal, closeDeleteOptionModal] = useBooleanState();
+  const [indexToRemove, setIndexToRemove] = React.useState<number | undefined>();
+  const [scrollToBottom, doScrollToBottom, doNotScrollToBottom] = useBooleanState(false);
 
   const lastCodeInputRef = React.useRef<HTMLInputElement>();
   const lastLabelInputRef = React.useRef<HTMLInputElement>();
@@ -127,16 +132,18 @@ const ManageOptionsModal: React.FC<ManageOptionsModalProps> = ({onClose, attribu
   }, []);
 
   React.useEffect(() => {
-    if (filteredOptions && filteredOptions.length > 0) {
-      const option = filteredOptions[filteredOptions.length - 1];
-      if (typeof option.labels[currentLocaleCode] !== 'undefined') {
-        lastLabelInputRef.current?.focus();
-      } else {
-        lastCodeInputRef.current?.focus();
+    if (scrollToBottom) {
+      if (filteredOptions && filteredOptions.length > 0) {
+        const option = filteredOptions[filteredOptions.length - 1];
+        if (typeof option.labels[currentLocaleCode] !== 'undefined') {
+          lastLabelInputRef.current?.focus();
+        } else {
+          lastCodeInputRef.current?.focus();
+        }
       }
-    }
-    if (typeof tableContainerRef?.current !== 'undefined' && tableContainerRef.current) {
-      tableContainerRef.current.scrollTop = tableContainerRef.current.scrollHeight;
+      if (typeof tableContainerRef?.current !== 'undefined' && tableContainerRef.current) {
+        tableContainerRef.current.scrollTop = tableContainerRef.current.scrollHeight;
+      }
     }
   }, [options?.length]);
 
@@ -211,17 +218,29 @@ const ManageOptionsModal: React.FC<ManageOptionsModalProps> = ({onClose, attribu
     option.labels = {};
     if (newCodeInputRef.current) newCodeInputRef.current.value = '';
     if (newLabelInputRef.current) newLabelInputRef.current.value = '';
+    doScrollToBottom();
   };
 
-  const handleDelete = (index: number) => {
-    const tempValue = [...(options || [])];
-    tempValue.splice(index, 1);
-    setOptionsAndValidate(tempValue);
+  const handleDelete = () => {
+    if (typeof indexToRemove !== 'undefined' && options) {
+      const idToRemove = options[indexToRemove]?.id;
+      const tempValue = [...(options || [])];
+      tempValue.splice(indexToRemove, 1);
+      setOptionsAndValidate(tempValue);
+      setIndexToRemove(undefined);
+      doNotScrollToBottom();
 
-    const filteredOptions = (tempValue || []).filter(option => !!filteredOptionsIds[option.id]);
-    const pageCount = Math.ceil(filteredOptions.length / OPTIONS_PER_PAGE);
-    if (page > pageCount) {
-      setPage(page - 1);
+      if (idToRemove) {
+        delete filteredOptionsIds[idToRemove];
+        setFilteredOptionsIds({...filteredOptionsIds});
+      }
+
+      const filteredOptions = (tempValue || []).filter(option => !!filteredOptionsIds[option.id]);
+      const pageCount = Math.ceil(filteredOptions.length / OPTIONS_PER_PAGE);
+      if (page > pageCount) {
+        doScrollToBottom();
+        setPage(page - 1);
+      }
     }
   };
 
@@ -279,100 +298,112 @@ const ManageOptionsModal: React.FC<ManageOptionsModalProps> = ({onClose, attribu
   );
 
   return (
-    <Modal closeTitle={translate('pim_common.close')} onClose={onClose}>
-      <Modal.SectionTitle color='brand'>
-        {getLabel(attribute.labels, userContext.get('catalogLocale'), attribute.code)}&nbsp;/&nbsp;
-        {columnLabel}
-      </Modal.SectionTitle>
-      <Modal.Title>{translate('pim_table_attribute.form.attribute.manage_options')}</Modal.Title>
-      <OptionsTwoColumnsLayout rightColumn={LabelTranslations}>
-        <div>
-          <SectionTitle title={columnLabel}>
-            <ManageOptionsSectionTitle>{columnLabel}</ManageOptionsSectionTitle>
-            <Search
-              searchValue={searchValue}
-              onSearchChange={handleSearchChange}
-              placeholder={translate('pim_table_attribute.form.attribute.search_placeholder')}
-            />
-            <LocaleSwitcher
-              localeCode={currentLocaleCode}
-              onChange={setCurrentLocaleCode}
-              locales={activatedLocales || []}
-            />
-          </SectionTitle>
-          {!options && <LoaderIcon />}
-          {options && (
-            <>
-              {filteredOptions.length > 0 && (
-                <Pagination
-                  currentPage={page}
-                  totalItems={filteredOptions.length}
-                  itemsPerPage={OPTIONS_PER_PAGE}
-                  followPage={setPage}
-                />
-              )}
-              <TableContainer ref={tableContainerRef}>
-                <Table>
-                  <Table.Header>
-                    <Table.HeaderCell>{translate('pim_common.label')}</Table.HeaderCell>
-                    <Table.HeaderCell>
-                      {translate('pim_common.code')} {translate('pim_common.required_label')}
-                    </Table.HeaderCell>
-                    <Table.HeaderCell />
-                  </Table.Header>
-                  <ManageOptionsBody>
-                    {filteredOptions.slice((page - 1) * OPTIONS_PER_PAGE, page * OPTIONS_PER_PAGE).map(option => (
+    <>
+      <Modal closeTitle={translate('pim_common.close')} onClose={onClose}>
+        <Modal.SectionTitle color='brand'>
+          {getLabel(attribute.labels, userContext.get('catalogLocale'), attribute.code)}&nbsp;/&nbsp;
+          {columnLabel}
+        </Modal.SectionTitle>
+        <Modal.Title>{translate('pim_table_attribute.form.attribute.manage_options')}</Modal.Title>
+        <OptionsTwoColumnsLayout rightColumn={LabelTranslations}>
+          <div>
+            <SectionTitle title={columnLabel}>
+              <ManageOptionsSectionTitle>{columnLabel}</ManageOptionsSectionTitle>
+              <Search
+                searchValue={searchValue}
+                onSearchChange={handleSearchChange}
+                placeholder={translate('pim_table_attribute.form.attribute.search_placeholder')}
+              />
+              <LocaleSwitcher
+                localeCode={currentLocaleCode}
+                onChange={setCurrentLocaleCode}
+                locales={activatedLocales || []}
+              />
+            </SectionTitle>
+            {!options && <LoaderIcon />}
+            {options && (
+              <>
+                {filteredOptions.length > 0 && (
+                  <Pagination
+                    currentPage={page}
+                    totalItems={filteredOptions.length}
+                    itemsPerPage={OPTIONS_PER_PAGE}
+                    followPage={setPage}
+                  />
+                )}
+                <TableContainer ref={tableContainerRef}>
+                  <Table>
+                    <Table.Header>
+                      <Table.HeaderCell>{translate('pim_common.label')}</Table.HeaderCell>
+                      <Table.HeaderCell>
+                        {translate('pim_common.code')} {translate('pim_common.required_label')}
+                      </Table.HeaderCell>
+                      <Table.HeaderCell />
+                    </Table.Header>
+                    <ManageOptionsBody>
+                      {filteredOptions.slice((page - 1) * OPTIONS_PER_PAGE, page * OPTIONS_PER_PAGE).map(option => (
+                        <ManageOptionsRow
+                          codeInputRef={isLastOption(option) ? lastCodeInputRef : undefined}
+                          labelInputRef={isLastOption(option) ? lastLabelInputRef : undefined}
+                          isSelected={selectedOptionIndex === getRealIndex(option)}
+                          onSelect={() => setSelectedOptionIndex(getRealIndex(option))}
+                          data-testid={`row-${getRealIndex(option)}`}
+                          onChange={(option: SelectOptionWithId) => handleOptionChange(getRealIndex(option), option)}
+                          key={option.id}
+                          option={option}
+                          onDelete={() => {
+                            openDeleteOptionModal();
+                            setIndexToRemove(getRealIndex(option));
+                          }}
+                          violations={violations[option.id]}
+                          localeCode={currentLocaleCode}
+                        />
+                      ))}
                       <ManageOptionsRow
-                        codeInputRef={isLastOption(option) ? lastCodeInputRef : undefined}
-                        labelInputRef={isLastOption(option) ? lastLabelInputRef : undefined}
-                        isSelected={selectedOptionIndex === getRealIndex(option)}
-                        onSelect={() => setSelectedOptionIndex(getRealIndex(option))}
-                        data-testid={`row-${getRealIndex(option)}`}
-                        onChange={(option: SelectOptionWithId) => handleOptionChange(getRealIndex(option), option)}
-                        key={option.id}
-                        option={option}
-                        onDelete={() => handleDelete(getRealIndex(option))}
-                        violations={violations[option.id]}
+                        codeInputRef={newCodeInputRef}
+                        labelInputRef={newLabelInputRef}
+                        isSelected={selectedOptionIndex === -1}
+                        onSelect={() => setSelectedOptionIndex(-1)}
+                        data-testid={'row-new'}
+                        onChange={(option: SelectOptionWithId) => handleAddOption(option)}
+                        option={emptySelectOption}
+                        labelPlaceholder={translate('pim_table_attribute.form.attribute.new_option_placeholder')}
                         localeCode={currentLocaleCode}
+                        forceAutocomplete={true}
                       />
-                    ))}
-                    <ManageOptionsRow
-                      codeInputRef={newCodeInputRef}
-                      labelInputRef={newLabelInputRef}
-                      isSelected={selectedOptionIndex === -1}
-                      onSelect={() => setSelectedOptionIndex(-1)}
-                      data-testid={'row-new'}
-                      onChange={(option: SelectOptionWithId) => handleAddOption(option)}
-                      option={emptySelectOption}
-                      labelPlaceholder={translate('pim_table_attribute.form.attribute.new_option_placeholder')}
-                      localeCode={currentLocaleCode}
-                      forceAutocomplete={true}
-                    />
-                  </ManageOptionsBody>
-                </Table>
-                {filteredOptions.length === 0 && searchValue !== '' && (
-                  <CenteredHelper>
-                    <AddingValueIllustration size={120} />
-                    TODO Sorry, there are no options for your search!
-                  </CenteredHelper>
-                )}
-                {filteredOptions.length === 0 && searchValue === '' && (
-                  <CenteredHelper>
-                    <AddingValueIllustration size={120} />
-                    TODO Please add options
-                  </CenteredHelper>
-                )}
-              </TableContainer>
-            </>
-          )}
-        </div>
-        <Modal.TopRightButtons>
-          <Button level='primary' onClick={handleConfirm} disabled={!canSave}>
-            {translate('pim_common.confirm')}
-          </Button>
-        </Modal.TopRightButtons>
-      </OptionsTwoColumnsLayout>
-    </Modal>
+                    </ManageOptionsBody>
+                  </Table>
+                  {filteredOptions.length === 0 && searchValue !== '' && (
+                    <CenteredHelper>
+                      <AddingValueIllustration size={120} />
+                      TODO Sorry, there are no options for your search!
+                    </CenteredHelper>
+                  )}
+                  {filteredOptions.length === 0 && searchValue === '' && (
+                    <CenteredHelper>
+                      <AddingValueIllustration size={120} />
+                      TODO Please add options
+                    </CenteredHelper>
+                  )}
+                </TableContainer>
+              </>
+            )}
+          </div>
+          <Modal.TopRightButtons>
+            <Button level='primary' onClick={handleConfirm} disabled={!canSave}>
+              {translate('pim_common.confirm')}
+            </Button>
+          </Modal.TopRightButtons>
+        </OptionsTwoColumnsLayout>
+      </Modal>
+      {isDeleteOptionModalOpen && typeof indexToRemove !== 'undefined' && options && (
+        <DeleteOptionModal
+          close={closeDeleteOptionModal}
+          onDelete={handleDelete}
+          optionCode={options[indexToRemove]?.code ?? ''}
+        />
+      )}
+    </>
   );
 };
 
