@@ -14,11 +14,15 @@ declare(strict_types=1);
 namespace Akeneo\Platform\TailoredExport\Infrastructure\Validation\Source\PriceCollection;
 
 use Akeneo\Platform\TailoredExport\Application\Query\Selection\PriceCollection\PriceCollectionAmountSelection;
-use Akeneo\Platform\TailoredExport\Application\Query\Selection\PriceCollection\PriceCollectionCurrencySelection;
+use Akeneo\Platform\TailoredExport\Application\Query\Selection\PriceCollection\PriceCollectionCurrencyCodeSelection;
+use Akeneo\Platform\TailoredExport\Application\Query\Selection\PriceCollection\PriceCollectionCurrencyLabelSelection;
+use Akeneo\Platform\TailoredExport\Infrastructure\Validation\LocaleShouldBeActive;
 use Symfony\Component\Validator\Constraint;
 use Symfony\Component\Validator\Constraints\Choice;
 use Symfony\Component\Validator\Constraints\Collection;
 use Symfony\Component\Validator\Constraints\NotBlank;
+use Symfony\Component\Validator\Constraints\Optional;
+use Symfony\Component\Validator\Constraints\Type;
 use Symfony\Component\Validator\ConstraintValidator;
 
 class PriceCollectionSelectionValidator extends ConstraintValidator
@@ -33,42 +37,48 @@ class PriceCollectionSelectionValidator extends ConstraintValidator
     public function validate($selection, Constraint $constraint)
     {
         $validator = $this->context->getValidator();
-        $violations = $validator->validate($selection, [
-            new Collection(
-                [
-                    'fields' => [
-                        'type' => [
-                            new NotBlank(),
-                            new Choice(
-                                [
-                                    'strict' => true,
-                                    'choices' => [
-                                        PriceCollectionCurrencySelection::TYPE,
-                                        PriceCollectionAmountSelection::TYPE,
-                                    ],
-                                ]
-                            )
-                        ],
-                        'separator' => [
-                            new Choice(
-                                [
-                                    'strict' => true,
-                                    'choices' => $this->availableCollectionSeparator,
-                                ]
-                            )
-                        ],
-                    ],
-                ]
-            ),
-        ]);
+        $violations = $validator->validate($selection, new Collection(
+            [
+                'fields' => [
+                    'type' => new Choice(
+                        [
+                            'choices' => [
+                                PriceCollectionCurrencyCodeSelection::TYPE,
+                                PriceCollectionCurrencyLabelSelection::TYPE,
+                                PriceCollectionAmountSelection::TYPE,
+                            ],
+                        ]
+                    ),
+                    'locale' => new Optional([new Type(['type' => 'string'])]),
+                    'separator' => new Choice(
+                        [
+                            'choices' => $this->availableCollectionSeparator,
+                        ]
+                    ),
+                ],
+            ]
+        ));
+        foreach ($violations as $violation) {
+            $this->context->buildViolation(
+                $violation->getMessage(),
+                $violation->getParameters()
+            )
+                ->atPath($violation->getPropertyPath())
+                ->addViolation();
+        }
 
-        if (0 < $violations->count()) {
+        if (PriceCollectionCurrencyLabelSelection::TYPE === $selection['type']) {
+            $violations = $validator->validate($selection['locale'], [
+                new NotBlank(),
+                new LocaleShouldBeActive()
+            ]);
+
             foreach ($violations as $violation) {
                 $this->context->buildViolation(
                     $violation->getMessage(),
                     $violation->getParameters()
                 )
-                    ->atPath($violation->getPropertyPath())
+                    ->atPath('[locale]')
                     ->addViolation();
             }
         }

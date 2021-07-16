@@ -9,8 +9,10 @@ import {
   addPropertySource,
   updateSource,
   removeSource,
+  addAssociationTypeSource,
 } from './ColumnConfiguration';
 import {Source} from './Source';
+import {AssociationType} from './AssociationType';
 
 const channels: Channel[] = [
   {
@@ -238,6 +240,40 @@ test('it adds property source', () => {
         operations: {},
         selection: {
           type: 'code',
+          separator: ',',
+        },
+      },
+    ],
+    format: {
+      type: 'concat',
+      elements: [],
+    },
+  });
+});
+
+test('it adds association type source', () => {
+  const columnConfiguration = createColumn('The first column', 'fbf9cff9-e95c-4e7d-983b-2947c7df90df');
+  const associationType: AssociationType = {
+    code: 'UPSELL',
+    labels: {},
+    is_quantified: false,
+  };
+
+  const newColumnConfiguration = addAssociationTypeSource(columnConfiguration, associationType);
+  expect(newColumnConfiguration).toEqual({
+    uuid: columnConfiguration.uuid,
+    target: 'The first column',
+    sources: [
+      {
+        uuid: newColumnConfiguration.sources[0].uuid,
+        type: 'association_type',
+        code: 'UPSELL',
+        channel: null,
+        locale: null,
+        operations: {},
+        selection: {
+          type: 'code',
+          entity_type: 'products',
           separator: ',',
         },
       },

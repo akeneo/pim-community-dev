@@ -50,6 +50,7 @@ akeneo_data_quality_insights:
           messages:
             first_step:
               message1: 对丰富属性和选项标签有不解之处？在<a href="{{ link }}" target="_blank">此处</a>温习其基础知识吧！
+              message2: 需要属性和属性选项方面的帮助？请查看<a href="{{ link }}" target="_blank">此处</a>！
             second_step:
               message1: 请精心打理您的属性和选项标签。这样您的产品会越来越丰富。
               message2: 工作尚未完成！您的部分标签仍需要工作。

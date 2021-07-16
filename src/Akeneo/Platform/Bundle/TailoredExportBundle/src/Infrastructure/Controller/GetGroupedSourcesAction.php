@@ -13,8 +13,11 @@ declare(strict_types=1);
 
 namespace Akeneo\Platform\TailoredExport\Infrastructure\Controller;
 
-use Akeneo\Pim\Permission\Bundle\User\UserContext;
-use Akeneo\Platform\TailoredExport\Domain\Query\GetGroupedAttributes;
+use Akeneo\Pim\Structure\Component\Query\PublicApi\Association\AssociationType;
+use Akeneo\Pim\Structure\Component\Query\PublicApi\Association\FindAssociationTypesInterface;
+use Akeneo\Pim\Structure\Component\Query\PublicApi\Attribute\FindFlattenAttributesInterface;
+use Akeneo\Pim\Structure\Component\Query\PublicApi\Attribute\FlattenAttribute;
+use Akeneo\Platform\TailoredExport\Domain\Query\FindSystemSourcesInterface;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
@@ -26,19 +29,23 @@ final class GetGroupedSourcesAction
     private const LIMIT_DEFAULT = 20;
     private const FIELD_TRANSLATION_BASE = 'pim_common.';
     private const SYSTEM_GROUP_TRANSLATION_KEY = 'System';
+    private const DEFAULT_LOCALE = 'en_US';
 
-    private GetGroupedAttributes $getGroupedAttributes;
-    protected UserContext $userContext;
-    protected TranslatorInterface $translator;
+    private TranslatorInterface $translator;
+    private FindSystemSourcesInterface $getSystemSources;
+    private FindAssociationTypesInterface $findAssociationTypes;
+    private FindFlattenAttributesInterface $findFlattenAttributes;
 
     public function __construct(
-        GetGroupedAttributes $getGroupedAttributes,
-        UserContext $userContext,
-        TranslatorInterface $translator
+        TranslatorInterface $translator,
+        FindSystemSourcesInterface $getSystemSources,
+        FindAssociationTypesInterface $findAssociationTypes,
+        FindFlattenAttributesInterface $findFlattenAttributes
     ) {
-        $this->getGroupedAttributes = $getGroupedAttributes;
-        $this->userContext = $userContext;
         $this->translator = $translator;
+        $this->getSystemSources = $getSystemSources;
+        $this->findAssociationTypes = $findAssociationTypes;
+        $this->findFlattenAttributes = $findFlattenAttributes;
     }
 
     public function __invoke(Request $request): Response
@@ -49,105 +56,102 @@ final class GetGroupedSourcesAction
 
         $options = $request->get('options', []);
         $search = $request->get('search');
-        $limit = $options['limit'] ?? static::LIMIT_DEFAULT;
+        $limit = $options['limit'] ?? self::LIMIT_DEFAULT;
         $page = $options['page'];
         $offset = $page * $limit;
-        $localeCode = $options['locale'];
+
+        $localeCode = $options['locale'] ?? self::DEFAULT_LOCALE;
         $attributeTypes = isset($options['attributeTypes']) ? explode(',', $options['attributeTypes']) : null;
 
-        $fields = [
-            'categories',
-            'enabled',
-            'family',
-            'parent',
-            'groups',
-            'family_variant',
-            // 'identifier',
-            // 'created',
-            // 'updated',
-            // 'entity_type',
-            // 'completeness',
-            // 'associations',
-            // 'quantified_associations', //nope
-        ];
+        $paginatedFields = $this->getSystemSources->execute($localeCode, $limit, $offset, $search);
+        $offset -= count($paginatedFields);
+        $limit -= count($paginatedFields);
 
-        $filteredFields = $this->filterSystemFieldByText($fields, $search);
-        $paginatedFields = array_slice($filteredFields, $offset, $limit);
+        $paginatedAssociations = $this->findAssociationTypes->execute($localeCode, $limit, $offset, $search);
+        $offset -= count($paginatedAssociations);
+        $limit -= count($paginatedAssociations);
 
-        $paginatedAttributes = [];
-        if ($limit > count($paginatedFields)) {
-            $offset -= count($filteredFields);
-            $limit -= count($paginatedFields);
-
-            $paginatedAttributes = $this->getGroupedAttributes->findAttributes(
-                $localeCode,
-                $limit,
-                $offset,
-                $attributeTypes,
-                $search
-            );
-        }
+        $paginatedAttributes = $this->findFlattenAttributes->execute(
+            $localeCode,
+            $limit,
+            $attributeTypes,
+            $offset,
+            $search
+        );
 
         return new JsonResponse(array_merge(
-            $this->formatSystemFields($paginatedFields),
+            $this->formatSystemFields($paginatedFields, $localeCode),
+            $this->formatAssociationFields($paginatedAssociations, $localeCode),
             $this->formatAttributes($paginatedAttributes)
         ));
     }
 
-    private function filterSystemFieldByText(array $fields, ?string $search): array
-    {
-        if (null === $search || '' === trim($search)) {
-            return $fields;
-        }
-
-        return array_filter($fields, function (string $field) use ($search): bool {
-            return strpos(strtolower($field), strtolower($search)) !== false;
-        });
-    }
-
-    private function formatSystemFields(array $fields): array
+    private function formatSystemFields(array $fields, string $localeCode): array
     {
         if (count($fields) === 0) {
             return [];
         }
 
-        $uiLocale = $this->userContext->getUiLocale();
-        $children = array_map(function (string $field) use ($uiLocale): array {
+        $children = array_map(function (string $field) use ($localeCode): array {
             return [
                 'code' => $field,
                 'type' => 'property',
                 'label' => $this->translator->trans(
-                    sprintf('%s%s', static::FIELD_TRANSLATION_BASE, $field),
+                    sprintf('%s%s', self::FIELD_TRANSLATION_BASE, $field),
                     [],
                     null,
-                    null !== $uiLocale ? $uiLocale->getCode() : null
+                    $localeCode
                 ),
             ];
         }, $fields);
 
         return [[
             'code' => 'system',
-            'label' => $this->translator->trans(static::SYSTEM_GROUP_TRANSLATION_KEY),
+            'label' => $this->translator->trans(self::SYSTEM_GROUP_TRANSLATION_KEY, [], null, $localeCode),
             'children' => $children,
         ]];
     }
 
-    private function formatAttributes(array $attributes): array
+    private function formatAssociationFields(array $fields, string $localeCode): array
+    {
+        if (empty($fields)) {
+            return [];
+        }
+
+        $associationFields = array_map(static function (AssociationType $field) use ($localeCode): array {
+            return [
+                'code' => $field->getCode(),
+                'type' => 'association_type',
+                'label' => $field->getLabel($localeCode),
+            ];
+        }, $fields);
+
+        return [[
+            'code' => 'association_types',
+            'label' => $this->translator->trans('pim_common.association_types'),
+            'children' => $associationFields,
+        ]];
+    }
+
+    /**
+     * @param FlattenAttribute[] $flattenAttributes
+     */
+    private function formatAttributes(array $flattenAttributes): array
     {
         $results = [];
-        foreach ($attributes as $attribute) {
-            $groupCode = $attribute['group_code'];
+        foreach ($flattenAttributes as $flattenAttribute) {
+            $groupCode = $flattenAttribute->getAttributeGroupCode();
             if (!array_key_exists($groupCode, $results)) {
                 $results[$groupCode] = [
                     'code' => $groupCode,
-                    'label' => $attribute['group_label'],
+                    'label' => $flattenAttribute->getAttributeGroupLabel(),
                     'children' => [],
                 ];
             }
 
             $results[$groupCode]['children'][] = [
-                'code' => $attribute['code'],
-                'label' => $attribute['label'],
+                'code' => $flattenAttribute->getCode(),
+                'label' => $flattenAttribute->getLabel(),
                 'type' => 'attribute',
             ];
         }

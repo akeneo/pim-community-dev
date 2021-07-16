@@ -5,6 +5,7 @@ import {Channel, renderWithProviders as baseRender, ValidationError} from '@aken
 import {CodeLabelCollectionSelector} from './CodeLabelCollectionSelector';
 import {Attribute} from '../../../models/Attribute';
 import {FetcherContext} from '../../../contexts';
+import {AssociationType} from '../../../models';
 
 const attributes = [
   {
@@ -49,6 +50,7 @@ const channels: Channel[] = [
 const fetchers = {
   attribute: {fetchByIdentifiers: (): Promise<Attribute[]> => Promise.resolve<Attribute[]>(attributes)},
   channel: {fetchAll: (): Promise<Channel[]> => Promise.resolve(channels)},
+  associationType: {fetchByCodes: (): Promise<AssociationType[]> => Promise.resolve([])},
 };
 
 const renderWithProviders = async (node: ReactNode) =>
@@ -67,7 +69,7 @@ test('it displays a type dropdown and a separator dropdown when the selection ty
 
   expect(screen.getByText('pim_common.type')).toBeInTheDocument();
   expect(
-    screen.getByText('akeneo.tailored_export.column_details.sources.selection.collection_separator')
+    screen.getByText('akeneo.tailored_export.column_details.sources.selection.collection_separator.title')
   ).toBeInTheDocument();
   expect(screen.getByText('pim_common.code')).toBeInTheDocument();
   expect(screen.queryByText('pim_common.locale')).not.toBeInTheDocument();
@@ -138,8 +140,12 @@ test('it can select a collection separator', async () => {
     />
   );
 
-  userEvent.click(screen.getByText('akeneo.tailored_export.column_details.sources.selection.collection_separator'));
-  userEvent.click(screen.getByTitle(';'));
+  userEvent.click(
+    screen.getByText('akeneo.tailored_export.column_details.sources.selection.collection_separator.title')
+  );
+  userEvent.click(
+    screen.getByTitle('akeneo.tailored_export.column_details.sources.selection.collection_separator.semicolon')
+  );
 
   expect(onSelectionChange).toHaveBeenCalledWith({type: 'label', locale: 'en_US', separator: ';'});
 });

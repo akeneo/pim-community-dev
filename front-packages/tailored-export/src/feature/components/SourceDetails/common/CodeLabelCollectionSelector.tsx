@@ -11,9 +11,9 @@ import {
 import {useChannels} from '../../../hooks';
 import {LocaleDropdown} from '../../LocaleDropdown';
 
-const availableSeparators = [',', ';', '|'];
+const availableSeparators = {',': 'comma', ';': 'semicolon', '|': 'pipe'};
 
-type CollectionSeparator = typeof availableSeparators[number];
+type CollectionSeparator = keyof typeof availableSeparators;
 
 type CodeLabelCollectionSelection =
   | {
@@ -27,7 +27,7 @@ type CodeLabelCollectionSelection =
     };
 
 const isCollectionSeparator = (separator: unknown): separator is CollectionSeparator =>
-  typeof separator === 'string' && availableSeparators.includes(separator);
+  typeof separator === 'string' && separator in availableSeparators;
 
 const isCodeLabelCollectionSelection = (selection: any): selection is CodeLabelCollectionSelection =>
   'type' in selection &&
@@ -94,7 +94,7 @@ const CodeLabelCollectionSelector = ({
           onChange={updatedValue => onSelectionChange({...selection, locale: updatedValue})}
         />
       )}
-      <Field label={translate('akeneo.tailored_export.column_details.sources.selection.collection_separator')}>
+      <Field label={translate('akeneo.tailored_export.column_details.sources.selection.collection_separator.title')}>
         <SelectInput
           invalid={0 < separatorErrors.length}
           clearable={false}
@@ -107,9 +107,13 @@ const CodeLabelCollectionSelector = ({
             }
           }}
         >
-          {availableSeparators.map(availableSeparator => (
-            <SelectInput.Option key={availableSeparator} title={availableSeparator} value={availableSeparator}>
-              {availableSeparator}
+          {Object.entries(availableSeparators).map(([separator, name]) => (
+            <SelectInput.Option
+              key={separator}
+              title={translate(`akeneo.tailored_export.column_details.sources.selection.collection_separator.${name}`)}
+              value={separator}
+            >
+              {translate(`akeneo.tailored_export.column_details.sources.selection.collection_separator.${name}`)}
             </SelectInput.Option>
           ))}
         </SelectInput>

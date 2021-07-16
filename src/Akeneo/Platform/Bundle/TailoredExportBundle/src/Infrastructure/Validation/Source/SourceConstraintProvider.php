@@ -13,6 +13,7 @@ declare(strict_types=1);
 
 namespace Akeneo\Platform\TailoredExport\Infrastructure\Validation\Source;
 
+use Akeneo\Platform\TailoredExport\Application\Query\Source\AssociationTypeSource;
 use Akeneo\Platform\TailoredExport\Application\Query\Source\AttributeSource;
 use Akeneo\Platform\TailoredExport\Application\Query\Source\PropertySource;
 use Akeneo\Platform\TailoredExport\Infrastructure\Validation\ChannelShouldExist;
@@ -51,14 +52,9 @@ class SourceConstraintProvider
                     ]),
                     new LocaleShouldBeActive()
                 ],
-                'type' => [
-                    new Choice(
-                        [
-                            'strict' => true,
-                            'choices' => [AttributeSource::TYPE, PropertySource::TYPE],
-                        ]
-                    )
-                ],
+                'type' =>  new Choice([
+                    'choices' => [AttributeSource::TYPE, PropertySource::TYPE, AssociationTypeSource::TYPE],
+                ]),
             ],
         ]);
     }

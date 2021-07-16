@@ -15,6 +15,7 @@ import translations from './translations.json';
 import {FakePIM} from './FakePIM';
 import {Attribute} from './feature/models';
 import {FetcherContext} from './feature/contexts';
+import {AssociationType} from './feature/models/AssociationType';
 
 const FetcherProvider: FC = ({children}) => {
   const router = useRouter();
@@ -36,6 +37,17 @@ const FetcherProvider: FC = ({children}) => {
             const route = router.generate('pim_enrich_channel_rest_index');
 
             return baseFetcher(route);
+          },
+        },
+        associationType: {
+          fetchByCodes: (codes: string[]): Promise<AssociationType[]> => {
+            const route = router.generate('pim_enrich_associationtype_rest_index', {
+              identifiers: codes.join(','),
+            });
+
+            return baseFetcher(route).then((associationTypes: AssociationType[]) =>
+              associationTypes.filter(associationType => codes.includes(associationType.code))
+            );
           },
         },
       }}

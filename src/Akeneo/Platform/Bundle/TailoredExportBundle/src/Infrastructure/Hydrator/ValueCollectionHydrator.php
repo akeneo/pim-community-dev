@@ -15,6 +15,7 @@ namespace Akeneo\Platform\TailoredExport\Infrastructure\Hydrator;
 
 use Akeneo\Pim\Enrichment\Component\Product\Model\ProductInterface;
 use Akeneo\Platform\TailoredExport\Application\Query\Column\ColumnCollection;
+use Akeneo\Platform\TailoredExport\Application\Query\Source\AssociationTypeSource;
 use Akeneo\Platform\TailoredExport\Application\Query\Source\AttributeSource;
 use Akeneo\Platform\TailoredExport\Application\Query\Source\PropertySource;
 use Akeneo\Platform\TailoredExport\Domain\ValueCollection;
@@ -42,6 +43,8 @@ class ValueCollectionHydrator
                 $valueCollection->add($value, $source->getCode(), $source->getChannel(), $source->getLocale());
             } elseif ($source instanceof PropertySource) {
                 $valueCollection->add($value, $source->getName(), null, null);
+            } elseif ($source instanceof AssociationTypeSource) {
+                $valueCollection->add($value, $source->getCode(), null, null);
             } else {
                 throw new \InvalidArgumentException('Unsupported source');
             }

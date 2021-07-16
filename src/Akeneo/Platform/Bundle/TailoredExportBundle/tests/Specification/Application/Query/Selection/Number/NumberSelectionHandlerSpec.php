@@ -23,14 +23,18 @@ class NumberSelectionHandlerSpec extends ObjectBehavior
 {
     public function it_applies_the_selection()
     {
-        $selection = new NumberSelection();
+        $selection = new NumberSelection(',');
         $value = new NumberValue('10');
+        $decimalValue = new NumberValue('10.89');
 
         $this->applySelection($selection, $value)
             ->shouldReturn('10');
+
+        $this->applySelection($selection, $decimalValue)
+            ->shouldReturn('10,89');
     }
 
-    public function it_does_not_applies_selection_on_not_supported_selections_and_values()
+    public function it_does_not_apply_selection_on_not_supported_selections_and_values()
     {
         $notSupportedSelection = new BooleanSelection();
         $notSupportedValue = new BooleanValue(true);
@@ -42,13 +46,13 @@ class NumberSelectionHandlerSpec extends ObjectBehavior
 
     public function it_supports_number_selection_with_number_value()
     {
-        $selection = new NumberSelection();
+        $selection = new NumberSelection(',');
         $value = new NumberValue('10');
 
         $this->supports($selection, $value)->shouldReturn(true);
     }
 
-    public function it_does_not_supports_other_selections_and_values()
+    public function it_does_not_support_other_selections_and_values()
     {
         $notSupportedSelection = new BooleanSelection();
         $notSupportedValue = new BooleanValue(true);

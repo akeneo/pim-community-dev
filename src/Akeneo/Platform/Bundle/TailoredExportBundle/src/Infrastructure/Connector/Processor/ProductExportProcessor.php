@@ -14,10 +14,11 @@ declare(strict_types=1);
 namespace Akeneo\Platform\TailoredExport\Infrastructure\Connector\Processor;
 
 use Akeneo\Pim\Enrichment\Component\Product\Model\ProductInterface;
-use Akeneo\Pim\Structure\Component\Query\PublicApi\AttributeType\Attribute;
+use Akeneo\Pim\Structure\Component\Query\PublicApi\Association\GetAssociationTypesInterface;
 use Akeneo\Pim\Structure\Component\Query\PublicApi\AttributeType\GetAttributes;
 use Akeneo\Platform\TailoredExport\Application\ProductMapper;
 use Akeneo\Platform\TailoredExport\Application\Query\Column\ColumnCollection;
+use Akeneo\Platform\TailoredExport\Application\Query\Source\AssociationTypeSource;
 use Akeneo\Platform\TailoredExport\Application\Query\Source\AttributeSource;
 use Akeneo\Platform\TailoredExport\Infrastructure\Hydrator\ColumnCollectionHydrator;
 use Akeneo\Platform\TailoredExport\Infrastructure\Hydrator\ValueCollectionHydrator;
@@ -28,6 +29,7 @@ use Akeneo\Tool\Component\Batch\Step\StepExecutionAwareInterface;
 class ProductExportProcessor implements ItemProcessorInterface, StepExecutionAwareInterface
 {
     private GetAttributes $getAttributes;
+    private GetAssociationTypesInterface $getAssociationTypes;
     private ValueCollectionHydrator $valueCollectionHydrator;
     private ColumnCollectionHydrator $columnCollectionHydrator;
     private ProductMapper $productMapper;
@@ -36,11 +38,13 @@ class ProductExportProcessor implements ItemProcessorInterface, StepExecutionAwa
 
     public function __construct(
         GetAttributes $getAttributes,
+        GetAssociationTypesInterface $getAssociationTypes,
         ValueCollectionHydrator $valueCollectionHydrator,
         ColumnCollectionHydrator $columnCollectionHydrator,
         ProductMapper $productMapper
     ) {
         $this->getAttributes = $getAttributes;
+        $this->getAssociationTypes = $getAssociationTypes;
         $this->valueCollectionHydrator = $valueCollectionHydrator;
         $this->columnCollectionHydrator = $columnCollectionHydrator;
         $this->productMapper = $productMapper;
@@ -78,7 +82,8 @@ class ProductExportProcessor implements ItemProcessorInterface, StepExecutionAwa
     {
         if (null === $this->columnCollection) {
             $indexedAttributes = $this->getIndexedAttributes($columns);
-            $this->columnCollection = $this->columnCollectionHydrator->hydrate($columns, $indexedAttributes);
+            $indexedAssociationTypes = $this->getIndexedAssociationTypes($columns);
+            $this->columnCollection = $this->columnCollectionHydrator->hydrate($columns, $indexedAttributes, $indexedAssociationTypes);
         }
 
         return $this->columnCollection;
@@ -96,5 +101,21 @@ class ProductExportProcessor implements ItemProcessorInterface, StepExecutionAwa
         }
 
         return array_filter($this->getAttributes->forCodes(array_unique($attributeCodes)));
+    }
+
+    private function getIndexedAssociationTypes(array $columns): array
+    {
+        $associationTypeCodes = [];
+        foreach ($columns as $column) {
+            foreach ($column['sources'] as $source) {
+                if (AssociationTypeSource::TYPE === $source['type']) {
+                    $associationTypeCodes[] = $source['code'];
+                }
+            }
+        }
+
+        $indexedAssociationTypes = $this->getAssociationTypes->forCodes(array_unique($associationTypeCodes));
+
+        return array_filter($indexedAssociationTypes);
     }
 }

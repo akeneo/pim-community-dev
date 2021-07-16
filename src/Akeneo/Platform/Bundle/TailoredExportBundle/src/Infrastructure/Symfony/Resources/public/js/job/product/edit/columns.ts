@@ -1,7 +1,13 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
 import BaseView = require('pimui/js/view/base');
-import {ColumnsTab, ColumnsTabProps, FetcherContext, Attribute} from '@akeneo-pim-enterprise/tailored-export';
+import {
+  ColumnsTab,
+  ColumnsTabProps,
+  FetcherContext,
+  Attribute,
+  AssociationType,
+} from '@akeneo-pim-enterprise/tailored-export';
 import {Channel, ValidationError} from '@akeneo-pim-community/shared';
 import {ThemeProvider} from 'styled-components';
 import {pimTheme} from 'akeneo-design-system';
@@ -81,6 +87,19 @@ class ColumnView extends BaseView {
                       fetcherRegistry
                         .getFetcher('channel')
                         .fetchAll()
+                        .then(resolve)
+                    );
+                  },
+                },
+                associationType: {
+                  fetchByCodes: (codes: string[]): Promise<AssociationType[]> => {
+                    return new Promise(resolve =>
+                      fetcherRegistry
+                        .getFetcher('association-type')
+                        .fetchByIdentifiers(codes)
+                        .then((associationTypes: AssociationType[]) =>
+                          associationTypes.filter(associationType => codes.includes(associationType.code))
+                        )
                         .then(resolve)
                     );
                   },

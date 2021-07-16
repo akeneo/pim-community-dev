@@ -49,7 +49,11 @@ akeneo.tailored_export:
         title: Once your first column is defined, you can select your first source.
       selection:
         title: Selection
-        collection_separator: Separator
+        collection_separator:
+          title: Separator
+          comma: Comma (,)
+          semicolon: Semicolon (;)
+          pipe: Pipe (|)
         type:
           amount: Amount
           currency: Currency
@@ -70,9 +74,24 @@ akeneo.tailored_export:
           unit_code: Unit code
           unit_label: Unit label
         price:
+          currency_code: Currency code
+          currency_label: Currency label
+          currency_locale: Currency locale
           information: For this attribute, you can export either the amount or the currency.
         file:
           information: For this attribute, you can export either the path, the filekey or the name.
+        decimal_separator:
+          title: Decimal separator
+          comma: Comma (,)
+          dot: Dot (.)
+          arabic_comma: Arabic decimal separator (٫)
+        quantified_association:
+          quantity: Quantity
+        association:
+          entity_type: Entity type
+          information:
+            locale: If the attribute used as label has a value per locale, you may select a specific locale.
+            channel: If the attribute used as label has a value per channel, you may select a specific channel.
       operation:
         replacement:
           title: Replace value
@@ -90,6 +109,7 @@ akeneo.tailored_export:
         should_be_unique: This column name already exists, please enter a new one.
     sources:
       max_source_count_reached: You have reached the limit of {{ limit }} sources, you can no longer add sources to your export.
+      association_type_should_exist: The association type {{ association_type_code }} does not exist
     locale:
       should_be_active: The {{ locale_code }} locale should be active.
     channel:

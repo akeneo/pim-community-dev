@@ -1,7 +1,15 @@
 import React from 'react';
 import {Field, Helper, SelectInput} from 'akeneo-design-system';
-import {Section, filterErrors, useTranslate, ValidationError} from '@akeneo-pim-community/shared';
+import {
+  Section,
+  filterErrors,
+  useTranslate,
+  getAllLocalesFromChannels,
+  ValidationError,
+} from '@akeneo-pim-community/shared';
 import {PriceCollectionSelection, availableSeparators, isPriceCollectionSeparator} from './model';
+import {LocaleDropdown} from '../../LocaleDropdown';
+import {useChannels} from '../../../hooks';
 
 type PriceCollectionSelectorProps = {
   selection: PriceCollectionSelection;
@@ -11,6 +19,9 @@ type PriceCollectionSelectorProps = {
 
 const PriceCollectionSelector = ({selection, validationErrors, onSelectionChange}: PriceCollectionSelectorProps) => {
   const translate = useTranslate();
+  const channels = useChannels();
+  const locales = getAllLocalesFromChannels(channels);
+  const localeErrors = filterErrors(validationErrors, '[locale]');
   const typeErrors = filterErrors(validationErrors, '[type]');
   const separatorErrors = filterErrors(validationErrors, '[separator]');
 
@@ -24,7 +35,9 @@ const PriceCollectionSelector = ({selection, validationErrors, onSelectionChange
           openLabel={translate('pim_common.open')}
           value={selection.type}
           onChange={type => {
-            if ('amount' === type || 'currency' === type) {
+            if ('currency_label' === type) {
+              onSelectionChange({...selection, type, locale: locales[0].code});
+            } else if ('currency_code' === type || 'amount' === type) {
               onSelectionChange({...selection, type});
             }
           }}
@@ -36,10 +49,16 @@ const PriceCollectionSelector = ({selection, validationErrors, onSelectionChange
             {translate('akeneo.tailored_export.column_details.sources.selection.type.amount')}
           </SelectInput.Option>
           <SelectInput.Option
-            title={translate('akeneo.tailored_export.column_details.sources.selection.type.currency')}
-            value="currency"
+            title={translate('akeneo.tailored_export.column_details.sources.selection.price.currency_code')}
+            value="currency_code"
           >
-            {translate('akeneo.tailored_export.column_details.sources.selection.type.currency')}
+            {translate('akeneo.tailored_export.column_details.sources.selection.price.currency_code')}
+          </SelectInput.Option>
+          <SelectInput.Option
+            title={translate('akeneo.tailored_export.column_details.sources.selection.price.currency_label')}
+            value="currency_label"
+          >
+            {translate('akeneo.tailored_export.column_details.sources.selection.price.currency_label')}
           </SelectInput.Option>
         </SelectInput>
         <Helper inline={true} level="info">
@@ -51,7 +70,16 @@ const PriceCollectionSelector = ({selection, validationErrors, onSelectionChange
           </Helper>
         ))}
       </Field>
-      <Field label={translate('akeneo.tailored_export.column_details.sources.selection.collection_separator')}>
+      {'currency_label' === selection.type && (
+        <LocaleDropdown
+          label={translate('akeneo.tailored_export.column_details.sources.selection.price.currency_locale')}
+          value={selection.locale}
+          validationErrors={localeErrors}
+          locales={locales}
+          onChange={updatedValue => onSelectionChange({...selection, locale: updatedValue})}
+        />
+      )}
+      <Field label={translate('akeneo.tailored_export.column_details.sources.selection.collection_separator.title')}>
         <SelectInput
           invalid={0 < separatorErrors.length}
           clearable={false}
@@ -64,9 +92,13 @@ const PriceCollectionSelector = ({selection, validationErrors, onSelectionChange
             }
           }}
         >
-          {availableSeparators.map(availableSeparator => (
-            <SelectInput.Option key={availableSeparator} title={availableSeparator} value={availableSeparator}>
-              {availableSeparator}
+          {Object.entries(availableSeparators).map(([separator, name]) => (
+            <SelectInput.Option
+              key={separator}
+              title={translate(`akeneo.tailored_export.column_details.sources.selection.collection_separator.${name}`)}
+              value={separator}
+            >
+              {translate(`akeneo.tailored_export.column_details.sources.selection.collection_separator.${name}`)}
             </SelectInput.Option>
           ))}
         </SelectInput>

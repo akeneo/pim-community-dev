@@ -1,6 +1,6 @@
 ## Bug fixes
 
-- PIM-9955: Handle duplicated code asset in the import batch. 
+- PIM-9955: Handle duplicated code asset in the import batch.
 - AOB-1277: Fix issue when helm remove disk too fast on delete instance
 - PIM-9742: Asset. Product link rules "Failed" without informations instead of sending Warning.
 - PIM-9675: Api search_after on asset issue for Serenity clients
@@ -22,7 +22,7 @@
 - PIM-9723: Fix Mysql memory size issue during ordering in SQL when getting category trees in product grid
 - PIM-9722: Fix the increasing amount of requests when editing attribute with options
 - PIM-9698: Fix product and product model deletion events when entity does not have any category
-- PIM-9710: Fix rule execution job status stuck in STARTED or STOPPING 
+- PIM-9710: Fix rule execution job status stuck in STARTED or STOPPING
 - PIM-9731: Fix proposals on boolean attributes when comparing an empty and a false value
 - PIM-9756: Use PNG format for Asset transformations targets
 - PIM-9760: Fix link assets to products job not translated in job tracker
@@ -43,14 +43,14 @@
 - PIM-9771: Fix the image preview when exporting a product as pdf
 - PIM-9822: Fix Error 500 after deleting a filterable asset family attribute
 - PIM-9825: Fix Assets not being properly reindexed after bulk edit
-- PIM-9835: Fix DQI loading in attribute edit page with a large amount of options 
+- PIM-9835: Fix DQI loading in attribute edit page with a large amount of options
 - PIM-9854: Fix message when deleting a user group used in a project
 - PIM-9853: Make the word "product" translatable
 - PIM-9872: Fix Columns button from published product grid when catalog contains many attributes
 - PIM-9866: Creates a warning whenever a cell contains a date in a reference entity xls import
 - PIM-9871: Fix Published Product Grid takes long time to load for high number of attribute usable in grid
 - PIM-9874: Fix slow SQL query when many assets are linked to products when getting products through API
-- PIM-9879: Fix notification link when a proposal on a product model was accepted or rejected 
+- PIM-9879: Fix notification link when a proposal on a product model was accepted or rejected
 - PIM-9897: Simultaneous different mass publish jobs create Deadlock issue
 - PIM-9912: Exception is not caught at the beginning of rules execution
 - PIM-9704: Disable possibility to have media link with unauthorized protocol for security propose
@@ -58,16 +58,19 @@
 - PIM-9927: Fix data_quality_insights_evaluations job when simple or multiselect product values are invalid
 - PIM-9937: Rule engine - Fix remove action for reference entity collection and asset collection attributes
 - PIM-9898: Assets: Fix "attribute as main media" and naming convention inconsistency
+- PIM-9965: Fix Asset Family attribute saving notification displaying twice
+- PIM-9963: Fix number of lines field missing on XLSX product export job
 
 ## Improvements
 
-- PIM-9619: Improve error message when creating a new project with a name already used 
+- PIM-9619: Improve error message when creating a new project with a name already used
 - PLG-45: Activate SSO authentication from a command CLI
 - RAC-509: Upgrade asset limit by asset family to 10 millions
 - PIM-9777: Fix error message when trying to delete an attribute linked to an entity
 - CPM-152: Use Symfony Messenger to handle job queue messages. Therefore the `akeneo_batch_job_execution_queue` table is removed.
   Depending on your environment, please check the associated `messenger.yml` to figure out how the messages are sent/received.
   The former command to launch job consumption is removed and replaced by:
+
 ```bash
 bin/console messenger:consume ui_job import_export_job data_maintenance_job
 ```
@@ -88,4 +91,4 @@ bin/console messenger:consume ui_job import_export_job data_maintenance_job
 - Change constructor of `Akeneo\Pim\Automation\RuleEngine\Component\Engine\ProductRuleSelector` to remove `ProductRepositoryInterface $repo`
 - Remove class `Akeneo/AssetManager/back/Domain/Event/AssetFamilyAssetsDeletedEvent`
 - Update `Akeneo/AssetManager/back/Domain/Repository/AssetIndexerInterface.php` to:
-    - remove the `removeByAssetFamilyIdentifier` method
+  - remove the `removeByAssetFamilyIdentifier` method

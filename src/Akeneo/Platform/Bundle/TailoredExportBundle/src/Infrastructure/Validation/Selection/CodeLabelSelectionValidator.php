@@ -31,18 +31,14 @@ class CodeLabelSelectionValidator extends ConstraintValidator
             new Collection(
                 [
                     'fields' => [
-                        'type' => [
-                            new NotBlank(),
-                            new Choice(
-                                [
-                                    'strict' => true,
-                                    'choices' => [
-                                        'code',
-                                        'label',
-                                    ],
-                                ]
-                            )
-                        ],
+                        'type' => new Choice(
+                            [
+                                'choices' => [
+                                    'code',
+                                    'label',
+                                ],
+                            ]
+                        ),
                         'locale' => new Optional([new Type(['type' => 'string'])]),
                     ],
                 ]

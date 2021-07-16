@@ -7,6 +7,7 @@ import {Attribute} from '../../../models/Attribute';
 import {FetcherContext} from '../../../contexts';
 import {getDefaultTextSource} from '../Text/model';
 import {CodeLabelSelection} from '../common/CodeLabelSelector';
+import {AssociationType} from '../../../models';
 
 const attribute = {
   code: 'text',
@@ -21,6 +22,7 @@ const attribute = {
 const fetchers = {
   attribute: {fetchByIdentifiers: (): Promise<Attribute[]> => Promise.resolve<Attribute[]>([])},
   channel: {fetchAll: (): Promise<Channel[]> => Promise.resolve([])},
+  associationType: {fetchByCodes: (): Promise<AssociationType[]> => Promise.resolve([])},
 };
 
 const renderWithProviders = async (node: ReactNode) =>

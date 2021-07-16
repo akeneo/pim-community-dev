@@ -8,10 +8,12 @@ import {FetcherContext} from '../../../contexts';
 import {getDefaultTextSource} from '../Text/model';
 import {getDefaultCategoriesSource} from './model';
 import {CodeLabelCollectionSelection} from '../common/CodeLabelCollectionSelector';
+import {AssociationType} from '../../../models';
 
 const fetchers = {
   attribute: {fetchByIdentifiers: (): Promise<Attribute[]> => Promise.resolve<Attribute[]>([])},
   channel: {fetchAll: (): Promise<Channel[]> => Promise.resolve([])},
+  associationType: {fetchByCodes: (): Promise<AssociationType[]> => Promise.resolve([])},
 };
 
 const renderWithProviders = async (node: ReactNode) =>

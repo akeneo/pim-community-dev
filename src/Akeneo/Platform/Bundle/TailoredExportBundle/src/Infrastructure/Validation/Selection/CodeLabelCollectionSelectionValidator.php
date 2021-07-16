@@ -39,26 +39,19 @@ class CodeLabelCollectionSelectionValidator extends ConstraintValidator
             new Collection(
                 [
                     'fields' => [
-                        'type' => [
-                            new NotBlank(),
-                            new Choice(
-                                [
-                                    'strict' => true,
-                                    'choices' => [
-                                        'code',
-                                        'label',
-                                    ],
-                                ]
-                            )
-                        ],
-                        'separator' => [
-                            new Choice(
-                                [
-                                    'strict' => true,
-                                    'choices' => $this->availableCollectionSeparator,
-                                ]
-                            )
-                        ],
+                        'type' => new Choice(
+                            [
+                                'choices' => [
+                                    'code',
+                                    'label',
+                                ],
+                            ]
+                        ),
+                        'separator' => new Choice(
+                            [
+                                'choices' => $this->availableCollectionSeparator,
+                            ]
+                        ),
                         'locale' => new Optional([new Type(['type' => 'string'])]),
                     ],
                 ]

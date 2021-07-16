@@ -158,7 +158,7 @@ pim:
   dqi:
     settings:
       enabled: true
-  defaultCatalog: src/Akeneo/Platform/Bundle/InstallerBundle/Resources/fixtures/minimal
+  defaultCatalog: vendor/akeneo/pim-community-dev/src/Akeneo/Platform/Bundle/InstallerBundle/Resources/fixtures/minimal
   defaultAdminUser:
     login: null # Fill me
     firstName: null # Fill me

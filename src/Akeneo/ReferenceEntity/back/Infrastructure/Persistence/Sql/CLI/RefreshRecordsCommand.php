@@ -90,6 +90,8 @@ class RefreshRecordsCommand extends Command
             'reference-entity refresh-records',
             ['duration' => $ruleRunDuration->format('%s.%fs'), 'refresh_records' => $totalRecords]
         );
+
+        return 0;
     }
 
     private function getTotalRecords(): int

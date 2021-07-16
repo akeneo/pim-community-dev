@@ -25,24 +25,24 @@ use Symfony\Component\Validator\Violation\ConstraintViolationBuilderInterface;
 
 class LocaleShouldBeActiveValidatorSpec extends ObjectBehavior
 {
-    function let(ChannelExistsWithLocaleInterface $channelExistsWithLocale, ExecutionContextInterface $context)
+    public function let(ChannelExistsWithLocaleInterface $channelExistsWithLocale, ExecutionContextInterface $context)
     {
         $this->beConstructedWith($channelExistsWithLocale);
         $this->initialize($context);
     }
 
-    function it_is_a_constraint_validator()
+    public function it_is_a_constraint_validator()
     {
         $this->shouldImplement(ConstraintValidatorInterface::class);
         $this->shouldHaveType(LocaleShouldBeActiveValidator::class);
     }
 
-    function it_throws_an_exception_with_a_wrong_constraint()
+    public function it_throws_an_exception_with_a_wrong_constraint()
     {
         $this->shouldThrow(\InvalidArgumentException::class)->during('validate', ['foo', new IsNull()]);
     }
 
-    function it_does_not_validate_a_non_string_value(
+    public function it_does_not_validate_a_non_string_value(
         ChannelExistsWithLocaleInterface $channelExistsWithLocale,
         ExecutionContextInterface $context
     ) {
@@ -52,7 +52,7 @@ class LocaleShouldBeActiveValidatorSpec extends ObjectBehavior
         $this->validate(new \stdClass(), new LocaleShouldBeActive());
     }
 
-    function it_does_not_add_a_violation_if_the_locale_is_active(
+    public function it_does_not_add_a_violation_if_the_locale_is_active(
         ChannelExistsWithLocaleInterface $channelExistsWithLocale,
         ExecutionContextInterface $context
     ) {
@@ -62,7 +62,7 @@ class LocaleShouldBeActiveValidatorSpec extends ObjectBehavior
         $this->validate('en_US', new LocaleShouldBeActive());
     }
 
-    function it_adds_a_violation_if_the_locale_is_not_active(
+    public function it_adds_a_violation_if_the_locale_is_not_active(
         ChannelExistsWithLocaleInterface $channelExistsWithLocale,
         ExecutionContextInterface $context,
         ConstraintViolationBuilderInterface $violationBuilder

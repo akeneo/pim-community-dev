@@ -14,7 +14,8 @@ declare(strict_types=1);
 namespace Akeneo\Platform\TailoredExport\Test\Acceptance\UseCases\Attribute;
 
 use Akeneo\Platform\TailoredExport\Application\Query\Selection\PriceCollection\PriceCollectionAmountSelection;
-use Akeneo\Platform\TailoredExport\Application\Query\Selection\PriceCollection\PriceCollectionCurrencySelection;
+use Akeneo\Platform\TailoredExport\Application\Query\Selection\PriceCollection\PriceCollectionCurrencyCodeSelection;
+use Akeneo\Platform\TailoredExport\Application\Query\Selection\PriceCollection\PriceCollectionCurrencyLabelSelection;
 use Akeneo\Platform\TailoredExport\Application\Query\Selection\SelectionInterface;
 use Akeneo\Platform\TailoredExport\Domain\SourceValue\Price;
 use Akeneo\Platform\TailoredExport\Domain\SourceValue\PriceCollectionValue;
@@ -47,9 +48,15 @@ final class HandlePriceCollectionValueTest extends AttributeTestCase
         return [
             [
                 'operations' => [],
-                'selection' => new PriceCollectionCurrencySelection(','),
+                'selection' => new PriceCollectionCurrencyCodeSelection(','),
                 'value' => new PriceCollectionValue([new Price('199', 'EUR'), new Price('100', 'USD')]),
                 'expected' => [self::TARGET_NAME => 'EUR,USD']
+            ],
+            [
+                'operations' => [],
+                'selection' => new PriceCollectionCurrencyLabelSelection(',', 'fr_FR'),
+                'value' => new PriceCollectionValue([new Price('199', 'EUR'), new Price('100', 'USD')]),
+                'expected' => [self::TARGET_NAME => 'euro,dollar des États-Unis']
             ],
             [
                 'operations' => [],

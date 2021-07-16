@@ -3,7 +3,7 @@ import {screen, act} from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
 import {renderWithProviders as baseRender, Channel} from '@akeneo-pim-community/shared';
 import {AttributeSourceConfigurator} from './AttributeSourceConfigurator';
-import {Attribute, Source} from '../../models';
+import {AssociationType, Attribute, Source} from '../../models';
 import {FetcherContext} from '../../contexts';
 
 const attributes = [
@@ -24,6 +24,13 @@ const attributes = [
     localizable: false,
     is_locale_specific: true,
     available_locales: ['de_DE'],
+  },
+  {
+    code: 'nothing',
+    type: 'pim_catalog_nothing',
+    labels: {},
+    scopable: false,
+    localizable: false,
   },
 ];
 
@@ -88,6 +95,7 @@ const fetchers = {
       Promise.resolve<Attribute[]>(attributes.filter(({code}) => identifiers.includes(code))),
   },
   channel: {fetchAll: (): Promise<Channel[]> => Promise.resolve<Channel[]>(channels)},
+  associationType: {fetchByCodes: (): Promise<AssociationType[]> => Promise.resolve([])},
 };
 
 const renderWithProviders = async (node: ReactNode) =>
@@ -247,4 +255,24 @@ test('it calls handler when locale is changed', async () => {
   userEvent.click(screen.getByText('English (United States)'));
 
   expect(handleSourceChange).toHaveBeenCalledWith({...source, locale: 'en_US'});
+});
+
+test('it renders nothing if the configurator is unknown', async () => {
+  const mockedConsole = jest.spyOn(console, 'error').mockImplementation();
+  const handleSourceChange = jest.fn();
+
+  await renderWithProviders(
+    <AttributeSourceConfigurator
+      source={{
+        code: 'nothing',
+        uuid: 'unique_id',
+        type: 'attribute',
+      }}
+      validationErrors={[]}
+      onSourceChange={handleSourceChange}
+    />
+  );
+
+  expect(mockedConsole).toHaveBeenCalledWith('No configurator found for "pim_catalog_nothing" attribute type');
+  mockedConsole.mockRestore();
 });

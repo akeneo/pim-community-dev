@@ -50,6 +50,7 @@ akeneo_data_quality_insights:
           messages:
             first_step:
               message1: You are having a hard time with attribute and option labels? How about going back to basics <a href="{{ link }}" target="_blank">here</a>?
+              message2: Do you need help with your attributes and attribute options? Take a look <a href="{{ link }}" target="_blank">here</a>!
             second_step:
               message1: Take a closer look at your attributes and options labels. Your products will look even better afterwards.
               message2: It looks like you got lost somewhere along the way! Some of your labels still need work.

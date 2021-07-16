@@ -3,7 +3,7 @@ import {act, screen} from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
 import {Channel, renderWithProviders as baseRender, ValidationError} from '@akeneo-pim-community/shared';
 import {PriceCollectionSelector} from './PriceCollectionSelector';
-import {Attribute} from '../../../models';
+import {AssociationType, Attribute} from '../../../models';
 import {FetcherContext} from '../../../contexts';
 
 const attributes: Attribute[] = [
@@ -49,6 +49,7 @@ const channels: Channel[] = [
 const fetchers = {
   attribute: {fetchByIdentifiers: (): Promise<Attribute[]> => Promise.resolve<Attribute[]>(attributes)},
   channel: {fetchAll: (): Promise<Channel[]> => Promise.resolve(channels)},
+  associationType: {fetchByCodes: (): Promise<AssociationType[]> => Promise.resolve([])},
 };
 
 const renderWithProviders = async (node: ReactNode) =>
@@ -81,9 +82,44 @@ test('it can select a currency selection type', async () => {
   );
 
   userEvent.click(screen.getByText('pim_common.type'));
-  userEvent.click(screen.getByTitle('akeneo.tailored_export.column_details.sources.selection.type.currency'));
+  userEvent.click(screen.getByTitle('akeneo.tailored_export.column_details.sources.selection.price.currency_code'));
 
-  expect(onSelectionChange).toHaveBeenCalledWith({type: 'currency', separator: ','});
+  expect(onSelectionChange).toHaveBeenCalledWith({type: 'currency_code', separator: ','});
+});
+
+test('it can select a currency label along with a default selected locale', async () => {
+  const onSelectionChange = jest.fn();
+
+  await renderWithProviders(
+    <PriceCollectionSelector
+      selection={{type: 'amount', separator: ','}}
+      validationErrors={[]}
+      onSelectionChange={onSelectionChange}
+    />
+  );
+
+  userEvent.click(screen.getByText('pim_common.type'));
+  userEvent.click(screen.getByTitle('akeneo.tailored_export.column_details.sources.selection.price.currency_label'));
+
+  expect(onSelectionChange).toHaveBeenCalledWith({type: 'currency_label', locale: 'en_US', separator: ','});
+});
+
+test('it can select a currency label locale', async () => {
+  const onSelectionChange = jest.fn();
+
+  await renderWithProviders(
+    <PriceCollectionSelector
+      selection={{type: 'currency_label', locale: 'en_US', separator: ','}}
+      validationErrors={[]}
+      onSelectionChange={onSelectionChange}
+    />
+  );
+
+  userEvent.click(screen.getByText('pim_common.type'));
+  userEvent.click(screen.getByText('akeneo.tailored_export.column_details.sources.selection.price.currency_locale'));
+  userEvent.click(screen.getByText('fr_FR'));
+
+  expect(onSelectionChange).toHaveBeenCalledWith({type: 'currency_label', locale: 'fr_FR', separator: ','});
 });
 
 test('it can select a price collection separator', async () => {
@@ -97,8 +133,12 @@ test('it can select a price collection separator', async () => {
     />
   );
 
-  userEvent.click(screen.getByText('akeneo.tailored_export.column_details.sources.selection.collection_separator'));
-  userEvent.click(screen.getByTitle(';'));
+  userEvent.click(
+    screen.getByText('akeneo.tailored_export.column_details.sources.selection.collection_separator.title')
+  );
+  userEvent.click(
+    screen.getByText('akeneo.tailored_export.column_details.sources.selection.collection_separator.semicolon')
+  );
 
   expect(onSelectionChange).toHaveBeenCalledWith({type: 'amount', separator: ';'});
 });
@@ -120,11 +160,18 @@ test('it displays validation errors', async () => {
       parameters: {},
       propertyPath: '[separator]',
     },
+    {
+      messageTemplate: 'error.key.locale',
+      invalidValue: '',
+      message: 'this is a locale error',
+      parameters: {},
+      propertyPath: '[locale]',
+    },
   ];
 
   await renderWithProviders(
     <PriceCollectionSelector
-      selection={{type: 'amount', separator: ','}}
+      selection={{type: 'currency_label', locale: 'en_US', separator: ','}}
       validationErrors={validationErrors}
       onSelectionChange={onSelectionChange}
     />
@@ -132,4 +179,5 @@ test('it displays validation errors', async () => {
 
   expect(screen.getByText('error.key.type')).toBeInTheDocument();
   expect(screen.getByText('error.key.separator')).toBeInTheDocument();
+  expect(screen.getByText('error.key.locale')).toBeInTheDocument();
 });
