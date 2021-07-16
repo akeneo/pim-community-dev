@@ -45,6 +45,8 @@ $rules = [
             'Akeneo\Pim\Enrichment\Component\Product\Query\GetProductModelLabelsInterface',
             'Akeneo\Pim\Enrichment\Component\Product\Model\ProductModelInterface',
             'Akeneo\Pim\Enrichment\Component\Product\Value\MetricValue',
+            'Akeneo\Pim\Enrichment\Component\Product\Model\GroupInterface',
+            'Akeneo\Pim\Enrichment\Component\Product\Query\GetProductLabelsInterface'
         ]
     )->in('Akeneo\Platform\TailoredExport'),
 ];

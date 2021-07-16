@@ -85,6 +85,8 @@ akeneo.tailored_export:
           comma: Comma (,)
           dot: Dot (.)
           arabic_comma: Arabic decimal separator (٫)
+        quantified_association:
+          quantity: Quantity
         association:
           entity_type: Entity type
           information:

@@ -35,7 +35,6 @@ const useAssociationType = (associationTypeCode: string): AssociationType | null
       setAssociationType(associationTypes[0] ?? null);
     });
   }, [associationTypeCode, associationTypeFetcher, isMounted]);
-
   return associationType?.code === associationTypeCode ? associationType : null;
 };
 

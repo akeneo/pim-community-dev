@@ -17,6 +17,8 @@ use Akeneo\Pim\Enrichment\Component\Product\Model\GroupInterface;
 use Akeneo\Pim\Enrichment\Component\Product\Model\ProductInterface;
 use Akeneo\Pim\Enrichment\Component\Product\Model\ProductModelInterface;
 use Akeneo\Platform\TailoredExport\Application\Query\Source\AssociationTypeSource;
+use Akeneo\Platform\TailoredExport\Domain\SourceValue\QuantifiedAssociation;
+use Akeneo\Platform\TailoredExport\Domain\SourceValue\QuantifiedAssociationsValue;
 use Akeneo\Platform\TailoredExport\Domain\SourceValue\SimpleAssociationsValue;
 use Akeneo\Platform\TailoredExport\Domain\SourceValueInterface;
 
@@ -26,7 +28,12 @@ final class AssociationTypeValueHydrator
     {
         $associationTypeCode = $source->getCode();
         if ($source->isQuantified()) {
-            throw new \LogicException('Unsupported quantified association type');
+            $normalizedQuantifiedAssociations = $product->getQuantifiedAssociations()->normalize()[$associationTypeCode] ?? [];
+
+            return new QuantifiedAssociationsValue(
+                $this->getProductQuantifiedAssociations($normalizedQuantifiedAssociations),
+                $this->getProductModelQuantifiedAssociations($normalizedQuantifiedAssociations)
+            );
         }
 
         return new SimpleAssociationsValue(
@@ -79,5 +86,47 @@ final class AssociationTypeValueHydrator
         }
 
         return $associatedGroupCodes;
+    }
+
+    /**
+     * @param array $normalizedQuantifiedAssociations = [
+     *     'products' => array<{identifier': string, "quantity": int}>,
+     *     'product_models' => array<{identifier': string, "quantity": int}>
+     * ]
+     *
+     * @return QuantifiedAssociation[]
+     */
+    private function getProductQuantifiedAssociations(array $normalizedQuantifiedAssociations): array
+    {
+        $normalizedProductQuantifiedAssociations = $normalizedQuantifiedAssociations['products']  ?? [];
+
+        return array_map(
+            static fn ($productQuantifiedAssociation) => new QuantifiedAssociation(
+                $productQuantifiedAssociation['identifier'],
+                $productQuantifiedAssociation['quantity']
+            ),
+            $normalizedProductQuantifiedAssociations
+        );
+    }
+
+    /**
+     * @param array $normalizedQuantifiedAssociations = [
+     *     'products' => array<{identifier': string, "quantity": int}>,
+     *     'product_models' => array<{identifier': string, "quantity": int}>
+     * ]
+     *
+     * @return QuantifiedAssociation[]
+     */
+    private function getProductModelQuantifiedAssociations(array $normalizedQuantifiedAssociations): array
+    {
+        $normalizedProductModelQuantifiedAssociations = $normalizedQuantifiedAssociations['product_models']  ?? [];
+
+        return array_map(
+            static fn ($productQuantifiedAssociation) => new QuantifiedAssociation(
+                $productQuantifiedAssociation['identifier'],
+                $productQuantifiedAssociation['quantity']
+            ),
+            $normalizedProductModelQuantifiedAssociations
+        );
     }
 }

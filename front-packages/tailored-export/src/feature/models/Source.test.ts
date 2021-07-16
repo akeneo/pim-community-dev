@@ -20,6 +20,7 @@ import {getDefaultReferenceEntitySource} from '../components/SourceDetails/Refer
 import {getDefaultSimpleSelectSource} from '../components/SourceDetails/SimpleSelect/model';
 import {getDefaultTextSource} from '../components/SourceDetails/Text/model';
 import {getDefaultSimpleAssociationTypeSource} from '../components/SourceDetails/SimpleAssociationType/model';
+import {getDefaultQuantifiedAssociationTypeSource} from '../components/SourceDetails/QuantifiedAssociationType/model';
 
 const getAttribute = (type: string): Attribute => ({
   code: 'nice_attribute',
@@ -97,5 +98,8 @@ test('it can get the default attribute source by attribute type', () => {
 test('it can get the default association type source by type', () => {
   expect(getDefaultAssociationTypeSource({code: 'UPSELL', labels: {}, is_quantified: false})).toEqual(
     getDefaultSimpleAssociationTypeSource({code: 'UPSELL', labels: {}, is_quantified: false})
+  );
+  expect(getDefaultAssociationTypeSource({code: 'PACK', labels: {}, is_quantified: true})).toEqual(
+    getDefaultQuantifiedAssociationTypeSource({code: 'PACK', labels: {}, is_quantified: true})
   );
 });

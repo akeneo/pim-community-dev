@@ -36,6 +36,10 @@ import {
   SimpleAssociationTypeSource,
 } from '../components/SourceDetails/SimpleAssociationType/model';
 import {AssociationType} from './AssociationType';
+import {
+  getDefaultQuantifiedAssociationTypeSource,
+  QuantifiedAssociationTypeSource,
+} from '../components/SourceDetails/QuantifiedAssociationType/model';
 
 type Source =
   | AssetCollectionSource
@@ -57,7 +61,8 @@ type Source =
   | ReferenceEntityCollectionSource
   | SimpleSelectSource
   | TextSource
-  | SimpleAssociationTypeSource;
+  | SimpleAssociationTypeSource
+  | QuantifiedAssociationTypeSource;
 
 const getDefaultPropertySource = (sourceCode: string): Source => {
   switch (sourceCode) {
@@ -118,6 +123,10 @@ const getDefaultAttributeSource = (
 };
 
 const getDefaultAssociationTypeSource = (associationType: AssociationType): Source => {
+  if (associationType.is_quantified) {
+    return getDefaultQuantifiedAssociationTypeSource(associationType);
+  }
+
   return getDefaultSimpleAssociationTypeSource(associationType);
 };
 
