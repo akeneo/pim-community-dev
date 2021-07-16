@@ -5,22 +5,21 @@ import {TextColumnValidation} from '../../models/TableConfiguration';
 type TableInputTextProps = {
   value?: string;
   onChange: (value: string) => void;
-  searchValue: string;
   validations: TextColumnValidation;
   inError?: boolean;
   readOnly?: boolean;
+  highlighted?: boolean;
 };
 
 const TableInputText: React.FC<TableInputTextProps> = ({
   value,
   onChange,
-  searchValue = '',
+  highlighted = false,
   validations,
   inError = false,
   readOnly = false,
   ...rest
 }) => {
-  const highlighted = searchValue.indexOf(`${value}`) >= 0;
   const isTooLong = typeof validations.max_length !== 'undefined' && (value || '').length > validations.max_length;
 
   return (

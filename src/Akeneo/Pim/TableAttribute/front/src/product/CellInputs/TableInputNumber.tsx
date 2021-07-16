@@ -5,7 +5,7 @@ import {NumberColumnValidation} from '../../models/TableConfiguration';
 type TableInputNumberProps = {
   value?: string;
   onChange: (value?: string) => void;
-  searchValue?: string;
+  highlighted?: boolean;
   validations: NumberColumnValidation;
   inError?: boolean;
   readOnly?: boolean;
@@ -14,13 +14,12 @@ type TableInputNumberProps = {
 const TableInputNumber: React.FC<TableInputNumberProps> = ({
   value,
   onChange,
-  searchValue = '',
+  highlighted = false,
   validations,
   inError = false,
   readOnly = false,
   ...rest
 }) => {
-  const highlighted = typeof value !== 'undefined' && searchValue.indexOf(value) >= 0;
   const isLessThanMin =
     typeof value !== 'undefined' && typeof validations.min !== 'undefined' && parseFloat(value) < validations.min;
   const isGreaterThanMax =

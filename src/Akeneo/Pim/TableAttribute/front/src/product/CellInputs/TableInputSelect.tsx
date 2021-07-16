@@ -12,6 +12,7 @@ type TableInputSelectProps = {
   options?: SelectOption[];
   inError?: boolean;
   readOnly?: boolean;
+  highlighted?: boolean;
 };
 
 const FakeInput = styled.div`
@@ -32,6 +33,7 @@ const TableInputSelect: React.FC<TableInputSelectProps> = ({
   options,
   readOnly = false,
   inError = false,
+  highlighted = false,
   ...rest
 }) => {
   const translate = useTranslate();
@@ -85,6 +87,7 @@ const TableInputSelect: React.FC<TableInputSelectProps> = ({
 
   return (
     <TableInput.Select
+      highlighted={highlighted}
       value={label}
       onClear={handleClear}
       clearLabel={translate('pim_common.clear')}

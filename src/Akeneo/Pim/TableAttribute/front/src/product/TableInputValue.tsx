@@ -2,6 +2,7 @@ import React from 'react';
 import {AddingValueIllustration, AkeneoThemedProps, getColor, getFontSize, TableInput} from 'akeneo-design-system';
 import {
   ColumnCode,
+  ColumnDefinition,
   NumberColumnValidation,
   SelectOption,
   SelectOptionCode,
@@ -95,17 +96,37 @@ const TableInputValue: React.FC<TableInputValueProps> = ({
   let filteredData = valueData;
   let valueDataPage = valueData.slice(currentPage * itemsPerPage, (currentPage + 1) * itemsPerPage);
 
-  const cellMatchSearch = (cellAsString: string) => {
-    return isSearching && cellAsString.indexOf(searchText) >= 0;
+  const cellMatchSearch = (cell: TableCell, columnDefinition: ColumnDefinition) => {
+    if (!isSearching || typeof cell === 'undefined') {
+      return false;
+    }
+
+    switch (columnDefinition.data_type) {
+      case 'text':
+        return (cell as string).toLowerCase().includes(searchText.toLowerCase());
+      case 'number':
+        return `${cell}`.toLowerCase().includes(searchText.toLowerCase());
+      case 'boolean':
+        return translate(cell ? 'pim_common.yes' : 'pim_common.no')
+          .toLowerCase()
+          .includes(searchText.toLowerCase());
+      case 'select': {
+        const option = (options[columnDefinition.code] || []).find(option => option.code === cell);
+        if (!option) {
+          return false;
+        }
+        return getLabel(option.labels, userContext.get('catalogLocale'), option.code)
+          .toLowerCase()
+          .includes(searchText.toLowerCase());
+      }
+    }
   };
 
   if (isSearching) {
     filteredData = valueData.filter(row => {
-      return tableConfiguration
-        .map(columnDefinition => columnDefinition.code)
-        .some(columnCode => {
-          return cellMatchSearch(`${row[columnCode]}`);
-        });
+      return tableConfiguration.some(columnDefinition => {
+        return cellMatchSearch(row[columnDefinition.code], columnDefinition);
+      });
     });
     valueDataPage = filteredData.slice(0, itemsPerPage);
   }
@@ -158,6 +179,7 @@ const TableInputValue: React.FC<TableInputValueProps> = ({
               <TableInput.Row key={row['unique id']}>
                 <TableInput.Cell
                   rowTitle={true}
+                  highlighted={cellMatchSearch(row[firstColumn.code], firstColumn)}
                   inError={
                     isInErrorFromBackend(row['unique id'], firstColumn.code) ||
                     selectOptionLabels[`${firstColumn.code}-${row[firstColumn.code]}`] === null
@@ -178,7 +200,7 @@ const TableInputValue: React.FC<TableInputValueProps> = ({
                     <TableInput.Cell key={`${row['unique id']}-${columnCode}`}>
                       {'number' === columnType && (
                         <TableInputNumber
-                          searchValue={searchText}
+                          highlighted={cellMatchSearch(row[columnCode], columnDefinition)}
                           value={row[columnCode] as string | undefined}
                           onChange={value => handleChange(row['unique id'], columnCode, value)}
                           data-testid={`input-${row['unique id']}-${columnCode}`}
@@ -189,7 +211,7 @@ const TableInputValue: React.FC<TableInputValueProps> = ({
                       )}
                       {'text' === columnType && (
                         <TableInputText
-                          searchValue={searchText}
+                          highlighted={cellMatchSearch(row[columnCode], columnDefinition)}
                           value={row[columnCode] as string | undefined}
                           onChange={(value: string) => handleChange(row['unique id'], columnCode, value)}
                           data-testid={`input-${row['unique id']}-${columnCode}`}
@@ -200,7 +222,7 @@ const TableInputValue: React.FC<TableInputValueProps> = ({
                       )}
                       {'select' === columnType && (
                         <TableInputSelect
-                          // TODO Highlight
+                          highlighted={cellMatchSearch(row[columnCode], columnDefinition)}
                           value={row[columnCode] as SelectOptionCode | undefined}
                           onChange={(value: SelectOptionCode | undefined) =>
                             handleChange(row['unique id'], columnCode, value)
@@ -213,7 +235,7 @@ const TableInputValue: React.FC<TableInputValueProps> = ({
                       )}
                       {'boolean' === columnType && (
                         <TableInput.Boolean
-                          // TODO Highlight
+                          highlighted={cellMatchSearch(row[columnCode], columnDefinition)}
                           value={typeof row[columnCode] === 'undefined' ? null : (row[columnCode] as boolean | null)}
                           onChange={(value: boolean | null) =>
                             handleChange(row['unique id'], columnCode, null === value ? undefined : value)
