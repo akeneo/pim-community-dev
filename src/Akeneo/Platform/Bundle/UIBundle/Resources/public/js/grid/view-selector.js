@@ -292,7 +292,7 @@ define([
 
       deferred.then(
         function (initView) {
-          var datagridState = DatagridState.get(this.gridAlias, ['filters', 'columns']);
+          var datagridState = DatagridState.get(this.gridAlias, ['filters', 'columns', 'text']);
 
           this.initialView = $.extend(true, {}, initView);
           this.currentView = $.extend(true, {}, initView);
@@ -300,6 +300,7 @@ define([
           if (0 !== this.initialView.id && datagridState.columns !== null) {
             this.currentView.filters = datagridState.filters;
             this.currentView.columns = datagridState.columns.split(',');
+            this.currentView.text = datagridState.text;
           }
 
           DatagridState.set(this.gridAlias, {initialViewState: this.initialView.filters});
@@ -380,7 +381,7 @@ define([
      * It allows this selector to react to new filters / columns etc..
      */
     onGridStateChange: function () {
-      var datagridState = DatagridState.get(this.gridAlias, ['filters', 'columns']);
+      var datagridState = DatagridState.get(this.gridAlias, ['filters', 'columns', 'text']);
       if (null === datagridState.columns) {
         datagridState.columns = '';
       }
@@ -446,6 +447,7 @@ define([
     selectView: function (view) {
       DatagridState.set(this.gridAlias, {
         view: view.id,
+        text: view.text,
         filters: view.filters,
         columns: view.columns.join(','),
       });
