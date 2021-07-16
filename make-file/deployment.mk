@@ -40,6 +40,7 @@ USE_ONBOARDER_CATALOG ?= false
 UPGRADE_STEP_2 ?= false
 PIM_SRC_DIR_GE ?=
 MAIN_TF_TEMPLATE ?= serenity_instance
+CYPRESS_baseUrl ?= https://$(INSTANCE_NAME).$(GOOGLE_MANAGED_ZONE_DNS)
 
 ifeq ($(TYPE),grth)
 	PIM_SRC_DIR_GE := gcs::https://www.googleapis.com/storage/v1/akecld-terraform-modules/$(GRTH_BUCKET)/$(IMAGE_TAG)
@@ -336,7 +337,7 @@ test-prod:
 
 .PHONY: smoke-tests
 smoke-tests: #Doc: Run Cypress smoke tests on deployed env
-	CYPRESS_baseUrl=https://$(INSTANCE_NAME).$(GOOGLE_MANAGED_ZONE_DNS) PIM_CONTEXT=test make end-to-end-front
+	CYPRESS_baseUrl=$(CYPRESS_baseUrl) PIM_CONTEXT=test make end-to-end-front
 
 .PHONY: release
 release:

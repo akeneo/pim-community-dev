@@ -1,0 +1,28 @@
+apiVersion: v1
+kind: Pod
+metadata:
+  name: "{{ .Release.Name }}-svc-test"
+  labels:
+    app.kubernetes.io/component: svc-test
+    {{- include "pim.standardLabels" . | indent 4 }}
+    {{- include "pim.extraLabels" . | indent 4 }}
+  annotations:
+    "helm.sh/hook": test
+spec:
+  containers:
+  - name: svc-test
+    image: debian:buster-slim
+    env:
+      - name: TARGET
+        value: https://{{ required ".Values.common.pimMasterDomain" .Values.common.pimMasterDomain }}/monitoring/services_status
+      - name: MONITORING_AUTHENTICATION_TOKEN
+        value: "X-AUTH-TOKEN: {{ required ".Values.pim.monitoring.authenticationToken" .Values.pim.monitoring.authenticationToken}}"
+    command: ["bash", "/scripts-dir/test-svc.sh"]
+    volumeMounts:
+    - name: pim-scripts
+      mountPath: /scripts-dir
+  restartPolicy: Never
+  volumes:
+  - name: pim-scripts
+    configMap:
+      name:  pim-scripts

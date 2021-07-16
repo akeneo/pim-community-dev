@@ -1,0 +1,5 @@
+{
+    "require": {
+        "jmleroux/circleci-php-client": "^3.5"
+    }
+}

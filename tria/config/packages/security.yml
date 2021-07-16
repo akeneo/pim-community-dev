@@ -1,0 +1,82 @@
+security:
+    providers:
+        chain_provider:
+            chain:
+                providers: [pim_user]
+        pim_user:
+            id: pim_user.provider.user
+        pim_user_api:
+            id: pim_user.provider.user_api
+
+    encoders:
+        Akeneo\UserManagement\Component\Model\User: sha512
+        Symfony\Component\Security\Core\User\User: plaintext
+
+    firewalls:
+        dev:
+            pattern:                        ^/(_(profiler|wdt)|css|images|js)/
+            security:                       false
+
+        install:
+            pattern:                        ^/installer
+            security:                       false
+            anonymous:                      true
+
+        login:
+            pattern:                        ^/user/(login|reset-request|send-email|check-email)$
+            provider:                       chain_provider
+            anonymous:                      true
+            logout_on_user_change:          true
+
+        monitoring:
+            pattern:                        ^/monitoring/services_status
+            security:                       false
+
+        reset_password:
+            pattern:                        ^/user/reset/*
+            provider:                       chain_provider
+            anonymous:                      true
+            logout_on_user_change:          true
+
+        oauth_token:
+            pattern:                        ^/api/oauth/v1/token
+            security:                       false
+
+        api_index:
+            pattern:                        ^/api/rest/v1$
+            security:                       false
+
+        api:
+            pattern:                        ^/api
+            fos_oauth:                      true
+            stateless:                      true
+            access_denied_handler:          pim_api.security.access_denied_handler
+            provider:                       pim_user_api
+
+        main:
+            pattern:                        ^/
+            provider:                       chain_provider
+            form_login:
+                csrf_token_generator:       security.csrf.token_manager
+                check_path:                 pim_user_security_check
+                login_path:                 pim_user_security_login
+                use_forward:                true
+            logout:
+                path:                       pim_user_security_logout
+            remember_me:
+                secret:                     "%env(APP_SECRET)%"
+                name:                       BAPRM
+                lifetime:                   1209600   # stay logged for two weeks
+            anonymous:                      false
+            logout_on_user_change:          true
+
+    access_control:
+        - { path: ^/admin/, role: ROLE_ADMIN }
+        - { path: ^/api/rest/v1$, role: IS_AUTHENTICATED_ANONYMOUSLY }
+        - { path: ^/api/, role: pim_api_overall_access }
+
+acl:
+    connection: default
+    cache:
+        id: security.acl.cache.doctrine
+        prefix: sf2_acl_

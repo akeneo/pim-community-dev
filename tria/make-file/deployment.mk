@@ -1,0 +1,292 @@
+# Adapted CircleCi Jobs (CI=true) OR manual run from release dir
+
+# Force bash compatibility (Instead of user default shell)
+SHELL := /bin/bash
+
+INSTANCE_NAME_PREFIX ?= pimci
+INSTANCE_NAME ?=  $(INSTANCE_NAME_PREFIX)-$(IMAGE_TAG_SHORTED)
+TYPE ?= tria
+PFID ?= $(TYPE)-$(INSTANCE_NAME)
+CI ?= false
+ACTIVATE_MONITORING ?= true
+
+ENV_NAME ?= dev
+TEST_AUTO ?= false
+PRODUCT_REFERENCE_TYPE ?= pim_trial_instance
+PRODUCT_REFERENCE_CODE ?= trial_$(ENV_NAME)
+GOOGLE_PROJECT_ID ?= akecld-saas-$(ENV_NAME)
+GOOGLE_CLUSTER_REGION ?= europe-west3
+GOOGLE_CLUSTER_ZONE ?= europe-west3-a
+GOOGLE_CLUSTER_NAME ?= $(GOOGLE_CLUSTER_ZONE)
+GOOGLE_MANAGED_ZONE_DNS ?= $(ENV_NAME).cloud.akeneo.com
+GOOGLE_MANAGED_ZONE_NAME ?= $(ENV_NAME)-cloud-akeneo-com
+CLUSTER_DNS_NAME ?= europe-west3-a-akecld-saas-$(ENV_NAME).$(ENV_NAME).cloud.akeneo.com.
+GOOGLE_STORAGE_lOCATION ?= eu
+REGISTRY ?= eu.gcr.io
+HELM_REPO_PROD := akeneo-charts
+DEPLOYMENTS_INSTANCES_DIR ?= $(PWD)/deployments/instances
+CLOUD_CUSTOMERS_DEV_DIR ?= /root/cloud-customers-dev
+OPERATIONS_TOOLS_DIR ?= /root/operation-tools
+OPERATIONS_TOOLS_BRANCH ?= master
+TRIA_BUCKET ?= trial-edition-dev
+INSTANCE_DIR ?= $(DEPLOYMENTS_INSTANCES_DIR)/$(PFID)
+MYSQL_DISK_SIZE ?= 10
+MYSQL_DISK_DESCRIPTION ?=
+MYSQL_SOURCE_SNAPSHOT ?=
+MAX_DNS_TEST_TIMEOUT ?= 300
+ONBOARDER_PIM_GEN_FILE ?=
+WITH_SUPPLIERS ?= false
+USE_ONBOARDER_CATALOG ?= false
+UPGRADE_STEP_2 ?= false
+PIM_SRC_DIR_FT ?= gcs::https://www.googleapis.com/storage/v1/akecld-terraform-modules/$(TRIA_BUCKET)/$(IMAGE_TAG)/
+MAIN_TF_TEMPLATE ?= pim_trial_instance
+
+ifeq ($(CI),true)
+	TF_INPUT_FALSE ?= -input=false
+	TF_AUTO_APPROVE ?= -auto-approve
+else
+	TF_INPUT_FALSE ?=
+	TF_AUTOAPPROVE ?=
+	# considering we use Makefile from the root of the project repo
+endif
+
+PIM_SRC_DIR ?= $(PWD)
+#Vars for exec_in
+executor ?= kubectl
+migrate ?= no
+
+.PHONY: deploy-instance
+deploy-instance: create-ci-release-files deploy
+
+.PHONY: delete-instance
+delete-instance: create-ci-release-files delete
+
+.PHONY: deploy
+deploy: terraform-deploy
+	@echo "#######################################################################################"
+	@echo ""
+	@echo "This environment is available at https://$(INSTANCE_NAME).$(GOOGLE_MANAGED_ZONE_DNS) :)"
+	@echo ""
+	@echo "K9s direct access command line: k9s -n $(PFID) -c pods"
+	@echo ""
+	@echo "#######################################################################################"
+
+.PHONY: terraform-deploy
+terraform-deploy: terraform-init terraform-apply
+
+$(INSTANCE_DIR):
+	mkdir -p $(INSTANCE_DIR)
+
+.PHONY: terraform-init
+terraform-init: $(INSTANCE_DIR)
+ifeq ($(UPGRADE_STEP_2),true)
+		@echo "We are in the second step of update"
+		cd $(INSTANCE_DIR) && STEP='PRE_INIT' INSTANCE_NAME=$(INSTANCE_NAME) bash $(PWD)/deployments/automation/upgrade.sh
+endif
+	cd $(INSTANCE_DIR) && cat main.tf.json
+	cd $(INSTANCE_DIR) && terraform init $(TF_INPUT_FALSE) -upgrade
+
+.PHONY: terraform-plan
+terraform-plan: terraform-init
+	cd $(INSTANCE_DIR) && terraform plan
+
+.PHONY: terraform-apply
+terraform-apply:
+ifeq ($(UPGRADE_STEP_2),true)
+		@echo "We are in the second step of update"
+		cd $(INSTANCE_DIR) && STEP='PRE_APPLY' INSTANCE_NAME=$(INSTANCE_NAME) bash $(PWD)/deployments/automation/upgrade.sh
+endif
+	cd $(INSTANCE_DIR) && terraform plan '-out=upgrades.tfplan' $(TF_INPUT_FALSE) -compact-warnings
+	cd $(INSTANCE_DIR) && terraform apply $(TF_INPUT_FALSE) $(TF_AUTO_APPROVE) upgrades.tfplan
+
+.PHONY: prepare-infrastructure-artifacts
+prepare-infrastructure-artifacts: render-helm-templates
+	mkdir -p ~/artifacts/infra
+	cp -raT $(DEPLOYMENTS_INSTANCES_DIR) ~/artifacts/infra/ || true
+	cp -raT $(PIM_SRC_DIR)/deployments/terraform/pim/templates/ ~/artifacts/infra/ || true
+	rm -Rf ~/artifacts/infra/**/.terraform || true
+	rm -Rf ~/artifacts/infra/**/.kubeconfig || true
+
+.PHONY: render-helm-templates
+render-helm-templates:
+	cd $(INSTANCE_DIR) ;\
+	mkdir -p helm-render ;\
+	helm3 template .terraform/modules/pim/pim -f tf-helm-pim-values.yaml -f values.yaml -n $(PFID) --output-dir helm-render || true
+
+.PHONY: delete
+delete:
+	if [ -f "$(INSTANCE_DIR)/main.tf.json" ]; then \
+		cd $(INSTANCE_DIR) ;\
+		echo "Destroying $(INSTANCE_DIR) ..." ;\
+		ENV_NAME=$(ENV_NAME) TYPE=$(TYPE) INSTANCE_NAME=$(INSTANCE_NAME) TF_INPUT_FALSE=$(TF_INPUT_FALSE) TF_AUTO_APPROVE=$(TF_AUTO_APPROVE) bash $(PWD)/deployments/bin/delete_instance.sh ;\
+	fi
+
+.PHONY: create-ci-release-files
+create-ci-release-files: create-ci-values create-pim-main-tf
+
+.PHONY: create-ci-values
+create-ci-values: $(INSTANCE_DIR)
+	@echo "=========================================================="
+	@echo "Deploy namespace : $(PFID)"
+	@echo " - with instance name prefix : $(INSTANCE_NAME_PREFIX)"
+	@echo " - with image tag : $(IMAGE_TAG)"
+	@echo " - on cluster : $(GOOGLE_PROJECT_ID)/$(GOOGLE_CLUSTER_ZONE)"
+	@echo " - URL : $(INSTANCE_NAME).$(GOOGLE_MANAGED_ZONE_DNS)"
+	@echo "=========================================================="
+	if [ ! -f $(INSTANCE_DIR)/values.yaml ]; then cp $(PIM_SRC_DIR)/deployments/config/ci-values.yaml $(INSTANCE_DIR)/values.yaml; fi
+ifeq ($(INSTANCE_NAME_PREFIX),pimup)
+	yq w -i $(INSTANCE_DIR)/values.yaml pim.hook.installPim.enabled true
+	yq w -i $(INSTANCE_DIR)/values.yaml pim.hook.upgradePim.enabled true
+	yq w -i $(INSTANCE_DIR)/values.yaml pim.hook.upgradeES.enabled true
+endif
+ifeq ($(INSTANCE_NAME_PREFIX),pimci-pr)
+	sed 's/^\(FLAG_.*_ENABLED\).*/  \1: "1"/g' .env | (grep "FLAG_.*_ENABLED" | grep -v "ONBOARDER" | grep -v "FREE_TRIAL" || true) >> $(PIM_SRC_DIR)/deployments/terraform/pim/templates/env-configmap.yaml
+endif
+
+.PHONY: get_mysql_parameters_disk
+get_mysql_parameters_disk:
+	MYSQL_DISK_SIZE=`gcloud compute disks describe --zone=$(GOOGLE_COMPUTE_ZONE) --project=$(GOOGLE_PROJECT_ID) $(PFID)-mysql --format=json |jq -r '.sizeGb'`; \
+	MYSQL_SOURCE_SNAPSHOT=`gcloud compute disks describe --zone=$(GOOGLE_COMPUTE_ZONE) --project=$(GOOGLE_PROJECT_ID) $(PFID)-mysql --format=json |jq -r '.sourceSnapshot'`; \
+	yq w -j -P -i $(INSTANCE_DIR)/main.tf.json 'module.pim.mysql_source_snapshot' "$${MYSQL_SOURCE_SNAPSHOT}"; \
+	yq w -j -P -i $(INSTANCE_DIR)/main.tf.json 'module.pim.mysql_disk_size' "$${MYSQL_DISK_SIZE}"; \
+	yq w -j -P -i $(INSTANCE_DIR)/main.tf.json 'module.pim.mysql_disk_name' "$(PFID)-mysql";
+
+.PHONY: create-pim-main-tf
+create-pim-main-tf: $(INSTANCE_DIR)
+ifeq ($(ACTIVATE_MONITORING),true)
+	jq -s '.[0] * .[1]' $(PWD)/deployments/config/$(MAIN_TF_TEMPLATE).tpl.tf.json  $(PWD)/deployments/config/$(MAIN_TF_TEMPLATE)_monitoring.tpl.tf.json  > $(INSTANCE_DIR)/$(MAIN_TF_TEMPLATE).tpl.tf.json.tmp
+else
+	cat $(PWD)/deployments/config/$(MAIN_TF_TEMPLATE).tpl.tf.json > $(INSTANCE_DIR)/$(MAIN_TF_TEMPLATE).tpl.tf.json.tmp
+	@echo "-- WARNING: MONITORING is not activated on this PR. If your PR impact monitoring, please activate it."
+	@echo "To activate it show 'deactivate_monitoring' and 'ACTIVATE_MONITORING' on '.CircleCi/config.yml'"
+endif
+
+	CLUSTER_DNS_NAME=$(CLUSTER_DNS_NAME) \
+	GOOGLE_CLUSTER_ZONE=$(GOOGLE_CLUSTER_ZONE) \
+	GOOGLE_MANAGED_ZONE_DNS=$(GOOGLE_MANAGED_ZONE_DNS) \
+	GOOGLE_MANAGED_ZONE_NAME=$(GOOGLE_MANAGED_ZONE_NAME) \
+	GOOGLE_PROJECT_ID=$(GOOGLE_PROJECT_ID) \
+	IMAGE_TAG=$(IMAGE_TAG) \
+	INSTANCE_NAME=$(INSTANCE_NAME) \
+	PFID=$(PFID) \
+	PIM_SRC_DIR_FT=$(PIM_SRC_DIR_FT) \
+	PIM_SRC_DIR=$(PIM_SRC_DIR) \
+	TYPE=$(TYPE) \
+	PRODUCT_REFERENCE_TYPE=$(PRODUCT_REFERENCE_TYPE) \
+	PRODUCT_REFERENCE_CODE=$(PRODUCT_REFERENCE_CODE) \
+	MYSQL_DISK_SIZE=$(MYSQL_DISK_SIZE) \
+	MYSQL_DISK_NAME=$(PFID)-mysql \
+	MYSQL_SOURCE_SNAPSHOT=$(MYSQL_SOURCE_SNAPSHOT) \
+	MAILGUN_API_KEY=${MAILGUN_API_KEY} \
+	envsubst < $(INSTANCE_DIR)/$(MAIN_TF_TEMPLATE).tpl.tf.json.tmp > $(INSTANCE_DIR)/main.tf.json ;\
+	rm -rf $(INSTANCE_DIR)/$(MAIN_TF_TEMPLATE).tpl.tf.json.tmp
+
+.PHONY: change-terraform-source-version
+change-terraform-source-version: #Doc: change terraform source to deploy infra with a custom git version
+	yq w -j -P -i ${INSTANCE_DIR}/main.tf.json 'module.pim.source' "gcs::https://www.googleapis.com/storage/v1/akecld-terraform-modules/$(TRIA_BUCKET)/$(IMAGE_TAG)//deployments/terraform"
+ifeq ($(ACTIVATE_MONITORING),true)
+	yq w -j -P -i ${INSTANCE_DIR}/main.tf.json 'module.pim-monitoring.source' "gcs::https://www.googleapis.com/storage/v1/akecld-terraform-modules/$(TRIA_BUCKET)/$(IMAGE_TAG)//deployments/terraform/monitoring"
+endif
+
+.PHONY: commit-instance
+commit-instance:
+	git clone git@github.com:akeneo/cloud-customers-dev.git $(CLOUD_CUSTOMERS_DEV_DIR)
+	mkdir -p $(DEPLOYMENTS_INSTANCES_DIR)/$(PFID)
+	IMAGE_TAG=$(IMAGE_TAG) $(MAKE) create-ci-release-files
+	IMAGE_TAG=$(IMAGE_TAG) $(MAKE) change-terraform-source-version
+	GIT_SSH_COMMAND='ssh -i ~/.ssh/id_rsa_1f25f8bb595295f6e2f2972f30d4e966 -o UserKnownHostsFile=~/.ssh/known_hosts -o IdentitiesOnly=Yes' \
+	make deploy
+	git config --global user.email "pim_ci@akeneo.com"
+	git config --global user.name "pim_ci_instance_creation"
+	cd $(CLOUD_CUSTOMERS_DEV_DIR) && git add $(DEPLOYMENTS_INSTANCES_DIR)/$(PFID)
+	(cd $(CLOUD_CUSTOMERS_DEV_DIR) && git pull --no-commit && git commit -am "Created instance $(PFID)" && git push) || \
+	bash $(PWD)/deployments/bin/pull_push_loop.sh $(CLOUD_CUSTOMERS_DEV_DIR)
+
+.PHONY: uncommit-instance
+uncommit-instance:
+	rm -rf $(CLOUD_CUSTOMERS_DEV_DIR)/*
+	git clone git@cloud-customers-dev:akeneo/cloud-customers-dev.git $(CLOUD_CUSTOMERS_DEV_DIR)
+	make delete
+	rm -rf $(DEPLOYMENTS_INSTANCES_DIR)/$(PFID)
+	git config --global user.email "pim_ci@akeneo.com"
+	git config --global user.name "pim_ci_instance_deletion"
+	cd $(CLOUD_CUSTOMERS_DEV_DIR) && git add $(DEPLOYMENTS_INSTANCES_DIR)/$(PFID)
+	(cd $(CLOUD_CUSTOMERS_DEV_DIR) && git pull --no-commit && git commit -am "Deleted instance $(PFID)" && git push) || \
+	bash $(PWD)/deployments/bin/pull_push_loop.sh $(CLOUD_CUSTOMERS_DEV_DIR)
+
+.PHONY: upgrade-instance
+upgrade-instance:
+	git clone git@operation-tools:akeneo/operation-tools.git $(OPERATIONS_TOOLS_DIR)
+	cd $(OPERATIONS_TOOLS_DIR) && git checkout $(OPERATIONS_TOOLS_BRANCH)
+	cp $(OPERATIONS_TOOLS_DIR)/jenkins.yaml /usr/share/jenkins/ref/casc/jenkins.yaml
+	mkdir -p /workspace && cp ${HOME}/gcloud-service-key.json /workspace/pim_ci.json
+	JENKINS_LIBS_SSH_PRIVATE_FILE_PATH=~/.ssh/id_rsa_2c6118646e36aa7476fd5e6b735923c6 \
+	PERRYBOT_SSH_PRIVATE_FILE_PATH=~/.ssh/id_rsa_5f7bb3cbd43de2c2365f9db487865f67 \
+	DEVTEST=true \
+	DEVTEST_INSTANCE=$(PFID) \
+	JENKINSFILE_PATH=$(OPERATIONS_TOOLS_DIR)/saas-instances-upgrade.Jenkinsfile \
+	/app/bin/jenkinsfile-runner-launcher -ns -u \
+	-a "batchMode=false" \
+	-a "skipShutdown=false" \
+	-a "autoApply=true" \
+	-a "release=$(IMAGE_TAG)" \
+	-a "productTypePrefixFilter=$(TYPE)" \
+	-a "googleProjectIdFilter=akecld-saas-dev" \
+	-a "googleCloudZoneFilter=*" \
+	-a "forceUpdate=false"
+
+.PHONY: test-prod
+test-prod:
+	export KUBECONFIG=$(INSTANCE_DIR)/.kubeconfig
+	FN_1=5;	FN_2=0;\
+	while ! host $(INSTANCE_NAME).$(GOOGLE_MANAGED_ZONE_DNS); do \
+			TIME_TO_SLEEP=`expr $${FN_1} + $${FN_2}`; FN_1=$${FN_2}; FN_2=$${TIME_TO_SLEEP}; \
+			if [ $${TIME_TO_SLEEP} -gt $(MAX_DNS_TEST_TIMEOUT) ]; then echo 'DNS resolution issue on "$(INSTANCE_NAME).$(GOOGLE_MANAGED_ZONE_DNS)"';exit 1; fi; \
+		echo 'Waiting for DNS "$(INSTANCE_NAME).$(GOOGLE_MANAGED_ZONE_DNS)" to be ready'; sleep $${TIME_TO_SLEEP} ; \
+	done
+	helm3 test ${PFID} -n ${PFID} --debug --logs
+
+.PHONY: smoke-tests
+smoke-tests: #Doc: Run Cypress smoke tests on deployed env
+	CYPRESS_baseUrl=https://$(INSTANCE_NAME).$(GOOGLE_MANAGED_ZONE_DNS) PIM_CONTEXT=test make end-to-end-front
+
+.PHONY: release
+release:
+# For srnt
+# ifeq ($(CI),true)
+# 	git config user.name "Michel Tag"
+# 	git config user.email "akeneo-ci@akeneo.com"
+# 	git remote set-url origin https://micheltag:${MICHEL_TAG_TOKEN}@github.com/akeneo/pim-enterprise-dev.git
+# endif
+	TYPE=$(TYPE) bash $(PWD)/deployments/bin/release.sh $(OLD_IMAGE_TAG) $(NEW_IMAGE_TAG)
+
+.PHONY: delete_environments_hourly
+delete_environments_hourly:
+	ENV_NAME=${ENV_NAME} bash $(PWD)/deployments/bin/remove_instances.sh
+
+.PHONY: php-image-prod
+php-image-prod: #Doc: pull docker image for pim-enterprise-dev with the prod tag
+ifeq ($(TYPE),srnt)
+	git config user.name "Michel Tag"
+	git config user.email "akeneo-ci@akeneo.com"
+
+	git remote set-url origin https://micheltag:${MICHEL_TAG_TOKEN}@github.com/akeneo/pim-enterprise-dev.git
+	sed -i "s/VERSION = '.*';/VERSION = '${IMAGE_TAG_DATE}';/g" src/Akeneo/Platform/EnterpriseVersion.php
+	git add src/Akeneo/Platform/EnterpriseVersion.php
+	git commit -m "Prepare SaaS ${IMAGE_TAG}"
+endif
+
+	sed -i "s/VERSION = '.*';/VERSION = '${IMAGE_TAG}';/g" src/Akeneo/Platform/FreeTrialVersion.php
+	cd $(PWD)/.. && DOCKER_BUILDKIT=1 docker build --no-cache --progress=plain --pull --tag eu.gcr.io/akeneo-ci/pim-enterprise-dev:${IMAGE_TAG} --target prod --build-arg COMPOSER_AUTH='${COMPOSER_AUTH}' -f $(TYPE)/Dockerfile .
+
+.PHONY: push-php-image-prod
+push-php-image-prod: #Doc: push docker image to docker hub
+	docker push eu.gcr.io/akeneo-ci/pim-enterprise-dev:${IMAGE_TAG}
+
+.PHONY: test-helm-cronjob
+test-helm-cronjob: #Doc: Test declared cronjob job are available via the PIM console
+	bash $(PWD)/deployments/bin/test-cronjob-values.sh
+
+.PHONY: test_helm_generated_k8s_files
+test_helm_generated_k8s_files: #Doc Test helm generated templates are K8S compliant
+	bash $(PWD)/deployments/bin/test_helm_generated_k8s_files.sh
