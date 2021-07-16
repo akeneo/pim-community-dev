@@ -36,7 +36,8 @@ class RemoveCompletenessForChannelAndLocaleTaskletSpec extends ObjectBehavior
         ChannelInterface $ecommerce,
         LocaleInterface $enUs,
         LocaleInterface $frFR,
-        BulkSaverInterface $localeBulkSaver
+        BulkSaverInterface $localeBulkSaver,
+        BulkSaverInterface $productBulkSaver
     ): void {
         $this->beConstructedWith(
             $cacheClearer,
@@ -46,8 +47,7 @@ class RemoveCompletenessForChannelAndLocaleTaskletSpec extends ObjectBehavior
             $channelRepository,
             $localeRepository,
             $localeBulkSaver,
-            'rootDir',
-            'prod',
+            $productBulkSaver,
             2
         );
         $this->setStepExecution($stepExecution);
