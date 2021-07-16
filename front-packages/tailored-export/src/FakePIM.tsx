@@ -22,6 +22,7 @@ import {
   filterErrors,
 } from '@akeneo-pim-community/shared';
 import {ColumnConfiguration} from './feature/models/ColumnConfiguration';
+import {QualityScoreFilter} from './feature/components/QualityScoreFilter/QualityScoreFilter';
 
 const JOB_CODE = 'mmm';
 
@@ -183,6 +184,10 @@ const FakePIM = () => {
     return filter.field === 'completeness';
   });
 
+  const qualityScoreFilter = jobConfiguration.configuration.filters.data.find(filter => {
+    return filter.field === 'quality_score_multi_locales';
+  });
+
   const categorySelection = categoryFilter ? categoryFilter['value'] : [];
 
   return (
@@ -229,6 +234,12 @@ const FakePIM = () => {
               filter={completenessFilter}
               onChange={handleFilterChange}
               validationErrors={filterErrors(validationErrors, '[filters][data][2]')}
+            />
+            <QualityScoreFilter
+              availableOperators={AVAILABLE_OPERATORS}
+              filter={qualityScoreFilter}
+              onChange={handleFilterChange}
+              validationErrors={filterErrors(validationErrors, '[filters][data][3]')}
             />
           </FieldContainer>
         )}

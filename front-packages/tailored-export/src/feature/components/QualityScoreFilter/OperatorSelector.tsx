@@ -9,6 +9,8 @@ type OperatorSelectorProps = {
   onChange: (newOperator: Operator) => void;
   validationErrors: ValidationError[];
 };
+
+// TODO: Put in common with completeness operatorSelector ?
 const OperatorSelector = ({availableOperators, operator, onChange, validationErrors}: OperatorSelectorProps) => {
   const translate = useTranslate();
 
@@ -24,10 +26,10 @@ const OperatorSelector = ({availableOperators, operator, onChange, validationErr
         {availableOperators.map((operator: Operator) => (
           <SelectInput.Option
             key={operator}
-            title={translate(`pim_enrich.export.product.filter.quality-score.operators.${operator}`)}
+            title={translate(`pim_enrich.export.product.filter.quality_score.operators.${operator}`)}
             value={operator}
           >
-            {translate(`pim_enrich.export.product.filter.quality-score.operators.${operator}`)}
+            {translate(`pim_enrich.export.product.filter.quality_score.operators.${operator}`)}
           </SelectInput.Option>
         ))}
       </SelectInput>

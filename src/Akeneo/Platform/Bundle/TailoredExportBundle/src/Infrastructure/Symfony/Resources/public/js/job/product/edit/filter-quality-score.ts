@@ -3,6 +3,7 @@ import ReactDOM from 'react-dom';
 import {ThemeProvider} from 'styled-components';
 import {pimTheme} from 'akeneo-design-system';
 import {DependenciesProvider} from '@akeneo-pim-community/legacy-bridge';
+// import {QualityScoreFilter} from '@akeneo-pim-enterprise/tailored-export';
 import {ValidationError} from '@akeneo-pim-community/shared';
 const BaseQualityScoreFilter = require('pim/filter/product/quality-score');
 const __ = require('oro/translator');

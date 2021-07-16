@@ -189,6 +189,10 @@ extensions:
 
     akeneo-product-quality-score-filter:
         module: akeneotailoredexport/js/job/product/edit/filter-quality-score
+        config:
+            operators:
+                - IN AT LEAST ONE LOCALE
+                - IN ALL LOCALES
 
     pim-job-instance-xlsx-tailored-product-export-edit-filter-the-data-default-attribute-filters:
         module: pim/job/product/edit/content/data/default-attribute-filters
