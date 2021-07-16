@@ -1,0 +1,55 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: {{ template "pim.fullName" . }}-env
+  labels:
+    chart: "{{ .Chart.Name }}-{{ .Chart.Version | replace "+" "_" }}"
+    helm.sh/chart: "{{ .Chart.Name }}-{{ .Chart.Version | replace "+" "_" }}"
+    release: "{{ .Release.Name }}" # Ex: srnt-invivo
+    heritage: "{{ .Release.Service }}" # Deprecated
+data:
+  AKENEO_PIM_URL: {{ printf "https://%s" .Values.common.pimMasterDomain  | quote }}
+  PFID: {{ .Values.global.extraLabels.pfid | quote }}
+  PAPO_PROJECT_CODE_TRUNCATED: {{ .Values.global.extraLabels.papo_project_code_truncated}}
+  PAPO_PROJECT_CODE_HASHED: {{ .Values.global.extraLabels.papo_project_code_hashed}}
+  GOOGLE_CLOUD_PROJECT: {{ .Values.common.gcpProjectID | quote }}
+  GOOGLE_LOCATION: {{ .Values.common.googleZone | quote }}
+  K8S_CLUSTER_NAME: {{ .Values.common.googleZone | quote }}
+  LC_ALL: C.UTF-8
+  MAILER_URL: {{ .Values.mailer.base_mailer_url }}?encryption=tls&auth_mode=login&username={{ .Values.mailer.login }}&password={{ .Values.mailer.password }}&sender_address=no-reply%40{{ .Values.common.pimMasterDomain }}
+  MEMCACHED_SVC:  {{ .Values.memcached.fullnameOverride | quote}}
+  APP_DATABASE_HOST: {{ .Values.mysql.mysql.serviceName | quote }}
+  APP_DATABASE_NAME: {{ .Values.mysql.mysql.defaultDatabase | quote }}
+  APP_DATABASE_PORT: "3306"
+  APP_DATABASE_USER: {{ .Values.mysql.mysql.defaultUser | quote }}
+  APP_INDEX_HOSTS: {{ .Values.elasticsearch.fullnameOverride }}-client:9200
+  APP_ELASTICSEARCH_TOTAL_FIELDS_LIMIT: {{ .Values.pim.elasticsearch.settings.totalFieldsLimit | quote }}
+  APP_ELASTICSEARCH_MAX_CHUNK_SIZE_CHARACTERS: {{ .Values.pim.elasticsearch.settings.maxChunkSizeCharacters | quote }}
+  {{- if .Values.pim.dqi.settings.enabled }}
+  FLAG_DATA_QUALITY_INSIGHTS_ENABLED: "1"
+  {{- else }}
+  FLAG_DATA_QUALITY_INSIGHTS_ENABLED: "0"
+  {{- end }}
+  APP_SECRET: {{ .Values.pim.secret }}
+  SRNT_GOOGLE_APPLICATION_CREDENTIALS: /var/secrets/google/srnt.json
+  SRNT_GOOGLE_BUCKET_NAME: {{ .Values.pim.storage.bucketName | quote }}
+  APP_ENV: prod
+  TRUSTED_PROXY_IPS: 10.0.0.0/8
+  FLAG_ONBOARDER_ENABLED: "0"
+  {{- if .Values.pim.comm_panel_api_url }}
+  COMM_PANEL_API_URL: {{ .Values.pim.comm_panel_api_url | quote }}
+  {{- end }}
+  PUBSUB_SUBSCRIPTION_WEBHOOK: {{ .Values.pim.pubsub.subscription_webhook }}
+  PUBSUB_SUBSCRIPTION_JOB_QUEUE_UI: {{ .Values.pim.pubsub.subscription_job_queue_ui }}
+  PUBSUB_SUBSCRIPTION_JOB_QUEUE_IMPORT_EXPORT: {{ .Values.pim.pubsub.subscription_job_queue_import_export }}
+  PUBSUB_SUBSCRIPTION_JOB_QUEUE_DATA_MAINTENANCE: {{ .Values.pim.pubsub.subscription_job_queue_data_maintenance }}
+  PUBSUB_TOPIC_BUSINESS_EVENT: {{ .Values.pim.pubsub.topic_business_event }}
+  PUBSUB_TOPIC_JOB_QUEUE_UI: {{ .Values.pim.pubsub.topic_job_queue_ui }}
+  PUBSUB_TOPIC_JOB_QUEUE_IMPORT_EXPORT: {{ .Values.pim.pubsub.topic_job_queue_import_export }}
+  PUBSUB_TOPIC_JOB_QUEUE_DATA_MAINTENANCE: {{ .Values.pim.pubsub.topic_job_queue_data_maintenance }}
+  LOGGING_LEVEL: {{ .Values.pim.logging_level }}
+  {{- if .Values.free_trial.enabled }}
+  FLAG_FREE_TRIAL_ENABLED: "1"
+  {{- else }}
+  FLAG_FREE_TRIAL_ENABLED: "0"
+  {{- end }}

@@ -58,6 +58,9 @@ jobs:
       - run:
           name: Remove MySQL port translation for GRTH (see BH-664)
           command: yq delete --inplace grth/docker-compose.yml services.mysql.ports
+      - run:
+          name: Remove MySQL port translation for TRIA
+          command: yq delete --inplace tria/docker-compose.yml services.mysql.ports
       - when:
             condition: << parameters.is_pull_request >>
             steps:
@@ -73,6 +76,12 @@ jobs:
                           curl --output /dev/null --silent --head --fail https://github.com/akeneo/pim-community-dev/tree/${CIRCLE_BRANCH} && \
                               sed -i "s#akeneo/pim-community-dev\": \"dev-master#akeneo/pim-community-dev\": \"dev-${CIRCLE_BRANCH}#" grth/composer.json || \
                               echo "No CE branch $CIRCLE_BRANCH found. I don't touch the Growth Edition file."
+                - run:
+                      name: Update composer.json if same branch exists in CE for TRIA
+                      command: |
+                          curl --output /dev/null --silent --head --fail https://github.com/akeneo/pim-community-dev/tree/${CIRCLE_BRANCH} && \
+                              sed -i "s#akeneo/pim-community-dev\": \"dev-master#akeneo/pim-community-dev\": \"dev-${CIRCLE_BRANCH}#" tria/composer.json || \
+                              echo "No CE branch $CIRCLE_BRANCH found. I don't touch the Growth Edition file."
       - persist_to_workspace:
           root: ~/
           paths:
@@ -84,11 +93,17 @@ jobs:
           path: grth/composer.json
           destination: grth-composer.json
       - store_artifacts:
+          path: tria/composer.json
+          destination: tria-composer.json
+      - store_artifacts:
           path: docker-compose.yml
           destination: ee-docker-compose.yml
       - store_artifacts:
           path: grth/docker-compose.yml
           destination: grth-docker-compose.yml
+      - store_artifacts:
+          path: tria/docker-compose.yml
+          destination: tria-docker-compose.yml
 
   ##################
   # Build          #
@@ -319,6 +334,108 @@ jobs:
           echo export IMAGE_TAG_SHORTED=${IMAGE_TAG_SHORTED} >> persisted_env_vars
           echo export IMAGE_TAG_DATE=${IMAGE_TAG_DATE} >> persisted_env_vars
           echo export GROWTH_RELEASE_NAME=${GROWTH_RELEASE_NAME} >> persisted_env_vars
+          echo export PRODUCT_REFERENCE_TYPE=${PRODUCT_REFERENCE_TYPE} >> persisted_env_vars
+          echo export PRODUCT_REFERENCE_CODE=${PRODUCT_REFERENCE_CODE} >> persisted_env_vars
+          echo export PIM_CONTEXT=${PIM_CONTEXT} >> persisted_env_vars
+    - persist_to_workspace:
+          root: ~/
+          paths:
+            - project
+
+  build_tria:
+    parameters:
+      is_pull_request:
+        type: boolean
+        default: false
+    environment:
+      <<: *envVarsDeployDev
+    machine:
+      image: ubuntu-2004:202010-01
+    working_directory: ~/project/tria
+    steps:
+    - attach_workspace:
+        at: ~/
+    - add_ssh_keys:
+        fingerprints:
+          - "1f:25:f8:bb:59:52:95:f6:e2:f2:97:2f:30:d4:e9:66"
+    - set_gcloud_config_dev
+    - install_yq
+    - when:
+        condition: << parameters.is_pull_request >>
+        steps:
+          - run:
+              name: Get last good CE build revision on PR
+              command: |
+                if curl --output /dev/null --silent --head --fail https://github.com/akeneo/pim-community-dev/tree/${CIRCLE_BRANCH}; then
+                  CE_BRANCH=${CIRCLE_BRANCH}
+                  CE_COMMIT_HASH=HEAD
+                else
+                  CE_BRANCH=master
+                  CE_COMMIT_HASH=HEAD
+                fi
+
+                echo export CE_BRANCH=${CE_BRANCH} >> $BASH_ENV
+                echo export CE_COMMIT_HASH=${CE_COMMIT_HASH} >> $BASH_ENV
+    - when:
+        condition:
+          not: << parameters.is_pull_request >>
+        steps:
+          - run:
+              name: Get last good CE build revision on master
+              command: |
+                docker run --rm -v ${PWD}/last_good_ce:/app composer composer install
+                CE_BRANCH=master
+                CE_COMMIT_HASH=$(docker run --rm -v ${PWD}/last_good_ce:/app composer php get_last_good_ce_revision.php)
+
+                echo export CE_BRANCH=${CE_BRANCH} >> $BASH_ENV
+                echo export CE_COMMIT_HASH=${CE_COMMIT_HASH} >> $BASH_ENV
+    - run:
+        name: Define value for next steps
+        command: |
+          TYPE="tria"
+          IMAGE_TAG=$(echo trial-${CIRCLE_SHA1} | cut -b 1-40)
+          IMAGE_TAG_SHORTED=$(echo ${CIRCLE_SHA1} | cut -c -7)
+          IMAGE_TAG_DATE=$(date +%Y%m%d%H%M%S)
+          TRIAL_RELEASE_NAME="trial-v$(date +%Y%m%d%H%M%S)"
+          PRODUCT_REFERENCE_TYPE="pim_trial_instance"
+          PRODUCT_REFERENCE_CODE="trial_${ENV_NAME}"
+          PIM_CONTEXT=deployment
+
+          echo export TYPE=${TYPE} >> $BASH_ENV
+          echo export IMAGE_TAG=${IMAGE_TAG} >> $BASH_ENV
+          echo export IMAGE_TAG_SHORTED=${IMAGE_TAG_SHORTED} >> $BASH_ENV
+          echo export IMAGE_TAG_DATE=${IMAGE_TAG_DATE} >> $BASH_ENV
+          echo export TRIAL_RELEASE_NAME=${TRIAL_RELEASE_NAME} >> $BASH_ENV
+          echo export PRODUCT_REFERENCE_TYPE=${PRODUCT_REFERENCE_TYPE} >> $BASH_ENV
+          echo export PRODUCT_REFERENCE_CODE=${PRODUCT_REFERENCE_CODE} >> $BASH_ENV
+          echo export PIM_CONTEXT=${PIM_CONTEXT} >> $BASH_ENV
+
+          echo "CE Branch used: ${CE_BRANCH}"
+          echo "CE Commit hash used: ${CE_COMMIT_HASH}"
+          echo "Image tag: ${IMAGE_TAG}"
+          echo "Trial Release name: ${TRIAL_RELEASE_NAME}"
+    - run:
+        name: Set the right CE branch
+        command: |
+          docker run --rm -v ${PWD}/..:/app -e CE_COMMIT_HASH=${CE_COMMIT_HASH} -e CE_BRANCH=${CE_BRANCH} composer bash -c 'cd tria && composer require "akeneo/pim-community-dev:dev-${CE_BRANCH}#${CE_COMMIT_HASH}" --no-update --ignore-platform-reqs'
+    - run:
+        name: Build the Free Trial Edition prod image
+        command: make php-image-prod
+    - run:
+        name: Push the Free Trial Edition prod image on docker registry
+        command: make push-php-image-prod
+    - run:
+        name: Push Terraform modules to GCS
+        command: |
+          BOTO_CONFIG=/dev/null gsutil -m cp -r deployments/ gs://akecld-terraform-modules/trial-edition-dev/${IMAGE_TAG}/
+    - run:
+        name: Persist env vars for next jobs
+        command: |
+          echo export TYPE=${TYPE} > persisted_env_vars
+          echo export IMAGE_TAG=${IMAGE_TAG} >> persisted_env_vars
+          echo export IMAGE_TAG_SHORTED=${IMAGE_TAG_SHORTED} >> persisted_env_vars
+          echo export IMAGE_TAG_DATE=${IMAGE_TAG_DATE} >> persisted_env_vars
+          echo export TRIAL_RELEASE_NAME=${TRIAL_RELEASE_NAME} >> persisted_env_vars
           echo export PRODUCT_REFERENCE_TYPE=${PRODUCT_REFERENCE_TYPE} >> persisted_env_vars
           echo export PRODUCT_REFERENCE_CODE=${PRODUCT_REFERENCE_CODE} >> persisted_env_vars
           echo export PIM_CONTEXT=${PIM_CONTEXT} >> persisted_env_vars
@@ -816,6 +933,18 @@ jobs:
           - store_artifacts:
                 path: var/logs
 
+  test_tria:
+      machine:
+          image: ubuntu-2004:202010-01
+      working_directory: ~/project/tria
+      steps:
+          - attach_workspace:
+              at: ~/
+          - run:
+              name: Change owner on project dir (default user = circleci (1001) and docker needs uid 1000)
+              command: |
+                  echo "Do tests"
+
   pull_request_success:
       docker:
           - image: alpine/git
@@ -936,6 +1065,27 @@ jobs:
               name: Test Growth Edition Helm generated yaml files compliance with latest kubernetes Version
               command: make test_helm_generated_k8s_files
 
+  test_helm_generated_k8s_files_tria:
+      environment:
+        <<: *envVarsDeployDev
+      <<: *dockerCloudDeployerNext
+      working_directory: ~/project/tria
+      steps:
+          - attach_workspace:
+                at: ~/
+          - set_gcloud_config_dev
+          - run:
+              name: Define value for next steps
+              command: |
+                PIM_CONTEXT=deployment
+                echo export PIM_CONTEXT=${PIM_CONTEXT} >> $BASH_ENV
+          - run:
+              name: Test Free Trial Edition Helm generated yaml files compliance with current kubernetes Version
+              command: K8S_CLUSTER_VERSION_ENABLED=1 make test_helm_generated_k8s_files
+          - run:
+              name: Test Free Trial Edition Helm generated yaml files compliance with latest kubernetes Version
+              command: make test_helm_generated_k8s_files
+
   test_cronjobs_existence_srnt:
       environment:
         <<: *envVarsDeployDev
@@ -957,6 +1107,22 @@ jobs:
       machine:
           image: ubuntu-2004:202010-01
       working_directory: ~/project/grth
+      steps:
+          - attach_workspace:
+                at: ~/
+          - set_gcloud_config_dev
+          - restore_persisted_env_vars
+          - install_yq
+          - run:
+              name: Test Cronjob jobs exists
+              command: make test-helm-cronjob
+
+  test_cronjobs_existence_tria:
+      environment:
+        <<: *envVarsDeployDev
+      machine:
+          image: ubuntu-2004:202010-01
+      working_directory: ~/project/tria
       steps:
           - attach_workspace:
                 at: ~/
@@ -1016,6 +1182,48 @@ jobs:
         <<: *envVarsDeployDev
       <<: *dockerCloudDeployerNext
       working_directory: ~/project/grth
+      steps:
+          - attach_workspace:
+                at: ~/
+          - set_gcloud_config_dev
+          - restore_persisted_env_vars
+          - run:
+              name: Define value for next steps
+              command: |
+                INSTANCE_NAME_PREFIX=pimci
+                INSTANCE_NAME=${INSTANCE_NAME_PREFIX}-${IMAGE_TAG_SHORTED}-${CIRCLE_BUILD_NUM}
+
+                echo export INSTANCE_NAME_PREFIX=${INSTANCE_NAME_PREFIX} >> $BASH_ENV
+                echo export INSTANCE_NAME=${INSTANCE_NAME} >> $BASH_ENV
+
+                echo "Instance name prefix: ${INSTANCE_NAME_PREFIX}"
+                echo "Instance name: ${INSTANCE_NAME}"
+                echo "Image tag: ${IMAGE_TAG}"
+          - run:
+              name: DATADOG deployment Livetail logs page
+              command: echo "https://app.datadoghq.eu/logs/livetail?query=kube_namespace%3A${TYPE}-${INSTANCE_NAME}"
+          - run:
+              name: Deploy PIM on kubernetes
+              command: make deploy-instance
+          - run:
+              name: Test PIM connexion on kubernetes
+              command: make test-prod
+          - run:
+              name: Prepare infrastructure artifacts
+              command: make prepare-infrastructure-artifacts
+              when: on_fail
+          - store_artifacts:
+              path: ~/artifacts/infra
+          - run:
+              name: Remove env on kubernetes
+              command: make delete
+              when: always
+
+  test_deploy_tria:
+      environment:
+        <<: *envVarsDeployDev
+      <<: *dockerCloudDeployerNext
+      working_directory: ~/project/tria
       steps:
           - attach_workspace:
                 at: ~/
@@ -1116,47 +1324,6 @@ jobs:
               command: IMAGE_TAG=${LATEST_RELEASE} make uncommit-instance
               when: on_fail
 
-  test_upgrade_srnt_from_last_release:
-      environment:
-          <<: *envVarsDeployDev
-      <<: *dockerJenkinsCloudDeployer
-      steps:
-          - attach_workspace:
-                at: ~/
-          - add_ssh_keys
-          - set_gcloud_config_dev
-          - restore_persisted_env_vars
-          - run:
-                name: Define value for next steps
-                command: |
-                    PIM_CONTEXT=deployment
-                    echo export PIM_CONTEXT=${PIM_CONTEXT} >> $BASH_ENV
-                    ssh-keyscan -t rsa github.com >> ~/.ssh/known_hosts
-                    echo '' > /root/.ssh/config #clean github exclusions automatically added by circleci
-                    REPO_TO_ADD=github.com KEY_TO_ADD=/root/.ssh/id_rsa_1f25f8bb595295f6e2f2972f30d4e966 bash deployments/bin/add-deploy-key.sh
-                    REPO_TO_ADD=cloud-customers-dev KEY_TO_ADD=/root/.ssh/id_rsa_5f7bb3cbd43de2c2365f9db487865f67 bash deployments/bin/add-deploy-key.sh
-                    REPO_TO_ADD=jenkins-k8s-utils KEY_TO_ADD=/root/.ssh/id_rsa_2c6118646e36aa7476fd5e6b735923c6 bash deployments/bin/add-deploy-key.sh
-                    REPO_TO_ADD=operation-tools KEY_TO_ADD=/root/.ssh/id_rsa_9871a29f0e320bbf564ab34189c7b429 bash deployments/bin/add-deploy-key.sh
-          - run:
-                name: Jenkins Upgrade
-                command: make upgrade-instance
-          - run:
-              name: Production tests on upgraded env
-              command: make test-prod
-          - run:
-              name: Check that upgrader pod ran
-              command: kubectl get pods --namespace=${TYPE}-${INSTANCE_NAME} | grep pim-upgrader
-          - run:
-              name: Prepare infrastructure artifacts
-              command: make prepare-infrastructure-artifacts
-              when: on_fail
-          - store_artifacts:
-              path: ~/artifacts/infra
-          - run:
-              name: Remove upgraded env
-              command: make uncommit-instance
-              when: always
-
   test_deploy_grth_last_release:
       environment:
           <<: *envVarsDeployDev
@@ -1220,6 +1387,47 @@ jobs:
               name: Remove env on kubernetes
               command: IMAGE_TAG=${LATEST_RELEASE} make uncommit-instance
               when: on_fail
+
+  test_upgrade_srnt_from_last_release:
+      environment:
+          <<: *envVarsDeployDev
+      <<: *dockerJenkinsCloudDeployer
+      steps:
+          - attach_workspace:
+                at: ~/
+          - add_ssh_keys
+          - set_gcloud_config_dev
+          - restore_persisted_env_vars
+          - run:
+                name: Define value for next steps
+                command: |
+                    PIM_CONTEXT=deployment
+                    echo export PIM_CONTEXT=${PIM_CONTEXT} >> $BASH_ENV
+                    ssh-keyscan -t rsa github.com >> ~/.ssh/known_hosts
+                    echo '' > /root/.ssh/config #clean github exclusions automatically added by circleci
+                    REPO_TO_ADD=github.com KEY_TO_ADD=/root/.ssh/id_rsa_1f25f8bb595295f6e2f2972f30d4e966 bash deployments/bin/add-deploy-key.sh
+                    REPO_TO_ADD=cloud-customers-dev KEY_TO_ADD=/root/.ssh/id_rsa_5f7bb3cbd43de2c2365f9db487865f67 bash deployments/bin/add-deploy-key.sh
+                    REPO_TO_ADD=jenkins-k8s-utils KEY_TO_ADD=/root/.ssh/id_rsa_2c6118646e36aa7476fd5e6b735923c6 bash deployments/bin/add-deploy-key.sh
+                    REPO_TO_ADD=operation-tools KEY_TO_ADD=/root/.ssh/id_rsa_9871a29f0e320bbf564ab34189c7b429 bash deployments/bin/add-deploy-key.sh
+          - run:
+                name: Jenkins Upgrade
+                command: make upgrade-instance
+          - run:
+              name: Production tests on upgraded env
+              command: make test-prod
+          - run:
+              name: Check that upgrader pod ran
+              command: kubectl get pods --namespace=${TYPE}-${INSTANCE_NAME} | grep pim-upgrader
+          - run:
+              name: Prepare infrastructure artifacts
+              command: make prepare-infrastructure-artifacts
+              when: on_fail
+          - store_artifacts:
+              path: ~/artifacts/infra
+          - run:
+              name: Remove upgraded env
+              command: make uncommit-instance
+              when: always
 
   test_upgrade_grth_from_last_release:
       environment:
@@ -1383,6 +1591,27 @@ jobs:
                   docker image tag eu.gcr.io/akeneo-ci/pim-enterprise-dev:$IMAGE_TAG eu.gcr.io/akeneo-cloud/pim-enterprise-dev:$GROWTH_RELEASE_NAME
                   docker push eu.gcr.io/akeneo-ci/pim-enterprise-dev:$GROWTH_RELEASE_NAME
                   docker push eu.gcr.io/akeneo-cloud/pim-enterprise-dev:$GROWTH_RELEASE_NAME
+
+  release_tria:
+      environment:
+          <<: *envVarsDeployDev
+      machine:
+          image: ubuntu-2004:202010-01
+      working_directory: ~/project/tria
+      steps:
+          - attach_workspace:
+                at: ~/
+          - set_gcloud_config_dev
+          - restore_persisted_env_vars
+          - run:
+              name: Push Terraform modules to GCS
+              command: |
+                BOTO_CONFIG=/dev/null gsutil -m cp -r deployments/ gs://akecld-terraform-modules/trial-edition/${TRIAL_RELEASE_NAME}/
+                BOTO_CONFIG=/dev/null gsutil -m cp -r deployments/ gs://akecld-terraform-modules/trial-edition-dev/${TRIAL_RELEASE_NAME}/
+          - run:
+              name: Tag the Docker image with the definitive tag
+              command: |
+                  OLD_IMAGE_TAG=${IMAGE_TAG} NEW_IMAGE_TAG=${TRIAL_RELEASE_NAME} PIM_CONTEXT=deployment make release
 
   ##################
   # Deploy         #
@@ -1616,6 +1845,70 @@ jobs:
               command: make delete
               when: on_fail
 
+  deploy_pr_tria_environment:
+      environment:
+          <<: *envVarsDeployDev
+      <<: *dockerCloudDeployerNext
+      working_directory: ~/project/tria
+      steps:
+          - attach_workspace:
+              at: ~/
+          - set_gcloud_config_dev
+          - restore_persisted_env_vars
+          - run:
+              name: Define value for next steps
+              command: |
+                INSTANCE_NAME_PREFIX=pimci-pr-ft
+                INSTANCE_NAME=${INSTANCE_NAME_PREFIX}-${CIRCLE_PULL_REQUEST##*/}
+                ACTIVATE_MONITORING=true
+
+                echo export IMAGE_TAG=${IMAGE_TAG} >> $BASH_ENV
+                echo export INSTANCE_NAME_PREFIX=${INSTANCE_NAME_PREFIX} >> $BASH_ENV
+                echo export INSTANCE_NAME=${INSTANCE_NAME} >> $BASH_ENV
+                echo export PRODUCT_REFERENCE_TYPE=${PRODUCT_REFERENCE_TYPE} >> $BASH_ENV
+                echo export PRODUCT_REFERENCE_CODE=${PRODUCT_REFERENCE_CODE} >> $BASH_ENV
+                echo export ACTIVATE_MONITORING=${ACTIVATE_MONITORING} >> $BASH_ENV
+
+                echo "Instance name prefix: ${INSTANCE_NAME_PREFIX}"
+                echo "Instance name: ${INSTANCE_NAME}"
+                echo "Image tag: ${IMAGE_TAG}"
+          - run:
+              name: Check Circle CI PR
+              command: |
+                if [[ ${CIRCLE_PULL_REQUEST##*/} == "" ]]; then echo "ERROR : CIRCLE_PULL_REQUEST is empty."; exit 1;fi
+                echo "This environment will be available at https://${INSTANCE_NAME}.dev.cloud.akeneo.com once deployed :)"
+          - run:
+              name: Deploy PR environment
+              command: make deploy-instance
+          - run:
+              name: Prepare infrastructure artifacts
+              command: make prepare-infrastructure-artifacts
+              when: on_fail
+          - store_artifacts:
+              path: ~/artifacts/infra
+          - run:
+              name: Remove env on kubernetes
+              command: make delete
+              when: on_fail
+          - run:
+              name: Persist env vars for next jobs
+              command: |
+                echo export TYPE=${TYPE} > persisted_env_vars
+                echo export IMAGE_TAG=${IMAGE_TAG} >> persisted_env_vars
+                echo export IMAGE_TAG_SHORTED=${IMAGE_TAG_SHORTED} >> persisted_env_vars
+                echo export IMAGE_TAG_DATE=${IMAGE_TAG_DATE} >> persisted_env_vars
+                echo export INSTANCE_NAME_PREFIX=${INSTANCE_NAME_PREFIX} >> persisted_env_vars
+                echo export INSTANCE_NAME=${INSTANCE_NAME} >> persisted_env_vars
+                echo export ACTIVATE_MONITORING=${ACTIVATE_MONITORING} >> persisted_env_vars
+                echo export TRIAL_RELEASE_NAME=${TRIAL_RELEASE_NAME} >> persisted_env_vars
+                echo export PRODUCT_REFERENCE_TYPE=${PRODUCT_REFERENCE_TYPE} >> persisted_env_vars
+                echo export PRODUCT_REFERENCE_CODE=${PRODUCT_REFERENCE_CODE} >> persisted_env_vars
+                echo export PIM_CONTEXT=${PIM_CONTEXT} >> persisted_env_vars
+          - persist_to_workspace:
+              root: ~/
+              paths:
+                - project/tria/persisted_env_vars
+
   ##################
   # Cleanup        #
   ##################
@@ -1637,6 +1930,26 @@ jobs:
                 name: Delete environments
                 command: |
                     make delete_environments_hourly
+          - run:
+                name: Delete tria environments
+                command: |
+                    cd tria && make delete_environments_hourly
+
+  remove_pr_tria:
+    environment:
+        <<: *envVarsDeployDev
+    <<: *dockerCloudDeployerNext
+    working_directory: ~/project/tria
+    steps:
+        - attach_workspace:
+              at: ~/
+        - set_gcloud_config_dev
+        - restore_persisted_env_vars
+        - run:
+              name: Delete environments
+              command: |
+                  make create-ci-release-files
+                  make delete
 
 workflows:
   pull_request:
@@ -1651,13 +1964,7 @@ workflows:
                 is_pull_request: true
                 requires:
                     - ready_to_build?
-          - build_srnt_dev:
-                requires:
-                    - checkout
           - test_helm_generated_k8s_files_srnt:
-                requires:
-                    - checkout
-          - test_helm_generated_k8s_files_grth:
                 requires:
                     - checkout
           - build_srnt_prod:
@@ -1682,10 +1989,9 @@ workflows:
           - deploy_pr_srnt_environment:
                 requires:
                     - deploy_pr_srnt_environment?
-          - deploy_pr_grth_environment?:
-                type: approval
+          - test_helm_generated_k8s_files_grth:
                 requires:
-                    - test_cronjobs_existence_grth
+                    - checkout
           - build_grth:
                 is_pull_request: true
                 requires:
@@ -1693,25 +1999,68 @@ workflows:
           - test_cronjobs_existence_grth:
                 requires:
                     - build_grth
+          - test_deploy_grth:
+                requires:
+                    - test_cronjobs_existence_grth
           - test_deploy_grth_last_release:
                 requires:
                     - test_cronjobs_existence_grth
           - test_upgrade_grth_from_last_release:
                 requires:
                     - test_deploy_grth_last_release
-          - test_deploy_grth:
+          - deploy_pr_grth_environment?:
+                type: approval
                 requires:
                     - test_cronjobs_existence_grth
           - deploy_pr_grth_environment:
                 requires:
                     - deploy_pr_grth_environment?
-          - test_front_code_style:
+          - test_helm_generated_k8s_files_tria:
+                requires:
+                    - checkout
+          - build_tria:
+                is_pull_request: true
+                requires:
+                    - test_helm_generated_k8s_files_tria
+          - test_cronjobs_existence_tria:
+                requires:
+                    - build_tria
+          - test_deploy_tria:
+                requires:
+                    - test_cronjobs_existence_tria
+          - deploy_pr_tria_environment?:
+                type: approval
+                requires:
+                    - test_cronjobs_existence_tria
+          - deploy_pr_tria_environment:
+                requires:
+                    - deploy_pr_tria_environment?
+          - remove_pr_tria?:
+                type: approval
+                requires:
+                    - deploy_pr_tria_environment
+          - remove_pr_tria:
+                requires:
+                    - remove_pr_tria?
+          - build_srnt_dev:
+                requires:
+                    - checkout
+          - test_back_integration_bounded_contexts:
                 requires:
                     - build_srnt_dev
-          - test_database:
+          - test_back_integration_reference_entities:
                 requires:
                     - build_srnt_dev
           - test_back_static_and_acceptance:
+                requires:
+                    - build_srnt_dev
+          - test_back_phpunit:
+                requires:
+                    - build_srnt_dev
+          - test_back_performance:
+                requires:
+                    - build_srnt_dev
+          - test_back_data_migrations:
                 requires:
                     - build_srnt_dev
           - test_front_static_acceptance_and_integration:
@@ -1720,16 +2069,10 @@ workflows:
           - test_front_end_to_end:
                 requires:
                     - build_srnt_dev
-          - test_back_phpunit:
+          - test_front_code_style:
                 requires:
                     - build_srnt_dev
-          - test_back_integration_bounded_contexts:
-                requires:
-                    - build_srnt_dev
-          - test_back_integration_reference_entities:
-                requires:
-                    - build_srnt_dev
-          - test_back_performance:
+          - test_database:
                 requires:
                     - build_srnt_dev
           - test_onboarder_bundle:
@@ -1738,7 +2081,7 @@ workflows:
           - test_grth:
                 requires:
                     - build_srnt_dev
-          - test_back_data_migrations:
+          - test_tria:
                 requires:
                     - build_srnt_dev
           - test_back_behat_legacy:
@@ -1757,6 +2100,7 @@ workflows:
                     - test_database
                     - test_back_data_migrations
                     - test_grth
+                    - test_tria
 
   on_demand_srnt_release:
       jobs:
@@ -1860,6 +2204,29 @@ workflows:
                   - test_deploy_grth
                   - test_upgrade_grth_from_last_release
 
+  on_demand_tria_release:
+    jobs:
+      - ready_to_build?:
+          type: approval
+          filters:
+            branches:
+              only: master
+      - checkout:
+          requires:
+            - ready_to_build?
+      - build_tria:
+          requires:
+            - checkout
+      - test_cronjobs_existence_tria:
+          requires:
+            - build_tria
+      - test_deploy_tria:
+          requires:
+            - test_cronjobs_existence_tria
+      - release_tria:
+          requires:
+            - test_deploy_tria
+
   nightly_srnt_release:
       triggers:
           - schedule:
@@ -1962,6 +2329,29 @@ workflows:
                     - test_deploy_grth
                     - test_upgrade_grth_from_last_release
 
+  nightly_tria_release:
+    triggers:
+      - schedule:
+          cron: "0 4 * * *"
+          filters:
+            branches:
+              only:
+                - master
+    jobs:
+      - checkout
+      - build_tria:
+          requires:
+            - checkout
+      - test_cronjobs_existence_tria:
+          requires:
+            - build_tria
+      - test_deploy_tria:
+          requires:
+            - test_cronjobs_existence_tria
+      - release_tria:
+          requires:
+            - test_deploy_tria
+
   nightly_deployments:
       triggers:
           - schedule:
@@ -1970,7 +2360,6 @@ workflows:
                     branches:
                         only:
                             - master
-
       jobs:
           - checkout
           - deploy_srnt_helpdesk_environment:
@@ -2027,7 +2416,6 @@ workflows:
                    branches:
                        only:
                            - master
-
      jobs:
          - checkout
          - delete_environments_hourly:
