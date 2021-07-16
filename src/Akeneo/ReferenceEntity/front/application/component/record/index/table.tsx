@@ -19,6 +19,7 @@ import CompletenessFilter, {
 } from 'akeneoreferenceentity/application/component/record/index/completeness-filter';
 import ItemsCounter from 'akeneoreferenceentity/application/component/record/index/items-counter';
 import {NormalizedAttributeIdentifier} from 'akeneoreferenceentity/domain/model/attribute/identifier';
+import {clearImageLoadingQueue} from 'akeneoreferenceentity/tools/image-loader';
 
 interface TableState {
   locale: string;
@@ -125,6 +126,7 @@ export default class Table extends React.Component<TableProps, {columns: Column[
   }
 
   componentDidUnMount() {
+    clearImageLoadingQueue();
     if (this.needResize) {
       window.removeEventListener('resize', this.resizeScrollContainer.bind(this));
     }

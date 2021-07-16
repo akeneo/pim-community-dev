@@ -1,5 +1,9 @@
 # 5.0.x
 
+## Improvements
+
+- PIM-9969: Add queue to lazy load Reference Entity Records thumbnails
+
 # 5.0.40 (2021-07-09)
 
 # 5.0.39 (2021-07-06)
@@ -94,6 +98,7 @@ PIM-9823: [Backport] PIM-9734: Fix URI too long for rules on smart attributes
 # 5.0.20 (2021-04-22)
 
 ## Bug fixes
+
 - PIM-9815: Fix asset and record imports in XLSX when sone cells contain only numeric characters
 
 # 5.0.19 (2021-04-20)
@@ -120,7 +125,7 @@ PIM-9823: [Backport] PIM-9734: Fix URI too long for rules on smart attributes
 ## Bug fixes
 
 - PIM-9793: Fix custom rule import
-- PIM-9795: [Standard Kernel] Do not load Messenger configuration from EE if it exists in project 
+- PIM-9795: [Standard Kernel] Do not load Messenger configuration from EE if it exists in project
 
 # 5.0.15 (2021-04-06)
 
