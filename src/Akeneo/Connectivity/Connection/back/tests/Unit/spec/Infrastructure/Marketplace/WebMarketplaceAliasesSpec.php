@@ -57,7 +57,7 @@ class WebMarketplaceAliasesSpec extends ObjectBehavior
     ) {
         $versionProvider->getEdition()->willReturn('EE');
 
-        $this->getUtmCampaign()->shouldReturn('enterprise-edition');
+        $this->getEdition()->shouldReturn('enterprise-edition');
     }
 
     public function it_returns_the_ee_edition_by_default_when_unknown_edition(
@@ -65,7 +65,7 @@ class WebMarketplaceAliasesSpec extends ObjectBehavior
     ) {
         $versionProvider->getEdition()->willReturn('Foo');
 
-        $this->getUtmCampaign()->shouldReturn('enterprise-edition');
+        $this->getEdition()->shouldReturn('enterprise-edition');
     }
 
     public function it_returns_the_version_from_the_decorated(
