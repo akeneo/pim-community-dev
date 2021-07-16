@@ -26,8 +26,8 @@ import {TableInputText} from './CellInputs/TableInputText';
 
 const TABLE_VALUE_ITEMS_PER_PAGE = [10, 20, 50, 100];
 
-const TableInputContainer = styled.div`
-  width: 100%;
+const TableInputContainer = styled.div<{isCopying: boolean} & AkeneoThemedProps>`
+  width: ${({isCopying}) => isCopying ? '460px' : '100%'};
 `;
 
 const CenteredHelper = styled.div`
@@ -54,6 +54,7 @@ type TableInputValueProps = {
   searchText?: string;
   violatedCells?: ViolatedCell[];
   readOnly?: boolean;
+  isCopying?: boolean;
 };
 
 const TableInputValue: React.FC<TableInputValueProps> = ({
@@ -64,6 +65,7 @@ const TableInputValue: React.FC<TableInputValueProps> = ({
   readOnly = false,
   searchText = '',
   violatedCells = [],
+  isCopying = false,
 }) => {
   const translate = useTranslate();
   const userContext = useUserContext();
@@ -145,7 +147,7 @@ const TableInputValue: React.FC<TableInputValueProps> = ({
   };
 
   return (
-    <TableInputContainer>
+    <TableInputContainer isCopying={isCopying}>
       <TableInput>
         <TableInput.Header>
           {tableConfiguration.map(columnDefinition => (

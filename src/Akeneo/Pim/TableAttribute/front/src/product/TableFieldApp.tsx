@@ -252,6 +252,7 @@ const TableFieldApp: React.FC<TableFieldAppProps> = ({
             searchText={copyContext ? '' : searchText}
             readOnly={editMode === 'view'}
             violatedCells={violatedCellsById}
+            isCopying={!!copyContext}
           />
           {renderElements('field-input')}
         </div>
@@ -275,6 +276,7 @@ const TableFieldApp: React.FC<TableFieldAppProps> = ({
                     valueData={addUniqueId(copyContext.data || [])}
                     tableConfiguration={attribute.table_configuration}
                     readOnly={true}
+                    isCopying={!!copyContext}
                   />
                 </div>
               </div>

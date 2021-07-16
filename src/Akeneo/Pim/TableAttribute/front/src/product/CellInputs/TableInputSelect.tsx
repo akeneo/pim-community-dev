@@ -78,7 +78,7 @@ const TableInputSelect: React.FC<TableInputSelectProps> = ({value, onChange, opt
 
   return (
     <TableInput.Select
-      value={`${label}${readOnly ? ' [read only]' : ''}`}
+      value={label}
       onClear={handleClear}
       clearLabel={translate('pim_common.clear')}
       openDropdownLabel={translate('pim_common.open')}
@@ -88,8 +88,7 @@ const TableInputSelect: React.FC<TableInputSelectProps> = ({value, onChange, opt
       searchValue={searchValue}
       onSearchChange={handleSearchValue}
       inError={inError || notFoundOption}
-      /** TODO Implement this **/
-      //readOnly={readOnly}
+      readOnly={readOnly}
       {...rest}>
       {itemsToDisplay.map(option => {
         return (
