@@ -3,10 +3,10 @@ import styled, {css} from 'styled-components';
 import {TextInput} from '../../TextInput/TextInput';
 import {AkeneoThemedProps, getColor} from '../../../../theme';
 
-const TableInputText = styled(TextInput)<{highlighted: boolean; inError: boolean} & AkeneoThemedProps>`
+const TableInputText = styled(TextInput)<{highlighted: boolean; inError: boolean; readOnly: boolean} & AkeneoThemedProps>`
   height: 39px;
   padding-left: 10px;
-  padding-right: 10px;
+  padding-right: ${({readOnly}) => (readOnly ? '35px' : '10px')};
   border-radius: 0;
   border: none;
 
