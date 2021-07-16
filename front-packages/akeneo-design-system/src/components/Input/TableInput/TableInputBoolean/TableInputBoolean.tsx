@@ -26,26 +26,22 @@ const BooleanButton = styled.button<{highlighted: boolean; inError: boolean; rea
   line-height: 39px;
   align-items: center;
   cursor: ${({readOnly}) => (readOnly ? 'not-allowed' : 'pointer')};
+  background: none;
 
   ${({highlighted, inError}) =>
-    highlighted && !inError
-      ? css`
-          background: ${getColor('green', 10)};
-          box-shadow: 0 0 0 1px ${getColor('green', 80)};
-        `
-      : css`
-          background: none;
-        `};
+    highlighted &&
+    !inError &&
+    css`
+      background: ${getColor('green', 10)};
+      box-shadow: 0 0 0 1px ${getColor('green', 80)};
+    `};
 
   ${({inError}) =>
-    inError
-      ? css`
-          background: ${getColor('red', 10)};
-          box-shadow: 0 0 0 1px ${getColor('red', 80)};
-        `
-      : css`
-          background: none;
-        `};
+    inError &&
+    css`
+      background: ${getColor('red', 10)};
+      box-shadow: 0 0 0 1px ${getColor('red', 80)};
+    `};
 `;
 
 const IconsPart = styled.div`
