@@ -143,7 +143,7 @@ final class ProductValidationContext implements Context
             print_r(get_class($violation));
             $message = $violation->getMessage();
             $path = $violation->getPropertyPath();
-            $messages[] = sprintf('path: %s, message: %s', $path , $message);
+            $messages[] = sprintf('path: %s, message: %s', $path, $message);
             if ($message === $errorMessage && $path === $errorPath) {
                 $isFoundMessage = true;
             }

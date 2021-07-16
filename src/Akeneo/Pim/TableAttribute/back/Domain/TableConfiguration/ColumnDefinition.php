@@ -21,6 +21,7 @@ interface ColumnDefinition
     public function code(): ColumnCode;
     public function dataType(): ColumnDataType;
     public function labels(): LabelCollection;
+    public function validations(): ValidationCollection;
     /** @return array<string, mixed> */
     public function normalize(): array;
 }
