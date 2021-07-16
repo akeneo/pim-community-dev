@@ -1,3 +1,3 @@
-FROM cypress/included:7.2.0
+FROM cypress/included:7.6.0
 
 RUN npm i @testing-library/cypress
