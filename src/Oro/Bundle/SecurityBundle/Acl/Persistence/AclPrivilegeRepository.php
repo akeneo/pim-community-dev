@@ -111,6 +111,7 @@ class AclPrivilegeRepository implements EventDispatcherAware
                 if ($oid->getType() === ObjectIdentityFactory::ROOT_IDENTITY_TYPE) {
                     $name = self::ROOT_PRIVILEGE_NAME;
                     $group = '';
+                    $order = 0;
                 } else {
                     /** @var AclClassInfo $class */
                     $class = $classes[$oid->getType()];
@@ -119,6 +120,7 @@ class AclPrivilegeRepository implements EventDispatcherAware
                         $name = substr($class->getClassName(), strpos($class->getClassName(), '\\'));
                     }
                     $group = $class->getGroup();
+                    $order = $class->getOrder();
                 }
 
                 $privilege = new AclPrivilege();
@@ -130,7 +132,8 @@ class AclPrivilegeRepository implements EventDispatcherAware
                         )
                     )
                     ->setGroup($group)
-                    ->setExtensionKey($extensionKey);
+                    ->setExtensionKey($extensionKey)
+                    ->setOrder($order);
 
                 $this->addPermissions($sid, $privilege, $oid, $acls, $extension, $rootAcl);
 
@@ -465,6 +468,9 @@ class AclPrivilegeRepository implements EventDispatcherAware
                 }
                 if (strpos($b->getIdentity()->getId(), ObjectIdentityFactory::ROOT_IDENTITY_TYPE)) {
                     return 1;
+                }
+                if ($a->getOrder() !== $b->getOrder()) {
+                    return ($a->getOrder() > $b->getOrder()) ? 1 : -1;
                 }
 
                 return strcmp($a->getIdentity()->getName(), $b->getIdentity()->getName());
