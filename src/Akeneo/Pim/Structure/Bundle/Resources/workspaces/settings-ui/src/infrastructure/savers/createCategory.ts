@@ -1,4 +1,4 @@
-import {LocaleCode} from "@akeneo-pim-community/shared";
+import {LocaleCode} from '@akeneo-pim-community/shared';
 
 const Routing = require('routing');
 
@@ -8,7 +8,12 @@ type ValidationErrors = {
   [fieldCode: string]: string;
 };
 
-const createCategory = async (code: string, parent?: string, locale?: LocaleCode, label?: string): Promise<ValidationErrors> => {
+const createCategory = async (
+  code: string,
+  parent?: string,
+  locale?: LocaleCode,
+  label?: string
+): Promise<ValidationErrors> => {
   const response = await fetch(Routing.generate(ROUTE_NAME), {
     method: 'POST',
     headers: {
@@ -21,7 +26,7 @@ const createCategory = async (code: string, parent?: string, locale?: LocaleCode
         // @ts-ignore
         [locale]: label,
       },
-      parent: parent
+      parent: parent,
     }),
   });
 

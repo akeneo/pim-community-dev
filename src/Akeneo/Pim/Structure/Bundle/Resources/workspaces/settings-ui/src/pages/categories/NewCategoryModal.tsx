@@ -85,11 +85,11 @@ const NewCategoryModal: FC<NewCategoryModalProps> = ({closeModal, onCreate, pare
       </StyledField>
       <TextFieldContainer>
         <TextField
-            label={translate('pim_common.label')}
-            value={newCategoryLabel}
-            onChange={setNewCategoryLabel}
-            locale={locale}
-            maxLength={100}
+          label={translate('pim_common.label')}
+          value={newCategoryLabel}
+          onChange={setNewCategoryLabel}
+          locale={locale}
+          maxLength={100}
         />
       </TextFieldContainer>
     </Modal>
