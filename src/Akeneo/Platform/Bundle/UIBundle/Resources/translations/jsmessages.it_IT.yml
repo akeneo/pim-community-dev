@@ -237,6 +237,7 @@ pim_common:
   family: Famiglia
   parent: Genitore
   groups: Gruppi
+  products: Prodotti
   more: Altro
 error:
   exception: Accidenti! Si è verificato un errore {{ status_code}}...
