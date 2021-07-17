@@ -237,6 +237,7 @@ pim_common:
   family: 品类
   parent: 父级
   groups: 分组
+  products: 产品
   more: 更多
 error:
   exception: 哎呀 ！发生错误 {{ status_code }} ...
