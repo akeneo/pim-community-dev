@@ -1,62 +1,94 @@
 batch_jobs.xlsx_tailored_product_export.label: Op maat gemaakte export van producten in XLSX
 akeneo.tailored_export:
+  filters:
+    completeness:
+      locales:
+        label: Geef voor de volledigheid de talen aan
+        placeholder: Selecteer enkele talen
+        remove: Verwijder de taal
   form:
     job_instance:
       tab:
         content:
-          title: Data filteren
+          title: Productselectie
         column:
-          title: Kolommen selecteren
+          title: Structuur exporteren
+        filters:
+          title: Geef uw productselectie op
   column_list:
     title: Kolommen
     header:
-      column_name: Kolomnaam
-      source_data: Brongegevens
+      column_name: Koptekst van kolom
+      source_data: Inhoud van kolom
     column_row:
-      target_placeholder: Geef hier uw nieuwe kolomnaam op
+      target_placeholder: Geef hier de naam van de kolom op
       remove: Kolom verwijderen
-      no_source: Geen bron
+      no_source: Geef de bron van de inhoud op
     no_column_selection:
-      title: Geen kolommen geselecteerd om te exporteren
-      subtitle: Voor meer informatie over toewijzingen en bewerkingen,
-      link: kan dit artikel u helpen
+      title: Uw exportprofiel is leeg. Voeg uw eerste kolom toe.
+      subtitle: Klik op 'Eerste kolom toevoegen' om uw exporttabel te gaan bouwen.
+      link: Kijk in ons helpcenter voor meer informatie.
       add_column: Eerste kolom toevoegen
   column_details:
     sources:
       title: Bronnen
       add: Bron toevoegen
       no_result: Er zijn geen resultaten.
-      locale_specific.info: Dit attribuut is taalspecifiek
+      locale_specific.info: Dit attribuut heeft een waarde per taal.
       remove:
         title: bron
         text: Weet u zeker dat u deze bron wilt verwijderen?
         button: Deze bron verwijderen
       no_source_configuration:
-        title: Er zijn geen bewerkingen beschikbaar voor deze bron. Alleen de waarde wordt geëxporteerd.
+        title: Er zijn geen bewerkingen beschikbaar voor deze bron. De waarde wordt geëxporteerd zoals hij er nu staat.
       no_source_selected:
-        title: Momenteel geen bron geselecteerd.
-        subtitle: Voor meer informatie over toewijzingen en bewerkingen,
-        link: kan dit artikel u helpen
+        title: Klik op 'Bron toevoegen' om de inhoud van de kolom op te geven.
+        link: Kijk in ons helpcenter voor meer informatie.
       no_column_selected:
-        title: Momenteel geen kolom geselecteerd.
+        title: Nadat u de eerste kolom heeft gedefinieerd, kunt u uw eerste bron selecteren.
       selection:
         title: Selectie
-        separator: Scheidingsteken
         type:
           amount: Bedrag
           currency: Valuta
+          key: Bestandssleutel
+          path: Pad
+          name: Bestandsnaam
+        format: Indeling
+        parent:
+          information:
+            locale: Als het attribuut dat gebruikt wordt als label een waarde per locatie heeft, kunt u een specifieke taal selecteren.
+            channel: Als het attribuut dat gebruikt wordt als label een waarde per kanaal heeft, kunt u een specifiek kanaal selecteren.
+        code_label:
+          information: Voor dit attribuut kunt u ofwel de code of het label exporteren.
+        measurement:
+          information: Voor dit attribuut kunt u de waarde of de code of het label van de eenheid exporteren.
+          value: Waarde
+          unit_locale: Taal van eenheid
+          unit_code: Code van eenheid
+          unit_label: Label van eenheid
+        price:
+          information: Voor dit attribuut kunt u het bedrag of de valuta exporteren.
+        file:
+          information: Voor dit attribuut kunt u het pad, de bestandssleuten of de naam exporteren.
+      operation:
+        replacement:
+          title: Waarde vervangen
+          placeholder: Geef de vervangende waarde op
+          enabled: Vervangende waarde ingeschakeld
+          disabled: Vervangende waarde uitgeschakeld
   column:
     delete_message: Weet u zeker dat u deze kolom wilt verwijderen?
   validation:
     columns:
-      max_column_count_reached: U hebt het maximum aantal kolommen van {{ limit }} bereikt
+      max_column_count_reached: U hebt de limiet van {{ limit }} kolommen bereikt. U kunt geen kolommen meer toevoegen aan uw export.
       target:
-        should_not_be_blank: Kolomnaam mag niet leeg zijn
+        should_not_be_blank: Geef een kolomnaam op.
         max_length_reached: Kolomnaam is te lang. Hij moet {{ limit }} tekens of minder bevatten.
-        should_be_unique: Kolomnaam moet uniek zijn
+        should_be_unique: Deze kolomnaam bestaat al, voer een nieuwe naam in.
     sources:
-      max_source_count_reached: U hebt het maximum aantal bronnen van {{ limit }} bereikt
+      max_source_count_reached: U hebt de limiet van {{ limit }} bronnen bereikt. U kunt geen bronnen meer toevoegen aan uw export.
     locale:
-      should_be_active: Taal {{ locale_code }} moet actief zijn
+      should_be_active: De taal {{ locale_code }} moet actief zijn.
     channel:
-      should_exist: Kanaal {{ channel_code }} moet bestaan
+      should_exist: Het kanaal {{ channel_code }} moet actief zijn.

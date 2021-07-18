@@ -126,7 +126,7 @@ extensions:
             label: pim_import_export.form.job_instance.tab.properties.file_path.title
             tooltip: pim_import_export.form.job_instance.tab.properties.file_path.help
 
-    pim-job-instance-xlsx-product-export-edit-properties-lines-per-file:
+    pim-job-instance-xlsx-tailored-product-export-edit-properties-lines-per-file:
         module: pim/job/common/edit/field/text
         parent: pim-job-instance-xlsx-tailored-product-export-edit-global
         position: 150

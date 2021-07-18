@@ -1,0 +1,15 @@
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: pim-web
+  labels:
+    {{- include "pim.extraLabels" . | indent 4 }}
+spec:
+  type: ClusterIP
+  selector:
+    component: pim-web
+    role: pim-web
+  ports:
+    - name: pim-web-http
+      port: 80

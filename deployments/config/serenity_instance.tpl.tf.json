@@ -21,7 +21,6 @@
       }
   },
   "terraform": {
-      "required_version": "= 0.12.25",
       "backend": {
           "gcs": {
               "bucket": "akecld-terraform-dev",

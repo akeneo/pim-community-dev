@@ -107,6 +107,8 @@ class IndexRecordsCommand extends Command
 
             return self::ERROR_CODE_USAGE;
         }
+
+        return 0;
     }
 
     /**

@@ -97,7 +97,9 @@ class ColumnView extends BaseView {
                       fetcherRegistry
                         .getFetcher('association-type')
                         .fetchByIdentifiers(codes)
-                        .then((associationTypes: AssociationType[]) => associationTypes.filter(associationType=>codes.includes(associationType.code)))
+                        .then((associationTypes: AssociationType[]) =>
+                          associationTypes.filter(associationType => codes.includes(associationType.code))
+                        )
                         .then(resolve)
                     );
                   },

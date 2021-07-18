@@ -80,5 +80,7 @@ class RefreshAssetsCommand extends Command
             $i++;
         }
         $progressBar->finish();
+
+        return 0;
     }
 }

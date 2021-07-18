@@ -1,0 +1,99 @@
+{{ $tplCtx := . -}}
+{{ range $daemonName, $daemonOptions := .Values.pim.daemons -}}
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: pim-daemon-{{ $daemonName }}
+  labels:
+    component: "pim-daemon-{{ $daemonName }}" # Deprecated. Cf https://www.notion.so/akeneo/Tagging-strategy-782b4ae037c44d4884b02c8c62e81117
+    app.kubernetes.io/component: "pim-daemon-{{ $daemonName }}"
+    role: "pim-daemon-{{ $daemonName }}" # Deprecated. Cf https://www.notion.so/akeneo/Tagging-strategy-782b4ae037c44d4884b02c8c62e81117
+    {{- include "pim.standardLabels" $tplCtx | indent 4 }}
+    {{- include "pim.extraLabels" $tplCtx | indent 4 }}
+spec:
+  replicas: {{ $daemonOptions.replicas }}
+  minReadySeconds: 30
+  selector:
+    matchLabels:
+      component: "pim-daemon-{{ $daemonName }}"
+      release: "{{ $tplCtx.Release.Name }}"
+  strategy:
+{{- if $daemonOptions.trapped }}
+    type: RollingUpdate
+    rollingUpdate:
+      maxUnavailable: 100%
+      maxSurge: 100%
+{{- else }}
+    type: Recreate
+{{- end }}
+
+  template:
+    metadata:
+      labels:
+        component: "pim-daemon-{{ $daemonName }}" # Deprecated. Cf https://www.notion.so/akeneo/Tagging-strategy-782b4ae037c44d4884b02c8c62e81117
+        app.kubernetes.io/component: "pim-daemon-{{ $daemonName }}"
+        role: "pim-daemon-{{ $daemonName }}" # Deprecated. Cf https://www.notion.so/akeneo/Tagging-strategy-782b4ae037c44d4884b02c8c62e81117
+        {{- include "pim.standardLabels" $tplCtx | indent 8 }}
+        {{- include "pim.extraLabels" $tplCtx | indent 8 }}
+      annotations:
+        checksum/env-config: {{ include (print $.Template.BasePath "/env-configmap.yaml") $tplCtx | replace  (printf "%s-%s" $tplCtx.Chart.Name $tplCtx.Chart.Version ) "" | sha256sum }} # force reload of pods upon change of the configmap
+        checksum/secrets: {{ include (print $.Template.BasePath "/pim-secrets.yaml") $tplCtx | replace  (printf "%s-%s" $tplCtx.Chart.Name $tplCtx.Chart.Version ) "" | sha256sum }} # force reload of pods upon change of the configmap
+    spec:
+{{- if $daemonOptions.trapped }}
+      terminationGracePeriodSeconds: 86400
+{{- end }}
+      affinity:
+        podAntiAffinity:
+          preferredDuringSchedulingIgnoredDuringExecution:
+          - weight: 1
+            podAffinityTerm:
+              topologyKey: kubernetes.io/hostname
+              labelSelector:
+                matchLabels:
+                  app: "{{ template "pim.fullName" $tplCtx }}"
+                  release: "{{ $tplCtx.Release.Name }}"
+                  role: pim-daemon-{{ $daemonName }}
+      containers:
+        - name: php
+          image: {{ template "pim.imageNameAndTag" $tplCtx }}
+          imagePullPolicy: {{ $tplCtx.Values.image.pim.pullPolicy | quote }}
+{{- if $daemonOptions.trapped }}
+          command: ['setpriv','--reuid=www-data','--regid=www-data','--init-groups','bin/queue-daemon-wrapper.sh','{{ $daemonOptions.pimCommand }}']
+{{- else }}
+          command: ['sh', '-c', 'export HOME=/srv/pim && cd /srv/pim && su www-data -s /bin/bash -c "php bin/console --quiet {{ $daemonOptions.pimCommand }}"']
+{{- end }}
+          resources:
+{{ toYaml (required ( printf "Missing daemon resources for %s" $daemonName ) $daemonOptions.resources) | indent 12 }}
+          volumeMounts:
+            - name: google-cloud-pim-storage-key
+              mountPath: /var/secrets/google/srnt.json
+              subPath: srnt.json
+              readOnly: true
+          envFrom: [ configMapRef: { name: {{ template "pim.fullName"  $tplCtx }}-env } ]
+          env:
+            - { name: MAILER_USER, valueFrom: { secretKeyRef: { name: pim-secrets, key: mailerLogin } } }
+            - { name: MAILER_PASSWORD, valueFrom: { secretKeyRef: { name: pim-secrets, key: mailerPassword } } }
+            - { name: APP_DATABASE_PASSWORD, valueFrom: { secretKeyRef: { name: pim-secrets, key: mysqlPimUserPassword } } }
+            - { name: GOOGLE_NAMESPACE, valueFrom: { fieldRef: { fieldPath: metadata.namespace } } }
+            - { name: GOOGLE_POD_NAME, valueFrom: { fieldRef: { fieldPath: metadata.name } } }
+            - { name: CONTAINER_NAME, value: php }
+{{- if $tplCtx.Values.common.phpConfCLI }}
+{{ toYaml $tplCtx.Values.common.phpConfCLI | indent 12 }}
+{{- end }}
+      initContainers:
+        - name: php-wait-for-dependencies
+          image: {{ template "pim.imageNameAndTag" $tplCtx }}
+          imagePullPolicy: {{ $tplCtx.Values.image.pim.pullPolicy | quote }}
+          command: ['sh', '-c', 'su www-data -s /bin/bash -c "cd /srv/pim && php bin/wait-for-dependencies"']
+          envFrom: [ configMapRef: { name: {{ template "pim.fullName" $tplCtx }}-env } ]
+          env:
+            - { name: APP_DATABASE_PASSWORD, valueFrom: { secretKeyRef: { name: pim-secrets, key: mysqlPimUserPassword } } }
+      volumes:
+        - name: google-cloud-pim-storage-key
+          secret:
+            secretName: pim-secrets
+            items:
+            - key: srntPimStorageKey
+              path: srnt.json
+---
+{{ end }}

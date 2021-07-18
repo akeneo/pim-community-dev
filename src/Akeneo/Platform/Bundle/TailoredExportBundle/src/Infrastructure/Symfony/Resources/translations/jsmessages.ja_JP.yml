@@ -1,62 +1,94 @@
 batch_jobs.xlsx_tailored_product_export.label: カスタム商品を XLSX 形式でエクスポート
 akeneo.tailored_export:
+  filters:
+    completeness:
+      locales:
+        label: 完全性のロケールを定義する
+        placeholder: ロケールをいくつか選択
+        remove: ロケールを削除
   form:
     job_instance:
       tab:
         content:
-          title: データをフィルタ
+          title: 商品の選択
         column:
-          title: 列を選択
+          title: 構造をエクスポート
+        filters:
+          title: 商品選択を定義する
   column_list:
     title: 列
     header:
-      column_name: 列名
-      source_data: ソースデータ
+      column_name: 列ヘッダ
+      source_data: 列コンテンツ
     column_row:
-      target_placeholder: ここに新しい列名を定義します
+      target_placeholder: ここに新しい列名を定義する
       remove: 列を削除
-      no_source: ソースなし
+      no_source: コンテンツソースを定義する
     no_column_selection:
-      title: エクスポートする列が選択されていません
-      subtitle: マッピングと操作については
-      link: こちらの記事をご覧ください
+      title: エクスポートプロファイルが空です。最初の列を追加してください。
+      subtitle: '「最初の列を追加」をクリックして、エクスポートテーブルの構築を開始します。'
+      link: 詳細についてはヘルプセンターをご確認ください。
       add_column: 最初の列を追加
   column_details:
     sources:
       title: ソース
       add: ソースを追加
       no_result: 結果はありません。
-      locale_specific.info: この属性はロケール固有です
+      locale_specific.info: 属性はロケールごとに値があります。
       remove:
         title: ソース
         text: このソースを本当に削除しますか？
         button: このソースを削除
       no_source_configuration:
-        title: このソースで利用できる操作はありません。値のみがエクスポートされます。
+        title: このソースで利用できる操作はありません。値がそのままエクスポートされます。
       no_source_selected:
-        title: 現在選択されたソースはありません。
-        subtitle: マッピングと操作については
-        link: こちらの記事をご覧ください
+        title: '「ソースを追加」をクリックして列コンテンツの定義を開始します。'
+        link: 詳細についてはヘルプセンターをご確認ください。
       no_column_selected:
-        title: 現在選択された列はありません。
+        title: 最初の列が定義されると、最初のソースを選択できます。
       selection:
         title: 選択
-        separator: 区切り
         type:
           amount: 数量
           currency: 通貨
+          key: ファイルキー
+          path: パス
+          name: ファイル名
+        format: フォーマット
+        parent:
+          information:
+            locale: ラベルとして使用される属性にロケールごとに値がある場合、特定のロケールを選択できます。
+            channel: ラベルとして使用される属性にチャンネルごとに値がある場合、特定のチャンネルを選択できます。
+        code_label:
+          information: この属性では、コードまたはラベルのいずれかをエクスポートできます。
+        measurement:
+          information: この属性では、値、ユニットコードまたはユニットラベルのいずれかをエクスポートできます。
+          value: 値
+          unit_locale: ユニットロケール
+          unit_code: ユニットコー​​ド
+          unit_label: ユニットラベル
+        price:
+          information: この属性では、金額または通貨のいずれかをエクスポートできます。
+        file:
+          information: この属性では、パス、ファイルキーまたは名前のいずれかをエクスポートできます。
+      operation:
+        replacement:
+          title: 値を置き換える
+          placeholder: 置換値を定義する
+          enabled: 有効な置換値
+          disabled: 無効な置換値
   column:
     delete_message: この列を本当に削除しますか？
   validation:
     columns:
-      max_column_count_reached: 最大列数の {{ limit }} に達しました 
+      max_column_count_reached: '{{ limit }} 列の上限に達しました。これ以上エクスポートに列を追加できません。'
       target:
-        should_not_be_blank: 列名は空にできません
+        should_not_be_blank: 列名を定義してください。
         max_length_reached: 列名が長すぎます。{{ limit }} 文字未満である必要があります。
-        should_be_unique: 列名は一意である必要があります
+        should_be_unique: この列名はすでに存在します。新しい列名を入力してください。
     sources:
-      max_source_count_reached: 最大ソース数の {{ limit }} に達しました
+      max_source_count_reached: '{{ limit }} ソースの上限に達しました。これ以上エクスポートにソースを追加できません。'
     locale:
-      should_be_active: ロケール {{ locale_code }} はアクティブである必要があります
+      should_be_active: '{{ locale_code }} ロケールはアクティブである必要があります。'
     channel:
-      should_exist: チャンネル {{ channel_code }} が存在する必要があります
+      should_exist: '{{ channel_code }} チャンネルはアクティブである必要があります。'

@@ -1,62 +1,94 @@
 batch_jobs.xlsx_tailored_product_export.label: Individueller Produktexport in XLSX
 akeneo.tailored_export:
+  filters:
+    completeness:
+      locales:
+        label: Definieren Sie die Gebietsschemen für die Vollständigkeit
+        placeholder: Gebietsschema auswählen
+        remove: Gebietsschema entfernen
   form:
     job_instance:
       tab:
         content:
-          title: Daten filtern
+          title: Produktauswahl
         column:
-          title: Spalten auswählen
+          title: Struktur exportieren
+        filters:
+          title: Definieren Sie Ihre Produktauswahl
   column_list:
     title: Spalten
     header:
-      column_name: Spaltenname
-      source_data: Quelldaten
+      column_name: Spaltenkopfzeile
+      source_data: Spalteninhalt
     column_row:
-      target_placeholder: Legen Sie hier Ihren neuen Spaltennamen fest
+      target_placeholder: Definieren Sie hier Ihren Spaltennamen
       remove: Spalte entfernen
-      no_source: Keine Quelle
+      no_source: Inhaltsquelle definieren
     no_column_selection:
-      title: Keine Spaltenauswahl zum Exportieren
-      subtitle: Um mehr über Mapping und Operationen zu erfahren,
-      link: kann dieser Artikel Ihnen helfen
+      title: Ihr Exportprofil ist leer. Fügen Sie Ihre erste Spalte hinzu.
+      subtitle: Klicken Sie auf 'Erste Spalte hinzufügen', um mit dem Erstellen Ihrer Exporttabelle zu beginnen.
+      link: Weitere Informationen finden Sie in unserem Hilfe-Center.
       add_column: Erste Spalte hinzufügen
   column_details:
     sources:
       title: Quellen
       add: Quelle hinzufügen
       no_result: Leider gibt es keine Ergebnisse.
-      locale_specific.info: Dieses Attribut ist gebietsschemaspezifisch
+      locale_specific.info: Dieses Attribut hat einen Wert pro Gebietsschema.
       remove:
         title: Quelle
         text: Sind Sie sicher, dass Sie diese Quelle entfernen möchten?
         button: Diese Quelle entfernen
       no_source_configuration:
-        title: Für diese Quelle sind keine Operationen verfügbar. Nur der Wert wird exportiert.
+        title: Für diese Quelle sind keine Operationen verfügbar. Ihr Wert wird wie exportiert.
       no_source_selected:
-        title: Keine Quelle für den Moment ausgewählt.
-        subtitle: Um mehr über Mapping und Operationen zu erfahren,
-        link: kann dieser Artikel Ihnen helfen
+        title: Klicken Sie auf 'Quelle hinzufügen', um den Inhalt der Spalte zu definieren.
+        link: Weitere Informationen finden Sie in unserem Hilfe-Center.
       no_column_selected:
-        title: Keine Spalte für den Moment ausgewählt.
+        title: Sobald Ihre erste Spalte definiert ist, können Sie Ihre erste Quelle auswählen.
       selection:
         title: Auswahl
-        separator: Trennzeichen
         type:
           amount: Anzahl
           currency: Währung
+          key: Dateischlüssel
+          path: Pfad
+          name: Dateiname
+        format: Format
+        parent:
+          information:
+            locale: Wenn das Attribut als Label einen Wert pro Gebietsschema hat, können Sie ein bestimmtes Gebietsschema auswählen.
+            channel: Wenn das Attribut als Label einen Wert pro Kanal hat, können Sie einen bestimmten Kanal auswählen.
+        code_label:
+          information: Für dieses Attribut können Sie entweder den Code oder das Label exportieren.
+        measurement:
+          information: Für dieses Attribut können Sie entweder den Wert, den Einheitencode oder das Label exportieren.
+          value: Wert
+          unit_locale: Gebietsschema
+          unit_code: Einheit
+          unit_label: Einheitslabel
+        price:
+          information: Für dieses Attribut können Sie entweder den Betrag oder die Währung exportieren.
+        file:
+          information: Für dieses Attribut können Sie entweder den Pfad, den Dateischlüssel oder den Namen exportieren.
+      operation:
+        replacement:
+          title: Wert ersetzen
+          placeholder: Ersetzungswert festlegen
+          enabled: Ersetzungswert aktiviert
+          disabled: Ersetzungswert deaktiviert
   column:
     delete_message: Sind Sie sicher, dass Sie diese Spalte entfernen möchten?
   validation:
     columns:
-      max_column_count_reached: Sie haben die maximale Spaltenanzahl von {{ limit }} erreicht
+      max_column_count_reached: Sie haben das Limit von {{ limit }} Spalten erreicht, Sie können keine Spalten mehr zu Ihrem Export hinzufügen.
       target:
-        should_not_be_blank: Spaltenname darf nicht leer sein
+        should_not_be_blank: Bitte geben Sie einen Spaltennamen an.
         max_length_reached: Der Spaltenname ist zu lang. Er sollte {{ limit }} oder weniger Zeichen enthalten.
-        should_be_unique: Spaltenname muss eindeutig sein
+        should_be_unique: Dieser Spaltenname existiert bereits, bitte geben Sie einen neuen ein.
     sources:
-      max_source_count_reached: Du hast die maximale Anzahl an Quellen von {{ limit }} erreicht
+      max_source_count_reached: Sie haben das Limit von {{ limit }} Quellen erreicht, Sie können keine Quellen mehr zu Ihrem Export hinzufügen.
     locale:
-      should_be_active: Gebietsschema {{ locale_code }} sollte aktiv sein
+      should_be_active: Das Gebietsschema {{ locale_code }} sollte aktiv sein.
     channel:
-      should_exist: Kanal {{ channel_code }} sollte existieren
+      should_exist: Der {{ channel_code }} -Kanal sollte aktiv sein.

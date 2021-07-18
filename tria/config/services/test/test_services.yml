@@ -1,0 +1,3 @@
+services:
+    akeneo_monitoring.status_checker.pub_sub:
+        class: 'Akeneo\Platform\Bundle\MonitoringBundle\ServiceStatusChecker\PubSub\NullPubSubStatusChecker'
