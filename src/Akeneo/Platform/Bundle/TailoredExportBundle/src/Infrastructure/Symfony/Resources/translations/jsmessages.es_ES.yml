@@ -48,7 +48,6 @@ akeneo.tailored_export:
         title: Una vez definida su primera columna, puede seleccionar su primera fuente.
       selection:
         title: Selección
-        collection_separator: Separador
         type:
           amount: Cantidad
           currency: Moneda

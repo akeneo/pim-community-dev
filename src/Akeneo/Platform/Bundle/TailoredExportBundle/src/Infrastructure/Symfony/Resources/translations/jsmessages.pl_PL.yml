@@ -48,7 +48,6 @@ akeneo.tailored_export:
         title: Po zdefiniowaniu pierwszej kolumny możesz wybrać pierwsze źródło.
       selection:
         title: Wybór
-        collection_separator: Separator
         type:
           amount: Kwota
           currency: Waluta

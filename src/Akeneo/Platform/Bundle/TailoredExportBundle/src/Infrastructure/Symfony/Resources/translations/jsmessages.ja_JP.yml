@@ -48,7 +48,6 @@ akeneo.tailored_export:
         title: 最初の列が定義されると、最初のソースを選択できます。
       selection:
         title: 選択
-        collection_separator: 区切り
         type:
           amount: 数量
           currency: 通貨
