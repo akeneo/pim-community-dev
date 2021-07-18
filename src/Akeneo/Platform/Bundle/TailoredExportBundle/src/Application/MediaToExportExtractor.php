@@ -13,6 +13,7 @@ declare(strict_types=1);
 
 namespace Akeneo\Platform\TailoredExport\Application;
 
+use Akeneo\Platform\TailoredExport\Application\Query\Column\Column;
 use Akeneo\Platform\TailoredExport\Application\Query\Column\ColumnCollection;
 use Akeneo\Platform\TailoredExport\Application\Query\Selection\File\FileSelectionInterface;
 use Akeneo\Platform\TailoredExport\Domain\MediaToExport;

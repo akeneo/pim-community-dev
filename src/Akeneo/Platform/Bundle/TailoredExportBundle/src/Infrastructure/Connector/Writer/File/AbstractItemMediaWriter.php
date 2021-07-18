@@ -79,7 +79,7 @@ abstract class AbstractItemMediaWriter implements
             $this->addHeadersIfNeeded(current($items)->getMappedProducts());
         }
 
-        /** @var $processedTailoredExport ProcessedTailoredExport */
+        /** @var ProcessedTailoredExport $processedTailoredExport */
         foreach ($items as $processedTailoredExport) {
             if ($this->isMaxLinesPerFileReached()) {
                 $this->writer->close();
