@@ -48,7 +48,6 @@ akeneo.tailored_export:
         title: Sobald Ihre erste Spalte definiert ist, können Sie Ihre erste Quelle auswählen.
       selection:
         title: Auswahl
-        collection_separator: Trennzeichen
         type:
           amount: Anzahl
           currency: Währung

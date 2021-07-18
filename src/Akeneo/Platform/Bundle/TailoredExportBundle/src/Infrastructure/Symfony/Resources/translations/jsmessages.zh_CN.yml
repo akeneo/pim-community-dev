@@ -48,7 +48,6 @@ akeneo.tailored_export:
         title: 一旦定义好第一列，您可以选择第一个源。
       selection:
         title: 选择
-        collection_separator: 分隔符
         type:
           amount: 金额
           currency: 货币

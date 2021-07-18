@@ -48,7 +48,6 @@ akeneo.tailored_export:
         title: Una volta che la prima colonna è definita, puoi selezionare la tua prima origine.
       selection:
         title: Selezione
-        collection_separator: Separatore
         type:
           amount: Importo
           currency: Valuta

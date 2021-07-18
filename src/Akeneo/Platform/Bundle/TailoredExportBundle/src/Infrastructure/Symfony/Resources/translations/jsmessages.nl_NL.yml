@@ -48,7 +48,6 @@ akeneo.tailored_export:
         title: Nadat u de eerste kolom heeft gedefinieerd, kunt u uw eerste bron selecteren.
       selection:
         title: Selectie
-        collection_separator: Scheidingsteken
         type:
           amount: Bedrag
           currency: Valuta
