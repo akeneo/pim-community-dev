@@ -33,7 +33,7 @@ extensions:
             title: pim_enrich.entity.product.page_title.index
 
     pim-product-index-grid-context:
-        module: pim/product/product-grid-context
+        module: pim/product/product-grid-title-context
         parent: pim-product-index
         targetZone: context
 
