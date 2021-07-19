@@ -50,6 +50,7 @@ akeneo_data_quality_insights:
           messages:
             first_step:
               message1: 属性とオプションのラベルで戸惑っていますか？<a href="{{ link }}" target="_blank">こちら</a>で基本を確認してみませんか？
+              message2: 属性と属性のオプションについてヘルプが必要ですか？<a href="{{ link }}" target="_blank">こちら</a>をご覧ください！
             second_step:
               message1: 属性とオプションのラベルを詳しく見てみましょう。商品が改善されます。
               message2: どこかでコントロールを失ったようです！一部のラベルをまだ調整する必要があります。
