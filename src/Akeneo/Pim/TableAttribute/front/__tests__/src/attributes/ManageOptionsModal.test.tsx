@@ -5,6 +5,7 @@ import {ManageOptionsModal} from '../../../src/attribute/ManageOptionsModal';
 import {getTableAttribute} from '../factories/Attributes';
 import {getSelectColumnDefinition} from '../factories/ColumnDefinition';
 import {ingredientsSelectOptions} from '../../../src/fetchers/__mocks__/SelectOptionsFetcher';
+
 jest.mock('../../../src/fetchers/SelectOptionsFetcher');
 jest.mock('../../../src/fetchers/LocaleFetcher');
 jest.mock('../../../src/attribute/LocaleSwitcher');
@@ -273,5 +274,33 @@ describe('ManageOptionsModal', () => {
     fireEvent.click(await screen.findByText('Fake LocaleSwitcher de_DE'));
     expect(await screen.findByLabelText('English (United States)')).toHaveValue('Salt');
     expect(await findLabelInput(0)).toHaveValue('Achtzergüntlich');
+  });
+
+  it('should focus on new field when entering Enter', async () => {
+    renderWithProviders(
+      <ManageOptionsModal
+        attribute={getTableAttribute()}
+        onChange={jest.fn()}
+        columnDefinition={getSelectColumnDefinition()}
+        onClose={jest.fn()}
+      />
+    );
+    expect(await findCodeInput(0)).toHaveValue('salt');
+
+    // Test Enter on code field
+    fireEvent.change(getCodeInput('new'), {target: {value: 'a_code_that_will_receive_enter'}});
+    const codeInput = await findCodeInput(4);
+    expect(codeInput).toHaveValue('a_code_that_will_receive_enter');
+    fireEvent.focus(codeInput);
+    fireEvent.keyDown(codeInput, {key: 'Enter', code: 'Enter'});
+    expect(getCodeInput('new')).toHaveFocus();
+
+    // Test Enter on label field
+    fireEvent.change(getLabelInput('new'), {target: {value: 'A label that will receive Enter'}});
+    const labelInput = await findLabelInput(5);
+    expect(labelInput).toHaveValue('A label that will receive Enter');
+    fireEvent.focus(labelInput);
+    fireEvent.keyDown(labelInput, {key: 'Enter', code: 'Enter'});
+    expect(getLabelInput('new')).toHaveFocus();
   });
 });
