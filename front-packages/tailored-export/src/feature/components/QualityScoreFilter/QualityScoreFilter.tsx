@@ -51,13 +51,12 @@ const QualityScoreFilter = ({availableOperators, filter, onChange, validationErr
   const localesErrors = filterErrors(formattedValidationErrors, '[context][locales]');
 
   const handleOperatorChange = (newOperator: Operator) => {
-    onChange({field: filter.field, value: filter.value, operator: newOperator});
+    onChange({...filter, operator: newOperator});
   };
   const handleLocalesChange = (newLocales: LocaleCode[]) => {
     const newFilter = {...filter, context: {scope: filter.context?.scope ?? '', locales: newLocales}};
     onChange(newFilter);
   };
-
   const handleChannelChange = (newScope: ChannelCode) => {
     const newAvailableLocaleCodes = getLocalesFromChannel(availableChannels, newScope).map(
       (locale: Locale) => locale.code

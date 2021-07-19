@@ -5,7 +5,7 @@ import {pimTheme} from 'akeneo-design-system';
 import {DependenciesProvider} from '@akeneo-pim-community/legacy-bridge';
 import {AssociationType, Attribute, FetcherContext, QualityScoreFilter} from '@akeneo-pim-enterprise/tailored-export';
 import {Channel, filterErrors, ValidationError} from '@akeneo-pim-community/shared';
-const BaseQualityScoreFilter = require('pim/filter/product/quality-score');
+const BaseQualityScoreFilter = require('pim/filter/filter');
 const mediator = require('oro/mediator');
 const fetcherRegistry = require('pim/fetcher-registry');
 
@@ -50,18 +50,15 @@ class FilterQualityScore extends BaseQualityScoreFilter {
    * {@inheritdoc}
    */
   render() {
-    const promises: any[] = [];
     this.elements = {};
     this.setEditable(true);
 
-    mediator.trigger('pim_enrich:form:filter:extension:add', {filter: this, promises: promises});
+    mediator.trigger('pim_enrich:form:filter:extension:add', {filter: this});
 
-    $.when.apply($, promises).then(() => {
-      this.$el.html(this.renderInput());
-      this.renderElements();
-      this.postRender();
-      this.delegateEvents();
-    });
+    this.$el.html(this.renderInput());
+    this.renderElements();
+    this.postRender();
+    this.delegateEvents();
 
     return this;
   }
@@ -118,6 +115,10 @@ class FilterQualityScore extends BaseQualityScoreFilter {
       this.$('.quality-score-filter-container')[0]
     );
   }
+  /**
+   * {@inheritdoc}
+   */
+  updateState() {}
 }
 
 export = FilterQualityScore;
