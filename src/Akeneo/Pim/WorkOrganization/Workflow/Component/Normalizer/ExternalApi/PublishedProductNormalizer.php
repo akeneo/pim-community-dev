@@ -24,15 +24,16 @@ use Symfony\Component\Serializer\Normalizer\NormalizerInterface;
  */
 class PublishedProductNormalizer implements NormalizerInterface, CacheableSupportsMethodInterface
 {
-    /** @var NormalizerInterface */
-    protected $productNormalizer;
+    protected NormalizerInterface $productNormalizer;
+    private ?NormalizerInterface $associationNormalizer;
 
-    /**
-     * @param NormalizerInterface $productNormalizer
-     */
-    public function __construct(NormalizerInterface $productNormalizer)
-    {
+    public function __construct(
+        NormalizerInterface $productNormalizer,
+        // TODO pullup master: remove nullable
+        ?NormalizerInterface $associationNormalizer = null
+    ) {
         $this->productNormalizer = $productNormalizer;
+        $this->associationNormalizer = $associationNormalizer;
     }
 
     /**
@@ -48,6 +49,15 @@ class PublishedProductNormalizer implements NormalizerInterface, CacheableSuppor
         }
         if (array_key_exists('with_quality_scores', $context)) {
             $normalizedPublishedProduct['quality_scores'] = [];
+        }
+
+        // TODO pullup master: remove null check
+        if (null !== $this->associationNormalizer) {
+            $normalizedPublishedProduct['associations'] = $this->associationNormalizer->normalize(
+                $product,
+                $format,
+                $context
+            );
         }
 
         return $normalizedPublishedProduct;

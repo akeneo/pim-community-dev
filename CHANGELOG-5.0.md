@@ -1,5 +1,9 @@
 # 5.0.x
 
+## Bug fixes
+
+- PIM-9971: [Backport] Add associations in published product normalizer
+
 ## Improvements
 
 - PIM-9969: Add queue to lazy load Reference Entity Records thumbnails
@@ -314,13 +318,13 @@ PIM-9823: [Backport] PIM-9734: Fix URI too long for rules on smart attributes
 - Change `Akeneo\Pim\Permission\Bundle\Entity\Query\ProductCategoryAccessQuery::getGrantedProductIdentifiers()` method to replace `Symfony\Component\Security\Core\User\UserInterface $user` parameter by `Akeneo\UserManagement\Component\Model\UserInterface $user`
 - Change `Akeneo\Pim\Permission\Bundle\Entity\Query\ProductModelCategoryAccessQuery::getGrantedProductIdentifiers()` method to replace `Symfony\Component\Security\Core\User\UserInterface $user` parameter by `Akeneo\UserManagement\Component\Model\UserInterface $user`
 - Change `Akeneo\Pim\Permission\Bundle\Entity\Repository\CategoryAccessRepository` to use `Akeneo\UserManagement\Component\Model\UserInterface` instead of `Symfony\Component\Security\Core\User\UserInterface`. It affects the following public and protected methods:
-    - `getGrantedChildrenIds()`
-    - `getGrantedChildrenCodes()`
-    - `getGrantedCategoryIds()`
-    - `isOwner()`
-    - `areAllCategoryCodesGranted()`
-    - `isCategoriesGranted()`
-    - `getGrantedChildrenQB()`
+  - `getGrantedChildrenIds()`
+  - `getGrantedChildrenCodes()`
+  - `getGrantedCategoryIds()`
+  - `isOwner()`
+  - `areAllCategoryCodesGranted()`
+  - `isCategoriesGranted()`
+  - `getGrantedChildrenQB()`
 - Change `Akeneo\Pim\Permission\Bundle\Entity\Repository\CategoryAccessRepository::getGrantedUserGroupsForEntityWithValues()` to replace `Akeneo\Pim\Enrichment\Component\Product\Model\EntityWithValuesInterface $entityWithValues` parameter by `Akeneo\Tool\Component\Classification\CategoryAwareInterface $entity`
 - Change `Akeneo\Pim\Permission\Bundle\Manager\AttributeGroupAccessManager::isUserGranted()` to replace `Symfony\Component\Security\Core\User\UserInterface $user` parameter by `Akeneo\UserManagement\Component\Model\UserInterface $user`
 - Change `Akeneo\Pim\Permission\Bundle\Manager\CategoryAccessManager::isUserGranted()` to replace `Symfony\Component\Security\Core\User\UserInterface $user` parameter by `Akeneo\UserManagement\Component\Model\UserInterface $user`
@@ -339,7 +343,7 @@ PIM-9823: [Backport] PIM-9734: Fix URI too long for rules on smart attributes
 - Change `Akeneo\Pim\WorkOrganization\Workflow\Component\Repository\EntityWithValuesDraftRepositoryInterface::findUserEntityWithValuesDraft()` to return `Akeneo\Pim\WorkOrganization\Workflow\Component\Model\EntityWithValuesDraftInterface` instead of `Akeneo\Pim\Enrichment\Component\Product\Model\EntityWithValuesInterface`
 - Change constructor `Akeneo\Pim\WorkOrganization\TeamworkAssistant\Bundle\EventListener\EnsureUserCanBeDeletedSubscriber` to make the parameter `IsUserOwnerOfProjectsQueryInterface $isUserOwnerOfProjectsQuery` not null
 - Update `Akeneo\Pim\WorkOrganization\Workflow\Component\Model\PublishedProduct` to:
-    - remove the `setFamilyId()`, `setProductModel()` and `getProductModel()` methods
-    - remove the `$categoryIds` public property and the `$familyId`, `$groupIds` and `$productModel` protected properties
-    - remove the `getAssociationForType()`, `getAssociationForTypeCode()` and `setAssociations()` public methods
+  - remove the `setFamilyId()`, `setProductModel()` and `getProductModel()` methods
+  - remove the `$categoryIds` public property and the `$familyId`, `$groupIds` and `$productModel` protected properties
+  - remove the `getAssociationForType()`, `getAssociationForTypeCode()` and `setAssociations()` public methods
 - Rename `Akeneo\Pim\Permission\Bundle\Entity\Repository\CategoryAccessRepository::isCategoriesGranted` to `isCategoryIdsGranted`
