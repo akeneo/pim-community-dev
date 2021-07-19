@@ -1575,13 +1575,13 @@ jobs:
           - run:
               name: Prepare the Terraform module with the upgrade script
               command: |
-                mkdir -p /home/circleci/project/deployments/terraform/deployments
-                cp -r /home/circleci/project/deployments/automation /home/circleci/project/deployments/terraform/deployments
+                mkdir -p deployments/terraform/deployments
+                cp -r deployments/automation deployments/terraform/deployments
           - run:
               name: Push Terraform modules to GCS
               command: |
-                BOTO_CONFIG=/dev/null gsutil -m cp -r /home/circleci/project/deployments/terraform gs://akecld-terraform-modules/growth-edition/$GROWTH_RELEASE_NAME/
-                BOTO_CONFIG=/dev/null gsutil -m cp -r /home/circleci/project/deployments/terraform gs://akecld-terraform-modules/growth-edition/$GROWTH_RELEASE_NAME/terraform/deployments/terraform
+                BOTO_CONFIG=/dev/null gsutil -m cp -r deployments/terraform gs://akecld-terraform-modules/growth-edition/$GROWTH_RELEASE_NAME/
+                BOTO_CONFIG=/dev/null gsutil -m cp -r deployments/terraform gs://akecld-terraform-modules/growth-edition/$GROWTH_RELEASE_NAME/terraform/deployments/terraform
                 BOTO_CONFIG=/dev/null gsutil -m cp -r gs://akecld-terraform-modules/growth-edition/$GROWTH_RELEASE_NAME gs://akecld-terraform-modules/growth-edition-dev/$GROWTH_RELEASE_NAME
           - run:
               name: Tag the Docker image with the definitive tag
