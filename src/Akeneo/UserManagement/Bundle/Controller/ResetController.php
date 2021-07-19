@@ -6,15 +6,18 @@ use Akeneo\Tool\Component\Email\SenderAddress;
 use Akeneo\UserManagement\Bundle\Form\Handler\ResetHandler;
 use Akeneo\UserManagement\Bundle\Manager\UserManager;
 use Akeneo\UserManagement\Component\Model\UserInterface;
+use DateTime;
+use DateTimeZone;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
 use Swift_Mailer;
-use Symfony\Bundle\FrameworkBundle\Controller\Controller;
+use Swift_Message;
+use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\Form\FormInterface;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Session\SessionInterface;
 use Symfony\Component\Security\Core\Authentication\Token\Storage\TokenStorageInterface;
 
-class ResetController extends Controller
+class ResetController extends AbstractController
 {
     const SESSION_EMAIL = 'pim_user_reset_email';
 
@@ -97,7 +100,7 @@ class ResetController extends Controller
         /**
          * @todo Move to postUpdate lifecycle event handler as service
          */
-        $message = (new \Swift_Message('Reset password'))
+        $message = (new Swift_Message('Reset password'))
             ->setFrom((string) SenderAddress::fromMailerUrl($this->mailerUrl))
             ->setTo($user->getEmail())
             ->setBody(
@@ -105,7 +108,7 @@ class ResetController extends Controller
                 'text/html'
             );
 
-        $user->setPasswordRequestedAt(new \DateTime('now', new \DateTimeZone('UTC')));
+        $user->setPasswordRequestedAt(new DateTime('now', new DateTimeZone('UTC')));
 
         $this->mailer->send($message);
         $this->userManager->updateUser($user);
@@ -178,7 +181,7 @@ class ResetController extends Controller
      * Get the truncated email displayed when requesting the resetting.
      * The default implementation only keeps the part following @ in the address.
      *
-     * @param \Akeneo\UserManagement\Component\Model\UserInterface $user
+     * @param UserInterface $user
      *
      * @return string
      */

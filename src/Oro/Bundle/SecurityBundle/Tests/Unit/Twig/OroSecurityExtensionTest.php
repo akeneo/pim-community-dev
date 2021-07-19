@@ -48,7 +48,7 @@ class OroSecurityExtensionTest extends \PHPUnit_Framework_TestCase
 
         foreach ($expectedFunctions as $twigFunction => $internalMethod) {
             $this->assertArrayHasKey($twigFunction, $actualFunctions);
-            $this->assertInstanceOf('\Twig_SimpleFunction', $actualFunctions[$twigFunction]);
+            $this->assertInstanceOf('TwigFunction', $actualFunctions[$twigFunction]);
             $this->assertAttributeEquals($internalMethod, 'method', $actualFunctions[$twigFunction]);
         }
     }

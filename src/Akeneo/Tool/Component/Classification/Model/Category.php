@@ -21,19 +21,19 @@ class Category implements CategoryInterface
     protected $code;
 
     /** @var int */
-    protected $left;
+    protected int $left;
 
     /** @var int */
-    protected $level;
+    protected int $level;
 
     /** @var int */
-    protected $right;
+    protected int $right;
 
     /** @var int */
-    protected $root;
+    protected int $root;
 
     /** @var CategoryInterface */
-    protected $parent;
+    protected \Akeneo\Pim\Enrichment\Component\Category\Model\CategoryInterface $parent;
 
     /** @var Collection */
     protected $children;

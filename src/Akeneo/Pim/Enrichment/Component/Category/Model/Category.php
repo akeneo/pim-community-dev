@@ -6,6 +6,7 @@ use Akeneo\Tool\Component\Classification\Model\Category as BaseCategory;
 use Akeneo\Tool\Component\Localization\Model\TranslationInterface;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
+use Gedmo\Mapping\Annotation as Gedmo;
 
 /**
  * Category class allowing to organize a flexible product class into trees
@@ -13,14 +14,15 @@ use Doctrine\Common\Collections\Collection;
  * @author    Romain Monceau <romain@akeneo.com>
  * @copyright 2013 Akeneo SAS (http://www.akeneo.com)
  * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
+ * @Gedmo\Tree(type="nested")
  */
 class Category extends BaseCategory implements CategoryInterface
 {
     /** @var Collection of ProductInterface */
-    protected $products;
+    protected ArrayCollection $products;
 
     /** @var Collection of ProductModelInterface */
-    protected $productModels;
+    protected ArrayCollection $productModels;
 
     /**
      * Used locale to override Translation listener's locale
@@ -28,18 +30,29 @@ class Category extends BaseCategory implements CategoryInterface
      *
      * @var string
      */
-    protected $locale;
+    protected string $locale;
 
     /** @var ArrayCollection of CategoryTranslation */
-    protected $translations;
+    protected ArrayCollection $translations;
 
     /** @var ArrayCollection of Channel */
-    protected $channels;
+    protected ArrayCollection $channels;
 
     /** @var \DateTime */
     protected $created;
 
     private \DateTime $updated;
+
+    /** @Gedmo\TreeLeft */
+    protected int $left;
+    /** @Gedmo\TreeLevel */
+    protected int $level;
+    /** @Gedmo\TreeRight */
+    protected int $right;
+    /** @Gedmo\TreeRoot */
+    protected int $root;
+    /** @Gedmo\TreeParent */
+    protected CategoryInterface $parent;
 
     public function __construct()
     {

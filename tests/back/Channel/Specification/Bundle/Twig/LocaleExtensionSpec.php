@@ -72,7 +72,7 @@ class LocaleExtensionSpec extends ObjectBehavior
                 $function = array_filter(
                     $subject,
                     function ($function) use ($name) {
-                        return $function instanceof \Twig_SimpleFunction &&
+                        return $function instanceof TwigFunction &&
                             $function->getName() === $name;
                     }
                 );

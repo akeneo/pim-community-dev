@@ -5,8 +5,8 @@ namespace Oro\Bundle\PimDataGridBundle\Twig;
 use Oro\Bundle\DataGridBundle\Datagrid\Manager;
 use Oro\Bundle\PimDataGridBundle\Datagrid\Configuration\ConfiguratorInterface;
 use Symfony\Contracts\Translation\TranslatorInterface;
-use Twig_Extension;
-use Twig_SimpleFunction;
+use Twig\Extension\AbstractExtension;
+use Twig\TwigFunction;
 
 /**
  * Add some functions about datagrid filters
@@ -15,16 +15,11 @@ use Twig_SimpleFunction;
  * @copyright 2015 Akeneo SAS (http://www.akeneo.com)
  * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
  */
-class FilterExtension extends Twig_Extension
+class FilterExtension extends AbstractExtension
 {
-    /** @var Manager */
-    private $datagridManager;
-
-    /** @var ConfiguratorInterface */
-    private $filtersConfigurator;
-
-    /** @var TranslatorInterface */
-    private $translator;
+    private Manager $datagridManager;
+    private ConfiguratorInterface $filtersConfigurator;
+    private TranslatorInterface $translator;
 
     public function __construct(Manager $datagridManager, ConfiguratorInterface $filtersConfigurator, TranslatorInterface $translator)
     {
@@ -36,10 +31,10 @@ class FilterExtension extends Twig_Extension
     /**
      * {@inheritdoc}
      */
-    public function getFunctions()
+    public function getFunctions(): array
     {
         return [
-            new Twig_SimpleFunction('filter_label', [$this, 'filterLabel']),
+            new TwigFunction('filter_label', [$this, 'filterLabel']),
         ];
     }
 
@@ -48,7 +43,7 @@ class FilterExtension extends Twig_Extension
      *
      * @return string
      */
-    public function filterLabel($code)
+    public function filterLabel(string $code): ?string
     {
         $configuration = $this->datagridManager->getDatagrid('product-grid')->getAcceptor()->getConfig();
         $this->filtersConfigurator->configure($configuration);
@@ -59,8 +54,6 @@ class FilterExtension extends Twig_Extension
             return null;
         }
 
-        $label = $this->translator->trans($label);
-
-        return $label;
+        return $this->translator->trans($label);
     }
 }

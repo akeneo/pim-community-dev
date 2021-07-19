@@ -4,8 +4,8 @@ declare(strict_types=1);
 
 namespace Akeneo\Pim\Enrichment\Bundle\Twig;
 
-use Twig_Extension;
-use Twig_SimpleFunction;
+use Twig\Extension\AbstractExtension;
+use Twig\TwigFunction;
 
 /**
  * Twig extension to manage attribute from twig templates
@@ -14,7 +14,7 @@ use Twig_SimpleFunction;
  * @copyright 2020 Akeneo SAS (http://www.akeneo.com)
  * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
  */
-class AttributeExtension extends Twig_Extension
+class AttributeExtension extends AbstractExtension
 {
     /**
      * {@inheritdoc}
@@ -22,7 +22,7 @@ class AttributeExtension extends Twig_Extension
     public function getFunctions()
     {
         return [
-            new Twig_SimpleFunction('contains_han_characters', [$this, 'containsHanCharacters']),
+            new TwigFunction('contains_han_characters', [$this, 'containsHanCharacters']),
         ];
     }
 

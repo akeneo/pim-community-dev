@@ -188,7 +188,7 @@ class ViewElementExtensionSpec extends ObjectBehavior
                 $function = array_filter(
                     $subject,
                     function ($function) use ($name, $needsContext, $safe) {
-                        return $function instanceof \Twig_SimpleFunction &&
+                        return $function instanceof TwigFunction &&
                             $function->getName() === $name &&
                             $function->needsContext() === $needsContext &&
                             $function->getSafe(new \Twig_Node()) === $safe;

@@ -30,8 +30,8 @@ $rules = [
         'Oro\Bundle\DataGridBundle',
         'Oro\Bundle\PimDataGridBundle',
         // TODO: dependencies related to the front end, remove twig screens
-        'Twig_SimpleFunction', // used by the category tree
-        'Twig_Extension', // used by Twig extensions
+        'TwigFunction', // used by the category tree
+        'AbstractExtension', // used by Twig extensions
         'Twig\Environment', // used by Twig extensions
 
         // Event API

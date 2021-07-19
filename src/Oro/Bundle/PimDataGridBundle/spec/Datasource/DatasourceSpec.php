@@ -3,7 +3,7 @@
 namespace spec\Oro\Bundle\PimDataGridBundle\Datasource;
 
 use Oro\Bundle\PimDataGridBundle\Datasource\DatasourceInterface;
-use Doctrine\Common\Persistence\ObjectManager;
+use Doctrine\Persistence\ObjectManager;
 use Oro\Bundle\DataGridBundle\Datagrid\DatagridInterface;
 use PhpSpec\ObjectBehavior;
 use Oro\Bundle\PimDataGridBundle\Datasource\ResultRecord\HydratorInterface;

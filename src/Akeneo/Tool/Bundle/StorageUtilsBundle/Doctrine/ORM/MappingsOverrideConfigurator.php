@@ -3,9 +3,8 @@
 namespace Akeneo\Tool\Bundle\StorageUtilsBundle\Doctrine\ORM;
 
 use Akeneo\Tool\Bundle\StorageUtilsBundle\Doctrine\MappingsOverrideConfiguratorInterface;
-use Doctrine\Common\Persistence\Mapping\ClassMetadata;
 use Doctrine\ORM\Configuration;
-use Doctrine\ORM\Mapping\ClassMetadata as OrmClassMetadata;
+use Doctrine\ORM\Mapping\ClassMetadata;
 use Doctrine\ORM\Mapping\ClassMetadataInfo;
 
 /**
@@ -55,9 +54,6 @@ class MappingsOverrideConfigurator implements MappingsOverrideConfiguratorInterf
 
     /**
      * Set the association mappings of a metadata.
-     *
-     * @param ClassMetadataInfo $metadata
-     * @param Configuration     $configuration
      */
     protected function setAssociationMappings(ClassMetadataInfo $metadata, Configuration $configuration)
     {
@@ -65,7 +61,7 @@ class MappingsOverrideConfigurator implements MappingsOverrideConfiguratorInterf
 
         foreach (class_parents($metadata->getName()) as $parent) {
             if (in_array($parent, $supportedClasses)) {
-                $parentMetadata = new OrmClassMetadata(
+                $parentMetadata = new ClassMetadata(
                     $parent,
                     $configuration->getNamingStrategy()
                 );
@@ -83,8 +79,6 @@ class MappingsOverrideConfigurator implements MappingsOverrideConfiguratorInterf
 
     /**
      * Unset the association mappings of a metadata.
-     *
-     * @param ClassMetadataInfo $metadata
      */
     protected function unsetAssociationMappings(ClassMetadataInfo $metadata)
     {
@@ -100,7 +94,7 @@ class MappingsOverrideConfigurator implements MappingsOverrideConfiguratorInterf
      *
      * @return bool
      */
-    protected function hasRelation($type)
+    protected function hasRelation($type): bool
     {
         return in_array(
             $type,

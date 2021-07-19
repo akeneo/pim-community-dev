@@ -6,7 +6,8 @@ use Akeneo\Pim\Enrichment\Bundle\Doctrine\ORM\Counter\CategoryItemsCounterInterf
 use Akeneo\Pim\Enrichment\Bundle\Doctrine\ORM\Counter\CategoryItemsCounterRegistryInterface;
 use Akeneo\Pim\Enrichment\Component\Category\Model\CategoryInterface;
 use Doctrine\Common\Collections\Collection;
-use Twig_SimpleFunction;
+use Twig\Extension\AbstractExtension;
+use Twig\TwigFunction;
 
 /**
  * Twig extension to render category from twig templates
@@ -15,7 +16,7 @@ use Twig_SimpleFunction;
  * @copyright 2013 Akeneo SAS (http://www.akeneo.com)
  * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
  */
-class CategoryExtension extends \Twig_Extension
+class CategoryExtension extends AbstractExtension
 {
     /** @var CategoryItemsCounterRegistryInterface */
     protected $categoryItemsCounter;
@@ -35,12 +36,12 @@ class CategoryExtension extends \Twig_Extension
     public function getFunctions()
     {
         return [
-            new Twig_SimpleFunction('children_response', [$this, 'childrenResponse']),
-            new Twig_SimpleFunction('children_tree_response', [$this, 'childrenTreeResponse']),
-            new Twig_SimpleFunction('list_categories_response', [$this, 'listCategoriesResponse']),
-            new Twig_SimpleFunction('list_trees_response', [$this, 'listTreesResponse']),
-            new Twig_SimpleFunction('exceeds_products_limit_for_removal', [$this, 'exceedsProductsLimitForRemoval']),
-            new Twig_SimpleFunction('get_products_limit_for_removal', [$this, 'getProductsLimitForRemoval']),
+            new TwigFunction('children_response', [$this, 'childrenResponse']),
+            new TwigFunction('children_tree_response', [$this, 'childrenTreeResponse']),
+            new TwigFunction('list_categories_response', [$this, 'listCategoriesResponse']),
+            new TwigFunction('list_trees_response', [$this, 'listTreesResponse']),
+            new TwigFunction('exceeds_products_limit_for_removal', [$this, 'exceedsProductsLimitForRemoval']),
+            new TwigFunction('get_products_limit_for_removal', [$this, 'getProductsLimitForRemoval']),
         ];
     }
 

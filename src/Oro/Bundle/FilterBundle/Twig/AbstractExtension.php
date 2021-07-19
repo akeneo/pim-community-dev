@@ -2,7 +2,9 @@
 
 namespace Oro\Bundle\FilterBundle\Twig;
 
-abstract class AbstractExtension extends \Twig_Extension
+use Twig\Extension\AbstractExtension as TwigExtension;
+
+abstract class AbstractExtension extends TwigExtension
 {
     /**
      * Extension name

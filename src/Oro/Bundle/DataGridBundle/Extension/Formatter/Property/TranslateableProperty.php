@@ -9,7 +9,6 @@ class TranslateableProperty extends FieldProperty
     const DOMAIN_KEY = 'domain';
     const LOCALE_KEY = 'locale';
 
-    /** @var array */
     protected $excludeParams = [self::DOMAIN_KEY, self::LOCALE_KEY];
 
     /**

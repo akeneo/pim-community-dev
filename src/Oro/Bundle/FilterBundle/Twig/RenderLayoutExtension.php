@@ -2,8 +2,11 @@
 
 namespace Oro\Bundle\FilterBundle\Twig;
 
-use Symfony\Component\Form\Extension\Core\View\ChoiceView;
+use Symfony\Component\Form\ChoiceList\View\ChoiceView;
 use Symfony\Component\Form\FormView;
+use Twig\Environment;
+use Twig\TwigFilter;
+use Twig\TwigFunction;
 
 class RenderLayoutExtension extends AbstractExtension
 {
@@ -23,7 +26,7 @@ class RenderLayoutExtension extends AbstractExtension
     public function getFunctions()
     {
         return [
-            new \Twig_SimpleFunction(
+            new TwigFunction(
                 'oro_filter_render_filter_javascript',
                 [$this, 'renderFilterJavascript'],
                 $this->defaultFunctionOptions
@@ -33,18 +36,13 @@ class RenderLayoutExtension extends AbstractExtension
 
     /**
      * Render JS code for specified filter form view
-     *
-     * @param \Twig_Environment $environment
-     * @param FormView $formView
-     * @return string
      */
-    public function renderFilterJavascript(\Twig_Environment $environment, FormView $formView)
+    public function renderFilterJavascript(Environment $environment, FormView $formView): string
     {
         if (!$formView->vars['block_prefixes'] || !is_array($formView->vars['block_prefixes'])) {
             return '';
         }
 
-        /** @var $template \Twig_Template */
         $template = $environment->loadTemplate($this->templateName);
 
         // start from the last element
@@ -66,13 +64,13 @@ class RenderLayoutExtension extends AbstractExtension
     /**
      * @return array
      */
-    public function getFilters()
+    public function getFilters(): array
     {
         return [
-            new \Twig_SimpleFilter(
+            new TwigFilter(
                 'oro_filter_choices',
                 [$this, 'getChoices']
-            )
+            ),
         ];
     }
 
@@ -90,7 +88,7 @@ class RenderLayoutExtension extends AbstractExtension
             if ($choice instanceof ChoiceView) {
                 $result[] = [
                     'value' => $choice->value,
-                    'label' => $choice->label
+                    'label' => $choice->label,
                 ];
             }
         }

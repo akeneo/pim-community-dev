@@ -3,14 +3,13 @@
 namespace Oro\Bundle\DataGridBundle\Twig;
 
 use Oro\Bundle\DataGridBundle\Datagrid\MetadataParser;
-use Twig_Extension;
-use Twig_SimpleFunction;
+use Twig\Extension\AbstractExtension;
+use Twig\TwigFunction;
 
-class MetadataExtension extends Twig_Extension
+class MetadataExtension extends AbstractExtension
 {
-    /**
-     * @param ContainerInterface $container
-     */
+    private MetadataParser $metadataParser;
+
     public function __construct(MetadataParser $metadataParser)
     {
         $this->metadataParser = $metadataParser;
@@ -19,11 +18,11 @@ class MetadataExtension extends Twig_Extension
     /**
      * {@inheritDoc}
      */
-    public function getFunctions()
+    public function getFunctions(): array
     {
         return [
-            new Twig_SimpleFunction('oro_datagrid_data', [$this->metadataParser, 'getGridData']),
-            new Twig_SimpleFunction('oro_datagrid_metadata', [$this->metadataParser, 'getGridMetadata'])
+            new TwigFunction('oro_datagrid_data', [$this->metadataParser, 'getGridData']),
+            new TwigFunction('oro_datagrid_metadata', [$this->metadataParser, 'getGridMetadata']),
         ];
     }
 }

@@ -20,9 +20,9 @@ class FilterExtensionSpec extends ObjectBehavior
         $this->beConstructedWith($manager, $configurator, $translator);
     }
 
-    function it_is_a_twig_extension()
+    function it_is_a_AbstractExtension()
     {
-        $this->shouldBeAnInstanceOf('Twig_Extension');
+        $this->shouldBeAnInstanceOf('AbstractExtension');
     }
 
     function it_throws_an_exception_when_i_try_to_get_the_label_of_an_unknown_filter(

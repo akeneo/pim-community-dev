@@ -4,6 +4,7 @@
 # Put parameters here that don't need to change on each machine where the app is deployed
 # https://symfony.com/doc/current/best_practices/configuration.html#application-related-configuration
 parameters:
+    kernel.root_dir: '%kernel.project_dir%/src'
     pim_ce_dev_src_folder_location: '%kernel.project_dir%'
     index_hosts: '%env(APP_INDEX_HOSTS)%'
     product_and_product_model_index_name: '%env(APP_PRODUCT_AND_PRODUCT_MODEL_INDEX_NAME)%'

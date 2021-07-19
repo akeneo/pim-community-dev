@@ -3,10 +3,9 @@ declare(strict_types=1);
 
 namespace Akeneo\Tool\Component\BatchQueue\Factory;
 
-use Akeneo\Tool\Component\Batch\Model\JobExecution;
 use Akeneo\Tool\Component\Batch\Model\JobInstance;
 use Akeneo\Tool\Component\BatchQueue\Queue\JobExecutionMessageInterface;
-use Doctrine\Common\Persistence\ObjectRepository;
+use Doctrine\Persistence\ObjectRepository;
 use Webmozart\Assert\Assert;
 
 /**

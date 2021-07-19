@@ -3,6 +3,8 @@
 namespace Akeneo\Platform\Bundle\UIBundle\Twig;
 
 use Akeneo\Platform\Bundle\UIBundle\EventListener\ScriptNonceGenerator;
+use Twig\Extension\AbstractExtension;
+use Twig\TwigFunction;
 
 /**
  * CSP twig extension.
@@ -13,10 +15,9 @@ use Akeneo\Platform\Bundle\UIBundle\EventListener\ScriptNonceGenerator;
  * @copyright 2019 Akeneo SAS (http://www.akeneo.com)
  * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
  */
-class ContentSecurityPolicyExtension extends \Twig_Extension
+class ContentSecurityPolicyExtension extends AbstractExtension
 {
-    /** @var ScriptNonceGenerator */
-    private $scriptNonceGenerator;
+    private ScriptNonceGenerator $scriptNonceGenerator;
 
     public function __construct(ScriptNonceGenerator $scriptNonceGenerator)
     {
@@ -29,7 +30,7 @@ class ContentSecurityPolicyExtension extends \Twig_Extension
     public function getFunctions()
     {
         return [
-            new \Twig_SimpleFunction('js_nonce', [$this, 'getScriptNonce']),
+            new TwigFunction('js_nonce', [$this, 'getScriptNonce']),
         ];
     }
 

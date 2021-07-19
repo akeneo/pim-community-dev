@@ -3,12 +3,12 @@
 namespace Akeneo\UserManagement\Bundle\Controller;
 
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
-use Symfony\Bundle\FrameworkBundle\Controller\Controller;
+use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\Security\Csrf\CsrfTokenManagerInterface;
 use Symfony\Component\Security\Http\Authentication\AuthenticationUtils;
 use Symfony\Component\Security\Http\Logout\LogoutUrlGenerator;
 
-class SecurityController extends Controller
+class SecurityController extends AbstractController
 {
     /** @var AuthenticationUtils */
     private $authenticationUtils;

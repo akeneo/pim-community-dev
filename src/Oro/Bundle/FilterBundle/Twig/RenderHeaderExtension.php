@@ -2,6 +2,9 @@
 
 namespace Oro\Bundle\FilterBundle\Twig;
 
+use Twig\Environment;
+use Twig\TwigFunction;
+
 class RenderHeaderExtension extends AbstractExtension
 {
     /**
@@ -25,12 +28,12 @@ class RenderHeaderExtension extends AbstractExtension
     public function getFunctions()
     {
         return [
-            new \Twig_SimpleFunction(
+            new TwigFunction(
                 'oro_filter_render_header_javascript',
                 [$this, 'renderHeaderJavascript'],
                 $this->defaultFunctionOptions
             ),
-            new \Twig_SimpleFunction(
+            new TwigFunction(
                 'oro_filter_render_header_stylesheet',
                 [$this, 'renderHeaderStylesheet'],
                 $this->defaultFunctionOptions
@@ -40,33 +43,20 @@ class RenderHeaderExtension extends AbstractExtension
 
     /**
      * Render specific block from template
-     *
-     * @param \Twig_Environment $environment
-     * @param string $blockName
-     * @param array $context
-     * @return string
      */
-    protected function renderTemplateBlock(\Twig_Environment $environment, $blockName, $context = [])
+    protected function renderTemplateBlock(Environment $environment, string $blockName, array $context = []): string
     {
-        /** @var $template \Twig_Template */
         $template = $environment->loadTemplate($this->templateName);
+
         return $template->renderBlock($blockName, $context);
     }
 
-    /**
-     * @param \Twig_Environment $environment
-     * @return string
-     */
-    public function renderHeaderJavascript(\Twig_Environment $environment)
+    public function renderHeaderJavascript(Environment $environment): string
     {
         return $this->renderTemplateBlock($environment, self::HEADER_JAVASCRIPT);
     }
 
-    /**
-     * @param \Twig_Environment $environment
-     * @return string
-     */
-    public function renderHeaderStylesheet(\Twig_Environment $environment)
+    public function renderHeaderStylesheet(Environment $environment): string
     {
         return $this->renderTemplateBlock($environment, self::HEADER_STYLESHEET);
     }

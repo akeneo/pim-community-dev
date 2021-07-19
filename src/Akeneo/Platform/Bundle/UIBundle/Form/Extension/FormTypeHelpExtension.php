@@ -42,8 +42,13 @@ class FormTypeHelpExtension extends AbstractTypeExtension
     /**
      * {@inheritdoc}
      */
-    public function getExtendedType()
+    public function getExtendedType(): string
     {
         return FormType::class;
+    }
+
+    public static function getExtendedTypes(): iterable
+    {
+        return [FormType::class];
     }
 }

@@ -39,11 +39,8 @@ class FormTypeSelect2Extension extends AbstractTypeExtension
         $resolver->setDefined(['select2']);
     }
 
-    /**
-     * {@inheritdoc}
-     */
-    public function getExtendedType()
+    public static function getExtendedTypes(): iterable
     {
-        return FormType::class;
+        return [FormType::class];
     }
 }

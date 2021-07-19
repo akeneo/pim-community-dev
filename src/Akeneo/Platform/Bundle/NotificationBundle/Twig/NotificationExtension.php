@@ -4,6 +4,8 @@ namespace Akeneo\Platform\Bundle\NotificationBundle\Twig;
 
 use Akeneo\Platform\Bundle\NotificationBundle\Entity\Repository\UserNotificationRepositoryInterface;
 use Akeneo\UserManagement\Bundle\Context\UserContext;
+use Twig\Extension\AbstractExtension;
+use Twig\TwigFunction;
 
 /**
  * Twig extension to provide the number of unread user notifications
@@ -12,20 +14,11 @@ use Akeneo\UserManagement\Bundle\Context\UserContext;
  * @copyright 2014 Akeneo SAS (http://www.akeneo.com)
  * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
  */
-class NotificationExtension extends \Twig_Extension
+class NotificationExtension extends AbstractExtension
 {
-    /** @var UserNotificationRepositoryInterface */
-    protected $repository;
+    protected UserNotificationRepositoryInterface $repository;
+    protected UserContext $userContext;
 
-    /** @var UserContext */
-    protected $userContext;
-
-    /**
-     * Constructor
-     *
-     * @param UserNotificationRepositoryInterface $repository
-     * @param UserContext                         $userContext
-     */
     public function __construct(UserNotificationRepositoryInterface $repository, UserContext $userContext)
     {
         $this->repository = $repository;
@@ -38,7 +31,7 @@ class NotificationExtension extends \Twig_Extension
     public function getFunctions()
     {
         return [
-            new \Twig_SimpleFunction('notification_count', [$this, 'countNotifications'])
+            new TwigFunction('notification_count', [$this, 'countNotifications'])
         ];
     }
 

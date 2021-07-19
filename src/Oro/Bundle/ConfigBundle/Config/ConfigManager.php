@@ -2,7 +2,7 @@
 
 namespace Oro\Bundle\ConfigBundle\Config;
 
-use Doctrine\Common\Persistence\ObjectManager;
+use Doctrine\Persistence\ObjectManager;
 use Oro\Bundle\ConfigBundle\Entity\Config;
 use Oro\Bundle\ConfigBundle\Entity\ConfigValue;
 use Symfony\Component\Form\FormInterface;

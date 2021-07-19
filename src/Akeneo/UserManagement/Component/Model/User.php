@@ -28,7 +28,7 @@ class User implements UserInterface
     const TYPE_API = 'api';
 
     /** @var int|string */
-    protected $id;
+    protected string|int $id;
 
     /** @var string */
     protected $username;
@@ -192,14 +192,14 @@ class User implements UserInterface
      */
     public function unserialize($serialized)
     {
-        list(
+        [
             $this->password,
             $this->salt,
             $this->username,
             $this->enabled,
             $this->confirmationToken,
             $this->id
-        ) = unserialize($serialized);
+        ] = unserialize($serialized);
     }
 
     /**
@@ -224,6 +224,11 @@ class User implements UserInterface
     public function getId()
     {
         return $this->id;
+    }
+
+    public function getUserIdentifier() : string
+    {
+        return $this->username;
     }
 
     /**

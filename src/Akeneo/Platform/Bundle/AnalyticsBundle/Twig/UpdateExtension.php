@@ -2,8 +2,9 @@
 
 namespace Akeneo\Platform\Bundle\AnalyticsBundle\Twig;
 
-use Akeneo\Platform\VersionProviderInterface;
 use Oro\Bundle\ConfigBundle\Config\ConfigManager;
+use Twig\Extension\AbstractExtension;
+use Twig\TwigFunction;
 
 /**
  * Twig extension to detect if update notification is enabled and to provide the url to fetch the last patch
@@ -12,15 +13,12 @@ use Oro\Bundle\ConfigBundle\Config\ConfigManager;
  * @copyright 2015 Akeneo SAS (http://www.akeneo.com)
  * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
  */
-class UpdateExtension extends \Twig_Extension
+class UpdateExtension extends AbstractExtension
 {
-    /** @var ConfigManager */
-    protected $configManager;
+    protected ConfigManager $configManager;
+    protected string $updateServerUrl;
 
-    /** @var string */
-    protected $updateServerUrl;
-
-    public function __construct(ConfigManager $configManager, $updateServerUrl)
+    public function __construct(ConfigManager $configManager, string $updateServerUrl)
     {
         $this->configManager = $configManager;
         $this->updateServerUrl = $updateServerUrl;
@@ -29,11 +27,11 @@ class UpdateExtension extends \Twig_Extension
     /**
      * {@inheritdoc}
      */
-    public function getFunctions()
+    public function getFunctions(): array
     {
         return [
-            new \Twig_SimpleFunction('is_last_patch_enabled', [$this, 'isLastPatchEnabled']),
-            new \Twig_SimpleFunction('get_update_server_url', [$this, 'getUpdateServerUrl']),
+            new TwigFunction('is_last_patch_enabled', [$this, 'isLastPatchEnabled']),
+            new TwigFunction('get_update_server_url', [$this, 'getUpdateServerUrl']),
         ];
     }
 
@@ -47,10 +45,7 @@ class UpdateExtension extends \Twig_Extension
         return $this->configManager->get('pim_analytics.version_update');
     }
 
-    /**
-     * @return string
-     */
-    public function getUpdateServerUrl()
+    public function getUpdateServerUrl(): string
     {
         return $this->updateServerUrl;
     }

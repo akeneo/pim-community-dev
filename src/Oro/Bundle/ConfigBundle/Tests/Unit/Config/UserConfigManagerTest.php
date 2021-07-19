@@ -4,7 +4,7 @@ namespace Oro\Bundle\ConfigBundle\Tests\Unit\Config;
 
 use Akeneo\UserManagement\Component\Model\Group;
 use Akeneo\UserManagement\Component\Model\User;
-use Doctrine\Common\Persistence\ObjectRepository;
+use Doctrine\Persistence\ObjectRepository;
 use Oro\Bundle\ConfigBundle\Config\UserConfigManager;
 use Symfony\Component\Security\Core\Authentication\Token\Storage\TokenStorageInterface;
 

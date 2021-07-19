@@ -56,7 +56,7 @@ class AbstractExtensionTestCase extends \PHPUnit_Framework_TestCase
 
         $actualFunctions = $this->extension->getFunctions();
 
-        /** @var $function \Twig_SimpleFunction */
+        /** @var $function TwigFunction */
         foreach ($actualFunctions as $function) {
             $functionName = $function->getName();
             $this->assertArrayHasKey($functionName, $this->expectedFunctions);
@@ -72,7 +72,7 @@ class AbstractExtensionTestCase extends \PHPUnit_Framework_TestCase
     {
         $actualFilters = $this->extension->getFilters();
 
-        /** @var $filter \Twig_SimpleFilter */
+        /** @var $filter TwigFilter */
         foreach ($actualFilters as $filter) {
             $filterName = $filter->getName();
             $this->assertArrayHasKey($filterName, $this->expectedFilters);

@@ -3,13 +3,12 @@
 namespace Oro\Bundle\ConfigBundle\Twig;
 
 use Oro\Bundle\ConfigBundle\Config\ConfigManager;
+use Twig\Extension\AbstractExtension;
+use Twig\TwigFunction;
 
-class ConfigExtension extends \Twig_Extension
+class ConfigExtension extends AbstractExtension
 {
-    /**
-     * @var ConfigManager
-     */
-    protected $userConfigManager;
+    protected ConfigManager $userConfigManager;
 
     public function __construct(ConfigManager $userConfigManager)
     {
@@ -24,12 +23,12 @@ class ConfigExtension extends \Twig_Extension
     public function getFunctions()
     {
         return [
-            new \Twig_SimpleFunction('oro_config_value', [$this, 'getUserValue']),
+            new TwigFunction('oro_config_value', [$this, 'getUserValue']),
         ];
     }
 
     /**
-     * @param  string $name Setting name in "{bundle}.{setting}" format
+     * @param string $name Setting name in "{bundle}.{setting}" format
      *
      * @return mixed
      */

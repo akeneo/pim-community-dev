@@ -3,6 +3,8 @@
 namespace Akeneo\UserManagement\Bundle\Twig;
 
 use Symfony\Component\Yaml\Yaml;
+use Twig\Extension\AbstractExtension;
+use Twig\TwigFunction;
 
 /**
  * Twig extension to provide acl groups
@@ -11,10 +13,9 @@ use Symfony\Component\Yaml\Yaml;
  * @copyright 2014 Akeneo SAS (http://www.akeneo.com)
  * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
  */
-class AclGroupsExtension extends \Twig_Extension
+class AclGroupsExtension extends AbstractExtension
 {
-    /** @var array */
-    protected $bundles;
+    protected array $bundles;
 
     /**
      * @param array $bundles
@@ -30,8 +31,8 @@ class AclGroupsExtension extends \Twig_Extension
     public function getFunctions()
     {
         return [
-            new \Twig_SimpleFunction('acl_groups', [$this, 'getAclGroups']),
-            new \Twig_SimpleFunction('acl_group_names', [$this, 'getAclGroupNames']),
+            new TwigFunction('acl_groups', [$this, 'getAclGroups']),
+            new TwigFunction('acl_group_names', [$this, 'getAclGroupNames']),
         ];
     }
 

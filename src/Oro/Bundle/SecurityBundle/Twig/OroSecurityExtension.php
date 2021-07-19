@@ -3,8 +3,10 @@
 namespace Oro\Bundle\SecurityBundle\Twig;
 
 use Oro\Bundle\SecurityBundle\SecurityFacade;
+use Twig\Extension\AbstractExtension;
+use Twig\TwigFunction;
 
-class OroSecurityExtension extends \Twig_Extension
+class OroSecurityExtension extends AbstractExtension
 {
     /**
      * @var SecurityFacade
@@ -27,7 +29,7 @@ class OroSecurityExtension extends \Twig_Extension
     public function getFunctions()
     {
         return [
-            new \Twig_SimpleFunction('resource_granted', [$this, 'checkResourceIsGranted']),
+            new TwigFunction('resource_granted', [$this, 'checkResourceIsGranted']),
         ];
     }
 
@@ -36,7 +38,7 @@ class OroSecurityExtension extends \Twig_Extension
      *
      * @param string|string[] $attributes Can be a role name(s), permission name(s), an ACL annotation id
      *                                    or something else, it depends on registered security voters
-     * @param mixed $object A domain object, object identity or object identity descriptor (id:type)
+     * @param mixed           $object     A domain object, object identity or object identity descriptor (id:type)
      *
      * @return bool
      */

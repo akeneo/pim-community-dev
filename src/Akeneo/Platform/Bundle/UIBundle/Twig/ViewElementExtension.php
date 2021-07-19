@@ -5,6 +5,8 @@ namespace Akeneo\Platform\Bundle\UIBundle\Twig;
 use Akeneo\Platform\Bundle\UIBundle\ViewElement\ViewElementInterface;
 use Akeneo\Platform\Bundle\UIBundle\ViewElement\ViewElementRegistry;
 use Twig\Environment;
+use Twig\Extension\AbstractExtension;
+use Twig\TwigFunction;
 
 /**
  * Twig extension to display view elements
@@ -13,7 +15,7 @@ use Twig\Environment;
  * @copyright 2014 Akeneo SAS (http://www.akeneo.com)
  * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
  */
-class ViewElementExtension extends \Twig_Extension
+class ViewElementExtension extends AbstractExtension
 {
     protected ViewElementRegistry $registry;
     protected Environment $templating;
@@ -32,16 +34,16 @@ class ViewElementExtension extends \Twig_Extension
     public function getFunctions()
     {
         return [
-            new \Twig_SimpleFunction(
+            new TwigFunction(
                 'view_elements',
                 [$this, 'renderViewElements'],
                 ['needs_context' => true, 'is_safe' => ['html']]
             ),
-            new \Twig_SimpleFunction(
+            new TwigFunction(
                 'view_element_aliases',
                 [$this, 'getViewElementAliases'],
                 ['needs_context' => true, 'is_safe' => ['html']]
-            )
+            ),
         ];
     }
 
@@ -62,16 +64,16 @@ class ViewElementExtension extends \Twig_Extension
         for ($i = 0; $i < $elementCount; $i++) {
             $element = $elements[$i];
             $elementContext = [
-                'viewElement' => [
-                    'alias' => $element->getAlias(),
-                    'loop'  => [
-                        'index'  => $i + 1,
-                        'first'  => 0 === $i,
-                        'last'   => $elementCount === $i + 1,
-                        'length' => $elementCount
-                    ]
-                ]
-            ] + $context;
+                    'viewElement' => [
+                        'alias' => $element->getAlias(),
+                        'loop' => [
+                            'index' => $i + 1,
+                            'first' => 0 === $i,
+                            'last' => $elementCount === $i + 1,
+                            'length' => $elementCount,
+                        ],
+                    ],
+                ] + $context;
 
             if (true === $this->debug) {
                 $content .= sprintf("<!-- Start view element template: %s -->\n", $element->getTemplate());

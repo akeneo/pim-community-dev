@@ -10,7 +10,7 @@ use Akeneo\UserManagement\Component\EntityUploadedImageInterface;
 use Doctrine\Common\Collections\Collection;
 use Oro\Bundle\PimDataGridBundle\Entity\DatagridView;
 use Symfony\Component\HttpFoundation\File\UploadedFile;
-use Symfony\Component\Security\Core\User\AdvancedUserInterface;
+use Symfony\Component\Security\Core\User\UserInterface as BaseInterface;
 
 /**
  * Interface UserInterface
@@ -19,7 +19,7 @@ use Symfony\Component\Security\Core\User\AdvancedUserInterface;
  * @copyright 2015 Akeneo SAS (http://www.akeneo.com)
  * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
  */
-interface UserInterface extends AdvancedUserInterface, \Serializable, EntityUploadedImageInterface
+interface UserInterface extends BaseInterface, \Serializable, EntityUploadedImageInterface
 {
     public const SYSTEM_USER_NAME = 'system';
 

@@ -5,9 +5,9 @@ namespace Akeneo\UserManagement\Bundle\Manager;
 use Akeneo\UserManagement\Component\Model\Role;
 use Akeneo\UserManagement\Component\Model\User;
 use Akeneo\UserManagement\Component\Model\UserInterface;
-use Doctrine\Common\Persistence\ObjectManager;
-use Doctrine\Common\Persistence\ObjectRepository;
 use Doctrine\ORM\QueryBuilder;
+use Doctrine\Persistence\ObjectManager;
+use Doctrine\Persistence\ObjectRepository;
 use Symfony\Component\Security\Core\Encoder\EncoderFactoryInterface;
 use Symfony\Component\Security\Core\Exception\UnsupportedUserException;
 use Symfony\Component\Security\Core\Exception\UsernameNotFoundException;
@@ -16,28 +16,10 @@ use Symfony\Component\Security\Core\User\UserProviderInterface;
 
 class UserManager implements UserProviderInterface
 {
-    /**
-     * @var string
-     */
-    protected $class;
+    protected string $class;
+    protected ObjectManager $om;
+    protected EncoderFactoryInterface $encoderFactory;
 
-    /**
-     * @var ObjectManager
-     */
-    protected $om;
-
-    /**
-     * @var EncoderFactoryInterface
-     */
-    protected $encoderFactory;
-
-    /**
-     * Constructor
-     *
-     * @param string                  $class          Entity name
-     * @param ObjectManager           $om             Object manager
-     * @param EncoderFactoryInterface $encoderFactory
-     */
     public function __construct($class, ObjectManager $om, EncoderFactoryInterface $encoderFactory)
     {
         $this->class = $class;
@@ -46,13 +28,9 @@ class UserManager implements UserProviderInterface
     }
 
     /**
-     * Updates a user
-     *
-     * @param  SecurityUserInterface $user
-     * @param  bool                  $flush Whether to flush the changes (default true)
      * @throws \RuntimeException
      */
-    public function updateUser(SecurityUserInterface $user, $flush = true)
+    public function updateUser(SecurityUserInterface $user, bool $flush = true)
     {
         $this->updatePassword($user);
 
@@ -88,11 +66,6 @@ class UserManager implements UserProviderInterface
         }
     }
 
-    /**
-     * Deletes a user
-     *
-     * @param SecurityUserInterface $user
-     */
     public function deleteUser(SecurityUserInterface $user)
     {
         $this->getStorageManager()->remove($user);
@@ -102,7 +75,8 @@ class UserManager implements UserProviderInterface
     /**
      * Finds one user by the given criteria
      *
-     * @param  array $criteria
+     * @param array $criteria
+     *
      * @return SecurityUserInterface
      */
     public function findUserBy(array $criteria)
@@ -123,21 +97,16 @@ class UserManager implements UserProviderInterface
     /**
      * Finds a user by email
      *
-     * @param  string $email
+     * @param string $email
+     *
      * @return SecurityUserInterface
      */
-    public function findUserByEmail($email)
+    public function findUserByEmail(string $email)
     {
         return $this->findUserBy(['email' => $email]);
     }
 
-    /**
-     * Finds a user by username
-     *
-     * @param  string $username
-     * @return SecurityUserInterface
-     */
-    public function findUserByUsername($username)
+    public function findUserByUsername(string $username): SecurityUserInterface
     {
         return $this->findUserBy(['username' => $username]);
     }
@@ -145,7 +114,8 @@ class UserManager implements UserProviderInterface
     /**
      * Finds a user either by email, or username
      *
-     * @param  string $usernameOrEmail
+     * @param string $usernameOrEmail
+     *
      * @return SecurityUserInterface
      */
     public function findUserByUsernameOrEmail($usernameOrEmail)
@@ -160,7 +130,8 @@ class UserManager implements UserProviderInterface
     /**
      * Finds a user either by confirmation token
      *
-     * @param  string $token
+     * @param string $token
+     *
      * @return SecurityUserInterface
      */
     public function findUserByConfirmationToken($token)
@@ -184,11 +155,12 @@ class UserManager implements UserProviderInterface
      * It is strongly discouraged to use this method manually as it bypasses
      * all ACL checks.
      *
-     * @param  SecurityUserInterface    $user
+     * @param SecurityUserInterface $user
+     *
+     * @return SecurityUserInterface
+     * @throws UsernameNotFoundException if user could not be reloaded
      * @throws UnsupportedUserException if a User Instance is given which is not managed by this UserManager
      *                                  (so another Manager could try managing it)
-     * @throws UsernameNotFoundException if user could not be reloaded
-     * @return SecurityUserInterface
      */
     public function refreshUser(SecurityUserInterface $user)
     {
@@ -200,7 +172,10 @@ class UserManager implements UserProviderInterface
 
         if (!$user instanceof SecurityUserInterface) {
             throw new UnsupportedUserException(
-                sprintf('Expected an instance of Akeneo\UserManagement\Component\Model\UserInterface, but got "%s"', get_class($user))
+                sprintf(
+                    'Expected an instance of Akeneo\UserManagement\Component\Model\UserInterface, but got "%s"',
+                    get_class($user)
+                )
             );
         }
 
@@ -218,11 +193,9 @@ class UserManager implements UserProviderInterface
      * It is strongly discouraged to call this method manually as it bypasses
      * all ACL checks.
      *
-     * @param  string                    $username
      * @throws UsernameNotFoundException if user not found
-     * @return SecurityUserInterface
      */
-    public function loadUserByUsername($username)
+    public function loadUserByUsername($username): SecurityUserInterface
     {
         $user = $this->findUserByUsername($username);
 
@@ -231,6 +204,12 @@ class UserManager implements UserProviderInterface
         }
 
         return $user;
+    }
+
+
+    public function loadUserByIdentifier(string $identifier): SecurityUserInterface
+    {
+        return $this->loadUserByUsername($identifier);
     }
 
     /**

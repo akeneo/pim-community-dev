@@ -13,9 +13,9 @@ class Configuration implements ConfigurationInterface
      */
     public function getConfigTreeBuilder()
     {
-        $builder = new TreeBuilder();
+        $builder = new TreeBuilder('pim_user');
         $builder
-            ->root('pim_user')
+            ->getRootNode()
             ->children()
                 ->arrayNode('reset')
                     ->addDefaultsIfNotSet()
