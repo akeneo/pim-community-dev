@@ -47,13 +47,13 @@ final class HandleFileValueTest extends AttributeTestCase
         return [
             [
                 'operations' => [],
-                'selection' => new FileNameSelection(),
+                'selection' => new FileNameSelection(self::ATTRIBUTE_CODE),
                 'value' => new FileValue('my_product', 'catalog', 'file_key_hash', 'my_file.jpg', null, null),
                 'expected' => [self::TARGET_NAME => 'my_file.jpg']
             ],
             [
                 'operations' => [],
-                'selection' => new FileKeySelection(),
+                'selection' => new FileKeySelection(self::ATTRIBUTE_CODE),
                 'value' => new FileValue('my_product', 'catalog', 'file_key_hash', 'my_file.jpg', null, null),
                 'expected' => [self::TARGET_NAME => 'file_key_hash']
             ],
