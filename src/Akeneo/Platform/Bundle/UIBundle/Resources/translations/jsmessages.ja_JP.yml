@@ -237,6 +237,7 @@ pim_common:
   family: ファミリー
   parent: 上位
   groups: グループ
+  products: 商品
   more: 詳細
 error:
   exception: 申し訳ありません！ エラー{{ status_code }} が発生しました
