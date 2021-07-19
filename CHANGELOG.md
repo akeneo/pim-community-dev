@@ -86,6 +86,7 @@
 - PIM-9950: Fix import product model fail instead of warning vs permission
 - PIM-9948: Fix performance issue on product model import
 - PIM-9966: Fix Settings page crashing when coming from the PEF
+- PIM-9973: Fix Asset attribute media type dropdown being hidden
 
 ## New features
 
@@ -126,10 +127,9 @@ bin/console messenger:consume ui_job import_export_job data_maintenance_job
 - Change constructor of `Oro\Bundle\PimFilterBundle\Filter\ProductValue\MetricFilter` to remove `Symfony\Component\Translation\TranslatorInterface $translator`
 - Change constructor of `Akeneo\Pim\Enrichment\Component\Product\Normalizer\InternalApi\VersionNormalizer` to add `Symfony\Contracts\Translation\LocaleAwareInterface\LocaleAwareInterface $localeAware`
 - Change constructor of `Akeneo\UserManagement\Bundle\EventListener\LocaleSubscriber` to:
-    - remove `Symfony\Component\Translation\TranslatorInterface $translator`
-    - add  `Symfony\Contracts\Translation\LocaleAwareInterface\LocaleAwareInterface $localeAware`
+  - remove `Symfony\Component\Translation\TranslatorInterface $translator`
+  - add `Symfony\Contracts\Translation\LocaleAwareInterface\LocaleAwareInterface $localeAware`
 
 ### CLI commands
 
 ### Services
-
