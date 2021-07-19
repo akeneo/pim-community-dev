@@ -4,11 +4,7 @@ import {TableContext} from '../TableContext';
 import {useDrop} from './useDrop';
 import {useDragElementIndex} from './useDragElementIndex';
 
-type TableBodyChild =
-  | TableBodyChild[]
-  | ReactElement<TableRowProps>
-  | boolean
-  | undefined;
+type TableBodyChild = TableBodyChild[] | ReactElement<TableRowProps> | boolean | undefined;
 
 type TableBodyProps = {
   /**
@@ -35,7 +31,6 @@ const TableBody = React.forwardRef<HTMLTableSectionElement, TableBodyProps>(
           });
         })
       : children;
-
 
     const rowCount = Children.count(children);
     const [tableId, onDrop, onDragOver] = useDrop(rowCount, draggedElementIndex);

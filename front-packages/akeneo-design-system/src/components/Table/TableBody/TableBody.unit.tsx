@@ -57,11 +57,11 @@ test('it does not throw when using conditional row', () => {
         <Table.Row>
           <Table.Cell>First row</Table.Cell>
         </Table.Row>
-        {displayRow &&
+        {displayRow && (
           <Table.Row>
-              <Table.Cell>Second row</Table.Cell>
+            <Table.Cell>Second row</Table.Cell>
           </Table.Row>
-        }
+        )}
       </Table.Body>
     </Table>
   );
