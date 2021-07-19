@@ -1,5 +1,5 @@
 import React, {ChangeEvent, useCallback, useRef} from 'react';
-import styled from 'styled-components';
+import styled, {css} from 'styled-components';
 import {InputProps} from '../InputProps';
 import {ArrowDownIcon, ArrowUpIcon, LockIcon} from '../../../icons';
 import {Key, Override} from '../../../shared';
@@ -22,10 +22,16 @@ const Input = styled.input<{readOnly: boolean; invalid: boolean} & AkeneoThemedP
   color: ${({readOnly}) => (readOnly ? getColor('grey', 100) : getColor('grey', 140))};
   font-size: ${getFontSize('default')};
   line-height: 40px;
-  padding: 0 15px;
+  padding: 0 ${({readOnly}) => (readOnly ? '35px' : '15px')} 0 15px;
   box-sizing: border-box;
   outline-style: none;
   appearance: textfield;
+  ${({readOnly}) =>
+    readOnly &&
+    css`
+      overflow: hidden;
+      text-overflow: ellipsis;
+    `}
 
   &::-webkit-inner-spin-button,
   &::-webkit-outer-spin-button {
@@ -157,6 +163,7 @@ const NumberInput = React.forwardRef<HTMLInputElement, NumberInputProps>(
           aria-invalid={invalid}
           invalid={invalid}
           autoComplete="off"
+          title={rest.value}
           {...rest}
         />
         {readOnly && <ReadOnlyIcon size={16} />}

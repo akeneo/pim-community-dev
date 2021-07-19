@@ -1,50 +1,49 @@
 import React, {ReactNode} from 'react';
 import {Dropdown} from '../../../Dropdown/Dropdown';
 import {useBooleanState} from '../../../../hooks';
-import {ArrowDownIcon, CloseIcon} from '../../../../icons';
+import {ArrowDownIcon, CloseIcon, LockIcon} from '../../../../icons';
 import {Search} from '../../../Search/Search';
 import styled, {css} from 'styled-components';
 import {IconButton} from '../../../IconButton/IconButton';
 import {AkeneoThemedProps, getColor} from '../../../../theme';
 
-const SelectButtonDropdown = styled(Dropdown)`
+const SelectButtonDropdown = styled(Dropdown)<{readOnly: boolean} & AkeneoThemedProps>`
   width: 100%;
-  cursor: pointer;
+  color: ${({readOnly}) => (readOnly ? getColor('grey', 100) : getColor('grey', 140))};
 `;
 
-const SelectButton = styled.button<{highlighted: boolean; inError: boolean} & AkeneoThemedProps>`
-  color: ${getColor('grey', 140)};
+const SelectButton = styled.button<{highlighted: boolean; inError: boolean; readOnly: boolean} & AkeneoThemedProps>`
+  color: ${({readOnly}) => (readOnly ? getColor('grey', 100) : getColor('grey', 140))};
   width: 100%;
   background: none;
   border: none;
   text-align: left;
-  display: flex;
+  display: inline-block;
   justify-content: space-between;
-  padding: 0 10px;
+  padding: 0 ${({readOnly}) => (readOnly ? '35px' : '70px')} 0 10px;
   height: 39px;
   line-height: 39px;
   align-items: center;
-  cursor: pointer;
+  cursor: ${({readOnly}) => (readOnly ? 'not-allowed' : 'pointer')};
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  background: none;
 
   ${({highlighted, inError}) =>
-    highlighted && !inError
-      ? css`
-          background: ${getColor('green', 10)};
-          box-shadow: 0 0 0 1px ${getColor('green', 80)};
-        `
-      : css`
-          background: none;
-        `};
+    highlighted &&
+    !inError &&
+    css`
+      background: ${getColor('green', 10)};
+      box-shadow: 0 0 0 1px ${getColor('green', 80)};
+    `};
 
   ${({inError}) =>
-    inError
-      ? css`
-          background: ${getColor('red', 10)};
-          box-shadow: 0 0 0 1px ${getColor('red', 80)};
-        `
-      : css`
-          background: none;
-        `};
+    inError &&
+    css`
+      background: ${getColor('red', 10)};
+      box-shadow: 0 0 0 1px ${getColor('red', 80)};
+    `};
 `;
 
 const IconsPart = styled.div`
@@ -68,6 +67,7 @@ type TableInputSelectProps = {
   searchPlaceholder: string;
   searchTitle: string;
   inError?: boolean;
+  readOnly?: boolean;
 };
 
 const TableInputSelect: React.FC<TableInputSelectProps> = ({
@@ -83,6 +83,7 @@ const TableInputSelect: React.FC<TableInputSelectProps> = ({
   onNextPage,
   children,
   inError,
+  readOnly = false,
   ...rest
 }) => {
   const [isOpen, open, close] = useBooleanState(false);
@@ -97,12 +98,21 @@ const TableInputSelect: React.FC<TableInputSelectProps> = ({
   };
 
   return (
-    <SelectButtonDropdown {...rest}>
-      <SelectButton onClick={open} tabIndex={-1} highlighted={highlighted} inError={inError}>
+    <SelectButtonDropdown readOnly={readOnly} {...rest}>
+      <SelectButton
+        readOnly={readOnly}
+        onClick={() => {
+          if (!readOnly) open();
+        }}
+        tabIndex={-1}
+        highlighted={highlighted}
+        title={value}
+        inError={inError}
+      >
         {value}&nbsp;
       </SelectButton>
       <IconsPart>
-        {value && !isOpen && (
+        {value && !readOnly && !isOpen && (
           <IconButton
             icon={<CloseIcon />}
             size="small"
@@ -112,14 +122,17 @@ const TableInputSelect: React.FC<TableInputSelectProps> = ({
             onClick={onClear}
           />
         )}
-        <IconButton
-          icon={<ArrowDownIcon />}
-          size="small"
-          title={openDropdownLabel}
-          ghost="borderless"
-          level="tertiary"
-          onClick={open}
-        />
+        {!readOnly && (
+          <IconButton
+            icon={<ArrowDownIcon />}
+            size="small"
+            title={openDropdownLabel}
+            ghost="borderless"
+            level="tertiary"
+            onClick={open}
+          />
+        )}
+        {readOnly && <LockIcon size={16} />}
       </IconsPart>
       {isOpen && (
         <Dropdown.Overlay onClose={close} dropdownOpenerVisible={true}>

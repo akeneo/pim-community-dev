@@ -25,7 +25,8 @@ class ProductViolationNormalizerSpec extends ObjectBehavior
             'attribute' => 'description',
             'locale'    => 'en_US',
             'scope'     => 'mobile',
-            'message'   => 'The text is too long.'
+            'message'   => 'The text is too long.',
+            'path'      => 'values[description-mobile-en_US].text',
         ]);
     }
 
@@ -42,7 +43,8 @@ class ProductViolationNormalizerSpec extends ObjectBehavior
             'attribute' => 'description',
             'locale'    => 'en_US',
             'scope'     => 'mobile',
-            'message'   => 'The text is too long.'
+            'message'   => 'The text is too long.',
+            'path'      => 'values[{"code":"description","locale":"en_US","scope":"mobile"}].text',
         ]);
     }
 
@@ -57,7 +59,8 @@ class ProductViolationNormalizerSpec extends ObjectBehavior
             'attribute' => 'movie_title',
             'locale'    => 'fr_FR',
             'scope'     => null,
-            'message'   => 'This movie title is very bad.'
+            'message'   => 'This movie title is very bad.',
+            'path'      => 'values[movie_title-<all_channels>-fr_FR].text',
         ]);
     }
 
@@ -72,7 +75,8 @@ class ProductViolationNormalizerSpec extends ObjectBehavior
             'attribute' => 'movie_title',
             'locale'    => 'fr_FR',
             'scope'     => null,
-            'message'   => 'This movie title is very bad.'
+            'message'   => 'This movie title is very bad.',
+            'path'      => 'values[{"code":"movie_title","locale":"fr_FR","scope":null}].text',
         ]);
     }
 
@@ -87,7 +91,8 @@ class ProductViolationNormalizerSpec extends ObjectBehavior
             'attribute' => 'name',
             'locale'    => null,
             'scope'     => 'ecommerce',
-            'message'   => 'The text is too short.'
+            'message'   => 'The text is too short.',
+            'path'      => 'values[name-ecommerce-<all_locales>].text',
         ]);
     }
 
@@ -102,7 +107,8 @@ class ProductViolationNormalizerSpec extends ObjectBehavior
             'attribute' => 'name',
             'locale'    => null,
             'scope'     => 'ecommerce',
-            'message'   => 'The text is too short.'
+            'message'   => 'The text is too short.',
+            'path'      => 'values[{"code":"name","locale":null,"scope":"ecommerce"}].text',
         ]);
     }
 
@@ -117,7 +123,8 @@ class ProductViolationNormalizerSpec extends ObjectBehavior
             'attribute' => 'price',
             'locale'    => null,
             'scope'     => null,
-            'message'   => 'The price should be above 10.'
+            'message'   => 'The price should be above 10.',
+            'path'      => 'values[price-<all_channels>-<all_locales>].float',
         ]);
     }
 
@@ -132,7 +139,8 @@ class ProductViolationNormalizerSpec extends ObjectBehavior
             'attribute' => 'price',
             'locale'    => null,
             'scope'     => null,
-            'message'   => 'The price should be above 10.'
+            'message'   => 'The price should be above 10.',
+            'path'      => 'values[price]',
         ]);
     }
 
@@ -147,7 +155,8 @@ class ProductViolationNormalizerSpec extends ObjectBehavior
             'attribute' => 'price',
             'locale'    => null,
             'scope'     => null,
-            'message'   => 'The price should be above 10.'
+            'message'   => 'The price should be above 10.',
+            'path'      => 'values[{"code":"price","locale":null,"scope":null}].float',
         ]);
     }
 
