@@ -1,14 +1,20 @@
-import React, {ReactNode, Ref, cloneElement, Children, useContext} from 'react';
+import React, {Ref, cloneElement, Children, useContext, ReactElement} from 'react';
 import {TableRowProps} from '../TableRow/TableRow';
 import {TableContext} from '../TableContext';
 import {useDrop} from './useDrop';
 import {useDragElementIndex} from './useDragElementIndex';
 
+type TableBodyChild =
+  | TableBodyChild[]
+  | ReactElement<TableRowProps>
+  | boolean
+  | undefined;
+
 type TableBodyProps = {
   /**
    * Header rows
    */
-  children?: ReactNode;
+  children?: TableBodyChild;
 };
 
 const TableBody = React.forwardRef<HTMLTableSectionElement, TableBodyProps>(
@@ -18,7 +24,7 @@ const TableBody = React.forwardRef<HTMLTableSectionElement, TableBodyProps>(
     const decoratedChildren = isDragAndDroppable
       ? Children.map(children, (child, rowIndex) => {
           if (!React.isValidElement<TableRowProps>(child)) {
-            throw Error('Children of Table.Body should be a valid react element');
+            return null;
           }
 
           return cloneElement(child, {
@@ -29,6 +35,7 @@ const TableBody = React.forwardRef<HTMLTableSectionElement, TableBodyProps>(
           });
         })
       : children;
+
 
     const rowCount = Children.count(children);
     const [tableId, onDrop, onDragOver] = useDrop(rowCount, draggedElementIndex);
