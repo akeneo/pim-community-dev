@@ -19,5 +19,5 @@ services:
             - '@Akeneo\Platform\TailoredExport\Application\OperationHandler'
             - '@Akeneo\Platform\TailoredExport\Application\Query\Selection\SelectionHandler'
 
-    Akeneo\Platform\TailoredExport\Application\FilePathGenerator:
+    Akeneo\Platform\TailoredExport\Application\MediaToExportExtractor:
         public: false

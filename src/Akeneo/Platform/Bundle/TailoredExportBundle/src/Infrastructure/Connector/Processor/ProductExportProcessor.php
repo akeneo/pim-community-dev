@@ -34,7 +34,7 @@ class ProductExportProcessor implements ItemProcessorInterface, StepExecutionAwa
     private ValueCollectionHydrator $valueCollectionHydrator;
     private ColumnCollectionHydrator $columnCollectionHydrator;
     private ProductMapper $productMapper;
-    private MediaToExportExtractorInterface $filePathGenerator;
+    private MediaToExportExtractorInterface $mediaToExportExtractor;
     private ?StepExecution $stepExecution = null;
     private ?ColumnCollection $columnCollection = null;
 
@@ -44,14 +44,14 @@ class ProductExportProcessor implements ItemProcessorInterface, StepExecutionAwa
         ValueCollectionHydrator $valueCollectionHydrator,
         ColumnCollectionHydrator $columnCollectionHydrator,
         ProductMapper $productMapper,
-        MediaToExportExtractorInterface $filePathGenerator
+        MediaToExportExtractorInterface $mediaToExportExtractor
     ) {
         $this->getAttributes = $getAttributes;
         $this->getAssociationTypes = $getAssociationTypes;
         $this->valueCollectionHydrator = $valueCollectionHydrator;
         $this->columnCollectionHydrator = $columnCollectionHydrator;
         $this->productMapper = $productMapper;
-        $this->filePathGenerator = $filePathGenerator;
+        $this->mediaToExportExtractor = $mediaToExportExtractor;
     }
 
     /**
@@ -72,7 +72,7 @@ class ProductExportProcessor implements ItemProcessorInterface, StepExecutionAwa
         $valueCollection = $this->valueCollectionHydrator->hydrate($product, $columnCollection);
 
         $mappedProducts = $this->productMapper->map($columnCollection, $valueCollection);
-        $filesToExport = $this->filePathGenerator->extract($columnCollection, $valueCollection);
+        $filesToExport = $this->mediaToExportExtractor->extract($columnCollection, $valueCollection);
 
         return new ProcessedTailoredExport($mappedProducts, $filesToExport);
     }

@@ -41,7 +41,7 @@ services:
       - '@Akeneo\Platform\TailoredExport\Infrastructure\Hydrator\ValueCollectionHydrator'
       - '@Akeneo\Platform\TailoredExport\Infrastructure\Hydrator\ColumnCollectionHydrator'
       - '@Akeneo\Platform\TailoredExport\Application\ProductMapper'
-      - '@Akeneo\Platform\TailoredExport\Application\FilePathGenerator'
+      - '@Akeneo\Platform\TailoredExport\Application\MediaToExportExtractor'
 
   akeneo.tailored_export.connector.xlsx.file_writer_factory:
     class: Akeneo\Platform\TailoredExport\Infrastructure\Connector\Writer\File\FileWriterFactory
