@@ -60,6 +60,7 @@
 - PIM-9898: Assets: Fix "attribute as main media" and naming convention inconsistency
 - PIM-9965: Fix Asset Family attribute saving notification displaying twice
 - PIM-9963: Fix number of lines field missing on XLSX product export job
+- PIM-9973: Fix Asset attribute media type dropdown being hidden
 
 ## Improvements
 
