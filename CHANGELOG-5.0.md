@@ -1,5 +1,7 @@
 # 5.0.x
 
+# 5.0.41 (2021-07-19)
+
 ## Bug fixes
 
 - PIM-9971: [Backport] Add associations in published product normalizer
