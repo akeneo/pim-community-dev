@@ -24,10 +24,10 @@ class AclPrivilegesEventSubscriber implements EventSubscriberInterface
 
     public static function getSubscribedEvents()
     {
-        return [PrivilegesPostLoadEvent::class => 'handle'];
+        return [PrivilegesPostLoadEvent::class => 'disableAclIfFeatureIsDisabled'];
     }
 
-    public function handle(PrivilegesPostLoadEvent $event)
+    public function disableAclIfFeatureIsDisabled(PrivilegesPostLoadEvent $event)
     {
         if (true === $this->featureFlag->isEnabled()) {
             return;

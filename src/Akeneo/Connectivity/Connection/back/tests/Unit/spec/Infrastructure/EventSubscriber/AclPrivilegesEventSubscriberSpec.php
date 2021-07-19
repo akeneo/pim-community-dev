@@ -24,7 +24,7 @@ class AclPrivilegesEventSubscriberSpec extends ObjectBehavior
 
     public function it_provides_subscribed_events(): void
     {
-        $this->getSubscribedEvents()->shouldReturn([PrivilegesPostLoadEvent::class => 'handle']);
+        $this->getSubscribedEvents()->shouldReturn([PrivilegesPostLoadEvent::class => 'disableAclIfFeatureIsDisabled']);
     }
 
     public function it_does_nothing_if_the_feature_flag_is_enabled(
@@ -34,7 +34,7 @@ class AclPrivilegesEventSubscriberSpec extends ObjectBehavior
         $featureFlag->isEnabled()->willReturn(true);
         $event->setPrivileges(Argument::any())->shouldNotBeCalled();
 
-        $this->handle($event);
+        $this->disableAclIfFeatureIsDisabled($event);
     }
 
     public function it_filter_acls_if_the_feature_flag_is_disabled(
@@ -49,6 +49,6 @@ class AclPrivilegesEventSubscriberSpec extends ObjectBehavior
 
         $event->setPrivileges($filteredPrivileges)->shouldBeCalled();
 
-        $this->handle($event);
+        $this->disableAclIfFeatureIsDisabled($event);
     }
 }
