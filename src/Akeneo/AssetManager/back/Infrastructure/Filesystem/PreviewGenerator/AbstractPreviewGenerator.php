@@ -78,8 +78,13 @@ abstract class AbstractPreviewGenerator implements PreviewGeneratorInterface
 
             if (!$isStored) {
                 $binary = $this->dataManager->find($previewType, $url);
+                $content = $binary->getContent();
 
-                if (self::PREVIEW_SIZE_LIMIT < strlen($binary->getContent())) {
+                if (null === $content) {
+                    throw new CouldNotGeneratePreviewException('The file content is empty');
+                }
+
+                if (self::PREVIEW_SIZE_LIMIT < strlen($content)) {
                     throw new \LogicException('The file is too large to generate a preview');
                 }
 
