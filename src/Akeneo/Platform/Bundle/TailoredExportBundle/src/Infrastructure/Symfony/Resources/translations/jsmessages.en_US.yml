@@ -8,6 +8,8 @@ akeneo.tailored_export:
         placeholder: Select some locales
         remove: Remove the locale
     quality_score:
+      quality_score:
+        label: Quality Score
       locales:
         label: Define the locales for the quality score
   form:
