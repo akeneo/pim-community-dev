@@ -19,7 +19,7 @@ const TEMPLATES: Template[] = [
     code: 'empty_table',
     tableConfiguration: [],
     icon: TableIcon,
-  },
+  }
 ];
 
 export {TEMPLATES};

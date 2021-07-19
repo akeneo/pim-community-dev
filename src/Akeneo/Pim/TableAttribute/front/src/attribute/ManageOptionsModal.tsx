@@ -357,6 +357,8 @@ const ManageOptionsModal: React.FC<ManageOptionsModalProps> = ({onClose, attribu
                           }}
                           violations={violations[option.id]}
                           localeCode={currentLocaleCode}
+                          onLabelEnter={isLastOption(option) ? () => newLabelInputRef.current?.focus() : undefined}
+                          onCodeEnter={isLastOption(option) ? () => newCodeInputRef.current?.focus() : undefined}
                         />
                       ))}
                       <ManageOptionsRow

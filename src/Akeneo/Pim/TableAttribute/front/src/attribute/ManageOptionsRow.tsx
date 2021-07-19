@@ -1,6 +1,6 @@
 import React, {MutableRefObject} from 'react';
 import {SelectOptionWithId} from './ManageOptionsModal';
-import {Helper, IconButton, Table, TextInput, CloseIcon} from 'akeneo-design-system';
+import {Helper, IconButton, Table, TextInput, CloseIcon, Key} from 'akeneo-design-system';
 import styled from 'styled-components';
 import {LocaleCode, useTranslate} from '@akeneo-pim-community/shared';
 
@@ -24,6 +24,8 @@ type ManageOptionsRowProps = {
   labelInputRef?: MutableRefObject<any>;
   localeCode: LocaleCode;
   forceAutocomplete?: boolean;
+  onCodeEnter?: () => void;
+  onLabelEnter?: () => void;
 };
 
 const ManageOptionsRow: React.FC<ManageOptionsRowProps> = ({
@@ -38,6 +40,8 @@ const ManageOptionsRow: React.FC<ManageOptionsRowProps> = ({
   labelInputRef,
   localeCode,
   forceAutocomplete = false,
+  onCodeEnter,
+  onLabelEnter,
   ...rest
 }) => {
   const translate = useTranslate();
@@ -73,6 +77,11 @@ const ManageOptionsRow: React.FC<ManageOptionsRowProps> = ({
             maxLength={255}
             placeholder={labelPlaceholder}
             onFocus={onSelect}
+            onKeyDown={(event: React.KeyboardEvent<HTMLInputElement>) => {
+              if (Key.Enter === event.key) {
+                onLabelEnter?.();
+              }
+            }}
           />
         </CellFieldContainer>
       </ManageOptionCell>
@@ -85,6 +94,11 @@ const ManageOptionsRow: React.FC<ManageOptionsRowProps> = ({
               onChange={handleCodeChange}
               maxLength={100}
               onFocus={handleCodeFocus}
+              onKeyDown={(event: React.KeyboardEvent<HTMLInputElement>) => {
+                if (Key.Enter === event.key) {
+                  onCodeEnter?.();
+                }
+              }}
             />
           )}
           {!option.isNew && <TextInput defaultValue={option.code || ''} disabled={true} readOnly={true} />}
