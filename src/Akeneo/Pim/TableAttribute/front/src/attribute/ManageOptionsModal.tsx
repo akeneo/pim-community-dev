@@ -39,9 +39,13 @@ const OptionsTwoColumnsLayout = styled(TwoColumnsLayout)`
 const ManageOptionsBody = styled(Table.Body)`
   & > tr:last-child {
     position: sticky;
-    bottom: 0;
+    bottom: -1px;
     background-color: ${getColor('white')};
     z-index: 1;
+
+    & > td {
+      border-bottom: 1px solid ${getColor('white')};
+    }
   }
 `;
 
@@ -56,6 +60,10 @@ const CenteredHelper = styled.div`
     display: block;
     margin: auto;
   }
+`;
+
+const ManageOptionsSearch = styled(Search)`
+  border-bottom-color: ${getColor('grey', 140)};
 `;
 
 type ManageOptionsModalProps = {
@@ -309,7 +317,7 @@ const ManageOptionsModal: React.FC<ManageOptionsModalProps> = ({onClose, attribu
           <div>
             <SectionTitle title={columnLabel}>
               <ManageOptionsSectionTitle>{columnLabel}</ManageOptionsSectionTitle>
-              <Search
+              <ManageOptionsSearch
                 searchValue={searchValue}
                 onSearchChange={handleSearchChange}
                 placeholder={translate('pim_table_attribute.form.attribute.search_placeholder')}
