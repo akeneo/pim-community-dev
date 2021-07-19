@@ -118,6 +118,7 @@ class TableField extends (Field as {new (config: any): any}) {
             copyContext={copyContext}
             violations={this.violations}
             onCopyCheckboxChange={handleCopyCheckboxChange}
+            copyCheckboxChecked={this.selected}
           />
         </ThemeProvider>
       </DependenciesProvider>,

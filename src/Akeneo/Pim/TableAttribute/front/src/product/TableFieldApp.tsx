@@ -58,6 +58,7 @@ type TableFieldAppProps = TemplateContext & {
   violations?: Violations[];
   copyContext?: CopyContext;
   onCopyCheckboxChange: any;
+  copyCheckboxChecked?: boolean;
 };
 
 type TableRowWithId = TableRow & {'unique id': string};
@@ -83,6 +84,7 @@ const TableFieldApp: React.FC<TableFieldAppProps> = ({
   copyContext,
   elements,
   onCopyCheckboxChange,
+  copyCheckboxChecked = false,
   violations = [],
 }) => {
   const translate = useTranslate();
@@ -102,7 +104,7 @@ const TableFieldApp: React.FC<TableFieldAppProps> = ({
   const [tableValue, setTableValue] = React.useState<TableValueWithId>(addUniqueId(value.data || []));
   const [removedRows, setRemovedRows] = React.useState<{[key: string]: TableRowWithId}>({});
   const [searchText, setSearchText] = React.useState<string>('');
-  const [copyChecked, setCopyChecked] = React.useState<boolean>(false);
+  const [copyChecked, setCopyChecked] = React.useState<boolean>(copyCheckboxChecked);
   const firstColumnCode: ColumnCode = attribute.table_configuration[0].code;
   const [violatedCellsById] = React.useState<ViolatedCell[]>(
     (violations || []).reduce((old, violation) => {
