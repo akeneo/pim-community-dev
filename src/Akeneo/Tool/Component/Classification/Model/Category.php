@@ -33,7 +33,7 @@ class Category implements CategoryInterface
     protected int $root;
 
     /** @var CategoryInterface */
-    protected \Akeneo\Pim\Enrichment\Component\Category\Model\CategoryInterface $parent;
+    protected CategoryInterface $parent;
 
     /** @var Collection */
     protected $children;

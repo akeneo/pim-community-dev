@@ -3,10 +3,10 @@
 namespace Akeneo\Pim\Enrichment\Component\Category\Model;
 
 use Akeneo\Tool\Component\Classification\Model\Category as BaseCategory;
+use Akeneo\Tool\Component\Classification\Model\CategoryInterface as BaseCategoryInterface;
 use Akeneo\Tool\Component\Localization\Model\TranslationInterface;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
-use Doctrine\ORM\PersistentCollection;
 use Gedmo\Mapping\Annotation as Gedmo;
 
 /**
@@ -51,7 +51,7 @@ class Category extends BaseCategory implements CategoryInterface
     /** @Gedmo\TreeRoot */
     protected int $root;
     /** @Gedmo\TreeParent */
-    protected CategoryInterface $parent;
+    protected BaseCategoryInterface $parent;
 
     public function __construct()
     {

@@ -7,8 +7,8 @@ use Akeneo\Platform\Bundle\UIBundle\Form\Exception\FormException;
 use Akeneo\Platform\Bundle\UIBundle\Form\Transformer\ArrayToStringTransformer;
 use Akeneo\Platform\Bundle\UIBundle\Form\Transformer\EntitiesToIdsTransformer;
 use Akeneo\Platform\Bundle\UIBundle\Form\Transformer\EntityToIdTransformer;
-use Doctrine\Common\Persistence\ManagerRegistry;
 use Doctrine\ORM\EntityManager;
+use Doctrine\Persistence\ManagerRegistry;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\HiddenType;
 use Symfony\Component\Form\FormBuilderInterface;
@@ -19,14 +19,8 @@ class EntityIdentifierType extends AbstractType
 {
     const NAME = 'pim_enrich_entity_identifier';
 
-    /**
-     * @var ManagerRegistry
-     */
-    protected $registry;
+    protected ManagerRegistry $registry;
 
-    /**
-     * @param ManagerRegistry $registry
-     */
     public function __construct(ManagerRegistry $registry)
     {
         $this->registry = $registry;
