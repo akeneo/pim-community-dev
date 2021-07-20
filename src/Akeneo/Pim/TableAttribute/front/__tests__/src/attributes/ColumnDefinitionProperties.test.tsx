@@ -65,7 +65,7 @@ describe('ColumnDefinitionProperties', () => {
     expect(handleChange).toBeCalledWith({...getTextColumnDefinitionWithId(), validations: {max_length: 10}});
   });
 
-  it('should display validation errors', () => {
+  it('should display violations on validation fields', () => {
     const handleChange = jest.fn();
     renderWithProviders(
       <ColumnDefinitionProperties
@@ -80,6 +80,57 @@ describe('ColumnDefinitionProperties', () => {
     );
 
     expect(screen.getByText('pim_table_attribute.validations.max_greater_than_min')).toBeInTheDocument();
+  });
+
+  it('should display violation on when code is empty', () => {
+    const handleChange = jest.fn();
+    renderWithProviders(
+      <ColumnDefinitionProperties
+        selectedColumn={{...getNumberColumnDefinitionWithId(), code: ''}}
+        onChange={handleChange}
+        activeLocales={[getEnUsLocale()]}
+        catalogLocaleCode={'en_US'}
+        isDuplicateColumnCode={() => false}
+        savedColumnIds={[]}
+        attribute={getTableAttribute()}
+      />
+    );
+
+    expect(screen.getByText('pim_table_attribute.validations.column_code_must_be_filled')).toBeInTheDocument();
+  });
+
+  it('should display violation on when code is invalid', () => {
+    const handleChange = jest.fn();
+    renderWithProviders(
+      <ColumnDefinitionProperties
+        selectedColumn={{...getNumberColumnDefinitionWithId(), code: '&&'}}
+        onChange={handleChange}
+        activeLocales={[getEnUsLocale()]}
+        catalogLocaleCode={'en_US'}
+        isDuplicateColumnCode={() => false}
+        savedColumnIds={[]}
+        attribute={getTableAttribute()}
+      />
+    );
+
+    expect(screen.getByText('pim_table_attribute.validations.invalid_code')).toBeInTheDocument();
+  });
+
+  it('should display violation on when code is duplicate', () => {
+    const handleChange = jest.fn();
+    renderWithProviders(
+      <ColumnDefinitionProperties
+        selectedColumn={getNumberColumnDefinitionWithId()}
+        onChange={handleChange}
+        activeLocales={[getEnUsLocale()]}
+        catalogLocaleCode={'en_US'}
+        isDuplicateColumnCode={() => true}
+        savedColumnIds={[]}
+        attribute={getTableAttribute()}
+      />
+    );
+
+    expect(screen.getByText('pim_table_attribute.validations.duplicated_column_code')).toBeInTheDocument();
   });
 
   it('should save options', () => {

@@ -116,6 +116,19 @@ const ColumnDefinitionProperties: React.FC<ColumnDefinitionPropertiesProps> = ({
     </>
   );
 
+  const codeViolations: string[] = [];
+  if (selectedColumn.code === '')
+    codeViolations.push(translate('pim_table_attribute.validations.column_code_must_be_filled'));
+  if (selectedColumn.code !== '' && !/^[a-zA-Z0-9_]+$/.exec(selectedColumn.code))
+    codeViolations.push(translate('pim_table_attribute.validations.invalid_code'));
+  if (isDuplicateColumnCode(selectedColumn.code)) {
+    codeViolations.push(
+      translate('pim_table_attribute.validations.duplicated_column_code', {
+        duplicateCode: selectedColumn.code,
+      })
+    );
+  }
+
   return (
     <div>
       <SectionTitle title={getLabel(selectedColumn.labels, catalogLocaleCode, selectedColumn.code)}>
@@ -130,13 +143,11 @@ const ColumnDefinitionProperties: React.FC<ColumnDefinitionPropertiesProps> = ({
             value={selectedColumn.code}
             onChange={handleCodeChange}
           />
-          {isDuplicateColumnCode(selectedColumn.code) && (
-            <Helper level='error'>
-              {translate('pim_table_attribute.validations.duplicated_column_code', {
-                duplicateCode: selectedColumn.code,
-              })}
+          {codeViolations.map((violation, i) => (
+            <Helper key={i} level='error'>
+              {violation}
             </Helper>
-          )}
+          ))}
         </Field>
         <Field
           label={translate('pim_table_attribute.form.attribute.data_type')}

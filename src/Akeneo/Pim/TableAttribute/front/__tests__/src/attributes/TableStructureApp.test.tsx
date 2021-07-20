@@ -219,7 +219,7 @@ describe('TableStructureApp', () => {
     });
     expect(handleChange).toHaveBeenCalledWith([
       getComplexTableConfiguration()[0],
-      {...getComplexTableConfiguration()[1], validations: {min: '10', max: '50'}},
+      {...getComplexTableConfiguration()[1], validations: {min: 10, max: 50}},
       getComplexTableConfiguration()[2],
       getComplexTableConfiguration()[3],
       getComplexTableConfiguration()[4],
@@ -231,7 +231,7 @@ describe('TableStructureApp', () => {
 
     expect(handleChange).toHaveBeenCalledWith([
       getComplexTableConfiguration()[0],
-      {...getComplexTableConfiguration()[1], validations: {min: '10', max: '50', decimals_allowed: true}},
+      {...getComplexTableConfiguration()[1], validations: {min: 10, max: 50, decimals_allowed: true}},
       getComplexTableConfiguration()[2],
       getComplexTableConfiguration()[3],
       getComplexTableConfiguration()[4],
