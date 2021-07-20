@@ -18,17 +18,12 @@ use Symfony\Component\EventDispatcher\EventSubscriberInterface;
  */
 final class ConfigureCategoryTreeForExportJobsAfterChangingTheChannelCategoryTree implements EventSubscriberInterface
 {
-    /** @var ObjectRepository */
-    private $jobInstanceRepository;
+    private ObjectRepository $jobInstanceRepository;
+    private ObjectUpdaterInterface $jobInstanceUpdater;
+    private BulkSaverInterface $jobInstanceSaver;
 
-    /** @var ObjectUpdaterInterface */
-    private $jobInstanceUpdater;
-
-    /** @var BulkSaverInterface */
-    private $jobInstanceSaver;
-
-    /** @var array|string[] */
-    private $supportedJobNames;
+    /** @var string[] */
+    private array $supportedJobNames;
 
     public static function getSubscribedEvents(): array
     {

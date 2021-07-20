@@ -3,7 +3,7 @@
 namespace Akeneo\Tool\Bundle\VersioningBundle\Event;
 
 use Akeneo\Tool\Component\Versioning\Model\VersionInterface;
-use Symfony\Component\EventDispatcher\Event;
+use Symfony\Contracts\EventDispatcher\Event;
 
 /**
  * @deprecated Will be removed in 4.0

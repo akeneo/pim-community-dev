@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace Akeneo\Channel\Component\Event;
 
-use Symfony\Component\EventDispatcher\Event;
+use Symfony\Contracts\EventDispatcher\Event;
 
 /**
  * @author Paul Chasle <paul.chasle@akeneo.com>
@@ -14,14 +14,9 @@ use Symfony\Component\EventDispatcher\Event;
  */
 final class ChannelCategoryHasBeenUpdated extends Event
 {
-    /** @var string */
-    private $channelCode;
-
-    /** @var string */
-    private $previousCategoryCode;
-
-    /** @var string */
-    private $newCategoryCode;
+    private string $channelCode;
+    private string $previousCategoryCode;
+    private string $newCategoryCode;
 
     public function __construct(string $channelCode, string $previousCategoryCode, string $newCategoryCode)
     {

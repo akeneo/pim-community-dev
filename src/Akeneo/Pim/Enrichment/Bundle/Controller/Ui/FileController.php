@@ -9,12 +9,12 @@ use Akeneo\Tool\Component\FileStorage\FilesystemProvider;
 use Akeneo\Tool\Component\FileStorage\Repository\FileInfoRepositoryInterface;
 use Akeneo\Tool\Component\FileStorage\StreamedFileResponse;
 use Liip\ImagineBundle\Controller\ImagineController;
-use Symfony\Component\HttpFoundation\File\MimeType\MimeTypeGuesser;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpKernel\Exception\BadRequestHttpException;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
+use Symfony\Component\Mime\MimeTypes;
 
 /**
  * @author    Adrien Pétremann <adrien.petremann@akeneo.com>
@@ -26,38 +26,21 @@ class FileController
     const DEFAULT_IMAGE_KEY = '__default_image__';
     const SVG_MIME_TYPES = ['image/svg', 'image/svg+xml'];
 
-    /** @var ImagineController */
-    protected $imagineController;
+    protected ImagineController $imagineController;
+    protected FilesystemProvider $filesystemProvider;
+    protected FileInfoRepositoryInterface $fileInfoRepository;
+    protected FileTypeGuesserInterface $fileTypeGuesser;
+    protected DefaultImageProviderInterface $defaultImageProvider;
+    private MimeTypes $mimeTypes;
+    protected array $filesystemAliases;
 
-    /** @var FilesystemProvider */
-    protected $filesystemProvider;
-
-    /** @var FileInfoRepositoryInterface */
-    protected $fileInfoRepository;
-
-    /** @var FileTypeGuesserInterface */
-    protected $fileTypeGuesser;
-
-    /** @var DefaultImageProviderInterface */
-    protected $defaultImageProvider;
-
-    /** @var array */
-    protected $filesystemAliases;
-
-    /**
-     * @param ImagineController             $imagineController
-     * @param FilesystemProvider            $filesystemProvider
-     * @param FileInfoRepositoryInterface   $fileInfoRepository
-     * @param FileTypeGuesserInterface      $fileTypeGuesser
-     * @param DefaultImageProviderInterface $defaultImageProvider
-     * @param array                         $filesystemAliases
-     */
     public function __construct(
         ImagineController $imagineController,
         FilesystemProvider $filesystemProvider,
         FileInfoRepositoryInterface $fileInfoRepository,
         FileTypeGuesserInterface $fileTypeGuesser,
         DefaultImageProviderInterface $defaultImageProvider,
+        MimeTypes $mimeTypes,
         array $filesystemAliases
     ) {
         $this->imagineController = $imagineController;
@@ -66,16 +49,10 @@ class FileController
         $this->fileTypeGuesser = $fileTypeGuesser;
         $this->defaultImageProvider = $defaultImageProvider;
         $this->filesystemAliases = $filesystemAliases;
+        $this->mimeTypes = $mimeTypes;
     }
 
-    /**
-     * @param Request $request
-     * @param string  $filename
-     * @param string  $filter
-     *
-     * @return RedirectResponse
-     */
-    public function showAction(Request $request, $filename, $filter = null)
+    public function showAction(Request $request, string $filename, ?string $filter = null): Response|RedirectResponse
     {
         $filename = urldecode($filename);
         $fileInfo = $this->fileInfoRepository->findOneByIdentifier($filename);
@@ -213,7 +190,7 @@ class FileController
             $mimeType = $file->getMimeType();
         }
         if (null === $mimeType && file_exists($filename)) {
-            $mimeType = MimeTypeGuesser::getInstance()->guess($filename);
+            $mimeType = $this->mimeTypes->guessMimeType($filename);
         }
 
         return $mimeType;

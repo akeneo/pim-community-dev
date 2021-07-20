@@ -5,7 +5,7 @@ declare(strict_types=1);
 namespace Akeneo\Pim\Enrichment\Component\Product\EntityWithFamily\Event;
 
 use Akeneo\Pim\Enrichment\Component\Product\Model\ProductInterface;
-use Symfony\Component\EventDispatcher\Event;
+use Symfony\Contracts\EventDispatcher\Event;
 
 /**
  * This event is raised when a product is converted to a variant product
@@ -16,35 +16,22 @@ use Symfony\Component\EventDispatcher\Event;
  */
 class ParentHasBeenAddedToProduct extends Event
 {
-    /** @var ProductInterface */
-    private $variantProduct;
-
-    /** @var string */
-    private $parentCode;
+    private ProductInterface $variantProduct;
+    private string $parentCode;
 
     public const EVENT_NAME = 'PARENT_HAS_BEEN_ADDED_TO_PRODUCT';
 
-    /**
-     * @param ProductInterface $variantProduct
-     * @param string           $parentCode
-     */
     public function __construct(ProductInterface $variantProduct, string $parentCode)
     {
         $this->variantProduct = $variantProduct;
         $this->parentCode = $parentCode;
     }
 
-    /**
-     * @return ProductInterface
-     */
     public function convertedProduct(): ProductInterface
     {
         return $this->variantProduct;
     }
 
-    /**
-     * @return string
-     */
     public function parentCode(): string
     {
         return $this->parentCode;
