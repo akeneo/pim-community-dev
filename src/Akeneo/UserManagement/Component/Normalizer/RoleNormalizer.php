@@ -4,7 +4,6 @@ declare(strict_types=1);
 namespace Akeneo\UserManagement\Component\Normalizer;
 
 use Akeneo\Tool\Component\Connector\ArrayConverter\ArrayConverterInterface;
-use Akeneo\Tool\Component\Connector\Processor\Normalization\Processor;
 use Akeneo\UserManagement\Component\Model\RoleInterface;
 use Oro\Bundle\SecurityBundle\Acl\AccessLevel;
 use Oro\Bundle\SecurityBundle\Acl\Persistence\AclManager;
