@@ -126,7 +126,7 @@ extensions:
             label: pim_import_export.form.job_instance.tab.properties.file_path.title
             tooltip: pim_import_export.form.job_instance.tab.properties.file_path.help
 
-    pim-job-instance-xlsx-product-export-edit-properties-lines-per-file:
+    pim-job-instance-xlsx-tailored-product-export-edit-properties-lines-per-file:
         module: pim/job/common/edit/field/text
         parent: pim-job-instance-xlsx-tailored-product-export-edit-global
         position: 150
@@ -154,6 +154,7 @@ extensions:
         parent: pim-job-instance-xlsx-tailored-product-export-edit-filter-the-data
         targetZone: data-filters
         config:
+            sectionTitle: akeneo.tailored_export.form.job_instance.tab.filters.title
             filters:
                 -
                     field: family
@@ -165,11 +166,23 @@ extensions:
                     field: categories
                     view: akeneo-product-all-category-filter
                 -
+                    field: completeness
+                    view: akeneo-product-localized-completeness-filter
+                -
                     field: updated
                     view: akeneo-product-updated-filter
 
     akeneo-product-all-category-filter:
         module: akeneotailoredexport/js/job/product/edit/filter-categories
+
+    akeneo-product-localized-completeness-filter:
+        module: akeneotailoredexport/js/job/product/edit/filter-localized-completeness
+        config:
+            operators:
+                - ALL
+                - GREATER OR EQUALS THAN ON AT LEAST ONE LOCALE
+                - GREATER OR EQUALS THAN ON ALL LOCALES
+                - LOWER THAN ON ALL LOCALES
 
     pim-job-instance-xlsx-tailored-product-export-edit-filter-the-data-default-attribute-filters:
         module: pim/job/product/edit/content/data/default-attribute-filters

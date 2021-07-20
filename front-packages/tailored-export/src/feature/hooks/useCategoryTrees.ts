@@ -6,8 +6,9 @@ type CategoryTree = Category & {
 };
 
 const useCategoryTrees = (
-  initialCategorySelection: string[],
-  setActiveCategoryTree: React.Dispatch<React.SetStateAction<string>>
+  selectedCategoryCodes: string[],
+  shouldIncludeChildren: boolean,
+  setActiveCategoryTree?: React.Dispatch<React.SetStateAction<string>>
 ) => {
   const [categoryTrees, setCategoryTrees] = useState<CategoryTree[]>([]);
   const isMounted = useIsMounted();
@@ -21,20 +22,20 @@ const useCategoryTrees = (
           ['Content-type', 'application/json'],
           ['X-Requested-With', 'XMLHttpRequest'],
         ],
-        body: JSON.stringify(initialCategorySelection),
+        body: JSON.stringify({selectedCategoryCodes, shouldIncludeChildren}),
       });
       const json = await response.json();
 
       if (isMounted()) {
         setCategoryTrees(json);
-        setActiveCategoryTree(currentActiveCategoryTree =>
+        setActiveCategoryTree?.(currentActiveCategoryTree =>
           '' === currentActiveCategoryTree ? json[0].code : currentActiveCategoryTree
         );
       }
     };
 
     fetchCategories();
-  }, [route, setCategoryTrees, isMounted, initialCategorySelection, setActiveCategoryTree]);
+  }, [route, setCategoryTrees, shouldIncludeChildren, isMounted, selectedCategoryCodes, setActiveCategoryTree]);
 
   return categoryTrees;
 };

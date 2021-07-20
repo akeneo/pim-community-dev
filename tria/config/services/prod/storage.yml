@@ -1,0 +1,20 @@
+services:
+    Google\Cloud\Storage\StorageClient:
+        arguments:
+            - projectId: '%env(GOOGLE_CLOUD_PROJECT)%'
+              keyFilePath: '%env(SRNT_GOOGLE_APPLICATION_CREDENTIALS)%'
+
+    Google\Cloud\Storage\Bucket:
+        class: 'Google\Cloud\Storage\Bucket'
+        factory: 'Google\Cloud\Storage\StorageClient:bucket'
+        arguments:
+            - '%env(SRNT_GOOGLE_BUCKET_NAME)%'
+
+    # TODO: remove this service override as soon as possible
+    # This is a hack to non recursively list the contents of a directory in a GCS bucket
+    # As the service definition is abstract, there is no way to decorate it
+    oneup_flysystem.adapter.googlecloudstorage:
+        class: 'Akeneo\Tool\Component\FileStorage\Adapter\GoogleCloudStorageAdapter'
+        abstract: true
+        public: false
+        arguments: [ ~, ~, ~, ~ ]

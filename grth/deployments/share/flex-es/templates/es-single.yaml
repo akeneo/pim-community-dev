@@ -1,0 +1,117 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: {{ template "elasticsearch.fullName" . }}-single
+  labels:
+    app: {{ template "elasticsearch.fullName" . }}
+    chart: "{{ .Chart.Name }}-{{ .Chart.Version }}"
+    release: "{{ .Release.Name }}"
+    heritage: "{{ .Release.Service }}"
+    component: {{ template "elasticsearch.fullName" . }}
+    role: single
+    {{- range $key, $value := .Values.global.extraLabels }}
+    {{ $key }}: {{ $value | quote }}
+    {{- end }}
+    {{- range $key, $value := .Values.common.extraLabels }}
+    {{ $key }}: {{ $value | quote }}
+    {{- end }}
+    {{- range $key, $value := .Values.single.extraLabels }}
+    {{ $key }}: {{ $value | quote }}
+    {{- end }}
+spec:
+  selector:
+    matchLabels:
+      component: {{ template "elasticsearch.fullName" . }}
+      role: single
+  replicas: 1
+  strategy:
+    type: Recreate
+  template:
+    metadata:
+      labels:
+        component: {{ template "elasticsearch.fullName" . }}
+        role: single
+        {{- range $key, $value := .Values.global.extraLabels }}
+        {{ $key }}: {{ $value | quote }}
+        {{- end }}
+        {{- range $key, $value := .Values.common.extraLabels }}
+        {{ $key }}: {{ $value | quote }}
+        {{- end }}
+        {{- range $key, $value := .Values.single.extraLabels }}
+        {{ $key }}: {{ $value | quote }}
+        {{- end }}
+    spec:
+      {{- if .Values.common.busybox.increaseMaxMapCount }}
+      initContainers:
+      - name: init-sysctl
+        image: "{{ .Values.image.init.repository }}:{{ .Values.image.init.tag }}"
+        imagePullPolicy: {{ .Values.image.init.pullPolicy }}
+        command: ["sysctl", "-w", "vm.max_map_count=262144"]
+        securityContext:
+          privileged: true
+      {{- end }}
+      containers:
+      - name: es-single
+        securityContext:
+          privileged: true
+          capabilities:
+            add:
+              - IPC_LOCK
+              - SYS_RESOURCE
+        image: "{{ .Values.image.es.repository }}:{{ .Values.image.es.tag }}"
+        imagePullPolicy: {{ .Values.image.es.pullPolicy }}
+        {{- if .Values.common.command }}
+        command:
+          {{- range $key, $value := .Values.common.command }}
+          - {{ $value }}
+          {{- end }}
+        {{- end }}
+        env:
+        - name: PATH_DATA
+          value: "{{ .Values.common.dataDir }}"
+        - name: PATH_LOGS
+          value: "/data/var/log/elasticsearch/"
+        - name: path.data
+          value: "{{ .Values.common.dataDir }}"
+        - name: path.logs
+          value: "/data/var/log/elasticsearch/"
+        - name: node.name
+          valueFrom:
+            fieldRef:
+              fieldPath: metadata.name
+        - name: NAMESPACE
+          valueFrom:
+            fieldRef:
+              fieldPath: metadata.namespace
+        - name: ES_JAVA_OPTS
+          value: "-Xms{{ .Values.single.heapMemory }} -Xmx{{ .Values.single.heapMemory }}"
+        {{- range $key, $value :=  .Values.common.env }}
+        - name: {{ $key }}
+          value: {{ $value | quote }}
+        {{- end }}
+        {{- range $key, $value :=  .Values.single.env }}
+        - name: {{ $key }}
+          value: {{ $value | quote }}
+        {{- end }}
+        resources:
+{{ toYaml .Values.single.resources | indent 10 }}
+        ports:
+        - containerPort: 9200
+          name: http
+          protocol: TCP
+        - containerPort: 9300
+          name: transport
+          protocol: TCP
+        livenessProbe:
+          tcpSocket:
+            port: 9300
+          initialDelaySeconds: 20
+          periodSeconds: 10
+          failureThreshold: 6
+        volumeMounts:
+        - name: data
+          mountPath: "/data"
+      volumes:
+        - name: data
+          persistentVolumeClaim:
+            claimName: pvc-{{ .Release.Name }}-es-single

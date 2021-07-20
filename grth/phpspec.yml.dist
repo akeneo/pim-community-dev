@@ -1,0 +1,8 @@
+suites:
+  ## Platform BC
+  Platform:
+    namespace: Akeneo\Platform
+    psr4_prefix: Akeneo\Platform
+    spec_path: tests/back/Platform
+    src_path: src/Akeneo/Platform
+    spec_prefix: Specification

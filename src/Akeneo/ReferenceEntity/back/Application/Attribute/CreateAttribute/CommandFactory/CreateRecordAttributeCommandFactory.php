@@ -39,7 +39,7 @@ class CreateRecordAttributeCommandFactory extends AbstractCreateAttributeCommand
             $normalizedCommand['is_required'] ?? false,
             $normalizedCommand['value_per_channel'],
             $normalizedCommand['value_per_locale'],
-            $normalizedCommand['record_type']
+            $normalizedCommand['record_type'] ?? null
         );
 
         return $command;

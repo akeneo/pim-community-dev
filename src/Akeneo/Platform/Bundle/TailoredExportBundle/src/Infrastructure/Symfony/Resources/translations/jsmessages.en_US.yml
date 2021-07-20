@@ -1,63 +1,116 @@
 batch_jobs.xlsx_tailored_product_export.label: Tailored product export in XLSX
 
 akeneo.tailored_export:
+  filters:
+    completeness:
+      locales:
+        label: Define the locales for the completeness
+        placeholder: Select some locales
+        remove: Remove the locale
   form:
     job_instance:
       tab:
         content:
-          title: Filter the data
+          title: Product selection
         column:
-          title: Select the columns
+          title: Export structure
+        filters:
+          title: Define your product selection
   column_list:
     title: Columns
     header:
-      column_name: Column name
-      source_data: Source Data
+      column_name: Column header
+      source_data: Column content
     column_row:
-      target_placeholder: Define your new column name here
+      target_placeholder: Define your column name here
       remove: Remove column
-      no_source: No source
+      no_source: Define content source
     no_column_selection:
-      title: No columns selection to export
-      subtitle: To know more about mapping and operations,
-      link: this article may help you
+      title: Your export profile is empty. Add your first column.
+      subtitle: Click on 'Add first column' to start building your export table.
+      link: Check out our Help Center for more information.
       add_column: Add first column
   column_details:
     sources:
       title: Sources
       add: Add source
       no_result: Sorry, there is no results.
-      locale_specific.info: This attribute is locale specific
+      locale_specific.info: This attribute has a value per locale.
       remove:
         title: source
         text: Are you sure you want to remove this source?
         button: Remove this source
       no_source_configuration:
-        title: There are no operations available for this source. Only its value will be exported.
+        title: There are no operations available for this source. Its value will be exported as is.
       no_source_selected:
-        title: No source selected for the moment.
-        subtitle: To know more about mapping and operations,
-        link: this article may help you
+        title: Click on 'Add source' to start defining your column content.
+        link: Check out our Help Center for more information.
       no_column_selected:
-        title: No column selected for the moment.
+        title: Once your first column is defined, you can select your first source.
       selection:
         title: Selection
-        separator: Separator
+        collection_separator:
+          title: Separator
+          comma: Comma (,)
+          semicolon: Semicolon (;)
+          pipe: Pipe (|)
         type:
           amount: Amount
           currency: Currency
+          key: Filekey
+          path: Path
+          name: Filename
+        format: Format
+        parent:
+          information:
+            locale: If the attribute used as label has a value per locale, you may select a specific locale.
+            channel: If the attribute used as label has a value per channel, you may select a specific channel.
+        code_label:
+          information: For this attribute, you can export either the code or the label.
+        measurement:
+          information: For this attribute, you can export either the value, the unit code or the unit label.
+          value: Value
+          unit_locale: Unit locale
+          unit_code: Unit code
+          unit_label: Unit label
+        price:
+          currency_code: Currency code
+          currency_label: Currency label
+          currency_locale: Currency locale
+          information: For this attribute, you can export either the amount or the currency.
+        file:
+          information: For this attribute, you can export either the path, the filekey or the name.
+        decimal_separator:
+          title: Decimal separator
+          comma: Comma (,)
+          dot: Dot (.)
+          arabic_comma: Arabic decimal separator (٫)
+        quantified_association:
+          quantity: Quantity
+        association:
+          entity_type: Entity type
+          information:
+            locale: If the attribute used as label has a value per locale, you may select a specific locale.
+            channel: If the attribute used as label has a value per channel, you may select a specific channel.
+      operation:
+        replacement:
+          title: Replace value
+          placeholder: Define the replacement value
+          enabled: Enabled replacement value
+          disabled: Disabled replacement value
   column:
     delete_message: Are you sure you want to remove this column?
   validation:
     columns:
-      max_column_count_reached: You reached the maximum column count of {{ limit }}
+      max_column_count_reached: You have reached the limit of {{ limit }} columns, you can no longer add columns to your export.
       target:
-        should_not_be_blank: Column name should not be blank
+        should_not_be_blank: Please define a column name.
         max_length_reached: Column name is too long. It should have {{ limit }} characters or less.
-        should_be_unique: Column name should be unique
+        should_be_unique: This column name already exists, please enter a new one.
     sources:
-      max_source_count_reached: You reached the maximum source count of {{ limit }}
+      max_source_count_reached: You have reached the limit of {{ limit }} sources, you can no longer add sources to your export.
+      association_type_should_exist: The association type {{ association_type_code }} does not exist
     locale:
-      should_be_active: Locale {{ locale_code }} should be active
+      should_be_active: The {{ locale_code }} locale should be active.
     channel:
-      should_exist: Channel {{ channel_code }} should exist
+      should_exist: The {{ channel_code }} channel should be active.

@@ -19,8 +19,7 @@ namespace Akeneo\ReferenceEntity\Application\Attribute\CreateAttribute;
  */
 class CreateRecordAttributeCommand extends AbstractCreateAttributeCommand
 {
-    /** @var string */
-    public $recordType;
+    public ?string $recordType;
 
     public function __construct(
         string $referenceEntityIdentifier,
@@ -29,7 +28,7 @@ class CreateRecordAttributeCommand extends AbstractCreateAttributeCommand
         bool $isRequired,
         bool $valuePerChannel,
         bool $valuePerLocale,
-        string $recordType
+        ?string $recordType
     ) {
         parent::__construct(
             $referenceEntityIdentifier,

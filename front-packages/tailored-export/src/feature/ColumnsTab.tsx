@@ -2,13 +2,18 @@ import React, {useState} from 'react';
 import styled from 'styled-components';
 import {uuid} from 'akeneo-design-system';
 import {ValidationError} from '@akeneo-pim-community/shared';
-import {createColumn, addColumn, removeColumn, ColumnConfiguration, updateColumn} from './models/ColumnConfiguration';
 import {ColumnDetails} from './components/ColumnDetails/ColumnDetails';
 import {ColumnList} from './components/ColumnList/ColumnList';
 import {ValidationErrorsContext} from './contexts/ValidationErrorsContext';
 import {ColumnDetailsPlaceholder} from './components/ColumnDetails/ColumnDetailsPlaceholder';
-
-const MAX_COLUMN_COUNT = 1000;
+import {
+  addColumn,
+  createColumn,
+  removeColumn,
+  ColumnConfiguration,
+  updateColumn,
+  MAX_COLUMN_COUNT,
+} from './models/ColumnConfiguration';
 
 const Container = styled.div`
   padding-top: 10px;
@@ -27,6 +32,7 @@ const ColumnsTab = ({columnsConfiguration, validationErrors, onColumnsConfigurat
   const [selectedColumn, setSelectedColumn] = useState<string | null>(
     columnsConfiguration.length === 0 ? null : columnsConfiguration[0].uuid
   );
+
   const handleCreateColumn = (newColumnName: string) => {
     const column = createColumn(newColumnName, uuid());
     onColumnsConfigurationChange(addColumn(columnsConfiguration, column));
@@ -35,12 +41,9 @@ const ColumnsTab = ({columnsConfiguration, validationErrors, onColumnsConfigurat
   const handleCreateColumns = (newColumnNames: string[]) => {
     const newColumns = newColumnNames.reduce((existingColumns, newColumnName) => {
       if (existingColumns.length === MAX_COLUMN_COUNT) return existingColumns;
-
       const columnToAdd = createColumn(newColumnName, uuid());
-
       return addColumn(existingColumns, columnToAdd);
     }, columnsConfiguration);
-
     onColumnsConfigurationChange(newColumns);
     setSelectedColumn(newColumns[newColumns.length - 1].uuid);
   };
@@ -82,5 +85,5 @@ const ColumnsTab = ({columnsConfiguration, validationErrors, onColumnsConfigurat
   );
 };
 
-export {ColumnsTab, MAX_COLUMN_COUNT};
+export {ColumnsTab};
 export type {ColumnsTabProps};

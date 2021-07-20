@@ -7,7 +7,7 @@ namespace Akeneo\Pim\Enrichment\ReferenceEntity\Component\Connector\FlatTranslat
 use Akeneo\Pim\Enrichment\Component\Product\Connector\FlatTranslator\AttributeValue\FlatAttributeValueTranslatorInterface;
 use Akeneo\Pim\Enrichment\Component\Product\Connector\FlatTranslator\FlatTranslatorInterface;
 use Akeneo\Pim\Structure\Component\AttributeTypes;
-use Akeneo\ReferenceEntity\Infrastructure\PublicApi\Enrich\FindRecordsLabelTranslations;
+use Akeneo\ReferenceEntity\Infrastructure\PublicApi\Enrich\FindRecordsLabelTranslationsInterface;
 
 /**
  * @author    Samir Boulil <samir.boulil@akeneo.com>
@@ -16,10 +16,10 @@ use Akeneo\ReferenceEntity\Infrastructure\PublicApi\Enrich\FindRecordsLabelTrans
  */
 class ReferenceEntitySimpleLinkValueTranslator implements FlatAttributeValueTranslatorInterface
 {
-    /** @var FindRecordsLabelTranslations */
+    /** @var FindRecordsLabelTranslationsInterface */
     private $findRecordsLabelTranslations;
 
-    public function __construct(FindRecordsLabelTranslations $findRecordsLabelTranslations)
+    public function __construct(FindRecordsLabelTranslationsInterface $findRecordsLabelTranslations)
     {
         $this->findRecordsLabelTranslations = $findRecordsLabelTranslations;
     }

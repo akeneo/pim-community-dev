@@ -36,8 +36,5 @@ akeneo_authentication:
 hslavich_saml_sp:
     resource: "@HslavichOneloginSamlBundle/Resources/config/routing.yml"
 
-akeneo_monitoring:
-    resource: "@AkeneoMonitoringBundle/Resources/config/routing.yml"
-
 shared_catalog:
     resource: "@AkeneoSharedCatalogBundle/Resources/config/routing.yml"

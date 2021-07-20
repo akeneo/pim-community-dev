@@ -5,7 +5,7 @@ declare(strict_types=1);
 namespace Specification\Akeneo\Pim\Enrichment\ReferenceEntity\Component\Connector\FlatTranslator\FlatAttributeValueTranslator;
 
 use Akeneo\Pim\Enrichment\ReferenceEntity\Component\Connector\FlatTranslator\FlatAttributeValueTranslator\ReferenceEntitySimpleLinkValueTranslator;
-use Akeneo\ReferenceEntity\Infrastructure\PublicApi\Enrich\FindRecordsLabelTranslations;
+use Akeneo\ReferenceEntity\Infrastructure\PublicApi\Enrich\FindRecordsLabelTranslationsInterface;
 use PhpSpec\ObjectBehavior;
 
 /**
@@ -15,7 +15,7 @@ use PhpSpec\ObjectBehavior;
  */
 class ReferenceEntitySimpleLinkValueTranslatorSpec extends ObjectBehavior
 {
-    function let(FindRecordsLabelTranslations $findRecordsLabelTranslations)
+    function let(FindRecordsLabelTranslationsInterface $findRecordsLabelTranslations)
     {
         $this->beConstructedWith($findRecordsLabelTranslations);
     }
@@ -31,7 +31,7 @@ class ReferenceEntitySimpleLinkValueTranslatorSpec extends ObjectBehavior
         $this->supports('something_else', 'other_attribute')->shouldReturn(false);
     }
 
-    function it_returns_the_labels_of_the_records(FindRecordsLabelTranslations $findRecordsLabelTranslations)
+    function it_returns_the_labels_of_the_records(FindRecordsLabelTranslationsInterface $findRecordsLabelTranslations)
     {
         $findRecordsLabelTranslations
             ->find('designers', ['dyson', 'starck'], 'fr_FR')
@@ -41,7 +41,7 @@ class ReferenceEntitySimpleLinkValueTranslatorSpec extends ObjectBehavior
             ->shouldReturn(['Dyson', 'Philippe Starck']);
     }
 
-    function it_returns_the_record_code_between_brackets_if_the_record_does_have_a_label(FindRecordsLabelTranslations $findRecordsLabelTranslations)
+    function it_returns_the_record_code_between_brackets_if_the_record_does_have_a_label(FindRecordsLabelTranslationsInterface $findRecordsLabelTranslations)
     {
         $findRecordsLabelTranslations
             ->find('designers', ['michael'], 'fr_FR')
@@ -51,7 +51,7 @@ class ReferenceEntitySimpleLinkValueTranslatorSpec extends ObjectBehavior
             ->shouldReturn(['[michael]']);
     }
 
-    function it_does_not_translate_if_the_reference_data_name_is_null(FindRecordsLabelTranslations $findRecordsLabelTranslations)
+    function it_does_not_translate_if_the_reference_data_name_is_null(FindRecordsLabelTranslationsInterface $findRecordsLabelTranslations)
     {
         $findRecordsLabelTranslations->find()->shouldNotBeCalled();
 

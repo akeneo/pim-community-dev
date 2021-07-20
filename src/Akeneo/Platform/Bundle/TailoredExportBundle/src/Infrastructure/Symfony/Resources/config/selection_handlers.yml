@@ -1,0 +1,244 @@
+services:
+  Akeneo\Platform\TailoredExport\Application\Query\Selection\SelectionHandler:
+    public: true
+    arguments:
+      - !tagged_iterator akeneo.tailored_export.selection_handler
+
+  Akeneo\Platform\TailoredExport\Application\Query\Selection\Categories\CategoriesCodeSelectionHandler:
+    public: true
+    tags:
+      - { name: akeneo.tailored_export.selection_handler }
+
+  Akeneo\Platform\TailoredExport\Application\Query\Selection\Categories\CategoriesLabelSelectionHandler:
+    public: true
+    arguments:
+      - '@akeneo.pim.structure.query.get_category_translations'
+    tags:
+      - { name: akeneo.tailored_export.selection_handler }
+
+  Akeneo\Platform\TailoredExport\Application\Query\Selection\Family\FamilyCodeSelectionHandler:
+    public: true
+    tags:
+      - { name: akeneo.tailored_export.selection_handler }
+
+  Akeneo\Platform\TailoredExport\Application\Query\Selection\Family\FamilyLabelSelectionHandler:
+    public: true
+    arguments:
+      - '@akeneo.pim.structure.query.get_family_translations'
+    tags:
+      - { name: akeneo.tailored_export.selection_handler }
+
+  Akeneo\Platform\TailoredExport\Application\Query\Selection\FamilyVariant\FamilyVariantCodeSelectionHandler:
+    public: true
+    tags:
+      - { name: akeneo.tailored_export.selection_handler }
+
+  Akeneo\Platform\TailoredExport\Application\Query\Selection\FamilyVariant\FamilyVariantLabelSelectionHandler:
+    public: true
+    arguments:
+      - '@akeneo.pim.structure.query.get_family_variant_translations'
+    tags:
+      - { name: akeneo.tailored_export.selection_handler }
+
+  Akeneo\Platform\TailoredExport\Application\Query\Selection\Enabled\EnabledSelectionHandler:
+    public: true
+    tags:
+      - { name: akeneo.tailored_export.selection_handler }
+
+  Akeneo\Platform\TailoredExport\Application\Query\Selection\Parent\ParentCodeSelectionHandler:
+    public: true
+    tags:
+      - { name: akeneo.tailored_export.selection_handler }
+
+  Akeneo\Platform\TailoredExport\Application\Query\Selection\Parent\ParentLabelSelectionHandler:
+    public: true
+    arguments:
+      - '@Akeneo\Platform\TailoredExport\Domain\Query\FindProductModelLabelsInterface'
+    tags:
+      - { name: akeneo.tailored_export.selection_handler }
+
+  Akeneo\Platform\TailoredExport\Application\Query\Selection\Groups\GroupsCodeSelectionHandler:
+    public: true
+    tags:
+      - { name: akeneo.tailored_export.selection_handler }
+
+  Akeneo\Platform\TailoredExport\Application\Query\Selection\Groups\GroupsLabelSelectionHandler:
+    public: true
+    arguments:
+      - '@Akeneo\Platform\TailoredExport\Domain\Query\FindGroupLabelsInterface'
+    tags:
+      - { name: akeneo.tailored_export.selection_handler }
+
+  Akeneo\Platform\TailoredExport\Application\Query\Selection\Scalar\ScalarSelectionHandler:
+    public: true
+    tags:
+      - { name: akeneo.tailored_export.selection_handler, priority: -1 }
+
+  Akeneo\Platform\TailoredExport\Application\Query\Selection\Date\DateSelectionHandler:
+    public: true
+    tags:
+      - { name: akeneo.tailored_export.selection_handler }
+
+  Akeneo\Platform\TailoredExport\Application\Query\Selection\File\FileKeySelectionHandler:
+    public: true
+    tags:
+      - { name: akeneo.tailored_export.selection_handler }
+
+  Akeneo\Platform\TailoredExport\Application\Query\Selection\File\FileNameSelectionHandler:
+    public: true
+    tags:
+      - { name: akeneo.tailored_export.selection_handler }
+
+  Akeneo\Platform\TailoredExport\Application\Query\Selection\File\FilePathSelectionHandler:
+    public: true
+    arguments:
+      - '@pim_connector.writer.file.media_exporter_path_generator'
+    tags:
+      - { name: akeneo.tailored_export.selection_handler }
+
+  Akeneo\Platform\TailoredExport\Application\Query\Selection\SimpleSelect\SimpleSelectCodeSelectionHandler:
+    public: true
+    tags:
+      - { name: akeneo.tailored_export.selection_handler }
+
+  Akeneo\Platform\TailoredExport\Application\Query\Selection\SimpleSelect\SimpleSelectLabelSelectionHandler:
+    public: true
+    arguments:
+      - '@Akeneo\Platform\TailoredExport\Domain\Query\FindAttributeOptionLabelsInterface'
+    tags:
+      - { name: akeneo.tailored_export.selection_handler }
+
+  Akeneo\Platform\TailoredExport\Application\Query\Selection\MultiSelect\MultiSelectCodeSelectionHandler:
+    public: true
+    tags:
+      - { name: akeneo.tailored_export.selection_handler }
+
+  Akeneo\Platform\TailoredExport\Application\Query\Selection\MultiSelect\MultiSelectLabelSelectionHandler:
+    public: true
+    arguments:
+      - '@Akeneo\Platform\TailoredExport\Domain\Query\FindAttributeOptionLabelsInterface'
+    tags:
+      - { name: akeneo.tailored_export.selection_handler }
+
+  Akeneo\Platform\TailoredExport\Application\Query\Selection\ReferenceEntity\ReferenceEntityCodeSelectionHandler:
+    public: true
+    tags:
+      - { name: akeneo.tailored_export.selection_handler }
+
+  Akeneo\Platform\TailoredExport\Application\Query\Selection\ReferenceEntity\ReferenceEntityLabelSelectionHandler:
+    public: true
+    arguments:
+      - '@akeneo_referenceentity.infrastructure.persistence.query.enrich.find_records_labels_public_api'
+    tags:
+      - { name: akeneo.tailored_export.selection_handler }
+
+  Akeneo\Platform\TailoredExport\Application\Query\Selection\ReferenceEntityCollection\ReferenceEntityCollectionCodeSelectionHandler:
+    public: true
+    tags:
+      - { name: akeneo.tailored_export.selection_handler }
+
+  Akeneo\Platform\TailoredExport\Application\Query\Selection\ReferenceEntityCollection\ReferenceEntityCollectionLabelSelectionHandler:
+    public: true
+    arguments:
+      - '@akeneo_referenceentity.infrastructure.persistence.query.enrich.find_records_labels_public_api'
+    tags:
+      - { name: akeneo.tailored_export.selection_handler }
+
+  Akeneo\Platform\TailoredExport\Application\Query\Selection\AssetCollection\AssetCollectionCodeSelectionHandler:
+    public: true
+    tags:
+      - { name: akeneo.tailored_export.selection_handler }
+
+  Akeneo\Platform\TailoredExport\Application\Query\Selection\Boolean\BooleanSelectionHandler:
+    public: true
+    tags:
+      - { name: akeneo.tailored_export.selection_handler }
+
+  Akeneo\Platform\TailoredExport\Application\Query\Selection\AssetCollection\AssetCollectionLabelSelectionHandler:
+    public: true
+    arguments:
+      - '@akeneo_assetmanager.infrastructure.persistence.query.enrich.find_asset_label_translation_public_api'
+    tags:
+      - { name: akeneo.tailored_export.selection_handler }
+
+  Akeneo\Platform\TailoredExport\Application\Query\Selection\Measurement\MeasurementValueSelectionHandler:
+    public: true
+    tags:
+      - { name: akeneo.tailored_export.selection_handler }
+
+  Akeneo\Platform\TailoredExport\Application\Query\Selection\Measurement\MeasurementUnitCodeSelectionHandler:
+    public: true
+    tags:
+      - { name: akeneo.tailored_export.selection_handler }
+
+  Akeneo\Platform\TailoredExport\Application\Query\Selection\Measurement\MeasurementUnitLabelSelectionHandler:
+    public: true
+    arguments:
+      - '@Akeneo\Platform\TailoredExport\Domain\Query\FindUnitLabelInterface'
+    tags:
+      - { name: akeneo.tailored_export.selection_handler }
+
+  Akeneo\Platform\TailoredExport\Application\Query\Selection\Null\NullSelectionHandler:
+    public: true
+    tags:
+      - { name: akeneo.tailored_export.selection_handler }
+
+  Akeneo\Platform\TailoredExport\Application\Query\Selection\Number\NumberSelectionHandler:
+    public: true
+    tags:
+      - { name: akeneo.tailored_export.selection_handler }
+
+  Akeneo\Platform\TailoredExport\Application\Query\Selection\PriceCollection\PriceCollectionAmountSelectionHandler:
+    public: true
+    tags:
+      - { name: akeneo.tailored_export.selection_handler }
+
+  Akeneo\Platform\TailoredExport\Application\Query\Selection\PriceCollection\PriceCollectionCurrencyCodeSelectionHandler:
+    public: true
+    tags:
+      - { name: akeneo.tailored_export.selection_handler }
+
+  Akeneo\Platform\TailoredExport\Application\Query\Selection\PriceCollection\PriceCollectionCurrencyLabelSelectionHandler:
+    arguments:
+      - '@pim_catalog.localization.translator.currency'
+    public: true
+    tags:
+      - { name: akeneo.tailored_export.selection_handler }
+
+  Akeneo\Platform\TailoredExport\Application\Query\Selection\SimpleAssociations\SimpleAssociationsCodeSelectionHandler:
+    public: true
+    tags:
+      - { name: akeneo.tailored_export.selection_handler }
+
+  Akeneo\Platform\TailoredExport\Application\Query\Selection\SimpleAssociations\SimpleAssociationsLabelSelectionHandler:
+    public: true
+    arguments:
+      - '@Akeneo\Platform\TailoredExport\Domain\Query\FindProductLabelsInterface'
+      - '@Akeneo\Platform\TailoredExport\Domain\Query\FindProductModelLabelsInterface'
+    tags:
+      - { name: akeneo.tailored_export.selection_handler }
+
+  Akeneo\Platform\TailoredExport\Application\Query\Selection\SimpleAssociations\SimpleAssociationsGroupsLabelSelectionHandler:
+    public: true
+    arguments:
+      - '@Akeneo\Platform\TailoredExport\Domain\Query\FindGroupLabelsInterface'
+    tags:
+      - { name: akeneo.tailored_export.selection_handler }
+
+  Akeneo\Platform\TailoredExport\Application\Query\Selection\QuantifiedAssociations\QuantifiedAssociationsCodeSelectionHandler:
+    public: true
+    tags:
+      - { name: akeneo.tailored_export.selection_handler }
+
+  Akeneo\Platform\TailoredExport\Application\Query\Selection\QuantifiedAssociations\QuantifiedAssociationsLabelSelectionHandler:
+    public: true
+    arguments:
+      - '@Akeneo\Platform\TailoredExport\Domain\Query\FindProductLabelsInterface'
+      - '@Akeneo\Platform\TailoredExport\Domain\Query\FindProductModelLabelsInterface'
+    tags:
+      - { name: akeneo.tailored_export.selection_handler }
+
+  Akeneo\Platform\TailoredExport\Application\Query\Selection\QuantifiedAssociations\QuantifiedAssociationsQuantitySelectionHandler:
+    public: true
+    tags:
+      - { name: akeneo.tailored_export.selection_handler }

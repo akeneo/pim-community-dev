@@ -65,8 +65,6 @@ export const saveAttribute = (dismiss: boolean = true) => async (
   }
   await dispatch(updateAttributeList());
 
-  dispatch(notifyAttributeWellSaved());
-
   return;
 };
 

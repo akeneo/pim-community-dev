@@ -1,5 +1,0 @@
-services:
-  Akeneo\Platform\TailoredExport\Infrastructure\Connector\Processor\PropertySelector\PropertySelectorRegistry:
-    public: true
-    arguments:
-      - !tagged_iterator akeneo.tailored_export.property_selector

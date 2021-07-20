@@ -5,26 +5,46 @@ import {Channel, renderWithProviders as baseRender} from '@akeneo-pim-community/
 import {ColumnList} from './ColumnList';
 import {FetcherContext, ValidationErrorsContext} from '../../contexts';
 import {ColumnConfiguration} from '../../models/ColumnConfiguration';
-import {Attribute} from '../../models';
+import {AssociationType, Attribute} from '../../models';
+
+const associationTypes: AssociationType[] = [
+  {
+    code: 'XSELL',
+    labels: {en_US: 'Cross sell'},
+    is_quantified: false,
+  },
+  {
+    code: 'UPSELL',
+    labels: {},
+    is_quantified: false,
+  },
+];
 
 const attributes: Attribute[] = [
   {
+    type: 'pim_catalog_text',
     code: 'name',
     labels: {fr_FR: 'French name', en_US: 'English name'},
     scopable: false,
     localizable: false,
+    is_locale_specific: false,
+    available_locales: [],
   },
   {
+    type: 'pim_catalog_textarea',
     code: 'description',
     labels: {fr_FR: 'French description', en_US: 'English description'},
     scopable: false,
     localizable: false,
+    is_locale_specific: false,
+    available_locales: [],
   },
 ];
 
 const fetchers = {
   attribute: {fetchByIdentifiers: (): Promise<Attribute[]> => Promise.resolve<Attribute[]>(attributes)},
   channel: {fetchAll: (): Promise<Channel[]> => Promise.resolve([])},
+  associationType: {fetchByCodes: (): Promise<AssociationType[]> => Promise.resolve(associationTypes)},
 };
 
 const renderWithProviders = async (node: ReactNode) =>
@@ -104,11 +124,8 @@ test('it can remove a column', async () => {
     />
   );
 
-  const removeButton = screen.getByTitle('akeneo.tailored_export.column_list.column_row.remove');
-  fireEvent.click(removeButton);
-
-  const confirmButton = screen.getByText('pim_common.delete');
-  fireEvent.click(confirmButton);
+  fireEvent.click(screen.getByTitle('akeneo.tailored_export.column_list.column_row.remove'));
+  fireEvent.click(screen.getByText('pim_common.confirm'));
 
   expect(handleRemove).toBeCalled();
 });
@@ -396,12 +413,30 @@ test('it displays the sources labels on the row', async () => {
         },
         {
           uuid: '1235',
-          code: 'enabled',
+          code: 'parent',
           type: 'property',
           locale: null,
           channel: null,
-          operations: [],
+          operations: {},
           selection: {type: 'code'},
+        },
+        {
+          uuid: '31d80b71-b169-4275-81a3-c788690a5470',
+          code: 'XSELL',
+          type: 'association_type',
+          locale: null,
+          channel: null,
+          operations: {},
+          selection: {type: 'code', separator: ',', entity_type: 'products'},
+        },
+        {
+          uuid: '296d487e-294b-4e42-a8d0-08e66f78a84d',
+          code: 'UPSELL',
+          type: 'association_type',
+          locale: null,
+          channel: null,
+          operations: {},
+          selection: {type: 'code', separator: ',', entity_type: 'products'},
         },
       ],
       format: {
@@ -435,6 +470,6 @@ test('it displays the sources labels on the row', async () => {
 
   const [_headerRow, firstRow, secondRow] = screen.getAllByRole('row');
 
-  expect(within(firstRow).getByText('English name, pim_common.enabled')).toBeInTheDocument();
+  expect(within(firstRow).getByText('English name, pim_common.parent, Cross sell, [UPSELL]')).toBeInTheDocument();
   expect(within(secondRow).getByText('akeneo.tailored_export.column_list.column_row.no_source')).toBeInTheDocument();
 });

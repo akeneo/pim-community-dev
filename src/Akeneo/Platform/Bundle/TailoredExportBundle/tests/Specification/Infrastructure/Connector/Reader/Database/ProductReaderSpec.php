@@ -25,14 +25,14 @@ use Prophecy\Promise\ReturnPromise;
 
 class ProductReaderSpec extends ObjectBehavior
 {
-    function let(ProductQueryBuilderFactoryInterface $pqbFactory, StepExecution $stepExecution)
+    public function let(ProductQueryBuilderFactoryInterface $pqbFactory, StepExecution $stepExecution)
     {
         $this->beConstructedWith($pqbFactory);
 
         $this->setStepExecution($stepExecution);
     }
 
-    function it_reads_products(
+    public function it_reads_products(
         ProductQueryBuilderFactoryInterface $pqbFactory,
         StepExecution $stepExecution,
         ProductQueryBuilderInterface $pqb,
@@ -90,7 +90,7 @@ class ProductReaderSpec extends ObjectBehavior
         $this->read()->shouldReturn(null);
     }
 
-    function it_return_product_count(
+    public function it_return_product_count(
         ProductQueryBuilderFactoryInterface $pqbFactory,
         StepExecution $stepExecution,
         ProductQueryBuilderInterface $pqb,
@@ -139,7 +139,7 @@ class ProductReaderSpec extends ObjectBehavior
         $this->totalItems()->shouldReturn(10);
     }
 
-    function it_throws_if_the_reader_is_not_initialized()
+    public function it_throws_if_the_reader_is_not_initialized()
     {
         $this->shouldThrow(\RuntimeException::class)
             ->during('totalItems');

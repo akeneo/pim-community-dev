@@ -1,0 +1,3 @@
+parameters:
+    pim_ce_dev_src_folder_location: '%kernel.project_dir%/vendor/akeneo/pim-community-dev'
+    monitoring_authentication_token: '%env(MONITORING_AUTHENTICATION_TOKEN)%'

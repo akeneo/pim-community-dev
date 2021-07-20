@@ -30,9 +30,14 @@ class AssetCodeShouldBeUniqueValidator extends ConstraintValidator
 {
     private AssetExistsInterface $assetExists;
 
-    public function __construct(AssetExistsInterface $assetExists)
+    private $insertedCodes = [];
+
+    private int $batchSize;
+
+    public function __construct(AssetExistsInterface $assetExists, int $batchSize=100)
     {
         $this->assetExists = $assetExists;
+        $this->batchSize = $batchSize;
     }
 
     public function validate($command, Constraint $constraint)
@@ -68,11 +73,17 @@ class AssetCodeShouldBeUniqueValidator extends ConstraintValidator
         $code = AssetCode::fromString($command->code);
         $alreadyExists = $this->assetExists->withCode($code);
 
-        if ($alreadyExists) {
+        if ($alreadyExists
+            || in_array(strtolower($command->code), $this->insertedCodes)) {
             $this->context->buildViolation(AssetCodeShouldBeUnique::ERROR_MESSAGE)
                 ->setParameter('%code%', $code)
                 ->atPath('code')
                 ->addViolation();
+            return;
+        }
+        $this->insertedCodes[]=strtolower($command->code);
+        if (sizeof($this->insertedCodes) > $this->batchSize) {
+            array_shift($this->insertedCodes);
         }
     }
 }

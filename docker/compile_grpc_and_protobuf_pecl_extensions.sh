@@ -25,4 +25,16 @@ echo "Compress protobuf.so" && \
 tar czf ${BINDIR}/build/protobuf.tar.gz -C ${BINDIR}/build protobuf.so && \
 rm ${BINDIR}/build/protobuf.so || true && \
 
+echo "Copy grpc and protobuf to grth folder"
+cp ${BINDIR}/build/grpc.tar.gz ${BINDIR}/../grth/docker/build/grpc.tar.gz
+cp ${BINDIR}/build/grpc.ini ${BINDIR}/../grth/docker/build/grpc.ini
+cp ${BINDIR}/build/protobuf.tar.gz ${BINDIR}/../grth/docker/build/protobuf.tar.gz
+cp ${BINDIR}/build/protobuf.ini ${BINDIR}/../grth/docker/build/protobuf.ini
+
+echo "Copy grpc and protobuf to tria folder"
+cp ${BINDIR}/build/grpc.tar.gz ${BINDIR}/../tria/docker/build/grpc.tar.gz
+cp ${BINDIR}/build/grpc.ini ${BINDIR}/../tria/docker/build/grpc.ini
+cp ${BINDIR}/build/protobuf.tar.gz ${BINDIR}/../tria/docker/build/protobuf.tar.gz
+cp ${BINDIR}/build/protobuf.ini ${BINDIR}/../tria/docker/build/protobuf.ini
+
 echo "Extension updated and retrieved locally, ready to be versionned."

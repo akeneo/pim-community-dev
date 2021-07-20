@@ -97,7 +97,7 @@ pim:
   daemons:
     job-consumer-process:
       enabled: true
-      pimCommand: "messenger:consume ui_job import_export_job data_maintenance_job --limit=1 --time-limit=3600"
+      pimCommand: "messenger:consume --quiet ui_job import_export_job data_maintenance_job --limit=1 --time-limit=3600"
       replicas: 2
       trapped: true
       resources:

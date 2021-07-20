@@ -16,6 +16,7 @@ namespace Akeneo\AssetManager\Infrastructure\Connector\Api\MediaFile;
 use Akeneo\AssetManager\Infrastructure\Filesystem\Storage;
 use Akeneo\Tool\Component\FileStorage\Exception\FileRemovalException;
 use Akeneo\Tool\Component\FileStorage\Exception\FileTransferException;
+use Akeneo\Tool\Component\FileStorage\Exception\InvalidFile;
 use Akeneo\Tool\Component\FileStorage\File\FileStorerInterface;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -30,7 +31,6 @@ use Symfony\Component\Routing\RouterInterface;
 class UploadMediaFileAction
 {
     private FileStorerInterface $fileStorer;
-
     private RouterInterface $router;
 
     public function __construct(FileStorerInterface $fileStorer, RouterInterface $router)
@@ -47,14 +47,14 @@ class UploadMediaFileAction
 
         if (preg_match(
             '/[' . preg_quote('& \ + * ? [ ^ ] $ ( ) { } = ! < > | : - # @ ;', '/') . ']/',
-            $request->files->get('file')->getClientOriginalExtension())
-        ) {
+            $request->files->get('file')->getClientOriginalExtension()
+        )) {
             throw new UnprocessableEntityHttpException('File extension cannot contain special characters.');
         }
 
         try {
             $fileInfo = $this->fileStorer->store($request->files->get('file'), Storage::FILE_STORAGE_ALIAS, true);
-        } catch (FileTransferException | FileRemovalException $exception) {
+        } catch (FileTransferException | FileRemovalException | InvalidFile $exception) {
             throw new UnprocessableEntityHttpException($exception->getMessage(), $exception);
         }
 

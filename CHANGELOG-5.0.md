@@ -1,5 +1,19 @@
 # 5.0.x
 
+# 5.0.40 (2021-07-09)
+
+# 5.0.39 (2021-07-06)
+
+## Bug fixes
+
+- PIM-9942: Fix parsing of locale and channel codes in asset mass upload form
+
+# 5.0.38 (2021-07-02)
+
+## Bug fixes
+
+- PIM-9945: Fix the number of displayed elements in the locale grid
+
 # 5.0.37 (2021-07-01)
 
 ## Bug fixes

@@ -2,6 +2,7 @@ services:
     Akeneo\Platform\TailoredExport\Infrastructure\Controller\GetGroupedSourcesAction:
         public: true
         arguments:
-            - '@pimee_tailored_export.query.sql.get_grouped_attributes'
-            - '@pim_user.context.user'
             - '@translator'
+            - '@Akeneo\Platform\TailoredExport\Domain\Query\FindSystemSourcesInterface'
+            - '@akeneo.pim.structure.query.find_association_types'
+            - '@akeneo.pim.structure.query.find_flatten_attributes'

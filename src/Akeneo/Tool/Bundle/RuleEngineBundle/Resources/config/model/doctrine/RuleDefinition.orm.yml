@@ -2,6 +2,10 @@ Akeneo\Tool\Bundle\RuleEngineBundle\Model\RuleDefinition:
     type: entity
     table: akeneo_rule_engine_rule_definition
     changeTrackingPolicy: DEFERRED_EXPLICIT
+    indexes:
+        akeneo_rule_engine_rule_definition_code__index:
+            columns:
+                - code
     fields:
         id:
             type: integer

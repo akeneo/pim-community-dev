@@ -1,0 +1,32 @@
+{
+  "module": {
+      "pim": {
+          "dns_external": "${INSTANCE_NAME}.${GOOGLE_MANAGED_ZONE_DNS}.",
+          "dns_internal": "${CLUSTER_DNS_NAME}",
+          "dns_zone": "${GOOGLE_MANAGED_ZONE_NAME}",
+          "google_project_id": "${GOOGLE_PROJECT_ID}",
+          "google_project_zone": "${GOOGLE_CLUSTER_ZONE}",
+          "google_storage_location": "EU",
+          "instance_name": "${INSTANCE_NAME}",
+          "mailgun_api_key": "${MAILGUN_API_KEY}",
+          "mysql_disk_size": "${MYSQL_DISK_SIZE}",
+          "mysql_disk_description": "${MYSQL_DISK_DESCRIPTION}",
+          "mysql_disk_name": "${MYSQL_DISK_NAME}",
+          "mysql_source_snapshot": "${MYSQL_SOURCE_SNAPSHOT}",
+          "papo_project_code": "NOT_ON_PAPO_${PFID}",
+          "product_reference_code": "${PRODUCT_REFERENCE_CODE}",
+          "product_reference_type": "${PRODUCT_REFERENCE_TYPE}",
+          "pim_version": "${IMAGE_TAG}",
+          "source": "${PIM_SRC_DIR_FT}/deployments/terraform"
+      }
+  },
+  "terraform": {
+      "required_version": "= 0.12.25",
+      "backend": {
+          "gcs": {
+              "bucket": "akecld-terraform-dev",
+              "prefix": "saas/${GOOGLE_PROJECT_ID}/${GOOGLE_CLUSTER_ZONE}/${PFID}"
+          }
+      }
+  }
+}

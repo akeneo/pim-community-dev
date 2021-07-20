@@ -1,5 +1,30 @@
 services:
-    pimee_tailored_export.query.sql.get_grouped_attributes:
-        class: Akeneo\Platform\TailoredExport\Infrastructure\Query\SqlGetGroupedAttributes
+    Akeneo\Platform\TailoredExport\Domain\Query\FindProductLabelsInterface:
+        class: Akeneo\Platform\TailoredExport\Infrastructure\Query\Enrichment\FindProductLabels
         arguments:
-            - '@database_connection'
+          - '@akeneo.pim.enrichment.product.query.get_product_labels'
+
+    Akeneo\Platform\TailoredExport\Domain\Query\FindProductModelLabelsInterface:
+        class: Akeneo\Platform\TailoredExport\Infrastructure\Query\Enrichment\FindProductModelLabels
+        arguments:
+            - '@akeneo.pim.enrichment.product.query.get_product_model_labels'
+
+    Akeneo\Platform\TailoredExport\Domain\Query\FindAttributeOptionLabelsInterface:
+        class: Akeneo\Platform\TailoredExport\Infrastructure\Query\Structure\FindAttributeOptionLabels
+        arguments:
+            - '@akeneo.pim.structure.query.lru_cached_get_existing_attribute_options_with_values'
+
+    Akeneo\Platform\TailoredExport\Domain\Query\FindGroupLabelsInterface:
+        class: Akeneo\Platform\TailoredExport\Infrastructure\Query\Structure\FindGroupLabels
+        arguments:
+          - '@akeneo.pim.structure.query.get_group_translations'
+
+    Akeneo\Platform\TailoredExport\Domain\Query\FindUnitLabelInterface:
+        class: Akeneo\Platform\TailoredExport\Infrastructure\Query\Measurement\FindUnitLabel
+        arguments:
+            - '@akeneo_measurement.public_api.get_unit_translations'
+
+    Akeneo\Platform\TailoredExport\Domain\Query\FindSystemSourcesInterface:
+        class: Akeneo\Platform\TailoredExport\Infrastructure\Query\InMemoryFindSystemSources
+        arguments:
+            - '@translator'

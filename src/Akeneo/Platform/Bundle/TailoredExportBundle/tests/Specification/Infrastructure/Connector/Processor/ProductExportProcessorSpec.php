@@ -14,37 +14,69 @@ declare(strict_types=1);
 namespace Specification\Akeneo\Platform\TailoredExport\Infrastructure\Connector\Processor;
 
 use Akeneo\Pim\Enrichment\Component\Product\Model\ProductInterface;
-use Akeneo\Pim\Enrichment\Component\Product\Model\ValueInterface;
+use Akeneo\Pim\Structure\Component\Query\PublicApi\Association\AssociationType;
+use Akeneo\Pim\Structure\Component\Query\PublicApi\Association\GetAssociationTypesInterface;
+use Akeneo\Pim\Structure\Component\Query\PublicApi\Association\LabelCollection;
 use Akeneo\Pim\Structure\Component\Query\PublicApi\AttributeType\Attribute;
 use Akeneo\Pim\Structure\Component\Query\PublicApi\AttributeType\GetAttributes;
-use Akeneo\Platform\TailoredExport\Infrastructure\Connector\Processor\AttributeSelector\AttributeSelectorRegistry;
+use Akeneo\Platform\TailoredExport\Application\ProductMapper;
+use Akeneo\Platform\TailoredExport\Application\Query\Column\ColumnCollection;
+use Akeneo\Platform\TailoredExport\Domain\SourceValue\StringValue;
+use Akeneo\Platform\TailoredExport\Domain\ValueCollection;
+use Akeneo\Platform\TailoredExport\Infrastructure\Hydrator\ColumnCollectionHydrator;
+use Akeneo\Platform\TailoredExport\Infrastructure\Hydrator\ValueCollectionHydrator;
 use Akeneo\Tool\Component\Batch\Job\JobParameters;
 use Akeneo\Tool\Component\Batch\Model\StepExecution;
 use PhpSpec\ObjectBehavior;
 
 class ProductExportProcessorSpec extends ObjectBehavior
 {
-    function let(
+    public function let(
         StepExecution $stepExecution,
-        AttributeSelectorRegistry $attributeSelectorRegistry,
-        GetAttributes $getAttributes
+        JobParameters $jobParameters,
+        GetAttributes $getAttributes,
+        GetAssociationTypesInterface $getAssociationTypes,
+        ValueCollectionHydrator $valueCollectionHydrator,
+        ColumnCollectionHydrator $columnCollectionHydrator,
+        ProductMapper $productMapper
     ) {
         $this->beConstructedWith(
-            $attributeSelectorRegistry,
-            $getAttributes
+            $getAttributes,
+            $getAssociationTypes,
+            $valueCollectionHydrator,
+            $columnCollectionHydrator,
+            $productMapper
         );
         $this->setStepExecution($stepExecution);
+
+        $stepExecution->getJobParameters()->willReturn($jobParameters);
     }
 
     public function it_processes_product(
         ProductInterface $product,
         JobParameters $jobParameters,
-        ValueInterface $nameValue,
-        $stepExecution,
-        $getAttributes,
-        $attributeSelectorRegistry
+        GetAttributes $getAttributes,
+        GetAssociationTypesInterface $getAssociationTypes,
+        ValueCollectionHydrator $valueCollectionHydrator,
+        ColumnCollectionHydrator $columnCollectionHydrator,
+        ColumnCollection $columnCollection,
+        ProductMapper $productMapper
     ) {
         $columns = [
+            [
+                'target' => 'categories-export',
+                'sources' => [
+                    [
+                        'type' => 'property',
+                        'code' => 'categories',
+                        'locale' => null,
+                        'channel' => null,
+                        'selection' => [
+                            'type' => 'code'
+                        ],
+                    ],
+                ],
+            ],
             [
                 'target' => 'name-export',
                 'sources' => [
@@ -54,24 +86,46 @@ class ProductExportProcessorSpec extends ObjectBehavior
                         'locale' => null,
                         'channel' => null,
                         'selection' => [
-                            'type' => 'code'
-                        ]
-                    ]
+                            'type' => 'code',
+                        ],
+                    ],
                 ],
-            ]
-        ];
-        $name = $this->createAttribute('name');
-        $stepExecution->getJobParameters()->willReturn($jobParameters);
-        $jobParameters->get('columns')->willReturn($columns);
-        $product->getValue('name', null, null)->willReturn($nameValue);
-        $getAttributes->forCode('name')->willReturn($name);
-        $attributeSelectorRegistry->applyAttributeSelection(['type' => 'code'], $name, $nameValue)->willReturn('name value');
-
-        $this->process($product)->shouldReturn(
+            ],
             [
-                'name-export' => 'name value'
-            ]
-        );
+                'target' => 'association-export',
+                'sources' => [
+                    [
+                        'type' => 'association_type',
+                        'code' => 'X_SELL',
+                        'locale' => null,
+                        'channel' => null,
+                        'selection' => [
+                            'type' => 'code',
+                            'entity_type' => 'products',
+                            'separator' => ',',
+                        ],
+                    ],
+                ],
+            ],
+        ];
+
+        $name = $this->createAttribute('name');
+        $crossSellAssociation = $this->createAssociationType('X_SELL');
+        $valueCollection = new ValueCollection();
+        $valueCollection->add(new StringValue('some_data'), 'name', null, null);
+        $mappedProduct = [
+            'categories-export' => 'my category',
+            'name-export' => 'name value',
+        ];
+
+        $jobParameters->get('columns')->willReturn($columns);
+        $getAttributes->forCodes(['name'])->willReturn(['name' => $name]);
+        $getAssociationTypes->forCodes(['X_SELL'])->willReturn(['X_SELL' => $crossSellAssociation]);
+        $columnCollectionHydrator->hydrate($columns, ['name' => $name], ['X_SELL' => $crossSellAssociation])->willReturn($columnCollection);
+        $valueCollectionHydrator->hydrate($product, $columnCollection)->willReturn($valueCollection);
+        $productMapper->map($columnCollection, $valueCollection)->willReturn($mappedProduct);
+
+        $this->process($product)->shouldReturn($mappedProduct);
     }
 
     private function createAttribute(string $code): Attribute
@@ -87,6 +141,16 @@ class ProductExportProcessorSpec extends ObjectBehavior
             null,
             'text',
             []
+        );
+    }
+
+    private function createAssociationType(string $code): AssociationType
+    {
+        return new AssociationType(
+            $code,
+            LabelCollection::fromArray([]),
+            false,
+            false,
         );
     }
 }

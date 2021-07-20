@@ -92,6 +92,7 @@ acceptance-back: var/tests/behat #Doc: launch Behat acceptance tests
 	PIM_CONTEXT=asset-manager $(MAKE) asset-manager-acceptance-back
 	PIM_CONTEXT=rule-engine $(MAKE) rule-engine-acceptance-back
 	PIM_CONTEXT=connectivity-connection $(MAKE) connectivity-connection-acceptance-back
+	PIM_CONTEXT=tailored-export $(MAKE) acceptance-back
 	${PHP_RUN} vendor/bin/behat -p acceptance --format pim --out var/tests/behat --format progress --out std --colors
 	${PHP_RUN} vendor/bin/behat --config vendor/akeneo/pim-community-dev/behat.yml -p acceptance --no-interaction --format=progress --strict
 

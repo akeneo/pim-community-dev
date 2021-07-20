@@ -1,62 +1,94 @@
 batch_jobs.xlsx_tailored_product_export.label: XSLX로 맞춤화된 제품 내보내기
 akeneo.tailored_export:
+  filters:
+    completeness:
+      locales:
+        label: 완성도 관련 로케일 정의
+        placeholder: 일부 로케일 선택
+        remove: 로케일 제거
   form:
     job_instance:
       tab:
         content:
-          title: 데이터 필터링
+          title: 제품 선택
         column:
-          title: 열 선택
+          title: 구조 내보내기
+        filters:
+          title: 제품 선택 정의
   column_list:
     title: 열
     header:
-      column_name: 열 이름
-      source_data: 소스 데이터
+      column_name: 열 헤더
+      source_data: 열 콘텐츠
     column_row:
-      target_placeholder: 여기에서 새 열 이름 정의
+      target_placeholder: 여기에서 열 이름 정의
       remove: 열 제거
-      no_source: 소스 없음
+      no_source: 콘텐츠 소스 정의
     no_column_selection:
-      title: 내보낼 열 선택 없음
-      subtitle: 매핑 및 작업에 관해 자세히 알아보려면
-      link: 이 문서가 도움이 될 수 있습니다.
+      title: 내보내기 프로필이 비어 있습니다. 첫 열을 추가하십시오.
+      subtitle: '''첫 열 추가''를 클릭하면 내보내기 테이블 빌드가 시작됩니다.'
+      link: 자세한 내용은 도움말 센터를 확인하십시오.
       add_column: 첫 번째 열 추가
   column_details:
     sources:
       title: 소스
       add: 소스 추가
       no_result: 죄송합니다. 결과가 없습니다.
-      locale_specific.info: 이 특성은 특정 로케일에 한정됩니다.
+      locale_specific.info: 이 특성은 로케일당 값을 가집니다.
       remove:
         title: 소스
         text: 이 소스를 제거하시겠습니까?
         button: 이 소스 제거
       no_source_configuration:
-        title: 이 소스에 사용 가능한 작업이 없습니다. 해당 값만 내보내집니다.
+        title: 이 소스에 사용 가능한 작업이 없습니다. 해당 값이 그대로 내보내집니다.
       no_source_selected:
-        title: 현재 선택된 소스가 없습니다.
-        subtitle: 매핑 및 작업에 관해 자세히 알아보려면
-        link: 이 문서가 도움이 될 수 있습니다.
+        title: '''소스 추가''를 클릭하여 열 콘텐츠를 정의하십시오.'
+        link: 자세한 내용은 도움말 센터를 확인하십시오.
       no_column_selected:
-        title: 현재 선택된 열이 없습니다.
+        title: 첫 번째 열을 정의하고 나면 첫 번째 소스를 선택할 수 있습니다.
       selection:
         title: 선택
-        separator: 구분 기호
         type:
           amount: 총계
           currency: 통화
+          key: 파일 키
+          path: 경로
+          name: 파일 이름
+        format: 형식
+        parent:
+          information:
+            locale: 레이블로 사용된 특성이 로케일별 값을 가진 경우, 특정 로케일을 선택할 수 있습니다. 
+            channel: 레이블로 사용된 특성이 채널별 값을 가진 경우, 특정 채널을 선택할 수 있습니다. 
+        code_label:
+          information: 이 특성의 경우 코드 또는 레이블을 내보낼 수 있습니다.
+        measurement:
+          information: 이 특성의 경우 값, 단위 코드 또는 단위 레이블을 내보낼 수 있습니다.
+          value: 값
+          unit_locale: 단위 로케일
+          unit_code: 단위 코드
+          unit_label: 단위 레이블
+        price:
+          information: 이 특성의 경우 수량 또는 통화를 내보낼 수 있습니다.
+        file:
+          information: 이 특성의 경우 경로, 파일 키 또는 이름을 내보낼 수 있습니다.
+      operation:
+        replacement:
+          title: 값 바꾸기
+          placeholder: 대체 값을 정의
+          enabled: 활성화된 대체 값
+          disabled: 비활성화된 대체 값
   column:
     delete_message: 이 열을 삭제하시겠습니까?
   validation:
     columns:
-      max_column_count_reached: 최대 열 개수인 {{ limit }}개에 도달했습니다.
+      max_column_count_reached: '{{ limit }}개의 열 제한에 도달했습니다. 더 이상 내보내기에 열을 추가할 수 없습니다.'
       target:
-        should_not_be_blank: 열 이름은 비워둘 수 없습니다.
+        should_not_be_blank: 열 이름을 지정해 주십시오.
         max_length_reached: 열 이름이 너무 깁니다. {{ limit }}자 이하여야 합니다.
-        should_be_unique: 열 이름은 고유해야 합니다.
+        should_be_unique: 이 열 이름은 이미 있습니다. 새 이름을 입력해 주십시오.
     sources:
-      max_source_count_reached: 최대 소스 개수인 {{ limit }}개에 도달했습니다.
+      max_source_count_reached: '{{ limit }}개의 소스 제한에 도달했습니다. 더 이상 내보내기에 소스를 추가할 수 없습니다.'
     locale:
-      should_be_active: 로케일 {{ locale_code }}을(를) 활성화해야 합니다.
+      should_be_active: '{{ locale_code }} 로케일을 활성화해야 합니다.'
     channel:
-      should_exist: 채널 {{ channel_code }}이(가) 있어야 합니다.
+      should_exist: '{{ channel_code }} 채널을 활성화해야 합니다.'

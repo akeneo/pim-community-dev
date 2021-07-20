@@ -11,6 +11,7 @@ use Akeneo\Pim\Enrichment\Product\Component\Product\Webhook\ProductRemovedEventD
 use Akeneo\Pim\Enrichment\Product\Component\Product\Query\GetViewableCategoryCodes;
 use Akeneo\Platform\Component\EventQueue\Author;
 use Akeneo\Platform\Component\EventQueue\BulkEvent;
+use Akeneo\Platform\Component\Webhook\Context;
 use Akeneo\Platform\Component\Webhook\EventDataBuilderInterface;
 use Akeneo\Platform\Component\Webhook\EventDataCollection;
 use Akeneo\UserManagement\Component\Model\User;
@@ -50,7 +51,7 @@ class ProductRemovedEventDataBuilderSpec extends ObjectBehavior
     ): void {
         $user = new User();
         $user->setUsername('erp_1234');
-        $user->setId(1234);
+        $user->setId(10);
 
         $eventWithGrantedProduct = new ProductRemoved(
             Author::fromNameAndType('erp', 'ui'),
@@ -68,6 +69,7 @@ class ProductRemovedEventDataBuilderSpec extends ObjectBehavior
                 $eventWithNonGrantedProduct,
             ]
         );
+        $context = new Context('erp_1234', 10);
 
         $baseProductRemovedEventDataBuilder->supports($bulkEvent)->willReturn(true);
 
@@ -88,7 +90,7 @@ class ProductRemovedEventDataBuilderSpec extends ObjectBehavior
             new NotGrantedProductException($user->getUsername(), 'blue_cam')
         );
 
-        $actualCollection = $this->build($bulkEvent, $user);
+        $actualCollection = $this->build($bulkEvent, $context);
 
         Assert::assertEquals($expectedCollection, $actualCollection->getWrappedObject());
     }
@@ -108,7 +110,7 @@ class ProductRemovedEventDataBuilderSpec extends ObjectBehavior
         $bulkEvent = new BulkEvent([$eventWithNonCategorizedProduct]);
         $baseProductRemovedEventDataBuilder->supports($bulkEvent)->willReturn(true);
 
-        $actualCollection = $this->build($bulkEvent, $user);
+        $actualCollection = $this->build($bulkEvent, new Context('erp_1234', 10));
         $actualCollection->getEventData($eventWithNonCategorizedProduct)->shouldBe([
             'resource' => ['identifier' => $eventWithNonCategorizedProduct->getIdentifier()],
         ]);
@@ -116,9 +118,6 @@ class ProductRemovedEventDataBuilderSpec extends ObjectBehavior
 
     public function it_throws_an_error_if_an_event_is_not_supported($baseProductRemovedEventDataBuilder): void
     {
-        $user = new User();
-        $user->setUsername('erp_1234');
-
         $supportedEvent = new ProductRemoved(
             Author::fromNameAndType('erp', 'ui'),
             $this->aBlueJeanProduct()
@@ -140,7 +139,7 @@ class ProductRemovedEventDataBuilderSpec extends ObjectBehavior
 
         $this
             ->shouldThrow(\InvalidArgumentException::class)
-            ->during('build', [$bulkEvent, $user]);
+            ->during('build', [$bulkEvent, new Context('erp_1234', 10)]);
     }
 
     private function aBlueJeanProduct(): array

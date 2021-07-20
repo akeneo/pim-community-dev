@@ -36,8 +36,11 @@ services:
   akeneo.tailored_export.connector.processor.product_export:
     class: 'Akeneo\Platform\TailoredExport\Infrastructure\Connector\Processor\ProductExportProcessor'
     arguments:
-      - '@Akeneo\Platform\TailoredExport\Infrastructure\Connector\Processor\AttributeSelector\AttributeSelectorRegistry'
       - '@akeneo.pim.structure.query.get_attributes'
+      - '@akeneo.pim.structure.query.get_association_types'
+      - '@Akeneo\Platform\TailoredExport\Infrastructure\Hydrator\ValueCollectionHydrator'
+      - '@Akeneo\Platform\TailoredExport\Infrastructure\Hydrator\ColumnCollectionHydrator'
+      - '@Akeneo\Platform\TailoredExport\Application\ProductMapper'
 
   akeneo.tailored_export.connector.xlsx.file_writer_factory:
     class: Akeneo\Platform\TailoredExport\Infrastructure\Connector\Writer\File\FileWriterFactory

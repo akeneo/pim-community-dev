@@ -1,9 +1,10 @@
-import {Channel} from '@akeneo-pim-community/shared';
-import {act} from 'react-dom/test-utils';
-import {Attribute, FetcherContext} from '../contexts';
-import {useAttribute, useAttributes} from './useAttributes';
 import React, {ReactNode} from 'react';
-import {renderHook} from '@testing-library/react-hooks';
+import {renderHook, act} from '@testing-library/react-hooks';
+import {Channel} from '@akeneo-pim-community/shared';
+import {FetcherContext} from '../contexts';
+import {useAttribute, useAttributes} from './useAttributes';
+import {Attribute} from '../models/Attribute';
+import {AssociationType} from '../models';
 
 type WrapperProps = {
   children?: ReactNode;
@@ -16,6 +17,7 @@ const Wrapper = ({children, response}: WrapperProps) => {
       value={{
         attribute: {fetchByIdentifiers: (): Promise<Attribute[]> => Promise.resolve<Attribute[]>(response)},
         channel: {fetchAll: (): Promise<Channel[]> => new Promise(resolve => resolve([]))},
+        associationType: {fetchByCodes: (): Promise<AssociationType[]> => Promise.resolve([])},
       }}
     >
       {children}
@@ -24,9 +26,25 @@ const Wrapper = ({children, response}: WrapperProps) => {
 };
 
 test('It fetch the attributes', async () => {
-  const response = [
-    {code: 'description', labels: {}, scopable: true, localizable: true},
-    {code: 'name', labels: {}, scopable: false, localizable: false},
+  const response: Attribute[] = [
+    {
+      code: 'description',
+      labels: {},
+      scopable: true,
+      localizable: true,
+      type: 'pim_catalog_textarea',
+      is_locale_specific: false,
+      available_locales: [],
+    },
+    {
+      code: 'name',
+      labels: {},
+      scopable: false,
+      localizable: false,
+      type: 'pim_catalog_text',
+      is_locale_specific: false,
+      available_locales: [],
+    },
   ];
 
   const {result, waitForNextUpdate} = renderHook(() => useAttributes(['name', 'description']), {
@@ -43,38 +61,82 @@ test('It fetch the attributes', async () => {
 });
 
 test('It fetch an attribute', async () => {
-  const {result, waitForNextUpdate} = renderHook(() => useAttribute('release_date'), {
+  const {result, waitForNextUpdate} = renderHook(() => useAttribute('description'), {
     wrapper: Wrapper,
-    initialProps: {response: [{code: 'description', labels: {}, scopable: true, localizable: true}]},
+    initialProps: {
+      response: [
+        {
+          code: 'description',
+          labels: {},
+          scopable: true,
+          localizable: true,
+          type: 'pim_catalog_textarea',
+          is_locale_specific: false,
+          available_locales: [],
+        },
+      ],
+    },
   });
   expect(result.current);
   await act(async () => {
     await waitForNextUpdate();
   });
 
-  const attribute = result.current;
-  expect(attribute).toEqual({code: 'description', labels: {}, scopable: true, localizable: true});
+  const attributeAfterFetch = result.current;
+  expect(attributeAfterFetch).toEqual({
+    code: 'description',
+    labels: {},
+    scopable: true,
+    localizable: true,
+    type: 'pim_catalog_textarea',
+    is_locale_specific: false,
+    available_locales: [],
+  });
 });
 
-test('It return null if no attribute', async () => {
+test('It returns null if no attribute', async () => {
   const {result} = renderHook(() => useAttribute('release_date'), {wrapper: Wrapper, initialProps: {response: []}});
 
   const attribute = result.current;
   expect(attribute).toBeNull();
 });
 
-test('It return attributes only if hook is mounted', async () => {
-  const {unmount} = renderHook(() => useAttributes([]), {
+test('It returns attributes only if hook is mounted', async () => {
+  const {unmount} = renderHook(() => useAttributes(['release_date']), {
     wrapper: Wrapper,
-    initialProps: {response: [{code: 'description', labels: {}, scopable: true, localizable: true}]},
+    initialProps: {
+      response: [
+        {
+          code: 'description',
+          labels: {},
+          scopable: true,
+          localizable: true,
+          type: 'pim_catalog_textarea',
+          is_locale_specific: false,
+          available_locales: [],
+        },
+      ],
+    },
   });
   unmount();
 });
 
-test('It return attribute only if hook is mounted', async () => {
+test('It returns attribute only if hook is mounted', async () => {
   const {unmount} = renderHook(() => useAttribute('release_date'), {
     wrapper: Wrapper,
-    initialProps: {response: [{code: 'description', labels: {}, scopable: true, localizable: true}]},
+    initialProps: {
+      response: [
+        {
+          code: 'description',
+          labels: {},
+          scopable: true,
+          localizable: true,
+          type: 'pim_catalog_textarea',
+          is_locale_specific: false,
+          available_locales: [],
+        },
+      ],
+    },
   });
   unmount();
 });

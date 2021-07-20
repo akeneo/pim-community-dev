@@ -1,3 +1,5 @@
+import {Channel} from '../../../../../vendor/akeneo/pim-community-dev/front-packages/shared/lib';
+import {Attribute} from './Attribute';
 import {
   createColumn,
   addColumn,
@@ -7,20 +9,35 @@ import {
   addPropertySource,
   updateSource,
   removeSource,
-  Source,
+  addAssociationTypeSource,
 } from './ColumnConfiguration';
+import {Source} from './Source';
+import {AssociationType} from './AssociationType';
 
-const channels = [
+const channels: Channel[] = [
   {
+    category_tree: '',
+    conversion_units: [],
+    currencies: [],
+    meta: {
+      created: '',
+      form: '',
+      id: 1,
+      updated: '',
+    },
     code: 'ecommerce',
     locales: [
       {
         code: 'en_US',
         label: 'English (United States)',
+        region: 'US',
+        language: 'en',
       },
       {
         code: 'fr_FR',
         label: 'French (France)',
+        region: 'FR',
+        language: 'fr',
       },
     ],
     labels: {
@@ -28,15 +45,28 @@ const channels = [
     },
   },
   {
+    category_tree: '',
+    conversion_units: [],
+    currencies: [],
+    meta: {
+      created: '',
+      form: '',
+      id: 1,
+      updated: '',
+    },
     code: 'mobile',
     locales: [
       {
         code: 'de_DE',
         label: 'German (Germany)',
+        region: 'DE',
+        language: 'de',
       },
       {
         code: 'en_US',
         label: 'English (United States)',
+        region: 'US',
+        language: 'en',
       },
     ],
     labels: {
@@ -44,19 +74,34 @@ const channels = [
     },
   },
   {
+    category_tree: '',
+    conversion_units: [],
+    currencies: [],
+    meta: {
+      created: '',
+      form: '',
+      id: 1,
+      updated: '',
+    },
     code: 'print',
     locales: [
       {
         code: 'de_DE',
         label: 'German (Germany)',
+        region: 'DE',
+        language: 'de',
       },
       {
         code: 'en_US',
         label: 'English (United States)',
+        region: 'US',
+        language: 'en',
       },
       {
         code: 'fr_FR',
         label: 'French (France)',
+        region: 'FR',
+        language: 'fr',
       },
     ],
     labels: {
@@ -65,13 +110,16 @@ const channels = [
   },
 ];
 
-const attribute = {
+const attribute: Attribute = {
+  type: 'pim_catalog_text',
   code: 'name',
   labels: {
     fr_FR: 'Nom',
   },
   scopable: true,
   localizable: true,
+  is_locale_specific: false,
+  available_locales: [],
 };
 
 test('it creates a column', () => {
@@ -114,7 +162,7 @@ test('it updates a column', () => {
 
 test('it add attribute source', () => {
   const columnConfiguration = createColumn('The first column', 'fbf9cff9-e95c-4e7d-983b-2947c7df90df');
-  const newColumnConfiguration = addAttributeSource(columnConfiguration, 'name', attribute, channels);
+  const newColumnConfiguration = addAttributeSource(columnConfiguration, attribute, channels);
   expect(newColumnConfiguration).toEqual({
     uuid: columnConfiguration.uuid,
     target: 'The first column',
@@ -125,7 +173,7 @@ test('it add attribute source', () => {
         code: 'name',
         channel: 'ecommerce',
         locale: 'en_US',
-        operations: [],
+        operations: {},
         selection: {
           type: 'code',
         },
@@ -140,7 +188,8 @@ test('it add attribute source', () => {
 
 test('it adds a locale specific attribute source', () => {
   const columnConfiguration = createColumn('The first column', 'fbf9cff9-e95c-4e7d-983b-2947c7df90df');
-  const localeSpecificAttribute = {
+  const localeSpecificAttribute: Attribute = {
+    type: 'pim_catalog_text',
     code: 'name',
     labels: {
       fr_FR: 'Nom',
@@ -151,7 +200,7 @@ test('it adds a locale specific attribute source', () => {
     available_locales: ['fr_FR'],
   };
 
-  const newColumnConfiguration = addAttributeSource(columnConfiguration, 'name', localeSpecificAttribute, channels);
+  const newColumnConfiguration = addAttributeSource(columnConfiguration, localeSpecificAttribute, channels);
   expect(newColumnConfiguration).toEqual({
     uuid: columnConfiguration.uuid,
     target: 'The first column',
@@ -162,7 +211,7 @@ test('it adds a locale specific attribute source', () => {
         code: 'name',
         channel: 'ecommerce',
         locale: 'fr_FR',
-        operations: [],
+        operations: {},
         selection: {
           type: 'code',
         },
@@ -175,9 +224,9 @@ test('it adds a locale specific attribute source', () => {
   });
 });
 
-test('it add property source', () => {
+test('it adds property source', () => {
   const columnConfiguration = createColumn('The first column', 'fbf9cff9-e95c-4e7d-983b-2947c7df90df');
-  const newColumnConfiguration = addPropertySource(columnConfiguration, 'category');
+  const newColumnConfiguration = addPropertySource(columnConfiguration, 'categories');
   expect(newColumnConfiguration).toEqual({
     uuid: columnConfiguration.uuid,
     target: 'The first column',
@@ -185,12 +234,47 @@ test('it add property source', () => {
       {
         uuid: newColumnConfiguration.sources[0].uuid,
         type: 'property',
-        code: 'category',
+        code: 'categories',
         channel: null,
         locale: null,
-        operations: [],
+        operations: {},
         selection: {
           type: 'code',
+          separator: ',',
+        },
+      },
+    ],
+    format: {
+      type: 'concat',
+      elements: [],
+    },
+  });
+});
+
+test('it adds association type source', () => {
+  const columnConfiguration = createColumn('The first column', 'fbf9cff9-e95c-4e7d-983b-2947c7df90df');
+  const associationType: AssociationType = {
+    code: 'UPSELL',
+    labels: {},
+    is_quantified: false,
+  };
+
+  const newColumnConfiguration = addAssociationTypeSource(columnConfiguration, associationType);
+  expect(newColumnConfiguration).toEqual({
+    uuid: columnConfiguration.uuid,
+    target: 'The first column',
+    sources: [
+      {
+        uuid: newColumnConfiguration.sources[0].uuid,
+        type: 'association_type',
+        code: 'UPSELL',
+        channel: null,
+        locale: null,
+        operations: {},
+        selection: {
+          type: 'code',
+          entity_type: 'products',
+          separator: ',',
         },
       },
     ],
@@ -205,13 +289,14 @@ test('it does nothing when update an nonexistent source', () => {
   const columnConfiguration = createColumn('The first column', 'fbf9cff9-e95c-4e7d-983b-2947c7df90df');
   const updatedSource: Source = {
     uuid: 'abf9cff9-e95c-4e7d-983b-2947c7df90df',
-    type: 'property',
-    code: 'category',
+    type: 'attribute',
+    code: 'description',
     channel: null,
     locale: null,
-    operations: [],
+    operations: {},
     selection: {
       type: 'code',
+      separator: ',',
     },
   };
 
@@ -220,16 +305,16 @@ test('it does nothing when update an nonexistent source', () => {
   expect(updatedConfiguration).toEqual(columnConfiguration);
 });
 
-test('it update a source', () => {
+test('it updates a source', () => {
   const columnConfiguration = createColumn('The first column', 'fbf9cff9-e95c-4e7d-983b-2947c7df90df');
-  const columnConfigurationWithSource = addAttributeSource(columnConfiguration, 'category', attribute, channels);
+  const columnConfigurationWithSource = addAttributeSource(columnConfiguration, attribute, channels);
   const updatedSource: Source = {
     uuid: columnConfigurationWithSource.sources[0].uuid,
     type: 'attribute',
     code: 'name',
     channel: 'mobile',
     locale: 'fr_FR',
-    operations: [],
+    operations: {},
     selection: {
       type: 'code',
     },
@@ -247,7 +332,7 @@ test('it update a source', () => {
         code: 'name',
         channel: 'mobile',
         locale: 'fr_FR',
-        operations: [],
+        operations: {},
         selection: {
           type: 'code',
         },
@@ -262,7 +347,7 @@ test('it update a source', () => {
 
 test('it removes a source', () => {
   const columnConfiguration = createColumn('The first column', 'fbf9cff9-e95c-4e7d-983b-2947c7df90df');
-  const columnConfigurationWithSource = addAttributeSource(columnConfiguration, 'category', attribute, channels);
+  const columnConfigurationWithSource = addAttributeSource(columnConfiguration, attribute, channels);
 
   const updatedConfiguration = removeSource(columnConfigurationWithSource, columnConfigurationWithSource.sources[0]);
 

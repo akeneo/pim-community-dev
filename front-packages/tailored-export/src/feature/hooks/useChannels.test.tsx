@@ -3,7 +3,7 @@ import {renderHook, act} from '@testing-library/react-hooks';
 import {Channel} from '@akeneo-pim-community/shared';
 import {FetcherContext} from '../contexts';
 import {useChannels} from './useChannels';
-import {Attribute} from '../models';
+import {AssociationType, Attribute} from '../models';
 
 const channelResponse: Channel[] = [
   {
@@ -81,6 +81,7 @@ const fetchers = {
   channel: {
     fetchAll: (): Promise<Channel[]> => Promise.resolve(channelResponse),
   },
+  associationType: {fetchByCodes: (): Promise<AssociationType[]> => Promise.resolve([])},
 };
 
 const Wrapper: React.FC = ({children}) => {

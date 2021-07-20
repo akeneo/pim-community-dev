@@ -13,15 +13,18 @@ declare(strict_types=1);
 
 namespace Akeneo\Platform\TailoredExport\Infrastructure\Validation;
 
+use Akeneo\Pim\Structure\Component\Query\PublicApi\Association\GetAssociationTypesInterface;
 use Akeneo\Pim\Structure\Component\Query\PublicApi\AttributeType\GetAttributes;
-use Akeneo\Platform\TailoredExport\Domain\SourceTypes;
+use Akeneo\Platform\TailoredExport\Application\Query\Source\AssociationTypeSource;
+use Akeneo\Platform\TailoredExport\Application\Query\Source\AttributeSource;
+use Akeneo\Platform\TailoredExport\Application\Query\Source\PropertySource;
+use Akeneo\Platform\TailoredExport\Infrastructure\Validation\Source\SimpleAssociationType\SimpleAssociationTypeSourceConstraint;
 use Symfony\Component\Validator\Constraint;
 use Symfony\Component\Validator\Constraints\Choice;
 use Symfony\Component\Validator\Constraints\Collection;
 use Symfony\Component\Validator\Constraints\Count;
 use Symfony\Component\Validator\Constraints\NotBlank;
 use Symfony\Component\Validator\Constraints\Type;
-use Symfony\Component\Validator\Constraints\Uuid;
 use Symfony\Component\Validator\ConstraintValidator;
 use Symfony\Component\Validator\Validator\ValidatorInterface;
 
@@ -29,18 +32,23 @@ class SourcesValidator extends ConstraintValidator
 {
     private const MAX_SOURCE_COUNT = 4;
     private GetAttributes $getAttributes;
+    private GetAssociationTypesInterface $getAssociationTypes;
 
     /** @var Constraint[] */
-    private array $attributeSelectionConstraints;
-
+    private array $attributeConstraints;
     /** @var Constraint[] */
-    private array $propertySelectionConstraints;
+    private array $propertyConstraints;
 
-    public function __construct(GetAttributes $getAttributes, array $attributeSelectionConstraints, array $propertySelectionConstraints)
-    {
+    public function __construct(
+        GetAttributes $getAttributes,
+        GetAssociationTypesInterface $getAssociationTypes,
+        array $attributeConstraints,
+        array $propertyConstraints
+    ) {
         $this->getAttributes = $getAttributes;
-        $this->attributeSelectionConstraints = $attributeSelectionConstraints;
-        $this->propertySelectionConstraints = $propertySelectionConstraints;
+        $this->getAssociationTypes = $getAssociationTypes;
+        $this->attributeConstraints = $attributeConstraints;
+        $this->propertyConstraints = $propertyConstraints;
     }
 
     public function validate($sources, Constraint $constraint)
@@ -81,43 +89,20 @@ class SourcesValidator extends ConstraintValidator
             $source,
             new Collection([
                 'fields' => [
-                    'uuid' => [
-                        new NotBlank(),
-                        new Uuid()
-                    ],
                     'code' => [
                         new Type([
                             'type' => 'string',
                         ]),
                         new NotBlank(),
                     ],
-                    'channel' => [
-                        new Type([
-                            'type' => 'string',
-                        ]),
-                        new ChannelShouldExist(),
-                    ],
-                    'locale' => [
-                        new Type([
-                            'type' => 'string',
-                        ]),
-                        new LocaleShouldBeActive()
-                    ],
-                    'operations' => [
-                        new Type([
-                            'type' => 'array',
-                        ]),
-                    ],
-                    'type' => [
-                        new Choice(
-                            [
-                                'strict' => true,
-                                'choices' => [SourceTypes::PROPERTY, SourceTypes::ATTRIBUTE],
-                            ]
-                        )
-                    ],
-                    'selection' => new NotBlank(),
+                    'type' => new Choice(
+                        [
+                            'choices' => [AttributeSource::TYPE, PropertySource::TYPE, AssociationTypeSource::TYPE],
+                        ]
+                    ),
+
                 ],
+                'allowExtraFields' => true
             ]),
         );
 
@@ -134,32 +119,52 @@ class SourcesValidator extends ConstraintValidator
             return;
         }
 
-        $this->validateSelection($validator, $source);
-    }
+        if (PropertySource::TYPE === $source['type']) {
+            $constraint = $this->propertyConstraints[$source['code']] ?? null;
+        } elseif (AssociationTypeSource::TYPE === $source['type']) {
+            $associationTypes = $this->getAssociationTypes->forCodes([$source['code']]);
+            $associationType = $associationTypes[$source['code']] ?? null;
+            if (null === $associationType) {
+                $this->context->buildViolation(Sources::ASSOCIATION_TYPE_SHOULD_EXIST)
+                    ->atPath(sprintf('[%s]', $source['uuid']))
+                    ->setParameter('association_type_code', $source['code'])
+                    ->addViolation();
 
-    private function validateSelection(ValidatorInterface $validator, array $source)
-    {
-        if (SourceTypes::PROPERTY === $source['type']) {
-            $constraint = $this->propertySelectionConstraints[$source['code']] ?? null;
-        } else {
+                return;
+            }
+
+            if ($associationType->isQuantified()) {
+                // @TODO Add two way validation (RAC-683)
+                $constraint = null;
+            } else {
+                $constraint = new SimpleAssociationTypeSourceConstraint();
+            }
+        } elseif (AttributeSource::TYPE === $source['type']) {
             $attribute = $this->getAttributes->forCode($source['code']);
-            $constraint = $this->attributeSelectionConstraints[$attribute->type()] ?? null;
+
+            if (null === $attribute) {
+                //TODO handle attribute not found RAC-720
+                return;
+            }
+
+            $constraint = $this->attributeConstraints[$attribute->type()] ?? null;
+        } else {
+            throw new \InvalidArgumentException(sprintf('Unsupported source type "%s"', $source['type']));
         }
 
         if (null === $constraint) {
             return;
         }
 
-        $violations = $validator->validate($source['selection'], $constraint);
-        if (0 < $violations->count()) {
-            foreach ($violations as $violation) {
-                $this->context->buildViolation(
-                    $violation->getMessage(),
-                    $violation->getParameters()
-                )
-                    ->atPath(sprintf('[%s][selection]%s', $source['uuid'], $violation->getPropertyPath()))
-                    ->addViolation();
-            }
+        $violations = $validator->validate($source, $constraint);
+
+        foreach ($violations as $violation) {
+            $this->context->buildViolation(
+                $violation->getMessage(),
+                $violation->getParameters()
+            )
+                ->atPath(sprintf('[%s]%s', $source['uuid'], $violation->getPropertyPath()))
+                ->addViolation();
         }
     }
 }

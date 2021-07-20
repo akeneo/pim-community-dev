@@ -2,9 +2,17 @@
 
 declare(strict_types=1);
 
+/*
+ * This file is part of the Akeneo PIM Enterprise Edition.
+ *
+ * (c) 2021 Akeneo SAS (https://www.akeneo.com)
+ *
+ * For the full copyright and license information, please view the LICENSE
+ * file that was distributed with this source code.
+ */
+
 namespace Akeneo\Platform\TailoredExport\Infrastructure\Validation\Selection;
 
-use Akeneo\Platform\TailoredExport\Domain\SelectionTypes;
 use Akeneo\Platform\TailoredExport\Infrastructure\Validation\LocaleShouldBeActive;
 use Symfony\Component\Validator\Constraint;
 use Symfony\Component\Validator\Constraints\Choice;
@@ -31,26 +39,19 @@ class CodeLabelCollectionSelectionValidator extends ConstraintValidator
             new Collection(
                 [
                     'fields' => [
-                        'type' => [
-                            new NotBlank(),
-                            new Choice(
-                                [
-                                    'strict' => true,
-                                    'choices' => [
-                                        SelectionTypes::CODE,
-                                        SelectionTypes::LABEL,
-                                    ],
-                                ]
-                            )
-                        ],
-                        'separator' => [
-                            new Choice(
-                                [
-                                    'strict' => true,
-                                    'choices' => $this->availableCollectionSeparator,
-                                ]
-                            )
-                        ],
+                        'type' => new Choice(
+                            [
+                                'choices' => [
+                                    'code',
+                                    'label',
+                                ],
+                            ]
+                        ),
+                        'separator' => new Choice(
+                            [
+                                'choices' => $this->availableCollectionSeparator,
+                            ]
+                        ),
                         'locale' => new Optional([new Type(['type' => 'string'])]),
                     ],
                 ]
@@ -70,7 +71,7 @@ class CodeLabelCollectionSelectionValidator extends ConstraintValidator
             return;
         }
 
-        if (SelectionTypes::LABEL === $selection['type']) {
+        if ('label' === $selection['type']) {
             $violations = $validator->validate($selection['locale'] ?? null, [
                 new NotBlank(),
                 new LocaleShouldBeActive()

@@ -3,6 +3,7 @@ services:
         class: Akeneo\AssetManager\Infrastructure\Validation\Asset\AssetCodeShouldBeUniqueValidator
         arguments:
             - '@akeneo_assetmanager.infrastructure.persistence.query.asset_exists'
+            - '%pim_job_product_batch_size%'
         tags:
             - { name: 'validator.constraint_validator', alias: 'akeneo_assetmanager.validator.asset.asset_is_unique' }
 

@@ -223,6 +223,66 @@ test('I can create a line from a filename localizable and scopable', () => {
         channel: null,
       },
     },
+    {
+      filename: 'foo5%-en_US-ecommerce.png',
+      assetFamily: assetFamily,
+      channels: channels,
+      locales: locales,
+      expected: {
+        ...line,
+        code: 'foo5_',
+        locale: 'en_US',
+        channel: 'ecommerce',
+      },
+    },
+    {
+      filename: 'foo4 -en_US-ecommerce',
+      assetFamily: assetFamily,
+      channels: channels,
+      locales: locales,
+      expected: {
+        ...line,
+        code: 'foo4',
+        locale: 'en_US',
+        channel: 'ecommerce',
+      },
+    },
+    {
+      filename: 'foo3$--ecommerce.png',
+      assetFamily: assetFamily,
+      channels: channels,
+      locales: locales,
+      expected: {
+        ...line,
+        code: 'foo3_',
+        locale: null,
+        channel: 'ecommerce',
+      },
+    },
+    {
+      filename: 'foo2!-en_US-.png',
+      assetFamily: assetFamily,
+      channels: channels,
+      locales: locales,
+      expected: {
+        ...line,
+        code: 'foo2_',
+        locale: 'en_US',
+        channel: null,
+      },
+    },
+    {
+      filename: 'foo1 --.png',
+      assetFamily: assetFamily,
+      channels: channels,
+      locales: locales,
+      expected: {
+        ...line,
+        code: 'foo1',
+        locale: null,
+        channel: null,
+      },
+    },
   ].forEach(test => assertLineCreatedMatchExpected(test));
 });
 

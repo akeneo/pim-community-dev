@@ -2,35 +2,21 @@ batch_jobs.xlsx_tailored_product_export.label: Export sur mesure des produits en
 akeneo.tailored_export:
   column_list:
     title: Colonnes
-    header:
-      column_name: Nom des colonnes
-      source_data: Données source
     column_row:
-      target_placeholder: Définissez votre nouveau nom de colonne ici
       remove: Supprimer la colonne
-      no_source: Aucune source de donnée sélectionnée
     no_column_selection:
-      title: Aucune sélection de colonnes à exporter
       add_column: Ajouter votre première colonne
   column_details:
     sources:
       title: Sources de données
       add: Ajouter une source de données
       no_result: Désolé, il n'y a aucun résultat.
-      locale_specific.info: Cet attribut est spécifique à une ou plusieurs locales.
       remove:
         title: source
         text: Êtes-vous sûr de vouloir supprimer cette source de données ?
         button: Supprimer cette source
-      no_source_configuration:
-        title: Aucune opération n'est disponible pour cette source. Seule sa valeur sera exportée.
-      no_source_selected:
-        title: Aucune source sélectionnée pour le moment.
-      no_column_selected:
-        title: Aucune colonne sélectionnée pour le moment.
       selection:
         title: Sélection
-        separator: Séparateur
         type:
           amount: Montant
           currency: Devise
@@ -38,14 +24,5 @@ akeneo.tailored_export:
     delete_message: Êtes-vous sûr de vouloir supprimer cette colonne ?
   validation:
     columns:
-      max_column_count_reached: Vous avez atteint le nombre maximum de {{ limit }} colonnes.
       target:
-        should_not_be_blank: Le nom de cette colonne ne doit pas être vide.
         max_length_reached: Le nom de cette colonne est trop long. Il doit contenir un maximum de {{ max }} caractères.
-        should_be_unique: Une autre colonne comporte le même nom. Merci d'en définir un nouveau.
-    sources:
-      max_source_count_reached: Vous avez atteint le nombre maximum de {{ limit }} sources.
-    locale:
-      should_be_active: La locale {{ locale_code }} n'est pas active.
-    channel:
-      should_exist: Le canal {{ channel_code }} n'existe plus.

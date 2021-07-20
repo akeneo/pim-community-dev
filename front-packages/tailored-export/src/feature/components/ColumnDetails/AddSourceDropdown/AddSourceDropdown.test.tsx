@@ -43,7 +43,7 @@ jest.mock('../../../hooks/useAvailableSourcesFetcher', () => ({
     ],
 }));
 
-test('it add attribute source', async () => {
+test('it adds attribute source', async () => {
   const handleSourceSelected = jest.fn();
 
   renderWithProviders(<AddSourceDropdown onSourceSelected={handleSourceSelected} />);
@@ -62,7 +62,7 @@ test('it add attribute source', async () => {
   expect(handleSourceSelected).lastCalledWith('name', 'attribute');
 });
 
-test('it add property source', async () => {
+test('it adds property source', async () => {
   const handleSourceSelected = jest.fn();
 
   renderWithProviders(<AddSourceDropdown onSourceSelected={handleSourceSelected} />);
