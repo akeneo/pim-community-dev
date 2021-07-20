@@ -70,10 +70,25 @@ const AttributeSourceConfigurator = ({source, validationErrors, onSourceChange}:
   const channels = useChannels();
   const localeErrors = filterErrors(validationErrors, '[locale]');
   const channelErrors = filterErrors(validationErrors, '[channel]');
+  const attributeErrors = filterErrors(validationErrors, '[code]');
   const locales = getLocalesFromChannel(channels, source.channel);
   const attribute = useAttribute(source.code);
 
-  if (null === attribute) return null;
+  if (null === attribute) {
+    if (0 === attributeErrors.length) {
+      return null;
+    }
+
+    return (
+      <>
+        {attributeErrors.map((error, index) => (
+          <Helper key={index} level="error">
+            {translate(error.messageTemplate, error.parameters)}
+          </Helper>
+        ))}
+      </>
+    );
+  }
 
   const localeSpecificFilteredLocales = attribute.is_locale_specific
     ? locales.filter(({code}) => attribute.available_locales.includes(code))

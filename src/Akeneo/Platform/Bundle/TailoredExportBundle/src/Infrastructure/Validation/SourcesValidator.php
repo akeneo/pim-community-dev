@@ -94,6 +94,7 @@ class SourcesValidator extends ConstraintValidator
                             'type' => 'string',
                         ]),
                         new NotBlank(),
+                        new AttributeShouldExist()
                     ],
                     'type' => new Choice(
                         [

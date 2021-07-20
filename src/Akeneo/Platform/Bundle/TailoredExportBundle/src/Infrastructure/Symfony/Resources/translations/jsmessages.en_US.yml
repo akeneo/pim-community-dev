@@ -120,3 +120,5 @@ akeneo.tailored_export:
       should_be_active: The {{ locale_code }} locale should be active.
     channel:
       should_exist: The {{ channel_code }} channel does not exist.
+    attribute:
+      should_exist: The {{ attribute_code }} attribute does not exists. Either recreate it or delete this source.
