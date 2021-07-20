@@ -38,6 +38,8 @@ product_model.family_variant.not_blank.message: 产品模型品类变型不能�
 "The {{ attribute_code }} attribute requires a date that should be {{ limit }} or before.": 属性 {{ attribute_code }} 必须为 {{ limit }} 或更早的日期。
 "The {{ attribute }} attribute requires a number, and the submitted {{ value }} value is not.": 属性 {{ attribute }} 必须为数字，而提交的值 {{ value }} 不是。
 "The %attribute% attribute must not contain more than %limit% characters. The submitted value is too long.": 属性 %attribute% 不能超过 %limit% 个字符。提交的值太长。
+"The %type% file extension is not allowed for the %attribute% attribute. Allowed extensions are %extensions%.": 属性 %attribute% 不允许使用 %type% 文件扩展名。允许的扩展名为 %extensions%。
+"The %attribute% attribute requires a url link.": 属性 %attribute% 需要 URL 链接。
 "The %attribute% attribute requires a valid date. Please use the following format %date_format% for dates.": 属性 %attribute% 要求有效的日期。请使用以下日期格式：%date_format%。
 "The %locale% locale is not available on the %attribute% attribute.": 区域 %locale% 在属性 %attribute% 上不可用。
 'The {{ attribute_code }} attribute must match the following regular expression: {{ pattern }}.': '属性 {{ attribute_code }} 必须符合以下正则表达式： {{ pattern }}。'
@@ -49,6 +51,8 @@ product_model.family_variant.not_blank.message: 产品模型品类变型不能�
 'The %attribute% attribute requires an equal or greater than %min_value% value.': '属性 %attribute% 要求等于或大于值 %min_value%。'
 'The %attribute% attribute requires an equal or lesser than %max_value% value.': '属性 %attribute% 要求等于或小于值 %max_value%。'
 "The %attribute_code% attribute requires a value per channel. The %channel% channel (scope) must exist in your PIM": '属性 %attribute_code% 每个渠道都需要一个值。渠道 %channel%  (范围) 必须存在于您的 PIM 中'
+"The %identifier% identifier is already used for another product.": '标识符 %identifier% 已用于另一个产品。'
+'Please specify a valid currency for the %attribute_code% attribute, the %currency_code% code was sent.': '请为属性 %attribute_code% 指定有效的货币，已发送代码 %currency_code%。'
 pim_catalog:
   constraint:
     can_have_family_variant_empty_axis_value: ' 属性"%attribute%"不能为空，因为其被定义为该实体的轴'
@@ -60,6 +64,7 @@ pim_catalog:
     attribute_does_not_belong_to_family: '属性"%attribute%"不属于品类"%family%'
     variant_product_invalid_family: '变型产品品类必须与其父类相同'
     php_int_max_reached: '最大数值必须小于 %php_int_max%。'
+    not_null_family: 品类不能为“空 (null)”，因为具有标识符"%sku%"的产品是变型产品。
     variant_product_has_parent: '变型产品"%variant_product%"必须有父产品'
     invalid_variant_product_parent: '变型产品"%variant_product%"不能以产品模型"%product_model%"作为父模型， (此产品模型只能有其他产品模型作为子模型)'
     modified_variant_axis_value: '变型轴"%variant_axis%"不能修改，"%provided_value%" 已给定'

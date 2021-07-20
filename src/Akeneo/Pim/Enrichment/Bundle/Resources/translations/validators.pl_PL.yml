@@ -38,6 +38,8 @@ product_model.family_variant.not_blank.message: Wariant rodziny modelu produktu 
 "The {{ attribute_code }} attribute requires a date that should be {{ limit }} or before.": Atrybut {{ attribute_code }} wymaga daty nie późniejszej niż {{ limit }}.
 "The {{ attribute }} attribute requires a number, and the submitted {{ value }} value is not.": Atrybut {{ attribute }} wymaga liczby, a wprowadzona wartość {{ value }} nią nie jest.
 "The %attribute% attribute must not contain more than %limit% characters. The submitted value is too long.": Atrybut %attribute% nie może zawierać więcej niż %limit% znaków. Wprowadzona wartość jest za długa.
+"The %type% file extension is not allowed for the %attribute% attribute. Allowed extensions are %extensions%.": Rozszerzenie pliku %type% nie jest dozwolone dla atrybutu %attribute%. Dozwolone rozszerzenia to %extensions%.
+"The %attribute% attribute requires a url link.": Atrybut %attribute% wymaga adresu URL.
 "The %attribute% attribute requires a valid date. Please use the following format %date_format% for dates.": 'Atrybut %attribute% wymaga prawidłowej daty. Użyj następującego formatu daty: %date_format%.'
 "The %locale% locale is not available on the %attribute% attribute.": Dla atrybutu %attribute% nie jest dostępna wersja językowa %locale%.
 'The {{ attribute_code }} attribute must match the following regular expression: {{ pattern }}.': 'Atrybut {{ attribute_code }} musi pasować do następującego wyrażenia regularnego: {{ pattern }}.'
@@ -49,6 +51,8 @@ product_model.family_variant.not_blank.message: Wariant rodziny modelu produktu 
 'The %attribute% attribute requires an equal or greater than %min_value% value.': 'Atrybut %attribute% wymaga wartości równej lub większej niż %min_value%.'
 'The %attribute% attribute requires an equal or lesser than %max_value% value.': 'Atrybut %attribute% wymaga wartości równej lub mniejszej niż %max_value%.'
 "The %attribute_code% attribute requires a value per channel. The %channel% channel (scope) must exist in your PIM": 'Atrybut %attribute_code% wymaga wartości na kanał. Kanał %channel% (zakres) musi istnieć w PIM'
+"The %identifier% identifier is already used for another product.": 'Identyfikator %identifier% jest już używany z innym produktem.'
+'Please specify a valid currency for the %attribute_code% attribute, the %currency_code% code was sent.': 'Podaj prawidłową walutę dla atrybutu %attribute_code%. Kod %currency_code% został wysłany.'
 pim_catalog:
   constraint:
     can_have_family_variant_empty_axis_value: 'Atrybut "%attribute%" nie może być pusty, ponieważ jest zdefiniowany jako oś dla tego obiektu'
@@ -60,6 +64,7 @@ pim_catalog:
     attribute_does_not_belong_to_family: 'Atrybut "%attribute%" nie należy do rodziny "%family%"'
     variant_product_invalid_family: 'Rodzina wariantu produktu musi być taka sama, jak jego elementu nadrzędnego'
     php_int_max_reached: 'Maksymalna liczba musi być mniejsza niż %php_int_max%.'
+    not_null_family: Rodzina nie może mieć wartości "null" ponieważ produkt z identyfikatorem "%sku%" jest produktem z wariantami.
     variant_product_has_parent: 'Wariant produktu "%variant_product%" musi mieć element nadrzędny'
     invalid_variant_product_parent: 'Wariant produktu "%variant_product%" nie może mieć modelu produktu "%product_model%" jako elementu nadrzędnego (ten model produktu może mieć tylko inne modele produktów jako elementy podrzędne)'
     modified_variant_axis_value: 'Wariant osi "%variant_axis%" nie może zostać zmodyfikowany, "%provided_value%" ustalona'

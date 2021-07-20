@@ -237,6 +237,7 @@ pim_common:
   family: Rodzina
   parent: Element nadrzędny
   groups: Grupy
+  products: Produkty
   more: Więcej
 error:
   exception: O rany! Wystąpił błąd {{ status_code }}...

@@ -75,6 +75,7 @@ pim_common:
   unit: Eenheid
   yes: "Ja"
   no: "Nee"
+  association_types: Associatietypes
 pim_enrich:
   #ACLs
   acl:
@@ -448,7 +449,7 @@ pim_datagrid:
     enabled:
       label: Status
     scope:
-      label: Bereik
+      label: Kanaal
     completeness:
       label: Voltooien
     created:

@@ -75,6 +75,7 @@ pim_common:
   unit: Einheit
   yes: "Ja"
   no: "Nein"
+  association_types: Verbindungstypen
 pim_enrich:
   #ACLs
   acl:
@@ -448,7 +449,7 @@ pim_datagrid:
     enabled:
       label: Status
     scope:
-      label: Gültigkeitsbereich
+      label: Ausgabekanal
     completeness:
       label: Vollständig
     created:

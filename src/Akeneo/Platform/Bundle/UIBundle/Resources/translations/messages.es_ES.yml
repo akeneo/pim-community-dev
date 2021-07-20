@@ -75,6 +75,7 @@ pim_common:
   unit: Unidad
   yes: "Sí"
   no: "No"
+  association_types: Tipos de asociaciones
 pim_enrich:
   #ACLs
   acl:
@@ -448,7 +449,7 @@ pim_datagrid:
     enabled:
       label: Estado
     scope:
-      label: Ámbito
+      label: Canal
     completeness:
       label: Completo
     created:

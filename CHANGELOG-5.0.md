@@ -1,5 +1,24 @@
 # 5.0.x
 
+# 5.0.40 (2021-07-09)
+
+## Bug fixes
+
+- PIM-9956: [Backport] PIM-9852: Fix exception during PRE_REMOVE on removeAll cause ES desynchronisation
+- PIM-9943: Fix product-grid quality score filter all
+
+# 5.0.39 (2021-07-06)
+
+## Bug fixes
+
+- PIM-9951: Fix wrong locale used by spellcheck when comparing product attributes
+
+# 5.0.38 (2021-07-02)
+
+## Bug fixes
+
+- PIM-9944: Fix attribute group grid search
+
 # 5.0.37 (2021-07-01)
 
 # 5.0.36 (2021-06-25)

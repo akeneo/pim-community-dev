@@ -36,7 +36,12 @@ jobs:
       - run:
           name: Require proper dev CE branch
           command: |
-            sed -i "s|\"akeneo/pim-community-dev\": \"dev-master|\"akeneo/pim-community-dev\": \"dev-${CIRCLE_BRANCH}|" composer.json
+            sed -i "s#akeneo/pim-community-dev\": \"dev-master#akeneo/pim-community-dev\": \"dev-${CIRCLE_BRANCH}#" composer.json
+            sed -i "s#akeneo/pim-community-dev\": \"dev-master#akeneo/pim-community-dev\": \"dev-${CIRCLE_BRANCH}#" grth/composer.json
+      - install_yq
+      - run:
+          name: Remove MySQL port translation (see BH-664)
+          command: yq delete --inplace docker-compose.yml services.mysql.ports
       - run:
           name: Persist default IMAGE_TAG to be the repo last commit SHA1
           command: |
@@ -52,6 +57,10 @@ jobs:
       image: ubuntu-2004:202101-01
     steps:
       - checkout
+      - install_yq
+      - run:
+          name: Remove MySQL port translation (see BH-664)
+          command: yq delete --inplace docker-compose.yml services.mysql.ports
       - persist_to_workspace:
           root: ~/
           paths:
@@ -249,17 +258,12 @@ jobs:
           name: Install database
           command: APP_ENV=dev O="--catalog src/Akeneo/Platform/Bundle/InstallerBundle/Resources/fixtures/icecat_demo_dev" make database
       - run:
-          name: Add "adminakeneo" user
-          command: APP_ENV=dev docker-compose exec -u www-data fpm bin/console pim:user:create adminakeneo adminakeneo product-team@akeneo.com admin1 admin2 en_US --admin -n
-      - run:
           name: Launch Cypress
-          command: CYPRESS_defaultCommandTimeout=8000 CYPRESS_requestTimeout=10000 make end-to-end-front
+          command: CYPRESS_defaultCommandTimeout=10000 CYPRESS_requestTimeout=15000 CYPRESS_responseTimeout=50000 make end-to-end-front
       - store_artifacts:
           path: cypress/screenshots
       - store_artifacts:
           path: cypress/videos
-      - store_artifacts:
-          path: var/logs
 
   test_back_behat_legacy:
     machine:
@@ -570,7 +574,11 @@ jobs:
                 at: ~/
           - run:
                 name: Change owner on project dir in order to archive the project into the workspace
-                command: sudo chown -R 1000:1000 ../project
+                command: |
+                  mkdir -p ~/.cache/yarn ~/.composer
+                  sudo chown -R 1000:1000 ../project
+                  sudo chown -R 1000:1000 ~/.composer
+                  sudo chown -R 1000:1000 ~/.cache/yarn
           - run:
                 name: Create an empty service account
                 command: |
@@ -871,3 +879,13 @@ commands:
             echo "Persisted env vars:"
             cat persisted_env_vars
             cat persisted_env_vars >> $BASH_ENV
+
+  install_yq:
+    description: "Install yq"
+    steps:
+      - run:
+          name: Install yq
+          command: |
+            wget https://github.com/mikefarah/yq/releases/download/3.3.1/yq_linux_386
+            sudo mv yq_linux_386 /usr/local/bin/yq
+            sudo chmod +x /usr/local/bin/yq

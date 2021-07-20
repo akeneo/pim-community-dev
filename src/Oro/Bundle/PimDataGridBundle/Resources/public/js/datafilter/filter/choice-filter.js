@@ -205,6 +205,19 @@ define([
       initSelect2.init(this.$(this.criteriaValueSelectors.value), {
         multiple: true,
         tokenSeparators: [',', ' ', ';'],
+        tokenizer: function (input, selection, callback) {
+          if (![',', ' ', ';'].some(separator => input.includes(separator))) {
+            return;
+          }
+
+          input.split(/,| |;/).forEach(part => {
+            if ('' === part) {
+              return;
+            }
+
+            callback({id: part, text: part});
+          });
+        },
         tags: [],
         width: '290px',
         formatNoMatches: function () {

@@ -72,6 +72,7 @@ pim_common:
   groups: Groups
   yes: "Yes"
   no: "No"
+  association_types: Association types
 pim_enrich:
   #ACLs
   acl:
@@ -435,6 +436,8 @@ pim_datagrid:
       label: Groups
     enabled:
       label: Status
+    scope:
+      label: Channel
     completeness:
       label: Complete
     created:

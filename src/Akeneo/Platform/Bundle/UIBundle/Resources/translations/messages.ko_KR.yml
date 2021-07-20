@@ -75,6 +75,7 @@ pim_common:
   unit: 단위
   yes: "예"
   no: "아니요"
+  association_types: 연결 유형
 pim_enrich:
   #ACLs
   acl:
@@ -448,7 +449,7 @@ pim_datagrid:
     enabled:
       label: 상태
     scope:
-      label: 범위
+      label: 채널
     completeness:
       label: 완료
     created:
