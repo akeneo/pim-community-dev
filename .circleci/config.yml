@@ -34,6 +34,12 @@ aliases:
                 password: $GCLOUD_SERVICE_KEY_DEV  # JSON service account you created, do not encode to base64
 
 jobs:
+  checkout_tailored_export:
+    docker:
+      - image: alpine/git
+    steps:
+      - checkout
+
   checkout:
     parameters:
         is_pull_request:
