@@ -69,6 +69,21 @@ RUN echo 'APT::Install-Recommends "0" ; APT::Install-Suggests "0" ;' > /etc/apt/
 RUN sed -i '/<!-- <policy domain="module" rights="none" pattern="{PS,PDF,XPS}" \/> -->/c\  <policy domain="module" rights="read|write" pattern="{PS,PDF,XPS}" \/>' /etc/ImageMagick-6/policy.xml
 RUN sed -i '/<policy domain="coder" rights="none" pattern="PDF" \/>/c\  <policy domain="coder" rights="read|write" pattern="PDF" \/>' /etc/ImageMagick-6/policy.xml
 
+# Temporary commands for grpc and protobuf until https://github.com/oerdnj/deb.sury.org/issues/1622 is not solved
+#   Bonus: if the versionned compiled extensions are no longer compatible with the PHP version
+#          you can compile and push to versionning newly compiled extensions thanks to this
+#          helper command: ./docker/compile_grpc_and_protobuf_pecl_extensions.sh
+COPY docker/build/grpc.tar.gz /tmp/grpc.tar.gz
+RUN tar xzf /tmp/grpc.tar.gz -C `php -r 'echo ini_get("extension_dir");'` && rm /tmp/grpc.tar.gz
+COPY docker/build/grpc.ini /etc/php/7.4/cli/conf.d/99-grpc.ini
+COPY docker/build/grpc.ini /etc/php/7.4/fpm/conf.d/99-grpc.ini
+
+COPY docker/build/protobuf.tar.gz /tmp/protobuf.tar.gz
+RUN tar xzf /tmp/protobuf.tar.gz -C `php -r 'echo ini_get("extension_dir");'` && rm /tmp/protobuf.tar.gz
+COPY docker/build/protobuf.ini /etc/php/7.4/cli/conf.d/99-protobuf.ini
+COPY docker/build/protobuf.ini /etc/php/7.4/fpm/conf.d/99-protobuf.ini
+# end of temporary commands
+
 COPY docker/php.ini /etc/php/7.4/cli/conf.d/99-akeneo.ini
 COPY docker/php.ini /etc/php/7.4/fpm/conf.d/99-akeneo.ini
 
@@ -166,6 +181,34 @@ RUN mkdir var && \
     (test -d vendor/akeneo/pim-onboarder/upgrades/schema/ && cp vendor/akeneo/pim-onboarder/upgrades/schema/* upgrades/schema/ || true)
 
 #
+# Intermediate image to install BigCommerce Connector
+#
+FROM builder AS bigcommerceconnector
+
+ARG COMPOSER_AUTH
+
+WORKDIR /srv/pim
+
+COPY tmp tmp
+
+# Build back
+WORKDIR /srv/pim/tmp/build-connector/back/
+
+RUN php -d 'memory_limit=4G' /usr/local/bin/composer install \
+        --no-scripts \
+        --no-interaction \
+        --no-ansi \
+        --no-dev \
+        --prefer-dist \
+        --optimize-autoloader
+
+# Build front
+WORKDIR /srv/pim/tmp/build-connector/front
+
+RUN yarnpkg install --frozen-lockfile
+RUN REACT_APP_API_WEB_PATH="/connectors/bigcommerce/api-web" REACT_APP_URL_BASENAME="/connectors/bigcommerce" yarnpkg run build
+
+#
 # Image used for production
 #
 FROM base AS prod
@@ -184,6 +227,10 @@ COPY --from=builder --chown=www-data:www-data /srv/pim/var/cache/prod var/cache/
 COPY --from=builder --chown=www-data:www-data /srv/pim/vendor vendor
 COPY --from=builder --chown=www-data:www-data /srv/pim/.env.local.php .
 COPY --from=builder --chown=www-data:www-data /srv/pim/composer.lock .
+
+# Copy big commerce connector
+COPY --from=bigcommerceconnector --chown=www-data:www-data /srv/pim/tmp/build-connector/back connectors/bigcommerce/back
+COPY --from=bigcommerceconnector --chown=www-data:www-data /srv/pim/tmp/build-connector/front/build connectors/bigcommerce/front
 
 # Prepare the application
 RUN mkdir -p public/media && chown -R www-data:www-data public/media var && \

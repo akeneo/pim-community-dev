@@ -95,7 +95,7 @@ FROM base as compile-extensions
 
 RUN apt-get update && \
     apt-get --yes install build-essential make autoconf zlib1g-dev php7.4-dev php-pear && \
-    pecl install grpc protobuf && \
+    pecl install grpc-1.38.0 protobuf-3.17.3 && \
     strip --strip-debug /usr/lib/php/*/grpc.so && \
     apt-get clean && \
     rm -rf /var/lib/apt/lists/*
@@ -246,7 +246,6 @@ COPY --from=builder --chown=www-data:www-data /srv/pim/composer.lock .
 # Copy big commerce connector
 COPY --from=bigcommerceconnector --chown=www-data:www-data /srv/pim/tmp/build-connector/back connectors/bigcommerce/back
 COPY --from=bigcommerceconnector --chown=www-data:www-data /srv/pim/tmp/build-connector/front/build connectors/bigcommerce/front
-
 
 # Prepare the application
 RUN mkdir -p public/media && chown -R www-data:www-data public/media var && \
