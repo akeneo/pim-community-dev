@@ -273,13 +273,17 @@ const SettingsIndex = () => {
                     }
                   />
                 )}
-                {featureFlags.isEnabled('free_trial') &&
+                {featureFlags.isEnabled('free_trial') && (
                   <DisableIconCard
-                    icon={<LockIconContainer><LockIcon size={16} color={theme.color.blue100}/></LockIconContainer>}
+                    icon={
+                      <LockIconContainer>
+                        <LockIcon size={16} color={theme.color.blue100} />
+                      </LockIconContainer>
+                    }
                     label={translate('free_trial.menu.rules')}
                     content={translate('free_trial.menu.feature_ee_only')}
                   />
-                }
+                )}
               </IconCardGrid>
             </SectionContent>
           </>
@@ -294,11 +298,11 @@ const DisableIconCard = styled(IconCard)`
   border: 1px rgba(240, 241, 243, 0.5) solid;
 
   :hover {
-    background: #FFF;
+    background: #fff;
     border: 1px rgba(240, 241, 243, 0.5) solid;
   }
-  
-  >*:not(:first-child) {
+
+  > *:not(:first-child) {
     opacity: 0.5;
   }
 `;

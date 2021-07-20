@@ -118,11 +118,14 @@ class Menu extends BaseForm {
   buildMainMenuEntries(navigationEntriesExtensions: EntryView[]): NavigationEntry[] {
     return navigationEntriesExtensions
       .filter((extension: EntryView) => {
-        return extension.config.disabled || !(
-          typeof extension.config === 'object' &&
-          (!extension.config.to || extension.config.isLandingSectionPage) &&
-          typeof extension.hasChildren === 'function' &&
-          !extension.hasChildren()
+        return (
+          extension.config.disabled ||
+          !(
+            typeof extension.config === 'object' &&
+            (!extension.config.to || extension.config.isLandingSectionPage) &&
+            typeof extension.hasChildren === 'function' &&
+            !extension.hasChildren()
+          )
         );
       })
       .map((extension: EntryView) => {
