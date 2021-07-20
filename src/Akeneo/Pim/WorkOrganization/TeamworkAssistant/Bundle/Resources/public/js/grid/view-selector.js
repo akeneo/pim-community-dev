@@ -15,7 +15,10 @@ define([
   'pim/datagrid/state',
   'pim/fetcher-registry',
   'backbone',
-], function($, _, __, ViewSelector, DatagridState, FetcherRegistry, Backbone) {
+  'pim/date-context',
+  'pim/formatter/date',
+  'oro/mediator',
+], function($, _, __, ViewSelector, DatagridState, FetcherRegistry, Backbone, DateContext, DateFormatter, mediator) {
   return ViewSelector.extend({
     hasNoProject: false,
 
@@ -165,7 +168,12 @@ define([
         return FetcherRegistry.getFetcher('project')
           .fetch(view.label)
           .then(project => {
+            var dateFormat = DateContext.get('date').format;
+
             view.text = project.label;
+            view.dueDateLabel = __('teamwork_assistant.project.due_date');
+            view.dueDate = DateFormatter.format(project.due_date, 'yyyy-MM-dd', dateFormat);
+            view.completionRatio = Math.round(project.completeness.ratio_done);
             this.trigger('grid:view-selector:project-selected', project);
 
             return view;
