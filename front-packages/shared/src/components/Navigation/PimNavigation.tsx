@@ -1,4 +1,4 @@
-import React, {FC, useMemo} from 'react';
+import React, {FC, useCallback, useMemo} from 'react';
 import styled from 'styled-components';
 import {PimView} from '../PimView';
 import {useRouter, useTranslate} from '../../hooks';
@@ -44,25 +44,28 @@ const PimNavigation: FC<Props> = ({entries, activeEntryCode, activeSubEntryCode,
     return;
   }, [activeNavigationEntry, activeSubEntryCode]);
 
-  const getMainNavigationItemStyles = (entry: NavigationEntry) => {
-    let styles = {};
-
-    if (entry.align === 'bottom') {
-      styles = {
-        ...styles,
-        {position: 'absolute', bottom: '0'},
+  const getMainNavigationItemStyles = useCallback(
+    (entry: NavigationEntry) => {
+      let styles: React.CSSProperties = {};
+      if (entry.align === 'bottom') {
+        styles = {
+          ...styles,
+          position: 'absolute',
+          bottom: '0',
+        };
       }
-    }
 
-    if (entry.disabled && freeTrialEnabled) {
-      styles = {
-        ...styles,
-      {cursor: 'pointer'},
+      if (entry.disabled && freeTrialEnabled) {
+        styles = {
+          ...styles,
+          cursor: 'pointer',
+        };
       }
-    }
 
-    return styles;
-  }
+      return styles;
+    },
+    [freeTrialEnabled]
+  );
 
   return (
     <NavContainer aria-label="Main navigation">
@@ -78,19 +81,19 @@ const PimNavigation: FC<Props> = ({entries, activeEntryCode, activeSubEntryCode,
               disabled={entry.disabled}
               icon={entry.icon}
               onClick={() => handleFollowEntry(entry)}
-              role='menuitem'
-              data-testid='pim-main-menu-item'
+              role="menuitem"
+              data-testid="pim-main-menu-item"
               className={entry.code === activeEntryCode ? 'active' : undefined}
               style={getMainNavigationItemStyles(entry)}
             >
               {translate(entry.title)}
-              {entry.disabled && freeTrialEnabled &&
+              {entry.disabled && freeTrialEnabled && (
                 <LockIconContainer>
                   <StyledTag tint="blue">
-                    <StyledLockIcon size={16} color={'#5992c7'}/>
+                    <StyledLockIcon size={16} color={'#5992c7'} />
                   </StyledTag>
                 </LockIconContainer>
-              }
+              )}
             </MainNavigationItem>
           ))}
         </MenuContainer>
@@ -98,11 +101,10 @@ const PimNavigation: FC<Props> = ({entries, activeEntryCode, activeSubEntryCode,
           <PimView viewName="pim-menu-help" />
         </HelpContainer>
       </MainNavContainer>
-      {
-        activeNavigationEntry &&
+      {activeNavigationEntry &&
         (!activeNavigationEntry.isLandingSectionPage || activeSubEntryCode) &&
         activeSubNavigation &&
-        activeSubNavigation.sections.length > 0 &&
+        activeSubNavigation.sections.length > 0 && (
           <SubNavigation
             entries={activeSubNavigation.entries}
             sections={activeSubNavigation.sections}
@@ -112,7 +114,7 @@ const PimNavigation: FC<Props> = ({entries, activeEntryCode, activeSubEntryCode,
             activeSubEntryCode={activeSubEntryCode}
             freeTrialEnabled={freeTrialEnabled}
           />
-      }
+        )}
     </NavContainer>
   );
 };
