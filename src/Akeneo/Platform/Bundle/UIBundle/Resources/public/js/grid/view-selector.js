@@ -460,7 +460,6 @@ define([
     selectView: function (view) {
       DatagridState.set(this.gridAlias, {
         view: view.id,
-        text: view.text,
         filters: view.filters,
         columns: view.columns.join(','),
       });

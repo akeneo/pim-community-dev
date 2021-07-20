@@ -12,8 +12,8 @@ const ProductGridContext = ({type, children}: Props) => {
 
   return (
     <ContextContainer>
-      <ViewNameContainer>{children}</ViewNameContainer>{' '}
-      {type === 'public' || type === 'view' ? `(${translate('pim_common.public_view')})` : null}
+      <ViewNameContainer>{children}</ViewNameContainer>
+      {type === 'public' || type === 'view' ? ` (${translate('pim_common.public_view')})` : null}
     </ContextContainer>
   );
 };
