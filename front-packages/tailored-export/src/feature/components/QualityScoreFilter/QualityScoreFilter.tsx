@@ -10,7 +10,7 @@ import {
   ValidationError,
 } from '@akeneo-pim-community/shared';
 import {Operator, OperatorSelector} from './OperatorSelector';
-import {QualityScore, QualityScoreSelector, AVAILABLE_QUALITY_SCORES} from './QualityScoreSelector';
+import {AVAILABLE_QUALITY_SCORES, QualityScores, QualityScoreSelector} from './QualityScoreSelector';
 import {ChannelDropdown} from '../ChannelDropdown';
 import {useChannels} from '../../hooks';
 import {LocalesSelector} from './LocalesSelector';
@@ -30,7 +30,7 @@ const Container = styled.div`
 type Filter = {
   field: 'quality_score_multi_locales';
   operator: Operator | null;
-  value: number | null;
+  value: number[];
   context?: {
     locales: LocaleCode[];
     scope: ChannelCode;
@@ -66,9 +66,9 @@ const QualityScoreFilter = ({availableOperators, filter, onChange, validationErr
     const newFilter = {...filter, context: {scope: newScope, locales: newAvailableLocaleCodes}};
     onChange(newFilter);
   };
-  const handleQualityScoreChange = (newQualityScore: QualityScore) => {
-    if ('NO_CONDITION_ON_QUALITY_SCORE' === newQualityScore) {
-      const resetFilter = {...filter, operator: null, value: null};
+  const handleQualityScoreChange = (newQualityScores: QualityScores) => {
+    if (0 === newQualityScores.length) {
+      const resetFilter = {...filter, operator: null, value: []};
       onChange(resetFilter);
     } else {
       const newScope = filter.context?.scope ?? availableChannels[0].code;
@@ -77,7 +77,10 @@ const QualityScoreFilter = ({availableOperators, filter, onChange, validationErr
       const newFilter = {
         ...filter,
         operator: 'IN AT LEAST ONE LOCALE',
-        value: AVAILABLE_QUALITY_SCORES.indexOf(newQualityScore),
+        value: newQualityScores.map((qualityScore: string) => {
+          const res = AVAILABLE_QUALITY_SCORES.indexOf(qualityScore) + 1;
+          return res;
+        }),
         context: {
           locales: newLocales,
           scope: newScope,
@@ -91,7 +94,7 @@ const QualityScoreFilter = ({availableOperators, filter, onChange, validationErr
     <Container>
       <QualityScoreSelector
         availableQualityScores={AVAILABLE_QUALITY_SCORES}
-        qualityScore={filter.value ? AVAILABLE_QUALITY_SCORES[filter.value] : AVAILABLE_QUALITY_SCORES[0]}
+        qualityScore={filter.value.map((qualityScore: number) => AVAILABLE_QUALITY_SCORES[qualityScore - 1])}
         onChange={handleQualityScoreChange}
         validationErrors={valueErrors}
       />

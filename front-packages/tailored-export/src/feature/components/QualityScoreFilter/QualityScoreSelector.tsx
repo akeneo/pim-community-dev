@@ -1,17 +1,16 @@
 import React from 'react';
 import {useTranslate, Section, ValidationError} from '@akeneo-pim-community/shared';
-import {Field, Helper, SelectInput} from 'akeneo-design-system';
-import {Operator} from '../CompletenessFilter/OperatorSelector';
+import {Field, Helper, MultiSelectInput} from 'akeneo-design-system';
 
-type QualityScore = string;
+type QualityScores = string[];
 type QualityScoreSelectorProps = {
-  availableQualityScores: string[];
-  qualityScore: QualityScore;
-  onChange: (newQualityScore: QualityScore) => void;
+  availableQualityScores: QualityScores;
+  qualityScore: QualityScores;
+  onChange: (newQualityScores: QualityScores) => void;
   validationErrors: ValidationError[];
 };
 
-const AVAILABLE_QUALITY_SCORES = ['NO_CONDITION_ON_QUALITY_SCORE', 'A', 'B', 'C', 'D', 'E'];
+const AVAILABLE_QUALITY_SCORES = ['A', 'B', 'C', 'D', 'E'];
 
 const QualityScoreSelector = ({
   availableQualityScores,
@@ -24,26 +23,20 @@ const QualityScoreSelector = ({
   return (
     <Section>
       <Field label={translate('pim_enrich.export.product.filter.quality-score.title')}>
-        <SelectInput
-          clearable={false}
-          emptyResultLabel={translate('pim_common.no_result')}
-          openLabel={translate('pim_common.open')}
+        <MultiSelectInput
           value={qualityScore}
           onChange={onChange}
+          emptyResultLabel={translate('pim_common.no_result')}
+          openLabel={translate('pim_common.open')}
+          placeholder={translate('pim_enrich.export.product.filter.quality-score.empty_selection')}
+          removeLabel={translate('akeneo.tailored_export.filters.quality_score.locales.remove')}
         >
-          {availableQualityScores.map((qualityScore: Operator) => {
-            const qualityScoreLabel =
-              qualityScore !== 'NO_CONDITION_ON_QUALITY_SCORE'
-                ? qualityScore
-                : translate(`pim_enrich.export.product.filter.quality-score.empty_selection`);
-
-            return (
-              <SelectInput.Option key={qualityScore} title={qualityScoreLabel} value={qualityScore}>
-                {translate(qualityScoreLabel)}
-              </SelectInput.Option>
-            );
-          })}
-        </SelectInput>
+          {availableQualityScores.map((qualityScore: string) => (
+            <MultiSelectInput.Option key={qualityScore} title={qualityScore} value={qualityScore}>
+              {qualityScore}
+            </MultiSelectInput.Option>
+          ))}
+        </MultiSelectInput>
         {validationErrors.map((error, index) => (
           <Helper key={index} inline={true} level="error">
             {translate(error.messageTemplate, error.parameters)}
@@ -55,4 +48,4 @@ const QualityScoreSelector = ({
 };
 
 export {QualityScoreSelector, AVAILABLE_QUALITY_SCORES};
-export type {QualityScore};
+export type {QualityScores};
