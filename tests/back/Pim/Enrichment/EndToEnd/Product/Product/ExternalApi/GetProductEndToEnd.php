@@ -6,7 +6,11 @@ namespace AkeneoTest\Pim\Enrichment\EndToEnd\Product\Product\ExternalApi;
 
 use Akeneo\Test\Integration\Configuration;
 use AkeneoTest\Pim\Enrichment\Integration\Normalizer\NormalizedProductCleaner;
-use PHPUnit\Framework\Assert;
+use Doctrine\Common\Collections\ArrayCollection;
+use Oro\Bundle\SecurityBundle\Acl\AccessLevel;
+use Oro\Bundle\SecurityBundle\Model\AclPermission;
+use Oro\Bundle\SecurityBundle\Model\AclPrivilege;
+use Oro\Bundle\SecurityBundle\Model\AclPrivilegeIdentity;
 use Symfony\Component\HttpFoundation\Response;
 
 /**
@@ -298,6 +302,50 @@ class GetProductEndToEnd extends AbstractProductTestCase
 
         $this->assertSame(Response::HTTP_OK, $response->getStatusCode());
         $this->assertResponse($response, $expectedProduct);
+    }
+
+    public function test_access_denied_on_get_a_product_if_no_permission()
+    {
+
+        $this->createProduct('product', [
+            'family'     => 'familyA1',
+            'enabled'       => true,
+            'categories' => ['categoryA', 'master', 'master_china'],
+            'groups'     => ['groupA', 'groupB'],
+            'values'     => [
+                'a_date' => [
+                    ['data' => '2016-06-28', 'locale' => null, 'scope' => null]
+                ],
+            ],
+        ]);
+
+        $client = $this->createAuthenticatedClient();
+
+        $aclManager = $this->get('oro_security.acl.manager');
+        $role = $this->get('pim_user.repository.role')->findOneByIdentifier('ROLE_ADMINISTRATOR');
+        $privilege = new AclPrivilege();
+        $identity = new AclPrivilegeIdentity('action:pim_api_product_list');
+        $privilege
+            ->setIdentity($identity)
+            ->addPermission(new AclPermission('EXECUTE', AccessLevel::NONE_LEVEL));
+        $aclManager->getPrivilegeRepository()->savePrivileges(
+            $aclManager->getSid($role),
+            new ArrayCollection([$privilege])
+        );
+        $aclManager->flush();
+        $aclManager->clearCache();
+
+        $client->request('GET', 'api/rest/v1/products/product');
+        $expectedResponse = <<<JSON
+{
+    "code": 403,
+    "message": "Access forbidden. You are not allowed to list products."
+}
+JSON;
+
+        $response = $client->getResponse();
+        $this->assertSame(Response::HTTP_FORBIDDEN, $response->getStatusCode());
+        $this->assertJsonStringEqualsJsonString($expectedResponse, $response->getContent());
     }
 
     /**

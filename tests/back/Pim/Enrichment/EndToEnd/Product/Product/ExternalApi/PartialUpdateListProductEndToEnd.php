@@ -6,6 +6,11 @@ namespace AkeneoTest\Pim\Enrichment\EndToEnd\Product\Product\ExternalApi;
 
 use Akeneo\Test\Integration\Configuration;
 use Akeneo\Tool\Bundle\ApiBundle\Stream\StreamResourceResponse;
+use Doctrine\Common\Collections\ArrayCollection;
+use Oro\Bundle\SecurityBundle\Acl\AccessLevel;
+use Oro\Bundle\SecurityBundle\Model\AclPermission;
+use Oro\Bundle\SecurityBundle\Model\AclPrivilege;
+use Oro\Bundle\SecurityBundle\Model\AclPrivilegeIdentity;
 use PHPUnit\Framework\Assert;
 use Symfony\Component\HttpFoundation\Response;
 
@@ -98,6 +103,43 @@ JSON;
         $esProduct = $this->getProductFromIndex('my_identifier');
         Assert::assertNotNull($esProduct);
         Assert::assertEquals('familyA2', $esProduct['family']['code']);
+    }
+
+    public function testAccessDeniedOnUpdateAPartialProductIfNoPermission()
+    {
+        $client = $this->createAuthenticatedClient();
+
+        $aclManager = $this->get('oro_security.acl.manager');
+        $role = $this->get('pim_user.repository.role')->findOneByIdentifier('ROLE_ADMINISTRATOR');
+        $privilege = new AclPrivilege();
+        $identity = new AclPrivilegeIdentity('action:pim_api_product_edit');
+        $privilege
+            ->setIdentity($identity)
+            ->addPermission(new AclPermission('EXECUTE', AccessLevel::NONE_LEVEL));
+        $aclManager->getPrivilegeRepository()->savePrivileges(
+            $aclManager->getSid($role),
+            new ArrayCollection([$privilege])
+        );
+        $aclManager->flush();
+        $aclManager->clearCache();
+
+        $data = <<<JSON
+{"line":1,"identifier":"product_family","status_code":204}
+{"line":2,"identifier":"my_identifier","status_code":201}
+JSON;
+
+        $result = $this->executeStreamRequest('PATCH', 'api/rest/v1/products', [], [], [], $data);
+
+        $expectedResponse = <<<JSON
+{
+    "code": 403,
+    "message": "Access forbidden. You are not allowed to create or update products."
+}
+JSON;
+
+        $response = $result['http_response'];
+        $this->assertSame(Response::HTTP_FORBIDDEN, $response->getStatusCode());
+        $this->assertJsonStringEqualsJsonString($expectedResponse, $response->getContent());
     }
 
     public function testCreateAndUpdateSameProduct()
