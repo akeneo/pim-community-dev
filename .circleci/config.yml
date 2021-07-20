@@ -179,6 +179,10 @@ jobs:
             - project
 
   build_srnt_prod:
+      parameters:
+          is_pull_request:
+              type: boolean
+              default: false
       environment:
         <<: *envVarsDeployDev
       machine:
