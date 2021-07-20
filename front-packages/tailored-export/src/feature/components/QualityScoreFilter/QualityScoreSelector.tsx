@@ -11,6 +11,8 @@ type QualityScoreSelectorProps = {
   validationErrors: ValidationError[];
 };
 
+const AVAILABLE_QUALITY_SCORES = ['NO_CONDITION_ON_QUALITY_SCORE', 'A', 'B', 'C', 'D', 'E'];
+
 const QualityScoreSelector = ({
   availableQualityScores,
   qualityScore,
@@ -52,5 +54,5 @@ const QualityScoreSelector = ({
   );
 };
 
-export {QualityScoreSelector};
+export {QualityScoreSelector, AVAILABLE_QUALITY_SCORES};
 export type {QualityScore};

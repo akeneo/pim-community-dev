@@ -2,7 +2,7 @@ import React from 'react';
 import {screen} from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
 import {Channel, renderWithProviders} from '@akeneo-pim-community/shared';
-import {CompletenessFilter, Operator} from './CompletenessFilter';
+import {QualityScoreFilter} from './QualityScoreFilter';
 
 const channels: Channel[] = [
   {
@@ -71,170 +71,114 @@ jest.mock('../../hooks/useChannels', () => ({
   useChannels: () => channels,
 }));
 
-const operatorsAndVisibility = [
-  {operator: 'ALL', shouldAppear: false},
-  {operator: 'GREATER OR EQUALS THAN ON AT LEAST ONE LOCALE', shouldAppear: true},
-  {operator: 'GREATER OR EQUALS THAN ON ALL LOCALES', shouldAppear: true},
-  {operator: 'LOWER THAN ON ALL LOCALES', shouldAppear: true},
-] as const;
-let availableOperators = operatorsAndVisibility.map(operatorAndVisibility => operatorAndVisibility.operator);
+const availableOperators = ['IN AT LEAST ONE LOCALE', 'IN ALL LOCALES'];
+test('it does not display the channel, locale and operator selectors depending if a quality score is not selected', () => {
+  renderWithProviders(
+    <QualityScoreFilter
+      availableOperators={availableOperators}
+      filter={{
+        field: 'quality_score_multi_locales',
+        operator: null,
+        value: null,
+      }}
+      onChange={() => {}}
+      validationErrors={[]}
+    />
+  );
 
-test.each(operatorsAndVisibility)(
-  'it displays the locale selector depending on the operator',
-  ({operator, shouldAppear}: {operator: Operator; shouldAppear: boolean}) => {
-    renderWithProviders(
-      <CompletenessFilter
-        availableOperators={availableOperators}
-        filter={{
-          field: 'completeness',
-          value: 100,
-          operator: operator,
-          context: {locales: ['fr_FR', 'en_US'], scope: 'ecommerce'},
-        }}
-        onChange={() => {}}
-        validationErrors={[]}
-      />
-    );
+  expect(screen.getByText(`pim_enrich.export.product.filter.quality-score.title`)).toBeInTheDocument();
+  expect(
+    screen.queryByText('pim_enrich.export.product.filter.quality-score.operator_choice_title')
+  ).not.toBeInTheDocument();
+  expect(screen.queryByText('pim_common.channel')).not.toBeInTheDocument();
+  expect(screen.queryByText('akeneo.tailored_export.filters.quality_score.locales.label')).not.toBeInTheDocument();
+});
 
-    expect(screen.getByText(`pim_enrich.export.product.filter.completeness.operators.${operator}`)).toBeInTheDocument();
+test('it displays the channel, locale and operator selectors depending if a quality score selected', () => {
+  renderWithProviders(
+    <QualityScoreFilter
+      availableOperators={availableOperators}
+      filter={{
+        field: 'quality_score_multi_locales',
+        operator: 'IN AT LEAST ONE LOCALE',
+        value: 1,
+      }}
+      onChange={() => {}}
+      validationErrors={[]}
+    />
+  );
 
-    if (shouldAppear) {
-      expect(screen.getByText('akeneo.tailored_export.filters.completeness.locales.label')).toBeInTheDocument();
-    } else {
-      expect(screen.queryByText('akeneo.tailored_export.filters.completeness.locales.label')).not.toBeInTheDocument();
-    }
-  }
-);
+  expect(screen.getByText(`pim_enrich.export.product.filter.quality-score.title`)).toBeInTheDocument();
+  expect(screen.getByText('pim_enrich.export.product.filter.quality-score.operator_choice_title')).toBeInTheDocument();
+  expect(screen.getByText('pim_common.channel')).toBeInTheDocument();
+  expect(screen.getByText('akeneo.tailored_export.filters.quality_score.locales.label')).toBeInTheDocument();
+});
+
+test('when a quality score is selected, the operator, channel and locale selectors are initialized with default values', () => {
+  const handleFilterChange = jest.fn();
+  renderWithProviders(
+    <QualityScoreFilter
+      availableOperators={availableOperators}
+      filter={{
+        field: 'quality_score_multi_locales',
+        operator: null,
+        value: null,
+      }}
+      onChange={handleFilterChange}
+      validationErrors={[]}
+    />
+  );
+
+  userEvent.click(screen.getByText('pim_enrich.export.product.filter.quality-score.title'));
+  userEvent.click(screen.getByText('A'));
+
+  expect(handleFilterChange).toHaveBeenCalledWith({
+    field: 'quality_score_multi_locales',
+    operator: 'IN AT LEAST ONE LOCALE',
+    value: 1,
+    context: {
+      scope: 'ecommerce', // first channel in the list
+      locales: ['en_US', 'fr_FR', 'br_FR'], // All locales of the channel 'ecommerce'
+    },
+  });
+});
 
 test('it can switch operator', () => {
-  const handleOperatorChange = jest.fn();
-
+  const handleFilterChange = jest.fn();
   renderWithProviders(
-    <CompletenessFilter
+    <QualityScoreFilter
       availableOperators={availableOperators}
       filter={{
-        field: 'completeness',
-        value: 100,
-        operator: 'LOWER THAN ON ALL LOCALES',
-        context: {locales: ['fr_FR'], scope: 'ecommerce'},
+        field: 'quality_score_multi_locales',
+        operator: 'IN AT LEAST ONE LOCALE',
+        value: 1,
       }}
-      onChange={handleOperatorChange}
+      onChange={handleFilterChange}
       validationErrors={[]}
     />
   );
 
-  userEvent.click(screen.getAllByTitle('pim_common.open')[0]);
-  userEvent.click(
-    screen.getByText('pim_enrich.export.product.filter.completeness.operators.GREATER OR EQUALS THAN ON ALL LOCALES')
-  );
+  userEvent.click(screen.getByText('pim_enrich.export.product.filter.quality-score.operator_choice_title'));
+  userEvent.click(screen.getByText('pim_enrich.export.product.filter.quality-score.operators.IN ALL LOCALES'));
 
-  expect(handleOperatorChange).toHaveBeenCalledWith({
-    context: {locales: ['fr_FR'], scope: 'ecommerce'},
-    field: 'completeness',
-    operator: 'GREATER OR EQUALS THAN ON ALL LOCALES',
-    value: 100,
+  expect(handleFilterChange).toHaveBeenCalledWith({
+    field: 'quality_score_multi_locales',
+    operator: 'IN ALL LOCALES',
+    value: 1,
   });
 });
 
-test('it initializes the context when the user switch operator from "ALL" to another operator', () => {
-  const handleOperatorChange = jest.fn();
-
+test('it can switch channel and initializes the locales value with all locales activated for this channel', () => {
+  const handleFilterChange = jest.fn();
   renderWithProviders(
-    <CompletenessFilter
+    <QualityScoreFilter
       availableOperators={availableOperators}
       filter={{
-        field: 'completeness',
-        value: 100,
-        operator: 'ALL',
+        field: 'quality_score_multi_locales',
+        operator: 'IN AT LEAST ONE LOCALE',
+        value: 1,
       }}
-      onChange={handleOperatorChange}
-      validationErrors={[]}
-    />
-  );
-
-  userEvent.click(screen.getAllByTitle('pim_common.open')[0]);
-  userEvent.click(
-    screen.getByText('pim_enrich.export.product.filter.completeness.operators.GREATER OR EQUALS THAN ON ALL LOCALES')
-  );
-
-  expect(handleOperatorChange).toHaveBeenCalledWith({
-    context: {locales: [], scope: 'ecommerce'},
-    field: 'completeness',
-    operator: 'GREATER OR EQUALS THAN ON ALL LOCALES',
-    value: 100,
-  });
-});
-
-test('it removes the context when the user switch the operator to "ALL"', () => {
-  const handleOperatorChange = jest.fn();
-
-  renderWithProviders(
-    <CompletenessFilter
-      availableOperators={availableOperators}
-      filter={{
-        field: 'completeness',
-        value: 100,
-        operator: 'GREATER OR EQUALS THAN ON ALL LOCALES',
-        context: {locales: ['fr_FR', 'en_US'], scope: 'ecommerce'},
-      }}
-      onChange={handleOperatorChange}
-      validationErrors={[]}
-    />
-  );
-
-  userEvent.click(screen.getAllByTitle('pim_common.open')[0]);
-  userEvent.click(screen.getByText('pim_enrich.export.product.filter.completeness.operators.ALL'));
-
-  expect(handleOperatorChange).toHaveBeenCalledWith({
-    field: 'completeness',
-    operator: 'ALL',
-    value: 100,
-  });
-});
-
-test('it keeps the channel when switching an operator that is not "ALL"', () => {
-  const handleOperatorChange = jest.fn();
-
-  renderWithProviders(
-    <CompletenessFilter
-      availableOperators={availableOperators}
-      filter={{
-        field: 'completeness',
-        value: 100,
-        operator: 'GREATER OR EQUALS THAN ON ALL LOCALES',
-        context: {locales: ['fr_FR', 'en_US'], scope: 'ecommerce'},
-      }}
-      onChange={handleOperatorChange}
-      validationErrors={[]}
-    />
-  );
-
-  userEvent.click(screen.getAllByTitle('pim_common.open')[0]);
-  userEvent.click(
-    screen.getByText('pim_enrich.export.product.filter.completeness.operators.LOWER THAN ON ALL LOCALES')
-  );
-
-  expect(handleOperatorChange).toHaveBeenCalledWith({
-    context: {locales: ['fr_FR', 'en_US'], scope: 'ecommerce'},
-    field: 'completeness',
-    operator: 'LOWER THAN ON ALL LOCALES',
-    value: 100,
-  });
-});
-
-test('it selects a channel', () => {
-  const handleOperatorChange = jest.fn();
-
-  renderWithProviders(
-    <CompletenessFilter
-      availableOperators={availableOperators}
-      filter={{
-        field: 'completeness',
-        value: 100,
-        operator: 'GREATER OR EQUALS THAN ON ALL LOCALES',
-        context: {locales: ['fr_FR', 'en_US'], scope: 'ecommerce'},
-      }}
-      onChange={handleOperatorChange}
+      onChange={handleFilterChange}
       validationErrors={[]}
     />
   );
@@ -242,27 +186,32 @@ test('it selects a channel', () => {
   userEvent.click(screen.getByLabelText('pim_common.channel'));
   userEvent.click(screen.getByText('[print]'));
 
-  expect(handleOperatorChange).toHaveBeenCalledWith({
-    context: {locales: ['fr_FR', 'en_US'], scope: 'print'},
-    field: 'completeness',
-    operator: 'GREATER OR EQUALS THAN ON ALL LOCALES',
-    value: 100,
+  expect(handleFilterChange).toHaveBeenCalledWith({
+    field: 'quality_score_multi_locales',
+    operator: 'IN AT LEAST ONE LOCALE',
+    value: 1,
+    context: {
+      scope: 'print',
+      locales: ['en_US', 'fr_FR'],
+    },
   });
 });
 
 test('it filters the locales that do not belong to a channel when the channel changes', () => {
-  const handleOperatorChange = jest.fn();
-
+  const handleFilterChange = jest.fn();
   renderWithProviders(
-    <CompletenessFilter
+    <QualityScoreFilter
       availableOperators={availableOperators}
       filter={{
-        field: 'completeness',
-        value: 100,
-        operator: 'GREATER OR EQUALS THAN ON ALL LOCALES',
-        context: {locales: ['fr_FR', 'en_US', 'br_FR'], scope: 'ecommerce'},
+        field: 'quality_score_multi_locales',
+        operator: 'IN AT LEAST ONE LOCALE',
+        value: 1,
+        context: {
+          scope: 'ecommerce',
+          locales: ['fr_FR', 'br_FR'],
+        },
       }}
-      onChange={handleOperatorChange}
+      onChange={handleFilterChange}
       validationErrors={[]}
     />
   );
@@ -270,58 +219,114 @@ test('it filters the locales that do not belong to a channel when the channel ch
   userEvent.click(screen.getByLabelText('pim_common.channel'));
   userEvent.click(screen.getByText('[print]'));
 
-  expect(handleOperatorChange).toHaveBeenCalledWith({
-    context: {locales: ['fr_FR', 'en_US'], scope: 'print'},
-    field: 'completeness',
-    operator: 'GREATER OR EQUALS THAN ON ALL LOCALES',
-    value: 100,
+  expect(handleFilterChange).toHaveBeenCalledWith({
+    field: 'quality_score_multi_locales',
+    operator: 'IN AT LEAST ONE LOCALE',
+    value: 1,
+    context: {
+      scope: 'print',
+      locales: ['en_US', 'fr_FR'],
+    },
   });
 });
 
-test('it can select locales', () => {
-  const handleLocalesChange = jest.fn();
-
+test('it can switch locales', () => {
+  const handleFilterChange = jest.fn();
   renderWithProviders(
-    <CompletenessFilter
+    <QualityScoreFilter
       availableOperators={availableOperators}
       filter={{
-        field: 'completeness',
-        value: 100,
-        operator: 'GREATER OR EQUALS THAN ON ALL LOCALES',
-        context: {locales: ['en_US', 'fr_FR'], scope: 'ecommerce'},
+        field: 'quality_score_multi_locales',
+        operator: 'IN AT LEAST ONE LOCALE',
+        value: 1,
+        context: {
+          scope: 'ecommerce',
+          locales: ['fr_FR'],
+        },
       }}
-      onChange={handleLocalesChange}
+      onChange={handleFilterChange}
       validationErrors={[]}
     />
   );
 
-  userEvent.click(screen.getByLabelText('akeneo.tailored_export.filters.completeness.locales.label'));
+  userEvent.click(screen.getByLabelText('akeneo.tailored_export.filters.quality_score.locales.label'));
   userEvent.click(screen.getByText('Breton'));
 
-  expect(handleLocalesChange).toHaveBeenCalledWith({
-    context: {locales: ['en_US', 'fr_FR', 'br_FR'], scope: 'ecommerce'},
-    field: 'completeness',
-    operator: 'GREATER OR EQUALS THAN ON ALL LOCALES',
-    value: 100,
+  expect(handleFilterChange).toHaveBeenCalledWith({
+    field: 'quality_score_multi_locales',
+    operator: 'IN AT LEAST ONE LOCALE',
+    value: 1,
+    context: {
+      scope: 'ecommerce',
+      locales: ['fr_FR', 'br_FR'],
+    },
   });
 });
 
-test('it displays locales validation errors', () => {
-  const localesErrorMessage = 'error with the locales';
-
+test('when the user switch the quality score to null it removes the context and the operator', () => {
+  const handleFilterChange = jest.fn();
   renderWithProviders(
-    <CompletenessFilter
+    <QualityScoreFilter
       availableOperators={availableOperators}
       filter={{
-        field: 'completeness',
-        value: 100,
-        operator: 'GREATER OR EQUALS THAN ON ALL LOCALES',
-        context: {locales: [], scope: ''},
+        field: 'quality_score_multi_locales',
+        operator: 'IN AT LEAST ONE LOCALE',
+        value: 1,
+      }}
+      onChange={handleFilterChange}
+      validationErrors={[]}
+    />
+  );
+
+  userEvent.click(screen.getByText('pim_enrich.export.product.filter.quality-score.title'));
+  userEvent.click(screen.getByText('pim_enrich.export.product.filter.quality-score.empty_selection'));
+
+  expect(handleFilterChange).toHaveBeenCalledWith({
+    field: 'quality_score_multi_locales',
+    operator: null,
+    value: null,
+  });
+});
+
+test('it displays validation errors', () => {
+  const qualityScoreErrorMessage = 'error with qualityScore';
+  const operatorErrorMessage = 'error with operator';
+  const channelErrorMessage = 'error with channel';
+  const localeErrorMessage = 'error with locale';
+
+  renderWithProviders(
+    <QualityScoreFilter
+      availableOperators={availableOperators}
+      filter={{
+        field: 'quality_score_multi_locales',
+        operator: 'IN AT LEAST ONE LOCALE',
+        value: 1,
       }}
       onChange={() => {}}
       validationErrors={[
         {
-          messageTemplate: localesErrorMessage,
+          messageTemplate: qualityScoreErrorMessage,
+          parameters: {},
+          message: '',
+          propertyPath: '[value]',
+          invalidValue: '',
+        },
+        {
+          messageTemplate: operatorErrorMessage,
+          parameters: {},
+          message: '',
+          propertyPath: '[operator]',
+          invalidValue: '',
+        },
+        {
+          messageTemplate: channelErrorMessage,
+          parameters: {},
+          message: '',
+          propertyPath: '[context][scope]',
+          invalidValue: '',
+        },
+        {
+          messageTemplate: localeErrorMessage,
           parameters: {},
           message: '',
           propertyPath: '[context][locales]',
@@ -331,33 +336,8 @@ test('it displays locales validation errors', () => {
     />
   );
 
-  expect(screen.getByText(localesErrorMessage)).toBeInTheDocument();
-});
-
-test('it displays operator validation errors', () => {
-  const operatorErrorMessage = 'error with the operator';
-
-  renderWithProviders(
-    <CompletenessFilter
-      availableOperators={availableOperators}
-      filter={{
-        field: 'completeness',
-        value: 100,
-        operator: 'GREATER OR EQUALS THAN ON ALL LOCALES',
-        context: {locales: [], scope: ''},
-      }}
-      onChange={() => {}}
-      validationErrors={[
-        {
-          messageTemplate: operatorErrorMessage,
-          parameters: {},
-          message: '',
-          propertyPath: '[operator]',
-          invalidValue: '',
-        },
-      ]}
-    />
-  );
-
+  expect(screen.getByText(qualityScoreErrorMessage)).toBeInTheDocument();
   expect(screen.getByText(operatorErrorMessage)).toBeInTheDocument();
+  expect(screen.getByText(channelErrorMessage)).toBeInTheDocument();
+  expect(screen.getByText(localeErrorMessage)).toBeInTheDocument();
 });

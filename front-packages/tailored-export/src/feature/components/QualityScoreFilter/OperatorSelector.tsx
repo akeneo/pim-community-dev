@@ -1,5 +1,5 @@
 import React from 'react';
-import {useTranslate, Section, ValidationError} from '@akeneo-pim-community/shared';
+import {Section, useTranslate, ValidationError} from '@akeneo-pim-community/shared';
 import {Field, Helper, SelectInput} from 'akeneo-design-system';
 
 type Operator = string;

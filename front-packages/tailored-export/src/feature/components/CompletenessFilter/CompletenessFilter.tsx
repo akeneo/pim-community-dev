@@ -52,7 +52,7 @@ const CompletenessFilter = ({availableOperators, filter, onChange, validationErr
       const newScope = filter.context?.scope ?? availableChannels[0].code;
       onChange({...filter, operator: newOperator, context: {locales: newLocales, scope: newScope}});
     } else {
-      onChange({field: filter.field, value: filter.value, operator: newOperator, context: {scope: '', locales: []}});
+      onChange({field: filter.field, value: filter.value, operator: newOperator});
     }
   };
   const handleLocalesChange = (newLocales: LocaleCode[]) => {

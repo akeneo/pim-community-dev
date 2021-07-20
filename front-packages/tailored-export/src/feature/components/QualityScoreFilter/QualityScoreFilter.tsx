@@ -10,7 +10,7 @@ import {
   ValidationError,
 } from '@akeneo-pim-community/shared';
 import {Operator, OperatorSelector} from './OperatorSelector';
-import {QualityScore, QualityScoreSelector} from './QualityScoreSelector';
+import {QualityScore, QualityScoreSelector, AVAILABLE_QUALITY_SCORES} from './QualityScoreSelector';
 import {ChannelDropdown} from '../ChannelDropdown';
 import {useChannels} from '../../hooks';
 import {LocalesSelector} from './LocalesSelector';
@@ -42,8 +42,6 @@ type QualityScoreFilterProps = {
   onChange: (newFilter: Filter) => void;
   validationErrors: ValidationError[];
 };
-
-const AVAILABLE_QUALITY_SCORES = ['NO_CONDITION_ON_QUALITY_SCORE', 'A', 'B', 'C', 'D', 'E'];
 
 const QualityScoreFilter = ({availableOperators, filter, onChange, validationErrors}: QualityScoreFilterProps) => {
   const availableChannels = useChannels();
