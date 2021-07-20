@@ -24,7 +24,7 @@ test('it displays the selected locales', () => {
     <LocalesSelector value={['en_US']} locales={availableLocales} onChange={() => {}} validationErrors={[]} />
   );
 
-  expect(screen.queryByText('akeneo.tailored_export.filters.completeness.locales.label')).toBeInTheDocument();
+  expect(screen.queryByText('akeneo.tailored_export.filters.quality_score.locales.label')).toBeInTheDocument();
   expect(screen.queryByText('English (American)')).toBeInTheDocument();
 });
 
@@ -39,7 +39,7 @@ test('it notifies when a locale is added to the selection', () => {
     />
   );
 
-  userEvent.click(screen.getByText('akeneo.tailored_export.filters.completeness.locales.label'));
+  userEvent.click(screen.getByText('akeneo.tailored_export.filters.quality_score.locales.label'));
   userEvent.click(screen.getByText('English (American)'));
 
   expect(onLocalesSelectionChange).toHaveBeenCalledWith(['fr_FR', 'en_US']);

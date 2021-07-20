@@ -2,50 +2,61 @@ import React from 'react';
 import {screen} from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
 import {renderWithProviders} from '@akeneo-pim-community/shared';
-import {OperatorSelector} from './OperatorSelector';
+import {QualityScoreSelector} from './QualityScoreSelector';
 
-const availableOperators = ['ALL', 'LOWER THAN ON ALL LOCALES'];
+const availableQualityScores = ['NO_CONDITION_ON_QUALITY_SCORE', 'A', 'B', 'C', 'D', 'E'];
 
-test('it displays the selected operator', () => {
+test('it displays unselected quality score', () => {
   renderWithProviders(
-    <OperatorSelector
-      availableOperators={availableOperators}
-      operator="ALL"
+    <QualityScoreSelector
+      availableQualityScores={availableQualityScores}
+      qualityScore="NO_CONDITION_ON_QUALITY_SCORE"
       onChange={() => {}}
       validationErrors={[]}
     />
   );
 
-  expect(screen.getByText('pim_enrich.export.product.filter.completeness.operators.ALL')).toBeInTheDocument();
+  expect(screen.getByText('pim_enrich.export.product.filter.quality-score.empty_selection')).toBeInTheDocument();
 });
 
-test('it notifies when the operator is changed', async () => {
+test('it displays the selected quality score', () => {
+  renderWithProviders(
+    <QualityScoreSelector
+      availableQualityScores={availableQualityScores}
+      qualityScore="A"
+      onChange={() => {}}
+      validationErrors={[]}
+    />
+  );
+
+  expect(screen.getByText('A')).toBeInTheDocument();
+});
+
+test('it notifies when the quality score is changed', async () => {
   const onOperatorChange = jest.fn();
 
   await renderWithProviders(
-    <OperatorSelector
-      availableOperators={availableOperators}
-      operator="ALL"
+    <QualityScoreSelector
+      availableQualityScores={availableQualityScores}
+      qualityScore="A"
       onChange={onOperatorChange}
       validationErrors={[]}
     />
   );
 
   userEvent.click(screen.getByTitle('pim_common.open'));
-  userEvent.click(
-    screen.getByText('pim_enrich.export.product.filter.completeness.operators.LOWER THAN ON ALL LOCALES')
-  );
+  userEvent.click(screen.getByText('B'));
 
-  expect(onOperatorChange).toHaveBeenCalledWith('LOWER THAN ON ALL LOCALES');
+  expect(onOperatorChange).toHaveBeenCalledWith('B');
 });
 
 test('it displays validations errors if any', async () => {
   const myErrorMessage = 'My message.';
 
   await renderWithProviders(
-    <OperatorSelector
-      availableOperators={availableOperators}
-      operator="ALL"
+    <QualityScoreSelector
+      availableQualityScores={availableQualityScores}
+      qualityScore="A"
       onChange={() => {}}
       validationErrors={[
         {

@@ -10,7 +10,7 @@ type LocalesSelectorProps = {
 };
 
 // TODO: Put this locale selector in common with the one from completeness
-//       Pass-in the the label as a prop.
+//       Pass-in the the label as a prop?
 const LocalesSelector = ({locales, value, onChange, validationErrors}: LocalesSelectorProps) => {
   const translate = useTranslate();
 
