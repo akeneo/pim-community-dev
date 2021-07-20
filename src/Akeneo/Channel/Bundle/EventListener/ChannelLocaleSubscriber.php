@@ -7,8 +7,8 @@ namespace Akeneo\Channel\Bundle\EventListener;
 use Akeneo\Channel\Component\Model\ChannelInterface;
 use Akeneo\Channel\Component\Model\LocaleInterface;
 use Akeneo\Channel\Component\Repository\LocaleRepositoryInterface;
-use Akeneo\Tool\Component\Console\CommandLauncher;
 use Akeneo\Tool\Bundle\BatchBundle\Launcher\JobLauncherInterface;
+use Akeneo\Tool\Component\Console\CommandLauncher;
 use Akeneo\Tool\Component\StorageUtils\Repository\IdentifiableObjectRepositoryInterface;
 use Akeneo\Tool\Component\StorageUtils\Saver\BulkSaverInterface;
 use Akeneo\Tool\Component\StorageUtils\StorageEvents;
@@ -149,7 +149,7 @@ class ChannelLocaleSubscriber implements EventSubscriberInterface
 
     private function removeCompletenessForChannelAndLocales(array $localesCodes, string $channelCode): void
     {
-        if ($this->jobLauncher === null || $this->jobInstanceRepository === null || $this->jobName === null ) {
+        if ($this->jobLauncher === null || $this->jobInstanceRepository === null || $this->jobName === null) {
             $this->launchCommand($localesCodes, $channelCode);
         } else {
             $this->launchJob($localesCodes, $channelCode);
