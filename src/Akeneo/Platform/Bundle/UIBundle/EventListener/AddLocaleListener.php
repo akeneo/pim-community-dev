@@ -16,38 +16,20 @@ use Doctrine\ORM\Event\LifecycleEventArgs;
  */
 class AddLocaleListener implements EventSubscriber
 {
-    /**
-     * Locale to inject
-     *
-     * @var string
-     */
     protected $locale;
 
-    /**
-     * Specifies the list of events to listen
-     *
-     * @return array
-     */
-    public function getSubscribedEvents()
+    public function getSubscribedEvents(): array
     {
         return [
-            'postLoad'
+            'postLoad',
         ];
     }
 
-    /**
-     * @param string $locale
-     */
-    public function setLocale($locale)
+    public function setLocale(string $locale)
     {
         $this->locale = $locale;
     }
 
-    /**
-     * Post load
-     *
-     * @param LifecycleEventArgs $args
-     */
     public function postLoad(LifecycleEventArgs $args)
     {
         $entity = $args->getEntity();

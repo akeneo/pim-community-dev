@@ -2,7 +2,6 @@
 
 namespace Akeneo\Platform\Bundle\InstallerBundle\Command;
 
-use Akeneo\Platform\CommunityVersion;
 use Akeneo\Platform\Requirements;
 use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Helper\Table;
@@ -49,7 +48,7 @@ class CheckRequirementsCommand extends Command
     /**
      * {@inheritdoc}
      */
-    protected function execute(InputInterface $input, OutputInterface $output)
+    protected function execute(InputInterface $input, OutputInterface $output): int
     {
         $output->writeln('<info>Akeneo PIM requirements check:</info>');
 
@@ -58,6 +57,8 @@ class CheckRequirementsCommand extends Command
             $output,
             new Requirements($this->rootDirectory)
         );
+
+        return Command::SUCCESS;
     }
 
     /**
@@ -104,7 +105,7 @@ class CheckRequirementsCommand extends Command
                 $table->addRow(
                     [
                         $requirement->isOptional() ? 'WARNING' : 'ERROR',
-                        $requirement->getHelpText()
+                        $requirement->getHelpText(),
                     ]
                 );
             }

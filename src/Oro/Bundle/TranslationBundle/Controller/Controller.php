@@ -1,4 +1,5 @@
 <?php
+
 namespace Oro\Bundle\TranslationBundle\Controller;
 
 use Symfony\Component\HttpFoundation\Request;
@@ -20,6 +21,7 @@ class Controller
 
     /**
      * @param string|TemplateReferenceInterface $template a template name or a TemplateReferenceInterface instance
+     *
      * @throws \InvalidArgumentException
      */
     public function __construct(TranslatorInterface $translator, Environment $templating, $template, $options)
@@ -35,15 +37,11 @@ class Controller
 
     /**
      * Action point for js translation resource
-     *
-     * @param Request $request
-     * @param string $_locale
-     * @return Response
      */
-    public function indexAction(Request $request, $_locale)
+    public function indexAction(Request $request, string $_locale): Response
     {
-        $domains = isset($this->options['domains']) ? $this->options['domains'] : [];
-        $debug = isset($this->options['debug']) ? (bool)$this->options['debug'] : false;
+        $domains = $this->options['domains'] ?? [];
+        $debug = isset($this->options['debug']) && (bool)$this->options['debug'];
 
         $content = $this->renderJsTranslationContent($domains, $_locale, $debug);
 
@@ -52,20 +50,15 @@ class Controller
 
     /**
      * Combines JSON with js translation and renders js-resource
-     *
-     * @param array $domains
-     * @param string $locale
-     * @param bool $debug
-     * @return string
      */
-    public function renderJsTranslationContent(array $domains, $locale, $debug = false)
+    public function renderJsTranslationContent(array $domains, string $locale, bool $debug = false): string
     {
         $domainsTranslations = $this->translator->getTranslations($domains, $locale);
 
         $result = [
-            'locale'         => $locale,
+            'locale' => $locale,
             'defaultDomains' => $domains,
-            'messages'       => [],
+            'messages' => [],
         ];
         if ($debug) {
             $result['debug'] = true;

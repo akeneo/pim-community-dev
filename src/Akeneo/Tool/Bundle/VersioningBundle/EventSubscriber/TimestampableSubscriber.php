@@ -5,8 +5,8 @@ namespace Akeneo\Tool\Bundle\VersioningBundle\EventSubscriber;
 use Akeneo\Tool\Component\Versioning\Model\TimestampableInterface;
 use Akeneo\Tool\Component\Versioning\Model\Version;
 use Doctrine\Common\EventSubscriber;
-use Doctrine\Common\Persistence\Event\LifecycleEventArgs;
 use Doctrine\ORM\EntityManagerInterface;
+use Doctrine\Persistence\Event\LifecycleEventArgs;
 
 /**
  * Updates the updated date of versioned objects
@@ -38,9 +38,6 @@ class TimestampableSubscriber implements EventSubscriber
         return ['prePersist'];
     }
 
-    /**
-     * @param LifecycleEventArgs $args
-     */
     public function prePersist(LifecycleEventArgs $args)
     {
         $version = $args->getObject();

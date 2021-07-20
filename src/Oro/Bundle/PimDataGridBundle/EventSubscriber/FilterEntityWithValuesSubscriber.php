@@ -7,7 +7,7 @@ namespace Oro\Bundle\PimDataGridBundle\EventSubscriber;
 use Akeneo\Pim\Enrichment\Component\Product\Model\EntityWithFamilyInterface;
 use Akeneo\Pim\Enrichment\Component\Product\Model\EntityWithValuesInterface;
 use Doctrine\Common\EventSubscriber;
-use Doctrine\Common\Persistence\Event\LifecycleEventArgs;
+use Doctrine\ORM\Event\LifecycleEventArgs;
 use Doctrine\ORM\Events;
 
 /**
@@ -52,8 +52,6 @@ class FilterEntityWithValuesSubscriber implements EventSubscriber
     /**
      * Filter directly the real object values from the raw values field.
      * Should only be used in the datagrid context.
-     *
-     * @param LifecycleEventArgs $event
      */
     public function postLoad(LifecycleEventArgs $event): void
     {

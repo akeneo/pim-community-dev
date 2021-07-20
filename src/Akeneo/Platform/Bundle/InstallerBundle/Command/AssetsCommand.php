@@ -78,15 +78,17 @@ class AssetsCommand extends Command
     /**
      * {@inheritdoc}
      */
-    protected function execute(InputInterface $input, OutputInterface $output)
+    protected function execute(InputInterface $input, OutputInterface $output): int
     {
         $output->writeln('<info>Akeneo PIM assets</info>');
 
         $event = new GenericEvent();
-        $event->setArguments([
-            'clean'   => $input->getOption('clean'),
-            'symlink' => $input->getOption('symlink')
-        ]);
+        $event->setArguments(
+            [
+                'clean' => $input->getOption('clean'),
+                'symlink' => $input->getOption('symlink'),
+            ]
+        );
 
         $this->eventDispatcher->dispatch($event, InstallerEvents::PRE_ASSETS_DUMP);
 
@@ -94,7 +96,7 @@ class AssetsCommand extends Command
 
         if (true === $input->getOption('clean')) {
             try {
-                $this->cleanDirectories([$webDir.'bundles', $webDir.'css', $webDir.'js']);
+                $this->cleanDirectories([$webDir . 'bundles', $webDir . 'css', $webDir . 'js']);
             } catch (\Exception $e) {
                 $output->writeln(sprintf('<error>Error during PIM installation. %s</error>', $e->getMessage()));
                 $output->writeln('');
@@ -104,7 +106,7 @@ class AssetsCommand extends Command
         }
 
         $this->commandExecutor
-            ->runCommand('fos:js-routing:dump', ['--format' => 'json', '--target' => $webDir.'js/fos_js_routes.json'])
+            ->runCommand('fos:js-routing:dump', ['--format' => 'json', '--target' => $webDir . 'js/fos_js_routes.json'])
             ->runCommand('assets:install');
 
         $this->eventDispatcher->dispatch($event, InstallerEvents::POST_SYMFONY_ASSETS_DUMP);
@@ -118,7 +120,7 @@ class AssetsCommand extends Command
 
         $this->eventDispatcher->dispatch($event, InstallerEvents::POST_ASSETS_DUMP);
 
-        return $this;
+        return Command::SUCCESS;
     }
 
     /**
@@ -126,7 +128,7 @@ class AssetsCommand extends Command
      */
     protected function getWebDir()
     {
-        return $this->rootDir.'/../public/';
+        return $this->rootDir . '/../public/';
     }
 
     /**

@@ -9,7 +9,7 @@ use Symfony\Component\Console\Output\OutputInterface;
 /**
  * Dump a file called require-paths containing a list of required bundle paths
  *
- * @author Tamara Robichet <tamara.robichet@akeneo.com>
+ * @author    Tamara Robichet <tamara.robichet@akeneo.com>
  * @copyright 2017 Akeneo SAS (http://www.akeneo.com)
  * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
  */
@@ -58,16 +58,16 @@ class DumpRequirePathsCommand extends Command
         if (false === file_put_contents($mainConfigFilePath, $mainConfigContent)) {
             throw new \RuntimeException('Unable to write file ' . $mainConfigFilePath);
         }
+
+        return Command::SUCCESS;
     }
 
     /**
      * Collect an array of requirejs.yml paths for each bundle
-     * @param string $rootDir
-     * @return array
      */
-    protected function collectConfigPaths(string $rootDir)
+    protected function collectConfigPaths(string $rootDir): array
     {
-        $paths = array();
+        $paths = [];
         $rootDir = realpath($rootDir . '/../') . '/';
 
         foreach ($this->bundles as $bundle) {

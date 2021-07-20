@@ -6,7 +6,7 @@ use Akeneo\Pim\Enrichment\Component\Product\Factory\WriteValueCollectionFactory;
 use Akeneo\Pim\Enrichment\Component\Product\Model\EntityWithValuesInterface;
 use Akeneo\Tool\Component\StorageUtils\Model\StateUpdatedAware;
 use Doctrine\Common\EventSubscriber;
-use Doctrine\Common\Persistence\Event\LifecycleEventArgs;
+use Doctrine\ORM\Event\LifecycleEventArgs;
 use Doctrine\ORM\Events;
 
 /**
@@ -34,10 +34,10 @@ final class LoadEntityWithValuesSubscriber implements EventSubscriber
     /**
      * {@inheritdoc}
      */
-    public function getSubscribedEvents()
+    public function getSubscribedEvents(): array
     {
         return [
-            Events::postLoad
+            Events::postLoad,
         ];
     }
 
@@ -46,8 +46,6 @@ final class LoadEntityWithValuesSubscriber implements EventSubscriber
      *
      * For products, we also add the identifier as a regular value
      * so that it can be used in the product edit form transparently.
-     *
-     * @param LifecycleEventArgs $event
      */
     public function postLoad(LifecycleEventArgs $event)
     {

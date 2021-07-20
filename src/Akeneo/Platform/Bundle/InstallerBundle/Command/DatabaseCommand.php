@@ -7,7 +7,6 @@ use Akeneo\Platform\Bundle\InstallerBundle\Event\InstallerEvent;
 use Akeneo\Platform\Bundle\InstallerBundle\Event\InstallerEvents;
 use Akeneo\Platform\Bundle\InstallerBundle\FixtureLoader\FixtureJobLoader;
 use Akeneo\Tool\Bundle\ElasticsearchBundle\ClientRegistry;
-use Doctrine\Bundle\DoctrineBundle\Registry;
 use Doctrine\DBAL\Driver\Connection;
 use Doctrine\DBAL\Exception\ConnectionException;
 use Doctrine\ORM\EntityManagerInterface;
@@ -116,8 +115,7 @@ class DatabaseCommand extends Command
                 null,
                 InputOption::VALUE_NONE,
                 'Try to use an existing database if it already exists. Beware, the database data will still be deleted'
-            )
-        ;
+            );
     }
 
     /**
@@ -135,7 +133,7 @@ class DatabaseCommand extends Command
     /**
      * {@inheritdoc}
      */
-    protected function execute(InputInterface $input, OutputInterface $output)
+    protected function execute(InputInterface $input, OutputInterface $output): int
     {
         $output->writeln('<info>Prepare database schema</info>');
 
@@ -145,7 +143,10 @@ class DatabaseCommand extends Command
                 $this->connection->connect();
             }
             if ($input->getOption('doNotDropDatabase')) {
-                $this->commandExecutor->runCommand('doctrine:schema:drop', ['--force' => true, '--full-database' => true]);
+                $this->commandExecutor->runCommand(
+                    'doctrine:schema:drop',
+                    ['--force' => true, '--full-database' => true]
+                );
             } else {
                 $this->commandExecutor->runCommand('doctrine:database:drop', ['--force' => true]);
             }
@@ -193,9 +194,11 @@ class DatabaseCommand extends Command
             $this->loadFixturesStep($input, $output);
 
             $this->eventDispatcher->dispatch(
-                new InstallerEvent($this->commandExecutor, null, [
-                    'catalog' => $input->getOption('catalog')
-                ]),
+                new InstallerEvent(
+                    $this->commandExecutor, null, [
+                    'catalog' => $input->getOption('catalog'),
+                ]
+                ),
                 InstallerEvents::POST_LOAD_FIXTURES
             );
         }
@@ -205,7 +208,7 @@ class DatabaseCommand extends Command
 
         $this->setLatestKnownMigration($input);
 
-        return $this;
+        return Command::SUCCESS;
     }
 
     /**
@@ -228,8 +231,6 @@ class DatabaseCommand extends Command
     /**
      * Create tables not mapped to Doctrine entities
      *
-     * @param OutputInterface $output
-     *
      * @throws \Doctrine\DBAL\DBALException
      */
     protected function createNotMappedTables(OutputInterface $output)
@@ -251,7 +252,8 @@ class DatabaseCommand extends Command
         $this->connection->exec($configTableSql);
 
         $output->writeln('<info>Create messenger table</info>');
-        $messengerTableSql = "CREATE TABLE messenger_messages (
+        $messengerTableSql = "DROP TABLE IF EXISTS messenger_messages; 
+            CREATE TABLE messenger_messages (
                 `id` bigint(20) NOT NULL AUTO_INCREMENT,
                 `body` longtext COLLATE utf8mb4_unicode_ci NOT NULL,
                 `headers` longtext COLLATE utf8mb4_unicode_ci NOT NULL,
@@ -270,7 +272,7 @@ class DatabaseCommand extends Command
     /**
      * Step where fixtures are loaded
      *
-     * @param InputInterface  $input
+     * @param InputInterface $input
      * @param OutputInterface $output
      *
      * @return DatabaseCommand
@@ -293,16 +295,18 @@ class DatabaseCommand extends Command
         $jobInstances = $this->fixtureJobLoader->getLoadedJobInstances();
         foreach ($jobInstances as $jobInstance) {
             $params = [
-                'code'       => $jobInstance->getCode(),
+                'code' => $jobInstance->getCode(),
                 '--no-debug' => true,
-                '--no-log'   => true,
-                '-v'         => true,
+                '--no-log' => true,
+                '-v' => true,
             ];
 
             $this->eventDispatcher->dispatch(
-                new InstallerEvent($this->commandExecutor, $jobInstance->getCode(), [
-                    'catalog' => $catalog
-                ]),
+                new InstallerEvent(
+                    $this->commandExecutor, $jobInstance->getCode(), [
+                    'catalog' => $catalog,
+                ]
+                ),
                 InstallerEvents::PRE_LOAD_FIXTURE
             );
             if ($input->getOption('verbose')) {
@@ -315,14 +319,15 @@ class DatabaseCommand extends Command
             }
             $this->commandExecutor->runCommand('akeneo:batch:job', $params);
             $this->eventDispatcher->dispatch(
-                new InstallerEvent($this->commandExecutor, $jobInstance->getCode(), [
+                new InstallerEvent(
+                    $this->commandExecutor, $jobInstance->getCode(), [
                     'job_name' => $jobInstance->getJobName(),
-                ]),
+                ]
+                ),
                 InstallerEvents::POST_LOAD_FIXTURE
             );
         }
         $output->writeln('');
-
 
         $output->writeln('<info>Delete jobs for fixtures.</info>');
         $this->fixtureJobLoader->deleteJobInstances();
@@ -359,7 +364,9 @@ class DatabaseCommand extends Command
         $latestMigrationProcess->run();
 
         if ($latestMigrationProcess->getExitCode() !== 0) {
-            throw new \RuntimeException("Impossible to get the latest migration {$latestMigrationProcess->getErrorOutput()}");
+            throw new \RuntimeException(
+                "Impossible to get the latest migration {$latestMigrationProcess->getErrorOutput()}"
+            );
         }
 
         return $latestMigrationProcess->getOutput();

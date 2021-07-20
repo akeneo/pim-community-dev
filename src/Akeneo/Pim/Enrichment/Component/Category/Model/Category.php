@@ -6,6 +6,7 @@ use Akeneo\Tool\Component\Classification\Model\Category as BaseCategory;
 use Akeneo\Tool\Component\Localization\Model\TranslationInterface;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
+use Doctrine\ORM\PersistentCollection;
 use Gedmo\Mapping\Annotation as Gedmo;
 
 /**
@@ -19,24 +20,22 @@ use Gedmo\Mapping\Annotation as Gedmo;
 class Category extends BaseCategory implements CategoryInterface
 {
     /** @var Collection of ProductInterface */
-    protected ArrayCollection $products;
+    protected Collection $products;
 
     /** @var Collection of ProductModelInterface */
-    protected ArrayCollection $productModels;
+    protected Collection $productModels;
 
     /**
      * Used locale to override Translation listener's locale
      * this is not a mapped field of entity metadata, just a simple property
-     *
-     * @var string
      */
-    protected string $locale;
+    protected ?string $locale;
 
-    /** @var ArrayCollection of CategoryTranslation */
-    protected ArrayCollection $translations;
+    /** @var Collection of CategoryTranslation */
+    protected Collection $translations;
 
-    /** @var ArrayCollection of Channel */
-    protected ArrayCollection $channels;
+    /** @var Collection of Channel */
+    protected Collection $channels;
 
     /** @var \DateTime */
     protected $created;
