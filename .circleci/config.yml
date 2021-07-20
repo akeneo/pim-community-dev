@@ -187,6 +187,7 @@ jobs:
         <<: *envVarsDeployDev
       machine:
           image: ubuntu-2004:202010-01
+      working_directory: ~/project
       steps:
           - attach_workspace:
                 at: ~/
@@ -2527,7 +2528,6 @@ commands:
                           echo export CONNECTOR_BC_BRANCH=${CONNECTOR_BC_BRANCH} >> $BASH_ENV
           - run:
               name: BIG COMMERCE CONNECTOR - Checkout BigCommerce Connector
-              working_dir: ~/project
               command: |
                   mkdir -p tmp
                   echo ${CONNECTOR_BC_BRANCH}
