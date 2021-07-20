@@ -10,6 +10,10 @@
 
 - PIM-9969: Add queue to lazy load Reference Entity Records thumbnails
 
+## Bug fixes
+
+- PIM-9972: Half the selected published product are unpublished through mass action
+
 # 5.0.40 (2021-07-09)
 
 # 5.0.39 (2021-07-06)
