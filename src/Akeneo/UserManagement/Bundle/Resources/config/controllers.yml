@@ -50,10 +50,8 @@ services:
         class: 'Akeneo\UserManagement\Bundle\Controller\Rest\UserRoleController'
         arguments:
             - '@pim_user.repository.role'
-            - '@pim_connector.processor.normalization.user_role'
-            - '@pim_connector.array_converter.standard_to_flat.user_role'
             - '@pim_connector.array_converter.flat_to_standard.import.user_role'
-            - '@serializer'
+            - '@pim_user.normalizer.user_role'
             - '@pim_user.context.user'
             - '@pim_user.factory.role_with_permissions'
             - '@pim_user.updater.role_with_permissions'

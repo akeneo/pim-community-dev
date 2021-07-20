@@ -3,7 +3,6 @@
 namespace Akeneo\UserManagement\Bundle\Controller\Rest;
 
 use Akeneo\Tool\Component\Connector\ArrayConverter\ArrayConverterInterface;
-use Akeneo\Tool\Component\Connector\Processor\Normalization\Processor;
 use Akeneo\Tool\Component\StorageUtils\Factory\SimpleFactoryInterface;
 use Akeneo\Tool\Component\StorageUtils\Saver\BulkSaverInterface;
 use Akeneo\Tool\Component\StorageUtils\Updater\ObjectUpdaterInterface;
@@ -28,58 +27,28 @@ use Symfony\Component\Validator\Validator\ValidatorInterface;
  */
 class UserRoleController
 {
-    /** @var RoleRepository */
-    protected $roleRepository;
+    protected RoleRepository $roleRepository;
 
-    /** @var NormalizerInterface */
-    protected $normalizer;
+    protected UserContext $userContext;
 
-    /** @var UserContext */
-    protected $userContext;
-
-    /** @var BulkSaverInterface */
     private BulkSaverInterface $saver;
 
-    /**  @var SimpleFactoryInterface */
     private SimpleFactoryInterface $factory;
 
-    /** @var ObjectUpdaterInterface */
     private ObjectUpdaterInterface $updater;
 
-    /** @var ValidatorInterface */
     private ValidatorInterface $validator;
 
-    /** @var NormalizerInterface */
     private NormalizerInterface $constraintViolationNormalizer;
 
-    /**  @var NormalizerInterface */
-    private NormalizerInterface $basicNormalizer;
+    private NormalizerInterface $normalizer;
 
-    /** @var ArrayConverterInterface */
-    private ArrayConverterInterface $standardToFlatArrayConverter;
-
-    /** @var ArrayConverterInterface */
     private ArrayConverterInterface $flatToStandardArrayConverter;
 
-    /**
-     * @param RoleRepository $roleRepository
-     * @param Processor $normalizer
-     * @param ArrayConverterInterface $standardToFlatArrayConverter
-     * @param ArrayConverterInterface $flatToStandardArrayConverter
-     * @param NormalizerInterface $basicNormalizer
-     * @param UserContext $userContext
-     * @param SimpleFactoryInterface $factory
-     * @param ObjectUpdaterInterface $updater
-     * @param BulkSaverInterface $saver
-     * @param ValidatorInterface $validator
-     * @param NormalizerInterface $constraintViolationNormalizer
-     */
     public function __construct(
         RoleRepository $roleRepository,
-        Processor $normalizer,
-        ArrayConverterInterface $standardToFlatArrayConverter,
         ArrayConverterInterface $flatToStandardArrayConverter,
-        NormalizerInterface $basicNormalizer,
+        NormalizerInterface $normalizer,
         UserContext $userContext,
         SimpleFactoryInterface $factory,
         ObjectUpdaterInterface $updater,
@@ -89,10 +58,8 @@ class UserRoleController
 
     ) {
         $this->roleRepository = $roleRepository;
-        $this->normalizer = $normalizer;
-        $this->standardToFlatArrayConverter = $standardToFlatArrayConverter;
         $this->flatToStandardArrayConverter = $flatToStandardArrayConverter;
-        $this->basicNormalizer = $basicNormalizer;
+        $this->normalizer = $normalizer;
         $this->userContext = $userContext;
         $this->factory = $factory;
         $this->updater = $updater;
@@ -135,31 +102,25 @@ class UserRoleController
 
         $userRole = $this->roleRepository->findOneByIdentifier($userRole->role()->getRole());
 
-        return new JsonResponse($this->standardToFlatArrayConverter->convert($this->normalizer->process($userRole)));
+        return new JsonResponse($this->normalizer->normalize($userRole, 'flat'));
     }
 
     /**
-     * @param int $identifier
      * @AclAncestor("pim_user_role_edit")
-     * @return JsonResponse
      */
     public function getAction(int $identifier): JsonResponse
     {
         $userRole = $this->getUserRoleOr404($identifier);
 
-        return new JsonResponse($this->standardToFlatArrayConverter->convert($this->normalizer->process($userRole)));
+        return new JsonResponse($this->normalizer->normalize($userRole, 'flat'));
     }
 
-
-    /**
-     * @return JsonResponse
-     */
     public function indexAction()
     {
         $queryBuildder = $this->roleRepository->getAllButAnonymousQB();
         $roles = $queryBuildder->getQuery()->execute();
 
-        return new JsonResponse($this->basicNormalizer->normalize(
+        return new JsonResponse($this->normalizer->normalize(
             $roles,
             'internal_api',
             $this->userContext->toArray()

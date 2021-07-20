@@ -29,5 +29,6 @@ services:
         arguments:
             - '@oro_security.acl.manager'
             - '@oro_security.normalizer.acl_privilege'
+            - '@pim_connector.array_converter.standard_to_flat.user_role'
         tags:
             - { name: pim_standard_format_serializer.normalizer }

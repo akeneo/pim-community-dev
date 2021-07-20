@@ -3,6 +3,8 @@ declare(strict_types=1);
 
 namespace Akeneo\UserManagement\Component\Normalizer;
 
+use Akeneo\Tool\Component\Connector\ArrayConverter\ArrayConverterInterface;
+use Akeneo\Tool\Component\Connector\Processor\Normalization\Processor;
 use Akeneo\UserManagement\Component\Model\RoleInterface;
 use Oro\Bundle\SecurityBundle\Acl\AccessLevel;
 use Oro\Bundle\SecurityBundle\Acl\Persistence\AclManager;
@@ -19,16 +21,22 @@ final class RoleNormalizer implements NormalizerInterface, CacheableSupportsMeth
 {
     private const ACL_EXTENSION_KEY = 'action';
 
-    private array $supportedFormats = ['array', 'standard'];
+    private array $supportedFormats = ['array', 'standard', 'flat'];
 
     private AclManager $aclManager;
     private NormalizerInterface $aclPrivilegeNormalizer;
     private ?array $cacheIndexedAclIds = null;
+    private ArrayConverterInterface $standardToFlatArrayConverter;
 
-    public function __construct(AclManager $aclManager, NormalizerInterface $aclPrivilegeNormalizer)
+    public function __construct(
+        AclManager $aclManager,
+        NormalizerInterface $aclPrivilegeNormalizer,
+        ArrayConverterInterface $standardToFlatArrayConverter
+    )
     {
         $this->aclManager = $aclManager;
         $this->aclPrivilegeNormalizer = $aclPrivilegeNormalizer;
+        $this->standardToFlatArrayConverter = $standardToFlatArrayConverter;
     }
 
     /**
@@ -60,11 +68,13 @@ final class RoleNormalizer implements NormalizerInterface, CacheableSupportsMeth
             }
         }
 
-        return [
+        $result = [
             'role' => $role->getRole(),
             'label' => $role->getLabel(),
             'permissions' => $permissions,
         ];
+
+        return 'flat' === $format ? $this->standardToFlatArrayConverter->convert($result) : $result;
     }
 
     /**

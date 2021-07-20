@@ -2,9 +2,8 @@
 
 namespace Akeneo\UserManagement\Bundle\Controller\Rest;
 
-use Akeneo\Tool\Component\Connector\Processor\Denormalization\AbstractProcessor;
 use Akeneo\Tool\Component\StorageUtils\Factory\SimpleFactoryInterface;
-use Akeneo\Tool\Component\StorageUtils\Saver\BulkSaverInterface;
+use Akeneo\Tool\Component\StorageUtils\Saver\SaverInterface;
 use Akeneo\Tool\Component\StorageUtils\Updater\ObjectUpdaterInterface;
 use Akeneo\UserManagement\Bundle\Context\UserContext;
 use Akeneo\UserManagement\Bundle\Doctrine\ORM\Repository\GroupRepository;
@@ -28,46 +27,29 @@ use Oro\Bundle\SecurityBundle\Annotation\AclAncestor;
  */
 class UserGroupController
 {
-    /** @var GroupRepository */
-    protected $groupRepository;
-    /** @var NormalizerInterface */
-    protected $normalizer;
+    protected GroupRepository $groupRepository;
 
-    /** @var UserContext */
-    protected $userContext;
+    protected NormalizerInterface $normalizer;
 
-    /** @var BulkSaverInterface */
-    private BulkSaverInterface $saver;
+    protected UserContext $userContext;
 
-    /**  @var SimpleFactoryInterface */
+    private SaverInterface $saver;
+
     private SimpleFactoryInterface $factory;
 
-    /** @var ObjectUpdaterInterface */
     private ObjectUpdaterInterface $updater;
 
-    /** @var ValidatorInterface */
     private ValidatorInterface $validator;
 
-    /** @var NormalizerInterface */
     private NormalizerInterface $constraintViolationNormalizer;
 
-    /**
-     * @param GroupRepository $groupRepository
-     * @param NormalizerInterface $normalizer
-     * @param UserContext $userContext
-     * @param SimpleFactoryInterface $factory
-     * @param ObjectUpdaterInterface $updater
-     * @param BulkSaverInterface $saver
-     * @param ValidatorInterface $validator
-     * @param NormalizerInterface $constraintViolationNormalizer
-     */
     public function __construct(
         GroupRepository $groupRepository,
         NormalizerInterface $normalizer,
         UserContext $userContext,
         SimpleFactoryInterface $factory,
         ObjectUpdaterInterface $updater,
-        BulkSaverInterface $saver,
+        SaverInterface $saver,
         ValidatorInterface $validator,
         NormalizerInterface $constraintViolationNormalizer
     )
@@ -116,9 +98,7 @@ class UserGroupController
     }
 
     /**
-     * @param int $identifier
      * @AclAncestor("pim_user_group_edit")
-     * @return JsonResponse
      */
     public function getAction(int $identifier): JsonResponse
     {
@@ -152,13 +132,13 @@ class UserGroupController
      * @param $identifier
      * @return Group
      */
-    private function getUserGroupOr404($identifier):Group
+    private function getUserGroupOr404($identifier): Group
     {
         $userGroup = $this->groupRepository->findOneBy(['id' => $identifier]);
 
         if (null === $userGroup) {
             throw new NotFoundHttpException(
-                sprintf('User Group with id "%s" not found', $identifier)
+                sprintf('The "%s" user group is not found', $identifier)
             );
         }
 
