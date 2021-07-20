@@ -22,7 +22,19 @@ define([
   'pim/fetcher-registry',
   'pim/form-builder',
   'oro/mediator',
-], function ($, _, __, Backbone, BaseForm, template, initSelect2, DatagridState, FetcherRegistry, FormBuilder, mediator) {
+], function (
+  $,
+  _,
+  __,
+  Backbone,
+  BaseForm,
+  template,
+  initSelect2,
+  DatagridState,
+  FetcherRegistry,
+  FormBuilder,
+  mediator
+) {
   return BaseForm.extend({
     template: _.template(template),
     resultsPerPage: 20,

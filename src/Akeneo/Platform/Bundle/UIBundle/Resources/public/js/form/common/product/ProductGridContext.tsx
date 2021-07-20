@@ -1,10 +1,10 @@
 import React from 'react';
-import styled from "styled-components";
-import {useTranslate} from "@akeneo-pim-community/shared";
+import styled from 'styled-components';
+import {useTranslate} from '@akeneo-pim-community/shared';
 
 type Props = {
-  type: string,
-  children: string
+  type: string;
+  children: string;
 };
 
 const ProductGridContext = ({type, children}: Props) => {
@@ -12,17 +12,21 @@ const ProductGridContext = ({type, children}: Props) => {
 
   return (
     <ContextContainer>
-      {children} {type === 'public' ? `(${translate('pim_common.public_view')})` : null}
+      <ViewNameContainer>{children}</ViewNameContainer>{' '}
+      {type === 'public' || type === 'view' ? `(${translate('pim_common.public_view')})` : null}
     </ContextContainer>
   );
-}
+};
 
 const ContextContainer = styled.div`
-  color: rgb(17, 50, 77);
   font-size: 17px;
   font-weight: normal;
   height: 21px;
   width: 358px;
+`;
+
+const ViewNameContainer = styled.span`
+  color: rgb(17, 50, 77);
 `;
 
 export {ProductGridContext};
