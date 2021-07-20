@@ -16,7 +16,7 @@ const NewCategoryModal: FC<NewCategoryModalProps> = ({closeModal, onCreate, pare
   const [newCategoryLabel, setNewCategoryLabel] = useState('');
   const notify = useNotify();
   const [validationErrors, setValidationErrors] = useState<ValidationErrors>({});
-  const locale = useUserContext().get('uiLocale');
+  const locale = useUserContext().get('catalogLocale');
 
   const codeFieldRef = useRef<HTMLInputElement | null>(null);
   useAutoFocus(codeFieldRef);
