@@ -19,14 +19,19 @@ const ProductGridContext = ({type, children}: Props) => {
 };
 
 const ContextContainer = styled.div`
+  display: flex;
   font-size: 17px;
   font-weight: normal;
   height: 21px;
-  width: 358px;
 `;
 
 const ViewNameContainer = styled.span`
   color: rgb(17, 50, 77);
+  max-width: 650px;
+  padding-right: 4px;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
 `;
 
 export {ProductGridContext};
