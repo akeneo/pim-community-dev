@@ -19,6 +19,11 @@ services:
         arguments:
             - '@database_connection'
 
+    akeneo_assetmanager.infrastructure.persistence.query.enrich.get_file_info_public_api:
+        class: 'Akeneo\AssetManager\Infrastructure\PublicApi\Enrich\SqlGetFileInfo'
+        arguments:
+            - '@database_connection'
+
     # Enrichment > Reference entities
     pimee.asset_manager.enrichment.product.get_products_linked_to_an_asset_action:
         class: Akeneo\Pim\Enrichment\AssetManager\Component\Controller\Product\GetProductsLinkedToAnAssetAction

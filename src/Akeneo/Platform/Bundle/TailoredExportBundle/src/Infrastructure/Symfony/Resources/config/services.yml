@@ -20,4 +20,6 @@ services:
             - '@Akeneo\Platform\TailoredExport\Application\Query\Selection\SelectionHandler'
 
     Akeneo\Platform\TailoredExport\Application\MediaToExportExtractor:
+        arguments:
+            - '@akeneo_assetmanager.infrastructure.persistence.query.enrich.get_file_info_public_api'
         public: false

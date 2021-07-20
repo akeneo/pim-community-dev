@@ -23,7 +23,11 @@ class AssetCollectionCodeSelectionHandlerSpec extends ObjectBehavior
 {
     public function it_applies_the_selection()
     {
-        $selection = new AssetCollectionCodeSelection('/');
+        $selection = new AssetCollectionCodeSelection(
+            '/',
+            'packshot',
+            'foo_attribute_code'
+        );
         $value = new AssetCollectionValue(['asset_family_code1', 'asset_family_code2', 'asset_family_code...']);
 
         $this->applySelection($selection, $value)
@@ -42,7 +46,11 @@ class AssetCollectionCodeSelectionHandlerSpec extends ObjectBehavior
 
     public function it_supports_asset_collection_code_selection_with_asset_collection_value()
     {
-        $selection = new AssetCollectionCodeSelection('/');
+        $selection = new AssetCollectionCodeSelection(
+            '/',
+            'packshot',
+            'foo_attribute_code'
+        );
         $value = new AssetCollectionValue([]);
 
         $this->supports($selection, $value)->shouldReturn(true);

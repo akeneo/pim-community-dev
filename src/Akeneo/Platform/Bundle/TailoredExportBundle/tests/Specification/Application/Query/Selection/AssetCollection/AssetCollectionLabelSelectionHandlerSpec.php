@@ -32,7 +32,8 @@ class AssetCollectionLabelSelectionHandlerSpec extends ObjectBehavior
         $selection = new AssetCollectionLabelSelection(
             '/',
             'fr_FR',
-            'an_asset_family_code'
+            'an_asset_family_code',
+            'foo_attribute_code'
         );
         $value = new AssetCollectionValue(['asset_code1', 'asset_code2', 'asset_code...']);
 
@@ -64,7 +65,8 @@ class AssetCollectionLabelSelectionHandlerSpec extends ObjectBehavior
         $selection = new AssetCollectionLabelSelection(
             '/',
             'fr_FR',
-            'an_asset_family_code'
+            'an_asset_family_code',
+            'foo_attribute_code'
         );
         $value = new AssetCollectionValue([]);
 
