@@ -14,11 +14,15 @@ type TableStructureTabConfig = {
   activeForTypes: AttributeType[];
 };
 
+type Violation = {global: boolean; message: string; path: string};
+
 class TableStructureTab extends (BaseView as {new (options: {config: TableStructureTabConfig}): any}) {
   private config: TableStructureTabConfig;
+  private violations: Violation[];
 
   initialize(options: {config: TableStructureTabConfig}): void {
     this.config = options.config;
+    this.violations = [];
 
     BaseView.prototype.initialize.apply(this, options);
   }
@@ -29,9 +33,41 @@ class TableStructureTab extends (BaseView as {new (options: {config: TableStruct
         code: this.code,
         label: translate(this.config.label),
       });
+
+      this.listenTo(this.getRoot(), 'pim_enrich:form:entity:bad_request', this.onBadRequest.bind(this));
+      this.listenTo(this.getRoot(), 'pim_enrich:form:entity:pre_save', this.removeErrors.bind(this));
     }
 
     return super.configure();
+  }
+
+  removeErrors(): void {
+    if (this.violations.length) {
+      this.getRoot().trigger('pim_enrich:form:form-tabs:remove-error', this.code);
+    }
+    this.violations = [];
+  }
+
+  onBadRequest(event: {response: Violation[]}): void {
+    this.violations = event.response;
+
+    /** Possible paths:
+     * - 'table_configuration' (error on column count)
+     * - 'raw_table_configuration' (error on duplicate code)
+     * - 'raw_table_configuration[2][validations]' (error on a validation field)
+     */
+    const isATableConfigurationViolation: (path: string) => boolean = path => {
+      if (path === 'table_configuration') return true;
+      if (path === 'raw_table_configuration') return true;
+      if (/^raw_table_configuration/.exec(path)) return true;
+
+      return false;
+    };
+
+    if (event.response.some(violation => isATableConfigurationViolation(violation.path))) {
+      this.getRoot().trigger('pim_enrich:form:form-tabs:add-error', this.code);
+      this.getRoot().trigger('pim_enrich:form:form-tabs:change', this.code);
+    }
   }
 
   handleChange(tableConfiguration: TableConfiguration): void {
