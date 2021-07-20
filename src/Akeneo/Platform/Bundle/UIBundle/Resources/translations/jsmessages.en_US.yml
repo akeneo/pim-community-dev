@@ -248,6 +248,8 @@ pim_common:
     family: Family
     parent: Parent
     groups: Groups
+    products: Products
+    product_models: Product models
     more: More
     public_view: Public view
 
