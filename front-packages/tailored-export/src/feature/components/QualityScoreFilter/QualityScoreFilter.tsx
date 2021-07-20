@@ -77,10 +77,7 @@ const QualityScoreFilter = ({availableOperators, filter, onChange, validationErr
       const newFilter = {
         ...filter,
         operator: 'IN AT LEAST ONE LOCALE',
-        value: newQualityScores.map((qualityScore: string) => {
-          const res = AVAILABLE_QUALITY_SCORES.indexOf(qualityScore) + 1;
-          return res;
-        }),
+        value: newQualityScores.map((qualityScore: string) => AVAILABLE_QUALITY_SCORES.indexOf(qualityScore) + 1),
         context: {
           locales: newLocales,
           scope: newScope,
