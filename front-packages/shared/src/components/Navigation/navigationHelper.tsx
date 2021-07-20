@@ -64,6 +64,15 @@ const aMainNavigation = (): NavigationEntry[] => {
       icon: <CardIcon/>,
       subNavigations: [],
       isLandingSectionPage: true,
+    },
+    {
+      code: 'entry3',
+      title: 'Entry 3',
+      route: 'entry3_route',
+      icon: <CardIcon/>,
+      subNavigations: [],
+      isLandingSectionPage: false,
+      disabled: true
     }
   ];
 };

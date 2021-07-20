@@ -20,9 +20,9 @@ type Props = {
   entries: NavigationEntry[];
   activeEntryCode: string | null;
   activeSubEntryCode: string | null;
-  freeTrialEnabled: boolean;
+  freeTrialEnabled?: boolean;
 };
-const PimNavigation: FC<Props> = ({entries, activeEntryCode, activeSubEntryCode, freeTrialEnabled}) => {
+const PimNavigation: FC<Props> = ({entries, activeEntryCode, activeSubEntryCode, freeTrialEnabled = false}) => {
   const translate = useTranslate();
   const router = useRouter();
 
@@ -88,7 +88,7 @@ const PimNavigation: FC<Props> = ({entries, activeEntryCode, activeSubEntryCode,
             >
               {translate(entry.title)}
               {entry.disabled && freeTrialEnabled && (
-                <LockIconContainer>
+                <LockIconContainer data-testid="locked-entry">
                   <StyledTag tint="blue">
                     <StyledLockIcon size={16} color={'#5992c7'} />
                   </StyledTag>
