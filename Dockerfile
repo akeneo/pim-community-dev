@@ -69,8 +69,36 @@ RUN echo 'APT::Install-Recommends "0" ; APT::Install-Suggests "0" ;' > /etc/apt/
 RUN sed -i '/<!-- <policy domain="module" rights="none" pattern="{PS,PDF,XPS}" \/> -->/c\  <policy domain="module" rights="read|write" pattern="{PS,PDF,XPS}" \/>' /etc/ImageMagick-6/policy.xml
 RUN sed -i '/<policy domain="coder" rights="none" pattern="PDF" \/>/c\  <policy domain="coder" rights="read|write" pattern="PDF" \/>' /etc/ImageMagick-6/policy.xml
 
+# Temporary commands for grpc and protobuf until https://github.com/oerdnj/deb.sury.org/issues/1622 is not solved
+#   Bonus: if the versionned compiled extensions are no longer compatible with the PHP version
+#          you can compile and push to versionning newly compiled extensions thanks to this
+#          helper command: ./docker/compile_grpc_and_protobuf_pecl_extensions.sh
+COPY docker/build/grpc.tar.gz /tmp/grpc.tar.gz
+RUN tar xzf /tmp/grpc.tar.gz -C `php -r 'echo ini_get("extension_dir");'` && rm /tmp/grpc.tar.gz
+COPY docker/build/grpc.ini /etc/php/7.4/cli/conf.d/99-grpc.ini
+COPY docker/build/grpc.ini /etc/php/7.4/fpm/conf.d/99-grpc.ini
+
+COPY docker/build/protobuf.tar.gz /tmp/protobuf.tar.gz
+RUN tar xzf /tmp/protobuf.tar.gz -C `php -r 'echo ini_get("extension_dir");'` && rm /tmp/protobuf.tar.gz
+COPY docker/build/protobuf.ini /etc/php/7.4/cli/conf.d/99-protobuf.ini
+COPY docker/build/protobuf.ini /etc/php/7.4/fpm/conf.d/99-protobuf.ini
+# end of temporary commands
+
 COPY docker/php.ini /etc/php/7.4/cli/conf.d/99-akeneo.ini
 COPY docker/php.ini /etc/php/7.4/fpm/conf.d/99-akeneo.ini
+
+#
+# Temporary stage to compile grpc and protobuf extension
+#
+
+FROM base as compile-extensions
+
+RUN apt-get update && \
+    apt-get --yes install build-essential make autoconf zlib1g-dev php7.4-dev php-pear && \
+    pecl install grpc protobuf && \
+    strip --strip-debug /usr/lib/php/*/grpc.so && \
+    apt-get clean && \
+    rm -rf /var/lib/apt/lists/*
 
 #
 # Image used for development
