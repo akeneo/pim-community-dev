@@ -74,6 +74,7 @@ pim_enrich:
       quick_export:
         launched_flash: The job exporting products is currently running
 category:
+  create: Create a category
   edit: Edit category
   overview: Categories
 tree:
