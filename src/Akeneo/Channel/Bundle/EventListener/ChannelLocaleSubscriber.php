@@ -7,6 +7,7 @@ namespace Akeneo\Channel\Bundle\EventListener;
 use Akeneo\Channel\Component\Model\ChannelInterface;
 use Akeneo\Channel\Component\Model\LocaleInterface;
 use Akeneo\Channel\Component\Repository\LocaleRepositoryInterface;
+use Akeneo\Tool\Component\Console\CommandLauncher;
 use Akeneo\Tool\Bundle\BatchBundle\Launcher\JobLauncherInterface;
 use Akeneo\Tool\Component\StorageUtils\Repository\IdentifiableObjectRepositoryInterface;
 use Akeneo\Tool\Component\StorageUtils\Saver\BulkSaverInterface;
@@ -30,30 +31,39 @@ class ChannelLocaleSubscriber implements EventSubscriberInterface
     /** @var BulkSaverInterface */
     protected $saver;
 
-    /** @var JobLauncherInterface */
-    private $jobLauncher;
+    /** @var CommandLauncher */
+    protected $commandLauncher;
 
     /** @var TokenStorageInterface */
     protected $tokenStorage;
 
-    /** @var string */
+    /** @var JobLauncherInterface | null*/
+    private $jobLauncher;
+
+    /** @var string | null */
     private $jobName;
 
-    /** @var IdentifiableObjectRepositoryInterface */
+    /** @var IdentifiableObjectRepositoryInterface | null */
     private $jobInstanceRepository;
 
+    /**
+     * TODO On merge master remove $commandLauncher
+     * @see https://akeneo.atlassian.net/browse/PIM-9738
+     */
     public function __construct(
         LocaleRepositoryInterface $repository,
         BulkSaverInterface $saver,
-        JobLauncherInterface $jobLauncher,
+        CommandLauncher $commandLauncher,
         TokenStorageInterface $tokenStorage,
-        IdentifiableObjectRepositoryInterface $jobInstanceRepository,
-        string $jobName
+        JobLauncherInterface $jobLauncher = null,
+        IdentifiableObjectRepositoryInterface $jobInstanceRepository = null,
+        string $jobName = null
     ) {
         $this->repository = $repository;
         $this->saver = $saver;
-        $this->jobLauncher = $jobLauncher;
+        $this->commandLauncher = $commandLauncher;
         $this->tokenStorage = $tokenStorage;
+        $this->jobLauncher = $jobLauncher;
         $this->jobInstanceRepository = $jobInstanceRepository;
         $this->jobName = $jobName;
     }
@@ -139,6 +149,15 @@ class ChannelLocaleSubscriber implements EventSubscriberInterface
 
     private function removeCompletenessForChannelAndLocales(array $localesCodes, string $channelCode): void
     {
+        if ($this->jobLauncher === null || $this->jobInstanceRepository === null || $this->jobName === null ) {
+            $this->launchCommand($localesCodes, $channelCode);
+        } else {
+            $this->launchJob($localesCodes, $channelCode);
+        }
+    }
+
+    private function launchJob(array $localesCodes, string $channelCode): void
+    {
         $user = $this->tokenStorage->getToken()->getUser();
         $jobInstance = $this->jobInstanceRepository->findOneByIdentifier($this->jobName);
 
@@ -151,5 +170,17 @@ class ChannelLocaleSubscriber implements EventSubscriberInterface
                 'username' => $user->getUsername(),
             ]
         );
+    }
+
+    private function launchCommand(array $localesCodes, string $channelCode): void
+    {
+        $cmd = sprintf(
+            'pim:catalog:remove-completeness-for-channel-and-locale %s %s %s',
+            $channelCode,
+            implode(',', $localesCodes),
+            $this->tokenStorage->getToken()->getUsername()
+        );
+
+        $this->commandLauncher->executeBackground($cmd);
     }
 }
