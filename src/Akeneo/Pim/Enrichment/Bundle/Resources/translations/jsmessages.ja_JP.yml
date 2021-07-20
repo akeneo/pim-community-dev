@@ -61,6 +61,7 @@ pim_enrich.entity.product:
     history:
       version: バージョン
       author: 作成者
+      logged_at: 日付/時間
       from: 開始
       modified: 修正
       old_value: 以前の値

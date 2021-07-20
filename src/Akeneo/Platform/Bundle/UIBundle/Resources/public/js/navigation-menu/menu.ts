@@ -29,6 +29,7 @@ type EntryView = View & {
     isLandingSectionPage?: boolean;
     tab?: string;
     icon: string;
+    align?: string;
     disabled?: boolean;
   };
   items: SubEntry[];
@@ -76,7 +77,7 @@ class Menu extends BaseForm {
     return super.configure();
   }
 
-  /**
+  /**is
    * {@inheritdoc}
    */
   render() {
@@ -125,7 +126,7 @@ class Menu extends BaseForm {
         );
       })
       .map((extension: EntryView) => {
-        const {title, isLandingSectionPage, icon} = extension.config;
+        const {title, isLandingSectionPage, icon, align} = extension.config;
 
         return {
           code: extension.code,
@@ -136,6 +137,7 @@ class Menu extends BaseForm {
           icon: React.createElement(DSM[icon] ? DSM[icon] : 'span'),
           subNavigations: this.findMainEntrySubNavigations(extension.code),
           isLandingSectionPage: isLandingSectionPage ?? false,
+          align: align,
         };
       });
   }

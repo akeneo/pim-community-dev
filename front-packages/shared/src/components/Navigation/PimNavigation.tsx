@@ -13,6 +13,7 @@ type NavigationEntry = {
   icon: React.ReactElement<IconProps>;
   subNavigations: SubNavigationType[];
   isLandingSectionPage: boolean;
+  align?: string;
 };
 
 type Props = {
@@ -43,6 +44,26 @@ const PimNavigation: FC<Props> = ({entries, activeEntryCode, activeSubEntryCode,
     return;
   }, [activeNavigationEntry, activeSubEntryCode]);
 
+  const getMainNavigationItemStyles = (entry: NavigationEntry) => {
+    let styles = {};
+
+    if (entry.align === 'bottom') {
+      styles = {
+        ...styles,
+        {position: 'absolute', bottom: '0'},
+      }
+    }
+
+    if (entry.disabled && freeTrialEnabled) {
+      styles = {
+        ...styles,
+      {cursor: 'pointer'},
+      }
+    }
+
+    return styles;
+  }
+
   return (
     <NavContainer aria-label="Main navigation">
       <MainNavContainer>
@@ -60,7 +81,7 @@ const PimNavigation: FC<Props> = ({entries, activeEntryCode, activeSubEntryCode,
               role='menuitem'
               data-testid='pim-main-menu-item'
               className={entry.code === activeEntryCode ? 'active' : undefined}
-              style={entry.disabled && freeTrialEnabled ? {cursor: 'pointer'} : {}}
+              style={getMainNavigationItemStyles(entry)}
             >
               {translate(entry.title)}
               {entry.disabled && freeTrialEnabled &&
@@ -143,7 +164,6 @@ const MenuContainer = styled.div`
   position: relative;
   height: 100%;
 `;
-
 const HelpContainer = styled.div`
   height: 80px;
   min-height: 80px;

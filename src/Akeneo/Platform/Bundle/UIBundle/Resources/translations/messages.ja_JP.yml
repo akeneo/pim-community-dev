@@ -75,6 +75,7 @@ pim_common:
   unit: ユニット
   yes: "はい"
   no: "いいえ"
+  association_types: 関連タイプ
 pim_enrich:
   #ACLs
   acl:
