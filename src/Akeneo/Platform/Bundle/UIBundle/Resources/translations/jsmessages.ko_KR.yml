@@ -237,6 +237,7 @@ pim_common:
   family: 패밀리
   parent: 상위
   groups: 그룹
+  products: 제품
   more: 더보기 
 error:
   exception: 죄송합니다! {{ status_code }} 오류가 발생했습니다...

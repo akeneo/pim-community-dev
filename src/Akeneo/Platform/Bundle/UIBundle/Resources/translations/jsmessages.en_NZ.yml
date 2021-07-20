@@ -212,6 +212,7 @@ pim_common:
     STARTS WITH: Starts with
     ENDS WITH: Ends with
   groups: Groups
+  products: Products
 error:
   exception: Oh snap! A {{ status_code }} error occurred...
   forbidden: Forbidden. You are not allowed to access this page
