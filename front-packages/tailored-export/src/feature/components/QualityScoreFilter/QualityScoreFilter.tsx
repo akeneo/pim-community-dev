@@ -16,16 +16,12 @@ import {ChannelDropdown} from '../ChannelDropdown';
 import {useChannels} from '../../hooks';
 import {LocalesSelector} from '../LocalesSelector';
 
-// For the margin-top/bottom, seen with Stephane until we have a better way
-// of displaying dynamic/multi-lines fields
 const Container = styled.div`
   display: flex;
   flex-direction: column;
   gap: 15px;
   justify-content: space-between;
   width: 100%;
-  margin-top: 60px;
-  margin-bottom: 60px;
 `;
 
 type Filter = {
