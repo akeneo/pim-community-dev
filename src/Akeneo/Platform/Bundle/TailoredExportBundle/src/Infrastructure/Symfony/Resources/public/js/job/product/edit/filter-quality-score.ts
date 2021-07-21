@@ -5,11 +5,11 @@ import {pimTheme} from 'akeneo-design-system';
 import {DependenciesProvider} from '@akeneo-pim-community/legacy-bridge';
 import {AssociationType, Attribute, FetcherContext, QualityScoreFilter} from '@akeneo-pim-enterprise/tailored-export';
 import {Channel, filterErrors, ValidationError} from '@akeneo-pim-community/shared';
-const BaseQualityScoreFilter = require('pim/filter/filter');
+const BaseFilter = require('pim/filter/filter');
 const mediator = require('oro/mediator');
 const fetcherRegistry = require('pim/fetcher-registry');
 
-class FilterQualityScore extends BaseQualityScoreFilter {
+class FilterQualityScore extends BaseFilter {
   private validationErrors: ValidationError[] = [];
 
   /**
@@ -37,7 +37,7 @@ class FilterQualityScore extends BaseQualityScoreFilter {
       this.setValidationErrors(event.response.normalized_errors)
     );
 
-    return BaseQualityScoreFilter.prototype.configure.apply(this, arguments);
+    return BaseFilter.prototype.configure.apply(this, arguments);
   }
 
   setValidationErrors(validationErrors: ValidationError[]) {
@@ -46,6 +46,7 @@ class FilterQualityScore extends BaseQualityScoreFilter {
       this.postRender();
     }
   }
+
   /**
    * {@inheritdoc}
    */

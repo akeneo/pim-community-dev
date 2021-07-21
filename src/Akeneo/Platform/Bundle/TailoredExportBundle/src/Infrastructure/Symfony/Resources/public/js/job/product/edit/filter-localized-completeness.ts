@@ -6,11 +6,11 @@ import {pimTheme} from 'akeneo-design-system';
 import {DependenciesProvider} from '@akeneo-pim-community/legacy-bridge';
 import {AssociationType, Attribute, CompletenessFilter, FetcherContext} from '@akeneo-pim-enterprise/tailored-export';
 const __ = require('oro/translator');
+const mediator = require('oro/mediator');
 const BaseFilter = require('pim/filter/filter');
-const BaseCompletenessFilter = require('pim/filter/product/completeness');
 const fetcherRegistry = require('pim/fetcher-registry');
 
-class FilterLocalizedCompleteness extends BaseCompletenessFilter {
+class FilterLocalizedCompleteness extends BaseFilter {
   private validationErrors: ValidationError[] = [];
 
   /**
@@ -43,6 +43,23 @@ class FilterLocalizedCompleteness extends BaseCompletenessFilter {
     return BaseFilter.prototype.configure.apply(this, arguments);
   }
 
+  /**
+   * {@inheritdoc}
+   */
+  render() {
+    this.elements = {};
+    this.setEditable(true);
+
+    mediator.trigger('pim_enrich:form:filter:extension:add', {filter: this});
+
+    this.$el.html(this.renderInput());
+    this.renderElements();
+    this.postRender();
+    this.delegateEvents();
+
+    return this;
+  }
+
   setValidationErrors(validationErrors: ValidationError[]) {
     this.validationErrors = validationErrors;
     if (this.$('.completeness-filter-container').length > 0) {
@@ -51,21 +68,12 @@ class FilterLocalizedCompleteness extends BaseCompletenessFilter {
   }
 
   /**
-   * Override to prevent the modal handler being called on the base Category filter
-   */
-  openSelector() {}
-
-  /**
    * Returns rendered input.
    *
    * @return {String}
    */
   renderInput() {
-    return '<div class="completeness-filter-container" style="width: 100%;"></div>';
-  }
-
-  isEmpty() {
-    return false;
+    return '<div class="completeness-filter-container" style="width: 100%;margin-top: 60px;"></div>';
   }
 
   /**
@@ -86,30 +94,19 @@ class FilterLocalizedCompleteness extends BaseCompletenessFilter {
                 attribute: {
                   fetchByIdentifiers: (identifiers: string[]): Promise<Attribute[]> => {
                     return new Promise(resolve =>
-                      fetcherRegistry
-                        .getFetcher('attribute')
-                        .fetchByIdentifiers(identifiers)
-                        .then(resolve)
+                      fetcherRegistry.getFetcher('attribute').fetchByIdentifiers(identifiers).then(resolve)
                     );
                   },
                 },
                 channel: {
                   fetchAll: (): Promise<Channel[]> => {
-                    return new Promise(resolve =>
-                      fetcherRegistry
-                        .getFetcher('channel')
-                        .fetchAll()
-                        .then(resolve)
-                    );
+                    return new Promise(resolve => fetcherRegistry.getFetcher('channel').fetchAll().then(resolve));
                   },
                 },
                 associationType: {
                   fetchByCodes: (codes: string[]): Promise<AssociationType[]> => {
                     return new Promise(resolve =>
-                      fetcherRegistry
-                        .getFetcher('association-type')
-                        .fetchByIdentifiers(codes)
-                        .then(resolve)
+                      fetcherRegistry.getFetcher('association-type').fetchByIdentifiers(codes).then(resolve)
                     );
                   },
                 },
