@@ -33,7 +33,6 @@ class RemoveLocaleFromChannelEndToEnd extends InternalApiTestCase
     public function setUp(): void
     {
         parent::setUp();
-        static::bootKernel();
 
         $this->authenticate($this->createAdminUser());
         $this->validator = $this->get('validator');
