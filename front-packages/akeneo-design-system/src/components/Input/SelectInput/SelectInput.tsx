@@ -1,4 +1,4 @@
-import React, {ReactNode, useState, useRef, isValidElement, ReactElement} from 'react';
+import React, {ReactNode, useState, useRef, isValidElement, ReactElement, KeyboardEvent, useCallback} from 'react';
 import styled from 'styled-components';
 import {Key, Override} from '../../../shared';
 import {InputProps} from '../InputProps';
@@ -63,7 +63,8 @@ const OptionContainer = styled.div`
   line-height: 34px;
 
   &:focus {
-    color: ${getColor('grey', 120)};
+    background: ${getColor('grey', 20)};
+    color: ${getColor('brand', 140)};
   }
   &:hover {
     background: ${getColor('grey', 20)};
@@ -181,6 +182,8 @@ const SelectInput = ({
   const [searchValue, setSearchValue] = useState<string>('');
   const [dropdownIsOpen, openOverlay, closeOverlay] = useBooleanState();
   const inputRef = useRef<HTMLInputElement>(null);
+  const firstOptionRef = useRef<HTMLDivElement>(null);
+  const lastOptionRef = useRef<HTMLDivElement>(null);
 
   const validChildren = React.Children.toArray(children).filter((child): child is ReactElement<
     {value: string} & React.HTMLAttributes<HTMLSpanElement>
@@ -247,6 +250,50 @@ const SelectInput = ({
   useShortcut(Key.Enter, handleEnter, inputRef);
   useShortcut(Key.Escape, handleBlur, inputRef);
 
+  const handleInputKeyDown = useCallback((event: KeyboardEvent<HTMLInputElement>) => {
+    if (null !== event.currentTarget) {
+      if (event.key === Key.ArrowDown) {
+        firstOptionRef.current?.focus();
+        event.preventDefault();
+      } else if (event.key === Key.ArrowUp) {
+        lastOptionRef.current?.focus();
+        event.preventDefault();
+      }
+    }
+  }, []);
+
+  const handleOptionKeyDown = useCallback((event: KeyboardEvent<HTMLDivElement>) => {
+    if (null !== event.currentTarget) {
+      if (([Key.ArrowDown, Key.ArrowUp, Key.Enter] as string[]).includes(event.key)) {
+        if (event.key === Key.ArrowDown) {
+          const nextSibling = (event.currentTarget as HTMLElement).nextSibling as HTMLElement;
+          if (null === nextSibling) {
+            inputRef.current?.focus();
+          } else {
+            nextSibling.focus();
+          }
+          event.preventDefault();
+        }
+        if (event.key === Key.ArrowUp) {
+          const previousSibling = (event.currentTarget as HTMLElement).previousSibling as HTMLElement;
+          if (null === previousSibling) {
+            inputRef.current?.focus();
+          } else {
+            previousSibling.focus();
+          }
+          event.preventDefault();
+        }
+        if (event.key === Key.Enter) {
+          const value = (event.currentTarget.firstChild as HTMLElement)?.getAttribute('value') as string;
+          onChange?.(value);
+          handleBlur();
+        }
+      } else {
+        inputRef.current?.focus();
+      }
+    }
+  }, []);
+
   return (
     <SelectInputContainer readOnly={readOnly} value={value} {...rest}>
       <InputContainer>
@@ -263,6 +310,7 @@ const SelectInput = ({
           onChange={handleSearch}
           onFocus={handleFocus}
           aria-labelledby={ariaLabelledby}
+          onKeyDown={handleInputKeyDown}
         />
         {!readOnly && (
           <ActionContainer>
@@ -296,11 +344,27 @@ const SelectInput = ({
             {filteredChildren.length === 0 ? (
               <EmptyResultContainer>{emptyResultLabel}</EmptyResultContainer>
             ) : (
-              filteredChildren.map(child => {
+              filteredChildren.map((child, index) => {
                 const value = child.props.value;
+                let ref = undefined;
+                switch (index) {
+                  case 0:
+                    ref = firstOptionRef;
+                    break;
+                  case filteredChildren.length - 1:
+                    ref = lastOptionRef;
+                    break;
+                }
 
                 return (
-                  <OptionContainer key={value} onClick={handleOptionClick(value)}>
+                  <OptionContainer
+                    data-testid={value}
+                    key={value}
+                    onClick={handleOptionClick(value)}
+                    onKeyDown={handleOptionKeyDown}
+                    tabIndex={0}
+                    ref={ref}
+                  >
                     {React.cloneElement(child)}
                   </OptionContainer>
                 );

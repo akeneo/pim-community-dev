@@ -72,6 +72,7 @@ pim_common:
   groups: Groups
   yes: "Yes"
   no: "No"
+  association_types: Association types
 pim_enrich:
   #ACLs
   acl:

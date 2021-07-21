@@ -75,6 +75,7 @@ pim_common:
   unit: 단위
   yes: "예"
   no: "아니요"
+  association_types: 연결 유형
 pim_enrich:
   #ACLs
   acl:

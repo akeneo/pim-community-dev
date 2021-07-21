@@ -75,6 +75,7 @@ pim_common:
   unit: 单位
   yes: "是"
   no: "否　"
+  association_types: 关联类型
 pim_enrich:
   #ACLs
   acl:

@@ -38,6 +38,8 @@ product_model.family_variant.not_blank.message: 商品モデルのファミリ�
 "The {{ attribute_code }} attribute requires a date that should be {{ limit }} or before.": '{{ attribute_code }} 属性には {{ limit }} 以前の日付が必要です。'
 "The {{ attribute }} attribute requires a number, and the submitted {{ value }} value is not.": '{{ attribute }} 属性には数値が必要ですが、送信された {{ value }} 値は数値ではありません。'
 "The %attribute% attribute must not contain more than %limit% characters. The submitted value is too long.": '%attribute% 属性には %limit% 文字以上を含むことはできません。送信された値は長すぎます。'
+"The %type% file extension is not allowed for the %attribute% attribute. Allowed extensions are %extensions%.": '%type% ファイル拡張子はこの %attribute% 属性に対して許可されていません。許可されている拡張子は %extensions% です。'
+"The %attribute% attribute requires a url link.": '%attribute% 属性には URL リンクが必要です。'
 "The %attribute% attribute requires a valid date. Please use the following format %date_format% for dates.": '%attribute% 属性には有効な日付が必要です。日付には、次のフォーマット %date_format% を使用してください。'
 "The %locale% locale is not available on the %attribute% attribute.": '%locale% ロケールは %attribute% 属性で使用できません。'
 'The {{ attribute_code }} attribute must match the following regular expression: {{ pattern }}.': '{{ attribute_code }} 属性は次の正規表現に一致する必要があります: {{ pattern }}。'
@@ -49,6 +51,8 @@ product_model.family_variant.not_blank.message: 商品モデルのファミリ�
 'The %attribute% attribute requires an equal or greater than %min_value% value.': '%attribute% 属性には %min_value% 以上の値が必要です。'
 'The %attribute% attribute requires an equal or lesser than %max_value% value.': '%attribute% 属性には %max_value% 以下の値が必要です。'
 "The %attribute_code% attribute requires a value per channel. The %channel% channel (scope) must exist in your PIM": '%attribute_code% 属性にはチャンネルごとの値が必要です。%channel% チャンネル (スコープ) は PIM 内に存在する必要があります'
+"The %identifier% identifier is already used for another product.": '%identifier% 識別子は別の商品にすでに使用されています。'
+'Please specify a valid currency for the %attribute_code% attribute, the %currency_code% code was sent.': '%attribute_code% 属性に有効な通貨を指定してください。%currency_code% コー​​ドが送信されました。'
 pim_catalog:
   constraint:
     can_have_family_variant_empty_axis_value: 'この属性「%attribute%」は当該エンティティの主軸に定義済みであるため空にできません'
@@ -60,6 +64,7 @@ pim_catalog:
     attribute_does_not_belong_to_family: '属性「%attribute%」はファミリー「%family%」に属していません'
     variant_product_invalid_family: '商品バリエーションのファミリーは同じ上位に属する必要があります'
     php_int_max_reached: '最大数値は%php_int_max%より小さく指定してください'
+    not_null_family: '%sku% 識別子を持つ商品はバリエーション商品であるため、ファミリーは「null」にはできません。'
     variant_product_has_parent: '商品バリエーション「%variant_product%」は上位を持つ必要があります'
     invalid_variant_product_parent: '商品バリエーション「%variant_product%」は、商品モデル「%product_model%」を上位にすることはできません(この商品モデルは別の商品モデルを下位にすることのみ可能です)'
     modified_variant_axis_value: '軸のバリエーション「%variant_axis%」は変更できず、「%provided_value%」に固定されいます'
