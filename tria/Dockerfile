@@ -191,7 +191,7 @@ ARG COMPOSER_AUTH
 
 WORKDIR /srv/pim
 
-COPY tmp tmp
+COPY tria/tmp tmp
 
 # Build back
 WORKDIR /srv/pim/tmp/build-connector/back/
