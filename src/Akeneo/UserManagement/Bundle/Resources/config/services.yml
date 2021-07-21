@@ -22,7 +22,7 @@ services:
     pim_user.entity_with_image.subscriber:
         class: 'Akeneo\UserManagement\Bundle\EventListener\UploadedImageSubscriber'
         arguments:
-            - '%kernel.root_dir%'
+            - '%kernel.project_dir%/..'
         tags:
             - { name: doctrine.event_subscriber }
 

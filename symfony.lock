@@ -81,6 +81,9 @@
     "doctrine/dbal": {
         "version": "v2.7.2"
     },
+    "doctrine/deprecations": {
+        "version": "v0.5.3"
+    },
     "doctrine/doctrine-bundle": {
         "version": "1.6",
         "recipe": {
@@ -148,6 +151,9 @@
     "doctrine/reflection": {
         "version": "v1.0.0"
     },
+    "doctrine/sql-formatter": {
+        "version": "1.1.1"
+    },
     "dompdf/dompdf": {
         "version": "v0.6.2"
     },
@@ -171,6 +177,15 @@
     },
     "firebase/php-jwt": {
         "version": "v5.2.0"
+    },
+    "friends-of-behat/mink": {
+        "version": "v1.7.1"
+    },
+    "friends-of-behat/mink-browserkit-driver": {
+        "version": "v1.3.3"
+    },
+    "friends-of-behat/mink-extension": {
+        "version": "v2.5.0"
     },
     "friends-of-behat/symfony-extension": {
         "version": "2.0",
@@ -276,6 +291,12 @@
     },
     "justinrainbow/json-schema": {
         "version": "5.2.9"
+    },
+    "klapaudius/oauth-server-bundle": {
+        "version": "3.0.0"
+    },
+    "klapaudius/oauth2-php": {
+        "version": "1.4.0"
     },
     "laminas/laminas-code": {
         "version": "3.4.1"
@@ -571,6 +592,9 @@
     "symfony/acl-bundle": {
         "version": "v1.0.0"
     },
+    "symfony/amqp-messenger": {
+        "version": "v5.3.2"
+    },
     "symfony/asset": {
         "version": "v4.3.4"
     },
@@ -625,6 +649,9 @@
     },
     "symfony/doctrine-bridge": {
         "version": "v4.3.4"
+    },
+    "symfony/doctrine-messenger": {
+        "version": "v5.3.2"
     },
     "symfony/dom-crawler": {
         "version": "v4.3.4"
@@ -737,6 +764,9 @@
     "symfony/orm-pack": {
         "version": "v1.0.6"
     },
+    "symfony/password-hasher": {
+        "version": "v5.3.3"
+    },
     "symfony/polyfill-apcu": {
         "version": "v1.4.0"
     },
@@ -782,8 +812,14 @@
     "symfony/property-access": {
         "version": "v4.3.4"
     },
+    "symfony/property-info": {
+        "version": "v5.3.1"
+    },
     "symfony/proxy-manager-bridge": {
         "version": "v4.3.4"
+    },
+    "symfony/redis-messenger": {
+        "version": "v5.3.2"
     },
     "symfony/requirements-checker": {
         "version": "1.0",

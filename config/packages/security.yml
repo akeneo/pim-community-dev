@@ -26,13 +26,11 @@ security:
             pattern:                        ^/user/(login|reset-request|send-email|check-email)$
             provider:                       chain_provider
             anonymous:                      true
-            logout_on_user_change:          true
 
         reset_password:
             pattern:                        ^/user/reset/*
             provider:                       chain_provider
             anonymous:                      true
-            logout_on_user_change:          true
 
         oauth_token:
             pattern:                        ^/api/oauth/v1/token
@@ -64,7 +62,6 @@ security:
                 name:                       BAPRM
                 lifetime:                   1209600   # stay logged for two weeks
             anonymous:                      false
-            logout_on_user_change:          true
 
     access_control:
         - { path: ^/admin/, role: ROLE_ADMIN }
