@@ -6,11 +6,6 @@ namespace AkeneoTest\Pim\Enrichment\EndToEnd\Product\Product\ExternalApi;
 
 use Akeneo\Test\Integration\Configuration;
 use Akeneo\Tool\Bundle\ApiBundle\Stream\StreamResourceResponse;
-use Doctrine\Common\Collections\ArrayCollection;
-use Oro\Bundle\SecurityBundle\Acl\AccessLevel;
-use Oro\Bundle\SecurityBundle\Model\AclPermission;
-use Oro\Bundle\SecurityBundle\Model\AclPrivilege;
-use Oro\Bundle\SecurityBundle\Model\AclPrivilegeIdentity;
 use PHPUnit\Framework\Assert;
 use Symfony\Component\HttpFoundation\Response;
 
@@ -107,21 +102,7 @@ JSON;
 
     public function testAccessDeniedOnUpdateAPartialProductIfNoPermission()
     {
-        $client = $this->createAuthenticatedClient();
-
-        $aclManager = $this->get('oro_security.acl.manager');
-        $role = $this->get('pim_user.repository.role')->findOneByIdentifier('ROLE_ADMINISTRATOR');
-        $privilege = new AclPrivilege();
-        $identity = new AclPrivilegeIdentity('action:pim_api_product_edit');
-        $privilege
-            ->setIdentity($identity)
-            ->addPermission(new AclPermission('EXECUTE', AccessLevel::NONE_LEVEL));
-        $aclManager->getPrivilegeRepository()->savePrivileges(
-            $aclManager->getSid($role),
-            new ArrayCollection([$privilege])
-        );
-        $aclManager->flush();
-        $aclManager->clearCache();
+        $this->deletePermissionAcl('action:pim_api_product_edit');
 
         $data = <<<JSON
 {"line":1,"identifier":"product_family","status_code":204}

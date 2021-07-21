@@ -6,11 +6,6 @@ namespace AkeneoTest\Pim\Enrichment\EndToEnd\Product\Product\ExternalApi;
 
 use Akeneo\Test\Integration\Configuration;
 use AkeneoTest\Pim\Enrichment\Integration\Normalizer\NormalizedProductCleaner;
-use Doctrine\Common\Collections\ArrayCollection;
-use Oro\Bundle\SecurityBundle\Acl\AccessLevel;
-use Oro\Bundle\SecurityBundle\Model\AclPermission;
-use Oro\Bundle\SecurityBundle\Model\AclPrivilege;
-use Oro\Bundle\SecurityBundle\Model\AclPrivilegeIdentity;
 use Symfony\Component\HttpFoundation\Response;
 
 /**
@@ -320,20 +315,7 @@ class GetProductEndToEnd extends AbstractProductTestCase
         ]);
 
         $client = $this->createAuthenticatedClient();
-
-        $aclManager = $this->get('oro_security.acl.manager');
-        $role = $this->get('pim_user.repository.role')->findOneByIdentifier('ROLE_ADMINISTRATOR');
-        $privilege = new AclPrivilege();
-        $identity = new AclPrivilegeIdentity('action:pim_api_product_list');
-        $privilege
-            ->setIdentity($identity)
-            ->addPermission(new AclPermission('EXECUTE', AccessLevel::NONE_LEVEL));
-        $aclManager->getPrivilegeRepository()->savePrivileges(
-            $aclManager->getSid($role),
-            new ArrayCollection([$privilege])
-        );
-        $aclManager->flush();
-        $aclManager->clearCache();
+        $this->deletePermissionAcl('action:pim_api_product_list');
 
         $client->request('GET', 'api/rest/v1/products/product');
         $expectedResponse = <<<JSON

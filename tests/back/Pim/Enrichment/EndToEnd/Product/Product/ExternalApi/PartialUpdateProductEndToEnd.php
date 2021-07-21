@@ -440,21 +440,7 @@ JSON;
     public function testAccessDeniedOnUpdateAPartialProductIfNoPermission()
     {
         $client = $this->createAuthenticatedClient();
-
-        $aclManager = $this->get('oro_security.acl.manager');
-        $role = $this->get('pim_user.repository.role')->findOneByIdentifier('ROLE_ADMINISTRATOR');
-        $privilege = new AclPrivilege();
-        $identity = new AclPrivilegeIdentity('action:pim_api_product_edit');
-        $privilege
-            ->setIdentity($identity)
-            ->addPermission(new AclPermission('EXECUTE', AccessLevel::NONE_LEVEL));
-        $aclManager->getPrivilegeRepository()->savePrivileges(
-            $aclManager->getSid($role),
-            new ArrayCollection([$privilege])
-        );
-        $aclManager->flush();
-        $aclManager->clearCache();
-
+        $this->deletePermissionAcl('action:pim_api_product_edit');
         $data =
             <<<JSON
     {
