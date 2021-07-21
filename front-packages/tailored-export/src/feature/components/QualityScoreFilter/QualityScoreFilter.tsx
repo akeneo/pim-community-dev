@@ -7,13 +7,14 @@ import {
   getLocalesFromChannel,
   Locale,
   LocaleCode,
+  useTranslate,
   ValidationError,
 } from '@akeneo-pim-community/shared';
 import {Operator, OperatorSelector} from './OperatorSelector';
 import {AVAILABLE_QUALITY_SCORES, QualityScore, QualityScores, QualityScoreSelector} from './QualityScoreSelector';
 import {ChannelDropdown} from '../ChannelDropdown';
 import {useChannels} from '../../hooks';
-import {LocalesSelector} from './LocalesSelector';
+import {LocalesSelector} from '../LocalesSelector';
 
 // For the margin-top/bottom, seen with Stephane until we have a better way
 // of displaying dynamic/multi-lines fields
@@ -44,6 +45,7 @@ type QualityScoreFilterProps = {
 };
 
 const QualityScoreFilter = ({availableOperators, filter, onChange, validationErrors}: QualityScoreFilterProps) => {
+  const translate = useTranslate();
   const availableChannels = useChannels();
   const availableLocales = getLocalesFromChannel(availableChannels, filter.context?.scope ?? null);
   const formattedValidationErrors = formatParameters(validationErrors);
@@ -117,6 +119,9 @@ const QualityScoreFilter = ({availableOperators, filter, onChange, validationErr
             locales={availableLocales ?? []}
             onChange={handleLocalesChange}
             validationErrors={localesErrors}
+            label={translate('akeneo.tailored_export.filters.quality_score.locales.label')}
+            placeholder={translate('akeneo.tailored_export.filters.quality_score.locales.placeholder')}
+            removeLabel={translate('akeneo.tailored_export.filters.quality_score.locales.remove')}
           />
         </>
       )}

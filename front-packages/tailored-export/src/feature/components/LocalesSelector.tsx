@@ -3,23 +3,35 @@ import {useTranslate, LocaleCode, Section, Locale, ValidationError} from '@akene
 import {Field, MultiSelectInput, Helper} from 'akeneo-design-system';
 
 type LocalesSelectorProps = {
+  label: string;
+  placeholder: string;
+  removeLabel: string;
   value: LocaleCode[];
   locales: Locale[];
   onChange: (newLocales: LocaleCode[]) => void;
   validationErrors: ValidationError[];
 };
-const LocalesSelector = ({locales, value, onChange, validationErrors}: LocalesSelectorProps) => {
+
+const LocalesSelector = ({
+  locales,
+  value,
+  onChange,
+  validationErrors,
+  removeLabel,
+  placeholder,
+  label,
+}: LocalesSelectorProps) => {
   const translate = useTranslate();
 
   return (
     <Section>
-      <Field label={translate('akeneo.tailored_export.filters.completeness.locales.label')}>
+      <Field label={label}>
         <MultiSelectInput
           emptyResultLabel={translate('pim_common.no_result')}
           onChange={onChange}
           openLabel={translate('pim_common.open')}
-          placeholder={translate('akeneo.tailored_export.filters.completeness.locales.placeholder')}
-          removeLabel={translate('akeneo.tailored_export.filters.completeness.locales.remove')}
+          placeholder={placeholder}
+          removeLabel={removeLabel}
           value={value}
         >
           {locales.map((locale: Locale) => (
