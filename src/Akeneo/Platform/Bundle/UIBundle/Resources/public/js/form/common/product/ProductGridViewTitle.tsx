@@ -7,7 +7,7 @@ type Props = {
   children: string;
 };
 
-const ProductGridContext = ({type, children}: Props) => {
+const ProductGridViewTitle = ({type, children}: Props) => {
   const translate = useTranslate();
 
   return (
@@ -34,4 +34,4 @@ const ViewNameContainer = styled.span`
   white-space: nowrap;
 `;
 
-export {ProductGridContext};
+export {ProductGridViewTitle};

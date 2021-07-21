@@ -1,4 +1,4 @@
-import {ProductGridContext} from './ProductGridContext';
+import {ProductGridViewTitle} from './ProductGridViewTitle';
 
 const BaseView = require('pimui/js/view/base');
 const mediator = require('oro/mediator');
@@ -11,7 +11,7 @@ type CurrentView = {
   filters: string;
 };
 
-class ProductGridTitleContext extends BaseView {
+class ProductGridViewTitleContext extends BaseView {
   private currentView: CurrentView;
 
   /**
@@ -31,15 +31,15 @@ class ProductGridTitleContext extends BaseView {
   /**
    * {@inheritdoc}
    */
-  render(): ProductGridTitleContext {
+  render(): ProductGridViewTitleContext {
     if (!this.currentView) {
       return this;
     }
 
-    this.renderReact(ProductGridContext, {type: this.currentView.type, children: this.currentView.text}, this.el);
+    this.renderReact(ProductGridViewTitle, {type: this.currentView.type, children: this.currentView.text}, this.el);
 
     return this;
   }
 }
 
-export = ProductGridTitleContext;
+export = ProductGridViewTitleContext;
