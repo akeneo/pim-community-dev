@@ -89,7 +89,8 @@ services:
             - '@security.logout_url_generator'
             - '%pim_user.login_form.action_route%'
             - '%pim_user.login_form.additional_hidden_fields%'
-        calls: [['setContainer', ['@service_container']]]
+        calls:
+            - ['setContainer', ['@service_container']]
         tags:
             - 'container.service_subscriber'
 

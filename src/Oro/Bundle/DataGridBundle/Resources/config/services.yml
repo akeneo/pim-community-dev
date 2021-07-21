@@ -72,3 +72,5 @@ services:
         public: true
         arguments:
             - '@oro_datagrid.datagrid.manager'
+        calls:
+            - ['setContainer', ['@service_container']]

@@ -72,6 +72,8 @@ services:
             - '@akeneo_batch.job.job_registry'
             - '@logger'
             - '@oneup_flysystem.archivist_filesystem'
+        calls:
+            - [ setContainer, [ '@service_container' ] ]
 
     pim_import_export.controller.category_trees:
         public: true

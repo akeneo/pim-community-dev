@@ -18,26 +18,13 @@ class ResetController extends AbstractController
 {
     const SESSION_EMAIL = 'pim_user_reset_email';
 
-    /** @var UserManager */
-    private $userManager;
-
-    /** @var Swift_Mailer */
-    private $mailer;
-
-    /** @var SessionInterface */
-    private $session;
-
-    /** @var ResetHandler */
-    private $resetHandler;
-
-    /** @var TokenStorageInterface */
-    private $tokenStorage;
-
-    /** @var FormInterface */
-    private $form;
-
-    /** @var string */
-    private $mailerUrl;
+    private UserManager $userManager;
+    private Swift_Mailer $mailer;
+    private SessionInterface $session;
+    private ResetHandler $resetHandler;
+    private TokenStorageInterface $tokenStorage;
+    private FormInterface $form;
+    private string $mailerUrl;
 
     public function __construct(
         UserManager $userManager,
@@ -58,9 +45,9 @@ class ResetController extends AbstractController
     }
 
     /**
-     * @Template("PimUserBundle:Reset:request.html.twig")
+     * @Template("@PimUser/Reset/request.html.twig")
      */
-    public function request()
+    public function request(): array
     {
         return [];
     }
@@ -68,7 +55,7 @@ class ResetController extends AbstractController
     /**
      * Request reset user password
      *
-     * @Template("PimUserBundle:Reset:sendEmail.html.twig")
+     * @Template("@PimUser/Reset/sendEmail.html.twig")
      */
     public function sendEmail(Request $request)
     {
@@ -98,7 +85,7 @@ class ResetController extends AbstractController
          * @todo Move to postUpdate lifecycle event handler as service
          */
         $message = (new \Swift_Message('Reset password'))
-            ->setFrom((string) SenderAddress::fromMailerUrl($this->mailerUrl))
+            ->setFrom((string)SenderAddress::fromMailerUrl($this->mailerUrl))
             ->setTo($user->getEmail())
             ->setBody(
                 $this->renderView('PimUserBundle:Mail:reset.html.twig', ['user' => $user]),
@@ -137,7 +124,7 @@ class ResetController extends AbstractController
     /**
      * Reset user password
      *
-     * @Template("PimUserBundle:Reset:reset.html.twig")
+     * @Template("@PimUser/Reset/reset.html.twig")
      */
     public function reset($token)
     {
@@ -170,19 +157,15 @@ class ResetController extends AbstractController
 
         return [
             'token' => $token,
-            'form'  => $this->form->createView(),
+            'form' => $this->form->createView(),
         ];
     }
 
     /**
      * Get the truncated email displayed when requesting the resetting.
      * The default implementation only keeps the part following @ in the address.
-     *
-     * @param \Akeneo\UserManagement\Component\Model\UserInterface $user
-     *
-     * @return string
      */
-    protected function getObfuscatedEmail(UserInterface $user)
+    protected function getObfuscatedEmail(UserInterface $user): string
     {
         $email = $user->getEmail();
 

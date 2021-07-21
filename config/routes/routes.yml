@@ -56,9 +56,9 @@ pim_data_quality_insights:
 
 oro_default:
     path:  /
+    controller: 'Symfony\Bundle\FrameworkBundle\Controller\TemplateController'
     defaults:
-        template:    PimUIBundle::index.html.twig
-        _controller: FrameworkBundle:Template:template
+        template:    "@PimUI/index.html.twig"
 
 oro_config:
     resource: "@OroConfigBundle/Resources/config/oro/routing.yml"
