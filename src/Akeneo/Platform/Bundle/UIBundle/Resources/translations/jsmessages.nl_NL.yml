@@ -237,6 +237,7 @@ pim_common:
   family: Familie
   parent: Bovenliggende
   groups: Groepen
+  products: Producten
   more: Meer
 error:
   exception: Oh, nee! Een {{ status_code }} fout deed zich voor...

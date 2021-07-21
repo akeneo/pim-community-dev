@@ -28,6 +28,9 @@ class GetAllExtensionsEndToEnd extends WebTestCase
         return $this->catalog->useMinimalCatalog();
     }
 
+    /**
+     * @group ce
+     */
     public function test_it_gets_all_the_extensions(): void
     {
         $expectedExtensions = [

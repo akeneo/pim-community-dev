@@ -3,8 +3,8 @@ export type Extension = {
     name: string;
     logo: string;
     author: string;
-    partner: string;
-    description: string;
+    partner: string | null;
+    description: string | null;
     url: string;
     categories: string[];
     certified: boolean;
