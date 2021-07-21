@@ -79,7 +79,7 @@ final class SqlTableConfigurationRepository implements TableConfigurationReposit
                 <<<SQL
                 INSERT INTO pim_catalog_table_column (id, attribute_id, code, data_type, column_order, labels, validations)
                 SELECT * FROM (
-                    SELECT :column_id, attribute.id, :code, :data_type, :column_order AS column_order, :labels AS labels, :validations as validations
+                    SELECT :column_id, attribute.id as attribute_id, :code as column_code, :data_type as data_type, :column_order AS column_order, :labels AS labels, :validations as validations
                     FROM pim_catalog_attribute AS attribute WHERE code = :attribute_code
                 ) AS newvalues                
                 ON DUPLICATE KEY UPDATE column_order = newvalues.column_order, labels = newvalues.labels, validations = newvalues.validations

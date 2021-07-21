@@ -13,6 +13,7 @@ declare(strict_types=1);
 
 namespace Akeneo\Pim\TableAttribute\tests\back\Integration\TableConfiguration\Persistence;
 
+use Akeneo\Pim\TableAttribute\Domain\TableConfiguration\BooleanColumn;
 use Akeneo\Pim\TableAttribute\Domain\TableConfiguration\NumberColumn;
 use Akeneo\Pim\TableAttribute\Domain\TableConfiguration\Repository\TableConfigurationNotFoundException;
 use Akeneo\Pim\TableAttribute\Domain\TableConfiguration\SelectColumn;
@@ -102,6 +103,27 @@ final class SqlTableConfigurationRepositoryIntegration extends TestCase
         self::assertSame('quantity', $rows[0]['code']);
         self::assertSame($idQuantity, $rows[0]['id']);
         self::assertSame('aqr', $rows[1]['code']);
+    }
+
+    /** @test */
+    public function it_saves_a_table_configuration_with_reserved_keywords_as_column_codes()
+    {
+        $tableConfiguration = TableConfiguration::fromColumnDefinitions(
+            [
+                SelectColumn::fromNormalized(['code' => 'select']),
+                TextColumn::fromNormalized(['code' => 'text']),
+                BooleanColumn::fromNormalized(['code' => 'boolean']),
+                NumberColumn::fromNormalized(['code' => 'number']),
+            ]
+        );
+        $this->sqlTableConfigurationRepository->save('nutrition', $tableConfiguration);
+
+        $rows = $this->connection->executeQuery(
+            'SELECT * FROM pim_catalog_table_column WHERE attribute_id = :attribute_id ORDER BY column_order',
+            ['attribute_id' => $this->tableAttributeId]
+        )->fetchAll();
+
+        self::assertCount(4, $rows);
     }
 
     /** @test */
