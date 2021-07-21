@@ -34,12 +34,6 @@ aliases:
                 password: $GCLOUD_SERVICE_KEY_DEV  # JSON service account you created, do not encode to base64
 
 jobs:
-  checkout_tailored_export:
-    docker:
-      - image: alpine/git
-    steps:
-      - checkout
-
   checkout:
     parameters:
         is_pull_request:
@@ -183,6 +177,79 @@ jobs:
           root: ~/
           paths:
             - project
+
+
+  checkout_tailored_export:
+    parameters:
+      is_pull_request:
+        type: boolean
+        default: false
+    docker:
+      - image: alpine/git
+    steps:
+      - checkout
+      - run:
+          name: Install cUrl
+          command: apk --no-cache add curl
+      - run:
+          name: Install yq
+          command: |
+            wget https://github.com/mikefarah/yq/releases/download/3.3.1/yq_linux_386
+            mv yq_linux_386 /usr/local/bin/yq
+            chmod +x /usr/local/bin/yq
+      - run:
+          name: Remove MySQL port translation for EE (see BH-664)
+          command: yq delete --inplace docker-compose.yml services.mysql.ports
+      - run:
+          name: Remove MySQL port translation for GRTH (see BH-664)
+          command: yq delete --inplace grth/docker-compose.yml services.mysql.ports
+      - run:
+          name: Remove MySQL port translation for TRIA
+          command: yq delete --inplace tria/docker-compose.yml services.mysql.ports
+      - when:
+          condition: << parameters.is_pull_request >>
+          steps:
+            - run:
+                name: Update composer.json if same branch exists in CE for EE
+                command: |
+                  curl --output /dev/null --silent --head --fail https://github.com/akeneo/pim-community-dev/tree/${CIRCLE_BRANCH} && \
+                      sed -i "s#akeneo/pim-community-dev\": \"dev-master#akeneo/pim-community-dev\": \"dev-${CIRCLE_BRANCH}#" composer.json || \
+                      echo "No CE branch $CIRCLE_BRANCH found. I don't touch the EE dependencies."
+            - run:
+                name: Update composer.json if same branch exists in CE for GRTH
+                command: |
+                  curl --output /dev/null --silent --head --fail https://github.com/akeneo/pim-community-dev/tree/${CIRCLE_BRANCH} && \
+                      sed -i "s#akeneo/pim-community-dev\": \"dev-master#akeneo/pim-community-dev\": \"dev-${CIRCLE_BRANCH}#" grth/composer.json || \
+                      echo "No CE branch $CIRCLE_BRANCH found. I don't touch the Growth Edition file."
+            - run:
+                name: Update composer.json if same branch exists in CE for TRIA
+                command: |
+                  curl --output /dev/null --silent --head --fail https://github.com/akeneo/pim-community-dev/tree/${CIRCLE_BRANCH} && \
+                      sed -i "s#akeneo/pim-community-dev\": \"dev-master#akeneo/pim-community-dev\": \"dev-${CIRCLE_BRANCH}#" tria/composer.json || \
+                      echo "No CE branch $CIRCLE_BRANCH found. I don't touch the Growth Edition file."
+      - persist_to_workspace:
+          root: ~/
+          paths:
+            - project
+      - store_artifacts:
+          path: composer.json
+          destination: ee-composer.json
+      - store_artifacts:
+          path: grth/composer.json
+          destination: grth-composer.json
+      - store_artifacts:
+          path: tria/composer.json
+          destination: tria-composer.json
+      - store_artifacts:
+          path: docker-compose.yml
+          destination: ee-docker-compose.yml
+      - store_artifacts:
+          path: grth/docker-compose.yml
+          destination: grth-docker-compose.yml
+      - store_artifacts:
+          path: tria/docker-compose.yml
+          destination: tria-docker-compose.yml
+
   ##################
   # Build          #
   ##################
