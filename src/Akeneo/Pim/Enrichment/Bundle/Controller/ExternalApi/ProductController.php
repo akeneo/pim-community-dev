@@ -349,6 +349,8 @@ class ProductController
     }
 
     /**
+     * @AclAncestor("pim_api_product_remove")
+     *
      * @param string $code
      *
      * @return Response

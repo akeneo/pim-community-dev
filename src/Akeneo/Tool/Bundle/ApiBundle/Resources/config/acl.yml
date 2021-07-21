@@ -94,3 +94,7 @@ pim_api_product_list:
     type: action
     label: pim_api.acl.product.list
     group_name: pim_api.acl_group.product
+pim_api_product_remove:
+    type: action
+    label: pim_api.acl.product.remove
+    group_name: pim_api.acl_group.product

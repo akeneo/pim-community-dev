@@ -26,6 +26,7 @@ pim_api:
         product:
             edit: Create and update products
             list: List products
+            remove: Delete products
         currency.list: List currencies
         association_type:
             edit: Create and update association types

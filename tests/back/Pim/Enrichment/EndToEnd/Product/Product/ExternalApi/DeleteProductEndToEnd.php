@@ -7,6 +7,11 @@ namespace AkeneoTest\Pim\Enrichment\EndToEnd\Product\Product\ExternalApi;
 use Akeneo\Pim\Enrichment\Component\Product\Message\ProductRemoved;
 use Akeneo\Test\Integration\Configuration;
 use Akeneo\Test\IntegrationTestsBundle\Messenger\AssertEventCountTrait;
+use Doctrine\Common\Collections\ArrayCollection;
+use Oro\Bundle\SecurityBundle\Acl\AccessLevel;
+use Oro\Bundle\SecurityBundle\Model\AclPermission;
+use Oro\Bundle\SecurityBundle\Model\AclPrivilege;
+use Oro\Bundle\SecurityBundle\Model\AclPrivilegeIdentity;
 use Symfony\Component\HttpFoundation\Response;
 
 class DeleteProductEndToEnd extends AbstractProductTestCase
@@ -38,6 +43,47 @@ class DeleteProductEndToEnd extends AbstractProductTestCase
         $this->assertNull($this->get('pim_catalog.repository.product')->findOneByIdentifier('foo'));
 
         $this->assertEventCount(1, ProductRemoved::class);
+    }
+
+    public function test_access_denied_on_get_a_product_if_no_permission()
+    {
+
+        $this->createAdminUser();
+
+        $client = $this->createAuthenticatedClient();
+
+        $aclManager = $this->get('oro_security.acl.manager');
+        $role = $this->get('pim_user.repository.role')->findOneByIdentifier('ROLE_ADMINISTRATOR');
+        $privilege = new AclPrivilege();
+        $identity = new AclPrivilegeIdentity('action:pim_api_product_remove');
+        $privilege
+            ->setIdentity($identity)
+            ->addPermission(new AclPermission('EXECUTE', AccessLevel::NONE_LEVEL));
+        $aclManager->getPrivilegeRepository()->savePrivileges(
+            $aclManager->getSid($role),
+            new ArrayCollection([$privilege])
+        );
+        $aclManager->flush();
+        $aclManager->clearCache();
+
+
+        $this->assertCount(7, $this->get('pim_catalog.repository.product')->findAll());
+
+        $this->get('pim_catalog.elasticsearch.indexer.product')->indexFromProductIdentifier('foo');
+
+        $client->request('DELETE', 'api/rest/v1/products/foo');
+        $expectedResponse = <<<JSON
+{
+    "code": 403,
+    "message": "Access forbidden. You are not allowed to create or update products."
+}
+JSON;
+
+        $response = $client->getResponse();
+        $this->assertSame(Response::HTTP_FORBIDDEN, $response->getStatusCode());
+        $this->assertJsonStringEqualsJsonString($expectedResponse, $response->getContent());
+
+        $this->assertCount(7, $this->get('pim_catalog.repository.product')->findAll());
     }
 
     public function testNotFoundAProduct()
