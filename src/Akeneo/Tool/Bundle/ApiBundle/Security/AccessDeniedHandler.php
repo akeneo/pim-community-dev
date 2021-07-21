@@ -39,7 +39,7 @@ class AccessDeniedHandler implements AccessDeniedHandlerInterface
     protected function getMessage(Request $request, AccessDeniedException $exception)
     {
         if ($exception instanceof OroAccessDeniedException) {
-            $actionName = 'GET' === $request->getMethod() ? 'list' : 'create or update';
+            $actionName = $this->getActionName($request);
 
             preg_match('`\\\\(\w+)Controller`', $exception->getControllerClass(), $matches);
             $englishInflector = new EnglishInflector();
@@ -56,5 +56,17 @@ class AccessDeniedHandler implements AccessDeniedHandlerInterface
     private function getInflector(): Inflector
     {
         return new Inflector(new NoopWordInflector(), new NoopWordInflector());
+    }
+
+    private function getActionName(Request $request): string
+    {
+        if (Request::METHOD_GET === $request->getMethod()) {
+            return 'list';
+        }
+        if (Request::METHOD_DELETE === $request->getMethod()) {
+            return 'delete';
+        }
+
+        return 'create or update';
     }
 }

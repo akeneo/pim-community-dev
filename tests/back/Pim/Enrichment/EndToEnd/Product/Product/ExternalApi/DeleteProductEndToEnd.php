@@ -75,7 +75,7 @@ class DeleteProductEndToEnd extends AbstractProductTestCase
         $expectedResponse = <<<JSON
 {
     "code": 403,
-    "message": "Access forbidden. You are not allowed to create or update products."
+    "message": "Access forbidden. You are not allowed to delete products."
 }
 JSON;
 
