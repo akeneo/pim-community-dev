@@ -8,9 +8,11 @@ import {UserContext} from '../../shared/user';
 import {useHistory} from 'react-router';
 import {useFetchExtensions} from '../hooks/use-fetch-extensions';
 import {Extensions} from '../../model/extension';
+import {Apps} from '../../model/app';
 import {UnreachableMarketplace} from '../components/UnreachableMarketplace';
 import {Marketplace} from '../components/Marketplace';
 import {MarketplaceIsLoading} from '../components/MarketplaceIsLoading';
+import {useFetchApps} from '../hooks/use-fetch-apps';
 
 export const MarketplacePage: FC = () => {
     const translate = useTranslate();
@@ -18,9 +20,11 @@ export const MarketplacePage: FC = () => {
     const history = useHistory();
     const generateUrl = useRouter();
     const fetchExtensions = useFetchExtensions();
+    const fetchApps = useFetchApps();
     const dashboardHref = `#${generateUrl('akeneo_connectivity_connection_audit_index')}`;
     const [userProfile, setUserProfile] = useState<string | null>(null);
     const [extensions, setExtensions] = useState<Extensions | null | false>(null);
+    const [apps, setApps] = useState<Apps | null | false>(null);
 
     useEffect(() => {
         const profile = user.get<string | null>('profile');
@@ -35,6 +39,11 @@ export const MarketplacePage: FC = () => {
             .then(setExtensions)
             .catch(() => setExtensions(false));
     }, [fetchExtensions]);
+    useEffect(() => {
+        fetchApps()
+            .then(setApps)
+            .catch(() => setApps(false));
+    }, [fetchApps]);
 
     if (null === userProfile) {
         return null;
@@ -54,9 +63,10 @@ export const MarketplacePage: FC = () => {
             </PageHeader>
 
             <PageContent>
-                {null === extensions && <MarketplaceIsLoading />}
-                {false === extensions && <UnreachableMarketplace />}
-                {false !== extensions && null !== extensions && <Marketplace extensions={extensions} />}
+                {null === extensions || null === apps && <MarketplaceIsLoading />}
+                {false === extensions && false === apps && <UnreachableMarketplace />}
+                {false !== extensions && null !== extensions &&
+                false !== apps && null !== apps && <Marketplace extensions={extensions} apps={apps}/>}
             </PageContent>
         </>
     );
