@@ -24,18 +24,10 @@ Akeneo\Pim\Enrichment\Component\Category\Model\Category:
             unique: true
         created:
             type: datetime
-            gedmo:
-                timestampable:
-                    on: create
         updated:
             type: datetime
             options:
                 default: CURRENT_TIMESTAMP
-            gedmo:
-                timestampable:
-                    on: change
-                    field:
-                        - parent
         root:
             type: integer
         level:

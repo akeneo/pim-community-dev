@@ -7,8 +7,8 @@ use Akeneo\Channel\Component\Repository\ChannelRepositoryInterface;
 use Akeneo\Tool\Component\StorageUtils\Event\RemoveEvent;
 use Akeneo\Tool\Component\StorageUtils\Remover\RemoverInterface;
 use Akeneo\Tool\Component\StorageUtils\StorageEvents;
-use Doctrine\Persistence\ObjectManager;
 use Doctrine\Common\Util\ClassUtils;
+use Doctrine\Persistence\ObjectManager;
 use Symfony\Component\EventDispatcher\EventDispatcherInterface;
 use Symfony\Contracts\Translation\TranslatorInterface;
 
@@ -56,12 +56,12 @@ class ChannelRemover implements RemoverInterface
 
         $options['unitary'] = true;
 
-        $this->eventDispatcher->dispatch(StorageEvents::PRE_REMOVE, new RemoveEvent($object, $objectId, $options));
+        $this->eventDispatcher->dispatch(new RemoveEvent($object, $objectId, $options), StorageEvents::PRE_REMOVE);
 
         $this->objectManager->remove($object);
         $this->objectManager->flush();
 
-        $this->eventDispatcher->dispatch(StorageEvents::POST_REMOVE, new RemoveEvent($object, $objectId, $options));
+        $this->eventDispatcher->dispatch(new RemoveEvent($object, $objectId, $options), StorageEvents::POST_REMOVE);
     }
 
     /**
@@ -83,16 +83,20 @@ class ChannelRemover implements RemoverInterface
 
         $channelCount = $this->channelRepository->countAll();
         if (1 === $channelCount) {
-            throw new \LogicException($this->translator->trans(
-                'pim_enrich.channel.flash.delete.error',
-                ['%channelCode%' => $object->getCode() ]
-            ));
+            throw new \LogicException(
+                $this->translator->trans(
+                    'pim_enrich.channel.flash.delete.error',
+                    ['%channelCode%' => $object->getCode()]
+                )
+            );
         }
 
         if (true === $this->isChannelUsedInProductExportJob->execute($object->getCode())) {
-            throw new \LogicException($this->translator->trans(
-                'pim_enrich.channel.flash.delete.linked_to_export_profile'
-            ));
+            throw new \LogicException(
+                $this->translator->trans(
+                    'pim_enrich.channel.flash.delete.linked_to_export_profile'
+                )
+            );
         }
     }
 }

@@ -97,8 +97,6 @@ class GroupController extends AbstractController
     }
 
     /**
-     * @param Group $entity
-     *
      * @return array|JsonResponse
      */
     private function updateGroup(Group $entity)
@@ -112,7 +110,7 @@ class GroupController extends AbstractController
             return new JsonResponse(
                 [
                     'route' => 'pim_user_group_update',
-                    'params' => ['id' => $entity->getId()]
+                    'params' => ['id' => $entity->getId()],
                 ]
             );
         }
@@ -122,12 +120,8 @@ class GroupController extends AbstractController
         ];
     }
 
-    /**
-     * @param string $event
-     * @param Group  $group
-     */
-    private function dispatchGroupEvent($event, Group $group = null)
+    private function dispatchGroupEvent(string $event, ?Group $group = null)
     {
-        $this->eventDispatcher->dispatch($event, new GenericEvent($group));
+        $this->eventDispatcher->dispatch(new GenericEvent($group), $event);
     }
 }

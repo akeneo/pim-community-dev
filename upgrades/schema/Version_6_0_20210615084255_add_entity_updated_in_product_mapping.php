@@ -16,7 +16,7 @@ use Webmozart\Assert\Assert;
  */
 final class Version_6_0_20210615084255_add_entity_updated_in_product_mapping extends AbstractMigration implements ContainerAwareInterface
 {
-    private ContainerInterface $container;
+    private ?ContainerInterface $container;
 
     public function up(Schema $schema) : void
     {

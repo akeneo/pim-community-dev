@@ -43,7 +43,10 @@ class RemoveValuesFromProductModels
     {
         $paths = implode(
             ',',
-            array_map(fn ($attributeCode) => $this->connection->quote(sprintf('$."%s"', $attributeCode)), $attributeCodes)
+            array_map(
+                fn($attributeCode) => $this->connection->quote(sprintf('$."%s"', $attributeCode)),
+                $attributeCodes
+            )
         );
 
         $this->connection->executeQuery(
@@ -67,18 +70,22 @@ SQL,
 
         foreach ($productModels as $productModel) {
             $this->eventDispatcher->dispatch(
-                StorageEvents::POST_SAVE,
-                new GenericEvent($productModel, [
+                new GenericEvent(
+                    $productModel, [
                     'unitary' => false,
-                ])
+                ]
+                ),
+                StorageEvents::POST_SAVE
             );
         }
 
         $this->eventDispatcher->dispatch(
-            StorageEvents::POST_SAVE_ALL,
-            new GenericEvent($productModels, [
+            new GenericEvent(
+                $productModels, [
                 'unitary' => false,
-            ])
+            ]
+            ),
+            StorageEvents::POST_SAVE_ALL
         );
     }
 }

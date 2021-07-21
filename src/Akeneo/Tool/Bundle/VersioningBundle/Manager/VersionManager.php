@@ -8,8 +8,8 @@ use Akeneo\Tool\Bundle\VersioningBundle\Event\BuildVersionEvents;
 use Akeneo\Tool\Bundle\VersioningBundle\Repository\VersionRepositoryInterface;
 use Akeneo\Tool\Component\Versioning\Model\Version;
 use Doctrine\Common\Collections\ArrayCollection;
-use Doctrine\Persistence\ObjectManager;
 use Doctrine\Common\Util\ClassUtils;
+use Doctrine\Persistence\ObjectManager;
 use Symfony\Component\EventDispatcher\EventDispatcherInterface;
 
 /**
@@ -115,7 +115,7 @@ class VersionManager
     {
         $createdVersions = [];
 
-        $event = $this->eventDispatcher->dispatch(BuildVersionEvents::PRE_BUILD, new BuildVersionEvent());
+        $event = $this->eventDispatcher->dispatch(new BuildVersionEvent(), BuildVersionEvents::PRE_BUILD);
         if (null !== $event && null !== $event->getUsername()) {
             $this->username = $event->getUsername();
         }
@@ -257,9 +257,9 @@ class VersionManager
 
         $pendingVersions = $this->getVersionRepository()->findBy(
             [
-                'resourceId'   => $versionable->getId(),
+                'resourceId' => $versionable->getId(),
                 'resourceName' => ClassUtils::getClass($versionable),
-                'pending'      => true
+                'pending' => true,
             ],
             ['loggedAt' => 'asc']
         );

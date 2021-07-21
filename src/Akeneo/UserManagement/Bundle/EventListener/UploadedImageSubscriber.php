@@ -42,7 +42,9 @@ class UploadedImageSubscriber implements EventSubscriber
     {
         /** @var EntityUploadedImageInterface $entity */
         $entity = $args->getEntity();
-        $this->removeImage($entity);
+        if ($this->isExpectedEntity($entity)) {
+            $this->removeImage($entity);
+        }
     }
 
     /**
@@ -124,7 +126,7 @@ class UploadedImageSubscriber implements EventSubscriber
 
     protected function removeImage(EntityUploadedImageInterface $entity): void
     {
-        if ($this->isExpectedEntity($entity) && $entity->getImage()) {
+        if ($entity->getImage()) {
             $file = $this->getUploadRootDir($entity) . DIRECTORY_SEPARATOR . $entity->getImage();
             if (is_file($file) && is_writable($file)) {
                 unlink($file);
@@ -135,7 +137,7 @@ class UploadedImageSubscriber implements EventSubscriber
     /**
      * Check for new image upload.
      */
-    protected function hasUploadedImage(EntityUploadedImageInterface $entity): bool
+    protected function hasUploadedImage(object $entity): bool
     {
         return $this->isExpectedEntity($entity) && null !== $entity->getImageFile();
     }

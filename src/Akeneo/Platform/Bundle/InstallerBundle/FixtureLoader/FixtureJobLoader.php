@@ -50,13 +50,6 @@ class FixtureJobLoader
         $this->jobInstanceRepository = $jobInstanceRepository;
     }
 
-    /**
-     * Load the fixture jobs in database
-     *
-     * @param array $replacePaths
-     *
-     * @throws \Exception
-     */
     public function loadJobInstances(string $catalogPath, array $replacePaths = [])
     {
         $jobInstances = $this->jobInstancesBuilder->build();
@@ -64,9 +57,6 @@ class FixtureJobLoader
         $this->jobInstanceSaver->saveAll($configuredJobInstances, ['is_installation' => true]);
     }
 
-    /**
-     * Deletes all the fixtures job
-     */
     public function deleteJobInstances()
     {
         $jobInstances = $this->jobInstanceRepository->findBy(['type' => static::JOB_TYPE]);

@@ -10,8 +10,7 @@ use Symfony\Component\DependencyInjection\ContainerInterface;
 
 final class Version_4_0_20190801083247_remove_indexes extends AbstractMigration  implements ContainerAwareInterface
 {
-    /** @var ContainerInterface */
-    private $container;
+    private ?ContainerInterface $container;
 
     public function up(Schema $schema) : void
     {

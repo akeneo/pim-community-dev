@@ -67,7 +67,10 @@ final class ApiAggregatorForAttributeOptionPostSaveEventSubscriber implements Ev
             return;
         }
 
-        $this->eventDispatcher->dispatch(StorageEvents::POST_SAVE_ALL, new GenericEvent($this->eventsAttributesOptions));
+        $this->eventDispatcher->dispatch(
+            new GenericEvent($this->eventsAttributesOptions),
+            StorageEvents::POST_SAVE_ALL
+        );
         $this->eventsAttributesOptions = [];
     }
 }

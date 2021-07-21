@@ -24,7 +24,7 @@ class Category implements CategoryInterface
     protected int $level;
     protected int $right;
     protected int $root;
-    protected CategoryInterface $parent;
+    protected ?CategoryInterface $parent = null;
 
     /** @var Collection */
     protected $children;

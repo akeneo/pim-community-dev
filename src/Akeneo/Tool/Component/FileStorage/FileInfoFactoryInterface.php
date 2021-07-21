@@ -16,8 +16,6 @@ interface FileInfoFactoryInterface
     /**
      * @param \SplFileInfo $rawFile     the raw file to create a File with
      * @param string       $destFsAlias the filesystem alias where the file will be stored
-     *
-     * @return FileInfoInterface
      */
-    public function createFromRawFile(\SplFileInfo $rawFile, $destFsAlias);
+    public function createFromRawFile(\SplFileInfo $rawFile, string $destFsAlias): FileInfoInterface;
 }

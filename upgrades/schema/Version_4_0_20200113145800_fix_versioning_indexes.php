@@ -8,7 +8,7 @@ use Doctrine\Migrations\AbstractMigration;
 
 class Version_4_0_20200113145800_fix_versioning_indexes extends AbstractMigration
 {
-    public function up(Schema $schema)
+    public function up(Schema $schema): void
     {
         $this->updateVersioningIndexes();
     }
@@ -43,9 +43,9 @@ class Version_4_0_20200113145800_fix_versioning_indexes extends AbstractMigratio
         }
 
         $sql = <<<SQL
-ALTER TABLE pim_versioning_version 
-    ADD INDEX resource_name_resource_id_version_idx (resource_name, resource_id, version);
-SQL;
+        ALTER TABLE pim_versioning_version 
+            ADD INDEX resource_name_resource_id_version_idx (resource_name, resource_id, version);
+        SQL;
 
         try {
             $this->connection->executeQuery($sql);
@@ -56,7 +56,7 @@ SQL;
         }
     }
 
-    public function down(Schema $schema)
+    public function down(Schema $schema): void
     {
         $this->throwIrreversibleMigrationException();
     }

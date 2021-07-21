@@ -5,7 +5,7 @@ namespace Akeneo\Pim\Enrichment\Bundle\EventSubscriber;
 use Akeneo\Tool\Component\Versioning\Model\TimestampableInterface;
 use Akeneo\Tool\Component\Versioning\Model\VersionableInterface;
 use Doctrine\Common\EventSubscriber;
-use Doctrine\Common\Persistence\Event\LifecycleEventArgs;
+use Doctrine\Persistence\Event\LifecycleEventArgs;
 
 /**
  * Aims to add timestambable behavior
@@ -29,11 +29,6 @@ class TimestampableSubscriber implements EventSubscriber
         ];
     }
 
-    /**
-     * Before insert
-     *
-     * @param LifecycleEventArgs $args
-     */
     public function prePersist(LifecycleEventArgs $args)
     {
         $object = $args->getObject();
@@ -46,11 +41,6 @@ class TimestampableSubscriber implements EventSubscriber
         $object->setUpdated(new \DateTime('now', new \DateTimeZone('UTC')));
     }
 
-    /**
-     * Before update
-     *
-     * @param LifecycleEventArgs $args
-     */
     public function preUpdate(LifecycleEventArgs $args)
     {
         $object = $args->getObject();

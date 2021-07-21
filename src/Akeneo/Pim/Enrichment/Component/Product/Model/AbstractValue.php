@@ -11,17 +11,10 @@ namespace Akeneo\Pim\Enrichment\Component\Product\Model;
  */
 abstract class AbstractValue implements ValueInterface
 {
-    /** @var mixed */
     protected $data;
-
-    /** @var string */
-    protected $attributeCode;
-
-    /** @var string */
-    protected $localeCode;
-
-    /** @var string */
-    protected $scopeCode;
+    protected string $attributeCode;
+    protected ?string $localeCode;
+    protected ?string $scopeCode;
 
     /**
      * Forbid external access to the default constructor to force usage of named constructors

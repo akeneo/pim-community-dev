@@ -200,11 +200,14 @@ class UserController
     protected function update(UserInterface $user, ?string $previousUsername = null)
     {
         $this->eventDispatcher->dispatch(
+            new GenericEvent(
+                $user,
+                [
+                    'current_user' => $this->tokenStorage->getToken()->getUser(),
+                    'previous_username' => $previousUsername,
+                ]
+            ),
             UserEvent::POST_UPDATE,
-            new GenericEvent($user, [
-                'current_user' => $this->tokenStorage->getToken()->getUser(),
-                'previous_username' => $previousUsername,
-            ])
         );
 
         $this->session->remove('dataLocale');
@@ -351,7 +354,7 @@ class UserController
 
     /**
      * @param UserInterface $user
-     * @param array $data
+     * @param array         $data
      *
      * @return JsonResponse
      */
@@ -424,14 +427,16 @@ class UserController
         $newPasswordRepeat = $data['new_password_repeat'] ?? '';
 
         if (!$this->encoder->isPasswordValid($user, $currentPassword)) {
-            $violations->add(new ConstraintViolation(
-                $this->translator->trans('pim_user.user.fields_errors.current_password.wrong'),
-                '',
-                [],
-                '',
-                'current_password',
-                ''
-            ));
+            $violations->add(
+                new ConstraintViolation(
+                    $this->translator->trans('pim_user.user.fields_errors.current_password.wrong'),
+                    '',
+                    [],
+                    '',
+                    'current_password',
+                    ''
+                )
+            );
         }
 
         $violations->addAll($this->validatePasswordLength($newPassword, 'new_password'));
@@ -440,19 +445,24 @@ class UserController
         return $violations;
     }
 
-    private function validatePasswordMatch(string $password, string $passwordRepeat, string $propertyPath): ConstraintViolationListInterface
-    {
+    private function validatePasswordMatch(
+        string $password,
+        string $passwordRepeat,
+        string $propertyPath
+    ): ConstraintViolationListInterface {
         $violations = new ConstraintViolationList();
 
         if ($password !== $passwordRepeat) {
-            $violations->add(new ConstraintViolation(
-                $this->translator->trans('pim_user.user.fields_errors.new_password_repeat.not_match'),
-                '',
-                [],
-                '',
-                $propertyPath,
-                ''
-            ));
+            $violations->add(
+                new ConstraintViolation(
+                    $this->translator->trans('pim_user.user.fields_errors.new_password_repeat.not_match'),
+                    '',
+                    [],
+                    '',
+                    $propertyPath,
+                    ''
+                )
+            );
         }
 
         return $violations;
@@ -463,26 +473,30 @@ class UserController
         $violations = new ConstraintViolationList();
 
         if (self::PASSWORD_MINIMUM_LENGTH > mb_strlen($password)) {
-            $violations->add(new ConstraintViolation(
-                $this->translator->trans('pim_user.user.fields_errors.new_password.minimum_length'),
-                '',
-                [],
-                '',
-                $propertyPath,
-                ''
-            ));
-        // We have to use `strlen` here because Symfony's BasePasswordEncoder will check
-        // the actual byte count when trying to encode it with salt.
-        // See: Symfony\Component\Security\Core\Encoder\BasePasswordEncoder
+            $violations->add(
+                new ConstraintViolation(
+                    $this->translator->trans('pim_user.user.fields_errors.new_password.minimum_length'),
+                    '',
+                    [],
+                    '',
+                    $propertyPath,
+                    ''
+                )
+            );
+            // We have to use `strlen` here because Symfony's BasePasswordEncoder will check
+            // the actual byte count when trying to encode it with salt.
+            // See: Symfony\Component\Security\Core\Encoder\BasePasswordEncoder
         } elseif (self::PASSWORD_MAXIMUM_LENGTH < strlen($password)) {
-            $violations->add(new ConstraintViolation(
-                $this->translator->trans('pim_user.user.fields_errors.new_password.maximum_length'),
-                '',
-                [],
-                '',
-                $propertyPath,
-                ''
-            ));
+            $violations->add(
+                new ConstraintViolation(
+                    $this->translator->trans('pim_user.user.fields_errors.new_password.maximum_length'),
+                    '',
+                    [],
+                    '',
+                    $propertyPath,
+                    ''
+                )
+            );
         }
 
         return $violations;

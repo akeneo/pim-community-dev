@@ -21,6 +21,10 @@ class DateValidator extends BaseDateValidator
             throw new UnexpectedTypeException($constraint, Date::class);
         }
 
+        if ($value instanceof \DateTimeInterface) {
+            return;
+        }
+        
         parent::validate($value, $constraint);
 
         foreach ($this->context->getViolations() as $key => $violation) {

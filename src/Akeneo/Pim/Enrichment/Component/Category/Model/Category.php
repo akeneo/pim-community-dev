@@ -15,7 +15,7 @@ use Gedmo\Mapping\Annotation as Gedmo;
  * @author    Romain Monceau <romain@akeneo.com>
  * @copyright 2013 Akeneo SAS (http://www.akeneo.com)
  * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
- *            
+ *
  * @Gedmo\Tree(type="nested")
  */
 class Category extends BaseCategory implements CategoryInterface
@@ -40,9 +40,13 @@ class Category extends BaseCategory implements CategoryInterface
     /** @var ArrayCollection of Channel */
     protected $channels;
 
-    /** @var \DateTime */
+    /**
+     * @var \DateTime
+     * @Gedmo\Timestampable(on="create")
+     */
     protected $created;
 
+    /** @Gedmo\Timestampable(on="change", field={"parent"}) */
     private \DateTime $updated;
 
     /** @Gedmo\TreeLeft */
@@ -54,7 +58,7 @@ class Category extends BaseCategory implements CategoryInterface
     /** @Gedmo\TreeRoot */
     protected int $root;
     /** @Gedmo\TreeParent */
-    protected BaseCategoryInterface $parent;
+    protected ?BaseCategoryInterface $parent = null;
 
     public function __construct()
     {

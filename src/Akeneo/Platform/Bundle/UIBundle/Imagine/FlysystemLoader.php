@@ -7,7 +7,7 @@ use Akeneo\Tool\Component\FileStorage\Repository\FileInfoRepositoryInterface;
 use Liip\ImagineBundle\Binary\Loader\LoaderInterface;
 use Liip\ImagineBundle\Exception\Binary\Loader\NotLoadableException;
 use Liip\ImagineBundle\Model\Binary;
-use Symfony\Component\HttpFoundation\File\MimeType\MimeTypeGuesser;
+use Symfony\Component\Mime\MimeTypes;
 
 /**
  * Image loader for Flysystem
@@ -18,14 +18,9 @@ use Symfony\Component\HttpFoundation\File\MimeType\MimeTypeGuesser;
  */
 class FlysystemLoader implements LoaderInterface
 {
-    /** @var FilesystemProvider */
-    protected $filesystemProvider;
-
-    /** @var string */
-    protected $filesystemAliases;
-
-    /** @var FileInfoRepositoryInterface */
-    protected $fileInfoRepository;
+    protected FilesystemProvider $filesystemProvider;
+    protected array $filesystemAliases;
+    protected FileInfoRepositoryInterface $fileInfoRepository;
 
     public function __construct(
         FilesystemProvider $filesystemProvider,
@@ -107,16 +102,13 @@ class FlysystemLoader implements LoaderInterface
      * The file can have been stored locally, for example when we upload an image in the product
      * edit form, it is temporary stored in /tmp/pim/file_storage/xxx
      *
-     * @param string $path
-     *
-     * @throws NotLoadableException
-     *
      * @return Binary|string
+     * @throws NotLoadableException
      */
-    protected function retrieveContentFileFromLocal($path)
+    protected function retrieveContentFileFromLocal(string $path)
     {
         $content = file_get_contents($path);
-        $mimeType = MimeTypeGuesser::getInstance()->guess($path);
+        $mimeType = (new MimeTypes())->guessMimeType($path);
 
         if (false === $content) {
             throw new NotLoadableException(sprintf('Unable to read the file "%s".', $path));

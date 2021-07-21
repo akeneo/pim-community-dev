@@ -9,7 +9,7 @@ use Symfony\Component\DependencyInjection\ContainerInterface;
 
 final class Version_6_0_20210531152335_dqi_launch_recompute_products_scores extends AbstractMigration  implements ContainerAwareInterface
 {
-    private ContainerInterface $container;
+    private ?ContainerInterface $container;
 
     public function up(Schema $schema) : void
     {
