@@ -32,7 +32,8 @@
             "Akeneo\\Connectivity\\Connection\\Tests\\": "vendor/akeneo/pim-community-dev/src/Akeneo/Connectivity/Connection/back/tests",
             "Akeneo\\Connectivity\\Connection\\Tests\\EndToEnd\\": "vendor/akeneo/pim-community-dev/src/Akeneo/Connectivity/Connection/tests/",
             "Pim\\Upgrade\\Schema\\Tests\\": "vendor/akeneo/pim-community-dev/upgrades/test_schema/",
-            "Akeneo\\Platform\\CommunicationChannel\\Test\\": "vendor/akeneo/pim-community-dev/src/Akeneo/Platform/Bundle/CommunicationChannelBundle/back/tests"
+            "Akeneo\\Platform\\CommunicationChannel\\Test\\": "vendor/akeneo/pim-community-dev/src/Akeneo/Platform/Bundle/CommunicationChannelBundle/back/tests",
+            "Akeneo\\Test\\FreeTrial\\": "src/Akeneo/FreeTrial/tests/back"
         }
     },
     "require": {

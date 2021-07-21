@@ -15,6 +15,7 @@ services:
     volumes:
       - './:/srv/pim'
       - '${HOST_COMPOSER_HOME:-~/.composer}:/var/www/.composer'
+      - '../grth:/srv/grth'
     working_dir: '/srv/pim'
     command: 'php'
     init: true
@@ -36,6 +37,7 @@ services:
     volumes:
       - './:/srv/pim'
       - './docker/fpm.conf:/etc/php/7.4/fpm/pool.d/zzz-akeneo.conf'
+      - '../grth:/srv/grth'
     working_dir: '/srv/pim'
     command: 'php-fpm -F'
     networks:
