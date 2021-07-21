@@ -79,7 +79,7 @@ test('it does not display the channel, locale and operator selectors depending i
       filter={{
         field: 'quality_score_multi_locales',
         operator: null,
-        value: null,
+        value: [],
       }}
       onChange={() => {}}
       validationErrors={[]}
@@ -101,7 +101,7 @@ test('it displays the channel, locale and operator selectors depending if a qual
       filter={{
         field: 'quality_score_multi_locales',
         operator: 'IN AT LEAST ONE LOCALE',
-        value: 1,
+        value: [1],
       }}
       onChange={() => {}}
       validationErrors={[]}
@@ -122,7 +122,7 @@ test('when a quality score is selected, the operator, channel and locale selecto
       filter={{
         field: 'quality_score_multi_locales',
         operator: null,
-        value: null,
+        value: [],
       }}
       onChange={handleFilterChange}
       validationErrors={[]}
@@ -135,7 +135,7 @@ test('when a quality score is selected, the operator, channel and locale selecto
   expect(handleFilterChange).toHaveBeenCalledWith({
     field: 'quality_score_multi_locales',
     operator: 'IN AT LEAST ONE LOCALE',
-    value: 1,
+    value: [1],
     context: {
       scope: 'ecommerce', // first channel in the list
       locales: ['en_US', 'fr_FR', 'br_FR'], // All locales of the channel 'ecommerce'
@@ -151,7 +151,7 @@ test('it can switch operator', () => {
       filter={{
         field: 'quality_score_multi_locales',
         operator: 'IN AT LEAST ONE LOCALE',
-        value: 1,
+        value: [1],
       }}
       onChange={handleFilterChange}
       validationErrors={[]}
@@ -164,7 +164,7 @@ test('it can switch operator', () => {
   expect(handleFilterChange).toHaveBeenCalledWith({
     field: 'quality_score_multi_locales',
     operator: 'IN ALL LOCALES',
-    value: 1,
+    value: [1],
   });
 });
 
@@ -176,7 +176,7 @@ test('it can switch channel and initializes the locales value with all locales a
       filter={{
         field: 'quality_score_multi_locales',
         operator: 'IN AT LEAST ONE LOCALE',
-        value: 1,
+        value: [1],
       }}
       onChange={handleFilterChange}
       validationErrors={[]}
@@ -189,7 +189,7 @@ test('it can switch channel and initializes the locales value with all locales a
   expect(handleFilterChange).toHaveBeenCalledWith({
     field: 'quality_score_multi_locales',
     operator: 'IN AT LEAST ONE LOCALE',
-    value: 1,
+    value: [1],
     context: {
       scope: 'print',
       locales: ['en_US', 'fr_FR'],
@@ -205,7 +205,7 @@ test('it filters the locales that do not belong to a channel when the channel ch
       filter={{
         field: 'quality_score_multi_locales',
         operator: 'IN AT LEAST ONE LOCALE',
-        value: 1,
+        value: [1],
         context: {
           scope: 'ecommerce',
           locales: ['fr_FR', 'br_FR'],
@@ -222,7 +222,7 @@ test('it filters the locales that do not belong to a channel when the channel ch
   expect(handleFilterChange).toHaveBeenCalledWith({
     field: 'quality_score_multi_locales',
     operator: 'IN AT LEAST ONE LOCALE',
-    value: 1,
+    value: [1],
     context: {
       scope: 'print',
       locales: ['en_US', 'fr_FR'],
@@ -238,7 +238,7 @@ test('it can switch locales', () => {
       filter={{
         field: 'quality_score_multi_locales',
         operator: 'IN AT LEAST ONE LOCALE',
-        value: 1,
+        value: [1],
         context: {
           scope: 'ecommerce',
           locales: ['fr_FR'],
@@ -255,7 +255,7 @@ test('it can switch locales', () => {
   expect(handleFilterChange).toHaveBeenCalledWith({
     field: 'quality_score_multi_locales',
     operator: 'IN AT LEAST ONE LOCALE',
-    value: 1,
+    value: [1],
     context: {
       scope: 'ecommerce',
       locales: ['fr_FR', 'br_FR'],
@@ -263,7 +263,7 @@ test('it can switch locales', () => {
   });
 });
 
-test('when the user switch the quality score to null it removes the context and the operator', () => {
+test('when the user switch resets the quality score it removes the context and the operator', () => {
   const handleFilterChange = jest.fn();
   renderWithProviders(
     <QualityScoreFilter
@@ -271,7 +271,7 @@ test('when the user switch the quality score to null it removes the context and 
       filter={{
         field: 'quality_score_multi_locales',
         operator: 'IN AT LEAST ONE LOCALE',
-        value: 1,
+        value: [1],
       }}
       onChange={handleFilterChange}
       validationErrors={[]}
@@ -279,12 +279,12 @@ test('when the user switch the quality score to null it removes the context and 
   );
 
   userEvent.click(screen.getByText('pim_enrich.export.product.filter.quality-score.title'));
-  userEvent.click(screen.getByText('pim_enrich.export.product.filter.quality-score.empty_selection'));
+  userEvent.click(screen.getByTitle('akeneo.tailored_export.filters.quality_score.quality_score.remove'));
 
   expect(handleFilterChange).toHaveBeenCalledWith({
     field: 'quality_score_multi_locales',
     operator: null,
-    value: null,
+    value: [],
   });
 });
 
@@ -300,7 +300,7 @@ test('it displays validation errors', () => {
       filter={{
         field: 'quality_score_multi_locales',
         operator: 'IN AT LEAST ONE LOCALE',
-        value: 1,
+        value: [1],
       }}
       onChange={() => {}}
       validationErrors={[

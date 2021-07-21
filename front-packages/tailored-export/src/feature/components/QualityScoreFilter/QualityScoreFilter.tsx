@@ -10,7 +10,7 @@ import {
   ValidationError,
 } from '@akeneo-pim-community/shared';
 import {Operator, OperatorSelector} from './OperatorSelector';
-import {AVAILABLE_QUALITY_SCORES, QualityScores, QualityScoreSelector} from './QualityScoreSelector';
+import {AVAILABLE_QUALITY_SCORES, QualityScore, QualityScores, QualityScoreSelector} from './QualityScoreSelector';
 import {ChannelDropdown} from '../ChannelDropdown';
 import {useChannels} from '../../hooks';
 import {LocalesSelector} from './LocalesSelector';
@@ -72,15 +72,18 @@ const QualityScoreFilter = ({availableOperators, filter, onChange, validationErr
       onChange(resetFilter);
     } else {
       const newScope = filter.context?.scope ?? availableChannels[0].code;
-      const newLocales = getLocalesFromChannel(availableChannels, newScope).map((locale: Locale) => locale.code);
+      const newLocales =
+        filter.context?.locales ??
+        getLocalesFromChannel(availableChannels, newScope).map((locale: Locale) => locale.code);
+      const newOperator = filter.operator ?? 'IN AT LEAST ONE LOCALE';
 
       const newFilter = {
         ...filter,
-        operator: 'IN AT LEAST ONE LOCALE',
-        value: newQualityScores.map((qualityScore: string) => AVAILABLE_QUALITY_SCORES.indexOf(qualityScore) + 1),
+        value: newQualityScores.map((qualityScore: QualityScore) => AVAILABLE_QUALITY_SCORES.indexOf(qualityScore) + 1),
+        operator: newOperator,
         context: {
-          locales: newLocales,
           scope: newScope,
+          locales: newLocales,
         },
       };
       onChange(newFilter);
@@ -91,7 +94,7 @@ const QualityScoreFilter = ({availableOperators, filter, onChange, validationErr
     <Container>
       <QualityScoreSelector
         availableQualityScores={AVAILABLE_QUALITY_SCORES}
-        qualityScore={filter.value.map((qualityScore: number) => AVAILABLE_QUALITY_SCORES[qualityScore - 1])}
+        qualityScores={filter.value.map((qualityScore: number) => AVAILABLE_QUALITY_SCORES[qualityScore - 1])}
         onChange={handleQualityScoreChange}
         validationErrors={valueErrors}
       />

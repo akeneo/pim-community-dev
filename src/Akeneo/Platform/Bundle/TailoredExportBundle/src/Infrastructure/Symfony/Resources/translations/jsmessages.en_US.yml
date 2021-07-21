@@ -10,6 +10,7 @@ akeneo.tailored_export:
     quality_score:
       quality_score:
         label: Quality Score
+        remove: Remove quality score
       locales:
         label: Define the locales for the quality score
   form:

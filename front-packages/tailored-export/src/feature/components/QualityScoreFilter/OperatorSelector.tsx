@@ -4,7 +4,7 @@ import {Field, Helper, SelectInput} from 'akeneo-design-system';
 
 type Operator = string;
 type OperatorSelectorProps = {
-  availableOperators: string[];
+  availableOperators: Operator[];
   operator: Operator;
   onChange: (newOperator: Operator) => void;
   validationErrors: ValidationError[];

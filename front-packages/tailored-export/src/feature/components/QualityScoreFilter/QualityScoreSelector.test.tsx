@@ -6,24 +6,11 @@ import {QualityScoreSelector} from './QualityScoreSelector';
 
 const availableQualityScores = ['NO_CONDITION_ON_QUALITY_SCORE', 'A', 'B', 'C', 'D', 'E'];
 
-test('it displays unselected quality score', () => {
-  renderWithProviders(
-    <QualityScoreSelector
-      availableQualityScores={availableQualityScores}
-      qualityScore="NO_CONDITION_ON_QUALITY_SCORE"
-      onChange={() => {}}
-      validationErrors={[]}
-    />
-  );
-
-  expect(screen.getByText('pim_enrich.export.product.filter.quality-score.empty_selection')).toBeInTheDocument();
-});
-
 test('it displays the selected quality score', () => {
   renderWithProviders(
     <QualityScoreSelector
       availableQualityScores={availableQualityScores}
-      qualityScore="A"
+      qualityScores={['A']}
       onChange={() => {}}
       validationErrors={[]}
     />
@@ -38,7 +25,7 @@ test('it notifies when the quality score is changed', async () => {
   await renderWithProviders(
     <QualityScoreSelector
       availableQualityScores={availableQualityScores}
-      qualityScore="A"
+      qualityScores={['A']}
       onChange={onOperatorChange}
       validationErrors={[]}
     />
@@ -47,7 +34,7 @@ test('it notifies when the quality score is changed', async () => {
   userEvent.click(screen.getByTitle('pim_common.open'));
   userEvent.click(screen.getByText('B'));
 
-  expect(onOperatorChange).toHaveBeenCalledWith('B');
+  expect(onOperatorChange).toHaveBeenCalledWith(['A', 'B']);
 });
 
 test('it displays validations errors if any', async () => {
@@ -56,7 +43,7 @@ test('it displays validations errors if any', async () => {
   await renderWithProviders(
     <QualityScoreSelector
       availableQualityScores={availableQualityScores}
-      qualityScore="A"
+      qualityScores={['A']}
       onChange={() => {}}
       validationErrors={[
         {
