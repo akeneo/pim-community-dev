@@ -183,63 +183,43 @@ jobs:
           root: ~/
           paths:
             - project
-
-
   ##################
   # Build          #
   ##################
   test_tailored_export:
-    parameters:
-      is_pull_request:
-        type: boolean
-        default: true
     machine:
       image: ubuntu-2004:202010-01
     steps:
       - attach_workspace:
-          at: ~/
+            at: ~/
       - run:
           name: Copy docker-compose.override.yml.dist
           command: cp .circleci/docker-compose.override.yml.dist docker-compose.override.yml
       - run:
           name: Build the latest Docker images
           command: |
-            make php-image-dev
-            docker save -o php-pim-image.tar akeneo/pim-dev/php:7.4
+              make php-image-dev
+              docker save -o php-pim-image.tar akeneo/pim-dev/php:7.4
       - run:
           name: Setup tests results folder and log folder
           command: mkdir -p var/tests/phpspec var/tests/csfixer var/logs var/tests/screenshots ~/.cache/yarn ~/.composer
       - run:
           name: Change owner on project dir (default user = circleci (1001) and docker needs uid 1000)
           command: |
-            sudo chown -R 1000:1000 ../project
-            sudo chown -R 1000:1000 ~/.composer
-            sudo chown -R 1000:1000 ~/.cache/yarn
-      - when:
-          condition: << parameters.is_pull_request >>
-          steps:
-            - run:
-                name: Update composer.json if same branch exists in CE
-                command: >
-                  curl --output /dev/null --silent --head --fail
-                  https://github.com/akeneo/pim-community-dev/tree/${CIRCLE_BRANCH} &&
-                  docker-compose run --rm -u www-data:www-data php php
-                  /usr/local/bin/composer require "akeneo/pim-community-dev:dev-${CIRCLE_BRANCH}" --no-update ||
-                  echo "No CE branch $CIRCLE_BRANCH found. I don't touch the composer.json file." &&
-                  docker-compose run --rm -u www-data:www-data -e COMPOSER=grth/composer.json php php
-                  /usr/local/bin/composer require "akeneo/pim-community-dev:dev-${CIRCLE_BRANCH}" --no-update ||
-                  echo "No CE branch $CIRCLE_BRANCH found. I don't touch the GRTH composer.json file."
+              sudo chown -R 1000:1000 ../project
+              sudo chown -R 1000:1000 ~/.composer
+              sudo chown -R 1000:1000 ~/.cache/yarn
       - run:
           name: Install back and front dependencies
           command: make dependencies
           environment:
             YARN_REGISTRY: "http://registry.yarnpkg.com"
-      # - run:
-      #     name: Install assets
-      #     command: make assets
-      # - run:
-      #     name: Build css
-      #     command: make css
+#      - run:
+#          name: Install assets
+#          command: make assets
+#      - run:
+#          name: Build css
+#          command: make css
       - run:
           name: Create hash for front packages
           command: |
@@ -265,12 +245,16 @@ jobs:
       - run:
           name: Build front-packages
           command: make front-packages
-      # - run:
-      #     name: Build Javascript
-      #     command: make javascript-dev
+#      - run:
+#          name: Build Javascript
+#          command: make javascript-dev
       - run:
-          name: Change owner on project dir after installing when there is no cache
-          command: sudo chmod -R 777 ../project
+            name: Change owner on project dir after installing when there is no cache
+            command: sudo chmod -R 777 ../project
+      - persist_to_workspace:
+          root: ~/
+          paths:
+            - project
       ### TAILORED EXPORT TESTS START HERE ##
       ### Skip build javascript, install assets, build css
       - run:
