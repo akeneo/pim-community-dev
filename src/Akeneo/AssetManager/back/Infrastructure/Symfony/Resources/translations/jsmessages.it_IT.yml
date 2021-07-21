@@ -16,7 +16,7 @@ pim_asset_manager:
     add_asset_title: 'Apri il selettore attività per aggiungere attività alla raccolta'
     no_asset_in_collection: 'Spiacenti, non c''è alcuna attività in questa raccolta.'
     helper:
-      title: 'Benvenuto nel tuo nuovissimo spazio di gestione asset prodotto!'
+      title: 'Benvenuto nel tuo nuovissimo spazio di gestione asset di prodotto!'
       text: 'Nessuna raccolta asset presente per questa famiglia. Per partecipare a questa nuova esperienza, basta aggiungere un attributo di raccolta asset nelle impostazioni.'
       link: 'Come aggiungere una raccolta di attività?'
     no_asset:

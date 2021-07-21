@@ -1,5 +1,13 @@
 # 4.0.x
 
+## Bug fixes
+
+- PIM-9968: Fix product (variant included) history not displayed for a read-only user
+
+# 4.0.119 (2021-07-15)
+
+## Bug fixes
+
 - PIM-9964: Fix buffer size error on get rules by adding an index on code.
 
 # 4.0.118 (2021-07-07)
