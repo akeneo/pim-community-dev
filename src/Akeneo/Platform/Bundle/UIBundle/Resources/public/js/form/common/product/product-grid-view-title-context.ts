@@ -11,20 +11,36 @@ type CurrentView = {
   filters: string;
 };
 
+type ProjectDetails = {
+  dueDateLabel: string;
+  dueDate: string;
+  completionRatio: number;
+  badgeClass: string;
+};
+
 class ProductGridViewTitleContext extends BaseView {
   private currentView: CurrentView;
+  private projectDetails: ProjectDetails;
 
   /**
    * {@inheritdoc}
    */
   configure() {
     mediator.on('grid:view:selected', this.onGridViewSelected.bind(this));
+    mediator.on('grid:project:selected', this.onGridProjectSelected.bind(this));
 
     return super.configure();
   }
 
-  onGridViewSelected(view: any) {
+  onGridViewSelected(view: CurrentView) {
     this.currentView = view;
+    this.render();
+  }
+
+  onGridProjectSelected(project: CurrentView, projectDetails: ProjectDetails) {
+    this.currentView = project;
+    this.projectDetails = projectDetails;
+
     this.render();
   }
 
@@ -36,7 +52,11 @@ class ProductGridViewTitleContext extends BaseView {
       return this;
     }
 
-    this.renderReact(ProductGridViewTitle, {type: this.currentView.type, children: this.currentView.text}, this.el);
+    this.renderReact(
+      ProductGridViewTitle,
+      {type: this.currentView.type, projectDetails: this.projectDetails, children: this.currentView.text},
+      this.el
+    );
 
     return this;
   }

@@ -4,16 +4,25 @@ import {useTranslate} from '@akeneo-pim-community/shared';
 
 type Props = {
   type: string;
+  projectDetails?: ProjectDetails;
   children: string;
 };
 
-const ProductGridViewTitle = ({type, children}: Props) => {
+type ProjectDetails = {
+  dueDateLabel: string;
+  dueDate: string;
+  completionRatio: number;
+  badgeClass: string;
+};
+
+const ProductGridViewTitle = ({type, projectDetails, children}: Props) => {
   const translate = useTranslate();
 
   return (
     <ContextContainer>
       <ViewNameContainer>{children}</ViewNameContainer>
       {type === 'public' || type === 'view' ? ` (${translate('pim_common.public_view')})` : null}
+      {projectDetails && `${projectDetails.dueDateLabel}: ${projectDetails.dueDate}`}
     </ContextContainer>
   );
 };
