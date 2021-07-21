@@ -1,3 +1,0 @@
-parameters:
-    # Maximum number of measurement family to process in a single API request
-    maximum_measurement_families: 100
