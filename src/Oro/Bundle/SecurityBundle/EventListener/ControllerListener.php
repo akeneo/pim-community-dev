@@ -6,27 +6,14 @@ use Doctrine\Common\Util\ClassUtils;
 use Oro\Bundle\SecurityBundle\Exception\AccessDeniedException;
 use Oro\Bundle\SecurityBundle\SecurityFacade;
 use Psr\Log\LoggerInterface;
-use Symfony\Component\HttpKernel\Event\FilterControllerEvent;
+use Symfony\Component\HttpKernel\Event\ControllerEvent;
 use Symfony\Component\HttpKernel\HttpKernelInterface;
 
 class ControllerListener
 {
-    /**
-     * @var SecurityFacade
-     */
-    private $securityFacade;
+    private SecurityFacade $securityFacade;
+    private LoggerInterface $logger;
 
-    /**
-     * @var LoggerInterface
-     */
-    private $logger;
-
-    /**
-     * Constructor
-     *
-     * @param SecurityFacade  $securityFacade
-     * @param LoggerInterface $logger
-     */
     public function __construct(
         SecurityFacade $securityFacade,
         LoggerInterface $logger
@@ -40,11 +27,9 @@ class ControllerListener
      *
      * This method is executed just before any controller action.
      *
-     * @param  FilterControllerEvent $event
-     *
      * @throws AccessDeniedException
      */
-    public function onKernelController(FilterControllerEvent $event)
+    public function onKernelController(ControllerEvent $event)
     {
         $controller = $event->getController();
         /*
@@ -52,7 +37,7 @@ class ControllerListener
          * If it is a class, it comes in array format
          */
         if (is_array($controller)) {
-            list($object, $method) = $controller;
+            [$object, $method] = $controller;
             $controllerClass = ClassUtils::getClass($object);
 
             $this->logger->debug(

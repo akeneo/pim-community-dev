@@ -9,7 +9,7 @@ use Oro\Bundle\SecurityBundle\Metadata\AclAnnotationProvider;
 use Oro\Bundle\SecurityBundle\SecurityFacade;
 use Oro\Bundle\SecurityBundle\Tests\Unit\Acl\Domain\Fixtures\TestDomainObject;
 use Symfony\Component\HttpFoundation\Request;
-use Symfony\Component\HttpKernel\Event\FilterControllerEvent;
+use Symfony\Component\HttpKernel\Event\ControllerEvent;
 use Symfony\Component\HttpKernel\HttpKernelInterface;
 use Symfony\Component\Security\Acl\Domain\ObjectIdentity;
 
@@ -33,7 +33,7 @@ class ControllerListenerTest extends \PHPUnit_Framework_TestCase
     /** @var ControllerListener */
     protected $listener;
 
-    /** @var FilterControllerEvent */
+    /** @var ControllerEvent */
     protected $event;
 
     protected function setUp(): void
@@ -62,7 +62,7 @@ class ControllerListenerTest extends \PHPUnit_Framework_TestCase
 
     public function testInterceptWithNoAnnotation()
     {
-        $event = new FilterControllerEvent(
+        $event = new ControllerEvent(
             $this->createMock('Symfony\Component\HttpKernel\HttpKernelInterface'),
             [new TestDomainObject(), $this->methodName],
             $this->request,
@@ -91,7 +91,7 @@ class ControllerListenerTest extends \PHPUnit_Framework_TestCase
 
     public function testInterceptAccessGranted()
     {
-        $event = new FilterControllerEvent(
+        $event = new ControllerEvent(
             $this->createMock('Symfony\Component\HttpKernel\HttpKernelInterface'),
             [new TestDomainObject(), $this->methodName],
             $this->request,
@@ -139,7 +139,7 @@ class ControllerListenerTest extends \PHPUnit_Framework_TestCase
 
     public function testInterceptAccessGrantedWithIgnoreClassAcl()
     {
-        $event = new FilterControllerEvent(
+        $event = new ControllerEvent(
             $this->createMock('Symfony\Component\HttpKernel\HttpKernelInterface'),
             [new TestDomainObject(), $this->methodName],
             $this->request,
@@ -172,7 +172,7 @@ class ControllerListenerTest extends \PHPUnit_Framework_TestCase
 
     public function testInterceptAccessGrantedWithoutClassAcl()
     {
-        $event = new FilterControllerEvent(
+        $event = new ControllerEvent(
             $this->createMock('Symfony\Component\HttpKernel\HttpKernelInterface'),
             [new TestDomainObject(), $this->methodName],
             $this->request,
@@ -212,7 +212,7 @@ class ControllerListenerTest extends \PHPUnit_Framework_TestCase
 
     public function testInterceptAccessGrantedByClassAcl()
     {
-        $event = new FilterControllerEvent(
+        $event = new ControllerEvent(
             $this->createMock('Symfony\Component\HttpKernel\HttpKernelInterface'),
             [new TestDomainObject(), $this->methodName],
             $this->request,
@@ -253,7 +253,7 @@ class ControllerListenerTest extends \PHPUnit_Framework_TestCase
      */
     public function testInterceptAccessDeniedByClassAcl()
     {
-        $event = new FilterControllerEvent(
+        $event = new ControllerEvent(
             $this->createMock('Symfony\Component\HttpKernel\HttpKernelInterface'),
             [new TestDomainObject(), $this->methodName],
             $this->request,
@@ -304,7 +304,7 @@ class ControllerListenerTest extends \PHPUnit_Framework_TestCase
      */
     public function testInterceptAccessDeniedByMethodAcl()
     {
-        $event = new FilterControllerEvent(
+        $event = new ControllerEvent(
             $this->createMock('Symfony\Component\HttpKernel\HttpKernelInterface'),
             [new TestDomainObject(), $this->methodName],
             $this->request,
@@ -340,7 +340,7 @@ class ControllerListenerTest extends \PHPUnit_Framework_TestCase
      */
     public function testInterceptAccessDenied()
     {
-        $event = new FilterControllerEvent(
+        $event = new ControllerEvent(
             $this->createMock('Symfony\Component\HttpKernel\HttpKernelInterface'),
             [new TestDomainObject(), $this->methodName],
             $this->request,
@@ -372,7 +372,7 @@ class ControllerListenerTest extends \PHPUnit_Framework_TestCase
 
     public function testInterceptAccessDeniedForInternalAction()
     {
-        $event = new FilterControllerEvent(
+        $event = new ControllerEvent(
             $this->createMock('Symfony\Component\HttpKernel\HttpKernelInterface'),
             [new TestDomainObject(), $this->methodName],
             $this->request,

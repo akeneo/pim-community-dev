@@ -2,6 +2,7 @@
 
 namespace Akeneo\UserManagement\Bundle\Controller;
 
+use Doctrine\ORM\Mapping as ORM;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\Security\Csrf\CsrfTokenManagerInterface;
@@ -10,20 +11,11 @@ use Symfony\Component\Security\Http\Logout\LogoutUrlGenerator;
 
 class SecurityController extends AbstractController
 {
-    /** @var AuthenticationUtils */
-    private $authenticationUtils;
-
-    /** @var CsrfTokenManagerInterface */
-    private $csrfTokenManager;
-
-    /** @var string */
-    private $actionRoute;
-
-    /** @var string */
-    private $additionalHiddenFields;
-
-    /** @var LogoutUrlGenerator */
-    private $logoutUrlGenerator;
+    private AuthenticationUtils $authenticationUtils;
+    private CsrfTokenManagerInterface $csrfTokenManager;
+    private string $actionRoute;
+    private array $additionalHiddenFields;
+    private LogoutUrlGenerator $logoutUrlGenerator;
 
     public function __construct(
         AuthenticationUtils $authenticationUtils,
@@ -40,7 +32,7 @@ class SecurityController extends AbstractController
     }
 
     /**
-     * @Template("PimUserBundle:Security:login.html.twig")
+     * @Template("@PimUser/Security/login.html.twig")
      */
     public function login()
     {
