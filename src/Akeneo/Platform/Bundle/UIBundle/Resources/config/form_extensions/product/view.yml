@@ -184,6 +184,15 @@ extensions:
         targetZone: container
         position: 120
 
+    pimee-product-view-form-history:
+        module: pim/product-edit-form/history
+        parent: pimee-product-view-column-tabs
+        targetZone: container
+        aclResourceId: pim_enrich_product_history
+        position: 140
+        config:
+            tabCode: pim-product-edit-form-history
+
     pimee-product-view-comments:
         module: pim/product-edit-form/comments
         parent: pimee-product-view-column-tabs
