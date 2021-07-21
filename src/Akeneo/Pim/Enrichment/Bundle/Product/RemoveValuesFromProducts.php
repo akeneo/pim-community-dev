@@ -43,7 +43,7 @@ class RemoveValuesFromProducts
         $paths = implode(
             ',',
             array_map(
-                fn($attributeCode) => $this->connection->quote(sprintf('$."%s"', $attributeCode)),
+                fn ($attributeCode) => $this->connection->quote(sprintf('$."%s"', $attributeCode)),
                 $attributeCodes
             )
         );

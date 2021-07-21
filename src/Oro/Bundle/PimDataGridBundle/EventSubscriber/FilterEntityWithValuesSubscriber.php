@@ -7,8 +7,8 @@ namespace Oro\Bundle\PimDataGridBundle\EventSubscriber;
 use Akeneo\Pim\Enrichment\Component\Product\Model\EntityWithFamilyInterface;
 use Akeneo\Pim\Enrichment\Component\Product\Model\EntityWithValuesInterface;
 use Doctrine\Common\EventSubscriber;
-use Doctrine\Persistence\Event\LifecycleEventArgs;
 use Doctrine\ORM\Events;
+use Doctrine\Persistence\Event\LifecycleEventArgs;
 
 /**
  * Aims to filter raw values field (JSON array) when an entity with values is loaded by Doctrine.

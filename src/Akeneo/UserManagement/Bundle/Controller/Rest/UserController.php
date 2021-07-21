@@ -483,7 +483,7 @@ class UserController
                     ''
                 )
             );
-            // We have to use `strlen` here because Symfony's BasePasswordEncoder will check
+        // We have to use `strlen` here because Symfony's BasePasswordEncoder will check
             // the actual byte count when trying to encode it with salt.
             // See: Symfony\Component\Security\Core\Encoder\BasePasswordEncoder
         } elseif (self::PASSWORD_MAXIMUM_LENGTH < strlen($password)) {

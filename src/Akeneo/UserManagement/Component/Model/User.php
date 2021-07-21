@@ -629,7 +629,7 @@ class User implements UserInterface
      */
     public function getRoles(): array
     {
-        return $this->roles->map(fn(RoleInterface $role): string => $role->getRole())->getValues();
+        return $this->roles->map(fn (RoleInterface $role): string => $role->getRole())->getValues();
     }
 
     /**

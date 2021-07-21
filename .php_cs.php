@@ -1,14 +1,16 @@
 <?php
 
-return PhpCsFixer\Config::create()
-    ->setRules(array(
-        '@PSR2' => true,
-        'linebreak_after_opening_tag' => true,
-        'ordered_imports' => true,
-        'method_argument_space' => [
-            'ensure_fully_multiline' => false
-        ],
-    ))
+return (new PhpCsFixer\Config())
+    ->setRules(
+        [
+            '@PSR2' => true,
+            'linebreak_after_opening_tag' => true,
+            'ordered_imports' => true,
+            'method_argument_space' => [
+                'on_multiline' => 'ignore',
+            ],
+        ]
+    )
     ->setCacheFile('var/php_cs.cache')
     ->setFinder(
         PhpCsFixer\Finder::create()
