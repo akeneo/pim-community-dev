@@ -15,10 +15,8 @@ define([
   'pim/datagrid/state',
   'pim/fetcher-registry',
   'backbone',
-  'pim/date-context',
-  'pim/formatter/date',
   'oro/mediator',
-], function($, _, __, ViewSelector, DatagridState, FetcherRegistry, Backbone, DateContext, DateFormatter, mediator) {
+], function($, _, __, ViewSelector, DatagridState, FetcherRegistry, Backbone, mediator) {
   return ViewSelector.extend({
     hasNoProject: false,
 
@@ -168,13 +166,23 @@ define([
         return FetcherRegistry.getFetcher('project')
           .fetch(view.label)
           .then(project => {
-            var dateFormat = DateContext.get('date').format;
-
             view.text = project.label;
-            view.dueDateLabel = __('teamwork_assistant.project.due_date');
-            view.dueDate = DateFormatter.format(project.due_date, 'yyyy-MM-dd', dateFormat);
-            view.completionRatio = Math.round(project.completeness.ratio_done);
+
+            let badgeClass = 'AknBadge--warning';
+            if (project.completeness.ratio_done === 0) {
+              badgeClass = 'AknBadge--invalid';
+            } else if (project.completeness.ratio_done === 100) {
+              badgeClass = 'AknBadge--success';
+            }
+
+            const projectDetails = {
+              dueDateLabel: __('teamwork_assistant.project.due_date'),
+              dueDate: project.due_date,
+              completionRatio: project.completeness.ratio_done,
+              badgeClass: badgeClass
+            }
             this.trigger('grid:view-selector:project-selected', project);
+            mediator.trigger('grid:project:selected', view, projectDetails);
 
             return view;
           });
