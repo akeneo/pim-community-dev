@@ -10,11 +10,8 @@ class Configuration implements ConfigurationInterface
     /**
      * {@inheritDoc}
      */
-    public function getConfigTreeBuilder()
+    public function getConfigTreeBuilder(): TreeBuilder
     {
-        $treeBuilder = new TreeBuilder();
-        $treeBuilder->root('oro_data_grid');
-
-        return $treeBuilder;
+        return new TreeBuilder('oro_data_grid');
     }
 }

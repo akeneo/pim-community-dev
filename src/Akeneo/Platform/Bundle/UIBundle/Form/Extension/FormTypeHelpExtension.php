@@ -39,11 +39,8 @@ class FormTypeHelpExtension extends AbstractTypeExtension
         $resolver->setDefined(['help', 'info']);
     }
 
-    /**
-     * {@inheritdoc}
-     */
-    public function getExtendedType()
+    public static function getExtendedTypes(): iterable
     {
-        return FormType::class;
+        return [FormType::class];
     }
 }

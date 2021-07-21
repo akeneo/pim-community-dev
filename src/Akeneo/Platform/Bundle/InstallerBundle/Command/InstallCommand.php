@@ -24,9 +24,7 @@ class InstallCommand extends Command
 
     /** @var CommandExecutor */
     private $commandExecutor;
-
-    /** @var InstallStatusManager */
-    private $installStatusManager;
+    private InstallStatusManager $installStatusManager;
 
     public function __construct(InstallStatusManager $installStatusManager)
     {
@@ -67,7 +65,7 @@ class InstallCommand extends Command
     /**
      * {@inheritdoc}
      */
-    protected function execute(InputInterface $input, OutputInterface $output)
+    protected function execute(InputInterface $input, OutputInterface $output): int
     {
         $forceInstall = $input->getOption('force');
 
@@ -93,7 +91,7 @@ class InstallCommand extends Command
         $output->writeln('');
         $output->writeln('<info>Akeneo PIM Application has been successfully installed.</info>');
 
-        return 0;
+        return Command::SUCCESS;
     }
 
     /**

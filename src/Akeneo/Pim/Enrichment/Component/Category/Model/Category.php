@@ -3,9 +3,11 @@
 namespace Akeneo\Pim\Enrichment\Component\Category\Model;
 
 use Akeneo\Tool\Component\Classification\Model\Category as BaseCategory;
+use Akeneo\Tool\Component\Classification\Model\CategoryInterface as BaseCategoryInterface;
 use Akeneo\Tool\Component\Localization\Model\TranslationInterface;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
+use Gedmo\Mapping\Annotation as Gedmo;
 
 /**
  * Category class allowing to organize a flexible product class into trees
@@ -13,6 +15,8 @@ use Doctrine\Common\Collections\Collection;
  * @author    Romain Monceau <romain@akeneo.com>
  * @copyright 2013 Akeneo SAS (http://www.akeneo.com)
  * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
+ *            
+ * @Gedmo\Tree(type="nested")
  */
 class Category extends BaseCategory implements CategoryInterface
 {
@@ -40,6 +44,17 @@ class Category extends BaseCategory implements CategoryInterface
     protected $created;
 
     private \DateTime $updated;
+
+    /** @Gedmo\TreeLeft */
+    protected int $left;
+    /** @Gedmo\TreeLevel */
+    protected int $level;
+    /** @Gedmo\TreeRight */
+    protected int $right;
+    /** @Gedmo\TreeRoot */
+    protected int $root;
+    /** @Gedmo\TreeParent */
+    protected BaseCategoryInterface $parent;
 
     public function __construct()
     {

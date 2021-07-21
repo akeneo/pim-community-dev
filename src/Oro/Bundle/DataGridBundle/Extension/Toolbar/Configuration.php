@@ -10,11 +10,11 @@ class Configuration implements ConfigurationInterface
     /**
      * {@inheritDoc}
      */
-    public function getConfigTreeBuilder()
+    public function getConfigTreeBuilder(): TreeBuilder
     {
-        $builder = new TreeBuilder();
+        $builder = new TreeBuilder('toolbarOptions');
 
-        $builder->root('toolbarOptions')
+        $builder->getRootNode()
             ->children()
                 ->booleanNode('hide')->defaultFalse()->end()
                 ->arrayNode('pageSize')->addDefaultsIfNotSet()

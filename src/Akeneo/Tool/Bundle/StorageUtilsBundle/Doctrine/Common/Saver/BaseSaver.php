@@ -5,8 +5,8 @@ namespace Akeneo\Tool\Bundle\StorageUtilsBundle\Doctrine\Common\Saver;
 use Akeneo\Tool\Component\StorageUtils\Saver\BulkSaverInterface;
 use Akeneo\Tool\Component\StorageUtils\Saver\SaverInterface;
 use Akeneo\Tool\Component\StorageUtils\StorageEvents;
-use Doctrine\Common\Persistence\ObjectManager;
 use Doctrine\Common\Util\ClassUtils;
+use Doctrine\Persistence\ObjectManager;
 use Symfony\Component\EventDispatcher\EventDispatcherInterface;
 use Symfony\Component\EventDispatcher\GenericEvent;
 
@@ -19,24 +19,14 @@ use Symfony\Component\EventDispatcher\GenericEvent;
  */
 class BaseSaver implements SaverInterface, BulkSaverInterface
 {
-    /** @var ObjectManager */
-    protected $objectManager;
+    protected ObjectManager $objectManager;
+    protected EventDispatcherInterface $eventDispatcher;
+    protected string $savedClass;
 
-    /** @var EventDispatcherInterface */
-    protected $eventDispatcher;
-
-    /** @var string */
-    protected $savedClass;
-
-    /**
-     * @param ObjectManager                  $objectManager
-     * @param EventDispatcherInterface       $eventDispatcher
-     * @param string                         $savedClass
-     */
     public function __construct(
         ObjectManager $objectManager,
         EventDispatcherInterface $eventDispatcher,
-        $savedClass
+        string $savedClass
     ) {
         $this->objectManager = $objectManager;
         $this->eventDispatcher = $eventDispatcher;

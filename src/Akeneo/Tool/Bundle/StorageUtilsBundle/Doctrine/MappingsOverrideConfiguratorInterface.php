@@ -2,7 +2,7 @@
 
 namespace Akeneo\Tool\Bundle\StorageUtilsBundle\Doctrine;
 
-use Doctrine\Common\Persistence\Mapping\ClassMetadata;
+use Doctrine\Persistence\Mapping\ClassMetadata;
 
 /**
  * Configure the mappings of the metadata classes that are override.
@@ -24,12 +24,6 @@ interface MappingsOverrideConfiguratorInterface
      *      ['original' => 'Foo\Bar\Model', 'override' => 'Acme\Bar\Model'],
      *      ['original' => 'Foo\Baz\Model', 'override' => 'Acme\Baz\Model'],
      *  ]
-     *
-     * @param ClassMetadata $metadata
-     * @param mixed         $configuration
-     * @param array         $mappingOverrides
-     *
-     * @return ClassMetadata
      */
-    public function configure(ClassMetadata $metadata, array $mappingOverrides, $configuration);
+    public function configure(ClassMetadata $metadata, array $mappingOverrides, $configuration): ClassMetadata;
 }

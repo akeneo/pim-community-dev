@@ -3,7 +3,7 @@
 namespace Akeneo\Tool\Component\Api\Repository;
 
 use Akeneo\Tool\Component\StorageUtils\Repository\IdentifiableObjectRepositoryInterface;
-use Doctrine\Common\Persistence\ObjectRepository;
+use Doctrine\Persistence\ObjectRepository;
 
 /**
  * This interface should be used for simple entities on the API,

@@ -4,7 +4,6 @@ fos_rest:
         - { path: ^/(?!_profiler|_wdt) }
     view:
         failed_validation: HTTP_BAD_REQUEST
-        default_engine: php
         formats:
             json: true
         mime_types:
@@ -17,8 +16,6 @@ fos_rest:
     body_listener:
         decoders:
             json: fos_rest.decoder.json
-    routing_loader:
-        default_format: json
     exception:
         messages:
             Symfony\Component\HttpKernel\Exception\ConflictHttpException: true

@@ -20,9 +20,9 @@ class Configuration implements ConfigurationInterface
      */
     public function getConfigTreeBuilder()
     {
-        $treeBuilder = new TreeBuilder();
+        $treeBuilder = new TreeBuilder('pim_notification');
         $rootNode = $treeBuilder
-            ->root('pim_notification')
+            ->getRootNode()
             ->children()
                 ->booleanNode('version_update')
                     ->defaultTrue()

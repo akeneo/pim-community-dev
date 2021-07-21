@@ -3,10 +3,11 @@
 namespace Akeneo\Tool\Bundle\StorageUtilsBundle\Doctrine\ORM;
 
 use Akeneo\Tool\Bundle\StorageUtilsBundle\Doctrine\MappingsOverrideConfiguratorInterface;
-use Doctrine\Common\Persistence\Mapping\ClassMetadata;
 use Doctrine\ORM\Configuration;
 use Doctrine\ORM\Mapping\ClassMetadata as OrmClassMetadata;
 use Doctrine\ORM\Mapping\ClassMetadataInfo;
+use Doctrine\Persistence\Mapping\ClassMetadata;
+use InvalidArgumentException;
 
 /**
  * Configure the ORM mappings of the metadata classes.
@@ -26,15 +27,15 @@ class MappingsOverrideConfigurator implements MappingsOverrideConfiguratorInterf
     /**
      * {@inheritdoc}
      */
-    public function configure(ClassMetadata $metadata, array $mappingOverrides, $configuration)
+    public function configure(ClassMetadata $metadata, array $mappingOverrides, $configuration): ClassMetadata
     {
         if (!$metadata instanceof ClassMetadataInfo) {
-            throw new \InvalidArgumentException(
+            throw new InvalidArgumentException(
                 'This configurator only handles "Doctrine\ORM\Mapping\ClassMetadataInfo".'
             );
         }
         if (!$configuration instanceof Configuration) {
-            throw new \InvalidArgumentException(
+            throw new InvalidArgumentException(
                 'This configurator only handles "Doctrine\ORM\Configuration".'
             );
         }

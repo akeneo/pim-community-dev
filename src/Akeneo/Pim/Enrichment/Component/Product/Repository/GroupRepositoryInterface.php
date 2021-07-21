@@ -3,7 +3,7 @@
 namespace Akeneo\Pim\Enrichment\Component\Product\Repository;
 
 use Akeneo\Tool\Component\StorageUtils\Repository\IdentifiableObjectRepositoryInterface;
-use Doctrine\Common\Persistence\ObjectRepository;
+use Doctrine\Persistence\ObjectRepository;
 
 /**
  * Group repository interface

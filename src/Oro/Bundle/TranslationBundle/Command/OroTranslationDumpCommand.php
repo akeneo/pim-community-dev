@@ -15,23 +15,12 @@ class OroTranslationDumpCommand extends Command
 {
     protected static $defaultName = 'oro:translation:dump';
 
-    /** @var Controller */
-    private $controller;
-
-    /** @var Filesystem */
-    private $filesystem;
-
-    /** @var string */
-    private $jsTranslationDomains;
-
-    /** @var string */
-    private $rootDir;
-
-    /** @var string */
-    private $defaultLocale;
-
-    /** @var RouterInterface */
-    private $router;
+    private Controller $controller;
+    private Filesystem $filesystem;
+    private array $jsTranslationDomains;
+    private string $rootDir;
+    private string $defaultLocale;
+    private RouterInterface $router;
 
     public function __construct(
         Controller $controller,
@@ -75,7 +64,7 @@ class OroTranslationDumpCommand extends Command
     /**
      * {@inheritdoc}
      */
-    protected function execute(InputInterface $input, OutputInterface $output)
+    protected function execute(InputInterface $input, OutputInterface $output): int
     {
         $locales = $input->getArgument('locale');
         $locales = null === $locales ? [$this->defaultLocale] : explode(', ', $locales);
@@ -105,5 +94,7 @@ class OroTranslationDumpCommand extends Command
                 throw new \RuntimeException('Unable to write file ' . $target);
             }
         }
+
+        return Command::SUCCESS;
     }
 }

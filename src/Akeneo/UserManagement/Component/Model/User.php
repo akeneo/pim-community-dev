@@ -10,7 +10,6 @@ use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\Inflector\Inflector;
 use Doctrine\Inflector\NoopWordInflector;
-use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\HttpFoundation\File\UploadedFile;
 
 /**
@@ -51,15 +50,8 @@ class User implements UserInterface
     /** @var string */
     protected $nameSuffix;
 
-    /**
-     * Image filename
-     *
-     * @var string
-     */
-    protected $image;
-
-    /** @var FileInfoInterface */
-    protected $avatar;
+    protected ?string $image;
+    protected ?FileInfoInterface $avatar;
 
     /**
      * Image filename
@@ -67,16 +59,8 @@ class User implements UserInterface
      * @var UploadedFile
      */
     protected $imageFile;
-
-    /** @var boolean */
-    protected $enabled = true;
-
-    /**
-     * The salt to use for hashing
-     *
-     * @var string
-     */
-    protected $salt;
+    protected bool $enabled = true;
+    protected string $salt;
 
     /**
      * Encrypted password. Must be persisted.
@@ -138,27 +122,17 @@ class User implements UserInterface
     /** @var ArrayCollection */
     protected $defaultGridViews;
 
-    /** @var bool */
-    protected $emailNotifications = false;
-
-    /** @var array */
-    protected $productGridFilters = [];
+    protected bool $emailNotifications = false;
+    protected array $productGridFilters = [];
 
     /** @var string */
     protected $phone;
 
-    /** @var string */
-    protected $timezone;
-
-    /** @var array $property bag for properties extension */
-    private $properties = [];
-
-    private int $consecutiveAuthenticationFailureCounter=0;
-
-    private ?\DateTime $authenticationFailureResetDate=null;
-
+    protected string $timezone;
+    private array $properties = [];
+    private int $consecutiveAuthenticationFailureCounter = 0;
+    private ?\DateTime $authenticationFailureResetDate = null;
     protected $type = self::TYPE_USER;
-
     private ?string $profile = null;
 
     public function __construct()
@@ -192,14 +166,14 @@ class User implements UserInterface
      */
     public function unserialize($serialized)
     {
-        list(
+        [
             $this->password,
             $this->salt,
             $this->username,
             $this->enabled,
             $this->confirmationToken,
-            $this->id
-        ) = unserialize($serialized);
+            $this->id,
+        ] = unserialize($serialized);
     }
 
     /**
@@ -229,10 +203,16 @@ class User implements UserInterface
     /**
      * {@inheritdoc}
      */
-    public function getUsername()
+    public function getUsername(): string
     {
         return $this->username;
     }
+
+    public function getUserIdentifier(): string
+    {
+        return $this->username;
+    }
+
 
     /**
      * {@inheritdoc}
@@ -287,13 +267,18 @@ class User implements UserInterface
      */
     public function getFullName()
     {
-        return \implode(' ', array_filter([
-            $this->namePrefix,
-            $this->firstName,
-            $this->middleName,
-            $this->lastName,
-            $this->nameSuffix
-        ]));
+        return \implode(
+            ' ',
+            array_filter(
+                [
+                    $this->namePrefix,
+                    $this->firstName,
+                    $this->middleName,
+                    $this->lastName,
+                    $this->nameSuffix,
+                ]
+            )
+        );
     }
 
     /**
@@ -430,7 +415,7 @@ class User implements UserInterface
     public function isPasswordRequestNonExpired($ttl)
     {
         return $this->getPasswordRequestedAt() instanceof \DateTime &&
-               $this->getPasswordRequestedAt()->getTimestamp() + $ttl > time();
+            $this->getPasswordRequestedAt()->getTimestamp() + $ttl > time();
     }
 
     /**
@@ -544,7 +529,7 @@ class User implements UserInterface
      */
     public function setEnabled($enabled)
     {
-        $this->enabled = (boolean) $enabled;
+        $this->enabled = (boolean)$enabled;
 
         return $this;
     }
@@ -644,7 +629,7 @@ class User implements UserInterface
      */
     public function getRoles(): array
     {
-        return $this->roles->map(fn (RoleInterface $role): string => $role->getRole())->getValues();
+        return $this->roles->map(fn(RoleInterface $role): string => $role->getRole())->getValues();
     }
 
     /**
@@ -685,7 +670,7 @@ class User implements UserInterface
             );
         }
 
-        return (bool) $this->getRole($roleName);
+        return (bool)$this->getRole($roleName);
     }
 
     /**
@@ -861,7 +846,7 @@ class User implements UserInterface
      */
     public function __toString()
     {
-        return (string) $this->getUsername();
+        return (string)$this->getUsername();
     }
 
     /**
@@ -903,7 +888,7 @@ class User implements UserInterface
 
         $suffix = $this->getCreatedAt() ? $this->getCreatedAt()->format('Y-m') : date('Y-m');
 
-        return ($forWeb ? $ds : '').'uploads'.$ds.'users'.$ds.$suffix;
+        return ($forWeb ? $ds : '') . 'uploads' . $ds . 'users' . $ds . $suffix;
     }
 
     /**
@@ -1214,5 +1199,10 @@ class User implements UserInterface
     public function setProfile(?string $profile): void
     {
         $this->profile = '' === $profile ? null : $profile;
+    }
+
+    public function __call($name, $arguments)
+    {
+        // TODO: Implement @method string getUserIdentifier()
     }
 }

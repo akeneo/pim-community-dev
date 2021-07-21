@@ -19,10 +19,10 @@ class Configuration implements ConfigurationInterface
      */
     public function getConfigTreeBuilder()
     {
-        $treeBuilder = new TreeBuilder();
+        $treeBuilder = new TreeBuilder('pim_ui');
 
         $rootNode = $treeBuilder
-            ->root('pim_ui');
+            ->getRootNode();
 
         SettingsBuilder::append(
             $rootNode,

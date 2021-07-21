@@ -5,8 +5,8 @@ namespace Akeneo\Pim\Enrichment\Bundle\StructureVersion\EventListener;
 use Akeneo\Pim\Enrichment\Component\Product\Model\ProductInterface;
 use Akeneo\Pim\Enrichment\Component\Product\Model\ProductModelInterface;
 use Akeneo\Tool\Component\StorageUtils\StorageEvents;
+use Doctrine\Bundle\DoctrineBundle\Registry;
 use Doctrine\Common\Util\ClassUtils;
-use Symfony\Bridge\Doctrine\RegistryInterface;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 use Symfony\Component\EventDispatcher\GenericEvent;
 
@@ -19,13 +19,9 @@ use Symfony\Component\EventDispatcher\GenericEvent;
  */
 class StructureVersionUpdater implements EventSubscriberInterface
 {
-    /** @var RegistryInterface */
-    protected $doctrine;
+    protected Registry $doctrine;
 
-    /**
-     * @param RegistryInterface $doctrine
-     */
-    public function __construct(RegistryInterface $doctrine)
+    public function __construct(Registry $doctrine)
     {
         $this->doctrine = $doctrine;
     }

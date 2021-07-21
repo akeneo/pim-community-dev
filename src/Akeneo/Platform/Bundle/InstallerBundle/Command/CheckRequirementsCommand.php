@@ -49,7 +49,7 @@ class CheckRequirementsCommand extends Command
     /**
      * {@inheritdoc}
      */
-    protected function execute(InputInterface $input, OutputInterface $output)
+    protected function execute(InputInterface $input, OutputInterface $output): int
     {
         $output->writeln('<info>Akeneo PIM requirements check:</info>');
 
@@ -58,6 +58,8 @@ class CheckRequirementsCommand extends Command
             $output,
             new Requirements($this->rootDirectory)
         );
+        
+        return Command::SUCCESS;
     }
 
     /**

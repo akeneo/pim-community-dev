@@ -3,7 +3,7 @@
 namespace Akeneo\Tool\Bundle\StorageUtilsBundle\EventSubscriber;
 
 use Doctrine\Common\EventSubscriber;
-use Doctrine\Common\Persistence\Event\LoadClassMetadataEventArgs;
+use Doctrine\Persistence\Event\LoadClassMetadataEventArgs;
 
 /**
  * Mechanism to overwrite repository class without redefine class mapping
@@ -14,15 +14,12 @@ use Doctrine\Common\Persistence\Event\LoadClassMetadataEventArgs;
  */
 class ResolveTargetRepositorySubscriber implements EventSubscriber
 {
-    /**
-     * @staticvar array
-     */
-    protected static $resolveTargetRepo = [];
+    protected static array $resolveTargetRepo = [];
 
     /**
      * {@inheritdoc}
      */
-    public function getSubscribedEvents()
+    public function getSubscribedEvents(): array
     {
         return [
             'loadClassMetadata'
@@ -42,8 +39,6 @@ class ResolveTargetRepositorySubscriber implements EventSubscriber
 
     /**
      * Processes event and resolves new object repository class
-     *
-     * @param LoadClassMetadataEventArgs $args
      */
     public function loadClassMetadata(LoadClassMetadataEventArgs $args)
     {

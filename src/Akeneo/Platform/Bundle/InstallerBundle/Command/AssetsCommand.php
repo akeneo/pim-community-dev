@@ -23,33 +23,24 @@ class AssetsCommand extends Command
 {
     protected static $defaultName = 'pim:installer:assets';
 
-    /** @var CommandExecutor */
-    protected $commandExecutor;
-
-    /** @var Filesystem */
-    private $filesystem;
-
-    /** @var EventDispatcherInterface */
-    private $eventDispatcher;
-
-    /** @var array */
-    private $defaultLocales;
-
-    /** @var string */
-    private $rootDir;
+    protected CommandExecutor $commandExecutor;
+    private Filesystem $filesystem;
+    private EventDispatcherInterface $eventDispatcher;
+    private array $defaultLocales;
+    private string $projectDir;
 
     public function __construct(
         Filesystem $filesystem,
         EventDispatcherInterface $eventDispatcher,
         array $localeCodes,
-        string $rootDir
+        string $projectDir
     ) {
         parent::__construct();
 
         $this->filesystem = $filesystem;
         $this->eventDispatcher = $eventDispatcher;
         $this->defaultLocales = $localeCodes;
-        $this->rootDir = $rootDir;
+        $this->projectDir = $projectDir;
     }
 
     /**
@@ -78,7 +69,7 @@ class AssetsCommand extends Command
     /**
      * {@inheritdoc}
      */
-    protected function execute(InputInterface $input, OutputInterface $output)
+    protected function execute(InputInterface $input, OutputInterface $output): int
     {
         $output->writeln('<info>Akeneo PIM assets</info>');
 
@@ -118,23 +109,18 @@ class AssetsCommand extends Command
 
         $this->eventDispatcher->dispatch($event, InstallerEvents::POST_ASSETS_DUMP);
 
-        return $this;
+        return Command::SUCCESS;
     }
 
-    /**
-     * @return string
-     */
-    protected function getWebDir()
+    protected function getWebDir(): string
     {
-        return $this->rootDir.'/../public/';
+        return $this->projectDir.'/public/';
     }
 
     /**
      * Removes a list of directories and all its content.
-     *
-     * @param string[] $directories
      */
-    protected function cleanDirectories($directories)
+    protected function cleanDirectories(array $directories)
     {
         foreach ($directories as $directory) {
             if ($this->filesystem->exists($directory)) {

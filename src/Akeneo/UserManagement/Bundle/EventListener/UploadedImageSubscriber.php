@@ -8,20 +8,14 @@ use Doctrine\ORM\Event\LifecycleEventArgs;
 
 class UploadedImageSubscriber implements EventSubscriber
 {
-    /**
-     * @var string
-     */
-    protected $webRoot;
+    protected string $webRoot;
 
     /**
-     * Define web root path.
-     *
-     * @param  string                    $kernelRootDir
      * @throws \InvalidArgumentException
      */
-    public function __construct($kernelRootDir)
+    public function __construct(string $kernelProjectDir)
     {
-        $this->webRoot = realpath($kernelRootDir . '/../public');
+        $this->webRoot = realpath($kernelProjectDir . '/public');
         if (!$this->webRoot) {
             throw new \InvalidArgumentException('Invalid kernel root');
         }
@@ -30,21 +24,19 @@ class UploadedImageSubscriber implements EventSubscriber
     /**
      * {@inheritdoc}
      */
-    public function getSubscribedEvents()
+    public function getSubscribedEvents(): array
     {
         return [
             'preUpdate',
             'prePersist',
             'postPersist',
             'postUpdate',
-            'postRemove'
+            'postRemove',
         ];
     }
 
     /**
      * Remove uploaded image if any.
-     *
-     * @param LifecycleEventArgs $args
      */
     public function postRemove(LifecycleEventArgs $args)
     {
@@ -76,31 +68,16 @@ class UploadedImageSubscriber implements EventSubscriber
         }
     }
 
-    /**
-     * Handle prePersist.
-     *
-     * @param LifecycleEventArgs $args
-     */
     public function prePersist(LifecycleEventArgs $args)
     {
         $this->updateImageName($args);
     }
 
-    /**
-     * Handle postPersist.
-     *
-     * @param LifecycleEventArgs $args
-     */
     public function postPersist(LifecycleEventArgs $args)
     {
         $this->handleImageUpload($args);
     }
 
-    /**
-     * Handle postUpdate.
-     *
-     * @param LifecycleEventArgs $args
-     */
     public function postUpdate(LifecycleEventArgs $args)
     {
         $this->handleImageUpload($args);
@@ -108,8 +85,6 @@ class UploadedImageSubscriber implements EventSubscriber
 
     /**
      * Move uploaded image to upload dir.
-     *
-     * @param LifecycleEventArgs $args
      */
     protected function handleImageUpload(LifecycleEventArgs $args)
     {
@@ -131,8 +106,6 @@ class UploadedImageSubscriber implements EventSubscriber
 
     /**
      * Update uploaded image name.
-     *
-     * @param LifecycleEventArgs $args
      */
     protected function updateImageName(LifecycleEventArgs $args)
     {
@@ -144,23 +117,12 @@ class UploadedImageSubscriber implements EventSubscriber
         }
     }
 
-    /**
-     * Get upload directory location in FS.
-     *
-     * @param  EntityUploadedImageInterface $entity
-     * @return string
-     */
-    protected function getUploadRootDir(EntityUploadedImageInterface $entity)
+    protected function getUploadRootDir(EntityUploadedImageInterface $entity): string
     {
         return rtrim($this->webRoot, DIRECTORY_SEPARATOR) . DIRECTORY_SEPARATOR . $entity->getUploadDir();
     }
 
-    /**
-     * Remove image.
-     *
-     * @param EntityUploadedImageInterface $entity
-     */
-    protected function removeImage($entity)
+    protected function removeImage(EntityUploadedImageInterface $entity): void
     {
         if ($this->isExpectedEntity($entity) && $entity->getImage()) {
             $file = $this->getUploadRootDir($entity) . DIRECTORY_SEPARATOR . $entity->getImage();
@@ -172,22 +134,16 @@ class UploadedImageSubscriber implements EventSubscriber
 
     /**
      * Check for new image upload.
-     *
-     * @param  EntityUploadedImageInterface $entity
-     * @return bool
      */
-    protected function hasUploadedImage($entity)
+    protected function hasUploadedImage(EntityUploadedImageInterface $entity): bool
     {
         return $this->isExpectedEntity($entity) && null !== $entity->getImageFile();
     }
 
     /**
      * Check if entity acceptable by subscriber.
-     *
-     * @param  object $entity
-     * @return bool
      */
-    protected function isExpectedEntity($entity)
+    protected function isExpectedEntity(object $entity): bool
     {
         return $entity instanceof EntityUploadedImageInterface;
     }

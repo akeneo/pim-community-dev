@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "a6f6bf6683b0cae75a76595ed8cb0d39",
+    "content-hash": "7a87850fac1ed88d3c716bce3a882a28",
     "packages": [
         {
             "name": "ass/xmlsecurity",
@@ -9414,31 +9414,34 @@
         },
         {
             "name": "symfony/security-acl",
-            "version": "v3.1.2",
+            "version": "v3.2.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/symfony/security-acl.git",
-                "reference": "3090d19879577c2993314c68a2cf6c5723744049"
+                "reference": "b8f4a879f32ae48059e0071070deaca75bf4901c"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/symfony/security-acl/zipball/3090d19879577c2993314c68a2cf6c5723744049",
-                "reference": "3090d19879577c2993314c68a2cf6c5723744049",
+                "url": "https://api.github.com/repos/symfony/security-acl/zipball/b8f4a879f32ae48059e0071070deaca75bf4901c",
+                "reference": "b8f4a879f32ae48059e0071070deaca75bf4901c",
                 "shasum": ""
             },
             "require": {
-                "php": ">=7.1.3",
-                "symfony/security-core": "^3.4|^4.4|^5.0"
+                "php": ">=7.2.5",
+                "symfony/security-core": "^4.4|^5.0"
             },
             "conflict": {
+                "doctrine/cache": "<1.11",
                 "doctrine/dbal": "<2.13.1|~3.0.0"
             },
             "require-dev": {
+                "doctrine/cache": "^1.11|^2.0",
                 "doctrine/common": "^2.2|^3",
                 "doctrine/dbal": "^2.13.1|^3.1",
                 "doctrine/persistence": "^1.3.3|^2",
-                "psr/log": "~1.0",
-                "symfony/finder": "^3.4|^4.4|^5.0",
+                "psr/log": "^1|^2|^3",
+                "symfony/cache": "^4.4|^5.0",
+                "symfony/finder": "^4.4|^5.0",
                 "symfony/phpunit-bridge": "^5.2"
             },
             "type": "library",
@@ -9473,7 +9476,7 @@
             "homepage": "https://symfony.com",
             "support": {
                 "issues": "https://github.com/symfony/security-acl/issues",
-                "source": "https://github.com/symfony/security-acl/tree/v3.1.2"
+                "source": "https://github.com/symfony/security-acl/tree/v3.2.0"
             },
             "funding": [
                 {
@@ -9489,7 +9492,7 @@
                     "type": "tidelift"
                 }
             ],
-            "time": "2021-04-28T18:28:16+00:00"
+            "time": "2021-07-21T09:22:34+00:00"
         },
         {
             "name": "symfony/security-bundle",
@@ -16338,33 +16341,33 @@
         },
         {
             "name": "symfony/debug-bundle",
-            "version": "v4.4.18",
+            "version": "v5.3.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/symfony/debug-bundle.git",
-                "reference": "d11df24e90f07b49b1b1b170b28d8396edff4d8d"
+                "reference": "b73833ac97189fc809816dfbb02185a1a793b072"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/symfony/debug-bundle/zipball/d11df24e90f07b49b1b1b170b28d8396edff4d8d",
-                "reference": "d11df24e90f07b49b1b1b170b28d8396edff4d8d",
+                "url": "https://api.github.com/repos/symfony/debug-bundle/zipball/b73833ac97189fc809816dfbb02185a1a793b072",
+                "reference": "b73833ac97189fc809816dfbb02185a1a793b072",
                 "shasum": ""
             },
             "require": {
                 "ext-xml": "*",
-                "php": ">=7.1.3",
-                "symfony/http-kernel": "^3.4|^4.0|^5.0",
-                "symfony/twig-bridge": "^3.4|^4.0|^5.0",
-                "symfony/var-dumper": "^4.1.1|^5.0"
+                "php": ">=7.2.5",
+                "symfony/http-kernel": "^4.4|^5.0",
+                "symfony/twig-bridge": "^4.4|^5.0",
+                "symfony/var-dumper": "^4.4|^5.0"
             },
             "conflict": {
-                "symfony/config": "<4.2",
-                "symfony/dependency-injection": "<3.4"
+                "symfony/config": "<4.4",
+                "symfony/dependency-injection": "<5.2"
             },
             "require-dev": {
-                "symfony/config": "^4.2|^5.0",
-                "symfony/dependency-injection": "^3.4|^4.0|^5.0",
-                "symfony/web-profiler-bundle": "^3.4|^4.0|^5.0"
+                "symfony/config": "^4.4|^5.0",
+                "symfony/dependency-injection": "^4.4|^5.0",
+                "symfony/web-profiler-bundle": "^4.4|^5.0"
             },
             "suggest": {
                 "symfony/config": "For service container configuration",
@@ -16393,10 +16396,10 @@
                     "homepage": "https://symfony.com/contributors"
                 }
             ],
-            "description": "Symfony DebugBundle",
+            "description": "Provides a tight integration of the Symfony Debug component into the Symfony full-stack framework",
             "homepage": "https://symfony.com",
             "support": {
-                "source": "https://github.com/symfony/debug-bundle/tree/v4.4.18"
+                "source": "https://github.com/symfony/debug-bundle/tree/v5.3.0"
             },
             "funding": [
                 {
@@ -16412,7 +16415,7 @@
                     "type": "tidelift"
                 }
             ],
-            "time": "2020-10-24T11:50:19+00:00"
+            "time": "2021-03-17T16:58:09+00:00"
         },
         {
             "name": "symfony/dom-crawler",
@@ -16690,13 +16693,7 @@
     "aliases": [],
     "minimum-stability": "stable",
     "stability-flags": {
-        "klapaudius/oauth-server-bundle": 0,
-        "friendsofsymfony/rest-bundle": 0,
-        "symfony/acl-bundle": 0,
-        "symfony/security-acl": 0,
-        "akeneo/php-coupling-detector": 0,
-        "friends-of-behat/mink-extension": 0,
-        "symfony/web-server-bundle": 0
+        "symfony/security-acl": 0
     },
     "prefer-stable": false,
     "prefer-lowest": false,
@@ -16710,6 +16707,7 @@
         "ext-gd": ">=2.0",
         "ext-imagick": "*",
         "ext-intl": "*",
+        "ext-json": "*",
         "ext-mbstring": "*",
         "ext-pdo": "*",
         "ext-xml": "*",

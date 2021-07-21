@@ -14,7 +14,7 @@ services:
             - '@filesystem'
             - '@event_dispatcher'
             - '%pim_localization.provider.ui_locale.locale_codes%'
-            - '%kernel.project_dir%/..'
+            - '%kernel.project_dir%'
         tags:
             - { name: 'console.command' }
 
@@ -40,7 +40,7 @@ services:
 
     Akeneo\Platform\Bundle\InstallerBundle\Command\DumpRequirePathsCommand:
         arguments:
-            - '%kernel.project_dir%/..'
+            - '%kernel.project_dir%/src/'
             - '%kernel.bundles%'
         tags:
             - { name: console.command }

@@ -20,20 +20,11 @@ class Category implements CategoryInterface
     /** @var string */
     protected $code;
 
-    /** @var int */
-    protected $left;
-
-    /** @var int */
-    protected $level;
-
-    /** @var int */
-    protected $right;
-
-    /** @var int */
-    protected $root;
-
-    /** @var CategoryInterface */
-    protected $parent;
+    protected int $left;
+    protected int $level;
+    protected int $right;
+    protected int $root;
+    protected CategoryInterface $parent;
 
     /** @var Collection */
     protected $children;

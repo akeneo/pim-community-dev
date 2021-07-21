@@ -2,7 +2,7 @@
 
 namespace Akeneo\Platform\Bundle\UIBundle\Form\Transformer;
 
-use Symfony\Bridge\Doctrine\RegistryInterface;
+use Doctrine\Bundle\DoctrineBundle\Registry;
 
 /**
  * Ajax choice transformer factory
@@ -13,23 +13,10 @@ use Symfony\Bridge\Doctrine\RegistryInterface;
  */
 class AjaxEntityTransformerFactory implements TransformerFactoryInterface
 {
-    /**
-     * @var RegistryInterface
-     */
-    protected $doctrine;
+    protected Registry $doctrine;
+    protected string $class;
 
-    /**
-     * @var string
-     */
-    protected $class;
-
-    /**
-     * Constructor
-     *
-     * @param RegistryInterface $doctrine
-     * @param string            $class
-     */
-    public function __construct(RegistryInterface $doctrine, $class)
+    public function __construct(Registry $doctrine, string $class)
     {
         $this->doctrine = $doctrine;
         $this->class = $class;

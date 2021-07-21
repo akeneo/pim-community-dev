@@ -3,7 +3,7 @@
 namespace Akeneo\Pim\Enrichment\Bundle\StructureVersion\Provider;
 
 use Akeneo\Platform\Bundle\UIBundle\Provider\StructureVersion\StructureVersionProviderInterface;
-use Symfony\Bridge\Doctrine\RegistryInterface;
+use Doctrine\Bundle\DoctrineBundle\Registry;
 
 /**
  * Structure version provider
@@ -17,13 +17,9 @@ class StructureVersion implements StructureVersionProviderInterface
     /** @var array */
     protected $resourceNames = [];
 
-    /** @var RegistryInterface */
-    protected $doctrine;
-
-    /**
-     * @param RegistryInterface $doctrine
-     */
-    public function __construct(RegistryInterface $doctrine)
+    protected Registry $doctrine;
+    
+    public function __construct(Registry $doctrine)
     {
         $this->doctrine = $doctrine;
     }
@@ -34,12 +30,12 @@ class StructureVersion implements StructureVersionProviderInterface
     public function getStructureVersion()
     {
         $sql = <<<'SQL'
-SELECT last_update
-FROM akeneo_structure_version_last_update
-WHERE resource_name IN (:resource_names)
-ORDER BY last_update DESC
-LIMIT 1;
-SQL;
+            SELECT last_update
+            FROM akeneo_structure_version_last_update
+            WHERE resource_name IN (:resource_names)
+            ORDER BY last_update DESC
+            LIMIT 1;
+            SQL;
 
         $connection = $this->doctrine->getConnection();
         $stmt = $connection->executeQuery(

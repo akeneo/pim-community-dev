@@ -3,11 +3,10 @@
 namespace Oro\Bundle\DataGridBundle\Controller;
 
 use Oro\Bundle\DataGridBundle\Datagrid\ManagerInterface;
-use Symfony\Bundle\FrameworkBundle\Controller\Controller;
+use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\JsonResponse;
-use Symfony\Component\HttpFoundation\Response;
 
-class GridController extends Controller
+class GridController extends AbstractController
 {
     /** @var ManagerInterface */
     private $manager;
@@ -22,7 +21,7 @@ class GridController extends Controller
      *
      * @return JsonResponse
      */
-    public function get($gridName)
+    public function get(string $gridName): JsonResponse
     {
         $grid = $this->manager->getDatagrid($gridName);
         $result = $grid->getData();

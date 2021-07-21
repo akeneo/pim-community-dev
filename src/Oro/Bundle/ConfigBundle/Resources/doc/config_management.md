@@ -24,9 +24,9 @@ use Oro\Bundle\ConfigBundle\DependencyInjection\SettingsBuilder;
 
 public function getConfigTreeBuilder()
 {
-    $builder = new TreeBuilder();
+    $builder = new TreeBuilder('oro_mybundle');
     $root    = $builder
-        ->root('oro_mybundle')
+        ->getRootNode()
         ->children()
             // ...
         ->end();

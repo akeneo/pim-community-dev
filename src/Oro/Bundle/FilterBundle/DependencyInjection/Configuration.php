@@ -13,10 +13,10 @@ class Configuration implements ConfigurationInterface
     /**
      * {@inheritDoc}
      */
-    public function getConfigTreeBuilder()
+    public function getConfigTreeBuilder(): TreeBuilder
     {
-        $treeBuilder = new TreeBuilder();
-        $rootNode = $treeBuilder->root('oro_filter');
+        $treeBuilder = new TreeBuilder('oro_filter');
+        $rootNode = $treeBuilder->getRootNode();
 
         $rootNode
             ->children()
