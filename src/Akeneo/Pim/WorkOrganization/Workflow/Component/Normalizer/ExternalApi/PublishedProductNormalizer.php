@@ -25,10 +25,12 @@ use Symfony\Component\Serializer\Normalizer\NormalizerInterface;
 class PublishedProductNormalizer implements NormalizerInterface, CacheableSupportsMethodInterface
 {
     protected NormalizerInterface $productNormalizer;
-    private NormalizerInterface $associationNormalizer;
+    private ?NormalizerInterface $associationNormalizer;
 
-    public function __construct(NormalizerInterface $productNormalizer, NormalizerInterface $associationNormalizer)
-    {
+    public function __construct(
+        NormalizerInterface $productNormalizer,
+        NormalizerInterface $associationNormalizer
+    ) {
         $this->productNormalizer = $productNormalizer;
         $this->associationNormalizer = $associationNormalizer;
     }
