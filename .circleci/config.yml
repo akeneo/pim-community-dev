@@ -2533,4 +2533,5 @@ commands:
                   echo ${CONNECTOR_BC_BRANCH}
                   git clone --branch $CONNECTOR_BC_BRANCH git@github.com:akeneo/bigcommerce-connector.git tmp/build-connector
                   cd tmp/build-connector
+                  pwd
                   echo `git rev-parse --short HEAD`
