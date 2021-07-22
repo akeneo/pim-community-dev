@@ -124,7 +124,7 @@ akeneo_asset_manager_asset_family_permission_get_rest:
 
 akeneo_asset_manager_product_get_linked_product:
     path: '/rest/asset_manager/{assetFamilyIdentifier}/asset/{assetCode}/product/{attributeCode}'
-    defaults: { _controller: pimee.asset_manager.enrichment.product.get_products_linked_to_a_asset_action }
+    defaults: { _controller: pimee.asset_manager.enrichment.product.get_products_linked_to_an_asset_action }
     methods: [GET]
 
 akeneo_asset_manager_image_preview:

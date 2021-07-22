@@ -56,7 +56,7 @@ const MediaFileView = ({
           readOnly={!rights.attribute.edit}
           emptyResultLabel={translate('pim_asset_manager.result_counter', {count: 0}, 0)}
           clearable={false}
-          verticalPosition="up"
+          verticalPosition="down"
           value={attribute.mediaType.toString()}
           onChange={(mediaType: string) => {
             onAdditionalPropertyUpdated('media_type', createMediaTypeFromString(mediaType));

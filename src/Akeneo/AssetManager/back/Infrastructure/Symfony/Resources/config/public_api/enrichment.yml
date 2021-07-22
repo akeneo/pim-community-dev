@@ -20,8 +20,8 @@ services:
             - '@database_connection'
 
     # Enrichment > Reference entities
-    pimee.asset_manager.enrichment.product.get_products_linked_to_a_asset_action:
-        class: Akeneo\Pim\Enrichment\AssetManager\Component\Controller\Product\GetProductsLinkedToAAssetAction
+    pimee.asset_manager.enrichment.product.get_products_linked_to_an_asset_action:
+        class: Akeneo\Pim\Enrichment\AssetManager\Component\Controller\Product\GetProductsLinkedToAnAssetAction
         public: true
         arguments:
             - '@akeneo.pim.enrichment.query.product_and_product_model_query_builder_from_size_factory.with_product_identifier_cursor'
