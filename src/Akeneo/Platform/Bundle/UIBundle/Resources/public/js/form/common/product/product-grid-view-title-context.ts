@@ -1,4 +1,4 @@
-import {ProductGridViewTitle} from './ProductGridViewTitle';
+import {ProductGridViewTitle} from '../../../grid/ProductGridViewTitle';
 
 const BaseView = require('pimui/js/view/base');
 const mediator = require('oro/mediator');
@@ -15,30 +15,24 @@ type ProjectDetails = {
   dueDateLabel: string;
   dueDate: string;
   completionRatio: number;
-  badgeClass: string;
 };
 
 class ProductGridViewTitleContext extends BaseView {
   private currentView: CurrentView;
-  private projectDetails: ProjectDetails;
+  private projectDetails: ProjectDetails | null;
 
   /**
    * {@inheritdoc}
    */
   configure() {
     mediator.on('grid:view:selected', this.onGridViewSelected.bind(this));
-    mediator.on('grid:project:selected', this.onGridProjectSelected.bind(this));
+    mediator.on('grid:project:selected', this.onGridViewSelected.bind(this));
 
     return super.configure();
   }
 
-  onGridViewSelected(view: CurrentView) {
+  onGridViewSelected(view: CurrentView, projectDetails: ProjectDetails | null = null) {
     this.currentView = view;
-    this.render();
-  }
-
-  onGridProjectSelected(project: CurrentView, projectDetails: ProjectDetails) {
-    this.currentView = project;
     this.projectDetails = projectDetails;
 
     this.render();
@@ -48,7 +42,7 @@ class ProductGridViewTitleContext extends BaseView {
    * {@inheritdoc}
    */
   render(): ProductGridViewTitleContext {
-    if (!this.currentView) {
+    if (!this.currentView || (this.currentView.type === 'project' && !this.projectDetails)) {
       return this;
     }
 

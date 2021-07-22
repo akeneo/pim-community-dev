@@ -1,6 +1,7 @@
 import React from 'react';
 import styled from 'styled-components';
 import {useTranslate} from '@akeneo-pim-community/shared';
+import {ProductGridProjectDetails} from "./ProductGridProjectDetails";
 
 type Props = {
   type: string;
@@ -12,7 +13,6 @@ type ProjectDetails = {
   dueDateLabel: string;
   dueDate: string;
   completionRatio: number;
-  badgeClass: string;
 };
 
 const ProductGridViewTitle = ({type, projectDetails, children}: Props) => {
@@ -22,7 +22,7 @@ const ProductGridViewTitle = ({type, projectDetails, children}: Props) => {
     <ContextContainer>
       <ViewNameContainer>{children}</ViewNameContainer>
       {type === 'public' || type === 'view' ? ` (${translate('pim_common.public_view')})` : null}
-      {projectDetails && `${projectDetails.dueDateLabel}: ${projectDetails.dueDate}`}
+      {projectDetails && <ProductGridProjectDetails projectDetails={projectDetails}/>}
     </ContextContainer>
   );
 };
