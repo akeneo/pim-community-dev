@@ -17,6 +17,7 @@ use Akeneo\Pim\Enrichment\ReferenceEntity\Component\Normalizer\LinkedProductsNor
 use PhpSpec\ObjectBehavior;
 use Prophecy\Argument;
 use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\HttpKernel\Exception\UnprocessableEntityHttpException;
 use Symfony\Component\Validator\ConstraintViolation;
 use Symfony\Component\Validator\ConstraintViolationList;
 use Symfony\Component\Validator\Validator\ValidatorInterface;
@@ -58,7 +59,7 @@ class GetProductsLinkedToARecordActionSpec extends ObjectBehavior
 
         $rows = $this->get30Rows();
         $fetchProductAndProductModelRows->__invoke(Argument::type(FetchProductAndProductModelRowsParameters::class))
-                                        ->willReturn($rows);
+            ->willReturn($rows);
         $linkedProductNormalizer->normalize($rows, $channel, $localeCode)->willReturn(['product_info']);
 
         $this->__invoke(new Request(['channel' => $channel, 'locale' => $localeCode]), $recordCode, $attributeCode);
@@ -76,16 +77,16 @@ class GetProductsLinkedToARecordActionSpec extends ObjectBehavior
         $channel = 'ecommerce';
 
         $pqbFactory->create(['default_locale' => $locale, 'default_scope' => $channel, 'limit' => 20])
-                   ->willReturn($pqb);
+            ->willReturn($pqb);
         $pqb->addFilter($attributeCode, Operators::IN_LIST, [$recordCode]);
         $pqb->addSorter('updated', 'DESC');
 
         $validator->validate(Argument::type(FetchProductAndProductModelRowsParameters::class))
-                  ->willReturn($this->violation());
+            ->willReturn($this->violation());
 
         $fetchProductAndProductModelRows->__invoke()->shouldNotBeCalled();
 
-        $this->shouldThrow(\LogicException::class)
+        $this->shouldThrow(UnprocessableEntityHttpException::class)
             ->during('__invoke', [new Request(['channel' => $channel, 'locale' => $locale]), $recordCode, $attributeCode]);
     }
 
