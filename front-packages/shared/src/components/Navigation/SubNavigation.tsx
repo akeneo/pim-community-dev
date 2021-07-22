@@ -38,7 +38,9 @@ const SubNavigation: FC<Props> = ({title, sections, entries, backLink, stateCode
   const translate = useTranslate();
   const router = useRouter();
   const subNavigationState = sessionStorage.getItem(`collapsedColumn_${stateCode}`);
-  const [isSubNavigationOpened, openSubNavigation, closeSubNavigation] = useBooleanState(subNavigationState === null || subNavigationState === '1');
+  const [isSubNavigationOpened, openSubNavigation, closeSubNavigation] = useBooleanState(
+    subNavigationState === null || subNavigationState === '1'
+  );
 
   useEffect(() => {
     sessionStorage.setItem(`collapsedColumn_${stateCode}`, isSubNavigationOpened ? '1' : '0');
@@ -51,42 +53,40 @@ const SubNavigation: FC<Props> = ({title, sections, entries, backLink, stateCode
   };
 
   return (
-    <SubNavContainer role='menu' data-testid='pim-sub-menu'>
+    <SubNavContainer role="menu" data-testid="pim-sub-menu">
       <SubNavigationPanel isOpen={isSubNavigationOpened} open={openSubNavigation} close={closeSubNavigation}>
-        {!isSubNavigationOpened && <SubNavigationDropdown entries={entries} title={title}/>}
+        <SubNavigationPanel.Collapsed>
+          <SubNavigationDropdown entries={entries} title={title} />
+        </SubNavigationPanel.Collapsed>
 
-        {isSubNavigationOpened &&
-        <>
-          {backLink &&
+        {backLink && (
           // @ts-ignore
-          <Backlink onClick={() => router.redirectToRoute(backLink.route)}>
-            {translate(backLink.title)}
-          </Backlink>
-          }
-          {sections.map(section => {
-            return (
-              <Section key={section.code}>
-                <SectionTitle>{translate(section.title)}</SectionTitle>
-                {entries.filter(subNav => subNav.sectionCode === section.code).map(subEntry =>
+          <Backlink onClick={() => router.redirectToRoute(backLink.route)}>{translate(backLink.title)}</Backlink>
+        )}
+        {sections.map(section => {
+          return (
+            <Section key={section.code}>
+              <SectionTitle>{translate(section.title)}</SectionTitle>
+              {entries
+                .filter(subNav => subNav.sectionCode === section.code)
+                .map(subEntry => (
                   <SubNavigationItem
                     active={subEntry.code === activeSubEntryCode}
                     key={subEntry.code}
                     href={`#${router.generate(subEntry.route, subEntry.routeParams)}`}
                     onClick={(event: any) => handleFollowSubEntry(event, subEntry)}
-                    role='menuitem'
+                    role="menuitem"
                   >
                     {subEntry.title}
                   </SubNavigationItem>
-                )}
-              </Section>
-            );
-          })}
-        </>
-        }
+                ))}
+            </Section>
+          );
+        })}
       </SubNavigationPanel>
     </SubNavContainer>
   );
-}
+};
 
 const SubNavContainer = styled.div``;
 
