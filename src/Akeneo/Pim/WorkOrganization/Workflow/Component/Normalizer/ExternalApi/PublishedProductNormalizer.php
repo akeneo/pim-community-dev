@@ -27,8 +27,10 @@ class PublishedProductNormalizer implements NormalizerInterface, CacheableSuppor
     protected NormalizerInterface $productNormalizer;
     private NormalizerInterface $associationNormalizer;
 
-    public function __construct(NormalizerInterface $productNormalizer, NormalizerInterface $associationNormalizer)
-    {
+    public function __construct(
+        NormalizerInterface $productNormalizer,
+        NormalizerInterface $associationNormalizer
+    ) {
         $this->productNormalizer = $productNormalizer;
         $this->associationNormalizer = $associationNormalizer;
     }
