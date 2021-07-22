@@ -27,7 +27,7 @@ const SectionTitle: FC<Props> = ({title, children}) => {
   return (
     <Container>
       <span>{translate(title)}</span>
-      {children && children}
+      {children}
     </Container>
   );
 };
