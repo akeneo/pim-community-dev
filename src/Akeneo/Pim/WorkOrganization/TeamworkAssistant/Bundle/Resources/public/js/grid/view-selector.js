@@ -15,8 +15,10 @@ define([
   'pim/datagrid/state',
   'pim/fetcher-registry',
   'backbone',
+  'pim/date-context',
+  'pim/formatter/date',
   'oro/mediator',
-], function($, _, __, ViewSelector, DatagridState, FetcherRegistry, Backbone, mediator) {
+], function($, _, __, ViewSelector, DatagridState, FetcherRegistry, Backbone, DateContext, DateFormatter, mediator) {
   return ViewSelector.extend({
     hasNoProject: false,
 
@@ -34,6 +36,32 @@ define([
       this.listenTo(this.getRoot(), 'grid:view-selector:project-removed', this.onProjectRemoved.bind(this));
 
       return ViewSelector.prototype.configure.apply(this, arguments);
+    },
+
+    initializeSelection: function () {
+      return ViewSelector.prototype.initializeSelection.apply(this, arguments).then(
+        (view) => {
+          if ('project' === view.type && view.label) {
+            return FetcherRegistry.getFetcher('project')
+              .fetch(view.label)
+              .then(project => {
+                view.text = project.label;
+
+                const projectDetails = {
+                  dueDateLabel: __('teamwork_assistant.project.due_date'),
+                  dueDate: DateFormatter.format(project.due_date, 'yyyy-MM-dd', DateContext.get('date').format),
+                  completionRatio: project.completeness.ratio_done,
+                };
+
+                mediator.trigger('grid:view:selected', view, projectDetails);
+
+                return view;
+              });
+          }
+
+          return view;
+        }
+      )
     },
 
     /**
@@ -167,22 +195,7 @@ define([
           .fetch(view.label)
           .then(project => {
             view.text = project.label;
-
-            let badgeClass = 'AknBadge--warning';
-            if (project.completeness.ratio_done === 0) {
-              badgeClass = 'AknBadge--invalid';
-            } else if (project.completeness.ratio_done === 100) {
-              badgeClass = 'AknBadge--success';
-            }
-
-            const projectDetails = {
-              dueDateLabel: __('teamwork_assistant.project.due_date'),
-              dueDate: project.due_date,
-              completionRatio: project.completeness.ratio_done,
-              badgeClass: badgeClass
-            }
             this.trigger('grid:view-selector:project-selected', project);
-            mediator.trigger('grid:project:selected', view, projectDetails);
 
             return view;
           });
