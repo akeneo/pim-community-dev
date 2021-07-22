@@ -15,12 +15,14 @@ const ModalContent = styled.div`
 type SelectAttributeTypeModalProps = {
   iconsMap: {[attributeType: string]: string};
   onAttributeTypeSelect: (attributeType: AttributeType) => void;
+  onClose: () => void;
 };
 type AttributeType = string;
 
 const SelectAttributeTypeModal: React.FC<SelectAttributeTypeModalProps> = ({
   iconsMap,
   onAttributeTypeSelect,
+  onClose,
 }) => {
   const translate = useTranslate();
   const Router = useRouter();
@@ -41,7 +43,7 @@ const SelectAttributeTypeModal: React.FC<SelectAttributeTypeModalProps> = ({
     });
   }, []);
 
-  return <Modal closeTitle={translate('pim_common.close')} onClose={close}>
+  return <Modal closeTitle={translate('pim_common.close')} onClose={onClose}>
     <Modal.SectionTitle color="brand">
       {translate('pim_enrich.entity.attribute.module.create.button')}
     </Modal.SectionTitle>
