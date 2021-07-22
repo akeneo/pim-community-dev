@@ -13,6 +13,9 @@
         "psr-0": {
             "": "src/"
         },
+        "psr-4": {
+            "Akeneo\\FreeTrial\\": ["src/Akeneo/FreeTrial/back", "vendor/akeneo/pim-community-dev/src/Akeneo/FreeTrial/back"]
+        },
         "exclude-from-classmap": [
             "vendor/akeneo/pim-community-dev/src/Kernel.php"
         ]
