@@ -15,19 +15,19 @@ const Container = styled.div`
   font-weight: normal;
   line-height: 44px;
   height: 44px;
-  justify-content: space-between;
   align-items: center;
   z-index: 2;
   border-bottom: 1px solid ${({theme}) => theme.color.grey140};
   margin-top: 20px;
 `;
 
-const SectionTitle: FC<Props> = ({title}) => {
+const SectionTitle: FC<Props> = ({title, children}) => {
   const translate = useTranslate();
 
   return (
     <Container>
       <span>{translate(title)}</span>
+      {children && children}
     </Container>
   );
 };

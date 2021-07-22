@@ -6,3 +6,9 @@ free_trial:
     sso: SAML-based Single Sign-On
     rules: Rules
     feature_ee_only: This feature is for Enterprise Edition only
+  dqi:
+    dashboard:
+      helper: Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod labore et dolore magna aliqua.
+  activity:
+    dashboard:
+      helper: Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod labore et dolore magna aliqua.
