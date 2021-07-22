@@ -38,30 +38,28 @@ define([
       return ViewSelector.prototype.configure.apply(this, arguments);
     },
 
-    initializeSelection: function () {
-      return ViewSelector.prototype.initializeSelection.apply(this, arguments).then(
-        (view) => {
-          if ('project' === view.type && view.label) {
-            return FetcherRegistry.getFetcher('project')
-              .fetch(view.label)
-              .then(project => {
-                view.text = project.label;
+    initializeSelection: function() {
+      return ViewSelector.prototype.initializeSelection.apply(this, arguments).then(view => {
+        if ('project' === view.type && view.label) {
+          return FetcherRegistry.getFetcher('project')
+            .fetch(view.label)
+            .then(project => {
+              view.text = project.label;
 
-                const projectDetails = {
-                  dueDateLabel: __('teamwork_assistant.project.due_date'),
-                  dueDate: DateFormatter.format(project.due_date, 'yyyy-MM-dd', DateContext.get('date').format),
-                  completionRatio: project.completeness.ratio_done,
-                };
+              const projectDetails = {
+                dueDateLabel: __('teamwork_assistant.project.due_date'),
+                dueDate: DateFormatter.format(project.due_date, 'yyyy-MM-dd', DateContext.get('date').format),
+                completionRatio: project.completeness.ratio_done,
+              };
 
-                mediator.trigger('grid:view:selected', view, projectDetails);
+              mediator.trigger('grid:view:selected', view, projectDetails);
 
-                return view;
-              });
-          }
-
-          return view;
+              return view;
+            });
         }
-      )
+
+        return view;
+      });
     },
 
     /**
