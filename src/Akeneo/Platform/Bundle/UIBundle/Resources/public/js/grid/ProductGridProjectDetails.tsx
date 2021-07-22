@@ -23,10 +23,10 @@ const getLevel = (completionRatio: number) => {
 
 const ProductGridProjectDetails = ({projectDetails}: Props) => {
   return (
-      <div>
-        &nbsp;-&nbsp;<Badge level={getLevel(projectDetails.completionRatio)}>{projectDetails.completionRatio} %</Badge>
-        &nbsp;-&nbsp;{projectDetails.dueDateLabel}: {projectDetails.dueDate}
-      </div>
+    <div>
+      &nbsp;-&nbsp;<Badge level={getLevel(projectDetails.completionRatio)}>{projectDetails.completionRatio} %</Badge>
+      &nbsp;-&nbsp;{projectDetails.dueDateLabel}: {projectDetails.dueDate}
+    </div>
   );
 };
 
