@@ -24,7 +24,7 @@ const CategoryTree: React.FC<Props> = ({
   selectedCategories,
   initCategoryTreeOpenBranch,
 }) => {
-  const cnNodeSelectCategory = (categoryCode: CategoryCode) => {
+  const onNodeSelectCategory = (categoryCode: CategoryCode) => {
     if (categoryCode !== categoryTree.code) {
       onSelectCategory(categoryCode);
     }
@@ -41,7 +41,7 @@ const CategoryTree: React.FC<Props> = ({
         locale={locale}
         nodeType={NodeType.BRANCH}
         opened
-        onSelect={cnNodeSelectCategory}
+        onSelect={onNodeSelectCategory}
         selectedCategories={selectedCategories}
       />
     </ul>
