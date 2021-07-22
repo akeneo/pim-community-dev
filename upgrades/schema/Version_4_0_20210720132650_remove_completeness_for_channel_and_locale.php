@@ -12,7 +12,7 @@ final class Version_4_0_20210720132650_remove_completeness_for_channel_and_local
 {
     public function up(Schema $schema) : void
     {
-        if ($this->jobExists('remove_non_existing_product_values')) {
+        if ($this->jobExists('remove_completeness_for_channel_and_locale')) {
             return;
         }
 
