@@ -3,11 +3,11 @@
 namespace Specification\Akeneo\Pim\Enrichment\Component\Product\Localization\Presenter;
 
 use Akeneo\Pim\Structure\Component\Model\AttributeInterface;
-use Akeneo\Tool\Bundle\MeasureBundle\Model\LocaleIdentifier;
-use Akeneo\Tool\Bundle\MeasureBundle\Model\MeasurementFamily;
-use Akeneo\Tool\Bundle\MeasureBundle\Model\MeasurementFamilyCode;
-use Akeneo\Tool\Bundle\MeasureBundle\Model\UnitCode;
-use Akeneo\Tool\Bundle\MeasureBundle\Persistence\MeasurementFamilyRepositoryInterface;
+use AkeneoMeasureBundle\Model\LocaleIdentifier;
+use AkeneoMeasureBundle\Model\MeasurementFamily;
+use AkeneoMeasureBundle\Model\MeasurementFamilyCode;
+use AkeneoMeasureBundle\Model\UnitCode;
+use AkeneoMeasureBundle\Persistence\MeasurementFamilyRepositoryInterface;
 use Akeneo\Tool\Component\Localization\Factory\NumberFactory;
 use Akeneo\Tool\Component\StorageUtils\Repository\BaseCachedObjectRepository;
 use PhpSpec\ObjectBehavior;
@@ -20,14 +20,14 @@ class MetricPresenterSpec extends ObjectBehavior
         NumberFactory $numberFactory,
         MeasurementFamilyRepositoryInterface $measurementFamilyRepository,
         BaseCachedObjectRepository $baseCachedObjectRepository,
-		LoggerInterface $logger
+        LoggerInterface $logger
     ) {
         $this->beConstructedWith(
             $numberFactory,
             ['pim_catalog_metric'],
             $measurementFamilyRepository,
             $baseCachedObjectRepository,
-			$logger
+            $logger
         );
     }
 
@@ -51,7 +51,8 @@ class MetricPresenterSpec extends ObjectBehavior
             ->willReturn($measurementFamily);
         $measurementFamily->getUnitLabel(
             UnitCode::fromString('KILOGRAM'),
-            LocaleIdentifier::fromCode('en_US'))
+            LocaleIdentifier::fromCode('en_US')
+        )
             ->willReturn('Kilogram');
         $numberFactory->create(['attribute' => 'weight', 'locale' => 'en_US'])->willReturn($numberFormatter);
         $numberFormatter->format(12000.34)->willReturn('12,000.34');

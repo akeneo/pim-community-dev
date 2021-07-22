@@ -103,11 +103,11 @@
 ## BC breaks
 
 - API-1557:
-    - `Akeneo\Pim\Enrichment\Bundle\EventSubscriber\BusinessEvent\DispatchProductCreatedAndUpdatedEventSubscriber` implements `Akeneo\Pim\Enrichment\Bundle\EventSubscriber\BusinessEvent\DispatchBufferedPimEventSubscriberInterface`.
-    - `Akeneo\Pim\Enrichment\Bundle\EventSubscriber\BusinessEvent\DispatchProductModelCreatedAndUpdatedEventSubscriber` implements `Akeneo\Pim\Enrichment\Bundle\EventSubscriber\BusinessEvent\DispatchBufferedPimEventSubscriberInterface`.
-    - `Akeneo\Pim\Enrichment\Bundle\EventSubscriber\BusinessEvent\DispatchProductModelRemovedEventSubscriber` implements `Akeneo\Pim\Enrichment\Bundle\EventSubscriber\BusinessEvent\DispatchBufferedPimEventSubscriberInterface`.
-    - `Akeneo\Pim\Enrichment\Bundle\EventSubscriber\BusinessEvent\DispatchProductRemovedEventSubscriber` implements `Akeneo\Pim\Enrichment\Bundle\EventSubscriber\BusinessEvent\DispatchBufferedPimEventSubscriberInterface`.
-    -  Public methods have been changed according to the new interface.
+  - `Akeneo\Pim\Enrichment\Bundle\EventSubscriber\BusinessEvent\DispatchProductCreatedAndUpdatedEventSubscriber` implements `Akeneo\Pim\Enrichment\Bundle\EventSubscriber\BusinessEvent\DispatchBufferedPimEventSubscriberInterface`.
+  - `Akeneo\Pim\Enrichment\Bundle\EventSubscriber\BusinessEvent\DispatchProductModelCreatedAndUpdatedEventSubscriber` implements `Akeneo\Pim\Enrichment\Bundle\EventSubscriber\BusinessEvent\DispatchBufferedPimEventSubscriberInterface`.
+  - `Akeneo\Pim\Enrichment\Bundle\EventSubscriber\BusinessEvent\DispatchProductModelRemovedEventSubscriber` implements `Akeneo\Pim\Enrichment\Bundle\EventSubscriber\BusinessEvent\DispatchBufferedPimEventSubscriberInterface`.
+  - `Akeneo\Pim\Enrichment\Bundle\EventSubscriber\BusinessEvent\DispatchProductRemovedEventSubscriber` implements `Akeneo\Pim\Enrichment\Bundle\EventSubscriber\BusinessEvent\DispatchBufferedPimEventSubscriberInterface`.
+  - Public methods have been changed according to the new interface.
 
 # 5.0.22 (2021-04-27)
 
@@ -207,7 +207,7 @@
 - PIM-9213: Fix tooltip hover on Ellipsis for Family Name on creating product
 - PIM-9184: API - Fix dbal query group by part for saas instance
 - PIM-9289: Display a correct error message when deleting a group or an association
-- PIM-9327: PDF generation header miss the product name when the attribute used as label is localizable 
+- PIM-9327: PDF generation header miss the product name when the attribute used as label is localizable
 - PIM-9324: Fix product grid not loading when asset used as main picture is deleted
 - PIM-9356: Fix external api endpoint for products with invalid quantified associations
 - PIM-9357: Make rules case-insensitive so it complies with family and attribute codes
@@ -288,7 +288,7 @@
 - CXP-493: Do not save products when they were not actually updated. In order to do so, the product now returns copies of
   its collections (values, categories, groups, associations and quantified associations). Practically, this means that such a collection cannot be directly
   updated "from outside" anymore (e.g: `$product->getCategories()->add($category)` **won't update the product anymore**,
-  you should now use `$product->addCategory($category)` to achieve it)  
+  you should now use `$product->addCategory($category)` to achieve it)
 - CXP-544: Do not save product models when they were not actually updated. As for products, the product model
   will now return copies of its collections (values, categories, associations and quantified associations)
 
@@ -308,79 +308,79 @@
 ## BC breaks
 
 - API-1140: Change $criteria format from `Akeneo\Pim\Structure\Bundle\Doctrine\ORM\Repository\ExternalApi\AttributeRepository`
-    the new format is `[property: [['operator' => (string), 'value' => (mixed)]]]`.
+  the new format is `[property: [['operator' => (string), 'value' => (mixed)]]]`.
 
 ### Codebase
 
 - Change constructor of `Akeneo\Tool\Bundle\ElasticsearchBundle\IndexConfiguration\Loader` to
-    - add `Symfony\Component\DependencyInjection\ParameterBag\ParameterBagInterface $parameterBag`
+  - add `Symfony\Component\DependencyInjection\ParameterBag\ParameterBagInterface $parameterBag`
 - Change constructor of `Akeneo\Pim\Enrichment\Bundle\Controller\InternalApi\ProductModelController` to
-    - add `Akeneo\Pim\Enrichment\Bundle\Filter\CollectionFilterInterface $productEditDataFilter`
+  - add `Akeneo\Pim\Enrichment\Bundle\Filter\CollectionFilterInterface $productEditDataFilter`
 - Change constructor of `\Akeneo\Pim\Enrichment\Bundle\Controller\ExternalApi\ProductController` to
-    - add `Akeneo\Pim\Enrichment\Component\Product\Query\GetConnectorProducts $getConnectorProductsWithOptions`
-    - add `Symfony\Component\EventDispatcher\EventDispatcherInterface $eventDispatcher`
-    - add `GetProductsWithQualityScoresInterface $getProductsWithQualityScores`  
-    - add `Akeneo\Pim\Enrichment\Component\Product\EntityWithFamilyVariant\RemoveParentInterface $removeParent`
+  - add `Akeneo\Pim\Enrichment\Component\Product\Query\GetConnectorProducts $getConnectorProductsWithOptions`
+  - add `Symfony\Component\EventDispatcher\EventDispatcherInterface $eventDispatcher`
+  - add `GetProductsWithQualityScoresInterface $getProductsWithQualityScores`
+  - add `Akeneo\Pim\Enrichment\Component\Product\EntityWithFamilyVariant\RemoveParentInterface $removeParent`
 - Change constructor of `Akeneo\Pim\Enrichment\Bundle\Controller\InternalApi\ProductController` to
-    - add `Akeneo\Pim\Enrichment\Bundle\Filter\CollectionFilterInterface $productEditDataFilter`
-    - add `Akeneo\Pim\Enrichment\Component\Product\EntityWithFamilyVariant\RemoveParentInterface $removeParent`
+  - add `Akeneo\Pim\Enrichment\Bundle\Filter\CollectionFilterInterface $productEditDataFilter`
+  - add `Akeneo\Pim\Enrichment\Component\Product\EntityWithFamilyVariant\RemoveParentInterface $removeParent`
 - Change constructor of `Akeneo\Pim\Structure\Component\Validator\Constraints\ValidMetricValidator` to
-    - remove `array $measures`
-    - add `Akeneo\Tool\Bundle\MeasureBundle\Provider\LegacyMeasurementProvider $provider`
-- Change constructor of `Akeneo\Tool\Bundle\MeasureBundle\Controller\ExternalApi\MeasureFamilyController` to
-    - remove `array $measures`
-    - add `Akeneo\Tool\Bundle\MeasureBundle\Provider\LegacyMeasurementProvider $legacyMeasurementProvider`
-- Change constructor of `Akeneo\Tool\Bundle\MeasureBundle\Controller\MeasuresController` to
-    - remove `array $measures`
-    - add `Akeneo\Tool\Bundle\MeasureBundle\Provider\LegacyMeasurementProvider $provider`
-- Change constructor of `Akeneo\Tool\Bundle\MeasureBundle\Convert\MeasureConverter` to
-    - remove `array $config`
-    - add `Akeneo\Tool\Bundle\MeasureBundle\Provider\LegacyMeasurementProvider $provider`
-- Change constructor of `Akeneo\Tool\Bundle\MeasureBundle\Manager\MeasureManager` to
-     - remove `array $config`
-     - add `Akeneo\Tool\Bundle\MeasureBundle\Provider\LegacyMeasurementProvider $legacyMeasurementProvider`
+  - remove `array $measures`
+  - add `AkeneoMeasureBundle\Provider\LegacyMeasurementProvider $provider`
+- Change constructor of `AkeneoMeasureBundle\Controller\ExternalApi\MeasureFamilyController` to
+  - remove `array $measures`
+  - add `AkeneoMeasureBundle\Provider\LegacyMeasurementProvider $legacyMeasurementProvider`
+- Change constructor of `AkeneoMeasureBundle\Controller\MeasuresController` to
+  - remove `array $measures`
+  - add `AkeneoMeasureBundle\Provider\LegacyMeasurementProvider $provider`
+- Change constructor of `AkeneoMeasureBundle\Convert\MeasureConverter` to
+  - remove `array $config`
+  - add `AkeneoMeasureBundle\Provider\LegacyMeasurementProvider $provider`
+- Change constructor of `AkeneoMeasureBundle\Manager\MeasureManager` to
+  - remove `array $config`
+  - add `AkeneoMeasureBundle\Provider\LegacyMeasurementProvider $legacyMeasurementProvider`
 - Change constructor of `Akeneo\Pim\Enrichment\Component\Product\Localization\Presenter` to
-    - remove `Akeneo\Tool\Component\Localization\TranslatorProxy $translatorProxy`
-    - add `Akeneo\Tool\Bundle\MeasureBundle\Persistence\MeasurementFamilyRepositoryInterface $measurementFamilyRepository`
-    - add `Akeneo\Tool\Component\StorageUtils\Repository\BaseCachedObjectRepository $baseCachedObjectRepository`
-    - add `Psr\Log\LoggerInterface $logger`
+  - remove `Akeneo\Tool\Component\Localization\TranslatorProxy $translatorProxy`
+  - add `AkeneoMeasureBundle\Persistence\MeasurementFamilyRepositoryInterface $measurementFamilyRepository`
+  - add `Akeneo\Tool\Component\StorageUtils\Repository\BaseCachedObjectRepository $baseCachedObjectRepository`
+  - add `Psr\Log\LoggerInterface $logger`
 - Change constructor of `Akeneo\Pim\Enrichment\Component\Product\Normalizer\InternalApi\GroupNormalizer` to
-    - add `Akeneo\Pim\Enrichment\Component\Product\Query\GetGroupProductIdentifiers`
+  - add `Akeneo\Pim\Enrichment\Component\Product\Query\GetGroupProductIdentifiers`
 - Change constructor of `Akeneo\Pim\Structure\Component\Query\PublicApi\AttributeType\Attribute` to
-    - add `(string) $defaultMetricUnit`    
+  - add `(string) $defaultMetricUnit`
 - Change constructor of `Akeneo\Pim\Enrichment\Bundle\Elasticsearch\IdentifierResultCursor` to add `Akeneo\Pim\Enrichment\Bundle\Elasticsearch\ElasticsearchResult $result`
 - Change constructor of `Akeneo\Pim\Enrichment\Bundle\Storage\ElasticsearchAndSql\ProductGrid\FetchProductAndProductModelRows` to add `Akeneo\Pim\Enrichment\Bundle\Elasticsearch\Facet\ProductAndProductsModelDocumentTypeFacetFactory $productAndProductsModelDocumentTypeFacetFactory`
 - Change constructor of `Akeneo\Pim\Enrichment\Component\Product\Grid\ReadModel\Rows` to
-    - add `?int $totalProductCount`
-    - add `?int $totalProductModelCount`
+  - add `?int $totalProductCount`
+  - add `?int $totalProductModelCount`
 - Change constructor of `Akeneo\Pim\Enrichment\Bundle\Elasticsearch\ProductAndProductModelQueryBuilderWithSearchAggregatorFactory` to make not nullable the third parameter `Akeneo\Pim\Enrichment\Bundle\Elasticsearch\ProductAndProductModelSearchAggregator $searchAggregator`
-- Change `Akeneo\Tool\Bundle\MeasureBundle\Manager\MeasureManager` to remove method `setMeasureConfig(array $config)`
-- Remove `Akeneo\Tool\Bundle\MeasureBundle\DependencyInjection\Configuration`
-- Remove `Akeneo\Tool\Bundle\MeasureBundle\Family\AreaFamilyInterface`
-- Remove `Akeneo\Tool\Bundle\MeasureBundle\Family\BinaryFamilyInterface`
-- Remove `Akeneo\Tool\Bundle\MeasureBundle\Family\CaseBoxFamilyInterface`
-- Remove `Akeneo\Tool\Bundle\MeasureBundle\Family\DecibelFamilyInterface`
-- Remove `Akeneo\Tool\Bundle\MeasureBundle\Family\DurationFamilyInterface`
-- Remove `Akeneo\Tool\Bundle\MeasureBundle\Family\ElectricChargeFamilyInterface`
-- Remove `Akeneo\Tool\Bundle\MeasureBundle\Family\EnergyFamilyInterface`
-- Remove `Akeneo\Tool\Bundle\MeasureBundle\Family\FrequencyFamilyInterface`
-- Remove `Akeneo\Tool\Bundle\MeasureBundle\Family\IntensityFamilyInterface`
-- Remove `Akeneo\Tool\Bundle\MeasureBundle\Family\LengthFamilyInterface`
-- Remove `Akeneo\Tool\Bundle\MeasureBundle\Family\PowerFamilyInterface`
-- Remove `Akeneo\Tool\Bundle\MeasureBundle\Family\PressureFamilyInterface`
-- Remove `Akeneo\Tool\Bundle\MeasureBundle\Family\ResistanceFamilyInterface`
-- Remove `Akeneo\Tool\Bundle\MeasureBundle\Family\SpeedFamilyInterface`
-- Remove `Akeneo\Tool\Bundle\MeasureBundle\Family\TemperatureFamilyInterface`
-- Remove `Akeneo\Tool\Bundle\MeasureBundle\Family\VoltageFamilyInterface`
-- Remove `Akeneo\Tool\Bundle\MeasureBundle\Family\VolumeFamilyInterface`
-- Remove `Akeneo\Tool\Bundle\MeasureBundle\Family\WeightFamilyInterface`
-- Rename `Akeneo\Tool\Bundle\MeasureBundle\Exception\UnknownFamilyMeasureException` as `Akeneo\Tool\Bundle\MeasureBundle\Exception\MeasurementFamilyNotFoundException`
-- Rename `Akeneo\Tool\Bundle\MeasureBundle\Exception\UnknownMeasureException` as `Akeneo\Tool\Bundle\MeasureBundle\Exception\UnitNotFoundException`
+- Change `AkeneoMeasureBundle\Manager\MeasureManager` to remove method `setMeasureConfig(array $config)`
+- Remove `AkeneoMeasureBundle\DependencyInjection\Configuration`
+- Remove `AkeneoMeasureBundle\Family\AreaFamilyInterface`
+- Remove `AkeneoMeasureBundle\Family\BinaryFamilyInterface`
+- Remove `AkeneoMeasureBundle\Family\CaseBoxFamilyInterface`
+- Remove `AkeneoMeasureBundle\Family\DecibelFamilyInterface`
+- Remove `AkeneoMeasureBundle\Family\DurationFamilyInterface`
+- Remove `AkeneoMeasureBundle\Family\ElectricChargeFamilyInterface`
+- Remove `AkeneoMeasureBundle\Family\EnergyFamilyInterface`
+- Remove `AkeneoMeasureBundle\Family\FrequencyFamilyInterface`
+- Remove `AkeneoMeasureBundle\Family\IntensityFamilyInterface`
+- Remove `AkeneoMeasureBundle\Family\LengthFamilyInterface`
+- Remove `AkeneoMeasureBundle\Family\PowerFamilyInterface`
+- Remove `AkeneoMeasureBundle\Family\PressureFamilyInterface`
+- Remove `AkeneoMeasureBundle\Family\ResistanceFamilyInterface`
+- Remove `AkeneoMeasureBundle\Family\SpeedFamilyInterface`
+- Remove `AkeneoMeasureBundle\Family\TemperatureFamilyInterface`
+- Remove `AkeneoMeasureBundle\Family\VoltageFamilyInterface`
+- Remove `AkeneoMeasureBundle\Family\VolumeFamilyInterface`
+- Remove `AkeneoMeasureBundle\Family\WeightFamilyInterface`
+- Rename `AkeneoMeasureBundle\Exception\UnknownFamilyMeasureException` as `AkeneoMeasureBundle\Exception\MeasurementFamilyNotFoundException`
+- Rename `AkeneoMeasureBundle\Exception\UnknownMeasureException` as `AkeneoMeasureBundle\Exception\UnitNotFoundException`
 - Change constructor of `Akeneo\Pim\Enrichment\Bundle\Command\RefreshProductCommand` to
-    - replace `Akeneo\Tool\Component\StorageUtils\Saver\SaverInterface $productSaver` by `Akeneo\Tool\Component\StorageUtils\Saver\BulkSaverInterface $productSaver`
-    - replace `Akeneo\Tool\Component\StorageUtils\Saver\SaverInterface $productModelSaver` by `Akeneo\Tool\Component\StorageUtils\Saver\BulkSaverInterface $productModelSaver`
+  - replace `Akeneo\Tool\Component\StorageUtils\Saver\SaverInterface $productSaver` by `Akeneo\Tool\Component\StorageUtils\Saver\BulkSaverInterface $productSaver`
+  - replace `Akeneo\Tool\Component\StorageUtils\Saver\SaverInterface $productModelSaver` by `Akeneo\Tool\Component\StorageUtils\Saver\BulkSaverInterface $productModelSaver`
 - Change constructor of `Akeneo\Pim\Enrichment\Bundle\Command\RemoveCompletenessForChannelAndLocaleCommand` to
-    - replace `Akeneo\Tool\Component\StorageUtils\Saver\SaverInterface $channelSaver` by `Akeneo\Tool\Component\StorageUtils\Saver\BulkSaverInterface $channelSaver`
+  - replace `Akeneo\Tool\Component\StorageUtils\Saver\SaverInterface $channelSaver` by `Akeneo\Tool\Component\StorageUtils\Saver\BulkSaverInterface $channelSaver`
 - Add `getChannels()` and `getLabel()` methods in `Akeneo\Pim\Enrichment\Component\Category\Model\CategoryInterface` interface
 - Change `addFieldSorter()` method of `Akeneo\Pim\Enrichment\Component\Product\Query\Sorter\FieldSorterInterface` to return `Akeneo\Pim\Enrichment\Component\Product\Query\Sorter\FieldSorterInterface`
 - The `Akeneo\Tool\Component\Api\Repository\ApiResourceRepositoryInterface` interface now also extends `Doctrine\Common\Persistence\ObjectRepository` interface
@@ -392,93 +392,94 @@
 - Change `Akeneo\Pim\Enrichment\Component\Product\Model\Group::getTranslation()` to return null or an instance of `Akeneo\Pim\Enrichment\Component\Product\Model\GroupTranslationInterface`
 - Change `Akeneo\Pim\Enrichment\Component\Category\Model\Category::getTranslation()` to return null or an instance of `Akeneo\Pim\Enrichment\Component\Category\Model\CategoryTranslationInterface`
 - Change `Akeneo\Pim\Enrichment\Component\Comment\Normalizer\Standard\CommentNormalizer` to implement `Symfony\Component\Serializer\Normalizer\NormalizerAwareInterface` instead of `Symfony\Component\Serializer\SerializerAwareInterface`. That means:
-    - the `setSerializer()` method and the `$serializer` property are removed
-    - the `setNormalizer()` method and the `$normalizer` property are added
+  - the `setSerializer()` method and the `$serializer` property are removed
+  - the `setNormalizer()` method and the `$normalizer` property are added
 - Change `Akeneo\Pim\Enrichment\Component\Product\Normalizer\Versioning\Product\CollectionNormalizer` to implement `Symfony\Component\Serializer\Normalizer\NormalizerAwareInterface` instead of `Symfony\Component\Serializer\SerializerAwareInterface`. That means:
-    - the `setSerializer()` method and the `$serializer` property are removed
-    - the `setNormalizer()` method and the `$normalizer` property are added
+  - the `setSerializer()` method and the `$serializer` property are removed
+  - the `setNormalizer()` method and the `$normalizer` property are added
 - Change `Akeneo\Pim\Enrichment\Component\Product\Normalizer\Versioning\Product\ValueNormalizer` to implement `Symfony\Component\Serializer\Normalizer\NormalizerAwareInterface` instead of `Symfony\Component\Serializer\SerializerAwareInterface`. That means:
-    - the `setSerializer()` method and the `$serializer` property are removed
-    - the `setNormalizer()` method and the `$normalizer` property are added
+  - the `setSerializer()` method and the `$serializer` property are removed
+  - the `setNormalizer()` method and the `$normalizer` property are added
 - Change `Akeneo\Pim\Enrichment\Component\Product\Normalizer\Versioning\ProductModelNormalizer` to implement `Symfony\Component\Serializer\Normalizer\NormalizerAwareInterface` instead of `Symfony\Component\Serializer\SerializerAwareInterface`. That means:
-    - the `setSerializer()` method and the `$serializer` property are removed
-    - the `setNormalizer()` method and the `$normalizer` property are added
+  - the `setSerializer()` method and the `$serializer` property are removed
+  - the `setNormalizer()` method and the `$normalizer` property are added
 - Change `Akeneo\Pim\Enrichment\Component\Product\Normalizer\Versioning\ProductNormalizer` to implement `Symfony\Component\Serializer\Normalizer\NormalizerAwareInterface` instead of `Symfony\Component\Serializer\SerializerAwareInterface`. That means:
-    - the `setSerializer()` method and the `$serializer` property are removed
-    - the `setNormalizer()` method and the `$normalizer` property are added
+  - the `setSerializer()` method and the `$serializer` property are removed
+  - the `setNormalizer()` method and the `$normalizer` property are added
 - Change `Akeneo\Pim\Structure\Component\Normalizer\InternalApi\AttributeOptionNormalizer` to implement `Symfony\Component\Serializer\Normalizer\NormalizerAwareInterface` instead of `Symfony\Component\Serializer\SerializerAwareInterface`. That means:
-    - the `setSerializer()` method and the `$serializer` property are removed
-    - the `setNormalizer()` method and the `$normalizer` property are added
+  - the `setSerializer()` method and the `$serializer` property are removed
+  - the `setNormalizer()` method and the `$normalizer` property are added
 - Change `Akeneo\Pim\Structure\Component\Normalizer\InternalApi\AttributeOptionValueCollectionNormalizer` to implement `Symfony\Component\Serializer\Normalizer\NormalizerAwareInterface` instead of `Symfony\Component\Serializer\SerializerAwareInterface`. That means:
-    - the `setSerializer()` method and the `$serializer` property are removed
-    - the `setNormalizer()` method and the `$normalizer` property are added
+  - the `setSerializer()` method and the `$serializer` property are removed
+  - the `setNormalizer()` method and the `$normalizer` property are added
 - Remove `Akeneo\Pim\Enrichment\Component\Product\Normalizer\InternalApi\ViolationNormalizer` class, it is replaced by `Akeneo\Pim\Enrichment\Component\Product\Normalizer\InternalApi\ConstraintViolationNormalizer`
 - Change `Akeneo\Pim\Enrichment\Component\Product\Model\EntityWithValuesInterface` to add `getId()` and `getIdentifier()` methods
 - Change constructor of `Akeneo\Pim\Structure\Bundle\Controller\InternalApi\AttributeGroupController` to replace `Doctrine\ORM\EntityRepository $attributeGroupRepo` by `Akeneo\Pim\Structure\Component\Repository\AttributeGroupRepositoryInterface $attributeGroupRepo`
 - Change `Akeneo\Pim\Structure\Component\Repository\FamilyRepositoryInterface` interface to add `getWithVariants()`
 - Change constructor of `Akeneo\Pim\Structure\Bundle\Query\InternalApi\AttributeGroup\Sql\FindAttributeCodesForAttributeGroup` to replace `Doctrine\DBAL\Driver\Connection $connection` by `Doctrine\DBAL\Connection $connection`
 - Update `Akeneo\Pim\Enrichment\Component\Product\Model\ProductInterface` to
-    - remove the `setFamilyId()` method
-    - extend the new `Akeneo\Tool\Component\StorageUtils\Model\StateUpdatedAware` interface (with `isDirty()` and `cleanup()` methods)
-- Update `Akeneo\Pim\Enrichment\Component\Product\Model\ProductModelInterface` to extend the new `Akeneo\Tool\Component\StorageUtils\Model\StateUpdatedAware` interface (with `isDirty()` and `cleanup()` methods)    
+  - remove the `setFamilyId()` method
+  - extend the new `Akeneo\Tool\Component\StorageUtils\Model\StateUpdatedAware` interface (with `isDirty()` and `cleanup()` methods)
+- Update `Akeneo\Pim\Enrichment\Component\Product\Model\ProductModelInterface` to extend the new `Akeneo\Tool\Component\StorageUtils\Model\StateUpdatedAware` interface (with `isDirty()` and `cleanup()` methods)
 - Update `Akeneo\Pim\Enrichment\Component\Product\Model\AbstractProduct` to
-    - remove the `setFamilyId()` method
-    - remove the `$categoryIds` public property and  the `$familyId` and `$groupIds` protected properties
-    - add `isDirty()` and `cleanup()` methods 
+  - remove the `setFamilyId()` method
+  - remove the `$categoryIds` public property and the `$familyId` and `$groupIds` protected properties
+  - add `isDirty()` and `cleanup()` methods
 - Change the `Oro\Bundle\PimDataGridBundle\Repository\DatagridViewRepositoryInterface` to:
-    - remove the `findDatagridViewByAlias()` method
-    - rename the `getDatagridViewTypeByUser()` method to `getDatagridViewAliasesByUser()` and add type hint on the return (array)
-    - add type hint on the return of the `findDatagridViewBySearch()` method (`Doctrine\Common\Collections\Collection`)
+  - remove the `findDatagridViewByAlias()` method
+  - rename the `getDatagridViewTypeByUser()` method to `getDatagridViewAliasesByUser()` and add type hint on the return (array)
+  - add type hint on the return of the `findDatagridViewBySearch()` method (`Doctrine\Common\Collections\Collection`)
 - Change constructor of `Akeneo\Pim\Enrichment\Component\Product\Job\DeleteProductsAndProductModelsTasklet` to
-    - add `Akeneo\Tool\Component\Batch\Job\JobRepositoryInterface $jobRepository`
+  - add `Akeneo\Tool\Component\Batch\Job\JobRepositoryInterface $jobRepository`
 - Update `Akeneo\Pim\Enrichment\Component\Product\Model\ProductModel` to add `isDirty()` and `cleanup()` methods
 - Move `Akeneo\Pim\Enrichment\Component\Product\Validator\Constraints\WritableDirectory` to `Akeneo\Tool\Component\StorageUtils\Validator\Constraints\WritableDirectory`
 - Move `Akeneo\Pim\Enrichment\Component\Product\Validator\Constraints\WritableDirectoryValidator` to `Akeneo\Tool\Component\StorageUtils\Validator\Constraints\WritableDirectoryValidator`
 - Change constructor of `Akeneo\Pim\Enrichment\Bundle\Command\CleanRemovedAttributesFromProductAndProductModelCommand` to
-    - add `\Symfony\Component\EventDispatcher\EventDispatcherInterface $eventDispatcher`
-    - remove `\Akeneo\Pim\Enrichment\Component\Product\ValuesRemover\CleanValuesOfRemovedAttributesInterface $cleanValuesOfRemovedAttributes`
-    - add `\Akeneo\Tool\Bundle\BatchBundle\Launcher\JobLauncherInterface $jobLauncher`
-    - add `\Akeneo\Tool\Component\StorageUtils\Repository\IdentifiableObjectRepositoryInterface $jobInstanceRepository`
-    - add `\Akeneo\Pim\Enrichment\Component\Product\Query\CountProductsWithRemovedAttributeInterface $countProductsWithRemovedAttribute`
-    - add `\Akeneo\Pim\Enrichment\Component\Product\Query\CountProductModelsWithRemovedAttributeInterface $countProductModelsWithRemovedAttribute`
-    - add `\Akeneo\Pim\Enrichment\Component\Product\Query\CountProductsAndProductModelsWithInheritedRemovedAttributeInterface $countProductsAndProductModelsWithInheritedRemovedAttribute`
-    - add `\Symfony\Component\Routing\RouterInterface $router`
-    - add `string $pimUrl`
+
+  - add `\Symfony\Component\EventDispatcher\EventDispatcherInterface $eventDispatcher`
+  - remove `\Akeneo\Pim\Enrichment\Component\Product\ValuesRemover\CleanValuesOfRemovedAttributesInterface $cleanValuesOfRemovedAttributes`
+  - add `\Akeneo\Tool\Bundle\BatchBundle\Launcher\JobLauncherInterface $jobLauncher`
+  - add `\Akeneo\Tool\Component\StorageUtils\Repository\IdentifiableObjectRepositoryInterface $jobInstanceRepository`
+  - add `\Akeneo\Pim\Enrichment\Component\Product\Query\CountProductsWithRemovedAttributeInterface $countProductsWithRemovedAttribute`
+  - add `\Akeneo\Pim\Enrichment\Component\Product\Query\CountProductModelsWithRemovedAttributeInterface $countProductModelsWithRemovedAttribute`
+  - add `\Akeneo\Pim\Enrichment\Component\Product\Query\CountProductsAndProductModelsWithInheritedRemovedAttributeInterface $countProductsAndProductModelsWithInheritedRemovedAttribute`
+  - add `\Symfony\Component\Routing\RouterInterface $router`
+  - add `string $pimUrl`
 
 - Change the `Oro\Bundle\PimDataGridBundle\Controller\ProductExportController` class to remove the `getRequest()` method
 - Change signature of `createInversedAssociation()` from `Akeneo\Pim\Enrichment\Component\Product\Updater\TwoWayAssociationUpdaterInterface`
-    - remove `AssociationInterface $association`
-    - add `string $associationTypeCode` and `Akeneo\Pim\Enrichment\Component\Product\Model\EntityWithAssociationsInterface $associatedEntity`
+  - remove `AssociationInterface $association`
+  - add `string $associationTypeCode` and `Akeneo\Pim\Enrichment\Component\Product\Model\EntityWithAssociationsInterface $associatedEntity`
 - Change signature of `removeInversedAssociation()` from `Akeneo\Pim\Enrichment\Component\Product\Updater\TwoWayAssociationUpdaterInterface`
-    - remove `AssociationInterface $association`
-    - add `string $associationTypeCode` and `Akeneo\Pim\Enrichment\Component\Product\Model\EntityWithAssociationsInterface $associatedEntity`
+  - remove `AssociationInterface $association`
+  - add `string $associationTypeCode` and `Akeneo\Pim\Enrichment\Component\Product\Model\EntityWithAssociationsInterface $associatedEntity`
 - Update `Akeneo\Pim\Enrichment\Component\Product\Model\EntityWithAssociationsInterface` interface:
-    - Remove method `setAssociations()`
-    - Remove method `getAssociationForType()`
-    - Remove method `getAssociationForTypeCode()`
-    - Add method `hasAssociationForTypeCode()`
-    - Add method `addAssociatedProduct()`
-    - Add method `removeAssociatedProduct()`
-    - Add method `getAssociatedProducts()`
-    - Add method `addAssociatedProductModel()`
-    - Add method `removeAssociatedProductModel()`
-    - Add method `getAssociatedProductModels()`
-    - Add method `addAssociatedGroup()`
-    - Add method `removeAssociatedGroup()`
-    - Add method `getAssociatedGroups()`
+  - Remove method `setAssociations()`
+  - Remove method `getAssociationForType()`
+  - Remove method `getAssociationForTypeCode()`
+  - Add method `hasAssociationForTypeCode()`
+  - Add method `addAssociatedProduct()`
+  - Add method `removeAssociatedProduct()`
+  - Add method `getAssociatedProducts()`
+  - Add method `addAssociatedProductModel()`
+  - Add method `removeAssociatedProductModel()`
+  - Add method `getAssociatedProductModels()`
+  - Add method `addAssociatedGroup()`
+  - Add method `removeAssociatedGroup()`
+  - Add method `getAssociatedGroups()`
 - Change constructor of `Akeneo\Pim\Enrichment\Component\Product\Updater\Adder\AssociationFieldAdder`:
   - add argument `Akeneo\Pim\Structure\Component\Repository\AssociationTypeRepositoryInterface $associationTypeRepository`
   - add argument `Akeneo\Pim\Enrichment\Component\Product\Updater\TwoWayAssociationUpdaterInterface $twoWayAssociationUpdater`
-- Change constructor of `Akeneo\Pim\Enrichment\Component\Product\Updater\Clearer\Field\AssociationFieldClearer`: add argument `Akeneo\Pim\Enrichment\Component\Product\Updater\TwoWayAssociationUpdaterInterface $twoWayAssociationUpdater`   
+- Change constructor of `Akeneo\Pim\Enrichment\Component\Product\Updater\Clearer\Field\AssociationFieldClearer`: add argument `Akeneo\Pim\Enrichment\Component\Product\Updater\TwoWayAssociationUpdaterInterface $twoWayAssociationUpdater`
 - Change constructor of `Akeneo\Pim\Enrichment\Component\Product\Updater\Setter\AssociationFieldSetter`: add argument `Akeneo\Pim\Structure\Component\Repository\AssociationTypeRepositoryInterface $associationTypeRepository`
 - Change constructor of `Akeneo\Pim\Enrichment\Component\Product\Factory\ReadValueCollectionFactory` to
-    - add `Psr\Log\LoggerInterface $logger`
+  - add `Psr\Log\LoggerInterface $logger`
 - Move `Akeneo\Channel\Component\Query\GetChannelCodeWithLocaleCodesInterface` to `Akeneo\Channel\Component\Query\PublicApi\GetChannelCodeWithLocaleCodesInterface`
 - Remove `Akeneo\Pim\Enrichment\Component\Product\Validator\Constraints\ImmutableVariantAxesValues`
 - Remove `Akeneo\Pim\Enrichment\Component\Product\Validator\Constraints\ImmutableVariantAxesValuesValidator`
 - Change constructor of `Akeneo\Pim\Enrichment\Component\Product\Connector\Processor\Denormalizer\ProductProcessor` to add `Akeneo\Pim\Enrichment\Component\Product\EntityWithFamilyVariant\RemoveParentInterface $removeParent`
 - Change constructor of `Akeneo\Platform\Bundle\ImportExportBundle\Controller\Ui\JobTrackerController` to
-    - add `Psr\Log\LoggerInterface $logger`
+  - add `Psr\Log\LoggerInterface $logger`
 
 ### CLI commands
 
@@ -491,5 +492,5 @@ The following CLI commands have been deleted:
 - Update `akeneo_measure.manager` to use `akeneo_measure.provider.measurement_provider`
 - Update `akeneo_measure.controller.rest.measures` to use `akeneo_measure.provider.measurement_provider`
 - Update `legacy_pim_api.controller.measure_family` to use `akeneo_measure.provider.measurement_provider`
-- Rename `pim_api.controller.measure_family` to  `legacy_pim_api.controller.measure_family`
+- Rename `pim_api.controller.measure_family` to `legacy_pim_api.controller.measure_family`
 - Remove parameter `akeneo_measure.measures_config`

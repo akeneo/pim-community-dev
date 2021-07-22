@@ -7,8 +7,8 @@ use Akeneo\Pim\Enrichment\Component\Product\Query\Filter\AttributeFilterInterfac
 use Akeneo\Pim\Enrichment\Component\Product\Query\Filter\Operators;
 use Akeneo\Pim\Enrichment\Component\Product\Validator\ElasticsearchFilterValidator;
 use Akeneo\Pim\Structure\Component\Model\AttributeInterface;
-use Akeneo\Tool\Bundle\MeasureBundle\Convert\MeasureConverter;
-use Akeneo\Tool\Bundle\MeasureBundle\Manager\MeasureManager;
+use AkeneoMeasureBundle\Convert\MeasureConverter;
+use AkeneoMeasureBundle\Manager\MeasureManager;
 use Akeneo\Tool\Component\StorageUtils\Exception\InvalidPropertyException;
 use Akeneo\Tool\Component\StorageUtils\Exception\InvalidPropertyTypeException;
 

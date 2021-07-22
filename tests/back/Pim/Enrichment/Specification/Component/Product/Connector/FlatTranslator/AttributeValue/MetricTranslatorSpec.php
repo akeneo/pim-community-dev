@@ -2,7 +2,7 @@
 
 namespace Specification\Akeneo\Pim\Enrichment\Component\Product\Connector\FlatTranslator\AttributeValue;
 
-use Akeneo\Tool\Bundle\MeasureBundle\PublicApi\GetUnitTranslations;
+use AkeneoMeasureBundle\PublicApi\GetUnitTranslations;
 use PhpSpec\ObjectBehavior;
 
 class MetricTranslatorSpec extends ObjectBehavior

@@ -30,7 +30,7 @@
 
 ## Bug fixes
 
-- PIM-9242: Fix API product model list when filtering with SINCE LAST N DAYS operator 
+- PIM-9242: Fix API product model list when filtering with SINCE LAST N DAYS operator
 
 # 3.0.76 (2020-04-27)
 
@@ -131,6 +131,7 @@
 # 3.0.57 (2019-12-02)
 
 ## Enhancements
+
 - PIM-9002: Allow command `pim:product:clean-removed-attributes` to work with --no-interaction parameter
 
 # 3.0.56 (2019-11-27)
@@ -241,6 +242,7 @@ AOB-691: Allow only default filters without calling a dynamic attributes query i
 - PIM-8678: Fill the updated property on Family entity update
 
 ## BC Breaks
+
 - Change `Akeneo\Pim\Structure\Component\Mode\FamilyInterface` to extend `Akeneo\Tool\Component\Versioning\Model\TimestampableInterface`
 
 # 3.0.38 (2019-08-20)
@@ -404,7 +406,7 @@ AOB-691: Allow only default filters without calling a dynamic attributes query i
 - PIM-8283: Command `akeneo:batch:purge-job-execution` now works with option `--days=0`.
 - PIM-8329: Add Serbian flag for CS region
 - PIM-8254: Attributes, attribute groups, groups, group types and channels edit page are not accessible anymore
-    and remove action is disabled from grid if they are not granted.
+  and remove action is disabled from grid if they are not granted.
 
 # Improvements
 
@@ -578,7 +580,7 @@ AOB-691: Allow only default filters without calling a dynamic attributes query i
 - Set Elasticsearch 6.5.4 as a minimal requirement
 - Set PHP 7.2 as minimal required version
 - TIP-236: Merge Oro User bundle/component into Akeneo User bundle/component
-- GITHUB-8451: Add basic compatibility for PHP 7.2  (Thanks [janmyszkier](https://github.com/janmyszkier)!)
+- GITHUB-8451: Add basic compatibility for PHP 7.2 (Thanks [janmyszkier](https://github.com/janmyszkier)!)
 - PIM-7371: Improve the performance to display the category tree in the product grid
 - PIM-7506: Cache default views and columns on the product grid
 - TIP-879: Uses utf8mb4 as encoding for MySQL instead of the less complete utf8
@@ -600,6 +602,7 @@ AOB-691: Allow only default filters without calling a dynamic attributes query i
 - TIP-898: Allow extension for user via a property named "properties", used on the EE by example
 
 ## BC breaks
+
 - TIP-1018: Remove SOAP requirements (not used anymore) and WSSE bundle
 - Remove service `@pim_enrich.provider.structure_version.attribute` in favor of `@pim_structure_version.provider.structure_version.attribute`
 - Remove service `@pim_enrich.provider.structure_version.family_variant` in favor of `@pim_structure_version.provider.structure_version.family_variant`
@@ -623,6 +626,7 @@ AOB-691: Allow only default filters without calling a dynamic attributes query i
 - MySQL charset for Akeneo is now utf8mb4, instead of the flawed utf8. If you have custom table, you can convert them with `ALTER TABLE my_custom_table CONVERT TO CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci`. For Akeneo native tables, the migration scripts apply the conversion.
 - ProductValue objects must now be instantiated through the named constructor must be called to instantiate a new ProductValue. See `Akeneo\Pim\Enrichment\Component\Product\Model\AbstractValue`, methods `value()`, `scopableValue()`, `localizablevalue()` and `scopableAndLocalizableValue()`
 - The service `pim_catalog.repository.cached_attribute`, of type `Akeneo\Tool\Component\StorageUtils\Repository\IdentifiableObjectRepositoryInterface`, has been added to the construtor of the following classes:
+
   - `Akeneo\Pim\Enrichment\Bundle\Doctrine\Common\Saver\ProductUniqueDataSynchronizer`
   - `Akeneo\Pim\Enrichment\Bundle\Form\Subscriber\FilterLocaleSpecificValueSubscriber`
   - `Akeneo\Pim\Enrichment\Bundle\PdfGeneration\Renderer\ProductPdfRenderer`
@@ -643,16 +647,17 @@ AOB-691: Allow only default filters without calling a dynamic attributes query i
   - `Oro\Bundle\PimDataGridBundle\Normalizer\Product\ReferenceDataNormalizer`
 
 - The service `pim_catalog.repository.cached_attribute_option`, of type `Akeneo\Tool\Component\StorageUtils\Repository\IdentifiableObjectRepositoryInterface`, has been added to the construtor of the following classes:
+
   - `Akeneo\Pim\Enrichment\Component\Product\Normalizer\Versioning\Product\ValueNormalizer`
   - `Oro\Bundle\PimDataGridBundle\Normalizer\Product\OptionNormalizer`
   - `Oro\Bundle\PimDataGridBundle\Normalizer\Product\OptionsNormalizer`
 
 - The service `pim_reference_data.repository_resolver`, of type `Akeneo\Pim\Enrichment\Component\Product\Repository\ReferenceDataRepositoryResolverInterface`, has been added to the constructor of the following classes:
+
   - `Oro\Bundle\PimDataGridBundle\Normalizer\Product\ReferenceDataCollectionNormalizer`
   - `Oro\Bundle\PimDataGridBundle\Normalizer\Product\ReferenceDataNormalizer`
 
 - In `Akeneo\Pim\Enrichment\Component\Product\Factory\ValueCollectionFactory`, the attribute repository parameter is now defined as `Akeneo\Tool\Component\StorageUtils\Repository\IdentifiableObjectRepositoryInterface` instead of ``Akeneo\Tool\Component\StorageUtils\Repository\CachedObjectRepositoryInterface`
-
 
 - Change constructor of `Akeneo\UserManagement\Component\Updater\UserUpdater` to add `Akeneo\Tool\Component\FileStorage\File\FileStorerInterface`
 - Change constructor of `Akeneo\UserManagement\Component\Updater\UserUpdater` to add `Akeneo\Tool\Component\FileStorage\Repository\FileInfoRepositoryInterface`
@@ -683,7 +688,7 @@ AOB-691: Allow only default filters without calling a dynamic attributes query i
 - Change constructor of `Akeneo\Platform\Bundle\UIBundle\UiLocaleProvider` to add `Akeneo\Channel\Component\Repository\LocaleRepositoryInterface` argument
 - Remove `Akeneo\Platform\Bundle\UIBundle\Form\Type\ProductGridFilterChoiceType`
 - Remove `Pim\Bundle\EnrichBundle\PimEnrichBundle`
-- Move `Pim\Bundle\EnrichBundle\Controller\Rest\MeasuresController` to `Akeneo\Tool\Bundle\MeasureBundle\Controller\MeasuresController`
+- Move `Pim\Bundle\EnrichBundle\Controller\Rest\MeasuresController` to `AkeneoMeasureBundle\Controller\MeasuresController`
 - Move `Pim\Bundle\EnrichBundle\Controller\Rest\ApiClientController` to `Akeneo\UserManagement\Bundle\Controller\ApiClientController`
 - Move `Pim\Bundle\EnrichBundle\Connector\Item\MassEdit\TemporaryFileCleaner` to `Akeneo\Pim\Enrichment\Component\Product\Connector\Item\MassEdit\TemporaryFileCleaner`
 - Move `Pim\Bundle\EnrichBundle\Connector\Step\MassEditStep` to `Akeneo\Pim\Enrichment\Component\Product\Connector\Step\MassEditStep`
@@ -1036,11 +1041,11 @@ AOB-691: Allow only default filters without calling a dynamic attributes query i
 - Move `Pim\Component\Catalog\Normalizer\Storage\Product\PropertiesNormalizer` to `Akeneo\Pim\Enrichment\Component\Product\Normalizer\Storage\Product\PropertiesNormalizer`
 - Move `Pim\Component\Catalog\Normalizer\Storage\ProductNormalizer` to `Akeneo\Pim\Enrichment\Component\Product\Normalizer\Storage\ProductNormalizer`
 
-- Register standard format normalizers into  `pim_standard_format_serializer` serializer and untagged them from `pim_serializer` serializer
-- Register indexing normalizers into  `pim_indexing_serializer` serializer and untagged them from `pim_serializer` serializer
-- Register datagrid normalizers into  `pim_datagrid_serializer` serializer and untagged them from `pim_serializer` serializer
-- Register storage normalizers into  `pim_storage_serializer` serializer and untagged them from `pim_serializer` serializer
-- Register external API normalizers into  `pim_external_api_serializer` serializer and untagged them from `pim_serializer` serializer
+- Register standard format normalizers into `pim_standard_format_serializer` serializer and untagged them from `pim_serializer` serializer
+- Register indexing normalizers into `pim_indexing_serializer` serializer and untagged them from `pim_serializer` serializer
+- Register datagrid normalizers into `pim_datagrid_serializer` serializer and untagged them from `pim_serializer` serializer
+- Register storage normalizers into `pim_storage_serializer` serializer and untagged them from `pim_serializer` serializer
+- Register external API normalizers into `pim_external_api_serializer` serializer and untagged them from `pim_serializer` serializer
 
 - Change constructor of `Pim\Component\Catalog\Updater\ProductUpdater`, remove `$supportedFields` argument
 
@@ -1278,7 +1283,7 @@ AOB-691: Allow only default filters without calling a dynamic attributes query i
 - Move namespace `Pim\Component\Console` to `Akeneo\Tool\Component\Console`
 - Move namespace `Pim\Component\Localization` to `Akeneo\Tool\Component\Localization`
 - Move namespace `Pim\Component\Versioning` except Normalizers to `Akeneo\Tool\Component\Versioning`
-- Move namespace `Pim\Bundle\MeasureBundle` to `Akeneo\Tool\Bundle\MeasureBundle`
+- Move namespace `Pim\Bundle\MeasureBundle` to `AkeneoMeasureBundle`
 - Move namespace `Pim\Component\FileStorage` to `Akeneo\Tool\Component\FileStorage`
 - Move namespace `Pim\Bundle\FileStorageBundle` to `Akeneo\Tool\Bundle\FileStorageBundle`
 - Move namespace `Pim\Component\Classification` to `Akeneo\Tool\Component\Classification`
@@ -1810,14 +1815,14 @@ AOB-691: Allow only default filters without calling a dynamic attributes query i
 - Change constructor of `Akeneo\Pim\Enrichment\Component\Product\Factory\Value\PriceCollectionValueFactory`, add `Akeneo\Pim\Enrichment\Component\Product\Channel\Query\FindActivatedCurrenciesInterface` argument
 - Change constructor of `Akeneo\Pim\Enrichment\Component\Product\Connector\Writer\Database\ProductWriter`, remove last argument `Akeneo\Tool\Component\StorageUtils\Cache\EntityManagerClearerInterface`
 - Remove methods `generateMissingForProducts`, `generateMissingForChannel` and `generateMissing` from `Akeneo\Pim\Enrichment\Component\Product\Completeness\CompletenessGeneratorInterface`
-    and `Akeneo\Pim\Enrichment\Component\Product\Completeness\CompletenessGenerator`
+  and `Akeneo\Pim\Enrichment\Component\Product\Completeness\CompletenessGenerator`
 - Remove methods `generateMissingForProducts`, `generateMissingForChannel`, `generateMissing`, `schedule`, `bulkSchedule` and `scheduleForFamily` from `Akeneo\Pim\Enrichment\Component\Product\ManagerCompletenessManager`
 - Change constructor of `Akeneo\Pim\Enrichment\Component\Product\Manager\`, remove arguments
-    `Akeneo\Pim\Structure\Component\Repository\FamilyRepositoryInterface`,
-    `Akeneo\Channel\Component\Repository\ChannelRepositoryInterface`,
-    `Akeneo\Channel\Component\Repository\LocaleRepositoryInterface`,
-    `Akeneo\Pim\Enrichment\Component\Product\Completeness\CompletenessRemoverInterface`
-`\ValueCompleteCheckerInterface`
+  `Akeneo\Pim\Structure\Component\Repository\FamilyRepositoryInterface`,
+  `Akeneo\Channel\Component\Repository\ChannelRepositoryInterface`,
+  `Akeneo\Channel\Component\Repository\LocaleRepositoryInterface`,
+  `Akeneo\Pim\Enrichment\Component\Product\Completeness\CompletenessRemoverInterface`
+  `\ValueCompleteCheckerInterface`
 - Change constructor of `Akeneo\Pim\Enrichment\Component\Product\Connector\Reader\Database\ProductReader`, remove arguments `Akeneo\Pim\Enrichment\Component\Product\CompletenessManager` and last argument `bool`
 - Change constructor of `Akeneo\Pim\Enrichment\Component\Product\Connector\Reader\Database\MassEdit\FilteredProductReader`, remove arguments `Akeneo\Pim\Enrichment\Component\Product\CompletenessManager` and last argument `bool`
 - Change constructor of `Akeneo\Pim\Enrichment\Component\Product\Connector\Reader\Database\MassEdit\ProductAndProductModelReader`, remove argument `Akeneo\Pim\Enrichment\Component\Product\CompletenessManager`

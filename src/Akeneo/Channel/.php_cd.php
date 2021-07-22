@@ -46,7 +46,7 @@ $rules = [
         'Akeneo\Pim\Structure\Component\AttributeTypes',
 
         // TIP-1012: Create a Measure component
-        'Akeneo\Tool\Bundle\MeasureBundle\Manager\MeasureManager',
+        'AkeneoMeasureBundle\Manager\MeasureManager',
     ])->in('Akeneo\Channel\Component'),
 ];
 

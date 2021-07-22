@@ -3,10 +3,10 @@
 namespace Specification\Akeneo\Pim\Enrichment\Component\Product\Factory;
 
 use Akeneo\Pim\Enrichment\Component\Product\Model\Metric;
-use Akeneo\Tool\Bundle\MeasureBundle\Convert\MeasureConverter;
-use Akeneo\Tool\Bundle\MeasureBundle\Exception\MeasurementFamilyNotFoundException;
-use Akeneo\Tool\Bundle\MeasureBundle\Exception\UnitNotFoundException;
-use Akeneo\Tool\Bundle\MeasureBundle\Manager\MeasureManager;
+use AkeneoMeasureBundle\Convert\MeasureConverter;
+use AkeneoMeasureBundle\Exception\MeasurementFamilyNotFoundException;
+use AkeneoMeasureBundle\Exception\UnitNotFoundException;
+use AkeneoMeasureBundle\Manager\MeasureManager;
 use PhpSpec\ObjectBehavior;
 use Prophecy\Argument;
 

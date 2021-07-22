@@ -2,7 +2,7 @@
 
 namespace Specification\Akeneo\Channel\Component\Validator\Constraint;
 
-use Akeneo\Tool\Bundle\MeasureBundle\Manager\MeasureManager;
+use AkeneoMeasureBundle\Manager\MeasureManager;
 use Akeneo\Tool\Component\StorageUtils\Repository\IdentifiableObjectRepositoryInterface;
 use PhpSpec\ObjectBehavior;
 use Akeneo\Pim\Structure\Component\AttributeTypes;

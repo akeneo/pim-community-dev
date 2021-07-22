@@ -3,7 +3,7 @@
 namespace Akeneo\Channel\Component\Validator\Constraint;
 
 use Akeneo\Pim\Structure\Component\AttributeTypes;
-use Akeneo\Tool\Bundle\MeasureBundle\Manager\MeasureManager;
+use AkeneoMeasureBundle\Manager\MeasureManager;
 use Akeneo\Tool\Component\StorageUtils\Repository\IdentifiableObjectRepositoryInterface;
 use Symfony\Component\Validator\Constraint;
 use Symfony\Component\Validator\ConstraintValidator;
@@ -63,8 +63,7 @@ class ConversionUnitsValidator extends ConstraintValidator
                 if (!$this->measureManager->unitCodeExistsInFamily(
                     $conversionUnit,
                     $attribute->getMetricFamily()
-                )
-                ) {
+                )) {
                     $this->context
                         ->buildViolation($constraint->invalidUnitCode)
                         ->setParameters(

@@ -6,7 +6,7 @@ use Akeneo\Channel\Component\Model\ChannelInterface;
 use Akeneo\Pim\Enrichment\Component\Product\Builder\EntityWithValuesBuilderInterface;
 use Akeneo\Pim\Enrichment\Component\Product\Model\EntityWithValuesInterface;
 use Akeneo\Pim\Enrichment\Component\Product\Model\MetricInterface;
-use Akeneo\Tool\Bundle\MeasureBundle\Convert\MeasureConverter;
+use AkeneoMeasureBundle\Convert\MeasureConverter;
 use Akeneo\Tool\Component\StorageUtils\Repository\IdentifiableObjectRepositoryInterface;
 
 /**

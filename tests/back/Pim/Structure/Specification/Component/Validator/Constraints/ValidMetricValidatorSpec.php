@@ -2,7 +2,7 @@
 
 namespace Specification\Akeneo\Pim\Structure\Component\Validator\Constraints;
 
-use Akeneo\Tool\Bundle\MeasureBundle\Provider\LegacyMeasurementProvider;
+use AkeneoMeasureBundle\Provider\LegacyMeasurementProvider;
 use PhpSpec\ObjectBehavior;
 use Akeneo\Pim\Structure\Component\Model\AttributeInterface;
 use Akeneo\Pim\Enrichment\Component\Product\Model\MetricInterface;

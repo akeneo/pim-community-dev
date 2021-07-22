@@ -2,7 +2,7 @@
 
 namespace Specification\Akeneo\Pim\Enrichment\Component\Product\Converter;
 
-use Akeneo\Tool\Bundle\MeasureBundle\Convert\MeasureConverter;
+use AkeneoMeasureBundle\Convert\MeasureConverter;
 use PhpSpec\ObjectBehavior;
 use Akeneo\Pim\Enrichment\Component\Product\Builder\EntityWithValuesBuilderInterface;
 use Akeneo\Pim\Structure\Component\Model\AttributeInterface;

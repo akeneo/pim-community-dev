@@ -22,7 +22,7 @@ return [
     Akeneo\Tool\Bundle\BatchBundle\AkeneoBatchBundle::class => ['all' => true],
     Akeneo\Tool\Bundle\BatchQueueBundle\AkeneoBatchQueueBundle::class => ['all' => true],
     Akeneo\Tool\Bundle\FileStorageBundle\AkeneoFileStorageBundle::class => ['all' => true],
-    Akeneo\Tool\Bundle\MeasureBundle\AkeneoMeasureBundle::class => ['all' => true],
+    AkeneoMeasureBundle\AkeneoMeasureBundle::class => ['all' => true],
     Akeneo\Tool\Bundle\StorageUtilsBundle\AkeneoStorageUtilsBundle::class => ['all' => true],
     Doctrine\Bundle\MigrationsBundle\DoctrineMigrationsBundle::class => ['all' => true],
     FOS\OAuthServerBundle\FOSOAuthServerBundle::class => ['all' => true],

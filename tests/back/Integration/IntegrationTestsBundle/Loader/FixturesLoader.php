@@ -15,7 +15,7 @@ use Akeneo\Test\IntegrationTestsBundle\Security\SystemUserAuthenticator;
 use Akeneo\Tool\Bundle\BatchBundle\Job\DoctrineJobRepository;
 use Akeneo\Tool\Bundle\ElasticsearchBundle\Client;
 use Akeneo\Tool\Bundle\ElasticsearchBundle\ClientRegistry;
-use Akeneo\Tool\Bundle\MeasureBundle\Installer\MeasurementInstaller;
+use AkeneoMeasureBundle\Installer\MeasurementInstaller;
 use Doctrine\DBAL\Connection;
 use Elasticsearch\ClientBuilder;
 use League\Flysystem\Filesystem;
@@ -194,7 +194,6 @@ class FixturesLoader implements FixturesLoaderInterface
         $this->jobLauncher->flushJobQueue();
 
         $this->systemUserAuthenticator->createSystemUser();
-
     }
 
     protected function purgeMessengerEvents()
@@ -226,7 +225,9 @@ class FixturesLoader implements FixturesLoaderInterface
      */
     protected function getHashForFiles(array $files): string
     {
-        $realFiles = array_filter($files, function ($entry) { return is_file($entry); });
+        $realFiles = array_filter($files, function ($entry) {
+            return is_file($entry);
+        });
         $hashes = array_map('sha1_file', $realFiles);
 
         return sha1(implode(':', $hashes));
@@ -364,7 +365,7 @@ class FixturesLoader implements FixturesLoaderInterface
     {
         $rawFiles = [];
         foreach ($directories as $directory) {
-            $rawFiles = array_merge($rawFiles, glob($directory.'/*'));
+            $rawFiles = array_merge($rawFiles, glob($directory . '/*'));
         }
 
         if (empty($rawFiles)) {
@@ -399,16 +400,16 @@ class FixturesLoader implements FixturesLoaderInterface
 
         $this->execCommand([
             'mysqldump',
-            '-h '.$this->databaseHost,
-            '-u '.$this->databaseUser,
-            '-p'.$this->databasePassword,
+            '-h ' . $this->databaseHost,
+            '-u ' . $this->databaseUser,
+            '-p' . $this->databasePassword,
             '--no-create-info',
             '--quick',
             '--skip-add-locks',
             '--skip-disable-keys',
             '--complete-insert',
             $this->databaseName,
-            '> '.$filepath,
+            '> ' . $filepath,
         ]);
     }
 

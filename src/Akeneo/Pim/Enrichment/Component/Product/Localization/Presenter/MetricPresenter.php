@@ -2,11 +2,11 @@
 
 namespace Akeneo\Pim\Enrichment\Component\Product\Localization\Presenter;
 
-use Akeneo\Tool\Bundle\MeasureBundle\Exception\UnitNotFoundException;
-use Akeneo\Tool\Bundle\MeasureBundle\Model\LocaleIdentifier;
-use Akeneo\Tool\Bundle\MeasureBundle\Model\MeasurementFamilyCode;
-use Akeneo\Tool\Bundle\MeasureBundle\Model\UnitCode;
-use Akeneo\Tool\Bundle\MeasureBundle\Persistence\MeasurementFamilyRepositoryInterface;
+use AkeneoMeasureBundle\Exception\UnitNotFoundException;
+use AkeneoMeasureBundle\Model\LocaleIdentifier;
+use AkeneoMeasureBundle\Model\MeasurementFamilyCode;
+use AkeneoMeasureBundle\Model\UnitCode;
+use AkeneoMeasureBundle\Persistence\MeasurementFamilyRepositoryInterface;
 use Akeneo\Tool\Component\Localization\Factory\NumberFactory;
 use Akeneo\Tool\Component\Localization\Presenter\NumberPresenter;
 use Akeneo\Tool\Component\StorageUtils\Repository\BaseCachedObjectRepository;

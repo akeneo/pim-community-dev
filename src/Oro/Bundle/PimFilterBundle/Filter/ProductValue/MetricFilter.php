@@ -3,7 +3,7 @@
 namespace Oro\Bundle\PimFilterBundle\Filter\ProductValue;
 
 use Akeneo\Pim\Enrichment\Component\Product\Query\Filter\Operators;
-use Akeneo\Tool\Bundle\MeasureBundle\Manager\MeasureManager;
+use AkeneoMeasureBundle\Manager\MeasureManager;
 use Oro\Bundle\FilterBundle\Datasource\FilterDatasourceAdapterInterface;
 use Oro\Bundle\FilterBundle\Filter\NumberFilter as OroNumberFilter;
 use Oro\Bundle\FilterBundle\Form\Type\Filter\FilterType;
@@ -95,21 +95,21 @@ class MetricFilter extends OroNumberFilter
     {
         $data['type'] = isset($data['type']) ? $data['type'] : null;
 
-        if (!is_array($data)
+        if (
+            !is_array($data)
             || !array_key_exists('value', $data)
-            || (
-                !is_numeric($data['value']) &&
-                !in_array($data['type'], [FilterType::TYPE_EMPTY, FilterType::TYPE_NOT_EMPTY])
-            )) {
+            || (!is_numeric($data['value']) &&
+                !in_array($data['type'], [FilterType::TYPE_EMPTY, FilterType::TYPE_NOT_EMPTY]))
+        ) {
             return false;
         }
 
-        if (!is_array($data)
+        if (
+            !is_array($data)
             || !array_key_exists('unit', $data)
-            || (
-                !is_string($data['unit']) &&
-                !in_array($data['type'], [FilterType::TYPE_EMPTY, FilterType::TYPE_NOT_EMPTY])
-            )) {
+            || (!is_string($data['unit']) &&
+                !in_array($data['type'], [FilterType::TYPE_EMPTY, FilterType::TYPE_NOT_EMPTY]))
+        ) {
             return false;
         }
 

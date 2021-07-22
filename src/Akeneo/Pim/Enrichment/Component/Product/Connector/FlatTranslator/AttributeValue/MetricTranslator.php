@@ -6,7 +6,7 @@ namespace Akeneo\Pim\Enrichment\Component\Product\Connector\FlatTranslator\Attri
 
 use Akeneo\Pim\Enrichment\Component\Product\Connector\FlatTranslator\FlatTranslatorInterface;
 use Akeneo\Pim\Structure\Component\AttributeTypes;
-use Akeneo\Tool\Bundle\MeasureBundle\PublicApi\GetUnitTranslations;
+use AkeneoMeasureBundle\PublicApi\GetUnitTranslations;
 
 class MetricTranslator implements FlatAttributeValueTranslatorInterface
 {

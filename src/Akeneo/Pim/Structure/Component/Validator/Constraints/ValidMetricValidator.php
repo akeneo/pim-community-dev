@@ -6,7 +6,7 @@ use Akeneo\Pim\Enrichment\Component\Product\Model\MetricInterface;
 use Akeneo\Pim\Enrichment\Component\Product\Model\ValueInterface;
 use Akeneo\Pim\Enrichment\Component\Product\Value\MetricValueInterface;
 use Akeneo\Pim\Structure\Component\Model\AttributeInterface;
-use Akeneo\Tool\Bundle\MeasureBundle\Provider\LegacyMeasurementProvider;
+use AkeneoMeasureBundle\Provider\LegacyMeasurementProvider;
 use Symfony\Component\PropertyAccess\PropertyAccessorInterface;
 use Symfony\Component\Validator\Constraint;
 use Symfony\Component\Validator\ConstraintValidator;
@@ -53,7 +53,8 @@ class ValidMetricValidator extends ConstraintValidator
         } elseif ($object instanceof MetricInterface && null !== $object->getData()) {
             $familyProperty = 'family';
             $unitProperty = 'unit';
-        } elseif ($object instanceof MetricValueInterface && null !== $object->getData()
+        } elseif (
+            $object instanceof MetricValueInterface && null !== $object->getData()
             && (null !== $object->getUnit() || null !== $object->getAmount())
         ) {
             $object = $object->getData();
