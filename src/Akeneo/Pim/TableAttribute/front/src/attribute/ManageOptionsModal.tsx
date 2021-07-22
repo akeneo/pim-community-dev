@@ -191,7 +191,7 @@ const ManageOptionsModal: React.FC<ManageOptionsModalProps> = ({
           violationsForOption.push(translate('pim_table_attribute.validations.column_code_must_be_filled'));
         }
         if (option.code !== '' && !/^[a-zA-Z0-9_]+$/.exec(option.code)) {
-          violationsForOption.push(translate('pim_table_attribute.validations.invalid_code'));
+          violationsForOption.push(translate('pim_table_attribute.validations.invalid_column_code'));
         }
         if (option.code !== '' && duplicates[option.code]) {
           violationsForOption.push(translate('pim_table_attribute.validations.duplicated_select_code'));

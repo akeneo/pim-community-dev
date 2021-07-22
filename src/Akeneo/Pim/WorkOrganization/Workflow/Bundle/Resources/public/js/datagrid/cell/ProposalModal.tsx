@@ -46,7 +46,7 @@ const ProposalModal = ({
           value={comment}
           maxLength={255}
           characterLeftLabel={translate(
-            'pim_datagrid.workflow.characters_left',
+            'pim_common.characters_left',
             {count: 255 - comment.length},
             255 - comment.length
           )}

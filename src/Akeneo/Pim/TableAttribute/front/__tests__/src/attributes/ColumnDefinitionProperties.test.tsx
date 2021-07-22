@@ -113,7 +113,7 @@ describe('ColumnDefinitionProperties', () => {
       />
     );
 
-    expect(screen.getByText('pim_table_attribute.validations.invalid_code')).toBeInTheDocument();
+    expect(screen.getByText('pim_table_attribute.validations.invalid_column_code')).toBeInTheDocument();
   });
 
   it('should display violation on when code is duplicate', () => {

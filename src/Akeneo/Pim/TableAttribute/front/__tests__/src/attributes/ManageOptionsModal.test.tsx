@@ -98,7 +98,7 @@ describe('ManageOptionsModal', () => {
     expect(await findCodeInput(0)).toHaveValue('salt');
 
     fireEvent.change(getCodeInput('new'), {target: {value: 's a l t'}});
-    expect(await screen.findByText('pim_table_attribute.validations.invalid_code')).toBeInTheDocument();
+    expect(await screen.findByText('pim_table_attribute.validations.invalid_column_code')).toBeInTheDocument();
     fireEvent.change(getCodeInput(ingredientsSelectOptions.length), {target: {value: ''}});
     expect(screen.getByText('pim_table_attribute.validations.column_code_must_be_filled')).toBeInTheDocument();
     fireEvent.change(getCodeInput('new'), {target: {value: 'pepper'}});

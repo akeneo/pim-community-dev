@@ -120,7 +120,7 @@ const ColumnDefinitionProperties: React.FC<ColumnDefinitionPropertiesProps> = ({
   if (selectedColumn.code === '')
     codeViolations.push(translate('pim_table_attribute.validations.column_code_must_be_filled'));
   if (selectedColumn.code !== '' && !/^[a-zA-Z0-9_]+$/.exec(selectedColumn.code))
-    codeViolations.push(translate('pim_table_attribute.validations.invalid_code'));
+    codeViolations.push(translate('pim_table_attribute.validations.invalid_column_code'));
   if (isDuplicateColumnCode(selectedColumn.code)) {
     codeViolations.push(
       translate('pim_table_attribute.validations.duplicated_column_code', {

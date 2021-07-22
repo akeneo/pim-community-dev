@@ -74,7 +74,7 @@ const AddColumnModal: React.FC<AddColumnModalProps> = ({close, onCreate, existin
     const validations: string[] = [];
     if (code === '') validations.push(translate('pim_table_attribute.validations.column_code_must_be_filled'));
     if (code !== '' && !/^[a-zA-Z0-9_]+$/.exec(code))
-      validations.push(translate('pim_table_attribute.validations.invalid_code'));
+      validations.push(translate('pim_table_attribute.validations.invalid_column_code'));
     if (existingColumnCodes.includes(code))
       validations.push(
         translate('pim_table_attribute.validations.duplicated_column_code', {
@@ -141,7 +141,7 @@ const AddColumnModal: React.FC<AddColumnModalProps> = ({close, onCreate, existin
             onChange={handleCodeChange}
             maxLength={100}
             characterLeftLabel={translate(
-              'pim_table_attribute.form.attribute.characters_left',
+              'pim_common.characters_left',
               {count: 100 - columnDefinition.code.length},
               100 - columnDefinition.code.length
             )}

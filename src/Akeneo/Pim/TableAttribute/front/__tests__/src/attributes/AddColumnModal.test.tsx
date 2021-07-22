@@ -110,7 +110,7 @@ describe('AddColumnModal', () => {
     fireEvent.click(screen.getByText('pim_table_attribute.properties.data_type.text'));
 
     fireEvent.change(codeInput, {target: {value: 'a wrong code'}});
-    expect(screen.getByText('pim_table_attribute.validations.invalid_code')).toBeInTheDocument();
+    expect(screen.getByText('pim_table_attribute.validations.invalid_column_code')).toBeInTheDocument();
     expect(createButton.disabled).toEqual(true);
 
     fireEvent.change(codeInput, {target: {value: ''}});
