@@ -66,7 +66,7 @@ const QualityScoreFilter = ({availableOperators, filter, onChange, validationErr
   };
   const handleQualityScoreChange = (newQualityScores: QualityScores) => {
     if (0 === newQualityScores.length) {
-      const resetFilter = {...filter, operator: null, value: []};
+      const resetFilter = {field: filter.field, operator: null, value: []};
       onChange(resetFilter);
     } else {
       const newScope = filter.context?.scope ?? availableChannels[0].code;

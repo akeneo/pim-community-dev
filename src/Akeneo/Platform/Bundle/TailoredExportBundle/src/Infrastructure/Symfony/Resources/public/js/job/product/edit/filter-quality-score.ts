@@ -5,6 +5,7 @@ import {pimTheme} from 'akeneo-design-system';
 import {DependenciesProvider} from '@akeneo-pim-community/legacy-bridge';
 import {AssociationType, Attribute, FetcherContext, QualityScoreFilter} from '@akeneo-pim-enterprise/tailored-export';
 import {Channel, filterErrors, ValidationError} from '@akeneo-pim-community/shared';
+const _ = require('underscore');
 const BaseFilter = require('pim/filter/filter');
 const mediator = require('oro/mediator');
 const fetcherRegistry = require('pim/fetcher-registry');
@@ -17,6 +18,13 @@ class FilterQualityScore extends BaseFilter {
    */
   initialize(config: any) {
     this.config = config?.config;
+  }
+
+  /**
+   * {@inheritdoc}
+   */
+  isEmpty() {
+    return _.isEmpty(this.getValue());
   }
 
   /**
@@ -36,6 +44,9 @@ class FilterQualityScore extends BaseFilter {
     this.listenTo(this.parentForm.getRoot(), 'pim_enrich:form:entity:bad_request', (event: any) =>
       this.setValidationErrors(event.response.normalized_errors)
     );
+    this.listenTo(this.getRoot(), 'pim_enrich:form:entity:pre_update', (data: any) => {
+      _.defaults(data, {field: this.getCode(), operator: null, value: []});
+    });
 
     return BaseFilter.prototype.configure.apply(this, arguments);
   }
@@ -82,30 +93,19 @@ class FilterQualityScore extends BaseFilter {
                 attribute: {
                   fetchByIdentifiers: (identifiers: string[]): Promise<Attribute[]> => {
                     return new Promise(resolve =>
-                      fetcherRegistry
-                        .getFetcher('attribute')
-                        .fetchByIdentifiers(identifiers)
-                        .then(resolve)
+                      fetcherRegistry.getFetcher('attribute').fetchByIdentifiers(identifiers).then(resolve)
                     );
                   },
                 },
                 channel: {
                   fetchAll: (): Promise<Channel[]> => {
-                    return new Promise(resolve =>
-                      fetcherRegistry
-                        .getFetcher('channel')
-                        .fetchAll()
-                        .then(resolve)
-                    );
+                    return new Promise(resolve => fetcherRegistry.getFetcher('channel').fetchAll().then(resolve));
                   },
                 },
                 associationType: {
                   fetchByCodes: (codes: string[]): Promise<AssociationType[]> => {
                     return new Promise(resolve =>
-                      fetcherRegistry
-                        .getFetcher('association-type')
-                        .fetchByIdentifiers(codes)
-                        .then(resolve)
+                      fetcherRegistry.getFetcher('association-type').fetchByIdentifiers(codes).then(resolve)
                     );
                   },
                 },
