@@ -115,6 +115,7 @@ class FilterQualityScore extends BaseFilter {
               availableOperators: this.config.operators,
               filter: this.getFormData(),
               onChange: newFilter => {
+                this.getRoot().model.clear({silent: true});
                 this.setData(newFilter);
                 this.render();
               },
