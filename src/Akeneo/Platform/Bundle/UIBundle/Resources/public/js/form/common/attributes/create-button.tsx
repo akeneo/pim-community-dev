@@ -5,6 +5,7 @@ import {DependenciesProvider} from '@akeneo-pim-community/legacy-bridge';
 import {CreateButtonApp} from './CreateButtonApp';
 import {pimTheme} from 'akeneo-design-system';
 import {ThemeProvider} from 'styled-components';
+import {LabelCollection} from "@akeneo-pim-community/shared";
 const translate = require('oro/translator');
 const router = require('pim/router');
 
@@ -31,11 +32,8 @@ class CreateButton extends BaseView {
     return params.get(paramName);
   }
 
-  onClick(attributeType: string): void {
-    router.redirectToRoute('pim_enrich_attribute_create', {
-      attribute_type: attributeType,
-      code: this.getQueryParam('code'),
-    });
+  onClick(data: { attribute_type: string, code: string, label: string }): void {
+    router.redirectToRoute('pim_enrich_attribute_create', data);
   }
 
   render(): any {
@@ -48,6 +46,7 @@ class CreateButton extends BaseView {
             iconsMap={moduleConfig.attribute_icons}
             isModalOpen={!!this.getQueryParam('open_create_attribute_modal')}
             onClick={this.onClick.bind(this)}
+            defaultCode={this.getQueryParam('code')}
           />
         </ThemeProvider>
       </DependenciesProvider>,
