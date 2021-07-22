@@ -38,8 +38,8 @@ final class ConsolidateDashboardRates
     public function consolidate(ConsolidationDate $day): void
     {
         $this->consolidateWholeCatalog($day);
-        $this->consolidateFamilies($day);
-        $this->consolidateCategories($day);
+        //$this->consolidateFamilies($day);
+        //$this->consolidateCategories($day);
     }
 
     private function consolidateWholeCatalog(ConsolidationDate $day): void
