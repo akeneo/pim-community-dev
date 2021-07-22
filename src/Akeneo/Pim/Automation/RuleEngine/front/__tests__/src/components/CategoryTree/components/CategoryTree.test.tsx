@@ -261,4 +261,59 @@ describe('SelectCategoriesTrees', () => {
     // Then
     expect(onSelectCategory).toHaveBeenNthCalledWith(1, 'audio_video');
   });
+  it('should not call on select when clicking on the tree root node label', async () => {
+    // Given
+    const masterChildrenMock = {
+      attr: {
+        id: 'node_1',
+        'data-code': 'master',
+      },
+      data: 'Master catalog',
+      state: 'closed jstree-root',
+      children: [
+        {
+          attr: {
+            id: 'node_10',
+            'data-code': 'audio_video',
+          },
+          data: 'Audio and Video',
+          state: 'closed',
+        },
+      ],
+    };
+    mockFetchCategoryTreeChildren.mockImplementationOnce(() =>
+      Promise.resolve({
+        ok: true,
+        json: () => masterChildrenMock,
+      })
+    );
+    const categoryTree: CategoryTreeModel = {
+      code: 'master',
+      parent: '',
+      labels: {
+        en_US: 'Master catalog',
+        de_DE: 'Hauptkatalog',
+        fr_FR: 'Catalogue principal',
+      },
+      id: 1,
+    };
+    const onSelectCategory = jest.fn();
+    const selectedCategories: Category[] = [];
+    const locale = 'en_US';
+    // When
+    renderWithProviders(
+      <CategoryTree
+        locale={locale}
+        categoryTree={categoryTree}
+        onSelectCategory={onSelectCategory}
+        selectedCategories={selectedCategories}
+      />,
+      {all: true}
+    );
+    expect(screen.getByText(categoryTree.labels[locale])).toBeInTheDocument();
+    expect(await screen.findByText(/master catalog/i)).toBeInTheDocument();
+    userEvent.click(screen.getByText(/master catalog/i));
+    // Then
+    expect(onSelectCategory).not.toHaveBeenCalledWith('master');
+  });
 });

@@ -63,6 +63,7 @@
 - PIM-9973: Fix Asset attribute media type dropdown being hidden
 - PIM-9961: Remove useless "global settings" tab on asset and record XLSX imports (SAAS only)
 - PIM-9974: [PIM-9972] Half the selected published product are unpublished through mass action
+- PIM-9980: Prevent root category selection in Rule Engine set categories action 
 
 
 ## Improvements
