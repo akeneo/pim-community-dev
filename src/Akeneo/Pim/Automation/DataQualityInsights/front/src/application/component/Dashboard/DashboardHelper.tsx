@@ -1,12 +1,13 @@
 import React from 'react';
 
 const __ = require('oro/translator');
+const FeatureFlags = require('pim/feature-flags');
 
 const DashboardHelper = React.memo(() => {
   let helper = <></>;
   const showHelper = localStorage.getItem('data-quality-insights:dashboard:show-helper');
 
-  if (showHelper === null) {
+  if (showHelper === null && !FeatureFlags.isEnabled('free_trial')) {
     localStorage.setItem('data-quality-insights:dashboard:show-helper', '0');
     helper = (
       <div className="AknDescriptionHeader">
