@@ -119,4 +119,4 @@ akeneo.tailored_export:
     locale:
       should_be_active: The {{ locale_code }} locale should be active.
     channel:
-      should_exist: The {{ channel_code }} channel should be active.
+      should_exist: The {{ channel_code }} channel does not exist.
