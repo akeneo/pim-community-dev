@@ -71,7 +71,7 @@ SQL;
     {
         return array_values(array_filter(
             $rawValueCollection,
-            fn (array $value) => $value['attribute'] === $attributeAsMainMediaIdentifier
+            static fn (array $value) => $value['attribute'] === $attributeAsMainMediaIdentifier
         ));
     }
 }

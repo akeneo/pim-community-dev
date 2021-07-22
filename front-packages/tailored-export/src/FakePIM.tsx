@@ -1,4 +1,4 @@
-import React, {useState} from 'react';
+import React, {useEffect, useState} from 'react';
 import styled from 'styled-components';
 import {
   AkeneoIcon,
@@ -11,17 +11,17 @@ import {
   TabBar,
   useTabBar,
 } from 'akeneo-design-system';
-import {CompletenessFilter, CategoryFilter, ColumnsTab, CategoryFilterType} from './feature';
-import {useEffect} from 'react';
+import {CategoryFilter, CategoryFilterType, ColumnsTab, CompletenessFilter} from './feature';
 import {
+  filterErrors,
   NotificationLevel,
   useNotify,
   useRoute,
   useTranslate,
   ValidationError,
-  filterErrors,
 } from '@akeneo-pim-community/shared';
 import {ColumnConfiguration} from './feature/models/ColumnConfiguration';
+import {QualityScoreFilter} from './feature/components/QualityScoreFilter/QualityScoreFilter';
 
 const JOB_CODE = 'mmm';
 
@@ -95,13 +95,6 @@ const FakePIM = () => {
   const saveRoute = useRoute('pim_enrich_job_instance_rest_export_put', {identifier: JOB_CODE});
   const notify = useNotify();
   const translate = useTranslate();
-  const AVAILABLE_OPERATORS = [
-    'ALL',
-    'GREATER OR EQUALS THAN ON AT LEAST ONE LOCALE',
-    'GREATER OR EQUALS THAN ON ALL LOCALES',
-    'LOWER THAN ON ALL LOCALES',
-  ];
-
   const handleColumnConfigurationChange = (columnConfiguration: ColumnConfiguration[]) => {
     if (null !== jobConfiguration) {
       setJobConfiguration(jobConfiguration => ({
@@ -125,9 +118,21 @@ const FakePIM = () => {
     });
   };
 
-  const handleFilterChange = updatedFilter => {
+  const handleCompletenessFilterChange = updatedFilter => {
     const updatedFilters = jobConfiguration.configuration.filters.data.map(filter => {
       if (filter.field !== 'completeness') return filter;
+
+      return updatedFilter;
+    });
+
+    setJobConfiguration({
+      ...jobConfiguration,
+      configuration: {...jobConfiguration.configuration, filters: {data: updatedFilters}},
+    });
+  };
+  const handleQualityScoreFilterChange = updatedFilter => {
+    const updatedFilters = jobConfiguration.configuration.filters.data.map(filter => {
+      if (filter.field !== 'quality_score_multi_locales') return filter;
 
       return updatedFilter;
     });
@@ -183,6 +188,10 @@ const FakePIM = () => {
     return filter.field === 'completeness';
   });
 
+  const qualityScoreFilter = jobConfiguration.configuration.filters.data.find(filter => {
+    return filter.field === 'quality_score_multi_locales';
+  });
+
   const categorySelection = categoryFilter ? categoryFilter['value'] : [];
 
   return (
@@ -225,10 +234,21 @@ const FakePIM = () => {
             {categorySelection.length === 0 ? 'All products' : `${categorySelection.length} selected category`}
             <CategoryFilter filter={categoryFilter} onChange={handleCategoryChange} />
             <CompletenessFilter
-              availableOperators={AVAILABLE_OPERATORS}
+              availableOperators={[
+                'ALL',
+                'GREATER OR EQUALS THAN ON AT LEAST ONE LOCALE',
+                'GREATER OR EQUALS THAN ON ALL LOCALES',
+                'LOWER THAN ON ALL LOCALES',
+              ]}
               filter={completenessFilter}
-              onChange={handleFilterChange}
+              onChange={handleCompletenessFilterChange}
               validationErrors={filterErrors(validationErrors, '[filters][data][2]')}
+            />
+            <QualityScoreFilter
+              availableOperators={['IN AT LEAST ONE LOCALE', 'IN ALL LOCALES']}
+              filter={qualityScoreFilter}
+              onChange={handleQualityScoreFilterChange}
+              validationErrors={filterErrors(validationErrors, '[filters][data][3]')}
             />
           </FieldContainer>
         )}

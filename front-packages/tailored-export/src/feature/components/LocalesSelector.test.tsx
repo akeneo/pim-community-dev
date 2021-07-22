@@ -21,10 +21,18 @@ const availableLocales = [
 
 test('it displays the selected locales', () => {
   renderWithProviders(
-    <LocalesSelector value={['en_US']} locales={availableLocales} onChange={() => {}} validationErrors={[]} />
+    <LocalesSelector
+      value={['en_US']}
+      locales={availableLocales}
+      onChange={() => {}}
+      validationErrors={[]}
+      label="locale_selector.label"
+      placeholder="locale_selector.placeholder"
+      removeLabel="locale_selector.remove_label"
+    />
   );
 
-  expect(screen.queryByText('akeneo.tailored_export.filters.completeness.locales.label')).toBeInTheDocument();
+  expect(screen.queryByText('locale_selector.label')).toBeInTheDocument();
   expect(screen.queryByText('English (American)')).toBeInTheDocument();
 });
 
@@ -36,10 +44,13 @@ test('it notifies when a locale is added to the selection', () => {
       locales={availableLocales}
       onChange={onLocalesSelectionChange}
       validationErrors={[]}
+      label="locale_selector.label"
+      placeholder="locale_selector.placeholder"
+      removeLabel="locale_selector.remove_label"
     />
   );
 
-  userEvent.click(screen.getByText('akeneo.tailored_export.filters.completeness.locales.label'));
+  userEvent.click(screen.getByText('locale_selector.label'));
   userEvent.click(screen.getByText('English (American)'));
 
   expect(onLocalesSelectionChange).toHaveBeenCalledWith(['fr_FR', 'en_US']);
@@ -62,6 +73,9 @@ test('it displays validations errors if any', () => {
           invalidValue: '',
         },
       ]}
+      label="locale_selector.label"
+      placeholder="locale_selector.placeholder"
+      removeLabel="locale_selector.remove_label"
     />
   );
 

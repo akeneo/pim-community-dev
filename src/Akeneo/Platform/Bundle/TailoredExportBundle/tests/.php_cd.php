@@ -46,7 +46,8 @@ $rules = [
             'Akeneo\Pim\Enrichment\Component\Product\Model\ProductModelInterface',
             'Akeneo\Pim\Enrichment\Component\Product\Value\MetricValue',
             'Akeneo\Pim\Enrichment\Component\Product\Model\GroupInterface',
-            'Akeneo\Pim\Enrichment\Component\Product\Query\GetProductLabelsInterface'
+            'Akeneo\Pim\Enrichment\Component\Product\Query\GetProductLabelsInterface',
+            'Akeneo\Pim\Automation\DataQualityInsights\Infrastructure\Elasticsearch\Filter\QualityScoreMultiLocalesFilter'
         ]
     )->in('Akeneo\Platform\TailoredExport'),
 ];

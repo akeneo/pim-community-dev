@@ -7,6 +7,12 @@ akeneo.tailored_export:
         label: Define the locales for the completeness
         placeholder: Select some locales
         remove: Remove the locale
+    quality_score:
+      quality_score:
+        label: Quality Score
+        remove: Remove quality score
+      locales:
+        label: Define the locales for the quality score
   form:
     job_instance:
       tab:

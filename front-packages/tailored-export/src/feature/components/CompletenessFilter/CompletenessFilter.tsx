@@ -8,9 +8,10 @@ import {
   LocaleCode,
   ValidationError,
   Locale,
+  useTranslate,
 } from '@akeneo-pim-community/shared';
 import {Operator, OperatorSelector} from './OperatorSelector';
-import {LocalesSelector} from './LocalesSelector';
+import {LocalesSelector} from '../LocalesSelector';
 import {ChannelDropdown} from '../ChannelDropdown';
 import {useChannels} from '../../hooks';
 
@@ -39,6 +40,7 @@ type CompletenessFilterProps = {
 };
 
 const CompletenessFilter = ({availableOperators, filter, onChange, validationErrors}: CompletenessFilterProps) => {
+  const translate = useTranslate();
   const availableChannels = useChannels();
   const availableLocales = getLocalesFromChannel(availableChannels, filter.context?.scope ?? null);
   const formattedValidationErrors = formatParameters(validationErrors);
@@ -91,6 +93,9 @@ const CompletenessFilter = ({availableOperators, filter, onChange, validationErr
             locales={availableLocales ?? []}
             onChange={handleLocalesChange}
             validationErrors={localesErrors}
+            label={translate('akeneo.tailored_export.filters.completeness.locales.label')}
+            placeholder={translate('akeneo.tailored_export.filters.completeness.locales.placeholder')}
+            removeLabel={translate('akeneo.tailored_export.filters.completeness.locales.remove')}
           />
         </>
       )}
