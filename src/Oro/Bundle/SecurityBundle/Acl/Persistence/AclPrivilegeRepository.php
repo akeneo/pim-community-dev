@@ -5,12 +5,15 @@ namespace Oro\Bundle\SecurityBundle\Acl\Persistence;
 use Doctrine\Common\Collections\ArrayCollection;
 use Oro\Bundle\SecurityBundle\Acl\AccessLevel;
 use Oro\Bundle\SecurityBundle\Acl\Domain\ObjectIdentityFactory;
+use Oro\Bundle\SecurityBundle\Acl\Event\EventDispatcherAware;
+use Oro\Bundle\SecurityBundle\Acl\Event\PrivilegesPostLoadEvent;
 use Oro\Bundle\SecurityBundle\Acl\Extension\AclClassInfo;
 use Oro\Bundle\SecurityBundle\Acl\Extension\AclExtensionInterface;
 use Oro\Bundle\SecurityBundle\Acl\Permission\MaskBuilder;
 use Oro\Bundle\SecurityBundle\Model\AclPermission;
 use Oro\Bundle\SecurityBundle\Model\AclPrivilege;
 use Oro\Bundle\SecurityBundle\Model\AclPrivilegeIdentity;
+use Symfony\Component\EventDispatcher\EventDispatcherInterface;
 use Symfony\Component\Security\Acl\Domain\ObjectIdentity;
 use Symfony\Component\Security\Acl\Domain\ObjectIdentity as OID;
 use Symfony\Component\Security\Acl\Exception\NotAllAclsFoundException;
@@ -21,7 +24,7 @@ use Symfony\Component\Security\Acl\Model\SecurityIdentityInterface as SID;
 /**
  * @SuppressWarnings(PHPMD.ExcessiveClassComplexity)
  */
-class AclPrivilegeRepository
+class AclPrivilegeRepository implements EventDispatcherAware
 {
     const ROOT_PRIVILEGE_NAME = '(default)';
 
@@ -29,6 +32,8 @@ class AclPrivilegeRepository
      * @var AclManager
      */
     protected $manager;
+
+    protected ?EventDispatcherInterface $eventDispatcher = null;
 
     /**
      * Constructor
@@ -106,6 +111,7 @@ class AclPrivilegeRepository
                 if ($oid->getType() === ObjectIdentityFactory::ROOT_IDENTITY_TYPE) {
                     $name = self::ROOT_PRIVILEGE_NAME;
                     $group = '';
+                    $order = 0;
                 } else {
                     /** @var AclClassInfo $class */
                     $class = $classes[$oid->getType()];
@@ -114,6 +120,7 @@ class AclPrivilegeRepository
                         $name = substr($class->getClassName(), strpos($class->getClassName(), '\\'));
                     }
                     $group = $class->getGroup();
+                    $order = $class->getOrder();
                 }
 
                 $privilege = new AclPrivilege();
@@ -125,7 +132,8 @@ class AclPrivilegeRepository
                         )
                     )
                     ->setGroup($group)
-                    ->setExtensionKey($extensionKey);
+                    ->setExtensionKey($extensionKey)
+                    ->setOrder($order);
 
                 $this->addPermissions($sid, $privilege, $oid, $acls, $extension, $rootAcl);
 
@@ -134,6 +142,12 @@ class AclPrivilegeRepository
         }
 
         $this->sortPrivileges($privileges);
+
+        if (null !== $this->eventDispatcher) {
+            $event = new PrivilegesPostLoadEvent($privileges);
+            $this->eventDispatcher->dispatch($event);
+            $privileges = $event->getPrivileges();
+        }
 
         return $privileges;
     }
@@ -455,6 +469,9 @@ class AclPrivilegeRepository
                 if (strpos($b->getIdentity()->getId(), ObjectIdentityFactory::ROOT_IDENTITY_TYPE)) {
                     return 1;
                 }
+                if ($a->getOrder() !== $b->getOrder()) {
+                    return ($a->getOrder() > $b->getOrder()) ? 1 : -1;
+                }
 
                 return strcmp($a->getIdentity()->getName(), $b->getIdentity()->getName());
             }
@@ -647,5 +664,10 @@ class AclPrivilegeRepository
                 }
             }
         }
+    }
+
+    public function setEventDispatcher(EventDispatcherInterface $eventDispatcher): void
+    {
+        $this->eventDispatcher = $eventDispatcher;
     }
 }
