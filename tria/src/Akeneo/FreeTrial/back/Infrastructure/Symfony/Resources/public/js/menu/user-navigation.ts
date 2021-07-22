@@ -9,7 +9,7 @@ class FreeTrialUserNavigation extends UserNavigation {
     this.renderReact(
         InviteUserButton,
         {},
-        document.getElementById('dropzone-before-user-navigation')
+        document.getElementById('invite-user-btn')
     );
 
     return this;
