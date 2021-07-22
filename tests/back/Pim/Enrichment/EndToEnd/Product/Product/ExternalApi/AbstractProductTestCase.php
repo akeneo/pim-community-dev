@@ -146,7 +146,7 @@ abstract class AbstractProductTestCase extends ApiTestCase
         Assert::assertSame($expectedProduct, $standardizedProduct);
     }
 
-    protected function deletePermissionAcl(string $aclPrivilegeIdentityId): void
+    protected function removeAclFromRole(string $aclPrivilegeIdentityId): void
     {
         $aclManager = $this->get('oro_security.acl.manager');
         $role = $this->get('pim_user.repository.role')->findOneByIdentifier('ROLE_ADMINISTRATOR');

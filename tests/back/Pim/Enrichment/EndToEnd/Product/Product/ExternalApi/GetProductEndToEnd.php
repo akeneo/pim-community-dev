@@ -315,7 +315,7 @@ class GetProductEndToEnd extends AbstractProductTestCase
         ]);
 
         $client = $this->createAuthenticatedClient();
-        $this->deletePermissionAcl('action:pim_api_product_list');
+        $this->removeAclFromRole('action:pim_api_product_list');
 
         $client->request('GET', 'api/rest/v1/products/product');
         $expectedResponse = <<<JSON

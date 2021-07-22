@@ -102,7 +102,7 @@ JSON;
 
     public function testAccessDeniedOnUpdateAPartialProductIfNoPermission()
     {
-        $this->deletePermissionAcl('action:pim_api_product_edit');
+        $this->removeAclFromRole('action:pim_api_product_edit');
 
         $data = <<<JSON
 {"line":1,"identifier":"product_family","status_code":204}

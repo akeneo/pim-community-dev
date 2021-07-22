@@ -51,7 +51,7 @@ JSON;
     public function test_access_denied_on_create_a_product_if_no_permission()
     {
         $client = $this->createAuthenticatedClient();
-        $this->deletePermissionAcl('action:pim_api_product_edit');
+        $this->removeAclFromRole('action:pim_api_product_edit');
 
         $data =
             <<<JSON

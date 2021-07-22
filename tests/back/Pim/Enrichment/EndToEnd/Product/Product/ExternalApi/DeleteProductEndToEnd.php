@@ -45,7 +45,7 @@ class DeleteProductEndToEnd extends AbstractProductTestCase
         $this->createAdminUser();
         $this->assertCount(7, $this->get('pim_catalog.repository.product')->findAll());
         $client = $this->createAuthenticatedClient();
-        $this->deletePermissionAcl('action:pim_api_product_remove');
+        $this->removeAclFromRole('action:pim_api_product_remove');
         $this->get('pim_catalog.elasticsearch.indexer.product')->indexFromProductIdentifier('foo');
         $client->request('DELETE', 'api/rest/v1/products/foo');
         $expectedResponse = <<<JSON

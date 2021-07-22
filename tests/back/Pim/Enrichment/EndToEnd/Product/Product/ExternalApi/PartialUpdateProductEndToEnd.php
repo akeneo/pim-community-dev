@@ -440,7 +440,7 @@ JSON;
     public function testAccessDeniedOnUpdateAPartialProductIfNoPermission()
     {
         $client = $this->createAuthenticatedClient();
-        $this->deletePermissionAcl('action:pim_api_product_edit');
+        $this->removeAclFromRole('action:pim_api_product_edit');
         $data =
             <<<JSON
     {
