@@ -51,7 +51,7 @@ final class MediaToExportExtractor implements MediaToExportExtractorInterface
                 if ($selection instanceof FileSelectionInterface
                     && ($value = $valueCollection->getFromSource($source)) instanceof FileValue
                 ) {
-                    $mediaToExports[] = $this->extractFromFileSource($selection, $value);
+                    $mediaToExports[$value->getKey()] = $this->extractFromFileSource($selection, $value);
                 }
 
                 if ($selection instanceof AssetCollectionSelectionInterface
@@ -96,9 +96,10 @@ final class MediaToExportExtractor implements MediaToExportExtractorInterface
                 $value->getLocaleReference()
             );
 
-        $mediaToExports = array_map(
+        $mediaToExports = array_reduce(
+            $fileInfoCollection,
 //            function(FileInfo $fileInfo) use ($selection, $value) {
-            function($fileInfo) use ($selection, $value) {
+            function($accumulator, $fileInfo) use ($selection, $value) {
                 $exportDirectory = MediaExporterPathGenerator::generate(
                     $value->getEntityIdentifier(),
                     $selection->getAttributeCode(),
@@ -108,13 +109,15 @@ final class MediaToExportExtractor implements MediaToExportExtractorInterface
 
                 $path = sprintf('%s%s', $exportDirectory, $fileInfo['originalFilename']);
 
-                return new MediaToExport(
+                $accumulator[$fileInfo['filePath']] = new MediaToExport(
                     $fileInfo['filePath'],
                     Storage::FILE_STORAGE_ALIAS,
                     $path
                 );
+
+                return $accumulator;
             },
-            $fileInfoCollection
+            []
         );
 
         return $mediaToExports;

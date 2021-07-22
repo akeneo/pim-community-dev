@@ -35,7 +35,12 @@ class AssetCollectionLabelSelectionHandlerSpec extends ObjectBehavior
             'an_asset_family_code',
             'foo_attribute_code'
         );
-        $value = new AssetCollectionValue(['asset_code1', 'asset_code2', 'asset_code...']);
+        $value = new AssetCollectionValue(
+            ['asset_code1', 'asset_code2', 'asset_code...'],
+            'the_identifier',
+            null,
+            null
+        );
 
         $findAssetLabelTranslations->byFamilyCodeAndAssetCodes(
             'an_asset_family_code',
@@ -68,7 +73,7 @@ class AssetCollectionLabelSelectionHandlerSpec extends ObjectBehavior
             'an_asset_family_code',
             'foo_attribute_code'
         );
-        $value = new AssetCollectionValue([]);
+        $value = new AssetCollectionValue([], 'an_id', null, null);
 
         $this->supports($selection, $value)->shouldReturn(true);
     }

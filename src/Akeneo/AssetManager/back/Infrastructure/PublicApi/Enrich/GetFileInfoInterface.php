@@ -19,6 +19,14 @@ namespace Akeneo\AssetManager\Infrastructure\PublicApi\Enrich;
  */
 interface GetFileInfoInterface
 {
+    /**
+     * @return array{
+     *      array{
+     *          filePath: string,
+     *          originalFilename: string
+     *      }
+     *  }>,
+     */
     public function forAssetFamilyAndAssetCodes(
         string $assetFamilyIdentifier,
         array $assetCodes,

@@ -35,7 +35,6 @@ use Akeneo\AssetManager\Integration\SqlIntegrationTestCase;
 final class SqlGetFileInfoTest extends SqlIntegrationTestCase
 {
     private SqlGetFileInfo $sqlGetFileInfo;
-    private string $attributeMainMediaIdentifier;
 
     public function setUp(): void
     {
@@ -50,109 +49,109 @@ final class SqlGetFileInfoTest extends SqlIntegrationTestCase
     public function it_returns_a_list_of_main_media_values(): void
     {
         $results = $this->sqlGetFileInfo->forAssetFamilyAndAssetCodes(
-            'asset_family_1',
-            ['asset_1_a', 'asset_1_b', 'asset_2_a'],
+            'asset_family_packshot',
+            ['asset_family_packshot_asset_1', 'asset_family_packshot_asset_2'],
             null,
             'fr_FR'
         );
 
-        dump($results);
-
         self::assertCount(2, $results);
         self::assertEqualsCanonicalizing([
             [
-                'data' => 'http://www.example.com/us_link_1_a',
-                'locale' => 'en_US',
-                'channel' => null,
-                'attribute' => $this->attributeMainMediaIdentifier,
+                'filePath' => 'test/main_image_asset_1_fr_FR.jpg',
+                'originalFilename' => 'main_image_asset_1_fr_FR.jpg',
             ],
             [
-                'data' => 'http://www.example.com/fr_link_1_a',
-                'locale' => 'fr_FR',
-                'channel' => null,
-                'attribute' => $this->attributeMainMediaIdentifier,
-            ],
-        ], $results['asset_1_a']);
+                'filePath' => 'test/main_image_asset_2_fr_FR.jpg',
+                'originalFilename' => 'main_image_asset_2_fr_FR.jpg',
+            ]
+        ], $results);
     }
 
-//    /** @test */
-//    public function it_returns_an_empty_array_for_unknown_asset_family_or_asset_codes(): void
-//    {
-//        $results = $this->sqlGetAssetMainMediaValues->forAssetFamilyAndAssetCodes(
-//            'asset_family_1',
-//            ['asset_2_a']
-//        );
-//        self::assertEmpty($results);
-//
-//        $results = $this->sqlGetAssetMainMediaValues->forAssetFamilyAndAssetCodes(
-//            'unknown',
-//            ['asset_1_a', 'asset_2_a']
-//        );
-//        self::assertEmpty($results);
-//
-//        $results = $this->sqlGetAssetMainMediaValues->forAssetFamilyAndAssetCodes(
-//            'asset_family_1',
-//            []
-//        );
-//        self::assertEmpty($results);
-//    }
+    /** @test */
+    public function it_returns_an_empty_array_for_unknown_asset_family_or_asset_codes(): void
+    {
+        $results = $this->sqlGetFileInfo->forAssetFamilyAndAssetCodes(
+            'asset_family_1',
+            ['asset_2_a'],
+            null,
+            null
+        );
+        self::assertEmpty($results);
+
+        $results = $this->sqlGetFileInfo->forAssetFamilyAndAssetCodes(
+            'unknown',
+            ['asset_1_a', 'asset_2_a'],
+            null,
+            null
+        );
+        self::assertEmpty($results);
+    }
 
     private function loadDataset(): void
     {
+        $assetFamilyPackshot = $this->createAssetFamily('asset_family_packshot');
+        $assetPackshot = $this->createAsset($assetFamilyPackshot, '1');
+        $assetPackshot = $this->createAsset($assetFamilyPackshot, '2');
+
+        $assetFamilyAtmosphere = $this->createAssetFamily('asset_family_atmosphere');
+        $assetAtmosphere = $this->createAsset($assetFamilyAtmosphere, '1');
+        $assetAtmosphere = $this->createAsset($assetFamilyAtmosphere, '2');
+    }
+
+    private function createAssetFamily(string $assetFamilyIdentifier): AssetFamily
+    {
         $assetFamilyRepository = $this->get('akeneo_assetmanager.infrastructure.persistence.repository.asset_family');
+
+        $assetFamilyIdentifier = AssetFamilyIdentifier::fromString($assetFamilyIdentifier);
+        $assetFamilyRepository->create(AssetFamily::create(
+            $assetFamilyIdentifier,
+            [],
+            Image::createEmpty(),
+            RuleTemplateCollection::empty())
+        );
+
+        return $assetFamilyRepository->getByIdentifier($assetFamilyIdentifier);
+    }
+
+    private function createAsset(AssetFamily $assetFamily, string $assetCode): void
+    {
         $assetRepository = $this->get('akeneo_assetmanager.infrastructure.persistence.repository.asset');
 
-        foreach ([1, 2] as $index) {
-            $assetFamilyIdentifier = AssetFamilyIdentifier::fromString(sprintf('asset_family_%d', $index));
-            $assetFamilyRepository->create(AssetFamily::create(
-                $assetFamilyIdentifier,
-                [],
-                Image::createEmpty(),
-                RuleTemplateCollection::empty())
-            );
-            $assetFamily = $assetFamilyRepository->getByIdentifier($assetFamilyIdentifier);
-
-            if (1 === $index) {
-                $this->attributeMainMediaIdentifier = $assetFamily->getAttributeAsMainMediaReference()->getIdentifier()->__toString();
-            }
-
-            foreach (range('a', 'b') as $assetCode) {
-                $assetRepository->create(
-                    Asset::create(
-                        AssetIdentifier::fromString(sprintf('asset_%d_%s', $index, $assetCode)),
-                        $assetFamilyIdentifier,
-                        AssetCode::fromString(sprintf('asset_%d_%s', $index, $assetCode)),
-                        ValueCollection::fromValues([
-                            Value::create(
-                                $assetFamily->getAttributeAsMainMediaReference()->getIdentifier(),
-                                ChannelReference::noReference(),
-                                LocaleReference::createFromNormalized('en_US'),
-                                FileData::createFromNormalize([
-                                    'filePath' => 'test/image_2.jpg',
-                                    'originalFilename' => 'image_2.jpg',
-                                    'size' => 100,
-                                    'mimeType' => 'image/jpg',
-                                    'extension' => '.jpg',
-                                    'updatedAt' => '2021-01-22T15:16:21+0000',
-                                ])
-                            ),
-                            Value::create(
-                                $assetFamily->getAttributeAsMainMediaReference()->getIdentifier(),
-                                ChannelReference::noReference(),
-                                LocaleReference::createFromNormalized('fr_FR'),
-                                FileData::createFromNormalize([
-                                    'filePath' => 'test/image_3.jpg',
-                                    'originalFilename' => 'image_3.jpg',
-                                    'size' => 100,
-                                    'mimeType' => 'image/jpg',
-                                    'extension' => '.jpg',
-                                    'updatedAt' => '2021-01-22T15:16:21+0000',
-                                ])
-                            ),
+        $assetRepository->create(
+            Asset::create(
+                AssetIdentifier::fromString(sprintf('%s_asset_%s', $assetFamily->getIdentifier(), $assetCode)),
+                $assetFamily->getIdentifier(),
+                AssetCode::fromString(sprintf('%s_asset_%s', $assetFamily->getIdentifier(), $assetCode)),
+                ValueCollection::fromValues([
+                    Value::create(
+                        $assetFamily->getAttributeAsMainMediaReference()->getIdentifier(),
+                        ChannelReference::noReference(),
+                        LocaleReference::createFromNormalized('en_US'),
+                        FileData::createFromNormalize([
+                            'filePath' => sprintf('test/main_image_asset_%s_en_US.jpg', $assetCode),
+                            'originalFilename' => sprintf('main_image_asset_%s_en_US.jpg', $assetCode),
+                            'size' => 100,
+                            'mimeType' => 'image/jpg',
+                            'extension' => '.jpg',
+                            'updatedAt' => '2021-01-22T15:16:21+0000',
                         ])
-                    )
-                );
-            }
-        }
+                    ),
+                    Value::create(
+                        $assetFamily->getAttributeAsMainMediaReference()->getIdentifier(),
+                        ChannelReference::noReference(),
+                        LocaleReference::createFromNormalized('fr_FR'),
+                        FileData::createFromNormalize([
+                            'filePath' => sprintf('test/main_image_asset_%s_fr_FR.jpg', $assetCode),
+                            'originalFilename' => sprintf('main_image_asset_%s_fr_FR.jpg', $assetCode),
+                            'size' => 100,
+                            'mimeType' => 'image/jpg',
+                            'extension' => '.jpg',
+                            'updatedAt' => '2021-01-22T15:16:21+0000',
+                        ])
+                    ),
+                ])
+            )
+        );
     }
 }

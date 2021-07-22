@@ -28,7 +28,12 @@ class AssetCollectionCodeSelectionHandlerSpec extends ObjectBehavior
             'packshot',
             'foo_attribute_code'
         );
-        $value = new AssetCollectionValue(['asset_family_code1', 'asset_family_code2', 'asset_family_code...']);
+        $value = new AssetCollectionValue(
+            ['asset_family_code1', 'asset_family_code2', 'asset_family_code...'],
+            'the_identifier',
+            null,
+            null
+        );
 
         $this->applySelection($selection, $value)
             ->shouldReturn('asset_family_code1/asset_family_code2/asset_family_code...');
@@ -51,7 +56,7 @@ class AssetCollectionCodeSelectionHandlerSpec extends ObjectBehavior
             'packshot',
             'foo_attribute_code'
         );
-        $value = new AssetCollectionValue([]);
+        $value = new AssetCollectionValue([], 'the_identifier', null, null);
 
         $this->supports($selection, $value)->shouldReturn(true);
     }

@@ -85,7 +85,7 @@ SQL;
             ['assetFamilyIdentifier' => $assetFamilyIdentifier]
         )->fetchColumn();
 
-        if (null === $attributeIdentifier) {
+        if (!$attributeIdentifier) {
             return null;
         }
 
