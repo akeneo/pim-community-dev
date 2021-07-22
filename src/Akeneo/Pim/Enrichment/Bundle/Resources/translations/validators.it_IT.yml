@@ -38,9 +38,21 @@ product_model.family_variant.not_blank.message: La famiglia variante del modello
 "The {{ attribute_code }} attribute requires a date that should be {{ limit }} or before.": L'attributo {{ attribute_code }} richiede una data che deve essere {{ limit }} o antecedente.
 "The {{ attribute }} attribute requires a number, and the submitted {{ value }} value is not.": L'attributo {{ attribute }} richiede un numero, e il valore {{ value }} inviato non lo è.
 "The %attribute% attribute must not contain more than %limit% characters. The submitted value is too long.": L'attributo %attribute% non deve contenere più di %limit% caratteri. Il valore inviato è troppo lungo.
+"The %type% file extension is not allowed for the %attribute% attribute. Allowed extensions are %extensions%.": L'estensione del file %type% non è consentita per l'attributo %attribute% . Le estensioni consentite sono %extensions%.
+"The %attribute% attribute requires a url link.": L'attributo %attribute% richiede un link url.
+"The %attribute% attribute requires a valid date. Please use the following format %date_format% for dates.": L'attributo %attribute% richiede una data valida. Per le date, utilizza il seguente formato %date_format%.
+"The %locale% locale is not available on the %attribute% attribute.": L'impostazione locale %locale% non è disponibile sull'attributo %attribute%.
 'The {{ attribute_code }} attribute must match the following regular expression: {{ pattern }}.': 'L''attributo {{ attribute_code }} deve corrispondere alla seguente espressione regolare: {{ pattern }}.'
 'The {{ attribute_code }} attribute cannot be empty.': 'L''attributo {{ attribute_code }} non può essere vuoto.'
+'The file %file_name% is too large (%file_size% %suffix%). The %attribute% attribute can not exceed %max_file_size% %suffix%.': Il file %file_name% è troppo grande (%file_size% %suffix%). L'attributo %attribute% non può superare %max_file_size% %suffix%.
+'The %attribute_code% attribute requires a valid locale. The %invalid_locale% locale does not exist.': 'L''attributo %attribute_code% richiede un''impostazione locale valida. L''impostazione locale %invalid_locale% non esiste.'
+'The %attribute_code% attribute requires a valid locale. The %invalid_locale% locale is not bound to the %channel_code% channel.': 'L''attributo %attribute_code% richiede un''impostazione locale valida. L''impostazione locale %invalid_locale% non è associata al canale %channel_code%.'
 "The %attribute% attribute requires an e-mail address.": 'L''attributo %attribute% richiede un indirizzo e-mail.'
+'The %attribute% attribute requires an equal or greater than %min_value% value.': 'L''attributo %attribute% richiede un valore uguale a o maggiore di %min_value%.'
+'The %attribute% attribute requires an equal or lesser than %max_value% value.': 'L''attributo %attribute% richiede un valore uguale a o minore di %max_value%.'
+"The %attribute_code% attribute requires a value per channel. The %channel% channel (scope) must exist in your PIM": 'L''attributo %attribute_code% richiede un valore per canale. Il canale %channel% (ambito) deve esistere nel tuo PIM'
+"The %identifier% identifier is already used for another product.": 'L''identificatore %identifier% è già utilizzato per un altro prodotto.'
+'Please specify a valid currency for the %attribute_code% attribute, the %currency_code% code was sent.': 'Specifica una valuta valida per l''attributo %attribute_code%; il codice %currency_code% è stato inviato.'
 pim_catalog:
   constraint:
     can_have_family_variant_empty_axis_value: 'L''attributo "%attribute%" non può essere vuoto, in quanto è definito come asse per questa entità'
@@ -52,6 +64,7 @@ pim_catalog:
     attribute_does_not_belong_to_family: 'L''attributo "%attribute%" non appartiene alla famiglia "%family%"'
     variant_product_invalid_family: 'La famiglia variante del prodotto deve essere la stessa del proprio genitore'
     php_int_max_reached: 'Il numero massimo deve essere inferiore a %php_int_max%.'
+    not_null_family: La famiglia non può essere "null" perché il prodotto con identificativo "%sku%" è un prodotto variante.
     variant_product_has_parent: 'Il prodotto variante "%variant_product%" deve avere un genitore'
     invalid_variant_product_parent: 'Il prodotto variante "%variant_product%" non può avere come genitore il modello di prodotto "%product_model%", (questo modello di prodotto può avere solo altri modelli di prodotto come figli)'
     modified_variant_axis_value: 'L''asse variante "%variant_axis%" non può essere modificato, dato "%provided_value%"'

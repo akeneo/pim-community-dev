@@ -237,6 +237,7 @@ pim_common:
   family: Family
   parent: Parent
   groups: Groups
+  products: Products
   more: More
 error:
   exception: Oh snap! A {{ status_code }} error occurred...

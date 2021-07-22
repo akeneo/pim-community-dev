@@ -124,7 +124,7 @@ const MarketplaceCard: FC<Props> = ({extension}) => {
     const translate = useTranslate();
 
     const normalizedDescription =
-        extension.description.length > 150 ? (
+        null !== extension.description && extension.description.length > 150 ? (
             <>
                 {extension.description.substring(0, 139)}&hellip;&nbsp;
                 <Link decorated href={extension.url} target='_blank'>
@@ -145,7 +145,7 @@ const MarketplaceCard: FC<Props> = ({extension}) => {
                     &nbsp;
                     {extension.author}
                 </Author>
-                <PartnerTag>{extension.partner}</PartnerTag>
+                {extension.partner && <PartnerTag>{extension.partner}</PartnerTag>}
                 {extension.categories.length > 0 && <Tag>{extension.categories[0]}</Tag>}
                 <Description>{normalizedDescription}</Description>
             </TextInformation>
