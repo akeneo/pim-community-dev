@@ -137,6 +137,17 @@ extensions:
             label: pim_import_export.form.job_instance.tab.properties.lines_per_file.title
             tooltip: pim_import_export.form.job_instance.tab.properties.lines_per_file.help
 
+    pim-job-instance-xlsx-product-export-edit-properties-with-media:
+        module: pim/job/common/edit/field/switch
+        parent: pim-job-instance-xlsx-tailored-product-export-edit-global
+        position: 170
+        targetZone: properties
+        config:
+            fieldCode: configuration.with_media
+            readOnly: false
+            label: pim_import_export.form.job_instance.tab.properties.with_media.title
+            tooltip: pim_import_export.form.job_instance.tab.properties.with_media.help
+
     pim-job-instance-xlsx-tailored-product-export-edit-label:
         module: pim/job/common/edit/label
         parent: pim-job-instance-xlsx-tailored-product-export-edit

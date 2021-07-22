@@ -15,7 +15,9 @@ services:
             - { name: pim_enrich.provider.form }
 
     Akeneo\Platform\TailoredExport\Application\ProductMapper:
-        public: true
         arguments:
             - '@Akeneo\Platform\TailoredExport\Application\OperationHandler'
             - '@Akeneo\Platform\TailoredExport\Application\Query\Selection\SelectionHandler'
+
+    Akeneo\Platform\TailoredExport\Application\MediaToExportExtractor:
+        public: false

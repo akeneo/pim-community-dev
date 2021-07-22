@@ -18,6 +18,7 @@ use Akeneo\Platform\TailoredExport\Domain\SourceValueInterface;
 class FileValue implements SourceValueInterface
 {
     private string $entityIdentifier;
+    private string $storage;
     private string $key;
     private string $originalFilename;
     private ?string $channel;
@@ -25,12 +26,14 @@ class FileValue implements SourceValueInterface
 
     public function __construct(
         string $entityIdentifier,
+        string $storage,
         string $key,
         string $originalFilename,
         ?string $channel,
         ?string $locale
     ) {
         $this->entityIdentifier = $entityIdentifier;
+        $this->storage = $storage;
         $this->key = $key;
         $this->originalFilename = $originalFilename;
         $this->channel = $channel;
@@ -40,6 +43,11 @@ class FileValue implements SourceValueInterface
     public function getEntityIdentifier(): string
     {
         return $this->entityIdentifier;
+    }
+
+    public function getStorage(): string
+    {
+        return $this->storage;
     }
 
     public function getKey(): string

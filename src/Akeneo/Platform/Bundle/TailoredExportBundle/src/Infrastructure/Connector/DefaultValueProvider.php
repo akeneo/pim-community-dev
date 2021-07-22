@@ -42,6 +42,7 @@ class DefaultValueProvider implements DefaultValuesProviderInterface
     public function getDefaultValues(): array
     {
         $defaultValues = $this->simpleProvider->getDefaultValues();
+        $defaultValues['with_media'] = true;
         $defaultValues['columns'] = [];
         $defaultValues['filters'] = [
             'data' => [
