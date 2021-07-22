@@ -35,13 +35,6 @@ class FilterLocalizedCompleteness extends BaseFilter {
   /**
    * {@inheritdoc}
    */
-  isEmpty() {
-    return 'ALL' === this.getOperator();
-  }
-
-  /**
-   * {@inheritdoc}
-   */
   configure() {
     this.listenTo(this.parentForm.getRoot(), 'pim_enrich:form:entity:pre_save', () => this.setValidationErrors([]));
     this.listenTo(this.parentForm.getRoot(), 'pim_enrich:form:entity:bad_request', (event: any) =>
