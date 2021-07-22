@@ -176,13 +176,19 @@ test('it displays attribute errors', async () => {
   };
 
   await renderWithProviders(
-    <AttributeSourceConfigurator source={source} validationErrors={[{
-      messageTemplate: 'code error message',
-      parameters: {},
-      message: '',
-      propertyPath: '[code]',
-      invalidValue: '',
-    }]} onSourceChange={handleSourceChange} />
+    <AttributeSourceConfigurator
+      source={source}
+      validationErrors={[
+        {
+          messageTemplate: 'code error message',
+          parameters: {},
+          message: '',
+          propertyPath: '[code]',
+          invalidValue: '',
+        },
+      ]}
+      onSourceChange={handleSourceChange}
+    />
   );
 
   expect(screen.getByText('code error message')).toBeInTheDocument();

@@ -121,4 +121,4 @@ akeneo.tailored_export:
     channel:
       should_exist: The {{ channel_code }} channel does not exist.
     attribute:
-      should_exist: The {{ attribute_code }} attribute does not exists. Either recreate it or delete this source.
+      should_exist: The {{ attribute_code }} attribute does not exist. Either recreate it or delete this source.
