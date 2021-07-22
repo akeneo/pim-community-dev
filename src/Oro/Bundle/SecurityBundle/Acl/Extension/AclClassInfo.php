@@ -26,4 +26,6 @@ interface AclClassInfo
     public function getLabel();
 
     public function isEnabledAtCreation(): bool;
+
+    public function getOrder(): int;
 }
