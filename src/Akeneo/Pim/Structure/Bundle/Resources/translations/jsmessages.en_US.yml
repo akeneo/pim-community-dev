@@ -212,6 +212,10 @@ pim_enrich.entity.attribute:
             url: URL
         wysiwyg_enabled: Rich text editor enabled
         default_value: Default value
+        code:
+            must_be_filled: The code must be filled
+            invalid: The code is invalid
+            not_available: This code is not available
     module:
         add_attribute:
             no_available_attributes: There are no more attributes to add
