@@ -161,6 +161,33 @@ test('it calls handler when locale is changed', async () => {
   expect(handleSourceChange).toHaveBeenCalledWith({...source, locale: 'en_US'});
 });
 
+test('it displays attribute errors', async () => {
+  const handleSourceChange = jest.fn();
+  const source: Source = {
+    uuid: 'cffd560e-1e40-4c55-a415-89c7958b270d',
+    code: 'invalid_attribute',
+    type: 'attribute',
+    locale: 'fr_FR',
+    channel: 'ecommerce',
+    operations: [],
+    selection: {
+      type: 'code',
+    },
+  };
+
+  await renderWithProviders(
+    <AttributeSourceConfigurator source={source} validationErrors={[{
+      messageTemplate: 'code error message',
+      parameters: {},
+      message: '',
+      propertyPath: '[code]',
+      invalidValue: '',
+    }]} onSourceChange={handleSourceChange} />
+  );
+
+  expect(screen.getByText('code error message')).toBeInTheDocument();
+});
+
 test('it renders nothing if the configurator is unknown', async () => {
   const mockedConsole = jest.spyOn(console, 'error').mockImplementation();
   const handleSourceChange = jest.fn();
