@@ -103,7 +103,7 @@ services:
   akeneo.tailored_export.validation.attribute_should_exist:
     class: 'Akeneo\Platform\TailoredExport\Infrastructure\Validation\AttributeShouldExistValidator'
     arguments:
-      - '@akeneo.pim.structure.query.sql_get_attributes'
+      - '@akeneo.pim.structure.query.get_attributes'
     tags:
       - { name: validator.constraint_validator, alias: 'akeneo.tailored_export.validation.attribute_should_exist' }
     public: true
