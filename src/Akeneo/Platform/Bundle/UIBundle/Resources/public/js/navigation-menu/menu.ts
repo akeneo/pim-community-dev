@@ -137,7 +137,9 @@ class Menu extends BaseForm {
           disabled: extension.config.disabled || false,
           route: this.findEntryRoute(extension),
           // @ts-ignore
-          icon: React.createElement(DSM[icon] ? DSM[icon] : 'span'),
+          icon: React.createElement(DSM[icon] ? DSM[icon] : 'span', {
+            shapeRendering: icon === 'CardIcon' ? "crispEdges" : undefined,
+          }),
           subNavigations: this.findMainEntrySubNavigations(extension.code),
           isLandingSectionPage: isLandingSectionPage ?? false,
           align: align,
