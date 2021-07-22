@@ -82,19 +82,30 @@ class FilterQualityScore extends BaseFilter {
                 attribute: {
                   fetchByIdentifiers: (identifiers: string[]): Promise<Attribute[]> => {
                     return new Promise(resolve =>
-                      fetcherRegistry.getFetcher('attribute').fetchByIdentifiers(identifiers).then(resolve)
+                      fetcherRegistry
+                        .getFetcher('attribute')
+                        .fetchByIdentifiers(identifiers)
+                        .then(resolve)
                     );
                   },
                 },
                 channel: {
                   fetchAll: (): Promise<Channel[]> => {
-                    return new Promise(resolve => fetcherRegistry.getFetcher('channel').fetchAll().then(resolve));
+                    return new Promise(resolve =>
+                      fetcherRegistry
+                        .getFetcher('channel')
+                        .fetchAll()
+                        .then(resolve)
+                    );
                   },
                 },
                 associationType: {
                   fetchByCodes: (codes: string[]): Promise<AssociationType[]> => {
                     return new Promise(resolve =>
-                      fetcherRegistry.getFetcher('association-type').fetchByIdentifiers(codes).then(resolve)
+                      fetcherRegistry
+                        .getFetcher('association-type')
+                        .fetchByIdentifiers(codes)
+                        .then(resolve)
                     );
                   },
                 },
