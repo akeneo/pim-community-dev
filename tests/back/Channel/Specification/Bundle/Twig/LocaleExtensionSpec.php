@@ -5,6 +5,8 @@ namespace Specification\Akeneo\Channel\Bundle\Twig;
 use Akeneo\Channel\Component\Model\LocaleInterface;
 use Akeneo\UserManagement\Bundle\Context\UserContext;
 use PhpSpec\ObjectBehavior;
+use Twig\TwigFilter;
+use Twig\TwigFunction;
 
 class LocaleExtensionSpec extends ObjectBehavior
 {
@@ -72,7 +74,7 @@ class LocaleExtensionSpec extends ObjectBehavior
                 $function = array_filter(
                     $subject,
                     function ($function) use ($name) {
-                        return $function instanceof \Twig_SimpleFunction &&
+                        return $function instanceof TwigFunction &&
                             $function->getName() === $name;
                     }
                 );
@@ -89,7 +91,7 @@ class LocaleExtensionSpec extends ObjectBehavior
                 $filter = array_filter(
                     $subject,
                     function ($filter) use ($name) {
-                        return $filter instanceof \Twig_SimpleFilter &&
+                        return $filter instanceof TwigFilter &&
                             $filter->getName() === $name;
                     }
                 );

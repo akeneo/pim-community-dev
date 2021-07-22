@@ -2,7 +2,7 @@
 
 namespace Akeneo\Tool\Component\Localization;
 
-use Symfony\Component\Intl\Intl;
+use Symfony\Component\Intl\Currencies;
 
 class CurrencyTranslator implements CurrencyTranslatorInterface
 {
@@ -10,7 +10,7 @@ class CurrencyTranslator implements CurrencyTranslatorInterface
     {
         $language = \Locale::getPrimaryLanguage($locale);
 
-        $currencyTranslated = Intl::getCurrencyBundle()->getCurrencyName($currencyCode, $language);
+        $currencyTranslated = Currencies::getName($currencyCode, $language);
         if (null === $currencyTranslated) {
             return $fallback;
         }

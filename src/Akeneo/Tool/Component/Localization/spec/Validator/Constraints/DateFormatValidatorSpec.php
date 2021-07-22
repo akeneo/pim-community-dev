@@ -25,6 +25,7 @@ class DateFormatValidatorSpec extends ObjectBehavior
     ) {
         $format = 'dd/MM/yyyy';
         $constraint->dateFormat = $format;
+        $constraint->path = 'constraint_path';
         $dateFactory->create(['date_format' => $format])->willReturn($dateFormatter);
 
         $context
@@ -47,6 +48,7 @@ class DateFormatValidatorSpec extends ObjectBehavior
         $format = 'dd/MM/yyyy';
         $dateFactory->create(['date_format' => $format])->willReturn($dateFormatter);
         $constraint->dateFormat = $format;
+        $constraint->path = 'constraint_path';
         $this->validate('21/12/2015', $constraint)->shouldReturn(null);
 
         $format = 'yyyy-MM-dd';
@@ -71,6 +73,7 @@ class DateFormatValidatorSpec extends ObjectBehavior
         $date = '2015-12-21';
         $format = 'dd/MM/yyyy';
         $constraint->dateFormat = $format;
+        $constraint->path = 'constraint_path';
         $dateFactory->create(['date_format' => $format])->willReturn($dateFormatter);
         $dateFormatter->parse($date)->willReturn(false);
         $dateFormatter->setLenient(false)->shouldBeCalled();
@@ -93,6 +96,7 @@ class DateFormatValidatorSpec extends ObjectBehavior
         $date = '21-12-2015';
         $format = 'dd/MM/yyyy';
         $constraint->dateFormat = $format;
+        $constraint->path = 'constraint_path';
         $dateFactory->create(['date_format' => $format])->willReturn($dateFormatter);
         $dateFormatter->parse($date)->willReturn(123456);
         $dateFormatter->setLenient(false)->shouldBeCalled();
@@ -115,6 +119,7 @@ class DateFormatValidatorSpec extends ObjectBehavior
         $date = 'Tuesday,31 December 2015';
         $format = 'EEEE dd MMMM yyyy';
         $constraint->dateFormat = $format;
+        $constraint->path = 'constraint_path';
         $dateFactory->create(['date_format' => $format])->willReturn($dateFormatter);
         $dateFormatter->parse($date)->willReturn(123456);
         $dateFormatter->setLenient(false)->shouldBeCalled();

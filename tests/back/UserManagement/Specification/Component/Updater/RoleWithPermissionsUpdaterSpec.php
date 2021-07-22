@@ -56,7 +56,7 @@ class RoleWithPermissionsUpdaterSpec extends ObjectBehavior
     ) {
         $roleWithPermissions = RoleWithPermissions::createFromRoleAndPermissions($role->getWrappedObject(), []);
 
-        $sid = new RoleSecurityIdentity($role);
+        $sid = new RoleSecurityIdentity($role->getRole());
         $aclManager->getSid($role)->willReturn($sid);
         $aclManager->getPrivilegeRepository()->willReturn($privilegeRepository);
         $privilegeRepository->getPrivileges($sid)->willReturn(
@@ -93,7 +93,7 @@ class RoleWithPermissionsUpdaterSpec extends ObjectBehavior
     ) {
         $roleWithPermissions = RoleWithPermissions::createFromRoleAndPermissions($role->getWrappedObject(), []);
 
-        $sid = new RoleSecurityIdentity($role);
+        $sid = new RoleSecurityIdentity($role->getRole());
         $aclManager->getSid($role)->willReturn($sid);
         $aclManager->getPrivilegeRepository()->willReturn($privilegeRepository);
         $privilegeRepository->getPrivileges($sid)->willReturn(

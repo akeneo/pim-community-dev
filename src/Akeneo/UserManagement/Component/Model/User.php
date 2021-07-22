@@ -50,8 +50,8 @@ class User implements UserInterface
     /** @var string */
     protected $nameSuffix;
 
-    protected ?string $image;
-    protected ?FileInfoInterface $avatar;
+    protected ?string $image = null;
+    protected ?FileInfoInterface $avatar = null;
 
     /**
      * Image filename
@@ -203,7 +203,7 @@ class User implements UserInterface
     /**
      * {@inheritdoc}
      */
-    public function getUsername(): string
+    public function getUsername(): ?string
     {
         return $this->username;
     }
@@ -212,7 +212,6 @@ class User implements UserInterface
     {
         return $this->username;
     }
-
 
     /**
      * {@inheritdoc}
@@ -529,7 +528,7 @@ class User implements UserInterface
      */
     public function setEnabled($enabled)
     {
-        $this->enabled = (boolean)$enabled;
+        $this->enabled = (boolean) $enabled;
 
         return $this;
     }
@@ -629,7 +628,7 @@ class User implements UserInterface
      */
     public function getRoles(): array
     {
-        return $this->roles->map(fn (RoleInterface $role): string => $role->getRole())->getValues();
+        return $this->roles->map(fn(RoleInterface $role): string => $role->getRole())->getValues();
     }
 
     /**
@@ -670,7 +669,7 @@ class User implements UserInterface
             );
         }
 
-        return (bool)$this->getRole($roleName);
+        return (bool) $this->getRole($roleName);
     }
 
     /**
@@ -846,7 +845,7 @@ class User implements UserInterface
      */
     public function __toString()
     {
-        return (string)$this->getUsername();
+        return (string) $this->getUsername();
     }
 
     /**

@@ -5,15 +5,15 @@ declare(strict_types=1);
 namespace Specification\Akeneo\Pim\Enrichment\Bundle\StructureVersion\EventListener;
 
 use Akeneo\Pim\Enrichment\Component\Product\Model\Product;
+use Doctrine\Bundle\DoctrineBundle\Registry;
 use Doctrine\DBAL\Connection;
 use PhpSpec\ObjectBehavior;
 use Prophecy\Argument;
-use Symfony\Bridge\Doctrine\RegistryInterface;
 use Symfony\Component\EventDispatcher\GenericEvent;
 
 class StructureVersionUpdaterSpec extends ObjectBehavior
 {
-    function let(RegistryInterface $registry, Connection $connection)
+    function let(Registry $registry, Connection $connection)
     {
         $registry->getConnection()->willReturn($connection);
         $this->beConstructedWith($registry);

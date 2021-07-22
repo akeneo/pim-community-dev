@@ -8,6 +8,7 @@ use Doctrine\ORM\AbstractQuery;
 use Doctrine\ORM\EntityManager;
 use Doctrine\ORM\Mapping\ClassMetadata;
 use Doctrine\ORM\QueryBuilder;
+use Doctrine\Persistence\ObjectRepository;
 use PhpSpec\ObjectBehavior;
 use Akeneo\Pim\Structure\Component\ReferenceData\ConfigurationRegistryInterface;
 use Prophecy\Argument;
@@ -30,7 +31,7 @@ class ProductRepositorySpec extends ObjectBehavior
 
     function it_is_an_object_repository()
     {
-        $this->shouldImplement('Doctrine\Common\Persistence\ObjectRepository');
+        $this->shouldImplement(ObjectRepository::class);
     }
 
     function it_checks_if_the_product_has_an_attribute_in_its_family(

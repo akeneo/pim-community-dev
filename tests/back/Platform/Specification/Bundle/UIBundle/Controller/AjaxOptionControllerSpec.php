@@ -3,19 +3,19 @@
 namespace Specification\Akeneo\Platform\Bundle\UIBundle\Controller;
 
 use Akeneo\Tool\Component\StorageUtils\Repository\SearchableRepositoryInterface;
+use Doctrine\Bundle\DoctrineBundle\Registry;
 use PhpSpec\ObjectBehavior;
 use Akeneo\Pim\Structure\Bundle\Doctrine\ORM\Repository\AttributeOptionRepository;
 use Akeneo\Pim\Enrichment\Component\Product\Repository\GroupRepositoryInterface;
 use Akeneo\Pim\Structure\Component\ReferenceData\ConfigurationRegistryInterface;
 use Akeneo\Pim\Structure\Component\Model\ReferenceDataConfigurationInterface;
 use Akeneo\Pim\Enrichment\Component\Product\Repository\ReferenceDataRepositoryInterface;
-use Symfony\Bridge\Doctrine\RegistryInterface;
 use Symfony\Component\HttpFoundation\ParameterBag;
 use Symfony\Component\HttpFoundation\Request;
 
 class AjaxOptionControllerSpec extends ObjectBehavior
 {
-    function let(RegistryInterface $doctrine, ConfigurationRegistryInterface $registry)
+    function let(Registry $doctrine, ConfigurationRegistryInterface $registry)
     {
         $this->beConstructedWith($doctrine, $registry);
     }

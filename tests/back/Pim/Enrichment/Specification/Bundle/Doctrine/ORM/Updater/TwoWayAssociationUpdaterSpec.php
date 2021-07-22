@@ -6,17 +6,14 @@ namespace Specification\Akeneo\Pim\Enrichment\Bundle\Doctrine\ORM\Updater;
 use Akeneo\Pim\Enrichment\Bundle\Doctrine\ORM\Updater\TwoWayAssociationUpdater;
 use Akeneo\Pim\Enrichment\Component\Product\Association\MissingAssociationAdder;
 use Akeneo\Pim\Enrichment\Component\Product\Exception\TwoWayAssociationWithTheSameProductException;
-use Akeneo\Pim\Enrichment\Component\Product\Model\AbstractProduct;
-use Akeneo\Pim\Enrichment\Component\Product\Model\AssociationInterface;
 use Akeneo\Pim\Enrichment\Component\Product\Model\EntityWithAssociationsInterface;
 use Akeneo\Pim\Enrichment\Component\Product\Model\Product;
 use Akeneo\Pim\Enrichment\Component\Product\Model\ProductInterface;
 use Akeneo\Pim\Enrichment\Component\Product\Model\ProductModel;
-use Akeneo\Pim\Enrichment\Component\Product\Model\ProductModelInterface;
 use Akeneo\Pim\Enrichment\Component\Product\Updater\TwoWayAssociationUpdaterInterface;
 use Doctrine\Common\Collections\ArrayCollection;
-use Doctrine\Common\Persistence\ManagerRegistry;
 use Doctrine\ORM\EntityManager;
+use Doctrine\Persistence\ManagerRegistry;
 use PhpSpec\ObjectBehavior;
 use Prophecy\Argument;
 
@@ -189,8 +186,8 @@ class TwoWayAssociationUpdaterSpec extends ObjectBehavior
             ->during('removeInversedAssociation', [$owner, 'xsell', $associatedProduct]);
     }
 
-    public function it_does_not_associate_product_with_itself(
-    ): void {
+    public function it_does_not_associate_product_with_itself(): void
+    {
 
         $ownerAndAssociateProduct = new Product();
         $ownerAndAssociateProduct->setIdentifier('owner_and_associate_product_identifier');

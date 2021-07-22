@@ -7,6 +7,7 @@ use Akeneo\Channel\Component\Model\Locale;
 use Akeneo\Pim\Enrichment\Component\Category\Model\Category;
 use Akeneo\Tool\Component\FileStorage\Model\FileInfoInterface;
 use Akeneo\UserManagement\Component\Model\Role;
+use Akeneo\UserManagement\Component\Model\User;
 use Akeneo\UserManagement\Component\Model\UserInterface;
 use Akeneo\UserManagement\Component\Normalizer\Standard\UserNormalizer;
 use Doctrine\Common\Collections\ArrayCollection;
@@ -37,7 +38,7 @@ class UserNormalizerSpec extends ObjectBehavior
         $this->supportsNormalization($user, 'array')->shouldBe(true);
     }
 
-    function it_normalizes_a_user(UserInterface $user, FileInfoInterface $avatar, DatagridView $productGridView)
+    function it_normalizes_a_user(User $user, FileInfoInterface $avatar, DatagridView $productGridView)
     {
         $role = new Role();
         $role->setRole('ROLE_ADMIN');

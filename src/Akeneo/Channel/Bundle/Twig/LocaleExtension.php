@@ -94,7 +94,7 @@ class LocaleExtension extends \Twig_Extension
         $translateIn = $translateIn ?: $this->getCurrentLocaleCode();
         $language = \Locale::getPrimaryLanguage($translateIn);
 
-        return Intl\Intl::getCurrencyBundle()->getCurrencySymbol($code, $language);
+        return Intl\Currencies::getSymbol($code, $language);
     }
 
     /**
@@ -110,7 +110,7 @@ class LocaleExtension extends \Twig_Extension
         $translateIn = $translateIn ?: $this->getCurrentLocaleCode();
         $language = \Locale::getPrimaryLanguage($translateIn);
 
-        return Intl\Intl::getCurrencyBundle()->getCurrencyName($code, $language);
+        return Intl\Currencies::getName($code, $language);
     }
 
     /**

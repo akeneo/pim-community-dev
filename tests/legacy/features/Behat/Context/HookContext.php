@@ -9,8 +9,8 @@ use Behat\Mink\Driver\Selenium2Driver;
 use Behat\Mink\Exception\UnsupportedDriverActionException;
 use Behat\Testwork\Tester\Result\TestResult;
 use Context\FeatureContext;
+use Doctrine\Bundle\DoctrineBundle\Registry;
 use Psr\Log\LoggerInterface;
-use Symfony\Bridge\Doctrine\RegistryInterface;
 use Symfony\Component\Process\Process;
 use WebDriver\Exception\UnexpectedAlertOpen;
 
@@ -26,12 +26,7 @@ class HookContext extends PimContext
     protected int $windowHeight;
     protected ?Process $jobConsumerProcess;
 
-    /**
-     * @param string $mainContextClass
-     * @param int $windowWidth
-     * @param int $windowHeight
-     */
-    public function __construct(string $mainContextClass, int $windowWidth, int $windowHeight)
+   public function __construct(string $mainContextClass, int $windowWidth, int $windowHeight)
     {
         parent::__construct($mainContextClass);
         $this->windowWidth  = $windowWidth;
@@ -235,7 +230,7 @@ class HookContext extends PimContext
     }
 
     /**
-     * @return RegistryInterface
+     * @return Registry
      */
     private function getDoctrine()
     {

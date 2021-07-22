@@ -28,6 +28,7 @@ use Doctrine\Common\Util\Debug;
 use Doctrine\DBAL\Driver\Connection;
 use Doctrine\Inflector\Inflector;
 use Doctrine\Inflector\NoopWordInflector;
+use Doctrine\Persistence\ObjectRepository;
 use PHPUnit\Framework\Assert;
 
 /**
@@ -332,11 +333,9 @@ class FixturesContext extends PimContext
     }
 
     /**
-     * @param string $namespace
-     *
-     * @return \Doctrine\Common\Persistence\ObjectRepository
+     * @return ObjectRepository
      */
-    protected function getRepository($namespace)
+    protected function getRepository(string $namespace)
     {
         return $this->getMainContext()->getEntityManager()->getRepository($namespace);
     }
