@@ -170,6 +170,7 @@ pim_common:
     before: Before
     by: by
     cancel: Cancel
+    characters_left: ]-Inf, 1]{{ count }} character left|]1, Inf[{{ count }} characters left
     clear_value: Clear value
     close: Close
     code: Code
