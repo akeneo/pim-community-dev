@@ -318,10 +318,10 @@ jobs:
       - run:
             name: Change owner on project dir after installing when there is no cache
             command: sudo chmod -R 777 ../project
-      - persist_to_workspace:
-          root: ~/
-          paths:
-            - project
+    #   - persist_to_workspace:
+    #       root: ~/
+    #       paths:
+    #         - project
       ### TAILORED EXPORT TESTS START HERE ##
       ### Skip build javascript, install assets, build css
       - run:
@@ -333,9 +333,6 @@ jobs:
             docker load -i php-pim-image.tar
             APP_ENV=test C='fpm mysql elasticsearch object-storage pubsub-emulator' make up
             docker/wait_docker_up.sh
-      - run:
-          name: Install database
-          command: APP_ENV=test make database
       - run:
           name: Install database
           command: APP_ENV=test make database

@@ -4,7 +4,7 @@ import userEvent from '@testing-library/user-event';
 import {renderWithProviders as baseRender, Channel} from '@akeneo-pim-community/shared';
 import {ColumnsTab} from './ColumnsTab';
 import {ColumnConfiguration} from './models/ColumnConfiguration';
-import {AssociationType, Attribute, AvailableSourceGroup} from './models';
+import {AssociationType, Attribute} from './models';
 import {FetcherContext} from './contexts';
 
 const attributes: Attribute[] = [
@@ -33,8 +33,8 @@ jest.mock('akeneo-design-system/lib/shared/uuid', () => ({
 }));
 
 jest.mock('./hooks/useAvailableSourcesFetcher', () => ({
-  useAvailableSourcesFetcher: () => (): AvailableSourceGroup[] =>
-    [
+  useAvailableSourcesFetcher: () => () => ({
+    results: [
       {
         code: 'system',
         label: 'System',
@@ -68,6 +68,7 @@ jest.mock('./hooks/useAvailableSourcesFetcher', () => ({
         ],
       },
     ],
+  }),
 }));
 
 test('It open the source panel related to the column selected', async () => {

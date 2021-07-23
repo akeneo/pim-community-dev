@@ -10,6 +10,7 @@ import {
   removeSource,
   updateSource,
   Source,
+  MAX_SOURCE_COUNT,
 } from '../../models';
 import {AddSourceDropdown} from './AddSourceDropdown/AddSourceDropdown';
 import {AttributeSourceConfigurator} from '../SourceDetails/AttributeSourceConfigurator';
@@ -94,7 +95,10 @@ const ColumnDetails = ({columnConfiguration, onColumnChange}: ColumnDetailsProps
       <SourcesSectionTitle sticky={0}>
         <SectionTitle.Title>{translate('akeneo.tailored_export.column_details.sources.title')}</SectionTitle.Title>
         <SectionTitle.Spacer />
-        <AddSourceDropdown onSourceSelected={handleSourceAdd} />
+        <AddSourceDropdown
+          canAddSource={columnConfiguration.sources.length < MAX_SOURCE_COUNT}
+          onSourceSelected={handleSourceAdd}
+        />
       </SourcesSectionTitle>
       <Content>
         {columnConfiguration.sources.length !== 0 && (

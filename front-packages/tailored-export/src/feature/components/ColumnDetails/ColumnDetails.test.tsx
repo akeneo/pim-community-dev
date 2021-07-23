@@ -3,7 +3,7 @@ import {act, screen} from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
 import {renderWithProviders as baseRender, Channel} from '@akeneo-pim-community/shared';
 import {ColumnDetails} from './ColumnDetails';
-import {AssociationType, Attribute, AvailableSourceGroup, ColumnConfiguration} from '../../models';
+import {AssociationType, Attribute, ColumnConfiguration, Source} from '../../models';
 import {FetcherContext, ValidationErrorsContext} from '../../contexts';
 
 const associationTypes: AssociationType[] = [
@@ -75,8 +75,8 @@ jest.mock('akeneo-design-system/lib/shared/uuid', () => ({
 }));
 
 jest.mock('../../hooks/useAvailableSourcesFetcher', () => ({
-  useAvailableSourcesFetcher: () => (): AvailableSourceGroup[] =>
-    [
+  useAvailableSourcesFetcher: () => () => ({
+    results: [
       {
         code: 'system',
         label: 'System',
@@ -126,6 +126,7 @@ jest.mock('../../hooks/useAvailableSourcesFetcher', () => ({
         ],
       },
     ],
+  }),
 }));
 
 test('it renders column details', async () => {
@@ -221,6 +222,50 @@ test('We can add an attribute source', async () => {
       type: 'concat',
     },
   });
+});
+
+test('We cannot add source when the limit is reached', async () => {
+  const source: Source = {
+    channel: null,
+    code: 'description',
+    locale: null,
+    operations: {},
+    selection: {
+      type: 'code',
+    },
+    type: 'attribute',
+    uuid: '276b6361-badb-48a1-98ef-d75baa235148',
+  };
+
+  const columnConfiguration: ColumnConfiguration = {
+    uuid: '3a6645e0-0d70-411d-84ee-79833144544a',
+    sources: [source, {...source, uuid: '1'}, {...source, uuid: '2'}, {...source, uuid: '3'}],
+    target: 'My column name',
+    format: {
+      type: 'concat',
+      elements: [],
+    },
+  };
+
+  const handleColumnsConfigurationChange = jest.fn();
+
+  await renderWithProviders(
+    <ColumnDetails columnConfiguration={columnConfiguration} onColumnChange={handleColumnsConfigurationChange} />
+  );
+
+  const addSourceButton = screen.getByText('akeneo.tailored_export.column_details.sources.add');
+
+  expect(addSourceButton).toHaveAttribute('disabled');
+  expect(addSourceButton).toHaveAttribute(
+    'title',
+    'akeneo.tailored_export.validation.sources.max_source_count_reached'
+  );
+
+  await act(async () => {
+    userEvent.click(addSourceButton);
+  });
+
+  expect(handleColumnsConfigurationChange).not.toHaveBeenCalled();
 });
 
 test('We can add a property source', async () => {
