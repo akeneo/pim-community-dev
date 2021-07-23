@@ -27,7 +27,7 @@ const CategoryFilter = ({filter, onChange}: CategoryFilterProps) => {
   const [isCategoriesModalOpen, openCategoriesModal, closeCategoriesModal] = useBooleanState();
   const [categorySelection, setSelectedCategories] = useState<string[]>(filter.value);
   const [operator, setOperator] = useState<Operator>(filter.operator);
-  const shouldIncludeSubCategories = operator === 'IN CHILDREN';
+  const [shouldIncludeSubCategories, setShouldIncludeSubCategories] = useState<boolean>(operator === 'IN CHILDREN');
 
   const categoryTrees = useCategoryTrees(categorySelection, shouldIncludeSubCategories);
   const totalCategorySelected = categoryTrees.reduce((carry, categoryTree) => {
@@ -35,12 +35,18 @@ const CategoryFilter = ({filter, onChange}: CategoryFilterProps) => {
   }, 0);
 
   const handleShouldIncludeSubCategoryChange = (shouldIncludeSubCategory: boolean) => {
-    setOperator(shouldIncludeSubCategory ? 'IN CHILDREN' : 'IN');
+    setShouldIncludeSubCategories(shouldIncludeSubCategory);
   };
   const handleConfirm = () => {
-    const newOperator = filter.value.length === 0 ? 'NOT IN' : operator;
-
-    onChange({...filter, operator: newOperator, value: categorySelection});
+    const updatedFilter: CategoryFilterType =
+      0 === categorySelection.length
+        ? {...filter, operator: 'NOT IN', value: []}
+        : {
+            ...filter,
+            operator: shouldIncludeSubCategories ? 'IN CHILDREN' : 'IN',
+            value: categorySelection,
+          };
+    onChange(updatedFilter);
     closeCategoriesModal();
   };
   const handleClose = () => {
@@ -48,6 +54,7 @@ const CategoryFilter = ({filter, onChange}: CategoryFilterProps) => {
     setOperator(filter.operator);
     closeCategoriesModal();
   };
+
   return (
     <Container>
       {isCategoriesModalOpen && (

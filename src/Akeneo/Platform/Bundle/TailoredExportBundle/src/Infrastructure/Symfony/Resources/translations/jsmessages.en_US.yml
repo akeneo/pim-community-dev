@@ -32,7 +32,7 @@ akeneo.tailored_export:
       remove: Remove column
       no_source: Define content source
     no_column_selection:
-      title: Your export profile is empty. Add your first column.
+      title: Your export profile is empty.
       subtitle: Click on 'Add first column' to start building your export table.
       link: Check out our Help Center for more information.
       add_column: Add first column

@@ -19,8 +19,8 @@ use Akeneo\Platform\TailoredExport\Application\Query\Selection\File\FileSelectio
 use Akeneo\Platform\TailoredExport\Domain\MediaToExport;
 use Akeneo\Platform\TailoredExport\Domain\MediaToExportExtractorInterface;
 use Akeneo\Platform\TailoredExport\Domain\SourceValue\FileValue;
-use Akeneo\Platform\TailoredExport\Infrastructure\Connector\MediaExporterPathGenerator;
 use Akeneo\Platform\TailoredExport\Domain\ValueCollection;
+use Akeneo\Platform\TailoredExport\Infrastructure\Connector\MediaExporterPathGenerator;
 
 final class MediaToExportExtractor implements MediaToExportExtractorInterface
 {

@@ -206,7 +206,7 @@ const FakePIM = () => {
             <Breadcrumb>
               <Breadcrumb.Step>Exports</Breadcrumb.Step>
             </Breadcrumb>
-            <Title>Tailored Exports</Title>
+            <Title>THIS IS NOT THE PIM</Title>
           </div>
           <SaveButton onClick={saveJobConfiguration}>Save</SaveButton>
         </Header>
@@ -215,10 +215,10 @@ const FakePIM = () => {
           <TabBar.Tab isActive={false}>Permissions</TabBar.Tab>
           <TabBar.Tab isActive={false}>Global settings</TabBar.Tab>
           <TabBar.Tab isActive={isCurrent('lines')} onClick={() => switchTo('lines')}>
-            Filter the data
+            Product selection
           </TabBar.Tab>
           <TabBar.Tab isActive={isCurrent('columns')} onClick={() => switchTo('columns')}>
-            Select the columns
+            Export structure
           </TabBar.Tab>
           <TabBar.Tab isActive={false}>History</TabBar.Tab>
         </TabBar>
@@ -246,7 +246,7 @@ const FakePIM = () => {
             />
             <QualityScoreFilter
               availableOperators={['IN AT LEAST ONE LOCALE', 'IN ALL LOCALES']}
-              filter={qualityScoreFilter}
+              filter={qualityScoreFilter ?? {field: 'quality_score_multi_locales', operator: null, value: []}}
               onChange={handleQualityScoreFilterChange}
               validationErrors={filterErrors(validationErrors, '[filters][data][3]')}
             />
