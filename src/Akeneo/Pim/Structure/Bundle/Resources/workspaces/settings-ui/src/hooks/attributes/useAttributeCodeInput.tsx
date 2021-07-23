@@ -13,7 +13,7 @@ const useAttributeCodeInput: (props: useCodeInputProps) => any = ({
 }) => {
   const translate = useTranslate();
   const [code, setCode] = useState<string>(defaultCode || '');
-  const [isCodeDirty, setCodeDirty] = useState<boolean>(defaultCode !== '');
+  const [isCodeDirty, setCodeDirty] = useState<boolean>((defaultCode || '') !== '');
 
   React.useEffect(() => {
     if (!isCodeDirty) {
