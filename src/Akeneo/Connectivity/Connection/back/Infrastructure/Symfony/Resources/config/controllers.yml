@@ -65,6 +65,7 @@ services:
         public: true
         class: Akeneo\Connectivity\Connection\Infrastructure\InternalApi\Controller\Marketplace\GetAllApps
         arguments:
+            - '@akeneo_connectivity.connection.marketplace.app_url_generator'
             - '@akeneo_connectivity.connection.marketplace.get_all_apps_query'
             - '@akeneo_connectivity.connection.marketplace.analytics_generator'
             - '@pim_user.context.user'

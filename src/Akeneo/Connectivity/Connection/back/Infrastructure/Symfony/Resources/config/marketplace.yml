@@ -17,6 +17,11 @@ services:
             - '@akeneo_connectivity.connection.marketplace.query.get_user_profile'
             - '@akeneo_connectivity.connection.marketplace.web_marketplace_aliases'
             - '@pim_framework.service.pim_url'
+            -
+    akeneo_connectivity.connection.marketplace.app_url_generator:
+        class: Akeneo\Connectivity\Connection\Application\Marketplace\AppUrlGenerator
+        arguments:
+            - '@pim_framework.service.pim_url'
 
     akeneo_connectivity.connection.marketplace.query.get_user_profile:
         class: Akeneo\Connectivity\Connection\Infrastructure\Persistence\Dbal\Query\DbalGetUserProfileQuery

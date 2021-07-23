@@ -101,6 +101,22 @@ class App
     }
 
     /**
+     * @param array<string> $queryParameters
+     */
+    public function withPimUrlSource(array $queryParameters): self
+    {
+        $query = http_build_query($queryParameters);
+        $values = $this->normalize();
+        foreach (['activate_url', 'callback_url'] as $property) {
+            /* @phpstan-ignore-next-line */
+            $values[$property] = sprintf('%s?%s', $values[$property], $query);
+        }
+
+        /* @phpstan-ignore-next-line */
+        return self::fromWebMarketplaceValues($values);
+    }
+
+    /**
      * @return array{
      *  id: string,
      *  name: string,
