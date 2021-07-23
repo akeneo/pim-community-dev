@@ -42,7 +42,6 @@ class AddMissingJobInstanceRemoveCompletenessChannelLocale extends Command
      */
     protected function execute(InputInterface $input, OutputInterface $output): int
     {
-
         if ($this->jobExists('remove_completeness_for_channel_and_locale')) {
             $output->writeln('The "remove_completeness_for_channel_and_locale" job instance already exists');
             return self::EXIT_SUCCESS_CODE;
