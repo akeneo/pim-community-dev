@@ -1,1 +1,6 @@
 services:
+    akeneo_measure.proxy.structure.is_there_at_least_one_attribute_configured_with_measurement_family:
+        class: 'AkeneoMeasureBundle\Infrastructure\Structure\InMemoryIsThereAtLeastOneAttributeConfiguredWithMeasurementFamily'
+
+    akeneo_measure.proxy.security.security_facade:
+        class: 'AkeneoMeasureBundle\Infrastructure\Security\InMemorySecurityFacade'

@@ -7,7 +7,7 @@ services:
             - '@validator'
             - '@serializer'
             - '@akeneo_measure.application.create_measurement_family_handler'
-            - '@oro_security.security_facade'
+            - '@akeneo_measure.proxy.security.security_facade'
 
     pim_api.controller.internal_api.delete_measurement_family:
         class: AkeneoMeasureBundle\Controller\InternalApi\DeleteMeasurementFamilyAction
@@ -15,7 +15,7 @@ services:
         arguments:
             - '@validator'
             - '@akeneo_measure.application.delete_measurement_family_handler'
-            - '@oro_security.security_facade'
+            - '@akeneo_measure.proxy.security.security_facade'
 
     pim_api.controller.internal_api.save_measurement_family:
         class: AkeneoMeasureBundle\Controller\InternalApi\SaveMeasurementFamilyAction
@@ -24,7 +24,7 @@ services:
             - '@validator'
             - '@akeneo_measure.application.save_measurement_family_handler'
             - '@serializer'
-            - '@oro_security.security_facade'
+            - '@akeneo_measure.proxy.security.security_facade'
 
     pim_api.controller.internal_api.validate_unit:
         class: AkeneoMeasureBundle\Controller\InternalApi\ValidateUnitAction

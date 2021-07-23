@@ -32,7 +32,7 @@ class DeleteMeasurementFamilyTest extends AcceptanceTestCase
         $this->measurementFamilyRepository = $this->get('akeneo_measure.persistence.measurement_family_repository');
         $this->measurementFamilyRepository->clear();
         $this->deleteMeasurementFamilyHandler = $this->get('akeneo_measure.application.delete_measurement_family_handler');
-        $this->isThereAtLeastOneAttributeConfiguredWithMeasurementFamily = $this->get('akeneo_measurement.proxy.structure.is_there_at_least_one_attribute_configured_with_measurement_family');
+        $this->isThereAtLeastOneAttributeConfiguredWithMeasurementFamily = $this->get('akeneo_measure.proxy.structure.is_there_at_least_one_attribute_configured_with_measurement_family');
         $this->eventDispatcherMock = $this->get('event_dispatcher');
     }
 

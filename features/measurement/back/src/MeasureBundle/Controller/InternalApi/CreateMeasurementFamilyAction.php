@@ -6,7 +6,7 @@ namespace AkeneoMeasureBundle\Controller\InternalApi;
 
 use AkeneoMeasureBundle\Application\CreateMeasurementFamily\CreateMeasurementFamilyCommand;
 use AkeneoMeasureBundle\Application\CreateMeasurementFamily\CreateMeasurementFamilyHandler;
-use Oro\Bundle\SecurityBundle\SecurityFacade;
+use AkeneoMeasureBundle\Infrastructure\Security\SecurityFacadeInterface;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
@@ -31,14 +31,14 @@ class CreateMeasurementFamilyAction
     /** @var CreateMeasurementFamilyHandler */
     private $createMeasurementFamilyHandler;
 
-    /** @var SecurityFacade */
+    /** @var SecurityFacadeInterface */
     private $securityFacade;
 
     public function __construct(
         ValidatorInterface $validator,
         NormalizerInterface $violationNormalizer,
         CreateMeasurementFamilyHandler $createMeasurementFamilyHandler,
-        SecurityFacade $securityFacade
+        SecurityFacadeInterface $securityFacade
     ) {
         $this->validator                      = $validator;
         $this->violationNormalizer            = $violationNormalizer;
