@@ -1,5 +1,6 @@
 import React from 'react';
 import {Badge} from 'akeneo-design-system';
+import styled from "styled-components";
 
 type Props = {
   projectDetails: ProjectDetails;
@@ -24,10 +25,14 @@ const getLevel = (completionRatio: number) => {
 const ProductGridProjectDetails = ({projectDetails}: Props) => {
   return (
     <div>
-      &nbsp;-&nbsp;<Badge level={getLevel(projectDetails.completionRatio)}>{projectDetails.completionRatio} %</Badge>
+      &nbsp;-&nbsp;<BadgeStyled level={getLevel(projectDetails.completionRatio)}>{projectDetails.completionRatio} %</BadgeStyled>
       &nbsp;-&nbsp;{projectDetails.dueDateLabel}: {projectDetails.dueDate}
     </div>
   );
 };
+
+const BadgeStyled = styled(Badge)`
+  line-height: 18px;
+`;
 
 export {ProductGridProjectDetails};
