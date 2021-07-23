@@ -1,8 +1,8 @@
-import React, {FC, useState} from 'react';
-import {Modal, AttributesIllustration, Button, Field, TextInput, Locale, Helper} from "akeneo-design-system";
+import React, {FC, FunctionComponentElement, useState} from 'react';
+import {Modal, AttributesIllustration, Button, Field, TextInput, Locale} from "akeneo-design-system";
 import {useTranslate, useUserContext} from "@akeneo-pim-community/shared";
 import styled from "styled-components";
-import {useAttributeCodeInput} from "./useAttributeCodeInput";
+import {useAttributeCodeInput} from "../../hooks/attributes/useAttributeCodeInput";
 
 const FieldSet = styled.div`
   & > * {
@@ -10,16 +10,24 @@ const FieldSet = styled.div`
   }
 `
 
+export type CreateAttributeModalExtraFieldProps = {}
+export type CreateAttributeModalExtraField = {
+  component: FunctionComponentElement<CreateAttributeModalExtraFieldProps>;
+  valid: boolean;
+};
+
 type CreateAttributeModalProps = {
   onConfirm: (data: { code: string, label: string }) => void;
   onClose: () => void;
   defaultCode?: string;
+  extraFields: CreateAttributeModalExtraField[];
 }
 
 const CreateAttributeModal: FC<CreateAttributeModalProps> = ({
   onConfirm,
   onClose,
   defaultCode,
+  extraFields,
 }) => {
   const translate = useTranslate();
   const userContext = useUserContext();
@@ -57,12 +65,13 @@ const CreateAttributeModal: FC<CreateAttributeModalProps> = ({
         />
       </Field>
       {CodeField}
+      {extraFields.map((field, i) => React.cloneElement<CreateAttributeModalExtraFieldProps>(field.component, { key: i }))}
     </FieldSet>
     <Modal.BottomButtons>
       <Button level="tertiary" onClick={onClose}>
         {translate('pim_common.cancel')}
       </Button>
-      <Button level="primary" onClick={handleConfirm} disabled={isCodeValid}>
+      <Button level="primary" onClick={handleConfirm} disabled={!isCodeValid || extraFields.some(field => !field.valid)}>
         {translate('pim_common.confirm')}
       </Button>
     </Modal.BottomButtons>

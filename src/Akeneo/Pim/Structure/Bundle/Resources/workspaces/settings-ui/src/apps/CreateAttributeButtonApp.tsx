@@ -1,7 +1,7 @@
 import React from 'react';
 import {Button, useBooleanState} from 'akeneo-design-system';
-import {SelectAttributeTypeModal} from "./SelectAttributeTypeModal";
-import {CreateAttributeModal} from "./CreateAttributeModal";
+import {SelectAttributeTypeModal} from "../pages/attributes/SelectAttributeTypeModal";
+import {CreateAttributeModal} from "../pages/attributes/CreateAttributeModal";
 
 type AttributeType = string;
 
@@ -13,8 +13,8 @@ type CreateButtonAppProps = {
   defaultCode?: string;
 };
 
-const CreateButtonApp: React.FC<CreateButtonAppProps> = ({buttonTitle, iconsMap, isModalOpen = false, onClick, defaultCode}) => {
-  const [isSelectAttributeTypeModelOpan, openSelectAttributeTypeModal, closeSelectAttributeTypeModal] = useBooleanState(isModalOpen);
+const CreateAttributeButtonApp: React.FC<CreateButtonAppProps> = ({buttonTitle, iconsMap, isModalOpen = false, onClick, defaultCode}) => {
+  const [isSelectAttributeTypeModelOpen, openSelectAttributeTypeModal, closeSelectAttributeTypeModal] = useBooleanState(isModalOpen);
   const [isCreateAttributeModalOpen, openCreateAttributeModal, closeCreateAttributeModal] = useBooleanState(false);
   const [attributeType, setAttributeType] = React.useState<AttributeType | undefined>();
 
@@ -36,7 +36,7 @@ const CreateButtonApp: React.FC<CreateButtonAppProps> = ({buttonTitle, iconsMap,
 
   return (
     <>
-      {isSelectAttributeTypeModelOpan && <SelectAttributeTypeModal onClose={closeSelectAttributeTypeModal} iconsMap={iconsMap} onAttributeTypeSelect={handleAttributeTypeSelect}/>}
+      {isSelectAttributeTypeModelOpen && <SelectAttributeTypeModal onClose={closeSelectAttributeTypeModal} iconsMap={iconsMap} onAttributeTypeSelect={handleAttributeTypeSelect}/>}
       {isCreateAttributeModalOpen && <CreateAttributeModal onClose={handleClose} onConfirm={handleConfirm} defaultCode={defaultCode}/>}
       <Button id="attribute-create-button" onClick={openSelectAttributeTypeModal}>
         {buttonTitle}
@@ -45,4 +45,4 @@ const CreateButtonApp: React.FC<CreateButtonAppProps> = ({buttonTitle, iconsMap,
   );
 };
 
-export {CreateButtonApp};
+export {CreateAttributeButtonApp};
