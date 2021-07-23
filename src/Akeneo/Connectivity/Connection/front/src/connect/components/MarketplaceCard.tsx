@@ -118,7 +118,7 @@ const Actions = styled.div`
 `;
 
 type Props = {
-    item: Extension|App;
+    item: Extension | App;
     additionalActions?: ReactNode[];
 };
 

@@ -1,10 +1,6 @@
 import React, {FC, useRef} from 'react';
 import MarketplaceHelper from './MarketplaceHelper';
-import {
-    ArrowSimpleUpIcon, Button,
-    getColor,
-    IconButton,
-} from 'akeneo-design-system';
+import {ArrowSimpleUpIcon, getColor, IconButton} from 'akeneo-design-system';
 import {MarketplaceCard} from './MarketplaceCard';
 import {Extension, Extensions} from '../../model/extension';
 import {useTranslate} from '../../shared/translate';
@@ -45,9 +41,11 @@ export const Marketplace: FC<Props> = ({extensions, apps}) => {
         <MarketplaceCard key={extension.id} item={extension} />
     ));
     const appsList = apps.apps.map((app: App) => (
-        <MarketplaceCard key={app.id} item={app} additionalActions={[
-            <ActivateAppButton key={1} url={app.activate_url} />
-        ]}/>
+        <MarketplaceCard
+            key={app.id}
+            item={app}
+            additionalActions={[<ActivateAppButton key={1} url={app.activate_url} />]}
+        />
     ));
     const handleScrollTop = () => {
         scrollContainer.scrollTo(0, 0);
@@ -60,30 +58,26 @@ export const Marketplace: FC<Props> = ({extensions, apps}) => {
 
             <Section
                 title={translate('akeneo_connectivity.connection.connect.marketplace.apps.title')}
-                information={
-                    translate(
-                        'akeneo_connectivity.connection.connect.marketplace.apps.total',
-                        {
-                            total: apps.total.toString(),
-                        },
-                        apps.total
-                    )
-                }
+                information={translate(
+                    'akeneo_connectivity.connection.connect.marketplace.apps.total',
+                    {
+                        total: apps.total.toString(),
+                    },
+                    apps.total
+                )}
                 emptyMessage={translate('akeneo_connectivity.connection.connect.marketplace.apps.empty')}
             >
                 {appsList}
             </Section>
             <Section
                 title={translate('akeneo_connectivity.connection.connect.marketplace.extensions.title')}
-                information={
-                    translate(
-                        'akeneo_connectivity.connection.connect.marketplace.extensions.total',
-                        {
-                            total: extensions.total.toString(),
-                        },
-                        extensions.total
-                    )
-                }
+                information={translate(
+                    'akeneo_connectivity.connection.connect.marketplace.extensions.total',
+                    {
+                        total: extensions.total.toString(),
+                    },
+                    extensions.total
+                )}
                 emptyMessage={translate('akeneo_connectivity.connection.connect.marketplace.extensions.empty')}
             >
                 {extensionsList}

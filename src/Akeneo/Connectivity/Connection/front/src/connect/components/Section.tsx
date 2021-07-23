@@ -1,10 +1,5 @@
 import React, {Children, FC} from 'react';
-import {
-    AppIllustration,
-    getColor,
-    getFontSize,
-    SectionTitle,
-} from 'akeneo-design-system';
+import {AppIllustration, getColor, getFontSize, SectionTitle} from 'akeneo-design-system';
 import {Grid as CardGrid} from './MarketplaceCard';
 import styled from 'styled-components';
 
@@ -22,7 +17,7 @@ type Props = {
     title: string;
     information: string;
     emptyMessage: string;
-}
+};
 
 export const Section: FC<Props> = ({title, information, emptyMessage, children}) => {
     return (
