@@ -2,7 +2,9 @@ import { Meta, Story, ArgsTable, Canvas } from '@storybook/addon-docs/blocks';
 import { SubNavigationPanel } from './SubNavigationPanel.tsx';
 import { SpaceContainer } from '../../../storybook/PreviewGallery';
 import { useBooleanState } from '../../../hooks';
-import { MoreVerticalIcon } from "../../../icons"; import { Dropdown } from "../../Dropdown/Dropdown"; import { Link } from "../../Link/Link";
+import { MoreVerticalIcon } from "../../../icons";
+import { Dropdown } from "../../Dropdown/Dropdown";
+import { Link } from "../../Link/Link";
 
 <Meta
   title="Components/Navigation/SubNavigationPanel"
@@ -69,7 +71,7 @@ When the panel is collapsed the content is hidden.
           <SubNavigationPanel {...args} isOpen={isOpen} open={open} close={close}>
             <SubNavigationPanel.Collapsed>
               <Dropdown>
-                <MoreVerticalIcon title="Collapsed Content" onClick={openDropDown}/>
+                <MoreVerticalIcon title="Collapsed Content" onClick={openDropDown} />
                 {isDropdownOpen && (
                   <Dropdown.Overlay onClose={closeDropDown}>
                     <Dropdown.ItemCollection>
