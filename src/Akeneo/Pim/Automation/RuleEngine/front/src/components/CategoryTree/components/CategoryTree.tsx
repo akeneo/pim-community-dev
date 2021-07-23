@@ -24,12 +24,6 @@ const CategoryTree: React.FC<Props> = ({
   selectedCategories,
   initCategoryTreeOpenBranch,
 }) => {
-  const onNodeSelectCategory = (categoryCode: CategoryCode) => {
-    if (categoryCode !== categoryTree.code) {
-      onSelectCategory(categoryCode);
-    }
-  };
-
   return (
     <ul role='tree' aria-labelledby={ariaLabelledBy}>
       <CategoryTreeNode
@@ -41,7 +35,7 @@ const CategoryTree: React.FC<Props> = ({
         locale={locale}
         nodeType={NodeType.BRANCH}
         opened
-        onSelect={onNodeSelectCategory}
+        onSelect={onSelectCategory}
         selectedCategories={selectedCategories}
       />
     </ul>
