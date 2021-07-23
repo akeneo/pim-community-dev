@@ -2,7 +2,6 @@ import React from 'react';
 import {Button, useBooleanState} from 'akeneo-design-system';
 import {SelectAttributeTypeModal} from "./SelectAttributeTypeModal";
 import {CreateAttributeModal} from "./CreateAttributeModal";
-import {LabelCollection} from "@akeneo-pim-community/shared";
 
 type AttributeType = string;
 
@@ -10,7 +9,7 @@ type CreateButtonAppProps = {
   buttonTitle: string;
   iconsMap: {[attributeType: string]: string};
   isModalOpen?: boolean;
-  onClick: (data: { attribute_type: AttributeType, code: string, label: label }) => void;
+  onClick: (data: { attribute_type: AttributeType, code: string, label: string }) => void;
   defaultCode?: string;
 };
 
