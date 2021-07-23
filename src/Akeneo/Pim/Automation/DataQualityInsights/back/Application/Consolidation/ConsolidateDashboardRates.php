@@ -38,8 +38,8 @@ final class ConsolidateDashboardRates
     public function consolidate(ConsolidationDate $day): void
     {
         $this->consolidateWholeCatalog($day);
-        //$this->consolidateFamilies($day);
-        //$this->consolidateCategories($day);
+        $this->consolidateFamilies($day);
+        $this->consolidateCategories($day);
     }
 
     private function consolidateWholeCatalog(ConsolidationDate $day): void
@@ -56,24 +56,6 @@ final class ConsolidateDashboardRates
         $this->dashboardScoresProjectionRepository->save($dashBoardRatesProjection);
     }
 
-    private function consolidateFamilies(ConsolidationDate $day): void
-    {
-        $dashboardFamily = DashboardProjectionType::family();
-        $familyCodes = $this->getAllFamilyCodesQuery->execute();
-
-        foreach ($familyCodes as $familyCode) {
-            $familyRanks = $this->getRanksDistributionFromProductScoresQuery->byFamily($familyCode, $day->getDateTime());
-            $dashBoardRatesProjection = new DashboardRatesProjection(
-                $dashboardFamily,
-                DashboardProjectionCode::family($familyCode),
-                $day,
-                $familyRanks
-            );
-
-            $this->dashboardScoresProjectionRepository->save($dashBoardRatesProjection);
-        }
-    }
-
     private function consolidateCategories(ConsolidationDate $day): void
     {
         $dashboardCategory = DashboardProjectionType::category();
@@ -86,6 +68,25 @@ final class ConsolidateDashboardRates
                 DashboardProjectionCode::category($categoryCode),
                 $day,
                 $categoryRanks
+            );
+
+            $this->dashboardScoresProjectionRepository->save($dashBoardRatesProjection);
+        }
+    }
+
+
+    private function consolidateFamilies(ConsolidationDate $day): void
+    {
+        $dashboardFamily = DashboardProjectionType::family();
+        $familyCodes = $this->getAllFamilyCodesQuery->execute();
+
+        foreach ($familyCodes as $familyCode) {
+            $familyRanks = $this->getRanksDistributionFromProductScoresQuery->byFamily($familyCode, $day->getDateTime());
+            $dashBoardRatesProjection = new DashboardRatesProjection(
+                $dashboardFamily,
+                DashboardProjectionCode::family($familyCode),
+                $day,
+                $familyRanks
             );
 
             $this->dashboardScoresProjectionRepository->save($dashBoardRatesProjection);
