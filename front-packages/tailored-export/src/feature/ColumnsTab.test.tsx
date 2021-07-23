@@ -1,32 +1,9 @@
-import React, {ReactNode} from 'react';
+import React from 'react';
 import {screen, fireEvent, act} from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
-import {renderWithProviders as baseRender, Channel} from '@akeneo-pim-community/shared';
 import {ColumnsTab} from './ColumnsTab';
 import {ColumnConfiguration} from './models/ColumnConfiguration';
-import {AssociationType, Attribute} from './models';
-import {FetcherContext} from './contexts';
-
-const attributes: Attribute[] = [
-  {
-    code: 'description',
-    type: 'pim_catalog_text',
-    labels: {},
-    scopable: false,
-    localizable: false,
-    is_locale_specific: false,
-    available_locales: [],
-  },
-];
-
-const fetchers = {
-  attribute: {fetchByIdentifiers: (): Promise<Attribute[]> => Promise.resolve<Attribute[]>(attributes)},
-  channel: {fetchAll: (): Promise<Channel[]> => Promise.resolve([])},
-  associationType: {fetchByCodes: (): Promise<AssociationType[]> => Promise.resolve([])},
-};
-
-const renderWithProviders = async (node: ReactNode) =>
-  await act(async () => void baseRender(<FetcherContext.Provider value={fetchers}>{node}</FetcherContext.Provider>));
+import {renderWithProviders} from './tests';
 
 jest.mock('akeneo-design-system/lib/shared/uuid', () => ({
   uuid: () => '276b6361-badb-48a1-98ef-d75baa235148',

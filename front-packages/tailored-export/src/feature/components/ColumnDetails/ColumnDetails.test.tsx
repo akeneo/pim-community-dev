@@ -1,74 +1,10 @@
-import React, {ReactNode} from 'react';
+import React from 'react';
 import {act, screen} from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
-import {renderWithProviders as baseRender, Channel} from '@akeneo-pim-community/shared';
 import {ColumnDetails} from './ColumnDetails';
-import {AssociationType, Attribute, ColumnConfiguration, Source} from '../../models';
-import {FetcherContext, ValidationErrorsContext} from '../../contexts';
-
-const associationTypes: AssociationType[] = [
-  {
-    code: 'XSELL',
-    labels: {en_US: 'Cross sell'},
-    is_quantified: false,
-  },
-  {
-    code: 'UPSELL',
-    labels: {},
-    is_quantified: false,
-  },
-];
-
-const attributes: Attribute[] = [
-  {
-    code: 'description',
-    type: 'pim_catalog_text',
-    labels: {},
-    scopable: false,
-    localizable: false,
-    is_locale_specific: false,
-    available_locales: [],
-  },
-];
-
-const channels: Channel[] = [
-  {
-    code: 'ecommerce',
-    labels: {},
-    locales: [
-      {
-        code: 'en_US',
-        label: 'en_US',
-        region: 'US',
-        language: 'en',
-      },
-      {
-        code: 'br_FR',
-        label: 'Breton',
-        region: 'bzh',
-        language: 'br',
-      },
-    ],
-    category_tree: '',
-    conversion_units: [],
-    currencies: [],
-    meta: {
-      created: '',
-      form: '',
-      id: 1,
-      updated: '',
-    },
-  },
-];
-
-const fetchers = {
-  attribute: {fetchByIdentifiers: (): Promise<Attribute[]> => Promise.resolve<Attribute[]>(attributes)},
-  channel: {fetchAll: (): Promise<Channel[]> => Promise.resolve(channels)},
-  associationType: {fetchByCodes: (): Promise<AssociationType[]> => Promise.resolve(associationTypes)},
-};
-
-const renderWithProviders = async (node: ReactNode) =>
-  await act(async () => void baseRender(<FetcherContext.Provider value={fetchers}>{node}</FetcherContext.Provider>));
+import {ColumnConfiguration, Source} from '../../models';
+import {ValidationErrorsContext} from '../../contexts';
+import {renderWithProviders} from 'feature/tests';
 
 jest.mock('akeneo-design-system/lib/shared/uuid', () => ({
   uuid: () => '276b6361-badb-48a1-98ef-d75baa235148',

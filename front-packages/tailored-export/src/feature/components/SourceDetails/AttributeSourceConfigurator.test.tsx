@@ -1,105 +1,9 @@
-import React, {ReactNode} from 'react';
-import {screen, act} from '@testing-library/react';
+import React from 'react';
+import {screen} from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
-import {renderWithProviders as baseRender, Channel} from '@akeneo-pim-community/shared';
 import {AttributeSourceConfigurator} from './AttributeSourceConfigurator';
-import {AssociationType, Attribute, Source} from '../../models';
-import {FetcherContext} from '../../contexts';
-
-const attributes = [
-  {
-    code: 'description',
-    type: 'pim_catalog_text',
-    labels: {},
-    scopable: false,
-    localizable: false,
-    is_locale_specific: false,
-    available_locales: [],
-  },
-  {
-    code: 'locale_specific',
-    type: 'pim_catalog_text',
-    labels: {},
-    scopable: false,
-    localizable: false,
-    is_locale_specific: true,
-    available_locales: ['de_DE'],
-  },
-  {
-    code: 'nothing',
-    type: 'pim_catalog_nothing',
-    labels: {},
-    scopable: false,
-    localizable: false,
-  },
-];
-
-const channels = [
-  {
-    code: 'ecommerce',
-    locales: [
-      {code: 'en_US', label: 'English (United States)', region: 'US', language: 'en'},
-      {code: 'fr_FR', label: 'French (France)', region: 'FR', language: 'fr'},
-    ],
-    labels: {fr_FR: 'Ecommerce'},
-    category_tree: '',
-    conversion_units: [],
-    currencies: [],
-    meta: {
-      created: '',
-      form: '',
-      id: 1,
-      updated: '',
-    },
-  },
-  {
-    code: 'mobile',
-    locales: [
-      {code: 'de_DE', label: 'German (Germany)', region: 'DE', language: 'de'},
-      {code: 'en_US', label: 'English (United States)', region: 'US', language: 'en'},
-    ],
-    labels: {fr_FR: 'Mobile'},
-    category_tree: '',
-    conversion_units: [],
-    currencies: [],
-    meta: {
-      created: '',
-      form: '',
-      id: 1,
-      updated: '',
-    },
-  },
-  {
-    code: 'print',
-    locales: [
-      {code: 'de_DE', label: 'German (Germany)', region: 'DE', language: 'de'},
-      {code: 'en_US', label: 'English (United States)', region: 'US', language: 'en'},
-      {code: 'fr_FR', label: 'French (France)', region: 'FR', language: 'fr'},
-    ],
-    labels: {fr_FR: 'Impression'},
-    category_tree: '',
-    conversion_units: [],
-    currencies: [],
-    meta: {
-      created: '',
-      form: '',
-      id: 1,
-      updated: '',
-    },
-  },
-];
-
-const fetchers = {
-  attribute: {
-    fetchByIdentifiers: (identifiers: string[]): Promise<Attribute[]> =>
-      Promise.resolve<Attribute[]>(attributes.filter(({code}) => identifiers.includes(code))),
-  },
-  channel: {fetchAll: (): Promise<Channel[]> => Promise.resolve<Channel[]>(channels)},
-  associationType: {fetchByCodes: (): Promise<AssociationType[]> => Promise.resolve([])},
-};
-
-const renderWithProviders = async (node: ReactNode) =>
-  await act(async () => void baseRender(<FetcherContext.Provider value={fetchers}>{node}</FetcherContext.Provider>));
+import {Source} from '../../models';
+import {renderWithProviders} from 'feature/tests';
 
 test('it displays source configurator', async () => {
   const source: Source = {
@@ -267,6 +171,12 @@ test('it renders nothing if the configurator is unknown', async () => {
         code: 'nothing',
         uuid: 'unique_id',
         type: 'attribute',
+        locale: null,
+        channel: null,
+        operations: {},
+        selection: {
+          type: 'code',
+        },
       }}
       validationErrors={[]}
       onSourceChange={handleSourceChange}

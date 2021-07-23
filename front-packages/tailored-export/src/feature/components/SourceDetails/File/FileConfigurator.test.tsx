@@ -1,13 +1,10 @@
-import React, {ReactNode} from 'react';
-import {act, screen} from '@testing-library/react';
+import React from 'react';
+import {screen} from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
-import {Channel, renderWithProviders as baseRender} from '@akeneo-pim-community/shared';
+import {renderWithProviders} from '@akeneo-pim-community/shared';
 import {FileConfigurator} from './FileConfigurator';
-import {Attribute} from '../../../models/Attribute';
-import {FetcherContext} from '../../../contexts';
 import {FileSelection, getDefaultFileSource} from './model';
 import {getDefaultTextSource} from '../Text/model';
-import {AssociationType} from '../../../models';
 
 const attribute = {
   code: 'file',
@@ -18,15 +15,6 @@ const attribute = {
   is_locale_specific: false,
   available_locales: [],
 };
-
-const fetchers = {
-  attribute: {fetchByIdentifiers: (): Promise<Attribute[]> => Promise.resolve<Attribute[]>([])},
-  channel: {fetchAll: (): Promise<Channel[]> => Promise.resolve([])},
-  associationType: {fetchByCodes: (): Promise<AssociationType[]> => Promise.resolve([])},
-};
-
-const renderWithProviders = async (node: ReactNode) =>
-  await act(async () => void baseRender(<FetcherContext.Provider value={fetchers}>{node}</FetcherContext.Provider>));
 
 jest.mock('./FileSelector', () => ({
   FileSelector: ({onSelectionChange}: {onSelectionChange: (updatedSelection: FileSelection) => void}) => (

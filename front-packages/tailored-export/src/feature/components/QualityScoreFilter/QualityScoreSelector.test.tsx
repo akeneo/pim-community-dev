@@ -19,10 +19,10 @@ test('it displays the selected quality score', () => {
   expect(screen.getByText('A')).toBeInTheDocument();
 });
 
-test('it notifies when the quality score is changed', async () => {
+test('it notifies when the quality score is changed', () => {
   const onOperatorChange = jest.fn();
 
-  await renderWithProviders(
+  renderWithProviders(
     <QualityScoreSelector
       availableQualityScores={availableQualityScores}
       qualityScores={['A']}
@@ -37,10 +37,10 @@ test('it notifies when the quality score is changed', async () => {
   expect(onOperatorChange).toHaveBeenCalledWith(['A', 'B']);
 });
 
-test('it displays validations errors if any', async () => {
+test('it displays validations errors if any', () => {
   const myErrorMessage = 'My message.';
 
-  await renderWithProviders(
+  renderWithProviders(
     <QualityScoreSelector
       availableQualityScores={availableQualityScores}
       qualityScores={['A']}

@@ -21,10 +21,10 @@ test('it displays the selected operator', () => {
   ).toBeInTheDocument();
 });
 
-test('it notifies when the operator is changed', async () => {
+test('it notifies when the operator is changed', () => {
   const onOperatorChange = jest.fn();
 
-  await renderWithProviders(
+  renderWithProviders(
     <OperatorSelector
       availableOperators={availableOperators}
       operator="IN AT LEAST ONE LOCALE"
@@ -39,10 +39,10 @@ test('it notifies when the operator is changed', async () => {
   expect(onOperatorChange).toHaveBeenCalledWith('IN ALL LOCALES');
 });
 
-test('it displays validation errors if any', async () => {
+test('it displays validation errors if any', () => {
   const myErrorMessage = 'My message.';
 
-  await renderWithProviders(
+  renderWithProviders(
     <OperatorSelector
       availableOperators={availableOperators}
       operator="IN AT LEAST ONE LOCALE"

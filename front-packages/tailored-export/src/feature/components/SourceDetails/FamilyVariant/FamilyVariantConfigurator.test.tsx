@@ -1,32 +1,10 @@
-import React, {ReactNode} from 'react';
-import {act, screen} from '@testing-library/react';
+import React from 'react';
+import {screen} from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
-import {Channel, renderWithProviders as baseRender} from '@akeneo-pim-community/shared';
+import {renderWithProviders} from '@akeneo-pim-community/shared';
 import {FamilyVariantConfigurator} from './FamilyVariantConfigurator';
-import {Attribute} from '../../../models/Attribute';
-import {FetcherContext} from '../../../contexts';
 import {getDefaultTextSource} from '../Text/model';
 import {CodeLabelSelection} from '../common/CodeLabelSelector';
-import {AssociationType} from '../../../models';
-
-const attribute = {
-  code: 'text',
-  type: 'pim_catalog_text',
-  labels: {},
-  scopable: false,
-  localizable: false,
-  is_locale_specific: false,
-  available_locales: [],
-};
-
-const fetchers = {
-  attribute: {fetchByIdentifiers: (): Promise<Attribute[]> => Promise.resolve<Attribute[]>([])},
-  channel: {fetchAll: (): Promise<Channel[]> => Promise.resolve([])},
-  associationType: {fetchByCodes: (): Promise<AssociationType[]> => Promise.resolve([])},
-};
-
-const renderWithProviders = async (node: ReactNode) =>
-  await act(async () => void baseRender(<FetcherContext.Provider value={fetchers}>{node}</FetcherContext.Provider>));
 
 jest.mock('../common/CodeLabelSelector', () => ({
   CodeLabelSelector: ({onSelectionChange}: {onSelectionChange: (updatedSelection: CodeLabelSelection) => void}) => (
@@ -43,10 +21,10 @@ jest.mock('../common/CodeLabelSelector', () => ({
   ),
 }));
 
-test('it displays a family variant configurator', async () => {
+test('it displays a family variant configurator', () => {
   const onSourceChange = jest.fn();
 
-  await renderWithProviders(
+  renderWithProviders(
     <FamilyVariantConfigurator
       source={{
         channel: null,
@@ -80,13 +58,23 @@ test('it displays a family variant configurator', async () => {
   });
 });
 
-test('it does not render if the source is not valid', async () => {
+test('it does not render if the source is not valid', () => {
   const mockedConsole = jest.spyOn(console, 'error').mockImplementation();
   const onSourceChange = jest.fn();
 
-  await renderWithProviders(
+  const textAttribute = {
+    code: 'text',
+    type: 'pim_catalog_text',
+    labels: {},
+    scopable: false,
+    localizable: false,
+    is_locale_specific: false,
+    available_locales: [],
+  };
+
+  renderWithProviders(
     <FamilyVariantConfigurator
-      source={getDefaultTextSource(attribute, null, null)}
+      source={getDefaultTextSource(textAttribute, null, null)}
       validationErrors={[]}
       onSourceChange={onSourceChange}
     />
