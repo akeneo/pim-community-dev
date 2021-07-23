@@ -1,4 +1,4 @@
-import React, {ForwardRefExoticComponent, ReactNode} from 'react';
+import React, {ForwardRefExoticComponent, PropsWithoutRef, ReactNode, RefAttributes} from 'react';
 import styled, {css} from 'styled-components';
 import {PanelCloseIcon, PanelOpenIcon} from '../../../icons';
 import {AkeneoThemedProps, getColor} from '../../../theme';
@@ -112,7 +112,9 @@ type SubNavigationPanelProps = {
   openTitle?: string;
 };
 
-type SubNavigationPanelCompoundType = ForwardRefExoticComponent<SubNavigationPanelProps> & {
+type SubNavigationPanelCompoundType = ForwardRefExoticComponent<
+  PropsWithoutRef<SubNavigationPanelProps> & RefAttributes<HTMLDivElement>
+> & {
   Collapsed?: any;
 };
 
@@ -135,8 +137,8 @@ const SubNavigationPanel: SubNavigationPanelCompoundType = React.forwardRef<HTML
     });
 
     return (
-      <Container ref={forwardedRef} isOpen={isOpen}>
-        <Panel isOpen={isOpen} {...rest}>
+      <Container ref={forwardedRef} isOpen={isOpen} {...rest}>
+        <Panel isOpen={isOpen}>
           {collapsedContent}
           <PanelContent isOpen={isOpen}>{isOpen && contentChildren}</PanelContent>
         </Panel>
