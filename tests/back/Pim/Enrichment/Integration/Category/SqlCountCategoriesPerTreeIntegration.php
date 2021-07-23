@@ -4,19 +4,19 @@ declare(strict_types=1);
 
 namespace AkeneoTest\Pim\Enrichment\Integration\Category;
 
-use Akeneo\Pim\Enrichment\Bundle\Storage\Sql\Category\SqlCountCategoriesPerTree;
+use Akeneo\Pim\Enrichment\Bundle\Storage\Sql\Category\SqlGetCategoryChildrenCodesPerTree;
 use Akeneo\Test\Integration\Configuration;
 use Akeneo\Test\Integration\TestCase;
 use Webmozart\Assert\Assert;
 
 final class SqlCountCategoriesPerTreeIntegration extends TestCase
 {
-    public SqlCountCategoriesPerTree $countTotalCategoriesPerTree;
+    public SqlGetCategoryChildrenCodesPerTree $countTotalCategoriesPerTree;
 
     public function setUp(): void
     {
         parent::setUp();
-        $this->countTotalCategoriesPerTree = $this->get('akeneo.enrichment.public_api.count_categories_per_tree');
+        $this->countTotalCategoriesPerTree = $this->get('akeneo.enrichment.public_api.get_category_children_codes_per_tree');
 
         /**
          * master
