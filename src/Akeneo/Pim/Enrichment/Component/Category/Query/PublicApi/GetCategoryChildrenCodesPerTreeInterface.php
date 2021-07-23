@@ -15,11 +15,11 @@ interface GetCategoryChildrenCodesPerTreeInterface
      * For each category tree, return children codes of selected categories
      * @return array<string, string[]>
      */
-    public function executeWithChildren(array $selectedCategoryCodes): array;
+    public function executeWithChildren(array $categoryCodes): array;
 
     /**
      * For each category tree, return existing category codes of selected categories
      * @return array<string, string[]>
      */
-    public function executeWithoutChildren(array $selectedCategoryCodes): array;
+    public function executeWithoutChildren(array $categoryCodes): array;
 }
