@@ -57,6 +57,19 @@ final class GetAllAppsResult
     }
 
     /**
+     * @param array<string> $queryParameters
+     */
+    public function withPimUrlSource(array $queryParameters): self
+    {
+        return self::create(
+            $this->total,
+            array_map(function (App $app) use ($queryParameters) {
+                return $app->withPimUrlSource($queryParameters);
+            }, $this->apps),
+        );
+    }
+
+    /**
      * @return array{total:int, apps:array}
      */
     public function normalize(): array
