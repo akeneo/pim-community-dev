@@ -5,6 +5,7 @@ import {Channel, ValidationError, filterErrors} from '@akeneo-pim-community/shar
 import {pimTheme} from 'akeneo-design-system';
 import {DependenciesProvider} from '@akeneo-pim-community/legacy-bridge';
 import {AssociationType, Attribute, CompletenessFilter, FetcherContext} from '@akeneo-pim-enterprise/tailored-export';
+const _ = require('underscore');
 const __ = require('oro/translator');
 const mediator = require('oro/mediator');
 const BaseFilter = require('pim/filter/filter');
@@ -39,6 +40,9 @@ class FilterLocalizedCompleteness extends BaseFilter {
     this.listenTo(this.parentForm.getRoot(), 'pim_enrich:form:entity:bad_request', (event: any) =>
       this.setValidationErrors(event.response.normalized_errors)
     );
+    this.listenTo(this.getRoot(), 'pim_enrich:form:entity:pre_update', (data: any) => {
+      _.defaults(data, {field: this.getCode(), operator: _.first(this.config.operators), value: 100});
+    });
 
     return BaseFilter.prototype.configure.apply(this, arguments);
   }

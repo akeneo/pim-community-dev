@@ -263,7 +263,7 @@ test('it can switch locales', () => {
   });
 });
 
-test('when the user switch resets the quality score it removes the context and the operator', () => {
+test('when the user resets the quality score it removes the context and the operator', () => {
   const handleFilterChange = jest.fn();
   renderWithProviders(
     <QualityScoreFilter
@@ -272,6 +272,10 @@ test('when the user switch resets the quality score it removes the context and t
         field: 'quality_score_multi_locales',
         operator: 'IN AT LEAST ONE LOCALE',
         value: [1],
+        context: {
+          scope: 'ecommerce',
+          locales: ['fr_FR'],
+        },
       }}
       onChange={handleFilterChange}
       validationErrors={[]}

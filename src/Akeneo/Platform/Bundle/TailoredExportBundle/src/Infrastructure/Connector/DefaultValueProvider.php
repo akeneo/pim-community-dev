@@ -60,12 +60,7 @@ class DefaultValueProvider implements DefaultValuesProviderInterface
                     'field' => 'completeness',
                     'operator' => 'ALL',
                     'value' => 100,
-                ],
-                [
-                    'field' => 'quality_score_multi_locales',
-                    'operator' => null,
-                    'value' => [],
-                ],
+                ]
             ],
         ];
 
