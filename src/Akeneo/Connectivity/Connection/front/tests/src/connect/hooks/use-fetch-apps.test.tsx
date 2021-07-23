@@ -17,7 +17,7 @@ test('it fetches the apps', async () => {
                 categories: ['E-commerce'],
                 certified: false,
                 activate_url: 'https://extension-1.test/activate',
-                callback_url: 'https://extension-1.test/oauth2'
+                callback_url: 'https://extension-1.test/oauth2',
             },
             {
                 id: '896ae911-e877-46a0-b7c3-d7c572fe39ed',
@@ -30,7 +30,7 @@ test('it fetches the apps', async () => {
                 categories: ['E-commerce', 'Print'],
                 certified: true,
                 activate_url: 'https://extension-2.test/activate',
-                callback_url: 'https://extension-2.test/oauth2'
+                callback_url: 'https://extension-2.test/oauth2',
             },
         ],
     };
