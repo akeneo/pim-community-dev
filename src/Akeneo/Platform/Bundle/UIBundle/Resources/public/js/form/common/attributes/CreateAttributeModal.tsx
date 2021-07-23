@@ -1,7 +1,8 @@
 import React, {FC, useState} from 'react';
 import {Modal, AttributesIllustration, Button, Field, TextInput, Locale, Helper} from "akeneo-design-system";
-import {LabelCollection, useTranslate, useUserContext} from "@akeneo-pim-community/shared";
+import {useTranslate, useUserContext} from "@akeneo-pim-community/shared";
 import styled from "styled-components";
+import {useAttributeCodeInput} from "./useAttributeCodeInput";
 
 const FieldSet = styled.div`
   & > * {
@@ -22,25 +23,8 @@ const CreateAttributeModal: FC<CreateAttributeModalProps> = ({
 }) => {
   const translate = useTranslate();
   const userContext = useUserContext();
-
-  const [code, setCode] = useState<string>(defaultCode || '');
   const [label, setLabel] = useState<string>('');
-  const [isCodeDirty, setCodeDirty] = useState<boolean>(false);
-  const [isLabelDirty, setLabelDirty] = useState<boolean>(false);
-
-  const codeViolations: string[] = [];
-  if (code === '') {
-    codeViolations.push(translate('pim_enrich.entity.attribute.property.code.must_be_filled'));
-  }
-  if (code !== '' && !/^[a-zA-Z0-9_]+$/.exec(code)) {
-    codeViolations.push(translate('pim_enrich.entity.attribute.property.code.invalid'));
-  }
-  if (code !== '' && (
-    /^(id|family)$/i.exec(code) ||
-    /^(associationTypes|categories|categoryId|completeness|enabled|groups|associations|products|scope|treeId|values|category|parent|label|.*_products|.*_groups|entity_type|attributes)$/.exec(code))
-  ) {
-    codeViolations.push(translate('pim_enrich.entity.attribute.property.code.not_available'));
-  }
+  const [code, CodeField, isCodeValid] = useAttributeCodeInput({defaultCode, generatedFromLabel: label});
 
   const handleConfirm = () => {
     onClose();
@@ -50,18 +34,8 @@ const CreateAttributeModal: FC<CreateAttributeModalProps> = ({
     });
   }
 
-  const handleCodeChange = (code: string) => {
-    setCode(code);
-    setCodeDirty(true);
-  }
-
   const handleLabelChange = (label: string) => {
     setLabel(label);
-    setLabelDirty(true);
-    if (!isCodeDirty) {
-      const code = label.replace(/[^a-zA-Z0-9_]/gi, '_').substring(0, 255);
-      setCode(code);
-    }
   }
 
   return <Modal closeTitle={translate('pim_common.close')} onClose={onClose} illustration={<AttributesIllustration />}>
@@ -82,25 +56,13 @@ const CreateAttributeModal: FC<CreateAttributeModalProps> = ({
           )}
         />
       </Field>
-      <Field label={translate('pim_common.code')} requiredLabel={translate('pim_common.required_label')}>
-        <TextInput
-          characterLeftLabel={translate(
-            'pim_common.characters_left',
-            {count: 255 - code.length},
-            100 - code.length
-          )}
-          value={code}
-          onChange={handleCodeChange}
-          maxLength={255}
-        />
-        {(isCodeDirty || isLabelDirty) && codeViolations.map((violation, i) => <Helper key={i} level="error">{violation}</Helper>)}
-      </Field>
+      {CodeField}
     </FieldSet>
     <Modal.BottomButtons>
       <Button level="tertiary" onClick={onClose}>
         {translate('pim_common.cancel')}
       </Button>
-      <Button level="primary" onClick={handleConfirm} disabled={codeViolations.length > 0}>
+      <Button level="primary" onClick={handleConfirm} disabled={isCodeValid}>
         {translate('pim_common.confirm')}
       </Button>
     </Modal.BottomButtons>
