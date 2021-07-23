@@ -1,0 +1,7 @@
+services:
+    akeneo_measure.micro_backend.command.install:
+        class: 'AkeneoMeasureBundle\Command\InstallCommand'
+        arguments:
+            - '@akeneo_measure.installer.measurement_installer'
+        tags:
+            - { name: 'console.command' }

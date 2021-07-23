@@ -26,3 +26,8 @@ akeneo_measurements_validate_unit_rest:
     path: '/rest/measurement-families/{measurement_family_code}/validate-unit'
     defaults: { _controller: pim_api.controller.internal_api.validate_unit }
     methods: [POST]
+
+akeneo_measurements_measures_rest_index:
+    path: /configuration/measures/rest
+    defaults: { _controller: akeneo_measure.controller.rest.measures:indexAction }
+    methods: [GET]

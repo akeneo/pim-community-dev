@@ -1,6 +1,0 @@
-parameters:
-    pim_api.converter.measure_family.class: Akeneo\Tool\Component\Api\Converter\MeasureFamilyConverter
-
-services:
-    pim_api.converter.measure_family:
-        class: '%pim_api.converter.measure_family.class%'

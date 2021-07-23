@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace AkeneoMeasureBundle\Installer;
 
-use Akeneo\Platform\Bundle\InstallerBundle\Event\InstallerEvents;
+// use Akeneo\Platform\Bundle\InstallerBundle\Event\InstallerEvents; to fix
 use Doctrine\DBAL\Driver\Connection;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 
@@ -29,7 +29,7 @@ class MeasurementInstaller implements EventSubscriberInterface
     public static function getSubscribedEvents(): array
     {
         return [
-            InstallerEvents::POST_DB_CREATE => ['createMeasurementTableAndStandardMeasurementFamilies'],
+            'pim_installer.post_db_create' => ['createMeasurementTableAndStandardMeasurementFamilies'],
         ];
     }
 

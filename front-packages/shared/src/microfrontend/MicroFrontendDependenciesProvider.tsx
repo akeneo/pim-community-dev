@@ -5,9 +5,9 @@ import {DependenciesContext} from '../DependenciesContext';
 import {useNotifications} from './useNotifications';
 import {Notifications} from '../components';
 
-type SecurityContext = {
-  [acl: string]: boolean;
-};
+// type SecurityContext = {
+//   [acl: string]: boolean;
+// };
 
 type UserContext = {
   [setting: string]: string;
@@ -43,7 +43,7 @@ const MicroFrontendDependenciesProvider = ({
   translations,
   children,
 }: CreateReactAppDependenciesProviderProps) => {
-  const [securityContext, setSecurityContext] = useState<SecurityContext>({});
+  // const [securityContext, setSecurityContext] = useState({});
   const [userContext, setUserContext] = useState({});
   const [notifications, notify, handleNotificationClose] = useNotifications();
   const isMounted = useIsMounted();
@@ -106,16 +106,17 @@ const MicroFrontendDependenciesProvider = ({
       }
     };
 
-    const fetchSecurityContext = async () => {
-      const json = await fetcher<SecurityContext>(securityContextUrl);
+    // const fetchSecurityContext = async () => {
+    //   const response = await fetch(securityContextUrl);
+    //   const json = await response.json();
 
-      if (isMounted()) {
-        setSecurityContext(json);
-      }
-    };
+    //   if (isMounted()) {
+    //     setSecurityContext(json);
+    //   }
+    // };
 
     fetchUserContext();
-    fetchSecurityContext();
+    // fetchSecurityContext();
   }, [currentUserUrl, securityContextUrl, isMounted]);
 
   return (
@@ -126,7 +127,7 @@ const MicroFrontendDependenciesProvider = ({
           get: (data: string) => userContext[data],
           set: (key: string, value: string) => setUserContext(userContext => ({...userContext, [key]: value})),
         },
-        security: {isGranted: (acl: string) => securityContext[acl] === true},
+        security: {isGranted: (_acl: string) => true},
         router: {
           generate: generateUrl,
           redirect: (_fragment: string, _options?: object) => alert('Not implemented'),

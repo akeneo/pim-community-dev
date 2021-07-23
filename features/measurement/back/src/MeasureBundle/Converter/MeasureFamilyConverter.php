@@ -1,6 +1,6 @@
 <?php
 
-namespace Akeneo\Tool\Component\Api\Converter;
+namespace AkeneoMeasureBundle\Converter;
 
 use Akeneo\Tool\Component\Connector\ArrayConverter\ArrayConverterInterface;
 

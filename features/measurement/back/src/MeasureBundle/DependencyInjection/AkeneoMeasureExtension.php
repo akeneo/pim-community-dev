@@ -29,11 +29,14 @@ class AkeneoMeasureExtension extends Extension
         $loader->load('limits.yml');
         $loader->load('public_api.yml');
         $loader->load('services.yml');
-        $loader->load('proxy.yml');
+        $loader->load('converters.yml');
 
         $inMicroBackend = (bool) ($_ENV['IN_MICRO_BACKEND'] ?? false);
 
-        if (!$inMicroBackend) {
+        if ($inMicroBackend) {
+            $loader->load('fake.yml');
+            $loader->load('micro-backend.yml');
+        } else {
             $loader->load('proxy.yml');
         }
     }

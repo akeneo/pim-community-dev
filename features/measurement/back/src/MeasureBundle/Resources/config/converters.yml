@@ -1,0 +1,6 @@
+parameters:
+    akeneo_measure.converter.measure_family.class: AkeneoMeasureBundle\Converter\MeasureFamilyConverter
+
+services:
+    akeneo_measure.converter.measure_family:
+        class: '%akeneo_measure.converter.measure_family.class%'

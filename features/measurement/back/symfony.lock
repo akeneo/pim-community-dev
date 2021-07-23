@@ -1,4 +1,64 @@
 {
+    "doctrine/annotations": {
+        "version": "1.0",
+        "recipe": {
+            "repo": "github.com/symfony/recipes",
+            "branch": "master",
+            "version": "1.0",
+            "ref": "a2759dd6123694c8d901d0ec80006e044c2e6457"
+        },
+        "files": [
+            "config/routes/annotations.yaml"
+        ]
+    },
+    "doctrine/cache": {
+        "version": "1.12.1"
+    },
+    "doctrine/collections": {
+        "version": "1.6.7"
+    },
+    "doctrine/common": {
+        "version": "2.13.3"
+    },
+    "doctrine/dbal": {
+        "version": "v2.10.0"
+    },
+    "doctrine/doctrine-bundle": {
+        "version": "1.12",
+        "recipe": {
+            "repo": "github.com/symfony/recipes",
+            "branch": "master",
+            "version": "1.12",
+            "ref": "673ca0ede8ca357fe8a33076ce02f14404247957"
+        },
+        "files": [
+            "config/packages/doctrine.yaml",
+            "config/packages/prod/doctrine.yaml",
+            "src/Entity/.gitignore",
+            "src/Repository/.gitignore"
+        ]
+    },
+    "doctrine/doctrine-cache-bundle": {
+        "version": "1.4.0"
+    },
+    "doctrine/event-manager": {
+        "version": "1.1.1"
+    },
+    "doctrine/inflector": {
+        "version": "1.4.4"
+    },
+    "doctrine/lexer": {
+        "version": "1.2.1"
+    },
+    "doctrine/persistence": {
+        "version": "2.2.1"
+    },
+    "doctrine/reflection": {
+        "version": "1.2.2"
+    },
+    "jdorn/sql-formatter": {
+        "version": "v1.2.17"
+    },
     "justinrainbow/json-schema": {
         "version": "5.2.10"
     },
@@ -7,6 +67,9 @@
     },
     "psr/container": {
         "version": "1.1.1"
+    },
+    "psr/event-dispatcher": {
+        "version": "1.0.0"
     },
     "psr/log": {
         "version": "1.1.4"
@@ -38,6 +101,9 @@
     },
     "symfony/dependency-injection": {
         "version": "v4.4.26"
+    },
+    "symfony/doctrine-bridge": {
+        "version": "v4.4.25"
     },
     "symfony/dotenv": {
         "version": "v4.4.25"
@@ -137,8 +203,27 @@
             "config/routes.yaml"
         ]
     },
+    "symfony/serializer": {
+        "version": "v4.4.25"
+    },
     "symfony/service-contracts": {
         "version": "v2.4.0"
+    },
+    "symfony/translation-contracts": {
+        "version": "v2.4.0"
+    },
+    "symfony/validator": {
+        "version": "4.3",
+        "recipe": {
+            "repo": "github.com/symfony/recipes",
+            "branch": "master",
+            "version": "4.3",
+            "ref": "3eb8df139ec05414489d55b97603c5f6ca0c44cb"
+        },
+        "files": [
+            "config/packages/test/validator.yaml",
+            "config/packages/validator.yaml"
+        ]
     },
     "symfony/var-dumper": {
         "version": "v4.4.26"
@@ -148,5 +233,8 @@
     },
     "symfony/yaml": {
         "version": "v4.4.26"
+    },
+    "webmozart/assert": {
+        "version": "1.10.0"
     }
 }
