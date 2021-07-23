@@ -31,3 +31,9 @@ services:
             - '@akeneo_batch.job_repository'
         tags:
             - { name: console.command }
+
+    Akeneo\Tool\Bundle\BatchBundle\Command\AddMissingJobInstanceRemoveCompletenessChannelLocale:
+        arguments:
+            - '@database_connection'
+        tags:
+            - { name: console.command }
