@@ -1,3 +1,6 @@
 akeneo_monitoring:
     resource: "@AkeneoMonitoringBundle/Resources/config/routing.yml"
 
+free_trial:
+    prefix: /free-trial
+    resource: "@AkeneoFreeTrialBundle/Resources/config/routing.yml"

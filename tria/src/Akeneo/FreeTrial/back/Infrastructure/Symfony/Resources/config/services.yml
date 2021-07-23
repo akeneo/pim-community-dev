@@ -1,0 +1,9 @@
+services:
+  Akeneo\FreeTrial\Application\InviteUsers:
+    arguments:
+      - '@Akeneo\FreeTrial\Domain\API\InviteUserAPI'
+      - '@Akeneo\FreeTrial\Domain\Repository\InvitedUserRepository'
+
+  Akeneo\FreeTrial\Infrastructure\RetrievePimFQDN:
+    arguments:
+      - '%env(AKENEO_PIM_URL)%'

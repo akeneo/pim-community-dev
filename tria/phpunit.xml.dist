@@ -41,5 +41,8 @@
             <directory suffix="EndToEnd.php">src</directory>
         </testsuite>
 
+        <testsuite name="Free_Trial">
+            <directory suffix="Integration.php">src/Akeneo/FreeTrial/tests/back/Integration</directory>
+        </testsuite>
     </testsuites>
 </phpunit>
