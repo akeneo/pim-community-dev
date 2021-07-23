@@ -199,3 +199,9 @@ services:
         arguments:
             - '@pimee_catalog.security.factory.filtered_product_model'
         lazy: true
+
+    pim_enrich.filter.category_code:
+        class: 'Akeneo\Pim\Permission\Bundle\Filter\CategoryCodeViewFilter'
+        arguments:
+            - '@pimee_security.query.sql.get_viewable_category_codes_for_user'
+            - '@security.token_storage'
