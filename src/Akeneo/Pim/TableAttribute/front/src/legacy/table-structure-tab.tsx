@@ -4,7 +4,7 @@ import ReactDOM from 'react-dom';
 import {TableStructureApp} from '../attribute/TableStructureApp';
 import {TableConfiguration} from '../models/TableConfiguration';
 import {DependenciesProvider} from '@akeneo-pim-community/legacy-bridge';
-import {TEMPLATES} from '../models/Template';
+import {LocalizedTemplate, TEMPLATES} from '../models/Template';
 import {Attribute, AttributeType} from '../models/Attribute';
 // eslint-disable-next-line @typescript-eslint/no-var-requires
 const translate = require('oro/translator');
@@ -96,11 +96,14 @@ class TableStructureTab extends (BaseView as {new (options: {config: TableStruct
     const savedColumnCodes = (initialTableConfiguration || []).map(columnDefinition => columnDefinition.code);
     if (typeof initialTableConfiguration === 'undefined') {
       initialTableConfiguration = [];
-      const tableTemplate = this.getQueryParam('table_template');
+      const tableTemplate = this.getQueryParam('template');
       if (tableTemplate) {
-        const template = TEMPLATES.find(template => template.code === tableTemplate);
+        const template = ([] as LocalizedTemplate[]).concat(...(TEMPLATES.map(template => template.templates))).find(template => template.code === tableTemplate);
         if (template) {
           initialTableConfiguration = template.tableConfiguration;
+          this.handleChange(initialTableConfiguration);
+        } else {
+          console.error(`Unable to find template ${tableTemplate}`)
         }
       }
     }
