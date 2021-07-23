@@ -28,7 +28,8 @@
     "less": "node $npm_package_config_styles",
     "update-extensions": "node $npm_package_config_source/frontend/build/update-extensions.js",
     "generate-models": "yarn --cwd=node_modules/@akeneo-pim-community/communication-channel generate-models",
-    "packages:build": "yarn --cwd=$npm_package_config_source packages:build",
+    "free-trial:build": "yarn --cwd=front-packages/free-trial install --frozen-lockfile; yarn --cwd=front-packages/free-trial lib:build",
+    "packages:build": "yarn --cwd=$npm_package_config_source packages:build; yarn free-trial:build",
     "dsm:build": "yarn --cwd=$npm_package_config_source dsm:build"
   },
   "devDependencies": {
@@ -46,6 +47,7 @@
     "tslint-react": "^4.0.0"
   },
   "dependencies": {
+    "akeneo-pim-free-trial": "link:front-packages/free-trial",
     "draft-js": "^0.10.5",
     "draftjs-to-html": "^0.8.4",
     "html-to-draftjs": "^1.4.0",

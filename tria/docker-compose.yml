@@ -14,7 +14,9 @@ services:
       ASPELL_BINARY_PATH: '${ASPELL_BINARY_PATH:-aspell}'
     volumes:
       - './:/srv/pim'
+      - '../grth/:/srv/grth'
       - '${HOST_COMPOSER_HOME:-~/.composer}:/var/www/.composer'
+      - '../grth:/srv/grth'
     working_dir: '/srv/pim'
     command: 'php'
     init: true
@@ -35,7 +37,9 @@ services:
       ASPELL_BINARY_PATH: '${ASPELL_BINARY_PATH:-aspell}'
     volumes:
       - './:/srv/pim'
+      - '../grth/:/srv/grth'
       - './docker/fpm.conf:/etc/php/7.4/fpm/pool.d/zzz-akeneo.conf'
+      - '../grth:/srv/grth'
     working_dir: '/srv/pim'
     command: 'php-fpm -F'
     networks:

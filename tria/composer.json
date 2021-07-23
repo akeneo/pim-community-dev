@@ -13,6 +13,9 @@
         "psr-0": {
             "": "src/"
         },
+        "psr-4": {
+            "Akeneo\\FreeTrial\\": ["src/Akeneo/FreeTrial/back", "vendor/akeneo/pim-community-dev/src/Akeneo/FreeTrial/back"]
+        },
         "exclude-from-classmap": [
             "vendor/akeneo/pim-community-dev/src/Kernel.php"
         ]
@@ -32,7 +35,8 @@
             "Akeneo\\Connectivity\\Connection\\Tests\\": "vendor/akeneo/pim-community-dev/src/Akeneo/Connectivity/Connection/back/tests",
             "Akeneo\\Connectivity\\Connection\\Tests\\EndToEnd\\": "vendor/akeneo/pim-community-dev/src/Akeneo/Connectivity/Connection/tests/",
             "Pim\\Upgrade\\Schema\\Tests\\": "vendor/akeneo/pim-community-dev/upgrades/test_schema/",
-            "Akeneo\\Platform\\CommunicationChannel\\Test\\": "vendor/akeneo/pim-community-dev/src/Akeneo/Platform/Bundle/CommunicationChannelBundle/back/tests"
+            "Akeneo\\Platform\\CommunicationChannel\\Test\\": "vendor/akeneo/pim-community-dev/src/Akeneo/Platform/Bundle/CommunicationChannelBundle/back/tests",
+            "Akeneo\\Test\\FreeTrial\\": "src/Akeneo/FreeTrial/tests/back"
         }
     },
     "require": {

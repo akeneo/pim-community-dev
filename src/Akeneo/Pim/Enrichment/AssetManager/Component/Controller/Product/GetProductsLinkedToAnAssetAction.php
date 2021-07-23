@@ -21,29 +21,22 @@ use Akeneo\Pim\Enrichment\Component\Product\Query\Filter\Operators;
 use Akeneo\Pim\Enrichment\Component\Product\Query\ProductQueryBuilderFactoryInterface;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\HttpKernel\Exception\UnprocessableEntityHttpException;
 use Symfony\Component\Validator\Validator\ValidatorInterface;
 
 /**
- * Get products linked to a asset on an attribute
+ * Get products linked to an asset on an attribute
  *
  * @author    Julien Sanchez <julien@akeneo.com>
  * @copyright 2019 Akeneo SAS (https://www.akeneo.com)
  */
-class GetProductsLinkedToAAssetAction
+class GetProductsLinkedToAnAssetAction
 {
     private const MAX_RESULTS = 10;
-
-    /** @var ProductQueryBuilderFactoryInterface */
-    private $pqbFactory;
-
-    /** @var FetchProductAndProductModelRows */
-    private $fetchProductAndProductModelRows;
-
-    /** @var ValidatorInterface */
-    private $validator;
-
-    /** @var LinkedProductsNormalizer */
-    private $linkedProductNormalizer;
+    private ProductQueryBuilderFactoryInterface $pqbFactory;
+    private FetchProductAndProductModelRows $fetchProductAndProductModelRows;
+    private ValidatorInterface $validator;
+    private LinkedProductsNormalizer $linkedProductNormalizer;
 
     public function __construct(
         ProductQueryBuilderFactoryInterface $pqbFactory,
@@ -62,7 +55,12 @@ class GetProductsLinkedToAAssetAction
         $channelCode = $request->query->get('channel');
         $localeCode = $request->query->get('locale');
 
-        $rows = $this->findProductAndProductModelsIdentifiers($assetCode, $attributeCode, $localeCode, $channelCode);
+        try {
+            $rows = $this->findProductAndProductModelsIdentifiers($assetCode, $attributeCode, $localeCode, $channelCode);
+        } catch (\Exception $exception) {
+            throw new UnprocessableEntityHttpException($exception->getMessage());
+        }
+
         $normalizedProducts = $this->linkedProductNormalizer->normalize($rows, $channelCode, $localeCode);
 
         return new JsonResponse(['items' => $normalizedProducts, 'total_count' => $rows->totalCount()]);
