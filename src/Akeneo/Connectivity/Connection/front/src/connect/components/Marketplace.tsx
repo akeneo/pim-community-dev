@@ -13,6 +13,7 @@ import {useDisplayScrollTopButton} from '../../shared/scroll/hooks/useDisplayScr
 import findScrollParent from '../../shared/scroll/utils/findScrollParent';
 import {App, Apps} from '../../model/app';
 import {Section} from './Section';
+import {ActivateAppButton} from './ActivateAppButton';
 
 const ScrollToTop = styled(IconButton)`
     position: fixed;
@@ -45,9 +46,7 @@ export const Marketplace: FC<Props> = ({extensions, apps}) => {
     ));
     const appsList = apps.apps.map((app: App) => (
         <MarketplaceCard key={app.id} item={app} additionalActions={[
-            <Button key={1} level='primary' href={app.activate_url} target='_self'>
-                {translate('akeneo_connectivity.connection.connect.marketplace.card.connect')}
-            </Button>
+            <ActivateAppButton key={1} url={app.activate_url} />
         ]}/>
     ));
     const handleScrollTop = () => {
