@@ -5,7 +5,6 @@ import {DependenciesProvider} from '@akeneo-pim-community/legacy-bridge';
 import {CreateButtonApp} from './CreateButtonApp';
 import {pimTheme} from 'akeneo-design-system';
 import {ThemeProvider} from 'styled-components';
-import {LabelCollection} from "@akeneo-pim-community/shared";
 const translate = require('oro/translator');
 const router = require('pim/router');
 
