@@ -57,8 +57,8 @@ const PimNavigation: FC<Props> = ({entries, activeEntryCode, activeSubEntryCode}
               disabled={entry.disabled}
               icon={entry.icon}
               onClick={() => handleFollowEntry(entry)}
-              role='menuitem'
-              data-testid='pim-main-menu-item'
+              role="menuitem"
+              data-testid="pim-main-menu-item"
               className={entry.code === activeEntryCode ? 'active' : undefined}
               style={entry.align === 'bottom' ? {position: 'absolute', bottom: '0'} : {}}
             >

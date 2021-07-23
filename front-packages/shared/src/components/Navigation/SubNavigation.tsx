@@ -54,11 +54,16 @@ const SubNavigation: FC<Props> = ({title, sections, entries, backLink, stateCode
 
   return (
     <SubNavContainer role="menu" data-testid="pim-sub-menu">
-      <SubNavigationPanel isOpen={isSubNavigationOpened} open={openSubNavigation} close={closeSubNavigation}>
+      <SubNavigationPanel
+        isOpen={isSubNavigationOpened}
+        open={openSubNavigation}
+        close={closeSubNavigation}
+        closeTitle={translate('pim_common.close')}
+        openTitle={translate('pim_common.open')}
+      >
         <SubNavigationPanel.Collapsed>
           <SubNavigationDropdown entries={entries} title={title} />
         </SubNavigationPanel.Collapsed>
-
         {backLink && (
           // @ts-ignore
           <Backlink onClick={() => router.redirectToRoute(backLink.route)}>{translate(backLink.title)}</Backlink>
