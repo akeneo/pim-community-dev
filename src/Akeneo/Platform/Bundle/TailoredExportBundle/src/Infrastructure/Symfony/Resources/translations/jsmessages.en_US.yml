@@ -48,6 +48,8 @@ akeneo.tailored_export:
         button: Remove this source
       no_source_configuration:
         title: There are no operations available for this source. Its value will be exported as is.
+      deleted_attribute:
+        title: This attribute has been deleted, you can no longer use it as a source.
       no_source_selected:
         title: Click on 'Add source' to start defining your column content.
         link: Check out our Help Center for more information.

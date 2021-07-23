@@ -28,6 +28,7 @@ import {SimpleSelectConfigurator} from './SimpleSelect/SimpleSelectConfigurator'
 import {MultiSelectConfigurator} from './MultiSelect/MultiSelectConfigurator';
 import {ReferenceEntityConfigurator} from './ReferenceEntity/ReferenceEntityConfigurator';
 import {AssetCollectionConfigurator} from './AssetCollection/AssetCollectionConfigurator';
+import {DeletedAttributePlaceholder} from 'feature/components/SourceDetails/DeletedAttributePlaceholder';
 
 const Container = styled.div`
   display: flex;
@@ -74,9 +75,9 @@ const AttributeSourceConfigurator = ({source, validationErrors, onSourceChange}:
   const locales = getLocalesFromChannel(channels, source.channel);
   const attribute = useAttribute(source.code);
 
-  if (null === attribute) {
+  if (false === attribute) {
     if (0 === attributeErrors.length) {
-      return null;
+      return <DeletedAttributePlaceholder />;
     }
 
     return (
@@ -89,6 +90,8 @@ const AttributeSourceConfigurator = ({source, validationErrors, onSourceChange}:
       </>
     );
   }
+
+  if (null === attribute) return null;
 
   const localeSpecificFilteredLocales = attribute.is_locale_specific
     ? locales.filter(({code}) => attribute.available_locales.includes(code))
