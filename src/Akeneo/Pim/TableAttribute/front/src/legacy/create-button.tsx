@@ -12,15 +12,15 @@ const BaseCreateButton = require('pim/form/common/attributes/create-button');
 const router = require('pim/router');
 
 class CreateButton extends BaseCreateButton {
-  onClick(attributeType: AttributeType): void {
-    if (attributeType !== 'pim_catalog_table') {
-      return BaseCreateButton.prototype.onClick.apply(this, [attributeType]);
+  onClick(data: {attribute_type: AttributeType, code: string, label: string}): void {
+    if (data.attribute_type !== 'pim_catalog_table') {
+      return BaseCreateButton.prototype.onClick.apply(this, [data]);
     }
 
     const handleClick = (template: Template) => {
       router.redirectToRoute('pim_enrich_attribute_create', {
-        attribute_type: attributeType,
-        code: this.getQueryParam('code'),
+        attribute_type: data.attribute_type,
+        code: data.code,
         table_template: template.code,
       });
     };

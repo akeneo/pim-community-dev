@@ -47,4 +47,4 @@ const SelectTemplateApp: React.FC<SelectTemplateAppProps> = ({onClick, onClose, 
   );
 };
 
-export {SelectTemplateApp};
+export default SelectTemplateApp;
