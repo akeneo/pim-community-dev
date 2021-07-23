@@ -1,0 +1,32 @@
+pim_measurements:
+  validation:
+    common:
+      code:
+        pattern: 'To pole może zawierać tylko litery, cyfry i podkreślenia.'
+        limit_reached: 'Nie można utworzyć rodziny miar "%measurement_family_code%", ponieważ osiągnąłeś limit %limit% rodzin pomiarowych'
+    measurement_family:
+      standard_unit_code:
+        is_required: 'Wymagana jest jednostka standardowa.'
+        should_be_in_the_list_of_units: 'Standardowy kod jednostki "%standard_unit_code%" nie istnieje na liście jednostek dla rodziny miar "%measurement_family_code%".'
+        cannot_be_changed: 'Standardowy kod jednostki rodziny miar "%measurement_family_code%" nie może zostać zmieniony'
+        operation_should_be_multiply_by_one: 'Standardowy kod jednostki rodziny miar "%measurement_family_code%" powinien być operacją multiply-by-1'
+      should_contain_max_elements: 'Osiągnąłeś limit %limit% rodzin miar.'
+      code:
+        must_be_unique: 'Ten kod rodziny miar już istnieje.'
+      convert:
+        value_should_be_a_number_in_a_string: 'Wartość operacji powinna być poprawną liczbą'
+        should_contain_min_elements: 'Wymagana jest co najmniej jedna operacja przeliczeniowa na jednostkę.'
+        should_contain_max_elements: 'Osiągnąłeś limit %limit% operacji konwersji na jednostkę.'
+      measurement_family_units_is_locked_for_updates: 'Atrybut produktu jest powiązany z tą rodziną miar. Możesz jedynie zmienić przetłumaczone etykiety i symbol istniejących jednostek.'
+      measurement_family_unit_operations_locked_for_updates: 'Atrybut produktu jest powiązany z tą rodziną miar. Możesz jedynie zmienić przetłumaczone etykiety i symbol istniejących jednostek.'
+      units:
+        should_contain_min_elements: 'Wymagana jest co najmniej jedna operacja przeliczeniowa na jednostkę.'
+        should_contain_max_elements: 'Osiągnąłeś limit %limit% operacji konwersji na jednostkę.'
+        operation:
+          invalid_operator: 'Operator {{ value }} jest nieprawidłowy, użyj {{ choices }}.'
+        should_contain_at_least_one_unit: 'W rodzinie miar powinno być co najmniej %limit% jednostek.'
+        should_not_contain_duplicates: 'Znaleźliśmy kilka zduplikowanych jednostek w rodzinie miar. Rodzina miar wymaga unikalnych jednostek.'
+        must_be_indexed_by_code: 'Indeks nie pasuje do kodu jednostki.'
+    unit:
+      code:
+        must_be_unique: 'Ten kod jednostki już istnieje.'

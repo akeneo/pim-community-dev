@@ -1,0 +1,5 @@
+services:
+    akeneo_measurement.proxy.structure.is_there_at_least_one_attribute_configured_with_measurement_family:
+        class: AkeneoMeasureBundle\Infrastructure\Structure\IsThereAtLeastOneAttributeConfiguredWithMeasurementFamilyProxy
+        calls:
+            - setService: ['@?akeneo.pim.structure.query.is_there_at_least_one_attribute_configured_with_measurement_family']

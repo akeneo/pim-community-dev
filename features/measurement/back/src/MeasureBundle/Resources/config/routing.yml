@@ -1,0 +1,28 @@
+akeneo_measurements_settings_index:
+    path: '/configuration/measurement'
+
+akeneo_measurements_settings_any:
+    path: '/configuration/measurement/{any}'
+    requirements:
+        any: .*
+
+# Internal API
+akeneo_measurements_measurement_family_create_rest:
+    path: '/rest/measurement-families'
+    defaults: { _controller: pim_api.controller.internal_api.create_measurement_family }
+    methods: [POST]
+
+akeneo_measurements_measurement_family_delete_rest:
+    path: '/rest/measurement-families/{code}'
+    defaults: { _controller: pim_api.controller.internal_api.delete_measurement_family }
+    methods: [DELETE]
+
+akeneo_measurements_measurement_family_create_save:
+    path: '/rest/measurement-families/{measurement_family_code}'
+    defaults: { _controller: pim_api.controller.internal_api.save_measurement_family }
+    methods: [POST]
+
+akeneo_measurements_validate_unit_rest:
+    path: '/rest/measurement-families/{measurement_family_code}/validate-unit'
+    defaults: { _controller: pim_api.controller.internal_api.validate_unit }
+    methods: [POST]
