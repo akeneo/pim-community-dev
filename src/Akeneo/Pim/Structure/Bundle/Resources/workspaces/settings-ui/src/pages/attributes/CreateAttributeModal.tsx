@@ -42,10 +42,6 @@ const CreateAttributeModal: FC<CreateAttributeModalProps> = ({
     });
   }
 
-  const handleLabelChange = (label: string) => {
-    setLabel(label);
-  }
-
   return <Modal closeTitle={translate('pim_common.close')} onClose={onClose} illustration={<AttributesIllustration />}>
     <Modal.SectionTitle color="brand">
       {translate('pim_enrich.entity.attribute.module.create.button')}
@@ -55,7 +51,7 @@ const CreateAttributeModal: FC<CreateAttributeModalProps> = ({
       <Field label={translate('pim_common.label')} locale={<Locale code={userContext.get('catalogLocale')}/>}>
         <TextInput
           value={label}
-          onChange={handleLabelChange}
+          onChange={setLabel}
           maxLength={100}
           characterLeftLabel={translate(
             'pim_common.characters_left',
