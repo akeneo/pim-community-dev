@@ -25,20 +25,22 @@ const useAttributes = (attributeCodes: string[]): Attribute[] => {
   return attributes.filter(({code}) => attributeCodes.includes(code));
 };
 
-const useAttribute = (attributeCode: string): Attribute | null => {
+const useAttribute = (attributeCode: string): Attribute | null | false => {
   const attributeFetcher = useFetchers().attribute;
-  const [attribute, setAttribute] = useState<Attribute | null>(null);
+  const [attribute, setAttribute] = useState<Attribute | null | false>(null);
   const isMounted = useIsMounted();
 
   useEffect(() => {
     attributeFetcher.fetchByIdentifiers([attributeCode]).then((attributes: Attribute[]) => {
       if (!isMounted()) return;
 
-      setAttribute(attributes[0] ?? null);
+      setAttribute(attributes[0] ?? false);
     });
   }, [attributeCode, attributeFetcher, isMounted]);
 
-  return attribute?.code === attributeCode ? attribute : null;
+  if (attribute && attribute.code !== attributeCode) return null;
+
+  return attribute;
 };
 
 export {useAttribute, useAttributes};
