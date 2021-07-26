@@ -1,5 +1,6 @@
 import {RefObject, useCallback, useEffect, useState} from 'react';
-import useScrollPosition, {ScrollPosition} from './useScrollPosition';
+import useScrollPosition from './useScrollPosition';
+import {ScrollPosition} from '../utils/getScrollPosition';
 import useIsMounted from './useIsMounted';
 
 type InfiniteScrollStatus = {
