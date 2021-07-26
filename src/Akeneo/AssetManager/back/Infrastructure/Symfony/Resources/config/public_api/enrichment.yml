@@ -19,8 +19,8 @@ services:
         arguments:
             - '@database_connection'
 
-    akeneo_assetmanager.infrastructure.persistence.query.enrich.get_file_info_public_api:
-        class: 'Akeneo\AssetManager\Infrastructure\PublicApi\Enrich\SqlGetFileInfo'
+    akeneo_assetmanager.infrastructure.persistence.query.enrich.get_main_media_file_info_collection_public_api:
+        class: 'Akeneo\AssetManager\Infrastructure\PublicApi\Enrich\SqlGetMainMediaFileInfoCollection'
         arguments:
             - '@database_connection'
 

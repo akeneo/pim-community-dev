@@ -28,7 +28,7 @@ class ProcessedTailoredExport
         $this->mediaToExport = $mediaToExport;
     }
 
-    public function getMappedProducts(): array
+    public function getItems(): array
     {
         return $this->mappedProducts;
     }

@@ -17,6 +17,7 @@ use Akeneo\AssetManager\Domain\Model\Asset\Value\ChannelReference;
 use Akeneo\AssetManager\Domain\Model\Asset\Value\LocaleReference;
 use Akeneo\AssetManager\Domain\Model\Attribute\AttributeIdentifier;
 use Akeneo\AssetManager\Domain\Query\Attribute\ValueKey;
+use Akeneo\Tool\Component\FileStorage\Model\FileInfo;
 use Doctrine\DBAL\Connection;
 use Webmozart\Assert\Assert;
 
@@ -24,7 +25,7 @@ use Webmozart\Assert\Assert;
  * @author Pierre Jolly <pierre.jolly@akeneo.com>
  * @copyright 2021 Akeneo SAS (http://www.akeneo.com)
  */
-final class SqlGetFileInfo implements GetFileInfoInterface
+final class SqlGetMainMediaFileInfoCollection implements GetMainMediaFileInfoCollectionInterface
 {
     private Connection $connection;
 
@@ -55,7 +56,7 @@ final class SqlGetFileInfo implements GetFileInfoInterface
 SELECT JSON_UNQUOTE(JSON_EXTRACT(asset.value_collection, '$."%s".data.filePath')) as filePath,
        JSON_UNQUOTE(JSON_EXTRACT(asset.value_collection, '$."%s".data.originalFilename')) as originalFilename
 FROM akeneo_asset_manager_asset asset
-WHERE  asset.asset_family_identifier = :assetFamilyIdentifier AND asset.code IN (:assetCodes) 
+WHERE asset.asset_family_identifier = :assetFamilyIdentifier AND asset.code IN (:assetCodes) 
 SQL;
 
         $rawResults = $this->connection->executeQuery(
@@ -64,7 +65,13 @@ SQL;
             ['assetCodes' => Connection::PARAM_STR_ARRAY]
         )->fetchAll();
 
-        return $rawResults;
+        return array_map(function (array $rawResults) {
+            $fileInfo = new FileInfo();
+            $fileInfo->setKey($rawResults['filePath']);
+            $fileInfo->setOriginalFilename($rawResults['originalFilename']);
+
+            return $fileInfo;
+        }, $rawResults);
     }
 
     private function getMainMediaValueKey(

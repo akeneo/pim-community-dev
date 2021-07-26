@@ -21,5 +21,5 @@ services:
 
     Akeneo\Platform\TailoredExport\Application\MediaToExportExtractor:
         arguments:
-            - '@akeneo_assetmanager.infrastructure.persistence.query.enrich.get_file_info_public_api'
+            - '@akeneo_assetmanager.infrastructure.persistence.query.enrich.get_main_media_file_info_collection_public_api'
         public: false

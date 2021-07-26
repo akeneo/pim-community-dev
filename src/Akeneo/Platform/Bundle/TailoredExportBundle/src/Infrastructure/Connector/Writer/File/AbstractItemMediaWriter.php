@@ -76,7 +76,7 @@ abstract class AbstractItemMediaWriter implements
         if (!empty($items) && $this->numberOfWrittenLines === 0) {
             $this->writer = $this->fileWriterFactory->build();
             $this->writer->openToFile($this->openedPath);
-            $this->addHeadersIfNeeded(current($items)->getMappedProducts());
+            $this->addHeadersIfNeeded(current($items)->getItems());
         }
 
         /** @var ProcessedTailoredExport $processedTailoredExport */
@@ -88,10 +88,10 @@ abstract class AbstractItemMediaWriter implements
                 $this->writer = $this->fileWriterFactory->build();
                 $this->openedPath = $this->getPath();
                 $this->writer->openToFile($this->openedPath);
-                $this->addHeadersIfNeeded($processedTailoredExport->getMappedProducts());
+                $this->addHeadersIfNeeded($processedTailoredExport->getItems());
             }
 
-            $this->writer->addRow($processedTailoredExport->getMappedProducts());
+            $this->writer->addRow($processedTailoredExport->getItems());
             $this->writeMedia($processedTailoredExport->getMediaToExport());
             $this->numberOfWrittenLines++;
         }
@@ -216,11 +216,11 @@ abstract class AbstractItemMediaWriter implements
     }
 
     /**
-     * @var MediaToExport[] $filesToWrite
+     * @var MediaToExport[] $mediaCollectionToWrite
      */
-    private function writeMedia(array $filesToWrite): void
+    private function writeMedia(array $mediaCollectionToWrite): void
     {
-        if (empty($filesToWrite)) {
+        if (empty($mediaCollectionToWrite)) {
             return;
         }
 
@@ -229,8 +229,8 @@ abstract class AbstractItemMediaWriter implements
             return;
         }
 
-        foreach ($filesToWrite as $fileToWrite) {
-            $this->writtenFiles[] = WrittenFileInfo::fromFileStorage($fileToWrite->getKey(), $fileToWrite->getStorage(), $fileToWrite->getPath());
+        foreach ($mediaCollectionToWrite as $mediaToWrite) {
+            $this->writtenFiles[] = WrittenFileInfo::fromFileStorage($mediaToWrite->getKey(), $mediaToWrite->getStorage(), $mediaToWrite->getPath());
         }
     }
 }

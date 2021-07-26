@@ -13,7 +13,7 @@ declare(strict_types=1);
 
 namespace Specification\Akeneo\Platform\TailoredExport\Application;
 
-use Akeneo\AssetManager\Infrastructure\PublicApi\Enrich\GetFileInfoInterface;
+use Akeneo\AssetManager\Infrastructure\PublicApi\Enrich\GetMainMediaFileInfoCollectionInterface;
 use Akeneo\Platform\TailoredExport\Application\MediaToExportExtractor;
 use Akeneo\Platform\TailoredExport\Application\Query\Column\Column;
 use Akeneo\Platform\TailoredExport\Application\Query\Column\ColumnCollection;
@@ -26,13 +26,14 @@ use Akeneo\Platform\TailoredExport\Domain\MediaToExport;
 use Akeneo\Platform\TailoredExport\Domain\SourceValue\AssetCollectionValue;
 use Akeneo\Platform\TailoredExport\Domain\SourceValue\FileValue;
 use Akeneo\Platform\TailoredExport\Domain\ValueCollection;
+use Akeneo\Tool\Component\FileStorage\Model\FileInfo;
 use PhpSpec\ObjectBehavior;
 
 class MediaToExportExtractorSpec extends ObjectBehavior
 {
-    public function let(GetFileInfoInterface $getFileInfoCollection)
+    public function let(GetMainMediaFileInfoCollectionInterface $getMainMediaFileInfoCollectionn)
     {
-        $this->beConstructedWith($getFileInfoCollection);
+        $this->beConstructedWith($getMainMediaFileInfoCollectionn);
     }
 
     public function it_is_initializable(): void
@@ -85,7 +86,7 @@ class MediaToExportExtractorSpec extends ObjectBehavior
         $mediaToExport->shouldBeLike($expectedMediaToExport);
     }
 
-    public function it_extracts_asset_to_exports(GetFileInfoInterface $getFileInfoCollection): void
+    public function it_extracts_asset_to_exports(GetMainMediaFileInfoCollectionInterface $getMainMediaFileInfoCollection): void
     {
         $operationCollection = OperationCollection::create([]);
         $source = new AttributeSource(
@@ -116,16 +117,17 @@ class MediaToExportExtractorSpec extends ObjectBehavior
             null
         );
 
-        $getFileInfoCollection->forAssetFamilyAndAssetCodes(
+        $mainMediaFileInfo = new FileInfo();
+        $mainMediaFileInfo->setKey('a_filekey');
+        $mainMediaFileInfo->setOriginalFilename('an_original_filename');
+
+        $getMainMediaFileInfoCollection->forAssetFamilyAndAssetCodes(
             'a_family_code',
             ['asset_code_1', 'asset_code_2', 'asset_code_3'],
             null,
             null
         )->willReturn([
-            [
-                'filePath' => 'a_filekey',
-                'originalFilename' => 'an_original_filename',
-            ]
+            $mainMediaFileInfo
         ]);
 
         $expectedMediaToExport = [];
