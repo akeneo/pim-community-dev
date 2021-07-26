@@ -66,7 +66,14 @@ SQL;
             ['assetCodes' => Connection::PARAM_STR_ARRAY]
         )->fetchAll();
 
-        return array_map(static fn(array $rawResults) => new MediaFileInfo($rawResults['filePath'], $rawResults['originalFilename'], Storage::FILE_STORAGE_ALIAS), $rawResults);
+        return array_map(
+            static fn (array $rawResults) => new MediaFileInfo(
+                $rawResults['filePath'],
+                $rawResults['originalFilename'],
+                Storage::FILE_STORAGE_ALIAS
+            ),
+            $rawResults
+        );
     }
 
     private function getMainMediaValueKey(
