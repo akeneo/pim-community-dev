@@ -12,6 +12,7 @@ $rules = [
     $builder->only([
         'Symfony\Component',
         'Doctrine\Common',
+        'Doctrine\Persistence',
         'Doctrine\Inflector',
         'Akeneo\Tool',
         'Webmozart\Assert\Assert',
