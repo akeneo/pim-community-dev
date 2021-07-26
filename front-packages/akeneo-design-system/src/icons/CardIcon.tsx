@@ -10,9 +10,8 @@ const CardIcon = ({title, size = 24, color = 'currentColor', ...props}: IconProp
       fill="none"
       fillRule="evenodd"
       strokeLinecap="round"
-      strokeLinejoin="round"/>
+      strokeLinejoin="round"
+    />
   </svg>
-)
-;
-
+);
 export {CardIcon};
