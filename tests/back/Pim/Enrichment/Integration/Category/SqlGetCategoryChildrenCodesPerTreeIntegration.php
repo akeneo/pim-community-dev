@@ -4,19 +4,17 @@ declare(strict_types=1);
 
 namespace AkeneoTest\Pim\Enrichment\Integration\Category;
 
+use Akeneo\Pim\Enrichment\Bundle\Filter\CategoryCodeFilterInterface;
 use Akeneo\Pim\Enrichment\Bundle\Storage\Sql\Category\SqlGetCategoryChildrenCodesPerTree;
 use Akeneo\Test\Integration\Configuration;
 use Akeneo\Test\Integration\TestCase;
 use Webmozart\Assert\Assert;
 
-final class GetCategoryChildrenCodesPerTreeIntegration extends TestCase
+final class SqlGetCategoryChildrenCodesPerTreeIntegration extends TestCase
 {
-    public SqlGetCategoryChildrenCodesPerTree $getCategoryChildrenCodesPerTree;
-
     public function setUp(): void
     {
         parent::setUp();
-        $this->getCategoryChildrenCodesPerTree = $this->get('akeneo.enrichment.public_api.get_category_children_codes_per_tree');
 
         /**
          * master
@@ -80,7 +78,7 @@ final class GetCategoryChildrenCodesPerTreeIntegration extends TestCase
     public function it_throws_if_the_category_codes_are_not_non_empty_strings($invalidCategoryCode)
     {
         $this->expectException(\InvalidArgumentException::class);
-        $this->getCategoryChildrenCodesPerTree->executeWithoutChildren([$invalidCategoryCode]);
+        $this->getQuery(new AllowAll())->executeWithoutChildren([$invalidCategoryCode]);
     }
 
     /**
@@ -90,7 +88,7 @@ final class GetCategoryChildrenCodesPerTreeIntegration extends TestCase
     public function it_throws_if_the_category_codes_are_not_non_empty_strings_with_children($invalidCategoryCode)
     {
         $this->expectException(\InvalidArgumentException::class);
-        $this->getCategoryChildrenCodesPerTree->executeWithChildren([$invalidCategoryCode]);
+        $this->getQuery(new AllowAll())->executeWithChildren([$invalidCategoryCode]);
     }
 
     public function invalidCategoryCodes(): array
@@ -108,7 +106,7 @@ final class GetCategoryChildrenCodesPerTreeIntegration extends TestCase
      */
     public function it_returns_the_existing_categories_code_for_each_category_tree($categoryCodes, $expected): void
     {
-        $actual = $this->getCategoryChildrenCodesPerTree->executeWithoutChildren($categoryCodes);
+        $actual = $this->getQuery(new AllowAll())->executeWithoutChildren($categoryCodes);
 
         self::assertEqualsCanonicalizing($expected, $actual);
     }
@@ -135,7 +133,7 @@ final class GetCategoryChildrenCodesPerTreeIntegration extends TestCase
      */
     public function it_return_children_code_of_the_given_category_codes_for_each_category_tree($categoryCodes, $expectedResults): void
     {
-        $actual = $this->getCategoryChildrenCodesPerTree->executeWithChildren($categoryCodes);
+        $actual = $this->getQuery(new AllowAll())->executeWithChildren($categoryCodes);
         self::assertEqualsCanonicalizing($expectedResults, $actual);
     }
 
@@ -160,6 +158,24 @@ final class GetCategoryChildrenCodesPerTreeIntegration extends TestCase
         ];
     }
 
+    /**
+     * @test
+     */
+    public function it_filter_the_categories_when_searching_without_children()
+    {
+        $actual = $this->getQuery(new DenyAll())->executeWithoutChildren(['master']);
+        self::assertEqualsCanonicalizing(['master' => [], 'season' => []], $actual);
+    }
+
+    /**
+     * @test
+     */
+    public function it_filter_the_categories_when_searching_with_children()
+    {
+        $actual = $this->getQuery(new DenyAll())->executeWithChildren(['master']);
+        self::assertEqualsCanonicalizing(['master' => [], 'season' => []], $actual);
+    }
+
     private function givenCategories(array $categories): void
     {
         foreach ($categories as $categoryData) {
@@ -172,8 +188,33 @@ final class GetCategoryChildrenCodesPerTreeIntegration extends TestCase
         }
     }
 
+    private function getQuery(CategoryCodeFilterInterface $categoryCodeFilter): SqlGetCategoryChildrenCodesPerTree
+    {
+        return new SqlGetCategoryChildrenCodesPerTree(
+            $this->get('database_connection'),
+            $categoryCodeFilter
+        );
+    }
+
     protected function getConfiguration(): Configuration
     {
         return $this->catalog->useMinimalCatalog();
     }
 }
+
+class AllowAll implements CategoryCodeFilterInterface
+{
+    public function filter(array $codes): array
+    {
+        return $codes;
+    }
+}
+
+class DenyAll implements CategoryCodeFilterInterface
+{
+    public function filter(array $codes): array
+    {
+        return [];
+    }
+}
+
