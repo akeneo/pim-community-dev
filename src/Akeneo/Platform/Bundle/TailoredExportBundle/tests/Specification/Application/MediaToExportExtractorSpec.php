@@ -31,9 +31,9 @@ use PhpSpec\ObjectBehavior;
 
 class MediaToExportExtractorSpec extends ObjectBehavior
 {
-    public function let(GetMainMediaFileInfoCollectionInterface $getMainMediaFileInfoCollectionn)
+    public function let(GetMainMediaFileInfoCollectionInterface $getMainMediaFileInfoCollection)
     {
-        $this->beConstructedWith($getMainMediaFileInfoCollectionn);
+        $this->beConstructedWith($getMainMediaFileInfoCollection);
     }
 
     public function it_is_initializable(): void
