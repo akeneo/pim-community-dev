@@ -43,7 +43,7 @@ akeneo_data_quality_insights:
       day: jour
     key_indicators:
       title: Indicateurs clés
-      products_to_work_on: '{1}Vous avez <button>1 produit</button> sur lequel travailler. ]1, 200[Vous avez <button>{{ count }} produits</button> sur lesquels travailler. [200, Inf[Vous avez <button>plus de {{ count }} produits</button> sur lesquels travailler.'
+      products_to_work_on: '{1}Vous avez <button>1 produit</button> sur lequel travailler.|]1, 200[Vous avez <button>{{ count }} produits</button> sur lesquels travailler.|[200, Inf[Vous avez <button>plus de {{ count }} produits</button> sur lesquels travailler.'
       list:
         has_image:
           title: Produits avec une image
@@ -78,7 +78,7 @@ akeneo_data_quality_insights:
               message1: Vous pouvez faire un peu mieux encore ! Vos clients vous remercieront.
               message2: Vous y êtes presque, accrochez-vous et vos produits seront parfaitement enrichis.
               message3: Le diable se cache dans les détails, même sur votre marché.
-              message4: Vous avez besoin d'un coup de main pour peaufiner l'enrichissement de vos produits ? Sur cette page vous pourrez <a href="{{ link }}" target="_blank">apprendre à sélectionner les attributs les plus pertinents</a>. 
+              message4: Vous avez besoin d'un coup de main pour peaufiner l'enrichissement de vos produits ? Sur cette page vous pourrez <a href="{{ link }}" target="_blank">apprendre à sélectionner les attributs les plus pertinents</a>.
             third_step:
               message1: C'est bien jusqu'à présent, il faut s'accrocher encore un peu.
               message2: C'est un bon résultat, mais 100% ça serait vraiment parfait !
