@@ -87,7 +87,9 @@ define(['underscore', 'pim/controller/front', 'pim/form-builder', 'pim/fetcher-r
         }
       });
 
-      return objectParams[paramName] ?? '';
+      const value = objectParams[paramName] ?? '';
+
+      return decodeURI(value);
     },
 
     /**
