@@ -5,7 +5,7 @@ import {CreateAttributeModal} from "../pages/attributes/CreateAttributeModal";
 
 type AttributeType = string;
 
-type CreateButtonAppProps = {
+type CreateAttributeButtonAppProps = {
   buttonTitle: string;
   iconsMap: {[attributeType: string]: string};
   isModalOpen?: boolean;
@@ -13,8 +13,8 @@ type CreateButtonAppProps = {
   defaultCode?: string;
 };
 
-const CreateAttributeButtonApp: React.FC<CreateButtonAppProps> = ({buttonTitle, iconsMap, isModalOpen = false, onClick, defaultCode}) => {
-  const [isSelectAttributeTypeModelOpen, openSelectAttributeTypeModal, closeSelectAttributeTypeModal] = useBooleanState(isModalOpen);
+const CreateAttributeButtonApp: React.FC<CreateAttributeButtonAppProps> = ({buttonTitle, iconsMap, isModalOpen = false, onClick, defaultCode}) => {
+  const [isSelectAttributeTypeModalOpen, openSelectAttributeTypeModal, closeSelectAttributeTypeModal] = useBooleanState(isModalOpen);
   const [isCreateAttributeModalOpen, openCreateAttributeModal, closeCreateAttributeModal] = useBooleanState(false);
   const [attributeType, setAttributeType] = React.useState<AttributeType | undefined>();
 
@@ -36,8 +36,8 @@ const CreateAttributeButtonApp: React.FC<CreateButtonAppProps> = ({buttonTitle, 
 
   return (
     <>
-      {isSelectAttributeTypeModelOpen && <SelectAttributeTypeModal onClose={closeSelectAttributeTypeModal} iconsMap={iconsMap} onAttributeTypeSelect={handleAttributeTypeSelect}/>}
-      {isCreateAttributeModalOpen && <CreateAttributeModal onClose={handleClose} onConfirm={handleConfirm} defaultCode={defaultCode}/>}
+      {isSelectAttributeTypeModalOpen && <SelectAttributeTypeModal onClose={closeSelectAttributeTypeModal} iconsMap={iconsMap} onAttributeTypeSelect={handleAttributeTypeSelect}/>}
+      {isCreateAttributeModalOpen && <CreateAttributeModal onClose={handleClose} onConfirm={handleConfirm} defaultCode={defaultCode} extraFields={[]}/>}
       <Button id="attribute-create-button" onClick={openSelectAttributeTypeModal}>
         {buttonTitle}
       </Button>
