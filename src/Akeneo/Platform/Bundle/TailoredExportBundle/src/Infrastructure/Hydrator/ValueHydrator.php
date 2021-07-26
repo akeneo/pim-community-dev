@@ -13,6 +13,7 @@ declare(strict_types=1);
 
 namespace Akeneo\Platform\TailoredExport\Infrastructure\Hydrator;
 
+use Akeneo\AssetManager\Domain\Model\Asset\AssetCode;
 use Akeneo\Pim\Enrichment\Component\Product\Model\ProductInterface;
 use Akeneo\Pim\Enrichment\Component\Product\Model\ProductPriceInterface;
 use Akeneo\Pim\Enrichment\Component\Product\Model\ValueInterface;
@@ -87,7 +88,12 @@ class ValueHydrator
 
         switch ($attributeType) {
             case 'pim_catalog_asset_collection':
-                return new AssetCollectionValue($data);
+                return new AssetCollectionValue(
+                    array_map('strval', $data),
+                    $product->getIdentifier(),
+                    $value->getScopeCode(),
+                    $value->getLocaleCode()
+                );
             case 'pim_catalog_file':
             case 'pim_catalog_image':
                 return new FileValue(

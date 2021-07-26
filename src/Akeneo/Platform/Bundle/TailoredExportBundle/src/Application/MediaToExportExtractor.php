@@ -13,17 +13,28 @@ declare(strict_types=1);
 
 namespace Akeneo\Platform\TailoredExport\Application;
 
-use Akeneo\Platform\TailoredExport\Application\Query\Column\Column;
+use Akeneo\AssetManager\Infrastructure\PublicApi\Enrich\GetMainMediaFileInfoCollectionInterface;
+use Akeneo\AssetManager\Infrastructure\PublicApi\Enrich\MediaFileInfo;
 use Akeneo\Platform\TailoredExport\Application\Query\Column\ColumnCollection;
+use Akeneo\Platform\TailoredExport\Application\Query\Selection\AssetCollection\AssetCollectionSelectionInterface;
 use Akeneo\Platform\TailoredExport\Application\Query\Selection\File\FileSelectionInterface;
+use Akeneo\Platform\TailoredExport\Application\Query\Source\SourceInterface;
 use Akeneo\Platform\TailoredExport\Domain\MediaToExport;
 use Akeneo\Platform\TailoredExport\Domain\MediaToExportExtractorInterface;
+use Akeneo\Platform\TailoredExport\Domain\SourceValue\AssetCollectionValue;
 use Akeneo\Platform\TailoredExport\Domain\SourceValue\FileValue;
 use Akeneo\Platform\TailoredExport\Domain\ValueCollection;
 use Akeneo\Platform\TailoredExport\Infrastructure\Connector\MediaExporterPathGenerator;
 
 final class MediaToExportExtractor implements MediaToExportExtractorInterface
 {
+    private GetMainMediaFileInfoCollectionInterface $getMainMediaFileInfoCollection;
+
+    public function __construct(GetMainMediaFileInfoCollectionInterface $getMainMediaFileInfoCollection)
+    {
+        $this->getMainMediaFileInfoCollection = $getMainMediaFileInfoCollection;
+    }
+
     /**
      * @return MediaToExport[]
      */
@@ -31,35 +42,24 @@ final class MediaToExportExtractor implements MediaToExportExtractorInterface
     {
         $mediaToExports = [];
 
-        /** @var Column $column */
-        foreach ($columnCollection as $column) {
-            foreach ($column->getSourceCollection() as $source) {
-                $selection = $source->getSelection();
-                if (!$selection instanceof FileSelectionInterface) {
-                    continue;
-                }
+        /** @var SourceInterface $source */
+        foreach ($columnCollection->getAllSources() as $source) {
+            $selection = $source->getSelection();
+            $value = $valueCollection->getFromSource($source);
 
-                $value = $valueCollection->getFromSource($source);
+            if ($selection instanceof FileSelectionInterface && $value instanceof FileValue) {
+                $mediaToExports[$value->getKey()] = $this->extractFromFileSource($selection, $value);
+            }
 
-                if (!$value instanceof FileValue) {
-                    continue;
-                }
-
-                $mediaToExports[$value->getKey()] = new MediaToExport(
-                    $value->getKey(),
-                    $value->getStorage(),
-                    $this->generateFilePath(
-                        $selection,
-                        $value
-                    )
-                );
+            if ($selection instanceof AssetCollectionSelectionInterface && $value instanceof AssetCollectionValue) {
+                $mediaToExports = array_merge($mediaToExports, $this->extractFromAssetCollectionSource($selection, $value));
             }
         }
 
         return $mediaToExports;
     }
 
-    private function generateFilePath(FileSelectionInterface $selection, FileValue $value): string
+    private function extractFromFileSource(FileSelectionInterface $selection, FileValue $value): MediaToExport
     {
         $exportDirectory = MediaExporterPathGenerator::generate(
             $value->getEntityIdentifier(),
@@ -68,6 +68,49 @@ final class MediaToExportExtractor implements MediaToExportExtractorInterface
             $value->getLocaleReference()
         );
 
-        return sprintf('%s%s', $exportDirectory, $value->getOriginalFilename());
+        $path = sprintf('%s%s', $exportDirectory, $value->getOriginalFilename());
+
+        return new MediaToExport(
+            $value->getKey(),
+            $value->getStorage(),
+            $path
+        );
+    }
+
+    /**
+     * @return MediaToExport[]
+     */
+    private function extractFromAssetCollectionSource(AssetCollectionSelectionInterface $selection, AssetCollectionValue $value): array
+    {
+        $mainMediaFileInfoCollection = $this->getMainMediaFileInfoCollection
+            ->forAssetFamilyAndAssetCodes(
+                $selection->getAssetFamilyCode(),
+                $value->getAssetCodes(),
+                $value->getChannelReference(),
+                $value->getLocaleReference()
+            );
+
+        return array_reduce(
+            $mainMediaFileInfoCollection,
+            function (array $accumulator, MediaFileInfo $fileInfo) use ($selection, $value) {
+                $exportDirectory = MediaExporterPathGenerator::generate(
+                    $value->getEntityIdentifier(),
+                    $selection->getAttributeCode(),
+                    $value->getChannelReference(),
+                    $value->getLocaleReference()
+                );
+
+                $path = sprintf('%s%s', $exportDirectory, $fileInfo->getOriginalFilename());
+
+                $accumulator[$fileInfo->getFileKey()] = new MediaToExport(
+                    $fileInfo->getFileKey(),
+                    $fileInfo->getStorage(),
+                    $path
+                );
+
+                return $accumulator;
+            },
+            []
+        );
     }
 }

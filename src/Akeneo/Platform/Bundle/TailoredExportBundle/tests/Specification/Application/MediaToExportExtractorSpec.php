@@ -13,26 +13,36 @@ declare(strict_types=1);
 
 namespace Specification\Akeneo\Platform\TailoredExport\Application;
 
+use Akeneo\AssetManager\Infrastructure\PublicApi\Enrich\GetMainMediaFileInfoCollectionInterface;
+use Akeneo\AssetManager\Infrastructure\PublicApi\Enrich\MediaFileInfo;
 use Akeneo\Platform\TailoredExport\Application\MediaToExportExtractor;
 use Akeneo\Platform\TailoredExport\Application\Query\Column\Column;
 use Akeneo\Platform\TailoredExport\Application\Query\Column\ColumnCollection;
 use Akeneo\Platform\TailoredExport\Application\Query\Operation\OperationCollection;
+use Akeneo\Platform\TailoredExport\Application\Query\Selection\AssetCollection\AssetCollectionCodeSelection;
 use Akeneo\Platform\TailoredExport\Application\Query\Selection\File\FilePathSelection;
 use Akeneo\Platform\TailoredExport\Application\Query\Source\AttributeSource;
 use Akeneo\Platform\TailoredExport\Application\Query\Source\SourceCollection;
 use Akeneo\Platform\TailoredExport\Domain\MediaToExport;
+use Akeneo\Platform\TailoredExport\Domain\SourceValue\AssetCollectionValue;
 use Akeneo\Platform\TailoredExport\Domain\SourceValue\FileValue;
 use Akeneo\Platform\TailoredExport\Domain\ValueCollection;
+use Akeneo\Tool\Component\FileStorage\Model\FileInfo;
 use PhpSpec\ObjectBehavior;
 
 class MediaToExportExtractorSpec extends ObjectBehavior
 {
+    public function let(GetMainMediaFileInfoCollectionInterface $getMainMediaFileInfoCollection)
+    {
+        $this->beConstructedWith($getMainMediaFileInfoCollection);
+    }
+
     public function it_is_initializable(): void
     {
         $this->shouldBeAnInstanceOf(MediaToExportExtractor::class);
     }
 
-    public function it_extracts_media_to_exports(): void
+    public function it_extracts_file_media_to_exports(): void
     {
         $operationCollection = OperationCollection::create([]);
         $source = new AttributeSource(
@@ -74,6 +84,56 @@ class MediaToExportExtractorSpec extends ObjectBehavior
 
         $mediaToExport = $this->extract($columnCollection, $valueCollection);
         $mediaToExport->shouldHaveCount(1);
+        $mediaToExport->shouldBeLike($expectedMediaToExport);
+    }
+
+    public function it_extracts_asset_to_exports(GetMainMediaFileInfoCollectionInterface $getMainMediaFileInfoCollection): void
+    {
+        $operationCollection = OperationCollection::create([]);
+        $source = new AttributeSource(
+            'pim_catalog_asset_collection',
+            'a_code',
+            null,
+            null,
+            $operationCollection,
+            new AssetCollectionCodeSelection('/', 'a_family_code', 'an_attribute_code')
+        );
+        $column = new Column('target1', SourceCollection::create([$source]));
+
+        $columnCollection = ColumnCollection::create(
+            [$column]
+        );
+
+        $valueCollection = new ValueCollection();
+        $assetCollectionValue = new AssetCollectionValue(
+            ['asset_code_1', 'asset_code_2', 'asset_code_3'],
+            'an_id',
+            null,
+            null
+        );
+        $valueCollection->add(
+            $assetCollectionValue,
+            'a_code',
+            null,
+            null
+        );
+
+        $getMainMediaFileInfoCollection->forAssetFamilyAndAssetCodes(
+            'a_family_code',
+            ['asset_code_1', 'asset_code_2', 'asset_code_3'],
+            null,
+            null
+        )->willReturn([new MediaFileInfo('a_filekey', 'an_original_filename', 'assetStorage')]);
+
+        $expectedMediaToExport = [
+            'a_filekey' => new MediaToExport(
+                'a_filekey',
+                'assetStorage',
+                'files/an_id/an_attribute_code/an_original_filename'
+            )
+        ];
+
+        $mediaToExport = $this->extract($columnCollection, $valueCollection);
         $mediaToExport->shouldBeLike($expectedMediaToExport);
     }
 }

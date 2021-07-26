@@ -41,8 +41,8 @@ class BooleanSelectionHandlerSpec extends ObjectBehavior
 
     public function it_does_not_apply_selection_on_not_supported_selections_and_values()
     {
-        $notSupportedSelection = new AssetCollectionCodeSelection('/');
-        $notSupportedValue = new AssetCollectionValue([]);
+        $notSupportedSelection = new AssetCollectionCodeSelection('/', 'packshot', 'foo_attribute_code');
+        $notSupportedValue = new AssetCollectionValue([], 'an_id', null, null);
 
         $this
             ->shouldThrow(new \InvalidArgumentException('Cannot apply Boolean selection on this entity'))
@@ -59,8 +59,8 @@ class BooleanSelectionHandlerSpec extends ObjectBehavior
 
     public function it_does_not_support_other_selections_and_values()
     {
-        $notSupportedSelection = new AssetCollectionCodeSelection('/');
-        $notSupportedValue = new AssetCollectionValue([]);
+        $notSupportedSelection = new AssetCollectionCodeSelection('/', 'packshot', 'foo_attribute_code');
+        $notSupportedValue = new AssetCollectionValue([], 'the_id', null, null);
 
         $this->supports($notSupportedSelection, $notSupportedValue)->shouldReturn(false);
     }

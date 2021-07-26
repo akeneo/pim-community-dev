@@ -32,7 +32,9 @@ $rules = [
             'Box\Spout\Writer\WriterFactory',
             'Box\Spout\Writer\WriterInterface',
 
+            'Akeneo\AssetManager\Infrastructure\PublicApi\Enrich\GetMainMediaFileInfoCollectionInterface',
             'Akeneo\AssetManager\Infrastructure\PublicApi\Enrich\FindAssetLabelTranslation',
+            'Akeneo\AssetManager\Infrastructure\PublicApi\Enrich\MediaFileInfo',
             'Akeneo\Channel\Component\Query\PublicApi\ChannelExistsWithLocaleInterface',
             'Akeneo\Pim\Automation\DataQualityInsights\Infrastructure\Elasticsearch\Filter\QualityScoreMultiLocalesFilter',
             'Akeneo\Pim\Enrichment\Component\Product\Model\GroupInterface',

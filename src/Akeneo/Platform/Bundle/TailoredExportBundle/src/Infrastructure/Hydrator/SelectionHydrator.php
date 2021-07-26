@@ -123,13 +123,16 @@ class SelectionHydrator
         switch ($selectionConfiguration['type']) {
             case AssetCollectionCodeSelection::TYPE:
                 return new AssetCollectionCodeSelection(
-                    $selectionConfiguration['separator']
+                    $selectionConfiguration['separator'],
+                    $attribute->properties()['reference_data_name'],
+                    $attribute->code()
                 );
             case AssetCollectionLabelSelection::TYPE:
                 return new AssetCollectionLabelSelection(
                     $selectionConfiguration['separator'],
                     $selectionConfiguration['locale'],
-                    $attribute->properties()['reference_data_name']
+                    $attribute->properties()['reference_data_name'],
+                    $attribute->code()
                 );
             default:
                 throw new \LogicException(
