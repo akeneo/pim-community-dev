@@ -25,6 +25,7 @@ use Akeneo\AssetManager\Domain\Model\AssetFamily\AssetFamily;
 use Akeneo\AssetManager\Domain\Model\AssetFamily\AssetFamilyIdentifier;
 use Akeneo\AssetManager\Domain\Model\AssetFamily\RuleTemplateCollection;
 use Akeneo\AssetManager\Domain\Model\Image;
+use Akeneo\AssetManager\Infrastructure\PublicApi\Enrich\MediaFileInfo;
 use Akeneo\AssetManager\Infrastructure\PublicApi\Enrich\SqlGetMainMediaFileInfoCollection;
 use Akeneo\AssetManager\Integration\SqlIntegrationTestCase;
 use Akeneo\Tool\Component\FileStorage\Model\FileInfo;
@@ -56,13 +57,17 @@ final class SqlGetMainMediaFileInfoTest extends SqlIntegrationTestCase
             'fr_FR'
         );
 
-        $expectedFileInfo1 = new FileInfo();
-        $expectedFileInfo1->setKey('test/main_image_asset_1_fr_FR.jpg');
-        $expectedFileInfo1->setOriginalFilename('main_image_asset_1_fr_FR.jpg');
+        $expectedFileInfo1 = new MediaFileInfo(
+            'test/main_image_asset_1_fr_FR.jpg',
+            'main_image_asset_1_fr_FR.jpg',
+            'assetStorage'
+        );
 
-        $expectedFileInfo2 = new FileInfo();
-        $expectedFileInfo2->setKey('test/main_image_asset_2_fr_FR.jpg');
-        $expectedFileInfo2->setOriginalFilename('main_image_asset_2_fr_FR.jpg');
+        $expectedFileInfo2 = new MediaFileInfo(
+            'test/main_image_asset_2_fr_FR.jpg',
+            'main_image_asset_2_fr_FR.jpg',
+            'assetStorage'
+        );
 
         self::assertEqualsCanonicalizing([
             $expectedFileInfo1,
@@ -93,12 +98,12 @@ final class SqlGetMainMediaFileInfoTest extends SqlIntegrationTestCase
     private function loadDataset(): void
     {
         $assetFamilyPackshot = $this->createAssetFamily('asset_family_packshot');
-        $assetPackshot = $this->createAsset($assetFamilyPackshot, '1');
-        $assetPackshot = $this->createAsset($assetFamilyPackshot, '2');
+        $this->createAsset($assetFamilyPackshot, '1');
+        $this->createAsset($assetFamilyPackshot, '2');
 
         $assetFamilyAtmosphere = $this->createAssetFamily('asset_family_atmosphere');
-        $assetAtmosphere = $this->createAsset($assetFamilyAtmosphere, '1');
-        $assetAtmosphere = $this->createAsset($assetFamilyAtmosphere, '2');
+        $this->createAsset($assetFamilyAtmosphere, '1');
+        $this->createAsset($assetFamilyAtmosphere, '2');
     }
 
     private function createAssetFamily(string $assetFamilyIdentifier): AssetFamily

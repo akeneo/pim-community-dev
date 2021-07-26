@@ -22,7 +22,7 @@ class GetViewableCategoryCodesForUserIntegration extends TestCase
 
         $filteredCategoryCodes = $query->forCategoryCodes(['categoryC', 'categoryB', 'categoryA1', 'master'], $userId);
 
-        Assert::assertSame(['categoryA1', 'master'], $filteredCategoryCodes);
+        Assert::assertEqualsCanonicalizing(['categoryA1', 'master'], $filteredCategoryCodes);
     }
 
     /**

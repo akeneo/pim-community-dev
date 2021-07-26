@@ -15,6 +15,7 @@ namespace Akeneo\Pim\Permission\Bundle\Filter;
 
 use Akeneo\Pim\Enrichment\Bundle\Filter\CategoryCodeFilterInterface;
 use Akeneo\Pim\Permission\Component\Query\GetViewableCategoryCodesForUserInterface;
+use Akeneo\UserManagement\Component\Model\UserInterface;
 use Symfony\Component\Security\Core\Authentication\Token\Storage\TokenStorageInterface;
 
 class CategoryCodeViewFilter implements CategoryCodeFilterInterface
@@ -44,6 +45,9 @@ class CategoryCodeViewFilter implements CategoryCodeFilterInterface
         }
 
         $user = $this->tokenStorage->getToken()->getUser();
+        if (!$user instanceof UserInterface) {
+            throw new \RuntimeException('User is not authenticated');
+        }
 
         return $user->getId();
     }
