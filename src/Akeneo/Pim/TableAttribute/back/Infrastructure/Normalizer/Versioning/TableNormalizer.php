@@ -13,36 +13,36 @@ declare(strict_types=1);
 
 namespace Akeneo\Pim\TableAttribute\Infrastructure\Normalizer\Versioning;
 
+use Akeneo\Pim\Enrichment\Component\Product\Normalizer\Versioning\Product\AbstractValueDataNormalizer;
 use Akeneo\Pim\TableAttribute\Domain\Value\Table;
 use Symfony\Component\Serializer\Normalizer\CacheableSupportsMethodInterface;
-use Symfony\Component\Serializer\Normalizer\NormalizerInterface;
 use Webmozart\Assert\Assert;
 
-final class TableNormalizer implements NormalizerInterface, CacheableSupportsMethodInterface
+final class TableNormalizer extends AbstractValueDataNormalizer implements CacheableSupportsMethodInterface
 {
     /**
-     * {@inheritDoc}
-     */
-    public function normalize($object, string $format = null, array $context = []): array
-    {
-        Assert::isInstanceOf($object, Table::class);
-
-        return $object->normalize();
-    }
-
-    /**
-     * {@inheritDoc}
+     * {@inheritdoc}
      */
     public function supportsNormalization($data, string $format = null): bool
     {
         return $data instanceof Table && in_array($format, ['flat', 'versioning']);
     }
 
-    /**
-     * {@inheritDoc}
-     */
     public function hasCacheableSupportsMethod(): bool
     {
         return true;
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    protected function doNormalize($object, $format = null, array $context = []): ?string
+    {
+        Assert::isInstanceOf($object, Table::class);
+        if ([] === $object->uniqueColumnCodes()) {
+            return null;
+        }
+
+        return \json_encode($object->normalize());
     }
 }

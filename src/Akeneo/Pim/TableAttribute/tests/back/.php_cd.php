@@ -58,6 +58,7 @@ $rules = [
             'Akeneo\Pim\Enrichment\Component\Product\Validator\ConstraintGuesserInterface',
             'Akeneo\Pim\Enrichment\Component\Product\Connector\ArrayConverter\StandardToFlat\Product\ValueConverter\AbstractValueConverter',
             'Akeneo\Pim\Enrichment\Component\Product\Connector\ArrayConverter\FlatToStandard\ValueConverter\ValueConverterInterface',
+            'Akeneo\Pim\Enrichment\Component\Product\Normalizer\Versioning\Product\AbstractValueDataNormalizer',
             'Oro\Bundle\SecurityBundle\SecurityFacade',
             'Akeneo\Tool\Component\Batch',
         ]
