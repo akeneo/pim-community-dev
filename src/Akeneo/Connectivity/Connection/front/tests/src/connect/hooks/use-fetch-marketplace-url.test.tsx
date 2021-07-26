@@ -4,7 +4,7 @@ import {mockFetchResponses} from '../../../test-utils';
 
 test('it fetches the marketplace url', async () => {
     mockFetchResponses({
-        akeneo_connectivity_connection_marketplace_url_rest_get: {
+        akeneo_connectivity_connection_marketplace_rest_get_web_marketplace_url: {
             json: 'http://marketplace.test',
         },
     });
