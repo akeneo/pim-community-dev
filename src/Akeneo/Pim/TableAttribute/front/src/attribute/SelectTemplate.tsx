@@ -12,13 +12,13 @@ const ModalContent = styled.div`
   overflow-y: auto;
 `;
 
-type SelectTemplateAppProps = {
+type SelectTemplateProps = {
   onClick: (template: Template) => void;
   onClose: () => void;
   templates: Template[];
 };
 
-const SelectTemplateApp: React.FC<SelectTemplateAppProps> = ({onClick, onClose, templates}) => {
+const SelectTemplate: React.FC<SelectTemplateProps> = ({onClick, onClose, templates}) => {
   const translate = useTranslate();
 
   return (
@@ -47,4 +47,4 @@ const SelectTemplateApp: React.FC<SelectTemplateAppProps> = ({onClick, onClose, 
   );
 };
 
-export {SelectTemplateApp};
+export {SelectTemplate};

@@ -4,7 +4,7 @@ import ReactDOM from 'react-dom';
 import {TableStructureApp} from '../attribute/TableStructureApp';
 import {TableConfiguration} from '../models/TableConfiguration';
 import {DependenciesProvider} from '@akeneo-pim-community/legacy-bridge';
-import {LocalizedTemplate, TEMPLATES} from '../models/Template';
+import {TemplateVariation, TEMPLATES} from '../models/Template';
 import {Attribute, AttributeType} from '../models/Attribute';
 // eslint-disable-next-line @typescript-eslint/no-var-requires
 const translate = require('oro/translator');
@@ -98,8 +98,8 @@ class TableStructureTab extends (BaseView as {new (options: {config: TableStruct
       initialTableConfiguration = [];
       const tableTemplate = this.getQueryParam('template');
       if (tableTemplate) {
-        const template = ([] as LocalizedTemplate[])
-          .concat(...TEMPLATES.map(template => template.templates))
+        const template = ([] as TemplateVariation[])
+          .concat(...TEMPLATES.map(template => template.template_variations))
           .find(template => template.code === tableTemplate);
         if (template) {
           initialTableConfiguration = template.tableConfiguration;

@@ -28,7 +28,7 @@ describe('CreateAttributeButtonApp', () => {
     expect(screen.getByText('create')).toBeInTheDocument();
   });
 
-  it ('should callback confirm with selection of sub template', async () => {
+  it ('should callback confirm with selection of template variation', async () => {
     const handleClick = jest.fn();
     renderWithProviders(<CreateAttributeButtonApp
       buttonTitle={'create'}
@@ -58,7 +58,7 @@ describe('CreateAttributeButtonApp', () => {
     });
   });
 
-  it ('should not display sub templates when there is no choice', async () => {
+  it ('should not display template variation when there is no choice', async () => {
     renderWithProviders(<CreateAttributeButtonApp
       buttonTitle={'create'}
       onClick={jest.fn()}
@@ -73,7 +73,6 @@ describe('CreateAttributeButtonApp', () => {
     fireEvent.click(screen.getByText('pim_table_attribute.templates.empty_table'));
 
     expect(await screen.findByText('pim_common.create')).toBeInTheDocument();
-    fireEvent.change(screen.getByLabelText('pim_common.label'), {target: {value: 'A new attribute'}});
     expect(screen.queryByPlaceholderText('Please enter a value in the Select input TODO')).not.toBeInTheDocument();
   });
 

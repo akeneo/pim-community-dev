@@ -38,7 +38,6 @@ pim_table_attribute:
         column_data_type_must_be_filled: The data type must be filled
         invalid_column_code: The column code can only contain letters, numbers and underscores
         invalid_code: The code can only contain letters, numbers and underscores
-        not_available_code: TODO This code is not available
         duplicated_column_code: Each column requires a unique code. {{ duplicateCode }} is already used
         duplicated_select_code: Each code requires a unique code
         max_greater_than_min: Max should be greater than min

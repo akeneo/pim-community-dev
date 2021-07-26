@@ -4,7 +4,7 @@ import React from 'react';
 
 export type TemplateCode = string;
 
-export type LocalizedTemplate = {
+export type TemplateVariation = {
   code: TemplateCode;
   tableConfiguration: TableConfiguration;
 };
@@ -12,7 +12,7 @@ export type LocalizedTemplate = {
 export type Template = {
   code: string;
   icon: React.FC<IconProps>;
-  templates: LocalizedTemplate[];
+  template_variations: TemplateVariation[];
 };
 
 /**
@@ -20,7 +20,7 @@ export type Template = {
  * are not on catalog locales list, to be able to save without errors
  */
 
-const nutritionTemplateUs: LocalizedTemplate = {
+const nutritionTemplateUs: TemplateVariation = {
   code: 'nutrition-en',
   tableConfiguration: [
     {
@@ -46,7 +46,7 @@ const nutritionTemplateUs: LocalizedTemplate = {
   ],
 };
 
-const nutitionTemplateEu: LocalizedTemplate = {
+const nutritionTemplateEu: TemplateVariation = {
   code: 'nutrition-eu',
   tableConfiguration: [
     {
@@ -70,7 +70,7 @@ const nutitionTemplateEu: LocalizedTemplate = {
   ],
 };
 
-const emptyTable: LocalizedTemplate = {
+const emptyTable: TemplateVariation = {
   code: 'empty_table',
   tableConfiguration: [],
 };
@@ -79,12 +79,12 @@ const TEMPLATES: Template[] = [
   {
     icon: FoodIcon,
     code: 'nutrition',
-    templates: [nutritionTemplateUs, nutitionTemplateEu],
+    template_variations: [nutritionTemplateUs, nutritionTemplateEu],
   },
   {
     icon: TableIcon,
     code: 'empty_table',
-    templates: [emptyTable],
+    template_variations: [emptyTable],
   },
 ];
 

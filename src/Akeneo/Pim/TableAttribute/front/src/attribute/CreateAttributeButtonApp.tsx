@@ -5,7 +5,7 @@ import {CreateAttributeModalExtraField} from "@akeneo-pim-community/settings-ui/
 import {SelectAttributeTypeModal} from "@akeneo-pim-community/settings-ui/src/pages/attributes/SelectAttributeTypeModal";
 import {Template, TEMPLATES} from '../models/Template';
 import {useTranslate} from '@akeneo-pim-community/shared';
-import {SelectTemplateApp} from './SelectTemplateApp';
+import {SelectTemplate} from './SelectTemplate';
 
 type AttributeType = string;
 
@@ -26,14 +26,14 @@ const CreateAttributeButtonApp: React.FC<CreateAttributeButtonAppProps> = ({
 }) => {
   const translate = useTranslate();
 
-  const [isSelectAttributeTypeModelOpen, openSelectAttributeTypeModal, closeSelectAttributeTypeModal] = useBooleanState(
+  const [isSelectAttributeTypeModalOpen, openSelectAttributeTypeModal, closeSelectAttributeTypeModal] = useBooleanState(
     isModalOpen
   );
   const [isSelectTemplateModalOpen, openSelectTemplateModal, closeSelectTemplateModal] = useBooleanState(false);
   const [isCreateAttributeModalOpen, openCreateAttributeModal, closeCreateAttributeModal] = useBooleanState(false);
   const [attributeType, setAttributeType] = React.useState<AttributeType | undefined>();
   const [template, setTemplate] = React.useState<Template | undefined>();
-  const [localizedTemplateCode, setLocalizedTemplateCode] = React.useState<string | null>(null);
+  const [templateVariationCode, setTemplateVariationCode] = React.useState<string | null>(null);
 
   const handleAttributeTypeSelect = (attributeType: AttributeType) => {
     setAttributeType(attributeType);
@@ -47,8 +47,8 @@ const CreateAttributeButtonApp: React.FC<CreateAttributeButtonAppProps> = ({
 
   const handleTemplateSelect = (template: Template) => {
     setTemplate(template);
-    if (template.templates.length === 1) {
-      setLocalizedTemplateCode(template.templates[0].code);
+    if (template.template_variations.length === 1) {
+      setTemplateVariationCode(template.template_variations[0].code);
     }
     closeSelectTemplateModal();
     openCreateAttributeModal();
@@ -56,7 +56,7 @@ const CreateAttributeButtonApp: React.FC<CreateAttributeButtonAppProps> = ({
 
   const handleConfirm = (data: {code: string; label: string}) => {
     closeCreateAttributeModal();
-    onClick({...data, attribute_type: attributeType as string, template: localizedTemplateCode as string});
+    onClick({...data, attribute_type: attributeType as string, template: templateVariationCode as string});
   };
 
   const handleClose = () => {
@@ -67,7 +67,7 @@ const CreateAttributeButtonApp: React.FC<CreateAttributeButtonAppProps> = ({
   };
 
   let extraFields: CreateAttributeModalExtraField[] = [];
-  if (template && template.templates.length !== 1) {
+  if (template && template.template_variations.length !== 1) {
     extraFields = [
       {
         component: (
@@ -75,29 +75,29 @@ const CreateAttributeButtonApp: React.FC<CreateAttributeButtonAppProps> = ({
             <SelectInput
               clearLabel=''
               emptyResultLabel='No result found'
-              onChange={setLocalizedTemplateCode}
+              onChange={setTemplateVariationCode}
               openLabel=''
               placeholder='Please enter a value in the Select input TODO'
-              value={localizedTemplateCode}>
-              {template.templates.map(specific_template => (
+              value={templateVariationCode}>
+              {template.template_variations.map(template_variation => (
                 <SelectInput.Option
-                  key={specific_template.code}
-                  title={specific_template.code}
-                  value={specific_template.code}>
-                  {specific_template.code}
+                  key={template_variation.code}
+                  title={template_variation.code}
+                  value={template_variation.code}>
+                  {template_variation.code}
                 </SelectInput.Option>
               ))}
             </SelectInput>
           </Field>
         ),
-        valid: localizedTemplateCode !== null,
+        valid: templateVariationCode !== null,
       },
     ];
   }
 
   return (
     <>
-      {isSelectAttributeTypeModelOpen && (
+      {isSelectAttributeTypeModalOpen && (
         <SelectAttributeTypeModal
           onClose={handleClose}
           iconsMap={iconsMap}
@@ -105,7 +105,7 @@ const CreateAttributeButtonApp: React.FC<CreateAttributeButtonAppProps> = ({
         />
       )}
       {isSelectTemplateModalOpen && (
-        <SelectTemplateApp onClick={handleTemplateSelect} onClose={handleClose} templates={TEMPLATES} />
+        <SelectTemplate onClick={handleTemplateSelect} onClose={handleClose} templates={TEMPLATES} />
       )}
       {isCreateAttributeModalOpen && (
         <CreateAttributeModal
