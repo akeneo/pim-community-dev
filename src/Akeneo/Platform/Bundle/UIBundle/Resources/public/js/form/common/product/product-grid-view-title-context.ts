@@ -4,11 +4,8 @@ const BaseView = require('pimui/js/view/base');
 const mediator = require('oro/mediator');
 
 type CurrentView = {
-  id: number;
   text: string;
   type: string;
-  columns: [];
-  filters: string;
 };
 
 type ProjectDetails = {
