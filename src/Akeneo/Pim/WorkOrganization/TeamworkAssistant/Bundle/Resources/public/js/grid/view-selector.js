@@ -15,7 +15,10 @@ define([
   'pim/datagrid/state',
   'pim/fetcher-registry',
   'backbone',
-], function($, _, __, ViewSelector, DatagridState, FetcherRegistry, Backbone) {
+  'pim/date-context',
+  'pim/formatter/date',
+  'oro/mediator',
+], function($, _, __, ViewSelector, DatagridState, FetcherRegistry, Backbone, DateContext, DateFormatter, mediator) {
   return ViewSelector.extend({
     hasNoProject: false,
 
@@ -33,6 +36,30 @@ define([
       this.listenTo(this.getRoot(), 'grid:view-selector:project-removed', this.onProjectRemoved.bind(this));
 
       return ViewSelector.prototype.configure.apply(this, arguments);
+    },
+
+    initializeSelection: function() {
+      return ViewSelector.prototype.initializeSelection.apply(this, arguments).then(view => {
+        if ('project' === view.type && view.label) {
+          return FetcherRegistry.getFetcher('project')
+            .fetch(view.label)
+            .then(project => {
+              view.text = project.label;
+
+              const projectDetails = {
+                dueDateLabel: __('teamwork_assistant.project.due_date'),
+                dueDate: DateFormatter.format(project.due_date, 'yyyy-MM-dd', DateContext.get('date').format),
+                completionRatio: project.completeness.ratio_done,
+              };
+
+              mediator.trigger('grid:view:selected', view, projectDetails);
+
+              return view;
+            });
+        }
+
+        return view;
+      });
     },
 
     /**
