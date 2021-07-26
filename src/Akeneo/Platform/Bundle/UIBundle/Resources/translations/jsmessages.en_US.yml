@@ -251,6 +251,7 @@ pim_common:
     products: Products
     product_models: Product models
     more: More
+    public_view: Public view
 
 error:
     exception: Oh snap! A {{ status_code }} error occurred...
