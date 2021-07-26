@@ -151,7 +151,9 @@ class SourcesValidator extends ConstraintValidator
                 [
                     '{{ attribute_code }}' => $source['code'],
                 ]
-            )->addViolation();
+            )
+                ->atPath(sprintf('[%s][code]', $source['uuid']))
+                ->addViolation();
 
             return;
         }
