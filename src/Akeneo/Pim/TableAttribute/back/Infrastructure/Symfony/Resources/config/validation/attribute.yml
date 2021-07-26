@@ -82,6 +82,9 @@ Akeneo\Pim\Structure\Component\Model\Attribute:
                       - Type:
                           type: array
                           message: TODO options should be an array
+                      - Count:
+                          max: 20000
+                          maxMessage: TODO too much options
                       - All:
                         - Type:
                             type: array

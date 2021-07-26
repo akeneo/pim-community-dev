@@ -151,3 +151,7 @@ Feature: Create a table attribute
   Scenario: Cannot create a table configuration with an unknown column field
     When I create a table attribute with a configuration '{"data_type": "select", "code": "ingredient", "toto": "titi"}'
     Then There is a violation with message: TODO the "toto" field was not expected
+
+  Scenario: Cannot create a table configuration with too much options
+    When I create a table attribute with too much options
+    Then There is a violation with message: TODO too much options

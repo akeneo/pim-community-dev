@@ -126,7 +126,7 @@ final class CreateAttributeContext implements Context
     /**
      * @When /^I create a table attribute with a configuration '([^']*)'$/
      */
-    public function iCreateATableAttributeWithAConfiguration(string $jsonAsString)
+    public function iCreateATableAttributeWithAConfiguration(string $jsonAsString): void
     {
         $json = \json_decode($jsonAsString, true, 512, JSON_THROW_ON_ERROR);
 
@@ -195,6 +195,35 @@ final class CreateAttributeContext implements Context
         }
 
         $this->attributeRepository->save($attribute);
+    }
+
+    /**
+     * @When I create a table attribute with too much options
+     */
+    public function iCreateATableAttributeWithTooMuchOptions(): void
+    {
+        $options = [];
+        for ($i = 0; $i < 20001; $i++) {
+            $options[] = ['code' => sprintf('code_%s', $i)];
+        }
+
+        $attribute = $this->attributeBuilder
+            ->withCode('table')
+            ->withGroupCode('marketing')
+            ->withType(AttributeTypes::TABLE)
+            ->build();
+        $attribute->setRawTableConfiguration([
+            [
+                'data_type' => 'select',
+                'code' => 'ingredients',
+                'options' => $options,
+            ],
+            [
+                'data_type' => 'text',
+                'code' => 'description',
+            ],
+        ]);
+        $this->saveAttribute($attribute);
     }
 
     /**
