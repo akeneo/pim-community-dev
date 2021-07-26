@@ -1,5 +1,7 @@
 # 4.0.x
 
+# 4.0.120 (2021-07-26)
+
 ## Bug fixes
 
 - PIM-9968: Fix product (variant included) history not displayed for a read-only user
