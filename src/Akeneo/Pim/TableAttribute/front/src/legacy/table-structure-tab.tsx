@@ -98,12 +98,14 @@ class TableStructureTab extends (BaseView as {new (options: {config: TableStruct
       initialTableConfiguration = [];
       const tableTemplate = this.getQueryParam('template');
       if (tableTemplate) {
-        const template = ([] as LocalizedTemplate[]).concat(...(TEMPLATES.map(template => template.templates))).find(template => template.code === tableTemplate);
+        const template = ([] as LocalizedTemplate[])
+          .concat(...TEMPLATES.map(template => template.templates))
+          .find(template => template.code === tableTemplate);
         if (template) {
           initialTableConfiguration = template.tableConfiguration;
           this.handleChange(initialTableConfiguration);
         } else {
-          console.error(`Unable to find template ${tableTemplate}`)
+          console.error(`Unable to find template ${tableTemplate}`);
         }
       }
     }

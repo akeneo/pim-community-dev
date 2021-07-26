@@ -34,6 +34,6 @@ describe('SelectTemplateApp', () => {
       fireEvent.click(screen.getByTitle('pim_table_attribute.templates.empty_table'));
     });
 
-    expect(handleClick).toBeCalledWith(TEMPLATES[0]);
+    expect(handleClick).toBeCalledWith(TEMPLATES[1]);
   });
 });
