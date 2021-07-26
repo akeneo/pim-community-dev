@@ -78,7 +78,7 @@ final class SqlGetCategoryChildrenCodesPerTreeIntegration extends TestCase
     public function it_throws_if_the_category_codes_are_not_non_empty_strings($invalidCategoryCode)
     {
         $this->expectException(\InvalidArgumentException::class);
-        $this->getQuery(new AllowAll())->executeWithoutChildren([$invalidCategoryCode]);
+        $this->getQuery(new AllowAllCategoryCode())->executeWithoutChildren([$invalidCategoryCode]);
     }
 
     /**
@@ -88,7 +88,7 @@ final class SqlGetCategoryChildrenCodesPerTreeIntegration extends TestCase
     public function it_throws_if_the_category_codes_are_not_non_empty_strings_with_children($invalidCategoryCode)
     {
         $this->expectException(\InvalidArgumentException::class);
-        $this->getQuery(new AllowAll())->executeWithChildren([$invalidCategoryCode]);
+        $this->getQuery(new AllowAllCategoryCode())->executeWithChildren([$invalidCategoryCode]);
     }
 
     public function invalidCategoryCodes(): array
@@ -106,7 +106,7 @@ final class SqlGetCategoryChildrenCodesPerTreeIntegration extends TestCase
      */
     public function it_returns_the_existing_categories_code_for_each_category_tree($categoryCodes, $expected): void
     {
-        $actual = $this->getQuery(new AllowAll())->executeWithoutChildren($categoryCodes);
+        $actual = $this->getQuery(new AllowAllCategoryCode())->executeWithoutChildren($categoryCodes);
 
         self::assertEqualsCanonicalizing($expected, $actual);
     }
@@ -133,7 +133,7 @@ final class SqlGetCategoryChildrenCodesPerTreeIntegration extends TestCase
      */
     public function it_return_children_code_of_the_given_category_codes_for_each_category_tree($categoryCodes, $expectedResults): void
     {
-        $actual = $this->getQuery(new AllowAll())->executeWithChildren($categoryCodes);
+        $actual = $this->getQuery(new AllowAllCategoryCode())->executeWithChildren($categoryCodes);
         self::assertEqualsCanonicalizing($expectedResults, $actual);
     }
 
@@ -163,7 +163,7 @@ final class SqlGetCategoryChildrenCodesPerTreeIntegration extends TestCase
      */
     public function it_filter_the_categories_when_searching_without_children()
     {
-        $actual = $this->getQuery(new DenyAll())->executeWithoutChildren(['master']);
+        $actual = $this->getQuery(new DenyAllCategoryCode())->executeWithoutChildren(['master']);
         self::assertEqualsCanonicalizing(['master' => [], 'season' => []], $actual);
     }
 
@@ -172,7 +172,7 @@ final class SqlGetCategoryChildrenCodesPerTreeIntegration extends TestCase
      */
     public function it_filter_the_categories_when_searching_with_children()
     {
-        $actual = $this->getQuery(new DenyAll())->executeWithChildren(['master']);
+        $actual = $this->getQuery(new DenyAllCategoryCode())->executeWithChildren(['master']);
         self::assertEqualsCanonicalizing(['master' => [], 'season' => []], $actual);
     }
 
@@ -202,7 +202,7 @@ final class SqlGetCategoryChildrenCodesPerTreeIntegration extends TestCase
     }
 }
 
-class AllowAll implements CategoryCodeFilterInterface
+class AllowAllCategoryCode implements CategoryCodeFilterInterface
 {
     public function filter(array $codes): array
     {
@@ -210,7 +210,7 @@ class AllowAll implements CategoryCodeFilterInterface
     }
 }
 
-class DenyAll implements CategoryCodeFilterInterface
+class DenyAllCategoryCode implements CategoryCodeFilterInterface
 {
     public function filter(array $codes): array
     {
