@@ -6,6 +6,7 @@ const messenger = require('oro/messenger');
 const userContext = require('pim/user-context');
 const securityContext = require('pim/security-context');
 const mediator = require('oro/mediator');
+const featureFlags = require('pim/feature-flags');
 
 const dependencies = {
   router,
@@ -17,6 +18,7 @@ const dependencies = {
     isGranted: securityContext.isGranted.bind(securityContext),
   },
   mediator,
+  featureFlags,
 };
 
 export {dependencies};

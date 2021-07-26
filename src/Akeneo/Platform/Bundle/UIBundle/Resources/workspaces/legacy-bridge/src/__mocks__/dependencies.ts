@@ -41,6 +41,9 @@ const dependencies = {
     trigger: jest.fn((event: string) => event),
     on: jest.fn((event: string, _callback: () => void) => event),
   },
+  featureFlags: {
+    isEnabled: jest.fn(() => false),
+  },
 };
 
 export {dependencies};
