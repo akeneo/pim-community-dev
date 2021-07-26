@@ -61,6 +61,9 @@
 - PIM-9965: Fix Asset Family attribute saving notification displaying twice
 - PIM-9963: Fix number of lines field missing on XLSX product export job
 - PIM-9973: Fix Asset attribute media type dropdown being hidden
+- PIM-9961: Remove useless "global settings" tab on asset and record XLSX imports (SAAS only)
+- PIM-9974: [PIM-9972] Half the selected published product are unpublished through mass action
+
 
 ## Improvements
 
