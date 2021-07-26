@@ -4,10 +4,11 @@ namespace Specification\Akeneo\Channel\Bundle\Doctrine\Remover;
 
 use Akeneo\Channel\Component\Model\Channel;
 use Akeneo\Channel\Component\Query\IsChannelUsedInProductExportJobInterface;
+use Akeneo\Channel\Component\Repository\ChannelRepositoryInterface;
 use Akeneo\Tool\Component\StorageUtils\Remover\RemoverInterface;
 use Doctrine\Persistence\ObjectManager;
 use PhpSpec\ObjectBehavior;
-use Akeneo\Channel\Component\Repository\ChannelRepositoryInterface;
+use Prophecy\Argument;
 use Symfony\Component\EventDispatcher\EventDispatcherInterface;
 use Symfony\Contracts\Translation\TranslatorInterface;
 
@@ -20,6 +21,9 @@ class ChannelRemoverSpec extends ObjectBehavior
         TranslatorInterface $translator,
         IsChannelUsedInProductExportJobInterface $isChannelUsedInProductExportJob
     ) {
+        $eventDispatcher->dispatch(Argument::type('object'), Argument::type('string'))->willReturn(
+            Argument::type('object')
+        );
         $this->beConstructedWith(
             $objectManager,
             $eventDispatcher,
@@ -57,7 +61,7 @@ class ChannelRemoverSpec extends ObjectBehavior
         $anythingElse = new \stdClass();
         $exception = new \InvalidArgumentException(
             sprintf(
-            'Expects a "Akeneo\Channel\Component\Model\Channel", "%s" provided.',
+                'Expects a "Akeneo\Channel\Component\Model\Channel", "%s" provided.',
                 get_class($anythingElse)
             )
         );
@@ -72,7 +76,9 @@ class ChannelRemoverSpec extends ObjectBehavior
     ) {
         $channelRepository->countAll()->willReturn(1);
         $channel->getCode()->willReturn('code');
-        $translator->trans('pim_enrich.channel.flash.delete.error', ['%channelCode%' => 'code'])->willReturn('exception message');
+        $translator->trans('pim_enrich.channel.flash.delete.error', ['%channelCode%' => 'code'])->willReturn(
+            'exception message'
+        );
         $logicException = new \LogicException('exception message');
 
         $this->shouldThrow($logicException)->during('remove', [$channel]);

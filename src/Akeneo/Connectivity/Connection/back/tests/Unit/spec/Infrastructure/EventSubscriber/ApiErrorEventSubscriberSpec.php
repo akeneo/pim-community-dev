@@ -14,7 +14,6 @@ use Akeneo\Pim\Enrichment\Component\Product\Model\Product;
 use FOS\RestBundle\Context\Context;
 use PhpSpec\ObjectBehavior;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
-use Symfony\Component\HttpKernel\Event\TerminateEvent;
 use Symfony\Component\HttpKernel\KernelEvents;
 use Symfony\Component\Validator\ConstraintViolationList;
 
@@ -27,12 +26,14 @@ class ApiErrorEventSubscriberSpec extends ObjectBehavior
 
     public function it_provides_subscribed_events(): void
     {
-        $this->getSubscribedEvents()->shouldReturn([
-            ProductDomainErrorEvent::class => 'collectProductDomainError',
-            ProductValidationErrorEvent::class => 'collectProductValidationError',
-            TechnicalErrorEvent::class => 'collectTechnicalError',
-            KernelEvents::TERMINATE => 'flushApiErrors',
-        ]);
+        $this->getSubscribedEvents()->shouldReturn(
+            [
+                ProductDomainErrorEvent::class => 'collectProductDomainError',
+                ProductValidationErrorEvent::class => 'collectProductValidationError',
+                TechnicalErrorEvent::class => 'collectTechnicalError',
+                KernelEvents::TERMINATE => 'flushApiErrors',
+            ]
+        );
     }
 
     public function it_is_an_event_subscriber(): void
@@ -75,10 +76,10 @@ class ApiErrorEventSubscriberSpec extends ObjectBehavior
         $this->collectTechnicalError($event);
     }
 
-    public function it_flushes_collected_errors($collectApiError, TerminateEvent $terminateEvent): void
+    public function it_flushes_collected_errors($collectApiError): void
     {
         $collectApiError->flush()->shouldBeCalled();
 
-        $this->flushApiErrors($terminateEvent);
+        $this->flushApiErrors();
     }
 }

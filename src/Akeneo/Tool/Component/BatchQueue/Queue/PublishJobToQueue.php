@@ -30,40 +30,18 @@ use Symfony\Component\Validator\Validator\ValidatorInterface;
  */
 class PublishJobToQueue
 {
-    /** @var string */
-    private $jobInstanceClass;
-
-    /** @var DoctrineJobRepository */
-    private $jobRepository;
-
-    /** @var ValidatorInterface */
-    private $validator;
-
-    /** @var string */
-    private $kernelEnv;
-
-    /** @var JobRegistry */
-    private $jobRegistry;
-
-    /** @var JobParametersFactory */
-    private $jobParametersFactory;
-
-    /** @var EntityManagerInterface */
-    private $entityManager;
-
-    /** @var JobParametersValidator */
-    private $jobParametersValidator;
-
-    /** @var JobExecutionQueueInterface */
-    private $jobExecutionQueue;
-
+    private string $jobInstanceClass;
+    private DoctrineJobRepository $jobRepository;
+    private ValidatorInterface $validator;
+    private string $kernelEnv;
+    private JobRegistry $jobRegistry;
+    private JobParametersFactory $jobParametersFactory;
+    private EntityManagerInterface $entityManager;
+    private JobParametersValidator $jobParametersValidator;
+    private JobExecutionQueueInterface $jobExecutionQueue;
     private JobExecutionMessageFactory $jobExecutionMessageFactory;
-
-    /** @var EventDispatcherInterface */
-    private $eventDispatcher;
-
-    /** @var BatchLogHandler */
-    private $batchLogHandler;
+    private EventDispatcherInterface $eventDispatcher;
+    private BatchLogHandler $batchLogHandler;
 
     public function __construct(
         string $jobInstanceClass,
@@ -160,7 +138,7 @@ class PublishJobToQueue
         return $jobParameters;
     }
 
-    private function validateJobParameters(JobInstance $jobInstance, JobParameters $jobParameters, string $code) : void
+    private function validateJobParameters(JobInstance $jobInstance, JobParameters $jobParameters, string $code): void
     {
         // We merge the JobInstance from the JobManager EntityManager to the DefaultEntityManager
         // in order to be able to have a working UniqueEntity validation
@@ -197,6 +175,6 @@ class PublishJobToQueue
     private function dispatchJobExecutionEvent($eventName, JobExecution $jobExecution): void
     {
         $event = new JobExecutionEvent($jobExecution);
-        $this->eventDispatcher->dispatch($eventName, $event);
+        $this->eventDispatcher->dispatch($event, $eventName);
     }
 }

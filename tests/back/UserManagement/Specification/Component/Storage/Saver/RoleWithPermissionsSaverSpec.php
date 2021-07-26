@@ -7,7 +7,7 @@ use Akeneo\UserManagement\Component\Connector\RoleWithPermissions;
 use Akeneo\UserManagement\Component\Model\RoleInterface;
 use Akeneo\UserManagement\Component\Storage\Saver\RoleWithPermissionsSaver;
 use Doctrine\Common\Collections\ArrayCollection;
-use Doctrine\Persistence\ObjectManager;;
+use Doctrine\Persistence\ObjectManager;
 use Oro\Bundle\SecurityBundle\Acl\AccessLevel;
 use Oro\Bundle\SecurityBundle\Acl\Persistence\AclManager;
 use Oro\Bundle\SecurityBundle\Acl\Persistence\AclPrivilegeRepository;
@@ -16,17 +16,16 @@ use Oro\Bundle\SecurityBundle\Model\AclPrivilege;
 use Oro\Bundle\SecurityBundle\Model\AclPrivilegeIdentity;
 use PhpSpec\ObjectBehavior;
 use Prophecy\Argument;
-use Symfony\Component\EventDispatcher\EventDispatcherInterface;
+use Symfony\Component\EventDispatcher\EventDispatcher;
 use Symfony\Component\Security\Acl\Domain\RoleSecurityIdentity;
 
 class RoleWithPermissionsSaverSpec extends ObjectBehavior
 {
     function let(
         ObjectManager $objectManager,
-        EventDispatcherInterface $eventDispatcher,
         AclManager $aclManager
     ) {
-        $this->beConstructedWith($objectManager, $eventDispatcher, $aclManager);
+        $this->beConstructedWith($objectManager, new EventDispatcher(), $aclManager);
     }
 
     function it_is_a_bulk_saver()
@@ -70,9 +69,8 @@ class RoleWithPermissionsSaverSpec extends ObjectBehavior
             ['action:privilege1' => true, 'action:privilege2' => false]
         );
 
-        $aclManager->getSid(Argument::type(RoleInterface::class))->shouldBeCalledTimes(2)->will(
-            fn (...$role) => new RoleSecurityIdentity($role)
-        );
+        $aclManager->getSid($role1)->shouldBeCalledTimes(1)->willReturn(new RoleSecurityIdentity('ROLE_ADMIN'));
+        $aclManager->getSid($role2)->shouldBeCalledTimes(1)->willReturn(new RoleSecurityIdentity('ROLE_USER'));
         $aclManager->getPrivilegeRepository()->willReturn($privilegeRepository);
 
         $privilege1->getIdentity()->willReturn(new AclPrivilegeIdentity('action:privilege1'));
@@ -101,12 +99,12 @@ class RoleWithPermissionsSaverSpec extends ObjectBehavior
         $permission1->setAccessLevel(Argument::any())->shouldNotBeCalled();
         $permission2->setAccessLevel(Argument::any())->shouldNotBeCalled();
         $privilegeRepository->savePrivileges(Argument::type(RoleSecurityIdentity::class), $privilegeCollection1)
-                            ->shouldBeCalled();
+            ->shouldBeCalled();
 
         $permission3->setAccessLevel(AccessLevel::SYSTEM_LEVEL)->shouldBeCalled();
         $permission4->setAccessLevel(AccessLevel::NONE_LEVEL)->shouldBeCalled();
         $privilegeRepository->savePrivileges(Argument::type(RoleSecurityIdentity::class), $privilegeCollection2)
-                            ->shouldBeCalled();
+            ->shouldBeCalled();
 
         $this->saveAll([$roleWithPermissions1, $roleWithPermissions2]);
     }

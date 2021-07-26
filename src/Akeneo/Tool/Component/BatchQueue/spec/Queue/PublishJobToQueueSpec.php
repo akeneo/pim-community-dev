@@ -17,8 +17,8 @@ use Akeneo\Tool\Component\BatchQueue\Factory\JobExecutionMessageFactory;
 use Akeneo\Tool\Component\BatchQueue\Queue\JobExecutionQueueInterface;
 use Akeneo\Tool\Component\BatchQueue\Queue\PublishJobToQueue;
 use Akeneo\Tool\Component\BatchQueue\Queue\UiJobExecutionMessage;
-use Doctrine\Persistence\ObjectRepository;
 use Doctrine\ORM\EntityManagerInterface;
+use Doctrine\Persistence\ObjectRepository;
 use PhpSpec\ObjectBehavior;
 use Prophecy\Argument;
 use Symfony\Component\EventDispatcher\EventDispatcherInterface;
@@ -39,6 +39,7 @@ class PublishJobToQueueSpec extends ObjectBehavior
         EventDispatcherInterface $eventDispatcher,
         BatchLogHandler $batchLogHandler
     ) {
+        $eventDispatcher->dispatch(Argument::any(), Argument::type('string'))->willReturn(Argument::type('object'));
         $this->beConstructedWith(
             JobInstance::class,
             'prod',
@@ -88,7 +89,7 @@ class PublishJobToQueueSpec extends ObjectBehavior
 
         $entityManager->merge($jobInstance)->shouldBeCalled();
         $jobParametersValidator->validate($job, $jobParameters, ['Default', 'Execution'])
-                               ->shouldBeCalled()->willReturn(new ConstraintViolationList([]));
+            ->shouldBeCalled()->willReturn(new ConstraintViolationList([]));
         $entityManager->clear(get_class($jobInstance->getWrappedObject()))->shouldBeCalled();
 
         $jobExecution->getId()->willReturn(42);
@@ -102,7 +103,10 @@ class PublishJobToQueueSpec extends ObjectBehavior
         $jobRepository->updateJobExecution($jobExecution)->shouldBeCalled();
 
         $jobExecutionQueue->publish($jobExecutionMessage)->shouldBeCalled();
-        $eventDispatcher->dispatch(EventInterface::JOB_EXECUTION_CREATED, Argument::type(JobExecutionEvent::class))->shouldBeCalled();
+        $eventDispatcher->dispatch(
+            Argument::type(JobExecutionEvent::class),
+            EventInterface::JOB_EXECUTION_CREATED
+        )->shouldBeCalled();
 
         $this->publish('job-code', []);
     }

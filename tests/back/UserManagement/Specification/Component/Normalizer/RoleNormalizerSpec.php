@@ -48,7 +48,7 @@ class RoleNormalizerSpec extends ObjectBehavior
         $format = 'standard';
 
 
-        $sid = new RoleSecurityIdentity($role);
+        $sid = new RoleSecurityIdentity($role->getRole());
         $aclManager->getSid($role)->willReturn($sid);
         $aclManager->getPrivilegeRepository()->willReturn($aclPrivilegeRepository);
         $aclPrivileges = $this->buildAclPrivileges();

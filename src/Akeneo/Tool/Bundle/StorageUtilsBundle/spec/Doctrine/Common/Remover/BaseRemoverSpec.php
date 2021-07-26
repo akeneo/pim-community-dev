@@ -6,12 +6,14 @@ use Akeneo\Tool\Component\StorageUtils\Remover\BulkRemoverInterface;
 use Akeneo\Tool\Component\StorageUtils\Remover\RemoverInterface;
 use Doctrine\Persistence\ObjectManager;
 use PhpSpec\ObjectBehavior;
+use Prophecy\Argument;
 use Symfony\Component\EventDispatcher\EventDispatcherInterface;
 
 class BaseRemoverSpec extends ObjectBehavior
 {
     function let(ObjectManager $objectManager, EventDispatcherInterface $eventDispatcher)
     {
+        $eventDispatcher->dispatch(Argument::any(), Argument::type('string'))->willReturn(Argument::type('object'));
         $this->beConstructedWith(
             $objectManager,
             $eventDispatcher,
@@ -32,8 +34,11 @@ class BaseRemoverSpec extends ObjectBehavior
         $this->remove($type);
     }
 
-    function it_removes_the_objects_and_flushes_the_unit_of_work($objectManager, ModelToRemove $type1, ModelToRemove $type2)
-    {
+    function it_removes_the_objects_and_flushes_the_unit_of_work(
+        $objectManager,
+        ModelToRemove $type1,
+        ModelToRemove $type2
+    ) {
         $objectManager->remove($type1)->shouldBeCalled();
         $objectManager->remove($type2)->shouldBeCalled();
         $objectManager->flush()->shouldBeCalled();
@@ -55,8 +60,10 @@ class BaseRemoverSpec extends ObjectBehavior
     }
 }
 
-class ModelToRemove {
-    public function getId() {
+class ModelToRemove
+{
+    public function getId()
+    {
         return 42;
     }
 }

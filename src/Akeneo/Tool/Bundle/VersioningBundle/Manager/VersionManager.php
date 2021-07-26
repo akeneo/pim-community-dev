@@ -41,24 +41,11 @@ class VersionManager
      */
     protected $context;
 
-    /** @var ObjectManager */
-    protected $objectManager;
+    protected ObjectManager $objectManager;
+    protected VersionBuilder $versionBuilder;
+    protected VersionContext $versionContext;
+    protected EventDispatcherInterface $eventDispatcher;
 
-    /** @var VersionBuilder */
-    protected $versionBuilder;
-
-    /** @var VersionContext */
-    protected $versionContext;
-
-    /** @var EventDispatcherInterface */
-    protected $eventDispatcher;
-
-    /**
-     * @param ObjectManager            $objectManager
-     * @param VersionBuilder           $versionBuilder
-     * @param VersionContext           $versionContext
-     * @param EventDispatcherInterface $eventDispatcher
-     */
     public function __construct(
         ObjectManager $objectManager,
         VersionBuilder $versionBuilder,
@@ -183,7 +170,7 @@ class VersionManager
      *
      * @param object $versionable
      *
-     * @return ArrayCollection
+     * @return ArrayCollection|Version[]|null
      */
     public function getLogEntries($versionable)
     {

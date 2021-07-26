@@ -115,7 +115,7 @@
         "symfony/proxy-manager-bridge": "^5.3.0",
         "symfony/requirements-checker": "^1.1",
         "symfony/routing": "^5.3.0",
-        "symfony/security-acl": "@stable",
+        "symfony/security-acl": "^3.2.0",
         "symfony/security-bundle": "^5.3.0",
         "symfony/security-core": "^5.3.0",
         "symfony/security-csrf": "^5.3.0",

@@ -11,6 +11,7 @@ use Akeneo\Connectivity\Connection\Infrastructure\MessageHandler\BusinessEventHa
 use Akeneo\Platform\Component\EventQueue\BulkEvent;
 use Akeneo\Platform\Component\EventQueue\BulkEventInterface;
 use PhpSpec\ObjectBehavior;
+use Prophecy\Argument;
 use Symfony\Component\EventDispatcher\EventDispatcherInterface;
 use Symfony\Component\Messenger\Handler\MessageSubscriberInterface;
 
@@ -24,6 +25,7 @@ class BusinessEventHandlerSpec extends ObjectBehavior
         SendBusinessEventToWebhooksHandler $commandHandler,
         EventDispatcherInterface $eventDispatcher
     ): void {
+        $eventDispatcher->dispatch(Argument::type('object'))->willReturn(Argument::type('object'));
         $this->beConstructedWith($commandHandler, $eventDispatcher);
     }
 

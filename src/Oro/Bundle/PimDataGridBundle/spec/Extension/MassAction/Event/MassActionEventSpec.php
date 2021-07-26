@@ -5,6 +5,7 @@ namespace spec\Oro\Bundle\PimDataGridBundle\Extension\MassAction\Event;
 use Oro\Bundle\DataGridBundle\Datagrid\DatagridInterface;
 use Oro\Bundle\DataGridBundle\Extension\MassAction\Actions\MassActionInterface;
 use PhpSpec\ObjectBehavior;
+use Symfony\Contracts\EventDispatcher\Event;
 
 class MassActionEventSpec extends ObjectBehavior
 {
@@ -15,7 +16,7 @@ class MassActionEventSpec extends ObjectBehavior
 
     function it_is_an_event()
     {
-        $this->shouldBeAnInstanceOf('Symfony\Component\EventDispatcher\Event');
+        $this->shouldBeAnInstanceOf(Event::class);
     }
 
     function it_returns_datagrid($datagrid)

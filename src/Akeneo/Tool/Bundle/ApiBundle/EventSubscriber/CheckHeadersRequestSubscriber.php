@@ -24,16 +24,9 @@ use Symfony\Component\HttpKernel\KernelEvents;
  */
 class CheckHeadersRequestSubscriber implements EventSubscriberInterface
 {
-    /** @var FormatNegotiator */
-    protected $formatNegotiator;
+    protected FormatNegotiator $formatNegotiator;
+    protected ContentTypeNegotiator $contentTypeNegotiator;
 
-    /** @var ContentTypeNegotiator */
-    protected $contentTypeNegotiator;
-
-    /**
-     * @param FormatNegotiator      $formatNegotiator
-     * @param ContentTypeNegotiator $contentTypeNegotiator
-     */
     public function __construct(
         FormatNegotiator $formatNegotiator,
         ContentTypeNegotiator $contentTypeNegotiator
@@ -45,7 +38,7 @@ class CheckHeadersRequestSubscriber implements EventSubscriberInterface
     /**
      * {@inheritdoc}
      */
-    public static function getSubscribedEvents()
+    public static function getSubscribedEvents(): array
     {
         return [
             KernelEvents::REQUEST => 'onKernelRequest'
@@ -63,7 +56,7 @@ class CheckHeadersRequestSubscriber implements EventSubscriberInterface
         $request = $event->getRequest();
 
         if (!$request->attributes->has(FOSRestBundle::ZONE_ATTRIBUTE) ||
-            $event->getRequestType() !== HttpKernelInterface::MASTER_REQUEST
+            $event->getRequestType() !== HttpKernelInterface::MAIN_REQUEST
         ) {
             return;
         }

@@ -2,14 +2,17 @@
 
 namespace spec\Akeneo\Tool\Bundle\VersioningBundle\Manager;
 
+use Akeneo\Pim\Enrichment\Component\Product\Model\ProductInterface;
 use Akeneo\Tool\Bundle\StorageUtilsBundle\Doctrine\SmartManagerRegistry;
-use Akeneo\Tool\Component\Versioning\Model\Version;
-use Doctrine\Persistence\ObjectManager;
-use PhpSpec\ObjectBehavior;
 use Akeneo\Tool\Bundle\VersioningBundle\Builder\VersionBuilder;
+use Akeneo\Tool\Bundle\VersioningBundle\Event\BuildVersionEvent;
+use Akeneo\Tool\Bundle\VersioningBundle\Event\BuildVersionEvents;
 use Akeneo\Tool\Bundle\VersioningBundle\Manager\VersionContext;
 use Akeneo\Tool\Bundle\VersioningBundle\Repository\VersionRepositoryInterface;
-use Akeneo\Pim\Enrichment\Component\Product\Model\ProductInterface;
+use Akeneo\Tool\Component\Versioning\Model\Version;
+use Doctrine\Migrations\EventDispatcher;
+use Doctrine\Persistence\ObjectManager;
+use PhpSpec\ObjectBehavior;
 use Prophecy\Argument;
 use Symfony\Component\EventDispatcher\EventDispatcherInterface;
 
@@ -22,6 +25,8 @@ class VersionManagerSpec extends ObjectBehavior
         VersionContext $versionContext,
         EventDispatcherInterface $eventDispatcher
     ) {
+        $eventDispatcher->dispatch(Argument::type(BuildVersionEvent::class), BuildVersionEvents::PRE_BUILD)
+            ->willReturn(new BuildVersionEvent());
         $this->beConstructedWith($om, $builder, $versionContext, $eventDispatcher);
 
         $om->getRepository(Argument::any())->willReturn($versionRepository);
@@ -36,10 +41,12 @@ class VersionManagerSpec extends ObjectBehavior
         $this->isRealTimeVersioning()->shouldReturn(false);
     }
 
-    function it_uses_version_builder_to_build_versions($builder, $om, ProductInterface $product)
+    function it_uses_version_builder_to_build_versions($builder, ProductInterface $product,EventDispatcherInterface $eventDispatcher)
     {
         $this->setUsername('julia');
         $this->buildVersion($product);
+        $eventDispatcher->dispatch(Argument::type(BuildVersionEvent::class), BuildVersionEvents::PRE_BUILD)
+            ->willReturn('julia');
 
         $builder->buildVersion($product, 'julia', null, null)->shouldHaveBeenCalled();
     }
@@ -65,8 +72,12 @@ class VersionManagerSpec extends ObjectBehavior
         $version->isPending()->shouldReturn(true);
     }
 
-    function it_builds_pending_versions_and_last_version_when_versioning_an_entity($om, ProductInterface $product, $builder, $versionRepository)
-    {
+    function it_builds_pending_versions_and_last_version_when_versioning_an_entity(
+        $om,
+        ProductInterface $product,
+        $builder,
+        $versionRepository
+    ) {
         $product->getId()->willReturn(1);
 
         $pending1 = new Version('Product', 1, 'julia');

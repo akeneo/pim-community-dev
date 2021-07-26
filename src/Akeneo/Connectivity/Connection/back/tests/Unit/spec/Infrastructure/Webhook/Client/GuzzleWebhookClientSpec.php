@@ -42,6 +42,7 @@ class GuzzleWebhookClientSpec extends ObjectBehavior
         EventsApiRequestLogger $eventsApiRequestLogger,
         EventDispatcherInterface $eventDispatcher
     ): void {
+        $eventDispatcher->dispatch(Argument::any())->willReturn(Argument::type('object'));
         $this->beConstructedWith(
             new Client(),
             new JsonEncoder(),
@@ -63,6 +64,7 @@ class GuzzleWebhookClientSpec extends ObjectBehavior
         EventsApiRequestLogger $eventsApiRequestLogger,
         EventDispatcherInterface $eventDispatcher
     ): void {
+        $eventDispatcher->dispatch(Argument::any())->willReturn(Argument::type('object'));
         $mock = new MockHandler(
             [
                 new Response(200, ['Content-Length' => 0]),
@@ -135,17 +137,22 @@ class GuzzleWebhookClientSpec extends ObjectBehavior
         Assert::assertEquals($signature, $request->getHeader(RequestHeaders::HEADER_REQUEST_SIGNATURE)[0]);
 
         $eventDispatcher
-            ->dispatch(Argument::allOf(
-                Argument::type(EventsApiRequestSucceededEvent::class),
-                Argument::that(function (EventsApiRequestSucceededEvent $event) use ($Request1pimEvent) {
-                    if ('ecommerce' !== $event->getConnectionCode() || $Request1pimEvent !== $event->getEvents()[0]) {
-                        return false;
-                    }
+            ->dispatch(
+                Argument::allOf(
+                    Argument::type(EventsApiRequestSucceededEvent::class),
+                    Argument::that(
+                        function (EventsApiRequestSucceededEvent $event) use ($Request1pimEvent) {
+                            if ('ecommerce' !== $event->getConnectionCode() || $Request1pimEvent !== $event->getEvents(
+                                )[0]) {
+                                return false;
+                            }
 
-                    return true;
-                })
-            ))
-            ->shouldBeCalledTimes(1);
+                            return true;
+                        }
+                    )
+                )
+            )
+            ->shouldBeCalledTimes(1)->willReturn(Argument::type('object'));
 
         $eventsApiRequestLogger->logEventsApiRequestSucceed(
             'ecommerce',
@@ -170,17 +177,21 @@ class GuzzleWebhookClientSpec extends ObjectBehavior
         Assert::assertEquals($signature, $request->getHeader(RequestHeaders::HEADER_REQUEST_SIGNATURE)[0]);
 
         $eventDispatcher
-            ->dispatch(Argument::allOf(
-                Argument::type(EventsApiRequestSucceededEvent::class),
-                Argument::that(function (EventsApiRequestSucceededEvent $event) use ($Request2pimEvent) {
-                    if ('erp' !== $event->getConnectionCode() || $Request2pimEvent !== $event->getEvents()[0]) {
-                        return false;
-                    }
+            ->dispatch(
+                Argument::allOf(
+                    Argument::type(EventsApiRequestSucceededEvent::class),
+                    Argument::that(
+                        function (EventsApiRequestSucceededEvent $event) use ($Request2pimEvent) {
+                            if ('erp' !== $event->getConnectionCode() || $Request2pimEvent !== $event->getEvents()[0]) {
+                                return false;
+                            }
 
-                    return true;
-                })
-            ))
-            ->shouldBeCalledTimes(1);
+                            return true;
+                        }
+                    )
+                )
+            )
+            ->shouldBeCalledTimes(1)->willReturn(Argument::type('object'));
 
         $eventsApiRequestLogger->logEventsApiRequestSucceed(
             'erp',
@@ -190,7 +201,8 @@ class GuzzleWebhookClientSpec extends ObjectBehavior
             Argument::any()
         )->shouldBeCalled();
 
-        $eventDispatcher->dispatch(Argument::type(EventsApiRequestSucceededEvent::class))->shouldBeCalled();
+        $eventDispatcher->dispatch(Argument::type(EventsApiRequestSucceededEvent::class))->shouldBeCalled()
+            ->willReturn(Argument::type('object'));
     }
 
     public function it_logs_a_failed_events_api_request(
@@ -208,6 +220,8 @@ class GuzzleWebhookClientSpec extends ObjectBehavior
 
         $handlerStack = HandlerStack::create($mock);
         $handlerStack->push($history);
+
+        $eventDispatcher->dispatch(Argument::any(), Argument::any())->willReturn(Argument::type('object'));
 
         $this->beConstructedWith(
             new Client(['handler' => $handlerStack]),
@@ -255,7 +269,6 @@ class GuzzleWebhookClientSpec extends ObjectBehavior
         EventsApiRequestLogger $debugLogger,
         EventDispatcherInterface $eventDispatcher
     ): void {
-
         $container = [];
         $history = Middleware::history($container);
 

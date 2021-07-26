@@ -1,21 +1,17 @@
 <?php
 
-
 namespace Akeneo\UserManagement\Bundle\Provider;
 
 use Akeneo\UserManagement\Bundle\Manager\UserManager;
 use Akeneo\UserManagement\Bundle\Model\LockedAccountException;
-use Akeneo\UserManagement\Component\Model\User;
 use Akeneo\UserManagement\Component\Model\UserInterface;
 use Symfony\Component\Security\Core\Authentication\Provider\DaoAuthenticationProvider;
-use Symfony\Component\Security\Core\Authentication\Token\TokenInterface;
 use Symfony\Component\Security\Core\Authentication\Token\UsernamePasswordToken;
 use Symfony\Component\Security\Core\Encoder\EncoderFactoryInterface;
 use Symfony\Component\Security\Core\Exception\BadCredentialsException;
 use Symfony\Component\Security\Core\User\UserCheckerInterface;
 use Symfony\Component\Security\Core\User\UserInterface as SecurityUserInterface;
 use Symfony\Component\Security\Core\User\UserProviderInterface;
-use Webmozart\Assert\Assert;
 
 /**
  * @copyright 2021 Akeneo SAS (http://www.akeneo.com)
@@ -29,8 +25,16 @@ class CustomDaoAuthenticationProvider extends DaoAuthenticationProvider
 
     private int $accountMaxConsecutiveFailure;
 
-    public function __construct(UserProviderInterface $userProvider, UserCheckerInterface $userChecker, string $providerKey, EncoderFactoryInterface $encoderFactory, UserManager $userManager, int $accountLockDuration, int $accountMaxConsecutiveFailure, bool $hideUserNotFoundExceptions = true)
-    {
+    public function __construct(
+        UserProviderInterface $userProvider,
+        UserCheckerInterface $userChecker,
+        string $providerKey,
+        EncoderFactoryInterface $encoderFactory,
+        UserManager $userManager,
+        int $accountLockDuration,
+        int $accountMaxConsecutiveFailure,
+        bool $hideUserNotFoundExceptions = true
+    ) {
         parent::__construct($userProvider, $userChecker, $providerKey, $encoderFactory, $hideUserNotFoundExceptions);
         $this->userManager = $userManager;
         $this->accountLockDuration = $accountLockDuration;
@@ -90,7 +94,9 @@ class CustomDaoAuthenticationProvider extends DaoAuthenticationProvider
 
     private function isWithinLockTimePeriod(UserInterface $user): bool
     {
-        return ((new \DateTime())->modify("-{$this->accountLockDuration} minute") <= $user->getAuthenticationFailureResetDate());
+        return ((new \DateTime())->modify(
+                "-{$this->accountLockDuration} minute"
+            ) <= $user->getAuthenticationFailureResetDate());
     }
 
     private function isCounterReset(UserInterface $user): bool

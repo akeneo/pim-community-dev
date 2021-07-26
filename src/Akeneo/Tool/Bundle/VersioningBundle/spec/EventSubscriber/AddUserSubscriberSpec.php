@@ -2,10 +2,10 @@
 
 namespace spec\Akeneo\Tool\Bundle\VersioningBundle\EventSubscriber;
 
-use PhpSpec\ObjectBehavior;
 use Akeneo\Tool\Bundle\VersioningBundle\Event\BuildVersionEvent;
 use Akeneo\Tool\Bundle\VersioningBundle\Event\BuildVersionEvents;
 use Akeneo\UserManagement\Component\Model\User;
+use PhpSpec\ObjectBehavior;
 use Prophecy\Argument;
 use Symfony\Component\Security\Core\Authentication\Token\Storage\TokenStorageInterface;
 use Symfony\Component\Security\Core\Authentication\Token\TokenInterface;
@@ -15,7 +15,6 @@ class AddUserSubscriberSpec extends ObjectBehavior
 {
     function let(
         TokenStorageInterface $tokenStorage,
-        TokenInterface $token,
         AuthorizationCheckerInterface $authorizationChecker
     ) {
         $this->beConstructedWith($authorizationChecker, $tokenStorage);
@@ -36,9 +35,10 @@ class AddUserSubscriberSpec extends ObjectBehavior
     function it_injects_current_username_into_the_version_manager(
         BuildVersionEvent $event,
         $tokenStorage,
-        $token,
+        TokenInterface $token,
         User $user
     ) {
+        $event->setUsername(Argument::any())->willReturn(new BuildVersionEvent());
         $tokenStorage->getToken()->willReturn($token);
         $token->getUser()->willReturn($user);
         $user->getUsername()->willReturn('foo');
