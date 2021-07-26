@@ -428,7 +428,7 @@ class FixturesLoader implements FixturesLoaderInterface
      */
     protected function execCommand(array $arguments, $timeout = 120): string
     {
-        $process = new Process(implode(' ', $arguments));
+        $process = new Process($arguments);
         $process->setTimeout($timeout);
         $process->run();
 
