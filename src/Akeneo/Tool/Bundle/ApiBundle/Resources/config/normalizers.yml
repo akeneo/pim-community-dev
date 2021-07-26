@@ -11,14 +11,6 @@ services:
         arguments:
             - '@pim_external_api_exception_serializer'
 
-    fos_rest.serializer.exception_normalizer.symfony:
-        class: FOS\RestBundle\Serializer\Normalizer\ExceptionNormalizer
-        arguments:
-            - '@fos_rest.exception.messages_map'
-            - false
-        tags:
-            - { name: pim_external_api_exception_serializer.normalizer, priority: 90 }
-
     pim_api.normalizer.exception.documented:
         class: '%pim_api.normalizer.exception.documented.class%'
         tags:
