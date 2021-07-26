@@ -14,6 +14,7 @@ declare(strict_types=1);
 namespace Specification\Akeneo\Platform\TailoredExport\Application;
 
 use Akeneo\AssetManager\Infrastructure\PublicApi\Enrich\GetMainMediaFileInfoCollectionInterface;
+use Akeneo\AssetManager\Infrastructure\PublicApi\Enrich\MediaFileInfo;
 use Akeneo\Platform\TailoredExport\Application\MediaToExportExtractor;
 use Akeneo\Platform\TailoredExport\Application\Query\Column\Column;
 use Akeneo\Platform\TailoredExport\Application\Query\Column\ColumnCollection;
@@ -117,28 +118,22 @@ class MediaToExportExtractorSpec extends ObjectBehavior
             null
         );
 
-        $mainMediaFileInfo = new FileInfo();
-        $mainMediaFileInfo->setKey('a_filekey');
-        $mainMediaFileInfo->setOriginalFilename('an_original_filename');
-
         $getMainMediaFileInfoCollection->forAssetFamilyAndAssetCodes(
             'a_family_code',
             ['asset_code_1', 'asset_code_2', 'asset_code_3'],
             null,
             null
-        )->willReturn([
-            $mainMediaFileInfo
-        ]);
+        )->willReturn([new MediaFileInfo('a_filekey', 'an_original_filename', 'assetStorage')]);
 
-        $expectedMediaToExport = [];
-        $expectedMediaToExport['a_filekey'] = new MediaToExport(
-            'a_filekey',
-            'assetStorage',
-            'files/an_id/an_attribute_code/an_original_filename'
-        );
+        $expectedMediaToExport = [
+            'a_filekey' => new MediaToExport(
+                'a_filekey',
+                'assetStorage',
+                'files/an_id/an_attribute_code/an_original_filename'
+            )
+        ];
 
         $mediaToExport = $this->extract($columnCollection, $valueCollection);
-        $mediaToExport->shouldHaveCount(1);
         $mediaToExport->shouldBeLike($expectedMediaToExport);
     }
 }

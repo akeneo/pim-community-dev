@@ -89,7 +89,7 @@ class ValueHydrator
         switch ($attributeType) {
             case 'pim_catalog_asset_collection':
                 return new AssetCollectionValue(
-                    array_map(fn(AssetCode $assetCode) => $assetCode->normalize(), $data),
+                    array_map('strval', $data),
                     $product->getIdentifier(),
                     $value->getScopeCode(),
                     $value->getLocaleCode()

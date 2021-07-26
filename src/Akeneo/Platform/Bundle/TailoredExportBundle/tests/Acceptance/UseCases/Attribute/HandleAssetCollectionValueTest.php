@@ -48,20 +48,20 @@ final class HandleAssetCollectionValueTest extends AttributeTestCase
         return [
             [
                 'operations' => [],
-                'selection' => new AssetCollectionCodeSelection(','),
-                'value' => new AssetCollectionValue([]),
+                'selection' => new AssetCollectionCodeSelection(',', 'packshot', 'my_asset_collection'),
+                'value' => new AssetCollectionValue([], 'my_desk', null, 'en_US'),
                 'expected' => [self::TARGET_NAME => '']
             ],
             [
                 'operations' => [],
-                'selection' => new AssetCollectionCodeSelection(','),
-                'value' => new AssetCollectionValue(['packshot_0', 'packshot_1']),
+                'selection' => new AssetCollectionCodeSelection(',', 'packshot', 'my_asset_collection'),
+                'value' => new AssetCollectionValue(['packshot_0', 'packshot_1'], 'my_desk', 'ecommerce', null),
                 'expected' => [self::TARGET_NAME => 'packshot_0,packshot_1']
             ],
             [
                 'operations' => [],
-                'selection' => new AssetCollectionLabelSelection('|', 'en_US', 'packshot'),
-                'value' => new AssetCollectionValue(['packshot_0', 'packshot_1']),
+                'selection' => new AssetCollectionLabelSelection('|', 'en_US', 'packshot', 'my_asset_collection'),
+                'value' => new AssetCollectionValue(['packshot_0', 'packshot_1'], 'my_desk', 'ecommerce', null),
                 'expected' => [self::TARGET_NAME => 'Packshot 0|[packshot_1]']
             ]
         ];

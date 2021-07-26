@@ -13,8 +13,8 @@ declare(strict_types=1);
 
 namespace Akeneo\Platform\TailoredExport\Application;
 
-use Akeneo\AssetManager\Infrastructure\Filesystem\Storage;
 use Akeneo\AssetManager\Infrastructure\PublicApi\Enrich\GetMainMediaFileInfoCollectionInterface;
+use Akeneo\AssetManager\Infrastructure\PublicApi\Enrich\MediaFileInfo;
 use Akeneo\Platform\TailoredExport\Application\Query\Column\ColumnCollection;
 use Akeneo\Platform\TailoredExport\Application\Query\Selection\AssetCollection\AssetCollectionSelectionInterface;
 use Akeneo\Platform\TailoredExport\Application\Query\Selection\File\FileSelectionInterface;
@@ -25,7 +25,6 @@ use Akeneo\Platform\TailoredExport\Domain\SourceValue\AssetCollectionValue;
 use Akeneo\Platform\TailoredExport\Domain\SourceValue\FileValue;
 use Akeneo\Platform\TailoredExport\Domain\ValueCollection;
 use Akeneo\Platform\TailoredExport\Infrastructure\Connector\MediaExporterPathGenerator;
-use Akeneo\Tool\Component\FileStorage\Model\FileInfo;
 
 final class MediaToExportExtractor implements MediaToExportExtractorInterface
 {
@@ -48,15 +47,11 @@ final class MediaToExportExtractor implements MediaToExportExtractorInterface
             $selection = $source->getSelection();
             $value = $valueCollection->getFromSource($source);
 
-            if ($selection instanceof FileSelectionInterface
-                && $value instanceof FileValue
-            ) {
+            if ($selection instanceof FileSelectionInterface && $value instanceof FileValue) {
                 $mediaToExports[$value->getKey()] = $this->extractFromFileSource($selection, $value);
             }
 
-            if ($selection instanceof AssetCollectionSelectionInterface
-                && $value instanceof AssetCollectionValue
-            ) {
+            if ($selection instanceof AssetCollectionSelectionInterface && $value instanceof AssetCollectionValue) {
                 $mediaToExports = array_merge($mediaToExports, $this->extractFromAssetCollectionSource($selection, $value));
             }
         }
@@ -97,7 +92,7 @@ final class MediaToExportExtractor implements MediaToExportExtractorInterface
 
         return array_reduce(
             $mainMediaFileInfoCollection,
-            function(array $accumulator, FileInfo $fileInfo) use ($selection, $value) {
+            function (array $accumulator, MediaFileInfo $fileInfo) use ($selection, $value) {
                 $exportDirectory = MediaExporterPathGenerator::generate(
                     $value->getEntityIdentifier(),
                     $selection->getAttributeCode(),
@@ -107,9 +102,9 @@ final class MediaToExportExtractor implements MediaToExportExtractorInterface
 
                 $path = sprintf('%s%s', $exportDirectory, $fileInfo->getOriginalFilename());
 
-                $accumulator[$fileInfo->getKey()] = new MediaToExport(
-                    $fileInfo->getKey(),
-                    Storage::FILE_STORAGE_ALIAS,
+                $accumulator[$fileInfo->getFileKey()] = new MediaToExport(
+                    $fileInfo->getFileKey(),
+                    $fileInfo->getStorage(),
                     $path
                 );
 

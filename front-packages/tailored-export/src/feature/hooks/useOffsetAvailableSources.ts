@@ -38,7 +38,7 @@ const useOffsetAvailableSources = (debouncedSearchValue: string, shouldFetch = t
     if (!shouldFetch || isFetching.current) return;
 
     notOnLastPage();
-    fetchResults(defaultSourceOffset);
+    void fetchResults(defaultSourceOffset);
   }, [debouncedSearchValue, shouldFetch, fetchResults, notOnLastPage]);
 
   const handleNextPage = () => {

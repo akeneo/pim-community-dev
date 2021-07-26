@@ -13,8 +13,6 @@ declare(strict_types=1);
 
 namespace Akeneo\AssetManager\Infrastructure\PublicApi\Enrich;
 
-use Akeneo\Tool\Component\FileStorage\Model\FileInfo;
-
 /**
  * @author Pierre Jolly <pierre.jolly@akeneo.com>
  * @copyright 2021 Akeneo SAS (http://www.akeneo.com)
@@ -22,7 +20,7 @@ use Akeneo\Tool\Component\FileStorage\Model\FileInfo;
 interface GetMainMediaFileInfoCollectionInterface
 {
     /**
-     * @return FileInfo[]
+     * @return MediaFileInfo[]
      */
     public function forAssetFamilyAndAssetCodes(
         string $assetFamilyIdentifier,
