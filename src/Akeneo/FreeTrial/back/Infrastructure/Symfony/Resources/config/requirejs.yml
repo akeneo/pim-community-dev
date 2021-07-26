@@ -1,3 +1,3 @@
 config:
   paths:
-    pim/onboarding: akeneofreetrial/js/onboarding/appcues-onboarding.ts
+    pim/onboarding: akeneocommunityfreetrial/js/onboarding/appcues-onboarding.ts
