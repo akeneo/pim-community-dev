@@ -9,8 +9,8 @@ use Akeneo\Pim\Enrichment\Component\Product\Value\OptionValue;
 use Akeneo\Pim\Enrichment\Component\Product\Value\ScalarValue;
 use Akeneo\Pim\Permission\Component\Merger\NotGrantedValuesMerger;
 use Akeneo\Pim\Permission\Component\NotGrantedDataMergerInterface;
-use Akeneo\Pim\Permission\Component\Query\GetAllViewableLocalesForUser;
-use Akeneo\Pim\Permission\Component\Query\GetViewableAttributeCodesForUserInterface;
+use Akeneo\Pim\Structure\Component\Query\PublicApi\Permission\GetAllViewableLocalesForUser;
+use Akeneo\Pim\Structure\Component\Query\PublicApi\Permission\GetViewableAttributeCodesForUserInterface;
 use Akeneo\Tool\Component\StorageUtils\Exception\InvalidObjectException;
 use Akeneo\UserManagement\Component\Model\UserInterface;
 use Doctrine\Common\Util\ClassUtils;
@@ -68,10 +68,10 @@ class NotGrantedValuesMergerSpec extends ObjectBehavior
 
         $filteredProduct = new Product();
         $filteredProduct->setValues(new WriteValueCollection(
-           [
-               ScalarValue::value('not_granted_for_owner', 'bar'),
-               OptionValue::localizableValue('color', 'blue', 'en_US'),
-           ]
+            [
+                ScalarValue::value('not_granted_for_owner', 'bar'),
+                OptionValue::localizableValue('color', 'blue', 'en_US'),
+            ]
         ));
 
         $getViewableAttributeCodes->forAttributeCodes(Argument::is(['123', 'not_granted_for_owner', 'color']), 42)->willReturn(['color']);

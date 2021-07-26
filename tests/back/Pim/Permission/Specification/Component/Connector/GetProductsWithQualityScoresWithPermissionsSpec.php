@@ -7,7 +7,7 @@ use Akeneo\Pim\Enrichment\Component\Product\Connector\ReadModel\ConnectorProduct
 use Akeneo\Pim\Enrichment\Component\Product\Connector\ReadModel\ConnectorProductList;
 use Akeneo\Pim\Enrichment\Component\Product\Connector\UseCase\GetProductsWithQualityScoresInterface;
 use Akeneo\Pim\Enrichment\Component\Product\Model\ReadValueCollection;
-use Akeneo\Pim\Permission\Component\Query\GetAllViewableLocalesForUser;
+use Akeneo\Pim\Structure\Component\Query\PublicApi\Permission\GetAllViewableLocalesForUser;
 use Akeneo\UserManagement\Component\Model\UserInterface;
 use PhpSpec\ObjectBehavior;
 use Prophecy\Argument;
@@ -50,8 +50,7 @@ class GetProductsWithQualityScoresWithPermissionsSpec extends ObjectBehavior
     function it_applies_permissions_on_a_list_of_product_quality_scores(
         GetProductsWithQualityScoresInterface $getProductsWithQualityScores,
         GetAllViewableLocalesForUser $getAllViewableLocalesForUser
-    )
-    {
+    ) {
         $getAllViewableLocalesForUser->fetchAll(1)->willReturn(['fr_FR']);
 
         $connectorProduct1 = $this->buildConnectorProduct('pdt1', null);

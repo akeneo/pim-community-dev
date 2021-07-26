@@ -14,8 +14,8 @@ namespace Akeneo\Pim\Permission\Component\Filter;
 use Akeneo\Pim\Enrichment\Component\Product\Model\EntityWithFamilyVariantInterface;
 use Akeneo\Pim\Enrichment\Component\Product\Model\EntityWithValuesInterface;
 use Akeneo\Pim\Permission\Component\NotGrantedDataFilterInterface;
-use Akeneo\Pim\Permission\Component\Query\GetAllViewableLocalesForUser;
-use Akeneo\Pim\Permission\Component\Query\GetViewableAttributeCodesForUserInterface;
+use Akeneo\Pim\Structure\Component\Query\PublicApi\Permission\GetAllViewableLocalesForUser;
+use Akeneo\Pim\Structure\Component\Query\PublicApi\Permission\GetViewableAttributeCodesForUserInterface;
 use Akeneo\Tool\Component\StorageUtils\Exception\InvalidObjectException;
 use Akeneo\UserManagement\Component\Model\UserInterface;
 use Doctrine\Common\Util\ClassUtils;
@@ -63,8 +63,10 @@ class NotGrantedValuesFilter implements NotGrantedDataFilterInterface
             return $filteredEntityWithValues;
         }
 
-        if ($filteredEntityWithValues instanceof EntityWithFamilyVariantInterface &&
-            null !== $filteredEntityWithValues->getFamilyVariant()) {
+        if (
+            $filteredEntityWithValues instanceof EntityWithFamilyVariantInterface &&
+            null !== $filteredEntityWithValues->getFamilyVariant()
+        ) {
             $values = clone $filteredEntityWithValues->getValuesForVariation();
         } else {
             $values = clone $filteredEntityWithValues->getValues();

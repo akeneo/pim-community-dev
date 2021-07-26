@@ -10,8 +10,8 @@ use Akeneo\Pim\Enrichment\Component\Product\Value\OptionValue;
 use Akeneo\Pim\Enrichment\Component\Product\Value\ScalarValue;
 use Akeneo\Pim\Permission\Component\Filter\NotGrantedValuesFilter;
 use Akeneo\Pim\Permission\Component\NotGrantedDataFilterInterface;
-use Akeneo\Pim\Permission\Component\Query\GetAllViewableLocalesForUser;
-use Akeneo\Pim\Permission\Component\Query\GetViewableAttributeCodesForUserInterface;
+use Akeneo\Pim\Structure\Component\Query\PublicApi\Permission\GetAllViewableLocalesForUser;
+use Akeneo\Pim\Structure\Component\Query\PublicApi\Permission\GetViewableAttributeCodesForUserInterface;
 use Akeneo\Pim\Structure\Component\Model\FamilyVariant;
 use Akeneo\Tool\Component\StorageUtils\Exception\InvalidObjectException;
 use Akeneo\UserManagement\Component\Model\UserInterface;
@@ -83,7 +83,7 @@ class NotGrantedValuesFilterSpec extends ObjectBehavior
             )
         );
         $getViewableAttributeCodes->forAttributeCodes(['my_text_attribute', 'my_color_attribute'], 42)
-                                  ->willReturn(['my_text_attribute', 'my_color_attribute']);
+            ->willReturn(['my_text_attribute', 'my_color_attribute']);
 
         $filteredEntity = $this->filter($entityWithValues);
         $filteredEntity->shouldBeAnInstanceOf(EntityWithValuesInterface::class);
@@ -99,16 +99,16 @@ class NotGrantedValuesFilterSpec extends ObjectBehavior
         $entityWithValues = new ProductModel();
         $entityWithValues->setFamilyVariant($familyVariant);
         $entityWithValues->setValues(new WriteValueCollection(
-           [
-               ScalarValue::localizableValue('granted_attribute', 'some_value', 'en_US'),
-               ScalarValue::localizableValue('granted_attribute', 'some_other_value', 'de_DE'),
-               OptionValue::localizableValue('non_granted_attribute', 'foo', 'en_US'),
-               OptionValue::localizableValue('non_granted_attribute', 'foo', 'de_DE'),
-           ]
+            [
+                ScalarValue::localizableValue('granted_attribute', 'some_value', 'en_US'),
+                ScalarValue::localizableValue('granted_attribute', 'some_other_value', 'de_DE'),
+                OptionValue::localizableValue('non_granted_attribute', 'foo', 'en_US'),
+                OptionValue::localizableValue('non_granted_attribute', 'foo', 'de_DE'),
+            ]
         ));
 
         $getViewableAttributeCodes->forAttributeCodes(['granted_attribute', 'non_granted_attribute'], 42)
-                                  ->willReturn(['granted_attribute']);
+            ->willReturn(['granted_attribute']);
 
         $filteredEntity = $this->filter($entityWithValues);
         $filteredEntity->shouldBeAnInstanceOf(EntityWithValuesInterface::class);

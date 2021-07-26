@@ -22,8 +22,8 @@ use Akeneo\Pim\Permission\Bundle\Enrichment\Storage\Sql\Category\GetViewableCate
 use Akeneo\Pim\Permission\Bundle\Enrichment\Storage\Sql\ProductModel\FetchUserRightsOnProductModel;
 use Akeneo\Pim\Permission\Component\Authorization\Model\UserRightsOnProduct;
 use Akeneo\Pim\Permission\Component\Authorization\Model\UserRightsOnProductModel;
-use Akeneo\Pim\Permission\Component\Query\GetAllViewableLocalesForUser;
-use Akeneo\Pim\Permission\Component\Query\GetViewableAttributeCodesForUserInterface;
+use Akeneo\Pim\Structure\Component\Query\PublicApi\Permission\GetAllViewableLocalesForUser;
+use Akeneo\Pim\Structure\Component\Query\PublicApi\Permission\GetViewableAttributeCodesForUserInterface;
 use Akeneo\Pim\WorkOrganization\Workflow\Component\Query\PublicApi\GetWorkflowStatusFromProductIdentifiers;
 
 /**
@@ -81,7 +81,11 @@ class SqlGetConnectorProductsWithPermissions implements GetConnectorProducts
         ?array $localesToFilterOn
     ): ConnectorProductList {
         $connectorProductList = $this->getConnectorProducts->fromProductQueryBuilder(
-            $pqb, $userId, $attributesToFilterOn, $channelToFilterOn, $localesToFilterOn
+            $pqb,
+            $userId,
+            $attributesToFilterOn,
+            $channelToFilterOn,
+            $localesToFilterOn
         );
 
         $productsWithoutPermissionApplied = $connectorProductList->connectorProducts();
@@ -112,7 +116,11 @@ class SqlGetConnectorProductsWithPermissions implements GetConnectorProducts
         $viewableProductIdentifiers = $this->filterViewableProductIdentifiers($productIdentifiers, $userId);
 
         $connectorProductList = $this->getConnectorProducts->fromProductIdentifiers(
-            $viewableProductIdentifiers, $userId, $attributesToFilterOn, $channelToFilterOn, $localesToFilterOn
+            $viewableProductIdentifiers,
+            $userId,
+            $attributesToFilterOn,
+            $channelToFilterOn,
+            $localesToFilterOn
         );
 
         $productsWithPermissionApplied = $this->fromConnectorProductsWithoutPermission($connectorProductList->connectorProducts(), $userId);
