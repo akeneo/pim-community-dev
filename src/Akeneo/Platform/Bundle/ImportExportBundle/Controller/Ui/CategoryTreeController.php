@@ -5,7 +5,7 @@ declare(strict_types=1);
 namespace Akeneo\Platform\Bundle\ImportExportBundle\Controller\Ui;
 
 use Akeneo\Pim\Enrichment\Component\Category\Query\PublicApi\CategoryTree;
-use Akeneo\Pim\Enrichment\Component\Category\Query\PublicApi\CountCategoriesPerTree;
+use Akeneo\Pim\Enrichment\Component\Category\Query\PublicApi\GetCategoryChildrenCodesPerTreeInterface;
 use Akeneo\Pim\Enrichment\Component\Category\Query\PublicApi\FindCategoryTrees;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
@@ -18,12 +18,14 @@ use Symfony\Component\HttpFoundation\Request;
 class CategoryTreeController
 {
     private FindCategoryTrees $findCategoryTrees;
-    private CountCategoriesPerTree $countCategoriesPerTree;
+    private GetCategoryChildrenCodesPerTreeInterface $getCategoryChildrenCodesPerTree;
 
-    public function __construct(FindCategoryTrees $findCategoryTrees, CountCategoriesPerTree $countCategoriesPerTree)
-    {
+    public function __construct(
+        FindCategoryTrees $findCategoryTrees,
+        GetCategoryChildrenCodesPerTreeInterface $getCategoryChildrenCodesPerTree
+    ) {
         $this->findCategoryTrees = $findCategoryTrees;
-        $this->countCategoriesPerTree = $countCategoriesPerTree;
+        $this->getCategoryChildrenCodesPerTree = $getCategoryChildrenCodesPerTree;
     }
 
     public function __invoke(Request $request): JsonResponse
@@ -64,8 +66,10 @@ class CategoryTreeController
 
     private function findCategoryCountPerTree(array $selectedCategoryCodes, bool $shouldIncludeChildren): array
     {
-        return $shouldIncludeChildren ?
-            $this->countCategoriesPerTree->executeWithChildren($selectedCategoryCodes)
-            : $this->countCategoriesPerTree->executeWithoutChildren($selectedCategoryCodes);
+        $categoriesChildrenCodes = $shouldIncludeChildren ?
+            $this->getCategoryChildrenCodesPerTree->executeWithChildren($selectedCategoryCodes)
+            : $this->getCategoryChildrenCodesPerTree->executeWithoutChildren($selectedCategoryCodes);
+
+        return array_map(fn(array $childrenCodes) => count($childrenCodes), $categoriesChildrenCodes);
     }
 }
