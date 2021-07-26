@@ -36,7 +36,7 @@ class ProcessedTailoredExportSpec extends ObjectBehavior
 
         $this->beConstructedWith($mappedProducts, $filesToExport);
 
-        $this->getMappedProducts()->shouldReturn($mappedProducts);
+        $this->getItems()->shouldReturn($mappedProducts);
     }
 
     public function it_returns_the_files_to_export()
@@ -46,7 +46,7 @@ class ProcessedTailoredExportSpec extends ObjectBehavior
 
         $this->beConstructedWith($mappedProducts, $filesToExport);
 
-        $this->getFilesToExport()->shouldReturn($filesToExport);
+        $this->getMediaToExport()->shouldReturn($filesToExport);
     }
 
     private function getFakeMappedProducts(): array

@@ -17,20 +17,20 @@ use Akeneo\Platform\TailoredExport\Domain\MediaToExport;
 
 class ProcessedTailoredExport
 {
-    private array $mappedProducts;
+    private array $itemsToWrite;
 
     /** @var MediaToExport[] */
     private array $mediaToExport;
 
-    public function __construct(array $mappedProducts, array $mediaToExport)
+    public function __construct(array $itemsToWrite, array $mediaToExport)
     {
-        $this->mappedProducts = $mappedProducts;
+        $this->itemsToWrite = $itemsToWrite;
         $this->mediaToExport = $mediaToExport;
     }
 
     public function getItems(): array
     {
-        return $this->mappedProducts;
+        return $this->itemsToWrite;
     }
 
     public function getMediaToExport(): array
