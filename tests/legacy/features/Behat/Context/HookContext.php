@@ -26,7 +26,7 @@ class HookContext extends PimContext
     protected int $windowHeight;
     protected ?Process $jobConsumerProcess;
 
-   public function __construct(string $mainContextClass, int $windowWidth, int $windowHeight)
+    public function __construct(string $mainContextClass, int $windowWidth, int $windowHeight)
     {
         parent::__construct($mainContextClass);
         $this->windowWidth  = $windowWidth;

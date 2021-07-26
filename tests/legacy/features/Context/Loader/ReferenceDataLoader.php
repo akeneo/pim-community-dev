@@ -2,7 +2,9 @@
 
 namespace Context\Loader;
 
-use Doctrine\Persistence\ObjectManager;;
+use Doctrine\Persistence\ObjectManager;
+
+;
 
 /**
  * Loader for reference data
