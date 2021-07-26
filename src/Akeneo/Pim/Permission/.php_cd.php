@@ -122,6 +122,7 @@ $rules = [
         'Akeneo\Pim\Enrichment\Bundle\Filter\CollectionFilterInterface',
         'Akeneo\Pim\Enrichment\Bundle\Filter\ObjectFilterInterface',
         'Akeneo\Pim\Enrichment\Bundle\Filter\ProductEditDataFilter',
+        'Akeneo\Pim\Enrichment\Bundle\Filter\CategoryCodeFilterInterface',
 
         // TIP-1003: Do not override Community services
         'Akeneo\Pim\Enrichment\Component\Product\Connector\Processor\MassEdit\AddAttributeValueProcessor',
