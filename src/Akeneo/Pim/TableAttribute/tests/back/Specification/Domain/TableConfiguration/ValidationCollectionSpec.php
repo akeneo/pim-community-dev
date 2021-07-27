@@ -51,6 +51,13 @@ class ValidationCollectionSpec extends ObjectBehavior
         $this->normalize()->shouldReturn(['max_length' => 255]);
     }
 
+    function it_throws_an_exception_for_an_wrong_validation()
+    {
+        $this->beConstructedThrough('fromNormalized', [ColumnDataType::fromString('text'), ['min' => 5]]);
+
+        $this->shouldThrow(\InvalidArgumentException::class)->duringInstantiation();
+    }
+
     function it_normalizes_empty_validation()
     {
         $this->beConstructedThrough('createEmpty');
