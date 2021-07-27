@@ -32,6 +32,8 @@ aliases:
             auth:
                 username: _json_key  # default username when using a JSON key file to authenticate
                 password: $GCLOUD_SERVICE_KEY_DEV  # JSON service account you created, do not encode to base64
+orbs:
+  infracost: infracost/infracost@0.8.1
 
 jobs:
   checkout:
@@ -1172,6 +1174,10 @@ jobs:
               when: on_fail
           - store_artifacts:
               path: ~/artifacts/infra
+          - persist_to_workspace:
+              root: ~/
+              paths:
+                - upgrades.tfplan.json
           - run:
               name: Remove env on kubernetes
               command: make delete
@@ -1214,6 +1220,10 @@ jobs:
               when: on_fail
           - store_artifacts:
               path: ~/artifacts/infra
+          - persist_to_workspace:
+              root: ~/
+              paths:
+                - upgrades.tfplan.json
           - run:
               name: Remove env on kubernetes
               command: make delete
@@ -1976,6 +1986,15 @@ workflows:
           - test_deploy_srnt:
                 requires:
                     - test_cronjobs_existence_srnt
+          - infracost/infracost:
+                pre-steps:
+                    - attach_workspace:
+                        at: ~/
+                path: ~/upgrades.tfplan.json
+                show_skipped: "true"
+                usage_file: ~/project/.circleci/infracost-usage.yaml
+                requires:
+                    - test_deploy_srnt
           - test_deploy_srnt_last_release:
                 requires:
                     - test_cronjobs_existence_srnt
@@ -2012,6 +2031,15 @@ workflows:
                 type: approval
                 requires:
                     - test_cronjobs_existence_grth
+          - infracost/infracost:
+                pre-steps:
+                    - attach_workspace:
+                        at: ~/grth
+                path: ~/grth/upgrades.tfplan.json
+                show_skipped: "true"
+                usage_file: ~/project/.circleci/infracost-usage.yaml
+                requires:
+                    - test_deploy_grth
           - deploy_pr_grth_environment:
                 requires:
                     - deploy_pr_grth_environment?

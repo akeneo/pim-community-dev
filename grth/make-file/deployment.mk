@@ -110,6 +110,7 @@ ifeq ($(UPGRADE_STEP_2),true)
 		cd $(INSTANCE_DIR) && STEP='PRE_APPLY' INSTANCE_NAME=$(INSTANCE_NAME) bash $(PWD)/deployments/automation/upgrade.sh
 endif
 	cd $(INSTANCE_DIR) && terraform plan '-out=upgrades.tfplan' $(TF_INPUT_FALSE) -compact-warnings
+	cd $(INSTANCE_DIR) && terraform show -json upgrades.tfplan > ~/upgrades.tfplan.json
 	cd $(INSTANCE_DIR) && terraform apply $(TF_INPUT_FALSE) $(TF_AUTO_APPROVE) upgrades.tfplan
 
 .PHONY: prepare-infrastructure-artifacts
