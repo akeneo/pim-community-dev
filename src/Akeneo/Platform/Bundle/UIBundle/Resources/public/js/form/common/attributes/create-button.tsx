@@ -4,7 +4,7 @@ import React from 'react';
 import {DependenciesProvider} from '@akeneo-pim-community/legacy-bridge';
 import {pimTheme} from 'akeneo-design-system';
 import {ThemeProvider} from 'styled-components';
-import {CreateAttributeButtonApp} from "../../../attribute/form/CreateAttributeButtonApp";
+import {CreateAttributeButtonApp} from '../../../attribute/form/CreateAttributeButtonApp';
 const translate = require('oro/translator');
 const router = require('pim/router');
 
@@ -38,7 +38,7 @@ class CreateButton extends BaseView {
   getAttributeIcons() {
     const moduleConfig = __moduleConfig;
 
-    return moduleConfig.attribute_icons
+    return moduleConfig.attribute_icons;
   }
 
   getSteps() {
