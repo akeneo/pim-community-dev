@@ -188,7 +188,7 @@ class PurgeCommand extends Command
             if (!$helper->ask($input, $output, $question)) {
                 $output->writeln('Abort purge operation.');
 
-                return;
+                return Command::SUCCESS;
             }
         }
 
