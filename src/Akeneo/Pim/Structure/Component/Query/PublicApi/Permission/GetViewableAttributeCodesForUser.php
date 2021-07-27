@@ -12,7 +12,10 @@ declare(strict_types=1);
 
 namespace Akeneo\Pim\Structure\Component\Query\PublicApi\Permission;
 
-interface GetViewableAttributeCodesForUserInterface
+class GetViewableAttributeCodesForUser implements GetViewableAttributeCodesForUserInterface
 {
-    public function forAttributeCodes(array $attributeCodes, int $userId): array;
+    public function forAttributeCodes(array $attributeCodes, int $userId): array
+    {
+        return $attributeCodes;
+    }
 }
