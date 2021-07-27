@@ -14,6 +14,10 @@ define(['jquery', 'underscore', 'pim/form/common/fields/field', 'pim/template/fo
   return BaseField.extend({
     template: _.template(template),
     events: {
+      'focusout input': function focusOut(event) {
+        this.errors = [];
+        this.updateModel(this.getFieldValue(event.target));
+      },
       'keyup input': function (event) {
         this.errors = [];
         this.updateModel(this.getFieldValue(event.target));
