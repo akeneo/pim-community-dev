@@ -21,7 +21,7 @@ use Elasticsearch\ClientBuilder;
 use League\Flysystem\Filesystem;
 use League\Flysystem\Plugin\ListPaths;
 use Oro\Bundle\SecurityBundle\Acl\Persistence\AclManager;
-use Psr\EventDispatcher\EventDispatcherInterface;
+use RuntimeException;
 use Symfony\Bundle\FrameworkBundle\Console\Application;
 use Symfony\Component\Console\Input\ArrayInput;
 use Symfony\Component\Console\Output\BufferedOutput;
@@ -29,6 +29,7 @@ use Symfony\Component\HttpKernel\KernelInterface;
 use Symfony\Component\Messenger\Transport\TransportInterface;
 use Symfony\Component\Process\Exception\ProcessFailedException;
 use Symfony\Component\Process\Process;
+use Symfony\Contracts\EventDispatcher\EventDispatcherInterface;
 
 /**
  * @author    Yohan Blain <yohan.blain@akeneo.com>
@@ -37,72 +38,28 @@ use Symfony\Component\Process\Process;
  */
 class FixturesLoader implements FixturesLoaderInterface
 {
-    /** @var KernelInterface */
-    private $kernel;
-
-    /** @var DatabaseSchemaHandler */
-    private $databaseSchemaHandler;
-
-    /** @var SystemUserAuthenticator */
-    private $systemUserAuthenticator;
-
-    /** @var Application */
-    private $cli;
-
-    /** @var ReferenceDataLoader */
-    private $referenceDataLoader;
-
-    /** @var Filesystem */
-    private $archivistFilesystem;
-
-    /** @var DoctrineJobRepository */
-    private $doctrineJobRepository;
-
-    /** @var FixtureJobLoader */
-    private $fixtureJobLoader;
-
-    /** @var AclManager */
-    private $aclManager;
-
-    /** @var ProductIndexerInterface */
-    private $productIndexer;
-
-    /** @var ProductModelIndexerInterface */
-    private $productModelIndexer;
-
-    /** @var ClientRegistry */
-    private $clientRegistry;
-
-    /** @var Client */
-    private $esClient;
-
-    /** @var Connection */
-    private $dbConnection;
-
-    /** @var string */
-    private $databaseHost;
-
-    /** @var string */
-    private $databaseName;
-
-    /** @var string */
-    private $databaseUser;
-
-    /** @var string */
-    private $databasePassword;
-
-    /** @var string */
-    private $sqlDumpDirectory;
-
-    /** @var \Elasticsearch\Client */
-    private $nativeElasticsearchClient;
-
-    /** @var MeasurementInstaller */
-    private $measurementInstaller;
-
-    /** @var TransportInterface */
-    private $transport;
-
+    private KernelInterface $kernel;
+    private DatabaseSchemaHandler $databaseSchemaHandler;
+    private SystemUserAuthenticator $systemUserAuthenticator;
+    private Application $cli;
+    private ReferenceDataLoader $referenceDataLoader;
+    private Filesystem $archivistFilesystem;
+    private DoctrineJobRepository $doctrineJobRepository;
+    private FixtureJobLoader $fixtureJobLoader;
+    private AclManager $aclManager;
+    private ProductIndexerInterface $productIndexer;
+    private ProductModelIndexerInterface $productModelIndexer;
+    private ClientRegistry $clientRegistry;
+    private Client $esClient;
+    private Connection $dbConnection;
+    private string $databaseHost;
+    private string $databaseName;
+    private string $databaseUser;
+    private string $databasePassword;
+    private string $sqlDumpDirectory;
+    private \Elasticsearch\Client $nativeElasticsearchClient;
+    private MeasurementInstaller $measurementInstaller;
+    private TransportInterface $transport;
     private EventDispatcherInterface $eventDispatcher;
     private JobLauncher $jobLauncher;
 
@@ -194,7 +151,6 @@ class FixturesLoader implements FixturesLoaderInterface
         $this->jobLauncher->flushJobQueue();
 
         $this->systemUserAuthenticator->createSystemUser();
-
     }
 
     protected function purgeMessengerEvents()
@@ -226,7 +182,12 @@ class FixturesLoader implements FixturesLoaderInterface
      */
     protected function getHashForFiles(array $files): string
     {
-        $realFiles = array_filter($files, function ($entry) { return is_file($entry); });
+        $realFiles = array_filter(
+            $files,
+            function ($entry) {
+                return is_file($entry);
+            }
+        );
         $hashes = array_map('sha1_file', $realFiles);
 
         return sha1(implode(':', $hashes));
@@ -240,7 +201,7 @@ class FixturesLoader implements FixturesLoaderInterface
     protected function loadSqlFiles(array $files): void
     {
         foreach ($files as $file) {
-            $this->dbConnection->exec(file_get_contents($file));
+            $this->dbConnection->executeStatement(file_get_contents($file));
         }
     }
 
@@ -249,7 +210,7 @@ class FixturesLoader implements FixturesLoaderInterface
      *
      * @param array $files
      *
-     * @throws \RuntimeException
+     * @throws RuntimeException
      */
     protected function loadImportFiles(array $files): void
     {
@@ -271,28 +232,35 @@ class FixturesLoader implements FixturesLoaderInterface
         }
 
         // configure and load job instances in database
-        $this->fixtureJobLoader->loadJobInstances('src/Akeneo/Platform/Bundle/InstallerBundle/Resources/fixtures/minimal', $replacePaths);
+        $this->fixtureJobLoader->loadJobInstances(
+            'src/Akeneo/Platform/Bundle/InstallerBundle/Resources/fixtures/minimal',
+            $replacePaths
+        );
 
         // install the catalog via the job instances
         $jobInstances = $this->fixtureJobLoader->getLoadedJobInstances();
         foreach ($jobInstances as $jobInstance) {
-            $input = new ArrayInput([
-                'command'  => 'akeneo:batch:job',
-                'code'     => $jobInstance->getCode(),
-                '--no-log' => true,
-                '-v'       => true
-            ]);
+            $input = new ArrayInput(
+                [
+                    'command' => 'akeneo:batch:job',
+                    'code' => $jobInstance->getCode(),
+                    '--no-log' => true,
+                    '-v' => true,
+                ]
+            );
             $output = new BufferedOutput();
             $exitCode = $this->cli->run($input, $output);
 
             if (0 !== $exitCode) {
-                throw new \RuntimeException(sprintf('Catalog not installable! "%s"', $output->fetch()));
+                throw new RuntimeException(sprintf('Catalog not installable! "%s"', $output->fetch()));
             }
 
             $this->eventDispatcher->dispatch(
-                new InstallerEvent(null, $jobInstance->getCode(), [
-                    'job_name' => $jobInstance->getJobName(),
-                ]),
+                new InstallerEvent(
+                    null, $jobInstance->getCode(), [
+                            'job_name' => $jobInstance->getJobName(),
+                        ]
+                ),
                 InstallerEvents::POST_LOAD_FIXTURE
             );
         }
@@ -354,17 +322,13 @@ class FixturesLoader implements FixturesLoaderInterface
     /**
      * Get the list of catalog configuration file paths to load
      *
-     * @param array $directories
-     *
      * @throws \Exception if no files can be loaded
-     *
-     * @return array
      */
     protected function getFilesToLoad(array $directories): array
     {
         $rawFiles = [];
         foreach ($directories as $directory) {
-            $rawFiles = array_merge($rawFiles, glob($directory.'/*'));
+            $rawFiles = array_merge($rawFiles, glob($directory . '/*'));
         }
 
         if (empty($rawFiles)) {
@@ -387,46 +351,36 @@ class FixturesLoader implements FixturesLoaderInterface
         return $files;
     }
 
-    /**
-     * @param string $filepath
-     */
-    protected function dumpDatabase($filepath): void
+    protected function dumpDatabase(string $filepath): void
     {
         $dir = dirname($filepath);
         if (!file_exists($dir)) {
             mkdir($dir, 0755, true);
         }
 
-        $this->execCommand([
-            'mysqldump',
-            '-h '.$this->databaseHost,
-            '-u '.$this->databaseUser,
-            '-p'.$this->databasePassword,
-            '--no-create-info',
-            '--quick',
-            '--skip-add-locks',
-            '--skip-disable-keys',
-            '--complete-insert',
-            $this->databaseName,
-            '> '.$filepath,
-        ]);
+        $this->execCommand(
+            [
+                'mysqldump',
+                '-h' . $this->databaseHost,
+                '-u' . $this->databaseUser,
+                '-p' . $this->databasePassword,
+                '--no-create-info',
+                '--quick',
+                '--skip-add-locks',
+                '--skip-disable-keys',
+                '--complete-insert',
+                $this->databaseName,
+                '--result-file=' . $filepath,
+            ]
+        );
     }
 
-    /**
-     * @param string $filepath
-     */
-    protected function restoreDatabase($filepath): void
+    protected function restoreDatabase(string $filepath): void
     {
-        $this->dbConnection->exec(file_get_contents($filepath));
+        $this->dbConnection->executeStatement(file_get_contents($filepath));
     }
 
-    /**
-     * @param string[] $arguments
-     * @param int      $timeout
-     *
-     * @return string
-     */
-    protected function execCommand(array $arguments, $timeout = 120): string
+    protected function execCommand(array $arguments, int $timeout = 120): string
     {
         $process = new Process($arguments);
         $process->setTimeout($timeout);
@@ -484,21 +438,23 @@ class FixturesLoader implements FixturesLoaderInterface
         $indexNames = $this->getIndexNames();
         $this->nativeElasticsearchClient->indices()->refresh(['index' => $indexNames]);
 
-        $this->nativeElasticsearchClient->deleteByQuery([
-            'body' => [
-                'query' => [
-                    'match_all' => new \stdClass()
+        $this->nativeElasticsearchClient->deleteByQuery(
+            [
+                'body' => [
+                    'query' => [
+                        'match_all' => new \stdClass(),
+                    ],
                 ],
-            ],
-            'index' => $indexNames,
-            'refresh' => true
-        ]);
+                'index' => $indexNames,
+                'refresh' => true,
+            ]
+        );
     }
 
     private function getIndexNames(): array
     {
         return array_map(
-            fn (Client $client) => $client->getIndexName(),
+            fn(Client $client) => $client->getIndexName(),
             $this->clientRegistry->getClients()
         );
     }
