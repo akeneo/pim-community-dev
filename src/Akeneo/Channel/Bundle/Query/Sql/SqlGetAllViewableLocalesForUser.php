@@ -27,30 +27,20 @@ class SqlGetAllViewableLocalesForUser implements GetAllViewableLocalesForUserInt
 
     public function fetchAll(int $userId): array
     {
-        if (null !== $this->cache) {
-            return $this->cache;
+        if (null === $this->cache) {
+            $query = <<<SQL
+                SELECT locale.code
+                FROM pim_catalog_locale locale
+            SQL;
+
+            $this->cache = $this->sqlConnection->executeQuery($query)->fetchAll(\PDO::FETCH_COLUMN);
         }
 
-        $query = <<<SQL
-            SELECT
-                locale.code
-            FROM
-                JOIN pim_catalog_locale locale
-SQL;
-
-        $result = $this->sqlConnection
-            ->executeQuery(
-                $query,
-                ['userId' => $userId]
-            )->fetchAll(\PDO::FETCH_COLUMN);
-
-        $this->cache = $result;
-
-        return $result;
+        return $this->cache;
     }
 
     public function clearCache(): void
     {
-        $this->cache = [];
+        $this->cache = null;
     }
 }
