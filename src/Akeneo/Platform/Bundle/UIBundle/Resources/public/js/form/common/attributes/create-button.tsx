@@ -2,9 +2,9 @@ import BaseView = require('pimui/js/view/base');
 import ReactDOM from 'react-dom';
 import React from 'react';
 import {DependenciesProvider} from '@akeneo-pim-community/legacy-bridge';
-import {CreateAttributeButtonApp} from '@akeneo-pim-community/settings-ui/src/apps/CreateAttributeButtonApp';
 import {pimTheme} from 'akeneo-design-system';
 import {ThemeProvider} from 'styled-components';
+import {CreateAttributeButtonApp} from "../../../attribute/form/CreateAttributeButtonApp";
 const translate = require('oro/translator');
 const router = require('pim/router');
 
@@ -31,7 +31,7 @@ class CreateButton extends BaseView {
     return params.get(paramName);
   }
 
-  onClick(data: { attribute_type: string, code: string, label: string }): void {
+  onClick(data: any): void {
     router.redirectToRoute('pim_enrich_attribute_create', data);
   }
 
@@ -41,16 +41,23 @@ class CreateButton extends BaseView {
     return moduleConfig.attribute_icons
   }
 
+  getSteps() {
+    const moduleConfig = __moduleConfig;
+
+    return moduleConfig.steps;
+  }
+
   render(): any {
     ReactDOM.render(
       <DependenciesProvider>
         <ThemeProvider theme={pimTheme}>
           <CreateAttributeButtonApp
-            buttonTitle={translate(this.config.buttonTitle)}
+            steps={this.getSteps()}
             iconsMap={this.getAttributeIcons()}
             isModalOpen={!!this.getQueryParam('open_create_attribute_modal')}
+            buttonTitle={translate(this.config.buttonTitle)}
             onClick={this.onClick.bind(this)}
-            defaultCode={this.getQueryParam('code')}
+            initialData={{code: this.getQueryParam('code')}}
           />
         </ThemeProvider>
       </DependenciesProvider>,
