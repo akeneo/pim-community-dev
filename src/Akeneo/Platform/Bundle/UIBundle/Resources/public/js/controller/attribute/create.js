@@ -5,13 +5,13 @@
  */
 'use strict';
 
-define(['underscore', 'pim/controller/front', 'pim/form-builder', 'pim/fetcher-registry', 'pim/user-context'], function (
-  _,
-  BaseController,
-  FormBuilder,
-  fetcherRegistry,
-  UserContext
-) {
+define([
+  'underscore',
+  'pim/controller/front',
+  'pim/form-builder',
+  'pim/fetcher-registry',
+  'pim/user-context',
+], function (_, BaseController, FormBuilder, fetcherRegistry, UserContext) {
   return BaseController.extend({
     /**
      * {@inheritdoc}

@@ -47,6 +47,6 @@ define(['pim/form/common/edit-form'], function (BaseEditForm) {
 
     setLabels: function (labels) {
       this.labels = labels;
-    }
+    },
   });
 });

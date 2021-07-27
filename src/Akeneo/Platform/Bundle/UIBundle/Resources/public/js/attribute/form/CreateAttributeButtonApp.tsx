@@ -1,26 +1,26 @@
 import React from 'react';
-import SelectAttributeType from "./SelectAttributeType";
-import {Button, useBooleanState} from "akeneo-design-system";
+import SelectAttributeType from './SelectAttributeType';
+import {Button, useBooleanState} from 'akeneo-design-system';
 
 export type CreateAttributeButtonStepProps = {
   onClose: () => void;
   onStepConfirm: (data: AttributeData) => void;
   initialData?: AttributeData;
-}
+};
 
 export type CreateAttributeButtonAppProps = {
   buttonTitle: string;
   iconsMap: {[attributeType: string]: string};
-  steps: {[attributeType: string]: { view: React.FC<CreateAttributeButtonStepProps> }[]};
+  steps: {[attributeType: string]: {view: React.FC<CreateAttributeButtonStepProps>}[]};
   isModalOpen?: boolean;
   onClick: (data: AttributeData) => void;
   initialData?: AttributeData;
-}
+};
 
 type AttributeType = string;
 
 type AttributeData = {
-  attribute_type?: AttributeType
+  attribute_type?: AttributeType;
 } & {[key: string]: any};
 
 const CreateAttributeButtonApp: React.FC<CreateAttributeButtonAppProps> = ({
@@ -53,31 +53,41 @@ const CreateAttributeButtonApp: React.FC<CreateAttributeButtonAppProps> = ({
     }
 
     setCurrentStepIndex(currentStepIndex + 1);
-  }
+  };
 
   const handleClose = () => {
     setCurrentStepIndex(-1);
     setAttributeData(initialData);
     close();
-  }
+  };
 
-  return <>
-    {isOpen && <>
-      {(currentStepIndex === -1) && <SelectAttributeType onClose={handleClose} iconsMap={iconsMap} onStepConfirm={handleStepConfirm}/>}
-      {stepsForAttributeType.map((step, stepIndex) => {
-        const Component = step.view;
-        return stepIndex === currentStepIndex && <Component
-          key={stepIndex}
-          onClose={handleClose}
-          onStepConfirm={handleStepConfirm}
-          initialData={attributeData}
-        />
-      })}
-    </>}
-    <Button id="attribute-create-button" onClick={open}>
-      {buttonTitle}
-    </Button>
-  </>
-}
+  return (
+    <>
+      {isOpen && (
+        <>
+          {currentStepIndex === -1 && (
+            <SelectAttributeType onClose={handleClose} iconsMap={iconsMap} onStepConfirm={handleStepConfirm} />
+          )}
+          {stepsForAttributeType.map((step, stepIndex) => {
+            const Component = step.view;
+            return (
+              stepIndex === currentStepIndex && (
+                <Component
+                  key={stepIndex}
+                  onClose={handleClose}
+                  onStepConfirm={handleStepConfirm}
+                  initialData={attributeData}
+                />
+              )
+            );
+          })}
+        </>
+      )}
+      <Button id="attribute-create-button" onClick={open}>
+        {buttonTitle}
+      </Button>
+    </>
+  );
+};
 
 export {CreateAttributeButtonApp};
