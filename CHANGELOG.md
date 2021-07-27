@@ -66,6 +66,7 @@
 - PIM-9984: Fix image preview in asset manager in media link attributes
 - PIM-9981: Fix permission to download logs of clean removed attribute values job
 - PIM-9980: Prevent root category selection in Rule Engine set categories action 
+- PIM-9942: Fix message on DQI dashboard in French UI locale
 
 ## Improvements
 
