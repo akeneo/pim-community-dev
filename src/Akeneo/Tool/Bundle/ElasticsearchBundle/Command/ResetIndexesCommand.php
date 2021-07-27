@@ -24,10 +24,8 @@ use Symfony\Component\Console\Question\ConfirmationQuestion;
 class ResetIndexesCommand extends Command
 {
     protected static $defaultName = 'akeneo:elasticsearch:reset-indexes';
-    /**
-     * @var ClientRegistry
-     */
-    private $clientRegistry;
+
+    private ClientRegistry $clientRegistry;
 
     public function __construct(ClientRegistry $clientRegistry)
     {
@@ -55,28 +53,24 @@ class ResetIndexesCommand extends Command
     /**
      * {@inheritdoc}
      */
-    protected function execute(InputInterface $input, OutputInterface $output)
+    protected function execute(InputInterface $input, OutputInterface $output): int
     {
         if (!$this->userConfirmation($input, $output)) {
-            return;
+            return Command::SUCCESS;
         }
 
         $esClients = $this->getFilteredEsClients($input);
         $this->resetIndexes($output, $esClients);
 
         if (!$this->areIndexesExisting($output, $esClients)) {
-            return;
+            return Command::SUCCESS;
         }
 
         $this->showSuccessMessages($output);
+
+        return Command::SUCCESS;
     }
 
-    /**
-     * @param InputInterface  $input
-     * @param OutputInterface $output
-     *
-     * @return bool
-     */
     private function userConfirmation(InputInterface $input, OutputInterface $output): bool
     {
         $esClients = $this->getFilteredEsClients($input);

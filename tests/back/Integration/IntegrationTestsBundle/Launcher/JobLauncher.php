@@ -19,6 +19,7 @@ use Symfony\Component\Filesystem\Filesystem;
 use Symfony\Component\HttpKernel\KernelInterface;
 use Symfony\Component\Process\PhpExecutableFinder;
 use Symfony\Component\Process\Process;
+use Traversable;
 use Webmozart\Assert\Assert;
 
 /**
@@ -40,13 +41,13 @@ class JobLauncher
     private KernelInterface $kernel;
     private Connection $dbConnection;
     /** @var PubSubQueueStatus[] */
-    private iterable $pubSubQueueStatuses;
+    private Traversable $pubSubQueueStatuses;
     private LoggerInterface $logger;
 
     public function __construct(
         KernelInterface $kernel,
         Connection $dbConnection,
-        iterable $pubSubQueueStatuses,
+        Traversable $pubSubQueueStatuses,
         LoggerInterface $logger
     ) {
         Assert::allIsInstanceOf($pubSubQueueStatuses, PubSubQueueStatus::class);
@@ -57,15 +58,9 @@ class JobLauncher
     }
 
     /**
-     * @param string      $jobCode
-     * @param string|null $username
-     * @param array       $config
-     *
      * @throws \Exception
-     *
-     * @return string
      */
-    public function launchExport(string $jobCode, string $username = null, array $config = [], string $format = 'csv') : string
+    public function launchExport(string $jobCode, ?string $username = null, array $config = [], string $format = 'csv') : string
     {
         Assert::stringNotEmpty($format);
         $application = new Application($this->kernel);
@@ -110,15 +105,9 @@ class JobLauncher
     }
 
     /**
-     * @param string      $jobCode
-     * @param string|null $username
-     * @param array       $config
-     *
      * @throws \Exception
-     *
-     * @return string
      */
-    public function launchAuthenticatedExport(string $jobCode, string $username = null, array $config = []) : string
+    public function launchAuthenticatedExport(string $jobCode, ?string $username = null, array $config = []) : string
     {
         $config['is_user_authenticated'] = true;
 
@@ -149,15 +138,15 @@ class JobLauncher
         $config['filePath'] = $filePath;
 
         $pathFinder = new PhpExecutableFinder();
-        $command = sprintf(
-            '%s %s/console %s --env=%s --config=\'%s\' -v %s',
+        $command = [
             $pathFinder->find(),
-             sprintf('%s/../bin', $this->kernel->getRootDir()),
+             sprintf('%s/bin/console', $this->kernel->getProjectDir()),
             'akeneo:batch:job',
-            $this->kernel->getEnvironment(),
-            json_encode($config, JSON_HEX_APOS),
+            sprintf('--env=%s', $this->kernel->getEnvironment()),
+            sprintf("--config='%s'", json_encode($config, JSON_HEX_APOS)),
+            '-v',
             $jobCode
-        );
+        ];
 
         $process = new Process($command);
         $process->run();
@@ -361,14 +350,15 @@ class JobLauncher
      */
     public function launchConsumerOnceInBackground(int $timeLimitInSeconds = null): Process
     {
-        $command = sprintf(
-            'exec %s/console %s %s --env=%s --limit=1 --verbose %s',
-            sprintf('%s/../bin', $this->kernel->getContainer()->getParameter('kernel.root_dir')),
+        $command = [
+            sprintf('exec %s/console/bin', $this->kernel->getProjectDir()),
             static::MESSENGER_COMMAND_NAME,
             implode(' ', static::MESSENGER_RECEIVERS),
-            $this->kernel->getEnvironment(),
+            sprintf('--env=%s', $this->kernel->getEnvironment()),
+            '--limit=1',
+            '--verbose',
             $timeLimitInSeconds === null ? '' : sprintf('--time-limit=%d', $timeLimitInSeconds)
-        );
+        ];
 
         $process = new Process($command);
         $process->start(function (string $type, string $data) {
@@ -384,12 +374,6 @@ class JobLauncher
 
     /**
      * Launch an import in a subprocess.
-     *
-     * @param string $jobCode
-     * @param string $content
-     * @param string $username
-     * @param array  $fixturePaths
-     * @param array  $config
      *
      * @throws \Exception
      */
@@ -425,7 +409,7 @@ class JobLauncher
         $command = sprintf(
             '%s %s/console %s --env=%s --config=\'%s\' -v %s %s',
             $pathFinder->find(),
-            sprintf('%s/../bin', $this->kernel->getRootDir()),
+            sprintf('%s/bin', $this->kernel->getProjectDir()),
             'akeneo:batch:job',
             $this->kernel->getEnvironment(),
             json_encode($config, JSON_HEX_APOS),
@@ -433,7 +417,7 @@ class JobLauncher
             $username
         );
 
-        $process = new Process($command);
+        $process = new Process([$command]);
         $process->run();
 
         if (!$process->isSuccessful() && !BatchCommand::EXIT_WARNING_CODE === $process->getExitCode()) {
@@ -442,12 +426,6 @@ class JobLauncher
     }
     /**
      * Launch an import in a subprocess.
-     *
-     * @param string $jobCode
-     * @param string $content
-     * @param string $username
-     * @param array  $fixturePaths
-     * @param array  $config
      *
      * @throws \Exception
      */

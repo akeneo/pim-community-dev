@@ -60,12 +60,12 @@ final class ImportUserRoleIntegration extends TestCase
     public function it_imports_user_roles_in_csv(): void
     {
         $csvContent = <<<CSV
-role;label;permissions
-ROLE_ADMINISTRATOR;Administrator;action:pim_enrich_product_create,action:pim_enrich_product_edit_attributes,action:pim_enrich_product_history,action:pim_enrich_product_index
-ROLE_USER;"New user label";action:pim_enrich_product_index
-ROLE_NEW-ROLE;"No permission role";
+        role;label;permissions
+        ROLE_ADMINISTRATOR;Administrator;action:pim_enrich_product_create,action:pim_enrich_product_edit_attributes,action:pim_enrich_product_history,action:pim_enrich_product_index
+        ROLE_USER;"New user label";action:pim_enrich_product_index
+        ROLE_NEW-ROLE;"No permission role";
+        CSV;
 
-CSV;
         $userRole = $this->roleRepository->findOneByIdentifier('ROLE_USER');
         self::assertNotNull($userRole);
         $userLabelBeforeImport = $userRole->getLabel();

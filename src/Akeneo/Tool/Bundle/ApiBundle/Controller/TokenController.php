@@ -15,20 +15,14 @@ use Symfony\Component\HttpKernel\Exception\UnprocessableEntityHttpException;
  */
 class TokenController
 {
-    /** @var OAuth2 */
-    protected $oauthServer;
+    protected OAuth2 $oauthServer;
 
-    /**
-     * @param OAuth2 $oauthServer
-     */
     public function __construct(OAuth2 $oauthServer)
     {
         $this->oauthServer = $oauthServer;
     }
 
     /**
-     * @param Request $request
-     *
      * @throws UnprocessableEntityHttpException
      *
      * @return Response

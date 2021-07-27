@@ -93,4 +93,9 @@ class TranslatorDecorator implements TranslatorInterface, LocaleAwareInterface, 
 
         return $this->symfonyTranslator->getCatalogue($locale);
     }
+
+    public function __call($name, $arguments)
+    {
+        // TODO: Implement @method MessageCatalogueInterface[] getCatalogues()
+    }
 }

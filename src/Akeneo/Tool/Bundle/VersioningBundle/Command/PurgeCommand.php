@@ -28,14 +28,9 @@ class PurgeCommand extends Command
 
     const DEFAULT_MORE_THAN_DAYS = 90;
 
-    /** @var LoggerInterface */
-    private $logger;
-
-    /** @var VersionPurgerInterface */
-    private $versionPurger;
-
-    /** @var EventSubscriberInterface */
-    private $eventSubscriber;
+    private LoggerInterface $logger;
+    private VersionPurgerInterface $versionPurger;
+    private EventSubscriberInterface $eventSubscriber;
 
     public function __construct(
         LoggerInterface $logger,
@@ -144,7 +139,7 @@ class PurgeCommand extends Command
     /**
      * {@inheritdoc}
      */
-    protected function execute(InputInterface $input, OutputInterface $output)
+    protected function execute(InputInterface $input, OutputInterface $output): int
     {
         $noDebug = $input->getOption('no-debug');
         if (!$noDebug) {
@@ -198,5 +193,7 @@ class PurgeCommand extends Command
         }
 
         $this->versionPurger->purge($purgeOptions, $output);
+
+        return Command::SUCCESS;
     }
 }

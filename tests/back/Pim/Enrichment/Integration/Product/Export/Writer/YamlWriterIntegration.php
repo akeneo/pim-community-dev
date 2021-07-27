@@ -32,7 +32,7 @@ class YamlWriterIntegration extends KernelTestCase
         parent::setUp();
         static::bootKernel();
 
-        $this->filePath = static::$kernel->getRootDir().'/../var/a_dump.yml';
+        $this->filePath = static::$kernel->getProjectDir().'/var/a_dump.yml';
         $this->header = 'a_header';
 
         $jobParameters = new JobParameters(['filePath' => $this->filePath]);

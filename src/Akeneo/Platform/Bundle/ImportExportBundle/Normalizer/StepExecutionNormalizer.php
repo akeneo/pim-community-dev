@@ -37,19 +37,22 @@ class StepExecutionNormalizer implements NormalizerInterface, CacheableSupportsM
         $normalizedWarnings = $this->normalizeWarnings($stepExecution->getWarnings(), $context);
 
         if (isset($context['limit_warnings']) && $stepExecution->getWarnings()->count() > 0) {
-            $stepExecution->addSummaryInfo('displayed', count($normalizedWarnings).'/'.$stepExecution->getWarnings()->count());
+            $stepExecution->addSummaryInfo(
+                'displayed',
+                count($normalizedWarnings) . '/' . $stepExecution->getWarnings()->count()
+            );
         }
 
         return [
-            'label'     => $stepExecution->getStepName(),
-            'job'       => $stepExecution->getJobExecution()->getJobInstance()->getJobName(),
-            'status'    => $this->normalizeStatus($stepExecution->getStatus()->getValue()),
-            'summary'   => $this->normalizeSummary($stepExecution->getSummary()),
+            'label' => $stepExecution->getStepName(),
+            'job' => $stepExecution->getJobExecution()->getJobInstance()->getJobName(),
+            'status' => $this->normalizeStatus($stepExecution->getStatus()->getValue()),
+            'summary' => $this->normalizeSummary($stepExecution->getSummary()),
             'startedAt' => $this->presenter->present($stepExecution->getStartTime(), $context),
-            'endedAt'   => $this->presenter->present($stepExecution->getEndTime(), $context),
-            'warnings'  => $normalizedWarnings,
-            'errors'    => $stepExecution->getErrors(),
-            'failures'  => array_map(
+            'endedAt' => $this->presenter->present($stepExecution->getEndTime(), $context),
+            'warnings' => $normalizedWarnings,
+            'errors' => $stepExecution->getErrors(),
+            'failures' => array_map(
                 function ($failure) {
                     return $this->translator->trans($failure['message'], $failure['messageParameters']);
                 },
@@ -93,7 +96,7 @@ class StepExecutionNormalizer implements NormalizerInterface, CacheableSupportsM
         foreach ($selectedWarnings as $warning) {
             $result[] = [
                 'reason' => $this->translator->trans($warning->getReason(), $warning->getReasonParameters()),
-                'item'   => $warning->getItem(),
+                'item' => $warning->getItem(),
             ];
         }
 
@@ -112,7 +115,7 @@ class StepExecutionNormalizer implements NormalizerInterface, CacheableSupportsM
         $result = [];
         foreach ($summary as $key => $value) {
             $key = sprintf('job_execution.summary.%s', $key);
-            $result[$this->translator->trans($key)] = $this->translator->trans($value);
+            $result[$this->translator->trans($key)] = $this->translator->trans((string)$value);
         }
 
         return $result;
