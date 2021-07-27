@@ -1,10 +1,13 @@
 config:
     paths:
         pim/table-attribute/attribute/tab: akeneopimtableattribute/legacy/table-structure-tab
-        pim/table-attribute/attribute/create-button: akeneopimtableattribute/legacy/create-button
         pim/table-attribute/product/table-field: akeneopimtableattribute/legacy/table-field
 
     config:
         pim/form/common/attributes/create-button:
             attribute_icons:
                 pim_catalog_table: TableIcon
+            steps:
+                pim_catalog_table:
+                    - '@akeneopimtableattribute/attribute/SelectTemplate.tsx'
+                    - '@akeneopimtableattribute/attribute/CreateAttributeCodeLabelTemplate.tsx'

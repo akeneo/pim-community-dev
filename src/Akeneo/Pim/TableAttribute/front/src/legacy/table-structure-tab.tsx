@@ -96,7 +96,7 @@ class TableStructureTab extends (BaseView as {new (options: {config: TableStruct
     const savedColumnCodes = (initialTableConfiguration || []).map(columnDefinition => columnDefinition.code);
     if (typeof initialTableConfiguration === 'undefined') {
       initialTableConfiguration = [];
-      const tableTemplate = this.getQueryParam('template');
+      const tableTemplate = this.getQueryParam('template_variation');
       if (tableTemplate) {
         const template = ([] as TemplateVariation[])
           .concat(...TEMPLATES.map(template => template.template_variations))

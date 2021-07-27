@@ -1,8 +1,9 @@
 import React from 'react';
 import {Modal, Tiles, Tile} from 'akeneo-design-system';
 import {useTranslate} from '@akeneo-pim-community/shared';
-import {Template} from '../models/Template';
+import {TEMPLATES} from '../models/Template';
 import styled from 'styled-components';
+import {CreateAttributeButtonStepProps} from 'pim-community-dev/public/bundles/pimui/js/attribute/form/CreateAttributeButtonApp';
 
 const ModalContent = styled.div`
   margin-top: 30px;
@@ -12,14 +13,14 @@ const ModalContent = styled.div`
   overflow-y: auto;
 `;
 
-type SelectTemplateProps = {
-  onClick: (template: Template) => void;
-  onClose: () => void;
-  templates: Template[];
-};
-
-const SelectTemplate: React.FC<SelectTemplateProps> = ({onClick, onClose, templates}) => {
+const SelectTemplate: React.FC<CreateAttributeButtonStepProps> = ({onStepConfirm, onClose, initialData}) => {
   const translate = useTranslate();
+
+  React.useEffect(() => {
+    if (initialData?.attribute_type !== 'pim_catalog_table') {
+      onStepConfirm({});
+    }
+  }, []);
 
   return (
     <Modal closeTitle={translate('pim_common.close')} onClose={onClose}>
@@ -29,11 +30,11 @@ const SelectTemplate: React.FC<SelectTemplateProps> = ({onClick, onClose, templa
       <Modal.Title>{translate('pim_table_attribute.templates.choose_template')}</Modal.Title>
       <ModalContent>
         <Tiles size='big'>
-          {templates.map(template => {
+          {TEMPLATES.map(template => {
             const Icon = template.icon;
             return (
               <Tile
-                onClick={() => onClick(template)}
+                onClick={() => onStepConfirm({template: template.code})}
                 key={template.code}
                 icon={<Icon />}
                 title={translate(`pim_table_attribute.templates.${template.code}`)}>
@@ -47,4 +48,4 @@ const SelectTemplate: React.FC<SelectTemplateProps> = ({onClick, onClose, templa
   );
 };
 
-export {SelectTemplate};
+export const view = SelectTemplate;

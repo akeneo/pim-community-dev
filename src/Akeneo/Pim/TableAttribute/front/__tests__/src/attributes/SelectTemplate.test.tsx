@@ -1,22 +1,19 @@
 import React from 'react';
 import {renderWithProviders} from '@akeneo-pim-community/legacy-bridge/tests/front/unit/utils';
 import {act, screen, fireEvent} from '@testing-library/react';
-import {SelectTemplate} from '../../../src/attribute/SelectTemplate';
-import {TEMPLATES} from '../../../src/models/Template';
+import {view} from '../../../src/attribute/SelectTemplate';
+const SelectTemplate = view;
 
 describe('SelectTemplateApp', () => {
   it('should render the component', () => {
-    const handleClose = jest.fn();
-    const handleClick = jest.fn();
-    renderWithProviders(<SelectTemplate onClick={handleClick} onClose={handleClose} templates={TEMPLATES} />);
+    renderWithProviders(<SelectTemplate onStepConfirm={jest.fn()} onClose={jest.fn()}/>);
 
     expect(screen.getByText('pim_table_attribute.templates.empty_table')).toBeInTheDocument();
   });
 
   it('should close the component', () => {
     const handleClose = jest.fn();
-    const handleClick = jest.fn();
-    renderWithProviders(<SelectTemplate onClick={handleClick} onClose={handleClose} templates={TEMPLATES} />);
+    renderWithProviders(<SelectTemplate onStepConfirm={jest.fn()} onClose={handleClose} />);
 
     act(() => {
       fireEvent.click(screen.getByTitle('pim_common.close'));
@@ -26,14 +23,13 @@ describe('SelectTemplateApp', () => {
   });
 
   it('should callback the click', () => {
-    const handleClose = jest.fn();
-    const handleClick = jest.fn();
-    renderWithProviders(<SelectTemplate onClick={handleClick} onClose={handleClose} templates={TEMPLATES} />);
+    const handleStepConfirm = jest.fn();
+    renderWithProviders(<SelectTemplate onStepConfirm={handleStepConfirm} onClose={jest.fn()} />);
 
     act(() => {
       fireEvent.click(screen.getByTitle('pim_table_attribute.templates.empty_table'));
     });
 
-    expect(handleClick).toBeCalledWith(TEMPLATES[1]);
+    expect(handleStepConfirm).toBeCalledWith({template: 'empty_table'});
   });
 });
