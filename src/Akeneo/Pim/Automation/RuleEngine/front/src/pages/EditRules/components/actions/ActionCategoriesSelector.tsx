@@ -462,12 +462,12 @@ const ActionCategoriesSelector: React.FC<Props> = ({
                             );
                           }}
                           onSelectCategory={categoryCode => {
+                            const categoryTree = getCurrentCategoryTreeOrDefault() as CategoryTreeModel;
+                            if (categoryCode === categoryTree.code) {
+                              return;
+                            }
                             clearError(valueFormName);
-                            handleCategorySelect(
-                              categoryCode,
-                              getCurrentCategoryTreeOrDefault() as CategoryTreeModel,
-                              i
-                            );
+                            handleCategorySelect(categoryCode, categoryTree, i);
                           }}
                           selectedCategory={category}
                           categoryTreeSelected={
@@ -482,11 +482,12 @@ const ActionCategoriesSelector: React.FC<Props> = ({
                   data-testid='category-selector-new'
                   locale={currentCatalogLocale}
                   onSelectCategory={categoryCode => {
+                    const categoryTree = getCurrentCategoryTreeOrDefault() as CategoryTreeModel;
+                    if (categoryCode === categoryTree.code) {
+                      return;
+                    }
                     clearError(valueFormName);
-                    handleCategorySelect(
-                      categoryCode,
-                      getCurrentCategoryTreeOrDefault() as CategoryTreeModel
-                    );
+                    handleCategorySelect(categoryCode, categoryTree);
                   }}
                   categoryTreeSelected={
                     getCurrentCategoryTreeOrDefault() as CategoryTreeModel
