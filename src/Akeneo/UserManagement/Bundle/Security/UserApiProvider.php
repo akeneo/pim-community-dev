@@ -6,6 +6,7 @@ use Akeneo\UserManagement\Component\Repository\UserRepositoryInterface;
 use Doctrine\Common\Util\ClassUtils;
 use Symfony\Component\Security\Core\Exception\UnsupportedUserException;
 use Symfony\Component\Security\Core\Exception\UsernameNotFoundException;
+use Symfony\Component\Security\Core\Exception\UserNotFoundException;
 use Symfony\Component\Security\Core\User\UserInterface;
 use Symfony\Component\Security\Core\User\UserProviderInterface;
 
@@ -18,29 +19,28 @@ use Symfony\Component\Security\Core\User\UserProviderInterface;
  */
 class UserApiProvider implements UserProviderInterface
 {
-    /** @var UserRepositoryInterface */
-    protected $userRepository;
+    protected UserRepositoryInterface $userRepository;
 
-    /**
-     * @param UserRepositoryInterface $userRepository
-     */
     public function __construct(UserRepositoryInterface $userRepository)
     {
         $this->userRepository = $userRepository;
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function loadUserByUsername($username)
     {
-        $user = $this->userRepository->findOneByIdentifier($username);
+        return $this->loadUserByIdentifier($username);
+    }
+
+    public function loadUserByIdentifier(string $identifier)
+    {
+        $user = $this->userRepository->findOneByIdentifier($identifier);
         if (!$user) {
-            throw new UsernameNotFoundException(sprintf('User with username "%s" does not exist.', $username));
+            throw new UserNotFoundException(sprintf('User with username "%s" does not exist.', $identifier));
         }
 
         return $user;
     }
+
 
     /**
      * {@inheritdoc}

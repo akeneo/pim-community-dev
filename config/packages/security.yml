@@ -9,7 +9,12 @@ security:
             id: pim_user.provider.user_api
 
     encoders:
-        Akeneo\UserManagement\Component\Model\User: sha512
+        legacy_sha512:
+            algorithm: sha512
+        Akeneo\UserManagement\Component\Model\User:
+            algorithm: sodium
+            migrate_from:
+                - legacy_sha512
         Symfony\Component\Security\Core\User\User: plaintext
 
     firewalls:

@@ -11,7 +11,7 @@ use Akeneo\Test\IntegrationTestsBundle\Configuration\CatalogInterface;
 use Akeneo\Tool\Bundle\ApiBundle\Stream\StreamResourceResponse;
 use Akeneo\UserManagement\Component\Model\User;
 use Akeneo\UserManagement\Component\Model\UserInterface;
-use Symfony\Bundle\FrameworkBundle\Client;
+use Symfony\Bundle\FrameworkBundle\KernelBrowser;
 use Symfony\Bundle\FrameworkBundle\Test\WebTestCase;
 use Symfony\Component\HttpKernel\KernelInterface;
 use Symfony\Component\Security\Core\Authentication\Token\UsernamePasswordToken;
@@ -54,21 +54,18 @@ abstract class ApiTestCase extends WebTestCase
         $authenticator->createSystemUser();
 
         $this->get('pim_connector.doctrine.cache_clearer')->clear();
+        static::ensureKernelShutdown();
     }
 
     /**
      * Adds a valid access token to the client, so it is included in all its requests.
      *
-     * @param array $options
-     * @param array $server
      * @param string $clientId
      * @param string $secret
      * @param string $username
      * @param string $password
      * @param string $accessToken
      * @param string $refreshToken
-     *
-     * @return Client
      */
     protected function createAuthenticatedClient(
         array $options = [],
@@ -79,19 +76,20 @@ abstract class ApiTestCase extends WebTestCase
         $password = self::PASSWORD,
         $accessToken = null,
         $refreshToken = null
-    ) {
+    ): KernelBrowser {
         $options = array_merge($options, ['debug' => false]);
 
         if (null === $clientId || null === $secret) {
-            list($clientId, $secret) = $this->createOAuthClient();
+            [$clientId, $secret] = $this->createOAuthClient();
         }
 
         if (null === $accessToken || null === $refreshToken) {
-            list($accessToken, $refreshToken) = $this->authenticate($clientId, $secret, $username, $password);
+            [$accessToken, $refreshToken] = $this->authenticate($clientId, $secret, $username, $password);
         }
 
+        static::ensureKernelShutdown();
         $client = static::createClient($options, $server);
-        $client->setServerParameter('HTTP_AUTHORIZATION', 'Bearer '.$accessToken);
+        $client->setServerParameter('HTTP_AUTHORIZATION', 'Bearer ' . $accessToken);
 
         $user = $this->get('pim_user.repository.user')->findOneByIdentifier($username);
         $token = new UsernamePasswordToken($user, null, 'main', $user->getRoles());
@@ -158,15 +156,11 @@ abstract class ApiTestCase extends WebTestCase
     /**
      * Authenticates a user by calling the token route and returns the access token and the refresh token.
      *
-     * @param string $clientId
-     * @param string $secret
-     * @param string $username
-     * @param string $password
-     *
      * @return string[]
      */
-    protected function authenticate($clientId, $secret, $username, $password)
+    protected function authenticate(string $clientId, string $secret, string $username, string $password): array
     {
+        static::ensureKernelShutdown();
         $webClient = static::createClient(['debug' => false]);
         $webClient->request(
             'POST',
@@ -193,14 +187,9 @@ abstract class ApiTestCase extends WebTestCase
         ];
     }
 
-    /**
-     * @param string $service
-     *
-     * @return mixed
-     */
-    protected function get(string $service)
+    protected function get(string $service): ?object
     {
-        return self::$container->get($service);
+        return self::getContainer()->get($service);
     }
 
     /**
@@ -210,7 +199,7 @@ abstract class ApiTestCase extends WebTestCase
      */
     protected function getParameter(string $parameter)
     {
-        return self::$container->getParameter($parameter);
+        return self::getContainer()->getParameter($parameter);
     }
 
     /**
@@ -238,7 +227,7 @@ abstract class ApiTestCase extends WebTestCase
     {
         $configuration = $this->getConfiguration();
         foreach ($configuration->getFixtureDirectories() as $fixtureDirectory) {
-            $path = $fixtureDirectory.DIRECTORY_SEPARATOR.$name;
+            $path = $fixtureDirectory . DIRECTORY_SEPARATOR . $name;
             if (is_file($path) && false !== realpath($path)) {
                 return realpath($path);
             }
@@ -268,11 +257,11 @@ abstract class ApiTestCase extends WebTestCase
      *
      * @param string $method
      * @param string $uri
-     * @param array $parameters
-     * @param array $files
-     * @param array $server
+     * @param array  $parameters
+     * @param array  $files
+     * @param array  $server
      * @param string $content
-     * @param bool $changeHistory
+     * @param bool   $changeHistory
      * @param string $username
      * @param string $password
      *
