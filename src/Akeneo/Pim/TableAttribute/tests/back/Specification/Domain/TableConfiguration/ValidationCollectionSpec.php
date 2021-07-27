@@ -13,6 +13,9 @@ declare(strict_types=1);
 
 namespace Specification\Akeneo\Pim\TableAttribute\Domain\TableConfiguration;
 
+use Akeneo\Pim\TableAttribute\Domain\TableConfiguration\Validation\DecimalsAllowedValidation;
+use Akeneo\Pim\TableAttribute\Domain\TableConfiguration\Validation\MaxValidation;
+use Akeneo\Pim\TableAttribute\Domain\TableConfiguration\Validation\MinValidation;
 use Akeneo\Pim\TableAttribute\Domain\TableConfiguration\ValidationCollection;
 use Akeneo\Pim\TableAttribute\Domain\TableConfiguration\ValueObject\ColumnDataType;
 use PhpSpec\ObjectBehavior;
@@ -23,6 +26,7 @@ class ValidationCollectionSpec extends ObjectBehavior
     {
         $this->beConstructedThrough('fromNormalized', [ColumnDataType::fromString('text'), ['max_length' => 100]]);
         $this->shouldHaveType(ValidationCollection::class);
+        $this->shouldImplement(\Traversable::class);
     }
 
     function it_throws_an_exception_when_there_are_no_keys()
@@ -63,5 +67,18 @@ class ValidationCollectionSpec extends ObjectBehavior
         $this->beConstructedThrough('createEmpty');
 
         $this->normalize()->shouldBeLike((object) []);
+    }
+
+    function it_is_traversable()
+    {
+        $this->beConstructedThrough(
+            'fromNormalized',
+            [ColumnDataType::fromString('number'), ['min' => 5, 'max' => 10, 'decimals_allowed' => false]]
+        );
+        $this->shouldYieldLike([
+            'min' => MinValidation::fromValue(5),
+            'max' => MaxValidation::fromValue(10),
+            'decimals_allowed' => DecimalsAllowedValidation::fromValue(false),
+        ]);
     }
 }

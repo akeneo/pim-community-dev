@@ -18,13 +18,16 @@ use Akeneo\Pim\TableAttribute\Domain\TableConfiguration\Validation\ValidationFac
 use Akeneo\Pim\TableAttribute\Domain\TableConfiguration\ValueObject\ColumnDataType;
 use Webmozart\Assert\Assert;
 
-final class ValidationCollection
+/**
+ * @phpstan-implements \IteratorAggregate<string, TableValidation>
+ */
+final class ValidationCollection implements \IteratorAggregate
 {
-    /** @var array<string, mixed> */
+    /** @var array<string, TableValidation> */
     private array $validations = [];
 
     /**
-     * @param array<string, mixed> $validations
+     * @param array<string, TableValidation> $validations
      */
     private function __construct(array $validations)
     {
@@ -65,5 +68,13 @@ final class ValidationCollection
             fn (TableValidation $validation) => $validation->getValue(),
             $this->validations
         );
+    }
+
+    /**
+     * @return \Traversable<string, TableValidation>
+     */
+    public function getIterator(): \Traversable
+    {
+        return new \ArrayIterator($this->validations);
     }
 }

@@ -15,6 +15,9 @@ namespace Akeneo\Pim\TableAttribute\Infrastructure\Validation\ProductValue;
 
 use Akeneo\Pim\TableAttribute\Domain\TableConfiguration\Repository\TableConfigurationRepository;
 use Akeneo\Pim\TableAttribute\Domain\TableConfiguration\TableConfiguration;
+use Akeneo\Pim\TableAttribute\Domain\TableConfiguration\Validation\DecimalsAllowedValidation;
+use Akeneo\Pim\TableAttribute\Domain\TableConfiguration\Validation\MaxLengthValidation;
+use Akeneo\Pim\TableAttribute\Domain\TableConfiguration\Validation\MaxValidation;
 use Akeneo\Pim\TableAttribute\Domain\TableConfiguration\Validation\MinValidation;
 use Akeneo\Pim\TableAttribute\Domain\TableConfiguration\ValidationCollection;
 use Akeneo\Pim\TableAttribute\Domain\TableConfiguration\ValueObject\ColumnCode;
@@ -89,55 +92,60 @@ final class TableValidationsShouldMatchValidator extends ConstraintValidator
      */
     private function buildConstraintsForText(ValidationCollection $validations): array
     {
-        $normalizedValidations = $validations->normalize();
-        if (is_object($normalizedValidations)) {
-            $normalizedValidations = [];
+        $maxLengthValue = self::DEFAULT_MAX_LENGTH;
+        foreach ($validations as $validation) {
+            if ($validation instanceof MaxLengthValidation) {
+                $maxLengthValue = $validation->getValue();
+            }
         }
-        $maxLengthValue = $normalizedValidations['max_length'] ?? self::DEFAULT_MAX_LENGTH;
 
         return [
-            new Constraints\Length([
-                'max' => $maxLengthValue,
-                'maxMessage' => TableValidationsShouldMatch::MAX_LENGTH_MESSAGE,
-            ])
+            new Constraints\Length(
+                [
+                    'max' => $maxLengthValue,
+                    'maxMessage' => TableValidationsShouldMatch::MAX_LENGTH_MESSAGE,
+                ]
+            ),
         ];
     }
 
     /**
      * @return Constraint[]
      *
-     * TODO: test the value is a number or a string
+     * TODO: test the value is a number or a string (decimals_allowed)
      */
     private function buildConstraintsForNumber(ValidationCollection $validations): array
     {
         $constraints = [];
-        $normalizedValidations = $validations->normalize();
-        if (is_object($normalizedValidations)) {
-            $normalizedValidations = [];
+        $decimalsAllowedValue = self::DEFAULT_DECIMALS_ALLOWED;
+
+        foreach ($validations as $validation) {
+            if ($validation instanceof MinValidation) {
+                $constraints[] = new Constraints\Range(
+                    [
+                        'min' => $validation->getValue(),
+                        'minMessage' => TableValidationsShouldMatch::MIN_MESSAGE,
+                    ]
+                );
+            } elseif ($validation instanceof MaxValidation) {
+                $constraints[] = new Constraints\Range(
+                    [
+                        'max' => min(PHP_INT_MAX, $validation->getValue()),
+                        'maxMessage' => TableValidationsShouldMatch::MAX_MESSAGE,
+                    ]
+                );
+            } elseif ($validation instanceof DecimalsAllowedValidation) {
+                $decimalsAllowedValue = $validation->getValue();
+            }
         }
 
-        if (array_key_exists('min', $normalizedValidations)) {
-            $constraints[] = new Constraints\Range([
-                'min' => $normalizedValidations['min'],
-                'minMessage' => TableValidationsShouldMatch::MIN_MESSAGE,
-            ]);
-        }
-
-        if (array_key_exists('max', $normalizedValidations)) {
-            $constraints[] = new Constraints\Range([
-                'max' => $normalizedValidations['max'],
-                'maxMessage' => TableValidationsShouldMatch::MAX_MESSAGE,
-            ]);
-        }
-
-        $decimalsAllowedValue = array_key_exists('decimals_allowed', $normalizedValidations)
-            ? $normalizedValidations['decimals_allowed']
-            : self::DEFAULT_DECIMALS_ALLOWED;
         if (!$decimalsAllowedValue) {
-            $constraints[] = new Constraints\Type([
-                'type' => 'integer',
-                'message' => TableValidationsShouldMatch::DECIMALS_ALLOWED_MESSAGE,
-            ]);
+            $constraints[] = new Constraints\Type(
+                [
+                    'type' => 'integer',
+                    'message' => TableValidationsShouldMatch::DECIMALS_ALLOWED_MESSAGE,
+                ]
+            );
         }
 
         return $constraints;
