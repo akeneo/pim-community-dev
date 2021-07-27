@@ -47,15 +47,13 @@
 
     .AknAttributeOption-itemCode {
       font-size: 13px;
-      font-weight: bold;
-      color: @AknLightPurple;
       cursor: pointer;
       display: table-cell;
 
       &>div {
         display: table;
         table-layout: fixed;
-        width: 100%;
+        width: 50%;
         &>span {
           white-space: nowrap;
           display: table-cell;
@@ -67,6 +65,11 @@
       &--new {
         padding-left: 44px;
       }
+    }
+
+    .AknAttributeOption-itemLabel {
+      color: @AknLightPurple;
+      font-style: italic;
     }
 
     .AknAttributeOption-cancel-new-option-icon, .AknAttributeOption-delete-option-icon {
