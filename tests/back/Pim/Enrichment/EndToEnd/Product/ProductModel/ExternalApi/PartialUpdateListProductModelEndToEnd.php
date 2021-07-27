@@ -238,6 +238,33 @@ JSON;
         Assert::assertNotNull($esProductModel);
     }
 
+    public function testAccessDeniedOnUpdateProductModelListIfNoPermission()
+    {
+        // We remove all completenesses in order to check that completeness is recomputed.
+        $this->get('database_connection')->exec('TRUNCATE pim_catalog_completeness;');
+        $this->removeAclFromRole('action:pim_api_product_edit');
+
+        $data = <<<JSON
+    {"code": "sub_sweat_option_a", "family_variant": "familyVariantA1", "parent": "sweat", "values": {"a_simple_select": [{"locale": null, "scope": null, "data": "optionA"}]}}
+    {"code": "root_product_model", "family_variant": "familyVariantA1", "values": {"a_number_float": [{"locale": null, "scope": null, "data": "13.111111111111"}]}}
+    {"code": "sweat", "values": {"a_number_float": [{"locale": null, "scope": null, "data": "10.5000"}]}}
+    {"code": "sub_sweat_option_b", "family_variant": "familyVariantA1", "parent": "sweat", "values": {"a_simple_select": [{"locale": null, "scope": null, "data": "optionB"}]}}
+JSON;
+
+        $response = $this->executeStreamRequest('PATCH', 'api/rest/v1/product-models', [], [], [], $data);
+        $httpResponse = $response['http_response'];
+
+        $expectedResponse = <<<JSON
+{
+    "code": 403,
+    "message": "Access forbidden. You are not allowed to create or update product models."
+}
+JSON;
+
+        $this->assertSame(Response::HTTP_FORBIDDEN, $httpResponse->getStatusCode());
+        $this->assertJsonStringEqualsJsonString($expectedResponse, $httpResponse->getContent());
+    }
+
     public function testCreateAndUpdateSameProductModel()
     {
         $data =

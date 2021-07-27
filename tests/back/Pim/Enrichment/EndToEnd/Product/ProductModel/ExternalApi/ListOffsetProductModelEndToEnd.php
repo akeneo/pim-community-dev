@@ -37,6 +37,24 @@ JSON;
         $this->assertListResponse($client->getResponse(), $expected);
     }
 
+    public function testAccessDeniedOnGetListProductModelIfNoPermission()
+    {
+        $client = $this->createAuthenticatedClient();
+        $this->removeAclFromRole('action:pim_api_product_list');
+        $client->request('GET', 'api/rest/v1/product-models?with_count=true&limit=3');
+
+        $expectedResponse = <<<JSON
+{
+    "code": 403,
+    "message": "Access forbidden. You are not allowed to list product models."
+}
+JSON;
+
+        $response = $client->getResponse();
+        $this->assertSame(Response::HTTP_FORBIDDEN, $response->getStatusCode());
+        $this->assertJsonStringEqualsJsonString($expectedResponse, $response->getContent());
+    }
+
     /**
      * @group ce
      */

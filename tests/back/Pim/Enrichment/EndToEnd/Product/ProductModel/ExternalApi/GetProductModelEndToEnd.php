@@ -2,15 +2,36 @@
 
 namespace AkeneoTest\Pim\Enrichment\EndToEnd\Product\ProductModel\ExternalApi;
 
-use Akeneo\Pim\Enrichment\Component\Product\Model\ProductModelAssociation;
 use Akeneo\Test\Integration\Configuration;
 use Akeneo\Tool\Bundle\ApiBundle\tests\integration\ApiTestCase;
 use AkeneoTest\Pim\Enrichment\Integration\Normalizer\NormalizedProductCleaner;
+use Doctrine\Common\Collections\ArrayCollection;
+use Oro\Bundle\SecurityBundle\Acl\AccessLevel;
+use Oro\Bundle\SecurityBundle\Model\AclPermission;
+use Oro\Bundle\SecurityBundle\Model\AclPrivilege;
+use Oro\Bundle\SecurityBundle\Model\AclPrivilegeIdentity;
 use PHPUnit\Framework\Assert;
 use Symfony\Component\HttpFoundation\Response;
 
 class GetProductModelEndToEnd extends ApiTestCase
 {
+    protected function removeAclFromRole(string $aclPrivilegeIdentityId): void
+    {
+        $aclManager = $this->get('oro_security.acl.manager');
+        $role = $this->get('pim_user.repository.role')->findOneByIdentifier('ROLE_ADMINISTRATOR');
+        $privilege = new AclPrivilege();
+        $identity = new AclPrivilegeIdentity($aclPrivilegeIdentityId);
+        $privilege
+            ->setIdentity($identity)
+            ->addPermission(new AclPermission('EXECUTE', AccessLevel::NONE_LEVEL));
+        $aclManager->getPrivilegeRepository()->savePrivileges(
+            $aclManager->getSid($role),
+            new ArrayCollection([$privilege])
+        );
+        $aclManager->flush();
+        $aclManager->clearCache();
+    }
+
     /**
      * @group ce
      * @group critical
@@ -87,6 +108,26 @@ class GetProductModelEndToEnd extends ApiTestCase
         $response = $client->getResponse();
         Assert::assertSame(Response::HTTP_OK, $response->getStatusCode());
         $this->assertResponse($response, $standardProductModel);
+    }
+
+    public function testAccessDeniedOnGetAProductModelIfNoPermission()
+    {
+        $this->addAssociationsToProductModel('model-biker-jacket-leather');
+
+        $client = $this->createAuthenticatedClient();
+        $this->removeAclFromRole('action:pim_api_product_list');
+        $client->request('GET', 'api/rest/v1/product-models/model-biker-jacket-leather');
+
+        $expectedResponse = <<<JSON
+{
+    "code": 403,
+    "message": "Access forbidden. You are not allowed to list product models."
+}
+JSON;
+
+        $response = $client->getResponse();
+        $this->assertSame(Response::HTTP_FORBIDDEN, $response->getStatusCode());
+        $this->assertJsonStringEqualsJsonString($expectedResponse, $response->getContent());
     }
 
     public function testFailToGetANonExistingProductModel()

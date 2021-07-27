@@ -100,6 +100,41 @@ JSON;
         $this->assertSame($standardizedProduct['values']['a_text'][0]['data'], 'My awesome text');
     }
 
+    public function testAccessDeniedOnUpdateProductModelIfNoPermission()
+    {
+        $client = $this->createAuthenticatedClient();
+        $this->removeAclFromRole('action:pim_api_product_edit');
+        $data = <<<JSON
+{
+    "code": "sub_sweat",
+    "family_variant": "familyVariantA1",
+    "parent": "sweat",
+    "values": {
+        "a_text": [
+            {
+                "locale": null,
+                "scope": null,
+                "data": "My awesome text"
+            }
+        ]
+    }
+}
+JSON;
+
+        $client->request('PATCH', 'api/rest/v1/product-models/sub_sweat', [], [], [], $data);
+
+        $expectedResponse = <<<JSON
+{
+    "code": 403,
+    "message": "Access forbidden. You are not allowed to create or update product models."
+}
+JSON;
+
+        $response = $client->getResponse();
+        $this->assertSame(Response::HTTP_FORBIDDEN, $response->getStatusCode());
+        $this->assertJsonStringEqualsJsonString($expectedResponse, $response->getContent());
+    }
+
     public function testUpdateSubProductModelAssociation()
     {
         $this->createProduct('a_second_product');
