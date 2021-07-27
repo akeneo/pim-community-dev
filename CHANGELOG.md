@@ -64,6 +64,7 @@
 - PIM-9961: Remove useless "global settings" tab on asset and record XLSX imports (SAAS only)
 - PIM-9974: [PIM-9972] Half the selected published product are unpublished through mass action
 - PIM-9984: Fix image preview in asset manager in media link attributes
+- PIM-9981: Fix permission to download logs of clean removed attribute values job
 
 ## Improvements
 
