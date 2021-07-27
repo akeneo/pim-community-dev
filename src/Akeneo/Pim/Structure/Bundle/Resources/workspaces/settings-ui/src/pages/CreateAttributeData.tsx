@@ -1,48 +1,45 @@
-import React, {FC, FunctionComponentElement, useState} from 'react';
-import {Modal, AttributesIllustration, Button, Field, TextInput, Locale} from "akeneo-design-system";
+import React, {FunctionComponentElement} from 'react';
 import {useTranslate, useUserContext} from "@akeneo-pim-community/shared";
+import {useAttributeCodeInput} from "../hooks/attributes/useAttributeCodeInput";
+import {AttributesIllustration, Button, Field, Locale, Modal, TextInput} from "akeneo-design-system";
+import {CreateAttributeButtonStepProps} from "../../../../../../../../Platform/Bundle/UIBundle/Resources/public/js/attribute/form/CreateAttributeButtonApp";
 import styled from "styled-components";
-import {useAttributeCodeInput} from "../../hooks/attributes/useAttributeCodeInput";
 
 const FieldSet = styled.div`
   & > * {
     margin-top: 20px;
   }
 `
-
-export type CreateAttributeModalExtraFieldProps = {}
-export type CreateAttributeModalExtraField = {
+type CreateAttributeModalExtraFieldProps = {}
+type CreateAttributeModalExtraField = {
+  data: {[key: string]: any};
   component: FunctionComponentElement<CreateAttributeModalExtraFieldProps>;
   valid: boolean;
 };
 
-type CreateAttributeModalProps = {
-  onConfirm: (data: { code: string, label: string }) => void;
-  onClose: () => void;
-  defaultCode?: string;
-  extraFields: CreateAttributeModalExtraField[];
+type CreateAttributeDataProps = CreateAttributeButtonStepProps & {
+  extraFields?: CreateAttributeModalExtraField[];
 }
 
-const CreateAttributeModal: FC<CreateAttributeModalProps> = ({
-  onConfirm,
+const CreateAttributeData: React.FC<CreateAttributeDataProps> = ({
   onClose,
-  defaultCode,
-  extraFields,
+  onStepConfirm,
+  initialData,
+  extraFields= [],
 }) => {
   const translate = useTranslate();
   const userContext = useUserContext();
-  const [label, setLabel] = useState<string>('');
-  const [code, CodeField, isCodeValid] = useAttributeCodeInput({defaultCode, generatedFromLabel: label});
+  const [label, setLabel] = React.useState<string>(initialData?.label || '');
+  const [code, CodeField, isCodeValid] = useAttributeCodeInput({defaultCode: initialData?.code, generatedFromLabel: label});
 
   const handleConfirm = () => {
-    onClose();
-    onConfirm({
-      code,
-      label,
-    });
+    const extraFieldsData = extraFields.reduce((old, extraField) => {
+      return {...old, ...extraField.data};
+    }, {});
+    onStepConfirm({code, label, ...extraFieldsData});
   }
 
-  return <Modal closeTitle={translate('pim_common.close')} onClose={onClose} illustration={<AttributesIllustration />}>
+  return <Modal closeTitle={translate('pim_common.close')} onClose={onClose} illustration={<AttributesIllustration/>}>
     <Modal.SectionTitle color="brand">
       {translate('pim_enrich.entity.attribute.module.create.button')}
     </Modal.SectionTitle>
@@ -72,6 +69,7 @@ const CreateAttributeModal: FC<CreateAttributeModalProps> = ({
       </Button>
     </Modal.BottomButtons>
   </Modal>
+
 }
 
-export {CreateAttributeModal};
+export {CreateAttributeData};
