@@ -1,5 +1,5 @@
 import {renderHook, act} from '@testing-library/react-hooks';
-import useInfiniteScroll from '@src/webhook/scroll/hooks/useInfiniteScroll';
+import useInfiniteScroll from '@src/shared/scroll/hooks/useInfiniteScroll';
 import {fireEvent} from '@testing-library/dom';
 
 beforeEach(() => {

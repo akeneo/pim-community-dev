@@ -87,6 +87,7 @@
 - PIM-9948: Fix performance issue on product model import
 - PIM-9966: Fix Settings page crashing when coming from the PEF
 - PIM-9973: Fix Asset attribute media type dropdown being hidden
+- PIM-9986: Fix error message returned by the backend not displayed when an error occured while deleting a category
 - PIM-9942: Fix message on DQI dashboard in French UI locale
 
 ## New features

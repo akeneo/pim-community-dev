@@ -1,4 +1,4 @@
-import findScrollParent from '@src/webhook/scroll/utils/findScrollParent';
+import findScrollParent from '@src/shared/scroll/utils/findScrollParent';
 
 test('It returns the default scrolling element when the element is null', () => {
     const parent = findScrollParent(null);
