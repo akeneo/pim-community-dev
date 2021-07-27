@@ -36,5 +36,4 @@ final class DecimalsAllowedValidation implements TableValidation
     {
         return $this->decimalsAllowed;
     }
-
 }

@@ -18,8 +18,12 @@ final class MinValidation implements TableValidation
 {
     public const KEY = 'min';
 
+    /** @var int|float */
     private $minValue;
 
+    /**
+     * @param int|float $minValue
+     */
     private function __construct($minValue)
     {
         $this->minValue = $minValue;

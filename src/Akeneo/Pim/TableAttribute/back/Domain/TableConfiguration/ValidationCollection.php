@@ -13,8 +13,8 @@ declare(strict_types=1);
 
 namespace Akeneo\Pim\TableAttribute\Domain\TableConfiguration;
 
-use Akeneo\Pim\TableAttribute\Domain\TableConfiguration\Validation\ValidationFactory;
 use Akeneo\Pim\TableAttribute\Domain\TableConfiguration\Validation\TableValidation;
+use Akeneo\Pim\TableAttribute\Domain\TableConfiguration\Validation\ValidationFactory;
 use Akeneo\Pim\TableAttribute\Domain\TableConfiguration\ValueObject\ColumnDataType;
 use Webmozart\Assert\Assert;
 

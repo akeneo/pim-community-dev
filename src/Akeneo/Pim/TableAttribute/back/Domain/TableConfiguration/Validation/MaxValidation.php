@@ -18,8 +18,12 @@ final class MaxValidation implements TableValidation
 {
     public const KEY = 'max';
 
+    /** @var int|float */
     private $maxValue;
 
+    /**
+     * @param int|float $maxValue
+     */
     private function __construct($maxValue)
     {
         $this->maxValue = $maxValue;

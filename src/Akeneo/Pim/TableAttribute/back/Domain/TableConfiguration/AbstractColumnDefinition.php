@@ -26,7 +26,7 @@ abstract class AbstractColumnDefinition implements ColumnDefinition
     protected LabelCollection $labels;
     protected ValidationCollection $validations;
 
-    protected function __construct(
+    final protected function __construct(
         ColumnCode $code,
         ColumnDataType $dataType,
         LabelCollection $labels,
