@@ -13,28 +13,7 @@ declare(strict_types=1);
 
 namespace Akeneo\Pim\TableAttribute\Domain\TableConfiguration;
 
-use Akeneo\Pim\TableAttribute\Domain\TableConfiguration\ValueObject\ColumnCode;
-use Akeneo\Pim\TableAttribute\Domain\TableConfiguration\ValueObject\ColumnDataType;
-use Webmozart\Assert\Assert;
-
 class TextColumn extends AbstractColumnDefinition
 {
-    private const DATATYPE = 'text';
-
-    /**
-     * @param array<string, mixed> $normalized
-     *
-     * @return self
-     */
-    public static function fromNormalized(array $normalized): self
-    {
-        Assert::keyExists($normalized, 'code');
-
-        return new self(
-            ColumnCode::fromString($normalized['code']),
-            ColumnDataType::fromString(self::DATATYPE),
-            LabelCollection::fromNormalized($normalized['labels'] ?? []),
-            ValidationCollection::fromNormalized($normalized['validations'] ?? [])
-        );
-    }
+    public const DATATYPE = 'text';
 }

@@ -49,12 +49,15 @@ class TextColumnSpec extends ObjectBehavior
             [
                 [
                     'code' => 'a_text',
-                    'validations' => ['foo' => 'bar'],
+                    'validations' => ['max_length' => 50],
                 ],
             ]
         );
 
-        $this->validations()->shouldBeLike(ValidationCollection::fromNormalized(['foo' => 'bar']));
+        $this->validations()->shouldBeLike(ValidationCollection::fromNormalized(
+            ColumnDataType::fromString('text'),
+            ['max_length' => 50]
+        ));
     }
 
     function it_can_be_normalized()

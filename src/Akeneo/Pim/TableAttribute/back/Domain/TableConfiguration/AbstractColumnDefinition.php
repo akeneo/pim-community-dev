@@ -15,9 +15,12 @@ namespace Akeneo\Pim\TableAttribute\Domain\TableConfiguration;
 
 use Akeneo\Pim\TableAttribute\Domain\TableConfiguration\ValueObject\ColumnCode;
 use Akeneo\Pim\TableAttribute\Domain\TableConfiguration\ValueObject\ColumnDataType;
+use Webmozart\Assert\Assert;
 
 abstract class AbstractColumnDefinition implements ColumnDefinition
 {
+    public const DATATYPE = '';
+
     protected ColumnCode $code;
     protected ColumnDataType $dataType;
     protected LabelCollection $labels;
@@ -53,6 +56,22 @@ abstract class AbstractColumnDefinition implements ColumnDefinition
     public function validations(): ValidationCollection
     {
         return $this->validations;
+    }
+
+    /**
+     * @param array<string, mixed> $normalized
+     */
+    public static function fromNormalized(array $normalized): self
+    {
+        Assert::keyExists($normalized, 'code');
+        $dataType = ColumnDataType::fromString(static::DATATYPE);
+
+        return new static(
+            ColumnCode::fromString($normalized['code']),
+            $dataType,
+            LabelCollection::fromNormalized($normalized['labels'] ?? []),
+            ValidationCollection::fromNormalized($dataType, $normalized['validations'] ?? [])
+        );
     }
 
     public function normalize(): array

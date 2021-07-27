@@ -10,9 +10,17 @@ declare(strict_types=1);
  * file that was distributed with this source code.
  */
 
-namespace Akeneo\Pim\TableAttribute\Domain\TableConfiguration;
+namespace Akeneo\Pim\TableAttribute\Domain\TableConfiguration\Validation;
 
-class BooleanColumn extends AbstractColumnDefinition
+interface TableValidation
 {
-    public const DATATYPE = 'boolean';
+    /**
+     * @param mixed $value
+     */
+    public static function fromValue($value): TableValidation;
+
+    /**
+     * @return mixed
+     */
+    public function getValue();
 }

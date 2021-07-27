@@ -15,6 +15,7 @@ namespace Akeneo\Pim\TableAttribute\Infrastructure\Validation\ProductValue;
 
 use Akeneo\Pim\TableAttribute\Domain\TableConfiguration\Repository\TableConfigurationRepository;
 use Akeneo\Pim\TableAttribute\Domain\TableConfiguration\TableConfiguration;
+use Akeneo\Pim\TableAttribute\Domain\TableConfiguration\Validation\MinValidation;
 use Akeneo\Pim\TableAttribute\Domain\TableConfiguration\ValidationCollection;
 use Akeneo\Pim\TableAttribute\Domain\TableConfiguration\ValueObject\ColumnCode;
 use Akeneo\Pim\TableAttribute\Domain\Value\Cell;
@@ -78,11 +79,7 @@ final class TableValidationsShouldMatchValidator extends ConstraintValidator
                 return $this->buildConstraintsForText($validations);
             case 'number':
                 return $this->buildConstraintsForNumber($validations);
-            case 'boolean':
-            case 'select':
-                return [];
             default:
-                // TODO: Return empty or exception?
                 return [];
         }
     }
@@ -108,6 +105,8 @@ final class TableValidationsShouldMatchValidator extends ConstraintValidator
 
     /**
      * @return Constraint[]
+     *
+     * TODO: test the value is a number or a string
      */
     private function buildConstraintsForNumber(ValidationCollection $validations): array
     {

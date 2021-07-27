@@ -49,12 +49,15 @@ class NumberColumnSpec extends ObjectBehavior
             [
                 [
                     'code' => 'number',
-                    'validations' => ['foo' => 'bar'],
+                    'validations' => ['min' => 5],
                 ],
             ]
         );
 
-        $this->validations()->shouldBeLike(ValidationCollection::fromNormalized(['foo' => 'bar']));
+        $this->validations()->shouldBeLike(ValidationCollection::fromNormalized(
+            ColumnDataType::fromString('number'),
+            ['min' => 5]
+        ));
     }
 
     function it_can_be_normalized()

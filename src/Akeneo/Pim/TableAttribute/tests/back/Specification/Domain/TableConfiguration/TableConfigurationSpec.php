@@ -87,11 +87,11 @@ class TableConfigurationSpec extends ObjectBehavior
         ]]);
 
         $this->getValidations(ColumnCode::fromString('ingredient'))
-            ->shouldBeLike(ValidationCollection::fromNormalized([]));
+            ->shouldBeLike(ValidationCollection::createEmpty());
         $this->getValidations(ColumnCode::fromString('quantity'))
-            ->shouldBeLike(ValidationCollection::fromNormalized(['min' => 5, 'max' => 20]));
+            ->shouldBeLike(ValidationCollection::fromNormalized(ColumnDataType::fromString('number'), ['min' => 5, 'max' => 20]));
         $this->getValidations(ColumnCode::fromString('description'))
-            ->shouldBeLike(ValidationCollection::fromNormalized(['max_length' => 50]));
+            ->shouldBeLike(ValidationCollection::fromNormalized(ColumnDataType::fromString('text'), ['max_length' => 50]));
         $this->getValidations(ColumnCode::fromString('unknown'))
             ->shouldBe(null);
     }

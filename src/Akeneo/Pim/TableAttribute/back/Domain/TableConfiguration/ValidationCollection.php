@@ -13,25 +13,29 @@ declare(strict_types=1);
 
 namespace Akeneo\Pim\TableAttribute\Domain\TableConfiguration;
 
+use Akeneo\Pim\TableAttribute\Domain\TableConfiguration\Validation\ValidationFactory;
+use Akeneo\Pim\TableAttribute\Domain\TableConfiguration\Validation\TableValidation;
+use Akeneo\Pim\TableAttribute\Domain\TableConfiguration\ValueObject\ColumnDataType;
 use Webmozart\Assert\Assert;
 
 final class ValidationCollection
 {
     /** @var array<string, mixed> */
-    private array $validations;
+    private array $validations = [];
 
     /**
      * @param array<string, mixed> $validations
      */
     private function __construct(array $validations)
     {
+        Assert::allImplementsInterface($validations, TableValidation::class);
         $this->validations = $validations;
     }
 
     /**
      * @param array<string, mixed>|\stdClass $validations
      */
-    public static function fromNormalized($validations): ValidationCollection
+    public static function fromNormalized(ColumnDataType $dataType, $validations): ValidationCollection
     {
         if ($validations instanceof \stdClass) {
             $validations = [];
@@ -39,7 +43,17 @@ final class ValidationCollection
         Assert::isArray($validations);
         Assert::allStringNotEmpty(array_keys($validations));
 
-        return new self($validations);
+        $validationObjects = [];
+        foreach ($validations as $key => $value) {
+            $validationObjects[$key] = ValidationFactory::create($dataType, $key, $value);
+        }
+
+        return new self($validationObjects);
+    }
+
+    public static function createEmpty(): ValidationCollection
+    {
+        return new self([]);
     }
 
     /**
@@ -47,6 +61,9 @@ final class ValidationCollection
      */
     public function normalize()
     {
-        return 0 === count($this->validations) ? (object) [] : $this->validations;
+        return 0 === count($this->validations) ? (object) [] : array_map(
+            fn (TableValidation $validation) => $validation->getValue(),
+            $this->validations
+        );
     }
 }

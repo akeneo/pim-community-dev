@@ -66,12 +66,12 @@ class BooleanColumnSpec extends ObjectBehavior
                 [
                     'code' => 'is_allergenic',
                     'labels' => ['en_US' => 'Is allergenic', 'fr_FR' => 'Allergène'],
-                    'validations' => ['foo' => 'bar'],
+                    'validations' => [],
                 ],
             ]
         );
 
-        $this->validations()->shouldBeLike(ValidationCollection::fromNormalized(['foo' => 'bar']));
+        $this->validations()->shouldBeLike(ValidationCollection::createEmpty());
     }
 
     function it_can_be_normalized()

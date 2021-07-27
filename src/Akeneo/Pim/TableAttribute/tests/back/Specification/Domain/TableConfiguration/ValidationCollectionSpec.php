@@ -14,45 +14,46 @@ declare(strict_types=1);
 namespace Specification\Akeneo\Pim\TableAttribute\Domain\TableConfiguration;
 
 use Akeneo\Pim\TableAttribute\Domain\TableConfiguration\ValidationCollection;
+use Akeneo\Pim\TableAttribute\Domain\TableConfiguration\ValueObject\ColumnDataType;
 use PhpSpec\ObjectBehavior;
 
 class ValidationCollectionSpec extends ObjectBehavior
 {
     function it_is_initializable()
     {
-        $this->beConstructedThrough('fromNormalized', [['max_length' => 255]]);
+        $this->beConstructedThrough('fromNormalized', [ColumnDataType::fromString('text'), ['max_length' => 100]]);
         $this->shouldHaveType(ValidationCollection::class);
     }
 
     function it_throws_an_exception_when_there_are_no_keys()
     {
-        $this->beConstructedThrough('fromNormalized', [['something']]);
+        $this->beConstructedThrough('fromNormalized', [ColumnDataType::fromString('text'), ['something']]);
         $this->shouldThrow(\InvalidArgumentException::class)->duringInstantiation();
     }
 
     function it_throws_an_exception_when_keys_are_numbers()
     {
-        $this->beConstructedThrough('fromNormalized', [[12 => 'something']]);
+        $this->beConstructedThrough('fromNormalized', [ColumnDataType::fromString('text'), [12 => 'something']]);
         $this->shouldThrow(\InvalidArgumentException::class)->duringInstantiation();
     }
 
     function it_can_be_instantiated_with_a_stdclass()
     {
-        $this->beConstructedThrough('fromNormalized', [new \stdClass()]);
+        $this->beConstructedThrough('fromNormalized', [ColumnDataType::fromString('text'), new \stdClass()]);
 
         $this->normalize()->shouldBeLike((object) []);
     }
 
     function it_normalizes_validations()
     {
-        $this->beConstructedThrough('fromNormalized', [['max_length' => 255]]);
+        $this->beConstructedThrough('fromNormalized', [ColumnDataType::fromString('text'), ['max_length' => 255]]);
 
         $this->normalize()->shouldReturn(['max_length' => 255]);
     }
 
     function it_normalizes_empty_validation()
     {
-        $this->beConstructedThrough('fromNormalized', [[]]);
+        $this->beConstructedThrough('createEmpty');
 
         $this->normalize()->shouldBeLike((object) []);
     }
