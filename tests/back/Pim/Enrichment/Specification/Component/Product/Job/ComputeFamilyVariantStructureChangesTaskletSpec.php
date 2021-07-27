@@ -248,6 +248,8 @@ class ComputeFamilyVariantStructureChangesTaskletSpec extends ObjectBehavior
             ->shouldBeCalled();
         $validator->validate($variantProduct)->willReturn($variantProductViolations);
         $variantProductViolations->count()->willReturn(1);
+        $variantProductViolations->rewind()->shouldBeCalled();
+        $variantProductViolations->valid()->shouldBeCalled();
         $productSaver->saveAll([$variantProduct])->shouldNotBeCalled();
 
         $this->setStepExecution($stepExecution);
@@ -316,6 +318,8 @@ class ComputeFamilyVariantStructureChangesTaskletSpec extends ObjectBehavior
             ->shouldBeCalled();
         $validator->validate($rootProductModel)->willReturn($rootProductModelViolations);
         $rootProductModelViolations->count()->willReturn(1);
+        $rootProductModelViolations->rewind()->shouldBeCalled();
+        $rootProductModelViolations->valid()->shouldBeCalled();
         $productModelSaver->saveAll([$rootProductModel])->shouldNotBeCalled();
 
         $this->setStepExecution($stepExecution);
