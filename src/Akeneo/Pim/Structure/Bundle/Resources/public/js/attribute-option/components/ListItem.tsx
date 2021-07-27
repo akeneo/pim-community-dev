@@ -128,7 +128,11 @@ const ListItem: FC<AttributeOptionItemProps> = ({children, ...props}) => {
         />
         <span className="AknAttributeOption-itemCode AknAttributeOption-itemLabel">
           <div>
-            <span>{data.optionValues[locale].value}</span>
+            <span>
+              {data.optionValues[locale] && data.optionValues[locale].value
+                ? data.optionValues[locale].value
+                : `[${data.code}]`}
+            </span>
           </div>
         </span>
         <span className="AknAttributeOption-itemCode" role="attribute-option-item-label">
