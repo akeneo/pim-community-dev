@@ -217,3 +217,9 @@ jobs:
         alias:     asset_manager_compute_transformations
         label:     asset_manager_compute_transformations
         type:      asset_manager_compute_transformations
+
+    remove_completeness_for_channel_and_locale:
+        connector: internal
+        alias:     remove_completeness_for_channel_and_locale
+        label:     Remove completeness for channel and locale
+        type:      remove_completeness_for_channel_and_locale

@@ -7,6 +7,10 @@
 - PIM-9968: Fix product (variant included) history not displayed for a read-only user
 - PIM-9979: Add command to fix internal job permissions
 
+## Improvements
+
+PIM-9738: transform the hidden `pim:catalog:remove-completeness-for-channel-and-locale` command into a job.
+
 # 4.0.119 (2021-07-15)
 
 ## Bug fixes

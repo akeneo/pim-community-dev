@@ -197,3 +197,9 @@ jobs:
         alias:     remove_non_existing_product_values
         label:     Remove non existing product values
         type:      remove_non_existing_product_values
+
+    remove_completeness_for_channel_and_locale:
+        connector: internal
+        alias:     remove_completeness_for_channel_and_locale
+        label:     Remove completeness for channel and locale
+        type:      remove_completeness_for_channel_and_locale
