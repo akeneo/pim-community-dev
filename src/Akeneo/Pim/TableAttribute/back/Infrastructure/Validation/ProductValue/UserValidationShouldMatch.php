@@ -20,7 +20,7 @@ final class UserValidationShouldMatch extends Constraint
     public const MIN_MESSAGE = 'TODO This value should be {{ limit }} or more.';
     public const MAX_MESSAGE = 'TODO This value should be {{ limit }} or less.';
     public const DECIMALS_ALLOWED_MESSAGE = 'TODO This value should not allow decimal.';
-    public const MAX_LENGTH_MESSAGE = 'TODO This value should contains {{ limit }} characters or less.';
+    public const MAX_LENGTH_MESSAGE = 'TODO This value should contain {{ limit }} characters or less.';
 
     public function getTargets(): array
     {

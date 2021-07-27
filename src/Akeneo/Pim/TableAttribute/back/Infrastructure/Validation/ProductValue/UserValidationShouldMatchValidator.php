@@ -47,7 +47,7 @@ final class UserValidationShouldMatchValidator extends ConstraintValidator
         foreach ($table as $rowIndex => $row) {
             /** @var Cell $cell */
             foreach ($row as $stringColumnCode => $cell) {
-                $constraints = $this->BuildConstraints($tableConfiguration, $stringColumnCode);
+                $constraints = $this->buildConstraints($tableConfiguration, $stringColumnCode);
 
                 if (0 < count($constraints)) {
                     $validator
@@ -61,7 +61,7 @@ final class UserValidationShouldMatchValidator extends ConstraintValidator
     /**
      * @return Constraint[]
      */
-    private function BuildConstraints(TableConfiguration $tableConfiguration, string $stringColumnCode): array
+    private function buildConstraints(TableConfiguration $tableConfiguration, string $stringColumnCode): array
     {
         $validations = $tableConfiguration->getValidations(ColumnCode::fromString($stringColumnCode));
         if (null === $validations) {
