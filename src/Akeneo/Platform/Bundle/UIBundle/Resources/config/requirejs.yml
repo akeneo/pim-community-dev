@@ -78,6 +78,9 @@ config:
         pim_catalog_metric: MetricIcon
         pim_reference_data_multiselect: AttributeMultiSelectIcon
         pim_reference_data_simpleselect: AttributeSelectIcon
+      steps:
+        default:
+          - '@pimui/js/attribute/form/CreateAttributeCodeAndLabel.tsx'
     pim/fetcher-registry:
       fetchers:
         default: pim/base-fetcher
