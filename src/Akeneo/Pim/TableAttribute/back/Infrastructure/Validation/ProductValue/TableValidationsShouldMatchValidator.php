@@ -23,7 +23,7 @@ use Symfony\Component\Validator\Constraints as Constraints;
 use Symfony\Component\Validator\ConstraintValidator;
 use Webmozart\Assert\Assert;
 
-final class UserValidationShouldMatchValidator extends ConstraintValidator
+final class TableValidationsShouldMatchValidator extends ConstraintValidator
 {
     private TableConfigurationRepository $tableConfigurationRepository;
 
@@ -34,7 +34,7 @@ final class UserValidationShouldMatchValidator extends ConstraintValidator
 
     public function validate($tableValue, Constraint $constraint): void
     {
-        Assert::isInstanceOf($constraint, UserValidationShouldMatch::class);
+        Assert::isInstanceOf($constraint, TableValidationsShouldMatch::class);
         if (!$tableValue instanceof TableValue) {
             return;
         }
@@ -74,27 +74,27 @@ final class UserValidationShouldMatchValidator extends ConstraintValidator
                 case 'min':
                     $constraints[] = new Constraints\Range([
                         'min' => $validationValue,
-                        'minMessage' => UserValidationShouldMatch::MIN_MESSAGE,
+                        'minMessage' => TableValidationsShouldMatch::MIN_MESSAGE,
                     ]);
                     break;
                 case 'max':
                     $constraints[] = new Constraints\Range([
                         'max' => $validationValue,
-                        'maxMessage' => UserValidationShouldMatch::MAX_MESSAGE,
+                        'maxMessage' => TableValidationsShouldMatch::MAX_MESSAGE,
                     ]);
                     break;
                 case 'decimals_allowed':
                     if (!$validationValue) {
                         $constraints[] = new Constraints\Type([
                             'type' => 'integer',
-                            'message' => UserValidationShouldMatch::DECIMALS_ALLOWED_MESSAGE,
+                            'message' => TableValidationsShouldMatch::DECIMALS_ALLOWED_MESSAGE,
                         ]);
                     }
                     break;
                 case 'max_length':
                     $constraints[] = new Constraints\Length([
                         'max' => $validationValue,
-                        'maxMessage' => UserValidationShouldMatch::MAX_LENGTH_MESSAGE,
+                        'maxMessage' => TableValidationsShouldMatch::MAX_LENGTH_MESSAGE,
                     ]);
                     break;
                 default:

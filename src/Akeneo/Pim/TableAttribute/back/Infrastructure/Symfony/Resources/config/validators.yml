@@ -51,7 +51,7 @@ services:
         tags:
             - { name: 'validator.constraint_validator' }
 
-    Akeneo\Pim\TableAttribute\Infrastructure\Validation\ProductValue\UserValidationShouldMatchValidator:
+    Akeneo\Pim\TableAttribute\Infrastructure\Validation\ProductValue\TableValidationsShouldMatchValidator:
         arguments:
             - '@Akeneo\Pim\TableAttribute\Domain\TableConfiguration\Repository\TableConfigurationRepository'
         tags:

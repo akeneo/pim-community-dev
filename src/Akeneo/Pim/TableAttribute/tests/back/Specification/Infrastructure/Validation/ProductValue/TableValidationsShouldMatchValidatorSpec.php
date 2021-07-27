@@ -19,8 +19,8 @@ use Akeneo\Pim\TableAttribute\Domain\TableConfiguration\SelectColumn;
 use Akeneo\Pim\TableAttribute\Domain\TableConfiguration\TableConfiguration;
 use Akeneo\Pim\TableAttribute\Domain\TableConfiguration\TextColumn;
 use Akeneo\Pim\TableAttribute\Domain\Value\Table;
-use Akeneo\Pim\TableAttribute\Infrastructure\Validation\ProductValue\UserValidationShouldMatch;
-use Akeneo\Pim\TableAttribute\Infrastructure\Validation\ProductValue\UserValidationShouldMatchValidator;
+use Akeneo\Pim\TableAttribute\Infrastructure\Validation\ProductValue\TableValidationsShouldMatch;
+use Akeneo\Pim\TableAttribute\Infrastructure\Validation\ProductValue\TableValidationsShouldMatchValidator;
 use Akeneo\Pim\TableAttribute\Infrastructure\Value\TableValue;
 use PhpSpec\ObjectBehavior;
 use Prophecy\Argument;
@@ -33,7 +33,7 @@ use Symfony\Component\Validator\Context\ExecutionContext;
 use Symfony\Component\Validator\Validator\ContextualValidatorInterface;
 use Symfony\Component\Validator\Validator\ValidatorInterface;
 
-final class UserValidationShouldMatchValidatorSpec extends ObjectBehavior
+final class TableValidationsShouldMatchValidatorSpec extends ObjectBehavior
 {
     function let(TableConfigurationRepository $tableConfigurationRepository, ExecutionContext $context)
     {
@@ -43,7 +43,7 @@ final class UserValidationShouldMatchValidatorSpec extends ObjectBehavior
 
     function it_is_initializable()
     {
-        $this->shouldHaveType(UserValidationShouldMatchValidator::class);
+        $this->shouldHaveType(TableValidationsShouldMatchValidator::class);
         $this->shouldImplement(ConstraintValidatorInterface::class);
     }
 
@@ -66,7 +66,7 @@ final class UserValidationShouldMatchValidatorSpec extends ObjectBehavior
 
         $contextualValidator->validate(Argument::cetera())->shouldNotBeCalled();
 
-        $this->validate(new \stdClass(), new UserValidationShouldMatch());
+        $this->validate(new \stdClass(), new TableValidationsShouldMatch());
     }
 
     function it_does_nothing_when(
@@ -102,28 +102,28 @@ final class UserValidationShouldMatchValidatorSpec extends ObjectBehavior
 
         $baseContextualValidator->atPath('[0].quantity')->willReturn($contextualValidator1);
         $contextualValidator1->validate(12, [
-            new Range(['min' => 5, 'minMessage' => UserValidationShouldMatch::MIN_MESSAGE]),
-            new Range(['max' => 50, 'maxMessage' => UserValidationShouldMatch::MAX_MESSAGE]),
-            new Type([ 'type' => 'integer', 'message' => UserValidationShouldMatch::DECIMALS_ALLOWED_MESSAGE]),
+            new Range(['min' => 5, 'minMessage' => TableValidationsShouldMatch::MIN_MESSAGE]),
+            new Range(['max' => 50, 'maxMessage' => TableValidationsShouldMatch::MAX_MESSAGE]),
+            new Type([ 'type' => 'integer', 'message' => TableValidationsShouldMatch::DECIMALS_ALLOWED_MESSAGE]),
         ])->shouldBeCalledOnce();
 
         $baseContextualValidator->atPath('[0].description')->willReturn($contextualValidator2);
         $contextualValidator2->validate('a description', [
-            new Length(['max' => 15, 'maxMessage' => UserValidationShouldMatch::MAX_LENGTH_MESSAGE]),
+            new Length(['max' => 15, 'maxMessage' => TableValidationsShouldMatch::MAX_LENGTH_MESSAGE]),
         ])->shouldBeCalledOnce();
 
         $baseContextualValidator->atPath('[1].quantity')->willReturn($contextualValidator3);
         $contextualValidator3->validate(4, [
-            new Range(['min' => 5, 'minMessage' => UserValidationShouldMatch::MIN_MESSAGE]),
-            new Range(['max' => 50, 'maxMessage' => UserValidationShouldMatch::MAX_MESSAGE]),
-            new Type([ 'type' => 'integer', 'message' => UserValidationShouldMatch::DECIMALS_ALLOWED_MESSAGE]),
+            new Range(['min' => 5, 'minMessage' => TableValidationsShouldMatch::MIN_MESSAGE]),
+            new Range(['max' => 50, 'maxMessage' => TableValidationsShouldMatch::MAX_MESSAGE]),
+            new Type([ 'type' => 'integer', 'message' => TableValidationsShouldMatch::DECIMALS_ALLOWED_MESSAGE]),
         ])->shouldBeCalledOnce();
 
         $baseContextualValidator->atPath('[3].description')->willReturn($contextualValidator4);
         $contextualValidator4->validate('another description', [
-            new Length(['max' => 15, 'maxMessage' => UserValidationShouldMatch::MAX_LENGTH_MESSAGE]),
+            new Length(['max' => 15, 'maxMessage' => TableValidationsShouldMatch::MAX_LENGTH_MESSAGE]),
         ])->shouldBeCalledOnce();
 
-        $this->validate($tableValue, new UserValidationShouldMatch());
+        $this->validate($tableValue, new TableValidationsShouldMatch());
     }
 }
