@@ -4,8 +4,8 @@ declare(strict_types=1);
 
 namespace Akeneo\Pim\Permission\Component\Filter;
 
+use Akeneo\Channel\Component\Query\PublicApi\Permission\GetAllViewableLocalesForUserInterface;
 use Akeneo\Pim\Enrichment\Component\Product\ProductModel\Filter\AttributeFilterInterface;
-use Akeneo\Pim\Structure\Component\Query\PublicApi\Permission\GetAllViewableLocalesForUser;
 use Akeneo\Pim\Structure\Component\Query\PublicApi\Permission\GetViewableAttributeCodesForUserInterface;
 use Akeneo\Tool\Component\StorageUtils\Exception\UnknownPropertyException;
 use Akeneo\UserManagement\Component\Model\UserInterface;
@@ -22,14 +22,9 @@ use Webmozart\Assert\Assert;
  */
 class GrantedProductAttributeFilter implements AttributeFilterInterface
 {
-    /** @var AttributeFilterInterface */
-    private $productAttributeFilter;
-
-    /** @var GetViewableAttributeCodesForUserInterface */
-    private $getViewableAttributeCodesForUser;
-
-    /** @var GetAllViewableLocalesForUser */
-    private $getViewableLocalesForUser;
+    private AttributeFilterInterface $productAttributeFilter;
+    private GetViewableAttributeCodesForUserInterface $getViewableAttributeCodesForUser;
+    private GetAllViewableLocalesForUserInterface $getViewableLocalesForUser;
 
     /** @var TokenStorageInterface */
     private $tokenStorage;
@@ -37,7 +32,7 @@ class GrantedProductAttributeFilter implements AttributeFilterInterface
     public function __construct(
         AttributeFilterInterface $productAttributeFilter,
         GetViewableAttributeCodesForUserInterface $getViewableAttributeCodesForUser,
-        GetAllViewableLocalesForUser $getViewableLocalesForUser,
+        GetAllViewableLocalesForUserInterface $getViewableLocalesForUser,
         TokenStorageInterface $tokenStorage
     ) {
         $this->productAttributeFilter = $productAttributeFilter;

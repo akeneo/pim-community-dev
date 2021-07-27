@@ -6,3 +6,6 @@ services:
             - '@Akeneo\Platform\TailoredExport\Domain\Query\FindSystemSourcesInterface'
             - '@akeneo.pim.structure.query.find_association_types'
             - '@Akeneo\Platform\TailoredExport\Domain\Query\FindViewableAttributesInterface'
+
+    Akeneo\Platform\TailoredExport\Infrastructure\Controller\CanEditJobAction:
+        public: true

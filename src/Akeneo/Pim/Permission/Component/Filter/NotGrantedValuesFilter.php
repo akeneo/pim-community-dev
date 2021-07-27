@@ -11,10 +11,10 @@
 
 namespace Akeneo\Pim\Permission\Component\Filter;
 
+use Akeneo\Channel\Component\Query\PublicApi\Permission\GetAllViewableLocalesForUserInterface;
 use Akeneo\Pim\Enrichment\Component\Product\Model\EntityWithFamilyVariantInterface;
 use Akeneo\Pim\Enrichment\Component\Product\Model\EntityWithValuesInterface;
 use Akeneo\Pim\Permission\Component\NotGrantedDataFilterInterface;
-use Akeneo\Pim\Structure\Component\Query\PublicApi\Permission\GetAllViewableLocalesForUser;
 use Akeneo\Pim\Structure\Component\Query\PublicApi\Permission\GetViewableAttributeCodesForUserInterface;
 use Akeneo\Tool\Component\StorageUtils\Exception\InvalidObjectException;
 use Akeneo\UserManagement\Component\Model\UserInterface;
@@ -29,18 +29,15 @@ use Webmozart\Assert\Assert;
  */
 class NotGrantedValuesFilter implements NotGrantedDataFilterInterface
 {
-    /** @var GetViewableAttributeCodesForUserInterface */
-    private $getViewableAttributeCodes;
-
-    /** @var GetAllViewableLocalesForUser */
-    private $getViewableLocaleCodesForUser;
+    private GetViewableAttributeCodesForUserInterface $getViewableAttributeCodes;
+    private GetAllViewableLocalesForUserInterface $getViewableLocaleCodesForUser;
 
     /** @var TokenStorageInterface */
     private $tokenStorage;
 
     public function __construct(
         GetViewableAttributeCodesForUserInterface $getViewableAttributeCodes,
-        GetAllViewableLocalesForUser $getViewableLocaleCodesForUser,
+        GetAllViewableLocalesForUserInterface $getViewableLocaleCodesForUser,
         TokenStorageInterface $tokenStorage
     ) {
         $this->getViewableAttributeCodes = $getViewableAttributeCodes;

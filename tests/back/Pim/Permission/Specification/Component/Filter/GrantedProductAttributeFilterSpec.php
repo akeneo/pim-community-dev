@@ -4,9 +4,9 @@ declare(strict_types=1);
 
 namespace Specification\Akeneo\Pim\Permission\Component\Filter;
 
+use Akeneo\Channel\Component\Query\PublicApi\Permission\GetAllViewableLocalesForUserInterface;
 use Akeneo\Pim\Enrichment\Component\Product\ProductModel\Filter\AttributeFilterInterface;
 use Akeneo\Pim\Permission\Component\Filter\GrantedProductAttributeFilter;
-use Akeneo\Pim\Structure\Component\Query\PublicApi\Permission\GetAllViewableLocalesForUser;
 use Akeneo\Pim\Structure\Component\Query\PublicApi\Permission\GetViewableAttributeCodesForUserInterface;
 use Akeneo\Tool\Component\StorageUtils\Exception\UnknownPropertyException;
 use Akeneo\UserManagement\Component\Model\UserInterface;
@@ -20,7 +20,7 @@ class GrantedProductAttributeFilterSpec extends ObjectBehavior
     function let(
         AttributeFilterInterface $productAttributeFilter,
         GetViewableAttributeCodesForUserInterface $getViewableAttributeCodesForUser,
-        GetAllViewableLocalesForUser $getViewableLocalesForUser,
+        GetAllViewableLocalesForUserInterface $getViewableLocalesForUser,
         TokenStorageInterface $tokenStorage,
         TokenInterface $token,
         UserInterface $user

@@ -13,6 +13,7 @@ declare(strict_types=1);
 
 namespace Akeneo\Pim\Permission\Bundle\Enrichment\Storage\Sql\ProductModel;
 
+use Akeneo\Channel\Component\Query\PublicApi\Permission\GetAllViewableLocalesForUserInterface;
 use Akeneo\Pim\Enrichment\Component\Product\Connector\ReadModel\ConnectorProductModel;
 use Akeneo\Pim\Enrichment\Component\Product\Connector\ReadModel\ConnectorProductModelList;
 use Akeneo\Pim\Enrichment\Component\Product\Exception\ObjectNotFoundException;
@@ -22,7 +23,6 @@ use Akeneo\Pim\Permission\Bundle\Enrichment\Storage\Sql\Category\GetViewableCate
 use Akeneo\Pim\Permission\Bundle\Enrichment\Storage\Sql\Product\FetchUserRightsOnProduct;
 use Akeneo\Pim\Permission\Component\Authorization\Model\UserRightsOnProduct;
 use Akeneo\Pim\Permission\Component\Authorization\Model\UserRightsOnProductModel;
-use Akeneo\Pim\Structure\Component\Query\PublicApi\Permission\GetAllViewableLocalesForUser;
 use Akeneo\Pim\Structure\Component\Query\PublicApi\Permission\GetViewableAttributeCodesForUserInterface;
 use Akeneo\Pim\WorkOrganization\Workflow\Component\Query\PublicApi\GetWorkflowStatusFromProductModelCodes;
 
@@ -56,7 +56,7 @@ class SqlGetConnectorProductModelsWithPermissions implements GetConnectorProduct
         GetConnectorProductModels $getConnectorProductModels,
         GetViewableCategoryCodes $getViewableCategoryCodes,
         GetViewableAttributeCodesForUserInterface $getViewableAttributeCodesForUser,
-        GetAllViewableLocalesForUser $getViewableLocaleCodesForUser,
+        GetAllViewableLocalesForUserInterface $getViewableLocaleCodesForUser,
         FetchUserRightsOnProduct $fetchUserRightsOnProduct,
         FetchUserRightsOnProductModel $fetchUserRightsOnProductModel,
         GetWorkflowStatusFromProductModelCodes $getWorkflowStatusFromProductModelCodes

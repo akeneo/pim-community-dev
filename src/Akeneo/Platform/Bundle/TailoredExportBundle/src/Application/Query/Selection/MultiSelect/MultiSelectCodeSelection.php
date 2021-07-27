@@ -29,4 +29,14 @@ final class MultiSelectCodeSelection implements MultiSelectSelectionInterface
     {
         return $this->separator;
     }
+
+    public function getAllLocaleCodes(): array
+    {
+        return [];
+    }
+
+    public function getAllAttributeCodes(): array
+    {
+        return [];
+    }
 }

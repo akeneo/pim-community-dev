@@ -45,4 +45,14 @@ final class AssetCollectionCodeSelection implements AssetCollectionSelectionInte
     {
         return $this->attributeCode;
     }
+
+    public function getAllLocaleCodes(): array
+    {
+        return [];
+    }
+
+    public function getAllAttributeCodes(): array
+    {
+        return [$this->attributeCode];
+    }
 }

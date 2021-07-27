@@ -2,6 +2,7 @@
 
 namespace Specification\Akeneo\Pim\Permission\Component\Filter;
 
+use Akeneo\Channel\Component\Query\PublicApi\Permission\GetAllViewableLocalesForUserInterface;
 use Akeneo\Pim\Enrichment\Component\Product\Model\EntityWithValuesInterface;
 use Akeneo\Pim\Enrichment\Component\Product\Model\Product;
 use Akeneo\Pim\Enrichment\Component\Product\Model\ProductModel;
@@ -10,7 +11,6 @@ use Akeneo\Pim\Enrichment\Component\Product\Value\OptionValue;
 use Akeneo\Pim\Enrichment\Component\Product\Value\ScalarValue;
 use Akeneo\Pim\Permission\Component\Filter\NotGrantedValuesFilter;
 use Akeneo\Pim\Permission\Component\NotGrantedDataFilterInterface;
-use Akeneo\Pim\Structure\Component\Query\PublicApi\Permission\GetAllViewableLocalesForUser;
 use Akeneo\Pim\Structure\Component\Query\PublicApi\Permission\GetViewableAttributeCodesForUserInterface;
 use Akeneo\Pim\Structure\Component\Model\FamilyVariant;
 use Akeneo\Tool\Component\StorageUtils\Exception\InvalidObjectException;
@@ -25,7 +25,7 @@ class NotGrantedValuesFilterSpec extends ObjectBehavior
 {
     function let(
         GetViewableAttributeCodesForUserInterface $getViewableAttributeCodes,
-        GetAllViewableLocalesForUser $getViewableLocaleCodesForUser,
+        GetAllViewableLocalesForUserInterface $getViewableLocaleCodesForUser,
         TokenStorageInterface $tokenStorage,
         TokenInterface $token,
         UserInterface $user

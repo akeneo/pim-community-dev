@@ -17,4 +17,14 @@ use Akeneo\Platform\TailoredExport\Application\Query\Selection\SelectionInterfac
 
 final class ScalarSelection implements SelectionInterface
 {
+
+    public function getAllLocaleCodes(): array
+    {
+        return [];
+    }
+
+    public function getAllAttributeCodes(): array
+    {
+        return [];
+    }
 }

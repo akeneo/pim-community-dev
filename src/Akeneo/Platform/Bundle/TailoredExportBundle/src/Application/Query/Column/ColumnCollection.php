@@ -53,4 +53,24 @@ class ColumnCollection implements \IteratorAggregate
 
         return SourceCollection::create($sources);
     }
+
+    public function getAllLocaleCodes(): array
+    {
+        $localeCodes = [];
+        foreach ($this->getAllSources() as $source) {
+            $localeCodes = array_merge($localeCodes, $source->getAllLocaleCodes());
+        }
+
+        return array_unique($localeCodes);
+    }
+
+    public function getAllAttributeCodes(): array
+    {
+        $attributeCodes = [];
+        foreach ($this->getAllSources() as $source) {
+            $attributeCodes = array_merge($attributeCodes, $source->getAllAttributeCodes());
+        }
+
+        return array_unique($attributeCodes);
+    }
 }

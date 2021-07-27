@@ -15,4 +15,6 @@ namespace Akeneo\Platform\TailoredExport\Application\Query\Operation;
 
 interface OperationInterface
 {
+    public function getAllLocaleCodes(): array;
+    public function getAllAttributeCodes(): array;
 }

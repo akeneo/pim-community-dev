@@ -16,4 +16,14 @@ namespace Akeneo\Platform\TailoredExport\Application\Query\Selection\Parent;
 final class ParentCodeSelection implements ParentSelectionInterface
 {
     public const TYPE = 'code';
+
+    public function getAllLocaleCodes(): array
+    {
+        return [];
+    }
+
+    public function getAllAttributeCodes(): array
+    {
+        return [];
+    }
 }

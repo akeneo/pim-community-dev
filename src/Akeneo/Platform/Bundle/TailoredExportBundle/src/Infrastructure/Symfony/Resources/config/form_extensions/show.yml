@@ -43,12 +43,13 @@ extensions:
         position: 100
 
     pim-job-instance-xlsx-tailored-product-export-show-edit:
-        module: pim/common/redirect
+        module: pimee/job/export/edit/edit-button
         parent: pim-job-instance-xlsx-tailored-product-export-show
         targetZone: buttons
         position: 100
         aclResourceId: pim_importexport_export_profile_edit
         config:
+            iconName: pencil
             label: pim_common.edit
             route: pim_importexport_export_profile_edit
             buttonClass: AknButton AknButton--action

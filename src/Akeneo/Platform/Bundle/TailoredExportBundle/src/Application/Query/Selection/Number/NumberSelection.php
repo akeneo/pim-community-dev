@@ -29,4 +29,14 @@ class NumberSelection implements SelectionInterface
     {
         return $this->decimalSeparator;
     }
+
+    public function getAllLocaleCodes(): array
+    {
+        return [];
+    }
+
+    public function getAllAttributeCodes(): array
+    {
+        return [];
+    }
 }

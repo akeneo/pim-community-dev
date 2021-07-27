@@ -14,6 +14,7 @@ declare(strict_types=1);
 namespace Akeneo\Platform\TailoredExport\Application\Query\Source;
 
 use Akeneo\Platform\TailoredExport\Application\Query\Operation\OperationCollection;
+use Akeneo\Platform\TailoredExport\Application\Query\Operation\OperationInterface;
 use Akeneo\Platform\TailoredExport\Application\Query\Selection\SelectionInterface;
 
 class PropertySource implements SourceInterface
@@ -47,5 +48,33 @@ class PropertySource implements SourceInterface
     public function getSelection(): SelectionInterface
     {
         return $this->selection;
+    }
+
+    public function getAllLocaleCodes(): array
+    {
+        $operationLocales = array_reduce(
+            iterator_to_array($this->getOperationCollection()),
+            function (array $result, OperationInterface $operation) {
+                return array_merge($result, $operation->getAllLocaleCodes());
+            },
+            []
+        );
+        $selectionLocales = $this->selection->getAllLocaleCodes();
+
+        return $operationLocales + $selectionLocales;
+    }
+
+    public function getAllAttributeCodes(): array
+    {
+        $operationAttributes = array_reduce(
+            iterator_to_array($this->getOperationCollection()),
+            function (array $result, OperationInterface $operation) {
+                return array_merge($result, $operation->getAllAttributeCodes());
+            },
+            []
+        );
+        $selectionAttributes = $this->selection->getAllAttributeCodes();
+
+        return $operationAttributes + $selectionAttributes;
     }
 }

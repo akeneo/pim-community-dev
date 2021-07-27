@@ -16,4 +16,14 @@ namespace Akeneo\Platform\TailoredExport\Application\Query\Selection\Measurement
 final class MeasurementUnitCodeSelection implements MeasurementSelectionInterface
 {
     public const TYPE = 'unit_code';
+
+    public function getAllLocaleCodes(): array
+    {
+        return [];
+    }
+
+    public function getAllAttributeCodes(): array
+    {
+        return [];
+    }
 }

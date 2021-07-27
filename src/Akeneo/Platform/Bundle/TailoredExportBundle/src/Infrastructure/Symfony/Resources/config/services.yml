@@ -23,3 +23,18 @@ services:
         arguments:
             - '@akeneo_assetmanager.infrastructure.persistence.query.enrich.get_main_media_file_info_collection_public_api'
         public: false
+
+    akeneo.tailored_export.normalizer.job_instance:
+        class: 'Akeneo\Platform\TailoredExport\Infrastructure\Normalizer\Standard\JobInstanceNormalizer'
+        arguments:
+            - '@pim_catalog.normalizer.standard.job_instance'
+            - '@pimee_security.query.get_all_viewable_locales_for_user' # this service is in CE and overrided in EE
+            - '@pimee_security.query.get_viewable_attribute_codes_for_user' # this service is in CE and overrided in EE
+            - '@security.token_storage'
+            - '@akeneo.pim.structure.query.get_attributes'
+            - '@akeneo.pim.structure.query.get_association_types'
+            - '@Akeneo\Platform\TailoredExport\Infrastructure\Hydrator\ColumnCollectionHydrator'
+        calls:
+            - setNormalizer: ['@?pimee_security.normalizer.job_instance'] # we override the CE normalizer by the one in EE if exists
+        tags:
+            - { name: pim_standard_format_serializer.normalizer, priority: 120 } # the priority is higher here to override the one in EE

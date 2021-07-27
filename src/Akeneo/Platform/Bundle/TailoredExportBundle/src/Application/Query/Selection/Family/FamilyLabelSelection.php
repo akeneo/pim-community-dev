@@ -28,4 +28,14 @@ final class FamilyLabelSelection implements FamilySelectionInterface
     {
         return $this->locale;
     }
+
+    public function getAllLocaleCodes(): array
+    {
+        return [$this->locale];
+    }
+
+    public function getAllAttributeCodes(): array
+    {
+        return [];
+    }
 }
