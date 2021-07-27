@@ -50,13 +50,13 @@ class Category extends BaseCategory implements CategoryInterface
     private \DateTime $updated;
 
     /** @Gedmo\TreeLeft */
-    protected int $left;
+    protected int $left = 0;
     /** @Gedmo\TreeLevel */
-    protected int $level;
+    protected int $level = 0;
     /** @Gedmo\TreeRight */
-    protected int $right;
+    protected int $right = 0;
     /** @Gedmo\TreeRoot */
-    protected int $root;
+    protected int $root = 0;
     /** @Gedmo\TreeParent */
     protected ?BaseCategoryInterface $parent = null;
 
