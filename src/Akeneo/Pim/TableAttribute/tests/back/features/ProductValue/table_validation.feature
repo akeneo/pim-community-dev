@@ -38,10 +38,11 @@ Feature: Enrich a table attribute value
 
   Scenario: Providing a table with number with decimal raises an violation
     When a product is created with values:
-      | attribute   | json_data                                                                     |
-      | nutrition   | [{"ingredient": "sugar", "quantity": 50.5, "description": "the description"}] |
-    Then 1 violation is raised
+      | attribute   | json_data                                                                                                                   |
+      | nutrition   | [{"ingredient": "sugar", "quantity": 50.5, "description": "the description"}, {"ingredient": "salt", "quantity": "30.14"}] |
+    Then 2 violations are raised
     And the violation 'TODO This value should not allow decimal.' is raised at path 'values[nutrition-<all_channels>-<all_locales>][0].quantity'
+    And the violation 'TODO This value should not allow decimal.' is raised at path 'values[nutrition-<all_channels>-<all_locales>][1].quantity'
 
   Scenario: Providing a table with text longer than 15 raises an violation
     When a product is created with values:

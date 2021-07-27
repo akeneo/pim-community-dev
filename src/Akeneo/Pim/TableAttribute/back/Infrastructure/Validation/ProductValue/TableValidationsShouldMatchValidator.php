@@ -140,9 +140,8 @@ final class TableValidationsShouldMatchValidator extends ConstraintValidator
         }
 
         if (!$decimalsAllowedValue) {
-            $constraints[] = new Constraints\Type(
+            $constraints[] = new NotDecimal(
                 [
-                    'type' => 'integer',
                     'message' => TableValidationsShouldMatch::DECIMALS_ALLOWED_MESSAGE,
                 ]
             );

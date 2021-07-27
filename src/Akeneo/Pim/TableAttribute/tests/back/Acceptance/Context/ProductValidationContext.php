@@ -81,11 +81,12 @@ final class ProductValidationContext implements Context
     {
         if ($violationCount !== $this->violations->count()) {
             throw new \Exception(sprintf(
-                '%d violation%s expected, %d violation%s found',
+                '%d violation%s expected, %d violation%s found: %s',
                 $violationCount,
                 $violationCount > 1 ? 's' : '',
                 $this->violations->count(),
                 $this->violations->count() > 1 ? 's' : '',
+                $this->violations
             ));
         }
     }

@@ -19,16 +19,15 @@ use Akeneo\Pim\TableAttribute\Domain\TableConfiguration\SelectColumn;
 use Akeneo\Pim\TableAttribute\Domain\TableConfiguration\TableConfiguration;
 use Akeneo\Pim\TableAttribute\Domain\TableConfiguration\TextColumn;
 use Akeneo\Pim\TableAttribute\Domain\Value\Table;
+use Akeneo\Pim\TableAttribute\Infrastructure\Validation\ProductValue\NotDecimal;
 use Akeneo\Pim\TableAttribute\Infrastructure\Validation\ProductValue\TableValidationsShouldMatch;
 use Akeneo\Pim\TableAttribute\Infrastructure\Validation\ProductValue\TableValidationsShouldMatchValidator;
 use Akeneo\Pim\TableAttribute\Infrastructure\Value\TableValue;
 use PhpSpec\ObjectBehavior;
 use Prophecy\Argument;
-use Symfony\Component\Validator\Constraint;
 use Symfony\Component\Validator\Constraints\Length;
 use Symfony\Component\Validator\Constraints\NotBlank;
 use Symfony\Component\Validator\Constraints\Range;
-use Symfony\Component\Validator\Constraints\Type;
 use Symfony\Component\Validator\ConstraintValidatorInterface;
 use Symfony\Component\Validator\Context\ExecutionContext;
 use Symfony\Component\Validator\Validator\ContextualValidatorInterface;
@@ -105,7 +104,7 @@ final class TableValidationsShouldMatchValidatorSpec extends ObjectBehavior
         $contextualValidator1->validate(12, [
             new Range(['min' => 5, 'minMessage' => TableValidationsShouldMatch::MIN_MESSAGE]),
             new Range(['max' => 50, 'maxMessage' => TableValidationsShouldMatch::MAX_MESSAGE]),
-            new Type([ 'type' => 'integer', 'message' => TableValidationsShouldMatch::DECIMALS_ALLOWED_MESSAGE]),
+            new NotDecimal(['message' => TableValidationsShouldMatch::DECIMALS_ALLOWED_MESSAGE]),
         ])->shouldBeCalledOnce();
 
         $baseContextualValidator->atPath('[0].description')->willReturn($contextualValidator2);
@@ -117,7 +116,7 @@ final class TableValidationsShouldMatchValidatorSpec extends ObjectBehavior
         $contextualValidator3->validate(4, [
             new Range(['min' => 5, 'minMessage' => TableValidationsShouldMatch::MIN_MESSAGE]),
             new Range(['max' => 50, 'maxMessage' => TableValidationsShouldMatch::MAX_MESSAGE]),
-            new Type([ 'type' => 'integer', 'message' => TableValidationsShouldMatch::DECIMALS_ALLOWED_MESSAGE]),
+            new NotDecimal(['message' => TableValidationsShouldMatch::DECIMALS_ALLOWED_MESSAGE]),
         ])->shouldBeCalledOnce();
 
         $baseContextualValidator->atPath('[3].description')->willReturn($contextualValidator4);
@@ -153,7 +152,7 @@ final class TableValidationsShouldMatchValidatorSpec extends ObjectBehavior
 
         $baseContextualValidator->atPath('[0].quantity_without_validation')->willReturn($contextualValidator);
         $contextualValidator->validate(12, [
-            new Type([ 'type' => 'integer', 'message' => TableValidationsShouldMatch::DECIMALS_ALLOWED_MESSAGE]),
+            new NotDecimal(['message' => TableValidationsShouldMatch::DECIMALS_ALLOWED_MESSAGE]),
         ])->shouldBeCalledOnce();
 
         $this->validate($tableValue, new TableValidationsShouldMatch());
