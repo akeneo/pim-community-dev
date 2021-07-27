@@ -1,5 +1,5 @@
 services:
-    Akeneo\Pim\TableAttribute\Infrastructure\TableConfiguration\Normalizer\AttributeNormalizer:
+    Akeneo\Pim\TableAttribute\Infrastructure\TableConfiguration\Normalizer\Standard\AttributeNormalizer:
         decorates: 'pim_catalog.normalizer.standard.attribute'
         decoration_inner_name: 'base_standard_attribute_normalizer'
         arguments:

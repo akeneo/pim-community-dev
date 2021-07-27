@@ -11,7 +11,7 @@ declare(strict_types=1);
  * file that was distributed with this source code.
  */
 
-namespace Akeneo\Pim\TableAttribute\Infrastructure\TableConfiguration\Normalizer;
+namespace Akeneo\Pim\TableAttribute\Infrastructure\TableConfiguration\Normalizer\Standard;
 
 use Akeneo\Pim\Structure\Component\AttributeTypes;
 use Akeneo\Pim\Structure\Component\Model\AttributeInterface;
