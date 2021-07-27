@@ -3,6 +3,7 @@ import {AddAttributeIcon, IconProps, Modal, Tile, Tiles} from "akeneo-design-sys
 import {baseFetcher, useRouter, useTranslate} from "@akeneo-pim-community/shared";
 import * as icons from "akeneo-design-system/lib/icons";
 import styled from "styled-components";
+import {CreateAttributeButtonStepProps} from "./CreateAttributeButtonApp";
 
 const ModalContent = styled.div`
   margin-top: 30px;
@@ -12,16 +13,15 @@ const ModalContent = styled.div`
   overflow-y: auto;
 `;
 
-type SelectAttributeTypeModalProps = {
-  iconsMap: {[attributeType: string]: string};
-  onAttributeTypeSelect: (attributeType: AttributeType) => void;
-  onClose: () => void;
-};
 type AttributeType = string;
 
-const SelectAttributeTypeModal: React.FC<SelectAttributeTypeModalProps> = ({
+type SelectAttributeTypeModalProps = CreateAttributeButtonStepProps & {
+  iconsMap: {[attributeType: string]: string};
+};
+
+const SelectAttributeType: React.FC<SelectAttributeTypeModalProps> = ({
   iconsMap,
-  onAttributeTypeSelect,
+  onStepConfirm,
   onClose,
 }) => {
   const translate = useTranslate();
@@ -55,7 +55,7 @@ const SelectAttributeTypeModal: React.FC<SelectAttributeTypeModalProps> = ({
           const Icon = castIcons[component] || AddAttributeIcon;
           return (
             <Tile
-              onClick={() => onAttributeTypeSelect(attributeType)}
+              onClick={() => onStepConfirm({ attribute_type: attributeType })}
               key={attributeType}
               icon={<Icon />}
               title={translate(`pim_enrich.entity.attribute.property.type.${attributeType}`)}
@@ -67,6 +67,6 @@ const SelectAttributeTypeModal: React.FC<SelectAttributeTypeModalProps> = ({
       </Tiles>
     </ModalContent>
   </Modal>
-}
+};
 
-export {SelectAttributeTypeModal};
+export default SelectAttributeType;
