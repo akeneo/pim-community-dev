@@ -1,9 +1,20 @@
 import React from 'react';
-import {CreateAttributeButtonStepProps} from 'pim-community-dev/public/bundles/pimui/js/attribute/form/CreateAttributeButtonApp';
-import {CreateAttributeData} from '@akeneo-pim-community/settings-ui/src/pages/CreateAttributeData'
+import {CreateAttributeData} from '@akeneo-pim-community/settings-ui/src/pages/CreateAttributeData';
 import {Field, SelectInput} from 'akeneo-design-system';
 import {useTranslate} from '@akeneo-pim-community/shared';
 import {Template, TEMPLATES} from '../models/Template';
+
+type AttributeType = string;
+
+type AttributeData = {
+  attribute_type?: AttributeType;
+} & {[key: string]: any};
+
+export type CreateAttributeButtonStepProps = {
+  onClose: () => void;
+  onStepConfirm: (data: AttributeData) => void;
+  initialData?: AttributeData;
+};
 
 const CreateAttributeCodeLabelTemplate: React.FC<CreateAttributeButtonStepProps> = ({
   onClose,

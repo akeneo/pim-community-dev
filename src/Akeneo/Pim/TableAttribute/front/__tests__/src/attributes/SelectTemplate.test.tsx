@@ -6,7 +6,7 @@ const SelectTemplate = view;
 
 describe('SelectTemplateApp', () => {
   it('should render the component', () => {
-    renderWithProviders(<SelectTemplate onStepConfirm={jest.fn()} onClose={jest.fn()}/>);
+    renderWithProviders(<SelectTemplate onStepConfirm={jest.fn()} onClose={jest.fn()} />);
 
     expect(screen.getByText('pim_table_attribute.templates.empty_table')).toBeInTheDocument();
   });

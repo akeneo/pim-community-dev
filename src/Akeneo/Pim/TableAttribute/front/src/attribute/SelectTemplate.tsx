@@ -3,7 +3,6 @@ import {Modal, Tiles, Tile} from 'akeneo-design-system';
 import {useTranslate} from '@akeneo-pim-community/shared';
 import {TEMPLATES} from '../models/Template';
 import styled from 'styled-components';
-import {CreateAttributeButtonStepProps} from 'pim-community-dev/public/bundles/pimui/js/attribute/form/CreateAttributeButtonApp';
 
 const ModalContent = styled.div`
   margin-top: 30px;
@@ -12,6 +11,18 @@ const ModalContent = styled.div`
   overflow-x: hidden;
   overflow-y: auto;
 `;
+
+type AttributeType = string;
+
+type AttributeData = {
+  attribute_type?: AttributeType;
+} & {[key: string]: any};
+
+export type CreateAttributeButtonStepProps = {
+  onClose: () => void;
+  onStepConfirm: (data: AttributeData) => void;
+  initialData?: AttributeData;
+};
 
 const SelectTemplate: React.FC<CreateAttributeButtonStepProps> = ({onStepConfirm, onClose, initialData}) => {
   const translate = useTranslate();
