@@ -36,8 +36,12 @@ jobs:
       - run:
           name: Require proper dev CE branch
           command: |
-            sed -i "s|\"akeneo/pim-community-dev\": \"dev-master|\"akeneo/pim-community-dev\": \"dev-${CIRCLE_BRANCH}|" composer.json
-            sed -i "s|\"akeneo/pim-community-dev\": \"dev-master|\"akeneo/pim-community-dev\": \"dev-${CIRCLE_BRANCH}|" grth/composer.json
+            sed -i "s#akeneo/pim-community-dev\": \"dev-master#akeneo/pim-community-dev\": \"dev-${CIRCLE_BRANCH}#" composer.json
+            sed -i "s#akeneo/pim-community-dev\": \"dev-master#akeneo/pim-community-dev\": \"dev-${CIRCLE_BRANCH}#" grth/composer.json
+      - install_yq
+      - run:
+          name: Remove MySQL port translation (see BH-664)
+          command: yq delete --inplace docker-compose.yml services.mysql.ports
       - run:
           name: Persist default IMAGE_TAG to be the repo last commit SHA1
           command: |
@@ -53,6 +57,10 @@ jobs:
       image: ubuntu-2004:202101-01
     steps:
       - checkout
+      - install_yq
+      - run:
+          name: Remove MySQL port translation (see BH-664)
+          command: yq delete --inplace docker-compose.yml services.mysql.ports
       - persist_to_workspace:
           root: ~/
           paths:
@@ -250,17 +258,42 @@ jobs:
           name: Install database
           command: APP_ENV=dev O="--catalog src/Akeneo/Platform/Bundle/InstallerBundle/Resources/fixtures/icecat_demo_dev" make database
       - run:
-          name: Add "adminakeneo" user
-          command: APP_ENV=dev docker-compose exec -u www-data fpm bin/console pim:user:create adminakeneo adminakeneo product-team@akeneo.com admin1 admin2 en_US --admin -n
-      - run:
           name: Launch Cypress
-          command: CYPRESS_defaultCommandTimeout=8000 CYPRESS_requestTimeout=10000 make end-to-end-front
+          command: CYPRESS_defaultCommandTimeout=10000 CYPRESS_requestTimeout=15000 CYPRESS_responseTimeout=50000 make end-to-end-front
       - store_artifacts:
           path: cypress/screenshots
       - store_artifacts:
           path: cypress/videos
+
+  marketplace_activate_e2e:
+    machine:
+      image: ubuntu-2004:202101-01
+    steps:
+      - attach_workspace:
+          at: ~/
+      - run:
+          name: Change owner on project dir in order to archive the project into the workspace
+          command: sudo chown -R 1000:1000 ../project
+      - run:
+          name: Start containers
+          command: |
+            docker load -i php-pim-image.tar
+            APP_ENV=behat C='fpm mysql elasticsearch httpd object-storage selenium pubsub-emulator' make up
+            docker/wait_docker_up.sh
+      - run:
+          name: Install database
+          command: APP_ENV=behat make database
+      - run:
+          name: End to end Behat tests
+          command: PIM_CONTEXT=test make connectivity-connection-activate-e2e
+      - store_test_results:
+          path: var/tests/behat
+      - store_artifacts:
+          path: var/tests/behat
       - store_artifacts:
           path: var/logs
+      - store_artifacts:
+          path: var/tests/screenshots
 
   test_back_behat_legacy:
     machine:
@@ -571,7 +604,11 @@ jobs:
                 at: ~/
           - run:
                 name: Change owner on project dir in order to archive the project into the workspace
-                command: sudo chown -R 1000:1000 ../project
+                command: |
+                  mkdir -p ~/.cache/yarn ~/.composer
+                  sudo chown -R 1000:1000 ../project
+                  sudo chown -R 1000:1000 ~/.composer
+                  sudo chown -R 1000:1000 ~/.cache/yarn
           - run:
                 name: Create an empty service account
                 command: |
@@ -753,6 +790,14 @@ workflows:
                 name: cypress_sanity_checks_ce
                 requires:
                   - build_dev_ce
+          - marketplace_activate_e2e?:
+                type: approval
+                requires:
+                  - build_dev_ce
+          - marketplace_activate_e2e:
+                name: marketplace_activate_e2e_ce
+                requires:
+                  - marketplace_activate_e2e?
           - test_back_static_and_acceptance:
                 name: test_back_static_and_acceptance_ce
                 requires:
@@ -872,3 +917,13 @@ commands:
             echo "Persisted env vars:"
             cat persisted_env_vars
             cat persisted_env_vars >> $BASH_ENV
+
+  install_yq:
+    description: "Install yq"
+    steps:
+      - run:
+          name: Install yq
+          command: |
+            wget https://github.com/mikefarah/yq/releases/download/3.3.1/yq_linux_386
+            sudo mv yq_linux_386 /usr/local/bin/yq
+            sudo chmod +x /usr/local/bin/yq

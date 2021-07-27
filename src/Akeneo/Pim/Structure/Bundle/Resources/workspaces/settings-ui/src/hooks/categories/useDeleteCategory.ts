@@ -31,15 +31,15 @@ const useDeleteCategory = () => {
   };
 
   const handleDeleteCategory = async (categoryToDelete: CategoryToDelete) => {
-    const success = await deleteCategory(categoryToDelete.identifier);
-    success && categoryToDelete.onDelete();
+    const response = await deleteCategory(categoryToDelete.identifier);
+    response.ok && categoryToDelete.onDelete();
 
-    const message = success
+    const message = response.ok
       ? 'pim_enrich.entity.category.category_deletion.success'
-      : 'pim_enrich.entity.category.category_deletion.error';
+      : response.errorMessage || 'pim_enrich.entity.category.category_deletion.error';
 
     notify(
-      success ? NotificationLevel.SUCCESS : NotificationLevel.ERROR,
+      response.ok ? NotificationLevel.SUCCESS : NotificationLevel.ERROR,
       translate(message, {name: categoryToDelete.label})
     );
   };

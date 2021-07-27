@@ -56,6 +56,7 @@ services:
             - '@?security.acl.dbal.provider'
             - '@oro_security.acl.ace_provider'
             - '%oro_security.acl.privilege_repository.class%'
+            - '@event_dispatcher'
 
     oro_security.acl.sid_manager:
         class: '%oro_security.acl.sid_manager.class%'
