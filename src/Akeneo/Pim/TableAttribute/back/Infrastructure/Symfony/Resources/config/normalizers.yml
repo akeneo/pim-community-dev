@@ -1,15 +1,30 @@
 services:
+    # attribute normalizers
     Akeneo\Pim\TableAttribute\Infrastructure\TableConfiguration\Normalizer\Standard\AttributeNormalizer:
         decorates: 'pim_catalog.normalizer.standard.attribute'
         decoration_inner_name: 'base_standard_attribute_normalizer'
         arguments:
             - '@base_standard_attribute_normalizer'
 
+    Akeneo\Pim\TableAttribute\Infrastructure\TableConfiguration\Normalizer\Versioning\AttributeNormalizer:
+        decorates: 'pim_versioning.serializer.normalizer.flat.attribute'
+        decoration_inner_name: 'base_versioning_attribute_normalizer'
+        arguments:
+            - '@base_versioning_attribute_normalizer'
+            - '@Akeneo\Pim\TableAttribute\Domain\TableConfiguration\Repository\SelectOptionCollectionRepository'
+
+    Akeneo\Pim\TableAttribute\Infrastructure\Normalizer\ExternalApi\TableAttributeNormalizer:
+        decorates: 'pim_api.normalizer.attribute'
+        decoration_inner_name: 'base_api_attribute_normalizer'
+        arguments:
+            - '@base_api_attribute_normalizer'
+            - '@Akeneo\Pim\TableAttribute\Domain\TableConfiguration\Repository\SelectOptionCollectionRepository'
+
+    # value normalizers
     Akeneo\Pim\TableAttribute\Infrastructure\Normalizer\Standard\TableNormalizer:
         tags:
             - { name: 'pim_standard_format_serializer.normalizer', priority: 90 }
             - { name: 'pim_storage_serializer.normalizer', priority: 90 }
-            - { name: 'pim_versioning.serializer.normalizer', priority: 90 }
 
     Akeneo\Pim\TableAttribute\Infrastructure\Normalizer\Versioning\TableNormalizer:
         tags:
@@ -20,10 +35,3 @@ services:
             - '@akeneo.pim.structure.query.get_attributes'
         tags:
             - { name: 'pim_indexing_serializer.normalizer' }
-
-    Akeneo\Pim\TableAttribute\Infrastructure\Normalizer\ExternalApi\TableAttributeNormalizer:
-        decorates: 'pim_api.normalizer.attribute'
-        decoration_inner_name: 'base_api_attribute_normalizer'
-        arguments:
-            - '@base_api_attribute_normalizer'
-            - '@Akeneo\Pim\TableAttribute\Domain\TableConfiguration\Repository\SelectOptionCollectionRepository'
