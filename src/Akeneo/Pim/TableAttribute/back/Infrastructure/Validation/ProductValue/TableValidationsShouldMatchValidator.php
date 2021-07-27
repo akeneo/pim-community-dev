@@ -15,6 +15,7 @@ namespace Akeneo\Pim\TableAttribute\Infrastructure\Validation\ProductValue;
 
 use Akeneo\Pim\TableAttribute\Domain\TableConfiguration\Repository\TableConfigurationRepository;
 use Akeneo\Pim\TableAttribute\Domain\TableConfiguration\TableConfiguration;
+use Akeneo\Pim\TableAttribute\Domain\TableConfiguration\ValidationCollection;
 use Akeneo\Pim\TableAttribute\Domain\TableConfiguration\ValueObject\ColumnCode;
 use Akeneo\Pim\TableAttribute\Domain\Value\Cell;
 use Akeneo\Pim\TableAttribute\Infrastructure\Value\TableValue;
@@ -25,6 +26,9 @@ use Webmozart\Assert\Assert;
 
 final class TableValidationsShouldMatchValidator extends ConstraintValidator
 {
+    private const DEFAULT_MAX_LENGTH = 100;
+    private const DEFAULT_DECIMALS_ALLOWED = false;
+
     private TableConfigurationRepository $tableConfigurationRepository;
 
     public function __construct(TableConfigurationRepository $tableConfigurationRepository)
@@ -47,7 +51,7 @@ final class TableValidationsShouldMatchValidator extends ConstraintValidator
         foreach ($table as $rowIndex => $row) {
             /** @var Cell $cell */
             foreach ($row as $stringColumnCode => $cell) {
-                $constraints = $this->buildConstraints($tableConfiguration, $stringColumnCode);
+                $constraints = $this->buildConstraints($tableConfiguration, ColumnCode::fromString($stringColumnCode));
 
                 if (0 < count($constraints)) {
                     $validator
@@ -61,45 +65,80 @@ final class TableValidationsShouldMatchValidator extends ConstraintValidator
     /**
      * @return Constraint[]
      */
-    private function buildConstraints(TableConfiguration $tableConfiguration, string $stringColumnCode): array
+    private function buildConstraints(TableConfiguration $tableConfiguration, ColumnCode $columnCode): array
     {
-        $validations = $tableConfiguration->getValidations(ColumnCode::fromString($stringColumnCode));
-        if (null === $validations) {
+        $columnDataType = $tableConfiguration->getColumnDataType($columnCode);
+        $validations = $tableConfiguration->getValidations($columnCode);
+        if (null === $columnDataType || null === $validations) {
             return [];
         }
 
+        switch ($columnDataType->asString()) {
+            case 'text':
+                return $this->buildConstraintsForText($validations);
+            case 'number':
+                return $this->buildConstraintsForNumber($validations);
+            case 'boolean':
+            case 'select':
+                return [];
+            default:
+                // TODO: Return empty or exception?
+                return [];
+        }
+    }
+
+    /**
+     * @return Constraint[]
+     */
+    private function buildConstraintsForText(ValidationCollection $validations): array
+    {
+        $normalizedValidations = $validations->normalize();
+        if (is_object($normalizedValidations)) {
+            $normalizedValidations = [];
+        }
+        $maxLengthValue = $normalizedValidations['max_length'] ?? self::DEFAULT_MAX_LENGTH;
+
+        return [
+            new Constraints\Length([
+                'max' => $maxLengthValue,
+                'maxMessage' => TableValidationsShouldMatch::MAX_LENGTH_MESSAGE,
+            ])
+        ];
+    }
+
+    /**
+     * @return Constraint[]
+     */
+    private function buildConstraintsForNumber(ValidationCollection $validations): array
+    {
         $constraints = [];
-        foreach ($validations->normalize() as $key => $validationValue) {
-            switch ($key) {
-                case 'min':
-                    $constraints[] = new Constraints\Range([
-                        'min' => $validationValue,
-                        'minMessage' => TableValidationsShouldMatch::MIN_MESSAGE,
-                    ]);
-                    break;
-                case 'max':
-                    $constraints[] = new Constraints\Range([
-                        'max' => $validationValue,
-                        'maxMessage' => TableValidationsShouldMatch::MAX_MESSAGE,
-                    ]);
-                    break;
-                case 'decimals_allowed':
-                    if (!$validationValue) {
-                        $constraints[] = new Constraints\Type([
-                            'type' => 'integer',
-                            'message' => TableValidationsShouldMatch::DECIMALS_ALLOWED_MESSAGE,
-                        ]);
-                    }
-                    break;
-                case 'max_length':
-                    $constraints[] = new Constraints\Length([
-                        'max' => $validationValue,
-                        'maxMessage' => TableValidationsShouldMatch::MAX_LENGTH_MESSAGE,
-                    ]);
-                    break;
-                default:
-                    throw new \InvalidArgumentException(sprintf('The "%s" validation is unknown', $key));
-            }
+        $normalizedValidations = $validations->normalize();
+        if (is_object($normalizedValidations)) {
+            $normalizedValidations = [];
+        }
+
+        if (array_key_exists('min', $normalizedValidations)) {
+            $constraints[] = new Constraints\Range([
+                'min' => $normalizedValidations['min'],
+                'minMessage' => TableValidationsShouldMatch::MIN_MESSAGE,
+            ]);
+        }
+
+        if (array_key_exists('max', $normalizedValidations)) {
+            $constraints[] = new Constraints\Range([
+                'max' => $normalizedValidations['max'],
+                'maxMessage' => TableValidationsShouldMatch::MAX_MESSAGE,
+            ]);
+        }
+
+        $decimalsAllowedValue = array_key_exists('decimals_allowed', $normalizedValidations)
+            ? $normalizedValidations['decimals_allowed']
+            : self::DEFAULT_DECIMALS_ALLOWED;
+        if (!$decimalsAllowedValue) {
+            $constraints[] = new Constraints\Type([
+                'type' => 'integer',
+                'message' => TableValidationsShouldMatch::DECIMALS_ALLOWED_MESSAGE,
+            ]);
         }
 
         return $constraints;

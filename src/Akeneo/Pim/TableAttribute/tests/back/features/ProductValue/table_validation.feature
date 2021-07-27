@@ -48,4 +48,4 @@ Feature: Enrich a table attribute value
       | attribute   | json_data                                                                             |
       | nutrition   | [{"ingredient": "sugar", "quantity": 10, "description": "the very long description"}] |
     Then 1 violation is raised
-    And the violation 'TODO This value should contains 15 characters or less.' is raised at path 'values[nutrition-<all_channels>-<all_locales>][0].description'
+    And the violation 'TODO This value should contain 15 characters or less.' is raised at path 'values[nutrition-<all_channels>-<all_locales>][0].description'

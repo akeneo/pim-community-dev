@@ -24,6 +24,7 @@ use Akeneo\Pim\TableAttribute\Infrastructure\Validation\ProductValue\TableValida
 use Akeneo\Pim\TableAttribute\Infrastructure\Value\TableValue;
 use PhpSpec\ObjectBehavior;
 use Prophecy\Argument;
+use Symfony\Component\Validator\Constraint;
 use Symfony\Component\Validator\Constraints\Length;
 use Symfony\Component\Validator\Constraints\NotBlank;
 use Symfony\Component\Validator\Constraints\Range;
@@ -69,7 +70,7 @@ final class TableValidationsShouldMatchValidatorSpec extends ObjectBehavior
         $this->validate(new \stdClass(), new TableValidationsShouldMatch());
     }
 
-    function it_does_nothing_when(
+    function it_calls_validations_on_each_needed_cells(
         TableConfigurationRepository $tableConfigurationRepository,
         ExecutionContext $context,
         ValidatorInterface $validator,
@@ -91,7 +92,7 @@ final class TableValidationsShouldMatchValidatorSpec extends ObjectBehavior
                 SelectColumn::fromNormalized(['code' => 'ingredient']),
                 NumberColumn::fromNormalized(['code' => 'quantity', 'validations' => ['min' => 5, 'max' => 50, 'decimals_allowed' => false]]),
                 TextColumn::fromNormalized(['code' => 'description', 'validations' => ['max_length' => 15]]),
-                TextColumn::fromNormalized(['code' => 'useless_description', 'validations' => ['max_length' => 20]]),
+                TextColumn::fromNormalized(['code' => 'useless_description', 'validations' => ['max_length' => 1]]),
                 NumberColumn::fromNormalized(['code' => 'quantity_without_validation', 'validations' => ['decimals_allowed' => true]]),
                 TextColumn::fromNormalized(['code' => 'description_without_validation']),
             ])
@@ -122,6 +123,74 @@ final class TableValidationsShouldMatchValidatorSpec extends ObjectBehavior
         $baseContextualValidator->atPath('[3].description')->willReturn($contextualValidator4);
         $contextualValidator4->validate('another description', [
             new Length(['max' => 15, 'maxMessage' => TableValidationsShouldMatch::MAX_LENGTH_MESSAGE]),
+        ])->shouldBeCalledOnce();
+
+        $this->validate($tableValue, new TableValidationsShouldMatch());
+    }
+
+    function it_calls_validations_on_number_cells(
+        TableConfigurationRepository $tableConfigurationRepository,
+        ExecutionContext $context,
+        ValidatorInterface $validator,
+        ContextualValidatorInterface $baseContextualValidator,
+        ContextualValidatorInterface $contextualValidator
+    ) {
+        $tableValue = TableValue::value('nutrition', Table::fromNormalized([
+            ['ingredient' => 'sugar', 'quantity_without_validation' => 12],
+            ['ingredient' => 'garlic', 'quantity_with_decimals_allowed' => 12],
+        ]));
+
+        $tableConfigurationRepository->getByAttributeCode('nutrition')->willReturn(
+            TableConfiguration::fromColumnDefinitions([
+                SelectColumn::fromNormalized(['code' => 'ingredient']),
+                NumberColumn::fromNormalized(['code' => 'quantity_without_validation']),
+                NumberColumn::fromNormalized(['code' => 'quantity_with_decimals_allowed', 'validations' => ['decimals_allowed' => true]]),
+            ])
+        );
+
+        $context->getValidator()->willReturn($validator);
+        $validator->inContext($context)->willReturn($baseContextualValidator);
+
+        $baseContextualValidator->atPath('[0].quantity_without_validation')->willReturn($contextualValidator);
+        $contextualValidator->validate(12, [
+            new Type([ 'type' => 'integer', 'message' => TableValidationsShouldMatch::DECIMALS_ALLOWED_MESSAGE]),
+        ])->shouldBeCalledOnce();
+
+        $this->validate($tableValue, new TableValidationsShouldMatch());
+    }
+
+    function it_calls_validations_on_text_cells(
+        TableConfigurationRepository $tableConfigurationRepository,
+        ExecutionContext $context,
+        ValidatorInterface $validator,
+        ContextualValidatorInterface $baseContextualValidator,
+        ContextualValidatorInterface $contextualValidator1,
+        ContextualValidatorInterface $contextualValidator2
+    ) {
+        $tableValue = TableValue::value('nutrition', Table::fromNormalized([
+            ['ingredient' => 'sugar', 'text_with_default_validation' => 'a'],
+            ['ingredient' => 'garlic', 'text_with_max_length' => 'b'],
+        ]));
+
+        $tableConfigurationRepository->getByAttributeCode('nutrition')->willReturn(
+            TableConfiguration::fromColumnDefinitions([
+                SelectColumn::fromNormalized(['code' => 'ingredient']),
+                TextColumn::fromNormalized(['code' => 'text_with_default_validation']),
+                TextColumn::fromNormalized(['code' => 'text_with_max_length', 'validations' => ['max_length' => 5]]),
+            ])
+        );
+
+        $context->getValidator()->willReturn($validator);
+        $validator->inContext($context)->willReturn($baseContextualValidator);
+
+        $baseContextualValidator->atPath('[0].text_with_default_validation')->willReturn($contextualValidator1);
+        $contextualValidator1->validate('a', [
+            new Length(['max' => 100, 'maxMessage' => TableValidationsShouldMatch::MAX_LENGTH_MESSAGE]),
+        ])->shouldBeCalledOnce();
+
+        $baseContextualValidator->atPath('[1].text_with_max_length')->willReturn($contextualValidator2);
+        $contextualValidator2->validate('b', [
+            new Length(['max' => 5, 'maxMessage' => TableValidationsShouldMatch::MAX_LENGTH_MESSAGE]),
         ])->shouldBeCalledOnce();
 
         $this->validate($tableValue, new TableValidationsShouldMatch());
