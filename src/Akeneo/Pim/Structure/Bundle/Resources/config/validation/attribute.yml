@@ -281,7 +281,7 @@ Akeneo\Pim\Structure\Component\Model\Attribute:
                     - pim_reference_data_multiselect
                     - pim_reference_data_simpleselect
         dateMin:
-            - DateTime: ~
+            - Type: \DateTimeInterface
             - IsNull:
                 groups:
                     - pim_catalog_identifier
@@ -298,7 +298,7 @@ Akeneo\Pim\Structure\Component\Model\Attribute:
                     - pim_reference_data_multiselect
                     - pim_reference_data_simpleselect
         dateMax:
-            - DateTime: ~
+            - Type: \DateTimeInterface
             - IsNull:
                 groups:
                     - pim_catalog_identifier
