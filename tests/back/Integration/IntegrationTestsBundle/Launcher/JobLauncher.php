@@ -233,8 +233,8 @@ class JobLauncher
         $output = new BufferedOutput();
         $exitCode = $application->run($input, $output);
 
-        if (BatchCommand::EXIT_SUCCESS_CODE !== $exitCode) {
-            throw new \Exception(sprintf('Export failed, "%s".', $output->fetch()));
+        if (!\in_array($exitCode, [BatchCommand::EXIT_SUCCESS_CODE, BatchCommand::EXIT_WARNING_CODE])) {
+            throw new \Exception(sprintf('Import failed, "%s".', $output->fetch()));
         }
     }
 
