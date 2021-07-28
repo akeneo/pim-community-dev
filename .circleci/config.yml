@@ -1421,7 +1421,7 @@ jobs:
                     REPO_TO_ADD=operation-tools KEY_TO_ADD=/root/.ssh/id_rsa_9871a29f0e320bbf564ab34189c7b429 bash deployments/bin/add-deploy-key.sh
           - run:
                 name: Jenkins Upgrade
-                command: make upgrade-instance
+                command: OPERATIONS_TOOLS_BRANCH=master make upgrade-instance
           - run:
               name: Production tests on upgraded env
               command: make test-prod
@@ -1463,7 +1463,7 @@ jobs:
                     REPO_TO_ADD=operation-tools KEY_TO_ADD=/root/.ssh/id_rsa_9871a29f0e320bbf564ab34189c7b429 bash deployments/bin/add-deploy-key.sh
           - run:
                 name: Jenkins Upgrade
-                command: make upgrade-instance
+                command: OPERATIONS_TOOLS_BRANCH=master make upgrade-instance
           - run:
                 name: Production tests on upgraded env
                 command: make test-prod
@@ -1667,7 +1667,7 @@ jobs:
                   REPO_TO_ADD=operation-tools KEY_TO_ADD=/root/.ssh/id_rsa_9871a29f0e320bbf564ab34189c7b429 bash deployments/bin/add-deploy-key.sh
             - run:
                 name: Jenkins Upgrade
-                command: IMAGE_TAG=${RELEASE_TO_DEPLOY} make upgrade-instance
+                command: IMAGE_TAG=${RELEASE_TO_DEPLOY} OPERATIONS_TOOLS_BRANCH=master make upgrade-instance
             - run:
                 name: Communicate
                 command: |
@@ -1715,7 +1715,7 @@ jobs:
                   REPO_TO_ADD=operation-tools KEY_TO_ADD=/root/.ssh/id_rsa_9871a29f0e320bbf564ab34189c7b429 bash deployments/bin/add-deploy-key.sh
             - run:
                   name: Jenkins Upgrade
-                  command: IMAGE_TAG=${RELEASE_TO_DEPLOY} make upgrade-instance
+                  command: IMAGE_TAG=${RELEASE_TO_DEPLOY} OPERATIONS_TOOLS_BRANCH=master make upgrade-instance
             - run:
                 name: Communicate
                 command: |
@@ -1762,7 +1762,7 @@ jobs:
                 REPO_TO_ADD=operation-tools KEY_TO_ADD=/root/.ssh/id_rsa_9871a29f0e320bbf564ab34189c7b429 bash deployments/bin/add-deploy-key.sh
           - run:
               name: Jenkins Upgrade
-              command: IMAGE_TAG=${RELEASE_TO_DEPLOY} make upgrade-instance
+              command: IMAGE_TAG=${RELEASE_TO_DEPLOY} OPERATIONS_TOOLS_BRANCH=master make upgrade-instance
 
   deploy_pr_srnt_environment:
       environment:
