@@ -111,8 +111,6 @@ final class TableValidationsShouldMatchValidator extends ConstraintValidator
 
     /**
      * @return Constraint[]
-     *
-     * TODO: test the value is a number or a string (decimals_allowed)
      */
     private function buildConstraintsForNumber(ValidationCollection $validations): array
     {
