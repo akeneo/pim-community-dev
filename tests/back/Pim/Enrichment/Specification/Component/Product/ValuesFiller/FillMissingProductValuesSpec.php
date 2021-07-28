@@ -36,6 +36,12 @@ class FillMissingProductValuesSpec extends ObjectBehavior
         $family->addAttribute(
             (new Builder())->aTextAttribute()->withCode('specific_localizable_name')->specificlocalizable()->build()
         );
+        $family->addAttribute(
+            (new Builder())
+                ->aTextAttribute()
+                ->withCode('scopable_localizable_locale_specific_name')->localizable()->scopable()->specificlocalizable()
+                ->build()
+        );
 
         $family->addAttribute(
             (new Builder())->aTextAttribute()->withCode('scopable_name')->scopable()->build()
@@ -141,6 +147,18 @@ class FillMissingProductValuesSpec extends ObjectBehavior
                         'locale' => null,
                         'data' => null,
                     ]],
+                    'scopable_localizable_locale_specific_name' => [
+                        [
+                            'scope' => 'tablet',
+                            'locale' => null,
+                            'data' => null
+                        ],
+                        [
+                            'scope' => 'ecommerce',
+                            'locale' => null,
+                            'data' => null
+                        ],
+                    ],
                     'scopable_name' => [
                         [
                             'scope' => 'tablet',
@@ -274,6 +292,18 @@ class FillMissingProductValuesSpec extends ObjectBehavior
                         'locale' => null,
                         'data' => null,
                     ]],
+                    'scopable_localizable_locale_specific_name' => [
+                        [
+                            'scope' => 'tablet',
+                            'locale' => null,
+                            'data' => null
+                        ],
+                        [
+                            'scope' => 'ecommerce',
+                            'locale' => null,
+                            'data' => null
+                        ],
+                    ],
                     'scopable_name' => [
                         [
                             'scope' => 'tablet',
