@@ -34,7 +34,6 @@ const ColumnDefinitionProperties: React.FC<ColumnDefinitionPropertiesProps> = ({
 }) => {
   const translate = useTranslate();
   const [isManageOptionsOpen, openManageOption, closeManageOption] = useBooleanState();
-
   const handleValidationChange = (validation: ColumnValidation) => {
     selectedColumn.validations = {...selectedColumn.validations, ...validation};
     onChange(selectedColumn);

@@ -19,11 +19,12 @@ type Violation = {global: boolean; message: string; path: string};
 class TableStructureTab extends (BaseView as {new (options: {config: TableStructureTabConfig}): any}) {
   private config: TableStructureTabConfig;
   private violations: Violation[];
+  private savedColumnCodes: string[] | undefined;
 
   initialize(options: {config: TableStructureTabConfig}): void {
     this.config = options.config;
     this.violations = [];
-
+    this.savedColumnCodes = undefined;
     BaseView.prototype.initialize.apply(this, options);
   }
 
@@ -36,6 +37,7 @@ class TableStructureTab extends (BaseView as {new (options: {config: TableStruct
 
       this.listenTo(this.getRoot(), 'pim_enrich:form:entity:bad_request', this.onBadRequest.bind(this));
       this.listenTo(this.getRoot(), 'pim_enrich:form:entity:pre_save', this.removeErrors.bind(this));
+      this.listenTo(this.getRoot(), 'pim_enrich:form:entity:post_save', this.updateSavedColumns.bind(this));
     }
 
     return super.configure();
@@ -46,6 +48,10 @@ class TableStructureTab extends (BaseView as {new (options: {config: TableStruct
       this.getRoot().trigger('pim_enrich:form:form-tabs:remove-error', this.code);
     }
     this.violations = [];
+  }
+
+  updateSavedColumns(): void {
+    this.savedColumnCodes = undefined;
   }
 
   onBadRequest(event: {response: Violation[]}): void {
@@ -93,7 +99,9 @@ class TableStructureTab extends (BaseView as {new (options: {config: TableStruct
     }
 
     let initialTableConfiguration = this.getFormData().table_configuration as TableConfiguration | undefined;
-    const savedColumnCodes = (initialTableConfiguration || []).map(columnDefinition => columnDefinition.code);
+    if (typeof this.savedColumnCodes === 'undefined') {
+      this.savedColumnCodes = (initialTableConfiguration || []).map(columnDefinition => columnDefinition.code);
+    }
     if (typeof initialTableConfiguration === 'undefined') {
       initialTableConfiguration = [];
       const tableTemplate = this.getQueryParam('template_variation');
@@ -118,7 +126,7 @@ class TableStructureTab extends (BaseView as {new (options: {config: TableStruct
           attribute={attribute}
           initialTableConfiguration={initialTableConfiguration}
           onChange={this.handleChange.bind(this)}
-          savedColumnCodes={savedColumnCodes}
+          savedColumnCodes={this.savedColumnCodes}
         />
       </DependenciesProvider>,
       this.el
