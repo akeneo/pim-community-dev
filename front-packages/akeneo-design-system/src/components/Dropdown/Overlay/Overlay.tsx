@@ -44,6 +44,11 @@ type OverlayProps = Override<
     verticalPosition?: VerticalPosition;
 
     /**
+     * Horizontal position of the overlay (forced)
+     */
+    horizontalPosition?: HorizontalPosition;
+
+    /**
      * When dropdown is open, it will keep the opener element displayed.
      */
     dropdownOpenerVisible?: boolean;
@@ -107,6 +112,7 @@ const getOverlayPosition = (
 
 const Overlay = ({
   verticalPosition,
+  horizontalPosition,
   dropdownOpenerVisible = false,
   parentRef,
   onClose,
@@ -119,7 +125,7 @@ const Overlay = ({
   const overlayRef = useRef<HTMLDivElement>(null);
 
   verticalPosition = useVerticalPosition(overlayRef, verticalPosition);
-  const horizontalPosition = useHorizontalPosition(overlayRef);
+  horizontalPosition = useHorizontalPosition(overlayRef, horizontalPosition);
   const [visible, setVisible] = useState<boolean>(false);
   useShortcut(Key.Escape, onClose);
   useWindowResize();
