@@ -106,17 +106,19 @@ class WebUser extends PimContext
 
     /**
      * @param string $type
+     * @param string $code
      *
      * @return Then[]
      *
-     * @Given /^I create a(?:n)? "([^"]*)" attribute$/
+     * @Given /^I create a(?:n)? "([^"]*)" attribute having code "([^"]*)"?$/
      */
-    public function iCreateAnAttribute($type)
+    public function iCreateAnAttribute($type, $code = '')
     {
-        return [
-            new Step\Then('I create a new attribute'),
-            new Step\Then(sprintf('I choose the "%s" attribute type', $type))
-        ];
+        $this->iCreateANew('attribute');
+        $this->iChooseTheAttributeType($type);
+        $field = $this->getCurrentPage()->findField('Code');
+        $field->setValue($code);
+        $this->getCurrentPage()->findButton('Confirm')->click();
     }
 
     /**

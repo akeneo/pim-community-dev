@@ -13,9 +13,8 @@ Feature: Display the attribute history
 
   Scenario: Successfully edit a reference data attribute and see the history
     Given I am on the attributes page
-    And I create a "Reference data simple select" attribute
+    And I create a "Reference data simple select" attribute having code "mycolor"
     And I fill in the following information:
-      | Code                | mycolor |
       | Attribute group     | Other   |
       | Reference data type | color   |
     And I save the attribute
