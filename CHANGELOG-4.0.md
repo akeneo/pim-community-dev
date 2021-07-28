@@ -1,5 +1,7 @@
 # 4.0.x
 
+# 4.0.121 (2021-07-28)
+
 ## Improvements
 
 PIM-9738: transform the hidden `pim:catalog:remove-completeness-for-channel-and-locale` command into a job.
