@@ -6,7 +6,6 @@ namespace AkeneoTest\Pim\Enrichment\EndToEnd\Product\Product\ExternalApi;
 
 use Akeneo\Test\Integration\Configuration;
 use AkeneoTest\Pim\Enrichment\Integration\Normalizer\NormalizedProductCleaner;
-use PHPUnit\Framework\Assert;
 use Symfony\Component\HttpFoundation\Response;
 
 /**
@@ -298,6 +297,37 @@ class GetProductEndToEnd extends AbstractProductTestCase
 
         $this->assertSame(Response::HTTP_OK, $response->getStatusCode());
         $this->assertResponse($response, $expectedProduct);
+    }
+
+    public function test_access_denied_on_get_a_product_if_no_permission()
+    {
+
+        $this->createProduct('product', [
+            'family'     => 'familyA1',
+            'enabled'       => true,
+            'categories' => ['categoryA', 'master', 'master_china'],
+            'groups'     => ['groupA', 'groupB'],
+            'values'     => [
+                'a_date' => [
+                    ['data' => '2016-06-28', 'locale' => null, 'scope' => null]
+                ],
+            ],
+        ]);
+
+        $client = $this->createAuthenticatedClient();
+        $this->removeAclFromRole('action:pim_api_product_list');
+
+        $client->request('GET', 'api/rest/v1/products/product');
+        $expectedResponse = <<<JSON
+{
+    "code": 403,
+    "message": "Access forbidden. You are not allowed to list products."
+}
+JSON;
+
+        $response = $client->getResponse();
+        $this->assertSame(Response::HTTP_FORBIDDEN, $response->getStatusCode());
+        $this->assertJsonStringEqualsJsonString($expectedResponse, $response->getContent());
     }
 
     /**
