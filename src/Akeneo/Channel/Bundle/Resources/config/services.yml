@@ -72,6 +72,9 @@ services:
             - '@pim_catalog.saver.locale'
             - '@pim_catalog.command_launcher'
             - '@security.token_storage'
+            - '@akeneo_batch_queue.launcher.queue_job_launcher'
+            - '@akeneo_batch.job.job_instance_repository'
+            - '%pim_catalog.remove_completeness_for_channel_and_locale.job_name%'
         tags:
             - { name: kernel.event_subscriber }
 

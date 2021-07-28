@@ -716,6 +716,11 @@ jobs:
         alias:     compute_family_variant_structure_changes
         label:     Compute variant structure changes
         type:      compute_family_variant_structure_changes
+    remove_completeness_for_channel_and_locale:
+        connector: internal
+        alias:     remove_completeness_for_channel_and_locale
+        label:     Remove completeness for channel and locale
+        type:      remove_completeness_for_channel_and_locale
     remove_non_existing_product_values:
         connector: internal
         alias:     remove_non_existing_product_values
