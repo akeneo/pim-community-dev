@@ -2,7 +2,7 @@ import React, {FC, useRef, useState} from 'react';
 import {AttributeOption} from '../model';
 import DeleteConfirmationModal from './DeleteConfirmationModal';
 import {useAttributeContext} from '../contexts';
-import {useUserContext} from '@akeneo-pim-community/shared';
+import {useUserContext} from "@akeneo-pim-community/legacy-bridge";
 
 export type DragItem = {
   code: string;
@@ -36,7 +36,7 @@ const ListItem: FC<AttributeOptionItemProps> = ({children, ...props}) => {
   const [showDeleteConfirmationModal, setShowDeleteConfirmationModal] = useState<boolean>(false);
   const attributeContext = useAttributeContext();
   const rowRef = useRef(null);
-  const locale = useUserContext().get('catalogLocale');
+  const locale = useUserContext().get('uiLocale');
 
   const deleteOption = () => {
     setShowDeleteConfirmationModal(false);
