@@ -265,7 +265,7 @@ define([
      */
     createAttributeField: function (object, attributeCode, values) {
       const root = this.getRoot();
-      
+
       return FieldManager.getField(attributeCode)
         .then(function (field) {
           return $.when(
