@@ -11,11 +11,6 @@
 
 namespace Akeneo\Platform;
 
-/**
- * PIM Enterprise Version
- *
- * @author Nicolas Dupont <nicolas@akeneo.com>
- */
 class FreeTrialVersion
 {
     /** @staticvar string */
