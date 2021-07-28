@@ -45,6 +45,7 @@ class ProductViolationNormalizer implements NormalizerInterface, CacheableSuppor
                 'locale'    => null,
                 'scope'     => null,
                 'message'   => $violation->getMessage(),
+                'path'      => $propertyPath,
             ];
         }
 
