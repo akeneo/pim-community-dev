@@ -8,7 +8,7 @@ import {
   Attribute,
   AssociationType,
 } from '@akeneo-pim-enterprise/tailored-export';
-import {Channel, ValidationError} from '@akeneo-pim-community/shared';
+import {filterErrors, Channel, ValidationError} from '@akeneo-pim-community/shared';
 import {ThemeProvider} from 'styled-components';
 import {pimTheme} from 'akeneo-design-system';
 import {DependenciesProvider} from '@akeneo-pim-community/legacy-bridge';
@@ -28,14 +28,22 @@ class ColumnView extends BaseView {
 
   configure() {
     this.trigger('tab:register', {
-      code: this.config.tabCode ? this.config.tabCode : this.code,
+      code: this.getTabCode(),
       label: __(this.config.tabTitle),
     });
 
-    this.listenTo(this.getRoot(), 'pim_enrich:form:entity:pre_save', () => this.setValidationErrors([]));
-    this.listenTo(this.getRoot(), 'pim_enrich:form:entity:bad_request', event =>
-      this.setValidationErrors(event.response.normalized_errors)
-    );
+    this.listenTo(this.getRoot(), 'pim_enrich:form:entity:pre_save', () => {
+      this.getRoot().trigger('pim_enrich:form:form-tabs:remove-error', this.getTabCode());
+      this.setValidationErrors([]);
+    });
+
+    this.listenTo(this.getRoot(), 'pim_enrich:form:entity:bad_request', event => {
+      this.setValidationErrors(event.response.normalized_errors);
+
+      if (filterErrors(this.validationErrors, '[columns]').length > 0) {
+        this.getRoot().trigger('pim_enrich:form:form-tabs:add-error', this.getTabCode());
+      }
+    });
 
     return BaseView.prototype.configure.apply(this, arguments);
   }
@@ -43,6 +51,10 @@ class ColumnView extends BaseView {
   setValidationErrors(validationErrors: ValidationError[]) {
     this.validationErrors = validationErrors;
     this.render();
+  }
+
+  getTabCode(): string {
+    return this.config.tabCode ? this.config.tabCode : this.code;
   }
 
   /**

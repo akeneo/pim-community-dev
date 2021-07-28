@@ -33,7 +33,6 @@ const TargetCell = styled(Table.Cell)`
 
 const RemoveCell = styled(Table.Cell)`
   width: 50px;
-  padding-left: 0;
 `;
 
 const Spacer = styled.div`

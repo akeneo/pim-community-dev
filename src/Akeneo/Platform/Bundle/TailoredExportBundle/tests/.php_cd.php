@@ -47,7 +47,6 @@ $rules = [
             'Akeneo\Pim\Enrichment\Component\Product\Query\GetProductModelLabelsInterface',
             'Akeneo\Pim\Enrichment\Component\Product\Query\ProductQueryBuilderFactoryInterface',
             'Akeneo\Pim\Enrichment\Component\Product\Value\MetricValue',
-            'Akeneo\Pim\Permission\Bundle\User\UserContext',
             'Akeneo\Pim\Permission\Component\Query\GetViewableAttributeCodesForUserInterface',
             'Akeneo\Pim\Structure\Component\Query\PublicApi',
             'Akeneo\ReferenceEntity\Infrastructure\PublicApi\Enrich\FindRecordsLabelTranslations',

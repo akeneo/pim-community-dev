@@ -25,22 +25,23 @@ const useAttributes = (attributeCodes: string[]): Attribute[] => {
   return attributes.filter(({code}) => attributeCodes.includes(code));
 };
 
-const useAttribute = (attributeCode: string): Attribute | null | false => {
+const useAttribute = (attributeCode: string) => {
   const attributeFetcher = useFetchers().attribute;
-  const [attribute, setAttribute] = useState<Attribute | null | false>(null);
+  const [attribute, setAttribute] = useState<Attribute | null>(null);
   const isMounted = useIsMounted();
+  const [isFetching, setIsFetching] = useState<boolean>(false);
 
   useEffect(() => {
+    setIsFetching(true);
     attributeFetcher.fetchByIdentifiers([attributeCode]).then((attributes: Attribute[]) => {
       if (!isMounted()) return;
+      setIsFetching(false);
 
-      setAttribute(attributes[0] ?? false);
+      setAttribute(attributes[0] ?? null);
     });
   }, [attributeCode, attributeFetcher, isMounted]);
 
-  if (attribute && attribute.code !== attributeCode) return null;
-
-  return attribute;
+  return [isFetching, attribute?.code === attributeCode ? attribute : null] as const;
 };
 
 export {useAttribute, useAttributes};

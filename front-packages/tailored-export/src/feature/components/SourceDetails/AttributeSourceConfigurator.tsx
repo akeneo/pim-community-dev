@@ -3,6 +3,7 @@ import styled from 'styled-components';
 import {Helper} from 'akeneo-design-system';
 import {
   filterErrors,
+  getErrorsForPath,
   ChannelCode,
   LocaleCode,
   ValidationError,
@@ -28,7 +29,7 @@ import {SimpleSelectConfigurator} from './SimpleSelect/SimpleSelectConfigurator'
 import {MultiSelectConfigurator} from './MultiSelect/MultiSelectConfigurator';
 import {ReferenceEntityConfigurator} from './ReferenceEntity/ReferenceEntityConfigurator';
 import {AssetCollectionConfigurator} from './AssetCollection/AssetCollectionConfigurator';
-import {DeletedAttributePlaceholder} from './DeletedAttributePlaceholder';
+import {DeletedSourcePlaceholder} from './DeletedSourcePlaceholder';
 
 const Container = styled.div`
   display: flex;
@@ -71,14 +72,14 @@ const AttributeSourceConfigurator = ({source, validationErrors, onSourceChange}:
   const channels = useChannels();
   const localeErrors = filterErrors(validationErrors, '[locale]');
   const channelErrors = filterErrors(validationErrors, '[channel]');
-  const attributeErrors = filterErrors(validationErrors, '[code]');
+  const attributeErrors = getErrorsForPath(validationErrors, '');
   const locales = getLocalesFromChannel(channels, source.channel);
-  const attribute = useAttribute(source.code);
+  const [isFetching, attribute] = useAttribute(source.code);
 
   // TODO: add skeleton
-  if (null === attribute) return null;
+  if (isFetching) return null;
 
-  if (false === attribute) {
+  if (null === attribute) {
     return (
       <>
         {attributeErrors.map((error, index) => (
@@ -86,7 +87,9 @@ const AttributeSourceConfigurator = ({source, validationErrors, onSourceChange}:
             {translate(error.messageTemplate, error.parameters)}
           </Helper>
         ))}
-        <DeletedAttributePlaceholder />
+        <DeletedSourcePlaceholder
+          message={translate('akeneo.tailored_export.column_details.sources.deleted_attribute.title')}
+        />
       </>
     );
   }
@@ -104,39 +107,46 @@ const AttributeSourceConfigurator = ({source, validationErrors, onSourceChange}:
   }
 
   return (
-    <Container>
-      {null !== source.channel && (
-        <ChannelDropdown
-          value={source.channel}
-          channels={channels}
-          validationErrors={channelErrors}
-          onChange={(channelCode: ChannelCode) => {
-            const localeCode = getLocaleFromChannel(channels, channelCode, source.locale);
-            onSourceChange({...source, locale: localeCode, channel: channelCode});
-          }}
+    <>
+      {attributeErrors.map((error, index) => (
+        <Helper key={index} level="error">
+          {translate(error.messageTemplate, error.parameters)}
+        </Helper>
+      ))}
+      <Container>
+        {null !== source.channel && (
+          <ChannelDropdown
+            value={source.channel}
+            channels={channels}
+            validationErrors={channelErrors}
+            onChange={(channelCode: ChannelCode) => {
+              const localeCode = getLocaleFromChannel(channels, channelCode, source.locale);
+              onSourceChange({...source, locale: localeCode, channel: channelCode});
+            }}
+          />
+        )}
+        {null !== source.locale && (
+          <LocaleDropdown
+            value={source.locale}
+            validationErrors={localeErrors}
+            locales={localeSpecificFilteredLocales}
+            onChange={(localeCode: LocaleCode) => {
+              onSourceChange({...source, locale: localeCode});
+            }}
+          >
+            {attribute.is_locale_specific && (
+              <Helper inline>{translate('akeneo.tailored_export.column_details.sources.locale_specific.info')}</Helper>
+            )}
+          </LocaleDropdown>
+        )}
+        <Configurator
+          source={source}
+          attribute={attribute}
+          validationErrors={validationErrors}
+          onSourceChange={onSourceChange}
         />
-      )}
-      {null !== source.locale && (
-        <LocaleDropdown
-          value={source.locale}
-          validationErrors={localeErrors}
-          locales={localeSpecificFilteredLocales}
-          onChange={(localeCode: LocaleCode) => {
-            onSourceChange({...source, locale: localeCode});
-          }}
-        >
-          {attribute.is_locale_specific && (
-            <Helper inline>{translate('akeneo.tailored_export.column_details.sources.locale_specific.info')}</Helper>
-          )}
-        </LocaleDropdown>
-      )}
-      <Configurator
-        source={source}
-        attribute={attribute}
-        validationErrors={validationErrors}
-        onSourceChange={onSourceChange}
-      />
-    </Container>
+      </Container>
+    </>
   );
 };
 

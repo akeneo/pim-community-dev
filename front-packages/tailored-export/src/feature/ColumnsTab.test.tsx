@@ -245,9 +245,9 @@ test('It add source when user click on add source', async () => {
       uuid: 'fbf9cff9-e95c-4e7d-983b-2947c7df90df',
       sources: [
         {
-          channel: null,
+          channel: 'ecommerce',
           code: 'description',
-          locale: null,
+          locale: 'en_US',
           operations: {},
           selection: {
             type: 'code',

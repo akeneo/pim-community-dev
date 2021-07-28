@@ -142,9 +142,9 @@ test('We can add an attribute source', async () => {
     uuid: '3a6645e0-0d70-411d-84ee-79833144544a',
     sources: [
       {
-        channel: null,
+        channel: 'ecommerce',
         code: 'description',
-        locale: null,
+        locale: 'en_US',
         operations: {},
         selection: {
           type: 'code',

@@ -1,7 +1,6 @@
 import React from 'react';
 import styled from 'styled-components';
 import {getColor, getFontSize, RulesIllustration} from 'akeneo-design-system';
-import {useTranslate} from '@akeneo-pim-community/shared';
 
 const Content = styled.div`
   display: flex;
@@ -18,15 +17,17 @@ const Title = styled.div`
   text-align: center;
 `;
 
-const DeletedAttributePlaceholder = () => {
-  const translate = useTranslate();
+type DeletedSourcePlaceholderProps = {
+  message: string;
+};
 
+const DeletedSourcePlaceholder = ({message}: DeletedSourcePlaceholderProps) => {
   return (
     <Content>
       <RulesIllustration size={128} />
-      <Title>{translate('akeneo.tailored_export.column_details.sources.deleted_attribute.title')}</Title>
+      <Title>{message}</Title>
     </Content>
   );
 };
 
-export {DeletedAttributePlaceholder};
+export {DeletedSourcePlaceholder};

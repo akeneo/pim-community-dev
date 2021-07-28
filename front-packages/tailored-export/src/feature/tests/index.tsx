@@ -3,6 +3,7 @@ import {act} from '@testing-library/react';
 import {renderWithProviders as baseRender, Channel} from '@akeneo-pim-community/shared';
 import {AssociationType, Attribute} from '../models';
 import {FetcherContext} from '../contexts';
+import {renderHook, RenderHookResult} from '@testing-library/react-hooks';
 
 const associationTypes: AssociationType[] = [
   {
@@ -14,6 +15,11 @@ const associationTypes: AssociationType[] = [
     code: 'UPSELL',
     labels: {},
     is_quantified: false,
+  },
+  {
+    code: 'PACK',
+    labels: {},
+    is_quantified: true,
   },
 ];
 
@@ -49,8 +55,8 @@ const attributes: Attribute[] = [
     type: 'pim_catalog_textarea',
     code: 'description',
     labels: {fr_FR: 'French description', en_US: 'English description'},
-    scopable: false,
-    localizable: false,
+    scopable: true,
+    localizable: true,
     is_locale_specific: false,
     available_locales: [],
   },
@@ -148,7 +154,18 @@ const fetchers = {
   },
 };
 
-const renderWithProviders = async (node: ReactNode) =>
-  await act(async () => void baseRender(<FetcherContext.Provider value={fetchers}>{node}</FetcherContext.Provider>));
+type WrapperProps = {
+  children?: ReactNode;
+};
 
-export {renderWithProviders};
+const Wrapper = ({children}: WrapperProps) => (
+  <FetcherContext.Provider value={fetchers}>{children}</FetcherContext.Provider>
+);
+
+const renderWithProviders = async (children: ReactNode) =>
+  await act(async () => void baseRender(<Wrapper>{children}</Wrapper>));
+
+const renderHookWithProviders = <P, R>(hook: (props: P) => R, initialProps?: P): RenderHookResult<P, R> =>
+  renderHook(hook, {wrapper: Wrapper, initialProps});
+
+export {renderWithProviders, renderHookWithProviders};

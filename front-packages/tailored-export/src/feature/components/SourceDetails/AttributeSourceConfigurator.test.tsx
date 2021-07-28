@@ -161,7 +161,7 @@ test('it calls handler when locale is changed', async () => {
   expect(handleSourceChange).toHaveBeenCalledWith({...source, locale: 'en_US'});
 });
 
-test('it displays attribute errors', async () => {
+test('it displays attribute errors when attribute is not found', async () => {
   const handleSourceChange = jest.fn();
   const source: Source = {
     uuid: 'cffd560e-1e40-4c55-a415-89c7958b270d',
@@ -183,7 +183,40 @@ test('it displays attribute errors', async () => {
           messageTemplate: 'code error message',
           parameters: {},
           message: '',
-          propertyPath: '[code]',
+          propertyPath: '',
+          invalidValue: '',
+        },
+      ]}
+      onSourceChange={handleSourceChange}
+    />
+  );
+
+  expect(screen.getByText('code error message')).toBeInTheDocument();
+});
+
+test('it displays attribute errors when attribute is found', async () => {
+  const handleSourceChange = jest.fn();
+  const source: Source = {
+    uuid: 'cffd560e-1e40-4c55-a415-89c7958b270d',
+    code: 'description',
+    type: 'attribute',
+    locale: 'fr_FR',
+    channel: 'ecommerce',
+    operations: [],
+    selection: {
+      type: 'code',
+    },
+  };
+
+  await renderWithProviders(
+    <AttributeSourceConfigurator
+      source={source}
+      validationErrors={[
+        {
+          messageTemplate: 'code error message',
+          parameters: {},
+          message: '',
+          propertyPath: '',
           invalidValue: '',
         },
       ]}

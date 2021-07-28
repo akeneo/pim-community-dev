@@ -1,69 +1,88 @@
-import React from 'react';
-import {Channel} from '@akeneo-pim-community/shared';
-import {act} from 'react-dom/test-utils';
-import {FetcherContext} from '../contexts';
+import {act} from '@testing-library/react-hooks';
 import {useAssociationType, useAssociationTypes} from './useAssociationTypes';
-import {renderHook} from '@testing-library/react-hooks';
-import {AssociationType, Attribute} from '../models';
+import {renderHookWithProviders} from '../tests';
 
-const response: AssociationType[] = [
-  {code: 'X_SELL', labels: {}, is_quantified: false},
-  {code: 'PACK', labels: {}, is_quantified: true},
-];
+const flushPromises = () => new Promise(setImmediate);
 
-const Wrapper: React.FC = ({children}) => {
-  return (
-    <FetcherContext.Provider
-      value={{
-        attribute: {fetchByIdentifiers: (): Promise<Attribute[]> => Promise.resolve<Attribute[]>([])},
-        channel: {fetchAll: (): Promise<Channel[]> => new Promise(resolve => resolve([]))},
-        associationType: {fetchByCodes: (): Promise<AssociationType[]> => new Promise(resolve => resolve(response))},
-      }}
-    >
-      {children}
-    </FetcherContext.Provider>
-  );
-};
-
-test('It fetch the association types', async () => {
-  const {result, waitForNextUpdate} = renderHook(() => useAssociationTypes(['X_SELL', 'PACK']), {wrapper: Wrapper});
-  expect(result.current);
+test('It fetches the association types', async () => {
+  const associationTypeCodes = ['XSELL', 'PACK'];
+  const {result} = renderHookWithProviders(() => useAssociationTypes(associationTypeCodes));
   await act(async () => {
-    await waitForNextUpdate();
+    await flushPromises();
   });
 
   const associationTypes = result.current;
-  expect(associationTypes).toEqual(response);
+  expect(associationTypes).toEqual([
+    {
+      code: 'XSELL',
+      labels: {
+        en_US: 'Cross sell',
+      },
+      is_quantified: false,
+    },
+    {
+      code: 'PACK',
+      labels: {},
+      is_quantified: true,
+    },
+  ]);
 });
 
-test('It fetch an association type', async () => {
-  const {result, waitForNextUpdate} = renderHook(() => useAssociationType('X_SELL'), {wrapper: Wrapper});
-  expect(result.current);
+test('It fetches an association type', async () => {
+  const {result} = renderHookWithProviders(() => useAssociationType('XSELL'));
   await act(async () => {
-    await waitForNextUpdate();
+    await flushPromises();
   });
 
-  const associationType = result.current;
-  expect(associationType).toEqual({code: 'X_SELL', labels: {}, is_quantified: false});
+  const [isFetching, associationType] = result.current;
+  expect(isFetching).toBe(false);
+  expect(associationType).toEqual({
+    code: 'XSELL',
+    labels: {
+      en_US: 'Cross sell',
+    },
+    is_quantified: false,
+  });
 });
 
 test('It returns null if no association type', async () => {
-  const {result, waitForNextUpdate} = renderHook(() => useAssociationType('UPSELL'), {wrapper: Wrapper});
+  const {result} = renderHookWithProviders(() => useAssociationType('nonexistent_association_type'));
   await act(async () => {
-    await waitForNextUpdate();
+    await flushPromises();
   });
 
-  const attribute = result.current;
-  expect(attribute).toBeNull();
+  const [isFetching, associationType] = result.current;
+  expect(isFetching).toBe(false);
+  expect(associationType).toBeNull();
 });
 
-test('It return association type only if hook is mounted', async () => {
-  const {unmount} = renderHook(() => useAssociationTypes(['X_SELL']), {wrapper: Wrapper});
+test('It returns null during loading', async () => {
+  const {result} = renderHookWithProviders(() => useAssociationType('XSELL'));
+  const [isFetching, associationType] = result.current;
+  expect(isFetching).toBe(true);
+  expect(associationType).toBeNull();
+
+  await act(async () => {
+    await flushPromises();
+  });
+
+  const [isFetchingAfterFetch, associationTypeAfterFetch] = result.current;
+  expect(isFetchingAfterFetch).toBe(false);
+  expect(associationTypeAfterFetch).toEqual({
+    code: 'XSELL',
+    labels: {
+      en_US: 'Cross sell',
+    },
+    is_quantified: false,
+  });
+});
+
+test('It return association types only if hook is mounted', async () => {
+  const {unmount} = renderHookWithProviders(() => useAssociationTypes(['XSELL']));
   unmount();
 });
 
-test('It returns attribute only if hook is mounted', async () => {
-  const {unmount} = renderHook(() => useAssociationType('X_SELL'), {wrapper: Wrapper});
-
+test('It returns association type only if hook is mounted', async () => {
+  const {unmount} = renderHookWithProviders(() => useAssociationType('XSELL'));
   unmount();
 });

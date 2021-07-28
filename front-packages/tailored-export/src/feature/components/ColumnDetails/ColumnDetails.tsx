@@ -72,18 +72,18 @@ const ColumnDetails = ({columnConfiguration, onColumnChange}: ColumnDetailsProps
   const handleSourceAdd = async (addedSourceCode: string, sourceType: string) => {
     if (sourceType === 'property') {
       const updatedColumnConfiguration = addPropertySource(columnConfiguration, addedSourceCode);
-      onColumnChange(updatedColumnConfiguration);
       switchTo(updatedColumnConfiguration.sources[updatedColumnConfiguration.sources.length - 1]?.uuid ?? '');
+      onColumnChange(updatedColumnConfiguration);
     } else if (sourceType === 'association_type') {
       const [associationType] = await associationTypeFetcher.fetchByCodes([addedSourceCode]);
       const updatedColumnConfiguration = addAssociationTypeSource(columnConfiguration, associationType);
-      onColumnChange(updatedColumnConfiguration);
       switchTo(updatedColumnConfiguration.sources[updatedColumnConfiguration.sources.length - 1]?.uuid ?? '');
+      onColumnChange(updatedColumnConfiguration);
     } else {
       const [attribute] = await attributeFetcher.fetchByIdentifiers([addedSourceCode]);
       const updatedColumnConfiguration = addAttributeSource(columnConfiguration, attribute, channels);
-      onColumnChange(updatedColumnConfiguration);
       switchTo(updatedColumnConfiguration.sources[updatedColumnConfiguration.sources.length - 1]?.uuid ?? '');
+      onColumnChange(updatedColumnConfiguration);
     }
   };
 

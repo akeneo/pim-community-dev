@@ -23,19 +23,23 @@ const useAssociationTypes = (associationTypeCodes: string[]): AssociationType[] 
   return associationTypes;
 };
 
-const useAssociationType = (associationTypeCode: string): AssociationType | null => {
+const useAssociationType = (associationTypeCode: string) => {
   const associationTypeFetcher = useFetchers().associationType;
   const [associationType, setAssociationType] = useState<AssociationType | null>(null);
   const isMounted = useIsMounted();
+  const [isFetching, setIsFetching] = useState<boolean>(false);
 
   useEffect(() => {
+    setIsFetching(true);
     associationTypeFetcher.fetchByCodes([associationTypeCode]).then((associationTypes: AssociationType[]) => {
       if (!isMounted()) return;
+      setIsFetching(false);
 
       setAssociationType(associationTypes[0] ?? null);
     });
   }, [associationTypeCode, associationTypeFetcher, isMounted]);
-  return associationType?.code === associationTypeCode ? associationType : null;
+
+  return [isFetching, associationType?.code === associationTypeCode ? associationType : null] as const;
 };
 
 export {useAssociationTypes, useAssociationType};

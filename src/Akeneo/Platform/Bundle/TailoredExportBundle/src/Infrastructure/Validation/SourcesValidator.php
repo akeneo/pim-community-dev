@@ -18,6 +18,7 @@ use Akeneo\Pim\Structure\Component\Query\PublicApi\AttributeType\GetAttributes;
 use Akeneo\Platform\TailoredExport\Application\Query\Source\AssociationTypeSource;
 use Akeneo\Platform\TailoredExport\Application\Query\Source\AttributeSource;
 use Akeneo\Platform\TailoredExport\Application\Query\Source\PropertySource;
+use Akeneo\Platform\TailoredExport\Infrastructure\Validation\Source\QuantifiedAssociationType\QuantifiedAssociationTypeSourceConstraint;
 use Akeneo\Platform\TailoredExport\Infrastructure\Validation\Source\SimpleAssociationType\SimpleAssociationTypeSourceConstraint;
 use Symfony\Component\Validator\Constraint;
 use Symfony\Component\Validator\Constraints\Count;
@@ -117,6 +118,7 @@ class SourcesValidator extends ConstraintValidator
     {
         $associationTypes = $this->getAssociationTypes->forCodes([$source['code']]);
         $associationType = $associationTypes[$source['code']] ?? null;
+
         if (null === $associationType) {
             $this->context->buildViolation(Sources::ASSOCIATION_TYPE_SHOULD_EXIST)
                 ->atPath(sprintf('[%s]', $source['uuid']))
@@ -126,16 +128,9 @@ class SourcesValidator extends ConstraintValidator
             return;
         }
 
-        if ($associationType->isQuantified()) {
-            // @TODO Add two way validation (RAC-683)
-            $constraint = null;
-        } else {
-            $constraint = new SimpleAssociationTypeSourceConstraint();
-        }
-
-        if (null === $constraint) {
-            return;
-        }
+        $constraint = $associationType->isQuantified() ?
+            new QuantifiedAssociationTypeSourceConstraint() :
+            new SimpleAssociationTypeSourceConstraint();
 
         $violations = $validator->validate($source, $constraint);
         $this->buildViolations($violations, $source);
@@ -152,7 +147,7 @@ class SourcesValidator extends ConstraintValidator
                     '{{ attribute_code }}' => $source['code'],
                 ]
             )
-                ->atPath(sprintf('[%s][code]', $source['uuid']))
+                ->atPath(sprintf('[%s]', $source['uuid']))
                 ->addViolation();
 
             return;
@@ -164,7 +159,7 @@ class SourcesValidator extends ConstraintValidator
             return;
         }
 
-        $violations = $validator->validate($source, $constraint);
+        $violations = $validator->validate($source, [new IsValidAttribute(), $constraint]);
         $this->buildViolations($violations, $source);
     }
 

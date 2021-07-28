@@ -7,6 +7,7 @@ services:
       - '@akeneo_batch.job_repository'
       -
         - '@akeneo.tailored_export.connector.step.xlsx_product.export'
+      - true
     tags:
       - { name: akeneo_batch.job, connector: '%akeneo.tailored_export.connector.name%', type: '%pim_connector.job.export_type%' }
 

@@ -18,7 +18,6 @@ use Akeneo\AssetManager\Domain\Model\Asset\Value\LocaleReference;
 use Akeneo\AssetManager\Domain\Model\Attribute\AttributeIdentifier;
 use Akeneo\AssetManager\Domain\Query\Attribute\ValueKey;
 use Akeneo\AssetManager\Infrastructure\Filesystem\Storage;
-use Akeneo\Tool\Component\FileStorage\Model\FileInfo;
 use Doctrine\DBAL\Connection;
 use Webmozart\Assert\Assert;
 
@@ -66,14 +65,20 @@ SQL;
             ['assetCodes' => Connection::PARAM_STR_ARRAY]
         )->fetchAll();
 
-        return array_map(
-            static fn (array $rawResults) => new MediaFileInfo(
-                $rawResults['filePath'],
-                $rawResults['originalFilename'],
+        $mediaFileInfoCollection = [];
+        foreach ($rawResults as $rawResult) {
+            if (null === $rawResult['filePath'] || null === $rawResult['originalFilename']) {
+                continue;
+            }
+
+            $mediaFileInfoCollection[] = new MediaFileInfo(
+                $rawResult['filePath'],
+                $rawResult['originalFilename'],
                 Storage::FILE_STORAGE_ALIAS
-            ),
-            $rawResults
-        );
+            );
+        }
+
+        return $mediaFileInfoCollection;
     }
 
     private function getMainMediaValueKey(

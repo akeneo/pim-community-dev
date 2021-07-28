@@ -1,4 +1,4 @@
-import React, {useState} from 'react';
+import React, {useEffect, useRef, useState} from 'react';
 import styled from 'styled-components';
 import {
   Button,
@@ -6,6 +6,7 @@ import {
   getColor,
   GroupsIllustration,
   Search,
+  useAutoFocus,
   useBooleanState,
   useDebounce,
 } from 'akeneo-design-system';
@@ -34,11 +35,17 @@ const AddSourceDropdown = ({canAddSource, onSourceSelected}: AddSourceDropdownPr
   const [searchValue, setSearchValue] = useState<string>('');
   const debouncedSearchValue = useDebounce(searchValue);
   const [items, handleNextPage] = useOffsetAvailableSources(debouncedSearchValue, isOpen);
+  const inputRef = useRef<HTMLInputElement>(null);
+  const focus = useAutoFocus(inputRef);
 
   const handleClose = () => {
     close();
     setSearchValue('');
   };
+
+  useEffect(() => {
+    isOpen && focus();
+  }, [isOpen, focus]);
 
   return (
     <Dropdown>
@@ -60,6 +67,7 @@ const AddSourceDropdown = ({canAddSource, onSourceSelected}: AddSourceDropdownPr
         <Dropdown.Overlay verticalPosition="down" onClose={handleClose}>
           <Dropdown.Header>
             <Search
+              inputRef={inputRef}
               onSearchChange={setSearchValue}
               placeholder={translate('pim_common.search')}
               searchValue={searchValue}
