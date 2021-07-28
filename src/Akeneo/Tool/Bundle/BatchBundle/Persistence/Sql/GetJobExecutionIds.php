@@ -6,7 +6,9 @@ namespace Akeneo\Tool\Bundle\BatchBundle\Persistence\Sql;
 
 use Akeneo\Tool\Component\Batch\Job\BatchStatus;
 use Doctrine\DBAL\Connection;
-use Doctrine\DBAL\Driver\PDOStatement;
+use Doctrine\DBAL\ForwardCompatibility\DriverResultStatement;
+use Doctrine\DBAL\ForwardCompatibility\DriverStatement;
+use Doctrine\DBAL\Result;
 use Doctrine\DBAL\Types\Type;
 
 /**
@@ -23,7 +25,11 @@ final class GetJobExecutionIds
         $this->connection = $connection;
     }
 
-    public function olderThanDays(int $days): PDOStatement
+    /**
+     * @return DriverStatement|DriverResultStatement
+     * @throws \Doctrine\DBAL\Exception
+     */
+    public function olderThanDays(int $days): Result
     {
         if ($days < 1) {
             throw new \InvalidArgumentException(sprintf('Number of days should be strictly superior to 0, "%s% given', $days));
@@ -50,7 +56,11 @@ SQL;
         );
     }
 
-    public function all(): PDOStatement
+    /**
+     * @return DriverStatement|DriverResultStatement
+     * @throws \Doctrine\DBAL\Exception
+     */
+    public function all(): Result
     {
         $query = <<<SQL
             SELECT id

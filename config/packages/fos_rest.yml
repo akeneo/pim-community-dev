@@ -17,6 +17,7 @@ fos_rest:
         decoders:
             json: fos_rest.decoder.json
     exception:
+        serializer_error_renderer: true
         messages:
             Symfony\Component\HttpKernel\Exception\ConflictHttpException: true
             Symfony\Component\HttpKernel\Exception\HttpException: true

@@ -15,23 +15,14 @@ use Symfony\Component\Routing\Router;
  */
 class RootEndpointController
 {
-    /** @var Router */
-    protected $router;
+    protected Router $router;
 
-    /**
-     * @param Router $router
-     */
     public function __construct(Router $router)
     {
         $this->router = $router;
     }
 
-    /**
-     * @param Request $request
-     *
-     * @return JsonResponse
-     */
-    public function getAction(Request $request)
+    public function getAction(Request $request): JsonResponse
     {
         $routes = $this->router->getRouteCollection();
 
