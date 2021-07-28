@@ -1,12 +1,14 @@
-import React, {ChangeEvent, FC, useEffect, useRef} from 'react';
+import React, {FC, useEffect, useRef} from 'react';
 
 import {AttributeOption, Locale} from '../model';
 import {useEditingOptionContext} from '../contexts';
+import {Field, TextInput} from 'akeneo-design-system';
+import styled from "styled-components";
 
 type AttributeOptionFormProps = {
   option: AttributeOption;
   locale: Locale;
-  onUpdateOptionLabel: (event: ChangeEvent, localeCode: string) => void;
+  onUpdateOptionLabel: (newLabel: string, localeCode: string) => void;
 };
 
 const AttributeOptionForm: FC<AttributeOptionFormProps> = ({option, locale, onUpdateOptionLabel}) => {
@@ -22,23 +24,20 @@ const AttributeOptionForm: FC<AttributeOptionFormProps> = ({option, locale, onUp
   }, [inputRef, addRef]);
 
   return (
-    <div className="AknFieldContainer">
-      <div className="AknFieldContainer-header">
-        <label className="AknFieldContainer-label control-label AknFieldContainer-label">{locale.label}</label>
-      </div>
-      <div className="AknFieldContainer-inputContainer field-input">
-        <input
+    <Container>
+      <Field label={locale.label} locale={locale.code}>
+        <TextInput
           ref={inputRef}
-          type="text"
-          className="AknTextField"
-          defaultValue={option.optionValues[locale.code].value}
-          role="attribute-option-label"
-          onChange={(event: ChangeEvent<HTMLInputElement>) => onUpdateOptionLabel(event, locale.code)}
-          data-locale={locale.code}
+          value={option.optionValues[locale.code].value}
+          onChange={newLabel => onUpdateOptionLabel(newLabel, locale.code)}
         />
-      </div>
-    </div>
+      </Field>
+    </Container>
   );
 };
+
+const Container = styled.div`
+  margin-bottom: 20px;
+`;
 
 export default AttributeOptionForm;
