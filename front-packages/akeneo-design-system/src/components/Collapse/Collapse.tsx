@@ -79,7 +79,7 @@ const Collapse = React.forwardRef<HTMLDivElement, CollapseProps>(
     {label, collapseButtonLabel, isOpen, onCollapse, children, ...rest}: CollapseProps,
     forwardedRef: Ref<HTMLDivElement>
   ) => {
-    const [contentHeight, setContentHeight] = useState<number | null>(null);
+    const [contentHeight, setContentHeight] = useState<number>(0);
     const [shouldAnimate, setShouldAnimate] = useState<boolean>(false);
     const contentRef = useRef<HTMLDivElement>(null);
     const isMounted = useIsMounted();
@@ -87,8 +87,7 @@ const Collapse = React.forwardRef<HTMLDivElement, CollapseProps>(
     const handleCollapse = () => onCollapse(!isOpen);
 
     useEffect(() => {
-      if (!contentRef.current) return;
-      if (0 === contentRef.current.scrollHeight) return;
+      if (!contentRef.current || 0 === contentRef.current.scrollHeight) return;
 
       setContentHeight(contentRef.current.scrollHeight);
       const shouldAnimateTimeoutId = window.setTimeout(() => {
@@ -117,9 +116,9 @@ const Collapse = React.forwardRef<HTMLDivElement, CollapseProps>(
         </LabelContainer>
         <Content
           ref={contentRef}
-          overflow={shouldAnimate || !isOpen || null === contentHeight ? 'hidden' : 'inherit'}
-          $height={isOpen && null !== contentHeight ? contentHeight : 0}
-          shouldAnimate={shouldAnimate && null !== contentHeight}
+          overflow={shouldAnimate || !isOpen ? 'hidden' : 'inherit'}
+          $height={isOpen ? contentHeight : 0}
+          shouldAnimate={shouldAnimate}
         >
           {children}
         </Content>
