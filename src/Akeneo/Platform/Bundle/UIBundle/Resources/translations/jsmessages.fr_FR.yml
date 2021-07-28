@@ -374,6 +374,7 @@ pim_settings:
   product_settings: Paramètres produit
   count:
     categories: Vous avez {{ countTrees }} arbres et {{ countCategories }} catégories
+    channel: Vous avez 1 canal
     channels: Vous avez {{ count }} canaux
     locales: Vous avez {{ count }} locales activées
     currencies: Vous avez {{ count }} devises activées
