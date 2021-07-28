@@ -105,7 +105,6 @@ final class IsValidAttributeValidator extends ConstraintValidator
                 'akeneo.tailored_export.validation.attribute.invalid_specific_locale',
                 [
                     '{{ attribute_code }}' => $attribute->code(),
-                    '{{ locale_code }}' => $localeCode,
                 ],
             )->atPath('[locale]')->addViolation();
         }
