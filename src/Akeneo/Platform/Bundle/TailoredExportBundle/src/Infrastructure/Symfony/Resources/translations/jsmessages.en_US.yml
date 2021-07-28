@@ -131,4 +131,4 @@ akeneo.tailored_export:
       channel_should_not_be_blank: The attribute {{ attribute_code }} now has a value per channel. Please either create it or choose a different source.
       locale_should_be_blank: The attribute {{ attribute_code }} does not have a value per locale anymore. Please either create it or choose a different source.
       channel_should_be_blank: The attribute {{ attribute_code }} does not have a value per channel anymore. Please either create it or choose a different source.
-      invalid_specific_locale: The {{ attribute_code }} attribute is locale specific. Please select another locale.
+      invalid_specific_locale: The attribute {{ attribute_code }} is locale specific. Please select another locale.
