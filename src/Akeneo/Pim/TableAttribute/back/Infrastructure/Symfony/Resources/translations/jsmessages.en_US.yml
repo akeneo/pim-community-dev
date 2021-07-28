@@ -20,6 +20,7 @@ pim_table_attribute:
             new_option_placeholder: Write your new option label
             search_placeholder: Write your new option label
             manage_options: Manage options
+            limit_option_reached: You reached the limit of {{ limit }} options.
         product:
             items_per_page: Items per page
             current_items: "{{ minItem }}-{{ maxItem }} of {{ itemCount }}"

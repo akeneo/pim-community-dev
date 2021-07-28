@@ -13,6 +13,7 @@ import {
   Search,
   AddingValueIllustration,
   useBooleanState,
+  Helper,
 } from 'akeneo-design-system';
 import {getLabel, Locale, LocaleCode, useRouter, useTranslate, useUserContext} from '@akeneo-pim-community/shared';
 import {SelectColumnDefinition, SelectOption} from '../models/TableConfiguration';
@@ -67,6 +68,7 @@ const ManageOptionsSearch = styled(Search)`
 `;
 
 type ManageOptionsModalProps = {
+  limit?: number;
   onClose: () => void;
   attribute: Attribute;
   columnDefinition: SelectColumnDefinition;
@@ -81,8 +83,14 @@ export type SelectOptionWithId = SelectOption & {
 const emptySelectOption: SelectOptionWithId = {id: uuid(), code: '', labels: {}, isNew: true};
 
 const OPTIONS_PER_PAGE = 20;
-
-const ManageOptionsModal: React.FC<ManageOptionsModalProps> = ({onClose, attribute, columnDefinition, onChange}) => {
+const LIMIT_OPTIONS = 20000;
+const ManageOptionsModal: React.FC<ManageOptionsModalProps> = ({
+  onClose,
+  attribute,
+  columnDefinition,
+  onChange,
+  limit = LIMIT_OPTIONS,
+}) => {
   const userContext = useUserContext();
   const router = useRouter();
   const translate = useTranslate();
@@ -328,6 +336,13 @@ const ManageOptionsModal: React.FC<ManageOptionsModalProps> = ({onClose, attribu
                 locales={activatedLocales || []}
               />
             </SectionTitle>
+            {options && options.length >= limit && (
+              <Helper level='info'>
+                {translate('pim_table_attribute.form.attribute.limit_option_reached', {
+                  limit,
+                })}
+              </Helper>
+            )}
             {!options && <LoaderIcon />}
             {options && (
               <>
@@ -369,18 +384,20 @@ const ManageOptionsModal: React.FC<ManageOptionsModalProps> = ({onClose, attribu
                           onCodeEnter={isLastOption(option) ? () => newCodeInputRef.current?.focus() : undefined}
                         />
                       ))}
-                      <ManageOptionsRow
-                        codeInputRef={newCodeInputRef}
-                        labelInputRef={newLabelInputRef}
-                        isSelected={selectedOptionIndex === -1}
-                        onSelect={() => setSelectedOptionIndex(-1)}
-                        data-testid={'row-new'}
-                        onChange={(option: SelectOptionWithId) => handleAddOption(option)}
-                        option={emptySelectOption}
-                        labelPlaceholder={translate('pim_table_attribute.form.attribute.new_option_placeholder')}
-                        localeCode={currentLocaleCode}
-                        forceAutocomplete={true}
-                      />
+                      {options && options.length < limit && (
+                        <ManageOptionsRow
+                          codeInputRef={newCodeInputRef}
+                          labelInputRef={newLabelInputRef}
+                          isSelected={selectedOptionIndex === -1}
+                          onSelect={() => setSelectedOptionIndex(-1)}
+                          data-testid={'row-new'}
+                          onChange={(option: SelectOptionWithId) => handleAddOption(option)}
+                          option={emptySelectOption}
+                          labelPlaceholder={translate('pim_table_attribute.form.attribute.new_option_placeholder')}
+                          localeCode={currentLocaleCode}
+                          forceAutocomplete={true}
+                        />
+                      )}
                     </ManageOptionsBody>
                   </Table>
                   {filteredOptions.length === 0 && searchValue !== '' && (

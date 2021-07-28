@@ -124,6 +124,7 @@ describe('ManageOptionsModal', () => {
   it('should add a new option and confirm', async () => {
     const handleChange = jest.fn();
     const handleClose = jest.fn();
+
     renderWithProviders(
       <ManageOptionsModal
         attribute={getTableAttribute()}
@@ -255,6 +256,25 @@ describe('ManageOptionsModal', () => {
     fireEvent.click(screen.getByText('pim_common.delete'));
 
     expect(await findCodeInput(19)).toBeInTheDocument();
+  });
+
+  it('should prevent the user from adding a new option when reaching the limit', async () => {
+    renderWithProviders(
+      <ManageOptionsModal
+        limit={51}
+        attribute={{...getTableAttribute(), code: 'attribute_with_a_lot_of_options'}}
+        onChange={jest.fn()}
+        columnDefinition={getSelectColumnDefinition()}
+        onClose={jest.fn()}
+      />
+    );
+    expect(screen.queryByText('pim_table_attribute.form.attribute.limit_option_reached')).not.toBeInTheDocument();
+    expect(await findLabelInput('new')).toBeInTheDocument();
+
+    fireEvent.change(getCodeInput('new'), {target: {value: 'code'}});
+
+    expect(await screen.findByText('pim_table_attribute.form.attribute.limit_option_reached')).toBeInTheDocument();
+    expect(queryLabelInput('new')).not.toBeInTheDocument();
   });
 
   it('should be able to change the default locale', async () => {
