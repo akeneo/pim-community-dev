@@ -135,7 +135,7 @@ const AttributeSourceConfigurator = ({source, validationErrors, onSourceChange}:
             }}
           >
             {attribute.is_locale_specific && (
-              <Helper inline>{translate('akeneo.tailored_export.column_details.sources.locale_specific.info')}</Helper>
+              <Helper inline>{translate('akeneo.tailored_export.column_details.sources.locale_specific')}</Helper>
             )}
           </LocaleDropdown>
         )}

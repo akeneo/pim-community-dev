@@ -41,7 +41,7 @@ akeneo.tailored_export:
       title: Sources
       add: Add source
       no_result: Sorry, there is no results.
-      locale_specific.info: This attribute has a value per locale.
+      locale_specific: This attribute is locale specific.
       remove:
         title: source
         text: Are you sure you want to remove this source?
@@ -119,16 +119,16 @@ akeneo.tailored_export:
         should_be_unique: This column name already exists, please enter a new one.
     sources:
       max_source_count_reached: You have reached the limit of {{ limit }} sources, you can no longer add sources to your export.
-      association_type_should_exist: The {{ association_type_code }} association type does not exist. Please either create it or choose a different source.
+      association_type_should_exist: The association type {{ association_type_code }} does not exist. Please either create it or choose a different source.
     locale:
-      should_be_active: The {{ locale_code }} locale has been deactivated. Either reactivate it or select another locale.
-      should_be_bound_to_channel: The {{ locale_code }} locale should be active in the {{ channel_code }} channel.
+      should_be_active: The locale {{ locale_code }} has been deactivated. Either reactivate it or select another locale.
+      should_be_bound_to_channel: The locale {{ locale_code }} has been deactivated for the channel {{ channel_code }}. Either reactivate it or select another locale.
     channel:
-      should_exist: The {{ channel_code }} channel has been deleted. Please select another channel.
+      should_exist: The channel {{ channel_code }} has been deleted. Please select another channel.
     attribute:
-      should_exist: The {{ attribute_code }} attribute does not exist. Please either create it or choose a different source.
-      locale_should_not_be_blank: The {{ attribute_code }} attribute now has a value per locale. Please either create it or choose a different source.
-      channel_should_not_be_blank: The {{ attribute_code }} attribute now has a value per channel. Please either create it or choose a different source.
-      locale_should_be_blank: The {{ attribute_code }} attribute does not have a value per locale anymore. Please either create it or choose a different source.
-      channel_should_be_blank: The {{ attribute_code }} attribute does not have a value per channel anymore. Please either create it or choose a different source.
-      invalid_specific_locale: The {{ attribute_code }} attribute is locale specific and its available locales does not include {{ locale_code }}.
+      should_exist: The attribute {{ attribute_code }} does not exist. Please either create it or choose a different source.
+      locale_should_not_be_blank: The attribute {{ attribute_code }} now has a value per locale. Please either create it or choose a different source.
+      channel_should_not_be_blank: The attribute {{ attribute_code }} now has a value per channel. Please either create it or choose a different source.
+      locale_should_be_blank: The attribute {{ attribute_code }} does not have a value per locale anymore. Please either create it or choose a different source.
+      channel_should_be_blank: The attribute {{ attribute_code }} does not have a value per channel anymore. Please either create it or choose a different source.
+      invalid_specific_locale: The attribute {{ attribute_code }} is locale specific and its available locales does not include {{ locale_code }}.
