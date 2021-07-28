@@ -5,7 +5,7 @@ import {AttributeOption} from '../model';
 import {useAttributeContext} from '../contexts';
 import {useAttributeOptionsListState} from '../hooks/useAttributeOptionsListState';
 import {useSortedAttributeOptions} from '../hooks/useSortedAttributeOptions';
-import ToggleButton from './ToggleButton';
+import AutoOptionSorting from './AutoOptionSorting';
 import ListItem, {DragItem} from './ListItem';
 import NewOptionPlaceholder from './NewOptionPlaceholder';
 
@@ -76,10 +76,7 @@ const List = ({
         </div>
       </div>
 
-      <label className="AknFieldContainer-header" htmlFor="auto-sort-options">
-        {translate('pim_enrich.entity.attribute.property.auto_option_sorting')}
-      </label>
-      <ToggleButton />
+      <AutoOptionSorting />
 
       <div className="AknAttributeOption-list-optionsList" role="attribute-options-list">
         {sortedAttributeOptions !== null &&
