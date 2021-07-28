@@ -10,9 +10,8 @@ Feature: Edit an identifier attribute
 
   Scenario: Fail to create a second identifier attribute
     Given I am on the attributes page
-    When I create an "Identifier" attribute
+    When I create an "Identifier" attribute having code "mySecondId"
     And I fill in the following information:
-      | Code            | mySecondId |
       | Attribute group | Other      |
     And I press the "Save" button
     Then I should see the text "An identifier attribute already exists."

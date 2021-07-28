@@ -174,7 +174,8 @@ class ProductViolationNormalizerSpec extends ObjectBehavior
             'attribute' => 'sku',
             'locale'    => null,
             'scope'     => null,
-            'message'   => ' This value is already used.'
+            'message'   => ' This value is already used.',
+            'path'      => 'identifier',
         ]);
     }
 

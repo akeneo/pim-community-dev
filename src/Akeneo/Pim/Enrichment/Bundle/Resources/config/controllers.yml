@@ -135,7 +135,6 @@ services:
             - '@pim_catalog.repository.product_category'
             - '@pim_catalog.filter.chained'
 
-
     pim_enrich.controller.rest.product:
         public: true
         class: 'Akeneo\Pim\Enrichment\Bundle\Controller\InternalApi\ProductController'

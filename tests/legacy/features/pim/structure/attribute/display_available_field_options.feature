@@ -10,7 +10,7 @@ Feature: Display available field options
 
   Scenario Outline: Successfully display available parameter fields for attribute types
     Given I am on the attributes page
-    When I create a "<type>" attribute
+    When I create a "<type>" attribute having code "new_attribute"
     Then I should see the <fields> fields
 
     Examples:
