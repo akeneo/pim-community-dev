@@ -17,10 +17,14 @@ const CollapseContainer = styled.div`
   }
 `;
 
-const Content = styled.div<{$height: number; overflow: string}>`
+const Content = styled.div<{$height: number; overflow: string; shouldAnimate: boolean}>`
   max-height: ${({$height}) => $height}px;
   overflow: ${({overflow}) => overflow};
-  transition: max-height ${ANIMATION_DURATION}ms ease-in-out;
+  ${({shouldAnimate}) =>
+    shouldAnimate &&
+    `
+    transition: max-height ${ANIMATION_DURATION}ms ease-in-out;
+  `}
   padding-bottom: ${({$height}) => (0 === $height ? 0 : 10)}px;
 `;
 
@@ -75,28 +79,28 @@ const Collapse = React.forwardRef<HTMLDivElement, CollapseProps>(
     {label, collapseButtonLabel, isOpen, onCollapse, children, ...rest}: CollapseProps,
     forwardedRef: Ref<HTMLDivElement>
   ) => {
-    const [contentHeight, setContentHeight] = useState<number>(0);
-    const [overflow, setOverflow] = useState<string>(isOpen ? 'inherit' : 'hidden');
+    const [contentHeight, setContentHeight] = useState<number | null>(null);
+    const [shouldAnimate, setShouldAnimate] = useState<boolean>(false);
     const contentRef = useRef<HTMLDivElement>(null);
     const isMounted = useIsMounted();
 
     const handleCollapse = () => onCollapse(!isOpen);
 
     useEffect(() => {
-      if (contentRef.current) {
-        if (isOpen) {
-          setContentHeight(contentRef.current.scrollHeight);
-          const timeoutId = window.setTimeout(() => isMounted() && setOverflow('inherit'), ANIMATION_DURATION);
+      if (!contentRef.current) return;
+      if (0 === contentRef.current.scrollHeight) return;
 
-          return () => window.clearTimeout(timeoutId);
-        }
+      setContentHeight(contentRef.current.scrollHeight);
+      const shouldAnimateTimeoutId = window.setTimeout(() => {
+        if (!isMounted()) return;
 
-        setContentHeight(0);
-        setOverflow('hidden');
-      }
+        setShouldAnimate(true);
+      }, ANIMATION_DURATION);
 
-      return;
-    }, [isOpen, children]);
+      return () => {
+        window.clearTimeout(shouldAnimateTimeoutId);
+      };
+    }, [children]);
 
     return (
       <CollapseContainer ref={forwardedRef} {...rest}>
@@ -111,7 +115,12 @@ const Collapse = React.forwardRef<HTMLDivElement, CollapseProps>(
             icon={isOpen ? <CheckPartialIcon /> : <PlusIcon />}
           />
         </LabelContainer>
-        <Content ref={contentRef} overflow={overflow} $height={contentHeight}>
+        <Content
+          ref={contentRef}
+          overflow={shouldAnimate || !isOpen || null === contentHeight ? 'hidden' : 'inherit'}
+          $height={isOpen && null !== contentHeight ? contentHeight : 0}
+          shouldAnimate={shouldAnimate && null !== contentHeight}
+        >
           {children}
         </Content>
       </CollapseContainer>
