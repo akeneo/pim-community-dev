@@ -47,7 +47,10 @@ define([
 
       var object = event.sentData;
       var valuesErrors = _.uniq(event.response.values, function (error) {
-        return JSON.stringify(error);
+        const errorClone = _.clone(error);
+        delete errorClone.path;
+
+        return JSON.stringify(errorClone);
       });
 
       if (valuesErrors) {
