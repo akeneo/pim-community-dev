@@ -1107,6 +1107,24 @@ jobs:
         configuration:
             withHeader: true
             linesPerFile: 10000
+    csv_table_attribute_options_import:
+        connector: Akeneo CSV Connector
+        alias:     csv_table_attribute_options_import
+        label:     Demo CSV table option import
+        type:      import
+        configuration:
+            filePath:      /tmp/table_option.csv
+            uploadAllowed: true
+            delimiter:     ;
+            enclosure:     '"'
+    xlsx_table_attribute_options_import:
+        connector: Akeneo XLSX Connector
+        alias:     xlsx_table_attribute_options_import
+        label:     Demo XLSX table option import
+        type:      import
+        configuration:
+            filePath:      /tmp/table_option.xlsx
+            uploadAllowed: true
     csv_user_group_import:
         connector: Akeneo CSV Connector
         alias: csv_user_group_import

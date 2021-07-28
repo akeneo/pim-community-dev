@@ -13,8 +13,6 @@ declare(strict_types=1);
 
 namespace Akeneo\Pim\TableAttribute\Domain\TableConfiguration;
 
-use Webmozart\Assert\Assert;
-
 final class SelectOptionCollection
 {
     /** @var array<string, SelectOption> */
@@ -69,8 +67,8 @@ final class SelectOptionCollection
         ));
     }
 
-    public function hasOptionCode(string $optionCode): bool
+    public function getByCode(string $optionCode): ?SelectOption
     {
-        return array_key_exists($optionCode, $this->options);
+        return $this->options[$optionCode] ?? null;
     }
 }

@@ -1,0 +1,27 @@
+Akeneo\Pim\TableAttribute\Domain\TableConfiguration\DTO\SelectOptionDetails:
+  constraints:
+    - Akeneo\Pim\TableAttribute\Infrastructure\Validation\Attribute\AttributeColumnTypeShouldBeSelect: ~
+  properties:
+    optionCode:
+      - NotBlank:
+          message: pim_table_configuration.validation.table_configuration.option_code_must_be_filled
+      - Regex:
+          pattern: /^[a-zA-Z0-9_]+$/
+          message: pim_table_configuration.validation.table_configuration.invalid_option_code
+      - Length:
+          max: 100
+          maxMessage: pim_table_configuration.validation.table_configuration.too_long_option_code
+    labels:
+      - Type:
+          type: array
+          message: pim_table_configuration.validation.table_configuration.invalid_option_labels_format
+      - Akeneo\Pim\TableAttribute\Infrastructure\Validation\Attribute\LabelCollection: ~
+      - All:
+          - Type:
+              type: string
+              message: pim_table_configuration.validation.table_configuration.option_label_must_be_a_string
+          - Length:
+              max: 255
+              maxMessage: pim_table_configuration.validation.table_configuration.too_long_option_label
+          - NotNull:
+              message: pim_table_configuration.validation.table_configuration.option_label_must_be_a_string

@@ -15,7 +15,6 @@ namespace Akeneo\Pim\TableAttribute\tests\back\Integration\TableConfiguration\Pe
 use Akeneo\Pim\TableAttribute\Domain\TableConfiguration\Repository\SelectOptionCollectionRepository;
 use Akeneo\Pim\TableAttribute\Domain\TableConfiguration\SelectOptionCollection;
 use Akeneo\Pim\TableAttribute\Domain\TableConfiguration\ValueObject\ColumnCode;
-use Akeneo\Pim\TableAttribute\Infrastructure\TableConfiguration\Repository\SqlSelectOptionCollectionRepository;
 use Akeneo\Test\Integration\Configuration;
 use Akeneo\Test\Integration\TestCase;
 use Doctrine\DBAL\Connection;
@@ -23,7 +22,7 @@ use Doctrine\DBAL\Connection;
 final class SqlSelectOptionCollectionRepositoryIntegration extends TestCase
 {
     private Connection $connection;
-    private SqlSelectOptionCollectionRepository $sqlSelectOptionCollectionRepository;
+    private SelectOptionCollectionRepository $selectOptionCollectionRepository;
 
     /** @test */
     public function it_returns_option_collection(): void
@@ -34,7 +33,7 @@ final class SqlSelectOptionCollectionRepositoryIntegration extends TestCase
                 ['code' => 'pepper', 'labels' => ['en_US' => 'Pepper', 'fr_FR' => 'Poivre']],
                 ['code' => 'garlic', 'labels' => ['en_US' => 'Garlic', 'fr_FR' => 'Ail']],
             ],
-            $this->sqlSelectOptionCollectionRepository->getByColumn('nutrition', ColumnCode::fromString('ingredients'))->normalize()
+            $this->selectOptionCollectionRepository->getByColumn('nutrition', ColumnCode::fromString('ingredients'))->normalize()
         );
 
         self::assertEqualsCanonicalizing(
@@ -42,24 +41,24 @@ final class SqlSelectOptionCollectionRepositoryIntegration extends TestCase
                 ['code' => 'salt', 'labels' => ['en_US' => 'Salt']],
                 ['code' => 'pepper', 'labels' => ['en_US' => 'Pepper']],
             ],
-            $this->sqlSelectOptionCollectionRepository->getByColumn('nutrition_copy', ColumnCode::fromString('ingredients'))->normalize()
+            $this->selectOptionCollectionRepository->getByColumn('nutrition_copy', ColumnCode::fromString('ingredients'))->normalize()
         );
 
         self::assertEqualsCanonicalizing(
             [],
-            $this->sqlSelectOptionCollectionRepository->getByColumn('nutrition_copy', ColumnCode::fromString('unknown'))->normalize()
+            $this->selectOptionCollectionRepository->getByColumn('nutrition_copy', ColumnCode::fromString('unknown'))->normalize()
         );
 
         self::assertEqualsCanonicalizing(
             [],
-            $this->sqlSelectOptionCollectionRepository->getByColumn('unknown', ColumnCode::fromString('ingredients'))->normalize()
+            $this->selectOptionCollectionRepository->getByColumn('unknown', ColumnCode::fromString('ingredients'))->normalize()
         );
     }
 
     /** @test */
     public function it_saves_option_collection(): void
     {
-        $this->sqlSelectOptionCollectionRepository->save('nutrition', ColumnCode::fromString('ingredients'), SelectOptionCollection::fromNormalized([
+        $this->selectOptionCollectionRepository->save('nutrition', ColumnCode::fromString('ingredients'), SelectOptionCollection::fromNormalized([
             ['code' => 'salt', 'labels' => ['en_US' => 'Salt', 'fr_FR' => 'Sel']],
             ['code' => 'chili', 'labels' => ['en_US' => 'Chili', 'fr_FR' => 'Piment']],
         ]));
@@ -68,7 +67,7 @@ final class SqlSelectOptionCollectionRepositoryIntegration extends TestCase
                 ['code' => 'salt', 'labels' => ['en_US' => 'Salt', 'fr_FR' => 'Sel']],
                 ['code' => 'chili', 'labels' => ['en_US' => 'Chili', 'fr_FR' => 'Piment']],
             ],
-            $this->sqlSelectOptionCollectionRepository->getByColumn('nutrition', ColumnCode::fromString('ingredients'))->normalize()
+            $this->selectOptionCollectionRepository->getByColumn('nutrition', ColumnCode::fromString('ingredients'))->normalize()
         );
         $this->assertColumnOptionsOfNutritionCopyAreNotUpdated();
     }
@@ -76,12 +75,31 @@ final class SqlSelectOptionCollectionRepositoryIntegration extends TestCase
     /** @test */
     public function it_removes_the_select_options(): void
     {
-        $this->sqlSelectOptionCollectionRepository->save('nutrition', ColumnCode::fromString('ingredients'), SelectOptionCollection::empty());
+        $this->selectOptionCollectionRepository->save('nutrition', ColumnCode::fromString('ingredients'), SelectOptionCollection::empty());
         self::assertEqualsCanonicalizing(
             [],
-            $this->sqlSelectOptionCollectionRepository->getByColumn('nutrition', ColumnCode::fromString('ingredients'))->normalize()
+            $this->selectOptionCollectionRepository->getByColumn('nutrition', ColumnCode::fromString('ingredients'))->normalize()
         );
         $this->assertColumnOptionsOfNutritionCopyAreNotUpdated();
+    }
+
+    /** @test */
+    public function it_upserts_select_options()
+    {
+        $this->selectOptionCollectionRepository->upsert('nutrition', ColumnCode::fromString('ingredients'), SelectOptionCollection::fromNormalized([
+            ['code' => 'salt', 'labels' => []],
+            ['code' => 'chili', 'labels' => ['en_US' => 'Chili', 'fr_FR' => 'Piment']],
+        ]));
+        self::assertEqualsCanonicalizing(
+            [
+                ['code' => 'salt', 'labels' => (object)[]],
+                ['code' => 'pepper', 'labels' => ['en_US' => 'Pepper', 'fr_FR' => 'Poivre']],
+                ['code' => 'garlic', 'labels' => ['en_US' => 'Garlic', 'fr_FR' => 'Ail']],
+                ['code' => 'chili', 'labels' => ['en_US' => 'Chili', 'fr_FR' => 'Piment']],
+            ],
+            $this->selectOptionCollectionRepository->getByColumn('nutrition', ColumnCode::fromString('ingredients'))
+                                                      ->normalize()
+        );
     }
 
     private function assertColumnOptionsOfNutritionCopyAreNotUpdated(): void
@@ -91,7 +109,7 @@ final class SqlSelectOptionCollectionRepositoryIntegration extends TestCase
                 ['code' => 'salt', 'labels' => ['en_US' => 'Salt']],
                 ['code' => 'pepper', 'labels' => ['en_US' => 'Pepper']],
             ],
-            $this->sqlSelectOptionCollectionRepository->getByColumn('nutrition_copy', ColumnCode::fromString('ingredients'))->normalize()
+            $this->selectOptionCollectionRepository->getByColumn('nutrition_copy', ColumnCode::fromString('ingredients'))->normalize()
         );
     }
 
@@ -99,7 +117,7 @@ final class SqlSelectOptionCollectionRepositoryIntegration extends TestCase
     {
         parent::setUp();
         $this->connection = $this->get('database_connection');
-        $this->sqlSelectOptionCollectionRepository = $this->get(SelectOptionCollectionRepository::class);
+        $this->selectOptionCollectionRepository = $this->get(SelectOptionCollectionRepository::class);
 
         $this->nutritionAttributeId = $this->createAttribute('nutrition');
         $this->nutritionCopyAttributeId = $this->createAttribute('nutrition_copy');

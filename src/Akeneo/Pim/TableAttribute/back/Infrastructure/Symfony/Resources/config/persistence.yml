@@ -36,10 +36,16 @@ services:
         tags:
             - { name: kernel.event_subscriber }
 
-    Akeneo\Pim\TableAttribute\Domain\TableConfiguration\Repository\SelectOptionCollectionRepository:
-        class: 'Akeneo\Pim\TableAttribute\Infrastructure\TableConfiguration\Repository\SqlSelectOptionCollectionRepository'
+    Akeneo\Pim\TableAttribute\Infrastructure\TableConfiguration\Repository\SqlSelectOptionCollectionRepository:
         arguments:
             - '@database_connection'
+
+    Akeneo\Pim\TableAttribute\Domain\TableConfiguration\Repository\SelectOptionCollectionRepository:
+        class: '\Akeneo\Pim\TableAttribute\Infrastructure\TableConfiguration\Repository\LruCachedSelectOptionCollectionRepository'
+        arguments:
+            - '@Akeneo\Pim\TableAttribute\Infrastructure\TableConfiguration\Repository\SqlSelectOptionCollectionRepository'
+        tags:
+            - { name: akeneo.pim.cached_query }
 
     Akeneo\Pim\TableAttribute\Domain\TableConfiguration\Query\GetNonExistingSelectOptionCodes:
         class: Akeneo\Pim\TableAttribute\Infrastructure\TableConfiguration\Query\SqlGetNonExistingSelectOptionCodes

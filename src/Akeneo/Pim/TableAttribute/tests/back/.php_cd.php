@@ -44,6 +44,7 @@ $rules = [
             'Akeneo\Tool\Component\StorageUtils\Exception\InvalidPropertyTypeException',
             'Akeneo\Tool\Component\Connector\Exception',
             'Akeneo\Tool\Component\Connector\ArrayConverter\ArrayConverterInterface',
+            'Akeneo\Tool\Component\Connector\ArrayConverter\FieldsRequirementChecker',
             'Akeneo\Channel\Component\Query\PublicApi',
             'Akeneo\Platform\Bundle\InstallerBundle\Event',
             'Akeneo\Platform\Bundle\UIBundle\Provider\Field\FieldProviderInterface',
@@ -58,12 +59,7 @@ $rules = [
             'Akeneo\Pim\Enrichment\Component\Product\Connector\ArrayConverter\StandardToFlat\Product\ValueConverter\AbstractValueConverter',
             'Akeneo\Pim\Enrichment\Component\Product\Connector\ArrayConverter\FlatToStandard\ValueConverter\ValueConverterInterface',
             'Oro\Bundle\SecurityBundle\SecurityFacade',
-            'Akeneo\Tool\Component\Batch\Item\InitializableInterface',
-            'Akeneo\Tool\Component\Batch\Item\ItemProcessorInterface',
-            'Akeneo\Tool\Component\Batch\Item\ItemReaderInterface',
-            'Akeneo\Tool\Component\Batch\Item\TrackableItemReaderInterface',
-            'Akeneo\Tool\Component\Batch\Model\StepExecution',
-            'Akeneo\Tool\Component\Batch\Step\StepExecutionAwareInterface',
+            'Akeneo\Tool\Component\Batch',
         ]
     )->in('Akeneo\Pim\TableAttribute\Infrastructure'),
 ];

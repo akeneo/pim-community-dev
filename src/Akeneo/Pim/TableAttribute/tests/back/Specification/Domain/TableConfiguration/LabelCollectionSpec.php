@@ -13,6 +13,7 @@ declare(strict_types=1);
 
 namespace Specification\Akeneo\Pim\TableAttribute\Domain\TableConfiguration;
 
+use Akeneo\Pim\TableAttribute\Domain\TableConfiguration\LabelCollection;
 use PhpSpec\ObjectBehavior;
 
 class LabelCollectionSpec extends ObjectBehavior
@@ -54,13 +55,10 @@ class LabelCollectionSpec extends ObjectBehavior
     function it_normalizes_labels()
     {
         $this->beConstructedThrough('fromNormalized', [[
-            'en_US' => '',
+            'en_US' => 'Sugar',
             'fr_FR' => '',
         ]]);
-        $this->normalize()->shouldBe([
-            'en_US' => '',
-            'fr_FR' => '',
-        ]);
+        $this->normalize()->shouldBe(['en_US' => 'Sugar']);
     }
 
     function it_normalizes_empty_label()
@@ -68,5 +66,39 @@ class LabelCollectionSpec extends ObjectBehavior
         $this->beConstructedThrough('fromNormalized', [[]]);
 
         $this->normalize()->shouldBeLike((object) []);
+    }
+
+    function it_can_be_merged_with_other_labels()
+    {
+        $this->beConstructedThrough('fromNormalized', [[
+            'en_US' => 'Sugar',
+            'fr_FR' => '',
+        ]]);
+
+        $newLabels = $this->merge(LabelCollection::fromNormalized(['fr_FR' => 'Sucre', 'de_DE' => 'Achtung']));
+        $newLabels->shouldNotBe($this);
+        $newLabels->shouldBeLike(LabelCollection::fromNormalized([
+            'en_US' => 'Sugar',
+            'fr_FR' => 'Sucre',
+            'de_DE' => 'Achtung',
+        ]));
+    }
+
+    function it_can_be_merged_with_an_empty_label_collection()
+    {
+        $this->beConstructedThrough(
+            'fromNormalized',
+            [
+                [
+                    'en_US' => 'Sugar',
+                    'fr_FR' => '',
+                ]
+            ]
+        );
+
+        $newLabels = $this->merge(LabelCollection::fromNormalized([]));
+        $newLabels->shouldNotBe($this);
+        $newLabels->shouldBeLike(LabelCollection::fromNormalized(['en_US' => 'Sugar']));
+        $newLabels->normalize()->shouldReturn(['en_US' => 'Sugar']);
     }
 }

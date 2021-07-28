@@ -44,7 +44,7 @@ final class LabelCollection
         Assert::allString($normalizedLabels);
         Assert::allStringNotEmpty(\array_keys($normalizedLabels));
 
-        return new self($normalizedLabels);
+        return new self(\array_filter($normalizedLabels));
     }
 
     /**
@@ -53,5 +53,15 @@ final class LabelCollection
     public function normalize()
     {
         return 0 === count($this->labels) ? (object) [] : $this->labels;
+    }
+
+    public function merge(LabelCollection $labelCollection): LabelCollection
+    {
+        $newLabels = $labelCollection->normalize();
+        if (!\is_array($newLabels)) {
+            return LabelCollection::fromNormalized($this->labels);
+        }
+
+        return LabelCollection::fromNormalized(\array_replace($this->labels, $newLabels));
     }
 }

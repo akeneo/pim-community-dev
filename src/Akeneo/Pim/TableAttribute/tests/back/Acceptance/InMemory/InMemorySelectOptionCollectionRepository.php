@@ -27,14 +27,22 @@ class InMemorySelectOptionCollectionRepository implements SelectOptionCollection
         ColumnCode $columnCode,
         SelectOptionCollection $selectOptionCollection
     ): void {
-        if (!is_array($this->options[$attributeCode] ?? [])) {
-            $this->options[$attributeCode] = [];
-        }
         $this->options[$attributeCode][$columnCode->asString()] = $selectOptionCollection;
     }
 
     public function getByColumn(string $attributeCode, ColumnCode $columnCode): SelectOptionCollection
     {
         return $this->options[$attributeCode][$columnCode->asString()] ?? SelectOptionCollection::empty();
+    }
+
+    public function upsert(
+        string $attributeCode,
+        ColumnCode $columnCode,
+        SelectOptionCollection $selectOptionCollection
+    ): void {
+        $formerOptions = $this->options[$attributeCode][$columnCode->asString()] ?? SelectOptionCollection::empty();
+        $this->options[$attributeCode][$columnCode->asString()] = SelectOptionCollection::fromNormalized(
+            \array_merge($formerOptions->normalize(), $selectOptionCollection->normalize())
+        );
     }
 }

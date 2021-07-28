@@ -2,6 +2,7 @@
 
 namespace Specification\Akeneo\Pim\TableAttribute\Domain\TableConfiguration;
 
+use Akeneo\Pim\TableAttribute\Domain\TableConfiguration\SelectOption;
 use Akeneo\Pim\TableAttribute\Domain\TableConfiguration\SelectOptionCollection;
 use PhpSpec\ObjectBehavior;
 
@@ -44,10 +45,10 @@ class SelectOptionCollectionSpec extends ObjectBehavior
             ->shouldReturn(['sugar', 'salt']);
     }
 
-    function it_returns_true_false_if_it_contains_the_option_code_or_not()
+    function it_gets_an_option_by_code()
     {
-        $this->hasOptionCode('sugar')->shouldReturn(true);
-        $this->hasOptionCode('salt')->shouldReturn(true);
-        $this->hasOptionCode('unknown')->shouldReturn(false);
+        $this->getByCode('sugar')->shouldBeAnInstanceOf(SelectOption::class);
+        $this->getByCode('salt')->shouldBeAnInstanceOf(SelectOption::class);
+        $this->getByCode('unknown')->shouldReturn(null);
     }
 }

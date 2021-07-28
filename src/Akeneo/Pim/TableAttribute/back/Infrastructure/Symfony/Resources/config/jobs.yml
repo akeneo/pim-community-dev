@@ -24,6 +24,32 @@ services:
         tags:
             - { name: akeneo_batch.job, connector: '%pim_connector.connector_name.xlsx%', type: '%pim_connector.job.export_type%' }
 
+    pim_table_attribute.job.csv_option_import:
+        class: '%pim_connector.job.simple_job.class%'
+        arguments:
+            - 'csv_table_attribute_options_import'
+            - '@event_dispatcher'
+            - '@akeneo_batch.job_repository'
+            -
+                - '@pim_connector.step.charset_validator'
+                - '@pim_table_attribute.step.csv_option_import'
+            - true
+        tags:
+            - { name: akeneo_batch.job, connector: '%pim_connector.connector_name.csv%', type: '%pim_connector.job.import_type%' }
+
+    pim_table_attribute.job.xlsx_option_import:
+        class: '%pim_connector.job.simple_job.class%'
+        arguments:
+            - 'xlsx_table_attribute_options_import'
+            - '@event_dispatcher'
+            - '@akeneo_batch.job_repository'
+            -
+                - '@pim_connector.step.charset_validator'
+                - '@pim_table_attribute.step.xlsx_option_import'
+            - true
+        tags:
+            - { name: akeneo_batch.job, connector: '%pim_connector.connector_name.xlsx%', type: '%pim_connector.job.import_type%' }
+
     # Steps
     pim_table_attribute.step.csv_option_export:
         class: '%pim_connector.step.item_step.class%'
@@ -49,6 +75,60 @@ services:
             - 1000
             - '@akeneo_batch.job.job_stopper'
 
+    pim_table_attribute.step.csv_option_import:
+        class: '%pim_connector.step.item_step.class%'
+        arguments:
+            - 'import'
+            - '@event_dispatcher'
+            - '@akeneo_batch.job_repository'
+            - '@pim_table_attribute.reader.file.csv_table_option'
+            - '@Akeneo\Pim\TableAttribute\Infrastructure\Connector\Processor\Denormalization\SelectOptionDetailsProcessor'
+            - '@Akeneo\Pim\TableAttribute\Infrastructure\Connector\Writer\Database\SelectOption'
+            - 1000
+            - '@akeneo_batch.job.job_stopper'
+
+    pim_table_attribute.step.xlsx_option_import:
+        class: '%pim_connector.step.item_step.class%'
+        arguments:
+            - 'import'
+            - '@event_dispatcher'
+            - '@akeneo_batch.job_repository'
+            - '@pim_table_attribute.reader.file.xlsx_table_option'
+            - '@Akeneo\Pim\TableAttribute\Infrastructure\Connector\Processor\Denormalization\SelectOptionDetailsProcessor'
+            - '@Akeneo\Pim\TableAttribute\Infrastructure\Connector\Writer\Database\SelectOption'
+            - 1000
+            - '@akeneo_batch.job.job_stopper'
+
+    # readers
+    Akeneo\Pim\TableAttribute\Infrastructure\Connector\Reader\Database\SelectOptionDetailsReader:
+        arguments:
+            - '@Akeneo\Pim\TableAttribute\Domain\TableConfiguration\Query\CountSelectOptions'
+            - '@Akeneo\Pim\TableAttribute\Domain\TableConfiguration\Query\GetSelectOptionDetails'
+
+    pim_table_attribute.reader.file.csv_table_option:
+        class: 'Akeneo\Tool\Component\Connector\Reader\File\Csv\Reader'
+        arguments:
+            - '@pim_connector.reader.file.csv_iterator_factory'
+            - '@Akeneo\Pim\TableAttribute\Infrastructure\Connector\ArrayConverter\FlatToStandard\SelectOptionDetails'
+
+    pim_table_attribute.reader.file.xlsx_table_option:
+        class: 'Akeneo\Tool\Component\Connector\Reader\File\Xlsx\Reader'
+        arguments:
+            - '@pim_connector.reader.file.xlsx_iterator_factory'
+            - '@Akeneo\Pim\TableAttribute\Infrastructure\Connector\ArrayConverter\FlatToStandard\SelectOptionDetails'
+
+    Akeneo\Pim\TableAttribute\Infrastructure\Connector\ArrayConverter\FlatToStandard\SelectOptionDetails:
+        arguments:
+            - '@pim_connector.array_convertor.checker.fields_requirement'
+
+    # processors
+    Akeneo\Pim\TableAttribute\Infrastructure\Connector\Processor\Normalization\SelectOptionDetailsProcessor: ~
+
+    Akeneo\Pim\TableAttribute\Infrastructure\Connector\Processor\Denormalization\SelectOptionDetailsProcessor:
+        arguments:
+            - '@Akeneo\Pim\TableAttribute\Domain\TableConfiguration\Repository\SelectOptionCollectionRepository'
+            - '@validator'
+
     # writers
     pim_table_attribute.writer.select_option.file.csv:
         class: Akeneo\Tool\Component\Connector\Writer\File\Csv\Writer
@@ -64,6 +144,22 @@ services:
             - '@pim_connector.factory.flat_item_buffer'
             - '@pim_table_attribute.writer.file.select_options.flat_item_buffer_flusher'
 
+    pim_table_attribute.writer.file.select_options.flat_item_buffer_flusher:
+        class: '%pim_connector.writer.file.flat_item_buffer_flusher.class%'
+        arguments:
+            - '@pim_connector.writer.file.default.column_presenter'
+            - '@pim_table_attribute.file.select_options.column_sorter'
+
+    pim_table_attribute.file.select_options.column_sorter:
+        class: '%pim_connector.writer.file.default.column_sorter.class%'
+        arguments:
+            - '@pim_connector.array_converter.field_splitter'
+            - [ 'attribute', 'column', 'code' ]
+
+    Akeneo\Pim\TableAttribute\Infrastructure\Connector\Writer\Database\SelectOption:
+        arguments:
+            - '@Akeneo\Pim\TableAttribute\Domain\TableConfiguration\Repository\SelectOptionCollectionRepository'
+
     # Constraint providers
     pim_table_attribute.job.job_parameters.constraint_collection_provider.simple_csv_export:
         class: 'Akeneo\Tool\Component\Connector\Job\JobParameters\ConstraintCollectionProvider\SimpleCsvExport'
@@ -76,6 +172,20 @@ services:
         class: 'Akeneo\Tool\Component\Connector\Job\JobParameters\ConstraintCollectionProvider\SimpleXlsxExport'
         arguments:
             - ['xlsx_table_attribute_options_export']
+        tags:
+            - { name: akeneo_batch.job.job_parameters.constraint_collection_provider }
+
+    pim_table_attribute.job.job_parameters.constraint_collection_provider.simple_csv_import:
+        class: 'Akeneo\Tool\Component\Connector\Job\JobParameters\ConstraintCollectionProvider\SimpleCsvImport'
+        arguments:
+            - [ 'csv_table_attribute_options_import' ]
+        tags:
+            - { name: akeneo_batch.job.job_parameters.constraint_collection_provider }
+
+    pim_table_attribute.job.job_parameters.constraint_collection_provider.simple_xlsx_import:
+        class: 'Akeneo\Tool\Component\Connector\Job\JobParameters\ConstraintCollectionProvider\SimpleXlsxImport'
+        arguments:
+            - [ 'xlsx_table_attribute_options_import' ]
         tags:
             - { name: akeneo_batch.job.job_parameters.constraint_collection_provider }
 
@@ -94,21 +204,16 @@ services:
         tags:
             - { name: akeneo_batch.job.job_parameters.default_values_provider }
 
-    Akeneo\Pim\TableAttribute\Infrastructure\Connector\Reader\Database\SelectOptionDetailsReader:
+    pim_table_attribute.job.job_parameters.default_values_provider.simple_csv_import:
+        class: 'Akeneo\Tool\Component\Connector\Job\JobParameters\DefaultValuesProvider\SimpleCsvImport'
         arguments:
-            - '@Akeneo\Pim\TableAttribute\Domain\TableConfiguration\Query\CountSelectOptions'
-            - '@Akeneo\Pim\TableAttribute\Domain\TableConfiguration\Query\GetSelectOptionDetails'
+            - [ 'csv_table_attribute_options_import' ]
+        tags:
+            - { name: akeneo_batch.job.job_parameters.default_values_provider }
 
-    Akeneo\Pim\TableAttribute\Infrastructure\Connector\Processor\Normalization\SelectOptionDetailsProcessor: ~
-
-    pim_table_attribute.writer.file.select_options.flat_item_buffer_flusher:
-        class: '%pim_connector.writer.file.flat_item_buffer_flusher.class%'
+    pim_table_attribute.job.job_parameters.default_values_provider.simple_xlsx_import:
+        class: 'Akeneo\Tool\Component\Connector\Job\JobParameters\DefaultValuesProvider\SimpleXlsxImport'
         arguments:
-            - '@pim_connector.writer.file.default.column_presenter'
-            - '@pim_table_attribute.file.select_options.column_sorter'
-
-    pim_table_attribute.file.select_options.column_sorter:
-        class: '%pim_connector.writer.file.default.column_sorter.class%'
-        arguments:
-            - '@pim_connector.array_converter.field_splitter'
-            - [ 'attribute', 'column', 'code' ]
+            - [ 'xlsx_table_attribute_options_import' ]
+        tags:
+            - { name: akeneo_batch.job.job_parameters.default_values_provider }

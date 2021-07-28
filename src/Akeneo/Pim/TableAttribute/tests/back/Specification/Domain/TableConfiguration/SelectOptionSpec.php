@@ -2,6 +2,7 @@
 
 namespace Specification\Akeneo\Pim\TableAttribute\Domain\TableConfiguration;
 
+use Akeneo\Pim\TableAttribute\Domain\TableConfiguration\LabelCollection;
 use Akeneo\Pim\TableAttribute\Domain\TableConfiguration\SelectOption;
 use PhpSpec\ObjectBehavior;
 
@@ -46,6 +47,18 @@ class SelectOptionSpec extends ObjectBehavior
     function it_exposes_its_code()
     {
         $this->code()->shouldBe('sugar');
+    }
+
+    function it_exposes_its_labels()
+    {
+        $this->labels()->shouldBeLike(
+            LabelCollection::fromNormalized(
+                [
+                    'en_US' => 'Sugar',
+                    'fr_FR' => 'Sucre',
+                ]
+            )
+        );
     }
 
     function it_can_be_normalized()

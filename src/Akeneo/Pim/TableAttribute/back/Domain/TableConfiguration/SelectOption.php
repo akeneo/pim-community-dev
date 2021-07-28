@@ -46,6 +46,11 @@ final class SelectOption
         return $this->code;
     }
 
+    public function labels(): LabelCollection
+    {
+        return $this->labels;
+    }
+
     /**
      * @return array<string, mixed>
      */
