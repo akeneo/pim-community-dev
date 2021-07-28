@@ -237,3 +237,9 @@ jobs:
         alias:     clean_removed_attribute_job
         label:     Cleaning removed attribute values
         type:      clean_removed_attribute_job
+
+    remove_completeness_for_channel_and_locale:
+        connector: internal
+        alias:     remove_completeness_for_channel_and_locale
+        label:     Remove completeness for channel and locale
+        type:      remove_completeness_for_channel_and_locale
