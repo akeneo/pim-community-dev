@@ -39,7 +39,7 @@ phpunit:
 # Please use the target `end-to-end-legacy` instead
 .PHONY: behat-legacy
 behat-legacy:
-	APP_ENV=behat $(PHP_RUN) vendor/bin/behat -p legacy -s all ${F}
+	APP_ENV=behat ${PHP_RUN} vendor/bin/behat -p legacy -s all ${F}
 
 .PHONY: xdebug-on
 xdebug-on:

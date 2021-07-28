@@ -69,8 +69,8 @@ RUN echo 'APT::Install-Recommends "0" ; APT::Install-Suggests "0" ;' > /etc/apt/
 RUN sed -i '/<!-- <policy domain="module" rights="none" pattern="{PS,PDF,XPS}" \/> -->/c\  <policy domain="module" rights="read|write" pattern="{PS,PDF,XPS}" \/>' /etc/ImageMagick-6/policy.xml
 RUN sed -i '/<policy domain="coder" rights="none" pattern="PDF" \/>/c\  <policy domain="coder" rights="read|write" pattern="PDF" \/>' /etc/ImageMagick-6/policy.xml
 
-COPY docker/php.ini /etc/php/7.4/cli/conf.d/99-akeneo.ini
-COPY docker/php.ini /etc/php/7.4/fpm/conf.d/99-akeneo.ini
+COPY grth/docker/php.ini /etc/php/7.4/cli/conf.d/99-akeneo.ini
+COPY grth/docker/php.ini /etc/php/7.4/fpm/conf.d/99-akeneo.ini
 
 #
 # Image used for development
@@ -97,10 +97,10 @@ RUN apt-get update && \
     apt-get clean && \
     rm -rf /var/lib/apt/lists/*
 
-COPY docker/build/xdebug.ini /etc/php/7.4/cli/conf.d/99-akeneo-xdebug.ini
-COPY docker/build/xdebug.ini /etc/php/7.4/fpm/conf.d/99-akeneo-xdebug.ini
-COPY docker/build/blackfire.ini /etc/php/7.4/cli/conf.d/99-akeneo-blackfire.ini
-COPY docker/build/blackfire.ini /etc/php/7.4/fpm/conf.d/99-akeneo-blackfire.ini
+COPY grth/docker/build/xdebug.ini /etc/php/7.4/cli/conf.d/99-akeneo-xdebug.ini
+COPY grth/docker/build/xdebug.ini /etc/php/7.4/fpm/conf.d/99-akeneo-xdebug.ini
+COPY grth/docker/build/blackfire.ini /etc/php/7.4/cli/conf.d/99-akeneo-blackfire.ini
+COPY grth/docker/build/blackfire.ini /etc/php/7.4/fpm/conf.d/99-akeneo-blackfire.ini
 
 COPY --from=composer:2 /usr/bin/composer /usr/local/bin/composer
 RUN chmod +x /usr/local/bin/composer
@@ -130,14 +130,14 @@ RUN sh -c 'wget -q -O - https://deb.nodesource.com/gpgkey/nodesource.gpg.key | A
 
 WORKDIR /srv/pim/
 
-COPY bin bin
-COPY config config
-COPY public public
-COPY frontend frontend
-COPY src src
-COPY upgrades upgrades
-COPY front-packages front-packages
-COPY composer.json package.json yarn.lock .env tsconfig.json *.js .
+COPY grth/bin bin
+COPY grth/config config
+COPY grth/public public
+COPY grth/frontend frontend
+COPY grth/src src
+COPY grth/upgrades upgrades
+COPY grth/front-packages front-packages
+COPY grth/composer.json grth/package.json grth/yarn.lock grth/.env grth/tsconfig.json grth/*.js .
 
 ENV APP_ENV=prod
 ENV PUPPETEER_SKIP_CHROMIUM_DOWNLOAD=1
@@ -182,8 +182,7 @@ COPY --from=builder --chown=www-data:www-data /srv/pim/src src
 COPY --from=builder --chown=www-data:www-data /srv/pim/upgrades upgrades
 COPY --from=builder --chown=www-data:www-data /srv/pim/var/cache/prod var/cache/prod
 COPY --from=builder --chown=www-data:www-data /srv/pim/vendor vendor
-COPY --from=builder --chown=www-data:www-data /srv/pim/.env.local.php .
-COPY --from=builder --chown=www-data:www-data /srv/pim/composer.lock .
+COPY --from=builder --chown=www-data:www-data /srv/pim/.env.local.php /srv/pim/composer.lock .
 
 # Prepare the application
 RUN mkdir -p public/media && chown -R www-data:www-data public/media var && \

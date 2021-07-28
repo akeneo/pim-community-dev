@@ -22,7 +22,7 @@ class GrowthEditionVersion
     const VERSION = 'master';
 
     /** @staticvar string */
-    const VERSION_CODENAME = 'Buttercup';
+    const VERSION_CODENAME = 'Growth Edition';
 
     /** @staticvar string */
     const EDITION = 'Growth Edition';
