@@ -128,7 +128,9 @@ const SettingsIndex = () => {
                     onClick={() => redirectToRoute('pim_enrich_channel_index')}
                     content={
                       countEntities.hasOwnProperty('count_channels')
-                        ? translate('pim_settings.count.channels', {count: countEntities['count_channels']})
+                        ? countEntities['count_channels'] === 1
+                          ? translate('pim_settings.count.channel')
+                          : translate('pim_settings.count.channels', {count: countEntities['count_channels']})
                         : ''
                     }
                   />
