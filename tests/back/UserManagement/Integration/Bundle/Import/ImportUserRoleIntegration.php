@@ -6,12 +6,12 @@ namespace AkeneoTest\UserManagement\Integration\Bundle\Import;
 use Akeneo\Test\Integration\TestCase;
 use Akeneo\Test\IntegrationTestsBundle\Launcher\JobLauncher;
 use Akeneo\Tool\Bundle\BatchBundle\Persistence\Sql\SqlCreateJobInstance;
+use Akeneo\Tool\Component\Connector\Writer\WriterFactory;
 use Akeneo\UserManagement\Component\Model\Role;
 use Akeneo\UserManagement\Component\Repository\RoleRepositoryInterface;
-use Akeneo\Tool\Component\Connector\Writer\WriterFactory;
 use Oro\Bundle\SecurityBundle\Acl\AccessLevel;
 use Oro\Bundle\SecurityBundle\Acl\Persistence\AclManager;
-use SebastianBergmann\RecursionContext\InvalidArgumentException;
+use PHPUnit\Framework\Assert;
 
 /**
  * @author    Nicolas Marniesse <nicolas.marniesse@akeneo.com>
@@ -177,16 +177,18 @@ CSV;
     }
 
     /** @test */
-    public function it_fails_when_role_contains_lower_case(): void
+    public function it_adds_warnings_when_role_contains_lower_case(): void
     {
         $csvContent = <<<CSV
 role;label;permissions
 ROLE_NEWa;"No permission role";
 
 CSV;
-        $this->expectException(\Exception::class);
-        $this->expectExceptionMessageMatches('/role\.role: The role should begin with "ROLE_" and should contain only underscores, dashes and alphanumeric characters in uppercase.: ROLE_NEWa/');
         $this->jobLauncher->launchImport(static::CSV_IMPORT_JOB_CODE, $csvContent);
+        $this->assertWarning(
+            '/role\.role: The role should begin with "ROLE_" and should contain only underscores, dashes and alphanumeric characters in uppercase.: ROLE_NEWa/',
+            self::CSV_IMPORT_JOB_CODE
+        );
     }
 
     /** @test */
@@ -197,9 +199,11 @@ role;label;permissions
 ROLE_NEW WITH_SPACE;"No permission role";
 
 CSV;
-        $this->expectException(\Exception::class);
-        $this->expectExceptionMessageMatches('/role\.role: The role should begin with "ROLE_" and should contain only underscores, dashes and alphanumeric characters in uppercase.: ROLE_NEW WITH_SPACE/');
         $this->jobLauncher->launchImport(static::CSV_IMPORT_JOB_CODE, $csvContent);
+        $this->assertWarning(
+            '/role\.role: The role should begin with "ROLE_" and should contain only underscores, dashes and alphanumeric characters in uppercase.: ROLE_NEW WITH_SPACE/',
+            self::CSV_IMPORT_JOB_CODE
+        );
     }
 
     /** @test */
@@ -210,9 +214,11 @@ role;label;permissions
 ROLE_NEW_(WITH_BRACKET;"No permission role";
 
 CSV;
-        $this->expectException(\Exception::class);
-        $this->expectExceptionMessageMatches('/role\.role: The role should begin with "ROLE_" and should contain only underscores, dashes and alphanumeric characters in uppercase.: ROLE_NEW_\(WITH_BRACKET/');
         $this->jobLauncher->launchImport(static::CSV_IMPORT_JOB_CODE, $csvContent);
+        $this->assertWarning(
+            '/role\.role: The role should begin with "ROLE_" and should contain only underscores, dashes and alphanumeric characters in uppercase.: ROLE_NEW_\(WITH_BRACKET/',
+            self::CSV_IMPORT_JOB_CODE
+        );
     }
 
     private function assertRoleHasPermission(Role $role, string $permission): void
@@ -251,6 +257,22 @@ CSV;
         }
 
         return false;
+    }
+
+    private function assertWarning(string $pattern, string $jobCode): void
+    {
+        $warnings = $this->get('database_connection')->executeQuery(
+            <<<SQL
+SELECT reason FROM akeneo_batch_warning warning
+INNER JOIN akeneo_batch_step_execution abse ON warning.step_execution_id = abse.id
+INNER JOIN akeneo_batch_job_execution abje ON abse.job_execution_id = abje.id    
+INNER JOIN akeneo_batch_job_instance abji ON abje.job_instance_id = abji.id
+WHERE abji.code = :jobCode
+SQL,
+            ['jobCode' => $jobCode]
+        )->fetchAll();
+        Assert::assertCount(1, $warnings);
+        Assert::assertMatchesRegularExpression($pattern, $warnings[0]['reason']);
     }
 
     /**
