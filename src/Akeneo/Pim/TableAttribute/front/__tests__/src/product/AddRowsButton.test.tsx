@@ -2,6 +2,7 @@ import React from 'react';
 import {renderWithProviders} from '@akeneo-pim-community/legacy-bridge/tests/front/unit/utils';
 import {screen, act, fireEvent} from '@testing-library/react';
 import {AddRowsButton} from '../../../src/product/AddRowsButton';
+import {getTableAttribute} from '../factories/Attributes';
 jest.mock('../../../src/attribute/LocaleLabel');
 jest.mock('../../../src/fetchers/SelectOptionsFetcher');
 
@@ -18,7 +19,7 @@ describe('AddRowsButton', () => {
   it('should render the component', async () => {
     renderWithProviders(
       <AddRowsButton
-        attributeCode={'nutrition'}
+        attribute={getTableAttribute()}
         columnCode={'ingredient'}
         checkedOptionCodes={['salt', 'sugar']}
         toggleChange={() => {}}
@@ -46,7 +47,7 @@ describe('AddRowsButton', () => {
     const toggleChange = jest.fn();
     renderWithProviders(
       <AddRowsButton
-        attributeCode={'nutrition'}
+        attribute={getTableAttribute()}
         columnCode={'ingredient'}
         checkedOptionCodes={['salt', 'sugar']}
         toggleChange={toggleChange}
@@ -78,7 +79,7 @@ describe('AddRowsButton', () => {
     const toggleChange = jest.fn();
     renderWithProviders(
       <AddRowsButton
-        attributeCode={'nutrition'}
+        attribute={getTableAttribute()}
         columnCode={'ingredient'}
         checkedOptionCodes={['salt', 'sugar']}
         toggleChange={toggleChange}
@@ -114,7 +115,7 @@ describe('AddRowsButton', () => {
     const toggleChange = jest.fn();
     renderWithProviders(
       <AddRowsButton
-        attributeCode={'attribute_with_a_lot_of_options'}
+        attribute={{...getTableAttribute(), code: 'attribute_with_a_lot_of_options'}}
         columnCode={'ingredient'}
         checkedOptionCodes={['salt', 'sugar']}
         toggleChange={toggleChange}
@@ -133,5 +134,23 @@ describe('AddRowsButton', () => {
       entryCallback?.([{isIntersecting: true}]);
     });
     expect(await screen.findByText('label21')).toBeInTheDocument();
+  });
+
+  it('should redirect from helper when there is not option', async () => {
+    renderWithProviders(
+      <AddRowsButton
+        attribute={{...getTableAttribute(), code: 'attribute_without_options'}}
+        columnCode={'ingredient'}
+        checkedOptionCodes={[]}
+        toggleChange={jest.fn()}
+      />
+    );
+
+    const button = screen.getByText('pim_table_attribute.product_edit_form.add_rows');
+    await act(async () => {
+      fireEvent.click(button);
+      expect(await screen.findByText('pim_table_attribute.form.product.no_add_options_link')).toBeInTheDocument();
+    });
+    fireEvent.click(screen.getByText('pim_table_attribute.form.product.no_add_options_link'));
   });
 });

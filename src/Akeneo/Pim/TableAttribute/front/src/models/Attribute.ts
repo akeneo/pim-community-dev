@@ -1,3 +1,5 @@
+import {TableConfiguration} from './TableConfiguration';
+
 export type Attribute = {
   code: string;
   type: string;
@@ -32,6 +34,9 @@ export type Attribute = {
   filter_types: {[type: string]: string};
   is_locale_specific: boolean;
   meta: {id: string} & {[key: string]: any};
+  table_configuration?: TableConfiguration;
 };
 
 export type AttributeType = string;
+
+export type TableAttribute = Attribute & {table_configuration: TableConfiguration};

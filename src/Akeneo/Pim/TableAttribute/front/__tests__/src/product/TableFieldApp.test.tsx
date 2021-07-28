@@ -5,6 +5,7 @@ import {TableFieldApp} from '../../../src/product/TableFieldApp';
 import {TemplateContext} from '../../../src/legacy/table-field';
 import {getComplexTableConfiguration} from '../factories/TableConfiguration';
 import {getTableValueSelectRow} from '../factories/TableValue';
+import {getTableAttribute} from '../factories/Attributes';
 jest.mock('../../../src/attribute/LocaleLabel');
 jest.mock('../../../src/fetchers/SelectOptionsFetcher');
 jest.mock('../../../src/product/AddRowsButton');
@@ -28,10 +29,7 @@ const getTemplateContext: () => TemplateContext = () => {
     locale: 'en_US',
     fieldId: 'foobar',
     scope: 'ecommerce',
-    attribute: {
-      code: 'nutrition',
-      table_configuration: getComplexTableConfiguration(),
-    },
+    attribute: {...getTableAttribute(), table_configuration: getComplexTableConfiguration()},
     value: {data: [getTableValueSelectRow()]},
     editMode: 'edit',
   };

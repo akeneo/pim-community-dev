@@ -136,7 +136,9 @@ const ColumnDefinitionProperties: React.FC<ColumnDefinitionPropertiesProps> = ({
         </SectionTitle.Title>
       </SectionTitle>
       <FieldsList>
-        <Field label={translate('pim_common.code')} requiredLabel={translate('pim_common.required_label')}>
+        <Field
+          label={translate('pim_table_attribute.form.attribute.column_code')}
+          requiredLabel={translate('pim_common.required_label')}>
           <TextInput
             readOnly={savedColumnIds.includes(selectedColumn.id)}
             value={selectedColumn.code}

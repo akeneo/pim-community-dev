@@ -1,12 +1,12 @@
 import React from 'react';
 import * as ReactDOM from 'react-dom';
-import {TableConfiguration} from '../models/TableConfiguration';
 import {DependenciesProvider} from '@akeneo-pim-community/legacy-bridge';
 import {ThemeProvider} from 'styled-components';
 import {pimTheme} from 'akeneo-design-system';
 import {TableValue} from '../models/TableValue';
 import {TableFieldApp} from '../product/TableFieldApp';
 import {ChannelCode, LocaleCode} from '@akeneo-pim-community/shared';
+import {TableAttribute} from '../models/Attribute';
 // eslint-disable-next-line @typescript-eslint/no-var-requires
 const Field = require('pim/field');
 // eslint-disable-next-line @typescript-eslint/no-var-requires
@@ -27,10 +27,7 @@ export type TemplateContext = {
     removable: boolean;
     root: any;
   };
-  attribute: {
-    code: string;
-    table_configuration: TableConfiguration;
-  };
+  attribute: TableAttribute;
   value: {
     data: TableValue;
   };

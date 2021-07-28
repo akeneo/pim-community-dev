@@ -2,6 +2,7 @@ config:
     paths:
         pim/table-attribute/attribute/tab: akeneopimtableattribute/legacy/table-structure-tab
         pim/table-attribute/product/table-field: akeneopimtableattribute/legacy/table-field
+        pim/table-attribute/attribute/properties-helper: akeneopimtableattribute/legacy/properties-helper
 
     config:
         pim/form/common/attributes/create-button:

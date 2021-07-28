@@ -4,21 +4,24 @@ pim_table_attribute:
             tab:
                 table_structure: Table structure
             table_attribute: Table attribute
-            add_column: Add a new column
+            add_column: Add new columns
             select_type: Select your type
-            data_type: Data type
-            labels: Labels
-            columns: Columns
-            please_type: Please type "{{ text }}"
+            data_type: Column type
+            labels: Label translations
+            column_management: Column management
+            characters_left: ]-Inf, 1]{{ count }} character left|]1, Inf[{{ count }} characters left
+            please_type: Please type « {{ text }} »
             confirm_column_delete: Are you sure you want to delete this column?
             confirm_option_delete: Are you sure you want to delete this option?
-            empty_title: Your table options are empty!
-            empty_subtitle: Add new columns to define your table composition
-            unique_title: Your table attribute is almost ready!
-            unique_subtitle: You need 2 columns minimum for your attribute to be valid.
+            empty_title: Your table options are empty.
+            empty_subtitle: The first step is to define your columns.
+            unique_title: Your table attribute is almost ready.
+            unique_subtitle: Define at least 2 columns to start using your table.
             new_option_placeholder: Write your new option label
-            search_placeholder: Write your new option label
+            search_placeholder: Search an option
             manage_options: Manage options
+            column_code: Column code
+            properties_helper: You must define the table structure and at least 2 columns before saving your table attribute
             limit_option_reached: You reached the limit of {{ limit }} options.
             template_label: Select the standard of your {{ templateLabel }}
             template_placeholder: Please enter a value in the Select input TODO
@@ -27,13 +30,18 @@ pim_table_attribute:
             current_items: "{{ minItem }}-{{ maxItem }} of {{ itemCount }}"
             current_page: "Page {{ currentPage }} / {{ pageCount }}"
             no_search_result: "Sorry, there are no lines for your search!"
-            no_rows_title: "Your {{ attributeLabel }} is empty"
-            no_rows_subtitle: "TODO To add lines, define new properties"
+            no_rows_title: "Your {{ attributeLabel }} table is empty."
+            no_rows_subtitle: Add rows to define new properties
+            no_add_options_title: To add lines
+            no_add_options: Manage your « {{ attributeLabel }} » options
+            no_add_options_unallowed: Contact your PIM administrator to manage the « {{ attributeLabel }} » options
+            no_add_options_link: here
+            no_edit_permission: No edit permission
     properties:
         data_type:
             text: Text
             number: Number
-            boolean: Boolean
+            boolean: Yes/No
             select: Select
     validations:
         column_code_must_be_filled: The code must be filled
@@ -43,9 +51,9 @@ pim_table_attribute:
         duplicated_column_code: Each column requires a unique code. {{ duplicateCode }} is already used
         duplicated_select_code: Each code requires a unique code
         max_greater_than_min: Max should be greater than min
-        max_length: Max characters
-        min: Min number
-        max: Max number
+        max_length: Maximum number of characters
+        min: Minimal value
+        max: Maximum value
         decimals_allowed: Decimals values allowed
     templates:
         choose_template: Choose your template

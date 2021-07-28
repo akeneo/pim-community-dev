@@ -24,6 +24,7 @@ import {TableInputSelect} from './CellInputs/TableInputSelect';
 import {TableCell} from '../models/TableValue';
 import {TableInputNumber} from './CellInputs/TableInputNumber';
 import {TableInputText} from './CellInputs/TableInputText';
+import {TableAttribute} from '../models/Attribute';
 
 const TABLE_VALUE_ITEMS_PER_PAGE = [10, 20, 50, 100];
 
@@ -48,7 +49,7 @@ const CenteredHelperTitle = styled.div`
 `;
 
 type TableInputValueProps = {
-  attributeCode: string;
+  attribute: TableAttribute;
   valueData: TableValueWithId;
   tableConfiguration: TableConfiguration;
   onChange?: (tableValue: TableValueWithId) => void;
@@ -59,7 +60,7 @@ type TableInputValueProps = {
 };
 
 const TableInputValue: React.FC<TableInputValueProps> = ({
-  attributeCode,
+  attribute,
   valueData,
   tableConfiguration,
   onChange,
@@ -134,7 +135,7 @@ const TableInputValue: React.FC<TableInputValueProps> = ({
   const [firstColumn, ...otherColumns] = tableConfiguration;
 
   const getOptionLabel = async (columnCode: ColumnCode, value: string) => {
-    const selectOption = await getSelectOption(router, attributeCode, columnCode, value);
+    const selectOption = await getSelectOption(router, attribute.code, columnCode, value);
 
     return selectOption ? getLabel(selectOption.labels, userContext.get('catalogLocale'), selectOption.code) : null;
   };
@@ -144,7 +145,7 @@ const TableInputValue: React.FC<TableInputValueProps> = ({
       for await (const column of tableConfiguration.filter(
         columnDefinition => columnDefinition.data_type === 'select'
       )) {
-        options[column.code] = (await getSelectOptions(router, attributeCode, column.code)) || [];
+        options[column.code] = (await getSelectOptions(router, attribute.code, column.code)) || [];
       }
       setOptions({...options});
 
@@ -262,7 +263,11 @@ const TableInputValue: React.FC<TableInputValueProps> = ({
       {!isSearching && valueDataPage.length === 0 && (
         <CenteredHelper>
           <AddingValueIllustration size={120} />
-          <CenteredHelperTitle>{translate('pim_table_attribute.form.product.no_rows_title')}</CenteredHelperTitle>
+          <CenteredHelperTitle>
+            {translate('pim_table_attribute.form.product.no_rows_title', {
+              attributeLabel: getLabel(attribute.labels, userContext.get('catalogLocale'), attribute.code),
+            })}
+          </CenteredHelperTitle>
           {translate('pim_table_attribute.form.product.no_rows_subtitle')}
         </CenteredHelper>
       )}

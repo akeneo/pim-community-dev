@@ -16,11 +16,11 @@ const FieldInfo = styled.div`
   display: flex;
   height: 24px;
   line-height: 24px;
-  & > *:not(:last-child) {
+  & > *:not(:last-child):not(:empty) {
     border-right: 1px solid ${getColor('grey', 100)};
     padding-right: 20px;
   }
-  & > * {
+  & > *:not(:empty) {
     padding-left: 20px;
   }
 `;
@@ -232,7 +232,7 @@ const TableFieldApp: React.FC<TableFieldAppProps> = ({
             {getLocaleScopeInfo(locale, scope)}
             {isEditable && (
               <AddRowsButton
-                attributeCode={attribute.code}
+                attribute={attribute}
                 columnCode={firstColumnCode}
                 checkedOptionCodes={tableValue.map(row => (row[firstColumnCode] ?? '') as string)}
                 toggleChange={handleToggleRow}
@@ -250,7 +250,7 @@ const TableFieldApp: React.FC<TableFieldAppProps> = ({
         </TableFieldHeader>
         <div className='AknFieldContainer-inputContainer field-input'>
           <TableInputValue
-            attributeCode={attribute.code}
+            attribute={attribute}
             valueData={tableValue}
             tableConfiguration={attribute.table_configuration}
             onChange={handleChange}
@@ -277,7 +277,7 @@ const TableFieldApp: React.FC<TableFieldAppProps> = ({
                 </TableFieldHeader>
                 <div className='AknFieldContainer-inputContainer field-input'>
                   <TableInputValue
-                    attributeCode={attribute.code}
+                    attribute={attribute}
                     valueData={addUniqueId(copyContext.data || [])}
                     tableConfiguration={attribute.table_configuration}
                     readOnly={true}

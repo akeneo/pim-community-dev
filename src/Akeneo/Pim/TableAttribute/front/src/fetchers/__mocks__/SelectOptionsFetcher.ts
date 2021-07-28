@@ -33,6 +33,10 @@ const getSelectOptions: (_router: Router, attributeCode: string) => SelectOption
     return selectOptions;
   }
 
+  if (attributeCode === 'attribute_without_options') {
+    return [];
+  }
+
   return ingredientsSelectOptions;
 };
 

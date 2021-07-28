@@ -1,6 +1,7 @@
-import {Attribute} from '../../../src/models/Attribute';
+import {TableAttribute} from '../../../src/models/Attribute';
+import {getSimpleTableConfiguration} from './TableConfiguration';
 
-const getTableAttribute: () => Attribute = () => {
+const getTableAttribute: () => TableAttribute = () => {
   return {
     code: 'nutrition',
     labels: {
@@ -39,6 +40,7 @@ const getTableAttribute: () => Attribute = () => {
     validation_regexp: null,
     validation_rule: null,
     wysiwyg_enabled: null,
+    table_configuration: getSimpleTableConfiguration(),
   };
 };
 

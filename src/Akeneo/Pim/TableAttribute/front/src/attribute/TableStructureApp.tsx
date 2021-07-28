@@ -139,8 +139,8 @@ const TableStructureApp: React.FC<TableStructureAppProps> = ({
 
   const leftColumn = (
     <div>
-      <SectionTitle title={translate('pim_table_attribute.form.attribute.columns')}>
-        <SectionTitle.Title>{translate('pim_table_attribute.form.attribute.columns')}</SectionTitle.Title>
+      <SectionTitle title={translate('pim_table_attribute.form.attribute.column_management')}>
+        <SectionTitle.Title>{translate('pim_table_attribute.form.attribute.column_management')}</SectionTitle.Title>
       </SectionTitle>
       {tableConfiguration.length > 0 ? (
         <>

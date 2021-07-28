@@ -24,7 +24,7 @@ describe('TableStructureApp', () => {
     );
     await waitPageToBeLoaded();
 
-    const codeInput = screen.getByLabelText('pim_common.code') as HTMLInputElement;
+    const codeInput = screen.getByLabelText('pim_table_attribute.form.attribute.column_code') as HTMLInputElement;
     const dataTypeInput = screen.getByLabelText('pim_table_attribute.form.attribute.data_type') as HTMLInputElement;
     const english = screen.getByLabelText('English (United States)') as HTMLInputElement;
     const german = screen.getByLabelText('German (Germany)') as HTMLInputElement;
@@ -50,7 +50,7 @@ describe('TableStructureApp', () => {
       await fireEvent.click(screen.getAllByRole('row')[1]);
     });
 
-    const codeInput = screen.getByLabelText('pim_common.code') as HTMLInputElement;
+    const codeInput = screen.getByLabelText('pim_table_attribute.form.attribute.column_code') as HTMLInputElement;
     const english = screen.getByLabelText('English (United States)') as HTMLInputElement;
     expect(codeInput.value).toEqual('quantity');
     expect(codeInput).not.toHaveAttribute('readonly');
@@ -151,7 +151,7 @@ describe('TableStructureApp', () => {
       fireEvent.click(screen.getAllByRole('row')[1]);
     });
 
-    const codeInput = screen.getByLabelText('pim_common.code') as HTMLInputElement;
+    const codeInput = screen.getByLabelText('pim_table_attribute.form.attribute.column_code') as HTMLInputElement;
     expect(codeInput.value).toEqual('quantity');
     await act(async () => {
       const deleteButtons = await screen.findAllByTitle('pim_common.delete');
@@ -185,7 +185,7 @@ describe('TableStructureApp', () => {
     );
     await waitPageToBeLoaded();
 
-    const codeInput = screen.getByLabelText('pim_common.code') as HTMLInputElement;
+    const codeInput = screen.getByLabelText('pim_table_attribute.form.attribute.column_code') as HTMLInputElement;
     expect(codeInput).toHaveAttribute('readonly');
   });
 

@@ -1,4 +1,5 @@
 extensions:
+    # Edit attribute
     pim-attribute-edit-form-table-options-tab:
         module: pim/table-attribute/attribute/tab
         parent: pim-attribute-edit-form-form-tabs
@@ -8,6 +9,7 @@ extensions:
             label: pim_table_attribute.form.attribute.tab.table_structure
             activeForTypes: [ 'pim_catalog_table' ]
 
+    # Create attribute
     pim-attribute-create-form-table-structure-tab:
         module: pim/table-attribute/attribute/tab
         parent: pim-attribute-create-form-form-tabs
@@ -16,3 +18,10 @@ extensions:
         config:
             label: pim_table_attribute.form.attribute.tab.table_structure
             activeForTypes: [ 'pim_catalog_table' ]
+
+    # Properties attribute
+    pim-attribute-create-form-properties-helper:
+        module: pim/table-attribute/attribute/properties-helper
+        parent: pim-attribute-create-form-properties
+        targetZone: accordion
+        position: 0

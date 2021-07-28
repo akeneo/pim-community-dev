@@ -4,6 +4,7 @@ import {screen, fireEvent, act} from '@testing-library/react';
 import {TableInputValue} from '../../../src/product/TableInputValue';
 import {getTableValueWithId} from '../factories/TableValue';
 import {getComplexTableConfiguration} from '../factories/TableConfiguration';
+import {getTableAttribute} from '../factories/Attributes';
 jest.mock('../../../src/attribute/LocaleLabel');
 jest.mock('../../../src/fetchers/SelectOptionsFetcher');
 
@@ -12,7 +13,7 @@ describe('TableInputValue', () => {
     const handleChange = jest.fn();
     renderWithProviders(
       <TableInputValue
-        attributeCode={'nutrition'}
+        attribute={getTableAttribute()}
         valueData={getTableValueWithId()}
         tableConfiguration={getComplexTableConfiguration()}
         searchText={''}
@@ -37,7 +38,7 @@ describe('TableInputValue', () => {
     const handleChange = jest.fn();
     renderWithProviders(
       <TableInputValue
-        attributeCode={'nutrition'}
+        attribute={getTableAttribute()}
         valueData={getTableValueWithId()}
         tableConfiguration={getComplexTableConfiguration()}
         searchText={''}
@@ -69,7 +70,7 @@ describe('TableInputValue', () => {
     const handleChange = jest.fn();
     renderWithProviders(
       <TableInputValue
-        attributeCode={'nutrition'}
+        attribute={getTableAttribute()}
         valueData={getTableValueWithId()}
         tableConfiguration={getComplexTableConfiguration()}
         searchText={'r'}

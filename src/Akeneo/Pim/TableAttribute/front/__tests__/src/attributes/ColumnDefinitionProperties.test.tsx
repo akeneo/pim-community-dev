@@ -41,7 +41,7 @@ describe('ColumnDefinitionProperties', () => {
       />
     );
 
-    const codeInput = screen.getByLabelText('pim_common.code') as HTMLInputElement;
+    const codeInput = screen.getByLabelText('pim_table_attribute.form.attribute.column_code') as HTMLInputElement;
     fireEvent.change(codeInput, {target: {value: 'somethingelse'}});
     expect(handleChange).toBeCalledWith({...getSelectColumnDefinitionWithId(), code: 'somethingelse'});
   });
