@@ -126,7 +126,7 @@ const TableInputBoolean: React.FC<TableInputBooleanProps> = ({
         {readOnly && <LockIcon size={16} />}
       </IconsPart>
       {isOpen && (
-        <Dropdown.Overlay onClose={close} dropdownOpenerVisible={true}>
+        <Dropdown.Overlay onClose={close} dropdownOpenerVisible={true} horizontalPosition="left">
           <Dropdown.ItemCollection>
             <Dropdown.Item onClick={() => handleChange(true)}>
               <Badge level="primary">{yesLabel}</Badge>
