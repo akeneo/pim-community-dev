@@ -15,6 +15,8 @@ namespace Akeneo\Pim\TableAttribute\Domain\TableConfiguration;
 
 final class SelectOptionCollection
 {
+    public const MAX_OPTIONS = 20000;
+
     /** @var array<string, SelectOption> */
     private array $options;
 

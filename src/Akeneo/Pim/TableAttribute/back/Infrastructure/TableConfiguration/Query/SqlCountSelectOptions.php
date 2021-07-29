@@ -14,6 +14,7 @@ declare(strict_types=1);
 namespace Akeneo\Pim\TableAttribute\Infrastructure\TableConfiguration\Query;
 
 use Akeneo\Pim\TableAttribute\Domain\TableConfiguration\Query\CountSelectOptions;
+use Akeneo\Pim\TableAttribute\Domain\TableConfiguration\ValueObject\ColumnCode;
 use Doctrine\DBAL\Connection;
 
 final class SqlCountSelectOptions implements CountSelectOptions
@@ -29,6 +30,24 @@ final class SqlCountSelectOptions implements CountSelectOptions
     {
         return (int) $this->connection->executeQuery(
             'SELECT COUNT(*) FROM pim_catalog_table_column_select_option'
+        )->fetchColumn();
+    }
+
+    public function forAttributeAndColumn(string $attributeCode, ColumnCode $columnCode): int
+    {
+        $sql = <<<SQL
+        SELECT
+            count(*)
+        FROM pim_catalog_table_column_select_option o
+            JOIN pim_catalog_table_column c ON c.id = o.column_id
+            JOIN pim_catalog_attribute a ON a.id = c.attribute_id
+        WHERE a.code = :attribute_code AND c.code = :column_code
+        SQL;
+
+
+        return (int) $this->connection->executeQuery(
+            $sql,
+            ['attribute_code' => $attributeCode, 'column_code' => $columnCode->asString()]
         )->fetchColumn();
     }
 }

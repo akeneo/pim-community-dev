@@ -3,6 +3,7 @@
 namespace Specification\Akeneo\Pim\TableAttribute\Infrastructure\Connector\Processor\Denormalization;
 
 use Akeneo\Pim\TableAttribute\Domain\TableConfiguration\DTO\SelectOptionDetails;
+use Akeneo\Pim\TableAttribute\Domain\TableConfiguration\Query\CountSelectOptions;
 use Akeneo\Pim\TableAttribute\Domain\TableConfiguration\Repository\SelectOptionCollectionRepository;
 use Akeneo\Pim\TableAttribute\Domain\TableConfiguration\SelectOptionCollection;
 use Akeneo\Pim\TableAttribute\Domain\TableConfiguration\ValueObject\ColumnCode;
@@ -22,6 +23,7 @@ class SelectOptionDetailsProcessorSpec extends ObjectBehavior
     function let(
         SelectOptionCollectionRepository $selectOptionCollectionRepository,
         ValidatorInterface $validator,
+        CountSelectOptions $countSelectOptions,
         StepExecution $stepExecution
     ) {
         $selectOptionCollectionRepository
@@ -43,8 +45,10 @@ class SelectOptionDetailsProcessorSpec extends ObjectBehavior
                     ]
                 )
             );
+        $countSelectOptions->forAttributeAndColumn('nutrition', ColumnCode::fromString('ingredient'))
+            ->willReturn(5);
 
-        $this->beConstructedWith($selectOptionCollectionRepository, $validator);
+        $this->beConstructedWith($selectOptionCollectionRepository, $validator, $countSelectOptions);
         $this->setStepExecution($stepExecution);
     }
 
@@ -204,5 +208,60 @@ class SelectOptionDetailsProcessorSpec extends ObjectBehavior
 
         $stepExecution->incrementSummaryInfo('skip')->shouldBeCalled();
         $this->shouldThrow(InvalidItemException::class)->during('process', [$item]);
+    }
+
+    function it_skips_the_item_when_the_maximum_number_of_options_is_reached(
+        SelectOptionCollectionRepository $selectOptionCollectionRepository,
+        CountSelectOptions $countSelectOptions,
+        ValidatorInterface $validator,
+        StepExecution $stepExecution
+    ) {
+        $selectOptionCollectionRepository
+            ->getByColumn('nutrition', ColumnCode::fromString('score'))
+            ->willReturn(SelectOptionCollection::fromNormalized([
+                [
+                    'code' => 'existing_option',
+                    'labels' => [],
+                ],
+            ]));
+        $countSelectOptions->forAttributeAndColumn('nutrition', ColumnCode::fromString('score'))
+            ->willReturn(19998);
+        $validator->validate(Argument::type(SelectOptionDetails::class))->shouldBeCalled()->willReturn(
+            new ConstraintViolationList([])
+        );
+
+        $item1 = [
+            'attribute' => 'nutrition',
+            'column' => 'score',
+            'code' => 'zzz',
+            'labels' => [],
+        ];
+        $this->process($item1);
+
+        $item2 = [
+            'attribute' => 'nutrition',
+            'column' => 'score',
+            'code' => 'zzzz',
+            'labels' => [],
+        ];
+        $this->process($item2);
+
+        $item3 = [
+            'attribute' => 'nutrition',
+            'column' => 'score',
+            'code' => 'zzzzz',
+            'labels' => [],
+        ];
+        $stepExecution->getSummaryInfo('item_position')->willReturn(7);
+        $stepExecution->incrementSummaryInfo('skip')->shouldBeCalled();
+        $this->shouldThrow(InvalidItemException::class)->during('process', [$item3]);
+
+        $updatedItem = [
+            'attribute' => 'nutrition',
+            'column' => 'score',
+            'code' => 'existing_option',
+            'labels' => [],
+        ];
+        $this->process($updatedItem);
     }
 }

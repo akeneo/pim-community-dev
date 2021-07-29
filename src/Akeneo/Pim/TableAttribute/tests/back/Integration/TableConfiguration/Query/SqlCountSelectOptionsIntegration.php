@@ -16,6 +16,7 @@ use Akeneo\Pim\Structure\Component\AttributeTypes;
 use Akeneo\Pim\TableAttribute\Domain\TableConfiguration\NumberColumn;
 use Akeneo\Pim\TableAttribute\Domain\TableConfiguration\Query\CountSelectOptions;
 use Akeneo\Pim\TableAttribute\Domain\TableConfiguration\SelectColumn;
+use Akeneo\Pim\TableAttribute\Domain\TableConfiguration\ValueObject\ColumnCode;
 use Akeneo\Pim\TableAttribute\Infrastructure\TableConfiguration\Query\SqlCountSelectOptions;
 use Akeneo\Test\Integration\Configuration;
 use Akeneo\Test\Integration\TestCase;
@@ -44,7 +45,7 @@ final class SqlCountSelectOptionsIntegration extends TestCase
             ]],
             ['data_type' => NumberColumn::DATATYPE, 'code' => 'measure'],
         ]);
-        $this->createTableAttribute('nutrition', [
+        $this->createTableAttribute('nutrition_us', [
             ['data_type' => SelectColumn::DATATYPE, 'code' => 'ingredient', 'options' => [
                 ['code' => 'salt', 'labels' => ['en_US' => 'Salt']],
                 ['code' => 'sugar', 'labels' => ['en_US' => 'Sugar']],
@@ -60,6 +61,58 @@ final class SqlCountSelectOptionsIntegration extends TestCase
         ]);
 
         self::assertSame(11, $this->query->all());
+    }
+
+    /** @test */
+    public function it_counts_the_select_options_by_attribute_and_column(): void
+    {
+        $this->createTableAttribute('packaging', [
+            ['data_type' => SelectColumn::DATATYPE, 'code' => 'dimension', 'options' => [
+                ['code' => 'width', 'labels' => ['en_US' => 'Width']],
+                ['code' => 'height', 'labels' => ['en_US' => 'Height']],
+                ['code' => 'depth'],
+            ]],
+            ['data_type' => NumberColumn::DATATYPE, 'code' => 'measure'],
+        ]);
+        $this->createTableAttribute('nutrition_us', [
+            ['data_type' => SelectColumn::DATATYPE, 'code' => 'ingredient', 'options' => [
+                ['code' => 'salt', 'labels' => ['en_US' => 'Salt']],
+                ['code' => 'sugar', 'labels' => ['en_US' => 'Sugar']],
+                ['code' => 'egg'],
+            ]],
+            ['data_type' => SelectColumn::DATATYPE, 'code' => 'score', 'options' => [
+                ['code' => 'D', 'labels' => ['en_US' => 'D']],
+                ['code' => 'B', 'labels' => ['en_US' => 'B']],
+                ['code' => 'C', 'labels' => ['en_US' => 'C']],
+                ['code' => 'E', 'labels' => ['en_US' => 'E']],
+                ['code' => 'A', 'labels' => ['en_US' => 'A']],
+            ]],
+        ]);
+        $this->createTableAttribute('nutrition_eu', [
+            ['data_type' => SelectColumn::DATATYPE, 'code' => 'ingredient', 'options' => [
+                ['code' => 'salt', 'labels' => ['en_US' => 'Salt']],
+                ['code' => 'sugar', 'labels' => ['en_US' => 'Sugar']],
+                ['code' => 'egg'],
+            ]],
+            ['data_type' => SelectColumn::DATATYPE, 'code' => 'score', 'options' => [
+                ['code' => 'D', 'labels' => ['en_US' => 'D']],
+                ['code' => 'B', 'labels' => ['en_US' => 'B']],
+                ['code' => 'C', 'labels' => ['en_US' => 'C']],
+                ['code' => 'A', 'labels' => ['en_US' => 'A']],
+            ]],
+        ]);
+
+        self::assertSame(3, $this->query->forAttributeAndColumn('packaging', ColumnCode::fromString('dimension')));
+        self::assertSame(0, $this->query->forAttributeAndColumn('packaging', ColumnCode::fromString('unknown')));
+
+        self::assertSame(3, $this->query->forAttributeAndColumn('nutrition_us', ColumnCode::fromString('ingredient')));
+        self::assertSame(5, $this->query->forAttributeAndColumn('nutrition_us', ColumnCode::fromString('score')));
+
+        self::assertSame(3, $this->query->forAttributeAndColumn('nutrition_eu', ColumnCode::fromString('ingredient')));
+        self::assertSame(4, $this->query->forAttributeAndColumn('nutrition_eu', ColumnCode::fromString('score')));
+
+        self::assertSame(0, $this->query->forAttributeAndColumn('unknown', ColumnCode::fromString('ingredient')));
+        self::assertSame(0, $this->query->forAttributeAndColumn('unknown', ColumnCode::fromString('unknown')));
     }
 
     protected function getConfiguration(): Configuration

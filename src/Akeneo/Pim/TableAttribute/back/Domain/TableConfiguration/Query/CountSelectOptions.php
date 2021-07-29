@@ -12,7 +12,11 @@ declare(strict_types=1);
 
 namespace Akeneo\Pim\TableAttribute\Domain\TableConfiguration\Query;
 
+use Akeneo\Pim\TableAttribute\Domain\TableConfiguration\ValueObject\ColumnCode;
+
 interface CountSelectOptions
 {
     public function all(): int;
+
+    public function forAttributeAndColumn(string $attributeCode, ColumnCode $columnCode): int;
 }
