@@ -11,7 +11,8 @@ test('It fetches the association types', async () => {
     await flushPromises();
   });
 
-  const associationTypes = result.current;
+  const [isFetching, associationTypes] = result.current;
+  expect(isFetching).toBe(false);
   expect(associationTypes).toEqual([
     {
       code: 'XSELL',
@@ -77,7 +78,7 @@ test('It returns null during loading', async () => {
   });
 });
 
-test('It return association types only if hook is mounted', async () => {
+test('It returns association types only if hook is mounted', async () => {
   const {unmount} = renderHookWithProviders(() => useAssociationTypes(['XSELL']));
   unmount();
 });

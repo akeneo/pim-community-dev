@@ -80,8 +80,8 @@ const ColumnRow = forwardRef<HTMLInputElement, ColumnRowProps>(
       [column.sources]
     );
 
-    const attributes = useAttributes(attributeCodes);
-    const associationTypes = useAssociationTypes(associationTypeCodes);
+    const [, attributes] = useAttributes(attributeCodes);
+    const [, associationTypes] = useAssociationTypes(associationTypeCodes);
 
     return (
       <>

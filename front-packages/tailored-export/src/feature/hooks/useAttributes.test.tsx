@@ -33,7 +33,8 @@ test('It fetches attributes', async () => {
     await flushPromises();
   });
 
-  const attributes = result.current;
+  const [isFetching, attributes] = result.current;
+  expect(isFetching).toBe(false);
   expect(attributes).toEqual(response);
 });
 
@@ -120,8 +121,9 @@ test('It returns null when switching attribute code', async () => {
   });
 
   await act(async () => {
-    await rerender({attributeCode: 'release_date'});
+    rerender({attributeCode: 'release_date'});
 
+    await flushPromises();
     const [isFetching, attribute] = result.current;
     expect(attribute).toBeNull();
     expect(isFetching).toBe(false);
@@ -135,7 +137,8 @@ test('It returns an empty array if attribute codes are empty', async () => {
 
   await act(async () => {
     await flushPromises();
-    const attributes = result.current;
+    const [isFetching, attributes] = result.current;
+    expect(isFetching).toBe(false);
     expect(attributes).toEqual([
       {
         code: 'description',
@@ -153,10 +156,12 @@ test('It returns an empty array if attribute codes are empty', async () => {
   });
 
   await act(async () => {
-    await rerender({attributeCodes: []});
+    rerender({attributeCodes: []});
 
-    const attribute = result.current;
-    expect(attribute).toEqual([]);
+    await flushPromises();
+    const [isFetching, attributes] = result.current;
+    expect(isFetching).toBe(false);
+    expect(attributes).toEqual([]);
   });
 });
 

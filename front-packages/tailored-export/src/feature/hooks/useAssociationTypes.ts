@@ -3,24 +3,27 @@ import {useEffect, useState} from 'react';
 import {useFetchers} from '../contexts';
 import {AssociationType} from '../models/AssociationType';
 
-const useAssociationTypes = (associationTypeCodes: string[]): AssociationType[] => {
+const useAssociationTypes = (associationTypeCodes: string[]) => {
   const associationTypeFetcher = useFetchers().associationType;
   const [associationTypes, setAssociationTypes] = useState<AssociationType[]>([]);
   const isMounted = useIsMounted();
+  const [isFetching, setIsFetching] = useState<boolean>(false);
 
   useEffect(() => {
     if (associationTypeCodes.length === 0) {
       return;
     }
+    setIsFetching(true);
 
     associationTypeFetcher.fetchByCodes(associationTypeCodes).then((associationTypes: AssociationType[]) => {
       if (!isMounted()) return;
 
       setAssociationTypes(associationTypes);
+      setIsFetching(false);
     });
   }, [associationTypeCodes, associationTypeFetcher, isMounted]);
 
-  return associationTypes;
+  return [isFetching, associationTypes.filter(({code}) => associationTypeCodes.includes(code))] as const;
 };
 
 const useAssociationType = (associationTypeCode: string) => {
@@ -39,7 +42,9 @@ const useAssociationType = (associationTypeCode: string) => {
     });
   }, [associationTypeCode, associationTypeFetcher, isMounted]);
 
-  return [isFetching, associationType?.code === associationTypeCode ? associationType : null] as const;
+  const currentAssociationType = associationType?.code === associationTypeCode ? associationType : null;
+
+  return [isFetching && !currentAssociationType, currentAssociationType] as const;
 };
 
 export {useAssociationTypes, useAssociationType};
