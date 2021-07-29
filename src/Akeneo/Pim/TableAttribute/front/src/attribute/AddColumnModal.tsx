@@ -127,11 +127,6 @@ const AddColumnModal: React.FC<AddColumnModalProps> = ({close, onCreate, existin
       </Modal.SectionTitle>
       <Modal.Title>{translate('pim_table_attribute.form.attribute.add_column')}</Modal.Title>
       <FieldsList>
-        <div>
-          Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore
-          magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo
-          consequat.
-        </div>
         <Field label={translate('pim_common.label')} locale={<LocaleLabel localeCode={catalogLocale} />}>
           <TextInput value={columnDefinition.label} onChange={handleLabelChange} />
         </Field>
