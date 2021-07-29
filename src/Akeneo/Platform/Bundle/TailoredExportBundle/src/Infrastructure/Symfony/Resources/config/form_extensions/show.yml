@@ -43,7 +43,7 @@ extensions:
         position: 100
 
     pim-job-instance-xlsx-tailored-product-export-show-edit:
-        module: pimee/job/export/edit/edit-button
+        module: akeneotailoredexport/job/product/show/edit-button
         parent: pim-job-instance-xlsx-tailored-product-export-show
         targetZone: buttons
         position: 100
