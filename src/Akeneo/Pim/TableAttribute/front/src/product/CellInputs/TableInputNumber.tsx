@@ -29,7 +29,7 @@ const TableInputNumber: React.FC<TableInputNumberProps> = ({
 
   return (
     <TableInput.Number
-      value={value}
+      value={value || ''}
       onChange={onChange}
       highlighted={highlighted}
       min={validations.min}

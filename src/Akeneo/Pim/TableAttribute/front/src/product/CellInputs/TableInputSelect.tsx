@@ -11,7 +11,6 @@ type TableInputSelectProps = {
   onChange: (value: SelectOptionCode | undefined) => void;
   options?: SelectOption[];
   inError?: boolean;
-  readOnly?: boolean;
   highlighted?: boolean;
 };
 
@@ -31,7 +30,6 @@ const TableInputSelect: React.FC<TableInputSelectProps> = ({
   value,
   onChange,
   options,
-  readOnly = false,
   inError = false,
   highlighted = false,
   ...rest
@@ -98,7 +96,6 @@ const TableInputSelect: React.FC<TableInputSelectProps> = ({
       searchValue={searchValue}
       onSearchChange={handleSearchValue}
       inError={inError || notFoundOption}
-      readOnly={readOnly}
       {...rest}>
       {itemsToDisplay.map(option => {
         return (

@@ -185,6 +185,7 @@ const TableFieldApp: React.FC<TableFieldAppProps> = ({
   };
 
   const isCompareTranslate = typeof elements['comparison'] !== 'undefined';
+  const isEditable = editMode === 'edit';
 
   const getLocaleScopeInfo = (locale: LocaleCode | null, scope: ChannelCode | null) => (
     <LocaleScopeInfo className='AknFieldContainer-fieldInfo field-info'>
@@ -229,14 +230,16 @@ const TableFieldApp: React.FC<TableFieldAppProps> = ({
               </div>
             )}
             {getLocaleScopeInfo(locale, scope)}
-            <AddRowsButton
-              attributeCode={attribute.code}
-              columnCode={firstColumnCode}
-              checkedOptionCodes={tableValue.map(row => (row[firstColumnCode] ?? '') as string)}
-              toggleChange={handleToggleRow}
-            />
+            {isEditable && (
+              <AddRowsButton
+                attributeCode={attribute.code}
+                columnCode={firstColumnCode}
+                checkedOptionCodes={tableValue.map(row => (row[firstColumnCode] ?? '') as string)}
+                toggleChange={handleToggleRow}
+              />
+            )}
           </FieldInfo>
-          {context.optional && context.removable && 'edit' === editMode && (
+          {context.optional && context.removable && isEditable && (
             <i
               className='AknIconButton AknIconButton--small icon-remove remove-attribute'
               data-attribute={attribute.code}
@@ -252,7 +255,7 @@ const TableFieldApp: React.FC<TableFieldAppProps> = ({
             tableConfiguration={attribute.table_configuration}
             onChange={handleChange}
             searchText={copyContext ? '' : searchText}
-            readOnly={editMode === 'view'}
+            readOnly={!isEditable}
             violatedCells={violatedCellsById}
             isCopying={!!copyContext}
           />

@@ -165,7 +165,7 @@ const TableInputValue: React.FC<TableInputValueProps> = ({
 
   return (
     <TableInputContainer isCopying={isCopying}>
-      <TableInput>
+      <TableInput readOnly={readOnly}>
         <TableInput.Header>
           {tableConfiguration.map(columnDefinition => (
             <TableInput.HeaderCell key={columnDefinition.code}>
@@ -206,7 +206,6 @@ const TableInputValue: React.FC<TableInputValueProps> = ({
                           data-testid={`input-${row['unique id']}-${columnCode}`}
                           validations={columnDefinition.validations as NumberColumnValidation}
                           inError={isInErrorFromBackend(row['unique id'], columnCode)}
-                          readOnly={readOnly}
                         />
                       )}
                       {'text' === columnType && (
@@ -217,7 +216,6 @@ const TableInputValue: React.FC<TableInputValueProps> = ({
                           data-testid={`input-${row['unique id']}-${columnCode}`}
                           validations={columnDefinition.validations as TextColumnValidation}
                           inError={isInErrorFromBackend(row['unique id'], columnCode)}
-                          readOnly={readOnly}
                         />
                       )}
                       {'select' === columnType && (
@@ -230,7 +228,6 @@ const TableInputValue: React.FC<TableInputValueProps> = ({
                           data-testid={`input-${row['unique id']}-${columnCode}`}
                           options={options[columnCode]}
                           inError={isInErrorFromBackend(row['unique id'], columnCode)}
-                          readOnly={readOnly}
                         />
                       )}
                       {'boolean' === columnType && (
@@ -246,7 +243,6 @@ const TableInputValue: React.FC<TableInputValueProps> = ({
                           openDropdownLabel={translate('pim_common.open')}
                           data-testid={`input-${row['unique id']}-${columnCode}`}
                           inError={isInErrorFromBackend(row['unique id'], columnCode)}
-                          readOnly={readOnly}
                         />
                       )}
                     </TableInput.Cell>
