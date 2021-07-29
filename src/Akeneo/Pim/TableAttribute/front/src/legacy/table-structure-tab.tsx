@@ -50,7 +50,7 @@ class TableStructureTab extends (BaseView as {new (options: {config: TableStruct
     this.violations = [];
   }
 
-  updateSavedColumns(): void {
+  resetSavedColumns(): void {
     this.savedColumnCodes = undefined;
   }
 
