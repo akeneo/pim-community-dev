@@ -41,14 +41,4 @@ class ReplacementOperation implements OperationInterface
 
         return $this->mapping[$value];
     }
-
-    public function getAllLocaleCodes(): array
-    {
-        return [];
-    }
-
-    public function getAllAttributeCodes(): array
-    {
-        return [];
-    }
 }

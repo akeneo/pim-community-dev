@@ -15,6 +15,4 @@ namespace Akeneo\Platform\TailoredExport\Application\Query\Selection;
 
 interface SelectionInterface
 {
-    public function getAllLocaleCodes(): array;
-    public function getAllAttributeCodes(): array;
 }

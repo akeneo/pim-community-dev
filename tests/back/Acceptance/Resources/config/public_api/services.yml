@@ -1,3 +1,0 @@
-services:
-    akeneo_assetmanager.infrastructure.persistence.query.enrich.find_asset_label_translation_public_api:
-        class: Akeneo\AssetManager\Infrastructure\PublicApi\Enrich\FindAssetLabelTranslation

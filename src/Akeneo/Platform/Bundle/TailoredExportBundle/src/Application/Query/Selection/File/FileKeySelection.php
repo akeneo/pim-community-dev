@@ -27,14 +27,4 @@ final class FileKeySelection implements FileSelectionInterface
     {
         return $this->attributeCode;
     }
-
-    public function getAllLocaleCodes(): array
-    {
-        return [];
-    }
-
-    public function getAllAttributeCodes(): array
-    {
-        return [];
-    }
 }

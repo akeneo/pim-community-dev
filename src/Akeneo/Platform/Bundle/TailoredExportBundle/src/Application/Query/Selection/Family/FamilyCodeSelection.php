@@ -16,14 +16,4 @@ namespace Akeneo\Platform\TailoredExport\Application\Query\Selection\Family;
 final class FamilyCodeSelection implements FamilySelectionInterface
 {
     public const TYPE = 'code';
-
-    public function getAllLocaleCodes(): array
-    {
-        return [];
-    }
-
-    public function getAllAttributeCodes(): array
-    {
-        return [];
-    }
 }

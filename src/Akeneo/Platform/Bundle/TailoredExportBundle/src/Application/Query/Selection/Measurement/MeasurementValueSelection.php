@@ -16,14 +16,4 @@ namespace Akeneo\Platform\TailoredExport\Application\Query\Selection\Measurement
 final class MeasurementValueSelection implements MeasurementSelectionInterface
 {
     public const TYPE = 'value';
-
-    public function getAllLocaleCodes(): array
-    {
-        return [];
-    }
-
-    public function getAllAttributeCodes(): array
-    {
-        return [];
-    }
 }

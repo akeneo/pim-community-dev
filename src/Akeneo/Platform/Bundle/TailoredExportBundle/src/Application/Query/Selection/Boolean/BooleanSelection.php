@@ -18,14 +18,4 @@ use Akeneo\Platform\TailoredExport\Application\Query\Selection\SelectionInterfac
 
 class BooleanSelection implements SelectionInterface
 {
-
-    public function getAllLocaleCodes(): array
-    {
-        return [];
-    }
-
-    public function getAllAttributeCodes(): array
-    {
-        return [];
-    }
 }

@@ -49,32 +49,4 @@ class PropertySource implements SourceInterface
     {
         return $this->selection;
     }
-
-    public function getAllLocaleCodes(): array
-    {
-        $operationLocales = array_reduce(
-            iterator_to_array($this->getOperationCollection()),
-            function (array $result, OperationInterface $operation) {
-                return array_merge($result, $operation->getAllLocaleCodes());
-            },
-            []
-        );
-        $selectionLocales = $this->selection->getAllLocaleCodes();
-
-        return $operationLocales + $selectionLocales;
-    }
-
-    public function getAllAttributeCodes(): array
-    {
-        $operationAttributes = array_reduce(
-            iterator_to_array($this->getOperationCollection()),
-            function (array $result, OperationInterface $operation) {
-                return array_merge($result, $operation->getAllAttributeCodes());
-            },
-            []
-        );
-        $selectionAttributes = $this->selection->getAllAttributeCodes();
-
-        return $operationAttributes + $selectionAttributes;
-    }
 }

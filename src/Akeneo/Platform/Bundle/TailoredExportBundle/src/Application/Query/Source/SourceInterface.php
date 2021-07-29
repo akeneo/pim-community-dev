@@ -21,8 +21,4 @@ interface SourceInterface
     public function getOperationCollection(): OperationCollection;
 
     public function getSelection(): SelectionInterface;
-
-    public function getAllLocaleCodes(): array;
-
-    public function getAllAttributeCodes(): array;
 }

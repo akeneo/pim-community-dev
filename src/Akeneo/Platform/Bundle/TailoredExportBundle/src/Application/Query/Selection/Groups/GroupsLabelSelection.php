@@ -37,14 +37,4 @@ final class GroupsLabelSelection implements GroupsSelectionInterface
     {
         return $this->locale;
     }
-
-    public function getAllLocaleCodes(): array
-    {
-        return [$this->locale];
-    }
-
-    public function getAllAttributeCodes(): array
-    {
-        return [];
-    }
 }

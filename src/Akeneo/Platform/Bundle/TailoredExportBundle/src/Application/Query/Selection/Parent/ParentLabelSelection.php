@@ -37,14 +37,4 @@ final class ParentLabelSelection implements ParentSelectionInterface
     {
         return $this->channel;
     }
-
-    public function getAllLocaleCodes(): array
-    {
-        return [$this->locale];
-    }
-
-    public function getAllAttributeCodes(): array
-    {
-        return [];
-    }
 }

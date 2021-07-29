@@ -8,6 +8,7 @@ use Akeneo\Pim\Structure\Component\Query\PublicApi\AttributeType\GetAttributes;
 use Akeneo\Pim\Structure\Component\Query\PublicApi\Permission\GetViewableAttributeCodesForUserInterface;
 use Akeneo\Platform\TailoredExport\Application\Query\Source\AssociationTypeSource;
 use Akeneo\Platform\TailoredExport\Application\Query\Source\AttributeSource;
+use Akeneo\Platform\TailoredExport\Application\Query\Source\SourceInterface;
 use Akeneo\Platform\TailoredExport\Infrastructure\Hydrator\ColumnCollectionHydrator;
 use Akeneo\Tool\Component\Batch\Model\JobInstance;
 use Symfony\Component\Security\Core\Authentication\Token\Storage\TokenStorageInterface;
@@ -85,33 +86,26 @@ class JobInstanceNormalizer implements NormalizerInterface, CacheableSupportsMet
             return false;
         }
 
+        if (!isset($jobInstance->getRawParameters()['columns'])) return false;
+
         $columns = $jobInstance->getRawParameters()['columns'];
-        [
-            [
-                [
-                    'code'
-                    'selection' => [
-                        'locale' => 'en_US'
-                    ]
-                ]
-            ]
-        ]
 
-        // $columns = $jobInstance->getRawParameters()['columns'];
-        // $indexedAttributes = $this->getIndexedAttributes($columns);
-        // $indexedAssociationTypes = $this->getIndexedAssociationTypes($columns);
+        $indexedAttributes = $this->getIndexedAttributes($columns);
+        $indexedAssociationTypes = $this->getIndexedAssociationTypes($columns);
 
-        // $columnCollection = $this->columnCollectionHydrator->hydrate($columns, $indexedAttributes, $indexedAssociationTypes);
+        $columnCollection = $this->columnCollectionHydrator->hydrate($columns, $indexedAttributes, $indexedAssociationTypes);
 
-        // $jobAttributeCodes = $columnCollection->getAllAttributeCodes();
-        // $viewableAttributes = $this->getViewableAttributes->forAttributeCodes($jobAttributeCodes, $userId);
-        // $canEditAllAttributes = array_intersect($viewableAttributes, $jobAttributeCodes) === $jobAttributeCodes;
+        $attributeSources = array_filter(iterator_to_array($columnCollection->getAllSources()->getIterator()), static fn (SourceInterface $source) => $source instanceof AttributeSource);
 
-        // $jobLocaleCodes = $columnCollection->getAllLocaleCodes();
-        // $viewableLocales = $this->getAllViewableLocales->fetchAll($userId);
-        // $canEditAllLocales = array_intersect($jobLocaleCodes, $viewableLocales) === $viewableLocales;
+        $jobAttributeCodes = array_unique(array_map(static fn (AttributeSource $source) => $source->getCode(), $attributeSources));
+        $viewableAttributes = $this->getViewableAttributes->forAttributeCodes($jobAttributeCodes, $userId);
+        $canEditAllAttributes = array_intersect($viewableAttributes, $jobAttributeCodes) === $jobAttributeCodes;
 
-        // return $canEditAllAttributes && $canEditAllLocales;
+        $jobLocaleCodes = array_unique(array_filter(array_map(static fn (AttributeSource $source) => $source->getLocale(), $attributeSources)));
+        $viewableLocales = $this->getAllViewableLocales->fetchAll($userId);
+        $canEditAllLocales = array_intersect($jobLocaleCodes, $viewableLocales) === $viewableLocales;
+
+        return $canEditAllAttributes && $canEditAllLocales;
     }
 
     private function getIndexedAttributes(array $columns): array
@@ -166,7 +160,7 @@ class JobInstanceNormalizer implements NormalizerInterface, CacheableSupportsMet
      */
     public function supportsNormalization($data, $format = null)
     {
-        return $this->normalizer->supportsNormalization($data, $format); // add filter on job type (tailored export)
+        return $this->normalizer->supportsNormalization($data, $format) && 'xlsx_tailored_product_export' ===  $data->getJobName();
     }
 
     public function hasCacheableSupportsMethod(): bool

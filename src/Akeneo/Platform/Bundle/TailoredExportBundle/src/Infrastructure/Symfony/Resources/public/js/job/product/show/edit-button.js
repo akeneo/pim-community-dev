@@ -29,15 +29,15 @@ define(['underscore', 'pim/common/redirect', 'pim/fetcher-registry'], function(_
 
       return promise.promise();
 
-      // return FetcherRegistry.getFetcher('permission')
-      //   .fetchAll()
-      //   .then(
-      //     (permissions) => {
-      //       var permission = _.findWhere(permissions.job_instances, {code: this.getFormData().code});
+      return $.deferred.allFetcherRegistry.getFetcher('permission')
+        .fetchAll()
+        .then(
+          (permissions) => {
+            var permission = _.findWhere(permissions.job_instances, {code: this.getFormData().code});
 
-      //       return permission.edit;
-      //     }
-      //   );
+            return permission.edit;
+          }
+        );
     },
   });
 });

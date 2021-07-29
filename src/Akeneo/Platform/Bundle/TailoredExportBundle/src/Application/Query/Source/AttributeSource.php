@@ -73,34 +73,4 @@ class AttributeSource implements SourceInterface
     {
         return $this->selection;
     }
-
-    public function getAllLocaleCodes(): array
-    {
-        $sourceLocales = null === $this->getLocale() ? [] : [$this->getLocale()];
-        $operationLocales = array_reduce(
-            iterator_to_array($this->getOperationCollection()),
-            function (array $result, OperationInterface $operation) {
-                return array_merge($result, $operation->getAllLocaleCodes());
-            },
-            []
-        );
-        $selectionLocales = $this->selection->getAllLocaleCodes();
-
-        return $sourceLocales + $operationLocales + $selectionLocales;
-    }
-
-    public function getAllAttributeCodes(): array
-    {
-        $sourceAttributes = [$this->getCode()];
-        $operationAttributes = array_reduce(
-            iterator_to_array($this->getOperationCollection()),
-            function (array $result, OperationInterface $operation) {
-                return array_merge($result, $operation->getAllAttributeCodes());
-            },
-            []
-        );
-        $selectionAttributes = $this->selection->getAllAttributeCodes();
-
-        return $sourceAttributes + $operationAttributes + $selectionAttributes;
-    }
 }

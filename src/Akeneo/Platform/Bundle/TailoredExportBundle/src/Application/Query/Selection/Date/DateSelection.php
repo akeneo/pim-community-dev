@@ -32,14 +32,4 @@ final class DateSelection implements DateSelectionInterface
     {
         return $this->format;
     }
-
-    public function getAllLocaleCodes(): array
-    {
-        return [];
-    }
-
-    public function getAllAttributeCodes(): array
-    {
-        return [];
-    }
 }

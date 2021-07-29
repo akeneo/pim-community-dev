@@ -56,14 +56,4 @@ class AssociationTypeSource implements SourceInterface
     {
         return $this->selection;
     }
-
-    public function getAllLocaleCodes(): array
-    {
-        return [];
-    }
-
-    public function getAllAttributeCodes(): array
-    {
-        return [];
-    }
 }

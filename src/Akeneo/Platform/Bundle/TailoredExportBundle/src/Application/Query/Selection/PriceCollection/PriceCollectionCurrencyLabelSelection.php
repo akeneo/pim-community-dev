@@ -35,14 +35,4 @@ final class PriceCollectionCurrencyLabelSelection implements PriceCollectionSele
     {
         return $this->locale;
     }
-
-    public function getAllLocaleCodes(): array
-    {
-        return [$this->locale];
-    }
-
-    public function getAllAttributeCodes(): array
-    {
-        return [];
-    }
 }

@@ -47,14 +47,4 @@ final class QuantifiedAssociationsQuantitySelection implements QuantifiedAssocia
     {
         return $this->separator;
     }
-
-    public function getAllLocaleCodes(): array
-    {
-        return [];
-    }
-
-    public function getAllAttributeCodes(): array
-    {
-        return [];
-    }
 }

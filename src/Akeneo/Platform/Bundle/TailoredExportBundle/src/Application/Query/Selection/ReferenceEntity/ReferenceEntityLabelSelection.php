@@ -37,14 +37,4 @@ final class ReferenceEntityLabelSelection implements ReferenceEntitySelectionInt
     {
         return $this->referenceEntityCode;
     }
-
-    public function getAllLocaleCodes(): array
-    {
-        return [$this->locale];
-    }
-
-    public function getAllAttributeCodes(): array
-    {
-        return [];
-    }
 }
