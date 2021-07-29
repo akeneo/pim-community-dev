@@ -29,7 +29,7 @@ describe('CreateAttributeCodeLabelTemplate', () => {
 
     expect(await screen.findByText('pim_common.create')).toBeInTheDocument();
     fireEvent.change(screen.getByLabelText('pim_common.label'), {target: {value: 'A new attribute'}});
-    fireEvent.focus(screen.getByPlaceholderText('Please enter a value in the Select input TODO'));
+    fireEvent.focus(screen.getByPlaceholderText('pim_table_attribute.form.attribute.template_placeholder'));
     expect(await screen.findByText('nutrition-eu')).toBeInTheDocument();
     fireEvent.click(screen.getByText('nutrition-eu'));
     fireEvent.click(screen.getByText('pim_common.confirm'));

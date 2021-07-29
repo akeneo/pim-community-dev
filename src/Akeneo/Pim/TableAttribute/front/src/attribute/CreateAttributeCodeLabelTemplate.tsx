@@ -1,5 +1,5 @@
 import React from 'react';
-import {CreateAttributeData} from '@akeneo-pim-community/settings-ui/src/pages/CreateAttributeData';
+import {CreateAttributeModal} from '@akeneo-pim-community/settings-ui/src/pages/CreateAttributeModal';
 import {Field, SelectInput} from 'akeneo-design-system';
 import {useTranslate} from '@akeneo-pim-community/shared';
 import {Template, TEMPLATES} from '../models/Template';
@@ -32,13 +32,16 @@ const CreateAttributeCodeLabelTemplate: React.FC<CreateAttributeButtonStepProps>
     template.template_variations.length > 1
       ? {
           component: (
-            <Field label={'choose template TODO'} requiredLabel={translate('pim_common.required_label')}>
+            <Field
+              label={translate('pim_table_attribute.form.attribute.template_label', {
+                templateLabel: template.code,
+              })}
+              requiredLabel={translate('pim_common.required_label')}>
               <SelectInput
-                clearLabel=''
-                emptyResultLabel='No result found'
+                emptyResultLabel={translate('pim_common.no_result')}
                 onChange={setTemplateVariationCode}
-                openLabel=''
-                placeholder='Please enter a value in the Select input TODO'
+                openLabel={translate('pim_common.open')}
+                placeholder={translate('pim_table_attribute.form.attribute.template_placeholder')}
                 value={templateVariationCode}>
                 {template.template_variations.map(template_variation => (
                   <SelectInput.Option
@@ -62,7 +65,7 @@ const CreateAttributeCodeLabelTemplate: React.FC<CreateAttributeButtonStepProps>
   ];
 
   return (
-    <CreateAttributeData
+    <CreateAttributeModal
       onClose={onClose}
       onStepConfirm={onStepConfirm}
       initialData={initialData}
