@@ -3,7 +3,6 @@ import styled from 'styled-components';
 import {getColor, getFontSize} from '../../theme';
 import {IconButton} from '../../components';
 import {CheckPartialIcon, PlusIcon} from '../../icons';
-import {useIsMounted} from '../../hooks';
 
 const ANIMATION_DURATION = 100;
 
@@ -82,17 +81,17 @@ const Collapse = React.forwardRef<HTMLDivElement, CollapseProps>(
     const [contentHeight, setContentHeight] = useState<number>(0);
     const [shouldAnimate, setShouldAnimate] = useState<boolean>(false);
     const contentRef = useRef<HTMLDivElement>(null);
-    const isMounted = useIsMounted();
 
     const handleCollapse = () => onCollapse(!isOpen);
 
     useEffect(() => {
-      if (!contentRef.current || 0 === contentRef.current.scrollHeight) return;
+      setContentHeight(contentHeight => {
+        const scrollHeight = contentRef.current?.scrollHeight ?? 0;
 
-      setContentHeight(contentRef.current.scrollHeight);
+        return 0 === scrollHeight ? contentHeight : scrollHeight;
+      });
+
       const shouldAnimateTimeoutId = window.setTimeout(() => {
-        if (!isMounted()) return;
-
         setShouldAnimate(true);
       }, ANIMATION_DURATION);
 
