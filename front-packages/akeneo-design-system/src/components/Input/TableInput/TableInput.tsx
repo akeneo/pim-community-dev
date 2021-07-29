@@ -10,6 +10,7 @@ import {TableInputText} from './TableInputText/TableInputText';
 import {TableInputNumber} from './TableInputNumber/TableInputNumber';
 import {TableInputBoolean} from './TableInputBoolean/TableInputBoolean';
 import {TableInputSelect} from './TableInputSelect/TableInputSelect';
+import {TableInputContext} from './TableInputContext';
 
 const TableInputContainer = styled.div`
   width: 100%;
@@ -40,21 +41,29 @@ type TableInputProps = Override<
      * use `thead` or `tbody`.
      */
     children?: ReactNode;
+
+    /**
+     * Displays the value of the input, but does not allow changes.
+     */
+    readOnly?: boolean;
   }
 >;
 
 /**
  * Table input allows the user to input content in a table.
  */
-const TableInput = ({children, ...rest}: TableInputProps) => {
+const TableInput = ({children, readOnly = false, ...rest}: TableInputProps) => {
   const [shadowed, setShadowed] = React.useState<boolean>(false);
   const handleScroll = (event: React.UIEvent<HTMLElement>) => {
     setShadowed(event.currentTarget.scrollLeft > 0);
   };
+
   return (
-    <TableInputContainer onScroll={handleScroll} {...rest}>
-      <TableInputTable className={shadowed ? 'shadowed' : ''}>{children}</TableInputTable>
-    </TableInputContainer>
+    <TableInputContext.Provider value={{readOnly}}>
+      <TableInputContainer onScroll={handleScroll} {...rest}>
+        <TableInputTable className={shadowed ? 'shadowed' : ''}>{children}</TableInputTable>
+      </TableInputContainer>
+    </TableInputContext.Provider>
   );
 };
 
