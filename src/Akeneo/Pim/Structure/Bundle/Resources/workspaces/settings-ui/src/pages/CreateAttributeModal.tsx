@@ -20,14 +20,14 @@ type AttributeData = {
   attribute_type?: AttributeType;
 } & {[key: string]: any};
 
-type CreateAttributeDataProps = {
+type CreateAttributeModalProps = {
   onClose: () => void;
   onStepConfirm: (data: AttributeData) => void;
   initialData?: AttributeData;
   extraFields?: CreateAttributeModalExtraField[];
 };
 
-const CreateAttributeData: React.FC<CreateAttributeDataProps> = ({
+const CreateAttributeModal: React.FC<CreateAttributeModalProps> = ({
   onClose,
   onStepConfirm,
   initialData,
@@ -88,4 +88,4 @@ const CreateAttributeData: React.FC<CreateAttributeDataProps> = ({
   );
 };
 
-export {CreateAttributeData};
+export {CreateAttributeModal};

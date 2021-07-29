@@ -11,7 +11,7 @@ Feature: Create attribute options
   @critical
   Scenario: Successfully create some attribute options
     Given I am on the attributes page
-    And I create a "Simple select" attribute having code "size"
+    And I create a "Simple select" attribute with code "size"
     And I fill in the following information:
       | Attribute group | Other |
     When I save the attribute
