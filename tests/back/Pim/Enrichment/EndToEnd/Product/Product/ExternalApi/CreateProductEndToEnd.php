@@ -48,32 +48,6 @@ JSON;
         $this->assertSame('', $response->getContent());
     }
 
-    public function test_access_denied_on_create_a_product_if_no_permission()
-    {
-        $client = $this->createAuthenticatedClient();
-        $this->removeAclFromRole('action:pim_api_product_edit');
-
-        $data =
-            <<<JSON
-    {
-        "identifier": "product_create_headers"
-    }
-JSON;
-
-        $client->request('POST', 'api/rest/v1/products', [], [], [], $data);
-
-        $expectedResponse = <<<JSON
-{
-    "code": 403,
-    "message": "Access forbidden. You are not allowed to create or update products."
-}
-JSON;
-
-        $response = $client->getResponse();
-        $this->assertSame(Response::HTTP_FORBIDDEN, $response->getStatusCode());
-        $this->assertJsonStringEqualsJsonString($expectedResponse, $response->getContent());
-    }
-
     public function testProductCreationWithFamily()
     {
         $client = $this->createAuthenticatedClient();

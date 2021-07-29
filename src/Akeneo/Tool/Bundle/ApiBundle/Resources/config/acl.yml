@@ -85,16 +85,3 @@ pim_api_association_type_edit:
     type: action
     label: pim_api.acl.association_type.edit
     group_name: pim_api.acl_group.association_type
-
-pim_api_product_edit:
-    type: action
-    label: pim_api.acl.product.edit
-    group_name: pim_api.acl_group.product
-pim_api_product_list:
-    type: action
-    label: pim_api.acl.product.list
-    group_name: pim_api.acl_group.product
-pim_api_product_remove:
-    type: action
-    label: pim_api.acl.product.remove
-    group_name: pim_api.acl_group.product
