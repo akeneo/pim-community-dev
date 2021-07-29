@@ -14,7 +14,7 @@ use Symfony\Component\Validator\ConstraintViolationListInterface;
  */
 class ViolationHttpException extends UnprocessableEntityHttpException
 {
-    /** @var string */
+    /** @var ConstraintViolationListInterface */
     protected $violations;
 
     /**

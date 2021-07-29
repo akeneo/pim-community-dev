@@ -19,8 +19,7 @@ use Symfony\Component\Validator\ConstraintViolationInterface;
  */
 class ConstraintViolationNormalizer extends ViolationNormalizer
 {
-    /** @var DocumentationBuilderRegistry */
-    private $documentationBuilderRegistry;
+    private DocumentationBuilderRegistry $documentationBuilderRegistry;
 
     public function __construct(
         IdentifiableObjectRepositoryInterface $attributeRepository,

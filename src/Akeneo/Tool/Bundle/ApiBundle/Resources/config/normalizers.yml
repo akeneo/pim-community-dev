@@ -16,17 +16,6 @@ services:
         tags:
             - { name: pim_external_api_exception_serializer.normalizer, priority: 100 }
 
-    fos_rest.serializer.flatten_exception_normalizer:
-        class: FOS\RestBundle\Serializer\Normalizer\FlattenExceptionNormalizer
-        arguments:
-            - '@fos_rest.exception.codes_map'
-            - '@fos_rest.exception.messages_map'
-            - false
-            - false
-        tags:
-            - { name: serializer.normalizer, priority: -10 }
-            - { name: pim_external_api_exception_serializer.normalizer, priority: 90 }
-
     pim_api.normalizer.exception.violation:
         class: '%pim_api.normalizer.exception.violation.class%'
         arguments:
@@ -46,3 +35,12 @@ services:
             - '@router'
         tags:
             - { name: pim_external_api_serializer.normalizer, priority: 90 }
+
+    Akeneo\Tool\Bundle\ApiBundle\Serializer\Normalizer\FlattenExceptionNormalizer:
+        decorates: fos_rest.serializer.flatten_exception_normalizer
+        arguments:
+            - '@.inner'
+        calls:
+            - [ 'setNormalizer', [ '@pim_external_api_exception_serializer' ] ]
+        tags:
+            - { name: pim_external_api_exception_serializer.normalizer, priority: 100 }
