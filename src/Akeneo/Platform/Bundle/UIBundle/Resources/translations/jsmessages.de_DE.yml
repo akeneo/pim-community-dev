@@ -374,7 +374,6 @@ pim_settings:
   product_settings: Artikel Einstellungen
   count:
     categories: Du hast {{ countTrees }} Bäume und {{ countCategories }} Kategorien
-    channels: Du hast {{ count }} Kanäle
     locales: Sie haben {{ count }} Gebietsschemata aktiviert
     currencies: Sie haben {{ count }} Währungen aktiviert
     attribute_groups: Sie haben {{ count }} Attributgruppen
