@@ -1,6 +1,7 @@
 import React from 'react';
 import {TableInputBoolean} from './TableInputBoolean';
 import {fireEvent, render, screen} from '../../../../storybook/test-util';
+import {TableInput} from '../TableInput';
 
 test('it renders a Yes boolean input', () => {
   const handleChange = jest.fn();
@@ -57,15 +58,22 @@ test('it calls Callbacks on Yes change', () => {
 test('it does not open options on readonly mode', () => {
   const handleChange = jest.fn();
   render(
-    <TableInputBoolean
-      value={true}
-      onChange={handleChange}
-      yesLabel="Yes"
-      noLabel="No"
-      clearLabel={'Clear'}
-      openDropdownLabel={'Open'}
-      readOnly={true}
-    />
+    <TableInput readOnly={true}>
+      <tbody>
+        <tr>
+          <td>
+            <TableInputBoolean
+              value={true}
+              onChange={handleChange}
+              yesLabel="Yes"
+              noLabel="No"
+              clearLabel={'Clear'}
+              openDropdownLabel={'Open'}
+            />
+          </td>
+        </tr>
+      </tbody>
+    </TableInput>
   );
 
   fireEvent.click(screen.getByText('Yes'));
