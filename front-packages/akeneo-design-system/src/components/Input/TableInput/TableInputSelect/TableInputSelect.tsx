@@ -1,30 +1,32 @@
 import React, {ReactNode} from 'react';
 import {Dropdown} from '../../../Dropdown/Dropdown';
 import {useBooleanState} from '../../../../hooks';
-import {ArrowDownIcon, CloseIcon, LockIcon} from '../../../../icons';
+import {ArrowDownIcon, CloseIcon} from '../../../../icons';
 import {Search} from '../../../Search/Search';
 import styled, {css} from 'styled-components';
 import {IconButton} from '../../../IconButton/IconButton';
 import {AkeneoThemedProps, getColor} from '../../../../theme';
+import {TableInputContext} from '../TableInputContext';
+import {TableInputReadOnlyCell} from '../TableInputReadOnlyCell';
 
-const SelectButtonDropdown = styled(Dropdown)<{readOnly: boolean} & AkeneoThemedProps>`
+const SelectButtonDropdown = styled(Dropdown)`
   width: 100%;
-  color: ${({readOnly}) => (readOnly ? getColor('grey', 100) : getColor('grey', 140))};
+  color: ${getColor('grey', 140)};
 `;
 
-const SelectButton = styled.button<{highlighted: boolean; inError: boolean; readOnly: boolean} & AkeneoThemedProps>`
-  color: ${({readOnly}) => (readOnly ? getColor('grey', 100) : getColor('grey', 140))};
+const SelectButton = styled.button<{highlighted: boolean; inError: boolean} & AkeneoThemedProps>`
+  color: ${getColor('grey', 140)};
   width: 100%;
   background: none;
   border: none;
   text-align: left;
   display: inline-block;
   justify-content: space-between;
-  padding: 0 ${({readOnly}) => (readOnly ? '35px' : '70px')} 0 10px;
+  padding: 0 70px 0 10px;
   height: 39px;
   line-height: 39px;
   align-items: center;
-  cursor: ${({readOnly}) => (readOnly ? 'not-allowed' : 'pointer')};
+  cursor: pointer;
   white-space: nowrap;
   overflow: hidden;
   text-overflow: ellipsis;
@@ -67,7 +69,6 @@ type TableInputSelectProps = {
   searchPlaceholder: string;
   searchTitle: string;
   inError?: boolean;
-  readOnly?: boolean;
 };
 
 const TableInputSelect: React.FC<TableInputSelectProps> = ({
@@ -83,7 +84,6 @@ const TableInputSelect: React.FC<TableInputSelectProps> = ({
   onNextPage,
   children,
   inError,
-  readOnly = false,
   ...rest
 }) => {
   const [isOpen, open, close] = useBooleanState(false);
@@ -97,22 +97,19 @@ const TableInputSelect: React.FC<TableInputSelectProps> = ({
     if (onSearchChange) onSearchChange(search);
   };
 
+  const {readOnly} = React.useContext(TableInputContext);
+
+  if (readOnly) {
+    return <TableInputReadOnlyCell title={value}>{value}</TableInputReadOnlyCell>;
+  }
+
   return (
-    <SelectButtonDropdown readOnly={readOnly} {...rest}>
-      <SelectButton
-        readOnly={readOnly}
-        onClick={() => {
-          if (!readOnly) open();
-        }}
-        tabIndex={-1}
-        highlighted={highlighted}
-        title={value}
-        inError={inError}
-      >
+    <SelectButtonDropdown {...rest}>
+      <SelectButton onClick={open} tabIndex={-1} highlighted={highlighted} title={value} inError={inError}>
         {value}&nbsp;
       </SelectButton>
       <IconsPart>
-        {value && !readOnly && !isOpen && (
+        {value && !isOpen && (
           <IconButton
             icon={<CloseIcon />}
             size="small"
@@ -122,17 +119,14 @@ const TableInputSelect: React.FC<TableInputSelectProps> = ({
             onClick={onClear}
           />
         )}
-        {!readOnly && (
-          <IconButton
-            icon={<ArrowDownIcon />}
-            size="small"
-            title={openDropdownLabel}
-            ghost="borderless"
-            level="tertiary"
-            onClick={open}
-          />
-        )}
-        {readOnly && <LockIcon size={16} />}
+        <IconButton
+          icon={<ArrowDownIcon />}
+          size="small"
+          title={openDropdownLabel}
+          ghost="borderless"
+          level="tertiary"
+          onClick={open}
+        />
       </IconsPart>
       {isOpen && (
         <Dropdown.Overlay onClose={close} dropdownOpenerVisible={true} horizontalPosition="left">

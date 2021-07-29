@@ -1,6 +1,7 @@
 import React from 'react';
 import {TableInputSelect} from './TableInputSelect';
 import {fireEvent, render, screen} from '../../../../storybook/test-util';
+import {TableInput} from '../TableInput';
 
 test('it renders a Select input', () => {
   const handleClear = jest.fn();
@@ -61,16 +62,23 @@ test('it callbacks search', () => {
 
 test('it does not open dropdown on readonly', () => {
   render(
-    <TableInputSelect
-      value={'Option1'}
-      openDropdownLabel={'Open'}
-      clearLabel={'Clear'}
-      onClear={jest.fn()}
-      searchPlaceholder={'Search'}
-      searchTitle={'Search'}
-      onSearchChange={jest.fn()}
-      readOnly={true}
-    />
+    <TableInput readOnly={true}>
+      <tbody>
+        <tr>
+          <td>
+            <TableInputSelect
+              value={'Option1'}
+              openDropdownLabel={'Open'}
+              clearLabel={'Clear'}
+              onClear={jest.fn()}
+              searchPlaceholder={'Search'}
+              searchTitle={'Search'}
+              onSearchChange={jest.fn()}
+            />
+          </td>
+        </tr>
+      </tbody>
+    </TableInput>
   );
 
   fireEvent.click(screen.getByTitle('Option1'));

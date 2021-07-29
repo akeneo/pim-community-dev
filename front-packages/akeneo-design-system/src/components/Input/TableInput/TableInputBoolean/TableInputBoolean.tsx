@@ -4,16 +4,18 @@ import styled, {css} from 'styled-components';
 import {AkeneoThemedProps, getColor} from '../../../../theme';
 import {Override} from '../../../../shared';
 import {Dropdown} from '../../../Dropdown/Dropdown';
-import {ArrowDownIcon, CloseIcon, LockIcon} from '../../../../icons';
+import {ArrowDownIcon, CloseIcon} from '../../../../icons';
 import {useBooleanState} from '../../../../hooks';
 import {IconButton} from '../../../IconButton/IconButton';
+import {TableInputReadOnlyCell} from '../TableInputReadOnlyCell';
+import {TableInputContext} from '../TableInputContext';
 
-const BooleanButtonDropdown = styled(Dropdown)<{readOnly: boolean} & AkeneoThemedProps>`
+const BooleanButtonDropdown = styled(Dropdown)`
   width: 100%;
-  color: ${({readOnly}) => (readOnly ? getColor('grey', 100) : getColor('grey', 140))};
+  color: ${getColor('grey', 140)};
 `;
 
-const BooleanButton = styled.button<{highlighted: boolean; inError: boolean; readOnly: boolean} & AkeneoThemedProps>`
+const BooleanButton = styled.button<{highlighted: boolean; inError: boolean} & AkeneoThemedProps>`
   color: ${getColor('grey', 140)};
   width: 100%;
   background: none;
@@ -25,7 +27,7 @@ const BooleanButton = styled.button<{highlighted: boolean; inError: boolean; rea
   height: 39px;
   line-height: 39px;
   align-items: center;
-  cursor: ${({readOnly}) => (readOnly ? 'not-allowed' : 'pointer')};
+  cursor: pointer;
   background: none;
 
   ${({highlighted, inError}) =>
@@ -64,7 +66,6 @@ type TableInputBooleanProps = Override<
     clearLabel: string;
     openDropdownLabel: string;
     inError?: boolean;
-    readOnly?: boolean;
   }
 >;
 
@@ -76,7 +77,6 @@ const TableInputBoolean: React.FC<TableInputBooleanProps> = ({
   highlighted = false,
   clearLabel,
   openDropdownLabel,
-  readOnly = false,
   inError = false,
   ...rest
 }) => {
@@ -87,23 +87,27 @@ const TableInputBoolean: React.FC<TableInputBooleanProps> = ({
     close();
   };
 
+  const YesBadge = <Badge level="primary">{yesLabel}</Badge>;
+  const NoBadge = <Badge level="tertiary">{noLabel}</Badge>;
+
+  const {readOnly} = React.useContext(TableInputContext);
+
+  if (readOnly) {
+    return (
+      <TableInputReadOnlyCell title={value !== null && (value ? yesLabel : noLabel)}>
+        {value !== null && (value ? YesBadge : NoBadge)}
+      </TableInputReadOnlyCell>
+    );
+  }
+
   return (
-    <BooleanButtonDropdown readOnly={readOnly} {...rest}>
-      <BooleanButton
-        readOnly={readOnly}
-        tabIndex={-1}
-        highlighted={highlighted}
-        onClick={() => {
-          if (!readOnly) open();
-        }}
-        inError={inError}
-      >
-        {value !== null &&
-          (value ? <Badge level="primary">{yesLabel}</Badge> : <Badge level="tertiary">{noLabel}</Badge>)}
+    <BooleanButtonDropdown {...rest}>
+      <BooleanButton tabIndex={-1} highlighted={highlighted} onClick={open} inError={inError}>
+        {value !== null && (value ? YesBadge : NoBadge)}
         &nbsp;
       </BooleanButton>
       <IconsPart>
-        {value !== null && !readOnly && !isOpen && (
+        {value !== null && !isOpen && (
           <IconButton
             icon={<CloseIcon />}
             size="small"
@@ -113,27 +117,20 @@ const TableInputBoolean: React.FC<TableInputBooleanProps> = ({
             onClick={() => handleChange(null)}
           />
         )}
-        {!readOnly && (
-          <IconButton
-            icon={<ArrowDownIcon />}
-            size="small"
-            title={openDropdownLabel}
-            ghost="borderless"
-            level="tertiary"
-            onClick={open}
-          />
-        )}
-        {readOnly && <LockIcon size={16} />}
+        <IconButton
+          icon={<ArrowDownIcon />}
+          size="small"
+          title={openDropdownLabel}
+          ghost="borderless"
+          level="tertiary"
+          onClick={open}
+        />
       </IconsPart>
       {isOpen && (
         <Dropdown.Overlay onClose={close} dropdownOpenerVisible={true} horizontalPosition="left">
           <Dropdown.ItemCollection>
-            <Dropdown.Item onClick={() => handleChange(true)}>
-              <Badge level="primary">{yesLabel}</Badge>
-            </Dropdown.Item>
-            <Dropdown.Item onClick={() => handleChange(false)}>
-              <Badge level="tertiary">{noLabel}</Badge>
-            </Dropdown.Item>
+            <Dropdown.Item onClick={() => handleChange(true)}>{YesBadge}</Dropdown.Item>
+            <Dropdown.Item onClick={() => handleChange(false)}>{NoBadge}</Dropdown.Item>
           </Dropdown.ItemCollection>
         </Dropdown.Overlay>
       )}
