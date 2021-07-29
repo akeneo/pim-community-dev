@@ -37,7 +37,7 @@ class TableStructureTab extends (BaseView as {new (options: {config: TableStruct
 
       this.listenTo(this.getRoot(), 'pim_enrich:form:entity:bad_request', this.onBadRequest.bind(this));
       this.listenTo(this.getRoot(), 'pim_enrich:form:entity:pre_save', this.removeErrors.bind(this));
-      this.listenTo(this.getRoot(), 'pim_enrich:form:entity:post_save', this.updateSavedColumns.bind(this));
+      this.listenTo(this.getRoot(), 'pim_enrich:form:entity:post_save', this.resetSavedColumns.bind(this));
     }
 
     return super.configure();
