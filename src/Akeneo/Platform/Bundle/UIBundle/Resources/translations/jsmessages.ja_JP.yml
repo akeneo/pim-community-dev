@@ -374,7 +374,6 @@ pim_settings:
   product_settings: 商品設定
   count:
     categories: '{{ countTrees }} 個のツリーと {{ countCategories }} 個のカテゴリがあります'
-    channels: '{{ count }} 個のチャンネルがあります'
     locales: '{{ count }} 個の有効なロケールがあります'
     currencies: '{{ count }} 個の有効な通貨があります'
     attribute_groups: '{{ count }} 個の属性グループがあります'
