@@ -10,7 +10,7 @@ Feature: Edit an identifier attribute
 
   Scenario: Fail to create a second identifier attribute
     Given I am on the attributes page
-    When I create an "Identifier" attribute having code "mySecondId"
+    When I create an "Identifier" attribute with code "mySecondId"
     And I fill in the following information:
       | Attribute group | Other      |
     And I press the "Save" button

@@ -8,7 +8,7 @@ Feature: Create an attribute
     Given the "default" catalog configuration
     And I am logged in as "Julia"
     And I am on the attributes page
-    And I create a "Text" attribute having code "short_description"
+    And I create a "Text" attribute with code "short_description"
 
   @critical
   Scenario: Successfully create and validate a text attribute
