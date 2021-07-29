@@ -110,7 +110,7 @@ class WebUser extends PimContext
      *
      * @return Then[]
      *
-     * @Given /^I create a(?:n)? "([^"]*)" attribute having code "([^"]*)"?$/
+     * @Given /^I create a(?:n)? "([^"]*)" attribute with code "([^"]*)"?$/
      */
     public function iCreateAnAttribute($type, $code = '')
     {
