@@ -83,15 +83,15 @@ const List = ({
       </label>
       <ToggleButton />
 
-      <div className="AknAttributeOption-list-optionsList" role="attribute-options-list">
-        <>
-          <SpacedTable>
-            <Table.Header sticky={44}>
-              <TableHeaderFirstCell>&nbsp;</TableHeaderFirstCell>
-              <TableHeaderLabelCell>{translate('pim_common.label')}</TableHeaderLabelCell>
-              <TableHeaderCodeCell>{translate('pim_common.code')}</TableHeaderCodeCell>
-            </Table.Header>
-          </SpacedTable>
+      <>
+        <SpacedTable>
+          <Table.Header sticky={44}>
+            <TableHeaderFirstCell>&nbsp;</TableHeaderFirstCell>
+            <TableHeaderLabelCell>{translate('pim_common.label')}</TableHeaderLabelCell>
+            <TableHeaderCodeCell>{translate('pim_common.code')}</TableHeaderCodeCell>
+          </Table.Header>
+        </SpacedTable>
+        <div className="AknAttributeOption-list-optionsList" role="attribute-options-list">
           {sortedAttributeOptions !== null &&
             sortedAttributeOptions.map((attributeOption: AttributeOption, index: number) => {
               return (
@@ -111,10 +111,10 @@ const List = ({
                 </ListItem>
               );
             })}
-        </>
 
-        {showNewOptionPlaceholder && <NewOptionPlaceholder cancelNewOption={cancelNewOption} />}
-      </div>
+          {showNewOptionPlaceholder && <NewOptionPlaceholder cancelNewOption={cancelNewOption} />}
+        </div>
+      </>
     </div>
   );
 };
@@ -134,6 +134,7 @@ const TableHeaderLabelCell = styled(Table.HeaderCell)`
   @media (max-width: 1440px) {
     width: 32%;
   }
+
   & > span {
     padding: 0;
   }

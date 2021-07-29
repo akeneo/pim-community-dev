@@ -2,7 +2,7 @@ import React, {FC, useRef, useState} from 'react';
 import {AttributeOption} from '../model';
 import DeleteConfirmationModal from './DeleteConfirmationModal';
 import {useAttributeContext} from '../contexts';
-import {useUserContext} from "@akeneo-pim-community/legacy-bridge";
+import {useUserContext} from '@akeneo-pim-community/legacy-bridge';
 
 export type DragItem = {
   code: string;
@@ -126,7 +126,7 @@ const ListItem: FC<AttributeOptionItemProps> = ({children, ...props}) => {
           draggable={true}
           role={'attribute-option-move-handle'}
         />
-        <span className="AknAttributeOption-itemCode AknAttributeOption-itemLabel">
+        <span className="AknAttributeOption-itemLabel" role="attribute-option-item-label">
           <div>
             <span>
               {data.optionValues[locale] && data.optionValues[locale].value
@@ -135,7 +135,7 @@ const ListItem: FC<AttributeOptionItemProps> = ({children, ...props}) => {
             </span>
           </div>
         </span>
-        <span className="AknAttributeOption-itemCode" role="attribute-option-item-label">
+        <span className="AknAttributeOption-itemCode" role="attribute-option-item-code">
           <div>
             <span>{data.code}</span>
           </div>
