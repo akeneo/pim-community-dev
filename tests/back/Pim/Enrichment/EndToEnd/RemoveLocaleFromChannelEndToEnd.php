@@ -177,7 +177,7 @@ class RemoveLocaleFromChannelEndToEnd extends InternalApiTestCase
         return $ecommerceChannel;
     }
 
-    private function createProduct($identifier, array $data): void
+    protected function createProduct($identifier, array $data): void
     {
         $family = isset($data['family']) ? $data['family'] : null;
 
