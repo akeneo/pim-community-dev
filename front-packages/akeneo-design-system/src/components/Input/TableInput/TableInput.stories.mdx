@@ -132,7 +132,7 @@ Table input allows the user to input content in a table.
     {args => {
       const linesCount = 5;
       return (
-        <TableInput {...args}>
+        <TableInput {...args} readOnly={true}>
           <TableInput.Header>
             <TableInput.HeaderCell rowTitle={true}>Title cell</TableInput.HeaderCell>
             <TableInput.HeaderCell rowTitle={true}>Select cell</TableInput.HeaderCell>
@@ -144,10 +144,10 @@ Table input allows the user to input content in a table.
             {[...Array(linesCount).keys()].map((_,r) => {
               return <TableInput.Row key={r}>
                 <TableInput.Cell rowTitle={true}>Value</TableInput.Cell>
-                <TableInput.Cell><TableInput.Select onSearchChange={() => {}} value={'Cell with a select value having a big text'} readOnly/></TableInput.Cell>
-                <TableInput.Cell><TableInput.Text value={'Cell with a text value having a big text'} readOnly/></TableInput.Cell>
-                <TableInput.Cell><TableInput.Number value={Math.pow(4212345967, r)} readOnly/></TableInput.Cell>
-                <TableInput.Cell><TableInput.Boolean value={true} yesLabel={"Yes"} noLabel={"No"} readOnly/></TableInput.Cell>
+                <TableInput.Cell><TableInput.Select onSearchChange={() => {}} value={'Cell with a select value having a big text'}/></TableInput.Cell>
+                <TableInput.Cell><TableInput.Text value={'Cell with a text value having a big text'}/></TableInput.Cell>
+                <TableInput.Cell><TableInput.Number value={Math.pow(4212345967, r)}/></TableInput.Cell>
+                <TableInput.Cell><TableInput.Boolean value={true} yesLabel={"Yes"} noLabel={"No"}/></TableInput.Cell>
               </TableInput.Row>
             })}
           </TableInput.Body>

@@ -17,7 +17,7 @@ const useFakeTableInput = (linesCount: number) => {
         nutritionScore: `${(lineIndex % 3) + 1}` as '1' | '2' | '3',
         part: `${lineIndex * 100}g`,
         quantity: lineIndex * 10,
-        is_allergenic: null,
+        is_allergenic: [true, false, null][lineIndex % 3],
       };
     })
   );
