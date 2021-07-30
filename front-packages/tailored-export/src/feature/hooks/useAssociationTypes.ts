@@ -29,6 +29,7 @@ const useAssociationTypes = (associationTypeCodes: string[]) => {
 const useAssociationType = (associationTypeCode: string) => {
   const associationTypeFetcher = useFetchers().associationType;
   const [associationType, setAssociationType] = useState<AssociationType | null>(null);
+  const [previousAssociationTypeCode, setPreviousAssociationTypeCode] = useState<string | null>(null);
   const isMounted = useIsMounted();
   const [isFetching, setIsFetching] = useState<boolean>(false);
 
@@ -36,15 +37,16 @@ const useAssociationType = (associationTypeCode: string) => {
     setIsFetching(true);
     associationTypeFetcher.fetchByCodes([associationTypeCode]).then((associationTypes: AssociationType[]) => {
       if (!isMounted()) return;
-      setIsFetching(false);
 
       setAssociationType(associationTypes[0] ?? null);
+      setIsFetching(false);
+      setPreviousAssociationTypeCode(associationTypeCode);
     });
   }, [associationTypeCode, associationTypeFetcher, isMounted]);
 
   const currentAssociationType = associationType?.code === associationTypeCode ? associationType : null;
 
-  return [isFetching && !currentAssociationType, currentAssociationType] as const;
+  return [isFetching || previousAssociationTypeCode !== associationTypeCode, currentAssociationType] as const;
 };
 
 export {useAssociationTypes, useAssociationType};

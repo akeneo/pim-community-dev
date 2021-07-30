@@ -31,6 +31,7 @@ const useAttributes = (attributeCodes: string[]) => {
 const useAttribute = (attributeCode: string) => {
   const attributeFetcher = useFetchers().attribute;
   const [attribute, setAttribute] = useState<Attribute | null>(null);
+  const [previousAttributeCode, setPreviousAttributeCode] = useState<string | null>(null);
   const isMounted = useIsMounted();
   const [isFetching, setIsFetching] = useState<boolean>(false);
 
@@ -38,15 +39,16 @@ const useAttribute = (attributeCode: string) => {
     setIsFetching(true);
     attributeFetcher.fetchByIdentifiers([attributeCode]).then((attributes: Attribute[]) => {
       if (!isMounted()) return;
-      setIsFetching(false);
 
       setAttribute(attributes[0] ?? null);
+      setIsFetching(false);
+      setPreviousAttributeCode(attributeCode);
     });
   }, [attributeCode, attributeFetcher, isMounted]);
 
   const currentAttribute = attribute?.code === attributeCode ? attribute : null;
 
-  return [isFetching && !currentAttribute, currentAttribute] as const;
+  return [isFetching || previousAttributeCode !== attributeCode, currentAttribute] as const;
 };
 
 export {useAttribute, useAttributes};

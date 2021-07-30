@@ -60,7 +60,9 @@ const NoSourcePlaceholder = () => {
       <RulesIllustration size={128} />
       <Title>{translate('akeneo.tailored_export.column_details.sources.no_source_selected.title')}</Title>
       <SubTitle>
-        <Link href={'#TODO'}>{translate('akeneo.tailored_export.column_details.sources.no_source_selected.link')}</Link>
+        <Link href="https://help.akeneo.com/pim/serenity/articles/tailored-export.html#define-your-export-structure">
+          {translate('akeneo.tailored_export.column_details.sources.no_source_selected.link')}
+        </Link>
       </SubTitle>
     </Content>
   );
