@@ -13,10 +13,6 @@ declare(strict_types=1);
 
 namespace Akeneo\AssetManager\Infrastructure\PublicApi\Enrich;
 
-use Akeneo\AssetManager\Domain\Model\Asset\Value\ChannelReference;
-use Akeneo\AssetManager\Domain\Model\Asset\Value\LocaleReference;
-use Akeneo\AssetManager\Domain\Model\Attribute\AttributeIdentifier;
-use Akeneo\AssetManager\Domain\Query\Attribute\ValueKey;
 use Akeneo\AssetManager\Infrastructure\Filesystem\Storage;
 use Doctrine\DBAL\Connection;
 use Webmozart\Assert\Assert;
@@ -36,9 +32,7 @@ final class SqlGetMainMediaFileInfoCollection implements GetMainMediaFileInfoCol
 
     public function forAssetFamilyAndAssetCodes(
         string $assetFamilyIdentifier,
-        array $assetCodes,
-        ?string $channelReference,
-        ?string $localeReference
+        array $assetCodes
     ): array {
         if (0 === count($assetCodes)) {
             return [];
@@ -46,67 +40,48 @@ final class SqlGetMainMediaFileInfoCollection implements GetMainMediaFileInfoCol
 
         Assert::allString($assetCodes);
 
-        $valueKey = $this->getMainMediaValueKey($assetFamilyIdentifier, $channelReference, $localeReference);
-
-        if (null === $valueKey) {
-            return [];
-        }
-
         $sql = <<<SQL
-SELECT JSON_UNQUOTE(JSON_EXTRACT(asset.value_collection, '$."%s".data.filePath')) as filePath,
-       JSON_UNQUOTE(JSON_EXTRACT(asset.value_collection, '$."%s".data.originalFilename')) as originalFilename
+SELECT
+    asset.code,
+    asset.value_collection,
+    family.attribute_as_main_media
 FROM akeneo_asset_manager_asset asset
-WHERE asset.asset_family_identifier = :assetFamilyIdentifier AND asset.code IN (:assetCodes) 
+    JOIN akeneo_asset_manager_asset_family family ON asset.asset_family_identifier = family.identifier
+    JOIN akeneo_asset_manager_attribute attribute ON family.attribute_as_main_media = attribute.identifier
+WHERE asset.asset_family_identifier = :assetFamilyIdentifier AND asset.code IN (:assetCodes)
+AND attribute.attribute_type = 'media_file'
 SQL;
 
         $rawResults = $this->connection->executeQuery(
-            sprintf($sql, $valueKey->__toString(), $valueKey->__toString()),
+            $sql,
             ['assetFamilyIdentifier' => $assetFamilyIdentifier, 'assetCodes' => $assetCodes],
             ['assetCodes' => Connection::PARAM_STR_ARRAY]
         )->fetchAll();
 
         $mediaFileInfoCollection = [];
         foreach ($rawResults as $rawResult) {
-            if (null === $rawResult['filePath'] || null === $rawResult['originalFilename']) {
-                continue;
-            }
-
-            $mediaFileInfoCollection[] = new MediaFileInfo(
-                $rawResult['filePath'],
-                $rawResult['originalFilename'],
-                Storage::FILE_STORAGE_ALIAS
+            $mainMediaValues = $this->filterMainMediaValues(
+                json_decode($rawResult['value_collection'], true),
+                $rawResult['attribute_as_main_media']
             );
+
+            $mediaFileInfoCollection = array_merge($mediaFileInfoCollection, array_map(static fn ($mainMediaValue) => new MediaFileInfo(
+                $mainMediaValue['data']['filePath'],
+                $mainMediaValue['data']['originalFilename'],
+                Storage::FILE_STORAGE_ALIAS
+            ), $mainMediaValues));
         }
 
         return $mediaFileInfoCollection;
     }
 
-    private function getMainMediaValueKey(
-        string $assetFamilyIdentifier,
-        ?string $channelReference,
-        ?string $localeReference
-    ): ?ValueKey {
-        $sqlGetAttributeAsMainMediaIdentifier = <<<SQL
-SELECT asset_attribute.identifier as attribute_identifier
-FROM akeneo_asset_manager_asset_family family
-JOIN akeneo_asset_manager_attribute asset_attribute ON family.attribute_as_main_media = asset_attribute.identifier
-WHERE family.identifier = :assetFamilyIdentifier
-AND asset_attribute.attribute_type = 'media_file'
-SQL;
-
-        $attributeIdentifier = $this->connection->executeQuery(
-            $sqlGetAttributeAsMainMediaIdentifier,
-            ['assetFamilyIdentifier' => $assetFamilyIdentifier]
-        )->fetchColumn();
-
-        if (!$attributeIdentifier) {
-            return null;
-        }
-
-        return ValueKey::create(
-            AttributeIdentifier::fromString($attributeIdentifier),
-            ChannelReference::createFromNormalized($channelReference),
-            LocaleReference::createFromNormalized($localeReference)
-        );
+    private function filterMainMediaValues(array $rawValueCollection, string $attributeAsMainMediaIdentifier): array
+    {
+        return array_values(array_filter(
+            $rawValueCollection,
+            static fn (array $value) => $value['attribute'] === $attributeAsMainMediaIdentifier
+                && null !== $value['data']['filePath'] ?? null
+                && null !== $value['data']['originalFilename'] ?? null
+        ));
     }
 }

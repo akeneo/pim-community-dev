@@ -48,7 +48,7 @@ final class MediaToExportExtractor implements MediaToExportExtractorInterface
             $value = $valueCollection->getFromSource($source);
 
             if ($selection instanceof FileSelectionInterface && $value instanceof FileValue) {
-                $mediaToExports[$value->getKey()] = $this->extractFromFileSource($selection, $value);
+                $mediaToExports[] = $this->extractFromFileSource($selection, $value);
             }
 
             if ($selection instanceof AssetCollectionSelectionInterface && $value instanceof AssetCollectionValue) {
@@ -80,14 +80,14 @@ final class MediaToExportExtractor implements MediaToExportExtractorInterface
     /**
      * @return MediaToExport[]
      */
-    private function extractFromAssetCollectionSource(AssetCollectionSelectionInterface $selection, AssetCollectionValue $value): array
-    {
+    private function extractFromAssetCollectionSource(
+        AssetCollectionSelectionInterface $selection,
+        AssetCollectionValue $value
+    ): array {
         $mainMediaFileInfoCollection = $this->getMainMediaFileInfoCollection
             ->forAssetFamilyAndAssetCodes(
                 $selection->getAssetFamilyCode(),
-                $value->getAssetCodes(),
-                $value->getChannelReference(),
-                $value->getLocaleReference()
+                $value->getAssetCodes()
             );
 
         return array_reduce(
@@ -102,7 +102,7 @@ final class MediaToExportExtractor implements MediaToExportExtractorInterface
 
                 $path = sprintf('%s%s', $exportDirectory, $fileInfo->getOriginalFilename());
 
-                $accumulator[$fileInfo->getFileKey()] = new MediaToExport(
+                $accumulator[] = new MediaToExport(
                     $fileInfo->getFileKey(),
                     $fileInfo->getStorage(),
                     $path

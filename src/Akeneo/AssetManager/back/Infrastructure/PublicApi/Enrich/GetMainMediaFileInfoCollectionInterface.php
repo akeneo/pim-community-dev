@@ -24,8 +24,6 @@ interface GetMainMediaFileInfoCollectionInterface
      */
     public function forAssetFamilyAndAssetCodes(
         string $assetFamilyIdentifier,
-        array $assetCodes,
-        ?string $channelReference,
-        ?string $localeReference
+        array $assetCodes
     ): array;
 }

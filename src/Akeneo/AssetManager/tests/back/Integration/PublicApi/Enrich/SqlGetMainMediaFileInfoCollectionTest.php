@@ -28,13 +28,12 @@ use Akeneo\AssetManager\Domain\Model\Image;
 use Akeneo\AssetManager\Infrastructure\PublicApi\Enrich\MediaFileInfo;
 use Akeneo\AssetManager\Infrastructure\PublicApi\Enrich\SqlGetMainMediaFileInfoCollection;
 use Akeneo\AssetManager\Integration\SqlIntegrationTestCase;
-use Akeneo\Tool\Component\FileStorage\Model\FileInfo;
 
 /**
  * @author Pierre Jolly <pierre.jolly@akeneo.com>
  * @copyright 2021 Akeneo SAS (http://www.akeneo.com)
  */
-final class SqlGetMainMediaFileInfoTest extends SqlIntegrationTestCase
+final class SqlGetMainMediaFileInfoCollectionTest extends SqlIntegrationTestCase
 {
     private SqlGetMainMediaFileInfoCollection $sqlGetMainMediaFileInfo;
 
@@ -52,9 +51,7 @@ final class SqlGetMainMediaFileInfoTest extends SqlIntegrationTestCase
     {
         $results = $this->sqlGetMainMediaFileInfo->forAssetFamilyAndAssetCodes(
             'asset_family_packshot',
-            ['asset_family_packshot_asset_1', 'asset_family_packshot_asset_2'],
-            null,
-            'fr_FR'
+            ['asset_family_packshot_asset_1', 'asset_family_packshot_asset_2']
         );
 
         $expectedFileInfo1 = new MediaFileInfo(
@@ -69,9 +66,23 @@ final class SqlGetMainMediaFileInfoTest extends SqlIntegrationTestCase
             'assetStorage'
         );
 
+        $expectedFileInfo3 = new MediaFileInfo(
+            'test/main_image_asset_1_en_US.jpg',
+            'main_image_asset_1_en_US.jpg',
+            'assetStorage'
+        );
+
+        $expectedFileInfo4 = new MediaFileInfo(
+            'test/main_image_asset_2_en_US.jpg',
+            'main_image_asset_2_en_US.jpg',
+            'assetStorage'
+        );
+
         self::assertEqualsCanonicalizing([
             $expectedFileInfo1,
-            $expectedFileInfo2
+            $expectedFileInfo2,
+            $expectedFileInfo3,
+            $expectedFileInfo4,
         ], $results);
     }
 
@@ -80,17 +91,13 @@ final class SqlGetMainMediaFileInfoTest extends SqlIntegrationTestCase
     {
         $results = $this->sqlGetMainMediaFileInfo->forAssetFamilyAndAssetCodes(
             'asset_family_1',
-            ['asset_2_a'],
-            null,
-            null
+            ['asset_2_a']
         );
         self::assertEmpty($results);
 
         $results = $this->sqlGetMainMediaFileInfo->forAssetFamilyAndAssetCodes(
             'unknown',
-            ['asset_1_a', 'asset_2_a'],
-            null,
-            null
+            ['asset_1_a', 'asset_2_a']
         );
         self::assertEmpty($results);
     }
@@ -111,11 +118,13 @@ final class SqlGetMainMediaFileInfoTest extends SqlIntegrationTestCase
         $assetFamilyRepository = $this->get('akeneo_assetmanager.infrastructure.persistence.repository.asset_family');
 
         $assetFamilyIdentifier = AssetFamilyIdentifier::fromString($assetFamilyIdentifier);
-        $assetFamilyRepository->create(AssetFamily::create(
-            $assetFamilyIdentifier,
-            [],
-            Image::createEmpty(),
-            RuleTemplateCollection::empty())
+        $assetFamilyRepository->create(
+            AssetFamily::create(
+                $assetFamilyIdentifier,
+                [],
+                Image::createEmpty(),
+                RuleTemplateCollection::empty()
+            )
         );
 
         return $assetFamilyRepository->getByIdentifier($assetFamilyIdentifier);

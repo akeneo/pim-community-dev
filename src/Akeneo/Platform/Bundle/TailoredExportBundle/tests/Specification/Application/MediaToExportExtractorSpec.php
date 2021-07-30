@@ -27,7 +27,6 @@ use Akeneo\Platform\TailoredExport\Domain\MediaToExport;
 use Akeneo\Platform\TailoredExport\Domain\SourceValue\AssetCollectionValue;
 use Akeneo\Platform\TailoredExport\Domain\SourceValue\FileValue;
 use Akeneo\Platform\TailoredExport\Domain\ValueCollection;
-use Akeneo\Tool\Component\FileStorage\Model\FileInfo;
 use PhpSpec\ObjectBehavior;
 
 class MediaToExportExtractorSpec extends ObjectBehavior
@@ -75,12 +74,13 @@ class MediaToExportExtractorSpec extends ObjectBehavior
             null
         );
 
-        $expectedMediaToExport = [];
-        $expectedMediaToExport['a_filekey'] = new MediaToExport(
-            'a_filekey',
-            'catalog',
-            'files/an_id/an_attribute_code/an_original_filename'
-        );
+        $expectedMediaToExport = [
+            new MediaToExport(
+                'a_filekey',
+                'catalog',
+                'files/an_id/an_attribute_code/an_original_filename'
+            )
+        ];
 
         $mediaToExport = $this->extract($columnCollection, $valueCollection);
         $mediaToExport->shouldHaveCount(1);
@@ -120,13 +120,11 @@ class MediaToExportExtractorSpec extends ObjectBehavior
 
         $getMainMediaFileInfoCollection->forAssetFamilyAndAssetCodes(
             'a_family_code',
-            ['asset_code_1', 'asset_code_2', 'asset_code_3'],
-            null,
-            null
+            ['asset_code_1', 'asset_code_2', 'asset_code_3']
         )->willReturn([new MediaFileInfo('a_filekey', 'an_original_filename', 'assetStorage')]);
 
         $expectedMediaToExport = [
-            'a_filekey' => new MediaToExport(
+            new MediaToExport(
                 'a_filekey',
                 'assetStorage',
                 'files/an_id/an_attribute_code/an_original_filename'
