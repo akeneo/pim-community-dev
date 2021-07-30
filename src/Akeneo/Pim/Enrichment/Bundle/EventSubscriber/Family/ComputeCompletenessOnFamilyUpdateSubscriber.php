@@ -24,38 +24,15 @@ use Symfony\Component\Security\Core\Authentication\Token\Storage\TokenStorageInt
  */
 final class ComputeCompletenessOnFamilyUpdateSubscriber implements EventSubscriberInterface
 {
-    /** @var TokenStorageInterface */
-    private $tokenStorage;
+    private TokenStorageInterface $tokenStorage;
+    private JobLauncherInterface $jobLauncher;
+    private IdentifiableObjectRepositoryInterface $jobInstanceRepository;
+    private string $jobName;
+    private AttributeRequirementRepositoryInterface $attributeRequirementRepository;
+    private FindAttributesForFamily $findAttributesForFamily;
+    private bool $areAttributeRequirementsUpdatedForFamilies;
+    private bool $isAttributeListUpdated;
 
-    /** @var JobLauncherInterface */
-    private $jobLauncher;
-
-    /** @var IdentifiableObjectRepositoryInterface */
-    private $jobInstanceRepository;
-
-    /** @var string */
-    private $jobName;
-
-    /** @var AttributeRequirementRepositoryInterface */
-    private $attributeRequirementRepository;
-
-    /** @var FindAttributesForFamily */
-    private $findAttributesForFamily;
-
-    /** @var bool */
-    private $areAttributeRequirementsUpdatedForFamilies;
-
-    /** @var bool */
-    private $isAttributeListUpdated;
-
-    /**
-     * @param TokenStorageInterface                   $tokenStorage
-     * @param JobLauncherInterface                    $jobLauncher
-     * @param IdentifiableObjectRepositoryInterface   $jobInstanceRepository
-     * @param AttributeRequirementRepositoryInterface $attributeRequirementRepository
-     * @param FindAttributesForFamily                 $findAttributesForFamily
-     * @param string                                  $jobName
-     */
     public function __construct(
         TokenStorageInterface $tokenStorage,
         JobLauncherInterface $jobLauncher,

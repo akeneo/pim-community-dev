@@ -4,7 +4,7 @@ namespace AkeneoTest\Pim\Structure\EndToEnd\Attribute\InternalApi;
 
 use Akeneo\Test\Integration\Configuration;
 use Akeneo\Tool\Bundle\ApiBundle\tests\integration\ApiTestCase;
-use Symfony\Bundle\FrameworkBundle\Client;
+use Symfony\Bundle\FrameworkBundle\KernelBrowser;
 use Symfony\Component\HttpFoundation\Response;
 
 /**
@@ -125,8 +125,9 @@ JSON;
         return $this->catalog->useTechnicalCatalog();
     }
 
-    private static function createSearchAttributeClient(): Client
+    private static function createSearchAttributeClient(): KernelBrowser
     {
+        static::ensureKernelShutdown();
         return self::createClient([], [
             'PHP_AUTH_USER' => self::PASSWORD,
             'PHP_AUTH_PW'   => self::USERNAME,

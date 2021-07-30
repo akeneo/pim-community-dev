@@ -54,7 +54,6 @@ abstract class ApiTestCase extends WebTestCase
         $authenticator->createSystemUser();
 
         $this->get('pim_connector.doctrine.cache_clearer')->clear();
-        static::ensureKernelShutdown();
     }
 
     /**

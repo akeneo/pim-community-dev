@@ -3,7 +3,7 @@
 namespace AkeneoTest\Pim\Enrichment\EndToEnd\Product\ProductModel\ExternalApi;
 
 use PHPUnit\Framework\Assert;
-use Symfony\Bundle\FrameworkBundle\Client;
+use Symfony\Bundle\FrameworkBundle\KernelBrowser;
 
 class ListSearchAfterProductModelEndToEnd extends AbstractProductModelTestCase
 {
@@ -43,7 +43,7 @@ class ListSearchAfterProductModelEndToEnd extends AbstractProductModelTestCase
         $this->assertItems($responseBody, ['sweat', 'shoes', 'tshirt']);
     }
 
-    private function followLink(Client $client, string $type): void
+    private function followLink(KernelBrowser $client, string $type): void
     {
         $link = $this->getLink(json_decode($client->getResponse()->getContent(), true), $type);
         Assert::assertNotNull($link);
@@ -96,12 +96,7 @@ class ListSearchAfterProductModelEndToEnd extends AbstractProductModelTestCase
         return urldecode($responseBody['_links'][$type]['href']);
     }
 
-    /**
-     * @param string $productModelIdentifier
-
-     * @return string
-     */
-    private function getEncryptedId($productModelIdentifier)
+    private function getEncryptedId(string $productModelIdentifier): string
     {
         $encrypter = $this->get('pim_api.security.primary_key_encrypter');
 

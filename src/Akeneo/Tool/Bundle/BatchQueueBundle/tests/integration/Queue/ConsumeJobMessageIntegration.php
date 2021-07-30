@@ -170,7 +170,7 @@ class ConsumeJobMessageIntegration extends TestCase
     {
         $count = 0;
         do {
-            $pgrep = new Process(sprintf('pgrep -P %d', $processPid));
+            $pgrep = new Process([sprintf('pgrep -P %d', $processPid)]);
             $pgrep->run();
             $output = trim($pgrep->getOutput());
             if ('' !== $output) {

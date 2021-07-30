@@ -9,6 +9,8 @@ use Akeneo\Pim\Enrichment\Component\FileStorage;
 use Akeneo\Test\IntegrationTestsBundle\Configuration\CatalogInterface;
 use Akeneo\UserManagement\Component\Model\User;
 use Akeneo\UserManagement\Component\Model\UserInterface;
+use Exception;
+use SplFileInfo;
 use Symfony\Bundle\FrameworkBundle\Test\KernelTestCase;
 use Symfony\Component\HttpKernel\KernelInterface;
 
@@ -19,11 +21,8 @@ use Symfony\Component\HttpKernel\KernelInterface;
  */
 abstract class TestCase extends KernelTestCase
 {
-    /** @var KernelInterface */
-    protected $testKernel;
-
-    /** @var CatalogInterface */
-    protected $catalog;
+    protected ?KernelInterface $testKernel;
+    protected ?CatalogInterface $catalog;
 
     /**
      * @return Configuration
@@ -53,34 +52,19 @@ abstract class TestCase extends KernelTestCase
         $this->get('akeneo_integration_tests.launcher.job_launcher')->flushJobQueue();
     }
 
-    /**
-     * @param string $service
-     *
-     * @return mixed
-     */
-    protected function get(string $service)
+    protected function get(string $service): ?object
     {
-        return self::$container->get($service);
+        return self::getContainer()->get($service);
     }
 
-    /**
-     * @param string $parameter
-     *
-     * @return mixed
-     */
     protected function getParameter(string $parameter)
     {
-        return self::$container->getParameter($parameter);
+        return self::getContainer()->getParameter($parameter);
     }
 
-    /**
-     * @param string $parameter
-     *
-     * @return bool
-     */
-    protected function hasParameter(string $parameter)
+    protected function hasParameter(string $parameter): bool
     {
-        return self::$container->hasParameter($parameter);
+        return self::getContainer()->hasParameter($parameter);
     }
 
     /**
@@ -98,11 +82,7 @@ abstract class TestCase extends KernelTestCase
      * Look in every fixture directory if a fixture $name exists.
      * And return the pathname of the fixture if it exists.
      *
-     * @param string $name
-     *
-     * @throws \Exception if no fixture $name has been found
-     *
-     * @return string
+     * @throws Exception if no fixture $name has been found
      */
     protected function getFixturePath(string $name): string
     {
@@ -114,17 +94,17 @@ abstract class TestCase extends KernelTestCase
             }
         }
 
-        throw new \Exception(sprintf('The fixture "%s" does not exist.', $name));
+        throw new Exception(sprintf('The fixture "%s" does not exist.', $name));
     }
 
     protected function getFileInfoKey(string $path): string
     {
         if (!is_file($path)) {
-            throw new \Exception(sprintf('The path "%s" does not exist.', $path));
+            throw new Exception(sprintf('The path "%s" does not exist.', $path));
         }
 
         $fileStorer = $this->get('akeneo_file_storage.file_storage.file.file_storer');
-        $fileInfo = $fileStorer->store(new \SplFileInfo($path), FileStorage::CATALOG_STORAGE_ALIAS);
+        $fileInfo = $fileStorer->store(new SplFileInfo($path), FileStorage::CATALOG_STORAGE_ALIAS);
 
         return $fileInfo->getKey();
     }
