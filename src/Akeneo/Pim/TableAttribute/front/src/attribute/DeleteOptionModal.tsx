@@ -8,9 +8,17 @@ type DeleteOptionModalProps = {
   close: () => void;
   onDelete: () => void;
   optionCode: SelectOptionCode;
+  isFirstColumn: boolean;
+  attributeLabel: string;
 };
 
-const DeleteOptionModal: React.FC<DeleteOptionModalProps> = ({close, onDelete, optionCode}) => {
+const DeleteOptionModal: React.FC<DeleteOptionModalProps> = ({
+  close,
+  onDelete,
+  optionCode,
+  isFirstColumn,
+  attributeLabel,
+}) => {
   const translate = useTranslate();
   const [typedText, setTypedText] = React.useState<string>('');
 
@@ -28,10 +36,14 @@ const DeleteOptionModal: React.FC<DeleteOptionModalProps> = ({close, onDelete, o
       <FieldsList>
         <div>{translate('pim_table_attribute.form.attribute.confirm_option_delete')}</div>
         <Helper level='info'>
-          {/* TODO Column number */}
-          {translate((Math.random() === 0)  ? 'pim_table_attribute.form.attribute.delete_first_option_helper' : 'pim_table_attribute.form.attribute.delete_other_option_helper', {
-            attributeLabel: "TODO"
-          })}
+          {translate(
+            isFirstColumn
+              ? 'pim_table_attribute.form.attribute.delete_first_option_helper'
+              : 'pim_table_attribute.form.attribute.delete_other_option_helper',
+            {
+              attributeLabel,
+            }
+          )}
         </Helper>
         <Field label={translate('pim_table_attribute.form.attribute.please_type', {text: optionCode})}>
           <TextInput onChange={setTypedText} value={typedText} />

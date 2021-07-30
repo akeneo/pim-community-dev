@@ -27,6 +27,8 @@ pim_table_attribute:
             delete_first_option_helper: When you delete this option, the entire row will be deleted for all the products using the "{{ attributeLabel }}" table attribute.
             delete_other_option_helper: When you delete this option, the cell value will be removed for all the products using the "{{ attributeLabel }}" table attribute.
             no_options_helper: Please, add your first option.
+            no_options: No options found
+            please_try_again: Please try again
         product:
             items_per_page: Items per page
             current_items: "{{ minItem }}-{{ maxItem }} of {{ itemCount }}"
@@ -54,7 +56,7 @@ pim_table_attribute:
         duplicated_select_code: Each code requires a unique code
         max_greater_than_min: Max should be greater than min
         max_length: Maximum number of characters
-        min: Minimal value
+        min: Minimum value
         max: Maximum value
         decimals_allowed: Decimals values allowed
     templates:

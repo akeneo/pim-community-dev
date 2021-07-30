@@ -8,7 +8,12 @@ describe('DeleteColumnModal', () => {
     const handleClose = jest.fn();
     const handleDelete = jest.fn();
     renderWithProviders(
-      <DeleteColumnModal close={handleClose} columnDefinitionCode={'ingredient'} onDelete={handleDelete} />
+      <DeleteColumnModal
+        close={handleClose}
+        columnDefinitionCode={'ingredient'}
+        onDelete={handleDelete}
+        attributeLabel={'Nutrition'}
+      />
     );
     const deleteButton = await screen.findByText('pim_common.delete');
     expect(deleteButton).toHaveAttribute('disabled');
@@ -31,7 +36,12 @@ describe('DeleteColumnModal', () => {
     const handleClose = jest.fn();
     const handleDelete = jest.fn();
     renderWithProviders(
-      <DeleteColumnModal close={handleClose} columnDefinitionCode={'ingredient'} onDelete={handleDelete} />
+      <DeleteColumnModal
+        close={handleClose}
+        columnDefinitionCode={'ingredient'}
+        onDelete={handleDelete}
+        attributeLabel={'Nutrition'}
+      />
     );
     const cancelButton = await screen.findByText('pim_common.cancel');
 

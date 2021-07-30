@@ -163,8 +163,13 @@ const AddRowsButton: React.FC<AddRowsButtonProps> = ({attribute, columnCode, che
             {searchValue !== '' && itemsToDisplay.length === 0 && (
               <CenteredHelper>
                 <AddingValueIllustration size={100} />
-                No options. Change search TODO
-                Comme lautre
+                <CenteredHelper>
+                  <AddingValueIllustration size={120} />
+                  <CenteredHelperTitle>
+                    {translate('pim_table_attribute.form.attribute.no_options')}
+                  </CenteredHelperTitle>
+                  {translate('pim_table_attribute.form.attribute.please_try_again')}
+                </CenteredHelper>
               </CenteredHelper>
             )}
           </Dropdown.ItemCollection>

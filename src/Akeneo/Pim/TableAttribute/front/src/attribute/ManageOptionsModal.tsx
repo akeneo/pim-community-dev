@@ -9,6 +9,7 @@ import {
   uuid,
   LoaderIcon,
   getColor,
+  getFontSize,
   Pagination,
   Search,
   AddingValueIllustration,
@@ -61,6 +62,11 @@ const CenteredHelper = styled.div`
     display: block;
     margin: auto;
   }
+`;
+
+const CenteredHelperTitle = styled.div`
+  font-size: ${getFontSize('big')};
+  color: ${getColor('grey', 140)};
 `;
 
 const ManageOptionsSearch = styled(Search)`
@@ -403,8 +409,10 @@ const ManageOptionsModal: React.FC<ManageOptionsModalProps> = ({
                   {filteredOptions.length === 0 && searchValue !== '' && (
                     <CenteredHelper>
                       <AddingValueIllustration size={120} />
-                      Sorry, there are no options for your search!
-                      MEtttre comme l'autre
+                      <CenteredHelperTitle>
+                        {translate('pim_table_attribute.form.attribute.no_options')}
+                      </CenteredHelperTitle>
+                      {translate('pim_table_attribute.form.attribute.please_try_again')}
                     </CenteredHelper>
                   )}
                   {filteredOptions.length === 0 && searchValue === '' && (
@@ -429,6 +437,8 @@ const ManageOptionsModal: React.FC<ManageOptionsModalProps> = ({
           close={closeDeleteOptionModal}
           onDelete={handleDelete}
           optionCode={options[indexToRemove]?.code ?? ''}
+          isFirstColumn={indexToRemove === 0}
+          attributeLabel={getLabel(attribute.labels, userContext.get('catalogLocale'), attribute.code)}
         />
       )}
     </>

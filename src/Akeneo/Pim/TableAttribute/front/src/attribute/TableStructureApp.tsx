@@ -205,6 +205,7 @@ const TableStructureApp: React.FC<TableStructureAppProps> = ({
             tableConfiguration.find(columnDefinition => columnDefinition.id === lastColumnIdToDelete)
               ?.code as ColumnCode
           }
+          attributeLabel={getLabel(attribute.labels, userContext.get('catalogLocale'), attribute.code)}
         />
       )}
       {isNewColumnModalOpen && (

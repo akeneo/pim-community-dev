@@ -66,11 +66,11 @@ Feature: Create a table attribute
 
   Scenario: Cannot create a table configuration having invalid validation type
     When I create a table attribute with a configuration '{"data_type": "text", "code": "quantity", "validations": 123}'
-    Then There is a violation with message: TODO Validation should be an object
+    Then There is a violation with message: The Validations field requires a key value object
 
   Scenario: Cannot create a table configuration having unknown validation
     When I create a table attribute with a configuration '{"data_type": "text", "code": "quantity", "validations": { "unknown": 123 }}'
-    Then There is a violation with message: TODO wrong validation type max_length unknown
+    Then There is a violation with message: The "unknown" Validations does not work on a "text" column, allowed: "max_length"
 
   Scenario: Cannot create a table configuration having invalid max length validation value type
     When I create a table attribute with a configuration '{"data_type": "text", "code": "quantity", "validations": { "max_length": "foo bar"}}'
@@ -106,7 +106,7 @@ Feature: Create a table attribute
 
   Scenario: Cannot create a table configuration with invalid validations on a text column
     When I create a table attribute with a configuration '{"data_type": "text", "code": "quantity", "validations": { "min": 10, "max": 20, "decimals_allowed": true }}'
-    Then There is a violation with message: TODO wrong validation type max_length min, max, decimals_allowed
+    Then There is a violation with message: The "min, max, decimals_allowed" Validations does not work on a "text" column, allowed: "max_length"
 
   Scenario: Cannot create a table configuration with a min or max validation greater than 100
     When I create a table attribute with a configuration '{"data_type": "text", "code": "quantity", "validations": { "max_length": 200 }}'

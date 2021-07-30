@@ -4,7 +4,7 @@ pim_table_configuration:
             must_be_filled: The table attribute configuration must be filled
             must_contain_at_least_two_columns: The table attribute must contain at least 2 columns
             missing_column: The {{ field }} column must be filled
-            missing_option_field: The "{{ field }}" is required
+            missing_option_field: The {{ field }} is required
             column_code_must_be_filled: The column code must be filled
             option_code_must_be_filled: The option code must be filled
             invalid_code: The column code can only contain letters, numbers and underscores
@@ -22,12 +22,11 @@ pim_table_configuration:
             invalid_labels_format: The column labels must be a key/value object
             invalid_option_labels_format: The option labels must be a key/value object
             must_not_be_filled: The type %type% does not allow table_configuration
-            first_column_should_be_select: "The first column type should always be ""select"", current type: ""{{ data_type }}"""
+            first_column_should_be_select: 'The first column type should always be "select", current type: "{{ data_type }}"'
             first_column_code_cannot_be_changed: The code of your first column cannot be changed.
-            unknown_option_field: "Make sure you use only expected fields, current field: ""{{ field }}"""
-            unknown_column_field: "Make sure you use only expected fields, current field: ""{{ field }}"""
+            unknown_field: 'Make sure you use only expected fields, current field: {{ field }}'
         product_value:
             non_existing_columns: '[0,1]The "{{ non_existing_columns }}" column does not exist|]1,Inf[The "{{ non_existing_columns }}" columns do not exist'
             unexpected_data_type: 'The "{{ columnCode }}" column expects a {{ expected }}, {{ given }} given'
             first_column_required: 'The "{{ columnCode }}" column is mandatory'
-            unknown_option: "Make sure you only use existing option codes, current value: ""{{ optionCode }}"""
+            unknown_option: 'Make sure you only use existing option codes, current value: "{{ optionCode }}"'

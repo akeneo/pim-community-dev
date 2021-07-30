@@ -7,7 +7,15 @@ describe('DeleteOptionModal', () => {
   it('renders a disabled delete button when the text is not filled', async () => {
     const handleClose = jest.fn();
     const handleDelete = jest.fn();
-    renderWithProviders(<DeleteOptionModal close={handleClose} optionCode={'salt'} onDelete={handleDelete} />);
+    renderWithProviders(
+      <DeleteOptionModal
+        close={handleClose}
+        optionCode={'salt'}
+        onDelete={handleDelete}
+        isFirstColumn={false}
+        attributeLabel='Nutrition'
+      />
+    );
     const deleteButton = await screen.findByText('pim_common.delete');
     expect(deleteButton).toHaveAttribute('disabled');
 
@@ -28,7 +36,15 @@ describe('DeleteOptionModal', () => {
   it('closes the modal when user clicks on cancel button', async () => {
     const handleClose = jest.fn();
     const handleDelete = jest.fn();
-    renderWithProviders(<DeleteOptionModal close={handleClose} optionCode={'salt'} onDelete={handleDelete} />);
+    renderWithProviders(
+      <DeleteOptionModal
+        close={handleClose}
+        optionCode={'salt'}
+        onDelete={handleDelete}
+        isFirstColumn={false}
+        attributeLabel='Nutrition'
+      />
+    );
     const cancelButton = await screen.findByText('pim_common.cancel');
 
     act(() => {

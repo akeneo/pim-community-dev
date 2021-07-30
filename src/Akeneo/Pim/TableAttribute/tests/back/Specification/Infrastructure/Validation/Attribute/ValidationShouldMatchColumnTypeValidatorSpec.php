@@ -39,7 +39,7 @@ class ValidationShouldMatchColumnTypeValidatorSpec extends ObjectBehavior
     ) {
         $context->buildViolation(
             Argument::type('string'),
-            ['{{ expected }}' => 'max_length', '{{ given }}' => 'min']
+            ['{{ expected }}' => 'max_length', '{{ given }}' => 'min', '{{ columnType }}' => 'text']
         )->shouldBeCalled()->willReturn($violationBuilder);
 
         $violationBuilder->atPath('validations')->shouldBeCalled()->willReturn($violationBuilder);
@@ -54,7 +54,7 @@ class ValidationShouldMatchColumnTypeValidatorSpec extends ObjectBehavior
         ExecutionContextInterface $context,
         ConstraintViolationBuilderInterface $violationBuilder
     ) {
-        $context->buildViolation(Argument::type('string'), ['{{ given }}' => 'min'])->shouldBeCalled()->willReturn(
+        $context->buildViolation(Argument::type('string'), ['{{ given }}' => 'min', '{{ columnType }}' => 'boolean'])->shouldBeCalled()->willReturn(
             $violationBuilder
         );
         $violationBuilder->atPath('validations')->shouldBeCalled()->willReturn($violationBuilder);
@@ -98,7 +98,7 @@ class ValidationShouldMatchColumnTypeValidatorSpec extends ObjectBehavior
     ) {
         $context->buildViolation(
             Argument::type('string'),
-            ['{{ expected }}' => 'max_length', '{{ given }}' => 'min, max, decimals_allowed']
+            ['{{ expected }}' => 'max_length', '{{ given }}' => 'min, max, decimals_allowed', '{{ columnType }}' => 'text']
         )->shouldBeCalledOnce()->willReturn($violationBuilder);
 
         $violationBuilder->atPath('validations')->shouldBeCalledOnce()->willReturn($violationBuilder);

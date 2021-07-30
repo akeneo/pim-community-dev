@@ -61,9 +61,9 @@ CSV;
         $warnings = $this->connection->executeQuery('SELECT reason FROM akeneo_batch_warning')->fetchAll();
 
         Assert::assertEqualsCanonicalizing([
-            'attribute: TODO attribute does not exist' . PHP_EOL,
+            'attribute: The "unknown" attribute does not exist' . PHP_EOL,
             'Field "attribute" must be filled',
-            'column: TODO column does not exist for attribute' . PHP_EOL,
+            'column: The "unknown" column does not exist for the "nutrition" attribute' . PHP_EOL,
             'Field "column" must be filled',
             'Field "code" must be filled',
             'optionCode: The option code can only contain letters, numbers and underscores: invalid code' . PHP_EOL,

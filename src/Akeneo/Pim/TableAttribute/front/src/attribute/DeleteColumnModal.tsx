@@ -8,9 +8,15 @@ type DeleteColumnModalProps = {
   close: () => void;
   onDelete: () => void;
   columnDefinitionCode: ColumnCode;
+  attributeLabel: string;
 };
 
-const DeleteColumnModal: React.FC<DeleteColumnModalProps> = ({close, onDelete, columnDefinitionCode}) => {
+const DeleteColumnModal: React.FC<DeleteColumnModalProps> = ({
+  close,
+  onDelete,
+  columnDefinitionCode,
+  attributeLabel,
+}) => {
   const translate = useTranslate();
   const [typedColumnCode, setTypedColumnCode] = React.useState<ColumnCode>('');
 
@@ -27,10 +33,9 @@ const DeleteColumnModal: React.FC<DeleteColumnModalProps> = ({close, onDelete, c
       <Modal.Title>{translate('pim_common.confirm_deletion')}</Modal.Title>
       <FieldsList>
         <div>{translate('pim_table_attribute.form.attribute.confirm_column_delete')}</div>
-        <Helper level='info'>{translate(
-          'pim_table_attribute.form.attribute.delete_column_helper',
-          { attributeLabel: "TODO" }
-        )}</Helper>
+        <Helper level='info'>
+          {translate('pim_table_attribute.form.attribute.delete_column_helper', {attributeLabel})}
+        </Helper>
         <Field
           label={translate('pim_table_attribute.form.attribute.please_type', {
             text: columnDefinitionCode,

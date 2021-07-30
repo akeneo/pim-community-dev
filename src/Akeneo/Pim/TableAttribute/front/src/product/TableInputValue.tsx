@@ -221,6 +221,7 @@ const TableInputValue: React.FC<TableInputValueProps> = ({
                       )}
                       {'select' === columnType && (
                         <TableInputSelect
+                          attribute={attribute}
                           highlighted={cellMatchSearch(row[columnCode], columnDefinition)}
                           value={row[columnCode] as SelectOptionCode | undefined}
                           onChange={(value: SelectOptionCode | undefined) =>

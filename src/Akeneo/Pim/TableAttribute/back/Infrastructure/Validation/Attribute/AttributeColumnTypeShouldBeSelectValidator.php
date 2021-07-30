@@ -43,7 +43,7 @@ final class AttributeColumnTypeShouldBeSelectValidator extends ConstraintValidat
         $attribute = $this->getAttributes->forCode($value->attributeCode());
         if (null === $attribute) {
             $this->context->buildViolation(
-                'attribute does not exist', // The "{{ attribute }}" attribute does not exist.
+                'The "{{ attribute }}" attribute does not exist',
                 [
                     '{{ attribute }}' => $value->attributeCode(),
                 ]
@@ -54,7 +54,7 @@ final class AttributeColumnTypeShouldBeSelectValidator extends ConstraintValidat
 
         if (AttributeTypes::TABLE !== $attribute->type()) {
             $this->context->buildViolation(
-                'attribute should be a table attribute', // The "{{ attribute }}" attribute is not a table attribute.
+                'The "{{ attribute }}" attribute is not a table attribute',
                 [
                     '{{ attribute }}' => $value->attributeCode(),
                 ]
@@ -70,7 +70,7 @@ final class AttributeColumnTypeShouldBeSelectValidator extends ConstraintValidat
         );
         if (!\in_array($value->columnCode(), $columnCodes)) {
             $this->context->buildViolation(
-                'column does not exist for attribute', // "The "{{ column }}" column does not exist for the "{{ attribute }}" attribute.
+                'The "{{ column }}" column does not exist for the "{{ attribute }}" attribute',
                 [
                     '{{ attribute }}' => $value->attributeCode(),
                     '{{ column }}' => $value->columnCode(),
@@ -83,7 +83,7 @@ final class AttributeColumnTypeShouldBeSelectValidator extends ConstraintValidat
         $dataType = $configuration->getColumnDataType(ColumnCode::fromString($value->columnCode()))->asString();
         if (SelectColumn::DATATYPE !== $dataType) {
             $this->context->buildViolation(
-                'column should be a select', // The "{{ column }}" column of the "{{ attribute }}" attribute is not a "select".
+                'The "{{ column }}" column of the "{{ attribute }}" attribute is not a "select".',
                 [
                     '{{ attribute }}' => $value->attributeCode(),
                     '{{ column }}' => $value->columnCode(),

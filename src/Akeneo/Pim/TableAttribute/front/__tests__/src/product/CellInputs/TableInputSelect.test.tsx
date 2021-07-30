@@ -2,6 +2,7 @@ import React from 'react';
 import {renderWithProviders} from '@akeneo-pim-community/legacy-bridge/tests/front/unit/utils';
 import {act, fireEvent, screen} from '@testing-library/react';
 import {TableInputSelect} from '../../../../src/product/CellInputs/TableInputSelect';
+import {getTableAttribute} from '../../factories/Attributes';
 
 type EntryCallback = (entries: {isIntersecting: boolean}[]) => void;
 
@@ -38,14 +39,28 @@ const nutritionScoreOptions = [
 
 describe('TableInputSelect', () => {
   it('should render label of existing option', () => {
-    renderWithProviders(<TableInputSelect value={'B'} options={nutritionScoreOptions} onChange={jest.fn()} />);
+    renderWithProviders(
+      <TableInputSelect
+        value={'B'}
+        options={nutritionScoreOptions}
+        onChange={jest.fn()}
+        attribute={getTableAttribute()}
+      />
+    );
 
     expect(screen.getByText('B')).toBeInTheDocument();
   });
 
   it('should delete the value', () => {
     const handleChange = jest.fn();
-    renderWithProviders(<TableInputSelect value={'B'} options={nutritionScoreOptions} onChange={handleChange} />);
+    renderWithProviders(
+      <TableInputSelect
+        value={'B'}
+        options={nutritionScoreOptions}
+        onChange={handleChange}
+        attribute={getTableAttribute()}
+      />
+    );
 
     fireEvent.click(screen.getByTitle('pim_common.clear'));
     expect(handleChange).toBeCalledWith(undefined);
@@ -53,13 +68,15 @@ describe('TableInputSelect', () => {
 
   it('should display nothing if no options', () => {
     const handleChange = jest.fn();
-    renderWithProviders(<TableInputSelect value={'B'} onChange={handleChange} />);
+    renderWithProviders(<TableInputSelect value={'B'} onChange={handleChange} attribute={getTableAttribute()} />);
 
     expect(screen.queryByText('B')).not.toBeInTheDocument();
   });
 
   it('should paginate the options', async () => {
-    renderWithProviders(<TableInputSelect onChange={jest.fn()} options={nutritionScoreOptions} />);
+    renderWithProviders(
+      <TableInputSelect onChange={jest.fn()} options={nutritionScoreOptions} attribute={getTableAttribute()} />
+    );
 
     await act(async () => {
       fireEvent.click(screen.getByTitle('pim_common.open'));
@@ -76,7 +93,9 @@ describe('TableInputSelect', () => {
 
   it('should updates the value', async () => {
     const handleChange = jest.fn();
-    renderWithProviders(<TableInputSelect onChange={handleChange} options={nutritionScoreOptions} />);
+    renderWithProviders(
+      <TableInputSelect onChange={handleChange} options={nutritionScoreOptions} attribute={getTableAttribute()} />
+    );
 
     await act(async () => {
       fireEvent.click(screen.getByTitle('pim_common.open'));
@@ -88,7 +107,9 @@ describe('TableInputSelect', () => {
   });
 
   it('should search in the options', async () => {
-    renderWithProviders(<TableInputSelect onChange={jest.fn()} options={nutritionScoreOptions} />);
+    renderWithProviders(
+      <TableInputSelect onChange={jest.fn()} options={nutritionScoreOptions} attribute={getTableAttribute()} />
+    );
 
     await act(async () => {
       fireEvent.click(screen.getByTitle('pim_common.open'));
@@ -98,5 +119,15 @@ describe('TableInputSelect', () => {
 
     expect(screen.queryByText('U')).toBeInTheDocument();
     expect(screen.queryByText('A')).not.toBeInTheDocument();
+  });
+
+  it('should display a link when there is no options', async () => {
+    renderWithProviders(<TableInputSelect onChange={jest.fn()} options={[]} attribute={getTableAttribute()} />);
+
+    await act(async () => {
+      fireEvent.click(screen.getByTitle('pim_common.open'));
+      expect(await screen.findByText('pim_table_attribute.form.product.no_add_options_link')).toBeInTheDocument();
+      fireEvent.click(screen.getByText('pim_table_attribute.form.product.no_add_options_link'));
+    });
   });
 });

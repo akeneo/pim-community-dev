@@ -1,8 +1,16 @@
 import React, {useState} from 'react';
-import {Dropdown, TableInput, AddingValueIllustration} from 'akeneo-design-system';
+import {Dropdown, TableInput, AddingValueIllustration, getFontSize, getColor, Link} from 'akeneo-design-system';
 import {SelectOption, SelectOptionCode} from '../../models/TableConfiguration';
-import {getLabel, LoadingPlaceholderContainer, useTranslate, useUserContext} from '@akeneo-pim-community/shared';
+import {
+  getLabel,
+  LoadingPlaceholderContainer,
+  useTranslate,
+  useUserContext,
+  useSecurity,
+  useRouter,
+} from '@akeneo-pim-community/shared';
 import styled from 'styled-components';
+import {Attribute} from '../../models/Attribute';
 
 const BATCH_SIZE = 20;
 
@@ -12,6 +20,7 @@ type TableInputSelectProps = {
   options?: SelectOption[];
   inError?: boolean;
   highlighted?: boolean;
+  attribute: Attribute;
 };
 
 const FakeInput = styled.div`
@@ -26,19 +35,29 @@ const CenteredHelper = styled.div`
   }
 `;
 
+const CenteredHelperTitle = styled.div`
+  font-size: ${getFontSize('big')};
+  color: ${getColor('grey', 140)};
+`;
+
 const TableInputSelect: React.FC<TableInputSelectProps> = ({
   value,
   onChange,
   options,
   inError = false,
   highlighted = false,
+  attribute,
   ...rest
 }) => {
   const translate = useTranslate();
   const userContext = useUserContext();
+  const security = useSecurity();
+  const router = useRouter();
 
   const [searchValue, setSearchValue] = React.useState<string>('');
   const [numberOfDisplayedItems, setNumberOfDisplayedItems] = useState<number>(BATCH_SIZE);
+
+  const hasEditPermission = security.isGranted('pim_enrich_attribute_edit');
 
   const isLoading = typeof options === 'undefined';
   let option = null;
@@ -75,6 +94,10 @@ const TableInputSelect: React.FC<TableInputSelectProps> = ({
     })
     .slice(0, numberOfDisplayedItems);
 
+  const handleRedirect = () => {
+    router.redirect(router.generate('pim_enrich_attribute_edit', {code: attribute.code}));
+  };
+
   if (isLoading) {
     return (
       <LoadingPlaceholderContainer>
@@ -107,14 +130,31 @@ const TableInputSelect: React.FC<TableInputSelectProps> = ({
       {searchValue === '' && itemsToDisplay.length === 0 && (
         <CenteredHelper>
           <AddingValueIllustration size={100} />
-          Do exactly the same than AddRowsButton (with permission toussa toussa)
+          <CenteredHelperTitle>
+            {translate('pim_table_attribute.form.product.no_add_options_title')}
+          </CenteredHelperTitle>
+          {hasEditPermission ? (
+            <div>
+              {translate('pim_table_attribute.form.product.no_add_options', {
+                attributeLabel: getLabel(attribute.labels, userContext.get('catalogLocale'), attribute.code),
+              })}{' '}
+              <Link onClick={handleRedirect}>{translate('pim_table_attribute.form.product.no_add_options_link')}</Link>
+            </div>
+          ) : (
+            translate('pim_table_attribute.form.product.no_add_options_unallowed', {
+              attributeLabel: getLabel(attribute.labels, userContext.get('catalogLocale'), attribute.code),
+            })
+          )}
         </CenteredHelper>
       )}
       {searchValue !== '' && itemsToDisplay.length === 0 && (
         <CenteredHelper>
           <AddingValueIllustration size={100} />
-          No options found. // title
-          Please try again // sub title
+          <CenteredHelper>
+            <AddingValueIllustration size={120} />
+            <CenteredHelperTitle>{translate('pim_table_attribute.form.attribute.no_options')}</CenteredHelperTitle>
+            {translate('pim_table_attribute.form.attribute.please_try_again')}
+          </CenteredHelper>
         </CenteredHelper>
       )}
     </TableInput.Select>

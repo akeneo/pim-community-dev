@@ -120,6 +120,6 @@ Akeneo\Pim\Structure\Component\Model\Attribute:
                                         - NotNull:
                                             message: pim_table_configuration.validation.table_configuration.option_label_must_be_a_string
                             missingFieldsMessage: pim_table_configuration.validation.table_configuration.missing_option_field
-                            extraFieldsMessage: pim_table_configuration.validation.table_configuration.unknown_option_field
+                            extraFieldsMessage: pim_table_configuration.validation.table_configuration.unknown_field
               missingFieldsMessage: pim_table_configuration.validation.table_configuration.missing_column
-              extraFieldsMessage: pim_table_configuration.validation.table_configuration.unknown_column_field
+              extraFieldsMessage: pim_table_configuration.validation.table_configuration.unknown_field
