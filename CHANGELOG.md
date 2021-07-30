@@ -67,6 +67,7 @@
 - PIM-9981: Fix permission to download logs of clean removed attribute values job
 - PIM-9980: Prevent root category selection in Rule Engine set categories action 
 - PIM-9942: Fix message on DQI dashboard in French UI locale
+- PIM-9983: Fix optimization of query to get info about projects
 
 ## Improvements
 
