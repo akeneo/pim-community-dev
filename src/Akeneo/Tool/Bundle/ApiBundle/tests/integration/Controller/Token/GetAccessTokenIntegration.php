@@ -8,6 +8,12 @@ use Symfony\Component\HttpFoundation\Response;
 
 class GetAccessTokenIntegration extends ApiTestCase
 {
+    protected function setUp(): void
+    {
+        parent::setUp();
+        static::ensureKernelShutdown();
+    }
+
     public function testGetAccessTokenWithJsonContentType()
     {
         $client = static::createClient();
@@ -366,7 +372,7 @@ JSON;
     /**
      * {@inheritdoc}
      */
-    protected function getConfiguration()
+    protected function getConfiguration(): Configuration
     {
         return $this->catalog->useTechnicalCatalog();
     }

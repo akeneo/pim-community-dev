@@ -6,7 +6,7 @@ namespace AkeneoTest\Pim\Enrichment\EndToEnd\Product\Product\ExternalApi\ListPro
 
 use Akeneo\Test\Integration\Configuration;
 use AkeneoTest\Pim\Enrichment\EndToEnd\Product\Product\ExternalApi\AbstractProductTestCase;
-use Symfony\Bundle\FrameworkBundle\Client;
+use Symfony\Bundle\FrameworkBundle\KernelBrowser;
 use Symfony\Component\HttpFoundation\Response;
 
 class ErrorListProductEndToEnd extends AbstractProductTestCase
@@ -252,12 +252,7 @@ JSON;
         $this->assertJsonStringEqualsJsonString($expected, $client->getResponse()->getContent());
     }
 
-    /**
-     * @param Client $client
-     * @param string $message
-     * @param int    $code
-     */
-    private function assert(Client $client, $message, int $code)
+    private function assert(KernelBrowser $client, $message, int $code)
     {
         $response = $client->getResponse();
 
