@@ -44,7 +44,7 @@ final class Appcues implements ExternalDependencyProviderInterface, ContentSecur
             'style-src'   => ["'self'", "https://*.appcues.com", "https://*.appcues.net", "https://fonts.googleapis.com", "'unsafe-inline'"],
             'script-src'  => ["'self'", "https://*.appcues.com", "https://*.appcues.net", "'unsafe-inline'"],
             'img-src'     => ["'self'", "res.cloudinary.com", "twemoji.maxcdn.com"],
-            'connect-src' => ["https://*.appcues.com", "*.appcues.net", "ws:"],
+            'connect-src' => ["https://*.appcues.com", "https://*.appcues.net", "wss://*.appcues.net", "wss://*.appcues.com"],
             'font-src'    => ["https://fonts.gstatic.com"]
         ];
     }

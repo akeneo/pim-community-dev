@@ -87,6 +87,10 @@
 - PIM-9948: Fix performance issue on product model import
 - PIM-9966: Fix Settings page crashing when coming from the PEF
 - PIM-9973: Fix Asset attribute media type dropdown being hidden
+- PIM-9986: Fix error message returned by the backend not displayed when an error occured while deleting a category
+- PIM-9942: Fix message on DQI dashboard in French UI locale
+- PIM-9947: Display validation errors message in the UI when `compute_family_variant_structure_changes` job fails
+- PIM-9987: Fix product grid count not accurate after specific SKU selection
 
 ## New features
 
@@ -96,6 +100,7 @@
 ## Improvements
 
 - PIM-9716: Autoselect last element of pasted list in choice filter
+- PIM-9985: Improve channels sentence display in the settings menu
 
 # Technical Improvements
 

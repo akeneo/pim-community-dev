@@ -154,6 +154,9 @@ const MicroFrontendDependenciesProvider = ({
           on: (_event: string, _callback: () => void) => {},
           off: (_event: string, _callback: () => void) => {},
         },
+        featureFlags: {
+          isEnabled: () => false,
+        },
       }}
     >
       <Notifications notifications={notifications} onNotificationClosed={handleNotificationClose} />
