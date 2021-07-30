@@ -5,7 +5,7 @@ declare(strict_types=1);
 /*
  * This file is part of the Akeneo PIM Enterprise Edition.
  *
- * (c) 2019 Akeneo SAS (http://www.akeneo.com)
+ * (c) 2021 Akeneo SAS (https://www.akeneo.com)
  *
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
@@ -17,10 +17,6 @@ use Akeneo\AssetManager\Infrastructure\Filesystem\Storage;
 use Doctrine\DBAL\Connection;
 use Webmozart\Assert\Assert;
 
-/**
- * @author Pierre Jolly <pierre.jolly@akeneo.com>
- * @copyright 2021 Akeneo SAS (http://www.akeneo.com)
- */
 final class SqlGetMainMediaFileInfoCollection implements GetMainMediaFileInfoCollectionInterface
 {
     private Connection $connection;
