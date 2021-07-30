@@ -48,7 +48,7 @@ jest.mock('./hooks/useAvailableSourcesFetcher', () => ({
   }),
 }));
 
-test('It open the source panel related to the column selected', async () => {
+test('It opens the source panel related to the column selected', async () => {
   const columnsConfiguration: ColumnConfiguration[] = [
     {
       uuid: 'fbf9cff9-e95c-4e7d-983b-2947c7df90df',
@@ -84,7 +84,7 @@ test('It open the source panel related to the column selected', async () => {
   ).toBeInTheDocument();
 });
 
-test('It create a column when user enter a text in last input', async () => {
+test('It creates a column when user enter a text in last input', async () => {
   const columnsConfiguration: ColumnConfiguration[] = [
     {
       uuid: 'fbf9cff9-e95c-4e7d-983b-2947c7df90df',
@@ -107,10 +107,12 @@ test('It create a column when user enter a text in last input', async () => {
     />
   );
 
-  const lastInput = screen.getAllByPlaceholderText(
-    'akeneo.tailored_export.column_list.column_row.target_placeholder'
-  )[1];
-  userEvent.type(lastInput, 't');
+  act(() => {
+    const lastInput = screen.getAllByPlaceholderText(
+      'akeneo.tailored_export.column_list.column_row.target_placeholder'
+    )[1];
+    userEvent.type(lastInput, 't');
+  });
 
   expect(handleColumnsConfigurationChange).toHaveBeenCalledWith([
     {
@@ -134,7 +136,7 @@ test('It create a column when user enter a text in last input', async () => {
   ]);
 });
 
-test('It update column when user change value input', async () => {
+test('It updates column when user change value input', async () => {
   const columnsConfiguration: ColumnConfiguration[] = [
     {
       uuid: 'fbf9cff9-e95c-4e7d-983b-2947c7df90df',
@@ -161,8 +163,8 @@ test('It update column when user change value input', async () => {
     'akeneo.tailored_export.column_list.column_row.target_placeholder'
   )[0];
 
-  await act(async () => {
-    await fireEvent.change(firstInput, {target: {value: 'my new column name'}});
+  act(() => {
+    fireEvent.change(firstInput, {target: {value: 'my new column name'}});
   });
 
   expect(handleColumnsConfigurationChange).toHaveBeenCalledWith([
@@ -178,7 +180,7 @@ test('It update column when user change value input', async () => {
   ]);
 });
 
-test('It delete column when user click on delete button', async () => {
+test('It deletes column when user click on delete button', async () => {
   const columnsConfiguration: ColumnConfiguration[] = [
     {
       uuid: 'fbf9cff9-e95c-4e7d-983b-2947c7df90df',
@@ -207,7 +209,7 @@ test('It delete column when user click on delete button', async () => {
   expect(handleColumnsConfigurationChange).toHaveBeenCalledWith([]);
 });
 
-test('It add source when user click on add source', async () => {
+test('It adds source when user click on add source', async () => {
   const columnsConfiguration: ColumnConfiguration[] = [
     {
       uuid: 'fbf9cff9-e95c-4e7d-983b-2947c7df90df',

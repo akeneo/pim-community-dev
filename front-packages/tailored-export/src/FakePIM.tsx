@@ -1,4 +1,4 @@
-import React, {useEffect, useState} from 'react';
+import React, {useCallback, useEffect, useState} from 'react';
 import styled from 'styled-components';
 import {
   AkeneoIcon,
@@ -11,7 +11,7 @@ import {
   TabBar,
   useTabBar,
 } from 'akeneo-design-system';
-import {CategoryFilter, CategoryFilterType, ColumnsTab, CompletenessFilter} from './feature';
+import {CategoryFilter, CategoryFilterType, ColumnsTab, CompletenessFilter, CompletenessFilterType} from './feature';
 import {
   filterErrors,
   NotificationLevel,
@@ -21,7 +21,7 @@ import {
   ValidationError,
 } from '@akeneo-pim-community/shared';
 import {ColumnConfiguration} from './feature/models/ColumnConfiguration';
-import {QualityScoreFilter} from './feature/components/QualityScoreFilter/QualityScoreFilter';
+import {QualityScoreFilter, QualityScoreFilterType} from './feature/components/QualityScoreFilter/QualityScoreFilter';
 
 const JOB_CODE = 'mmm';
 
@@ -72,16 +72,13 @@ const SaveButton = styled(Button)`
   right: 40px;
 `;
 
+type Filter = CompletenessFilterType | QualityScoreFilterType | CategoryFilterType;
+
 type JobConfiguration = {
   code: string;
   configuration: {
     filters: {
-      data: {
-        field: string;
-        value: string[];
-        operator: string;
-        context: any;
-      }[];
+      data: Filter[];
     };
     columns: ColumnConfiguration[];
   };
@@ -89,20 +86,21 @@ type JobConfiguration = {
 
 const FakePIM = () => {
   const [jobConfiguration, setJobConfiguration] = useState<JobConfiguration | null>(null);
+  const [initialColumnConfiguration, setInitialColumnConfiguration] = useState<ColumnConfiguration[] | null>(null);
   const [validationErrors, setValidationErrors] = useState<ValidationError[]>([]);
   const [isCurrent, switchTo] = useTabBar('columns');
   const route = useRoute('pim_enrich_job_instance_rest_export_get', {identifier: JOB_CODE});
   const saveRoute = useRoute('pim_enrich_job_instance_rest_export_put', {identifier: JOB_CODE});
   const notify = useNotify();
   const translate = useTranslate();
-  const handleColumnConfigurationChange = (columnConfiguration: ColumnConfiguration[]) => {
-    if (null !== jobConfiguration) {
-      setJobConfiguration(jobConfiguration => ({
-        ...jobConfiguration,
-        configuration: {...jobConfiguration.configuration, columns: columnConfiguration},
-      }));
-    }
-  };
+
+  const handleColumnConfigurationChange = useCallback((columnConfiguration: ColumnConfiguration[]) => {
+    setJobConfiguration(jobConfiguration => ({
+      ...jobConfiguration,
+      configuration: {...jobConfiguration.configuration, columns: columnConfiguration},
+    }));
+  }, []);
+
   const handleCategoryChange = (updatedFilter: CategoryFilterType) => {
     if (jobConfiguration === null) return;
 
@@ -118,7 +116,7 @@ const FakePIM = () => {
     });
   };
 
-  const handleCompletenessFilterChange = updatedFilter => {
+  const handleCompletenessFilterChange = (updatedFilter: CompletenessFilterType) => {
     const updatedFilters = jobConfiguration.configuration.filters.data.map(filter => {
       if (filter.field !== 'completeness') return filter;
 
@@ -130,7 +128,7 @@ const FakePIM = () => {
       configuration: {...jobConfiguration.configuration, filters: {data: updatedFilters}},
     });
   };
-  const handleQualityScoreFilterChange = updatedFilter => {
+  const handleQualityScoreFilterChange = (updatedFilter: QualityScoreFilterType) => {
     const updatedFilters = jobConfiguration.configuration.filters.data.map(filter => {
       if (filter.field !== 'quality_score_multi_locales') return filter;
 
@@ -174,23 +172,25 @@ const FakePIM = () => {
       const jobConfiguration = await response.json();
 
       setJobConfiguration(jobConfiguration);
+      setInitialColumnConfiguration(jobConfiguration.configuration.columns);
     };
 
     fetchJobConfiguration();
   }, [route]);
 
-  if (jobConfiguration === null) return null;
+  if (null === jobConfiguration || null === initialColumnConfiguration) return null;
+
   const categoryFilter = jobConfiguration.configuration.filters.data.find(filter => {
     return filter.field === 'categories';
-  });
+  }) as CategoryFilterType;
 
   const completenessFilter = jobConfiguration.configuration.filters.data.find(filter => {
     return filter.field === 'completeness';
-  });
+  }) as CompletenessFilterType;
 
   const qualityScoreFilter = jobConfiguration.configuration.filters.data.find(filter => {
     return filter.field === 'quality_score_multi_locales';
-  });
+  }) as QualityScoreFilterType;
 
   const categorySelection = categoryFilter ? categoryFilter['value'] : [];
 
@@ -225,7 +225,7 @@ const FakePIM = () => {
         {isCurrent('columns') && (
           <ColumnsTab
             validationErrors={validationErrors}
-            columnsConfiguration={jobConfiguration.configuration.columns}
+            columnsConfiguration={initialColumnConfiguration}
             onColumnsConfigurationChange={handleColumnConfigurationChange}
           />
         )}

@@ -36,6 +36,7 @@ test('it renders a placeholder when no column is selected', async () => {
       onColumnCreated={jest.fn}
       onColumnsCreated={jest.fn}
       onColumnRemoved={jest.fn}
+      onFocusNext={jest.fn()}
       onColumnSelected={jest.fn}
       selectedColumn={null}
     />
@@ -76,6 +77,7 @@ test('it can remove a column', async () => {
       onColumnsCreated={jest.fn}
       onColumnRemoved={handleRemove}
       onColumnSelected={jest.fn}
+      onFocusNext={jest.fn()}
       selectedColumn={null}
     />
   );
@@ -109,6 +111,7 @@ test('it can create a new column', async () => {
       onColumnCreated={handleCreate}
       onColumnsCreated={handleCreate}
       onColumnRemoved={jest.fn}
+      onFocusNext={jest.fn()}
       onColumnSelected={jest.fn}
       selectedColumn={null}
     />
@@ -145,6 +148,7 @@ test('it can handle paste events', async () => {
       onColumnCreated={handleCreate}
       onColumnsCreated={handleCreate}
       onColumnRemoved={jest.fn}
+      onFocusNext={jest.fn()}
       onColumnSelected={jest.fn}
       selectedColumn={null}
     />
@@ -189,6 +193,7 @@ test('it can update a column', async () => {
       onColumnCreated={jest.fn}
       onColumnsCreated={jest.fn}
       onColumnRemoved={jest.fn}
+      onFocusNext={jest.fn()}
       onColumnSelected={jest.fn}
       selectedColumn={null}
     />
@@ -254,6 +259,7 @@ test('it displays validation errors', async () => {
         onColumnCreated={jest.fn}
         onColumnsCreated={jest.fn}
         onColumnRemoved={jest.fn}
+        onFocusNext={jest.fn()}
         onColumnSelected={jest.fn}
         selectedColumn={null}
       />
@@ -267,7 +273,7 @@ test('it displays validation errors', async () => {
   expect(globalError).toBeInTheDocument();
 });
 
-test('it move to next line when user type enter', async () => {
+test('it moves to next line when user type enter', async () => {
   const columnsConfiguration: ColumnConfiguration[] = [
     {
       uuid: '1',
@@ -290,6 +296,7 @@ test('it move to next line when user type enter', async () => {
   ];
 
   const handleColumnSelected = jest.fn();
+  const handleFocusNext = jest.fn();
 
   await renderWithProviders(
     <ColumnList
@@ -299,6 +306,7 @@ test('it move to next line when user type enter', async () => {
       onColumnCreated={jest.fn}
       onColumnsCreated={jest.fn}
       onColumnRemoved={jest.fn}
+      onFocusNext={handleFocusNext}
       onColumnSelected={handleColumnSelected}
       selectedColumn={null}
     />
@@ -307,7 +315,8 @@ test('it move to next line when user type enter', async () => {
   const firstInput = screen.getByDisplayValue('my column');
   userEvent.type(firstInput, '{enter}');
 
-  expect(handleColumnSelected).toHaveBeenCalledWith('2');
+  expect(handleColumnSelected).toHaveBeenCalledWith('1');
+  expect(handleFocusNext).toHaveBeenCalled();
 });
 
 test('it focus the selected column', async () => {
@@ -340,6 +349,7 @@ test('it focus the selected column', async () => {
       onColumnCreated={jest.fn}
       onColumnsCreated={jest.fn}
       onColumnRemoved={jest.fn}
+      onFocusNext={jest.fn()}
       onColumnSelected={jest.fn}
       selectedColumn={columnsConfiguration[0]}
     />
@@ -419,6 +429,7 @@ test('it displays the sources labels on the row', async () => {
       onColumnCreated={jest.fn}
       onColumnsCreated={jest.fn}
       onColumnRemoved={jest.fn}
+      onFocusNext={jest.fn()}
       onColumnSelected={jest.fn}
       selectedColumn={columnsConfiguration[0]}
     />

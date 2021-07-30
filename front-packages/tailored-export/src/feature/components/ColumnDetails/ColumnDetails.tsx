@@ -144,9 +144,9 @@ const ColumnDetails = ({columnConfiguration, onColumnChange}: ColumnDetailsProps
               onSourceChange={handleSourceChange}
             />
           )}
+          {columnConfiguration.sources.length === 0 && <NoSourcePlaceholder />}
         </ConfiguratorContainer>
         {currentSource && <SourceFooter source={currentSource} onSourceRemove={handleSourceRemove} />}
-        {columnConfiguration.sources.length === 0 && <NoSourcePlaceholder />}
       </Content>
     </Container>
   );

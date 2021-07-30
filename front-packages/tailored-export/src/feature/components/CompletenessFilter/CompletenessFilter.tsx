@@ -23,7 +23,7 @@ const Container = styled.div`
   width: 100%;
 `;
 
-type Filter = {
+type CompletenessFilterType = {
   field: 'completeness';
   operator: Operator;
   value: number;
@@ -32,10 +32,11 @@ type Filter = {
     scope: ChannelCode;
   };
 };
+
 type CompletenessFilterProps = {
   availableOperators: Operator[];
-  filter: Filter;
-  onChange: (newFilter: Filter) => void;
+  filter: CompletenessFilterType;
+  onChange: (newFilter: CompletenessFilterType) => void;
   validationErrors: ValidationError[];
 };
 
@@ -104,4 +105,4 @@ const CompletenessFilter = ({availableOperators, filter, onChange, validationErr
 };
 
 export {CompletenessFilter};
-export type {Operator};
+export type {Operator, CompletenessFilterType};

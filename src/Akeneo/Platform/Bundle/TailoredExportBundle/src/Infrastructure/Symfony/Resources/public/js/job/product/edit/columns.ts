@@ -7,6 +7,7 @@ import {
   FetcherContext,
   Attribute,
   AssociationType,
+  ColumnConfiguration,
 } from '@akeneo-pim-enterprise/tailored-export';
 import {filterErrors, Channel, ValidationError} from '@akeneo-pim-community/shared';
 import {ThemeProvider} from 'styled-components';
@@ -57,6 +58,11 @@ class ColumnView extends BaseView {
     return this.config.tabCode ? this.config.tabCode : this.code;
   }
 
+  setColumnConfigurationData(columnsConfiguration: ColumnConfiguration[]): void {
+    const formData = this.getFormData();
+    this.setData({...formData, configuration: {...formData.configuration, columns: columnsConfiguration}});
+  }
+
   /**
    * {@inheritdoc}
    */
@@ -65,10 +71,7 @@ class ColumnView extends BaseView {
 
     const props: ColumnsTabProps = {
       columnsConfiguration: formData.configuration.columns,
-      onColumnsConfigurationChange: columnsConfiguration => {
-        this.setData({...formData, configuration: {...formData.configuration, columns: columnsConfiguration}});
-        this.render();
-      },
+      onColumnsConfigurationChange: this.setColumnConfigurationData.bind(this),
       validationErrors: this.validationErrors,
     };
 

@@ -24,7 +24,7 @@ const Container = styled.div`
   width: 100%;
 `;
 
-type Filter = {
+type QualityScoreFilterType = {
   field: 'quality_score_multi_locales';
   operator: Operator | null;
   value: number[];
@@ -33,10 +33,11 @@ type Filter = {
     scope: ChannelCode;
   };
 };
+
 type QualityScoreFilterProps = {
   availableOperators: Operator[];
-  filter: Filter;
-  onChange: (newFilter: Filter) => void;
+  filter: QualityScoreFilterType;
+  onChange: (newFilter: QualityScoreFilterType) => void;
   validationErrors: ValidationError[];
 };
 
@@ -126,3 +127,4 @@ const QualityScoreFilter = ({availableOperators, filter, onChange, validationErr
 };
 
 export {QualityScoreFilter};
+export type {QualityScoreFilterType};
