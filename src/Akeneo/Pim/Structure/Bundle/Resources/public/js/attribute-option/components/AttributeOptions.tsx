@@ -1,7 +1,6 @@
 import React, {useCallback, useEffect, useState} from 'react';
 import {useDispatch} from 'react-redux';
 
-import List from './List';
 import Edit from './Edit';
 import New from './New';
 import {AttributeOption} from '../model';
@@ -21,6 +20,7 @@ import {useAttributeContext} from '../contexts';
 import {NotificationLevel, useNotify, useTranslate} from '@akeneo-pim-community/shared';
 import EmptyAttributeOptionsList from './EmptyAttributeOptionsList';
 import useAttributeOptions from '../hooks/useAttributeOptions';
+import AttributeOptionTable from "./AttributeOptionTable";
 
 const AttributeOptions = () => {
   const attributeOptions = useAttributeOptions();
@@ -144,7 +144,16 @@ const AttributeOptions = () => {
       )}
 
       {(attributeOptions !== null && attributeOptions.length === 0 && !showNewOptionForm) || (
-        <List
+        /*<List
+          selectAttributeOption={selectAttributeOption}
+          selectedOptionId={selectedOption ? selectedOption.id : null}
+          isNewOptionFormDisplayed={showNewOptionForm}
+          showNewOptionForm={setShowNewOptionForm}
+          deleteAttributeOption={deleteAttributeOption}
+          manuallySortAttributeOptions={manuallySortAttributeOptions}
+        />*/
+
+        <AttributeOptionTable
           selectAttributeOption={selectAttributeOption}
           selectedOptionId={selectedOption ? selectedOption.id : null}
           isNewOptionFormDisplayed={showNewOptionForm}
