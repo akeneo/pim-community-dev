@@ -109,7 +109,7 @@ class TableValueFactorySpec extends ObjectBehavior
 
         $this->shouldThrow(InvalidPropertyTypeException::validArrayStructureExpected(
             'nutrition',
-            'TODO cell should be a scalar',
+            'The cell value must be a text string, a number or a boolean.',
             TableValueFactory::class,
             [['foo' => ['an array']]]
         ))->during(

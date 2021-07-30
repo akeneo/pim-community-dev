@@ -222,7 +222,7 @@ describe('ManageOptionsModal', () => {
     );
 
     expect(await findCodeInput(1)).toHaveValue('pepper');
-    const searchInput = await screen.findByPlaceholderText('pim_table_attribute.form.attribute.search_placeholder');
+    const searchInput = await screen.findByPlaceholderText('pim_common.search');
     expect(searchInput).toBeInTheDocument();
     fireEvent.change(searchInput, {target: {value: 'pep'}});
     expect(await findCodeInput(1)).toHaveValue('pepper');

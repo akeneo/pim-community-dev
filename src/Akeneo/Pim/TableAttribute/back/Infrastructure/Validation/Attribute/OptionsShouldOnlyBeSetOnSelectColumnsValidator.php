@@ -33,7 +33,7 @@ final class OptionsShouldOnlyBeSetOnSelectColumnsValidator extends ConstraintVal
         }
 
         $this->context->buildViolation(
-            'TODO options cannot be set for a "{{ data_type }}" column data type',
+            'Options cannot be set for a "{{ data_type }}" column type',
             [
                 '{{ data_type }}' => $value['data_type'],
             ]

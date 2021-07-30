@@ -328,7 +328,7 @@ const ManageOptionsModal: React.FC<ManageOptionsModalProps> = ({
               <ManageOptionsSearch
                 searchValue={searchValue}
                 onSearchChange={handleSearchChange}
-                placeholder={translate('pim_table_attribute.form.attribute.search_placeholder')}
+                placeholder={translate('pim_common.search')}
               />
               <LocaleSwitcher
                 localeCode={currentLocaleCode}
@@ -403,13 +403,14 @@ const ManageOptionsModal: React.FC<ManageOptionsModalProps> = ({
                   {filteredOptions.length === 0 && searchValue !== '' && (
                     <CenteredHelper>
                       <AddingValueIllustration size={120} />
-                      TODO Sorry, there are no options for your search!
+                      Sorry, there are no options for your search!
+                      MEtttre comme l'autre
                     </CenteredHelper>
                   )}
                   {filteredOptions.length === 0 && searchValue === '' && (
                     <CenteredHelper>
                       <AddingValueIllustration size={120} />
-                      TODO Please add options
+                      {translate('pim_table_attribute.form.attribute.no_options_helper')}
                     </CenteredHelper>
                   )}
                 </TableContainer>

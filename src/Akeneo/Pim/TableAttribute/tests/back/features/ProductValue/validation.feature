@@ -57,4 +57,4 @@ Feature: Enrich a table attribute value
     When a product is created with values:
       | attribute | json_data                                                                       |
       | nutrition | [{"ingredient": "butter", "quantity": 1, "isAllergen":true, "comments": "foo"}] |
-    Then the error "TODO butter is not a valid option" is raised
+    Then the error "Make sure you only use existing option codes, current value: \"butter\"" is raised

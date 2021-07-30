@@ -17,4 +17,4 @@ Feature: Update a table attribute
 
   Scenario: Cannot update a table attribute when the first column code changes
     When I change a table attribute updating the first column code
-    Then There is a violation with message: TODO do not change first column
+    Then There is a violation with message: The code of your first column cannot be changed.

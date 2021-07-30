@@ -88,7 +88,7 @@ class CreateTableValueEndToEnd extends ApiTestCase
         $response = $client->getResponse();
         Assert::assertSame(Response::HTTP_UNPROCESSABLE_ENTITY, $response->getStatusCode());
         Assert::assertStringContainsString(
-            'Property "nutrition" expects an array with valid data, TODO cell should be a scalar.',
+            'Property "nutrition" expects an array with valid data, The cell value must be a text string, a number or a boolean..',
             \json_decode($response->getContent(), true)['message']
         );
     }

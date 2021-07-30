@@ -164,6 +164,7 @@ const AddRowsButton: React.FC<AddRowsButtonProps> = ({attribute, columnCode, che
               <CenteredHelper>
                 <AddingValueIllustration size={100} />
                 No options. Change search TODO
+                Comme lautre
               </CenteredHelper>
             )}
           </Dropdown.ItemCollection>

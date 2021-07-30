@@ -27,26 +27,26 @@ Feature: Enrich a table attribute value
       | attribute   | json_data                                                                  |
       | nutrition   | [{"ingredient": "sugar", "quantity": 5, "description": "the description"}] |
     Then 1 violation is raised
-    And the violation 'TODO This value should be 10 or more.' is raised at path 'values[nutrition-<all_channels>-<all_locales>][0].quantity'
+    And the violation 'This value should be 10 or more.' is raised at path 'values[nutrition-<all_channels>-<all_locales>][0].quantity'
 
   Scenario: Providing a table with number greater than 100 raises an violation
     When a product is created with values:
       | attribute   | json_data                                                                    |
       | nutrition   | [{"ingredient": "sugar", "quantity": 101, "description": "the description"}] |
     Then 1 violation is raised
-    And the violation 'TODO This value should be 100 or less.' is raised at path 'values[nutrition-<all_channels>-<all_locales>][0].quantity'
+    And the violation 'This value should be 100 or less.' is raised at path 'values[nutrition-<all_channels>-<all_locales>][0].quantity'
 
   Scenario: Providing a table with number with decimal raises an violation
     When a product is created with values:
       | attribute   | json_data                                                                                                                   |
       | nutrition   | [{"ingredient": "sugar", "quantity": 50.5, "description": "the description"}, {"ingredient": "salt", "quantity": "30.14"}] |
     Then 2 violations are raised
-    And the violation 'TODO This value should not allow decimal.' is raised at path 'values[nutrition-<all_channels>-<all_locales>][0].quantity'
-    And the violation 'TODO This value should not allow decimal.' is raised at path 'values[nutrition-<all_channels>-<all_locales>][1].quantity'
+    And the violation 'The required value is an integer' is raised at path 'values[nutrition-<all_channels>-<all_locales>][0].quantity'
+    And the violation 'The required value is an integer' is raised at path 'values[nutrition-<all_channels>-<all_locales>][1].quantity'
 
   Scenario: Providing a table with text longer than 15 raises an violation
     When a product is created with values:
       | attribute   | json_data                                                                             |
       | nutrition   | [{"ingredient": "sugar", "quantity": 10, "description": "the very long description"}] |
     Then 1 violation is raised
-    And the violation 'TODO This value should contain 15 characters or less.' is raised at path 'values[nutrition-<all_channels>-<all_locales>][0].description'
+    And the violation 'This value should contain 15 characters or less.' is raised at path 'values[nutrition-<all_channels>-<all_locales>][0].description'

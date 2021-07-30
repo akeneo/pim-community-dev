@@ -53,7 +53,7 @@ class TableValueFactory implements ValueFactory
                 if (!is_scalar($cell)) {
                     throw InvalidPropertyTypeException::validArrayStructureExpected(
                         $attribute->code(),
-                        'TODO cell should be a scalar',
+                        'The cell value must be a text string, a number or a boolean.',
                         static::class,
                         $data
                     );

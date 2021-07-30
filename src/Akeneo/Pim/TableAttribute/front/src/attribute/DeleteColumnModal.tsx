@@ -27,10 +27,10 @@ const DeleteColumnModal: React.FC<DeleteColumnModalProps> = ({close, onDelete, c
       <Modal.Title>{translate('pim_common.confirm_deletion')}</Modal.Title>
       <FieldsList>
         <div>{translate('pim_table_attribute.form.attribute.confirm_column_delete')}</div>
-        <Helper level='info'>
-          Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore
-          magna aliqua.
-        </Helper>
+        <Helper level='info'>{translate(
+          'pim_table_attribute.form.attribute.delete_column_helper',
+          { attributeLabel: "TODO" }
+        )}</Helper>
         <Field
           label={translate('pim_table_attribute.form.attribute.please_type', {
             text: columnDefinitionCode,

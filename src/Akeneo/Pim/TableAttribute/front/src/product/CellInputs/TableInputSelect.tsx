@@ -107,13 +107,14 @@ const TableInputSelect: React.FC<TableInputSelectProps> = ({
       {searchValue === '' && itemsToDisplay.length === 0 && (
         <CenteredHelper>
           <AddingValueIllustration size={100} />
-          No options. Add options ! TODO
+          Do exactly the same than AddRowsButton (with permission toussa toussa)
         </CenteredHelper>
       )}
       {searchValue !== '' && itemsToDisplay.length === 0 && (
         <CenteredHelper>
           <AddingValueIllustration size={100} />
-          No options. Change search TODO
+          No options found. // title
+          Please try again // sub title
         </CenteredHelper>
       )}
     </TableInput.Select>

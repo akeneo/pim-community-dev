@@ -74,19 +74,19 @@ Feature: Create a table attribute
 
   Scenario: Cannot create a table configuration having invalid max length validation value type
     When I create a table attribute with a configuration '{"data_type": "text", "code": "quantity", "validations": { "max_length": "foo bar"}}'
-    Then There is a violation with message: TODO integer
+    Then There is a violation with message: The required value is an integer
 
   Scenario: Cannot create a table configuration having invalid negative max_length
     When I create a table attribute with a configuration '{"data_type": "text", "code": "quantity", "validations": { "max_length": -8000}}'
-    Then There is a violation with message: TODO positive int
+    Then There is a violation with message: The required value is a positive integer
 
   Scenario: Cannot create a table configuration having invalid min validation value type
     When I create a table attribute with a configuration '{"data_type": "number", "code": "quantity", "validations": { "min": "foo bar"}}'
-    Then There is a violation with message: TODO numeric
+    Then There is a violation with message: The required value is a number
 
   Scenario: Cannot create a table configuration having invalid max validation value type
     When I create a table attribute with a configuration '{"data_type": "number", "code": "quantity", "validations": { "max": "foo bar"}}'
-    Then There is a violation with message: TODO numeric
+    Then There is a violation with message: The required value is a number
 
   Scenario: Cannot create a non table attribute with a table configuration
     When I create a text attribute with a table configuration
@@ -94,15 +94,15 @@ Feature: Create a table attribute
 
   Scenario: Cannot create a table attribute when the first column is not select
     When I create a table attribute with text first column
-    Then There is a violation with message: TODO The first column should be select, "text" given
+    Then There is a violation with message: The first column type should always be "select", current type: "text"
 
   Scenario: Cannot create a table configuration having invalid decimals allowed value type
     When I create a table attribute with a configuration '{"data_type": "text", "code": "quantity", "validations": { "decimals_allowed": "error"}}'
-    Then There is a violation with message: TODO bool
+    Then There is a violation with message: The required value is a boolean
 
   Scenario: Cannot create a table configuration with min validation greater than max validation
     When I create a table attribute with a configuration '{"data_type": "text", "code": "quantity", "validations": { "min": 10, "max": 5}}'
-    Then There is a violation with message: TODO max should be greater than min
+    Then There is a violation with message: The maximum value should be greater than the minimum value.
 
   Scenario: Cannot create a table configuration with invalid validations on a text column
     When I create a table attribute with a configuration '{"data_type": "text", "code": "quantity", "validations": { "min": 10, "max": 20, "decimals_allowed": true }}'
@@ -110,19 +110,19 @@ Feature: Create a table attribute
 
   Scenario: Cannot create a table configuration with a min or max validation greater than 100
     When I create a table attribute with a configuration '{"data_type": "text", "code": "quantity", "validations": { "max_length": 200 }}'
-    Then There is a violation with message: TODO max_length should be less than or equal to 100 (given: 200)
+    Then There is a violation with message: The Max_length value should be less than or equal to 100 (current value: 200)
 
   Scenario: Cannot create a table configuration if options is not an array
     When I create a table attribute with a configuration '{"data_type": "select", "code": "ingredient", "options": "test"}'
-    Then There is a violation with message: TODO options should be an array
+    Then There is a violation with message: The Options field requires an array containing only key value objects
 
   Scenario: Cannot create a table configuration with an invalid option type
     When I create a table attribute with a configuration '{"data_type": "select", "code": "ingredient", "options": ["test"]}'
-    Then There is a violation with message: TODO each option should be an array
+    Then There is a violation with message: The Options field requires an array containing only key value objects
 
   Scenario: Cannot create a table configuration with an option without code
     When I create a table attribute with a configuration '{"data_type": "select", "code": "ingredient", "options": [{"labels": []}]}'
-    Then There is a violation with message: TODO The "code" must be filled
+    Then There is a violation with message: The "code" is required
 
   Scenario: Cannot create a table configuration with an option with an invalid code type
     When I create a table attribute with a configuration '{"data_type": "select", "code": "ingredient", "options": [{"code": false}]}'
@@ -150,11 +150,11 @@ Feature: Create a table attribute
 
   Scenario: Cannot create a table configuration with options for a non select column
     When I create a table attribute with a configuration '{"data_type": "text", "code": "ingredient", "options": [{"code": "sugar", "labels": {"en_US": "Sugar"}}]}'
-    Then There is a violation with message: TODO options cannot be set for a "text" column data type
+    Then There is a violation with message: Options cannot be set for a "text" column type
 
   Scenario: Cannot create a table configuration with an unknown column field
     When I create a table attribute with a configuration '{"data_type": "select", "code": "ingredient", "toto": "titi"}'
-    Then There is a violation with message: TODO the "toto" field was not expected
+    Then There is a violation with message: Make sure you use only expected fields, current field: "toto"
 
   Scenario: Cannot create a table configuration with too many options
     When I create a table attribute with too much options

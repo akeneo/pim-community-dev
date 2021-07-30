@@ -45,7 +45,7 @@ final class ValidationShouldMatchColumnTypeValidator extends ConstraintValidator
         $validationKeys = \array_keys($value['validations']);
         if ([] === self::VALIDATION_MAPPING[$columnType]) {
             $this->context->buildViolation(
-                'TODO wrong no validation allowed {{ given }}',
+                'wrong no validation allowed {{ given }}', // Do not use Validations on a "{{ columnType }}" column, current column type: {{ given }}.
                 [
                     '{{ given }}' => \implode(', ', $validationKeys),
                 ]
@@ -57,7 +57,7 @@ final class ValidationShouldMatchColumnTypeValidator extends ConstraintValidator
         $invalidValidationKeys = \array_diff($validationKeys, self::VALIDATION_MAPPING[$columnType]);
         if ([] !== $invalidValidationKeys) {
             $this->context->buildViolation(
-                'TODO wrong validation type {{ expected }} {{ given }}',
+                'wrong validation type {{ expected }} {{ given }}', // The {{ given }} Validations does not work on a "{{ columnType }}" column, allowed: {{ expected }}
                 [
                     '{{ expected }}' => \implode(', ', self::VALIDATION_MAPPING[$columnType]),
                     '{{ given }}' => \implode(', ', $invalidValidationKeys),

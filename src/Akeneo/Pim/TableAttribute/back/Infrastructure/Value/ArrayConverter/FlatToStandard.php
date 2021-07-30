@@ -34,8 +34,7 @@ final class FlatToStandard implements ValueConverterInterface
             try {
                 $data = \json_decode($value, true, 512, JSON_THROW_ON_ERROR);
             } catch (\JsonException $e) {
-                //TODO: improve error message
-                throw new DataArrayConversionException('invalid json');
+                throw new DataArrayConversionException('Invalid json');
             }
         }
 

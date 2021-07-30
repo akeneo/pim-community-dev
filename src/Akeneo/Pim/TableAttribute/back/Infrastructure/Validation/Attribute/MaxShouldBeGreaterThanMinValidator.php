@@ -26,7 +26,7 @@ final class MaxShouldBeGreaterThanMinValidator extends ConstraintValidator
             return;
         }
         if (\is_int($value['min'] ?? null) && \is_int($value['max'] ?? null) && $value['min'] > $value['max']) {
-            $this->context->buildViolation('TODO max should be greater than min', [])->addViolation();
+            $this->context->buildViolation('The maximum value should be greater than the minimum value.', [])->addViolation();
         }
     }
 }

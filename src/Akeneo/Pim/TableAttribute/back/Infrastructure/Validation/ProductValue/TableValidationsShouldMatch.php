@@ -17,10 +17,10 @@ use Symfony\Component\Validator\Constraint;
 
 final class TableValidationsShouldMatch extends Constraint
 {
-    public const MIN_MESSAGE = 'TODO This value should be {{ limit }} or more.';
-    public const MAX_MESSAGE = 'TODO This value should be {{ limit }} or less.';
-    public const DECIMALS_ALLOWED_MESSAGE = 'TODO This value should not allow decimal.';
-    public const MAX_LENGTH_MESSAGE = 'TODO This value should contain {{ limit }} characters or less.';
+    public const MIN_MESSAGE = 'This value should be {{ limit }} or more.';
+    public const MAX_MESSAGE = 'This value should be {{ limit }} or less.';
+    public const DECIMALS_ALLOWED_MESSAGE = 'The required value is an integer';
+    public const MAX_LENGTH_MESSAGE = 'This value should contain {{ limit }} characters or less.';
 
     /**
      * {@inheritDoc}

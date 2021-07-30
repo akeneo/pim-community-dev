@@ -17,5 +17,5 @@ use Symfony\Component\Validator\Constraint;
 
 final class NotDecimal extends Constraint
 {
-    public string $message = 'TODO This value should not be decimal: {{ invalid_value }}';
+    public string $message = 'This value should be an integer: {{ invalid_value }}';
 }
