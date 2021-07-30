@@ -615,11 +615,8 @@ jobs:
                     mkdir secret
                     echo "{}" > secret/serviceAccount.json
           - run:
-                name: Start containers
-                command: |
-                    docker load -i php-pim-image.tar
-                    APP_ENV=test C='mysql elasticsearch object-storage pubsub-emulator' make up
-                    docker/wait_docker_up.sh
+                name: Load php pim image
+                command: docker load -i php-pim-image.tar
           - run:
                 name: Load make commands
                 command: cp vendor/akeneo/pim-onboarder/onboarder.mk make-file/onboarder.mk
@@ -645,6 +642,11 @@ jobs:
           - run:
                 name: PHP coupling detector
                 command: PIM_CONTEXT=onboarder make test-coupling-detector
+          - run:
+                name: Start containers
+                command: |
+                    APP_ENV=test C='mysql elasticsearch object-storage pubsub-emulator' make up
+                    docker/wait_docker_up.sh
           - run:
                 name: Execute specifications
                 command: PIM_CONTEXT=onboarder make test-spec
