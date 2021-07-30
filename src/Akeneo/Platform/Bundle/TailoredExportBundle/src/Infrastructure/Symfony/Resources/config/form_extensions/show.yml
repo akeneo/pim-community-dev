@@ -32,6 +32,7 @@ extensions:
         config:
             label: pim_import_export.form.job_instance.button.export.title
             route: pim_enrich_job_instance_rest_export_launch
+            title: akeneo.tailored_export.form.job_instance.launch.title
             identifier:
                 path: code
                 name: code
@@ -43,7 +44,7 @@ extensions:
         position: 100
 
     pim-job-instance-xlsx-tailored-product-export-show-edit:
-        module: akeneotailoredexport/job/product/show/edit-button
+        module: pimee/job/export/edit/edit-button
         parent: pim-job-instance-xlsx-tailored-product-export-show
         targetZone: buttons
         position: 100
@@ -53,6 +54,7 @@ extensions:
             label: pim_common.edit
             route: pim_importexport_export_profile_edit
             buttonClass: AknButton AknButton--action
+            title: akeneo.tailored_export.form.job_instance.edit.title
             identifier:
                 path: code
                 name: code

@@ -22,6 +22,10 @@ akeneo.tailored_export:
           title: Export structure
         filters:
           title: Define your product selection
+      edit:
+        title: To edit, check your permissions with your PIM administrator.
+      launch:
+        title: To export, check your permissions with your PIM administrator.
   column_list:
     title: Columns
     header:

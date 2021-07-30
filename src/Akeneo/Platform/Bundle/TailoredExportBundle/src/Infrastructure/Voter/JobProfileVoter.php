@@ -1,8 +1,18 @@
 <?php
 
-namespace Akeneo\Platform\TailoredExport\Infrastructure\Normalizer\Standard;
+/*
+ * This file is part of the Akeneo PIM Enterprise Edition.
+ *
+ * (c) 2014 Akeneo SAS (http://www.akeneo.com)
+ *
+ * For the full copyright and license information, please view the LICENSE
+ * file that was distributed with this source code.
+ */
+
+namespace Akeneo\Platform\TailoredExport\Infrastructure\Voter;
 
 use Akeneo\Channel\Component\Query\PublicApi\Permission\GetAllViewableLocalesForUserInterface;
+use Akeneo\Pim\Permission\Component\Attributes;
 use Akeneo\Pim\Structure\Component\Query\PublicApi\Association\GetAssociationTypesInterface;
 use Akeneo\Pim\Structure\Component\Query\PublicApi\AttributeType\GetAttributes;
 use Akeneo\Pim\Structure\Component\Query\PublicApi\Permission\GetViewableAttributeCodesForUserInterface;
@@ -11,20 +21,20 @@ use Akeneo\Platform\TailoredExport\Application\Query\Source\AttributeSource;
 use Akeneo\Platform\TailoredExport\Application\Query\Source\SourceInterface;
 use Akeneo\Platform\TailoredExport\Infrastructure\Hydrator\ColumnCollectionHydrator;
 use Akeneo\Tool\Component\Batch\Model\JobInstance;
+use Akeneo\UserManagement\Component\Model\UserInterface;
 use Symfony\Component\Security\Core\Authentication\Token\Storage\TokenStorageInterface;
-use Symfony\Component\Serializer\Normalizer\CacheableSupportsMethodInterface;
-use Symfony\Component\Serializer\Normalizer\NormalizerInterface;
+use Symfony\Component\Security\Core\Authentication\Token\TokenInterface;
+use Symfony\Component\Security\Core\Authorization\Voter\Voter;
+use Symfony\Component\Security\Core\Authorization\Voter\VoterInterface;
 
 /**
- * A normalizer to transform a job instance entity into a array with permission
+ * Job profile voter, allows to know if a job profile can be executed or edited by
+ * a user depending on the attributes and locales in the sources of the job
  *
- * @author    Julien Sanchez <julien@akeneo.com>
- * @copyright 2016 Akeneo SAS (http://www.akeneo.com)
- * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
+ * @author Julien Sanchez <julien@akeneo.com>
  */
-class JobInstanceNormalizer implements NormalizerInterface, CacheableSupportsMethodInterface
+class JobProfileVoter extends Voter implements VoterInterface
 {
-    protected NormalizerInterface $normalizer;
     protected GetAllViewableLocalesForUserInterface $getAllViewableLocales;
     protected GetViewableAttributeCodesForUserInterface $getViewableAttributes;
     private TokenStorageInterface $tokenStorage;
@@ -33,7 +43,6 @@ class JobInstanceNormalizer implements NormalizerInterface, CacheableSupportsMet
     private ColumnCollectionHydrator $columnCollectionHydrator;
 
     /**
-     * @param NormalizerInterface                   $normalizer
      * @param GetAllViewableLocalesForUserInterface $getAllViewableLocales
      * @param GetViewableAttributeCodesForUserInterface $getViewableAttributes
      * @param TokenStorageInterface $tokenStorage
@@ -42,7 +51,6 @@ class JobInstanceNormalizer implements NormalizerInterface, CacheableSupportsMet
      * @param ColumnCollectionHydrator $columnCollectionHydrator
      */
     public function __construct(
-        NormalizerInterface $normalizer,
         GetAllViewableLocalesForUserInterface $getAllViewableLocales,
         GetViewableAttributeCodesForUserInterface $getViewableAttributes,
         TokenStorageInterface $tokenStorage,
@@ -50,7 +58,6 @@ class JobInstanceNormalizer implements NormalizerInterface, CacheableSupportsMet
         GetAssociationTypesInterface $getAssociationTypes,
         ColumnCollectionHydrator $columnCollectionHydrator
     ) {
-        $this->normalizer = $normalizer;
         $this->getAllViewableLocales = $getAllViewableLocales;
         $this->getViewableAttributes = $getViewableAttributes;
         $this->tokenStorage = $tokenStorage;
@@ -61,28 +68,53 @@ class JobInstanceNormalizer implements NormalizerInterface, CacheableSupportsMet
 
     /**
      * {@inheritdoc}
-     *
-     * @param JobInstance $object
      */
-    public function normalize($object, $format = null, array $context = [])
+    public function vote(TokenInterface $token, $object, array $attributes)
     {
-        $normalizedJobInstance = $this->normalizer->normalize($object, $format, $context);
+        $result = VoterInterface::ACCESS_ABSTAIN;
 
-        $normalizedJobInstance['permissions'] = array_merge(
-            $normalizedJobInstance['permissions'] ?? [],
-            [
-                'edit_tailored_export' => $this->canEditTailoredExport($object)
-            ]
-        );
+        if (!$object instanceof JobInstance) {
+            return $result;
+        }
 
-        return $normalizedJobInstance;
+        if ('xlsx_tailored_product_export' !== $object->getJobName()) return;
+
+        foreach ($attributes as $attribute) {
+            if ($this->supports($attribute, $object)) {
+                $result = VoterInterface::ACCESS_DENIED;
+
+                if ($this->voteOnAttribute($attribute, $object, $token)) {
+                    return VoterInterface::ACCESS_GRANTED;
+                }
+            }
+        }
+
+        return $result;
     }
 
-    /** this could be extracted to a dedicated service */
-    private function canEditTailoredExport(JobInstance $jobInstance): bool
+    /**
+     * {@inheritdoc}
+     */
+    protected function supports($attribute, $subject)
     {
-        $userId = $this->getUserId();
-        if (null === $this->getUserId()) {
+        return in_array($attribute, [Attributes::EXECUTE, Attributes::EDIT]) &&
+            $subject instanceof JobInstance && 'xlsx_tailored_product_export' === $subject->getJobName();
+    }
+
+    protected function voteOnAttribute($attribute, $object, TokenInterface $token)
+    {
+        return $this->canEditTailoredExport($object, $token);
+    }
+
+    private function canEditTailoredExport(JobInstance $jobInstance, TokenInterface $token): bool
+    {
+        $user = $token->getUser();
+        if (!$user instanceof UserInterface) {
+            throw new \InvalidArgumentException('Invalid user type');
+        }
+
+        $userId = $user->getId();
+        if (null === $user->getId()) {
             return false;
         }
 
@@ -136,36 +168,5 @@ class JobInstanceNormalizer implements NormalizerInterface, CacheableSupportsMet
         $indexedAssociationTypes = $this->getAssociationTypes->forCodes(array_unique($associationTypeCodes));
 
         return array_filter($indexedAssociationTypes);
-    }
-
-    private function getUserId(): ?int
-    {
-        if ($this->tokenStorage->getToken() && $user = $this->tokenStorage->getToken()->getUser()) {
-            return $user->getId();
-        }
-
-        return null;
-    }
-
-    /**
-     * If we are in EE, we override the normalizer with the wone with permissions
-     */
-    public function setNormalizer(NormalizerInterface $normalizer): void
-    {
-        $this->normalizer = $normalizer;
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    public function supportsNormalization($data, $format = null)
-    {
-        return $this->normalizer->supportsNormalization($data, $format) && 'xlsx_tailored_product_export' ===  $data->getJobName();
-    }
-
-    public function hasCacheableSupportsMethod(): bool
-    {
-        return $this->normalizer instanceof CacheableSupportsMethodInterface
-            && $this->normalizer->hasCacheableSupportsMethod();
     }
 }
