@@ -1401,9 +1401,6 @@ jobs:
               command: |
                   rm -r ./deployments
                   BOTO_CONFIG=/dev/null gsutil -m cp -r gs://akecld-terraform-modules/growth-edition/${LATEST_RELEASE}/terraform/deployments/ .
-                  # To remove after merging
-                  sed -i '/icecat_demo_dev$/d' make-file/deployment.mk
-                  # To remove after merging
           - run:
                 name: Deploy instance with latest release
                 command: |
@@ -1921,24 +1918,6 @@ jobs:
               name: Remove env on kubernetes
               command: make delete
               when: on_fail
-          - run:
-              name: Persist env vars for next jobs
-              command: |
-                echo export TYPE=${TYPE} > persisted_env_vars
-                echo export IMAGE_TAG=${IMAGE_TAG} >> persisted_env_vars
-                echo export IMAGE_TAG_SHORTED=${IMAGE_TAG_SHORTED} >> persisted_env_vars
-                echo export IMAGE_TAG_DATE=${IMAGE_TAG_DATE} >> persisted_env_vars
-                echo export INSTANCE_NAME_PREFIX=${INSTANCE_NAME_PREFIX} >> persisted_env_vars
-                echo export INSTANCE_NAME=${INSTANCE_NAME} >> persisted_env_vars
-                echo export ACTIVATE_MONITORING=${ACTIVATE_MONITORING} >> persisted_env_vars
-                echo export TRIAL_RELEASE_NAME=${TRIAL_RELEASE_NAME} >> persisted_env_vars
-                echo export PRODUCT_REFERENCE_TYPE=${PRODUCT_REFERENCE_TYPE} >> persisted_env_vars
-                echo export PRODUCT_REFERENCE_CODE=${PRODUCT_REFERENCE_CODE} >> persisted_env_vars
-                echo export PIM_CONTEXT=${PIM_CONTEXT} >> persisted_env_vars
-          - persist_to_workspace:
-              root: ~/
-              paths:
-                - project/persisted_env_vars
 
   ##################
   # Cleanup        #
@@ -1961,25 +1940,6 @@ jobs:
                 name: Delete environments
                 command: |
                     make delete_environments_hourly
-          - run:
-                name: Delete tria environments
-                command: |
-                    cd tria && make delete_environments_hourly
-
-  remove_pr_tria:
-    environment:
-        <<: *envVarsDeployDev
-    <<: *dockerCloudDeployerNext
-    steps:
-        - attach_workspace:
-              at: ~/
-        - set_gcloud_config_dev
-        - restore_persisted_env_vars
-        - run:
-              name: Delete environments
-              command: |
-                  make create-ci-release-files
-                  make delete
 
 workflows:
   pull_request:
@@ -2083,13 +2043,6 @@ workflows:
           - deploy_pr_tria_environment:
                 requires:
                     - deploy_pr_tria_environment?
-          - remove_pr_tria?:
-                type: approval
-                requires:
-                    - deploy_pr_tria_environment
-          - remove_pr_tria:
-                requires:
-                    - remove_pr_tria?
           - build_srnt_dev:
                 requires:
                     - checkout

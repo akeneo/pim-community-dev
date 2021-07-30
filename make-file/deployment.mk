@@ -391,7 +391,7 @@ delete_environments_hourly:
 
 .PHONY: clone_serenity
 clone_serenity:
-	PRODUCT_REFERENCE_TYPE=serenity_instance_clone INSTANCE_NAME=${INSTANCE_NAME} IMAGE_TAG=$(IMAGE_TAG) INSTANCE_NAME_PREFIX=pimci-duplic PIM_CONTEXT=deployment make create-ci-release-files && \
+	PRODUCT_REFERENCE_TYPE=serenity_instance MAIN_TF_TEMPLATE=serenity_instance INSTANCE_NAME=${INSTANCE_NAME} IMAGE_TAG=$(IMAGE_TAG) INSTANCE_NAME_PREFIX=pimci-duplic PIM_CONTEXT=deployment make create-ci-release-files && \
 	ENV_NAME=dev SOURCE_PFID=$(SOURCE_PFID) INSTANCE_NAME=$(INSTANCE_NAME) bash $(PWD)/deployments/bin/clone_serenity.sh
 
 .PHONY: clone_flexibility

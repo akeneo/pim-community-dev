@@ -25,5 +25,5 @@ class FreeTrialVersion
     const VERSION_CODENAME = 'Free Trial Edition';
 
     /** @staticvar string */
-    const EDITION = 'Frre Trial Edition';
+    const EDITION = 'Free Trial Edition';
 }
