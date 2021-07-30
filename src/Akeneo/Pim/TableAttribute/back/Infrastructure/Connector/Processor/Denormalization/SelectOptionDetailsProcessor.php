@@ -35,6 +35,7 @@ final class SelectOptionDetailsProcessor implements ItemProcessorInterface, Step
     private ValidatorInterface $validator;
     private CountSelectOptions $countSelectOptions;
     private ?StepExecution $stepExecution = null;
+    /** @var array<string, int> */
     private array $optionCountByAttributeAndColumn = [];
 
     public function __construct(
@@ -130,18 +131,25 @@ final class SelectOptionDetailsProcessor implements ItemProcessorInterface, Step
 
     private function getCount(string $attributeCode, string $columnCode): int
     {
-        if (null === ($this->optionCountByAttributeAndColumn[$attributeCode][$columnCode] ?? null)) {
-            $this->optionCountByAttributeAndColumn[$attributeCode][$columnCode] = $this->countSelectOptions->forAttributeAndColumn(
+        $key = $this->buildKey($attributeCode, $columnCode);
+        if (null === ($this->optionCountByAttributeAndColumn[$key] ?? null)) {
+            $this->optionCountByAttributeAndColumn[$key] = $this->countSelectOptions->forAttributeAndColumn(
                 $attributeCode,
                 ColumnCode::fromString($columnCode)
             );
         }
 
-        return $this->optionCountByAttributeAndColumn[$attributeCode][$columnCode];
+        return $this->optionCountByAttributeAndColumn[$key];
     }
 
     private function incrementCount(string $attributeCode, string $columnCode): void
     {
-        $this->optionCountByAttributeAndColumn[$attributeCode][$columnCode] = $this->getCount($attributeCode, $columnCode) + 1;
+        $key = $this->buildKey($attributeCode, $columnCode);
+        $this->optionCountByAttributeAndColumn[$key] = $this->getCount($attributeCode, $columnCode) + 1;
+    }
+
+    private function buildKey(string $attributeCode, string $columnCode): string
+    {
+        return sprintf('%s-%s', strtolower($attributeCode), strtolower($columnCode));
     }
 }

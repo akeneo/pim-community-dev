@@ -218,12 +218,10 @@ class SelectOptionDetailsProcessorSpec extends ObjectBehavior
     ) {
         $selectOptionCollectionRepository
             ->getByColumn('nutrition', ColumnCode::fromString('score'))
-            ->willReturn(SelectOptionCollection::fromNormalized([
-                [
-                    'code' => 'existing_option',
-                    'labels' => [],
-                ],
-            ]));
+            ->willReturn(SelectOptionCollection::fromNormalized([['code' => 'existing_option', 'labels' => []]]));
+        $selectOptionCollectionRepository
+            ->getByColumn('nuTRition', ColumnCode::fromString('SCore'))
+            ->willReturn(SelectOptionCollection::fromNormalized([['code' => 'existing_option', 'labels' => []]]));
         $countSelectOptions->forAttributeAndColumn('nutrition', ColumnCode::fromString('score'))
             ->willReturn(19998);
         $validator->validate(Argument::type(SelectOptionDetails::class))->shouldBeCalled()->willReturn(
@@ -247,8 +245,8 @@ class SelectOptionDetailsProcessorSpec extends ObjectBehavior
         $this->process($item2);
 
         $item3 = [
-            'attribute' => 'nutrition',
-            'column' => 'score',
+            'attribute' => 'nuTRition',
+            'column' => 'SCore',
             'code' => 'zzzzz',
             'labels' => [],
         ];
