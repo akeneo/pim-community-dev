@@ -34,8 +34,6 @@ class Version_6_0_20210727080505_add_client_id_and_user_id_Integration extends T
 
     public function test_it_adds_client_id_and_user_id_columns_to_pim_api_auth_code_table(): void
     {
-        $this->prepareTable();
-
         Assert::assertFalse($this->columnExist('client_id'));
         Assert::assertFalse($this->columnExist('user_id'));
         Assert::assertFalse($this->foreignKeyConstraintExists('client_id','pim_api_client','id'));
@@ -51,20 +49,6 @@ class Version_6_0_20210727080505_add_client_id_and_user_id_Integration extends T
         Assert::assertTrue($this->indexExist('user_id'));
         Assert::assertTrue($this->foreignKeyConstraintExists('client_id','pim_api_client','id'));
         Assert::assertTrue($this->foreignKeyConstraintExists('user_id','oro_user','id'));
-
-    }
-
-    private function prepareTable(): void
-    {
-        if ($this->columnExist('client_id')) {
-            $this->connection->executeQuery("ALTER TABLE pim_api_auth_code DROP FOREIGN KEY FK_API_AUTH_CODE_CLIENT_ID;");
-            $this->connection->executeQuery('ALTER TABLE pim_api_auth_code DROP COLUMN client_id;');
-        }
-
-        if ($this->columnExist('user_id')) {
-            $this->connection->executeQuery("ALTER TABLE pim_api_auth_code DROP FOREIGN KEY FK_API_AUTH_CODE_USER_ID;");
-            $this->connection->executeQuery('ALTER TABLE pim_api_auth_code DROP COLUMN user_id;');
-        }
     }
 
     private function columnExist($columnName): bool
