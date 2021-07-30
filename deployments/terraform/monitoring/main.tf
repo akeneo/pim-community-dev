@@ -10,6 +10,6 @@ provider "google" {
 }
 
 locals {
-  type = "${replace(var.product_reference_type, "growth_", "") != var.product_reference_type}" ? "grth" : "srnt"
+  type = "${var.types[var.product_reference_type]}"
   pfid = "${local.type}-${var.instance_name}"
 }

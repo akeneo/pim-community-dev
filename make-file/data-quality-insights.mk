@@ -31,7 +31,7 @@ data-quality-insights-cs-fix: #Doc: launch PHP fixer for quality-insights
 
 .PHONY: data-quality-insights-integration-back
 data-quality-insights-integration-back: #Doc: launch PHPunit integration tests for quality-insights
-	APP_ENV=test $(PHP_RUN) vendor/bin/phpunit --testsuite=Data_Quality_Insights --testdox
+	APP_ENV=test ${PHP_RUN} vendor/bin/phpunit --testsuite=Data_Quality_Insights --testdox
 
 .PHONY: data-quality-insights-unit-front
 data-quality-insights-unit-front: #Doc: launch JS unit test for quality insights

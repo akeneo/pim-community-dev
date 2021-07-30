@@ -24,6 +24,8 @@ NAMESPACE_PATH=$(pwd)
 
 echo "1 - initializing terraform in $(pwd)"
 cat ${PWD}/main.tf.json
+gsutil rm gs://akecld-terraform-dev/saas/akecld-saas-dev/europe-west3-a/${PFID}/default.tflock || true
+
 terraform init
 # for mysql disk deletion, we must desactivate prevent_destroy in tf file
 find ${NAMESPACE_PATH}/../../  -name "*.tf" -type f | xargs sed -i "s/prevent_destroy = true/prevent_destroy = false/g"
