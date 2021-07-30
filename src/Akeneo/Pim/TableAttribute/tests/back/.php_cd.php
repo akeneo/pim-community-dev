@@ -51,6 +51,7 @@ $rules = [
             'Akeneo\Pim\Enrichment\Component\Product\Factory\Value\ValueFactory',
             'Akeneo\Pim\Enrichment\Component\Product\Model\ValueInterface',
             'Akeneo\Pim\Enrichment\Component\Product\Model\AbstractValue',
+            'Akeneo\Pim\Enrichment\Component\Product\Model\EntityWithValuesInterface',
             'Akeneo\Pim\Enrichment\Component\Product\Comparator\ComparatorInterface',
             'Akeneo\Pim\Enrichment\Component\Product\Normalizer\Indexing\Value\AbstractProductValueNormalizer',
             'Akeneo\Pim\Enrichment\Component\Product\Normalizer\Indexing\Value\ValueCollectionNormalizer',
@@ -59,6 +60,7 @@ $rules = [
             'Akeneo\Pim\Enrichment\Component\Product\Connector\ArrayConverter\StandardToFlat\Product\ValueConverter\AbstractValueConverter',
             'Akeneo\Pim\Enrichment\Component\Product\Connector\ArrayConverter\FlatToStandard\ValueConverter\ValueConverterInterface',
             'Akeneo\Pim\Enrichment\Component\Product\Normalizer\Versioning\Product\AbstractValueDataNormalizer',
+            'Akeneo\Pim\Enrichment\Component\Product\Updater\Copier\AbstractAttributeCopier',
             'Oro\Bundle\SecurityBundle\SecurityFacade',
             'Akeneo\Tool\Component\Batch',
         ]
