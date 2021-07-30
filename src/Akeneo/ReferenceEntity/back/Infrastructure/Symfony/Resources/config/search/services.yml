@@ -30,6 +30,7 @@ services:
     # Indexers
     akeneo_referenceentity.infrastructure.search.elasticsearch.record_indexer:
         class: Akeneo\ReferenceEntity\Infrastructure\Search\Elasticsearch\Record\RecordIndexer
+        public: true
         arguments:
             - '@akeneo_referenceentity.client.record'
             - '@akeneo_referenceentity.infrastructure.search.elasticsearch.record_normalizer'
