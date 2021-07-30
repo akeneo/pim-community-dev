@@ -35,7 +35,10 @@ const ColumnListPlaceholder = ({onColumnCreated}: ColumnListPlaceholderProps) =>
       <Title>{translate('akeneo.tailored_export.column_list.no_column_selection.title')}</Title>
       <Subtitle>
         {translate('akeneo.tailored_export.column_list.no_column_selection.subtitle')}{' '}
-        <Link href="https://help.akeneo.com/pim/serenity/articles/tailored-export.html#define-your-export-structure">
+        <Link
+          target="_blank"
+          href="https://help.akeneo.com/pim/serenity/articles/tailored-export.html#define-your-export-structure"
+        >
           {translate('akeneo.tailored_export.column_list.no_column_selection.link')}
         </Link>
       </Subtitle>
