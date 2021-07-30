@@ -374,7 +374,6 @@ pim_settings:
   product_settings: 제품 설정
   count:
     categories: '{{ countTrees }}개의 트리와 {{ countCategories }}개의 카테고리가 있습니다.'
-    channels: '{{ count }}개의 채널이 있습니다.'
     locales: '{{ count }}개의 활성화된 로케일이 있습니다.'
     currencies: '{{ count }}개의 활성화된 통화가 있습니다.'
     attribute_groups: '{{ count }}개의 특성 그룹이 있습니다.'

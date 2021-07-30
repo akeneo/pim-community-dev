@@ -374,7 +374,6 @@ pim_settings:
   product_settings: Ustawienia produktów
   count:
     categories: 'Posiadasz następującą liczbę drzew: {{ countTrees }} i następującą liczbę kategorii: {{ countCategories }}'
-    channels: 'Posiadasz następującą liczbę kanałów: {{ count }}'
     locales: 'Posiadasz następującą liczbę włączonych wersji językowych: {{ count }}'
     currencies: 'Posiadasz następującą liczbę włączonych walut: {{ count }}'
     attribute_groups: 'Posiadasz następującą liczbę grup atrybutów: {{ count }}'
