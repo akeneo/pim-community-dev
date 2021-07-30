@@ -44,7 +44,6 @@ final class SqlCountSelectOptions implements CountSelectOptions
         WHERE a.code = :attribute_code AND c.code = :column_code
         SQL;
 
-
         return (int) $this->connection->executeQuery(
             $sql,
             ['attribute_code' => $attributeCode, 'column_code' => $columnCode->asString()]
