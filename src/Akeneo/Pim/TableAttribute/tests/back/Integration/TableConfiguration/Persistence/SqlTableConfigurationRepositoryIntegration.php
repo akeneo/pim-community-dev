@@ -43,12 +43,12 @@ final class SqlTableConfigurationRepositoryIntegration extends TestCase
     public function it_saves_a_new_table_configuration(): void
     {
         $tableConfiguration = TableConfiguration::fromColumnDefinitions([
-            TextColumn::fromNormalized(['code' => 'ingredients']),
-            TextColumn::fromNormalized(['code' => 'quantity']),
-            SelectColumn::fromNormalized(['code' => 'isAllergenic', 'options' => [
+            SelectColumn::fromNormalized(['code' => 'ingredients', 'options' => [
                 ['code' => 'sugar'],
                 ['code' => 'salt', 'labels' => ['en_US' => 'Salt', 'fr_FR' => 'Sel']],
             ]]),
+            TextColumn::fromNormalized(['code' => 'quantity']),
+            TextColumn::fromNormalized(['code' => 'isAllergenic']),
         ]);
         $this->sqlTableConfigurationRepository->save('nutrition', $tableConfiguration);
 
@@ -60,13 +60,13 @@ final class SqlTableConfigurationRepositoryIntegration extends TestCase
         self::assertCount(3, $rows);
         self::assertEquals(0, $rows[0]['column_order']);
         self::assertSame('ingredients', $rows[0]['code']);
-        self::assertSame('text', $rows[0]['data_type']);
+        self::assertSame('select', $rows[0]['data_type']);
         self::assertSame('ingredients_', substr($rows[0]['id'], 0, strlen('ingredients_')));
         self::assertEquals(1, $rows[1]['column_order']);
         self::assertSame('quantity', $rows[1]['code']);
         self::assertSame('text', $rows[1]['data_type']);
         self::assertSame('quantity_', substr($rows[1]['id'], 0, strlen('quantity_')));
-        self::assertSame('select', $rows[2]['data_type']);
+        self::assertSame('text', $rows[2]['data_type']);
         self::assertSame('isAllergenic', $rows[2]['code']);
         self::assertSame('2', $rows[2]['column_order']);
     }
@@ -75,8 +75,9 @@ final class SqlTableConfigurationRepositoryIntegration extends TestCase
     public function it_updates_a_table_configuration(): void
     {
         $tableConfiguration = TableConfiguration::fromColumnDefinitions([
-            TextColumn::fromNormalized(['code' => 'ingredients']),
+            SelectColumn::fromNormalized(['code' => 'ingredients']),
             TextColumn::fromNormalized(['code' => 'quantity']),
+            BooleanColumn::fromNormalized(['code' => 'isAllergenic']),
         ]);
         $this->sqlTableConfigurationRepository->save('nutrition', $tableConfiguration);
 
@@ -85,12 +86,13 @@ final class SqlTableConfigurationRepositoryIntegration extends TestCase
             ['attribute_id' => $this->tableAttributeId]
         )->fetchAll();
 
-        self::assertCount(2, $rows);
+        self::assertCount(3, $rows);
         $idQuantity = $rows[1]['id'];
 
         $tableConfiguration = TableConfiguration::fromColumnDefinitions([
-            TextColumn::fromNormalized(['code' => 'quantity']),
+            SelectColumn::fromNormalized(['code' => 'ingredients']),
             TextColumn::fromNormalized(['code' => 'aqr']),
+            TextColumn::fromNormalized(['code' => 'quantity']),
         ]);
         $this->sqlTableConfigurationRepository->save('nutrition', $tableConfiguration);
 
@@ -99,9 +101,9 @@ final class SqlTableConfigurationRepositoryIntegration extends TestCase
             ['attribute_id' => $this->tableAttributeId]
         )->fetchAll();
 
-        self::assertCount(2, $rows);
-        self::assertSame('quantity', $rows[0]['code']);
-        self::assertSame($idQuantity, $rows[0]['id']);
+        self::assertCount(3, $rows);
+        self::assertSame('quantity', $rows[2]['code']);
+        self::assertSame($idQuantity, $rows[2]['id']);
         self::assertSame('aqr', $rows[1]['code']);
     }
 
@@ -130,7 +132,7 @@ final class SqlTableConfigurationRepositoryIntegration extends TestCase
     public function it_updates_a_table_configuration_and_changes_the_columns_order(): void
     {
         $tableConfiguration = TableConfiguration::fromColumnDefinitions([
-            TextColumn::fromNormalized(['code' => 'ingredients']),
+            SelectColumn::fromNormalized(['code' => 'ingredients']),
             TextColumn::fromNormalized(['code' => 'quantity']),
             TextColumn::fromNormalized(['code' => 'price']),
         ]);
@@ -147,7 +149,7 @@ final class SqlTableConfigurationRepositoryIntegration extends TestCase
         $idPrice = $rows[2]['id'];
 
         $tableConfiguration = TableConfiguration::fromColumnDefinitions([
-            TextColumn::fromNormalized(['code' => 'ingredients']),
+            SelectColumn::fromNormalized(['code' => 'ingredients']),
             TextColumn::fromNormalized(['code' => 'price']),
             TextColumn::fromNormalized(['code' => 'quantity']),
         ]);
@@ -171,7 +173,7 @@ final class SqlTableConfigurationRepositoryIntegration extends TestCase
     public function it_recreates_the_column_when_data_type_is_updated(): void
     {
         $tableConfiguration = TableConfiguration::fromColumnDefinitions([
-            TextColumn::fromNormalized(['code' => 'ingredients']),
+            SelectColumn::fromNormalized(['code' => 'ingredients']),
             TextColumn::fromNormalized(['code' => 'quantity']),
         ]);
         $this->sqlTableConfigurationRepository->save('nutrition', $tableConfiguration);
@@ -187,7 +189,7 @@ final class SqlTableConfigurationRepositoryIntegration extends TestCase
         self::assertSame('text', $rows[1]['data_type']);
 
         $tableConfiguration = TableConfiguration::fromColumnDefinitions([
-            TextColumn::fromNormalized(['code' => 'ingredients']),
+            SelectColumn::fromNormalized(['code' => 'ingredients']),
             NumberColumn::fromNormalized(['code' => 'quantity']),
         ]);
         $this->sqlTableConfigurationRepository->save('nutrition', $tableConfiguration);
