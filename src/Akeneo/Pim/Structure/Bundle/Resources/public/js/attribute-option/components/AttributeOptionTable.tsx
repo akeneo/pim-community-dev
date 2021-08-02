@@ -149,7 +149,7 @@ const AttributeOptionTable = ({
               );
             })}
 
-          {showNewOptionPlaceholder && <NewOptionPlaceholder cancelNewOption={cancelNewOption} />}
+          {showNewOptionPlaceholder && <NewOptionPlaceholder cancelNewOption={cancelNewOption} isDraggable={isDraggable} />}
         </Table.Body>
       </SpacedTable>
     </div>

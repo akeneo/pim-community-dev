@@ -3,7 +3,7 @@ import React, {FC, useEffect, useRef} from 'react';
 import {AttributeOption, Locale} from '../model';
 import {useEditingOptionContext} from '../contexts';
 import {Field, TextInput} from 'akeneo-design-system';
-import styled from "styled-components";
+import styled from 'styled-components';
 
 type AttributeOptionFormProps = {
   option: AttributeOption;

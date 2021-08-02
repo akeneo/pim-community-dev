@@ -1,21 +1,29 @@
 import React, {useRef} from 'react';
 import {useTranslate} from '@akeneo-pim-community/shared';
 import {useScrollIntoView} from '../hooks/useScrollIntoView';
-import {CloseIcon, IconButton, Table} from 'akeneo-design-system';
+import {CloseIcon, IconButton, RowIcon, Table} from 'akeneo-design-system';
 import styled from 'styled-components';
 
 interface newOptionPlaceholderProps {
   cancelNewOption: () => void;
+  isDraggable: boolean;
 }
 
-const NewOptionPlaceholder = ({cancelNewOption}: newOptionPlaceholderProps) => {
+const NewOptionPlaceholder = ({cancelNewOption, isDraggable}: newOptionPlaceholderProps) => {
   const translate = useTranslate();
   const placeholderRef = useRef<HTMLDivElement>(null);
 
   useScrollIntoView(placeholderRef);
 
   return (
-    <Table.Row isSelected={true} draggable={false}>
+    <TableRow isSelected={true}>
+      {!isDraggable && (
+        <TableCellNoDraggable>
+          <HandleContainer>
+            <RowIcon size={16} />
+          </HandleContainer>
+        </TableCellNoDraggable>
+      )}
       <Table.Cell rowTitle={true}>
         {translate('pim_enrich.entity.attribute_option.module.edit.new_option_code')}
       </Table.Cell>
@@ -29,9 +37,26 @@ const NewOptionPlaceholder = ({cancelNewOption}: newOptionPlaceholderProps) => {
           level="tertiary"
         />
       </TableActionCell>
-    </Table.Row>
+    </TableRow>
   );
 };
+
+const TableRow = styled(Table.Row)`
+  td:first-child {
+    color: #f0f1f3;
+  }
+`;
+
+const TableCellNoDraggable = styled(Table.Cell)`
+  width: 40px;
+`;
+
+const HandleContainer = styled.div`
+  cursor: grab;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+`;
 
 const TableActionCell = styled(Table.ActionCell)`
   width: 50px;
