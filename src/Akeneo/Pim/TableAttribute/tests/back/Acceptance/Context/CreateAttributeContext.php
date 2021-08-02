@@ -124,6 +124,15 @@ final class CreateAttributeContext implements Context
     }
 
     /**
+     * @When I create a table attribute with a configuration having a label with :number characters
+     */
+    public function iCreateATableAttributeWithAConfigurationHavingALabelWithCharacters(int $number): void
+    {
+        $label = str_repeat('a', $number);
+        $this->iCreateATableAttributeWithAConfiguration(sprintf('{"data_type": "text", "code": "ingredient", "labels": {"en_US": "%s"}}', $label));
+    }
+
+    /**
      * @When /^I create a table attribute with a configuration '([^']*)'$/
      */
     public function iCreateATableAttributeWithAConfiguration(string $jsonAsString): void

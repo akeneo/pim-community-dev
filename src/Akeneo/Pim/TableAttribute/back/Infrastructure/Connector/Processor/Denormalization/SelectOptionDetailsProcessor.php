@@ -127,7 +127,7 @@ final class SelectOptionDetailsProcessor implements ItemProcessorInterface, Step
             $itemPosition = $this->stepExecution->getSummaryInfo('item_position');
         }
 
-        throw new InvalidItemException('TODO too much options', new FileInvalidItem($item, $itemPosition));
+        throw new InvalidItemException('TODO too many options', new FileInvalidItem($item, $itemPosition));
     }
 
     private function getCount(string $attributeCode, string $columnCode): int

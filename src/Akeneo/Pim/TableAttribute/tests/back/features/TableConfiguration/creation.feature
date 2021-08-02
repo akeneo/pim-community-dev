@@ -40,6 +40,10 @@ Feature: Create a table attribute
     When I create a table attribute with a configuration having column code "ingredients_ingredients_ingredients_ingredients_ingredients_ingredients_ingredients_ingredients_ingredients_ingredients_ingredients_ingredients"
     Then There is a violation with message: The column code is too long: it must be 100 characters or less
 
+  Scenario: Cannot create a table configuration with too long label
+    When I create a table attribute with a configuration having a label with 251 characters
+    Then There is a violation with message: The column label is too long: it must be 250 characters or less
+
   Scenario: Cannot create a table configuration without type
     When I create a table attribute with a configuration '{"code": "quantity"}'
     Then There is a violation with message: The "data_type" column must be filled
@@ -152,6 +156,6 @@ Feature: Create a table attribute
     When I create a table attribute with a configuration '{"data_type": "select", "code": "ingredient", "toto": "titi"}'
     Then There is a violation with message: TODO the "toto" field was not expected
 
-  Scenario: Cannot create a table configuration with too much options
+  Scenario: Cannot create a table configuration with too many options
     When I create a table attribute with too much options
-    Then There is a violation with message: TODO too much options
+    Then There is a violation with message: TODO too many options

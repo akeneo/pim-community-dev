@@ -46,6 +46,9 @@ Akeneo\Pim\Structure\Component\Model\Attribute:
                               message: pim_table_configuration.validation.table_configuration.column_label_must_be_a_string
                           - NotNull:
                               message: pim_table_configuration.validation.table_configuration.column_label_must_be_a_string
+                          - Length:
+                              max: 250
+                              maxMessage: pim_table_configuration.validation.table_configuration.too_long_label
                 validations:
                   - Optional:
                       - Type:
@@ -84,7 +87,7 @@ Akeneo\Pim\Structure\Component\Model\Attribute:
                           message: TODO options should be an array
                       - Count:
                           max: 20000
-                          maxMessage: TODO too much options
+                          maxMessage: TODO too many options
                       - All:
                         - Type:
                             type: array

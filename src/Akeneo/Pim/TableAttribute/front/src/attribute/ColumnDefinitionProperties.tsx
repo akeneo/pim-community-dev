@@ -167,6 +167,7 @@ const ColumnDefinitionProperties: React.FC<ColumnDefinitionPropertiesProps> = ({
             <TextInput
               onChange={label => handleLabelChange(locale.code, label)}
               value={selectedColumn.labels[locale.code] ?? ''}
+              maxLength={250}
             />
           </Field>
         ))}

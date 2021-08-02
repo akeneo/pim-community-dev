@@ -10,6 +10,7 @@ pim_table_configuration:
             invalid_code: The column code can only contain letters, numbers and underscores
             invalid_option_code: The option code can only contain letters, numbers and underscores
             too_long_code: "The column code is too long: it must be 100 characters or less"
+            too_long_label: "The column label is too long: it must be 250 characters or less"
             too_long_option_code: "The option code is too long: it must be 100 characters or less"
             too_long_option_label: "The option label is too long: it must be 255 characters or less"
             duplicated_column_code: Each column requires a unique code. "%duplicateCodes%" is already used
