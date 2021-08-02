@@ -4,6 +4,7 @@ namespace Specification\Akeneo\Pim\TableAttribute\Domain\TableConfiguration;
 
 use Akeneo\Pim\TableAttribute\Domain\TableConfiguration\LabelCollection;
 use Akeneo\Pim\TableAttribute\Domain\TableConfiguration\SelectOption;
+use Akeneo\Pim\TableAttribute\Domain\TableConfiguration\ValueObject\SelectOptionCode;
 use PhpSpec\ObjectBehavior;
 
 class SelectOptionSpec extends ObjectBehavior
@@ -46,7 +47,7 @@ class SelectOptionSpec extends ObjectBehavior
 
     function it_exposes_its_code()
     {
-        $this->code()->shouldBe('sugar');
+        $this->code()->shouldBeLike(SelectOptionCode::fromString('sugar'));
     }
 
     function it_exposes_its_labels()

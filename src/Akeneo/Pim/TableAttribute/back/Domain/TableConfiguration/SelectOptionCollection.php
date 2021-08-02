@@ -13,6 +13,8 @@ declare(strict_types=1);
 
 namespace Akeneo\Pim\TableAttribute\Domain\TableConfiguration;
 
+use Akeneo\Pim\TableAttribute\Domain\TableConfiguration\ValueObject\SelectOptionCode;
+
 final class SelectOptionCollection
 {
     public const MAX_OPTIONS = 20000;
@@ -27,7 +29,7 @@ final class SelectOptionCollection
     {
         $this->options = [];
         foreach ($options as $option) {
-            $this->options[$option->code()] = $option;
+            $this->options[$option->code()->asString()] = $option;
         }
     }
 
@@ -59,12 +61,12 @@ final class SelectOptionCollection
     }
 
     /**
-     * @return string[]
+     * @return SelectOptionCode[]
      */
     public function getOptionCodes(): array
     {
         return \array_values(\array_map(
-            fn (SelectOption $selectOption): string => $selectOption->code(),
+            fn (SelectOption $selectOption): SelectOptionCode => $selectOption->code(),
             $this->options
         ));
     }

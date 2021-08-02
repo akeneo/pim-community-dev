@@ -4,6 +4,7 @@ namespace Specification\Akeneo\Pim\TableAttribute\Domain\TableConfiguration;
 
 use Akeneo\Pim\TableAttribute\Domain\TableConfiguration\SelectOption;
 use Akeneo\Pim\TableAttribute\Domain\TableConfiguration\SelectOptionCollection;
+use Akeneo\Pim\TableAttribute\Domain\TableConfiguration\ValueObject\SelectOptionCode;
 use PhpSpec\ObjectBehavior;
 
 class SelectOptionCollectionSpec extends ObjectBehavior
@@ -42,7 +43,10 @@ class SelectOptionCollectionSpec extends ObjectBehavior
     function it_returns_option_codes()
     {
         $this->getOptionCodes()
-            ->shouldReturn(['sugar', 'salt']);
+            ->shouldBeLike([
+                SelectOptionCode::fromString('sugar'),
+                SelectOptionCode::fromString('salt'),
+            ]);
     }
 
     function it_gets_an_option_by_code()

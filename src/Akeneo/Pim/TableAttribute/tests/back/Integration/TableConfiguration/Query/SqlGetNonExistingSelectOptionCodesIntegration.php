@@ -14,6 +14,7 @@ namespace Akeneo\Pim\TableAttribute\tests\back\Integration\TableConfiguration\Qu
 
 use Akeneo\Pim\TableAttribute\Domain\TableConfiguration\Query\GetNonExistingSelectOptionCodes;
 use Akeneo\Pim\TableAttribute\Domain\TableConfiguration\ValueObject\ColumnCode;
+use Akeneo\Pim\TableAttribute\Domain\TableConfiguration\ValueObject\SelectOptionCode;
 use Akeneo\Pim\TableAttribute\Infrastructure\TableConfiguration\Query\SqlGetNonExistingSelectOptionCodes;
 use Akeneo\Test\Integration\Configuration;
 use Akeneo\Test\Integration\TestCase;
@@ -35,30 +36,39 @@ final class SqlGetNonExistingSelectOptionCodesIntegration extends TestCase
         $nonExistingCodes = $this->sqlGetNonExistingSelectOptionCodes->forOptionCodes(
             'nutrition',
             ColumnCode::fromString('ingredients'),
-            ['salt', 'pepper', 'onion', 'garlic']
+            [SelectOptionCode::fromString('salt'), SelectOptionCode::fromString('pepper'), SelectOptionCode::fromString('onion'), SelectOptionCode::fromString('garlic')]
         );
-        self::assertEqualsCanonicalizing(['onion'], $nonExistingCodes);
+        self::assertEqualsCanonicalizing([SelectOptionCode::fromString('onion')], $nonExistingCodes);
 
         $nonExistingCodes = $this->sqlGetNonExistingSelectOptionCodes->forOptionCodes(
             'nutrition_copy',
             ColumnCode::fromString('ingredients'),
-            ['salt', 'pepper', 'onion', 'garlic']
+            [SelectOptionCode::fromString('salt'), SelectOptionCode::fromString('pepper'), SelectOptionCode::fromString('onion'), SelectOptionCode::fromString('garlic')]
         );
-        self::assertEqualsCanonicalizing(['onion', 'garlic'], $nonExistingCodes);
+        self::assertEqualsCanonicalizing(
+            [SelectOptionCode::fromString('onion'), SelectOptionCode::fromString('garlic')],
+            $nonExistingCodes
+        );
 
         $nonExistingCodes = $this->sqlGetNonExistingSelectOptionCodes->forOptionCodes(
             'nutrition',
             ColumnCode::fromString('quantity'),
-            ['salt', 'pepper', 'onion', 'garlic']
+            [SelectOptionCode::fromString('salt'), SelectOptionCode::fromString('pepper'), SelectOptionCode::fromString('onion'), SelectOptionCode::fromString('garlic')]
         );
-        self::assertEqualsCanonicalizing(['salt', 'pepper', 'onion', 'garlic'], $nonExistingCodes);
+        self::assertEqualsCanonicalizing(
+            [SelectOptionCode::fromString('salt'), SelectOptionCode::fromString('pepper'), SelectOptionCode::fromString('onion'), SelectOptionCode::fromString('garlic')],
+            $nonExistingCodes
+        );
 
         $nonExistingCodes = $this->sqlGetNonExistingSelectOptionCodes->forOptionCodes(
             'unknown',
             ColumnCode::fromString('quantity'),
-            ['salt', 'pepper', 'onion', 'garlic']
+            [SelectOptionCode::fromString('salt'), SelectOptionCode::fromString('pepper'), SelectOptionCode::fromString('onion'), SelectOptionCode::fromString('garlic')]
         );
-        self::assertEqualsCanonicalizing(['salt', 'pepper', 'onion', 'garlic'], $nonExistingCodes);
+        self::assertEqualsCanonicalizing(
+            [SelectOptionCode::fromString('salt'), SelectOptionCode::fromString('pepper'), SelectOptionCode::fromString('onion'), SelectOptionCode::fromString('garlic')],
+            $nonExistingCodes
+        );
     }
 
     protected function setUp(): void

@@ -6,6 +6,7 @@ use Akeneo\Pim\TableAttribute\Domain\TableConfiguration\DTO\SelectOptionDetails;
 use Akeneo\Pim\TableAttribute\Domain\TableConfiguration\Repository\SelectOptionCollectionRepository;
 use Akeneo\Pim\TableAttribute\Domain\TableConfiguration\SelectOptionCollection;
 use Akeneo\Pim\TableAttribute\Domain\TableConfiguration\ValueObject\ColumnCode;
+use Akeneo\Pim\TableAttribute\Domain\TableConfiguration\ValueObject\SelectOptionCode;
 use Akeneo\Pim\TableAttribute\Infrastructure\Connector\Writer\Database\SelectOption;
 use Akeneo\Tool\Component\Batch\Item\ItemWriterInterface;
 use Akeneo\Tool\Component\Batch\Model\StepExecution;
@@ -46,21 +47,21 @@ class SelectOptionSpec extends ObjectBehavior
                 fn ($options) => $options instanceof SelectOptionCollection && [
                         'salt',
                         'sugar',
-                    ] === $options->getOptionCodes()
+                    ] === $this->convertToString($options->getOptionCodes())
             )
         )->shouldBeCalledOnce();
         $selectOptionCollectionRepository->upsert(
             'nutrition',
             ColumnCode::fromString('grade'),
             Argument::that(
-                fn ($options) => $options instanceof SelectOptionCollection && ['a'] === $options->getOptionCodes()
+                fn ($options) => $options instanceof SelectOptionCollection && ['a'] === $this->convertToString($options->getOptionCodes())
             )
         )->shouldBeCalledOnce();
         $selectOptionCollectionRepository->upsert(
             'packaging',
             ColumnCode::fromString('dimension'),
             Argument::that(
-                fn ($options) => $options instanceof SelectOptionCollection && ['width'] === $options->getOptionCodes()
+                fn ($options) => $options instanceof SelectOptionCollection && ['width'] === $this->convertToString($options->getOptionCodes())
             )
         )->shouldBeCalledOnce();
 
@@ -101,5 +102,17 @@ class SelectOptionSpec extends ObjectBehavior
     function it_only_handles_select_option_details()
     {
         $this->shouldThrow(\InvalidArgumentException::class)->during('write', [[new \stdClass()]]);
+    }
+
+    /**
+     * @param SelectOptionCode[] $selectOptionCodes
+     * @return string[]
+     */
+    private function convertToString(array $selectOptionCodes): array
+    {
+        return array_map(
+            fn (SelectOptionCode $selectOptionCode): string => $selectOptionCode->asString(),
+            $selectOptionCodes
+        );
     }
 }

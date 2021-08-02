@@ -16,6 +16,7 @@ namespace Akeneo\Pim\TableAttribute\Infrastructure\Validation\ProductValue;
 use Akeneo\Pim\TableAttribute\Domain\TableConfiguration\Query\GetNonExistingSelectOptionCodes;
 use Akeneo\Pim\TableAttribute\Domain\TableConfiguration\Repository\TableConfigurationRepository;
 use Akeneo\Pim\TableAttribute\Domain\TableConfiguration\ValueObject\ColumnCode;
+use Akeneo\Pim\TableAttribute\Domain\TableConfiguration\ValueObject\SelectOptionCode;
 use Akeneo\Pim\TableAttribute\Domain\Value\Cell;
 use Akeneo\Pim\TableAttribute\Infrastructure\Value\TableValue;
 use Symfony\Component\Validator\Constraint;
@@ -65,14 +66,22 @@ final class SelectOptionsShouldExistValidator extends ConstraintValidator
         }
 
         foreach ($optionCodesPerColumnCode as $stringColumnCode => $optionCodes) {
+            $optionCodeObjects = array_map(
+                fn (string $optionCode): SelectOptionCode => SelectOptionCode::fromString($optionCode),
+                array_values(array_unique($optionCodes))
+            );
             $nonExistingOptions = $this->getNonExistingSelectOptionCodes->forOptionCodes(
                 $tableValue->getAttributeCode(),
                 ColumnCode::fromString($stringColumnCode),
-                array_values(array_unique($optionCodes))
+                $optionCodeObjects
             );
-            foreach ($optionCodes as $rowIndex => $nonExistingOption) {
-                if (in_array($nonExistingOption, $nonExistingOptions)) {
-                    $this->context->buildViolation($constraint->message, ['{{ optionCode }}' => $nonExistingOption])
+            $nonExistingOptions = array_map(
+                fn (SelectOptionCode $optionCode): string => $optionCode->asString(),
+                $nonExistingOptions
+            );
+            foreach ($optionCodes as $rowIndex => $optionCode) {
+                if (in_array($optionCode, $nonExistingOptions)) {
+                    $this->context->buildViolation($constraint->message, ['{{ optionCode }}' => $optionCode])
                         ->atPath(sprintf('[%d].%s', $rowIndex, $stringColumnCode))
                         ->addViolation();
                 }

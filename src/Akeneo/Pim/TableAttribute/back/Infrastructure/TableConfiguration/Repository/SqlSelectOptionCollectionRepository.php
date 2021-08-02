@@ -16,6 +16,7 @@ namespace Akeneo\Pim\TableAttribute\Infrastructure\TableConfiguration\Repository
 use Akeneo\Pim\TableAttribute\Domain\TableConfiguration\Repository\SelectOptionCollectionRepository;
 use Akeneo\Pim\TableAttribute\Domain\TableConfiguration\SelectOptionCollection;
 use Akeneo\Pim\TableAttribute\Domain\TableConfiguration\ValueObject\ColumnCode;
+use Akeneo\Pim\TableAttribute\Domain\TableConfiguration\ValueObject\SelectOptionCode;
 use Doctrine\DBAL\Connection;
 
 class SqlSelectOptionCollectionRepository implements SelectOptionCollectionRepository
@@ -57,11 +58,11 @@ class SqlSelectOptionCollectionRepository implements SelectOptionCollectionRepos
             );
         } else {
             $newAttributeAndOptionCodes = array_map(
-                fn (string $optionCode): string => sprintf(
+                fn (SelectOptionCode $optionCode): string => sprintf(
                     '%s-%s-%s',
                     $attributeCode,
                     $columnCode->asString(),
-                    $optionCode
+                    $optionCode->asString()
                 ),
                 $newOptionCodes
             );

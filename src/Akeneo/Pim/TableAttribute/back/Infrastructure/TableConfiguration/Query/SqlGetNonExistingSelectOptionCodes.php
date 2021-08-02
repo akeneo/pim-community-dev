@@ -15,6 +15,7 @@ namespace Akeneo\Pim\TableAttribute\Infrastructure\TableConfiguration\Query;
 
 use Akeneo\Pim\TableAttribute\Domain\TableConfiguration\Query\GetNonExistingSelectOptionCodes;
 use Akeneo\Pim\TableAttribute\Domain\TableConfiguration\ValueObject\ColumnCode;
+use Akeneo\Pim\TableAttribute\Domain\TableConfiguration\ValueObject\SelectOptionCode;
 use Doctrine\DBAL\Connection;
 use Doctrine\DBAL\FetchMode;
 
@@ -33,6 +34,11 @@ class SqlGetNonExistingSelectOptionCodes implements GetNonExistingSelectOptionCo
             return [];
         }
 
+        $selectStringOptionCodes = array_map(
+            fn (SelectOptionCode $selectOptionCode): string => $selectOptionCode->asString(),
+            $selectOptionCodes
+        );
+
         $sql = <<<SQL
         SELECT pim_catalog_table_column_select_option.code
         FROM pim_catalog_table_column_select_option
@@ -46,11 +52,20 @@ SQL;
         $existingOptionCodes = $this->connection->executeQuery($sql, [
             'columnCode' => $columnCode->asString(),
             'attributeCode' => $attributeCode,
-            'selectOptionCodes' => array_unique($selectOptionCodes),
+            'selectOptionCodes' => array_unique($selectStringOptionCodes),
         ], [
             ':selectOptionCodes' => Connection::PARAM_STR_ARRAY
         ])->fetchAll(FetchMode::COLUMN);
 
-        return array_diff($selectOptionCodes, $existingOptionCodes);
+        return \array_udiff(
+            $selectOptionCodes,
+            array_map(
+                fn (string $code): SelectOptionCode => SelectOptionCode::fromString($code),
+                $existingOptionCodes
+            ),
+            function (SelectOptionCode $a, SelectOptionCode $b): int {
+                return \strcmp($a->asString(), $b->asString());
+            }
+        );
     }
 }

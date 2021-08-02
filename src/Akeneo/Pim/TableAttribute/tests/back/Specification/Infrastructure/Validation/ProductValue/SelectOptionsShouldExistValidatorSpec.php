@@ -9,6 +9,7 @@ use Akeneo\Pim\TableAttribute\Domain\TableConfiguration\SelectColumn;
 use Akeneo\Pim\TableAttribute\Domain\TableConfiguration\TableConfiguration;
 use Akeneo\Pim\TableAttribute\Domain\TableConfiguration\TextColumn;
 use Akeneo\Pim\TableAttribute\Domain\TableConfiguration\ValueObject\ColumnCode;
+use Akeneo\Pim\TableAttribute\Domain\TableConfiguration\ValueObject\SelectOptionCode;
 use Akeneo\Pim\TableAttribute\Domain\Value\Table;
 use Akeneo\Pim\TableAttribute\Infrastructure\Validation\ProductValue\SelectOptionsShouldExist;
 use Akeneo\Pim\TableAttribute\Infrastructure\Validation\ProductValue\SelectOptionsShouldExistValidator;
@@ -76,11 +77,11 @@ class SelectOptionsShouldExistValidatorSpec extends ObjectBehavior
         ]));
 
         $getNonExistingSelectOptionCodes
-            ->forOptionCodes('nutrition', ColumnCode::fromString('ingredient'), ['unknown_ingredient', 'salt'])
-            ->willReturn(['unknown_ingredient']);
+            ->forOptionCodes('nutrition', ColumnCode::fromString('ingredient'), [SelectOptionCode::fromString('unknown_ingredient'), SelectOptionCode::fromString('salt')])
+            ->willReturn([SelectOptionCode::fromString('unknown_ingredient')]);
         $getNonExistingSelectOptionCodes
-            ->forOptionCodes('nutrition', ColumnCode::fromString('supplier'), ['unknown_supplier'])
-            ->willReturn(['unknown_supplier']);
+            ->forOptionCodes('nutrition', ColumnCode::fromString('supplier'), [SelectOptionCode::fromString('unknown_supplier')])
+            ->willReturn([SelectOptionCode::fromString('unknown_supplier')]);
 
         $context->buildViolation($constraint->message, ['{{ optionCode }}' => 'unknown_ingredient'])
             ->shouldBeCalledOnce()->willReturn($violationBuilder);
@@ -104,10 +105,10 @@ class SelectOptionsShouldExistValidatorSpec extends ObjectBehavior
         ]));
 
         $getNonExistingSelectOptionCodes
-            ->forOptionCodes('nutrition', ColumnCode::fromString('ingredient'), ['sugar', 'salt'])
+            ->forOptionCodes('nutrition', ColumnCode::fromString('ingredient'), [SelectOptionCode::fromString('sugar'), SelectOptionCode::fromString('salt')])
             ->willReturn([]);
         $getNonExistingSelectOptionCodes
-            ->forOptionCodes('nutrition', ColumnCode::fromString('supplier'), ['Akeneo'])
+            ->forOptionCodes('nutrition', ColumnCode::fromString('supplier'), [SelectOptionCode::fromString('Akeneo')])
             ->willReturn([]);
 
         $context->buildViolation(Argument::cetera())->shouldNotBeCalled();
@@ -125,7 +126,7 @@ class SelectOptionsShouldExistValidatorSpec extends ObjectBehavior
         ]));
 
         $getNonExistingSelectOptionCodes
-            ->forOptionCodes('nutrition', ColumnCode::fromString('ingredient'), ['salt'])
+            ->forOptionCodes('nutrition', ColumnCode::fromString('ingredient'), [SelectOptionCode::fromString('salt')])
             ->willReturn([]);
 
         $context->buildViolation(Argument::cetera())->shouldNotBeCalled();

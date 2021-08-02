@@ -13,14 +13,15 @@ declare(strict_types=1);
 
 namespace Akeneo\Pim\TableAttribute\Domain\TableConfiguration;
 
+use Akeneo\Pim\TableAttribute\Domain\TableConfiguration\ValueObject\SelectOptionCode;
 use Webmozart\Assert\Assert;
 
 final class SelectOption
 {
-    private string $code;
+    private SelectOptionCode $code;
     private LabelCollection $labels;
 
-    private function __construct(string $code, LabelCollection $labels)
+    private function __construct(SelectOptionCode $code, LabelCollection $labels)
     {
         $this->code = $code;
         $this->labels = $labels;
@@ -38,10 +39,13 @@ final class SelectOption
         Assert::keyExists($normalized, 'code');
         Assert::stringNotEmpty($normalized['code']);
 
-        return new SelectOption($normalized['code'], LabelCollection::fromNormalized($normalized['labels'] ?? []));
+        return new SelectOption(
+            SelectOptionCode::fromString($normalized['code']),
+            LabelCollection::fromNormalized($normalized['labels'] ?? [])
+        );
     }
 
-    public function code(): string
+    public function code(): SelectOptionCode
     {
         return $this->code;
     }
@@ -59,7 +63,7 @@ final class SelectOption
         $labels = $this->labels->normalize();
 
         return [
-            'code' => $this->code,
+            'code' => $this->code->asString(),
             'labels' => [] === $labels ? (object) [] : $labels,
         ];
     }

@@ -14,13 +14,14 @@ declare(strict_types=1);
 namespace Akeneo\Pim\TableAttribute\Domain\TableConfiguration\Query;
 
 use Akeneo\Pim\TableAttribute\Domain\TableConfiguration\ValueObject\ColumnCode;
+use Akeneo\Pim\TableAttribute\Domain\TableConfiguration\ValueObject\SelectOptionCode;
 
 interface GetNonExistingSelectOptionCodes
 {
     /**
-     * @param array<string> $selectOptionCodes
+     * @param array<SelectOptionCode> $selectOptionCodes
      *
-     * @return array<string>
+     * @return array<SelectOptionCode>
      */
     public function forOptionCodes(string $attributeCode, ColumnCode $columnCode, array $selectOptionCodes): array;
 }

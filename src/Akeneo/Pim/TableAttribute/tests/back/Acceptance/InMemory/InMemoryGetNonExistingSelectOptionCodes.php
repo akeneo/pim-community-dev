@@ -15,6 +15,7 @@ namespace Akeneo\Pim\TableAttribute\tests\back\Acceptance\InMemory;
 
 use Akeneo\Pim\TableAttribute\Domain\TableConfiguration\Query\GetNonExistingSelectOptionCodes;
 use Akeneo\Pim\TableAttribute\Domain\TableConfiguration\ValueObject\ColumnCode;
+use Akeneo\Pim\TableAttribute\Domain\TableConfiguration\ValueObject\SelectOptionCode;
 
 class InMemoryGetNonExistingSelectOptionCodes implements GetNonExistingSelectOptionCodes
 {
@@ -27,6 +28,12 @@ class InMemoryGetNonExistingSelectOptionCodes implements GetNonExistingSelectOpt
 
     public function forOptionCodes(string $attributeCode, ColumnCode $columnCode, array $selectOptionCodes): array
     {
-        return array_diff($selectOptionCodes, $this->collectionRepository->getByColumn($attributeCode, $columnCode)->getOptionCodes());
+        return \array_udiff(
+            $selectOptionCodes,
+            $this->collectionRepository->getByColumn($attributeCode, $columnCode)->getOptionCodes(),
+            function (SelectOptionCode $a, SelectOptionCode $b): int {
+                return \strcmp($a->asString(), $b->asString());
+            }
+        );
     }
 }
