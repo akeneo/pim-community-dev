@@ -107,27 +107,30 @@ const TableFieldApp: React.FC<TableFieldAppProps> = ({
   const [searchText, setSearchText] = React.useState<string>('');
   const [copyChecked, setCopyChecked] = React.useState<boolean>(copyCheckboxChecked);
   const firstColumnCode: ColumnCode = attribute.table_configuration[0].code;
-  const [violatedCellsById] = React.useState<ViolatedCell[]>(
-    (violations || []).reduce((old, violation) => {
-      if (locale === violation.locale && scope === violation.scope) {
-        // Complete path looks like values[attributeCode-<all_channels>-en_US][3].ingredient
-        const completePath = violation.path;
-        const index = completePath.indexOf(']');
-        if (index >= 0) {
-          const realPath = completePath.substr(index + 1);
-          const results = /^\[(\d+)\]\.(.+)$/.exec(realPath);
-          if (results) {
-            old.push({
-              id: tableValue[parseInt(results[1])]['unique id'],
-              columnCode: results[2],
-            });
-          }
-        }
-      }
+  const [violatedCellsById, setViolatedCellsById] = React.useState<ViolatedCell[]>([]);
 
-      return old;
-    }, [] as ViolatedCell[])
-  );
+  React.useEffect(() => {
+    setViolatedCellsById(
+        (violations || []).reduce((old, violation) => {
+          if (locale === violation.locale && scope === violation.scope) {
+            // Complete path looks like values[attributeCode-<all_channels>-en_US][3].ingredient
+            const completePath = violation.path;
+            const index = completePath.indexOf(']');
+            if (index >= 0) {
+              const realPath = completePath.substr(index + 1);
+              const results = /^\[(\d+)\]\.(.+)$/.exec(realPath);
+              if (results) {
+                old.push({
+                  id: tableValue[parseInt(results[1])]['unique id'],
+                  columnCode: results[2],
+                });
+              }
+            }
+          }
+          return old;
+        }, [] as ViolatedCell[])
+    )
+  },[JSON.stringify(violations)]);
 
   React.useEffect(() => {
     clearCacheSelectOptions();

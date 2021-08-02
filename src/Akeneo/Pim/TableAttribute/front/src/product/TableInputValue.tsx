@@ -66,10 +66,15 @@ const TableInputValue: React.FC<TableInputValueProps> = ({
   const [currentPage, setCurrentPage] = React.useState<number>(0);
   const [selectOptionLabels, setSelectOptionLabels] = React.useState<{[key: string]: string | null}>({});
   const [options, setOptions] = React.useState<{[columnCode: string]: SelectOption[]}>({});
+  const [currentViolatedCells, setCurrentViolatedCells] = React.useState<ViolatedCell[]>(violatedCells);
   const isSearching = searchText.trim() !== '';
 
   const handleChange = (uniqueId: string, columnCode: ColumnCode, cellValue: TableCell | undefined) => {
     const rowIndex = valueData.findIndex(row => row['unique id'] === uniqueId);
+    const newViolatedCells = currentViolatedCells.filter((cell:ViolatedCell) =>{
+      return cell.id !== uniqueId || cell.columnCode !== columnCode;
+    })
+    setCurrentViolatedCells(newViolatedCells);
     if (rowIndex >= 0) {
       const row = valueData[rowIndex];
       if (typeof cellValue === 'undefined') {
@@ -151,7 +156,7 @@ const TableInputValue: React.FC<TableInputValueProps> = ({
   }, [valueDataPage.length]);
 
   const isInErrorFromBackend = (id: string, columnCode: ColumnCode) => {
-    return violatedCells.some(violatedCell => violatedCell.id === id && violatedCell.columnCode === columnCode);
+    return currentViolatedCells.some(violatedCell => violatedCell.id === id && violatedCell.columnCode === columnCode);
   };
 
   return (

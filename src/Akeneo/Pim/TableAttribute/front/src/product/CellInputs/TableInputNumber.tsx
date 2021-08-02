@@ -20,6 +20,7 @@ const TableInputNumber: React.FC<TableInputNumberProps> = ({
   readOnly = false,
   ...rest
 }) => {
+
   const isLessThanMin =
     typeof value !== 'undefined' && typeof validations.min !== 'undefined' && parseFloat(value) < validations.min;
   const isGreaterThanMax =
