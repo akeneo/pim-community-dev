@@ -13,6 +13,7 @@ use Akeneo\Tool\Component\Connector\Step\TaskletInterface;
 use Akeneo\Tool\Component\StorageUtils\Cache\EntityManagerClearerInterface;
 use Akeneo\Tool\Component\StorageUtils\Factory\SimpleFactoryInterface;
 use Akeneo\Tool\Component\StorageUtils\Saver\BulkSaverInterface;
+use Psr\Log\LoggerInterface;
 
 /**
  * When a channel is updated, products completenesses related to channel and locales need to be cleaned.
@@ -118,7 +119,7 @@ class RemoveCompletenessForChannelAndLocaleTasklet implements TaskletInterface
 
     private function cleanProducts(array $productIdentifiers): void
     {
-        $this->productBulkSaver->saveAll($productIdentifiers);
+        $this->productBulkSaver->saveAll($productIdentifiers, ['force_save' => true]);
     }
 
     private function notifyUsersItBegins(array $users): void

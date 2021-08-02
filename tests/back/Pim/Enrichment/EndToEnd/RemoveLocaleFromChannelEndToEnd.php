@@ -107,8 +107,8 @@ class RemoveLocaleFromChannelEndToEnd extends InternalApiTestCase
         ]);
         $this->createFamilyWithRequirement('jeans', $attribute, $ecommerceChannel);
 
-        $this->createProduct('blue_jean', [
-            'family' => 'jeans',
+        $this->createProduct('blue_jean', 'jeans',
+            [
             'values' => [
                 'a_scopable_localizable_text' => [
                     ['data' => 'blue', 'locale' => 'en_US', 'scope' => 'ecommerce'],
@@ -117,8 +117,8 @@ class RemoveLocaleFromChannelEndToEnd extends InternalApiTestCase
             ]
         ]);
 
-        $this->createProduct('yellow_jean', [
-            'family' => 'jeans',
+
+        $this->createProduct('yellow_jean', 'jeans', [
             'values' => [
                 'a_scopable_localizable_text' => [
                     ['data' => 'yellow_jean', 'locale' => 'fr_FR', 'scope' => 'ecommerce']
@@ -175,18 +175,6 @@ class RemoveLocaleFromChannelEndToEnd extends InternalApiTestCase
         $this->get('pim_catalog.saver.channel')->save($ecommerceChannel);
 
         return $ecommerceChannel;
-    }
-
-    protected function createProduct($identifier, array $data): void
-    {
-        $family = isset($data['family']) ? $data['family'] : null;
-
-        $product = $this->get('pim_catalog.builder.product')->createProduct($identifier, $family);
-        $this->get('pim_catalog.updater.product')->update($product, $data);
-        $this->validate($product);
-        $this->get('pim_catalog.saver.product')->save($product);
-
-        $this->esProductClient->refreshIndex();
     }
 
     private function validate($entity): void
