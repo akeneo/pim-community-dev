@@ -55,13 +55,11 @@ final class LabelCollection
         return 0 === count($this->labels) ? (object) [] : $this->labels;
     }
 
-    public function merge(LabelCollection $labelCollection): LabelCollection
+    /**
+     * @param array<string, string> $labels
+     */
+    public function merge(array $labels): LabelCollection
     {
-        $newLabels = $labelCollection->normalize();
-        if (!\is_array($newLabels)) {
-            return LabelCollection::fromNormalized($this->labels);
-        }
-
-        return LabelCollection::fromNormalized(\array_replace($this->labels, $newLabels));
+        return LabelCollection::fromNormalized(\array_replace($this->labels, $labels));
     }
 }

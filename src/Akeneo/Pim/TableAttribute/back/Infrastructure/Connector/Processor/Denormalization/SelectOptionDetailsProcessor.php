@@ -64,7 +64,6 @@ final class SelectOptionDetailsProcessor implements ItemProcessorInterface, Step
 
         Assert::isArray($item['labels'] ?? []);
 
-        $labels = LabelCollection::fromNormalized($item['labels'] ?? []);
         $options = $this->selectOptionCollectionRepository->getByColumn(
             $item['attribute'],
             ColumnCode::fromString($item['column'])
@@ -74,9 +73,11 @@ final class SelectOptionDetailsProcessor implements ItemProcessorInterface, Step
         $isCreation = null === $option;
         if ($isCreation) {
             $this->checkMaxOptionCountIsNotReached($item);
-        } else {
-            $labels = $option->labels()->merge($labels);
         }
+
+        $labels = null !== $option
+            ? $option->labels()->merge($item['labels'] ?? [])
+            : LabelCollection::fromNormalized($item['labels'] ?? []);
         $normalizedLabels = $labels->normalize();
 
         $details = new SelectOptionDetails(

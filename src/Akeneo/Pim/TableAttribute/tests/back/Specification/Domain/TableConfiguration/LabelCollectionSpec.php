@@ -72,19 +72,18 @@ class LabelCollectionSpec extends ObjectBehavior
     {
         $this->beConstructedThrough('fromNormalized', [[
             'en_US' => 'Sugar',
-            'fr_FR' => '',
+            'fr_FR' => 'Suc',
         ]]);
 
-        $newLabels = $this->merge(LabelCollection::fromNormalized(['fr_FR' => 'Sucre', 'de_DE' => 'Achtung']));
+        $newLabels = $this->merge(['fr_FR' => 'Sucre', 'de_DE' => 'Zucker', 'en_US' => '']);
         $newLabels->shouldNotBe($this);
         $newLabels->shouldBeLike(LabelCollection::fromNormalized([
-            'en_US' => 'Sugar',
             'fr_FR' => 'Sucre',
-            'de_DE' => 'Achtung',
+            'de_DE' => 'Zucker',
         ]));
     }
 
-    function it_can_be_merged_with_an_empty_label_collection()
+    function it_can_be_merged_with_an_empty_array()
     {
         $this->beConstructedThrough(
             'fromNormalized',
@@ -96,7 +95,7 @@ class LabelCollectionSpec extends ObjectBehavior
             ]
         );
 
-        $newLabels = $this->merge(LabelCollection::fromNormalized([]));
+        $newLabels = $this->merge([]);
         $newLabels->shouldNotBe($this);
         $newLabels->shouldBeLike(LabelCollection::fromNormalized(['en_US' => 'Sugar']));
         $newLabels->normalize()->shouldReturn(['en_US' => 'Sugar']);
