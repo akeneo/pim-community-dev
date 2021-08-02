@@ -9,6 +9,7 @@ import {
   PimView,
   useRouter,
   useSecurity,
+  useSessionStorageState,
   useSetPageTitle,
   useTranslate,
 } from '@akeneo-pim-community/shared';
@@ -26,12 +27,27 @@ type CategoryToCreate = {
   onCreate: () => void;
 };
 
+type lastSelectedCategory = {
+  treeId: string;
+  categoryId: string;
+};
+
 const CategoriesTreePage: FC = () => {
   let {treeId} = useParams<Params>();
   const router = useRouter();
   const translate = useTranslate();
   const {isGranted} = useSecurity();
-  const {tree, loadingStatus, loadTree} = useCategoryTree(parseInt(treeId));
+  const [lastSelectedCategory] = useSessionStorageState<lastSelectedCategory>(
+    {
+      treeId: treeId,
+      categoryId: '-1',
+    },
+    'lastSelectedCategory'
+  );
+  const {tree, loadingStatus, loadTree} = useCategoryTree(
+    parseInt(treeId),
+    lastSelectedCategory.treeId === treeId ? lastSelectedCategory.categoryId : '-1'
+  );
   const [treeLabel, setTreeLabel] = useState<string>('');
   const [isNewCategoryModalOpen, openNewCategoryModal, closeNewCategoryModal] = useBooleanState();
   const [categoryToCreate, setCategoryToCreate] = useState<CategoryToCreate | null>(null);

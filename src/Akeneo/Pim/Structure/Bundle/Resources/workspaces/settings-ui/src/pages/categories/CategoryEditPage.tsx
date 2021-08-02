@@ -103,6 +103,10 @@ const CategoryEditPage: FC = () => {
     setCategoryLabel(getLabel(category.labels, catalogLocale, category.code));
     setTreeLabel(getLabel(rootCategory.labels, catalogLocale, rootCategory.code));
     setTree(rootCategory);
+    sessionStorage.setItem(
+      'lastSelectedCategory',
+      JSON.stringify({treeId: rootCategory.id.toString(), categoryId: categoryId})
+    );
   }, [category, userContext]);
 
   if (categoryLoadingStatus === 'error') {
