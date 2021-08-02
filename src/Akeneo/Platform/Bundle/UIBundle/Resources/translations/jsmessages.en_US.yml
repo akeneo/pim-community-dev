@@ -206,6 +206,7 @@ pim_common:
     ok: OK
     open: Open
     no_result: No result found
+    no_search_result: Sorry, there is no result for your search.
     other_actions: Other actions
     permissions: Permissions
     previous: Previous
