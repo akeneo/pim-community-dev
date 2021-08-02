@@ -7,7 +7,7 @@ import {useAttributeOptionsListState} from '../hooks/useAttributeOptionsListStat
 import {useSortedAttributeOptions} from '../hooks/useSortedAttributeOptions';
 import AutoOptionSorting from './AutoOptionSorting';
 import NewOptionPlaceholder from './NewOptionPlaceholder';
-import {Button, Table} from "akeneo-design-system";
+import {Button, CloseIcon, IconButton, Table} from "akeneo-design-system";
 import styled from "styled-components";
 import AttributeOptionTableRow, {DragItem} from "./AttributeOptionTableRow";
 
@@ -31,7 +31,7 @@ const AttributeOptionTable = ({
   const {attributeOptions, extraData} = useAttributeOptionsListState();
   const translate = useTranslate();
   const attributeContext = useAttributeContext();
-  const {sortedAttributeOptions, moveAttributeOption, validateMoveAttributeOption} = useSortedAttributeOptions(
+  const {sortedAttributeOptions, moveAttributeOption, validateMoveAttributeOption, setSortedAttributeOptions} = useSortedAttributeOptions(
     attributeOptions,
     attributeContext.autoSortOptions,
     manuallySortAttributeOptions
@@ -100,6 +100,12 @@ const AttributeOptionTable = ({
           {sortedAttributeOptions !== null &&
           sortedAttributeOptions.map((attributeOption: AttributeOption, index: number) => {
             return (
+              /*<Table.Row key={`${attributeOption.code}${index}`}>
+                <Table.Cell rowTitle={true}>{attributeOption.code}</Table.Cell>
+                <Table.Cell>{extraData[attributeOption.code]}</Table.Cell>
+                <Table.Cell>test</Table.Cell>
+              </Table.Row>*/
+
               <AttributeOptionTableRow
                 key={attributeOption.code}
                 data={attributeOption}

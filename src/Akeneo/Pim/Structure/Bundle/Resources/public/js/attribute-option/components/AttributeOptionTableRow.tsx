@@ -105,11 +105,17 @@ const AttributeOptionTableRow: FC<AttributeOptionItemProps> = ({children, ...pro
   };
 
   return (
-    <>
+    <Table.Row key={`${data.code}${index}`}>
+      <Table.Cell rowTitle={true}>{data.code}</Table.Cell>
+      <Table.Cell>{children}</Table.Cell>
+      <Table.Cell>test</Table.Cell>
+    </Table.Row>
+
+    /*<>
       <Table.Row
-        isSelected={isSelected}
-        draggable={isDraggable}
-        onClick={() => selectAttributeOption(data.id)}
+        //isSelected={isSelected}
+        //draggable={isDraggable}
+        //onClick={() => selectAttributeOption(data.id)}
         key={`${data.code}${index}`}
       >
         <Table.Cell rowTitle={true}>{data.code}</Table.Cell>
@@ -136,7 +142,7 @@ const AttributeOptionTableRow: FC<AttributeOptionItemProps> = ({children, ...pro
           cancelDelete={() => setShowDeleteConfirmationModal(false)}
         />
       )}
-    </>
+    </>*/
   );
 };
 
