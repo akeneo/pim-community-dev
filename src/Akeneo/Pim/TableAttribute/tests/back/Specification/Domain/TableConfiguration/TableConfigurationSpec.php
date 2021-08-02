@@ -26,11 +26,13 @@ class TableConfigurationSpec extends ObjectBehavior
         $this->shouldThrow(\InvalidArgumentException::class)->duringInstantiation();
     }
 
-    function it_cannot_have_the_same_column_twice(ColumnDefinition $definition)
+    function it_cannot_have_the_same_column_twice()
     {
-        $definition->code()->willReturn(ColumnCode::fromString('ingredients'));
-        $this->beConstructedThrough('fromColumnDefinitions', [[$definition, $definition]]);
-        $this->shouldThrow(\InvalidArgumentException::class)->duringInstantiation();
+        $this->beConstructedThrough('fromColumnDefinitions', [[
+            SelectColumn::fromNormalized(['code' => 'ingredient']),
+            TextColumn::fromNormalized(['code' => 'INGredient']),
+        ]]);
+        $this->shouldThrow(new \InvalidArgumentException('The column codes are not unique'))->duringInstantiation();
     }
 
     function it_is_initializable(ColumnDefinition $ingredients, ColumnDefinition $quantity)
@@ -44,11 +46,13 @@ class TableConfigurationSpec extends ObjectBehavior
     function it_returns_the_data_type_of_a_given_column_code()
     {
         $this->beConstructedThrough('fromColumnDefinitions', [[
-            TextColumn::fromNormalized(['code' => 'ingredient']),
+            SelectColumn::fromNormalized(['code' => 'ingredient']),
+            TextColumn::fromNormalized(['code' => 'description']),
             NumberColumn::fromNormalized(['code' => 'quantity']),
         ]]);
 
-        $this->getColumnDataType(ColumnCode::fromString('ingredient'))->shouldBeLike(ColumnDataType::fromString('text'));
+        $this->getColumnDataType(ColumnCode::fromString('ingredient'))->shouldBeLike(ColumnDataType::fromString('select'));
+        $this->getColumnDataType(ColumnCode::fromString('description'))->shouldBeLike(ColumnDataType::fromString('text'));
         $this->getColumnDataType(ColumnCode::fromString('quantity'))->shouldBeLike(ColumnDataType::fromString('number'));
         $this->getColumnDataType(ColumnCode::fromString('unknown'))->shouldReturn(null);
     }
@@ -56,7 +60,7 @@ class TableConfigurationSpec extends ObjectBehavior
     function it_returns_the_first_column_code()
     {
         $this->beConstructedThrough('fromColumnDefinitions', [[
-            4 => TextColumn::fromNormalized(['code' => 'ingredient']),
+            4 => SelectColumn::fromNormalized(['code' => 'ingredient']),
             2 => NumberColumn::fromNormalized(['code' => 'quantity']),
         ]]);
 
@@ -96,9 +100,14 @@ class TableConfigurationSpec extends ObjectBehavior
             ->shouldBe(null);
     }
 
-//    TODO: implement when select columns are implemented
-//    function it_must_have_a_select_column_as_first_column()
-//    {
-//        $this->shouldThrow(\InvalidArgumentException::class)->duringInstantiation();
-//    }
+    function it_must_have_a_select_column_as_first_column()
+    {
+        $this->beConstructedThrough('fromColumnDefinitions', [[
+            NumberColumn::fromNormalized(['code' => 'quantity']),
+            SelectColumn::fromNormalized(['code' => 'ingredient']),
+        ]]);
+
+        $this->shouldThrow(new \InvalidArgumentException('The first column should have "select" type'))
+            ->duringInstantiation();
+    }
 }

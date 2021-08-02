@@ -15,6 +15,7 @@ namespace Specification\Akeneo\Pim\TableAttribute\Infrastructure\Validation\Prod
 
 use Akeneo\Pim\TableAttribute\Domain\TableConfiguration\NumberColumn;
 use Akeneo\Pim\TableAttribute\Domain\TableConfiguration\Repository\TableConfigurationRepository;
+use Akeneo\Pim\TableAttribute\Domain\TableConfiguration\SelectColumn;
 use Akeneo\Pim\TableAttribute\Domain\TableConfiguration\TableConfiguration;
 use Akeneo\Pim\TableAttribute\Domain\TableConfiguration\TextColumn;
 use Akeneo\Pim\TableAttribute\Domain\Value\Table;
@@ -37,7 +38,7 @@ final class FirstColumnShouldBeFilledValidatorSpec extends ObjectBehavior
 
         $tableConfigurationRepository->getByAttributeCode('nutrition')->willReturn(
             TableConfiguration::fromColumnDefinitions([
-                TextColumn::fromNormalized(['code' => 'ingredient']),
+                SelectColumn::fromNormalized(['code' => 'ingredient']),
                 NumberColumn::fromNormalized(['code' => 'quantity']),
             ])
         );

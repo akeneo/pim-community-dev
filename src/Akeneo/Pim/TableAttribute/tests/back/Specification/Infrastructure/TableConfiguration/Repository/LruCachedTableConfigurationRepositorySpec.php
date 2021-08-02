@@ -4,6 +4,7 @@ namespace Specification\Akeneo\Pim\TableAttribute\Infrastructure\TableConfigurat
 
 use Akeneo\Pim\TableAttribute\Domain\TableConfiguration\NumberColumn;
 use Akeneo\Pim\TableAttribute\Domain\TableConfiguration\Repository\TableConfigurationRepository;
+use Akeneo\Pim\TableAttribute\Domain\TableConfiguration\SelectColumn;
 use Akeneo\Pim\TableAttribute\Domain\TableConfiguration\TableConfiguration;
 use Akeneo\Pim\TableAttribute\Domain\TableConfiguration\TextColumn;
 use Akeneo\Pim\TableAttribute\Infrastructure\TableConfiguration\Repository\LruCachedTableConfigurationRepository;
@@ -26,7 +27,7 @@ class LruCachedTableConfigurationRepositorySpec extends ObjectBehavior
     {
         $tableConfiguration = TableConfiguration::fromColumnDefinitions(
             [
-                TextColumn::fromNormalized(['code' => 'ingredient', 'labels' => ['en_US' => 'Ingredient']]),
+                SelectColumn::fromNormalized(['code' => 'ingredient', 'labels' => ['en_US' => 'Ingredient']]),
                 NumberColumn::fromNormalized(['code' => 'quantity', 'labels' => ['en_US' => 'Quantity']]),
             ]
         );
@@ -40,7 +41,7 @@ class LruCachedTableConfigurationRepositorySpec extends ObjectBehavior
     ) {
         $tableConfiguration = TableConfiguration::fromColumnDefinitions(
             [
-                TextColumn::fromNormalized(['code' => 'ingredient', 'labels' => ['en_US' => 'Ingredient']]),
+                SelectColumn::fromNormalized(['code' => 'ingredient', 'labels' => ['en_US' => 'Ingredient']]),
                 NumberColumn::fromNormalized(['code' => 'quantity', 'labels' => ['en_US' => 'Quantity']]),
             ]
         );
@@ -54,13 +55,13 @@ class LruCachedTableConfigurationRepositorySpec extends ObjectBehavior
     ) {
         $tableConfiguration = TableConfiguration::fromColumnDefinitions(
             [
-                TextColumn::fromNormalized(['code' => 'ingredient', 'labels' => ['en_US' => 'Ingredient']]),
+                SelectColumn::fromNormalized(['code' => 'ingredient', 'labels' => ['en_US' => 'Ingredient']]),
                 NumberColumn::fromNormalized(['code' => 'quantity', 'labels' => ['en_US' => 'Quantity']]),
             ]
         );
         $otherTableConfiguration = TableConfiguration::fromColumnDefinitions(
             [
-                TextColumn::fromNormalized(['code' => 'package']),
+                SelectColumn::fromNormalized(['code' => 'package']),
                 NumberColumn::fromNormalized(['code' => 'width']),
                 NumberColumn::fromNormalized(['code' => 'height']),
                 NumberColumn::fromNormalized(['code' => 'depth']),
@@ -80,7 +81,7 @@ class LruCachedTableConfigurationRepositorySpec extends ObjectBehavior
     ) {
         $tableConfiguration = TableConfiguration::fromColumnDefinitions(
             [
-                TextColumn::fromNormalized(['code' => 'ingredient', 'labels' => ['en_US' => 'Ingredient']]),
+                SelectColumn::fromNormalized(['code' => 'ingredient', 'labels' => ['en_US' => 'Ingredient']]),
                 NumberColumn::fromNormalized(['code' => 'quantity', 'labels' => ['en_US' => 'Quantity']]),
             ]
         );

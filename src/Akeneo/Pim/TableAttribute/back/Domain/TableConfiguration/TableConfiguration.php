@@ -35,16 +35,18 @@ final class TableConfiguration
      */
     public static function fromColumnDefinitions(array $columnDefinitions): self
     {
+        $columnDefinitions = array_values($columnDefinitions);
         Assert::allIsInstanceOf($columnDefinitions, ColumnDefinition::class);
         Assert::minCount($columnDefinitions, 2);
+        Assert::isInstanceOf($columnDefinitions[0], SelectColumn::class, 'The first column should have "select" type');
 
         $codes = \array_map(
-            fn (ColumnDefinition $definition): string => $definition->code()->asString(),
+            fn (ColumnDefinition $definition): string => strtolower($definition->code()->asString()),
             $columnDefinitions
         );
-        Assert::uniqueValues($codes);
+        Assert::uniqueValues($codes, 'The column codes are not unique');
 
-        return new self(array_values($columnDefinitions));
+        return new self($columnDefinitions);
     }
 
     /**

@@ -5,6 +5,7 @@ namespace Specification\Akeneo\Pim\TableAttribute\Infrastructure\TableConfigurat
 use Akeneo\Pim\Structure\Component\AttributeTypes;
 use Akeneo\Pim\Structure\Component\Model\AttributeInterface;
 use Akeneo\Pim\TableAttribute\Domain\TableConfiguration\Repository\TableConfigurationRepository;
+use Akeneo\Pim\TableAttribute\Domain\TableConfiguration\SelectColumn;
 use Akeneo\Pim\TableAttribute\Domain\TableConfiguration\TableConfiguration;
 use Akeneo\Pim\TableAttribute\Domain\TableConfiguration\TextColumn;
 use Akeneo\Pim\TableAttribute\Infrastructure\TableConfiguration\EventSubscriber\LoadRawTableConfiguration;
@@ -67,13 +68,13 @@ class LoadRawTableConfigurationSpec extends ObjectBehavior
         $tableConfigurationRepository->getByAttributeCode('nutrition')->shouldBeCalled()->willReturn(
             TableConfiguration::fromColumnDefinitions(
                 [
-                    TextColumn::fromNormalized(['code' => 'ingredients', 'labels' => []]),
+                    SelectColumn::fromNormalized(['code' => 'ingredients', 'labels' => []]),
                     TextColumn::fromNormalized(['code' => 'quantity', 'labels' => []]),
                 ]
             )
         );
         $attribute->setRawTableConfiguration([
-            ['code' => 'ingredients', 'data_type' => 'text', 'labels' => (object) [], 'validations' => (object) []],
+            ['code' => 'ingredients', 'data_type' => 'select', 'labels' => (object) [], 'validations' => (object) []],
             ['code' => 'quantity', 'data_type' => 'text', 'labels' => (object) [], 'validations' => (object) []],
         ])->shouldBeCalled();
 

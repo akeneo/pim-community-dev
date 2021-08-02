@@ -32,11 +32,11 @@ class SelectOptionsShouldExistValidatorSpec extends ObjectBehavior
         $this->initialize($context);
 
         $tableConfiguration = TableConfiguration::fromColumnDefinitions([
-            TextColumn::fromNormalized(['code' => 'quantity']),
             SelectColumn::fromNormalized(['code' => 'ingredient', 'options' => [
                 ['code' => 'salt'],
                 ['code' => 'sugar'],
             ]]),
+            TextColumn::fromNormalized(['code' => 'quantity']),
             SelectColumn::fromNormalized(['code' => 'supplier', 'options' => [
                 ['code' => 'Akeneo'],
             ]]),

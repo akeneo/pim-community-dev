@@ -5,8 +5,10 @@ namespace Specification\Akeneo\Pim\TableAttribute\Infrastructure\TableConfigurat
 use Akeneo\Pim\Structure\Component\AttributeTypes;
 use Akeneo\Pim\Structure\Component\Model\AttributeInterface;
 use Akeneo\Pim\TableAttribute\Domain\TableConfiguration\Factory\ColumnFactory;
+use Akeneo\Pim\TableAttribute\Domain\TableConfiguration\NumberColumn;
 use Akeneo\Pim\TableAttribute\Domain\TableConfiguration\Repository\SelectOptionCollectionRepository;
 use Akeneo\Pim\TableAttribute\Domain\TableConfiguration\Repository\TableConfigurationRepository;
+use Akeneo\Pim\TableAttribute\Domain\TableConfiguration\SelectColumn;
 use Akeneo\Pim\TableAttribute\Domain\TableConfiguration\SelectOptionCollection;
 use Akeneo\Pim\TableAttribute\Domain\TableConfiguration\TableConfiguration;
 use Akeneo\Pim\TableAttribute\Domain\TableConfiguration\TextColumn;
@@ -69,12 +71,12 @@ class TableConfigurationSaverSpec extends ObjectBehavior
     ) {
         $attribute->getType()->willReturn(AttributeTypes::TABLE);
         $attribute->getRawTableConfiguration()->willReturn([
-            ['data_type' => 'text', 'code' => 'ingredients', 'labels' => []],
+            ['data_type' => 'select', 'code' => 'ingredients', 'labels' => []],
             ['data_type' => 'text', 'code' => 'quantity', 'labels' => []],
         ]);
         $attribute->getCode()->willReturn('nutrition');
-        $columnFactory->createFromNormalized(['data_type' => 'text', 'code' => 'ingredients', 'labels' => []])
-            ->willReturn(TextColumn::fromNormalized(['data_type' => 'text', 'code' => 'ingredients', 'labels' => []]));
+        $columnFactory->createFromNormalized(['data_type' => 'select', 'code' => 'ingredients', 'labels' => []])
+            ->willReturn(SelectColumn::fromNormalized(['data_type' => 'text', 'code' => 'ingredients', 'labels' => []]));
         $columnFactory->createFromNormalized(['data_type' => 'text', 'code' => 'quantity', 'labels' => []])
             ->willReturn(TextColumn::fromNormalized(['data_type' => 'text', 'code' => 'quantity', 'labels' => []]));
 
@@ -95,10 +97,10 @@ class TableConfigurationSaverSpec extends ObjectBehavior
         $attribute->getType()->willReturn(AttributeTypes::TABLE);
         $attribute->getRawTableConfiguration()->willReturn([$column1, $column2, $column3, $column4]);
         $attribute->getCode()->willReturn('nutrition');
-        $columnFactory->createFromNormalized($column1)->willReturn(TextColumn::fromNormalized($column1));
-        $columnFactory->createFromNormalized($column2)->willReturn(TextColumn::fromNormalized($column2));
-        $columnFactory->createFromNormalized($column3)->willReturn(TextColumn::fromNormalized($column3));
-        $columnFactory->createFromNormalized($column4)->willReturn(TextColumn::fromNormalized($column4));
+        $columnFactory->createFromNormalized($column1)->willReturn(SelectColumn::fromNormalized($column1));
+        $columnFactory->createFromNormalized($column2)->willReturn(SelectColumn::fromNormalized($column2));
+        $columnFactory->createFromNormalized($column3)->willReturn(NumberColumn::fromNormalized($column3));
+        $columnFactory->createFromNormalized($column4)->willReturn(SelectColumn::fromNormalized($column4));
 
         $tableConfigurationRepository->save('nutrition', Argument::type(TableConfiguration::class))->shouldBeCalled();
 
