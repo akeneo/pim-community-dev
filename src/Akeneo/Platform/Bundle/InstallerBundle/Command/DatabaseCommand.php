@@ -185,7 +185,9 @@ class DatabaseCommand extends Command
 
         if (false === $input->getOption('withoutFixtures')) {
             $this->eventDispatcher->dispatch(
-                new InstallerEvent($this->commandExecutor),
+                new InstallerEvent($this->commandExecutor, null, [
+                    'catalog' => $input->getOption('catalog')
+                ]),
                 InstallerEvents::PRE_LOAD_FIXTURES
             );
 
