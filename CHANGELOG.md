@@ -2,6 +2,7 @@
 
 ## Bug fixes
 
+- PIM-10005: New Product API Web Permission migration didn't work properly
 - PIM-9946: Throw warning when product import contains two products with same identifiers
 - PIM-9885: Associating a product to itself with a 2-way association returns an error 500
 - PIM-9890: Creating Channels with numeric code breaks the PIM

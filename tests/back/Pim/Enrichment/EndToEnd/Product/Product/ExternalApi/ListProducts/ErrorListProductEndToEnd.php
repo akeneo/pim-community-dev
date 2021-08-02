@@ -252,23 +252,6 @@ JSON;
         $this->assertJsonStringEqualsJsonString($expected, $client->getResponse()->getContent());
     }
 
-    public function test_access_denied_on_list_products_if_no_permission()
-    {
-        $client = $this->createAuthenticatedClient();
-        $this->removeAclFromRole('action:pim_api_product_list');
-        $client->request('GET', 'api/rest/v1/products?page=1limit=1');
-        $expectedResponse = <<<JSON
-{
-    "code": 403,
-    "message": "Access forbidden. You are not allowed to list products."
-}
-JSON;
-
-        $response = $client->getResponse();
-        $this->assertSame(Response::HTTP_FORBIDDEN, $response->getStatusCode());
-        $this->assertJsonStringEqualsJsonString($expectedResponse, $response->getContent());
-    }
-
     /**
      * @param Client $client
      * @param string $message
