@@ -5,4 +5,4 @@ services:
             - '@translator'
             - '@Akeneo\Platform\TailoredExport\Domain\Query\FindSystemSourcesInterface'
             - '@akeneo.pim.structure.query.find_association_types'
-            - '@akeneo.pim.structure.query.find_flatten_attributes'
+            - '@Akeneo\Platform\TailoredExport\Domain\Query\FindViewableAttributesInterface'

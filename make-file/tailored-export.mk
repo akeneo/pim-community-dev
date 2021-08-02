@@ -28,7 +28,7 @@ else
 endif
 
 .PHONY: ci-back
-ci-back: unit-back acceptance-back integration-back lint-back coupling-back
+ci-back: lint-back coupling-back unit-back acceptance-back integration-back
 
 .PHONY: ci-front
 ci-front:

@@ -1,60 +1,9 @@
-import React, {ReactNode} from 'react';
-import {act, screen} from '@testing-library/react';
+import React from 'react';
+import {screen} from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
-import {Channel, renderWithProviders as baseRender, ValidationError} from '@akeneo-pim-community/shared';
+import {ValidationError} from '@akeneo-pim-community/shared';
 import {CodeLabelSelector} from './CodeLabelSelector';
-import {Attribute} from '../../../models/Attribute';
-import {FetcherContext} from '../../../contexts';
-import {AssociationType} from '../../../models';
-
-const attributes = [
-  {
-    code: 'description',
-    type: 'pim_catalog_text',
-    labels: {},
-    scopable: false,
-    localizable: false,
-    is_locale_specific: false,
-    available_locales: [],
-  },
-];
-const channels: Channel[] = [
-  {
-    code: 'ecommerce',
-    labels: {},
-    locales: [
-      {
-        code: 'en_US',
-        label: 'en_US',
-        region: 'US',
-        language: 'en',
-      },
-      {
-        code: 'fr_FR',
-        label: 'fr_FR',
-        region: 'FR',
-        language: 'fr',
-      },
-    ],
-    category_tree: '',
-    conversion_units: [],
-    currencies: [],
-    meta: {
-      created: '',
-      form: '',
-      id: 1,
-      updated: '',
-    },
-  },
-];
-const fetchers = {
-  attribute: {fetchByIdentifiers: (): Promise<Attribute[]> => Promise.resolve<Attribute[]>(attributes)},
-  channel: {fetchAll: (): Promise<Channel[]> => Promise.resolve(channels)},
-  associationType: {fetchByCodes: (): Promise<AssociationType[]> => Promise.resolve([])},
-};
-
-const renderWithProviders = async (node: ReactNode) =>
-  await act(async () => void baseRender(<FetcherContext.Provider value={fetchers}>{node}</FetcherContext.Provider>));
+import {renderWithProviders} from 'feature/tests';
 
 test('it displays a type dropdown when the selection type is code', async () => {
   const onSelectionChange = jest.fn();
@@ -83,7 +32,7 @@ test('it displays a locale dropdown when the selection type is label', async () 
   expect(screen.getByText('pim_common.locale')).toBeInTheDocument();
 
   userEvent.click(screen.getByLabelText('pim_common.locale'));
-  userEvent.click(screen.getByText('fr_FR'));
+  userEvent.click(screen.getByText('Français'));
 
   expect(onSelectionChange).toHaveBeenCalledWith({type: 'label', locale: 'fr_FR'});
 });

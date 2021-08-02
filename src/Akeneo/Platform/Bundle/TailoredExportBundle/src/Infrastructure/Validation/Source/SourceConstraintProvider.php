@@ -44,13 +44,11 @@ class SourceConstraintProvider
                     new Type([
                         'type' => 'string',
                     ]),
-                    new ChannelShouldExist(),
                 ],
                 'locale' => [
                     new Type([
                         'type' => 'string',
                     ]),
-                    new LocaleShouldBeActive()
                 ],
                 'type' =>  new Choice([
                     'choices' => [AttributeSource::TYPE, PropertySource::TYPE, AssociationTypeSource::TYPE],

@@ -18,41 +18,17 @@ use Akeneo\Test\IntegrationTestsBundle\Configuration\CatalogInterface;
 use Symfony\Bundle\FrameworkBundle\KernelBrowser;
 use Symfony\Bundle\FrameworkBundle\Test\WebTestCase;
 
-abstract class ControllerIntegrationTestCase extends WebTestCase
+abstract class ControllerIntegrationTestCase extends IntegrationTestCase
 {
-    protected CatalogInterface $catalog;
     protected KernelBrowser $client;
-
-    abstract protected function getConfiguration(): Configuration;
 
     protected function setUp(): void
     {
+        parent::setUp();
         $this->client = static::createClient(['environment' => 'test', 'debug' => false]);
         $this->client->disableReboot();
 
-        $this->catalog = $this->get('akeneo_integration_tests.catalogs');
-        $fixturesLoader = $this->get('akeneo_integration_tests.loader.fixtures_loader');
-        $fixturesLoader->load($this->getConfiguration());
-
         $authenticator = $this->get('akeneo_integration_tests.security.system_user_authenticator');
         $authenticator->createSystemUser();
-
-        $this->get('pim_connector.doctrine.cache_clearer')->clear();
-    }
-
-    protected function get(string $service)
-    {
-        return self::$container->get($service);
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    protected function tearDown(): void
-    {
-        $connectionCloser = $this->get('akeneo_integration_tests.doctrine.connection.connection_closer');
-        $connectionCloser->closeConnections();
-
-        $this->ensureKernelShutdown();
     }
 }

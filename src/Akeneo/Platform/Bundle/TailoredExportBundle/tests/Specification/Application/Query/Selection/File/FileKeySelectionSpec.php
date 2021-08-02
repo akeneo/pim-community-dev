@@ -18,8 +18,18 @@ use PhpSpec\ObjectBehavior;
 
 class FileKeySelectionSpec extends ObjectBehavior
 {
+    public function let()
+    {
+        $this->beConstructedWith('foo_attribute_code');
+    }
+
     public function it_is_initializable(): void
     {
         $this->shouldBeAnInstanceOf(FileKeySelection::class);
+    }
+
+    public function it_returns_the_attribute_code()
+    {
+        $this->getAttributeCode()->shouldReturn('foo_attribute_code');
     }
 }

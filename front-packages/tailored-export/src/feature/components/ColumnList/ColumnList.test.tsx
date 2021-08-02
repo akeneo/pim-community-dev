@@ -1,54 +1,10 @@
-import React, {ReactNode} from 'react';
-import {screen, fireEvent, act, within} from '@testing-library/react';
+import React from 'react';
+import {screen, fireEvent, within} from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
-import {Channel, renderWithProviders as baseRender} from '@akeneo-pim-community/shared';
 import {ColumnList} from './ColumnList';
-import {FetcherContext, ValidationErrorsContext} from '../../contexts';
+import {ValidationErrorsContext} from '../../contexts';
 import {ColumnConfiguration} from '../../models/ColumnConfiguration';
-import {AssociationType, Attribute} from '../../models';
-
-const associationTypes: AssociationType[] = [
-  {
-    code: 'XSELL',
-    labels: {en_US: 'Cross sell'},
-    is_quantified: false,
-  },
-  {
-    code: 'UPSELL',
-    labels: {},
-    is_quantified: false,
-  },
-];
-
-const attributes: Attribute[] = [
-  {
-    type: 'pim_catalog_text',
-    code: 'name',
-    labels: {fr_FR: 'French name', en_US: 'English name'},
-    scopable: false,
-    localizable: false,
-    is_locale_specific: false,
-    available_locales: [],
-  },
-  {
-    type: 'pim_catalog_textarea',
-    code: 'description',
-    labels: {fr_FR: 'French description', en_US: 'English description'},
-    scopable: false,
-    localizable: false,
-    is_locale_specific: false,
-    available_locales: [],
-  },
-];
-
-const fetchers = {
-  attribute: {fetchByIdentifiers: (): Promise<Attribute[]> => Promise.resolve<Attribute[]>(attributes)},
-  channel: {fetchAll: (): Promise<Channel[]> => Promise.resolve([])},
-  associationType: {fetchByCodes: (): Promise<AssociationType[]> => Promise.resolve(associationTypes)},
-};
-
-const renderWithProviders = async (node: ReactNode) =>
-  await act(async () => void baseRender(<FetcherContext.Provider value={fetchers}>{node}</FetcherContext.Provider>));
+import {renderWithProviders} from 'feature/tests';
 
 test('it renders a placeholder when no column is selected', async () => {
   const columnsConfiguration: ColumnConfiguration[] = [
@@ -80,6 +36,7 @@ test('it renders a placeholder when no column is selected', async () => {
       onColumnCreated={jest.fn}
       onColumnsCreated={jest.fn}
       onColumnRemoved={jest.fn}
+      onFocusNext={jest.fn()}
       onColumnSelected={jest.fn}
       selectedColumn={null}
     />
@@ -120,6 +77,7 @@ test('it can remove a column', async () => {
       onColumnsCreated={jest.fn}
       onColumnRemoved={handleRemove}
       onColumnSelected={jest.fn}
+      onFocusNext={jest.fn()}
       selectedColumn={null}
     />
   );
@@ -153,6 +111,7 @@ test('it can create a new column', async () => {
       onColumnCreated={handleCreate}
       onColumnsCreated={handleCreate}
       onColumnRemoved={jest.fn}
+      onFocusNext={jest.fn()}
       onColumnSelected={jest.fn}
       selectedColumn={null}
     />
@@ -189,6 +148,7 @@ test('it can handle paste events', async () => {
       onColumnCreated={handleCreate}
       onColumnsCreated={handleCreate}
       onColumnRemoved={jest.fn}
+      onFocusNext={jest.fn()}
       onColumnSelected={jest.fn}
       selectedColumn={null}
     />
@@ -233,6 +193,7 @@ test('it can update a column', async () => {
       onColumnCreated={jest.fn}
       onColumnsCreated={jest.fn}
       onColumnRemoved={jest.fn}
+      onFocusNext={jest.fn()}
       onColumnSelected={jest.fn}
       selectedColumn={null}
     />
@@ -298,6 +259,7 @@ test('it displays validation errors', async () => {
         onColumnCreated={jest.fn}
         onColumnsCreated={jest.fn}
         onColumnRemoved={jest.fn}
+        onFocusNext={jest.fn()}
         onColumnSelected={jest.fn}
         selectedColumn={null}
       />
@@ -311,7 +273,7 @@ test('it displays validation errors', async () => {
   expect(globalError).toBeInTheDocument();
 });
 
-test('it move to next line when user type enter', async () => {
+test('it moves to next line when user type enter', async () => {
   const columnsConfiguration: ColumnConfiguration[] = [
     {
       uuid: '1',
@@ -334,6 +296,7 @@ test('it move to next line when user type enter', async () => {
   ];
 
   const handleColumnSelected = jest.fn();
+  const handleFocusNext = jest.fn();
 
   await renderWithProviders(
     <ColumnList
@@ -343,6 +306,7 @@ test('it move to next line when user type enter', async () => {
       onColumnCreated={jest.fn}
       onColumnsCreated={jest.fn}
       onColumnRemoved={jest.fn}
+      onFocusNext={handleFocusNext}
       onColumnSelected={handleColumnSelected}
       selectedColumn={null}
     />
@@ -351,7 +315,8 @@ test('it move to next line when user type enter', async () => {
   const firstInput = screen.getByDisplayValue('my column');
   userEvent.type(firstInput, '{enter}');
 
-  expect(handleColumnSelected).toHaveBeenCalledWith('2');
+  expect(handleColumnSelected).toHaveBeenCalledWith('1');
+  expect(handleFocusNext).toHaveBeenCalled();
 });
 
 test('it focus the selected column', async () => {
@@ -384,6 +349,7 @@ test('it focus the selected column', async () => {
       onColumnCreated={jest.fn}
       onColumnsCreated={jest.fn}
       onColumnRemoved={jest.fn}
+      onFocusNext={jest.fn()}
       onColumnSelected={jest.fn}
       selectedColumn={columnsConfiguration[0]}
     />
@@ -463,6 +429,7 @@ test('it displays the sources labels on the row', async () => {
       onColumnCreated={jest.fn}
       onColumnsCreated={jest.fn}
       onColumnRemoved={jest.fn}
+      onFocusNext={jest.fn()}
       onColumnSelected={jest.fn}
       selectedColumn={columnsConfiguration[0]}
     />

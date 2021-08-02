@@ -19,10 +19,10 @@ test('it displays the selected operator', () => {
   expect(screen.getByText('pim_enrich.export.product.filter.completeness.operators.ALL')).toBeInTheDocument();
 });
 
-test('it notifies when the operator is changed', async () => {
+test('it notifies when the operator is changed', () => {
   const onOperatorChange = jest.fn();
 
-  await renderWithProviders(
+  renderWithProviders(
     <OperatorSelector
       availableOperators={availableOperators}
       operator="ALL"
@@ -39,10 +39,10 @@ test('it notifies when the operator is changed', async () => {
   expect(onOperatorChange).toHaveBeenCalledWith('LOWER THAN ON ALL LOCALES');
 });
 
-test('it displays validations errors if any', async () => {
+test('it displays validations errors if any', () => {
   const myErrorMessage = 'My message.';
 
-  await renderWithProviders(
+  renderWithProviders(
     <OperatorSelector
       availableOperators={availableOperators}
       operator="ALL"

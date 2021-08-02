@@ -20,6 +20,7 @@ use Akeneo\Platform\TailoredExport\Application\ProductMapper;
 use Akeneo\Platform\TailoredExport\Application\Query\Column\ColumnCollection;
 use Akeneo\Platform\TailoredExport\Application\Query\Source\AssociationTypeSource;
 use Akeneo\Platform\TailoredExport\Application\Query\Source\AttributeSource;
+use Akeneo\Platform\TailoredExport\Domain\MediaToExportExtractorInterface;
 use Akeneo\Platform\TailoredExport\Infrastructure\Hydrator\ColumnCollectionHydrator;
 use Akeneo\Platform\TailoredExport\Infrastructure\Hydrator\ValueCollectionHydrator;
 use Akeneo\Tool\Component\Batch\Item\ItemProcessorInterface;
@@ -33,6 +34,7 @@ class ProductExportProcessor implements ItemProcessorInterface, StepExecutionAwa
     private ValueCollectionHydrator $valueCollectionHydrator;
     private ColumnCollectionHydrator $columnCollectionHydrator;
     private ProductMapper $productMapper;
+    private MediaToExportExtractorInterface $mediaToExportExtractor;
     private ?StepExecution $stepExecution = null;
     private ?ColumnCollection $columnCollection = null;
 
@@ -41,13 +43,15 @@ class ProductExportProcessor implements ItemProcessorInterface, StepExecutionAwa
         GetAssociationTypesInterface $getAssociationTypes,
         ValueCollectionHydrator $valueCollectionHydrator,
         ColumnCollectionHydrator $columnCollectionHydrator,
-        ProductMapper $productMapper
+        ProductMapper $productMapper,
+        MediaToExportExtractorInterface $mediaToExportExtractor
     ) {
         $this->getAttributes = $getAttributes;
         $this->getAssociationTypes = $getAssociationTypes;
         $this->valueCollectionHydrator = $valueCollectionHydrator;
         $this->columnCollectionHydrator = $columnCollectionHydrator;
         $this->productMapper = $productMapper;
+        $this->mediaToExportExtractor = $mediaToExportExtractor;
     }
 
     /**
@@ -67,7 +71,10 @@ class ProductExportProcessor implements ItemProcessorInterface, StepExecutionAwa
         $columnCollection = $this->getColumnCollection($columns);
         $valueCollection = $this->valueCollectionHydrator->hydrate($product, $columnCollection);
 
-        return $this->productMapper->map($columnCollection, $valueCollection);
+        $mappedProducts = $this->productMapper->map($columnCollection, $valueCollection);
+        $filesToExport = $this->mediaToExportExtractor->extract($columnCollection, $valueCollection);
+
+        return new ProcessedTailoredExport($mappedProducts, $filesToExport);
     }
 
     /**

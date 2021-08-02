@@ -1,9 +1,9 @@
 import React from 'react';
 import {screen} from '@testing-library/react';
+import userEvent from '@testing-library/user-event';
 import {renderWithProviders} from '@akeneo-pim-community/shared';
 import {PropertySourceConfigurator} from './PropertySourceConfigurator';
 import {Source} from '../../models';
-import userEvent from '@testing-library/user-event';
 
 jest.mock('./Enabled/EnabledConfigurator', () => ({
   ...jest.requireActual('./Enabled/EnabledConfigurator'),
@@ -36,6 +36,14 @@ test('it renders a property configurator', () => {
         code: 'enabled',
         uuid: 'unique_id',
         type: 'property',
+        locale: null,
+        channel: null,
+        operations: {
+          replacement: {type: 'replacement', mapping: {true: 'vrai', false: 'faux'}},
+        },
+        selection: {
+          type: 'code',
+        },
       }}
       validationErrors={[]}
       onSourceChange={handleSourceChange}
@@ -49,6 +57,13 @@ test('it renders a property configurator', () => {
     uuid: 'unique_id',
     type: 'property',
     locale: 'en_US',
+    channel: null,
+    operations: {
+      replacement: {type: 'replacement', mapping: {true: 'vrai', false: 'faux'}},
+    },
+    selection: {
+      type: 'code',
+    },
   });
 });
 
@@ -62,6 +77,12 @@ test('it render nothing if the configurator is unknown', () => {
         code: 'nothing',
         uuid: 'unique_id',
         type: 'property',
+        locale: null,
+        channel: null,
+        operations: {},
+        selection: {
+          type: 'code',
+        },
       }}
       validationErrors={[]}
       onSourceChange={handleSourceChange}

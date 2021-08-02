@@ -21,8 +21,10 @@ use Akeneo\Pim\Structure\Component\Query\PublicApi\AttributeType\Attribute;
 use Akeneo\Pim\Structure\Component\Query\PublicApi\AttributeType\GetAttributes;
 use Akeneo\Platform\TailoredExport\Application\ProductMapper;
 use Akeneo\Platform\TailoredExport\Application\Query\Column\ColumnCollection;
+use Akeneo\Platform\TailoredExport\Domain\MediaToExportExtractorInterface;
 use Akeneo\Platform\TailoredExport\Domain\SourceValue\StringValue;
 use Akeneo\Platform\TailoredExport\Domain\ValueCollection;
+use Akeneo\Platform\TailoredExport\Infrastructure\Connector\Processor\ProcessedTailoredExport;
 use Akeneo\Platform\TailoredExport\Infrastructure\Hydrator\ColumnCollectionHydrator;
 use Akeneo\Platform\TailoredExport\Infrastructure\Hydrator\ValueCollectionHydrator;
 use Akeneo\Tool\Component\Batch\Job\JobParameters;
@@ -38,14 +40,16 @@ class ProductExportProcessorSpec extends ObjectBehavior
         GetAssociationTypesInterface $getAssociationTypes,
         ValueCollectionHydrator $valueCollectionHydrator,
         ColumnCollectionHydrator $columnCollectionHydrator,
-        ProductMapper $productMapper
+        ProductMapper $productMapper,
+        MediaToExportExtractorInterface $mediaToExportExtractor
     ) {
         $this->beConstructedWith(
             $getAttributes,
             $getAssociationTypes,
             $valueCollectionHydrator,
             $columnCollectionHydrator,
-            $productMapper
+            $productMapper,
+            $mediaToExportExtractor
         );
         $this->setStepExecution($stepExecution);
 
@@ -60,7 +64,8 @@ class ProductExportProcessorSpec extends ObjectBehavior
         ValueCollectionHydrator $valueCollectionHydrator,
         ColumnCollectionHydrator $columnCollectionHydrator,
         ColumnCollection $columnCollection,
-        ProductMapper $productMapper
+        ProductMapper $productMapper,
+        MediaToExportExtractorInterface $mediaToExportExtractor
     ) {
         $columns = [
             [
@@ -113,7 +118,7 @@ class ProductExportProcessorSpec extends ObjectBehavior
         $crossSellAssociation = $this->createAssociationType('X_SELL');
         $valueCollection = new ValueCollection();
         $valueCollection->add(new StringValue('some_data'), 'name', null, null);
-        $mappedProduct = [
+        $mappedProducts = [
             'categories-export' => 'my category',
             'name-export' => 'name value',
         ];
@@ -123,9 +128,13 @@ class ProductExportProcessorSpec extends ObjectBehavior
         $getAssociationTypes->forCodes(['X_SELL'])->willReturn(['X_SELL' => $crossSellAssociation]);
         $columnCollectionHydrator->hydrate($columns, ['name' => $name], ['X_SELL' => $crossSellAssociation])->willReturn($columnCollection);
         $valueCollectionHydrator->hydrate($product, $columnCollection)->willReturn($valueCollection);
-        $productMapper->map($columnCollection, $valueCollection)->willReturn($mappedProduct);
 
-        $this->process($product)->shouldReturn($mappedProduct);
+        $productMapper->map($columnCollection, $valueCollection)->willReturn($mappedProducts);
+        $mediaToExportExtractor->extract($columnCollection, $valueCollection)->willReturn([]);
+
+        $processedTailoredExport = new ProcessedTailoredExport($mappedProducts, []);
+
+        $this->process($product)->shouldBeLike($processedTailoredExport);
     }
 
     private function createAttribute(string $code): Attribute

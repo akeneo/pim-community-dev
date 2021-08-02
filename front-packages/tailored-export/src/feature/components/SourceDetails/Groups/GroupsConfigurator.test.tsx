@@ -3,9 +3,9 @@ import {screen} from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
 import {renderWithProviders} from '@akeneo-pim-community/shared';
 import {GroupsConfigurator} from './GroupsConfigurator';
-import {CodeLabelCollectionSelection} from '../../../models';
 import {getDefaultGroupsSource} from '../../../components/SourceDetails/Groups/model';
 import {getDefaultParentSource} from '../Parent/model';
+import {CodeLabelCollectionSelection} from '../common/CodeLabelCollectionSelector';
 
 jest.mock('../common/CodeLabelCollectionSelector', () => ({
   CodeLabelCollectionSelector: ({

@@ -17,4 +17,5 @@ use Akeneo\Platform\TailoredExport\Application\Query\Selection\SelectionInterfac
 
 interface FileSelectionInterface extends SelectionInterface
 {
+    public function getAttributeCode(): string;
 }

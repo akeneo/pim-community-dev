@@ -87,11 +87,17 @@ class ValueHydrator
 
         switch ($attributeType) {
             case 'pim_catalog_asset_collection':
-                return new AssetCollectionValue($data);
+                return new AssetCollectionValue(
+                    array_map('strval', $data),
+                    $product->getIdentifier(),
+                    $value->getScopeCode(),
+                    $value->getLocaleCode()
+                );
             case 'pim_catalog_file':
             case 'pim_catalog_image':
                 return new FileValue(
                     $product->getIdentifier(),
+                    $data->getStorage(),
                     $data->getKey(),
                     $data->getOriginalFilename(),
                     $value->getScopeCode(),

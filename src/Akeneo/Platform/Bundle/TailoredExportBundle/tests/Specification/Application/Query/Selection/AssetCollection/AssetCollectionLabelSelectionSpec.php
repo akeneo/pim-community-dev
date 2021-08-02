@@ -22,7 +22,8 @@ class AssetCollectionLabelSelectionSpec extends ObjectBehavior
         $this->beConstructedWith(
             '-',
             'fr_FR',
-            'a_family_code'
+            'a_family_code',
+            'foo_attribute_code'
         );
     }
 
@@ -39,5 +40,10 @@ class AssetCollectionLabelSelectionSpec extends ObjectBehavior
     public function it_returns_the_asset_family_code()
     {
         $this->getAssetFamilyCode()->shouldReturn('a_family_code');
+    }
+
+    public function it_returns_the_attribute_code()
+    {
+        $this->getAttributeCode()->shouldReturn('foo_attribute_code');
     }
 }

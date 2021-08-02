@@ -19,11 +19,21 @@ class AssetCollectionCodeSelectionSpec extends ObjectBehavior
 {
     public function let()
     {
-        $this->beConstructedWith('-');
+        $this->beConstructedWith('-', 'packshot', 'foo_attribute_code');
     }
 
     public function it_returns_the_separator()
     {
         $this->getSeparator()->shouldReturn('-');
+    }
+
+    public function it_returns_the_asset_family_code()
+    {
+        $this->getAssetFamilyCode()->shouldReturn('packshot');
+    }
+
+    public function it_returns_the_attribute_code()
+    {
+        $this->getAttributeCode()->shouldReturn('foo_attribute_code');
     }
 }
