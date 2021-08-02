@@ -102,10 +102,7 @@ const getOverlayPosition = (
     top = 'up' === verticalPosition ? parentRect.top - elementRect.height : parentRect.bottom + 1;
   }
 
-  const left =
-    'left' === horizontalPosition
-      ? parentRect.right - elementRect.width + BORDER_SHADOW_OFFSET
-      : parentRect.left - BORDER_SHADOW_OFFSET + 2;
+  const left = 'left' === horizontalPosition ? parentRect.right - elementRect.width : parentRect.left;
 
   return [top, left];
 };
