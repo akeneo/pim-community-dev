@@ -5,7 +5,7 @@ import {SubNavigationPanel} from './SubNavigationPanel';
 
 test('it renders its children properly', () => {
   render(
-    <SubNavigationPanel open={() => {}} close={() => {}}>
+    <SubNavigationPanel open={jest.fn()} close={jest.fn()}>
       SubNavigationPanel content
     </SubNavigationPanel>
   );
@@ -14,12 +14,12 @@ test('it renders its children properly', () => {
 
 test('it supports forwardRef', () => {
   const ref = {current: null};
-  render(<SubNavigationPanel open={() => {}} close={() => {}} ref={ref} />);
+  render(<SubNavigationPanel open={jest.fn()} close={jest.fn()} ref={ref} />);
   expect(ref.current).not.toBe(null);
 });
 
 test('it supports ...rest props', () => {
-  render(<SubNavigationPanel open={() => {}} close={() => {}} data-testid="my_value" />);
+  render(<SubNavigationPanel open={jest.fn()} close={jest.fn()} data-testid="my_value" />);
   expect(screen.getByTestId('my_value')).toBeInTheDocument();
 });
 
