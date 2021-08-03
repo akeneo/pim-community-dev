@@ -18,4 +18,6 @@ use Akeneo\Platform\TailoredExport\Application\Query\Selection\SelectionInterfac
 interface AssetCollectionSelectionInterface extends SelectionInterface
 {
     public function getSeparator(): string;
+    public function getAssetFamilyCode(): string;
+    public function getAttributeCode(): string;
 }

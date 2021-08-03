@@ -1,11 +1,9 @@
-import React, {useState} from 'react';
+import React, {useCallback, useEffect, useState} from 'react';
 import styled from 'styled-components';
 import {uuid} from 'akeneo-design-system';
 import {ValidationError} from '@akeneo-pim-community/shared';
-import {ColumnDetails} from './components/ColumnDetails/ColumnDetails';
-import {ColumnList} from './components/ColumnList/ColumnList';
+import {ColumnDetails, ColumnList, ColumnDetailsPlaceholder} from './components';
 import {ValidationErrorsContext} from './contexts/ValidationErrorsContext';
-import {ColumnDetailsPlaceholder} from './components/ColumnDetails/ColumnDetailsPlaceholder';
 import {
   addColumn,
   createColumn,
@@ -28,39 +26,70 @@ type ColumnsTabProps = {
   onColumnsConfigurationChange: (columnsConfiguration: ColumnConfiguration[]) => void;
 };
 
-const ColumnsTab = ({columnsConfiguration, validationErrors, onColumnsConfigurationChange}: ColumnsTabProps) => {
+const ColumnsTab = ({
+  columnsConfiguration: initial,
+  validationErrors,
+  onColumnsConfigurationChange,
+}: ColumnsTabProps) => {
+  const [columnsConfiguration, setColumnsConfiguration] = useState<ColumnConfiguration[]>(initial);
   const [selectedColumn, setSelectedColumn] = useState<string | null>(
     columnsConfiguration.length === 0 ? null : columnsConfiguration[0].uuid
   );
 
-  const handleCreateColumn = (newColumnName: string) => {
+  useEffect(() => {
+    onColumnsConfigurationChange(columnsConfiguration);
+  }, [onColumnsConfigurationChange, columnsConfiguration]);
+
+  const handleCreateColumn = useCallback((newColumnName: string) => {
     const column = createColumn(newColumnName, uuid());
-    onColumnsConfigurationChange(addColumn(columnsConfiguration, column));
+    setColumnsConfiguration(columnsConfiguration => addColumn(columnsConfiguration, column));
     setSelectedColumn(column.uuid);
-  };
-  const handleCreateColumns = (newColumnNames: string[]) => {
-    const newColumns = newColumnNames.reduce((existingColumns, newColumnName) => {
-      if (existingColumns.length === MAX_COLUMN_COUNT) return existingColumns;
-      const columnToAdd = createColumn(newColumnName, uuid());
-      return addColumn(existingColumns, columnToAdd);
-    }, columnsConfiguration);
-    onColumnsConfigurationChange(newColumns);
-    setSelectedColumn(newColumns[newColumns.length - 1].uuid);
-  };
-  const handleRemoveColumn = (columnUuid: string) => {
-    onColumnsConfigurationChange(removeColumn(columnsConfiguration, columnUuid));
-  };
-  const handleSelectColumn = (selectedColumn: string | null) => {
+  }, []);
+
+  const handleCreateColumns = useCallback((newColumnNames: string[]) => {
+    setColumnsConfiguration(columnsConfiguration => {
+      const newColumns = newColumnNames.reduce((existingColumns, newColumnName) => {
+        if (existingColumns.length === MAX_COLUMN_COUNT) return existingColumns;
+        const columnToAdd = createColumn(newColumnName, uuid());
+        return addColumn(existingColumns, columnToAdd);
+      }, columnsConfiguration);
+
+      setSelectedColumn(newColumns[newColumns.length - 1].uuid);
+
+      return newColumns;
+    });
+  }, []);
+
+  const handleRemoveColumn = useCallback((columnUuid: string) => {
+    setColumnsConfiguration(columnsConfiguration => removeColumn(columnsConfiguration, columnUuid));
+  }, []);
+
+  const handleSelectColumn = useCallback((selectedColumn: string | null) => {
     setSelectedColumn(selectedColumn);
-  };
-  const handleChangeColumn = (column: ColumnConfiguration) => {
-    onColumnsConfigurationChange(updateColumn(columnsConfiguration, column));
-  };
-  const handleReorderColumns = (newIndices: number[]) => {
-    onColumnsConfigurationChange(newIndices.map(index => columnsConfiguration[index]));
-  };
+  }, []);
+
+  const handleChangeColumn = useCallback((column: ColumnConfiguration) => {
+    setColumnsConfiguration(columnsConfiguration => updateColumn(columnsConfiguration, column));
+  }, []);
+
+  const handleReorderColumns = useCallback((newIndices: number[]) => {
+    setColumnsConfiguration(columnsConfiguration => newIndices.map(index => columnsConfiguration[index]));
+  }, []);
 
   const selectedColumnConfiguration = columnsConfiguration.find(({uuid}) => selectedColumn === uuid) ?? null;
+
+  const handleFocusNext = useCallback(() => {
+    setColumnsConfiguration(columnsConfiguration => {
+      setSelectedColumn(selectedColumn => {
+        const currentColumnIndex = columnsConfiguration.findIndex(({uuid}) => selectedColumn === uuid);
+        const nextColumn = columnsConfiguration[currentColumnIndex + 1];
+
+        return undefined === nextColumn ? null : nextColumn.uuid;
+      });
+
+      return columnsConfiguration;
+    });
+  }, []);
 
   return (
     <ValidationErrorsContext.Provider value={validationErrors}>
@@ -74,6 +103,7 @@ const ColumnsTab = ({columnsConfiguration, validationErrors, onColumnsConfigurat
           onColumnSelected={handleSelectColumn}
           onColumnRemoved={handleRemoveColumn}
           onColumnReorder={handleReorderColumns}
+          onFocusNext={handleFocusNext}
         />
         {null === selectedColumnConfiguration ? (
           <ColumnDetailsPlaceholder />

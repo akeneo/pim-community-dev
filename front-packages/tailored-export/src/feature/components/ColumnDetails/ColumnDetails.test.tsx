@@ -1,82 +1,18 @@
-import React, {ReactNode} from 'react';
+import React from 'react';
 import {act, screen} from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
-import {renderWithProviders as baseRender, Channel} from '@akeneo-pim-community/shared';
 import {ColumnDetails} from './ColumnDetails';
-import {AssociationType, Attribute, AvailableSourceGroup, ColumnConfiguration} from '../../models';
-import {FetcherContext, ValidationErrorsContext} from '../../contexts';
-
-const associationTypes: AssociationType[] = [
-  {
-    code: 'XSELL',
-    labels: {en_US: 'Cross sell'},
-    is_quantified: false,
-  },
-  {
-    code: 'UPSELL',
-    labels: {},
-    is_quantified: false,
-  },
-];
-
-const attributes: Attribute[] = [
-  {
-    code: 'description',
-    type: 'pim_catalog_text',
-    labels: {},
-    scopable: false,
-    localizable: false,
-    is_locale_specific: false,
-    available_locales: [],
-  },
-];
-
-const channels: Channel[] = [
-  {
-    code: 'ecommerce',
-    labels: {},
-    locales: [
-      {
-        code: 'en_US',
-        label: 'en_US',
-        region: 'US',
-        language: 'en',
-      },
-      {
-        code: 'br_FR',
-        label: 'Breton',
-        region: 'bzh',
-        language: 'br',
-      },
-    ],
-    category_tree: '',
-    conversion_units: [],
-    currencies: [],
-    meta: {
-      created: '',
-      form: '',
-      id: 1,
-      updated: '',
-    },
-  },
-];
-
-const fetchers = {
-  attribute: {fetchByIdentifiers: (): Promise<Attribute[]> => Promise.resolve<Attribute[]>(attributes)},
-  channel: {fetchAll: (): Promise<Channel[]> => Promise.resolve(channels)},
-  associationType: {fetchByCodes: (): Promise<AssociationType[]> => Promise.resolve(associationTypes)},
-};
-
-const renderWithProviders = async (node: ReactNode) =>
-  await act(async () => void baseRender(<FetcherContext.Provider value={fetchers}>{node}</FetcherContext.Provider>));
+import {ColumnConfiguration, Source} from '../../models';
+import {ValidationErrorsContext} from '../../contexts';
+import {renderWithProviders} from 'feature/tests';
 
 jest.mock('akeneo-design-system/lib/shared/uuid', () => ({
   uuid: () => '276b6361-badb-48a1-98ef-d75baa235148',
 }));
 
 jest.mock('../../hooks/useAvailableSourcesFetcher', () => ({
-  useAvailableSourcesFetcher: () => (): AvailableSourceGroup[] =>
-    [
+  useAvailableSourcesFetcher: () => () => ({
+    results: [
       {
         code: 'system',
         label: 'System',
@@ -126,6 +62,7 @@ jest.mock('../../hooks/useAvailableSourcesFetcher', () => ({
         ],
       },
     ],
+  }),
 }));
 
 test('it renders column details', async () => {
@@ -205,9 +142,9 @@ test('We can add an attribute source', async () => {
     uuid: '3a6645e0-0d70-411d-84ee-79833144544a',
     sources: [
       {
-        channel: null,
+        channel: 'ecommerce',
         code: 'description',
-        locale: null,
+        locale: 'en_US',
         operations: {},
         selection: {
           type: 'code',
@@ -221,6 +158,50 @@ test('We can add an attribute source', async () => {
       type: 'concat',
     },
   });
+});
+
+test('We cannot add source when the limit is reached', async () => {
+  const source: Source = {
+    channel: null,
+    code: 'description',
+    locale: null,
+    operations: {},
+    selection: {
+      type: 'code',
+    },
+    type: 'attribute',
+    uuid: '276b6361-badb-48a1-98ef-d75baa235148',
+  };
+
+  const columnConfiguration: ColumnConfiguration = {
+    uuid: '3a6645e0-0d70-411d-84ee-79833144544a',
+    sources: [source, {...source, uuid: '1'}, {...source, uuid: '2'}, {...source, uuid: '3'}],
+    target: 'My column name',
+    format: {
+      type: 'concat',
+      elements: [],
+    },
+  };
+
+  const handleColumnsConfigurationChange = jest.fn();
+
+  await renderWithProviders(
+    <ColumnDetails columnConfiguration={columnConfiguration} onColumnChange={handleColumnsConfigurationChange} />
+  );
+
+  const addSourceButton = screen.getByText('akeneo.tailored_export.column_details.sources.add');
+
+  expect(addSourceButton).toHaveAttribute('disabled');
+  expect(addSourceButton).toHaveAttribute(
+    'title',
+    'akeneo.tailored_export.validation.sources.max_source_count_reached'
+  );
+
+  await act(async () => {
+    userEvent.click(addSourceButton);
+  });
+
+  expect(handleColumnsConfigurationChange).not.toHaveBeenCalled();
 });
 
 test('We can add a property source', async () => {

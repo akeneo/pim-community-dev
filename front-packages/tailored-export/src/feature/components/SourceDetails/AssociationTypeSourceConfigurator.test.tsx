@@ -1,23 +1,9 @@
-import React, {ReactNode} from 'react';
-import {screen, act} from '@testing-library/react';
+import React from 'react';
+import {screen} from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
-import {renderWithProviders as baseRender, Channel} from '@akeneo-pim-community/shared';
 import {AssociationTypeSourceConfigurator} from './AssociationTypeSourceConfigurator';
-import {AssociationType, AssociationTypeConfiguratorProps, Attribute, Source} from '../../models';
-import {FetcherContext} from '../../contexts';
-
-const associationTypes: AssociationType[] = [
-  {
-    code: 'XSELL',
-    labels: {},
-    is_quantified: false,
-  },
-  {
-    code: 'PACK',
-    labels: {},
-    is_quantified: true,
-  },
-];
+import {AssociationTypeConfiguratorProps, Source} from '../../models';
+import {renderWithProviders} from 'feature/tests';
 
 const simpleAssociationTypeSource: Source = {
   uuid: 'cffd560e-1e40-4c55-a415-89c7958b270d',
@@ -46,18 +32,6 @@ const quantifiedAssociationTypeSource: Source = {
     separator: ',',
   },
 };
-
-const fetchers = {
-  attribute: {fetchByIdentifiers: (): Promise<Attribute[]> => Promise.resolve<Attribute[]>([])},
-  channel: {fetchAll: (): Promise<Channel[]> => Promise.resolve<Channel[]>([])},
-  associationType: {
-    fetchByCodes: (associationTypeCodes: string[]): Promise<AssociationType[]> =>
-      Promise.resolve(associationTypes.filter(({code}) => associationTypeCodes.includes(code))),
-  },
-};
-
-const renderWithProviders = async (node: ReactNode) =>
-  await act(async () => void baseRender(<FetcherContext.Provider value={fetchers}>{node}</FetcherContext.Provider>));
 
 jest.mock('./SimpleAssociationType/SimpleAssociationTypeConfigurator', () => ({
   SimpleAssociationTypeConfigurator: ({onSourceChange}: {onSourceChange: (updatedSource: Source) => void}) => (
@@ -121,4 +95,74 @@ test('it displays a quantified association type configurator', async () => {
     ...quantifiedAssociationTypeSource,
     selection: {type: 'code', entity_type: 'product_models', separator: ','},
   });
+});
+
+test('it displays association type errors when attribute does not exist', async () => {
+  const handleSourceChange = jest.fn();
+  const source: Source = {
+    uuid: 'cffd560e-1e40-4c55-a415-89c7958b270d',
+    code: 'invalid_association_type',
+    type: 'association_type',
+    locale: null,
+    channel: null,
+    operations: [],
+    selection: {
+      type: 'code',
+      entity_type: 'products',
+      separator: ',',
+    },
+  };
+
+  await renderWithProviders(
+    <AssociationTypeSourceConfigurator
+      source={source}
+      validationErrors={[
+        {
+          messageTemplate: 'code error message',
+          parameters: {},
+          message: '',
+          propertyPath: '',
+          invalidValue: '',
+        },
+      ]}
+      onSourceChange={handleSourceChange}
+    />
+  );
+
+  expect(screen.getByText('code error message')).toBeInTheDocument();
+});
+
+test('it displays association type errors when attribute is found', async () => {
+  const handleSourceChange = jest.fn();
+  const source: Source = {
+    uuid: 'cffd560e-1e40-4c55-a415-89c7958b270d',
+    code: 'XSELL',
+    type: 'association_type',
+    locale: null,
+    channel: null,
+    operations: [],
+    selection: {
+      type: 'code',
+      entity_type: 'products',
+      separator: ',',
+    },
+  };
+
+  await renderWithProviders(
+    <AssociationTypeSourceConfigurator
+      source={source}
+      validationErrors={[
+        {
+          messageTemplate: 'code error message',
+          parameters: {},
+          message: '',
+          propertyPath: '',
+          invalidValue: '',
+        },
+      ]}
+      onSourceChange={handleSourceChange}
+    />
+  );
+
+  expect(screen.getByText('code error message')).toBeInTheDocument();
 });

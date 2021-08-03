@@ -1,10 +1,12 @@
 import React from 'react';
-import {ValidationError} from '@akeneo-pim-community/shared';
-import {Source} from '../../models';
 import styled from 'styled-components';
+import {Helper} from 'akeneo-design-system';
+import {useTranslate, getErrorsForPath, ValidationError} from '@akeneo-pim-community/shared';
+import {Source} from '../../models';
 import {useAssociationType} from '../../hooks';
 import {SimpleAssociationTypeConfigurator} from './SimpleAssociationType/SimpleAssociationTypeConfigurator';
 import {QuantifiedAssociationTypeConfigurator} from './QuantifiedAssociationType/QuantifiedAssociationTypeConfigurator';
+import {DeletedSourcePlaceholder} from './DeletedSourcePlaceholder';
 
 const Container = styled.div`
   display: flex;
@@ -25,9 +27,24 @@ const AssociationTypeSourceConfigurator = ({
   validationErrors,
   onSourceChange,
 }: AssociationTypeSourceConfiguratorProps) => {
-  const associationType = useAssociationType(source.code);
+  const translate = useTranslate();
+  const [isFetching, associationType] = useAssociationType(source.code);
+  const associationTypeErrors = getErrorsForPath(validationErrors, '');
+
+  if (isFetching) return null;
   if (null === associationType) {
-    return null;
+    return (
+      <>
+        {associationTypeErrors.map((error, index) => (
+          <Helper key={index} level="error">
+            {translate(error.messageTemplate, error.parameters)}
+          </Helper>
+        ))}
+        <DeletedSourcePlaceholder
+          message={translate('akeneo.tailored_export.column_details.sources.deleted_association_type.title')}
+        />
+      </>
+    );
   }
 
   const Configurator = associationType.is_quantified
@@ -35,9 +52,16 @@ const AssociationTypeSourceConfigurator = ({
     : SimpleAssociationTypeConfigurator;
 
   return (
-    <Container>
-      <Configurator source={source} validationErrors={validationErrors} onSourceChange={onSourceChange} />
-    </Container>
+    <>
+      {associationTypeErrors.map((error, index) => (
+        <Helper key={index} level="error">
+          {translate(error.messageTemplate, error.parameters)}
+        </Helper>
+      ))}
+      <Container>
+        <Configurator source={source} validationErrors={validationErrors} onSourceChange={onSourceChange} />
+      </Container>
+    </>
   );
 };
 

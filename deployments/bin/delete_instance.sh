@@ -24,6 +24,8 @@ NAMESPACE_PATH=$(pwd)
 
 echo "1 - initializing terraform in $(pwd)"
 cat ${PWD}/main.tf.json
+gsutil rm gs://akecld-terraform-dev/saas/akecld-saas-dev/europe-west3-a/${PFID}/default.tflock || true
+
 terraform init
 # for mysql disk deletion, we must desactivate prevent_destroy in tf file
 find ${NAMESPACE_PATH}/../../  -name "*.tf" -type f | xargs sed -i "s/prevent_destroy = true/prevent_destroy = false/g"
@@ -40,10 +42,20 @@ export KUBECONFIG=.kubeconfig
 LIST_PD_NAME=$((kubectl get pv -o json | jq -r --arg PFID "$PFID" '[.items[] | select(.spec.claimRef.namespace == $PFID) | .spec.gcePersistentDisk.pdName] | unique | .[]' | grep -v mysql) || echo "")
 
 (helm3 list -n "${PFID}" && helm3 uninstall ${PFID} -n ${PFID}) || true
-((kubectl get ns ${PFID} | grep "$PFID") && kubectl delete ns ${PFID}) || true
+
+echo "Wait MySQL deletion"
+POD_MYSQL=$(kubectl get pods --no-headers --namespace=${PFID} -l component=mysql | awk '{print $1}')
+(kubectl wait pod/${POD_MYSQL} --namespace=${PFID} --for=delete) || true
 
 terraform destroy ${TF_INPUT_FALSE} ${TF_AUTO_APPROVE}
 
+echo "Remove JOB_CONSOMER"
+# Quick fix and to remove after actual fix
+LIST_JOB_CONSUMER=$(kubectl get pods --no-headers --namespace=${PFID} -l component=pim-daemon-job-consumer-process | awk '{print $1}')
+(kubectl delete pod --grace-period=0 --force --namespace ${PFID} --ignore-not-found=true ${LIST_JOB_CONSUMER} ) || true
+
+echo "Remove namespace"
+((kubectl get ns ${PFID} | grep "$PFID") && kubectl delete ns ${PFID}) || true
 
 echo "3 - Removing shared state files"
 if [[ $GOOGLE_PROJECT_ID == "akecld-saas-dev" || $GOOGLE_PROJECT_ID == "akecld-onboarder-dev" ]]; then

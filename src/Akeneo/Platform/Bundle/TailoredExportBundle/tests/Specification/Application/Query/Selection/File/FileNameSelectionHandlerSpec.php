@@ -23,10 +23,11 @@ class FileNameSelectionHandlerSpec extends ObjectBehavior
 {
     public function it_applies_the_selection()
     {
-        $selection = new FileNameSelection();
+        $selection = new FileNameSelection('an_attribute_code');
         $value = new FileValue(
             'identifier',
-            'a_key',
+            'catalog',
+            'a_filekey',
             'original_filename',
             null,
             null
@@ -48,10 +49,11 @@ class FileNameSelectionHandlerSpec extends ObjectBehavior
 
     public function it_supports_file_name_selection_with_file_value()
     {
-        $selection = new FileNameSelection();
+        $selection = new FileNameSelection('an_attribute_code');
         $value = new FileValue(
             'identifier',
-            'a_key',
+            'catalog',
+            'a_filekey',
             'original_filename',
             null,
             null

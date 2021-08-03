@@ -6,14 +6,32 @@ SHELL := /bin/bash
 INSTANCE_NAME_PREFIX ?= pimci
 INSTANCE_NAME ?=  $(INSTANCE_NAME_PREFIX)-$(IMAGE_TAG_SHORTED)
 TYPE ?= srnt
+PIM_SRC_PATH ?=
+TYPE_LONG ?= serenity
+ENV_NAME ?= dev
+EDITION_VERSION_FILE ?= EnterpriseVersion.php
+
+BUCKET ?= growth-edition-dev
+ifeq ($(TYPE),grth)
+	TYPE_LONG := growth_edition
+	PIM_SRC_PATH := $(TYPE)
+	EDITION_VERSION_FILE := GrowthEditionVersion.php
+endif
+ifeq ($(TYPE),tria)
+	TYPE_LONG := pim_trial
+	PIM_SRC_PATH := $(TYPE)
+	EDITION_VERSION_FILE := FreeTrialVersion.php
+	BUCKET := trial-edition-dev
+endif
+
+PRODUCT_REFERENCE_TYPE ?= $(TYPE_LONG)_instance
+PRODUCT_REFERENCE_CODE ?= $(TYPE_LONG)_$(ENV_NAME)
+
 PFID ?= $(TYPE)-$(INSTANCE_NAME)
 CI ?= false
 ACTIVATE_MONITORING ?= true
 
-ENV_NAME ?= dev
 TEST_AUTO ?= false
-PRODUCT_REFERENCE_TYPE ?= serenity_instance
-PRODUCT_REFERENCE_CODE ?= serenity_$(ENV_NAME)
 GOOGLE_PROJECT_ID ?= akecld-saas-$(ENV_NAME)
 GOOGLE_CLUSTER_REGION ?= europe-west3
 GOOGLE_CLUSTER_ZONE ?= europe-west3-a
@@ -28,7 +46,6 @@ DEPLOYMENTS_INSTANCES_DIR ?= $(PWD)/deployments/instances
 CLOUD_CUSTOMERS_DEV_DIR ?= /root/cloud-customers-dev
 OPERATIONS_TOOLS_DIR ?= /root/operation-tools
 OPERATIONS_TOOLS_BRANCH ?= master
-GRTH_BUCKET ?= growth-edition-dev
 INSTANCE_DIR ?= $(DEPLOYMENTS_INSTANCES_DIR)/$(PFID)
 MYSQL_DISK_SIZE ?= 10
 MYSQL_DISK_DESCRIPTION ?=
@@ -38,26 +55,18 @@ ONBOARDER_PIM_GEN_FILE ?=
 WITH_SUPPLIERS ?= false
 USE_ONBOARDER_CATALOG ?= false
 UPGRADE_STEP_2 ?= false
-PIM_SRC_DIR_GE ?=
-MAIN_TF_TEMPLATE ?= serenity_instance
+BUCKET_PIM_SRC_DIR ?= gcs::https://www.googleapis.com/storage/v1/akecld-terraform-modules/$(BUCKET)/$(IMAGE_TAG)
+MAIN_TF_TEMPLATE ?= $(PRODUCT_REFERENCE_TYPE)
 CYPRESS_baseUrl ?= https://$(INSTANCE_NAME).$(GOOGLE_MANAGED_ZONE_DNS)
-
-ifeq ($(TYPE),grth)
-	PIM_SRC_DIR_GE := gcs::https://www.googleapis.com/storage/v1/akecld-terraform-modules/$(GRTH_BUCKET)/$(IMAGE_TAG)
-	MAIN_TF_TEMPLATE := growth_instance
-endif
 
 ifeq ($(CI),true)
 	TF_INPUT_FALSE ?= -input=false
 	TF_AUTO_APPROVE ?= -auto-approve
-	# CircleCi Checkout Directory , need to avoid ~ for terraform module path
-	PIM_SRC_DIR ?= /root/project
 else
 	TF_INPUT_FALSE ?=
 	TF_AUTOAPPROVE ?=
-	PIM_SRC_DIR ?= $(PWD)
-	# considering we use Makefile from the root of the project repo
 endif
+PIM_SRC_DIR ?= $(PWD)
 
 #Vars for exec_in
 executor ?= kubectl
@@ -113,6 +122,7 @@ ifeq ($(UPGRADE_STEP_2),true)
 		cd $(INSTANCE_DIR) && STEP='PRE_APPLY' INSTANCE_NAME=$(INSTANCE_NAME) bash $(PWD)/deployments/automation/upgrade.sh
 endif
 	cd $(INSTANCE_DIR) && terraform plan '-out=upgrades.tfplan' $(TF_INPUT_FALSE) -compact-warnings
+	cd $(INSTANCE_DIR) && terraform show -json upgrades.tfplan > ~/upgrades.tfplan.json
 	cd $(INSTANCE_DIR) && terraform apply $(TF_INPUT_FALSE) $(TF_AUTO_APPROVE) upgrades.tfplan
 
 .PHONY: prepare-infrastructure-artifacts
@@ -167,6 +177,12 @@ create-ci-values: $(INSTANCE_DIR)
 	@echo " - URL : $(INSTANCE_NAME).$(GOOGLE_MANAGED_ZONE_DNS)"
 	@echo "=========================================================="
 	if [ ! -f $(INSTANCE_DIR)/values.yaml ]; then cp $(PIM_SRC_DIR)/deployments/config/ci-values.yaml $(INSTANCE_DIR)/values.yaml; fi
+ifeq ($(TYPE),grth)
+	yq w -i $(INSTANCE_DIR)/values.yaml pim.defaultCatalog vendor/akeneo/pim-community-dev/src/Akeneo/Platform/Bundle/InstallerBundle/Resources/fixtures/icecat_demo_dev
+endif
+ifeq ($(TYPE),tria)
+	yq w -i $(INSTANCE_DIR)/values.yaml pim.defaultCatalog vendor/akeneo/pim-community-dev/src/Akeneo/Platform/Bundle/InstallerBundle/Resources/fixtures/icecat_demo_dev
+endif
 ifeq ($(INSTANCE_NAME_PREFIX),pimup)
 	yq w -i $(INSTANCE_DIR)/values.yaml pim.hook.installPim.enabled true
 	yq w -i $(INSTANCE_DIR)/values.yaml pim.hook.upgradePim.enabled true
@@ -202,6 +218,12 @@ endif
 ifeq (${USE_ONBOARDER_CATALOG},true)
 	yq w -i $(INSTANCE_DIR)/values.yaml pim.defaultCatalog "vendor/akeneo/pim-onboarder/src/Bundle/Resources/fixtures/onboarder"
 endif
+
+.PHONY: prepare-chart-default-values
+prepare-chart-default-values:
+	yq d -i $(PIM_SRC_DIR)/deployments/terraform/pim/values.yaml 'pim.jobs'
+	yq m -i -x $(PIM_SRC_DIR)/deployments/terraform/pim/values.yaml $(PIM_SRC_DIR)/deployments/terraform/pim/values-$(TYPE).yaml
+	cat $(PIM_SRC_DIR)/deployments/terraform/pim/values.yaml
 
 .PHONY: get_mysql_parameters_disk
 get_mysql_parameters_disk:
@@ -245,7 +267,7 @@ endif
 	IMAGE_TAG=$(IMAGE_TAG) \
 	INSTANCE_NAME=$(INSTANCE_NAME) \
 	PFID=$(PFID) \
-	PIM_SRC_DIR_GE=$(PIM_SRC_DIR_GE) \
+	BUCKET_PIM_SRC_DIR=$(BUCKET_PIM_SRC_DIR) \
 	PIM_SRC_DIR=$(PIM_SRC_DIR) \
 	TYPE=$(TYPE) \
 	PRODUCT_REFERENCE_TYPE=$(PRODUCT_REFERENCE_TYPE) \
@@ -256,11 +278,6 @@ endif
 	MAILGUN_API_KEY=${MAILGUN_API_KEY} \
 	envsubst < $(INSTANCE_DIR)/$(MAIN_TF_TEMPLATE).tpl.tf.json.tmp > $(INSTANCE_DIR)/main.tf.json ;\
 	rm -rf $(INSTANCE_DIR)/$(MAIN_TF_TEMPLATE).tpl.tf.json.tmp
-ifeq ($(INSTANCE_NAME_PREFIX),pimup)
-	# echo "COMMENT THESES LINES BELOW AFTER MERGING & RELEASING BRANCH"
-	# yq d -i $(INSTANCE_DIR)/main.tf.json 'module.pim-monitoring.monitoring_authentication_token'
-	# echo "COMMENT THESES LINES AFTER MERGING & RELEASING BRANCH"
-endif
 
 .PHONY: change-terraform-source-version
 change-terraform-source-version: #Doc: change terraform source to deploy infra with a custom git version
@@ -271,9 +288,15 @@ ifeq ($(ACTIVATE_MONITORING),true)
 endif
 endif
 ifeq ($(TYPE),grth)
-	yq w -j -P -i ${INSTANCE_DIR}/main.tf.json 'module.pim.source' "gcs::https://www.googleapis.com/storage/v1/akecld-terraform-modules/$(GRTH_BUCKET)/$(IMAGE_TAG)/terraform"
+	yq w -j -P -i ${INSTANCE_DIR}/main.tf.json 'module.pim.source' "gcs::https://www.googleapis.com/storage/v1/akecld-terraform-modules/$(BUCKET)/$(IMAGE_TAG)/terraform"
 ifeq ($(ACTIVATE_MONITORING),true)
-	yq w -j -P -i ${INSTANCE_DIR}/main.tf.json 'module.pim-monitoring.source' "gcs::https://www.googleapis.com/storage/v1/akecld-terraform-modules/$(GRTH_BUCKET)/$(IMAGE_TAG)/terraform/monitoring"
+	yq w -j -P -i ${INSTANCE_DIR}/main.tf.json 'module.pim-monitoring.source' "gcs::https://www.googleapis.com/storage/v1/akecld-terraform-modules/$(BUCKET)/$(IMAGE_TAG)/terraform/monitoring"
+endif
+endif
+ifeq ($(TYPE),tria)
+	yq w -j -P -i ${INSTANCE_DIR}/main.tf.json 'module.pim.source' "gcs::https://www.googleapis.com/storage/v1/akecld-terraform-modules/$(BUCKET)/$(IMAGE_TAG)//deployments/terraform"
+ifeq ($(ACTIVATE_MONITORING),true)
+	yq w -j -P -i ${INSTANCE_DIR}/main.tf.json 'module.pim-monitoring.source' "gcs::https://www.googleapis.com/storage/v1/akecld-terraform-modules/$(BUCKET)/$(IMAGE_TAG)//deployments/terraform/monitoring"
 endif
 endif
 
@@ -346,7 +369,7 @@ ifeq ($(CI),true)
 	git config user.email "akeneo-ci@akeneo.com"
 	git remote set-url origin https://micheltag:${MICHEL_TAG_TOKEN}@github.com/akeneo/pim-enterprise-dev.git
 endif
-	bash $(PWD)/deployments/bin/release.sh ${OLD_IMAGE_TAG}
+	TYPE=$(TYPE) bash $(PWD)/deployments/bin/release.sh $(OLD_IMAGE_TAG) $(NEW_IMAGE_TAG)
 
 .PHONY: slack_helpdesk
 slack_helpdesk:
@@ -368,7 +391,7 @@ delete_environments_hourly:
 
 .PHONY: clone_serenity
 clone_serenity:
-	PRODUCT_REFERENCE_TYPE=serenity_instance_clone INSTANCE_NAME=${INSTANCE_NAME} IMAGE_TAG=$(IMAGE_TAG) INSTANCE_NAME_PREFIX=pimci-duplic PIM_CONTEXT=deployment make create-ci-release-files && \
+	PRODUCT_REFERENCE_TYPE=serenity_instance MAIN_TF_TEMPLATE=serenity_instance INSTANCE_NAME=${INSTANCE_NAME} IMAGE_TAG=$(IMAGE_TAG) INSTANCE_NAME_PREFIX=pimci-duplic PIM_CONTEXT=deployment make create-ci-release-files && \
 	ENV_NAME=dev SOURCE_PFID=$(SOURCE_PFID) INSTANCE_NAME=$(INSTANCE_NAME) bash $(PWD)/deployments/bin/clone_serenity.sh
 
 .PHONY: clone_flexibility
@@ -392,7 +415,8 @@ ifeq ($(TYPE),srnt)
 	git commit -m "Prepare SaaS ${IMAGE_TAG}"
 endif
 
-	DOCKER_BUILDKIT=1 docker build --no-cache --progress=plain --pull --tag eu.gcr.io/akeneo-ci/pim-enterprise-dev:${IMAGE_TAG} --target prod --build-arg COMPOSER_AUTH='${COMPOSER_AUTH}' .
+	sed -i "s/VERSION = '.*';/VERSION = '${IMAGE_TAG}';/g" $(PIM_SRC_PATH)/src/Akeneo/Platform/$(EDITION_VERSION_FILE)
+	DOCKER_BUILDKIT=1 docker build --no-cache --progress=plain --pull --tag eu.gcr.io/akeneo-ci/pim-enterprise-dev:${IMAGE_TAG} --target prod --build-arg COMPOSER_AUTH='${COMPOSER_AUTH}' -f $(PIM_SRC_PATH)/Dockerfile .
 
 .PHONY: push-php-image-prod
 push-php-image-prod: #Doc: push docker image to docker hub

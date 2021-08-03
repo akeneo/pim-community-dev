@@ -3,11 +3,10 @@ import {screen, act} from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
 import {renderWithProviders} from '@akeneo-pim-community/shared';
 import {AddSourceDropdown} from './AddSourceDropdown';
-import {AvailableSourceGroup} from '../../../models';
 
 jest.mock('../../../hooks/useAvailableSourcesFetcher', () => ({
-  useAvailableSourcesFetcher: () => (): AvailableSourceGroup[] =>
-    [
+  useAvailableSourcesFetcher: () => () => ({
+    results: [
       {
         code: 'system',
         label: 'System',
@@ -41,12 +40,13 @@ jest.mock('../../../hooks/useAvailableSourcesFetcher', () => ({
         ],
       },
     ],
+  }),
 }));
 
 test('it adds attribute source', async () => {
   const handleSourceSelected = jest.fn();
 
-  renderWithProviders(<AddSourceDropdown onSourceSelected={handleSourceSelected} />);
+  renderWithProviders(<AddSourceDropdown canAddSource={true} onSourceSelected={handleSourceSelected} />);
   await act(async () => {
     userEvent.click(screen.getByText('akeneo.tailored_export.column_details.sources.add'));
   });
@@ -65,11 +65,27 @@ test('it adds attribute source', async () => {
 test('it adds property source', async () => {
   const handleSourceSelected = jest.fn();
 
-  renderWithProviders(<AddSourceDropdown onSourceSelected={handleSourceSelected} />);
+  renderWithProviders(<AddSourceDropdown canAddSource={true} onSourceSelected={handleSourceSelected} />);
   await act(async () => {
     userEvent.click(screen.getByText('akeneo.tailored_export.column_details.sources.add'));
   });
 
   userEvent.click(screen.getByText('Categories'));
   expect(handleSourceSelected).lastCalledWith('category', 'property');
+});
+
+test('it cannot add a source when the limit is reached', () => {
+  const handleSourceSelected = jest.fn();
+
+  renderWithProviders(<AddSourceDropdown canAddSource={false} onSourceSelected={handleSourceSelected} />);
+
+  const addSourceButton = screen.getByText('akeneo.tailored_export.column_details.sources.add');
+  expect(addSourceButton).toHaveAttribute('disabled');
+  expect(addSourceButton).toHaveAttribute(
+    'title',
+    'akeneo.tailored_export.validation.sources.max_source_count_reached'
+  );
+
+  userEvent.click(addSourceButton);
+  expect(handleSourceSelected).not.toHaveBeenCalled();
 });

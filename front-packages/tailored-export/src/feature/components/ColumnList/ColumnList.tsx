@@ -32,6 +32,7 @@ type ColumnListProps = {
   onColumnSelected: (uuid: string | null) => void;
   onColumnRemoved: (uuid: string) => void;
   onColumnReorder: (newIndices: number[]) => void;
+  onFocusNext: () => void;
 };
 
 const ColumnList = ({
@@ -43,6 +44,7 @@ const ColumnList = ({
   onColumnSelected,
   onColumnRemoved,
   onColumnReorder,
+  onFocusNext,
 }: ColumnListProps) => {
   const translate = useTranslate();
   const inputRef = useRef<HTMLInputElement>(null);
@@ -53,22 +55,14 @@ const ColumnList = ({
     focus();
   }, [selectedColumn?.uuid, focus, placeholderDisplayed]);
 
-  const handleFocusNextColumn = (columnUuid: string) => {
-    const currentColumnIndex = columnsConfiguration.findIndex(({uuid}) => columnUuid === uuid);
-    const nextColumn = columnsConfiguration[currentColumnIndex + 1];
-
-    onColumnSelected(undefined === nextColumn ? null : nextColumn.uuid);
-  };
-
   const handlePaste = (event: ClipboardEvent<HTMLInputElement>) => {
     const clipboardData = event.clipboardData;
     const pastedData = clipboardData?.getData('Text');
-
     const pastedColumns = pastedData?.split('\t');
-
     const currentColumnIsEmpty = null === selectedColumn || '' === selectedColumn.target;
     const currentColumnIsLastColumn =
       null === selectedColumn || columnsConfiguration.indexOf(selectedColumn) === columnsConfiguration.length - 1;
+
     if (undefined !== pastedColumns && pastedColumns.length > 1 && currentColumnIsEmpty && currentColumnIsLastColumn) {
       event.preventDefault(); // We need to prevent default to not trigger onChange event
       onColumnsCreated(pastedColumns.filter(Boolean));
@@ -109,7 +103,7 @@ const ColumnList = ({
                 onColumnChange={onColumnChange}
                 onColumnRemoved={onColumnRemoved}
                 onColumnSelected={onColumnSelected}
-                onFocusNext={handleFocusNextColumn}
+                onFocusNext={onFocusNext}
               />
             ))}
           </Table.Body>

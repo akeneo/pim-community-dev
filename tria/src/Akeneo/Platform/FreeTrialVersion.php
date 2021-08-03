@@ -22,8 +22,8 @@ class FreeTrialVersion
     const VERSION = 'master';
 
     /** @staticvar string */
-    const VERSION_CODENAME = 'Buttercup';
+    const VERSION_CODENAME = 'Free Trial Edition';
 
     /** @staticvar string */
-    const EDITION = 'Frre Trial Edition';
+    const EDITION = 'Free Trial Edition';
 }

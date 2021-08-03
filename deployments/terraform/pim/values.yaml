@@ -22,8 +22,6 @@ backup:
     enabled: false
     schedule: "0 0 0 * * *" # Each day at midnight
 
-
-
 common:
   extraLabels: {}
   pimMasterDomain: null # Generated with terraform template

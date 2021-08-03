@@ -31,8 +31,24 @@ class EnabledReplacementOperationValidator extends ConstraintValidator
                 'type' => new EqualTo(['value' => 'replacement']),
                 'mapping' => new Collection([
                     'fields' => [
-                        'true' => [new NotBlank(), new Length(['max' => 255])],
-                        'false' => [new NotBlank(), new Length(['max' => 255])],
+                        'true' => [
+                            new NotBlank([
+                                'message' => 'akeneo.tailored_export.validation.required'
+                            ]),
+                            new Length([
+                                'max' => 255,
+                                'maxMessage' => 'akeneo.tailored_export.validation.max_length_reached',
+                            ])
+                        ],
+                        'false' => [
+                            new NotBlank([
+                                'message' => 'akeneo.tailored_export.validation.required'
+                            ]),
+                            new Length([
+                                'max' => 255,
+                                'maxMessage' => 'akeneo.tailored_export.validation.max_length_reached',
+                            ])
+                        ],
                     ]
                 ])
             ]

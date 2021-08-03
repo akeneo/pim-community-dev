@@ -32,8 +32,8 @@ class ScalarSelectionHandlerSpec extends ObjectBehavior
 
     public function it_does_not_apply_selection_on_not_supported_selections_and_values()
     {
-        $notSupportedSelection = new AssetCollectionCodeSelection('/');
-        $notSupportedValue = new AssetCollectionValue([]);
+        $notSupportedSelection = new AssetCollectionCodeSelection('/', 'atmosphere', 'foo_attribute_code');
+        $notSupportedValue = new AssetCollectionValue([], 'an_id', null, null);
 
         $this
             ->shouldThrow(new \InvalidArgumentException('Cannot apply Scalar selection on this entity'))
@@ -52,8 +52,8 @@ class ScalarSelectionHandlerSpec extends ObjectBehavior
 
     public function it_does_not_support_other_selections_and_values()
     {
-        $notSupportedSelection = new AssetCollectionCodeSelection('/');
-        $notSupportedValue = new AssetCollectionValue([]);
+        $notSupportedSelection = new AssetCollectionCodeSelection('/', 'atmosphere', 'foo_attribute_code');
+        $notSupportedValue = new AssetCollectionValue([], 'an_id', null, null);
 
         $this->supports($notSupportedSelection, $notSupportedValue)->shouldReturn(false);
     }

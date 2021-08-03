@@ -1,0 +1,80 @@
+global:
+  extraLabels:
+    type: srnt
+
+pim:
+  jobs:
+    versioning-purge:
+      enabled: true
+      pimCommand: "pim:versioning:purge --more-than-days 90 --no-interaction --force"
+      schedule: "0 1 * * 0"
+    batch-purge:
+      enabled: true
+      pimCommand: "akeneo:batch:purge-job-execution"
+      schedule: "0 0 1 * *"
+    update-connectivity-audit-data:
+      enabled: true
+      pimCommand: "akeneo:connectivity-audit:update-data"
+      schedule: "1 * * * *"
+    purge-connectivity-connection-error:
+      enabled: true
+      pimCommand: "akeneo:connectivity-connection:purge-error"
+      schedule: "10 * * * *"
+    purge-connectivity-audit-error-count:
+      enabled: true
+      pimCommand: "akeneo:connectivity-audit:purge-error-count"
+      schedule: "40 12 * * *"
+    rule-run:
+      enabled: true
+      pimCommand: "akeneo:rule:run"
+      schedule: "0 5,11,17,23 * * *"
+    versionning-refresh:
+      enabled: true
+      pimCommand: "pim:versioning:refresh"
+      schedule: "0 3 * * *"
+    volume-aggregate:
+      enabled: true
+      pimCommand: "pim:volume:aggregate"
+      schedule: "0 4 * * *"
+    project-recalculate:
+      enabled: true
+      pimCommand: "pimee:project:recalculate"
+      schedule: "20 0 * * *"
+    project-notify-before-due-date:
+      enabled: true
+      pimCommand: "pimee:project:notify-before-due-date"
+      schedule: "0 2 * * *"
+    reference-entity-refresh-records:
+      enabled: true
+      pimCommand: "akeneo:reference-entity:refresh-records"
+      schedule: "0 23 * * *"
+    sso-log-rotate:
+      enabled: true
+      pimCommand: "pimee:sso:rotate-log 30"
+      schedule: "5 22 * * *"
+    data-quality-insights-periodic-tasks:
+      enabled: true
+      pimCommand: "pim:data-quality-insights:schedule-periodic-tasks"
+      schedule: "15 0 * * *"
+    data-quality-insights-prepare-evaluations:
+      enabled: true
+      pimCommand: "pim:data-quality-insights:prepare-evaluations"
+      schedule: "*/10 * * * *"
+    data-quality-insights-evaluations:
+      enabled: true
+      pimCommand: "pim:data-quality-insights:evaluations"
+      schedule: "*/30 * * * *"
+    purge-events-api-logs:
+      enabled: true
+      pimCommand: "akeneo:connectivity-connection:purge-events-api-logs"
+      schedule: "5 * * * *"
+      resources:
+        limits:
+          memory: "128Mi"
+        requests:
+          cpu: "100m"
+          memory: "128Mi"
+    migrate-job-messages-from-old-queue:
+      enabled: true
+      pimCommand: "akeneo:batch:migrate-job-messages-from-old-queue --no-interaction"
+      schedule: "*/15 * * * *"

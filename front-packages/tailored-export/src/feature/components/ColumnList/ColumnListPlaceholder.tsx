@@ -10,10 +10,12 @@ const Container = styled.div`
   gap: 10px;
   margin-top: 40px;
 `;
+
 const Title = styled.div`
   color: ${getColor('grey', 140)};
   font-size: ${getFontSize('title')};
 `;
+
 const Subtitle = styled.div`
   color: ${getColor('grey', 100)};
   font-size: ${getFontSize('default')};
@@ -33,7 +35,12 @@ const ColumnListPlaceholder = ({onColumnCreated}: ColumnListPlaceholderProps) =>
       <Title>{translate('akeneo.tailored_export.column_list.no_column_selection.title')}</Title>
       <Subtitle>
         {translate('akeneo.tailored_export.column_list.no_column_selection.subtitle')}{' '}
-        <Link href={'#TODO'}>{translate('akeneo.tailored_export.column_list.no_column_selection.link')}</Link>
+        <Link
+          target="_blank"
+          href="https://help.akeneo.com/pim/serenity/articles/tailored-export.html#define-your-export-structure"
+        >
+          {translate('akeneo.tailored_export.column_list.no_column_selection.link')}
+        </Link>
       </Subtitle>
       <Button level="secondary" ghost={true} onClick={() => onColumnCreated('')}>
         {translate('akeneo.tailored_export.column_list.no_column_selection.add_column')}

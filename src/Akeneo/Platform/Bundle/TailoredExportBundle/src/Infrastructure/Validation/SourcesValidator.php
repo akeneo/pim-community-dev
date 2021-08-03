@@ -18,14 +18,13 @@ use Akeneo\Pim\Structure\Component\Query\PublicApi\AttributeType\GetAttributes;
 use Akeneo\Platform\TailoredExport\Application\Query\Source\AssociationTypeSource;
 use Akeneo\Platform\TailoredExport\Application\Query\Source\AttributeSource;
 use Akeneo\Platform\TailoredExport\Application\Query\Source\PropertySource;
+use Akeneo\Platform\TailoredExport\Infrastructure\Validation\Source\QuantifiedAssociationType\QuantifiedAssociationTypeSourceConstraint;
 use Akeneo\Platform\TailoredExport\Infrastructure\Validation\Source\SimpleAssociationType\SimpleAssociationTypeSourceConstraint;
 use Symfony\Component\Validator\Constraint;
-use Symfony\Component\Validator\Constraints\Choice;
-use Symfony\Component\Validator\Constraints\Collection;
 use Symfony\Component\Validator\Constraints\Count;
-use Symfony\Component\Validator\Constraints\NotBlank;
 use Symfony\Component\Validator\Constraints\Type;
 use Symfony\Component\Validator\ConstraintValidator;
+use Symfony\Component\Validator\ConstraintViolationListInterface;
 use Symfony\Component\Validator\Validator\ValidatorInterface;
 
 class SourcesValidator extends ConstraintValidator
@@ -85,79 +84,87 @@ class SourcesValidator extends ConstraintValidator
 
     private function validateSource(ValidatorInterface $validator, $source): void
     {
-        $violations = $validator->validate(
-            $source,
-            new Collection([
-                'fields' => [
-                    'code' => [
-                        new Type([
-                            'type' => 'string',
-                        ]),
-                        new NotBlank(),
-                    ],
-                    'type' => new Choice(
-                        [
-                            'choices' => [AttributeSource::TYPE, PropertySource::TYPE, AssociationTypeSource::TYPE],
-                        ]
-                    ),
-
-                ],
-                'allowExtraFields' => true
-            ]),
-        );
-
-        if (0 < $violations->count()) {
-            foreach ($violations as $violation) {
-                $this->context->buildViolation(
-                    $violation->getMessage(),
-                    $violation->getParameters()
-                )
-                    ->atPath(sprintf('[%s]%s', $source['uuid'], $violation->getPropertyPath()))
-                    ->addViolation();
-            }
-
-            return;
-        }
-
-        if (PropertySource::TYPE === $source['type']) {
-            $constraint = $this->propertyConstraints[$source['code']] ?? null;
-        } elseif (AssociationTypeSource::TYPE === $source['type']) {
-            $associationTypes = $this->getAssociationTypes->forCodes([$source['code']]);
-            $associationType = $associationTypes[$source['code']] ?? null;
-            if (null === $associationType) {
-                $this->context->buildViolation(Sources::ASSOCIATION_TYPE_SHOULD_EXIST)
-                    ->atPath(sprintf('[%s]', $source['uuid']))
-                    ->setParameter('association_type_code', $source['code'])
-                    ->addViolation();
+        switch ($source['type']) {
+            case PropertySource::TYPE:
+                $this->validatePropertySource($validator, $source);
 
                 return;
-            }
+            case AssociationTypeSource::TYPE:
+                $this->validateAssociationTypeSource($validator, $source);
 
-            if ($associationType->isQuantified()) {
-                // @TODO Add two way validation (RAC-683)
-                $constraint = null;
-            } else {
-                $constraint = new SimpleAssociationTypeSourceConstraint();
-            }
-        } elseif (AttributeSource::TYPE === $source['type']) {
-            $attribute = $this->getAttributes->forCode($source['code']);
-
-            if (null === $attribute) {
-                //TODO handle attribute not found RAC-720
                 return;
-            }
+            case AttributeSource::TYPE:
+                $this->validateAttributeSource($validator, $source);
 
-            $constraint = $this->attributeConstraints[$attribute->type()] ?? null;
-        } else {
-            throw new \InvalidArgumentException(sprintf('Unsupported source type "%s"', $source['type']));
+                return;
+            default:
+                throw new \InvalidArgumentException(sprintf('Unsupported source type "%s"', $source['type']));
         }
+    }
+
+    private function validatePropertySource(ValidatorInterface $validator, $source): void
+    {
+        $constraint = $this->propertyConstraints[$source['code']] ?? null;
 
         if (null === $constraint) {
             return;
         }
 
         $violations = $validator->validate($source, $constraint);
+        $this->buildViolations($violations, $source);
+    }
 
+    private function validateAssociationTypeSource(ValidatorInterface $validator, $source): void
+    {
+        $associationTypes = $this->getAssociationTypes->forCodes([$source['code']]);
+        $associationType = $associationTypes[$source['code']] ?? null;
+
+        if (null === $associationType) {
+            $this->context->buildViolation(Sources::ASSOCIATION_TYPE_SHOULD_EXIST)
+                ->atPath(sprintf('[%s]', $source['uuid']))
+                ->setParameter('association_type_code', $source['code'])
+                ->addViolation();
+
+            return;
+        }
+
+        $constraint = $associationType->isQuantified() ?
+            new QuantifiedAssociationTypeSourceConstraint() :
+            new SimpleAssociationTypeSourceConstraint();
+
+        $violations = $validator->validate($source, $constraint);
+        $this->buildViolations($violations, $source);
+    }
+
+    private function validateAttributeSource(ValidatorInterface $validator, $source): void
+    {
+        $attribute = $this->getAttributes->forCode($source['code']);
+
+        if (null === $attribute) {
+            $this->context->buildViolation(
+                Sources::ATTRIBUTE_SHOULD_EXIST,
+                [
+                    '{{ attribute_code }}' => $source['code'],
+                ]
+            )
+                ->atPath(sprintf('[%s]', $source['uuid']))
+                ->addViolation();
+
+            return;
+        }
+
+        $constraint = $this->attributeConstraints[$attribute->type()] ?? null;
+
+        if (null === $constraint) {
+            return;
+        }
+
+        $violations = $validator->validate($source, [new IsValidAttribute(), $constraint]);
+        $this->buildViolations($violations, $source);
+    }
+
+    private function buildViolations(ConstraintViolationListInterface $violations, $source): void
+    {
         foreach ($violations as $violation) {
             $this->context->buildViolation(
                 $violation->getMessage(),

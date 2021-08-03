@@ -41,6 +41,8 @@ import {
   QuantifiedAssociationTypeSource,
 } from '../components/SourceDetails/QuantifiedAssociationType/model';
 
+const MAX_SOURCE_COUNT = 4;
+
 type Source =
   | AssetCollectionSource
   | BooleanSource
@@ -130,5 +132,5 @@ const getDefaultAssociationTypeSource = (associationType: AssociationType): Sour
   return getDefaultSimpleAssociationTypeSource(associationType);
 };
 
-export {getDefaultPropertySource, getDefaultAttributeSource, getDefaultAssociationTypeSource};
+export {MAX_SOURCE_COUNT, getDefaultPropertySource, getDefaultAttributeSource, getDefaultAssociationTypeSource};
 export type {Source};

@@ -68,6 +68,12 @@ services:
     tags:
       - { name: validator.constraint_validator }
     public: true
+  Akeneo\Platform\TailoredExport\Infrastructure\Validation\Source\QuantifiedAssociationType\QuantifiedAssociationSelectionValidator:
+    arguments:
+      - [ ',', ';', '|' ]
+    tags:
+      - { name: validator.constraint_validator }
+    public: true
 
   Akeneo\Platform\TailoredExport\Infrastructure\Validation\Source\SimpleAssociationType\SimpleAssociationSelectionValidator:
     arguments:
@@ -81,6 +87,14 @@ services:
       - [',', '.', '٫‎']
     tags:
       - { name: validator.constraint_validator }
+    public: true
+
+  Akeneo\Platform\TailoredExport\Infrastructure\Validation\IsValidAttributeValidator:
+    arguments:
+      - '@akeneo.pim.structure.query.get_attributes'
+      - '@pim_channel.query.cache.channel_exists_with_locale'
+    tags:
+      - { name: validator.constraint_validator, alias: 'akeneo.tailored_export.validation.locale_should_be_active' }
     public: true
 
   akeneo.tailored_export.validation.locale_should_be_active:

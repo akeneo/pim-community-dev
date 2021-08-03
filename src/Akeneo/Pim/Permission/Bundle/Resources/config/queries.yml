@@ -117,6 +117,11 @@ services:
         arguments:
             - '@pimee_security.query.sql.get_viewable_attribute_codes_for_user'
 
+    pimee_security.query.sql.get_viewable_category_codes_for_user:
+        class: 'Akeneo\Pim\Permission\Bundle\Persistence\Sql\GetViewableCategoryCodesForUser'
+        arguments:
+            - '@database_connection'
+
     pimee_security.query.get_all_viewable_locales_for_user:
         class: 'Akeneo\Pim\Permission\Bundle\Persistence\Sql\LocaleRight\GetAllViewableLocalesForUser'
         arguments:

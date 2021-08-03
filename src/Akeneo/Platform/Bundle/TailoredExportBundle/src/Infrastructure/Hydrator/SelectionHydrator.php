@@ -123,13 +123,16 @@ class SelectionHydrator
         switch ($selectionConfiguration['type']) {
             case AssetCollectionCodeSelection::TYPE:
                 return new AssetCollectionCodeSelection(
-                    $selectionConfiguration['separator']
+                    $selectionConfiguration['separator'],
+                    $attribute->properties()['reference_data_name'],
+                    $attribute->code()
                 );
             case AssetCollectionLabelSelection::TYPE:
                 return new AssetCollectionLabelSelection(
                     $selectionConfiguration['separator'],
                     $selectionConfiguration['locale'],
-                    $attribute->properties()['reference_data_name']
+                    $attribute->properties()['reference_data_name'],
+                    $attribute->code()
                 );
             default:
                 throw new \LogicException(
@@ -144,9 +147,9 @@ class SelectionHydrator
             case FilePathSelection::TYPE:
                 return new FilePathSelection($attribute->code());
             case FileKeySelection::TYPE:
-                return new FileKeySelection();
+                return new FileKeySelection($attribute->code());
             case FileNameSelection::TYPE:
-                return new FileNameSelection();
+                return new FileNameSelection($attribute->code());
             default:
                 throw new \LogicException(
                     sprintf('Selection type "%s" is not supported for attribute type "%s"', $selectionConfiguration['type'], $attribute->type())
