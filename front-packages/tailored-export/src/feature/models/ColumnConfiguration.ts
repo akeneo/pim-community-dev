@@ -22,6 +22,11 @@ type ColumnConfiguration = {
   format: Format;
 };
 
+type ColumnsState = {
+  columns: ColumnConfiguration[];
+  selectedColumnUuid: string | null;
+};
+
 const createColumn = (newColumnName: string, uuid: string): ColumnConfiguration => {
   if (null === /^[0-9A-F]{8}-[0-9A-F]{4}-[4][0-9A-F]{3}-[89AB][0-9A-F]{3}-[0-9A-F]{12}$/i.exec(uuid)) {
     throw new Error(`Column configuration creation requires a valid uuid: "${uuid}"`);
@@ -107,7 +112,7 @@ const removeSource = (columnConfiguration: ColumnConfiguration, removedSource: S
   sources: columnConfiguration.sources.filter(source => source.uuid !== removedSource.uuid),
 });
 
-export type {ColumnConfiguration};
+export type {ColumnConfiguration, ColumnsState};
 export {
   addColumn,
   createColumn,

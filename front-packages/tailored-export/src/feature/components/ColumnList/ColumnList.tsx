@@ -1,4 +1,4 @@
-import React, {ClipboardEvent, useEffect, useRef, useState} from 'react';
+import React, {ClipboardEvent, Dispatch, SetStateAction, useCallback, useEffect, useRef, useState} from 'react';
 import {
   getColor,
   Helper,
@@ -12,7 +12,7 @@ import {
 } from 'akeneo-design-system';
 import styled from 'styled-components';
 import {NoDataSection, NoDataTitle, useTranslate} from '@akeneo-pim-community/shared';
-import {ColumnConfiguration, MAX_COLUMN_COUNT} from '../../models/ColumnConfiguration';
+import {ColumnConfiguration, ColumnsState, MAX_COLUMN_COUNT} from '../../models/ColumnConfiguration';
 import {ColumnListPlaceholder} from './ColumnListPlaceholder';
 import {ColumnRow, TargetCell} from './ColumnRow';
 import {useValidationErrors} from '../../contexts';
@@ -38,32 +38,33 @@ const SpacedSearch = styled(Search)`
 `;
 
 type ColumnListProps = {
-  columnsConfiguration: ColumnConfiguration[];
-  selectedColumn: ColumnConfiguration | null;
+  columnsState: ColumnsState;
+  setColumnsState: Dispatch<SetStateAction<ColumnsState>>;
   onColumnCreated: (target: string) => void;
   onColumnsCreated: (targets: string[]) => void;
   onColumnChange: (column: ColumnConfiguration) => void;
-  onColumnSelected: (uuid: string | null) => void;
-  onColumnRemoved: (uuid: string) => void;
+  onColumnSelected: (columnUuid: string | null) => void;
+  onColumnRemoved: (columnUuid: string) => void;
   onColumnReorder: (newIndices: number[]) => void;
-  onFocusNext: () => void;
 };
 
 const ColumnList = ({
-  columnsConfiguration,
-  selectedColumn,
+  columnsState,
+  setColumnsState,
   onColumnCreated,
   onColumnsCreated,
   onColumnChange,
   onColumnSelected,
   onColumnRemoved,
   onColumnReorder,
-  onFocusNext,
 }: ColumnListProps) => {
+  const {selectedColumnUuid, columns} = columnsState;
+  const selectedColumn: ColumnConfiguration | null =
+    columnsState.columns.find(({uuid}) => selectedColumnUuid === uuid) ?? null;
   const translate = useTranslate();
   const inputRef = useRef<HTMLInputElement>(null);
   const focus = useAutoFocus(inputRef);
-  const [placeholderDisplayed, , hidePlaceholder] = useBooleanState(0 === columnsConfiguration.length);
+  const [placeholderDisplayed, , hidePlaceholder] = useBooleanState(0 === columns.length);
   const [searchValue, setSearchValue] = useState<string>('');
 
   useEffect(() => {
@@ -75,8 +76,7 @@ const ColumnList = ({
     const pastedData = clipboardData?.getData('Text');
     const pastedColumns = pastedData?.split('\t');
     const currentColumnIsEmpty = null === selectedColumn || '' === selectedColumn.target;
-    const currentColumnIsLastColumn =
-      null === selectedColumn || columnsConfiguration.indexOf(selectedColumn) === columnsConfiguration.length - 1;
+    const currentColumnIsLastColumn = null === selectedColumn || columns.indexOf(selectedColumn) === columns.length - 1;
 
     if (undefined !== pastedColumns && pastedColumns.length > 1 && currentColumnIsEmpty && currentColumnIsLastColumn) {
       event.preventDefault(); // We need to prevent default to not trigger onChange event
@@ -85,12 +85,31 @@ const ColumnList = ({
   };
 
   const globalErrors = useValidationErrors('[columns]', true);
-  const filteredColumns = columnsConfiguration.filter(({target}) => target.includes(searchValue));
+  const filteredColumns = columns.filter(({target}) => target.includes(searchValue));
 
-  const canAddColumn = MAX_COLUMN_COUNT > columnsConfiguration.length;
+  const canAddColumn = MAX_COLUMN_COUNT > columns.length;
   const shouldDisplayNewColumnRow = canAddColumn && '' === searchValue;
   const shouldDisplayNoResults = !placeholderDisplayed && 0 === filteredColumns.length && '' !== searchValue;
   const shouldDisplayTable = !placeholderDisplayed && !shouldDisplayNoResults;
+
+  const handleFocusNext = useCallback(() => {
+    setColumnsState(previousColumnsState => {
+      const filteredColumns = previousColumnsState.columns.filter(({target}) => target.includes(searchValue));
+      const currentColumnIndex = filteredColumns.findIndex(
+        ({uuid}) => previousColumnsState.selectedColumnUuid === uuid
+      );
+      const nextColumn = filteredColumns[currentColumnIndex + 1] ?? null;
+      const selectedColumnUuid =
+        ('' !== searchValue || MAX_COLUMN_COUNT <= previousColumnsState.columns.length) && null === nextColumn
+          ? previousColumnsState.selectedColumnUuid
+          : nextColumn?.uuid ?? null;
+
+      return {
+        ...previousColumnsState,
+        selectedColumnUuid,
+      };
+    });
+  }, [searchValue, setColumnsState]);
 
   return (
     <Container>
@@ -135,7 +154,7 @@ const ColumnList = ({
                 onColumnChange={onColumnChange}
                 onColumnRemoved={onColumnRemoved}
                 onColumnSelected={onColumnSelected}
-                onFocusNext={onFocusNext}
+                onFocusNext={handleFocusNext}
               />
             ))}
           </Table.Body>

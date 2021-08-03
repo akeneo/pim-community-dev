@@ -98,9 +98,12 @@ test('It returns null during loading', async () => {
 });
 
 test('It returns null when switching attribute code', async () => {
-  const {result, rerender} = renderHookWithProviders(({attributeCode}) => useAttribute(attributeCode), {
-    attributeCode: 'description',
-  });
+  const {result, rerender, waitForNextUpdate} = renderHookWithProviders(
+    ({attributeCode}) => useAttribute(attributeCode),
+    {
+      attributeCode: 'description',
+    }
+  );
 
   await act(async () => {
     await flushPromises();
@@ -123,7 +126,9 @@ test('It returns null when switching attribute code', async () => {
   await act(async () => {
     rerender({attributeCode: 'release_date'});
 
+    await waitForNextUpdate();
     await flushPromises();
+
     const [isFetching, attribute] = result.current;
     expect(attribute).toBeNull();
     expect(isFetching).toBe(false);
