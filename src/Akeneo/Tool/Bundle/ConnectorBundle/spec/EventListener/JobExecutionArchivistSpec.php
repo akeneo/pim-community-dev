@@ -63,10 +63,15 @@ class JobExecutionArchivistSpec extends ObjectBehavior
         $archiver3->getArchives($jobExecution, false)->willYield([]);
         $this->registerArchiver($archiver3);
 
-        $this->getArchives($jobExecution)->shouldReturn([
-            'output' => ['log.log' => 'a/b/log.log', 'test.png' => 'a/b/test.png'],
-            'input' => ['image.jpg' => 'a/c/d/image.jpg', 'notice.pdf' => 'b/c/d/notice.pdf']
-        ]);
+        $archives = $this->getArchives($jobExecution);
+        $archives->shouldBeArray();
+
+        $archives->shouldHaveKey('output');
+        $archives['output']->shouldYield(['log.log' => 'a/b/log.log', 'test.png' => 'a/b/test.png']);
+        $archives->shouldHaveKey('input');
+        $archives['input']->shouldYield(['image.jpg' => 'a/c/d/image.jpg', 'notice.pdf' => 'b/c/d/notice.pdf']);
+        $archives->shouldHaveKey('invalid_items');
+        $archives['invalid_items']->shouldYield([]);
     }
 
     function it_does_not_return_archives_if_the_job_is_still_running(

@@ -177,6 +177,8 @@ class FileWriterArchiverSpec extends ObjectBehavior
                 [
                     new FileAttributes('export/my_job_name/42/output/export_1.csv'),
                     new FileAttributes('export/my_job_name/42/output/export_2.csv'),
+                    new FileAttributes('export/my_job_name/42/output/files/sku1/image.jpg'),
+                    new FileAttributes('export/my_job_name/42/output/files/sku2/media.png'),
                 ]
             )
         );
@@ -184,6 +186,8 @@ class FileWriterArchiverSpec extends ObjectBehavior
         $this->getArchives($jobExecution)->shouldYield([
             'export_1.csv' => 'export/my_job_name/42/output/export_1.csv',
             'export_2.csv' => 'export/my_job_name/42/output/export_2.csv',
+            'files/sku1/image.jpg' => 'export/my_job_name/42/output/files/sku1/image.jpg',
+            'files/sku2/media.png' => 'export/my_job_name/42/output/files/sku2/media.png',
         ]);
     }
 }

@@ -84,10 +84,15 @@ class JobExecutionController
         $archives = [];
         foreach ($this->archivist->getArchives($jobExecution) as $archiveName => $files) {
             $label = $this->translator->trans(sprintf('pim_enrich.entity.job_execution.module.download.%s', $archiveName));
-            $archives[$archiveName] = [
-                'label' => $label,
-                'files' => $files,
-            ];
+            if (!\is_array($files)) {
+                $files = \iterator_to_array($files);
+            }
+            if (\count($files) > 0) {
+                $archives[$archiveName] = [
+                    'label' => $label,
+                    'files' => $files,
+                ];
+            }
         }
 
         return $archives;

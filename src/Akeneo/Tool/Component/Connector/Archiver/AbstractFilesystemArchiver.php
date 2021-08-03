@@ -32,7 +32,7 @@ abstract class AbstractFilesystemArchiver implements ArchiverInterface
             ->map(fn (StorageAttributes $attributes): string => $attributes->path());
 
         foreach ($listing as $path) {
-            yield \basename($path) => $path;
+            yield \ltrim(\substr($path, \strlen($directory)), '\\/') => $path;
         }
     }
 
