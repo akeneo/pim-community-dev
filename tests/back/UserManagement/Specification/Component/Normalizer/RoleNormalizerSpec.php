@@ -3,8 +3,10 @@ declare(strict_types=1);
 
 namespace Specification\Akeneo\UserManagement\Component\Normalizer;
 
+use Akeneo\Tool\Component\Connector\ArrayConverter\ArrayConverterInterface;
 use Akeneo\UserManagement\Component\Model\Role;
 use Akeneo\UserManagement\Component\Normalizer\RoleNormalizer;
+use Oro\Bundle\SecurityBundle\Acl\AccessLevel;
 use Oro\Bundle\SecurityBundle\Acl\Extension\AclExtensionInterface;
 use Oro\Bundle\SecurityBundle\Acl\Persistence\AclManager;
 use Oro\Bundle\SecurityBundle\Acl\Persistence\AclPrivilegeRepository;
@@ -18,7 +20,7 @@ use Symfony\Component\Serializer\Normalizer\NormalizerInterface;
 
 class RoleNormalizerSpec extends ObjectBehavior
 {
-    function let(AclManager $aclManager, NormalizerInterface $aclPrivilegeNormalizer, AclExtensionInterface $extension)
+    function let(AclManager $aclManager, NormalizerInterface $aclPrivilegeNormalizer, AclExtensionInterface $extension, ArrayConverterInterface $standardToFlatArrayConverter)
     {
         $aclManager->getAllExtensions()->willReturn([$extension]);
         $extension->getExtensionKey()->willReturn('action');
@@ -28,7 +30,7 @@ class RoleNormalizerSpec extends ObjectBehavior
             new ActionMetadata('name3'),
         ]);
 
-        $this->beConstructedWith($aclManager, $aclPrivilegeNormalizer);
+        $this->beConstructedWith($aclManager, $aclPrivilegeNormalizer, $standardToFlatArrayConverter);
     }
 
     function it_is_a_normalizer()
@@ -92,6 +94,77 @@ class RoleNormalizerSpec extends ObjectBehavior
                     ],
                 ],
             ],
+        ]);
+
+    }
+
+
+    function it_normalizes_a_role_for_the_flat_format(
+        AclManager $aclManager,
+        NormalizerInterface $aclPrivilegeNormalizer,
+        AclPrivilegeRepository $aclPrivilegeRepository,
+        ArrayConverterInterface $standardToFlatArrayConverter
+    ) {
+        $role = new Role();
+        $role->setRole('ROLE_ADMINISTRATOR');
+        $role->setLabel('Administrator');
+        $format = 'flat';
+
+
+        $sid = new RoleSecurityIdentity($role);
+        $aclManager->getSid($role)->willReturn($sid);
+        $aclManager->getPrivilegeRepository()->willReturn($aclPrivilegeRepository);
+        $aclPrivileges = $this->buildAclPrivileges();
+        $aclPrivilegeRepository->getPrivileges($sid)->willReturn($aclPrivileges);
+
+        $aclPrivilegeNormalizer->normalize($aclPrivileges[0], 'array', [])->willReturn([
+            'id' => 'action:name1',
+            'name' => 'name1',
+            'group' => 'group1',
+            'type' => 'action',
+            'permissions' => [
+                'EXECUTE' => ['name' => 'EXECUTE', 'access_level' => AccessLevel::BASIC_LEVEL],
+            ],
+        ]);
+        $aclPrivilegeNormalizer->normalize($aclPrivileges[1], 'array', [])->willReturn([
+            'id' => 'action:name2',
+            'name' => 'name2',
+            'group' => 'group2',
+            'type' => 'action',
+            'permissions' => [
+                'VIEW' => ['name' => 'VIEW', 'access_level' => AccessLevel::BASIC_LEVEL],
+                'CREATE' => ['name' => 'CREATE', 'access_level' => AccessLevel::NONE_LEVEL],
+            ],
+        ]);
+        $aclPrivilegeNormalizer->normalize($aclPrivileges[2], 'array', [])->shouldNotBeCalled();
+        $aclPrivilegeNormalizer->normalize($aclPrivileges[3], 'array', [])->shouldNotBeCalled();
+
+        $standardToFlatArrayConverter->convert([
+            'role' => 'ROLE_ADMINISTRATOR',
+            'label' => 'Administrator',
+            'permissions' => [
+                [
+                    'id' => 'action:name1',
+                    'name' => 'name1',
+                    'group' => 'group1',
+                    'type' => 'action',
+                    'permissions' => [
+                        'EXECUTE' => ['name' => 'EXECUTE', 'access_level' => AccessLevel::BASIC_LEVEL],
+                    ],
+                ]
+            ],
+        ])->willReturn([
+            'role' => 'ROLE_ADMINISTRATOR',
+            'label' => 'Administrator',
+            'permissions' => 'action:name1'
+        ]);
+
+        $this->supportsNormalization($role, $format)->shouldBe(true);
+
+        $this->normalize($role, 'flat')->shouldBe([
+            'role' => 'ROLE_ADMINISTRATOR',
+            'label' => 'Administrator',
+            'permissions' => 'action:name1'
         ]);
     }
 

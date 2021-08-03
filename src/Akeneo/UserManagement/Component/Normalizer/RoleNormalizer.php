@@ -63,7 +63,7 @@ final class RoleNormalizer implements NormalizerInterface, CacheableSupportsMeth
 
             $aclPermission = $aclPermissions->current();
             if ($aclPermission->getAccessLevel() !== AccessLevel::NONE_LEVEL) {
-                $permissions[] = $this->aclPrivilegeNormalizer->normalize($privilege, $format, $context);
+                $permissions[] = $this->aclPrivilegeNormalizer->normalize($privilege, 'array', $context);
             }
         }
 
