@@ -113,10 +113,19 @@ const SettingsIndex = () => {
                     content={
                       countEntities.hasOwnProperty('count_category_trees') &&
                       countEntities.hasOwnProperty('count_categories')
-                        ? translate('pim_settings.count.categories', {
-                            countTrees: countEntities['count_category_trees'],
-                            countCategories: countEntities['count_categories'] - countEntities['count_category_trees'],
-                          })
+                        ? translate(
+                            'pim_settings.count.category_trees',
+                            {
+                              count: countEntities['count_category_trees'],
+                            },
+                            countEntities['count_category_trees']
+                          ).concat(
+                            translate(
+                              'pim_settings.count.categories',
+                              {count: countEntities['count_categories'] - countEntities['count_category_trees']},
+                              countEntities['count_categories'] - countEntities['count_category_trees']
+                            )
+                          )
                         : ''
                     }
                   />
@@ -144,7 +153,11 @@ const SettingsIndex = () => {
                     onClick={() => redirectToRoute('pim_enrich_locale_index')}
                     content={
                       countEntities.hasOwnProperty('count_locales')
-                        ? translate('pim_settings.count.locales', {count: countEntities['count_locales']})
+                        ? translate(
+                            'pim_settings.count.locales',
+                            {count: countEntities['count_locales']},
+                            countEntities['count_locales']
+                          )
                         : ''
                     }
                   />
@@ -156,7 +169,11 @@ const SettingsIndex = () => {
                     onClick={() => redirectToRoute('pim_enrich_currency_index')}
                     content={
                       countEntities.hasOwnProperty('count_currencies')
-                        ? translate('pim_settings.count.currencies', {count: countEntities['count_currencies']})
+                        ? translate(
+                            'pim_settings.count.currencies',
+                            {count: countEntities['count_currencies']},
+                            countEntities['count_currencies']
+                          )
                         : ''
                     }
                   />
@@ -179,9 +196,13 @@ const SettingsIndex = () => {
                     onClick={() => redirectToRoute('pim_enrich_attributegroup_index')}
                     content={
                       countEntities.hasOwnProperty('count_attribute_groups')
-                        ? translate('pim_settings.count.attribute_groups', {
-                            count: countEntities['count_attribute_groups'],
-                          })
+                        ? translate(
+                            'pim_settings.count.attribute_groups',
+                            {
+                              count: countEntities['count_attribute_groups'],
+                            },
+                            countEntities['count_attribute_groups']
+                          )
                         : ''
                     }
                   />
@@ -193,7 +214,11 @@ const SettingsIndex = () => {
                     onClick={() => redirectToRoute('pim_enrich_attribute_index')}
                     content={
                       countEntities.hasOwnProperty('count_attributes')
-                        ? translate('pim_settings.count.attributes', {count: countEntities['count_attributes']})
+                        ? translate(
+                            'pim_settings.count.attributes',
+                            {count: countEntities['count_attributes']},
+                            countEntities['count_attributes']
+                          )
                         : ''
                     }
                   />
@@ -205,7 +230,11 @@ const SettingsIndex = () => {
                     onClick={() => redirectToRoute('pim_enrich_family_index')}
                     content={
                       countEntities.hasOwnProperty('count_families')
-                        ? translate('pim_settings.count.families', {count: countEntities['count_families']})
+                        ? translate(
+                            'pim_settings.count.families',
+                            {count: countEntities['count_families']},
+                            countEntities['count_families']
+                          )
                         : ''
                     }
                   />
@@ -217,7 +246,11 @@ const SettingsIndex = () => {
                     onClick={() => redirectToRoute('akeneo_measurements_settings_index')}
                     content={
                       countEntities.hasOwnProperty('count_measurements')
-                        ? translate('pim_settings.count.measurements', {count: countEntities['count_measurements']})
+                        ? translate(
+                            'pim_settings.count.measurements',
+                            {count: countEntities['count_measurements']},
+                            countEntities['count_measurements']
+                          )
                         : ''
                     }
                   />
@@ -229,9 +262,13 @@ const SettingsIndex = () => {
                     onClick={() => redirectToRoute('pim_enrich_associationtype_index')}
                     content={
                       countEntities.hasOwnProperty('count_association_types')
-                        ? translate('pim_settings.count.association_types', {
-                            count: countEntities['count_association_types'],
-                          })
+                        ? translate(
+                            'pim_settings.count.association_types',
+                            {
+                              count: countEntities['count_association_types'],
+                            },
+                            countEntities['count_association_types']
+                          )
                         : ''
                     }
                   />
@@ -243,7 +280,11 @@ const SettingsIndex = () => {
                     onClick={() => redirectToRoute('pim_enrich_grouptype_index')}
                     content={
                       countEntities.hasOwnProperty('count_group_types')
-                        ? translate('pim_settings.count.group_types', {count: countEntities['count_group_types']})
+                        ? translate(
+                            'pim_settings.count.group_types',
+                            {count: countEntities['count_group_types']},
+                            countEntities['count_group_types']
+                          )
                         : ''
                     }
                   />
@@ -255,7 +296,11 @@ const SettingsIndex = () => {
                     onClick={() => redirectToRoute('pim_enrich_group_index')}
                     content={
                       countEntities.hasOwnProperty('count_groups')
-                        ? translate('pim_settings.count.groups', {count: countEntities['count_groups']})
+                        ? translate(
+                            'pim_settings.count.groups',
+                            {count: countEntities['count_groups']},
+                            countEntities['count_groups']
+                          )
                         : ''
                     }
                   />
@@ -267,7 +312,11 @@ const SettingsIndex = () => {
                     onClick={() => redirectToRoute('pimee_catalog_rule_rule_index')}
                     content={
                       countEntities.hasOwnProperty('count_rules')
-                        ? translate('pim_settings.count.rules', {count: countEntities['count_rules']})
+                        ? translate(
+                            'pim_settings.count.rules',
+                            {count: countEntities['count_rules']},
+                            countEntities['count_rules']
+                          )
                         : ''
                     }
                   />
