@@ -19,6 +19,7 @@ use Akeneo\ReferenceEntity\Domain\Query\Record\RecordQuery;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
+use Symfony\Component\HttpKernel\Exception\BadRequestHttpException;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 
 /**
@@ -29,8 +30,7 @@ use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
  */
 class IndexAction
 {
-    /** @var SearchRecord */
-    private $searchRecord;
+    private SearchRecord $searchRecord;
 
     public function __construct(SearchRecord $searchRecord)
     {
@@ -43,6 +43,11 @@ class IndexAction
     public function __invoke(Request $request, string $referenceEntityIdentifier): JsonResponse
     {
         $normalizedQuery = json_decode($request->getContent(), true);
+
+        if (null === $normalizedQuery) {
+            throw new BadRequestHttpException('Invalid JSON message received');
+        }
+
         $query = RecordQuery::createFromNormalized($normalizedQuery);
         $referenceEntityIdentifier = $this->getReferenceEntityIdentifierOr404($referenceEntityIdentifier);
 
@@ -65,8 +70,8 @@ class IndexAction
     {
         try {
             return ReferenceEntityIdentifier::fromString($identifier);
-        } catch (\Exception $e) {
-            throw new NotFoundHttpException($e->getMessage());
+        } catch (\Exception $exception) {
+            throw new NotFoundHttpException($exception->getMessage());
         }
     }
 
