@@ -136,7 +136,7 @@ describe('AddRowsButton', () => {
     expect(await screen.findByText('label21')).toBeInTheDocument();
   });
 
-  it('should redirect from helper when there is not option', async () => {
+  it('should redirect from helper when there is no option', async () => {
     renderWithProviders(
       <AddRowsButton
         attribute={{...getTableAttribute(), code: 'attribute_without_options'}}

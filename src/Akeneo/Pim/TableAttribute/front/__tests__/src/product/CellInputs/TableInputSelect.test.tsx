@@ -121,7 +121,7 @@ describe('TableInputSelect', () => {
     expect(screen.queryByText('A')).not.toBeInTheDocument();
   });
 
-  it('should display a link when there is no options', async () => {
+  it('should display a link when there is no option', async () => {
     renderWithProviders(<TableInputSelect onChange={jest.fn()} options={[]} attribute={getTableAttribute()} />);
 
     await act(async () => {

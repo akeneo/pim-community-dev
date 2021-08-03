@@ -9,7 +9,6 @@ pim_table_attribute:
             data_type: Column type
             labels: Label translations
             column_management: Column management
-            characters_left: ]-Inf, 1]{{ count }} character left|]1, Inf[{{ count }} characters left
             please_type: Please type "{{ text }}"
             confirm_column_delete: Are you sure you want to delete this column?
             confirm_option_delete: Are you sure you want to delete this option?
@@ -20,13 +19,13 @@ pim_table_attribute:
             new_option_placeholder: Write your new option label
             manage_options: Manage options
             column_code: Column code
-            properties_helper: You must define the table structure and at least 2 columns before saving your table attribute
+            properties_helper: You must define the table structure and at least 2 columns before you can save your table attribute
             limit_option_reached: You reached the limit of {{ limit }} options.
             template_label: Select the standard of your "{{ templateLabel }}" table
             delete_column_helper: When you delete this column, all of its values are removed from all the products using the "{{ attributeLabel }}" table attribute.
             delete_first_option_helper: When you delete this option, the entire row will be deleted for all the products using the "{{ attributeLabel }}" table attribute.
             delete_other_option_helper: When you delete this option, the cell value will be removed for all the products using the "{{ attributeLabel }}" table attribute.
-            no_options_helper: Please, add your first option.
+            no_options_helper: Please add your first option.
             no_options: No options found
             please_try_again: Please try again
         product:
