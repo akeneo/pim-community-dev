@@ -92,6 +92,7 @@
 - PIM-9942: Fix message on DQI dashboard in French UI locale
 - PIM-9947: Display validation errors message in the UI when `compute_family_variant_structure_changes` job fails
 - PIM-9987: Fix product grid count not accurate after specific SKU selection
+- PIM-10009: Fix error being printed in the response of partial update of product models API
 
 ## New features
 
