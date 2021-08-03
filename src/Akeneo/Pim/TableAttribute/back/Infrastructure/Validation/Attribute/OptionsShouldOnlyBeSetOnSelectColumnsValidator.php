@@ -33,7 +33,7 @@ final class OptionsShouldOnlyBeSetOnSelectColumnsValidator extends ConstraintVal
         }
 
         $this->context->buildViolation(
-            'Options cannot be set for a "{{ data_type }}" column type',
+            'pim_table_configuration.validation.table_configuration.options_cannot_be_set',
             [
                 '{{ data_type }}' => $value['data_type'],
             ]

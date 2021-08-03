@@ -45,7 +45,7 @@ final class ValidationShouldMatchColumnTypeValidator extends ConstraintValidator
         $validationKeys = \array_keys($value['validations']);
         if ([] === self::VALIDATION_MAPPING[$columnType]) {
             $this->context->buildViolation(
-                'Do not use Validations on a "{{ columnType }}" column, current column type: "{{ given }}"',
+                'pim_table_configuration.validation.table_configuration.no_validations_allowed',
                 [
                     '{{ given }}' => \implode(', ', $validationKeys),
                     '{{ columnType }}' => $columnType,
@@ -58,7 +58,7 @@ final class ValidationShouldMatchColumnTypeValidator extends ConstraintValidator
         $invalidValidationKeys = \array_diff($validationKeys, self::VALIDATION_MAPPING[$columnType]);
         if ([] !== $invalidValidationKeys) {
             $this->context->buildViolation(
-                'The "{{ given }}" Validations does not work on a "{{ columnType }}" column, allowed: "{{ expected }}"',
+                'pim_table_configuration.validation.table_configuration.invalid_validation_key',
                 [
                     '{{ expected }}' => \implode(', ', self::VALIDATION_MAPPING[$columnType]),
                     '{{ given }}' => \implode(', ', $invalidValidationKeys),

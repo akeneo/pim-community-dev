@@ -25,8 +25,21 @@ pim_table_configuration:
             first_column_should_be_select: 'The first column type should always be "select", current type: "{{ data_type }}"'
             first_column_code_cannot_be_changed: The code of your first column cannot be changed.
             unknown_field: 'Make sure you use only expected fields, current field: {{ field }}'
+            attribute_does_not_exist: The "{{ attribute }}" attribute does not exist
+            not_table_attribute: The "{{ attribute }}" attribute is not a table attribute
+            column_does_not_exist: The "{{ column }}" column does not exist for the "{{ attribute }}" attribute
+            not_select_column: The "{{ column }}" column of the "{{ attribute }}" attribute is not a "select"
+            max_should_be_greater_than_min: The maximum value should be greater than the minimum value.
+            options_cannot_be_set: Options cannot be set for a "{{ data_type }}" column type
+            no_validations_allowed: 'Do not use Validations on a "{{ columnType }}" column, current column type: "{{ given }}"'
+            invalid_validation_key: 'The "{{ given }}" Validations does not work on a "{{ columnType }}" column, allowed: "{{ expected }}"'
         product_value:
             non_existing_columns: '[0,1]The "{{ non_existing_columns }}" column does not exist|]1,Inf[The "{{ non_existing_columns }}" columns do not exist'
             unexpected_data_type: 'The "{{ columnCode }}" column expects a {{ expected }}, {{ given }} given'
             first_column_required: 'The "{{ columnCode }}" column is mandatory'
             unknown_option: 'Make sure you only use existing option codes, current value: "{{ optionCode }}"'
+            integer_required: 'This value should be an integer: {{ invalid_value }}'
+            min_validation: This value should be {{ limit }} or more.
+            max_validation: This value should be {{ limit }} or less.
+            value_integer_required: 'The required value is an integer'
+            max_length_validation: This value should contain {{ limit }} characters or less.

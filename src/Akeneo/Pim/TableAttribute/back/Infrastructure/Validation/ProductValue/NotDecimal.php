@@ -17,5 +17,5 @@ use Symfony\Component\Validator\Constraint;
 
 final class NotDecimal extends Constraint
 {
-    public string $message = 'This value should be an integer: {{ invalid_value }}';
+    public string $message = 'pim_table_configuration.validation.product_value.integer_required';
 }

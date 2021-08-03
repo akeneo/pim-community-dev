@@ -17,10 +17,10 @@ use Symfony\Component\Validator\Constraint;
 
 final class TableValidationsShouldMatch extends Constraint
 {
-    public const MIN_MESSAGE = 'This value should be {{ limit }} or more.';
-    public const MAX_MESSAGE = 'This value should be {{ limit }} or less.';
-    public const DECIMALS_ALLOWED_MESSAGE = 'The required value is an integer';
-    public const MAX_LENGTH_MESSAGE = 'This value should contain {{ limit }} characters or less.';
+    public const MIN_MESSAGE = 'pim_table_configuration.validation.product_value.min_validation';
+    public const MAX_MESSAGE = 'pim_table_configuration.validation.product_value.max_validation';
+    public const DECIMALS_ALLOWED_MESSAGE = 'pim_table_configuration.validation.product_value.value_integer_required';
+    public const MAX_LENGTH_MESSAGE = 'pim_table_configuration.validation.product_value.max_length_validation';
 
     /**
      * {@inheritDoc}
