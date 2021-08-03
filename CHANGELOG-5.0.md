@@ -1,5 +1,9 @@
 # 5.0.x
 
+## Bug fixes
+
+- PIM-9975: Skip DQI evaluation for texts coming from Word to fix timeout and performance issues during product save
+
 # 5.0.43 (2021-07-26)
 
 # 5.0.42 (2021-07-20)
