@@ -83,4 +83,31 @@ describe('TableInputValue', () => {
       expect(screen.queryByTestId(`input-uniquesalt-${columnCode}`)).not.toBeInTheDocument();
     });
   });
+
+  it('should change inputValue class when a violated cell changed', async () => {
+    const handleChange = jest.fn();
+    renderWithProviders(
+      <TableInputValue
+        attributeCode={'nutrition'}
+        valueData={getTableValueWithId()}
+        tableConfiguration={getComplexTableConfiguration()}
+        onChange={handleChange}
+        violatedCells={[
+          {
+            id: 'uniqueidsugar',
+            columnCode: 'quantity',
+          },
+        ]}
+      />
+    );
+    expect(await screen.findByText('Sugar')).toBeInTheDocument();
+
+    const sugarInput = screen.getByTestId('input-uniqueidsugar-quantity');
+    const formerClassList = sugarInput.classList.toString();
+
+    act(() => {
+      fireEvent.change(sugarInput, {target: {value: '200'}});
+    });
+    expect(sugarInput.classList.toString()).not.toEqual(formerClassList);
+  });
 });

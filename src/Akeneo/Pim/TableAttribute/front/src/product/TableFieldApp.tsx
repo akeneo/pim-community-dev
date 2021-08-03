@@ -111,26 +111,26 @@ const TableFieldApp: React.FC<TableFieldAppProps> = ({
 
   React.useEffect(() => {
     setViolatedCellsById(
-        (violations || []).reduce((old, violation) => {
-          if (locale === violation.locale && scope === violation.scope) {
-            // Complete path looks like values[attributeCode-<all_channels>-en_US][3].ingredient
-            const completePath = violation.path;
-            const index = completePath.indexOf(']');
-            if (index >= 0) {
-              const realPath = completePath.substr(index + 1);
-              const results = /^\[(\d+)\]\.(.+)$/.exec(realPath);
-              if (results) {
-                old.push({
-                  id: tableValue[parseInt(results[1])]['unique id'],
-                  columnCode: results[2],
-                });
-              }
+      (violations || []).reduce((old, violation) => {
+        if (locale === violation.locale && scope === violation.scope) {
+          // Complete path looks like values[attributeCode-<all_channels>-en_US][3].ingredient
+          const completePath = violation.path;
+          const index = completePath.indexOf(']');
+          if (index >= 0) {
+            const realPath = completePath.substr(index + 1);
+            const results = /^\[(\d+)\]\.(.+)$/.exec(realPath);
+            if (results) {
+              old.push({
+                id: tableValue[parseInt(results[1])]['unique id'],
+                columnCode: results[2],
+              });
             }
           }
-          return old;
-        }, [] as ViolatedCell[])
-    )
-  },[JSON.stringify(violations)]);
+        }
+        return old;
+      }, [] as ViolatedCell[])
+    );
+  }, [JSON.stringify(violations)]);
 
   React.useEffect(() => {
     clearCacheSelectOptions();

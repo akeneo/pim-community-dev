@@ -71,9 +71,9 @@ const TableInputValue: React.FC<TableInputValueProps> = ({
 
   const handleChange = (uniqueId: string, columnCode: ColumnCode, cellValue: TableCell | undefined) => {
     const rowIndex = valueData.findIndex(row => row['unique id'] === uniqueId);
-    const newViolatedCells = currentViolatedCells.filter((cell:ViolatedCell) =>{
+    const newViolatedCells = currentViolatedCells.filter((cell: ViolatedCell) => {
       return cell.id !== uniqueId || cell.columnCode !== columnCode;
-    })
+    });
     setCurrentViolatedCells(newViolatedCells);
     if (rowIndex >= 0) {
       const row = valueData[rowIndex];
