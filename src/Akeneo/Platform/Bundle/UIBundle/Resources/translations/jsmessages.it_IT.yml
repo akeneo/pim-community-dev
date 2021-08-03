@@ -374,7 +374,6 @@ pim_settings:
   product_settings: Impostazioni prodotti
   count:
     categories: Hai {{ countTrees }} alberi e {{ countCategories }} categorie
-    channels: Hai {{ count }} canali
     locales: Hai {{ count }} impostazioni locali attivate
     currencies: Hai {{ count }} valute attivate
     attribute_groups: Hai {{ count }} gruppi di attributi

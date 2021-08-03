@@ -1,4 +1,4 @@
-import React, {ChangeEvent, ReactNode} from 'react';
+import React, {ChangeEvent, ReactNode, RefObject} from 'react';
 import styled from 'styled-components';
 import {getColor} from '../../theme';
 import {SearchIcon} from '../../icons';
@@ -57,7 +57,7 @@ const ResultCount = styled.span`
 
 type SearchProps = {
   /**
-   * Content of the Search component
+   * Content of the Search component.
    */
   children?: ReactNode;
 
@@ -67,27 +67,33 @@ type SearchProps = {
   placeholder?: string;
 
   /**
-   * Text displayed on the rollover of the Search component
+   * Text displayed on the rollover of the Search component.
    */
   title?: string;
 
   /**
-   * The search string
+   * The search string.
    */
   searchValue: string;
 
   /**
-   * Handle called when the search input is updated
+   * Ref to forward to the input field.
+   */
+  inputRef?: RefObject<HTMLInputElement>;
+
+  /**
+   * Handle called when the search input is updated.
    */
   onSearchChange: (searchValue: string) => void;
 };
 
-const Search = ({children, placeholder, title, searchValue, onSearchChange, ...rest}: SearchProps) => {
+const Search = ({children, placeholder, title, searchValue, inputRef, onSearchChange, ...rest}: SearchProps) => {
   return (
     <Container {...rest}>
       <SearchContainer>
         <SearchIcon size={20} />
         <SearchInput
+          ref={inputRef}
           title={title}
           placeholder={placeholder}
           value={searchValue}
