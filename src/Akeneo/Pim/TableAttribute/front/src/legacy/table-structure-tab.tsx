@@ -7,7 +7,7 @@ import {DependenciesProvider} from '@akeneo-pim-community/legacy-bridge';
 import {Attribute, AttributeType} from '../models/Attribute';
 import {getTranslatedTableConfigurationFromVariationTemplate} from '../models/TranslatedTableConfigurationProvider';
 import {Locale} from '@akeneo-pim-community/settings-ui';
-import {LocaleCode} from '../../../../../AssetManager/front/domain/model/locale';
+import {LocaleCode} from '@akeneo-pim-community/shared';
 // eslint-disable-next-line @typescript-eslint/no-var-requires
 const translate = require('oro/translator');
 // eslint-disable-next-line @typescript-eslint/no-var-requires

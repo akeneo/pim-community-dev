@@ -49,7 +49,13 @@ const getMessages = async (localeCodes: LocaleCode[]) => {
   for await (const localeCode of localeCodes) {
     const response = await fetch(`js/translation/${localeCode}.js`);
     const json = await response.json();
-    responses[localeCode] = json.messages;
+    const messages = {};
+    Object.keys(json.messages).forEach(messageKey => {
+      if (/^jsmessages:table_attribute_template\./.exec(messageKey)) {
+        messages[messageKey] = json.messages[messageKey];
+      }
+    });
+    responses[localeCode] = messages;
   }
   return responses;
 };
