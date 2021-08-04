@@ -1,6 +1,6 @@
 import React, {useEffect, useState} from 'react';
-import {useTranslate, useUserContext} from '@akeneo-pim-community/shared';
-import {AttributeOption} from '../model';
+import {LocaleCode, SearchBar, useTranslate, useUserContext} from '@akeneo-pim-community/shared';
+import {AttributeOption, OptionValue} from '../model';
 import {useAttributeContext} from '../contexts';
 import {useAttributeOptionsListState} from '../hooks';
 import {useSortedAttributeOptions} from '../hooks';
@@ -39,6 +39,8 @@ const AttributeOptionTable = ({
   const [showDeleteConfirmationModal, setShowDeleteConfirmationModal] = useState<boolean>(false);
   const [showNewOptionPlaceholder, setShowNewOptionPlaceholder] = useState<boolean>(isNewOptionFormDisplayed);
   const [isDraggable, setIsDraggable] = useState<boolean>(attributeContext.autoSortOptions);
+  const [searchValue, setSearchValue] = useState('');
+  const [autoSortingReadOnly, setAutoSortingReadOnly] = useState<boolean>(false);
 
   useEffect(() => {
     if (selectedOptionId !== null) {
@@ -83,6 +85,30 @@ const AttributeOptionTable = ({
     });
   };
 
+  const filterOnLabelOrCode =
+    (searchValue: string, locale: LocaleCode) =>
+    (entity: {code: string; optionValues: OptionValue}): boolean =>
+      -1 !== entity.code.toLowerCase().indexOf(searchValue.toLowerCase()) ||
+      (undefined !== entity.optionValues[locale] &&
+        -1 !== entity.optionValues[locale].value.toLowerCase().indexOf(searchValue.toLowerCase()));
+
+  const filteredAttributeOptions =
+    null === sortedAttributeOptions ? null : sortedAttributeOptions.filter(filterOnLabelOrCode(searchValue, locale));
+
+  const filteredAttributeOptionsCount = null === filteredAttributeOptions ? 0 : filteredAttributeOptions.length;
+  const onSearchChange = (searchValue: string) => {
+    if (searchValue) {
+      setIsDraggable(false);
+      setAutoSortingReadOnly(true);
+    } else {
+      if (!attributeContext.autoSortOptions) {
+        setIsDraggable(true);
+      }
+      setAutoSortingReadOnly(false);
+    }
+    setSearchValue(searchValue);
+  }
+
   return (
     <div className="AknSubsection AknAttributeOption-list">
       <div className="AknSubsection-title AknSubsection-title--glued tabsection-title">
@@ -92,7 +118,14 @@ const AttributeOptionTable = ({
         </Button>
       </div>
 
-      <AutoOptionSorting />
+      <SearchBar
+        placeholder={translate('pim_enrich.entity.attribute_option.module.edit.search.placeholder')}
+        count={filteredAttributeOptionsCount}
+        searchValue={searchValue}
+        onSearchChange={onSearchChange}
+      />
+
+      <AutoOptionSorting readOnly={autoSortingReadOnly}/>
 
       <SpacedTable isDragAndDroppable={isDraggable} onReorder={newIndices => reorderAttributeOptions(newIndices)}>
         <Table.Header sticky={44}>
@@ -103,8 +136,8 @@ const AttributeOptionTable = ({
           <Table.HeaderCell>&nbsp;</Table.HeaderCell>
         </Table.Header>
         <Table.Body>
-          {sortedAttributeOptions !== null &&
-            sortedAttributeOptions.map((attributeOption: AttributeOption, index: number) => {
+          {filteredAttributeOptions !== null &&
+            filteredAttributeOptions.map((attributeOption: AttributeOption, index: number) => {
               const deleteOption = () => {
                 setShowDeleteConfirmationModal(false);
                 deleteAttributeOption(attributeOption.id);
