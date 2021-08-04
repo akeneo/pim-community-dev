@@ -11,7 +11,7 @@ declare(strict_types=1);
  * file that was distributed with this source code.
  */
 
-namespace Akeneo\Platform\TailoredExport\Infrastructure\Validation\Source\Enabled;
+namespace Akeneo\Platform\TailoredExport\Infrastructure\Validation\Operation;
 
 use Symfony\Component\Validator\Constraint;
 use Symfony\Component\Validator\Constraints\Collection;
@@ -20,7 +20,7 @@ use Symfony\Component\Validator\Constraints\Length;
 use Symfony\Component\Validator\Constraints\NotBlank;
 use Symfony\Component\Validator\ConstraintValidator;
 
-class EnabledReplacementOperationValidator extends ConstraintValidator
+class BooleanReplacementOperationValidator extends ConstraintValidator
 {
     public function validate($operation, Constraint $constraint)
     {

@@ -64,6 +64,7 @@ const ColumnDetails = ({columnConfiguration, onColumnChange}: ColumnDetailsProps
   const handleSourceChange = (updatedSource: Source) => {
     onColumnChange(updateSource(columnConfiguration, updatedSource));
   };
+
   const handleSourceRemove = (currentSource: Source) => {
     onColumnChange(removeSource(columnConfiguration, currentSource));
     switchTo(firstSource);

@@ -77,7 +77,7 @@ test('it renders an invalid property placeholder when the source is invalid', ()
 
   renderWithProviders(
     <PropertySourceConfigurator
-      // @ts-expect-error invalid operations
+      // @ts-expect-error unknown selection type
       source={{
         code: 'enabled',
         uuid: 'unique_id',
@@ -85,7 +85,7 @@ test('it renders an invalid property placeholder when the source is invalid', ()
         locale: null,
         channel: null,
         operations: {},
-        selection: {type: 'code'},
+        selection: {type: 'path'},
       }}
       validationErrors={[]}
       onSourceChange={handleSourceChange}

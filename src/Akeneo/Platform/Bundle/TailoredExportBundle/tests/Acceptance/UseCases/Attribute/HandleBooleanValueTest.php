@@ -13,6 +13,7 @@ declare(strict_types=1);
 
 namespace Akeneo\Platform\TailoredExport\Test\Acceptance\UseCases\Attribute;
 
+use Akeneo\Platform\TailoredExport\Application\Query\Operation\ReplacementOperation;
 use Akeneo\Platform\TailoredExport\Application\Query\Selection\Boolean\BooleanSelection;
 use Akeneo\Platform\TailoredExport\Application\Query\Selection\SelectionInterface;
 use Akeneo\Platform\TailoredExport\Domain\SourceValue\BooleanValue;
@@ -54,7 +55,51 @@ final class HandleBooleanValueTest extends AttributeTestCase
                 'selection' => new BooleanSelection(),
                 'value' => new BooleanValue(false),
                 'expected' => [self::TARGET_NAME => '0']
-            ]
+            ],
+            [
+                'operations' => [
+                    ReplacementOperation::createFromNormalized(
+                        [
+                            'mapping' => [
+                                'true' => 'oui',
+                                'false' => 'non'
+                            ]
+                        ]
+                    )
+                ],
+                'selection' => new BooleanSelection(),
+                'value' => new BooleanValue(true),
+                'expected' => [self::TARGET_NAME => 'oui']
+            ],
+            [
+                'operations' => [
+                    ReplacementOperation::createFromNormalized(
+                        [
+                            'mapping' => [
+                                'true' => 'oui',
+                                'false' => 'non'
+                            ]
+                        ]
+                    )
+                ],
+                'selection' => new BooleanSelection(),
+                'value' => new BooleanValue(false),
+                'expected' => [self::TARGET_NAME => 'non']
+            ],
+            [
+                'operations' => [
+                    ReplacementOperation::createFromNormalized(
+                        [
+                            'mapping' => [
+                                'true' => 'oui',
+                            ]
+                        ]
+                    )
+                ],
+                'selection' => new BooleanSelection(),
+                'value' => new BooleanValue(false),
+                'expected' => [self::TARGET_NAME => '0']
+            ],
         ];
     }
 }

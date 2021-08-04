@@ -110,6 +110,8 @@ akeneo.tailored_export:
           placeholder: Define the replacement value
           enabled: Enabled replacement value
           disabled: Disabled replacement value
+          yes: Yes replacement value
+          no: No replacement value
   column:
     delete_message: Are you sure you want to remove this column?
   validation:

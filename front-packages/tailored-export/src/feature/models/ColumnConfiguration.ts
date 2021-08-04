@@ -100,12 +100,25 @@ const addPropertySource = (columnConfiguration: ColumnConfiguration, sourceCode:
   };
 };
 
-const updateSource = (columnConfiguration: ColumnConfiguration, updatedSource: Source): ColumnConfiguration => ({
-  ...columnConfiguration,
-  sources: columnConfiguration.sources.map<Source>(source =>
-    source.uuid === updatedSource.uuid ? updatedSource : source
-  ),
-});
+const filterEmptyOperations = (operations: object) =>
+  Object.keys(operations).reduce((accumulator, key) => {
+    if (undefined !== operations[key]) {
+      accumulator[key] = operations[key];
+    }
+
+    return accumulator;
+  }, {});
+
+const updateSource = (columnConfiguration: ColumnConfiguration, updatedSource: Source): ColumnConfiguration => {
+  const filteredOperations = filterEmptyOperations(updatedSource.operations);
+
+  return {
+    ...columnConfiguration,
+    sources: columnConfiguration.sources.map<Source>(source =>
+      source.uuid === updatedSource.uuid ? {...updatedSource, operations: filteredOperations} : source
+    ),
+  };
+};
 
 const removeSource = (columnConfiguration: ColumnConfiguration, removedSource: Source): ColumnConfiguration => ({
   ...columnConfiguration,
@@ -114,14 +127,15 @@ const removeSource = (columnConfiguration: ColumnConfiguration, removedSource: S
 
 export type {ColumnConfiguration, ColumnsState};
 export {
-  addColumn,
-  createColumn,
-  removeColumn,
-  updateColumn,
-  removeSource,
-  addAttributeSource,
   addAssociationTypeSource,
+  addAttributeSource,
+  addColumn,
   addPropertySource,
-  updateSource,
+  createColumn,
+  filterEmptyOperations,
   MAX_COLUMN_COUNT,
+  removeColumn,
+  removeSource,
+  updateColumn,
+  updateSource,
 };

@@ -169,6 +169,11 @@ const FakePIM = () => {
   useEffect(() => {
     const fetchJobConfiguration = async () => {
       const response = await fetch(route);
+
+      if (404 === response.status) {
+        throw new Error('Be sure to create a Tailored Export job with code "mmm"');
+      }
+
       const jobConfiguration = await response.json();
 
       setJobConfiguration(jobConfiguration);

@@ -129,9 +129,8 @@ test('It returns null when switching attribute code', async () => {
     await waitForNextUpdate();
     await flushPromises();
 
-    const [isFetching, attribute] = result.current;
+    const [, attribute] = result.current;
     expect(attribute).toBeNull();
-    expect(isFetching).toBe(false);
   });
 });
 

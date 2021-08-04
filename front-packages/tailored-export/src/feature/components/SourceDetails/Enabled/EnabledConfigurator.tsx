@@ -8,7 +8,7 @@ import {InvalidPropertySourceError} from '../error';
 
 const EnabledConfigurator = ({source, validationErrors, onSourceChange}: PropertyConfiguratorProps) => {
   const translate = useTranslate();
-  const [isReplacementCollapsed, toggleReplacementCollapse] = useState<boolean>(true);
+  const [isReplacementCollapsed, toggleReplacementCollapse] = useState<boolean>('replacement' in source.operations);
 
   if (!isEnabledSource(source)) {
     throw new InvalidPropertySourceError(`Invalid source data "${source.code}" for enabled configurator`);
@@ -22,6 +22,8 @@ const EnabledConfigurator = ({source, validationErrors, onSourceChange}: Propert
       onCollapse={toggleReplacementCollapse}
     >
       <BooleanReplacement
+        trueLabel={translate('akeneo.tailored_export.column_details.sources.operation.replacement.enabled')}
+        falseLabel={translate('akeneo.tailored_export.column_details.sources.operation.replacement.disabled')}
         operation={source.operations.replacement}
         validationErrors={filterErrors(validationErrors, '[operations][replacement]')}
         onOperationChange={updatedOperation =>
