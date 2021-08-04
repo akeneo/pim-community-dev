@@ -2,6 +2,7 @@
 
 namespace Akeneo\UserManagement\Bundle\Controller\Rest;
 
+use Akeneo\Tool\Component\StorageUtils\Exception\UnknownPropertyException;
 use Akeneo\Tool\Component\StorageUtils\Factory\SimpleFactoryInterface;
 use Akeneo\Tool\Component\StorageUtils\Saver\SaverInterface;
 use Akeneo\Tool\Component\StorageUtils\Updater\ObjectUpdaterInterface;
@@ -73,10 +74,20 @@ class UserGroupController
             return new RedirectResponse('/');
         }
 
+
         $userGroup = $this->factory->create();
         $content = json_decode($request->getContent(), true);
 
-        $this->updater->update($userGroup, $content);
+        if(!$content) {
+            return new JsonResponse(['message' => 'Invalid json message received'], Response::HTTP_BAD_REQUEST);
+        }
+
+        try {
+            $this->updater->update($userGroup, $content);
+        } catch (UnknownPropertyException $exception) {
+            return new JsonResponse(['message' => $exception->getMessage()], Response::HTTP_UNPROCESSABLE_ENTITY);
+        }
+
         $violations = $this->validator->validate($userGroup);
 
         if ($violations->count() > 0) {
@@ -94,7 +105,7 @@ class UserGroupController
 
         $this->saver->save($userGroup);
 
-        return new JsonResponse($this->normalizer->normalize($userGroup, 'internal_api'));
+        return new JsonResponse($this->normalizer->normalize($userGroup, 'internal_api'), Response::HTTP_CREATED);
     }
 
     /**
