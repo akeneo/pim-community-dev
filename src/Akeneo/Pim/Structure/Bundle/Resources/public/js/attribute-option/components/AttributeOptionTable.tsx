@@ -1,5 +1,5 @@
 import React, {useEffect, useState} from 'react';
-import {useTranslate} from '@akeneo-pim-community/shared';
+import {useTranslate, useUserContext} from '@akeneo-pim-community/shared';
 import {AttributeOption} from '../model';
 import {useAttributeContext} from '../contexts';
 import {useAttributeOptionsListState} from '../hooks';
@@ -30,6 +30,7 @@ const AttributeOptionTable = ({
   const {attributeOptions, extraData} = useAttributeOptionsListState();
   const translate = useTranslate();
   const attributeContext = useAttributeContext();
+  const locale = useUserContext().get('catalogLocale');
   const {sortedAttributeOptions, setSortedAttributeOptions} = useSortedAttributeOptions(
     attributeOptions,
     attributeContext.autoSortOptions,
@@ -93,6 +94,7 @@ const AttributeOptionTable = ({
       <SpacedTable isDragAndDroppable={isDraggable} onReorder={newIndices => reorderAttributeOptions(newIndices)}>
         <Table.Header sticky={44}>
           {!isDraggable && <Table.HeaderCell>&nbsp;</Table.HeaderCell>}
+          <Table.HeaderCell>{translate('pim_common.label')}</Table.HeaderCell>
           <Table.HeaderCell>{translate('pim_common.code')}</Table.HeaderCell>
           <Table.HeaderCell>&nbsp;</Table.HeaderCell>
           <Table.HeaderCell>&nbsp;</Table.HeaderCell>
@@ -119,7 +121,12 @@ const AttributeOptionTable = ({
                       </HandleContainer>
                     </TableCellNoDraggable>
                   )}
-                  <Table.Cell rowTitle={true}>{attributeOption.code}</Table.Cell>
+                  <TableCellLabel rowTitle={true}>
+                    {attributeOption.optionValues[locale] && attributeOption.optionValues[locale].value
+                      ? attributeOption.optionValues[locale].value
+                      : `[${attributeOption.code}]`}
+                  </TableCellLabel>
+                  <Table.Cell>{attributeOption.code}</Table.Cell>
                   <Table.Cell>{extraData[attributeOption.code]}</Table.Cell>
                   <TableActionCell>
                     <IconButton
@@ -146,7 +153,9 @@ const AttributeOptionTable = ({
               );
             })}
 
-          {showNewOptionPlaceholder && <NewOptionPlaceholder cancelNewOption={cancelNewOption} isDraggable={isDraggable} />}
+          {showNewOptionPlaceholder && (
+            <NewOptionPlaceholder cancelNewOption={cancelNewOption} isDraggable={isDraggable} />
+          )}
         </Table.Body>
       </SpacedTable>
     </div>
@@ -157,6 +166,10 @@ const SpacedTable = styled(Table)`
   th {
     padding-top: 15px;
   }
+`;
+
+const TableCellLabel = styled(Table.Cell)`
+  width: 35%;
 `;
 
 const TableCellNoDraggable = styled(Table.Cell)`

@@ -24,7 +24,8 @@ const NewOptionPlaceholder = ({cancelNewOption, isDraggable}: newOptionPlacehold
           </HandleContainer>
         </TableCellNoDraggable>
       )}
-      <Table.Cell rowTitle={true}>
+      <TableCellLabel rowTitle={true}>&nbsp;</TableCellLabel>
+      <Table.Cell>
         {translate('pim_enrich.entity.attribute_option.module.edit.new_option_code')}
       </Table.Cell>
       <Table.Cell>&nbsp;</Table.Cell>
@@ -45,6 +46,10 @@ const TableRow = styled(Table.Row)`
   td:first-child {
     color: ${getColor('grey', 40)};
   }
+`;
+
+const TableCellLabel = styled(Table.Cell)`
+  width: 35%;
 `;
 
 const TableCellNoDraggable = styled(Table.Cell)`
