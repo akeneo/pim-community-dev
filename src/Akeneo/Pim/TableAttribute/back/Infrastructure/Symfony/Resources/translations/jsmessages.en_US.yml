@@ -71,6 +71,9 @@ pim_table_attribute:
     templates:
         choose_template: Choose your template
         empty_table: Empty table
+        nutrition: Nutrition
+        nutrition-en: Nutrition [United Kingdom]
+        nutrition-eu: Nutrition [European Union]
     product_edit_form:
         add_rows: Add rows
         search: Search

@@ -45,9 +45,9 @@ const CreateAttributeCodeLabelTemplate: React.FC<CreateAttributeButtonStepProps>
                 {template.template_variations.map(template_variation => (
                   <SelectInput.Option
                     key={template_variation.code}
-                    title={template_variation.code}
+                    title={translate(`pim_table_attribute.templates.${template_variation.code}`)}
                     value={template_variation.code}>
-                    {template_variation.code}
+                    {translate(`pim_table_attribute.templates.${template_variation.code}`)}
                   </SelectInput.Option>
                 ))}
               </SelectInput>
