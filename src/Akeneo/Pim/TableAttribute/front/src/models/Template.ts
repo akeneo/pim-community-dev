@@ -15,32 +15,27 @@ export type Template = {
   template_variations: TemplateVariation[];
 };
 
-/**
- * TODO When we will add real templates with labels, we will have to ensure that we will remove the labels which
- * are not on catalog locales list, to be able to save without errors
- */
-
-const nutritionTemplateUs: TemplateVariation = {
+const nutritionTemplateEn: TemplateVariation = {
   code: 'nutrition-en',
   tableConfiguration: [
     {
       code: 'type',
       data_type: 'select',
-      labels: {en_US: 'Type'},
+      labels: {},
       options: [
-        {code: 'calories', labels: {en_US: 'Calories'}},
-        {code: 'fat', labels: {en_US: 'Fat'}},
-        {code: 'cholesterol', labels: {en_US: 'Cholesterol'}},
-        {code: 'sodium', labels: {en_US: 'Sodium'}},
-        {code: 'carbohydrate', labels: {en_US: 'Carbohydrate'}},
-        {code: 'protein', labels: {en_US: 'Protein'}},
+        {code: 'calories', labels: {}},
+        {code: 'fat', labels: {}},
+        {code: 'cholesterol', labels: {}},
+        {code: 'sodium', labels: {}},
+        {code: 'carbohydrate', labels: {}},
+        {code: 'protein', labels: {}},
       ],
       validations: [],
     },
     {
       code: 'quantity',
       data_type: 'text',
-      labels: {en_US: 'Quantity'},
+      labels: {},
       validations: {},
     },
   ],
@@ -52,19 +47,19 @@ const nutritionTemplateEu: TemplateVariation = {
     {
       code: 'type',
       data_type: 'select',
-      labels: {en_US: 'Type'},
+      labels: {},
       options: [
-        {code: 'energy', labels: {en_US: 'Energy'}},
-        {code: 'fat', labels: {en_US: 'Fat'}},
-        {code: 'cholesterol', labels: {en_US: 'Cholesterol'}},
-        {code: 'salt', labels: {en_US: 'Salt'}},
+        {code: 'energy', labels: {}},
+        {code: 'fat', labels: {}},
+        {code: 'cholesterol', labels: {}},
+        {code: 'salt', labels: {}},
       ],
       validations: {},
     },
     {
       code: 'quantity',
       data_type: 'text',
-      labels: {en_US: 'Quantity'},
+      labels: {},
       validations: {},
     },
   ],
@@ -79,7 +74,7 @@ const TEMPLATES: Template[] = [
   {
     icon: FoodIcon,
     code: 'nutrition',
-    template_variations: [nutritionTemplateUs, nutritionTemplateEu],
+    template_variations: [nutritionTemplateEn, nutritionTemplateEu],
   },
   {
     icon: TableIcon,

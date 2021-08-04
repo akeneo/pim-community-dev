@@ -1,3 +1,13 @@
+table_attribute_template:
+    nutrition-en:
+        type:
+            label: Type
+            options:
+                calories: Calories
+                fat: Fat
+        quantity:
+            label: Quantity
+
 pim_table_attribute:
     form:
         attribute:

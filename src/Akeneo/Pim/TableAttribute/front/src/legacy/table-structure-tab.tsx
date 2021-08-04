@@ -4,10 +4,14 @@ import ReactDOM from 'react-dom';
 import {TableStructureApp} from '../attribute/TableStructureApp';
 import {TableConfiguration} from '../models/TableConfiguration';
 import {DependenciesProvider} from '@akeneo-pim-community/legacy-bridge';
-import {TemplateVariation, TEMPLATES} from '../models/Template';
 import {Attribute, AttributeType} from '../models/Attribute';
+import {getTranslatedTableConfigurationFromVariationTemplate} from '../models/TranslatedTableConfigurationProvider';
+import {Locale} from '@akeneo-pim-community/settings-ui';
+import {LocaleCode} from '../../../../../AssetManager/front/domain/model/locale';
 // eslint-disable-next-line @typescript-eslint/no-var-requires
 const translate = require('oro/translator');
+// eslint-disable-next-line @typescript-eslint/no-var-requires
+const FetcherRegistry = require('pim/fetcher-registry');
 
 type TableStructureTabConfig = {
   label: string;
@@ -98,39 +102,28 @@ class TableStructureTab extends (BaseView as {new (options: {config: TableStruct
       return;
     }
 
-    let initialTableConfiguration = this.getFormData().table_configuration as TableConfiguration | undefined;
+    const initialTableConfiguration = this.getFormData().table_configuration as TableConfiguration | undefined;
     if (typeof this.savedColumnCodes === 'undefined') {
       this.savedColumnCodes = (initialTableConfiguration || []).map(columnDefinition => columnDefinition.code);
     }
-    if (typeof initialTableConfiguration === 'undefined') {
-      initialTableConfiguration = [];
-      const tableTemplate = this.getQueryParam('template_variation');
-      if (tableTemplate) {
-        const template = ([] as TemplateVariation[])
-          .concat(...TEMPLATES.map(template => template.template_variations))
-          .find(template => template.code === tableTemplate);
-        if (template) {
-          initialTableConfiguration = template.tableConfiguration;
-          this.handleChange(initialTableConfiguration);
-        } else {
-          console.error(`Unable to find template ${tableTemplate}`);
-        }
-      }
-    }
-
     const attribute: Attribute = this.getFormData();
 
-    ReactDOM.render(
-      <DependenciesProvider>
-        <TableStructureApp
-          attribute={attribute}
-          initialTableConfiguration={initialTableConfiguration}
-          onChange={this.handleChange.bind(this)}
-          savedColumnCodes={this.savedColumnCodes}
-        />
-      </DependenciesProvider>,
-      this.el
-    );
+    this.getTableConfiguration(initialTableConfiguration).then(tableConfiguration => {
+      this.handleChange(tableConfiguration);
+
+      ReactDOM.render(
+        <DependenciesProvider>
+          <TableStructureApp
+            attribute={attribute}
+            initialTableConfiguration={tableConfiguration}
+            onChange={this.handleChange.bind(this)}
+            savedColumnCodes={this.savedColumnCodes || []}
+          />
+        </DependenciesProvider>,
+        this.el
+      );
+    });
+
     return this;
   }
 
@@ -138,6 +131,34 @@ class TableStructureTab extends (BaseView as {new (options: {config: TableStruct
     ReactDOM.unmountComponentAtNode(this.el);
 
     return super.remove();
+  }
+
+  private async getTableConfiguration(
+    initialTableConfiguration: TableConfiguration | undefined
+  ): Promise<TableConfiguration> {
+    if (typeof initialTableConfiguration === 'undefined') {
+      const templateVariationCode = this.getQueryParam('template_variation');
+
+      /**
+       * Only the locales which are in the catalog locales list (i.e. activated) AND available in the UI (i.e.
+       * translated) can have translated template data.
+       */
+      const activatedLocales = await FetcherRegistry.getFetcher('locale').fetchActivated();
+      const activatedLocaleCodes = activatedLocales.map((locale: Locale) => locale.code);
+      const uiLocales = await FetcherRegistry.getFetcher('ui-locale').fetchAll();
+      const uiLocaleCodes = uiLocales.map((locale: Locale) => locale.code);
+      const activatedUiLocales = activatedLocaleCodes.filter((localeCode: LocaleCode) =>
+        uiLocaleCodes.includes(localeCode)
+      );
+
+      if (templateVariationCode) {
+        return getTranslatedTableConfigurationFromVariationTemplate(templateVariationCode, activatedUiLocales);
+      }
+    }
+
+    return new Promise(resolve => {
+      resolve([]);
+    });
   }
 
   private isActive() {
