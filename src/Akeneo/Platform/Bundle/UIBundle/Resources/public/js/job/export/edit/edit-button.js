@@ -6,7 +6,7 @@
  * @copyright 2017 Akeneo SAS (http://www.akeneo.com)
  * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
  */
-define(['underscore', 'oro/translator', 'pim/common/redirect', 'pim/fetcher-registry'], function(_, __, BaseRedirect, FetcherRegistry) {
+define(['underscore', 'oro/translator', 'pim/common/redirect', 'pim/fetcher-registry', 'pim/router'], function(_, __, BaseRedirect, FetcherRegistry, router) {
   return BaseRedirect.extend({
     /**
      * {@inheritdoc}
@@ -18,7 +18,7 @@ define(['underscore', 'oro/translator', 'pim/common/redirect', 'pim/fetcher-regi
             this.template({
               label: __(this.config.label),
               buttonClass: (this.config.buttonClass || 'AknButton--action') + (isVisible ? '' : ' AknButton--disabled') ,
-              title: __(this.config.title)
+              title: isVisible ? '' : __(this.config.title)
             })
           );
         }

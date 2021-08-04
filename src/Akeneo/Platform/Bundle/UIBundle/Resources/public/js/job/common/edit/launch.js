@@ -22,8 +22,8 @@ define(['underscore', 'oro/translator', 'pimcommunity/job/common/edit/launch', '
           this.$el.html(
             this.template({
               label: __(this.config.label),
-              buttonClass: (isVisible ? '' : ' AknButton--disabled') ,
-              title: __(this.config.title)
+              buttonClass: isVisible ? '' : ' AknButton--disabled',
+              title: isVisible ? '' : __(this.config.title)
             })
           );
         }

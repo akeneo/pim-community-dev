@@ -25,13 +25,20 @@ services:
         public: false
 
     akeneo.tailored_export.voter.job_profile:
+        decorates: pimee_security.voter.job_profile
+        decoration_priority: 10 # Arbitrary value to be able to add decorator before and after
+        decoration_on_invalid: ignore
         class: 'Akeneo\Platform\TailoredExport\Infrastructure\Voter\JobProfileVoter'
+        arguments:
+            - '@akeneo.tailored_export.voter.job_profile.inner'
+            - '@Akeneo\Platform\TailoredExport\Infrastructure\Voter\CanEditTailoredExport'
+            - '%akeneo.tailored_export.connector.xlsx.code%'
+        tags:
+            - { name: security.voter }
+
+
+    Akeneo\Platform\TailoredExport\Infrastructure\Voter\CanEditTailoredExport:
         arguments:
             - '@pimee_security.query.get_all_viewable_locales_for_user' # this service is in CE and overrided in EE
             - '@pimee_security.query.get_viewable_attribute_codes_for_user' # this service is in CE and overrided in EE
-            - '@security.token_storage'
             - '@akeneo.pim.structure.query.get_attributes'
-            - '@akeneo.pim.structure.query.get_association_types'
-            - '@Akeneo\Platform\TailoredExport\Infrastructure\Hydrator\ColumnCollectionHydrator'
-        tags:
-            - { name: security.voter }
