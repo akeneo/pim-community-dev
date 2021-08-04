@@ -6,7 +6,7 @@ import {useAttributeOptionsListState} from '../hooks';
 import {useSortedAttributeOptions} from '../hooks';
 import AutoOptionSorting from './AutoOptionSorting';
 import NewOptionPlaceholder from './NewOptionPlaceholder';
-import {Button, CloseIcon, IconButton, RowIcon, Table} from 'akeneo-design-system';
+import {AkeneoThemedProps, Button, CloseIcon, getColor, IconButton, RowIcon, Table} from 'akeneo-design-system';
 import styled from 'styled-components';
 import DeleteConfirmationModal from './DeleteConfirmationModal';
 
@@ -170,9 +170,9 @@ const HandleContainer = styled.div`
   justify-content: center;
 `;
 
-const TableRow = styled(Table.Row)<{isDraggable: boolean}>`
+const TableRow = styled(Table.Row)<{isDraggable: boolean} & AkeneoThemedProps>`
   td:first-child {
-    color: ${({isDraggable}) => (isDraggable ? 'grey' : '#f0f1f3')};
+    color: ${({isDraggable}) => (isDraggable ? getColor('grey', 100) : getColor('grey', 40))};
   }
 `;
 
