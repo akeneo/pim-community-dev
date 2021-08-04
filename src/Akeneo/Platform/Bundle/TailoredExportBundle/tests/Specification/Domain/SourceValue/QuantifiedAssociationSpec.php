@@ -33,7 +33,7 @@ class QuantifiedAssociationSpec extends ObjectBehavior
         $this->getIdentifier()->shouldReturn('an_id');
     }
 
-    public function it_returns_the_quantitiy()
+    public function it_returns_the_quantity()
     {
         $this->getQuantity()->shouldReturn(100);
     }

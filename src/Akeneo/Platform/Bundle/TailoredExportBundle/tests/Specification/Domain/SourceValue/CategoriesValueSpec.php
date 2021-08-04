@@ -34,7 +34,7 @@ class CategoriesValueSpec extends ObjectBehavior
         $this->shouldThrow(\InvalidArgumentException::class)->duringInstantiation();
     }
 
-    public function it_returns_the_categorie_codes()
+    public function it_returns_the_category_codes()
     {
         $this->getCategoryCodes()->shouldReturn(['category_code_1', 'category_code_2', 'category_code_3']);
     }
