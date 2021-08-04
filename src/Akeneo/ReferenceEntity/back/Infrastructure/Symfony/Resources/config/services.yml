@@ -33,6 +33,17 @@ services:
         tags:
             - { name: 'console.command'}
 
+    Akeneo\ReferenceEntity\Infrastructure\Symfony\Command\IndexAllRecordsOnTemporaryIndexCommand:
+        arguments:
+            - '@database_connection'
+            - '@akeneo_referenceentity.infrastructure.persistence.repository.reference_entity'
+            - '@akeneo_referenceentity.infrastructure.search.elasticsearch.record_indexer_temporary'
+            - '@akeneo_elasticsearch.client_builder'
+            - '%record_index_name%'
+            - '%index_hosts%'
+        tags:
+            - {name: console.command}
+
     akeneo_referenceentity.event_subscriber.remove_user_group:
         class: Akeneo\ReferenceEntity\Infrastructure\EventSubscriber\RemoveUserGroupSubscriber
         arguments:

@@ -15,6 +15,10 @@ akeneo_elasticsearch:
             index_name: "%record_index_name%"
             configuration_files: "%record_index_configuration%"
         -
+            service_name: "akeneo_referenceentity.client.record_temporary"
+            index_name: "akeneo_referenceentity_record_v2"
+            configuration_files: "%record_index_configuration%"
+        -
             service_name: "akeneo_assetmanager.client.asset"
             index_name: "%asset_index_name%"
             configuration_files: "%asset_index_configuration%"
