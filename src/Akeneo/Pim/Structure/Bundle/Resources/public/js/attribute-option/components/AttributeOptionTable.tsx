@@ -6,18 +6,10 @@ import {useAttributeOptionsListState} from '../hooks';
 import {useSortedAttributeOptions} from '../hooks';
 import AutoOptionSorting from './AutoOptionSorting';
 import NewOptionPlaceholder from './NewOptionPlaceholder';
-import {
-  AkeneoThemedProps,
-  Button,
-  CloseIcon,
-  getColor,
-  IconButton,
-  RowIcon,
-  Table,
-  NoResultsIllustration,
-} from 'akeneo-design-system';
+import {AkeneoThemedProps, Button, CloseIcon, getColor, IconButton, RowIcon, Table} from 'akeneo-design-system';
 import styled from 'styled-components';
 import DeleteConfirmationModal from './DeleteConfirmationModal';
+import NoResultOnSearch from './NoResultOnSearch';
 
 interface ListProps {
   selectAttributeOption: (selectedOptionId: number | null) => void;
@@ -36,10 +28,11 @@ const AttributeOptionTable = ({
   deleteAttributeOption,
   manuallySortAttributeOptions,
 }: ListProps) => {
-  const {attributeOptions, extraData} = useAttributeOptionsListState();
   const translate = useTranslate();
-  const attributeContext = useAttributeContext();
   const locale = useUserContext().get('catalogLocale');
+  const attributeContext = useAttributeContext();
+
+  const {attributeOptions, extraData} = useAttributeOptionsListState();
   const {sortedAttributeOptions, setSortedAttributeOptions} = useSortedAttributeOptions(
     attributeOptions,
     attributeContext.autoSortOptions,
@@ -134,14 +127,7 @@ const AttributeOptionTable = ({
         onSearchChange={onSearchChange}
       />
 
-      {filteredAttributeOptionsCount === 0 && attributeOptionsCount > 0 && (
-        <NoResultSection>
-          <NoResultsIllustration size={128} />
-          <NoResultTitle>
-            {translate('pim_enrich.entity.attribute_option.module.edit.search.no_result.title')}
-          </NoResultTitle>
-        </NoResultSection>
-      )}
+      {filteredAttributeOptionsCount === 0 && attributeOptionsCount > 0 && <NoResultOnSearch />}
 
       {filteredAttributeOptionsCount > 0 && filteredAttributeOptions !== null && (
         <>
@@ -248,16 +234,6 @@ const TableRow = styled(Table.Row)<{isDraggable: boolean} & AkeneoThemedProps>`
 
 const TableActionCell = styled(Table.ActionCell)`
   width: 50px;
-`;
-
-const NoResultSection = styled.div`
-  text-align: center;
-  margin-top: 42px;
-`;
-
-const NoResultTitle = styled.div`
-  color: ${getColor('grey', 120)};
-  text-align: center;
 `;
 
 export default AttributeOptionTable;
