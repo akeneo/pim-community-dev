@@ -25,7 +25,6 @@ akeneo.tailored_export:
       remove: 列を削除
       no_source: コンテンツソースを定義する
     no_column_selection:
-      title: エクスポートプロファイルが空です。最初の列を追加してください。
       subtitle: '「最初の列を追加」をクリックして、エクスポートテーブルの構築を開始します。'
       link: 詳細についてはヘルプセンターをご確認ください。
       add_column: 最初の列を追加
@@ -34,7 +33,6 @@ akeneo.tailored_export:
       title: ソース
       add: ソースを追加
       no_result: 結果はありません。
-      locale_specific.info: 属性はロケールごとに値があります。
       remove:
         title: ソース
         text: このソースを本当に削除しますか？
@@ -59,18 +57,12 @@ akeneo.tailored_export:
           information:
             locale: ラベルとして使用される属性にロケールごとに値がある場合、特定のロケールを選択できます。
             channel: ラベルとして使用される属性にチャンネルごとに値がある場合、特定のチャンネルを選択できます。
-        code_label:
-          information: この属性では、コードまたはラベルのいずれかをエクスポートできます。
         measurement:
           information: この属性では、値、ユニットコードまたはユニットラベルのいずれかをエクスポートできます。
           value: 値
           unit_locale: ユニットロケール
           unit_code: ユニットコー​​ド
           unit_label: ユニットラベル
-        price:
-          information: この属性では、金額または通貨のいずれかをエクスポートできます。
-        file:
-          information: この属性では、パス、ファイルキーまたは名前のいずれかをエクスポートできます。
       operation:
         replacement:
           title: 値を置き換える
@@ -84,11 +76,6 @@ akeneo.tailored_export:
       max_column_count_reached: '{{ limit }} 列の上限に達しました。これ以上エクスポートに列を追加できません。'
       target:
         should_not_be_blank: 列名を定義してください。
-        max_length_reached: 列名が長すぎます。{{ limit }} 文字未満である必要があります。
         should_be_unique: この列名はすでに存在します。新しい列名を入力してください。
     sources:
       max_source_count_reached: '{{ limit }} ソースの上限に達しました。これ以上エクスポートにソースを追加できません。'
-    locale:
-      should_be_active: '{{ locale_code }} ロケールはアクティブである必要があります。'
-    channel:
-      should_exist: '{{ channel_code }} チャンネルはアクティブである必要があります。'

@@ -25,7 +25,6 @@ akeneo.tailored_export:
       remove: Rimuovi colonna
       no_source: Definisci origine contenuto
     no_column_selection:
-      title: Il tuo profilo di esportazione è vuoto. Aggiungi la tua prima colonna.
       subtitle: Fai clic su 'Aggiungi prima colonna' per iniziare a creare la tua tabella di esportazione.
       link: Consulta il nostro Help Center per ulteriori informazioni.
       add_column: Aggiungi prima colonna
@@ -34,7 +33,6 @@ akeneo.tailored_export:
       title: Origini
       add: Aggiungi origine
       no_result: Spiacenti, nessun risultato presente.
-      locale_specific.info: Questo attributo ha un valore per impostazione locale.
       remove:
         title: origine
         text: Sei sicuro di voler rimuovere questa origine?
@@ -59,18 +57,12 @@ akeneo.tailored_export:
           information:
             locale: Se l'attributo usato come etichetta ha un valore per impostazione locale, puoi selezionare un'impostazione locale specifica.
             channel: Se l'attributo usato come etichetta ha un valore per canale, puoi selezionare un canale specifico.
-        code_label:
-          information: Per questo attributo, puoi esportare il codice o l'etichetta.
         measurement:
           information: Per questo attributo, puoi esportare il valore, il codice unità o l'etichetta unità.
           value: Valore
           unit_locale: Impostazione locale unità
           unit_code: Codice unità
           unit_label: Etichetta unità
-        price:
-          information: Per questo attributo, puoi esportare sia l'importo che la valuta.
-        file:
-          information: Per questo attributo, puoi esportare il percorso, la chiave di file o il nome.
       operation:
         replacement:
           title: Sostituisci valore
@@ -84,11 +76,6 @@ akeneo.tailored_export:
       max_column_count_reached: Hai raggiunto il limite di {{ limit }} colonne, non puoi più aggiungere colonne alla tua esportazione.
       target:
         should_not_be_blank: Definisci un nome di colonna.
-        max_length_reached: Nome della colonna troppo lungo. Deve avere {{ limit }} caratteri o meno.
         should_be_unique: Questo nome di colonna esiste già, inseriscine uno nuovo.
     sources:
       max_source_count_reached: Hai raggiunto il limite di {{ limit }} origini, non puoi più aggiungere origini alla tua esportazione.
-    locale:
-      should_be_active: L'impostazione locale {{ locale_code }} deve essere attiva.
-    channel:
-      should_exist: Il canale {{ channel_code }} deve essere attivo.

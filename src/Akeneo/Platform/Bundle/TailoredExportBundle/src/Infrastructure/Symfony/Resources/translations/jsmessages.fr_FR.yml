@@ -22,7 +22,3 @@ akeneo.tailored_export:
           currency: Devise
   column:
     delete_message: Êtes-vous sûr de vouloir supprimer cette colonne ?
-  validation:
-    columns:
-      target:
-        max_length_reached: Le nom de cette colonne est trop long. Il doit contenir un maximum de {{ max }} caractères.

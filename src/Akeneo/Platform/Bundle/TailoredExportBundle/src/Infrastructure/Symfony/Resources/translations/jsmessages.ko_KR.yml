@@ -25,7 +25,6 @@ akeneo.tailored_export:
       remove: 열 제거
       no_source: 콘텐츠 소스 정의
     no_column_selection:
-      title: 내보내기 프로필이 비어 있습니다. 첫 열을 추가하십시오.
       subtitle: '''첫 열 추가''를 클릭하면 내보내기 테이블 빌드가 시작됩니다.'
       link: 자세한 내용은 도움말 센터를 확인하십시오.
       add_column: 첫 번째 열 추가
@@ -34,7 +33,6 @@ akeneo.tailored_export:
       title: 소스
       add: 소스 추가
       no_result: 죄송합니다. 결과가 없습니다.
-      locale_specific.info: 이 특성은 로케일당 값을 가집니다.
       remove:
         title: 소스
         text: 이 소스를 제거하시겠습니까?
@@ -59,18 +57,12 @@ akeneo.tailored_export:
           information:
             locale: 레이블로 사용된 특성이 로케일별 값을 가진 경우, 특정 로케일을 선택할 수 있습니다. 
             channel: 레이블로 사용된 특성이 채널별 값을 가진 경우, 특정 채널을 선택할 수 있습니다. 
-        code_label:
-          information: 이 특성의 경우 코드 또는 레이블을 내보낼 수 있습니다.
         measurement:
           information: 이 특성의 경우 값, 단위 코드 또는 단위 레이블을 내보낼 수 있습니다.
           value: 값
           unit_locale: 단위 로케일
           unit_code: 단위 코드
           unit_label: 단위 레이블
-        price:
-          information: 이 특성의 경우 수량 또는 통화를 내보낼 수 있습니다.
-        file:
-          information: 이 특성의 경우 경로, 파일 키 또는 이름을 내보낼 수 있습니다.
       operation:
         replacement:
           title: 값 바꾸기
@@ -84,11 +76,6 @@ akeneo.tailored_export:
       max_column_count_reached: '{{ limit }}개의 열 제한에 도달했습니다. 더 이상 내보내기에 열을 추가할 수 없습니다.'
       target:
         should_not_be_blank: 열 이름을 지정해 주십시오.
-        max_length_reached: 열 이름이 너무 깁니다. {{ limit }}자 이하여야 합니다.
         should_be_unique: 이 열 이름은 이미 있습니다. 새 이름을 입력해 주십시오.
     sources:
       max_source_count_reached: '{{ limit }}개의 소스 제한에 도달했습니다. 더 이상 내보내기에 소스를 추가할 수 없습니다.'
-    locale:
-      should_be_active: '{{ locale_code }} 로케일을 활성화해야 합니다.'
-    channel:
-      should_exist: '{{ channel_code }} 채널을 활성화해야 합니다.'
