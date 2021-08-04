@@ -1,7 +1,7 @@
 import React, {useRef} from 'react';
 import {useTranslate} from '@akeneo-pim-community/shared';
 import {useScrollIntoView} from '../hooks/useScrollIntoView';
-import {CloseIcon, IconButton, RowIcon, Table} from 'akeneo-design-system';
+import {CloseIcon, getColor, IconButton, RowIcon, Table} from 'akeneo-design-system';
 import styled from 'styled-components';
 
 interface newOptionPlaceholderProps {
@@ -44,7 +44,7 @@ const NewOptionPlaceholder = ({cancelNewOption, isDraggable}: newOptionPlacehold
 
 const TableRow = styled(Table.Row)`
   td:first-child {
-    color: #f0f1f3;
+    color: ${getColor('grey', 40)};
   }
 `;
 
