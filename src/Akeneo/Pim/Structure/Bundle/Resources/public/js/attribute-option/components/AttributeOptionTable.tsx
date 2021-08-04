@@ -71,10 +71,7 @@ const AttributeOptionTable = ({
 
   const reorderAttributeOptions = (newIndices: number[]) => {
     setSortedAttributeOptions((rows: AttributeOption[]): AttributeOption[] => {
-      const newSortedAttributeOptions = newIndices.map(index => rows[index]);
-      if (typeof newSortedAttributeOptions[newSortedAttributeOptions.length - 1] === 'undefined') {
-        newSortedAttributeOptions.pop();
-      }
+      const newSortedAttributeOptions = newIndices.map(index => rows[index]).filter(index => index !== undefined);
 
       manuallySortAttributeOptions(newSortedAttributeOptions);
 
