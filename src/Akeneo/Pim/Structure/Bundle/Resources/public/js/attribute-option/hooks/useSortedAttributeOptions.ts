@@ -6,6 +6,7 @@ type UseSortedAttributeOptionsState = {
   sortedAttributeOptions: AttributeOption[] | null;
   moveAttributeOption: (sourceOptionCode: string, targetOptionCode: string) => void;
   validateMoveAttributeOption: () => void;
+  setSortedAttributeOptions: (attributeOptions: (rows: AttributeOption[]) => AttributeOption[]) => void;
 };
 
 export const useSortedAttributeOptions = (
@@ -62,5 +63,6 @@ export const useSortedAttributeOptions = (
     sortedAttributeOptions,
     moveAttributeOption,
     validateMoveAttributeOption,
+    setSortedAttributeOptions,
   };
 };
