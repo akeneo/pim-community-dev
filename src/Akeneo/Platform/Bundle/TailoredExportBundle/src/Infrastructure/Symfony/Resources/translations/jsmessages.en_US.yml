@@ -46,6 +46,10 @@ akeneo.tailored_export:
         title: source
         text: Are you sure you want to remove this source?
         button: Remove this source
+      invalid_source:
+        attribute: This attribute has been deleted and recreated with another type, please remove this source and add it again.
+        association_type: This association type has been deleted and recreated with another type, please remove this source and add it again.
+        property: This property is invalid, please remove this source and add it again.
       no_source_configuration:
         title: There are no operations available for this source. Its value will be exported as is.
       deleted_attribute:

@@ -68,16 +68,17 @@ test('it does not render if the source is not valid', () => {
 
   const dateAttribute = {...attribute, type: 'pim_catalog_date', code: 'date_attribute'};
 
-  renderWithProviders(
-    <PriceCollectionConfigurator
-      source={getDefaultDateSource(dateAttribute, null, null)}
-      attribute={dateAttribute}
-      validationErrors={[]}
-      onSourceChange={onSourceChange}
-    />
-  );
+  expect(() => {
+    renderWithProviders(
+      <PriceCollectionConfigurator
+        source={getDefaultDateSource(dateAttribute, null, null)}
+        attribute={dateAttribute}
+        validationErrors={[]}
+        onSourceChange={onSourceChange}
+      />
+    );
+  }).toThrow('Invalid source data "date_attribute" for price collection configurator');
 
-  expect(mockedConsole).toHaveBeenCalledWith('Invalid source data "date_attribute" for price collection configurator');
   expect(screen.queryByText('Update selection')).not.toBeInTheDocument();
   mockedConsole.mockRestore();
 });

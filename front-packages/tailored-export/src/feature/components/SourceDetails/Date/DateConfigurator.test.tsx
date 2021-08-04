@@ -60,16 +60,17 @@ test('it does not render if the source is not valid', () => {
   const mockedConsole = jest.spyOn(console, 'error').mockImplementation();
   const onSourceChange = jest.fn();
 
-  renderWithProviders(
-    <DateConfigurator
-      source={getDefaultTextSource(attribute, null, null)}
-      attribute={attribute}
-      validationErrors={[]}
-      onSourceChange={onSourceChange}
-    />
-  );
+  expect(() => {
+    renderWithProviders(
+      <DateConfigurator
+        source={getDefaultTextSource(attribute, null, null)}
+        attribute={attribute}
+        validationErrors={[]}
+        onSourceChange={onSourceChange}
+      />
+    );
+  }).toThrow('Invalid source data "date" for date configurator');
 
-  expect(mockedConsole).toHaveBeenCalledWith('Invalid source data "date" for date configurator');
   expect(screen.queryByText('Update selection')).not.toBeInTheDocument();
   mockedConsole.mockRestore();
 });

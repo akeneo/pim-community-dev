@@ -4,6 +4,7 @@ import {filterErrors, useTranslate} from '@akeneo-pim-community/shared';
 import {AttributeConfiguratorProps} from '../../../models';
 import {CodeLabelCollectionSelector} from '../common/CodeLabelCollectionSelector';
 import {isReferenceEntityCollectionSource} from './model';
+import {InvalidAttributeSourceError} from '../error';
 
 const ReferenceEntityCollectionConfigurator = ({
   source,
@@ -14,9 +15,9 @@ const ReferenceEntityCollectionConfigurator = ({
   const [isSelectorCollapsed, toggleSelectorCollapse] = useState<boolean>(true);
 
   if (!isReferenceEntityCollectionSource(source)) {
-    console.error(`Invalid source data "${source.code}" for reference entity collection configurator`);
-
-    return null;
+    throw new InvalidAttributeSourceError(
+      `Invalid source data "${source.code}" for reference entity collection configurator`
+    );
   }
 
   return (

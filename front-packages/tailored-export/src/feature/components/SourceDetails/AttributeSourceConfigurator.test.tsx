@@ -252,3 +252,30 @@ test('it renders nothing if the configurator is unknown', async () => {
   expect(mockedConsole).toHaveBeenCalledWith('No configurator found for "pim_catalog_nothing" attribute type');
   mockedConsole.mockRestore();
 });
+
+test('it renders an invalid attribute placeholder when the source is invalid', async () => {
+  const mockedConsole = jest.spyOn(console, 'error').mockImplementation();
+  const handleSourceChange = jest.fn();
+
+  await renderWithProviders(
+    <AttributeSourceConfigurator
+      source={{
+        code: 'weight',
+        uuid: 'unique_id',
+        type: 'attribute',
+        locale: null,
+        channel: null,
+        operations: {},
+        // @ts-expect-error invalid selection
+        selection: {},
+      }}
+      validationErrors={[]}
+      onSourceChange={handleSourceChange}
+    />
+  );
+
+  expect(
+    screen.getByText('akeneo.tailored_export.column_details.sources.invalid_source.attribute')
+  ).toBeInTheDocument();
+  mockedConsole.mockRestore();
+});

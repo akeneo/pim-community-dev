@@ -58,11 +58,12 @@ test('it does not render if the source is not valid', () => {
   const mockedConsole = jest.spyOn(console, 'error').mockImplementation();
   const onSourceChange = jest.fn();
 
-  renderWithProviders(
-    <ParentConfigurator source={getDefaultGroupsSource()} validationErrors={[]} onSourceChange={onSourceChange} />
-  );
+  expect(() => {
+    renderWithProviders(
+      <ParentConfigurator source={getDefaultGroupsSource()} validationErrors={[]} onSourceChange={onSourceChange} />
+    );
+  }).toThrow('Invalid source data "groups" for parent configurator');
 
-  expect(mockedConsole).toHaveBeenCalledWith('Invalid source data "groups" for parent configurator');
   expect(screen.queryByText('Update selection')).not.toBeInTheDocument();
   mockedConsole.mockRestore();
 });

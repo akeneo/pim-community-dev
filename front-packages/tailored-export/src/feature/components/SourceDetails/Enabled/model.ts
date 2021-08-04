@@ -33,7 +33,7 @@ const getDefaultEnabledSource = (): EnabledSource => ({
 });
 
 const isEnabledSource = (source: Source): source is EnabledSource =>
-  'object' === typeof source && null !== source && 'enabled' === source.code;
+  'object' === typeof source && null !== source && 'enabled' === source.code && 'replacement' in source.operations;
 
 export {getDefaultEnabledSource, isEnabledSource};
 export type {EnabledSource};

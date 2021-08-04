@@ -72,15 +72,16 @@ test('it does not render if the source is not valid', () => {
     available_locales: [],
   };
 
-  renderWithProviders(
-    <FamilyConfigurator
-      source={getDefaultTextSource(textAttribute, null, null)}
-      validationErrors={[]}
-      onSourceChange={onSourceChange}
-    />
-  );
+  expect(() => {
+    renderWithProviders(
+      <FamilyConfigurator
+        source={getDefaultTextSource(textAttribute, null, null)}
+        validationErrors={[]}
+        onSourceChange={onSourceChange}
+      />
+    );
+  }).toThrow('Invalid source data "text" for family configurator');
 
-  expect(mockedConsole).toHaveBeenCalledWith('Invalid source data "text" for family configurator');
   expect(screen.queryByText('Update selection')).not.toBeInTheDocument();
   mockedConsole.mockRestore();
 });

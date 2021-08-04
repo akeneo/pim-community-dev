@@ -30,10 +30,10 @@ jest.mock('./FileSelector', () => ({
   ),
 }));
 
-test('it displays a file configurator', async () => {
+test('it displays a file configurator', () => {
   const onSourceChange = jest.fn();
 
-  await renderWithProviders(
+  renderWithProviders(
     <FileConfigurator
       source={{
         ...getDefaultFileSource(attribute, null, null),
@@ -56,20 +56,21 @@ test('it displays a file configurator', async () => {
   });
 });
 
-test('it does not render if the source is not valid', async () => {
+test('it does not render if the source is not valid', () => {
   const mockedConsole = jest.spyOn(console, 'error').mockImplementation();
   const onSourceChange = jest.fn();
 
-  await renderWithProviders(
-    <FileConfigurator
-      source={getDefaultTextSource(attribute, null, null)}
-      attribute={attribute}
-      validationErrors={[]}
-      onSourceChange={onSourceChange}
-    />
-  );
+  expect(() => {
+    renderWithProviders(
+      <FileConfigurator
+        source={getDefaultTextSource(attribute, null, null)}
+        attribute={attribute}
+        validationErrors={[]}
+        onSourceChange={onSourceChange}
+      />
+    );
+  }).toThrow('Invalid source data "file" for file configurator');
 
-  expect(mockedConsole).toHaveBeenCalledWith('Invalid source data "file" for file configurator');
   expect(screen.queryByText('Update selection')).not.toBeInTheDocument();
   mockedConsole.mockRestore();
 });

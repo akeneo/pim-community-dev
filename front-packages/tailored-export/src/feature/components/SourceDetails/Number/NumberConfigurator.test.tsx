@@ -59,19 +59,19 @@ test('it displays a number configurator', () => {
 test('it does not render if the source is not valid', () => {
   const mockedConsole = jest.spyOn(console, 'error').mockImplementation();
   const onSourceChange = jest.fn();
-
   const dateAttribute = {...attribute, type: 'pim_catalog_date', code: 'date_attribute'};
 
-  renderWithProviders(
-    <NumberConfigurator
-      source={getDefaultDateSource(dateAttribute, null, null)}
-      attribute={dateAttribute}
-      validationErrors={[]}
-      onSourceChange={onSourceChange}
-    />
-  );
+  expect(() => {
+    renderWithProviders(
+      <NumberConfigurator
+        source={getDefaultDateSource(dateAttribute, null, null)}
+        attribute={dateAttribute}
+        validationErrors={[]}
+        onSourceChange={onSourceChange}
+      />
+    );
+  }).toThrow('Invalid source data "date_attribute" for number configurator');
 
-  expect(mockedConsole).toHaveBeenCalledWith('Invalid source data "date_attribute" for number configurator');
   expect(screen.queryByText('Update selection')).not.toBeInTheDocument();
   mockedConsole.mockRestore();
 });

@@ -57,15 +57,16 @@ test('it does not render if the source is not valid', () => {
   const mockedConsole = jest.spyOn(console, 'error').mockImplementation();
   const onSourceChange = jest.fn();
 
-  renderWithProviders(
-    <QuantifiedAssociationTypeConfigurator
-      source={getDefaultEnabledSource()}
-      validationErrors={[]}
-      onSourceChange={onSourceChange}
-    />
-  );
+  expect(() => {
+    renderWithProviders(
+      <QuantifiedAssociationTypeConfigurator
+        source={getDefaultEnabledSource()}
+        validationErrors={[]}
+        onSourceChange={onSourceChange}
+      />
+    );
+  }).toThrow('Invalid source data "enabled" for quantified association configurator');
 
-  expect(mockedConsole).toHaveBeenCalledWith('Invalid source data "enabled" for quantified association configurator');
   expect(screen.queryByText('Update selection')).not.toBeInTheDocument();
   mockedConsole.mockRestore();
 });

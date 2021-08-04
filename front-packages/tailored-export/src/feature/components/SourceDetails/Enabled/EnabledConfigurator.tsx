@@ -4,15 +4,14 @@ import {filterErrors, useTranslate} from '@akeneo-pim-community/shared';
 import {BooleanReplacement} from '../common/BooleanReplacement';
 import {PropertyConfiguratorProps} from '../../../models';
 import {isEnabledSource} from './model';
+import {InvalidPropertySourceError} from '../error';
 
 const EnabledConfigurator = ({source, validationErrors, onSourceChange}: PropertyConfiguratorProps) => {
   const translate = useTranslate();
   const [isReplacementCollapsed, toggleReplacementCollapse] = useState<boolean>(true);
 
   if (!isEnabledSource(source)) {
-    console.error(`Invalid source data "${source.code}" for enabled configurator`);
-
-    return null;
+    throw new InvalidPropertySourceError(`Invalid source data "${source.code}" for enabled configurator`);
   }
 
   return (

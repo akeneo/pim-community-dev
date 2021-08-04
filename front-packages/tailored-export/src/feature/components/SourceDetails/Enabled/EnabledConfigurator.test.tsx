@@ -80,15 +80,16 @@ test('it does not render if the source is not valid', () => {
     available_locales: [],
   };
 
-  renderWithProviders(
-    <EnabledConfigurator
-      source={getDefaultTextSource(dateAttribute, null, null)}
-      validationErrors={[]}
-      onSourceChange={onSourceChange}
-    />
-  );
+  expect(() => {
+    renderWithProviders(
+      <EnabledConfigurator
+        source={getDefaultTextSource(dateAttribute, null, null)}
+        validationErrors={[]}
+        onSourceChange={onSourceChange}
+      />
+    );
+  }).toThrow('Invalid source data "date" for enabled configurator');
 
-  expect(mockedConsole).toHaveBeenCalledWith('Invalid source data "date" for enabled configurator');
   expect(screen.queryByText('Update replacement')).not.toBeInTheDocument();
   mockedConsole.mockRestore();
 });
