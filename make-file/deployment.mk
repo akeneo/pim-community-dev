@@ -410,12 +410,12 @@ ifeq ($(TYPE),srnt)
 	git config user.email "akeneo-ci@akeneo.com"
 
 	git remote set-url origin https://micheltag:${MICHEL_TAG_TOKEN}@github.com/akeneo/pim-enterprise-dev.git
-	sed -i "s/VERSION = '.*';/VERSION = '${IMAGE_TAG_DATE}';/g" src/Akeneo/Platform/EnterpriseVersion.php
+	sed -i "s/VERSION = '.*';/VERSION = '${RELEASE_NAME}';/g" src/Akeneo/Platform/EnterpriseVersion.php
 	git add src/Akeneo/Platform/EnterpriseVersion.php
 	git commit -m "Prepare SaaS ${IMAGE_TAG}"
 endif
 
-	sed -i "s/VERSION = '.*';/VERSION = '${IMAGE_TAG}';/g" $(PIM_SRC_PATH)/src/Akeneo/Platform/$(EDITION_VERSION_FILE)
+	sed -i "s/VERSION = '.*';/VERSION = '${RELEASE_NAME}';/g" $(PIM_SRC_PATH)/src/Akeneo/Platform/$(EDITION_VERSION_FILE)
 	DOCKER_BUILDKIT=1 docker build --no-cache --progress=plain --pull --tag eu.gcr.io/akeneo-ci/pim-enterprise-dev:${IMAGE_TAG} --target prod --build-arg COMPOSER_AUTH='${COMPOSER_AUTH}' -f $(PIM_SRC_PATH)/Dockerfile .
 
 .PHONY: push-php-image-prod
