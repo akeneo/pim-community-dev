@@ -25,7 +25,6 @@ akeneo.tailored_export:
       remove: Eliminar columna
       no_source: Definir fuente de contenido
     no_column_selection:
-      title: Su perfil de exportación está vacío. Añada su primera columna.
       subtitle: Haga clic en «Añadir primera columna» para comenzar a construir su tabla de exportación.
       link: Eche un vistazo a nuestro Centro de ayuda para más información.
       add_column: Añadir primera columna
@@ -34,7 +33,6 @@ akeneo.tailored_export:
       title: Fuentes
       add: Añadir fuente
       no_result: Lo sentimos, no hay resultados.
-      locale_specific.info: Este atributo tiene un valor por configuración regional.
       remove:
         title: fuente
         text: '¿Está seguro de que quiere eliminar esta fuente?'
@@ -59,18 +57,12 @@ akeneo.tailored_export:
           information:
             locale: Si el atributo usado como etiqueta tiene un valor por configuración regional, puede seleccionar una configuración regional específica.
             channel: Si el atributo utilizado como etiqueta tiene un valor por canal, puede seleccionar un canal específico.
-        code_label:
-          information: Para este atributo, puede exportar el código o la etiqueta.
         measurement:
           information: Para este atributo, puede exportar el valor, el código de la unidad o la etiqueta de la unidad.
           value: Valor
           unit_locale: Configuración regional de unidad
           unit_code: Código de unidad
           unit_label: Etiqueta unitaria
-        price:
-          information: Para este atributo, puede exportar la cantidad o la moneda.
-        file:
-          information: Para este atributo, puede exportar la ruta, la clave de archivo o el nombre.
       operation:
         replacement:
           title: Reemplazar valor
@@ -84,11 +76,6 @@ akeneo.tailored_export:
       max_column_count_reached: Ha alcanzado el límite de columnas {{ limit }}, ya no puede añadir columnas a su exportación.
       target:
         should_not_be_blank: Defina un nombre de columna.
-        max_length_reached: El nombre de la columna es demasiado largo. Debería tener {{ limit }} caracteres o menos.
         should_be_unique: Este nombre de columna ya existe, introduzca uno nuevo.
     sources:
       max_source_count_reached: Ha alcanzado el límite de {{ limit }} fuentes, ya no puede añadir fuentes a su exportación.
-    locale:
-      should_be_active: La configuración regional {{ locale_code }} debe estar activa.
-    channel:
-      should_exist: El canal {{ channel_code }} debe estar activo.

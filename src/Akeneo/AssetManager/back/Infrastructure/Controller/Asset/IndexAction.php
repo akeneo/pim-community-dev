@@ -19,6 +19,7 @@ use Akeneo\AssetManager\Domain\Query\Asset\AssetQuery;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
+use Symfony\Component\HttpKernel\Exception\BadRequestHttpException;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 
 /**
@@ -42,6 +43,11 @@ class IndexAction
     public function __invoke(Request $request, string $assetFamilyIdentifier): JsonResponse
     {
         $normalizedQuery = json_decode($request->getContent(), true);
+
+        if (null === $normalizedQuery) {
+            throw new BadRequestHttpException('Invalid JSON message received');
+        }
+
         $query = AssetQuery::createFromNormalized($normalizedQuery);
         $assetFamilyIdentifier = $this->getAssetFamilyIdentifierOr404($assetFamilyIdentifier);
 
@@ -64,8 +70,8 @@ class IndexAction
     {
         try {
             return AssetFamilyIdentifier::fromString($identifier);
-        } catch (\Exception $e) {
-            throw new NotFoundHttpException($e->getMessage());
+        } catch (\Exception $exception) {
+            throw new NotFoundHttpException($exception->getMessage());
         }
     }
 

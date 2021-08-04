@@ -366,7 +366,7 @@ jobs:
                 IMAGE_TAG=${CIRCLE_SHA1}
                 IMAGE_TAG_SHORTED=$(echo ${IMAGE_TAG} | cut -c -7)
                 IMAGE_TAG_DATE=$(date +%Y%m%d%H%M%S)
-                SERENITY_RELEASE_NAME="v$(date +%Y%m%d%H%M%S)"
+                RELEASE_NAME="v$(date +%Y%m%d%H%M%S)"
                 PRODUCT_REFERENCE_TYPE="serenity_instance"
                 PRODUCT_REFERENCE_CODE="serenity_${ENV_NAME}"
                 PIM_CONTEXT=deployment
@@ -375,13 +375,13 @@ jobs:
                 echo export IMAGE_TAG=${IMAGE_TAG} >> $BASH_ENV
                 echo export IMAGE_TAG_SHORTED=${IMAGE_TAG_SHORTED} >> $BASH_ENV
                 echo export IMAGE_TAG_DATE=${IMAGE_TAG_DATE} >> $BASH_ENV
-                echo export SERENITY_RELEASE_NAME=${SERENITY_RELEASE_NAME} >> $BASH_ENV
+                echo export RELEASE_NAME=${RELEASE_NAME} >> $BASH_ENV
                 echo export PRODUCT_REFERENCE_TYPE=${PRODUCT_REFERENCE_TYPE} >> $BASH_ENV
                 echo export PRODUCT_REFERENCE_CODE=${PRODUCT_REFERENCE_CODE} >> $BASH_ENV
                 echo export PIM_CONTEXT=${PIM_CONTEXT} >> $BASH_ENV
 
                 echo "Image tag: ${IMAGE_TAG}"
-                echo "Serenity release name: ${SERENITY_RELEASE_NAME}"
+                echo "Serenity release name: ${RELEASE_NAME}"
           - run:
               name: Build the Serenity Edition prod image
               command: make php-image-prod
@@ -395,7 +395,7 @@ jobs:
                 echo export IMAGE_TAG=${IMAGE_TAG} >> persisted_env_vars
                 echo export IMAGE_TAG_SHORTED=${IMAGE_TAG_SHORTED} >> persisted_env_vars
                 echo export IMAGE_TAG_DATE=${IMAGE_TAG_DATE} >> persisted_env_vars
-                echo export SERENITY_RELEASE_NAME=${SERENITY_RELEASE_NAME} >> persisted_env_vars
+                echo export RELEASE_NAME=${RELEASE_NAME} >> persisted_env_vars
                 echo export PRODUCT_REFERENCE_TYPE=${PRODUCT_REFERENCE_TYPE} >> persisted_env_vars
                 echo export PRODUCT_REFERENCE_CODE=${PRODUCT_REFERENCE_CODE} >> persisted_env_vars
                 echo export PIM_CONTEXT=${PIM_CONTEXT} >> persisted_env_vars
@@ -457,7 +457,7 @@ jobs:
           IMAGE_TAG=$(echo growth-${CIRCLE_SHA1} | cut -b 1-40)
           IMAGE_TAG_SHORTED=$(echo ${CIRCLE_SHA1} | cut -c -7)
           IMAGE_TAG_DATE=$(date +%Y%m%d%H%M%S)
-          GROWTH_RELEASE_NAME="growth-v$(date +%Y%m%d%H%M%S)"
+          RELEASE_NAME="growth-v$(date +%Y%m%d%H%M%S)"
           PRODUCT_REFERENCE_TYPE="growth_edition_instance"
           PRODUCT_REFERENCE_CODE="growth_edition_${ENV_NAME}"
           PIM_CONTEXT=deployment
@@ -466,7 +466,7 @@ jobs:
           echo export IMAGE_TAG=${IMAGE_TAG} >> $BASH_ENV
           echo export IMAGE_TAG_SHORTED=${IMAGE_TAG_SHORTED} >> $BASH_ENV
           echo export IMAGE_TAG_DATE=${IMAGE_TAG_DATE} >> $BASH_ENV
-          echo export GROWTH_RELEASE_NAME=${GROWTH_RELEASE_NAME} >> $BASH_ENV
+          echo export RELEASE_NAME=${RELEASE_NAME} >> $BASH_ENV
           echo export PRODUCT_REFERENCE_TYPE=${PRODUCT_REFERENCE_TYPE} >> $BASH_ENV
           echo export PRODUCT_REFERENCE_CODE=${PRODUCT_REFERENCE_CODE} >> $BASH_ENV
           echo export PIM_CONTEXT=${PIM_CONTEXT} >> $BASH_ENV
@@ -474,7 +474,7 @@ jobs:
           echo "CE Branch used: ${CE_BRANCH}"
           echo "CE Commit hash used: ${CE_COMMIT_HASH}"
           echo "Image tag: ${IMAGE_TAG}"
-          echo "Growth Release name: ${GROWTH_RELEASE_NAME}"
+          echo "Growth Release name: ${RELEASE_NAME}"
     - run:
         name: Set the right CE branch
         command: |
@@ -508,7 +508,7 @@ jobs:
           echo export IMAGE_TAG=${IMAGE_TAG} >> persisted_env_vars
           echo export IMAGE_TAG_SHORTED=${IMAGE_TAG_SHORTED} >> persisted_env_vars
           echo export IMAGE_TAG_DATE=${IMAGE_TAG_DATE} >> persisted_env_vars
-          echo export GROWTH_RELEASE_NAME=${GROWTH_RELEASE_NAME} >> persisted_env_vars
+          echo export RELEASE_NAME=${RELEASE_NAME} >> persisted_env_vars
           echo export PRODUCT_REFERENCE_TYPE=${PRODUCT_REFERENCE_TYPE} >> persisted_env_vars
           echo export PRODUCT_REFERENCE_CODE=${PRODUCT_REFERENCE_CODE} >> persisted_env_vars
           echo export PIM_CONTEXT=${PIM_CONTEXT} >> persisted_env_vars
@@ -570,7 +570,7 @@ jobs:
           IMAGE_TAG=$(echo trial-${CIRCLE_SHA1} | cut -b 1-40)
           IMAGE_TAG_SHORTED=$(echo ${CIRCLE_SHA1} | cut -c -7)
           IMAGE_TAG_DATE=$(date +%Y%m%d%H%M%S)
-          TRIAL_RELEASE_NAME="trial-v$(date +%Y%m%d%H%M%S)"
+          RELEASE_NAME="trial-v$(date +%Y%m%d%H%M%S)"
           PRODUCT_REFERENCE_TYPE="pim_trial_instance"
           PRODUCT_REFERENCE_CODE="pim_trial_${ENV_NAME}"
           PIM_CONTEXT=deployment
@@ -579,7 +579,7 @@ jobs:
           echo export IMAGE_TAG=${IMAGE_TAG} >> $BASH_ENV
           echo export IMAGE_TAG_SHORTED=${IMAGE_TAG_SHORTED} >> $BASH_ENV
           echo export IMAGE_TAG_DATE=${IMAGE_TAG_DATE} >> $BASH_ENV
-          echo export TRIAL_RELEASE_NAME=${TRIAL_RELEASE_NAME} >> $BASH_ENV
+          echo export RELEASE_NAME=${RELEASE_NAME} >> $BASH_ENV
           echo export PRODUCT_REFERENCE_TYPE=${PRODUCT_REFERENCE_TYPE} >> $BASH_ENV
           echo export PRODUCT_REFERENCE_CODE=${PRODUCT_REFERENCE_CODE} >> $BASH_ENV
           echo export PIM_CONTEXT=${PIM_CONTEXT} >> $BASH_ENV
@@ -587,7 +587,7 @@ jobs:
           echo "CE Branch used: ${CE_BRANCH}"
           echo "CE Commit hash used: ${CE_COMMIT_HASH}"
           echo "Image tag: ${IMAGE_TAG}"
-          echo "Trial Release name: ${TRIAL_RELEASE_NAME}"
+          echo "Trial Release name: ${RELEASE_NAME}"
     - run:
         name: Set the right CE branch
         command: |
@@ -612,7 +612,7 @@ jobs:
           echo export IMAGE_TAG=${IMAGE_TAG} >> persisted_env_vars
           echo export IMAGE_TAG_SHORTED=${IMAGE_TAG_SHORTED} >> persisted_env_vars
           echo export IMAGE_TAG_DATE=${IMAGE_TAG_DATE} >> persisted_env_vars
-          echo export TRIAL_RELEASE_NAME=${TRIAL_RELEASE_NAME} >> persisted_env_vars
+          echo export RELEASE_NAME=${RELEASE_NAME} >> persisted_env_vars
           echo export PRODUCT_REFERENCE_TYPE=${PRODUCT_REFERENCE_TYPE} >> persisted_env_vars
           echo export PRODUCT_REFERENCE_CODE=${PRODUCT_REFERENCE_CODE} >> persisted_env_vars
           echo export PIM_CONTEXT=${PIM_CONTEXT} >> persisted_env_vars
@@ -1756,12 +1756,12 @@ jobs:
           - run:
               name: Push Terraform modules to GCS
               command: |
-                BOTO_CONFIG=/dev/null gsutil -m cp -r deployments/terraform gs://akecld-terraform-modules/serenity-edition/${SERENITY_RELEASE_NAME}/
-                BOTO_CONFIG=/dev/null gsutil -m cp -r deployments gs://akecld-terraform-modules/serenity-edition/${SERENITY_RELEASE_NAME}/terraform/
+                BOTO_CONFIG=/dev/null gsutil -m cp -r deployments/terraform gs://akecld-terraform-modules/serenity-edition/${RELEASE_NAME}/
+                BOTO_CONFIG=/dev/null gsutil -m cp -r deployments gs://akecld-terraform-modules/serenity-edition/${RELEASE_NAME}/terraform/
           - run:
               name: PIM_CONTEXT=deployment make release
               command: |
-                OLD_IMAGE_TAG=${IMAGE_TAG} NEW_IMAGE_TAG=${SERENITY_RELEASE_NAME} PIM_CONTEXT=deployment make release
+                OLD_IMAGE_TAG=${IMAGE_TAG} NEW_IMAGE_TAG=${RELEASE_NAME} PIM_CONTEXT=deployment make release
 
   release_grth:
       environment:
@@ -1781,17 +1781,17 @@ jobs:
           - run:
               name: Push Terraform modules to GCS
               command: |
-                BOTO_CONFIG=/dev/null gsutil -m cp -r deployments/terraform gs://akecld-terraform-modules/growth-edition/$GROWTH_RELEASE_NAME/
-                BOTO_CONFIG=/dev/null gsutil -m cp -r deployments/terraform gs://akecld-terraform-modules/growth-edition/$GROWTH_RELEASE_NAME/terraform/deployments/terraform
-                BOTO_CONFIG=/dev/null gsutil -m cp -r gs://akecld-terraform-modules/growth-edition/$GROWTH_RELEASE_NAME gs://akecld-terraform-modules/growth-edition-dev/$GROWTH_RELEASE_NAME
+                BOTO_CONFIG=/dev/null gsutil -m cp -r deployments/terraform gs://akecld-terraform-modules/growth-edition/$RELEASE_NAME/
+                BOTO_CONFIG=/dev/null gsutil -m cp -r deployments/terraform gs://akecld-terraform-modules/growth-edition/$RELEASE_NAME/terraform/deployments/terraform
+                BOTO_CONFIG=/dev/null gsutil -m cp -r gs://akecld-terraform-modules/growth-edition/$RELEASE_NAME gs://akecld-terraform-modules/growth-edition-dev/$RELEASE_NAME
           - run:
               name: Tag the Docker image with the definitive tag
               command: |
                   docker pull eu.gcr.io/akeneo-ci/pim-enterprise-dev:$IMAGE_TAG
-                  docker image tag eu.gcr.io/akeneo-ci/pim-enterprise-dev:$IMAGE_TAG eu.gcr.io/akeneo-ci/pim-enterprise-dev:$GROWTH_RELEASE_NAME
-                  docker image tag eu.gcr.io/akeneo-ci/pim-enterprise-dev:$IMAGE_TAG eu.gcr.io/akeneo-cloud/pim-enterprise-dev:$GROWTH_RELEASE_NAME
-                  docker push eu.gcr.io/akeneo-ci/pim-enterprise-dev:$GROWTH_RELEASE_NAME
-                  docker push eu.gcr.io/akeneo-cloud/pim-enterprise-dev:$GROWTH_RELEASE_NAME
+                  docker image tag eu.gcr.io/akeneo-ci/pim-enterprise-dev:$IMAGE_TAG eu.gcr.io/akeneo-ci/pim-enterprise-dev:$RELEASE_NAME
+                  docker image tag eu.gcr.io/akeneo-ci/pim-enterprise-dev:$IMAGE_TAG eu.gcr.io/akeneo-cloud/pim-enterprise-dev:$RELEASE_NAME
+                  docker push eu.gcr.io/akeneo-ci/pim-enterprise-dev:$RELEASE_NAME
+                  docker push eu.gcr.io/akeneo-cloud/pim-enterprise-dev:$RELEASE_NAME
 
   release_tria:
       environment:
@@ -1806,12 +1806,12 @@ jobs:
           - run:
               name: Push Terraform modules to GCS
               command: |
-                BOTO_CONFIG=/dev/null gsutil -m cp -r deployments/ gs://akecld-terraform-modules/trial-edition/${TRIAL_RELEASE_NAME}/
-                BOTO_CONFIG=/dev/null gsutil -m cp -r deployments/ gs://akecld-terraform-modules/trial-edition-dev/${TRIAL_RELEASE_NAME}/
+                BOTO_CONFIG=/dev/null gsutil -m cp -r deployments/ gs://akecld-terraform-modules/trial-edition/${RELEASE_NAME}/
+                BOTO_CONFIG=/dev/null gsutil -m cp -r deployments/ gs://akecld-terraform-modules/trial-edition-dev/${RELEASE_NAME}/
           - run:
               name: Tag the Docker image with the definitive tag
               command: |
-                  OLD_IMAGE_TAG=${IMAGE_TAG} NEW_IMAGE_TAG=${TRIAL_RELEASE_NAME} PIM_CONTEXT=deployment make release
+                  OLD_IMAGE_TAG=${IMAGE_TAG} NEW_IMAGE_TAG=${RELEASE_NAME} PIM_CONTEXT=deployment make release
 
   ##################
   # Deploy         #
