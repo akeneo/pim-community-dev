@@ -1,5 +1,5 @@
 import {TEMPLATES, TemplateVariation} from './Template';
-import {TableConfiguration} from './TableConfiguration';
+import {SelectOption, TableConfiguration} from './TableConfiguration';
 import {LocaleCode} from '../../../../../AssetManager/front/domain/model/locale';
 
 const getTranslatedTableConfigurationFromVariationTemplate = async (
@@ -26,8 +26,8 @@ const getTranslatedTableConfigurationFromVariationTemplate = async (
       }
     });
 
-    if ('options' in columnDefinition && typeof columnDefinition.options !== 'undefined') {
-      columnDefinition.options = columnDefinition.options.map(option => {
+    if (typeof columnDefinition['options'] !== 'undefined') {
+      columnDefinition['options'] = columnDefinition['options'].map((option: SelectOption) => {
         localeCodes.forEach(localeCode => {
           const key = `jsmessages:table_attribute_template.${templateVariation.code}.${columnDefinition.code}.options.${option.code}`;
           const label = messages[localeCode][key];
