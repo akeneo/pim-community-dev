@@ -3,8 +3,7 @@ version: '3.7'
 services:
   cypress:
     build:
-      context: .
-      dockerfile: docker/cypress/Dockerfile
+      context: ./docker/cypress
     environment:
       CYPRESS_baseUrl: '${CYPRESS_baseUrl:-http://httpd}'
       CYPRESS_defaultCommandTimeout: '${CYPRESS_defaultCommandTimeout:-4000}'
