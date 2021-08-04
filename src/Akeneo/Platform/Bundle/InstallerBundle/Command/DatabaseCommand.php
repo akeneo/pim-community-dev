@@ -331,6 +331,7 @@ SQL;
             $this->eventDispatcher->dispatch(
                 new InstallerEvent($this->commandExecutor, $jobInstance->getCode(), [
                     'job_name' => $jobInstance->getJobName(),
+                    'catalog' => $catalog,
                 ]),
                 InstallerEvents::POST_LOAD_FIXTURE
             );
