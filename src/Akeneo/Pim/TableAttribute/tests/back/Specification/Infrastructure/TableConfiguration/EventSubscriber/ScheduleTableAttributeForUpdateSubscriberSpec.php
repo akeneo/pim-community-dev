@@ -43,7 +43,7 @@ class ScheduleTableAttributeForUpdateSubscriberSpec extends ObjectBehavior
         $this->scheduleForUpdate(new GenericEvent($name));
     }
 
-    function it_does_nothing_if_the_argument_the_table_attribute_is_nopt_persisted_yet(
+    function it_does_nothing_if_the_table_attribute_is_not_persisted_yet(
         EntityManagerInterface $entityManager,
         AttributeInterface $table
     ) {
