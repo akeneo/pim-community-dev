@@ -45,16 +45,25 @@ class OperationCollection implements \IteratorAggregate
     {
         $operations = [];
         foreach ($normalizedOperations as $normalizedOperation) {
-            $operation = null;
-            if ($normalizedOperation['type'] === 'replacement') {
-                $operation = ReplacementOperation::createFromNormalized($normalizedOperation);
-            }
+            $operation = self::hydrateOperation($normalizedOperation);
 
-            if ($operation) {
+            if (null !== $operation) {
                 $operations[] = $operation;
             }
         }
 
         return self::create($operations);
+    }
+
+    private static function hydrateOperation(array $normalizedOperation): ?OperationInterface
+    {
+        switch ($normalizedOperation['type']) {
+            case 'replacement':
+                return ReplacementOperation::createFromNormalized($normalizedOperation);
+            case 'default_value':
+                return DefaultValueOperation::createFromNormalized($normalizedOperation);
+            default:
+                return null;
+        }
     }
 }

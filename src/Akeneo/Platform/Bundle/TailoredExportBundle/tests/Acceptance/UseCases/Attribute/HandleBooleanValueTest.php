@@ -13,10 +13,12 @@ declare(strict_types=1);
 
 namespace Akeneo\Platform\TailoredExport\Test\Acceptance\UseCases\Attribute;
 
+use Akeneo\Platform\TailoredExport\Application\Query\Operation\DefaultValueOperation;
 use Akeneo\Platform\TailoredExport\Application\Query\Operation\ReplacementOperation;
 use Akeneo\Platform\TailoredExport\Application\Query\Selection\Boolean\BooleanSelection;
 use Akeneo\Platform\TailoredExport\Application\Query\Selection\SelectionInterface;
 use Akeneo\Platform\TailoredExport\Domain\SourceValue\BooleanValue;
+use Akeneo\Platform\TailoredExport\Domain\SourceValue\NullValue;
 use Akeneo\Platform\TailoredExport\Domain\SourceValueInterface;
 use PHPUnit\Framework\Assert;
 
@@ -65,11 +67,32 @@ final class HandleBooleanValueTest extends AttributeTestCase
                                 'false' => 'non'
                             ]
                         ]
-                    )
+                    ),
+                    DefaultValueOperation::createFromNormalized([
+                        'value' => 'n/a'
+                    ])
                 ],
                 'selection' => new BooleanSelection(),
                 'value' => new BooleanValue(true),
                 'expected' => [self::TARGET_NAME => 'oui']
+            ],
+            [
+                'operations' => [
+                    ReplacementOperation::createFromNormalized(
+                        [
+                            'mapping' => [
+                                'true' => 'oui',
+                                'false' => 'non'
+                            ]
+                        ]
+                    ),
+                    DefaultValueOperation::createFromNormalized([
+                        'value' => 'n/a'
+                    ])
+                ],
+                'selection' => new BooleanSelection(),
+                'value' => new NullValue(),
+                'expected' => [self::TARGET_NAME => 'n/a']
             ],
             [
                 'operations' => [
