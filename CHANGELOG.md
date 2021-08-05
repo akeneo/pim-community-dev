@@ -93,6 +93,7 @@
 - PIM-9947: Display validation errors message in the UI when `compute_family_variant_structure_changes` job fails
 - PIM-9987: Fix product grid count not accurate after specific SKU selection
 - PIM-10009: Fix error being printed in the response of partial update of product models API
+- PIM-10003: Fix translation in setting page are not plurializable
 
 ## New features
 
