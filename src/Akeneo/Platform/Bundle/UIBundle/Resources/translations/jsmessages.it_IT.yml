@@ -372,15 +372,3 @@ pim_settings:
   settings_menu: Menu Impostazioni
   catalog_settings: Impostazioni catalogo
   product_settings: Impostazioni prodotti
-  count:
-    categories: Hai {{ countTrees }} alberi e {{ countCategories }} categorie
-    locales: Hai {{ count }} impostazioni locali attivate
-    currencies: Hai {{ count }} valute attivate
-    attribute_groups: Hai {{ count }} gruppi di attributi
-    attributes: Hai {{ count }} attributi
-    families: Hai {{ count }} famiglie
-    measurements: Hai {{ count }} unità di misura
-    association_types: Hai {{ count }} tipi di associazione
-    group_types: Hai {{ count }} tipi di gruppo
-    groups: Hai {{ count }} gruppi
-    rules: Hai {{ count }} regole attivate
