@@ -16,7 +16,6 @@ use Akeneo\CouplingDetector\Configuration\DefaultFinder;
 use Akeneo\CouplingDetector\RuleBuilder;
 
 $finder = new DefaultFinder();
-
 $builder = new RuleBuilder();
 
 $rules = [
@@ -32,10 +31,8 @@ $rules = [
             'Box\Spout\Writer\WriterFactory',
             'Box\Spout\Writer\WriterInterface',
 
-            'Akeneo\AssetManager\Infrastructure\PublicApi\Enrich\GetMainMediaFileInfoCollectionInterface',
-            'Akeneo\AssetManager\Infrastructure\PublicApi\Enrich\FindAssetLabelTranslation',
-            'Akeneo\AssetManager\Infrastructure\PublicApi\Enrich\MediaFileInfo',
-            'Akeneo\Channel\Component\Query\PublicApi\ChannelExistsWithLocaleInterface',
+            'Akeneo\AssetManager\Infrastructure\PublicApi',
+            'Akeneo\Channel\Component\Query\PublicApi',
             'Akeneo\Pim\Automation\DataQualityInsights\Infrastructure\Elasticsearch\Filter\QualityScoreMultiLocalesFilter',
             'Akeneo\Pim\Enrichment\Component\Product\Model\GroupInterface',
             'Akeneo\Pim\Enrichment\Component\Product\Model\ProductInterface',
@@ -48,9 +45,8 @@ $rules = [
             'Akeneo\Pim\Enrichment\Component\Product\Query\ProductQueryBuilderFactoryInterface',
             'Akeneo\Pim\Enrichment\Component\Product\Value\MetricValue',
             'Akeneo\Pim\Permission\Bundle\User\UserContext',
-            'Akeneo\Pim\Structure\Component\Query\PublicApi\Permission\GetViewableAttributeCodesForUserInterface',
             'Akeneo\Pim\Structure\Component\Query\PublicApi',
-            'Akeneo\ReferenceEntity\Infrastructure\PublicApi\Enrich\FindRecordsLabelTranslations',
+            'Akeneo\ReferenceEntity\Infrastructure\PublicApi',
             'Akeneo\UserManagement\Component\Model\UserInterface',
         ]
     )->in('Akeneo\Platform\TailoredExport'),
