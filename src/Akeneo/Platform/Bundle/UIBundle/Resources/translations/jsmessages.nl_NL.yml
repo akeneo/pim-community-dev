@@ -374,7 +374,6 @@ pim_settings:
   product_settings: Productinstellingen
   count:
     categories: U hebt {{ countTrees }} bomen en {{ countCategories }} categorieën
-    channels: U hebt {{ count }} kanalen
     locales: U hebt {{ count }} ingeschakelde talen
     currencies: U hebt {{ count }} ingeschakelde munteenheden
     attribute_groups: U hebt {{ count }} attribuutgroepen

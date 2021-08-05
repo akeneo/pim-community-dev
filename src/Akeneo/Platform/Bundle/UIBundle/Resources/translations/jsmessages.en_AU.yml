@@ -373,7 +373,6 @@ pim_settings:
   product_settings: Product settings
   count:
     categories: You have {{ countTrees }} trees and {{ countCategories }} categories
-    channels: You have {{ count }} channels
     locales: You have {{ count }} enabled locales
     currencies: You have {{ count }} enabled currencies
     attribute_groups: You have {{ count }} attribute groups
