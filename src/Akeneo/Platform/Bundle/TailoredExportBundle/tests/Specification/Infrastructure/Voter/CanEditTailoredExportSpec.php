@@ -20,7 +20,6 @@ use Akeneo\Pim\Structure\Component\Query\PublicApi\Permission\GetViewableAttribu
 use Akeneo\Tool\Component\Batch\Model\JobInstance;
 use PhpSpec\ObjectBehavior;
 
-
 class CanEditTailoredExportSpec extends ObjectBehavior
 {
     const COLUMNS = [

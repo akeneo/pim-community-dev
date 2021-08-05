@@ -16,30 +16,27 @@ define(['underscore', 'oro/translator', 'pimcommunity/job/common/edit/launch', '
     /**
      * {@inheritdoc}
      */
-    render: function () {
-      this.isVisible().then(
-        (isVisible) => {
-          this.$el.html(
-            this.template({
-              label: __(this.config.label),
-              buttonClass: isVisible ? '' : ' AknButton--disabled',
-              title: isVisible ? '' : __(this.config.title)
-            })
-          );
-        }
-      );
+    render: function() {
+      this.isVisible().then(isVisible => {
+        this.$el.html(
+          this.template({
+            label: __(this.config.label),
+            buttonClass: isVisible ? '' : ' AknButton--disabled',
+            title: isVisible ? '' : __(this.config.title),
+          })
+        );
+      });
 
       this.delegateEvents();
 
       return this;
     },
 
-    launch: function () {
-      this.isVisible().then((isVisible) => {
+    launch: function() {
+      this.isVisible().then(isVisible => {
         isVisible && BaseLaunch.prototype.launch();
       });
     },
-
 
     /**
      * {@inheritdoc}
@@ -47,13 +44,11 @@ define(['underscore', 'oro/translator', 'pimcommunity/job/common/edit/launch', '
     isVisible: function() {
       return FetcherRegistry.getFetcher('permission')
         .fetchAll()
-        .then(
-          (permissions) => {
-            var permission = _.findWhere(permissions.job_instances, {code: this.getFormData().code});
+        .then(permissions => {
+          var permission = _.findWhere(permissions.job_instances, {code: this.getFormData().code});
 
-            return permission.execute;
-          }
-        );
+          return permission.execute;
+        });
     },
   });
 });

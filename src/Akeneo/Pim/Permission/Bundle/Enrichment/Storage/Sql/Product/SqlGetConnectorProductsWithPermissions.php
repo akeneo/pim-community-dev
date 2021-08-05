@@ -31,26 +31,13 @@ use Akeneo\Pim\WorkOrganization\Workflow\Component\Query\PublicApi\GetWorkflowSt
  */
 class SqlGetConnectorProductsWithPermissions implements GetConnectorProducts
 {
-    /** @var GetConnectorProducts */
-    private $getConnectorProducts;
-
-    /** @var GetViewableCategoryCodes */
-    private $getViewableCategoryCodes;
-
-    /** @var GetViewableAttributeCodesForUserInterface */
-    private $getViewableAttributeCodesForUser;
-
-    /** @var GetAllViewableLocalesForUser */
-    private $getViewableLocaleCodesForUser;
-
-    /** @var FetchUserRightsOnProduct */
-    private $fetchUserRightsOnProduct;
-
-    /** @var FetchUserRightsOnProductModel */
-    private $fetchUserRightsOnProductModel;
-
-    /** @var GetWorkflowStatusFromProductIdentifiers */
-    private $getWorkflowStatusFromProductIdentifiers;
+    private GetConnectorProducts $getConnectorProducts;
+    private GetViewableCategoryCodes $getViewableCategoryCodes;
+    private GetViewableAttributeCodesForUserInterface $getViewableAttributeCodesForUser;
+    private GetAllViewableLocalesForUserInterface $getViewableLocaleCodesForUser;
+    private FetchUserRightsOnProduct $fetchUserRightsOnProduct;
+    private FetchUserRightsOnProductModel $fetchUserRightsOnProductModel;
+    private GetWorkflowStatusFromProductIdentifiers $getWorkflowStatusFromProductIdentifiers;
 
     public function __construct(
         GetConnectorProducts $getConnectorProducts,

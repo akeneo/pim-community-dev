@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 /*
  * This file is part of the Akeneo PIM Enterprise Edition.
  *
@@ -33,7 +35,7 @@ class JobProfileVoter extends Voter implements VoterInterface
     public function __construct(
         Voter $decoratedVoter,
         CanEditTailoredExport $canEditTailoredExport,
-        string $tailoredExportJobNames
+        array $tailoredExportJobNames
     ) {
         $this->decoratedVoter = $decoratedVoter;
         $this->canEditTailoredExport = $canEditTailoredExport;
@@ -53,7 +55,12 @@ class JobProfileVoter extends Voter implements VoterInterface
 
         $vote = $this->decoratedVoter->vote($token, $subject, $attributes);
 
-        if (VoterInterface::ACCESS_DENIED === $vote || in_array($subject->getJobName(), $this->tailoredExportJobNames)) return $vote;
+        if (
+            VoterInterface::ACCESS_DENIED === $vote
+            || !in_array($subject->getJobName(), $this->tailoredExportJobNames)
+        ) {
+            return $vote;
+        }
 
         foreach ($attributes as $attribute) {
             if ($this->supports($attribute, $subject)) {
@@ -76,7 +83,7 @@ class JobProfileVoter extends Voter implements VoterInterface
         return $this->decoratedVoter->supports($attribute, $subject);
     }
 
-    protected function voteOnAttribute($attribute, $object, TokenInterface $token)
+    protected function voteOnAttribute($attribute, $object, TokenInterface $token): bool
     {
         $user = $token->getUser();
         if (!$user instanceof UserInterface) {
