@@ -88,7 +88,7 @@ test('it renders column details', async () => {
     },
   };
 
-  await renderWithProviders(<ColumnDetails columnConfiguration={columnConfiguration} onColumnChange={jest.fn} />);
+  await renderWithProviders(<ColumnDetails columnConfiguration={columnConfiguration} onColumnChange={jest.fn()} />);
 
   expect(screen.getByText(/akeneo.tailored_export.column_details.sources.title/i)).toBeInTheDocument();
 });
@@ -104,7 +104,7 @@ test('it renders placeholder when there is no source selected', async () => {
     },
   };
 
-  await renderWithProviders(<ColumnDetails columnConfiguration={columnConfiguration} onColumnChange={jest.fn} />);
+  await renderWithProviders(<ColumnDetails columnConfiguration={columnConfiguration} onColumnChange={jest.fn()} />);
 
   expect(
     screen.getByText(/akeneo.tailored_export.column_details.sources.no_source_selected.title/i)
@@ -444,7 +444,7 @@ test('it renders column details with errors', async () => {
         },
       ]}
     >
-      <ColumnDetails columnConfiguration={columnConfiguration} onColumnChange={jest.fn} />
+      <ColumnDetails columnConfiguration={columnConfiguration} onColumnChange={jest.fn()} />
     </ValidationErrorsContext.Provider>
   );
 

@@ -56,20 +56,20 @@ test('it displays a date configurator', () => {
   });
 });
 
-test('it does not render if the source is not valid', () => {
+test('it tells when the source data is invalid', () => {
   const mockedConsole = jest.spyOn(console, 'error').mockImplementation();
-  const onSourceChange = jest.fn();
+  const textAttribute = {...attribute, type: 'pim_catalog_text', code: 'text_attribute'};
 
   expect(() => {
     renderWithProviders(
       <DateConfigurator
-        source={getDefaultTextSource(attribute, null, null)}
-        attribute={attribute}
+        source={getDefaultTextSource(textAttribute, null, null)}
+        attribute={textAttribute}
         validationErrors={[]}
-        onSourceChange={onSourceChange}
+        onSourceChange={jest.fn()}
       />
     );
-  }).toThrow('Invalid source data "date" for date configurator');
+  }).toThrow('Invalid source data "text_attribute" for date configurator');
 
   expect(screen.queryByText('Update selection')).not.toBeInTheDocument();
   mockedConsole.mockRestore();

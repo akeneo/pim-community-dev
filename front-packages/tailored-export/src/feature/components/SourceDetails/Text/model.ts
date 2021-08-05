@@ -1,6 +1,6 @@
 import {uuid} from 'akeneo-design-system';
 import {ChannelReference, LocaleReference} from '@akeneo-pim-community/shared';
-import {Attribute} from '../../../models';
+import {Attribute, Source} from '../../../models';
 
 type TextSource = {
   uuid: string;
@@ -26,5 +26,8 @@ const getDefaultTextSource = (
   selection: {type: 'code'},
 });
 
+const isTextSource = (source: Source): source is TextSource =>
+  'type' in source.selection && 'code' === source.selection.type;
+
 export type {TextSource};
-export {getDefaultTextSource};
+export {getDefaultTextSource, isTextSource};

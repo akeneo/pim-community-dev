@@ -75,30 +75,20 @@ test('it displays a boolean configurator', () => {
   });
 });
 
-test('it does not render if the source is not valid', () => {
+test('it tells when the source data is invalid', () => {
   const mockedConsole = jest.spyOn(console, 'error').mockImplementation();
-  const onSourceChange = jest.fn();
-
-  const dateAttribute = {
-    code: 'date',
-    type: 'pim_catalog_date',
-    labels: {},
-    scopable: false,
-    localizable: false,
-    is_locale_specific: false,
-    available_locales: [],
-  };
+  const dateAttribute = {...attribute, type: 'pim_catalog_date', code: 'date_attribute'};
 
   expect(() => {
     renderWithProviders(
       <BooleanConfigurator
-        attribute={attribute}
+        attribute={dateAttribute}
         source={getDefaultDateSource(dateAttribute, null, null)}
         validationErrors={[]}
-        onSourceChange={onSourceChange}
+        onSourceChange={jest.fn()}
       />
     );
-  }).toThrow('Invalid source data "date" for boolean configurator');
+  }).toThrow('Invalid source data "date_attribute" for boolean configurator');
 
   expect(screen.queryByText('Update replacement')).not.toBeInTheDocument();
   mockedConsole.mockRestore();

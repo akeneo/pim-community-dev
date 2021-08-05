@@ -66,9 +66,8 @@ test('it displays a reference entity collection configurator', () => {
   });
 });
 
-test('it does not render if the source is not valid', () => {
+test('it tells when the source data is invalid', () => {
   const mockedConsole = jest.spyOn(console, 'error').mockImplementation();
-  const onSourceChange = jest.fn();
   const dateAttribute = {...attribute, type: 'pim_catalog_date', code: 'date_attribute'};
 
   expect(() => {
@@ -77,7 +76,7 @@ test('it does not render if the source is not valid', () => {
         source={getDefaultDateSource(dateAttribute, null, null)}
         attribute={dateAttribute}
         validationErrors={[]}
-        onSourceChange={onSourceChange}
+        onSourceChange={jest.fn()}
       />
     );
   }).toThrow('Invalid source data "date_attribute" for reference entity collection configurator');

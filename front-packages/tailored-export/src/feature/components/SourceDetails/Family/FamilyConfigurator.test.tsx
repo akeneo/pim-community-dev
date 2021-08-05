@@ -3,8 +3,8 @@ import {screen} from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
 import {renderWithProviders} from '@akeneo-pim-community/shared';
 import {FamilyConfigurator} from './FamilyConfigurator';
-import {getDefaultTextSource} from '../Text/model';
 import {CodeLabelSelection} from '../common/CodeLabelSelector';
+import {getDefaultParentSource} from '../Parent/model';
 
 jest.mock('../common/CodeLabelSelector', () => ({
   CodeLabelSelector: ({onSelectionChange}: {onSelectionChange: (updatedSelection: CodeLabelSelection) => void}) => (
@@ -58,29 +58,14 @@ test('it displays a family configurator', () => {
   });
 });
 
-test('it does not render if the source is not valid', () => {
+test('it tells when the source data is invalid', () => {
   const mockedConsole = jest.spyOn(console, 'error').mockImplementation();
-  const onSourceChange = jest.fn();
-
-  const textAttribute = {
-    code: 'text',
-    type: 'pim_catalog_text',
-    labels: {},
-    scopable: false,
-    localizable: false,
-    is_locale_specific: false,
-    available_locales: [],
-  };
 
   expect(() => {
     renderWithProviders(
-      <FamilyConfigurator
-        source={getDefaultTextSource(textAttribute, null, null)}
-        validationErrors={[]}
-        onSourceChange={onSourceChange}
-      />
+      <FamilyConfigurator source={getDefaultParentSource()} validationErrors={[]} onSourceChange={jest.fn()} />
     );
-  }).toThrow('Invalid source data "text" for family configurator');
+  }).toThrow('Invalid source data "parent" for family configurator');
 
   expect(screen.queryByText('Update selection')).not.toBeInTheDocument();
   mockedConsole.mockRestore();

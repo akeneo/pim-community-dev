@@ -19,7 +19,7 @@ test('it displays source configurator', async () => {
   };
 
   await renderWithProviders(
-    <AttributeSourceConfigurator source={source} validationErrors={[]} onSourceChange={jest.fn} />
+    <AttributeSourceConfigurator source={source} validationErrors={[]} onSourceChange={jest.fn()} />
   );
 
   expect(
@@ -41,7 +41,7 @@ test('it displays locale dropdown when attribute is localizable', async () => {
   };
 
   await renderWithProviders(
-    <AttributeSourceConfigurator source={source} validationErrors={[]} onSourceChange={jest.fn} />
+    <AttributeSourceConfigurator source={source} validationErrors={[]} onSourceChange={jest.fn()} />
   );
 
   expect(screen.getByLabelText(/pim_common.locale/i)).toBeInTheDocument();
@@ -62,7 +62,7 @@ test('it displays a filtered locale dropdown when attribute is localizable and l
   };
 
   await renderWithProviders(
-    <AttributeSourceConfigurator source={source} onSourceChange={jest.fn} validationErrors={[]} />
+    <AttributeSourceConfigurator source={source} onSourceChange={jest.fn()} validationErrors={[]} />
   );
 
   userEvent.click(screen.getByLabelText(/pim_common.locale/i));
@@ -85,7 +85,7 @@ test('it displays a channel dropdown when attribute is scopable', async () => {
   };
 
   await renderWithProviders(
-    <AttributeSourceConfigurator source={source} validationErrors={[]} onSourceChange={jest.fn} />
+    <AttributeSourceConfigurator source={source} validationErrors={[]} onSourceChange={jest.fn()} />
   );
 
   expect(screen.queryByLabelText(/pim_common.locale/i)).not.toBeInTheDocument();
@@ -106,7 +106,7 @@ test('it displays a channel dropdown when attribute is scopable and localizable'
   };
 
   await renderWithProviders(
-    <AttributeSourceConfigurator source={source} validationErrors={[]} onSourceChange={jest.fn} />
+    <AttributeSourceConfigurator source={source} validationErrors={[]} onSourceChange={jest.fn()} />
   );
 
   expect(screen.getByLabelText(/pim_common.locale/i)).toBeInTheDocument();
