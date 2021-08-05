@@ -1,6 +1,9 @@
 import {TEMPLATES, TemplateVariation} from './Template';
 import {SelectOption, TableConfiguration} from './TableConfiguration';
-import {LocaleCode} from '../../../../../AssetManager/front/domain/model/locale';
+import {LocaleCode} from '@akeneo-pim-community/shared/';
+
+type TranslationMessages = {[messageKey: string]: string};
+type TranslationMessagesByLocale = {[localeCode: string]: TranslationMessages};
 
 const getTranslatedTableConfigurationFromVariationTemplate = async (
   variationTemplate: string,
@@ -26,8 +29,8 @@ const getTranslatedTableConfigurationFromVariationTemplate = async (
       }
     });
 
-    if (typeof columnDefinition['options'] !== 'undefined') {
-      columnDefinition['options'] = columnDefinition['options'].map((option: SelectOption) => {
+    if ('options' in columnDefinition && typeof columnDefinition.options !== 'undefined') {
+      columnDefinition.options = columnDefinition.options.map((option: SelectOption) => {
         localeCodes.forEach(localeCode => {
           const key = `jsmessages:table_attribute_template.${templateVariation.code}.${columnDefinition.code}.options.${option.code}`;
           const label = messages[localeCode][key];
@@ -44,12 +47,12 @@ const getTranslatedTableConfigurationFromVariationTemplate = async (
   });
 };
 
-const getMessages = async (localeCodes: LocaleCode[]) => {
-  const responses = {};
+const getMessages: (localeCodes: LocaleCode[]) => Promise<TranslationMessagesByLocale> = async localeCodes => {
+  const responses: TranslationMessagesByLocale = {};
   for await (const localeCode of localeCodes) {
     const response = await fetch(`js/translation/${localeCode}.js`);
-    const json = await response.json();
-    const messages = {};
+    const json: {messages: TranslationMessages} = await response.json();
+    const messages: TranslationMessages = {};
     Object.keys(json.messages).forEach(messageKey => {
       if (/^jsmessages:table_attribute_template\./.exec(messageKey)) {
         messages[messageKey] = json.messages[messageKey];
