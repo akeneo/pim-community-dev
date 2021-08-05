@@ -11,7 +11,6 @@
 
 namespace Akeneo\Platform\TailoredExport\Infrastructure\Voter;
 
-use Akeneo\Pim\Permission\Component\Attributes;
 use Akeneo\Tool\Component\Batch\Model\JobInstance;
 use Akeneo\UserManagement\Component\Model\UserInterface;
 use Symfony\Component\Security\Core\Authentication\Token\TokenInterface;
@@ -34,11 +33,11 @@ class JobProfileVoter extends Voter implements VoterInterface
     public function __construct(
         Voter $decoratedVoter,
         CanEditTailoredExport $canEditTailoredExport,
-        string $tailoredExportJobName
+        string $tailoredExportJobNames
     ) {
         $this->decoratedVoter = $decoratedVoter;
         $this->canEditTailoredExport = $canEditTailoredExport;
-        $this->tailoredExportJobName = $tailoredExportJobName;
+        $this->tailoredExportJobNames = $tailoredExportJobNames;
     }
 
     /**
@@ -54,7 +53,7 @@ class JobProfileVoter extends Voter implements VoterInterface
 
         $vote = $this->decoratedVoter->vote($token, $subject, $attributes);
 
-        if (VoterInterface::ACCESS_DENIED === $vote || $this->tailoredExportJobName !== $subject->getJobName()) return $vote;
+        if (VoterInterface::ACCESS_DENIED === $vote || in_array($subject->getJobName(), $this->tailoredExportJobNames)) return $vote;
 
         foreach ($attributes as $attribute) {
             if ($this->supports($attribute, $subject)) {
