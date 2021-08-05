@@ -7,7 +7,7 @@ services:
 
   Akeneo\Platform\TailoredExport\Application\OperationHandler\DefaultValueHandler:
     tags:
-      - { name: akeneo.tailored_export.operation_applier }
+      - { name: akeneo.tailored_export.operation_applier, priority: 100 }
 
   Akeneo\Platform\TailoredExport\Application\OperationHandler\BooleanReplacementHandler:
     tags:
