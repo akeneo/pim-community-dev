@@ -49,7 +49,6 @@ use Akeneo\Tool\Component\StorageUtils\Updater\ObjectUpdaterInterface;
 use Akeneo\UserManagement\Component\Model\UserInterface;
 use Elasticsearch\Common\Exceptions\BadRequest400Exception;
 use Elasticsearch\Common\Exceptions\ServerErrorResponseException;
-use Oro\Bundle\SecurityBundle\Annotation\AclAncestor;
 use Psr\Log\LoggerInterface;
 use Symfony\Component\EventDispatcher\EventDispatcherInterface;
 use Symfony\Component\HttpFoundation\JsonResponse;
@@ -246,8 +245,6 @@ class ProductController
     }
 
     /**
-     * @AclAncestor("pim_api_product_list")
-     *
      * @param Request $request
      *
      * @return JsonResponse
@@ -314,8 +311,6 @@ class ProductController
     }
 
     /**
-     * @AclAncestor("pim_api_product_list")
-     *
      * @param Request $request
      * @param string $code
      * @return JsonResponse
@@ -349,8 +344,6 @@ class ProductController
     }
 
     /**
-     * @AclAncestor("pim_api_product_remove")
-     *
      * @param string $code
      *
      * @return Response
@@ -373,8 +366,6 @@ class ProductController
     }
 
     /**
-     * @AclAncestor("pim_api_product_edit")
-     *
      * @param Request $request
      *
      * @return Response
@@ -416,8 +407,6 @@ class ProductController
     }
 
     /**
-     * @AclAncestor("pim_api_product_edit")
-     *
      * @param Request $request
      * @param string  $code
      *
@@ -483,8 +472,6 @@ class ProductController
 
     /**
      * Products are saved 1 by 1, but we batch events in order to improve performances.
-     *
-     * @AclAncestor("pim_api_product_edit")
      *
      * @param Request $request
      *

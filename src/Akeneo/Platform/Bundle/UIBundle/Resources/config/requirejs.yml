@@ -981,6 +981,7 @@ config:
     pim/grid/locale-switcher:   pimui/js/product/grid/locale-switcher
     pim/grid/category-switcher: pimui/js/product/grid/category-switcher
     pim/grid/mass-actions:      pimui/js/grid/mass-actions
+    pim/product/grid/mass-actions: pimui/js/product/grid/mass-actions.ts
 
     # Category tree
     pim/grid/category-tree:      pimui/js/product/grid/category-tree
