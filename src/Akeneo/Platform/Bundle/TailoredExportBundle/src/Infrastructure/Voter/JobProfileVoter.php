@@ -28,7 +28,8 @@ class JobProfileVoter extends Voter implements VoterInterface
 {
     protected Voter $decoratedVoter;
     protected CanEditTailoredExport $canEditTailoredExport;
-    private string $tailoredExportJobName;
+    /** @var string[] */
+    private array $tailoredExportJobNames;
 
     public function __construct(
         Voter $decoratedVoter,

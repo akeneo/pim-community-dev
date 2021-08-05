@@ -3,7 +3,7 @@
 /*
  * This file is part of the Akeneo PIM Enterprise Edition.
  *
- * (c) 2014 Akeneo SAS (http://www.akeneo.com)
+ * (c) 2021 Akeneo SAS (https://www.akeneo.com)
  *
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
@@ -48,13 +48,13 @@ class CanEditTailoredExport
     private function canEditAllAttributes(array $columns, int $userId): bool
     {
         $jobAttributeCodes = array_unique(array_reduce($columns, function (array $accumulator, array $column) {
-            $attributeSources = array_filter($column['sources'], fn (array $source) => 'attribute' === $source['type']);
+            $attributeSources = array_filter($column['sources'], static fn (array $source) => AttributeSource::TYPE === $source['type']);
             $attributeCodes = array_map(fn (array $source) => $source['code'], $attributeSources);
 
             return array_merge($accumulator, $attributeCodes);
         }, []));
         $notDeletedJobAttributes = $this->getAttributes->forCodes($jobAttributeCodes);
-        $notDeletedJobAttributeCodes = array_map(fn (Attribute $attribute) => $attribute->code(), $notDeletedJobAttributes);
+        $notDeletedJobAttributeCodes = array_map(static fn (Attribute $attribute) => $attribute->code(), $notDeletedJobAttributes);
 
         $viewableAttributes = $this->getViewableAttributes->forAttributeCodes($notDeletedJobAttributeCodes, $userId);
 

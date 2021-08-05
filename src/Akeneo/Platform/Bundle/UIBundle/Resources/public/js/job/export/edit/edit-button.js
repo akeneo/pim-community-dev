@@ -17,7 +17,7 @@ define(['underscore', 'oro/translator', 'pim/common/redirect', 'pim/fetcher-regi
           this.$el.html(
             this.template({
               label: __(this.config.label),
-              buttonClass: (this.config.buttonClass || 'AknButton--action') + (isVisible ? '' : ' AknButton--disabled') ,
+              buttonClass: `${this.config.buttonClass ?? 'AknButton--action'}${isVisible ? '' : ' AknButton--disabled'}`,
               title: isVisible ? '' : __(this.config.title)
             })
           );
