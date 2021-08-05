@@ -70,6 +70,7 @@ $rules = [
 
         // TIP-1002: Permissions should not be linked to Channel
         'Akeneo\Channel\Component\Model\ChannelInterface',
+        'Akeneo\Channel\Component\Query\PublicApi',
 
         //TODO: Link by id instead of reference
         'Akeneo\Pim\Enrichment\Component\Category\Model\CategoryInterface',
@@ -86,6 +87,7 @@ $rules = [
         'Akeneo\Pim\Structure\Component\Model\AttributeGroupInterface',
         'Akeneo\Pim\Structure\Component\Model\AttributeInterface',
         'Akeneo\Pim\Structure\Component\Model\FamilyVariantInterface',
+        'Akeneo\Pim\Structure\Component\Query\PublicApi',
 
         //TODO: It extends Controller
         'Akeneo\Pim\Enrichment\Bundle\Controller\InternalApi\ProductPdfController',
@@ -206,6 +208,7 @@ $rules = [
 
         // TIP-1002: Permissions should not be linked to Channel
         'Akeneo\Channel\Component\Model\ChannelInterface',
+        'Akeneo\Channel\Component\Query\PublicApi',
 
         //TODO: Link by id instead of reference
         'Akeneo\Pim\Structure\Component\Model\AttributeGroupInterface',
@@ -215,6 +218,7 @@ $rules = [
         'Akeneo\UserManagement\Component\Model\GroupInterface',
         'Akeneo\UserManagement\Component\Model\UserInterface',
         'Akeneo\Pim\Structure\Component\Model\AttributeInterface',
+        'Akeneo\Pim\Structure\Component\Query\PublicApi',
         'Akeneo\Pim\Enrichment\Component\Product\Exception\InvalidAttributeException',
         'Akeneo\Pim\Enrichment\Component\Product\Exception\UnknownAttributeException',
         'Akeneo\Pim\Enrichment\Component\Product\Model\EntityWithAssociationsInterface',
