@@ -136,9 +136,14 @@ class TableStructureTab extends (BaseView as {new (options: {config: TableStruct
   private async getTableConfiguration(
     initialTableConfiguration: TableConfiguration | undefined
   ): Promise<TableConfiguration> {
-    if (typeof initialTableConfiguration === 'undefined') {
-      const templateVariationCode = this.getQueryParam('template_variation');
+    if (typeof initialTableConfiguration !== 'undefined') {
+      return new Promise(resolve => {
+        resolve(initialTableConfiguration);
+      });
+    }
 
+    const templateVariationCode = this.getQueryParam('template_variation');
+    if (templateVariationCode) {
       /**
        * Only the locales which are in the catalog locales list (i.e. activated) AND available in the UI (i.e.
        * translated) can have translated template data.
@@ -151,9 +156,7 @@ class TableStructureTab extends (BaseView as {new (options: {config: TableStruct
         uiLocaleCodes.includes(localeCode)
       );
 
-      if (templateVariationCode) {
-        return getTranslatedTableConfigurationFromVariationTemplate(templateVariationCode, activatedUiLocales);
-      }
+      return getTranslatedTableConfigurationFromVariationTemplate(templateVariationCode, activatedUiLocales);
     }
 
     return new Promise(resolve => {
