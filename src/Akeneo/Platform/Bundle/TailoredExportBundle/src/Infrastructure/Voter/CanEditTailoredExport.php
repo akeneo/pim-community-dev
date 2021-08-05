@@ -12,7 +12,6 @@
 namespace Akeneo\Platform\TailoredExport\Infrastructure\Voter;
 
 use Akeneo\Channel\Component\Query\PublicApi\Permission\GetAllViewableLocalesForUserInterface;
-use Akeneo\Pim\Structure\Component\Query\InternalApi\GetAllBlacklistedAttributeCodesInterface;
 use Akeneo\Pim\Structure\Component\Query\PublicApi\AttributeType\Attribute;
 use Akeneo\Pim\Structure\Component\Query\PublicApi\AttributeType\GetAttributes;
 use Akeneo\Pim\Structure\Component\Query\PublicApi\Permission\GetViewableAttributeCodesForUserInterface;
@@ -25,7 +24,7 @@ class CanEditTailoredExport
 {
     protected GetAllViewableLocalesForUserInterface $getAllViewableLocales;
     protected GetViewableAttributeCodesForUserInterface $getViewableAttributes;
-    protected GetAllBlacklistedAttributeCodesInterface $getAllBlacklistedAttributes;
+    protected GetAttributes $getAttributes;
 
     public function __construct(
         GetAllViewableLocalesForUserInterface $getAllViewableLocales,
@@ -46,10 +45,11 @@ class CanEditTailoredExport
         return $this->canEditAllAttributes($columns, $userId) && $this->canEditAllLocales($columns, $userId);
     }
 
-    private function canEditAllAttributes(array $columns, int $userId)
+    private function canEditAllAttributes(array $columns, int $userId): bool
     {
         $jobAttributeCodes = array_unique(array_reduce($columns, function (array $accumulator, array $column) {
-            $attributeCodes = array_map(fn (array $source) => $source['code'], $column['sources']);
+            $attributeSources = array_filter($column['sources'], fn (array $source) => 'attribute' === $source['type']);
+            $attributeCodes = array_map(fn (array $source) => $source['code'], $attributeSources);
 
             return array_merge($accumulator, $attributeCodes);
         }, []));
@@ -61,7 +61,7 @@ class CanEditTailoredExport
         return array_intersect($viewableAttributes, $notDeletedJobAttributeCodes) === $notDeletedJobAttributeCodes;
     }
 
-    private function canEditAllLocales(array $columns, int $userId)
+    private function canEditAllLocales(array $columns, int $userId): bool
     {
         $jobLocaleCodes = array_unique(array_reduce($columns, function (array $accumulator, array $column) {
             $localeCodes = array_map(fn (array $source) => $source['locale'], $column['sources']);
