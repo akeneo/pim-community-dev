@@ -45,6 +45,15 @@ class TableStructureTab extends (BaseView as {new (options: {config: TableStruct
       this.listenTo(this.getRoot(), 'pim_enrich:form:entity:post_save', this.resetSavedColumns.bind(this));
     }
 
+    const templateVariationCode = this.getQueryParam('template_variation');
+    if (templateVariationCode) {
+      this.getTableConfigurationFromTemplate(templateVariationCode).then(tableConfiguration => {
+        if (tableConfiguration.length > 0) {
+          this.handleChange(tableConfiguration);
+        }
+      });
+    }
+
     return super.configure();
   }
 
@@ -139,31 +148,31 @@ class TableStructureTab extends (BaseView as {new (options: {config: TableStruct
     initialTableConfiguration: TableConfiguration | undefined
   ): Promise<TableConfiguration> {
     if (typeof initialTableConfiguration !== 'undefined') {
-      return new Promise(resolve => {
-        resolve(initialTableConfiguration);
-      });
+      return new Promise(resolve => resolve(initialTableConfiguration));
     }
 
     const templateVariationCode = this.getQueryParam('template_variation');
     if (templateVariationCode) {
-      /**
-       * Only the locales which are in the catalog locales list (i.e. activated) AND available in the UI (i.e.
-       * translated) can have translated template data.
-       */
-      const activatedLocales = await FetcherRegistry.getFetcher('locale').fetchActivated();
-      const activatedLocaleCodes = activatedLocales.map((locale: Locale) => locale.code);
-      const uiLocales = await FetcherRegistry.getFetcher('ui-locale').fetchAll();
-      const uiLocaleCodes = uiLocales.map((locale: Locale) => locale.code);
-      const activatedUiLocales = activatedLocaleCodes.filter((localeCode: LocaleCode) =>
-        uiLocaleCodes.includes(localeCode)
-      );
-
-      return getTranslatedTableConfigurationFromVariationTemplate(templateVariationCode, activatedUiLocales);
+      return this.getTableConfigurationFromTemplate(templateVariationCode);
     }
 
-    return new Promise(resolve => {
-      resolve([]);
-    });
+    return new Promise(resolve => resolve([]));
+  }
+
+  private async getTableConfigurationFromTemplate(templateVariationCode: string): Promise<TableConfiguration> {
+    /**
+     * Only the locales which are in the catalog locales list (i.e. activated) AND available in the UI (i.e.
+     * translated) can have translated template data.
+     */
+    const activatedLocales = await FetcherRegistry.getFetcher('locale').fetchActivated();
+    const activatedLocaleCodes = activatedLocales.map((locale: Locale) => locale.code);
+    const uiLocales = await FetcherRegistry.getFetcher('ui-locale').fetchAll();
+    const uiLocaleCodes = uiLocales.map((locale: Locale) => locale.code);
+    const activatedUiLocales = activatedLocaleCodes.filter((localeCode: LocaleCode) =>
+      uiLocaleCodes.includes(localeCode)
+    );
+
+    return getTranslatedTableConfigurationFromVariationTemplate(templateVariationCode, activatedUiLocales);
   }
 
   private isActive() {
