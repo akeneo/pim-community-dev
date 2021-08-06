@@ -1,5 +1,5 @@
 import React, {useState} from 'react';
-import {useTranslate} from '@akeneo-pim-community/shared';
+import {useTranslate, useRouter} from '@akeneo-pim-community/shared';
 import {Field, Helper, TextInput} from 'akeneo-design-system';
 
 type useCodeInputProps = {
@@ -11,6 +11,29 @@ const useAttributeCodeInput: (props: useCodeInputProps) => any = ({defaultCode, 
   const translate = useTranslate();
   const [code, setCode] = useState<string>(defaultCode || '');
   const [isCodeDirty, setCodeDirty] = useState<boolean>((defaultCode || '') !== '');
+  const router = useRouter();
+
+  const [controller, setController] = React.useState<AbortController | undefined>();
+  const [duplicateCode, setDuplicateCode] = React.useState<boolean>(false);
+
+  React.useEffect(() => {
+    controller?.abort();
+
+    const newController = new AbortController();
+    setController(newController);
+
+    const url = router.generate('pim_enrich_attribute_rest_index', {identifiers: code});
+    fetch(url, {signal: newController.signal})
+      .then((response: Response) => {
+        response.json().then((json: any[]) => setDuplicateCode(json.length > 0));
+      })
+      .catch((e: any) => {
+        if (e.name !== 'AbortError') {
+          throw e;
+        }
+      })
+      .finally(() => setController(undefined));
+  }, [code]);
 
   React.useEffect(() => {
     if (!isCodeDirty) {
@@ -39,6 +62,9 @@ const useAttributeCodeInput: (props: useCodeInputProps) => any = ({defaultCode, 
       ))
   ) {
     codeViolations.push(translate('pim_enrich.entity.attribute.property.code.not_available'));
+  }
+  if (duplicateCode) {
+    codeViolations.push(translate('pim_enrich.entity.attribute.property.code.is_duplicate'));
   }
 
   const CodeField = (
