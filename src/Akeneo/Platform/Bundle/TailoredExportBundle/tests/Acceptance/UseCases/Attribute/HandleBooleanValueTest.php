@@ -46,19 +46,19 @@ final class HandleBooleanValueTest extends AttributeTestCase
     public function provider(): array
     {
         return [
-            [
+            'it selects true value' => [
                 'operations' => [],
                 'selection' => new BooleanSelection(),
                 'value' => new BooleanValue(true),
                 'expected' => [self::TARGET_NAME => '1']
             ],
-            [
+            'it selects false value' => [
                 'operations' => [],
                 'selection' => new BooleanSelection(),
                 'value' => new BooleanValue(false),
                 'expected' => [self::TARGET_NAME => '0']
             ],
-            [
+            'it does not apply default value operation when value is not null' => [
                 'operations' => [
                     ReplacementOperation::createFromNormalized(
                         [
@@ -76,7 +76,7 @@ final class HandleBooleanValueTest extends AttributeTestCase
                 'value' => new BooleanValue(true),
                 'expected' => [self::TARGET_NAME => 'oui']
             ],
-            [
+            'it applies default value operation when value is null' => [
                 'operations' => [
                     ReplacementOperation::createFromNormalized(
                         [
@@ -94,7 +94,7 @@ final class HandleBooleanValueTest extends AttributeTestCase
                 'value' => new NullValue(),
                 'expected' => [self::TARGET_NAME => 'n/a']
             ],
-            [
+            'it applies replacement operation when value is found in the mapping' => [
                 'operations' => [
                     ReplacementOperation::createFromNormalized(
                         [
@@ -109,7 +109,7 @@ final class HandleBooleanValueTest extends AttributeTestCase
                 'value' => new BooleanValue(false),
                 'expected' => [self::TARGET_NAME => 'non']
             ],
-            [
+            'it does not apply replacement operation when value is not found in the mapping' => [
                 'operations' => [
                     ReplacementOperation::createFromNormalized(
                         [
