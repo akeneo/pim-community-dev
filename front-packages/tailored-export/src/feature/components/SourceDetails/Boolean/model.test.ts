@@ -1,25 +1,22 @@
+import {Source} from '../../../models';
 import {isBooleanSource} from './model';
 
-test('it validates that its a boolean source', () => {
-  expect(
-    isBooleanSource({
-      uuid: '123',
-      code: 'a code',
-      type: 'attribute',
-      locale: 'fr_FR',
-      channel: 'ecommerce',
-      operations: {},
-      selection: {type: 'code'},
-    })
-  ).toEqual(true);
+const source: Source = {
+  uuid: '123',
+  code: 'a code',
+  type: 'attribute',
+  locale: 'fr_FR',
+  channel: 'ecommerce',
+  operations: {},
+  selection: {type: 'code'},
+};
+
+test('it validates that something is a boolean source', () => {
+  expect(isBooleanSource(source)).toEqual(true);
 
   expect(
     isBooleanSource({
-      uuid: '123',
-      code: 'a code',
-      type: 'attribute',
-      locale: 'fr_FR',
-      channel: 'ecommerce',
+      ...source,
       operations: {
         replacement: {
           type: 'replacement',
@@ -29,38 +26,27 @@ test('it validates that its a boolean source', () => {
           },
         },
       },
-      selection: {type: 'code'},
     })
   ).toEqual(true);
 
   expect(
     isBooleanSource({
-      uuid: '123',
-      code: 'a code',
-      type: 'attribute',
-      locale: 'fr_FR',
-      channel: 'ecommerce',
+      ...source,
       operations: {
         default_value: {
           type: 'default_value',
           value: 'a default value',
         },
       },
-      selection: {type: 'code'},
     })
   ).toEqual(true);
 
   expect(
     isBooleanSource({
-      uuid: '123',
-      code: 'a code',
-      type: 'attribute',
-      locale: 'fr_FR',
-      channel: 'ecommerce',
+      ...source,
       operations: {
         foo: 'bar',
       },
-      selection: {type: 'code'},
     })
   ).toEqual(false);
 });

@@ -6,7 +6,6 @@ import {BooleanReplacementOperation} from '../common/BooleanReplacement';
 import {BooleanConfigurator} from './BooleanConfigurator';
 import {getDefaultBooleanSource} from './model';
 import {getDefaultDateSource} from '../Date/model';
-import {DefaultValueOperation} from '../common/DefaultValue';
 
 const attribute = {
   code: 'boolean',
@@ -41,21 +40,7 @@ jest.mock('../common/BooleanReplacement', () => ({
   ),
 }));
 
-jest.mock('../common/DefaultValue', () => ({
-  ...jest.requireActual('../common/DefaultValue'),
-  DefaultValue: ({onOperationChange}: {onOperationChange: (updatedOperation: DefaultValueOperation) => void}) => (
-    <button
-      onClick={() =>
-        onOperationChange({
-          type: 'default_value',
-          value: 'foo',
-        })
-      }
-    >
-      Default value
-    </button>
-  ),
-}));
+jest.mock('../common/DefaultValue');
 
 test('it can update replacement operation', () => {
   const onSourceChange = jest.fn();
