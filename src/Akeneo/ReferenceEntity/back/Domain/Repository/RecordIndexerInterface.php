@@ -9,7 +9,7 @@ use Akeneo\ReferenceEntity\Domain\Model\ReferenceEntity\ReferenceEntityIdentifie
 interface RecordIndexerInterface
 {
     /**
-     * Indexes multiple records
+     * Indexes a record
      *
      * @param RecordIdentifier $recordIdentifier
      */
@@ -19,6 +19,13 @@ interface RecordIndexerInterface
      * Indexes all records belonging to the given reference entity.
      */
     public function indexByReferenceEntity(ReferenceEntityIdentifier $referenceEntityIdentifier): void;
+
+    /**
+     * Indexes multiple records
+     *
+     * @param RecordIdentifier[] $recordIdentifiers
+     */
+    public function indexByRecordIdentifiers(array $recordIdentifiers): void;
 
     /**
      * Remove all records belonging to a reference entity

@@ -3,10 +3,8 @@
 namespace Pim\Upgrade\Schema;
 
 use Akeneo\Platform\VersionProvider;
-use Akeneo\ReferenceEntity\Infrastructure\Symfony\Command\IndexAllRecordsOnTemporaryIndexCommand;
 use Akeneo\Tool\Bundle\ElasticsearchBundle\IndexConfiguration\UpdateIndexMappingWrapper;
 use Doctrine\DBAL\Schema\Schema;
-use Doctrine\DBAL\Types\Types;
 use Doctrine\Migrations\AbstractMigration;
 use Psr\Container\ContainerInterface;
 use Symfony\Component\DependencyInjection\ContainerAwareInterface;
@@ -22,10 +20,7 @@ final class Version_6_0_20210804115038_reindex_records extends AbstractMigration
 
     public function up(Schema $schema): void
     {
-        if ($this->isSassVersion()) {
-            $this->migrateSassVersion();
-            return;
-        }
+        $this->skipIf($this->isSassVersion(), 'This migration is only for non Sass version');
 
         $this->disableMigrationWarning();
 
@@ -54,18 +49,5 @@ final class Version_6_0_20210804115038_reindex_records extends AbstractMigration
         $versionProvider = $this->container->get('pim_catalog.version_provider');
 
         return $versionProvider->isSaaSVersion();
-    }
-
-    private function migrateSassVersion(): void
-    {
-        $this->container->get('akeneo_referenceentity.client.record_temporary')->resetIndex();
-        $this->addSql(
-            'INSERT INTO pim_configuration (`code`, `values`) VALUES (:code, :values);',
-            [
-                'code' => IndexAllRecordsOnTemporaryIndexCommand::CONFIGURATION_CODE,
-                'values' => ['status' => 'todo', 'temporary_index_alias' => 'akeneo_referenceentity_record_v2'],
-            ],
-            ['values' => Types::JSON]
-        );
     }
 }

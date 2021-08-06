@@ -46,6 +46,22 @@ class RecordIndexer implements RecordIndexerInterface
         $this->recordClient->index($normalizedRecord['identifier'], $normalizedRecord, refresh::disable());
     }
 
+    /**
+     * {@inheritDoc}
+     */
+    public function indexByRecordIdentifiers(array $recordIdentifiers): void
+    {
+        $normalizedRecords = array_map(
+            fn (RecordIdentifier $recordIdentifier) => $this->normalizer->normalizeRecord($recordIdentifier),
+            array_unique($recordIdentifiers)
+        );
+
+        $recordsToIndexByBatch = array_chunk($normalizedRecords, $this->batchSize);
+        foreach ($recordsToIndexByBatch as $recordsToIndex) {
+            $this->recordClient->bulkIndexes($recordsToIndex, self::KEY_AS_ID, refresh::disable());
+        }
+    }
+
     public function indexByReferenceEntity(ReferenceEntityIdentifier $referenceEntityIdentifier): void
     {
         $normalizedSearchableRecords = $this->normalizer->normalizeRecordsByReferenceEntity($referenceEntityIdentifier);

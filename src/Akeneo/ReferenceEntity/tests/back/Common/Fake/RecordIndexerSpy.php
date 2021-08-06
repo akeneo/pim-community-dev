@@ -18,11 +18,9 @@ use PHPUnit\Framework\Assert;
  */
 class RecordIndexerSpy implements RecordIndexerInterface
 {
-    /** @var array */
-    private $indexedReferenceEntities = [];
-
-    /** @var bool */
-    private $isIndexRefreshed = false;
+    private array $indexedReferenceEntities = [];
+    private array $indexedRecords = [];
+    private bool $isIndexRefreshed = false;
 
     /**
      * Indexes all records belonging to the given reference entity.
@@ -47,6 +45,11 @@ class RecordIndexerSpy implements RecordIndexerInterface
         Assert::assertContains($referenceEntityIdentifier, $this->indexedReferenceEntities);
     }
 
+    public function assertRecordIndexed(string $recordIdentifier)
+    {
+        Assert::assertContains($recordIdentifier, $this->indexedRecords);
+    }
+
     public function assertIndexRefreshed()
     {
         Assert::assertTrue($this->isIndexRefreshed, 'Index should be refreshed');
@@ -54,6 +57,11 @@ class RecordIndexerSpy implements RecordIndexerInterface
 
     public function index(RecordIdentifier $recordIdentifier)
     {
+    }
+
+    public function indexByRecordIdentifiers(array $recordIdentifiers): void
+    {
+        $this->indexedRecords[] = $recordIdentifiers;
     }
 
     /**

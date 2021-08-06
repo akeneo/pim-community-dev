@@ -35,13 +35,6 @@ services:
             - '@akeneo_referenceentity.infrastructure.search.elasticsearch.record_normalizer'
             - '%akeneo_referenceentity.infrastructure.search.elasticsearch.record_indexer.batch_size%'
 
-    akeneo_referenceentity.infrastructure.search.elasticsearch.record_indexer_temporary:
-      class: Akeneo\ReferenceEntity\Infrastructure\Search\Elasticsearch\Record\RecordIndexer
-      arguments:
-        - '@akeneo_referenceentity.client.record_temporary'
-        - '@akeneo_referenceentity.infrastructure.search.elasticsearch.record_normalizer'
-        - '%akeneo_referenceentity.infrastructure.search.elasticsearch.record_indexer.batch_size%'
-
     akeneo_referenceentity.infrastructure.elasticsearch.update_index_mapping:
       class: Akeneo\Tool\Bundle\ElasticsearchBundle\IndexConfiguration\UpdateIndexMappingWrapper
       public: true
@@ -74,6 +67,9 @@ services:
         class: Akeneo\ReferenceEntity\Infrastructure\Search\Elasticsearch\Record\CountRecords
         arguments:
             - '@akeneo_referenceentity.client.record'
+
+    akeneo_referenceentity.infrastructure.search.elasticsearch.record.get_record_identifiers_updated_after_datetime:
+      class: Akeneo\ReferenceEntity\Infrastructure\Search\Elasticsearch\Record\GetRecordIdentifiersUpdatedAfterDatetime
 
     akeneo_referenceentity.infrastructure.search.elasticsearch.record.query.find_values_to_index_for_channel_and_locale:
        class: Akeneo\ReferenceEntity\Infrastructure\Persistence\Sql\Attribute\SqlFindValueKeysToIndexForAllChannelsAndLocales
