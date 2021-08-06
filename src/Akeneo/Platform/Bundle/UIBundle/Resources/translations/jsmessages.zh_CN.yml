@@ -238,6 +238,7 @@ pim_common:
   parent: 父级
   groups: 分组
   products: 产品
+  product_models: 产品模型
   more: 更多
 error:
   exception: 哎呀 ！发生错误 {{ status_code }} ...

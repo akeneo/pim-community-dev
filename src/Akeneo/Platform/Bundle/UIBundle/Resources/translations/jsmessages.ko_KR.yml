@@ -372,15 +372,3 @@ pim_settings:
   settings_menu: 설정 메뉴
   catalog_settings: 카탈로그 설정
   product_settings: 제품 설정
-  count:
-    categories: '{{ countTrees }}개의 트리와 {{ countCategories }}개의 카테고리가 있습니다.'
-    locales: '{{ count }}개의 활성화된 로케일이 있습니다.'
-    currencies: '{{ count }}개의 활성화된 통화가 있습니다.'
-    attribute_groups: '{{ count }}개의 특성 그룹이 있습니다.'
-    attributes: '{{ count }}개의 특성이 있습니다.'
-    families: '{{ count }}개의 패밀리가 있습니다.'
-    measurements: '{{ count }}개의 측정이 있습니다.'
-    association_types: '{{ count }}개의 연결 유형이 있습니다.'
-    group_types: '{{ count }}개의 그룹 유형이 있습니다.'
-    groups: '{{ count }}개의 그룹이 있습니다.'
-    rules: '{{ count }}개의 활성화된 규칙이 있습니다.'
