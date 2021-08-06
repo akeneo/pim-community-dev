@@ -64,3 +64,16 @@ Feature: Enrich a table attribute value
       | attribute | json_data                                                                       |
       | nutrition | [{"ingredient": "butter", "quantity": 1, "isAllergen":true, "comments": "foo"}] |
     Then the error 'Make sure you only use existing option codes, current value: "butter"' is raised
+
+  Scenario: Providing a valid table using numerics as column codes and select option codes should not raise any error
+    Given the following attributes:
+      | code        | type                     | table_configuration                                                                                               |
+      | sku         | pim_catalog_identifier   |                                                                                                                   |
+      | test_number | pim_catalog_table        | [{"code": "1", "data_type": "select"}, {"code": "2", "data_type": "number"}, {"code":"3", "data_type":"boolean"}] |
+    And the following select options:
+      | attribute_code | column_code | options                          |
+      | test_number    | 1           | [{"code": "11"}, {"code": "12"}] |
+    When a product is created with values:
+      | attribute   | json_data                         |
+      | test_number | [{"1": "11", "2": 20, "3": true}] |
+    Then no product violation is raised

@@ -67,12 +67,12 @@ final class SelectOptionsShouldExistValidator extends ConstraintValidator
 
         foreach ($optionCodesPerColumnCode as $stringColumnCode => $optionCodes) {
             $optionCodeObjects = array_map(
-                fn (string $optionCode): SelectOptionCode => SelectOptionCode::fromString($optionCode),
+                fn (string $optionCode): SelectOptionCode => SelectOptionCode::fromString((string) $optionCode),
                 array_values(array_unique($optionCodes))
             );
             $nonExistingOptions = $this->getNonExistingSelectOptionCodes->forOptionCodes(
                 $tableValue->getAttributeCode(),
-                ColumnCode::fromString($stringColumnCode),
+                ColumnCode::fromString((string) $stringColumnCode),
                 $optionCodeObjects
             );
             $nonExistingOptions = array_map(

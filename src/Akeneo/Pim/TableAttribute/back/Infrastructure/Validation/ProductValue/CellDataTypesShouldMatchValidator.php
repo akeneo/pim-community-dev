@@ -43,7 +43,9 @@ class CellDataTypesShouldMatchValidator extends ConstraintValidator
         foreach ($table as $rowIndex => $row) {
             /** @var Cell $cell */
             foreach ($row as $stringColumnCode => $cell) {
-                $expectedDataType = $tableConfiguration->getColumnDataType(ColumnCode::fromString($stringColumnCode));
+                $expectedDataType = $tableConfiguration->getColumnDataType(
+                    ColumnCode::fromString((string) $stringColumnCode)
+                );
                 if (null === $expectedDataType) {
                     continue;
                 }
@@ -51,6 +53,7 @@ class CellDataTypesShouldMatchValidator extends ConstraintValidator
                 $data = $cell->normalize();
                 switch ($expectedDataType->asString()) {
                     case 'text':
+                    case 'select':
                         if (!is_string($data)) {
                             $this->addViolation('string', $data, $rowIndex, $stringColumnCode);
                         }
@@ -63,11 +66,6 @@ class CellDataTypesShouldMatchValidator extends ConstraintValidator
                     case 'boolean':
                         if (!is_bool($data)) {
                             $this->addViolation('boolean', $data, $rowIndex, $stringColumnCode);
-                        }
-                        break;
-                    case 'select':
-                        if (!is_string($data)) {
-                            $this->addViolation('string', $data, $rowIndex, $stringColumnCode);
                         }
                         break;
                     default:

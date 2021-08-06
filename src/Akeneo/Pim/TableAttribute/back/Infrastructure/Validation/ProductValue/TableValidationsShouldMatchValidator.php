@@ -55,7 +55,7 @@ final class TableValidationsShouldMatchValidator extends ConstraintValidator
         foreach ($table as $rowIndex => $row) {
             /** @var Cell $cell */
             foreach ($row as $stringColumnCode => $cell) {
-                $constraints = $this->buildConstraints($tableConfiguration, ColumnCode::fromString($stringColumnCode));
+                $constraints = $this->buildConstraints($tableConfiguration, ColumnCode::fromString((string) $stringColumnCode));
 
                 if (0 < count($constraints)) {
                     $validator

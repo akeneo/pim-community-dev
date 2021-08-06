@@ -93,7 +93,7 @@ class TableValueFactory implements ValueFactory
         $foundOptionCodes = [];
         foreach ($data as $rowIndex => $row) {
             foreach ($row as $columnCode => $value) {
-                if ($firstColumnCode === \strtolower($columnCode)) {
+                if ($firstColumnCode === \strtolower((string) $columnCode)) {
                     $optionCode = \strtolower((string) $value);
                     if (array_key_exists($optionCode, $foundOptionCodes)) {
                         unset($data[$foundOptionCodes[$optionCode]]);
