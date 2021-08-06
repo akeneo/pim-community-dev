@@ -12,6 +12,12 @@ services:
     tags:
       - { name: 'kernel.event_subscriber' }
 
+  Akeneo\FreeTrial\Infrastructure\Install\EventSubscriber\InstallMeasurementsSubscriber:
+    arguments:
+      - '@database_connection'
+    tags:
+      - { name: 'kernel.event_subscriber' }
+
   Akeneo\FreeTrial\Infrastructure\Install\EventSubscriber\InstallProductsSubscriber:
     arguments:
       - '@pim_catalog.builder.product'
