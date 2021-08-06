@@ -17,21 +17,7 @@ const attribute = {
   available_locales: [],
 };
 
-jest.mock('../common/DefaultValue', () => ({
-  ...jest.requireActual('../common/DefaultValue'),
-  DefaultValue: ({onOperationChange}: {onOperationChange: (updatedOperation: DefaultValueOperation) => void}) => (
-    <button
-      onClick={() =>
-        onOperationChange({
-          type: 'default_value',
-          value: 'foo',
-        })
-      }
-    >
-      Default value
-    </button>
-  ),
-}));
+jest.mock('../common/DefaultValue');
 
 test('it can update default value operation', () => {
   const onSourceChange = jest.fn();
@@ -63,23 +49,6 @@ test('it can update default value operation', () => {
     },
     uuid: 'e612bc67-9c30-4121-8b8d-e08b8c4a0640',
   });
-});
-
-test('it displays a text configurator', () => {
-  const onSourceChange = jest.fn();
-
-  renderWithProviders(
-    <TextConfigurator
-      source={getDefaultTextSource(attribute, null, null)}
-      attribute={attribute}
-      validationErrors={[]}
-      onSourceChange={onSourceChange}
-    />
-  );
-
-  expect(
-    screen.getByText('akeneo.tailored_export.column_details.sources.no_source_configuration.title')
-  ).toBeInTheDocument();
 });
 
 test('it tells when the source data is invalid', () => {
