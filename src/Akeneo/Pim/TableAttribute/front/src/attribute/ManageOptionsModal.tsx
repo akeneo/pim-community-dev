@@ -1,20 +1,19 @@
 import React from 'react';
 import {
+  AddingValueIllustration,
   Button,
   Field,
+  getColor,
+  Helper,
+  LoaderIcon,
   Modal,
+  Pagination,
+  Search,
   SectionTitle,
   Table,
   TextInput,
-  uuid,
-  LoaderIcon,
-  getColor,
-  getFontSize,
-  Pagination,
-  Search,
-  AddingValueIllustration,
   useBooleanState,
-  Helper,
+  uuid,
 } from 'akeneo-design-system';
 import {getLabel, Locale, LocaleCode, useRouter, useTranslate, useUserContext} from '@akeneo-pim-community/shared';
 import {SelectColumnDefinition, SelectOption} from '../models/TableConfiguration';
@@ -27,6 +26,7 @@ import {getActivatedLocales} from '../repositories/Locale';
 import {ManageOptionsRow} from './ManageOptionsRow';
 import {LocaleSwitcher} from './LocaleSwitcher';
 import {DeleteOptionModal} from './DeleteOptionModal';
+import {CenteredHelper} from '../shared/CenteredHelper';
 
 const TableContainer = styled.div`
   height: calc(100vh - 270px);
@@ -54,19 +54,6 @@ const ManageOptionsBody = styled(Table.Body)`
 const ManageOptionsSectionTitle = styled(SectionTitle.Title)`
   flex-grow: 1;
   flex-basis: 400px;
-`;
-
-const CenteredHelper = styled.div`
-  text-align: center;
-  & > * {
-    display: block;
-    margin: auto;
-  }
-`;
-
-const CenteredHelperTitle = styled.div`
-  font-size: ${getFontSize('big')};
-  color: ${getColor('grey', 140)};
 `;
 
 const ManageOptionsSearch = styled(Search)`
@@ -407,17 +394,15 @@ const ManageOptionsModal: React.FC<ManageOptionsModalProps> = ({
                     </ManageOptionsBody>
                   </Table>
                   {filteredOptions.length === 0 && searchValue !== '' && (
-                    <CenteredHelper>
-                      <AddingValueIllustration size={120} />
-                      <CenteredHelperTitle>
+                    <CenteredHelper illustration={<AddingValueIllustration />}>
+                      <CenteredHelper.Title>
                         {translate('pim_table_attribute.form.attribute.no_options')}
-                      </CenteredHelperTitle>
+                      </CenteredHelper.Title>
                       {translate('pim_table_attribute.form.attribute.please_try_again')}
                     </CenteredHelper>
                   )}
                   {filteredOptions.length === 0 && searchValue === '' && (
-                    <CenteredHelper>
-                      <AddingValueIllustration size={120} />
+                    <CenteredHelper illustration={<AddingValueIllustration />}>
                       {translate('pim_table_attribute.form.attribute.no_options_helper')}
                     </CenteredHelper>
                   )}

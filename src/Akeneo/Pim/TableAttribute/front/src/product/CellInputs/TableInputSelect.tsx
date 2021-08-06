@@ -1,16 +1,17 @@
 import React, {useState} from 'react';
-import {Dropdown, TableInput, AddingValueIllustration, getFontSize, getColor, Link} from 'akeneo-design-system';
+import {AddingValueIllustration, Dropdown, Link, TableInput} from 'akeneo-design-system';
 import {SelectOption, SelectOptionCode} from '../../models/TableConfiguration';
 import {
   getLabel,
   LoadingPlaceholderContainer,
+  useRouter,
+  useSecurity,
   useTranslate,
   useUserContext,
-  useSecurity,
-  useRouter,
 } from '@akeneo-pim-community/shared';
 import styled from 'styled-components';
 import {Attribute} from '../../models/Attribute';
+import {CenteredHelper} from '../../shared/CenteredHelper';
 
 const BATCH_SIZE = 20;
 
@@ -25,19 +26,6 @@ type TableInputSelectProps = {
 
 const FakeInput = styled.div`
   margin: 0 10px;
-`;
-
-const CenteredHelper = styled.div`
-  text-align: center;
-  & > * {
-    display: block;
-    margin: auto;
-  }
-`;
-
-const CenteredHelperTitle = styled.div`
-  font-size: ${getFontSize('big')};
-  color: ${getColor('grey', 140)};
 `;
 
 const TableInputSelect: React.FC<TableInputSelectProps> = ({
@@ -128,34 +116,35 @@ const TableInputSelect: React.FC<TableInputSelectProps> = ({
         );
       })}
       {searchValue === '' && itemsToDisplay.length === 0 && (
-        <CenteredHelper>
-          <AddingValueIllustration size={100} />
-          <CenteredHelperTitle>
-            {translate('pim_table_attribute.form.product.no_add_options_title')}
-          </CenteredHelperTitle>
-          {hasEditPermission ? (
-            <div>
-              {translate('pim_table_attribute.form.product.no_add_options', {
+        <CenteredHelper.Container>
+          <CenteredHelper illustration={<AddingValueIllustration />}>
+            <CenteredHelper.Title>
+              {translate('pim_table_attribute.form.product.no_add_options_title')}
+            </CenteredHelper.Title>
+            {hasEditPermission ? (
+              <div>
+                {translate('pim_table_attribute.form.product.no_add_options', {
+                  attributeLabel: getLabel(attribute.labels, userContext.get('catalogLocale'), attribute.code),
+                })}{' '}
+                <Link onClick={handleRedirect}>
+                  {translate('pim_table_attribute.form.product.no_add_options_link')}
+                </Link>
+              </div>
+            ) : (
+              translate('pim_table_attribute.form.product.no_add_options_unallowed', {
                 attributeLabel: getLabel(attribute.labels, userContext.get('catalogLocale'), attribute.code),
-              })}{' '}
-              <Link onClick={handleRedirect}>{translate('pim_table_attribute.form.product.no_add_options_link')}</Link>
-            </div>
-          ) : (
-            translate('pim_table_attribute.form.product.no_add_options_unallowed', {
-              attributeLabel: getLabel(attribute.labels, userContext.get('catalogLocale'), attribute.code),
-            })
-          )}
-        </CenteredHelper>
+              })
+            )}
+          </CenteredHelper>
+        </CenteredHelper.Container>
       )}
       {searchValue !== '' && itemsToDisplay.length === 0 && (
-        <CenteredHelper>
-          <AddingValueIllustration size={100} />
-          <CenteredHelper>
-            <AddingValueIllustration size={120} />
-            <CenteredHelperTitle>{translate('pim_table_attribute.form.attribute.no_options')}</CenteredHelperTitle>
+        <CenteredHelper.Container>
+          <CenteredHelper illustration={<AddingValueIllustration />}>
+            <CenteredHelper.Title>{translate('pim_table_attribute.form.attribute.no_options')}</CenteredHelper.Title>
             {translate('pim_table_attribute.form.attribute.please_try_again')}
           </CenteredHelper>
-        </CenteredHelper>
+        </CenteredHelper.Container>
       )}
     </TableInput.Select>
   );

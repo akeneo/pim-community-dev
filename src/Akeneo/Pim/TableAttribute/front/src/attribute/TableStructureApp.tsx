@@ -2,11 +2,8 @@ import React from 'react';
 import {TwoColumnsLayout} from './TwoColumnsLayout';
 import {
   AddingValueIllustration,
-  AkeneoThemedProps,
   Button,
   CloseIcon,
-  getColor,
-  getFontSize,
   IconButton,
   pimTheme,
   SectionTitle,
@@ -23,6 +20,7 @@ import {DeleteColumnModal} from './DeleteColumnModal';
 import {ColumnDefinitionProperties} from './ColumnDefinitionProperties';
 import {Attribute} from '../models/Attribute';
 import {getActivatedLocales} from '../repositories/Locale';
+import {CenteredHelper} from '../shared/CenteredHelper';
 
 const EmptyTableCell = styled(Table.Cell)`
   width: 44px;
@@ -30,15 +28,6 @@ const EmptyTableCell = styled(Table.Cell)`
 
 const AddNewColumnButton = styled(Button)`
   margin-top: 20px;
-`;
-
-const CenteredHelper = styled.div<{centered: boolean} & AkeneoThemedProps>`
-  text-align: ${({centered}) => (centered ? 'center' : 'initial')};
-`;
-
-const EmptyTableTitle = styled.div`
-  font-size: ${getFontSize('big')};
-  color: ${getColor('grey', 140)};
 `;
 
 type TableStructureAppProps = {
@@ -157,17 +146,17 @@ const TableStructureApp: React.FC<TableStructureAppProps> = ({
             </Table.Body>
           </Table>
           {tableConfiguration.length === 1 && (
-            <CenteredHelper centered={true}>
-              <AddingValueIllustration size={120} />
-              <EmptyTableTitle>{translate('pim_table_attribute.form.attribute.unique_title')}</EmptyTableTitle>
+            <CenteredHelper illustration={<AddingValueIllustration />}>
+              <CenteredHelper.Title>
+                {translate('pim_table_attribute.form.attribute.unique_title')}
+              </CenteredHelper.Title>
               {translate('pim_table_attribute.form.attribute.unique_subtitle')}
             </CenteredHelper>
           )}
         </>
       ) : (
-        <CenteredHelper centered={true}>
-          <AddingValueIllustration size={120} />
-          <EmptyTableTitle>{translate('pim_table_attribute.form.attribute.empty_title')}</EmptyTableTitle>
+        <CenteredHelper illustration={<AddingValueIllustration />}>
+          <CenteredHelper.Title>{translate('pim_table_attribute.form.attribute.empty_title')}</CenteredHelper.Title>
           {translate('pim_table_attribute.form.attribute.empty_subtitle')}
         </CenteredHelper>
       )}
@@ -215,7 +204,7 @@ const TableStructureApp: React.FC<TableStructureAppProps> = ({
           existingColumnCodes={tableConfiguration.map(columnDefinition => columnDefinition.code)}
         />
       )}
-      <CenteredHelper centered={tableConfiguration.length === 0}>
+      <CenteredHelper>
         <AddNewColumnButton
           title={translate('pim_table_attribute.form.attribute.add_column')}
           ghost

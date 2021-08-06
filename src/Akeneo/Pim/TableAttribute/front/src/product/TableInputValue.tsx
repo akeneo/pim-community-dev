@@ -1,5 +1,5 @@
 import React from 'react';
-import {AddingValueIllustration, AkeneoThemedProps, getColor, getFontSize, TableInput} from 'akeneo-design-system';
+import {AddingValueIllustration, AkeneoThemedProps, getColor, TableInput} from 'akeneo-design-system';
 import {
   ColumnCode,
   ColumnDefinition,
@@ -25,27 +25,17 @@ import {TableCell} from '../models/TableValue';
 import {TableInputNumber} from './CellInputs/TableInputNumber';
 import {TableInputText} from './CellInputs/TableInputText';
 import {TableAttribute} from '../models/Attribute';
+import {CenteredHelper} from '../shared/CenteredHelper';
 
 const TABLE_VALUE_ITEMS_PER_PAGE = [10, 20, 50, 100];
 
-const TableInputContainer = styled.div<{isCopying: boolean} & AkeneoThemedProps>`
-  width: ${({isCopying}) => (isCopying ? '460px' : '100%')};
-`;
-
-const CenteredHelper = styled.div`
+const BorderedCenteredHelper = styled(CenteredHelper)`
   border: 1px solid ${getColor('grey', 80)};
   padding-bottom: 20px;
-  text-align: center;
-  color: ${getColor('grey', 100)};
-  & > * {
-    display: block;
-    margin: auto;
-  }
 `;
 
-const CenteredHelperTitle = styled.div`
-  color: ${getColor('grey', 140)};
-  font-size: ${getFontSize('big')};
+const TableInputContainer = styled.div<{isCopying: boolean} & AkeneoThemedProps>`
+  width: ${({isCopying}) => (isCopying ? '460px' : '100%')};
 `;
 
 type TableInputValueProps = {
@@ -256,21 +246,19 @@ const TableInputValue: React.FC<TableInputValueProps> = ({
         </TableInput.Body>
       </TableInput>
       {isSearching && valueDataPage.length === 0 && (
-        <CenteredHelper>
-          <AddingValueIllustration size={120} />
+        <BorderedCenteredHelper illustration={<AddingValueIllustration />}>
           {translate('pim_table_attribute.form.product.no_search_result')}
-        </CenteredHelper>
+        </BorderedCenteredHelper>
       )}
       {!isSearching && valueDataPage.length === 0 && (
-        <CenteredHelper>
-          <AddingValueIllustration size={120} />
-          <CenteredHelperTitle>
+        <BorderedCenteredHelper illustration={<AddingValueIllustration />}>
+          <CenteredHelper.Title>
             {translate('pim_table_attribute.form.product.no_rows_title', {
               attributeLabel: getLabel(attribute.labels, userContext.get('catalogLocale'), attribute.code),
             })}
-          </CenteredHelperTitle>
+          </CenteredHelper.Title>
           {translate('pim_table_attribute.form.product.no_rows_subtitle')}
-        </CenteredHelper>
+        </BorderedCenteredHelper>
       )}
       {valueData.length > TABLE_VALUE_ITEMS_PER_PAGE[0] && (
         <TableFooter

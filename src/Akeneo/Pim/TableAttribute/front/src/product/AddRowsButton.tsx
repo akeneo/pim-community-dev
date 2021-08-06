@@ -1,22 +1,21 @@
 import React, {useState} from 'react';
 import {
-  useBooleanState,
-  Dropdown,
+  AddingValueIllustration,
   ArrowDownIcon,
-  Search,
+  Badge,
   Button,
   Checkbox,
-  AddingValueIllustration,
-  getFontSize,
-  getColor,
+  Dropdown,
   Link,
-  Badge,
+  Search,
+  useBooleanState,
 } from 'akeneo-design-system';
-import {useRouter, getLabel, useUserContext, useTranslate, useSecurity} from '@akeneo-pim-community/shared';
+import {getLabel, useRouter, useSecurity, useTranslate, useUserContext} from '@akeneo-pim-community/shared';
 import {ColumnCode, SelectOption, SelectOptionCode} from '../models/TableConfiguration';
 import {getSelectOptions} from '../repositories/SelectOption';
 import styled from 'styled-components';
 import {TableAttribute} from '../models/Attribute';
+import {CenteredHelper} from '../shared/CenteredHelper';
 
 const BATCH_SIZE = 20;
 
@@ -26,21 +25,6 @@ type AddRowsButtonProps = {
   checkedOptionCodes: SelectOptionCode[];
   toggleChange: (optionCode: SelectOptionCode) => void;
 };
-
-const CenteredHelper = styled.div`
-  text-align: center;
-  max-width: 258px;
-  padding: 0 20px;
-  & > * {
-    display: block;
-    margin: auto;
-  }
-`;
-
-const CenteredHelperTitle = styled.div`
-  font-size: ${getFontSize('big')};
-  color: ${getColor('grey', 140)};
-`;
 
 const NoEditPermission = styled(Badge)`
   position: absolute;
@@ -139,33 +123,37 @@ const AddRowsButton: React.FC<AddRowsButtonProps> = ({attribute, columnCode, che
               </Dropdown.Item>
             ))}
             {searchValue === '' && itemsToDisplay.length === 0 && (
-              <CenteredHelper>
-                <AddingValueIllustration size={100} />
-                <CenteredHelperTitle>
-                  {translate('pim_table_attribute.form.product.no_add_options_title')}
-                </CenteredHelperTitle>
-                {hasEditPermission ? (
-                  <div>
-                    {translate('pim_table_attribute.form.product.no_add_options', {
+              <CenteredHelper.Container>
+                <CenteredHelper illustration={<AddingValueIllustration />}>
+                  <CenteredHelper.Title>
+                    {translate('pim_table_attribute.form.product.no_add_options_title')}
+                  </CenteredHelper.Title>
+                  {hasEditPermission ? (
+                    <div>
+                      {translate('pim_table_attribute.form.product.no_add_options', {
+                        attributeLabel: getLabel(attribute.labels, userContext.get('catalogLocale'), attribute.code),
+                      })}{' '}
+                      <Link onClick={handleRedirect}>
+                        {translate('pim_table_attribute.form.product.no_add_options_link')}
+                      </Link>
+                    </div>
+                  ) : (
+                    translate('pim_table_attribute.form.product.no_add_options_unallowed', {
                       attributeLabel: getLabel(attribute.labels, userContext.get('catalogLocale'), attribute.code),
-                    })}{' '}
-                    <Link onClick={handleRedirect}>
-                      {translate('pim_table_attribute.form.product.no_add_options_link')}
-                    </Link>
-                  </div>
-                ) : (
-                  translate('pim_table_attribute.form.product.no_add_options_unallowed', {
-                    attributeLabel: getLabel(attribute.labels, userContext.get('catalogLocale'), attribute.code),
-                  })
-                )}
-              </CenteredHelper>
+                    })
+                  )}
+                </CenteredHelper>
+              </CenteredHelper.Container>
             )}
             {searchValue !== '' && itemsToDisplay.length === 0 && (
-              <CenteredHelper>
-                <AddingValueIllustration size={120} />
-                <CenteredHelperTitle>{translate('pim_table_attribute.form.attribute.no_options')}</CenteredHelperTitle>
-                {translate('pim_table_attribute.form.attribute.please_try_again')}
-              </CenteredHelper>
+              <CenteredHelper.Container>
+                <CenteredHelper illustration={<AddingValueIllustration />}>
+                  <CenteredHelper.Title>
+                    {translate('pim_table_attribute.form.attribute.no_options')}
+                  </CenteredHelper.Title>
+                  {translate('pim_table_attribute.form.attribute.please_try_again')}
+                </CenteredHelper>
+              </CenteredHelper.Container>
             )}
           </Dropdown.ItemCollection>
         </Dropdown.Overlay>
