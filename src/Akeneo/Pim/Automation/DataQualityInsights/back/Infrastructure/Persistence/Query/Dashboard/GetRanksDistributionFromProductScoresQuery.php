@@ -7,7 +7,7 @@ namespace Akeneo\Pim\Automation\DataQualityInsights\Infrastructure\Persistence\Q
 use Akeneo\Channel\Component\Query\PublicApi\GetChannelCodeWithLocaleCodesInterface;
 use Akeneo\Pim\Automation\DataQualityInsights\Domain\Model\RanksDistributionCollection;
 use Akeneo\Pim\Automation\DataQualityInsights\Domain\Query\Dashboard\GetRanksDistributionFromProductScoresQueryInterface;
-use Akeneo\Pim\Automation\DataQualityInsights\Domain\Query\Structure\GetCategoryChildrenIdsQueryInterface;
+use Akeneo\Pim\Automation\DataQualityInsights\Domain\Query\Structure\GetCategoryChildrenCodesQueryInterface;
 use Akeneo\Pim\Automation\DataQualityInsights\Domain\ValueObject\CategoryCode;
 use Akeneo\Pim\Automation\DataQualityInsights\Domain\ValueObject\FamilyCode;
 use Akeneo\Pim\Enrichment\Component\Product\Model\ProductInterface;
@@ -21,14 +21,14 @@ final class GetRanksDistributionFromProductScoresQuery implements GetRanksDistri
 
     private Client $elasticsearchClient;
 
-    private GetCategoryChildrenIdsQueryInterface $getCategoryChildrenIdsQuery;
+    private GetCategoryChildrenCodesQueryInterface $getCategoryChildrenIdsQuery;
 
     private GetChannelCodeWithLocaleCodesInterface $getChannelCodeWithLocaleCodes;
 
     public function __construct(
-        Connection $connection,
-        Client $elasticsearchClient,
-        GetCategoryChildrenIdsQueryInterface $getCategoryChildrenIdsQuery,
+        Connection                             $connection,
+        Client                                 $elasticsearchClient,
+        GetCategoryChildrenCodesQueryInterface $getCategoryChildrenIdsQuery,
         GetChannelCodeWithLocaleCodesInterface $getChannelCodeWithLocaleCodes
     ) {
         $this->connection = $connection;
@@ -95,7 +95,6 @@ final class GetRanksDistributionFromProductScoresQuery implements GetRanksDistri
      */
     public function byFamily(FamilyCode $familyCode, \DateTimeImmutable $date): RanksDistributionCollection
     {
-
         $query = $this->buildRankDistributionQuery();
         $query['query']['constant_score']['filter']['bool']['filter'][] = [
             'term' => [
@@ -121,10 +120,6 @@ final class GetRanksDistributionFromProductScoresQuery implements GetRanksDistri
                     ]
                 ];
             }
-        }
-
-        if (empty($elasticsearchAggs)) {
-            return new RanksDistributionCollection([]);
         }
 
         // size = 0 to avoid to fill the cache

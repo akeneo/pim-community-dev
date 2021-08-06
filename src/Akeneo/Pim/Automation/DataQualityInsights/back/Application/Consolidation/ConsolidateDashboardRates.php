@@ -56,25 +56,6 @@ final class ConsolidateDashboardRates
         $this->dashboardScoresProjectionRepository->save($dashBoardRatesProjection);
     }
 
-    private function consolidateCategories(ConsolidationDate $day): void
-    {
-        $dashboardCategory = DashboardProjectionType::category();
-        $categoryCodes = $this->getAllCategoryCodesQuery->execute();
-
-        foreach ($categoryCodes as $categoryCode) {
-            $categoryRanks = $this->getRanksDistributionFromProductScoresQuery->byCategory($categoryCode, $day->getDateTime());
-            $dashBoardRatesProjection = new DashboardRatesProjection(
-                $dashboardCategory,
-                DashboardProjectionCode::category($categoryCode),
-                $day,
-                $categoryRanks
-            );
-
-            $this->dashboardScoresProjectionRepository->save($dashBoardRatesProjection);
-        }
-    }
-
-
     private function consolidateFamilies(ConsolidationDate $day): void
     {
         $dashboardFamily = DashboardProjectionType::family();
@@ -87,6 +68,24 @@ final class ConsolidateDashboardRates
                 DashboardProjectionCode::family($familyCode),
                 $day,
                 $familyRanks
+            );
+
+            $this->dashboardScoresProjectionRepository->save($dashBoardRatesProjection);
+        }
+    }
+
+    private function consolidateCategories(ConsolidationDate $day): void
+    {
+        $dashboardCategory = DashboardProjectionType::category();
+        $categoryCodes = $this->getAllCategoryCodesQuery->execute();
+
+        foreach ($categoryCodes as $categoryCode) {
+            $categoryRanks = $this->getRanksDistributionFromProductScoresQuery->byCategory($categoryCode, $day->getDateTime());
+            $dashBoardRatesProjection = new DashboardRatesProjection(
+                $dashboardCategory,
+                DashboardProjectionCode::category($categoryCode),
+                $day,
+                $categoryRanks
             );
 
             $this->dashboardScoresProjectionRepository->save($dashBoardRatesProjection);
