@@ -1,11 +1,17 @@
 import React from 'react';
 import {renderWithProviders} from '@akeneo-pim-community/legacy-bridge/tests/front/unit/utils';
-import {fireEvent, screen} from '@testing-library/react';
+import {act, fireEvent, screen} from '@testing-library/react';
 import {view} from '../../../src/attribute/CreateAttributeCodeLabelTemplate';
+import 'jest-fetch-mock';
 const CreateAttributeCodeLabelTemplate = view;
 
 describe('CreateAttributeCodeLabelTemplate', () => {
-  it('should render the component', () => {
+  afterEach(() => {
+    fetchMock.resetMocks();
+  });
+  it('should render the component', async () => {
+    fetchMock.mockResponses([JSON.stringify([]), {status: 200}]);
+
     renderWithProviders(
       <CreateAttributeCodeLabelTemplate
         onStepConfirm={jest.fn()}
@@ -14,10 +20,12 @@ describe('CreateAttributeCodeLabelTemplate', () => {
       />
     );
 
-    expect(screen.getByText('pim_common.create')).toBeInTheDocument();
+    expect(await screen.findByText('pim_common.create')).toBeInTheDocument();
   });
 
   it('should callback confirm with selection of template variation', async () => {
+    fetchMock.mockResponses([JSON.stringify([]), {status: 200}], [JSON.stringify([]), {status: 200}]);
+
     const handleStepConfirm = jest.fn();
     renderWithProviders(
       <CreateAttributeCodeLabelTemplate
@@ -28,8 +36,10 @@ describe('CreateAttributeCodeLabelTemplate', () => {
     );
 
     expect(await screen.findByText('pim_common.create')).toBeInTheDocument();
-    fireEvent.change(screen.getByLabelText('pim_common.label'), {target: {value: 'A new attribute'}});
-    fireEvent.focus(screen.getAllByRole('textbox')[2]);
+    act(() => {
+      fireEvent.change(screen.getByLabelText('pim_common.label'), {target: {value: 'A new attribute'}});
+      fireEvent.focus(screen.getAllByRole('textbox')[2]);
+    });
     expect(await screen.findByText('pim_table_attribute.templates.nutrition-eu')).toBeInTheDocument();
     fireEvent.click(screen.getByText('pim_table_attribute.templates.nutrition-eu'));
     fireEvent.click(screen.getByText('pim_common.confirm'));
@@ -39,5 +49,24 @@ describe('CreateAttributeCodeLabelTemplate', () => {
       label: 'A new attribute',
       template_variation: 'nutrition-eu',
     });
+  });
+
+  it('should add a violation when code is already used', async () => {
+    fetchMock.mockResponses([JSON.stringify([]), {status: 200}], [JSON.stringify([{code: 'name'}]), {status: 200}]);
+
+    const handleStepConfirm = jest.fn();
+    renderWithProviders(
+      <CreateAttributeCodeLabelTemplate
+        onStepConfirm={handleStepConfirm}
+        onClose={jest.fn()}
+        initialData={{template: 'empty_table'}}
+      />
+    );
+
+    expect(await screen.findByText('pim_common.create')).toBeInTheDocument();
+    act(() => {
+      fireEvent.change(screen.getByLabelText('pim_common.code'), {target: {value: 'name'}});
+    });
+    expect(await screen.findByText('pim_enrich.entity.attribute.property.code.is_duplicate')).toBeInTheDocument();
   });
 });
