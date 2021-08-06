@@ -1,5 +1,5 @@
-import React, {useEffect, useState} from 'react';
-import {useTranslate, useUserContext} from '@akeneo-pim-community/shared';
+import React, {useCallback, useEffect, useState} from 'react';
+import {SearchBar, useDebounceCallback, useTranslate, useUserContext} from '@akeneo-pim-community/shared';
 import {AttributeOption} from '../model';
 import {useAttributeContext} from '../contexts';
 import {useAttributeOptionsListState} from '../hooks';
@@ -9,6 +9,7 @@ import NewOptionPlaceholder from './NewOptionPlaceholder';
 import {AkeneoThemedProps, Button, CloseIcon, getColor, IconButton, RowIcon, Table} from 'akeneo-design-system';
 import styled from 'styled-components';
 import DeleteConfirmationModal from './DeleteConfirmationModal';
+import NoResultOnSearch from './NoResultOnSearch';
 
 interface ListProps {
   selectAttributeOption: (selectedOptionId: number | null) => void;
@@ -27,18 +28,22 @@ const AttributeOptionTable = ({
   deleteAttributeOption,
   manuallySortAttributeOptions,
 }: ListProps) => {
-  const {attributeOptions, extraData} = useAttributeOptionsListState();
   const translate = useTranslate();
-  const attributeContext = useAttributeContext();
   const locale = useUserContext().get('catalogLocale');
+  const attributeContext = useAttributeContext();
+  const {attributeOptions, extraData} = useAttributeOptionsListState();
   const {sortedAttributeOptions, setSortedAttributeOptions} = useSortedAttributeOptions(
     attributeOptions,
     attributeContext.autoSortOptions,
     manuallySortAttributeOptions
   );
+  const [filteredAttributeOptions, setFilteredAttributeOptions] =
+    useState<AttributeOption[] | null>(sortedAttributeOptions);
   const [showDeleteConfirmationModal, setShowDeleteConfirmationModal] = useState<boolean>(false);
   const [showNewOptionPlaceholder, setShowNewOptionPlaceholder] = useState<boolean>(isNewOptionFormDisplayed);
   const [isDraggable, setIsDraggable] = useState<boolean>(attributeContext.autoSortOptions);
+  const [searchValue, setSearchValue] = useState('');
+  const [autoSortingReadOnly, setAutoSortingReadOnly] = useState<boolean>(false);
 
   useEffect(() => {
     if (selectedOptionId !== null) {
@@ -80,6 +85,48 @@ const AttributeOptionTable = ({
     });
   };
 
+  const filterOnLabelOrCode = useCallback(
+    (searchString: string) => {
+      if (sortedAttributeOptions) {
+        setFilteredAttributeOptions(
+          sortedAttributeOptions.filter((attributeOption: AttributeOption) => {
+            return (
+              attributeOption.code.toLocaleLowerCase().includes(searchString.toLowerCase().trim()) ||
+              attributeOption.optionValues[locale].value.toLocaleLowerCase().includes(searchString.toLowerCase().trim())
+            );
+          })
+        );
+      }
+    },
+    [sortedAttributeOptions]
+  );
+
+  useEffect(() => {
+    setFilteredAttributeOptions(sortedAttributeOptions);
+    setSearchValue('');
+  }, [sortedAttributeOptions]);
+
+  const debouncedSearch = useDebounceCallback(filterOnLabelOrCode, 300);
+
+  const onSearch = (searchValue: string) => {
+    if (searchValue) {
+      setIsDraggable(false);
+      setAutoSortingReadOnly(true);
+    } else {
+      if (!attributeContext.autoSortOptions) {
+        setIsDraggable(true);
+      }
+      setAutoSortingReadOnly(false);
+    }
+
+    setSearchValue(searchValue);
+    debouncedSearch(searchValue);
+  };
+
+  const attributeOptionsCount = null === attributeOptions ? 0 : attributeOptions.length;
+
+  const filteredAttributeOptionsCount = null === filteredAttributeOptions ? 0 : filteredAttributeOptions.length;
+
   return (
     <div className="AknSubsection AknAttributeOption-list">
       <div className="AknSubsection-title AknSubsection-title--glued tabsection-title">
@@ -89,75 +136,87 @@ const AttributeOptionTable = ({
         </Button>
       </div>
 
-      <AutoOptionSorting />
+      <SearchBar
+        placeholder={translate('pim_enrich.entity.attribute_option.module.edit.search.placeholder')}
+        count={filteredAttributeOptionsCount}
+        searchValue={searchValue}
+        onSearchChange={onSearch}
+      />
 
-      <SpacedTable isDragAndDroppable={isDraggable} onReorder={newIndices => reorderAttributeOptions(newIndices)}>
-        <Table.Header sticky={44}>
-          {!isDraggable && <Table.HeaderCell>&nbsp;</Table.HeaderCell>}
-          <Table.HeaderCell>{translate('pim_common.label')}</Table.HeaderCell>
-          <Table.HeaderCell>{translate('pim_common.code')}</Table.HeaderCell>
-          <Table.HeaderCell>&nbsp;</Table.HeaderCell>
-          <Table.HeaderCell>&nbsp;</Table.HeaderCell>
-        </Table.Header>
-        <Table.Body>
-          {sortedAttributeOptions !== null &&
-            sortedAttributeOptions.map((attributeOption: AttributeOption, index: number) => {
-              const deleteOption = () => {
-                setShowDeleteConfirmationModal(false);
-                deleteAttributeOption(attributeOption.id);
-              };
+      {filteredAttributeOptionsCount === 0 && attributeOptionsCount > 0 && <NoResultOnSearch />}
 
-              return (
-                <TableRow
-                  isDraggable={isDraggable}
-                  isSelected={selectedOptionId === attributeOption.id}
-                  onClick={() => onSelectItem(attributeOption.id)}
-                  key={`${attributeOption.code}${index}`}
-                >
-                  {!isDraggable && (
-                    <TableCellNoDraggable>
-                      <HandleContainer>
-                        <RowIcon size={16} />
-                      </HandleContainer>
-                    </TableCellNoDraggable>
-                  )}
-                  <TableCellLabel rowTitle={true}>
-                    {attributeOption.optionValues[locale] && attributeOption.optionValues[locale].value
-                      ? attributeOption.optionValues[locale].value
-                      : `[${attributeOption.code}]`}
-                  </TableCellLabel>
-                  <Table.Cell>{attributeOption.code}</Table.Cell>
-                  <Table.Cell>{extraData[attributeOption.code]}</Table.Cell>
-                  <TableActionCell>
-                    <IconButton
-                      icon={<CloseIcon />}
-                      onClick={(event: any) => {
-                        event.preventDefault();
-                        event.stopPropagation();
-                        setShowDeleteConfirmationModal(true);
-                      }}
-                      title={translate('pim_common.delete')}
-                      ghost="borderless"
-                      level="tertiary"
-                    />
+      {filteredAttributeOptionsCount > 0 && filteredAttributeOptions !== null && (
+        <>
+          <AutoOptionSorting readOnly={autoSortingReadOnly} />
 
-                    {showDeleteConfirmationModal && (
-                      <DeleteConfirmationModal
-                        attributeOptionCode={attributeOption.code}
-                        confirmDelete={deleteOption}
-                        cancelDelete={() => setShowDeleteConfirmationModal(false)}
-                      />
+          <SpacedTable isDragAndDroppable={isDraggable} onReorder={newIndices => reorderAttributeOptions(newIndices)}>
+            <Table.Header sticky={44}>
+              {!isDraggable && <Table.HeaderCell>&nbsp;</Table.HeaderCell>}
+              <Table.HeaderCell>{translate('pim_common.label')}</Table.HeaderCell>
+              <Table.HeaderCell>{translate('pim_common.code')}</Table.HeaderCell>
+              <Table.HeaderCell>&nbsp;</Table.HeaderCell>
+              <Table.HeaderCell>&nbsp;</Table.HeaderCell>
+            </Table.Header>
+            <Table.Body>
+              {filteredAttributeOptions.map((attributeOption: AttributeOption, index: number) => {
+                const deleteOption = () => {
+                  setShowDeleteConfirmationModal(false);
+                  deleteAttributeOption(attributeOption.id);
+                };
+
+                return (
+                  <TableRow
+                    isDraggable={isDraggable}
+                    isSelected={selectedOptionId === attributeOption.id}
+                    onClick={() => onSelectItem(attributeOption.id)}
+                    key={`${attributeOption.code}${index}`}
+                  >
+                    {!isDraggable && (
+                      <TableCellNoDraggable>
+                        <HandleContainer>
+                          <RowIcon size={16} />
+                        </HandleContainer>
+                      </TableCellNoDraggable>
                     )}
-                  </TableActionCell>
-                </TableRow>
-              );
-            })}
+                    <TableCellLabel rowTitle={true}>
+                      {attributeOption.optionValues[locale] && attributeOption.optionValues[locale].value
+                        ? attributeOption.optionValues[locale].value
+                        : `[${attributeOption.code}]`}
+                    </TableCellLabel>
+                    <Table.Cell>{attributeOption.code}</Table.Cell>
+                    <Table.Cell>{extraData[attributeOption.code]}</Table.Cell>
+                    <TableActionCell>
+                      <IconButton
+                        icon={<CloseIcon />}
+                        onClick={(event: any) => {
+                          event.preventDefault();
+                          event.stopPropagation();
+                          setShowDeleteConfirmationModal(true);
+                        }}
+                        title={translate('pim_common.delete')}
+                        ghost="borderless"
+                        level="tertiary"
+                      />
 
-          {showNewOptionPlaceholder && (
-            <NewOptionPlaceholder cancelNewOption={cancelNewOption} isDraggable={isDraggable} />
-          )}
-        </Table.Body>
-      </SpacedTable>
+                      {showDeleteConfirmationModal && (
+                        <DeleteConfirmationModal
+                          attributeOptionCode={attributeOption.code}
+                          confirmDelete={deleteOption}
+                          cancelDelete={() => setShowDeleteConfirmationModal(false)}
+                        />
+                      )}
+                    </TableActionCell>
+                  </TableRow>
+                );
+              })}
+
+              {showNewOptionPlaceholder && (
+                <NewOptionPlaceholder cancelNewOption={cancelNewOption} isDraggable={isDraggable} />
+              )}
+            </Table.Body>
+          </SpacedTable>
+        </>
+      )}
     </div>
   );
 };

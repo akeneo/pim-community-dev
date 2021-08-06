@@ -25,9 +25,7 @@ const NewOptionPlaceholder = ({cancelNewOption, isDraggable}: newOptionPlacehold
         </TableCellNoDraggable>
       )}
       <TableCellLabel rowTitle={true}>&nbsp;</TableCellLabel>
-      <Table.Cell>
-        {translate('pim_enrich.entity.attribute_option.module.edit.new_option_code')}
-      </Table.Cell>
+      <Table.Cell>{translate('pim_enrich.entity.attribute_option.module.edit.new_option_code')}</Table.Cell>
       <Table.Cell>&nbsp;</Table.Cell>
       <TableActionCell>
         <IconButton
