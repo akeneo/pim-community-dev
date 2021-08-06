@@ -10,6 +10,7 @@ use Akeneo\Pim\TableAttribute\Infrastructure\TableConfiguration\Normalizer\Versi
 use PhpSpec\ObjectBehavior;
 use Prophecy\Argument;
 use Symfony\Component\Serializer\Normalizer\NormalizerInterface;
+use Webmozart\Assert\Assert;
 
 class AttributeNormalizerSpec extends ObjectBehavior
 {
@@ -123,8 +124,19 @@ class AttributeNormalizerSpec extends ObjectBehavior
         $attribute->getType()->willReturn('pim_catalog_table');
         $attribute->getRawTableConfiguration()->willReturn(
             [
-                ['data_type' => 'select', 'code' => 'ingredient', 'labels' => (object)[], 'validations' => (object)[], 'options' => [['code' => 'sugar', 'labels' => ['en_US' => 'Sugar']]]],
-                ['data_type' => 'number', 'code' => 'quantity', 'labels' => (object)[], 'validations' => (object)[]],
+                [
+                    'data_type' => 'select',
+                    'code' => 'ingredient',
+                    'labels' => (object)[],
+                    'validations' => (object)[],
+                    'options' => [['code' => 'sugar', 'labels' => ['en_US' => 'Sugar']]],
+                ],
+                [
+                    'data_type' => 'number',
+                    'code' => 'quantity',
+                    'labels' => (object)[],
+                    'validations' => (object)[]
+                ],
             ]
         );
         $baseNormalizer->normalize($attribute, 'flat', [])->shouldBeCalled()->willReturn(['code' => 'nutrition']);
@@ -134,5 +146,43 @@ class AttributeNormalizerSpec extends ObjectBehavior
                 'table_configuration' => '[{"data_type":"select","code":"ingredient","labels":{},"validations":{},"options":[{"code":"sugar"}]},{"data_type":"number","code":"quantity","labels":{},"validations":{}}]',
             ]
         );
+    }
+
+    function it_only_normalizes_the_10000_first_options(
+        NormalizerInterface $baseNormalizer,
+        AttributeInterface $attribute
+    ) {
+        $attribute->getType()->willReturn('pim_catalog_table');
+
+        $options = \array_map(
+            fn (int $i): array => ['code' => \sprintf('option_%d',  $i)],
+            \range(0, 20000)
+        );
+        $attribute->getRawTableConfiguration()->willReturn(
+            [
+                [
+                    'data_type' => 'select',
+                    'code' => 'ingredient',
+                    'labels' => (object)[],
+                    'validations' => (object)[],
+                    'options' => $options,
+                ],
+                [
+                    'data_type' => 'number',
+                    'code' => 'quantity',
+                    'labels' => (object)[],
+                    'validations' => (object)[]
+                ],
+            ]
+        );
+        $baseNormalizer->normalize($attribute, 'flat', [])->shouldBeCalled()->willReturn(['code' => 'nutrition']);
+
+        $normalized = $this->normalize($attribute, 'flat', []);
+        $normalized->shouldBeArray();
+        $normalized->shouldHaveKey('table_configuration');
+
+        $normalizedOptions = \json_decode($normalized['table_configuration']->getWrappedObject(), true)[0]['options'];
+        Assert::isArray($normalizedOptions);
+        Assert::count($normalizedOptions, 10000);
     }
 }

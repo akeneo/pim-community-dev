@@ -23,6 +23,8 @@ use Symfony\Component\Serializer\Normalizer\NormalizerInterface;
 
 class AttributeNormalizer implements NormalizerInterface, CacheableSupportsMethodInterface
 {
+    private const MAX_OPTIONS = 10000;
+
     private NormalizerInterface $baseNormalizer;
     private SelectOptionCollectionRepository $selectOptionCollectionRepository;
 
@@ -49,6 +51,7 @@ class AttributeNormalizer implements NormalizerInterface, CacheableSupportsMetho
                         );
                         $options = $options->normalize();
                     }
+                    $options = \array_slice($options, 0, self::MAX_OPTIONS);
                     foreach ($options as $optionIndex => $option) {
                         unset($options[$optionIndex]['labels']);
                     }
