@@ -75,7 +75,10 @@
         "phpstan/phpstan-symfony": "^0.12.6",
         "mcustiel/phiremock": "2.1.1",
         "phpstan/phpstan-webmozart-assert": "^0.12.7",
-        "jfcherng/php-diff": "^6.10"
+        "jfcherng/php-diff": "^6.10",
+        "akeneo/api-php-client": "^6.0",
+        "php-http/guzzle6-adapter": "^2.0",
+        "http-interop/http-factory-guzzle": "^1.0"
     },
     "repositories": {
         "grth": {

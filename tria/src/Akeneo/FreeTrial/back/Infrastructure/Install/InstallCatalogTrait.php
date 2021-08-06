@@ -33,4 +33,34 @@ trait InstallCatalogTrait
     {
         return $this->getFixturesPath() . '/jobs.yml';
     }
+
+    private function getMediaFilesFixturesDirectoryPath(): string
+    {
+        return $this->getFixturesPath() . '/media_files';
+    }
+
+    private function getMediaFilesFixturesPath(): string
+    {
+        return $this->getFixturesPath() . '/media_files.json';
+    }
+
+    private function getProductsFixturesPath(): string
+    {
+        return $this->getFixturesPath() . '/products.json';
+    }
+
+    private function getProductModelsFixturesPath(): string
+    {
+        return $this->getFixturesPath() . '/product_models.json';
+    }
+
+    private function getProductsAssociationsFixturesPath(): string
+    {
+        return $this->getFixturesPath() . '/products_associations.json';
+    }
+
+    private function getProductModelsAssociationsFixturesPath(): string
+    {
+        return $this->getFixturesPath() . '/product_models_associations.json';
+    }
 }
