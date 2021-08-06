@@ -66,13 +66,10 @@ class ReindexRecordsWithoutDowntime
         $oldRefreshInterval = $this->getRefreshIntervalForIndex($migratedIndexName);
         $this->setRefreshIntervalToIndex($migratedIndexName, self::REFRESH_INTERVAL_DURING_INDEXATION);
 
-        $lastReferenceDatetime = $this->reindexRecords(
-            $this->currentIndexRecordClient,
-            $migratedIndexClient
-        );
-
+        $lastReferenceDatetime = $this->reindexRecords($this->currentIndexRecordClient, $migratedIndexClient);
         $this->setRefreshIntervalToIndex($migratedIndexName, $oldRefreshInterval);
         $migratedIndexClient->refreshIndex();
+
         $this->switchIndexAliasToNewIndex($currentIndexName, $migratedIndexName, $migratedIndexAlias);
         $indexedRecordsAfterSwitch = $this->reindexRecordsUpdatedAfterDatetime(
             $migratedIndexClient,

@@ -2,8 +2,6 @@
 
 declare(strict_types=1);
 
-namespace Akeneo\ReferenceEntity\Infrastructure\Symfony\Command;
-
 /*
  * This file is part of the Akeneo PIM Enterprise Edition.
  *
@@ -12,6 +10,8 @@ namespace Akeneo\ReferenceEntity\Infrastructure\Symfony\Command;
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
  */
+
+namespace Akeneo\ReferenceEntity\Infrastructure\Symfony\Command;
 
 use Akeneo\ReferenceEntity\Infrastructure\Clock\ClockInterface;
 use Akeneo\ReferenceEntity\Infrastructure\Symfony\Command\IndexMigration\ReindexRecordsWithoutDowntime;
