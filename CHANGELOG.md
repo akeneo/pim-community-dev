@@ -94,6 +94,7 @@
 - PIM-9987: Fix product grid count not accurate after specific SKU selection
 - PIM-10009: Fix error being printed in the response of partial update of product models API
 - PIM-10003: Fix translation in setting page are not plurializable
+- PIM-9989: Fix record code of reference entity field is case-sensitive
 
 ## New features
 
