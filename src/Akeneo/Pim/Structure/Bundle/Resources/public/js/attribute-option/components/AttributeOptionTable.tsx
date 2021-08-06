@@ -1,6 +1,6 @@
-import React, {useEffect, useState} from 'react';
-import {LocaleCode, SearchBar, useTranslate, useUserContext} from '@akeneo-pim-community/shared';
-import {AttributeOption, OptionValue} from '../model';
+import React, {useCallback, useEffect, useState} from 'react';
+import {SearchBar, useDebounceCallback, useTranslate, useUserContext} from '@akeneo-pim-community/shared';
+import {AttributeOption} from '../model';
 import {useAttributeContext} from '../contexts';
 import {useAttributeOptionsListState} from '../hooks';
 import {useSortedAttributeOptions} from '../hooks';
@@ -31,13 +31,14 @@ const AttributeOptionTable = ({
   const translate = useTranslate();
   const locale = useUserContext().get('catalogLocale');
   const attributeContext = useAttributeContext();
-
   const {attributeOptions, extraData} = useAttributeOptionsListState();
   const {sortedAttributeOptions, setSortedAttributeOptions} = useSortedAttributeOptions(
     attributeOptions,
     attributeContext.autoSortOptions,
     manuallySortAttributeOptions
   );
+  const [filteredAttributeOptions, setFilteredAttributeOptions] =
+    useState<AttributeOption[] | null>(sortedAttributeOptions);
   const [showDeleteConfirmationModal, setShowDeleteConfirmationModal] = useState<boolean>(false);
   const [showNewOptionPlaceholder, setShowNewOptionPlaceholder] = useState<boolean>(isNewOptionFormDisplayed);
   const [isDraggable, setIsDraggable] = useState<boolean>(attributeContext.autoSortOptions);
@@ -84,21 +85,30 @@ const AttributeOptionTable = ({
     });
   };
 
-  const filterOnLabelOrCode =
-    (searchValue: string, locale: LocaleCode) =>
-    (entity: {code: string; optionValues: OptionValue}): boolean =>
-      -1 !== entity.code.toLowerCase().indexOf(searchValue.toLowerCase()) ||
-      (undefined !== entity.optionValues[locale] &&
-        -1 !== entity.optionValues[locale].value.toLowerCase().indexOf(searchValue.toLowerCase()));
+  const filterOnLabelOrCode = useCallback(
+    (searchString: string) => {
+      if (sortedAttributeOptions) {
+        setFilteredAttributeOptions(
+          sortedAttributeOptions.filter((attributeOption: AttributeOption) => {
+            return (
+              attributeOption.code.toLocaleLowerCase().includes(searchString.toLowerCase().trim()) ||
+              attributeOption.optionValues[locale].value.toLocaleLowerCase().includes(searchString.toLowerCase().trim())
+            );
+          })
+        );
+      }
+    },
+    [sortedAttributeOptions]
+  );
 
-  const filteredAttributeOptions =
-    null === sortedAttributeOptions ? null : sortedAttributeOptions.filter(filterOnLabelOrCode(searchValue, locale));
+  useEffect(() => {
+    setFilteredAttributeOptions(sortedAttributeOptions);
+    setSearchValue('');
+  }, [sortedAttributeOptions]);
 
-  const attributeOptionsCount = null === attributeOptions ? 0 : attributeOptions.length;
+  const debouncedSearch = useDebounceCallback(filterOnLabelOrCode, 300);
 
-  const filteredAttributeOptionsCount = null === filteredAttributeOptions ? 0 : filteredAttributeOptions.length;
-
-  const onSearchChange = (searchValue: string) => {
+  const onSearch = (searchValue: string) => {
     if (searchValue) {
       setIsDraggable(false);
       setAutoSortingReadOnly(true);
@@ -108,8 +118,14 @@ const AttributeOptionTable = ({
       }
       setAutoSortingReadOnly(false);
     }
+
     setSearchValue(searchValue);
+    debouncedSearch(searchValue);
   };
+
+  const attributeOptionsCount = null === attributeOptions ? 0 : attributeOptions.length;
+
+  const filteredAttributeOptionsCount = null === filteredAttributeOptions ? 0 : filteredAttributeOptions.length;
 
   return (
     <div className="AknSubsection AknAttributeOption-list">
@@ -124,7 +140,7 @@ const AttributeOptionTable = ({
         placeholder={translate('pim_enrich.entity.attribute_option.module.edit.search.placeholder')}
         count={filteredAttributeOptionsCount}
         searchValue={searchValue}
-        onSearchChange={onSearchChange}
+        onSearchChange={onSearch}
       />
 
       {filteredAttributeOptionsCount === 0 && attributeOptionsCount > 0 && <NoResultOnSearch />}
