@@ -105,6 +105,7 @@ akeneo.tailored_export:
             locale: If the attribute used as label has a value per locale, you may select a specific locale.
             channel: If the attribute used as label has a value per channel, you may select a specific channel.
       operation:
+        header: Operations
         replacement:
           title: Replace value
           placeholder: Define the replacement value
