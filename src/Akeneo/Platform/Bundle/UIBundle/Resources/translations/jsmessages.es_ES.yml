@@ -372,15 +372,3 @@ pim_settings:
   settings_menu: Menú de ajustes
   catalog_settings: Configuración del catálogo
   product_settings: Ajustes del producto
-  count:
-    categories: Tienes {{ countTrees }} árboles y {{ countCategories }} categorías
-    locales: Tienes {{ count }} locales habilitados
-    currencies: Tienes {{ count }} monedas habilitadas
-    attribute_groups: Tiene {{ count }} grupos de atributos
-    attributes: Tienes {{ count }} atributos
-    families: Tienes {{ count }} familias
-    measurements: Tiene {{ count }} mediciones
-    association_types: Tienes {{ count }} tipos de asociación
-    group_types: Tiene {{ count }} tipos de grupos
-    groups: Tiene {{ count }} grupos
-    rules: Tiene {{ count }} reglas habilitadas

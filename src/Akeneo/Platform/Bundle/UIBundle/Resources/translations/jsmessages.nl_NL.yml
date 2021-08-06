@@ -372,15 +372,3 @@ pim_settings:
   settings_menu: Menu Instellingen
   catalog_settings: Catalogusinstellingen
   product_settings: Productinstellingen
-  count:
-    categories: U hebt {{ countTrees }} bomen en {{ countCategories }} categorieën
-    locales: U hebt {{ count }} ingeschakelde talen
-    currencies: U hebt {{ count }} ingeschakelde munteenheden
-    attribute_groups: U hebt {{ count }} attribuutgroepen
-    attributes: U hebt {{ count }} attributen
-    families: U hebt {{ count }} families
-    measurements: U hebt {{ count }} metingen
-    association_types: U hebt {{ count }} associatietypes
-    group_types: U hebt {{ count }} groepstypes
-    groups: U hebt {{ count }} groepen
-    rules: U hebt {{ count }} ingeschakelde regels
