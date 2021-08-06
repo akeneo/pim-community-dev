@@ -8,6 +8,7 @@ import {Attribute, AttributeType} from '../models/Attribute';
 import {getTranslatedTableConfigurationFromVariationTemplate} from '../models/TranslatedTableConfigurationProvider';
 import {Locale} from '@akeneo-pim-community/settings-ui';
 import {LocaleCode} from '@akeneo-pim-community/shared';
+import {clearCacheSelectOptions} from '../repositories/SelectOption';
 // eslint-disable-next-line @typescript-eslint/no-var-requires
 const translate = require('oro/translator');
 // eslint-disable-next-line @typescript-eslint/no-var-requires
@@ -55,6 +56,7 @@ class TableStructureTab extends (BaseView as {new (options: {config: TableStruct
   }
 
   resetSavedColumns(): void {
+    clearCacheSelectOptions();
     this.savedColumnCodes = undefined;
   }
 

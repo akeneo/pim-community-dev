@@ -4,6 +4,12 @@ import {fetchSelectOptions} from '../fetchers/SelectOptionsFetcher';
 
 const selectOptionsCache: {[key: string]: SelectOption[] | null} = {};
 
+const clearCacheSelectOptions: () => void = () => {
+  for (const key in selectOptionsCache) {
+    delete selectOptionsCache[key];
+  }
+};
+
 const getSelectOptions = async (
   router: Router,
   attributeCode: string,
@@ -27,4 +33,4 @@ const getSelectOption = async (
   return options?.find(option => option.code === selectOptionCode) ?? null;
 };
 
-export {getSelectOptions, getSelectOption};
+export {getSelectOptions, getSelectOption, clearCacheSelectOptions};

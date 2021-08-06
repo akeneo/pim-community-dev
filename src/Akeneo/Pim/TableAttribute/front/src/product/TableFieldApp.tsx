@@ -7,6 +7,7 @@ import {CopyContext, TemplateContext, Violations} from '../legacy/table-field';
 import {ChannelCode, LocaleCode, useTranslate} from '@akeneo-pim-community/shared';
 import {AddRowsButton} from './AddRowsButton';
 import {ColumnCode, SelectOptionCode} from '../models/TableConfiguration';
+import {clearCacheSelectOptions} from '../repositories/SelectOption';
 
 const TableInputContainer = styled.div<{isCompareTranslate: boolean} & AkeneoThemedProps>`
   ${({isCompareTranslate}) => !isCompareTranslate && 'flex-basis: 100% !important'}
@@ -127,6 +128,10 @@ const TableFieldApp: React.FC<TableFieldAppProps> = ({
       return old;
     }, [] as ViolatedCell[])
   );
+
+  React.useEffect(() => {
+    clearCacheSelectOptions();
+  }, []);
 
   const renderElements: (position: string) => React.ReactNode = position => {
     return (
