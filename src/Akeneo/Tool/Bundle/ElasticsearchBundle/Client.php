@@ -56,6 +56,18 @@ class Client
         $this->client = $builder->build();
     }
 
+    public static function duplicateClient(Client $client, string $indexName): self
+    {
+        return new self(
+            $client->builder,
+            $client->configurationLoader,
+            $client->hosts,
+            $indexName,
+            $client->idPrefix,
+            $client->maxChunkSize
+        );
+    }
+
     /**
      * @param string       $id
      * @param array        $body
