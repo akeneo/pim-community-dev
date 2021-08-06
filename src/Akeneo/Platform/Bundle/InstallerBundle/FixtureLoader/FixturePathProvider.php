@@ -36,7 +36,7 @@ class FixturePathProvider
         }
 
         if (null === $installerDataDir || !is_dir($installerDataDir)) {
-            throw new \RuntimeException('Installer data directory cannot be found.');
+            throw new \RuntimeException('Installer data directory cannot be found.', 1);
         }
 
         if (DIRECTORY_SEPARATOR !== substr($installerDataDir, -1, 1)) {
