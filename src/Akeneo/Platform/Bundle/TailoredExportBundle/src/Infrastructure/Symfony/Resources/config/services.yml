@@ -16,7 +16,7 @@ services:
 
     Akeneo\Platform\TailoredExport\Application\ProductMapper:
         arguments:
-            - '@Akeneo\Platform\TailoredExport\Application\OperationHandler'
+            - '@Akeneo\Platform\TailoredExport\Application\OperationApplier'
             - '@Akeneo\Platform\TailoredExport\Application\Query\Selection\SelectionHandler'
 
     Akeneo\Platform\TailoredExport\Application\MediaToExportExtractor:

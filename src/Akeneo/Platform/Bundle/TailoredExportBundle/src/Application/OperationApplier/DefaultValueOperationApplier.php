@@ -11,18 +11,20 @@ declare(strict_types=1);
  * file that was distributed with this source code.
  */
 
-namespace Akeneo\Platform\TailoredExport\Application\OperationHandler;
+namespace Akeneo\Platform\TailoredExport\Application\OperationApplier;
 
-use Akeneo\Platform\TailoredExport\Application\Query\Operation\OperationInterface;
 use Akeneo\Platform\TailoredExport\Application\Query\Operation\DefaultValueOperation;
+use Akeneo\Platform\TailoredExport\Application\Query\Operation\OperationInterface;
 use Akeneo\Platform\TailoredExport\Domain\SourceValue\NullValue;
 use Akeneo\Platform\TailoredExport\Domain\SourceValue\StringValue;
 use Akeneo\Platform\TailoredExport\Domain\SourceValueInterface;
 
-class DefaultValueHandler implements OperationHandlerInterface
+class DefaultValueOperationApplier implements OperationApplierInterface
 {
-    public function handleOperation(OperationInterface $operation, SourceValueInterface $value): SourceValueInterface
-    {
+    public function applyOperation(
+        OperationInterface $operation,
+        SourceValueInterface $value
+    ): SourceValueInterface {
         if (
             !$operation instanceof DefaultValueOperation
             || !$value instanceof NullValue

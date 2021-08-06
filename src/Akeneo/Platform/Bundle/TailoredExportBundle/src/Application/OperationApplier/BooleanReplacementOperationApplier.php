@@ -11,26 +11,28 @@ declare(strict_types=1);
  * file that was distributed with this source code.
  */
 
-namespace Akeneo\Platform\TailoredExport\Application\OperationHandler;
+namespace Akeneo\Platform\TailoredExport\Application\OperationApplier;
 
 use Akeneo\Platform\TailoredExport\Application\Query\Operation\OperationInterface;
 use Akeneo\Platform\TailoredExport\Application\Query\Operation\ReplacementOperation;
-use Akeneo\Platform\TailoredExport\Domain\SourceValue\EnabledValue;
+use Akeneo\Platform\TailoredExport\Domain\SourceValue\BooleanValue;
 use Akeneo\Platform\TailoredExport\Domain\SourceValue\StringValue;
 use Akeneo\Platform\TailoredExport\Domain\SourceValueInterface;
 
-class EnabledReplacementHandler implements OperationHandlerInterface
+class BooleanReplacementOperationApplier implements OperationApplierInterface
 {
-    public function handleOperation(OperationInterface $operation, SourceValueInterface $value): SourceValueInterface
-    {
+    public function applyOperation(
+        OperationInterface $operation,
+        SourceValueInterface $value
+    ): SourceValueInterface {
         if (
             !$operation instanceof ReplacementOperation
-            || !$value instanceof EnabledValue
+            || !$value instanceof BooleanValue
         ) {
-            throw new \LogicException('Cannot apply Enabled replacement operation');
+            throw new \LogicException('Cannot apply Boolean replacement operation');
         }
 
-        $data = $value->isEnabled() ? 'true' : 'false';
+        $data = $value->getData() ? 'true' : 'false';
 
         if ($operation->hasMappedValue($data)) {
             $mappedValue = $operation->getMappedValue($data);
@@ -43,6 +45,6 @@ class EnabledReplacementHandler implements OperationHandlerInterface
 
     public function supports(OperationInterface $operation, SourceValueInterface $value): bool
     {
-        return $value instanceof EnabledValue && $operation instanceof ReplacementOperation;
+        return $value instanceof BooleanValue && $operation instanceof ReplacementOperation;
     }
 }
