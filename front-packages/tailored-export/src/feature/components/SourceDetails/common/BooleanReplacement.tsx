@@ -9,7 +9,7 @@ type BooleanReplacementOperation = {
   };
 };
 
-const isBooleanReplacementOperation = (operation?: any) =>
+const isBooleanReplacementOperation = (operation?: any): operation is BooleanReplacementOperation =>
   undefined !== operation &&
   'type' in operation &&
   'replacement' === operation.type &&
