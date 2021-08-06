@@ -51,7 +51,7 @@ final class HandleScalarValueTest extends AttributeTestCase
                 'value' => new StringValue('Sunglasses'),
                 'expected' => [self::TARGET_NAME => 'Sunglasses']
             ],
-            [
+            'it applies default value operation when value is null' => [
                 'operations' => [
                     DefaultValueOperation::createFromNormalized([
                         'value' => 'n/a'
@@ -60,6 +60,16 @@ final class HandleScalarValueTest extends AttributeTestCase
                 'selection' => new ScalarSelection(),
                 'value' => new NullValue(),
                 'expected' => [self::TARGET_NAME => 'n/a']
+            ],
+            'it does not apply default value operation when value is not null' => [
+                'operations' => [
+                    DefaultValueOperation::createFromNormalized([
+                        'value' => 'n/a'
+                    ])
+                ],
+                'selection' => new ScalarSelection(),
+                'value' => new StringValue('Sunglasses'),
+                'expected' => [self::TARGET_NAME => 'Sunglasses']
             ],
         ];
     }

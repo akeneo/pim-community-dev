@@ -31,7 +31,7 @@ const getDefaultTextSource = (
   selection: {type: 'code'},
 });
 
-const isTextOperations = (operations: any): operations is TextOperations => {
+const isTextOperations = (operations: Object): operations is TextOperations => {
   return Object.entries(operations).every(([type, operation]) => {
     switch (type) {
       case 'default_value':

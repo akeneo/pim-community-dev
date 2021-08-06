@@ -1,6 +1,6 @@
 import {isTextSource} from './model';
 
-test('it validates that its a text source', () => {
+test('it validates a text source', () => {
   expect(
     isTextSource({
       uuid: '123',
