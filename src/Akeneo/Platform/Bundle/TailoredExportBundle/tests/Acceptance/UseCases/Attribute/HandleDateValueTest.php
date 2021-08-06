@@ -13,9 +13,11 @@ declare(strict_types=1);
 
 namespace Akeneo\Platform\TailoredExport\Test\Acceptance\UseCases\Attribute;
 
+use Akeneo\Platform\TailoredExport\Application\Query\Operation\DefaultValueOperation;
 use Akeneo\Platform\TailoredExport\Application\Query\Selection\Date\DateSelection;
 use Akeneo\Platform\TailoredExport\Application\Query\Selection\SelectionInterface;
 use Akeneo\Platform\TailoredExport\Domain\SourceValue\DateValue;
+use Akeneo\Platform\TailoredExport\Domain\SourceValue\NullValue;
 use Akeneo\Platform\TailoredExport\Domain\SourceValueInterface;
 use PHPUnit\Framework\Assert;
 
@@ -54,7 +56,27 @@ final class HandleDateValueTest extends AttributeTestCase
                 'selection' => new DateSelection('dd/mm/yy'),
                 'value' => new DateValue(new \DateTime('16-05-2020T02:12:25')),
                 'expected' => [self::TARGET_NAME => '16/05/20']
-            ]
+            ],
+            'it applies default value operation when value is null' => [
+                'operations' => [
+                    DefaultValueOperation::createFromNormalized([
+                        'value' => 'n/a'
+                    ])
+                ],
+                'selection' => new DateSelection('dd/mm/yy'),
+                'value' => new NullValue(),
+                'expected' => [self::TARGET_NAME => 'n/a']
+            ],
+            'it does not apply default value operation when value is not null' => [
+                'operations' => [
+                    DefaultValueOperation::createFromNormalized([
+                        'value' => 'n/a'
+                    ])
+                ],
+                'selection' => new DateSelection('dd/mm/yy'),
+                'value' => new DateValue(new \DateTime('16-05-2020T02:12:25')),
+                'expected' => [self::TARGET_NAME => '16/05/20']
+            ],
         ];
     }
 }
