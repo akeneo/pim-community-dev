@@ -20,41 +20,32 @@ use Akeneo\Pim\TableAttribute\Domain\TableConfiguration\Repository\SelectOptionC
 use Akeneo\Pim\TableAttribute\Domain\TableConfiguration\SelectColumn;
 use Akeneo\Pim\TableAttribute\Domain\TableConfiguration\TableConfiguration;
 use Akeneo\Pim\TableAttribute\Domain\TableConfiguration\ValueObject\ColumnCode;
-use Oro\Bundle\SecurityBundle\SecurityFacade;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
-use Symfony\Component\Security\Core\Exception\AccessDeniedException;
 
 final class GetSelectOptionsController
 {
     private AttributeRepositoryInterface $attributeRepository;
     private ColumnFactory $columnFactory;
     private SelectOptionCollectionRepository $optionCollectionRepository;
-    private SecurityFacade $securityFacade;
 
     public function __construct(
         AttributeRepositoryInterface $attributeRepository,
         ColumnFactory $columnFactory,
-        SelectOptionCollectionRepository $optionCollectionRepository,
-        SecurityFacade $securityFacade
+        SelectOptionCollectionRepository $optionCollectionRepository
     ) {
         $this->attributeRepository = $attributeRepository;
         $this->columnFactory = $columnFactory;
         $this->optionCollectionRepository = $optionCollectionRepository;
-        $this->securityFacade = $securityFacade;
     }
 
     public function __invoke(Request $request, string $attributeCode, string $columnCode): Response
     {
         if (!$request->isXmlHttpRequest()) {
             return new RedirectResponse('/');
-        }
-
-        if (!$this->securityFacade->isGranted('pim_enrich_attribute_edit')) {
-            throw new AccessDeniedException();
         }
 
         $attribute = $this->attributeRepository->findOneByIdentifier($attributeCode);

@@ -28,7 +28,6 @@ $rules = [
             'Symfony\Component\EventDispatcher\EventSubscriberInterface',
             'Symfony\Component\EventDispatcher\GenericEvent',
             'Symfony\Component\HttpFoundation',
-            'Symfony\Component\Security\Core\Exception\AccessDeniedException',
 
             // doctrine
             'Doctrine\Common\EventSubscriber',
@@ -63,7 +62,6 @@ $rules = [
             'Akeneo\Pim\Enrichment\Component\Product\Connector\ArrayConverter\FlatToStandard\ValueConverter\ValueConverterInterface',
             'Akeneo\Pim\Enrichment\Component\Product\Normalizer\Versioning\Product\AbstractValueDataNormalizer',
             'Akeneo\Pim\Enrichment\Component\Product\Updater\Copier\AbstractAttributeCopier',
-            'Oro\Bundle\SecurityBundle\SecurityFacade',
             'Akeneo\Tool\Component\Batch',
         ]
     )->in('Akeneo\Pim\TableAttribute\Infrastructure'),

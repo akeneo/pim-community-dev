@@ -43,21 +43,6 @@ final class GetSelectOptionsControllerIntegration extends ControllerIntegrationT
     }
 
     /** @test */
-    public function it_is_forbidden_when_user_does_not_have_access(): void
-    {
-        $this->get('akeneo_integration_tests.helper.authenticator')->logIn($this->client, 'julia');
-        $this->disableAcl('action:pim_enrich_attribute_edit');
-
-        $this->webClientHelper->callApiRoute(
-            $this->client,
-            'pim_table_attribute_get_select_options',
-            ['attributeCode' => 'nutrition', 'columnCode' => 'ingredients']
-        );
-        $response = $this->client->getResponse();
-        Assert::assertSame(Response::HTTP_FORBIDDEN, $response->getStatusCode());
-    }
-
-    /** @test */
     public function it_returns_the_options_of_a_select_column(): void
     {
         $this->get('akeneo_integration_tests.helper.authenticator')->logIn($this->client, 'julia');
