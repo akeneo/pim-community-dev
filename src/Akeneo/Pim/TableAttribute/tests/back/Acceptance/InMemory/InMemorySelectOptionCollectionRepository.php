@@ -32,7 +32,7 @@ class InMemorySelectOptionCollectionRepository implements SelectOptionCollection
 
     public function getByColumn(string $attributeCode, ColumnCode $columnCode): SelectOptionCollection
     {
-        return $this->options[$attributeCode][$columnCode->asString()] ?? SelectOptionCollection::empty();
+        return $this->options[\strtolower($attributeCode)][\strtolower($columnCode->asString())] ?? SelectOptionCollection::empty();
     }
 
     public function upsert(
@@ -40,8 +40,8 @@ class InMemorySelectOptionCollectionRepository implements SelectOptionCollection
         ColumnCode $columnCode,
         SelectOptionCollection $selectOptionCollection
     ): void {
-        $formerOptions = $this->options[$attributeCode][$columnCode->asString()] ?? SelectOptionCollection::empty();
-        $this->options[$attributeCode][$columnCode->asString()] = SelectOptionCollection::fromNormalized(
+        $formerOptions = $this->options[\strtolower($attributeCode)][\strtolower($columnCode->asString())] ?? SelectOptionCollection::empty();
+        $this->options[\strtolower($attributeCode)][\strtolower($columnCode->asString())] = SelectOptionCollection::fromNormalized(
             \array_merge($formerOptions->normalize(), $selectOptionCollection->normalize())
         );
     }

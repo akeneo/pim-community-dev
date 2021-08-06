@@ -151,6 +151,6 @@ final class SelectOptionDetailsProcessor implements ItemProcessorInterface, Step
 
     private function buildKey(string $attributeCode, string $columnCode): string
     {
-        return sprintf('%s-%s', strtolower($attributeCode), strtolower($columnCode));
+        return sprintf('%s-%s', \strtolower($attributeCode), \strtolower($columnCode));
     }
 }

@@ -31,7 +31,7 @@ final class UpdateAttributeEndToEnd extends AbstractAttributeApiTestCase
         "group":"attributeGroupA",
         "table_configuration": [
             {
-                "code": "ingredients",
+                "code": "INGredients",
                 "data_type": "select",
                 "labels": {
                     "fr_FR":"Ingraydients",

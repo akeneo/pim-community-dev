@@ -108,6 +108,47 @@ final class SqlTableConfigurationRepositoryIntegration extends TestCase
     }
 
     /** @test */
+    public function it_updates_a_table_configuration_with_case_insensitive(): void
+    {
+        $tableConfiguration = TableConfiguration::fromColumnDefinitions([
+            SelectColumn::fromNormalized(['code' => 'ingredients']),
+            TextColumn::fromNormalized(['code' => 'quantity']),
+            BooleanColumn::fromNormalized(['code' => 'isAllergenic']),
+        ]);
+        $this->sqlTableConfigurationRepository->save('nutrition', $tableConfiguration);
+
+        $rows = $this->connection->executeQuery(
+            'SELECT * FROM pim_catalog_table_column WHERE attribute_id = :attribute_id ORDER BY column_order',
+            ['attribute_id' => $this->tableAttributeId]
+        )->fetchAll();
+
+        self::assertCount(3, $rows);
+        $idIngredients = $rows[0]['id'];
+        $idQuantity = $rows[1]['id'];
+
+        $tableConfiguration = TableConfiguration::fromColumnDefinitions([
+            SelectColumn::fromNormalized(['code' => 'INGredients']),
+            TextColumn::fromNormalized(['code' => 'aqr']),
+            TextColumn::fromNormalized(['code' => 'QUANTITY']),
+        ]);
+        $this->sqlTableConfigurationRepository->save('NUTrition', $tableConfiguration);
+
+        $rows = $this->connection->executeQuery(
+            'SELECT * FROM pim_catalog_table_column WHERE attribute_id = :attribute_id ORDER BY column_order',
+            ['attribute_id' => $this->tableAttributeId]
+        )->fetchAll();
+
+        self::assertCount(3, $rows);
+        self::assertSame('ingredients', $rows[0]['code']);
+        // It's really important the column is not recreated (= the id still the same).
+        // Otherwise all its options are deleted by cascade.
+        self::assertSame($idIngredients, $rows[0]['id']);
+        self::assertSame('quantity', $rows[2]['code']);
+        self::assertSame($idQuantity, $rows[2]['id']);
+        self::assertSame('aqr', $rows[1]['code']);
+    }
+
+    /** @test */
     public function it_saves_a_table_configuration_with_reserved_keywords_as_column_codes()
     {
         $tableConfiguration = TableConfiguration::fromColumnDefinitions(

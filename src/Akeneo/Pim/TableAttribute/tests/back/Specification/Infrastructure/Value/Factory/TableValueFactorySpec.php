@@ -54,9 +54,9 @@ class TableValueFactorySpec extends ObjectBehavior
             null,
             null,
             [
-                ['quantity' => 5, 'ingredient' => 'salt'],
+                ['quantity' => 5, 'ingrediENT' => 'SAlt'],
                 ['quantity' => 10, 'ingredient' => 'sugar'],
-                ['quantity' => 20, 'ingredient' => 'salt'],
+                ['quantity' => 20, 'INGredient' => 'SALT'],
                 ['quantity' => 30, 'ingredient' => 'salt'],
             ]
         );

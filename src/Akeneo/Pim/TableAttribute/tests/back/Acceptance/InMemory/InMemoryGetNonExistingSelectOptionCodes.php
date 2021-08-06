@@ -32,7 +32,7 @@ class InMemoryGetNonExistingSelectOptionCodes implements GetNonExistingSelectOpt
             $selectOptionCodes,
             $this->collectionRepository->getByColumn($attributeCode, $columnCode)->getOptionCodes(),
             function (SelectOptionCode $a, SelectOptionCode $b): int {
-                return \strcmp($a->asString(), $b->asString());
+                return \strcasecmp($a->asString(), $b->asString());
             }
         );
     }

@@ -88,16 +88,18 @@ class TableValueFactory implements ValueFactory
     private function removeDuplicateOnFirstColumn(Attribute $attribute, array $data): array
     {
         $tableConfiguration = $this->tableConfigurationRepository->getByAttributeCode($attribute->code());
-        $firstColumnCode = $tableConfiguration->getFirstColumnCode()->asString();
+        $firstColumnCode = \strtolower($tableConfiguration->getFirstColumnCode()->asString());
 
         $foundOptionCodes = [];
         foreach ($data as $rowIndex => $row) {
-            if (array_key_exists($firstColumnCode, $row)) {
-                $firstColumnValue = $row[$firstColumnCode];
-                if (array_key_exists($firstColumnValue, $foundOptionCodes)) {
-                    unset($data[$foundOptionCodes[$firstColumnValue]]);
+            foreach ($row as $columnCode => $value) {
+                if ($firstColumnCode === \strtolower($columnCode)) {
+                    $optionCode = \strtolower((string) $value);
+                    if (array_key_exists($optionCode, $foundOptionCodes)) {
+                        unset($data[$foundOptionCodes[$optionCode]]);
+                    }
+                    $foundOptionCodes[$optionCode] = $rowIndex;
                 }
-                $foundOptionCodes[$firstColumnValue] = $rowIndex;
             }
         }
 

@@ -55,4 +55,23 @@ class SelectOptionCollectionSpec extends ObjectBehavior
         $this->getByCode('salt')->shouldBeAnInstanceOf(SelectOption::class);
         $this->getByCode('unknown')->shouldReturn(null);
     }
+
+    function it_cannot_contain_duplicated_codes_with_case_insensitive()
+    {
+        $this->beConstructedThrough('fromNormalized', [
+            [
+                ['code' => 'sugar'],
+                ['code' => 'salt', 'labels' => ['fr_FR' => 'Sel']],
+                ['code' => 'SUGAR', 'labels' => ['en_US' => 'sugar']],
+                ['code' => 'SALT', 'labels' => ['en_US' => 'salt']],
+            ]
+        ]);
+
+        $this->normalize()->shouldBeLike(
+            [
+                ['code' => 'SUGAR', 'labels' => ['en_US' => 'sugar']],
+                ['code' => 'SALT', 'labels' => ['en_US' => 'salt']],
+            ]
+        );
+    }
 }

@@ -53,6 +53,12 @@ Feature: Enrich a table attribute value
       | nutrition | [{"ingredient": "sugar", "quantity": 1, "isAllergen":true, "comments": "foo"}] |
     Then no error is raised
 
+  Scenario: Providing a valid table should not raise any error with case insensitive
+    When a product is created with values:
+      | attribute | json_data                                                                      |
+      | nutrition | [{"INGredient": "SUGar", "quantity": 1, "ISAllergen":true, "COMMENTS": "foo"}] |
+    Then no error is raised
+
   Scenario: Providing a non existent option for a select cell should raise an error
     When a product is created with values:
       | attribute | json_data                                                                       |

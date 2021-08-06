@@ -47,7 +47,7 @@ class TableConfigurationSpec extends ObjectBehavior
     {
         $this->beConstructedThrough('fromColumnDefinitions', [[
             SelectColumn::fromNormalized(['code' => 'ingredient']),
-            TextColumn::fromNormalized(['code' => 'description']),
+            TextColumn::fromNormalized(['code' => 'descripTION']),
             NumberColumn::fromNormalized(['code' => 'quantity']),
         ]]);
 
@@ -94,7 +94,7 @@ class TableConfigurationSpec extends ObjectBehavior
             ->shouldBeLike(ValidationCollection::createEmpty());
         $this->getValidations(ColumnCode::fromString('quantity'))
             ->shouldBeLike(ValidationCollection::fromNormalized(ColumnDataType::fromString('number'), ['min' => 5, 'max' => 20]));
-        $this->getValidations(ColumnCode::fromString('description'))
+        $this->getValidations(ColumnCode::fromString('DESCRIPtion'))
             ->shouldBeLike(ValidationCollection::fromNormalized(ColumnDataType::fromString('text'), ['max_length' => 50]));
         $this->getValidations(ColumnCode::fromString('unknown'))
             ->shouldBe(null);

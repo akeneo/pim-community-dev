@@ -154,6 +154,30 @@ final class CreateAttributeContext implements Context
     }
 
     /**
+     * @When /^I create a table attribute with a configuration having column codes "([^"]*)"$/
+     */
+    public function iCreateATableAttributeWithAConfigurationHavingColumnCodes(string $codes): void
+    {
+        $rawTableConfiguration = [
+            ['data_type' => 'select', 'code' => 'ingredients'],
+        ];
+        $codes = explode(',', $codes);
+        foreach ($codes as $code) {
+            $rawTableConfiguration[] = ['data_type' => 'text', 'code' => $code];
+        }
+
+        $this->iCreateATableAttributeWithAConfiguration(sprintf('{"data_type": "text", "code": "%s"}', $code));
+
+        $attribute = $this->attributeBuilder
+            ->withCode('table')
+            ->withGroupCode('marketing')
+            ->withType(AttributeTypes::TEXT)
+            ->build();
+        $attribute->setRawTableConfiguration($rawTableConfiguration);
+        $this->saveAttribute($attribute);
+    }
+
+    /**
      * @When I create a text attribute with a table configuration
      */
     public function iCreateATextAttributeWithAConfiguration(): void

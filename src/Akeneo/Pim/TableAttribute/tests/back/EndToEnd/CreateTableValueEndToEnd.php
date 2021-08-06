@@ -49,6 +49,31 @@ class CreateTableValueEndToEnd extends ApiTestCase
         Assert::assertEqualsCanonicalizing($expectedData, $value->getData()->normalize());
     }
 
+    public function testItCreatesATableProductValueWithCaseInsensitive(): void
+    {
+        $client = $this->createAuthenticatedClient();
+
+        $data = [
+            'identifier' => 'id1',
+            'values' => [
+                'nutrition' => [
+                    ['locale' => null, 'scope' => null, 'data' => [['INGredients' => 'BAR']]],
+                ],
+            ],
+        ];
+
+        $client->request('POST', 'api/rest/v1/products', [], [], [], json_encode($data));
+        $response = $client->getResponse();
+        Assert::assertSame(Response::HTTP_CREATED, $response->getStatusCode());
+
+        $productFromDb = $this->get('pim_catalog.repository.product')->findOneByIdentifier('id1');
+        Assert::assertNotNull($productFromDb);
+        $value = $productFromDb->getValue('nutrition');
+        Assert::assertInstanceOf(TableValue::class, $value);
+        $expectedData = [['foo' => 'BAR']];
+        Assert::assertEqualsCanonicalizing($expectedData, $value->getData()->normalize());
+    }
+
     public function testItInvalidatesOnInvalidFormat(): void
     {
         $client = $this->createAuthenticatedClient();

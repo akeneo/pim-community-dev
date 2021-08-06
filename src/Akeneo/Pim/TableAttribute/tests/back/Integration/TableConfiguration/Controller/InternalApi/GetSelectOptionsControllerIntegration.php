@@ -71,6 +71,19 @@ final class GetSelectOptionsControllerIntegration extends ControllerIntegrationT
     }
 
     /** @test */
+    public function it_returns_the_options_of_a_select_column_case_insensitive(): void
+    {
+        $this->get('akeneo_integration_tests.helper.authenticator')->logIn($this->client, 'julia');
+        $this->webClientHelper->callApiRoute(
+            $this->client,
+            'pim_table_attribute_get_select_options',
+            ['attributeCode' => 'NUtrition', 'columnCode' => 'INgredients']
+        );
+        $response = $this->client->getResponse();
+        Assert::assertSame(Response::HTTP_OK, $response->getStatusCode());
+    }
+
+    /** @test */
     public function it_returns_404_when_attribute_is_unknown(): void
     {
         $this->get('akeneo_integration_tests.helper.authenticator')->logIn($this->client, 'julia');

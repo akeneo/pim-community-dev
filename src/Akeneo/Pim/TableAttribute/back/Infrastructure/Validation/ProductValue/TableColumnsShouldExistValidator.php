@@ -36,10 +36,10 @@ final class TableColumnsShouldExistValidator extends ConstraintValidator
             return;
         }
 
-        $columnCodes = $value->getData()->uniqueColumnCodes();
+        $columnCodes = \array_map('strtolower', $value->getData()->uniqueColumnCodes());
         $tableConfiguration = $this->tableConfigurationRepository->getByAttributeCode($value->getAttributeCode());
         $existingColumnCodes = \array_map(
-            fn (ColumnCode $columnCode): string => $columnCode->asString(),
+            fn (ColumnCode $columnCode): string => \strtolower($columnCode->asString()),
             $tableConfiguration->columnCodes()
         );
 

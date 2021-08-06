@@ -108,7 +108,7 @@ class TableColumnsShouldExistValidatorSpec extends ObjectBehavior
         $tableConfigurationRepository->getByAttributeCode('nutrition')->shouldBeCalled()->willReturn(
             TableConfiguration::fromColumnDefinitions(
                 [
-                    SelectColumn::fromNormalized(['code' => 'ingredient']),
+                    SelectColumn::fromNormalized(['code' => 'INGredient']),
                     NumberColumn::fromNormalized(['code' => 'quantity']),
                 ]
             )

@@ -29,7 +29,7 @@ final class SelectOptionCollection
     {
         $this->options = [];
         foreach ($options as $option) {
-            $this->options[$option->code()->asString()] = $option;
+            $this->options[\strtolower($option->code()->asString())] = $option;
         }
     }
 
@@ -73,6 +73,6 @@ final class SelectOptionCollection
 
     public function getByCode(string $optionCode): ?SelectOption
     {
-        return $this->options[$optionCode] ?? null;
+        return $this->options[\strtolower($optionCode)] ?? null;
     }
 }

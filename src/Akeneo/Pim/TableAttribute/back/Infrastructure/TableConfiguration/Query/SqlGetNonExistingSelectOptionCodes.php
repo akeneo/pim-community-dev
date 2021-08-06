@@ -63,9 +63,7 @@ SQL;
                 fn (string $code): SelectOptionCode => SelectOptionCode::fromString($code),
                 $existingOptionCodes
             ),
-            function (SelectOptionCode $a, SelectOptionCode $b): int {
-                return \strcmp($a->asString(), $b->asString());
-            }
+            fn (SelectOptionCode $a, SelectOptionCode $b): int => \strcasecmp($a->asString(), $b->asString())
         );
     }
 }

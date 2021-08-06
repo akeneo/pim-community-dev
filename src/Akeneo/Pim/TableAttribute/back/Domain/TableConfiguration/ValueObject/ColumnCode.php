@@ -42,6 +42,6 @@ final class ColumnCode
 
     public function equals(ColumnCode $otherColumnCode): bool
     {
-        return $this->asString() === $otherColumnCode->asString();
+        return \strtolower($this->asString()) === \strtolower($otherColumnCode->asString());
     }
 }

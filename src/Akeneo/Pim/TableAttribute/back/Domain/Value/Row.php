@@ -81,6 +81,19 @@ final class Row implements \IteratorAggregate
 
     public function cell(ColumnCode $columnCode): ?Cell
     {
-        return $this->cells[$columnCode->asString()] ?? null;
+        // Early return for optimistic path (good string case)
+        $value = $this->cells[$columnCode->asString()] ?? null;
+        if (null !== $value) {
+            return $value;
+        }
+
+        $expectedStringColumnCode = \strtolower($columnCode->asString());
+        foreach ($this->cells as $stringColumnCode => $cell) {
+            if (\strtolower(\strval($stringColumnCode)) === $expectedStringColumnCode) {
+                return $cell;
+            }
+        }
+
+        return null;
     }
 }

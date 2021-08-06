@@ -46,6 +46,8 @@ class RowSpec extends ObjectBehavior
     function it_returns_the_cell_given_a_column_code()
     {
         $this->cell(ColumnCode::fromString('0'))->shouldBeLike(Cell::fromNormalized('baz'));
+        $this->cell(ColumnCode::fromString('foo'))->shouldBeLike(Cell::fromNormalized('bar'));
+        $this->cell(ColumnCode::fromString('FOo'))->shouldBeLike(Cell::fromNormalized('bar'));
         $this->cell(ColumnCode::fromString('unknown'))->shouldReturn(null);
     }
 }

@@ -22,16 +22,21 @@ class IsColumnCodeUniqueValidator extends ConstraintValidator
     public function validate($value, Constraint $constraint): void
     {
         Assert::isInstanceOf($constraint, IsColumnCodeUnique::class);
-        if (!is_array($value)) {
+        if (!\is_array($value)) {
             return;
         }
 
-        $codes = array_column($value, 'code');
-        $duplicateCodes = array_unique(array_diff_key($codes, array_unique($codes)));
+        $codes = \array_column($value, 'code');
+        $lowercaseCodes = \array_map('strtolower', $codes);
+        $lowercaseDuplicateCodes = \array_diff_key($lowercaseCodes, \array_unique($lowercaseCodes));
+        $duplicateCodes = \array_intersect_key($codes, $lowercaseDuplicateCodes);
         if (count($duplicateCodes) > 0) {
             $this->context->buildViolation(
                 'pim_table_configuration.validation.table_configuration.duplicated_column_code',
-                [ '%duplicateCodes%' => join(', ', $duplicateCodes) ]
+                [
+                    '%duplicateCodes%' => \join(', ', $duplicateCodes),
+                    '%count%' => \count($duplicateCodes),
+                ],
             )->addViolation();
         }
     }

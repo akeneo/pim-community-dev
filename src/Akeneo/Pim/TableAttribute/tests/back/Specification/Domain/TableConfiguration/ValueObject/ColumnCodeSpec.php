@@ -40,6 +40,7 @@ class ColumnCodeSpec extends ObjectBehavior
         $this->beConstructedThrough('fromString', ['ingredients']);
 
         $this->equals(ColumnCode::fromString('ingredients'))->shouldBe(true);
+        $this->equals(ColumnCode::fromString('INGREDIENTS'))->shouldBe(true);
         $this->equals(ColumnCode::fromString('other'))->shouldBe(false);
     }
 }

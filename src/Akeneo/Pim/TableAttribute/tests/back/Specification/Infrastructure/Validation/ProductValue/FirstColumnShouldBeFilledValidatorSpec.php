@@ -17,7 +17,6 @@ use Akeneo\Pim\TableAttribute\Domain\TableConfiguration\NumberColumn;
 use Akeneo\Pim\TableAttribute\Domain\TableConfiguration\Repository\TableConfigurationRepository;
 use Akeneo\Pim\TableAttribute\Domain\TableConfiguration\SelectColumn;
 use Akeneo\Pim\TableAttribute\Domain\TableConfiguration\TableConfiguration;
-use Akeneo\Pim\TableAttribute\Domain\TableConfiguration\TextColumn;
 use Akeneo\Pim\TableAttribute\Domain\Value\Table;
 use Akeneo\Pim\TableAttribute\Infrastructure\Validation\ProductValue\FirstColumnShouldBeFilled;
 use Akeneo\Pim\TableAttribute\Infrastructure\Validation\ProductValue\FirstColumnShouldBeFilledValidator;
@@ -90,6 +89,17 @@ final class FirstColumnShouldBeFilledValidatorSpec extends ObjectBehavior
         $tableValue = TableValue::value('nutrition', Table::fromNormalized([
             ['ingredient' => 'sugar'],
             ['ingredient' => 'salt'],
+        ]));
+        $context->buildViolation(Argument::cetera())->shouldNotBeCalled();
+
+        $this->validate($tableValue, new FirstColumnShouldBeFilled());
+    }
+
+    function it_does_not_add_violation_when_first_column_is_filled_case_insensitive(ExecutionContext $context)
+    {
+        $tableValue = TableValue::value('nutrition', Table::fromNormalized([
+            ['INGredient' => 'sugar'],
+            ['ingrediENT' => 'salt'],
         ]));
         $context->buildViolation(Argument::cetera())->shouldNotBeCalled();
 

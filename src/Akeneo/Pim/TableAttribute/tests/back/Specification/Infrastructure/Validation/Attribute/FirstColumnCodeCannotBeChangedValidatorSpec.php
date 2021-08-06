@@ -19,7 +19,6 @@ use Akeneo\Pim\TableAttribute\Infrastructure\Validation\Attribute\FirstColumnCod
 use Akeneo\Pim\TableAttribute\Infrastructure\Validation\Attribute\FirstColumnCodeCannotBeChangedValidator;
 use PhpSpec\ObjectBehavior;
 use Prophecy\Argument;
-use Symfony\Component\Validator\Constraint;
 use Symfony\Component\Validator\Constraints\NotBlank;
 use Symfony\Component\Validator\ConstraintValidatorInterface;
 use Symfony\Component\Validator\Context\ExecutionContext;
@@ -69,6 +68,29 @@ final class FirstColumnCodeCannotBeChangedValidatorSpec extends ObjectBehavior
         ]);
         $attributeToValidate->getRawTableConfiguration()->willReturn([
             ['code' => 'ingredients'],
+            ['code' => 'new'],
+        ]);
+
+        $context->buildViolation(Argument::cetera())->shouldNotBeCalled();
+
+        $this->validate($attributeToValidate, new FirstColumnCodeCannotBeChanged());
+    }
+
+    function it_does_nothing_when_the_first_column_code_does_not_change_with_case_insensitive(
+        ExecutionContext $context,
+        AttributeRepositoryInterface $attributeRepository,
+        AttributeInterface $attributeToValidate,
+        AttributeInterface $formerAttribute
+    ) {
+        $attributeToValidate->getCode()->willReturn('table');
+        $attributeRepository->findOneByIdentifier('table')->willReturn($formerAttribute);
+
+        $formerAttribute->getRawTableConfiguration()->willReturn([
+            ['code' => 'ingredients'],
+            ['code' => 'quantity'],
+        ]);
+        $attributeToValidate->getRawTableConfiguration()->willReturn([
+            ['code' => 'INGredients'],
             ['code' => 'new'],
         ]);
 

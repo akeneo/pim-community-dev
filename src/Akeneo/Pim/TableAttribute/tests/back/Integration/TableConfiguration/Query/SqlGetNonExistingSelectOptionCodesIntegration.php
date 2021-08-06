@@ -41,6 +41,13 @@ final class SqlGetNonExistingSelectOptionCodesIntegration extends TestCase
         self::assertEqualsCanonicalizing([SelectOptionCode::fromString('onion')], $nonExistingCodes);
 
         $nonExistingCodes = $this->sqlGetNonExistingSelectOptionCodes->forOptionCodes(
+            'NUTrition',
+            ColumnCode::fromString('INGredients'),
+            [SelectOptionCode::fromString('SALT'), SelectOptionCode::fromString('pepPER'), SelectOptionCode::fromString('onion'), SelectOptionCode::fromString('garlic')]
+        );
+        self::assertEqualsCanonicalizing([SelectOptionCode::fromString('onion')], $nonExistingCodes);
+
+        $nonExistingCodes = $this->sqlGetNonExistingSelectOptionCodes->forOptionCodes(
             'nutrition_copy',
             ColumnCode::fromString('ingredients'),
             [SelectOptionCode::fromString('salt'), SelectOptionCode::fromString('pepper'), SelectOptionCode::fromString('onion'), SelectOptionCode::fromString('garlic')]

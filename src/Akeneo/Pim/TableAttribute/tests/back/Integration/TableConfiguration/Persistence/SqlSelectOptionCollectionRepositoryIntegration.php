@@ -38,6 +38,15 @@ final class SqlSelectOptionCollectionRepositoryIntegration extends TestCase
 
         self::assertEqualsCanonicalizing(
             [
+                ['code' => 'salt', 'labels' => ['en_US' => 'Salt', 'fr_FR' => 'Sel']],
+                ['code' => 'pepper', 'labels' => ['en_US' => 'Pepper', 'fr_FR' => 'Poivre']],
+                ['code' => 'garlic', 'labels' => ['en_US' => 'Garlic', 'fr_FR' => 'Ail']],
+            ],
+            $this->selectOptionCollectionRepository->getByColumn('NUTrition', ColumnCode::fromString('INGREDIENTS'))->normalize()
+        );
+
+        self::assertEqualsCanonicalizing(
+            [
                 ['code' => 'salt', 'labels' => ['en_US' => 'Salt']],
                 ['code' => 'pepper', 'labels' => ['en_US' => 'Pepper']],
             ],
@@ -66,6 +75,25 @@ final class SqlSelectOptionCollectionRepositoryIntegration extends TestCase
             [
                 ['code' => 'salt', 'labels' => ['en_US' => 'Salt', 'fr_FR' => 'Sel']],
                 ['code' => 'chili', 'labels' => ['en_US' => 'Chili', 'fr_FR' => 'Piment']],
+            ],
+            $this->selectOptionCollectionRepository->getByColumn('nutrition', ColumnCode::fromString('ingredients'))->normalize()
+        );
+        $this->assertColumnOptionsOfNutritionCopyAreNotUpdated();
+    }
+
+    /** @test */
+    public function it_saves_option_collection_with_case_insensitive(): void
+    {
+        $this->selectOptionCollectionRepository->save('NUTrition', ColumnCode::fromString('ingREDIENTS'), SelectOptionCollection::fromNormalized([
+            ['code' => 'SALT', 'labels' => ['en_US' => 'Salt', 'fr_FR' => 'Sel']],
+            ['code' => 'PEpper', 'labels' => ['en_US' => 'Pepper', 'fr_FR' => 'Poivre', 'de_DE' => 'Pfeffer']],
+            ['code' => 'CHILI', 'labels' => ['en_US' => 'Chili', 'fr_FR' => 'Piment']],
+        ]));
+        self::assertEqualsCanonicalizing(
+            [
+                ['code' => 'salt', 'labels' => ['en_US' => 'Salt', 'fr_FR' => 'Sel']],
+                ['code' => 'pepper', 'labels' => ['en_US' => 'Pepper', 'fr_FR' => 'Poivre', 'de_DE' => 'Pfeffer']],
+                ['code' => 'CHILI', 'labels' => ['en_US' => 'Chili', 'fr_FR' => 'Piment']],
             ],
             $this->selectOptionCollectionRepository->getByColumn('nutrition', ColumnCode::fromString('ingredients'))->normalize()
         );

@@ -15,6 +15,7 @@ namespace Akeneo\Pim\TableAttribute\Infrastructure\Validation\Attribute;
 
 use Akeneo\Pim\Structure\Component\Model\AttributeInterface;
 use Akeneo\Pim\Structure\Component\Repository\AttributeRepositoryInterface;
+use Akeneo\Pim\TableAttribute\Domain\TableConfiguration\ValueObject\ColumnCode;
 use Symfony\Component\Validator\Constraint;
 use Symfony\Component\Validator\ConstraintValidator;
 use Webmozart\Assert\Assert;
@@ -51,8 +52,13 @@ final class FirstColumnCodeCannotBeChangedValidator extends ConstraintValidator
 
         $formerFirstColumnCode = $formerRawTableConfiguration[0]['code'] ?? null;
         $newFirstColumnCode = $newRawTableConfiguration[0]['code'] ?? null;
+        if (!\is_string($formerFirstColumnCode) || !\is_string($newFirstColumnCode)) {
+            return;
+        }
 
-        if ($formerFirstColumnCode !== $newFirstColumnCode) {
+        $formerFirstColumnCode = ColumnCode::fromString($formerFirstColumnCode);
+        $newFirstColumnCode = ColumnCode::fromString($newFirstColumnCode);
+        if (!$formerFirstColumnCode->equals($newFirstColumnCode)) {
             $this->context->buildViolation($constraint->message)
                 ->atPath('[0].code')
                 ->addViolation();

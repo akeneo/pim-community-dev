@@ -36,6 +36,10 @@ Feature: Create a table attribute
     When I create a table attribute with a configuration having column code "ingredients"
     Then There is a violation with message: Each column requires a unique code. "ingredients" is already used
 
+  Scenario: Cannot create a table configuration with duplicate column codes with case insensitive
+    When I create a table attribute with a configuration having column codes "INGredients,ingredieNTS"
+    Then There is a violation with message: Each column requires a unique code. "INGredients, ingredieNTS" are already used
+
   Scenario: Cannot create a table configuration with too long code
     When I create a table attribute with a configuration having column code "ingredients_ingredients_ingredients_ingredients_ingredients_ingredients_ingredients_ingredients_ingredients_ingredients_ingredients_ingredients"
     Then There is a violation with message: The column code is too long: it must be 100 characters or less

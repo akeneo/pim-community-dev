@@ -56,8 +56,8 @@ final class ProductValueIntegration extends TestCase
         /** @var Product $product */
         $product = $this->get('pim_catalog.builder.product')->createProduct('id1');
         $this->get('pim_catalog.updater.product')->update($product, ['values' => [
-            'nutrition' => [
-                ['locale' => null, 'scope' => null, 'data' => [['ingredients' => 'bar', 'quantity' => 10]]],
+            'NUTRITION' => [
+                ['locale' => null, 'scope' => null, 'data' => [['INGredients' => 'BAR', 'quantity' => 10]]],
             ],
         ]]);
         self::assertInstanceOf(TableValue::class, $product->getValue('nutrition'));
