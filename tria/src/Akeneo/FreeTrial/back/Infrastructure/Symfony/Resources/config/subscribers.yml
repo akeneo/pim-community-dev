@@ -11,3 +11,44 @@ services:
       - '@Akeneo\FreeTrial\Domain\Repository\InvitedUserRepository'
     tags:
       - { name: 'kernel.event_subscriber' }
+
+  Akeneo\FreeTrial\Infrastructure\Install\EventSubscriber\InstallProductsSubscriber:
+    arguments:
+      - '@pim_catalog.builder.product'
+      - '@pim_catalog.updater.product'
+      - '@pim_catalog.saver.product'
+      - '@pim_catalog.validator.product'
+    tags:
+      - { name: 'kernel.event_subscriber' }
+
+  Akeneo\FreeTrial\Infrastructure\Install\EventSubscriber\InstallProductAssociationsSubscriber:
+    arguments:
+      - '@pim_catalog.repository.product'
+      - '@pim_catalog.updater.product'
+      - '@pim_catalog.saver.product'
+    tags:
+      - { name: 'kernel.event_subscriber' }
+
+  Akeneo\FreeTrial\Infrastructure\Install\EventSubscriber\InstallProductModelsSubscriber:
+    arguments:
+      - '@pim_catalog.factory.product_model'
+      - '@pim_api.updater.product_model'
+      - '@pim_catalog.saver.product_model'
+      - '@pim_catalog.validator.product_model'
+    tags:
+      - { name: 'kernel.event_subscriber' }
+
+  Akeneo\FreeTrial\Infrastructure\Install\EventSubscriber\InstallProductModelAssociationsSubscriber:
+    arguments:
+      - '@pim_catalog.repository.product_model'
+      - '@pim_catalog.updater.product_model'
+      - '@pim_catalog.saver.product_model'
+    tags:
+      - { name: 'kernel.event_subscriber' }
+
+  Akeneo\FreeTrial\Infrastructure\Install\EventSubscriber\InstallMediaFilesSubscriber:
+    arguments:
+      - '@oneup_flysystem.mount_manager'
+      - '@akeneo_file_storage.saver.file'
+    tags:
+      - { name: 'kernel.event_subscriber' }
