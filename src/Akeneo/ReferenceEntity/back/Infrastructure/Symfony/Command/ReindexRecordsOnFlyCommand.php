@@ -79,7 +79,7 @@ final class ReindexRecordsOnFlyCommand extends Command
         $this->batchSize = $batchSize;
     }
 
-    public function execute(InputInterface $input, OutputInterface $output)
+    public function execute(InputInterface $input, OutputInterface $output): int
     {
         $io = new SymfonyStyle($input, $output);
 
@@ -98,7 +98,7 @@ final class ReindexRecordsOnFlyCommand extends Command
         }
 
         $currentDatetime = $this->clock->now();
-        $currentIndexName = $this->getIndexNameFromIndexAlias($this->recordIndexAlias);
+        $currentIndexName = $this->getCurrentIndexName();
         $migratedIndexAlias = \sprintf('%s-%s', $this->recordIndexAlias, $currentDatetime->getTimestamp());
 
         $migratedIndexClient = Client::duplicateClient($this->currentIndexRecordClient, $migratedIndexAlias);
@@ -117,7 +117,7 @@ final class ReindexRecordsOnFlyCommand extends Command
         );
 
         $this->setRefreshIntervalToIndex($migratedIndexName, $oldRefreshInterval);
-
+        $migratedIndexClient->refreshIndex();
         $this->switchIndexAliasToNewIndex($currentIndexName, $migratedIndexName, $migratedIndexAlias);
         $this->reindexRecordsUpdatedAfterDatetime(
             $migratedIndexClient,
@@ -319,9 +319,9 @@ final class ReindexRecordsOnFlyCommand extends Command
         Assert::true($result['acknowledged']);
     }
 
-    private function getIndexNameFromIndexAlias(string $indexAlias): string
+    private function getCurrentIndexName(): string
     {
-        $aliases = $this->nativeClient->indices()->getAlias(['name' => $indexAlias]);
+        $aliases = $this->nativeClient->indices()->getAlias(['name' => $this->recordIndexAlias]);
         $indexNames = \array_keys($aliases);
         Assert::keyExists($indexNames, 0, 'No index name found from $indexAlias index alias');
         Assert::count($indexNames, 1, 'Cannot migrated an index alias with more than one index');
