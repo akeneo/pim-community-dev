@@ -102,9 +102,6 @@ test('it can update default value operation', () => {
         value: 'foo',
       },
     },
-    selection: {
-      type: 'code',
-    },
     uuid: 'e612bc67-9c30-4121-8b8d-e08b8c4a0640',
   });
 });
