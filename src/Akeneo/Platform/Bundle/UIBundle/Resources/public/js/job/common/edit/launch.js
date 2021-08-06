@@ -22,7 +22,7 @@ define(['underscore', 'oro/translator', 'pimcommunity/job/common/edit/launch', '
           this.template({
             label: __(this.config.label),
             buttonClass: isVisible ? '' : ' AknButton--disabled',
-            title: isVisible ? '' : __(this.config.title),
+            title: (isVisible || !this.config.title) ? '' : __(this.config.title),
           })
         );
       });
