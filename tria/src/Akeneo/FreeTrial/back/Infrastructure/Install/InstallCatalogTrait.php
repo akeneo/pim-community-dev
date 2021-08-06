@@ -63,4 +63,14 @@ trait InstallCatalogTrait
     {
         return $this->getFixturesPath() . '/product_models_associations.json';
     }
+
+    private function getViewsFixturesPath(): string
+    {
+        return $this->getFixturesPath() . '/views.csv';
+    }
+
+    private function getCategoriesCodesFixturesPath(): string
+    {
+        return $this->getFixturesPath() . '/categories_codes.csv';
+    }
 }

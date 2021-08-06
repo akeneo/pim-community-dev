@@ -58,3 +58,10 @@ services:
       - '@akeneo_file_storage.saver.file'
     tags:
       - { name: 'kernel.event_subscriber' }
+
+  Akeneo\FreeTrial\Infrastructure\Install\EventSubscriber\InstallViewsSubscriber:
+    arguments:
+      - '@database_connection'
+      - '@logger'
+    tags:
+      - { name: 'kernel.event_subscriber' }
