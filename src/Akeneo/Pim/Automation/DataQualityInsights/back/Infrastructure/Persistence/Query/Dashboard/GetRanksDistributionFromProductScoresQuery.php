@@ -106,9 +106,11 @@ final class GetRanksDistributionFromProductScoresQuery implements GetRanksDistri
         return $this->hydrateToRankDistributionCollection($elasticsearchResult);
     }
 
-
-
-    private function buildRankDistributionQuery(): array {
+    /**
+     * cf hydrateToRankDistributionCollection to see an example of result
+     */
+    private function buildRankDistributionQuery(): array
+    {
         $channels = $this->getChannelCodeWithLocaleCodes->findAll();
         $elasticsearchAggs = [];
         foreach ($channels as ['channelCode' => $channelCode, 'localeCodes' => $localeCodes]) {
