@@ -239,9 +239,9 @@ pim:
       enabled: true
       pimCommand: "akeneo:batch:migrate-job-messages-from-old-queue --no-interaction"
       schedule: "*/15 * * * *"
-    reindex-records-on-fly:
+    migrate-records-index-mapping:
       enabled: true
-      pimCommand: "akeneo:reference-entity:reindex-records-on-fly --no-interaction"
+      pimCommand: "akeneo:reference-entity:migrate-records-index-mapping --no-interaction"
       schedule: "*/30 * * * *"
 
 # Onboarder

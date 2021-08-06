@@ -4,7 +4,7 @@ namespace Akeneo\ReferenceEntity\Infrastructure\Search\Elasticsearch\Record;
 
 use Akeneo\Tool\Bundle\ElasticsearchBundle\Client;
 
-final class GetRecordIdentifiersUpdatedAfterDatetime
+class GetRecordIdentifiersUpdatedAfterDatetime
 {
     public function nextBatch(Client $elasticsearchClient, \DateTimeInterface $dateTime, int $batchSize): iterable
     {

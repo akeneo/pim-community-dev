@@ -17,7 +17,7 @@ use Akeneo\ReferenceEntity\Domain\Model\ReferenceEntity\ReferenceEntityIdentifie
 use Akeneo\Test\Integration\Configuration;
 use Akeneo\Test\Integration\TestCase;
 use Doctrine\DBAL\Connection;
-use Elasticsearch\Client;
+use Elasticsearch\Client as NativeClient;
 use Pim\Upgrade\Schema\Tests\ExecuteMigrationTrait;
 
 final class Version_6_0_20210804115038_reindex_records_Integration extends TestCase
@@ -35,11 +35,11 @@ final class Version_6_0_20210804115038_reindex_records_Integration extends TestC
 
         $recordAliasName = $this->getParameter('record_index_name');
 
-        $client = $this->getClient();
+        $nativeClient = $this->getClient();
         $this->loadReferenceEntityAndRecords();
 
-        $recordsInIndexBeforeMigration = $this->getRecordsCountInIndex($client, $recordAliasName);
-        $indexNameBeforeMigration = $this->getIndexNameFromAlias($client, $recordAliasName);
+        $recordsInIndexBeforeMigration = $this->getRecordsCountInIndex($nativeClient, $recordAliasName);
+        $indexNameBeforeMigration = $this->getIndexNameFromAlias($nativeClient, $recordAliasName);
 
         self::assertEquals(2, $recordsInIndexBeforeMigration);
         self::assertNotNull($indexNameBeforeMigration);
@@ -47,7 +47,7 @@ final class Version_6_0_20210804115038_reindex_records_Integration extends TestC
         $this->reExecuteMigration(self::MIGRATION_LABEL);
         $this->get('akeneo_referenceentity.client.record')->refreshIndex();
 
-        $indexNameAfterMigration = $this->getIndexNameFromAlias($client, $recordAliasName);
+        $indexNameAfterMigration = $this->getIndexNameFromAlias($nativeClient, $recordAliasName);
         self::assertEquals($indexNameBeforeMigration, $indexNameAfterMigration);
     }
 
@@ -58,11 +58,11 @@ final class Version_6_0_20210804115038_reindex_records_Integration extends TestC
         }
 
         $recordAliasName = $this->getParameter('record_index_name');
-        $client = $this->getClient();
+        $nativeClient = $this->getClient();
         $this->loadReferenceEntityAndRecords();
 
-        $recordsInIndexBeforeMigration = $this->getRecordsCountInIndex($client, $recordAliasName);
-        $indexNameBeforeMigration = $this->getIndexNameFromAlias($client, $recordAliasName);
+        $recordsInIndexBeforeMigration = $this->getRecordsCountInIndex($nativeClient, $recordAliasName);
+        $indexNameBeforeMigration = $this->getIndexNameFromAlias($nativeClient, $recordAliasName);
 
         self::assertEquals(2, $recordsInIndexBeforeMigration);
         self::assertNotNull($indexNameBeforeMigration);
@@ -70,7 +70,7 @@ final class Version_6_0_20210804115038_reindex_records_Integration extends TestC
         $this->reExecuteMigration(self::MIGRATION_LABEL);
         $this->get('akeneo_referenceentity.client.record')->refreshIndex();
 
-        $indexNameAfterMigration = $this->getIndexNameFromAlias($client, $recordAliasName);
+        $indexNameAfterMigration = $this->getIndexNameFromAlias($nativeClient, $recordAliasName);
         self::assertEquals(2, $recordsInIndexBeforeMigration);
         self::assertNotEquals($indexNameBeforeMigration, $indexNameAfterMigration);
     }
@@ -82,7 +82,7 @@ final class Version_6_0_20210804115038_reindex_records_Integration extends TestC
         return $versionProvider->isSaaSVersion();
     }
 
-    private function getClient(): Client
+    private function getClient(): NativeClient
     {
         $clientBuilder = $this->get('akeneo_elasticsearch.client_builder');
         $hosts = $this->getParameter('index_hosts');
@@ -91,7 +91,7 @@ final class Version_6_0_20210804115038_reindex_records_Integration extends TestC
         return $clientBuilder->setHosts($hosts)->build();
     }
 
-    private function getIndexNameFromAlias(Client $client, string $aliasName): ?string
+    private function getIndexNameFromAlias(NativeClient $client, string $aliasName): ?string
     {
         $indices = $client->indices();
         $aliases = $indices->getAlias(['name' => $aliasName]);
@@ -122,9 +122,9 @@ SQL
         $this->get('akeneo_referenceentity.client.record')->refreshIndex();
     }
 
-    private function getRecordsCountInIndex(Client $client, string $aliasName): int
+    private function getRecordsCountInIndex(NativeClient $nativeClient, string $aliasName): int
     {
-        $response = $client->count(['index' => $aliasName]);
+        $response = $nativeClient->count(['index' => $aliasName]);
 
         return $response['count'];
     }

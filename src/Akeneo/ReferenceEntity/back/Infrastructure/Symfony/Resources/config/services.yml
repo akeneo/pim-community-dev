@@ -33,19 +33,28 @@ services:
         tags:
             - { name: 'console.command'}
 
-    Akeneo\ReferenceEntity\Infrastructure\Symfony\Command\ReindexRecordsOnFlyCommand:
+    Akeneo\ReferenceEntity\Infrastructure\Symfony\Command\MigrateRecordsIndexMappingCommand:
         arguments:
             - '@database_connection'
+            - '@akeneo_referenceentity.clock'
+            - '@akeneo_referenceentity.client.record'
+            - '@Akeneo\ReferenceEntity\Infrastructure\Symfony\Command\IndexMigration\ReindexRecordsWithoutDowntime'
+            - '%record_index_name%'
+        tags:
+            - {name: console.command}
+
+    Akeneo\ReferenceEntity\Infrastructure\Symfony\Command\IndexMigration\ReindexRecordsWithoutDowntime:
+        class: Akeneo\ReferenceEntity\Infrastructure\Symfony\Command\IndexMigration\ReindexRecordsWithoutDowntime
+        arguments:
             - '@akeneo_elasticsearch.client_builder'
             - '@akeneo_referenceentity.clock'
             - '@akeneo_referenceentity.infrastructure.search.elasticsearch.record_normalizer'
             - '@akeneo_referenceentity.client.record'
             - '@akeneo_referenceentity.infrastructure.search.elasticsearch.record.get_record_identifiers_updated_after_datetime'
+            - '@logger'
             - '%record_index_name%'
             - ['%index_hosts%']
             - '%akeneo_referenceentity.infrastructure.search.elasticsearch.record_indexer.batch_size%'
-        tags:
-            - {name: console.command}
 
     akeneo_referenceentity.event_subscriber.remove_user_group:
         class: Akeneo\ReferenceEntity\Infrastructure\EventSubscriber\RemoveUserGroupSubscriber
