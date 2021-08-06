@@ -1,0 +1,4 @@
+services:
+    Akeneo\FreeTrial\Infrastructure\Install\Command\BuildJobsYamlCommand:
+        tags:
+            - { name: 'console.command' }
