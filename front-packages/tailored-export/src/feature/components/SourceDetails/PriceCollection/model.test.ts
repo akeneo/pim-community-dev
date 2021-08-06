@@ -1,4 +1,9 @@
-import {getDefaultPriceCollectionSource, isPriceCollectionSelection, isPriceCollectionSource} from './model';
+import {
+  getDefaultPriceCollectionSource,
+  isPriceCollectionSelection,
+  isPriceCollectionSource,
+  PriceCollectionSource,
+} from './model';
 
 test("it tells if it's a price selection", () => {
   expect(isPriceCollectionSelection({separator: ';', type: 'amount'})).toBe(true);
@@ -9,17 +14,40 @@ test("it tells if it's a price selection", () => {
 });
 
 test("it tells if it's a price collection source", () => {
+  const source: PriceCollectionSource = {
+    uuid: 'test_id',
+    code: 'test_code',
+    type: 'attribute',
+    locale: null,
+    channel: null,
+    operations: {},
+    selection: {type: 'amount', separator: ','},
+  };
+
+  expect(isPriceCollectionSource(source)).toBe(true);
+
   expect(
     isPriceCollectionSource({
-      uuid: 'test_id',
-      code: 'test_code',
-      type: 'attribute',
-      locale: null,
-      channel: null,
-      operations: {},
-      selection: {type: 'amount', separator: ','},
+      ...source,
+      operations: {
+        default_value: {
+          type: 'default_value',
+          value: 'a default value',
+        },
+      },
     })
-  ).toBe(true);
+  ).toEqual(true);
+
+  expect(
+    // @ts-expect-error invalid operations
+    isPriceCollectionSource({
+      ...source,
+      operations: {
+        foo: 'bar',
+      },
+    })
+  ).toEqual(false);
+
   expect(isPriceCollectionSelection({})).toBe(false);
 });
 

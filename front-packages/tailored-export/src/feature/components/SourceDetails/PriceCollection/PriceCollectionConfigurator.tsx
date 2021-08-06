@@ -4,6 +4,7 @@ import {AttributeConfiguratorProps} from '../../../models';
 import {PriceCollectionSelector} from './PriceCollectionSelector';
 import {isPriceCollectionSource} from './model';
 import {InvalidAttributeSourceError} from '../error';
+import {DefaultValue, Operations} from '../common';
 
 const PriceCollectionConfigurator = ({source, validationErrors, onSourceChange}: AttributeConfiguratorProps) => {
   if (!isPriceCollectionSource(source)) {
@@ -11,13 +12,22 @@ const PriceCollectionConfigurator = ({source, validationErrors, onSourceChange}:
   }
 
   return (
-    <PriceCollectionSelector
-      selection={source.selection}
-      validationErrors={filterErrors(validationErrors, '[selection]')}
-      onSelectionChange={updatedPriceCollectionSelection =>
-        onSourceChange({...source, selection: updatedPriceCollectionSelection})
-      }
-    />
+    <Operations>
+      <DefaultValue
+        operation={source.operations.default_value}
+        validationErrors={filterErrors(validationErrors, '[operations][default_value]')}
+        onOperationChange={updatedOperation =>
+          onSourceChange({...source, operations: {...source.operations, default_value: updatedOperation}})
+        }
+      />
+      <PriceCollectionSelector
+        selection={source.selection}
+        validationErrors={filterErrors(validationErrors, '[selection]')}
+        onSelectionChange={updatedPriceCollectionSelection =>
+          onSourceChange({...source, selection: updatedPriceCollectionSelection})
+        }
+      />
+    </Operations>
   );
 };
 
