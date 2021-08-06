@@ -137,6 +137,8 @@ const TableFieldApp: React.FC<TableFieldAppProps> = ({
             return (
               <span key={elementKey} dangerouslySetInnerHTML={{__html: element.render().el.innerHTML as string}} />
             );
+          } else if (typeof element === 'string') {
+            return <span key={elementKey} dangerouslySetInnerHTML={{__html: element}} />;
           } else {
             return <span key={elementKey} dangerouslySetInnerHTML={{__html: element[0].outerHTML as string}} />;
           }

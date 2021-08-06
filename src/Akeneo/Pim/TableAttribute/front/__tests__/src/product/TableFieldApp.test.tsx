@@ -65,11 +65,8 @@ describe('TableFieldApp', () => {
   it('should render elements', async () => {
     const handleChange = jest.fn();
 
-    const elementAsHtml = [
-      {
-        outerHTML: '<div>Guidelines</div>',
-      },
-    ];
+    const elementAsString = '<div>Element as String</div>';
+    const elementAsHtml = [{outerHTML: '<div>Guidelines</div>'}];
     const elementAsBackbone = {
       render: () => {
         return {el: {innerHTML: '<div>Completeness</div>'}};
@@ -81,8 +78,9 @@ describe('TableFieldApp', () => {
         {...getTemplateContext()}
         onChange={handleChange}
         elements={{
+          badge: {completeness: elementAsString},
           footer: {guidelines: elementAsHtml},
-          badge: {completeness: elementAsBackbone},
+          label: {fromSmart: elementAsBackbone},
         }}
         onCopyCheckboxChange={jest.fn()}
       />
@@ -91,6 +89,7 @@ describe('TableFieldApp', () => {
     expect(await screen.findByText('Sugar')).toBeInTheDocument();
     expect(screen.getByText('Guidelines')).toBeInTheDocument();
     expect(screen.getByText('Completeness')).toBeInTheDocument();
+    expect(screen.getByText('Element as String')).toBeInTheDocument();
   });
 
   it('should add and remove a row', async () => {
