@@ -372,15 +372,3 @@ pim_settings:
   settings_menu: 設定メニュー
   catalog_settings: カタログ設定
   product_settings: 商品設定
-  count:
-    categories: '{{ countTrees }} 個のツリーと {{ countCategories }} 個のカテゴリがあります'
-    locales: '{{ count }} 個の有効なロケールがあります'
-    currencies: '{{ count }} 個の有効な通貨があります'
-    attribute_groups: '{{ count }} 個の属性グループがあります'
-    attributes: '{{ count }} 個の属性があります'
-    families: '{{ count }} 個のファミリーがあります'
-    measurements: '{{ count }} 個の測定があります'
-    association_types: '{{ count }} 個の関連タイプがあります'
-    group_types: '{{ count }} 個のグループタイプがあります'
-    groups: '{{ count }} 個のグループがあります'
-    rules: '{{ count }} 個の有効なルールがあります'
