@@ -71,6 +71,7 @@
 - PIM-10009: Fix error being printed in the response of partial update of product models API
 - PIM-10020: Fix asset media link preview when the URI contains special characters
 - PIM-10018: Fix asset code case in the product edit form
+- PIM-9989: Fix record code of reference entity field is case-sensitive
 
 ## Improvements
 
