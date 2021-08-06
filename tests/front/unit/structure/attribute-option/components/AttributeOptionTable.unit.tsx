@@ -2,16 +2,7 @@ import React from 'react';
 import * as ReactDOM from 'react-dom';
 import {Provider} from 'react-redux';
 import '@testing-library/jest-dom/extend-expect';
-import {
-  act,
-  fireEvent,
-  getAllByRole,
-  getByRole,
-  queryByRole,
-  queryAllByRole,
-  createEvent,
-  getByText,
-} from '@testing-library/react';
+import {act, fireEvent, getAllByRole, getByRole, queryByRole, queryAllByRole, getByText} from '@testing-library/react';
 import {DependenciesProvider} from '@akeneo-pim-community/legacy-bridge';
 import {createStoreWithInitialState} from 'akeneopimstructure/js/attribute-option/store/store';
 import {AttributeContextProvider} from 'akeneopimstructure/js/attribute-option/contexts';
@@ -31,21 +22,21 @@ afterEach(() => {
   document.body.removeChild(container);
 });
 
-const blackOption: AttributeOption = {
+const blueOption: AttributeOption = {
   id: 14,
-  code: 'black',
+  code: 'blue',
   optionValues: {
-    en_US: {id: 1, value: 'Black', locale: 'en_US'},
-    fr_FR: {id: 2, value: 'Noir', locale: 'fr_FR'},
+    en_US: {id: 1, value: 'Blue', locale: 'en_US'},
+    fr_FR: {id: 2, value: 'Bleu', locale: 'fr_FR'},
   },
 };
 
-const blueOption: AttributeOption = {
+const blackOption: AttributeOption = {
   id: 80,
-  code: 'blue',
+  code: 'black',
   optionValues: {
-    en_US: {id: 3, value: 'Blue', locale: 'en_US'},
-    fr_FR: {id: 4, value: 'Bleu', locale: 'fr_FR'},
+    en_US: {id: 3, value: 'Black', locale: 'en_US'},
+    fr_FR: {id: 4, value: 'Noir', locale: 'fr_FR'},
   },
 };
 
@@ -53,16 +44,13 @@ const options = [blueOption, blackOption];
 
 describe('Attribute options table', () => {
   test('it renders an empty attribute options list', async () => {
-    await renderComponent([], false, jest.fn(), jest.fn(), jest.fn());
+    await renderComponent([], false, jest.fn(), jest.fn(), jest.fn(), jest.fn(), null);
+
     expect(getByRole(container, 'attribute-options-list')).toBeEmptyDOMElement();
   });
 
   test('it renders a list of 2 options not sorted alphabetically by default', async () => {
-    global.fetch = jest.fn().mockImplementationOnce(route => {
-      return {json: () => options};
-    });
-
-    await renderComponent(options, false, jest.fn(), jest.fn(), jest.fn());
+    await renderComponent(options, false, jest.fn(), jest.fn(), jest.fn(), jest.fn(), null);
 
     const attributeOptionsLabel = getAllByRole(container, 'attribute-option-item-label');
     const attributeOptionsCode = getAllByRole(container, 'attribute-option-item-code');
@@ -77,7 +65,7 @@ describe('Attribute options table', () => {
   });
 
   test('it renders a list of 2 options sorted alphabetically by default', async () => {
-    await renderComponent(options, true, jest.fn(), jest.fn(), jest.fn());
+    await renderComponent(options, true, jest.fn(), jest.fn(), jest.fn(), jest.fn(), null);
 
     const attributeOptionsLabel = getAllByRole(container, 'attribute-option-item-label');
     const attributeOptionsCode = getAllByRole(container, 'attribute-option-item-code');
@@ -90,7 +78,7 @@ describe('Attribute options table', () => {
   });
 
   test('the list order can be toggled', async () => {
-    await renderComponent(options, false, jest.fn(), jest.fn(), jest.fn());
+    await renderComponent(options, false, jest.fn(), jest.fn(), jest.fn(), jest.fn(), null);
 
     let attributeOptionsLabel = getAllByRole(container, 'attribute-option-item-label');
     let attributeOptionsCode = getAllByRole(container, 'attribute-option-item-code');
@@ -129,7 +117,7 @@ describe('Attribute options table', () => {
   test('it displays a fake new option at the end when adding a new option', async () => {
     window.HTMLElement.prototype.scrollIntoView = jest.fn();
     const showNewOptionFormCallback = jest.fn();
-    await renderComponent(options, false, jest.fn(), showNewOptionFormCallback, jest.fn());
+    await renderComponent(options, false, jest.fn(), showNewOptionFormCallback, jest.fn(), jest.fn(), null);
 
     expect(queryByRole(container, 'new-option-placeholder')).toBeNull();
 
@@ -147,8 +135,8 @@ describe('Attribute options table', () => {
 
   test('it allows option selection', async () => {
     const selectOptionCallback = jest.fn();
-    const blueOptionId = 80;
-    await renderComponent(options, false, selectOptionCallback, jest.fn(), jest.fn(), blueOptionId);
+    const blueOptionId = 14;
+    await renderComponent(options, false, selectOptionCallback, jest.fn(), jest.fn(), jest.fn(), blueOptionId);
 
     expect(queryByRole(container, 'new-option-placeholder')).toBeNull();
 
@@ -162,13 +150,13 @@ describe('Attribute options table', () => {
     const blackOptionLabel = optionLabels[1];
     await fireEvent.click(blackOptionLabel);
 
-    const blackOptionId = 14;
+    const blackOptionId = 80;
     expect(selectOptionCallback).toHaveBeenNthCalledWith(1, blackOptionId);
   });
 
   test('it allows attribute option to be deleted', async () => {
     const deleteAttributeOptionCallback = jest.fn();
-    await renderComponent(options, false, jest.fn(), deleteAttributeOptionCallback, jest.fn());
+    await renderComponent(options, false, jest.fn(), jest.fn(), jest.fn(), deleteAttributeOptionCallback, null);
 
     const optionItems = queryAllByRole(container, 'attribute-option-item');
     const blueOption = optionItems[0];
@@ -193,7 +181,7 @@ describe('Attribute options table', () => {
 
   test('the attribute option deletion can be cancelled with the 2 cancel buttons', async () => {
     const deleteAttributeOptionCallback = jest.fn();
-    await renderComponent(options, false, jest.fn(), deleteAttributeOptionCallback, jest.fn());
+    await renderComponent(options, false, jest.fn(), jest.fn(), jest.fn(), deleteAttributeOptionCallback, null);
 
     const optionItems = queryAllByRole(container, 'attribute-option-item');
     const blueOption = optionItems[0];
@@ -205,8 +193,8 @@ describe('Attribute options table', () => {
 
     expect(cancelButtons).toHaveLength(2);
 
-    fireEvent.click(cancelButtons[0]);
-    await expect(deleteAttributeOptionCallback).not.toHaveBeenCalled();
+    await fireEvent.click(cancelButtons[0]);
+    expect(deleteAttributeOptionCallback).not.toHaveBeenCalled();
     expect(deleteConfirmationModal).not.toBeInTheDocument();
 
     await fireEvent.click(deleteButton);
@@ -216,110 +204,47 @@ describe('Attribute options table', () => {
     expect(deleteConfirmationModal).not.toBeInTheDocument();
   });
 
-  /*test('an attribute option will not be moved upwards if the treshold is not met', async () => {
-    const moveOptionCallback = jest.fn();
-    await renderComponent(
-      blueOption,
-      jest.fn(),
-      jest.fn(),
-      moveOptionCallback,
-      jest.fn(),
-      false,
-      {code: 'black', index: 0},
-      jest.fn()
-    );
-    const attributeOptionMoveHandle = getByRole(container, 'attribute-option-move-handle');
+  test('the attribute can be dragged and dropped', async () => {
+    const manuallySortAttributeOptionsCallback = jest.fn();
+    await renderComponent(options, false, jest.fn(), jest.fn(), manuallySortAttributeOptionsCallback, jest.fn(), null);
 
-    fireEvent.dragOver(attributeOptionMoveHandle, {
-      target: {
-        getBoundingClientRect: jest.fn().mockImplementation(() => {
-          return {bottom: 10, top: 0};
-        }),
-        clientY: 4,
-      },
-    });
+    const optionItems = queryAllByRole(container, 'attribute-option-item');
+    const blueOption = optionItems[0];
+    const blackOption = optionItems[1];
 
-    expect(moveOptionCallback).not.toHaveBeenCalled();
-  });
+    await fireEvent.dragStart(blueOption);
+    await fireEvent.dragEnter(blackOption);
+    await fireEvent.dragOver(blackOption);
+    await fireEvent.drop(blackOption);
 
-  test('an attribute option will not be moved downwards if the treshold is not met', async () => {
-    const moveOptionCallback = jest.fn();
-    await renderComponent(
-      blueOption,
-      jest.fn(),
-      jest.fn(),
-      moveOptionCallback,
-      jest.fn(),
-      false,
-      {code: 'black', index: 2},
-      jest.fn()
-    );
-    const attributeOptionMoveHandle = getByRole(container, 'attribute-option-move-handle');
+    let attributeOptionsLabel = getAllByRole(container, 'attribute-option-item-label');
+    let attributeOptionsCode = getAllByRole(container, 'attribute-option-item-code');
+    expect(attributeOptionsLabel.length).toBe(2);
+    expect(attributeOptionsCode.length).toBe(2);
+    expect(attributeOptionsLabel[0].textContent).toBe('Black');
+    expect(attributeOptionsLabel[1].textContent).toBe('Blue');
+    expect(attributeOptionsCode[0].textContent).toBe('black');
+    expect(attributeOptionsCode[1].textContent).toBe('blue');
 
-    fireEvent.dragOver(attributeOptionMoveHandle, {
-      target: {
-        getBoundingClientRect: jest.fn().mockImplementation(() => {
-          return {bottom: 10, top: 0};
-        }),
-        clientY: 6,
-      },
-    });
-
-    expect(moveOptionCallback).not.toHaveBeenCalled();
-  });
-
-  test('an attribute option cannot replace itself', async () => {
-    const moveOptionCallback = jest.fn();
-    await renderComponent(
-      blackOption,
-      jest.fn(),
-      jest.fn(),
-      moveOptionCallback,
-      jest.fn(),
-      false,
-      {code: 'black', index: 2},
-      jest.fn()
-    );
-    const attributeOptionMoveHandle = getByRole(container, 'attribute-option-move-handle');
-
-    fireEvent.dragOver(attributeOptionMoveHandle);
-
-    expect(moveOptionCallback).not.toHaveBeenCalled();
+    expect(manuallySortAttributeOptionsCallback).toHaveBeenCalled();
   });
 
   test('an attribute option cannot be moved if the options are sorted alphabetically', async () => {
-    const setDragItem = jest.fn();
-    await renderComponent(blackOption, jest.fn(), jest.fn(), jest.fn(), jest.fn(), true, setDragItem);
-    const attributeOptionMoveHandle = getByRole(container, 'attribute-option-move-handle');
+    const manuallySortAttributeOptionsCallback = jest.fn();
+    await renderComponent(options, true, jest.fn(), jest.fn(), manuallySortAttributeOptionsCallback, jest.fn(), null);
 
-    fireEvent.dragStart(attributeOptionMoveHandle);
-    expect(setDragItem).not.toHaveBeenCalled();
+    const optionItems = queryAllByRole(container, 'attribute-option-item');
+    const blueOption = optionItems[0];
+    const blackOption = optionItems[1];
 
-    fireEvent.dragEnd(attributeOptionMoveHandle);
-    expect(setDragItem).not.toHaveBeenCalled();
-  });*/
+    await fireEvent.dragStart(blueOption);
+    await fireEvent.dragEnter(blackOption);
+    await fireEvent.dragOver(blackOption);
+    await fireEvent.drop(blackOption);
+
+    expect(manuallySortAttributeOptionsCallback).not.toHaveBeenCalled();
+  });
 });
-
-async function moveBlueOptionToBackOption(attributeOptionMoveHandle, attributeOptions) {
-  const dragStartEvent = createEvent.dragStart(attributeOptionMoveHandle);
-  const setDragImage = jest.fn();
-  Object.assign(dragStartEvent, {
-    dataTransfer: {
-      setDragImage,
-    },
-  });
-  await fireEvent(attributeOptionMoveHandle, dragStartEvent);
-  await fireEvent.dragOver(attributeOptions[1], {
-    target: {
-      getBoundingClientRect: jest.fn().mockImplementation(() => {
-        return {bottom: 10, top: 0};
-      }),
-      clientY: 6,
-    },
-  });
-  await fireEvent.drop(attributeOptionMoveHandle);
-  await fireEvent.dragEnd(attributeOptionMoveHandle);
-}
 
 async function renderComponent(
   options: any,
@@ -327,7 +252,8 @@ async function renderComponent(
   selectOptionCallback: jest.Mock<any, any>,
   showNewOptionFormCallback: jest.Mock<any, any>,
   manuallySortAttributeOptionsCallback: jest.Mock<any, any>,
-  selectedOptionId = null
+  deleteAttributeOptionCallback: jest.Mock<any, any>,
+  selectedOptionId: number | null
 ) {
   await act(async () => {
     ReactDOM.render(
@@ -340,7 +266,7 @@ async function renderComponent(
                 isNewOptionFormDisplayed={false}
                 showNewOptionForm={showNewOptionFormCallback}
                 selectedOptionId={selectedOptionId}
-                deleteAttributeOption={jest.fn()}
+                deleteAttributeOption={deleteAttributeOptionCallback}
                 manuallySortAttributeOptions={manuallySortAttributeOptionsCallback}
               />
             </AttributeContextProvider>

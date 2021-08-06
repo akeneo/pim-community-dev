@@ -95,6 +95,7 @@ describe('AttributeOptionForm', () => {
     const {queryByRole} = renderAttributeOptionFormWithContext();
     const input = queryByRole(/attribute-option-label/i);
 
+    // @ts-ignore
     fireEvent.change(input, {target: {value: 'Black'}});
 
     expect(onUpdateOptionLabelMockFn).toHaveBeenCalled();

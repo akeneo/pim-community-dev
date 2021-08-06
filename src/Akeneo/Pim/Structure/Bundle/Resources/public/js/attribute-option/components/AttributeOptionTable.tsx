@@ -35,8 +35,7 @@ const AttributeOptionTable = ({
   const {attributeOptions, extraData} = useAttributeOptionsListState();
   const {sortedAttributeOptions, setSortedAttributeOptions} = useSortedAttributeOptions(
     attributeOptions,
-    attributeContext.autoSortOptions,
-    manuallySortAttributeOptions
+    attributeContext.autoSortOptions
   );
   const [showDeleteConfirmationModal, setShowDeleteConfirmationModal] = useState<boolean>(false);
   const [showNewOptionPlaceholder, setShowNewOptionPlaceholder] = useState<boolean>(isNewOptionFormDisplayed);
