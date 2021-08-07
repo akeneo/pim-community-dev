@@ -434,3 +434,4 @@ batch_jobs:
     perform.label: XLSX 产品快速导出
   default_steps:
     delete_products_and_product_models: 删除产品和产品模型
+    remove_completeness_for_channel_and_locale: 移除渠道和区域的完成度

@@ -434,3 +434,4 @@ batch_jobs:
     perform.label: XLSX商品のクイックエクスポート
   default_steps:
     delete_products_and_product_models: 商品と商品モデルを削除
+    remove_completeness_for_channel_and_locale: チャネルとロケールの完全性を削除
