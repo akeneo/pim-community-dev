@@ -19,6 +19,7 @@ pim_menu:
     marketplace: マーケットプレイス
 pim_title:
   akeneo_connectivity_connection_connect_marketplace: マーケットプレイス
+  akeneo_connectivity_connection_connect_marketplace_profile: マーケットプレイス
   akeneo_connectivity_connection_settings_index: 接続設定
   akeneo_connectivity_connection_settings_edit: 接続設定
   akeneo_connectivity_connection_settings_any: 接続設定
@@ -36,6 +37,20 @@ akeneo_connectivity.connection:
       title: PIM を別のアプリケーションに接続しますか？🤟
       sub_title: どのアプリケーションを Akeneo PIM に接続できるのか、マーケットプレイスでご覧ください。
       link: マーケットプレイスにアクセス
+      helper:
+        title: '{0} お使いの PIM バージョンと互換性のあるコネクターが {{ count }} 個あります。|{1} お使いの PIM バージョンと互換性のあるコネクターが {{ count }} 個あります。|[2,Inf] お使いの PIM バージョンと互換性のあるコネクターが {{ count }} 個あります。'
+        description: これは概要です。詳細については Web マーケットプレイスをご覧ください。
+        link: ' Web マーケットプレイスに移動'
+      card:
+        developed_by: 開発者
+        read_more: 続きを読む
+        more_info: さらに詳しい情報
+      extensions:
+        title: コネクター
+        total: '{0} コネクターがありません|{1} 1 個のコネクター|[2,Inf] {{ total }} 個のコネクター'
+        empty: お使いのバージョンと互換性のあるコネクターがありません
+      unreachable: マーケットに接続できません。後でもう一度確認してください。
+      scroll_to_top: 上までスクロール
   connections: 接続
   secondary_actions:
     title: その他の操作
