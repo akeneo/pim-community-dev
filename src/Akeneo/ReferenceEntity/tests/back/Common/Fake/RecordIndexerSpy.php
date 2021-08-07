@@ -44,6 +44,11 @@ class RecordIndexerSpy implements RecordIndexerInterface
         Assert::assertContains($referenceEntityIdentifier, $this->indexedReferenceEntities);
     }
 
+    public function assertIndexRefreshed()
+    {
+        Assert::assertTrue($this->isIndexRefreshed, 'Index should be refreshed');
+    }
+
     public function index(RecordIdentifier $recordIdentifier)
     {
     }

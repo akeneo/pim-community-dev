@@ -127,7 +127,7 @@ class ReindexRecordsWithoutDowntime
         foreach ($batchedNormalizedRecordIdentifiersToIndex as $normalizedRecordIdentifiersToIndex) {
             $indexedRecords += \count($normalizedRecordIdentifiersToIndex);
             $recordIdentifiersToIndex = \array_map(
-                static fn($normalizedRecordIdentifier) => RecordIdentifier::fromString($normalizedRecordIdentifier),
+                static fn ($normalizedRecordIdentifier) => RecordIdentifier::fromString($normalizedRecordIdentifier),
                 $normalizedRecordIdentifiersToIndex
             );
 
