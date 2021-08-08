@@ -6,6 +6,12 @@ akeneo.tailored_export:
         label: 完全性のロケールを定義する
         placeholder: ロケールをいくつか選択
         remove: ロケールを削除
+    quality_score:
+      quality_score:
+        label: 品質スコア
+        remove: 品質スコアを削除
+      locales:
+        label: 品質スコアのロケールを定義する
   form:
     job_instance:
       tab:
@@ -25,6 +31,7 @@ akeneo.tailored_export:
       remove: 列を削除
       no_source: コンテンツソースを定義する
     no_column_selection:
+      title: エクスポートプロファイルが空です。
       subtitle: '「最初の列を追加」をクリックして、エクスポートテーブルの構築を開始します。'
       link: 詳細についてはヘルプセンターをご確認ください。
       add_column: 最初の列を追加
@@ -33,12 +40,17 @@ akeneo.tailored_export:
       title: ソース
       add: ソースを追加
       no_result: 結果はありません。
+      locale_specific: この属性はロケール固有です。
       remove:
         title: ソース
         text: このソースを本当に削除しますか？
         button: このソースを削除
       no_source_configuration:
         title: このソースで利用できる操作はありません。値がそのままエクスポートされます。
+      deleted_attribute:
+        title: この属性は削除されました。ソースとして使用できません。
+      deleted_association_type:
+        title: この関連タイプは削除されました。ソースとして使用できません。
       no_source_selected:
         title: '「ソースを追加」をクリックして列コンテンツの定義を開始します。'
         link: 詳細についてはヘルプセンターをご確認ください。
@@ -46,6 +58,11 @@ akeneo.tailored_export:
         title: 最初の列が定義されると、最初のソースを選択できます。
       selection:
         title: 選択
+        collection_separator:
+          title: 区切り
+          comma: コンマ (,)
+          semicolon: セミコロン (;)
+          pipe: パイプ (|)
         type:
           amount: 数量
           currency: 通貨
@@ -63,6 +80,25 @@ akeneo.tailored_export:
           unit_locale: ユニットロケール
           unit_code: ユニットコー​​ド
           unit_label: ユニットラベル
+        price:
+          currency_code: 通貨コード
+          currency_label: 通貨ラベル
+          currency_locale: 通貨ロケール
+          information: この属性では、通貨コード、通貨ラベル、または金額のいずれかをエクスポートできます。
+        file:
+          information: この属性では、パス、ファイルキーまたはファイル名のいずれかをエクスポートできます。
+        decimal_separator:
+          title: 小数点記号
+          comma: コンマ (,)
+          dot: ドット (.)
+          arabic_comma: アラビア文字の小数点記号 (٫)
+        quantified_association:
+          quantity: 数量
+        association:
+          entity_type: エンティティタイプ
+          information:
+            locale: ラベルとして使用される属性にロケールごとに値がある場合、特定のロケールを選択できます。
+            channel: ラベルとして使用される属性にチャンネルごとに値がある場合、特定のチャンネルを選択できます。
       operation:
         replacement:
           title: 値を置き換える
@@ -72,10 +108,26 @@ akeneo.tailored_export:
   column:
     delete_message: この列を本当に削除しますか？
   validation:
+    required: この値は必須です。
+    max_length_reached: 値が長すぎます。{{ limit }} 以下の文字数で設定してください。
     columns:
       max_column_count_reached: '{{ limit }} 列の上限に達しました。これ以上エクスポートに列を追加できません。'
       target:
         should_not_be_blank: 列名を定義してください。
+        max_length_reached: 列名が長すぎます。{{ limit }} 文字未満である必要があります。
         should_be_unique: この列名はすでに存在します。新しい列名を入力してください。
     sources:
       max_source_count_reached: '{{ limit }} ソースの上限に達しました。これ以上エクスポートにソースを追加できません。'
+      association_type_should_exist: 関連タイプ {{ association_type_code }} は存在しません。作成するか、別のソースを選択してください。
+    locale:
+      should_be_active: ロケール {{ locale_code }} は無効化されています。再度有効にするか、別のロケールを選択してください。
+      should_be_bound_to_channel: チャンネル {{ channel_code }} のロケール {{ locale_code }} は無効化されています。再度有効にするか、別のロケールを選択してください。
+    channel:
+      should_exist: チャンネル {{ channel_code }} は削除されています。別のチャンネルを選択してください。
+    attribute:
+      should_exist: 属性 {{ attribute_code }} は存在しません。作成するか、別のソースを選択してください。
+      locale_should_not_be_blank: 属性 {{ attribute_code }} はロケールごとに値を持つようになりました。作成するか、別のソースを選択してください。
+      channel_should_not_be_blank: 属性 {{ attribute_code }} はチャンネルごとに値を持つようになりました。作成するか、別のソースを選択してください。
+      locale_should_be_blank: 属性 {{ attribute_code }} はロケールごとに値を持たなくなりました。作成するか、別のソースを選択してください。
+      channel_should_be_blank: 属性 {{ attribute_code }} はチャンネルごとに値を持たなくなりました。作成するか、別のソースを選択してください。
+      invalid_specific_locale: 属性 {{ attribute_code }} はロケール固有です。別のロケールを選択してください。
