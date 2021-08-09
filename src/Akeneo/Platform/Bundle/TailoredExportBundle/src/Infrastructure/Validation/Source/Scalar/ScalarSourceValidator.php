@@ -13,6 +13,7 @@ declare(strict_types=1);
 
 namespace Akeneo\Platform\TailoredExport\Infrastructure\Validation\Source\Scalar;
 
+use Akeneo\Platform\TailoredExport\Infrastructure\Validation\Operation\DefaultValueOperationConstraint;
 use Akeneo\Platform\TailoredExport\Infrastructure\Validation\Source\SourceConstraintProvider;
 use Symfony\Component\Validator\Constraint;
 use Symfony\Component\Validator\Constraints\Collection;
@@ -31,6 +32,9 @@ class ScalarSourceValidator extends ConstraintValidator
         $sourceConstraintFields['operations'] = new Type([
             'type' => 'array',
         ]);
+        $sourceConstraintFields['operations'] = new Collection(['fields' => [
+            'default_value' => new Optional(new DefaultValueOperationConstraint()),
+        ]]);
 
         $violations = $validator->validate($source, new Collection(['fields' => $sourceConstraintFields]));
 
