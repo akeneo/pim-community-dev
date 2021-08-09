@@ -28,3 +28,4 @@ services:
         class: 'Akeneo\Channel\Bundle\Query\Sql\SqlGetAllViewableLocalesForUser'
         arguments:
             - '@database_connection'
+        tags: ['akeneo.pim.cached_query']
