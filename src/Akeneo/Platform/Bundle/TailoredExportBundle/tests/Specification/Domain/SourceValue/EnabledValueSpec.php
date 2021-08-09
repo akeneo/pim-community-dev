@@ -13,7 +13,6 @@ declare(strict_types=1);
 
 namespace Specification\Akeneo\Platform\TailoredExport\Domain\SourceValue;
 
-use Akeneo\Platform\TailoredExport\Domain\SourceValue\DateValue;
 use Akeneo\Platform\TailoredExport\Domain\SourceValue\EnabledValue;
 use PhpSpec\ObjectBehavior;
 

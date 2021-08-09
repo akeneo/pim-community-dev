@@ -13,26 +13,26 @@ declare(strict_types=1);
 
 namespace Specification\Akeneo\Platform\TailoredExport\Application\Query\Selection\Categories;
 
-use Akeneo\Pim\Structure\Component\Query\PublicApi\Category\GetCategoryTranslations;
 use Akeneo\Platform\TailoredExport\Application\Query\Selection\Boolean\BooleanSelection;
 use Akeneo\Platform\TailoredExport\Application\Query\Selection\Categories\CategoriesLabelSelection;
+use Akeneo\Platform\TailoredExport\Domain\Query\FindCategoryLabelsInterface;
 use Akeneo\Platform\TailoredExport\Domain\SourceValue\BooleanValue;
 use Akeneo\Platform\TailoredExport\Domain\SourceValue\CategoriesValue;
 use PhpSpec\ObjectBehavior;
 
 class CategoriesLabelSelectionHandlerSpec extends ObjectBehavior
 {
-    public function let(GetCategoryTranslations $getCategoryTranslations)
+    public function let(FindCategoryLabelsInterface $findCategoryLabels)
     {
-        $this->beConstructedWith($getCategoryTranslations);
+        $this->beConstructedWith($findCategoryLabels);
     }
 
-    public function it_applies_the_selection(GetCategoryTranslations $getCategoryTranslations)
+    public function it_applies_the_selection(FindCategoryLabelsInterface $findCategoryLabels)
     {
         $selection = new CategoriesLabelSelection('-', 'fr_FR');
         $value = new CategoriesValue(['category_code1', 'category_code2', 'category_code3']);
 
-        $getCategoryTranslations->byCategoryCodesAndLocale(
+        $findCategoryLabels->byCodes(
             ['category_code1', 'category_code2', 'category_code3'],
             'fr_FR'
         )->willReturn([

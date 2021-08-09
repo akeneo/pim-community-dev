@@ -13,7 +13,6 @@ declare(strict_types=1);
 
 namespace Specification\Akeneo\Platform\TailoredExport\Application\Query\Selection\Groups;
 
-use Akeneo\Pim\Structure\Component\Query\PublicApi\Group\GetGroupTranslations;
 use Akeneo\Platform\TailoredExport\Application\Query\Selection\Boolean\BooleanSelection;
 use Akeneo\Platform\TailoredExport\Application\Query\Selection\Groups\GroupsLabelSelection;
 use Akeneo\Platform\TailoredExport\Domain\Query\FindGroupLabelsInterface;

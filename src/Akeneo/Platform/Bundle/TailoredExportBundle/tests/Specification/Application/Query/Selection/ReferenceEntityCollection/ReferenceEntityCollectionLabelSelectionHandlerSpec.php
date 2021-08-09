@@ -15,19 +15,19 @@ namespace Specification\Akeneo\Platform\TailoredExport\Application\Query\Selecti
 
 use Akeneo\Platform\TailoredExport\Application\Query\Selection\Boolean\BooleanSelection;
 use Akeneo\Platform\TailoredExport\Application\Query\Selection\ReferenceEntityCollection\ReferenceEntityCollectionLabelSelection;
+use Akeneo\Platform\TailoredExport\Domain\Query\FindRecordLabelsInterface;
 use Akeneo\Platform\TailoredExport\Domain\SourceValue\BooleanValue;
 use Akeneo\Platform\TailoredExport\Domain\SourceValue\ReferenceEntityCollectionValue;
-use Akeneo\ReferenceEntity\Infrastructure\PublicApi\Enrich\FindRecordsLabelTranslationsInterface;
 use PhpSpec\ObjectBehavior;
 
 class ReferenceEntityCollectionLabelSelectionHandlerSpec extends ObjectBehavior
 {
-    public function let(FindRecordsLabelTranslationsInterface $findRecordsLabelTranslations)
+    public function let(FindRecordLabelsInterface $findRecordLabels)
     {
-        $this->beConstructedWith($findRecordsLabelTranslations);
+        $this->beConstructedWith($findRecordLabels);
     }
 
-    public function it_applies_the_selection(FindRecordsLabelTranslationsInterface $findRecordsLabelTranslations)
+    public function it_applies_the_selection(FindRecordLabelsInterface $findRecordLabels)
     {
         $selection = new ReferenceEntityCollectionLabelSelection(
             '/',
@@ -36,7 +36,7 @@ class ReferenceEntityCollectionLabelSelectionHandlerSpec extends ObjectBehavior
         );
         $value = new ReferenceEntityCollectionValue(['record_code1', 'record_code2', 'record_code...']);
 
-        $findRecordsLabelTranslations->find(
+        $findRecordLabels->byReferenceEntityCodeAndRecordCodes(
             'a_reference_entity_code',
             ['record_code1', 'record_code2', 'record_code...'],
             'fr_FR'

@@ -15,19 +15,19 @@ namespace Specification\Akeneo\Platform\TailoredExport\Application\Query\Selecti
 
 use Akeneo\Platform\TailoredExport\Application\Query\Selection\Boolean\BooleanSelection;
 use Akeneo\Platform\TailoredExport\Application\Query\Selection\ReferenceEntity\ReferenceEntityLabelSelection;
+use Akeneo\Platform\TailoredExport\Domain\Query\FindRecordLabelsInterface;
 use Akeneo\Platform\TailoredExport\Domain\SourceValue\BooleanValue;
 use Akeneo\Platform\TailoredExport\Domain\SourceValue\ReferenceEntityValue;
-use Akeneo\ReferenceEntity\Infrastructure\PublicApi\Enrich\FindRecordsLabelTranslationsInterface;
 use PhpSpec\ObjectBehavior;
 
 class ReferenceEntityLabelSelectionHandlerSpec extends ObjectBehavior
 {
-    public function let(FindRecordsLabelTranslationsInterface $findRecordsLabelTranslations)
+    public function let(FindRecordLabelsInterface $findRecordLabels)
     {
-        $this->beConstructedWith($findRecordsLabelTranslations);
+        $this->beConstructedWith($findRecordLabels);
     }
 
-    public function it_applies_the_selection(FindRecordsLabelTranslationsInterface $findRecordsLabelTranslations)
+    public function it_applies_the_selection(FindRecordLabelsInterface $findRecordLabels)
     {
         $selection = new ReferenceEntityLabelSelection(
             'fr_FR',
@@ -35,7 +35,7 @@ class ReferenceEntityLabelSelectionHandlerSpec extends ObjectBehavior
         );
         $value = new ReferenceEntityValue('record_code1');
 
-        $findRecordsLabelTranslations->find(
+        $findRecordLabels->byReferenceEntityCodeAndRecordCodes(
             'a_reference_entity_code',
             ['record_code1'],
             'fr_FR'
@@ -46,15 +46,16 @@ class ReferenceEntityLabelSelectionHandlerSpec extends ObjectBehavior
         $this->applySelection($selection, $value)->shouldReturn('label1');
     }
 
-    public function it_applies_the_selection_and_fallback_when_no_translation_is_found(FindRecordsLabelTranslationsInterface $findRecordsLabelTranslations)
-    {
+    public function it_applies_the_selection_and_fallback_when_no_translation_is_found(
+        FindRecordLabelsInterface $findRecordLabels
+    ) {
         $selection = new ReferenceEntityLabelSelection(
             'fr_FR',
             'a_reference_entity_code'
         );
         $value = new ReferenceEntityValue('record_code1');
 
-        $findRecordsLabelTranslations->find(
+        $findRecordLabels->byReferenceEntityCodeAndRecordCodes(
             'a_reference_entity_code',
             ['record_code1'],
             'fr_FR'

@@ -18,7 +18,6 @@ use Akeneo\Platform\TailoredExport\Application\Query\Selection\Measurement\Measu
 use Akeneo\Platform\TailoredExport\Domain\Query\FindUnitLabelInterface;
 use Akeneo\Platform\TailoredExport\Domain\SourceValue\BooleanValue;
 use Akeneo\Platform\TailoredExport\Domain\SourceValue\MeasurementValue;
-use Akeneo\Tool\Bundle\MeasureBundle\PublicApi\GetUnitTranslations;
 use PhpSpec\ObjectBehavior;
 
 class MeasurementUnitLabelSelectionHandlerSpec extends ObjectBehavior
