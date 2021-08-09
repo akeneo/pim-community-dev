@@ -12,7 +12,7 @@ services:
   Akeneo\Platform\TailoredExport\Application\Query\Selection\Categories\CategoriesLabelSelectionHandler:
     public: true
     arguments:
-      - '@akeneo.pim.structure.query.get_category_translations'
+      - '@Akeneo\Platform\TailoredExport\Domain\Query\FindCategoryLabelsInterface'
     tags:
       - { name: akeneo.tailored_export.selection_handler }
 
@@ -24,7 +24,7 @@ services:
   Akeneo\Platform\TailoredExport\Application\Query\Selection\Family\FamilyLabelSelectionHandler:
     public: true
     arguments:
-      - '@akeneo.pim.structure.query.get_family_translations'
+      - '@Akeneo\Platform\TailoredExport\Domain\Query\FindFamilyLabelInterface'
     tags:
       - { name: akeneo.tailored_export.selection_handler }
 
@@ -36,7 +36,7 @@ services:
   Akeneo\Platform\TailoredExport\Application\Query\Selection\FamilyVariant\FamilyVariantLabelSelectionHandler:
     public: true
     arguments:
-      - '@akeneo.pim.structure.query.get_family_variant_translations'
+      - '@Akeneo\Platform\TailoredExport\Domain\Query\FindFamilyVariantLabelInterface'
     tags:
       - { name: akeneo.tailored_export.selection_handler }
 
@@ -128,7 +128,7 @@ services:
   Akeneo\Platform\TailoredExport\Application\Query\Selection\ReferenceEntity\ReferenceEntityLabelSelectionHandler:
     public: true
     arguments:
-      - '@akeneo_referenceentity.infrastructure.persistence.query.enrich.find_records_labels_public_api'
+      - '@Akeneo\Platform\TailoredExport\Domain\Query\FindRecordLabelsInterface'
     tags:
       - { name: akeneo.tailored_export.selection_handler }
 
@@ -140,7 +140,7 @@ services:
   Akeneo\Platform\TailoredExport\Application\Query\Selection\ReferenceEntityCollection\ReferenceEntityCollectionLabelSelectionHandler:
     public: true
     arguments:
-      - '@akeneo_referenceentity.infrastructure.persistence.query.enrich.find_records_labels_public_api'
+      - '@Akeneo\Platform\TailoredExport\Domain\Query\FindRecordLabelsInterface'
     tags:
       - { name: akeneo.tailored_export.selection_handler }
 
@@ -157,7 +157,7 @@ services:
   Akeneo\Platform\TailoredExport\Application\Query\Selection\AssetCollection\AssetCollectionLabelSelectionHandler:
     public: true
     arguments:
-      - '@akeneo_assetmanager.infrastructure.persistence.query.enrich.find_asset_label_translation_public_api'
+      - '@Akeneo\Platform\TailoredExport\Domain\Query\FindAssetLabelsInterface'
     tags:
       - { name: akeneo.tailored_export.selection_handler }
 

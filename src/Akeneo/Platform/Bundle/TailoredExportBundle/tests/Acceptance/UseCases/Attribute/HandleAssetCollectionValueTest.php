@@ -20,7 +20,7 @@ use Akeneo\Platform\TailoredExport\Application\Query\Selection\SelectionInterfac
 use Akeneo\Platform\TailoredExport\Domain\SourceValue\AssetCollectionValue;
 use Akeneo\Platform\TailoredExport\Domain\SourceValue\NullValue;
 use Akeneo\Platform\TailoredExport\Domain\SourceValueInterface;
-use Akeneo\Platform\TailoredExport\Test\Acceptance\FakeServices\Asset\InMemoryFindAssetLabelTranslation;
+use Akeneo\Platform\TailoredExport\Test\Acceptance\FakeServices\Asset\InMemoryFindAssetLabels;
 use PHPUnit\Framework\Assert;
 
 final class HandleAssetCollectionValueTest extends AttributeTestCase
@@ -91,8 +91,8 @@ final class HandleAssetCollectionValueTest extends AttributeTestCase
 
     private function loadAssetLabels()
     {
-        /** @var InMemoryFindAssetLabelTranslation $assetLabelsRepository */
-        $assetLabelsRepository = self::$container->get('akeneo_assetmanager.infrastructure.persistence.query.enrich.find_asset_label_translation_public_api');
+        /** @var InMemoryFindAssetLabels $assetLabelsRepository */
+        $assetLabelsRepository = self::$container->get('Akeneo\Platform\TailoredExport\Domain\Query\FindAssetLabelsInterface');
         $assetLabelsRepository->addAssetLabel('packshot', 'packshot_0', 'en_US', 'Packshot 0');
     }
 }

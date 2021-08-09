@@ -13,20 +13,19 @@ declare(strict_types=1);
 
 namespace Akeneo\Platform\TailoredExport\Application\Query\Selection\AssetCollection;
 
-use Akeneo\AssetManager\Infrastructure\PublicApi\Enrich\FindAssetLabelTranslationInterface;
 use Akeneo\Platform\TailoredExport\Application\Query\Selection\SelectionHandlerInterface;
 use Akeneo\Platform\TailoredExport\Application\Query\Selection\SelectionInterface;
+use Akeneo\Platform\TailoredExport\Domain\Query\FindAssetLabelsInterface;
 use Akeneo\Platform\TailoredExport\Domain\SourceValue\AssetCollectionValue;
 use Akeneo\Platform\TailoredExport\Domain\SourceValueInterface;
 
 class AssetCollectionLabelSelectionHandler implements SelectionHandlerInterface
 {
-    private FindAssetLabelTranslationInterface $findAssetLabelTranslations;
+    private FindAssetLabelsInterface $findAssetLabels;
 
-    public function __construct(
-        FindAssetLabelTranslationInterface $findAssetLabelTranslations
-    ) {
-        $this->findAssetLabelTranslations = $findAssetLabelTranslations;
+    public function __construct(FindAssetLabelsInterface $findAssetLabels)
+    {
+        $this->findAssetLabels = $findAssetLabels;
     }
 
     public function applySelection(SelectionInterface $selection, SourceValueInterface $value): string
@@ -40,7 +39,7 @@ class AssetCollectionLabelSelectionHandler implements SelectionHandlerInterface
 
         $assetCodes = $value->getAssetCodes();
         $assetFamilyCode = $selection->getAssetFamilyCode();
-        $assetTranslations = $this->findAssetLabelTranslations->byFamilyCodeAndAssetCodes(
+        $assetTranslations = $this->findAssetLabels->byAssetFamilyCodeAndAssetCodes(
             $assetFamilyCode,
             $assetCodes,
             $selection->getLocale()

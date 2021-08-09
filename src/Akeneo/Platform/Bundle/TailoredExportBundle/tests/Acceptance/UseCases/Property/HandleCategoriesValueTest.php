@@ -18,7 +18,7 @@ use Akeneo\Platform\TailoredExport\Application\Query\Selection\Categories\Catego
 use Akeneo\Platform\TailoredExport\Application\Query\Selection\SelectionInterface;
 use Akeneo\Platform\TailoredExport\Domain\SourceValue\CategoriesValue;
 use Akeneo\Platform\TailoredExport\Domain\SourceValueInterface;
-use Akeneo\Platform\TailoredExport\Test\Acceptance\FakeServices\Category\InMemoryGetCategoryTranslations;
+use Akeneo\Platform\TailoredExport\Test\Acceptance\FakeServices\Category\InMemoryFindCategoryLabels;
 use PHPUnit\Framework\Assert;
 
 final class HandleCategoriesValueTest extends PropertyTestCase
@@ -71,8 +71,8 @@ final class HandleCategoriesValueTest extends PropertyTestCase
 
     private function loadCategoryLabels()
     {
-        /** @var InMemoryGetCategoryTranslations $categoryLabelsRepository */
-        $categoryLabelsRepository = self::$container->get('akeneo.pim.structure.query.get_category_translations');
+        /** @var InMemoryFindCategoryLabels $categoryLabelsRepository */
+        $categoryLabelsRepository = self::$container->get('Akeneo\Platform\TailoredExport\Domain\Query\FindCategoryLabelsInterface');
         $categoryLabelsRepository->addCategoryLabel('master', 'fr_FR', 'Catalogue principal');
     }
 }

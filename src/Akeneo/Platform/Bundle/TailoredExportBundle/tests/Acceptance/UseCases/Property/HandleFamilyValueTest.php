@@ -20,6 +20,7 @@ use Akeneo\Platform\TailoredExport\Application\Query\Selection\SelectionInterfac
 use Akeneo\Platform\TailoredExport\Domain\SourceValue\FamilyValue;
 use Akeneo\Platform\TailoredExport\Domain\SourceValue\NullValue;
 use Akeneo\Platform\TailoredExport\Domain\SourceValueInterface;
+use Akeneo\Platform\TailoredExport\Test\Acceptance\FakeServices\Family\InMemoryFindFamilyLabel;
 use Akeneo\Platform\TailoredExport\Test\Acceptance\FakeServices\Family\InMemoryGetFamilyTranslations;
 use PHPUnit\Framework\Assert;
 
@@ -93,8 +94,8 @@ final class HandleFamilyValueTest extends PropertyTestCase
 
     private function loadFamilyLabels()
     {
-        /** @var InMemoryGetFamilyTranslations $familyLabelsRepository */
-        $familyLabelsRepository = self::$container->get('akeneo.pim.structure.query.get_family_translations');
+        /** @var InMemoryFindFamilyLabel $familyLabelsRepository */
+        $familyLabelsRepository = self::$container->get('Akeneo\Platform\TailoredExport\Domain\Query\FindFamilyLabelInterface');
         $familyLabelsRepository->addFamilyLabel('pants', 'fr_FR', 'Pantalons');
     }
 }
