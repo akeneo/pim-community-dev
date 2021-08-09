@@ -1,19 +1,19 @@
-import React, {useState} from 'react';
-import {Collapse} from 'akeneo-design-system';
-import {filterErrors, useTranslate} from '@akeneo-pim-community/shared';
+import React from 'react';
 import {AttributeConfiguratorProps} from '../../../models';
 import {isBooleanSource} from './model';
-import {BooleanReplacement} from '../common/BooleanReplacement';
 import {InvalidAttributeSourceError} from '../error';
+import {NoOperationsPlaceholder} from "../NoOperationsPlaceholder";
 
-const BooleanConfigurator = ({source, validationErrors, onSourceChange}: AttributeConfiguratorProps) => {
-  const translate = useTranslate();
-  const [isReplacementCollapsed, toggleReplacementCollapse] = useState<boolean>('replacement' in source.operations);
+const BooleanConfigurator = ({source}: AttributeConfiguratorProps) => {
+//  const translate = useTranslate();
+//  const [isReplacementCollapsed, toggleReplacementCollapse] = useState<boolean>('replacement' in source.operations);
 
   if (!isBooleanSource(source)) {
     throw new InvalidAttributeSourceError(`Invalid source data "${source.code}" for boolean configurator`);
   }
 
+  return <NoOperationsPlaceholder />;
+/**
   return (
     <Collapse
       collapseButtonLabel={isReplacementCollapsed ? translate('pim_common.close') : translate('pim_common.open')}
@@ -32,6 +32,7 @@ const BooleanConfigurator = ({source, validationErrors, onSourceChange}: Attribu
       />
     </Collapse>
   );
+*/
 };
 
 export {BooleanConfigurator};
