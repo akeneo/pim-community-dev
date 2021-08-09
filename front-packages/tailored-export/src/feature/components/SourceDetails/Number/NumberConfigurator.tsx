@@ -4,15 +4,14 @@ import {isNumberSource} from './model';
 import React, {useState} from 'react';
 import {AttributeConfiguratorProps} from '../../../models';
 import {NumberSelector} from './NumberSelector';
+import {InvalidAttributeSourceError} from '../error';
 
 const NumberConfigurator = ({source, onSourceChange, validationErrors}: AttributeConfiguratorProps) => {
   const translate = useTranslate();
   const [isSelectorCollapsed, toggleSelectorCollapse] = useState<boolean>(true);
 
   if (!isNumberSource(source)) {
-    console.error(`Invalid source data "${source.code}" for number configurator`);
-
-    return null;
+    throw new InvalidAttributeSourceError(`Invalid source data "${source.code}" for number configurator`);
   }
 
   return (

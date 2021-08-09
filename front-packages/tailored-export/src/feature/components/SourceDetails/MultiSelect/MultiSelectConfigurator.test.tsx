@@ -66,22 +66,21 @@ test('it displays a multi select configurator', () => {
   });
 });
 
-test('it does not render if the source is not valid', () => {
+test('it tells when the source data is invalid', () => {
   const mockedConsole = jest.spyOn(console, 'error').mockImplementation();
-  const onSourceChange = jest.fn();
-
   const dateAttribute = {...attribute, type: 'pim_catalog_date', code: 'date_attribute'};
 
-  renderWithProviders(
-    <MultiSelectConfigurator
-      source={getDefaultDateSource(dateAttribute, null, null)}
-      attribute={dateAttribute}
-      validationErrors={[]}
-      onSourceChange={onSourceChange}
-    />
-  );
+  expect(() => {
+    renderWithProviders(
+      <MultiSelectConfigurator
+        source={getDefaultDateSource(dateAttribute, null, null)}
+        attribute={dateAttribute}
+        validationErrors={[]}
+        onSourceChange={jest.fn()}
+      />
+    );
+  }).toThrow('Invalid source data "date_attribute" for multi select configurator');
 
-  expect(mockedConsole).toHaveBeenCalledWith('Invalid source data "date_attribute" for multi select configurator');
   expect(screen.queryByText('Update selection')).not.toBeInTheDocument();
   mockedConsole.mockRestore();
 });

@@ -3,7 +3,7 @@ import {screen, fireEvent, within} from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
 import {ColumnList} from './ColumnList';
 import {ValidationErrorsContext} from '../../contexts';
-import {ColumnConfiguration} from '../../models/ColumnConfiguration';
+import {ColumnConfiguration, ColumnsState} from '../../models/ColumnConfiguration';
 import {renderWithProviders} from 'feature/tests';
 
 test('it renders a placeholder when no column is selected', async () => {
@@ -30,15 +30,14 @@ test('it renders a placeholder when no column is selected', async () => {
 
   await renderWithProviders(
     <ColumnList
-      onColumnReorder={jest.fn}
-      columnsConfiguration={columnsConfiguration}
-      onColumnChange={jest.fn}
-      onColumnCreated={jest.fn}
-      onColumnsCreated={jest.fn}
-      onColumnRemoved={jest.fn}
-      onFocusNext={jest.fn()}
-      onColumnSelected={jest.fn}
-      selectedColumn={null}
+      onColumnReorder={jest.fn()}
+      columnsState={{columns: columnsConfiguration, selectedColumnUuid: null}}
+      onColumnChange={jest.fn()}
+      onColumnCreated={jest.fn()}
+      onColumnsCreated={jest.fn()}
+      onColumnRemoved={jest.fn()}
+      onColumnSelected={jest.fn()}
+      setColumnsState={jest.fn()}
     />
   );
 
@@ -70,15 +69,14 @@ test('it can remove a column', async () => {
 
   await renderWithProviders(
     <ColumnList
-      onColumnReorder={jest.fn}
-      columnsConfiguration={columnsConfiguration}
-      onColumnChange={jest.fn}
-      onColumnCreated={jest.fn}
-      onColumnsCreated={jest.fn}
+      onColumnReorder={jest.fn()}
+      columnsState={{columns: columnsConfiguration, selectedColumnUuid: null}}
+      onColumnChange={jest.fn()}
+      onColumnCreated={jest.fn()}
+      onColumnsCreated={jest.fn()}
       onColumnRemoved={handleRemove}
-      onColumnSelected={jest.fn}
-      onFocusNext={jest.fn()}
-      selectedColumn={null}
+      onColumnSelected={jest.fn()}
+      setColumnsState={jest.fn()}
     />
   );
 
@@ -105,15 +103,14 @@ test('it can create a new column', async () => {
 
   await renderWithProviders(
     <ColumnList
-      onColumnReorder={jest.fn}
-      columnsConfiguration={columnsConfiguration}
-      onColumnChange={jest.fn}
+      onColumnReorder={jest.fn()}
+      columnsState={{columns: columnsConfiguration, selectedColumnUuid: null}}
+      onColumnChange={jest.fn()}
       onColumnCreated={handleCreate}
       onColumnsCreated={handleCreate}
-      onColumnRemoved={jest.fn}
-      onFocusNext={jest.fn()}
-      onColumnSelected={jest.fn}
-      selectedColumn={null}
+      onColumnRemoved={jest.fn()}
+      onColumnSelected={jest.fn()}
+      setColumnsState={jest.fn()}
     />
   );
 
@@ -142,15 +139,14 @@ test('it can handle paste events', async () => {
 
   await renderWithProviders(
     <ColumnList
-      onColumnReorder={jest.fn}
-      columnsConfiguration={columnsConfiguration}
-      onColumnChange={jest.fn}
+      onColumnReorder={jest.fn()}
+      columnsState={{columns: columnsConfiguration, selectedColumnUuid: null}}
+      onColumnChange={jest.fn()}
       onColumnCreated={handleCreate}
       onColumnsCreated={handleCreate}
-      onColumnRemoved={jest.fn}
-      onFocusNext={jest.fn()}
-      onColumnSelected={jest.fn}
-      selectedColumn={null}
+      onColumnRemoved={jest.fn()}
+      onColumnSelected={jest.fn()}
+      setColumnsState={jest.fn()}
     />
   );
 
@@ -187,15 +183,14 @@ test('it can update a column', async () => {
 
   await renderWithProviders(
     <ColumnList
-      onColumnReorder={jest.fn}
-      columnsConfiguration={columnsConfiguration}
+      onColumnReorder={jest.fn()}
+      columnsState={{columns: columnsConfiguration, selectedColumnUuid: null}}
       onColumnChange={handleColumnChange}
-      onColumnCreated={jest.fn}
-      onColumnsCreated={jest.fn}
-      onColumnRemoved={jest.fn}
-      onFocusNext={jest.fn()}
-      onColumnSelected={jest.fn}
-      selectedColumn={null}
+      onColumnCreated={jest.fn()}
+      onColumnsCreated={jest.fn()}
+      onColumnRemoved={jest.fn()}
+      onColumnSelected={jest.fn()}
+      setColumnsState={jest.fn()}
     />
   );
 
@@ -253,15 +248,14 @@ test('it displays validation errors', async () => {
       ]}
     >
       <ColumnList
-        onColumnReorder={jest.fn}
-        columnsConfiguration={columnsConfiguration}
+        onColumnReorder={jest.fn()}
+        columnsState={{columns: columnsConfiguration, selectedColumnUuid: null}}
         onColumnChange={handleColumnChange}
-        onColumnCreated={jest.fn}
-        onColumnsCreated={jest.fn}
-        onColumnRemoved={jest.fn}
-        onFocusNext={jest.fn()}
-        onColumnSelected={jest.fn}
-        selectedColumn={null}
+        onColumnCreated={jest.fn()}
+        onColumnsCreated={jest.fn()}
+        onColumnRemoved={jest.fn()}
+        onColumnSelected={jest.fn()}
+        setColumnsState={jest.fn()}
       />
     </ValidationErrorsContext.Provider>
   );
@@ -296,19 +290,21 @@ test('it moves to next line when user type enter', async () => {
   ];
 
   const handleColumnSelected = jest.fn();
-  const handleFocusNext = jest.fn();
+  const handleSetColumnsState = jest.fn(
+    (dispatch: (columnsState: ColumnsState) => ColumnsState): void =>
+      void dispatch({columns: columnsConfiguration, selectedColumnUuid: columnsConfiguration[0].uuid})
+  );
 
   await renderWithProviders(
     <ColumnList
-      onColumnReorder={jest.fn}
-      columnsConfiguration={columnsConfiguration}
-      onColumnChange={jest.fn}
-      onColumnCreated={jest.fn}
-      onColumnsCreated={jest.fn}
-      onColumnRemoved={jest.fn}
-      onFocusNext={handleFocusNext}
+      onColumnReorder={jest.fn()}
+      columnsState={{columns: columnsConfiguration, selectedColumnUuid: columnsConfiguration[0].uuid}}
+      onColumnChange={jest.fn()}
+      onColumnCreated={jest.fn()}
+      onColumnsCreated={jest.fn()}
+      onColumnRemoved={jest.fn()}
       onColumnSelected={handleColumnSelected}
-      selectedColumn={null}
+      setColumnsState={handleSetColumnsState}
     />
   );
 
@@ -316,7 +312,7 @@ test('it moves to next line when user type enter', async () => {
   userEvent.type(firstInput, '{enter}');
 
   expect(handleColumnSelected).toHaveBeenCalledWith('1');
-  expect(handleFocusNext).toHaveBeenCalled();
+  expect(handleSetColumnsState).toHaveBeenCalled();
 });
 
 test('it focus the selected column', async () => {
@@ -343,15 +339,14 @@ test('it focus the selected column', async () => {
 
   await renderWithProviders(
     <ColumnList
-      onColumnReorder={jest.fn}
-      columnsConfiguration={columnsConfiguration}
-      onColumnChange={jest.fn}
-      onColumnCreated={jest.fn}
-      onColumnsCreated={jest.fn}
-      onColumnRemoved={jest.fn}
-      onFocusNext={jest.fn()}
-      onColumnSelected={jest.fn}
-      selectedColumn={columnsConfiguration[0]}
+      onColumnReorder={jest.fn()}
+      columnsState={{columns: columnsConfiguration, selectedColumnUuid: columnsConfiguration[0].uuid}}
+      onColumnChange={jest.fn()}
+      onColumnCreated={jest.fn()}
+      onColumnsCreated={jest.fn()}
+      onColumnRemoved={jest.fn()}
+      onColumnSelected={jest.fn()}
+      setColumnsState={jest.fn()}
     />
   );
 
@@ -423,15 +418,14 @@ test('it displays the sources labels on the row', async () => {
 
   await renderWithProviders(
     <ColumnList
-      onColumnReorder={jest.fn}
-      columnsConfiguration={columnsConfiguration}
-      onColumnChange={jest.fn}
-      onColumnCreated={jest.fn}
-      onColumnsCreated={jest.fn}
-      onColumnRemoved={jest.fn}
-      onFocusNext={jest.fn()}
-      onColumnSelected={jest.fn}
-      selectedColumn={columnsConfiguration[0]}
+      onColumnReorder={jest.fn()}
+      columnsState={{columns: columnsConfiguration, selectedColumnUuid: columnsConfiguration[0].uuid}}
+      onColumnChange={jest.fn()}
+      onColumnCreated={jest.fn()}
+      onColumnsCreated={jest.fn()}
+      onColumnRemoved={jest.fn()}
+      onColumnSelected={jest.fn()}
+      setColumnsState={jest.fn()}
     />
   );
 

@@ -52,6 +52,15 @@ const attributes: Attribute[] = [
     available_locales: [],
   },
   {
+    type: 'pim_catalog_metric',
+    code: 'weight',
+    labels: {fr_FR: 'Poids', en_US: 'Weight'},
+    scopable: false,
+    localizable: false,
+    is_locale_specific: false,
+    available_locales: [],
+  },
+  {
     type: 'pim_catalog_textarea',
     code: 'description',
     labels: {fr_FR: 'French description', en_US: 'English description'},

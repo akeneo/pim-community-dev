@@ -28,7 +28,6 @@ const Container = styled.div`
   width: 400px;
   display: flex;
   flex-direction: column;
-  padding: 0px 4px;
   display: flex;
   flex-direction: column;
 `;
@@ -65,6 +64,7 @@ const ColumnDetails = ({columnConfiguration, onColumnChange}: ColumnDetailsProps
   const handleSourceChange = (updatedSource: Source) => {
     onColumnChange(updateSource(columnConfiguration, updatedSource));
   };
+
   const handleSourceRemove = (currentSource: Source) => {
     onColumnChange(removeSource(columnConfiguration, currentSource));
     switchTo(firstSource);

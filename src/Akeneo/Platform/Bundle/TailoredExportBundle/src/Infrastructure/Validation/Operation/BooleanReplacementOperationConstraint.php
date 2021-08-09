@@ -11,14 +11,14 @@ declare(strict_types=1);
  * file that was distributed with this source code.
  */
 
-namespace Akeneo\Platform\TailoredExport\Infrastructure\Validation\Source\Enabled;
+namespace Akeneo\Platform\TailoredExport\Infrastructure\Validation\Operation;
 
 use Symfony\Component\Validator\Constraint;
 
-class EnabledReplacementOperationConstraint extends Constraint
+class BooleanReplacementOperationConstraint extends Constraint
 {
     public function validatedBy(): string
     {
-        return EnabledReplacementOperationValidator::class;
+        return BooleanReplacementOperationValidator::class;
     }
 }

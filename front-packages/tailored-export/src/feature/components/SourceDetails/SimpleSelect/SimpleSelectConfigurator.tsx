@@ -4,15 +4,14 @@ import {filterErrors, useTranslate} from '@akeneo-pim-community/shared';
 import {AttributeConfiguratorProps} from '../../../models';
 import {CodeLabelSelector} from '../common/CodeLabelSelector';
 import {isSimpleSelectSource} from './model';
+import {InvalidAttributeSourceError} from '../error';
 
 const SimpleSelectConfigurator = ({source, validationErrors, onSourceChange}: AttributeConfiguratorProps) => {
   const translate = useTranslate();
   const [isSelectorCollapsed, toggleSelectorCollapse] = useState<boolean>(true);
 
   if (!isSimpleSelectSource(source)) {
-    console.error(`Invalid source data "${source.code}" for simple select configurator`);
-
-    return null;
+    throw new InvalidAttributeSourceError(`Invalid source data "${source.code}" for simple select configurator`);
   }
 
   return (

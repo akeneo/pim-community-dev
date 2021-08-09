@@ -10,6 +10,7 @@ import {
   updateSource,
   removeSource,
   addAssociationTypeSource,
+  filterEmptyOperations,
 } from './ColumnConfiguration';
 import {Source} from './Source';
 import {AssociationType} from './AssociationType';
@@ -359,5 +360,30 @@ test('it removes a source', () => {
       type: 'concat',
       elements: [],
     },
+  });
+});
+
+test('it filters empty operations', () => {
+  const operations = {
+    replacement: {
+      type: 'replacement',
+      mapping: {
+        true: 'vrai',
+        false: 'faux',
+      },
+    },
+    empty: undefined,
+    another: {not: 'empty'},
+  };
+
+  expect(filterEmptyOperations(operations)).toEqual({
+    replacement: {
+      type: 'replacement',
+      mapping: {
+        true: 'vrai',
+        false: 'faux',
+      },
+    },
+    another: {not: 'empty'},
   });
 });
