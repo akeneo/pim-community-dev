@@ -18,12 +18,12 @@ final class PriceCollectionCurrencyLabelSelection implements PriceCollectionSele
     public const TYPE = 'currency_label';
 
     private string $separator;
-    private string $localeCode;
+    private string $locale;
 
-    public function __construct(string $separator, string $localeCode)
+    public function __construct(string $separator, string $locale)
     {
         $this->separator = $separator;
-        $this->localeCode = $localeCode;
+        $this->locale = $locale;
     }
 
     public function getSeparator(): string
@@ -31,8 +31,8 @@ final class PriceCollectionCurrencyLabelSelection implements PriceCollectionSele
         return $this->separator;
     }
 
-    public function getLocaleCode(): string
+    public function getLocale(): string
     {
-        return $this->localeCode;
+        return $this->locale;
     }
 }
