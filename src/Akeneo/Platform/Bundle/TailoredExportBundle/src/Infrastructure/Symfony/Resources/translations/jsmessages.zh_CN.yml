@@ -6,6 +6,12 @@ akeneo.tailored_export:
         label: 定义完成度的区域
         placeholder: 选择一些区域
         remove: 移除区域
+    quality_score:
+      quality_score:
+        label: 质量评分
+        remove: 移除质量评分
+      locales:
+        label: 定义质量评分的区域
   form:
     job_instance:
       tab:
@@ -25,6 +31,7 @@ akeneo.tailored_export:
       remove: 删除列
       no_source: 定义内容源
     no_column_selection:
+      title: 您导出的配置文件是空的。
       subtitle: 点击“添加第一列”开始构建导出表。
       link: 查看我们的“帮助中心”获取更多信息。
       add_column: 添加第一列
@@ -33,12 +40,17 @@ akeneo.tailored_export:
       title: 源
       add: 添加源
       no_result: 抱歉，找不到结果 
+      locale_specific: 此属性为区域特定。
       remove:
         title: 源
         text: 确定要删除该源吗？
         button: 删除该源
       no_source_configuration:
         title: 此源没有可用的运算。其值将原样导出。
+      deleted_attribute:
+        title: 此属性已被删除，不能再将其用作源。
+      deleted_association_type:
+        title: 此关联类型已被删除，不能再将其用作源。
       no_source_selected:
         title: 点击“添加源”开始定义您的列内容。
         link: 查看我们的“帮助中心”获取更多信息。
@@ -46,6 +58,11 @@ akeneo.tailored_export:
         title: 一旦定义好第一列，您可以选择第一个源。
       selection:
         title: 选择
+        collection_separator:
+          title: 分隔符
+          comma: 逗号 (,)
+          semicolon: 分号 (;)
+          pipe: 管道 (|)
         type:
           amount: 金额
           currency: 货币
@@ -63,6 +80,25 @@ akeneo.tailored_export:
           unit_locale: 单位区域
           unit_code: 单位代码
           unit_label: 单位标签
+        price:
+          currency_code: 货币代码
+          currency_label: 货币标签
+          currency_locale: 货币区域
+          information: 对于此属性，您可以导出货币代码、货币标签或金额。
+        file:
+          information: 对于此属性，您可以导出路径、文件密钥或文件名。
+        decimal_separator:
+          title: 小数分隔符
+          comma: 逗号 (,)
+          dot: 点 (.)
+          arabic_comma: 阿拉伯小数分隔符 (٫)
+        quantified_association:
+          quantity: 数量
+        association:
+          entity_type: 实体类型
+          information:
+            locale: 如果用作标签的属性每个区域都有一个值，则您可以选择特定的区域。
+            channel: 如果用作标签的属性每个渠道都有一个值，则您可以选择特定的渠道。
       operation:
         replacement:
           title: 替换值
@@ -72,10 +108,26 @@ akeneo.tailored_export:
   column:
     delete_message: 确实要删除此列吗?
   validation:
+    required: 此值是必需的。
+    max_length_reached: 此值太长。其不应超过 {{ limit }} 个字符。
     columns:
       max_column_count_reached: 已达到列的上限数目 {{ limit }} ，无法再将列添加到导出中。
       target:
         should_not_be_blank: 请定义列名称。
+        max_length_reached: 列名称太长。其不应超过 {{ limit }} 个字符。
         should_be_unique: 此列名称已存在，请输入一个新名称。
     sources:
       max_source_count_reached: 已达到源的上限数目 {{ limit }} ，无法再将源添加到导出中。
+      association_type_should_exist: 关联类型 {{ association_type_code }} 不存在。请进行创建或选择其他的源。
+    locale:
+      should_be_active: 区域 {{ locale_code }} 已被停用。可以重新激活它或选择其他的区域。
+      should_be_bound_to_channel: 区域 {{ locale_code }} 已对渠道 {{ channel_code }} 停用。可以重新激活它或选择其他的区域。
+    channel:
+      should_exist: 渠道 {{ channel_code }} 已被删除。请选择其他的渠道。
+    attribute:
+      should_exist: 属性 {{ attribute_code }} 不存在。请进行创建或选择其他的源。
+      locale_should_not_be_blank: 属性 {{ attribute_code }} 现在针对每个区域都有一个值。请进行创建或选择其他的源。
+      channel_should_not_be_blank: 属性 {{ attribute_code }} 现在针对每个渠道都有一个值。请进行创建或选择其他的源。
+      locale_should_be_blank: 属性 {{ attribute_code }} 不再针对每个区域提供值。请进行创建或选择其他的源。
+      channel_should_be_blank: 属性 {{ attribute_code }} 不再针对每个渠道提供值。请进行创建或选择其他的源。
+      invalid_specific_locale: 属性 {{ attribute_code }} 为区域特定。请选择其他的区域。

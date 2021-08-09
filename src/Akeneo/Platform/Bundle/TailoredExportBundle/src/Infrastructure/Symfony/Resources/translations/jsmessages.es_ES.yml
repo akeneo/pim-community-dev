@@ -6,6 +6,12 @@ akeneo.tailored_export:
         label: Definir las configuraciones regionales para la exhaustividad
         placeholder: Seleccionar algunas configuraciones regionales
         remove: Eliminar la configuración regional
+    quality_score:
+      quality_score:
+        label: Puntuación de calidad
+        remove: Quitar puntuación de calidad
+      locales:
+        label: Definir las configuraciones regionales para la puntuación de calidad
   form:
     job_instance:
       tab:
@@ -25,6 +31,7 @@ akeneo.tailored_export:
       remove: Eliminar columna
       no_source: Definir fuente de contenido
     no_column_selection:
+      title: Su perfil de exportación está vacío.
       subtitle: Haga clic en «Añadir primera columna» para comenzar a construir su tabla de exportación.
       link: Eche un vistazo a nuestro Centro de ayuda para más información.
       add_column: Añadir primera columna
@@ -33,12 +40,17 @@ akeneo.tailored_export:
       title: Fuentes
       add: Añadir fuente
       no_result: Lo sentimos, no hay resultados.
+      locale_specific: Este atributo es específico de la configuración regional.
       remove:
         title: fuente
         text: '¿Está seguro de que quiere eliminar esta fuente?'
         button: Eliminar esta fuente
       no_source_configuration:
         title: No hay operaciones disponibles para esta fuente. Su valor será exportado tal como está.
+      deleted_attribute:
+        title: Este atributo ha sido eliminado, ya no puede usarlo como fuente.
+      deleted_association_type:
+        title: Este tipo de asociación ha sido eliminado, ya no puede usarlo como fuente.
       no_source_selected:
         title: Haga clic en «Añadir fuente» para comenzar a definir el contenido de su columna.
         link: Eche un vistazo a nuestro Centro de ayuda para más información.
@@ -46,6 +58,11 @@ akeneo.tailored_export:
         title: Una vez definida su primera columna, puede seleccionar su primera fuente.
       selection:
         title: Selección
+        collection_separator:
+          title: Separador
+          comma: Coma (,)
+          semicolon: Punto y coma (;)
+          pipe: Barra (|)
         type:
           amount: Cantidad
           currency: Moneda
@@ -63,6 +80,25 @@ akeneo.tailored_export:
           unit_locale: Configuración regional de unidad
           unit_code: Código de unidad
           unit_label: Etiqueta unitaria
+        price:
+          currency_code: Código de moneda
+          currency_label: Etiqueta de moneda
+          currency_locale: Configuración regional de moneda
+          information: Para este atributo, puede exportar el código de la moneda, la etiqueta de la moneda o el importe.
+        file:
+          information: Para este atributo, puede exportar la ruta, la clave de archivo o el nombre del archivo.
+        decimal_separator:
+          title: Separador de decimales
+          comma: Coma (,)
+          dot: Punto (.)
+          arabic_comma: Separador de decimales árabe (,)
+        quantified_association:
+          quantity: Cantidad
+        association:
+          entity_type: Tipo de entidad
+          information:
+            locale: Si el atributo usado como etiqueta tiene un valor por configuración regional, puede seleccionar una configuración regional específica.
+            channel: Si el atributo utilizado como etiqueta tiene un valor por canal, puede seleccionar un canal específico.
       operation:
         replacement:
           title: Reemplazar valor
@@ -72,10 +108,26 @@ akeneo.tailored_export:
   column:
     delete_message: '¿Está seguro de que quiere eliminar esta columna?'
   validation:
+    required: Este valor es obligatorio.
+    max_length_reached: Este valor es demasiado largo. Debe contener {{ limit }} caracteres o menos.
     columns:
       max_column_count_reached: Ha alcanzado el límite de columnas {{ limit }}, ya no puede añadir columnas a su exportación.
       target:
         should_not_be_blank: Defina un nombre de columna.
+        max_length_reached: El nombre de la columna es demasiado largo. Debe contener {{ limit }} caracteres o menos.
         should_be_unique: Este nombre de columna ya existe, introduzca uno nuevo.
     sources:
       max_source_count_reached: Ha alcanzado el límite de {{ limit }} fuentes, ya no puede añadir fuentes a su exportación.
+      association_type_should_exist: El tipo de asociación {{ association_type_code }} no existe. Cree o elija una fuente diferente.
+    locale:
+      should_be_active: La configuración regional {{ locale_code }} ha sido desactivada. Reactívela o seleccione otra configuración regional.
+      should_be_bound_to_channel: La configuración regional {{ locale_code }} ha sido desactivada para el canal {{ channel_code }}. Reactívela o seleccione otra configuración regional.
+    channel:
+      should_exist: El canal {{ channel_code }} ha sido eliminado. Seleccione otro canal.
+    attribute:
+      should_exist: El atributo {{ attribute_code }} no existe. Cree o elija una fuente diferente.
+      locale_should_not_be_blank: El atributo {{ attribute_code }} ahora tiene un valor por configuración regional. Cree o elija una fuente diferente.
+      channel_should_not_be_blank: El atributo {{ attribute_code }} ahora tiene un valor por canal. Cree o elija una fuente diferente.
+      locale_should_be_blank: El atributo {{ attribute_code }} ya no tiene un valor por configuración regional. Cree o elija una fuente diferente.
+      channel_should_be_blank: El atributo {{ attribute_code }} ya no tiene un valor por canal. Cree o elija una fuente diferente.
+      invalid_specific_locale: El atributo {{ attribute_code }} es específico de la configuración regional. Seleccione otra configuración regional.
