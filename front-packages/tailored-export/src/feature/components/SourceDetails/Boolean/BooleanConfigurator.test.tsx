@@ -1,10 +1,11 @@
 import React from 'react';
 import {screen} from '@testing-library/react';
-import userEvent from "@testing-library/user-event";
+import userEvent from '@testing-library/user-event';
 import {renderWithProviders} from '@akeneo-pim-community/shared';
 import {BooleanConfigurator} from './BooleanConfigurator';
 import {getDefaultBooleanSource} from './model';
 import {getDefaultDateSource} from '../Date/model';
+import {BooleanReplacementOperation} from "../common";
 
 const attribute = {
   code: 'boolean',
@@ -15,6 +16,29 @@ const attribute = {
   is_locale_specific: false,
   available_locales: [],
 };
+
+jest.mock('../common/BooleanReplacement', () => ({
+  ...jest.requireActual('../common/BooleanReplacement'),
+  BooleanReplacement: ({
+    onOperationChange,
+  }: {
+    onOperationChange: (updatedOperation: BooleanReplacementOperation) => void;
+  }) => (
+    <button
+      onClick={() =>
+        onOperationChange({
+          type: 'replacement',
+          mapping: {
+            true: 'activé',
+            false: 'désactivé',
+          },
+        })
+      }
+    >
+      Update replacement
+    </button>
+  ),
+}));
 
 jest.mock('../common/DefaultValue');
 

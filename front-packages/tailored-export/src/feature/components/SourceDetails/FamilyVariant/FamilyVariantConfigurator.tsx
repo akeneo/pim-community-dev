@@ -4,7 +4,7 @@ import {PropertyConfiguratorProps} from '../../../models';
 import {CodeLabelSelector} from '../common/CodeLabelSelector';
 import {isFamilyVariantSource} from './model';
 import {InvalidPropertySourceError} from '../error';
-import {DefaultValue, Operations} from "../common";
+import {DefaultValue, Operations} from '../common';
 
 const FamilyVariantConfigurator = ({source, validationErrors, onSourceChange}: PropertyConfiguratorProps) => {
   if (!isFamilyVariantSource(source)) {

@@ -1,7 +1,7 @@
 import {uuid} from 'akeneo-design-system';
 import {Source} from '../../../models';
 import {CodeLabelSelection} from '../common/CodeLabelSelector';
-import {DefaultValueOperation, isDefaultValueOperation} from "../common";
+import {DefaultValueOperation, isDefaultValueOperation} from '../common';
 
 type FamilyVariantOperations = {
   default_value?: DefaultValueOperation;
