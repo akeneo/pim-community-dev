@@ -60,3 +60,7 @@ services:
             - '@akeneo_connectivity.connection.marketplace.analytics_generator'
             - '@pim_user.context.user'
             - '@logger'
+
+    akeneo_connectivity.connection.internal_api.controller.apps.activate_app:
+        public: true
+        class: Akeneo\Connectivity\Connection\Infrastructure\InternalApi\Controller\Apps\ActivateAppController
