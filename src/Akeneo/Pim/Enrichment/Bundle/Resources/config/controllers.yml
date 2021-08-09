@@ -100,6 +100,7 @@ services:
             - '@security.token_storage'
             - '@pim_catalog.event_subscriber.product_model.on_save.api_aggregator_event_subscriber'
             - '@pim_api.warmup_query_cache.dummy'
+            - '@logger'
             - '%pim_api.configuration%'
 
     pim_api.controller.category:

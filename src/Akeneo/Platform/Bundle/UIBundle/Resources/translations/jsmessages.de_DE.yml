@@ -372,15 +372,3 @@ pim_settings:
   settings_menu: Konfigurationsmenü
   catalog_settings: Katalogeinstellungen
   product_settings: Artikel Einstellungen
-  count:
-    categories: Du hast {{ countTrees }} Bäume und {{ countCategories }} Kategorien
-    locales: Sie haben {{ count }} Gebietsschemata aktiviert
-    currencies: Sie haben {{ count }} Währungen aktiviert
-    attribute_groups: Sie haben {{ count }} Attributgruppen
-    attributes: Sie haben {{ count }} Attribute
-    families: Du hast {{ count }} Familien
-    measurements: Sie haben {{ count }} Messungen
-    association_types: Sie haben {{ count }} Verbindungstypen
-    group_types: Sie haben {{ count }} Gruppentypen
-    groups: Du hast {{ count }} Gruppen
-    rules: Du hast {{ count }} aktivierte Regeln
