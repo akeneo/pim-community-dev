@@ -382,7 +382,6 @@ pim_settings:
     attribute_groups: '{0}U heeft 0 attribuutgroepen|{1}U heeft 1 attribuutgroep|]1, Inf[U heeft {{ count }} attribuutgroepen'
     attributes: '{0}U heeft 0 attributen|{1}U heeft 1 attribuut|]1, Inf[U heeft {{ count }} attributen'
     families: '{0}U heeft 0 families |{1}U heeft 1 familie|]1, Inf[U heeft {{ count }} families'
-    measurements: '{0}U heeft 0 afmetingen|{1}U heeft 1 afmeting|]1, Inf[U heeft {{ count }} afmetingen'
     association_types: '{0}U heeft 0 associatietypes|{1}U heeft 1 associatietype|]1, Inf[U heeft {{ count }} associatietypes'
     group_types: '{0}U heeft 0 groepstypes|{1}U heeft 1 groepstype|]1, Inf[U heeft {{ count }} groepstypes'
     groups: '{0}U heeft 0 groepen|{1}U heeft 1 groep|]1, Inf[U heeft {{ count }} groepen'
