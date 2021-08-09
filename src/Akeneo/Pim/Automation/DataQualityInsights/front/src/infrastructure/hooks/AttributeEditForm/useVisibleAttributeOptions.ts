@@ -43,11 +43,11 @@ export const useVisibleAttributeOptions = () => {
     const observer = new IntersectionObserver(
       function(entries) {
         entries.forEach(entry => {
-          const labelElement = entry.target.querySelector('[role="attribute-option-item-label"]');
-          if (!labelElement) {
+          const codeElement = entry.target.querySelector('[role="attribute-option-item-code"]');
+          if (!codeElement) {
             return;
           }
-          const option = labelElement.textContent;
+          const option = codeElement.textContent;
 
           if (!option) {
             return;

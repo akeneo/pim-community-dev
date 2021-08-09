@@ -7,7 +7,6 @@ const toImproveBadge = <QualityBadge label={'to_improve'} />;
 const naBadge = <QualityBadge label={'n_a'} />;
 
 const AttributeOptionQualityBadge: FC<{option: string; evaluation: SpellcheckEvaluation}> = ({option, evaluation}) => {
-  console.log('test');
   if (!evaluation.options[option]) {
     return naBadge;
   }
