@@ -37,7 +37,6 @@ services:
         tags:
             - { name: security.voter }
 
-
     Akeneo\Platform\TailoredExport\Infrastructure\Voter\CanEditTailoredExport:
         arguments:
             - '@pimee_security.query.get_all_viewable_locales_for_user' # this service is in CE and overridden in EE

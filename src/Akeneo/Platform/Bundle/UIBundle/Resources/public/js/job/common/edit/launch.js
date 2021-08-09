@@ -34,7 +34,7 @@ define(['underscore', 'oro/translator', 'pimcommunity/job/common/edit/launch', '
 
     launch: function() {
       this.isVisible().then(isVisible => {
-        isVisible && BaseLaunch.prototype.launch();
+        isVisible && BaseLaunch.prototype.launch.apply(this);
       });
     },
 

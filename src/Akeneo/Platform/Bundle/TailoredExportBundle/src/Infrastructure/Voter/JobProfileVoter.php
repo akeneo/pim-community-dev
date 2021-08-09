@@ -5,7 +5,7 @@ declare(strict_types=1);
 /*
  * This file is part of the Akeneo PIM Enterprise Edition.
  *
- * (c) 2014 Akeneo SAS (http://www.akeneo.com)
+ * (c) 2021 Akeneo SAS (https://www.akeneo.com)
  *
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
@@ -27,13 +27,13 @@ use Symfony\Component\Security\Core\Authorization\Voter\VoterInterface;
  */
 class JobProfileVoter extends Voter implements VoterInterface
 {
-    protected Voter $decoratedVoter;
-    protected CanEditTailoredExport $canEditTailoredExport;
+    private ?Voter $decoratedVoter;
+    private CanEditTailoredExport $canEditTailoredExport;
     /** @var string[] */
     private array $tailoredExportJobNames;
 
     public function __construct(
-        Voter $decoratedVoter,
+        ?Voter $decoratedVoter,
         CanEditTailoredExport $canEditTailoredExport,
         array $tailoredExportJobNames
     ) {
@@ -45,7 +45,7 @@ class JobProfileVoter extends Voter implements VoterInterface
     /**
      * {@inheritdoc}
      */
-    public function vote(TokenInterface $token, $subject, array $attributes)
+    public function vote(TokenInterface $token, $subject, array $attributes): int
     {
         $result = VoterInterface::ACCESS_ABSTAIN;
 
@@ -53,13 +53,16 @@ class JobProfileVoter extends Voter implements VoterInterface
             return $result;
         }
 
-        $vote = $this->decoratedVoter->vote($token, $subject, $attributes);
+        if (null !== $this->decoratedVoter) {
+            $vote = $this->decoratedVoter->vote($token, $subject, $attributes);
 
-        if (
-            VoterInterface::ACCESS_DENIED === $vote
-            || !in_array($subject->getJobName(), $this->tailoredExportJobNames)
-        ) {
-            return $vote;
+            if (VoterInterface::ACCESS_DENIED === $vote) {
+                return VoterInterface::ACCESS_DENIED;
+            }
+        }
+
+        if (!in_array($subject->getJobName(), $this->tailoredExportJobNames)) {
+            return VoterInterface::ACCESS_ABSTAIN;
         }
 
         foreach ($attributes as $attribute) {
@@ -78,12 +81,16 @@ class JobProfileVoter extends Voter implements VoterInterface
     /**
      * {@inheritdoc}
      */
-    protected function supports($attribute, $subject)
+    protected function supports($attribute, $subject): bool
     {
-        return $this->decoratedVoter->supports($attribute, $subject);
+        if (null !== $this->decoratedVoter) {
+            return $this->decoratedVoter->supports($attribute, $subject);
+        }
+
+        return in_array($subject->getJobName(), $this->tailoredExportJobNames);
     }
 
-    protected function voteOnAttribute($attribute, $object, TokenInterface $token): bool
+    protected function voteOnAttribute($attribute, $subject, TokenInterface $token): bool
     {
         $user = $token->getUser();
         if (!$user instanceof UserInterface) {
@@ -95,6 +102,6 @@ class JobProfileVoter extends Voter implements VoterInterface
             return false;
         }
 
-        return $this->canEditTailoredExport->execute($object, $userId);
+        return $this->canEditTailoredExport->execute($subject, $userId);
     }
 }

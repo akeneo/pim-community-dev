@@ -59,12 +59,11 @@ class CanEditTailoredExport
 
             return array_merge($accumulator, $attributeCodes);
         }, []));
-        $notDeletedJobAttributes = $this->getAttributes->forCodes($jobAttributeCodes);
-        $notDeletedJobAttributeCodes = array_map(static fn (Attribute $attribute) => $attribute->code(), $notDeletedJobAttributes);
 
+        $notDeletedJobAttributeCodes = array_keys($this->getAttributes->forCodes($jobAttributeCodes));
         $viewableAttributes = $this->getViewableAttributes->forAttributeCodes($notDeletedJobAttributeCodes, $userId);
 
-        return array_intersect($viewableAttributes, $notDeletedJobAttributeCodes) === $notDeletedJobAttributeCodes;
+        return empty(array_diff($notDeletedJobAttributeCodes, $viewableAttributes));
     }
 
     private function canEditAllLocales(array $columns, int $userId): bool
@@ -74,8 +73,8 @@ class CanEditTailoredExport
 
             return array_merge($accumulator, array_filter($localeCodes));
         }, []));
-        $viewableLocales = $this->getAllViewableLocales->fetchAll($userId);
+        $viewableLocaleCodes = $this->getAllViewableLocales->fetchAll($userId);
 
-        return array_intersect($jobLocaleCodes, $viewableLocales) === $jobLocaleCodes;
+        return empty(array_diff($jobLocaleCodes, $viewableLocaleCodes));
     }
 }

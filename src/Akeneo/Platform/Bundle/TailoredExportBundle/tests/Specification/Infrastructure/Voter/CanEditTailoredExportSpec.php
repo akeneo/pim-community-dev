@@ -84,9 +84,9 @@ class CanEditTailoredExportSpec extends ObjectBehavior
         $weight = $this->createAttribute('weight');
 
         $getAttributes->forCodes(['description', 'name', 'weight'])->willReturn([
-            $description,
-            $name,
-            $weight
+            'description' => $description,
+            'name' => $name,
+            'weight' => $weight
         ]);
 
         $getViewableAttributes->forAttributeCodes(['description', 'name', 'weight'], $userId)->willReturn([
@@ -110,8 +110,8 @@ class CanEditTailoredExportSpec extends ObjectBehavior
         $weight = $this->createAttribute('weight');
 
         $getAttributes->forCodes(['description', 'name', 'weight'])->willReturn([
-            $description,
-            $weight
+            'description' => $description,
+            'weight' => $weight
         ]);
 
         $getViewableAttributes->forAttributeCodes(['description', 'weight'], $userId)->willReturn([
@@ -140,8 +140,8 @@ class CanEditTailoredExportSpec extends ObjectBehavior
         $weight = $this->createAttribute('weight');
 
         $getAttributes->forCodes(['description', 'name', 'weight'])->willReturn([
-            $description,
-            $weight
+            'description' => $description,
+            'weight' => $weight
         ]);
 
         $getViewableAttributes->forAttributeCodes(['description', 'weight'], $userId)->willReturn([
