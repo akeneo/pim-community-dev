@@ -2,18 +2,18 @@ import React from 'react';
 import {AttributeConfiguratorProps} from '../../../models';
 import {isBooleanSource} from './model';
 import {InvalidAttributeSourceError} from '../error';
-import {NoOperationsPlaceholder} from "../NoOperationsPlaceholder";
+import {NoOperationsPlaceholder} from '../NoOperationsPlaceholder';
 
 const BooleanConfigurator = ({source}: AttributeConfiguratorProps) => {
-//  const translate = useTranslate();
-//  const [isReplacementCollapsed, toggleReplacementCollapse] = useState<boolean>('replacement' in source.operations);
+  //  const translate = useTranslate();
+  //  const [isReplacementCollapsed, toggleReplacementCollapse] = useState<boolean>('replacement' in source.operations);
 
   if (!isBooleanSource(source)) {
     throw new InvalidAttributeSourceError(`Invalid source data "${source.code}" for boolean configurator`);
   }
 
   return <NoOperationsPlaceholder />;
-/**
+  /**
   return (
     <Collapse
       collapseButtonLabel={isReplacementCollapsed ? translate('pim_common.close') : translate('pim_common.open')}

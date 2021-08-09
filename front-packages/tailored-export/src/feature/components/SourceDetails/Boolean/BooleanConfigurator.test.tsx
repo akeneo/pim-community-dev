@@ -55,7 +55,7 @@ test('it displays a boolean configurator', () => {
 
   expect(
     screen.getByText('akeneo.tailored_export.column_details.sources.no_source_configuration.title')
-  ).toBeInTheDocument()
+  ).toBeInTheDocument();
   /**
   userEvent.click(screen.getByText('Update replacement'));
 
