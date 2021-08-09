@@ -396,15 +396,16 @@ pim_settings:
   catalog_settings: Catalog settings
   product_settings: Product settings
   count:
-    categories: You have {{ countTrees }} trees and {{ countCategories }} categories
-    channels: '{1}You have 1 channel|]1, Inf[You have {{ count }} channels'
-    locales: You have {{ count }} enabled locales
-    currencies: You have {{ count }} enabled currencies
-    attribute_groups: You have {{ count }} attribute groups
-    attributes: You have {{ count }} attributes
-    families: You have {{ count }} families
-    measurements: You have {{ count }} measurements
-    association_types: You have {{ count }} association types
-    group_types: You have {{ count }} group types
-    groups: You have {{ count }} groups
-    rules: You have {{ count }} enabled rules
+    category_trees: '{0}You have 0 trees |{1}You have 1 tree |]1, Inf[You have {{ count }} trees '
+    categories: '{0}and 0 categories|{1}and 1 category|]1, Inf[and {{ count }} categories'
+    channels: '{0}You have 0 channels|{1}You have 1 channel|]1, Inf[You have {{ count }} channels'
+    locales: '{0}You have 0 enabled locales|{1}You have 1 enabled locale|]1, Inf[You have {{ count }} enabled locales'
+    currencies: '{0}You have 0 enabled currencies|{1}You have 1 enabled currency|]1, Inf[You have {{ count }} enabled currencies'
+    attribute_groups: '{0}You have 0 attribute groups|{1}You have 1 attribute group|]1, Inf[You have {{ count }} attribute groups'
+    attributes: '{0}You have 0 attributes|{1}You have 1 attribute|]1, Inf[You have {{ count }} attributes'
+    families: '{0}You have 0 families|{1}You have 1 family|]1, Inf[You have {{ count }} families'
+    measurements: '{0}You have 0 measurements|{1}You have 1 measurement|]1, Inf[You have {{ count }} measurements'
+    association_types: '{0}You have 0 association types|{1}You have 1 association type|]1, Inf[You have {{ count }} association types'
+    group_types: '{0}You have 0 group types|{1}You have 1 group type|]1, Inf[You have {{ count }} group types'
+    groups: '{0}You have 0 groups|{1}You have 1 group|]1, Inf[You have {{ count }} groups'
+    rules: '{0}You have 0 enabled rules|{1}You have 1 enabled rule|]1, Inf[You have {{ count }} enabled rules'
