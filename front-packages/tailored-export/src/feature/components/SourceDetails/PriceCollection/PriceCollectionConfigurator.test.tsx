@@ -35,6 +35,8 @@ jest.mock('./PriceCollectionSelector', () => ({
   ),
 }));
 
+jest.mock('../common/DefaultValue');
+
 test('it displays a price collection configurator', () => {
   const onSourceChange = jest.fn();
 
@@ -57,6 +59,35 @@ test('it displays a price collection configurator', () => {
     selection: {
       type: 'currency_code',
       separator: ';',
+    },
+    uuid: 'e612bc67-9c30-4121-8b8d-e08b8c4a0640',
+  });
+});
+
+test('it can update default value operation', () => {
+  const onSourceChange = jest.fn();
+
+  renderWithProviders(
+    <PriceCollectionConfigurator
+      source={{
+        ...getDefaultPriceCollectionSource(attribute, null, null),
+        uuid: 'e612bc67-9c30-4121-8b8d-e08b8c4a0640',
+      }}
+      attribute={attribute}
+      validationErrors={[]}
+      onSourceChange={onSourceChange}
+    />
+  );
+
+  userEvent.click(screen.getByText('Default value'));
+
+  expect(onSourceChange).toHaveBeenCalledWith({
+    ...getDefaultPriceCollectionSource(attribute, null, null),
+    operations: {
+      default_value: {
+        type: 'default_value',
+        value: 'foo',
+      },
     },
     uuid: 'e612bc67-9c30-4121-8b8d-e08b8c4a0640',
   });

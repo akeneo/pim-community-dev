@@ -5,6 +5,7 @@ import {renderWithProviders} from '@akeneo-pim-community/shared';
 import {AssetCollectionConfigurator} from './AssetCollectionConfigurator';
 import {getDefaultTextSource} from '../Text/model';
 import {CodeLabelCollectionSelection} from '../common/CodeLabelCollectionSelector';
+import {getDefaultAssetCollectionSource} from './model';
 
 const attribute = {
   code: 'asset',
@@ -36,6 +37,8 @@ jest.mock('../common/CodeLabelCollectionSelector', () => ({
     </button>
   ),
 }));
+
+jest.mock('../common/DefaultValue');
 
 test('it displays an asset collection configurator', () => {
   const onSourceChange = jest.fn();
@@ -73,6 +76,35 @@ test('it displays an asset collection configurator', () => {
       type: 'label',
     },
     type: 'attribute',
+    uuid: 'e612bc67-9c30-4121-8b8d-e08b8c4a0640',
+  });
+});
+
+test('it can update default value operation', () => {
+  const onSourceChange = jest.fn();
+
+  renderWithProviders(
+    <AssetCollectionConfigurator
+      source={{
+        ...getDefaultAssetCollectionSource(attribute, null, null),
+        uuid: 'e612bc67-9c30-4121-8b8d-e08b8c4a0640',
+      }}
+      attribute={attribute}
+      validationErrors={[]}
+      onSourceChange={onSourceChange}
+    />
+  );
+
+  userEvent.click(screen.getByText('Default value'));
+
+  expect(onSourceChange).toHaveBeenCalledWith({
+    ...getDefaultAssetCollectionSource(attribute, null, null),
+    operations: {
+      default_value: {
+        type: 'default_value',
+        value: 'foo',
+      },
+    },
     uuid: 'e612bc67-9c30-4121-8b8d-e08b8c4a0640',
   });
 });

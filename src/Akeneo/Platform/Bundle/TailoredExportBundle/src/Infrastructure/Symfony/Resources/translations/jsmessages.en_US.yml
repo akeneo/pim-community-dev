@@ -109,6 +109,7 @@ akeneo.tailored_export:
             locale: If the attribute used as label has a value per locale, you may select a specific locale.
             channel: If the attribute used as label has a value per channel, you may select a specific channel.
       operation:
+        header: Operations
         replacement:
           title: Replace value
           placeholder: Define the replacement value
@@ -116,6 +117,10 @@ akeneo.tailored_export:
           disabled: Disabled replacement value
           yes: Yes replacement value
           no: No replacement value
+        default_value:
+          title: Use default value when empty
+          label: Default value
+          placeholder: Define the value
   column:
     delete_message: Are you sure you want to remove this column?
   validation:

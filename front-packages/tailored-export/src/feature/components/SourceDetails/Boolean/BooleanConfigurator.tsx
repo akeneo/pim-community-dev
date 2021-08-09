@@ -1,26 +1,26 @@
 import React from 'react';
+import {filterErrors, useTranslate} from '@akeneo-pim-community/shared';
 import {AttributeConfiguratorProps} from '../../../models';
 import {isBooleanSource} from './model';
 import {InvalidAttributeSourceError} from '../error';
-import {NoOperationsPlaceholder} from '../NoOperationsPlaceholder';
+import {BooleanReplacement, DefaultValue, Operations} from '../common';
 
-const BooleanConfigurator = ({source}: AttributeConfiguratorProps) => {
-  //  const translate = useTranslate();
-  //  const [isReplacementCollapsed, toggleReplacementCollapse] = useState<boolean>('replacement' in source.operations);
+const BooleanConfigurator = ({source, validationErrors, onSourceChange}: AttributeConfiguratorProps) => {
+  const translate = useTranslate();
 
   if (!isBooleanSource(source)) {
     throw new InvalidAttributeSourceError(`Invalid source data "${source.code}" for boolean configurator`);
   }
 
-  return <NoOperationsPlaceholder />;
-  /**
   return (
-    <Collapse
-      collapseButtonLabel={isReplacementCollapsed ? translate('pim_common.close') : translate('pim_common.open')}
-      label={translate('akeneo.tailored_export.column_details.sources.operation.replacement.title')}
-      isOpen={isReplacementCollapsed}
-      onCollapse={toggleReplacementCollapse}
-    >
+    <Operations>
+      <DefaultValue
+        operation={source.operations.default_value}
+        validationErrors={filterErrors(validationErrors, '[operations][default_value]')}
+        onOperationChange={updatedOperation =>
+          onSourceChange({...source, operations: {...source.operations, default_value: updatedOperation}})
+        }
+      />
       <BooleanReplacement
         trueLabel={translate('akeneo.tailored_export.column_details.sources.operation.replacement.yes')}
         falseLabel={translate('akeneo.tailored_export.column_details.sources.operation.replacement.no')}
@@ -30,9 +30,8 @@ const BooleanConfigurator = ({source}: AttributeConfiguratorProps) => {
           onSourceChange({...source, operations: {...source.operations, replacement: updatedOperation}})
         }
       />
-    </Collapse>
+    </Operations>
   );
-*/
 };
 
 export {BooleanConfigurator};

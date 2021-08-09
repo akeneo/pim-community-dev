@@ -20,14 +20,14 @@ use Akeneo\Platform\TailoredExport\Domain\ValueCollection;
 
 class ProductMapper
 {
-    private OperationHandler $operationHandler;
+    private OperationApplier $operationApplier;
     private SelectionHandler $selectionHandler;
 
     public function __construct(
-        OperationHandler $operationHandler,
+        OperationApplier $operationApplier,
         SelectionHandler $selectionHandler
     ) {
-        $this->operationHandler = $operationHandler;
+        $this->operationApplier = $operationApplier;
         $this->selectionHandler = $selectionHandler;
     }
 
@@ -42,7 +42,7 @@ class ProductMapper
                 $operations = $source->getOperationCollection();
                 $value = $valueCollection->getFromSource($source);
 
-                $transformedValue = $this->operationHandler->handleOperations($operations, $value);
+                $transformedValue = $this->operationApplier->applyOperations($operations, $value);
                 $mappedValues[] = $this->selectionHandler->applySelection(
                     $source->getSelection(),
                     $transformedValue

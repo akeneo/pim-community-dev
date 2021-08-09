@@ -13,9 +13,11 @@ declare(strict_types=1);
 
 namespace Akeneo\Platform\TailoredExport\Test\Acceptance\UseCases\Attribute;
 
+use Akeneo\Platform\TailoredExport\Application\Query\Operation\DefaultValueOperation;
 use Akeneo\Platform\TailoredExport\Application\Query\Selection\ReferenceEntityCollection\ReferenceEntityCollectionCodeSelection;
 use Akeneo\Platform\TailoredExport\Application\Query\Selection\ReferenceEntityCollection\ReferenceEntityCollectionLabelSelection;
 use Akeneo\Platform\TailoredExport\Application\Query\Selection\SelectionInterface;
+use Akeneo\Platform\TailoredExport\Domain\SourceValue\NullValue;
 use Akeneo\Platform\TailoredExport\Domain\SourceValue\ReferenceEntityCollectionValue;
 use Akeneo\Platform\TailoredExport\Domain\SourceValueInterface;
 use Akeneo\Platform\TailoredExport\Test\Acceptance\FakeServices\ReferenceEntity\InMemoryFindRecordsLabelTranslations;
@@ -47,17 +49,37 @@ final class HandleReferenceEntityCollectionValueTest extends AttributeTestCase
     public function provider(): array
     {
         return [
-            [
+            'it selects the record codes' => [
                 'operations' => [],
                 'selection' => new ReferenceEntityCollectionCodeSelection(','),
                 'value' => new ReferenceEntityCollectionValue(['blue', 'black']),
                 'expected' => [self::TARGET_NAME => 'blue,black']
             ],
-            [
+            'it selects the record labels' => [
                 'operations' => [],
                 'selection' => new ReferenceEntityCollectionLabelSelection(',', 'en_US', 'color'),
                 'value' => new ReferenceEntityCollectionValue(['blue', 'reference_entity_without_label']),
                 'expected' => [self::TARGET_NAME => 'Blue,[reference_entity_without_label]']
+            ],
+            'it applies default value operation when value is null' => [
+                'operations' => [
+                    DefaultValueOperation::createFromNormalized([
+                        'value' => 'n/a'
+                    ]),
+                ],
+                'selection' => new ReferenceEntityCollectionCodeSelection(','),
+                'value' => new NullValue(),
+                'expected' => [self::TARGET_NAME => 'n/a']
+            ],
+            'it does not apply default value operation when value is not null' => [
+                'operations' => [
+                    DefaultValueOperation::createFromNormalized([
+                        'value' => 'n/a'
+                    ]),
+                ],
+                'selection' => new ReferenceEntityCollectionCodeSelection(','),
+                'value' => new ReferenceEntityCollectionValue(['blue', 'black']),
+                'expected' => [self::TARGET_NAME => 'blue,black']
             ],
         ];
     }

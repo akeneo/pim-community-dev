@@ -16,11 +16,12 @@ namespace Akeneo\Platform\TailoredExport\Infrastructure\Validation\Source\File;
 use Akeneo\Platform\TailoredExport\Application\Query\Selection\File\FileKeySelection;
 use Akeneo\Platform\TailoredExport\Application\Query\Selection\File\FileNameSelection;
 use Akeneo\Platform\TailoredExport\Application\Query\Selection\File\FilePathSelection;
+use Akeneo\Platform\TailoredExport\Infrastructure\Validation\Operation\DefaultValueOperationConstraint;
 use Akeneo\Platform\TailoredExport\Infrastructure\Validation\Source\SourceConstraintProvider;
 use Symfony\Component\Validator\Constraint;
 use Symfony\Component\Validator\Constraints\Choice;
 use Symfony\Component\Validator\Constraints\Collection;
-use Symfony\Component\Validator\Constraints\Type;
+use Symfony\Component\Validator\Constraints\Optional;
 use Symfony\Component\Validator\ConstraintValidator;
 
 class FileSourceValidator extends ConstraintValidator
@@ -44,10 +45,9 @@ class FileSourceValidator extends ConstraintValidator
                 ],
             ]
         );
-
-        $sourceConstraintFields['operations'] = new Type([
-            'type' => 'array',
-        ]);
+        $sourceConstraintFields['operations'] = new Collection(['fields' => [
+            'default_value' => new Optional(new DefaultValueOperationConstraint()),
+        ]]);
 
         $violations = $validator->validate($source, new Collection(['fields' => $sourceConstraintFields]));
 
