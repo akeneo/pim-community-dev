@@ -40,7 +40,7 @@ class PriceCollectionCurrencyLabelSelectionHandler implements SelectionHandlerIn
         $selectedData = array_map(
             fn (Price $price) => $this->currencyTranslator->translate(
                 $price->getCurrency(),
-                $selection->getLocaleCode(),
+                $selection->getLocale(),
                 sprintf('[%s]', $price->getCurrency())
             ),
             $priceCollection

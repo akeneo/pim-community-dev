@@ -6,6 +6,12 @@ akeneo.tailored_export:
         label: Definisci le impostazioni locali per il completamento
         placeholder: Seleziona alcune impostazioni locali
         remove: Rimuovi l'impostazione locale
+    quality_score:
+      quality_score:
+        label: Punteggio qualità
+        remove: Rimuovi punteggio qualità
+      locales:
+        label: Definisci le impostazioni locali per il punteggio qualità
   form:
     job_instance:
       tab:
@@ -25,6 +31,7 @@ akeneo.tailored_export:
       remove: Rimuovi colonna
       no_source: Definisci origine contenuto
     no_column_selection:
+      title: Il tuo profilo di esportazione è vuoto.
       subtitle: Fai clic su 'Aggiungi prima colonna' per iniziare a creare la tua tabella di esportazione.
       link: Consulta il nostro Help Center per ulteriori informazioni.
       add_column: Aggiungi prima colonna
@@ -33,12 +40,17 @@ akeneo.tailored_export:
       title: Origini
       add: Aggiungi origine
       no_result: Spiacenti, nessun risultato presente.
+      locale_specific: Questo attributo è specifico per impostazioni locali.
       remove:
         title: origine
         text: Sei sicuro di voler rimuovere questa origine?
         button: Rimuovi questa origine
       no_source_configuration:
         title: Non sono presenti operazioni disponibili per questa origine. Il suo valore verrà esportato così com'è.
+      deleted_attribute:
+        title: Questo attributo è stato eliminato, non è più possibile utilizzarlo come origine.
+      deleted_association_type:
+        title: Questo tipo di associazione è stato eliminato, non è più possibile utilizzarlo come origine.
       no_source_selected:
         title: Fai clic su 'Aggiungi origine' per iniziare a definire il contenuto della colonna.
         link: Consulta il nostro Help Center per ulteriori informazioni.
@@ -46,6 +58,11 @@ akeneo.tailored_export:
         title: Una volta che la prima colonna è definita, puoi selezionare la tua prima origine.
       selection:
         title: Selezione
+        collection_separator:
+          title: Separatore
+          comma: Virgola (,)
+          semicolon: Punto e virgola (;)
+          pipe: Barra verticale (|)
         type:
           amount: Importo
           currency: Valuta
@@ -63,6 +80,25 @@ akeneo.tailored_export:
           unit_locale: Impostazione locale unità
           unit_code: Codice unità
           unit_label: Etichetta unità
+        price:
+          currency_code: Codice valuta
+          currency_label: Etichetta valuta
+          currency_locale: Impostazione locale valuta
+          information: Per questo attributo, puoi esportare il codice valuta, l'etichetta valuta o l'importo.
+        file:
+          information: Per questo attributo, puoi esportare il percorso, la chiave di file o il nome di file.
+        decimal_separator:
+          title: Separatore decimale
+          comma: Virgola (,)
+          dot: Punto (.)
+          arabic_comma: Separatore decimale arabo (٫)
+        quantified_association:
+          quantity: Quantità
+        association:
+          entity_type: Tipo di entità
+          information:
+            locale: Se l'attributo usato come etichetta ha un valore per impostazione locale, puoi selezionare un'impostazione locale specifica.
+            channel: Se l'attributo usato come etichetta ha un valore per canale, puoi selezionare un canale specifico.
       operation:
         replacement:
           title: Sostituisci valore
@@ -72,10 +108,26 @@ akeneo.tailored_export:
   column:
     delete_message: Sei sicuro di voler rimuovere questa colonna?
   validation:
+    required: Questo valore è obbligatorio
+    max_length_reached: Valore troppo lungo. Deve contenere {{ limit }} caratteri o meno.
     columns:
       max_column_count_reached: Hai raggiunto il limite di {{ limit }} colonne, non puoi più aggiungere colonne alla tua esportazione.
       target:
         should_not_be_blank: Definisci un nome di colonna.
+        max_length_reached: Nome della colonna troppo lungo. Deve contenere {{ limit }} caratteri o meno.
         should_be_unique: Questo nome di colonna esiste già, inseriscine uno nuovo.
     sources:
       max_source_count_reached: Hai raggiunto il limite di {{ limit }} origini, non puoi più aggiungere origini alla tua esportazione.
+      association_type_should_exist: Il tipo di associazione {{ association_type_code }} non esiste. Crealo o scegli un'altra origine.
+    locale:
+      should_be_active: L'impostazione locale {{ locale_code }} è stata disattivata. Riattivala o seleziona un'altra impostazione locale.
+      should_be_bound_to_channel: L'impostazione locale {{ locale_code }} è stata disattivata per il canale {{ channel_code }}. Riattivala o seleziona un'altra impostazione locale.
+    channel:
+      should_exist: Il canale {{ channel_code }} è stato eliminato. Seleziona un altro canale.
+    attribute:
+      should_exist: L'attributo {{ attribute_code }} non esiste. Crealo o scegli un'altra origine.
+      locale_should_not_be_blank: L'attributo {{ attribute_code }} non ha un valore per impostazione locale. Crealo o scegli un'altra origine.
+      channel_should_not_be_blank: L'attributo {{ attribute_code }} non ha un valore per canale. Crealo o scegli un'altra origine.
+      locale_should_be_blank: L'attributo {{ attribute_code }} non ha più un valore per impostazione locale. Crealo o scegli un'altra origine.
+      channel_should_be_blank: L'attributo {{ attribute_code }} non ha più un valore per canale. Crealo o scegli un'altra origine.
+      invalid_specific_locale: L'attributo {{ attribute_code }} è specifico per impostazioni locali. Seleziona un'altra impostazione locale.

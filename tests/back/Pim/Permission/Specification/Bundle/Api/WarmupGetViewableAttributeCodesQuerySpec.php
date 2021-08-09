@@ -3,7 +3,7 @@
 namespace Specification\Akeneo\Pim\Permission\Bundle\Api;
 
 use Akeneo\Pim\Permission\Bundle\Api\WarmupGetViewableAttributeCodesQuery;
-use Akeneo\Pim\Permission\Component\Query\GetViewableAttributeCodesForUserInterface;
+use Akeneo\Pim\Structure\Component\Query\PublicApi\Permission\GetViewableAttributeCodesForUserInterface;
 use Akeneo\Tool\Bundle\ApiBundle\Cache\WarmupQueryCache;
 use Akeneo\UserManagement\Component\Model\User;
 use PhpSpec\ObjectBehavior;
@@ -55,7 +55,7 @@ class WarmupGetViewableAttributeCodesQuerySpec extends ObjectBehavior
 JSON;
 
         $getViewableAttributeCodesForUser->forAttributeCodes(Argument::is(['color', 'size', '123456', 'name', 'description']), 42)
-                                         ->shouldBeCalled();
+            ->shouldBeCalled();
 
         $request = new Request([], [], [], [], [], [], $content);
         $this->fromRequest($request);
