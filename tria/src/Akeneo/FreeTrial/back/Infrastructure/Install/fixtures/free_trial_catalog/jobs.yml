@@ -1,0 +1,634 @@
+jobs:
+    attributes_import:
+        connector: 'Akeneo XLSX Connector'
+        alias: xlsx_attribute_import
+        label: 'Attribute Import (XLSX)'
+        type: import
+        configuration:
+            filePath: null
+            withHeader: true
+            uploadAllowed: true
+            invalid_items_file_format: xlsx
+            user_to_notify: null
+            is_user_authenticated: false
+    family_import:
+        connector: 'Akeneo XLSX Connector'
+        alias: xlsx_family_import
+        label: 'Family Import (XLSX)'
+        type: import
+        configuration:
+            filePath: null
+            withHeader: true
+            uploadAllowed: true
+            invalid_items_file_format: xlsx
+            user_to_notify: null
+            is_user_authenticated: false
+    options_import:
+        connector: 'Akeneo XLSX Connector'
+        alias: xlsx_attribute_option_import
+        label: 'Attribute Option Import (XLSX)'
+        type: import
+        configuration:
+            filePath: null
+            withHeader: true
+            uploadAllowed: true
+            invalid_items_file_format: xlsx
+            user_to_notify: null
+            is_user_authenticated: false
+    products_import:
+        connector: 'Akeneo XLSX Connector'
+        alias: xlsx_product_import
+        label: 'Products Import (XLSX)'
+        type: import
+        configuration:
+            filePath: null
+            withHeader: true
+            uploadAllowed: true
+            invalid_items_file_format: xlsx
+            user_to_notify: null
+            is_user_authenticated: false
+            decimalSeparator: .
+            dateFormat: yyyy-MM-dd
+            enabled: true
+            categoriesColumn: categories
+            familyColumn: family
+            groupsColumn: groups
+            enabledComparison: true
+            realTimeVersioning: true
+            convertVariantToSimple: false
+    category:
+        connector: 'Akeneo XLSX Connector'
+        alias: xlsx_category_import
+        label: 'Category Import (XLSX)'
+        type: import
+        configuration:
+            filePath: null
+            withHeader: true
+            uploadAllowed: true
+            invalid_items_file_format: xlsx
+            user_to_notify: null
+            is_user_authenticated: false
+    group:
+        connector: 'Akeneo XLSX Connector'
+        alias: xlsx_attribute_group_import
+        label: 'Attribute Group Import (XLSX)'
+        type: import
+        configuration:
+            filePath: null
+            withHeader: true
+            uploadAllowed: true
+            invalid_items_file_format: xlsx
+            user_to_notify: null
+            is_user_authenticated: false
+    variant:
+        connector: 'Akeneo XLSX Connector'
+        alias: xlsx_family_variant_import
+        label: 'Family Variant Import (XLSX)'
+        type: import
+        configuration:
+            filePath: null
+            withHeader: true
+            uploadAllowed: true
+            invalid_items_file_format: xlsx
+            user_to_notify: null
+            is_user_authenticated: false
+    model:
+        connector: 'Akeneo XLSX Connector'
+        alias: xlsx_product_model_import
+        label: 'Product Model Import (XLSX)'
+        type: import
+        configuration:
+            filePath: null
+            withHeader: true
+            uploadAllowed: true
+            invalid_items_file_format: xlsx
+            user_to_notify: null
+            is_user_authenticated: false
+            decimalSeparator: .
+            dateFormat: yyyy-MM-dd
+            enabled: true
+            categoriesColumn: categories
+            familyVariantColumn: family_variant
+            enabledComparison: true
+            realTimeVersioning: true
+    attributeex:
+        connector: 'Akeneo XLSX Connector'
+        alias: xlsx_attribute_export
+        label: 'Cat02 - Attribute Export (XLSX)'
+        type: export
+        configuration:
+            filePath: /tmp/export_%job_label%_%datetime%.xlsx
+            withHeader: true
+            linesPerFile: 10000
+            user_to_notify: null
+            is_user_authenticated: false
+    optionex:
+        connector: 'Akeneo XLSX Connector'
+        alias: xlsx_attribute_option_export
+        label: 'Cat03-Attribute Option Export (XLSX)'
+        type: export
+        configuration:
+            filePath: /tmp/export_%job_label%_%datetime%.xlsx
+            withHeader: true
+            linesPerFile: 10000
+            user_to_notify: null
+            is_user_authenticated: false
+    categories:
+        connector: 'Akeneo XLSX Connector'
+        alias: xlsx_category_export
+        label: 'Cat01-Category Export (XLSX)'
+        type: export
+        configuration:
+            filePath: /tmp/export_%job_label%_%datetime%.xlsx
+            withHeader: true
+            linesPerFile: 10000
+            user_to_notify: null
+            is_user_authenticated: false
+    family:
+        connector: 'Akeneo XLSX Connector'
+        alias: xlsx_family_export
+        label: 'Cat04-Family Export (XLSX)'
+        type: export
+        configuration:
+            filePath: /tmp/export_%job_label%_%datetime%.xlsx
+            withHeader: true
+            linesPerFile: 10000
+            user_to_notify: null
+            is_user_authenticated: false
+    product:
+        connector: 'Akeneo XLSX Connector'
+        alias: xlsx_product_export
+        label: 'Cat05-Product Export (XLSX)'
+        type: export
+        configuration:
+            filePath: /tmp/export_%job_label%_%datetime%.xlsx
+            withHeader: true
+            linesPerFile: 10000
+            user_to_notify: null
+            is_user_authenticated: false
+            decimalSeparator: .
+            dateFormat: yyyy-MM-dd
+            with_media: true
+            with_label: false
+            header_with_label: false
+            file_locale: null
+            filters:
+                data:
+                    -
+                        field: enabled
+                        operator: ALL
+                        value: null
+                    -
+                        field: completeness
+                        operator: ALL
+                        value: 100
+                        context:
+                            locales:
+                                - en_US
+                    -
+                        field: categories
+                        operator: 'IN CHILDREN'
+                        value:
+                            - master
+                structure:
+                    scope: ecommerce
+                    locales:
+                        - en_US
+                    attributes:
+                        - name
+    furniture_amazon:
+        connector: 'Akeneo XLSX Connector'
+        alias: xlsx_product_export
+        label: 'Furniture products for Amazon (weekly)'
+        type: export
+        configuration:
+            filePath: /tmp/export_%job_label%_%datetime%.xlsx
+            withHeader: true
+            linesPerFile: 10000
+            user_to_notify: null
+            is_user_authenticated: false
+            decimalSeparator: .
+            dateFormat: yyyy-MM-dd
+            with_media: true
+            with_label: false
+            header_with_label: false
+            file_locale: null
+            filters:
+                data:
+                    -
+                        field: enabled
+                        operator: '='
+                        value: true
+                    -
+                        field: completeness
+                        operator: 'GREATER OR EQUALS THAN ON ALL LOCALES'
+                        value: 100
+                        context:
+                            locales:
+                                - en_US
+                                - es_ES
+                                - zh_CN
+                    -
+                        field: categories
+                        operator: IN
+                        value:
+                            - '0006'
+                    -
+                        field: family
+                        operator: IN
+                        value:
+                            - furniture
+                    -
+                        field: updated
+                        operator: 'SINCE LAST JOB'
+                        value: furniture_amazon
+                structure:
+                    scope: marketplaces
+                    locales:
+                        - en_US
+                        - es_ES
+                        - zh_CN
+                    attributes:
+                        - name
+                        - designer
+                        - app_aesthetics
+                        - material
+                        - app_finishing
+                        - furniture_fabric_composition
+                        - recycled_material
+                        - made_in
+                        - length
+                        - leg_height
+                        - height
+                        - depth
+                        - weight
+                        - stand_depth
+                        - stand_width
+                        - furniture_packaging_dimensions
+                        - amazon_asin
+                        - image_1
+                        - image_2
+                        - image_dimension
+                        - image_3
+                        - amazon_titre_produit
+                        - vp_id_famille
+                        - amazon_keyword
+                        - amazon_modele
+                        - amazon_description
+                        - amazon_type_produit
+                        - amazon_ligne_produit
+                        - amazon_colisage
+                        - amazon_puce_page_produit_1
+                        - amazon_puce_page_produit_2
+                        - amazon_puce_page_produit_3
+                        - amazon_puce_page_produit_4
+                        - amazon_puce_page_produit_5
+    fashion_tmall:
+        connector: 'Akeneo XLSX Connector'
+        alias: xlsx_product_export
+        label: 'Fashion products for Tmall (daily)'
+        type: export
+        configuration:
+            filePath: /tmp/export_%job_label%_%datetime%.xlsx
+            withHeader: true
+            linesPerFile: 10000
+            user_to_notify: null
+            is_user_authenticated: false
+            decimalSeparator: .
+            dateFormat: yyyy-MM-dd
+            with_media: true
+            with_label: false
+            header_with_label: false
+            file_locale: null
+            filters:
+                data:
+                    -
+                        field: enabled
+                        operator: '='
+                        value: true
+                    -
+                        field: completeness
+                        operator: ALL
+                        value: 100
+                        context:
+                            locales:
+                                - en_US
+                                - zh_CN
+                    -
+                        field: categories
+                        operator: IN
+                        value:
+                            - '0001'
+                    -
+                        field: family
+                        operator: IN
+                        value:
+                            - clothing
+                    -
+                        field: updated
+                        operator: 'SINCE LAST JOB'
+                        value: fashion_tmall
+                structure:
+                    scope: marketplaces
+                    locales:
+                        - en_US
+                        - zh_CN
+                    attributes:
+                        - name
+                        - material
+                        - description
+                        - style_name
+                        - color
+                        - color_name
+                        - clothing_typespecific_details
+                        - clothing_pocket_description
+                        - clothing_closure_type
+                        - clothing_care_instructions
+                        - non_textile_part
+                        - clothing_material
+                        - clothing_material_text
+                        - made_in
+                        - tmall_title
+                        - tmall_categories
+                        - tmall_descripton
+                        - image_1
+                        - image_2
+                        - image_3
+                        - image_4
+                        - image_5
+    food_supermarket:
+        connector: 'Akeneo XLSX Connector'
+        alias: xlsx_product_export
+        label: 'Food products for Supermarkets (weekly)'
+        type: export
+        configuration:
+            filePath: /tmp/export_%job_label%_%datetime%.xlsx
+            withHeader: true
+            linesPerFile: 10000
+            user_to_notify: null
+            is_user_authenticated: false
+            decimalSeparator: .
+            dateFormat: yyyy-MM-dd
+            with_media: true
+            with_label: false
+            header_with_label: false
+            file_locale: null
+            filters:
+                data:
+                    -
+                        field: enabled
+                        operator: '='
+                        value: true
+                    -
+                        field: completeness
+                        operator: 'LOWER THAN ON ALL LOCALES'
+                        value: 100
+                        context:
+                            locales:
+                                - en_US
+                                - es_ES
+                                - zh_CN
+                    -
+                        field: categories
+                        operator: 'IN CHILDREN'
+                        value:
+                            - master
+                    -
+                        field: family
+                        operator: IN
+                        value:
+                            - food
+                    -
+                        field: updated
+                        operator: 'SINCE LAST JOB'
+                        value: food_supermarket
+                structure:
+                    scope: marketplaces
+                    locales:
+                        - en_US
+                        - es_ES
+                        - zh_CN
+                    attributes:
+                        - name
+                        - brand
+                        - price
+                        - ak_allergenes
+                        - food_fat_g
+                        - food_protein_g
+                        - food_energy_kj
+                        - food_allergens
+                        - cosmetic_allergenes
+                        - food_energy_kcal
+                        - food_kosher
+                        - food_halal
+                        - food_lactose
+                        - food_coeliac
+                        - ak_regime
+                        - ak_format_promotionnel
+    pharma_amazon:
+        connector: 'Akeneo XLSX Connector'
+        alias: xlsx_product_export
+        label: 'Pharma products for Amazon (monthly)'
+        type: export
+        configuration:
+            filePath: /tmp/export_%job_label%_%datetime%.xlsx
+            withHeader: true
+            linesPerFile: 10000
+            user_to_notify: null
+            is_user_authenticated: false
+            decimalSeparator: .
+            dateFormat: yyyy-MM-dd
+            with_media: true
+            with_label: false
+            header_with_label: false
+            file_locale: null
+            filters:
+                data:
+                    -
+                        field: enabled
+                        operator: '='
+                        value: true
+                    -
+                        field: completeness
+                        operator: ALL
+                        value: 100
+                        context:
+                            locales:
+                                - en_US
+                                - es_ES
+                    -
+                        field: categories
+                        operator: IN
+                        value:
+                            - '0008'
+                    -
+                        field: family
+                        operator: IN
+                        value:
+                            - pharma
+                structure:
+                    scope: marketplaces
+                    locales:
+                        - en_US
+                        - es_ES
+                    attributes:
+                        - name
+                        - price
+                        - description
+                        - pharmaceutical_form
+                        - cosmetics_text_benefit
+                        - cosmetic_web_fp_picto1
+                        - cosmetics_text_formula
+                        - cosmetics_text_bapplication
+                        - web_fp_picto2
+                        - usage_indicaion
+                        - forme_galenique
+                        - food_ingredients
+                        - cosmetic_format
+                        - amazon_asin
+                        - amazon_colisage
+                        - amazon_ligne_produit
+                        - amazon_type_produit
+                        - vp_id_famille
+                        - amazon_titre_produit
+                        - amazon_description
+    electronices_sales_app:
+        connector: 'Akeneo XLSX Connector'
+        alias: xlsx_product_export
+        label: 'Electronic products for Sales app'
+        type: export
+        configuration:
+            filePath: /tmp/export_%job_label%_%datetime%.xlsx
+            withHeader: true
+            linesPerFile: 10000
+            user_to_notify: null
+            is_user_authenticated: false
+            decimalSeparator: .
+            dateFormat: yyyy-MM-dd
+            with_media: true
+            with_label: false
+            header_with_label: false
+            file_locale: null
+            filters:
+                data:
+                    -
+                        field: enabled
+                        operator: '='
+                        value: true
+                    -
+                        field: completeness
+                        operator: 'GREATER OR EQUALS THAN ON ALL LOCALES'
+                        value: 100
+                        context:
+                            locales:
+                                - en_US
+                    -
+                        field: categories
+                        operator: 'IN CHILDREN'
+                        value:
+                            - master
+                    -
+                        field: family
+                        operator: IN
+                        value:
+                            - led_tvs
+                            - all_in_one_printers
+                            - laser_led_printers
+                            - multifunctionals
+                            - webcams
+                            - camcorders
+                            - digital_cameras
+                    -
+                        field: updated
+                        operator: 'SINCE LAST JOB'
+                        value: electronices_sales_app
+                structure:
+                    scope: ecommerce
+                    locales:
+                        - en_US
+                    attributes:
+                        - name
+                        - description
+                        - screen_size
+                        - resolution
+                        - display_srgb
+                        - display_diagonal
+                        - display_type
+                        - display_color
+                        - picture_quality_enhancement_technology
+                        - high_dynamic_range_hdr
+                        - curved_screen
+                        - backlight_type
+                        - motion_enhancement_technology
+                        - led_panel_type
+                        - 3d_technology
+                        - image_1
+                        - image_2
+                        - display_screen
+                        - warranty
+    printers_amazon:
+        connector: 'Akeneo XLSX Connector'
+        alias: xlsx_product_export
+        label: 'Printers for Amazon (weekly)'
+        type: export
+        configuration:
+            filePath: /tmp/export_%job_label%_%datetime%.xlsx
+            withHeader: true
+            linesPerFile: 10000
+            user_to_notify: null
+            is_user_authenticated: false
+            decimalSeparator: .
+            dateFormat: yyyy-MM-dd
+            with_media: true
+            with_label: false
+            header_with_label: false
+            file_locale: null
+            filters:
+                data:
+                    -
+                        field: enabled
+                        operator: '='
+                        value: true
+                    -
+                        field: completeness
+                        operator: ALL
+                        value: 100
+                        context:
+                            locales:
+                                - en_US
+                    -
+                        field: categories
+                        operator: IN
+                        value:
+                            - printers_ink_and_toners
+                    -
+                        field: family
+                        operator: IN
+                        value:
+                            - all_in_one_printers
+                            - laser_led_printers
+                            - multifunctionals
+                structure:
+                    scope: marketplaces
+                    locales:
+                        - en_US
+                    attributes:
+                        - name
+                        - image_1
+                        - price
+                        - description
+                        - multifunctional_functions
+                        - printer_type
+                        - number_of_ink_bottles_tanks_included
+                        - number_of_ink_bottles_tanks_required
+                        - number_of_color_cartridges_included
+                        - number_of_black_cartridges_included
+                        - mobile_device_printing
+                        - maximum_speed_rpm
+                        - maximum_print_size
+                        - bw_print_speed
+                        - color_print_speed
+                        - connector_type_1
+                        - color_scanning
+                        - connector_type_2
+                        - printer_connectivity

@@ -1,0 +1,10 @@
+code;family;label-en_US;variant-axes_1;variant-axes_2;variant-attributes_1;variant-attributes_2
+clothing_size;clothing;"Clothing by Size";clothing_size;;sku,weight,clothing_size;
+clothing_color_size;clothing;"Clothing by Color & Size";color;clothing_size;image_1,image_2,image_3,atmosphere,color,material,runway,customs_material,go_live_date,designer_color_name,online_set_code,image_material_detail,brief_product,runway_image;sku,weight,clothing_size
+furniture_color;furniture;"Furniture by Color";color;;sku,name,image_1,image_2,atmosphere,meta_title,color,image_material_detail,image_dimension,color_name;
+led_tvs_by_screen_size;led_tvs;"LED TVs by Screen Size";screen_size;;sku,price,width,height,image_dimension,depth,estimated_annual_operating_cost_usd,model_number,model_year,picture_quality_enhancement_technology,product_depth_with_stand,product_depth_without_stand,product_height_with_stand,product_height_without_stand,product_weight_with_stand,product_weight_without_stand,product_width,screen_size,speaker_output,stand_depth,stand_width,upc,vesa_wall_mount_standard,includes,variant_name,estimated_annual_electricity_use;
+cables_color_length;avcables;"A/V Cables & Connectors by Color and Length";color;cord_length_ft;image_1,image_2,image_3,color,color_category;sku,erp_name,price,cord_length_ft,upc,variant_name
+make_up_color;make_up;"Make-up by Color";color;;sku,image_1,image_2,image_3,color,image_instagram_1,image_instagram_2,image_instagram_3,color_name;
+container_size;cosmetics;"Container Size";cosmetic_cvolume;;sku,cosmetic_cvolume;
+appliances_color;appliances;"Appliances by Color";color;;sku,image_1,image_2,image_3,atmosphere,color,image_material_detail,color_name,atmosphere_2,image_4,image_5;
+tires_by_width_aspect_ratio_tires_diameter;tires;"Tires by Width + Aspect Ratio + Diameter";wheel_diameter,wheel_width,aspect_ratio_tires;;sku,erp_name,weight,price,name,wheel_diameter,wheel_width,load_range,speed_rating,load_index,measuring_rim_width,overall_diameter,rim_width_approved,tread_depth,tread_width,reinforced_tire,aspect_ratio_tires;

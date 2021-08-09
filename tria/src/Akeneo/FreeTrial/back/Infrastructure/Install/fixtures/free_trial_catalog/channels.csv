@@ -1,0 +1,4 @@
+code;label-en_US;label-zh_CN;label-es_ES;conversion_units;currencies;locales;tree
+ecommerce;eCommerce;电子商务;eCommerce;;USD,EUR;en_US,es_ES,zh_CN;master
+marketplaces;Marketplaces;市场;Marketplaces;;USD,EUR;en_US,es_ES,zh_CN;master
+pos;"Point of Sale";销售点;"Puntos de venta";;USD,EUR;en_US,es_ES,zh_CN;erp
