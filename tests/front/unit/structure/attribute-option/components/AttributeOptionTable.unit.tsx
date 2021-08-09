@@ -2,7 +2,16 @@ import React from 'react';
 import * as ReactDOM from 'react-dom';
 import {Provider} from 'react-redux';
 import '@testing-library/jest-dom/extend-expect';
-import {act, fireEvent, getAllByRole, getByRole, queryByRole, queryAllByRole, getByText} from '@testing-library/react';
+import {
+  act,
+  fireEvent,
+  getAllByRole,
+  getByRole,
+  queryByRole,
+  queryAllByRole,
+  getByText,
+  getByTitle
+} from '@testing-library/react';
 import {DependenciesProvider} from '@akeneo-pim-community/legacy-bridge';
 import {createStoreWithInitialState} from 'akeneopimstructure/js/attribute-option/store/store';
 import {AttributeContextProvider} from 'akeneopimstructure/js/attribute-option/contexts';
@@ -243,6 +252,38 @@ describe('Attribute options table', () => {
     await fireEvent.drop(blackOption);
 
     expect(manuallySortAttributeOptionsCallback).not.toHaveBeenCalled();
+  });
+
+  test('it finds item element in the list after a search', async () => {
+    jest.useFakeTimers();
+
+    await renderComponent(options, false, jest.fn(), jest.fn(), jest.fn(), jest.fn(), null);
+
+    let searchInput = getByTitle(container, 'pim_common.search');
+    fireEvent.change(searchInput, {target: {value: 'Blue'}});
+
+    setTimeout(() => {
+      const optionItems = queryAllByRole(container, 'attribute-option-item');
+      expect(optionItems.length).toBe(1);
+    }, 300);
+
+    jest.runAllTimers();
+  });
+
+  test('it does not find any item in the list after a search', async () => {
+    jest.useFakeTimers();
+
+    await renderComponent(options, false, jest.fn(), jest.fn(), jest.fn(), jest.fn(), null);
+
+    let searchInput = getByTitle(container, 'pim_common.search');
+    fireEvent.change(searchInput, {target: {value: 'Z'}});
+
+    setTimeout(() => {
+      const noResultElement = getByText(container, 'pim_enrich.entity.attribute_option.module.edit.search.no_result.title');
+      expect(noResultElement).toBeInTheDocument();
+    }, 300);
+
+    jest.runAllTimers();
   });
 });
 
