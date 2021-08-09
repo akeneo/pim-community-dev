@@ -34,8 +34,6 @@ services:
             - '@Akeneo\Platform\TailoredExport\Infrastructure\Voter\CanEditTailoredExport'
             -
                 - '%akeneo.tailored_export.connector.xlsx.code%'
-        tags:
-            - { name: security.voter }
 
     Akeneo\Platform\TailoredExport\Infrastructure\Voter\CanEditTailoredExport:
         arguments:

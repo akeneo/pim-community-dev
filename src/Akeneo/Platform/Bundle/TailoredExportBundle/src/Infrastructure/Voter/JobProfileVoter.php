@@ -54,15 +54,15 @@ class JobProfileVoter extends Voter implements VoterInterface
         }
 
         if (null !== $this->decoratedVoter) {
-            $vote = $this->decoratedVoter->vote($token, $subject, $attributes);
+            $result = $this->decoratedVoter->vote($token, $subject, $attributes);
 
-            if (VoterInterface::ACCESS_DENIED === $vote) {
+            if (VoterInterface::ACCESS_DENIED === $result) {
                 return VoterInterface::ACCESS_DENIED;
             }
         }
 
         if (!in_array($subject->getJobName(), $this->tailoredExportJobNames)) {
-            return VoterInterface::ACCESS_ABSTAIN;
+            return $result;
         }
 
         foreach ($attributes as $attribute) {
