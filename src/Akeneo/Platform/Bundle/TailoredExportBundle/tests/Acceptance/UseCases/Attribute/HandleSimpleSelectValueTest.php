@@ -13,9 +13,11 @@ declare(strict_types=1);
 
 namespace Akeneo\Platform\TailoredExport\Test\Acceptance\UseCases\Attribute;
 
+use Akeneo\Platform\TailoredExport\Application\Query\Operation\DefaultValueOperation;
 use Akeneo\Platform\TailoredExport\Application\Query\Selection\SelectionInterface;
 use Akeneo\Platform\TailoredExport\Application\Query\Selection\SimpleSelect\SimpleSelectCodeSelection;
 use Akeneo\Platform\TailoredExport\Application\Query\Selection\SimpleSelect\SimpleSelectLabelSelection;
+use Akeneo\Platform\TailoredExport\Domain\SourceValue\NullValue;
 use Akeneo\Platform\TailoredExport\Domain\SourceValue\SimpleSelectValue;
 use Akeneo\Platform\TailoredExport\Domain\SourceValueInterface;
 use Akeneo\Platform\TailoredExport\Test\Acceptance\FakeServices\AttributeOption\InMemoryFindAttributeOptionLabels;
@@ -46,24 +48,44 @@ final class HandleSimpleSelectValueTest extends AttributeTestCase
     public function provider(): array
     {
         return [
-            [
+            'it selects the code' => [
                 'operations' => [],
                 'selection' => new SimpleSelectCodeSelection(),
                 'value' => new SimpleSelectValue('cotton'),
                 'expected' => [self::TARGET_NAME => 'cotton']
             ],
-            [
+            'it selects the label' => [
                 'operations' => [],
                 'selection' => new SimpleSelectLabelSelection('en_US', 'material'),
                 'value' => new SimpleSelectValue('cotton'),
                 'expected' => [self::TARGET_NAME => 'Cotton']
             ],
-            [
+            'it fallbacks on the code when label is not found' => [
                 'operations' => [],
                 'selection' => new SimpleSelectLabelSelection('en_US', 'material'),
                 'value' => new SimpleSelectValue('option_without_label'),
                 'expected' => [self::TARGET_NAME => '[option_without_label]']
-            ]
+            ],
+            'it does not apply default value operation when value is not null' => [
+                'operations' => [
+                    DefaultValueOperation::createFromNormalized([
+                        'value' => 'n/a'
+                    ])
+                ],
+                'selection' => new SimpleSelectCodeSelection(),
+                'value' => new SimpleSelectValue('cotton'),
+                'expected' => [self::TARGET_NAME => 'cotton']
+            ],
+            'it applies default value operation when value is null' => [
+                'operations' => [
+                    DefaultValueOperation::createFromNormalized([
+                        'value' => 'n/a'
+                    ])
+                ],
+                'selection' => new SimpleSelectCodeSelection(),
+                'value' => new NullValue(),
+                'expected' => [self::TARGET_NAME => 'n/a']
+            ],
         ];
     }
 
