@@ -4,6 +4,7 @@ import {AttributeConfiguratorProps} from '../../../models';
 import {CodeLabelCollectionSelector} from '../common/CodeLabelCollectionSelector';
 import {isAssetCollectionSource} from './model';
 import {InvalidAttributeSourceError} from '../error';
+import {DefaultValue, Operations} from '../common';
 
 const AssetCollectionConfigurator = ({source, validationErrors, onSourceChange}: AttributeConfiguratorProps) => {
   if (!isAssetCollectionSource(source)) {
@@ -11,11 +12,20 @@ const AssetCollectionConfigurator = ({source, validationErrors, onSourceChange}:
   }
 
   return (
-    <CodeLabelCollectionSelector
-      selection={source.selection}
-      validationErrors={filterErrors(validationErrors, '[selection]')}
-      onSelectionChange={updatedSelection => onSourceChange({...source, selection: updatedSelection})}
-    />
+    <Operations>
+      <DefaultValue
+        operation={source.operations.default_value}
+        validationErrors={filterErrors(validationErrors, '[operations][default_value]')}
+        onOperationChange={updatedOperation =>
+          onSourceChange({...source, operations: {...source.operations, default_value: updatedOperation}})
+        }
+      />
+      <CodeLabelCollectionSelector
+        selection={source.selection}
+        validationErrors={filterErrors(validationErrors, '[selection]')}
+        onSelectionChange={updatedSelection => onSourceChange({...source, selection: updatedSelection})}
+      />
+    </Operations>
   );
 };
 

@@ -4,6 +4,7 @@ import {AttributeConfiguratorProps} from '../../../models';
 import {isFileSource} from './model';
 import {FileSelector} from './FileSelector';
 import {InvalidAttributeSourceError} from '../error';
+import {DefaultValue, Operations} from '../common';
 
 const FileConfigurator = ({source, validationErrors, onSourceChange}: AttributeConfiguratorProps) => {
   if (!isFileSource(source)) {
@@ -11,11 +12,20 @@ const FileConfigurator = ({source, validationErrors, onSourceChange}: AttributeC
   }
 
   return (
-    <FileSelector
-      selection={source.selection}
-      validationErrors={filterErrors(validationErrors, '[selection]')}
-      onSelectionChange={updatedFileSelection => onSourceChange({...source, selection: updatedFileSelection})}
-    />
+    <Operations>
+      <DefaultValue
+        operation={source.operations.default_value}
+        validationErrors={filterErrors(validationErrors, '[operations][default_value]')}
+        onOperationChange={updatedOperation =>
+          onSourceChange({...source, operations: {...source.operations, default_value: updatedOperation}})
+        }
+      />
+      <FileSelector
+        selection={source.selection}
+        validationErrors={filterErrors(validationErrors, '[selection]')}
+        onSelectionChange={updatedFileSelection => onSourceChange({...source, selection: updatedFileSelection})}
+      />
+    </Operations>
   );
 };
 

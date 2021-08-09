@@ -13,9 +13,11 @@ declare(strict_types=1);
 
 namespace Akeneo\Platform\TailoredExport\Test\Acceptance\UseCases\Attribute;
 
+use Akeneo\Platform\TailoredExport\Application\Query\Operation\DefaultValueOperation;
 use Akeneo\Platform\TailoredExport\Application\Query\Selection\ReferenceEntity\ReferenceEntityCodeSelection;
 use Akeneo\Platform\TailoredExport\Application\Query\Selection\ReferenceEntity\ReferenceEntityLabelSelection;
 use Akeneo\Platform\TailoredExport\Application\Query\Selection\SelectionInterface;
+use Akeneo\Platform\TailoredExport\Domain\SourceValue\NullValue;
 use Akeneo\Platform\TailoredExport\Domain\SourceValue\ReferenceEntityValue;
 use Akeneo\Platform\TailoredExport\Domain\SourceValueInterface;
 use Akeneo\Platform\TailoredExport\Test\Acceptance\FakeServices\ReferenceEntity\InMemoryFindRecordsLabelTranslations;
@@ -46,24 +48,44 @@ final class HandleReferenceEntityValueTest extends AttributeTestCase
     public function provider(): array
     {
         return [
-            [
+            'it selects the record code' => [
                 'operations' => [],
                 'selection' => new ReferenceEntityCodeSelection(),
                 'value' => new ReferenceEntityValue('starck'),
                 'expected' => [self::TARGET_NAME => 'starck']
             ],
-            [
+            'it selects the record label' => [
                 'operations' => [],
                 'selection' => new ReferenceEntityLabelSelection('en_US', 'designer'),
                 'value' => new ReferenceEntityValue('starck'),
                 'expected' => [self::TARGET_NAME => 'Starck']
             ],
-            [
+            'it fallbacks on the record code when the label is not found' => [
                 'operations' => [],
                 'selection' => new ReferenceEntityLabelSelection('en_US', 'designer'),
-                'value' => new ReferenceEntityValue('reference_entity_without_label'),
-                'expected' => [self::TARGET_NAME => '[reference_entity_without_label]']
-            ]
+                'value' => new ReferenceEntityValue('record_without_label'),
+                'expected' => [self::TARGET_NAME => '[record_without_label]']
+            ],
+            'it applies default value operation when value is null' => [
+                'operations' => [
+                    DefaultValueOperation::createFromNormalized([
+                        'value' => 'n/a'
+                    ]),
+                ],
+                'selection' => new ReferenceEntityCodeSelection(),
+                'value' => new NullValue(),
+                'expected' => [self::TARGET_NAME => 'n/a']
+            ],
+            'it does not apply default value operation when value is not null' => [
+                'operations' => [
+                    DefaultValueOperation::createFromNormalized([
+                        'value' => 'n/a'
+                    ]),
+                ],
+                'selection' => new ReferenceEntityCodeSelection(),
+                'value' => new ReferenceEntityValue('starck'),
+                'expected' => [self::TARGET_NAME => 'starck']
+            ],
         ];
     }
 

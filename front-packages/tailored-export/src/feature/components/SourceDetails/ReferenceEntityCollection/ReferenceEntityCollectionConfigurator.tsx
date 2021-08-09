@@ -4,6 +4,7 @@ import {AttributeConfiguratorProps} from '../../../models';
 import {CodeLabelCollectionSelector} from '../common/CodeLabelCollectionSelector';
 import {isReferenceEntityCollectionSource} from './model';
 import {InvalidAttributeSourceError} from '../error';
+import {DefaultValue, Operations} from '../common';
 
 const ReferenceEntityCollectionConfigurator = ({
   source,
@@ -17,11 +18,20 @@ const ReferenceEntityCollectionConfigurator = ({
   }
 
   return (
-    <CodeLabelCollectionSelector
-      selection={source.selection}
-      validationErrors={filterErrors(validationErrors, '[selection]')}
-      onSelectionChange={updatedSelection => onSourceChange({...source, selection: updatedSelection})}
-    />
+    <Operations>
+      <DefaultValue
+        operation={source.operations.default_value}
+        validationErrors={filterErrors(validationErrors, '[operations][default_value]')}
+        onOperationChange={updatedOperation =>
+          onSourceChange({...source, operations: {...source.operations, default_value: updatedOperation}})
+        }
+      />
+      <CodeLabelCollectionSelector
+        selection={source.selection}
+        validationErrors={filterErrors(validationErrors, '[selection]')}
+        onSelectionChange={updatedSelection => onSourceChange({...source, selection: updatedSelection})}
+      />
+    </Operations>
   );
 };
 
