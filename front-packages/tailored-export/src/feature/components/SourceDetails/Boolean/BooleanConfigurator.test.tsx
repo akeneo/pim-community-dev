@@ -5,7 +5,7 @@ import {renderWithProviders} from '@akeneo-pim-community/shared';
 import {BooleanConfigurator} from './BooleanConfigurator';
 import {getDefaultBooleanSource} from './model';
 import {getDefaultDateSource} from '../Date/model';
-import {BooleanReplacementOperation} from "../common";
+import {BooleanReplacementOperation} from '../common';
 
 const attribute = {
   code: 'boolean',
