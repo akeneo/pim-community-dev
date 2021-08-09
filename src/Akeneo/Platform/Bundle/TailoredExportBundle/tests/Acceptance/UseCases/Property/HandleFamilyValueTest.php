@@ -13,10 +13,12 @@ declare(strict_types=1);
 
 namespace Akeneo\Platform\TailoredExport\Test\Acceptance\UseCases\Property;
 
+use Akeneo\Platform\TailoredExport\Application\Query\Operation\DefaultValueOperation;
 use Akeneo\Platform\TailoredExport\Application\Query\Selection\Family\FamilyCodeSelection;
 use Akeneo\Platform\TailoredExport\Application\Query\Selection\Family\FamilyLabelSelection;
 use Akeneo\Platform\TailoredExport\Application\Query\Selection\SelectionInterface;
 use Akeneo\Platform\TailoredExport\Domain\SourceValue\FamilyValue;
+use Akeneo\Platform\TailoredExport\Domain\SourceValue\NullValue;
 use Akeneo\Platform\TailoredExport\Domain\SourceValueInterface;
 use Akeneo\Platform\TailoredExport\Test\Acceptance\FakeServices\Family\InMemoryGetFamilyTranslations;
 use PHPUnit\Framework\Assert;
@@ -48,24 +50,44 @@ final class HandleFamilyValueTest extends PropertyTestCase
     public function provider(): array
     {
         return [
-            [
+            'it selects the family code' => [
                 'operations' => [],
                 'selection' => new FamilyCodeSelection(),
                 'value' => new FamilyValue('pants'),
                 'expected' => [self::TARGET_NAME => 'pants']
             ],
-            [
+            'it fallbacks on the family code when the label is not found' => [
                 'operations' => [],
                 'selection' => new FamilyLabelSelection('en_US'),
                 'value' => new FamilyValue('pants'),
                 'expected' => [self::TARGET_NAME => '[pants]']
             ],
-            [
+            'it selects the family label' => [
                 'operations' => [],
                 'selection' => new FamilyLabelSelection('fr_FR'),
                 'value' => new FamilyValue('pants'),
                 'expected' => [self::TARGET_NAME => 'Pantalons']
-            ]
+            ],
+            'it applies default value operation when value is null' => [
+                'operations' => [
+                    DefaultValueOperation::createFromNormalized([
+                        'value' => 'n/a'
+                    ]),
+                ],
+                'selection' => new FamilyCodeSelection(),
+                'value' => new NullValue(),
+                'expected' => [self::TARGET_NAME => 'n/a']
+            ],
+            'it does not apply default value operation when value is not null' => [
+                'operations' => [
+                    DefaultValueOperation::createFromNormalized([
+                        'value' => 'n/a'
+                    ]),
+                ],
+                'selection' => new FamilyCodeSelection(),
+                'value' => new FamilyValue('pants'),
+                'expected' => [self::TARGET_NAME => 'pants']
+            ],
         ];
     }
 
