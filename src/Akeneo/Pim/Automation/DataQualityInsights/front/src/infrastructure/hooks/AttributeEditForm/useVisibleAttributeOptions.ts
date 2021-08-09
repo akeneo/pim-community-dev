@@ -14,8 +14,12 @@ export const useVisibleAttributeOptions = () => {
     const observer = new MutationObserver(mutations => {
       mutations.forEach(mutation => {
         const element = mutation.target as Element;
-        if (element.hasAttribute('role') && element.getAttribute('role') === 'attribute-options-list') {
-          setTimeout(() => setRenderingCount(renderingCount + 1), 1000);
+        if (
+          element.hasAttribute('role') &&
+          element.getAttribute('role') === 'attribute-options-list' &&
+          element.querySelectorAll('tr[role="attribute-option-item"]').length > 0
+        ) {
+          setRenderingCount(renderingCount + 1);
         }
       });
     });
