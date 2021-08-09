@@ -124,7 +124,7 @@ class ReindexRecordsWithoutDowntimeSpec extends ObjectBehavior
 
         // Second indexation
         $getRecordIdentifiersUpdatedAfterDatetime
-            ->nextBatch($currentIndexRecordClient, $datetimeAfterFirstIndexation->modify('- 1msec'), 10)
+            ->nextBatch($currentIndexRecordClient, $datetimeAfterFirstIndexation->modify('- 1second'), 10)
             ->willReturn([]);
 
         $indicesNamespace->updateAliases([
@@ -148,7 +148,7 @@ class ReindexRecordsWithoutDowntimeSpec extends ObjectBehavior
 
         // Indexation after index swap
         $getRecordIdentifiersUpdatedAfterDatetime
-            ->nextBatch($migratedIndexRecordClient, $datetimeAfterSwitch->modify('- 1msec'), 10)
+            ->nextBatch($migratedIndexRecordClient, $datetimeAfterSwitch->modify('- 1second'), 10)
             ->willReturn([]);
 
         $indicesNamespace->delete(['index' => 'record_index_name'])->willReturn(['acknowledged' => true]);
@@ -227,7 +227,7 @@ class ReindexRecordsWithoutDowntimeSpec extends ObjectBehavior
 
         // Second indexation
         $getRecordIdentifiersUpdatedAfterDatetime
-            ->nextBatch($currentIndexRecordClient, $datetimeAfterFirstIndexation->modify('- 1msec'), 10)
+            ->nextBatch($currentIndexRecordClient, $datetimeAfterFirstIndexation->modify('- 1second'), 10)
             ->willReturn([['designer_starck_29aea250-bc94-49b2-8259-bbc116410eb2']]);
 
         $starckNormalized = ['code' => 'designer_starck_29aea250-bc94-49b2-8259-bbc116410eb2'];
@@ -239,7 +239,7 @@ class ReindexRecordsWithoutDowntimeSpec extends ObjectBehavior
 
         // Third indexation
         $getRecordIdentifiersUpdatedAfterDatetime
-            ->nextBatch($currentIndexRecordClient, $datetimeAfterSecondIndexation->modify('- 1msec'), 10)
+            ->nextBatch($currentIndexRecordClient, $datetimeAfterSecondIndexation->modify('- 1second'), 10)
             ->willReturn([]);
 
         $indicesNamespace->updateAliases([
@@ -263,7 +263,7 @@ class ReindexRecordsWithoutDowntimeSpec extends ObjectBehavior
 
         // Indexation after index swap
         $getRecordIdentifiersUpdatedAfterDatetime
-            ->nextBatch($migratedIndexRecordClient, $datetimeAfterSwitch->modify('- 1msec'), 10)
+            ->nextBatch($migratedIndexRecordClient, $datetimeAfterSwitch->modify('- 1second'), 10)
             ->willReturn([]);
 
         $indicesNamespace->delete(['index' => 'record_index_name'])->willReturn(['acknowledged' => true]);
@@ -339,7 +339,7 @@ class ReindexRecordsWithoutDowntimeSpec extends ObjectBehavior
 
         // Second indexation
         $getRecordIdentifiersUpdatedAfterDatetime
-            ->nextBatch($currentIndexRecordClient, $datetimeAfterFirstIndexation->modify('- 1msec'), 10)
+            ->nextBatch($currentIndexRecordClient, $datetimeAfterFirstIndexation->modify('- 1second'), 10)
             ->willReturn([]);
 
         $indicesNamespace->updateAliases([
@@ -363,7 +363,7 @@ class ReindexRecordsWithoutDowntimeSpec extends ObjectBehavior
 
         // Indexation after index swap
         $getRecordIdentifiersUpdatedAfterDatetime
-            ->nextBatch($migratedIndexRecordClient, $datetimeAfterSwitch->modify('- 1msec'), 10)
+            ->nextBatch($migratedIndexRecordClient, $datetimeAfterSwitch->modify('- 1second'), 10)
             ->willReturn([['designer_starck_29aea250-bc94-49b2-8259-bbc116410eb2']]);
 
         $starckNormalized = ['code' => 'designer_starck_29aea250-bc94-49b2-8259-bbc116410eb2'];
@@ -445,7 +445,7 @@ class ReindexRecordsWithoutDowntimeSpec extends ObjectBehavior
 
         // Second indexation
         $getRecordIdentifiersUpdatedAfterDatetime
-            ->nextBatch($currentIndexRecordClient, $datetimeAfterFirstIndexation->modify('- 1msec'), 10)
+            ->nextBatch($currentIndexRecordClient, $datetimeAfterFirstIndexation->modify('- 1second'), 10)
             ->willReturn([]);
 
         $indicesNamespace->updateAliases([

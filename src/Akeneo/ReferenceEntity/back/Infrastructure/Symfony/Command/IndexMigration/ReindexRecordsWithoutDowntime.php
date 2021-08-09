@@ -89,7 +89,7 @@ class ReindexRecordsWithoutDowntime
         $lastReferenceDatetime = $this->clock->now()->setTimestamp(0);
 
         do {
-            $nextUpdateTime = $this->clock->now()->modify('-1msec');
+            $nextUpdateTime = $this->clock->now()->modify('- 1second');
             $this->logger->info('Start reindexing records', [
                 'date' => $lastReferenceDatetime->format(\DateTimeInterface::ISO8601)
             ]);
