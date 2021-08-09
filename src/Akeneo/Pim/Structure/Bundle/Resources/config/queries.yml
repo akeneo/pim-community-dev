@@ -141,3 +141,7 @@ services:
         class: Akeneo\Pim\Structure\Bundle\Query\InternalApi\AttributeOption\SqlGetAttributeOptionCodes
         arguments:
             - '@database_connection'
+
+    pimee_security.query.get_viewable_attribute_codes_for_user:
+        class: 'Akeneo\Pim\Structure\Component\Query\PublicApi\Permission\GetViewableAttributeCodesForUser'
+
