@@ -18,6 +18,7 @@ use Akeneo\Platform\TailoredExport\Infrastructure\Validation\Source\SourceConstr
 use Symfony\Component\Validator\Constraint;
 use Symfony\Component\Validator\Constraints\Collection;
 use Symfony\Component\Validator\Constraints\EqualTo;
+use Symfony\Component\Validator\Constraints\Optional;
 use Symfony\Component\Validator\Constraints\Type;
 use Symfony\Component\Validator\ConstraintValidator;
 

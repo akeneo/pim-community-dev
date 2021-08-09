@@ -14,7 +14,6 @@ declare(strict_types=1);
 namespace Akeneo\Platform\TailoredExport\Infrastructure\Validation\Source\QuantifiedAssociationType;
 
 use Akeneo\Platform\TailoredExport\Application\Query\Selection\QuantifiedAssociations\QuantifiedAssociationsCodeSelection;
-use Akeneo\Platform\TailoredExport\Application\Query\Selection\QuantifiedAssociations\QuantifiedAssociationsCodeSelectionHandler;
 use Akeneo\Platform\TailoredExport\Application\Query\Selection\QuantifiedAssociations\QuantifiedAssociationsLabelSelection;
 use Akeneo\Platform\TailoredExport\Application\Query\Selection\QuantifiedAssociations\QuantifiedAssociationsQuantitySelection;
 use Akeneo\Platform\TailoredExport\Application\Query\Selection\QuantifiedAssociations\QuantifiedAssociationsSelectionInterface;
