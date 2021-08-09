@@ -22,6 +22,9 @@ $rules = [
         'Webmozart\Assert\Assert',
     ])->in('Akeneo\ReferenceEntity\Application'),
     $builder->only([
+        'Elasticsearch\Client',
+        'Elasticsearch\ClientBuilder',
+
         'Akeneo\ReferenceEntity\Application',
         'Akeneo\ReferenceEntity\Domain',
         'Akeneo\Tool\Component',
