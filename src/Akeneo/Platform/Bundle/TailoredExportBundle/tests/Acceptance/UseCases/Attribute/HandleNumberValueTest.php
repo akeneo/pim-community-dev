@@ -74,7 +74,11 @@ final class HandleNumberValueTest extends AttributeTestCase
                 'expected' => [self::TARGET_NAME => 'n/a']
             ],
             'it does not apply default value operation when value is not null' => [
-                'operations' => [],
+                'operations' => [
+                    DefaultValueOperation::createFromNormalized([
+                        'value' => 'n/a'
+                    ])
+                ],
                 'selection' => new NumberSelection(','),
                 'value' => new NumberValue('10'),
                 'expected' => [self::TARGET_NAME => '10']
