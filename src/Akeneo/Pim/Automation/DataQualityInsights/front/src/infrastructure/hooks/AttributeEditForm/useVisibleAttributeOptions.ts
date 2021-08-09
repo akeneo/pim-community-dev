@@ -15,7 +15,7 @@ export const useVisibleAttributeOptions = () => {
       mutations.forEach(mutation => {
         const element = mutation.target as Element;
         if (element.hasAttribute('role') && element.getAttribute('role') === 'attribute-options-list') {
-          setRenderingCount(renderingCount + 1);
+          setTimeout(() => setRenderingCount(renderingCount + 1), 1000);
         }
       });
     });
@@ -33,7 +33,7 @@ export const useVisibleAttributeOptions = () => {
   }, []);
 
   useLayoutEffect(() => {
-    const elements = document.querySelectorAll('div[role="attribute-option-item"]');
+    const elements = document.querySelectorAll('tr[role="attribute-option-item"]');
     const container = document.querySelector('div[role="attribute-options-list"]');
 
     const observer = new IntersectionObserver(
