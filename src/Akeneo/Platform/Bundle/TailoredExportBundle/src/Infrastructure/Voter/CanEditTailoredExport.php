@@ -15,7 +15,7 @@ use Akeneo\Channel\Component\Query\PublicApi\Permission\GetAllViewableLocalesFor
 use Akeneo\Pim\Structure\Component\Query\PublicApi\AttributeType\Attribute;
 use Akeneo\Pim\Structure\Component\Query\PublicApi\AttributeType\GetAttributes;
 use Akeneo\Pim\Structure\Component\Query\PublicApi\Permission\GetViewableAttributeCodesForUserInterface;
-use Akeneo\Platform\TailoredExport\Application\Query\Source\AttributeSource;
+use Akeneo\Platform\TailoredExport\Domain\Model\Source\AttributeSource;
 use Akeneo\Tool\Component\Batch\Model\JobInstance;
 
 class CanEditTailoredExport

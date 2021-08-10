@@ -11,7 +11,7 @@ declare(strict_types=1);
  * file that was distributed with this source code.
  */
 
-namespace Akeneo\Platform\TailoredExport\Application\Query\Source;
+namespace Akeneo\Platform\TailoredExport\Domain\Model\Source;
 
 use Webmozart\Assert\Assert;
 

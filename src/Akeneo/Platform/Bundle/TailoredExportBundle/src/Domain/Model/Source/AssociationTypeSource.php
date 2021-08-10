@@ -11,37 +11,45 @@ declare(strict_types=1);
  * file that was distributed with this source code.
  */
 
-namespace Akeneo\Platform\TailoredExport\Application\Query\Source;
+namespace Akeneo\Platform\TailoredExport\Domain\Model\Source;
 
 use Akeneo\Platform\TailoredExport\Application\Query\Operation\OperationCollection;
 use Akeneo\Platform\TailoredExport\Application\Query\Selection\SelectionInterface;
 
-class PropertySource implements SourceInterface
+class AssociationTypeSource implements SourceInterface
 {
-    public const TYPE = 'property';
+    public const TYPE = 'association_type';
 
-    private string $name;
-    private OperationCollection $operations;
+    private string $code;
+    private bool $isQuantified;
+    private OperationCollection $operationCollection;
     private SelectionInterface $selection;
 
     public function __construct(
-        string $name,
-        OperationCollection $operations,
+        string $code,
+        bool $isQuantified,
+        OperationCollection $operationCollection,
         SelectionInterface $selection
     ) {
-        $this->name = $name;
-        $this->operations = $operations;
+        $this->code = $code;
+        $this->isQuantified = $isQuantified;
+        $this->operationCollection = $operationCollection;
         $this->selection = $selection;
     }
 
-    public function getName(): string
+    public function getCode(): string
     {
-        return $this->name;
+        return $this->code;
+    }
+
+    public function isQuantified(): bool
+    {
+        return $this->isQuantified;
     }
 
     public function getOperationCollection(): OperationCollection
     {
-        return $this->operations;
+        return $this->operationCollection;
     }
 
     public function getSelection(): SelectionInterface

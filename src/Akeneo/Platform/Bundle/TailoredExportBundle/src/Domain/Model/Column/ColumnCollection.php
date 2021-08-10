@@ -11,9 +11,9 @@ declare(strict_types=1);
  * file that was distributed with this source code.
  */
 
-namespace Akeneo\Platform\TailoredExport\Application\Query\Column;
+namespace Akeneo\Platform\TailoredExport\Domain\Model\Column;
 
-use Akeneo\Platform\TailoredExport\Application\Query\Source\SourceCollection;
+use Akeneo\Platform\TailoredExport\Domain\Model\Source\SourceCollection;
 use Webmozart\Assert\Assert;
 
 class ColumnCollection implements \IteratorAggregate

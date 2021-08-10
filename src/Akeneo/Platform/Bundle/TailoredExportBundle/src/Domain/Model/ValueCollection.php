@@ -13,10 +13,10 @@ declare(strict_types=1);
 
 namespace Akeneo\Platform\TailoredExport\Domain\Model;
 
-use Akeneo\Platform\TailoredExport\Application\Query\Source\AssociationTypeSource;
-use Akeneo\Platform\TailoredExport\Application\Query\Source\AttributeSource;
-use Akeneo\Platform\TailoredExport\Application\Query\Source\PropertySource;
-use Akeneo\Platform\TailoredExport\Application\Query\Source\SourceInterface;
+use Akeneo\Platform\TailoredExport\Domain\Model\Source\AssociationTypeSource;
+use Akeneo\Platform\TailoredExport\Domain\Model\Source\AttributeSource;
+use Akeneo\Platform\TailoredExport\Domain\Model\Source\PropertySource;
+use Akeneo\Platform\TailoredExport\Domain\Model\Source\SourceInterface;
 use Akeneo\Platform\TailoredExport\Domain\Model\SourceValue\SourceValueInterface;
 
 final class ValueCollection

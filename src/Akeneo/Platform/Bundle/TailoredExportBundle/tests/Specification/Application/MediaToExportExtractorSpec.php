@@ -17,13 +17,13 @@ use Akeneo\AssetManager\Infrastructure\PublicApi\Enrich\GetMainMediaFileInfoColl
 use Akeneo\AssetManager\Infrastructure\PublicApi\Enrich\MediaFileInfo;
 use Akeneo\Platform\TailoredExport\Application\MediaToExport;
 use Akeneo\Platform\TailoredExport\Application\MediaToExportExtractor;
-use Akeneo\Platform\TailoredExport\Application\Query\Column\Column;
-use Akeneo\Platform\TailoredExport\Application\Query\Column\ColumnCollection;
+use Akeneo\Platform\TailoredExport\Domain\Model\Column\Column;
+use Akeneo\Platform\TailoredExport\Domain\Model\Column\ColumnCollection;
 use Akeneo\Platform\TailoredExport\Application\Query\Operation\OperationCollection;
 use Akeneo\Platform\TailoredExport\Application\Query\Selection\AssetCollection\AssetCollectionCodeSelection;
 use Akeneo\Platform\TailoredExport\Application\Query\Selection\File\FilePathSelection;
-use Akeneo\Platform\TailoredExport\Application\Query\Source\AttributeSource;
-use Akeneo\Platform\TailoredExport\Application\Query\Source\SourceCollection;
+use Akeneo\Platform\TailoredExport\Domain\Model\Source\AttributeSource;
+use Akeneo\Platform\TailoredExport\Domain\Model\Source\SourceCollection;
 use Akeneo\Platform\TailoredExport\Domain\Model\SourceValue\AssetCollectionValue;
 use Akeneo\Platform\TailoredExport\Domain\Model\SourceValue\FileValue;
 use Akeneo\Platform\TailoredExport\Domain\Model\ValueCollection;

@@ -5,13 +5,13 @@ declare(strict_types=1);
 namespace Akeneo\Platform\TailoredExport\Infrastructure\Hydrator;
 
 use Akeneo\Pim\Structure\Component\Query\PublicApi\Association\AssociationType;
-use Akeneo\Platform\TailoredExport\Application\Query\Column\Column;
-use Akeneo\Platform\TailoredExport\Application\Query\Column\ColumnCollection;
+use Akeneo\Platform\TailoredExport\Domain\Model\Column\Column;
+use Akeneo\Platform\TailoredExport\Domain\Model\Column\ColumnCollection;
 use Akeneo\Platform\TailoredExport\Application\Query\Operation\OperationCollection;
-use Akeneo\Platform\TailoredExport\Application\Query\Source\AssociationTypeSource;
-use Akeneo\Platform\TailoredExport\Application\Query\Source\AttributeSource;
-use Akeneo\Platform\TailoredExport\Application\Query\Source\PropertySource;
-use Akeneo\Platform\TailoredExport\Application\Query\Source\SourceCollection;
+use Akeneo\Platform\TailoredExport\Domain\Model\Source\AssociationTypeSource;
+use Akeneo\Platform\TailoredExport\Domain\Model\Source\AttributeSource;
+use Akeneo\Platform\TailoredExport\Domain\Model\Source\PropertySource;
+use Akeneo\Platform\TailoredExport\Domain\Model\Source\SourceCollection;
 
 class ColumnCollectionHydrator
 {

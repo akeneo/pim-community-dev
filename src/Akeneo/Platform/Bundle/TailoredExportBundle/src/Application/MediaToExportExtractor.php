@@ -15,10 +15,10 @@ namespace Akeneo\Platform\TailoredExport\Application;
 
 use Akeneo\AssetManager\Infrastructure\PublicApi\Enrich\GetMainMediaFileInfoCollectionInterface;
 use Akeneo\AssetManager\Infrastructure\PublicApi\Enrich\MediaFileInfo;
-use Akeneo\Platform\TailoredExport\Application\Query\Column\ColumnCollection;
+use Akeneo\Platform\TailoredExport\Domain\Model\Column\ColumnCollection;
 use Akeneo\Platform\TailoredExport\Application\Query\Selection\AssetCollection\AssetCollectionSelectionInterface;
 use Akeneo\Platform\TailoredExport\Application\Query\Selection\File\FileSelectionInterface;
-use Akeneo\Platform\TailoredExport\Application\Query\Source\SourceInterface;
+use Akeneo\Platform\TailoredExport\Domain\Model\Source\SourceInterface;
 use Akeneo\Platform\TailoredExport\Domain\Model\SourceValue\AssetCollectionValue;
 use Akeneo\Platform\TailoredExport\Domain\Model\SourceValue\FileValue;
 use Akeneo\Platform\TailoredExport\Domain\Model\ValueCollection;
