@@ -20,7 +20,7 @@ use Akeneo\Platform\TailoredExport\Domain\Model\SourceValue\QuantifiedAssociatio
 use Akeneo\Platform\TailoredExport\Domain\Model\SourceValue\QuantifiedAssociationsValue;
 use PhpSpec\ObjectBehavior;
 
-class QuantifiedAssociationsQuantitySelectionHandlerSpec extends ObjectBehavior
+class QuantifiedAssociationsQuantitySelectionApplierSpec extends ObjectBehavior
 {
     public function it_applies_the_selection_on_products()
     {
