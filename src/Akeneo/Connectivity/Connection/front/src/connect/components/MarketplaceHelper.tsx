@@ -2,6 +2,7 @@ import React, {FC, useEffect, useState} from 'react';
 import {ChannelsIllustration, Information, Link} from 'akeneo-design-system';
 import {useFetchMarketplaceUrl} from '../hooks/use-fetch-marketplace-url';
 import {useTranslate} from '../../shared/translate';
+import {useFeatureFlags} from "../../shared/feature-flags";
 
 type Props = {
     count: number;
@@ -9,6 +10,7 @@ type Props = {
 
 const MarketplaceHelper: FC<Props> = ({count}) => {
     const translate = useTranslate();
+    const featureFlag = useFeatureFlags();
     const fetchMarketplaceUrl = useFetchMarketplaceUrl();
     const [marketplaceUrl, setMarketplaceUrl] = useState<string>('');
 
@@ -16,11 +18,15 @@ const MarketplaceHelper: FC<Props> = ({count}) => {
         fetchMarketplaceUrl().then(setMarketplaceUrl);
     }, [fetchMarketplaceUrl]);
 
+    const titleTranslationKey = featureFlag.isEnabled('FLAG_MARKETPLACE_ACTIVATE_ENABLED')
+        ? 'akeneo_connectivity.connection.connect.marketplace.helper.title_with_apps'
+        : 'akeneo_connectivity.connection.connect.marketplace.helper.title';
+
     const title = (
         <div
             dangerouslySetInnerHTML={{
                 __html: translate(
-                    'akeneo_connectivity.connection.connect.marketplace.helper.title',
+                    titleTranslationKey,
                     {count: `<span class='AknConnectivityConnection-helper--highlight'>${count}</span>`},
                     count
                 ),
