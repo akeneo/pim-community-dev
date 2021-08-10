@@ -13,7 +13,7 @@ declare(strict_types=1);
 
 namespace Akeneo\Platform\TailoredExport\Domain\Model\Selection\Date;
 
-use Akeneo\Platform\TailoredExport\Application\Query\Selection\Date\DateFormat;
+use Akeneo\Platform\TailoredExport\Application\MapValues\SelectionApplier\Date\DateFormat;
 
 final class DateSelection implements DateSelectionInterface
 {
