@@ -1,2 +1,3 @@
 akeneo_connectivity.connection:
   acl.manage_settings: Accéder au paramétrage des connections
+  acl.manage_apps: Accéder au paramétrage des apps
