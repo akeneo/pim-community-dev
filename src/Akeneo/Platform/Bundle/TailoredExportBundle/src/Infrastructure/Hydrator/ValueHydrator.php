@@ -164,7 +164,13 @@ class ValueHydrator
 
                 return new FamilyVariantValue($familyVariant->getCode());
             case 'groups':
-                return new GroupsValue($product->getGroupCodes());
+                $groupCodes = $product->getGroupCodes();
+                
+                if (empty($groupCodes)) {
+                    return new NullValue();
+                }
+
+                return new GroupsValue($groupCodes);
             case 'parent':
                 $parent = $product->getParent();
 
