@@ -35,3 +35,33 @@ services:
             - '@akeneo.pim.structure.query.find_flatten_attributes'
             - '@pimee_security.query.get_viewable_attribute_codes_for_user'
             - '@security.token_storage'
+
+    Akeneo\Platform\TailoredExport\Domain\Query\FindAssetLabelsInterface:
+        class: Akeneo\Platform\TailoredExport\Infrastructure\Query\AssetManager\FindAssetLabels
+        arguments:
+            - '@akeneo_assetmanager.infrastructure.persistence.query.enrich.find_asset_label_translation_public_api'
+
+    Akeneo\Platform\TailoredExport\Domain\Query\FindRecordLabelsInterface:
+        class: Akeneo\Platform\TailoredExport\Infrastructure\Query\ReferenceEntity\FindRecordLabels
+        arguments:
+            - '@akeneo_referenceentity.infrastructure.persistence.query.enrich.find_records_labels_public_api'
+
+    Akeneo\Platform\TailoredExport\Domain\Query\FindCategoryLabelsInterface:
+        class: Akeneo\Platform\TailoredExport\Infrastructure\Query\Enrichment\FindCategoryLabels
+        arguments:
+            - '@akeneo.pim.structure.query.get_category_translations'
+
+    Akeneo\Platform\TailoredExport\Domain\Query\FindFamilyLabelInterface:
+        class: Akeneo\Platform\TailoredExport\Infrastructure\Query\Structure\FindFamilyLabel
+        arguments:
+            - '@akeneo.pim.structure.query.get_family_translations'
+
+    Akeneo\Platform\TailoredExport\Domain\Query\FindFamilyVariantLabelInterface:
+        class: Akeneo\Platform\TailoredExport\Infrastructure\Query\Structure\FindFamilyVariantLabel
+        arguments:
+            - '@akeneo.pim.structure.query.get_family_variant_translations'
+
+    Akeneo\Platform\TailoredExport\Domain\Query\FindCurrencyLabelsInterface:
+        class: Akeneo\Platform\TailoredExport\Infrastructure\Query\Structure\FindCurrencyLabels
+        arguments:
+            - '@pim_catalog.localization.translator.currency'

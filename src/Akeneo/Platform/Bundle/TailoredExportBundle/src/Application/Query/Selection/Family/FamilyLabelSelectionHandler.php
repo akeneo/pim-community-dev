@@ -13,19 +13,19 @@ declare(strict_types=1);
 
 namespace Akeneo\Platform\TailoredExport\Application\Query\Selection\Family;
 
-use Akeneo\Pim\Structure\Component\Query\PublicApi\Family\GetFamilyTranslations;
 use Akeneo\Platform\TailoredExport\Application\Query\Selection\SelectionHandlerInterface;
 use Akeneo\Platform\TailoredExport\Application\Query\Selection\SelectionInterface;
+use Akeneo\Platform\TailoredExport\Domain\Query\FindFamilyLabelInterface;
 use Akeneo\Platform\TailoredExport\Domain\SourceValue\FamilyValue;
 use Akeneo\Platform\TailoredExport\Domain\SourceValueInterface;
 
 class FamilyLabelSelectionHandler implements SelectionHandlerInterface
 {
-    private GetFamilyTranslations $getFamilyTranslations;
+    private FindFamilyLabelInterface $findFamilyLabel;
 
-    public function __construct(GetFamilyTranslations $getFamilyTranslations)
+    public function __construct(FindFamilyLabelInterface $findFamilyLabel)
     {
-        $this->getFamilyTranslations = $getFamilyTranslations;
+        $this->findFamilyLabel = $findFamilyLabel;
     }
 
     public function applySelection(SelectionInterface $selection, SourceValueInterface $value): string
@@ -37,10 +37,9 @@ class FamilyLabelSelectionHandler implements SelectionHandlerInterface
         }
 
         $familyCode = $value->getFamilyCode();
-        $familyTranslations = $this->getFamilyTranslations
-            ->byFamilyCodesAndLocale([$familyCode], $selection->getLocale());
+        $familyTranslation = $this->findFamilyLabel->byCode($familyCode, $selection->getLocale());
 
-        return $familyTranslations[$familyCode] ?? sprintf('[%s]', $familyCode);
+        return $familyTranslation ?? sprintf('[%s]', $familyCode);
     }
 
     public function supports(SelectionInterface $selection, SourceValueInterface $value): bool

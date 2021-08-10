@@ -20,7 +20,7 @@ use Akeneo\Platform\TailoredExport\Application\Query\Selection\SelectionInterfac
 use Akeneo\Platform\TailoredExport\Domain\SourceValue\NullValue;
 use Akeneo\Platform\TailoredExport\Domain\SourceValue\ReferenceEntityValue;
 use Akeneo\Platform\TailoredExport\Domain\SourceValueInterface;
-use Akeneo\Platform\TailoredExport\Test\Acceptance\FakeServices\ReferenceEntity\InMemoryFindRecordsLabelTranslations;
+use Akeneo\Platform\TailoredExport\Test\Acceptance\FakeServices\ReferenceEntity\InMemoryFindRecordLabels;
 use PHPUnit\Framework\Assert;
 
 final class HandleReferenceEntityValueTest extends AttributeTestCase
@@ -91,8 +91,8 @@ final class HandleReferenceEntityValueTest extends AttributeTestCase
 
     private function loadRecords()
     {
-        /** @var InMemoryFindRecordsLabelTranslations $recordLabelsRepository */
-        $recordLabelsRepository = self::$container->get('akeneo_referenceentity.infrastructure.persistence.query.enrich.find_records_labels_public_api');
+        /** @var InMemoryFindRecordLabels $recordLabelsRepository */
+        $recordLabelsRepository = self::$container->get('Akeneo\Platform\TailoredExport\Domain\Query\FindRecordLabelsInterface');
         $recordLabelsRepository->addRecordLabel('designer', 'starck', 'en_US', 'Starck');
     }
 }

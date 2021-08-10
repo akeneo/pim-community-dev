@@ -4,9 +4,9 @@ declare(strict_types=1);
 
 namespace Akeneo\Platform\TailoredExport\Test\Acceptance\FakeServices\ReferenceEntity;
 
-use Akeneo\ReferenceEntity\Infrastructure\PublicApi\Enrich\FindRecordsLabelTranslationsInterface;
+use Akeneo\Platform\TailoredExport\Domain\Query\FindRecordLabelsInterface;
 
-final class InMemoryFindRecordsLabelTranslations implements FindRecordsLabelTranslationsInterface
+final class InMemoryFindRecordLabels implements FindRecordLabelsInterface
 {
     private array $recordLabels;
 
@@ -15,7 +15,7 @@ final class InMemoryFindRecordsLabelTranslations implements FindRecordsLabelTran
         $this->recordLabels[$attributeCode][$optionCode][$locale] = $optionTranslation;
     }
 
-    public function find(string $referenceEntityCode, array $recordCodes, $locale): array
+    public function byReferenceEntityCodeAndRecordCodes(string $referenceEntityCode, array $recordCodes, $locale): array
     {
         return array_reduce($recordCodes, function ($carry, $recordCode) use ($referenceEntityCode, $locale) {
             $carry[$recordCode] = $this->recordLabels[$referenceEntityCode][$recordCode][$locale] ?? null;

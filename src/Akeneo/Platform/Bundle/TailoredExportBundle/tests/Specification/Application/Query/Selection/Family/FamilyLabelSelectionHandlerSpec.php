@@ -13,45 +13,38 @@ declare(strict_types=1);
 
 namespace Specification\Akeneo\Platform\TailoredExport\Application\Query\Selection\Family;
 
-use Akeneo\Pim\Structure\Component\Query\PublicApi\Family\GetFamilyTranslations;
 use Akeneo\Platform\TailoredExport\Application\Query\Selection\Boolean\BooleanSelection;
 use Akeneo\Platform\TailoredExport\Application\Query\Selection\Family\FamilyLabelSelection;
+use Akeneo\Platform\TailoredExport\Domain\Query\FindFamilyLabelInterface;
 use Akeneo\Platform\TailoredExport\Domain\SourceValue\BooleanValue;
 use Akeneo\Platform\TailoredExport\Domain\SourceValue\FamilyValue;
 use PhpSpec\ObjectBehavior;
 
 class FamilyLabelSelectionHandlerSpec extends ObjectBehavior
 {
-    public function let(GetFamilyTranslations $getFamilyTranslations)
+    public function let(FindFamilyLabelInterface $findFamilyLabel)
     {
-        $this->beConstructedWith($getFamilyTranslations);
+        $this->beConstructedWith($findFamilyLabel);
     }
 
-    public function it_applies_the_selection(GetFamilyTranslations $getFamilyTranslations)
+    public function it_applies_the_selection(FindFamilyLabelInterface $findFamilyLabel)
     {
         $selection = new FamilyLabelSelection('fr_FR');
         $value = new FamilyValue('a_family_code');
 
-        $getFamilyTranslations->byFamilyCodesAndLocale(
-            ['a_family_code'],
-            'fr_FR'
-        )->willReturn([
-            'a_family_code' => 'A Family Label',
-        ]);
+        $findFamilyLabel->byCode('a_family_code', 'fr_FR')->willReturn('A Family Label');
 
         $this->applySelection($selection, $value)
             ->shouldReturn('A Family Label');
     }
 
-    public function it_applies_selection_and_fallback_when_no_translation_is_found(GetFamilyTranslations $getFamilyTranslations)
-    {
+    public function it_applies_selection_and_fallback_when_no_translation_is_found(
+        FindFamilyLabelInterface $findFamilyLabel
+    ) {
         $selection = new FamilyLabelSelection('fr_FR');
         $value = new FamilyValue('a_family_code');
 
-        $getFamilyTranslations->byFamilyCodesAndLocale(
-            ['a_family_code'],
-            'fr_FR'
-        )->willReturn([]);
+        $findFamilyLabel->byCode('a_family_code', 'fr_FR')->willReturn(null);
 
         $this->applySelection($selection, $value)
             ->shouldReturn('[a_family_code]');

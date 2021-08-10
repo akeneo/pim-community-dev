@@ -15,18 +15,18 @@ namespace Akeneo\Platform\TailoredExport\Application\Query\Selection\PriceCollec
 
 use Akeneo\Platform\TailoredExport\Application\Query\Selection\SelectionHandlerInterface;
 use Akeneo\Platform\TailoredExport\Application\Query\Selection\SelectionInterface;
+use Akeneo\Platform\TailoredExport\Domain\Query\FindCurrencyLabelsInterface;
 use Akeneo\Platform\TailoredExport\Domain\SourceValue\Price;
 use Akeneo\Platform\TailoredExport\Domain\SourceValue\PriceCollectionValue;
 use Akeneo\Platform\TailoredExport\Domain\SourceValueInterface;
-use Akeneo\Tool\Component\Localization\CurrencyTranslatorInterface;
 
 class PriceCollectionCurrencyLabelSelectionHandler implements SelectionHandlerInterface
 {
-    private CurrencyTranslatorInterface $currencyTranslator;
+    private FindCurrencyLabelsInterface $findCurrencyLabels;
 
-    public function __construct(CurrencyTranslatorInterface $currencyTranslator)
+    public function __construct(FindCurrencyLabelsInterface $findCurrencyLabels)
     {
-        $this->currencyTranslator = $currencyTranslator;
+        $this->findCurrencyLabels = $findCurrencyLabels;
     }
 
     public function applySelection(SelectionInterface $selection, SourceValueInterface $value): string
@@ -37,14 +37,13 @@ class PriceCollectionCurrencyLabelSelectionHandler implements SelectionHandlerIn
         }
 
         $priceCollection = $value->getPriceCollection();
-        $selectedData = array_map(
-            fn (Price $price) => $this->currencyTranslator->translate(
-                $price->getCurrency(),
-                $selection->getLocale(),
-                sprintf('[%s]', $price->getCurrency())
-            ),
-            $priceCollection
-        );
+        $currencyCodes = array_map(static fn (Price $price) => $price->getCurrency(), $priceCollection);
+
+        $currencyLabels = $this->findCurrencyLabels->byCodes($currencyCodes, $selection->getLocale());
+
+        $selectedData = array_map(static function ($currencyCode) use ($currencyLabels) {
+            return $currencyLabels[$currencyCode] ?? sprintf('[%s]', $currencyCode);
+        }, $currencyCodes);
 
         return implode($selection->getSeparator(), $selectedData);
     }

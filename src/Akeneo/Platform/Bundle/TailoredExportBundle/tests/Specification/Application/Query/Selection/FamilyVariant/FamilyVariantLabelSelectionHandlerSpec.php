@@ -13,45 +13,38 @@ declare(strict_types=1);
 
 namespace Specification\Akeneo\Platform\TailoredExport\Application\Query\Selection\FamilyVariant;
 
-use Akeneo\Pim\Structure\Component\Query\PublicApi\FamilyVariant\GetFamilyVariantTranslations;
 use Akeneo\Platform\TailoredExport\Application\Query\Selection\Boolean\BooleanSelection;
 use Akeneo\Platform\TailoredExport\Application\Query\Selection\FamilyVariant\FamilyVariantLabelSelection;
+use Akeneo\Platform\TailoredExport\Domain\Query\FindFamilyVariantLabelInterface;
 use Akeneo\Platform\TailoredExport\Domain\SourceValue\BooleanValue;
 use Akeneo\Platform\TailoredExport\Domain\SourceValue\FamilyVariantValue;
 use PhpSpec\ObjectBehavior;
 
 class FamilyVariantLabelSelectionHandlerSpec extends ObjectBehavior
 {
-    public function let(GetFamilyVariantTranslations $getFamilyVariantTranslations)
+    public function let(FindFamilyVariantLabelInterface $findFamilyVariantLabel)
     {
-        $this->beConstructedWith($getFamilyVariantTranslations);
+        $this->beConstructedWith($findFamilyVariantLabel);
     }
 
-    public function it_applies_the_selection(GetFamilyVariantTranslations $getFamilyVariantTranslations)
+    public function it_applies_the_selection(FindFamilyVariantLabelInterface $findFamilyVariantLabel)
     {
         $selection = new FamilyVariantLabelSelection('fr_FR');
         $value = new FamilyVariantValue('a_family_variant_code');
 
-        $getFamilyVariantTranslations->byFamilyVariantCodesAndLocale(
-            ['a_family_variant_code'],
-            'fr_FR'
-        )->willReturn([
-            'a_family_variant_code' => 'A FamilyVariant Label',
-        ]);
+        $findFamilyVariantLabel->byCode('a_family_variant_code', 'fr_FR')->willReturn('A FamilyVariant Label');
 
         $this->applySelection($selection, $value)
             ->shouldReturn('A FamilyVariant Label');
     }
 
-    public function it_applies_the_selection_and_fallback_when_no_translation_is_found(GetFamilyVariantTranslations $getFamilyVariantTranslations)
-    {
+    public function it_applies_the_selection_and_fallback_when_no_translation_is_found(
+        FindFamilyVariantLabelInterface $findFamilyVariantLabel
+    ) {
         $selection = new FamilyVariantLabelSelection('fr_FR');
         $value = new FamilyVariantValue('a_family_variant_code');
 
-        $getFamilyVariantTranslations->byFamilyVariantCodesAndLocale(
-            ['a_family_variant_code'],
-            'fr_FR'
-        )->willReturn([]);
+        $findFamilyVariantLabel->byCode('a_family_variant_code', 'fr_FR')->willReturn(null);
 
         $this->applySelection($selection, $value)
             ->shouldReturn('[a_family_variant_code]');

@@ -13,20 +13,19 @@ declare(strict_types=1);
 
 namespace Akeneo\Platform\TailoredExport\Application\Query\Selection\FamilyVariant;
 
-use Akeneo\Pim\Structure\Component\Query\PublicApi\FamilyVariant\GetFamilyVariantTranslations;
 use Akeneo\Platform\TailoredExport\Application\Query\Selection\SelectionHandlerInterface;
 use Akeneo\Platform\TailoredExport\Application\Query\Selection\SelectionInterface;
+use Akeneo\Platform\TailoredExport\Domain\Query\FindFamilyVariantLabelInterface;
 use Akeneo\Platform\TailoredExport\Domain\SourceValue\FamilyVariantValue;
 use Akeneo\Platform\TailoredExport\Domain\SourceValueInterface;
 
 class FamilyVariantLabelSelectionHandler implements SelectionHandlerInterface
 {
-    private GetFamilyVariantTranslations $getFamilyVariantTranslations;
+    private FindFamilyVariantLabelInterface $findFamilyVariantLabel;
 
-    public function __construct(
-        GetFamilyVariantTranslations $getFamilyVariantTranslations
-    ) {
-        $this->getFamilyVariantTranslations = $getFamilyVariantTranslations;
+    public function __construct(FindFamilyVariantLabelInterface $findFamilyVariantLabel)
+    {
+        $this->findFamilyVariantLabel = $findFamilyVariantLabel;
     }
 
     public function applySelection(SelectionInterface $selection, SourceValueInterface $value): string
@@ -39,10 +38,9 @@ class FamilyVariantLabelSelectionHandler implements SelectionHandlerInterface
         }
 
         $familyVariantCode = $value->getFamilyVariantCode();
-        $familyVariantTranslations = $this->getFamilyVariantTranslations
-            ->byFamilyVariantCodesAndLocale([$familyVariantCode], $selection->getLocale());
+        $familyVariantTranslation = $this->findFamilyVariantLabel->byCode($familyVariantCode, $selection->getLocale());
 
-        return $familyVariantTranslations[$familyVariantCode] ?? sprintf('[%s]', $familyVariantCode);
+        return $familyVariantTranslation ?? sprintf('[%s]', $familyVariantCode);
     }
 
     public function supports(SelectionInterface $selection, SourceValueInterface $value): bool

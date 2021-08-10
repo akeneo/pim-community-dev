@@ -13,7 +13,6 @@ declare(strict_types=1);
 
 namespace Specification\Akeneo\Platform\TailoredExport\Application\Query\Selection\Parent;
 
-use Akeneo\Pim\Enrichment\Component\Product\Query\GetProductModelLabelsInterface;
 use Akeneo\Platform\TailoredExport\Application\Query\Selection\Boolean\BooleanSelection;
 use Akeneo\Platform\TailoredExport\Application\Query\Selection\Parent\ParentLabelSelection;
 use Akeneo\Platform\TailoredExport\Domain\Query\FindProductModelLabelsInterface;

@@ -13,11 +13,11 @@ declare(strict_types=1);
 
 namespace Akeneo\Platform\TailoredExport\Domain\Query;
 
-interface FindGroupLabelsInterface
+interface FindCurrencyLabelsInterface
 {
     /**
-     * @param string[] $groupCodes
-     * @return array<string, string>
+     * @param string[] $currencyCodes
+     * @return array<string, string | null>
      */
-    public function byCodes(array $groupCodes, string $locale): array;
+    public function byCodes(array $currencyCodes, string $locale): array;
 }

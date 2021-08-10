@@ -13,21 +13,21 @@ declare(strict_types=1);
 
 namespace Specification\Akeneo\Platform\TailoredExport\Application\Query\Selection\AssetCollection;
 
-use Akeneo\AssetManager\Infrastructure\PublicApi\Enrich\FindAssetLabelTranslationInterface;
 use Akeneo\Platform\TailoredExport\Application\Query\Selection\AssetCollection\AssetCollectionLabelSelection;
 use Akeneo\Platform\TailoredExport\Application\Query\Selection\Boolean\BooleanSelection;
+use Akeneo\Platform\TailoredExport\Domain\Query\FindAssetLabelsInterface;
 use Akeneo\Platform\TailoredExport\Domain\SourceValue\AssetCollectionValue;
 use Akeneo\Platform\TailoredExport\Domain\SourceValue\BooleanValue;
 use PhpSpec\ObjectBehavior;
 
 class AssetCollectionLabelSelectionHandlerSpec extends ObjectBehavior
 {
-    public function let(FindAssetLabelTranslationInterface $findAssetLabelTranslations)
+    public function let(FindAssetLabelsInterface $findAssetLabels)
     {
-        $this->beConstructedWith($findAssetLabelTranslations);
+        $this->beConstructedWith($findAssetLabels);
     }
 
-    public function it_applies_the_selection(FindAssetLabelTranslationInterface $findAssetLabelTranslations)
+    public function it_applies_the_selection(FindAssetLabelsInterface $findAssetLabels)
     {
         $selection = new AssetCollectionLabelSelection(
             '/',
@@ -42,7 +42,7 @@ class AssetCollectionLabelSelectionHandlerSpec extends ObjectBehavior
             null
         );
 
-        $findAssetLabelTranslations->byFamilyCodeAndAssetCodes(
+        $findAssetLabels->byAssetFamilyCodeAndAssetCodes(
             'an_asset_family_code',
             ['asset_code1', 'asset_code2', 'asset_code...'],
             'fr_FR'

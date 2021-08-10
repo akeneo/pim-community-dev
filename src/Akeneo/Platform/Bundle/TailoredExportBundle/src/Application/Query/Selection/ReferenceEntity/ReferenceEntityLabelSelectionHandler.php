@@ -15,17 +15,17 @@ namespace Akeneo\Platform\TailoredExport\Application\Query\Selection\ReferenceEn
 
 use Akeneo\Platform\TailoredExport\Application\Query\Selection\SelectionHandlerInterface;
 use Akeneo\Platform\TailoredExport\Application\Query\Selection\SelectionInterface;
+use Akeneo\Platform\TailoredExport\Domain\Query\FindRecordLabelsInterface;
 use Akeneo\Platform\TailoredExport\Domain\SourceValue\ReferenceEntityValue;
 use Akeneo\Platform\TailoredExport\Domain\SourceValueInterface;
-use Akeneo\ReferenceEntity\Infrastructure\PublicApi\Enrich\FindRecordsLabelTranslationsInterface;
 
 class ReferenceEntityLabelSelectionHandler implements SelectionHandlerInterface
 {
-    private FindRecordsLabelTranslationsInterface $findRecordLabelTranslations;
+    private FindRecordLabelsInterface $findRecordLabels;
 
-    public function __construct(FindRecordsLabelTranslationsInterface $findRecordLabelTranslations)
+    public function __construct(FindRecordLabelsInterface $findRecordLabels)
     {
-        $this->findRecordLabelTranslations = $findRecordLabelTranslations;
+        $this->findRecordLabels = $findRecordLabels;
     }
 
     public function applySelection(SelectionInterface $selection, SourceValueInterface $value): string
@@ -36,7 +36,7 @@ class ReferenceEntityLabelSelectionHandler implements SelectionHandlerInterface
 
         $recordCode = $value->getRecordCode();
         $referenceEntityCode = $selection->getReferenceEntityCode();
-        $recordTranslations = $this->findRecordLabelTranslations->find(
+        $recordTranslations = $this->findRecordLabels->byReferenceEntityCodeAndRecordCodes(
             $referenceEntityCode,
             [$recordCode],
             $selection->getLocale()

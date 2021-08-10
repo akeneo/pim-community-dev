@@ -16,17 +16,17 @@ namespace Specification\Akeneo\Platform\TailoredExport\Application\Query\Selecti
 use Akeneo\Platform\TailoredExport\Application\Query\Selection\Boolean\BooleanSelection;
 use Akeneo\Platform\TailoredExport\Application\Query\Selection\PriceCollection\PriceCollectionCurrencyLabelSelection;
 use Akeneo\Platform\TailoredExport\Application\Query\Selection\PriceCollection\PriceCollectionCurrencyLabelSelectionHandler;
+use Akeneo\Platform\TailoredExport\Domain\Query\FindCurrencyLabelsInterface;
 use Akeneo\Platform\TailoredExport\Domain\SourceValue\BooleanValue;
 use Akeneo\Platform\TailoredExport\Domain\SourceValue\Price;
 use Akeneo\Platform\TailoredExport\Domain\SourceValue\PriceCollectionValue;
-use Akeneo\Tool\Component\Localization\CurrencyTranslatorInterface;
 use PhpSpec\ObjectBehavior;
 
 class PriceCollectionCurrencyLabelSelectionHandlerSpec extends ObjectBehavior
 {
-    public function let(CurrencyTranslatorInterface $currencyTranslator)
+    public function let(FindCurrencyLabelsInterface $findCurrencyLabels)
     {
-        $this->beConstructedWith($currencyTranslator);
+        $this->beConstructedWith($findCurrencyLabels);
     }
 
     public function it_is_initializable()
@@ -34,13 +34,15 @@ class PriceCollectionCurrencyLabelSelectionHandlerSpec extends ObjectBehavior
         $this->shouldHaveType(PriceCollectionCurrencyLabelSelectionHandler::class);
     }
 
-    public function it_applies_the_selection($currencyTranslator)
+    public function it_applies_the_selection(FindCurrencyLabelsInterface $findCurrencyLabels)
     {
         $selection = new PriceCollectionCurrencyLabelSelection('|', 'fr_FR');
         $value = new PriceCollectionValue([new Price('102', 'EUR'), new Price('103', 'USD'), new Price('104', 'DKK')]);
-        $currencyTranslator->translate('EUR', 'fr_FR', '[EUR]')->willReturn('Euros €');
-        $currencyTranslator->translate('USD', 'fr_FR', '[USD]')->willReturn('Dollars $');
-        $currencyTranslator->translate('DKK', 'fr_FR', '[DKK]')->willReturn('Donkey kong 🐒');
+        $findCurrencyLabels->byCodes(['EUR', 'USD', 'DKK'], 'fr_FR')->willReturn([
+            'EUR' => 'Euros €',
+            'USD' => 'Dollars $',
+            'DKK' => 'Donkey kong 🐒'
+        ]);
 
         $this->applySelection($selection, $value)->shouldReturn('Euros €|Dollars $|Donkey kong 🐒');
     }

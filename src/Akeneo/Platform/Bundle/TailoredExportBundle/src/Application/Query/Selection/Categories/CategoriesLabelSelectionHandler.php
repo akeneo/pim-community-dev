@@ -13,19 +13,19 @@ declare(strict_types=1);
 
 namespace Akeneo\Platform\TailoredExport\Application\Query\Selection\Categories;
 
-use Akeneo\Pim\Structure\Component\Query\PublicApi\Category\GetCategoryTranslations;
 use Akeneo\Platform\TailoredExport\Application\Query\Selection\SelectionHandlerInterface;
 use Akeneo\Platform\TailoredExport\Application\Query\Selection\SelectionInterface;
+use Akeneo\Platform\TailoredExport\Domain\Query\FindCategoryLabelsInterface;
 use Akeneo\Platform\TailoredExport\Domain\SourceValue\CategoriesValue;
 use Akeneo\Platform\TailoredExport\Domain\SourceValueInterface;
 
 class CategoriesLabelSelectionHandler implements SelectionHandlerInterface
 {
-    private GetCategoryTranslations $getCategoryTranslations;
+    private FindCategoryLabelsInterface $findCategoryLabels;
 
-    public function __construct(GetCategoryTranslations $getCategoryTranslations)
+    public function __construct(FindCategoryLabelsInterface $findCategoryLabels)
     {
-        $this->getCategoryTranslations = $getCategoryTranslations;
+        $this->findCategoryLabels = $findCategoryLabels;
     }
 
     public function applySelection(SelectionInterface $selection, SourceValueInterface $value): string
@@ -39,9 +39,7 @@ class CategoriesLabelSelectionHandler implements SelectionHandlerInterface
 
         $categoryCodes = $value->getCategoryCodes();
 
-        $categoryTranslations = $this->getCategoryTranslations
-            ->byCategoryCodesAndLocale($categoryCodes, $selection->getLocale());
-
+        $categoryTranslations = $this->findCategoryLabels->byCodes($categoryCodes, $selection->getLocale());
         $selectedData = array_map(fn ($categoryCode) => $categoryTranslations[$categoryCode] ??
             sprintf('[%s]', $categoryCode), $categoryCodes);
 

@@ -4,9 +4,9 @@ declare(strict_types=1);
 
 namespace Akeneo\Platform\TailoredExport\Test\Acceptance\FakeServices\Category;
 
-use Akeneo\Pim\Structure\Component\Query\PublicApi\Category\GetCategoryTranslations as GetCategoryTranslationsInterface;
+use Akeneo\Platform\TailoredExport\Domain\Query\FindCategoryLabelsInterface;
 
-final class InMemoryGetCategoryTranslations implements GetCategoryTranslationsInterface
+final class InMemoryFindCategoryLabels implements FindCategoryLabelsInterface
 {
     private array $categoryLabels = [];
 
@@ -15,7 +15,7 @@ final class InMemoryGetCategoryTranslations implements GetCategoryTranslationsIn
         $this->categoryLabels[$categoryCode][$locale] = $label;
     }
 
-    public function byCategoryCodesAndLocale(array $categoryCodes, string $locale): array
+    public function byCodes(array $categoryCodes, string $locale): array
     {
         return array_reduce($categoryCodes, function ($carry, $categoryCode) use ($locale) {
             $carry[$categoryCode] = $this->categoryLabels[$categoryCode][$locale] ?? null;
