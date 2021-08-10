@@ -1,4 +1,4 @@
-import {GroupsSource, isGroupsSource} from "./model";
+import {GroupsSource, isGroupsSource} from './model';
 
 const source: GroupsSource = {
   uuid: '123',
@@ -10,7 +10,7 @@ const source: GroupsSource = {
   selection: {type: 'code', separator: ','},
 };
 
-test('it validates that something is a group source', () => {
+test('it validates that something is a groups source', () => {
   expect(isGroupsSource(source)).toEqual(true);
 
   expect(

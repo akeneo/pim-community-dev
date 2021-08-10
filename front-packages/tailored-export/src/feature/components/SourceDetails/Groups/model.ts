@@ -1,9 +1,9 @@
 import {uuid} from 'akeneo-design-system';
 import {Source} from '../../../models';
 import {CodeLabelCollectionSelection} from '../common/CodeLabelCollectionSelector';
-import {DefaultValueOperation, isDefaultValueOperation} from "../common";
+import {DefaultValueOperation, isDefaultValueOperation} from '../common';
 
-type GroupOperations = {
+type GroupsOperations = {
   default_value?: DefaultValueOperation;
 };
 
@@ -13,7 +13,7 @@ type GroupsSource = {
   type: 'property';
   locale: null;
   channel: null;
-  operations: GroupOperations;
+  operations: GroupsOperations;
   selection: CodeLabelCollectionSelection;
 };
 
@@ -27,7 +27,7 @@ const getDefaultGroupsSource = (): GroupsSource => ({
   selection: {type: 'code', separator: ','},
 });
 
-const isGroupOperations = (operations: Object): operations is GroupOperations =>
+const isGroupsOperations = (operations: Object): operations is GroupsOperations =>
   Object.entries(operations).every(([type, operation]) => {
     switch (type) {
       case 'default_value':
@@ -38,7 +38,7 @@ const isGroupOperations = (operations: Object): operations is GroupOperations =>
   });
 
 const isGroupsSource = (source: Source): source is GroupsSource =>
-  'groups' === source.code && isGroupOperations(source.operations);
+  'groups' === source.code && isGroupsOperations(source.operations);
 
 export {getDefaultGroupsSource, isGroupsSource};
 export type {GroupsSource};
