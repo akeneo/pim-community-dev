@@ -18,9 +18,6 @@ use Akeneo\Pim\Structure\Component\Query\PublicApi\Permission\GetViewableAttribu
 use Akeneo\Platform\TailoredExport\Application\Query\Source\AttributeSource;
 use Akeneo\Tool\Component\Batch\Model\JobInstance;
 
-/**
- * @author Julien Sanchez <julien@akeneo.com>
- */
 class CanEditTailoredExport
 {
     protected GetAllViewableLocalesForUserInterface $getAllViewableLocales;

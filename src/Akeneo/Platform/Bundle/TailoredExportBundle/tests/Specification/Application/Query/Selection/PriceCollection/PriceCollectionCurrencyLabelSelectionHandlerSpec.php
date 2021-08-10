@@ -15,7 +15,7 @@ namespace Specification\Akeneo\Platform\TailoredExport\Application\Query\Selecti
 
 use Akeneo\Platform\TailoredExport\Application\Query\Selection\Boolean\BooleanSelection;
 use Akeneo\Platform\TailoredExport\Application\Query\Selection\PriceCollection\PriceCollectionCurrencyLabelSelection;
-use Akeneo\Platform\TailoredExport\Application\Query\Selection\PriceCollection\PriceCollectionCurrencyLabelSelectionHandler;
+use Akeneo\Platform\TailoredExport\Application\Query\Selection\PriceCollection\PriceCollectionCurrencyLabelSelectionApplier;
 use Akeneo\Platform\TailoredExport\Domain\Model\SourceValue\BooleanValue;
 use Akeneo\Platform\TailoredExport\Domain\Model\SourceValue\Price;
 use Akeneo\Platform\TailoredExport\Domain\Model\SourceValue\PriceCollectionValue;
@@ -31,7 +31,7 @@ class PriceCollectionCurrencyLabelSelectionHandlerSpec extends ObjectBehavior
 
     public function it_is_initializable()
     {
-        $this->shouldHaveType(PriceCollectionCurrencyLabelSelectionHandler::class);
+        $this->shouldHaveType(PriceCollectionCurrencyLabelSelectionApplier::class);
     }
 
     public function it_applies_the_selection(FindCurrencyLabelsInterface $findCurrencyLabels)
