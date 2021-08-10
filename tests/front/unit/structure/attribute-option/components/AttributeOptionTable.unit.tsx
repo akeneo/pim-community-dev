@@ -11,6 +11,8 @@ import {
   queryAllByRole,
   getByText,
   getByTitle,
+  getAllByTestId,
+  getByTestId,
 } from '@testing-library/react';
 import {DependenciesProvider} from '@akeneo-pim-community/legacy-bridge';
 import {createStoreWithInitialState} from 'akeneopimstructure/js/attribute-option/store/store';
@@ -61,8 +63,8 @@ describe('Attribute options table', () => {
   test('it renders a list of 2 options not sorted alphabetically by default', async () => {
     await renderComponent(options, false, jest.fn(), jest.fn(), jest.fn(), jest.fn(), null);
 
-    const attributeOptionsLabel = getAllByRole(container, 'attribute-option-item-label');
-    const attributeOptionsCode = getAllByRole(container, 'attribute-option-item-code');
+    const attributeOptionsLabel = getAllByTestId(container, 'attribute-option-item-label');
+    const attributeOptionsCode = getAllByTestId(container, 'attribute-option-item-code');
     expect(attributeOptionsLabel.length).toBe(2);
     expect(attributeOptionsCode.length).toBe(2);
     expect(attributeOptionsLabel[0].textContent).toBe('Blue');
@@ -76,7 +78,7 @@ describe('Attribute options table', () => {
   test('it renders a list of 2 options sorted alphabetically by default', async () => {
     await renderComponent(options, true, jest.fn(), jest.fn(), jest.fn(), jest.fn(), null);
 
-    const attributeOptionsLabel = getAllByRole(container, 'attribute-option-item-label');
+    const attributeOptionsLabel = getAllByTestId(container, 'attribute-option-item-label');
     const attributeOptionsCode = getAllByRole(container, 'attribute-option-item-code');
     expect(attributeOptionsLabel.length).toBe(2);
     expect(attributeOptionsCode.length).toBe(2);
@@ -89,7 +91,7 @@ describe('Attribute options table', () => {
   test('the list order can be toggled', async () => {
     await renderComponent(options, false, jest.fn(), jest.fn(), jest.fn(), jest.fn(), null);
 
-    let attributeOptionsLabel = getAllByRole(container, 'attribute-option-item-label');
+    let attributeOptionsLabel = getAllByTestId(container, 'attribute-option-item-label');
     let attributeOptionsCode = getAllByRole(container, 'attribute-option-item-code');
     expect(attributeOptionsLabel.length).toBe(2);
     expect(attributeOptionsCode.length).toBe(2);
@@ -101,7 +103,7 @@ describe('Attribute options table', () => {
     const autoOptionSortYes = getByText(container, 'pim_common.yes');
     await fireEvent.click(autoOptionSortYes);
 
-    attributeOptionsLabel = getAllByRole(container, 'attribute-option-item-label');
+    attributeOptionsLabel = getAllByTestId(container, 'attribute-option-item-label');
     attributeOptionsCode = getAllByRole(container, 'attribute-option-item-code');
     expect(attributeOptionsLabel.length).toBe(2);
     expect(attributeOptionsCode.length).toBe(2);
@@ -113,7 +115,7 @@ describe('Attribute options table', () => {
     const autoOptionSortNo = getByText(container, 'pim_common.no');
     await fireEvent.click(autoOptionSortNo);
 
-    attributeOptionsLabel = getAllByRole(container, 'attribute-option-item-label');
+    attributeOptionsLabel = getAllByTestId(container, 'attribute-option-item-label');
     attributeOptionsCode = getAllByRole(container, 'attribute-option-item-code');
     expect(attributeOptionsLabel.length).toBe(2);
     expect(attributeOptionsCode.length).toBe(2);
@@ -155,7 +157,7 @@ describe('Attribute options table', () => {
     expect(blueOption).toHaveAttribute('data-testid', 'is-selected');
     expect(blackOption).toHaveAttribute('data-testid', 'is-not-selected');
 
-    const optionLabels = queryAllByRole(container, 'attribute-option-item-label');
+    const optionLabels = getAllByTestId(container, 'attribute-option-item-label');
     const blackOptionLabel = optionLabels[1];
     await fireEvent.click(blackOptionLabel);
 
@@ -170,7 +172,7 @@ describe('Attribute options table', () => {
     const optionItems = queryAllByRole(container, 'attribute-option-item');
     const blueOption = optionItems[0];
 
-    const deleteButton = getByRole(blueOption, 'attribute-option-delete-button');
+    const deleteButton = getByTestId(blueOption, 'attribute-option-delete-button');
     let deleteConfirmationModal = queryByRole(blueOption, 'attribute-option-delete-confirmation-modal');
     expect(deleteConfirmationModal).not.toBeInTheDocument();
 
@@ -226,7 +228,7 @@ describe('Attribute options table', () => {
     await fireEvent.dragOver(blackOption);
     await fireEvent.drop(blackOption);
 
-    let attributeOptionsLabel = getAllByRole(container, 'attribute-option-item-label');
+    let attributeOptionsLabel = getAllByTestId(container, 'attribute-option-item-label');
     let attributeOptionsCode = getAllByRole(container, 'attribute-option-item-code');
     expect(attributeOptionsLabel.length).toBe(2);
     expect(attributeOptionsCode.length).toBe(2);
@@ -265,7 +267,7 @@ describe('Attribute options table', () => {
     await act(async () => {
       setTimeout(() => {
         const optionItems = queryAllByRole(container, 'attribute-option-item');
-        const attributeOptionsLabel = getAllByRole(container, 'attribute-option-item-label');
+        const attributeOptionsLabel = getAllByTestId(container, 'attribute-option-item-label');
         const attributeOptionsCode = getAllByRole(container, 'attribute-option-item-code');
 
         expect(optionItems.length).toBe(1);

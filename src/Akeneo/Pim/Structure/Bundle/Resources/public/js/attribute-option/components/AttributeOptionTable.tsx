@@ -185,12 +185,12 @@ const AttributeOptionTable = ({
                           </HandleContainer>
                         </TableCellNoDraggable>
                       )}
-                      <TableCellLabel role="attribute-option-item-label" rowTitle={true}>
+                      <TableCellLabel data-testid="attribute-option-item-label" rowTitle={true}>
                         {attributeOption.optionValues[locale] && attributeOption.optionValues[locale].value
                           ? attributeOption.optionValues[locale].value
                           : `[${attributeOption.code}]`}
                       </TableCellLabel>
-                      <Table.Cell role="attribute-option-item-code">{attributeOption.code}</Table.Cell>
+                      <Table.Cell data-testid="attribute-option-item-code">{attributeOption.code}</Table.Cell>
                       <Table.Cell>{extraData[attributeOption.code]}</Table.Cell>
                       <TableActionCell>
                         <IconButton
@@ -203,7 +203,7 @@ const AttributeOptionTable = ({
                           title={translate('pim_common.delete')}
                           ghost="borderless"
                           level="tertiary"
-                          role="attribute-option-delete-button"
+                          data-testid="attribute-option-delete-button"
                         />
 
                         {showDeleteConfirmationModal && (
