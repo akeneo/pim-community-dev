@@ -6,10 +6,11 @@ services:
             - '@pim_catalog.normalizer.standard.translation'
             - '@pim_catalog.filter.chained'
 
-    akeneo.enrichment.public_api.count_categories_per_tree:
-        class: Akeneo\Pim\Enrichment\Bundle\Storage\Sql\Category\SqlCountCategoriesPerTree
+    akeneo.enrichment.public_api.get_category_children_codes_per_tree:
+        class: Akeneo\Pim\Enrichment\Bundle\Storage\Sql\Category\SqlGetCategoryChildrenCodesPerTree
         arguments:
             - '@database_connection'
+            - '@pim_enrich.filter.category_code'
 
     pim_catalog.doctrine.query.find_variant_product_completeness:
         class: 'Akeneo\Pim\Enrichment\Bundle\Storage\Sql\Completeness\VariantProductRatio'

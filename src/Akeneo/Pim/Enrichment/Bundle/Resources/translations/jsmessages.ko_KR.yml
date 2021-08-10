@@ -61,6 +61,7 @@ pim_enrich.entity.product:
     history:
       version: 버전 
       author: 작성자
+      logged_at: 날짜/시간
       from: 시작
       modified: 수정됨
       old_value: 이전 값

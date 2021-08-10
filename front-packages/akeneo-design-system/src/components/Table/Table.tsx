@@ -1,4 +1,4 @@
-import React, {ReactNode} from 'react';
+import React, {ReactNode, useMemo} from 'react';
 import styled from 'styled-components';
 import {TableCell} from './TableCell/TableCell';
 import {TableHeader} from './TableHeader/TableHeader';
@@ -66,8 +66,15 @@ const Table = ({
   children,
   ...rest
 }: TableProps) => {
+  const providerValue = useMemo(() => ({isSelectable, displayCheckbox, isDragAndDroppable, onReorder}), [
+    isSelectable,
+    displayCheckbox,
+    isDragAndDroppable,
+    onReorder,
+  ]);
+
   return (
-    <TableContext.Provider value={{isSelectable, displayCheckbox, isDragAndDroppable, onReorder}}>
+    <TableContext.Provider value={providerValue}>
       <TableContainer {...rest}>{children}</TableContainer>
     </TableContext.Provider>
   );

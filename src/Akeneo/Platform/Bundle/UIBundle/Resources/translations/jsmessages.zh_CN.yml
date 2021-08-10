@@ -238,6 +238,7 @@ pim_common:
   parent: 父级
   groups: 分组
   products: 产品
+  product_models: 产品模型
   more: 更多
 error:
   exception: 哎呀 ！发生错误 {{ status_code }} ...
@@ -372,16 +373,3 @@ pim_settings:
   settings_menu: 设置菜单
   catalog_settings: 目录设置 
   product_settings: 产品设置
-  count:
-    categories: 您有 {{ countTrees }} 个树和 {{ countCategories }} 个类别
-    channels: 您有 {{ count }} 个渠道
-    locales: 您有 {{ count }} 个已启用的区域
-    currencies: 您有 {{ count }} 个已启用的货币
-    attribute_groups: 您有 {{ count }} 个属性组
-    attributes: 您有 {{ count }} 个属性
-    families: 您有 {{ count }} 个品类
-    measurements: 您有 {{ count }} 个测量单位
-    association_types: 您有 {{ count }} 个关联类型
-    group_types: 您有 {{ count }} 个分组类型
-    groups: 您有 {{ count }} 个组
-    rules: 您有 {{ count }} 个已启用规则

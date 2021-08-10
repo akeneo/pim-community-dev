@@ -40,28 +40,6 @@ class DeleteProductEndToEnd extends AbstractProductTestCase
         $this->assertEventCount(1, ProductRemoved::class);
     }
 
-    public function test_access_denied_on_get_a_product_if_no_permission()
-    {
-        $this->createAdminUser();
-        $this->assertCount(7, $this->get('pim_catalog.repository.product')->findAll());
-        $client = $this->createAuthenticatedClient();
-        $this->removeAclFromRole('action:pim_api_product_remove');
-        $this->get('pim_catalog.elasticsearch.indexer.product')->indexFromProductIdentifier('foo');
-        $client->request('DELETE', 'api/rest/v1/products/foo');
-        $expectedResponse = <<<JSON
-{
-    "code": 403,
-    "message": "Access forbidden. You are not allowed to delete products."
-}
-JSON;
-
-        $response = $client->getResponse();
-        $this->assertSame(Response::HTTP_FORBIDDEN, $response->getStatusCode());
-        $this->assertJsonStringEqualsJsonString($expectedResponse, $response->getContent());
-
-        $this->assertCount(7, $this->get('pim_catalog.repository.product')->findAll());
-    }
-
     public function testNotFoundAProduct()
     {
         $this->createAdminUser();
