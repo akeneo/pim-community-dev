@@ -15,8 +15,8 @@ namespace Specification\Akeneo\Platform\TailoredExport\Application\Query\Selecti
 
 use Akeneo\Platform\TailoredExport\Application\Query\Selection\Boolean\BooleanSelection;
 use Akeneo\Platform\TailoredExport\Application\Query\Selection\Enabled\EnabledSelection;
-use Akeneo\Platform\TailoredExport\Domain\SourceValue\BooleanValue;
-use Akeneo\Platform\TailoredExport\Domain\SourceValue\EnabledValue;
+use Akeneo\Platform\TailoredExport\Domain\Model\SourceValue\BooleanValue;
+use Akeneo\Platform\TailoredExport\Domain\Model\SourceValue\EnabledValue;
 use PhpSpec\ObjectBehavior;
 
 class EnabledSelectionHandlerSpec extends ObjectBehavior

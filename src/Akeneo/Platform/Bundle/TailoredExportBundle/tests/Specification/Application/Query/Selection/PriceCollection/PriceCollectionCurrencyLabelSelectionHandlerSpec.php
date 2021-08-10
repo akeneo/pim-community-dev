@@ -16,10 +16,10 @@ namespace Specification\Akeneo\Platform\TailoredExport\Application\Query\Selecti
 use Akeneo\Platform\TailoredExport\Application\Query\Selection\Boolean\BooleanSelection;
 use Akeneo\Platform\TailoredExport\Application\Query\Selection\PriceCollection\PriceCollectionCurrencyLabelSelection;
 use Akeneo\Platform\TailoredExport\Application\Query\Selection\PriceCollection\PriceCollectionCurrencyLabelSelectionHandler;
+use Akeneo\Platform\TailoredExport\Domain\Model\SourceValue\BooleanValue;
+use Akeneo\Platform\TailoredExport\Domain\Model\SourceValue\Price;
+use Akeneo\Platform\TailoredExport\Domain\Model\SourceValue\PriceCollectionValue;
 use Akeneo\Platform\TailoredExport\Domain\Query\FindCurrencyLabelsInterface;
-use Akeneo\Platform\TailoredExport\Domain\SourceValue\BooleanValue;
-use Akeneo\Platform\TailoredExport\Domain\SourceValue\Price;
-use Akeneo\Platform\TailoredExport\Domain\SourceValue\PriceCollectionValue;
 use PhpSpec\ObjectBehavior;
 
 class PriceCollectionCurrencyLabelSelectionHandlerSpec extends ObjectBehavior

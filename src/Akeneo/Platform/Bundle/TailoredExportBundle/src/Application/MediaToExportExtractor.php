@@ -19,11 +19,9 @@ use Akeneo\Platform\TailoredExport\Application\Query\Column\ColumnCollection;
 use Akeneo\Platform\TailoredExport\Application\Query\Selection\AssetCollection\AssetCollectionSelectionInterface;
 use Akeneo\Platform\TailoredExport\Application\Query\Selection\File\FileSelectionInterface;
 use Akeneo\Platform\TailoredExport\Application\Query\Source\SourceInterface;
-use Akeneo\Platform\TailoredExport\Domain\MediaToExport;
-use Akeneo\Platform\TailoredExport\Domain\MediaToExportExtractorInterface;
-use Akeneo\Platform\TailoredExport\Domain\SourceValue\AssetCollectionValue;
-use Akeneo\Platform\TailoredExport\Domain\SourceValue\FileValue;
-use Akeneo\Platform\TailoredExport\Domain\ValueCollection;
+use Akeneo\Platform\TailoredExport\Domain\Model\SourceValue\AssetCollectionValue;
+use Akeneo\Platform\TailoredExport\Domain\Model\SourceValue\FileValue;
+use Akeneo\Platform\TailoredExport\Domain\Model\ValueCollection;
 use Akeneo\Platform\TailoredExport\Infrastructure\Connector\MediaExporterPathGenerator;
 
 final class MediaToExportExtractor implements MediaToExportExtractorInterface

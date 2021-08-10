@@ -16,8 +16,8 @@ namespace Specification\Akeneo\Platform\TailoredExport\Application\Query\Selecti
 use Akeneo\Platform\TailoredExport\Application\Query\Selection\AssetCollection\AssetCollectionCodeSelection;
 use Akeneo\Platform\TailoredExport\Application\Query\Selection\Enabled\EnabledSelection;
 use Akeneo\Platform\TailoredExport\Application\Query\Selection\Scalar\ScalarSelection;
-use Akeneo\Platform\TailoredExport\Domain\SourceValue\AssetCollectionValue;
-use Akeneo\Platform\TailoredExport\Domain\SourceValue\StringValue;
+use Akeneo\Platform\TailoredExport\Domain\Model\SourceValue\AssetCollectionValue;
+use Akeneo\Platform\TailoredExport\Domain\Model\SourceValue\StringValue;
 use PhpSpec\ObjectBehavior;
 
 class ScalarSelectionHandlerSpec extends ObjectBehavior

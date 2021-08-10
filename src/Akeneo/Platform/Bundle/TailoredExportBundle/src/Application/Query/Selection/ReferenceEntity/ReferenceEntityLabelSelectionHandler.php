@@ -15,9 +15,9 @@ namespace Akeneo\Platform\TailoredExport\Application\Query\Selection\ReferenceEn
 
 use Akeneo\Platform\TailoredExport\Application\Query\Selection\SelectionHandlerInterface;
 use Akeneo\Platform\TailoredExport\Application\Query\Selection\SelectionInterface;
+use Akeneo\Platform\TailoredExport\Domain\Model\SourceValue\ReferenceEntityValue;
+use Akeneo\Platform\TailoredExport\Domain\Model\SourceValue\SourceValueInterface;
 use Akeneo\Platform\TailoredExport\Domain\Query\FindRecordLabelsInterface;
-use Akeneo\Platform\TailoredExport\Domain\SourceValue\ReferenceEntityValue;
-use Akeneo\Platform\TailoredExport\Domain\SourceValueInterface;
 
 class ReferenceEntityLabelSelectionHandler implements SelectionHandlerInterface
 {

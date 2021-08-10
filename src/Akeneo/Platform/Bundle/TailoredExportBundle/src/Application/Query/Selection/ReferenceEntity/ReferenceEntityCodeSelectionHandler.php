@@ -15,8 +15,8 @@ namespace Akeneo\Platform\TailoredExport\Application\Query\Selection\ReferenceEn
 
 use Akeneo\Platform\TailoredExport\Application\Query\Selection\SelectionHandlerInterface;
 use Akeneo\Platform\TailoredExport\Application\Query\Selection\SelectionInterface;
-use Akeneo\Platform\TailoredExport\Domain\SourceValue\ReferenceEntityValue;
-use Akeneo\Platform\TailoredExport\Domain\SourceValueInterface;
+use Akeneo\Platform\TailoredExport\Domain\Model\SourceValue\ReferenceEntityValue;
+use Akeneo\Platform\TailoredExport\Domain\Model\SourceValue\SourceValueInterface;
 
 class ReferenceEntityCodeSelectionHandler implements SelectionHandlerInterface
 {

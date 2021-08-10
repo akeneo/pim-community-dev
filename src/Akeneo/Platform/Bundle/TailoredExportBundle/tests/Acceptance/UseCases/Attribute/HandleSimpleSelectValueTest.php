@@ -17,9 +17,9 @@ use Akeneo\Platform\TailoredExport\Application\Query\Operation\DefaultValueOpera
 use Akeneo\Platform\TailoredExport\Application\Query\Selection\SelectionInterface;
 use Akeneo\Platform\TailoredExport\Application\Query\Selection\SimpleSelect\SimpleSelectCodeSelection;
 use Akeneo\Platform\TailoredExport\Application\Query\Selection\SimpleSelect\SimpleSelectLabelSelection;
-use Akeneo\Platform\TailoredExport\Domain\SourceValue\NullValue;
-use Akeneo\Platform\TailoredExport\Domain\SourceValue\SimpleSelectValue;
-use Akeneo\Platform\TailoredExport\Domain\SourceValueInterface;
+use Akeneo\Platform\TailoredExport\Domain\Model\SourceValue\NullValue;
+use Akeneo\Platform\TailoredExport\Domain\Model\SourceValue\SimpleSelectValue;
+use Akeneo\Platform\TailoredExport\Domain\Model\SourceValue\SourceValueInterface;
 use Akeneo\Platform\TailoredExport\Test\Acceptance\FakeServices\AttributeOption\InMemoryFindAttributeOptionLabels;
 use PHPUnit\Framework\Assert;
 

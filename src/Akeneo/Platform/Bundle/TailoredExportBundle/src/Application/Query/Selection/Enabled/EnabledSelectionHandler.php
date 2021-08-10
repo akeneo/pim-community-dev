@@ -15,8 +15,8 @@ namespace Akeneo\Platform\TailoredExport\Application\Query\Selection\Enabled;
 
 use Akeneo\Platform\TailoredExport\Application\Query\Selection\SelectionHandlerInterface;
 use Akeneo\Platform\TailoredExport\Application\Query\Selection\SelectionInterface;
-use Akeneo\Platform\TailoredExport\Domain\SourceValue\EnabledValue;
-use Akeneo\Platform\TailoredExport\Domain\SourceValueInterface;
+use Akeneo\Platform\TailoredExport\Domain\Model\SourceValue\EnabledValue;
+use Akeneo\Platform\TailoredExport\Domain\Model\SourceValue\SourceValueInterface;
 
 class EnabledSelectionHandler implements SelectionHandlerInterface
 {

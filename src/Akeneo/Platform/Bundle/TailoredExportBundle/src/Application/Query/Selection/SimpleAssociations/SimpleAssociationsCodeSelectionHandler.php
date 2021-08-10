@@ -15,8 +15,8 @@ namespace Akeneo\Platform\TailoredExport\Application\Query\Selection\SimpleAssoc
 
 use Akeneo\Platform\TailoredExport\Application\Query\Selection\SelectionHandlerInterface;
 use Akeneo\Platform\TailoredExport\Application\Query\Selection\SelectionInterface;
-use Akeneo\Platform\TailoredExport\Domain\SourceValue\SimpleAssociationsValue;
-use Akeneo\Platform\TailoredExport\Domain\SourceValueInterface;
+use Akeneo\Platform\TailoredExport\Domain\Model\SourceValue\SimpleAssociationsValue;
+use Akeneo\Platform\TailoredExport\Domain\Model\SourceValue\SourceValueInterface;
 
 class SimpleAssociationsCodeSelectionHandler implements SelectionHandlerInterface
 {

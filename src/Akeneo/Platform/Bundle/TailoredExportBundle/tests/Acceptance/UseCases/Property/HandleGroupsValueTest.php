@@ -17,9 +17,9 @@ use Akeneo\Platform\TailoredExport\Application\Query\Operation\DefaultValueOpera
 use Akeneo\Platform\TailoredExport\Application\Query\Selection\Groups\GroupsCodeSelection;
 use Akeneo\Platform\TailoredExport\Application\Query\Selection\Groups\GroupsLabelSelection;
 use Akeneo\Platform\TailoredExport\Application\Query\Selection\SelectionInterface;
-use Akeneo\Platform\TailoredExport\Domain\SourceValue\GroupsValue;
-use Akeneo\Platform\TailoredExport\Domain\SourceValue\NullValue;
-use Akeneo\Platform\TailoredExport\Domain\SourceValueInterface;
+use Akeneo\Platform\TailoredExport\Domain\Model\SourceValue\GroupsValue;
+use Akeneo\Platform\TailoredExport\Domain\Model\SourceValue\NullValue;
+use Akeneo\Platform\TailoredExport\Domain\Model\SourceValue\SourceValueInterface;
 use Akeneo\Platform\TailoredExport\Test\Acceptance\FakeServices\Group\InMemoryFindGroupLabels;
 use PHPUnit\Framework\Assert;
 

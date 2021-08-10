@@ -13,8 +13,6 @@ declare(strict_types=1);
 
 namespace Akeneo\Platform\TailoredExport\Application\Query\Selection\Date;
 
-use Akeneo\Platform\TailoredExport\Domain\DateFormat;
-
 final class DateSelection implements DateSelectionInterface
 {
     private string $format;

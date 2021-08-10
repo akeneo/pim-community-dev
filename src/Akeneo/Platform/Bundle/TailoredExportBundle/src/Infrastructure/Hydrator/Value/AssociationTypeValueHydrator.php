@@ -17,10 +17,10 @@ use Akeneo\Pim\Enrichment\Component\Product\Model\GroupInterface;
 use Akeneo\Pim\Enrichment\Component\Product\Model\ProductInterface;
 use Akeneo\Pim\Enrichment\Component\Product\Model\ProductModelInterface;
 use Akeneo\Platform\TailoredExport\Application\Query\Source\AssociationTypeSource;
-use Akeneo\Platform\TailoredExport\Domain\SourceValue\QuantifiedAssociation;
-use Akeneo\Platform\TailoredExport\Domain\SourceValue\QuantifiedAssociationsValue;
-use Akeneo\Platform\TailoredExport\Domain\SourceValue\SimpleAssociationsValue;
-use Akeneo\Platform\TailoredExport\Domain\SourceValueInterface;
+use Akeneo\Platform\TailoredExport\Domain\Model\SourceValue\QuantifiedAssociation;
+use Akeneo\Platform\TailoredExport\Domain\Model\SourceValue\QuantifiedAssociationsValue;
+use Akeneo\Platform\TailoredExport\Domain\Model\SourceValue\SimpleAssociationsValue;
+use Akeneo\Platform\TailoredExport\Domain\Model\SourceValue\SourceValueInterface;
 
 final class AssociationTypeValueHydrator
 {

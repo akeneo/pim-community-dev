@@ -15,9 +15,9 @@ namespace Specification\Akeneo\Platform\TailoredExport\Application\Query\Selecti
 
 use Akeneo\Platform\TailoredExport\Application\Query\Selection\Boolean\BooleanSelection;
 use Akeneo\Platform\TailoredExport\Application\Query\Selection\ReferenceEntityCollection\ReferenceEntityCollectionLabelSelection;
+use Akeneo\Platform\TailoredExport\Domain\Model\SourceValue\BooleanValue;
+use Akeneo\Platform\TailoredExport\Domain\Model\SourceValue\ReferenceEntityCollectionValue;
 use Akeneo\Platform\TailoredExport\Domain\Query\FindRecordLabelsInterface;
-use Akeneo\Platform\TailoredExport\Domain\SourceValue\BooleanValue;
-use Akeneo\Platform\TailoredExport\Domain\SourceValue\ReferenceEntityCollectionValue;
 use PhpSpec\ObjectBehavior;
 
 class ReferenceEntityCollectionLabelSelectionHandlerSpec extends ObjectBehavior

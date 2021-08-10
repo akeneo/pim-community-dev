@@ -15,8 +15,8 @@ namespace Akeneo\Platform\TailoredExport\Test\Acceptance\UseCases\Attribute;
 
 use Akeneo\Platform\TailoredExport\Application\Query\Selection\Null\NullSelection;
 use Akeneo\Platform\TailoredExport\Application\Query\Selection\SelectionInterface;
-use Akeneo\Platform\TailoredExport\Domain\SourceValue\NullValue;
-use Akeneo\Platform\TailoredExport\Domain\SourceValueInterface;
+use Akeneo\Platform\TailoredExport\Domain\Model\SourceValue\NullValue;
+use Akeneo\Platform\TailoredExport\Domain\Model\SourceValue\SourceValueInterface;
 use PHPUnit\Framework\Assert;
 
 final class HandleNullValueTest extends AttributeTestCase

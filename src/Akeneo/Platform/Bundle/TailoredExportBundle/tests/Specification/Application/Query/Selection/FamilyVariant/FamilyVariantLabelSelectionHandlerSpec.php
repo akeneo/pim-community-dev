@@ -15,9 +15,9 @@ namespace Specification\Akeneo\Platform\TailoredExport\Application\Query\Selecti
 
 use Akeneo\Platform\TailoredExport\Application\Query\Selection\Boolean\BooleanSelection;
 use Akeneo\Platform\TailoredExport\Application\Query\Selection\FamilyVariant\FamilyVariantLabelSelection;
+use Akeneo\Platform\TailoredExport\Domain\Model\SourceValue\BooleanValue;
+use Akeneo\Platform\TailoredExport\Domain\Model\SourceValue\FamilyVariantValue;
 use Akeneo\Platform\TailoredExport\Domain\Query\FindFamilyVariantLabelInterface;
-use Akeneo\Platform\TailoredExport\Domain\SourceValue\BooleanValue;
-use Akeneo\Platform\TailoredExport\Domain\SourceValue\FamilyVariantValue;
 use PhpSpec\ObjectBehavior;
 
 class FamilyVariantLabelSelectionHandlerSpec extends ObjectBehavior

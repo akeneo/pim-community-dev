@@ -18,9 +18,9 @@ use Akeneo\Platform\TailoredExport\Application\Query\Selection\Measurement\Measu
 use Akeneo\Platform\TailoredExport\Application\Query\Selection\Measurement\MeasurementUnitLabelSelection;
 use Akeneo\Platform\TailoredExport\Application\Query\Selection\Measurement\MeasurementValueSelection;
 use Akeneo\Platform\TailoredExport\Application\Query\Selection\SelectionInterface;
-use Akeneo\Platform\TailoredExport\Domain\SourceValue\MeasurementValue;
-use Akeneo\Platform\TailoredExport\Domain\SourceValue\NullValue;
-use Akeneo\Platform\TailoredExport\Domain\SourceValueInterface;
+use Akeneo\Platform\TailoredExport\Domain\Model\SourceValue\MeasurementValue;
+use Akeneo\Platform\TailoredExport\Domain\Model\SourceValue\NullValue;
+use Akeneo\Platform\TailoredExport\Domain\Model\SourceValue\SourceValueInterface;
 use Akeneo\Platform\TailoredExport\Test\Acceptance\FakeServices\Measurement\InMemoryFindUnitLabel;
 use PHPUnit\Framework\Assert;
 

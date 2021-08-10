@@ -15,9 +15,9 @@ namespace Specification\Akeneo\Platform\TailoredExport\Application\Query\Selecti
 
 use Akeneo\Platform\TailoredExport\Application\Query\Selection\Boolean\BooleanSelection;
 use Akeneo\Platform\TailoredExport\Application\Query\Selection\Parent\ParentLabelSelection;
+use Akeneo\Platform\TailoredExport\Domain\Model\SourceValue\BooleanValue;
+use Akeneo\Platform\TailoredExport\Domain\Model\SourceValue\ParentValue;
 use Akeneo\Platform\TailoredExport\Domain\Query\FindProductModelLabelsInterface;
-use Akeneo\Platform\TailoredExport\Domain\SourceValue\BooleanValue;
-use Akeneo\Platform\TailoredExport\Domain\SourceValue\ParentValue;
 use PhpSpec\ObjectBehavior;
 
 class ParentLabelSelectionHandlerSpec extends ObjectBehavior

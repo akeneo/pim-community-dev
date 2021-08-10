@@ -16,8 +16,8 @@ namespace Akeneo\Platform\TailoredExport\Test\Acceptance\UseCases\Property;
 use Akeneo\Platform\TailoredExport\Application\Query\Operation\ReplacementOperation;
 use Akeneo\Platform\TailoredExport\Application\Query\Selection\Enabled\EnabledSelection;
 use Akeneo\Platform\TailoredExport\Application\Query\Selection\SelectionInterface;
-use Akeneo\Platform\TailoredExport\Domain\SourceValue\EnabledValue;
-use Akeneo\Platform\TailoredExport\Domain\SourceValueInterface;
+use Akeneo\Platform\TailoredExport\Domain\Model\SourceValue\EnabledValue;
+use Akeneo\Platform\TailoredExport\Domain\Model\SourceValue\SourceValueInterface;
 use PHPUnit\Framework\Assert;
 
 final class HandleEnabledValueTest extends PropertyTestCase

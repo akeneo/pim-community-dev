@@ -15,9 +15,9 @@ namespace Akeneo\Platform\TailoredExport\Application\Query\Selection\PriceCollec
 
 use Akeneo\Platform\TailoredExport\Application\Query\Selection\SelectionHandlerInterface;
 use Akeneo\Platform\TailoredExport\Application\Query\Selection\SelectionInterface;
-use Akeneo\Platform\TailoredExport\Domain\SourceValue\Price;
-use Akeneo\Platform\TailoredExport\Domain\SourceValue\PriceCollectionValue;
-use Akeneo\Platform\TailoredExport\Domain\SourceValueInterface;
+use Akeneo\Platform\TailoredExport\Domain\Model\SourceValue\Price;
+use Akeneo\Platform\TailoredExport\Domain\Model\SourceValue\PriceCollectionValue;
+use Akeneo\Platform\TailoredExport\Domain\Model\SourceValue\SourceValueInterface;
 
 class PriceCollectionCurrencyCodeSelectionHandler implements SelectionHandlerInterface
 {

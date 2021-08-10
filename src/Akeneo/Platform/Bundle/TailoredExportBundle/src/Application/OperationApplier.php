@@ -15,7 +15,7 @@ namespace Akeneo\Platform\TailoredExport\Application;
 
 use Akeneo\Platform\TailoredExport\Application\OperationApplier\OperationApplierInterface;
 use Akeneo\Platform\TailoredExport\Application\Query\Operation\OperationCollection;
-use Akeneo\Platform\TailoredExport\Domain\SourceValueInterface;
+use Akeneo\Platform\TailoredExport\Domain\Model\SourceValue\SourceValueInterface;
 
 class OperationApplier
 {

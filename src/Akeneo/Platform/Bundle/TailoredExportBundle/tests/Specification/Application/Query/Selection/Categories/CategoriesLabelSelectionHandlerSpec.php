@@ -15,9 +15,9 @@ namespace Specification\Akeneo\Platform\TailoredExport\Application\Query\Selecti
 
 use Akeneo\Platform\TailoredExport\Application\Query\Selection\Boolean\BooleanSelection;
 use Akeneo\Platform\TailoredExport\Application\Query\Selection\Categories\CategoriesLabelSelection;
+use Akeneo\Platform\TailoredExport\Domain\Model\SourceValue\BooleanValue;
+use Akeneo\Platform\TailoredExport\Domain\Model\SourceValue\CategoriesValue;
 use Akeneo\Platform\TailoredExport\Domain\Query\FindCategoryLabelsInterface;
-use Akeneo\Platform\TailoredExport\Domain\SourceValue\BooleanValue;
-use Akeneo\Platform\TailoredExport\Domain\SourceValue\CategoriesValue;
 use PhpSpec\ObjectBehavior;
 
 class CategoriesLabelSelectionHandlerSpec extends ObjectBehavior

@@ -20,8 +20,8 @@ use Akeneo\Platform\TailoredExport\Application\Query\Operation\OperationCollecti
 use Akeneo\Platform\TailoredExport\Application\Query\Selection\SelectionInterface;
 use Akeneo\Platform\TailoredExport\Application\Query\Source\PropertySource;
 use Akeneo\Platform\TailoredExport\Application\Query\Source\SourceCollection;
-use Akeneo\Platform\TailoredExport\Domain\SourceValueInterface;
-use Akeneo\Platform\TailoredExport\Domain\ValueCollection;
+use Akeneo\Platform\TailoredExport\Domain\Model\SourceValue\SourceValueInterface;
+use Akeneo\Platform\TailoredExport\Domain\Model\ValueCollection;
 use Symfony\Bundle\FrameworkBundle\Test\KernelTestCase;
 
 abstract class PropertyTestCase extends KernelTestCase

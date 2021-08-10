@@ -15,8 +15,8 @@ namespace Akeneo\Platform\TailoredExport\Application\Query\Selection\Scalar;
 
 use Akeneo\Platform\TailoredExport\Application\Query\Selection\SelectionHandlerInterface;
 use Akeneo\Platform\TailoredExport\Application\Query\Selection\SelectionInterface;
-use Akeneo\Platform\TailoredExport\Domain\SourceValue\StringValue;
-use Akeneo\Platform\TailoredExport\Domain\SourceValueInterface;
+use Akeneo\Platform\TailoredExport\Domain\Model\SourceValue\SourceValueInterface;
+use Akeneo\Platform\TailoredExport\Domain\Model\SourceValue\StringValue;
 
 class ScalarSelectionHandler implements SelectionHandlerInterface
 {

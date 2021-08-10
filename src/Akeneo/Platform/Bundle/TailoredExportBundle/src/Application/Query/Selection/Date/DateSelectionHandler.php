@@ -15,9 +15,8 @@ namespace Akeneo\Platform\TailoredExport\Application\Query\Selection\Date;
 
 use Akeneo\Platform\TailoredExport\Application\Query\Selection\SelectionHandlerInterface;
 use Akeneo\Platform\TailoredExport\Application\Query\Selection\SelectionInterface;
-use Akeneo\Platform\TailoredExport\Domain\DateFormat;
-use Akeneo\Platform\TailoredExport\Domain\SourceValue\DateValue;
-use Akeneo\Platform\TailoredExport\Domain\SourceValueInterface;
+use Akeneo\Platform\TailoredExport\Domain\Model\SourceValue\DateValue;
+use Akeneo\Platform\TailoredExport\Domain\Model\SourceValue\SourceValueInterface;
 
 class DateSelectionHandler implements SelectionHandlerInterface
 {

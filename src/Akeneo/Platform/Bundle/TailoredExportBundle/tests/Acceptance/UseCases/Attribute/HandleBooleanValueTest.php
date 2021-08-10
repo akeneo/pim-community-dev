@@ -17,9 +17,9 @@ use Akeneo\Platform\TailoredExport\Application\Query\Operation\DefaultValueOpera
 use Akeneo\Platform\TailoredExport\Application\Query\Operation\ReplacementOperation;
 use Akeneo\Platform\TailoredExport\Application\Query\Selection\Boolean\BooleanSelection;
 use Akeneo\Platform\TailoredExport\Application\Query\Selection\SelectionInterface;
-use Akeneo\Platform\TailoredExport\Domain\SourceValue\BooleanValue;
-use Akeneo\Platform\TailoredExport\Domain\SourceValue\NullValue;
-use Akeneo\Platform\TailoredExport\Domain\SourceValueInterface;
+use Akeneo\Platform\TailoredExport\Domain\Model\SourceValue\BooleanValue;
+use Akeneo\Platform\TailoredExport\Domain\Model\SourceValue\NullValue;
+use Akeneo\Platform\TailoredExport\Domain\Model\SourceValue\SourceValueInterface;
 use PHPUnit\Framework\Assert;
 
 final class HandleBooleanValueTest extends AttributeTestCase

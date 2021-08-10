@@ -18,7 +18,7 @@ use Akeneo\Platform\TailoredExport\Application\Query\Column\ColumnCollection;
 use Akeneo\Platform\TailoredExport\Application\Query\Source\AssociationTypeSource;
 use Akeneo\Platform\TailoredExport\Application\Query\Source\AttributeSource;
 use Akeneo\Platform\TailoredExport\Application\Query\Source\PropertySource;
-use Akeneo\Platform\TailoredExport\Domain\ValueCollection;
+use Akeneo\Platform\TailoredExport\Domain\Model\ValueCollection;
 
 class ValueCollectionHydrator
 {

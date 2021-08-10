@@ -22,9 +22,9 @@ use Akeneo\Platform\TailoredExport\Application\Query\Selection\Enabled\EnabledSe
 use Akeneo\Platform\TailoredExport\Application\Query\Source\AttributeSource;
 use Akeneo\Platform\TailoredExport\Application\Query\Source\PropertySource;
 use Akeneo\Platform\TailoredExport\Application\Query\Source\SourceCollection;
-use Akeneo\Platform\TailoredExport\Domain\SourceValue\BooleanValue;
-use Akeneo\Platform\TailoredExport\Domain\SourceValue\EnabledValue;
-use Akeneo\Platform\TailoredExport\Domain\ValueCollection;
+use Akeneo\Platform\TailoredExport\Domain\Model\SourceValue\BooleanValue;
+use Akeneo\Platform\TailoredExport\Domain\Model\SourceValue\EnabledValue;
+use Akeneo\Platform\TailoredExport\Domain\Model\ValueCollection;
 use PHPUnit\Framework\Assert;
 use Symfony\Bundle\FrameworkBundle\Test\KernelTestCase;
 

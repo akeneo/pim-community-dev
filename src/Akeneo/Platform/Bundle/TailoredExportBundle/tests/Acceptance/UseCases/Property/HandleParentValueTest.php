@@ -16,8 +16,8 @@ namespace Akeneo\Platform\TailoredExport\Test\Acceptance\UseCases\Property;
 use Akeneo\Platform\TailoredExport\Application\Query\Selection\Parent\ParentCodeSelection;
 use Akeneo\Platform\TailoredExport\Application\Query\Selection\Parent\ParentLabelSelection;
 use Akeneo\Platform\TailoredExport\Application\Query\Selection\SelectionInterface;
-use Akeneo\Platform\TailoredExport\Domain\SourceValue\ParentValue;
-use Akeneo\Platform\TailoredExport\Domain\SourceValueInterface;
+use Akeneo\Platform\TailoredExport\Domain\Model\SourceValue\ParentValue;
+use Akeneo\Platform\TailoredExport\Domain\Model\SourceValue\SourceValueInterface;
 use Akeneo\Platform\TailoredExport\Test\Acceptance\FakeServices\ProductModel\InMemoryFindProductModelLabels;
 use PHPUnit\Framework\Assert;
 

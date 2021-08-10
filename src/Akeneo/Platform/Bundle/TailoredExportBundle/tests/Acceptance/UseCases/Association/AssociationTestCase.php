@@ -21,8 +21,8 @@ use Akeneo\Platform\TailoredExport\Application\Query\Selection\SelectionInterfac
 use Akeneo\Platform\TailoredExport\Application\Query\Source\AssociationTypeSource;
 use Akeneo\Platform\TailoredExport\Application\Query\Source\PropertySource;
 use Akeneo\Platform\TailoredExport\Application\Query\Source\SourceCollection;
-use Akeneo\Platform\TailoredExport\Domain\SourceValueInterface;
-use Akeneo\Platform\TailoredExport\Domain\ValueCollection;
+use Akeneo\Platform\TailoredExport\Domain\Model\SourceValue\SourceValueInterface;
+use Akeneo\Platform\TailoredExport\Domain\Model\ValueCollection;
 use Symfony\Bundle\FrameworkBundle\Test\KernelTestCase;
 
 abstract class AssociationTestCase extends KernelTestCase

@@ -13,7 +13,7 @@ declare(strict_types=1);
 
 namespace Akeneo\Platform\TailoredExport\Infrastructure\Connector\Processor;
 
-use Akeneo\Platform\TailoredExport\Domain\MediaToExport;
+use Akeneo\Platform\TailoredExport\Application\MediaToExport;
 
 class ProcessedTailoredExport
 {

@@ -16,7 +16,7 @@ namespace Akeneo\Platform\TailoredExport\Application;
 use Akeneo\Platform\TailoredExport\Application\Query\Column\Column;
 use Akeneo\Platform\TailoredExport\Application\Query\Column\ColumnCollection;
 use Akeneo\Platform\TailoredExport\Application\Query\Selection\SelectionHandler;
-use Akeneo\Platform\TailoredExport\Domain\ValueCollection;
+use Akeneo\Platform\TailoredExport\Domain\Model\ValueCollection;
 
 class ProductMapper
 {

@@ -15,9 +15,9 @@ namespace Specification\Akeneo\Platform\TailoredExport\Application\Query\Selecti
 
 use Akeneo\Platform\TailoredExport\Application\Query\Selection\AssetCollection\AssetCollectionLabelSelection;
 use Akeneo\Platform\TailoredExport\Application\Query\Selection\Boolean\BooleanSelection;
+use Akeneo\Platform\TailoredExport\Domain\Model\SourceValue\AssetCollectionValue;
+use Akeneo\Platform\TailoredExport\Domain\Model\SourceValue\BooleanValue;
 use Akeneo\Platform\TailoredExport\Domain\Query\FindAssetLabelsInterface;
-use Akeneo\Platform\TailoredExport\Domain\SourceValue\AssetCollectionValue;
-use Akeneo\Platform\TailoredExport\Domain\SourceValue\BooleanValue;
 use PhpSpec\ObjectBehavior;
 
 class AssetCollectionLabelSelectionHandlerSpec extends ObjectBehavior

@@ -18,9 +18,9 @@ use Akeneo\Platform\TailoredExport\Application\Query\Selection\File\FileKeySelec
 use Akeneo\Platform\TailoredExport\Application\Query\Selection\File\FileNameSelection;
 use Akeneo\Platform\TailoredExport\Application\Query\Selection\File\FilePathSelection;
 use Akeneo\Platform\TailoredExport\Application\Query\Selection\SelectionInterface;
-use Akeneo\Platform\TailoredExport\Domain\SourceValue\FileValue;
-use Akeneo\Platform\TailoredExport\Domain\SourceValue\NullValue;
-use Akeneo\Platform\TailoredExport\Domain\SourceValueInterface;
+use Akeneo\Platform\TailoredExport\Domain\Model\SourceValue\FileValue;
+use Akeneo\Platform\TailoredExport\Domain\Model\SourceValue\NullValue;
+use Akeneo\Platform\TailoredExport\Domain\Model\SourceValue\SourceValueInterface;
 use PHPUnit\Framework\Assert;
 
 final class HandleFileValueTest extends AttributeTestCase

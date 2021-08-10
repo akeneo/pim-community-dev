@@ -15,9 +15,9 @@ namespace Akeneo\Platform\TailoredExport\Application\Query\Selection\Measurement
 
 use Akeneo\Platform\TailoredExport\Application\Query\Selection\SelectionHandlerInterface;
 use Akeneo\Platform\TailoredExport\Application\Query\Selection\SelectionInterface;
+use Akeneo\Platform\TailoredExport\Domain\Model\SourceValue\MeasurementValue;
+use Akeneo\Platform\TailoredExport\Domain\Model\SourceValue\SourceValueInterface;
 use Akeneo\Platform\TailoredExport\Domain\Query\FindUnitLabelInterface;
-use Akeneo\Platform\TailoredExport\Domain\SourceValue\MeasurementValue;
-use Akeneo\Platform\TailoredExport\Domain\SourceValueInterface;
 
 class MeasurementUnitLabelSelectionHandler implements SelectionHandlerInterface
 {

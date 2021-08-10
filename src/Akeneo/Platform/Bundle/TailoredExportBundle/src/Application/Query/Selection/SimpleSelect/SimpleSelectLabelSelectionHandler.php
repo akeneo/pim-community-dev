@@ -15,9 +15,9 @@ namespace Akeneo\Platform\TailoredExport\Application\Query\Selection\SimpleSelec
 
 use Akeneo\Platform\TailoredExport\Application\Query\Selection\SelectionHandlerInterface;
 use Akeneo\Platform\TailoredExport\Application\Query\Selection\SelectionInterface;
+use Akeneo\Platform\TailoredExport\Domain\Model\SourceValue\SimpleSelectValue;
+use Akeneo\Platform\TailoredExport\Domain\Model\SourceValue\SourceValueInterface;
 use Akeneo\Platform\TailoredExport\Domain\Query\FindAttributeOptionLabelsInterface;
-use Akeneo\Platform\TailoredExport\Domain\SourceValue\SimpleSelectValue;
-use Akeneo\Platform\TailoredExport\Domain\SourceValueInterface;
 
 class SimpleSelectLabelSelectionHandler implements SelectionHandlerInterface
 {

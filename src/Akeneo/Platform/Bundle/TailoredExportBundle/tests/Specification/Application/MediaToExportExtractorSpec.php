@@ -15,6 +15,7 @@ namespace Specification\Akeneo\Platform\TailoredExport\Application;
 
 use Akeneo\AssetManager\Infrastructure\PublicApi\Enrich\GetMainMediaFileInfoCollectionInterface;
 use Akeneo\AssetManager\Infrastructure\PublicApi\Enrich\MediaFileInfo;
+use Akeneo\Platform\TailoredExport\Application\MediaToExport;
 use Akeneo\Platform\TailoredExport\Application\MediaToExportExtractor;
 use Akeneo\Platform\TailoredExport\Application\Query\Column\Column;
 use Akeneo\Platform\TailoredExport\Application\Query\Column\ColumnCollection;
@@ -23,10 +24,9 @@ use Akeneo\Platform\TailoredExport\Application\Query\Selection\AssetCollection\A
 use Akeneo\Platform\TailoredExport\Application\Query\Selection\File\FilePathSelection;
 use Akeneo\Platform\TailoredExport\Application\Query\Source\AttributeSource;
 use Akeneo\Platform\TailoredExport\Application\Query\Source\SourceCollection;
-use Akeneo\Platform\TailoredExport\Domain\MediaToExport;
-use Akeneo\Platform\TailoredExport\Domain\SourceValue\AssetCollectionValue;
-use Akeneo\Platform\TailoredExport\Domain\SourceValue\FileValue;
-use Akeneo\Platform\TailoredExport\Domain\ValueCollection;
+use Akeneo\Platform\TailoredExport\Domain\Model\SourceValue\AssetCollectionValue;
+use Akeneo\Platform\TailoredExport\Domain\Model\SourceValue\FileValue;
+use Akeneo\Platform\TailoredExport\Domain\Model\ValueCollection;
 use PhpSpec\ObjectBehavior;
 
 class MediaToExportExtractorSpec extends ObjectBehavior

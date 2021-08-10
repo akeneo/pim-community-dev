@@ -15,10 +15,10 @@ namespace Akeneo\Platform\TailoredExport\Application\Query\Selection\QuantifiedA
 
 use Akeneo\Platform\TailoredExport\Application\Query\Selection\SelectionHandlerInterface;
 use Akeneo\Platform\TailoredExport\Application\Query\Selection\SelectionInterface;
+use Akeneo\Platform\TailoredExport\Domain\Model\SourceValue\QuantifiedAssociationsValue;
+use Akeneo\Platform\TailoredExport\Domain\Model\SourceValue\SourceValueInterface;
 use Akeneo\Platform\TailoredExport\Domain\Query\FindProductLabelsInterface;
 use Akeneo\Platform\TailoredExport\Domain\Query\FindProductModelLabelsInterface;
-use Akeneo\Platform\TailoredExport\Domain\SourceValue\QuantifiedAssociationsValue;
-use Akeneo\Platform\TailoredExport\Domain\SourceValueInterface;
 
 class QuantifiedAssociationsLabelSelectionHandler implements SelectionHandlerInterface
 {

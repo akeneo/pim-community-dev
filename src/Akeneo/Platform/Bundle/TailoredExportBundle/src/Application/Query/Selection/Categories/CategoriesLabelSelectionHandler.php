@@ -15,9 +15,9 @@ namespace Akeneo\Platform\TailoredExport\Application\Query\Selection\Categories;
 
 use Akeneo\Platform\TailoredExport\Application\Query\Selection\SelectionHandlerInterface;
 use Akeneo\Platform\TailoredExport\Application\Query\Selection\SelectionInterface;
+use Akeneo\Platform\TailoredExport\Domain\Model\SourceValue\CategoriesValue;
+use Akeneo\Platform\TailoredExport\Domain\Model\SourceValue\SourceValueInterface;
 use Akeneo\Platform\TailoredExport\Domain\Query\FindCategoryLabelsInterface;
-use Akeneo\Platform\TailoredExport\Domain\SourceValue\CategoriesValue;
-use Akeneo\Platform\TailoredExport\Domain\SourceValueInterface;
 
 class CategoriesLabelSelectionHandler implements SelectionHandlerInterface
 {

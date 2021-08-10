@@ -15,9 +15,9 @@ namespace Akeneo\Platform\TailoredExport\Application\Query\Selection\Family;
 
 use Akeneo\Platform\TailoredExport\Application\Query\Selection\SelectionHandlerInterface;
 use Akeneo\Platform\TailoredExport\Application\Query\Selection\SelectionInterface;
+use Akeneo\Platform\TailoredExport\Domain\Model\SourceValue\FamilyValue;
+use Akeneo\Platform\TailoredExport\Domain\Model\SourceValue\SourceValueInterface;
 use Akeneo\Platform\TailoredExport\Domain\Query\FindFamilyLabelInterface;
-use Akeneo\Platform\TailoredExport\Domain\SourceValue\FamilyValue;
-use Akeneo\Platform\TailoredExport\Domain\SourceValueInterface;
 
 class FamilyLabelSelectionHandler implements SelectionHandlerInterface
 {

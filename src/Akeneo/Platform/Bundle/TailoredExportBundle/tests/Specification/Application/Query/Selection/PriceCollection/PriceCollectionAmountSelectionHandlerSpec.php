@@ -15,9 +15,9 @@ namespace Specification\Akeneo\Platform\TailoredExport\Application\Query\Selecti
 
 use Akeneo\Platform\TailoredExport\Application\Query\Selection\Boolean\BooleanSelection;
 use Akeneo\Platform\TailoredExport\Application\Query\Selection\PriceCollection\PriceCollectionAmountSelection;
-use Akeneo\Platform\TailoredExport\Domain\SourceValue\BooleanValue;
-use Akeneo\Platform\TailoredExport\Domain\SourceValue\Price;
-use Akeneo\Platform\TailoredExport\Domain\SourceValue\PriceCollectionValue;
+use Akeneo\Platform\TailoredExport\Domain\Model\SourceValue\BooleanValue;
+use Akeneo\Platform\TailoredExport\Domain\Model\SourceValue\Price;
+use Akeneo\Platform\TailoredExport\Domain\Model\SourceValue\PriceCollectionValue;
 use PhpSpec\ObjectBehavior;
 
 class PriceCollectionAmountSelectionHandlerSpec extends ObjectBehavior
