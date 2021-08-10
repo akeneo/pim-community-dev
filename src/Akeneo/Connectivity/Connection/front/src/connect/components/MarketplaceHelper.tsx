@@ -19,8 +19,8 @@ const MarketplaceHelper: FC<Props> = ({count}) => {
     }, [fetchMarketplaceUrl]);
 
     const titleTranslationKey = featureFlag.isEnabled('marketplace_activate')
-        ? 'akeneo_connectivity.connection.connect.marketplace.helper.title_with_apps'
-        : 'akeneo_connectivity.connection.connect.marketplace.helper.title';
+        ? 'akeneo_connectivity.connection.connect.marketplace.helper.title'
+        : 'akeneo_connectivity.connection.connect.marketplace.helper.title_without_apps';
 
     const title = (
         <div
