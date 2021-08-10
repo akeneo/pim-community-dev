@@ -26,10 +26,11 @@ const AttributeOptionForm: FC<AttributeOptionFormProps> = ({option, locale, onUp
   return (
     <Container>
       <Field label={locale.label} locale={locale.code}>
-        <TextInput
+        <TextInputStyled
           ref={inputRef}
           value={option.optionValues[locale.code].value}
           onChange={newLabel => onUpdateOptionLabel(newLabel, locale.code)}
+          role="attribute-option-label"
         />
       </Field>
     </Container>
@@ -38,6 +39,10 @@ const AttributeOptionForm: FC<AttributeOptionFormProps> = ({option, locale, onUp
 
 const Container = styled.div`
   margin-bottom: 20px;
+`;
+
+const TextInputStyled = styled(TextInput)`
+  padding: 0 9px;
 `;
 
 export default AttributeOptionForm;

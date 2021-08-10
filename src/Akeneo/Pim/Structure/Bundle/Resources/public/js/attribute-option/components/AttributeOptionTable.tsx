@@ -34,8 +34,7 @@ const AttributeOptionTable = ({
   const {attributeOptions, extraData} = useAttributeOptionsListState();
   const {sortedAttributeOptions, setSortedAttributeOptions} = useSortedAttributeOptions(
     attributeOptions,
-    attributeContext.autoSortOptions,
-    manuallySortAttributeOptions
+    attributeContext.autoSortOptions
   );
   const [filteredAttributeOptions, setFilteredAttributeOptions] =
     useState<AttributeOption[] | null>(sortedAttributeOptions);
@@ -131,7 +130,12 @@ const AttributeOptionTable = ({
     <div className="AknSubsection AknAttributeOption-list">
       <div className="AknSubsection-title AknSubsection-title--glued tabsection-title">
         <span>{translate('pim_enrich.entity.attribute_option.module.edit.options_codes')}</span>
-        <Button ghost level="tertiary" onClick={() => displayNewOptionPlaceholder()}>
+        <Button
+          ghost
+          level="tertiary"
+          onClick={() => displayNewOptionPlaceholder()}
+          role="add-new-attribute-option-button"
+        >
           {translate('pim_enrich.entity.product.module.attribute.add_option')}
         </Button>
       </div>
@@ -143,80 +147,85 @@ const AttributeOptionTable = ({
         onSearchChange={onSearch}
       />
 
-      {filteredAttributeOptionsCount === 0 && attributeOptionsCount > 0 && <NoResultOnSearch />}
+      <div role="attribute-options-list">
+        {filteredAttributeOptionsCount === 0 && attributeOptionsCount > 0 && <NoResultOnSearch />}
 
-      {filteredAttributeOptionsCount > 0 && filteredAttributeOptions !== null && (
-        <>
-          <AutoOptionSorting readOnly={autoSortingReadOnly} />
+        {filteredAttributeOptionsCount > 0 && filteredAttributeOptions !== null && (
+          <>
+            <AutoOptionSorting readOnly={autoSortingReadOnly} />
 
-          <SpacedTable isDragAndDroppable={isDraggable} onReorder={newIndices => reorderAttributeOptions(newIndices)}>
-            <Table.Header sticky={44}>
-              {!isDraggable && <Table.HeaderCell>&nbsp;</Table.HeaderCell>}
-              <Table.HeaderCell>{translate('pim_common.label')}</Table.HeaderCell>
-              <Table.HeaderCell>{translate('pim_common.code')}</Table.HeaderCell>
-              <Table.HeaderCell>&nbsp;</Table.HeaderCell>
-              <Table.HeaderCell>&nbsp;</Table.HeaderCell>
-            </Table.Header>
-            <Table.Body>
-              {filteredAttributeOptions.map((attributeOption: AttributeOption, index: number) => {
-                const deleteOption = () => {
-                  setShowDeleteConfirmationModal(false);
-                  deleteAttributeOption(attributeOption.id);
-                };
+            <SpacedTable isDragAndDroppable={isDraggable} onReorder={newIndices => reorderAttributeOptions(newIndices)}>
+              <Table.Header sticky={44}>
+                {!isDraggable && <Table.HeaderCell>&nbsp;</Table.HeaderCell>}
+                <Table.HeaderCell>{translate('pim_common.label')}</Table.HeaderCell>
+                <Table.HeaderCell>{translate('pim_common.code')}</Table.HeaderCell>
+                <Table.HeaderCell>&nbsp;</Table.HeaderCell>
+                <Table.HeaderCell>&nbsp;</Table.HeaderCell>
+              </Table.Header>
+              <Table.Body>
+                {filteredAttributeOptions.map((attributeOption: AttributeOption, index: number) => {
+                  const deleteOption = () => {
+                    setShowDeleteConfirmationModal(false);
+                    deleteAttributeOption(attributeOption.id);
+                  };
 
-                return (
-                  <TableRow
-                    isDraggable={isDraggable}
-                    isSelected={selectedOptionId === attributeOption.id}
-                    onClick={() => onSelectItem(attributeOption.id)}
-                    key={`${attributeOption.code}${index}`}
-                  >
-                    {!isDraggable && (
-                      <TableCellNoDraggable>
-                        <HandleContainer>
-                          <RowIcon size={16} />
-                        </HandleContainer>
-                      </TableCellNoDraggable>
-                    )}
-                    <TableCellLabel rowTitle={true}>
-                      {attributeOption.optionValues[locale] && attributeOption.optionValues[locale].value
-                        ? attributeOption.optionValues[locale].value
-                        : `[${attributeOption.code}]`}
-                    </TableCellLabel>
-                    <Table.Cell>{attributeOption.code}</Table.Cell>
-                    <Table.Cell>{extraData[attributeOption.code]}</Table.Cell>
-                    <TableActionCell>
-                      <IconButton
-                        icon={<CloseIcon />}
-                        onClick={(event: any) => {
-                          event.preventDefault();
-                          event.stopPropagation();
-                          setShowDeleteConfirmationModal(true);
-                        }}
-                        title={translate('pim_common.delete')}
-                        ghost="borderless"
-                        level="tertiary"
-                      />
-
-                      {showDeleteConfirmationModal && (
-                        <DeleteConfirmationModal
-                          attributeOptionCode={attributeOption.code}
-                          confirmDelete={deleteOption}
-                          cancelDelete={() => setShowDeleteConfirmationModal(false)}
-                        />
+                  return (
+                    <TableRow
+                      role="attribute-option-item"
+                      isDraggable={isDraggable}
+                      isSelected={selectedOptionId === attributeOption.id}
+                      onClick={() => onSelectItem(attributeOption.id)}
+                      key={`${attributeOption.code}${index}`}
+                      data-testid={selectedOptionId === attributeOption.id ? 'is-selected' : 'is-not-selected'}
+                    >
+                      {!isDraggable && (
+                        <TableCellNoDraggable>
+                          <HandleContainer>
+                            <RowIcon size={16} />
+                          </HandleContainer>
+                        </TableCellNoDraggable>
                       )}
-                    </TableActionCell>
-                  </TableRow>
-                );
-              })}
+                      <TableCellLabel role="attribute-option-item-label" rowTitle={true}>
+                        {attributeOption.optionValues[locale] && attributeOption.optionValues[locale].value
+                          ? attributeOption.optionValues[locale].value
+                          : `[${attributeOption.code}]`}
+                      </TableCellLabel>
+                      <Table.Cell role="attribute-option-item-code">{attributeOption.code}</Table.Cell>
+                      <Table.Cell>{extraData[attributeOption.code]}</Table.Cell>
+                      <TableActionCell>
+                        <IconButton
+                          icon={<CloseIcon />}
+                          onClick={(event: any) => {
+                            event.preventDefault();
+                            event.stopPropagation();
+                            setShowDeleteConfirmationModal(true);
+                          }}
+                          title={translate('pim_common.delete')}
+                          ghost="borderless"
+                          level="tertiary"
+                          role="attribute-option-delete-button"
+                        />
 
-              {showNewOptionPlaceholder && (
-                <NewOptionPlaceholder cancelNewOption={cancelNewOption} isDraggable={isDraggable} />
-              )}
-            </Table.Body>
-          </SpacedTable>
-        </>
-      )}
+                        {showDeleteConfirmationModal && (
+                          <DeleteConfirmationModal
+                            attributeOptionCode={attributeOption.code}
+                            confirmDelete={deleteOption}
+                            cancelDelete={() => setShowDeleteConfirmationModal(false)}
+                          />
+                        )}
+                      </TableActionCell>
+                    </TableRow>
+                  );
+                })}
+
+                {showNewOptionPlaceholder && (
+                  <NewOptionPlaceholder cancelNewOption={cancelNewOption} isDraggable={isDraggable} />
+                )}
+              </Table.Body>
+            </SpacedTable>
+          </>
+        )}
+      </div>
     </div>
   );
 };

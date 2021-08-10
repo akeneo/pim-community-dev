@@ -13,7 +13,7 @@ const AutoOptionSorting = ({readOnly}: AutoOptionSortingProps) => {
   const attributeContext = useAttributeContext();
 
   return (
-    <FieldContainer>
+    <FieldContainer role="toggle-sort-attribute-option">
       <Field label={translate('pim_enrich.entity.attribute.property.auto_option_sorting')}>
         <BooleanInput
           value={attributeContext.autoSortOptions ?? false}
