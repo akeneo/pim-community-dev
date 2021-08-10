@@ -101,7 +101,12 @@ const CategoryTreesDataGrid: FC<Props> = ({trees, refreshCategoryTrees}) => {
 
   return (
     <>
-      <StyledSearch searchValue={searchString} onSearchChange={onSearch} placeholder={translate('pim_common.search')}>
+      <StyledSearch
+        sticky={0}
+        searchValue={searchString}
+        onSearchChange={onSearch}
+        placeholder={translate('pim_common.search')}
+      >
         <Search.ResultCount>
           {translate('pim_common.result_count', {itemsCount: filteredTrees.length.toString()}, filteredTrees.length)}
         </Search.ResultCount>
