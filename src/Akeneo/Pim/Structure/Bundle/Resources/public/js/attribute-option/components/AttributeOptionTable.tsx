@@ -190,7 +190,7 @@ const AttributeOptionTable = ({
                           ? attributeOption.optionValues[locale].value
                           : `[${attributeOption.code}]`}
                       </TableCellLabel>
-                      <Table.Cell data-testid="attribute-option-item-code">{attributeOption.code}</Table.Cell>
+                      <Table.Cell role="attribute-option-item-code">{attributeOption.code}</Table.Cell>
                       <Table.Cell>{extraData[attributeOption.code]}</Table.Cell>
                       <TableActionCell>
                         <IconButton

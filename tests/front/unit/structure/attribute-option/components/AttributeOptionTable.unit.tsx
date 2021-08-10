@@ -64,7 +64,7 @@ describe('Attribute options table', () => {
     await renderComponent(options, false, jest.fn(), jest.fn(), jest.fn(), jest.fn(), null);
 
     const attributeOptionsLabel = getAllByTestId(container, 'attribute-option-item-label');
-    const attributeOptionsCode = getAllByTestId(container, 'attribute-option-item-code');
+    const attributeOptionsCode = getAllByRole(container, 'attribute-option-item-code');
     expect(attributeOptionsLabel.length).toBe(2);
     expect(attributeOptionsCode.length).toBe(2);
     expect(attributeOptionsLabel[0].textContent).toBe('Blue');
@@ -197,7 +197,7 @@ describe('Attribute options table', () => {
     const optionItems = queryAllByRole(container, 'attribute-option-item');
     const blueOption = optionItems[0];
 
-    const deleteButton = getByRole(blueOption, 'attribute-option-delete-button');
+    const deleteButton = getByTestId(blueOption, 'attribute-option-delete-button');
     await fireEvent.click(deleteButton);
     const deleteConfirmationModal = queryByRole(blueOption, 'attribute-option-delete-confirmation-modal');
     let cancelButtons = queryAllByRole(blueOption, 'attribute-option-confirm-cancel-button');
