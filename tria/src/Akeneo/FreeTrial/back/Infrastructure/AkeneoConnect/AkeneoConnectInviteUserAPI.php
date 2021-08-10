@@ -2,6 +2,15 @@
 
 declare(strict_types=1);
 
+/*
+ * This file is part of the Akeneo PIM Enterprise Edition.
+ *
+ * (c) 2021 Akeneo SAS (http://www.akeneo.com)
+ *
+ * For the full copyright and license information, please view the LICENSE
+ * file that was distributed with this source code.
+ */
+
 namespace Akeneo\FreeTrial\Infrastructure\AkeneoConnect;
 
 use Akeneo\FreeTrial\Domain\API\InviteUserAPI;
@@ -11,10 +20,6 @@ use Akeneo\FreeTrial\Domain\Exception\InvitationFailedException;
 use Psr\Log\LoggerInterface;
 use Symfony\Component\HttpFoundation\Response;
 
-/**
- * @copyright 2021 Akeneo SAS (http://www.akeneo.com)
- * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
- */
 class AkeneoConnectInviteUserAPI implements InviteUserAPI
 {
     public const INVITATION_ALREADY_SENT = 'invitation_already_sent';
