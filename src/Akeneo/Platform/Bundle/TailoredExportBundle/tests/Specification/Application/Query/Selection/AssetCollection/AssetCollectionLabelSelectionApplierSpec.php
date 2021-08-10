@@ -20,7 +20,7 @@ use Akeneo\Platform\TailoredExport\Domain\Model\SourceValue\BooleanValue;
 use Akeneo\Platform\TailoredExport\Domain\Query\FindAssetLabelsInterface;
 use PhpSpec\ObjectBehavior;
 
-class AssetCollectionLabelSelectionHandlerSpec extends ObjectBehavior
+class AssetCollectionLabelSelectionApplierSpec extends ObjectBehavior
 {
     public function let(FindAssetLabelsInterface $findAssetLabels)
     {

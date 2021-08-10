@@ -20,7 +20,7 @@ use Akeneo\Platform\TailoredExport\Domain\Model\SourceValue\SimpleSelectValue;
 use Akeneo\Platform\TailoredExport\Domain\Query\FindAttributeOptionLabelsInterface;
 use PhpSpec\ObjectBehavior;
 
-class SimpleSelectLabelSelectionHandlerSpec extends ObjectBehavior
+class SimpleSelectLabelSelectionApplierSpec extends ObjectBehavior
 {
     public function let(FindAttributeOptionLabelsInterface $findAttributeOptionLabels)
     {

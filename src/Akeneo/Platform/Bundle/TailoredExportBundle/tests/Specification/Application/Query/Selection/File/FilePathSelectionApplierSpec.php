@@ -19,7 +19,7 @@ use Akeneo\Platform\TailoredExport\Domain\Model\SourceValue\BooleanValue;
 use Akeneo\Platform\TailoredExport\Domain\Model\SourceValue\FileValue;
 use PhpSpec\ObjectBehavior;
 
-class FilePathSelectionHandlerSpec extends ObjectBehavior
+class FilePathSelectionApplierSpec extends ObjectBehavior
 {
     public function it_applies_the_selection()
     {

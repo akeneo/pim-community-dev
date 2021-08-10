@@ -20,7 +20,7 @@ use Akeneo\Platform\TailoredExport\Domain\Model\SourceValue\Price;
 use Akeneo\Platform\TailoredExport\Domain\Model\SourceValue\PriceCollectionValue;
 use PhpSpec\ObjectBehavior;
 
-class PriceCollectionCurrencyCodeSelectionHandlerSpec extends ObjectBehavior
+class PriceCollectionCurrencyCodeSelectionApplierSpec extends ObjectBehavior
 {
     public function it_applies_the_selection()
     {

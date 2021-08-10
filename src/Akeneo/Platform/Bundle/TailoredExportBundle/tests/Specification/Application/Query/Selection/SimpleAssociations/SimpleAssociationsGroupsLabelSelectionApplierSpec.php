@@ -20,7 +20,7 @@ use Akeneo\Platform\TailoredExport\Domain\Model\SourceValue\SimpleAssociationsVa
 use Akeneo\Platform\TailoredExport\Domain\Query\FindGroupLabelsInterface;
 use PhpSpec\ObjectBehavior;
 
-class SimpleAssociationsGroupsLabelSelectionHandlerSpec extends ObjectBehavior
+class SimpleAssociationsGroupsLabelSelectionApplierSpec extends ObjectBehavior
 {
     public function let(FindGroupLabelsInterface $findGroupLabelsInterface)
     {

@@ -20,7 +20,7 @@ use Akeneo\Platform\TailoredExport\Domain\Model\SourceValue\MeasurementValue;
 use Akeneo\Platform\TailoredExport\Domain\Query\FindUnitLabelInterface;
 use PhpSpec\ObjectBehavior;
 
-class MeasurementUnitLabelSelectionHandlerSpec extends ObjectBehavior
+class MeasurementUnitLabelSelectionApplierSpec extends ObjectBehavior
 {
     public function let(FindUnitLabelInterface $findUnitLabel)
     {

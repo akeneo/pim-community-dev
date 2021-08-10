@@ -20,7 +20,7 @@ use Akeneo\Platform\TailoredExport\Domain\Model\SourceValue\MultiSelectValue;
 use Akeneo\Platform\TailoredExport\Domain\Query\FindAttributeOptionLabelsInterface;
 use PhpSpec\ObjectBehavior;
 
-class MultiSelectLabelSelectionHandlerSpec extends ObjectBehavior
+class MultiSelectLabelSelectionApplierSpec extends ObjectBehavior
 {
     public function let(FindAttributeOptionLabelsInterface $findAttributeOptionLabels)
     {

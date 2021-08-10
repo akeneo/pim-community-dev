@@ -19,7 +19,7 @@ use Akeneo\Platform\TailoredExport\Domain\Model\SourceValue\BooleanValue;
 use Akeneo\Platform\TailoredExport\Domain\Model\SourceValue\ParentValue;
 use PhpSpec\ObjectBehavior;
 
-class ParentCodeSelectionHandlerSpec extends ObjectBehavior
+class ParentCodeSelectionApplierSpec extends ObjectBehavior
 {
     public function it_applies_the_selection()
     {

@@ -20,7 +20,7 @@ use Akeneo\Platform\TailoredExport\Domain\Model\SourceValue\CategoriesValue;
 use Akeneo\Platform\TailoredExport\Domain\Query\FindCategoryLabelsInterface;
 use PhpSpec\ObjectBehavior;
 
-class CategoriesLabelSelectionHandlerSpec extends ObjectBehavior
+class CategoriesLabelSelectionApplierSpec extends ObjectBehavior
 {
     public function let(FindCategoryLabelsInterface $findCategoryLabels)
     {

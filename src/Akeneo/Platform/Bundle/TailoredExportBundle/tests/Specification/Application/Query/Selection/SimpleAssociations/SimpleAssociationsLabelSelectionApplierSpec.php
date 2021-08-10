@@ -21,7 +21,7 @@ use Akeneo\Platform\TailoredExport\Domain\Query\FindProductLabelsInterface;
 use Akeneo\Platform\TailoredExport\Domain\Query\FindProductModelLabelsInterface;
 use PhpSpec\ObjectBehavior;
 
-class SimpleAssociationsLabelSelectionHandlerSpec extends ObjectBehavior
+class SimpleAssociationsLabelSelectionApplierSpec extends ObjectBehavior
 {
     public function let(
         FindProductLabelsInterface $findProductLabels,

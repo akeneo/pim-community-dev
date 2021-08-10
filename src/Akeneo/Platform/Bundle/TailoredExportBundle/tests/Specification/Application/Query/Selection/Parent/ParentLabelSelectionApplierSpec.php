@@ -20,7 +20,7 @@ use Akeneo\Platform\TailoredExport\Domain\Model\SourceValue\ParentValue;
 use Akeneo\Platform\TailoredExport\Domain\Query\FindProductModelLabelsInterface;
 use PhpSpec\ObjectBehavior;
 
-class ParentLabelSelectionHandlerSpec extends ObjectBehavior
+class ParentLabelSelectionApplierSpec extends ObjectBehavior
 {
     public function let(FindProductModelLabelsInterface $findProductModelLabels)
     {

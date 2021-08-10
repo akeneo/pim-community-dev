@@ -19,7 +19,7 @@ use Akeneo\Platform\TailoredExport\Domain\Model\SourceValue\BooleanValue;
 use Akeneo\Platform\TailoredExport\Domain\Model\SourceValue\MultiSelectValue;
 use PhpSpec\ObjectBehavior;
 
-class MultiSelectCodeSelectionHandlerSpec extends ObjectBehavior
+class MultiSelectCodeSelectionApplierSpec extends ObjectBehavior
 {
     public function it_applies_the_selection()
     {

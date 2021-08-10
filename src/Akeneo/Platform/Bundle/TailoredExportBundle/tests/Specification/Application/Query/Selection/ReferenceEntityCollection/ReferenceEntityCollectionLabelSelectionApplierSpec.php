@@ -20,7 +20,7 @@ use Akeneo\Platform\TailoredExport\Domain\Model\SourceValue\ReferenceEntityColle
 use Akeneo\Platform\TailoredExport\Domain\Query\FindRecordLabelsInterface;
 use PhpSpec\ObjectBehavior;
 
-class ReferenceEntityCollectionLabelSelectionHandlerSpec extends ObjectBehavior
+class ReferenceEntityCollectionLabelSelectionApplierSpec extends ObjectBehavior
 {
     public function let(FindRecordLabelsInterface $findRecordLabels)
     {

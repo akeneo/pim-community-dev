@@ -22,7 +22,7 @@ use Akeneo\Platform\TailoredExport\Domain\Model\SourceValue\PriceCollectionValue
 use Akeneo\Platform\TailoredExport\Domain\Query\FindCurrencyLabelsInterface;
 use PhpSpec\ObjectBehavior;
 
-class PriceCollectionCurrencyLabelSelectionHandlerSpec extends ObjectBehavior
+class PriceCollectionCurrencyLabelSelectionApplierSpec extends ObjectBehavior
 {
     public function let(FindCurrencyLabelsInterface $findCurrencyLabels)
     {

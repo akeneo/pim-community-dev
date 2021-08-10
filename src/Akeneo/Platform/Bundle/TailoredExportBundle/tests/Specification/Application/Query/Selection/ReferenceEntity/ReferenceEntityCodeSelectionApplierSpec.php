@@ -19,7 +19,7 @@ use Akeneo\Platform\TailoredExport\Domain\Model\SourceValue\BooleanValue;
 use Akeneo\Platform\TailoredExport\Domain\Model\SourceValue\ReferenceEntityValue;
 use PhpSpec\ObjectBehavior;
 
-class ReferenceEntityCodeSelectionHandlerSpec extends ObjectBehavior
+class ReferenceEntityCodeSelectionApplierSpec extends ObjectBehavior
 {
     public function it_applies_the_selection()
     {

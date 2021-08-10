@@ -19,7 +19,7 @@ use Akeneo\Platform\TailoredExport\Domain\Model\SourceValue\BooleanValue;
 use Akeneo\Platform\TailoredExport\Domain\Model\SourceValue\GroupsValue;
 use PhpSpec\ObjectBehavior;
 
-class GroupsCodeSelectionHandlerSpec extends ObjectBehavior
+class GroupsCodeSelectionApplierSpec extends ObjectBehavior
 {
     public function it_applies_the_selection()
     {

@@ -19,7 +19,7 @@ use Akeneo\Platform\TailoredExport\Domain\Model\SourceValue\BooleanValue;
 use Akeneo\Platform\TailoredExport\Domain\Model\SourceValue\EnabledValue;
 use PhpSpec\ObjectBehavior;
 
-class EnabledSelectionHandlerSpec extends ObjectBehavior
+class EnabledSelectionApplierSpec extends ObjectBehavior
 {
     public function it_applies_the_selection_when_value_is_true()
     {

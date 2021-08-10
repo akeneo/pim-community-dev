@@ -19,7 +19,7 @@ use Akeneo\Platform\TailoredExport\Domain\Model\SourceValue\BooleanValue;
 use Akeneo\Platform\TailoredExport\Domain\Model\SourceValue\NullValue;
 use PhpSpec\ObjectBehavior;
 
-class NullSelectionHandlerSpec extends ObjectBehavior
+class NullSelectionApplierSpec extends ObjectBehavior
 {
     public function it_applies_the_selection()
     {

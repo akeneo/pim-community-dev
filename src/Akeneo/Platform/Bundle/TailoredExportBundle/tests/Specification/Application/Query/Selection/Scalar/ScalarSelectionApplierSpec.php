@@ -20,7 +20,7 @@ use Akeneo\Platform\TailoredExport\Domain\Model\SourceValue\AssetCollectionValue
 use Akeneo\Platform\TailoredExport\Domain\Model\SourceValue\StringValue;
 use PhpSpec\ObjectBehavior;
 
-class ScalarSelectionHandlerSpec extends ObjectBehavior
+class ScalarSelectionApplierSpec extends ObjectBehavior
 {
     public function it_applies_the_selection()
     {

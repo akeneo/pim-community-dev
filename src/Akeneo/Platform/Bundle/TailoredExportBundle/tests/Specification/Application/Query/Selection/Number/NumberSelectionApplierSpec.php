@@ -19,7 +19,7 @@ use Akeneo\Platform\TailoredExport\Domain\Model\SourceValue\BooleanValue;
 use Akeneo\Platform\TailoredExport\Domain\Model\SourceValue\NumberValue;
 use PhpSpec\ObjectBehavior;
 
-class NumberSelectionHandlerSpec extends ObjectBehavior
+class NumberSelectionApplierSpec extends ObjectBehavior
 {
     public function it_applies_the_selection()
     {

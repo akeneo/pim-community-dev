@@ -19,7 +19,7 @@ use Akeneo\Platform\TailoredExport\Domain\Model\SourceValue\BooleanValue;
 use Akeneo\Platform\TailoredExport\Domain\Model\SourceValue\MeasurementValue;
 use PhpSpec\ObjectBehavior;
 
-class MeasurementUnitCodeSelectionHandlerSpec extends ObjectBehavior
+class MeasurementUnitCodeSelectionApplierSpec extends ObjectBehavior
 {
     public function it_applies_the_selection()
     {

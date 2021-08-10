@@ -19,7 +19,7 @@ use Akeneo\Platform\TailoredExport\Domain\Model\SourceValue\BooleanValue;
 use Akeneo\Platform\TailoredExport\Domain\Model\SourceValue\SimpleAssociationsValue;
 use PhpSpec\ObjectBehavior;
 
-class SimpleAssociationsCodeSelectionHandlerSpec extends ObjectBehavior
+class SimpleAssociationsCodeSelectionApplierSpec extends ObjectBehavior
 {
     public function it_applies_the_selection_on_products()
     {

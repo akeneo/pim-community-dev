@@ -19,7 +19,7 @@ use Akeneo\Platform\TailoredExport\Domain\Model\SourceValue\BooleanValue;
 use Akeneo\Platform\TailoredExport\Domain\Model\SourceValue\DateValue;
 use PhpSpec\ObjectBehavior;
 
-class DateSelectionHandlerSpec extends ObjectBehavior
+class DateSelectionApplierSpec extends ObjectBehavior
 {
     public function it_applies_the_selection()
     {

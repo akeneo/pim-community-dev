@@ -20,7 +20,7 @@ use Akeneo\Platform\TailoredExport\Domain\Model\SourceValue\FamilyValue;
 use Akeneo\Platform\TailoredExport\Domain\Query\FindFamilyLabelInterface;
 use PhpSpec\ObjectBehavior;
 
-class FamilyLabelSelectionHandlerSpec extends ObjectBehavior
+class FamilyLabelSelectionApplierSpec extends ObjectBehavior
 {
     public function let(FindFamilyLabelInterface $findFamilyLabel)
     {

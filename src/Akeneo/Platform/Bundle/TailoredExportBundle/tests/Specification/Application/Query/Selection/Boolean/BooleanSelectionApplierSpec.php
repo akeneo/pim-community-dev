@@ -19,7 +19,7 @@ use Akeneo\Platform\TailoredExport\Domain\Model\SourceValue\AssetCollectionValue
 use Akeneo\Platform\TailoredExport\Domain\Model\SourceValue\BooleanValue;
 use PhpSpec\ObjectBehavior;
 
-class BooleanSelectionHandlerSpec extends ObjectBehavior
+class BooleanSelectionApplierSpec extends ObjectBehavior
 {
     public function it_applies_the_selection_when_value_is_true()
     {

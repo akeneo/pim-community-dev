@@ -20,7 +20,7 @@ use Akeneo\Platform\TailoredExport\Domain\Model\SourceValue\GroupsValue;
 use Akeneo\Platform\TailoredExport\Domain\Query\FindGroupLabelsInterface;
 use PhpSpec\ObjectBehavior;
 
-class GroupsLabelSelectionHandlerSpec extends ObjectBehavior
+class GroupsLabelSelectionApplierSpec extends ObjectBehavior
 {
     public function let(FindGroupLabelsInterface $findGroupLabels)
     {
