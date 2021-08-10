@@ -84,6 +84,7 @@ Cypress.Commands.add('reloadProduct', () => {
   cy.intercept('GET', /\/configuration\/rest\/.*/).as('configuration');
   cy.wait('@getProduct');
   cy.wait('@configuration');
+  cy.findFirstTextField();
 });
 
 Cypress.Commands.add('updateField', (label, value) => {
