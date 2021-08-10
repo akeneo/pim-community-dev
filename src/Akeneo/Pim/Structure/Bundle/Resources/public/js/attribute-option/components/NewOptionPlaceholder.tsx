@@ -11,12 +11,12 @@ interface newOptionPlaceholderProps {
 
 const NewOptionPlaceholder = ({cancelNewOption, isDraggable}: newOptionPlaceholderProps) => {
   const translate = useTranslate();
-  const placeholderRef = useRef<HTMLDivElement>(null);
+  const placeholderRef = useRef<HTMLTableRowElement>(null);
 
   useScrollIntoView(placeholderRef);
 
   return (
-    <TableRow isSelected={true}>
+    <TableRow isSelected={true} ref={placeholderRef} role="new-option-placeholder">
       {!isDraggable && (
         <TableCellNoDraggable>
           <HandleContainer>
@@ -34,6 +34,7 @@ const NewOptionPlaceholder = ({cancelNewOption, isDraggable}: newOptionPlacehold
           title={translate('pim_common.delete')}
           ghost="borderless"
           level="tertiary"
+          role="new-option-cancel"
         />
       </TableActionCell>
     </TableRow>
