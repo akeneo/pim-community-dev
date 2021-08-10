@@ -41,7 +41,7 @@ export const MarketplacePage: FC = () => {
             .catch(() => setExtensions(false));
     }, [fetchExtensions]);
     useEffect(() => {
-        if (!featureFlag.isEnabled('FLAG_MARKETPLACE_ACTIVATE_ENABLED')) {
+        if (!featureFlag.isEnabled('marketplace_activate')) {
             setApps({
                 total: 0,
                 apps: [],

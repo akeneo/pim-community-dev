@@ -58,7 +58,7 @@ export const Marketplace: FC<Props> = ({extensions, apps}) => {
             <div ref={ref} />
             <MarketplaceHelper count={extensions.total + apps.total} />
 
-            {featureFlag.isEnabled('FLAG_MARKETPLACE_ACTIVATE_ENABLED') && (
+            {featureFlag.isEnabled('marketplace_activate') && (
                 <Section
                     title={translate('akeneo_connectivity.connection.connect.marketplace.apps.title')}
                     information={translate(
