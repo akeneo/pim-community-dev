@@ -31,7 +31,7 @@ class AkeneoTailoredExportExtension extends Extension
         $loader->load('jobs.yml');
         $loader->load('operation_appliers.yml');
         $loader->load('queries.yml');
-        $loader->load('selection_handlers.yml');
+        $loader->load('selection_appliers.yml');
         $loader->load('services.yml');
         $loader->load('validations.yml');
 

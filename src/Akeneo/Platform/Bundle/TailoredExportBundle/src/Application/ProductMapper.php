@@ -15,20 +15,20 @@ namespace Akeneo\Platform\TailoredExport\Application;
 
 use Akeneo\Platform\TailoredExport\Application\Query\Column\Column;
 use Akeneo\Platform\TailoredExport\Application\Query\Column\ColumnCollection;
-use Akeneo\Platform\TailoredExport\Application\Query\Selection\SelectionHandler;
+use Akeneo\Platform\TailoredExport\Application\Query\Selection\SelectionApplier;
 use Akeneo\Platform\TailoredExport\Domain\Model\ValueCollection;
 
 class ProductMapper
 {
     private OperationApplier $operationApplier;
-    private SelectionHandler $selectionHandler;
+    private SelectionApplier $selectionApplier;
 
     public function __construct(
         OperationApplier $operationApplier,
-        SelectionHandler $selectionHandler
+        SelectionApplier $selectionApplier
     ) {
         $this->operationApplier = $operationApplier;
-        $this->selectionHandler = $selectionHandler;
+        $this->selectionApplier = $selectionApplier;
     }
 
     public function map(ColumnCollection $columnCollection, ValueCollection $valueCollection): array
@@ -43,7 +43,7 @@ class ProductMapper
                 $value = $valueCollection->getFromSource($source);
 
                 $transformedValue = $this->operationApplier->applyOperations($operations, $value);
-                $mappedValues[] = $this->selectionHandler->applySelection(
+                $mappedValues[] = $this->selectionApplier->applySelection(
                     $source->getSelection(),
                     $transformedValue
                 );
