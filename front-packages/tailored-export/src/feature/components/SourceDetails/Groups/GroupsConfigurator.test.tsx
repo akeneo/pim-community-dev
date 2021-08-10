@@ -5,27 +5,8 @@ import {renderWithProviders} from '@akeneo-pim-community/shared';
 import {GroupsConfigurator} from './GroupsConfigurator';
 import {getDefaultGroupsSource} from '../../../components/SourceDetails/Groups/model';
 import {getDefaultParentSource} from '../Parent/model';
-import {CodeLabelCollectionSelection} from '../common/CodeLabelCollectionSelector';
 
-jest.mock('../common/CodeLabelCollectionSelector', () => ({
-  CodeLabelCollectionSelector: ({
-    onSelectionChange,
-  }: {
-    onSelectionChange: (updatedSelection: CodeLabelCollectionSelection) => void;
-  }) => (
-    <button
-      onClick={() =>
-        onSelectionChange({
-          type: 'label',
-          locale: 'en_US',
-          separator: ',',
-        })
-      }
-    >
-      Update selection
-    </button>
-  ),
-}));
+jest.mock('../common/CodeLabelCollectionSelector');
 
 test('it displays a groups configurator', () => {
   const onSourceChange = jest.fn();

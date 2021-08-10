@@ -3,25 +3,10 @@ import {screen} from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
 import {renderWithProviders} from '@akeneo-pim-community/shared';
 import {FamilyVariantConfigurator} from './FamilyVariantConfigurator';
-import {CodeLabelSelection} from '../common/CodeLabelSelector';
 import {getDefaultParentSource} from '../Parent/model';
 
 jest.mock('../common/DefaultValue');
-
-jest.mock('../common/CodeLabelSelector', () => ({
-  CodeLabelSelector: ({onSelectionChange}: {onSelectionChange: (updatedSelection: CodeLabelSelection) => void}) => (
-    <button
-      onClick={() =>
-        onSelectionChange({
-          type: 'label',
-          locale: 'en_US',
-        })
-      }
-    >
-      Update selection
-    </button>
-  ),
-}));
+jest.mock('../common/CodeLabelSelector');
 
 test('it displays a family variant configurator', () => {
   const onSourceChange = jest.fn();

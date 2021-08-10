@@ -3,24 +3,9 @@ import {screen} from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
 import {renderWithProviders} from '@akeneo-pim-community/shared';
 import {FamilyConfigurator} from './FamilyConfigurator';
-import {CodeLabelSelection} from '../common/CodeLabelSelector';
 import {getDefaultParentSource} from '../Parent/model';
 
-jest.mock('../common/CodeLabelSelector', () => ({
-  CodeLabelSelector: ({onSelectionChange}: {onSelectionChange: (updatedSelection: CodeLabelSelection) => void}) => (
-    <button
-      onClick={() =>
-        onSelectionChange({
-          type: 'label',
-          locale: 'en_US',
-        })
-      }
-    >
-      Update selection
-    </button>
-  ),
-}));
-
+jest.mock('../common/CodeLabelSelector');
 jest.mock('../common/DefaultValue');
 
 test('it displays a family configurator', () => {

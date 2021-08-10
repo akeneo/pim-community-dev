@@ -5,7 +5,6 @@ import {renderWithProviders} from '@akeneo-pim-community/shared';
 import {MultiSelectConfigurator} from './MultiSelectConfigurator';
 import {getDefaultMultiSelectSource} from './model';
 import {getDefaultDateSource} from '../Date/model';
-import {CodeLabelCollectionSelection} from '../common/CodeLabelCollectionSelector';
 
 const attribute = {
   code: 'multiselect',
@@ -17,27 +16,7 @@ const attribute = {
   available_locales: [],
 };
 
-jest.mock('../common/CodeLabelCollectionSelector', () => ({
-  ...jest.requireActual('../common/CodeLabelCollectionSelector'),
-  CodeLabelCollectionSelector: ({
-    onSelectionChange,
-  }: {
-    onSelectionChange: (updatedSelection: CodeLabelCollectionSelection) => void;
-  }) => (
-    <button
-      onClick={() =>
-        onSelectionChange({
-          type: 'label',
-          locale: 'en_US',
-          separator: ',',
-        })
-      }
-    >
-      Update selection
-    </button>
-  ),
-}));
-
+jest.mock('../common/CodeLabelCollectionSelector');
 jest.mock('../common/DefaultValue');
 
 test('it displays a multi select configurator', () => {

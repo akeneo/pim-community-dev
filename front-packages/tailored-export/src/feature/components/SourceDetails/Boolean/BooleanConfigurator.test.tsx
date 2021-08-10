@@ -5,7 +5,6 @@ import {renderWithProviders} from '@akeneo-pim-community/shared';
 import {BooleanConfigurator} from './BooleanConfigurator';
 import {getDefaultBooleanSource} from './model';
 import {getDefaultDateSource} from '../Date/model';
-import {BooleanReplacementOperation} from '../common';
 
 const attribute = {
   code: 'boolean',
@@ -17,29 +16,7 @@ const attribute = {
   available_locales: [],
 };
 
-jest.mock('../common/BooleanReplacement', () => ({
-  ...jest.requireActual('../common/BooleanReplacement'),
-  BooleanReplacement: ({
-    onOperationChange,
-  }: {
-    onOperationChange: (updatedOperation: BooleanReplacementOperation) => void;
-  }) => (
-    <button
-      onClick={() =>
-        onOperationChange({
-          type: 'replacement',
-          mapping: {
-            true: 'activé',
-            false: 'désactivé',
-          },
-        })
-      }
-    >
-      Update replacement
-    </button>
-  ),
-}));
-
+jest.mock('../common/BooleanReplacement');
 jest.mock('../common/DefaultValue');
 
 test('it can update replacement operation', () => {

@@ -5,7 +5,6 @@ import {renderWithProviders} from '@akeneo-pim-community/shared';
 import {ReferenceEntityConfigurator} from './ReferenceEntityConfigurator';
 import {getDefaultReferenceEntitySource} from './model';
 import {getDefaultDateSource} from '../Date/model';
-import {CodeLabelSelection} from '../common/CodeLabelSelector';
 
 const attribute = {
   code: 'ref_entity',
@@ -17,22 +16,7 @@ const attribute = {
   available_locales: [],
 };
 
-jest.mock('../common/CodeLabelSelector', () => ({
-  ...jest.requireActual('../common/CodeLabelSelector'),
-  CodeLabelSelector: ({onSelectionChange}: {onSelectionChange: (updatedSelection: CodeLabelSelection) => void}) => (
-    <button
-      onClick={() =>
-        onSelectionChange({
-          type: 'label',
-          locale: 'en_US',
-        })
-      }
-    >
-      Update selection
-    </button>
-  ),
-}));
-
+jest.mock('../common/CodeLabelSelector');
 jest.mock('../common/DefaultValue');
 
 test('it displays a reference entity configurator', () => {
