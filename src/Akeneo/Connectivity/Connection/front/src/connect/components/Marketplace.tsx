@@ -10,7 +10,7 @@ import findScrollParent from '../../shared/scroll/utils/findScrollParent';
 import {App, Apps} from '../../model/app';
 import {Section} from './Section';
 import {ActivateAppButton} from './ActivateAppButton';
-import {useFeatureFlags} from "../../shared/feature-flags";
+import {useFeatureFlags} from '../../shared/feature-flags';
 
 const ScrollToTop = styled(IconButton)`
     position: fixed;
@@ -58,7 +58,7 @@ export const Marketplace: FC<Props> = ({extensions, apps}) => {
             <div ref={ref} />
             <MarketplaceHelper count={extensions.total + apps.total} />
 
-            {featureFlag.isEnabled('FLAG_MARKETPLACE_ACTIVATE_ENABLED') &&
+            {featureFlag.isEnabled('FLAG_MARKETPLACE_ACTIVATE_ENABLED') && (
                 <Section
                     title={translate('akeneo_connectivity.connection.connect.marketplace.apps.title')}
                     information={translate(
@@ -72,7 +72,7 @@ export const Marketplace: FC<Props> = ({extensions, apps}) => {
                 >
                     {appsList}
                 </Section>
-            }
+            )}
             <Section
                 title={translate('akeneo_connectivity.connection.connect.marketplace.extensions.title')}
                 information={translate(

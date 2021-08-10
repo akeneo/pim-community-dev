@@ -2,7 +2,7 @@ import React, {FC, useEffect, useState} from 'react';
 import {ChannelsIllustration, Information, Link} from 'akeneo-design-system';
 import {useFetchMarketplaceUrl} from '../hooks/use-fetch-marketplace-url';
 import {useTranslate} from '../../shared/translate';
-import {useFeatureFlags} from "../../shared/feature-flags";
+import {useFeatureFlags} from '../../shared/feature-flags';
 
 type Props = {
     count: number;

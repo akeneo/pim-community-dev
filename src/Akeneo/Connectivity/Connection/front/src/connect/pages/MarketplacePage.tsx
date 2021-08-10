@@ -12,7 +12,7 @@ import {UnreachableMarketplace} from '../components/UnreachableMarketplace';
 import {Marketplace} from '../components/Marketplace';
 import {MarketplaceIsLoading} from '../components/MarketplaceIsLoading';
 import {useFetchApps} from '../hooks/use-fetch-apps';
-import {useFeatureFlags} from "../../shared/feature-flags";
+import {useFeatureFlags} from '../../shared/feature-flags';
 
 export const MarketplacePage: FC = () => {
     const translate = useTranslate();
