@@ -200,7 +200,7 @@ services:
 
   Akeneo\Platform\TailoredExport\Application\Query\Selection\PriceCollection\PriceCollectionCurrencyLabelSelectionHandler:
     arguments:
-      - '@pim_catalog.localization.translator.currency'
+      - '@Akeneo\Platform\TailoredExport\Domain\Query\FindCurrencyLabelsInterface'
     public: true
     tags:
       - { name: akeneo.tailored_export.selection_handler }

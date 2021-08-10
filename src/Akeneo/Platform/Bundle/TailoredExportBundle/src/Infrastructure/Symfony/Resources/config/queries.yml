@@ -60,3 +60,8 @@ services:
         class: Akeneo\Platform\TailoredExport\Infrastructure\Query\Structure\FindFamilyVariantLabel
         arguments:
             - '@akeneo.pim.structure.query.get_family_variant_translations'
+
+    Akeneo\Platform\TailoredExport\Domain\Query\FindCurrencyLabelsInterface:
+        class: Akeneo\Platform\TailoredExport\Infrastructure\Query\Structure\FindCurrencyLabels
+        arguments:
+            - '@pim_catalog.localization.translator.currency'

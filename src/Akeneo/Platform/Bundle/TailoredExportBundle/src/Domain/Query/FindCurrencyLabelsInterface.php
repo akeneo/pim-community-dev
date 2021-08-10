@@ -13,15 +13,11 @@ declare(strict_types=1);
 
 namespace Akeneo\Platform\TailoredExport\Domain\Query;
 
-interface FindAssetLabelsInterface
+interface FindCurrencyLabelsInterface
 {
     /**
-     * @params string[] $assetCodes
-     * @return array<string, string>
+     * @param string[] $currencyCodes
+     * @return array<string, string | null>
      */
-    public function byAssetFamilyCodeAndAssetCodes(
-        string $assetFamilyCode,
-        array $assetCodes,
-        string $locale
-    ): array;
+    public function byCodes(array $currencyCodes, string $locale): array;
 }
