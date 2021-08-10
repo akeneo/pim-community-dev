@@ -11,7 +11,7 @@ declare(strict_types=1);
  * file that was distributed with this source code.
  */
 
-namespace Akeneo\Platform\TailoredExport\Application\Query\Selection\File;
+namespace Akeneo\Platform\TailoredExport\Domain\Model\Selection\File;
 
 final class FileNameSelection implements FileSelectionInterface
 {

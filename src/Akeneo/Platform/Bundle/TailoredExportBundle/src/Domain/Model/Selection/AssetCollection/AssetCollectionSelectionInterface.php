@@ -11,9 +11,9 @@ declare(strict_types=1);
  * file that was distributed with this source code.
  */
 
-namespace Akeneo\Platform\TailoredExport\Application\Query\Selection\AssetCollection;
+namespace Akeneo\Platform\TailoredExport\Domain\Model\Selection\AssetCollection;
 
-use Akeneo\Platform\TailoredExport\Application\Query\Selection\SelectionInterface;
+use Akeneo\Platform\TailoredExport\Domain\Model\Selection\SelectionInterface;
 
 interface AssetCollectionSelectionInterface extends SelectionInterface
 {

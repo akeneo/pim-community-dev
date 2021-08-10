@@ -14,7 +14,8 @@ declare(strict_types=1);
 namespace Akeneo\Platform\TailoredExport\Application\Query\Selection\PriceCollection;
 
 use Akeneo\Platform\TailoredExport\Application\Query\Selection\SelectionApplierInterface;
-use Akeneo\Platform\TailoredExport\Application\Query\Selection\SelectionInterface;
+use Akeneo\Platform\TailoredExport\Domain\Model\Selection\SelectionInterface;
+use Akeneo\Platform\TailoredExport\Domain\Model\Selection\PriceCollection\PriceCollectionCurrencyLabelSelection;
 use Akeneo\Platform\TailoredExport\Domain\Model\SourceValue\Price;
 use Akeneo\Platform\TailoredExport\Domain\Model\SourceValue\PriceCollectionValue;
 use Akeneo\Platform\TailoredExport\Domain\Model\SourceValue\SourceValueInterface;

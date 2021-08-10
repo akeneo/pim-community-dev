@@ -14,9 +14,9 @@ declare(strict_types=1);
 namespace Akeneo\Platform\TailoredExport\Test\Acceptance\UseCases\Attribute;
 
 use Akeneo\Platform\TailoredExport\Domain\Model\Operation\DefaultValueOperation;
-use Akeneo\Platform\TailoredExport\Application\Query\Selection\AssetCollection\AssetCollectionCodeSelection;
-use Akeneo\Platform\TailoredExport\Application\Query\Selection\AssetCollection\AssetCollectionLabelSelection;
-use Akeneo\Platform\TailoredExport\Application\Query\Selection\SelectionInterface;
+use Akeneo\Platform\TailoredExport\Domain\Model\Selection\AssetCollection\AssetCollectionCodeSelection;
+use Akeneo\Platform\TailoredExport\Domain\Model\Selection\AssetCollection\AssetCollectionLabelSelection;
+use Akeneo\Platform\TailoredExport\Domain\Model\Selection\SelectionInterface;
 use Akeneo\Platform\TailoredExport\Domain\Model\SourceValue\AssetCollectionValue;
 use Akeneo\Platform\TailoredExport\Domain\Model\SourceValue\NullValue;
 use Akeneo\Platform\TailoredExport\Domain\Model\SourceValue\SourceValueInterface;

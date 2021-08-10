@@ -14,7 +14,8 @@ declare(strict_types=1);
 namespace Akeneo\Platform\TailoredExport\Application\Query\Selection\Parent;
 
 use Akeneo\Platform\TailoredExport\Application\Query\Selection\SelectionApplierInterface;
-use Akeneo\Platform\TailoredExport\Application\Query\Selection\SelectionInterface;
+use Akeneo\Platform\TailoredExport\Domain\Model\Selection\SelectionInterface;
+use Akeneo\Platform\TailoredExport\Domain\Model\Selection\Parent\ParentLabelSelection;
 use Akeneo\Platform\TailoredExport\Domain\Model\SourceValue\ParentValue;
 use Akeneo\Platform\TailoredExport\Domain\Model\SourceValue\SourceValueInterface;
 use Akeneo\Platform\TailoredExport\Domain\Query\FindProductModelLabelsInterface;

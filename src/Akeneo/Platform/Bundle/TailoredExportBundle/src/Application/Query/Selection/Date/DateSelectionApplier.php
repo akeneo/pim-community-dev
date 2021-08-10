@@ -14,7 +14,8 @@ declare(strict_types=1);
 namespace Akeneo\Platform\TailoredExport\Application\Query\Selection\Date;
 
 use Akeneo\Platform\TailoredExport\Application\Query\Selection\SelectionApplierInterface;
-use Akeneo\Platform\TailoredExport\Application\Query\Selection\SelectionInterface;
+use Akeneo\Platform\TailoredExport\Domain\Model\Selection\Date\DateSelection;
+use Akeneo\Platform\TailoredExport\Domain\Model\Selection\SelectionInterface;
 use Akeneo\Platform\TailoredExport\Domain\Model\SourceValue\DateValue;
 use Akeneo\Platform\TailoredExport\Domain\Model\SourceValue\SourceValueInterface;
 

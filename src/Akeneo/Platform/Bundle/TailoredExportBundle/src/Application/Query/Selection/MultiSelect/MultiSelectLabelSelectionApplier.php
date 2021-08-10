@@ -14,7 +14,8 @@ declare(strict_types=1);
 namespace Akeneo\Platform\TailoredExport\Application\Query\Selection\MultiSelect;
 
 use Akeneo\Platform\TailoredExport\Application\Query\Selection\SelectionApplierInterface;
-use Akeneo\Platform\TailoredExport\Application\Query\Selection\SelectionInterface;
+use Akeneo\Platform\TailoredExport\Domain\Model\Selection\SelectionInterface;
+use Akeneo\Platform\TailoredExport\Domain\Model\Selection\MultiSelect\MultiSelectLabelSelection;
 use Akeneo\Platform\TailoredExport\Domain\Model\SourceValue\MultiSelectValue;
 use Akeneo\Platform\TailoredExport\Domain\Model\SourceValue\SourceValueInterface;
 use Akeneo\Platform\TailoredExport\Domain\Query\FindAttributeOptionLabelsInterface;

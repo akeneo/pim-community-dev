@@ -13,8 +13,8 @@ declare(strict_types=1);
 
 namespace Specification\Akeneo\Platform\TailoredExport\Application\Query\Selection\Parent;
 
-use Akeneo\Platform\TailoredExport\Application\Query\Selection\Boolean\BooleanSelection;
-use Akeneo\Platform\TailoredExport\Application\Query\Selection\Parent\ParentCodeSelection;
+use Akeneo\Platform\TailoredExport\Domain\Model\Selection\Boolean\BooleanSelection;
+use Akeneo\Platform\TailoredExport\Domain\Model\Selection\Parent\ParentCodeSelection;
 use Akeneo\Platform\TailoredExport\Domain\Model\SourceValue\BooleanValue;
 use Akeneo\Platform\TailoredExport\Domain\Model\SourceValue\ParentValue;
 use PhpSpec\ObjectBehavior;

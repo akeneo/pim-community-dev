@@ -11,9 +11,9 @@ declare(strict_types=1);
  * file that was distributed with this source code.
  */
 
-namespace Akeneo\Platform\TailoredExport\Application\Query\Selection\Categories;
+namespace Akeneo\Platform\TailoredExport\Domain\Model\Selection\Categories;
 
-use Akeneo\Platform\TailoredExport\Application\Query\Selection\SelectionInterface;
+use Akeneo\Platform\TailoredExport\Domain\Model\Selection\SelectionInterface;
 
 interface CategoriesSelectionInterface extends SelectionInterface
 {

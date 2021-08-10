@@ -13,8 +13,8 @@ declare(strict_types=1);
 
 namespace Specification\Akeneo\Platform\TailoredExport\Application\Query\Selection\Enabled;
 
-use Akeneo\Platform\TailoredExport\Application\Query\Selection\Boolean\BooleanSelection;
-use Akeneo\Platform\TailoredExport\Application\Query\Selection\Enabled\EnabledSelection;
+use Akeneo\Platform\TailoredExport\Domain\Model\Selection\Boolean\BooleanSelection;
+use Akeneo\Platform\TailoredExport\Domain\Model\Selection\Enabled\EnabledSelection;
 use Akeneo\Platform\TailoredExport\Domain\Model\SourceValue\BooleanValue;
 use Akeneo\Platform\TailoredExport\Domain\Model\SourceValue\EnabledValue;
 use PhpSpec\ObjectBehavior;

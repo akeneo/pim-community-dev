@@ -14,7 +14,8 @@ declare(strict_types=1);
 namespace Akeneo\Platform\TailoredExport\Application\Query\Selection\SimpleAssociations;
 
 use Akeneo\Platform\TailoredExport\Application\Query\Selection\SelectionApplierInterface;
-use Akeneo\Platform\TailoredExport\Application\Query\Selection\SelectionInterface;
+use Akeneo\Platform\TailoredExport\Domain\Model\Selection\SelectionInterface;
+use Akeneo\Platform\TailoredExport\Domain\Model\Selection\SimpleAssociations\SimpleAssociationsLabelSelection;
 use Akeneo\Platform\TailoredExport\Domain\Model\SourceValue\SimpleAssociationsValue;
 use Akeneo\Platform\TailoredExport\Domain\Model\SourceValue\SourceValueInterface;
 use Akeneo\Platform\TailoredExport\Domain\Query\FindGroupLabelsInterface;

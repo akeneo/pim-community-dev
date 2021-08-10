@@ -13,7 +13,7 @@ declare(strict_types=1);
 
 namespace Akeneo\Platform\TailoredExport\Domain\Model\Selection\QuantifiedAssociations;
 
-use Akeneo\Platform\TailoredExport\Application\Query\Selection\SelectionInterface;
+use Akeneo\Platform\TailoredExport\Domain\Model\Selection\SelectionInterface;
 
 interface QuantifiedAssociationsSelectionInterface extends SelectionInterface
 {

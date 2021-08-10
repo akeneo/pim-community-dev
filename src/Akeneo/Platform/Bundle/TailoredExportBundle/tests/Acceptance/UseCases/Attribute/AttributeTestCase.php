@@ -17,7 +17,7 @@ use Akeneo\Platform\TailoredExport\Application\ProductMapper;
 use Akeneo\Platform\TailoredExport\Domain\Model\Column\Column;
 use Akeneo\Platform\TailoredExport\Domain\Model\Column\ColumnCollection;
 use Akeneo\Platform\TailoredExport\Domain\Model\Operation\OperationCollection;
-use Akeneo\Platform\TailoredExport\Application\Query\Selection\SelectionInterface;
+use Akeneo\Platform\TailoredExport\Domain\Model\Selection\SelectionInterface;
 use Akeneo\Platform\TailoredExport\Domain\Model\Source\AttributeSource;
 use Akeneo\Platform\TailoredExport\Domain\Model\Source\SourceCollection;
 use Akeneo\Platform\TailoredExport\Domain\Model\SourceValue\SourceValueInterface;

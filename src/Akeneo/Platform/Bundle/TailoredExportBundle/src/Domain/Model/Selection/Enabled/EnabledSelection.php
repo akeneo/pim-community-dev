@@ -11,9 +11,9 @@ declare(strict_types=1);
  * file that was distributed with this source code.
  */
 
-namespace Akeneo\Platform\TailoredExport\Application\Query\Selection\Enabled;
+namespace Akeneo\Platform\TailoredExport\Domain\Model\Selection\Enabled;
 
-use Akeneo\Platform\TailoredExport\Application\Query\Selection\SelectionInterface;
+use Akeneo\Platform\TailoredExport\Domain\Model\Selection\SelectionInterface;
 
 class EnabledSelection implements SelectionInterface
 {

@@ -14,7 +14,7 @@ declare(strict_types=1);
 
 namespace Akeneo\Platform\TailoredExport\Domain\Model\Selection\Number;
 
-use Akeneo\Platform\TailoredExport\Application\Query\Selection\SelectionInterface;
+use Akeneo\Platform\TailoredExport\Domain\Model\Selection\SelectionInterface;
 
 class NumberSelection implements SelectionInterface
 {

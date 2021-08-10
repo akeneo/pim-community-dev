@@ -14,10 +14,10 @@ declare(strict_types=1);
 namespace Akeneo\Platform\TailoredExport\Test\Acceptance\UseCases\Attribute;
 
 use Akeneo\Platform\TailoredExport\Domain\Model\Operation\DefaultValueOperation;
-use Akeneo\Platform\TailoredExport\Application\Query\Selection\File\FileKeySelection;
-use Akeneo\Platform\TailoredExport\Application\Query\Selection\File\FileNameSelection;
-use Akeneo\Platform\TailoredExport\Application\Query\Selection\File\FilePathSelection;
-use Akeneo\Platform\TailoredExport\Application\Query\Selection\SelectionInterface;
+use Akeneo\Platform\TailoredExport\Domain\Model\Selection\File\FileKeySelection;
+use Akeneo\Platform\TailoredExport\Domain\Model\Selection\File\FileNameSelection;
+use Akeneo\Platform\TailoredExport\Domain\Model\Selection\File\FilePathSelection;
+use Akeneo\Platform\TailoredExport\Domain\Model\Selection\SelectionInterface;
 use Akeneo\Platform\TailoredExport\Domain\Model\SourceValue\FileValue;
 use Akeneo\Platform\TailoredExport\Domain\Model\SourceValue\NullValue;
 use Akeneo\Platform\TailoredExport\Domain\Model\SourceValue\SourceValueInterface;

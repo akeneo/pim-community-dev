@@ -11,7 +11,9 @@ declare(strict_types=1);
  * file that was distributed with this source code.
  */
 
-namespace Akeneo\Platform\TailoredExport\Application\Query\Selection\Date;
+namespace Akeneo\Platform\TailoredExport\Domain\Model\Selection\Date;
+
+use Akeneo\Platform\TailoredExport\Application\Query\Selection\Date\DateFormat;
 
 final class DateSelection implements DateSelectionInterface
 {
