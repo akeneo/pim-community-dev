@@ -19,7 +19,7 @@ use Akeneo\Platform\TailoredExport\Application\MediaToExport;
 use Akeneo\Platform\TailoredExport\Application\MediaToExportExtractor;
 use Akeneo\Platform\TailoredExport\Domain\Model\Column\Column;
 use Akeneo\Platform\TailoredExport\Domain\Model\Column\ColumnCollection;
-use Akeneo\Platform\TailoredExport\Application\Query\Operation\OperationCollection;
+use Akeneo\Platform\TailoredExport\Domain\Model\Operation\OperationCollection;
 use Akeneo\Platform\TailoredExport\Application\Query\Selection\AssetCollection\AssetCollectionCodeSelection;
 use Akeneo\Platform\TailoredExport\Application\Query\Selection\File\FilePathSelection;
 use Akeneo\Platform\TailoredExport\Domain\Model\Source\AttributeSource;

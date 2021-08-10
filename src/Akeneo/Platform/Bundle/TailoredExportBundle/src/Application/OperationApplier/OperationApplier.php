@@ -11,10 +11,9 @@ declare(strict_types=1);
  * file that was distributed with this source code.
  */
 
-namespace Akeneo\Platform\TailoredExport\Application;
+namespace Akeneo\Platform\TailoredExport\Application\OperationApplier;
 
-use Akeneo\Platform\TailoredExport\Application\OperationApplier\OperationApplierInterface;
-use Akeneo\Platform\TailoredExport\Application\Query\Operation\OperationCollection;
+use Akeneo\Platform\TailoredExport\Domain\Model\Operation\OperationCollection;
 use Akeneo\Platform\TailoredExport\Domain\Model\SourceValue\SourceValueInterface;
 
 class OperationApplier

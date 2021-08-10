@@ -16,7 +16,7 @@ namespace Akeneo\Platform\TailoredExport\Test\Acceptance\UseCases\Format;
 use Akeneo\Platform\TailoredExport\Application\ProductMapper;
 use Akeneo\Platform\TailoredExport\Domain\Model\Column\Column;
 use Akeneo\Platform\TailoredExport\Domain\Model\Column\ColumnCollection;
-use Akeneo\Platform\TailoredExport\Application\Query\Operation\OperationCollection;
+use Akeneo\Platform\TailoredExport\Domain\Model\Operation\OperationCollection;
 use Akeneo\Platform\TailoredExport\Application\Query\Selection\Boolean\BooleanSelection;
 use Akeneo\Platform\TailoredExport\Application\Query\Selection\Enabled\EnabledSelection;
 use Akeneo\Platform\TailoredExport\Domain\Model\Source\AttributeSource;

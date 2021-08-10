@@ -13,8 +13,8 @@ declare(strict_types=1);
 
 namespace Akeneo\Platform\TailoredExport\Application\OperationApplier;
 
-use Akeneo\Platform\TailoredExport\Application\Query\Operation\DefaultValueOperation;
-use Akeneo\Platform\TailoredExport\Application\Query\Operation\OperationInterface;
+use Akeneo\Platform\TailoredExport\Domain\Model\Operation\DefaultValueOperation;
+use Akeneo\Platform\TailoredExport\Domain\Model\Operation\OperationInterface;
 use Akeneo\Platform\TailoredExport\Domain\Model\SourceValue\NullValue;
 use Akeneo\Platform\TailoredExport\Domain\Model\SourceValue\SourceValueInterface;
 use Akeneo\Platform\TailoredExport\Domain\Model\SourceValue\StringValue;

@@ -1,7 +1,5 @@
 services:
-  Akeneo\Platform\TailoredExport\Application\PropertyValueGetter:
-
-  Akeneo\Platform\TailoredExport\Application\OperationApplier:
+  Akeneo\Platform\TailoredExport\Application\OperationApplier\OperationApplier:
     arguments:
       - !tagged_iterator akeneo.tailored_export.operation_applier
 

@@ -13,7 +13,7 @@ declare(strict_types=1);
 
 namespace Akeneo\Platform\TailoredExport\Application\OperationApplier;
 
-use Akeneo\Platform\TailoredExport\Application\Query\Operation\OperationInterface;
+use Akeneo\Platform\TailoredExport\Domain\Model\Operation\OperationInterface;
 use Akeneo\Platform\TailoredExport\Domain\Model\SourceValue\SourceValueInterface;
 
 interface OperationApplierInterface

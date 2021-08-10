@@ -13,7 +13,7 @@ declare(strict_types=1);
 
 namespace Akeneo\Platform\TailoredExport\Test\Acceptance\UseCases\Property;
 
-use Akeneo\Platform\TailoredExport\Application\Query\Operation\ReplacementOperation;
+use Akeneo\Platform\TailoredExport\Domain\Model\Operation\ReplacementOperation;
 use Akeneo\Platform\TailoredExport\Application\Query\Selection\Enabled\EnabledSelection;
 use Akeneo\Platform\TailoredExport\Application\Query\Selection\SelectionInterface;
 use Akeneo\Platform\TailoredExport\Domain\Model\SourceValue\EnabledValue;

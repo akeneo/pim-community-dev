@@ -7,7 +7,7 @@ namespace Akeneo\Platform\TailoredExport\Infrastructure\Hydrator;
 use Akeneo\Pim\Structure\Component\Query\PublicApi\Association\AssociationType;
 use Akeneo\Platform\TailoredExport\Domain\Model\Column\Column;
 use Akeneo\Platform\TailoredExport\Domain\Model\Column\ColumnCollection;
-use Akeneo\Platform\TailoredExport\Application\Query\Operation\OperationCollection;
+use Akeneo\Platform\TailoredExport\Domain\Model\Operation\OperationCollection;
 use Akeneo\Platform\TailoredExport\Domain\Model\Source\AssociationTypeSource;
 use Akeneo\Platform\TailoredExport\Domain\Model\Source\AttributeSource;
 use Akeneo\Platform\TailoredExport\Domain\Model\Source\PropertySource;

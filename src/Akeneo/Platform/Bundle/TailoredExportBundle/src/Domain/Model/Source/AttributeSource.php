@@ -13,7 +13,7 @@ declare(strict_types=1);
 
 namespace Akeneo\Platform\TailoredExport\Domain\Model\Source;
 
-use Akeneo\Platform\TailoredExport\Application\Query\Operation\OperationCollection;
+use Akeneo\Platform\TailoredExport\Domain\Model\Operation\OperationCollection;
 use Akeneo\Platform\TailoredExport\Application\Query\Selection\SelectionInterface;
 
 class AttributeSource implements SourceInterface
