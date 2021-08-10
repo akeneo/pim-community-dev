@@ -10,7 +10,7 @@ import {
   queryByRole,
   queryAllByRole,
   getByText,
-  getByTitle
+  getByTitle,
 } from '@testing-library/react';
 import {DependenciesProvider} from '@akeneo-pim-community/legacy-bridge';
 import {createStoreWithInitialState} from 'akeneopimstructure/js/attribute-option/store/store';
@@ -259,15 +259,22 @@ describe('Attribute options table', () => {
 
     await renderComponent(options, false, jest.fn(), jest.fn(), jest.fn(), jest.fn(), null);
 
-    let searchInput = getByTitle(container, 'pim_common.search');
+    const searchInput = getByTitle(container, 'pim_common.search');
     fireEvent.change(searchInput, {target: {value: 'Blue'}});
 
-    setTimeout(() => {
-      const optionItems = queryAllByRole(container, 'attribute-option-item');
-      expect(optionItems.length).toBe(1);
-    }, 300);
+    await act(async () => {
+      setTimeout(() => {
+        const optionItems = queryAllByRole(container, 'attribute-option-item');
+        const attributeOptionsLabel = getAllByRole(container, 'attribute-option-item-label');
+        const attributeOptionsCode = getAllByRole(container, 'attribute-option-item-code');
 
-    jest.runAllTimers();
+        expect(optionItems.length).toBe(1);
+        expect(attributeOptionsLabel[0].textContent).toBe('Blue');
+        expect(attributeOptionsCode[0].textContent).toBe('blue');
+      }, 300);
+
+      jest.runAllTimers();
+    });
   });
 
   test('it does not find any item in the list after a search', async () => {
@@ -275,15 +282,20 @@ describe('Attribute options table', () => {
 
     await renderComponent(options, false, jest.fn(), jest.fn(), jest.fn(), jest.fn(), null);
 
-    let searchInput = getByTitle(container, 'pim_common.search');
+    const searchInput = getByTitle(container, 'pim_common.search');
     fireEvent.change(searchInput, {target: {value: 'Z'}});
 
-    setTimeout(() => {
-      const noResultElement = getByText(container, 'pim_enrich.entity.attribute_option.module.edit.search.no_result.title');
-      expect(noResultElement).toBeInTheDocument();
-    }, 300);
+    await act(async () => {
+      setTimeout(() => {
+        const noResultElement = getByText(
+          container,
+          'pim_enrich.entity.attribute_option.module.edit.search.no_result.title'
+        );
+        expect(noResultElement).toBeInTheDocument();
+      }, 300);
 
-    jest.runAllTimers();
+      jest.runAllTimers();
+    });
   });
 });
 
