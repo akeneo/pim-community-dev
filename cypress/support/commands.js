@@ -77,6 +77,15 @@ Cypress.Commands.add('saveProduct', () => {
   cy.wait('@saveProduct');
 });
 
+Cypress.Commands.add('reloadProduct', () => {
+  cy.reload();
+  cy.intercept('GET', /\/enrich\/product\/rest\/.*/).as('getProduct');
+  cy.intercept('GET', /\/configuration\/rest\/.*/).as('configuration');
+  cy.wait('@getProduct');
+  cy.wait('@configuration');
+  cy.findFirstTextField();
+});
+
 Cypress.Commands.add('updateField', (label, value) => {
   cy.findByLabelText(label).clear().type(value);
 });

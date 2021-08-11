@@ -23,6 +23,10 @@ pim_api:
       edit: Tworzenie i aktualizowanie kanałów
       list: Przeglądanie kanałów
     locale.list: Przeglądanie ustawień regionalnych
+    product:
+      edit: Utwórz i aktualizuj produkty
+      list: Wymień produkty
+      remove: Usuń produkty
     currency.list: Przeglądanie walut
     association_type:
       edit: Tworzenie i aktualizowanie typów powiązań
@@ -37,6 +41,7 @@ pim_api:
     family_variant: Warianty rodziny
     channel: Kanały
     locale: Ustawienia regionalne
+    product: Produkty
     currency: Waluty
     association_type: Typy powiązań
 pim_user:

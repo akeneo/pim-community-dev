@@ -72,7 +72,7 @@ const UnitTab = ({
           {0 === filteredUnits.length && (
             <NoDataSection>
               <MeasurementIllustration size={256} />
-              <NoDataTitle>{translate('measurements.family.no_result.title')}</NoDataTitle>
+              <NoDataTitle>{translate('pim_common.no_search_result')}</NoDataTitle>
             </NoDataSection>
           )}
           {0 < filteredUnits.length && (

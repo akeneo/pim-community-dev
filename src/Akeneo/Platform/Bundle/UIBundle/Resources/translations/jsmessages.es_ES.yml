@@ -238,6 +238,7 @@ pim_common:
   parent: Padre
   groups: Grupos
   products: Productos
+  product_models: Modelos de producto
   more: Más
 error:
   exception: Oups! Un error {{ status_code }} ha ocurrido...
@@ -373,14 +374,16 @@ pim_settings:
   catalog_settings: Configuración del catálogo
   product_settings: Ajustes del producto
   count:
-    categories: Tienes {{ countTrees }} árboles y {{ countCategories }} categorías
-    locales: Tienes {{ count }} locales habilitados
-    currencies: Tienes {{ count }} monedas habilitadas
-    attribute_groups: Tiene {{ count }} grupos de atributos
-    attributes: Tienes {{ count }} atributos
-    families: Tienes {{ count }} familias
-    measurements: Tiene {{ count }} mediciones
-    association_types: Tienes {{ count }} tipos de asociación
-    group_types: Tiene {{ count }} tipos de grupos
-    groups: Tiene {{ count }} grupos
-    rules: Tiene {{ count }} reglas habilitadas
+    category_trees: '{0}Tiene 0 árboles |{1}Tiene 1 árbol |]1, Inf[Tiene {{ count }} árboles '
+    categories: '{0}y 0 categorías|{1}y 1 categoría|]1, Inf[y {{ count }} categorías'
+    channels: '{0}Tiene 0 canales|{1}Tiene 1 canal|]1, Inf[Tiene {{ count }} canales'
+    locales: '{0}Tiene 0 configuraciones regionales habilitadas|{1}Tiene 1 configuración regional habilitada|]1, Inf[Tiene {{ count }} configuraciones regionales habilitadas'
+    currencies: '{0}Tiene 0 monedas habilitadas|{1}Tiene 1 moneda habilitada|]1, Inf[Tiene {{ count }} monedas habilitadas'
+    attribute_groups: '{0}Tiene 0 grupos de atributos|{1}Tiene 1 grupo de atributos|]1, Inf[Tiene {{ count }} grupos de atributos'
+    attributes: '{0}Tiene 0 atributos|{1}Tiene 1 atributo|]1, Inf[Tiene {{ count }} atributos'
+    families: '{0}Tiene 0 familias|{1}Tiene 1 familia|]1, Inf[Tiene {{ count }} familias'
+    measurements: '{0}Tiene 0 mediciones|{1}Tiene 1 medición|]1, Inf[Tiene {{ count }} mediciones'
+    association_types: '{0}Tiene 0 tipos de asociación|{1}Tiene 1 tipo de asociación|]1, Inf[Tiene {{ count }} tipos de asociación'
+    group_types: '{0}Tiene 0 tipos de grupos|{1}Tiene 1 tipo de grupos|]1, Inf[Tiene {{ count }} tipos de grupos'
+    groups: '{0}Tiene 0 grupos|{1}Tiene 1 grupo|]1, Inf[Tiene {{ count }} grupos'
+    rules: '{0}Tiene 0 reglas habilitadas|{1}Tiene 1 regla habilitada|]1, Inf[Tiene {{ count }} reglas habilitadas'

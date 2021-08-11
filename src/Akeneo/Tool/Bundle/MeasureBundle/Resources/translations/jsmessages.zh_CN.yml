@@ -17,8 +17,6 @@ measurements:
     no_data:
       title: 抱歉，没有测量单位群！
       link: 点击此处进行添加
-    no_result:
-      title: 抱歉，找不到与搜索相符的结果！
     standard_unit: 标准单位
     standard_unit_is_not_editable_after_creation: 可以一劳永逸地设置标准单位，其用于转换其他单位。
     add_new_measurement_family: 添加新的测量单位群
