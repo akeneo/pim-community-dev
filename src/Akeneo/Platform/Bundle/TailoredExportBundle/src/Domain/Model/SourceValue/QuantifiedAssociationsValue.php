@@ -17,14 +17,10 @@ use Webmozart\Assert\Assert;
 
 final class QuantifiedAssociationsValue implements SourceValueInterface
 {
-    /**
-     * @return QuantifiedAssociation[]
-     */
+    /** @var QuantifiedAssociation[] */
     private array $productAssociations;
 
-    /**
-     * @return QuantifiedAssociation[]
-     */
+    /** @var QuantifiedAssociation[] */
     private array $productModelAssociations;
 
     public function __construct(

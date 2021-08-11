@@ -17,19 +17,13 @@ use Webmozart\Assert\Assert;
 
 class SimpleAssociationsValue implements SourceValueInterface
 {
-    /**
-     * @return string[]
-     */
+    /** @var string[] */
     private array $associatedProductIdentifiers;
 
-    /**
-     * @return string[]
-     */
+    /** @var string[] */
     private array $associatedProductModelCodes;
 
-    /**
-     * @return string[]
-     */
+    /** @var string[] */
     private array $associatedGroupCodes;
 
     public function __construct(

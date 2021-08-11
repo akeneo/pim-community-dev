@@ -11,9 +11,9 @@ declare(strict_types=1);
  * file that was distributed with this source code.
  */
 
-namespace Akeneo\Platform\TailoredExport\Application;
+namespace Akeneo\Platform\TailoredExport\Application\ExtractMedia;
 
-final class MediaToExport
+final class ExtractedMedia
 {
     private string $key;
     private string $storage;

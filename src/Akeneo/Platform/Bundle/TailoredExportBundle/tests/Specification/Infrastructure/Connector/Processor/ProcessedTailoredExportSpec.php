@@ -13,7 +13,7 @@ declare(strict_types=1);
 
 namespace Specification\Akeneo\Platform\TailoredExport\Infrastructure\Connector\Processor;
 
-use Akeneo\Platform\TailoredExport\Application\MediaToExport;
+use Akeneo\Platform\TailoredExport\Application\ExtractMedia\ExtractedMedia;
 use Akeneo\Platform\TailoredExport\Infrastructure\Connector\Processor\ProcessedTailoredExport;
 use PhpSpec\ObjectBehavior;
 
@@ -46,7 +46,7 @@ class ProcessedTailoredExportSpec extends ObjectBehavior
 
         $this->beConstructedWith($mappedProducts, $filesToExport);
 
-        $this->getMediaToExport()->shouldReturn($filesToExport);
+        $this->getExtractedMediaCollection()->shouldReturn($filesToExport);
     }
 
     private function getFakeMappedProducts(): array
@@ -61,8 +61,8 @@ class ProcessedTailoredExportSpec extends ObjectBehavior
     private function getFakeFilesToExport(): array
     {
         $filesToExport = [];
-        $filesToExport[] = new MediaToExport('a_key', 'catalog', 'a_path_to_file');
-        $filesToExport[] = new MediaToExport('another_key', 'catalog', 'another_path_to_file');
+        $filesToExport[] = new ExtractedMedia('a_key', 'catalog', 'a_path_to_file');
+        $filesToExport[] = new ExtractedMedia('another_key', 'catalog', 'another_path_to_file');
 
         return $filesToExport;
     }

@@ -11,12 +11,12 @@ declare(strict_types=1);
  * file that was distributed with this source code.
  */
 
-namespace Specification\Akeneo\Platform\TailoredExport\Application;
+namespace Specification\Akeneo\Platform\TailoredExport\Application\ExtractMedia;
 
 use Akeneo\AssetManager\Infrastructure\PublicApi\Enrich\GetMainMediaFileInfoCollectionInterface;
 use Akeneo\AssetManager\Infrastructure\PublicApi\Enrich\MediaFileInfo;
-use Akeneo\Platform\TailoredExport\Application\MediaToExport;
-use Akeneo\Platform\TailoredExport\Application\MediaToExportExtractor;
+use Akeneo\Platform\TailoredExport\Application\ExtractMedia\ExtractedMedia;
+use Akeneo\Platform\TailoredExport\Application\ExtractMedia\ExtractMediaQueryHandler;
 use Akeneo\Platform\TailoredExport\Domain\Model\Column\Column;
 use Akeneo\Platform\TailoredExport\Domain\Model\Column\ColumnCollection;
 use Akeneo\Platform\TailoredExport\Domain\Model\Operation\OperationCollection;
@@ -29,7 +29,7 @@ use Akeneo\Platform\TailoredExport\Domain\Model\SourceValue\FileValue;
 use Akeneo\Platform\TailoredExport\Domain\Model\ValueCollection;
 use PhpSpec\ObjectBehavior;
 
-class MediaToExportExtractorSpec extends ObjectBehavior
+class ExtractMediaQueryHandlerSpec extends ObjectBehavior
 {
     public function let(GetMainMediaFileInfoCollectionInterface $getMainMediaFileInfoCollection)
     {
@@ -38,7 +38,7 @@ class MediaToExportExtractorSpec extends ObjectBehavior
 
     public function it_is_initializable(): void
     {
-        $this->shouldBeAnInstanceOf(MediaToExportExtractor::class);
+        $this->shouldBeAnInstanceOf(ExtractMediaQueryHandler::class);
     }
 
     public function it_extracts_file_media_to_exports(): void
@@ -74,17 +74,17 @@ class MediaToExportExtractorSpec extends ObjectBehavior
             null
         );
 
-        $expectedMediaToExport = [
-            new MediaToExport(
+        $expectedExtractedMedia = [
+            new ExtractedMedia(
                 'a_filekey',
                 'catalog',
                 'files/an_id/an_attribute_code/an_original_filename'
             )
         ];
 
-        $mediaToExport = $this->extract($columnCollection, $valueCollection);
+        $mediaToExport = $this->handle($columnCollection, $valueCollection);
         $mediaToExport->shouldHaveCount(1);
-        $mediaToExport->shouldBeLike($expectedMediaToExport);
+        $mediaToExport->shouldBeLike($expectedExtractedMedia);
     }
 
     public function it_extracts_asset_to_exports(GetMainMediaFileInfoCollectionInterface $getMainMediaFileInfoCollection): void
@@ -123,15 +123,15 @@ class MediaToExportExtractorSpec extends ObjectBehavior
             ['asset_code_1', 'asset_code_2', 'asset_code_3']
         )->willReturn([new MediaFileInfo('a_filekey', 'an_original_filename', 'assetStorage')]);
 
-        $expectedMediaToExport = [
-            new MediaToExport(
+        $expectedExtractedMedia = [
+            new ExtractedMedia(
                 'a_filekey',
                 'assetStorage',
                 'files/an_id/an_attribute_code/an_original_filename'
             )
         ];
 
-        $mediaToExport = $this->extract($columnCollection, $valueCollection);
-        $mediaToExport->shouldBeLike($expectedMediaToExport);
+        $mediaToExport = $this->handle($columnCollection, $valueCollection);
+        $mediaToExport->shouldBeLike($expectedExtractedMedia);
     }
 }

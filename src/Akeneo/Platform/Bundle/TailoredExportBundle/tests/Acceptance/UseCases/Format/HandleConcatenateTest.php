@@ -13,7 +13,7 @@ declare(strict_types=1);
 
 namespace Akeneo\Platform\TailoredExport\Test\Acceptance\UseCases\Format;
 
-use Akeneo\Platform\TailoredExport\Application\ProductMapper;
+use Akeneo\Platform\TailoredExport\Application\MapValues\MapValuesQueryHandler;
 use Akeneo\Platform\TailoredExport\Domain\Model\Column\Column;
 use Akeneo\Platform\TailoredExport\Domain\Model\Column\ColumnCollection;
 use Akeneo\Platform\TailoredExport\Domain\Model\Operation\OperationCollection;
@@ -33,12 +33,12 @@ final class HandleConcatenateTest extends KernelTestCase
     public const ATTRIBUTE_CODE = 'test_attribute';
     public const TARGET_NAME = 'test_column';
 
-    private ?ProductMapper $productMapper;
+    private ?MapValuesQueryHandler $mapValuesQueryHandler;
 
     public function setUp(): void
     {
         self::bootKernel(['debug' => false]);
-        $this->productMapper = self::$container->get('Akeneo\Platform\TailoredExport\Application\ProductMapper');
+        $this->mapValuesQueryHandler = self::$container->get('Akeneo\Platform\TailoredExport\Application\MapValues\MapValuesQueryHandler');
     }
 
     public function test_it_can_concatenate_multiple_sources(): void
@@ -65,7 +65,7 @@ final class HandleConcatenateTest extends KernelTestCase
         $valueCollection->add(new EnabledValue(true), 'enabled', null, null);
         $valueCollection->add(new BooleanValue(false), 'is_active', null, null);
 
-        $mappedProduct = $this->productMapper->map($columnCollection, $valueCollection);
+        $mappedProduct = $this->mapValuesQueryHandler->handle($columnCollection, $valueCollection);
 
         Assert::assertSame([
             self::TARGET_NAME => '0 1'
@@ -91,7 +91,7 @@ final class HandleConcatenateTest extends KernelTestCase
         $valueCollection = new ValueCollection();
         $valueCollection->add(new BooleanValue(false), 'is_active', null, null);
 
-        $mappedProduct = $this->productMapper->map($columnCollection, $valueCollection);
+        $mappedProduct = $this->mapValuesQueryHandler->handle($columnCollection, $valueCollection);
 
         Assert::assertSame([
             self::TARGET_NAME => '0'

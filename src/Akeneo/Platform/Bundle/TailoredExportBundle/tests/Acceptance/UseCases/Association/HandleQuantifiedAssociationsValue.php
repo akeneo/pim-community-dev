@@ -38,13 +38,13 @@ final class HandleQuantifiedAssociationsValue extends AssociationTestCase
         SourceValueInterface $value,
         array $expected
     ): void {
-        $productMapper = $this->getProductMapper();
+        $mapValuesQueryHandler = $this->getMapValuesQueryHandler();
         $this->loadAssociatedEntityLabels();
 
         $columnCollection = $this->createSingleSourceColumnCollection(false, $operations, $selection);
         $valueCollection = $this->createSingleValueValueCollection($value);
 
-        $mappedProduct = $productMapper->map($columnCollection, $valueCollection);
+        $mappedProduct = $mapValuesQueryHandler->handle($columnCollection, $valueCollection);
 
         Assert::assertSame($expected, $mappedProduct);
     }

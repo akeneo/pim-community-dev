@@ -19,8 +19,8 @@ use Akeneo\Pim\Structure\Component\Query\PublicApi\Association\GetAssociationTyp
 use Akeneo\Pim\Structure\Component\Query\PublicApi\Association\LabelCollection;
 use Akeneo\Pim\Structure\Component\Query\PublicApi\AttributeType\Attribute;
 use Akeneo\Pim\Structure\Component\Query\PublicApi\AttributeType\GetAttributes;
-use Akeneo\Platform\TailoredExport\Application\MediaToExportExtractorInterface;
-use Akeneo\Platform\TailoredExport\Application\ProductMapper;
+use Akeneo\Platform\TailoredExport\Application\ExtractMedia\ExtractMediaQueryHandler;
+use Akeneo\Platform\TailoredExport\Application\MapValues\MapValuesQueryHandler;
 use Akeneo\Platform\TailoredExport\Domain\Model\Column\ColumnCollection;
 use Akeneo\Platform\TailoredExport\Domain\Model\SourceValue\StringValue;
 use Akeneo\Platform\TailoredExport\Domain\Model\ValueCollection;
@@ -40,16 +40,16 @@ class ProductExportProcessorSpec extends ObjectBehavior
         GetAssociationTypesInterface $getAssociationTypes,
         ValueCollectionHydrator $valueCollectionHydrator,
         ColumnCollectionHydrator $columnCollectionHydrator,
-        ProductMapper $productMapper,
-        MediaToExportExtractorInterface $mediaToExportExtractor
+        MapValuesQueryHandler $mapValuesQueryHandler,
+        ExtractMediaQueryHandler $extractMediaQueryHandler
     ) {
         $this->beConstructedWith(
             $getAttributes,
             $getAssociationTypes,
             $valueCollectionHydrator,
             $columnCollectionHydrator,
-            $productMapper,
-            $mediaToExportExtractor
+            $mapValuesQueryHandler,
+            $extractMediaQueryHandler
         );
         $this->setStepExecution($stepExecution);
 
@@ -64,8 +64,8 @@ class ProductExportProcessorSpec extends ObjectBehavior
         ValueCollectionHydrator $valueCollectionHydrator,
         ColumnCollectionHydrator $columnCollectionHydrator,
         ColumnCollection $columnCollection,
-        ProductMapper $productMapper,
-        MediaToExportExtractorInterface $mediaToExportExtractor
+        MapValuesQueryHandler $mapValuesQueryHandler,
+        ExtractMediaQueryHandler $extractMediaQueryHandler
     ) {
         $columns = [
             [
@@ -129,8 +129,8 @@ class ProductExportProcessorSpec extends ObjectBehavior
         $columnCollectionHydrator->hydrate($columns, ['name' => $name], ['X_SELL' => $crossSellAssociation])->willReturn($columnCollection);
         $valueCollectionHydrator->hydrate($product, $columnCollection)->willReturn($valueCollection);
 
-        $productMapper->map($columnCollection, $valueCollection)->willReturn($mappedProducts);
-        $mediaToExportExtractor->extract($columnCollection, $valueCollection)->willReturn([]);
+        $mapValuesQueryHandler->handle($columnCollection, $valueCollection)->willReturn($mappedProducts);
+        $extractMediaQueryHandler->handle($columnCollection, $valueCollection)->willReturn([]);
 
         $processedTailoredExport = new ProcessedTailoredExport($mappedProducts, []);
 

@@ -11,7 +11,7 @@ declare(strict_types=1);
  * file that was distributed with this source code.
  */
 
-namespace Akeneo\Platform\TailoredExport\Application;
+namespace Akeneo\Platform\TailoredExport\Application\MapValues;
 
 use Akeneo\Platform\TailoredExport\Application\MapValues\OperationApplier\OperationApplier;
 use Akeneo\Platform\TailoredExport\Application\MapValues\SelectionApplier\SelectionApplier;
@@ -19,7 +19,7 @@ use Akeneo\Platform\TailoredExport\Domain\Model\Column\Column;
 use Akeneo\Platform\TailoredExport\Domain\Model\Column\ColumnCollection;
 use Akeneo\Platform\TailoredExport\Domain\Model\ValueCollection;
 
-class ProductMapper
+class MapValuesQueryHandler
 {
     private OperationApplier $operationApplier;
     private SelectionApplier $selectionApplier;
@@ -32,7 +32,7 @@ class ProductMapper
         $this->selectionApplier = $selectionApplier;
     }
 
-    public function map(ColumnCollection $columnCollection, ValueCollection $valueCollection): array
+    public function handle(ColumnCollection $columnCollection, ValueCollection $valueCollection): array
     {
         $mappedProduct = [];
 

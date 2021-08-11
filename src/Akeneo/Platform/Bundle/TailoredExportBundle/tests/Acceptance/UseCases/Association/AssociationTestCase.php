@@ -13,7 +13,7 @@ declare(strict_types=1);
 
 namespace Akeneo\Platform\TailoredExport\Test\Acceptance\UseCases\Association;
 
-use Akeneo\Platform\TailoredExport\Application\ProductMapper;
+use Akeneo\Platform\TailoredExport\Application\MapValues\MapValuesQueryHandler;
 use Akeneo\Platform\TailoredExport\Domain\Model\Column\Column;
 use Akeneo\Platform\TailoredExport\Domain\Model\Column\ColumnCollection;
 use Akeneo\Platform\TailoredExport\Domain\Model\Operation\OperationCollection;
@@ -35,13 +35,16 @@ abstract class AssociationTestCase extends KernelTestCase
         static::bootKernel(['debug' => false]);
     }
 
-    protected function getProductMapper(): ProductMapper
+    protected function getMapValuesQueryHandler(): MapValuesQueryHandler
     {
-        return static::$container->get('Akeneo\Platform\TailoredExport\Application\ProductMapper');
+        return static::$container->get('Akeneo\Platform\TailoredExport\Application\MapValues\MapValuesQueryHandler');
     }
 
-    protected function createSingleSourceColumnCollection(bool $isQuantified, array $operations, SelectionInterface $selection): ColumnCollection
-    {
+    protected function createSingleSourceColumnCollection(
+        bool $isQuantified,
+        array $operations,
+        SelectionInterface $selection
+    ): ColumnCollection {
         return ColumnCollection::create([
             new Column(self::TARGET_NAME, SourceCollection::create([
                 new AssociationTypeSource(

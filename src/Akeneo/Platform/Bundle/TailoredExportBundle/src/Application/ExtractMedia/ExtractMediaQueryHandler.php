@@ -11,7 +11,7 @@ declare(strict_types=1);
  * file that was distributed with this source code.
  */
 
-namespace Akeneo\Platform\TailoredExport\Application;
+namespace Akeneo\Platform\TailoredExport\Application\ExtractMedia;
 
 use Akeneo\AssetManager\Infrastructure\PublicApi\Enrich\GetMainMediaFileInfoCollectionInterface;
 use Akeneo\AssetManager\Infrastructure\PublicApi\Enrich\MediaFileInfo;
@@ -24,7 +24,7 @@ use Akeneo\Platform\TailoredExport\Domain\Model\SourceValue\FileValue;
 use Akeneo\Platform\TailoredExport\Domain\Model\ValueCollection;
 use Akeneo\Platform\TailoredExport\Infrastructure\Connector\MediaExporterPathGenerator;
 
-final class MediaToExportExtractor implements MediaToExportExtractorInterface
+class ExtractMediaQueryHandler
 {
     private GetMainMediaFileInfoCollectionInterface $getMainMediaFileInfoCollection;
 
@@ -34,9 +34,9 @@ final class MediaToExportExtractor implements MediaToExportExtractorInterface
     }
 
     /**
-     * @return MediaToExport[]
+     * @return ExtractedMedia[]
      */
-    public function extract(ColumnCollection $columnCollection, ValueCollection $valueCollection): array
+    public function handle(ColumnCollection $columnCollection, ValueCollection $valueCollection): array
     {
         $mediaToExports = [];
 
@@ -57,7 +57,7 @@ final class MediaToExportExtractor implements MediaToExportExtractorInterface
         return $mediaToExports;
     }
 
-    private function extractFromFileSource(FileSelectionInterface $selection, FileValue $value): MediaToExport
+    private function extractFromFileSource(FileSelectionInterface $selection, FileValue $value): ExtractedMedia
     {
         $exportDirectory = MediaExporterPathGenerator::generate(
             $value->getEntityIdentifier(),
@@ -68,7 +68,7 @@ final class MediaToExportExtractor implements MediaToExportExtractorInterface
 
         $path = sprintf('%s%s', $exportDirectory, $value->getOriginalFilename());
 
-        return new MediaToExport(
+        return new ExtractedMedia(
             $value->getKey(),
             $value->getStorage(),
             $path
@@ -76,7 +76,7 @@ final class MediaToExportExtractor implements MediaToExportExtractorInterface
     }
 
     /**
-     * @return MediaToExport[]
+     * @return ExtractedMedia[]
      */
     private function extractFromAssetCollectionSource(
         AssetCollectionSelectionInterface $selection,
@@ -100,7 +100,7 @@ final class MediaToExportExtractor implements MediaToExportExtractorInterface
 
                 $path = sprintf('%s%s', $exportDirectory, $fileInfo->getOriginalFilename());
 
-                $accumulator[] = new MediaToExport(
+                $accumulator[] = new ExtractedMedia(
                     $fileInfo->getFileKey(),
                     $fileInfo->getStorage(),
                     $path
