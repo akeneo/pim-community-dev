@@ -1,29 +1,16 @@
 import React, {FC, useRef} from 'react';
 import MarketplaceHelper from './MarketplaceHelper';
-import {
-    AppIllustration,
-    ArrowSimpleUpIcon,
-    getColor,
-    getFontSize,
-    IconButton,
-    SectionTitle,
-} from 'akeneo-design-system';
-import {Grid as CardGrid, MarketplaceCard} from './MarketplaceCard';
+import {ArrowSimpleUpIcon, getColor, IconButton} from 'akeneo-design-system';
+import {MarketplaceCard} from './MarketplaceCard';
 import {Extension, Extensions} from '../../model/extension';
 import {useTranslate} from '../../shared/translate';
 import styled from 'styled-components';
 import {useDisplayScrollTopButton} from '../../shared/scroll/hooks/useDisplayScrollTopButton';
 import findScrollParent from '../../shared/scroll/utils/findScrollParent';
-
-const EmptyContainer = styled.section`
-    text-align: center;
-    padding: 40px;
-`;
-
-const EmptyMessage = styled.p`
-    color: ${getColor('grey', 140)};
-    font-size: ${getFontSize('big')};
-`;
+import {App, Apps} from '../../model/app';
+import {Section} from './Section';
+import {ActivateAppButton} from './ActivateAppButton';
+import {useFeatureFlags} from '../../shared/feature-flags';
 
 const ScrollToTop = styled(IconButton)`
     position: fixed;
@@ -43,15 +30,24 @@ const ScrollToTop = styled(IconButton)`
 
 type Props = {
     extensions: Extensions;
+    apps: Apps;
 };
 
-export const Marketplace: FC<Props> = ({extensions}) => {
+export const Marketplace: FC<Props> = ({extensions, apps}) => {
     const translate = useTranslate();
+    const featureFlag = useFeatureFlags();
     const ref = useRef(null);
     const scrollContainer = findScrollParent(ref.current);
     const displayScrollButton = useDisplayScrollTopButton(ref);
-    const extensionList = extensions.extensions.map((extension: Extension) => (
-        <MarketplaceCard key={extension.id} extension={extension} />
+    const extensionsList = extensions.extensions.map((extension: Extension) => (
+        <MarketplaceCard key={extension.id} item={extension} />
+    ));
+    const appsList = apps.apps.map((app: App) => (
+        <MarketplaceCard
+            key={app.id}
+            item={app}
+            additionalActions={[<ActivateAppButton key={1} url={app.activate_url} />]}
+        />
     ));
     const handleScrollTop = () => {
         scrollContainer.scrollTo(0, 0);
@@ -60,40 +56,43 @@ export const Marketplace: FC<Props> = ({extensions}) => {
     return (
         <>
             <div ref={ref} />
-            <MarketplaceHelper count={extensions.total} />
+            <MarketplaceHelper count={extensions.total + apps.total} />
 
-            <SectionTitle>
-                <SectionTitle.Title>
-                    {translate('akeneo_connectivity.connection.connect.marketplace.extensions.title')}
-                </SectionTitle.Title>
-                <SectionTitle.Spacer />
-                <SectionTitle.Information>
-                    {translate(
-                        'akeneo_connectivity.connection.connect.marketplace.extensions.total',
+            {featureFlag.isEnabled('marketplace_activate') && (
+                <Section
+                    title={translate('akeneo_connectivity.connection.connect.marketplace.apps.title')}
+                    information={translate(
+                        'akeneo_connectivity.connection.connect.marketplace.apps.total',
                         {
-                            total: extensions.total.toString(),
+                            total: apps.total.toString(),
                         },
-                        extensions.total
+                        apps.total
                     )}
-                </SectionTitle.Information>
-            </SectionTitle>
+                    emptyMessage={translate('akeneo_connectivity.connection.connect.marketplace.apps.empty')}
+                >
+                    {appsList}
+                </Section>
+            )}
+            <Section
+                title={translate('akeneo_connectivity.connection.connect.marketplace.extensions.title')}
+                information={translate(
+                    'akeneo_connectivity.connection.connect.marketplace.extensions.total',
+                    {
+                        total: extensions.total.toString(),
+                    },
+                    extensions.total
+                )}
+                emptyMessage={translate('akeneo_connectivity.connection.connect.marketplace.extensions.empty')}
+            >
+                {extensionsList}
+            </Section>
+
             {displayScrollButton && (
                 <ScrollToTop
                     onClick={handleScrollTop}
                     title={translate('akeneo_connectivity.connection.connect.marketplace.scroll_to_top')}
                     icon={<ArrowSimpleUpIcon />}
                 />
-            )}
-
-            {extensions.total === 0 ? (
-                <EmptyContainer>
-                    <AppIllustration size={128} />
-                    <EmptyMessage>
-                        {translate('akeneo_connectivity.connection.connect.marketplace.extensions.empty')}
-                    </EmptyMessage>
-                </EmptyContainer>
-            ) : (
-                <CardGrid> {extensionList} </CardGrid>
             )}
         </>
     );

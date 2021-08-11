@@ -1,9 +1,10 @@
-import React, {FC} from 'react';
+import React, {FC, ReactNode} from 'react';
 import styled from 'styled-components';
 import certifiedIcon from '../../common/assets/icons/certified.svg';
 import {getColor, getFontSize, Button, Link} from 'akeneo-design-system';
 import {useTranslate} from '../../shared/translate';
 import {Extension} from '../../model/extension';
+import {App} from '../../model/app';
 
 const Grid = styled.section`
     margin: 20px 0;
@@ -117,43 +118,45 @@ const Actions = styled.div`
 `;
 
 type Props = {
-    extension: Extension;
+    item: Extension | App;
+    additionalActions?: ReactNode[];
 };
 
-const MarketplaceCard: FC<Props> = ({extension}) => {
+const MarketplaceCard: FC<Props> = ({item, additionalActions}) => {
     const translate = useTranslate();
 
     const normalizedDescription =
-        null !== extension.description && extension.description.length > 150 ? (
+        null !== item.description && item.description.length > 150 ? (
             <>
-                {extension.description.substring(0, 139)}&hellip;&nbsp;
-                <Link decorated href={extension.url} target='_blank'>
+                {item.description.substring(0, 139)}&hellip;&nbsp;
+                <Link decorated href={item.url} target='_blank'>
                     {translate('akeneo_connectivity.connection.connect.marketplace.card.read_more')}
                 </Link>
             </>
         ) : (
-            extension.description
+            item.description
         );
 
     return (
         <CardContainer>
-            <Logo src={extension.logo} alt={extension.name} />
+            <Logo src={item.logo} alt={item.name} />
             <TextInformation>
-                <Name>{extension.name}</Name>
+                <Name>{item.name}</Name>
                 <Author>
                     {translate('akeneo_connectivity.connection.connect.marketplace.card.developed_by')}
                     &nbsp;
-                    {extension.author}
+                    {item.author}
                 </Author>
-                {extension.partner && <PartnerTag>{extension.partner}</PartnerTag>}
-                {extension.categories.length > 0 && <Tag>{extension.categories[0]}</Tag>}
+                {item.partner && <PartnerTag>{item.partner}</PartnerTag>}
+                {item.categories.length > 0 && <Tag>{item.categories[0]}</Tag>}
                 <Description>{normalizedDescription}</Description>
             </TextInformation>
-            {extension.certified && <CertifiedIcon />}
+            {item.certified && <CertifiedIcon />}
             <Actions>
-                <Button ghost level='tertiary' href={extension.url} target='_blank'>
+                <Button ghost level='tertiary' href={item.url} target='_blank'>
                     {translate('akeneo_connectivity.connection.connect.marketplace.card.more_info')}
                 </Button>
+                {additionalActions}
             </Actions>
         </CardContainer>
     );

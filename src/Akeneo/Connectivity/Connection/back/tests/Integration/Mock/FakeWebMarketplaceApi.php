@@ -41,4 +41,14 @@ class FakeWebMarketplaceApi implements WebMarketplaceApiInterface
             'items' => array_slice($this->extensions, $offset, $limit),
         ];
     }
+
+    public function getApps(int $offset = 0, int $limit = 10): array
+    {
+        return [
+            'total' => count($this->extensions),
+            'offset' => $offset,
+            'limit' => $limit,
+            'items' => array_slice($this->extensions, $offset, $limit),
+        ];
+    }
 }
