@@ -13,6 +13,7 @@ import {
   useRoute,
   PimView,
   PageHeader,
+  useFeatureFlags,
 } from '@akeneo-pim-community/shared';
 import {useMeasurementFamilies} from '../../hooks/use-measurement-families';
 import {sortMeasurementFamily, filterOnLabelOrCode, MeasurementFamilyCode} from '../../model/measurement-family';
@@ -49,6 +50,7 @@ const List = () => {
   const [measurementFamilies] = useMeasurementFamilies();
   const [isCreateModalOpen, openCreateModal, closeCreateModal] = useBooleanState(false);
   const settingsHref = useRoute('pim_settings_index');
+  const featureFlags = useFeatureFlags();
 
   const handleModalClose = useCallback(
     (createdMeasurementFamilyCode?: MeasurementFamilyCode) => {
@@ -105,12 +107,17 @@ const List = () => {
         </PageHeader.Title>
       </PageHeader>
       <PageContent>
-        <Information illustration={<MeasurementIllustration />} title={`👋  ${translate('measurements.helper.title')}`}>
-          <p>{translate('measurements.helper.text')}</p>
-          <Link href="https://help.akeneo.com/pim/articles/what-about-measurements.html" target="_blank">
-            {translate('measurements.helper.link')}
-          </Link>
-        </Information>
+        {false === featureFlags.isEnabled('free_trial') && (
+          <Information
+            illustration={<MeasurementIllustration />}
+            title={`👋  ${translate('measurements.helper.title')}`}
+          >
+            <p>{translate('measurements.helper.text')}</p>
+            <Link href="https://help.akeneo.com/pim/articles/what-about-measurements.html" target="_blank">
+              {translate('measurements.helper.link')}
+            </Link>
+          </Information>
+        )}
         {null === filteredMeasurementFamilies && (
           <TablePlaceholder className={`AknLoadingPlaceHolderContainer`}>
             {[...Array(5)].map((_e, i) => (
@@ -138,7 +145,7 @@ const List = () => {
             {0 === filteredMeasurementFamiliesCount && (
               <NoDataSection>
                 <MeasurementIllustration />
-                <NoDataTitle>{translate('measurements.family.no_result.title')}</NoDataTitle>
+                <NoDataTitle>{translate('pim_common.no_search_result')}</NoDataTitle>
               </NoDataSection>
             )}
             {0 < filteredMeasurementFamiliesCount && (

@@ -109,7 +109,6 @@ pim_enrich.entity.product:
         quantity: Ilość
       search:
         placeholder: Szukaj po etykiecie lub identyfikatorze
-      no_result: Przepraszamy, brak wyników dla tego wyszukiwania.
       no_data: Brak powiązanych produktów
       remove: Usuń powiązanie
       edit: Edytuj produkt

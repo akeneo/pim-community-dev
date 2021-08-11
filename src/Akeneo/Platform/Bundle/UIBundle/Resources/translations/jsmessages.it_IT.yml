@@ -238,6 +238,7 @@ pim_common:
   parent: Genitore
   groups: Gruppi
   products: Prodotti
+  product_models: Modelli di prodotto
   more: Altro
 error:
   exception: Accidenti! Si è verificato un errore {{ status_code}}...
@@ -373,15 +374,16 @@ pim_settings:
   catalog_settings: Impostazioni catalogo
   product_settings: Impostazioni prodotti
   count:
-    categories: Hai {{ countTrees }} alberi e {{ countCategories }} categorie
-    channels: Hai {{ count }} canali
-    locales: Hai {{ count }} impostazioni locali attivate
-    currencies: Hai {{ count }} valute attivate
-    attribute_groups: Hai {{ count }} gruppi di attributi
-    attributes: Hai {{ count }} attributi
-    families: Hai {{ count }} famiglie
-    measurements: Hai {{ count }} unità di misura
-    association_types: Hai {{ count }} tipi di associazione
-    group_types: Hai {{ count }} tipi di gruppo
-    groups: Hai {{ count }} gruppi
-    rules: Hai {{ count }} regole attivate
+    category_trees: '{0}Hai 0 alberi <unk>{1}Hai 1 albero <unk> ]1, Inf[Hai {{ count }} alberi '
+    categories: '{0}e 0 categorie|{1}e 1 categoria|]1, Inf[e {{ count }} categorie'
+    channels: '{0}Hai 0 canali|{1}Hai 1 canale|]1, Inf[Hai {{ count }} canali'
+    locales: '{0}Hai 0 impostazioni locali abilitate|{1}Hai 1 impostazione locale abilitata|]1, Inf[Hai {{ count }} impostazioni locali abilitate'
+    currencies: '{0}Hai 0 valute abilitate|{1}Hai 1 valuta abilitata|]1, Inf[Hai {{ count }} valute abilitate'
+    attribute_groups: '{0}Hai 0 gruppi di attributo|{1}Hai 1 gruppo di attributo|]1, Inf[Hai {{ count }} gruppi di attributo'
+    attributes: '{0}Hai 0 attributi|{1}Hai 1 attributo|]1, Inf[Hai {{ count }} attributi'
+    families: '{0}Hai 0 famiglie|{1}Hai 1 famiglia|]1, Inf[Hai {{ count }} famiglie'
+    measurements: '{0}Hai 0 unità di misura|{1}Hai 1 unità di misura|]1, Inf[Hai {{ count }} unità di misura'
+    association_types: '{0}Hai 0 tipi di associazione|{1}Hai 1 tipo di associazione|]1, Inf[Hai {{ count }} tipi di associazione'
+    group_types: '{0}Hai 0 tipi di gruppo|{1}Hai 1 tipo di gruppo|]1, Inf[Hai {{ count }} tipi di gruppo'
+    groups: '{0}Hai 0 gruppi|{1}Hai 1 gruppo|]1, Inf[Hai {{ count }} gruppi'
+    rules: '{0}Hai 0 regole abilitate|{1}Hai 1 regola abilitata|]1, Inf[Hai {{ count }} regole abilitate'

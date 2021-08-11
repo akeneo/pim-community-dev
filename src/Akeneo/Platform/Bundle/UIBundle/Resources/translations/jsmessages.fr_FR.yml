@@ -372,16 +372,3 @@ pim_settings:
   settings_menu: Menu des paramètres
   catalog_settings: Paramètres du catalogue
   product_settings: Paramètres produit
-  count:
-    categories: Vous avez {{ countTrees }} arbres et {{ countCategories }} catégories
-    channels: Vous avez {{ count }} canaux
-    locales: Vous avez {{ count }} locales activées
-    currencies: Vous avez {{ count }} devises activées
-    attribute_groups: Vous avez {{ count }} groupes d'attributs
-    attributes: Vous avez {{ count }} attributs
-    families: Vous avez {{ count }} familles
-    measurements: Vous avez {{ count }} mesures
-    association_types: Vous avez {{ count }} types d'association
-    group_types: Vous avez {{ count }} types de groupe
-    groups: Vous avez {{ count }} groupes
-    rules: Vous avez {{ count }} règles activées
