@@ -149,4 +149,132 @@ class App
             'callback_url' => $this->callbackUrl,
         ];
     }
+
+    public function getId(): string
+    {
+        return $this->id;
+    }
+
+    public function setId(string $id): self
+    {
+        $this->id = $id;
+        return $this;
+    }
+
+    public function getName(): string
+    {
+        return $this->name;
+    }
+
+    public function setName(string $name): self
+    {
+        $this->name = $name;
+        return $this;
+    }
+
+    public function getLogo(): string
+    {
+        return $this->logo;
+    }
+
+    public function setLogo(string $logo): self
+    {
+        $this->logo = $logo;
+        return $this;
+    }
+
+    public function getAuthor(): string
+    {
+        return $this->author;
+    }
+
+    public function setAuthor(string $author): self
+    {
+        $this->author = $author;
+        return $this;
+    }
+
+    public function getPartner(): ?string
+    {
+        return $this->partner;
+    }
+
+    public function setPartner(?string $partner): self
+    {
+        $this->partner = $partner;
+        return $this;
+    }
+
+    public function getDescription(): ?string
+    {
+        return $this->description;
+    }
+
+    public function setDescription(?string $description): self
+    {
+        $this->description = $description;
+        return $this;
+    }
+
+    public function getUrl(): string
+    {
+        return $this->url;
+    }
+
+    public function setUrl(string $url): self
+    {
+        $this->url = $url;
+        return $this;
+    }
+
+    public function isCertified(): bool
+    {
+        return $this->certified;
+    }
+
+    public function setCertified(bool $certified): self
+    {
+        $this->certified = $certified;
+        return $this;
+    }
+
+    /**
+     * @return string[]
+     */
+    public function getCategories(): array
+    {
+        return $this->categories;
+    }
+
+    /**
+     * @param string[] $categories
+     */
+    public function setCategories(array $categories): self
+    {
+        $this->categories = $categories;
+        return $this;
+    }
+
+    public function getActivateUrl(): string
+    {
+        return $this->activateUrl;
+    }
+
+    public function setActivateUrl(string $activateUrl): self
+    {
+        $this->activateUrl = $activateUrl;
+        return $this;
+    }
+
+    public function getCallbackUrl(): string
+    {
+        return $this->callbackUrl;
+    }
+
+    public function setCallbackUrl(string $callbackUrl): self
+    {
+        $this->callbackUrl = $callbackUrl;
+        return $this;
+    }
+
 }

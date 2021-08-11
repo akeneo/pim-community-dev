@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Akeneo\Connectivity\Connection\Infrastructure\Apps\OAuth;
 
+use Akeneo\Connectivity\Connection\Domain\Marketplace\Model\App;
 use Akeneo\Tool\Bundle\ApiBundle\Entity\Client;
 use FOS\OAuthServerBundle\Model\ClientManagerInterface;
 use OAuth2\OAuth2;
@@ -21,16 +22,16 @@ class ClientProvider implements ClientProviderInterface
         $this->clientManager = $clientManager;
     }
 
-    public function findOrCreateClient($app): Client
+    public function findOrCreateClient(App $app): Client
     {
         $appId = $app->getId();
 
-        $client = $this->clientManager->findClientBy(['marketplace_public_app_id' => $appId]);
+        $client = $this->clientManager->findClientBy(['marketplacePublicAppId' => $appId]);
         if ($client === null) {
             /** @var Client $client */
             $client = $this->clientManager->createClient();
 
-            $client->setRedirectUris([$app->callbackUrl()]);
+            $client->setRedirectUris([$app->getCallbackUrl()]);
             $client->setAllowedGrantTypes([OAuth2::GRANT_TYPE_AUTH_CODE]); //ToDO test grant type implicit
             $client->setMarketplacePublicAppId($appId);
 

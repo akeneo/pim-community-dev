@@ -51,4 +51,9 @@ class FakeWebMarketplaceApi implements WebMarketplaceApiInterface
             'items' => array_slice($this->extensions, $offset, $limit),
         ];
     }
+
+    public function getApp(string $id): ?array
+    {
+        return null;
+    }
 }

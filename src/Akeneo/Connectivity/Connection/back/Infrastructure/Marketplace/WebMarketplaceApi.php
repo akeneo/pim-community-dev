@@ -46,6 +46,14 @@ class WebMarketplaceApi implements WebMarketplaceApiInterface
         return json_decode(file_get_contents($this->fixturePath . 'marketplace-data-apps.json'), true);
     }
 
+    public function getApp(string $id): ?array
+    {
+        $apps = json_decode(file_get_contents($this->fixturePath . 'marketplace-data-apps.json'), true);
+        $yellApp = $apps['items'][0];
+
+        return $yellApp['id'] === $id ? $yellApp : null;
+    }
+
     public function setFixturePath(string $fixturePath)
     {
         $this->fixturePath = $fixturePath;

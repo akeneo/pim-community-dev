@@ -51,4 +51,22 @@ interface WebMarketplaceApiInterface
      * }
      */
     public function getApps(int $offset = 0, int $limit = 10): array;
+
+
+    /**
+     * @return null | array{
+     *      id: string,
+     *      name: string,
+     *      logo: string,
+     *      author: string,
+     *      partner?: string,
+     *      description: string,
+     *      url: string,
+     *      categories: array<string>,
+     *      certified?: bool,
+     *      activate_url: string,
+     *      callback_url: string,
+     * }
+     */
+    public function getApp(string $id): ?array;
 }

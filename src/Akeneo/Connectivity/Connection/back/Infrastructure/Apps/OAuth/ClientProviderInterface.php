@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Akeneo\Connectivity\Connection\Infrastructure\Apps\OAuth;
 
+use Akeneo\Connectivity\Connection\Domain\Marketplace\Model\App;
 use Akeneo\Tool\Bundle\ApiBundle\Entity\Client;
 
 /**
@@ -14,8 +15,8 @@ interface ClientProviderInterface
 {
     /**
      * Provides client given App identifier, creates a new one if none found
-     * @param $app
+     * @param App $app
      * @return Client
      */
-    public function findOrCreateClient($app): Client;
+    public function findOrCreateClient(App $app): Client;
 }
