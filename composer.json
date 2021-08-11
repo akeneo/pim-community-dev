@@ -62,7 +62,7 @@
         "ext-json": "*",
         "akeneo/pim-growth-edition": "*@dev",
         "akeneo/pim-community-dev": "dev-master",
-        "akeneo/pim-onboarder": "^4.3.8",
+        "akeneo/pim-onboarder": "dev-master@dev",
         "hslavich/oneloginsaml-bundle": "1.5.1",
         "justinrainbow/json-schema": "^5.2",
         "phpseclib/phpseclib": "2.0.31",
