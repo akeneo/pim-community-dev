@@ -4,6 +4,7 @@ import {filterErrors, useTranslate} from '@akeneo-pim-community/shared';
 import {AssociationTypeConfiguratorProps} from '../../../models';
 import {isQuantifiedAssociationTypeSource} from './model';
 import {QuantifiedAssociationTypeSelector} from './QuantifiedAssociationTypeSelector';
+import {InvalidAssociationTypeSourceError} from '../error';
 
 const QuantifiedAssociationTypeConfigurator = ({
   source,
@@ -14,9 +15,9 @@ const QuantifiedAssociationTypeConfigurator = ({
   const [isSelectorCollapsed, toggleSelectorCollapse] = useState<boolean>(true);
 
   if (!isQuantifiedAssociationTypeSource(source)) {
-    console.error(`Invalid source data "${source.code}" for quantified association configurator`);
-
-    return null;
+    throw new InvalidAssociationTypeSourceError(
+      `Invalid source data "${source.code}" for quantified association configurator`
+    );
   }
 
   return (

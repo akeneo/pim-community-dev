@@ -3,6 +3,7 @@ import {screen} from '@testing-library/react';
 import {renderWithProviders} from '@akeneo-pim-community/shared';
 import {TextConfigurator} from './TextConfigurator';
 import {getDefaultTextSource} from './model';
+import {getDefaultDateSource} from '../Date/model';
 
 const attribute = {
   code: 'text',
@@ -29,4 +30,22 @@ test('it displays a text configurator', () => {
   expect(
     screen.getByText('akeneo.tailored_export.column_details.sources.no_source_configuration.title')
   ).toBeInTheDocument();
+});
+
+test('it tells when the source data is invalid', () => {
+  const mockedConsole = jest.spyOn(console, 'error').mockImplementation();
+  const dateAttribute = {...attribute, type: 'pim_catalog_date', code: 'date_attribute'};
+
+  expect(() => {
+    renderWithProviders(
+      <TextConfigurator
+        source={getDefaultDateSource(dateAttribute, null, null)}
+        attribute={dateAttribute}
+        validationErrors={[]}
+        onSourceChange={jest.fn()}
+      />
+    );
+  }).toThrow('Invalid source data "date_attribute" for text configurator');
+
+  mockedConsole.mockRestore();
 });

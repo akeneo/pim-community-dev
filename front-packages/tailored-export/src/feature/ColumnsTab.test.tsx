@@ -65,7 +65,7 @@ test('It opens the source panel related to the column selected', async () => {
     <ColumnsTab
       columnsConfiguration={columnsConfiguration}
       validationErrors={[]}
-      onColumnsConfigurationChange={jest.fn}
+      onColumnsConfigurationChange={jest.fn()}
     />
   );
 

@@ -4,15 +4,14 @@ import {filterErrors, useTranslate} from '@akeneo-pim-community/shared';
 import {AttributeConfiguratorProps} from '../../../models';
 import {DateSelector} from './DateSelector';
 import {isDateSource} from './model';
+import {InvalidAttributeSourceError} from '../error';
 
 const DateConfigurator = ({source, validationErrors, onSourceChange}: AttributeConfiguratorProps) => {
   const translate = useTranslate();
   const [isSelectorCollapsed, toggleSelectorCollapse] = useState<boolean>(true);
 
   if (!isDateSource(source)) {
-    console.error(`Invalid source data "${source.code}" for date configurator`);
-
-    return null;
+    throw new InvalidAttributeSourceError(`Invalid source data "${source.code}" for date configurator`);
   }
 
   return (

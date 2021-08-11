@@ -126,6 +126,7 @@ services:
         class: 'Akeneo\Pim\Permission\Bundle\Persistence\Sql\LocaleRight\GetAllViewableLocalesForUser'
         arguments:
             - '@database_connection'
+        tags: ['akeneo.pim.cached_query']
 
     akeneo.pim.enrichment.category.get_viewable_category_codes:
         class: 'Akeneo\Pim\Permission\Bundle\Enrichment\Storage\Sql\Category\GetViewableCategoryCodes'

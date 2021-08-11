@@ -6,6 +6,12 @@ akeneo.tailored_export:
         label: Geef voor de volledigheid de talen aan
         placeholder: Selecteer enkele talen
         remove: Verwijder de taal
+    quality_score:
+      quality_score:
+        label: Kwaliteitsscore
+        remove: Kwaliteitsscore verwijderen
+      locales:
+        label: Geef de talen voor de kwaliteitsscore op
   form:
     job_instance:
       tab:
@@ -25,7 +31,7 @@ akeneo.tailored_export:
       remove: Kolom verwijderen
       no_source: Geef de bron van de inhoud op
     no_column_selection:
-      title: Uw exportprofiel is leeg. Voeg uw eerste kolom toe.
+      title: Uw exportprofiel is leeg.
       subtitle: Klik op 'Eerste kolom toevoegen' om uw exporttabel te gaan bouwen.
       link: Kijk in ons helpcenter voor meer informatie.
       add_column: Eerste kolom toevoegen
@@ -34,13 +40,17 @@ akeneo.tailored_export:
       title: Bronnen
       add: Bron toevoegen
       no_result: Er zijn geen resultaten.
-      locale_specific.info: Dit attribuut heeft een waarde per taal.
+      locale_specific: Dit attribuut is taalspecifiek.
       remove:
         title: bron
         text: Weet u zeker dat u deze bron wilt verwijderen?
         button: Deze bron verwijderen
       no_source_configuration:
         title: Er zijn geen bewerkingen beschikbaar voor deze bron. De waarde wordt geëxporteerd zoals hij er nu staat.
+      deleted_attribute:
+        title: Dit attribuut is verwijderd, u kunt het niet meer als bron gebruiken.
+      deleted_association_type:
+        title: Dit associatietype is verwijderd, u kunt het niet meer als bron gebruiken.
       no_source_selected:
         title: Klik op 'Bron toevoegen' om de inhoud van de kolom op te geven.
         link: Kijk in ons helpcenter voor meer informatie.
@@ -48,6 +58,11 @@ akeneo.tailored_export:
         title: Nadat u de eerste kolom heeft gedefinieerd, kunt u uw eerste bron selecteren.
       selection:
         title: Selectie
+        collection_separator:
+          title: Scheidingsteken
+          comma: Komma (,)
+          semicolon: Puntkomma (;)
+          pipe: Sluisteken (|)
         type:
           amount: Bedrag
           currency: Valuta
@@ -59,8 +74,6 @@ akeneo.tailored_export:
           information:
             locale: Als het attribuut dat gebruikt wordt als label een waarde per locatie heeft, kunt u een specifieke taal selecteren.
             channel: Als het attribuut dat gebruikt wordt als label een waarde per kanaal heeft, kunt u een specifiek kanaal selecteren.
-        code_label:
-          information: Voor dit attribuut kunt u ofwel de code of het label exporteren.
         measurement:
           information: Voor dit attribuut kunt u de waarde of de code of het label van de eenheid exporteren.
           value: Waarde
@@ -68,9 +81,24 @@ akeneo.tailored_export:
           unit_code: Code van eenheid
           unit_label: Label van eenheid
         price:
-          information: Voor dit attribuut kunt u het bedrag of de valuta exporteren.
+          currency_code: Valutacode
+          currency_label: Valutalabel
+          currency_locale: Taal voor valuta
+          information: Voor dit attribuut kunt u de valutacode, het valutabelabel of het bedrag exporteren.
         file:
-          information: Voor dit attribuut kunt u het pad, de bestandssleuten of de naam exporteren.
+          information: Voor dit attribuut kunt u het pad, de bestandssleutel of de bestandsnaam exporteren.
+        decimal_separator:
+          title: Decimaal scheidingsteken
+          comma: Komma (,)
+          dot: Punt (.)
+          arabic_comma: Decimaal scheidingsteken voor Arabisch (٫)
+        quantified_association:
+          quantity: Aantal
+        association:
+          entity_type: Type entiteit
+          information:
+            locale: Als het attribuut dat als label wordt gebruikt een waarde per taal heeft, kunt u een specifieke taal selecteren.
+            channel: Als het attribuut dat als label wordt gebruikt een waarde per kanaal heeft, kunt u een specifiek kanaal selecteren.
       operation:
         replacement:
           title: Waarde vervangen
@@ -80,15 +108,26 @@ akeneo.tailored_export:
   column:
     delete_message: Weet u zeker dat u deze kolom wilt verwijderen?
   validation:
+    required: Deze waarde is verplicht.
+    max_length_reached: Deze waarde is te lang. Hij mag {{ limit }} tekens of minder bevatten.
     columns:
       max_column_count_reached: U hebt de limiet van {{ limit }} kolommen bereikt. U kunt geen kolommen meer toevoegen aan uw export.
       target:
         should_not_be_blank: Geef een kolomnaam op.
-        max_length_reached: Kolomnaam is te lang. Hij moet {{ limit }} tekens of minder bevatten.
+        max_length_reached: De kolomnaam is te lang. Hij mag {{ limit }} tekens of minder bevatten.
         should_be_unique: Deze kolomnaam bestaat al, voer een nieuwe naam in.
     sources:
       max_source_count_reached: U hebt de limiet van {{ limit }} bronnen bereikt. U kunt geen bronnen meer toevoegen aan uw export.
+      association_type_should_exist: Het associatietype {{ association_type_code }} bestaat niet. Maak het aan of kies een andere bron.
     locale:
-      should_be_active: De taal {{ locale_code }} moet actief zijn.
+      should_be_active: De taal {{ locale_code }} is gedeactiveerd. Activeer deze opnieuw of selecteer een andere taal.
+      should_be_bound_to_channel: De taal {{ locale_code }} is gedeactiveerd voor het kanaal {{ channel_code }}. Activeer het kanaal opnieuw of selecteer een andere taal.
     channel:
-      should_exist: Het kanaal {{ channel_code }} moet actief zijn.
+      should_exist: Het kanaal {{ channel_code }} is verwijderd. Selecteer een ander kanaal.
+    attribute:
+      should_exist: Het attribuut {{ attribute_code }} bestaat niet. Maak het aan of kies een andere bron.
+      locale_should_not_be_blank: Het attribuut {{ attribute_code }} bevat nu een waarde per taal. Maak deze aan of kies een andere bron.
+      channel_should_not_be_blank: Het attribuut {{ attribute_code }} bevat nu een waarde per kanaal. Maak dit aan of kies een andere bron.
+      locale_should_be_blank: Het attribuut {{ attribute_code }} bevat geen waarde per taal meer. Maak deze aan of kies een andere bron.
+      channel_should_be_blank: Het attribuut {{ attribute_code }} bevat geen waarde per kanaal meer. Maak dit aan of kies een andere bron.
+      invalid_specific_locale: Het attribuut {{ attribute_code }} is taalspecifiek. Selecteer een andere taal.

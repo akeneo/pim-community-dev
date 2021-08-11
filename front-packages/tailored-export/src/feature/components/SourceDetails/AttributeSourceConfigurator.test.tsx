@@ -19,7 +19,7 @@ test('it displays source configurator', async () => {
   };
 
   await renderWithProviders(
-    <AttributeSourceConfigurator source={source} validationErrors={[]} onSourceChange={jest.fn} />
+    <AttributeSourceConfigurator source={source} validationErrors={[]} onSourceChange={jest.fn()} />
   );
 
   expect(
@@ -41,7 +41,7 @@ test('it displays locale dropdown when attribute is localizable', async () => {
   };
 
   await renderWithProviders(
-    <AttributeSourceConfigurator source={source} validationErrors={[]} onSourceChange={jest.fn} />
+    <AttributeSourceConfigurator source={source} validationErrors={[]} onSourceChange={jest.fn()} />
   );
 
   expect(screen.getByLabelText(/pim_common.locale/i)).toBeInTheDocument();
@@ -62,7 +62,7 @@ test('it displays a filtered locale dropdown when attribute is localizable and l
   };
 
   await renderWithProviders(
-    <AttributeSourceConfigurator source={source} onSourceChange={jest.fn} validationErrors={[]} />
+    <AttributeSourceConfigurator source={source} onSourceChange={jest.fn()} validationErrors={[]} />
   );
 
   userEvent.click(screen.getByLabelText(/pim_common.locale/i));
@@ -85,7 +85,7 @@ test('it displays a channel dropdown when attribute is scopable', async () => {
   };
 
   await renderWithProviders(
-    <AttributeSourceConfigurator source={source} validationErrors={[]} onSourceChange={jest.fn} />
+    <AttributeSourceConfigurator source={source} validationErrors={[]} onSourceChange={jest.fn()} />
   );
 
   expect(screen.queryByLabelText(/pim_common.locale/i)).not.toBeInTheDocument();
@@ -106,7 +106,7 @@ test('it displays a channel dropdown when attribute is scopable and localizable'
   };
 
   await renderWithProviders(
-    <AttributeSourceConfigurator source={source} validationErrors={[]} onSourceChange={jest.fn} />
+    <AttributeSourceConfigurator source={source} validationErrors={[]} onSourceChange={jest.fn()} />
   );
 
   expect(screen.getByLabelText(/pim_common.locale/i)).toBeInTheDocument();
@@ -250,5 +250,32 @@ test('it renders nothing if the configurator is unknown', async () => {
   );
 
   expect(mockedConsole).toHaveBeenCalledWith('No configurator found for "pim_catalog_nothing" attribute type');
+  mockedConsole.mockRestore();
+});
+
+test('it renders an invalid attribute placeholder when the source is invalid', async () => {
+  const mockedConsole = jest.spyOn(console, 'error').mockImplementation();
+  const handleSourceChange = jest.fn();
+
+  await renderWithProviders(
+    <AttributeSourceConfigurator
+      source={{
+        code: 'weight',
+        uuid: 'unique_id',
+        type: 'attribute',
+        locale: null,
+        channel: null,
+        operations: {},
+        // @ts-expect-error invalid selection
+        selection: {},
+      }}
+      validationErrors={[]}
+      onSourceChange={handleSourceChange}
+    />
+  );
+
+  expect(
+    screen.getByText('akeneo.tailored_export.column_details.sources.invalid_source.attribute')
+  ).toBeInTheDocument();
   mockedConsole.mockRestore();
 });

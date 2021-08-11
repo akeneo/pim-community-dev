@@ -4,8 +4,8 @@ import userEvent from '@testing-library/user-event';
 import {renderWithProviders} from '@akeneo-pim-community/shared';
 import {EnabledConfigurator} from './EnabledConfigurator';
 import {getDefaultEnabledSource} from './model';
-import {getDefaultTextSource} from '../Text/model';
 import {BooleanReplacementOperation} from '../common/BooleanReplacement';
+import {getDefaultParentSource} from '../Parent/model';
 
 jest.mock('../common/BooleanReplacement', () => ({
   BooleanReplacement: ({
@@ -43,10 +43,7 @@ test('it displays an enabled configurator', () => {
     />
   );
 
-  const replacement = screen.getByText('Update replacement');
-
-  expect(replacement).toBeInTheDocument();
-  userEvent.click(replacement);
+  userEvent.click(screen.getByText('Update replacement'));
 
   expect(onSourceChange).toHaveBeenCalledWith({
     ...getDefaultEnabledSource(),
@@ -66,29 +63,15 @@ test('it displays an enabled configurator', () => {
   });
 });
 
-test('it does not render if the source is not valid', () => {
+test('it tells when the source data is invalid', () => {
   const mockedConsole = jest.spyOn(console, 'error').mockImplementation();
-  const onSourceChange = jest.fn();
 
-  const dateAttribute = {
-    code: 'date',
-    type: 'pim_catalog_date',
-    labels: {},
-    scopable: false,
-    localizable: false,
-    is_locale_specific: false,
-    available_locales: [],
-  };
+  expect(() => {
+    renderWithProviders(
+      <EnabledConfigurator source={getDefaultParentSource()} validationErrors={[]} onSourceChange={jest.fn()} />
+    );
+  }).toThrow('Invalid source data "parent" for enabled configurator');
 
-  renderWithProviders(
-    <EnabledConfigurator
-      source={getDefaultTextSource(dateAttribute, null, null)}
-      validationErrors={[]}
-      onSourceChange={onSourceChange}
-    />
-  );
-
-  expect(mockedConsole).toHaveBeenCalledWith('Invalid source data "date" for enabled configurator');
   expect(screen.queryByText('Update replacement')).not.toBeInTheDocument();
   mockedConsole.mockRestore();
 });

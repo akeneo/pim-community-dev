@@ -35,6 +35,6 @@ class PriceCollectionCurrencyLabelSelectionSpec extends ObjectBehavior
 
     public function it_returns_the_locale_code()
     {
-        $this->getLocaleCode()->shouldReturn('fr_FR');
+        $this->getLocale()->shouldReturn('fr_FR');
     }
 }

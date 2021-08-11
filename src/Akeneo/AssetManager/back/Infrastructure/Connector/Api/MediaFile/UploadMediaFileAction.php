@@ -41,19 +41,21 @@ class UploadMediaFileAction
 
     public function __invoke(Request $request): Response
     {
-        if (!$request->files->has('file')) {
+        $file = $request->files->has('file') ? $request->files->get('file') : null;
+
+        if (null === $file) {
             throw new UnprocessableEntityHttpException('Property "file" is required.');
         }
 
         if (preg_match(
             '/[' . preg_quote('& \ + * ? [ ^ ] $ ( ) { } = ! < > | : - # @ ;', '/') . ']/',
-            $request->files->get('file')->getClientOriginalExtension()
+            $file->getClientOriginalExtension()
         )) {
             throw new UnprocessableEntityHttpException('File extension cannot contain special characters.');
         }
 
         try {
-            $fileInfo = $this->fileStorer->store($request->files->get('file'), Storage::FILE_STORAGE_ALIAS, true);
+            $fileInfo = $this->fileStorer->store($file, Storage::FILE_STORAGE_ALIAS, true);
         } catch (FileTransferException | FileRemovalException | InvalidFile $exception) {
             throw new UnprocessableEntityHttpException($exception->getMessage(), $exception);
         }

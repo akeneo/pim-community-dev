@@ -13,11 +13,11 @@ declare(strict_types=1);
 
 namespace Akeneo\Pim\Permission\Component\Connector;
 
+use Akeneo\Channel\Component\Query\PublicApi\Permission\GetAllViewableLocalesForUserInterface;
 use Akeneo\Pim\Automation\DataQualityInsights\Domain\Model\ChannelLocaleRateCollection;
 use Akeneo\Pim\Enrichment\Component\Product\Connector\ReadModel\ConnectorProduct;
 use Akeneo\Pim\Enrichment\Component\Product\Connector\ReadModel\ConnectorProductList;
 use Akeneo\Pim\Enrichment\Component\Product\Connector\UseCase\GetProductsWithQualityScoresInterface;
-use Akeneo\Pim\Permission\Component\Query\GetAllViewableLocalesForUser;
 use Akeneo\UserManagement\Component\Model\UserInterface;
 use Symfony\Component\Security\Core\Authentication\Token\Storage\TokenStorageInterface;
 use Webmozart\Assert\Assert;
@@ -25,14 +25,12 @@ use Webmozart\Assert\Assert;
 final class GetProductsWithQualityScoresWithPermissions implements GetProductsWithQualityScoresInterface
 {
     private GetProductsWithQualityScoresInterface $getProductsWithQualityScores;
-
-    private GetAllViewableLocalesForUser $getAllViewableLocalesForUser;
-
+    private GetAllViewableLocalesForUserInterface $getAllViewableLocalesForUser;
     private TokenStorageInterface $tokenStorage;
 
     public function __construct(
         GetProductsWithQualityScoresInterface $getProductsWithQualityScores,
-        GetAllViewableLocalesForUser $getAllViewableLocalesForUser,
+        GetAllViewableLocalesForUserInterface $getAllViewableLocalesForUser,
         TokenStorageInterface $tokenStorage
     ) {
         $this->getProductsWithQualityScores = $getProductsWithQualityScores;

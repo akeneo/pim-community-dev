@@ -4,15 +4,14 @@ import {filterErrors, useTranslate} from '@akeneo-pim-community/shared';
 import {PropertyConfiguratorProps} from '../../../models';
 import {CodeLabelCollectionSelector} from '../common/CodeLabelCollectionSelector';
 import {isCategoriesSource} from './model';
+import {InvalidPropertySourceError} from '../error';
 
 const CategoriesConfigurator = ({source, validationErrors, onSourceChange}: PropertyConfiguratorProps) => {
   const translate = useTranslate();
   const [isSelectorCollapsed, toggleSelectorCollapse] = useState<boolean>(true);
 
   if (!isCategoriesSource(source)) {
-    console.error(`Invalid source data "${source.code}" for categories configurator`);
-
-    return null;
+    throw new InvalidPropertySourceError(`Invalid source data "${source.code}" for categories configurator`);
   }
 
   return (
