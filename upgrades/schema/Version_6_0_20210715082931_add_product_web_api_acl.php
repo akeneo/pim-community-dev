@@ -4,7 +4,6 @@ declare(strict_types=1);
 
 namespace Pim\Upgrade\Schema;
 
-use Akeneo\Tool\Bundle\ConnectorBundle\Doctrine\UnitOfWorkAndRepositoriesClearer;
 use Akeneo\UserManagement\Bundle\Doctrine\ORM\Repository\RoleRepository;
 use Akeneo\UserManagement\Bundle\Doctrine\ORM\Repository\RoleWithPermissionsRepository;
 use Akeneo\UserManagement\Component\Model\Role;
@@ -35,8 +34,6 @@ final class Version_6_0_20210715082931_add_product_web_api_acl extends AbstractM
         $roleWithPermissionsSaver = $this->container->get('pim_user.saver.role_with_permissions');
         /** @var RoleRepository $roleRepository */
         $roleRepository = $this->container->get('pim_user.repository.role');
-        /** @var UnitOfWorkAndRepositoriesClearer $cacheClearer */
-        $cacheClearer = $this->container->get('pim_connector.doctrine.cache_clearer');
 
         /** @var Role[] $roles */
         $roles = $roleRepository->findAll();
@@ -54,12 +51,10 @@ final class Version_6_0_20210715082931_add_product_web_api_acl extends AbstractM
             $roleWithPermissions->setPermissions($permissions);
 
             $roleWithPermissionsSaver->saveAll([$roleWithPermissions]);
+
+            $aclManager->flush();
+            $aclManager->clearCache();
         }
-
-        $aclManager->flush();
-
-        $aclManager->clearCache();
-        $cacheClearer->clear();
     }
 
     /**

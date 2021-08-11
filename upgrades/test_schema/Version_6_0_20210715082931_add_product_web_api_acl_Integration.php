@@ -12,7 +12,6 @@ use Akeneo\Tool\Component\StorageUtils\Saver\SaverInterface;
 use Akeneo\UserManagement\Bundle\Doctrine\ORM\Repository\RoleWithPermissionsRepository;
 use Akeneo\UserManagement\Component\Model\Role;
 use Akeneo\UserManagement\Component\Storage\Saver\RoleWithPermissionsSaver;
-use Akeneo\UserManagement\Component\Updater\RoleWithPermissionsUpdater;
 use Oro\Bundle\SecurityBundle\Acl\Persistence\AclManager;
 use Symfony\Component\Security\Acl\Domain\ObjectIdentity;
 use Symfony\Component\Security\Core\Authentication\Token\UsernamePasswordToken;
@@ -41,48 +40,107 @@ class Version_6_0_20210715082931_add_product_web_api_acl_Integration extends Tes
 
     public function test_the_migration_adds_the_new_permissions_to_existing_roles()
     {
+        $this->createRoleWithAcls('ROLE_WITH_PERMS', ['pim_api_overall_access', 'pim_api_product_list']);
+        $this->createRoleWithAcls('ROLE_WITHOUT_PERMS', []);
+
+        // The administrator has the ACLs by default, due to its mask on (root)
+        $this->assertRoleAcls('ROLE_ADMINISTRATOR', [
+            'pim_api_product_list' => true,
+            'pim_api_product_edit' => true,
+            'pim_api_product_remove' => true,
+        ]);
+        // This role has only its initial ACLs
+        $this->assertRoleAcls('ROLE_WITH_PERMS', [
+            'pim_api_overall_access' => true,
+            'pim_api_product_list' => true,
+            'pim_api_product_edit' => false,
+            'pim_api_product_remove' => false,
+        ]);
+        // This role has no ACLs
+        $this->assertRoleAcls('ROLE_WITHOUT_PERMS', [
+            'pim_api_overall_access' => false,
+            'pim_api_product_list' => false,
+            'pim_api_product_edit' => false,
+            'pim_api_product_remove' => false,
+        ]);
+
+        $this->reExecuteMigration($this->getMigrationLabel());
+
+        // Destroying the Kernel is the only solution I found to properly purge stateful variables
+        // from symfony/security-acl.
+        $this->testKernel = static::bootKernel(['debug' => false]);
+
+        // After the migration, the administrator still has all the ACLs
+        $this->assertRoleAcls('ROLE_ADMINISTRATOR', [
+            'pim_api_product_list' => true,
+            'pim_api_product_edit' => true,
+            'pim_api_product_remove' => true,
+        ]);
+        // After the migration, this role has the new ACLs while keeping the initial ones
+        $this->assertRoleAcls('ROLE_WITH_PERMS', [
+            'pim_api_overall_access' => true,
+            'pim_api_product_list' => true,
+            'pim_api_product_edit' => true,
+            'pim_api_product_remove' => true,
+        ]);
+        // After the migration, this role has only the new ACLs
+        $this->assertRoleAcls('ROLE_WITHOUT_PERMS', [
+            'pim_api_overall_access' => false,
+            'pim_api_product_list' => true,
+            'pim_api_product_edit' => true,
+            'pim_api_product_remove' => true,
+        ]);
+    }
+
+    private function createRoleWithAcls(string $roleCode, array $acls): void
+    {
+        /** @var AclManager $aclManager */
+        $aclManager = $this->get('oro_security.acl.manager');
+        /** @var UnitOfWorkAndRepositoriesClearer $cacheClearer */
+        $cacheClearer = $this->get('pim_connector.doctrine.cache_clearer');
         /** @var SimpleFactoryInterface $roleFactory */
         $roleFactory = $this->get('pim_user.factory.role');
         /** @var SaverInterface $roleSaver */
         $roleSaver = $this->get('pim_user.saver.role');
+        /** @var RoleWithPermissionsRepository $roleWithPermissionsRepository */
+        $roleWithPermissionsRepository = $this->get('pim_user.repository.role_with_permissions');
+        /** @var RoleWithPermissionsSaver $roleWithPermissionsSaver */
+        $roleWithPermissionsSaver = $this->get('pim_user.saver.role_with_permissions');
 
         /** @var Role $role */
         $role = $roleFactory->create();
-        $role->setRole('ROLE_WITHOUT_PERMS');
-        $role->setLabel('Test');
+        $role->setRole($roleCode);
+        $role->setLabel($roleCode);
         $roleSaver->save($role);
 
-        $this->assertRoleDoesNotHaveAcl('ROLE_WITHOUT_PERMS', 'pim_api_product_list');
-        $this->assertRoleDoesNotHaveAcl('ROLE_WITHOUT_PERMS', 'pim_api_product_edit');
-        $this->assertRoleDoesNotHaveAcl('ROLE_WITHOUT_PERMS', 'pim_api_product_remove');
+        $roleWithPermissions = $roleWithPermissionsRepository->findOneByIdentifier($roleCode);
+        assert(null !== $roleWithPermissions);
 
-        $this->reExecuteMigration($this->getMigrationLabel());
+        $permissions = $roleWithPermissions->permissions();
+        foreach ($acls as $acl) {
+            $permissions[sprintf('action:%s', $acl)] = true;
+        }
+        $roleWithPermissions->setPermissions($permissions);
 
-        $this->assertRoleHasAcl('ROLE_WITHOUT_PERMS', 'pim_api_product_list');
-        $this->assertRoleHasAcl('ROLE_WITHOUT_PERMS', 'pim_api_product_edit');
-        $this->assertRoleHasAcl('ROLE_WITHOUT_PERMS', 'pim_api_product_remove');
+        $roleWithPermissionsSaver->saveAll([$roleWithPermissions]);
+
+        $aclManager->flush();
+        $aclManager->clearCache();
+        $cacheClearer->clear();
     }
 
-    private function assertRoleHasAcl(string $role, string $acl): void
+    private function assertRoleAcls(string $role, array $acls): void
     {
         /** @var AccessDecisionManagerInterface $decisionManager */
         $decisionManager = $this->get('security.access.decision_manager');
+        $token = new UsernamePasswordToken(base_convert(bin2hex(random_bytes(32)), 16, 36), null, 'main', [$role]);
 
-        $token = new UsernamePasswordToken('test', null, 'main', [$role]);
-        $isAllowed = $decisionManager->decide($token, ['EXECUTE'], new ObjectIdentity('action', $acl));
+        foreach ($acls as $acl => $expectedValue) {
+            assert(is_bool($expectedValue));
 
-        $this->assertTrue($isAllowed);
-    }
-
-    private function assertRoleDoesNotHaveAcl(string $role, string $acl): void
-    {
-        /** @var AccessDecisionManagerInterface $decisionManager */
-        $decisionManager = $this->get('security.access.decision_manager');
-
-        $token = new UsernamePasswordToken('test', null, 'main', [$role]);
-        $isAllowed = $decisionManager->decide($token, ['EXECUTE'], new ObjectIdentity('action', $acl));
-
-        $this->assertFalse($isAllowed);
+            $isAllowed = $decisionManager->decide($token, ['EXECUTE'], new ObjectIdentity('action', $acl));
+            $this->assertEquals($expectedValue, $isAllowed);
+        }
     }
 
     private function getMigrationLabel(): string
