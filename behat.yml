@@ -27,6 +27,8 @@ contexts: &context
             - 'Context\FeatureContext'
     -   Context\SecurityContext:
             - 'Context\FeatureContext'
+    -   Context\UserContext:
+            - 'Context\FeatureContext'
     -   Pim\Behat\Context\AttributeValidationContext:
             - 'Context\FeatureContext'
     -   Pim\Behat\Context\Domain\Collect\ImportProfilesContext:
