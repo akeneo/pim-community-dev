@@ -21,11 +21,6 @@ use Symfony\Component\DependencyInjection\ContainerInterface;
  */
 final class Version_6_0_20210715082931_add_product_web_api_acl extends AbstractMigration implements ContainerAwareInterface
 {
-    private static $acls = [
-        'pim_api_product_list',
-        'pim_api_product_edit',
-    ];
-
     private ?ContainerInterface $container;
 
     public function up(Schema $schema): void
@@ -43,28 +38,28 @@ final class Version_6_0_20210715082931_add_product_web_api_acl extends AbstractM
         /** @var UnitOfWorkAndRepositoriesClearer $cacheClearer */
         $cacheClearer = $this->container->get('pim_connector.doctrine.cache_clearer');
 
-        foreach (self::$acls as $acl) {
-            /** @var Role[] $roles */
-            $roles = $roleRepository->findAll();
+        /** @var Role[] $roles */
+        $roles = $roleRepository->findAll();
 
-            foreach ($roles as $role) {
-                $roleWithPermissions = $roleWithPermissionsRepository->findOneByIdentifier($role->getRole());
-                if (null === $roleWithPermissions) {
-                    continue;
-                }
-
-                $permissions = $roleWithPermissions->permissions();
-                $permissions[sprintf('action:%s', $acl)] = true;
-                $roleWithPermissions->setPermissions($permissions);
-
-                $roleWithPermissionsSaver->saveAll([$roleWithPermissions]);
+        foreach ($roles as $role) {
+            $roleWithPermissions = $roleWithPermissionsRepository->findOneByIdentifier($role->getRole());
+            if (null === $roleWithPermissions) {
+                continue;
             }
 
-            $aclManager->flush();
+            $permissions = $roleWithPermissions->permissions();
+            $permissions['action:pim_api_product_list'] = true;
+            $permissions['action:pim_api_product_edit'] = true;
+            $permissions['action:pim_api_product_remove'] = true;
+            $roleWithPermissions->setPermissions($permissions);
 
-            $aclManager->clearCache();
-            $cacheClearer->clear();
+            $roleWithPermissionsSaver->saveAll([$roleWithPermissions]);
         }
+
+        $aclManager->flush();
+
+        $aclManager->clearCache();
+        $cacheClearer->clear();
     }
 
     /**

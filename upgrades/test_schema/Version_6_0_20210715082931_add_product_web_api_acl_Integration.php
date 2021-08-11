@@ -26,12 +26,6 @@ class Version_6_0_20210715082931_add_product_web_api_acl_Integration extends Tes
 {
     use ExecuteMigrationTrait;
 
-    /** @var string[] */
-    private static array $acls = [
-        'pim_api_product_list',
-        'pim_api_product_edit',
-    ];
-
     private AclManager $aclManager;
 
     protected function setUp(): void
@@ -58,18 +52,18 @@ class Version_6_0_20210715082931_add_product_web_api_acl_Integration extends Tes
         $role->setLabel('Test');
         $roleSaver->save($role);
 
-        foreach (self::$acls as $acl) {
-            $this->assertIsNotGranted('ROLE_WITHOUT_PERMS', $acl);
-        }
+        $this->assertRoleDoesNotHaveAcl('ROLE_WITHOUT_PERMS', 'pim_api_product_list');
+        $this->assertRoleDoesNotHaveAcl('ROLE_WITHOUT_PERMS', 'pim_api_product_edit');
+        $this->assertRoleDoesNotHaveAcl('ROLE_WITHOUT_PERMS', 'pim_api_product_remove');
 
         $this->reExecuteMigration($this->getMigrationLabel());
 
-        foreach (self::$acls as $acl) {
-            $this->assertIsGranted('ROLE_WITHOUT_PERMS', $acl);
-        }
+        $this->assertRoleHasAcl('ROLE_WITHOUT_PERMS', 'pim_api_product_list');
+        $this->assertRoleHasAcl('ROLE_WITHOUT_PERMS', 'pim_api_product_edit');
+        $this->assertRoleHasAcl('ROLE_WITHOUT_PERMS', 'pim_api_product_remove');
     }
 
-    private function assertIsGranted(string $role, string $acl): void
+    private function assertRoleHasAcl(string $role, string $acl): void
     {
         /** @var AccessDecisionManagerInterface $decisionManager */
         $decisionManager = $this->get('security.access.decision_manager');
@@ -80,7 +74,7 @@ class Version_6_0_20210715082931_add_product_web_api_acl_Integration extends Tes
         $this->assertTrue($isAllowed);
     }
 
-    private function assertIsNotGranted(string $role, string $acl): void
+    private function assertRoleDoesNotHaveAcl(string $role, string $acl): void
     {
         /** @var AccessDecisionManagerInterface $decisionManager */
         $decisionManager = $this->get('security.access.decision_manager');
