@@ -173,14 +173,14 @@ describe('Attribute options table', () => {
     const blueOption = optionItems[0];
 
     const deleteButton = getByTestId(blueOption, 'attribute-option-delete-button');
-    let deleteConfirmationModal = queryByRole(blueOption, 'attribute-option-delete-confirmation-modal');
+    let deleteConfirmationModal = queryByRole(container, 'attribute-option-delete-confirmation-modal');
     expect(deleteConfirmationModal).not.toBeInTheDocument();
 
     await fireEvent.click(deleteButton);
 
-    deleteConfirmationModal = getByRole(blueOption, 'attribute-option-delete-confirmation-modal');
-    const confirmDeleteButton = getByRole(blueOption, 'attribute-option-confirm-delete-button');
-    const cancelButtons = queryAllByRole(blueOption, 'attribute-option-confirm-cancel-button');
+    deleteConfirmationModal = getByRole(container, 'attribute-option-delete-confirmation-modal');
+    const confirmDeleteButton = getByRole(container, 'attribute-option-confirm-delete-button');
+    const cancelButtons = queryAllByRole(container, 'attribute-option-confirm-cancel-button');
 
     expect(deleteAttributeOptionCallback).not.toHaveBeenCalled();
     expect(deleteConfirmationModal).toBeInTheDocument();
@@ -200,7 +200,7 @@ describe('Attribute options table', () => {
     const deleteButton = getByTestId(blueOption, 'attribute-option-delete-button');
     await fireEvent.click(deleteButton);
     const deleteConfirmationModal = queryByRole(blueOption, 'attribute-option-delete-confirmation-modal');
-    let cancelButtons = queryAllByRole(blueOption, 'attribute-option-confirm-cancel-button');
+    let cancelButtons = queryAllByRole(container, 'attribute-option-confirm-cancel-button');
 
     expect(cancelButtons).toHaveLength(2);
 
@@ -209,7 +209,7 @@ describe('Attribute options table', () => {
     expect(deleteConfirmationModal).not.toBeInTheDocument();
 
     await fireEvent.click(deleteButton);
-    cancelButtons = queryAllByRole(blueOption, 'attribute-option-confirm-cancel-button');
+    cancelButtons = queryAllByRole(container, 'attribute-option-confirm-cancel-button');
     await fireEvent.click(cancelButtons[1]);
     expect(deleteAttributeOptionCallback).not.toHaveBeenCalled();
     expect(deleteConfirmationModal).not.toBeInTheDocument();
