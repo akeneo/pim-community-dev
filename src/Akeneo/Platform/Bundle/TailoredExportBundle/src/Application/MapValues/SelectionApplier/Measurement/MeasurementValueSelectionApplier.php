@@ -13,11 +13,11 @@ declare(strict_types=1);
 
 namespace Akeneo\Platform\TailoredExport\Application\MapValues\SelectionApplier\Measurement;
 
+use Akeneo\Platform\TailoredExport\Application\Common\Selection\Measurement\MeasurementValueSelection;
+use Akeneo\Platform\TailoredExport\Application\Common\Selection\SelectionInterface;
+use Akeneo\Platform\TailoredExport\Application\Common\SourceValue\MeasurementValue;
+use Akeneo\Platform\TailoredExport\Application\Common\SourceValue\SourceValueInterface;
 use Akeneo\Platform\TailoredExport\Application\MapValues\SelectionApplier\SelectionApplierInterface;
-use Akeneo\Platform\TailoredExport\Domain\Model\Selection\Measurement\MeasurementValueSelection;
-use Akeneo\Platform\TailoredExport\Domain\Model\Selection\SelectionInterface;
-use Akeneo\Platform\TailoredExport\Domain\Model\SourceValue\MeasurementValue;
-use Akeneo\Platform\TailoredExport\Domain\Model\SourceValue\SourceValueInterface;
 
 class MeasurementValueSelectionApplier implements SelectionApplierInterface
 {

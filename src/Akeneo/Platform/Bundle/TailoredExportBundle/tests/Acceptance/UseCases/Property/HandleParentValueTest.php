@@ -13,11 +13,11 @@ declare(strict_types=1);
 
 namespace Akeneo\Platform\TailoredExport\Test\Acceptance\UseCases\Property;
 
-use Akeneo\Platform\TailoredExport\Domain\Model\Selection\Parent\ParentCodeSelection;
-use Akeneo\Platform\TailoredExport\Domain\Model\Selection\Parent\ParentLabelSelection;
-use Akeneo\Platform\TailoredExport\Domain\Model\Selection\SelectionInterface;
-use Akeneo\Platform\TailoredExport\Domain\Model\SourceValue\ParentValue;
-use Akeneo\Platform\TailoredExport\Domain\Model\SourceValue\SourceValueInterface;
+use Akeneo\Platform\TailoredExport\Application\Common\Selection\Parent\ParentCodeSelection;
+use Akeneo\Platform\TailoredExport\Application\Common\Selection\Parent\ParentLabelSelection;
+use Akeneo\Platform\TailoredExport\Application\Common\Selection\SelectionInterface;
+use Akeneo\Platform\TailoredExport\Application\Common\SourceValue\ParentValue;
+use Akeneo\Platform\TailoredExport\Application\Common\SourceValue\SourceValueInterface;
 use Akeneo\Platform\TailoredExport\Test\Acceptance\FakeServices\ProductModel\InMemoryFindProductModelLabels;
 use PHPUnit\Framework\Assert;
 

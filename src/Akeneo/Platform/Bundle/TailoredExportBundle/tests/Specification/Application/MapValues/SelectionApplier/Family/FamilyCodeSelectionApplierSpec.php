@@ -13,10 +13,10 @@ declare(strict_types=1);
 
 namespace Specification\Akeneo\Platform\TailoredExport\Application\MapValues\SelectionApplier\Family;
 
-use Akeneo\Platform\TailoredExport\Domain\Model\Selection\Boolean\BooleanSelection;
-use Akeneo\Platform\TailoredExport\Domain\Model\Selection\Family\FamilyCodeSelection;
-use Akeneo\Platform\TailoredExport\Domain\Model\SourceValue\BooleanValue;
-use Akeneo\Platform\TailoredExport\Domain\Model\SourceValue\FamilyValue;
+use Akeneo\Platform\TailoredExport\Application\Common\Selection\Boolean\BooleanSelection;
+use Akeneo\Platform\TailoredExport\Application\Common\Selection\Family\FamilyCodeSelection;
+use Akeneo\Platform\TailoredExport\Application\Common\SourceValue\BooleanValue;
+use Akeneo\Platform\TailoredExport\Application\Common\SourceValue\FamilyValue;
 use PhpSpec\ObjectBehavior;
 
 class FamilyCodeSelectionApplierSpec extends ObjectBehavior

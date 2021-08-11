@@ -13,11 +13,11 @@ declare(strict_types=1);
 
 namespace Akeneo\Platform\TailoredExport\Application\MapValues\SelectionApplier\QuantifiedAssociations;
 
+use Akeneo\Platform\TailoredExport\Application\Common\Selection\QuantifiedAssociations\QuantifiedAssociationsQuantitySelection;
+use Akeneo\Platform\TailoredExport\Application\Common\Selection\SelectionInterface;
+use Akeneo\Platform\TailoredExport\Application\Common\SourceValue\QuantifiedAssociationsValue;
+use Akeneo\Platform\TailoredExport\Application\Common\SourceValue\SourceValueInterface;
 use Akeneo\Platform\TailoredExport\Application\MapValues\SelectionApplier\SelectionApplierInterface;
-use Akeneo\Platform\TailoredExport\Domain\Model\Selection\QuantifiedAssociations\QuantifiedAssociationsQuantitySelection;
-use Akeneo\Platform\TailoredExport\Domain\Model\Selection\SelectionInterface;
-use Akeneo\Platform\TailoredExport\Domain\Model\SourceValue\QuantifiedAssociationsValue;
-use Akeneo\Platform\TailoredExport\Domain\Model\SourceValue\SourceValueInterface;
 
 class QuantifiedAssociationsQuantitySelectionApplier implements SelectionApplierInterface
 {

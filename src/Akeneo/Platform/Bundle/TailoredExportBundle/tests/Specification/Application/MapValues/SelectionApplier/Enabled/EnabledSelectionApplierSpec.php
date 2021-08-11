@@ -13,10 +13,10 @@ declare(strict_types=1);
 
 namespace Specification\Akeneo\Platform\TailoredExport\Application\MapValues\SelectionApplier\Enabled;
 
-use Akeneo\Platform\TailoredExport\Domain\Model\Selection\Boolean\BooleanSelection;
-use Akeneo\Platform\TailoredExport\Domain\Model\Selection\Enabled\EnabledSelection;
-use Akeneo\Platform\TailoredExport\Domain\Model\SourceValue\BooleanValue;
-use Akeneo\Platform\TailoredExport\Domain\Model\SourceValue\EnabledValue;
+use Akeneo\Platform\TailoredExport\Application\Common\Selection\Boolean\BooleanSelection;
+use Akeneo\Platform\TailoredExport\Application\Common\Selection\Enabled\EnabledSelection;
+use Akeneo\Platform\TailoredExport\Application\Common\SourceValue\BooleanValue;
+use Akeneo\Platform\TailoredExport\Application\Common\SourceValue\EnabledValue;
 use PhpSpec\ObjectBehavior;
 
 class EnabledSelectionApplierSpec extends ObjectBehavior

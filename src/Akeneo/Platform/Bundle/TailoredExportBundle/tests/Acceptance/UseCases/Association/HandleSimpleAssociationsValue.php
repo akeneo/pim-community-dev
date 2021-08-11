@@ -13,12 +13,12 @@ declare(strict_types=1);
 
 namespace Akeneo\Platform\TailoredExport\Test\Acceptance\UseCases\Association;
 
-use Akeneo\Platform\TailoredExport\Domain\Model\Selection\SelectionInterface;
-use Akeneo\Platform\TailoredExport\Domain\Model\Selection\SimpleAssociations\SimpleAssociationsCodeSelection;
-use Akeneo\Platform\TailoredExport\Domain\Model\Selection\SimpleAssociations\SimpleAssociationsGroupsLabelSelection;
-use Akeneo\Platform\TailoredExport\Domain\Model\Selection\SimpleAssociations\SimpleAssociationsLabelSelection;
-use Akeneo\Platform\TailoredExport\Domain\Model\SourceValue\SimpleAssociationsValue;
-use Akeneo\Platform\TailoredExport\Domain\Model\SourceValue\SourceValueInterface;
+use Akeneo\Platform\TailoredExport\Application\Common\Selection\SelectionInterface;
+use Akeneo\Platform\TailoredExport\Application\Common\Selection\SimpleAssociations\SimpleAssociationsCodeSelection;
+use Akeneo\Platform\TailoredExport\Application\Common\Selection\SimpleAssociations\SimpleAssociationsGroupsLabelSelection;
+use Akeneo\Platform\TailoredExport\Application\Common\Selection\SimpleAssociations\SimpleAssociationsLabelSelection;
+use Akeneo\Platform\TailoredExport\Application\Common\SourceValue\SimpleAssociationsValue;
+use Akeneo\Platform\TailoredExport\Application\Common\SourceValue\SourceValueInterface;
 use Akeneo\Platform\TailoredExport\Test\Acceptance\FakeServices\Group\InMemoryFindGroupLabels;
 use Akeneo\Platform\TailoredExport\Test\Acceptance\FakeServices\Product\InMemoryFindProductLabels;
 use Akeneo\Platform\TailoredExport\Test\Acceptance\FakeServices\ProductModel\InMemoryFindProductModelLabels;

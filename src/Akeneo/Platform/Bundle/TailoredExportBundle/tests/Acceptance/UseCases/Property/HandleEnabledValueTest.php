@@ -13,11 +13,11 @@ declare(strict_types=1);
 
 namespace Akeneo\Platform\TailoredExport\Test\Acceptance\UseCases\Property;
 
-use Akeneo\Platform\TailoredExport\Domain\Model\Operation\ReplacementOperation;
-use Akeneo\Platform\TailoredExport\Domain\Model\Selection\Enabled\EnabledSelection;
-use Akeneo\Platform\TailoredExport\Domain\Model\Selection\SelectionInterface;
-use Akeneo\Platform\TailoredExport\Domain\Model\SourceValue\EnabledValue;
-use Akeneo\Platform\TailoredExport\Domain\Model\SourceValue\SourceValueInterface;
+use Akeneo\Platform\TailoredExport\Application\Common\Operation\ReplacementOperation;
+use Akeneo\Platform\TailoredExport\Application\Common\Selection\Enabled\EnabledSelection;
+use Akeneo\Platform\TailoredExport\Application\Common\Selection\SelectionInterface;
+use Akeneo\Platform\TailoredExport\Application\Common\SourceValue\EnabledValue;
+use Akeneo\Platform\TailoredExport\Application\Common\SourceValue\SourceValueInterface;
 use PHPUnit\Framework\Assert;
 
 final class HandleEnabledValueTest extends PropertyTestCase

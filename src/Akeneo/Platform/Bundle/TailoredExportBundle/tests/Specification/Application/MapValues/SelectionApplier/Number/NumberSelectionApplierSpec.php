@@ -13,10 +13,10 @@ declare(strict_types=1);
 
 namespace Specification\Akeneo\Platform\TailoredExport\Application\MapValues\SelectionApplier\Number;
 
-use Akeneo\Platform\TailoredExport\Domain\Model\Selection\Boolean\BooleanSelection;
-use Akeneo\Platform\TailoredExport\Domain\Model\Selection\Number\NumberSelection;
-use Akeneo\Platform\TailoredExport\Domain\Model\SourceValue\BooleanValue;
-use Akeneo\Platform\TailoredExport\Domain\Model\SourceValue\NumberValue;
+use Akeneo\Platform\TailoredExport\Application\Common\Selection\Boolean\BooleanSelection;
+use Akeneo\Platform\TailoredExport\Application\Common\Selection\Number\NumberSelection;
+use Akeneo\Platform\TailoredExport\Application\Common\SourceValue\BooleanValue;
+use Akeneo\Platform\TailoredExport\Application\Common\SourceValue\NumberValue;
 use PhpSpec\ObjectBehavior;
 
 class NumberSelectionApplierSpec extends ObjectBehavior

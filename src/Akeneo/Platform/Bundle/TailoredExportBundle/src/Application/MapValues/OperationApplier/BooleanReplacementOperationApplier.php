@@ -13,11 +13,11 @@ declare(strict_types=1);
 
 namespace Akeneo\Platform\TailoredExport\Application\MapValues\OperationApplier;
 
-use Akeneo\Platform\TailoredExport\Domain\Model\Operation\OperationInterface;
-use Akeneo\Platform\TailoredExport\Domain\Model\Operation\ReplacementOperation;
-use Akeneo\Platform\TailoredExport\Domain\Model\SourceValue\BooleanValue;
-use Akeneo\Platform\TailoredExport\Domain\Model\SourceValue\SourceValueInterface;
-use Akeneo\Platform\TailoredExport\Domain\Model\SourceValue\StringValue;
+use Akeneo\Platform\TailoredExport\Application\Common\Operation\OperationInterface;
+use Akeneo\Platform\TailoredExport\Application\Common\Operation\ReplacementOperation;
+use Akeneo\Platform\TailoredExport\Application\Common\SourceValue\BooleanValue;
+use Akeneo\Platform\TailoredExport\Application\Common\SourceValue\SourceValueInterface;
+use Akeneo\Platform\TailoredExport\Application\Common\SourceValue\StringValue;
 
 class BooleanReplacementOperationApplier implements OperationApplierInterface
 {

@@ -13,11 +13,11 @@ declare(strict_types=1);
 
 namespace Specification\Akeneo\Platform\TailoredExport\Application\MapValues\SelectionApplier\Scalar;
 
-use Akeneo\Platform\TailoredExport\Domain\Model\Selection\AssetCollection\AssetCollectionCodeSelection;
-use Akeneo\Platform\TailoredExport\Domain\Model\Selection\Enabled\EnabledSelection;
-use Akeneo\Platform\TailoredExport\Domain\Model\Selection\Scalar\ScalarSelection;
-use Akeneo\Platform\TailoredExport\Domain\Model\SourceValue\AssetCollectionValue;
-use Akeneo\Platform\TailoredExport\Domain\Model\SourceValue\StringValue;
+use Akeneo\Platform\TailoredExport\Application\Common\Selection\AssetCollection\AssetCollectionCodeSelection;
+use Akeneo\Platform\TailoredExport\Application\Common\Selection\Enabled\EnabledSelection;
+use Akeneo\Platform\TailoredExport\Application\Common\Selection\Scalar\ScalarSelection;
+use Akeneo\Platform\TailoredExport\Application\Common\SourceValue\AssetCollectionValue;
+use Akeneo\Platform\TailoredExport\Application\Common\SourceValue\StringValue;
 use PhpSpec\ObjectBehavior;
 
 class ScalarSelectionApplierSpec extends ObjectBehavior

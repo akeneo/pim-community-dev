@@ -13,15 +13,15 @@ declare(strict_types=1);
 
 namespace Akeneo\Platform\TailoredExport\Test\Acceptance\UseCases\Attribute;
 
-use Akeneo\Platform\TailoredExport\Domain\Model\Operation\DefaultValueOperation;
-use Akeneo\Platform\TailoredExport\Domain\Model\Selection\PriceCollection\PriceCollectionAmountSelection;
-use Akeneo\Platform\TailoredExport\Domain\Model\Selection\PriceCollection\PriceCollectionCurrencyCodeSelection;
-use Akeneo\Platform\TailoredExport\Domain\Model\Selection\PriceCollection\PriceCollectionCurrencyLabelSelection;
-use Akeneo\Platform\TailoredExport\Domain\Model\Selection\SelectionInterface;
-use Akeneo\Platform\TailoredExport\Domain\Model\SourceValue\NullValue;
-use Akeneo\Platform\TailoredExport\Domain\Model\SourceValue\Price;
-use Akeneo\Platform\TailoredExport\Domain\Model\SourceValue\PriceCollectionValue;
-use Akeneo\Platform\TailoredExport\Domain\Model\SourceValue\SourceValueInterface;
+use Akeneo\Platform\TailoredExport\Application\Common\Operation\DefaultValueOperation;
+use Akeneo\Platform\TailoredExport\Application\Common\Selection\PriceCollection\PriceCollectionAmountSelection;
+use Akeneo\Platform\TailoredExport\Application\Common\Selection\PriceCollection\PriceCollectionCurrencyCodeSelection;
+use Akeneo\Platform\TailoredExport\Application\Common\Selection\PriceCollection\PriceCollectionCurrencyLabelSelection;
+use Akeneo\Platform\TailoredExport\Application\Common\Selection\SelectionInterface;
+use Akeneo\Platform\TailoredExport\Application\Common\SourceValue\NullValue;
+use Akeneo\Platform\TailoredExport\Application\Common\SourceValue\Price;
+use Akeneo\Platform\TailoredExport\Application\Common\SourceValue\PriceCollectionValue;
+use Akeneo\Platform\TailoredExport\Application\Common\SourceValue\SourceValueInterface;
 use PHPUnit\Framework\Assert;
 
 final class HandlePriceCollectionValueTest extends AttributeTestCase

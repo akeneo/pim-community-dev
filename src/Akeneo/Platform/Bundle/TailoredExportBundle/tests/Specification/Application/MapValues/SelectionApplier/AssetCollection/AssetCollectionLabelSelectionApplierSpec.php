@@ -13,10 +13,10 @@ declare(strict_types=1);
 
 namespace Specification\Akeneo\Platform\TailoredExport\Application\MapValues\SelectionApplier\AssetCollection;
 
-use Akeneo\Platform\TailoredExport\Domain\Model\Selection\AssetCollection\AssetCollectionLabelSelection;
-use Akeneo\Platform\TailoredExport\Domain\Model\Selection\Boolean\BooleanSelection;
-use Akeneo\Platform\TailoredExport\Domain\Model\SourceValue\AssetCollectionValue;
-use Akeneo\Platform\TailoredExport\Domain\Model\SourceValue\BooleanValue;
+use Akeneo\Platform\TailoredExport\Application\Common\Selection\AssetCollection\AssetCollectionLabelSelection;
+use Akeneo\Platform\TailoredExport\Application\Common\Selection\Boolean\BooleanSelection;
+use Akeneo\Platform\TailoredExport\Application\Common\SourceValue\AssetCollectionValue;
+use Akeneo\Platform\TailoredExport\Application\Common\SourceValue\BooleanValue;
 use Akeneo\Platform\TailoredExport\Domain\Query\FindAssetLabelsInterface;
 use PhpSpec\ObjectBehavior;
 

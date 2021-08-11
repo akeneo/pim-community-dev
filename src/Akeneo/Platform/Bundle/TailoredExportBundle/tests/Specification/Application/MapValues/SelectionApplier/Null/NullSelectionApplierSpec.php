@@ -13,10 +13,10 @@ declare(strict_types=1);
 
 namespace Specification\Akeneo\Platform\TailoredExport\Application\MapValues\SelectionApplier\Null;
 
-use Akeneo\Platform\TailoredExport\Domain\Model\Selection\Boolean\BooleanSelection;
-use Akeneo\Platform\TailoredExport\Domain\Model\Selection\Null\NullSelection;
-use Akeneo\Platform\TailoredExport\Domain\Model\SourceValue\BooleanValue;
-use Akeneo\Platform\TailoredExport\Domain\Model\SourceValue\NullValue;
+use Akeneo\Platform\TailoredExport\Application\Common\Selection\Boolean\BooleanSelection;
+use Akeneo\Platform\TailoredExport\Application\Common\Selection\Null\NullSelection;
+use Akeneo\Platform\TailoredExport\Application\Common\SourceValue\BooleanValue;
+use Akeneo\Platform\TailoredExport\Application\Common\SourceValue\NullValue;
 use PhpSpec\ObjectBehavior;
 
 class NullSelectionApplierSpec extends ObjectBehavior

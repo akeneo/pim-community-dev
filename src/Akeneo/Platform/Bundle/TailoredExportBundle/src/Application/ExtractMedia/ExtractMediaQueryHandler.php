@@ -15,13 +15,13 @@ namespace Akeneo\Platform\TailoredExport\Application\ExtractMedia;
 
 use Akeneo\AssetManager\Infrastructure\PublicApi\Enrich\GetMainMediaFileInfoCollectionInterface;
 use Akeneo\AssetManager\Infrastructure\PublicApi\Enrich\MediaFileInfo;
-use Akeneo\Platform\TailoredExport\Domain\Model\Column\ColumnCollection;
-use Akeneo\Platform\TailoredExport\Domain\Model\Selection\AssetCollection\AssetCollectionSelectionInterface;
-use Akeneo\Platform\TailoredExport\Domain\Model\Selection\File\FileSelectionInterface;
-use Akeneo\Platform\TailoredExport\Domain\Model\Source\SourceInterface;
-use Akeneo\Platform\TailoredExport\Domain\Model\SourceValue\AssetCollectionValue;
-use Akeneo\Platform\TailoredExport\Domain\Model\SourceValue\FileValue;
-use Akeneo\Platform\TailoredExport\Domain\Model\ValueCollection;
+use Akeneo\Platform\TailoredExport\Application\Common\Column\ColumnCollection;
+use Akeneo\Platform\TailoredExport\Application\Common\Selection\AssetCollection\AssetCollectionSelectionInterface;
+use Akeneo\Platform\TailoredExport\Application\Common\Selection\File\FileSelectionInterface;
+use Akeneo\Platform\TailoredExport\Application\Common\Source\SourceInterface;
+use Akeneo\Platform\TailoredExport\Application\Common\SourceValue\AssetCollectionValue;
+use Akeneo\Platform\TailoredExport\Application\Common\SourceValue\FileValue;
+use Akeneo\Platform\TailoredExport\Application\Common\ValueCollection;
 use Akeneo\Platform\TailoredExport\Infrastructure\Connector\MediaExporterPathGenerator;
 
 class ExtractMediaQueryHandler

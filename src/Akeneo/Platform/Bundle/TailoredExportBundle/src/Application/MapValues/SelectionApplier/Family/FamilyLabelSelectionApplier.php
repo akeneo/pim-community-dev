@@ -13,11 +13,11 @@ declare(strict_types=1);
 
 namespace Akeneo\Platform\TailoredExport\Application\MapValues\SelectionApplier\Family;
 
+use Akeneo\Platform\TailoredExport\Application\Common\Selection\Family\FamilyLabelSelection;
+use Akeneo\Platform\TailoredExport\Application\Common\Selection\SelectionInterface;
+use Akeneo\Platform\TailoredExport\Application\Common\SourceValue\FamilyValue;
+use Akeneo\Platform\TailoredExport\Application\Common\SourceValue\SourceValueInterface;
 use Akeneo\Platform\TailoredExport\Application\MapValues\SelectionApplier\SelectionApplierInterface;
-use Akeneo\Platform\TailoredExport\Domain\Model\Selection\Family\FamilyLabelSelection;
-use Akeneo\Platform\TailoredExport\Domain\Model\Selection\SelectionInterface;
-use Akeneo\Platform\TailoredExport\Domain\Model\SourceValue\FamilyValue;
-use Akeneo\Platform\TailoredExport\Domain\Model\SourceValue\SourceValueInterface;
 use Akeneo\Platform\TailoredExport\Domain\Query\FindFamilyLabelInterface;
 
 class FamilyLabelSelectionApplier implements SelectionApplierInterface

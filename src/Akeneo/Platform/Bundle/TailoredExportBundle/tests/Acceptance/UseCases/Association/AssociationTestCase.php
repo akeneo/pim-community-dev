@@ -13,16 +13,16 @@ declare(strict_types=1);
 
 namespace Akeneo\Platform\TailoredExport\Test\Acceptance\UseCases\Association;
 
+use Akeneo\Platform\TailoredExport\Application\Common\Column\Column;
+use Akeneo\Platform\TailoredExport\Application\Common\Column\ColumnCollection;
+use Akeneo\Platform\TailoredExport\Application\Common\Operation\OperationCollection;
+use Akeneo\Platform\TailoredExport\Application\Common\Selection\SelectionInterface;
+use Akeneo\Platform\TailoredExport\Application\Common\Source\AssociationTypeSource;
+use Akeneo\Platform\TailoredExport\Application\Common\Source\PropertySource;
+use Akeneo\Platform\TailoredExport\Application\Common\Source\SourceCollection;
+use Akeneo\Platform\TailoredExport\Application\Common\SourceValue\SourceValueInterface;
+use Akeneo\Platform\TailoredExport\Application\Common\ValueCollection;
 use Akeneo\Platform\TailoredExport\Application\MapValues\MapValuesQueryHandler;
-use Akeneo\Platform\TailoredExport\Domain\Model\Column\Column;
-use Akeneo\Platform\TailoredExport\Domain\Model\Column\ColumnCollection;
-use Akeneo\Platform\TailoredExport\Domain\Model\Operation\OperationCollection;
-use Akeneo\Platform\TailoredExport\Domain\Model\Selection\SelectionInterface;
-use Akeneo\Platform\TailoredExport\Domain\Model\Source\AssociationTypeSource;
-use Akeneo\Platform\TailoredExport\Domain\Model\Source\PropertySource;
-use Akeneo\Platform\TailoredExport\Domain\Model\Source\SourceCollection;
-use Akeneo\Platform\TailoredExport\Domain\Model\SourceValue\SourceValueInterface;
-use Akeneo\Platform\TailoredExport\Domain\Model\ValueCollection;
 use Symfony\Bundle\FrameworkBundle\Test\KernelTestCase;
 
 abstract class AssociationTestCase extends KernelTestCase

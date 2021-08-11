@@ -13,8 +13,8 @@ declare(strict_types=1);
 
 namespace Akeneo\Platform\TailoredExport\Application\MapValues\OperationApplier;
 
-use Akeneo\Platform\TailoredExport\Domain\Model\Operation\OperationCollection;
-use Akeneo\Platform\TailoredExport\Domain\Model\SourceValue\SourceValueInterface;
+use Akeneo\Platform\TailoredExport\Application\Common\Operation\OperationCollection;
+use Akeneo\Platform\TailoredExport\Application\Common\SourceValue\SourceValueInterface;
 
 class OperationApplier
 {

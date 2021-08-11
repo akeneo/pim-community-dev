@@ -13,18 +13,18 @@ declare(strict_types=1);
 
 namespace Akeneo\Platform\TailoredExport\Test\Acceptance\UseCases\Format;
 
+use Akeneo\Platform\TailoredExport\Application\Common\Column\Column;
+use Akeneo\Platform\TailoredExport\Application\Common\Column\ColumnCollection;
+use Akeneo\Platform\TailoredExport\Application\Common\Operation\OperationCollection;
+use Akeneo\Platform\TailoredExport\Application\Common\Selection\Boolean\BooleanSelection;
+use Akeneo\Platform\TailoredExport\Application\Common\Selection\Enabled\EnabledSelection;
+use Akeneo\Platform\TailoredExport\Application\Common\Source\AttributeSource;
+use Akeneo\Platform\TailoredExport\Application\Common\Source\PropertySource;
+use Akeneo\Platform\TailoredExport\Application\Common\Source\SourceCollection;
+use Akeneo\Platform\TailoredExport\Application\Common\SourceValue\BooleanValue;
+use Akeneo\Platform\TailoredExport\Application\Common\SourceValue\EnabledValue;
+use Akeneo\Platform\TailoredExport\Application\Common\ValueCollection;
 use Akeneo\Platform\TailoredExport\Application\MapValues\MapValuesQueryHandler;
-use Akeneo\Platform\TailoredExport\Domain\Model\Column\Column;
-use Akeneo\Platform\TailoredExport\Domain\Model\Column\ColumnCollection;
-use Akeneo\Platform\TailoredExport\Domain\Model\Operation\OperationCollection;
-use Akeneo\Platform\TailoredExport\Domain\Model\Selection\Boolean\BooleanSelection;
-use Akeneo\Platform\TailoredExport\Domain\Model\Selection\Enabled\EnabledSelection;
-use Akeneo\Platform\TailoredExport\Domain\Model\Source\AttributeSource;
-use Akeneo\Platform\TailoredExport\Domain\Model\Source\PropertySource;
-use Akeneo\Platform\TailoredExport\Domain\Model\Source\SourceCollection;
-use Akeneo\Platform\TailoredExport\Domain\Model\SourceValue\BooleanValue;
-use Akeneo\Platform\TailoredExport\Domain\Model\SourceValue\EnabledValue;
-use Akeneo\Platform\TailoredExport\Domain\Model\ValueCollection;
 use PHPUnit\Framework\Assert;
 use Symfony\Bundle\FrameworkBundle\Test\KernelTestCase;
 

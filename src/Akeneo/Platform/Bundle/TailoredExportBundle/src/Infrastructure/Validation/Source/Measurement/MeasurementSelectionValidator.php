@@ -13,9 +13,9 @@ declare(strict_types=1);
 
 namespace Akeneo\Platform\TailoredExport\Infrastructure\Validation\Source\Measurement;
 
-use Akeneo\Platform\TailoredExport\Domain\Model\Selection\Measurement\MeasurementUnitCodeSelection;
-use Akeneo\Platform\TailoredExport\Domain\Model\Selection\Measurement\MeasurementUnitLabelSelection;
-use Akeneo\Platform\TailoredExport\Domain\Model\Selection\Measurement\MeasurementValueSelection;
+use Akeneo\Platform\TailoredExport\Application\Common\Selection\Measurement\MeasurementUnitCodeSelection;
+use Akeneo\Platform\TailoredExport\Application\Common\Selection\Measurement\MeasurementUnitLabelSelection;
+use Akeneo\Platform\TailoredExport\Application\Common\Selection\Measurement\MeasurementValueSelection;
 use Akeneo\Platform\TailoredExport\Infrastructure\Validation\LocaleShouldBeActive;
 use Symfony\Component\Validator\Constraint;
 use Symfony\Component\Validator\Constraints\Choice;

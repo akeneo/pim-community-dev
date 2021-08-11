@@ -13,10 +13,10 @@ declare(strict_types=1);
 
 namespace Akeneo\Platform\TailoredExport\Application\MapValues\SelectionApplier\Scalar;
 
+use Akeneo\Platform\TailoredExport\Application\Common\Selection\SelectionInterface;
+use Akeneo\Platform\TailoredExport\Application\Common\SourceValue\SourceValueInterface;
+use Akeneo\Platform\TailoredExport\Application\Common\SourceValue\StringValue;
 use Akeneo\Platform\TailoredExport\Application\MapValues\SelectionApplier\SelectionApplierInterface;
-use Akeneo\Platform\TailoredExport\Domain\Model\Selection\SelectionInterface;
-use Akeneo\Platform\TailoredExport\Domain\Model\SourceValue\SourceValueInterface;
-use Akeneo\Platform\TailoredExport\Domain\Model\SourceValue\StringValue;
 
 class ScalarSelectionApplier implements SelectionApplierInterface
 {

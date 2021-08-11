@@ -13,13 +13,13 @@ declare(strict_types=1);
 
 namespace Akeneo\Platform\TailoredExport\Test\Acceptance\UseCases\Property;
 
-use Akeneo\Platform\TailoredExport\Domain\Model\Operation\DefaultValueOperation;
-use Akeneo\Platform\TailoredExport\Domain\Model\Selection\Family\FamilyCodeSelection;
-use Akeneo\Platform\TailoredExport\Domain\Model\Selection\Family\FamilyLabelSelection;
-use Akeneo\Platform\TailoredExport\Domain\Model\Selection\SelectionInterface;
-use Akeneo\Platform\TailoredExport\Domain\Model\SourceValue\FamilyValue;
-use Akeneo\Platform\TailoredExport\Domain\Model\SourceValue\NullValue;
-use Akeneo\Platform\TailoredExport\Domain\Model\SourceValue\SourceValueInterface;
+use Akeneo\Platform\TailoredExport\Application\Common\Operation\DefaultValueOperation;
+use Akeneo\Platform\TailoredExport\Application\Common\Selection\Family\FamilyCodeSelection;
+use Akeneo\Platform\TailoredExport\Application\Common\Selection\Family\FamilyLabelSelection;
+use Akeneo\Platform\TailoredExport\Application\Common\Selection\SelectionInterface;
+use Akeneo\Platform\TailoredExport\Application\Common\SourceValue\FamilyValue;
+use Akeneo\Platform\TailoredExport\Application\Common\SourceValue\NullValue;
+use Akeneo\Platform\TailoredExport\Application\Common\SourceValue\SourceValueInterface;
 use Akeneo\Platform\TailoredExport\Test\Acceptance\FakeServices\Family\InMemoryFindFamilyLabel;
 use Akeneo\Platform\TailoredExport\Test\Acceptance\FakeServices\Family\InMemoryGetFamilyTranslations;
 use PHPUnit\Framework\Assert;

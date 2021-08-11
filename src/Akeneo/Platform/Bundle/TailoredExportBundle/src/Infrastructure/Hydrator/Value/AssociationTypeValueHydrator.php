@@ -16,11 +16,11 @@ namespace Akeneo\Platform\TailoredExport\Infrastructure\Hydrator\Value;
 use Akeneo\Pim\Enrichment\Component\Product\Model\GroupInterface;
 use Akeneo\Pim\Enrichment\Component\Product\Model\ProductInterface;
 use Akeneo\Pim\Enrichment\Component\Product\Model\ProductModelInterface;
-use Akeneo\Platform\TailoredExport\Domain\Model\Source\AssociationTypeSource;
-use Akeneo\Platform\TailoredExport\Domain\Model\SourceValue\QuantifiedAssociation;
-use Akeneo\Platform\TailoredExport\Domain\Model\SourceValue\QuantifiedAssociationsValue;
-use Akeneo\Platform\TailoredExport\Domain\Model\SourceValue\SimpleAssociationsValue;
-use Akeneo\Platform\TailoredExport\Domain\Model\SourceValue\SourceValueInterface;
+use Akeneo\Platform\TailoredExport\Application\Common\Source\AssociationTypeSource;
+use Akeneo\Platform\TailoredExport\Application\Common\SourceValue\QuantifiedAssociation;
+use Akeneo\Platform\TailoredExport\Application\Common\SourceValue\QuantifiedAssociationsValue;
+use Akeneo\Platform\TailoredExport\Application\Common\SourceValue\SimpleAssociationsValue;
+use Akeneo\Platform\TailoredExport\Application\Common\SourceValue\SourceValueInterface;
 
 final class AssociationTypeValueHydrator
 {

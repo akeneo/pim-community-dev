@@ -13,11 +13,11 @@ declare(strict_types=1);
 
 namespace Akeneo\Platform\TailoredExport\Application\MapValues;
 
+use Akeneo\Platform\TailoredExport\Application\Common\Column\Column;
+use Akeneo\Platform\TailoredExport\Application\Common\Column\ColumnCollection;
+use Akeneo\Platform\TailoredExport\Application\Common\ValueCollection;
 use Akeneo\Platform\TailoredExport\Application\MapValues\OperationApplier\OperationApplier;
 use Akeneo\Platform\TailoredExport\Application\MapValues\SelectionApplier\SelectionApplier;
-use Akeneo\Platform\TailoredExport\Domain\Model\Column\Column;
-use Akeneo\Platform\TailoredExport\Domain\Model\Column\ColumnCollection;
-use Akeneo\Platform\TailoredExport\Domain\Model\ValueCollection;
 
 class MapValuesQueryHandler
 {

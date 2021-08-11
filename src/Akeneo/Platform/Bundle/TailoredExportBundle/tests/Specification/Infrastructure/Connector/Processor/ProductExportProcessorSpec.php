@@ -19,11 +19,11 @@ use Akeneo\Pim\Structure\Component\Query\PublicApi\Association\GetAssociationTyp
 use Akeneo\Pim\Structure\Component\Query\PublicApi\Association\LabelCollection;
 use Akeneo\Pim\Structure\Component\Query\PublicApi\AttributeType\Attribute;
 use Akeneo\Pim\Structure\Component\Query\PublicApi\AttributeType\GetAttributes;
+use Akeneo\Platform\TailoredExport\Application\Common\Column\ColumnCollection;
+use Akeneo\Platform\TailoredExport\Application\Common\SourceValue\StringValue;
+use Akeneo\Platform\TailoredExport\Application\Common\ValueCollection;
 use Akeneo\Platform\TailoredExport\Application\ExtractMedia\ExtractMediaQueryHandler;
 use Akeneo\Platform\TailoredExport\Application\MapValues\MapValuesQueryHandler;
-use Akeneo\Platform\TailoredExport\Domain\Model\Column\ColumnCollection;
-use Akeneo\Platform\TailoredExport\Domain\Model\SourceValue\StringValue;
-use Akeneo\Platform\TailoredExport\Domain\Model\ValueCollection;
 use Akeneo\Platform\TailoredExport\Infrastructure\Connector\Processor\ProcessedTailoredExport;
 use Akeneo\Platform\TailoredExport\Infrastructure\Hydrator\ColumnCollectionHydrator;
 use Akeneo\Platform\TailoredExport\Infrastructure\Hydrator\ValueCollectionHydrator;

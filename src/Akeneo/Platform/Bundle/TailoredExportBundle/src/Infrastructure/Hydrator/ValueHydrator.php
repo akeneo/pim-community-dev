@@ -17,31 +17,31 @@ use Akeneo\Pim\Enrichment\Component\Product\Model\ProductInterface;
 use Akeneo\Pim\Enrichment\Component\Product\Model\ProductPriceInterface;
 use Akeneo\Pim\Enrichment\Component\Product\Model\ValueInterface;
 use Akeneo\Pim\Enrichment\Component\Product\Value\MetricValue;
-use Akeneo\Platform\TailoredExport\Domain\Model\Source\AssociationTypeSource;
-use Akeneo\Platform\TailoredExport\Domain\Model\Source\AttributeSource;
-use Akeneo\Platform\TailoredExport\Domain\Model\Source\PropertySource;
-use Akeneo\Platform\TailoredExport\Domain\Model\Source\SourceInterface;
-use Akeneo\Platform\TailoredExport\Domain\Model\SourceValue\AssetCollectionValue;
-use Akeneo\Platform\TailoredExport\Domain\Model\SourceValue\BooleanValue;
-use Akeneo\Platform\TailoredExport\Domain\Model\SourceValue\CategoriesValue;
-use Akeneo\Platform\TailoredExport\Domain\Model\SourceValue\DateValue;
-use Akeneo\Platform\TailoredExport\Domain\Model\SourceValue\EnabledValue;
-use Akeneo\Platform\TailoredExport\Domain\Model\SourceValue\FamilyValue;
-use Akeneo\Platform\TailoredExport\Domain\Model\SourceValue\FamilyVariantValue;
-use Akeneo\Platform\TailoredExport\Domain\Model\SourceValue\FileValue;
-use Akeneo\Platform\TailoredExport\Domain\Model\SourceValue\GroupsValue;
-use Akeneo\Platform\TailoredExport\Domain\Model\SourceValue\MeasurementValue;
-use Akeneo\Platform\TailoredExport\Domain\Model\SourceValue\MultiSelectValue;
-use Akeneo\Platform\TailoredExport\Domain\Model\SourceValue\NullValue;
-use Akeneo\Platform\TailoredExport\Domain\Model\SourceValue\NumberValue;
-use Akeneo\Platform\TailoredExport\Domain\Model\SourceValue\ParentValue;
-use Akeneo\Platform\TailoredExport\Domain\Model\SourceValue\Price;
-use Akeneo\Platform\TailoredExport\Domain\Model\SourceValue\PriceCollectionValue;
-use Akeneo\Platform\TailoredExport\Domain\Model\SourceValue\ReferenceEntityCollectionValue;
-use Akeneo\Platform\TailoredExport\Domain\Model\SourceValue\ReferenceEntityValue;
-use Akeneo\Platform\TailoredExport\Domain\Model\SourceValue\SimpleSelectValue;
-use Akeneo\Platform\TailoredExport\Domain\Model\SourceValue\SourceValueInterface;
-use Akeneo\Platform\TailoredExport\Domain\Model\SourceValue\StringValue;
+use Akeneo\Platform\TailoredExport\Application\Common\Source\AssociationTypeSource;
+use Akeneo\Platform\TailoredExport\Application\Common\Source\AttributeSource;
+use Akeneo\Platform\TailoredExport\Application\Common\Source\PropertySource;
+use Akeneo\Platform\TailoredExport\Application\Common\Source\SourceInterface;
+use Akeneo\Platform\TailoredExport\Application\Common\SourceValue\AssetCollectionValue;
+use Akeneo\Platform\TailoredExport\Application\Common\SourceValue\BooleanValue;
+use Akeneo\Platform\TailoredExport\Application\Common\SourceValue\CategoriesValue;
+use Akeneo\Platform\TailoredExport\Application\Common\SourceValue\DateValue;
+use Akeneo\Platform\TailoredExport\Application\Common\SourceValue\EnabledValue;
+use Akeneo\Platform\TailoredExport\Application\Common\SourceValue\FamilyValue;
+use Akeneo\Platform\TailoredExport\Application\Common\SourceValue\FamilyVariantValue;
+use Akeneo\Platform\TailoredExport\Application\Common\SourceValue\FileValue;
+use Akeneo\Platform\TailoredExport\Application\Common\SourceValue\GroupsValue;
+use Akeneo\Platform\TailoredExport\Application\Common\SourceValue\MeasurementValue;
+use Akeneo\Platform\TailoredExport\Application\Common\SourceValue\MultiSelectValue;
+use Akeneo\Platform\TailoredExport\Application\Common\SourceValue\NullValue;
+use Akeneo\Platform\TailoredExport\Application\Common\SourceValue\NumberValue;
+use Akeneo\Platform\TailoredExport\Application\Common\SourceValue\ParentValue;
+use Akeneo\Platform\TailoredExport\Application\Common\SourceValue\Price;
+use Akeneo\Platform\TailoredExport\Application\Common\SourceValue\PriceCollectionValue;
+use Akeneo\Platform\TailoredExport\Application\Common\SourceValue\ReferenceEntityCollectionValue;
+use Akeneo\Platform\TailoredExport\Application\Common\SourceValue\ReferenceEntityValue;
+use Akeneo\Platform\TailoredExport\Application\Common\SourceValue\SimpleSelectValue;
+use Akeneo\Platform\TailoredExport\Application\Common\SourceValue\SourceValueInterface;
+use Akeneo\Platform\TailoredExport\Application\Common\SourceValue\StringValue;
 use Akeneo\Platform\TailoredExport\Infrastructure\Hydrator\Value\AssociationTypeValueHydrator;
 
 class ValueHydrator
@@ -165,7 +165,7 @@ class ValueHydrator
                 return new FamilyVariantValue($familyVariant->getCode());
             case 'groups':
                 $groupCodes = $product->getGroupCodes();
-                
+
                 if (empty($groupCodes)) {
                     return new NullValue();
                 }

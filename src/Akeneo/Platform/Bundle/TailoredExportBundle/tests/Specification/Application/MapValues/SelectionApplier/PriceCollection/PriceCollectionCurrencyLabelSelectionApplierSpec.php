@@ -13,12 +13,12 @@ declare(strict_types=1);
 
 namespace Specification\Akeneo\Platform\TailoredExport\Application\MapValues\SelectionApplier\PriceCollection;
 
+use Akeneo\Platform\TailoredExport\Application\Common\Selection\Boolean\BooleanSelection;
+use Akeneo\Platform\TailoredExport\Application\Common\Selection\PriceCollection\PriceCollectionCurrencyLabelSelection;
+use Akeneo\Platform\TailoredExport\Application\Common\SourceValue\BooleanValue;
+use Akeneo\Platform\TailoredExport\Application\Common\SourceValue\Price;
+use Akeneo\Platform\TailoredExport\Application\Common\SourceValue\PriceCollectionValue;
 use Akeneo\Platform\TailoredExport\Application\MapValues\SelectionApplier\PriceCollection\PriceCollectionCurrencyLabelSelectionApplier;
-use Akeneo\Platform\TailoredExport\Domain\Model\Selection\Boolean\BooleanSelection;
-use Akeneo\Platform\TailoredExport\Domain\Model\Selection\PriceCollection\PriceCollectionCurrencyLabelSelection;
-use Akeneo\Platform\TailoredExport\Domain\Model\SourceValue\BooleanValue;
-use Akeneo\Platform\TailoredExport\Domain\Model\SourceValue\Price;
-use Akeneo\Platform\TailoredExport\Domain\Model\SourceValue\PriceCollectionValue;
 use Akeneo\Platform\TailoredExport\Domain\Query\FindCurrencyLabelsInterface;
 use PhpSpec\ObjectBehavior;
 

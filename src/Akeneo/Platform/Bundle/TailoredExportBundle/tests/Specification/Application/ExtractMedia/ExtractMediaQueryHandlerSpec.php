@@ -15,18 +15,18 @@ namespace Specification\Akeneo\Platform\TailoredExport\Application\ExtractMedia;
 
 use Akeneo\AssetManager\Infrastructure\PublicApi\Enrich\GetMainMediaFileInfoCollectionInterface;
 use Akeneo\AssetManager\Infrastructure\PublicApi\Enrich\MediaFileInfo;
+use Akeneo\Platform\TailoredExport\Application\Common\Column\Column;
+use Akeneo\Platform\TailoredExport\Application\Common\Column\ColumnCollection;
+use Akeneo\Platform\TailoredExport\Application\Common\Operation\OperationCollection;
+use Akeneo\Platform\TailoredExport\Application\Common\Selection\AssetCollection\AssetCollectionCodeSelection;
+use Akeneo\Platform\TailoredExport\Application\Common\Selection\File\FilePathSelection;
+use Akeneo\Platform\TailoredExport\Application\Common\Source\AttributeSource;
+use Akeneo\Platform\TailoredExport\Application\Common\Source\SourceCollection;
+use Akeneo\Platform\TailoredExport\Application\Common\SourceValue\AssetCollectionValue;
+use Akeneo\Platform\TailoredExport\Application\Common\SourceValue\FileValue;
+use Akeneo\Platform\TailoredExport\Application\Common\ValueCollection;
 use Akeneo\Platform\TailoredExport\Application\ExtractMedia\ExtractedMedia;
 use Akeneo\Platform\TailoredExport\Application\ExtractMedia\ExtractMediaQueryHandler;
-use Akeneo\Platform\TailoredExport\Domain\Model\Column\Column;
-use Akeneo\Platform\TailoredExport\Domain\Model\Column\ColumnCollection;
-use Akeneo\Platform\TailoredExport\Domain\Model\Operation\OperationCollection;
-use Akeneo\Platform\TailoredExport\Domain\Model\Selection\AssetCollection\AssetCollectionCodeSelection;
-use Akeneo\Platform\TailoredExport\Domain\Model\Selection\File\FilePathSelection;
-use Akeneo\Platform\TailoredExport\Domain\Model\Source\AttributeSource;
-use Akeneo\Platform\TailoredExport\Domain\Model\Source\SourceCollection;
-use Akeneo\Platform\TailoredExport\Domain\Model\SourceValue\AssetCollectionValue;
-use Akeneo\Platform\TailoredExport\Domain\Model\SourceValue\FileValue;
-use Akeneo\Platform\TailoredExport\Domain\Model\ValueCollection;
 use PhpSpec\ObjectBehavior;
 
 class ExtractMediaQueryHandlerSpec extends ObjectBehavior
