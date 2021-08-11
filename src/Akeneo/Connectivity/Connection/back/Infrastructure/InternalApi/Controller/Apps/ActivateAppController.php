@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Akeneo\Connectivity\Connection\Infrastructure\InternalApi\Controller\Apps;
 
+use Akeneo\Connectivity\Connection\Infrastructure\Apps\OAuth\ClientProviderInterface;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
@@ -15,6 +16,13 @@ use Symfony\Component\HttpFoundation\Response;
  */
 class ActivateAppController
 {
+    private ClientProviderInterface $clientProvider;
+
+    public function __construct(ClientProviderInterface  $clientProvider)
+    {
+        $this->clientProvider = $clientProvider;
+    }
+
     public function __invoke(Request $request, string $id): Response
     {
         if (!$request->isXmlHttpRequest()) {
