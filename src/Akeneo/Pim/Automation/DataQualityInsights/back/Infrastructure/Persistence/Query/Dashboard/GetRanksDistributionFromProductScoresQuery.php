@@ -4,168 +4,199 @@ declare(strict_types=1);
 
 namespace Akeneo\Pim\Automation\DataQualityInsights\Infrastructure\Persistence\Query\Dashboard;
 
+use Akeneo\Channel\Component\Query\PublicApi\GetChannelCodeWithLocaleCodesInterface;
 use Akeneo\Pim\Automation\DataQualityInsights\Domain\Model\RanksDistributionCollection;
 use Akeneo\Pim\Automation\DataQualityInsights\Domain\Query\Dashboard\GetRanksDistributionFromProductScoresQueryInterface;
-use Akeneo\Pim\Automation\DataQualityInsights\Domain\Query\Structure\GetCategoryChildrenIdsQueryInterface;
+use Akeneo\Pim\Automation\DataQualityInsights\Domain\Query\Structure\GetCategoryChildrenCodesQueryInterface;
 use Akeneo\Pim\Automation\DataQualityInsights\Domain\ValueObject\CategoryCode;
 use Akeneo\Pim\Automation\DataQualityInsights\Domain\ValueObject\FamilyCode;
+use Akeneo\Pim\Enrichment\Component\Product\Model\ProductInterface;
+use Akeneo\Tool\Bundle\ElasticsearchBundle\Client;
 use Doctrine\DBAL\Connection;
+use Webmozart\Assert\Assert;
 
 final class GetRanksDistributionFromProductScoresQuery implements GetRanksDistributionFromProductScoresQueryInterface
 {
     private Connection $connection;
 
-    private GetCategoryChildrenIdsQueryInterface $getCategoryChildrenIdsQuery;
+    private Client $elasticsearchClient;
 
-    public function __construct(Connection $connection, GetCategoryChildrenIdsQueryInterface $getCategoryChildrenIdsQuery)
-    {
+    private GetCategoryChildrenCodesQueryInterface $getCategoryChildrenIdsQuery;
+
+    private GetChannelCodeWithLocaleCodesInterface $getChannelCodeWithLocaleCodes;
+
+    public function __construct(
+        Connection                             $connection,
+        Client                                 $elasticsearchClient,
+        GetCategoryChildrenCodesQueryInterface $getCategoryChildrenIdsQuery,
+        GetChannelCodeWithLocaleCodesInterface $getChannelCodeWithLocaleCodes
+    ) {
         $this->connection = $connection;
+        $this->elasticsearchClient = $elasticsearchClient;
         $this->getCategoryChildrenIdsQuery = $getCategoryChildrenIdsQuery;
+        $this->getChannelCodeWithLocaleCodes = $getChannelCodeWithLocaleCodes;
     }
 
     public function forWholeCatalog(\DateTimeImmutable $date): RanksDistributionCollection
     {
-        $productScoresQuery = <<<SQL
-SELECT latest_eval.product_id, latest_eval.scores
-FROM pim_data_quality_insights_product_score AS latest_eval
-LEFT JOIN pim_data_quality_insights_product_score AS other_eval
-    ON other_eval.product_id = latest_eval.product_id
-    AND latest_eval.evaluated_at < other_eval.evaluated_at
-    AND other_eval.evaluated_at <= :day
-WHERE latest_eval.evaluated_at <= :day
-    AND other_eval.evaluated_at IS NULL
-SQL;
+        $query = $this->buildRankDistributionQuery();
 
-        $query = $this->buildRanksDistributionQuery($productScoresQuery);
-        $statement = $this->connection->executeQuery($query, ['day' => $date->format('Y-m-d')], ['day' => \PDO::PARAM_STR]);
-
-        $results = $statement->fetchColumn();
-        if (null === $results || false === $results) {
+        if (empty($query['aggs'])) {
             return new RanksDistributionCollection([]);
         }
 
-        $ranks = json_decode($results, true);
+        $elasticsearchResult = $this->elasticsearchClient->search($query);
 
-        if (!is_array($ranks)) {
-            throw new \RuntimeException('Something went wrong when fetching ranks distribution for the whole catalog');
-        }
-
-        return new RanksDistributionCollection($ranks);
+        return $this->hydrateToRankDistributionCollection($elasticsearchResult);
     }
 
     public function byCategory(CategoryCode $categoryCode, \DateTimeImmutable $date): RanksDistributionCollection
     {
-        $productScoresQuery = <<<SQL
-SELECT DISTINCT latest_eval.product_id, latest_eval.scores
-FROM pim_data_quality_insights_product_score AS latest_eval
-    INNER JOIN pim_catalog_category_product cp ON cp.product_id = latest_eval.product_id
-    LEFT JOIN pim_data_quality_insights_product_score AS other_eval
-        ON other_eval.product_id = latest_eval.product_id
-        AND latest_eval.evaluated_at < other_eval.evaluated_at
-        AND other_eval.evaluated_at <= :day
- WHERE latest_eval.evaluated_at <= :day
-   AND other_eval.evaluated_at IS NULL
-   AND cp . category_id IN (:categories)
-SQL;
+        $categoryCodes = $this->getCategoryChildrenIdsQuery->execute($categoryCode);
 
-        $query = $this->buildRanksDistributionQuery($productScoresQuery);
-        $categoryIds = $this->getCategoryChildrenIdsQuery->execute($categoryCode);
-
-        $statement = $this->connection->executeQuery(
-            $query,
-            [
-                'day' => $date->format('Y-m-d'),
-                'categories' => $categoryIds
-            ],
-            [
-                'day' => \PDO::PARAM_STR,
-                'categories' => Connection::PARAM_INT_ARRAY
+        $query = $this->buildRankDistributionQuery();
+        $query['query']['constant_score']['filter']['bool']['filter'][] = [
+            'terms' => [
+                'categories' => $categoryCodes
             ]
-        );
-
-        $results = $statement->fetchColumn();
-        if (null === $results || false === $results) {
-            return new RanksDistributionCollection([]);
-        }
-
-        $ranks = json_decode($results, true);
-        if (!is_array($ranks)) {
-            throw new \RuntimeException(sprintf('Something went wrong when fetching ranks distribution for the category "%s"', $categoryCode));
-        }
-
-        return new RanksDistributionCollection($ranks);
-    }
-
-    public function byFamily(FamilyCode $familyCode, \DateTimeImmutable $date): RanksDistributionCollection
-    {
-        $productScoresQuery = <<<SQL
-SELECT DISTINCT latest_eval.product_id, latest_eval.scores
-FROM pim_data_quality_insights_product_score AS latest_eval
-    INNER JOIN pim_catalog_product AS product ON product.id = latest_eval.product_id
-    INNER JOIN pim_catalog_family AS family ON family.id = product.family_id
-    LEFT JOIN pim_data_quality_insights_product_score AS other_eval
-        ON other_eval.product_id = latest_eval.product_id
-        AND latest_eval.evaluated_at < other_eval.evaluated_at
-        AND other_eval.evaluated_at <= :day
-WHERE latest_eval.evaluated_at <= :day
-AND other_eval.evaluated_at IS NULL
-AND family.code = :family_code
-SQL;
-        $query = $this->buildRanksDistributionQuery($productScoresQuery);
-
-        $statement = $this->connection->executeQuery(
-            $query,
-            [
-                'day' => $date->format('Y-m-d'),
-                'family_code' => $familyCode
-            ],
-            [
-                'day' => \PDO::PARAM_STR,
-                'family_code' => \PDO::PARAM_STR
-            ]
-        );
-
-        $results = $statement->fetchColumn();
-        if (null === $results || false === $results) {
-            return new RanksDistributionCollection([]);
-        }
-
-        $ranks = json_decode($results, true);
-        if (!is_array($ranks)) {
-            throw new \RuntimeException(sprintf('Something went wrong when fetching ranks distribution for the family "%s"', $familyCode));
-        }
-
-        return new RanksDistributionCollection($ranks);
+        ];
+        $elasticsearchResult = $this->elasticsearchClient->search($query);
+        return $this->hydrateToRankDistributionCollection($elasticsearchResult);
     }
 
     /**
-     * Build the main SQL query to aggregates the product scores per channel/locale
+     * It would be possible to calculate all consolidation scores from Elasticsearch
+     * in one request, by using multi level aggregation:
+     * {
+     *	 "aggs": {
+     *	 	"fe_case.cs_CZ": {
+     *	 		"terms": {
+     *	 			"field": "data_quality_insights.scores.fe_case.cs_CZ"
+     *	 		},
+     *	 		"aggs": {
+     *	 			"agg2": {
+     *	 				"terms": {
+     *	 					"field": "family.code"
+     *	 				}
+     *	 			}
+     *	 		}
+     *	 	}
+     *	 }
+     * }
+     *
+     * But actually, there is a limit of the number of buckets that we can return:
+     * https://www.elastic.co/guide/en/elasticsearch/reference/7.13/search-settings.html#search-settings-max-buckets
+     *
+     * As it's possible to reach more than 80,000 combinations of family/locale/channel, it's a good compromise to loop over the families:
+     * - it avoids to reach this ES limit
+     * - performance is good enough for a background job
+     * - it probably reduces the pressure over ES
+     *
      */
-    private function buildRanksDistributionQuery(string $productScoresQuery): string
+    public function byFamily(FamilyCode $familyCode, \DateTimeImmutable $date): RanksDistributionCollection
     {
-        return <<<SQL
-SELECT JSON_OBJECTAGG(channel_code, locale_ranks) AS channel_locale_ranks FROM (
-    SELECT channel_code, JSON_OBJECTAGG(locale_code, ranks) AS locale_ranks FROM (
-        SELECT channel_code, locale_code, JSON_OBJECTAGG(CONCAT('rank_', `rank`), total) AS ranks FROM (
-            SELECT channel_code, locale_code,
-                JSON_UNQUOTE(json_extract(scores, concat('$."', channel_code ,'"."', locale_code,'".rank'))) AS `rank`,
-                count(product_id) AS total
-            FROM (
-                    $productScoresQuery
-                ) product_score
-                CROSS JOIN (
-                    SELECT channel.code AS channel_code, locale.code  AS locale_code
-                    FROM pim_catalog_channel channel
-                    JOIN pim_catalog_channel_locale pccl ON channel.id = pccl.channel_id
-                    JOIN pim_catalog_locale locale ON pccl.locale_id = locale.id
-                ) channels_locales
-                WHERE JSON_CONTAINS_PATH(scores, 'one', concat('$."', channel_code ,'"."', locale_code,'"'))
-            GROUP BY channel_code, locale_code, `rank`
-        ) ranks
-        GROUP BY channel_code, locale_code
-    ) locales_ranks
-    GROUP BY channel_code
-) channels_locales_ranks
-SQL;
+        $query = $this->buildRankDistributionQuery();
+        $query['query']['constant_score']['filter']['bool']['filter'][] = [
+            'term' => [
+                'family.code' => (string) $familyCode
+            ]
+        ];
+        $elasticsearchResult = $this->elasticsearchClient->search($query);
+
+        return $this->hydrateToRankDistributionCollection($elasticsearchResult);
+    }
+
+    /**
+     * cf hydrateToRankDistributionCollection to see an example of result
+     */
+    private function buildRankDistributionQuery(): array
+    {
+        $channels = $this->getChannelCodeWithLocaleCodes->findAll();
+        $elasticsearchAggs = [];
+        foreach ($channels as ['channelCode' => $channelCode, 'localeCodes' => $localeCodes]) {
+            foreach ($localeCodes as $localeCode) {
+                $channelLocaleKey = "$channelCode.$localeCode";
+                $elasticsearchAggs[$channelLocaleKey] = [
+                    'terms' => [
+                        'field' => "data_quality_insights.scores.$channelLocaleKey"
+                    ]
+                ];
+            }
+        }
+
+        // size = 0 to avoid to fill the cache
+        //@see https://www.elastic.co/guide/en/elasticsearch/reference/7.13/search-aggregations.html#agg-caches
+        return [
+            'size' => 0,
+            'aggs' => $elasticsearchAggs,
+            'query' => [
+                'constant_score' => [
+                    'filter' => [
+                        'bool' => [
+                            'filter' => [
+                                [
+                                    'term' => [
+                                        'document_type' => ProductInterface::class
+                                    ]
+                                ]
+                            ]
+                        ],
+                    ]
+                ]
+            ],
+            'track_total_hits' => false
+        ];
+    }
+
+    /**
+     * @param array $elasticsearchResult
+     *
+     * [
+     *      "aggregations": [
+     *          "ecommerce.fr_FR": [
+     *              "doc_count_error_upper_bound": 0,
+     *              "sum_other_doc_count": 0,
+     *              "buckets": [
+     *                  [
+     *                      "key": 3,
+     *                      "doc_count": 181682
+     *                  ],
+     *                  [
+     *                      "key": 4,
+     *                      "doc_count": 37952
+     *                  ],
+     *                  [
+     *                      "key": 2,
+     *                      "doc_count": 22844
+     *                  ],
+     *                  [
+     *                      "key": 5,
+     *                      "doc_count": 12846
+     *                  ],
+     *                  [
+     *                      "key": 1,
+     *                      "doc_count": 1012
+     *                  ]
+     *              ]
+     *          ]
+     *      ]
+     * ]
+     *
+     */
+    private function hydrateToRankDistributionCollection(array $elasticsearchResult): RanksDistributionCollection
+    {
+        Assert::keyExists($elasticsearchResult, 'aggregations');
+
+        $ranks = [];
+        foreach ($elasticsearchResult["aggregations"] as $channelLocaleKey => $aggregationPerRank) {
+            [$channelCode, $localeCode] = explode('.', $channelLocaleKey);
+
+            Assert::keyExists($aggregationPerRank, 'buckets');
+            foreach ($aggregationPerRank['buckets'] as ['key' => $rank, 'doc_count' => $numberOfProducts]) {
+                $ranks[$channelCode][$localeCode]["rank_$rank"] = $numberOfProducts;
+            }
+        }
+
+        return new RanksDistributionCollection($ranks);
     }
 }
