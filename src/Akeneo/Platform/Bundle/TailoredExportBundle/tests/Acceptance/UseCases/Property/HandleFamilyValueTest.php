@@ -22,7 +22,6 @@ use Akeneo\Platform\TailoredExport\Application\Common\SourceValue\NullValue;
 use Akeneo\Platform\TailoredExport\Application\Common\SourceValue\SourceValueInterface;
 use Akeneo\Platform\TailoredExport\Application\MapValues\MapValuesQuery;
 use Akeneo\Platform\TailoredExport\Test\Acceptance\FakeServices\Family\InMemoryFindFamilyLabel;
-use Akeneo\Platform\TailoredExport\Test\Acceptance\FakeServices\Family\InMemoryGetFamilyTranslations;
 use PHPUnit\Framework\Assert;
 
 final class HandleFamilyValueTest extends PropertyTestCase

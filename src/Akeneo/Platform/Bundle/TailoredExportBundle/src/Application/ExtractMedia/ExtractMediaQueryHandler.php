@@ -13,44 +13,49 @@ declare(strict_types=1);
 
 namespace Akeneo\Platform\TailoredExport\Application\ExtractMedia;
 
-use Akeneo\AssetManager\Infrastructure\PublicApi\Enrich\GetMainMediaFileInfoCollectionInterface;
-use Akeneo\AssetManager\Infrastructure\PublicApi\Enrich\MediaFileInfo;
-use Akeneo\Platform\TailoredExport\Application\Common\Column\ColumnCollection;
+use Akeneo\Platform\TailoredExport\Application\Common\MediaPathGeneratorInterface;
 use Akeneo\Platform\TailoredExport\Application\Common\Selection\AssetCollection\AssetCollectionSelectionInterface;
 use Akeneo\Platform\TailoredExport\Application\Common\Selection\File\FileSelectionInterface;
 use Akeneo\Platform\TailoredExport\Application\Common\Source\SourceInterface;
 use Akeneo\Platform\TailoredExport\Application\Common\SourceValue\AssetCollectionValue;
 use Akeneo\Platform\TailoredExport\Application\Common\SourceValue\FileValue;
-use Akeneo\Platform\TailoredExport\Application\Common\ValueCollection;
-use Akeneo\Platform\TailoredExport\Infrastructure\Connector\MediaExporterPathGenerator;
+use Akeneo\Platform\TailoredExport\Domain\Query\MediaFileInfo\FindMediaFileInfoCollectionInterface;
+use Akeneo\Platform\TailoredExport\Domain\Query\MediaFileInfo\MediaFileInfo;
 
 class ExtractMediaQueryHandler
 {
-    private GetMainMediaFileInfoCollectionInterface $getMainMediaFileInfoCollection;
+    private FindMediaFileInfoCollectionInterface $findMediaFileInfoCollection;
+    private MediaPathGeneratorInterface $mediaPathGenerator;
 
-    public function __construct(GetMainMediaFileInfoCollectionInterface $getMainMediaFileInfoCollection)
-    {
-        $this->getMainMediaFileInfoCollection = $getMainMediaFileInfoCollection;
+    public function __construct(
+        FindMediaFileInfoCollectionInterface $findMediaFileInfoCollection,
+        MediaPathGeneratorInterface $mediaPathGenerator
+    ) {
+        $this->findMediaFileInfoCollection = $findMediaFileInfoCollection;
+        $this->mediaPathGenerator = $mediaPathGenerator;
     }
 
     /**
      * @return ExtractedMedia[]
      */
-    public function handle(ColumnCollection $columnCollection, ValueCollection $valueCollection): array
+    public function handle(ExtractMediaQuery $extractMediaQuery): array
     {
         $mediaToExports = [];
 
         /** @var SourceInterface $source */
-        foreach ($columnCollection->getAllSources() as $source) {
+        foreach ($extractMediaQuery->getColumnCollection()->getAllSources() as $source) {
             $selection = $source->getSelection();
-            $value = $valueCollection->getFromSource($source);
+            $value = $extractMediaQuery->getValueCollection()->getFromSource($source);
 
             if ($selection instanceof FileSelectionInterface && $value instanceof FileValue) {
                 $mediaToExports[] = $this->extractFromFileSource($selection, $value);
             }
 
             if ($selection instanceof AssetCollectionSelectionInterface && $value instanceof AssetCollectionValue) {
-                $mediaToExports = array_merge($mediaToExports, $this->extractFromAssetCollectionSource($selection, $value));
+                $mediaToExports = array_merge(
+                    $mediaToExports,
+                    $this->extractFromAssetCollectionSource($selection, $value)
+                );
             }
         }
 
@@ -59,7 +64,7 @@ class ExtractMediaQueryHandler
 
     private function extractFromFileSource(FileSelectionInterface $selection, FileValue $value): ExtractedMedia
     {
-        $exportDirectory = MediaExporterPathGenerator::generate(
+        $exportDirectory = $this->mediaPathGenerator->generate(
             $value->getEntityIdentifier(),
             $selection->getAttributeCode(),
             $value->getChannelReference(),
@@ -82,7 +87,7 @@ class ExtractMediaQueryHandler
         AssetCollectionSelectionInterface $selection,
         AssetCollectionValue $value
     ): array {
-        $mainMediaFileInfoCollection = $this->getMainMediaFileInfoCollection
+        $mainMediaFileInfoCollection = $this->findMediaFileInfoCollection
             ->forAssetFamilyAndAssetCodes(
                 $selection->getAssetFamilyCode(),
                 $value->getAssetCodes()
@@ -91,7 +96,7 @@ class ExtractMediaQueryHandler
         return array_reduce(
             $mainMediaFileInfoCollection,
             function (array $accumulator, MediaFileInfo $fileInfo) use ($selection, $value) {
-                $exportDirectory = MediaExporterPathGenerator::generate(
+                $exportDirectory = $this->mediaPathGenerator->generate(
                     $value->getEntityIdentifier(),
                     $selection->getAttributeCode(),
                     $value->getChannelReference(),

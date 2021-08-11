@@ -18,7 +18,6 @@ use Akeneo\Platform\TailoredExport\Application\Common\Selection\SimpleAssociatio
 use Akeneo\Platform\TailoredExport\Application\Common\SourceValue\SimpleAssociationsValue;
 use Akeneo\Platform\TailoredExport\Application\Common\SourceValue\SourceValueInterface;
 use Akeneo\Platform\TailoredExport\Application\MapValues\SelectionApplier\SelectionApplierInterface;
-use Akeneo\Platform\TailoredExport\Domain\Query\FindGroupLabelsInterface;
 use Akeneo\Platform\TailoredExport\Domain\Query\FindProductLabelsInterface;
 use Akeneo\Platform\TailoredExport\Domain\Query\FindProductModelLabelsInterface;
 

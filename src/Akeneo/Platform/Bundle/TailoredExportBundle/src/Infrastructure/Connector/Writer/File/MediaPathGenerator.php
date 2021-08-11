@@ -11,11 +11,13 @@ declare(strict_types=1);
  * file that was distributed with this source code.
  */
 
-namespace Akeneo\Platform\TailoredExport\Infrastructure\Connector;
+namespace Akeneo\Platform\TailoredExport\Infrastructure\Connector\Writer\File;
 
-class MediaExporterPathGenerator
+use Akeneo\Platform\TailoredExport\Application\Common\MediaPathGeneratorInterface;
+
+class MediaPathGenerator implements MediaPathGeneratorInterface
 {
-    public static function generate(string $identifier, string $attributeCode, ?string $scope, ?string $locale): string
+    public function generate(string $identifier, string $attributeCode, ?string $scope, ?string $locale): string
     {
         $identifier = str_replace(DIRECTORY_SEPARATOR, '_', $identifier);
         $target = sprintf('files/%s/%s', $identifier, $attributeCode);

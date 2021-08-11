@@ -11,19 +11,17 @@ declare(strict_types=1);
  * file that was distributed with this source code.
  */
 
-namespace Akeneo\Platform\TailoredExport\Domain\Query;
-
-use Akeneo\Pim\Structure\Component\Query\PublicApi\Attribute\FlattenAttribute;
+namespace Akeneo\Platform\TailoredExport\Domain\Query\Attribute;
 
 class ViewableAttributesResult
 {
     private int $offset;
 
-    /** @var FlattenAttribute[] */
+    /** @var Attribute[] */
     private array $attributes;
 
     /**
-     * @param FlattenAttribute[] $attributes
+     * @param Attribute[] $attributes
      */
     public function __construct(int $offset, array $attributes)
     {
@@ -32,7 +30,7 @@ class ViewableAttributesResult
     }
 
     /**
-     * @return FlattenAttribute[]
+     * @return Attribute[]
      */
     public function getAttributes(): array
     {

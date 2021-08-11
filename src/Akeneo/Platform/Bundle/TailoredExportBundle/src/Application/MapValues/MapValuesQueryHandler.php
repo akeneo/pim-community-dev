@@ -14,7 +14,6 @@ declare(strict_types=1);
 namespace Akeneo\Platform\TailoredExport\Application\MapValues;
 
 use Akeneo\Platform\TailoredExport\Application\Common\Column\Column;
-use Akeneo\Platform\TailoredExport\Application\MapValues\MapValuesQuery;
 use Akeneo\Platform\TailoredExport\Application\MapValues\OperationApplier\OperationApplier;
 use Akeneo\Platform\TailoredExport\Application\MapValues\SelectionApplier\SelectionApplier;
 

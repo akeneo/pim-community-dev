@@ -17,10 +17,16 @@ use Akeneo\Platform\TailoredExport\Application\Common\Selection\Boolean\BooleanS
 use Akeneo\Platform\TailoredExport\Application\Common\Selection\File\FilePathSelection;
 use Akeneo\Platform\TailoredExport\Application\Common\SourceValue\BooleanValue;
 use Akeneo\Platform\TailoredExport\Application\Common\SourceValue\FileValue;
+use Akeneo\Platform\TailoredExport\Infrastructure\Connector\Writer\File\MediaPathGenerator;
 use PhpSpec\ObjectBehavior;
 
 class FilePathSelectionApplierSpec extends ObjectBehavior
 {
+    public function let()
+    {
+        $this->beConstructedWith(new MediaPathGenerator());
+    }
+
     public function it_applies_the_selection()
     {
         $selection = new FilePathSelection('an_attribute_code');

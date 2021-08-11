@@ -13,15 +13,22 @@ declare(strict_types=1);
 
 namespace Akeneo\Platform\TailoredExport\Application\MapValues\SelectionApplier\File;
 
+use Akeneo\Platform\TailoredExport\Application\Common\MediaPathGeneratorInterface;
 use Akeneo\Platform\TailoredExport\Application\Common\Selection\File\FilePathSelection;
 use Akeneo\Platform\TailoredExport\Application\Common\Selection\SelectionInterface;
 use Akeneo\Platform\TailoredExport\Application\Common\SourceValue\FileValue;
 use Akeneo\Platform\TailoredExport\Application\Common\SourceValue\SourceValueInterface;
 use Akeneo\Platform\TailoredExport\Application\MapValues\SelectionApplier\SelectionApplierInterface;
-use Akeneo\Platform\TailoredExport\Infrastructure\Connector\MediaExporterPathGenerator;
 
 class FilePathSelectionApplier implements SelectionApplierInterface
 {
+    private MediaPathGeneratorInterface $mediaPathGenerator;
+
+    public function __construct(MediaPathGeneratorInterface $mediaPathGenerator)
+    {
+        $this->mediaPathGenerator = $mediaPathGenerator;
+    }
+
     public function applySelection(SelectionInterface $selection, SourceValueInterface $value): string
     {
         if (
@@ -31,7 +38,7 @@ class FilePathSelectionApplier implements SelectionApplierInterface
             throw new \InvalidArgumentException('Cannot apply File selection on this entity');
         }
 
-        $exportDirectory = MediaExporterPathGenerator::generate(
+        $exportDirectory = $this->mediaPathGenerator->generate(
             $value->getEntityIdentifier(),
             $selection->getAttributeCode(),
             $value->getChannelReference(),

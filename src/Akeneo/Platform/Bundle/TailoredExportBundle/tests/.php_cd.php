@@ -21,6 +21,17 @@ $builder = new RuleBuilder();
 $rules = [
     $builder->only(
         [
+            'Webmozart\Assert\Assert',
+            'Akeneo\Platform\TailoredExport\Domain',
+        ]
+    )->in('Akeneo\Platform\TailoredExport\Application'),
+    $builder->only(
+        [
+            'Webmozart\Assert\Assert',
+        ]
+    )->in('Akeneo\Platform\TailoredExport\Domain'),
+    $builder->only(
+        [
             'Symfony\Component',
             'Symfony\Contracts',
             'Akeneo\Tool',
@@ -30,6 +41,9 @@ $rules = [
             'Doctrine\DBAL\Connection',
             'Box\Spout\Writer\WriterFactory',
             'Box\Spout\Writer\WriterInterface',
+
+            'Akeneo\Platform\TailoredExport\Application',
+            'Akeneo\Platform\TailoredExport\Domain',
 
             'Akeneo\AssetManager\Infrastructure\PublicApi',
             'Akeneo\Channel\Component\Query\PublicApi',
@@ -48,7 +62,7 @@ $rules = [
             'Akeneo\ReferenceEntity\Infrastructure\PublicApi',
             'Akeneo\UserManagement\Component\Model\UserInterface',
         ]
-    )->in('Akeneo\Platform\TailoredExport'),
+    )->in('Akeneo\Platform\TailoredExport\Infrastructure'),
 ];
 
 return new Configuration($rules, $finder);

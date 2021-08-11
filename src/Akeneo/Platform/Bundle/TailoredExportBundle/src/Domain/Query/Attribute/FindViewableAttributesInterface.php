@@ -11,7 +11,7 @@ declare(strict_types=1);
  * file that was distributed with this source code.
  */
 
-namespace Akeneo\Platform\TailoredExport\Domain\Query;
+namespace Akeneo\Platform\TailoredExport\Domain\Query\Attribute;
 
 interface FindViewableAttributesInterface
 {

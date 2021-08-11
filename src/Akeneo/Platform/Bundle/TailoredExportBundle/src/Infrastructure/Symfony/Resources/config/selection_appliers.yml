@@ -92,7 +92,7 @@ services:
   Akeneo\Platform\TailoredExport\Application\MapValues\SelectionApplier\File\FilePathSelectionApplier:
     public: true
     arguments:
-      - '@pim_connector.writer.file.media_exporter_path_generator'
+      - '@Akeneo\Platform\TailoredExport\Infrastructure\Connector\Writer\File\MediaPathGenerator'
     tags:
       - { name: akeneo.tailored_export.selection_applier }
 

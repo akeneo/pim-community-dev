@@ -22,6 +22,7 @@ use Akeneo\Pim\Structure\Component\Query\PublicApi\AttributeType\GetAttributes;
 use Akeneo\Platform\TailoredExport\Application\Common\Column\ColumnCollection;
 use Akeneo\Platform\TailoredExport\Application\Common\SourceValue\StringValue;
 use Akeneo\Platform\TailoredExport\Application\Common\ValueCollection;
+use Akeneo\Platform\TailoredExport\Application\ExtractMedia\ExtractMediaQuery;
 use Akeneo\Platform\TailoredExport\Application\ExtractMedia\ExtractMediaQueryHandler;
 use Akeneo\Platform\TailoredExport\Application\MapValues\MapValuesQuery;
 use Akeneo\Platform\TailoredExport\Application\MapValues\MapValuesQueryHandler;
@@ -132,7 +133,7 @@ class ProductExportProcessorSpec extends ObjectBehavior
         $valueCollectionHydrator->hydrate($product, $columnCollection)->willReturn($valueCollection);
 
         $mapValuesQueryHandler->handle(new MapValuesQuery($columnCollection, $valueCollection))->willReturn($mappedProducts);
-        $extractMediaQueryHandler->handle($columnCollection, $valueCollection)->willReturn([]);
+        $extractMediaQueryHandler->handle(new ExtractMediaQuery($columnCollection, $valueCollection))->willReturn([]);
 
         $processedTailoredExport = new ProcessedTailoredExport($mappedProducts, []);
 
