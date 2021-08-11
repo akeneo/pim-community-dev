@@ -6,6 +6,11 @@ use Akeneo\Pim\Enrichment\Component\Product\Model\ProductInterface;
 use Akeneo\Pim\Enrichment\Component\Product\Model\ProductModelInterface;
 use Akeneo\Tool\Bundle\ApiBundle\tests\integration\ApiTestCase;
 use AkeneoTest\Pim\Enrichment\Integration\Normalizer\NormalizedProductCleaner;
+use Doctrine\Common\Collections\ArrayCollection;
+use Oro\Bundle\SecurityBundle\Acl\AccessLevel;
+use Oro\Bundle\SecurityBundle\Model\AclPermission;
+use Oro\Bundle\SecurityBundle\Model\AclPrivilege;
+use Oro\Bundle\SecurityBundle\Model\AclPrivilegeIdentity;
 use PHPUnit\Framework\Assert;
 use Symfony\Component\HttpFoundation\Response;
 
@@ -139,5 +144,22 @@ abstract class AbstractProductTestCase extends ApiTestCase
         NormalizedProductCleaner::clean($standardizedProduct);
 
         Assert::assertSame($expectedProduct, $standardizedProduct);
+    }
+
+    protected function removeAclFromRole(string $aclPrivilegeIdentityId): void
+    {
+        $aclManager = $this->get('oro_security.acl.manager');
+        $role = $this->get('pim_user.repository.role')->findOneByIdentifier('ROLE_ADMINISTRATOR');
+        $privilege = new AclPrivilege();
+        $identity = new AclPrivilegeIdentity($aclPrivilegeIdentityId);
+        $privilege
+            ->setIdentity($identity)
+            ->addPermission(new AclPermission('EXECUTE', AccessLevel::NONE_LEVEL));
+        $aclManager->getPrivilegeRepository()->savePrivileges(
+            $aclManager->getSid($role),
+            new ArrayCollection([$privilege])
+        );
+        $aclManager->flush();
+        $aclManager->clearCache();
     }
 }
