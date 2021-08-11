@@ -98,7 +98,7 @@ class FindViewableAttributes implements FindViewableAttributesInterface
     private function filterViewableAttributes(array $attributes): array
     {
         $userId = $this->getUserId();
-        $attributeCodes = array_map(static fn (FlattenAttribute $attribute) => $attribute->getCode(), $attributes);
+        $attributeCodes = array_map(static fn (Attribute $attribute) => $attribute->getCode(), $attributes);
         $viewableAttributeCodes = $this->getViewableAttributeCodesForUser->forAttributeCodes($attributeCodes, $userId);
 
         return array_filter(
