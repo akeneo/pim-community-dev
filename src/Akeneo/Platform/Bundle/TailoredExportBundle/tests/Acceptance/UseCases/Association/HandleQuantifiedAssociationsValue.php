@@ -13,13 +13,14 @@ declare(strict_types=1);
 
 namespace Akeneo\Platform\TailoredExport\Test\Acceptance\UseCases\Association;
 
-use Akeneo\Platform\TailoredExport\Application\Query\Selection\QuantifiedAssociations\QuantifiedAssociationsCodeSelection;
-use Akeneo\Platform\TailoredExport\Application\Query\Selection\QuantifiedAssociations\QuantifiedAssociationsLabelSelection;
-use Akeneo\Platform\TailoredExport\Application\Query\Selection\QuantifiedAssociations\QuantifiedAssociationsQuantitySelection;
-use Akeneo\Platform\TailoredExport\Application\Query\Selection\SelectionInterface;
-use Akeneo\Platform\TailoredExport\Domain\Model\SourceValue\QuantifiedAssociation;
-use Akeneo\Platform\TailoredExport\Domain\Model\SourceValue\QuantifiedAssociationsValue;
-use Akeneo\Platform\TailoredExport\Domain\Model\SourceValue\SourceValueInterface;
+use Akeneo\Platform\TailoredExport\Application\Common\Selection\QuantifiedAssociations\QuantifiedAssociationsCodeSelection;
+use Akeneo\Platform\TailoredExport\Application\Common\Selection\QuantifiedAssociations\QuantifiedAssociationsLabelSelection;
+use Akeneo\Platform\TailoredExport\Application\Common\Selection\QuantifiedAssociations\QuantifiedAssociationsQuantitySelection;
+use Akeneo\Platform\TailoredExport\Application\Common\Selection\SelectionInterface;
+use Akeneo\Platform\TailoredExport\Application\Common\SourceValue\QuantifiedAssociation;
+use Akeneo\Platform\TailoredExport\Application\Common\SourceValue\QuantifiedAssociationsValue;
+use Akeneo\Platform\TailoredExport\Application\Common\SourceValue\SourceValueInterface;
+use Akeneo\Platform\TailoredExport\Application\MapValues\MapValuesQuery;
 use Akeneo\Platform\TailoredExport\Test\Acceptance\FakeServices\Group\InMemoryFindGroupLabels;
 use Akeneo\Platform\TailoredExport\Test\Acceptance\FakeServices\Product\InMemoryFindProductLabels;
 use Akeneo\Platform\TailoredExport\Test\Acceptance\FakeServices\ProductModel\InMemoryFindProductModelLabels;
@@ -38,13 +39,13 @@ final class HandleQuantifiedAssociationsValue extends AssociationTestCase
         SourceValueInterface $value,
         array $expected
     ): void {
-        $productMapper = $this->getProductMapper();
+        $mapValuesQueryHandler = $this->getMapValuesQueryHandler();
         $this->loadAssociatedEntityLabels();
 
         $columnCollection = $this->createSingleSourceColumnCollection(false, $operations, $selection);
         $valueCollection = $this->createSingleValueValueCollection($value);
 
-        $mappedProduct = $productMapper->map($columnCollection, $valueCollection);
+        $mappedProduct = $mapValuesQueryHandler->handle(new MapValuesQuery($columnCollection, $valueCollection));
 
         Assert::assertSame($expected, $mappedProduct);
     }

@@ -14,14 +14,15 @@ services:
         tags:
             - { name: pim_enrich.provider.form }
 
-    Akeneo\Platform\TailoredExport\Application\ProductMapper:
+    Akeneo\Platform\TailoredExport\Application\MapValues\MapValuesQueryHandler:
         arguments:
-            - '@Akeneo\Platform\TailoredExport\Application\OperationApplier'
-            - '@Akeneo\Platform\TailoredExport\Application\Query\Selection\SelectionApplier'
+            - '@Akeneo\Platform\TailoredExport\Application\MapValues\OperationApplier\OperationApplier'
+            - '@Akeneo\Platform\TailoredExport\Application\MapValues\SelectionApplier\SelectionApplier'
 
-    Akeneo\Platform\TailoredExport\Application\MediaToExportExtractor:
+    Akeneo\Platform\TailoredExport\Application\ExtractMedia\ExtractMediaQueryHandler:
         arguments:
-            - '@akeneo_assetmanager.infrastructure.persistence.query.enrich.get_main_media_file_info_collection_public_api'
+            - '@Akeneo\Platform\TailoredExport\Infrastructure\Query\AssetManager\FindMediaFileInfoCollection'
+            - '@Akeneo\Platform\TailoredExport\Infrastructure\Connector\Writer\File\MediaPathGenerator'
         public: false
 
     akeneo.tailored_export.voter.job_profile:
@@ -40,3 +41,5 @@ services:
             - '@pimee_security.query.get_all_viewable_locales_for_user' # this service is in CE and overridden in EE
             - '@pimee_security.query.get_viewable_attribute_codes_for_user' # this service is in CE and overridden in EE
             - '@akeneo.pim.structure.query.get_attributes'
+
+    Akeneo\Platform\TailoredExport\Infrastructure\Connector\Writer\File\MediaPathGenerator: ~

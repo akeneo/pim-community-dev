@@ -13,14 +13,15 @@ declare(strict_types=1);
 
 namespace Akeneo\Platform\TailoredExport\Test\Acceptance\UseCases\Attribute;
 
-use Akeneo\Platform\TailoredExport\Application\Query\Operation\DefaultValueOperation;
-use Akeneo\Platform\TailoredExport\Application\Query\Selection\File\FileKeySelection;
-use Akeneo\Platform\TailoredExport\Application\Query\Selection\File\FileNameSelection;
-use Akeneo\Platform\TailoredExport\Application\Query\Selection\File\FilePathSelection;
-use Akeneo\Platform\TailoredExport\Application\Query\Selection\SelectionInterface;
-use Akeneo\Platform\TailoredExport\Domain\Model\SourceValue\FileValue;
-use Akeneo\Platform\TailoredExport\Domain\Model\SourceValue\NullValue;
-use Akeneo\Platform\TailoredExport\Domain\Model\SourceValue\SourceValueInterface;
+use Akeneo\Platform\TailoredExport\Application\Common\Operation\DefaultValueOperation;
+use Akeneo\Platform\TailoredExport\Application\Common\Selection\File\FileKeySelection;
+use Akeneo\Platform\TailoredExport\Application\Common\Selection\File\FileNameSelection;
+use Akeneo\Platform\TailoredExport\Application\Common\Selection\File\FilePathSelection;
+use Akeneo\Platform\TailoredExport\Application\Common\Selection\SelectionInterface;
+use Akeneo\Platform\TailoredExport\Application\Common\SourceValue\FileValue;
+use Akeneo\Platform\TailoredExport\Application\Common\SourceValue\NullValue;
+use Akeneo\Platform\TailoredExport\Application\Common\SourceValue\SourceValueInterface;
+use Akeneo\Platform\TailoredExport\Application\MapValues\MapValuesQuery;
 use PHPUnit\Framework\Assert;
 
 final class HandleFileValueTest extends AttributeTestCase
@@ -34,12 +35,12 @@ final class HandleFileValueTest extends AttributeTestCase
         SourceValueInterface $value,
         array $expected
     ): void {
-        $productMapper = $this->getProductMapper();
+        $mapValuesQueryHandler = $this->getMapValuesQueryHandler();
 
         $columnCollection = $this->createSingleSourceColumnCollection($operations, $selection);
         $valueCollection = $this->createSingleValueValueCollection($value);
 
-        $mappedProduct = $productMapper->map($columnCollection, $valueCollection);
+        $mappedProduct = $mapValuesQueryHandler->handle(new MapValuesQuery($columnCollection, $valueCollection));
 
         Assert::assertSame($expected, $mappedProduct);
     }

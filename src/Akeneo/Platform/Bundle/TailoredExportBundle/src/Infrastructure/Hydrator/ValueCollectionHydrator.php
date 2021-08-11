@@ -14,11 +14,11 @@ declare(strict_types=1);
 namespace Akeneo\Platform\TailoredExport\Infrastructure\Hydrator;
 
 use Akeneo\Pim\Enrichment\Component\Product\Model\ProductInterface;
-use Akeneo\Platform\TailoredExport\Application\Query\Column\ColumnCollection;
-use Akeneo\Platform\TailoredExport\Application\Query\Source\AssociationTypeSource;
-use Akeneo\Platform\TailoredExport\Application\Query\Source\AttributeSource;
-use Akeneo\Platform\TailoredExport\Application\Query\Source\PropertySource;
-use Akeneo\Platform\TailoredExport\Domain\Model\ValueCollection;
+use Akeneo\Platform\TailoredExport\Application\Common\Column\ColumnCollection;
+use Akeneo\Platform\TailoredExport\Application\Common\Source\AssociationTypeSource;
+use Akeneo\Platform\TailoredExport\Application\Common\Source\AttributeSource;
+use Akeneo\Platform\TailoredExport\Application\Common\Source\PropertySource;
+use Akeneo\Platform\TailoredExport\Application\Common\ValueCollection;
 
 class ValueCollectionHydrator
 {

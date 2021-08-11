@@ -13,9 +13,9 @@ declare(strict_types=1);
 
 namespace Akeneo\Platform\TailoredExport\Infrastructure\Validation\Source;
 
-use Akeneo\Platform\TailoredExport\Application\Query\Source\AssociationTypeSource;
-use Akeneo\Platform\TailoredExport\Application\Query\Source\AttributeSource;
-use Akeneo\Platform\TailoredExport\Application\Query\Source\PropertySource;
+use Akeneo\Platform\TailoredExport\Application\Common\Source\AssociationTypeSource;
+use Akeneo\Platform\TailoredExport\Application\Common\Source\AttributeSource;
+use Akeneo\Platform\TailoredExport\Application\Common\Source\PropertySource;
 use Symfony\Component\Validator\Constraints\Choice;
 use Symfony\Component\Validator\Constraints\Collection;
 use Symfony\Component\Validator\Constraints\NotBlank;
