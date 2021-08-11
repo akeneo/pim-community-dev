@@ -24,13 +24,13 @@ use Akeneo\Platform\TailoredExport\Application\Common\Source\SourceCollection;
 use Akeneo\Platform\TailoredExport\Application\Common\SourceValue\BooleanValue;
 use Akeneo\Platform\TailoredExport\Application\Common\SourceValue\EnabledValue;
 use Akeneo\Platform\TailoredExport\Application\Common\ValueCollection;
+use Akeneo\Platform\TailoredExport\Application\MapValues\MapValuesQuery;
 use Akeneo\Platform\TailoredExport\Application\MapValues\MapValuesQueryHandler;
 use PHPUnit\Framework\Assert;
 use Symfony\Bundle\FrameworkBundle\Test\KernelTestCase;
 
 final class HandleConcatenateTest extends KernelTestCase
 {
-    public const ATTRIBUTE_CODE = 'test_attribute';
     public const TARGET_NAME = 'test_column';
 
     private ?MapValuesQueryHandler $mapValuesQueryHandler;
@@ -65,7 +65,7 @@ final class HandleConcatenateTest extends KernelTestCase
         $valueCollection->add(new EnabledValue(true), 'enabled', null, null);
         $valueCollection->add(new BooleanValue(false), 'is_active', null, null);
 
-        $mappedProduct = $this->mapValuesQueryHandler->handle($columnCollection, $valueCollection);
+        $mappedProduct = $this->mapValuesQueryHandler->handle(new MapValuesQuery($columnCollection, $valueCollection));
 
         Assert::assertSame([
             self::TARGET_NAME => '0 1'
@@ -91,7 +91,7 @@ final class HandleConcatenateTest extends KernelTestCase
         $valueCollection = new ValueCollection();
         $valueCollection->add(new BooleanValue(false), 'is_active', null, null);
 
-        $mappedProduct = $this->mapValuesQueryHandler->handle($columnCollection, $valueCollection);
+        $mappedProduct = $this->mapValuesQueryHandler->handle(new MapValuesQuery($columnCollection, $valueCollection));
 
         Assert::assertSame([
             self::TARGET_NAME => '0'

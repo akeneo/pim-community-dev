@@ -20,6 +20,7 @@ use Akeneo\Platform\TailoredExport\Application\Common\Selection\SelectionInterfa
 use Akeneo\Platform\TailoredExport\Application\Common\SourceValue\BooleanValue;
 use Akeneo\Platform\TailoredExport\Application\Common\SourceValue\NullValue;
 use Akeneo\Platform\TailoredExport\Application\Common\SourceValue\SourceValueInterface;
+use Akeneo\Platform\TailoredExport\Application\MapValues\MapValuesQuery;
 use PHPUnit\Framework\Assert;
 
 final class HandleBooleanValueTest extends AttributeTestCase
@@ -38,7 +39,8 @@ final class HandleBooleanValueTest extends AttributeTestCase
         $columnCollection = $this->createSingleSourceColumnCollection($operations, $selection);
         $valueCollection = $this->createSingleValueValueCollection($value);
 
-        $mappedProduct = $mapValuesQueryHandler->handle($columnCollection, $valueCollection);
+        $mapValuesQuery = new MapValuesQuery($columnCollection, $valueCollection);
+        $mappedProduct = $mapValuesQueryHandler->handle($mapValuesQuery);
 
         Assert::assertSame($expected, $mappedProduct);
     }

@@ -20,6 +20,7 @@ use Akeneo\Platform\TailoredExport\Application\Common\Column\ColumnCollection;
 use Akeneo\Platform\TailoredExport\Application\Common\Source\AssociationTypeSource;
 use Akeneo\Platform\TailoredExport\Application\Common\Source\AttributeSource;
 use Akeneo\Platform\TailoredExport\Application\ExtractMedia\ExtractMediaQueryHandler;
+use Akeneo\Platform\TailoredExport\Application\MapValues\MapValuesQuery;
 use Akeneo\Platform\TailoredExport\Application\MapValues\MapValuesQueryHandler;
 use Akeneo\Platform\TailoredExport\Infrastructure\Hydrator\ColumnCollectionHydrator;
 use Akeneo\Platform\TailoredExport\Infrastructure\Hydrator\ValueCollectionHydrator;
@@ -71,7 +72,7 @@ class ProductExportProcessor implements ItemProcessorInterface, StepExecutionAwa
         $columnCollection = $this->getColumnCollection($columns);
         $valueCollection = $this->valueCollectionHydrator->hydrate($product, $columnCollection);
 
-        $mappedProducts = $this->mapValuesQueryHandler->handle($columnCollection, $valueCollection);
+        $mappedProducts = $this->mapValuesQueryHandler->handle(new MapValuesQuery($columnCollection, $valueCollection));
         $filesToExport = $this->extractMediaQueryHandler->handle($columnCollection, $valueCollection);
 
         return new ProcessedTailoredExport($mappedProducts, $filesToExport);

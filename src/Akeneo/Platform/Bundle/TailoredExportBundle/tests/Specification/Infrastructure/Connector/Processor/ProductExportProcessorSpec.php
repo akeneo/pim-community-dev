@@ -23,6 +23,7 @@ use Akeneo\Platform\TailoredExport\Application\Common\Column\ColumnCollection;
 use Akeneo\Platform\TailoredExport\Application\Common\SourceValue\StringValue;
 use Akeneo\Platform\TailoredExport\Application\Common\ValueCollection;
 use Akeneo\Platform\TailoredExport\Application\ExtractMedia\ExtractMediaQueryHandler;
+use Akeneo\Platform\TailoredExport\Application\MapValues\MapValuesQuery;
 use Akeneo\Platform\TailoredExport\Application\MapValues\MapValuesQueryHandler;
 use Akeneo\Platform\TailoredExport\Infrastructure\Connector\Processor\ProcessedTailoredExport;
 use Akeneo\Platform\TailoredExport\Infrastructure\Hydrator\ColumnCollectionHydrator;
@@ -63,7 +64,6 @@ class ProductExportProcessorSpec extends ObjectBehavior
         GetAssociationTypesInterface $getAssociationTypes,
         ValueCollectionHydrator $valueCollectionHydrator,
         ColumnCollectionHydrator $columnCollectionHydrator,
-        ColumnCollection $columnCollection,
         MapValuesQueryHandler $mapValuesQueryHandler,
         ExtractMediaQueryHandler $extractMediaQueryHandler
     ) {
@@ -126,10 +126,12 @@ class ProductExportProcessorSpec extends ObjectBehavior
         $jobParameters->get('columns')->willReturn($columns);
         $getAttributes->forCodes(['name'])->willReturn(['name' => $name]);
         $getAssociationTypes->forCodes(['X_SELL'])->willReturn(['X_SELL' => $crossSellAssociation]);
-        $columnCollectionHydrator->hydrate($columns, ['name' => $name], ['X_SELL' => $crossSellAssociation])->willReturn($columnCollection);
+        $columnCollection = ColumnCollection::create([]);
+        $columnCollectionHydrator->hydrate($columns, ['name' => $name], ['X_SELL' => $crossSellAssociation])
+            ->willReturn($columnCollection);
         $valueCollectionHydrator->hydrate($product, $columnCollection)->willReturn($valueCollection);
 
-        $mapValuesQueryHandler->handle($columnCollection, $valueCollection)->willReturn($mappedProducts);
+        $mapValuesQueryHandler->handle(new MapValuesQuery($columnCollection, $valueCollection))->willReturn($mappedProducts);
         $extractMediaQueryHandler->handle($columnCollection, $valueCollection)->willReturn([]);
 
         $processedTailoredExport = new ProcessedTailoredExport($mappedProducts, []);

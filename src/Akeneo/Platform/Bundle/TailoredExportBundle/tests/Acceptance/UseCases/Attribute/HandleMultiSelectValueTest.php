@@ -20,6 +20,7 @@ use Akeneo\Platform\TailoredExport\Application\Common\Selection\SelectionInterfa
 use Akeneo\Platform\TailoredExport\Application\Common\SourceValue\MultiSelectValue;
 use Akeneo\Platform\TailoredExport\Application\Common\SourceValue\NullValue;
 use Akeneo\Platform\TailoredExport\Application\Common\SourceValue\SourceValueInterface;
+use Akeneo\Platform\TailoredExport\Application\MapValues\MapValuesQuery;
 use Akeneo\Platform\TailoredExport\Test\Acceptance\FakeServices\AttributeOption\InMemoryFindAttributeOptionLabels;
 use PHPUnit\Framework\Assert;
 
@@ -40,7 +41,7 @@ final class HandleMultiSelectValueTest extends AttributeTestCase
         $columnCollection = $this->createSingleSourceColumnCollection($operations, $selection);
         $valueCollection = $this->createSingleValueValueCollection($value);
 
-        $mappedProduct = $mapValuesQueryHandler->handle($columnCollection, $valueCollection);
+        $mappedProduct = $mapValuesQueryHandler->handle(new MapValuesQuery($columnCollection, $valueCollection));
 
         Assert::assertSame($expected, $mappedProduct);
     }

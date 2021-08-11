@@ -14,8 +14,7 @@ declare(strict_types=1);
 namespace Akeneo\Platform\TailoredExport\Application\MapValues;
 
 use Akeneo\Platform\TailoredExport\Application\Common\Column\Column;
-use Akeneo\Platform\TailoredExport\Application\Common\Column\ColumnCollection;
-use Akeneo\Platform\TailoredExport\Application\Common\ValueCollection;
+use Akeneo\Platform\TailoredExport\Application\MapValues\MapValuesQuery;
 use Akeneo\Platform\TailoredExport\Application\MapValues\OperationApplier\OperationApplier;
 use Akeneo\Platform\TailoredExport\Application\MapValues\SelectionApplier\SelectionApplier;
 
@@ -32,16 +31,17 @@ class MapValuesQueryHandler
         $this->selectionApplier = $selectionApplier;
     }
 
-    public function handle(ColumnCollection $columnCollection, ValueCollection $valueCollection): array
-    {
+    public function handle(
+        MapValuesQuery $mapValuesQuery
+    ): array {
         $mappedProduct = [];
 
         /** @var Column $column */
-        foreach ($columnCollection as $column) {
+        foreach ($mapValuesQuery->getColumnCollection() as $column) {
             $mappedValues = [];
             foreach ($column->getSourceCollection() as $source) {
                 $operations = $source->getOperationCollection();
-                $value = $valueCollection->getFromSource($source);
+                $value = $mapValuesQuery->getValueCollection()->getFromSource($source);
 
                 $transformedValue = $this->operationApplier->applyOperations($operations, $value);
                 $mappedValues[] = $this->selectionApplier->applySelection(

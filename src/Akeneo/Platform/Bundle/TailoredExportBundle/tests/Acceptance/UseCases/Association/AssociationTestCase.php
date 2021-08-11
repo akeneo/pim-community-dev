@@ -18,7 +18,6 @@ use Akeneo\Platform\TailoredExport\Application\Common\Column\ColumnCollection;
 use Akeneo\Platform\TailoredExport\Application\Common\Operation\OperationCollection;
 use Akeneo\Platform\TailoredExport\Application\Common\Selection\SelectionInterface;
 use Akeneo\Platform\TailoredExport\Application\Common\Source\AssociationTypeSource;
-use Akeneo\Platform\TailoredExport\Application\Common\Source\PropertySource;
 use Akeneo\Platform\TailoredExport\Application\Common\Source\SourceCollection;
 use Akeneo\Platform\TailoredExport\Application\Common\SourceValue\SourceValueInterface;
 use Akeneo\Platform\TailoredExport\Application\Common\ValueCollection;
