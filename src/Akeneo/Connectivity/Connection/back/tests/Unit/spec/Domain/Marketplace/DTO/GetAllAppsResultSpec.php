@@ -68,4 +68,33 @@ class GetAllAppsResultSpec extends ObjectBehavior
             ],
         ]);
     }
+
+    public function it_adds_the_pim_url(
+        App $app,
+        App $appWithPimUrl
+    ) {
+        $queryParameters = [
+            'pim_url' => 'http://pim',
+        ];
+
+        $app->normalize()->willReturn([
+            'id' => 'cdbb6108-1914-4262-b728-aa4c679e33a8',
+            'activate_url' => 'https://extension.example/activate',
+        ]);
+        $appWithPimUrl->normalize()->willReturn([
+            'id' => 'cdbb6108-1914-4262-b728-aa4c679e33a8',
+            'activate_url' => 'https://extension.example/activate?pim_url=http%3A%2F%2Fpim',
+        ]);
+        $app->withPimUrlSource($queryParameters)->willReturn($appWithPimUrl);
+
+        $this->withPimUrlSource($queryParameters)->normalize()->shouldEqual([
+            'total' => 12,
+            'apps' => [
+                [
+                    'id' => 'cdbb6108-1914-4262-b728-aa4c679e33a8',
+                    'activate_url' => 'https://extension.example/activate?pim_url=http%3A%2F%2Fpim',
+                ],
+            ],
+        ]);
+    }
 }

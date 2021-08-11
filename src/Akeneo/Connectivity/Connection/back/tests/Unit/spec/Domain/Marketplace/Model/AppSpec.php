@@ -76,7 +76,7 @@ class AppSpec extends ObjectBehavior
     public function it_adds_pim_url_source()
     {
         $this->withPimUrlSource([
-            'pimUrl' => 'http://my-akeneo.test',
+            'pim_url' => 'http://my-akeneo.test',
         ])->normalize()->shouldBe([
             'id' => 'ce8cf07f-321e-4dd2-a52f-30ac00881ba7',
             'name' => 'Shopify App',
@@ -87,8 +87,8 @@ class AppSpec extends ObjectBehavior
             'url' => 'https:\/\/marketplace.akeneo.com\/extension\/shopify-app',
             'categories' => ['E-commerce'],
             'certified' => false,
-            'activate_url' => 'https:\/\/fake.shopify.akeneo.com\/activate?pimUrl=http%3A%2F%2Fmy-akeneo.test',
-            'callback_url' => 'https:\/\/fake.shopify.akeneo.com\/oauth2\/callback?pimUrl=http%3A%2F%2Fmy-akeneo.test',
+            'activate_url' => 'https:\/\/fake.shopify.akeneo.com\/activate?pim_url=http%3A%2F%2Fmy-akeneo.test',
+            'callback_url' => 'https:\/\/fake.shopify.akeneo.com\/oauth2\/callback',
         ]);
     }
 }

@@ -5,8 +5,6 @@ declare(strict_types=1);
 namespace spec\Akeneo\Connectivity\Connection\Application\Marketplace;
 
 use Akeneo\Connectivity\Connection\Application\Marketplace\AppUrlGenerator;
-use Akeneo\Connectivity\Connection\Domain\Marketplace\GetUserProfileQueryInterface;
-use Akeneo\Connectivity\Connection\Infrastructure\Marketplace\WebMarketplaceAliasesInterface;
 use Akeneo\Platform\Bundle\FrameworkBundle\Service\PimUrl;
 use PhpSpec\ObjectBehavior;
 
@@ -20,6 +18,7 @@ class AppUrlGeneratorSpec extends ObjectBehavior
     {
         $this->beConstructedWith($pimUrl);
     }
+
     function it_is_initializable()
     {
         $this->shouldHaveType(AppUrlGenerator::class);
@@ -30,6 +29,6 @@ class AppUrlGeneratorSpec extends ObjectBehavior
     ): void {
         $pimUrl->getPimUrl()->willReturn('http://my-akeneo.test');
 
-        $this->getAppQueryParameters()->shouldReturn(['pimUrl' => 'http://my-akeneo.test']);
+        $this->getAppQueryParameters()->shouldReturn(['pim_url' => 'http://my-akeneo.test']);
     }
 }

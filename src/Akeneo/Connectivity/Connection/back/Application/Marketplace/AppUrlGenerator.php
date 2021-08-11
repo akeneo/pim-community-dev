@@ -10,7 +10,7 @@ use Akeneo\Platform\Bundle\FrameworkBundle\Service\PimUrl;
  * @copyright 2021 Akeneo SAS (http://www.akeneo.com)
  * @license http://opensource.org/licenses/osl-3.0.php Open Software License (OSL 3.0)
  */
-class AppUrlGenerator
+final class AppUrlGenerator
 {
     private PimUrl $pimUrl;
 
@@ -24,6 +24,6 @@ class AppUrlGenerator
      */
     public function getAppQueryParameters(): array
     {
-        return ['pimUrl' => $this->pimUrl->getPimUrl()];
+        return ['pim_url' => $this->pimUrl->getPimUrl()];
     }
 }

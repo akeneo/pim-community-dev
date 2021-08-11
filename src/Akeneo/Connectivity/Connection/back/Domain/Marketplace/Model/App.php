@@ -83,18 +83,8 @@ class App
      */
     public function withAnalytics(array $queryParameters): self
     {
-        $query = http_build_query($queryParameters);
-
         $values = $this->normalize();
-
-        $url = $values['url'];
-        if (parse_url($url, PHP_URL_QUERY)) {
-            $url = sprintf('%s&%s', $url, $query);
-        } else {
-            $url = sprintf('%s?%s', $url, $query);
-        }
-
-        $values['url'] = $url;
+        $values['url'] = static::appendQueryParametersToUrl($values['url'], $queryParameters);
 
         /* @phpstan-ignore-next-line */
         return self::fromWebMarketplaceValues($values);
@@ -105,15 +95,27 @@ class App
      */
     public function withPimUrlSource(array $queryParameters): self
     {
-        $query = http_build_query($queryParameters);
         $values = $this->normalize();
-        foreach (['activate_url', 'callback_url'] as $property) {
-            /* @phpstan-ignore-next-line */
-            $values[$property] = sprintf('%s?%s', $values[$property], $query);
-        }
+        $values['activate_url'] = static::appendQueryParametersToUrl($values['activate_url'], $queryParameters);
 
         /* @phpstan-ignore-next-line */
         return self::fromWebMarketplaceValues($values);
+    }
+
+    /**
+     * @param array<string> $queryParameters
+     */
+    private static function appendQueryParametersToUrl(string $url, array $queryParameters): string
+    {
+        $query = http_build_query($queryParameters);
+
+        if (parse_url($url, PHP_URL_QUERY)) {
+            $url = sprintf('%s&%s', $url, $query);
+        } else {
+            $url = sprintf('%s?%s', $url, $query);
+        }
+
+        return $url;
     }
 
     /**
