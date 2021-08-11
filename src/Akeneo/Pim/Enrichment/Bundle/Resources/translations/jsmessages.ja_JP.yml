@@ -109,7 +109,6 @@ pim_enrich.entity.product:
         quantity: 数量
       search:
         placeholder: ラベルまたは識別子で検索
-      no_result: 検索結果がありません
       no_data: 関連商品はありません
       remove: 関連付けを削除
       edit: 製品の編集

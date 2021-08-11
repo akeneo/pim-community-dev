@@ -238,6 +238,7 @@ pim_common:
   parent: 상위
   groups: 그룹
   products: 제품
+  product_models: 제품 모델
   more: 더보기 
 error:
   exception: 죄송합니다! {{ status_code }} 오류가 발생했습니다...
@@ -372,3 +373,17 @@ pim_settings:
   settings_menu: 설정 메뉴
   catalog_settings: 카탈로그 설정
   product_settings: 제품 설정
+  count:
+    category_trees: '{0}0개의 트리 |{1}1개의 트리 |]1, Inf[{{ count }}개의 트리 '
+    categories: '{0}및 0개의 카테고리가 있습니다|{1}및 1개의 카테고리가 있습니다|]1, Inf[및 {{ count }}개의 카테고리가 있습니다'
+    channels: '{0}0개의 채널이 있습니다|{1}1개의 채널이 있습니다|]1, Inf[{{ count }}개의 채널이 있습니다'
+    locales: '{0}0개의 로케일이 활성화되어 있습니다|{1}1개의 로케일이 활성화되어 있습니다|]1, Inf[{{ count }}개의 로케일이 활성화되어 있습니다'
+    currencies: '{0}0개의 통화가 활성화되어 있습니다|{1}1개의 통화가  활성화되어 있습니다|]1, Inf[{{ count }}개의 통화가 활성화되어 있습니다'
+    attribute_groups: '{0}0개의 특성 그룹이 있습니다|{1}1개의 특성 그룹이 있습니다|]1, Inf[{{ count }}개의 특성 그룹이 있습니다'
+    attributes: '{0}0개의 특성이 있습니다|{1}1개의 특성이 있습니다|]1, Inf[{{ count }}개의 특성이 있습니다'
+    families: '{0}0개의 패밀리가 있습니다|{1}1개의 패밀리가 있습니다|]1, Inf[{{ count }}개의 패밀리가 있습니다'
+    measurements: '{0}0개의 측정이 있습니다|{1}1개의 측정이 있습니다|]1, Inf[{{ count }}개의 측정이 있습니다'
+    association_types: '{0}0개의 연결 유형이 있습니다|{1}1개의 연결 유형이 있습니다|]1, Inf[{{ count }}개의 연결 유형이 있습니다'
+    group_types: '{0}0개의 그룹 유형이 있습니다|{1}1개의 그룹 유형이 있습니다|]1, Inf[{{ count }}개의 그룹 유형이 있습니다'
+    groups: '{0}0개의 그룹이 있습니다|{1}1개의 그룹이 있습니다|]1, Inf[{{ count }}개의 그룹이 있습니다'
+    rules: '{0}0개의 규칙이 활성화되어 있습니다|{1}1개의 규칙이 활성화되어 있습니다|]1, Inf[{{ count }}개의 규칙이 활성화되어 있습니다'
