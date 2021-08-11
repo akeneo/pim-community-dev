@@ -36,5 +36,6 @@ class AkeneoConnectivityConnectionExtension extends Extension
         $loader->load('validators.yml');
         $loader->load('webhook.yml');
         $loader->load('wrong_credentials_connection.yml');
+        $loader->load('apps.yml');
     }
 }

@@ -1,0 +1,5 @@
+services:
+    akeneo_connectivity.connection.service.apps.client_provider:
+        class: Akeneo\Connectivity\Connection\Infrastructure\Apps\OAuth\ClientProvider
+        arguments:
+            - '@fos_oauth_server.client_manager.default'
