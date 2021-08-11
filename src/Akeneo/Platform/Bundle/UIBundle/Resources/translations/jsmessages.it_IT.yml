@@ -374,7 +374,7 @@ pim_settings:
   catalog_settings: Impostazioni catalogo
   product_settings: Impostazioni prodotti
   count:
-    category_trees: '{0}Hai 0 alberi <unk>{1}Hai 1 albero <unk> ]1, Inf[Hai {{ count }} alberi '
+    category_trees: '{0}Hai 0 alberi |{1}Hai 1 albero |]1, Inf[Hai {{ count }} alberi '
     categories: '{0}e 0 categorie|{1}e 1 categoria|]1, Inf[e {{ count }} categorie'
     channels: '{0}Hai 0 canali|{1}Hai 1 canale|]1, Inf[Hai {{ count }} canali'
     locales: '{0}Hai 0 impostazioni locali abilitate|{1}Hai 1 impostazione locale abilitata|]1, Inf[Hai {{ count }} impostazioni locali abilitate'
