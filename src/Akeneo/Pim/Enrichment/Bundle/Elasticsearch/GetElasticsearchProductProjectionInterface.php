@@ -15,7 +15,9 @@ use Akeneo\Pim\Enrichment\Component\Product\Exception\ObjectNotFoundException;
 interface GetElasticsearchProductProjectionInterface
 {
     /**
+     * @return iterable<string, ElasticsearchProductProjection>
+     *
      * @throws ObjectNotFoundException when one or several of the product are not found
      */
-    public function fromProductIdentifiers(array $productIdentifiers): array;
+    public function fromProductIdentifiers(array $productIdentifiers): iterable;
 }

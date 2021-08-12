@@ -17,6 +17,11 @@ services:
             - '@akeneo_connectivity.connection.marketplace.query.get_user_profile'
             - '@akeneo_connectivity.connection.marketplace.web_marketplace_aliases'
             - '@pim_framework.service.pim_url'
+            -
+    akeneo_connectivity.connection.marketplace.app_url_generator:
+        class: Akeneo\Connectivity\Connection\Application\Marketplace\AppUrlGenerator
+        arguments:
+            - '@pim_framework.service.pim_url'
 
     akeneo_connectivity.connection.marketplace.query.get_user_profile:
         class: Akeneo\Connectivity\Connection\Infrastructure\Persistence\Dbal\Query\DbalGetUserProfileQuery
@@ -33,6 +38,8 @@ services:
         arguments:
             - '@akeneo_connectivity.connection.marketplace.guzzle_client'
             - '@akeneo_connectivity.connection.marketplace.web_marketplace_aliases'
+        calls:
+            - setFixturePath: [ '%connectivity.marketplace_fixtures_directory%' ]
 
     akeneo_connectivity.connection.marketplace.web_marketplace_aliases:
         class: Akeneo\Connectivity\Connection\Infrastructure\Marketplace\WebMarketplaceAliases
@@ -41,6 +48,12 @@ services:
 
     akeneo_connectivity.connection.marketplace.get_all_extensions_query:
         class: Akeneo\Connectivity\Connection\Infrastructure\Marketplace\GetAllExtensionsQuery
+        arguments:
+            - '@akeneo_connectivity.connection.marketplace.web_marketplace_api'
+            - '%akeneo_pim_marketplace_api_pagination_size%'
+            -
+    akeneo_connectivity.connection.marketplace.get_all_apps_query:
+        class: Akeneo\Connectivity\Connection\Infrastructure\Marketplace\GetAllAppsQuery
         arguments:
             - '@akeneo_connectivity.connection.marketplace.web_marketplace_api'
             - '%akeneo_pim_marketplace_api_pagination_size%'

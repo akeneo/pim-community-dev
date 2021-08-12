@@ -109,7 +109,6 @@ pim_enrich.entity.product:
         quantity: 수량
       search:
         placeholder: 레이블 또는 식별자 검색
-      no_result: 죄송합니다. 검색 결과가 없습니다.
       no_data: 연결된 제품이 없습니다.
       remove: 연결 해제
       edit: 제품 정보 편집

@@ -4,34 +4,91 @@ import {render, screen} from '../../../storybook/test-util';
 import {SubNavigationPanel} from './SubNavigationPanel';
 
 test('it renders its children properly', () => {
-  render(<SubNavigationPanel>SubNavigationPanel content</SubNavigationPanel>);
+  const open = jest.fn();
+  const close = jest.fn();
+  render(
+    <SubNavigationPanel open={open} close={close}>
+      SubNavigationPanel content
+    </SubNavigationPanel>
+  );
   expect(screen.getByText('SubNavigationPanel content')).toBeInTheDocument();
 });
 
 test('it supports forwardRef', () => {
   const ref = {current: null};
-  render(<SubNavigationPanel ref={ref} />);
+  const open = jest.fn();
+  const close = jest.fn();
+  render(<SubNavigationPanel open={open} close={close} ref={ref} />);
   expect(ref.current).not.toBe(null);
 });
 
 test('it supports ...rest props', () => {
-  render(<SubNavigationPanel data-testid="my_value" />);
+  const open = jest.fn();
+  const close = jest.fn();
+  render(<SubNavigationPanel open={open} close={close} data-testid="my_value" />);
   expect(screen.getByTestId('my_value')).toBeInTheDocument();
 });
 
-test('it doesnt render its children when collapsed', () => {
-  render(<SubNavigationPanel isOpen={false}>SubNavigationPanel content</SubNavigationPanel>);
-  expect(screen.queryByText('SubNavigationPanel content')).toBeNull();
-});
-
 test('it closes when hitting the toggle button while opened', () => {
-  render(<SubNavigationPanel isOpen={true}>SubNavigationPanel content</SubNavigationPanel>);
+  let isOpen = true;
+  const open = () => {
+    isOpen = true;
+  };
+  const close = () => {
+    isOpen = false;
+  };
+  render(
+    <SubNavigationPanel open={open} close={close} isOpen={isOpen} closeTitle="Close" openTitle="Open">
+      SubNavigationPanel content
+    </SubNavigationPanel>
+  );
   userEvent.click(screen.getByTitle('Close'));
-  expect(screen.queryByText('SubNavigationPanel content')).toBeNull();
+  expect(screen.getByTitle('Close')).toBeInTheDocument();
+  expect(screen.queryByTitle('Open')).toBeFalsy();
 });
 
 test('it opens when hitting the toggle button while closed', () => {
-  render(<SubNavigationPanel isOpen={false}>SubNavigationPanel content</SubNavigationPanel>);
+  let isOpen = false;
+  const open = () => {
+    isOpen = true;
+  };
+  const close = () => {
+    isOpen = false;
+  };
+  render(
+    <SubNavigationPanel open={open} close={close} isOpen={isOpen} closeTitle="Close" openTitle="Open">
+      SubNavigationPanel content
+    </SubNavigationPanel>
+  );
   userEvent.click(screen.getByTitle('Open'));
-  expect(screen.getByText('SubNavigationPanel content')).toBeInTheDocument();
+  expect(screen.getByTitle('Open')).toBeInTheDocument();
+  expect(screen.queryByTitle('Close')).toBeFalsy();
+});
+
+test('it shows collapsed content', () => {
+  const open = jest.fn();
+  const close = jest.fn();
+  const {getByText, queryByText} = render(
+    <SubNavigationPanel open={open} close={close} isOpen={false}>
+      <SubNavigationPanel.Collapsed>Collapsed content</SubNavigationPanel.Collapsed>
+      SubNavigationPanel content
+    </SubNavigationPanel>
+  );
+
+  expect(queryByText('SubNavigationPanel content')).not.toBeInTheDocument();
+  expect(getByText('Collapsed content')).toBeVisible();
+});
+
+test('it hides collapsed content', () => {
+  const open = jest.fn();
+  const close = jest.fn();
+  const {getByText, queryByText} = render(
+    <SubNavigationPanel open={open} close={close} isOpen={true}>
+      <SubNavigationPanel.Collapsed>Collapsed content</SubNavigationPanel.Collapsed>
+      SubNavigationPanel content
+    </SubNavigationPanel>
+  );
+
+  expect(queryByText('SubNavigationPanel content')).toBeInTheDocument();
+  expect(getByText('Collapsed content')).not.toBeVisible();
 });
