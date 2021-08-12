@@ -18,31 +18,33 @@ class ScopeToAclMapperSpec extends ObjectBehavior
         $this->shouldHaveType(ScopeToAclMapper::class);
     }
 
-    public function it_returns_list_of_all_available_scopes()
+    public function it_returns_the_list_of_all_available_scopes()
     {
         $this->getAllScopes()->shouldReturn([
-            ScopeToAclMapper::SCOPE_READ_CATALOG_STRUCTURE,
-            ScopeToAclMapper::SCOPE_WRITE_CATALOG_STRUCTURE,
-            ScopeToAclMapper::SCOPE_READ_EXTENDED_PRODUCT_DATA,
-            ScopeToAclMapper::SCOPE_WRITE_EXTENDED_PRODUCT_DATA,
-            ScopeToAclMapper::SCOPE_READ_TARGET_SETTINGS,
-            ScopeToAclMapper::SCOPE_WRITE_TARGET_SETTINGS,
-            ScopeToAclMapper::SCOPE_READ_ASSOCIATION_TYPES,
-            ScopeToAclMapper::SCOPE_WRITE_ASSOCIATION_TYPES,
-            ScopeToAclMapper::SCOPE_WRITE_PRODUCTS,
-            ScopeToAclMapper::SCOPE_READ_PRODUCTS,
-            ScopeToAclMapper::SCOPE_DELETE_PRODUCTS,
+            'read_catalog_structure',
+            'write_catalog_structure',
+            'read_attribute_options',
+            'write_attribute_options',
+            'read_categories',
+            'write_categories',
+            'read_channel_settings',
+            'write_channel_settings',
+            'read_association_types',
+            'write_association_types',
+            'read_products',
+            'write_products',
+            'delete_products',
         ]);
     }
 
-    public function it_returns_empty_list_on_unknown_scope()
+    public function it_throw_on_unknown_scope()
     {
-        $this->getAcls('unknown_scope')->shouldReturn([]);
+        $this->shouldThrow(\LogicException::class)->during('getAcls', ['unknown_scope']);
     }
 
-    public function it_returns_access_catalog_structure_acl_list_on_read_catalog_structure_scope()
+    public function it_returns_the_acls_for_the_scope_read_catalog_structure()
     {
-        $this->getAcls(ScopeToAclMapper::SCOPE_READ_CATALOG_STRUCTURE)->shouldReturn([
+        $this->getAcls('read_catalog_structure')->shouldReturn([
             'pim_api_attribute_list',
             'pim_api_attribute_group_list',
             'pim_api_family_list',
@@ -50,9 +52,9 @@ class ScopeToAclMapperSpec extends ObjectBehavior
         ]);
     }
 
-    public function it_returns_access_and_edit_catalog_structure_acl_list_on_write_catalog_structure_scope()
+    public function it_returns_the_acls_for_the_scope_write_catalog_structure()
     {
-        $this->getAcls(ScopeToAclMapper::SCOPE_WRITE_CATALOG_STRUCTURE)->shouldReturn([
+        $this->getAcls('write_catalog_structure')->shouldReturn([
             'pim_api_attribute_list',
             'pim_api_attribute_edit',
             'pim_api_attribute_group_list',
@@ -64,36 +66,48 @@ class ScopeToAclMapperSpec extends ObjectBehavior
         ]);
     }
 
-    public function it_returns_access_extended_product_data_acl_list_on_read_extended_product_data_scope()
+    public function it_returns_the_acls_for_the_scope_read_attribute_options()
     {
-        $this->getAcls(ScopeToAclMapper::SCOPE_READ_EXTENDED_PRODUCT_DATA)->shouldReturn([
+        $this->getAcls('read_attribute_options')->shouldReturn([
             'pim_api_attribute_option_list',
+        ]);
+    }
+
+    public function it_returns_the_acls_for_the_scope_write_attribute_options()
+    {
+        $this->getAcls('write_attribute_options')->shouldReturn([
+            'pim_api_attribute_option_list',
+            'pim_api_attribute_option_edit',
+        ]);
+    }
+
+    public function it_returns_the_acls_for_the_scope_read_categories()
+    {
+        $this->getAcls('read_categories')->shouldReturn([
             'pim_api_category_list',
         ]);
     }
 
-    public function it_returns_access_and_edit_extended_product_data_acl_list_on_write_extended_product_data_scope()
+    public function it_returns_the_acls_for_the_scope_write_categories()
     {
-        $this->getAcls(ScopeToAclMapper::SCOPE_WRITE_EXTENDED_PRODUCT_DATA)->shouldReturn([
-            'pim_api_attribute_option_list',
-            'pim_api_attribute_option_edit',
+        $this->getAcls('write_categories')->shouldReturn([
             'pim_api_category_list',
             'pim_api_category_edit',
         ]);
     }
 
-    public function it_returns_access_target_settings_acl_list_on_read_target_settings_scope()
+    public function it_returns_the_acls_for_the_scope_read_channel_settings()
     {
-        $this->getAcls(ScopeToAclMapper::SCOPE_READ_TARGET_SETTINGS)->shouldReturn([
+        $this->getAcls('read_channel_settings')->shouldReturn([
             'pim_api_channel_list',
             'pim_api_locale_list',
             'pim_api_currency_list',
         ]);
     }
 
-    public function it_returns_access_and_edit_target_settings_acl_list_on_write_target_settings_scope()
+    public function it_returns_the_acls_for_the_scope_write_channel_settings()
     {
-        $this->getAcls(ScopeToAclMapper::SCOPE_WRITE_TARGET_SETTINGS)->shouldReturn([
+        $this->getAcls('write_channel_settings')->shouldReturn([
             'pim_api_channel_list',
             'pim_api_channel_edit',
             'pim_api_locale_list',
@@ -101,38 +115,39 @@ class ScopeToAclMapperSpec extends ObjectBehavior
         ]);
     }
 
-    public function it_returns_access_association_types_acl_list_on_read_association_types_scope()
+    public function it_returns_the_acls_for_the_scope_read_association_types()
     {
-        $this->getAcls(ScopeToAclMapper::SCOPE_READ_ASSOCIATION_TYPES)->shouldReturn([
+        $this->getAcls('read_association_types')->shouldReturn([
             'pim_api_association_type_list',
         ]);
     }
 
-    public function it_returns_access_and_edit_association_types_acl_list_on_write_association_types_scope()
+    public function it_returns_the_acls_for_the_scope_write_association_types()
     {
-        $this->getAcls(ScopeToAclMapper::SCOPE_WRITE_ASSOCIATION_TYPES)->shouldReturn([
+        $this->getAcls('write_association_types')->shouldReturn([
             'pim_api_association_type_list',
             'pim_api_association_type_edit',
         ]);
     }
-    public function it_returns_access_product_acl_list_on_read_products_scope()
-    {
-        $this->getAcls(ScopeToAclMapper::SCOPE_READ_PRODUCTS)->shouldReturn([
-            'pim_api_product_list',
-        ]);
-    }
 
-    public function it_returns_access_and_edit_product_acl_list_on_write_products_scope()
+    public function it_returns_the_acls_for_the_scope_write_products()
     {
-        $this->getAcls(ScopeToAclMapper::SCOPE_WRITE_PRODUCTS)->shouldReturn([
+        $this->getAcls('write_products')->shouldReturn([
             'pim_api_product_list',
             'pim_api_product_edit',
         ]);
     }
 
-    public function it_returns_remove_product_acl_list_on_delete_products_scope()
+    public function it_returns_the_acls_for_the_scope_read_products()
     {
-        $this->getAcls(ScopeToAclMapper::SCOPE_DELETE_PRODUCTS)->shouldReturn([
+        $this->getAcls('read_products')->shouldReturn([
+            'pim_api_product_list',
+        ]);
+    }
+
+    public function it_returns_the_acls_for_the_scope_delete_products()
+    {
+        $this->getAcls('delete_products')->shouldReturn([
             'pim_api_product_list',
             'pim_api_product_edit',
             'pim_api_product_remove',
