@@ -60,6 +60,10 @@ akeneo_connectivity.connection:
                 empty: No apps compatible with your version
             unreachable: We can't reach the marketplace, please come back later.
             scroll_to_top: Scroll to the top
+        apps:
+            activate:
+                flash:
+                    error: Sorry, an error occurred while connecting the App.
     connections: Connections
     secondary_actions:
         title: Other actions
