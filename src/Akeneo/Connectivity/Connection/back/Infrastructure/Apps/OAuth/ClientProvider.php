@@ -32,7 +32,7 @@ class ClientProvider implements ClientProviderInterface
             $client = $this->clientManager->createClient();
 
             $client->setRedirectUris([$app->getCallbackUrl()]);
-            $client->setAllowedGrantTypes([OAuth2::GRANT_TYPE_AUTH_CODE]); //ToDO test grant type implicit
+            $client->setAllowedGrantTypes([OAuth2::GRANT_TYPE_AUTH_CODE]);
             $client->setMarketplacePublicAppId($appId);
 
             $this->clientManager->updateClient($client);
