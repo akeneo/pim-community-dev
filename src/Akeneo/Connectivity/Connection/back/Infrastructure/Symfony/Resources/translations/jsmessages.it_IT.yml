@@ -38,8 +38,6 @@ akeneo_connectivity.connection:
       sub_title: Controlla il nostro marketplace per vedere quale applicazione può essere connessa con Akeneo PIM.
       link: Accedi al marketplace
       helper:
-        title: '{0} Esiste {{ count }} connettore compatibile con la tua versione PIM.{1} Esiste {{ count }} connettore compatibile con la tua versione PIM.<unk> [2,Inf] Esistono {{ count }} connettori compatibili con la tua versione PIM.'
-        description: Questa è solo una panoramica per maggiori dettagli; ti invitiamo a dare un'occhiata al nostro web marketplace.
         link: Vai al web marketplace
       card:
         developed_by: Sviluppato da
