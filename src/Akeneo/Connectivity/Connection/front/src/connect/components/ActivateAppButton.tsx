@@ -5,7 +5,7 @@ import {Button} from 'akeneo-design-system';
 import {useRouter} from "../../shared/router/use-router";
 import {NotificationLevel, useNotify} from "../../shared/notify";
 
-export const ActivateAppButton: FC<{ id: string }> = ({id}) => {
+export const ActivateAppButton: FC<{id: string}> = ({id}) => {
     const translate = useTranslate();
     const security = useSecurity();
     const generateUrl = useRouter();

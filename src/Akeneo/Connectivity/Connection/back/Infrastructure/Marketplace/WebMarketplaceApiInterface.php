@@ -52,7 +52,6 @@ interface WebMarketplaceApiInterface
      */
     public function getApps(int $offset = 0, int $limit = 10): array;
 
-
     /**
      * @return null | array{
      *      id: string,

@@ -12,5 +12,5 @@ use Akeneo\Connectivity\Connection\Domain\Marketplace\Model\App;
  */
 interface GetAppQueryInterface
 {
-    public function  execute(string $id): ?App;
+    public function execute(string $id): ?App;
 }
