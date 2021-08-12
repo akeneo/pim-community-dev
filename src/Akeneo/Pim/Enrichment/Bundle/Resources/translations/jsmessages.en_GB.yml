@@ -330,13 +330,13 @@ pim_enrich.export.product:
   global_settings:
     title: Global settings
 pim_enrich.mass_edit.product:
-  title: Products bulk action
+  title: Product bulk action
   confirm: "{0}You are about to update some products with the following information, please confirm.|{1}You are about to update a product with the following information, please confirm.|]1, Inf[You are about to update {{ itemsCount }} products with the following information, please confirm."
   step:
     select:
       label: Choose products
     choose:
-      title: Products bulk actions
+      title: Product bulk actions
       label_count: "]0, Inf[Select your action"
     configure:
       label: Configure
@@ -355,13 +355,13 @@ pim_enrich.mass_edit.product:
       description: The selected products will be enabled or disabled.
       field: To enable
     edit_common:
-      label: Edit attributes values
-      label_count: "{0}Edit attributes values of some <span class=\"AknFullPage-title--highlight\">products</span>|{1}Edit attributes values of <span class=\"AknFullPage-title--highlight\">1 product</span>|]1, Inf[Edit attributes values of <span class=\"AknFullPage-title--highlight\">{{ itemsCount }} products</span>"
+      label: Edit attribute values
+      label_count: "{0}Edit attribute values of some <span class=\"AknFullPage-title--highlight\">products</span>|{1}Edit attribute values of <span class=\"AknFullPage-title--highlight\">1 product</span>|]1, Inf[Edit attribute values of <span class=\"AknFullPage-title--highlight\">{{ itemsCount }} products</span>"
       description: Only the attributes belonging to the families of the selected products will be edited with the following data for the {{ locale }} locale and the {{ scope }} channel.
       no_update: Please select at least one field to update
     add_attribute_value:
-      label: Add attributes values
-      label_count: "{0}Add attributes values for some <span class=\"AknFullPage-title--highlight\">products</span>|{1}Add attributes values for <span class=\"AknFullPage-title--highlight\">1 product</span>|]1, Inf[Add attributes values for <span class=\"AknFullPage-title--highlight\">{{ itemsCount }} products</span>"
+      label: Add attribute values
+      label_count: "{0}Add attribute values for some <span class=\"AknFullPage-title--highlight\">products</span>|{1}Add attribute values for <span class=\"AknFullPage-title--highlight\">1 product</span>|]1, Inf[Add attribute values for <span class=\"AknFullPage-title--highlight\">{{ itemsCount }} products</span>"
       description: Only the multivalued attributes belonging to the families of the products will be edited with the following data for the {{ locale }} locale and the {{ scope }} channel. The attributes values are added, the previous values are kept.
     change_family:
       label: Change family
@@ -397,7 +397,7 @@ pim_enrich.mass_edit.product:
       label_count: "{0}Convert some <span class=\"AknFullPage-title--highlight\">products</span> to simple products|{1}Convert <span class=\"AknFullPage-title--highlight\">1 product</span> to a simple product|]1, Inf[Convert <span class=\"AknFullPage-title--highlight\">{{ itemsCount }} products</span> to simple products"
       description: All of the former values, categories and associations will be saved.
     associate_to_product_and_product_model:
-      label: Associate
+      label: Associate products
       label_count: "{0}Associate some <span class=\"AknFullPage-title--highlight\">products</span> to products or product models|{1}Associate <span class=\"AknFullPage-title--highlight\">1 product</span> to products or product models|]1, Inf[Associate <span class=\"AknFullPage-title--highlight\">{{ itemsCount }} products</span> to products or product models"
       description: The products selected in the grid will be associated to the selected products and product models for the chosen association type
       validate: Please add association before going to the next step
