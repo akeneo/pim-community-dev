@@ -1,4 +1,4 @@
-apps_activate_app:
+akeneo_connectivity_connection_apps_rest_get_app_activate_url:
     path: '/activate/{id}'
-    controller: akeneo_connectivity.connection.internal_api.controller.apps.activate_app
+    controller: akeneo_connectivity.connection.internal_api.controller.apps.get_app_activate_url
     methods: [GET]

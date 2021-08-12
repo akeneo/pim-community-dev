@@ -70,9 +70,9 @@ services:
             - '@akeneo_connectivity.connection.marketplace.analytics_generator'
             - '@pim_user.context.user'
 
-    akeneo_connectivity.connection.internal_api.controller.apps.activate_app:
+    akeneo_connectivity.connection.internal_api.controller.apps.get_app_activate_url:
         public: true
-        class: Akeneo\Connectivity\Connection\Infrastructure\InternalApi\Controller\Apps\ActivateAppController
+        class: Akeneo\Connectivity\Connection\Infrastructure\InternalApi\Controller\Apps\GetAppActivateUrlController
         arguments:
             - '@akeneo_connectivity.connection.marketplace.get_app_query'
             - '@akeneo_connectivity.connection.service.apps.client_provider'
