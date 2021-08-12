@@ -13,7 +13,7 @@ datagrid:
                 template: PimDataGridBundle:Property:currency_label.html.twig
                 frontend_type: html
             activated:
-                label: Activated
+                label: Enabled
                 type: twig
                 template: PimDataGridBundle:Property:activated.html.twig
                 frontend_type: html
@@ -48,5 +48,5 @@ datagrid:
                     data_name: c.code
                 activated:
                     type:      boolean
-                    label:     Activated
+                    label:     Enabled
                     data_name: c.activated
