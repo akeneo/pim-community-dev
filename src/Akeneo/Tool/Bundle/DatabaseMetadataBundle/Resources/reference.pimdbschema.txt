@@ -439,6 +439,8 @@ pim_api_access_token | token | NO | varchar(255) | UNI
 pim_api_access_token | expires_at | YES | int |
 pim_api_access_token | scope | YES | varchar(255) |
 pim_api_auth_code | id | NO | int | PRI
+pim_api_auth_code | client_id | YES | int | MUL
+pim_api_auth_code | user_id | YES | int | MUL
 pim_api_auth_code | token | NO | varchar(255) | UNI
 pim_api_auth_code | redirect_uri | NO | longtext |
 pim_api_auth_code | expires_at | YES | int |
