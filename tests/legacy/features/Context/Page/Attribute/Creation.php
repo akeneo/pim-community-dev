@@ -90,7 +90,7 @@ class Creation extends Form
 
         foreach ($labels as $locale => $label) {
             $labelField = $this->spin(function () use ($locale) {
-                return $this->find('css', sprintf('.AknTextField[data-locale="%s"]', $locale));
+                return $this->find('css', sprintf('input[role=%s][data-locale="%s"]', 'attribute-option-label', $locale));
             }, 'Unable to find the attribute option label for locale ' . $locale);
             $this->spin(function () use ($locale, $label, $labelField) {
                 $labelField->setValue($label);
