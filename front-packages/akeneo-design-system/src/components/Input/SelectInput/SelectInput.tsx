@@ -1,12 +1,11 @@
 import React, {ReactNode, useState, useRef, isValidElement, ReactElement, KeyboardEvent, useCallback} from 'react';
 import styled from 'styled-components';
 import {Key, Override} from '../../../shared';
-import {InputProps} from '../InputProps';
+import {InputProps, Overlay} from '../common';
 import {IconButton, TextInput} from '../../../components';
 import {useBooleanState, useShortcut, VerticalPosition} from '../../../hooks';
 import {AkeneoThemedProps, getColor} from '../../../theme';
 import {ArrowDownIcon, CloseIcon} from '../../../icons';
-import {Overlay} from './Overlay/Overlay';
 
 const SelectInputContainer = styled.div<{value: string | null; readOnly: boolean} & AkeneoThemedProps>`
   width: 100%;
