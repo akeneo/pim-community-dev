@@ -16,7 +16,7 @@ interface GetElasticsearchProductModelProjectionInterface
     /**
      * @param string[] $productModelCodes
      *
-     * @return ElasticsearchProductModelProjection[]
+     * @return iterable<string, ElasticsearchProductModelProjection>
      */
-    public function fromProductModelCodes(array $productModelCodes): array;
+    public function fromProductModelCodes(array $productModelCodes): iterable;
 }
