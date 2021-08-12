@@ -1,0 +1,22 @@
+{
+    "total": 1,
+    "offset": 0,
+    "limit": 120,
+    "items": [
+        {
+            "id": "6ff52991-1144-45cf-933a-5c45ae58e71a",
+            "name": "Yell extension",
+            "logo": "https:\/\/marketplace.akeneo.com\/sites\/default\/files\/styles\/extension_logo_large\/public\/extension-logos\/akeneo-to-shopware6-eimed_0.jpg?itok=InguS-1N",
+            "author": "Akeneo connectivity team",
+            "partner": "Akeneo",
+            "description": "Developed by the Akeneo team to demonstrate the different steps of an app activation. You can try it safely!",
+            "url": "https:\/\/marketplace.akeneo.com\/extension\/akeneo-shopware-6-connector-eikona-media",
+            "categories": [
+                "E-commerce"
+            ],
+            "certified": true,
+            "activate_url": "https://yell-extension-t2omu7tdaq-uc.a.run.app/activate",
+            "callback_url": "https://yell-extension-t2omu7tdaq-uc.a.run.app/oauth2"
+        }
+    ]
+}

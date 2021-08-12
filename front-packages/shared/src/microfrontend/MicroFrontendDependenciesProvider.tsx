@@ -5,6 +5,14 @@ import {DependenciesContext} from '../DependenciesContext';
 import {useNotifications} from './useNotifications';
 import {Notifications} from '../components';
 
+type SecurityContext = {
+  [acl: string]: boolean;
+};
+
+type UserContext = {
+  [setting: string]: string;
+};
+
 type Translations = {
   locale: string;
   messages: {[key: string]: string | null};
@@ -20,12 +28,22 @@ type CreateReactAppDependenciesProviderProps = {
   children: ReactNode;
 };
 
+const fetcher = async <Type,>(url: string): Promise<Type> => {
+  const response = await fetch(url);
+
+  if (401 === response.status) {
+    throw new Error('You are not logged in the PIM');
+  }
+
+  return await response.json();
+};
+
 const MicroFrontendDependenciesProvider = ({
   routes,
   translations,
   children,
 }: CreateReactAppDependenciesProviderProps) => {
-  const [securityContext, setSecurityContext] = useState({});
+  const [securityContext, setSecurityContext] = useState<SecurityContext>({});
   const [userContext, setUserContext] = useState({});
   const [notifications, notify, handleNotificationClose] = useNotifications();
   const isMounted = useIsMounted();
@@ -76,8 +94,7 @@ const MicroFrontendDependenciesProvider = ({
 
   useEffect(() => {
     const fetchUserContext = async () => {
-      const response = await fetch(currentUserUrl);
-      const json = await response.json();
+      const json = await fetcher<UserContext>(currentUserUrl);
 
       if (isMounted()) {
         setUserContext({
@@ -90,8 +107,7 @@ const MicroFrontendDependenciesProvider = ({
     };
 
     const fetchSecurityContext = async () => {
-      const response = await fetch(securityContextUrl);
-      const json = await response.json();
+      const json = await fetcher<SecurityContext>(securityContextUrl);
 
       if (isMounted()) {
         setSecurityContext(json);
@@ -137,6 +153,9 @@ const MicroFrontendDependenciesProvider = ({
           trigger: (event: string, _options?: unknown) => console.log('Triggering', event),
           on: (_event: string, _callback: () => void) => {},
           off: (_event: string, _callback: () => void) => {},
+        },
+        featureFlags: {
+          isEnabled: () => false,
         },
       }}
     >

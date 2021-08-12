@@ -78,4 +78,4 @@ services:
         class: Akeneo\Platform\Bundle\ImportExportBundle\Controller\Ui\CategoryTreeController
         arguments:
             - '@akeneo.enrichment.public_api.find_category_trees'
-            - '@akeneo.enrichment.public_api.count_categories_per_tree'
+            - '@akeneo.enrichment.public_api.get_category_children_codes_per_tree'
