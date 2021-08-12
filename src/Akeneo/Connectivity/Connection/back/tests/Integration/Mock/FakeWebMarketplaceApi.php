@@ -13,6 +13,7 @@ use Akeneo\Connectivity\Connection\Infrastructure\Marketplace\WebMarketplaceApiI
 class FakeWebMarketplaceApi implements WebMarketplaceApiInterface
 {
     private array $extensions = [];
+    private array $apps = [];
 
     /**
      * @param array<array{
@@ -42,18 +43,40 @@ class FakeWebMarketplaceApi implements WebMarketplaceApiInterface
         ];
     }
 
+    /**
+     * @param array<array{
+     *      id: string,
+     *      name: string,
+     *      logo: string,
+     *      author: string,
+     *      partner?: string,
+     *      description: string,
+     *      url: string,
+     *      categories: array<string>,
+     *      certified?: bool,
+     *      activate_url: string,
+     *      callback_url: string,
+     * }> $extensions
+     */
+    public function setApps(array $apps): void
+    {
+        $this->apps = $apps;
+    }
+
     public function getApps(int $offset = 0, int $limit = 10): array
     {
         return [
-            'total' => count($this->extensions),
+            'total' => count($this->apps),
             'offset' => $offset,
             'limit' => $limit,
-            'items' => array_slice($this->extensions, $offset, $limit),
+            'items' => array_slice($this->apps, $offset, $limit),
         ];
     }
 
     public function getApp(string $id): ?array
     {
-        return null;
+        return array_filter($this->apps, function (array $app) use ($id) {
+            return $app['id'] === $id;
+        })[0] ?? [];
     }
 }

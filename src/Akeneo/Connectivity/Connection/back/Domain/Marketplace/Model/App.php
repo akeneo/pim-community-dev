@@ -155,6 +155,11 @@ class App
         return $this->id;
     }
 
+    public function getActivateUrl(): string
+    {
+        return $this->activateUrl;
+    }
+
     public function getCallbackUrl(): string
     {
         return $this->callbackUrl;
