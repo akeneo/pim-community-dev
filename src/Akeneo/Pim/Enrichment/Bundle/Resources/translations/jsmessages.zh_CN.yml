@@ -109,7 +109,6 @@ pim_enrich.entity.product:
         quantity: 数量
       search:
         placeholder: 搜索标签或标识符
-      no_result: 抱歉，找不到与搜索相符的结果。
       no_data: 没有关联的产品。
       remove: 移除关联
       edit: 编辑产品

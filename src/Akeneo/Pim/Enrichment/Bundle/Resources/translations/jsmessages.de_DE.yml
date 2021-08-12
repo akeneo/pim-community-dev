@@ -109,7 +109,6 @@ pim_enrich.entity.product:
         quantity: Quantität
       search:
         placeholder: In Label oder Bezeichner suchen
-      no_result: Für Ihre Suche wurden leider keine passenden Treffer gefunden.
       no_data: Es gibt keine verbundenen Produkte
       remove: Verbindung entfernen
       edit: Produkt bearbeiten

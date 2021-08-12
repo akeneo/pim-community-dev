@@ -132,8 +132,10 @@ const Tab = ({children, onClick, isActive, parentRef, onVisibilityChange, ...res
       threshold: 0,
     };
 
-    const observer = new IntersectionObserver(event => {
-      onVisibilityChange?.(event[0].isIntersecting);
+    const observer = new IntersectionObserver(entries => {
+      const lastEntry = entries[entries.length - 1];
+
+      onVisibilityChange?.(lastEntry.isIntersecting);
     }, options);
 
     observer.observe(tabElement);

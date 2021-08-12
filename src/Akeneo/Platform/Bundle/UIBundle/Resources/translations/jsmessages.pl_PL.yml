@@ -195,6 +195,7 @@ pim_common:
   ok: OK
   open: Otwórz
   no_result: Brak wyników
+  no_search_result: Przepraszamy, brak wyników twojego wyszukiwania.
   other_actions: Inne akcje
   permissions: Uprawnienia
   previous: Poprzedni
@@ -238,6 +239,7 @@ pim_common:
   parent: Element nadrzędny
   groups: Grupy
   products: Produkty
+  product_models: Modele produktu
   more: Więcej
 error:
   exception: O rany! Wystąpił błąd {{ status_code }}...
@@ -372,3 +374,17 @@ pim_settings:
   settings_menu: Menu ustawień
   catalog_settings: Ustawienia katalogu
   product_settings: Ustawienia produktów
+  count:
+    category_trees: '{0}Liczba drzew: 0 |{1}Liczba drzew: 1 |]1, Inf[Liczba drzew: {{ count }}, '
+    categories: '{0}liczba kategorii: 0|{1}liczba kategorii: 1|]1, Inf[liczba kategorii: {{ count }}'
+    channels: '{0}Liczba kanałów: 0|{1}Liczba kanałów: 1|]1, Inf[Liczba kanałów: {{ count }}'
+    locales: '{0}Liczba włączonych ustawień regionalnych: 0|{1}Liczba włączonych ustawień regionalnych: 1|]1, Inf[Liczba włączonych ustawień regionalnych: {{ count }}'
+    currencies: '{0}Liczba włączonych walut: 0|{1}Liczba włączonych walut: 1|]1, Inf[Liczba włączonych walut: {{ count }}'
+    attribute_groups: '{0}Liczba grup atrybutów: 0|{1}Liczba grup atrybutów: 1|]1, Inf[Liczba grup atrybutów: {{ count }}'
+    attributes: '{0}Liczba atrybutów: 0|{1}Liczba atrybutów: 1|]1, Inf[Liczba atrybutów: {{ count }}'
+    families: '{0}Liczba rodzin: 0|{1}Liczba rodzin: 1|]1, Inf[Liczba rodzin: {{ count }}'
+    measurements: '{0}Liczba pomiarów: 0|{1}Liczba pomiarów: 1|]1, Inf[Liczba pomiarów: {{ count }}'
+    association_types: '{0}Liczba typów powiązań: 0|{1}Liczba typów powiązań: 1|]1, Inf[Liczba typów powiązań: {{ count }}'
+    group_types: '{0}Liczba typów grup: 0|{1}Liczba typów grup: 1|]1, Inf[Liczba typów grup: {{ count }}'
+    groups: '{0}Liczba grup: 0|{1}Liczba grup: 1|]1, Inf[Liczba grup: {{ count }}'
+    rules: '{0}Liczba włączonych reguł: 0|{1}Liczba włączonych reguł: 1|]1, Inf[Liczba włączonych reguł: {{ count }}'

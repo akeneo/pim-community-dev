@@ -2,10 +2,10 @@ import React from 'react';
 import {IconProps} from './IconProps';
 
 const SettingsIcon = ({title, size = 24, color = 'currentColor', ...props}: IconProps) => (
-  <svg viewBox="0 0 24 24" width={size} height={size} {...props}>
+  <svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg" width={size} height={size} {...props}>
     {title && <title>{title}</title>}
     <path
-      d="M11.5 14.5a3 3 0 100-6 3 3 0 000 6zM2 9.5h2.5L5 8 3.5 6.5l3-3L8 5l1.5-.47V2h3.953v2.53L15 5l2-1.5L19.5 6 18 8l.5 1.5H21v4h-2.5l-.5 1.545L19.5 17 17 19.5 15 18l-1.547.5V21H9.5v-2.5L8 18l-1.5 1.5-3-3L5 15.045 4.5 13.5H2v-4z"
+      d="M12 15a3 3 0 100-6 3 3 0 000 6zm-9.5-5H5l.5-1.5L4 7l3-3 1.5 1.5 1.5-.47V2.5h3.953v2.53l1.547.47 2-1.5L20 6.5l-1.5 2L19 10h2.5v4H19l-.5 1.545L20 17.5 17.5 20l-2-1.5-1.547.5v2.5H10V19l-1.5-.5L7 20l-3-3 1.5-1.455L5 14H2.5v-4z"
       stroke={color}
       fill="none"
       fillRule="evenodd"
@@ -14,5 +14,4 @@ const SettingsIcon = ({title, size = 24, color = 'currentColor', ...props}: Icon
     />
   </svg>
 );
-
 export {SettingsIcon};

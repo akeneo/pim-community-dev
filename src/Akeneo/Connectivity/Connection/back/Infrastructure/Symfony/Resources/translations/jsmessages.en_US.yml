@@ -41,17 +41,23 @@ akeneo_connectivity.connection:
             sub_title: Check our marketplace to see which application can be connected with Akeneo PIM.
             link: Access the marketplace
             helper:
-                title: '{0} There is {{ count }} connector compatible with your PIM version.|{1} There is {{ count }} connector compatible with your PIM version.|[2,Inf] There are {{ count }} connectors compatible with your PIM version.'
-                description: This is just an overview for more details, take a look at our web marketplace.
+                title: '{0} There is no apps or connectors compatible with your PIM version.|{1} There is {{ count }} app or connector compatible with your PIM version.|[2,Inf] There are {{ count }} apps and connectors compatible with your PIM version.'
+                title_without_apps: '{0} There is no connectors compatible with your PIM version.|{1} There is {{ count }} connector compatible with your PIM version.|[2,Inf] There are {{ count }} connectors compatible with your PIM version.'
+                description: This is just an overview. For more details, take a look at our web marketplace.
                 link: Go to web marketplace
             card:
                 developed_by: Developed by
                 read_more: read more
                 more_info: More info
+                connect: Connect
             extensions:
                 title: Connectors
                 total: '{0} No connectors|{1} 1 connector|[2,Inf] {{ total }} connectors'
                 empty: No connectors compatible with your version
+            apps:
+                title: Apps
+                total: '{0} No apps|{1} 1 app|[2,Inf] {{ total }} apps'
+                empty: No apps compatible with your version
             unreachable: We can't reach the marketplace, please come back later.
             scroll_to_top: Scroll to the top
     connections: Connections

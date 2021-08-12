@@ -17,8 +17,6 @@ measurements:
     no_data:
       title: Sorry is is geen matenfamilie!
       link: Klik hier om er één toe te voegen
-    no_result:
-      title: Sorry, er zijn geen resultaten voor uw zoek opdracht!
     standard_unit: Standaard eenheid
     standard_unit_is_not_editable_after_creation: Deze standaardeenheid is voor eens en voor altijd ingesteld. Het zal worden gebruikt om de andere eenheden om te bouwen.
     add_new_measurement_family: Voeg een nieuwe matenfamilie toe
