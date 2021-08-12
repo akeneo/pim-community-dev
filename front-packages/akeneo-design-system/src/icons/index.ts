@@ -37,6 +37,7 @@ export * from './CodeIcon';
 export * from './ColumnIcon';
 export * from './CompareIcon';
 export * from './ComponentIcon';
+export * from './ConnectIcon';
 export * from './CopyIcon';
 export * from './CreditsIcon';
 export * from './DangerIcon';
