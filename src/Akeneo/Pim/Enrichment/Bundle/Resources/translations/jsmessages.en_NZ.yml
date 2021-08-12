@@ -259,12 +259,12 @@ pim_enrich.export.product:
   global_settings:
     title: Global settings
 pim_enrich.mass_edit.product:
-  title: Products bulk action
+  title: Product bulk action
   step:
     select:
       label: Choose products
     choose:
-      title: Products bulk actions
+      title: Product bulk actions
       label_count: "]0, Inf[Select your action"
     configure:
       label: Configure
@@ -282,11 +282,11 @@ pim_enrich.mass_edit.product:
       description: The selected products will be enabled or disabled.
       field: To enable
     edit_common:
-      label: Edit attributes values
+      label: Edit attribute values
       description: Only the attributes belonging to the families of the selected products will be edited with the following data for the {{ locale }} locale and the {{ scope }} channel.
       no_update: Please select at least one field to update
     add_attribute_value:
-      label: Add attributes values
+      label: Add attribute values
       description: Only the multivalued attributes belonging to the families of the products will be edited with the following data for the {{ locale }} locale and the {{ scope }} channel. The attributes values are added, the previous values are kept.
     change_family:
       label: Change family
@@ -312,7 +312,7 @@ pim_enrich.mass_edit.product:
       description: The product model selected will gather the products and allows the enrichment of their common properties.
       no_update: Please select a product model before to continue
     associate_to_product_and_product_model:
-      label: Associate
+      label: Associate products
       description: The products selected in the grid will be associated to the selected products and product models for the chosen association type
       validate: Please add association before going to the next step
     change_parent_product_model:
