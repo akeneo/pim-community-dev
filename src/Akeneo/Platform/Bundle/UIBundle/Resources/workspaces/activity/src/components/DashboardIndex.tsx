@@ -21,21 +21,19 @@ const DashboardIndex = () => {
     <>
       <Header />
       <StyledPageContent>
-        {featureFlags.isEnabled('free_trial') &&
+        {featureFlags.isEnabled('free_trial') && (
           <div style={{marginBottom: '20px'}}>
             <SectionTitle>
-                <SectionTitle.Title style={{color: theme.color.grey100}}>
-                  {translate('free_trial.activity.dashboard.projects')}
-                </SectionTitle.Title>
-                <LockIconContainer>
-                  <LockIcon size={16} color={theme.color.blue100} />
-                </LockIconContainer>
+              <SectionTitle.Title style={{color: theme.color.grey100}}>
+                {translate('free_trial.activity.dashboard.projects')}
+              </SectionTitle.Title>
+              <LockIconContainer>
+                <LockIcon size={16} color={theme.color.blue100} />
+              </LockIconContainer>
             </SectionTitle>
-            <Helper level='info'>
-              {translate('free_trial.activity.dashboard.helper')}
-            </Helper>
+            <Helper level="info">{translate('free_trial.activity.dashboard.helper')}</Helper>
           </div>
-        }
+        )}
         <CompletenessWidget />
         <LastOperationsWidget />
         <PimVersion />
