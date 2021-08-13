@@ -40,7 +40,7 @@ type BackLink = {
 
 type Props = SubNavigationType & {
   activeSubEntryCode: string | null;
-  freeTrialEnabled: boolean;
+  freeTrialEnabled?: boolean;
 };
 
 const SubNavigation: FC<Props> = ({title, sections, entries, backLink, stateCode, activeSubEntryCode, freeTrialEnabled}) => {
