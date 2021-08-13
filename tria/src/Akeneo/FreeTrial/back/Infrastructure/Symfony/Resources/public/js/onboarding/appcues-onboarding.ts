@@ -1,5 +1,5 @@
 import {getAppcuesAgent} from './appcues-agent';
-import {PimOnboarding} from 'pimui/js/onboarding';
+import {PimOnboarding} from './pim-onboarding';
 
 const FeatureFlags = require('pim/feature-flags');
 const UserContext = require('pim/user-context');
