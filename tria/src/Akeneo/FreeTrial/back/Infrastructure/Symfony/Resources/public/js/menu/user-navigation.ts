@@ -6,6 +6,12 @@ class FreeTrialUserNavigation extends UserNavigation {
   render() {
     super.render();
 
+    /*this.renderReact(
+      AppcuesLaunchpadButton,
+      {},
+      document.getElementById('appcues-launchpad-btn')
+    );*/
+
     this.renderReact(
         InviteUserButton,
         {},
