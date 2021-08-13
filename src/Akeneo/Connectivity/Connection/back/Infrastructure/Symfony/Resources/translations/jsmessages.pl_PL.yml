@@ -38,8 +38,6 @@ akeneo_connectivity.connection:
       sub_title: Sprawdź nasz rynek, aby zobaczyć, którą aplikację można połączyć z Akeneo PIM.
       link: Dostęp do rynku
       helper:
-        title: '{0} Wtyczki kompatybilne z twoją wersją PIM: {{ count }}|{1} Wtyczki kompatybilne z twoją wersją PIM: {{ count }}.|[2,Inf] Wtyczki kompatybilne z twoją wersją PIM: {{ count }}'
-        description: To tylko podgląd, aby uzyskać więcej szczegółów, zobacz nasz rynek internetowy.
         link: Przejdź do rynku internetowego
       card:
         developed_by: 'Opracowane przez:'

@@ -38,8 +38,6 @@ akeneo_connectivity.connection:
       sub_title: どのアプリケーションを Akeneo PIM に接続できるのか、マーケットプレイスでご覧ください。
       link: マーケットプレイスにアクセス
       helper:
-        title: '{0} お使いの PIM バージョンと互換性のあるコネクターが {{ count }} 個あります。|{1} お使いの PIM バージョンと互換性のあるコネクターが {{ count }} 個あります。|[2,Inf] お使いの PIM バージョンと互換性のあるコネクターが {{ count }} 個あります。'
-        description: これは概要です。詳細については Web マーケットプレイスをご覧ください。
         link: ' Web マーケットプレイスに移動'
       card:
         developed_by: 開発者

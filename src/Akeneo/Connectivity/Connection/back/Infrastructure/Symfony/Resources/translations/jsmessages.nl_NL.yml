@@ -38,8 +38,6 @@ akeneo_connectivity.connection:
       sub_title: Bekijk onze marktplaats om te zien welke applicatie kan worden verbonden met Akeneo PIM.
       link: Naar de marktplaats
       helper:
-        title: '{0} Er zijn {{ count }} connectoren compatibel met uw PIM versie.{1} Er is {{ count }} connector compatibel met uw PIM-versie.## [2,Inf] Er zijn {{ count }} connectoren compatibel met uw PIM-versie.'
-        description: Dit is slechts een overzicht. Neem voor meer details een kijkje op onze marktplaats op internet.
         link: Ga naar marktplaats op internet
       card:
         developed_by: Ontwikkeld door
