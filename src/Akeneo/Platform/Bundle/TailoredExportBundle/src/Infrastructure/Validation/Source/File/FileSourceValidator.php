@@ -13,9 +13,9 @@ declare(strict_types=1);
 
 namespace Akeneo\Platform\TailoredExport\Infrastructure\Validation\Source\File;
 
-use Akeneo\Platform\TailoredExport\Application\Query\Selection\File\FileKeySelection;
-use Akeneo\Platform\TailoredExport\Application\Query\Selection\File\FileNameSelection;
-use Akeneo\Platform\TailoredExport\Application\Query\Selection\File\FilePathSelection;
+use Akeneo\Platform\TailoredExport\Application\Common\Selection\File\FileKeySelection;
+use Akeneo\Platform\TailoredExport\Application\Common\Selection\File\FileNameSelection;
+use Akeneo\Platform\TailoredExport\Application\Common\Selection\File\FilePathSelection;
 use Akeneo\Platform\TailoredExport\Infrastructure\Validation\Operation\DefaultValueOperationConstraint;
 use Akeneo\Platform\TailoredExport\Infrastructure\Validation\Source\SourceConstraintProvider;
 use Symfony\Component\Validator\Constraint;
