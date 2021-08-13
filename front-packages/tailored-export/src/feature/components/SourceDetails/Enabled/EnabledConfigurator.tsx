@@ -4,6 +4,7 @@ import {BooleanReplacement} from '../common/BooleanReplacement';
 import {PropertyConfiguratorProps} from '../../../models';
 import {isEnabledSource} from './model';
 import {InvalidPropertySourceError} from '../error';
+import {Operations} from '../common';
 
 const EnabledConfigurator = ({source, validationErrors, onSourceChange}: PropertyConfiguratorProps) => {
   const translate = useTranslate();
@@ -13,15 +14,17 @@ const EnabledConfigurator = ({source, validationErrors, onSourceChange}: Propert
   }
 
   return (
-    <BooleanReplacement
-      trueLabel={translate('akeneo.tailored_export.column_details.sources.operation.replacement.enabled')}
-      falseLabel={translate('akeneo.tailored_export.column_details.sources.operation.replacement.disabled')}
-      operation={source.operations.replacement}
-      validationErrors={filterErrors(validationErrors, '[operations][replacement]')}
-      onOperationChange={updatedOperation =>
-        onSourceChange({...source, operations: {...source.operations, replacement: updatedOperation}})
-      }
-    />
+    <Operations>
+      <BooleanReplacement
+        trueLabel={translate('akeneo.tailored_export.column_details.sources.operation.replacement.enabled')}
+        falseLabel={translate('akeneo.tailored_export.column_details.sources.operation.replacement.disabled')}
+        operation={source.operations.replacement}
+        validationErrors={filterErrors(validationErrors, '[operations][replacement]')}
+        onOperationChange={updatedOperation =>
+          onSourceChange({...source, operations: {...source.operations, replacement: updatedOperation}})
+        }
+      />
+    </Operations>
   );
 };
 
