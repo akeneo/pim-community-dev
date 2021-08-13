@@ -12,7 +12,6 @@ const pageTitle = require('pim/page-title');
 const DateContext = require('pim/date-context');
 const UserContext = require('pim/user-context');
 const template = require('pim/template/app');
-const PimOnboarding = require('pim/onboarding');
 
 class PimApp extends BaseView {
   private readonly template = _.template(template);
@@ -38,9 +37,6 @@ class PimApp extends BaseView {
 
     return $.when(FetcherRegistry.initialize(), DateContext.initialize(), UserContext.initialize())
       .then(initTranslator.fetch)
-      .then(() => {
-        PimOnboarding.init();
-      })
       .then(() => {
         init();
 
