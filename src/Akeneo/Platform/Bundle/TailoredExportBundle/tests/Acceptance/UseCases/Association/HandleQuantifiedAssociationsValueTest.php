@@ -26,7 +26,7 @@ use Akeneo\Platform\TailoredExport\Test\Acceptance\FakeServices\Product\InMemory
 use Akeneo\Platform\TailoredExport\Test\Acceptance\FakeServices\ProductModel\InMemoryFindProductModelLabels;
 use PHPUnit\Framework\Assert;
 
-final class HandleQuantifiedAssociationsValue extends AssociationTestCase
+final class HandleQuantifiedAssociationsValueTest extends AssociationTestCase
 {
     public const ASSOCIATION_TYPE_CODE = 'PACK';
 
@@ -53,7 +53,7 @@ final class HandleQuantifiedAssociationsValue extends AssociationTestCase
     public function provider(): array
     {
         $productAssociations = [new QuantifiedAssociation('1111111171', 3), new QuantifiedAssociation('13620748', 2)];
-        $productModelAssociations = [new QuantifiedAssociation('athena', 1), new QuantifiedAssociation('hat', 2)];
+        $productModelAssociations = [new QuantifiedAssociation('diana', 1), new QuantifiedAssociation('stilleto', 2)];
 
         return [
             'Select associated product codes with ";" as separator' => [
@@ -110,15 +110,11 @@ final class HandleQuantifiedAssociationsValue extends AssociationTestCase
     private function loadAssociatedEntityLabels()
     {
         /** @var InMemoryFindProductLabels $productLabelRepository */
-        $productLabelRepository = self::$container->get('akeneo.pim.structure.query.get_category_translations');
-        $productLabelRepository->addProductLabel('1111111171', 'ecommerce', 'fr_FR', 'Bag');
+        $productLabelRepository = self::$container->get('Akeneo\Platform\TailoredExport\Domain\Query\FindProductLabelsInterface');
+        $productLabelRepository->addProductLabel('1111111171', 'ecommerce', 'en_US', 'Bag');
 
         /** @var InMemoryFindProductModelLabels $productLabelRepository */
-        $productLabelRepository = self::$container->get('akeneo.pim.structure.query.get_category_translations');
-        $productLabelRepository->addProductModelLabel('diana', 'ecommerce', 'fr_FR', 'Diana');
-
-        /** @var InMemoryFindGroupLabels $groupLabelRepository */
-        $groupLabelRepository = self::$container->get('akeneo.pim.structure.query.get_category_translations');
-        $groupLabelRepository->addGroupLabel('summerSale2021', 'fr_FR', 'Summer sale 2021');
+        $productLabelRepository = self::$container->get('Akeneo\Platform\TailoredExport\Domain\Query\FindProductModelLabelsInterface');
+        $productLabelRepository->addProductModelLabel('diana', 'ecommerce', 'en_US', 'Diana');
     }
 }

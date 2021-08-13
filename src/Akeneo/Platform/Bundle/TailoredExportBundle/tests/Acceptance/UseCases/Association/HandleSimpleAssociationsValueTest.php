@@ -25,7 +25,7 @@ use Akeneo\Platform\TailoredExport\Test\Acceptance\FakeServices\Product\InMemory
 use Akeneo\Platform\TailoredExport\Test\Acceptance\FakeServices\ProductModel\InMemoryFindProductModelLabels;
 use PHPUnit\Framework\Assert;
 
-final class HandleSimpleAssociationsValue extends AssociationTestCase
+final class HandleSimpleAssociationsValueTest extends AssociationTestCase
 {
     public const ASSOCIATION_TYPE_CODE = 'X_SELL';
 
@@ -106,16 +106,16 @@ final class HandleSimpleAssociationsValue extends AssociationTestCase
     private function loadAssociatedEntityLabels()
     {
         /** @var InMemoryFindProductLabels $productLabelRepository */
-        $productLabelRepository = self::$container->get('akeneo.pim.structure.query.get_category_translations');
-        $productLabelRepository->addProductLabel('1111111171', 'ecommerce', 'fr_FR', 'Bag');
-        $productLabelRepository->addProductLabel('122334620748', 'ecommerce', 'fr_FR', 'Sunglasses');
+        $productLabelRepository = self::$container->get('Akeneo\Platform\TailoredExport\Domain\Query\FindProductLabelsInterface');
+        $productLabelRepository->addProductLabel('1111111171', 'ecommerce', 'en_US', 'Bag');
+        $productLabelRepository->addProductLabel('122334620748', 'ecommerce', 'en_US', 'Sunglasses');
 
         /** @var InMemoryFindProductModelLabels $productLabelRepository */
-        $productLabelRepository = self::$container->get('akeneo.pim.structure.query.get_category_translations');
-        $productLabelRepository->addProductModelLabel('diana', 'ecommerce', 'fr_FR', 'Diana');
+        $productLabelRepository = self::$container->get('Akeneo\Platform\TailoredExport\Domain\Query\FindProductModelLabelsInterface');
+        $productLabelRepository->addProductModelLabel('diana', 'ecommerce', 'en_US', 'Diana');
 
         /** @var InMemoryFindGroupLabels $groupLabelRepository */
-        $groupLabelRepository = self::$container->get('akeneo.pim.structure.query.get_category_translations');
-        $groupLabelRepository->addGroupLabel('summerSale2021', 'fr_FR', 'Summer sale 2021');
+        $groupLabelRepository = self::$container->get('Akeneo\Platform\TailoredExport\Domain\Query\FindGroupLabelsInterface');
+        $groupLabelRepository->addGroupLabel('summerSale2021', 'en_US', 'Summer sale 2021');
     }
 }
