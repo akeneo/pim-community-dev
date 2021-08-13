@@ -44,6 +44,10 @@ akeneo_connectivity_connection_connect_marketplace:
 akeneo_connectivity_connection_connect_marketplace_profile:
     path: '/connect/marketplace/profile'
 
+## Apps
+akeneo_connectivity_connection_connect_apps_activate:
+    path: '/connect/apps/activate'
+
 ## Error Management
 akeneo_connectivity_connection_error_management_dashboard:
    path: '/connect/data-flows/business-errors'
