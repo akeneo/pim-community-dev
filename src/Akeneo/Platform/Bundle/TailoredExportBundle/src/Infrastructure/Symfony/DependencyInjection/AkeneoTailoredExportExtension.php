@@ -34,11 +34,5 @@ class AkeneoTailoredExportExtension extends Extension
         $loader->load('selection_appliers.yml');
         $loader->load('services.yml');
         $loader->load('validations.yml');
-
-        $isEnabled = (bool) ($_ENV['FLAG_TAILORED_EXPORT_ENABLED'] ?? false);
-
-        if (!$isEnabled) {
-            $container->removeDefinition('akeneo.tailored_export.job.xlsx_product.export');
-        }
     }
 }
