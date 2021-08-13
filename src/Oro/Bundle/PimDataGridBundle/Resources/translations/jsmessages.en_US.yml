@@ -3,7 +3,7 @@ pim_datagrid:
   no_entities: "No {{ entityHint }} found"
   no_results: "Sorry, there is no {{ entityHint }} for your search."
   no_results_subtitle: "Try again with new search criteria."
-  search: "Search on {{ label }}"
+  search: "Search by {{ label }}"
 
   select:
     title: Select
