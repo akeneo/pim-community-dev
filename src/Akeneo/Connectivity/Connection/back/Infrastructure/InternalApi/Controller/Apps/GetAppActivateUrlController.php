@@ -7,6 +7,7 @@ namespace Akeneo\Connectivity\Connection\Infrastructure\InternalApi\Controller\A
 use Akeneo\Connectivity\Connection\Application\Marketplace\AppUrlGenerator;
 use Akeneo\Connectivity\Connection\Domain\Marketplace\GetAppQueryInterface;
 use Akeneo\Connectivity\Connection\Infrastructure\Apps\OAuth\ClientProviderInterface;
+use Akeneo\Platform\Bundle\FeatureFlagBundle\FeatureFlag;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
@@ -22,21 +23,28 @@ class GetAppActivateUrlController
     private GetAppQueryInterface $getAppQuery;
     private ClientProviderInterface $clientProvider;
     private AppUrlGenerator $appUrlGenerator;
+    private FeatureFlag $featureFlag;
 
     public function __construct(
         GetAppQueryInterface $getAppQuery,
         ClientProviderInterface $clientProvider,
-        AppUrlGenerator $appUrlGenerator
+        AppUrlGenerator $appUrlGenerator,
+        FeatureFlag $featureFlag
     ) {
         $this->getAppQuery = $getAppQuery;
         $this->clientProvider = $clientProvider;
         $this->appUrlGenerator = $appUrlGenerator;
+        $this->featureFlag = $featureFlag;
     }
 
     public function __invoke(Request $request, string $id): Response
     {
         if (!$request->isXmlHttpRequest()) {
             return new RedirectResponse('/');
+        }
+
+        if (!$this->featureFlag->isEnabled()) {
+            throw new NotFoundHttpException();
         }
 
         $app = $this->getAppQuery->execute($id);

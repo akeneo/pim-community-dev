@@ -22,6 +22,7 @@ pim_menu:
 pim_title:
     akeneo_connectivity_connection_connect_marketplace: Marketplace
     akeneo_connectivity_connection_connect_marketplace_profile: Marketplace
+    akeneo_connectivity_connection_connect_apps_activate: Apps
     akeneo_connectivity_connection_settings_index: Connections settings
     akeneo_connectivity_connection_settings_edit: Connection settings
     akeneo_connectivity_connection_settings_any: Connection settings

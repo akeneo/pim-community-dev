@@ -77,3 +77,4 @@ services:
             - '@akeneo_connectivity.connection.marketplace.get_app_query'
             - '@akeneo_connectivity.connection.service.apps.client_provider'
             - '@akeneo_connectivity.connection.marketplace.app_url_generator'
+            - '@akeneo_connectivity.connection.marketplace_activate.feature'
