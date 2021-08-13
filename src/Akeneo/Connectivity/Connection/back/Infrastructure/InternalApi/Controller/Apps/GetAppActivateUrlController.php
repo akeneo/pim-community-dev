@@ -8,10 +8,12 @@ use Akeneo\Connectivity\Connection\Application\Marketplace\AppUrlGenerator;
 use Akeneo\Connectivity\Connection\Domain\Marketplace\GetAppQueryInterface;
 use Akeneo\Connectivity\Connection\Infrastructure\Apps\OAuth\ClientProviderInterface;
 use Akeneo\Platform\Bundle\FeatureFlagBundle\FeatureFlag;
+use Oro\Bundle\SecurityBundle\SecurityFacade;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
+use Symfony\Component\HttpKernel\Exception\AccessDeniedHttpException;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 
 /**
@@ -23,17 +25,20 @@ class GetAppActivateUrlController
     private GetAppQueryInterface $getAppQuery;
     private ClientProviderInterface $clientProvider;
     private AppUrlGenerator $appUrlGenerator;
+    private SecurityFacade $security;
     private FeatureFlag $featureFlag;
 
     public function __construct(
         GetAppQueryInterface $getAppQuery,
         ClientProviderInterface $clientProvider,
         AppUrlGenerator $appUrlGenerator,
+        SecurityFacade $security,
         FeatureFlag $featureFlag
     ) {
         $this->getAppQuery = $getAppQuery;
         $this->clientProvider = $clientProvider;
         $this->appUrlGenerator = $appUrlGenerator;
+        $this->security = $security;
         $this->featureFlag = $featureFlag;
     }
 
@@ -45,6 +50,10 @@ class GetAppActivateUrlController
 
         if (!$this->featureFlag->isEnabled()) {
             throw new NotFoundHttpException();
+        }
+
+        if (!$this->security->isGranted('akeneo_connectivity_connection_manage_apps')) {
+            throw new AccessDeniedHttpException();
         }
 
         $app = $this->getAppQuery->execute($id);

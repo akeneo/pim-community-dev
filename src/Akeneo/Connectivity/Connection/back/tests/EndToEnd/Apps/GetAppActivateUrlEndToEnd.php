@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace Akeneo\Connectivity\Connection\Tests\EndToEnd\Apps;
 
 use Akeneo\Connectivity\Connection\back\tests\EndToEnd\WebTestCase;
+use Akeneo\Connectivity\Connection\Tests\Integration\Mock\FakeFeatureFlag;
 use Akeneo\Connectivity\Connection\Tests\Integration\Mock\FakeWebMarketplaceApi;
 use Akeneo\Test\Integration\Configuration;
 use PHPUnit\Framework\Assert;
@@ -16,10 +17,15 @@ use Symfony\Component\HttpFoundation\Response;
  */
 class GetAppActivateUrlEndToEnd extends WebTestCase
 {
+    private FakeWebMarketplaceApi $webMarketplaceApi;
+    private FakeFeatureFlag $featureFlagMarketplaceActivate;
+
     protected function setUp(): void
     {
         parent::setUp();
 
+        $this->webMarketplaceApi = $this->get('akeneo_connectivity.connection.marketplace.web_marketplace_api');
+        $this->featureFlagMarketplaceActivate = $this->get('akeneo_connectivity.connection.marketplace_activate.feature');
         $this->loadAppsFixtures();
     }
 
@@ -33,6 +39,7 @@ class GetAppActivateUrlEndToEnd extends WebTestCase
      */
     public function test_it_get_the_activate_url_of_an_app(): void
     {
+        $this->addAclToRole('ROLE_ADMINISTRATOR', 'akeneo_connectivity_connection_manage_apps');
         $this->authenticateAsAdmin();
         $this->client->request(
             'GET',
@@ -46,7 +53,50 @@ class GetAppActivateUrlEndToEnd extends WebTestCase
         $result = json_decode($this->client->getResponse()->getContent(), true);
 
         Assert::assertEquals(Response::HTTP_OK, $this->client->getResponse()->getStatusCode());
-        Assert::assertEquals('http://shopware.example.com/activate?pim_url=http%3A%2F%2Flocalhost%3A8080', $result['url']);
+        Assert::assertEquals(
+            'http://shopware.example.com/activate?pim_url=http%3A%2F%2Flocalhost%3A8080',
+            $result['url']
+        );
+    }
+
+    /**
+     * @group ce
+     */
+    public function test_it_cannot_activate_an_app_without_the_acl(): void
+    {
+        $this->authenticateAsAdmin();
+        $this->client->request(
+            'GET',
+            '/rest/apps/activate/90741597-54c5-48a1-98da-a68e7ee0a715',
+            [],
+            [],
+            [
+                'HTTP_X-Requested-With' => 'XMLHttpRequest',
+            ]
+        );
+
+        Assert::assertEquals(Response::HTTP_FORBIDDEN, $this->client->getResponse()->getStatusCode());
+    }
+
+    /**
+     * @group ce
+     */
+    public function test_it_cannot_activate_an_app_without_the_feature_flag(): void
+    {
+        $this->featureFlagMarketplaceActivate->disable();
+
+        $this->authenticateAsAdmin();
+        $this->client->request(
+            'GET',
+            '/rest/apps/activate/90741597-54c5-48a1-98da-a68e7ee0a715',
+            [],
+            [],
+            [
+                'HTTP_X-Requested-With' => 'XMLHttpRequest',
+            ]
+        );
+
+        Assert::assertEquals(Response::HTTP_NOT_FOUND, $this->client->getResponse()->getStatusCode());
     }
 
     private function loadAppsFixtures(): void
@@ -84,11 +134,6 @@ class GetAppActivateUrlEndToEnd extends WebTestCase
             ],
         ];
 
-        $this->getWebMarketplaceApi()->setApps($apps);
-    }
-
-    private function getWebMarketplaceApi(): FakeWebMarketplaceApi
-    {
-        return $this->get('akeneo_connectivity.connection.marketplace.web_marketplace_api');
+        $this->webMarketplaceApi->setApps($apps);
     }
 }
