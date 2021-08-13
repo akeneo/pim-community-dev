@@ -140,7 +140,7 @@ type SelectInputProps = Override<
     /**
      * Accessibility text for the open dropdown button
      */
-    openLabel?: string;
+    openLabel: string;
 
     /**
      * Defines if the input is valid on not.
@@ -172,7 +172,7 @@ const SelectInput = ({
   onChange,
   clearable = true,
   clearLabel = '',
-  openLabel = '',
+  openLabel,
   readOnly = false,
   verticalPosition,
   'aria-labelledby': ariaLabelledby,

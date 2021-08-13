@@ -118,7 +118,7 @@ type MultiMultiSelectInputProps = Override<
     /**
      * Accessibility text for the open dropdown button.
      */
-    openLabel?: string;
+    openLabel: string;
 
     /**
      * Accessibility text for the remove chip button.
@@ -161,7 +161,7 @@ const MultiSelectInput = ({
   onChange,
   removeLabel,
   onSubmit,
-  openLabel = '',
+  openLabel,
   readOnly = false,
   verticalPosition,
   'aria-labelledby': ariaLabelledby,
