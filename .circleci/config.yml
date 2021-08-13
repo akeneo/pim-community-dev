@@ -2128,6 +2128,9 @@ workflows:
           - test_deploy_srnt_last_release:
                 requires:
                     - test_cronjobs_existence_srnt
+          - test_upgrade_srnt_from_last_release:
+                requires:
+                    - test_deploy_srnt_last_release
           - test_front_code_style:
                 requires:
                     - build_srnt_dev
@@ -2170,6 +2173,7 @@ workflows:
                     - test_back_behat_legacy
                     - test_back_data_migrations
                     - test_deploy_srnt
+                    - test_upgrade_srnt_from_last_release
 
   on_demand_grth_release:
       jobs:
