@@ -11,7 +11,7 @@ declare(strict_types=1);
  * file that was distributed with this source code.
  */
 
-namespace Specification\Akeneo\Platform\TailoredExport\Application;
+namespace Specification\Akeneo\Platform\TailoredExport\Application\ExtractMedia;
 
 use Akeneo\Platform\TailoredExport\Application\ExtractMedia\ExtractedMedia;
 use PhpSpec\ObjectBehavior;

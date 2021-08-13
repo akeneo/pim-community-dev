@@ -133,8 +133,10 @@ class FindViewableAttributesIntegrationTest extends IntegrationTestCase
         ], $viewableAttributesResult);
     }
 
-    private function assertResultContainAttributeCodes(array $expectedAttributeCodes, \Akeneo\Platform\TailoredExport\Domain\Query\Attribute\ViewableAttributesResult $viewableAttributesResult)
-    {
+    private function assertResultContainAttributeCodes(
+        array $expectedAttributeCodes,
+        ViewableAttributesResult $viewableAttributesResult
+    ) {
         $actualAttributeCodes = array_map(static fn ($attribute) => $attribute->getCode(), $viewableAttributesResult->getAttributes());
         $this->assertEquals($expectedAttributeCodes, $actualAttributeCodes);
     }
