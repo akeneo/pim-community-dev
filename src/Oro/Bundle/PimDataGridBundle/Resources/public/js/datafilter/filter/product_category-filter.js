@@ -22,17 +22,6 @@ define(['jquery', 'underscore', 'oro/datafilter/number-filter', 'pim/tree/view',
     /**
      * @inheritDoc
      */
-    emptyValue: {
-      value: {
-        treeId: 0,
-        categoryId: -2,
-      },
-      type: 1,
-    },
-
-    /**
-     * @inheritDoc
-     */
     value: {},
 
     /**
@@ -41,9 +30,15 @@ define(['jquery', 'underscore', 'oro/datafilter/number-filter', 'pim/tree/view',
     initialize: function (urlParams, gridName, categoryBaseRoute, container, updateCallback) {
       this.$el.remove();
       this.$el = $(container);
+      this.emptyValue = {
+        value: {
+          treeId: 0,
+          categoryId: -2,
+        },
+        type: 1,
+      };
 
       this.value = $.extend(true, {}, this.emptyValue);
-
       NumberFilter.prototype.initialize.apply(this, arguments);
 
       if (urlParams && urlParams[gridName + '[_filter][category][value][treeId]']) {
@@ -156,8 +151,8 @@ define(['jquery', 'underscore', 'oro/datafilter/number-filter', 'pim/tree/view',
      * @inheritDoc
      */
     reset: function () {
-      TreeView.reset();
-      NumberFilter.prototype.reset.apply(this, arguments);
+            TreeView.reset();
+            NumberFilter.prototype.reset.apply(this, arguments);
     },
-  });
+    });
 });
