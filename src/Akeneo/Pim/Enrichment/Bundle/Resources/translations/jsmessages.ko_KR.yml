@@ -434,3 +434,4 @@ batch_jobs:
     perform.label: XLSX 제품의 빠른 내보내기
   default_steps:
     delete_products_and_product_models: 제품 및 제품 모델 삭제
+    remove_completeness_for_channel_and_locale: 채널 및 로케일의 완성도 제거
