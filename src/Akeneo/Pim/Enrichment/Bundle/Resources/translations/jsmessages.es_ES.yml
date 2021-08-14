@@ -434,3 +434,4 @@ batch_jobs:
     perform.label: Exportación rápida de producto en XSLX
   default_steps:
     delete_products_and_product_models: Eliminar productos y modelos de productos
+    remove_completeness_for_channel_and_locale: Eliminar la exhaustividad del canal y la configuración regional
