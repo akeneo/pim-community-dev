@@ -1,24 +1,30 @@
-import React, {ChangeEvent, ReactNode} from 'react';
-import styled from 'styled-components';
-import {getColor} from '../../theme';
+import React, {ChangeEvent, HTMLAttributes, ReactNode, RefObject} from 'react';
+import styled, {css} from 'styled-components';
+import {AkeneoThemedProps, getColor} from '../../theme';
 import {SearchIcon} from '../../icons';
+import {Override} from '../../shared';
 
-const Container = styled.div`
+const Container = styled.div<{sticky?: number} & AkeneoThemedProps>`
   display: flex;
   justify-content: space-between;
   align-items: center;
   border-bottom: 1px solid ${getColor('grey', 100)};
   background: ${getColor('white')};
-  position: sticky;
-  top: 0;
   height: 44px;
   flex: 1;
-  z-index: 1;
   box-sizing: border-box;
 
   :focus-within {
     border-bottom: 1px solid ${getColor('brand', 100)};
   }
+
+  ${({sticky}) =>
+    undefined !== sticky &&
+    css`
+      position: sticky;
+      top: ${sticky}px;
+      z-index: 9;
+    `}
 `;
 
 const SearchContainer = styled.div`
@@ -55,39 +61,53 @@ const ResultCount = styled.span`
   text-transform: none;
 `;
 
-type SearchProps = {
-  /**
-   * Content of the Search component
-   */
-  children?: ReactNode;
+type SearchProps = Override<
+  HTMLAttributes<HTMLDivElement>,
+  {
+    /**
+     * Content of the Search component.
+     */
+    children?: ReactNode;
 
-  /**
-   * Placeholder displayed when the search input is empty.
-   */
-  placeholder?: string;
+    /**
+     * Placeholder displayed when the search input is empty.
+     */
+    placeholder?: string;
 
-  /**
-   * Text displayed on the rollover of the Search component
-   */
-  title?: string;
+    /**
+     * Text displayed on the rollover of the Search component.
+     */
+    title?: string;
 
-  /**
-   * The search string
-   */
-  searchValue: string;
+    /**
+     * The search string.
+     */
+    searchValue: string;
 
-  /**
-   * Handle called when the search input is updated
-   */
-  onSearchChange: (searchValue: string) => void;
-};
+    /**
+     * Ref to forward to the input field.
+     */
+    inputRef?: RefObject<HTMLInputElement>;
 
-const Search = ({children, placeholder, title, searchValue, onSearchChange, ...rest}: SearchProps) => {
+    /**
+     * When set, defines the sticky top position of the Search component.
+     */
+    sticky?: number;
+
+    /**
+     * Handler called when the search input is updated.
+     */
+    onSearchChange: (searchValue: string) => void;
+  }
+>;
+
+const Search = ({children, placeholder, title, searchValue, inputRef, onSearchChange, ...rest}: SearchProps) => {
   return (
     <Container {...rest}>
       <SearchContainer>
         <SearchIcon size={20} />
         <SearchInput
+          ref={inputRef}
           title={title}
           placeholder={placeholder}
           value={searchValue}

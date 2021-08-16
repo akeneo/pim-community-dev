@@ -100,29 +100,6 @@ JSON;
         Assert::assertEquals('familyA2', $esProduct['family']['code']);
     }
 
-    public function testAccessDeniedOnUpdateAPartialProductIfNoPermission()
-    {
-        $this->removeAclFromRole('action:pim_api_product_edit');
-
-        $data = <<<JSON
-{"line":1,"identifier":"product_family","status_code":204}
-{"line":2,"identifier":"my_identifier","status_code":201}
-JSON;
-
-        $result = $this->executeStreamRequest('PATCH', 'api/rest/v1/products', [], [], [], $data);
-
-        $expectedResponse = <<<JSON
-{
-    "code": 403,
-    "message": "Access forbidden. You are not allowed to create or update products."
-}
-JSON;
-
-        $response = $result['http_response'];
-        $this->assertSame(Response::HTTP_FORBIDDEN, $response->getStatusCode());
-        $this->assertJsonStringEqualsJsonString($expectedResponse, $response->getContent());
-    }
-
     public function testCreateAndUpdateSameProduct()
     {
         $data =

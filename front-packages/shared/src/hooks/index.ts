@@ -15,3 +15,4 @@ export * from './useViewBuilder';
 export * from './useFetch';
 export * from './useSessionStorageState';
 export * from './useSetPageTitle';
+export * from './useFeatureFlags';

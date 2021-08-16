@@ -20,6 +20,7 @@ extensions:
         config:
             title: pim_menu.tab.activity
             iconModifier: iconCard
+            icon: CardIcon
 
     pim-menu-activity-column:
         module: pim/menu/column
@@ -67,6 +68,7 @@ extensions:
             title: pim_menu.tab.imports
             iconModifier: iconDownload
             to: pim_importexport_import_profile_index
+            icon: DownloadIcon
 
     # Products
     pim-menu-products:
@@ -79,6 +81,7 @@ extensions:
             title: pim_enrich.entity.product.plural_label
             iconModifier: iconProduct
             to: pim_enrich_product_index
+            icon: ProductIcon
 
     # Exports
     pim-menu-exports:
@@ -91,6 +94,7 @@ extensions:
             title: pim_menu.tab.exports
             iconModifier: iconUpload
             to: pim_importexport_export_profile_index
+            icon: UploadIcon
 
     # Settings
     pim-menu-settings:
@@ -103,6 +107,7 @@ extensions:
             iconModifier: iconSettings
             to: pim_settings_index
             isLandingSectionPage: true
+            icon: SettingsIcon
 
     pim-menu-settings-column:
         module: pim/menu/column
@@ -231,6 +236,7 @@ extensions:
         config:
             title: pim_menu.tab.system
             iconModifier: iconSystem
+            icon: SystemIcon
 
     pim-menu-system-column:
         module: pim/menu/column

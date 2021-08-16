@@ -3,10 +3,11 @@ import {
   FullScreenError,
   PageContent,
   PageHeader,
+  PimView,
   useRouter,
   useSecurity,
   useTranslate,
-  PimView,
+  Translate,
 } from '@akeneo-pim-community/shared';
 import {
   AssociateIcon,
@@ -20,24 +21,40 @@ import {
   IconCard,
   IconCardGrid,
   LocaleIcon,
+  LockIcon,
   MetricIcon,
   SectionTitle,
   ShopIcon,
   TagIcon,
+  useTheme,
   ValueIcon,
 } from 'akeneo-design-system';
 import styled from 'styled-components';
-import {useCountEntities} from '../hooks/settings';
+import {CountEntities, useCountEntities} from '../hooks/settings';
+
+const featureFlags = require('pim/feature-flags');
 
 const SectionContent = styled.div`
   margin-top: 20px;
   margin-bottom: 30px;
 `;
 
+const getPluralizedTranslation = (
+  translate: Translate,
+  translationId: string,
+  countEntities: CountEntities,
+  propertyPath: string
+) => {
+  return countEntities.hasOwnProperty(propertyPath)
+    ? translate(translationId, {count: countEntities[propertyPath]}, countEntities[propertyPath])
+    : '';
+};
+
 const SettingsIndex = () => {
   const translate = useTranslate();
   const {isGranted} = useSecurity();
   const router = useRouter();
+  const theme = useTheme();
 
   const canAccessCategories = isGranted('pim_enrich_product_category_list');
   const canAccessChannels = isGranted('pim_enrich_channel_index');
@@ -113,10 +130,18 @@ const SettingsIndex = () => {
                     content={
                       countEntities.hasOwnProperty('count_category_trees') &&
                       countEntities.hasOwnProperty('count_categories')
-                        ? translate('pim_settings.count.categories', {
-                            countTrees: countEntities['count_category_trees'],
-                            countCategories: countEntities['count_categories'] - countEntities['count_category_trees'],
-                          })
+                        ? getPluralizedTranslation(
+                            translate,
+                            'pim_settings.count.category_trees',
+                            countEntities,
+                            'count_category_trees'
+                          ).concat(
+                            translate(
+                              'pim_settings.count.categories',
+                              {count: countEntities['count_categories'] - countEntities['count_category_trees']},
+                              countEntities['count_categories'] - countEntities['count_category_trees']
+                            )
+                          )
                         : ''
                     }
                   />
@@ -126,11 +151,12 @@ const SettingsIndex = () => {
                     icon={<ShopIcon />}
                     label={translate('pim_menu.item.channel')}
                     onClick={() => redirectToRoute('pim_enrich_channel_index')}
-                    content={
-                      countEntities.hasOwnProperty('count_channels')
-                        ? translate('pim_settings.count.channels', {count: countEntities['count_channels']})
-                        : ''
-                    }
+                    content={getPluralizedTranslation(
+                      translate,
+                      'pim_settings.count.channels',
+                      countEntities,
+                      'count_channels'
+                    )}
                   />
                 )}
                 {canAccessLocales && (
@@ -138,11 +164,12 @@ const SettingsIndex = () => {
                     icon={<LocaleIcon />}
                     label={translate('pim_enrich.entity.locale.plural_label')}
                     onClick={() => redirectToRoute('pim_enrich_locale_index')}
-                    content={
-                      countEntities.hasOwnProperty('count_locales')
-                        ? translate('pim_settings.count.locales', {count: countEntities['count_locales']})
-                        : ''
-                    }
+                    content={getPluralizedTranslation(
+                      translate,
+                      'pim_settings.count.locales',
+                      countEntities,
+                      'count_locales'
+                    )}
                   />
                 )}
                 {canAccessCurrencies && (
@@ -150,11 +177,12 @@ const SettingsIndex = () => {
                     icon={<CreditsIcon />}
                     label={translate('pim_menu.item.currency')}
                     onClick={() => redirectToRoute('pim_enrich_currency_index')}
-                    content={
-                      countEntities.hasOwnProperty('count_currencies')
-                        ? translate('pim_settings.count.currencies', {count: countEntities['count_currencies']})
-                        : ''
-                    }
+                    content={getPluralizedTranslation(
+                      translate,
+                      'pim_settings.count.currencies',
+                      countEntities,
+                      'count_currencies'
+                    )}
                   />
                 )}
               </IconCardGrid>
@@ -173,13 +201,12 @@ const SettingsIndex = () => {
                     icon={<TagIcon />}
                     label={translate('pim_enrich.entity.attribute_group.plural_label')}
                     onClick={() => redirectToRoute('pim_enrich_attributegroup_index')}
-                    content={
-                      countEntities.hasOwnProperty('count_attribute_groups')
-                        ? translate('pim_settings.count.attribute_groups', {
-                            count: countEntities['count_attribute_groups'],
-                          })
-                        : ''
-                    }
+                    content={getPluralizedTranslation(
+                      translate,
+                      'pim_settings.count.attribute_groups',
+                      countEntities,
+                      'count_attribute_groups'
+                    )}
                   />
                 )}
                 {canAccessAttributes && (
@@ -187,11 +214,12 @@ const SettingsIndex = () => {
                     icon={<ValueIcon />}
                     label={translate('pim_enrich.entity.attribute.plural_label')}
                     onClick={() => redirectToRoute('pim_enrich_attribute_index')}
-                    content={
-                      countEntities.hasOwnProperty('count_attributes')
-                        ? translate('pim_settings.count.attributes', {count: countEntities['count_attributes']})
-                        : ''
-                    }
+                    content={getPluralizedTranslation(
+                      translate,
+                      'pim_settings.count.attributes',
+                      countEntities,
+                      'count_attributes'
+                    )}
                   />
                 )}
                 {canAccessFamilies && (
@@ -199,11 +227,12 @@ const SettingsIndex = () => {
                     icon={<AttributeFileIcon />}
                     label={translate('pim_menu.item.family')}
                     onClick={() => redirectToRoute('pim_enrich_family_index')}
-                    content={
-                      countEntities.hasOwnProperty('count_families')
-                        ? translate('pim_settings.count.families', {count: countEntities['count_families']})
-                        : ''
-                    }
+                    content={getPluralizedTranslation(
+                      translate,
+                      'pim_settings.count.families',
+                      countEntities,
+                      'count_families'
+                    )}
                   />
                 )}
                 {canAccessMeasurements && (
@@ -211,11 +240,12 @@ const SettingsIndex = () => {
                     icon={<MetricIcon />}
                     label={translate('pim_menu.item.measurements')}
                     onClick={() => redirectToRoute('akeneo_measurements_settings_index')}
-                    content={
-                      countEntities.hasOwnProperty('count_measurements')
-                        ? translate('pim_settings.count.measurements', {count: countEntities['count_measurements']})
-                        : ''
-                    }
+                    content={getPluralizedTranslation(
+                      translate,
+                      'pim_settings.count.measurements',
+                      countEntities,
+                      'count_measurements'
+                    )}
                   />
                 )}
                 {canAccessAssociationTypes && (
@@ -223,13 +253,12 @@ const SettingsIndex = () => {
                     icon={<AssociateIcon />}
                     label={translate('pim_menu.item.association_type')}
                     onClick={() => redirectToRoute('pim_enrich_associationtype_index')}
-                    content={
-                      countEntities.hasOwnProperty('count_association_types')
-                        ? translate('pim_settings.count.association_types', {
-                            count: countEntities['count_association_types'],
-                          })
-                        : ''
-                    }
+                    content={getPluralizedTranslation(
+                      translate,
+                      'pim_settings.count.association_types',
+                      countEntities,
+                      'count_association_types'
+                    )}
                   />
                 )}
                 {canAccessGroupTypes && (
@@ -237,11 +266,12 @@ const SettingsIndex = () => {
                     icon={<ComponentIcon />}
                     label={translate('pim_menu.item.group_type')}
                     onClick={() => redirectToRoute('pim_enrich_grouptype_index')}
-                    content={
-                      countEntities.hasOwnProperty('count_group_types')
-                        ? translate('pim_settings.count.group_types', {count: countEntities['count_group_types']})
-                        : ''
-                    }
+                    content={getPluralizedTranslation(
+                      translate,
+                      'pim_settings.count.group_types',
+                      countEntities,
+                      'count_group_types'
+                    )}
                   />
                 )}
                 {canAccessGroups && (
@@ -249,11 +279,12 @@ const SettingsIndex = () => {
                     icon={<GroupsIcon />}
                     label={translate('pim_menu.item.group')}
                     onClick={() => redirectToRoute('pim_enrich_group_index')}
-                    content={
-                      countEntities.hasOwnProperty('count_groups')
-                        ? translate('pim_settings.count.groups', {count: countEntities['count_groups']})
-                        : ''
-                    }
+                    content={getPluralizedTranslation(
+                      translate,
+                      'pim_settings.count.groups',
+                      countEntities,
+                      'count_groups'
+                    )}
                   />
                 )}
                 {canAccessRules && (
@@ -261,11 +292,23 @@ const SettingsIndex = () => {
                     icon={<AttributeLinkIcon />}
                     label={translate('pim_menu.item.rule')}
                     onClick={() => redirectToRoute('pimee_catalog_rule_rule_index')}
-                    content={
-                      countEntities.hasOwnProperty('count_rules')
-                        ? translate('pim_settings.count.rules', {count: countEntities['count_rules']})
-                        : ''
+                    content={getPluralizedTranslation(
+                      translate,
+                      'pim_settings.count.rules',
+                      countEntities,
+                      'count_rules'
+                    )}
+                  />
+                )}
+                {featureFlags.isEnabled('free_trial') && (
+                  <DisableIconCard
+                    icon={
+                      <LockIconContainer>
+                        <LockIcon size={16} color={theme.color.blue100} />
+                      </LockIconContainer>
                     }
+                    label={translate('free_trial.menu.rules')}
+                    content={translate('free_trial.menu.feature_ee_only')}
                   />
                 )}
               </IconCardGrid>
@@ -276,5 +319,30 @@ const SettingsIndex = () => {
     </>
   );
 };
+
+const DisableIconCard = styled(IconCard)`
+  cursor: pointer;
+  border: 1px rgba(240, 241, 243, 0.5) solid;
+
+  :hover {
+    background: #fff;
+    border: 1px rgba(240, 241, 243, 0.5) solid;
+  }
+
+  > *:not(:first-child) {
+    opacity: 0.5;
+  }
+`;
+
+const LockIconContainer = styled.div`
+  border: 1px solid #4ca8e0;
+  border-radius: 4px;
+  background: #f0f7fc;
+  height: 24px;
+  width: 24px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+`;
 
 export {SettingsIndex};

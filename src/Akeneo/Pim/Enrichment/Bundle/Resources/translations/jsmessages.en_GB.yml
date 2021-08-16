@@ -109,7 +109,6 @@ pim_enrich.entity.product:
         quantity: Quantities
       search:
         placeholder: Search on label or identifier
-      no_result: Sorry, there is no result for your search.
       no_data: There are no associated products
       remove: Remove association
       edit: Edit product

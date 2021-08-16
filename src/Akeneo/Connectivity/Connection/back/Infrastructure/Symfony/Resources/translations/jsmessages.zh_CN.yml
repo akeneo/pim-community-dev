@@ -19,6 +19,7 @@ pim_menu:
     marketplace: 商城
 pim_title:
   akeneo_connectivity_connection_connect_marketplace: 商城
+  akeneo_connectivity_connection_connect_marketplace_profile: 商城
   akeneo_connectivity_connection_settings_index: 连接设置
   akeneo_connectivity_connection_settings_edit: 连接设置
   akeneo_connectivity_connection_settings_any: 连接设置
@@ -36,6 +37,18 @@ akeneo_connectivity.connection:
       title: 想要将您的 PIM 连接到另一个应用程序？🤟
       sub_title: 请检查我们的商城以查看哪些应用程序可以与 Akeneo PIM 连接。
       link: 访问商城
+      helper:
+        link: 前往网上商城
+      card:
+        developed_by: 开发者
+        read_more: 阅读更多
+        more_info: 更多信息
+      extensions:
+        title: 连接器
+        total: '{0} 无连接器 |{1} 1 个连接器 | [2,Inf] {{ total }} 个连接器'
+        empty: 没有与您的版本兼容的连接器
+      unreachable: 无法访问商城，请稍后再试。
+      scroll_to_top: 滚动到顶部
   connections: 连接
   secondary_actions:
     title: 其他操作

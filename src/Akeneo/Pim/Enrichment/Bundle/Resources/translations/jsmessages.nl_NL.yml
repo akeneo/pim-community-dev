@@ -109,7 +109,6 @@ pim_enrich.entity.product:
         quantity: Aantal
       search:
         placeholder: Zoeken op label of ID
-      no_result: Er zijn geen resultaten voor uw zoekopdracht.
       no_data: Er zijn geen gekoppelde producten
       remove: Koppeling verwijderen
       edit: Bewerk product

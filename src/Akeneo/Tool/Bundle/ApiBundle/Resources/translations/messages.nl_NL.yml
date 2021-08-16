@@ -23,6 +23,10 @@ pim_api:
       edit: Kanalen aanmaken en bijwerken
       list: Kanalen weergeven
     locale.list: Lokalisaties weergeven
+    product:
+      edit: Producten aanmaken en bijwerken
+      list: Producten vermelden
+      remove: Producten verwijderen
     currency.list: Valuta weergeven
     association_type:
       edit: Associatietypes aanmaken en bijwerken
@@ -37,6 +41,7 @@ pim_api:
     family_variant: Familie varianten
     channel: Kanalen
     locale: Lokalisaties
+    product: Producten
     currency: Valuta
     association_type: Associatietypes
 pim_user:
