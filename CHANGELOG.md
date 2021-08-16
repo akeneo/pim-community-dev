@@ -69,6 +69,7 @@
 - PIM-9942: Fix message on DQI dashboard in French UI locale
 - PIM-9983: Fix optimization of query to get info about projects
 - PIM-10009: Fix error being printed in the response of partial update of product models API
+- PIM-10018: Fix asset code case in the product edit form
 
 ## Improvements
 
