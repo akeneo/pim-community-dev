@@ -12,6 +12,7 @@ namespace Akeneo\ReferenceEntity\Integration\Symfony\Command;
  */
 
 use Akeneo\ReferenceEntity\Integration\SqlIntegrationTestCase;
+use Akeneo\Tool\Bundle\ElasticsearchBundle\IndexConfiguration\IndexConfiguration;
 use Doctrine\DBAL\Types\Types;
 use Elasticsearch\Client as NativeClient;
 use Symfony\Bundle\FrameworkBundle\Console\Application;
@@ -19,9 +20,12 @@ use Symfony\Component\Console\Tester\CommandTester;
 
 class MigrateRecordsIndexMappingCommandTest extends SqlIntegrationTestCase
 {
+    private IndexConfiguration $currentIndexConfiguration;
+
     protected function setUp(): void
     {
         parent::setUp();
+        $this->currentIndexConfiguration = $this->get('akeneo_referenceentity.client.record.index_configuration.files')->load();
         $this->removePreviousMigration();
     }
 
@@ -49,7 +53,7 @@ class MigrateRecordsIndexMappingCommandTest extends SqlIntegrationTestCase
     /**
      * @test
      */
-    public function it_migrate_record_to_another_index()
+    public function it_migrates_records_to_another_index()
     {
         self::assertFalse($this->migrationIsDone());
 
@@ -66,48 +70,34 @@ class MigrateRecordsIndexMappingCommandTest extends SqlIntegrationTestCase
         self::assertNotSame($indexNameBeforeMigration, $indexNameAfterMigration);
     }
 
-
     private function removePreviousMigration(): void
     {
         $this->get('database_connection')->executeUpdate(
-            'DELETE FROM pim_configuration WHERE code = :code',
-            ['code' => $this->getCurrentIndexMappingMigrationCode()]
+            'DELETE FROM pim_index_migration WHERE index_alias = :index_alias AND hash = :hash',
+            ['index_alias' => 'akeneo_referenceentity_record_test', 'hash' => $this->currentIndexConfiguration->getHash()]
         );
     }
 
     private function migrationIsDone(): bool
     {
-        $sql = <<<SQL
-            SELECT EXISTS(
-                SELECT 1 
-                FROM pim_configuration 
-                WHERE code = :code
-                AND JSON_EXTRACT(`values`, '$.status') = 'done'
-            ) as is_existing
-            SQL;
-
-        $statement = $this->get('database_connection')->executeQuery(
-            $sql,
-            ['code' => $this->getCurrentIndexMappingMigrationCode()]
-        );
-
-        $result = $statement->fetch(\PDO::FETCH_ASSOC);
-
-        return (bool) $result['is_existing'];
+        return $this
+            ->get('Akeneo\Tool\Component\Elasticsearch\PublicApi\Read\IndexMigrationIsDoneInterface')
+            ->byIndexAliasAndHash('akeneo_referenceentity_record_test', $this->currentIndexConfiguration->getHash());
     }
 
     private function markCurrentIndexMigrationAsDone(): void
     {
         $sql = <<<SQL
-            INSERT INTO pim_configuration (`code`, `values`) 
-            VALUES (:code, :values) 
+            INSERT INTO pim_index_migration (`index_alias`, `hash`, `values`) 
+            VALUES (:index_alias, :hash, :values) 
             ON DUPLICATE KEY UPDATE `values`= :values;
         SQL;
 
         $this->get('database_connection')->executeUpdate(
             $sql,
             [
-                'code' => $this->getCurrentIndexMappingMigrationCode(),
+                'index_alias' => 'akeneo_referenceentity_record_test',
+                'hash' => $this->currentIndexConfiguration->getHash(),
                 'values' => ['status' => 'done']
             ],
             ['values' => Types::JSON]
@@ -155,13 +145,5 @@ class MigrateRecordsIndexMappingCommandTest extends SqlIntegrationTestCase
         $hosts = is_string($hosts) ? [$hosts] : $hosts;
 
         return $clientBuilder->setHosts($hosts)->build();
-    }
-
-    private function getCurrentIndexMappingMigrationCode(): string
-    {
-        $currentIndexConfiguration = $this->get('akeneo_referenceentity.client.record.index_configuration.files')->load();
-        $currentIndexConfigurationHash = \sha1(\json_encode($currentIndexConfiguration->buildAggregated()));
-
-        return \sprintf('records_index_mapping_migration_%s', $currentIndexConfigurationHash);
     }
 }

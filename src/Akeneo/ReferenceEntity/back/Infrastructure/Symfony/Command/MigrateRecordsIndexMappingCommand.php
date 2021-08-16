@@ -13,18 +13,15 @@ declare(strict_types=1);
 
 namespace Akeneo\ReferenceEntity\Infrastructure\Symfony\Command;
 
-use Akeneo\ReferenceEntity\Infrastructure\Clock\ClockInterface;
-use Akeneo\ReferenceEntity\Infrastructure\Symfony\Command\IndexMigration\ReindexRecordsWithoutDowntime;
-use Akeneo\Tool\Bundle\ElasticsearchBundle\Client;
 use Akeneo\Tool\Bundle\ElasticsearchBundle\IndexConfiguration\IndexConfiguration;
-use Doctrine\DBAL\Connection;
-use Doctrine\DBAL\Types\Type;
-use Doctrine\DBAL\Types\Types;
+use Akeneo\Tool\Bundle\ElasticsearchBundle\IndexConfiguration\Loader;
+use Akeneo\Tool\Component\Elasticsearch\PublicApi\Read\IndexMigrationIsDoneInterface;
+use Akeneo\Tool\Component\Elasticsearch\PublicApi\Write\MigrateIndexWithoutDowntime;
+use Akeneo\Tool\Component\Elasticsearch\PublicApi\Write\MigrateIndexWithoutDowntimeHandlerInterface;
 use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
 use Symfony\Component\Console\Style\SymfonyStyle;
-use Webmozart\Assert\Assert;
 
 /**
  * This command indexes all records on temporary index then change the alias used by the application to the temporary index.
@@ -40,25 +37,22 @@ final class MigrateRecordsIndexMappingCommand extends Command
     public const CONFIGURATION_CODE = 'records_index_mapping_migration_%s';
     protected static $defaultName = 'akeneo:reference-entity:migrate-records-index-mapping';
 
-    private Connection $connection;
-    private ClockInterface $clock;
-    private Client $currentIndexRecordClient;
-    private ReindexRecordsWithoutDowntime $reindexRecordsWithoutDowntime;
+    private IndexMigrationIsDoneInterface $indexMigrationIsDone;
+    private MigrateIndexWithoutDowntimeHandlerInterface $migrateIndexWithoutDowntimeHandler;
+    private Loader $configurationLoader;
     private string $recordIndexAlias;
 
     public function __construct(
-        Connection $connection,
-        ClockInterface $clock,
-        Client $currentIndexRecordClient,
-        ReindexRecordsWithoutDowntime $reindexRecordsWithoutDowntime,
+        IndexMigrationIsDoneInterface $indexMigrationIsDone,
+        MigrateIndexWithoutDowntimeHandlerInterface $migrateIndexWithoutDowntimeHandler,
+        Loader $configurationLoader,
         string $recordIndexAlias
     ) {
         parent::__construct(self::$defaultName);
 
-        $this->connection = $connection;
-        $this->clock = $clock;
-        $this->currentIndexRecordClient = $currentIndexRecordClient;
-        $this->reindexRecordsWithoutDowntime = $reindexRecordsWithoutDowntime;
+        $this->indexMigrationIsDone = $indexMigrationIsDone;
+        $this->migrateIndexWithoutDowntimeHandler = $migrateIndexWithoutDowntimeHandler;
+        $this->configurationLoader = $configurationLoader;
         $this->recordIndexAlias = $recordIndexAlias;
     }
 
@@ -66,8 +60,7 @@ final class MigrateRecordsIndexMappingCommand extends Command
     {
         $io = new SymfonyStyle($input, $output);
 
-        $currentIndexConfigurationLoader = $this->currentIndexRecordClient->getConfigurationLoader();
-        $currentIndexConfiguration = $currentIndexConfigurationLoader->load();
+        $currentIndexConfiguration = $this->configurationLoader->load();
         if ($this->currentMappingIsUpToDate($currentIndexConfiguration)) {
             $output->writeln('<info>The index mapping is up to date. Nothing to do.</info>');
 
@@ -80,91 +73,28 @@ final class MigrateRecordsIndexMappingCommand extends Command
             return 0;
         }
 
-        $currentDatetime = $this->clock->now();
-        $migratedIndexAlias = \sprintf('%s-%s', $this->recordIndexAlias, $currentDatetime->getTimestamp());
-        $migratedIndexClient = Client::duplicateClient($this->currentIndexRecordClient, $migratedIndexAlias);
-        $migratedIndexName = $this->createIndex($migratedIndexClient);
+        $indexMigrationCommand = new MigrateIndexWithoutDowntime(
+            $this->recordIndexAlias,
+            $currentIndexConfiguration,
+            static fn (\DateTimeImmutable $referenceDatetime) => [
+                'range' => [
+                    'updated_at' => ['gt' => $referenceDatetime->getTimestamp()]
+                ],
+            ],
+        );
 
-        $this->createMigration($currentIndexConfiguration, $currentDatetime, $migratedIndexAlias, $migratedIndexName);
-        $this->reindexRecordsWithoutDowntime->execute($migratedIndexClient, $migratedIndexAlias, $migratedIndexName);
-        $this->markTheMigrationAsDone($currentIndexConfiguration);
+        $this->migrateIndexWithoutDowntimeHandler->handle($indexMigrationCommand);
 
         $output->writeln('<info>Done</info>');
 
         return 0;
     }
 
-    private function createMigration(
-        IndexConfiguration $currentIndexConfiguration,
-        \DateTimeInterface $currentDatetime,
-        string $newIndexAlias,
-        string $newIndexName
-    ) {
-        $sql = <<<SQL
-            INSERT INTO pim_configuration (`code`, `values`) 
-            VALUES (:code, :values) 
-            ON DUPLICATE KEY UPDATE `values`= :values;
-        SQL;
-
-        $this->connection->executeUpdate(
-            $sql,
-            [
-                'code' => $this->getMigrationCode($currentIndexConfiguration),
-                'values' => [
-                    'started_at' => $currentDatetime->format('c'),
-                    'new_index_alias' => $newIndexAlias,
-                    'new_index_name' => $newIndexName,
-                    'status' => 'started',
-                ]
-            ],
-            ['values' => Types::JSON]
-        );
-    }
-
     private function currentMappingIsUpToDate(IndexConfiguration $currentIndexConfiguration): bool
     {
-        $sql = <<<SQL
-            SELECT EXISTS(
-                SELECT 1 
-                FROM pim_configuration 
-                WHERE code = :code
-                AND JSON_EXTRACT(`values`, '$.status') = 'done'
-            ) as is_existing
-            SQL;
-
-        $migrationCode = $this->getMigrationCode($currentIndexConfiguration);
-        $statement = $this->connection->executeQuery($sql, ['code' => $migrationCode]);
-
-        $platform = $this->connection->getDatabasePlatform();
-        $result = $statement->fetch(\PDO::FETCH_ASSOC);
-        $statement->closeCursor();
-
-        return Type::getType(Types::BOOLEAN)->convertToPhpValue($result['is_existing'], $platform);
-    }
-
-    private function markTheMigrationAsDone(IndexConfiguration $currentIndexConfiguration): void
-    {
-        $sql = <<<SQL
-            UPDATE pim_configuration
-            SET `values` = JSON_SET(`values`, '$.status', 'done') 
-            WHERE code = :code
-        SQL;
-
-        $this->connection->executeQuery($sql, ['code' => $this->getMigrationCode($currentIndexConfiguration)]);
-    }
-
-    private function getMigrationCode(IndexConfiguration $currentIndexConfiguration): string
-    {
-        $currentIndexConfigurationHash = \sha1(\json_encode($currentIndexConfiguration->buildAggregated()));
-
-        return \sprintf(self::CONFIGURATION_CODE, $currentIndexConfigurationHash);
-    }
-
-    private function createIndex(Client $client): string
-    {
-        $indexCreationResponse = $client->createIndex();
-        Assert::true($indexCreationResponse['acknowledged']);
-
-        return $indexCreationResponse['index'];
+        return $this->indexMigrationIsDone->byIndexAliasAndHash(
+            $this->recordIndexAlias,
+            $currentIndexConfiguration->getHash()
+        );
     }
 }

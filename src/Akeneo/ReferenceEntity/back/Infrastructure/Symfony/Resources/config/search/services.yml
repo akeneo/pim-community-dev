@@ -68,9 +68,6 @@ services:
         arguments:
             - '@akeneo_referenceentity.client.record'
 
-    akeneo_referenceentity.infrastructure.search.elasticsearch.record.get_record_identifiers_updated_after_datetime:
-      class: Akeneo\ReferenceEntity\Infrastructure\Search\Elasticsearch\Record\GetRecordIdentifiersUpdatedAfterDatetime
-
     akeneo_referenceentity.infrastructure.search.elasticsearch.record.query.find_values_to_index_for_channel_and_locale:
        class: Akeneo\ReferenceEntity\Infrastructure\Persistence\Sql\Attribute\SqlFindValueKeysToIndexForAllChannelsAndLocales
        arguments:

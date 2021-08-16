@@ -71,24 +71,6 @@ class RecordIndexerTest extends SearchIntegrationTestCase
     /**
      * @test
      */
-    public function it_indexes_multiple_records_by_identifiers()
-    {
-        $this->searchRecordIndexHelper->resetIndex();
-        $this->searchRecordIndexHelper->assertRecordDoesNotExists('designer', 'stark');
-        $this->searchRecordIndexHelper->assertRecordDoesNotExists('designer', 'coco');
-
-        $this->recordIndexer->indexByRecordIdentifiers([
-            RecordIdentifier::fromString('stark_designer_fingerprint'),
-            RecordIdentifier::fromString('coco_designer_fingerprint')
-        ]);
-
-        $this->searchRecordIndexHelper->assertRecordExists('designer', 'stark');
-        $this->searchRecordIndexHelper->assertRecordExists('designer', 'coco');
-    }
-
-    /**
-     * @test
-     */
     public function it_indexes_by_reference_entity()
     {
         $this->searchRecordIndexHelper->resetIndex();

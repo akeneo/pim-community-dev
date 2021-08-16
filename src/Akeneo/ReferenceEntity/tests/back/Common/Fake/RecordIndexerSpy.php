@@ -18,8 +18,11 @@ use PHPUnit\Framework\Assert;
  */
 class RecordIndexerSpy implements RecordIndexerInterface
 {
-    private array $indexedReferenceEntities = [];
-    private bool $isIndexRefreshed = false;
+    /** @var array */
+    private $indexedReferenceEntities = [];
+
+    /** @var bool */
+    private $isIndexRefreshed = false;
 
     /**
      * Indexes all records belonging to the given reference entity.
@@ -51,11 +54,6 @@ class RecordIndexerSpy implements RecordIndexerInterface
 
     public function index(RecordIdentifier $recordIdentifier)
     {
-    }
-
-    public function indexByRecordIdentifiers(array $recordIdentifiers): void
-    {
-        throw new NotImplementedException(__METHOD__);
     }
 
     /**
