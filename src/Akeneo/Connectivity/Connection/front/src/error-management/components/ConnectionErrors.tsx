@@ -3,6 +3,7 @@ import {Loading} from '../../common';
 import {useConnectionErrors} from '../hooks/api/use-connection-errors';
 import {ErrorList} from './ErrorList';
 import {ErrorsHelper} from './ErrorsHelper';
+import {useFeatureFlags} from '../../shared/feature-flags';
 
 type Props = {
     connectionCode: string;
@@ -10,6 +11,7 @@ type Props = {
 
 const ConnectionErrors: FC<Props> = ({connectionCode}) => {
     const {loading, connectionErrors} = useConnectionErrors(connectionCode);
+    const featureFlags = useFeatureFlags();
 
     if (loading) {
         return <Loading />;
@@ -17,7 +19,7 @@ const ConnectionErrors: FC<Props> = ({connectionCode}) => {
 
     return (
         <>
-            <ErrorsHelper errorCount={connectionErrors.length} />
+            {!featureFlags.isEnabled('free_trial') && <ErrorsHelper errorCount={connectionErrors.length} />}
             <ErrorList errors={connectionErrors} />
         </>
     );

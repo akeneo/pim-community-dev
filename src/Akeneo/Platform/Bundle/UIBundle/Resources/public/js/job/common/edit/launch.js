@@ -47,6 +47,8 @@ define([
           this.$el.html(
             this.template({
               label: __(this.config.label),
+              buttonClass: this.config.buttonClass ?? '',
+              title: this.config.title ? __(this.config.title) : '',
             })
           );
         }.bind(this)

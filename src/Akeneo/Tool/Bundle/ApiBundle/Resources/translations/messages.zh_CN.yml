@@ -23,6 +23,10 @@ pim_api:
       edit: 创建并更新渠道
       list: 列出渠道
     locale.list: 列出本地化语言
+    product:
+      edit: 创建并更新产品
+      list: 列出产品
+      remove: 删除产品
     currency.list: 列出货币
     association_type:
       edit: 创建并更新关联类型
@@ -37,6 +41,7 @@ pim_api:
     family_variant: 品类变型
     channel: 渠道
     locale: 区域
+    product: 产品
     currency: 货币
     association_type: 关联类型
 pim_user:

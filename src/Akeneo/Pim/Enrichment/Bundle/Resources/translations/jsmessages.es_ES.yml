@@ -109,7 +109,6 @@ pim_enrich.entity.product:
         quantity: Cantidad
       search:
         placeholder: Buscar en etiqueta o identificador
-      no_result: Su búsqueda no obtuvo ningún resultado.
       no_data: No hay productos asociados.
       remove: Eliminar asociación
       edit: Editar producto

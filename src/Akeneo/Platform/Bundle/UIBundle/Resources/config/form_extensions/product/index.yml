@@ -116,7 +116,7 @@ extensions:
             tab: pim-menu-products
 
     pim-product-index-mass-actions:
-        module: pim/grid/mass-actions
+        module: pim/product/grid/mass-actions
         parent: pim-product-index
         targetZone: bottom-panel
         config:

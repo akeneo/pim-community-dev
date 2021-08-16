@@ -921,16 +921,16 @@ config:
     pim/form/user/login-details:                         pimui/js/form/user/login-details
     pim/form/common/exclusif-boolean: pimui/js/form/common/exclusif-boolean
 
-    pim/menu/menu:                                       pimui/js/menu/menu
-    pim/menu/tab:                                        pimui/js/menu/tab
-    pim/menu/item:                                       pimui/js/menu/item
+    pim/menu/menu:                                       pimui/js/navigation-menu/menu.ts
+    pim/menu/tab:                                        pimui/js/navigation-menu/tab.ts
+    pim/menu/item:                                       pimui/js/navigation-menu/item.ts
     pim/menu/help:                                       pimui/js/menu/help.ts
     pim/menu/navigation-back:                            pimui/js/menu/navigation-back.ts
-    pim/menu/navigation-block:                           pimui/js/menu/navigation-block
+    pim/menu/navigation-block:                           pimui/js/navigation-menu/navigation-block.ts
     pim/menu/resizable:                                  pimui/js/menu/resizable
     pim/menu/user-navigation:                            pimui/js/menu/user-navigation
     pim/menu/logo:                                       pimui/js/menu/logo
-    pim/menu/column:                                     pimui/js/menu/column
+    pim/menu/column:                                     pimui/js/navigation-menu/column.ts
 
     # Common fields
     pim/form/common/fields/field:                   pimui/js/form/common/fields/field
@@ -982,6 +982,7 @@ config:
     pim/grid/locale-switcher:   pimui/js/product/grid/locale-switcher
     pim/grid/category-switcher: pimui/js/product/grid/category-switcher
     pim/grid/mass-actions:      pimui/js/grid/mass-actions
+    pim/product/grid/mass-actions: pimui/js/product/grid/mass-actions.ts
 
     # Category tree
     pim/grid/category-tree:      pimui/js/product/grid/category-tree

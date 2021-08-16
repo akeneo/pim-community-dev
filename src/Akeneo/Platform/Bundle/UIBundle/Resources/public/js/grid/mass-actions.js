@@ -140,13 +140,7 @@ define(['jquery', 'underscore', 'oro/translator', 'backbone', 'pim/form', 'pim/t
      * - The events of the sub extensions are lost after re-render.
      */
     updateView() {
-      let count = this.count;
-      if (this.datagrid) {
-        const selectionState = this.datagrid.getSelectionState();
-        if (!selectionState.inset) {
-          count = this.collection.state.totalRecords - Object.keys(selectionState.selectedModels).length;
-        }
-      }
+      const count = this.countEntities();
 
       if (count > 0) {
         this.$el.removeClass('AknDefault-bottomPanel--hidden');
@@ -172,6 +166,18 @@ define(['jquery', 'underscore', 'oro/translator', 'backbone', 'pim/form', 'pim/t
       }
 
       this.$el.find('.count').text(__(this.config.label, {count: count}, count));
+    },
+
+    countEntities() {
+      let count = this.count;
+      if (this.datagrid) {
+        const selectionState = this.datagrid.getSelectionState();
+        if (!selectionState.inset) {
+          count = this.collection.state.totalRecords - Object.keys(selectionState.selectedModels).length;
+        }
+      }
+
+      return count;
     },
   });
 });

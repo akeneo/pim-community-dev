@@ -19,6 +19,7 @@ pim_menu:
     marketplace: Rynek
 pim_title:
   akeneo_connectivity_connection_connect_marketplace: Rynek
+  akeneo_connectivity_connection_connect_marketplace_profile: Rynek
   akeneo_connectivity_connection_settings_index: Ustawienia połączeń
   akeneo_connectivity_connection_settings_edit: Ustawienia połączeń
   akeneo_connectivity_connection_settings_any: Ustawienie połączenia
@@ -36,6 +37,18 @@ akeneo_connectivity.connection:
       title: Chcesz połączyć PIM z inną aplikacją? 🤟
       sub_title: Sprawdź nasz rynek, aby zobaczyć, którą aplikację można połączyć z Akeneo PIM.
       link: Dostęp do rynku
+      helper:
+        link: Przejdź do rynku internetowego
+      card:
+        developed_by: 'Opracowane przez:'
+        read_more: czytaj więcej
+        more_info: Więcej informacji
+      extensions:
+        title: Wtyczki
+        total: '{0} Brak wtyczek|{1} Liczba wtyczek: 1|[2,Inf] Liczba wtyczek: {{ total }} '
+        empty: Brak wtyczek kompatybilnych z twoją wersją
+      unreachable: Nie możemy nawiązać połączenia z rynkiem. Spróbuj ponownie później.
+      scroll_to_top: Przewiń do początku
   connections: Połączenia
   secondary_actions:
     title: Inne działania

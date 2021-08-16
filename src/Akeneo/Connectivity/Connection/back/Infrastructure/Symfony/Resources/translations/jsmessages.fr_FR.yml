@@ -19,6 +19,7 @@ pim_menu:
     marketplace: Marketplace
 pim_title:
   akeneo_connectivity_connection_connect_marketplace: Marketplace
+  akeneo_connectivity_connection_connect_marketplace_profile: Marketplace
   akeneo_connectivity_connection_settings_index: Paramètres des connexions
   akeneo_connectivity_connection_settings_edit: Paramètres de connexion
   akeneo_connectivity_connection_settings_any: Paramètres de connexion
@@ -36,6 +37,18 @@ akeneo_connectivity.connection:
       title: Vous voulez connecter votre PIM avec une autre application ? 🤟
       sub_title: Consultez notre marketplace pour voir quelles applications peuvent être connectées avec Akeneo PIM.
       link: Accéder à la marketplace
+      helper:
+        link: Aller sur la Marketplace web
+      card:
+        developed_by: Développé par
+        read_more: en savoir plus
+        more_info: Plus d'info
+      extensions:
+        title: Connecteurs
+        total: '{0} Aucun connecteurs|{1} 1 connecteur|[2,Inf] {{ total }} connecteurs'
+        empty: Aucun connecteur compatible avec votre version
+      unreachable: La marketplace est injoignable, veuillez revenir plus tard.
+      scroll_to_top: Haut de la page
   connections: Connexions
   secondary_actions:
     title: Autres actions

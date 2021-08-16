@@ -19,6 +19,7 @@ pim_menu:
     marketplace: Marktplaats
 pim_title:
   akeneo_connectivity_connection_connect_marketplace: Marktplaats
+  akeneo_connectivity_connection_connect_marketplace_profile: Marktplaats
   akeneo_connectivity_connection_settings_index: Verbindingsinstellingen
   akeneo_connectivity_connection_settings_edit: Verbindingen instellingen
   akeneo_connectivity_connection_settings_any: Verbindingen instellingen
@@ -36,6 +37,18 @@ akeneo_connectivity.connection:
       title: Wilt u uw PIM verbinden met een andere applicatie? 🤟
       sub_title: Bekijk onze marktplaats om te zien welke applicatie kan worden verbonden met Akeneo PIM.
       link: Naar de marktplaats
+      helper:
+        link: Ga naar marktplaats op internet
+      card:
+        developed_by: Ontwikkeld door
+        read_more: meer lezen
+        more_info: Meer informatie
+      extensions:
+        title: Connectoren
+        total: '{0} Geen connectoren|{1} 1 connector|[2,Inf] {{ total }} connectoren'
+        empty: Er zijn geen connectoren die compatibel zijn met uw versie
+      unreachable: We kunnen de marktplaats niet bereiken. Kom later terug.
+      scroll_to_top: Naar boven scrollen
   connections: Verbindingen
   secondary_actions:
     title: Overige acties
