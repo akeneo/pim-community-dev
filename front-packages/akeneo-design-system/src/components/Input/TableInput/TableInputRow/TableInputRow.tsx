@@ -44,33 +44,29 @@ const TableInputTr = styled.tr<
     border-left: none;
   }
 
-  ${({placeholderPosition, rowIndex}) => {
-    switch (placeholderPosition) {
-      case 'bottom':
-        return css`
-          & > td {
-            background: linear-gradient(to top, ${getColor('blue', 40)} 4px, ${getZebraBackgroundColor(rowIndex)} 0px);
-          }
-        `;
-      case 'top':
-        return css`
-          & > td {
-            background: linear-gradient(
-              to bottom,
-              ${getColor('blue', 40)} 4px,
-              ${getZebraBackgroundColor(rowIndex)} 0px
-            );
-          }
-        `;
-      case 'none':
-      default:
-        return css`
-          & > td {
-            background: ${getZebraBackgroundColor(rowIndex)};
-          }
-        `;
-    }
-  }}
+  ${({placeholderPosition, rowIndex}) =>
+    placeholderPosition === 'bottom' &&
+    css`
+      & > td {
+        background: linear-gradient(to top, ${getColor('blue', 40)} 4px, ${getZebraBackgroundColor(rowIndex)} 0px);
+      }
+    `}
+
+  ${({placeholderPosition, rowIndex}) =>
+    placeholderPosition === 'top' &&
+    css`
+      & > td {
+        background: linear-gradient(to bottom, ${getColor('blue', 40)} 4px, ${getZebraBackgroundColor(rowIndex)} 0px);
+      }
+    `}
+  
+  ${({placeholderPosition, rowIndex}) =>
+    placeholderPosition === 'none' &&
+    css`
+      & > td {
+        background: ${getZebraBackgroundColor(rowIndex)};
+      }
+    `}
 `;
 
 const DragAndDropCell = styled(TableInputCell)`
@@ -131,7 +127,7 @@ const TableInputRow = forwardRef<HTMLTableRowElement, TableInputRowProps>(
         {...rest}
       >
         {isDragAndDroppable && (
-          <DragAndDropCell onMouseDown={drag} onMouseUp={drop}>
+          <DragAndDropCell onMouseDown={drag} onMouseUp={drop} data-testid="dragAndDrop">
             <RowIcon size={16} />
           </DragAndDropCell>
         )}

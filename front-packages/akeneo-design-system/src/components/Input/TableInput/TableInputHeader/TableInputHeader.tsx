@@ -1,8 +1,7 @@
-import React, {Children, cloneElement, ReactNode, Ref, useContext} from 'react';
+import React, {Children, ReactNode, Ref, useContext} from 'react';
 import styled from 'styled-components';
 import {getColor} from '../../../../theme';
 import {TableInputContext} from '../TableInputContext';
-import {TableInputRowProps} from '../TableInputRow/TableInputRow';
 import {TableInputHeaderCellProps} from '../TableInputHeaderCell/TableInputHeaderCell';
 
 const TableInputHeadTr = styled.tr`
@@ -34,7 +33,9 @@ const TableInputHeader = React.forwardRef<HTMLTableSectionElement, TableInputHea
       <thead ref={forwardedRef} {...rest}>
         <TableInputHeadTr>
           {Children.map(children, (child, i) => {
-            return isDragAndDroppable && i === 0 ? React.cloneElement(child, {colSpan: 2}) : child;
+            return isDragAndDroppable && i === 0 && React.isValidElement<TableInputHeaderCellProps>(child)
+              ? React.cloneElement(child, {colSpan: 2})
+              : child;
           })}
         </TableInputHeadTr>
       </thead>

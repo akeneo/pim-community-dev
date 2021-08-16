@@ -1,21 +1,8 @@
-import styled from 'styled-components';
 import React, {Children, cloneElement, ReactNode, Ref, useContext} from 'react';
-import {getColor} from '../../../../theme';
 import {TableInputContext} from '../TableInputContext';
 import {TableInputRowProps} from '../TableInputRow/TableInputRow';
 import {useDragElementIndex} from '../../../../hooks/useDragElementIndex';
 import {useDrop} from '../../../../hooks/useDrop';
-
-const TableInputTbody = styled.tbody`
-  /*
-  & > tr > td {
-    background: ${getColor('white')};
-  }
-  & > tr:nth-child(2n) > td {
-    background: ${getColor('grey', 20)};
-  }
-*/
-`;
 
 type TableInputBodyProps = {
   children?: ReactNode;
@@ -47,9 +34,9 @@ const TableInputBody = React.forwardRef<HTMLTableSectionElement, TableInputBodyP
     const [tableId, onDrop, onDragOver] = useDrop(rowCount, draggedElementIndex, onReorder);
 
     return (
-      <TableInputTbody data-table-id={tableId} onDrop={onDrop} onDragOver={onDragOver} ref={forwardedRef} {...rest}>
+      <tbody data-table-id={tableId} onDrop={onDrop} onDragOver={onDragOver} ref={forwardedRef} {...rest}>
         {decoratedChildren}
-      </TableInputTbody>
+      </tbody>
     );
   }
 );
