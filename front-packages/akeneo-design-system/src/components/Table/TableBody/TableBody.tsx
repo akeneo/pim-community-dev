@@ -1,8 +1,8 @@
 import React, {Ref, cloneElement, Children, useContext, ReactElement} from 'react';
 import {TableRowProps} from '../TableRow/TableRow';
 import {TableContext} from '../TableContext';
-import {useDrop} from './useDrop';
-import {useDragElementIndex} from './useDragElementIndex';
+import {useDrop} from '../../../hooks/useDrop';
+import {useDragElementIndex} from '../../../hooks/useDragElementIndex';
 
 type TableBodyChild = TableBodyChild[] | ReactElement<TableRowProps> | boolean | undefined;
 
@@ -16,7 +16,7 @@ type TableBodyProps = {
 const TableBody = React.forwardRef<HTMLTableSectionElement, TableBodyProps>(
   ({children, ...rest}: TableBodyProps, forwardedRef: Ref<HTMLTableSectionElement>) => {
     const [draggedElementIndex, onDragStart, onDragEnd] = useDragElementIndex();
-    const {isDragAndDroppable} = useContext(TableContext);
+    const {isDragAndDroppable, onReorder} = useContext(TableContext);
     const decoratedChildren = isDragAndDroppable
       ? Children.map(children, (child, rowIndex) => {
           if (!React.isValidElement<TableRowProps>(child)) {
@@ -33,7 +33,7 @@ const TableBody = React.forwardRef<HTMLTableSectionElement, TableBodyProps>(
       : children;
 
     const rowCount = Children.count(children);
-    const [tableId, onDrop, onDragOver] = useDrop(rowCount, draggedElementIndex);
+    const [tableId, onDrop, onDragOver] = useDrop(rowCount, draggedElementIndex, onReorder);
 
     return (
       <tbody ref={forwardedRef} data-table-id={tableId} onDrop={onDrop} onDragOver={onDragOver} {...rest}>
