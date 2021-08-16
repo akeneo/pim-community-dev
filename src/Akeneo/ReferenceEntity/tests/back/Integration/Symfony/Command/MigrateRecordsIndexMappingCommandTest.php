@@ -14,7 +14,7 @@ namespace Akeneo\ReferenceEntity\Integration\Symfony\Command;
 use Akeneo\ReferenceEntity\Integration\SqlIntegrationTestCase;
 use Akeneo\Tool\Bundle\ElasticsearchBundle\IndexConfiguration\IndexConfiguration;
 use Doctrine\DBAL\Types\Types;
-use Elasticsearch\Client as NativeClient;
+use Elasticsearch\Client;
 use Symfony\Bundle\FrameworkBundle\Console\Application;
 use Symfony\Component\Console\Tester\CommandTester;
 
@@ -125,7 +125,7 @@ class MigrateRecordsIndexMappingCommandTest extends SqlIntegrationTestCase
 
     private function getCurrentRecordIndexName(): string
     {
-        $indices = $this->getNativeClient()->indices();
+        $indices = $this->getClient()->indices();
         $aliases = $indices->getAlias(['name' => $this->getIndexName()]);
 
         return array_keys($aliases)[0];
@@ -133,12 +133,12 @@ class MigrateRecordsIndexMappingCommandTest extends SqlIntegrationTestCase
 
     private function getRecordsCountInIndex(): int
     {
-        $response = $this->getNativeClient()->count(['index' => $this->getIndexName()]);
+        $response = $this->getClient()->count(['index' => $this->getIndexName()]);
 
         return $response['count'];
     }
 
-    private function getNativeClient(): NativeClient
+    private function getClient(): Client
     {
         $clientBuilder = $this->get('akeneo_elasticsearch.client_builder');
         $hosts = self::$container->getParameter('index_hosts');
