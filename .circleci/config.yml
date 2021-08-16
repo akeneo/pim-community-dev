@@ -2114,7 +2114,7 @@ jobs:
 workflows:
   pull_request:
       jobs:
-        - - ready_to_build_tailored_export?:
+          - ready_to_build_tailored_export?:
               type: approval
               filters:
                 branches:
