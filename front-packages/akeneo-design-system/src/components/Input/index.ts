@@ -1,5 +1,5 @@
 export * from './BooleanInput/BooleanInput';
-export * from './InputProps';
+export * from './common';
 export * from './MediaFileInput/FileInfo';
 export * from './MediaFileInput/MediaFileInput';
 export * from './MediaLinkInput/MediaLinkInput';

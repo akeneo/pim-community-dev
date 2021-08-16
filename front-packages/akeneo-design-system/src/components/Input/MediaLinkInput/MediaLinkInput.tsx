@@ -1,7 +1,7 @@
 import React, {ChangeEvent, Ref, useRef, isValidElement, cloneElement, useState, useEffect} from 'react';
 import styled, {css} from 'styled-components';
 import {Key, Override} from '../../../shared';
-import {InputProps} from '../InputProps';
+import {InputProps} from '../common/InputProps';
 import {AkeneoThemedProps, getColor} from '../../../theme';
 import {DefaultPictureIllustration} from '../../../illustrations';
 import {IconButton, IconButtonProps, Image} from '../../../components';

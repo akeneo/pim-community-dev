@@ -64,6 +64,7 @@ export const UserGroupSelect: FC<Props> = ({userGroupId, onChange}: Props) => {
                 value={(!selectedUserGroup.isDefault && selectedUserGroup.id) || null}
                 onChange={handleUserGroupChange}
                 emptyResultLabel=''
+                openLabel=''
                 id='user_group'
             >
                 {userGroups
