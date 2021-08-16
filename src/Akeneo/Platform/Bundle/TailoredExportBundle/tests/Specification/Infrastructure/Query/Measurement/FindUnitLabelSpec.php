@@ -4,7 +4,6 @@ declare(strict_types=1);
 
 namespace Specification\Akeneo\Platform\TailoredExport\Infrastructure\Query\Measurement;
 
-use Akeneo\Platform\TailoredExport\Domain\Query\FindUnitLabelInterface;
 use Akeneo\Platform\TailoredExport\Infrastructure\Query\Measurement\FindUnitLabel;
 use Akeneo\Tool\Bundle\MeasureBundle\PublicApi\GetUnitTranslations;
 use PhpSpec\ObjectBehavior;
@@ -22,7 +21,7 @@ class FindUnitLabelSpec extends ObjectBehavior
         $this->beAnInstanceOf(FindUnitLabel::class);
     }
 
-    public function it_finds_unit_label_with_a_measurement_family_code_a_unit_code_and_a_locate(
+    public function it_finds_unit_label_with_of_a_measurement_family_code_unit_code(
         GetUnitTranslations $getUnitTranslations
     ): void {
         $expectedLabel = 'Grames';
@@ -36,7 +35,7 @@ class FindUnitLabelSpec extends ObjectBehavior
         $this->byFamilyCodeAndUnitCode($measurementFamilyCode, $unitCode, $localeCode)->shouldReturn($expectedLabel);
     }
 
-    public function it_returns_null_if_its_empty(
+    public function it_returns_null_if_label_is_empty(
         GetUnitTranslations $getUnitTranslations
     ): void {
         $measurementFamilyCode = 'weight';
