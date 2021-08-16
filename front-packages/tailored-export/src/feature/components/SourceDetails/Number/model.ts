@@ -3,9 +3,9 @@ import {ChannelReference, LocaleReference} from '@akeneo-pim-community/shared';
 import {Attribute, Source} from '../../../models';
 import {DefaultValueOperation, isDefaultValueOperation} from '../common';
 
-const availableSeparators = {'.': 'dot', ',': 'comma', '٫‎': 'arabic_comma'};
+const availableDecimalSeparators = {'.': 'dot', ',': 'comma', '٫‎': 'arabic_comma'};
 
-type NumberSeparator = keyof typeof availableSeparators;
+type NumberSeparator = keyof typeof availableDecimalSeparators;
 type NumberSelection = {decimal_separator: NumberSeparator};
 
 type NumberOperations = {
@@ -47,10 +47,11 @@ const isNumberOperations = (operations: Object): operations is NumberOperations 
   });
 
 const isNumberSelection = (selection: any): selection is NumberSelection => 'decimal_separator' in selection;
-const isNumberSeparator = (separator: any): separator is NumberSeparator => separator in availableSeparators;
+const isNumberDecimalSeparator = (separator: any): separator is NumberSeparator =>
+  separator in availableDecimalSeparators;
 
 const isNumberSource = (source: Source): source is NumberSource =>
   isNumberSelection(source.selection) && isNumberOperations(source.operations);
 
 export type {NumberSource, NumberSelection};
-export {getDefaultNumberSource, isNumberSource, isNumberSeparator, availableSeparators};
+export {getDefaultNumberSource, isNumberSource, isNumberDecimalSeparator, availableDecimalSeparators};

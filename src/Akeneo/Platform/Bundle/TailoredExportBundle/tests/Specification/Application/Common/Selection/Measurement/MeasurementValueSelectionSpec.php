@@ -13,13 +13,17 @@ declare(strict_types=1);
 
 namespace Specification\Akeneo\Platform\TailoredExport\Application\Common\Selection\Measurement;
 
-use Akeneo\Platform\TailoredExport\Application\Common\Selection\Measurement\MeasurementValueSelection;
 use PhpSpec\ObjectBehavior;
 
 class MeasurementValueSelectionSpec extends ObjectBehavior
 {
-    public function it_is_initializable(): void
+    public function let()
     {
-        $this->shouldBeAnInstanceOf(MeasurementValueSelection::class);
+        $this->beConstructedWith(',');
+    }
+
+    public function it_returns_the_decimal_separator()
+    {
+        $this->getDecimalSeparator()->shouldReturn(',');
     }
 }

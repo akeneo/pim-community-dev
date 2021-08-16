@@ -50,11 +50,11 @@ final class HandleMeasurementValueTest extends AttributeTestCase
     public function provider(): array
     {
         return [
-            'it selects the value' => [
+            'it selects the value and applies the provided decimal separator' => [
                 'operations' => [],
-                'selection' => new MeasurementValueSelection(),
-                'value' => new MeasurementValue('10', 'KILOGRAM'),
-                'expected' => [self::TARGET_NAME => '10']
+                'selection' => new MeasurementValueSelection(','),
+                'value' => new MeasurementValue('10.4', 'KILOGRAM'),
+                'expected' => [self::TARGET_NAME => '10,4']
             ],
             'it selects the unit code' => [
                 'operations' => [],
@@ -80,7 +80,7 @@ final class HandleMeasurementValueTest extends AttributeTestCase
                         'value' => 'n/a'
                     ])
                 ],
-                'selection' => new MeasurementValueSelection(),
+                'selection' => new MeasurementValueSelection('.'),
                 'value' => new NullValue(),
                 'expected' => [self::TARGET_NAME => 'n/a']
             ],
@@ -90,7 +90,7 @@ final class HandleMeasurementValueTest extends AttributeTestCase
                         'value' => 'n/a'
                     ])
                 ],
-                'selection' => new MeasurementValueSelection(),
+                'selection' => new MeasurementValueSelection('.'),
                 'value' => new MeasurementValue('10', 'KILOGRAM'),
                 'expected' => [self::TARGET_NAME => '10']
             ],

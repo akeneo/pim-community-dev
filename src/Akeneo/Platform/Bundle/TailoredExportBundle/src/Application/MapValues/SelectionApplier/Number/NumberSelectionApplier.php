@@ -21,7 +21,7 @@ use Akeneo\Platform\TailoredExport\Application\MapValues\SelectionApplier\Select
 
 class NumberSelectionApplier implements SelectionApplierInterface
 {
-    const DEFAULT_DECIMAL_SEPARATOR = '.';
+    private const DEFAULT_DECIMAL_SEPARATOR = '.';
 
     public function applySelection(SelectionInterface $selection, SourceValueInterface $value): string
     {

@@ -23,11 +23,20 @@ class MeasurementValueSelectionApplierSpec extends ObjectBehavior
 {
     public function it_applies_the_selection()
     {
-        $selection = new MeasurementValueSelection();
-        $value = new MeasurementValue('10', 'kilogram');
+        $selection = new MeasurementValueSelection('.');
+        $value = new MeasurementValue('10.4', 'kilogram');
 
         $this->applySelection($selection, $value)
-            ->shouldReturn('10');
+            ->shouldReturn('10.4');
+    }
+
+    public function it_applies_the_selection_and_format_using_decimal_separator()
+    {
+        $selection = new MeasurementValueSelection(',');
+        $value = new MeasurementValue('10.4', 'kilogram');
+
+        $this->applySelection($selection, $value)
+            ->shouldReturn('10,4');
     }
 
     public function it_does_not_apply_selection_on_not_supported_selections_and_values()
@@ -42,7 +51,7 @@ class MeasurementValueSelectionApplierSpec extends ObjectBehavior
 
     public function it_supports_measurement_value_selection_with_measurement_value()
     {
-        $selection = new MeasurementValueSelection();
+        $selection = new MeasurementValueSelection('.');
         $value = new MeasurementValue('10', 'kilogram');
 
         $this->supports($selection, $value)->shouldReturn(true);

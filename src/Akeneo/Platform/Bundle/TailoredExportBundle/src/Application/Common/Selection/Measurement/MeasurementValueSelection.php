@@ -16,4 +16,16 @@ namespace Akeneo\Platform\TailoredExport\Application\Common\Selection\Measuremen
 final class MeasurementValueSelection implements MeasurementSelectionInterface
 {
     public const TYPE = 'value';
+
+    private string $decimalSeparator;
+
+    public function __construct(string $decimalSeparator)
+    {
+        $this->decimalSeparator = $decimalSeparator;
+    }
+
+    public function getDecimalSeparator(): string
+    {
+        return $this->decimalSeparator;
+    }
 }

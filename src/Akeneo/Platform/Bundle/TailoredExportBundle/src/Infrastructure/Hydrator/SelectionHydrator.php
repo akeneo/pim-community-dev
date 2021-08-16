@@ -8,7 +8,6 @@ use Akeneo\Pim\Structure\Component\Query\PublicApi\Association\AssociationType;
 use Akeneo\Pim\Structure\Component\Query\PublicApi\AttributeType\Attribute;
 use Akeneo\Platform\TailoredExport\Application\Common\Selection\AssetCollection\AssetCollectionCodeSelection;
 use Akeneo\Platform\TailoredExport\Application\Common\Selection\AssetCollection\AssetCollectionLabelSelection;
-use Akeneo\Platform\TailoredExport\Application\Common\Selection\AssetCollection\AssetCollectionSelectionInterface;
 use Akeneo\Platform\TailoredExport\Application\Common\Selection\Boolean\BooleanSelection;
 use Akeneo\Platform\TailoredExport\Application\Common\Selection\Categories\CategoriesCodeSelection;
 use Akeneo\Platform\TailoredExport\Application\Common\Selection\Categories\CategoriesLabelSelection;
@@ -21,7 +20,6 @@ use Akeneo\Platform\TailoredExport\Application\Common\Selection\FamilyVariant\Fa
 use Akeneo\Platform\TailoredExport\Application\Common\Selection\File\FileKeySelection;
 use Akeneo\Platform\TailoredExport\Application\Common\Selection\File\FileNameSelection;
 use Akeneo\Platform\TailoredExport\Application\Common\Selection\File\FilePathSelection;
-use Akeneo\Platform\TailoredExport\Application\Common\Selection\File\FileSelectionInterface;
 use Akeneo\Platform\TailoredExport\Application\Common\Selection\Groups\GroupsCodeSelection;
 use Akeneo\Platform\TailoredExport\Application\Common\Selection\Groups\GroupsLabelSelection;
 use Akeneo\Platform\TailoredExport\Application\Common\Selection\Measurement\MeasurementUnitCodeSelection;
@@ -38,7 +36,6 @@ use Akeneo\Platform\TailoredExport\Application\Common\Selection\PriceCollection\
 use Akeneo\Platform\TailoredExport\Application\Common\Selection\QuantifiedAssociations\QuantifiedAssociationsCodeSelection;
 use Akeneo\Platform\TailoredExport\Application\Common\Selection\QuantifiedAssociations\QuantifiedAssociationsLabelSelection;
 use Akeneo\Platform\TailoredExport\Application\Common\Selection\QuantifiedAssociations\QuantifiedAssociationsQuantitySelection;
-use Akeneo\Platform\TailoredExport\Application\Common\Selection\QuantifiedAssociations\QuantifiedAssociationsSelectionInterface;
 use Akeneo\Platform\TailoredExport\Application\Common\Selection\ReferenceEntity\ReferenceEntityCodeSelection;
 use Akeneo\Platform\TailoredExport\Application\Common\Selection\ReferenceEntity\ReferenceEntityLabelSelection;
 use Akeneo\Platform\TailoredExport\Application\Common\Selection\ReferenceEntityCollection\ReferenceEntityCollectionCodeSelection;
@@ -54,7 +51,7 @@ use Akeneo\Platform\TailoredExport\Application\Common\Selection\SimpleSelect\Sim
 
 class SelectionHydrator
 {
-    public function createPropertySelection(array $selectionConfiguration, string $propertyName)
+    public function createPropertySelection(array $selectionConfiguration, string $propertyName): SelectionInterface
     {
         switch ($propertyName) {
             case 'categories':
@@ -118,7 +115,7 @@ class SelectionHydrator
         return $this->createSimpleAssociationsSelection($selectionConfiguration);
     }
 
-    private function createAssetCollectionSelection(array $selectionConfiguration, Attribute $attribute): AssetCollectionSelectionInterface
+    private function createAssetCollectionSelection(array $selectionConfiguration, Attribute $attribute): SelectionInterface
     {
         switch ($selectionConfiguration['type']) {
             case AssetCollectionCodeSelection::TYPE:
@@ -141,7 +138,7 @@ class SelectionHydrator
         }
     }
 
-    private function createFileSelection(array $selectionConfiguration, Attribute $attribute): FileSelectionInterface
+    private function createFileSelection(array $selectionConfiguration, Attribute $attribute): SelectionInterface
     {
         switch ($selectionConfiguration['type']) {
             case FilePathSelection::TYPE:
@@ -157,11 +154,11 @@ class SelectionHydrator
         }
     }
 
-    private function createMeasurementSelection(array $selectionConfiguration, Attribute $attribute)
+    private function createMeasurementSelection(array $selectionConfiguration, Attribute $attribute): SelectionInterface
     {
         switch ($selectionConfiguration['type']) {
             case MeasurementValueSelection::TYPE:
-                return new MeasurementValueSelection();
+                return new MeasurementValueSelection($selectionConfiguration['decimal_separator'] ?? '.');
             case MeasurementUnitCodeSelection::TYPE:
                 return new MeasurementUnitCodeSelection();
             case MeasurementUnitLabelSelection::TYPE:
@@ -176,7 +173,7 @@ class SelectionHydrator
         }
     }
 
-    private function createMultiselectSelection(array $selectionConfiguration, Attribute $attribute)
+    private function createMultiselectSelection(array $selectionConfiguration, Attribute $attribute): SelectionInterface
     {
         switch ($selectionConfiguration['type']) {
             case MultiSelectCodeSelection::TYPE:
@@ -196,7 +193,7 @@ class SelectionHydrator
         }
     }
 
-    private function createSimpleSelectSelection(array $selectionConfiguration, Attribute $attribute)
+    private function createSimpleSelectSelection(array $selectionConfiguration, Attribute $attribute): SelectionInterface
     {
         switch ($selectionConfiguration['type']) {
             case SimpleSelectCodeSelection::TYPE:
@@ -213,7 +210,7 @@ class SelectionHydrator
         }
     }
 
-    private function createPriceCollectionSelection(array $selectionConfiguration, Attribute $attribute)
+    private function createPriceCollectionSelection(array $selectionConfiguration, Attribute $attribute): SelectionInterface
     {
         switch ($selectionConfiguration['type']) {
             case PriceCollectionCurrencyCodeSelection::TYPE:
@@ -229,7 +226,7 @@ class SelectionHydrator
         }
     }
 
-    private function createReferenceEntitySelection(array $selectionConfiguration, Attribute $attribute)
+    private function createReferenceEntitySelection(array $selectionConfiguration, Attribute $attribute): SelectionInterface
     {
         switch ($selectionConfiguration['type']) {
             case ReferenceEntityCodeSelection::TYPE:
@@ -246,7 +243,7 @@ class SelectionHydrator
         }
     }
 
-    private function createReferenceEntityCollectionSelection(array $selectionConfiguration, Attribute $attribute)
+    private function createReferenceEntityCollectionSelection(array $selectionConfiguration, Attribute $attribute): SelectionInterface
     {
         switch ($selectionConfiguration['type']) {
             case ReferenceEntityCollectionCodeSelection::TYPE:
@@ -266,7 +263,7 @@ class SelectionHydrator
         }
     }
 
-    private function createCategoriesSelection(array $selectionConfiguration)
+    private function createCategoriesSelection(array $selectionConfiguration): SelectionInterface
     {
         switch ($selectionConfiguration['type']) {
             case CategoriesCodeSelection::TYPE:
@@ -285,7 +282,7 @@ class SelectionHydrator
         }
     }
 
-    private function createFamilySelection(array $selectionConfiguration)
+    private function createFamilySelection(array $selectionConfiguration): SelectionInterface
     {
         switch ($selectionConfiguration['type']) {
             case FamilyCodeSelection::TYPE:
@@ -299,7 +296,7 @@ class SelectionHydrator
         }
     }
 
-    private function createFamilyVariantSelection(array $selectionConfiguration)
+    private function createFamilyVariantSelection(array $selectionConfiguration): SelectionInterface
     {
         switch ($selectionConfiguration['type']) {
             case FamilyVariantCodeSelection::TYPE:
@@ -313,7 +310,7 @@ class SelectionHydrator
         }
     }
 
-    private function createGroupsSelection(array $selectionConfiguration)
+    private function createGroupsSelection(array $selectionConfiguration): SelectionInterface
     {
         switch ($selectionConfiguration['type']) {
             case GroupsCodeSelection::TYPE:
@@ -332,7 +329,7 @@ class SelectionHydrator
         }
     }
 
-    private function createParentSelection(array $selectionConfiguration)
+    private function createParentSelection(array $selectionConfiguration): SelectionInterface
     {
         switch ($selectionConfiguration['type']) {
             case ParentCodeSelection::TYPE:
@@ -349,7 +346,7 @@ class SelectionHydrator
         }
     }
 
-    private function createSimpleAssociationsSelection(array $selectionConfiguration)
+    private function createSimpleAssociationsSelection(array $selectionConfiguration): SelectionInterface
     {
         $entityType = $selectionConfiguration['entity_type'];
         switch ($selectionConfiguration['type']) {
@@ -376,7 +373,7 @@ class SelectionHydrator
         }
     }
 
-    private function createQuantifiedAssociationsSelection(array $selectionConfiguration): QuantifiedAssociationsSelectionInterface
+    private function createQuantifiedAssociationsSelection(array $selectionConfiguration): SelectionInterface
     {
         switch ($selectionConfiguration['type']) {
             case QuantifiedAssociationsCodeSelection::TYPE:
