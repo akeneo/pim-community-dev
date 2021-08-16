@@ -261,6 +261,8 @@ $rules = [
 
         // TIP-1020: Move JobLauncherInterface
         'Akeneo\Tool\Bundle\BatchBundle\Launcher\JobLauncherInterface',
+
+        'Akeneo\Platform\Bundle\NotificationBundle\NotifierInterface',
     ])->in('Akeneo\Pim\Enrichment\Component'),
 ];
 

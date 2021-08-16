@@ -3,6 +3,10 @@
 namespace Specification\Akeneo\Channel\Bundle\EventListener;
 
 use Akeneo\Tool\Component\Console\CommandLauncher;
+use Akeneo\Tool\Bundle\BatchBundle\Job\JobInstanceRepository;
+use Akeneo\Tool\Bundle\BatchBundle\Launcher\JobLauncherInterface;
+use Akeneo\Tool\Component\Batch\Model\JobInstance;
+use Akeneo\Tool\Component\StorageUtils\Repository\IdentifiableObjectRepositoryInterface;
 use Akeneo\Tool\Component\StorageUtils\Saver\BulkSaverInterface;
 use Akeneo\Tool\Component\StorageUtils\StorageEvents;
 use PhpSpec\ObjectBehavior;
@@ -14,6 +18,7 @@ use Prophecy\Argument;
 use Symfony\Component\EventDispatcher\GenericEvent;
 use Symfony\Component\Security\Core\Authentication\Token\Storage\TokenStorageInterface;
 use Symfony\Component\Security\Core\Authentication\Token\TokenInterface;
+use Symfony\Component\Security\Core\User\UserInterface;
 
 class ChannelLocaleSubscriberSpec extends ObjectBehavior
 {
@@ -21,9 +26,19 @@ class ChannelLocaleSubscriberSpec extends ObjectBehavior
         LocaleRepositoryInterface $repository,
         BulkSaverInterface $saver,
         CommandLauncher $commandLauncher,
-        TokenStorageInterface $tokenStorage
+        TokenStorageInterface $tokenStorage,
+        JobLauncherInterface $jobLauncher,
+        IdentifiableObjectRepositoryInterface $jobInstanceRepository
     ) {
-        $this->beConstructedWith($repository, $saver, $commandLauncher, $tokenStorage);
+        $this->beConstructedWith(
+            $repository,
+            $saver,
+            $commandLauncher,
+            $tokenStorage,
+            $jobLauncher,
+            $jobInstanceRepository,
+            'remove_completeness_for_channel_and_locale'
+        );
     }
 
     function it_is_initializable()
@@ -68,8 +83,91 @@ class ChannelLocaleSubscriberSpec extends ObjectBehavior
     function it_updates_channel_when_a_locale_has_been_removed(
         $repository,
         $saver,
-        $commandLauncher,
         $tokenStorage,
+        UserInterface $user,
+        JobInstanceRepository $jobInstanceRepository,
+        JobInstance $jobInstance,
+        JobLauncherInterface $jobLauncher,
+        GenericEvent $event,
+        ChannelInterface $channel,
+        LocaleInterface $localeEn,
+        LocaleInterface $localeFr,
+        LocaleInterface $localeEs,
+        TokenInterface $token
+    ) {
+        $event->getSubject()->willReturn($channel);
+        $repository->getDeletedLocalesForChannel($channel)->willReturn([$localeEn]);
+
+        $localeEn->getCode()->willReturn('en_US');
+        $localeFr->hasChannel($channel)->willReturn(true);
+        $localeEs->hasChannel($channel)->willReturn(false);
+
+        $channel->getLocales()->willReturn([$localeFr, $localeEs]);
+        $channel->getCode()->willReturn('print');
+        $channel->hasLocale($localeEn)->willReturn(false);
+        $channel->hasLocale($localeFr)->willReturn(true);
+
+        $localeEn->removeChannel($channel)->shouldBeCalled();
+        $localeEs->addChannel($channel)->shouldBeCalled();
+
+        $saver->saveAll([$localeFr, $localeEs, $localeEn])->shouldBeCalled();
+
+        $tokenStorage->getToken()->willReturn($token);
+        $token->getUser()->willReturn($user);
+        $user->getUsername()->willReturn('julia');
+
+        $jobInstanceRepository
+            ->findOneByIdentifier('remove_completeness_for_channel_and_locale')
+            ->willReturn($jobInstance);
+
+        $jobLauncher->launch(
+            $jobInstance,
+            $user,
+            [
+                'locales_identifier' => ['en_US'],
+                'channel_code' => 'print',
+                'username' => 'julia',
+            ]
+        )->shouldBeCalled();
+
+        $this->updateChannel($event);
+    }
+
+    function it_updates_channel_without_removed_locale(
+        $repository,
+        $saver,
+        GenericEvent $event,
+        ChannelInterface $channel,
+        LocaleInterface $localeFr,
+        LocaleInterface $localeEs,
+        JobLauncherInterface $jobLauncher
+    ) {
+        $event->getSubject()->willReturn($channel);
+        $repository->getDeletedLocalesForChannel($channel)->willReturn([]);
+
+        $localeFr->hasChannel($channel)->willReturn(true);
+        $localeEs->hasChannel($channel)->willReturn(false);
+
+        $channel->getLocales()->willReturn([$localeFr, $localeEs]);
+        $channel->getCode()->willReturn('print');
+        $channel->hasLocale($localeFr)->willReturn(true);
+
+        $localeEs->addChannel($channel)->shouldBeCalled();
+
+        $saver->saveAll([$localeFr, $localeEs])->shouldBeCalled();
+
+        $jobLauncher->launch(Argument::cetera())->shouldNotBeCalled();
+
+        $this->updateChannel($event);
+    }
+
+    // TODO Remove this test on merge master
+    function it_updates_channel_when_a_locale_has_been_removed_with_a_command(
+        $repository,
+        $saver,
+        $tokenStorage,
+        CommandLauncher $commandLauncher,
+        UserInterface $user,
         GenericEvent $event,
         ChannelInterface $channel,
         LocaleInterface $localeEn,
@@ -102,13 +200,21 @@ class ChannelLocaleSubscriberSpec extends ObjectBehavior
                 'pim:catalog:remove-completeness-for-channel-and-locale print en_US julia'
             )->shouldBeCalled();
 
+        $this->beConstructedWith(
+            $repository,
+            $saver,
+            $commandLauncher,
+            $tokenStorage,
+        );
+
         $this->updateChannel($event);
     }
 
-    function it_updates_channel_without_removed_locale(
+    // TODO Remove this test on merge master
+    function it_updates_channel_without_removed_locale_with_a_command(
         $repository,
         $saver,
-        $commandLauncher,
+        CommandLauncher $commandLauncher,
         $tokenStorage,
         GenericEvent $event,
         ChannelInterface $channel,
@@ -133,7 +239,14 @@ class ChannelLocaleSubscriberSpec extends ObjectBehavior
         $tokenStorage->getToken()->willReturn($token);
         $token->getUsername()->willReturn('julia');
 
-        $commandLauncher->executeBackground(Argument::any())->shouldNotBeCalled();
+        $commandLauncher->executeBackground(Argument::cetera())->shouldNotBeCalled();
+
+        $this->beConstructedWith(
+            $repository,
+            $saver,
+            $commandLauncher,
+            $tokenStorage,
+        );
 
         $this->updateChannel($event);
     }
