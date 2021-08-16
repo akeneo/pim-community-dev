@@ -405,3 +405,7 @@ services:
     Akeneo\Pim\Enrichment\Bundle\Storage\Sql\Category\CountTreesChildren:
         arguments:
             - '@database_connection'
+
+    Akeneo\Pim\Enrichment\Bundle\Storage\Sql\Product\GetProductIdsFromFamily:
+        arguments:
+            - '@database_connection'
