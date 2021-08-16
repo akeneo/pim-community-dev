@@ -2,6 +2,7 @@ import React, {FC, useRef, useState} from 'react';
 import {AttributeOption} from '../model';
 import DeleteConfirmationModal from './DeleteConfirmationModal';
 import {useAttributeContext} from '../contexts';
+import {useUserContext} from '@akeneo-pim-community/legacy-bridge';
 
 export type DragItem = {
   code: string;
@@ -35,6 +36,7 @@ const ListItem: FC<AttributeOptionItemProps> = ({children, ...props}) => {
   const [showDeleteConfirmationModal, setShowDeleteConfirmationModal] = useState<boolean>(false);
   const attributeContext = useAttributeContext();
   const rowRef = useRef(null);
+  const locale = useUserContext().get('uiLocale');
 
   const deleteOption = () => {
     setShowDeleteConfirmationModal(false);
@@ -124,7 +126,16 @@ const ListItem: FC<AttributeOptionItemProps> = ({children, ...props}) => {
           draggable={true}
           role={'attribute-option-move-handle'}
         />
-        <span className="AknAttributeOption-itemCode" role="attribute-option-item-label">
+        <span className="AknAttributeOption-itemLabel" role="attribute-option-item-label">
+          <div>
+            <span>
+              {data.optionValues[locale] && data.optionValues[locale].value
+                ? data.optionValues[locale].value
+                : `[${data.code}]`}
+            </span>
+          </div>
+        </span>
+        <span className="AknAttributeOption-itemCode" role="attribute-option-item-code">
           <div>
             <span>{data.code}</span>
           </div>
