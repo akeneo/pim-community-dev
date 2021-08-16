@@ -135,7 +135,7 @@ akeneo_data_quality_insights:
     back_to_products: Back to products
   attribute_group:
     helper_dqi_info: The quality score calculation will only take into account attributes belonging to attribute groups activated on data quality.
-    helper_dqi_link: More info on our helpcenter.
+    helper_dqi_link: More info on our Help Center.
     activation: Activation
     dqi_status: Data Quality Insights status
     activated: Activated
