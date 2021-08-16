@@ -6,8 +6,7 @@ import {TableInputContext} from '../TableInputContext';
 import {RowIcon} from '../../../../icons';
 import {TableInputCell} from '../TableInputCell/TableInputCell';
 import {useBooleanState} from '../../../../hooks';
-// TODO Move this file into shared
-import {PlaceholderPosition, usePlaceholderPosition} from '../../../Table/TableRow/usePlaceholderPosition';
+import {PlaceholderPosition, usePlaceholderPosition} from '../../../../hooks/usePlaceholderPosition';
 
 const getZebraBackgroundColor: (rowIndex: number) => (props: AkeneoThemedProps) => string = rowIndex => {
   return rowIndex % 2 === 0 ? getColor('white') : getColor('grey', 20);
