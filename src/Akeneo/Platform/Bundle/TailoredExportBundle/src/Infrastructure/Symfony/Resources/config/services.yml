@@ -15,7 +15,28 @@ services:
             - { name: pim_enrich.provider.form }
 
     Akeneo\Platform\TailoredExport\Application\ProductMapper:
-        public: true
         arguments:
             - '@Akeneo\Platform\TailoredExport\Application\OperationHandler'
             - '@Akeneo\Platform\TailoredExport\Application\Query\Selection\SelectionHandler'
+
+    Akeneo\Platform\TailoredExport\Application\MediaToExportExtractor:
+        arguments:
+            - '@akeneo_assetmanager.infrastructure.persistence.query.enrich.get_main_media_file_info_collection_public_api'
+        public: false
+
+    akeneo.tailored_export.voter.job_profile:
+        decorates: pimee_security.voter.job_profile
+        decoration_priority: 10 # Arbitrary value to be able to add decorator before and after
+        decoration_on_invalid: ignore
+        class: 'Akeneo\Platform\TailoredExport\Infrastructure\Voter\JobProfileVoter'
+        arguments:
+            - '@akeneo.tailored_export.voter.job_profile.inner'
+            - '@Akeneo\Platform\TailoredExport\Infrastructure\Voter\CanEditTailoredExport'
+            -
+                - '%akeneo.tailored_export.connector.xlsx.code%'
+
+    Akeneo\Platform\TailoredExport\Infrastructure\Voter\CanEditTailoredExport:
+        arguments:
+            - '@pimee_security.query.get_all_viewable_locales_for_user' # this service is in CE and overridden in EE
+            - '@pimee_security.query.get_viewable_attribute_codes_for_user' # this service is in CE and overridden in EE
+            - '@akeneo.pim.structure.query.get_attributes'

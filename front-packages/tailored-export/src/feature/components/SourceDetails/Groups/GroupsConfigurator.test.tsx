@@ -3,9 +3,9 @@ import {screen} from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
 import {renderWithProviders} from '@akeneo-pim-community/shared';
 import {GroupsConfigurator} from './GroupsConfigurator';
-import {CodeLabelCollectionSelection} from '../../../models';
 import {getDefaultGroupsSource} from '../../../components/SourceDetails/Groups/model';
 import {getDefaultParentSource} from '../Parent/model';
+import {CodeLabelCollectionSelection} from '../common/CodeLabelCollectionSelector';
 
 jest.mock('../common/CodeLabelCollectionSelector', () => ({
   CodeLabelCollectionSelector: ({
@@ -54,15 +54,16 @@ test('it displays a groups configurator', () => {
   });
 });
 
-test('it does not render if the source is not valid', () => {
+test('it tells when the source data is invalid', () => {
   const mockedConsole = jest.spyOn(console, 'error').mockImplementation();
   const onSourceChange = jest.fn();
 
-  renderWithProviders(
-    <GroupsConfigurator source={getDefaultParentSource()} validationErrors={[]} onSourceChange={onSourceChange} />
-  );
+  expect(() => {
+    renderWithProviders(
+      <GroupsConfigurator source={getDefaultParentSource()} validationErrors={[]} onSourceChange={onSourceChange} />
+    );
+  }).toThrow('Invalid source data "parent" for groups configurator');
 
-  expect(mockedConsole).toHaveBeenCalledWith('Invalid source data "parent" for groups configurator');
   expect(screen.queryByText('Update selection')).not.toBeInTheDocument();
   mockedConsole.mockRestore();
 });

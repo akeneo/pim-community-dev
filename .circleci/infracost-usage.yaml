@@ -1,0 +1,38 @@
+version: 0.1
+resource_usage:
+  module.pim.google_dns_record_set.main:
+    monthly_queries: 0
+  module.pim.google_pubsub_subscription.job-queue:
+    monthly_message_data_tb: 0
+    snapshot_storage_gb: 0
+    storage_gb: 0
+  module.pim.google_pubsub_subscription.webhook:
+    monthly_message_data_tb: 0
+    snapshot_storage_gb: 0
+    storage_gb: 0
+  module.pim.google_pubsub_topic.business-event:
+    monthly_message_data_tb: 0
+  module.pim.google_pubsub_topic.job-queue:
+    monthly_message_data_tb: 0
+  module.pim.google_storage_bucket.srnt_bucket:
+    monthly_class_a_operations: 0
+    monthly_class_b_operations: 0
+    monthly_data_retrieval_gb: 0
+    monthly_egress_data_transfer_gb:
+      asia: 0
+      australia: 0
+      china: 0
+      same_continent: 0
+      worldwide: 0
+    storage_gb: 1000
+  module.storage-backup.google_storage_bucket.storage_backup:
+    monthly_class_a_operations: 0
+    monthly_class_b_operations: 0
+    monthly_data_retrieval_gb: 0
+    monthly_egress_data_transfer_gb:
+      asia: 0
+      australia: 0
+      china: 0
+      same_continent: 0
+      worldwide: 0
+    storage_gb: 1000

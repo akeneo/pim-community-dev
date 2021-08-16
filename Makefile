@@ -1,11 +1,39 @@
-DOCKER_COMPOSE = docker-compose
+IMAGE_TAG ?= master
+CI ?= 0
+PIM_CONTEXT ?=0
+
+TYPE ?= srnt
+PIM_SRC_PATH ?= .
+ifneq ($(TYPE),srnt)
+PIM_SRC_PATH = $(TYPE)
+endif
+ifeq ($(PIM_CONTEXT),deployment)
+PIM_SRC_PATH = .
+endif
+
+COMPOSER_OVERRIDE ?= $(shell [ -f "$(PIM_SRC_PATH)/docker-compose.override.yml" ] && echo "-f $(PIM_SRC_PATH)/docker-compose.override.yml")
+COMPOSER_TARGET ?= -f $(PIM_SRC_PATH)/docker-compose.yml $(COMPOSER_OVERRIDE)
+
+## Include all *.mk files
+ifneq ($(PIM_CONTEXT),0)
+include $(PIM_SRC_PATH)/make-file/$(PIM_CONTEXT).mk
+endif
+
+DOCKER_COMPOSE_BIN = docker-compose
+DOCKER_COMPOSE = $(DOCKER_COMPOSE_BIN) $(COMPOSER_TARGET)
 NODE_RUN = $(DOCKER_COMPOSE) run -u node --rm -e YARN_REGISTRY -e PUPPETEER_SKIP_CHROMIUM_DOWNLOAD=1 -e PUPPETEER_EXECUTABLE_PATH=/usr/bin/google-chrome node
 YARN_RUN = $(NODE_RUN) yarn
 PHP_RUN = $(DOCKER_COMPOSE) run -u www-data --rm php php
 PHP_EXEC = $(DOCKER_COMPOSE) exec -u www-data fpm php
-IMAGE_TAG ?= master
-CI ?= 0
-PIM_CONTEXT ?=0
+
+DATABASE_CATALOG_MINIMAL_PATH ?= src/Akeneo/Platform/Bundle/InstallerBundle/Resources/fixtures/minimal
+DATABASE_CATALOG_ICECAT_PATH ?= src/Akeneo/Platform/Bundle/InstallerBundle/Resources/fixtures/icecat_demo_dev
+
+ifneq ($(TYPE), srnt)
+DATABASE_CATALOG_MINIMAL_PATH = vendor/akeneo/pim-community-dev/src/Akeneo/Platform/Bundle/InstallerBundle/Resources/fixtures/minimal
+DATABASE_CATALOG_ICECAT_PATH = vendor/akeneo/pim-community-dev/src/Akeneo/Platform/Bundle/InstallerBundle/Resources/fixtures/icecat_demo_dev
+endif
+
 
 .DEFAULT_GOAL := help
 
@@ -13,19 +41,15 @@ PIM_CONTEXT ?=0
 help: #Doc: display this help
 	@echo "$$(grep -hE '^\S+:.*#Doc:' $(MAKEFILE_LIST) | sed -e 's/:.*#Doc:\s*/:/' -e 's/^\(.\+\):\(.*\)/\1:-\ \2/' | column -c2 -t -s :)"
 
-## Include all *.mk files
-ifneq ($(PIM_CONTEXT),0)
-include make-file/$(PIM_CONTEXT).mk
-endif
 
 ##
 ## Front
 ##
 
-yarn.lock: package.json #Doc: run YARN install
+$(PIM_SRC_PATH)/yarn.lock: $(PIM_SRC_PATH)/package.json #Doc: run YARN install
 	$(YARN_RUN) install
 
-node_modules: yarn.lock #Doc: run YARN install --check-files
+$(PIM_SRC_PATH)/node_modules: $(PIM_SRC_PATH)/yarn.lock #Doc: run YARN install --check-files
 	$(YARN_RUN) install --frozen-lockfile --check-files
 
 .PHONY: javascript-extensions
@@ -91,12 +115,13 @@ var/cache/dev: #Doc: create Sf cache in DEV environement
 
 .PHONY: cache
 cache: #Doc: clean, generate & warm the Sf cache up
-	$(DOCKER_COMPOSE) run -u www-data --rm php rm -rf var/cache && $(PHP_RUN) bin/console cache:warmup
+	$(DOCKER_COMPOSE) run -u www-data --rm php rm -rf var/cache
+	$(PHP_RUN) bin/console cache:warmup
 
-composer.lock: composer.json #Doc: launch composer update
+$(PIM_SRC_PATH)/composer.lock: $(PIM_SRC_PATH)/composer.json #Doc: launch composer update
 	$(PHP_RUN) -d memory_limit=5G /usr/local/bin/composer update --no-interaction
 
-vendor: composer.lock #Doc: run composer install
+$(PIM_SRC_PATH)/vendor: $(PIM_SRC_PATH)/composer.lock #Doc: run composer install
 	$(PHP_RUN) -d memory_limit=5G /usr/local/bin/composer install --no-interaction
 
 .PHONY: check-requirements
@@ -120,7 +145,7 @@ stop-workers:
 ##
 
 .PHONY: dependencies
-dependencies: vendor node_modules #Doc: install PHP & JS dependencies
+dependencies: $(PIM_SRC_PATH)/vendor $(PIM_SRC_PATH)/node_modules #Doc: install PHP & JS dependencies
 
 # Those targets ease the pim installation depending on the Symfony environnement: behat, test, dev, prod.
 #
@@ -141,16 +166,16 @@ pim-behat: #Doc: run docker-compose up, clean symfony cache, reinstall assets, b
 	$(MAKE) css
 	$(MAKE) front-packages
 	$(MAKE) javascript-dev
-	docker/wait_docker_up.sh
-	APP_ENV=behat $(MAKE) database
+	cd $(PIM_SRC_PATH) && docker/wait_docker_up.sh
+	APP_ENV=behat O="--catalog $(DATABASE_CATALOG_MINIMAL_PATH)" $(MAKE) database
 	APP_ENV=behat $(PHP_RUN) bin/console pim:user:create --admin -n -- admin admin test@example.com John Doe en_US
 
 .PHONY: pim-test
 pim-test: #Doc: run docker-compose up, clean symfony cache & install a new icecat catalog database in test environement
 	APP_ENV=test $(MAKE) up
 	APP_ENV=test $(MAKE) cache
-	docker/wait_docker_up.sh
-	APP_ENV=test $(MAKE) database
+	cd $(PIM_SRC_PATH) && docker/wait_docker_up.sh
+	APP_ENV=test O="--catalog $(DATABASE_CATALOG_MINIMAL_PATH)" $(MAKE) database
 
 .PHONY: pim-dev
 pim-dev: #Doc: run docker-compose up, clean symfony cache, run webpack dev & install icecat_demo_dev database in dev environement
@@ -160,8 +185,8 @@ pim-dev: #Doc: run docker-compose up, clean symfony cache, run webpack dev & ins
 	$(MAKE) css
 	$(MAKE) front-packages
 	$(MAKE) javascript-dev
-	docker/wait_docker_up.sh
-	APP_ENV=dev O="--catalog src/Akeneo/Platform/Bundle/InstallerBundle/Resources/fixtures/icecat_demo_dev" $(MAKE) database
+	cd $(PIM_SRC_PATH) && docker/wait_docker_up.sh
+	APP_ENV=dev O="--catalog $(DATABASE_CATALOG_ICECAT_PATH)" $(MAKE) database
 
 .PHONY: pim-prod
 pim-prod: #Doc: run docker-compose up, clean symfony cache, reinstall assets, build PIM CSS, ???run make javascript-cloud??? & install a new icecat catalog database in prod environement
@@ -171,23 +196,23 @@ pim-prod: #Doc: run docker-compose up, clean symfony cache, reinstall assets, bu
 	$(MAKE) css
 	$(MAKE) front-packages
 	$(MAKE) javascript-prod
-	docker/wait_docker_up.sh
-	APP_ENV=prod $(MAKE) database
+	cd $(PIM_SRC_PATH) && docker/wait_docker_up.sh
+	APP_ENV=prod O="--catalog $(DATABASE_CATALOG_MINIMAL_PATH)" $(MAKE) database
 
 .PHONY: pim-saas-like
 pim-saas-like: export COMPOSE_PROJECT_NAME = pim-saas-like
 pim-saas-like: export COMPOSE_FILE = docker-compose.saas-like.yml
 pim-saas-like: #Doc: run docker-compose up, install PIM database and create PIM admin user
-	$(DOCKER_COMPOSE) up --detach --remove-orphan
-	docker/wait_docker_up.sh
-	$(DOCKER_COMPOSE) run fpm bin/console pim:installer:db
-	$(DOCKER_COMPOSE) run fpm bin/console pim:user:create --admin -n -- admin admin test@example.com John Doe en_US
+	$(DOCKER_COMPOSE_BIN) up --detach --remove-orphan
+	cd $(PIM_SRC_PATH) && docker/wait_docker_up.sh
+	$(DOCKER_COMPOSE_BIN) run fpm bin/console pim:installer:db
+	$(DOCKER_COMPOSE_BIN) run fpm bin/console pim:user:create --admin -n -- admin admin test@example.com John Doe en_US
 
 .PHONY: down-pim-saas-like
 down-pim-saas-like: export COMPOSE_PROJECT_NAME = pim-saas-like
 down-pim-saas-like: export COMPOSE_FILE = docker-compose.saas-like.yml
 down-pim-saas-like: #Doc: shutdown all docker containers
-	$(DOCKER_COMPOSE) down
+	$(DOCKER_COMPOSE_BIN) down
 
 ##
 ## Docker

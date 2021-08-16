@@ -31,7 +31,7 @@ resource "google_monitoring_uptime_check_config" "https" {
   project      = var.google_project_id
 
   http_check {
-    path    = "${var.monitoring_url}"
+    path    = var.monitoring_url
     port    = "443"
     headers = {
       X-AUTH-TOKEN = "${var.monitoring_authentication_token}"

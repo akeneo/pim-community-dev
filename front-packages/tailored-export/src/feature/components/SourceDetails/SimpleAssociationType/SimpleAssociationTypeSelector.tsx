@@ -145,9 +145,11 @@ const SimpleAssociationTypeSelector = ({
           validationErrors={localeErrors}
           onChange={updatedValue => onSelectionChange({...selection, locale: updatedValue})}
         >
-          <Helper inline={true} level="info">
-            {translate('akeneo.tailored_export.column_details.sources.selection.association.information.locale')}
-          </Helper>
+          {isProductOrProductModelSelection(selection) && (
+            <Helper inline={true} level="info">
+              {translate('akeneo.tailored_export.column_details.sources.selection.association.information.locale')}
+            </Helper>
+          )}
         </LocaleDropdown>
       )}
       <Field label={translate('akeneo.tailored_export.column_details.sources.selection.collection_separator.title')}>

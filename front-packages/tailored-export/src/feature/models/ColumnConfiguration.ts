@@ -22,6 +22,11 @@ type ColumnConfiguration = {
   format: Format;
 };
 
+type ColumnsState = {
+  columns: ColumnConfiguration[];
+  selectedColumnUuid: string | null;
+};
+
 const createColumn = (newColumnName: string, uuid: string): ColumnConfiguration => {
   if (null === /^[0-9A-F]{8}-[0-9A-F]{4}-[4][0-9A-F]{3}-[89AB][0-9A-F]{3}-[0-9A-F]{12}$/i.exec(uuid)) {
     throw new Error(`Column configuration creation requires a valid uuid: "${uuid}"`);
@@ -95,28 +100,42 @@ const addPropertySource = (columnConfiguration: ColumnConfiguration, sourceCode:
   };
 };
 
-const updateSource = (columnConfiguration: ColumnConfiguration, updatedSource: Source): ColumnConfiguration => ({
-  ...columnConfiguration,
-  sources: columnConfiguration.sources.map<Source>(source =>
-    source.uuid === updatedSource.uuid ? updatedSource : source
-  ),
-});
+const filterEmptyOperations = (operations: object) =>
+  Object.keys(operations).reduce((accumulator, key) => {
+    if (undefined !== operations[key]) {
+      accumulator[key] = operations[key];
+    }
+
+    return accumulator;
+  }, {});
+
+const updateSource = (columnConfiguration: ColumnConfiguration, updatedSource: Source): ColumnConfiguration => {
+  const filteredOperations = filterEmptyOperations(updatedSource.operations);
+
+  return {
+    ...columnConfiguration,
+    sources: columnConfiguration.sources.map<Source>(source =>
+      source.uuid === updatedSource.uuid ? {...updatedSource, operations: filteredOperations} : source
+    ),
+  };
+};
 
 const removeSource = (columnConfiguration: ColumnConfiguration, removedSource: Source): ColumnConfiguration => ({
   ...columnConfiguration,
   sources: columnConfiguration.sources.filter(source => source.uuid !== removedSource.uuid),
 });
 
-export type {ColumnConfiguration};
+export type {ColumnConfiguration, ColumnsState};
 export {
-  addColumn,
-  createColumn,
-  removeColumn,
-  updateColumn,
-  removeSource,
-  addAttributeSource,
   addAssociationTypeSource,
+  addAttributeSource,
+  addColumn,
   addPropertySource,
-  updateSource,
+  createColumn,
+  filterEmptyOperations,
   MAX_COLUMN_COUNT,
+  removeColumn,
+  removeSource,
+  updateColumn,
+  updateSource,
 };

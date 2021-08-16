@@ -1,33 +1,11 @@
-import React, {ReactNode} from 'react';
-import {act, screen} from '@testing-library/react';
+import React from 'react';
+import {screen} from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
-import {Channel, renderWithProviders as baseRender} from '@akeneo-pim-community/shared';
+import {renderWithProviders} from '@akeneo-pim-community/shared';
 import {EnabledConfigurator} from './EnabledConfigurator';
-import {Attribute} from '../../../models/Attribute';
-import {FetcherContext} from '../../../contexts';
 import {getDefaultEnabledSource} from './model';
-import {getDefaultTextSource} from '../Text/model';
 import {BooleanReplacementOperation} from '../common/BooleanReplacement';
-import {AssociationType} from '../../../models';
-
-const attribute = {
-  code: 'date',
-  type: 'pim_catalog_date',
-  labels: {},
-  scopable: false,
-  localizable: false,
-  is_locale_specific: false,
-  available_locales: [],
-};
-
-const fetchers = {
-  attribute: {fetchByIdentifiers: (): Promise<Attribute[]> => Promise.resolve<Attribute[]>([])},
-  channel: {fetchAll: (): Promise<Channel[]> => Promise.resolve([])},
-  associationType: {fetchByCodes: (): Promise<AssociationType[]> => Promise.resolve([])},
-};
-
-const renderWithProviders = async (node: ReactNode) =>
-  await act(async () => void baseRender(<FetcherContext.Provider value={fetchers}>{node}</FetcherContext.Provider>));
+import {getDefaultParentSource} from '../Parent/model';
 
 jest.mock('../common/BooleanReplacement', () => ({
   BooleanReplacement: ({
@@ -51,10 +29,10 @@ jest.mock('../common/BooleanReplacement', () => ({
   ),
 }));
 
-test('it displays an enabled configurator', async () => {
+test('it displays an enabled configurator', () => {
   const onSourceChange = jest.fn();
 
-  await renderWithProviders(
+  renderWithProviders(
     <EnabledConfigurator
       source={{
         ...getDefaultEnabledSource(),
@@ -65,10 +43,7 @@ test('it displays an enabled configurator', async () => {
     />
   );
 
-  const replacement = screen.getByText('Update replacement');
-
-  expect(replacement).toBeInTheDocument();
-  userEvent.click(replacement);
+  userEvent.click(screen.getByText('Update replacement'));
 
   expect(onSourceChange).toHaveBeenCalledWith({
     ...getDefaultEnabledSource(),
@@ -88,19 +63,15 @@ test('it displays an enabled configurator', async () => {
   });
 });
 
-test('it does not render if the source is not valid', async () => {
+test('it tells when the source data is invalid', () => {
   const mockedConsole = jest.spyOn(console, 'error').mockImplementation();
-  const onSourceChange = jest.fn();
 
-  await renderWithProviders(
-    <EnabledConfigurator
-      source={getDefaultTextSource(attribute, null, null)}
-      validationErrors={[]}
-      onSourceChange={onSourceChange}
-    />
-  );
+  expect(() => {
+    renderWithProviders(
+      <EnabledConfigurator source={getDefaultParentSource()} validationErrors={[]} onSourceChange={jest.fn()} />
+    );
+  }).toThrow('Invalid source data "parent" for enabled configurator');
 
-  expect(mockedConsole).toHaveBeenCalledWith('Invalid source data "date" for enabled configurator');
   expect(screen.queryByText('Update replacement')).not.toBeInTheDocument();
   mockedConsole.mockRestore();
 });

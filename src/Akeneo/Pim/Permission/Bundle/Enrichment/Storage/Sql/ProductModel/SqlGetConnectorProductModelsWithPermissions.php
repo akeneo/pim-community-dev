@@ -13,6 +13,7 @@ declare(strict_types=1);
 
 namespace Akeneo\Pim\Permission\Bundle\Enrichment\Storage\Sql\ProductModel;
 
+use Akeneo\Channel\Component\Query\PublicApi\Permission\GetAllViewableLocalesForUserInterface;
 use Akeneo\Pim\Enrichment\Component\Product\Connector\ReadModel\ConnectorProductModel;
 use Akeneo\Pim\Enrichment\Component\Product\Connector\ReadModel\ConnectorProductModelList;
 use Akeneo\Pim\Enrichment\Component\Product\Exception\ObjectNotFoundException;
@@ -22,8 +23,7 @@ use Akeneo\Pim\Permission\Bundle\Enrichment\Storage\Sql\Category\GetViewableCate
 use Akeneo\Pim\Permission\Bundle\Enrichment\Storage\Sql\Product\FetchUserRightsOnProduct;
 use Akeneo\Pim\Permission\Component\Authorization\Model\UserRightsOnProduct;
 use Akeneo\Pim\Permission\Component\Authorization\Model\UserRightsOnProductModel;
-use Akeneo\Pim\Permission\Component\Query\GetAllViewableLocalesForUser;
-use Akeneo\Pim\Permission\Component\Query\GetViewableAttributeCodesForUserInterface;
+use Akeneo\Pim\Structure\Component\Query\PublicApi\Permission\GetViewableAttributeCodesForUserInterface;
 use Akeneo\Pim\WorkOrganization\Workflow\Component\Query\PublicApi\GetWorkflowStatusFromProductModelCodes;
 
 /**
@@ -31,32 +31,19 @@ use Akeneo\Pim\WorkOrganization\Workflow\Component\Query\PublicApi\GetWorkflowSt
  */
 class SqlGetConnectorProductModelsWithPermissions implements GetConnectorProductModels
 {
-    /** @var GetConnectorProductModels */
-    private $getConnectorProductModels;
-
-    /** @var GetViewableCategoryCodes */
-    private $getViewableCategoryCodes;
-
-    /** @var GetViewableAttributeCodesForUserInterface */
-    private $getViewableAttributeCodesForUser;
-
-    /** @var GetAllViewableLocalesForUser */
-    private $getViewableLocaleCodesForUser;
-
-    /** @var FetchUserRightsOnProduct */
-    private $fetchUserRightsOnProduct;
-
-    /** @var FetchUserRightsOnProductModel */
-    private $fetchUserRightsOnProductModel;
-
-    /** @var GetWorkflowStatusFromProductModelCodes */
-    private $getWorkflowStatusFromProductModelCodes;
+    private GetConnectorProductModels $getConnectorProductModels;
+    private GetViewableCategoryCodes $getViewableCategoryCodes;
+    private GetViewableAttributeCodesForUserInterface $getViewableAttributeCodesForUser;
+    private GetAllViewableLocalesForUserInterface $getViewableLocaleCodesForUser;
+    private FetchUserRightsOnProduct $fetchUserRightsOnProduct;
+    private FetchUserRightsOnProductModel $fetchUserRightsOnProductModel;
+    private GetWorkflowStatusFromProductModelCodes $getWorkflowStatusFromProductModelCodes;
 
     public function __construct(
         GetConnectorProductModels $getConnectorProductModels,
         GetViewableCategoryCodes $getViewableCategoryCodes,
         GetViewableAttributeCodesForUserInterface $getViewableAttributeCodesForUser,
-        GetAllViewableLocalesForUser $getViewableLocaleCodesForUser,
+        GetAllViewableLocalesForUserInterface $getViewableLocaleCodesForUser,
         FetchUserRightsOnProduct $fetchUserRightsOnProduct,
         FetchUserRightsOnProductModel $fetchUserRightsOnProductModel,
         GetWorkflowStatusFromProductModelCodes $getWorkflowStatusFromProductModelCodes
@@ -91,7 +78,8 @@ class SqlGetConnectorProductModelsWithPermissions implements GetConnectorProduct
         $filteredProductModels = $this->filterConnectorProductModelsGivenPermissions($productModels, $userId);
 
         return new ConnectorProductModelList(
-            $connectorProductModelList->totalNumberOfProductModels(), $filteredProductModels
+            $connectorProductModelList->totalNumberOfProductModels(),
+            $filteredProductModels
         );
     }
 
@@ -134,7 +122,8 @@ class SqlGetConnectorProductModelsWithPermissions implements GetConnectorProduct
         $filteredProductModels = $this->filterConnectorProductModelsGivenPermissions($productModels, $userId);
 
         return new ConnectorProductModelList(
-            $connectorProductModelList->totalNumberOfProductModels(), $filteredProductModels
+            $connectorProductModelList->totalNumberOfProductModels(),
+            $filteredProductModels
         );
     }
 

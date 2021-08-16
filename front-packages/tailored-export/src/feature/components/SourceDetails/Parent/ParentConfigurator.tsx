@@ -4,15 +4,14 @@ import {filterErrors, useTranslate} from '@akeneo-pim-community/shared';
 import {PropertyConfiguratorProps} from '../../../models';
 import {ParentSelector} from './ParentSelector';
 import {isParentSource} from './model';
+import {InvalidPropertySourceError} from '../error';
 
 const ParentConfigurator = ({source, validationErrors, onSourceChange}: PropertyConfiguratorProps) => {
   const translate = useTranslate();
   const [isSelectorCollapsed, toggleSelectorCollapse] = useState<boolean>(true);
 
   if (!isParentSource(source)) {
-    console.error(`Invalid source data "${source.code}" for parent configurator`);
-
-    return null;
+    throw new InvalidPropertySourceError(`Invalid source data "${source.code}" for parent configurator`);
   }
 
   return (

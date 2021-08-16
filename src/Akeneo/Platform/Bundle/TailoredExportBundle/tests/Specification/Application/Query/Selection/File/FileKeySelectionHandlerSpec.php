@@ -23,17 +23,18 @@ class FileKeySelectionHandlerSpec extends ObjectBehavior
 {
     public function it_applies_the_selection()
     {
-        $selection = new FileKeySelection();
+        $selection = new FileKeySelection('an_attribute_code');
         $value = new FileValue(
             'identifier',
-            'a_key',
+            'catalog',
+            'a_filekey',
             'original_filename',
             null,
             null
         );
 
         $this->applySelection($selection, $value)
-            ->shouldReturn('a_key');
+            ->shouldReturn('a_filekey');
     }
 
     public function it_does_not_apply_selection_on_not_supported_selections_and_values()
@@ -48,10 +49,11 @@ class FileKeySelectionHandlerSpec extends ObjectBehavior
 
     public function it_supports_file_key_selection_with_file_value()
     {
-        $selection = new FileKeySelection();
+        $selection = new FileKeySelection('an_attribute_code');
         $value = new FileValue(
             'identifier',
-            'a_key',
+            'catalog',
+            'a_filekey',
             'original_filename',
             null,
             null

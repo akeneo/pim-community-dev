@@ -70,6 +70,7 @@ $rules = [
 
         // TIP-1002: Permissions should not be linked to Channel
         'Akeneo\Channel\Component\Model\ChannelInterface',
+        'Akeneo\Channel\Component\Query\PublicApi',
 
         //TODO: Link by id instead of reference
         'Akeneo\Pim\Enrichment\Component\Category\Model\CategoryInterface',
@@ -86,6 +87,7 @@ $rules = [
         'Akeneo\Pim\Structure\Component\Model\AttributeGroupInterface',
         'Akeneo\Pim\Structure\Component\Model\AttributeInterface',
         'Akeneo\Pim\Structure\Component\Model\FamilyVariantInterface',
+        'Akeneo\Pim\Structure\Component\Query\PublicApi',
 
         //TODO: It extends Controller
         'Akeneo\Pim\Enrichment\Bundle\Controller\InternalApi\ProductPdfController',
@@ -122,6 +124,7 @@ $rules = [
         'Akeneo\Pim\Enrichment\Bundle\Filter\CollectionFilterInterface',
         'Akeneo\Pim\Enrichment\Bundle\Filter\ObjectFilterInterface',
         'Akeneo\Pim\Enrichment\Bundle\Filter\ProductEditDataFilter',
+        'Akeneo\Pim\Enrichment\Bundle\Filter\CategoryCodeFilterInterface',
 
         // TIP-1003: Do not override Community services
         'Akeneo\Pim\Enrichment\Component\Product\Connector\Processor\MassEdit\AddAttributeValueProcessor',
@@ -205,6 +208,7 @@ $rules = [
 
         // TIP-1002: Permissions should not be linked to Channel
         'Akeneo\Channel\Component\Model\ChannelInterface',
+        'Akeneo\Channel\Component\Query\PublicApi',
 
         //TODO: Link by id instead of reference
         'Akeneo\Pim\Structure\Component\Model\AttributeGroupInterface',
@@ -214,6 +218,7 @@ $rules = [
         'Akeneo\UserManagement\Component\Model\GroupInterface',
         'Akeneo\UserManagement\Component\Model\UserInterface',
         'Akeneo\Pim\Structure\Component\Model\AttributeInterface',
+        'Akeneo\Pim\Structure\Component\Query\PublicApi',
         'Akeneo\Pim\Enrichment\Component\Product\Exception\InvalidAttributeException',
         'Akeneo\Pim\Enrichment\Component\Product\Exception\UnknownAttributeException',
         'Akeneo\Pim\Enrichment\Component\Product\Model\EntityWithAssociationsInterface',

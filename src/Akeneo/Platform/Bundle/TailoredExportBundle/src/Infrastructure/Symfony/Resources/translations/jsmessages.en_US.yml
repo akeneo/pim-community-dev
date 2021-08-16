@@ -7,6 +7,12 @@ akeneo.tailored_export:
         label: Define the locales for the completeness
         placeholder: Select some locales
         remove: Remove the locale
+    quality_score:
+      quality_score:
+        label: Quality Score
+        remove: Remove quality score
+      locales:
+        label: Define the locales for the quality score
   form:
     job_instance:
       tab:
@@ -16,6 +22,10 @@ akeneo.tailored_export:
           title: Export structure
         filters:
           title: Define your product selection
+      edit:
+        title: To edit, check your permissions with your PIM administrator.
+      launch:
+        title: To export, check your permissions with your PIM administrator.
   column_list:
     title: Columns
     header:
@@ -26,7 +36,7 @@ akeneo.tailored_export:
       remove: Remove column
       no_source: Define content source
     no_column_selection:
-      title: Your export profile is empty. Add your first column.
+      title: Your export profile is empty.
       subtitle: Click on 'Add first column' to start building your export table.
       link: Check out our Help Center for more information.
       add_column: Add first column
@@ -35,13 +45,21 @@ akeneo.tailored_export:
       title: Sources
       add: Add source
       no_result: Sorry, there is no results.
-      locale_specific.info: This attribute has a value per locale.
+      locale_specific: This attribute is locale specific.
       remove:
         title: source
         text: Are you sure you want to remove this source?
         button: Remove this source
+      invalid_source:
+        attribute: This attribute has been deleted and recreated with another type, please remove this source and add it again.
+        association_type: This association type has been deleted and recreated with another type, please remove this source and add it again.
+        property: This property is invalid, please remove this source and add it again.
       no_source_configuration:
         title: There are no operations available for this source. Its value will be exported as is.
+      deleted_attribute:
+        title: This attribute has been deleted, you can no longer use it as a source.
+      deleted_association_type:
+        title: This association type has been deleted, you can no longer use it as a source.
       no_source_selected:
         title: Click on 'Add source' to start defining your column content.
         link: Check out our Help Center for more information.
@@ -65,8 +83,6 @@ akeneo.tailored_export:
           information:
             locale: If the attribute used as label has a value per locale, you may select a specific locale.
             channel: If the attribute used as label has a value per channel, you may select a specific channel.
-        code_label:
-          information: For this attribute, you can export either the code or the label.
         measurement:
           information: For this attribute, you can export either the value, the unit code or the unit label.
           value: Value
@@ -77,9 +93,9 @@ akeneo.tailored_export:
           currency_code: Currency code
           currency_label: Currency label
           currency_locale: Currency locale
-          information: For this attribute, you can export either the amount or the currency.
+          information: For this attribute, you can export either the currency code, the currency label or the amount.
         file:
-          information: For this attribute, you can export either the path, the filekey or the name.
+          information: For this attribute, you can export either the path, the filekey or the filename.
         decimal_separator:
           title: Decimal separator
           comma: Comma (,)
@@ -98,19 +114,31 @@ akeneo.tailored_export:
           placeholder: Define the replacement value
           enabled: Enabled replacement value
           disabled: Disabled replacement value
+          yes: Yes replacement value
+          no: No replacement value
   column:
     delete_message: Are you sure you want to remove this column?
   validation:
+    required: This value is required.
+    max_length_reached: This value is too long. It should contain {{ limit }} characters or less.
     columns:
       max_column_count_reached: You have reached the limit of {{ limit }} columns, you can no longer add columns to your export.
       target:
         should_not_be_blank: Please define a column name.
-        max_length_reached: Column name is too long. It should have {{ limit }} characters or less.
+        max_length_reached: Column name is too long. It should contain {{ limit }} characters or less.
         should_be_unique: This column name already exists, please enter a new one.
     sources:
       max_source_count_reached: You have reached the limit of {{ limit }} sources, you can no longer add sources to your export.
-      association_type_should_exist: The association type {{ association_type_code }} does not exist
+      association_type_should_exist: The association type {{ association_type_code }} does not exist. Please either create it or choose a different source.
     locale:
-      should_be_active: The {{ locale_code }} locale should be active.
+      should_be_active: The locale {{ locale_code }} has been deactivated. Either reactivate it or select another locale.
+      should_be_bound_to_channel: The locale {{ locale_code }} has been deactivated for the channel {{ channel_code }}. Either reactivate it or select another locale.
     channel:
-      should_exist: The {{ channel_code }} channel should be active.
+      should_exist: The channel {{ channel_code }} has been deleted. Please select another channel.
+    attribute:
+      should_exist: The attribute {{ attribute_code }} does not exist. Please either create it or choose a different source.
+      locale_should_not_be_blank: The attribute {{ attribute_code }} now has a value per locale. Please either create it or choose a different source.
+      channel_should_not_be_blank: The attribute {{ attribute_code }} now has a value per channel. Please either create it or choose a different source.
+      locale_should_be_blank: The attribute {{ attribute_code }} does not have a value per locale anymore. Please either create it or choose a different source.
+      channel_should_be_blank: The attribute {{ attribute_code }} does not have a value per channel anymore. Please either create it or choose a different source.
+      invalid_specific_locale: The attribute {{ attribute_code }} is locale specific. Please select another locale.

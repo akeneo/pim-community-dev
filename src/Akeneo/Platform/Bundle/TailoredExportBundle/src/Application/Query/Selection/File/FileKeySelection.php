@@ -16,4 +16,15 @@ namespace Akeneo\Platform\TailoredExport\Application\Query\Selection\File;
 final class FileKeySelection implements FileSelectionInterface
 {
     public const TYPE = 'key';
+    private string $attributeCode;
+
+    public function __construct(string $attributeCode)
+    {
+        $this->attributeCode = $attributeCode;
+    }
+
+    public function getAttributeCode(): string
+    {
+        return $this->attributeCode;
+    }
 }

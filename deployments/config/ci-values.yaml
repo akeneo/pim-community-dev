@@ -1,3 +1,10 @@
+backup:
+  enabled: false
+
+image:
+  pim:
+    repository: eu.gcr.io/akeneo-ci/pim-enterprise-dev
+    
 pim:
   defaultCatalog: src/Akeneo/Platform/Bundle/InstallerBundle/Resources/fixtures/icecat_demo_dev
   secret: 5f559ffb-5b36-4922-9481-022057992057
@@ -9,30 +16,14 @@ pim:
     password: oFVFp9oAEibTCiqJe3omkm
     uiLocale: en_US
   hook:
-    addAdmin:
-      enabled: true
-    installPim:
-      enabled: true
     upgradePim:
       enabled: false # Set me to true when upgrading to a minor version
       hook: "post-upgrade"
     upgradeES:
       enabled: false
-  resources:
-    limits:
-      memory: "512Mi"
-    requests:
-      cpu: "100m"
-      memory: "256Mi"
-backup:
-  enabled: false
 
 mysql:
   mysql:
-    innodbBufferPoolSize: 512M
-    innodb_buffer_pool_instances: 4
-    maxConnections: 151
-    maxAllowedPacket: 4M
     userPassword: 9vbtChLWrLsRhnKkjozHEqqL
     rootPassword: exKJXyqPcVRxsMv7J9W7MdCC
     resources:
@@ -42,25 +33,11 @@ mysql:
 
 elasticsearch:
   client:
-    replicas: 1
     heapSize: "128m"
     resources:
-      limits:
-        cpu: "1"
-        memory: "512Mi"
       requests:
-        cpu: "25m"
         memory: "160Mi"
-  master:
-    persistence:
-      size: 1Gi
   data:
-    persistence:
-      size: 15Gi
     resources:
       requests:
-        cpu: "25m"
         memory: "512Mi"
-image:
-  pim:
-    repository: eu.gcr.io/akeneo-ci/pim-enterprise-dev

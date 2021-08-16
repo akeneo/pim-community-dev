@@ -6,6 +6,12 @@ akeneo.tailored_export:
         label: Zdefiniuj wersje językowe dla kompletności
         placeholder: Wybierz wersje językowe
         remove: Usuń wersję językową
+    quality_score:
+      quality_score:
+        label: Wynik jakości
+        remove: Usuń wynik jakości
+      locales:
+        label: Zdefiniuj ustawienia regionalne uwzględniane w wyniku jakości
   form:
     job_instance:
       tab:
@@ -15,6 +21,10 @@ akeneo.tailored_export:
           title: Eksportuj strukturę
         filters:
           title: Zdefiniuj wybór produktów
+      edit:
+        title: Aby edytować, poproś administratora PIM o sprawdzenie twoich uprawnień.
+      launch:
+        title: Aby eksportować, poproś administratora PIM o sprawdzenie twoich uprawnień.
   column_list:
     title: Kolumny
     header:
@@ -25,7 +35,7 @@ akeneo.tailored_export:
       remove: Usuń kolumnę
       no_source: Zdefiniuj źródło zawartości
     no_column_selection:
-      title: Profil eksportu jest pusty. Dodaj pierwszą kolumnę.
+      title: Twój profil eksportu jest pusty.
       subtitle: Aby rozpocząć tworzenie tabeli eksportu, kliknij 'Dodaj pierwszą kolumnę'.
       link: Aby uzyskać więcej informacji, sprawdź nasze Centrum Pomocy.
       add_column: Dodaj pierwszą kolumnę
@@ -34,13 +44,21 @@ akeneo.tailored_export:
       title: Źródła
       add: Dodaj źródło
       no_result: Przepraszamy, nie ma żadnych wyników.
-      locale_specific.info: Ten atrybut ma wartość na wersję językową.
+      locale_specific: Ten atrybut zależy od ustawień regionalnych.
       remove:
         title: źródło
         text: Czy na pewno chcesz usunąć to źródło?
         button: Usuń to źródło
+      invalid_source:
+        attribute: Ten atrybut został usunięty i odtworzony za pomocą innego typu. Usuń to źródło i dodaj je ponownie.
+        association_type: Ten typ powiązania został usunięty i odtworzony za pomocą innego typu. Usuń to źródło i dodaj je ponownie.
+        property: Ta właściwość jest nieprawidłowa. Usuń to źródło i dodaj je ponownie.
       no_source_configuration:
         title: Dla tego źródła nie ma dostępnych operacji. Jego wartość zostanie wyeksportowana bez zmian.
+      deleted_attribute:
+        title: Ten atrybut został usunięty, nie można już wykorzystywać go jako źródło.
+      deleted_association_type:
+        title: Ten typ powiązania został usunięty, nie można już wykorzystywać go jako źródło.
       no_source_selected:
         title: Aby zacząć definiować zawartość kolumny, kliknij 'Dodaj źródło'.
         link: Aby uzyskać więcej informacji, sprawdź nasze Centrum Pomocy.
@@ -48,6 +66,11 @@ akeneo.tailored_export:
         title: Po zdefiniowaniu pierwszej kolumny możesz wybrać pierwsze źródło.
       selection:
         title: Wybór
+        collection_separator:
+          title: Separator
+          comma: Przecinek (,)
+          semicolon: Średnik (;)
+          pipe: Linia (|)
         type:
           amount: Kwota
           currency: Waluta
@@ -59,8 +82,6 @@ akeneo.tailored_export:
           information:
             locale: Jeśli atrybut używany jako etykieta ma wartość na wersję językową, możesz wybrać określoną wersję językową.
             channel: Jeśli atrybut używany jako etykieta ma wartość na kanał, możesz wybrać określony kanał.
-        code_label:
-          information: Dla tego atrybutu możesz wyeksportować kod lub etykietę.
         measurement:
           information: Dla tego atrybutu możesz wyeksportować wartość, kod jednostki lub etykietę jednostkową.
           value: Wartość
@@ -68,27 +89,55 @@ akeneo.tailored_export:
           unit_code: Kod jednostki
           unit_label: Etykieta jednostki
         price:
-          information: Dla tego atrybutu możesz wyeksportować kwotę lub walutę.
+          currency_code: Kod waluty
+          currency_label: Etykieta waluty
+          currency_locale: Ustawienia regionalne waluty
+          information: W przypadku tego atrybutu możesz wyeksportować kod waluty, etykietę waluty lub kwotę.
         file:
-          information: Dla tego atrybutu możesz wyeksportować ścieżkę, klucz pliku lub nazwę.
+          information: W przypadku tego atrybutu możesz wyeksportować ścieżkę, klucz pliku lub nazwę pliku.
+        decimal_separator:
+          title: Separator dziesiętny
+          comma: Przecinek (,)
+          dot: Kropka (.)
+          arabic_comma: Arabski separator dziesiętny (٫)
+        quantified_association:
+          quantity: Ilość
+        association:
+          entity_type: Typ obiektu
+          information:
+            locale: Jeśli atrybut używany jako etykieta ma wartość zależną od ustawień regionalnych, możesz wybrać określone ustawienia regionalne.
+            channel: Jeśli atrybut używany jako etykieta ma wartość zależną od kanału, możesz wybrać określony kanał.
       operation:
         replacement:
           title: Zastąp wartość
           placeholder: Zdefiniuj wartość zastępczą
           enabled: Włączona wartość zastępcza
           disabled: Wyłączona wartość zastępcza
+          yes: Istnieje wartość zastępcza
+          no: Brak wartości zastępczej
   column:
     delete_message: Czy na pewno chcesz usunąć tę kolumnę?
   validation:
+    required: Ta wartość jest wymagana.
+    max_length_reached: 'Ta wartość jest zbyt długa. Powinna składać się z nie więcej niż następującej liczby znaków: {{ limit }}.'
     columns:
       max_column_count_reached: Osiągnięto limit {{ limit }} kolumn. Nie możesz już dodawać kolumn do eksportu.
       target:
         should_not_be_blank: Zdefiniuj nazwę kolumny.
-        max_length_reached: 'Nazwa kolumny jest zbyt długa. Powinna mieć nie więcej niż następującą liczbę znaków: {{ limit }}.'
+        max_length_reached: 'Nazwa kolumny jest zbyt długa. Powinna składać się z nie więcej niż następującej liczby znaków: {{ limit }}.'
         should_be_unique: Nazwa kolumny już istnieje. Wprowadź nową.
     sources:
       max_source_count_reached: Osiągnięto limit {{ limit }} źródeł. Nie możesz już dodawać źródeł do eksportu.
+      association_type_should_exist: Typ powiązania {{ association_type_code }} nie istnieje. Utwórz go lub wybierz inne źródło.
     locale:
-      should_be_active: Wersja językowa {{ locale_code }} powinna być aktywna.
+      should_be_active: Ustawienia regionalne {{ locale_code }} zostały zdezaktywowane. Aktywuj je ponownie lub wybierz inne ustawienia regionalne.
+      should_be_bound_to_channel: Ustawienia regionalne {{ locale_code }} zostały zdezaktywowane w kanale {{ channel_code }}. Aktywuj je ponownie lub wybierz inne ustawienia regionalne.
     channel:
-      should_exist: Kanał {{ channel_code }} powinien być aktywny.
+      should_exist: Kanał {{ channel_code }} został usunięty. Wybierz inny kanał.
+    attribute:
+      should_exist: Atrybut {{ attribute_code }} nie istnieje. Utwórz go lub wybierz inne źródło.
+      locale_should_not_be_blank: Atrybut {{ attribute_code }} ma obecnie wartość zależną od ustawień regionalnych. Utwórz go lub wybierz inne źródło.
+      channel_should_not_be_blank: Atrybut {{ attribute_code }} ma obecnie wartość zależną od kanału. Utwórz go lub wybierz inne źródło.
+      locale_should_be_blank: Atrybut {{ attribute_code }} nie ma już wartości zależnej od ustawień regionalnych. Utwórz go lub wybierz inne źródło.
+      channel_should_be_blank: Atrybut {{ attribute_code }} nie ma już wartości zależnej od kanału. Utwórz go lub wybierz inne źródło.
+      invalid_specific_locale: Atrybut {{ attribute_code }} jest przypisany do ustawień regionalnych. Wybierz inną wersję językową.

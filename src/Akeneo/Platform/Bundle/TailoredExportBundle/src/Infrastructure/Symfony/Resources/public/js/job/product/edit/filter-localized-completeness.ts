@@ -5,12 +5,13 @@ import {Channel, ValidationError, filterErrors} from '@akeneo-pim-community/shar
 import {pimTheme} from 'akeneo-design-system';
 import {DependenciesProvider} from '@akeneo-pim-community/legacy-bridge';
 import {AssociationType, Attribute, CompletenessFilter, FetcherContext} from '@akeneo-pim-enterprise/tailored-export';
+const _ = require('underscore');
 const __ = require('oro/translator');
+const mediator = require('oro/mediator');
 const BaseFilter = require('pim/filter/filter');
-const BaseCompletenessFilter = require('pim/filter/product/completeness');
 const fetcherRegistry = require('pim/fetcher-registry');
 
-class FilterLocalizedCompleteness extends BaseCompletenessFilter {
+class FilterLocalizedCompleteness extends BaseFilter {
   private validationErrors: ValidationError[] = [];
 
   /**
@@ -39,8 +40,28 @@ class FilterLocalizedCompleteness extends BaseCompletenessFilter {
     this.listenTo(this.parentForm.getRoot(), 'pim_enrich:form:entity:bad_request', (event: any) =>
       this.setValidationErrors(event.response.normalized_errors)
     );
+    this.listenTo(this.getRoot(), 'pim_enrich:form:entity:pre_update', (data: any) => {
+      _.defaults(data, {field: this.getCode(), operator: _.first(this.config.operators), value: 100});
+    });
 
     return BaseFilter.prototype.configure.apply(this, arguments);
+  }
+
+  /**
+   * {@inheritdoc}
+   */
+  render() {
+    this.elements = {};
+    this.setEditable(true);
+
+    mediator.trigger('pim_enrich:form:filter:extension:add', {filter: this});
+
+    this.$el.html(this.renderInput());
+    this.renderElements();
+    this.postRender();
+    this.delegateEvents();
+
+    return this;
   }
 
   setValidationErrors(validationErrors: ValidationError[]) {
@@ -51,21 +72,12 @@ class FilterLocalizedCompleteness extends BaseCompletenessFilter {
   }
 
   /**
-   * Override to prevent the modal handler being called on the base Category filter
-   */
-  openSelector() {}
-
-  /**
    * Returns rendered input.
    *
    * @return {String}
    */
   renderInput() {
-    return '<div class="completeness-filter-container" style="width: 100%"></div>';
-  }
-
-  isEmpty() {
-    return false;
+    return '<div class="completeness-filter-container" style="width: 100%;margin-top: 60px;"></div>';
   }
 
   /**
@@ -119,6 +131,7 @@ class FilterLocalizedCompleteness extends BaseCompletenessFilter {
               availableOperators: this.config.operators,
               filter: this.getFormData(),
               onChange: newFilter => {
+                this.getRoot().model.clear({silent: true});
                 this.setData(newFilter);
                 this.render();
               },

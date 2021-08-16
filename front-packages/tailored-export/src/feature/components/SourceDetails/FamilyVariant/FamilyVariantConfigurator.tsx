@@ -4,15 +4,14 @@ import {filterErrors, useTranslate} from '@akeneo-pim-community/shared';
 import {PropertyConfiguratorProps} from '../../../models';
 import {CodeLabelSelector} from '../common/CodeLabelSelector';
 import {isFamilyVariantSource} from './model';
+import {InvalidPropertySourceError} from '../error';
 
 const FamilyVariantConfigurator = ({source, validationErrors, onSourceChange}: PropertyConfiguratorProps) => {
   const translate = useTranslate();
   const [isSelectorCollapsed, toggleSelectorCollapse] = useState<boolean>(true);
 
   if (!isFamilyVariantSource(source)) {
-    console.error(`Invalid source data "${source.code}" for family variant configurator`);
-
-    return null;
+    throw new InvalidPropertySourceError(`Invalid source data "${source.code}" for family variant configurator`);
   }
 
   return (

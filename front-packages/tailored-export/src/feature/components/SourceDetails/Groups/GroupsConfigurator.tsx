@@ -4,15 +4,14 @@ import {filterErrors, useTranslate} from '@akeneo-pim-community/shared';
 import {PropertyConfiguratorProps} from '../../../models';
 import {CodeLabelCollectionSelector} from '../common/CodeLabelCollectionSelector';
 import {isGroupsSource} from './model';
+import {InvalidPropertySourceError} from '../error';
 
 const GroupsConfigurator = ({source, validationErrors, onSourceChange}: PropertyConfiguratorProps) => {
   const translate = useTranslate();
   const [isSelectorCollapsed, toggleSelectorCollapse] = useState<boolean>(true);
 
   if (!isGroupsSource(source)) {
-    console.error(`Invalid source data "${source.code}" for groups configurator`);
-
-    return null;
+    throw new InvalidPropertySourceError(`Invalid source data "${source.code}" for groups configurator`);
   }
 
   return (

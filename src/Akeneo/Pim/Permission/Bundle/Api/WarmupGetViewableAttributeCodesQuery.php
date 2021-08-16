@@ -13,7 +13,7 @@ declare(strict_types=1);
 
 namespace Akeneo\Pim\Permission\Bundle\Api;
 
-use Akeneo\Pim\Permission\Component\Query\GetViewableAttributeCodesForUserInterface;
+use Akeneo\Pim\Structure\Component\Query\PublicApi\Permission\GetViewableAttributeCodesForUserInterface;
 use Akeneo\Tool\Bundle\ApiBundle\Cache\WarmupQueryCache;
 use Akeneo\UserManagement\Component\Model\UserInterface;
 use Symfony\Component\HttpFoundation\Request;
@@ -69,7 +69,7 @@ final class WarmupGetViewableAttributeCodesQuery implements WarmupQueryCache
             $attributeCodes[] = array_map('strval', array_keys($values));
         }
 
-        return array_values(array_unique(array_merge_recursive(... $attributeCodes)));
+        return array_values(array_unique(array_merge_recursive(...$attributeCodes)));
     }
 
     private function getUserId(): ?int

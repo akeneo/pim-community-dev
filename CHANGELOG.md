@@ -63,7 +63,12 @@
 - PIM-9973: Fix Asset attribute media type dropdown being hidden
 - PIM-9961: Remove useless "global settings" tab on asset and record XLSX imports (SAAS only)
 - PIM-9974: [PIM-9972] Half the selected published product are unpublished through mass action
-
+- PIM-9984: Fix image preview in asset manager in media link attributes
+- PIM-9981: Fix permission to download logs of clean removed attribute values job
+- PIM-9980: Prevent root category selection in Rule Engine set categories action 
+- PIM-9942: Fix message on DQI dashboard in French UI locale
+- PIM-9983: Fix optimization of query to get info about projects
+- PIM-10009: Fix error being printed in the response of partial update of product models API
 
 ## Improvements
 

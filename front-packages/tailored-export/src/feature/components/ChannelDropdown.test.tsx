@@ -63,7 +63,7 @@ const channels: Channel[] = [
 
 test('it display channel dropdown', () => {
   renderWithProviders(
-    <ChannelDropdown value="ecommerce" channels={channels} validationErrors={[]} onChange={jest.fn} />
+    <ChannelDropdown value="ecommerce" channels={channels} validationErrors={[]} onChange={jest.fn()} />
   );
 
   expect(screen.getByLabelText(/pim_common.channel/i)).toBeInTheDocument();
@@ -101,7 +101,7 @@ test('it displays validation errors', () => {
   ];
 
   renderWithProviders(
-    <ChannelDropdown value="ecommerce" channels={channels} validationErrors={validationErrors} onChange={jest.fn} />
+    <ChannelDropdown value="ecommerce" channels={channels} validationErrors={validationErrors} onChange={jest.fn()} />
   );
 
   expect(screen.getByText('error.key.an_error')).toBeInTheDocument();

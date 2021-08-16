@@ -7,6 +7,7 @@ services:
       - '@akeneo_batch.job_repository'
       -
         - '@akeneo.tailored_export.connector.step.xlsx_product.export'
+      - true
     tags:
       - { name: akeneo_batch.job, connector: '%akeneo.tailored_export.connector.name%', type: '%pim_connector.job.export_type%' }
 
@@ -41,6 +42,7 @@ services:
       - '@Akeneo\Platform\TailoredExport\Infrastructure\Hydrator\ValueCollectionHydrator'
       - '@Akeneo\Platform\TailoredExport\Infrastructure\Hydrator\ColumnCollectionHydrator'
       - '@Akeneo\Platform\TailoredExport\Application\ProductMapper'
+      - '@Akeneo\Platform\TailoredExport\Application\MediaToExportExtractor'
 
   akeneo.tailored_export.connector.xlsx.file_writer_factory:
     class: Akeneo\Platform\TailoredExport\Infrastructure\Connector\Writer\File\FileWriterFactory

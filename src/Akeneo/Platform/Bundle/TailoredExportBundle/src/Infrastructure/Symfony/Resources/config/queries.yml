@@ -28,3 +28,10 @@ services:
         class: Akeneo\Platform\TailoredExport\Infrastructure\Query\InMemoryFindSystemSources
         arguments:
             - '@translator'
+
+    Akeneo\Platform\TailoredExport\Domain\Query\FindViewableAttributesInterface:
+        class: Akeneo\Platform\TailoredExport\Infrastructure\Query\FindViewableAttributes
+        arguments:
+            - '@akeneo.pim.structure.query.find_flatten_attributes'
+            - '@pimee_security.query.get_viewable_attribute_codes_for_user'
+            - '@security.token_storage'

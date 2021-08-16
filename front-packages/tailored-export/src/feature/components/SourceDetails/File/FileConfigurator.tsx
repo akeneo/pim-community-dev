@@ -4,15 +4,14 @@ import {filterErrors, useTranslate} from '@akeneo-pim-community/shared';
 import {AttributeConfiguratorProps} from '../../../models';
 import {isFileSource} from './model';
 import {FileSelector} from './FileSelector';
+import {InvalidAttributeSourceError} from '../error';
 
 const FileConfigurator = ({source, validationErrors, onSourceChange}: AttributeConfiguratorProps) => {
   const translate = useTranslate();
   const [isSelectorCollapsed, toggleSelectorCollapse] = useState<boolean>(true);
 
   if (!isFileSource(source)) {
-    console.error(`Invalid source data "${source.code}" for file configurator`);
-
-    return null;
+    throw new InvalidAttributeSourceError(`Invalid source data "${source.code}" for file configurator`);
   }
 
   return (

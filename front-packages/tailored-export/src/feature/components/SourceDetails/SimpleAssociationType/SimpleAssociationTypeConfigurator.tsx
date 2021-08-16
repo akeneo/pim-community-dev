@@ -4,6 +4,7 @@ import {filterErrors, useTranslate} from '@akeneo-pim-community/shared';
 import {AssociationTypeConfiguratorProps} from '../../../models';
 import {isSimpleAssociationTypeSource} from './model';
 import {SimpleAssociationTypeSelector} from './SimpleAssociationTypeSelector';
+import {InvalidAssociationTypeSourceError} from '../error';
 
 const SimpleAssociationTypeConfigurator = ({
   source,
@@ -14,9 +15,7 @@ const SimpleAssociationTypeConfigurator = ({
   const [isSelectorCollapsed, toggleSelectorCollapse] = useState<boolean>(true);
 
   if (!isSimpleAssociationTypeSource(source)) {
-    console.error(`Invalid source data "${source.code}" for association configurator`);
-
-    return null;
+    throw new InvalidAssociationTypeSourceError(`Invalid source data "${source.code}" for association configurator`);
   }
 
   return (
