@@ -4,6 +4,7 @@
 
 - PIM-9975: Skip DQI evaluation for texts coming from Word to fix timeout and performance issues during product save
 - PIM-10012: Fix rule grid mass actions when using the label filter
+- PIM-10023: [BACKPORT PIM-9937] Rule engine - Fix remove action for reference entity collection and asset collection attributes
 
 # 5.0.43 (2021-07-26)
 
