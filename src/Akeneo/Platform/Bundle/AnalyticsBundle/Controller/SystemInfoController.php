@@ -52,7 +52,7 @@ class SystemInfoController
 
         if ('txt' === $_format) {
             $content = $this->templating->render(
-                'PimAnalyticsBundle:SystemInfo:index.txt.twig',
+                '@PimAnalytics/SystemInfo/index.txt.twig',
                 ['data' => $data]
             );
 

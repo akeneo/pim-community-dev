@@ -10,12 +10,12 @@ datagrid:
             code:
                 label: Code
                 type: twig
-                template: PimDataGridBundle:Property:currency_label.html.twig
+                template: '@PimDataGrid/Property/currency_label.html.twig'
                 frontend_type: html
             activated:
                 label: Activated
                 type: twig
-                template: PimDataGridBundle:Property:activated.html.twig
+                template: '@PimDataGrid/Property/activated.html.twig'
                 frontend_type: html
         properties:
             id: ~

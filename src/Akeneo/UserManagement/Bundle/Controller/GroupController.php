@@ -46,7 +46,7 @@ class GroupController extends AbstractController
     /**
      * Create group form
      *
-     * @Template("PimUserBundle:Group:update.html.twig")
+     * @Template("@PimUser/Group/update.html.twig")
      * @AclAncestor("pim_user_group_create")
      */
     public function create()
@@ -59,7 +59,7 @@ class GroupController extends AbstractController
     /**
      * Edit group form
      *
-     * @Template("PimUserBundle:Group:update.html.twig")
+     * @Template("@PimUser/Group/update.html.twig")
      * @AclAncestor("pim_user_group_edit")
      */
     public function update(Group $entity)

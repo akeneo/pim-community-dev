@@ -13,7 +13,7 @@ datagrid:
             activated:
                 label: Activated
                 type: twig
-                template: PimDataGridBundle:Property:activated.html.twig
+                template: '@PimDataGrid/Property/activated.html.twig'
                 frontend_type: html
         properties: ~
         actions: ~

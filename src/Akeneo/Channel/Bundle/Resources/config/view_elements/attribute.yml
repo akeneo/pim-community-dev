@@ -1,5 +1,5 @@
 parameters:
-    pim_enrich.view_element.attribute.tab.history.template:   'PimUIBundle:Form:Tab/history.html.twig'
+    pim_enrich.view_element.attribute.tab.history.template:   '@@PimUI/Form/Tab/history.html.twig'
 
     pim_enrich.attribute.general_parameters.allowed_form_types:
         - code
@@ -30,7 +30,7 @@ services:
         class: '%pim_enrich.view_element.base.class%'
         arguments:
             - 'pane.accordion.general_parameters'
-            - 'PimUIBundle:Attribute:Tab/_default_parameter_form.html.twig'
+            - '@@PimUI/Attribute/Tab/_default_parameter_form.html.twig'
             -
                 allowed_form_types: '%pim_enrich.attribute.general_parameters.allowed_form_types%'
         tags:
@@ -40,7 +40,7 @@ services:
         class: '%pim_enrich.view_element.base.class%'
         arguments:
             - 'pane.accordion.backend_parameters'
-            - 'PimUIBundle:Attribute:Tab/_default_parameter_form.html.twig'
+            - '@@PimUI/Attribute/Tab/_default_parameter_form.html.twig'
             -
                 allowed_form_types: '%pim_enrich.attribute.backend_parameters.allowed_form_types%'
         tags:

@@ -12,7 +12,7 @@ services:
             - '@liip_imagine.cache.manager'
             - '@liip_imagine.filter.manager'
             - '@pim_catalog.repository.cached_attribute'
-            - 'AkeneoPimEnrichmentBundle:Product:renderPdf.html.twig'
+            - '@@AkeneoPimEnrichment/Product/renderPdf.html.twig'
             - '@pim_catalog.repository.cached_attribute_option'
             - '%pim_pdf_generator_font%'
             - '@pim_catalog.repository.cached_attribute_option'

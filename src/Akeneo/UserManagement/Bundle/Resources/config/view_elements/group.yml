@@ -1,6 +1,6 @@
 parameters:
-    pim_user.view_element.group.tab.general.template: 'PimUserBundle:Group:Tab/general.html.twig'
-    pim_user.view_element.group.tab.users.template:   'PimUserBundle:Group:Tab/users.html.twig'
+    pim_user.view_element.group.tab.general.template: '@@PimUser/Group/Tab/general.html.twig'
+    pim_user.view_element.group.tab.users.template:   '@@PimUser/Group/Tab/users.html.twig'
 
 services:
     pim_user.view_element.group.tab.general:

@@ -40,7 +40,7 @@ class RoleController extends AbstractController
 
     /**
      * @AclAncestor("pim_user_role_create")
-     * @Template("PimUserBundle:Role:update.html.twig")
+     * @Template("@PimUser/Role/update.html.twig")
      */
     public function create()
     {
@@ -49,7 +49,7 @@ class RoleController extends AbstractController
 
     /**
      * @AclAncestor("pim_user_role_edit")
-     * @Template("PimUserBundle:Role:update.html.twig")
+     * @Template("@PimUser/Role/update.html.twig")
      */
     public function update(Role $entity)
     {
