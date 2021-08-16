@@ -20,8 +20,7 @@ class AggregateVolumesCommand extends Command
 {
     protected static $defaultName = 'pim:volume:aggregate';
 
-    /** @var VolumeAggregation */
-    private $volumeAggregation;
+    private VolumeAggregation $volumeAggregation;
 
     public function __construct(VolumeAggregation $volumeAggregation)
     {
@@ -35,19 +34,20 @@ class AggregateVolumesCommand extends Command
      */
     protected function configure()
     {
-        $this
-            ->setDescription('Aggregate the result of all the volume queries that should not be executed live');
+        $this->setDescription('Aggregate the result of all the volume queries that should not be executed live');
     }
 
     /**
      * {@inheritdoc}
      */
-    protected function execute(InputInterface $input, OutputInterface $output)
+    protected function execute(InputInterface $input, OutputInterface $output): int
     {
         $output->writeln('Aggregation in progress. It can take minutes or hours depending on the size of the catalog.');
 
         $this->volumeAggregation->aggregate();
 
         $output->writeln('Catalog volumes aggregation done.');
+
+        return Command::SUCCESS;
     }
 }
