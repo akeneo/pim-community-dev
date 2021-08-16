@@ -121,6 +121,11 @@ akeneo.tailored_export:
           title: Use default value when empty
           label: Default value
           placeholder: Define the value
+    concatenation:
+      title: Concatenation
+      preview: Preview
+      space_between: Add space between sources
+      add_text: Add text
   column:
     delete_message: Are you sure you want to remove this column?
   validation:

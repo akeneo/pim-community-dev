@@ -21,6 +21,7 @@ import {useFetchers, useValidationErrors} from '../../contexts';
 import {useChannels} from '../../hooks';
 import {NoSourcePlaceholder} from './ColumnDetailsPlaceholder';
 import {SourceFooter} from './SourceFooter';
+import {SourcesConcatenation} from './SourcesConcatenation/SourcesConcatenation';
 
 const Container = styled.div`
   height: 100%;
@@ -148,6 +149,7 @@ const ColumnDetails = ({columnConfiguration, onColumnChange}: ColumnDetailsProps
         </ConfiguratorContainer>
         {currentSource && <SourceFooter source={currentSource} onSourceRemove={handleSourceRemove} />}
       </Content>
+      <SourcesConcatenation columnConfiguration={columnConfiguration} onColumnConfigurationChange={onColumnChange} />
     </Container>
   );
 };
