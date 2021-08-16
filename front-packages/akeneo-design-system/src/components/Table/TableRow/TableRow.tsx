@@ -6,7 +6,7 @@ import {Override} from '../../../shared';
 import {TableContext} from '../TableContext';
 import {TableCell} from '../TableCell/TableCell';
 import {RowIcon} from '../../../icons';
-import {PlaceholderPosition, usePlaceholderPosition} from './usePlaceholderPosition';
+import {PlaceholderPosition, usePlaceholderPosition} from '../../../hooks/usePlaceholderPosition';
 
 const RowContainer = styled.tr<
   {

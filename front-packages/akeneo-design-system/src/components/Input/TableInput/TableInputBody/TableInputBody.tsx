@@ -3,9 +3,8 @@ import React, {Children, cloneElement, ReactNode, Ref, useContext} from 'react';
 import {getColor} from '../../../../theme';
 import {TableInputContext} from '../TableInputContext';
 import {TableInputRowProps} from '../TableInputRow/TableInputRow';
-// TODO Move this file into Shared
-import {useDragElementIndex} from '../../../Table/TableBody/useDragElementIndex';
-import {useDrop} from './useDrop';
+import {useDragElementIndex} from '../../../../hooks/useDragElementIndex';
+import {useDrop} from '../../../../hooks/useDrop';
 
 const TableInputTbody = styled.tbody`
   /*
@@ -25,7 +24,7 @@ type TableInputBodyProps = {
 const TableInputBody = React.forwardRef<HTMLTableSectionElement, TableInputBodyProps>(
   ({children, ...rest}: TableInputBodyProps, forwardedRef: Ref<HTMLTableSectionElement>) => {
     const [draggedElementIndex, onDragStart, onDragEnd] = useDragElementIndex();
-    const {isDragAndDroppable} = useContext(TableInputContext);
+    const {isDragAndDroppable, onReorder} = useContext(TableInputContext);
 
     const decoratedChildren = Children.map(children, (child, rowIndex) => {
       if (!React.isValidElement<TableInputRowProps>(child)) {
@@ -45,7 +44,7 @@ const TableInputBody = React.forwardRef<HTMLTableSectionElement, TableInputBodyP
     });
 
     const rowCount = Children.count(decoratedChildren);
-    const [tableId, onDrop, onDragOver] = useDrop(rowCount, draggedElementIndex);
+    const [tableId, onDrop, onDragOver] = useDrop(rowCount, draggedElementIndex, onReorder);
 
     return (
       <TableInputTbody data-table-id={tableId} onDrop={onDrop} onDragOver={onDragOver} ref={forwardedRef} {...rest}>
