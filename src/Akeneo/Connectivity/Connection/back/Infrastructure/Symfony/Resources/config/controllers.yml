@@ -79,3 +79,11 @@ services:
             - '@akeneo_connectivity.connection.marketplace.app_url_generator'
             - '@oro_security.security_facade'
             - '@akeneo_connectivity.connection.marketplace_activate.feature'
+
+    akeneo_connectivity.connection.public.controller.apps.authorize:
+        public: true
+        class: Akeneo\Connectivity\Connection\Infrastructure\Apps\Controller\AuthorizeAction
+        arguments:
+            - '@Akeneo\Connectivity\Connection\Application\Apps\Command\AuthorizeAppHandler'
+            - '@router'
+            - '@akeneo_connectivity.connection.marketplace_activate.feature'
