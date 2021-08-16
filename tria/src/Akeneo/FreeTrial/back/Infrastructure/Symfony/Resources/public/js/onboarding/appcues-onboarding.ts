@@ -8,7 +8,6 @@ const Mediator = require('oro/mediator');
 const AppcuesOnboarding: PimOnboarding = {
   registerUser: () => {
     getAppcuesAgent().then(appcues => {
-      console.log('test', appcues);
       if (!FeatureFlags.isEnabled('free_trial') || appcues === null) {
         return;
       }
