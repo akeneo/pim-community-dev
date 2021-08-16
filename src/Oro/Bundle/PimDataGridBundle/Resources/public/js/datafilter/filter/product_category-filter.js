@@ -151,8 +151,8 @@ define(['jquery', 'underscore', 'oro/datafilter/number-filter', 'pim/tree/view',
      * @inheritDoc
      */
     reset: function () {
-            TreeView.reset();
-            NumberFilter.prototype.reset.apply(this, arguments);
+      TreeView.reset();
+      NumberFilter.prototype.reset.apply(this, arguments);
     },
-    });
+  });
 });
