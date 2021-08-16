@@ -2,7 +2,6 @@ parameters:
     akeneo_batch.job_instance_factory.class:                  Akeneo\Tool\Bundle\BatchBundle\Job\JobInstanceFactory
     akeneo_batch.logger_subscriber.class:                     Akeneo\Tool\Bundle\BatchBundle\EventListener\LoggerSubscriber
     akeneo_batch.notification_subscriber.class:               Akeneo\Tool\Bundle\BatchBundle\EventListener\NotificationSubscriber
-    akeneo_batch.lock_subscriber.class:                       Akeneo\Tool\Bundle\BatchBundle\EventListener\LockSubscriber
     akeneo_batch.load_job_parameters_listener.class:          Akeneo\Tool\Bundle\BatchBundle\EventListener\LoadJobParametersListener
     akeneo_batch.logger.batch_log_handler.class:              Akeneo\Tool\Bundle\BatchBundle\Monolog\Handler\BatchLogHandler
     akeneo_batch.mail_notifier.class:                         Akeneo\Tool\Bundle\BatchBundle\Notification\MailNotifier

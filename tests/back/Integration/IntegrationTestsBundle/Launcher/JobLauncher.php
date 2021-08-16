@@ -143,7 +143,7 @@ class JobLauncher
              sprintf('%s/bin/console', $this->kernel->getProjectDir()),
             'akeneo:batch:job',
             sprintf('--env=%s', $this->kernel->getEnvironment()),
-            sprintf("--config='%s'", json_encode($config, JSON_HEX_APOS)),
+            sprintf("--config=%s", json_encode($config, JSON_HEX_APOS)),
             '-v',
             $jobCode
         ];

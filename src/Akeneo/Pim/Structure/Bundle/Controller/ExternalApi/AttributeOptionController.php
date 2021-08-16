@@ -39,44 +39,19 @@ use Symfony\Component\Validator\Validator\ValidatorInterface;
  */
 class AttributeOptionController
 {
-    /** @var AttributeRepositoryInterface */
-    protected $attributeRepository;
-
-    /** @var ApiResourceRepositoryInterface */
-    protected $attributeOptionsRepository;
-
-    /** @var NormalizerInterface */
-    protected $normalizer;
-
-    /** @var SimpleFactoryInterface */
-    protected $factory;
-
-    /** @var ObjectUpdaterInterface */
-    protected $updater;
-
-    /** @var  ValidatorInterface */
-    protected $validator;
-
-    /** @var SaverInterface */
-    protected $saver;
-
-    /** @var RouterInterface */
-    protected $router;
-
-    /** @var PaginatorInterface */
-    protected $paginator;
-
-    /** @var ParameterValidatorInterface */
-    protected $parameterValidator;
-
-    /** @var StreamResourceResponse */
-    protected $partialUpdateStreamResource;
-
-    /** @var array */
-    protected $apiConfiguration;
-
-    /** @var array */
-    protected $supportedAttributeTypes;
+    protected AttributeRepositoryInterface $attributeRepository;
+    protected ApiResourceRepositoryInterface $attributeOptionsRepository;
+    protected NormalizerInterface $normalizer;
+    protected SimpleFactoryInterface $factory;
+    protected ObjectUpdaterInterface $updater;
+    protected ValidatorInterface $validator;
+    protected SaverInterface $saver;
+    protected RouterInterface $router;
+    protected PaginatorInterface $paginator;
+    protected ParameterValidatorInterface $parameterValidator;
+    protected StreamResourceResponse $partialUpdateStreamResource;
+    protected array $apiConfiguration;
+    protected array $supportedAttributeTypes;
 
     private ApiAggregatorForAttributeOptionPostSaveEventSubscriber $apiAggregatorForAttributeOptionPostSave;
 

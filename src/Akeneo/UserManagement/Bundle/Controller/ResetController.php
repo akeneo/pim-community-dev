@@ -88,7 +88,7 @@ class ResetController extends AbstractController
             ->setFrom((string)SenderAddress::fromMailerUrl($this->mailerUrl))
             ->setTo($user->getEmail())
             ->setBody(
-                $this->renderView('PimUserBundle:Mail:reset.html.twig', ['user' => $user]),
+                $this->renderView('@PimUser/Mail/reset.html.twig', ['user' => $user]),
                 'text/html'
             );
 

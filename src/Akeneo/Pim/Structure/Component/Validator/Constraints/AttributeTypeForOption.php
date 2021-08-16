@@ -13,11 +13,8 @@ use Symfony\Component\Validator\Constraint;
  */
 class AttributeTypeForOption extends Constraint
 {
-    /** @var string */
-    public $invalidAttributeMessage = 'Attribute "%attribute%" does not support options. Only attributes of type "%attribute_types%" support options';
-
-    /** @var string */
-    public $propertyPath = null;
+    public string $invalidAttributeMessage = 'Attribute "%attribute%" does not support options. Only attributes of type "%attribute_types%" support options';
+    public string $propertyPath = '';
 
     /**
      * {@inheritdoc}

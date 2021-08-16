@@ -17,12 +17,8 @@ use Symfony\Component\Validator\Exception\UnexpectedTypeException;
 class AttributeTypeForOptionValidator extends ConstraintValidator
 {
     /** @var string[] */
-    protected $supportedAttributeTypes;
+    protected array $supportedAttributeTypes;
 
-    /**
-     * AttributeTypeForOptionValidator constructor.
-     * @param array $supportedAttributeTypes
-     */
     public function __construct(array $supportedAttributeTypes)
     {
         $this->supportedAttributeTypes = $supportedAttributeTypes;
