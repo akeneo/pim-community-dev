@@ -2,6 +2,11 @@ import {uuid} from 'akeneo-design-system';
 import {ChannelReference, LocaleReference} from '@akeneo-pim-community/shared';
 import {Attribute, Source} from '../../../models';
 import {CodeLabelCollectionSelection, isCodeLabelCollectionSelection} from '../common/CodeLabelCollectionSelector';
+import {DefaultValueOperation, isDefaultValueOperation} from '../common';
+
+type MultiSelectOperations = {
+  default_value?: DefaultValueOperation;
+};
 
 type MultiSelectSource = {
   uuid: string;
@@ -9,7 +14,7 @@ type MultiSelectSource = {
   type: 'attribute';
   locale: LocaleReference;
   channel: ChannelReference;
-  operations: {};
+  operations: MultiSelectOperations;
   selection: CodeLabelCollectionSelection;
 };
 
@@ -27,8 +32,18 @@ const getDefaultMultiSelectSource = (
   selection: {type: 'code', separator: ','},
 });
 
+const isMultiSelectOperations = (operations: Object): operations is MultiSelectOperations =>
+  Object.entries(operations).every(([type, operation]) => {
+    switch (type) {
+      case 'default_value':
+        return isDefaultValueOperation(operation);
+      default:
+        return false;
+    }
+  });
+
 const isMultiSelectSource = (source: Source): source is MultiSelectSource =>
-  isCodeLabelCollectionSelection(source.selection);
+  isCodeLabelCollectionSelection(source.selection) && isMultiSelectOperations(source.operations);
 
 export {getDefaultMultiSelectSource, isMultiSelectSource};
 export type {MultiSelectSource};

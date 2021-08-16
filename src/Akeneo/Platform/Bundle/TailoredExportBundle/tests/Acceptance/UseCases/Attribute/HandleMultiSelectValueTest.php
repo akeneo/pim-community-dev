@@ -13,11 +13,14 @@ declare(strict_types=1);
 
 namespace Akeneo\Platform\TailoredExport\Test\Acceptance\UseCases\Attribute;
 
-use Akeneo\Platform\TailoredExport\Application\Query\Selection\MultiSelect\MultiSelectCodeSelection;
-use Akeneo\Platform\TailoredExport\Application\Query\Selection\MultiSelect\MultiSelectLabelSelection;
-use Akeneo\Platform\TailoredExport\Application\Query\Selection\SelectionInterface;
-use Akeneo\Platform\TailoredExport\Domain\SourceValue\MultiSelectValue;
-use Akeneo\Platform\TailoredExport\Domain\SourceValueInterface;
+use Akeneo\Platform\TailoredExport\Application\Common\Operation\DefaultValueOperation;
+use Akeneo\Platform\TailoredExport\Application\Common\Selection\MultiSelect\MultiSelectCodeSelection;
+use Akeneo\Platform\TailoredExport\Application\Common\Selection\MultiSelect\MultiSelectLabelSelection;
+use Akeneo\Platform\TailoredExport\Application\Common\Selection\SelectionInterface;
+use Akeneo\Platform\TailoredExport\Application\Common\SourceValue\MultiSelectValue;
+use Akeneo\Platform\TailoredExport\Application\Common\SourceValue\NullValue;
+use Akeneo\Platform\TailoredExport\Application\Common\SourceValue\SourceValueInterface;
+use Akeneo\Platform\TailoredExport\Application\MapValues\MapValuesQuery;
 use Akeneo\Platform\TailoredExport\Test\Acceptance\FakeServices\AttributeOption\InMemoryFindAttributeOptionLabels;
 use PHPUnit\Framework\Assert;
 
@@ -32,13 +35,13 @@ final class HandleMultiSelectValueTest extends AttributeTestCase
         SourceValueInterface $value,
         array $expected
     ): void {
-        $productMapper = $this->getProductMapper();
+        $mapValuesQueryHandler = $this->getMapValuesQueryHandler();
         $this->loadOptions();
 
         $columnCollection = $this->createSingleSourceColumnCollection($operations, $selection);
         $valueCollection = $this->createSingleValueValueCollection($value);
 
-        $mappedProduct = $productMapper->map($columnCollection, $valueCollection);
+        $mappedProduct = $mapValuesQueryHandler->handle(new MapValuesQuery($columnCollection, $valueCollection));
 
         Assert::assertSame($expected, $mappedProduct);
     }
@@ -46,17 +49,37 @@ final class HandleMultiSelectValueTest extends AttributeTestCase
     public function provider(): array
     {
         return [
-            [
+            'it selects the option codes' => [
                 'operations' => [],
                 'selection' => new MultiSelectCodeSelection('/'),
                 'value' => new MultiSelectValue(['cotton', 'wool']),
                 'expected' => [self::TARGET_NAME => 'cotton/wool']
             ],
-            [
+            'it selects the option labels' => [
                 'operations' => [],
                 'selection' => new MultiSelectLabelSelection('/', 'fr_FR', 'material'),
                 'value' => new MultiSelectValue(['cotton', 'wool']),
                 'expected' => [self::TARGET_NAME => '[cotton]/Laine']
+            ],
+            'it applies default value operation when value is null' => [
+                'operations' => [
+                    DefaultValueOperation::createFromNormalized([
+                        'value' => 'n/a'
+                    ]),
+                ],
+                'selection' => new MultiSelectCodeSelection('/'),
+                'value' => new NullValue(),
+                'expected' => [self::TARGET_NAME => 'n/a']
+            ],
+            'it does not apply default value operation when value is not null' => [
+                'operations' => [
+                    DefaultValueOperation::createFromNormalized([
+                        'value' => 'n/a'
+                    ]),
+                ],
+                'selection' => new MultiSelectCodeSelection('/'),
+                'value' => new MultiSelectValue(['cotton', 'wool']),
+                'expected' => [self::TARGET_NAME => 'cotton/wool']
             ],
         ];
     }

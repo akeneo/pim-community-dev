@@ -14,8 +14,8 @@ declare(strict_types=1);
 namespace Akeneo\Platform\TailoredExport\Test\Integration\Infrastructure\Query;
 
 use Akeneo\Pim\Structure\Component\AttributeTypes;
-use Akeneo\Platform\TailoredExport\Domain\Query\FindViewableAttributesInterface;
-use Akeneo\Platform\TailoredExport\Domain\Query\ViewableAttributesResult;
+use Akeneo\Platform\TailoredExport\Domain\Query\Attribute\FindViewableAttributesInterface;
+use Akeneo\Platform\TailoredExport\Domain\Query\Attribute\ViewableAttributesResult;
 use Akeneo\Platform\TailoredExport\Test\Integration\IntegrationTestCase;
 use Akeneo\Test\Integration\Configuration;
 
@@ -133,8 +133,10 @@ class FindViewableAttributesIntegrationTest extends IntegrationTestCase
         ], $viewableAttributesResult);
     }
 
-    private function assertResultContainAttributeCodes(array $expectedAttributeCodes, ViewableAttributesResult $viewableAttributesResult)
-    {
+    private function assertResultContainAttributeCodes(
+        array $expectedAttributeCodes,
+        ViewableAttributesResult $viewableAttributesResult
+    ) {
         $actualAttributeCodes = array_map(static fn ($attribute) => $attribute->getCode(), $viewableAttributesResult->getAttributes());
         $this->assertEquals($expectedAttributeCodes, $actualAttributeCodes);
     }
@@ -244,7 +246,9 @@ class FindViewableAttributesIntegrationTest extends IntegrationTestCase
 
     private function getQuery(): FindViewableAttributesInterface
     {
-        return $this->get('Akeneo\Platform\TailoredExport\Domain\Query\FindViewableAttributesInterface');
+        return $this->get(
+            'Akeneo\Platform\TailoredExport\Domain\Query\Attribute\FindViewableAttributesInterface'
+        );
     }
 
     protected function getConfiguration(): Configuration
