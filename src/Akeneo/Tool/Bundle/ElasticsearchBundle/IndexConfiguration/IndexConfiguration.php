@@ -11,20 +11,10 @@ namespace Akeneo\Tool\Bundle\ElasticsearchBundle\IndexConfiguration;
  */
 class IndexConfiguration
 {
-    /** @var array */
-    protected $settings;
+    protected array $settings;
+    protected array $mappings;
+    protected array $aliases;
 
-    /** @var array */
-    protected $mappings;
-
-    /** @var array */
-    protected $aliases;
-
-    /**
-     * @param array $settings
-     * @param array $mappings
-     * @param array $aliases
-     */
     public function __construct(array $settings, array $mappings, array $aliases)
     {
         $this->settings = $settings;
@@ -34,10 +24,8 @@ class IndexConfiguration
 
     /**
      * Get the full aggregated index configuration of Settings, Mappings and Aliases.
-     *
-     * @return array
      */
-    public function buildAggregated()
+    public function buildAggregated(): array
     {
         $settings = !empty($this->settings) ? $this->settings : new \stdClass();
         $mappings = !empty($this->mappings) ? $this->mappings : new \stdClass();
@@ -52,31 +40,30 @@ class IndexConfiguration
 
     /**
      * Get the index settings configuration
-     *
-     * @return array
      */
-    public function getSettings()
+    public function getSettings(): array
     {
         return $this->settings;
     }
 
     /**
      * Get the index mappings configuration
-     *
-     * @return array
      */
-    public function getMappings()
+    public function getMappings(): array
     {
         return $this->mappings;
     }
 
     /**
      * Get the index aliases configuration
-     *
-     * @return array
      */
-    public function getAliases()
+    public function getAliases(): array
     {
         return $this->aliases;
+    }
+
+    public function getHash(): string
+    {
+        return \sha1(\json_encode($this->buildAggregated()));
     }
 }
