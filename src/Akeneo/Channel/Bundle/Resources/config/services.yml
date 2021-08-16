@@ -70,7 +70,6 @@ services:
         arguments:
             - '@pim_catalog.repository.locale'
             - '@pim_catalog.saver.locale'
-            - '@pim_catalog.command_launcher'
             - '@security.token_storage'
             - '@akeneo_batch_queue.launcher.queue_job_launcher'
             - '@akeneo_batch.job.job_instance_repository'
