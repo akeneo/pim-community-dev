@@ -46,7 +46,7 @@ const AppcuesOnboarding: PimOnboarding = {
         footer: "<p>Your footer here</p>",
         // And if you'd prefer to use a custom icon rather than the default "bell" icon, you can optionally pass
         // in an icon as well. Make sure that src is set to the right resource, whether it's in your site's directory or hosted
-        icon: '../../icons/LaunchpadIcon.svg'
+        icon: '/bundles/akeneofreetrial/icons/LaunchpadIcon.svg'
       });
     });
   },
