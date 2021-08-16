@@ -36,24 +36,24 @@ class LocaleSubscriberSpec extends ObjectBehavior
         SessionInterface $session
     ) {
         $event->getRequest()->willReturn($request);
+        $request->hasSession()->willReturn(true);
         $request->getSession()->willReturn($session);
         $session->get('_locale')->willReturn('fr_FR');
+
         $request->setLocale('fr_FR')->shouldBeCalled();
 
         $this->onKernelRequest($event);
     }
 
     function it_not_sets_locale_on_kernel_request_if_user_session_is_null_and_config_does_not_exists(
-        $em,
+        EntityManager $em,
         RequestEvent $event,
         Request $request,
-        SessionInterface $session,
         Connection $connection,
         Statement $statement
     ) {
         $event->getRequest()->willReturn($request);
-        $request->getSession()->willReturn($session);
-        $session->get('_locale')->willReturn(null);
+        $request->hasSession()->willReturn(false);
 
         $em->getConnection()->willReturn($connection);
         $connection->executeQuery('SELECT value FROM oro_config_value WHERE name = "language" AND section = "pim_ui" LIMIT 1')->willReturn($statement);
@@ -66,16 +66,14 @@ class LocaleSubscriberSpec extends ObjectBehavior
     }
 
     function it_sets_locale_from_config_on_kernel_request_if_user_session_is_null(
-        $em,
+        EntityManager $em,
         RequestEvent $event,
         Request $request,
-        SessionInterface $session,
         Connection $connection,
         Statement $statement
     ) {
         $event->getRequest()->willReturn($request);
-        $request->getSession()->willReturn($session);
-        $session->get('_locale')->willReturn(null);
+        $request->hasSession()->willReturn(false);
 
         $em->getConnection()->willReturn($connection);
         $connection->executeQuery('SELECT value FROM oro_config_value WHERE name = "language" AND section = "pim_ui" LIMIT 1')->willReturn($statement);
