@@ -25,7 +25,7 @@ final class LocaleShouldBeActive extends Constraint
     /**
      * {@inheritdoc}
      */
-    public function validatedBy()
+    public function validatedBy(): string
     {
         return 'akeneo.tailored_export.validation.locale_should_be_active';
     }

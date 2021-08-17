@@ -1,24 +1,143 @@
 batch_jobs.xlsx_tailored_product_export.label: Export sur mesure des produits en XLSX
 akeneo.tailored_export:
+  filters:
+    completeness:
+      locales:
+        label: Définir les locales pour la complétude
+        placeholder: Sélectionnez une ou plusieurs locales
+        remove: Retirer la locale
+    quality_score:
+      quality_score:
+        label: Score de qualité
+        remove: Retirer le score de qualité
+      locales:
+        label: Définir les locales pour le score de qualité
+  form:
+    job_instance:
+      tab:
+        content:
+          title: Sélection des produits
+        column:
+          title: Structure de l'export
+        filters:
+          title: Définissez votre sélection de produits
+      edit:
+        title: Afin d'éditer ce profil, veuillez vérifier vos permissions avec votre administrateur.
+      launch:
+        title: Afin d'exporter, veuillez vérifier vos permissions avec votre administrateur.
   column_list:
     title: Colonnes
+    header:
+      column_name: En-tête de la colonne
+      source_data: Contenu de la colonne
     column_row:
+      target_placeholder: Définissez votre en-tête de colonne ici
       remove: Supprimer la colonne
+      no_source: Définissez la source du contenu de votre colonne
     no_column_selection:
+      title: Votre profil d'export est vide.
+      subtitle: Cliquez sur « Ajouter la première colonne » pour commencer à construire votre profil d'export.
+      link: Consultez notre Help Center pour plus d'informations.
       add_column: Ajouter votre première colonne
   column_details:
     sources:
       title: Sources de données
       add: Ajouter une source de données
       no_result: Désolé, il n'y a aucun résultat.
+      locale_specific: Cet attribut est spécifique à une ou plusieurs locales.
       remove:
         title: source
         text: Êtes-vous sûr de vouloir supprimer cette source de données ?
         button: Supprimer cette source
+      invalid_source:
+        attribute: L'attribut utilisé en tant que source a été supprimé et recréé avec un autre type. Veuillez supprimer cette source et l'ajouter à nouveau.
+        association_type: Ce type d'association utilisé en tant que source a été supprimé et recréé avec un autre type. Veuillez supprimer cette source et l'ajouter à nouveau.
+        property: Cette propriété n'est pas valide, veuillez supprimer cette source et l'ajouter à nouveau.
+      no_source_configuration:
+        title: Aucune opération n'est disponible pour cette source. Seule sa valeur sera exportée.
+      deleted_attribute:
+        title: Cet attribut a été supprimé, vous ne pouvez plus l'utiliser comme source.
+      deleted_association_type:
+        title: Ce type d'association a été supprimé, vous ne pouvez désormais plus l'utiliser comme source.
+      no_source_selected:
+        title: Cliquez sur « Ajouter une source » pour commencer à définir le contenu de votre colonne.
+        link: Consultez notre Help Center pour plus d'informations.
+      no_column_selected:
+        title: Une fois que votre première colonne est définie, vous pouvez ajouter votre première source.
       selection:
         title: Sélection
+        collection_separator:
+          title: Séparateur
+          comma: Virgule (,)
+          semicolon: Point-virgule (;)
+          pipe: Barre verticale (|)
         type:
           amount: Montant
           currency: Devise
+          key: Clé du fichier
+          path: Chemin d'accès
+          name: Nom du fichier
+        format: Format
+        parent:
+          information:
+            locale: Si l'attribut en tant que libellé a une valeur par locale, vous pouvez sélectionner une locale spécifique.
+            channel: Si l'attribut en tant que libellé a une valeur par canal, vous pouvez sélectionner un canal spécifique.
+        measurement:
+          information: Pour cet attribut, vous pouvez exporter la valeur, le code de l'unité ou le libellé de l'unité.
+          value: Valeur
+          unit_locale: Locale de l'unité
+          unit_code: Code de l'unité
+          unit_label: Libellé de l'unité
+        price:
+          currency_code: Code de la devise
+          currency_label: Libellé de la devise
+          currency_locale: Locale de la devise
+          information: Pour cet attribut, vous pouvez exporter le code de la devise, le libellé de la devise ou le montant.
+        file:
+          information: Pour cet attribut, vous pouvez exporter soit le chemin d'accès, la clé du fichier ou le nom du fichier.
+        decimal_separator:
+          title: Séparateur décimal
+          comma: Virgule (,)
+          dot: Point (.)
+          arabic_comma: Séparateur décimal arabe (٫)
+        quantified_association:
+          quantity: Quantité
+        association:
+          entity_type: Type d'entité
+          information:
+            locale: Si l'attribut en tant que libellé a une valeur par locale, vous pouvez sélectionner une locale spécifique.
+            channel: Si l'attribut en tant que libellé a une valeur par canal, vous pouvez sélectionner un canal spécifique.
+      operation:
+        replacement:
+          title: Remplacer la valeur
+          placeholder: Définir la valeur de remplacement
+          enabled: Valeur de remplacement de l'état activé
+          disabled: Valeur de remplacement de l'état désactivé
+          yes: Valeur de remplacement si vrai
+          no: Valeur de remplacement si faux
   column:
     delete_message: Êtes-vous sûr de vouloir supprimer cette colonne ?
+  validation:
+    required: Une valeur est requise.
+    max_length_reached: Cette valeur est trop longue. Elle doit contenir {{ max }} caractères ou moins.
+    columns:
+      max_column_count_reached: Vous avez atteint la limite de {{ limit }} colonnes, vous ne pouvez plus ajouter de colonnes à votre profil d'export.
+      target:
+        should_not_be_blank: Veuillez définir un en-tête de colonne.
+        max_length_reached: L'en-tête de cette colonne est trop long. Il doit contenir {{ max }} caractères ou moins.
+        should_be_unique: Cet en-tête de colonne existe déjà, veuillez en saisir un nouveau.
+    sources:
+      max_source_count_reached: Vous avez atteint la limite de {{ limit }} sources, vous ne pouvez plus ajouter de sources à votre profil d'export.
+      association_type_should_exist: Le type d'association {{ association_type_code }} n'existe pas. Veuillez le créer ou choisissez une source différente.
+    locale:
+      should_be_active: La locale {{ locale_code }} a été désactivée. Réactivez-la ou sélectionnez une autre locale.
+      should_be_bound_to_channel: La locale {{ locale_code }} a été désactivée pour le canal {{ channel_code }}. Réactivez-la ou sélectionnez une autre locale.
+    channel:
+      should_exist: Le canal {{ channel_code }} a été supprimé. Veuillez sélectionner un autre canal.
+    attribute:
+      should_exist: L'attribut {{ attribute_code }} n'existe pas. Veuillez le créer ou choisissez une source différente.
+      locale_should_not_be_blank: L'attribut {{ attribute_code }} a maintenant une valeur par locale. Veuillez la créer ou choisissez une source différente.
+      channel_should_not_be_blank: L'attribut {{ attribute_code }} a maintenant une valeur par canal. Veuillez le créer ou choisissez une source différente.
+      locale_should_be_blank: L'attribut {{ attribute_code }} n'a plus de valeur par locale. Veuillez la créer ou choisissez une source différente.
+      channel_should_be_blank: L'attribut {{ attribute_code }} n'a plus de valeur par canal. Veuillez le créer ou choisissez une source différente.
+      invalid_specific_locale: L'attribut {{ attribute_code }} est spécifique à une ou plusieurs locales. Veuillez sélectionner une autre locale.

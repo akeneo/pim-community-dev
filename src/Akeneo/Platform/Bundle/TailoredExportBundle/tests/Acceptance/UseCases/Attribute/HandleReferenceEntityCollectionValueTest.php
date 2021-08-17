@@ -13,12 +13,15 @@ declare(strict_types=1);
 
 namespace Akeneo\Platform\TailoredExport\Test\Acceptance\UseCases\Attribute;
 
-use Akeneo\Platform\TailoredExport\Application\Query\Selection\ReferenceEntityCollection\ReferenceEntityCollectionCodeSelection;
-use Akeneo\Platform\TailoredExport\Application\Query\Selection\ReferenceEntityCollection\ReferenceEntityCollectionLabelSelection;
-use Akeneo\Platform\TailoredExport\Application\Query\Selection\SelectionInterface;
-use Akeneo\Platform\TailoredExport\Domain\SourceValue\ReferenceEntityCollectionValue;
-use Akeneo\Platform\TailoredExport\Domain\SourceValueInterface;
-use Akeneo\Platform\TailoredExport\Test\Acceptance\FakeServices\ReferenceEntity\InMemoryFindRecordsLabelTranslations;
+use Akeneo\Platform\TailoredExport\Application\Common\Operation\DefaultValueOperation;
+use Akeneo\Platform\TailoredExport\Application\Common\Selection\ReferenceEntityCollection\ReferenceEntityCollectionCodeSelection;
+use Akeneo\Platform\TailoredExport\Application\Common\Selection\ReferenceEntityCollection\ReferenceEntityCollectionLabelSelection;
+use Akeneo\Platform\TailoredExport\Application\Common\Selection\SelectionInterface;
+use Akeneo\Platform\TailoredExport\Application\Common\SourceValue\NullValue;
+use Akeneo\Platform\TailoredExport\Application\Common\SourceValue\ReferenceEntityCollectionValue;
+use Akeneo\Platform\TailoredExport\Application\Common\SourceValue\SourceValueInterface;
+use Akeneo\Platform\TailoredExport\Application\MapValues\MapValuesQuery;
+use Akeneo\Platform\TailoredExport\Test\Acceptance\FakeServices\ReferenceEntity\InMemoryFindRecordLabels;
 use PHPUnit\Framework\Assert;
 
 final class HandleReferenceEntityCollectionValueTest extends AttributeTestCase
@@ -32,14 +35,14 @@ final class HandleReferenceEntityCollectionValueTest extends AttributeTestCase
         SourceValueInterface $value,
         array $expected
     ): void {
-        $productMapper = $this->getProductMapper();
+        $mapValuesQueryHandler = $this->getMapValuesQueryHandler();
 
         $this->loadRecords();
 
         $columnCollection = $this->createSingleSourceColumnCollection($operations, $selection);
         $valueCollection = $this->createSingleValueValueCollection($value);
 
-        $mappedProduct = $productMapper->map($columnCollection, $valueCollection);
+        $mappedProduct = $mapValuesQueryHandler->handle(new MapValuesQuery($columnCollection, $valueCollection));
 
         Assert::assertSame($expected, $mappedProduct);
     }
@@ -47,25 +50,45 @@ final class HandleReferenceEntityCollectionValueTest extends AttributeTestCase
     public function provider(): array
     {
         return [
-            [
+            'it selects the record codes' => [
                 'operations' => [],
                 'selection' => new ReferenceEntityCollectionCodeSelection(','),
                 'value' => new ReferenceEntityCollectionValue(['blue', 'black']),
                 'expected' => [self::TARGET_NAME => 'blue,black']
             ],
-            [
+            'it selects the record labels' => [
                 'operations' => [],
                 'selection' => new ReferenceEntityCollectionLabelSelection(',', 'en_US', 'color'),
                 'value' => new ReferenceEntityCollectionValue(['blue', 'reference_entity_without_label']),
                 'expected' => [self::TARGET_NAME => 'Blue,[reference_entity_without_label]']
+            ],
+            'it applies default value operation when value is null' => [
+                'operations' => [
+                    DefaultValueOperation::createFromNormalized([
+                        'value' => 'n/a'
+                    ]),
+                ],
+                'selection' => new ReferenceEntityCollectionCodeSelection(','),
+                'value' => new NullValue(),
+                'expected' => [self::TARGET_NAME => 'n/a']
+            ],
+            'it does not apply default value operation when value is not null' => [
+                'operations' => [
+                    DefaultValueOperation::createFromNormalized([
+                        'value' => 'n/a'
+                    ]),
+                ],
+                'selection' => new ReferenceEntityCollectionCodeSelection(','),
+                'value' => new ReferenceEntityCollectionValue(['blue', 'black']),
+                'expected' => [self::TARGET_NAME => 'blue,black']
             ],
         ];
     }
 
     private function loadRecords()
     {
-        /** @var InMemoryFindRecordsLabelTranslations $recordLabelsRepository */
-        $recordLabelsRepository = self::$container->get('akeneo_referenceentity.infrastructure.persistence.query.enrich.find_records_labels_public_api');
+        /** @var InMemoryFindRecordLabels $recordLabelsRepository */
+        $recordLabelsRepository = self::$container->get('Akeneo\Platform\TailoredExport\Domain\Query\FindRecordLabelsInterface');
         $recordLabelsRepository->addRecordLabel('color', 'blue', 'en_US', 'Blue');
     }
 }

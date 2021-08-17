@@ -86,6 +86,7 @@ const Create = ({data, errors, context, events}: CreateProps) => {
         <Field label={translate('pim_asset_manager.attribute.create.input.type')}>
           <SelectInput
             emptyResultLabel={translate('pim_asset_manager.result_counter', {count: 0}, 0)}
+            openLabel={translate('pim_common.open')}
             clearable={false}
             value={data.type ?? attributeTypes[0]}
             onChange={events.onTypeUpdated}

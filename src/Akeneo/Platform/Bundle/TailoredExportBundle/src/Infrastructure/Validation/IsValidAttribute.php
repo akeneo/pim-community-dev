@@ -23,7 +23,7 @@ final class IsValidAttribute extends Constraint
     /**
      * {@inheritdoc}
      */
-    public function validatedBy()
+    public function validatedBy(): string
     {
         return IsValidAttributeValidator::class;
     }

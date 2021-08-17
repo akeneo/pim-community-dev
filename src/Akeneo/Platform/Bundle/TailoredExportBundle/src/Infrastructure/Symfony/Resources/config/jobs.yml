@@ -41,8 +41,8 @@ services:
       - '@akeneo.pim.structure.query.get_association_types'
       - '@Akeneo\Platform\TailoredExport\Infrastructure\Hydrator\ValueCollectionHydrator'
       - '@Akeneo\Platform\TailoredExport\Infrastructure\Hydrator\ColumnCollectionHydrator'
-      - '@Akeneo\Platform\TailoredExport\Application\ProductMapper'
-      - '@Akeneo\Platform\TailoredExport\Application\MediaToExportExtractor'
+      - '@Akeneo\Platform\TailoredExport\Application\MapValues\MapValuesQueryHandler'
+      - '@Akeneo\Platform\TailoredExport\Application\ExtractMedia\ExtractMediaQueryHandler'
 
   akeneo.tailored_export.connector.xlsx.file_writer_factory:
     class: Akeneo\Platform\TailoredExport\Infrastructure\Connector\Writer\File\FileWriterFactory

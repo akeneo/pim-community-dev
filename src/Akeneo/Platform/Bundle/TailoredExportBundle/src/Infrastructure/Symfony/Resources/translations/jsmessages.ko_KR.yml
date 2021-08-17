@@ -21,6 +21,10 @@ akeneo.tailored_export:
           title: 구조 내보내기
         filters:
           title: 제품 선택 정의
+      edit:
+        title: 편집하려면 PIM 관리자에게 본인의 권한을 확인하십시오.
+      launch:
+        title: 내보내려면 PIM 관리자에게 본인의 권한을 확인하십시오.
   column_list:
     title: 열
     header:
@@ -45,6 +49,10 @@ akeneo.tailored_export:
         title: 소스
         text: 이 소스를 제거하시겠습니까?
         button: 이 소스 제거
+      invalid_source:
+        attribute: 이 특성은 삭제되었으며 다른 유형으로 재생성되었습니다. 이 소스를 제거하고 다시 추가하십시오.
+        association_type: 이 연결 유형은 삭제되었으며 다른 유형으로 재생성되었습니다. 이 소스를 제거하고 다시 추가하십시오.
+        property: 이 속성은 유효하지 않습니다. 이 소스를 제거하고 다시 추가하십시오.
       no_source_configuration:
         title: 이 소스에 사용 가능한 작업이 없습니다. 해당 값이 그대로 내보내집니다.
       deleted_attribute:
@@ -105,6 +113,8 @@ akeneo.tailored_export:
           placeholder: 대체 값을 정의
           enabled: 활성화된 대체 값
           disabled: 비활성화된 대체 값
+          yes: 값 대체
+          no: 값 대체 안 함
   column:
     delete_message: 이 열을 삭제하시겠습니까?
   validation:

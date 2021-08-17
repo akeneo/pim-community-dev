@@ -6,10 +6,6 @@ import {ColumnConfiguration, Source} from '../../models';
 import {ValidationErrorsContext} from '../../contexts';
 import {renderWithProviders} from 'feature/tests';
 
-jest.mock('akeneo-design-system/lib/shared/uuid', () => ({
-  uuid: () => '276b6361-badb-48a1-98ef-d75baa235148',
-}));
-
 jest.mock('../../hooks/useAvailableSourcesFetcher', () => ({
   useAvailableSourcesFetcher: () => () => ({
     results: [
@@ -150,7 +146,7 @@ test('We can add an attribute source', async () => {
           type: 'code',
         },
         type: 'attribute',
-        uuid: '276b6361-badb-48a1-98ef-d75baa235148',
+        uuid: expect.any(String),
       },
     ],
     format: {
@@ -244,7 +240,7 @@ test('We can add a property source', async () => {
           separator: ',',
         },
         type: 'property',
-        uuid: '276b6361-badb-48a1-98ef-d75baa235148',
+        uuid: expect.any(String),
       },
     ],
     format: {
@@ -285,7 +281,7 @@ test('We can add an association type as source', async () => {
     uuid: '3a6645e0-0d70-411d-84ee-79833144544a',
     sources: [
       {
-        uuid: '276b6361-badb-48a1-98ef-d75baa235148',
+        uuid: expect.any(String),
         type: 'association_type',
         code: 'XSELL',
         channel: null,
@@ -318,7 +314,7 @@ test('We can update a source', async () => {
           type: 'code',
         },
         type: 'attribute',
-        uuid: '266b6361-badb-48a1-98ef-d75baa235148',
+        uuid: expect.any(String),
       },
     ],
     target: 'My column name',
