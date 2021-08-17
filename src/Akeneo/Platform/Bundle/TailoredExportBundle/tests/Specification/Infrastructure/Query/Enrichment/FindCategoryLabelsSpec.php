@@ -14,7 +14,6 @@ declare(strict_types=1);
 namespace Specification\Akeneo\Platform\TailoredExport\Infrastructure\Query\Enrichment;
 
 use Akeneo\Pim\Structure\Component\Query\PublicApi\Category\GetCategoryTranslations;
-use Akeneo\Platform\TailoredExport\Domain\Query\FindCategoryLabelsInterface;
 use Akeneo\Platform\TailoredExport\Infrastructure\Query\Enrichment\FindCategoryLabels;
 use PhpSpec\ObjectBehavior;
 
