@@ -373,7 +373,9 @@ const TableInputValue: React.FC<TableInputValueProps> = ({
               attributeLabel: getLabel(attribute.labels, userContext.get('catalogLocale'), attribute.code),
             })}
           </CenteredHelper.Title>
-          {translate('pim_table_attribute.form.product.no_rows_subtitle')}
+          {readOnly
+            ? 'To be able to edit this attribute, go to the attribute setting page or contact your PIM administrator.'
+            : translate('pim_table_attribute.form.product.no_rows_subtitle')}
         </BorderedCenteredHelper>
       )}
       {valueData.length > TABLE_VALUE_ITEMS_PER_PAGE[0] && (
