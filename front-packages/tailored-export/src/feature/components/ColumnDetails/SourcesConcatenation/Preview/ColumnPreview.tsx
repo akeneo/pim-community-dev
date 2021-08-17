@@ -16,9 +16,8 @@ const PreviewTitle = styled.div`
   color: ${getColor('blue', 100)};
 `;
 
-const PreviewList = styled.div<{spaceBetween: boolean}>`
-  display: flex;
-  gap: ${({spaceBetween}) => (spaceBetween ? '5px' : '0px')};
+const PreviewList = styled.div`
+  overflow-wrap: break-word;
 `;
 
 const ColumnPreviewContainer = styled.div`
@@ -41,7 +40,7 @@ const ColumnPreview = ({columnConfiguration}: ColumnPreviewProps) => {
   return (
     <ColumnPreviewContainer>
       <PreviewTitle>{translate('akeneo.tailored_export.column_details.concatenation.preview')}</PreviewTitle>
-      <PreviewList spaceBetween={columnConfiguration.format.space_between ?? false}>
+      <PreviewList>
         {columnConfiguration.format.elements.map((element, index) => {
           if ('string' === element.type) {
             return <StringElement key={index}>{element.value}</StringElement>;
@@ -59,6 +58,12 @@ const ColumnPreview = ({columnConfiguration}: ColumnPreviewProps) => {
             default:
               throw new Error(`Source with uuid ${element.value} not found`);
           }
+        }).map((element, index) => {
+          if (columnConfiguration.format.space_between && index > 0) {
+            return <> {element}</>;
+          }
+
+          return element
         })}
       </PreviewList>
     </ColumnPreviewContainer>

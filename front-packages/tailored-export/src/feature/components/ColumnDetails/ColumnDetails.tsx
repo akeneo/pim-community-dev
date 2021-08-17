@@ -29,8 +29,6 @@ const Container = styled.div`
   width: 400px;
   display: flex;
   flex-direction: column;
-  display: flex;
-  flex-direction: column;
 `;
 
 const ConfiguratorContainer = styled.div`
@@ -39,7 +37,7 @@ const ConfiguratorContainer = styled.div`
   flex: 1;
 `;
 
-const Content = styled.div`
+const SourcesContent = styled.div`
   display: flex;
   flex-direction: column;
   flex: 1;
@@ -102,15 +100,15 @@ const ColumnDetails = ({columnConfiguration, onColumnChange}: ColumnDetailsProps
 
   return (
     <Container>
-      <SourcesSectionTitle sticky={0}>
-        <SectionTitle.Title>{translate('akeneo.tailored_export.column_details.sources.title')}</SectionTitle.Title>
-        <SectionTitle.Spacer />
-        <AddSourceDropdown
-          canAddSource={columnConfiguration.sources.length < MAX_SOURCE_COUNT}
-          onSourceSelected={handleSourceAdd}
-        />
-      </SourcesSectionTitle>
-      <Content>
+      <SourcesContent>
+        <SourcesSectionTitle sticky={0}>
+          <SectionTitle.Title>{translate('akeneo.tailored_export.column_details.sources.title')}</SectionTitle.Title>
+          <SectionTitle.Spacer />
+          <AddSourceDropdown
+            canAddSource={columnConfiguration.sources.length < MAX_SOURCE_COUNT}
+            onSourceSelected={handleSourceAdd}
+          />
+        </SourcesSectionTitle>
         {columnConfiguration.sources.length !== 0 && (
           <SourceTabBar
             validationErrors={validationErrors}
@@ -149,12 +147,14 @@ const ColumnDetails = ({columnConfiguration, onColumnChange}: ColumnDetailsProps
           {columnConfiguration.sources.length === 0 && <NoSourcePlaceholder />}
         </ConfiguratorContainer>
         {currentSource && <SourceFooter source={currentSource} onSourceRemove={handleSourceRemove} />}
-      </Content>
-      <SourcesConcatenation
-        columnConfiguration={columnConfiguration}
-        onColumnConfigurationChange={onColumnChange}
-        validationErrors={formatErrors}
-      />
+      </SourcesContent>
+      {columnConfiguration.sources.length > 0 &&
+        <SourcesConcatenation
+          columnConfiguration={columnConfiguration}
+          onColumnConfigurationChange={onColumnChange}
+          validationErrors={formatErrors}
+        />
+      }
     </Container>
   );
 };
