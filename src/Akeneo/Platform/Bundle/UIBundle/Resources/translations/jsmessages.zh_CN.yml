@@ -195,6 +195,7 @@ pim_common:
   ok: 确定
   open: 打开
   no_result: 未找到结果
+  no_search_result: 抱歉，找不到与搜索相符的结果。
   other_actions: 其他操作
   permissions: 权限
   previous: 上一步
@@ -373,3 +374,17 @@ pim_settings:
   settings_menu: 设置菜单
   catalog_settings: 目录设置 
   product_settings: 产品设置
+  count:
+    category_trees: '{0}您有 0 个树 |{1}您有 1 个树 |]1，Inf[您有 {{ count }} 个树'
+    categories: '{0}和 0 个类别 |{1}和 1 个类别 |]1, Inf[和 {{ count }} 个类别'
+    channels: '{0}您有 0 个渠道|{1}您有 1 个渠道|]1，Inf[您有 {{ count }} 渠道]'
+    locales: '{0}您有 0 个已启用区域|{1}您有 1 个已启用区域|]1，Inf[您有 {{ count }} 个已启用区域'
+    currencies: '{0}您有 0 个已启用货币|{1}您有 1 个已启用货币|]1, Inf[您有 {{ count }} 个已启用货币'
+    attribute_groups: '{0}您有 0 个属性组 |{1}您有 1 个属性组 |]1，Inf[您有 {{ count }} 个属性组'
+    attributes: '{0}您有 0 个属性|{1}您有 1 个属性|]1，Inf[您有 {{ count }} 个属性'
+    families: '{0}您有 0 个品类|{1}您有 1 个品类|]1，Inf[您有 {{ count }} 个品类'
+    measurements: '{0}您有 0 个测量|{1}您有 1 个测量|]1, Inf[您有 {{ count }} 个测量'
+    association_types: '{0}您有 0 个关联类型 |{1}您有 1 个关联类型 |]1, Inf[您有 {{ count }} 个关联类型'
+    group_types: '{0}您有 0 个分组类型 |{1}您有 1 个分组类型 |]1，Inf[您有 {{ count }} 个分组类型'
+    groups: '{0}您有 0 个组 |{1}您有 1 个组 |]1，Inf[您有 {{ count }} 个组'
+    rules: '{0}您有 0 个已启用规则|{1}您有 1 个已启用规则|]1, Inf[您有 {{ count }} 个已启用规则'
