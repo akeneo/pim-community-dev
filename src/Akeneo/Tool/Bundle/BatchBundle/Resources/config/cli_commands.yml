@@ -37,3 +37,9 @@ services:
             - '@Akeneo\Tool\Bundle\BatchBundle\Persistence\Sql\SqlMarkJobExecutionAsFailedWhenInterrupted'
         tags:
             - { name: console.command }
+
+    Akeneo\Tool\Bundle\BatchBundle\Command\AddMissingJobInstanceRemoveCompletenessChannelLocale:
+        arguments:
+            - '@database_connection'
+        tags:
+            - { name: console.command }

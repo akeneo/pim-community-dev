@@ -1,12 +1,11 @@
 import React, {ReactNode, useState, useRef, isValidElement, ReactElement, KeyboardEvent, useCallback} from 'react';
 import styled from 'styled-components';
 import {Key, Override} from '../../../shared';
-import {InputProps} from '../InputProps';
+import {InputProps, Overlay} from '../common';
 import {IconButton, TextInput} from '../../../components';
 import {useBooleanState, useShortcut, VerticalPosition} from '../../../hooks';
 import {AkeneoThemedProps, getColor} from '../../../theme';
 import {ArrowDownIcon, CloseIcon} from '../../../icons';
-import {Overlay} from './Overlay/Overlay';
 
 const SelectInputContainer = styled.div<{value: string | null; readOnly: boolean} & AkeneoThemedProps>`
   width: 100%;
@@ -141,7 +140,7 @@ type SelectInputProps = Override<
     /**
      * Accessibility text for the open dropdown button
      */
-    openLabel?: string;
+    openLabel: string;
 
     /**
      * Defines if the input is valid on not.
@@ -173,7 +172,7 @@ const SelectInput = ({
   onChange,
   clearable = true,
   clearLabel = '',
-  openLabel = '',
+  openLabel,
   readOnly = false,
   verticalPosition,
   'aria-labelledby': ariaLabelledby,

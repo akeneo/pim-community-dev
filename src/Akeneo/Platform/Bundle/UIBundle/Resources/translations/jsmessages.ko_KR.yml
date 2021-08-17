@@ -195,6 +195,7 @@ pim_common:
   ok: 확인
   open: 열기
   no_result: 결과를 찾을 수 없습니다.
+  no_search_result: 죄송합니다. 검색 결과가 없습니다.
   other_actions: 기타 작업
   permissions: 권한
   previous: 이전

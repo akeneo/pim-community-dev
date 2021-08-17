@@ -1,9 +1,9 @@
 import React, {HTMLAttributes, ReactNode, RefObject, useEffect, useRef, useState} from 'react';
 import {createPortal} from 'react-dom';
 import styled from 'styled-components';
-import {VerticalPosition, useVerticalPosition, useWindowResize} from '../../../../hooks';
-import {AkeneoThemedProps, CommonStyle, getColor} from '../../../../theme';
-import {Override} from '../../../../shared';
+import {VerticalPosition, useVerticalPosition, useWindowResize} from '../../../hooks';
+import {AkeneoThemedProps, CommonStyle, getColor} from '../../../theme';
+import {Override} from '../../../shared';
 
 const OverlayContent = styled.div<{visible: number; top: number; width: number; left: number} & AkeneoThemedProps>`
   ${CommonStyle}
@@ -75,7 +75,7 @@ const getOverlayPosition = (
 
 const Overlay = ({verticalPosition, parentRef, onClose, children, ...rest}: OverlayProps) => {
   const portalNode = document.createElement('div');
-  portalNode.setAttribute('id', 'selectinput-root');
+  portalNode.setAttribute('id', 'input-overlay-root');
   const portalRef = useRef<HTMLDivElement>(portalNode);
   const overlayRef = useRef<HTMLDivElement>(null);
   const [visible, setVisible] = useState<boolean>(false);
