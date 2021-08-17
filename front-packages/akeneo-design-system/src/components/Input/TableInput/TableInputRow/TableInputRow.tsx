@@ -72,6 +72,7 @@ const TableInputTr = styled.tr<
 const DragAndDropCell = styled(TableInputCell)`
   max-width: 26px;
   min-width: 26px;
+  width: 26px;
   color: ${getColor('grey', 100)};
   padding-top: 5px;
   text-align: right;
