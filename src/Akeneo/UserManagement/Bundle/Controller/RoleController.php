@@ -9,14 +9,14 @@ use Akeneo\UserManagement\Component\Repository\RoleRepositoryInterface;
 use Oro\Bundle\SecurityBundle\Acl\Persistence\AclSidManager;
 use Oro\Bundle\SecurityBundle\Annotation\AclAncestor;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
-use Symfony\Bundle\FrameworkBundle\Controller\Controller;
+use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Contracts\Translation\TranslatorInterface;
 
-class RoleController extends Controller
+class RoleController extends AbstractController
 {
     private RoleRepositoryInterface $roleRepository;
     private RemoverInterface $remover;
