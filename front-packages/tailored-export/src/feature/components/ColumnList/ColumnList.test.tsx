@@ -429,7 +429,7 @@ test('it displays the sources labels on the row', async () => {
     />
   );
 
-  const [_headerRow, firstRow, secondRow] = screen.getAllByRole('row');
+  const [, firstRow, secondRow] = screen.getAllByRole('row');
 
   expect(within(firstRow).getByText('English name, pim_common.parent, Cross sell, [UPSELL]')).toBeInTheDocument();
   expect(within(secondRow).getByText('akeneo.tailored_export.column_list.column_row.no_source')).toBeInTheDocument();

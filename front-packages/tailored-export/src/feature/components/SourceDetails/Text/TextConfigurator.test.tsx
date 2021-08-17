@@ -1,11 +1,10 @@
 import React from 'react';
 import {screen} from '@testing-library/react';
+import userEvent from '@testing-library/user-event';
 import {renderWithProviders} from '@akeneo-pim-community/shared';
 import {TextConfigurator} from './TextConfigurator';
 import {getDefaultTextSource} from './model';
 import {getDefaultDateSource} from '../Date/model';
-import {DefaultValueOperation} from '../common';
-import userEvent from '@testing-library/user-event';
 
 const attribute = {
   code: 'text',
