@@ -15,13 +15,23 @@ use Symfony\Component\Process\PhpExecutableFinder;
  */
 class CommandLauncher
 {
-    protected string $projectDir;
-    protected string $environment;
-    protected string $logsDir;
+    /** @var string Application root directory */
+    protected $rootDir;
 
-    public function __construct(string $projectDir, string $environment, string $logsDir)
+    /** @var string Application execution environment */
+    protected $environment;
+
+    /** @var string */
+    protected $logsDir;
+
+    /**
+     * @param string $rootDir
+     * @param string $environment
+     * @param string $logsDir
+     */
+    public function __construct(string $rootDir, string $environment, string $logsDir)
     {
-        $this->projectDir = $projectDir;
+        $this->rootDir = $rootDir;
         $this->environment = $environment;
         $this->logsDir = $logsDir;
     }
@@ -50,7 +60,7 @@ class CommandLauncher
             $phpCommand = "{$this->getPhp()} -d memory_limit={$memoryLimit}";
         }
 
-        return "{$phpCommand} {$this->projectDir}/bin/console --env={$this->environment} {$command}";
+        return "{$phpCommand} {$this->rootDir}/../bin/console --env={$this->environment} {$command}";
     }
 
     /**
@@ -92,6 +102,8 @@ class CommandLauncher
 
         exec($cmd, $output, $status);
 
-        return new CommandResult($output, $status);
+        $result = new CommandResult($output, $status);
+
+        return $result;
     }
 }
