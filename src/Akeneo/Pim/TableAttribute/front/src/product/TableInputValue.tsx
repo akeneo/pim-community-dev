@@ -13,7 +13,6 @@ import {
   ColumnDefinition,
   NumberColumnValidation,
   SelectOptionCode,
-  TableConfiguration,
   TextColumnValidation,
 } from '../models/TableConfiguration';
 import {getLabel, LoadingPlaceholderContainer, useTranslate, useUserContext} from '@akeneo-pim-community/shared';
@@ -64,7 +63,6 @@ const FirstCellLoadingPlaceholderContainer = styled(LoadingPlaceholderContainer)
 type TableInputValueProps = {
   attribute: TableAttribute;
   valueData: TableValueWithId;
-  tableConfiguration: TableConfiguration;
   onChange?: (tableValue: TableValueWithId) => void;
   searchText?: string;
   violatedCells?: ViolatedCell[];
@@ -75,7 +73,6 @@ type TableInputValueProps = {
 const TableInputValue: React.FC<TableInputValueProps> = ({
   attribute,
   valueData,
-  tableConfiguration,
   onChange,
   readOnly = false,
   searchText = '',
@@ -90,8 +87,8 @@ const TableInputValue: React.FC<TableInputValueProps> = ({
   const [isActionsOpened, setActionsOpened] = React.useState<string | undefined>();
   const isSearching = searchText !== '';
   const isDragAndDroppable = !readOnly && !isSearching;
-  const [firstColumn, ...otherColumns] = tableConfiguration;
-  const {getOptionsFromColumnCode, getOptionLabel} = useFetchOptions(tableConfiguration, attribute, valueData);
+  const [firstColumn, ...otherColumns] = attribute.table_configuration;
+  const {getOptionsFromColumnCode, getOptionLabel} = useFetchOptions(attribute.table_configuration, attribute.code, valueData);
 
   React.useEffect(() => {
     setCurrentPage(0);
@@ -152,7 +149,7 @@ const TableInputValue: React.FC<TableInputValueProps> = ({
 
   if (isSearching) {
     filteredData = valueData.filter(row => {
-      return tableConfiguration.some(columnDefinition => {
+      return attribute.table_configuration.some(columnDefinition => {
         return cellMatchSearch(row[columnDefinition.code], columnDefinition);
       });
     });
@@ -244,7 +241,7 @@ const TableInputValue: React.FC<TableInputValueProps> = ({
         isDragAndDroppable={isDragAndDroppable}
         onReorder={isDragAndDroppable ? handleReorder : undefined}>
         <TableInput.Header>
-          {tableConfiguration.map(columnDefinition => (
+          {attribute.table_configuration.map(columnDefinition => (
             <TableInput.HeaderCell key={columnDefinition.code}>
               {getLabel(columnDefinition.labels, userContext.get('catalogLocale'), columnDefinition.code)}
             </TableInput.HeaderCell>
@@ -328,9 +325,10 @@ const TableInputValue: React.FC<TableInputValueProps> = ({
                   );
                 })}
                 <TableInput.Cell>
+                  {!readOnly &&
                   <Dropdown>
                     <IconButton
-                      icon={<MoreVerticalIcon size={16} />}
+                      icon={<MoreVerticalIcon size={16}/>}
                       title={translate('pim_common.actions')}
                       onClick={() => openActions(row['unique id'])}
                       ghost='borderless'
@@ -355,6 +353,7 @@ const TableInputValue: React.FC<TableInputValueProps> = ({
                       </Dropdown.Overlay>
                     )}
                   </Dropdown>
+                  }
                 </TableInput.Cell>
               </TableInput.Row>
             );

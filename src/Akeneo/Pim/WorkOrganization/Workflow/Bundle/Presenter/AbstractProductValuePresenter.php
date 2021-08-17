@@ -11,6 +11,8 @@
 
 namespace Akeneo\Pim\WorkOrganization\Workflow\Bundle\Presenter;
 
+use Webmozart\Assert\Assert;
+
 /**
  * A product value diff presenter
  *

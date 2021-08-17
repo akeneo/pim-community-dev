@@ -1,5 +1,5 @@
 {
-  "name": "table_attribute",
+  "name": "@akeneo-pim-ge/table_attribute",
   "version": "1.0.0",
   "scripts": {
     "types-check": "tsc --noEmit",
