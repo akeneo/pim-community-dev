@@ -50,6 +50,11 @@ pim_table_attribute:
             no_add_options_unallowed: Contact your PIM administrator to manage the "{{ attributeLabel }}" options
             no_add_options_link: here
             no_edit_permission: No edit permission
+            actions:
+                delete_row: Delete this row
+                clear_row: Clear this row
+                move_first: Move to first position
+                move_last: Move to last position
     properties:
         data_type:
             text: Text

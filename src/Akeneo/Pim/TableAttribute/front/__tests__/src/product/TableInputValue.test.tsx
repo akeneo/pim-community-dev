@@ -10,17 +10,15 @@ jest.mock('../../../src/fetchers/SelectOptionsFetcher');
 
 describe('TableInputValue', () => {
   it('should render the component', async () => {
-    const handleChange = jest.fn();
     renderWithProviders(
       <TableInputValue
         attribute={getTableAttribute()}
         valueData={getTableValueWithId()}
         tableConfiguration={getComplexTableConfiguration()}
         searchText={''}
-        onChange={handleChange}
+        onChange={jest.fn()}
       />
     );
-
     expect(await screen.findByText('Sugar')).toBeInTheDocument();
 
     expect(screen.getByText('Ingredients')).toBeInTheDocument();
@@ -88,7 +86,7 @@ describe('TableInputValue', () => {
     const handleChange = jest.fn();
     renderWithProviders(
       <TableInputValue
-        attributeCode={'nutrition'}
+        attribute={getTableAttribute()}
         valueData={getTableValueWithId()}
         tableConfiguration={getComplexTableConfiguration()}
         onChange={handleChange}
@@ -109,5 +107,121 @@ describe('TableInputValue', () => {
       fireEvent.change(sugarInput, {target: {value: '200'}});
     });
     expect(sugarInput.classList.toString()).not.toEqual(formerClassList);
+  });
+
+  it('should delete row', async () => {
+    const handleChange = jest.fn();
+    renderWithProviders(
+      <TableInputValue
+        attribute={getTableAttribute()}
+        valueData={getTableValueWithId()}
+        tableConfiguration={getComplexTableConfiguration()}
+        searchText={''}
+        onChange={handleChange}
+      />
+    );
+    expect(await screen.findByText('Sugar')).toBeInTheDocument();
+
+    fireEvent.click(screen.getAllByTitle('pim_common.actions')[1]);
+    expect(await screen.findByTitle('pim_table_attribute.form.product.actions.delete_row')).toBeInTheDocument();
+    fireEvent.click(screen.getByTitle('pim_table_attribute.form.product.actions.delete_row'));
+    expect(handleChange).toBeCalledWith([{...getTableValueWithId()[0]}, {...getTableValueWithId()[2]}]);
+  });
+
+  it('should clear row', async () => {
+    const handleChange = jest.fn();
+    renderWithProviders(
+      <TableInputValue
+        attribute={getTableAttribute()}
+        valueData={getTableValueWithId()}
+        tableConfiguration={getComplexTableConfiguration()}
+        searchText={''}
+        onChange={handleChange}
+      />
+    );
+    expect(await screen.findByText('Sugar')).toBeInTheDocument();
+
+    fireEvent.click(screen.getAllByTitle('pim_common.actions')[1]);
+    expect(await screen.findByTitle('pim_table_attribute.form.product.actions.clear_row')).toBeInTheDocument();
+    fireEvent.click(screen.getByTitle('pim_table_attribute.form.product.actions.clear_row'));
+    expect(handleChange).toBeCalledWith([
+      {...getTableValueWithId()[0]},
+      {...getTableValueWithId()[1], part: undefined, is_allergenic: undefined, nutrition_score: undefined},
+      {...getTableValueWithId()[2]},
+    ]);
+  });
+
+  it('should move row to first position', async () => {
+    const handleChange = jest.fn();
+    renderWithProviders(
+      <TableInputValue
+        attribute={getTableAttribute()}
+        valueData={getTableValueWithId()}
+        tableConfiguration={getComplexTableConfiguration()}
+        searchText={''}
+        onChange={handleChange}
+      />
+    );
+    expect(await screen.findByText('Sugar')).toBeInTheDocument();
+
+    fireEvent.click(screen.getAllByTitle('pim_common.actions')[1]);
+    expect(await screen.findByTitle('pim_table_attribute.form.product.actions.move_first')).toBeInTheDocument();
+    fireEvent.click(screen.getByTitle('pim_table_attribute.form.product.actions.move_first'));
+    expect(handleChange).toBeCalledWith([
+      {...getTableValueWithId()[1]},
+      {...getTableValueWithId()[0]},
+      {...getTableValueWithId()[2]},
+    ]);
+  });
+
+  it('should move row to last position', async () => {
+    const handleChange = jest.fn();
+    renderWithProviders(
+      <TableInputValue
+        attribute={getTableAttribute()}
+        valueData={getTableValueWithId()}
+        tableConfiguration={getComplexTableConfiguration()}
+        searchText={''}
+        onChange={handleChange}
+      />
+    );
+    expect(await screen.findByText('Sugar')).toBeInTheDocument();
+
+    fireEvent.click(screen.getAllByTitle('pim_common.actions')[1]);
+    expect(await screen.findByTitle('pim_table_attribute.form.product.actions.move_last')).toBeInTheDocument();
+    fireEvent.click(screen.getByTitle('pim_table_attribute.form.product.actions.move_last'));
+    expect(handleChange).toBeCalledWith([
+      {...getTableValueWithId()[0]},
+      {...getTableValueWithId()[2]},
+      {...getTableValueWithId()[1]},
+    ]);
+  });
+
+  it('should reorder rows', async () => {
+    const handleChange = jest.fn();
+    renderWithProviders(
+      <TableInputValue
+        attribute={getTableAttribute()}
+        valueData={getTableValueWithId()}
+        tableConfiguration={getComplexTableConfiguration()}
+        searchText={''}
+        onChange={handleChange}
+      />
+    );
+    expect(await screen.findByText('Sugar')).toBeInTheDocument();
+
+    fireEvent.mouseDown(screen.getAllByTestId('dragAndDrop')[1]);
+    fireEvent.dragStart(screen.getAllByRole('row')[1]);
+    fireEvent.dragEnter(screen.getAllByRole('row')[2]);
+    fireEvent.dragLeave(screen.getAllByRole('row')[2]);
+    fireEvent.dragEnter(screen.getAllByRole('row')[3]);
+    fireEvent.drop(screen.getAllByRole('row')[3]);
+    fireEvent.dragEnd(screen.getAllByRole('row')[1]);
+
+    expect(handleChange).toBeCalledWith([
+      {...getTableValueWithId()[1]},
+      {...getTableValueWithId()[2]},
+      {...getTableValueWithId()[0]},
+    ]);
   });
 });

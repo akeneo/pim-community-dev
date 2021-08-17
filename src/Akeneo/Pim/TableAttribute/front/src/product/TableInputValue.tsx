@@ -1,5 +1,13 @@
 import React from 'react';
-import {AddingValueIllustration, AkeneoThemedProps, getColor, TableInput} from 'akeneo-design-system';
+import {
+  AddingValueIllustration,
+  AkeneoThemedProps,
+  Dropdown,
+  getColor,
+  IconButton,
+  MoreVerticalIcon,
+  TableInput,
+} from 'akeneo-design-system';
 import {
   ColumnCode,
   ColumnDefinition,
@@ -38,6 +46,21 @@ const TableInputContainer = styled.div<{isCopying: boolean} & AkeneoThemedProps>
   width: ${({isCopying}) => (isCopying ? '460px' : '100%')};
 `;
 
+const TableInputValueBody = styled(TableInput.Body)`
+  & > tr > td:last-child {
+    max-width: 34px;
+    min-width: 34px;
+    width: 34px;
+    border-left: none;
+  }
+`;
+
+const HeaderActionsCell = styled(TableInput.HeaderCell)`
+  max-width: 34px;
+  min-width: 34px;
+  width: 34px;
+`;
+
 type TableInputValueProps = {
   attribute: TableAttribute;
   valueData: TableValueWithId;
@@ -67,14 +90,24 @@ const TableInputValue: React.FC<TableInputValueProps> = ({
   const [selectOptionLabels, setSelectOptionLabels] = React.useState<{[key: string]: string | null}>({});
   const [options, setOptions] = React.useState<{[columnCode: string]: SelectOption[]}>({});
   const [currentViolatedCells, setCurrentViolatedCells] = React.useState<ViolatedCell[]>(violatedCells);
-  const isSearching = searchText.trim() !== '';
+  const [isActionsOpened, setActionsOpened] = React.useState<string | undefined>();
+  const isSearching = searchText !== '';
+  const isDragAndDroppable = !readOnly && !isSearching;
+
+  React.useEffect(() => {
+    setCurrentPage(0);
+  }, [searchText]);
+
+  const deleteValidationErrors = (uniqueId: string, columnCode: ColumnCode | undefined) => {
+    const newViolatedCells = currentViolatedCells.filter((cell: ViolatedCell) => {
+      return !(cell.id === uniqueId && (typeof columnCode === 'undefined' || cell.columnCode === columnCode));
+    });
+    setCurrentViolatedCells(newViolatedCells);
+  };
 
   const handleChange = (uniqueId: string, columnCode: ColumnCode, cellValue: TableCell | undefined) => {
     const rowIndex = valueData.findIndex(row => row['unique id'] === uniqueId);
-    const newViolatedCells = currentViolatedCells.filter((cell: ViolatedCell) => {
-      return cell.id !== uniqueId || cell.columnCode !== columnCode;
-    });
-    setCurrentViolatedCells(newViolatedCells);
+    deleteValidationErrors(uniqueId, columnCode);
     if (rowIndex >= 0) {
       const row = valueData[rowIndex];
       if (typeof cellValue === 'undefined') {
@@ -127,6 +160,14 @@ const TableInputValue: React.FC<TableInputValueProps> = ({
     valueDataPage = filteredData.slice(0, itemsPerPage);
   }
 
+  React.useEffect(() => {
+    const currentPageReal = currentPage + 1;
+    const pageCount = Math.ceil(filteredData.length / itemsPerPage);
+    if (currentPageReal > pageCount) {
+      setCurrentPage(currentPage - 1);
+    }
+  }, [valueData.length]);
+
   const [firstColumn, ...otherColumns] = tableConfiguration;
 
   const getOptionLabel = async (columnCode: ColumnCode, value: string) => {
@@ -144,7 +185,7 @@ const TableInputValue: React.FC<TableInputValueProps> = ({
       }
       setOptions({...options});
 
-      for await (const row of valueDataPage) {
+      for await (const row of valueData) {
         selectOptionLabels[`${firstColumn.code}-${row[firstColumn.code]}`] = await getOptionLabel(
           firstColumn.code,
           row[firstColumn.code] as string
@@ -153,23 +194,93 @@ const TableInputValue: React.FC<TableInputValueProps> = ({
       setSelectOptionLabels({...selectOptionLabels});
     };
     f();
-  }, [valueDataPage.length]);
+  }, [valueData.length]);
 
   const isInErrorFromBackend = (id: string, columnCode: ColumnCode) => {
     return currentViolatedCells.some(violatedCell => violatedCell.id === id && violatedCell.columnCode === columnCode);
   };
 
+  const handleReorder = (indexesFromPage: number[]) => {
+    const newIndexes = [];
+    for (let i = 0; i < valueData.length; i++) {
+      newIndexes.push(
+        i < itemsPerPage * currentPage || i >= itemsPerPage * (currentPage + 1)
+          ? i
+          : indexesFromPage[i - itemsPerPage * currentPage] + itemsPerPage * currentPage
+      );
+    }
+    const newTableValue = newIndexes.map(i => valueData[i]);
+    onChange?.(newTableValue);
+  };
+
+  const openActions = (uniqueId: string) => setActionsOpened(uniqueId);
+  const closeActions = () => setActionsOpened(undefined);
+  const isOpenActions = (uniqueId: string) => isActionsOpened === uniqueId;
+
+  const handleDeleteRow = (uniqueId: string) => {
+    deleteValidationErrors(uniqueId, undefined);
+    onChange?.(valueData.filter(row => row['unique id'] !== uniqueId));
+  };
+
+  const handleClearRow = (uniqueId: string) => {
+    closeActions();
+    deleteValidationErrors(uniqueId, undefined);
+    const rowIndex = valueData.findIndex(row => row['unique id'] === uniqueId);
+    if (rowIndex >= 0) {
+      const row = valueData[rowIndex];
+      const newRow = {'unique id': row['unique id']};
+      newRow[firstColumn.code] = row[firstColumn.code];
+
+      valueData[rowIndex] = newRow;
+      const newTableValue = [...valueData];
+
+      onChange?.(newTableValue);
+    }
+  };
+
+  const handleMoveFirst = (uniqueId: string) => {
+    closeActions();
+    const rowIndex = valueData.findIndex(row => row['unique id'] === uniqueId);
+    if (rowIndex >= 0) {
+      const indexes = [rowIndex];
+      for (let i = 0; i < valueData.length; i++) {
+        if (i !== rowIndex) indexes.push(i);
+      }
+      const newTableValue = indexes.map(index => valueData[index]);
+      onChange?.(newTableValue);
+    }
+  };
+
+  const handleMoveLast = (uniqueId: string) => {
+    closeActions();
+    const rowIndex = valueData.findIndex(row => row['unique id'] === uniqueId);
+    if (rowIndex >= 0) {
+      const indexes = [];
+      for (let i = 0; i < valueData.length; i++) {
+        if (i !== rowIndex) indexes.push(i);
+      }
+      indexes.push(rowIndex);
+
+      const newTableValue = indexes.map(index => valueData[index]);
+      onChange?.(newTableValue);
+    }
+  };
+
   return (
     <TableInputContainer isCopying={isCopying}>
-      <TableInput readOnly={readOnly}>
+      <TableInput
+        readOnly={readOnly}
+        isDragAndDroppable={isDragAndDroppable}
+        onReorder={isDragAndDroppable ? handleReorder : undefined}>
         <TableInput.Header>
           {tableConfiguration.map(columnDefinition => (
             <TableInput.HeaderCell key={columnDefinition.code}>
               {getLabel(columnDefinition.labels, userContext.get('catalogLocale'), columnDefinition.code)}
             </TableInput.HeaderCell>
           ))}
+          <HeaderActionsCell />
         </TableInput.Header>
-        <TableInput.Body>
+        <TableInputValueBody>
           {valueDataPage.map(row => {
             return (
               <TableInput.Row key={row['unique id']}>
@@ -245,10 +356,39 @@ const TableInputValue: React.FC<TableInputValueProps> = ({
                     </TableInput.Cell>
                   );
                 })}
+                <TableInput.Cell>
+                  <Dropdown>
+                    <IconButton
+                      icon={<MoreVerticalIcon size={16} />}
+                      title={translate('pim_common.actions')}
+                      onClick={() => openActions(row['unique id'])}
+                      ghost='borderless'
+                      level='tertiary'
+                    />
+                    {isOpenActions(row['unique id']) && (
+                      <Dropdown.Overlay verticalPosition='down' onClose={closeActions}>
+                        <Dropdown.ItemCollection>
+                          <Dropdown.Item onClick={() => handleDeleteRow(row['unique id'])}>
+                            {translate('pim_table_attribute.form.product.actions.delete_row')}
+                          </Dropdown.Item>
+                          <Dropdown.Item onClick={() => handleClearRow(row['unique id'])}>
+                            {translate('pim_table_attribute.form.product.actions.clear_row')}
+                          </Dropdown.Item>
+                          <Dropdown.Item onClick={() => handleMoveFirst(row['unique id'])}>
+                            {translate('pim_table_attribute.form.product.actions.move_first')}
+                          </Dropdown.Item>
+                          <Dropdown.Item onClick={() => handleMoveLast(row['unique id'])}>
+                            {translate('pim_table_attribute.form.product.actions.move_last')}
+                          </Dropdown.Item>
+                        </Dropdown.ItemCollection>
+                      </Dropdown.Overlay>
+                    )}
+                  </Dropdown>
+                </TableInput.Cell>
               </TableInput.Row>
             );
           })}
-        </TableInput.Body>
+        </TableInputValueBody>
       </TableInput>
       {isSearching && valueDataPage.length === 0 && (
         <BorderedCenteredHelper illustration={<AddingValueIllustration />}>
