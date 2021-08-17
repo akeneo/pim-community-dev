@@ -160,6 +160,27 @@ class Base extends Page
         }, sprintf('Switch label "%s" not found.', $locator));
     }
 
+    public function switchBooleanToValue($locator, $value)
+    {
+        $labelNode = $this->spin(function () use ($locator) {
+            $labels = $this->findAll('css', 'label');
+
+            foreach ($labels as $labelContainer) {
+                if ($labelContainer->getText() === $locator) {
+                    return $labelContainer;
+                }
+            }
+
+            return false;
+        }, sprintf('Cannot find the field label of "%s"', $locator));
+
+        $field = $this->findById($labelNode->getAttribute('for'));
+
+        if ($field->getAttribute('role') === 'switch') {
+            $field->find('css', sprintf('*[title=%s]', $value === 'yes' ? 'Yes' : 'No'))->click();
+        }
+    }
+
     /**
      * @return string
      */

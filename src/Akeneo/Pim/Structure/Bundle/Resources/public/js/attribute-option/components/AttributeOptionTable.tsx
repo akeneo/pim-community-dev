@@ -38,11 +38,11 @@ const AttributeOptionTable = ({
   );
   const [filteredAttributeOptions, setFilteredAttributeOptions] =
     useState<AttributeOption[] | null>(sortedAttributeOptions);
-  const [showDeleteConfirmationModal, setShowDeleteConfirmationModal] = useState<boolean>(false);
   const [showNewOptionPlaceholder, setShowNewOptionPlaceholder] = useState<boolean>(isNewOptionFormDisplayed);
   const [isDraggable, setIsDraggable] = useState<boolean>(attributeContext.autoSortOptions);
   const [searchValue, setSearchValue] = useState('');
   const [autoSortingReadOnly, setAutoSortingReadOnly] = useState<boolean>(false);
+  const [attributeOptionToDelete, setAttributeOptionToDelete] = useState<AttributeOption | null>(null);
 
   useEffect(() => {
     if (selectedOptionId !== null) {
@@ -164,11 +164,6 @@ const AttributeOptionTable = ({
               </Table.Header>
               <Table.Body>
                 {filteredAttributeOptions.map((attributeOption: AttributeOption, index: number) => {
-                  const deleteOption = () => {
-                    setShowDeleteConfirmationModal(false);
-                    deleteAttributeOption(attributeOption.id);
-                  };
-
                   return (
                     <TableRow
                       role="attribute-option-item"
@@ -198,21 +193,13 @@ const AttributeOptionTable = ({
                           onClick={(event: any) => {
                             event.preventDefault();
                             event.stopPropagation();
-                            setShowDeleteConfirmationModal(true);
+                            setAttributeOptionToDelete(attributeOption);
                           }}
                           title={translate('pim_common.delete')}
                           ghost="borderless"
                           level="tertiary"
                           data-testid="attribute-option-delete-button"
                         />
-
-                        {showDeleteConfirmationModal && (
-                          <DeleteConfirmationModal
-                            attributeOptionCode={attributeOption.code}
-                            confirmDelete={deleteOption}
-                            cancelDelete={() => setShowDeleteConfirmationModal(false)}
-                          />
-                        )}
                       </TableActionCell>
                     </TableRow>
                   );
@@ -223,6 +210,17 @@ const AttributeOptionTable = ({
                 )}
               </Table.Body>
             </SpacedTable>
+
+            {attributeOptionToDelete && (
+              <DeleteConfirmationModal
+                attributeOptionCode={attributeOptionToDelete.code}
+                confirmDelete={() => {
+                  deleteAttributeOption(attributeOptionToDelete.id);
+                  setAttributeOptionToDelete(null);
+                }}
+                cancelDelete={() => setAttributeOptionToDelete(null)}
+              />
+            )}
           </>
         )}
       </div>

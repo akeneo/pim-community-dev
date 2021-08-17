@@ -29,8 +29,8 @@ class Creation extends Form
         $this->elements = array_merge(
             $this->elements,
             [
-                'attribute_option_table' => ['css' => '.AknAttributeOption-list-optionsList'],
-                'attribute_options'      => ['css' => '.AknAttributeOption-listItem'],
+                'attribute_option_table' => ['css' => sprintf('tr[role=%s]', 'attribute-option-list')],
+                'attribute_options'      => ['css' => sprintf('tr[role=%s]', 'attribute-option-item')],
                 'new_option'             => ['css' => '.in-edition']
             ]
         );
@@ -90,7 +90,7 @@ class Creation extends Form
 
         foreach ($labels as $locale => $label) {
             $labelField = $this->spin(function () use ($locale) {
-                return $this->find('css', sprintf('.AknTextField[data-locale="%s"]', $locale));
+                return $this->find('css', sprintf('input[role=%s][data-locale="%s"]', 'attribute-option-label', $locale));
             }, 'Unable to find the attribute option label for locale ' . $locale);
             $this->spin(function () use ($locale, $label, $labelField) {
                 $labelField->setValue($label);
@@ -189,7 +189,7 @@ class Creation extends Form
      */
     public function countOrderableOptions()
     {
-        return count($this->findAll('css', $this->elements['attribute_option_table']['css'].' .AknAttributeOption-move-icon:not(.AknAttributeOption-move-icon--disabled)'));
+        return count($this->findAll('css', sprintf('td[data-testid=%s]', 'dragAndDrop')));
     }
 
     /**
@@ -207,7 +207,7 @@ class Creation extends Form
 
         $optionRow->click();
 
-        $deleteBtn = $optionRow->find('css', '.AknAttributeOption-delete-option-icon');
+        $deleteBtn = $optionRow->find('css', sprintf('button[data-testid=%s]', 'attribute-option-delete-button'));
 
         $this->spin(function () use ($deleteBtn) {
             $deleteBtn->click();
@@ -226,7 +226,7 @@ class Creation extends Form
         $this->spin(function () use ($expectedOrder) {
             $rows = $this->getOptionsElement();
             $actualOrder = array_map(function ($row) {
-                $option = $row->find('css', '.AknAttributeOption-itemCode');
+                $option = $row->find('css', sprintf('*[role=%s]', 'attribute-option-item-code'));
 
                 return null !== $option ? strtolower($option->getText()) : '';
             }, $rows);
@@ -257,8 +257,8 @@ class Creation extends Form
     protected function getOptionElement($optionName)
     {
         foreach ($this->getOptionsElement() as $optionRow) {
-            if ($optionRow->find('css', '.AknAttributeOption-itemCode') &&
-                strtolower($optionRow->find('css', '.AknAttributeOption-itemCode')->getText()) === strtolower($optionName)
+            if ($optionRow->find('css', sprintf('*[role=%s]', 'attribute-option-item-code')) &&
+                strtolower($optionRow->find('css', sprintf('*[role=%s]', 'attribute-option-item-code'))->getText()) === strtolower($optionName)
             ) {
                 return $optionRow;
             }
