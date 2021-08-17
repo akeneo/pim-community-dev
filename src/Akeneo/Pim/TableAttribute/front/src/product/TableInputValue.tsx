@@ -12,28 +12,21 @@ import {
   ColumnCode,
   ColumnDefinition,
   NumberColumnValidation,
-  SelectOption,
   SelectOptionCode,
   TableConfiguration,
   TextColumnValidation,
 } from '../models/TableConfiguration';
-import {
-  getLabel,
-  LoadingPlaceholderContainer,
-  useRouter,
-  useTranslate,
-  useUserContext,
-} from '@akeneo-pim-community/shared';
+import {getLabel, LoadingPlaceholderContainer, useTranslate, useUserContext} from '@akeneo-pim-community/shared';
 import {TableFooter} from './TableFooter';
 import styled from 'styled-components';
 import {TableRowWithId, TableValueWithId, ViolatedCell} from './TableFieldApp';
-import {getSelectOption, getSelectOptions} from '../repositories/SelectOption';
 import {TableInputSelect} from './CellInputs/TableInputSelect';
 import {TableCell} from '../models/TableValue';
 import {TableInputNumber} from './CellInputs/TableInputNumber';
 import {TableInputText} from './CellInputs/TableInputText';
 import {TableAttribute} from '../models/Attribute';
 import {CenteredHelper} from '../shared/CenteredHelper';
+import {useFetchOptions} from './useFetchOptions';
 
 const TABLE_VALUE_ITEMS_PER_PAGE = [10, 20, 50, 100];
 
@@ -84,15 +77,14 @@ const TableInputValue: React.FC<TableInputValueProps> = ({
 }) => {
   const translate = useTranslate();
   const userContext = useUserContext();
-  const router = useRouter();
   const [itemsPerPage, setItemsPerPage] = React.useState<number>(TABLE_VALUE_ITEMS_PER_PAGE[0]);
   const [currentPage, setCurrentPage] = React.useState<number>(0);
-  const [selectOptionLabels, setSelectOptionLabels] = React.useState<{[key: string]: string | null}>({});
-  const [options, setOptions] = React.useState<{[columnCode: string]: SelectOption[]}>({});
   const [currentViolatedCells, setCurrentViolatedCells] = React.useState<ViolatedCell[]>(violatedCells);
   const [isActionsOpened, setActionsOpened] = React.useState<string | undefined>();
   const isSearching = searchText !== '';
   const isDragAndDroppable = !readOnly && !isSearching;
+  const [firstColumn, ...otherColumns] = tableConfiguration;
+  const {getOptionsFromColumnCode, getOptionLabel} = useFetchOptions(tableConfiguration, attribute, valueData);
 
   React.useEffect(() => {
     setCurrentPage(0);
@@ -140,7 +132,7 @@ const TableInputValue: React.FC<TableInputValueProps> = ({
           .toLowerCase()
           .includes(searchText.toLowerCase());
       case 'select': {
-        const option = (options[columnDefinition.code] || []).find(option => option.code === cell);
+        const option = (getOptionsFromColumnCode(columnDefinition.code) || []).find(option => option.code === cell);
         if (!option) {
           return false;
         }
@@ -164,37 +156,9 @@ const TableInputValue: React.FC<TableInputValueProps> = ({
     const currentPageReal = currentPage + 1;
     const pageCount = Math.ceil(filteredData.length / itemsPerPage);
     if (currentPageReal > pageCount) {
-      setCurrentPage(currentPage - 1);
+      setCurrentPage(Math.max(0, pageCount - 1));
     }
-  }, [valueData.length]);
-
-  const [firstColumn, ...otherColumns] = tableConfiguration;
-
-  const getOptionLabel = async (columnCode: ColumnCode, value: string) => {
-    const selectOption = await getSelectOption(router, attribute.code, columnCode, value);
-
-    return selectOption ? getLabel(selectOption.labels, userContext.get('catalogLocale'), selectOption.code) : null;
-  };
-
-  React.useEffect(() => {
-    const f = async () => {
-      for await (const column of tableConfiguration.filter(
-        columnDefinition => columnDefinition.data_type === 'select'
-      )) {
-        options[column.code] = (await getSelectOptions(router, attribute.code, column.code)) || [];
-      }
-      setOptions({...options});
-
-      for await (const row of valueData) {
-        selectOptionLabels[`${firstColumn.code}-${row[firstColumn.code]}`] = await getOptionLabel(
-          firstColumn.code,
-          row[firstColumn.code] as string
-        );
-      }
-      setSelectOptionLabels({...selectOptionLabels});
-    };
-    f();
-  }, [valueData.length]);
+  }, [valueData.length, filteredData.length, itemsPerPage, currentPage, setCurrentPage]);
 
   const isInErrorFromBackend = (id: string, columnCode: ColumnCode) => {
     return currentViolatedCells.some(violatedCell => violatedCell.id === id && violatedCell.columnCode === columnCode);
@@ -227,8 +191,8 @@ const TableInputValue: React.FC<TableInputValueProps> = ({
     deleteValidationErrors(uniqueId, undefined);
     const rowIndex = valueData.findIndex(row => row['unique id'] === uniqueId);
     if (rowIndex >= 0) {
-      const row: TableRowWithId = valueData[rowIndex];
-      const newRow = {'unique id': row['unique id']};
+      const row = valueData[rowIndex];
+      const newRow: TableRowWithId = {'unique id': row['unique id']};
       newRow[firstColumn.code] = row[firstColumn.code];
 
       valueData[rowIndex] = newRow;
@@ -289,14 +253,14 @@ const TableInputValue: React.FC<TableInputValueProps> = ({
                   highlighted={cellMatchSearch(row[firstColumn.code], firstColumn)}
                   inError={
                     isInErrorFromBackend(row['unique id'], firstColumn.code) ||
-                    selectOptionLabels[`${firstColumn.code}-${row[firstColumn.code]}`] === null
+                    getOptionLabel(firstColumn.code, row[firstColumn.code]) === null
                   }>
-                  {typeof selectOptionLabels[`${firstColumn.code}-${row[firstColumn.code]}`] === 'undefined' ? (
+                  {typeof getOptionLabel(firstColumn.code, row[firstColumn.code]) === 'undefined' ? (
                     <LoadingPlaceholderContainer>
                       <div>{translate('pim_common.loading')}</div>
                     </LoadingPlaceholderContainer>
                   ) : (
-                    selectOptionLabels[`${firstColumn.code}-${row[firstColumn.code]}`] || `[${row[firstColumn.code]}]`
+                    getOptionLabel(firstColumn.code, row[firstColumn.code]) || `[${row[firstColumn.code]}]`
                   )}
                 </TableInput.Cell>
                 {otherColumns.map(columnDefinition => {
@@ -334,7 +298,7 @@ const TableInputValue: React.FC<TableInputValueProps> = ({
                             handleChange(row['unique id'], columnCode, value)
                           }
                           data-testid={`input-${row['unique id']}-${columnCode}`}
-                          options={options[columnCode]}
+                          options={getOptionsFromColumnCode(columnCode)}
                           inError={isInErrorFromBackend(row['unique id'], columnCode)}
                         />
                       )}
