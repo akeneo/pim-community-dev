@@ -2,8 +2,8 @@ import React, {FC} from 'react';
 import {useSecurity} from '../../shared/security';
 import {useTranslate} from '../../shared/translate';
 import {Button} from 'akeneo-design-system';
-import {useRouter} from "../../shared/router/use-router";
-import {useNotify} from "../../shared/notify";
+import {useRouter} from '../../shared/router/use-router';
+import {useNotify} from '../../shared/notify';
 
 export const ActivateAppButton: FC<{id: string}> = ({id}) => {
     const translate = useTranslate();
@@ -17,7 +17,7 @@ export const ActivateAppButton: FC<{id: string}> = ({id}) => {
     })}`;
 
     return (
-        <Button href={url} target="_blank" level='primary' disabled={isAuthorized}>
+        <Button href={url} target='_blank' level='primary' disabled={isAuthorized}>
             {translate('akeneo_connectivity.connection.connect.marketplace.card.connect')}
         </Button>
     );

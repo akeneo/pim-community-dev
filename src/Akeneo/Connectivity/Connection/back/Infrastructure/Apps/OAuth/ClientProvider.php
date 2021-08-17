@@ -26,6 +26,7 @@ class ClientProvider implements ClientProviderInterface
     {
         $appId = $app->getId();
 
+        /** @var Client | null $client */
         $client = $this->clientManager->findClientBy(['marketplacePublicAppId' => $appId]);
         if ($client === null) {
             /** @var Client $client */

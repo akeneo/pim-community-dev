@@ -1,9 +1,9 @@
 import React, {FC} from 'react';
-import {useRouter} from "../../shared/router/use-router";
-import {useTranslate} from "../../shared/translate";
-import {NotificationLevel, useNotify} from "../../shared/notify";
-import styled from "styled-components";
-import {useLocation} from "react-router-dom";
+import {useRouter} from '../../shared/router/use-router';
+import {useTranslate} from '../../shared/translate';
+import {NotificationLevel, useNotify} from '../../shared/notify';
+import styled from 'styled-components';
+import {useLocation} from 'react-router-dom';
 
 const FullScreen = styled.div`
     position: fixed;
@@ -30,7 +30,7 @@ export const AppActivatePage: FC = () => {
     }
 
     const url = generateUrl('akeneo_connectivity_connection_apps_rest_get_app_activate_url', {
-        'id': id,
+        id: id,
     });
 
     fetch(url, {
@@ -42,10 +42,11 @@ export const AppActivatePage: FC = () => {
             window.location.replace(response.url);
         })
         .catch(() => {
-            notify(NotificationLevel.ERROR, translate('akeneo_connectivity.connection.connect.apps.activate.flash.error'))
+            notify(
+                NotificationLevel.ERROR,
+                translate('akeneo_connectivity.connection.connect.apps.activate.flash.error')
+            );
         });
 
-    return (
-        <FullScreen/>
-    );
+    return <FullScreen />;
 };
