@@ -2,13 +2,25 @@
 
 declare(strict_types=1);
 
-namespace Akeneo\Platform\TailoredExport\Infrastructure\Query\Structure;
+namespace Specification\Akeneo\Platform\TailoredExport\Infrastructure\Query\Structure;
 
 use Akeneo\Pim\Structure\Component\Query\PublicApi\Group\GetGroupTranslations;
-use Akeneo\Platform\TailoredExport\Domain\Query\FindGroupLabelsInterface;
+use Akeneo\Platform\TailoredExport\Infrastructure\Query\Structure\FindGroupLabels;
+use PhpSpec\ObjectBehavior;
 
-class FindGroupLabels implements FindGroupLabelsInterface
+class FindGroupLabelsSpec extends ObjectBehavior
 {
+    public function let(
+        GetGroupTranslations $getGroupTranslations
+    ): void {
+        $this->beConstructedWith($getGroupTranslations);
+    }
+
+    public function it_is_initializable(): void
+    {
+        $this->shouldHaveType(FindGroupLabels::class);
+    }
+
     private GetGroupTranslations $getGroupTranslations;
 
     public function __construct(GetGroupTranslations $getGroupTranslations)
@@ -21,7 +33,6 @@ class FindGroupLabels implements FindGroupLabelsInterface
      */
     public function byCodes(array $groupCodes, string $locale): array
     {
-        // TODO: to improve to homogeneize with FindCurrencyLabels
         return $this->getGroupTranslations->byGroupCodesAndLocale($groupCodes, $locale);
     }
 }
