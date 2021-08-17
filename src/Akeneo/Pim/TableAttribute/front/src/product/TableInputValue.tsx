@@ -374,7 +374,7 @@ const TableInputValue: React.FC<TableInputValueProps> = ({
             })}
           </CenteredHelper.Title>
           {readOnly
-            ? 'To be able to edit this attribute, go to the attribute setting page or contact your PIM administrator.'
+            ? translate('pim_table_attribute.form.product.no_rows_subtitle_on_readonly')
             : translate('pim_table_attribute.form.product.no_rows_subtitle')}
         </BorderedCenteredHelper>
       )}
