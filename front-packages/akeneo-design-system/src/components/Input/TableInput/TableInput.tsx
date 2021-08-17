@@ -62,27 +62,17 @@ type TableInputProps = Override<
      * Displays the value of the input, but does not allow changes.
      */
     readOnly?: boolean;
-  } & (
-    | {
-        /**
-         * Define if rows can be ordered by drag and drop
-         */
-        isDragAndDroppable?: false;
 
-        onReorder?: undefined;
-      }
-    | {
-        /**
-         * Define if rows can be ordered by drag and drop
-         */
-        isDragAndDroppable: true;
+    /**
+     * Define if rows can be ordered by drag and drop
+     */
+    isDragAndDroppable?: boolean;
 
-        /**
-         * Called when an element got drag and drop on the table
-         */
-        onReorder: (updatedIndices: number[]) => void;
-      }
-  )
+    /**
+     * Called when an element got drag and drop on the table
+     */
+    onReorder?: (updatedIndices: number[]) => void | undefined;
+  }
 >;
 
 /**
