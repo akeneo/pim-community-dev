@@ -1,6 +1,7 @@
 import {uuid} from 'akeneo-design-system';
 import {ChannelReference, LocaleCode, LocaleReference} from '@akeneo-pim-community/shared';
 import {Attribute, Source} from '../../../models';
+import {DefaultValueOperation, isDefaultValueOperation} from '../common';
 
 type MeasurementSelection =
   | {
@@ -20,13 +21,17 @@ const isMeasurementSelection = (selection: any): selection is MeasurementSelecti
     ('unit_label' === selection.type && 'locale' in selection) ||
     'value' === selection.type);
 
+type MeasurementOperations = {
+  default_value?: DefaultValueOperation;
+};
+
 type MeasurementSource = {
   uuid: string;
   code: string;
   type: 'attribute';
   locale: LocaleReference;
   channel: ChannelReference;
-  operations: {};
+  operations: MeasurementOperations;
   selection: MeasurementSelection;
 };
 
@@ -44,7 +49,18 @@ const getDefaultMeasurementSource = (
   selection: {type: 'unit_code'},
 });
 
-const isMeasurementSource = (source: Source): source is MeasurementSource => isMeasurementSelection(source.selection);
+const isMeasurementOperations = (operations: Object): operations is MeasurementOperations =>
+  Object.entries(operations).every(([type, operation]) => {
+    switch (type) {
+      case 'default_value':
+        return isDefaultValueOperation(operation);
+      default:
+        return false;
+    }
+  });
+
+const isMeasurementSource = (source: Source): source is MeasurementSource =>
+  isMeasurementSelection(source.selection) && isMeasurementOperations(source.operations);
 
 export type {MeasurementSelection, MeasurementSource};
 export {isMeasurementSelection, getDefaultMeasurementSource, isMeasurementSource};

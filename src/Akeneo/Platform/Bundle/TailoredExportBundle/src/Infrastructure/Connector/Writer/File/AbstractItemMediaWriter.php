@@ -13,7 +13,7 @@ declare(strict_types=1);
 
 namespace Akeneo\Platform\TailoredExport\Infrastructure\Connector\Writer\File;
 
-use Akeneo\Platform\TailoredExport\Domain\MediaToExport;
+use Akeneo\Platform\TailoredExport\Application\ExtractMedia\ExtractedMedia;
 use Akeneo\Platform\TailoredExport\Infrastructure\Connector\Processor\ProcessedTailoredExport;
 use Akeneo\Tool\Component\Batch\Item\FlushableInterface;
 use Akeneo\Tool\Component\Batch\Item\InitializableInterface;
@@ -92,7 +92,7 @@ abstract class AbstractItemMediaWriter implements
             }
 
             $this->writer->addRow($processedTailoredExport->getItems());
-            $this->writeMedia($processedTailoredExport->getMediaToExport());
+            $this->writeMedia($processedTailoredExport->getExtractedMediaCollection());
             $this->numberOfWrittenLines++;
         }
 
@@ -216,11 +216,11 @@ abstract class AbstractItemMediaWriter implements
     }
 
     /**
-     * @var MediaToExport[] $mediaCollectionToWrite
+     * @var ExtractedMedia[] $extractedMediaCollection
      */
-    private function writeMedia(array $mediaCollectionToWrite): void
+    private function writeMedia(array $extractedMediaCollection): void
     {
-        if (empty($mediaCollectionToWrite)) {
+        if (empty($extractedMediaCollection)) {
             return;
         }
 
@@ -229,8 +229,12 @@ abstract class AbstractItemMediaWriter implements
             return;
         }
 
-        foreach ($mediaCollectionToWrite as $mediaToWrite) {
-            $this->writtenFiles[] = WrittenFileInfo::fromFileStorage($mediaToWrite->getKey(), $mediaToWrite->getStorage(), $mediaToWrite->getPath());
+        foreach ($extractedMediaCollection as $mediaToWrite) {
+            $this->writtenFiles[] = WrittenFileInfo::fromFileStorage(
+                $mediaToWrite->getKey(),
+                $mediaToWrite->getStorage(),
+                $mediaToWrite->getPath()
+            );
         }
     }
 }

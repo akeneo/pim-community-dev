@@ -13,10 +13,13 @@ declare(strict_types=1);
 
 namespace Akeneo\Platform\TailoredExport\Test\Acceptance\UseCases\Attribute;
 
-use Akeneo\Platform\TailoredExport\Application\Query\Selection\Number\NumberSelection;
-use Akeneo\Platform\TailoredExport\Application\Query\Selection\SelectionInterface;
-use Akeneo\Platform\TailoredExport\Domain\SourceValue\NumberValue;
-use Akeneo\Platform\TailoredExport\Domain\SourceValueInterface;
+use Akeneo\Platform\TailoredExport\Application\Common\Operation\DefaultValueOperation;
+use Akeneo\Platform\TailoredExport\Application\Common\Selection\Number\NumberSelection;
+use Akeneo\Platform\TailoredExport\Application\Common\Selection\SelectionInterface;
+use Akeneo\Platform\TailoredExport\Application\Common\SourceValue\NullValue;
+use Akeneo\Platform\TailoredExport\Application\Common\SourceValue\NumberValue;
+use Akeneo\Platform\TailoredExport\Application\Common\SourceValue\SourceValueInterface;
+use Akeneo\Platform\TailoredExport\Application\MapValues\MapValuesQuery;
 use PHPUnit\Framework\Assert;
 
 final class HandleNumberValueTest extends AttributeTestCase
@@ -30,12 +33,12 @@ final class HandleNumberValueTest extends AttributeTestCase
         SourceValueInterface $value,
         array $expected
     ): void {
-        $productMapper = $this->getProductMapper();
+        $mapValuesQueryHandler = $this->getMapValuesQueryHandler();
 
         $columnCollection = $this->createSingleSourceColumnCollection($operations, $selection);
         $valueCollection = $this->createSingleValueValueCollection($value);
 
-        $mappedProduct = $productMapper->map($columnCollection, $valueCollection);
+        $mappedProduct = $mapValuesQueryHandler->handle(new MapValuesQuery($columnCollection, $valueCollection));
 
         Assert::assertSame($expected, $mappedProduct);
     }
@@ -43,24 +46,44 @@ final class HandleNumberValueTest extends AttributeTestCase
     public function provider(): array
     {
         return [
-            'it_handles_number_selection' => [
+            'it handles number selection' => [
                 'operations' => [],
                 'selection' => new NumberSelection(','),
                 'value' => new NumberValue('10'),
                 'expected' => [self::TARGET_NAME => '10']
             ],
-            'it_handles_number_with_default_decimal_selection' => [
+            'it handles number with default decimal selection' => [
                 'operations' => [],
                 'selection' => new NumberSelection('.'),
                 'value' => new NumberValue('10.73737443838'),
                 'expected' => [self::TARGET_NAME => '10.73737443838']
             ],
-            'it_handles_number_with_decimal_selection' => [
+            'it handles number with decimal selection' => [
                 'operations' => [],
                 'selection' => new NumberSelection(','),
                 'value' => new NumberValue('10.73737443838'),
                 'expected' => [self::TARGET_NAME => '10,73737443838']
-            ]
+            ],
+            'it applies default value operation when value is null' => [
+                'operations' => [
+                    DefaultValueOperation::createFromNormalized([
+                        'value' => 'n/a'
+                    ])
+                ],
+                'selection' => new NumberSelection(','),
+                'value' => new NullValue(),
+                'expected' => [self::TARGET_NAME => 'n/a']
+            ],
+            'it does not apply default value operation when value is not null' => [
+                'operations' => [
+                    DefaultValueOperation::createFromNormalized([
+                        'value' => 'n/a'
+                    ])
+                ],
+                'selection' => new NumberSelection(','),
+                'value' => new NumberValue('10'),
+                'expected' => [self::TARGET_NAME => '10']
+            ],
         ];
     }
 }

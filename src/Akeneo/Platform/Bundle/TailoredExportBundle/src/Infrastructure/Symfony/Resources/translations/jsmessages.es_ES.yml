@@ -21,6 +21,10 @@ akeneo.tailored_export:
           title: Exportar estructura
         filters:
           title: Defina su selección de producto
+      edit:
+        title: Para editar, compruebe sus permisos con el administrador de PIM.
+      launch:
+        title: Para exportar, compruebe sus permisos con el administrador de PIM.
   column_list:
     title: Columnas
     header:
@@ -45,6 +49,10 @@ akeneo.tailored_export:
         title: fuente
         text: '¿Está seguro de que quiere eliminar esta fuente?'
         button: Eliminar esta fuente
+      invalid_source:
+        attribute: Este atributo ha sido eliminado y recreado con otro tipo. Elimine esta fuente y añádalo de nuevo.
+        association_type: Este tipo de asociación ha sido eliminado y recreado con otro tipo. Elimine esta fuente y añádalo de nuevo.
+        property: Esta propiedad no es válida. Elimine esta fuente y añádala de nuevo.
       no_source_configuration:
         title: No hay operaciones disponibles para esta fuente. Su valor será exportado tal como está.
       deleted_attribute:
@@ -105,6 +113,8 @@ akeneo.tailored_export:
           placeholder: Definir el valor de reemplazo
           enabled: Valor de reemplazo habilitado
           disabled: Valor de reemplazo deshabilitado
+          yes: Valor de reemplazo de Sí
+          no: Valor de reemplazo de No
   column:
     delete_message: '¿Está seguro de que quiere eliminar esta columna?'
   validation:

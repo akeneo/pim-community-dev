@@ -13,8 +13,8 @@ declare(strict_types=1);
 
 namespace Akeneo\Platform\TailoredExport\Infrastructure\Validation\Source\Parent;
 
-use Akeneo\Platform\TailoredExport\Application\Query\Selection\Parent\ParentCodeSelection;
-use Akeneo\Platform\TailoredExport\Application\Query\Selection\Parent\ParentLabelSelection;
+use Akeneo\Platform\TailoredExport\Application\Common\Selection\Parent\ParentCodeSelection;
+use Akeneo\Platform\TailoredExport\Application\Common\Selection\Parent\ParentLabelSelection;
 use Akeneo\Platform\TailoredExport\Infrastructure\Validation\ChannelShouldExist;
 use Akeneo\Platform\TailoredExport\Infrastructure\Validation\LocaleShouldBeActive;
 use Symfony\Component\Validator\Constraint;

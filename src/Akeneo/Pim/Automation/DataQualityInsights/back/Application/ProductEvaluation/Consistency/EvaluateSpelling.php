@@ -159,6 +159,12 @@ class EvaluateSpelling implements EvaluateCriterionInterface
             return false;
         }
 
+        // PIM-9975: A copy-paste from Word brings a complex text with a lot of tags. The HTML filter is long
+        // and can cause a timeout and a 500 error. So we decided to skip the evaluation.
+        if ($this->isTextComingFromWord($value)) {
+            return false;
+        }
+
         if (
             preg_match_all("/[\S']+/", $value) === 1 &&
             preg_match('~(@|^\d+|\d+[_\-]|[_\-]\d+)~', $value) === 1
@@ -231,5 +237,10 @@ class EvaluateSpelling implements EvaluateCriterionInterface
         }
 
         return self::TEXT_FAULT_WEIGHT;
+    }
+
+    private function isTextComingFromWord(string $text): bool
+    {
+        return strpos($text, '<w:WordDocument>') !== false;
     }
 }
