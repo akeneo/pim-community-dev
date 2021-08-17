@@ -56,7 +56,6 @@ const TableCellNoDraggable = styled(Table.Cell)`
 `;
 
 const HandleContainer = styled.div`
-  cursor: grab;
   display: flex;
   align-items: center;
   justify-content: center;
