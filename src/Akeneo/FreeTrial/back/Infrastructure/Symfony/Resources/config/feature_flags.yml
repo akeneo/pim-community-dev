@@ -7,8 +7,3 @@ services:
         arguments:
             - '%env(bool:FLAG_FREE_TRIAL_ENABLED)%'
         public: true
-
-    Akeneo\FreeTrial\Infrastructure\ExternalJavascriptDependencies\ExternalDependenciesFeatureFlag:
-        arguments:
-            - '@akeneo.free_trial.feature'
-        public: true
