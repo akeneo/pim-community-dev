@@ -37,7 +37,7 @@ class ScopeToAclMapperSpec extends ObjectBehavior
         ]);
     }
 
-    public function it_throw_on_unknown_scope()
+    public function it_throws_on_unknown_scope()
     {
         $this->shouldThrow(\LogicException::class)->during('getAcls', ['unknown_scope']);
     }

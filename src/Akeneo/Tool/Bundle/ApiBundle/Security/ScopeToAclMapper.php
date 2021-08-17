@@ -24,7 +24,7 @@ final class ScopeToAclMapper
     private const SCOPE_WRITE_PRODUCTS = 'write_products';
     private const SCOPE_DELETE_PRODUCTS = 'delete_products';
 
-    private const ScopeAclMap = [
+    private const SCOPE_ACL_MAP = [
         self::SCOPE_READ_CATALOG_STRUCTURE => [
             'pim_api_attribute_list',
             'pim_api_attribute_group_list',
@@ -92,15 +92,18 @@ final class ScopeToAclMapper
      */
     public function getAllScopes(): array
     {
-        return array_keys(self::ScopeAclMap);
+        return array_keys(self::SCOPE_ACL_MAP);
     }
 
+    /**
+     * @return string[]
+     */
     public function getAcls(string $scopeName): array
     {
-        if (!isset(self::ScopeAclMap[$scopeName])) {
+        if (!isset(self::SCOPE_ACL_MAP[$scopeName])) {
             throw new \LogicException(sprintf('Unknown scope "%s"', $scopeName));
         }
 
-        return self::ScopeAclMap[$scopeName];
+        return self::SCOPE_ACL_MAP[$scopeName];
     }
 }
