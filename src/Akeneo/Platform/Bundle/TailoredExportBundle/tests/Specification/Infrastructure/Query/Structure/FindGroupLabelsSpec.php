@@ -20,19 +20,5 @@ class FindGroupLabelsSpec extends ObjectBehavior
     {
         $this->shouldHaveType(FindGroupLabels::class);
     }
-
-    private GetGroupTranslations $getGroupTranslations;
-
-    public function __construct(GetGroupTranslations $getGroupTranslations)
-    {
-        $this->getGroupTranslations = $getGroupTranslations;
-    }
-
-    /**
-     * @inheritDoc
-     */
-    public function byCodes(array $groupCodes, string $locale): array
-    {
-        return $this->getGroupTranslations->byGroupCodesAndLocale($groupCodes, $locale);
-    }
+    // TODO: finish this spec
 }
