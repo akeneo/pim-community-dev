@@ -92,11 +92,7 @@ Feature: Execute rules from the user interface
     Then I should see the text "Confirm execution"
     When I confirm the rules execution
     And I wait for the "rule_engine_execute_rules" job to finish
-    And I am on the dashboard page
-    And I should have 1 new notification
-    Then I should see notification:
-      | type    | message                           |
-      | success | Execution of the rule(s) complete |
-    When I click on the notification "Execution of the rule(s) complete"
-    Then I should see the text "Execution details - Rules execution"
+    Then I should have 1 new notification
+    And I am on the job tracker page
+    And I should see the text "Rules execution"
     And I should see the text "COMPLETED"
