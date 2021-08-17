@@ -3,57 +3,47 @@ framework:
         transports:
             # Producers
             business_event:
-                dsn: 'gps:'
+                dsn: doctrine://default
                 options:
-                    project_id: '%env(GOOGLE_CLOUD_PROJECT)%'
-                    topic_name: '%env(PUBSUB_TOPIC_BUSINESS_EVENT)%'
-                    subscription_name: '%env(PUBSUB_SUBSCRIPTION_BUSINESS_EVENT)%'
-                    auto_setup: '%env(bool:PUBSUB_AUTO_SETUP)%'
-                retry_strategy:
-                    max_retries: 0
+                    table_name: messenger_messages
+                    queue_name: default
+                    redeliver_timeout: 3600
+                    auto_setup: false
                 serializer: pim_enrich.messenger.serializer.business_event
 
             # Consumers
             webhook:
-                dsn: 'gps:'
+                dsn: doctrine://default
                 options:
-                    project_id: '%env(GOOGLE_CLOUD_PROJECT)%'
-                    topic_name: '%env(PUBSUB_TOPIC_BUSINESS_EVENT)%'
-                    subscription_name: '%env(PUBSUB_SUBSCRIPTION_WEBHOOK)%'
-                    auto_setup: '%env(bool:PUBSUB_AUTO_SETUP)%'
-                retry_strategy:
-                    max_retries: 0
+                    table_name: messenger_messages
+                    queue_name: default
+                    redeliver_timeout: 3600
+                    auto_setup: false
                 serializer: pim_enrich.messenger.serializer.business_event
 
             ui_job:
-                dsn: 'gps:'
+                dsn: doctrine://default
                 options:
-                    project_id: '%env(GOOGLE_CLOUD_PROJECT)%'
-                    topic_name: '%env(PUBSUB_TOPIC_JOB_QUEUE_UI)%'
-                    subscription_name: '%env(PUBSUB_SUBSCRIPTION_JOB_QUEUE_UI)%'
-                    auto_setup: '%env(bool:PUBSUB_AUTO_SETUP)%'
-                retry_strategy:
-                    max_retries: 0
+                    table_name: messenger_messages
+                    queue_name: ui_job
+                    redeliver_timeout: 86400
+                    auto_setup: false
                 serializer: akeneo_batch_queue.messenger.serializer
             import_export_job:
-                dsn: 'gps:'
+                dsn: doctrine://default
                 options:
-                    project_id: '%env(GOOGLE_CLOUD_PROJECT)%'
-                    topic_name: '%env(PUBSUB_TOPIC_JOB_QUEUE_IMPORT_EXPORT)%'
-                    subscription_name: '%env(PUBSUB_SUBSCRIPTION_JOB_QUEUE_IMPORT_EXPORT)%'
-                    auto_setup: '%env(bool:PUBSUB_AUTO_SETUP)%'
-                retry_strategy:
-                    max_retries: 0
+                    table_name: messenger_messages
+                    queue_name: import_export_job
+                    redeliver_timeout: 86400
+                    auto_setup: false
                 serializer: akeneo_batch_queue.messenger.serializer
             data_maintenance_job:
-                dsn: 'gps:'
+                dsn: doctrine://default
                 options:
-                    project_id: '%env(GOOGLE_CLOUD_PROJECT)%'
-                    topic_name: '%env(PUBSUB_TOPIC_JOB_QUEUE_DATA_MAINTENANCE)%'
-                    subscription_name: '%env(PUBSUB_SUBSCRIPTION_JOB_QUEUE_DATA_MAINTENANCE)%'
-                    auto_setup: '%env(bool:PUBSUB_AUTO_SETUP)%'
-                retry_strategy:
-                    max_retries: 0
+                    table_name: messenger_messages
+                    queue_name: data_maintenance_job
+                    redeliver_timeout: 86400
+                    auto_setup: false
                 serializer: akeneo_batch_queue.messenger.serializer
 
         routing:
