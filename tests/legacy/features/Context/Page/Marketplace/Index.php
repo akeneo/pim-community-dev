@@ -12,5 +12,5 @@ use Context\Page\Base\Base;
  */
 class Index extends Base
 {
-    protected $path = '#/connect/marketplace/';
+    protected $path = '#/connect/marketplace';
 }

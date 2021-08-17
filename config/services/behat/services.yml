@@ -1,6 +1,10 @@
 parameters:
     comm_panel_api_url: 'http://localhost:8088' # avoid to call the external service in the CI
 
+imports:
+    # Akeneo/Connectivity/Connection
+    - { resource: ../../../src/Akeneo/Connectivity/Connection/tests/Resources/config/services.yml }
+
 services:
     _defaults:
         public: true

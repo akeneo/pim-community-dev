@@ -10,7 +10,8 @@ Feature: Activate an OAuth2 client application in the PIM
     And the user "Julia" has the profile "product_manager"
     And I am logged in as "Julia"
     And I am on the marketplace page
-    When I click on "yell" activate button
+    And I should see "Yell extension" app
+    When I click on "Yell extension" activate button
     And I am at the url "https://yell-extension-t2omu7tdaq-uc.a.run.app/?pim_url=..."
     And I click on the button "Free trial"
     And I am at the url "https://.../"
