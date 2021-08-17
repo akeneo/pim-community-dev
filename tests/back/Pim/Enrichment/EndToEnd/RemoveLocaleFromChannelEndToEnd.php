@@ -6,7 +6,6 @@ namespace AkeneoTest\Pim\Enrichment\EndToEnd;
 
 use Akeneo\Channel\Component\Model\ChannelInterface;
 use Akeneo\Pim\Enrichment\Component\Product\Completeness\Query\GetProductCompletenessRatio;
-use Akeneo\Pim\Enrichment\Component\Product\Model\ProductInterface;
 use Akeneo\Pim\Structure\Component\AttributeTypes;
 use Akeneo\Pim\Structure\Component\Model\AttributeInterface;
 use Akeneo\Test\Integration\Configuration;
@@ -213,11 +212,11 @@ class RemoveLocaleFromChannelEndToEnd extends InternalApiTestCase
 
     private function getProductId(string $productIdentifier): int
     {
-        /** @var IdentifiableObjectRepositoryInterface $productRepository */
-        $productRepository = $this->get('pim_catalog.repository.product');
-        /** @var ProductInterface $product */
-        $product = $productRepository->findOneByIdentifier($productIdentifier);
+        $productId = $this->get('database_connection')->executeQuery(
+            "SELECT id FROM pim_catalog_product WHERE identifier = :identifier;",
+            ['identifier' => $productIdentifier]
+        )->fetchColumn();
 
-        return (int) $product->getId();
+        return (int) $productId;
     }
 }
