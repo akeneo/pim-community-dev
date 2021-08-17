@@ -12,21 +12,3 @@ extensions:
         targetZone: buttons
         aclResourceId: pim_enrich_product_model_edit_attributes
         position: 60
-
-    pim-product-edit-form-left-column:
-        module: pim/free-trial/product-edit-form/left-column
-        parent: pim-product-edit-form
-        position: 5
-        targetZone: column
-        config:
-            stateCode: product_edit_form
-            navigationTitle: pim_menu.navigation.product
-
-    pim-product-model-edit-form-left-column:
-        module: pim/free-trial/product-edit-form/left-column
-        parent: pim-product-model-edit-form
-        position: 5
-        targetZone: column
-        config:
-            stateCode: product_edit_form
-            navigationTitle: pim_menu.navigation.product

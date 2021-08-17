@@ -11,4 +11,3 @@ config:
     pim/menu/user-navigation: akeneofreetrial/js/menu/user-navigation.ts
     pim/template/menu/user-navigation: akeneofreetrial/templates/menu/user-navigation.html
     pim/free-trial/product-edit-form/start-copy: akeneofreetrial/js/product-edit-form/start-copy.ts
-    pim/free-trial/product-edit-form/left-column: akeneofreetrial/js/product-edit-form/left-column.ts
