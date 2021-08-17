@@ -26,7 +26,7 @@ import {
 } from '@akeneo-pim-community/shared';
 import {TableFooter} from './TableFooter';
 import styled from 'styled-components';
-import {TableValueWithId, ViolatedCell} from './TableFieldApp';
+import {TableRowWithId, TableValueWithId, ViolatedCell} from './TableFieldApp';
 import {getSelectOption, getSelectOptions} from '../repositories/SelectOption';
 import {TableInputSelect} from './CellInputs/TableInputSelect';
 import {TableCell} from '../models/TableValue';
@@ -227,7 +227,7 @@ const TableInputValue: React.FC<TableInputValueProps> = ({
     deleteValidationErrors(uniqueId, undefined);
     const rowIndex = valueData.findIndex(row => row['unique id'] === uniqueId);
     if (rowIndex >= 0) {
-      const row = valueData[rowIndex];
+      const row: TableRowWithId = valueData[rowIndex];
       const newRow = {'unique id': row['unique id']};
       newRow[firstColumn.code] = row[firstColumn.code];
 

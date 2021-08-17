@@ -62,7 +62,7 @@ type TableFieldAppProps = TemplateContext & {
   copyCheckboxChecked?: boolean;
 };
 
-type TableRowWithId = TableRow & {'unique id': string};
+export type TableRowWithId = TableRow & {'unique id': string};
 // As we can't have space, the 'unique id' can not be used as column
 export type TableValueWithId = TableRowWithId[];
 
