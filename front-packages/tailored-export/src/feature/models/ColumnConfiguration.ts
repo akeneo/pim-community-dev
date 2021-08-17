@@ -14,7 +14,7 @@ type ConcatElement = {
 type Format = {
   type: 'concat';
   elements: ConcatElement[];
-  space_between: boolean;
+  space_between?: boolean;
 };
 
 type ColumnConfiguration = {
@@ -41,7 +41,6 @@ const createColumn = (newColumnName: string, uuid: string): ColumnConfiguration 
     format: {
       type: 'concat',
       elements: [],
-      space_between: false,
     },
   };
 };
@@ -52,7 +51,7 @@ const addColumn = (columns: ColumnConfiguration[], columnToAdd: ColumnConfigurat
 ];
 
 const removeColumn = (columns: ColumnConfiguration[], columnUuid: string): ColumnConfiguration[] =>
-  columns.filter(column => column.uuid !== columnUuid);
+  columns.filter(({uuid}) => uuid !== columnUuid);
 
 const updateColumn = (columns: ColumnConfiguration[], updatedColumn: ColumnConfiguration): ColumnConfiguration[] =>
   columns.map(column => (column.uuid === updatedColumn.uuid ? updatedColumn : column)).filter(isNonEmptyColumn);

@@ -32,7 +32,7 @@ const ConcatElementList = ({
             );
           }
 
-          const source = columnConfiguration.sources.find(({uuid}) => uuid === element.value);
+          const source = columnConfiguration.sources.find(({uuid}) => uuid === element.uuid);
 
           switch (source?.type) {
             case 'attribute':

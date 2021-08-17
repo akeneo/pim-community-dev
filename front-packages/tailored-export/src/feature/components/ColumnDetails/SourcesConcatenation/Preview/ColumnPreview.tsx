@@ -41,7 +41,7 @@ const ColumnPreview = ({columnConfiguration}: ColumnPreviewProps) => {
   return (
     <ColumnPreviewContainer>
       <PreviewTitle>{translate('akeneo.tailored_export.column_details.concatenation.preview')}</PreviewTitle>
-      <PreviewList spaceBetween={columnConfiguration.format.space_between}>
+      <PreviewList spaceBetween={columnConfiguration.format.space_between ?? false}>
         {columnConfiguration.format.elements.map((element, index) => {
           if ('string' === element.type) {
             return <StringElement key={index}>{element.value}</StringElement>;

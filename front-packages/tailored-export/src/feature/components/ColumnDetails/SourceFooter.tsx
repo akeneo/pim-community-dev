@@ -9,7 +9,6 @@ const Container = styled.div`
   bottom: 0;
   background: ${getColor('white')};
   padding-top: 10px;
-  border-top: 1px solid ${getColor('grey', 60)};
   display: flex;
   justify-content: flex-end;
 `;

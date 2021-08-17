@@ -1,6 +1,6 @@
 import React from 'react';
 import styled from 'styled-components';
-import {Button, Checkbox, Helper, SectionTitle, uuid} from 'akeneo-design-system';
+import {Button, Checkbox, getColor, Helper, SectionTitle, uuid} from 'akeneo-design-system';
 import {useTranslate, ValidationError} from '@akeneo-pim-community/shared';
 import {ColumnPreview} from './Preview/ColumnPreview';
 import {ColumnConfiguration, ConcatElement} from '../../../models';
@@ -13,6 +13,15 @@ const SourcesConcatenationContainer = styled.div`
   display: flex;
   flex-direction: column;
   gap: 10px;
+`;
+
+const ConcatenationFooter = styled.div`
+  position: sticky;
+  bottom: 0;
+  background: ${getColor('white')};
+  padding-top: 10px;
+  display: flex;
+  justify-content: flex-end;
 `;
 
 type SourcesConcatenationProps = {
@@ -78,45 +87,45 @@ const SourcesConcatenation = ({
   const canAddText = columnConfiguration.format.elements.filter(({type}) => 'string' === type).length < MAX_TEXT_COUNT;
 
   return (
-    <SourcesConcatenationContainer>
-      <div>
-        <SectionTitle>
-          <SectionTitle.Title>
-            {translate('akeneo.tailored_export.column_details.concatenation.title')}
-          </SectionTitle.Title>
-        </SectionTitle>
-        {validationErrors.map((error, index) => (
-          <Helper key={index} level="error">
-            {translate(error.messageTemplate, error.parameters)}
-          </Helper>
-        ))}
-      </div>
-      <ColumnPreview columnConfiguration={columnConfiguration} />
-      <Checkbox checked={columnConfiguration.format.space_between} onChange={handleSpacesBetweenChange}>
-        {translate('akeneo.tailored_export.column_details.concatenation.space_between')}
-      </Checkbox>
-      <ConcatElementList
-        columnConfiguration={columnConfiguration}
-        onConcatElementReorder={handleConcatElementReorder}
-        onConcatElementChange={handleConcatElementChange}
-        onConcatElementRemove={handleConcatElementRemove}
-      />
-      <div>
-        <Button
-          title={
-            !canAddText
-              ? translate('akeneo.tailored_export.validation.concatenation.max_text_count_reached')
-              : undefined
-          }
-          disabled={!canAddText}
-          level="secondary"
-          ghost={true}
-          onClick={handleAddText}
-        >
-          {translate('akeneo.tailored_export.column_details.concatenation.add_text')}
-        </Button>
-      </div>
-    </SourcesConcatenationContainer>
+    <>
+      <SectionTitle sticky={0}>
+        <SectionTitle.Title>
+          {translate('akeneo.tailored_export.column_details.concatenation.title')}
+        </SectionTitle.Title>
+      </SectionTitle>
+      {validationErrors.map((error, index) => (
+        <Helper key={index} level="error">
+          {translate(error.messageTemplate, error.parameters)}
+        </Helper>
+      ))}
+      <SourcesConcatenationContainer>
+        <ColumnPreview columnConfiguration={columnConfiguration} />
+        <Checkbox checked={columnConfiguration.format.space_between ?? false} onChange={handleSpacesBetweenChange}>
+          {translate('akeneo.tailored_export.column_details.concatenation.space_between')}
+        </Checkbox>
+        <ConcatElementList
+          columnConfiguration={columnConfiguration}
+          onConcatElementReorder={handleConcatElementReorder}
+          onConcatElementChange={handleConcatElementChange}
+          onConcatElementRemove={handleConcatElementRemove}
+        />
+        <ConcatenationFooter>
+          <Button
+            title={
+              !canAddText
+                ? translate('akeneo.tailored_export.validation.concatenation.max_text_count_reached')
+                : undefined
+            }
+            disabled={!canAddText}
+            level="secondary"
+            ghost={true}
+            onClick={handleAddText}
+          >
+            {translate('akeneo.tailored_export.column_details.concatenation.add_text')}
+          </Button>
+        </ConcatenationFooter>
+      </SourcesConcatenationContainer>
+    </>
   );
 };
 
