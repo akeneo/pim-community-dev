@@ -10,16 +10,6 @@ class FreeTrialStartCopy extends StartCopy {
         this.el
     );
   }
-
-  startCopy() {
-    super.getRoot().trigger('pim_enrich:form:start_compare_translate');
-    super.startCopy();
-  }
-
-  stopCopy() {
-    super.stopCopy();
-    super.getRoot().trigger('pim_enrich:form:stop_compare_translate');
-  }
 }
 
 export = FreeTrialStartCopy;
