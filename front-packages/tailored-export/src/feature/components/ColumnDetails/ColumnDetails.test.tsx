@@ -150,7 +150,13 @@ test('We can add an attribute source', async () => {
       },
     ],
     format: {
-      elements: [],
+      elements: [
+        {
+          type: 'source',
+          uuid: expect.any(String),
+          value: expect.any(String),
+        },
+      ],
       type: 'concat',
     },
   });
@@ -244,7 +250,13 @@ test('We can add a property source', async () => {
       },
     ],
     format: {
-      elements: [],
+      elements: [
+        {
+          type: 'source',
+          uuid: expect.any(String),
+          value: expect.any(String),
+        },
+      ],
       type: 'concat',
     },
   });
@@ -296,7 +308,13 @@ test('We can add an association type as source', async () => {
     ],
     format: {
       type: 'concat',
-      elements: [],
+      elements: [
+        {
+          type: 'source',
+          uuid: expect.any(String),
+          value: expect.any(String),
+        },
+      ],
     },
   });
 });

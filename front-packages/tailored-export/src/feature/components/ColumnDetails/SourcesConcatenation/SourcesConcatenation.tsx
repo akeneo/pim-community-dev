@@ -9,7 +9,6 @@ import {ConcatElementList} from './List/ConcatElementList';
 const MAX_TEXT_COUNT = 10;
 
 const SourcesConcatenationContainer = styled.div`
-  height: 400px;
   display: flex;
   flex-direction: column;
   gap: 10px;

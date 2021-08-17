@@ -255,7 +255,13 @@ test('It adds source when user click on add source', async () => {
         },
       ],
       format: {
-        elements: [],
+        elements: [
+          {
+            type: 'source',
+            uuid: expect.any(String),
+            value: expect.any(String),
+          },
+        ],
         type: 'concat',
       },
     },
