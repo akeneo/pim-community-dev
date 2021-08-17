@@ -13,12 +13,15 @@ declare(strict_types=1);
 
 namespace Akeneo\Platform\TailoredExport\Test\Acceptance\UseCases\Attribute;
 
-use Akeneo\Platform\TailoredExport\Application\Query\Selection\AssetCollection\AssetCollectionCodeSelection;
-use Akeneo\Platform\TailoredExport\Application\Query\Selection\AssetCollection\AssetCollectionLabelSelection;
-use Akeneo\Platform\TailoredExport\Application\Query\Selection\SelectionInterface;
-use Akeneo\Platform\TailoredExport\Domain\SourceValue\AssetCollectionValue;
-use Akeneo\Platform\TailoredExport\Domain\SourceValueInterface;
-use Akeneo\Platform\TailoredExport\Test\Acceptance\FakeServices\Asset\InMemoryFindAssetLabelTranslation;
+use Akeneo\Platform\TailoredExport\Application\Common\Operation\DefaultValueOperation;
+use Akeneo\Platform\TailoredExport\Application\Common\Selection\AssetCollection\AssetCollectionCodeSelection;
+use Akeneo\Platform\TailoredExport\Application\Common\Selection\AssetCollection\AssetCollectionLabelSelection;
+use Akeneo\Platform\TailoredExport\Application\Common\Selection\SelectionInterface;
+use Akeneo\Platform\TailoredExport\Application\Common\SourceValue\AssetCollectionValue;
+use Akeneo\Platform\TailoredExport\Application\Common\SourceValue\NullValue;
+use Akeneo\Platform\TailoredExport\Application\Common\SourceValue\SourceValueInterface;
+use Akeneo\Platform\TailoredExport\Application\MapValues\MapValuesQuery;
+use Akeneo\Platform\TailoredExport\Test\Acceptance\FakeServices\Asset\InMemoryFindAssetLabels;
 use PHPUnit\Framework\Assert;
 
 final class HandleAssetCollectionValueTest extends AttributeTestCase
@@ -32,13 +35,13 @@ final class HandleAssetCollectionValueTest extends AttributeTestCase
         SourceValueInterface $value,
         array $expected
     ): void {
-        $productMapper = $this->getProductMapper();
+        $mapValuesQueryHandler = $this->getMapValuesQueryHandler();
         $this->loadAssetLabels();
 
         $columnCollection = $this->createSingleSourceColumnCollection($operations, $selection);
         $valueCollection = $this->createSingleValueValueCollection($value);
 
-        $mappedProduct = $productMapper->map($columnCollection, $valueCollection);
+        $mappedProduct = $mapValuesQueryHandler->handle(new MapValuesQuery($columnCollection, $valueCollection));
 
         Assert::assertSame($expected, $mappedProduct);
     }
@@ -46,31 +49,51 @@ final class HandleAssetCollectionValueTest extends AttributeTestCase
     public function provider(): array
     {
         return [
-            [
+            'it returns an empty string if the asset collection is empty' => [
                 'operations' => [],
                 'selection' => new AssetCollectionCodeSelection(',', 'packshot', 'my_asset_collection'),
                 'value' => new AssetCollectionValue([], 'my_desk', null, 'en_US'),
                 'expected' => [self::TARGET_NAME => '']
             ],
-            [
+            'it selects the asset codes' => [
                 'operations' => [],
                 'selection' => new AssetCollectionCodeSelection(',', 'packshot', 'my_asset_collection'),
                 'value' => new AssetCollectionValue(['packshot_0', 'packshot_1'], 'my_desk', 'ecommerce', null),
                 'expected' => [self::TARGET_NAME => 'packshot_0,packshot_1']
             ],
-            [
+            'it selects the asset labels' => [
                 'operations' => [],
                 'selection' => new AssetCollectionLabelSelection('|', 'en_US', 'packshot', 'my_asset_collection'),
                 'value' => new AssetCollectionValue(['packshot_0', 'packshot_1'], 'my_desk', 'ecommerce', null),
                 'expected' => [self::TARGET_NAME => 'Packshot 0|[packshot_1]']
-            ]
+            ],
+            'it applies default value operation when value is null' => [
+                'operations' => [
+                    DefaultValueOperation::createFromNormalized([
+                        'value' => 'n/a'
+                    ]),
+                ],
+                'selection' => new AssetCollectionCodeSelection(',', 'packshot', 'my_asset_collection'),
+                'value' => new NullValue(),
+                'expected' => [self::TARGET_NAME => 'n/a']
+            ],
+            'it does not apply default value operation when value is not null' => [
+                'operations' => [
+                    DefaultValueOperation::createFromNormalized([
+                        'value' => 'n/a'
+                    ]),
+                ],
+                'selection' => new AssetCollectionCodeSelection(',', 'packshot', 'my_asset_collection'),
+                'value' => new AssetCollectionValue(['packshot_0', 'packshot_1'], 'my_desk', 'ecommerce', null),
+                'expected' => [self::TARGET_NAME => 'packshot_0,packshot_1']
+            ],
         ];
     }
 
     private function loadAssetLabels()
     {
-        /** @var InMemoryFindAssetLabelTranslation $assetLabelsRepository */
-        $assetLabelsRepository = self::$container->get('akeneo_assetmanager.infrastructure.persistence.query.enrich.find_asset_label_translation_public_api');
+        /** @var InMemoryFindAssetLabels $assetLabelsRepository */
+        $assetLabelsRepository = self::$container->get('Akeneo\Platform\TailoredExport\Domain\Query\FindAssetLabelsInterface');
         $assetLabelsRepository->addAssetLabel('packshot', 'packshot_0', 'en_US', 'Packshot 0');
     }
 }

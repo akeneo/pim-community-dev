@@ -71,6 +71,7 @@ const TextView = ({attribute, onAdditionalPropertyUpdated, onSubmit, errors, rig
           <SelectInput
             readOnly={!rights.attribute.edit}
             emptyResultLabel={translate('pim_asset_manager.result_counter', {count: 0}, 0)}
+            openLabel={translate('pim_common.open')}
             clearable={false}
             verticalPosition="up"
             value={attribute.validationRule.toString()}

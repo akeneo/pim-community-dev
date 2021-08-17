@@ -16,10 +16,20 @@ use Akeneo\CouplingDetector\Configuration\DefaultFinder;
 use Akeneo\CouplingDetector\RuleBuilder;
 
 $finder = new DefaultFinder();
-
 $builder = new RuleBuilder();
 
 $rules = [
+    $builder->only(
+        [
+            'Webmozart\Assert\Assert',
+            'Akeneo\Platform\TailoredExport\Domain',
+        ]
+    )->in('Akeneo\Platform\TailoredExport\Application'),
+    $builder->only(
+        [
+            'Webmozart\Assert\Assert',
+        ]
+    )->in('Akeneo\Platform\TailoredExport\Domain'),
     $builder->only(
         [
             'Symfony\Component',
@@ -32,10 +42,11 @@ $rules = [
             'Box\Spout\Writer\WriterFactory',
             'Box\Spout\Writer\WriterInterface',
 
-            'Akeneo\AssetManager\Infrastructure\PublicApi\Enrich\GetMainMediaFileInfoCollectionInterface',
-            'Akeneo\AssetManager\Infrastructure\PublicApi\Enrich\FindAssetLabelTranslation',
-            'Akeneo\AssetManager\Infrastructure\PublicApi\Enrich\MediaFileInfo',
-            'Akeneo\Channel\Component\Query\PublicApi\ChannelExistsWithLocaleInterface',
+            'Akeneo\Platform\TailoredExport\Application',
+            'Akeneo\Platform\TailoredExport\Domain',
+
+            'Akeneo\AssetManager\Infrastructure\PublicApi',
+            'Akeneo\Channel\Component\Query\PublicApi',
             'Akeneo\Pim\Automation\DataQualityInsights\Infrastructure\Elasticsearch\Filter\QualityScoreMultiLocalesFilter',
             'Akeneo\Pim\Enrichment\Component\Product\Model\GroupInterface',
             'Akeneo\Pim\Enrichment\Component\Product\Model\ProductInterface',
@@ -47,12 +58,11 @@ $rules = [
             'Akeneo\Pim\Enrichment\Component\Product\Query\GetProductModelLabelsInterface',
             'Akeneo\Pim\Enrichment\Component\Product\Query\ProductQueryBuilderFactoryInterface',
             'Akeneo\Pim\Enrichment\Component\Product\Value\MetricValue',
-            'Akeneo\Pim\Permission\Component\Query\GetViewableAttributeCodesForUserInterface',
             'Akeneo\Pim\Structure\Component\Query\PublicApi',
-            'Akeneo\ReferenceEntity\Infrastructure\PublicApi\Enrich\FindRecordsLabelTranslations',
+            'Akeneo\ReferenceEntity\Infrastructure\PublicApi',
             'Akeneo\UserManagement\Component\Model\UserInterface',
         ]
-    )->in('Akeneo\Platform\TailoredExport'),
+    )->in('Akeneo\Platform\TailoredExport\Infrastructure'),
 ];
 
 return new Configuration($rules, $finder);

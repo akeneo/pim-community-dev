@@ -4,7 +4,7 @@ import {renderWithProviders} from '@akeneo-pim-community/shared';
 import {ColumnListPlaceholder} from './ColumnListPlaceholder';
 
 test('it renders a placeholder when no column is selected', () => {
-  renderWithProviders(<ColumnListPlaceholder onColumnCreated={jest.fn} />);
+  renderWithProviders(<ColumnListPlaceholder onColumnCreated={jest.fn()} />);
 
   expect(screen.getByText(/akeneo.tailored_export.column_list.no_column_selection.title/i)).toBeInTheDocument();
 });

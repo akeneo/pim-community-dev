@@ -1,8 +1,18 @@
-import React, {ClipboardEvent, useEffect, useRef} from 'react';
-import {getColor, Helper, SectionTitle, Table, TextInput, useAutoFocus, useBooleanState} from 'akeneo-design-system';
+import React, {ClipboardEvent, Dispatch, SetStateAction, useCallback, useEffect, useRef, useState} from 'react';
+import {
+  getColor,
+  Helper,
+  RulesIllustration,
+  Search,
+  SectionTitle,
+  Table,
+  TextInput,
+  useAutoFocus,
+  useBooleanState,
+} from 'akeneo-design-system';
 import styled from 'styled-components';
-import {useTranslate} from '@akeneo-pim-community/shared';
-import {ColumnConfiguration, MAX_COLUMN_COUNT} from '../../models/ColumnConfiguration';
+import {NoDataSection, NoDataTitle, useTranslate} from '@akeneo-pim-community/shared';
+import {ColumnConfiguration, ColumnsState, filterColumns, MAX_COLUMN_COUNT} from '../../models/ColumnConfiguration';
 import {ColumnListPlaceholder} from './ColumnListPlaceholder';
 import {ColumnRow, TargetCell} from './ColumnRow';
 import {useValidationErrors} from '../../contexts';
@@ -23,33 +33,39 @@ const SourceDataHeaderCell = styled(Table.HeaderCell)`
   padding-left: 20px;
 `;
 
+const SpacedSearch = styled(Search)`
+  margin: 20px 0;
+`;
+
 type ColumnListProps = {
-  columnsConfiguration: ColumnConfiguration[];
-  selectedColumn: ColumnConfiguration | null;
+  columnsState: ColumnsState;
+  setColumnsState: Dispatch<SetStateAction<ColumnsState>>;
   onColumnCreated: (target: string) => void;
   onColumnsCreated: (targets: string[]) => void;
   onColumnChange: (column: ColumnConfiguration) => void;
-  onColumnSelected: (uuid: string | null) => void;
-  onColumnRemoved: (uuid: string) => void;
+  onColumnSelected: (columnUuid: string | null) => void;
+  onColumnRemoved: (columnUuid: string) => void;
   onColumnReorder: (newIndices: number[]) => void;
-  onFocusNext: () => void;
 };
 
 const ColumnList = ({
-  columnsConfiguration,
-  selectedColumn,
+  columnsState,
+  setColumnsState,
   onColumnCreated,
   onColumnsCreated,
   onColumnChange,
   onColumnSelected,
   onColumnRemoved,
   onColumnReorder,
-  onFocusNext,
 }: ColumnListProps) => {
+  const {selectedColumnUuid, columns} = columnsState;
+  const selectedColumn: ColumnConfiguration | null =
+    columnsState.columns.find(({uuid}) => selectedColumnUuid === uuid) ?? null;
   const translate = useTranslate();
   const inputRef = useRef<HTMLInputElement>(null);
   const focus = useAutoFocus(inputRef);
-  const [placeholderDisplayed, , hidePlaceholder] = useBooleanState(0 === columnsConfiguration.length);
+  const [placeholderDisplayed, , hidePlaceholder] = useBooleanState(0 === columns.length);
+  const [searchValue, setSearchValue] = useState<string>('');
 
   useEffect(() => {
     focus();
@@ -60,8 +76,7 @@ const ColumnList = ({
     const pastedData = clipboardData?.getData('Text');
     const pastedColumns = pastedData?.split('\t');
     const currentColumnIsEmpty = null === selectedColumn || '' === selectedColumn.target;
-    const currentColumnIsLastColumn =
-      null === selectedColumn || columnsConfiguration.indexOf(selectedColumn) === columnsConfiguration.length - 1;
+    const currentColumnIsLastColumn = null === selectedColumn || columns.indexOf(selectedColumn) === columns.length - 1;
 
     if (undefined !== pastedColumns && pastedColumns.length > 1 && currentColumnIsEmpty && currentColumnIsLastColumn) {
       event.preventDefault(); // We need to prevent default to not trigger onChange event
@@ -70,8 +85,31 @@ const ColumnList = ({
   };
 
   const globalErrors = useValidationErrors('[columns]', true);
+  const filteredColumns = filterColumns(columns, searchValue);
 
-  const canAddColumn = MAX_COLUMN_COUNT > columnsConfiguration.length;
+  const canAddColumn = MAX_COLUMN_COUNT > columns.length;
+  const shouldDisplayNewColumnRow = canAddColumn && '' === searchValue;
+  const shouldDisplayNoResults = !placeholderDisplayed && 0 === filteredColumns.length && '' !== searchValue;
+  const shouldDisplayTable = !placeholderDisplayed && !shouldDisplayNoResults;
+
+  const handleFocusNext = useCallback(() => {
+    setColumnsState(previousColumnsState => {
+      const filteredColumns = filterColumns(previousColumnsState.columns, searchValue);
+      const currentColumnIndex = filteredColumns.findIndex(
+        ({uuid}) => previousColumnsState.selectedColumnUuid === uuid
+      );
+      const nextColumn = filteredColumns[currentColumnIndex + 1] ?? null;
+      const selectedColumnUuid =
+        ('' !== searchValue || MAX_COLUMN_COUNT <= previousColumnsState.columns.length) && null === nextColumn
+          ? previousColumnsState.selectedColumnUuid
+          : nextColumn?.uuid ?? null;
+
+      return {
+        ...previousColumnsState,
+        selectedColumnUuid,
+      };
+    });
+  }, [searchValue, setColumnsState]);
 
   return (
     <Container>
@@ -79,14 +117,27 @@ const ColumnList = ({
         <SectionTitle.Title>{translate('akeneo.tailored_export.column_list.title')}</SectionTitle.Title>
         <SectionTitle.Spacer />
       </SectionTitle>
+      {!placeholderDisplayed && (
+        <SpacedSearch
+          sticky={44}
+          placeholder={translate('pim_common.search')}
+          searchValue={searchValue}
+          onSearchChange={setSearchValue}
+        >
+          <Search.ResultCount>
+            {translate('pim_common.result_count', {itemsCount: filteredColumns.length}, filteredColumns.length)}
+          </Search.ResultCount>
+        </SpacedSearch>
+      )}
       {globalErrors.map((error, index) => (
         <Helper key={index} level="error">
           {translate(error.messageTemplate, error.parameters)}
         </Helper>
       ))}
-      {!placeholderDisplayed && (
+      {placeholderDisplayed && <ColumnListPlaceholder onColumnCreated={hidePlaceholder} />}
+      {shouldDisplayTable && (
         <Table isDragAndDroppable={true} onReorder={onColumnReorder}>
-          <Table.Header sticky={44}>
+          <Table.Header sticky={88}>
             <Table.HeaderCell>{translate('akeneo.tailored_export.column_list.header.column_name')}</Table.HeaderCell>
             <SourceDataHeaderCell>
               {translate('akeneo.tailored_export.column_list.header.source_data')}
@@ -94,7 +145,7 @@ const ColumnList = ({
             <Table.HeaderCell />
           </Table.Header>
           <Table.Body>
-            {columnsConfiguration.map(column => (
+            {filteredColumns.map(column => (
               <ColumnRow
                 key={column.uuid}
                 ref={selectedColumn?.uuid === column.uuid ? inputRef : null}
@@ -103,12 +154,12 @@ const ColumnList = ({
                 onColumnChange={onColumnChange}
                 onColumnRemoved={onColumnRemoved}
                 onColumnSelected={onColumnSelected}
-                onFocusNext={onFocusNext}
+                onFocusNext={handleFocusNext}
               />
             ))}
           </Table.Body>
           <Table.Body>
-            {canAddColumn && (
+            {shouldDisplayNewColumnRow && (
               <Table.Row onClick={() => onColumnSelected(null)} isSelected={selectedColumn === null}>
                 <TargetCell>
                   <TextInput
@@ -128,7 +179,12 @@ const ColumnList = ({
           </Table.Body>
         </Table>
       )}
-      {placeholderDisplayed && <ColumnListPlaceholder onColumnCreated={hidePlaceholder} />}
+      {shouldDisplayNoResults && (
+        <NoDataSection>
+          <RulesIllustration size={256} />
+          <NoDataTitle>{translate('pim_common.no_search_result')}</NoDataTitle>
+        </NoDataSection>
+      )}
     </Container>
   );
 };

@@ -13,11 +13,12 @@ declare(strict_types=1);
 
 namespace Akeneo\Platform\TailoredExport\Infrastructure\Query;
 
-use Akeneo\Pim\Permission\Component\Query\GetViewableAttributeCodesForUserInterface;
 use Akeneo\Pim\Structure\Component\Query\PublicApi\Attribute\FindFlattenAttributesInterface;
 use Akeneo\Pim\Structure\Component\Query\PublicApi\Attribute\FlattenAttribute;
-use Akeneo\Platform\TailoredExport\Domain\Query\FindViewableAttributesInterface;
-use Akeneo\Platform\TailoredExport\Domain\Query\ViewableAttributesResult;
+use Akeneo\Pim\Structure\Component\Query\PublicApi\Permission\GetViewableAttributeCodesForUserInterface;
+use Akeneo\Platform\TailoredExport\Domain\Query\Attribute\Attribute;
+use Akeneo\Platform\TailoredExport\Domain\Query\Attribute\FindViewableAttributesInterface;
+use Akeneo\Platform\TailoredExport\Domain\Query\Attribute\ViewableAttributesResult;
 use Akeneo\UserManagement\Component\Model\UserInterface;
 use Symfony\Component\Security\Core\Authentication\Token\Storage\TokenStorageInterface;
 
@@ -48,7 +49,8 @@ class FindViewableAttributes implements FindViewableAttributesInterface
         $currentOffset = max($offset, 0);
 
         do {
-            $attributes = $this->findFlattenAttributes->execute($localeCode, $limit, $attributeTypes, $currentOffset, $search);
+            $attributes = $this->findAttributes($localeCode, $limit, $attributeTypes, $currentOffset, $search);
+
             if (empty($attributes)) {
                 return new ViewableAttributesResult($currentOffset, $viewableAttributes);
             }
@@ -62,15 +64,41 @@ class FindViewableAttributes implements FindViewableAttributesInterface
         return new ViewableAttributesResult($currentOffset, array_slice($viewableAttributes, 0, $limit));
     }
 
+    private function findAttributes(
+        string $localeCode,
+        int $limit,
+        ?array $attributeTypes,
+        $currentOffset,
+        ?string $search
+    ): array {
+        $flattenAttributes = $this->findFlattenAttributes->execute(
+            $localeCode,
+            $limit,
+            $attributeTypes,
+            $currentOffset,
+            $search
+        );
+
+        return array_map(
+            static fn (FlattenAttribute $flattenAttribute) => new Attribute(
+                $flattenAttribute->getCode(),
+                $flattenAttribute->getLabel(),
+                $flattenAttribute->getAttributeGroupCode(),
+                $flattenAttribute->getAttributeGroupLabel()
+            ),
+            $flattenAttributes
+        );
+    }
+
     /**
-     * @var FlattenAttribute[] $attributes
+     * @var Attribute[] $attributes
      *
-     * @return FlattenAttribute[]
+     * @return Attribute[]
      */
     private function filterViewableAttributes(array $attributes): array
     {
         $userId = $this->getUserId();
-        $attributeCodes = array_map(static fn (FlattenAttribute $attribute) => $attribute->getCode(), $attributes);
+        $attributeCodes = array_map(static fn (Attribute $attribute) => $attribute->getCode(), $attributes);
         $viewableAttributeCodes = $this->getViewableAttributeCodesForUser->forAttributeCodes($attributeCodes, $userId);
 
         return array_filter(

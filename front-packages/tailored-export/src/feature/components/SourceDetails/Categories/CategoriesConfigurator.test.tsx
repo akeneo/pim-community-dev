@@ -3,29 +3,10 @@ import {screen} from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
 import {renderWithProviders} from '@akeneo-pim-community/shared';
 import {CategoriesConfigurator} from './CategoriesConfigurator';
-import {getDefaultTextSource} from '../Text/model';
 import {getDefaultCategoriesSource} from './model';
-import {CodeLabelCollectionSelection} from '../common/CodeLabelCollectionSelector';
+import {getDefaultParentSource} from '../Parent/model';
 
-jest.mock('../common/CodeLabelCollectionSelector', () => ({
-  CodeLabelCollectionSelector: ({
-    onSelectionChange,
-  }: {
-    onSelectionChange: (updatedSelection: CodeLabelCollectionSelection) => void;
-  }) => (
-    <button
-      onClick={() =>
-        onSelectionChange({
-          type: 'label',
-          locale: 'en_US',
-          separator: ',',
-        })
-      }
-    >
-      Update selection
-    </button>
-  ),
-}));
+jest.mock('../common/CodeLabelCollectionSelector');
 
 test('it displays a categories configurator', () => {
   const onSourceChange = jest.fn();
@@ -54,31 +35,15 @@ test('it displays a categories configurator', () => {
   });
 });
 
-test('it does not render if the source is not valid', () => {
+test('it tells when the source data is invalid', () => {
   const mockedConsole = jest.spyOn(console, 'error').mockImplementation();
-  const onSourceChange = jest.fn();
 
-  renderWithProviders(
-    <CategoriesConfigurator
-      source={getDefaultTextSource(
-        {
-          code: 'text',
-          type: 'pim_catalog_text',
-          labels: {},
-          scopable: false,
-          localizable: false,
-          is_locale_specific: false,
-          available_locales: [],
-        },
-        null,
-        null
-      )}
-      validationErrors={[]}
-      onSourceChange={onSourceChange}
-    />
-  );
+  expect(() => {
+    renderWithProviders(
+      <CategoriesConfigurator source={getDefaultParentSource()} validationErrors={[]} onSourceChange={jest.fn()} />
+    );
+  }).toThrow('Invalid source data "parent" for categories configurator');
 
-  expect(mockedConsole).toHaveBeenCalledWith('Invalid source data "text" for categories configurator');
   expect(screen.queryByText('Update selection')).not.toBeInTheDocument();
   mockedConsole.mockRestore();
 });

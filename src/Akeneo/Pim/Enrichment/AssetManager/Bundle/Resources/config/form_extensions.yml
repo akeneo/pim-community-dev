@@ -33,6 +33,7 @@ extensions:
             title: pim_asset_manager.asset_family.title
             iconModifier: iconAssetFamily
             to: akeneo_asset_manager_asset_family_index
+            icon: AssetsIcon
 
     pim-asset-family-index-user-navigation:
         module: pim/menu/user-navigation

@@ -2,7 +2,7 @@ import React from 'react';
 import {screen} from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
 import {AssociationTypeSourceConfigurator} from './AssociationTypeSourceConfigurator';
-import {AssociationTypeConfiguratorProps, Source} from '../../models';
+import {Source} from '../../models';
 import {renderWithProviders} from 'feature/tests';
 
 const simpleAssociationTypeSource: Source = {
@@ -33,38 +33,9 @@ const quantifiedAssociationTypeSource: Source = {
   },
 };
 
-jest.mock('./SimpleAssociationType/SimpleAssociationTypeConfigurator', () => ({
-  SimpleAssociationTypeConfigurator: ({onSourceChange}: {onSourceChange: (updatedSource: Source) => void}) => (
-    <button
-      onClick={() =>
-        onSourceChange({
-          ...simpleAssociationTypeSource,
-          selection: {type: 'code', entity_type: 'product_models', separator: ','},
-        })
-      }
-    >
-      Update simple association selection
-    </button>
-  ),
-}));
-
-jest.mock('./QuantifiedAssociationType/QuantifiedAssociationTypeConfigurator', () => ({
-  QuantifiedAssociationTypeConfigurator: ({onSourceChange}: AssociationTypeConfiguratorProps) => (
-    <button
-      onClick={() =>
-        onSourceChange({
-          ...quantifiedAssociationTypeSource,
-          selection: {type: 'code', entity_type: 'product_models', separator: ','},
-        })
-      }
-    >
-      Update quantified association selection
-    </button>
-  ),
-}));
-
 test('it displays a simple association type configurator', async () => {
   const onSourceChange = jest.fn();
+
   await renderWithProviders(
     <AssociationTypeSourceConfigurator
       source={simpleAssociationTypeSource}
@@ -73,15 +44,22 @@ test('it displays a simple association type configurator', async () => {
     />
   );
 
-  userEvent.click(screen.getByText(/Update simple association selection/i));
+  userEvent.click(
+    screen.getByLabelText('akeneo.tailored_export.column_details.sources.selection.collection_separator.title')
+  );
+  userEvent.click(
+    screen.getByText('akeneo.tailored_export.column_details.sources.selection.collection_separator.pipe')
+  );
+
   expect(onSourceChange).toHaveBeenCalledWith({
     ...simpleAssociationTypeSource,
-    selection: {type: 'code', entity_type: 'product_models', separator: ','},
+    selection: {type: 'code', entity_type: 'products', separator: '|'},
   });
 });
 
 test('it displays a quantified association type configurator', async () => {
   const onSourceChange = jest.fn();
+
   await renderWithProviders(
     <AssociationTypeSourceConfigurator
       source={quantifiedAssociationTypeSource}
@@ -90,10 +68,14 @@ test('it displays a quantified association type configurator', async () => {
     />
   );
 
-  userEvent.click(screen.getByText(/Update quantified association selection/i));
+  userEvent.click(screen.getByLabelText('pim_common.type'));
+  userEvent.click(
+    screen.getByText('akeneo.tailored_export.column_details.sources.selection.quantified_association.quantity')
+  );
+
   expect(onSourceChange).toHaveBeenCalledWith({
     ...quantifiedAssociationTypeSource,
-    selection: {type: 'code', entity_type: 'product_models', separator: ','},
+    selection: {type: 'quantity', entity_type: 'products', separator: ','},
   });
 });
 
@@ -165,4 +147,31 @@ test('it displays association type errors when attribute is found', async () => 
   );
 
   expect(screen.getByText('code error message')).toBeInTheDocument();
+});
+
+test('it renders an invalid association type placeholder when the source is invalid', async () => {
+  const mockedConsole = jest.spyOn(console, 'error').mockImplementation();
+  const handleSourceChange = jest.fn();
+
+  await renderWithProviders(
+    <AssociationTypeSourceConfigurator
+      source={{
+        uuid: 'cffd560e-1e40-4c55-a415-89c7958b270d',
+        code: 'XSELL',
+        type: 'association_type',
+        locale: null,
+        channel: null,
+        operations: [],
+        // @ts-expect-error invalid selection
+        selection: {},
+      }}
+      validationErrors={[]}
+      onSourceChange={handleSourceChange}
+    />
+  );
+
+  expect(
+    screen.getByText('akeneo.tailored_export.column_details.sources.invalid_source.association_type')
+  ).toBeInTheDocument();
+  mockedConsole.mockRestore();
 });

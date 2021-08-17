@@ -6,7 +6,7 @@ import {Source} from '../../models';
 import {useAssociationType} from '../../hooks';
 import {SimpleAssociationTypeConfigurator} from './SimpleAssociationType/SimpleAssociationTypeConfigurator';
 import {QuantifiedAssociationTypeConfigurator} from './QuantifiedAssociationType/QuantifiedAssociationTypeConfigurator';
-import {DeletedSourcePlaceholder} from './DeletedSourcePlaceholder';
+import {DeletedAssociationTypeSourcePlaceholder, ErrorBoundary} from './error';
 
 const Container = styled.div`
   display: flex;
@@ -32,6 +32,7 @@ const AssociationTypeSourceConfigurator = ({
   const associationTypeErrors = getErrorsForPath(validationErrors, '');
 
   if (isFetching) return null;
+
   if (null === associationType) {
     return (
       <>
@@ -40,9 +41,7 @@ const AssociationTypeSourceConfigurator = ({
             {translate(error.messageTemplate, error.parameters)}
           </Helper>
         ))}
-        <DeletedSourcePlaceholder
-          message={translate('akeneo.tailored_export.column_details.sources.deleted_association_type.title')}
-        />
+        <DeletedAssociationTypeSourcePlaceholder />
       </>
     );
   }
@@ -52,7 +51,7 @@ const AssociationTypeSourceConfigurator = ({
     : SimpleAssociationTypeConfigurator;
 
   return (
-    <>
+    <ErrorBoundary>
       {associationTypeErrors.map((error, index) => (
         <Helper key={index} level="error">
           {translate(error.messageTemplate, error.parameters)}
@@ -61,7 +60,7 @@ const AssociationTypeSourceConfigurator = ({
       <Container>
         <Configurator source={source} validationErrors={validationErrors} onSourceChange={onSourceChange} />
       </Container>
-    </>
+    </ErrorBoundary>
   );
 };
 

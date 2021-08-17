@@ -13,12 +13,15 @@ declare(strict_types=1);
 
 namespace Akeneo\Platform\TailoredExport\Test\Acceptance\UseCases\Property;
 
-use Akeneo\Platform\TailoredExport\Application\Query\Selection\Family\FamilyCodeSelection;
-use Akeneo\Platform\TailoredExport\Application\Query\Selection\Family\FamilyLabelSelection;
-use Akeneo\Platform\TailoredExport\Application\Query\Selection\SelectionInterface;
-use Akeneo\Platform\TailoredExport\Domain\SourceValue\FamilyValue;
-use Akeneo\Platform\TailoredExport\Domain\SourceValueInterface;
-use Akeneo\Platform\TailoredExport\Test\Acceptance\FakeServices\Family\InMemoryGetFamilyTranslations;
+use Akeneo\Platform\TailoredExport\Application\Common\Operation\DefaultValueOperation;
+use Akeneo\Platform\TailoredExport\Application\Common\Selection\Family\FamilyCodeSelection;
+use Akeneo\Platform\TailoredExport\Application\Common\Selection\Family\FamilyLabelSelection;
+use Akeneo\Platform\TailoredExport\Application\Common\Selection\SelectionInterface;
+use Akeneo\Platform\TailoredExport\Application\Common\SourceValue\FamilyValue;
+use Akeneo\Platform\TailoredExport\Application\Common\SourceValue\NullValue;
+use Akeneo\Platform\TailoredExport\Application\Common\SourceValue\SourceValueInterface;
+use Akeneo\Platform\TailoredExport\Application\MapValues\MapValuesQuery;
+use Akeneo\Platform\TailoredExport\Test\Acceptance\FakeServices\Family\InMemoryFindFamilyLabel;
 use PHPUnit\Framework\Assert;
 
 final class HandleFamilyValueTest extends PropertyTestCase
@@ -34,13 +37,13 @@ final class HandleFamilyValueTest extends PropertyTestCase
         SourceValueInterface $value,
         array $expected
     ): void {
-        $productMapper = $this->getProductMapper();
+        $mapValuesQueryHandler = $this->getMapValuesQueryHandler();
         $this->loadFamilyLabels();
 
         $columnCollection = $this->createSingleSourceColumnCollection($operations, $selection);
         $valueCollection = $this->createSingleValueValueCollection($value);
 
-        $mappedProduct = $productMapper->map($columnCollection, $valueCollection);
+        $mappedProduct = $mapValuesQueryHandler->handle(new MapValuesQuery($columnCollection, $valueCollection));
 
         Assert::assertSame($expected, $mappedProduct);
     }
@@ -48,31 +51,51 @@ final class HandleFamilyValueTest extends PropertyTestCase
     public function provider(): array
     {
         return [
-            [
+            'it selects the family code' => [
                 'operations' => [],
                 'selection' => new FamilyCodeSelection(),
                 'value' => new FamilyValue('pants'),
                 'expected' => [self::TARGET_NAME => 'pants']
             ],
-            [
+            'it fallbacks on the family code when the label is not found' => [
                 'operations' => [],
                 'selection' => new FamilyLabelSelection('en_US'),
                 'value' => new FamilyValue('pants'),
                 'expected' => [self::TARGET_NAME => '[pants]']
             ],
-            [
+            'it selects the family label' => [
                 'operations' => [],
                 'selection' => new FamilyLabelSelection('fr_FR'),
                 'value' => new FamilyValue('pants'),
                 'expected' => [self::TARGET_NAME => 'Pantalons']
-            ]
+            ],
+            'it applies default value operation when value is null' => [
+                'operations' => [
+                    DefaultValueOperation::createFromNormalized([
+                        'value' => 'n/a'
+                    ]),
+                ],
+                'selection' => new FamilyCodeSelection(),
+                'value' => new NullValue(),
+                'expected' => [self::TARGET_NAME => 'n/a']
+            ],
+            'it does not apply default value operation when value is not null' => [
+                'operations' => [
+                    DefaultValueOperation::createFromNormalized([
+                        'value' => 'n/a'
+                    ]),
+                ],
+                'selection' => new FamilyCodeSelection(),
+                'value' => new FamilyValue('pants'),
+                'expected' => [self::TARGET_NAME => 'pants']
+            ],
         ];
     }
 
     private function loadFamilyLabels()
     {
-        /** @var InMemoryGetFamilyTranslations $familyLabelsRepository */
-        $familyLabelsRepository = self::$container->get('akeneo.pim.structure.query.get_family_translations');
+        /** @var InMemoryFindFamilyLabel $familyLabelsRepository */
+        $familyLabelsRepository = self::$container->get('Akeneo\Platform\TailoredExport\Domain\Query\FindFamilyLabelInterface');
         $familyLabelsRepository->addFamilyLabel('pants', 'fr_FR', 'Pantalons');
     }
 }

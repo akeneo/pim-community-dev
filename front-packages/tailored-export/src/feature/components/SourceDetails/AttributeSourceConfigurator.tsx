@@ -29,7 +29,7 @@ import {SimpleSelectConfigurator} from './SimpleSelect/SimpleSelectConfigurator'
 import {MultiSelectConfigurator} from './MultiSelect/MultiSelectConfigurator';
 import {ReferenceEntityConfigurator} from './ReferenceEntity/ReferenceEntityConfigurator';
 import {AssetCollectionConfigurator} from './AssetCollection/AssetCollectionConfigurator';
-import {DeletedSourcePlaceholder} from './DeletedSourcePlaceholder';
+import {ErrorBoundary, DeletedAttributeSourcePlaceholder} from './error';
 
 const Container = styled.div`
   display: flex;
@@ -39,7 +39,7 @@ const Container = styled.div`
   flex: 1;
 `;
 
-const configurators = {
+const configurators: {[attributeType: string]: FunctionComponent<AttributeConfiguratorProps>} = {
   pim_catalog_text: TextConfigurator,
   pim_catalog_textarea: TextConfigurator,
   pim_catalog_metric: MeasurementConfigurator,
@@ -55,10 +55,6 @@ const configurators = {
   pim_catalog_multiselect: MultiSelectConfigurator,
   akeneo_reference_entity: ReferenceEntityConfigurator,
   pim_catalog_asset_collection: AssetCollectionConfigurator,
-} as const;
-
-const getConfigurator = (attributeType: string): FunctionComponent<AttributeConfiguratorProps> | null => {
-  return configurators[attributeType] ?? null;
 };
 
 type AttributeSourceConfiguratorProps = {
@@ -87,9 +83,7 @@ const AttributeSourceConfigurator = ({source, validationErrors, onSourceChange}:
             {translate(error.messageTemplate, error.parameters)}
           </Helper>
         ))}
-        <DeletedSourcePlaceholder
-          message={translate('akeneo.tailored_export.column_details.sources.deleted_attribute.title')}
-        />
+        <DeletedAttributeSourcePlaceholder />
       </>
     );
   }
@@ -98,7 +92,7 @@ const AttributeSourceConfigurator = ({source, validationErrors, onSourceChange}:
     ? locales.filter(({code}) => attribute.available_locales.includes(code))
     : locales;
 
-  const Configurator = getConfigurator(attribute.type);
+  const Configurator = configurators[attribute.type] ?? null;
 
   if (null === Configurator) {
     console.error(`No configurator found for "${attribute.type}" attribute type`);
@@ -107,7 +101,7 @@ const AttributeSourceConfigurator = ({source, validationErrors, onSourceChange}:
   }
 
   return (
-    <>
+    <ErrorBoundary>
       {attributeErrors.map((error, index) => (
         <Helper key={index} level="error">
           {translate(error.messageTemplate, error.parameters)}
@@ -146,7 +140,7 @@ const AttributeSourceConfigurator = ({source, validationErrors, onSourceChange}:
           onSourceChange={onSourceChange}
         />
       </Container>
-    </>
+    </ErrorBoundary>
   );
 };
 

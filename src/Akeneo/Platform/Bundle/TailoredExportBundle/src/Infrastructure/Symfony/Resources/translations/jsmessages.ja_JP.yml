@@ -21,6 +21,10 @@ akeneo.tailored_export:
           title: 構造をエクスポート
         filters:
           title: 商品選択を定義する
+      edit:
+        title: 編集するには、PIM 管理者とアクセス許可を確認してください。
+      launch:
+        title: エクスポートするには、PIM 管理者とアクセス許可を確認してください。
   column_list:
     title: 列
     header:
@@ -45,6 +49,10 @@ akeneo.tailored_export:
         title: ソース
         text: このソースを本当に削除しますか？
         button: このソースを削除
+      invalid_source:
+        attribute: この属性は削除され、別のタイプで再作成されました。このソースを削除して、もう一度追加してください。
+        association_type: この属性タイプは削除され、別のタイプで再作成されました。このソースを削除して、もう一度追加してください。
+        property: このプロパティは無効です。このソースを削除して、もう一度追加してください。
       no_source_configuration:
         title: このソースで利用できる操作はありません。値がそのままエクスポートされます。
       deleted_attribute:
@@ -105,6 +113,8 @@ akeneo.tailored_export:
           placeholder: 置換値を定義する
           enabled: 有効な置換値
           disabled: 無効な置換値
+          yes: 値を置換する
+          no: 値を置換しない
   column:
     delete_message: この列を本当に削除しますか？
   validation:

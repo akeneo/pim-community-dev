@@ -13,11 +13,13 @@ declare(strict_types=1);
 
 namespace Akeneo\Platform\TailoredExport\Infrastructure\Validation\Source\Boolean;
 
+use Akeneo\Platform\TailoredExport\Infrastructure\Validation\Operation\BooleanReplacementOperationConstraint;
+use Akeneo\Platform\TailoredExport\Infrastructure\Validation\Operation\DefaultValueOperationConstraint;
 use Akeneo\Platform\TailoredExport\Infrastructure\Validation\Source\SourceConstraintProvider;
 use Symfony\Component\Validator\Constraint;
 use Symfony\Component\Validator\Constraints\Collection;
 use Symfony\Component\Validator\Constraints\EqualTo;
-use Symfony\Component\Validator\Constraints\Type;
+use Symfony\Component\Validator\Constraints\Optional;
 use Symfony\Component\Validator\ConstraintValidator;
 
 class BooleanSourceValidator extends ConstraintValidator
@@ -26,11 +28,13 @@ class BooleanSourceValidator extends ConstraintValidator
     {
         $validator = $this->context->getValidator();
         $sourceConstraintFields = SourceConstraintProvider::getConstraintCollection()->fields;
-        $sourceConstraintFields['selection'] = new Collection(['fields' => ['type' => new EqualTo(['value' => 'code'])]]);
-
-        $sourceConstraintFields['operations'] = new Type([
-            'type' => 'array',
-        ]);
+        $sourceConstraintFields['selection'] = new Collection(['fields' => [
+            'type' => new EqualTo(['value' => 'code'])
+        ]]);
+        $sourceConstraintFields['operations'] = new Collection(['fields' => [
+            'replacement' => new Optional(new BooleanReplacementOperationConstraint()),
+            'default_value' => new Optional(new DefaultValueOperationConstraint()),
+        ]]);
 
         $violations = $validator->validate($source, new Collection(['fields' => $sourceConstraintFields]));
 

@@ -22,6 +22,10 @@ akeneo.tailored_export:
           title: Export structure
         filters:
           title: Define your product selection
+      edit:
+        title: To edit, check your permissions with your PIM administrator.
+      launch:
+        title: To export, check your permissions with your PIM administrator.
   column_list:
     title: Columns
     header:
@@ -40,12 +44,16 @@ akeneo.tailored_export:
     sources:
       title: Sources
       add: Add source
-      no_result: Sorry, there is no results.
+      no_result: Sorry, there are no results.
       locale_specific: This attribute is locale specific.
       remove:
         title: source
         text: Are you sure you want to remove this source?
         button: Remove this source
+      invalid_source:
+        attribute: This attribute has been deleted and recreated with another type, please remove this source and add it again.
+        association_type: This association type has been deleted and recreated with another type, please remove this source and add it again.
+        property: This property is invalid, please remove this source and add it again.
       no_source_configuration:
         title: There are no operations available for this source. Its value will be exported as is.
       deleted_attribute:
@@ -101,11 +109,18 @@ akeneo.tailored_export:
             locale: If the attribute used as label has a value per locale, you may select a specific locale.
             channel: If the attribute used as label has a value per channel, you may select a specific channel.
       operation:
+        header: Operations
         replacement:
           title: Replace value
           placeholder: Define the replacement value
           enabled: Enabled replacement value
           disabled: Disabled replacement value
+          yes: Yes replacement value
+          no: No replacement value
+        default_value:
+          title: Use default value when empty
+          label: Default value
+          placeholder: Define the value
   column:
     delete_message: Are you sure you want to remove this column?
   validation:
@@ -118,7 +133,7 @@ akeneo.tailored_export:
         max_length_reached: Column name is too long. It should contain {{ limit }} characters or less.
         should_be_unique: This column name already exists, please enter a new one.
     sources:
-      max_source_count_reached: You have reached the limit of {{ limit }} sources, you can no longer add sources to your export.
+      max_source_count_reached: You have reached the limit of {{ limit }} sources, you can no longer add sources to this column.
       association_type_should_exist: The association type {{ association_type_code }} does not exist. Please either create it or choose a different source.
     locale:
       should_be_active: The locale {{ locale_code }} has been deactivated. Either reactivate it or select another locale.

@@ -5,10 +5,6 @@ import {ColumnsTab} from './ColumnsTab';
 import {ColumnConfiguration} from './models/ColumnConfiguration';
 import {renderWithProviders} from './tests';
 
-jest.mock('akeneo-design-system/lib/shared/uuid', () => ({
-  uuid: () => '276b6361-badb-48a1-98ef-d75baa235148',
-}));
-
 jest.mock('./hooks/useAvailableSourcesFetcher', () => ({
   useAvailableSourcesFetcher: () => () => ({
     results: [
@@ -65,7 +61,7 @@ test('It opens the source panel related to the column selected', async () => {
     <ColumnsTab
       columnsConfiguration={columnsConfiguration}
       validationErrors={[]}
-      onColumnsConfigurationChange={jest.fn}
+      onColumnsConfigurationChange={jest.fn()}
     />
   );
 
@@ -116,7 +112,7 @@ test('It creates a column when user enter a text in last input', async () => {
 
   expect(handleColumnsConfigurationChange).toHaveBeenCalledWith([
     {
-      uuid: 'fbf9cff9-e95c-4e7d-983b-2947c7df90df',
+      uuid: expect.any(String),
       target: 'my column',
       sources: [],
       format: {
@@ -125,7 +121,7 @@ test('It creates a column when user enter a text in last input', async () => {
       },
     },
     {
-      uuid: '276b6361-badb-48a1-98ef-d75baa235148',
+      uuid: expect.any(String),
       target: 't',
       sources: [],
       format: {
@@ -255,7 +251,7 @@ test('It adds source when user click on add source', async () => {
             type: 'code',
           },
           type: 'attribute',
-          uuid: '276b6361-badb-48a1-98ef-d75baa235148',
+          uuid: expect.any(String),
         },
       ],
       format: {

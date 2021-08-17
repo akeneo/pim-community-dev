@@ -53,19 +53,19 @@ test('it displays a simple association type configurator', () => {
   });
 });
 
-test('it does not render if the source is not valid', () => {
+test('it tells when the source data is invalid', () => {
   const mockedConsole = jest.spyOn(console, 'error').mockImplementation();
-  const onSourceChange = jest.fn();
 
-  renderWithProviders(
-    <SimpleAssociationTypeConfigurator
-      source={getDefaultEnabledSource()}
-      validationErrors={[]}
-      onSourceChange={onSourceChange}
-    />
-  );
+  expect(() => {
+    renderWithProviders(
+      <SimpleAssociationTypeConfigurator
+        source={getDefaultEnabledSource()}
+        validationErrors={[]}
+        onSourceChange={jest.fn()}
+      />
+    );
+  }).toThrow('Invalid source data "enabled" for association configurator');
 
-  expect(mockedConsole).toHaveBeenCalledWith('Invalid source data "enabled" for association configurator');
   expect(screen.queryByText('Update selection')).not.toBeInTheDocument();
   mockedConsole.mockRestore();
 });

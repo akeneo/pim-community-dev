@@ -9,7 +9,7 @@ type EnabledSource = {
   locale: null;
   channel: null;
   operations: {
-    replacement: BooleanReplacementOperation;
+    replacement?: BooleanReplacementOperation;
   };
   selection: {type: 'code'};
 };
@@ -20,20 +20,16 @@ const getDefaultEnabledSource = (): EnabledSource => ({
   type: 'property',
   locale: null,
   channel: null,
-  operations: {
-    replacement: {
-      type: 'replacement',
-      mapping: {
-        true: '1',
-        false: '0',
-      },
-    },
-  },
+  operations: {},
   selection: {type: 'code'},
 });
 
 const isEnabledSource = (source: Source): source is EnabledSource =>
-  'object' === typeof source && null !== source && 'enabled' === source.code;
+  'object' === typeof source &&
+  null !== source &&
+  'enabled' === source.code &&
+  'type' in source.selection &&
+  'code' === source.selection.type;
 
 export {getDefaultEnabledSource, isEnabledSource};
 export type {EnabledSource};

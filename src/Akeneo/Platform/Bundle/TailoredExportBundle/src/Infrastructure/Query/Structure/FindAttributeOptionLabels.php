@@ -31,7 +31,7 @@ class FindAttributeOptionLabels implements FindAttributeOptionLabelsInterface
         return array_reduce($optionCodes, function (&$carry, $optionCode) use ($attributeCode, $attributeOptionTranslations, $locale) {
             $optionKey = sprintf('%s.%s', $attributeCode, $optionCode);
 
-            $carry[$optionKey] = $attributeOptionTranslations[$optionKey][$locale] ?? null;
+            $carry[$optionCode] = $attributeOptionTranslations[$optionKey][$locale] ?? null;
 
             return $carry;
         }, []);

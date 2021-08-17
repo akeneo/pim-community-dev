@@ -1,6 +1,7 @@
 import {uuid} from 'akeneo-design-system';
 import {ChannelReference, LocaleReference} from '@akeneo-pim-community/shared';
 import {Source, Attribute} from '../../../models';
+import {DefaultValueOperation, isDefaultValueOperation} from '../common';
 
 const availableDateFormats = [
   'yyyy-mm-dd',
@@ -21,6 +22,10 @@ const availableDateFormats = [
   'dd.m.yy',
 ];
 
+type DateOperations = {
+  default_value?: DefaultValueOperation;
+};
+
 type DateFormat = typeof availableDateFormats[number];
 
 type DateSelection = {
@@ -39,7 +44,7 @@ type DateSource = {
   type: 'attribute';
   locale: LocaleReference;
   channel: ChannelReference;
-  operations: {};
+  operations: DateOperations;
   selection: DateSelection;
 };
 
@@ -57,7 +62,18 @@ const getDefaultDateSource = (
   selection: {format: availableDateFormats[0]},
 });
 
-const isDateSource = (source: Source): source is DateSource => isDateSelection(source.selection);
+const isDateOperations = (operations: Object): operations is DateOperations =>
+  Object.entries(operations).every(([type, operation]) => {
+    switch (type) {
+      case 'default_value':
+        return isDefaultValueOperation(operation);
+      default:
+        return false;
+    }
+  });
+
+const isDateSource = (source: Source): source is DateSource =>
+  isDateSelection(source.selection) && isDateOperations(source.operations);
 
 export {getDefaultDateSource, isDateSource, isDateFormat, availableDateFormats};
 export type {DateSelection, DateSource};

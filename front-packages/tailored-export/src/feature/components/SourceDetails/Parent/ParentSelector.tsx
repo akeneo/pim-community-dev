@@ -1,5 +1,5 @@
-import React from 'react';
-import {Field, Helper, SelectInput} from 'akeneo-design-system';
+import React, {useState} from 'react';
+import {Collapse, Field, Helper, SelectInput} from 'akeneo-design-system';
 import {
   filterErrors,
   getAllLocalesFromChannels,
@@ -19,6 +19,7 @@ type ParentSelectorProps = {
 };
 
 const ParentSelector = ({selection, validationErrors, onSelectionChange}: ParentSelectorProps) => {
+  const [isSelectorCollapsed, toggleSelectorCollapse] = useState<boolean>(true);
   const translate = useTranslate();
   const channels = useChannels();
   const locales = getAllLocalesFromChannels(channels);
@@ -27,60 +28,67 @@ const ParentSelector = ({selection, validationErrors, onSelectionChange}: Parent
   const typeErrors = filterErrors(validationErrors, '[type]');
 
   return (
-    <Section>
-      <Field label={translate('pim_common.type')}>
-        <SelectInput
-          clearable={false}
-          emptyResultLabel={translate('pim_common.no_result')}
-          openLabel={translate('pim_common.open')}
-          value={selection.type}
-          invalid={0 < typeErrors.length}
-          onChange={type => {
-            if ('label' === type) {
-              onSelectionChange({type, channel: channels[0].code, locale: locales[0].code});
-            } else if ('code' === type) {
-              onSelectionChange({type});
-            }
-          }}
-        >
-          <SelectInput.Option title={translate('pim_common.label')} value="label">
-            {translate('pim_common.label')}
-          </SelectInput.Option>
-          <SelectInput.Option title={translate('pim_common.code')} value="code">
-            {translate('pim_common.code')}
-          </SelectInput.Option>
-        </SelectInput>
-        {typeErrors.map((error, index) => (
-          <Helper key={index} inline={true} level="error">
-            {translate(error.messageTemplate, error.parameters)}
-          </Helper>
-        ))}
-      </Field>
-      {'label' === selection.type && (
-        <>
-          <ChannelDropdown
-            channels={channels}
-            value={selection.channel}
-            validationErrors={channelErrors}
-            onChange={updatedValue => onSelectionChange({...selection, channel: updatedValue})}
+    <Collapse
+      collapseButtonLabel={isSelectorCollapsed ? translate('pim_common.close') : translate('pim_common.open')}
+      label={translate('akeneo.tailored_export.column_details.sources.selection.title')}
+      isOpen={isSelectorCollapsed}
+      onCollapse={toggleSelectorCollapse}
+    >
+      <Section>
+        <Field label={translate('pim_common.type')}>
+          <SelectInput
+            clearable={false}
+            emptyResultLabel={translate('pim_common.no_result')}
+            openLabel={translate('pim_common.open')}
+            value={selection.type}
+            invalid={0 < typeErrors.length}
+            onChange={type => {
+              if ('label' === type) {
+                onSelectionChange({type, channel: channels[0].code, locale: locales[0].code});
+              } else if ('code' === type) {
+                onSelectionChange({type});
+              }
+            }}
           >
-            <Helper inline={true} level="info">
-              {translate('akeneo.tailored_export.column_details.sources.selection.parent.information.channel')}
+            <SelectInput.Option title={translate('pim_common.label')} value="label">
+              {translate('pim_common.label')}
+            </SelectInput.Option>
+            <SelectInput.Option title={translate('pim_common.code')} value="code">
+              {translate('pim_common.code')}
+            </SelectInput.Option>
+          </SelectInput>
+          {typeErrors.map((error, index) => (
+            <Helper key={index} inline={true} level="error">
+              {translate(error.messageTemplate, error.parameters)}
             </Helper>
-          </ChannelDropdown>
-          <LocaleDropdown
-            locales={locales}
-            value={selection.locale}
-            validationErrors={localeErrors}
-            onChange={updatedValue => onSelectionChange({...selection, locale: updatedValue})}
-          >
-            <Helper inline={true} level="info">
-              {translate('akeneo.tailored_export.column_details.sources.selection.parent.information.locale')}
-            </Helper>
-          </LocaleDropdown>
-        </>
-      )}
-    </Section>
+          ))}
+        </Field>
+        {'label' === selection.type && (
+          <>
+            <ChannelDropdown
+              channels={channels}
+              value={selection.channel}
+              validationErrors={channelErrors}
+              onChange={updatedValue => onSelectionChange({...selection, channel: updatedValue})}
+            >
+              <Helper inline={true} level="info">
+                {translate('akeneo.tailored_export.column_details.sources.selection.parent.information.channel')}
+              </Helper>
+            </ChannelDropdown>
+            <LocaleDropdown
+              locales={locales}
+              value={selection.locale}
+              validationErrors={localeErrors}
+              onChange={updatedValue => onSelectionChange({...selection, locale: updatedValue})}
+            >
+              <Helper inline={true} level="info">
+                {translate('akeneo.tailored_export.column_details.sources.selection.parent.information.locale')}
+              </Helper>
+            </LocaleDropdown>
+          </>
+        )}
+      </Section>
+    </Collapse>
   );
 };
 
