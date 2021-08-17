@@ -144,17 +144,17 @@ const ColumnDetails = ({columnConfiguration, onColumnChange}: ColumnDetailsProps
               onSourceChange={handleSourceChange}
             />
           )}
-          {columnConfiguration.sources.length === 0 && <NoSourcePlaceholder />}
+          {0 === columnConfiguration.sources.length && <NoSourcePlaceholder />}
         </ConfiguratorContainer>
         {currentSource && <SourceFooter source={currentSource} onSourceRemove={handleSourceRemove} />}
       </SourcesContent>
-      {columnConfiguration.sources.length > 0 &&
+      {0 < columnConfiguration.sources.length && (
         <SourcesConcatenation
           columnConfiguration={columnConfiguration}
           onColumnConfigurationChange={onColumnChange}
           validationErrors={formatErrors}
         />
-      }
+      )}
     </Container>
   );
 };

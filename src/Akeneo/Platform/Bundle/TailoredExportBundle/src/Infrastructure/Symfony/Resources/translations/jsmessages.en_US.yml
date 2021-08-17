@@ -126,6 +126,7 @@ akeneo.tailored_export:
       preview: Preview
       space_between: Add space between sources
       add_text: Add text
+      text_placeholder: Define text
   column:
     delete_message: Are you sure you want to remove this column?
   validation:

@@ -16,7 +16,7 @@ const AttributeSourceRow = ({source, ...rest}: SourceRowProps) => {
     <Table.Row {...rest}>
       <Table.Cell colSpan={2}>
         {null === attribute ? (
-          <Placeholder>{source.code}</Placeholder>
+          <Placeholder as="span">{source.code}</Placeholder>
         ) : (
           getLabel(attribute.labels, catalogLocale, attribute.code)
         )}
@@ -43,7 +43,7 @@ const AssociationTypeSourceRow = ({source, ...rest}: SourceRowProps) => {
     <Table.Row {...rest}>
       <Table.Cell colSpan={2}>
         {null === associationType ? (
-          <Placeholder>{source.code}</Placeholder>
+          <Placeholder as="span">{source.code}</Placeholder>
         ) : (
           getLabel(associationType.labels, catalogLocale, associationType.code)
         )}

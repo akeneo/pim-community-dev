@@ -1,4 +1,4 @@
-import React from 'react';
+import React, {Fragment} from 'react';
 import styled from 'styled-components';
 import {useTranslate} from '@akeneo-pim-community/shared';
 import {getColor, getFontSize} from 'akeneo-design-system';
@@ -41,30 +41,32 @@ const ColumnPreview = ({columnConfiguration}: ColumnPreviewProps) => {
     <ColumnPreviewContainer>
       <PreviewTitle>{translate('akeneo.tailored_export.column_details.concatenation.preview')}</PreviewTitle>
       <PreviewList>
-        {columnConfiguration.format.elements.map((element, index) => {
-          if ('string' === element.type) {
-            return <StringElement key={index}>{element.value}</StringElement>;
-          }
+        {columnConfiguration.format.elements
+          .map(element => {
+            if ('string' === element.type) {
+              return <StringElement key={element.uuid}>{element.value}</StringElement>;
+            }
 
-          const source = columnConfiguration.sources.find(({uuid}) => uuid === element.value);
+            const source = columnConfiguration.sources.find(({uuid}) => uuid === element.value);
 
-          switch (source?.type) {
-            case 'attribute':
-              return <AttributeSourceElement source={source} key={index} />;
-            case 'property':
-              return <PropertySourceElement source={source} key={index} />;
-            case 'association_type':
-              return <AssociationTypeSourceElement source={source} key={index} />;
-            default:
-              throw new Error(`Source with uuid ${element.value} not found`);
-          }
-        }).map((element, index) => {
-          if (columnConfiguration.format.space_between && index > 0) {
-            return <> {element}</>;
-          }
-
-          return element
-        })}
+            switch (source?.type) {
+              case 'attribute':
+                return <AttributeSourceElement source={source} key={element.uuid} />;
+              case 'property':
+                return <PropertySourceElement source={source} key={element.uuid} />;
+              case 'association_type':
+                return <AssociationTypeSourceElement source={source} key={element.uuid} />;
+              default:
+                throw new Error(`Source with uuid ${element.value} not found`);
+            }
+          })
+          .map((element, index) =>
+            true === columnConfiguration.format.space_between && 0 < index ? (
+              <Fragment key={index}> {element}</Fragment>
+            ) : (
+              element
+            )
+          )}
       </PreviewList>
     </ColumnPreviewContainer>
   );

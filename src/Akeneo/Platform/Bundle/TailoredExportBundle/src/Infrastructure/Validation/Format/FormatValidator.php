@@ -56,6 +56,7 @@ class FormatValidator extends ConstraintValidator
                                     'type' => new Type('string'),
                                     'value' => [
                                         new Type('string'),
+                                        new NotBlank(['message' => 'akeneo.tailored_export.validation.required']),
                                         new Length([
                                             'max' => self::TEXT_MAX_LENGTH,
                                         ])

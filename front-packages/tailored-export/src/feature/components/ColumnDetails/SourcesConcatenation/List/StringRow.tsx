@@ -1,7 +1,7 @@
 import React from 'react';
+import styled from 'styled-components';
 import {CloseIcon, IconButton, Table, TextInput} from 'akeneo-design-system';
 import {useTranslate} from '@akeneo-pim-community/shared';
-import styled from 'styled-components';
 import {ConcatElement} from '../../../../models';
 
 const RemoveCell = styled(Table.Cell)`
@@ -19,11 +19,17 @@ const StringRow = ({element, onConcatElementChange, onConcatElementRemove, ...re
 
   const handleChange = (value: string) => onConcatElementChange({...element, value});
   const handleRemove = () => onConcatElementRemove(element.uuid);
+  const handleBlur = () => '' === element.value && handleRemove();
 
   return (
     <Table.Row {...rest}>
       <Table.Cell>
-        <TextInput value={element.value} onChange={handleChange} />
+        <TextInput
+          placeholder={translate('akeneo.tailored_export.column_details.concatenation.text_placeholder')}
+          value={element.value}
+          onChange={handleChange}
+          onBlur={handleBlur}
+        />
       </Table.Cell>
       <RemoveCell>
         <IconButton

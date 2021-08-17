@@ -22,7 +22,7 @@ const AttributeSourceElement = ({source}: SourceElementProps) => {
   const catalogLocale = useUserContext().get('catalogLocale');
 
   if (null === attribute) {
-    return <Placeholder>{source.code}</Placeholder>;
+    return <Placeholder as="span">{source.code}</Placeholder>;
   }
 
   return <SourceElementContainer>{getLabel(attribute.labels, catalogLocale, attribute.code)}</SourceElementContainer>;
@@ -33,7 +33,7 @@ const AssociationTypeSourceElement = ({source}: SourceElementProps) => {
   const catalogLocale = useUserContext().get('catalogLocale');
 
   if (null === associationType) {
-    return <Placeholder>{source.code}</Placeholder>;
+    return <Placeholder as="span">{source.code}</Placeholder>;
   }
 
   return (
