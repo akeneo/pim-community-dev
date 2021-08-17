@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Akeneo\Connectivity\Connection\Infrastructure\Apps\Validation;
 
+use Akeneo\Tool\Bundle\ApiBundle\Security\ScopeToAclMapper;
 use Symfony\Component\Validator\Constraint;
 use Symfony\Component\Validator\ConstraintValidator;
 use Symfony\Component\Validator\Exception\UnexpectedTypeException;
@@ -14,6 +15,13 @@ use Symfony\Component\Validator\Exception\UnexpectedTypeException;
  */
 class ScopeMustBeValidValidator extends ConstraintValidator
 {
+    private ScopeToAclMapper $scopeToAclMapper;
+
+    public function __construct(ScopeToAclMapper $scopeToAclMapper)
+    {
+        $this->scopeToAclMapper = $scopeToAclMapper;
+    }
+
     public function validate($value, Constraint $constraint)
     {
         if (!$constraint instanceof ScopeMustBeValid) {
@@ -25,7 +33,14 @@ class ScopeMustBeValidValidator extends ConstraintValidator
         }
 
         $scopes = explode(' ', (string) $value);
+        $validScopes = $this->scopeToAclMapper->getAllScopes();
 
-        // @TODO
+        foreach ($scopes as $scope) {
+            if (!in_array($scope, $validScopes)) {
+                $this->context->buildViolation($constraint->message)->addViolation();
+
+                return;
+            }
+        }
     }
 }

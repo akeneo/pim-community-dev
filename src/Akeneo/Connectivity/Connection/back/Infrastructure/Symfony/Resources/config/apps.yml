@@ -3,3 +3,5 @@ services:
         class: Akeneo\Connectivity\Connection\Infrastructure\Apps\OAuth\ClientProvider
         arguments:
             - '@fos_oauth_server.client_manager.default'
+
+    Akeneo\Tool\Bundle\ApiBundle\Security\ScopeToAclMapper: ~

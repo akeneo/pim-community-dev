@@ -95,7 +95,7 @@ class AuthorizeAppHandlerIntegration extends TestCase
         );
 
         $this->expectException(AuthorizeAppInvalidRequest::class);
-        $this->expectExceptionMessage('akeneo_connectivity.connection.connect.apps.constraint.scopes.must_be_valid');
+        $this->expectExceptionMessage('akeneo_connectivity.connection.connect.apps.constraint.scope.must_be_valid');
         $this->handler->handle($command);
     }
 }

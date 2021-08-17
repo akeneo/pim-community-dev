@@ -47,5 +47,7 @@ services:
             - { name: validator.constraint_validator }
 
     Akeneo\Connectivity\Connection\Infrastructure\Apps\Validation\ScopeMustBeValidValidator:
+        arguments:
+            - '@Akeneo\Tool\Bundle\ApiBundle\Security\ScopeToAclMapper'
         tags:
             - { name: validator.constraint_validator }
