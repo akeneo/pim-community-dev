@@ -14,19 +14,12 @@ use Dompdf\Options;
  */
 class DompdfBuilder implements PdfBuilderInterface
 {
-    /**
-     * @var string
-     */
-    protected $rootDir;
-
-    /**
-     * @var Dompdf
-     */
-    protected $dompdf;
+    protected string $rootDir;
+    protected ?Dompdf $dompdf;
 
     private string $publicDir;
 
-    public function __construct(string $rootDir, $publicDir)
+    public function __construct(string $rootDir, string $publicDir)
     {
         $this->rootDir = $rootDir;
         $this->publicDir = $publicDir;

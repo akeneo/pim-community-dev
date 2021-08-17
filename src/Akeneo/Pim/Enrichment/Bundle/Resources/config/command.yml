@@ -9,7 +9,7 @@ services:
         arguments:
             - '@pim_connector.doctrine.cache_clearer'
             - '@pim_catalog.query.product_and_product_model_query_builder_factory'
-            - '%kernel.root_dir%'
+            - '%kernel.project_dir%/src'
             - '%pim_job_product_batch_size%'
             - '@event_dispatcher'
             - '@akeneo_batch_queue.launcher.queue_job_launcher'
