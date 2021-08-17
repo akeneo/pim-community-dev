@@ -2,8 +2,13 @@ import React from 'react';
 import styled from 'styled-components';
 import {useTranslate} from '@akeneo-pim-community/shared';
 import {getColor, getFontSize} from 'akeneo-design-system';
-import {ColumnConfiguration} from '../../../models';
-import {AssociationTypeSourceElement, AttributeSourceElement, PropertySourceElement} from './SourceElement';
+import {ColumnConfiguration} from '../../../../models';
+import {
+  AssociationTypeSourceElement,
+  AttributeSourceElement,
+  PropertySourceElement,
+  StringElement,
+} from './PreviewElement';
 
 const PreviewTitle = styled.div`
   text-transform: uppercase;
@@ -14,10 +19,6 @@ const PreviewTitle = styled.div`
 const PreviewList = styled.div<{spaceBetween: boolean}>`
   display: flex;
   gap: ${({spaceBetween}) => (spaceBetween ? '5px' : '0px')};
-`;
-
-const StringElement = styled.span`
-  color: ${getColor('blue', 100)};
 `;
 
 const ColumnPreviewContainer = styled.div`
@@ -40,13 +41,13 @@ const ColumnPreview = ({columnConfiguration}: ColumnPreviewProps) => {
   return (
     <ColumnPreviewContainer>
       <PreviewTitle>{translate('akeneo.tailored_export.column_details.concatenation.preview')}</PreviewTitle>
-      <PreviewList spaceBetween={columnConfiguration.format.spaceBetween}>
+      <PreviewList spaceBetween={columnConfiguration.format.space_between}>
         {columnConfiguration.format.elements.map((element, index) => {
           if ('string' === element.type) {
             return <StringElement key={index}>{element.value}</StringElement>;
           }
 
-          const source = columnConfiguration.sources.find(source => source.uuid === element.value);
+          const source = columnConfiguration.sources.find(({uuid}) => uuid === element.value);
 
           switch (source?.type) {
             case 'attribute':

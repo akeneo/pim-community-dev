@@ -1,10 +1,12 @@
 import React from 'react';
 import styled from 'styled-components';
-import {Button, Checkbox, SectionTitle, uuid} from 'akeneo-design-system';
-import {useTranslate} from '@akeneo-pim-community/shared';
-import {ColumnPreview} from './ColumnPreview';
-import {ColumnConfiguration} from '../../../models';
-import {ConcatenationList} from './ConcatenationList';
+import {Button, Checkbox, Helper, SectionTitle, uuid} from 'akeneo-design-system';
+import {useTranslate, ValidationError} from '@akeneo-pim-community/shared';
+import {ColumnPreview} from './Preview/ColumnPreview';
+import {ColumnConfiguration, ConcatElement} from '../../../models';
+import {ConcatElementList} from './List/ConcatElementList';
+
+const MAX_TEXT_COUNT = 10;
 
 const SourcesConcatenationContainer = styled.div`
   height: 400px;
@@ -14,18 +16,25 @@ const SourcesConcatenationContainer = styled.div`
 `;
 
 type SourcesConcatenationProps = {
+  validationErrors: ValidationError[];
   columnConfiguration: ColumnConfiguration;
   onColumnConfigurationChange: (columnConfiguration: ColumnConfiguration) => void;
 };
 
-const SourcesConcatenation = ({columnConfiguration, onColumnConfigurationChange}: SourcesConcatenationProps) => {
+const SourcesConcatenation = ({
+  validationErrors,
+  columnConfiguration,
+  onColumnConfigurationChange,
+}: SourcesConcatenationProps) => {
   const translate = useTranslate();
 
-  const handleSpacesBetweenChange = (spaceBetween: boolean) => {
-    onColumnConfigurationChange({...columnConfiguration, format: {...columnConfiguration.format, spaceBetween}});
-  };
+  const handleSpacesBetweenChange = (spaceBetween: boolean) =>
+    onColumnConfigurationChange({
+      ...columnConfiguration,
+      format: {...columnConfiguration.format, space_between: spaceBetween},
+    });
 
-  const handleAddText = () => {
+  const handleAddText = () =>
     onColumnConfigurationChange({
       ...columnConfiguration,
       format: {
@@ -33,25 +42,77 @@ const SourcesConcatenation = ({columnConfiguration, onColumnConfigurationChange}
         elements: [...columnConfiguration.format.elements, {uuid: uuid(), type: 'string', value: ''}],
       },
     });
+
+  const handleConcatElementChange = (updatedConcatElement: ConcatElement) => {
+    const updatedElements = columnConfiguration.format.elements.map(element =>
+      element.uuid === updatedConcatElement.uuid ? updatedConcatElement : element
+    );
+
+    onColumnConfigurationChange({
+      ...columnConfiguration,
+      format: {
+        ...columnConfiguration.format,
+        elements: updatedElements,
+      },
+    });
   };
+
+  const handleConcatElementRemove = (elementUuid: string) =>
+    onColumnConfigurationChange({
+      ...columnConfiguration,
+      format: {
+        ...columnConfiguration.format,
+        elements: columnConfiguration.format.elements.filter(({uuid}) => elementUuid !== uuid),
+      },
+    });
+
+  const handleConcatElementReorder = (newIndices: number[]) =>
+    onColumnConfigurationChange({
+      ...columnConfiguration,
+      format: {
+        ...columnConfiguration.format,
+        elements: newIndices.map(index => columnConfiguration.format.elements[index]),
+      },
+    });
+
+  const canAddText = columnConfiguration.format.elements.filter(({type}) => 'string' === type).length < MAX_TEXT_COUNT;
 
   return (
     <SourcesConcatenationContainer>
-      <SectionTitle>
-        <SectionTitle.Title>
-          {translate('akeneo.tailored_export.column_details.concatenation.title')}
-        </SectionTitle.Title>
-      </SectionTitle>
+      <div>
+        <SectionTitle>
+          <SectionTitle.Title>
+            {translate('akeneo.tailored_export.column_details.concatenation.title')}
+          </SectionTitle.Title>
+        </SectionTitle>
+        {validationErrors.map((error, index) => (
+          <Helper key={index} level="error">
+            {translate(error.messageTemplate, error.parameters)}
+          </Helper>
+        ))}
+      </div>
       <ColumnPreview columnConfiguration={columnConfiguration} />
-      <Checkbox checked={columnConfiguration.format.spaceBetween} onChange={handleSpacesBetweenChange}>
+      <Checkbox checked={columnConfiguration.format.space_between} onChange={handleSpacesBetweenChange}>
         {translate('akeneo.tailored_export.column_details.concatenation.space_between')}
       </Checkbox>
-      <ConcatenationList
+      <ConcatElementList
         columnConfiguration={columnConfiguration}
-        onColumnConfigurationChange={onColumnConfigurationChange}
+        onConcatElementReorder={handleConcatElementReorder}
+        onConcatElementChange={handleConcatElementChange}
+        onConcatElementRemove={handleConcatElementRemove}
       />
       <div>
-        <Button level="secondary" ghost={true} onClick={handleAddText}>
+        <Button
+          title={
+            !canAddText
+              ? translate('akeneo.tailored_export.validation.concatenation.max_text_count_reached')
+              : undefined
+          }
+          disabled={!canAddText}
+          level="secondary"
+          ghost={true}
+          onClick={handleAddText}
+        >
           {translate('akeneo.tailored_export.column_details.concatenation.add_text')}
         </Button>
       </div>

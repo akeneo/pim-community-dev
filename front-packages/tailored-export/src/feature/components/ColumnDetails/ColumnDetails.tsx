@@ -94,6 +94,7 @@ const ColumnDetails = ({columnConfiguration, onColumnChange}: ColumnDetailsProps
 
   const sourcesErrors = useValidationErrors(`[columns][${columnConfiguration.uuid}][sources]`, true);
   const validationErrors = useValidationErrors(`[columns][${columnConfiguration.uuid}][sources]`, false);
+  const formatErrors = useValidationErrors(`[columns][${columnConfiguration.uuid}][format]`, false);
 
   useEffect(() => {
     switchTo(firstSource);
@@ -149,7 +150,11 @@ const ColumnDetails = ({columnConfiguration, onColumnChange}: ColumnDetailsProps
         </ConfiguratorContainer>
         {currentSource && <SourceFooter source={currentSource} onSourceRemove={handleSourceRemove} />}
       </Content>
-      <SourcesConcatenation columnConfiguration={columnConfiguration} onColumnConfigurationChange={onColumnChange} />
+      <SourcesConcatenation
+        columnConfiguration={columnConfiguration}
+        onColumnConfigurationChange={onColumnChange}
+        validationErrors={formatErrors}
+      />
     </Container>
   );
 };

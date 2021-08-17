@@ -2,11 +2,15 @@ import React from 'react';
 import styled from 'styled-components';
 import {getColor} from 'akeneo-design-system';
 import {getLabel, useTranslate, useUserContext} from '@akeneo-pim-community/shared';
-import {Source} from '../../../models';
-import {useAssociationType, useAttribute} from '../../../hooks';
+import {Source} from '../../../../models';
+import {useAssociationType, useAttribute} from '../../../../hooks';
 
 const SourceElementContainer = styled.span`
   color: ${getColor('grey', 140)};
+`;
+
+const StringElement = styled.span`
+  color: ${getColor('blue', 100)};
 `;
 
 type SourceElementProps = {
@@ -41,4 +45,4 @@ const PropertySourceElement = ({source}: SourceElementProps) => {
   return <SourceElementContainer>{translate(`pim_common.${source.code}`)}</SourceElementContainer>;
 };
 
-export {AssociationTypeSourceElement, AttributeSourceElement, PropertySourceElement};
+export {AssociationTypeSourceElement, AttributeSourceElement, PropertySourceElement, StringElement};

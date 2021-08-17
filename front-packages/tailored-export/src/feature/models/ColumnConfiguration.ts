@@ -14,7 +14,7 @@ type ConcatElement = {
 type Format = {
   type: 'concat';
   elements: ConcatElement[];
-  spaceBetween: boolean;
+  space_between: boolean;
 };
 
 type ColumnConfiguration = {
@@ -41,7 +41,7 @@ const createColumn = (newColumnName: string, uuid: string): ColumnConfiguration 
     format: {
       type: 'concat',
       elements: [],
-      spaceBetween: false,
+      space_between: false,
     },
   };
 };
@@ -55,13 +55,7 @@ const removeColumn = (columns: ColumnConfiguration[], columnUuid: string): Colum
   columns.filter(column => column.uuid !== columnUuid);
 
 const updateColumn = (columns: ColumnConfiguration[], updatedColumn: ColumnConfiguration): ColumnConfiguration[] =>
-  columns
-    .map(column => {
-      if (column.uuid !== updatedColumn.uuid) return column;
-
-      return updatedColumn;
-    })
-    .filter(isNonEmptyColumn);
+  columns.map(column => (column.uuid === updatedColumn.uuid ? updatedColumn : column)).filter(isNonEmptyColumn);
 
 const isNonEmptyColumn = (columnConfiguration: ColumnConfiguration): boolean =>
   '' !== columnConfiguration.target ||
@@ -70,6 +64,15 @@ const isNonEmptyColumn = (columnConfiguration: ColumnConfiguration): boolean =>
 
 const filterColumns = (columns: ColumnConfiguration[], searchValue: string): ColumnConfiguration[] =>
   columns.filter(({target}) => target.toLowerCase().includes(searchValue.toLowerCase()));
+
+const addSource = (columnConfiguration: ColumnConfiguration, source: Source): ColumnConfiguration => ({
+  ...columnConfiguration,
+  sources: [...columnConfiguration.sources, source],
+  format: {
+    ...columnConfiguration.format,
+    elements: [...columnConfiguration.format.elements, {uuid: source.uuid, type: 'source', value: source.uuid}],
+  },
+});
 
 const addAttributeSource = (
   columnConfiguration: ColumnConfiguration,
@@ -86,27 +89,13 @@ const addAttributeSource = (
   return addSource(columnConfiguration, getDefaultAttributeSource(attribute, channelCode, locale));
 };
 
-const addSource = (columnConfiguration: ColumnConfiguration, source: Source): ColumnConfiguration => {
-  return {
-    ...columnConfiguration,
-    sources: [...columnConfiguration.sources, source],
-    format: {
-      ...columnConfiguration.format,
-      elements: [...columnConfiguration.format.elements, {uuid: source.uuid, type: 'source', value: source.uuid}],
-    },
-  };
-};
-
 const addAssociationTypeSource = (
   columnConfiguration: ColumnConfiguration,
   associationType: AssociationType
-): ColumnConfiguration => {
-  return addSource(columnConfiguration, getDefaultAssociationTypeSource(associationType));
-};
+): ColumnConfiguration => addSource(columnConfiguration, getDefaultAssociationTypeSource(associationType));
 
-const addPropertySource = (columnConfiguration: ColumnConfiguration, sourceCode: string): ColumnConfiguration => {
-  return addSource(columnConfiguration, getDefaultPropertySource(sourceCode));
-};
+const addPropertySource = (columnConfiguration: ColumnConfiguration, sourceCode: string): ColumnConfiguration =>
+  addSource(columnConfiguration, getDefaultPropertySource(sourceCode));
 
 const filterEmptyOperations = (operations: object) =>
   Object.keys(operations).reduce((accumulator, key) => {
@@ -139,7 +128,7 @@ const removeSource = (columnConfiguration: ColumnConfiguration, removedSource: S
   },
 });
 
-export type {ColumnConfiguration, ColumnsState};
+export type {ColumnConfiguration, ColumnsState, ConcatElement};
 export {
   addAssociationTypeSource,
   addAttributeSource,
