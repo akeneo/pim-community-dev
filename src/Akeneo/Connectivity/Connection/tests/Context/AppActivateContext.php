@@ -36,6 +36,7 @@ class AppActivateContext extends PimContext
      */
     public function iClickOnActivateButton(string $appName)
     {
+        $session = $this->getSession();
         $page = $this->getCurrentPage();
 
         $titleNode = $page->find('named', ['content', $appName]);
@@ -43,12 +44,14 @@ class AppActivateContext extends PimContext
         $cardContainer = $titleNode->getParent()->getParent();
 
         $link = $cardContainer->find('named', ['content', 'Connect']);
-
         Assert::assertNotNull($link);
 
         $link->click();
 
         Assert::assertCount(2, $this->getSession()->getWindowNames());
+
+        $windows = $session->getWindowNames();
+        $session->switchToWindow($windows[1]);
     }
 
     /**
@@ -57,11 +60,9 @@ class AppActivateContext extends PimContext
     public function iAmAtTheUrl(string $url)
     {
         $session = $this->getSession();
-        $windowNames = $session->getWindowNames();
-        $session->switchToWindow($windowNames[1]);
 
-        $page  = $this->getCurrentPage();
-
-        throw new PendingException();
+        $this->spin(function () use ($session, $url) {
+            return $session->getCurrentUrl() === $url;
+        }, sprintf('Current url is not %s', $url));
     }
 }
