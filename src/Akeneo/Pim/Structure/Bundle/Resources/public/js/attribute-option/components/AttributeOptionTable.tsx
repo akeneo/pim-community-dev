@@ -159,7 +159,7 @@ const AttributeOptionTable = ({
         onSearchChange={onSearch}
       />
 
-      <div data-testid="attribute-options-list">
+      <div data-testid="attribute-options-list" data-attribute-option-role="list">
         {filteredAttributeOptionsCount === 0 && attributeOptionsCount > 0 && <NoResultOnSearch />}
 
         {filteredAttributeOptionsCount > 0 && filteredAttributeOptions !== null && (
@@ -179,6 +179,7 @@ const AttributeOptionTable = ({
                   return (
                     <TableRow
                       data-testid="attribute-option-item"
+                      data-attribute-option-role="item"
                       isDraggable={isDraggable}
                       isSelected={selectedOptionId === attributeOption.id}
                       onClick={() => onSelectItem(attributeOption.id)}
@@ -197,7 +198,9 @@ const AttributeOptionTable = ({
                           ? attributeOption.optionValues[locale].value
                           : `[${attributeOption.code}]`}
                       </TableCellLabel>
-                      <Table.Cell data-testid="attribute-option-item-code">{attributeOption.code}</Table.Cell>
+                      <Table.Cell data-testid="attribute-option-item-code" data-attribute-option-role="item-code">
+                        {attributeOption.code}
+                      </Table.Cell>
                       <Table.Cell>{extraData[attributeOption.code]}</Table.Cell>
                       <TableActionCell>
                         <IconButton
