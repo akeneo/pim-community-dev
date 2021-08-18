@@ -3,18 +3,10 @@ import React, {Ref} from 'react';
 import {AkeneoThemedProps, getColor} from '../../../../theme';
 import {Override} from '../../../../shared';
 
-const TableInputTd = styled.td<{rowTitle: boolean; highlighted: boolean; inError: boolean} & AkeneoThemedProps>`
+const TableInputTd = styled.td<{highlighted: boolean; inError: boolean} & AkeneoThemedProps>`
   padding: 0;
   min-width: 150px;
   max-width: 250px;
-
-  ${({rowTitle}) =>
-    rowTitle &&
-    css`
-      color: ${getColor('brand', 100)};
-      padding: 0 10px;
-      font-weight: bold;
-    `}
 
   ${({highlighted, inError}) =>
     highlighted &&
@@ -24,7 +16,7 @@ const TableInputTd = styled.td<{rowTitle: boolean; highlighted: boolean; inError
       border-color: ${getColor('green', 80)} !important;
       background: ${getColor('green', 10)} !important;
     `}
-    
+
   ${({inError}) =>
     inError &&
     css`
@@ -32,6 +24,12 @@ const TableInputTd = styled.td<{rowTitle: boolean; highlighted: boolean; inError
       border-color: ${getColor('red', 80)} !important;
       background: ${getColor('red', 10)} !important;
     `}
+`;
+
+const RowTitleContainer = styled.div`
+  color: ${getColor('brand', 100)};
+  font-weight: bold;
+  padding: 0 10px;
 `;
 
 type TableInputCellProps = Override<
@@ -49,8 +47,9 @@ const TableInputCell = React.forwardRef<HTMLTableCellElement, TableInputCellProp
     forwardedRef: Ref<HTMLTableCellElement>
   ) => {
     return (
-      <TableInputTd rowTitle={rowTitle} highlighted={highlighted} inError={inError} ref={forwardedRef} {...rest}>
-        {children}
+      <TableInputTd highlighted={highlighted} inError={inError} ref={forwardedRef} {...rest}>
+        {rowTitle && <RowTitleContainer>{children}</RowTitleContainer>}
+        {!rowTitle && children}
       </TableInputTd>
     );
   }
