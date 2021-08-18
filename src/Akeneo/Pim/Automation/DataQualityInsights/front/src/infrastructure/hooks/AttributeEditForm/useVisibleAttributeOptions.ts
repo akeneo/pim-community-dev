@@ -15,9 +15,9 @@ export const useVisibleAttributeOptions = () => {
       mutations.forEach(mutation => {
         const element = mutation.target as Element;
         if (
-          element.hasAttribute('role') &&
-          element.getAttribute('role') === 'attribute-options-list' &&
-          element.querySelectorAll('tr[role="attribute-option-item"]').length > 0
+          element.hasAttribute('data-testid') &&
+          element.getAttribute('data-testid') === 'attribute-options-list' &&
+          element.querySelectorAll('tr[data-testid="attribute-option-item"]').length > 0
         ) {
           setRenderingCount(renderingCount + 1);
         }
@@ -37,13 +37,13 @@ export const useVisibleAttributeOptions = () => {
   }, []);
 
   useLayoutEffect(() => {
-    const elements = document.querySelectorAll('tr[role="attribute-option-item"]');
-    const container = document.querySelector('div[role="attribute-options-list"]');
+    const elements = document.querySelectorAll('tr[data-testid="attribute-option-item"]');
+    const container = document.querySelector('div[data-testid="attribute-options-list"]');
 
     const observer = new IntersectionObserver(
       function(entries) {
         entries.forEach(entry => {
-          const codeElement = entry.target.querySelector('[role="attribute-option-item-code"]');
+          const codeElement = entry.target.querySelector('[data-testid="attribute-option-item-code"]');
           if (!codeElement) {
             return;
           }
