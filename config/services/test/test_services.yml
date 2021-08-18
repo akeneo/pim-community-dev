@@ -23,7 +23,7 @@ services:
     akeneo_integration_tests.migration_command_launcher:
         class: 'Akeneo\Tool\Component\Console\CommandLauncher'
         arguments:
-            - '%kernel.root_dir%'
+            - '%kernel.project_dir%/src'
             - 'test'
             - '%kernel.logs_dir%'
 

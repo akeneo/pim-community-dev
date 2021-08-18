@@ -1,8 +1,8 @@
-import React, {FC, useMemo} from 'react';
+import React, {FC, useCallback, useMemo} from 'react';
 import styled from 'styled-components';
 import {PimView} from '../PimView';
 import {useRouter, useTranslate} from '../../hooks';
-import {IconProps, MainNavigationItem} from 'akeneo-design-system';
+import {IconProps, LockIcon, MainNavigationItem, Tag} from 'akeneo-design-system';
 import {SubNavigation, SubNavigationEntry, SubNavigationType} from './SubNavigation';
 
 type NavigationEntry = {
@@ -20,8 +20,9 @@ type Props = {
   entries: NavigationEntry[];
   activeEntryCode: string | null;
   activeSubEntryCode: string | null;
+  freeTrialEnabled?: boolean;
 };
-const PimNavigation: FC<Props> = ({entries, activeEntryCode, activeSubEntryCode}) => {
+const PimNavigation: FC<Props> = ({entries, activeEntryCode, activeSubEntryCode, freeTrialEnabled = false}) => {
   const translate = useTranslate();
   const router = useRouter();
 
@@ -43,6 +44,29 @@ const PimNavigation: FC<Props> = ({entries, activeEntryCode, activeSubEntryCode}
     return;
   }, [activeNavigationEntry, activeSubEntryCode]);
 
+  const getMainNavigationItemStyles = useCallback(
+    (entry: NavigationEntry) => {
+      let styles: React.CSSProperties = {};
+      if (entry.align === 'bottom') {
+        styles = {
+          ...styles,
+          position: 'absolute',
+          bottom: '0',
+        };
+      }
+
+      if (entry.disabled && freeTrialEnabled) {
+        styles = {
+          ...styles,
+          cursor: 'pointer',
+        };
+      }
+
+      return styles;
+    },
+    [freeTrialEnabled]
+  );
+
   return (
     <NavContainer aria-label="Main navigation">
       <MainNavContainer>
@@ -60,9 +84,16 @@ const PimNavigation: FC<Props> = ({entries, activeEntryCode, activeSubEntryCode}
               role="menuitem"
               data-testid="pim-main-menu-item"
               className={entry.code === activeEntryCode ? 'active' : undefined}
-              style={entry.align === 'bottom' ? {position: 'absolute', bottom: '0'} : {}}
+              style={getMainNavigationItemStyles(entry)}
             >
               {translate(entry.title)}
+              {entry.disabled && freeTrialEnabled && (
+                <LockIconContainer data-testid="locked-entry">
+                  <StyledTag tint="blue">
+                    <StyledLockIcon size={16} color={'#5992c7'} />
+                  </StyledTag>
+                </LockIconContainer>
+              )}
             </MainNavigationItem>
           ))}
         </MenuContainer>
@@ -70,11 +101,10 @@ const PimNavigation: FC<Props> = ({entries, activeEntryCode, activeSubEntryCode}
           <PimView viewName="pim-menu-help" />
         </HelpContainer>
       </MainNavContainer>
-      {
-        activeNavigationEntry &&
+      {activeNavigationEntry &&
         (!activeNavigationEntry.isLandingSectionPage || activeSubEntryCode) &&
         activeSubNavigation &&
-        activeSubNavigation.sections.length > 0 &&
+        activeSubNavigation.sections.length > 0 && (
           <SubNavigation
             entries={activeSubNavigation.entries}
             sections={activeSubNavigation.sections}
@@ -82,11 +112,33 @@ const PimNavigation: FC<Props> = ({entries, activeEntryCode, activeSubEntryCode}
             stateCode={activeSubNavigation.stateCode}
             title={activeSubNavigation.title}
             activeSubEntryCode={activeSubEntryCode}
+            freeTrialEnabled={freeTrialEnabled}
           />
-      }
+        )}
     </NavContainer>
   );
 };
+
+const StyledTag = styled(Tag)`
+  padding: 0;
+  height: 24px;
+  width: 24px;
+`;
+
+const StyledLockIcon = styled(LockIcon)`
+  margin: 3px;
+`;
+
+const LockIconContainer = styled.div`
+  position: absolute;
+  top: 0;
+  right: 12px;
+  width: 24px;
+  height: 24px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+`;
 
 const NavContainer = styled.nav`
   display: flex;
@@ -109,6 +161,7 @@ const LogoContainer = styled.div`
   min-height: 80px;
   position: relative;
 `;
+
 const MenuContainer = styled.div`
   position: relative;
   height: 100%;

@@ -18,7 +18,7 @@ const Status = ({tracking}: {tracking: JobExecutionTracking}) => {
     <Container>
       {translate('pim_common.status')}
       <JobExecutionStatusBadge
-        data-test-id="job-status"
+        data-testid="job-status"
         status={tracking.status}
         currentStep={tracking.currentStep}
         totalSteps={tracking.totalSteps}
