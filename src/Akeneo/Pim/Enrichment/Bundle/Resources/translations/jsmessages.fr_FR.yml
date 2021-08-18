@@ -551,6 +551,8 @@ batch_jobs:
     quick_export.label: Export rapide de produits en XLSX
     quick_export_product_model.label: Export rapide de modèles de produit en XLSX
     perform.label: Export rapide de produits en XLSX
+  default_steps:
+    delete_products_and_product_models: Supprimer les produits et les modèles de produits
 error:
   removing:
     group: Impossible de supprimer le groupe
