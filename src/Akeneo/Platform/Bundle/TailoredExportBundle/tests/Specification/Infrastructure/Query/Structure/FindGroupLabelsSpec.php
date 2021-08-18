@@ -20,5 +20,16 @@ class FindGroupLabelsSpec extends ObjectBehavior
     {
         $this->shouldHaveType(FindGroupLabels::class);
     }
-    // TODO: finish this spec
+
+    public function it_finds_the_labels_for_multiple_groups(
+        GetGroupTranslations $getGroupTranslations
+    ): void {
+        $groupCodes = ['group1', 'group2'];
+        $localeCode = 'fr_FR';
+
+        $expectedResult = ['Groupe 1', 'Groupe 2'];
+        $getGroupTranslations->byGroupCodesAndLocale($groupCodes, $localeCode)->willReturn($expectedResult);
+
+        $this->byCodes($groupCodes, $localeCode)->shouldReturn($expectedResult);
+    }
 }

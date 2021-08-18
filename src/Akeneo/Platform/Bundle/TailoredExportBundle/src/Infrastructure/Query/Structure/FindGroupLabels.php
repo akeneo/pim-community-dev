@@ -21,7 +21,6 @@ class FindGroupLabels implements FindGroupLabelsInterface
      */
     public function byCodes(array $groupCodes, string $locale): array
     {
-        // TODO: to improve to homogeneize with FindCurrencyLabels
         return $this->getGroupTranslations->byGroupCodesAndLocale($groupCodes, $locale);
     }
 }
