@@ -1,7 +1,7 @@
 import React from 'react';
 import * as ReactDOM from 'react-dom';
 import '@testing-library/jest-dom/extend-expect';
-import {act, fireEvent, getByRole, queryAllByRole} from '@testing-library/react';
+import {act, fireEvent, getByRole, queryAllByTestId} from '@testing-library/react';
 import {DependenciesProvider} from '@akeneo-pim-community/legacy-bridge';
 import Edit from 'akeneopimstructure/js/attribute-option/components/Edit';
 import {AttributeContextProvider, LocalesContextProvider} from 'akeneopimstructure/js/attribute-option/contexts';
@@ -49,7 +49,7 @@ const option: AttributeOption = {
 
 describe('Edit an attribute option', () => {
   test('it renders an option form', async () => {
-    global.fetch = jest.fn().mockImplementationOnce(route => {
+    global.fetch = jest.fn().mockImplementationOnce(() => {
       return {
         json: () => [
           {code: 'en_US', label: 'English (United States)'},
@@ -75,7 +75,7 @@ describe('Edit an attribute option', () => {
       );
     });
 
-    const translations = queryAllByRole(container, 'attribute-option-label');
+    const translations = queryAllByTestId(container, 'attribute-option-label');
     expect(translations.length).toBe(2);
 
     const saveButton = getByRole(container, 'save-options-translations');

@@ -6,7 +6,16 @@ import {useAttributeOptionsListState} from '../hooks';
 import {useSortedAttributeOptions} from '../hooks';
 import AutoOptionSorting from './AutoOptionSorting';
 import NewOptionPlaceholder from './NewOptionPlaceholder';
-import {AkeneoThemedProps, Button, CloseIcon, getColor, IconButton, RowIcon, Table} from 'akeneo-design-system';
+import {
+  AkeneoThemedProps,
+  Button,
+  CloseIcon,
+  getColor,
+  IconButton,
+  RowIcon,
+  SectionTitle,
+  Table,
+} from 'akeneo-design-system';
 import styled from 'styled-components';
 import DeleteConfirmationModal from './DeleteConfirmationModal';
 import NoResultOnSearch from './NoResultOnSearch';
@@ -43,16 +52,6 @@ const AttributeOptionTable = ({
   const [searchValue, setSearchValue] = useState('');
   const [autoSortingReadOnly, setAutoSortingReadOnly] = useState<boolean>(false);
   const [attributeOptionToDelete, setAttributeOptionToDelete] = useState<AttributeOption | null>(null);
-
-  useEffect(() => {
-    if (selectedOptionId !== null) {
-      setShowNewOptionPlaceholder(false);
-    }
-  }, [selectedOptionId]);
-
-  useEffect(() => {
-    attributeContext.autoSortOptions ? setIsDraggable(false) : setIsDraggable(true);
-  }, [attributeContext.autoSortOptions]);
 
   const onSelectItem = (optionId: number) => {
     setShowNewOptionPlaceholder(false);
@@ -100,11 +99,6 @@ const AttributeOptionTable = ({
     [sortedAttributeOptions]
   );
 
-  useEffect(() => {
-    setFilteredAttributeOptions(sortedAttributeOptions);
-    setSearchValue('');
-  }, [sortedAttributeOptions]);
-
   const debouncedSearch = useDebounceCallback(filterOnLabelOrCode, 300);
 
   const onSearch = (searchValue: string) => {
@@ -126,20 +120,38 @@ const AttributeOptionTable = ({
 
   const filteredAttributeOptionsCount = null === filteredAttributeOptions ? 0 : filteredAttributeOptions.length;
 
+  useEffect(() => {
+    if (selectedOptionId !== null) {
+      setShowNewOptionPlaceholder(false);
+    }
+  }, [selectedOptionId]);
+
+  useEffect(() => {
+    attributeContext.autoSortOptions ? setIsDraggable(false) : setIsDraggable(true);
+  }, [attributeContext.autoSortOptions]);
+
+  useEffect(() => {
+    setFilteredAttributeOptions(sortedAttributeOptions);
+    setSearchValue('');
+  }, [sortedAttributeOptions]);
+
   return (
     <div className="AknSubsection AknAttributeOption-list">
-      <div className="AknSubsection-title AknSubsection-title--glued tabsection-title">
-        <span>{translate('pim_enrich.entity.attribute_option.module.edit.options_codes')}</span>
+      <SectionTitleStyled>
+        <SectionTitle.Title>
+          {translate('pim_enrich.entity.attribute_option.module.edit.options_codes')}
+        </SectionTitle.Title>
+        <SectionTitle.Spacer />
         <Button
           size={'small'}
           ghost
           level="tertiary"
           onClick={() => displayNewOptionPlaceholder()}
-          role="add-new-attribute-option-button"
+          data-testid="add-new-attribute-option-button"
         >
           {translate('pim_enrich.entity.product.module.attribute.add_option')}
         </Button>
-      </div>
+      </SectionTitleStyled>
 
       <SearchBar
         placeholder={translate('pim_enrich.entity.attribute_option.module.edit.search.placeholder')}
@@ -148,7 +160,7 @@ const AttributeOptionTable = ({
         onSearchChange={onSearch}
       />
 
-      <div role="attribute-options-list">
+      <div data-testid="attribute-options-list">
         {filteredAttributeOptionsCount === 0 && attributeOptionsCount > 0 && <NoResultOnSearch />}
 
         {filteredAttributeOptionsCount > 0 && filteredAttributeOptions !== null && (
@@ -167,12 +179,12 @@ const AttributeOptionTable = ({
                 {filteredAttributeOptions.map((attributeOption: AttributeOption, index: number) => {
                   return (
                     <TableRow
-                      role="attribute-option-item"
+                      data-testid="attribute-option-item"
                       isDraggable={isDraggable}
                       isSelected={selectedOptionId === attributeOption.id}
                       onClick={() => onSelectItem(attributeOption.id)}
                       key={`${attributeOption.code}${index}`}
-                      data-testid={selectedOptionId === attributeOption.id ? 'is-selected' : 'is-not-selected'}
+                      data-isSelected={selectedOptionId === attributeOption.id ? 'is-selected' : 'is-not-selected'}
                     >
                       {!isDraggable && (
                         <TableCellNoDraggable>
@@ -186,7 +198,7 @@ const AttributeOptionTable = ({
                           ? attributeOption.optionValues[locale].value
                           : `[${attributeOption.code}]`}
                       </TableCellLabel>
-                      <Table.Cell role="attribute-option-item-code">{attributeOption.code}</Table.Cell>
+                      <Table.Cell data-testid="attribute-option-item-code">{attributeOption.code}</Table.Cell>
                       <Table.Cell>{extraData[attributeOption.code]}</Table.Cell>
                       <TableActionCell>
                         <IconButton
@@ -228,6 +240,10 @@ const AttributeOptionTable = ({
     </div>
   );
 };
+
+const SectionTitleStyled = styled(SectionTitle)`
+  margin: 20px 0 20px 0;
+`;
 
 const SpacedTable = styled(Table)`
   th {

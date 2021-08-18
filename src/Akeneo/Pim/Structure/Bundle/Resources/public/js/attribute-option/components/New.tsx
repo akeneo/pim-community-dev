@@ -32,7 +32,7 @@ const New = ({createAttributeOption}: NewProps) => {
       <form onSubmit={(event: any) => createNewOptionFromCode(event)}>
         <Container>
           <Field label={translate('pim_enrich.entity.attribute_option.module.edit.option_code')}>
-            <TextInputStyled ref={newOptionCodeRef} role="attribute-option-label" />
+            <TextInputStyled ref={newOptionCodeRef} data-testid="attribute-option-label" />
           </Field>
         </Container>
         <button className="AknButton AknButton--apply save" role="create-option-button" type="submit">
