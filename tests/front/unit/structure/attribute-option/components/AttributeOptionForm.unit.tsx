@@ -57,16 +57,16 @@ describe('AttributeOptionForm', () => {
 
   describe('on mount', () => {
     it('should display label and input', () => {
-      const {queryByRole, queryByText} = renderAttributeOptionFormWithContext();
-      const input = queryByRole(/attribute-option-label/i);
+      const {queryByTestId, queryByText} = renderAttributeOptionFormWithContext();
+      const input = queryByTestId(/attribute-option-label/i);
 
       expect(input).not.toBeNull();
       expect(queryByText('English (United States)')).not.toBeNull();
     });
 
     it('should dispatch the input was added', () => {
-      const {queryByRole} = renderAttributeOptionFormWithContext();
-      const input = queryByRole(/attribute-option-label/i);
+      const {queryByTestId} = renderAttributeOptionFormWithContext();
+      const input = queryByTestId(/attribute-option-label/i);
 
       expect(input).not.toBeNull();
       expect(addRefMockFn).toHaveBeenCalledWith('en_US', {current: input});
@@ -75,11 +75,11 @@ describe('AttributeOptionForm', () => {
 
   describe('on unmount', () => {
     it('should remove label and input', () => {
-      const {unmount, queryByRole, queryByText} = renderAttributeOptionFormWithContext();
+      const {unmount, queryByTestId, queryByText} = renderAttributeOptionFormWithContext();
 
       unmount();
 
-      expect(queryByRole(/attribute-option-label/i)).toBeNull();
+      expect(queryByTestId(/attribute-option-label/i)).toBeNull();
       expect(queryByText('English (United States)')).toBeNull();
     });
 
@@ -92,8 +92,8 @@ describe('AttributeOptionForm', () => {
   });
 
   it('should dispatch the option was updated when the user changes the value', () => {
-    const {queryByRole} = renderAttributeOptionFormWithContext();
-    const input = queryByRole(/attribute-option-label/i);
+    const {queryByTestId} = renderAttributeOptionFormWithContext();
+    const input = queryByTestId(/attribute-option-label/i);
 
     // @ts-ignore
     fireEvent.change(input, {target: {value: 'Black'}});

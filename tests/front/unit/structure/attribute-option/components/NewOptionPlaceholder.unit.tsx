@@ -41,27 +41,27 @@ describe('NewOptionPlaceholder', () => {
   };
 
   it('should display the placeholder and a cancel button', () => {
-    const {getByRole} = renderNewOptionPlaceholderWithContext();
+    const {getByTestId} = renderNewOptionPlaceholderWithContext();
 
-    const placeholder = getByRole(/new-option-placeholder/i);
-    const button = getByRole(/new-option-cancel/i);
+    const placeholder = getByTestId(/new-option-placeholder/i);
+    const button = getByTestId(/new-option-cancel/i);
 
     expect(placeholder).not.toBeNull();
     expect(button).not.toBeNull();
   });
 
   it('should scroll to the placeholder when it is mounted', () => {
-    const {getByRole} = renderNewOptionPlaceholderWithContext();
+    const {getByTestId} = renderNewOptionPlaceholderWithContext();
 
-    const placeholder = getByRole(/new-option-placeholder/i);
+    const placeholder = getByTestId(/new-option-placeholder/i);
 
     expect(placeholder.scrollIntoView).toHaveBeenCalled();
   });
 
   it('should dispatch the cancel of the new option creation when the user click on cancel button', () => {
-    const {getByRole} = renderNewOptionPlaceholderWithContext();
+    const {getByTestId} = renderNewOptionPlaceholderWithContext();
 
-    const button = getByRole(/new-option-cancel/i);
+    const button = getByTestId(/new-option-cancel/i);
 
     fireEvent.click(button);
 

@@ -35,7 +35,7 @@ const New = ({createAttributeOption}: NewProps) => {
             </label>
           </div>
           <div className="AknFieldContainer-inputContainer field-input">
-            <input type="text" className="AknTextField" role="attribute-option-label" ref={newOptionCodeRef} />
+            <input type="text" className="AknTextField" data-testid="attribute-option-label" ref={newOptionCodeRef} />
           </div>
         </div>
         <button className="AknButton AknButton--apply save" role="create-option-button" type="submit">

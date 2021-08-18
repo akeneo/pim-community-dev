@@ -16,7 +16,7 @@ const NewOptionPlaceholder = ({cancelNewOption, isDraggable}: newOptionPlacehold
   useScrollIntoView(placeholderRef);
 
   return (
-    <TableRow isSelected={true} ref={placeholderRef} role="new-option-placeholder">
+    <TableRow isSelected={true} ref={placeholderRef} data-testid="new-option-placeholder">
       {!isDraggable && (
         <TableCellNoDraggable>
           <HandleContainer>
@@ -34,7 +34,7 @@ const NewOptionPlaceholder = ({cancelNewOption, isDraggable}: newOptionPlacehold
           title={translate('pim_common.delete')}
           ghost="borderless"
           level="tertiary"
-          role="new-option-cancel"
+          data-testid="new-option-cancel"
         />
       </TableActionCell>
     </TableRow>
