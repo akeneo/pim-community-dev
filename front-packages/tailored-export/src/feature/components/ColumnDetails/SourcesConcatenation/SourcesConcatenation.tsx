@@ -88,16 +88,18 @@ const SourcesConcatenation = ({
 
   return (
     <SourcesConcatenationContainer>
-      <SectionTitle sticky={0}>
-        <SectionTitle.Title>
-          {translate('akeneo.tailored_export.column_details.concatenation.title')}
-        </SectionTitle.Title>
-      </SectionTitle>
-      {globalValidationErrors.map((error, index) => (
-        <Helper key={index} level="error">
-          {translate(error.messageTemplate, error.parameters)}
-        </Helper>
-      ))}
+      <div>
+        <SectionTitle sticky={0}>
+          <SectionTitle.Title>
+            {translate('akeneo.tailored_export.column_details.concatenation.title')}
+          </SectionTitle.Title>
+        </SectionTitle>
+        {globalValidationErrors.map((error, index) => (
+          <Helper key={index} level="error">
+            {translate(error.messageTemplate, error.parameters)}
+          </Helper>
+        ))}
+      </div>
       <ColumnPreview columnConfiguration={columnConfiguration} />
       <Checkbox checked={columnConfiguration.format.space_between ?? false} onChange={handleSpacesBetweenChange}>
         {translate('akeneo.tailored_export.column_details.concatenation.space_between')}
