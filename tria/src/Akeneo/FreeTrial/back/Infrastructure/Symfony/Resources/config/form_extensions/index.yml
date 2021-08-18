@@ -1,0 +1,3 @@
+extensions:
+  pim-user-index-create-button:
+    module: pim/free-trial/user/create-button

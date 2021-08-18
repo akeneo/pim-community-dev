@@ -21,6 +21,10 @@ akeneo.tailored_export:
           title: 구조 내보내기
         filters:
           title: 제품 선택 정의
+      edit:
+        title: 편집하려면 PIM 관리자에게 본인의 권한을 확인하십시오.
+      launch:
+        title: 내보내려면 PIM 관리자에게 본인의 권한을 확인하십시오.
   column_list:
     title: 열
     header:
@@ -39,12 +43,15 @@ akeneo.tailored_export:
     sources:
       title: 소스
       add: 소스 추가
-      no_result: 죄송합니다. 결과가 없습니다.
       locale_specific: 이 특성은 특정 로케일에 한정됩니다.
       remove:
         title: 소스
         text: 이 소스를 제거하시겠습니까?
         button: 이 소스 제거
+      invalid_source:
+        attribute: 이 특성은 삭제되었으며 다른 유형으로 재생성되었습니다. 이 소스를 제거하고 다시 추가하십시오.
+        association_type: 이 연결 유형은 삭제되었으며 다른 유형으로 재생성되었습니다. 이 소스를 제거하고 다시 추가하십시오.
+        property: 이 속성은 유효하지 않습니다. 이 소스를 제거하고 다시 추가하십시오.
       no_source_configuration:
         title: 이 소스에 사용 가능한 작업이 없습니다. 해당 값이 그대로 내보내집니다.
       deleted_attribute:
@@ -105,6 +112,8 @@ akeneo.tailored_export:
           placeholder: 대체 값을 정의
           enabled: 활성화된 대체 값
           disabled: 비활성화된 대체 값
+          yes: '''예'' 대체 값'
+          no: '''아니요'' 대체 값'
   column:
     delete_message: 이 열을 삭제하시겠습니까?
   validation:
@@ -117,7 +126,6 @@ akeneo.tailored_export:
         max_length_reached: 열 이름이 너무 깁니다. {{ limit }}자 이하여야 합니다.
         should_be_unique: 이 열 이름은 이미 있습니다. 새 이름을 입력해 주십시오.
     sources:
-      max_source_count_reached: '{{ limit }}개의 소스 제한에 도달했습니다. 더 이상 내보내기에 소스를 추가할 수 없습니다.'
       association_type_should_exist: 연결 유형 {{ association_type_code }}이(가) 없습니다. 생성하거나 다른 소스를 선택하십시오.
     locale:
       should_be_active: 로케일 {{ locale_code }}이(가) 비활성화되었습니다. 다시 활성화하거나 다른 로케일을 선택하십시오.

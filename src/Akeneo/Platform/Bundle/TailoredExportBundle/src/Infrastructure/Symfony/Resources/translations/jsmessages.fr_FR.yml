@@ -108,6 +108,7 @@ akeneo.tailored_export:
             locale: Si l'attribut en tant que libellé a une valeur par locale, vous pouvez sélectionner une locale spécifique.
             channel: Si l'attribut en tant que libellé a une valeur par canal, vous pouvez sélectionner un canal spécifique.
       operation:
+        header: Opérations
         replacement:
           title: Remplacer la valeur
           placeholder: Définir la valeur de remplacement
@@ -115,6 +116,10 @@ akeneo.tailored_export:
           disabled: Valeur de remplacement de l'état désactivé
           yes: Valeur de remplacement si vrai
           no: Valeur de remplacement si faux
+        default_value:
+          title: Utiliser une valeur par défaut si vide
+          label: Valeur par défaut
+          placeholder: Définir la valeur
   column:
     delete_message: Êtes-vous sûr de vouloir supprimer cette colonne ?
   validation:
@@ -127,7 +132,7 @@ akeneo.tailored_export:
         max_length_reached: L'en-tête de cette colonne est trop long. Il doit contenir {{ max }} caractères ou moins.
         should_be_unique: Cet en-tête de colonne existe déjà, veuillez en saisir un nouveau.
     sources:
-      max_source_count_reached: Vous avez atteint la limite de {{ limit }} sources, vous ne pouvez plus ajouter de sources à votre profil d'export.
+      max_source_count_reached: Vous avez atteint la limite de {{ limit }} sources, vous ne pouvez plus ajouter de sources à cette colonne.
       association_type_should_exist: Le type d'association {{ association_type_code }} n'existe pas. Veuillez le créer ou choisissez une source différente.
     locale:
       should_be_active: La locale {{ locale_code }} a été désactivée. Réactivez-la ou sélectionnez une autre locale.
