@@ -15,3 +15,4 @@ services:
 
     pim_import_export.clock:
         class: Akeneo\Platform\Bundle\ImportExportBundle\Query\SystemClock
+        public: true
