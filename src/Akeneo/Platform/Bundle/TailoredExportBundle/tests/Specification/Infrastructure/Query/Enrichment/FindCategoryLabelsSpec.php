@@ -30,7 +30,7 @@ class FindCategoryLabelsSpec extends ObjectBehavior
         $this->shouldHaveType(FindCategoryLabels::class);
     }
 
-    public function it_gets_the_label_of_multiple_categories(
+    public function it_finds_the_label_of_multiple_categories(
         GetCategoryTranslations $getCategoryTranslations
     ): void {
         $categoryCodes = ['winter', 'summer'];
