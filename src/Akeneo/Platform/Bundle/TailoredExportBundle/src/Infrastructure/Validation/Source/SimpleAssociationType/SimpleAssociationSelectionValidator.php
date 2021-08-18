@@ -44,7 +44,8 @@ class SimpleAssociationSelectionValidator extends ConstraintValidator
     {
         $this->context->getValidator()
             ->inContext($this->context)
-            ->validate($selection, [
+            ->validate(
+                $selection,
                 new Collection(
                     [
                         'fields' => [
@@ -75,7 +76,7 @@ class SimpleAssociationSelectionValidator extends ConstraintValidator
                         ],
                     ]
                 ),
-            ]);
+            );
 
         if ('label' === $selection['type']) {
             if (in_array($selection['entity_type'], self::ENTITY_TYPES_WITH_CHANNEL)) {

@@ -17,6 +17,15 @@ import {Attribute} from './feature/models';
 import {FetcherContext} from './feature/contexts';
 import {AssociationType} from './feature/models/AssociationType';
 
+const cache = {};
+const cachedFetcher = (route: string) => {
+  if (!cache[route]) {
+    cache[route] = baseFetcher(route);
+  }
+
+  return cache[route];
+};
+
 const FetcherProvider: FC = ({children}) => {
   const router = useRouter();
 
@@ -28,14 +37,14 @@ const FetcherProvider: FC = ({children}) => {
             identifiers: identifiers.join(','),
           });
 
-          return baseFetcher(route);
+          return cachedFetcher(route);
         },
       },
       channel: {
         fetchAll: (): Promise<Channel[]> => {
           const route = router.generate('pim_enrich_channel_rest_index');
 
-          return baseFetcher(route);
+          return cachedFetcher(route);
         },
       },
       associationType: {
@@ -44,7 +53,7 @@ const FetcherProvider: FC = ({children}) => {
             identifiers: codes.join(','),
           });
 
-          return baseFetcher(route);
+          return cachedFetcher(route);
         },
       },
     }),
