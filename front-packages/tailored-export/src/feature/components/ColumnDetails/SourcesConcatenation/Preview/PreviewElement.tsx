@@ -18,27 +18,27 @@ type SourceElementProps = {
 };
 
 const AttributeSourceElement = ({source}: SourceElementProps) => {
-  const [, attribute] = useAttribute(source.code);
+  const [isFetching, attribute] = useAttribute(source.code);
   const catalogLocale = useUserContext().get('catalogLocale');
 
-  if (null === attribute) {
+  if (isFetching) {
     return <Placeholder as="span">{source.code}</Placeholder>;
   }
 
-  return <SourceElementContainer>{getLabel(attribute.labels, catalogLocale, attribute.code)}</SourceElementContainer>;
+  return <SourceElementContainer>{getLabel(attribute?.labels ?? {}, catalogLocale, source.code)}</SourceElementContainer>;
 };
 
 const AssociationTypeSourceElement = ({source}: SourceElementProps) => {
-  const [, associationType] = useAssociationType(source.code);
+  const [isFetching, associationType] = useAssociationType(source.code);
   const catalogLocale = useUserContext().get('catalogLocale');
 
-  if (null === associationType) {
+  if (isFetching) {
     return <Placeholder as="span">{source.code}</Placeholder>;
   }
 
   return (
     <SourceElementContainer>
-      {getLabel(associationType.labels, catalogLocale, associationType.code)}
+      {getLabel(associationType?.labels ?? {}, catalogLocale, source.code)}
     </SourceElementContainer>
   );
 };

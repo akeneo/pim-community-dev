@@ -9,16 +9,16 @@ type SourceRowProps = {
 };
 
 const AttributeSourceRow = ({source, ...rest}: SourceRowProps) => {
-  const [, attribute] = useAttribute(source.code);
+  const [isFetching, attribute] = useAttribute(source.code);
   const catalogLocale = useUserContext().get('catalogLocale');
 
   return (
     <Table.Row {...rest}>
       <Table.Cell colSpan={2}>
-        {null === attribute ? (
+        {isFetching ? (
           <Placeholder as="span">{source.code}</Placeholder>
         ) : (
-          getLabel(attribute.labels, catalogLocale, attribute.code)
+          getLabel(attribute?.labels ?? {}, catalogLocale, source.code)
         )}
       </Table.Cell>
     </Table.Row>
@@ -36,16 +36,16 @@ const PropertySourceRow = ({source, ...rest}: SourceRowProps) => {
 };
 
 const AssociationTypeSourceRow = ({source, ...rest}: SourceRowProps) => {
-  const [, associationType] = useAssociationType(source.code);
+  const [isFetching, associationType] = useAssociationType(source.code);
   const catalogLocale = useUserContext().get('catalogLocale');
 
   return (
     <Table.Row {...rest}>
       <Table.Cell colSpan={2}>
-        {null === associationType ? (
+        {isFetching ? (
           <Placeholder as="span">{source.code}</Placeholder>
         ) : (
-          getLabel(associationType.labels, catalogLocale, associationType.code)
+          getLabel(associationType?.labels ?? {}, catalogLocale, source.code)
         )}
       </Table.Cell>
     </Table.Row>
