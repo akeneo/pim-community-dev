@@ -152,7 +152,7 @@ const SSOConfiguration: FC<SSOConfigurationProps> = ({setCanLeavePage, readonly}
       <PageHeader>
         <PageHeader.Breadcrumb>
           <Breadcrumb>
-            <Breadcrumb.Step onClick={() => router.redirect(router.generate('oro_config_configuration_system'))}>
+            <Breadcrumb.Step onClick={() => router.redirect(router.generate('pim_system_index'))}>
               {translate('pim_menu.tab.system')}
             </Breadcrumb.Step>
             <Breadcrumb.Step>{translate('pim_menu.item.sso')}</Breadcrumb.Step>
