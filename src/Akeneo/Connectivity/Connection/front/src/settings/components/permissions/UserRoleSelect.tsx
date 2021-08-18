@@ -61,6 +61,7 @@ export const UserRoleSelect = ({userRoleId, onChange}: Props) => {
                 onChange={handleUserRoleChange}
                 clearable={false}
                 emptyResultLabel=''
+                openLabel=''
                 id='user_role'
             >
                 {userRoles.map(userRole => (

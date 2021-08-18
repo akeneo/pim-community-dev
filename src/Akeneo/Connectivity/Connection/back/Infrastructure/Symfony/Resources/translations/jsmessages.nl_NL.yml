@@ -38,17 +38,23 @@ akeneo_connectivity.connection:
       sub_title: Bekijk onze marktplaats om te zien welke applicatie kan worden verbonden met Akeneo PIM.
       link: Naar de marktplaats
       helper:
-        title: '{0} Er zijn {{ count }} connectoren compatibel met uw PIM versie.{1} Er is {{ count }} connector compatibel met uw PIM-versie.## [2,Inf] Er zijn {{ count }} connectoren compatibel met uw PIM-versie.'
+        title: '{0} Er zijn geen apps of connectoren compatibel met uw PIM-versie.|{1} Er is {{ count }} app of connector compatibel met uw PIM-versie.|[2,Inf] Er zijn {{ count }} apps of connectoren compatibel met uw PIM-versie.'
+        title_without_apps: '{0} Er zijn geen connectoren compatibel met uw PIM versie.{1} Er is {{ count }} connector compatibel met uw PIM-versie.## [2,Inf] Er zijn {{ count }} connectoren compatibel met uw PIM-versie.'
         description: Dit is slechts een overzicht. Neem voor meer details een kijkje op onze marktplaats op internet.
         link: Ga naar marktplaats op internet
       card:
         developed_by: Ontwikkeld door
         read_more: meer lezen
         more_info: Meer informatie
+        connect: Verbinden
       extensions:
         title: Connectoren
         total: '{0} Geen connectoren|{1} 1 connector|[2,Inf] {{ total }} connectoren'
         empty: Er zijn geen connectoren die compatibel zijn met uw versie
+      apps:
+        title: Apps
+        total: '{0} Geen apps|{1} 1 app|[2,Inf] {{ total }} apps'
+        empty: Er zijn geen apps die compatibel zijn met uw versie
       unreachable: We kunnen de marktplaats niet bereiken. Kom later terug.
       scroll_to_top: Naar boven scrollen
   connections: Verbindingen

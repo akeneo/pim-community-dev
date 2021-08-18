@@ -86,6 +86,7 @@ export const UserProfileSelector: FC<Props> = ({selectedProfile, handleOnSelectC
                 <ProfileSelect
                     value={selectedProfile}
                     emptyResultLabel={translate('pim_user.profile.selector.not_found')}
+                    openLabel={translate('pim_common.open')}
                     placeholder={translate('pim_user.profile.selector.placeholder')}
                     onChange={handleOnSelectChange}
                     clearable={true}

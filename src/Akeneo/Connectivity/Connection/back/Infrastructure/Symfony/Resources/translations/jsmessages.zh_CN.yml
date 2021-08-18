@@ -38,17 +38,23 @@ akeneo_connectivity.connection:
       sub_title: 请检查我们的商城以查看哪些应用程序可以与 Akeneo PIM 连接。
       link: 访问商城
       helper:
-        title: '{0} 有 {{ count }} 个连接器与您的 PIM 版本兼容。{1} 有 {{ count }} 个连接器与您的 PIM 版本兼容。|[2,Inf] 有 {{ count }} 个连接器与您的 PIM 版本兼容。'
+        title: '{0} 没有与您的 PIM 版本兼容的应用或连接器。{1} 有 {{ count }} 个应用或连接器与您的 PIM 版本兼容。[2,Inf] 有 {{ count }} 个应用和连接器与您的 PIM 版本兼容。'
+        title_without_apps: '{0} 没有与您的 PIM 版本兼容的连接器。|{1} 有 {{ count }} 个连接器与您的 PIM 版本兼容。[2,Inf] 有 {{ count }} 个连接器与您的 PIM 版本兼容。'
         description: 这只是概览，还有更多内容，请探索我们的网上商城。
         link: 前往网上商城
       card:
         developed_by: 开发者
         read_more: 阅读更多
         more_info: 更多信息
+        connect: 连接
       extensions:
         title: 连接器
         total: '{0} 无连接器 |{1} 1 个连接器 | [2,Inf] {{ total }} 个连接器'
         empty: 没有与您的版本兼容的连接器
+      apps:
+        title: 应用
+        total: '{0} 没有应用 |{1} 1 个应用 |[2,Inf] {{ total }} 个应用'
+        empty: 没有与您的版本兼容的应用
       unreachable: 无法访问商城，请稍后再试。
       scroll_to_top: 滚动到顶部
   connections: 连接

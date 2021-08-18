@@ -38,17 +38,23 @@ akeneo_connectivity.connection:
       sub_title: Consulte nuestro mercado para ver qué aplicación se puede conectar con el PIM de Akeneo.
       link: Acceder al mercado
       helper:
-        title: '{0} Hay {{ count }} conector compatible con su versión de PIM.{1} Hay {{ count }} conector compatible con su versión de PIM.|[2,Inf] Hay {{ count }} conectores compatibles con su versión de PIM.'
-        description: Esto es solo un resumen. Para más detalles, eche un vistazo a nuestro mercado web.
+        title: '{0} No hay aplicaciones o conectores compatibles con su versión PIM.{1} Hay {{ count }} aplicación o conector compatible con su versión PIM. [2,Inf] Hay {{ count }} aplicaciones y conectores compatibles con tu versión PIM.'
+        title_without_apps: '{0} No hay conectores compatibles con su versión PIM.|{1} Hay {{ count }} conector compatible con su versión PIM. [2,Inf] Hay {{ count }} conectores compatibles con su versión PIM.'
+        description: Esto es solo un resumen. Para más detalles, eche un vistazo a nuestro sitio web.
         link: Ir al mercado web
       card:
         developed_by: Desarrollado por
         read_more: leer más
         more_info: Más información
+        connect: Conectar
       extensions:
         title: Conectores
         total: '{0} Sin conectores|{1} 1 conector|[2,Inf] {{ total }} conectores'
         empty: No hay conectores compatibles con su versión
+      apps:
+        title: Aplicaciones
+        total: '{0} Ninguna aplicación|{1} 1 aplicación|[2,Inf] {{ total }} aplicaciones'
+        empty: No hay aplicaciones compatibles con su versión
       unreachable: No podemos llegar al mercado, vuelva más tarde.
       scroll_to_top: Desplazar hasta la parte superior
   connections: Conexiones

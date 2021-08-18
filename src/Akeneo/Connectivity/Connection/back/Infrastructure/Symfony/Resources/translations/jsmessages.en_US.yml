@@ -44,7 +44,7 @@ akeneo_connectivity.connection:
             helper:
                 title: '{0} There is no apps or connectors compatible with your PIM version.|{1} There is {{ count }} app or connector compatible with your PIM version.|[2,Inf] There are {{ count }} apps and connectors compatible with your PIM version.'
                 title_without_apps: '{0} There is no connectors compatible with your PIM version.|{1} There is {{ count }} connector compatible with your PIM version.|[2,Inf] There are {{ count }} connectors compatible with your PIM version.'
-                description: This is just an overview for more details, take a look at our web marketplace.
+                description: This is just an overview. For more details, take a look at our web marketplace.
                 link: Go to web marketplace
             card:
                 developed_by: Developed by

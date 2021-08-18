@@ -3,10 +3,10 @@ import {
   FullScreenError,
   PageContent,
   PageHeader,
+  PimView,
   useRouter,
   useSecurity,
   useTranslate,
-  PimView,
   Translate,
 } from '@akeneo-pim-community/shared';
 import {
@@ -21,14 +21,18 @@ import {
   IconCard,
   IconCardGrid,
   LocaleIcon,
+  LockIcon,
   MetricIcon,
   SectionTitle,
   ShopIcon,
   TagIcon,
+  useTheme,
   ValueIcon,
 } from 'akeneo-design-system';
 import styled from 'styled-components';
 import {CountEntities, useCountEntities} from '../hooks/settings';
+
+const featureFlags = require('pim/feature-flags');
 
 const SectionContent = styled.div`
   margin-top: 20px;
@@ -50,6 +54,7 @@ const SettingsIndex = () => {
   const translate = useTranslate();
   const {isGranted} = useSecurity();
   const router = useRouter();
+  const theme = useTheme();
 
   const canAccessCategories = isGranted('pim_enrich_product_category_list');
   const canAccessChannels = isGranted('pim_enrich_channel_index');
@@ -295,6 +300,17 @@ const SettingsIndex = () => {
                     )}
                   />
                 )}
+                {featureFlags.isEnabled('free_trial') && (
+                  <DisableIconCard
+                    icon={
+                      <LockIconContainer>
+                        <LockIcon size={16} color={theme.color.blue100} />
+                      </LockIconContainer>
+                    }
+                    label={translate('free_trial.menu.rules')}
+                    content={translate('free_trial.menu.feature_ee_only')}
+                  />
+                )}
               </IconCardGrid>
             </SectionContent>
           </>
@@ -303,5 +319,30 @@ const SettingsIndex = () => {
     </>
   );
 };
+
+const DisableIconCard = styled(IconCard)`
+  cursor: pointer;
+  border: 1px rgba(240, 241, 243, 0.5) solid;
+
+  :hover {
+    background: #fff;
+    border: 1px rgba(240, 241, 243, 0.5) solid;
+  }
+
+  > *:not(:first-child) {
+    opacity: 0.5;
+  }
+`;
+
+const LockIconContainer = styled.div`
+  border: 1px solid #4ca8e0;
+  border-radius: 4px;
+  background: #f0f7fc;
+  height: 24px;
+  width: 24px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+`;
 
 export {SettingsIndex};

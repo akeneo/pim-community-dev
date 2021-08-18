@@ -7,7 +7,13 @@ import userEvent from '@testing-library/user-event';
 test('it renders its children properly', () => {
   const onChange = jest.fn();
   render(
-    <SelectInput value="en_US" onChange={onChange} placeholder="Placeholder" emptyResultLabel="Empty result">
+    <SelectInput
+      openLabel="Open"
+      value="en_US"
+      onChange={onChange}
+      placeholder="Placeholder"
+      emptyResultLabel="Empty result"
+    >
       <SelectInput.Option value="en_US" title="English (United States)">
         <Locale code="en_US" languageLabel="English" />
       </SelectInput.Option>
@@ -43,7 +49,13 @@ test('it renders its children properly', () => {
 test('it handles search', () => {
   const onChange = jest.fn();
   render(
-    <SelectInput value="en_US" onChange={onChange} placeholder="Placeholder" emptyResultLabel="Empty result">
+    <SelectInput
+      openLabel="Open"
+      value="en_US"
+      onChange={onChange}
+      placeholder="Placeholder"
+      emptyResultLabel="Empty result"
+    >
       <SelectInput.Option value="en_US" title="English (United States)">
         <Locale code="en_US" languageLabel="English" />
       </SelectInput.Option>
@@ -82,7 +94,13 @@ test('it handles search', () => {
 test('it handles empty cases', () => {
   const onChange = jest.fn();
   render(
-    <SelectInput value={null} onChange={onChange} placeholder="Placeholder" emptyResultLabel="Empty result">
+    <SelectInput
+      openLabel="Open"
+      value={null}
+      onChange={onChange}
+      placeholder="Placeholder"
+      emptyResultLabel="Empty result"
+    >
       <SelectInput.Option value="en_US" title="English (United States)">
         <Locale code="en_US" languageLabel="English" />
       </SelectInput.Option>
@@ -121,6 +139,7 @@ test('it handles clearing the field', () => {
       placeholder="Placeholder"
       emptyResultLabel="Empty result"
       clearLabel="clear"
+      openLabel="Open"
     >
       <SelectInput.Option value="en_US" title="English (United States)">
         <Locale code="en_US" languageLabel="English" />
@@ -152,6 +171,7 @@ test('it handles non clearable field', () => {
       placeholder="Placeholder"
       emptyResultLabel="Empty result"
       clearLabel="clear"
+      openLabel="Open"
       clearable={false}
     >
       <SelectInput.Option value="en_US" title="English (United States)">
@@ -280,7 +300,15 @@ test('it handles keyboard navigation', () => {
 
 test('SelectInput supports ...rest props', () => {
   const onChange = jest.fn();
-  render(<SelectInput value="noice" data-testid="my_value" emptyResultLabel="Empty result" onChange={onChange} />);
+  render(
+    <SelectInput
+      openLabel="Open"
+      value="noice"
+      data-testid="my_value"
+      emptyResultLabel="Empty result"
+      onChange={onChange}
+    />
+  );
   expect(screen.getByTestId('my_value')).toBeInTheDocument();
 });
 
@@ -289,7 +317,7 @@ test('SelectInput does not support duplicated options', () => {
   expect(() => {
     const onChange = jest.fn();
     render(
-      <SelectInput value="en_US" onChange={onChange} emptyResultLabel="Empty result">
+      <SelectInput openLabel="Open" value="en_US" onChange={onChange} emptyResultLabel="Empty result">
         <SelectInput.Option value="en_US" title="English (United States)">
           <Locale code="en_US" languageLabel="English" />
         </SelectInput.Option>

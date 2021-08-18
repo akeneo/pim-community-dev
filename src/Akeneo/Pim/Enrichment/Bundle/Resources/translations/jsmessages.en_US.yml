@@ -565,6 +565,9 @@ batch_jobs:
         quick_export.label: XLSX product quick export
         quick_export_product_model.label: XLSX product model quick export
         perform.label: XLSX product quick export
+    default_steps:
+        delete_products_and_product_models: Delete products and product models
+        remove_completeness_for_channel_and_locale: Remove completeness for channel and locale
 
 error:
     removing:

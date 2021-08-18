@@ -38,17 +38,23 @@ akeneo_connectivity.connection:
       sub_title: Akeneo 마켓플레이스에서 Akeneo PIM에 연결 가능한 애플리케이션을 확인해보십시오.
       link: 마켓플레이스에 액세스
       helper:
-        title: '{0} 사용 중인 PIM 버전과 호환되는 커넥터가 {{ count }}개 있습니다.|{1} 사용 중인 PIM 버전과 호환되는 커넥터가 {{ count }}개 있습니다.|[2,Inf] 사용 중인 PIM 버전과 호환되는 커넥터가 {{ count }}개 있습니다.'
+        title: '{0} 사용 중인 PIM 버전과 호환되는 앱 또는 커넥터가 없습니다.|{1} 사용 중인 PIM 버전과 호환되는 앱 또는 커넥터가 {{ count }}개 있습니다.|[2,Inf] 사용 중인 PIM 버전과 호환되는 앱 및 커넥터가 {{ count }}개 있습니다.'
+        title_without_apps: '{0} 사용 중인 PIM 버전과 호환되는 커넥터가 없습니다.|{1} 사용 중인 PIM 버전과 호환되는 커넥터가 {{ count }}개 있습니다.|[2,Inf] 사용 중인 PIM 버전과 호환되는 커넥터가 {{ count }}개 있습니다.'
         description: 이는 간단한 개요입니다. 자세한 정보는 마켓플레이스에서 살펴보십시오.
         link: 웹 마켓플레이스로 이동
       card:
         developed_by: '개발자:'
         read_more: 더보기
         more_info: 자세한 정보
+        connect: 연결
       extensions:
         title: 커넥터
         total: '{0} 커넥터 없음|{1} 1개 커넥터|[2,Inf] {{ total }}개 커넥터'
         empty: 사용 중인 버전과 호환되는 커넥터가 없습니다
+      apps:
+        title: 앱
+        total: '{0} 앱 없음|{1} 1개 앱|[2,Inf] {{ total }}개 앱'
+        empty: 사용 중인 버전과 호환되는 앱이 없습니다
       unreachable: 마켓플레이스에 연결할 수 없습니다. 잠시 후 다시 시도하십시오.
       scroll_to_top: 맨 위로 스크롤
   connections: 연결
