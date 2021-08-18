@@ -121,6 +121,11 @@ const DragAndDropCell = styled(TableInputCell)`
   cursor: grab;
   vertical-align: middle;
   line-height: 0px !important;
+  & > div {
+    height: 39px;
+    vertical-align: middle;
+    line-height: 44px;
+  }
 `;
 
 export type TableInputRowProps = Override<
@@ -179,7 +184,9 @@ const TableInputRow = forwardRef<HTMLTableRowElement, TableInputRowProps>(
       >
         {isDragAndDroppable && (
           <DragAndDropCell onMouseDown={drag} onMouseUp={drop} data-testid="dragAndDrop">
-            <RowIcon size={16} />
+            <div>
+              <RowIcon size={16} />
+            </div>
           </DragAndDropCell>
         )}
         {children}
