@@ -105,9 +105,9 @@ class UpdateIndexMappingWithoutDowntimeIntegration extends TestCase
         Assert::assertNotEquals($indexNameAfterFirstMigration, $indexNameAfterSecondMigration);
     }
 
-    private function getIndexNameFromAlias(string $aliasName): ?string
+    private function getIndexNameFromAlias(string $indexAlias): ?string
     {
-        $aliases = $this->client->indices()->getAlias(['name' => $aliasName]);
+        $aliases = $this->client->indices()->getAlias(['name' => $indexAlias]);
 
         return array_keys($aliases)[0] ?? null;
     }

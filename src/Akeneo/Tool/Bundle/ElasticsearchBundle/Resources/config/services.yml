@@ -42,6 +42,9 @@ services:
     Akeneo\Tool\Bundle\ElasticsearchBundle\IndexConfiguration\UpdateIndexMappingWithoutDowntime:
         arguments:
             - '@Akeneo\Tool\Component\Elasticsearch\ClockInterface'
+            - '@Akeneo\Tool\Bundle\ElasticsearchBundle\Infrastructure\Client\ClientMigration'
+
+    Akeneo\Tool\Bundle\ElasticsearchBundle\Infrastructure\Client\ClientMigration:
             - '@akeneo_elasticsearch.client_builder'
             - ['%index_hosts%']
 
