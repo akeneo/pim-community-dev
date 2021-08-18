@@ -27,14 +27,14 @@ class FindAssetLabelsSpec extends ObjectBehavior
 
     public function it_is_initializable(): void
     {
-        $this->beAnInstanceOf(FindAssetLabels::class);
+        $this->shouldHaveType(FindAssetLabels::class);
     }
 
     public function it_finds_asset_labels(
         FindAssetLabelTranslationInterface $findAssetLabelTranslation
     ): void {
         $assetFamilyCode = 'images';
-        $assetCodes = ['atmosphere1', 'atmosphere2'];
+        $assetCodes = ['atmosphere1', 'atmosphere2', 'unknown'];
         $localeCode = 'fr_FR';
 
         $expectedLabel = ['atmosphere1' => 'Atmosphere Main', 'atmosphere2' => 'Atmosphere Secondary'];

@@ -24,7 +24,7 @@ class FindGroupLabelsSpec extends ObjectBehavior
     public function it_finds_the_labels_for_multiple_groups(
         GetGroupTranslations $getGroupTranslations
     ): void {
-        $groupCodes = ['group1', 'group2'];
+        $groupCodes = ['group1', 'group2', 'unknown'];
         $localeCode = 'fr_FR';
 
         $expectedResult = ['Groupe 1', 'Groupe 2'];

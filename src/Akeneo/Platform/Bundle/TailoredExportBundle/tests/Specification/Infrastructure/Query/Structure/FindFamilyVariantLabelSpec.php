@@ -27,7 +27,7 @@ class FindFamilyVariantLabelSpec extends ObjectBehavior
 
     public function it_is_initializable(): void
     {
-        $this->beAnInstanceOf(FindFamilyVariantLabel::class);
+        $this->shouldHaveType(FindFamilyVariantLabel::class);
     }
 
     public function it_finds_the_label_of_a_family_variant(

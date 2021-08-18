@@ -18,17 +18,17 @@ class FindUnitLabelSpec extends ObjectBehavior
 
     public function it_is_initializable(): void
     {
-        $this->beAnInstanceOf(FindUnitLabel::class);
+        $this->shouldHaveType(FindUnitLabel::class);
     }
 
-    public function it_finds_unit_label_with_of_a_measurement_family_code_unit_code(
+    public function it_finds_unit_label(
         GetUnitTranslations $getUnitTranslations
     ): void {
-        $expectedLabel = 'Grames';
         $measurementFamilyCode = 'weight';
         $unitCode = 'GRAM';
         $localeCode = 'fr_FR';
 
+        $expectedLabel = 'Grames';
         $getUnitTranslations->byMeasurementFamilyCodeAndLocale($measurementFamilyCode, $localeCode)
             ->willReturn([$unitCode => $expectedLabel]);
 

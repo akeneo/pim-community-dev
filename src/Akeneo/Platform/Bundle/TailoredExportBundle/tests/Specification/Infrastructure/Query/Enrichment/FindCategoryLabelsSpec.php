@@ -27,15 +27,16 @@ class FindCategoryLabelsSpec extends ObjectBehavior
 
     public function it_is_initializable(): void
     {
-        $this->beAnInstanceOf(FindCategoryLabels::class);
+        $this->shouldHaveType(FindCategoryLabels::class);
     }
 
     public function it_gets_the_label_of_multiple_categories(
         GetCategoryTranslations $getCategoryTranslations
     ): void {
         $categoryCodes = ['winter', 'summer'];
-        $expectedLabel = ['winter' => 'Hiver', 'summer' => 'Été', 'automn' => null];
         $localeCode = 'fr_FR';
+
+        $expectedLabel = ['winter' => 'Hiver', 'summer' => 'Été', 'automn' => null];
         $getCategoryTranslations->byCategoryCodesAndLocale($categoryCodes, $localeCode)
             ->willReturn($expectedLabel);
 

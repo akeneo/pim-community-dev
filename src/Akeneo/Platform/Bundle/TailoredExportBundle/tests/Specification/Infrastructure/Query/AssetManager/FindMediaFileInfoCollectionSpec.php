@@ -25,14 +25,14 @@ class FindMediaFileInfoCollectionSpec extends ObjectBehavior
 
     public function it_is_initializable(): void
     {
-        $this->beAnInstanceOf(FindMediaFileInfoCollection::class);
+        $this->shouldHaveType(FindMediaFileInfoCollection::class);
     }
 
     public function it_gets_media_file_info_collections(
         GetMainMediaFileInfoCollectionInterface $getMainMediaFileInfoCollection
     ): void {
         $assetFamilyCode = 'images';
-        $assetCodes = ['atmosphere1', 'atmosphere2'];
+        $assetCodes = ['atmosphere1', 'atmosphere2', 'unknown'];
 
         $getMainMediaFileInfoCollection->forAssetFamilyAndAssetCodes($assetFamilyCode, $assetCodes)
             ->willReturn(

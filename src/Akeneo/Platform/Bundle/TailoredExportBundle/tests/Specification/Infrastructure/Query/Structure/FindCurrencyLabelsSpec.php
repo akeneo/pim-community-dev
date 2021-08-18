@@ -13,7 +13,7 @@ declare(strict_types=1);
 
 namespace Specification\Akeneo\Platform\TailoredExport\Infrastructure\Query\Structure;
 
-use Akeneo\Platform\TailoredExport\Infrastructure\Query\Structure\FindAttributeOptionLabels;
+use Akeneo\Platform\TailoredExport\Infrastructure\Query\Structure\FindCurrencyLabels;
 use Akeneo\Tool\Component\Localization\CurrencyTranslatorInterface;
 use PhpSpec\ObjectBehavior;
 
@@ -27,7 +27,7 @@ class FindCurrencyLabelsSpec extends ObjectBehavior
 
     public function it_is_initializable(): void
     {
-        $this->beAnInstanceOf(FindAttributeOptionLabels::class);
+        $this->shouldHaveType(FindCurrencyLabels::class);
     }
 
     public function it_finds_the_labels_for_multiple_currencies(

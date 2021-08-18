@@ -26,7 +26,7 @@ class ProcessedTailoredExportSpec extends ObjectBehavior
 
         $this->beConstructedWith($mappedProducts, $filesToExport);
 
-        $this->shouldBeAnInstanceOf(ProcessedTailoredExport::class);
+        $this->shouldHaveType(ProcessedTailoredExport::class);
     }
 
     public function it_returns_the_mapped_products()

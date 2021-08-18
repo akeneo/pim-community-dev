@@ -18,10 +18,10 @@ class FindAttributeOptionLabelsSpec extends ObjectBehavior
 
     public function it_is_initializable(): void
     {
-        $this->beAnInstanceOf(FindAttributeOptionLabels::class);
+        $this->shouldHaveType(FindAttributeOptionLabels::class);
     }
 
-    public function it_finds_the_labels_of_an_attribute_options(
+    public function it_finds_the_labels_of_attribute_options(
         GetExistingAttributeOptionsWithValues $getExistingAttributeOptionsWithValues
     ): void {
         $getExistingAttributeOptionsWithValues->fromAttributeCodeAndOptionCodes(
@@ -35,7 +35,7 @@ class FindAttributeOptionLabelsSpec extends ObjectBehavior
         );
     }
 
-    public function it_returns_an_empty_list_if_no_label_for_any_option(
+    public function it_returns_an_empty_list_if_no_label(
         GetExistingAttributeOptionsWithValues $getExistingAttributeOptionsWithValues
     ): void {
         $getExistingAttributeOptionsWithValues->fromAttributeCodeAndOptionCodes(

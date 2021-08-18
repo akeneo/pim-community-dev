@@ -36,22 +36,7 @@ class FindRecordLabelsSpec extends ObjectBehavior
         $referenceEntityCode = 'designer';
         $recordCodes = ['stark', 'ron'];
         $localeCode = 'fr_FR';
-        $expectedLabels = ['stark' => 'Philippe Stark', 'ron' => 'Ron Arad'];
-
-        $findRecordLabelTranslations->find($referenceEntityCode, $recordCodes, $localeCode)
-            ->willReturn($expectedLabels);
-
-        $this->byReferenceEntityCodeAndRecordCodes($referenceEntityCode, $recordCodes, $localeCode)
-            ->shouldReturn($expectedLabels);
-    }
-
-    public function it_returns_null_when_the_label_is_empty(
-        FindRecordsLabelTranslationsInterface $findRecordLabelTranslations
-    ): void {
-        $referenceEntityCode = 'designer';
-        $recordCodes = ['stark', 'ron'];
-        $localeCode = 'fr_FR';
-        $expectedLabels = ['james' => null];
+        $expectedLabels = ['stark' => 'Philippe Stark', 'ron' => 'Ron Arad', 'unknown'];
 
         $findRecordLabelTranslations->find($referenceEntityCode, $recordCodes, $localeCode)
             ->willReturn($expectedLabels);

@@ -18,13 +18,13 @@ class FindProductLabelsSpec extends ObjectBehavior
 
     public function it_is_initializable(): void
     {
-        $this->beAnInstanceOf(FindProductLabels::class);
+        $this->shouldHaveType(FindProductLabels::class);
     }
 
     public function it_finds_product_labels(
         GetProductLabelsInterface $getProductLabels
     ): void {
-        $productCodes = ['vneck', 'watch'];
+        $productCodes = ['vneck', 'watch', 'unknown'];
         $channelCode = 'ecommerce';
         $localeCode = 'fr_FR';
 
