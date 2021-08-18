@@ -42,7 +42,7 @@ Feature: Edit common attributes of many products and product models at once
     Given I am on the products grid
     And I select rows model-col
     And I press the "Bulk actions" button
-    And I choose the "Edit attributesvalues" operation
+    And I choose the "Edit attribute values" operation
     And I display the Brand attribute
     And I change the "Brand" to "Nyke"
     And I display the Composition attribute
@@ -70,7 +70,7 @@ Feature: Edit common attributes of many products and product models at once
     And I filter by "color" with operator "IN LIST" and value "white"
     And I select rows model-col-white
     And I press the "Bulk actions" button
-    And I choose the "Edit attributesvalues" operation
+    And I choose the "Edit attribute values" operation
     And I display the Composition attribute
     And I change the "Composition" to "100% cotton"
     And I display the Weight attribute
@@ -91,7 +91,7 @@ Feature: Edit common attributes of many products and product models at once
     Given I am on the products grid
     And I select rows model-nin
     And I press the "Bulk actions" button
-    And I choose the "Edit attributesvalues" operation
+    And I choose the "Edit attribute values" operation
     And I display the Brand attribute
     And I change the "Brand" to "Nyke"
     And I display the Composition attribute
@@ -111,7 +111,7 @@ Feature: Edit common attributes of many products and product models at once
     Given I am on the products grid
     And I select rows model-col and tool-tee
     And I press the "Bulk actions" button
-    And I choose the "Edit attributesvalues" operation
+    And I choose the "Edit attribute values" operation
     And I display the Brand attribute
     And I change the "Brand" to "Nyke"
     And I display the Composition attribute
@@ -139,7 +139,7 @@ Feature: Edit common attributes of many products and product models at once
     And I select rows model-col
     And I select all entities
     And I press the "Bulk actions" button
-    And I choose the "Edit attributesvalues" operation
+    And I choose the "Edit attribute values" operation
     And I display the Brand attribute
     And I change the "Brand" to "Nyke"
     And I display the Composition attribute

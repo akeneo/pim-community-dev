@@ -23,7 +23,7 @@ Feature: Mass edit common attributes for reference data
   Scenario: Successfully update single-valued reference data at once
     Given I select rows heels and platform_shoes
     And I press the "Bulk actions" button
-    And I choose the "Edit attributesvalues" operation
+    And I choose the "Edit attribute values" operation
     And I display the Heel color attribute
     And I change the "Heel color" to "UA Red"
     And I confirm mass edit

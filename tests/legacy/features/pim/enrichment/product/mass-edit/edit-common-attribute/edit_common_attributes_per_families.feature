@@ -31,7 +31,7 @@ Feature: Edit common attributes of many products at once
   Scenario: Successfully update many price values at once
     Given I select rows boots and sandals
     And I press the "Bulk actions" button
-    And I choose the "Edit attributesvalues" operation
+    And I choose the "Edit attribute values" operation
     And I display the Price attribute
     And I change the "Price" to "100 USD"
     And I change the "Price" to "150 EUR"

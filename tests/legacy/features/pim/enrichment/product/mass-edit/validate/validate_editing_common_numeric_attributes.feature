@@ -108,7 +108,7 @@ Feature: Validate editing common numeric attributes of multiple products
   Scenario: Successfully mass edit a price attribute
     Given I select rows boots and sneakers
     And I press the "Bulk actions" button
-    And I choose the "Edit attributesvalues" operation
+    And I choose the "Edit attribute values" operation
     And I display the Price attribute
     And I change the "Price" to "10 USD"
     And I change the "Price" to "15 EUR"
@@ -121,7 +121,7 @@ Feature: Validate editing common numeric attributes of multiple products
     When I am on the products grid
     And I select rows boots, sandals and sneakers
     And I press the "Bulk actions" button
-    And I choose the "Edit attributesvalues" operation
+    And I choose the "Edit attribute values" operation
     And I display the Price attribute
     And I confirm mass edit
     And I wait for the "edit_common_attributes" job to finish
@@ -129,7 +129,7 @@ Feature: Validate editing common numeric attributes of multiple products
     When I am on the products grid
     And I select rows boots, sandals and sneakers
     And I press the "Bulk actions" button
-    And I choose the "Edit attributesvalues" operation
+    And I choose the "Edit attribute values" operation
     And I display the Price attribute
     And I change the "Price" to "500 USD"
     And I move on to the next step

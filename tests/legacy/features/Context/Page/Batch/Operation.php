@@ -16,7 +16,7 @@ class Operation extends Wizard
 {
     protected $steps = [
         'Change status'                    => 'Batch ChangeStatus',
-        'Edit attributes values'           => 'Batch EditCommonAttributes',
+        'Edit attribute values'            => 'Batch EditCommonAttributes',
         'Modifier les valeurs d’attributs' => 'Batch EditCommonAttributes',
         'Add attributes values'            => 'Batch EditCommonAttributes',
         'Change family'                    => 'Batch ChangeFamily',
@@ -26,7 +26,7 @@ class Operation extends Wizard
         'Move between categories'          => 'Batch Classify',
         'Remove from categories'           => 'Batch Classify',
         'Add to an existing product model' => 'Batch AddToExistingProductModel',
-        'Associate'                        => 'Batch AssociateToProduct',
+        'Associate products'               => 'Batch AssociateToProduct',
     ];
 
     /**
