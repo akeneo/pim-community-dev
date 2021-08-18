@@ -38,15 +38,23 @@ akeneo_connectivity.connection:
       sub_title: どのアプリケーションを Akeneo PIM に接続できるのか、マーケットプレイスでご覧ください。
       link: マーケットプレイスにアクセス
       helper:
+        title: '{0} お使いの PIM バージョンと互換性のあるアプリまたはコネクターがありません。|{1} お使いの PIM バージョンと互換性のあるアプリまたはコネクターが {{ count }} 個あります。|[2,Inf] お使いの PIM バージョンと互換性のあるアプリとコネクターが {{ count }} 個あります。'
+        title_without_apps: '{0} お使いの PIM バージョンと互換性のあるコネクターがありません。|{1} お使いの PIM バージョンと互換性のあるコネクターが {{ count }} 個あります。|[2,Inf] お使いの PIM バージョンと互換性のあるコネクターが {{ count }} 個あります。'
+        description: これは概要です。詳細については Web マーケットプレイスをご覧ください。
         link: ' Web マーケットプレイスに移動'
       card:
         developed_by: 開発者
         read_more: 続きを読む
         more_info: さらに詳しい情報
+        connect: 接続
       extensions:
         title: コネクター
         total: '{0} コネクターがありません|{1} 1 個のコネクター|[2,Inf] {{ total }} 個のコネクター'
         empty: お使いのバージョンと互換性のあるコネクターがありません
+      apps:
+        title: アプリ
+        total: '{0} アプリなし|{1} 1 個のアプリ|[2,Inf] {{ total }} 個のアプリ'
+        empty: お使いのバージョンと互換性のあるアプリがありません
       unreachable: マーケットに接続できません。後でもう一度確認してください。
       scroll_to_top: 上までスクロール
   connections: 接続
