@@ -380,6 +380,62 @@ test('We can update a source', async () => {
   });
 });
 
+test('We can update the format', async () => {
+  const columnConfiguration: ColumnConfiguration = {
+    uuid: '3a6645e0-0d70-411d-84ee-79833144544a',
+    sources: [
+      {
+        channel: null,
+        code: 'description',
+        locale: 'en_US',
+        operations: {},
+        selection: {
+          type: 'code',
+        },
+        type: 'attribute',
+        uuid: expect.any(String),
+      },
+    ],
+    target: 'My column name',
+    format: {
+      type: 'concat',
+      elements: [],
+    },
+  };
+
+  const handleColumnsConfigurationChange = jest.fn();
+
+  await renderWithProviders(
+    <ColumnDetails columnConfiguration={columnConfiguration} onColumnChange={handleColumnsConfigurationChange} />
+  );
+
+  const spaceBetweenCheckbox = screen.getByLabelText('akeneo.tailored_export.column_details.concatenation.space_between');
+  userEvent.click(spaceBetweenCheckbox);
+
+  expect(handleColumnsConfigurationChange).toHaveBeenCalledWith({
+    uuid: '3a6645e0-0d70-411d-84ee-79833144544a',
+    sources: [
+      {
+        channel: null,
+        code: 'description',
+        locale: 'en_US',
+        operations: {},
+        selection: {
+          type: 'code',
+        },
+        type: 'attribute',
+        uuid: expect.any(String),
+      },
+    ],
+    target: 'My column name',
+    format: {
+      type: 'concat',
+      space_between: true,
+      elements: [],
+    },
+  });
+});
+
 test('We can delete a source', async () => {
   const columnConfiguration: ColumnConfiguration = {
     uuid: '3a6645e0-0d70-411d-84ee-79833144544a',
