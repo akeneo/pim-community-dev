@@ -371,7 +371,7 @@ pim_datagrid:
       label: Complete
     identifier:
       label: Identifier
-  search: Search on {{ label }}
+  search: Search by {{ label }}
 batch_jobs:
   add_association:
     label: Associate
