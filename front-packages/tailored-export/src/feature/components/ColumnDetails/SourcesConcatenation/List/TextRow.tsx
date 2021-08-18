@@ -35,7 +35,6 @@ const TextRow = ({
 
   const handleChange = (value: string) => onConcatElementChange({...concatElement, value});
   const handleRemove = () => onConcatElementRemove(concatElement.uuid);
-  const handleBlur = () => '' === concatElement.value && handleRemove();
 
   useAutoFocus(inputRef);
 
@@ -48,7 +47,6 @@ const TextRow = ({
             placeholder={translate('akeneo.tailored_export.column_details.concatenation.text_placeholder')}
             value={concatElement.value}
             onChange={handleChange}
-            onBlur={handleBlur}
           />
           {valueErrors.map((error, index) => (
             <Helper key={index} inline={true} level="error">
