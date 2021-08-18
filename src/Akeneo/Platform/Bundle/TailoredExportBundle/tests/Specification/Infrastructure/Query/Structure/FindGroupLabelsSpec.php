@@ -27,7 +27,7 @@ class FindGroupLabelsSpec extends ObjectBehavior
         $groupCodes = ['group1', 'group2', 'unknown'];
         $localeCode = 'fr_FR';
 
-        $expectedResult = ['Groupe 1', 'Groupe 2'];
+        $expectedResult = ['group1' => 'Groupe 1', 'group2' => 'Groupe 2'];
         $getGroupTranslations->byGroupCodesAndLocale($groupCodes, $localeCode)->willReturn($expectedResult);
 
         $this->byCodes($groupCodes, $localeCode)->shouldReturn($expectedResult);
