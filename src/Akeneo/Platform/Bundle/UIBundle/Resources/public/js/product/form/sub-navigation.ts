@@ -3,7 +3,7 @@ const BaseColumn = require('pim/form/common/column');
 class ProductEditFormSubNavigation extends BaseColumn {
   isCollapsedByUser = false;
 
-  configure () {
+  configure() {
     this.isCollapsedByUser = this.isCollapsed();
 
     this.getRoot().on('pim_enrich:form:start_copy', this.onStartCompareTranslate, this);
