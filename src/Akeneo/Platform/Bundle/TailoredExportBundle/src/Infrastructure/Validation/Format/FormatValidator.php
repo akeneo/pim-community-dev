@@ -48,7 +48,7 @@ class FormatValidator extends ConstraintValidator
                 ]
             ]));
 
-        if ($this->context->getViolations()->count() > 0 ) {
+        if (0 < $this->context->getViolations()->count()) {
             return;
         }
 

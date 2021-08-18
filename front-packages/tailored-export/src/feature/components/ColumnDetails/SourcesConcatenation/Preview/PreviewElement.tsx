@@ -25,7 +25,9 @@ const AttributeSourceElement = ({source}: SourceElementProps) => {
     return <Placeholder as="span">{source.code}</Placeholder>;
   }
 
-  return <SourceElementContainer>{getLabel(attribute?.labels ?? {}, catalogLocale, source.code)}</SourceElementContainer>;
+  return (
+    <SourceElementContainer>{getLabel(attribute?.labels ?? {}, catalogLocale, source.code)}</SourceElementContainer>
+  );
 };
 
 const AssociationTypeSourceElement = ({source}: SourceElementProps) => {

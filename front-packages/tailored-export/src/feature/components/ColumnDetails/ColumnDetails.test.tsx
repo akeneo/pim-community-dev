@@ -409,7 +409,9 @@ test('We can update the format', async () => {
     <ColumnDetails columnConfiguration={columnConfiguration} onColumnChange={handleColumnsConfigurationChange} />
   );
 
-  const spaceBetweenCheckbox = screen.getByLabelText('akeneo.tailored_export.column_details.concatenation.space_between');
+  const spaceBetweenCheckbox = screen.getByLabelText(
+    'akeneo.tailored_export.column_details.concatenation.space_between'
+  );
   userEvent.click(spaceBetweenCheckbox);
 
   expect(handleColumnsConfigurationChange).toHaveBeenCalledWith({
