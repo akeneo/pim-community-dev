@@ -127,7 +127,7 @@ const removeSource = (columnConfiguration: ColumnConfiguration, removedSource: S
   },
 });
 
-export type {ColumnConfiguration, ColumnsState, ConcatElement};
+export type {ColumnConfiguration, ColumnsState, ConcatElement, Format};
 export {
   addAssociationTypeSource,
   addAttributeSource,

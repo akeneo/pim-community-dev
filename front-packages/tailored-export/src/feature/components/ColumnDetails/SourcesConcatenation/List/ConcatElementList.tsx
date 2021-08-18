@@ -1,13 +1,14 @@
 import React from 'react';
 import {Table} from 'akeneo-design-system';
 import {filterErrors, ValidationError} from '@akeneo-pim-community/shared';
-import {ColumnConfiguration, ConcatElement} from '../../../../models';
+import {ConcatElement, Format, Source} from '../../../../models';
 import {AssociationTypeSourceRow, AttributeSourceRow, PropertySourceRow} from './SourceRow';
 import {StringRow} from './StringRow';
 
 type ConcatElementListProps = {
   validationErrors: ValidationError[];
-  columnConfiguration: ColumnConfiguration;
+  sources: Source[];
+  format: Format;
   onConcatElementReorder: (newIndices: number[]) => void;
   onConcatElementChange: (updatedConcatElement: ConcatElement) => void;
   onConcatElementRemove: (elementUuid: string) => void;
@@ -15,7 +16,8 @@ type ConcatElementListProps = {
 
 const ConcatElementList = ({
   validationErrors,
-  columnConfiguration,
+  sources,
+  format,
   onConcatElementReorder,
   onConcatElementChange,
   onConcatElementRemove,
@@ -23,7 +25,7 @@ const ConcatElementList = ({
   return (
     <Table isDragAndDroppable={true} onReorder={onConcatElementReorder}>
       <Table.Body>
-        {columnConfiguration.format.elements.map(element => {
+        {format.elements.map(element => {
           if ('string' === element.type) {
             return (
               <StringRow
@@ -36,7 +38,7 @@ const ConcatElementList = ({
             );
           }
 
-          const source = columnConfiguration.sources.find(({uuid}) => uuid === element.uuid);
+          const source = sources.find(({uuid}) => uuid === element.uuid);
 
           switch (source?.type) {
             case 'attribute':

@@ -2,7 +2,7 @@ import React, {Fragment} from 'react';
 import styled from 'styled-components';
 import {useTranslate} from '@akeneo-pim-community/shared';
 import {getColor, getFontSize} from 'akeneo-design-system';
-import {ColumnConfiguration} from '../../../../models';
+import {Format, Source} from '../../../../models';
 import {
   AssociationTypeSourceElement,
   AttributeSourceElement,
@@ -31,23 +31,24 @@ const ColumnPreviewContainer = styled.div`
 `;
 
 type ColumnPreviewProps = {
-  columnConfiguration: ColumnConfiguration;
+  sources: Source[];
+  format: Format;
 };
 
-const ColumnPreview = ({columnConfiguration}: ColumnPreviewProps) => {
+const ColumnPreview = ({sources, format}: ColumnPreviewProps) => {
   const translate = useTranslate();
 
   return (
     <ColumnPreviewContainer>
       <PreviewTitle>{translate('akeneo.tailored_export.column_details.concatenation.preview')}</PreviewTitle>
       <PreviewList>
-        {columnConfiguration.format.elements
+        {format.elements
           .map(element => {
             if ('string' === element.type) {
               return <StringElement key={element.uuid}>{element.value}</StringElement>;
             }
 
-            const source = columnConfiguration.sources.find(({uuid}) => uuid === element.value);
+            const source = sources.find(({uuid}) => uuid === element.value);
 
             switch (source?.type) {
               case 'attribute':
@@ -61,11 +62,7 @@ const ColumnPreview = ({columnConfiguration}: ColumnPreviewProps) => {
             }
           })
           .map((element, index) =>
-            true === columnConfiguration.format.space_between && 0 < index ? (
-              <Fragment key={index}> {element}</Fragment>
-            ) : (
-              element
-            )
+            true === format.space_between && 0 < index ? <Fragment key={index}> {element}</Fragment> : element
           )}
       </PreviewList>
     </ColumnPreviewContainer>

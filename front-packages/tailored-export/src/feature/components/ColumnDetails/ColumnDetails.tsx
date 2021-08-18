@@ -11,6 +11,7 @@ import {
   updateSource,
   Source,
   MAX_SOURCE_COUNT,
+  Format,
 } from '../../models';
 import {AddSourceDropdown} from './AddSourceDropdown/AddSourceDropdown';
 import {AttributeSourceConfigurator} from '../SourceDetails/AttributeSourceConfigurator';
@@ -68,6 +69,8 @@ const ColumnDetails = ({columnConfiguration, onColumnChange}: ColumnDetailsProps
     onColumnChange(removeSource(columnConfiguration, currentSource));
     switchTo(firstSource);
   };
+
+  const handleFormatChange = (format: Format) => onColumnChange({...columnConfiguration, format});
 
   const attributeFetcher = useFetchers().attribute;
   const associationTypeFetcher = useFetchers().associationType;
@@ -150,9 +153,10 @@ const ColumnDetails = ({columnConfiguration, onColumnChange}: ColumnDetailsProps
       </SourcesContent>
       {0 < columnConfiguration.sources.length && (
         <SourcesConcatenation
-          columnConfiguration={columnConfiguration}
-          onColumnConfigurationChange={onColumnChange}
           validationErrors={formatErrors}
+          sources={columnConfiguration.sources}
+          format={columnConfiguration.format}
+          onFormatChange={handleFormatChange}
         />
       )}
     </Container>

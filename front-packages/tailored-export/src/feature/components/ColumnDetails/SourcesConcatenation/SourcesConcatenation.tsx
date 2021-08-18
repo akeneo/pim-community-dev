@@ -3,7 +3,7 @@ import styled from 'styled-components';
 import {Button, Checkbox, getColor, Helper, SectionTitle, uuid} from 'akeneo-design-system';
 import {filterErrors, getErrorsForPath, useTranslate, ValidationError} from '@akeneo-pim-community/shared';
 import {ColumnPreview} from './Preview/ColumnPreview';
-import {ColumnConfiguration, ConcatElement} from '../../../models';
+import {ConcatElement, Format, Source} from '../../../models';
 import {ConcatElementList} from './List/ConcatElementList';
 
 const MAX_TEXT_COUNT = 10;
@@ -25,66 +25,47 @@ const ConcatenationFooter = styled.div`
 
 type SourcesConcatenationProps = {
   validationErrors: ValidationError[];
-  columnConfiguration: ColumnConfiguration;
-  onColumnConfigurationChange: (columnConfiguration: ColumnConfiguration) => void;
+  sources: Source[];
+  format: Format;
+  onFormatChange: (format: Format) => void;
 };
 
-const SourcesConcatenation = ({
-  validationErrors,
-  columnConfiguration,
-  onColumnConfigurationChange,
-}: SourcesConcatenationProps) => {
+const SourcesConcatenation = ({validationErrors, sources, format, onFormatChange}: SourcesConcatenationProps) => {
   const translate = useTranslate();
   const globalValidationErrors = getErrorsForPath(validationErrors, '[elements]');
 
-  const handleSpacesBetweenChange = (spaceBetween: boolean) =>
-    onColumnConfigurationChange({
-      ...columnConfiguration,
-      format: {...columnConfiguration.format, space_between: spaceBetween},
-    });
+  const handleSpacesBetweenChange = (spaceBetween: boolean) => onFormatChange({...format, space_between: spaceBetween});
 
   const handleAddText = () =>
-    onColumnConfigurationChange({
-      ...columnConfiguration,
-      format: {
-        ...columnConfiguration.format,
-        elements: [...columnConfiguration.format.elements, {uuid: uuid(), type: 'string', value: ''}],
-      },
+    onFormatChange({
+      ...format,
+      elements: [...format.elements, {uuid: uuid(), type: 'string', value: ''}],
     });
 
   const handleConcatElementChange = (updatedConcatElement: ConcatElement) => {
-    const updatedElements = columnConfiguration.format.elements.map(element =>
+    const updatedElements = format.elements.map(element =>
       element.uuid === updatedConcatElement.uuid ? updatedConcatElement : element
     );
 
-    onColumnConfigurationChange({
-      ...columnConfiguration,
-      format: {
-        ...columnConfiguration.format,
-        elements: updatedElements,
-      },
+    onFormatChange({
+      ...format,
+      elements: updatedElements,
     });
   };
 
   const handleConcatElementRemove = (elementUuid: string) =>
-    onColumnConfigurationChange({
-      ...columnConfiguration,
-      format: {
-        ...columnConfiguration.format,
-        elements: columnConfiguration.format.elements.filter(({uuid}) => elementUuid !== uuid),
-      },
+    onFormatChange({
+      ...format,
+      elements: format.elements.filter(({uuid}) => elementUuid !== uuid),
     });
 
   const handleConcatElementReorder = (newIndices: number[]) =>
-    onColumnConfigurationChange({
-      ...columnConfiguration,
-      format: {
-        ...columnConfiguration.format,
-        elements: newIndices.map(index => columnConfiguration.format.elements[index]),
-      },
+    onFormatChange({
+      ...format,
+      elements: newIndices.map(index => format.elements[index]),
     });
 
-  const canAddText = columnConfiguration.format.elements.filter(({type}) => 'string' === type).length < MAX_TEXT_COUNT;
+  const canAddText = format.elements.filter(({type}) => 'string' === type).length < MAX_TEXT_COUNT;
 
   return (
     <SourcesConcatenationContainer>
@@ -100,12 +81,13 @@ const SourcesConcatenation = ({
           </Helper>
         ))}
       </div>
-      <ColumnPreview columnConfiguration={columnConfiguration} />
-      <Checkbox checked={columnConfiguration.format.space_between ?? false} onChange={handleSpacesBetweenChange}>
+      <ColumnPreview sources={sources} format={format} />
+      <Checkbox checked={format.space_between ?? false} onChange={handleSpacesBetweenChange}>
         {translate('akeneo.tailored_export.column_details.concatenation.space_between')}
       </Checkbox>
       <ConcatElementList
-        columnConfiguration={columnConfiguration}
+        sources={sources}
+        format={format}
         onConcatElementReorder={handleConcatElementReorder}
         onConcatElementChange={handleConcatElementChange}
         onConcatElementRemove={handleConcatElementRemove}
