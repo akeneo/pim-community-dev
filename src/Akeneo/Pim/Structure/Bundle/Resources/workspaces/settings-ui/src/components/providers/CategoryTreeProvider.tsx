@@ -1,5 +1,6 @@
 import React, {createContext, FC, useEffect, useState} from 'react';
-import {buildTreeNodeFromCategoryTree, CategoryTreeModel, TreeNode} from '../../models';
+import {CategoryTreeModel, TreeNode} from '../../models';
+import {buildNodesFromCategoryTree} from '../../helpers';
 
 type CategoryTreeState = {
   nodes: TreeNode<CategoryTreeModel>[];
@@ -19,12 +20,7 @@ const CategoryTreeProvider: FC<Props> = ({children, root}) => {
   const [nodes, setNodes] = useState<TreeNode<CategoryTreeModel>[]>([]);
 
   useEffect(() => {
-    const nodes = [buildTreeNodeFromCategoryTree(root)];
-    if (Array.isArray(root.children)) {
-      root.children.forEach(child => {
-        nodes.push(buildTreeNodeFromCategoryTree(child, root.id));
-      });
-    }
+    const nodes = buildNodesFromCategoryTree(root);
     setNodes(nodes);
   }, [root]);
 

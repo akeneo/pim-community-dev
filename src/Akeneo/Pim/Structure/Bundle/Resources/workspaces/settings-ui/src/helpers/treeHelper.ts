@@ -1,4 +1,4 @@
-import {TreeNode} from '../models';
+import {buildTreeNodeFromCategoryTree, CategoryTreeModel, TreeNode} from '../models';
 
 const findRoot = <T>(treeNodes: TreeNode<T>[]): TreeNode<T> | undefined => {
   return treeNodes.find(treeNode => treeNode.type === 'root');
@@ -57,4 +57,32 @@ const update = <T>(treeNodes: TreeNode<T>[], updatedNode: TreeNode<T>): TreeNode
   return [...treeNodes.filter(node => node.identifier !== updatedNode.identifier), updatedNode];
 };
 
-export {findByIdentifiers, findOneByIdentifier, findRoot, update, isDescendantOf, findLoadedDescendantsIdentifiers};
+const buildNodesFromCategoryTree = (root: CategoryTreeModel) => {
+  const nodes = [buildTreeNodeFromCategoryTree(root)];
+  if (Array.isArray(root.children)) {
+    addToNodes(nodes, root.children, root.id);
+  }
+
+  return nodes;
+};
+
+const addToNodes = (nodes: TreeNode<CategoryTreeModel>[], children: CategoryTreeModel[], parentId: number) => {
+  children.forEach(child => {
+    nodes.push(buildTreeNodeFromCategoryTree(child, parentId));
+    if (child.children) {
+      addToNodes(nodes, child.children, child.id);
+    }
+  });
+
+  return nodes;
+};
+
+export {
+  findByIdentifiers,
+  findOneByIdentifier,
+  findRoot,
+  update,
+  isDescendantOf,
+  findLoadedDescendantsIdentifiers,
+  buildNodesFromCategoryTree,
+};
