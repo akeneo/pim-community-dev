@@ -5,14 +5,12 @@ import '@testing-library/jest-dom/extend-expect';
 import {
   act,
   fireEvent,
-  getAllByRole,
-  getByRole,
-  queryByRole,
-  queryAllByRole,
   getByText,
   getByTitle,
   getAllByTestId,
   getByTestId,
+  queryByTestId,
+  queryAllByTestId,
 } from '@testing-library/react';
 import {DependenciesProvider} from '@akeneo-pim-community/legacy-bridge';
 import {createStoreWithInitialState} from 'akeneopimstructure/js/attribute-option/store/store';
@@ -57,14 +55,14 @@ describe('Attribute options table', () => {
   test('it renders an empty attribute options list', async () => {
     await renderComponent([], false, jest.fn(), jest.fn(), jest.fn(), jest.fn(), null);
 
-    expect(getByRole(container, 'attribute-options-list')).toBeEmptyDOMElement();
+    expect(getByTestId(container, 'attribute-options-list')).toBeEmptyDOMElement();
   });
 
   test('it renders a list of 2 options not sorted alphabetically by default', async () => {
     await renderComponent(options, false, jest.fn(), jest.fn(), jest.fn(), jest.fn(), null);
 
     const attributeOptionsLabel = getAllByTestId(container, 'attribute-option-item-label');
-    const attributeOptionsCode = getAllByRole(container, 'attribute-option-item-code');
+    const attributeOptionsCode = getAllByTestId(container, 'attribute-option-item-code');
     expect(attributeOptionsLabel.length).toBe(2);
     expect(attributeOptionsCode.length).toBe(2);
     expect(attributeOptionsLabel[0].textContent).toBe('Blue');
@@ -72,14 +70,14 @@ describe('Attribute options table', () => {
     expect(attributeOptionsCode[0].textContent).toBe('blue');
     expect(attributeOptionsCode[1].textContent).toBe('black');
 
-    expect(queryByRole(container, 'new-option-placeholder')).toBeNull();
+    expect(queryByTestId(container, 'new-option-placeholder')).toBeNull();
   });
 
   test('it renders a list of 2 options sorted alphabetically by default', async () => {
     await renderComponent(options, true, jest.fn(), jest.fn(), jest.fn(), jest.fn(), null);
 
     const attributeOptionsLabel = getAllByTestId(container, 'attribute-option-item-label');
-    const attributeOptionsCode = getAllByRole(container, 'attribute-option-item-code');
+    const attributeOptionsCode = getAllByTestId(container, 'attribute-option-item-code');
     expect(attributeOptionsLabel.length).toBe(2);
     expect(attributeOptionsCode.length).toBe(2);
     expect(attributeOptionsLabel[0].textContent).toBe('Black');
@@ -92,7 +90,7 @@ describe('Attribute options table', () => {
     await renderComponent(options, false, jest.fn(), jest.fn(), jest.fn(), jest.fn(), null);
 
     let attributeOptionsLabel = getAllByTestId(container, 'attribute-option-item-label');
-    let attributeOptionsCode = getAllByRole(container, 'attribute-option-item-code');
+    let attributeOptionsCode = getAllByTestId(container, 'attribute-option-item-code');
     expect(attributeOptionsLabel.length).toBe(2);
     expect(attributeOptionsCode.length).toBe(2);
     expect(attributeOptionsLabel[0].textContent).toBe('Blue');
@@ -104,7 +102,7 @@ describe('Attribute options table', () => {
     await fireEvent.click(autoOptionSortYes);
 
     attributeOptionsLabel = getAllByTestId(container, 'attribute-option-item-label');
-    attributeOptionsCode = getAllByRole(container, 'attribute-option-item-code');
+    attributeOptionsCode = getAllByTestId(container, 'attribute-option-item-code');
     expect(attributeOptionsLabel.length).toBe(2);
     expect(attributeOptionsCode.length).toBe(2);
     expect(attributeOptionsLabel[0].textContent).toBe('Black');
@@ -116,7 +114,7 @@ describe('Attribute options table', () => {
     await fireEvent.click(autoOptionSortNo);
 
     attributeOptionsLabel = getAllByTestId(container, 'attribute-option-item-label');
-    attributeOptionsCode = getAllByRole(container, 'attribute-option-item-code');
+    attributeOptionsCode = getAllByTestId(container, 'attribute-option-item-code');
     expect(attributeOptionsLabel.length).toBe(2);
     expect(attributeOptionsCode.length).toBe(2);
     expect(attributeOptionsLabel[0].textContent).toBe('Blue');
@@ -130,16 +128,16 @@ describe('Attribute options table', () => {
     const showNewOptionFormCallback = jest.fn();
     await renderComponent(options, false, jest.fn(), showNewOptionFormCallback, jest.fn(), jest.fn(), null);
 
-    expect(queryByRole(container, 'new-option-placeholder')).toBeNull();
+    expect(queryByTestId(container, 'new-option-placeholder')).toBeNull();
 
-    const addNewOptionButton = getByRole(container, 'add-new-attribute-option-button');
+    const addNewOptionButton = getByTestId(container, 'add-new-attribute-option-button');
     await fireEvent.click(addNewOptionButton);
-    const newOptionPlaceholder = getByRole(container, 'new-option-placeholder');
+    const newOptionPlaceholder = getByTestId(container, 'new-option-placeholder');
 
     expect(newOptionPlaceholder).toBeInTheDocument();
     expect(showNewOptionFormCallback).toHaveBeenNthCalledWith(1, true);
 
-    const cancelNewOptionButton = getByRole(container, 'new-option-cancel');
+    const cancelNewOptionButton = getByTestId(container, 'new-option-cancel');
     fireEvent.click(cancelNewOptionButton);
     expect(newOptionPlaceholder).not.toBeInTheDocument();
   });
@@ -149,13 +147,13 @@ describe('Attribute options table', () => {
     const blueOptionId = 14;
     await renderComponent(options, false, selectOptionCallback, jest.fn(), jest.fn(), jest.fn(), blueOptionId);
 
-    expect(queryByRole(container, 'new-option-placeholder')).toBeNull();
+    expect(queryByTestId(container, 'new-option-placeholder')).toBeNull();
 
-    const optionItems = queryAllByRole(container, 'attribute-option-item');
+    const optionItems = getAllByTestId(container, 'attribute-option-item');
     const blueOption = optionItems[0];
     const blackOption = optionItems[1];
-    expect(blueOption).toHaveAttribute('data-testid', 'is-selected');
-    expect(blackOption).toHaveAttribute('data-testid', 'is-not-selected');
+    expect(blueOption).toHaveAttribute('data-isSelected', 'is-selected');
+    expect(blackOption).toHaveAttribute('data-isSelected', 'is-not-selected');
 
     const optionLabels = getAllByTestId(container, 'attribute-option-item-label');
     const blackOptionLabel = optionLabels[1];
@@ -169,18 +167,18 @@ describe('Attribute options table', () => {
     const deleteAttributeOptionCallback = jest.fn();
     await renderComponent(options, false, jest.fn(), jest.fn(), jest.fn(), deleteAttributeOptionCallback, null);
 
-    const optionItems = queryAllByRole(container, 'attribute-option-item');
+    const optionItems = getAllByTestId(container, 'attribute-option-item');
     const blueOption = optionItems[0];
 
     const deleteButton = getByTestId(blueOption, 'attribute-option-delete-button');
-    let deleteConfirmationModal = queryByRole(container, 'attribute-option-delete-confirmation-modal');
+    let deleteConfirmationModal = queryByTestId(container, 'attribute-option-delete-confirmation-modal');
     expect(deleteConfirmationModal).not.toBeInTheDocument();
 
     await fireEvent.click(deleteButton);
 
-    deleteConfirmationModal = getByRole(container, 'attribute-option-delete-confirmation-modal');
-    const confirmDeleteButton = getByRole(container, 'attribute-option-confirm-delete-button');
-    const cancelButtons = queryAllByRole(container, 'attribute-option-confirm-cancel-button');
+    deleteConfirmationModal = getByTestId(container, 'attribute-option-delete-confirmation-modal');
+    const confirmDeleteButton = getByTestId(container, 'attribute-option-confirm-delete-button');
+    const cancelButtons = queryAllByTestId(container, 'attribute-option-confirm-cancel-button');
 
     expect(deleteAttributeOptionCallback).not.toHaveBeenCalled();
     expect(deleteConfirmationModal).toBeInTheDocument();
@@ -194,13 +192,13 @@ describe('Attribute options table', () => {
     const deleteAttributeOptionCallback = jest.fn();
     await renderComponent(options, false, jest.fn(), jest.fn(), jest.fn(), deleteAttributeOptionCallback, null);
 
-    const optionItems = queryAllByRole(container, 'attribute-option-item');
+    const optionItems = getAllByTestId(container, 'attribute-option-item');
     const blueOption = optionItems[0];
 
     const deleteButton = getByTestId(blueOption, 'attribute-option-delete-button');
     await fireEvent.click(deleteButton);
-    const deleteConfirmationModal = queryByRole(blueOption, 'attribute-option-delete-confirmation-modal');
-    let cancelButtons = queryAllByRole(container, 'attribute-option-confirm-cancel-button');
+    const deleteConfirmationModal = queryByTestId(blueOption, 'attribute-option-delete-confirmation-modal');
+    let cancelButtons = queryAllByTestId(container, 'attribute-option-confirm-cancel-button');
 
     expect(cancelButtons).toHaveLength(2);
 
@@ -209,7 +207,7 @@ describe('Attribute options table', () => {
     expect(deleteConfirmationModal).not.toBeInTheDocument();
 
     await fireEvent.click(deleteButton);
-    cancelButtons = queryAllByRole(container, 'attribute-option-confirm-cancel-button');
+    cancelButtons = queryAllByTestId(container, 'attribute-option-confirm-cancel-button');
     await fireEvent.click(cancelButtons[1]);
     expect(deleteAttributeOptionCallback).not.toHaveBeenCalled();
     expect(deleteConfirmationModal).not.toBeInTheDocument();
@@ -219,7 +217,7 @@ describe('Attribute options table', () => {
     const manuallySortAttributeOptionsCallback = jest.fn();
     await renderComponent(options, false, jest.fn(), jest.fn(), manuallySortAttributeOptionsCallback, jest.fn(), null);
 
-    const optionItems = queryAllByRole(container, 'attribute-option-item');
+    const optionItems = getAllByTestId(container, 'attribute-option-item');
     const blueOption = optionItems[0];
     const blackOption = optionItems[1];
 
@@ -229,7 +227,7 @@ describe('Attribute options table', () => {
     await fireEvent.drop(blackOption);
 
     let attributeOptionsLabel = getAllByTestId(container, 'attribute-option-item-label');
-    let attributeOptionsCode = getAllByRole(container, 'attribute-option-item-code');
+    let attributeOptionsCode = getAllByTestId(container, 'attribute-option-item-code');
     expect(attributeOptionsLabel.length).toBe(2);
     expect(attributeOptionsCode.length).toBe(2);
     expect(attributeOptionsLabel[0].textContent).toBe('Black');
@@ -244,7 +242,7 @@ describe('Attribute options table', () => {
     const manuallySortAttributeOptionsCallback = jest.fn();
     await renderComponent(options, true, jest.fn(), jest.fn(), manuallySortAttributeOptionsCallback, jest.fn(), null);
 
-    const optionItems = queryAllByRole(container, 'attribute-option-item');
+    const optionItems = getAllByTestId(container, 'attribute-option-item');
     const blueOption = optionItems[0];
     const blackOption = optionItems[1];
 
@@ -266,9 +264,9 @@ describe('Attribute options table', () => {
 
     await act(async () => {
       setTimeout(() => {
-        const optionItems = queryAllByRole(container, 'attribute-option-item');
+        const optionItems = getAllByTestId(container, 'attribute-option-item');
         const attributeOptionsLabel = getAllByTestId(container, 'attribute-option-item-label');
-        const attributeOptionsCode = getAllByRole(container, 'attribute-option-item-code');
+        const attributeOptionsCode = getAllByTestId(container, 'attribute-option-item-code');
 
         expect(optionItems.length).toBe(1);
         expect(attributeOptionsLabel[0].textContent).toBe('Blue');

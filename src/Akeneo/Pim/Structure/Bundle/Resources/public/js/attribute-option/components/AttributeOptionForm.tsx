@@ -31,7 +31,7 @@ const AttributeOptionForm: FC<AttributeOptionFormProps> = ({option, locale, onUp
           value={option.optionValues[locale.code].value}
           onChange={newLabel => onUpdateOptionLabel(newLabel, locale.code)}
           data-locale={locale.code}
-          role="attribute-option-label"
+          data-testid="attribute-option-label"
         />
       </Field>
     </Container>
