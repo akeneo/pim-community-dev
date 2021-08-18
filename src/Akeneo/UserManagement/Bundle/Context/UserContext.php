@@ -52,25 +52,25 @@ class UserContext
     protected $defaultLocale;
 
     /**
-     * @param TokenStorageInterface       $tokenStorage
-     * @param LocaleRepositoryInterface   $localeRepository
-     * @param ChannelRepositoryInterface  $channelRepository
+     * @param TokenStorageInterface $tokenStorage
+     * @param LocaleRepositoryInterface $localeRepository
+     * @param ChannelRepositoryInterface $channelRepository
      * @param CategoryRepositoryInterface $categoryRepository
-     * @param RequestStack                $requestStack
-     * @param string                      $defaultLocale
+     * @param RequestStack $requestStack
+     * @param string $defaultLocale
      */
     public function __construct(
-        TokenStorageInterface $tokenStorage,
-        LocaleRepositoryInterface $localeRepository,
-        ChannelRepositoryInterface $channelRepository,
+        TokenStorageInterface       $tokenStorage,
+        LocaleRepositoryInterface   $localeRepository,
+        ChannelRepositoryInterface  $channelRepository,
         CategoryRepositoryInterface $categoryRepository,
-        RequestStack $requestStack,
-        $defaultLocale
+        RequestStack                $requestStack,
+                                    $defaultLocale
     ) {
         $this->tokenStorage = $tokenStorage;
         $this->localeRepository = $localeRepository;
         $this->channelRepository = $channelRepository;
-        $this->categoryRepository= $categoryRepository;
+        $this->categoryRepository = $categoryRepository;
         $this->requestStack = $requestStack;
         $this->defaultLocale = $defaultLocale;
     }
@@ -79,9 +79,9 @@ class UserContext
      * Returns the current locale from the request or the user's catalog locale
      * or the first activated locale
      *
+     * @return LocaleInterface
      * @throws \LogicException When there are no activated locales
      *
-     * @return LocaleInterface
      */
     public function getCurrentLocale(): LocaleInterface
     {
@@ -240,9 +240,9 @@ class UserContext
     /**
      * Return the current user's timezone.
      *
+     * @return string
      * @throws \RuntimeException
      *
-     * @return string
      */
     public function getUserTimezone(): string
     {
@@ -307,19 +307,24 @@ class UserContext
         $locales = $this->getUserLocaleCodes();
 
         return [
-            'locales'  => $locales,
+            'locales' => $locales,
             'channels' => $channels,
-            'locale'   => $this->getUiLocale()->getCode(),
-            'channel'  => $this->getUserChannelCode()
+            'locale' => $this->getUiLocale()->getCode(),
+            'channel' => $this->getUserChannelCode()
         ];
     }
-    
+
     /**
      * @return CategoryInterface
      */
     public function getAccessibleUserTree()
     {
         return $this->getUserProductCategoryTree();
+    }
+
+    public static function isApiUser(Request $request): bool
+    {
+        return preg_match('/^\/api\/*/', $request->getRequestUri());
     }
 
     /**
@@ -430,8 +435,6 @@ class UserContext
                 }
             }
         }
-
-        return null;
     }
 
     /**

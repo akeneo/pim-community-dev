@@ -76,6 +76,9 @@ class UserContextListener implements EventSubscriberInterface
         if (HttpKernel::MASTER_REQUEST !== $event->getRequestType() || null === $this->tokenStorage->getToken()) {
             return;
         }
+        if (UserContext::isApiUser($event->getRequest())) {
+            return;
+        }
 
         try {
             $this->configureTranslatableListener();

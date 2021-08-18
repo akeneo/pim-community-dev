@@ -2,6 +2,7 @@
 
 namespace Akeneo\Platform\Bundle\UIBundle\EventListener;
 
+use Akeneo\UserManagement\Bundle\Context\UserContext;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 use Symfony\Component\HttpKernel\Event\RequestEvent;
 use Symfony\Component\HttpKernel\KernelEvents;
@@ -41,7 +42,7 @@ class CloseSessionListener implements EventSubscriberInterface
      */
     public function closeSession(RequestEvent $event) : void
     {
-        if (!$event->getRequest()->hasSession()) {
+        if (!$event->getRequest()->hasSession() || UserContext::isApiUser($event->getRequest())) {
             return;
         }
 

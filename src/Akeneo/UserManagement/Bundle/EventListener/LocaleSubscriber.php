@@ -2,6 +2,7 @@
 
 namespace Akeneo\UserManagement\Bundle\EventListener;
 
+use Akeneo\UserManagement\Bundle\Context\UserContext;
 use Akeneo\UserManagement\Component\Event\UserEvent;
 use Doctrine\ORM\EntityManager;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
@@ -51,8 +52,12 @@ class LocaleSubscriber implements EventSubscriberInterface
     public function onKernelRequest(RequestEvent $event)
     {
         $request = $event->getRequest();
-        $locale = $this->getLocale($request);
+        if (UserContext::isApiUser($event->getRequest())) {
+            #We don't want to create a session in case of API
+            return;
+        }
 
+        $locale = $this->getLocale($request);
         if (null !== $locale) {
             $request->setLocale($locale);
         }
