@@ -68,7 +68,7 @@ const ColumnPreview = ({sources, format}: ColumnPreviewProps) => {
         {format.elements
           .map(element => getPreviewElement(element, sources))
           .map((element, index) =>
-            true === format.space_between && 0 < index ? <Fragment key={index}> {element}</Fragment> : element
+            format.space_between && 0 < index ? <Fragment key={index}> {element}</Fragment> : element
           )}
       </PreviewList>
     </ColumnPreviewContainer>

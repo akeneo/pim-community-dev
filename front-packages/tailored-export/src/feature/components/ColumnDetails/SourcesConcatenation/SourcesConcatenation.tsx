@@ -82,7 +82,7 @@ const SourcesConcatenation = ({validationErrors, sources, format, onFormatChange
         ))}
       </div>
       <ColumnPreview sources={sources} format={format} />
-      <Checkbox checked={format.space_between ?? false} onChange={handleSpacesBetweenChange}>
+      <Checkbox checked={format.space_between} onChange={handleSpacesBetweenChange}>
         {translate('akeneo.tailored_export.column_details.concatenation.space_between')}
       </Checkbox>
       <ConcatElementList

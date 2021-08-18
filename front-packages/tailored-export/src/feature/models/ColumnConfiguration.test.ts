@@ -126,7 +126,11 @@ const attribute: Attribute = {
 
 test('it creates a column', () => {
   expect(createColumn('Identifier', 'fbf9cff9-e95c-4e7d-983b-2947c7df90df')).toEqual({
-    format: {elements: [], type: 'concat'},
+    format: {
+      elements: [],
+      type: 'concat',
+      space_between: true,
+    },
     sources: [],
     target: 'Identifier',
     uuid: 'fbf9cff9-e95c-4e7d-983b-2947c7df90df',
@@ -192,6 +196,7 @@ test('it adds attribute source', () => {
           value: firstSourceUuid,
         },
       ],
+      space_between: true,
     },
   });
 });
@@ -238,6 +243,7 @@ test('it adds a locale specific attribute source', () => {
           value: firstSourceUuid,
         },
       ],
+      space_between: true,
     },
   });
 });
@@ -273,6 +279,7 @@ test('it adds property source', () => {
           value: firstSourceUuid,
         },
       ],
+      space_between: true,
     },
   });
 });
@@ -314,6 +321,7 @@ test('it adds association type source', () => {
           value: firstSourceUuid,
         },
       ],
+      space_between: true,
     },
   });
 });
@@ -381,6 +389,7 @@ test('it updates a source', () => {
           value: firstSourceUuid,
         },
       ],
+      space_between: true,
     },
   });
 });
@@ -398,6 +407,7 @@ test('it removes a source', () => {
     format: {
       type: 'concat',
       elements: [],
+      space_between: true,
     },
   });
 });

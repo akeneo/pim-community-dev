@@ -14,7 +14,7 @@ type ConcatElement = {
 type Format = {
   type: 'concat';
   elements: ConcatElement[];
-  space_between?: boolean;
+  space_between: boolean;
 };
 
 type ColumnConfiguration = {
@@ -41,6 +41,7 @@ const createColumn = (newColumnName: string, uuid: string): ColumnConfiguration 
     format: {
       type: 'concat',
       elements: [],
+      space_between: true,
     },
   };
 };
