@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace Akeneo\Connectivity\Connection\Application\Apps\Command;
 
-use Akeneo\Connectivity\Connection\Domain\Apps\Exception\AuthorizeAppInvalidRequest;
+use Akeneo\Connectivity\Connection\Domain\Apps\Exception\InvalidAppAuthorizationRequest;
 use Symfony\Component\Validator\Validator\ValidatorInterface;
 
 /**
@@ -25,7 +25,7 @@ final class RequestAppAuthorizationHandler
     {
         $violations = $this->validator->validate($command);
         if (count($violations) > 0) {
-            throw new AuthorizeAppInvalidRequest($violations);
+            throw new InvalidAppAuthorizationRequest($violations);
         }
 
         // @todo call OAuth2 Auth services
