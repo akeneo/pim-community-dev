@@ -451,6 +451,7 @@ pim_api_client | redirect_uris | NO | longtext |
 pim_api_client | secret | NO | varchar(255) |
 pim_api_client | allowed_grant_types | NO | longtext |
 pim_api_client | label | YES | varchar(255) |
+pim_api_client | marketplace_public_app_id | YES | varchar(255) |
 pim_api_refresh_token | id | NO | int | PRI
 pim_api_refresh_token | client | YES | int | MUL
 pim_api_refresh_token | user | YES | int | MUL
