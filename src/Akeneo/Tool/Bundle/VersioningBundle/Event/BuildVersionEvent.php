@@ -2,7 +2,7 @@
 
 namespace Akeneo\Tool\Bundle\VersioningBundle\Event;
 
-use Symfony\Component\EventDispatcher\Event;
+use Symfony\Contracts\EventDispatcher\Event;
 
 /**
  * Build a new version

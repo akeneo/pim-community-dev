@@ -5,7 +5,7 @@ declare(strict_types=1);
 namespace Akeneo\Pim\Enrichment\Component\Product\EntityWithFamily\Event;
 
 use Akeneo\Pim\Enrichment\Component\Product\Model\ProductInterface;
-use Symfony\Component\EventDispatcher\Event;
+use Symfony\Contracts\EventDispatcher\Event;
 
 /**
  * This event is raised when a product is converted to a variant product
