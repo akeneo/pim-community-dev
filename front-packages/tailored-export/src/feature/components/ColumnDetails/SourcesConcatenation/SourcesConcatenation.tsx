@@ -1,7 +1,7 @@
 import React from 'react';
 import styled from 'styled-components';
 import {Button, Checkbox, getColor, Helper, SectionTitle, uuid} from 'akeneo-design-system';
-import {useTranslate, ValidationError} from '@akeneo-pim-community/shared';
+import {filterErrors, getErrorsForPath, useTranslate, ValidationError} from '@akeneo-pim-community/shared';
 import {ColumnPreview} from './Preview/ColumnPreview';
 import {ColumnConfiguration, ConcatElement} from '../../../models';
 import {ConcatElementList} from './List/ConcatElementList';
@@ -35,6 +35,7 @@ const SourcesConcatenation = ({
   onColumnConfigurationChange,
 }: SourcesConcatenationProps) => {
   const translate = useTranslate();
+  const globalValidationErrors = getErrorsForPath(validationErrors, '[elements]');
 
   const handleSpacesBetweenChange = (spaceBetween: boolean) =>
     onColumnConfigurationChange({
@@ -92,7 +93,7 @@ const SourcesConcatenation = ({
           {translate('akeneo.tailored_export.column_details.concatenation.title')}
         </SectionTitle.Title>
       </SectionTitle>
-      {validationErrors.map((error, index) => (
+      {globalValidationErrors.map((error, index) => (
         <Helper key={index} level="error">
           {translate(error.messageTemplate, error.parameters)}
         </Helper>
@@ -106,6 +107,7 @@ const SourcesConcatenation = ({
         onConcatElementReorder={handleConcatElementReorder}
         onConcatElementChange={handleConcatElementChange}
         onConcatElementRemove={handleConcatElementRemove}
+        validationErrors={filterErrors(validationErrors, '[elements]')}
       />
       <ConcatenationFooter>
         <Button

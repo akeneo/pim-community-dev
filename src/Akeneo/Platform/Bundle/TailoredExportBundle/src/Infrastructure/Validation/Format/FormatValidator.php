@@ -45,27 +45,31 @@ class FormatValidator extends ConstraintValidator
                         'max' => self::MAX_TEXT_COUNT,
                         'maxMessage' => Format::MAX_TEXT_COUNT_REACHED,
                     ]),
-                    new All([
-                        'constraints' => [
-                            new Collection([
-                                'fields' => [
-                                    'uuid' => [
-                                        new Uuid(),
-                                        new NotBlank()
-                                    ],
-                                    'type' => new Type('string'),
-                                    'value' => [
-                                        new Type('string'),
-                                        new NotBlank(['message' => 'akeneo.tailored_export.validation.required']),
-                                        new Length([
-                                            'max' => self::TEXT_MAX_LENGTH,
-                                        ])
-                                    ],
-                                ],
-                            ]),
-                        ],
-                    ]),
                 ]
             ]));
+
+
+        if ($this->context->getViolations()->count() > 0 ) {
+            return;
+        }
+
+        foreach ($format['elements'] ?? [] as $element) {
+            $this->context->getValidator()
+                ->inContext($this->context)
+                ->atPath(sprintf('[elements][%s]', $element['uuid']))
+                ->validate($element, new Collection([
+                    'uuid' => new Uuid(),
+                    'type' => new Choice([
+                        'choices' => ['string', 'source'],
+                    ]),
+                    'value' => [
+                        new Type('string'),
+                        new NotBlank(['message' => 'akeneo.tailored_export.validation.required']),
+                        new Length([
+                            'max' => self::TEXT_MAX_LENGTH,
+                        ])
+                    ],
+                ]));
+        }
     }
 }

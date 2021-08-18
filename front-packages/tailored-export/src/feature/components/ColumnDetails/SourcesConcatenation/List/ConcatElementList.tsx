@@ -3,8 +3,10 @@ import {Table} from 'akeneo-design-system';
 import {ColumnConfiguration, ConcatElement} from '../../../../models';
 import {AssociationTypeSourceRow, AttributeSourceRow, PropertySourceRow} from './SourceRow';
 import {StringRow} from './StringRow';
+import {filterErrors, ValidationError} from "@akeneo-pim-community/shared";
 
 type ConcatElementListProps = {
+  validationErrors: ValidationError[];
   columnConfiguration: ColumnConfiguration;
   onConcatElementReorder: (newIndices: number[]) => void;
   onConcatElementChange: (updatedConcatElement: ConcatElement) => void;
@@ -12,6 +14,7 @@ type ConcatElementListProps = {
 };
 
 const ConcatElementList = ({
+  validationErrors,
   columnConfiguration,
   onConcatElementReorder,
   onConcatElementChange,
@@ -25,6 +28,7 @@ const ConcatElementList = ({
             return (
               <StringRow
                 key={element.uuid}
+                validationErrors={filterErrors(validationErrors, `[${element.uuid}]`)}
                 element={element}
                 onConcatElementChange={onConcatElementChange}
                 onConcatElementRemove={onConcatElementRemove}
