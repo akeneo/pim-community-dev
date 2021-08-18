@@ -2,14 +2,16 @@
 
 .AknComparableFields {
   display: flex;
+  max-width: 960px;
+  justify-content: space-between;
 
   &-item:not(:empty) {
     flex-basis: @AknMaxFormWidth;
     flex-shrink: 0;
+  }
 
-    &--comparisonContainer {
-      margin-left: 20px;
-    }
+  &-item--comparisonContainer:not(:empty) {
+    margin-left: 10px;
   }
 
   &-copyContainer {
