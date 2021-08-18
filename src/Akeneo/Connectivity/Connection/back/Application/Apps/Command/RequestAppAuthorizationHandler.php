@@ -11,7 +11,7 @@ use Symfony\Component\Validator\Validator\ValidatorInterface;
  * @copyright 2021 Akeneo SAS (http://www.akeneo.com)
  * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
  */
-final class AuthorizeAppHandler
+final class RequestAppAuthorizationHandler
 {
     private ValidatorInterface $validator;
 
@@ -21,7 +21,7 @@ final class AuthorizeAppHandler
         $this->validator = $validator;
     }
 
-    public function handle(AuthorizeAppCommand $command): void
+    public function handle(RequestAppAuthorizationCommand $command): void
     {
         $violations = $this->validator->validate($command);
         if (count($violations) > 0) {

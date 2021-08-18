@@ -4,8 +4,8 @@ declare(strict_types=1);
 
 namespace Akeneo\Connectivity\Connection\Tests\Integration\Apps\Command;
 
-use Akeneo\Connectivity\Connection\Application\Apps\Command\AuthorizeAppCommand;
-use Akeneo\Connectivity\Connection\Application\Apps\Command\AuthorizeAppHandler;
+use Akeneo\Connectivity\Connection\Application\Apps\Command\RequestAppAuthorizationCommand;
+use Akeneo\Connectivity\Connection\Application\Apps\Command\RequestAppAuthorizationHandler;
 use Akeneo\Connectivity\Connection\Domain\Apps\Exception\AuthorizeAppInvalidRequest;
 use Akeneo\Test\Integration\Configuration;
 use Akeneo\Test\Integration\TestCase;
@@ -20,7 +20,7 @@ use Symfony\Component\PropertyAccess\PropertyAccessor;
  */
 class AuthorizeAppHandlerIntegration extends TestCase
 {
-    private AuthorizeAppHandler $handler;
+    private RequestAppAuthorizationHandler $handler;
     private ClientManagerInterface $clientManager;
     private PropertyAccessor $propertyAccessor;
 
@@ -33,7 +33,7 @@ class AuthorizeAppHandlerIntegration extends TestCase
     {
         parent::setUp();
 
-        $this->handler = $this->get(AuthorizeAppHandler::class);
+        $this->handler = $this->get(RequestAppAuthorizationHandler::class);
         $this->clientManager = $this->get('fos_oauth_server.client_manager.default');
         $this->propertyAccessor = PropertyAccess::createPropertyAccessor();
     }
@@ -51,7 +51,7 @@ class AuthorizeAppHandlerIntegration extends TestCase
 
     public function test_it_throws_when_the_client_id_is_not_valid()
     {
-        $command = new AuthorizeAppCommand(
+        $command = new RequestAppAuthorizationCommand(
             'e4d35502-08c9-40b4-a378-05d4cb255862',
             'code',
             '',
@@ -69,7 +69,7 @@ class AuthorizeAppHandlerIntegration extends TestCase
             'marketplacePublicAppId' => 'e4d35502-08c9-40b4-a378-05d4cb255862',
         ]);
 
-        $command = new AuthorizeAppCommand(
+        $command = new RequestAppAuthorizationCommand(
             'e4d35502-08c9-40b4-a378-05d4cb255862',
             'foo',
             '',
@@ -87,7 +87,7 @@ class AuthorizeAppHandlerIntegration extends TestCase
             'marketplacePublicAppId' => 'e4d35502-08c9-40b4-a378-05d4cb255862',
         ]);
 
-        $command = new AuthorizeAppCommand(
+        $command = new RequestAppAuthorizationCommand(
             'e4d35502-08c9-40b4-a378-05d4cb255862',
             'code',
             'foo bar',
