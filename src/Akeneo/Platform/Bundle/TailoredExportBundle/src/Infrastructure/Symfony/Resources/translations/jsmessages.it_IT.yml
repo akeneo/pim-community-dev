@@ -39,7 +39,6 @@ akeneo.tailored_export:
     sources:
       title: Origini
       add: Aggiungi origine
-      no_result: Spiacenti, nessun risultato presente.
       locale_specific: Questo attributo è specifico per impostazioni locali.
       remove:
         title: origine
@@ -117,7 +116,6 @@ akeneo.tailored_export:
         max_length_reached: Nome della colonna troppo lungo. Deve contenere {{ limit }} caratteri o meno.
         should_be_unique: Questo nome di colonna esiste già, inseriscine uno nuovo.
     sources:
-      max_source_count_reached: Hai raggiunto il limite di {{ limit }} origini, non puoi più aggiungere origini alla tua esportazione.
       association_type_should_exist: Il tipo di associazione {{ association_type_code }} non esiste. Crealo o scegli un'altra origine.
     locale:
       should_be_active: L'impostazione locale {{ locale_code }} è stata disattivata. Riattivala o seleziona un'altra impostazione locale.
