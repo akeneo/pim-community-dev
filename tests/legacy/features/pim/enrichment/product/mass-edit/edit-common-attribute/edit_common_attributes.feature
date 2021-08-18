@@ -31,7 +31,7 @@ Feature: Edit common attributes of many products at once
     Given I am on the products grid
     And I select rows boots, sandals and sneakers
     When I press the "Bulk actions" button
-    And I choose the "Edit attributes values" operation
+    And I choose the "Edit attributesvalues" operation
     And I display the Name attribute
     Then I should see a remove link next to the "Name" field
     When I remove the "Name" attribute
@@ -43,7 +43,7 @@ Feature: Edit common attributes of many products at once
     Given I am on the products grid
     And I select rows boots, sandals and sneakers
     And I press the "Bulk actions" button
-    And I choose the "Edit attributes values" operation
+    And I choose the "Edit attributesvalues" operation
     And I display the Name attribute
     And I change the "Name" to "boots"
     Then I should see a remove link next to the "Name" field
@@ -59,7 +59,7 @@ Feature: Edit common attributes of many products at once
     Given I am on the products grid
     And I select rows boots and sneakers
     And I press the "Bulk actions" button
-    And I choose the "Edit attributes values" operation
+    And I choose the "Edit attributesvalues" operation
     And I display the Weather conditions attribute
     And I change the "Weather conditions" to "Dry, Hot"
     And I confirm mass edit
