@@ -1,14 +1,16 @@
 services:
-  Akeneo\Platform\TailoredExport\Application\PropertyValueGetter:
-
-  Akeneo\Platform\TailoredExport\Application\OperationHandler:
+  Akeneo\Platform\TailoredExport\Application\MapValues\OperationApplier\OperationApplier:
     arguments:
       - !tagged_iterator akeneo.tailored_export.operation_applier
 
-  Akeneo\Platform\TailoredExport\Application\OperationHandler\BooleanReplacementHandler:
+  Akeneo\Platform\TailoredExport\Application\MapValues\OperationApplier\DefaultValueOperationApplier:
+    tags:
+      - { name: akeneo.tailored_export.operation_applier, priority: 100 }
+
+  Akeneo\Platform\TailoredExport\Application\MapValues\OperationApplier\BooleanReplacementOperationApplier:
     tags:
       - { name: akeneo.tailored_export.operation_applier }
 
-  Akeneo\Platform\TailoredExport\Application\OperationHandler\EnabledReplacementHandler:
+  Akeneo\Platform\TailoredExport\Application\MapValues\OperationApplier\EnabledReplacementOperationApplier:
     tags:
       - { name: akeneo.tailored_export.operation_applier }

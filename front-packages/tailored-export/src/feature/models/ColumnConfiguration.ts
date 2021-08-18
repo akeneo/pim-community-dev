@@ -65,6 +65,9 @@ const isNonEmptyColumn = (columnConfiguration: ColumnConfiguration): boolean =>
   0 !== columnConfiguration.sources.length ||
   0 !== columnConfiguration.format.elements.length;
 
+const filterColumns = (columns: ColumnConfiguration[], searchValue: string): ColumnConfiguration[] =>
+  columns.filter(({target}) => target.toLowerCase().includes(searchValue.toLowerCase()));
+
 const addAttributeSource = (
   columnConfiguration: ColumnConfiguration,
   attribute: Attribute,
@@ -132,6 +135,7 @@ export {
   addColumn,
   addPropertySource,
   createColumn,
+  filterColumns,
   filterEmptyOperations,
   MAX_COLUMN_COUNT,
   removeColumn,

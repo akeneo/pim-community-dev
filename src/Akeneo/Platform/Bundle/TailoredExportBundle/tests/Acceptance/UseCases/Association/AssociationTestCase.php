@@ -13,16 +13,15 @@ declare(strict_types=1);
 
 namespace Akeneo\Platform\TailoredExport\Test\Acceptance\UseCases\Association;
 
-use Akeneo\Platform\TailoredExport\Application\ProductMapper;
-use Akeneo\Platform\TailoredExport\Application\Query\Column\Column;
-use Akeneo\Platform\TailoredExport\Application\Query\Column\ColumnCollection;
-use Akeneo\Platform\TailoredExport\Application\Query\Operation\OperationCollection;
-use Akeneo\Platform\TailoredExport\Application\Query\Selection\SelectionInterface;
-use Akeneo\Platform\TailoredExport\Application\Query\Source\AssociationTypeSource;
-use Akeneo\Platform\TailoredExport\Application\Query\Source\PropertySource;
-use Akeneo\Platform\TailoredExport\Application\Query\Source\SourceCollection;
-use Akeneo\Platform\TailoredExport\Domain\SourceValueInterface;
-use Akeneo\Platform\TailoredExport\Domain\ValueCollection;
+use Akeneo\Platform\TailoredExport\Application\Common\Column\Column;
+use Akeneo\Platform\TailoredExport\Application\Common\Column\ColumnCollection;
+use Akeneo\Platform\TailoredExport\Application\Common\Operation\OperationCollection;
+use Akeneo\Platform\TailoredExport\Application\Common\Selection\SelectionInterface;
+use Akeneo\Platform\TailoredExport\Application\Common\Source\AssociationTypeSource;
+use Akeneo\Platform\TailoredExport\Application\Common\Source\SourceCollection;
+use Akeneo\Platform\TailoredExport\Application\Common\SourceValue\SourceValueInterface;
+use Akeneo\Platform\TailoredExport\Application\Common\ValueCollection;
+use Akeneo\Platform\TailoredExport\Application\MapValues\MapValuesQueryHandler;
 use Symfony\Bundle\FrameworkBundle\Test\KernelTestCase;
 
 abstract class AssociationTestCase extends KernelTestCase
@@ -35,13 +34,16 @@ abstract class AssociationTestCase extends KernelTestCase
         static::bootKernel(['debug' => false]);
     }
 
-    protected function getProductMapper(): ProductMapper
+    protected function getMapValuesQueryHandler(): MapValuesQueryHandler
     {
-        return static::$container->get('Akeneo\Platform\TailoredExport\Application\ProductMapper');
+        return static::$container->get('Akeneo\Platform\TailoredExport\Application\MapValues\MapValuesQueryHandler');
     }
 
-    protected function createSingleSourceColumnCollection(bool $isQuantified, array $operations, SelectionInterface $selection): ColumnCollection
-    {
+    protected function createSingleSourceColumnCollection(
+        bool $isQuantified,
+        array $operations,
+        SelectionInterface $selection
+    ): ColumnCollection {
         return ColumnCollection::create([
             new Column(self::TARGET_NAME, SourceCollection::create([
                 new AssociationTypeSource(

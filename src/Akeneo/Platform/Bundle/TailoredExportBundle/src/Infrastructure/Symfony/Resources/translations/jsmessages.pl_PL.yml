@@ -43,7 +43,6 @@ akeneo.tailored_export:
     sources:
       title: Źródła
       add: Dodaj źródło
-      no_result: Przepraszamy, nie ma żadnych wyników.
       locale_specific: Ten atrybut zależy od ustawień regionalnych.
       remove:
         title: źródło
@@ -127,7 +126,6 @@ akeneo.tailored_export:
         max_length_reached: 'Nazwa kolumny jest zbyt długa. Powinna składać się z nie więcej niż następującej liczby znaków: {{ limit }}.'
         should_be_unique: Nazwa kolumny już istnieje. Wprowadź nową.
     sources:
-      max_source_count_reached: Osiągnięto limit {{ limit }} źródeł. Nie możesz już dodawać źródeł do eksportu.
       association_type_should_exist: Typ powiązania {{ association_type_code }} nie istnieje. Utwórz go lub wybierz inne źródło.
     locale:
       should_be_active: Ustawienia regionalne {{ locale_code }} zostały zdezaktywowane. Aktywuj je ponownie lub wybierz inne ustawienia regionalne.

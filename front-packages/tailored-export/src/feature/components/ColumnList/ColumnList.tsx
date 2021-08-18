@@ -12,7 +12,7 @@ import {
 } from 'akeneo-design-system';
 import styled from 'styled-components';
 import {NoDataSection, NoDataTitle, useTranslate} from '@akeneo-pim-community/shared';
-import {ColumnConfiguration, ColumnsState, MAX_COLUMN_COUNT} from '../../models/ColumnConfiguration';
+import {ColumnConfiguration, ColumnsState, filterColumns, MAX_COLUMN_COUNT} from '../../models/ColumnConfiguration';
 import {ColumnListPlaceholder} from './ColumnListPlaceholder';
 import {ColumnRow, TargetCell} from './ColumnRow';
 import {useValidationErrors} from '../../contexts';
@@ -85,7 +85,7 @@ const ColumnList = ({
   };
 
   const globalErrors = useValidationErrors('[columns]', true);
-  const filteredColumns = columns.filter(({target}) => target.includes(searchValue));
+  const filteredColumns = filterColumns(columns, searchValue);
 
   const canAddColumn = MAX_COLUMN_COUNT > columns.length;
   const shouldDisplayNewColumnRow = canAddColumn && '' === searchValue;
@@ -94,7 +94,7 @@ const ColumnList = ({
 
   const handleFocusNext = useCallback(() => {
     setColumnsState(previousColumnsState => {
-      const filteredColumns = previousColumnsState.columns.filter(({target}) => target.includes(searchValue));
+      const filteredColumns = filterColumns(previousColumnsState.columns, searchValue);
       const currentColumnIndex = filteredColumns.findIndex(
         ({uuid}) => previousColumnsState.selectedColumnUuid === uuid
       );

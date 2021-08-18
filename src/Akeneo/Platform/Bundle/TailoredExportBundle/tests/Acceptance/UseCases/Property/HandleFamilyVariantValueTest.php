@@ -13,12 +13,15 @@ declare(strict_types=1);
 
 namespace Akeneo\Platform\TailoredExport\Test\Acceptance\UseCases\Property;
 
-use Akeneo\Platform\TailoredExport\Application\Query\Selection\FamilyVariant\FamilyVariantCodeSelection;
-use Akeneo\Platform\TailoredExport\Application\Query\Selection\FamilyVariant\FamilyVariantLabelSelection;
-use Akeneo\Platform\TailoredExport\Application\Query\Selection\SelectionInterface;
-use Akeneo\Platform\TailoredExport\Domain\SourceValue\FamilyVariantValue;
-use Akeneo\Platform\TailoredExport\Domain\SourceValueInterface;
-use Akeneo\Platform\TailoredExport\Test\Acceptance\FakeServices\FamilyVariant\InMemoryGetFamilyVariantTranslations;
+use Akeneo\Platform\TailoredExport\Application\Common\Operation\DefaultValueOperation;
+use Akeneo\Platform\TailoredExport\Application\Common\Selection\FamilyVariant\FamilyVariantCodeSelection;
+use Akeneo\Platform\TailoredExport\Application\Common\Selection\FamilyVariant\FamilyVariantLabelSelection;
+use Akeneo\Platform\TailoredExport\Application\Common\Selection\SelectionInterface;
+use Akeneo\Platform\TailoredExport\Application\Common\SourceValue\FamilyVariantValue;
+use Akeneo\Platform\TailoredExport\Application\Common\SourceValue\NullValue;
+use Akeneo\Platform\TailoredExport\Application\Common\SourceValue\SourceValueInterface;
+use Akeneo\Platform\TailoredExport\Application\MapValues\MapValuesQuery;
+use Akeneo\Platform\TailoredExport\Test\Acceptance\FakeServices\FamilyVariant\InMemoryFindFamilyVariantLabel;
 use PHPUnit\Framework\Assert;
 
 final class HandleFamilyVariantValueTest extends PropertyTestCase
@@ -34,13 +37,13 @@ final class HandleFamilyVariantValueTest extends PropertyTestCase
         SourceValueInterface $value,
         array $expected
     ): void {
-        $productMapper = $this->getProductMapper();
+        $mapValuesQueryHandler = $this->getMapValuesQueryHandler();
         $this->loadFamilyVariantLabels();
 
         $columnCollection = $this->createSingleSourceColumnCollection($operations, $selection);
         $valueCollection = $this->createSingleValueValueCollection($value);
 
-        $mappedProduct = $productMapper->map($columnCollection, $valueCollection);
+        $mappedProduct = $mapValuesQueryHandler->handle(new MapValuesQuery($columnCollection, $valueCollection));
 
         Assert::assertSame($expected, $mappedProduct);
     }
@@ -65,14 +68,34 @@ final class HandleFamilyVariantValueTest extends PropertyTestCase
                 'selection' => new FamilyVariantLabelSelection('fr_FR'),
                 'value' => new FamilyVariantValue('pants_size'),
                 'expected' => [static::TARGET_NAME => 'Pantalons']
-            ]
+            ],
+            'it applies default value operation when value is null' => [
+                'operations' => [
+                    DefaultValueOperation::createFromNormalized([
+                        'value' => 'n/a'
+                    ])
+                ],
+                'selection' => new FamilyVariantLabelSelection('fr_FR'),
+                'value' => new NullValue(),
+                'expected' => [self::TARGET_NAME => 'n/a']
+            ],
+            'it does not apply default value operation when value is not null' => [
+                'operations' => [
+                    DefaultValueOperation::createFromNormalized([
+                        'value' => 'n/a'
+                    ])
+                ],
+                'selection' => new FamilyVariantCodeSelection(),
+                'value' => new FamilyVariantValue('pants_size'),
+                'expected' => [static::TARGET_NAME => 'pants_size']
+            ],
         ];
     }
 
     private function loadFamilyVariantLabels()
     {
-        /** @var InMemoryGetFamilyVariantTranslations $familyVariantLabelsRepository */
-        $familyVariantLabelsRepository = self::$container->get('akeneo.pim.structure.query.get_family_variant_translations');
+        /** @var InMemoryFindFamilyVariantLabel $familyVariantLabelsRepository */
+        $familyVariantLabelsRepository = self::$container->get('Akeneo\Platform\TailoredExport\Domain\Query\FindFamilyVariantLabelInterface');
         $familyVariantLabelsRepository->addFamilyVariantLabel('pants_size', 'fr_FR', 'Pantalons');
     }
 }

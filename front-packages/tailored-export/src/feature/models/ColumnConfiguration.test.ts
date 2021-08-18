@@ -11,6 +11,7 @@ import {
   removeSource,
   addAssociationTypeSource,
   filterEmptyOperations,
+  filterColumns,
 } from './ColumnConfiguration';
 import {Source} from './Source';
 import {AssociationType} from './AssociationType';
@@ -386,4 +387,21 @@ test('it filters empty operations', () => {
     },
     another: {not: 'empty'},
   });
+});
+
+test('it filters columns based on a search value', () => {
+  const columns = [
+    createColumn('FIRST', 'fbf9cff9-e95c-4e7d-983b-2947c7df90df'),
+    createColumn('first', 'fbf9cff9-e95c-4e7d-983b-2947c7df90de'),
+    createColumn('fir', 'fbf9cff9-e95c-4e7d-983b-2947c7df90dd'),
+  ];
+
+  expect(filterColumns(columns, '')).toHaveLength(3);
+  expect(filterColumns(columns, 'fir')).toHaveLength(3);
+  expect(filterColumns(columns, 'FIR')).toHaveLength(3);
+  expect(filterColumns(columns, 'ir')).toHaveLength(3);
+  expect(filterColumns(columns, 'st')).toHaveLength(2);
+  expect(filterColumns(columns, 'first')).toHaveLength(2);
+  expect(filterColumns(columns, 'FIRST')).toHaveLength(2);
+  expect(filterColumns(columns, 'firsttt')).toHaveLength(0);
 });

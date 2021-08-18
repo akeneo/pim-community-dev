@@ -1,0 +1,6 @@
+services:
+    Akeneo\Pim\Permission\Bundle\Command\AddMissingJobPermissionsForUserGroupAllCommand:
+        arguments:
+            - '@database_connection'
+        tags:
+            - { name: console.command }
