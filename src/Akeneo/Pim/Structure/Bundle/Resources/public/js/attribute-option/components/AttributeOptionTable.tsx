@@ -131,6 +131,7 @@ const AttributeOptionTable = ({
       <div className="AknSubsection-title AknSubsection-title--glued tabsection-title">
         <span>{translate('pim_enrich.entity.attribute_option.module.edit.options_codes')}</span>
         <Button
+          size={'small'}
           ghost
           level="tertiary"
           onClick={() => displayNewOptionPlaceholder()}
