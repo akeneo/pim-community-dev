@@ -56,8 +56,10 @@ class FindViewableAttributesSpec extends ObjectBehavior
 
         $flattenAttributes = [
             new FlattenAttribute(
-                $viewableAttributeCode, $attributeLabel,
-                $attributeGroupCode, $attributeGroupLabel
+                $viewableAttributeCode, 
+                $attributeLabel,
+                $attributeGroupCode, 
+                $attributeGroupLabel
             ),
             new FlattenAttribute(
                 $unviewableAttributeCode, $attributeLabel, $attributeGroupCode, $attributeGroupLabel
