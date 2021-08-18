@@ -41,7 +41,7 @@ extensions:
         position: 100
 
     pim-product-model-edit-form-left-column:
-        module: pim/form/common/column
+        module: pim/product-edit-form/sub-navigation
         parent: pim-product-model-edit-form
         position: 5
         targetZone: column

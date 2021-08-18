@@ -722,6 +722,7 @@ config:
     pim/product/product-grid-title:                          pimui/js/form/common/product/product-grid-title.ts
     pim/product/product-grid-view-title-context:                   pimui/js/form/common/product/product-grid-view-title-context.ts
     pim/datagrid/product-gallery-row: pimdatagrid/js/datagrid/ProductGalleryRow.tsx
+    pim/product-edit-form/sub-navigation: pimui/js/product/form/sub-navigation.ts
 
     # Product model
     pim/product-model-edit-form/product-model-label: pimui/js/product-model/form/product-model-label
