@@ -1,6 +1,8 @@
 services:
-    akeneo_communication_channel.internal_api.announcement.add_viewed_announcements:
+    _defaults:
         public: true
+
+    akeneo_communication_channel.internal_api.announcement.add_viewed_announcements:
         class: 'Akeneo\Platform\CommunicationChannel\Infrastructure\Delivery\InternalApi\Announcement\AddViewedAnnouncementsAction'
         arguments:
             - '@pim_user.context.user'

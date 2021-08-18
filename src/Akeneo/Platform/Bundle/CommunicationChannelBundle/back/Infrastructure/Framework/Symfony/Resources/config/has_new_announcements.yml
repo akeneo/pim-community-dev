@@ -1,6 +1,8 @@
 services:
-    akeneo_communication_channel.internal_api.announcement.has_new_announcements:
+    _defaults:
         public: true
+
+    akeneo_communication_channel.internal_api.announcement.has_new_announcements:
         class: 'Akeneo\Platform\CommunicationChannel\Infrastructure\Delivery\InternalApi\Announcement\HasNewAnnouncementsAction'
         arguments:
             - '@pim_catalog.version_provider'
