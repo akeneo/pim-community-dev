@@ -49,7 +49,7 @@ define([
               const projectDetails = {
                 dueDateLabel: __('teamwork_assistant.project.due_date'),
                 dueDate: DateFormatter.format(project.due_date, 'yyyy-MM-dd', DateContext.get('date').format),
-                completionRatio: project.completeness.ratio_done,
+                completionRatio: Math.round(project.completeness.ratio_done),
               };
 
               mediator.trigger('grid:view:selected', view, projectDetails);
