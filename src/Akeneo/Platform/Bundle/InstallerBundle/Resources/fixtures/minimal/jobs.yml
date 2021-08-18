@@ -252,3 +252,9 @@ jobs:
         alias: reference_entity_mass_delete_records
         label: Mass delete records
         type: reference_entity_mass_delete_records
+
+    remove_completeness_for_channel_and_locale:
+        connector: internal
+        alias:     remove_completeness_for_channel_and_locale
+        label:     Remove completeness for channel and locale
+        type:      remove_completeness_for_channel_and_locale
