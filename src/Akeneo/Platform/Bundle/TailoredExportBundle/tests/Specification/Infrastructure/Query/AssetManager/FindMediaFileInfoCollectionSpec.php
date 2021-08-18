@@ -28,7 +28,7 @@ class FindMediaFileInfoCollectionSpec extends ObjectBehavior
         $this->shouldHaveType(FindMediaFileInfoCollection::class);
     }
 
-    public function it_gets_media_file_info_collections(
+    public function it_finds_media_file_info_collection(
         GetMainMediaFileInfoCollectionInterface $getMainMediaFileInfoCollection
     ): void {
         $assetFamilyCode = 'images';
