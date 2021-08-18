@@ -82,7 +82,7 @@ class Creation extends Form
     public function fillNewOption($name, $labels = [])
     {
         $codeField = $this->spin(function () {
-            return $this->find('css', '.AknTextField[role="attribute-option-label"]');
+            return $this->find('css', 'input[role="attribute-option-label"]');
         }, 'Unable to find the attribute option code field');
         $codeField->setValue($name);
 
