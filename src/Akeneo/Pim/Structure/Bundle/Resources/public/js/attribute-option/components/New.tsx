@@ -1,5 +1,7 @@
 import React, {useEffect, useRef} from 'react';
 import {useTranslate} from '@akeneo-pim-community/shared';
+import {Field, TextInput} from 'akeneo-design-system';
+import styled from 'styled-components';
 
 interface NewProps {
   createAttributeOption: (optionCode: string) => void;
@@ -28,16 +30,11 @@ const New = ({createAttributeOption}: NewProps) => {
         <span>{translate('pim_enrich.entity.attribute_option.module.edit.options_settings')}</span>
       </div>
       <form onSubmit={(event: any) => createNewOptionFromCode(event)}>
-        <div className="AknFieldContainer">
-          <div className="AknFieldContainer-header">
-            <label className="AknFieldContainer-label control-label AknFieldContainer-label">
-              <span>{translate('pim_enrich.entity.attribute_option.module.edit.option_code')}</span>
-            </label>
-          </div>
-          <div className="AknFieldContainer-inputContainer field-input">
-            <input type="text" className="AknTextField" data-testid="attribute-option-label" ref={newOptionCodeRef} />
-          </div>
-        </div>
+        <Container>
+          <Field label={translate('pim_enrich.entity.attribute_option.module.edit.option_code')}>
+            <TextInputStyled ref={newOptionCodeRef} data-testid="attribute-option-label" />
+          </Field>
+        </Container>
         <button className="AknButton AknButton--apply save" role="create-option-button" type="submit">
           {translate('pim_common.done')}
         </button>
@@ -45,5 +42,13 @@ const New = ({createAttributeOption}: NewProps) => {
     </div>
   );
 };
+
+const Container = styled.div`
+  margin-bottom: 20px;
+`;
+
+const TextInputStyled = styled(TextInput)`
+  padding: 0 9px;
+`;
 
 export default New;
