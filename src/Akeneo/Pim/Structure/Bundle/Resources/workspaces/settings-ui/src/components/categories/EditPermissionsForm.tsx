@@ -36,8 +36,9 @@ const EditPermissionsForm = ({formData, onChangePermissions, onChangeApplyPermis
           readOnly={false}
           value={formData.permissions.view.value}
           name={formData.permissions.view.fullName}
-          removeLabel="Remove"
-          emptyResultLabel="Empty result"
+          emptyResultLabel={translate('pim_common.no_result')}
+          openLabel={translate('pim_common.open')}
+          removeLabel={translate('pim_common.remove')}
           onChange={changedValues => onChangePermissions('view', changedValues)}
         >
           {Object.entries(formData.permissions.view.choices).map(([key, choice]) => (
@@ -51,8 +52,9 @@ const EditPermissionsForm = ({formData, onChangePermissions, onChangeApplyPermis
         <MultiSelectInput
           value={formData.permissions.edit.value}
           name={formData.permissions.edit.fullName}
-          removeLabel="Remove"
-          emptyResultLabel="Empty result"
+          emptyResultLabel={translate('pim_common.no_result')}
+          openLabel={translate('pim_common.open')}
+          removeLabel={translate('pim_common.remove')}
           onChange={changedValues => onChangePermissions('edit', changedValues)}
         >
           {Object.entries(formData.permissions.edit.choices).map(([key, choice]) => (
@@ -66,8 +68,9 @@ const EditPermissionsForm = ({formData, onChangePermissions, onChangeApplyPermis
         <MultiSelectInput
           value={formData.permissions.own.value}
           name={formData.permissions.own.fullName}
-          removeLabel="Remove"
-          emptyResultLabel="Empty result"
+          emptyResultLabel={translate('pim_common.no_result')}
+          openLabel={translate('pim_common.open')}
+          removeLabel={translate('pim_common.remove')}
           onChange={changedValues => onChangePermissions('own', changedValues)}
         >
           {Object.entries(formData.permissions.own.choices).map(([key, choice]) => (

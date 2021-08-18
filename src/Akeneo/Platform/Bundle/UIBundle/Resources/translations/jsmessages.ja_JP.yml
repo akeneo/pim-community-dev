@@ -195,6 +195,7 @@ pim_common:
   ok: OK
   open: 開く
   no_result: 結果はありません
+  no_search_result: 検索結果がありません。
   other_actions: その他の操作
   permissions: 許可
   previous: 前

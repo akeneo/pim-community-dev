@@ -31,6 +31,7 @@ const LabelContainer = styled.div`
   height: 44px;
   display: flex;
   align-items: center;
+  cursor: pointer;
 `;
 
 const Label = styled.div`
@@ -102,13 +103,12 @@ const Collapse = React.forwardRef<HTMLDivElement, CollapseProps>(
 
     return (
       <CollapseContainer ref={forwardedRef} {...rest}>
-        <LabelContainer>
+        <LabelContainer onClick={handleCollapse}>
           <Label>{label}</Label>
           <IconButton
             size="small"
             level="tertiary"
             ghost="borderless"
-            onClick={handleCollapse}
             title={collapseButtonLabel}
             icon={isOpen ? <CheckPartialIcon /> : <PlusIcon />}
           />

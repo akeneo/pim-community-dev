@@ -1,13 +1,12 @@
 import React, {useState, useRef, ReactElement, isValidElement} from 'react';
 import styled from 'styled-components';
 import {arrayUnique, Key, Override} from '../../../shared';
-import {InputProps} from '../InputProps';
+import {InputProps, Overlay} from '../common';
 import {IconButton} from '../../../components';
 import {useBooleanState, useShortcut, useVerticalPosition, VerticalPosition} from '../../../hooks';
 import {AkeneoThemedProps, getColor} from '../../../theme';
 import {ArrowDownIcon} from '../../../icons';
 import {ChipInput, ChipValue} from './ChipInput';
-import {Overlay} from './Overlay/Overlay';
 
 const MultiSelectInputContainer = styled.div<{value: string | null; readOnly: boolean} & AkeneoThemedProps>`
   width: 100%;
@@ -119,7 +118,7 @@ type MultiMultiSelectInputProps = Override<
     /**
      * Accessibility text for the open dropdown button.
      */
-    openLabel?: string;
+    openLabel: string;
 
     /**
      * Accessibility text for the remove chip button.
@@ -162,7 +161,7 @@ const MultiSelectInput = ({
   onChange,
   removeLabel,
   onSubmit,
-  openLabel = '',
+  openLabel,
   readOnly = false,
   verticalPosition,
   'aria-labelledby': ariaLabelledby,
@@ -171,6 +170,7 @@ const MultiSelectInput = ({
   const [searchValue, setSearchValue] = useState<string>('');
   const [dropdownIsOpen, openOverlay, closeOverlay] = useBooleanState();
   const inputRef = useRef<HTMLInputElement>(null);
+  const containerRef = useRef<HTMLDivElement>(null);
   const overlayRef = useRef<HTMLDivElement>(null);
   verticalPosition = useVerticalPosition(overlayRef, verticalPosition);
 
@@ -239,7 +239,7 @@ const MultiSelectInput = ({
   useShortcut(Key.Escape, handleBlur, inputRef);
 
   return (
-    <MultiSelectInputContainer readOnly={readOnly} value={value} {...rest}>
+    <MultiSelectInputContainer ref={containerRef} readOnly={readOnly} value={value} {...rest}>
       <InputContainer>
         <ChipInput
           ref={inputRef}
@@ -270,7 +270,7 @@ const MultiSelectInput = ({
         )}
       </InputContainer>
       {dropdownIsOpen && !readOnly && (
-        <Overlay verticalPosition={verticalPosition} onClose={handleBlur}>
+        <Overlay parentRef={containerRef} verticalPosition={verticalPosition} onClose={handleBlur}>
           <OptionCollection>
             {0 === filteredChildren.length ? (
               <EmptyResultContainer>{emptyResultLabel}</EmptyResultContainer>

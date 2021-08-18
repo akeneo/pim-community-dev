@@ -18,6 +18,7 @@ export const FlowTypeSelect: FC<Props> = ({value, onChange, id}: Props) => {
             onChange={value => onChange(value as FlowType)}
             clearable={false}
             emptyResultLabel=''
+            openLabel=''
             id={id}
         >
             <SelectInput.Option value={FlowType.DATA_SOURCE}>
