@@ -9,7 +9,7 @@ const SourceElementContainer = styled.span`
   color: ${getColor('grey', 140)};
 `;
 
-const StringElement = styled.span`
+const TextElement = styled.span`
   color: ${getColor('blue', 100)};
 `;
 
@@ -49,4 +49,4 @@ const PropertySourceElement = ({source}: SourceElementProps) => {
   return <SourceElementContainer>{translate(`pim_common.${source.code}`)}</SourceElementContainer>;
 };
 
-export {AssociationTypeSourceElement, AttributeSourceElement, PropertySourceElement, StringElement};
+export {AssociationTypeSourceElement, AttributeSourceElement, PropertySourceElement, TextElement};

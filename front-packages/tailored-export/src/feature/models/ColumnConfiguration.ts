@@ -7,7 +7,7 @@ const MAX_COLUMN_COUNT = 1000;
 
 type ConcatElement = {
   uuid: string;
-  type: 'string' | 'source';
+  type: 'text' | 'source';
   value: string;
 };
 

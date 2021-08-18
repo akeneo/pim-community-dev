@@ -3,12 +3,12 @@ import {screen} from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
 import {renderWithProviders} from 'feature/tests';
 import {ConcatElement} from 'feature';
-import {StringRow} from './StringRow';
+import {TextRow} from './TextRow';
 import {ValidationError} from '@akeneo-pim-community/shared';
 
 const concatElement: ConcatElement = {
-  type: 'string',
-  uuid: 'string-1e40-4c55-a415-89c7958b270d',
+  type: 'text',
+  uuid: 'text-1e40-4c55-a415-89c7958b270d',
   value: '',
 };
 
@@ -18,7 +18,7 @@ test('it calls the change handler when typing in the input', async () => {
   await renderWithProviders(
     <table>
       <tbody>
-        <StringRow
+        <TextRow
           validationErrors={[]}
           concatElement={concatElement}
           onConcatElementChange={handleChange}
@@ -42,7 +42,7 @@ test('it calls the remove handler when clicking on the remove button', async () 
   await renderWithProviders(
     <table>
       <tbody>
-        <StringRow
+        <TextRow
           validationErrors={[]}
           concatElement={concatElement}
           onConcatElementChange={jest.fn()}
@@ -71,7 +71,7 @@ test('it displays value validation errors', async () => {
   await renderWithProviders(
     <table>
       <tbody>
-        <StringRow
+        <TextRow
           validationErrors={validationErrors}
           concatElement={concatElement}
           onConcatElementChange={jest.fn()}

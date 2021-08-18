@@ -51,9 +51,9 @@ const format: Format = {
       value: 'description-1e40-4c55-a415-89c7958b270d',
     },
     {
-      type: 'string',
-      uuid: 'string-1e40-4c55-a415-89c7958b270d',
-      value: 'some string',
+      type: 'text',
+      uuid: 'text-1e40-4c55-a415-89c7958b270d',
+      value: 'some text',
     },
     {
       type: 'source',
@@ -61,9 +61,9 @@ const format: Format = {
       value: 'parent-1e40-4c55-a415-89c7958b270d',
     },
     {
-      type: 'string',
-      uuid: 'another-string-1e40-4c55-a415-89c7958b270d',
-      value: 'another string',
+      type: 'text',
+      uuid: 'another-text-1e40-4c55-a415-89c7958b270d',
+      value: 'another text',
     },
     {
       type: 'source',
@@ -86,9 +86,9 @@ test('it renders the a list of concat elements', async () => {
   );
 
   expect(screen.getByText('English description')).toBeInTheDocument();
-  expect(screen.getByDisplayValue('some string')).toBeInTheDocument();
+  expect(screen.getByDisplayValue('some text')).toBeInTheDocument();
   expect(screen.getByText('pim_common.parent')).toBeInTheDocument();
-  expect(screen.getByDisplayValue('another string')).toBeInTheDocument();
+  expect(screen.getByDisplayValue('another text')).toBeInTheDocument();
   expect(screen.getByText('Cross sell')).toBeInTheDocument();
 });
 

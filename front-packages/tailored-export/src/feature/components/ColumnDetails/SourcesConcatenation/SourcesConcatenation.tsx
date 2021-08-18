@@ -39,7 +39,7 @@ const SourcesConcatenation = ({validationErrors, sources, format, onFormatChange
   const handleAddText = () =>
     onFormatChange({
       ...format,
-      elements: [...format.elements, {uuid: uuid(), type: 'string', value: ''}],
+      elements: [...format.elements, {uuid: uuid(), type: 'text', value: ''}],
     });
 
   const handleConcatElementChange = (updatedConcatElement: ConcatElement) => {
@@ -65,7 +65,7 @@ const SourcesConcatenation = ({validationErrors, sources, format, onFormatChange
       elements: newIndices.map(index => format.elements[index]),
     });
 
-  const canAddText = format.elements.filter(({type}) => 'string' === type).length < MAX_TEXT_COUNT;
+  const canAddText = format.elements.filter(({type}) => 'text' === type).length < MAX_TEXT_COUNT;
 
   return (
     <SourcesConcatenationContainer>

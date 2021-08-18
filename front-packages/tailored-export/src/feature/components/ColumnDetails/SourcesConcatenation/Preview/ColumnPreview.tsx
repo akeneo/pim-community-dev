@@ -7,7 +7,7 @@ import {
   AssociationTypeSourceElement,
   AttributeSourceElement,
   PropertySourceElement,
-  StringElement,
+  TextElement,
 } from './PreviewElement';
 
 const PreviewTitle = styled.div`
@@ -44,8 +44,8 @@ const ColumnPreview = ({sources, format}: ColumnPreviewProps) => {
       <PreviewList>
         {format.elements
           .map(element => {
-            if ('string' === element.type) {
-              return <StringElement key={element.uuid}>{element.value}</StringElement>;
+            if ('text' === element.type) {
+              return <TextElement key={element.uuid}>{element.value}</TextElement>;
             }
 
             const source = sources.find(({uuid}) => uuid === element.value);

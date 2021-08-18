@@ -15,20 +15,20 @@ const Field = styled.div`
   gap: 5px;
 `;
 
-type StringRowProps = {
+type TextRowProps = {
   validationErrors: ValidationError[];
   concatElement: ConcatElement;
   onConcatElementChange: (concatElement: ConcatElement) => void;
   onConcatElementRemove: (concatElementUuid: string) => void;
 };
 
-const StringRow = ({
+const TextRow = ({
   validationErrors,
   concatElement,
   onConcatElementChange,
   onConcatElementRemove,
   ...rest
-}: StringRowProps) => {
+}: TextRowProps) => {
   const translate = useTranslate();
   const inputRef = useRef<HTMLInputElement>(null);
   const valueErrors = filterErrors(validationErrors, '[value]');
@@ -70,4 +70,4 @@ const StringRow = ({
   );
 };
 
-export {StringRow};
+export {TextRow};

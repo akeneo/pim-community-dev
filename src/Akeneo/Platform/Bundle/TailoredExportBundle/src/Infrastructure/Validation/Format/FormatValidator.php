@@ -59,7 +59,7 @@ class FormatValidator extends ConstraintValidator
                 ->validate($element, new Collection([
                     'uuid' => new Uuid(),
                     'type' => new Choice([
-                        'choices' => ['string', 'source'],
+                        'choices' => ['text', 'source'],
                     ]),
                     'value' => [
                         new Type('string'),

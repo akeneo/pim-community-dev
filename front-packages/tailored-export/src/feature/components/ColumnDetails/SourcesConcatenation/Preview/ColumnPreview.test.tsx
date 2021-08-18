@@ -51,9 +51,9 @@ const format: Format = {
       value: 'description-1e40-4c55-a415-89c7958b270d',
     },
     {
-      type: 'string',
-      uuid: 'string-1e40-4c55-a415-89c7958b270d',
-      value: 'some string',
+      type: 'text',
+      uuid: 'text-1e40-4c55-a415-89c7958b270d',
+      value: 'some text',
     },
     {
       type: 'source',
@@ -61,9 +61,9 @@ const format: Format = {
       value: 'parent-1e40-4c55-a415-89c7958b270d',
     },
     {
-      type: 'string',
-      uuid: 'another-string-1e40-4c55-a415-89c7958b270d',
-      value: 'another string',
+      type: 'text',
+      uuid: 'another-text-1e40-4c55-a415-89c7958b270d',
+      value: 'another text',
     },
     {
       type: 'source',
@@ -77,9 +77,9 @@ test('it renders the preview of a column', async () => {
   await renderWithProviders(<ColumnPreview sources={sources} format={format} />);
 
   expect(screen.getByText('English description')).toBeInTheDocument();
-  expect(screen.getByText('some string')).toBeInTheDocument();
+  expect(screen.getByText('some text')).toBeInTheDocument();
   expect(screen.getByText('pim_common.parent')).toBeInTheDocument();
-  expect(screen.getByText('another string')).toBeInTheDocument();
+  expect(screen.getByText('another text')).toBeInTheDocument();
   expect(screen.getByText('Cross sell')).toBeInTheDocument();
 });
 

@@ -3,7 +3,7 @@ import {Table} from 'akeneo-design-system';
 import {filterErrors, ValidationError} from '@akeneo-pim-community/shared';
 import {ConcatElement, Format, Source} from '../../../../models';
 import {AssociationTypeSourceRow, AttributeSourceRow, PropertySourceRow} from './SourceRow';
-import {StringRow} from './StringRow';
+import {TextRow} from './TextRow';
 
 type ConcatElementListProps = {
   validationErrors: ValidationError[];
@@ -26,9 +26,9 @@ const ConcatElementList = ({
     <Table isDragAndDroppable={true} onReorder={onConcatElementReorder}>
       <Table.Body>
         {format.elements.map(element => {
-          if ('string' === element.type) {
+          if ('text' === element.type) {
             return (
-              <StringRow
+              <TextRow
                 key={element.uuid}
                 validationErrors={filterErrors(validationErrors, `[${element.uuid}]`)}
                 concatElement={element}
