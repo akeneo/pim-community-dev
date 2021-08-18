@@ -26,6 +26,7 @@ $rules = [
     ])->in('Akeneo\Channel\Bundle'),
     $builder->only([
         'Symfony\Component',
+        'Symfony\Contracts',
         'Doctrine\Common',
         'Akeneo\Tool\Component',
         // TIP-942: Channel should not be linked to Category
