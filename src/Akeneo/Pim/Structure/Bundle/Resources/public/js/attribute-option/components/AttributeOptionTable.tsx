@@ -184,7 +184,7 @@ const AttributeOptionTable = ({
                       isSelected={selectedOptionId === attributeOption.id}
                       onClick={() => onSelectItem(attributeOption.id)}
                       key={`${attributeOption.code}${index}`}
-                      data-isSelected={selectedOptionId === attributeOption.id ? 'is-selected' : 'is-not-selected'}
+                      data-is-selected={selectedOptionId === attributeOption.id}
                     >
                       {!isDraggable && (
                         <TableCellNoDraggable>
