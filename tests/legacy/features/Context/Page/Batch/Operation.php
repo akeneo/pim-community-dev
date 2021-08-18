@@ -18,7 +18,7 @@ class Operation extends Wizard
         'Change status'                    => 'Batch ChangeStatus',
         'Edit attribute values'            => 'Batch EditCommonAttributes',
         'Modifier les valeurs d’attributs' => 'Batch EditCommonAttributes',
-        'Add attributes values'            => 'Batch EditCommonAttributes',
+        'Add attribute values'            => 'Batch EditCommonAttributes',
         'Change family'                    => 'Batch ChangeFamily',
         'Add to groups'                    => 'Batch AddToGroups',
         'Set attributes requirements'      => 'Batch SetAttributeRequirements',
