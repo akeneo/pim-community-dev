@@ -13,7 +13,7 @@ services:
             - '@filesystem'
             - '@router'
             - '%oro_translation.js_translation.domains%'
-            - '%kernel.root_dir%'
+            - '%kernel.project_dir%/src'
             - '%kernel.default_locale%'
         tags:
             - { name: console.command }

@@ -1,8 +1,65 @@
-import {findLoadedDescendantsIdentifiers} from '@akeneo-pim-community/settings-ui/src/helpers';
+import {
+  buildNodesFromCategoryTree,
+  findLoadedDescendantsIdentifiers,
+} from '@akeneo-pim-community/settings-ui/src/helpers';
 import {aTreeNode} from '../../utils/provideTreeNodeHelper';
-import {aCategory} from '../../utils/provideCategoryHelper';
+import {aCategory, aCategoryTree, aCategoryTreeWithChildren} from '../../utils/provideCategoryHelper';
 
 describe('treeHelper', () => {
+  test('it can build a list of nodes from a root category tree', () => {
+    const aCategoryWithoutChildren = aCategoryTree('cat_without_children', [], false, true, 2);
+    const anotherCategoryWithoutChildren = aCategoryTree('another_cat_without_children', [], false, true, 4);
+    const aCategoryWithChildren = aCategoryTreeWithChildren(
+      'cat_with_children',
+      [anotherCategoryWithoutChildren],
+      false,
+      false,
+      3
+    );
+    const root = aCategoryTreeWithChildren('a_root', [aCategoryWithoutChildren, aCategoryWithChildren], true, false, 1);
+
+    const nodes = buildNodesFromCategoryTree(root);
+
+    expect(nodes).toStrictEqual([
+      {
+        identifier: 1,
+        label: '[a_root]',
+        childrenIds: [2, 3],
+        data: root,
+        parentId: null,
+        type: 'root',
+        childrenStatus: 'loaded',
+      },
+      {
+        identifier: 2,
+        label: '[cat_without_children]',
+        childrenIds: [],
+        data: aCategoryWithoutChildren,
+        parentId: 1,
+        type: 'leaf',
+        childrenStatus: 'idle',
+      },
+      {
+        identifier: 3,
+        label: '[cat_with_children]',
+        childrenIds: [4],
+        data: aCategoryWithChildren,
+        parentId: 1,
+        type: 'node',
+        childrenStatus: 'loaded',
+      },
+      {
+        identifier: 4,
+        label: '[another_cat_without_children]',
+        childrenIds: [],
+        data: anotherCategoryWithoutChildren,
+        parentId: 3,
+        type: 'leaf',
+        childrenStatus: 'idle',
+      },
+    ]);
+  });
+
   test('it finds identifiers of loaded descendants of a given node', () => {
     const categoryRoot = aCategory('root', undefined, 1, null);
     const nodeRoot = aTreeNode(categoryRoot, 1, [10, 11], 'a_tree', null, 'root', 'loaded');

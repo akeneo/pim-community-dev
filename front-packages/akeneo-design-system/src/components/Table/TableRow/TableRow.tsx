@@ -73,16 +73,19 @@ const CheckboxContainer = styled.td<{isVisible: boolean}>`
   }
 `;
 
-const HandleContainer = styled.div`
+const HandleCell = styled(TableCell)`
   cursor: grab;
-  display: flex;
-  align-items: center;
-  justify-content: center;
+  width: 20px;
+
+  > div {
+    justify-content: center;
+  }
 
   :active {
     cursor: grabbing;
   }
 `;
+
 type TableRowProps = Override<
   HTMLAttributes<HTMLTableRowElement>,
   {
@@ -188,11 +191,9 @@ const TableRow = forwardRef<HTMLTableRowElement, TableRowProps>(
           </CheckboxContainer>
         )}
         {isDragAndDroppable && (
-          <TableCell onMouseDown={drag} onMouseUp={drop} data-testid="dragAndDrop">
-            <HandleContainer>
-              <RowIcon size={16} />
-            </HandleContainer>
-          </TableCell>
+          <HandleCell onMouseDown={drag} onMouseUp={drop} data-testid="dragAndDrop">
+            <RowIcon size={16} />
+          </HandleCell>
         )}
         {children}
       </RowContainer>

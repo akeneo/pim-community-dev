@@ -141,4 +141,6 @@ bin/console messenger:consume ui_job import_export_job data_maintenance_job
 
 ### CLI commands
 
+- PIM-9738: Remove command pim:catalog:remove-completeness-for-channel-and-locale
+
 ### Services

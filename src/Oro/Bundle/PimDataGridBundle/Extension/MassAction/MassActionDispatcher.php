@@ -2,6 +2,7 @@
 
 namespace Oro\Bundle\PimDataGridBundle\Extension\MassAction;
 
+use Doctrine\ORM\QueryBuilder;
 use Oro\Bundle\DataGridBundle\Datagrid\DatagridInterface;
 use Oro\Bundle\DataGridBundle\Datagrid\ManagerInterface;
 use Oro\Bundle\DataGridBundle\Datagrid\RequestParameters;
@@ -153,10 +154,11 @@ class MassActionDispatcher
         $this->requestParams->set(FilterExtension::FILTER_ROOT_PARAM, $filters);
 
         $qb = $datagrid->getAcceptedDatasource()->getQueryBuilder();
-        if (self::FAMILY_GRID_NAME === $parameters['gridName']) {
+        if ($qb instanceof QueryBuilder) {
             $qbLocaleParameter = $qb->getParameter('localeCode');
-            if (null !== $qbLocaleParameter && null === $qbLocaleParameter->getValue()) {
-                $qb->setParameter('localeCode', $parameters['dataLocale']);
+            $dataLocale = $parameters['dataLocale'] ?? null;
+            if (null !== $qbLocaleParameter && null === $qbLocaleParameter->getValue() && null !== $dataLocale) {
+                $qb->setParameter('localeCode', $dataLocale);
             }
         }
 
