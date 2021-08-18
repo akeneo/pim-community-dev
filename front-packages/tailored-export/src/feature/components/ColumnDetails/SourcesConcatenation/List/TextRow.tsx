@@ -47,6 +47,7 @@ const TextRow = ({
             placeholder={translate('akeneo.tailored_export.column_details.concatenation.text_placeholder')}
             value={concatElement.value}
             onChange={handleChange}
+            invalid={valueErrors.length > 0}
           />
           {valueErrors.map((error, index) => (
             <Helper key={index} inline={true} level="error">
