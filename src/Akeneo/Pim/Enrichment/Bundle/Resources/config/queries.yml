@@ -310,11 +310,6 @@ services:
         arguments:
             - '@database_connection'
 
-    pim_catalog.query.get_channel_active_locale_codes:
-        class: 'Akeneo\Channel\Bundle\Doctrine\Query\GetChannelActiveLocaleCodes'
-        arguments:
-            - '@database_connection'
-
     akeneo.pim.enrichment.group.query.get_group_product_identifiers:
         class: 'Akeneo\Pim\Enrichment\Bundle\Storage\Sql\Group\SqlGetGroupProductIdentifiers'
         arguments:
