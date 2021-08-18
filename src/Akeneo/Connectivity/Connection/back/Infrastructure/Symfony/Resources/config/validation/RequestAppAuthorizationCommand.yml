@@ -1,4 +1,4 @@
-Akeneo\Connectivity\Connection\Application\Apps\Command\AuthorizeAppCommand:
+Akeneo\Connectivity\Connection\Application\Apps\Command\RequestAppAuthorizationCommand:
   properties:
     clientId:
       - NotBlank:

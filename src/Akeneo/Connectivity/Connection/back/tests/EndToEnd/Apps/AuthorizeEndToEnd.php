@@ -5,12 +5,15 @@ declare(strict_types=1);
 namespace Akeneo\Connectivity\Connection\Tests\EndToEnd\Apps;
 
 use Akeneo\Connectivity\Connection\back\tests\EndToEnd\WebTestCase;
+use Akeneo\Connectivity\Connection\Domain\Marketplace\Model\App;
+use Akeneo\Connectivity\Connection\Infrastructure\Apps\OAuth\ClientProvider;
 use Akeneo\Connectivity\Connection\Tests\Integration\Mock\FakeFeatureFlag;
 use Akeneo\Connectivity\Connection\Tests\Integration\Mock\FakeWebMarketplaceApi;
 use Akeneo\Test\Integration\Configuration;
 use PHPUnit\Framework\Assert;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Response;
+use Symfony\Component\HttpFoundation\Session\SessionInterface;
 
 /**
  * @copyright 2021 Akeneo SAS (http://www.akeneo.com)
@@ -20,6 +23,8 @@ class AuthorizeEndToEnd extends WebTestCase
 {
     private FakeWebMarketplaceApi $webMarketplaceApi;
     private FakeFeatureFlag $featureFlagMarketplaceActivate;
+    private ClientProvider $clientProvider;
+    private SessionInterface $session;
 
     protected function setUp(): void
     {
@@ -27,6 +32,8 @@ class AuthorizeEndToEnd extends WebTestCase
 
         $this->webMarketplaceApi = $this->get('akeneo_connectivity.connection.marketplace.web_marketplace_api');
         $this->featureFlagMarketplaceActivate = $this->get('akeneo_connectivity.connection.marketplace_activate.feature');
+        $this->clientProvider = $this->get('akeneo_connectivity.connection.service.apps.client_provider');
+        $this->session = $this->get('session');
         $this->loadAppsFixtures();
     }
 
@@ -35,7 +42,7 @@ class AuthorizeEndToEnd extends WebTestCase
         return $this->catalog->useMinimalCatalog();
     }
 
-    public function test_it_is_redirected_when_authorizing_an_app_with_invalid_parameters(): void
+    public function test_it_is_redirected_to_the_error_when_authorizing_an_app_with_invalid_parameters(): void
     {
         $this->featureFlagMarketplaceActivate->enable();
         $this->addAclToRole('ROLE_ADMINISTRATOR', 'akeneo_connectivity_connection_manage_apps');
@@ -50,6 +57,40 @@ class AuthorizeEndToEnd extends WebTestCase
         Assert::assertEquals(Response::HTTP_FOUND, $this->client->getResponse()->getStatusCode());
         assert($response instanceof RedirectResponse);
         Assert::assertEquals('/#/connect/apps/authorize?error=akeneo_connectivity.connection.connect.apps.constraint.client_id.not_blank', $response->getTargetUrl());
+    }
+
+    public function test_it_is_redirected_to_the_wizard_when_authorizing_an_app(): void
+    {
+        $this->featureFlagMarketplaceActivate->enable();
+        $this->addAclToRole('ROLE_ADMINISTRATOR', 'akeneo_connectivity_connection_manage_apps');
+        $app = App::fromWebMarketplaceValues($this->webMarketplaceApi->getApp('90741597-54c5-48a1-98da-a68e7ee0a715'));
+        $this->clientProvider->findOrCreateClient($app);
+        $this->authenticateAsAdmin();
+
+        $this->client->request(
+            'GET',
+            '/connect/apps/v1/authorize',
+            [
+                'client_id' => '90741597-54c5-48a1-98da-a68e7ee0a715',
+                'response_type' => 'code',
+                'redirect_uri' => 'http://shopware.example.com/callback',
+                'state' => 'foo',
+            ]
+        );
+        $response = $this->client->getResponse();
+
+        Assert::assertEquals(Response::HTTP_FOUND, $this->client->getResponse()->getStatusCode());
+        assert($response instanceof RedirectResponse);
+        Assert::assertEquals('/#/connect/apps/authorize?client_id=90741597-54c5-48a1-98da-a68e7ee0a715', $response->getTargetUrl());
+
+        $authorizationInSession = $this->session->get('_app_auth_90741597-54c5-48a1-98da-a68e7ee0a715');
+        Assert::assertNotEmpty($authorizationInSession);
+        Assert::assertEquals([
+            'client_id' => '90741597-54c5-48a1-98da-a68e7ee0a715',
+            'scope' => '',
+            'redirect_uri' => 'http://shopware.example.com/callback',
+            'state' => 'foo',
+        ], json_decode($authorizationInSession, true));
     }
 
     private function loadAppsFixtures(): void

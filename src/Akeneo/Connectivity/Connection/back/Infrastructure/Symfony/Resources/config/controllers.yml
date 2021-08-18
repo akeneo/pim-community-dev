@@ -84,6 +84,6 @@ services:
         public: true
         class: Akeneo\Connectivity\Connection\Infrastructure\Apps\Controller\AuthorizeAction
         arguments:
-            - '@Akeneo\Connectivity\Connection\Application\Apps\Command\AuthorizeAppHandler'
+            - '@Akeneo\Connectivity\Connection\Application\Apps\Command\RequestAppAuthorizationHandler'
             - '@router'
             - '@akeneo_connectivity.connection.marketplace_activate.feature'

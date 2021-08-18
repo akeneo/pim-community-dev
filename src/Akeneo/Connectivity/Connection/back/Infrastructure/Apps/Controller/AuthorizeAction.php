@@ -56,6 +56,8 @@ class AuthorizeAction
             ]));
         }
 
-        return new Response('Not implemented yet');
+        return new RedirectResponse('/#' . $this->router->generate('akeneo_connectivity_connection_connect_apps_authorize', [
+            'client_id' => $command->getClientId(),
+        ]));
     }
 }

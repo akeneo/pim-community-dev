@@ -18,7 +18,7 @@ use Symfony\Component\PropertyAccess\PropertyAccessor;
  * @copyright 2021 Akeneo SAS (http://www.akeneo.com)
  * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
  */
-class AuthorizeAppHandlerIntegration extends TestCase
+class RequestAppAuthorizationHandlerIntegration extends TestCase
 {
     private RequestAppAuthorizationHandler $handler;
     private ClientManagerInterface $clientManager;

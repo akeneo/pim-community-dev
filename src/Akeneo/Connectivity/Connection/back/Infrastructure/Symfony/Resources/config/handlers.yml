@@ -117,7 +117,3 @@ services:
         arguments:
             - '@akeneo_connectivity.connection.webhook.generate_secret'
             - '@akeneo_connectivity.connection.persistence.query.save_webhook_secret'
-
-    Akeneo\Connectivity\Connection\Application\Apps\Command\AuthorizeAppHandler:
-        arguments:
-            - '@validator'
