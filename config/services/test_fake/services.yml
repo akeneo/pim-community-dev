@@ -15,6 +15,9 @@ imports:
     - { resource: ../../../src/Akeneo/Connectivity/Connection/back/tests/CatalogBuilder/Resources/config/loaders.yml }
 
 services:
+    _defaults:
+        public: true
+
     akeneo_integration_tests.doctrine.connection.connection_closer:
         class: Akeneo\Test\IntegrationTestsBundle\Doctrine\Connection\ConnectionCloser
         arguments:
