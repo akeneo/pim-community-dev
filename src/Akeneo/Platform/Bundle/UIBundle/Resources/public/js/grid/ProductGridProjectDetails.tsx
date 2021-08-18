@@ -18,22 +18,23 @@ const getLevel = (completionRatio: number) => {
   } else if (completionRatio === 100) {
     return 'primary';
   } else {
-    return 'secondary';
+    return 'warning';
   }
 };
 
 const ProductGridProjectDetails = ({projectDetails}: Props) => {
   return (
-    <div>
+    <BadgeContainer>
       &nbsp;-&nbsp;
-      <BadgeStyled level={getLevel(projectDetails.completionRatio)}>{projectDetails.completionRatio} %</BadgeStyled>
+      <Badge level={getLevel(projectDetails.completionRatio)}>{projectDetails.completionRatio} %</Badge>
       &nbsp;-&nbsp;{projectDetails.dueDateLabel}: {projectDetails.dueDate}
-    </div>
+    </BadgeContainer>
   );
 };
 
-const BadgeStyled = styled(Badge)`
-  line-height: 18px;
+const BadgeContainer = styled.div`
+  display: flex;
+  align-items: center;
 `;
 
 export {ProductGridProjectDetails};
