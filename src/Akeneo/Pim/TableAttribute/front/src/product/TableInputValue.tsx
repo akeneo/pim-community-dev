@@ -45,6 +45,7 @@ const TableInputValueBody = styled(TableInput.Body)`
     min-width: 34px;
     width: 34px;
     border-left: none;
+    line-height: 0;
   }
 `;
 
@@ -52,6 +53,12 @@ const HeaderActionsCell = styled(TableInput.HeaderCell)`
   max-width: 34px;
   min-width: 34px;
   width: 34px;
+`;
+
+const FirstCellLoadingPlaceholderContainer = styled(LoadingPlaceholderContainer)`
+  & > * {
+    height: 20px;
+  }
 `;
 
 type TableInputValueProps = {
@@ -247,7 +254,7 @@ const TableInputValue: React.FC<TableInputValueProps> = ({
         <TableInputValueBody>
           {valueDataPage.map(row => {
             return (
-              <TableInput.Row key={row['unique id']}>
+              <TableInput.Row key={row['unique id']} highlighted={isOpenActions(row['unique id'])}>
                 <TableInput.Cell
                   rowTitle={true}
                   highlighted={cellMatchSearch(row[firstColumn.code], firstColumn)}
@@ -256,9 +263,9 @@ const TableInputValue: React.FC<TableInputValueProps> = ({
                     getOptionLabel(firstColumn.code, row[firstColumn.code]) === null
                   }>
                   {typeof getOptionLabel(firstColumn.code, row[firstColumn.code]) === 'undefined' ? (
-                    <LoadingPlaceholderContainer>
+                    <FirstCellLoadingPlaceholderContainer>
                       <div>{translate('pim_common.loading')}</div>
-                    </LoadingPlaceholderContainer>
+                    </FirstCellLoadingPlaceholderContainer>
                   ) : (
                     getOptionLabel(firstColumn.code, row[firstColumn.code]) || `[${row[firstColumn.code]}]`
                   )}

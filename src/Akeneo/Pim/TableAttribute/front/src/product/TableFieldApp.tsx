@@ -10,7 +10,7 @@ import {ColumnCode, SelectOptionCode} from '../models/TableConfiguration';
 import {clearCacheSelectOptions} from '../repositories/SelectOption';
 
 const TableInputContainer = styled.div<{isCompareTranslate: boolean} & AkeneoThemedProps>`
-  ${({isCompareTranslate}) => !isCompareTranslate && 'flex-basis: 100% !important'}
+  ${({isCompareTranslate}) => !isCompareTranslate && 'width: 100%'}
 `;
 
 const FieldInfo = styled.div`
