@@ -250,3 +250,9 @@ services:
             - '@pim_catalog.elasticsearch.indexer.product_model'
         tags:
             - { name: kernel.event_subscriber }
+
+    Akeneo\Pim\Enrichment\Bundle\EventSubscriber\Family\AttributeAsLabelChangedSubscriber:
+        arguments:
+          - '@pim_catalog.repository.family'
+        tags:
+            - { name: kernel.event_subscriber }
