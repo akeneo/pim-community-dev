@@ -41,7 +41,7 @@ class FindCurrencyLabelsSpec extends ObjectBehavior
         );
     }
 
-    public function it_returns_an_null_if_no_label_for_any_currency(
+    public function it_returns_null_if_no_label_for_any_currency(
         CurrencyTranslatorInterface $currencyTranslator
     ): void {
         $currencyTranslator->translate('EUR', 'fr_FR', '')->willReturn('');
