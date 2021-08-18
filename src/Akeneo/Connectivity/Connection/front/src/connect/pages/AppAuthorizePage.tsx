@@ -12,13 +12,13 @@ export const AppAuthorizePage: FC = () => {
     const query = new URLSearchParams(location.search);
     const error = query.get('error');
 
+    if (null !== error) {
+        return <AuthorizeClientError error={error} />;
+    }
+
     const redirectToMarketPlace = () => {
         history.push('/connect/marketplace');
     };
 
-    return (
-        <Modal closeTitle='Close' onClose={redirectToMarketPlace}>
-            {null !== error && <AuthorizeClientError error={error} />}
-        </Modal>
-    );
+    return <Modal closeTitle='Close' onClose={redirectToMarketPlace}/>;
 };

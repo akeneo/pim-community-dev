@@ -3,8 +3,18 @@ import styled from 'styled-components';
 import {ClientErrorIllustration, Link} from 'akeneo-design-system';
 import {useTranslate} from '../../shared/translate';
 
-const Container = styled.div`
-    text-align: center;
+const FullScreen = styled.div`
+    position: fixed;
+    top: 0;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    background: #fff;
+    z-index: 900;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
 `;
 
 const ErrorTexts = styled.div`
@@ -34,15 +44,12 @@ export const AuthorizeClientError: FC<Props> = ({error}) => {
     const translate = useTranslate();
 
     return (
-        <Container>
+        <FullScreen>
             <ClientErrorIllustration width={420} height={204} />
             <ErrorTexts>
                 <ErrorMessage>{translate(error)}</ErrorMessage>
                 <SubText>{translate('akeneo_connectivity.connection.connect.apps.authorize.error.sub_text')}</SubText>
-                <Link href='https://www.akeneo.com'>
-                    {translate('akeneo_connectivity.connection.connect.apps.authorize.error.link_label')}
-                </Link>
             </ErrorTexts>
-        </Container>
+        </FullScreen>
     );
 };

@@ -23,6 +23,7 @@ pim_title:
     akeneo_connectivity_connection_connect_marketplace: Marketplace
     akeneo_connectivity_connection_connect_marketplace_profile: Marketplace
     akeneo_connectivity_connection_connect_apps_activate: Apps
+    akeneo_connectivity_connection_connect_apps_authorize: Apps
     akeneo_connectivity_connection_settings_index: Connections settings
     akeneo_connectivity_connection_settings_edit: Connection settings
     akeneo_connectivity_connection_settings_any: Connection settings
@@ -68,7 +69,6 @@ akeneo_connectivity.connection:
             authorize:
                 error:
                     sub_text: Please contact the app developer or Akeneo support
-                    link_label: Please contact the app developer or Akeneo support
             constraint:
                 client_id:
                     not_blank: The client_id is required.
