@@ -1,27 +1,24 @@
 import React, {FC} from 'react';
-import styled from "styled-components";
-import {useLocation} from "react-router-dom";
-import {useTranslate} from "../../shared/translate";
-
-const FullScreen = styled.div`
-    position: fixed;
-    top: 0;
-    bottom: 0;
-    left: 0;
-    right: 0;
-    background: #fff;
-    z-index: 900;
-`;
+import {useLocation} from 'react-router-dom';
+import {useTranslate} from '../../shared/translate';
+import {Modal} from 'akeneo-design-system';
+import {useHistory} from 'react-router';
+import {AuthorizeClientError} from '../components/AuthorizeClientError';
 
 export const AppAuthorizePage: FC = () => {
     const translate = useTranslate();
     const location = useLocation();
+    const history = useHistory();
     const query = new URLSearchParams(location.search);
     const error = query.get('error');
 
+    const redirectToMarketPlace = () => {
+        history.push('/connect/marketplace');
+    };
+
     return (
-        <FullScreen>
-            {translate(error || '')}
-        </FullScreen>
+        <Modal closeTitle='Close' onClose={redirectToMarketPlace}>
+            {null !== error && <AuthorizeClientError error={error} />}
+        </Modal>
     );
 };

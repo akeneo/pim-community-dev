@@ -65,6 +65,10 @@ akeneo_connectivity.connection:
             activate:
                 flash:
                     error: Sorry, an error occurred while connecting the App.
+            authorize:
+                error:
+                    sub_text: Please contact the app developer or Akeneo support
+                    link_label: Please contact the app developer or Akeneo support
             constraint:
                 client_id:
                     not_blank: The client_id is required.
