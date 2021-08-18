@@ -143,6 +143,7 @@ const AttributeOptionTable = ({
         </SectionTitle.Title>
         <SectionTitle.Spacer />
         <Button
+          size={'small'}
           ghost
           level="tertiary"
           onClick={() => displayNewOptionPlaceholder()}
