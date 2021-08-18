@@ -103,3 +103,39 @@ test('it throws when the source is not found', async () => {
 
   mockedConsole.mockRestore();
 });
+
+test('it throws when the source type is invalid', async () => {
+  const mockedConsole = jest.spyOn(console, 'error').mockImplementation();
+
+  const invalidSources: Source[] = [
+    {
+      uuid: 'invalid-1e40-4c55-a415-89c7958b270d',
+      code: 'invalid',
+      // @ts-expect-error invalid source type
+      type: 'invalid-type',
+      locale: null,
+      channel: null,
+      operations: {},
+      selection: {
+        type: 'code',
+      },
+    },
+  ];
+
+  const invalidFormat: Format = {
+    ...format,
+    elements: [
+      {
+        type: 'source',
+        uuid: 'invalid-1e40-4c55-a415-89c7958b270d',
+        value: 'invalid-1e40-4c55-a415-89c7958b270d',
+      },
+    ],
+  };
+
+  await expect(async () => {
+    await renderWithProviders(<ColumnPreview sources={invalidSources} format={invalidFormat} />);
+  }).rejects.toThrow();
+
+  mockedConsole.mockRestore();
+});

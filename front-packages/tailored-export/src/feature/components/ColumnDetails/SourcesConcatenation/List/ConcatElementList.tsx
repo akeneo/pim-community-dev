@@ -40,7 +40,11 @@ const ConcatElementList = ({
 
           const source = sources.find(({uuid}) => uuid === element.uuid);
 
-          switch (source?.type) {
+          if (undefined === source) {
+            throw new Error(`Source with uuid ${element.value} not found`);
+          }
+
+          switch (source.type) {
             case 'attribute':
               return <AttributeSourceRow source={source} key={element.uuid} />;
             case 'property':
@@ -48,7 +52,7 @@ const ConcatElementList = ({
             case 'association_type':
               return <AssociationTypeSourceRow source={source} key={element.uuid} />;
             default:
-              throw new Error(`Source with uuid ${element.value} not found`);
+              throw new Error('Invalid source type');
           }
         })}
       </Table.Body>
