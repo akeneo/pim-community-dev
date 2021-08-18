@@ -210,6 +210,8 @@ $rules = [
             'Oro\Bundle\SecurityBundle\SecurityFacade',
             // Dependency to retrieve the current User (and his timezone).
             'Akeneo\UserManagement\Bundle\Context\UserContext',
+            // Feature flag dependency
+            'Akeneo\Platform\Bundle\FeatureFlagBundle\FeatureFlag',
 
             'Psr\Log\LoggerInterface',
         ]
