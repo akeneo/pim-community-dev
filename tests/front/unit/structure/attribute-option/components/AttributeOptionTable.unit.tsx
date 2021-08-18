@@ -152,8 +152,8 @@ describe('Attribute options table', () => {
     const optionItems = getAllByTestId(container, 'attribute-option-item');
     const blueOption = optionItems[0];
     const blackOption = optionItems[1];
-    expect(blueOption).toHaveAttribute('data-is-selected', true);
-    expect(blackOption).toHaveAttribute('data-is-selected', false);
+    expect(blueOption).toHaveAttribute('data-is-selected', 'true');
+    expect(blackOption).toHaveAttribute('data-is-selected', 'false');
 
     const optionLabels = getAllByTestId(container, 'attribute-option-item-label');
     const blackOptionLabel = optionLabels[1];
