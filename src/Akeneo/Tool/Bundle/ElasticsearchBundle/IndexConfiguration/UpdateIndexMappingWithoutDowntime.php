@@ -69,7 +69,6 @@ final class UpdateIndexMappingWithoutDowntime
         $body['aliases'] = [$indexAlias => (object) []];
 
         $this->migrationClient->createIndex($indexName, $body);
-
     }
 
     private function moveAllDocuments(

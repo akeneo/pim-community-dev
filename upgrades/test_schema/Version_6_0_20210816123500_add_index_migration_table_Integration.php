@@ -31,7 +31,7 @@ class Version_6_0_20210816123500_add_index_migration_table_Integration extends T
         $expectedColumnsAndTypes = [
             'index_alias' => 'string',
             'hash' => 'string',
-            'values' => 'json',
+            'values' => 'string',
         ];
 
         $tableColumns = $schemaManager->listTableColumns('pim_index_migration');

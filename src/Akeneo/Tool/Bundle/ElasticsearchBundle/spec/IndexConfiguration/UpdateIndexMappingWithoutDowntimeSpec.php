@@ -20,6 +20,11 @@ use PhpSpec\ObjectBehavior;
 
 class UpdateIndexMappingWithoutDowntimeSpec extends ObjectBehavior
 {
+    private const INDEX_ALIAS_TO_MIGRATE = 'index_alias_to_migrate';
+    private const INDEX_NAME_TO_MIGRATE = 'index_name_to_migrate';
+    private const MIGRATED_INDEX_NAME = 'migrated_index_name';
+    private const TEMPORARY_INDEX_ALIAS = 'temporary_index_alias';
+
     public function let(
         ClockInterface $clock,
         ClientMigrationInterface $clientMigration,
@@ -45,7 +50,7 @@ class UpdateIndexMappingWithoutDowntimeSpec extends ObjectBehavior
             ],
         ]);
 
-        $clientMigration->getIndexSettings('index_name_to_migrate')->willReturn([
+        $clientMigration->getIndexSettings(self::INDEX_NAME_TO_MIGRATE)->willReturn([
             'refresh_interval' => 5,
             'number_of_replicas' => 2,
         ]);
@@ -62,12 +67,12 @@ class UpdateIndexMappingWithoutDowntimeSpec extends ObjectBehavior
         ClientMigrationInterface $clientMigration,
         IndexConfiguration $indexConfiguration
     ) {
-        $clientMigration->getIndexNameFromAlias('index_alias_to_migrate')->willReturn(
-            ['index_name_to_migrate'],
-            ['migrated_index_name'],
+        $clientMigration->getIndexNameFromAlias(self::INDEX_ALIAS_TO_MIGRATE)->willReturn(
+            [self::INDEX_NAME_TO_MIGRATE],
+            [self::MIGRATED_INDEX_NAME],
         );
 
-        $clientMigration->createIndex('migrated_index_name', [
+        $clientMigration->createIndex(self::MIGRATED_INDEX_NAME, [
             'settings' => [
                 'index' => [
                     'number_of_shards' => 3,
@@ -86,7 +91,7 @@ class UpdateIndexMappingWithoutDowntimeSpec extends ObjectBehavior
                     ],
                 ],
             ],
-            'aliases' => ['temporary_index_alias' => new \stdClass()]
+            'aliases' => [self::TEMPORARY_INDEX_ALIAS => new \stdClass()]
         ])->shouldBeCalledOnce();
 
         $firstDatetime = new \DateTimeImmutable('@0');
@@ -95,8 +100,8 @@ class UpdateIndexMappingWithoutDowntimeSpec extends ObjectBehavior
         $clock->now()->willReturn($firstDatetime, $datetimeAfterFirstIndexation, $datetimeAfterSwitch);
 
         $clientMigration->reindex(
-            'index_alias_to_migrate',
-            'temporary_index_alias',
+            self::INDEX_ALIAS_TO_MIGRATE,
+            self::TEMPORARY_INDEX_ALIAS,
             [
                 'range' => [
                     'updated_at' => ['gt' => $firstDatetime->getTimestamp()],
@@ -105,8 +110,8 @@ class UpdateIndexMappingWithoutDowntimeSpec extends ObjectBehavior
         )->shouldBeCalledOnce()->willReturn(10);
 
         $clientMigration->reindex(
-            'index_alias_to_migrate',
-            'temporary_index_alias',
+            self::INDEX_ALIAS_TO_MIGRATE,
+            self::TEMPORARY_INDEX_ALIAS,
             [
                 'range' => [
                     'updated_at' => ['gt' => $datetimeAfterFirstIndexation->modify('- 1second')->getTimestamp()],
@@ -115,19 +120,19 @@ class UpdateIndexMappingWithoutDowntimeSpec extends ObjectBehavior
         )->shouldBeCalledOnce()->willReturn(0);
 
         $clientMigration
-            ->putIndexSetting('migrated_index_name', ['refresh_interval' => 5, 'number_of_replicas' => 2])
+            ->putIndexSetting(self::MIGRATED_INDEX_NAME, ['refresh_interval' => 5, 'number_of_replicas' => 2])
             ->shouldBeCalledTimes(1);
 
         $clientMigration->switchIndexAlias(
-            'index_alias_to_migrate',
-            'index_name_to_migrate',
-            'temporary_index_alias',
-            'migrated_index_name'
+            self::INDEX_ALIAS_TO_MIGRATE,
+            self::INDEX_NAME_TO_MIGRATE,
+            self::TEMPORARY_INDEX_ALIAS,
+            self::MIGRATED_INDEX_NAME
         )->shouldBeCalledOnce();
 
         $clientMigration->reindex(
-            'temporary_index_alias',
-            'index_alias_to_migrate',
+            self::TEMPORARY_INDEX_ALIAS,
+            self::INDEX_ALIAS_TO_MIGRATE,
             [
                 'range' => [
                     'updated_at' => ['gt' => $datetimeAfterSwitch->modify('- 1second')->getTimestamp()],
@@ -135,12 +140,12 @@ class UpdateIndexMappingWithoutDowntimeSpec extends ObjectBehavior
             ]
         )->shouldBeCalledOnce()->willReturn(0);
 
-        $clientMigration->removeIndex('index_name_to_migrate')->shouldBeCalledOnce();
+        $clientMigration->removeIndex(self::INDEX_NAME_TO_MIGRATE)->shouldBeCalledOnce();
 
         $this->execute(
-            'index_alias_to_migrate',
-            'temporary_index_alias',
-            'migrated_index_name',
+            self::INDEX_ALIAS_TO_MIGRATE,
+            self::TEMPORARY_INDEX_ALIAS,
+            self::MIGRATED_INDEX_NAME,
             $indexConfiguration,
             fn (\DateTimeImmutable $referenceDatetime) => [
                 'range' => [
@@ -155,12 +160,12 @@ class UpdateIndexMappingWithoutDowntimeSpec extends ObjectBehavior
         ClientMigrationInterface $clientMigration,
         IndexConfiguration $indexConfiguration
     ) {
-        $clientMigration->getIndexNameFromAlias('index_alias_to_migrate')->willReturn(
-            ['index_name_to_migrate'],
-            ['migrated_index_name']
+        $clientMigration->getIndexNameFromAlias(self::INDEX_ALIAS_TO_MIGRATE)->willReturn(
+            [self::INDEX_NAME_TO_MIGRATE],
+            [self::MIGRATED_INDEX_NAME]
         );
 
-        $clientMigration->createIndex('migrated_index_name', [
+        $clientMigration->createIndex(self::MIGRATED_INDEX_NAME, [
             'settings' => [
                 'index' => [
                     'number_of_shards' => 3,
@@ -179,7 +184,7 @@ class UpdateIndexMappingWithoutDowntimeSpec extends ObjectBehavior
                     ],
                 ],
             ],
-            'aliases' => ['temporary_index_alias' => new \stdClass()]
+            'aliases' => [self::TEMPORARY_INDEX_ALIAS => new \stdClass()]
         ])->shouldBeCalledOnce();
 
         $firstDatetime = new \DateTimeImmutable('@0');
@@ -194,8 +199,8 @@ class UpdateIndexMappingWithoutDowntimeSpec extends ObjectBehavior
         );
 
         $clientMigration->reindex(
-            'index_alias_to_migrate',
-            'temporary_index_alias',
+            self::INDEX_ALIAS_TO_MIGRATE,
+            self::TEMPORARY_INDEX_ALIAS,
             [
                 'range' => [
                     'updated_at' => ['gt' => $firstDatetime->getTimestamp()],
@@ -204,8 +209,8 @@ class UpdateIndexMappingWithoutDowntimeSpec extends ObjectBehavior
         )->shouldBeCalledOnce()->willReturn(10);
 
         $clientMigration->reindex(
-            'index_alias_to_migrate',
-            'temporary_index_alias',
+            self::INDEX_ALIAS_TO_MIGRATE,
+            self::TEMPORARY_INDEX_ALIAS,
             [
                 'range' => [
                     'updated_at' => ['gt' => $datetimeAfterFirstIndexation->modify('- 1second')->getTimestamp()],
@@ -214,8 +219,8 @@ class UpdateIndexMappingWithoutDowntimeSpec extends ObjectBehavior
         )->shouldBeCalledOnce()->willReturn(2);
 
         $clientMigration->reindex(
-            'index_alias_to_migrate',
-            'temporary_index_alias',
+            self::INDEX_ALIAS_TO_MIGRATE,
+            self::TEMPORARY_INDEX_ALIAS,
             [
                 'range' => [
                     'updated_at' => ['gt' => $datetimeAfterSecondIndexation->modify('- 1second')->getTimestamp()]
@@ -224,19 +229,19 @@ class UpdateIndexMappingWithoutDowntimeSpec extends ObjectBehavior
         )->shouldBeCalledOnce()->willReturn(0);
 
         $clientMigration
-            ->putIndexSetting('migrated_index_name', ['refresh_interval' => 5, 'number_of_replicas' => 2])
+            ->putIndexSetting(self::MIGRATED_INDEX_NAME, ['refresh_interval' => 5, 'number_of_replicas' => 2])
             ->shouldBeCalledTimes(1);
 
         $clientMigration->switchIndexAlias(
-            'index_alias_to_migrate',
-            'index_name_to_migrate',
-            'temporary_index_alias',
-            'migrated_index_name'
+            self::INDEX_ALIAS_TO_MIGRATE,
+            self::INDEX_NAME_TO_MIGRATE,
+            self::TEMPORARY_INDEX_ALIAS,
+            self::MIGRATED_INDEX_NAME
         )->shouldBeCalledOnce();
 
         $clientMigration->reindex(
-            'temporary_index_alias',
-            'index_alias_to_migrate',
+            self::TEMPORARY_INDEX_ALIAS,
+            self::INDEX_ALIAS_TO_MIGRATE,
             [
                 'range' => [
                     'updated_at' => ['gt' => $datetimeAfterSwitch->modify('- 1second')->getTimestamp()]
@@ -244,12 +249,12 @@ class UpdateIndexMappingWithoutDowntimeSpec extends ObjectBehavior
             ]
         )->shouldBeCalledOnce()->willReturn(0);
 
-        $clientMigration->removeIndex('index_name_to_migrate')->shouldBeCalledOnce();
+        $clientMigration->removeIndex(self::INDEX_NAME_TO_MIGRATE)->shouldBeCalledOnce();
 
         $this->execute(
-            'index_alias_to_migrate',
-            'temporary_index_alias',
-            'migrated_index_name',
+            self::INDEX_ALIAS_TO_MIGRATE,
+            self::TEMPORARY_INDEX_ALIAS,
+            self::MIGRATED_INDEX_NAME,
             $indexConfiguration,
             fn (\DateTimeImmutable $referenceDatetime) => [
                 'range' => [
@@ -264,12 +269,12 @@ class UpdateIndexMappingWithoutDowntimeSpec extends ObjectBehavior
         ClientMigrationInterface $clientMigration,
         IndexConfiguration $indexConfiguration
     ) {
-        $clientMigration->getIndexNameFromAlias('index_alias_to_migrate')->willReturn(
-            ['index_name_to_migrate'],
-            ['migrated_index_name'],
+        $clientMigration->getIndexNameFromAlias(self::INDEX_ALIAS_TO_MIGRATE)->willReturn(
+            [self::INDEX_NAME_TO_MIGRATE],
+            [self::MIGRATED_INDEX_NAME],
         );
 
-        $clientMigration->createIndex('migrated_index_name', [
+        $clientMigration->createIndex(self::MIGRATED_INDEX_NAME, [
             'settings' => [
                 'index' => [
                     'number_of_shards' => 3,
@@ -288,7 +293,7 @@ class UpdateIndexMappingWithoutDowntimeSpec extends ObjectBehavior
                     ],
                 ],
             ],
-            'aliases' => ['temporary_index_alias' => new \stdClass()],
+            'aliases' => [self::TEMPORARY_INDEX_ALIAS => new \stdClass()],
         ])->shouldBeCalledOnce();
 
         $firstDatetime = new \DateTimeImmutable('@0');
@@ -301,8 +306,8 @@ class UpdateIndexMappingWithoutDowntimeSpec extends ObjectBehavior
         );
 
         $clientMigration->reindex(
-            'index_alias_to_migrate',
-            'temporary_index_alias',
+            self::INDEX_ALIAS_TO_MIGRATE,
+            self::TEMPORARY_INDEX_ALIAS,
             [
                 'range' => [
                     'updated_at' => ['gt' => $firstDatetime->getTimestamp()]
@@ -311,8 +316,8 @@ class UpdateIndexMappingWithoutDowntimeSpec extends ObjectBehavior
         )->shouldBeCalledOnce()->willReturn(10);
 
         $clientMigration->reindex(
-            'index_alias_to_migrate',
-            'temporary_index_alias',
+            self::INDEX_ALIAS_TO_MIGRATE,
+            self::TEMPORARY_INDEX_ALIAS,
             [
                 'range' => [
                     'updated_at' => ['gt' => $datetimeAfterFirstIndexation->modify('- 1second')->getTimestamp()]
@@ -321,19 +326,19 @@ class UpdateIndexMappingWithoutDowntimeSpec extends ObjectBehavior
         )->shouldBeCalledOnce()->willReturn(0);
 
         $clientMigration
-            ->putIndexSetting('migrated_index_name', ['refresh_interval' => 5, 'number_of_replicas' => 2])
+            ->putIndexSetting(self::MIGRATED_INDEX_NAME, ['refresh_interval' => 5, 'number_of_replicas' => 2])
             ->shouldBeCalledTimes(1);
 
         $clientMigration->switchIndexAlias(
-            'index_alias_to_migrate',
-            'index_name_to_migrate',
-            'temporary_index_alias',
-            'migrated_index_name'
+            self::INDEX_ALIAS_TO_MIGRATE,
+            self::INDEX_NAME_TO_MIGRATE,
+            self::TEMPORARY_INDEX_ALIAS,
+            self::MIGRATED_INDEX_NAME
         )->shouldBeCalledOnce();
 
         $clientMigration->reindex(
-            'temporary_index_alias',
-            'index_alias_to_migrate',
+            self::TEMPORARY_INDEX_ALIAS,
+            self::INDEX_ALIAS_TO_MIGRATE,
             [
                 'range' => [
                     'updated_at' => ['gt' => $datetimeAfterSwitch->modify('- 1second')->getTimestamp()]
@@ -341,12 +346,12 @@ class UpdateIndexMappingWithoutDowntimeSpec extends ObjectBehavior
             ],
         )->shouldBeCalledOnce()->willReturn(1);
 
-        $clientMigration->removeIndex('index_name_to_migrate')->shouldBeCalledOnce();
+        $clientMigration->removeIndex(self::INDEX_NAME_TO_MIGRATE)->shouldBeCalledOnce();
 
         $this->execute(
-            'index_alias_to_migrate',
-            'temporary_index_alias',
-            'migrated_index_name',
+            self::INDEX_ALIAS_TO_MIGRATE,
+            self::TEMPORARY_INDEX_ALIAS,
+            self::MIGRATED_INDEX_NAME,
             $indexConfiguration,
             fn (\DateTimeImmutable $referenceDatetime) => [
                 'range' => [
@@ -361,12 +366,12 @@ class UpdateIndexMappingWithoutDowntimeSpec extends ObjectBehavior
         ClientMigrationInterface $clientMigration,
         IndexConfiguration $indexConfiguration
     ) {
-        $clientMigration->getIndexNameFromAlias('index_alias_to_migrate')->willReturn(
-            ['index_name_to_migrate'],
-            ['migrated_index_name'],
+        $clientMigration->getIndexNameFromAlias(self::INDEX_ALIAS_TO_MIGRATE)->willReturn(
+            [self::INDEX_NAME_TO_MIGRATE],
+            [self::MIGRATED_INDEX_NAME],
         );
 
-        $clientMigration->createIndex('migrated_index_name', [
+        $clientMigration->createIndex(self::MIGRATED_INDEX_NAME, [
             'settings' => [
                 'index' => [
                     'number_of_shards' => 3,
@@ -385,7 +390,7 @@ class UpdateIndexMappingWithoutDowntimeSpec extends ObjectBehavior
                     ],
                 ],
             ],
-            'aliases' => ['temporary_index_alias' => new \stdClass()],
+            'aliases' => [self::TEMPORARY_INDEX_ALIAS => new \stdClass()],
         ])->shouldBeCalledOnce();
 
         $firstDatetime = new \DateTimeImmutable('@0');
@@ -398,8 +403,8 @@ class UpdateIndexMappingWithoutDowntimeSpec extends ObjectBehavior
         );
 
         $clientMigration->reindex(
-            'index_alias_to_migrate',
-            'temporary_index_alias',
+            self::INDEX_ALIAS_TO_MIGRATE,
+            self::TEMPORARY_INDEX_ALIAS,
             [
                 'range' => [
                     'updated_at' => ['gt' => $firstDatetime->getTimestamp()],
@@ -408,8 +413,8 @@ class UpdateIndexMappingWithoutDowntimeSpec extends ObjectBehavior
         )->shouldBeCalledOnce()->willReturn(10);
 
         $clientMigration->reindex(
-            'index_alias_to_migrate',
-            'temporary_index_alias',
+            self::INDEX_ALIAS_TO_MIGRATE,
+            self::TEMPORARY_INDEX_ALIAS,
             [
                 'range' => [
                     'updated_at' => ['gt' => $datetimeAfterFirstIndexation->modify('- 1second')->getTimestamp()],
@@ -418,24 +423,24 @@ class UpdateIndexMappingWithoutDowntimeSpec extends ObjectBehavior
         )->shouldBeCalledOnce()->willReturn(0);
 
         $clientMigration
-            ->putIndexSetting('migrated_index_name', ['refresh_interval' => 5, 'number_of_replicas' => 2])
+            ->putIndexSetting(self::MIGRATED_INDEX_NAME, ['refresh_interval' => 5, 'number_of_replicas' => 2])
             ->shouldBeCalledTimes(1);
 
         $clientMigration->switchIndexAlias(
-            'index_alias_to_migrate',
-            'index_name_to_migrate',
-            'temporary_index_alias',
-            'migrated_index_name'
+            self::INDEX_ALIAS_TO_MIGRATE,
+            self::INDEX_NAME_TO_MIGRATE,
+            self::TEMPORARY_INDEX_ALIAS,
+            self::MIGRATED_INDEX_NAME
         )->shouldBeCalledOnce()->willThrow(\InvalidArgumentException::class);
 
-        $clientMigration->removeIndex('index_name_to_migrate')->shouldNotBeCalled();
+        $clientMigration->removeIndex(self::INDEX_NAME_TO_MIGRATE)->shouldNotBeCalled();
 
         $this
             ->shouldThrow(\InvalidArgumentException::class)
             ->during('execute', [
-                'index_alias_to_migrate',
-                'temporary_index_alias',
-                'migrated_index_name',
+                self::INDEX_ALIAS_TO_MIGRATE,
+                self::TEMPORARY_INDEX_ALIAS,
+                self::MIGRATED_INDEX_NAME,
                 $indexConfiguration,
                 fn (\DateTimeImmutable $referenceDatetime) => [
                     'range' => [

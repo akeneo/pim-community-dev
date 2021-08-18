@@ -18,6 +18,7 @@ final class Version_6_0_20210816123500_add_index_migration_table extends Abstrac
                 `index_alias` VARCHAR(100) NOT NULL,
                 `hash` VARCHAR(100) NOT NULL,
                 `values` JSON NOT NULL,
+                INDEX migration_index (`index_alias`,`hash`),
                 UNIQUE KEY `unique_idx` (`index_alias`,`hash`)
             ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci
         SQL;

@@ -39,8 +39,8 @@ class MigrateIndexWithoutDowntimeHandler implements MigrateIndexWithoutDowntimeH
     public function handle(MigrateIndexWithoutDowntime $command)
     {
         $currentDatetime = $this->clock->now();
-        $temporaryIndexAlias = sprintf('%s_%s', $command->getIndexAlias(), $currentDatetime->getTimestamp());
-        $migratedIndexName = sprintf('%s_index', $temporaryIndexAlias);
+        $temporaryIndexAlias = $this->initTemporaryIndexAlias($command, $currentDatetime);
+        $migratedIndexName = $this->initMigratedIndexName($temporaryIndexAlias);
 
         $indexMigration = IndexMigration::create(
             $command->getIndexAlias(),
@@ -60,5 +60,17 @@ class MigrateIndexWithoutDowntimeHandler implements MigrateIndexWithoutDowntimeH
 
         $indexMigration->markAsDone();
         $this->indexMigrationRepository->save($indexMigration);
+    }
+
+    private function initTemporaryIndexAlias(
+        MigrateIndexWithoutDowntime $command,
+        \DateTimeImmutable $currentDatetime
+    ): string {
+        return sprintf('%s_%s', $command->getIndexAlias(), $currentDatetime->getTimestamp());
+    }
+
+    private function initMigratedIndexName(string $temporaryIndexAlias): string
+    {
+        return sprintf('%s_index', $temporaryIndexAlias);
     }
 }

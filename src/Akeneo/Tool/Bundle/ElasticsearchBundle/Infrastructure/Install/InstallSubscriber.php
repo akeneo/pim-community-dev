@@ -31,6 +31,7 @@ class InstallSubscriber implements EventSubscriberInterface
                 `index_alias` VARCHAR(100) NOT NULL,
                 `hash` VARCHAR(100) NOT NULL,
                 `values` JSON NOT NULL,
+                INDEX migration_index (`index_alias`,`hash`),
                 UNIQUE KEY `unique_idx` (`index_alias`,`hash`)
             ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci
             SQL
